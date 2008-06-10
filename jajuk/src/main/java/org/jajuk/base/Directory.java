@@ -86,7 +86,7 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
    * @see org.jajuk.base.Item#getIdentifier()
    */
   @Override
-  final public String getLabel() {
+  public final String getLabel() {
     return XML_DIRECTORY;
   }
 
@@ -259,27 +259,27 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
    *          Refresh handler
    */
   public void scan(boolean bDeepScan, RefreshReporter reporter) {
-    java.io.File[] files = getFio().listFiles(UtilSystem.fileFilter);
-    if (files == null || files.length == 0) { // none file, leave
+    java.io.File[] filelist = getFio().listFiles(UtilSystem.fileFilter);
+    if (filelist == null || filelist.length == 0) { // none file, leave
       return;
     }
-    for (int i = 0; i < files.length; i++) {
+    for (int i = 0; i < filelist.length; i++) {
       try { // check errors for each file
         // Check file name is correct (useful to fix name encoding
         // issues)
-        if (!new File(files[i].getAbsolutePath()).exists()) {
-          Log.warn("Cannot read file name (please rename it): {{" + files[i].getAbsolutePath()
+        if (!new File(filelist[i].getAbsolutePath()).exists()) {
+          Log.warn("Cannot read file name (please rename it): {{" + filelist[i].getAbsolutePath()
               + "}}");
           continue;
         }
         boolean bIsMusic = (Boolean) TypeManager.getInstance().getTypeByExtension(
-            UtilSystem.getExtension(files[i])).getValue(XML_TYPE_IS_MUSIC);
+            UtilSystem.getExtension(filelist[i])).getValue(XML_TYPE_IS_MUSIC);
         // Ignore iTunes files
-        if (files[i].getName().startsWith("._")) {
+        if (filelist[i].getName().startsWith("._")) {
           continue;
         }
         if (bIsMusic) {
-          String name = files[i].getName();
+          String name = filelist[i].getName();
           String sId = FileManager.createID(name, this).intern();
           // check the file is not already known in database
           org.jajuk.base.File fileRef = FileManager.getInstance().getFileByID(sId);
@@ -296,12 +296,12 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
           Tag tag = null;
           // ignore tag error to make sure to get a
           // tag object in all cases
-          tag = new Tag(files[i], true);
+          tag = new Tag(filelist[i], true);
           if (tag.isCorrupted()) {
             if (reporter != null) {
               reporter.notifyCorruptedFile();
             }
-            Log.error(103, "{{" + files[i].getAbsolutePath() + "}}", null);
+            Log.error(103, "{{" + filelist[i].getAbsolutePath() + "}}", null);
           }
           // if an error occurs, just notice it but keep the track
           String sTrackName = tag.getTrackName();
@@ -323,7 +323,7 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
           Style style = StyleManager.getInstance().registerStyle(sStyle);
           Year year = YearManager.getInstance().registerYear(sYear);
           Author author = AuthorManager.getInstance().registerAuthor(sAuthorName);
-          Type type = TypeManager.getInstance().getTypeByExtension(UtilSystem.getExtension(files[i]));
+          Type type = TypeManager.getInstance().getTypeByExtension(UtilSystem.getExtension(filelist[i]));
           // Store number of tracks in collection (note that the
           // collection is locked)
           long trackNumber = TrackManager.getInstance().getElementCount();
@@ -334,7 +334,7 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
           // check current date to accelerate refreshing if file has not
           // been modified since last refresh as user can rename a parent
           // directory and the files times under it are not modified
-          long lastModified = files[i].lastModified();
+          long lastModified = filelist[i].lastModified();
 
           // Use file date if the "force file date" option is used
           if (ConfigurationManager.getBoolean(CONF_FORCE_FILE_DATE)) {
@@ -353,7 +353,7 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
           }
 
           org.jajuk.base.File file = FileManager.getInstance().registerFile(sId,
-              files[i].getName(), this, track, files[i].length(), lQuality);
+              filelist[i].getName(), this, track, filelist[i].length(), lQuality);
           // Set file date
           file.setProperty(XML_FILE_DATE, new Date(lastModified));
           // Comment is at the track level, note that we take last
@@ -361,28 +361,25 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
           // apply to all files for a track
           track.setComment(sComment);
           // Make sure to refresh fiel size
-          file.setProperty(XML_SIZE, files[i].length());
+          file.setProperty(XML_SIZE, filelist[i].length());
         } else { // playlist
-          String sId = PlaylistManager.createID(files[i].getName(), this);
+          String sId = PlaylistManager.createID(filelist[i].getName(), this);
           Playlist plfRef = PlaylistManager.getInstance().getPlaylistByID(sId);
           // if known playlist and no deep scan, just leave
           if (plfRef != null && !bDeepScan) {
             continue;
           }
-          Playlist plFile = PlaylistManager.getInstance().registerPlaylistFile(files[i], this);
+          Playlist plFile = PlaylistManager.getInstance().registerPlaylistFile(filelist[i], this);
           plFile.forceRefresh(); // force refresh
-          if (plfRef == null) {
+          if (plfRef == null && reporter != null) {
             // stats, do it here and not
             // before because we ignore the
             // file if we cannot read it
-            if (reporter != null) {
-              reporter.notifyNewFile();
-            }
-
+            reporter.notifyNewFile();
           }
         }
       } catch (Exception e) {
-        Log.error(103, files.length > 0 ? "{{" + files[i].toString() + "}}" : "", e);
+        Log.error(103, filelist.length > 0 ? "{{" + filelist[i].toString() + "}}" : "", e);
       }
     }
   }
@@ -397,7 +394,7 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
    * 
    * @return String
    */
-  public String getRelativePath() {
+  public final String getRelativePath() {
     if (getName().equals("")) {
       // if this directory is a root device
       // directory
@@ -463,7 +460,7 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
    */
   public boolean shouldBeHidden() {
     if (getDevice().isMounted()
-        || ConfigurationManager.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED) == false) {
+        || !ConfigurationManager.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED)) {
       return false;
     }
     return true;
@@ -491,11 +488,11 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
   @Override
   public String getHumanValue(String sKey) {
     if (XML_DIRECTORY_PARENT.equals(sKey)) {
-      Directory dParent = DirectoryManager.getInstance().getDirectoryByID((String) getValue(sKey));
-      if (dParent == null) {
+      Directory parentdir = DirectoryManager.getInstance().getDirectoryByID((String) getValue(sKey));
+      if (parentdir == null) {
         return ""; // no parent directory
       } else {
-        return dParent.getFio().getAbsolutePath();
+        return parentdir.getFio().getAbsolutePath();
       }
     } else if (XML_DEVICE.equals(sKey)) {
       return (DeviceManager.getInstance().getDeviceByID((String) getValue(sKey))).getName();

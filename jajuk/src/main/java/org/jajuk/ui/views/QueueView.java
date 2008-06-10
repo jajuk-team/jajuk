@@ -273,8 +273,8 @@ public class QueueView extends PlaylistView {
           if (JajukEvents.EVENT_QUEUE_NEED_REFRESH.equals(subject)
               || JajukEvents.EVENT_DEVICE_REFRESH.equals(subject)
               || JajukEvents.EVENT_RATE_CHANGED.equals(subject)) {
-            editorModel.alItems.clear();
-            editorModel.alPlanned.clear();
+            editorModel.getItems().clear();
+            editorModel.getPlanned().clear();
             refreshQueue();
           } else if (JajukEvents.EVENT_CUSTOM_PROPERTIES_ADD.equals(subject)) {
             Properties properties = event.getDetails();
@@ -290,8 +290,8 @@ public class QueueView extends PlaylistView {
             editorTable.addColumnIntoConf((String) properties.get(DETAIL_CONTENT));
             editorTable.showColumns(editorTable.getColumnsConf());
 
-            editorModel.alItems.clear();
-            editorModel.alPlanned.clear();
+            editorModel.getItems().clear();
+            editorModel.getPlanned().clear();
             refreshQueue();
           } else if (JajukEvents.EVENT_CUSTOM_PROPERTIES_REMOVE.equals(subject)) {
             Properties properties = event.getDetails();
@@ -307,16 +307,16 @@ public class QueueView extends PlaylistView {
             editorTable.removeColumnFromConf((String) properties.get(DETAIL_CONTENT));
             editorTable.showColumns(editorTable.getColumnsConf());
 
-            editorModel.alItems.clear();
-            editorModel.alPlanned.clear();
+            editorModel.getItems().clear();
+            editorModel.getPlanned().clear();
             refreshQueue();
           } else if (JajukEvents.EVENT_VIEW_REFRESH_REQUEST.equals(subject)) {
             // force filter to refresh if the events has been triggered by the
             // table itself after a column change
             JTable table = (JTable) event.getDetails().get(DETAIL_CONTENT);
             if (table.equals(editorTable)) {
-              editorModel.alItems.clear();
-              editorModel.alPlanned.clear();
+              editorModel.getItems().clear();
+              editorModel.getPlanned().clear();
               refreshQueue();
             }
           }
@@ -337,8 +337,8 @@ public class QueueView extends PlaylistView {
     if (editorTable.getSelectionModel().getMinSelectionIndex() == -1) {
       setDefaultButtonState();
     }
-    editorModel.alItems = FIFO.getInstance().getFIFO();
-    editorModel.alPlanned = FIFO.getInstance().getPlanned();
+    editorModel.setItems(FIFO.getInstance().getFIFO());
+    editorModel.setPlanned(FIFO.getInstance().getPlanned());
     ((JajukTableModel) editorTable.getModel()).populateModel(editorTable.getColumnsConf());
     int[] rows = editorTable.getSelectedRows();
     // save selection
@@ -464,7 +464,7 @@ public class QueueView extends PlaylistView {
       int selectedRow = selection.getMaxSelectionIndex();
       // true if selected line is a planned track
       boolean bPlanned = false;
-      if (selectedRow > editorModel.alItems.size() - 1) {
+      if (selectedRow > editorModel.getItems().size() - 1) {
         // means it is a planned track
         bPlanned = true;
       }
@@ -527,7 +527,7 @@ public class QueueView extends PlaylistView {
           if (selection.getMaxSelectionIndex() == 0) {
             // current track can't go down
             jbDown.setEnabled(false);
-          } else if (selection.getMaxSelectionIndex() < editorModel.alItems.size() - 1) {
+          } else if (selection.getMaxSelectionIndex() < editorModel.getItems().size() - 1) {
             // a normal item can't go in the planned items
             jbDown.setEnabled(true);
           } else {

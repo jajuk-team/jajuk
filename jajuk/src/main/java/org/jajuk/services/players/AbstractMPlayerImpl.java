@@ -34,7 +34,7 @@ import org.jajuk.util.log.Log;
 /**
  * Mplayer player implementation
  */
-abstract public class AbstractMPlayerImpl implements IPlayerImpl, ITechnicalStrings {
+public abstract class AbstractMPlayerImpl implements IPlayerImpl, ITechnicalStrings {
 
   /** Stored Volume */
   float fVolume;

@@ -78,6 +78,16 @@ public class Transition {
         && getTo().equals(((Transition) other).getTo());
   }
 
+  @Override
+  public int hashCode() {
+    // for now just combine name and id to a hashcode
+    // idea taken from http://www.geocities.com/technofundo/tech/java/equalhash.html
+    int hash = 7;
+    hash = 31 * hash + getFrom().hashCode();
+    hash = 31 * hash + getTo().hashCode();
+    return hash;
+  }
+
   /**
    * @return Returns the from.
    */

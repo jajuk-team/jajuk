@@ -49,7 +49,7 @@ public class Author extends LogicalItem implements Comparable<Author> {
    * @see org.jajuk.base.Item#getIdentifier()
    */
   @Override
-  final public String getLabel() {
+  public final String getLabel() {
     return XML_AUTHOR;
   }
 

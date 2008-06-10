@@ -406,7 +406,7 @@ public class Track extends LogicalItem implements Comparable<Track> {
    */
   public boolean shouldBeHidden() {
     if (getPlayeableFile(true) != null
-        || ConfigurationManager.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED) == false) {
+        || !ConfigurationManager.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED)) {
       return false;
     }
     return true;
@@ -418,7 +418,7 @@ public class Track extends LogicalItem implements Comparable<Track> {
    * @see org.jajuk.base.Item#getIdentifier()
    */
   @Override
-  final public String getLabel() {
+  public final String getLabel() {
     return XML_TRACK;
   }
 

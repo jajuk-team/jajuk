@@ -111,7 +111,7 @@ public class Album extends LogicalItem implements Comparable<Album> {
    * @see org.jajuk.base.Item#getIdentifier()
    */
   @Override
-  final public String getLabel() {
+  public final String getLabel() {
     return XML_ALBUM;
   }
 

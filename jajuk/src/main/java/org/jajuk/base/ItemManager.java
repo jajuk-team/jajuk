@@ -78,7 +78,7 @@ public abstract class ItemManager implements ITechnicalStrings {
   /**
    * @return identifier used for XML generation
    */
-  abstract public String getLabel();
+  public abstract String getLabel();
 
   /**
    * @param sPropertyName

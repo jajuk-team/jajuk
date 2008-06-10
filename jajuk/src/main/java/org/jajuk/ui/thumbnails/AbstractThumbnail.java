@@ -78,7 +78,7 @@ public abstract class AbstractThumbnail extends JPanel implements ITechnicalStri
 
   List<Item> alSelected = new ArrayList<Item>(100);
 
-  public JLabel jlIcon;
+  protected JLabel jlIcon;
 
   static private long lDateLastMove;
 
@@ -198,7 +198,7 @@ public abstract class AbstractThumbnail extends JPanel implements ITechnicalStri
     }.start();
   }
 
-  abstract public void populate() throws Exception;
+  public abstract void populate() throws Exception;
 
   /** Return HTML text to display in the popup */
   public abstract String getDescription();
@@ -278,6 +278,7 @@ public abstract class AbstractThumbnail extends JPanel implements ITechnicalStri
           if (bDragging) {
             return;
           }
+
           // Left click
           if (e.getButton() == MouseEvent.BUTTON1 && e.getSource() == jlIcon) {
             // if second click (item already selected), play
@@ -339,7 +340,7 @@ public abstract class AbstractThumbnail extends JPanel implements ITechnicalStri
    * 
    * @param b
    */
-  public void setSelected(boolean b) {
+  public final void setSelected(boolean b) {
     selected = b;
     // Reset number of clicks
     if (!b) {
@@ -437,6 +438,10 @@ public abstract class AbstractThumbnail extends JPanel implements ITechnicalStri
    */
   public boolean isDataFlavorSupported(DataFlavor flavor) {
     return false;
+  }
+
+  public JLabel getIcon() {
+    return this.jlIcon;
   }
 
 }

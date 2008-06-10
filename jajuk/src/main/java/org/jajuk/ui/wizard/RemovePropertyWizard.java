@@ -109,7 +109,7 @@ public class RemovePropertyWizard extends CustomPropertyWizard {
     }
   }
 
-  public void populateProperties() {
+  public final void populateProperties() {
     // clear combo
     jcbName.removeAllItems();
     // refresh properties list for this item

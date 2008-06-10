@@ -549,8 +549,8 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
       setButtonState();
     }
     try {
-      editorModel.alItems = UtilFeatures.createStackItems(plf.getFiles(), ConfigurationManager
-          .getBoolean(CONF_STATE_REPEAT), true); // PERF
+      editorModel.setItems(UtilFeatures.createStackItems(plf.getFiles(), ConfigurationManager
+          .getBoolean(CONF_STATE_REPEAT), true)); // PERF
       ((JajukTableModel) editorTable.getModel()).populateModel(editorTable.getColumnsConf());
     } catch (JajukException je) { // don't trace because
       // it is called in a loop
@@ -757,7 +757,7 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
       int selectedRow = selection.getMaxSelectionIndex();
       // true if selected line is a planned track
       boolean bPlanned = false;
-      if (selectedRow > editorModel.alItems.size() - 1) {
+      if (selectedRow > editorModel.getItems().size() - 1) {
         // means it is a planned track
         bPlanned = true;
       }
@@ -819,7 +819,7 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
           // No up/down buttons for planned tracks
           jbDown.setEnabled(false);
         } else { // normal item
-          if (selection.getMaxSelectionIndex() < editorModel.alItems.size() - 1) {
+          if (selection.getMaxSelectionIndex() < editorModel.getItems().size() - 1) {
             // a normal item can't go in the planned items
             jbDown.setEnabled(true);
           } else {

@@ -239,10 +239,10 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener, 
       public void treeNodesChanged(TreeModelEvent e) {
         DefaultMutableTreeNode node;
         node = (DefaultMutableTreeNode) (e.getTreePath().getLastPathComponent());
-        try {
+
+        if(node != null) {
           int index = e.getChildIndices()[0];
           node = (DefaultMutableTreeNode) (node.getChildAt(index));
-        } catch (NullPointerException exc) {
         }
       }
 
@@ -881,7 +881,7 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener, 
         albumNode = eAlbum.nextElement();
         if (albumNode.getChildCount() < MIN_TRACKS_NUMBER) {
           while (albumNode.getChildCount() > 0) {
-
+            // FIXME: why do we do an empty busy loop here?
           }
         }
       }

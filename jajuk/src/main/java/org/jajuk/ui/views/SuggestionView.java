@@ -339,7 +339,7 @@ public class SuggestionView extends ViewAdapter implements ITechnicalStrings, Ob
         ThumbnailManager.refreshThumbnail(album, "100x100");
         LocalAlbumThumbnail thumb = new LocalAlbumThumbnail(album, 100, false);
         thumb.populate();
-        thumb.jlIcon.addMouseListener(new ThumbMouseListener());
+        thumb.getIcon().addMouseListener(new ThumbMouseListener());
         out.add(thumb);
       }
     } else {
@@ -361,7 +361,7 @@ public class SuggestionView extends ViewAdapter implements ITechnicalStrings, Ob
         for (AudioScrobblerAlbum album : albums) {
           AudioScrobblerAlbumThumbnail thumb = new AudioScrobblerAlbumThumbnail(album);
           thumb.populate();
-          thumb.jlIcon.addMouseListener(new ThumbMouseListener());
+          thumb.getIcon().addMouseListener(new ThumbMouseListener());
           out.add(thumb);
         }
       }
@@ -377,7 +377,7 @@ public class SuggestionView extends ViewAdapter implements ITechnicalStrings, Ob
         for (AudioScrobblerArtist similarAuthor : authors) {
           AudioScrobblerAuthorThumbnail thumb = new AudioScrobblerAuthorThumbnail(similarAuthor);
           thumb.populate();
-          thumb.jlIcon.addMouseListener(new ThumbMouseListener());
+          thumb.getIcon().addMouseListener(new ThumbMouseListener());
           out.add(thumb);
         }
       }

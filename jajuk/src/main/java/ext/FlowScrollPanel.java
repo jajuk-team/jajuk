@@ -40,7 +40,8 @@ public class FlowScrollPanel extends JXPanel implements Scrollable {
     setScroller(scrollPane);
   }
 
-  public void setScroller(JScrollPane scrollPane) {
+  public final void setScroller(JScrollPane scrollPane) {
+    // FIXME: do we really want to compare instances here instead of content??
     if (scroller != scrollPane) {
       scroller = scrollPane;
       if (scroller != null) {
@@ -61,8 +62,7 @@ public class FlowScrollPanel extends JXPanel implements Scrollable {
   @Override
   public Dimension getPreferredSize() {
     if (scroller == null) {
-      Dimension result = super.getPreferredSize();
-      return result;
+      return super.getPreferredSize();
     }
     Insets insets = getInsets();
     int hgap = layout.getHgap();
@@ -93,16 +93,18 @@ public class FlowScrollPanel extends JXPanel implements Scrollable {
           x += d.width;
           rowh = Math.max(rowh, d.height);
         } else {
-          if (x > maxRowWidth)
+          if (x > maxRowWidth) {
             maxRowWidth = x + hgap;
+          }
           x = d.width;
           y += vgap + rowh;
           rowh = d.height;
         }
       }
     }
-    if (x > maxRowWidth)
+    if (x > maxRowWidth) {
       maxRowWidth = x + 2 * hgap + insets.left + insets.right;
+    }
     y += vgap + rowh + insets.bottom;
     return new Dimension(maxRowWidth, y);
   }
@@ -112,8 +114,9 @@ public class FlowScrollPanel extends JXPanel implements Scrollable {
     if (l instanceof FlowLayout) {
       layout = (FlowLayout) l;
       super.setLayout(l);
-    } else
+    } else {
       throw new AWTError("FlowScrollPane can have only FlowLayout, not " + l);
+    }
   }
 
   //

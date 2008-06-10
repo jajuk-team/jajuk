@@ -342,7 +342,7 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
    * @see org.jajuk.base.Item#getIdentifier()
    */
   @Override
-  final public String getLabel() {
+  public final String getLabel() {
     return ITechnicalStrings.XML_DEVICE;
   }
 

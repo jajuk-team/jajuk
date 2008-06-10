@@ -50,6 +50,12 @@ public class WebRadio implements Comparable<WebRadio> {
     return name.equals(((WebRadio) other).getName());
   }
 
+  @Override
+  public int hashCode() {
+    // equals only compares on Name, therefore use the same for the hashcode
+    return name.hashCode();
+  }
+
   public int compareTo(WebRadio other) {
     // make null url web radio to appear first (useful for the wizard)
     if (getUrl() == null) {

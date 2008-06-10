@@ -45,7 +45,7 @@ public class TipOfTheDayWizard extends JFrame implements ITechnicalStrings {
 
   private static final long serialVersionUID = 1L;
 
-  private static final String[] tips = Messages.getAll("TipOfTheDay");
+  private static final String[] TIPS = Messages.getAll("TipOfTheDay");
 
   private int iLastTip;
 
@@ -59,7 +59,7 @@ public class TipOfTheDayWizard extends JFrame implements ITechnicalStrings {
     super(Messages.getString("TipOfTheDayView.0"));
     setAlwaysOnTop(true);
     setIconImage(IconLoader.ICON_LOGO.getImage());
-    this.iLastTip = (ConfigurationManager.getInt(CONF_TIP_OF_DAY_INDEX) - 1) % tips.length;
+    this.iLastTip = (ConfigurationManager.getInt(CONF_TIP_OF_DAY_INDEX) - 1) % TIPS.length;
 
     cbShow = new JCheckBox(Messages.getString("TipOfTheDayView.2"));
     cbShow.setSelected(ConfigurationManager.getBoolean(CONF_SHOW_TIP_ON_STARTUP));
@@ -74,7 +74,7 @@ public class TipOfTheDayWizard extends JFrame implements ITechnicalStrings {
     bNext.setMargin(new Insets(1, 1, 1, 1));
     bNext.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent actionevent) {
-        iLastTip = (iLastTip + 1) % tips.length;
+        iLastTip = (iLastTip + 1) % TIPS.length;
         setTip(iLastTip);
       }
     });
@@ -85,7 +85,7 @@ public class TipOfTheDayWizard extends JFrame implements ITechnicalStrings {
       public void actionPerformed(ActionEvent actionevent) {
         iLastTip = iLastTip - 1;
         if (iLastTip == -1) {
-          iLastTip = tips.length - 1;
+          iLastTip = TIPS.length - 1;
         }
         setTip(iLastTip);
       }
@@ -143,14 +143,14 @@ public class TipOfTheDayWizard extends JFrame implements ITechnicalStrings {
     }
   }
 
-  public void setTip(int p) {
+  public final void setTip(int p) {
     int i = p;
     iLastTip = i;
-    if (i >= tips.length) {
+    if (i >= TIPS.length) {
       i = 0;
     }
-    tipArea.setText(tips[i]);
-    lCounter.setText((new StringBuilder()).append("").append(i).append("/").append(tips.length -1)
+    tipArea.setText(TIPS[i]);
+    lCounter.setText((new StringBuilder()).append("").append(i).append("/").append(TIPS.length -1)
         .toString());
     tipArea.setCaretPosition(0);
   }
@@ -162,7 +162,7 @@ public class TipOfTheDayWizard extends JFrame implements ITechnicalStrings {
       toFront();
     } else {
       ConfigurationManager.setProperty(CONF_TIP_OF_DAY_INDEX, String.valueOf((iLastTip + 1)
-          % tips.length));
+          % TIPS.length));
       ConfigurationManager.setProperty(CONF_SHOW_TIP_ON_STARTUP, String
           .valueOf(cbShow.isSelected()));
     }

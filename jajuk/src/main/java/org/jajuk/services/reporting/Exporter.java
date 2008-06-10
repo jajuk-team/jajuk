@@ -61,7 +61,7 @@ public abstract class Exporter implements ITechnicalStrings {
    *          This XMLExporter constant specifies what type of collection we're
    *          exporting.
    */
-  abstract public void processCollection(int type) throws Exception;
+  public abstract void processCollection(int type) throws Exception;
 
   /**
    * This methods will create an HTML String of items
@@ -69,7 +69,7 @@ public abstract class Exporter implements ITechnicalStrings {
    * @param collection
    *          An List of the items to export
    */
-  abstract public void process(List<Item> collection) throws Exception;
+  public abstract void process(List<Item> collection) throws Exception;
 
   /**
    * 

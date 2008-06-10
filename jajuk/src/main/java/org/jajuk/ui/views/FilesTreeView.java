@@ -361,10 +361,9 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
         DefaultMutableTreeNode node;
         node = (DefaultMutableTreeNode) (e.getTreePath().getLastPathComponent());
 
-        try {
+        if(node != null) {
           int index = e.getChildIndices()[0];
           node = (DefaultMutableTreeNode) (node.getChildAt(index));
-        } catch (NullPointerException exc) {
         }
       }
 
@@ -1000,7 +999,7 @@ class DeviceNode extends TransferableTreeNode {
   private static final long serialVersionUID = 1L;
 
   /** device -> deviceNode hashmap */
-  public static Map<Device, DeviceNode> hmDeviceDeviceNode = new HashMap<Device, DeviceNode>(
+  private static Map<Device, DeviceNode> hmDeviceDeviceNode = new HashMap<Device, DeviceNode>(
       100);
 
   /**
@@ -1046,7 +1045,7 @@ class DirectoryNode extends TransferableTreeNode {
   private static final long serialVersionUID = 1L;
 
   /** directory -> directoryNode hashmap */
-  public static Map<Directory, DirectoryNode> hmDirectoryDirectoryNode = new HashMap<Directory, DirectoryNode>(
+  private static Map<Directory, DirectoryNode> hmDirectoryDirectoryNode = new HashMap<Directory, DirectoryNode>(
       100);
 
   /**

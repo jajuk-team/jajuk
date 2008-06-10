@@ -353,6 +353,12 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
     return (getID().equals(plfOther.getID()) && (plfOther.getType() == type));
   }
 
+  @Override
+  public int hashCode() {
+    // Item.hashCode() operates on ID, which should be sufficient for now.
+    return super.hashCode();
+  }
+
   /**
    * Force playlist re-read (don't use the cache). Can be used after a forced
    * refresh
@@ -417,11 +423,10 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
           getDirectory().getDevice().mount(
               ConfigurationManager.getBoolean(ITechnicalStrings.CONF_OPTIONS_HIDE_UNMOUNTED));
         } catch (final Exception e) {
-          Log.error(e);
-          throw new JajukException(141, getFio().getAbsolutePath(), null);
+          throw new JajukException(141, getFio().getAbsolutePath(), e);
         }
       } else {
-        throw new JajukException(141, getFio().getAbsolutePath(), null);
+        throw new JajukException(141, getFio().getAbsolutePath());
       }
     }
     if ((type == Type.NORMAL) && (alFiles == null)) {
@@ -434,7 +439,7 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
           Messages.showWarningMessage(Messages.getErrorMessage(142));
         }
       } else { // error accessing playlist
-        throw new JajukException(9, getFio().getAbsolutePath(), new Exception());
+        throw new JajukException(9, getFio().getAbsolutePath());
       }
     } else if (type.equals(Type.BESTOF)) {
       alFiles = FileManager.getInstance().getBestOfFiles();
@@ -443,11 +448,8 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
           ConfigurationManager.getBoolean(ITechnicalStrings.CONF_OPTIONS_HIDE_UNMOUNTED));
     } else if (type.equals(Type.BOOKMARK)) {
       alFiles = Bookmarks.getInstance().getFiles();
-    } else if (type.equals(Type.NEW)) {
-      if (alFiles == null) {
-        alFiles = new ArrayList<File>(10);
-      }
-
+    } else if (type.equals(Type.NEW) && (alFiles == null)) {
+      alFiles = new ArrayList<File>(10);
     }
     return alFiles;
   }
@@ -494,7 +496,7 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
    * @see org.jajuk.base.Item#getIdentifier()
    */
   @Override
-  final public String getLabel() {
+  public final String getLabel() {
     return ITechnicalStrings.XML_PLAYLIST_FILE;
   }
 
@@ -514,7 +516,7 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
    * Parse a playlist
    */
   public List<File> load() throws JajukException {
-    final List<File> alFiles = new ArrayList<File>(10);
+    final List<File> files = new ArrayList<File>(10);
     BufferedReader br = null;
     try {
       br = new BufferedReader(new FileReader(getFio()));
@@ -556,7 +558,7 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
               continue;
             }
           }
-          alFiles.add(file);
+          files.add(file);
         }
       }
       // display a warning message if the playlist contains unknown
@@ -577,7 +579,7 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
         }
       }
     }
-    return alFiles;
+    return files;
   }
 
   /**
@@ -762,7 +764,7 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
    */
   public boolean shouldBeHidden() {
     if (getDirectory().getDevice().isMounted()
-        || (ConfigurationManager.getBoolean(ITechnicalStrings.CONF_OPTIONS_HIDE_UNMOUNTED) == false)) {
+        || (!ConfigurationManager.getBoolean(ITechnicalStrings.CONF_OPTIONS_HIDE_UNMOUNTED))) {
       // option "only display mounted devices"
       return false;
     }
@@ -786,8 +788,8 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
           UtilGUI.waiting();
           final java.io.File fDir = jfc.getSelectedFile();
           final Date curDate = new Date();
-          final SimpleDateFormat Stamp = new SimpleDateFormat("ddMMyyyy-HHmm");
-          final String dirName = "Party-" + Stamp.format(curDate);
+          final SimpleDateFormat stamp = new SimpleDateFormat("ddMMyyyy-HHmm");
+          final String dirName = "Party-" + stamp.format(curDate);
           final java.io.File destDir = new java.io.File(fDir.getAbsolutePath() + "/" + dirName);
           destDir.mkdir();
           final java.io.File file = new java.io.File(destDir.getAbsolutePath() + "/playlist.m3u");

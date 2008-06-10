@@ -76,7 +76,7 @@ public class File extends PhysicalItem implements Comparable<File>, ITechnicalSt
    * @see org.jajuk.base.Item#getIdentifier()
    */
   @Override
-  final public String getLabel() {
+  public final String getLabel() {
     return XML_FILE;
   }
 
@@ -263,7 +263,7 @@ public class File extends PhysicalItem implements Comparable<File>, ITechnicalSt
    */
   public boolean shouldBeHidden() {
     if (getDirectory().getDevice().isMounted()
-        || ConfigurationManager.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED) == false) {
+        || !ConfigurationManager.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED)) {
       return false;
     }
     return true;

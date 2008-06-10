@@ -42,10 +42,10 @@ import org.jajuk.util.Messages;
 public class PlaylistTableModel extends JajukTableModel {
 
   /** Values */
-  public List<StackItem> alItems = new ArrayList<StackItem>(10);
+  private List<StackItem> alItems = new ArrayList<StackItem>(10);
 
   /** Values planned */
-  public List<StackItem> alPlanned = new ArrayList<StackItem>(10);
+  private List<StackItem> alPlanned = new ArrayList<StackItem>(10);
 
   private static final long serialVersionUID = 1L;
 
@@ -108,7 +108,7 @@ public class PlaylistTableModel extends JajukTableModel {
    * Create columns configuration
    * 
    */
-  public synchronized void prepareColumns() {
+  public final synchronized void prepareColumns() {
     vColNames.clear();
     vId.clear();
 
@@ -372,5 +372,21 @@ public class PlaylistTableModel extends JajukTableModel {
         }
       }
     }
+  }
+
+  public List<StackItem> getItems() {
+    return this.alItems;
+  }
+
+  public void setItems(List<StackItem> alItems) {
+    this.alItems = alItems;
+  }
+
+  public List<StackItem> getPlanned() {
+    return this.alPlanned;
+  }
+
+  public void setPlanned(List<StackItem> alPlanned) {
+    this.alPlanned = alPlanned;
   }
 }

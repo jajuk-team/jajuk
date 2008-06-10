@@ -83,7 +83,7 @@ public abstract class DigitalDJ implements ITechnicalStrings, Comparable<Digital
   /**
    * @return XML representation of this DJ
    */
-  abstract public String toXML();
+  public abstract String toXML();
 
   /**
    * 
@@ -147,6 +147,12 @@ public abstract class DigitalDJ implements ITechnicalStrings, Comparable<Digital
     return getName().equals(sOtherName);
   }
 
+  @Override
+  public int hashCode() {
+    // equals only compares on Name, therefore use the same for the hashcode
+    return sName.hashCode();
+  }
+
   /**
    * @param name
    */
@@ -187,7 +193,7 @@ public abstract class DigitalDJ implements ITechnicalStrings, Comparable<Digital
    * 
    * @return Generated playlist
    */
-  abstract public List<File> generatePlaylist();
+  public abstract List<File> generatePlaylist();
 
   public String getID() {
     return this.sID;

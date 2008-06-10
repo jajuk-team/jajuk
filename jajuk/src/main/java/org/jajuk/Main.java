@@ -496,7 +496,7 @@ public class Main implements ITechnicalStrings {
     for (final String check : configChecks) {
       final File file = UtilSystem.getConfFileByPath(check);
 
-      if (file.exists() == false) {
+      if (!file.exists()) {
         // if config file doesn't exit, create
         // it with default values
         org.jajuk.util.ConfigurationManager.commit();
@@ -507,7 +507,7 @@ public class Main implements ITechnicalStrings {
     for (final String check : dirChecks) {
       final File file = UtilSystem.getConfFileByPath(check);
 
-      if ((file.exists() == false) && (file.mkdir() == false)) {
+      if (!file.exists() && !file.mkdir()) {
         Log.warn("Could not create missing required directory [" + check + "]");
       }
     }

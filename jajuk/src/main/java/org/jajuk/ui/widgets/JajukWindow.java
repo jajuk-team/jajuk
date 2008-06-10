@@ -247,7 +247,7 @@ public class JajukWindow extends JFrame implements ITechnicalStrings, Observer {
    * 
    * @see org.jajuk.ui.Observer#update(java.lang.String)
    */
-  public void update(Event event) {
+  public final void update(Event event) {
     final JajukEvents subject = event.getSubject();
     SwingUtilities.invokeLater(new Runnable() {
       public void run() {

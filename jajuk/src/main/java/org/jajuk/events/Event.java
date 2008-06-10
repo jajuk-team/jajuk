@@ -97,4 +97,17 @@ public class Event {
     }
     return bOut;
   }
+
+  @Override
+  public int hashCode() {
+    // very simple implementation, needs to be revisited if this object is used heavily in HashMaps/HashSets
+    // for now just combine name and id to a hashcode
+    // idea taken from http://www.geocities.com/technofundo/tech/java/equalhash.html
+    int hash = 7;
+    hash = 31 * hash + subject.hashCode();
+    hash = 31 * hash + pDetails.hashCode();
+    return hash;
+  }
+  
+  
 }

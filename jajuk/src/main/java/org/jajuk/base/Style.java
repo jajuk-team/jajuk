@@ -121,7 +121,7 @@ public class Style extends LogicalItem implements Comparable<Style> {
    * @see org.jajuk.base.Item#getHumanValue(java.lang.String)
    */
   @Override
-  final public String getHumanValue(String sKey) {
+  public final String getHumanValue(String sKey) {
     if (XML_NAME.equals(sKey)) {
       return getName2();
     } else {// default

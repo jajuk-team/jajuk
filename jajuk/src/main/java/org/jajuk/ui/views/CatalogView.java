@@ -665,7 +665,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
               if (iNbCreatedThumbs % 20 == 0) {
                 System.gc();
               }
-              it.jlIcon.addMouseListener(new MouseAdapter() {
+              it.getIcon().addMouseListener(new MouseAdapter() {
                 @Override
                 public void mousePressed(MouseEvent e) {
                   LocalAlbumThumbnail thumb = (LocalAlbumThumbnail) ((JLabel) e.getSource())

@@ -89,7 +89,9 @@ public class ExitService extends Thread implements ITechnicalStrings {
         if (files != null) {
           for (File element : files) {
             if (element.getName().indexOf("localhost") != -1) {
-              if (element.delete()) {
+              if (!element.exists()) {
+                Log.info("Session file: " + element.getAbsolutePath() + " does not exist.");
+              } else if (element.delete()) {
                 Log.warn("Deleted session file: " + element.getAbsolutePath());
               } else {
                 Log.warn("Could not delete file: " + element.getAbsolutePath());
@@ -98,9 +100,11 @@ public class ExitService extends Thread implements ITechnicalStrings {
           }
         }
 
-        // Remove session flag. 
+        // Remove session flag.
         File file = Main.getSessionIdFile();
-        if (!file.delete()) {
+        if (!file.exists()) {
+          Log.info("Cannot delete file, file: " + file.toString() + " does not exist.");
+        } else if (!file.delete()) {
           Log.warn("Could not delete file: " + file.toString());
         }
 
