@@ -414,8 +414,8 @@ public class Log implements ITechnicalStrings {
   private static void spool(Throwable e) {
     spool("[ERROR] " + e.getClass() + " / " + e.getMessage() + " / " + e.getCause());
     StackTraceElement[] ste = e.getStackTrace();
-    for (int i = 0; i < ste.length; i++) {
-      spool("<font color='red'>" + ste[i].toString() + "</font>");
+    for (StackTraceElement element : ste) {
+      spool("<font color='red'>" + element.toString() + "</font>");
     }
   }
 

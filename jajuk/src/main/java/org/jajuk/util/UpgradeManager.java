@@ -56,10 +56,10 @@ public final class UpgradeManager implements ITechnicalStrings {
     // - for Jajuk < 1.3: no more use of .ser files
     file = UtilSystem.getConfFileByPath("");
     File[] files = file.listFiles();
-    for (int i = 0; i < files.length; i++) {
+    for (File element : files) {
       // delete all .ser files
-      if (UtilSystem.getExtension(files[i]).equals("ser")) {
-        files[i].delete();
+      if (UtilSystem.getExtension(element).equals("ser")) {
+        element.delete();
       }
     }
     // - for jajuk 1.3: wrong option name: "false" instead of

@@ -158,9 +158,9 @@ public class StylesSelectionDialog extends JajukJDialog implements ActionListene
       public void actionPerformed(ActionEvent ae) {
         if (ae.getSource() == okc.getOKButton()) {
           int[] selection = jlist.getSelectedIndices();
-          for (int i = 0; i < selection.length; i++) {
+          for (int element : selection) {
             selectedStyles.add(StyleManager.getInstance().getStyleByName(
-                (String) jlist.getModel().getElementAt(selection[i])));
+                (String) jlist.getModel().getElementAt(element)));
           }
         }
         dispose();

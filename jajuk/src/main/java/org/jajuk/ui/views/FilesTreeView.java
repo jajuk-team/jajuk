@@ -396,8 +396,8 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
           // get all components recursively
           selectedRecursively.clear();
           alSelected.clear();
-          for (int i = 0; i < paths.length; i++) {
-            Object o = paths[i].getLastPathComponent();
+          for (TreePath element : paths) {
+            Object o = element.getLastPathComponent();
             if (o instanceof TreeRootElement) {// root node
               items = FileManager.getInstance().getElementCount();
               selectedRecursively.addAll(FileManager.getInstance().getFiles());
@@ -576,16 +576,16 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
           jmiCDDBWizard.setEnabled(bShowCDDB);
         }
         if (c.equals(DirectoryNode.class)) {
-          for (int i = 0; i < paths.length; i++) {
-            Directory dir = ((DirectoryNode) (paths[i].getLastPathComponent())).getDirectory();
+          for (TreePath element : paths) {
+            Directory dir = ((DirectoryNode) (element.getLastPathComponent())).getDirectory();
             if (!dir.getDevice().isMounted()) {
               continue;
             }
           }
         }
         if (c.equals(FileNode.class)) {
-          for (int i = 0; i < paths.length; i++) {
-            File file = ((FileNode) (paths[i].getLastPathComponent())).getFile();
+          for (TreePath element : paths) {
+            File file = ((FileNode) (element.getLastPathComponent())).getFile();
             if (!file.isReady()) {
               continue;
             }
@@ -593,8 +593,8 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
         }
         jmiDelete.setEnabled(true);
         if (c.equals(PlaylistFileNode.class)) {
-          for (int i = 0; i < paths.length; i++) {
-            Playlist plf = ((PlaylistFileNode) (paths[i].getLastPathComponent())).getPlaylistFile();
+          for (TreePath element : paths) {
+            Playlist plf = ((PlaylistFileNode) (element.getLastPathComponent())).getPlaylistFile();
             if (!plf.isReady()) {
               jmiDelete.setEnabled(false);
               continue;
@@ -603,8 +603,8 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
         }
 
         // get all components recursively
-        for (int i = 0; i < paths.length; i++) {
-          Object o = paths[i].getLastPathComponent();
+        for (TreePath element : paths) {
+          Object o = element.getLastPathComponent();
           // return all childs nodes recursively
           Enumeration<DefaultMutableTreeNode> e2 = ((DefaultMutableTreeNode) o).depthFirstEnumeration();
           while (e2.hasMoreElements()) {
@@ -849,8 +849,8 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
         new RefactorAction(dir.getFilesRecursively());
       }
     } else if (e.getSource() == jmiDevMount) {
-      for (int i = 0; i < paths.length; i++) {
-        DeviceNode node = (DeviceNode) (paths[i].getLastPathComponent());
+      for (TreePath element : paths) {
+        DeviceNode node = (DeviceNode) (element.getLastPathComponent());
         Device device = node.getDevice();
         try {
           device.mount();
@@ -860,8 +860,8 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
         }
       }
     } else if (e.getSource() == jmiDevUnmount) {
-      for (int i = 0; i < paths.length; i++) {
-        DeviceNode node = (DeviceNode) (paths[i].getLastPathComponent());
+      for (TreePath element : paths) {
+        DeviceNode node = (DeviceNode) (element.getLastPathComponent());
         Device device = node.getDevice();
         try {
           device.unmount();

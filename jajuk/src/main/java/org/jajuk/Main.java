@@ -698,8 +698,8 @@ public class Main implements ITechnicalStrings {
     // crash
     if (files.length > 0) {
       StringBuilder details = new StringBuilder();
-      for (int i = 0; i < files.length; i++) {
-        details.append(files[i].getName());
+      for (File element : files) {
+        details.append(element.getName());
         details.append('\n');
       }
       Messages.showHideableWarningMessage(Messages.getString("Warning.2") + 

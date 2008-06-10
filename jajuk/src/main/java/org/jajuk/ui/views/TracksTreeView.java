@@ -270,8 +270,8 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener, 
           // get all components recursively
           alSelected.clear();
           selectedRecursively.clear();
-          for (int i = 0; i < tpSelected.length; i++) {
-            Object o = tpSelected[i].getLastPathComponent();
+          for (TreePath element : tpSelected) {
+            Object o = element.getLastPathComponent();
             if (o instanceof TreeRootElement) {
               // collection node
               items = TrackManager.getInstance().getElementCount();
@@ -381,8 +381,8 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener, 
           }
         }
         // get all components recursively
-        for (int i = 0; i < paths.length; i++) {
-          Object o = paths[i].getLastPathComponent();
+        for (TreePath element : paths) {
+          Object o = element.getLastPathComponent();
           Enumeration<DefaultMutableTreeNode> e2 = ((DefaultMutableTreeNode) o)
               .depthFirstEnumeration();
           // return all childs nodes recursively

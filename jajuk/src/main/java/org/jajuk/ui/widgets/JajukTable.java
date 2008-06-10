@@ -345,8 +345,8 @@ public class JajukTable extends JXTable implements ITechnicalStrings, ListSelect
    *          list of row indexes to be selected
    */
   public void setSelectedRows(int[] indexes) {
-    for (int i = 0; i < indexes.length; i++) {
-      addRowSelectionInterval(indexes[i], indexes[i]);
+    for (int element : indexes) {
+      addRowSelectionInterval(element, element);
     }
   }
 
@@ -363,8 +363,8 @@ public class JajukTable extends JXTable implements ITechnicalStrings, ListSelect
     JajukTableModel model = (JajukTableModel) getModel();
     selection.clear();
     int[] rows = getSelectedRows();
-    for (int i = 0; i < rows.length; i++) {
-      Object o = model.getItemAt(convertRowIndexToModel(rows[i]));
+    for (int element : rows) {
+      Object o = model.getItemAt(convertRowIndexToModel(element));
       // Make sure the model contains jajuk items
       if (!(o instanceof Item)) {
         return;

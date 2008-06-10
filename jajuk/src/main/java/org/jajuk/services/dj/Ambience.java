@@ -69,8 +69,8 @@ public class Ambience implements Comparable<Ambience> {
    */
   public Ambience(String sID, String sName, String[] styles) {
     Set<Style> hstyles = new HashSet<Style>(styles.length);
-    for (int i = 0; i < styles.length; i++) {
-      Style style = StyleManager.getInstance().getStyleByName(styles[i]);
+    for (String element : styles) {
+      Style style = StyleManager.getInstance().getStyleByName(element);
       if (style != null) {
         hstyles.add(style);
       } else {

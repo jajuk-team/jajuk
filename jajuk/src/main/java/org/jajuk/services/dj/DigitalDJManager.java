@@ -217,16 +217,16 @@ public class DigitalDJManager implements ITechnicalStrings, Observer {
           return false;
         }
       });
-      for (int i = 0; i < files.length; i++) {
+      for (File element : files) {
         try { // try each DJ to continue others if one fails
-          DigitalDJFactory factory = DigitalDJFactory.getFactory(files[i]);
-          DigitalDJ dj = factory.getDJ(files[i]);
+          DigitalDJFactory factory = DigitalDJFactory.getFactory(element);
+          DigitalDJ dj = factory.getDJ(element);
           djs.put(dj.getID(), dj);
           if (dj.getID().equals(ConfigurationManager.getProperty(CONF_DEFAULT_DJ))) {
             current = dj;
           }
         } catch (Exception e) {
-          Log.error(144, "{{" + files[i].getAbsolutePath() + "}}", e);
+          Log.error(144, "{{" + element.getAbsolutePath() + "}}", e);
         }
       }
     } catch (Exception e) {

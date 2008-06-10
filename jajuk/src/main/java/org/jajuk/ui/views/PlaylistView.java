@@ -559,9 +559,9 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
     // save selection
     editorModel.fireTableDataChanged();// refresh
     bSettingSelection = true;
-    for (int i = 0; i < rows.length; i++) {
+    for (int element : rows) {
       // set saved selection after a refresh
-      editorTable.getSelectionModel().addSelectionInterval(rows[i], rows[i]);
+      editorTable.getSelectionModel().addSelectionInterval(element, element);
     }
     bSettingSelection = false;
   }

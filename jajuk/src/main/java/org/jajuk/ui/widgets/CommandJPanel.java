@@ -963,8 +963,8 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
   void populateAmbiences() {
     ambiencesCombo.removeActionListener(ambienceListener);
     ItemListener[] il = ambiencesCombo.getItemListeners();
-    for (int i = 0; i < il.length; i++) {
-      ambiencesCombo.removeItemListener(il[i]);
+    for (ItemListener element : il) {
+      ambiencesCombo.removeItemListener(element);
     }
     ambiencesCombo.removeAllItems();
     ambiencesCombo.addItem(new JLabel(Messages.getString("CommandJPanel.19"),
