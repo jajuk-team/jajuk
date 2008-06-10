@@ -324,8 +324,7 @@ public class CDDBWizard extends JajukJDialog implements ITechnicalStrings, Actio
     if (aIdxToTag.length == 0) {
       dispose();
     } else {
-      for (int i = 0; i < aIdxToTag.length; i++) {
-        int iRow = aIdxToTag[i];
+      for (int iRow : aIdxToTag) {
         Track track = alTracks.get(iRow).getTrack();
         try {
           String sValue = fdbReader.getAlbum();

@@ -87,12 +87,12 @@ public class ExitService extends Thread implements ITechnicalStrings {
         // (can occur when network is not available)
         File[] files = UtilSystem.getConfFileByPath(FILE_SESSIONS).listFiles();
         if (files != null) {
-          for (int i = 0; i < files.length; i++) {
-            if (files[i].getName().indexOf("localhost") != -1) {
-              if (files[i].delete()) {
-                Log.warn("Deleted session file: " + files[i].getAbsolutePath());
+          for (File element : files) {
+            if (element.getName().indexOf("localhost") != -1) {
+              if (element.delete()) {
+                Log.warn("Deleted session file: " + element.getAbsolutePath());
               } else {
-                Log.warn("Could not delete file: " + files[i].getAbsolutePath());
+                Log.warn("Could not delete file: " + element.getAbsolutePath());
               }
             }
           }

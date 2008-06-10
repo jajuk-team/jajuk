@@ -146,13 +146,13 @@ public class NewPropertyWizard extends CustomPropertyWizard implements KeyListen
   public void actionPerformed(ActionEvent ae) {
     if (ae.getSource().equals(this.okp.getOKButton())) {
       // check the property is not already used internally
-      for (int i = 0; i < XML_RESERVED_ATTRIBUTE_NAMES.length; i++) {
+      for (String element : XML_RESERVED_ATTRIBUTE_NAMES) {
         /*
          * check user can't create a property that is the localized name of an
          * existing standard attribute. Note that a potential bug can occur if
          * user change language
          */
-        if (XML_RESERVED_ATTRIBUTE_NAMES[i].equalsIgnoreCase(jtfName.getText())
+        if (element.equalsIgnoreCase(jtfName.getText())
             || jtfName.getText().matches(",")) {
           Messages.showErrorMessage(110);
           return;

@@ -900,9 +900,9 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings {
      *         void items)
      */
     private boolean containsVoidItem() {
-      for (int i = 0; i < widgets.length; i++) {
-        JButton jbFrom = (JButton) widgets[i][1];
-        JButton jbTo = (JButton) widgets[i][2];
+      for (JComponent[] element : widgets) {
+        JButton jbFrom = (JButton) element[1];
+        JButton jbTo = (JButton) element[2];
         if (jbFrom.getText().equals("") || jbTo.getText().equals("")) {
           return true;
         }
@@ -1087,10 +1087,10 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings {
      */
     private int getTotalValue() {
       int total = 0;
-      for (int i = 0; i < widgets.length; i++) {
-        JSpinner jsp = (JSpinner) widgets[i][2];
+      for (JComponent[] element : widgets) {
+        JSpinner jsp = (JSpinner) element[2];
         // Only filled proportions are token into account
-        JButton jb = (JButton) widgets[i][1];
+        JButton jb = (JButton) element[1];
         if (jb.getText() == null || jb.getText().equals("")) {
           continue;
         }
@@ -1162,8 +1162,8 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings {
      *         void items)
      */
     private boolean containsVoidItem() {
-      for (int i = 0; i < widgets.length; i++) {
-        JButton jb = (JButton) widgets[i][1];
+      for (JComponent[] element : widgets) {
+        JButton jb = (JButton) element[1];
         if (jb.getText().equals("")) {
           return true;
         }

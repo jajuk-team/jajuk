@@ -223,8 +223,8 @@ public abstract class PerspectiveAdapter extends DockingDesktop implements IPers
       loadFile.delete();
       // Remove all registered dockables
       DockableState[] ds = getDockables();
-      for (int i = 0; i < ds.length; i++) {
-        remove(ds[i].getDockable());
+      for (DockableState element : ds) {
+        remove(element.getDockable());
       }
       // force reload
       load();
@@ -249,8 +249,8 @@ public abstract class PerspectiveAdapter extends DockingDesktop implements IPers
   public Set<IView> getViews() {
     Set<IView> views = new HashSet<IView>();
     DockableState[] dockables = getDockables();
-    for (int i = 0; i < dockables.length; i++) {
-      views.add((IView) dockables[i].getDockable());
+    for (DockableState element : dockables) {
+      views.add((IView) element.getDockable());
     }
     return views;
   }

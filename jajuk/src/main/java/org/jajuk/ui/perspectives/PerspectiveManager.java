@@ -158,8 +158,8 @@ public class PerspectiveManager implements ITechnicalStrings {
         JPanel perspectivePanel = Main.perspectivePanel;
         if (perspectivePanel.getComponentCount() > 0) {
           Component[] components = perspectivePanel.getComponents();
-          for (int i = 0; i < components.length; i++) {
-            perspectivePanel.remove(components[i]);
+          for (Component element : components) {
+            perspectivePanel.remove(element);
           }
         }
         Main.perspectivePanel.add(perspective.getContentPane(), BorderLayout.CENTER);

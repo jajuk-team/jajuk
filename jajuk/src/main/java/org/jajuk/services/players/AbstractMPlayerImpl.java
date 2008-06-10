@@ -153,8 +153,8 @@ abstract public class AbstractMPlayerImpl implements IPlayerImpl, ITechnicalStri
     if (!UtilString.isVoid(sAdditionalArgs)) {
       // Add any additional arguments provided by user
       String[] sArgs = sAdditionalArgs.split(" ");
-      for (int i = 0; i < sArgs.length; i++) {
-        cmd.add(sArgs[i]);
+      for (String element : sArgs) {
+        cmd.add(element);
       }
     }
     cmd.add(url);

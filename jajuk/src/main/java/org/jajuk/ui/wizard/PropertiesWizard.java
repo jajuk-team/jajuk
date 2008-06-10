@@ -574,8 +574,8 @@ public class PropertiesWizard extends JajukJDialog implements ITechnicalStrings,
               String[] sTab = s.split(",");
               StringBuilder sb = new StringBuilder();
               sb.append("<html>");
-              for (int i = 0; i < sTab.length; i++) {
-                sb.append("<p>").append(sTab[i]).append("</p>");
+              for (String element : sTab) {
+                sb.append("<p>").append(element).append("</p>");
               }
               sb.append("</html>");
               jl.setToolTipText(sb.toString());
