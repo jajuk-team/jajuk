@@ -60,49 +60,49 @@ public class AlbumsTableModel extends JajukTableModel {
     // First column is play icon, need to set a space character
     // for proper display in some look and feel
     vColNames.add(" ");
-    vId.add(XML_PLAY);
+    idList.add(XML_PLAY);
 
     vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_ALBUM));
-    vId.add(XML_ALBUM);
+    idList.add(XML_ALBUM);
 
     // First track found author. If different authors in album, will be
     // displayed in italic
     vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_AUTHOR));
-    vId.add(XML_AUTHOR);
+    idList.add(XML_AUTHOR);
 
     // First track found style. If different styles in album, will be
     // displayed in italic
     vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_STYLE));
-    vId.add(XML_STYLE);
+    idList.add(XML_STYLE);
 
     // First found track year, italic if different values
     vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_YEAR));
-    vId.add(XML_YEAR);
+    idList.add(XML_YEAR);
 
     // Album rate (average of its tracks rate)
     vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_TRACK_RATE));
-    vId.add(XML_TRACK_RATE);
+    idList.add(XML_TRACK_RATE);
 
     // Total album length
     vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_TRACK_LENGTH));
-    vId.add(XML_TRACK_LENGTH);
+    idList.add(XML_TRACK_LENGTH);
 
     // Number of tracks
     vColNames.add(Messages.getString("AlbumsTableView.1"));
-    vId.add(XML_TRACKS);
+    idList.add(XML_TRACKS);
 
     // First found track discovery date
     vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_TRACK_DISCOVERY_DATE));
-    vId.add(XML_TRACK_DISCOVERY_DATE);
+    idList.add(XML_TRACK_DISCOVERY_DATE);
 
     // Sum of all tracks hits
     vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_TRACK_HITS));
-    vId.add(XML_TRACK_HITS);
+    idList.add(XML_TRACK_HITS);
 
     // custom properties now
     for (PropertyMetaInformation meta : AlbumManager.getInstance().getCustomProperties()) {
       vColNames.add(meta.getName());
-      vId.add(meta.getName());
+      idList.add(meta.getName());
     }
   }
 

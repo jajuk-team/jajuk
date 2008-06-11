@@ -49,15 +49,15 @@ public class CDDBTableModel extends JajukTableModel {
 
     // Current Album title
     vColNames.add(Messages.getString("CDDBWizard.3"));
-    vId.add("CDDBWizard.1");
+    idList.add("CDDBWizard.1");
 
     // Current Track title
     vColNames.add(Messages.getString("CDDBWizard.2"));
-    vId.add("CDDBWizard.3");
+    idList.add("CDDBWizard.3");
 
     // Proposed Track Name
     vColNames.add(Messages.getString("CDDBWizard.4"));
-    vId.add("CDDBWizard.4");
+    idList.add("CDDBWizard.4");
   }
 
   /**

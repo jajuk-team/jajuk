@@ -54,7 +54,7 @@ public class PerspectiveBarJPanel extends JXPanel implements ITechnicalStrings {
   private JToolBar jtbPerspective;
 
   /** Self instance */
-  static private PerspectiveBarJPanel pb;
+  private static PerspectiveBarJPanel pb;
 
   /**
    * Perspective button

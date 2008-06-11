@@ -130,8 +130,7 @@ public class TracksTableView extends AbstractTableView {
   @Override
   public JajukTableModel populateTable() {
     // model creation
-    TracksTableModel model = new TracksTableModel();
-    return model;
+    return new TracksTableModel();
   }
 
   /*

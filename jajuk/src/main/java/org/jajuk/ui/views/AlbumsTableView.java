@@ -206,8 +206,7 @@ public class AlbumsTableView extends AbstractTableView {
   @Override
   JajukTableModel populateTable() {
     // model creation
-    AlbumsTableModel model = new AlbumsTableModel();
-    return model;
+    return new AlbumsTableModel();
   }
 
 }

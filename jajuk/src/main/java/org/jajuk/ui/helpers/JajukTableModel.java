@@ -20,8 +20,9 @@
 
 package org.jajuk.ui.helpers;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.HashSet;
+import java.util.Set;
 import java.util.Vector;
 
 import javax.swing.ImageIcon;
@@ -37,40 +38,40 @@ import org.jajuk.util.IconLoader;
 public abstract class JajukTableModel extends DefaultTableModel implements ITechnicalStrings {
 
   /** Column identifiers */
-  volatile public Vector<String> vId = new Vector<String>(10);
+  volatile protected List<String> idList = new ArrayList<String>(10);
 
   /** Rows number */
-  public int iRowNum;
+  protected int iRowNum;
 
   /** Values table* */
-  public Object[][] oValues;
+  protected Object[][] oValues;
 
   // Play icon in cache
-  public static final ImageIcon PLAY_ICON = IconLoader.ICON_PLAY_TABLE;
+  protected static final ImageIcon PLAY_ICON = IconLoader.ICON_PLAY_TABLE;
 
   // Unmount Play icon in cache
-  public static final ImageIcon UNMOUNT_PLAY_ICON = IconLoader.ICON_UNKNOWN;
+  protected static final ImageIcon UNMOUNT_PLAY_ICON = IconLoader.ICON_UNKNOWN;
 
   /** Objects */
-  public Item[] oItems;
+  protected Item[] oItems;
 
   /** Number of standard columns */
-  public int iNumberStandardCols;
+  protected int iNumberStandardCols;
 
   /** Cell editable flag */
-  public boolean[][] bCellEditable;
+  protected boolean[][] bCellEditable;
 
   /** Column names */
-  public Vector<String> vColNames = new Vector<String>(10);
+  protected Vector<String> vColNames = new Vector<String>(10);
 
   /** Last value used for undo */
-  public Object oLast = null;
+  private Object oLast = null;
 
   /** Editable flag */
   boolean bEditable = false;
 
   /** Tree selection */
-  public HashSet<Item> treeSelection;
+  protected Set<Item> treeSelection;
 
   /**
    * 
@@ -94,7 +95,7 @@ public abstract class JajukTableModel extends DefaultTableModel implements ITech
    * @return Column identifier for a given column title
    */
   public String getIdentifier(String sColName) {
-    return vId.get(vColNames.indexOf(sColName));
+    return idList.get(vColNames.indexOf(sColName));
   }
 
   /**
@@ -160,7 +161,7 @@ public abstract class JajukTableModel extends DefaultTableModel implements ITech
   }
 
   public String getIdentifier(int column) {
-    return vId.get(column);
+    return idList.get(column);
   }
 
   @Override
@@ -214,6 +215,14 @@ public abstract class JajukTableModel extends DefaultTableModel implements ITech
    */
   public void setEditable(boolean b) {
     this.bEditable = b;
+  }
+
+  public Set<Item> getTreeSelection() {
+    return this.treeSelection;
+  }
+
+  public void setTreeSelection(Set<Item> treeSelection) {
+    this.treeSelection = treeSelection;
   }
 
 }

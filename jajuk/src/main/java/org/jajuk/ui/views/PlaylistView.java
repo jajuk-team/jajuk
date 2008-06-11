@@ -434,7 +434,7 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
   }
 
   public Set<JajukEvents> getRegistrationKeys() {
-    HashSet<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
+    Set<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
     eventSubjectSet.add(JajukEvents.EVENT_CUSTOM_PROPERTIES_ADD);
     eventSubjectSet.add(JajukEvents.EVENT_CUSTOM_PROPERTIES_REMOVE);
     eventSubjectSet.add(JajukEvents.EVENT_DEVICE_REFRESH);

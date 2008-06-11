@@ -178,7 +178,7 @@ public class SuggestionView extends ViewAdapter implements ITechnicalStrings, Ob
   }
 
   public Set<JajukEvents> getRegistrationKeys() {
-    HashSet<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
+    Set<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
     eventSubjectSet.add(JajukEvents.EVENT_FILE_LAUNCHED);
     eventSubjectSet.add(JajukEvents.EVENT_PARAMETERS_CHANGE);
     eventSubjectSet.add(JajukEvents.EVENT_COVER_DEFAULT_CHANGED);

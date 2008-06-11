@@ -21,10 +21,11 @@
 package org.jajuk.events;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Queue;
 import java.util.Set;
-import java.util.Vector;
 
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.log.Log;
@@ -46,9 +47,9 @@ public class ObservationManager implements ITechnicalStrings {
   static Map<JajukEvents, Properties> hLastEventBySubject = new HashMap<JajukEvents, Properties>(
       10);
 
-  static volatile Vector<Event> vFIFO = new Vector<Event>(10);
+  static volatile Queue<Event> vFIFO = new LinkedList<Event>();
 
-  static private Thread t = new Thread("Observation Manager Thread") {
+  private static Thread t = new Thread("Observation Manager Thread") {
     @Override
     public void run() {
       while (true) {
@@ -57,9 +58,9 @@ public class ObservationManager implements ITechnicalStrings {
         } catch (InterruptedException e) {
           Log.error(e);
         }
-        if (vFIFO.size() > 0) {
-          final Event event = vFIFO.get(0);
-          vFIFO.remove(0);
+
+        final Event event = vFIFO.poll();
+        if(event != null) {
           new Thread("Observation Manager Sync Notify Thread") { // launch
                                                                   // action
                                                                   // asynchronously
@@ -73,6 +74,12 @@ public class ObservationManager implements ITechnicalStrings {
     }
   };
 
+  /** 
+   * Empty constructor to avoid instantiating utility class
+   */
+  private ObservationManager() {
+  }
+  
   /**
    * Register a component for a given subject
    * 

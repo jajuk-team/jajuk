@@ -392,7 +392,7 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings, Observ
   }
 
   public Set<JajukEvents> getRegistrationKeys() {
-    HashSet<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
+    Set<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
     eventSubjectSet.add(JajukEvents.EVENT_PARAMETERS_CHANGE);
     return eventSubjectSet;
   }

@@ -290,7 +290,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
   }
 
   public Set<JajukEvents> getRegistrationKeys() {
-    HashSet<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
+    Set<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
     eventSubjectSet.add(JajukEvents.EVENT_DEVICE_MOUNT);
     eventSubjectSet.add(JajukEvents.EVENT_DEVICE_UNMOUNT);
     eventSubjectSet.add(JajukEvents.EVENT_DEVICE_REFRESH);
@@ -361,7 +361,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
               return;
             }
             // Update model tree selection
-            model.treeSelection = (HashSet<Item>) event.getDetails().get(DETAIL_SELECTION);
+            model.setTreeSelection((Set<Item>) event.getDetails().get(DETAIL_SELECTION));
             // force redisplay to apply the filter
             jtable.clearSelection();
             // force filter to refresh
@@ -514,7 +514,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
     try {
       // file filter used by physical table view to change only the
       // file, not all files associated with the track
-      HashSet<File> filter = null;
+      Set<File> filter = null;
       if (item instanceof File) {
         filter = new HashSet<File>();
         filter.add((File)item);

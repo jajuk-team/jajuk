@@ -363,7 +363,7 @@ public class JajukSystray extends CommandJPanel {
 
   @Override
   public Set<JajukEvents> getRegistrationKeys() {
-    HashSet<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
+    Set<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
     eventSubjectSet.add(JajukEvents.EVENT_ZERO);
     eventSubjectSet.add(JajukEvents.EVENT_FILE_LAUNCHED);
     eventSubjectSet.add(JajukEvents.EVENT_PLAYER_PAUSE);

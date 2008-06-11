@@ -61,58 +61,58 @@ public class FilesTableModel extends JajukTableModel implements ITechnicalString
     // First column is play icon, need to set a space character
     // for proper display in some look and feel
     vColNames.add(" ");
-    vId.add(XML_PLAY);
+    idList.add(XML_PLAY);
 
     vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_NAME));
-    vId.add(XML_TRACK);
+    idList.add(XML_TRACK);
 
     vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_ALBUM));
-    vId.add(XML_ALBUM);
+    idList.add(XML_ALBUM);
 
     vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_AUTHOR));
-    vId.add(XML_AUTHOR);
+    idList.add(XML_AUTHOR);
 
     vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_STYLE));
-    vId.add(XML_STYLE);
+    idList.add(XML_STYLE);
 
     vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_TRACK_RATE));
-    vId.add(XML_TRACK_RATE);
+    idList.add(XML_TRACK_RATE);
 
     vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_TRACK_LENGTH));
-    vId.add(XML_TRACK_LENGTH);
+    idList.add(XML_TRACK_LENGTH);
 
     vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_DEVICE));
-    vId.add(XML_DEVICE);
+    idList.add(XML_DEVICE);
 
     vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_FILE_NAME));
-    vId.add(XML_NAME);
+    idList.add(XML_NAME);
 
     vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_TRACK_COMMENT));
-    vId.add(XML_TRACK_COMMENT);
+    idList.add(XML_TRACK_COMMENT);
 
     vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_QUALITY));
-    vId.add(XML_QUALITY);
+    idList.add(XML_QUALITY);
 
     vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_SIZE));
-    vId.add(XML_SIZE);
+    idList.add(XML_SIZE);
 
     vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_TRACK_ORDER));
-    vId.add(XML_TRACK_ORDER);
+    idList.add(XML_TRACK_ORDER);
 
     vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_YEAR));
-    vId.add(XML_YEAR);
+    idList.add(XML_YEAR);
 
     vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_DIRECTORY));
-    vId.add(XML_DIRECTORY);
+    idList.add(XML_DIRECTORY);
 
     vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_FILE_DATE));
-    vId.add(XML_FILE_DATE);
+    idList.add(XML_FILE_DATE);
 
     vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_TRACK_HITS));
-    vId.add(XML_TRACK_HITS);
+    idList.add(XML_TRACK_HITS);
 
     vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_TRACK_DISCOVERY_DATE));
-    vId.add(XML_TRACK_DISCOVERY_DATE);
+    idList.add(XML_TRACK_DISCOVERY_DATE);
 
     // -- Custom properties now--
     // for files
@@ -121,14 +121,14 @@ public class FilesTableModel extends JajukTableModel implements ITechnicalString
     while (it.hasNext()) {
       PropertyMetaInformation meta = it.next();
       vColNames.add(meta.getName());
-      vId.add(meta.getName());
+      idList.add(meta.getName());
     }
     // for tracks
     it = TrackManager.getInstance().getCustomProperties().iterator();
     while (it.hasNext()) {
       PropertyMetaInformation meta = it.next();
       vColNames.add(meta.getName());
-      vId.add(meta.getName());
+      idList.add(meta.getName());
     }
   }
 

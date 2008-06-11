@@ -62,48 +62,48 @@ public class TracksTableModel extends JajukTableModel {
     // First column is play icon, need to set a space character
     // for proper display in some look and feel
     vColNames.add(" ");
-    vId.add(XML_PLAY);
+    idList.add(XML_PLAY);
 
     vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_NAME));
-    vId.add(XML_NAME);
+    idList.add(XML_NAME);
 
     vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_ALBUM));
-    vId.add(XML_ALBUM);
+    idList.add(XML_ALBUM);
 
     vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_AUTHOR));
-    vId.add(XML_AUTHOR);
+    idList.add(XML_AUTHOR);
 
     vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_STYLE));
-    vId.add(XML_STYLE);
+    idList.add(XML_STYLE);
 
     vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_TRACK_RATE));
-    vId.add(XML_TRACK_RATE);
+    idList.add(XML_TRACK_RATE);
 
     vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_TRACK_LENGTH));
-    vId.add(XML_TRACK_LENGTH);
+    idList.add(XML_TRACK_LENGTH);
 
     vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_TRACK_COMMENT));
-    vId.add(XML_TRACK_COMMENT);
+    idList.add(XML_TRACK_COMMENT);
 
     vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_TRACK_DISCOVERY_DATE));
-    vId.add(XML_TRACK_DISCOVERY_DATE);
+    idList.add(XML_TRACK_DISCOVERY_DATE);
 
     vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_TRACK_ORDER));
-    vId.add(XML_TRACK_ORDER);
+    idList.add(XML_TRACK_ORDER);
 
     vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_YEAR));
-    vId.add(XML_YEAR);
+    idList.add(XML_YEAR);
 
     vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_TRACK_HITS));
-    vId.add(XML_TRACK_HITS);
+    idList.add(XML_TRACK_HITS);
 
     vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_FILES));
-    vId.add(XML_FILES);
+    idList.add(XML_FILES);
 
     // custom properties now
     for (PropertyMetaInformation meta : TrackManager.getInstance().getCustomProperties()) {
       vColNames.add(meta.getName());
-      vId.add(meta.getName());
+      idList.add(meta.getName());
     }
   }
 

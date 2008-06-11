@@ -162,7 +162,7 @@ public class LyricsView extends ViewAdapter implements Observer {
    * @see org.jajuk.base.Observer#getRegistrationKeys()
    */
   public Set<JajukEvents> getRegistrationKeys() {
-    final HashSet<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
+    final Set<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
 
     eventSubjectSet.add(JajukEvents.EVENT_FILE_LAUNCHED);
     eventSubjectSet.add(JajukEvents.EVENT_ZERO);

@@ -129,7 +129,7 @@ public class FontManager implements ITechnicalStrings, Observer {
    * @see org.jajuk.base.Observer#getRegistrationKeys()
    */
   public Set<JajukEvents> getRegistrationKeys() {
-    HashSet<JajukEvents> subjects = new HashSet<JajukEvents>(2);
+    Set<JajukEvents> subjects = new HashSet<JajukEvents>(2);
     // Register parameter changes to check new font size
     subjects.add(JajukEvents.EVENT_PARAMETERS_CHANGE);
     return subjects;

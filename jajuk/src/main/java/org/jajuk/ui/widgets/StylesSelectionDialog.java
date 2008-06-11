@@ -61,9 +61,9 @@ public class StylesSelectionDialog extends JajukJDialog implements ActionListene
 
   OKCancelPanel okc;
 
-  HashSet<Style> selectedStyles;
+  Set<Style> selectedStyles;
 
-  HashSet<Style> disabledStyles;
+  Set<Style> disabledStyles;
 
   Vector<String> list;
 
@@ -71,7 +71,7 @@ public class StylesSelectionDialog extends JajukJDialog implements ActionListene
    * @throws HeadlessException
    */
   @SuppressWarnings("unchecked")
-  public StylesSelectionDialog(HashSet disabledStyles) throws HeadlessException {
+  public StylesSelectionDialog(Set disabledStyles) throws HeadlessException {
     super();
     this.selectedStyles = new HashSet<Style>();
     this.disabledStyles = disabledStyles;
@@ -116,7 +116,7 @@ public class StylesSelectionDialog extends JajukJDialog implements ActionListene
    * 
    * @return selected styles
    */
-  public HashSet<Style> getSelectedStyles() {
+  public Set<Style> getSelectedStyles() {
     return selectedStyles;
   }
 

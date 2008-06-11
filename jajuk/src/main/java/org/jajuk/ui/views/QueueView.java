@@ -235,7 +235,7 @@ public class QueueView extends PlaylistView {
 
   @Override
   public Set<JajukEvents> getRegistrationKeys() {
-    HashSet<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
+    Set<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
     eventSubjectSet.add(JajukEvents.EVENT_QUEUE_NEED_REFRESH);
     eventSubjectSet.add(JajukEvents.EVENT_FILE_LAUNCHED);
     eventSubjectSet.add(JajukEvents.EVENT_DEVICE_REFRESH);

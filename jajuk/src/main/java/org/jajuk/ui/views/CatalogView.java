@@ -428,7 +428,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
   }
 
   public Set<JajukEvents> getRegistrationKeys() {
-    HashSet<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
+    Set<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
     eventSubjectSet.add(JajukEvents.EVENT_DEVICE_REFRESH);
     eventSubjectSet.add(JajukEvents.EVENT_COVER_DEFAULT_CHANGED);
     eventSubjectSet.add(JajukEvents.EVENT_PARAMETERS_CHANGE);
@@ -574,7 +574,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
           });
 
           // Now process each album
-          HashSet<Directory> directories = new HashSet<Directory>(albums.size());
+          Set<Directory> directories = new HashSet<Directory>(albums.size());
           List<LocalAlbumThumbnail> alItemsToDisplay = new ArrayList<LocalAlbumThumbnail>(
               albums.size());
           for (Object it : albums) {

@@ -78,7 +78,7 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings, Obse
   public static final int WARNING = 2;
 
   /** Self instance */
-  static private InformationJPanel ijp = null;
+  private static InformationJPanel ijp = null;
 
   /** Last slider manual move date */
   private static long lDateLastAdjust;
@@ -223,7 +223,7 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings, Obse
   }
 
   public Set<JajukEvents> getRegistrationKeys() {
-    HashSet<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
+    Set<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
     eventSubjectSet.add(JajukEvents.EVENT_ZERO);
     eventSubjectSet.add(JajukEvents.EVENT_FILE_LAUNCHED);
     eventSubjectSet.add(JajukEvents.EVENT_PLAY_ERROR);

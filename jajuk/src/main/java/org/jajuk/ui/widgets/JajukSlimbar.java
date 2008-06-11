@@ -470,7 +470,7 @@ public class JajukSlimbar extends JFrame implements ITechnicalStrings, Observer,
   }
 
   public Set<JajukEvents> getRegistrationKeys() {
-    HashSet<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
+    Set<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
     eventSubjectSet.add(JajukEvents.EVENT_FILE_LAUNCHED);
     eventSubjectSet.add(JajukEvents.EVENT_WEBRADIO_LAUNCHED);
     eventSubjectSet.add(JajukEvents.EVENT_PLAYER_PAUSE);

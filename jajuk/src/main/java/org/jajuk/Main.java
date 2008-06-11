@@ -189,6 +189,12 @@ public class Main implements ITechnicalStrings {
   private static File sessionIdFile;
 
   /**
+   * private constructor to avoid instantiating utility class
+   */
+  private Main() {
+  }
+
+  /**
    * Main entry
    * 
    * @param args
@@ -551,11 +557,11 @@ public class Main implements ITechnicalStrings {
           final ExitService exit = new ExitService();
           exit.setPriority(Thread.MAX_PRIORITY);
           Runtime.getRuntime().addShutdownHook(exit);
-          
+
           // backup the collection
           UtilSystem.backupFile(UtilSystem.getConfFileByPath(FILE_COLLECTION), ConfigurationManager
-            .getInt(CONF_BACKUP_SIZE));
-          
+              .getInt(CONF_BACKUP_SIZE));
+
           // Clean the collection up
           Collection.cleanup();
 
@@ -606,8 +612,9 @@ public class Main implements ITechnicalStrings {
         // try to find mplayer executable in know locations first
         if (mplayerPath == null) {
           try {
-            if (sc != null)
+            if (sc != null) {
               sc.setProgress(5, Messages.getString("Main.22"));
+            }
             Log.debug("Download Mplayer from: " + URL_MPLAYER);
             File fMPlayer = UtilSystem.getConfFileByPath(FILE_MPLAYER_EXE);
             DownloadManager.download(new URL(URL_MPLAYER), fMPlayer);
@@ -615,9 +622,9 @@ public class Main implements ITechnicalStrings {
             // download problem
             if (fMPlayer.length() != MPLAYER_EXE_SIZE) {
               fMPlayer.delete();
-              throw new Exception("MPlayer corrupted");
+              mplayerStatus = UtilSystem.MPlayerStatus.MPLAYER_STATUS_JNLP_DOWNLOAD_PBM;
             }
-          } catch (Exception e) {
+          } catch (IOException e) {
             mplayerStatus = UtilSystem.MPlayerStatus.MPLAYER_STATUS_JNLP_DOWNLOAD_PBM;
           }
         }
@@ -702,8 +709,8 @@ public class Main implements ITechnicalStrings {
         details.append(element.getName());
         details.append('\n');
       }
-      Messages.showHideableWarningMessage(Messages.getString("Warning.2") + 
-          details.toString(),CONF_NOT_SHOW_AGAIN_CONCURRENT_SESSION);
+      Messages.showHideableWarningMessage(Messages.getString("Warning.2") + details.toString(),
+          CONF_NOT_SHOW_AGAIN_CONCURRENT_SESSION);
     }
   }
 
@@ -733,7 +740,8 @@ public class Main implements ITechnicalStrings {
       Log
           .debug("Jajuk was not closed properly during previous session or multi-instance, try to load previous collection file");
       try {
-        // try to load collection file as we may arrive here when several concurrent sessions of jajuk are running on the same box
+        // try to load collection file as we may arrive here when several
+        // concurrent sessions of jajuk are running on the same box
         Collection.load(UtilSystem.getConfFileByPath(FILE_COLLECTION));
       } catch (final Exception e2) {
         // not better? strange...
@@ -870,7 +878,12 @@ public class Main implements ITechnicalStrings {
               final BufferedReader br = new BufferedReader(new FileReader(UtilSystem
                   .getConfFileByPath(FILE_FIFO)));
               String s = null;
-              for (; (s = br.readLine()) != null;) {
+              for (; ;) {
+                s = br.readLine();
+                if(s == null) {
+                  break;
+                }
+                
                 final org.jajuk.base.File file = FileManager.getInstance().getFileByID(s);
                 if ((file != null) && file.isReady()) {
                   alToPlay.add(file);

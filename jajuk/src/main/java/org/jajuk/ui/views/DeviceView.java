@@ -66,7 +66,7 @@ public class DeviceView extends ViewAdapter implements IView, ITechnicalStrings,
     Observer, MouseListener {
   private static final long serialVersionUID = 1L;
 
-  static private DeviceView dv; // self instance
+  private static DeviceView dv; // self instance
 
   FlowScrollPanel jpDevices;
 
@@ -160,7 +160,7 @@ public class DeviceView extends ViewAdapter implements IView, ITechnicalStrings,
   }
 
   public Set<JajukEvents> getRegistrationKeys() {
-    HashSet<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
+    Set<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
     eventSubjectSet.add(JajukEvents.EVENT_DEVICE_MOUNT);
     eventSubjectSet.add(JajukEvents.EVENT_DEVICE_UNMOUNT);
     eventSubjectSet.add(JajukEvents.EVENT_DEVICE_NEW);

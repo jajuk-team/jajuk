@@ -110,81 +110,81 @@ public class PlaylistTableModel extends JajukTableModel {
    */
   public final synchronized void prepareColumns() {
     vColNames.clear();
-    vId.clear();
+    idList.clear();
 
     // State icon (play/repeat/planned)
     vColNames.add("");
-    vId.add(XML_PLAY);
+    idList.add(XML_PLAY);
 
     // Track name
     // Note we display "title" and not "name" for this property for
     // clearness
     vColNames.add(Messages.getString("AbstractPlaylistEditorView.0"));
-    vId.add(XML_TRACK_NAME);
+    idList.add(XML_TRACK_NAME);
 
     // Album
     vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_TRACK_ALBUM));
-    vId.add(XML_TRACK_ALBUM);
+    idList.add(XML_TRACK_ALBUM);
 
     // Author
     vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_TRACK_AUTHOR));
-    vId.add(XML_TRACK_AUTHOR);
+    idList.add(XML_TRACK_AUTHOR);
 
     // Style
     vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_TRACK_STYLE));
-    vId.add(XML_TRACK_STYLE);
+    idList.add(XML_TRACK_STYLE);
 
     // Stars
     vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_TRACK_RATE));
-    vId.add(XML_TRACK_RATE);
+    idList.add(XML_TRACK_RATE);
 
     // Year
     vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_YEAR));
-    vId.add(XML_YEAR);
+    idList.add(XML_YEAR);
 
     // Length
     vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_TRACK_LENGTH));
-    vId.add(XML_TRACK_LENGTH);
+    idList.add(XML_TRACK_LENGTH);
 
     // comments
     vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_TRACK_COMMENT));
-    vId.add(XML_TRACK_COMMENT);
+    idList.add(XML_TRACK_COMMENT);
 
     // Added date
     vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_TRACK_DISCOVERY_DATE));
-    vId.add(XML_TRACK_DISCOVERY_DATE);
+    idList.add(XML_TRACK_DISCOVERY_DATE);
 
     // Order
     vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_TRACK_ORDER));
-    vId.add(XML_TRACK_ORDER);
+    idList.add(XML_TRACK_ORDER);
 
     // Device
     vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_DEVICE));
-    vId.add(XML_DEVICE);
+    idList.add(XML_DEVICE);
 
     // Directory
     vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_DIRECTORY));
-    vId.add(XML_DIRECTORY);
+    idList.add(XML_DIRECTORY);
 
     // File name
     vColNames.add(Messages.getString("Property_filename"));
-    vId.add(XML_FILE);
+    idList.add(XML_FILE);
 
     // Hits
     vColNames.add(Messages.getString("Property_hits"));
-    vId.add(XML_TRACK_HITS);
+    idList.add(XML_TRACK_HITS);
 
     // custom properties now
     // for tracks
 
     for (PropertyMetaInformation meta : TrackManager.getInstance().getCustomProperties()) {
       vColNames.add(meta.getName());
-      vId.add(meta.getName());
+      idList.add(meta.getName());
     }
     // for files
     for (PropertyMetaInformation meta : FileManager.getInstance().getCustomProperties()) {
       vColNames.add(meta.getName());
-      vId.add(meta.getName());
+      idList.add(meta.getName());
     }
   }
 

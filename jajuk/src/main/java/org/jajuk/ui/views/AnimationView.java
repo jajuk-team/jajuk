@@ -111,7 +111,7 @@ public class AnimationView extends ViewAdapter implements ITechnicalStrings, Obs
   }
 
   public Set<JajukEvents> getRegistrationKeys() {
-    HashSet<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
+    Set<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
     eventSubjectSet.add(JajukEvents.EVENT_FILE_LAUNCHED);
     eventSubjectSet.add(JajukEvents.EVENT_WEBRADIO_LAUNCHED);
     eventSubjectSet.add(JajukEvents.EVENT_ZERO);

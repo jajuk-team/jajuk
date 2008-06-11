@@ -128,7 +128,7 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
   private static final long serialVersionUID = 1L;
 
   // singleton
-  static private CommandJPanel command;
+  private static CommandJPanel command;
 
   // Toolbar panel
   ToolBarPanel topPanel;
@@ -604,7 +604,7 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
   }
 
   public Set<JajukEvents> getRegistrationKeys() {
-    HashSet<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
+    Set<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
     eventSubjectSet.add(JajukEvents.EVENT_PLAYER_PLAY);
     eventSubjectSet.add(JajukEvents.EVENT_PLAYER_STOP);
     eventSubjectSet.add(JajukEvents.EVENT_PLAYER_PAUSE);

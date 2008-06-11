@@ -95,7 +95,7 @@ public class StatView extends ViewAdapter implements Observer {
   }
 
   public Set<JajukEvents> getRegistrationKeys() {
-    HashSet<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
+    Set<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
     eventSubjectSet.add(JajukEvents.EVENT_DEVICE_DELETE);
     eventSubjectSet.add(JajukEvents.EVENT_DEVICE_REFRESH);
     return eventSubjectSet;

@@ -642,7 +642,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
   }
 
   public Set<JajukEvents> getRegistrationKeys() {
-    final HashSet<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
+    final Set<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
     eventSubjectSet.add(JajukEvents.EVENT_FILE_LAUNCHED);
     eventSubjectSet.add(JajukEvents.EVENT_ZERO);
     eventSubjectSet.add(JajukEvents.EVENT_PLAYER_STOP);

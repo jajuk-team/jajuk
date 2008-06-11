@@ -786,7 +786,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
   }
 
   public Set<JajukEvents> getRegistrationKeys() {
-    final HashSet<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
+    final Set<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
     eventSubjectSet.add(JajukEvents.EVENT_PARAMETERS_CHANGE);
     return eventSubjectSet;
   }

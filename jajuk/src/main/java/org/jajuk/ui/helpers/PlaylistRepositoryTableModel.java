@@ -59,24 +59,24 @@ public class PlaylistRepositoryTableModel extends JajukTableModel {
     // First column is play icon, need to set a space character
     // for proper display in some look and feel
     vColNames.add(" ");
-    vId.add(XML_PLAY);
+    idList.add(XML_PLAY);
 
     vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_NAME));
-    vId.add(XML_NAME);
+    idList.add(XML_NAME);
 
     vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_DEVICE));
-    vId.add(XML_DEVICE);
+    idList.add(XML_DEVICE);
 
     vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_DIRECTORY));
-    vId.add(XML_DIRECTORY);
+    idList.add(XML_DIRECTORY);
 
     vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_PATH));
-    vId.add(XML_PATH);
+    idList.add(XML_PATH);
 
     // custom properties now
     for (PropertyMetaInformation meta : PlaylistManager.getInstance().getCustomProperties()) {
       vColNames.add(meta.getName());
-      vId.add(meta.getName());
+      idList.add(meta.getName());
     }
   }
 

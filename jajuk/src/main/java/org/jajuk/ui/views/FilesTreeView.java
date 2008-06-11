@@ -161,7 +161,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
   }
 
   public Set<JajukEvents> getRegistrationKeys() {
-    HashSet<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
+    Set<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
     eventSubjectSet.add(JajukEvents.EVENT_FILE_LAUNCHED);
     eventSubjectSet.add(JajukEvents.EVENT_DEVICE_MOUNT);
     eventSubjectSet.add(JajukEvents.EVENT_DEVICE_UNMOUNT);

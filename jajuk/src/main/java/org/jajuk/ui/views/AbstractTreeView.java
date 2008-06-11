@@ -25,6 +25,7 @@ import ext.SwingWorker;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.swing.Action;
 import javax.swing.ActionMap;
@@ -64,7 +65,7 @@ public abstract class AbstractTreeView extends ViewAdapter {
   volatile short[] lock = new short[0];
 
   /** Resursive items selection */
-  HashSet<Item> selectedRecursively = new HashSet<Item>(100);
+  Set<Item> selectedRecursively = new HashSet<Item>(100);
 
   /** Items selection */
   List<Item> alSelected = new ArrayList<Item>(100);

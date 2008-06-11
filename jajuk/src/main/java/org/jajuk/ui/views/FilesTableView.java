@@ -81,13 +81,20 @@ public class FilesTableView extends AbstractTableView {
         jtable.setCommand(new ILaunchCommand() {
           public void launch(int nbClicks) {
             int iSelectedCol = jtable.getSelectedColumn();
+            
+            if(jtable.getSelectedColumnCount() != 1) {
+              return;
+            }
+            
+            if(jtable.convertColumnIndexToModel(iSelectedCol) != 0) {
+              return;
+            }
+            
             // selected column in view Test click on play icon
             // launch track only if only first column is selected (fixes issue
             // with Ctrl-A)
-            if (jtable.getSelectedColumnCount() == 1
-                && (jtable.convertColumnIndexToModel(iSelectedCol) == 0)
-                // click on play icon
-                || (nbClicks == 2 && !jtbEditable.isSelected())) {
+            if (// click on play icon
+                nbClicks == 2 && !jtbEditable.isSelected()) {
               // double click on any column and edition state false
               // selected row in view
               File file = (File) model.getItemAt(jtable.convertRowIndexToModel(jtable
@@ -120,8 +127,7 @@ public class FilesTableView extends AbstractTableView {
   @Override
   public JajukTableModel populateTable() {
     // model creation
-    FilesTableModel model = new FilesTableModel();
-    return model;
+    return new FilesTableModel();
   }
 
   /*
