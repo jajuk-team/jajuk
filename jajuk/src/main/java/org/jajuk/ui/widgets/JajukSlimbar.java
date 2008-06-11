@@ -97,8 +97,6 @@ public class JajukSlimbar extends JFrame implements ITechnicalStrings, Observer,
 
   private static final long serialVersionUID = 1L;
 
-  //private JLabel jajuk;
-
   private SizedButton jbPrevious;
 
   private SizedButton jbNext;

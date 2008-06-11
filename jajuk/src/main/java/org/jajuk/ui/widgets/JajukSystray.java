@@ -271,8 +271,15 @@ public class JajukSystray extends CommandJPanel {
     }
     trayIcon.addMouseMotionListener(new MouseMotionAdapter() {
 
+      long dateLastMove = 0;
+
       @Override
       public void mouseMoved(MouseEvent e) {
+        // [PERF] Consider only a single event per second
+        if (System.currentTimeMillis() - dateLastMove < 1000) {
+          return;
+        }
+        dateLastMove = System.currentTimeMillis();
         String title = null;
         File file = FIFO.getInstance().getCurrentFile();
         if (FIFO.getInstance().isPlayingRadio()) {
@@ -436,7 +443,7 @@ public class JajukSystray extends CommandJPanel {
           }
 
         } else if (JajukEvents.EVENT_WEBRADIO_LAUNCHED.equals(subject)) {
-          //WebRadio radio = FIFO.getInstance().getCurrentRadio();
+          // WebRadio radio = FIFO.getInstance().getCurrentRadio();
           // Enable webradio navigation actions
           ActionManager.getAction(PREVIOUS_TRACK).setEnabled(true);
           ActionManager.getAction(NEXT_TRACK).setEnabled(true);
