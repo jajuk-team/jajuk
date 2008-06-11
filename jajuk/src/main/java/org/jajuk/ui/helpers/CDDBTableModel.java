@@ -21,8 +21,8 @@ package org.jajuk.ui.helpers;
 
 import entagged.freedb.FreedbReadResult;
 
-import java.util.List;
 import java.util.Iterator;
+import java.util.List;
 
 import org.jajuk.base.Item;
 import org.jajuk.base.Track;

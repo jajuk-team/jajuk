@@ -178,8 +178,9 @@ public class DuplicateTracksList extends JPanel implements ListSelectionListener
         }
       }
       int[] indices = new int[iList.size()];
-      for (int k = 0; k < iList.size(); k++)
+      for (int k = 0; k < iList.size(); k++) {
         indices[k] = iList.get(k);
+      }
 
       list.setSelectedIndices(indices);
     }

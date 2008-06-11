@@ -44,8 +44,8 @@ import org.jajuk.ui.thumbnails.LocalAlbumThumbnail;
 import org.jajuk.ui.thumbnails.ThumbnailPopup;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.Messages;
-import org.jajuk.util.UtilGUI;
 import org.jajuk.util.UtilFeatures;
+import org.jajuk.util.UtilGUI;
 
 /**
  * List collection albums as a table

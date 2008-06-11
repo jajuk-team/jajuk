@@ -31,7 +31,7 @@ import javax.swing.ImageIcon;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
-import org.jajuk.util.UtilString; 
+import org.jajuk.util.UtilString;
 
 /**
  * A track

@@ -63,7 +63,7 @@ public class AmbienceManager implements ITechnicalStrings, Observer {
   }
 
   public Set<JajukEvents> getRegistrationKeys() {
-    HashSet<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
+    Set<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
     eventSubjectSet.add(JajukEvents.EVENT_STYLE_NAME_CHANGED);
     return eventSubjectSet;
   }
@@ -93,7 +93,7 @@ public class AmbienceManager implements ITechnicalStrings, Observer {
     while (e.hasMoreElements()) {
       String sKey = (String) e.nextElement();
       if (sKey.matches(AMBIENCE_PREFIX + ".*")) {
-        HashSet<Style> styles = new HashSet<Style>(10);
+        Set<Style> styles = new HashSet<Style>(10);
         StringTokenizer st = new StringTokenizer((String) properties.get(sKey), ",");
         while (st.hasMoreTokens()) {
           Style style = StyleManager.getInstance().getStyleByID(st.nextToken());

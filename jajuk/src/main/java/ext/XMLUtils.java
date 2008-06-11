@@ -28,10 +28,17 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
 public class XMLUtils {
+  /**
+   * private constructor to avoid instantiating utility class
+   */
+  private XMLUtils() {
+  }
 
   public static Element getChildElement(Element el, String tagName) {
-    if (el == null)
+    if (el == null) {
       return null;
+    }
+
     NodeList list = el.getElementsByTagName(tagName);
     if (list != null && list.getLength() > 0) {
       return (Element) list.item(0);

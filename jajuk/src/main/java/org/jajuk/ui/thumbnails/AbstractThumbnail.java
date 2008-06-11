@@ -80,9 +80,9 @@ public abstract class AbstractThumbnail extends JPanel implements ITechnicalStri
 
   protected JLabel jlIcon;
 
-  static private long lDateLastMove;
+  private static long lDateLastMove;
 
-  static private Point lastPosition;
+  private static Point lastPosition;
 
   private boolean selected = false;
 

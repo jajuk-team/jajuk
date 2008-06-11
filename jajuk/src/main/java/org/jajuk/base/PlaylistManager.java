@@ -31,7 +31,7 @@ import org.jajuk.events.JajukEvents;
 import org.jajuk.events.Observer;
 import org.jajuk.util.MD5Processor;
 import org.jajuk.util.Messages;
-import org.jajuk.util.UtilSystem; 
+import org.jajuk.util.UtilSystem;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 
@@ -263,7 +263,7 @@ public class PlaylistManager extends ItemManager implements Observer {
   }
 
   public Set<JajukEvents> getRegistrationKeys() {
-    HashSet<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
+    Set<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
     eventSubjectSet.add(JajukEvents.EVENT_FILE_NAME_CHANGED);
     return eventSubjectSet;
   }

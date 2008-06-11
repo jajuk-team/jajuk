@@ -65,9 +65,10 @@ public class Alarm implements ITechnicalStrings {
     } else {
       this.alarmMilliSeconds += 24 * 3600 * 1000;
     }
-    if (!UtilString.isVoid(alarmMessage))
+    if (!UtilString.isVoid(alarmMessage)) {
       Messages.showWarningMessage(Messages.getString("AlarmClock.5") + " \n" + getAlarmTime() + " "
           + alarmMessage);
+    }
   }
 
   public String getAlarmTime() {
@@ -79,14 +80,16 @@ public class Alarm implements ITechnicalStrings {
   }
 
   public String getAlarmText() {
-    if (!"".equals(alarmMessage))
+    if (!"".equals(alarmMessage)) {
       return Messages.getString("Stop") + ": " + alarmMessage + " "
           + (isDaily() ? Messages.getString("AlarmDialog.8") : "") + " "
           + Messages.getString("AlarmClock.3") + " @ " + getAlarmTime();
-    else
+    }
+    else {
       return Messages.getString("Stop") + ": "
           + (isDaily() ? Messages.getString("AlarmDialog.8") : "") + " "
           + Messages.getString("AlarmClock.3") + " @ " + getAlarmTime();
+    }
   }
 
   public boolean isDaily() {

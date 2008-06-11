@@ -29,6 +29,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 import java.util.Vector;
 
 import javax.swing.ButtonGroup;
@@ -832,7 +833,7 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings {
       synchronized (StyleManager.getInstance().getLock()) {
         Transition transition = alTransitions.get(row);
         // create list of styles used in existing transitions
-        HashSet<Style> disabledStyles = new HashSet<Style>();
+        Set<Style> disabledStyles = new HashSet<Style>();
         for (int i = 0; i < alTransitions.size(); i++) {
           Transition t = alTransitions.get(i);
           // ignore all styles expect those from current button
@@ -847,7 +848,7 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings {
           dialog.setSelection(transition.getTo().getStyles());
         }
         dialog.setVisible(true);
-        HashSet<Style> styles = dialog.getSelectedStyles();
+        Set<Style> styles = dialog.getSelectedStyles();
         // check if at least one style has been selected
         if (styles.size() == 0) {
           return;
@@ -1109,7 +1110,7 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings {
       synchronized (StyleManager.getInstance().getLock()) {
         Proportion proportion = proportions.get(row);
         // create list of styles used in existing transitions
-        HashSet<Style> disabledStyles = new HashSet<Style>();
+        Set<Style> disabledStyles = new HashSet<Style>();
         for (int i = 0; i < proportions.size(); i++) {
           if (i != row) { // do not exlude current proportion that
             // will be selected
@@ -1119,7 +1120,7 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings {
         StylesSelectionDialog dialog = new StylesSelectionDialog(disabledStyles);
         dialog.setSelection(proportion.getStyles());
         dialog.setVisible(true);
-        HashSet<Style> styles = dialog.getSelectedStyles();
+        Set<Style> styles = dialog.getSelectedStyles();
         // check if at least one style has been selected
         if (styles.size() == 0) {
           return;

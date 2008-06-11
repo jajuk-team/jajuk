@@ -458,10 +458,11 @@ public class JajukSlimbar extends JFrame implements ITechnicalStrings, Observer,
         Player.mute(false);
       }
 
-      if (newVolume > 100)
+      if (newVolume > 100) {
         newVolume = 100;
-      else if (newVolume < 0)
+      } else if (newVolume < 0) {
         newVolume = 0;
+      }
 
       Player.setVolume((float) newVolume / 100);
       jbVolume.setToolTipText(newVolume + " %");

@@ -38,7 +38,7 @@ import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.DownloadManager;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Messages;
-import org.jajuk.util.UtilString; 
+import org.jajuk.util.UtilString;
 import org.jajuk.util.UtilSystem;
 import org.jajuk.util.log.Log;
 import org.xml.sax.Attributes;
@@ -65,9 +65,9 @@ public final class WebRadioManager extends DefaultHandler implements ITechnicalS
   private String radioUrl;
 
   // Webradio file XML tags static strings
-  private final static String XML_RADIO = "Radio";
-  private final static String XML_URL = "url";
-  private final static String XML_NAME = "name";
+  private static final String XML_RADIO = "Radio";
+  private static final String XML_URL = "url";
+  private static final String XML_NAME = "name";
 
   File fwebradios;
 

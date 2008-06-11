@@ -27,7 +27,7 @@ import javax.swing.KeyStroke;
 
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.ITechnicalStrings;
-import org.jajuk.util.UtilSystem; 
+import org.jajuk.util.UtilSystem;
 import org.jajuk.util.log.Log;
 
 /**

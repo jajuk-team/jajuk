@@ -254,9 +254,9 @@ public class AlarmClockDialog extends JDialog implements ActionListener, ItemLis
       sbSearch.setEnabled(false);
     }
     if (e.getSource() == jcbMessage) {
-      if (jcbMessage.isSelected())
+      if (jcbMessage.isSelected()) {
         jtfMessage.setEnabled(true);
-      else {
+      } else {
         jtfMessage.setEnabled(false);
         ConfigurationManager.setProperty(ALARM_MESSAGE, "");
       }
@@ -300,9 +300,9 @@ public class AlarmClockDialog extends JDialog implements ActionListener, ItemLis
     ConfigurationManager.setProperty(ALARM_TIME_MINUTES, "" + jtfMinutes.getText());
     ConfigurationManager.setProperty(ALARM_TIME_SECONDS, "" + jtfSeconds.getText());
     ConfigurationManager.setProperty(ALARM_MESSAGE, "" + jtfMessage.getText());
-    if (jcbDaily.isSelected())
+    if (jcbDaily.isSelected()) {
       ConfigurationManager.setProperty(CONF_ALARM_DAILY, "" + true);
-    else {
+    } else {
       ConfigurationManager.setProperty(CONF_ALARM_DAILY, "" + false);
     }
     if (jrbShuffle.isSelected()) {

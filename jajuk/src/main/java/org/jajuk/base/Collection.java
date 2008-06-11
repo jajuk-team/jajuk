@@ -537,8 +537,9 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
           long lQuality = 0;
           try {
             if(attributes.getValue(XML_QUALITY) != null &&  
-                attributes.getValue(XML_QUALITY).length() >= 0)
+                attributes.getValue(XML_QUALITY).length() >= 0) {
               lQuality = Integer.parseInt(attributes.getValue(XML_QUALITY));
+            }
           } catch (Exception e) {
             if (Log.isDebugEnabled()) {
               // wrong format

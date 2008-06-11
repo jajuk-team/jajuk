@@ -23,6 +23,7 @@ package org.jajuk.services.dj;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import org.jajuk.base.File;
 import org.jajuk.base.Track;
@@ -109,7 +110,7 @@ public abstract class DigitalDJ implements ITechnicalStrings, Comparable<Digital
    */
   void filterFilesByRate(List<File> files) {
     // this set stores already used tracks
-    HashSet<Track> selectedTracks = new HashSet<Track>(files.size());
+    Set<Track> selectedTracks = new HashSet<Track>(files.size());
     // Select by rate if needed
     if (iRatingLevel > 0) {
       Iterator<File> it = files.iterator();

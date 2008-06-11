@@ -62,6 +62,12 @@ public class PerspectiveManager implements ITechnicalStrings {
    */
   private static Set<IPerspective> perspectives = new LinkedHashSet<IPerspective>(10);
 
+  /** 
+   * private constructor to avoid instantiating utility class
+   */
+  private PerspectiveManager() {
+  }
+  
   /**
    * Reset registered perspectives
    * 

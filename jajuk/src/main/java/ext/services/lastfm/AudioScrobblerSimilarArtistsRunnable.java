@@ -45,17 +45,20 @@ public class AudioScrobblerSimilarArtistsRunnable implements Runnable, ITechnica
 
       if (!interrupted && artists != null) {
         Image artistImage = service.getImage(artists);
-        if (!interrupted && artistImage != null)
+        if (!interrupted && artistImage != null) {
           listener.notifyArtistImage(artistImage);
+        }
 
         for (int i = 0; i < artists.getArtists().size(); i++) {
           Image img = null;
           AudioScrobblerArtist a = artists.getArtists().get(i);
-          if (!interrupted)
+          if (!interrupted) {
             img = service.getImage(a);
+          }
 
-          if (!interrupted)
+          if (!interrupted) {
             listener.notifyFinishGetSimilarArtist(a, img);
+          }
         }
       }
     }

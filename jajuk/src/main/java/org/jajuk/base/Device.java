@@ -88,7 +88,7 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
   private java.io.File fio;
 
   /** Device mount point* */
-  private final String sMountPoint = "";
+  private static final String sMountPoint = "";
 
   /** Mounted device flag */
   private boolean bMounted = false;
@@ -103,18 +103,18 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
   private volatile boolean bAlreadySynchronizing = false;
 
   /** Number of files in this device before refresh ( for refresh stats ) */
-  public int iNbFilesBeforeRefresh;
+  private int iNbFilesBeforeRefresh;
 
   /** Number of dirs in this device before refresh */
-  public int iNbDirsBeforeRefresh;
+  private int iNbDirsBeforeRefresh;
 
   /** Number of created files on source device during synchro ( for stats ) */
-  public int iNbCreatedFilesSrc;
+  private int iNbCreatedFilesSrc;
 
   /**
    * Number of created files on destination device during synchro ( for stats )
    */
-  public int iNbCreatedFilesDest;
+  private int iNbCreatedFilesDest;
 
   /** Number of deleted files during a synchro ( for stats ) */
   int iNbDeletedFiles = 0;
@@ -161,38 +161,40 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
     // directories cleanup
     for (final Item item : dirs) {
       final Directory dir = (Directory) item;
-      if (!ExitService.isExiting() && dir.getDevice().equals(this) && dir.getDevice().isMounted()) {
-        if (!dir.getFio().exists()) {
-          // note that associated files are removed too
-          DirectoryManager.getInstance().removeDirectory(dir.getID());
-          Log.debug("Removed: " + dir);
-          bChanges = true;
-        }
+      if (!ExitService.isExiting() && 
+          dir.getDevice().equals(this) && 
+          dir.getDevice().isMounted() &&
+          !dir.getFio().exists()) {
+        // note that associated files are removed too
+        DirectoryManager.getInstance().removeDirectory(dir.getID());
+        Log.debug("Removed: " + dir);
+        bChanges = true;
       }
     }
     // files cleanup
     final Set<org.jajuk.base.File> files = FileManager.getInstance().getFiles();
     for (final org.jajuk.base.File file : files) {
-      if (!ExitService.isExiting() && file.getDirectory().getDevice().equals(this)
-          && file.isReady()) {
+      if (!ExitService.isExiting() && 
+          file.getDirectory().getDevice().equals(this) && 
+          file.isReady() && 
         // Remove file if it doesn't exist any more or if it is a iTunes
         // file (useful for jajuk < 1.4)
-        if (!file.getIO().exists() || file.getName().startsWith("._")) {
-          FileManager.getInstance().removeFile(file);
-          Log.debug("Removed: " + file);
-          bChanges = true;
-        }
+        (!file.getIO().exists() || file.getName().startsWith("._"))) {
+        FileManager.getInstance().removeFile(file);
+        Log.debug("Removed: " + file);
+        bChanges = true;
       }
     }
     // Playlist cleanup
     final Set<Playlist> plfiles = PlaylistManager.getInstance().getPlaylists();
     for (final Playlist plf : plfiles) {
-      if (!ExitService.isExiting() && plf.getDirectory().getDevice().equals(this) && plf.isReady()) {
-        if (!plf.getFio().exists()) {
-          PlaylistManager.getInstance().removePlaylistFile(plf);
-          Log.debug("Removed: " + plf);
-          bChanges = true;
-        }
+      if (!ExitService.isExiting() && 
+          plf.getDirectory().getDevice().equals(this) && 
+          plf.isReady() && 
+          !plf.getFio().exists()) {
+        PlaylistManager.getInstance().removePlaylistFile(plf);
+        Log.debug("Removed: " + plf);
+        bChanges = true;
       }
     }
     // clear history to remove old files referenced in it
@@ -666,9 +668,13 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
         return true;
       }
       return false;
-    } catch (final RuntimeException re) { // runtime error are thrown
-      throw re;
     } catch (final Exception e) { // and regular ones logged
+      // runtime errors are thrown
+      if(e instanceof RuntimeException) {
+        throw (RuntimeException)e;
+      }
+      
+      // and regular ones logged
       Log.error(e);
       return false;
     } finally { // make sure to unlock refreshing even if an error
@@ -684,7 +690,7 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
     if (reporter != null) {
       reporter.updateState(dir);
     }
-    final File[] files = dir.getFio().listFiles(UtilSystem.dirFilter);
+    final File[] files = dir.getFio().listFiles(UtilSystem.getDirFilter());
     if (files != null) {
       for (final File element : files) {
         final Directory subDir = DirectoryManager.getInstance().registerDirectory(
@@ -807,12 +813,16 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
       }
       InformationJPanel.getInstance().setMessage(sOut, InformationJPanel.INFORMATIVE);
       Log.debug(sOut);
-    } catch (final RuntimeException re) { // runtime error are thrown
-      throw re;
-    } catch (final Exception e) { // and regular ones logged
+    } catch (final Exception e) {
+      // runtime errors are thrown
+      if(e instanceof RuntimeException) {
+        throw (RuntimeException)e;
+      }
+      
+      // and regular ones logged
       Log.error(e);
     } finally {
-      // make sure to unlock sychronizing even if an error occured
+      // make sure to unlock synchronizing even if an error occurred
       bAlreadySynchronizing = false;
     }
   }
@@ -825,10 +835,10 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
    * @return nb of created files
    */
   private int synchronizeUnidirectonal(final Device dSrc, final Device dest) {
-    final HashSet<Directory> hsSourceDirs = new HashSet<Directory>(100);
+    final Set<Directory> hsSourceDirs = new HashSet<Directory>(100);
     // contains paths ( relative to device) of desynchronized dirs
-    final HashSet<String> hsDesynchroPaths = new HashSet<String>(10);
-    final HashSet<Directory> hsDestDirs = new HashSet<Directory>(100);
+    final Set<String> hsDesynchroPaths = new HashSet<String>(10);
+    final Set<Directory> hsDestDirs = new HashSet<Directory>(100);
     int iNbCreatedFiles = 0;
     Iterator<Directory> it = DirectoryManager.getInstance().getDirectories().iterator();
     while (it.hasNext()) {
@@ -1011,7 +1021,7 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
    * Unmount the device
    * 
    */
-  public void unmount() throws Exception {
+  public void unmount() {
     unmount(false, true);
   }
 
@@ -1023,7 +1033,7 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
    * @param bUIRefresh
    *          set wheter the UI should be refreshed
    */
-  public void unmount(final boolean bEjection, final boolean bUIRefresh) throws Exception {
+  public void unmount(final boolean bEjection, final boolean bUIRefresh) {
     // look to see if the device is already mounted
     if (!bMounted) {
       Messages.showErrorMessage(125); // already unmounted

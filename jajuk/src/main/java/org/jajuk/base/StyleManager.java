@@ -42,7 +42,7 @@ import org.jajuk.util.error.JajukException;
 /**
  * Convenient class to manage styles
  */
-public class StyleManager extends ItemManager {
+public final class StyleManager extends ItemManager {
   /** Self instance */
   private static StyleManager singleton;
 

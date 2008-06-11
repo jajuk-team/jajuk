@@ -64,6 +64,12 @@ public class Player implements ITechnicalStrings {
   private static boolean bPlaying = false;
 
   /**
+   * private constructor to avoid instantiating utility class
+   */
+  private Player() {
+  }
+
+  /**
    * Asynchronous play for specified file with specified time interval
    * 
    * @param file
@@ -75,8 +81,9 @@ public class Player implements ITechnicalStrings {
    * @return true if play is OK
    */
   public static boolean play(final File file, final float fPosition, final long length) {
-    if(file == null)
-      throw new IllegalArgumentException("Cannot play empty file."); 
+    if(file == null) {
+      throw new IllegalArgumentException("Cannot play empty file.");
+    }
       
     fCurrent = file;
     try {

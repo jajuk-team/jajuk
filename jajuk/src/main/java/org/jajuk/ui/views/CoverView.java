@@ -1079,10 +1079,11 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
       return;
     }
     
-    if(fCurrent == null)
+    if(fCurrent == null) {
       throw new IllegalArgumentException("Internal Error: Unexpected value, " +
           "variable should not be empty. fCurrent: " + fCurrent +
           " dirReference: " + dirReference);
+    }
     
     // search for local covers in all directories mapping
     // the current track to reach other devices covers and

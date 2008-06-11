@@ -303,15 +303,15 @@ public class CDDBWizard extends JajukJDialog implements ITechnicalStrings, Actio
       aResult = fdb.query(fdbAlbum);
       vAlbums = new Vector<String>(aResult.length);
       Log.debug("CDDB Query return " + aResult.length + " match(es).");
-      int idx = 0;
+      int index = 0;
       for (int i = 0; i < aResult.length; i++) {
         vAlbums.add("[" + aResult[i].getDiscId() + "] " + aResult[i].getAlbum());
         if (aResult[i].isExactMatch()) {
-          idx = i;
+          index = i;
           InformationJPanel.getInstance().setMessage(Messages.getString("CDDBWizard.17"), 0);
         }
       }
-      return idx;
+      return index;
     } catch (FreedbException e) {
       Log.debug(e.getLocalizedMessage());
     }

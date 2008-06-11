@@ -83,6 +83,11 @@ import org.jdesktop.swingx.autocomplete.TextComponentAdaptor;
  * @author Thomas Bierhance
  */
 public class AutoCompleteDecorator {
+  /**
+   * private constructor to avoid instantiating utility class
+   */
+  private AutoCompleteDecorator() {
+  }
 
   /**
    * Enables automatic completion for the given JTextComponent based on the
@@ -194,18 +199,23 @@ public class AutoCompleteDecorator {
       @Override
       public void keyPressed(KeyEvent keyEvent) {
         // don't popup on action keys (cursor movements, etc...)
-        if (keyEvent.isActionKey())
+        if (keyEvent.isActionKey()) {
           return;
+        }
+        
         // don't popup if the combobox isn't visible anyway
         if (comboBox.isDisplayable() && !comboBox.isPopupVisible()) {
           int keyCode = keyEvent.getKeyCode();
           // don't popup when the user hits shift,ctrl or alt
           if (keyCode == KeyEvent.VK_SHIFT || keyCode == KeyEvent.VK_CONTROL
-              || keyCode == KeyEvent.VK_ALT)
+              || keyCode == KeyEvent.VK_ALT) {
             return;
+          }
           // don't popup when the user hits escape (see issue #311)
-          if (keyCode == KeyEvent.VK_ESCAPE)
+          if (keyCode == KeyEvent.VK_ESCAPE) {
             return;
+          }
+
           comboBox.setPopupVisible(true);
         }
       }

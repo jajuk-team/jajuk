@@ -55,49 +55,50 @@ import org.jajuk.util.filters.KnownTypeFilter;
 import org.jajuk.util.log.Log;
 
 /**
- * Set of convenient methods for system and IO 
+ * Set of convenient methods for system and IO
  */
-public class UtilSystem implements ITechnicalStrings{
+public class UtilSystem implements ITechnicalStrings {
 
   /** MPlayer status possible values * */
   public static enum MPlayerStatus {
     MPLAYER_STATUS_OK, MPLAYER_STATUS_NOT_FOUND, MPLAYER_STATUS_WRONG_VERSION, MPLAYER_STATUS_JNLP_DOWNLOAD_PBM
   }
-  /** Current date cached (for performances) **/
+
+  /** Current date cached (for performances) * */
   public static final Date TODAY = new Date();
-  
+
   /**
-   * Are we under Linux ? * 
+   * Are we under Linux ? *
    */
   private static final boolean UNDER_LINUX;
   /**
-   * Are we under MAC OS Intel ? * 
+   * Are we under MAC OS Intel ? *
    */
   private static final boolean UNDER_OSX_INTEL;
   /**
-   * Are we under MAC OS power ? * 
+   * Are we under MAC OS power ? *
    */
   private static final boolean UNDER_OSX_POWER;
   /**
-   * Are we under Windows ? * 
+   * Are we under Windows ? *
    */
   private static final boolean UNDER_WINDOWS;
   /**
-   * Are we under Windows 32 bits ? * 
+   * Are we under Windows 32 bits ? *
    */
   private static final boolean UNDER_WINDOWS_32BIT;
   /**
-   * Are we under Windows 64 bits ? * 
+   * Are we under Windows 64 bits ? *
    */
   private static final boolean UNDER_WINDOWS_64BIT;
   /**
-   * Directory filter used in refresh 
+   * Directory filter used in refresh
    */
-  public static JajukFileFilter dirFilter = new JajukFileFilter(DirectoryFilter.getInstance());
+  private static JajukFileFilter dirFilter = new JajukFileFilter(DirectoryFilter.getInstance());
   /**
-   * File filter used in refresh 
+   * File filter used in refresh
    */
-  public static JajukFileFilter fileFilter = new JajukFileFilter(KnownTypeFilter.getInstance());
+  private static JajukFileFilter fileFilter = new JajukFileFilter(KnownTypeFilter.getInstance());
 
   // Computes OS detection operations for perf reasons (can be called in loop
   // in refresh method for ie)
@@ -133,6 +134,19 @@ public class UtilSystem implements ITechnicalStrings{
     final String sArch = System.getProperty("os.arch");
     UNDER_OSX_POWER = org.jdesktop.swingx.util.OS.isMacOSX()
         && ((sArch != null) && !sArch.matches(".*86"));
+  }
+
+  /** Icons cache */
+  static Map<String, ImageIcon> iconCache = new HashMap<String, ImageIcon>(200);
+  /** Mplayer exe path */
+  private static File mplayerPath = null;
+  /** current class loader */
+  private static ClassLoader classLoader = null;
+
+  /**
+   * private constructor to avoid instantiating utility class
+   */
+  private UtilSystem() {
   }
 
   /**
@@ -244,9 +258,10 @@ public class UtilSystem implements ITechnicalStrings{
    *          source designed by URL
    * @param dest
    *          destination file full path
-   * @throws Exception
+   * @throws IOException
+   *           If the src or dest cannot be opened/created.
    */
-  public static void copy(final URL src, final String dest) throws Exception {
+  public static void copy(final URL src, final String dest) throws IOException {
     final BufferedReader br = new BufferedReader(new InputStreamReader(src.openStream()));
     final BufferedWriter bw = new BufferedWriter(new FileWriter(dest));
     String sLine = null;
@@ -632,7 +647,12 @@ public class UtilSystem implements ITechnicalStrings{
       final BufferedReader in = new BufferedReader(new InputStreamReader(proc.getInputStream()));
       String line = null;
       mplayerStatus = UtilSystem.MPlayerStatus.MPLAYER_STATUS_WRONG_VERSION;
-      for (; (line = in.readLine()) != null;) {
+      for (;;) {
+        line = in.readLine();
+        if (line == null) {
+          break;
+        }
+
         if (line.matches("get_time_pos.*")) {
           mplayerStatus = UtilSystem.MPlayerStatus.MPLAYER_STATUS_OK;
           break;
@@ -656,8 +676,8 @@ public class UtilSystem implements ITechnicalStrings{
     // Check in ~/.jajuk directory (used by webstart distribution
     // installers). Test exe size as well to detect unfinished downloads of
     // mplayer.exe in JNLP mode
-    if ((file = UtilSystem.getConfFileByPath(FILE_MPLAYER_EXE)).exists()
-        && file.length() == MPLAYER_EXE_SIZE) {
+    file = UtilSystem.getConfFileByPath(FILE_MPLAYER_EXE);
+    if (file.exists() && file.length() == MPLAYER_EXE_SIZE) {
       UtilSystem.mplayerPath = file;
       return UtilSystem.mplayerPath;
     } else {
@@ -682,19 +702,20 @@ public class UtilSystem implements ITechnicalStrings{
               .getAbsolutePath();
         }
         // Add MPlayer file name
-        if ((file = new File(sPATH + '/' + ITechnicalStrings.FILE_MPLAYER_EXE)).exists()
-            && file.length() == MPLAYER_EXE_SIZE) {
+        file = new File(sPATH + '/' + ITechnicalStrings.FILE_MPLAYER_EXE);
+        if (file.exists() && file.length() == MPLAYER_EXE_SIZE) {
           UtilSystem.mplayerPath = file;
         } else {
           // For bundle project, Jajuk should check if mplayer was
           // installed along with aTunes. In this case, mplayer is
           // found in sPATH\win_tools\ directory. Hence, changed sPATH
           // Note that we don't test mplayer.exe size in this case
-          if ((file = new File(sPATH + "/win_tools/" + ITechnicalStrings.FILE_MPLAYER_EXE))
-              .exists())
+          file = new File(sPATH + "/win_tools/" + ITechnicalStrings.FILE_MPLAYER_EXE);
+          if (file.exists()) {
             UtilSystem.mplayerPath = file;
+          }
         }
-  
+
       } catch (Exception e) {
         return UtilSystem.mplayerPath;
       }
@@ -896,7 +917,7 @@ public class UtilSystem implements ITechnicalStrings{
       throw te;
     }
     final BufferedReader input = new BufferedReader(fileReader);
-  
+
     // Read
     final StringBuilder strColl = new StringBuilder();
     String line = null;
@@ -908,7 +929,7 @@ public class UtilSystem implements ITechnicalStrings{
       final JajukException te = new JajukException(9, path, e);
       throw te;
     }
-  
+
     // Close the bufferedReader
     try {
       input.close();
@@ -916,7 +937,7 @@ public class UtilSystem implements ITechnicalStrings{
       final JajukException te = new JajukException(9, path, e);
       throw te;
     }
-  
+
     return strColl;
   }
 
@@ -952,7 +973,7 @@ public class UtilSystem implements ITechnicalStrings{
       throw te;
     }
     return sb;
-  
+
   }
 
   /**
@@ -983,11 +1004,12 @@ public class UtilSystem implements ITechnicalStrings{
     }
   }
 
-  /** Icons cache */
-  static Map<String, ImageIcon> iconCache = new HashMap<String, ImageIcon>(200);
-  /** Mplayer exe path */
-  private static File mplayerPath = null;
-  /** current class loader */
-  private static ClassLoader classLoader = null;
-  
+  public static JajukFileFilter getDirFilter() {
+    return dirFilter;
+  }
+
+  public static JajukFileFilter getFileFilter() {
+    return fileFilter;
+  }
+
 }

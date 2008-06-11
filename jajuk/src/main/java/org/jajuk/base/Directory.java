@@ -259,7 +259,7 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
    *          Refresh handler
    */
   public void scan(boolean bDeepScan, RefreshReporter reporter) {
-    java.io.File[] filelist = getFio().listFiles(UtilSystem.fileFilter);
+    java.io.File[] filelist = getFio().listFiles(UtilSystem.getFileFilter());
     if (filelist == null || filelist.length == 0) { // none file, leave
       return;
     }

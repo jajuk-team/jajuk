@@ -1060,10 +1060,11 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
         Player.mute(false);
       }
 
-      if (newVolume > 100)
+      if (newVolume > 100) {
         newVolume = 100;
-      else if (newVolume < 0)
+      } else if (newVolume < 0) {
         newVolume = 0;
+      }
 
       Player.setVolume((float) newVolume / 100);
       jpVolume.setToolTipText(newVolume + " %");

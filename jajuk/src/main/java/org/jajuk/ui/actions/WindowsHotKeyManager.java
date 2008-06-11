@@ -139,7 +139,8 @@ public abstract class WindowsHotKeyManager extends AbstractAction implements ITe
    * Free Jintellipad resources
    */
   public static void cleanup() {
-    if(jintellitype != null)
+    if(jintellitype != null) {
       jintellitype.cleanUp();
+    }
   }
 }

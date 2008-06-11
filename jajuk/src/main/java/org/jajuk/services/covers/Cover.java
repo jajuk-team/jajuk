@@ -29,8 +29,8 @@ import javax.swing.ImageIcon;
 
 import org.jajuk.util.DownloadManager;
 import org.jajuk.util.ITechnicalStrings;
-import org.jajuk.util.UtilGUI; 
 import org.jajuk.util.UtilFeatures;
+import org.jajuk.util.UtilGUI;
 import org.jajuk.util.UtilSystem;
 import org.jajuk.util.log.Log;
 

@@ -47,7 +47,7 @@ public abstract class ItemManager implements ITechnicalStrings {
    * Maps item classes -> instance, must be a linked map for ordering (mandatory
    * in commited collection)
    */
-  static private LinkedHashMap<Class<?>, ItemManager> hmItemManagers = new LinkedHashMap<Class<?>, ItemManager>(
+  private static LinkedHashMap<Class<?>, ItemManager> hmItemManagers = new LinkedHashMap<Class<?>, ItemManager>(
       10);
 
   /** Maps properties meta information name and object */

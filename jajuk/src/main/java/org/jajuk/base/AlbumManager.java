@@ -46,7 +46,7 @@ import org.jajuk.util.error.JajukException;
  * Convenient class to manage Albums
  * 
  */
-public class AlbumManager extends ItemManager implements Observer {
+public final class AlbumManager extends ItemManager implements Observer {
   /** Self instance */
   private static AlbumManager singleton;
 
@@ -75,7 +75,7 @@ public class AlbumManager extends ItemManager implements Observer {
   }
 
   public Set<JajukEvents> getRegistrationKeys() {
-    HashSet<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
+    Set<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
     eventSubjectSet.add(JajukEvents.EVENT_FILE_LAUNCHED);
     return eventSubjectSet;
   }
@@ -390,8 +390,7 @@ public class AlbumManager extends ItemManager implements Observer {
     Collections.shuffle(sublist);
     // The result is a sublist of shuffled albums, if we have less
     // albums than required, take max size possible
-    List<Album> out = sublist.subList(0, (size >= iNb) ? iNb : size);
-    return out;
+    return sublist.subList(0, (size >= iNb) ? iNb : size);
   }
 
   /**
@@ -448,11 +447,10 @@ public class AlbumManager extends ItemManager implements Observer {
    * @see org.jajuk.base.Observer#update(org.jajuk.base.Event)
    */
   public void update(Event event) {
-    if (event.getSubject() == JajukEvents.EVENT_FILE_LAUNCHED) {
+    if ((event.getSubject() == JajukEvents.EVENT_FILE_LAUNCHED) &&
       // Compute album max rating every 10 tracks launches
-      if (comp % 10 == 0) {
-        refreshMaxRating();
-      }
+      (comp % 10 == 0)) {
+      refreshMaxRating();
     }
   }
 

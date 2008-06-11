@@ -39,8 +39,9 @@ public class JajukJSplitPane extends JSplitPane {
     if (!isPainted) {
       hasProportionalLocation = true;
       this.proportionalLocation = proportionalLocation;
-    } else
+    } else {
       super.setDividerLocation(proportionalLocation);
+    }
   }
 
   @Override

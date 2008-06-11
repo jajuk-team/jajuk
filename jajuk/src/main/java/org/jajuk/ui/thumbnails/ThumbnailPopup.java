@@ -57,8 +57,8 @@ import org.jajuk.services.players.FIFO;
 import org.jajuk.ui.wizard.PropertiesWizard;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.ITechnicalStrings;
-import org.jajuk.util.UtilGUI;
 import org.jajuk.util.UtilFeatures;
+import org.jajuk.util.UtilGUI;
 import org.jajuk.util.log.Log;
 import org.jvnet.substance.SubstanceLookAndFeel;
 

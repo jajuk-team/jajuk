@@ -114,8 +114,9 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
         String line = null;
         for (; true;) {
           line = in.readLine(); 
-          if(line == null)
+          if(line == null) {
             break;
+          }
 
           if (line.matches(".*ANS_TIME_POSITION.*")) {
             // Stream no more opening

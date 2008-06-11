@@ -46,7 +46,7 @@ import org.jajuk.ui.widgets.InformationJPanel;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
-import org.jajuk.util.UtilGUI; 
+import org.jajuk.util.UtilGUI;
 import org.jajuk.util.UtilSystem;
 import org.jajuk.util.log.Log;
 
@@ -124,8 +124,9 @@ public class DeleteAction extends ActionBase {
               Directory d = f.getDirectory();
               UtilSystem.deleteFile(f.getIO());
               FileManager.getInstance().removeFile(f);
-              if (d.getFiles().size() == 0)
+              if (d.getFiles().size() == 0) {
                 emptyDirs.add(f.getDirectory());
+              }
             } catch (Exception ioe) {
               Log.error(131, ioe);
               rejFiles.add(f);

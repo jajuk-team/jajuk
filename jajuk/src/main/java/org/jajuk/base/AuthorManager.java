@@ -37,12 +37,12 @@ import org.jajuk.util.error.JajukException;
 /**
  * Convenient class to manage authors
  */
-public class AuthorManager extends ItemManager {
+public final class AuthorManager extends ItemManager {
   /** Self instance */
   private static AuthorManager singleton;
 
   /* List of all known authors */
-  public static Vector<String> authorsList;
+  private static Vector<String> authorsList = new Vector<String>(100);
 
   /**
    * No constructor available, only static access
@@ -60,7 +60,6 @@ public class AuthorManager extends ItemManager {
     registerProperty(new PropertyMetaInformation(XML_EXPANDED, false, false, false, false, true,
         Boolean.class, false));
     // create author list
-    authorsList = new Vector<String>(100);
   }
 
   /**

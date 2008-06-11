@@ -144,8 +144,7 @@ public class EntaggedTagImpl implements ITagImpl, ITechnicalStrings {
    * @see org.jajuk.base.ITagImpl#getQuality()
    */
   public long getQuality() throws Exception {
-    long lQuality = audioFile.getBitrate();
-    return lQuality;
+    return audioFile.getBitrate();
   }
 
   /*

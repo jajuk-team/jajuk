@@ -47,7 +47,7 @@ import org.jajuk.events.Observer;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Messages;
-import org.jajuk.util.UtilSystem; 
+import org.jajuk.util.UtilSystem;
 import org.jajuk.util.log.Log;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -79,7 +79,7 @@ public class DigitalDJManager implements ITechnicalStrings, Observer {
   }
 
   public Set<JajukEvents> getRegistrationKeys() {
-    HashSet<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
+    Set<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
     eventSubjectSet.add(JajukEvents.EVENT_AMBIENCE_REMOVED);
     return eventSubjectSet;
   }
@@ -107,7 +107,7 @@ public class DigitalDJManager implements ITechnicalStrings, Observer {
    * @return DJs names iteration
    */
   public Set<String> getDJNames() {
-    HashSet<String> hsNames = new HashSet<String>(10);
+    Set<String> hsNames = new HashSet<String>(10);
     for (DigitalDJ dj : djs.values()) {
       hsNames.add(dj.getName());
     }

@@ -36,7 +36,7 @@ import org.jajuk.util.filters.DirectoryFilter;
 /**
  * Convenient class to manage directories
  */
-public class DirectoryManager extends ItemManager {
+public final class DirectoryManager extends ItemManager {
   /** Self instance */
   private static DirectoryManager singleton;
 
@@ -66,8 +66,7 @@ public class DirectoryManager extends ItemManager {
       }
       sbAbs.append(sName);
     }
-    final String sId = MD5Processor.hash(sbAbs.toString());
-    return sId;
+    return MD5Processor.hash(sbAbs.toString());
   }
 
   /**

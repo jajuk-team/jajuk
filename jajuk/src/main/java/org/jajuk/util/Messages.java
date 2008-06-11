@@ -411,7 +411,7 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
    * @param iType
    * @return String for given JOptionPane message type
    */
-  static private String getTitleForType(final int iType) {
+  private static String getTitleForType(final int iType) {
     switch (iType) {
     case JOptionPane.ERROR_MESSAGE:
       return Messages.getString("Error");

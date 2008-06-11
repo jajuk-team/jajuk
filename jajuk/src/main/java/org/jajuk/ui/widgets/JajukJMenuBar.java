@@ -400,9 +400,9 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings, Observ
   public void mouseMoved(MouseEvent e) {
     if (e.getSource() == jmReminders) {
       jmReminders.removeAll();
-      if (AlarmManager.getInstance().getAllAlarms().size() == 0)
+      if (AlarmManager.getInstance().getAllAlarms().size() == 0) {
         jmReminders.add(Messages.getString("AlarmClock.2"));
-      else {
+      } else {
         for (final Alarm alarm : AlarmManager.getInstance().getAllAlarms()) {
           JMenuItem jma = new JMenuItem(alarm.getAlarmText(), IconLoader.ICON_ALARM);
           jma.addActionListener(new ActionListener() {

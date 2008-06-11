@@ -119,8 +119,9 @@ public class Submitter {
 
   private static void submitTrackToLastFm(Track track, long startedToPlay, int retries)
       throws SubmitterException {
-    if (submissionURL == null)
+    if (submissionURL == null) {
       handshake();
+    }
 
     HttpURLConnection connection;
     String queryString = getQueryString(track, startedToPlay);
@@ -139,8 +140,9 @@ public class Submitter {
       String[] lines = result.split("\n");
       if (lines[0].equals("BADAUTH")) {
         // Retry up to MAX_RETRIES
-        if (retries == MAX_RETRIES)
+        if (retries == MAX_RETRIES) {
           throw new SubmitterException(lines[0]);
+        }
 
         submissionURL = null;
 

@@ -31,6 +31,12 @@ import org.jajuk.util.log.Log;
  */
 
 public class MD5Processor {
+  /** 
+   * private constructor to avoid instantiating utility class
+   */
+  private MD5Processor() {
+  }
+  
 
   /**
    * MD5 hashcoding, return a hashcode

@@ -35,7 +35,7 @@ import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.DownloadManager;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Messages;
-import org.jajuk.util.UtilString; 
+import org.jajuk.util.UtilString;
 import org.jajuk.util.log.Log;
 
 /**
@@ -78,7 +78,7 @@ public class LastFmManager implements Observer, ITechnicalStrings {
    * @see org.jajuk.base.Observer#getRegistrationKeys()
    */
   public Set<JajukEvents> getRegistrationKeys() {
-    HashSet<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
+    Set<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
     eventSubjectSet.add(JajukEvents.EVENT_FILE_FINISHED);
     return eventSubjectSet;
   }

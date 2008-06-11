@@ -23,25 +23,35 @@ package org.jajuk.services.reporting;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.net.URL;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Result;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.sax.SAXSource;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
 import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
 /**
  * This class will take a XML file and either convert it to HTML or PDF.
  */
 public class XMLTransformer {
+  
+  /** 
+   * Private constructor to prevent instantiation of utility class.
+   */
+  private XMLTransformer() {
+  }
   /**
    * This method will convert an XML file into an HTML file using an xslt
    * transformation
@@ -52,8 +62,12 @@ public class XMLTransformer {
    *          The HTML file to convert.
    * @param xsl
    *          The url of the XSLT style sheet to use.
+   * @throws ParserConfigurationException if the XML Parser can not be instantiated.
+   * @throws IOException If the file cannot be opened.
+   * @throws SAXException If an exception during parsing the XML file occurs.
+   * @throws TransformerException If processing the XSL script causes an error.
    */
-  public static void xmlToHTML(File xml, File html, URL xsl) throws Exception {
+  public static void xmlToHTML(File xml, File html, URL xsl) throws ParserConfigurationException, SAXException, IOException, TransformerException {
     // DOM source creation
     DocumentBuilderFactory domFactory = DocumentBuilderFactory.newInstance();
     DocumentBuilder domBuilder = domFactory.newDocumentBuilder();

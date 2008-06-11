@@ -70,8 +70,9 @@ public class Tag implements ITechnicalStrings {
       bCorrupted = false;
     } catch (Exception e) {
       bCorrupted = true;
-      if (!bIgnoreErrors)
+      if (!bIgnoreErrors) {
         throw new JajukException(103, fio.getName(), e);
+      }
     }
   }
 

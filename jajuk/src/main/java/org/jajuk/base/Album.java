@@ -217,7 +217,7 @@ public class Album extends LogicalItem implements Comparable<Album> {
       return null;
     }
     // List if directories we have to look in
-    HashSet<Directory> dirs = new HashSet<Directory>(2);
+    Set<Directory> dirs = new HashSet<Directory>(2);
     for (Track track : tracks) {
       for (org.jajuk.base.File file : track.getFiles()) {
         if (file.isReady()) {
@@ -291,6 +291,7 @@ public class Album extends LogicalItem implements Comparable<Album> {
   /**
    * @return album average rating
    */
+  @Override
   public long getRate() {
     long rate = 0;
     for (Track track : tracks) {
@@ -329,7 +330,7 @@ public class Album extends LogicalItem implements Comparable<Album> {
    *         different styles
    */
   public Style getStyle() {
-    HashSet<Style> styles = new HashSet<Style>(1);
+    Set<Style> styles = new HashSet<Style>(1);
     for (Track track : tracks) {
       styles.add(track.getStyle());
     }
@@ -347,7 +348,7 @@ public class Album extends LogicalItem implements Comparable<Album> {
    *         different authors
    */
   public Author getAuthor() {
-    HashSet<Author> authors = new HashSet<Author>(1);
+    Set<Author> authors = new HashSet<Author>(1);
     for (Track track : tracks) {
       authors.add(track.getAuthor());
     }
@@ -365,7 +366,7 @@ public class Album extends LogicalItem implements Comparable<Album> {
    *         different years
    */
   public Year getYear() {
-    HashSet<Year> years = new HashSet<Year>(1);
+    Set<Year> years = new HashSet<Year>(1);
     for (Track track : tracks) {
       years.add(track.getYear());
     }

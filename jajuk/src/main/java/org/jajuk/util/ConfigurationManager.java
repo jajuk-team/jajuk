@@ -45,7 +45,7 @@ public class ConfigurationManager implements ITechnicalStrings {
   private static volatile Properties defaults = new Properties();
 
   /** Self instance* */
-  static private ConfigurationManager cm;
+  private static ConfigurationManager cm;
 
   /** Singleton accessor */
   public static synchronized ConfigurationManager getInstance() {

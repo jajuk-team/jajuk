@@ -34,6 +34,12 @@ public final class UpgradeManager implements ITechnicalStrings {
 
   private static String newVersionName;
 
+  /** 
+   * private constructor to avoid instantiating utility class
+   */
+  private UpgradeManager() {
+  }
+  
   /**
    * Actions to migrate an existing installation Step1 just at startup
    */
@@ -142,7 +148,7 @@ public final class UpgradeManager implements ITechnicalStrings {
   /**
    * Actions to migrate an existing installation Step 2 at the end of UI startup
    */
-  public static void upgradeStep2() throws Exception {
+  public static void upgradeStep2() {
 
   }
 

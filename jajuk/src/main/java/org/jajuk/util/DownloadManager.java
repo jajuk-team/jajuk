@@ -27,10 +27,12 @@ import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.net.Authenticator;
 import java.net.HttpURLConnection;
 import java.net.PasswordAuthentication;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.net.Proxy.Type;
@@ -53,6 +55,12 @@ public class DownloadManager implements ITechnicalStrings {
   /** Maps urls and associated files in cache */
   private static Map<URI, String> urlCache = new HashMap<URI, String>(100);
 
+  /** 
+   * private constructor to avoid instantiating utility class
+   */
+  private DownloadManager() {
+  }
+  
   /**
    * @param search
    * @return a list of urls
@@ -121,9 +129,9 @@ public class DownloadManager implements ITechnicalStrings {
    *          to download
    * @param Use
    *          cache : store file in image cache
-   * @throws Exception
+   * @throws IOException If a network problem occurs.
    */
-  public static void download(URL url, File fDestination) throws Exception {
+  public static void download(URL url, File fDestination) throws IOException {
     HttpURLConnection connection = NetworkUtils.getConnection(url, proxy);
     BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(fDestination));
     BufferedInputStream bis = new BufferedInputStream(connection.getInputStream());
@@ -143,9 +151,10 @@ public class DownloadManager implements ITechnicalStrings {
    * @param url
    *          to download
    * @return created file or null if a problem occured
-   * @throws Exception
+   * @throws URISyntaxException If the URL cannot be converted to an URI. 
+   * @throws IOException If a network problem occurs or a temporary file cannot be written.
    */
-  public static File downloadCover(URL url, String pID) throws Exception {
+  public static File downloadCover(URL url, String pID) throws URISyntaxException, IOException {
     String id = pID;
     // Check if url is known in cache
     String idCache = urlCache.get(url.toURI());

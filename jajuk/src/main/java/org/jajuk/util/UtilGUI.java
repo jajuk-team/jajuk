@@ -76,14 +76,18 @@ import org.jvnet.substance.watermark.WatermarkInfo;
  */
 public class UtilGUI implements ITechnicalStrings {
 
-  /* Cursors */
+  /* different types of Cursors that are available */
   public static final Cursor WAIT_CURSOR = new Cursor(Cursor.WAIT_CURSOR);
   public static final Cursor LINK_CURSOR = new Cursor(Cursor.HAND_CURSOR);
   public static final Cursor DEFAULT_CURSOR = new Cursor(Cursor.DEFAULT_CURSOR);
+
+  // Current cursor that is displayed
   private static Cursor currentCursor = DEFAULT_CURSOR;
-  static Highlighter defaultHighlighter;
+  
+  private static Highlighter defaultHighlighter;
+
   /** Set cursor thread, stored to avoid construction */
-  static Thread setCursorThread = new Thread() {
+  private static Thread setCursorThread = new Thread("Cursor setter thread") {
     @Override
     public void run() {
       Container container = null;
@@ -99,6 +103,12 @@ public class UtilGUI implements ITechnicalStrings {
     }
   };
 
+  /** 
+   * Private constructor to prevent instantiation of utility class.
+   */
+  private UtilGUI() {
+  }
+  
   /**
    * Display a given image in a frame (for debuging purpose)
    * 
@@ -540,10 +550,12 @@ public class UtilGUI implements ITechnicalStrings {
    */
   public static boolean isOver(Point location, Dimension dimension) {
     java.awt.Point p = MouseInfo.getPointerInfo().getLocation();
-    return (p.getX() > location.getX() && p.getY() > location.getY()
-        && p.getX() < (dimension.getWidth() + location.getX()) && p.getY() < (dimension.getHeight() + location
-        .getY()));
+    
+    if(p.getX() <= location.getX() || p.getY() <= location.getY()) {
+      return false;
+    }
+    
+    return (p.getX() < (dimension.getWidth() + location.getX()) && 
+        p.getY() < (dimension.getHeight() + location.getY()));
   }
-
- 
 }

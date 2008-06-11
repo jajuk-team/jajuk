@@ -31,7 +31,7 @@ public class AudioScrobblerSimilarArtists {
   private String picture;
   private List<AudioScrobblerArtist> artists;
 
-  public final static int MAX_SIMILAR_ARTISTS = 15;
+  public static final int MAX_SIMILAR_ARTISTS = 15;
 
   public String getArtistName() {
     return artistName;
@@ -54,8 +54,9 @@ public class AudioScrobblerSimilarArtists {
     similar.artists = new ArrayList<AudioScrobblerArtist>();
     NodeList artists = el.getElementsByTagName("artist");
     for (int i = 0; i < artists.getLength(); i++) {
-      if (i == MAX_SIMILAR_ARTISTS)
+      if (i == MAX_SIMILAR_ARTISTS) {
         break;
+      }
       Element e = (Element) artists.item(i);
       similar.artists.add(AudioScrobblerArtist.getArtist(e));
     }

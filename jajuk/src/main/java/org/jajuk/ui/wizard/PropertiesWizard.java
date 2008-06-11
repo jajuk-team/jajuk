@@ -38,6 +38,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
@@ -103,7 +104,7 @@ public class PropertiesWizard extends JajukJDialog implements ITechnicalStrings,
   List<Item> alItems2;
 
   /** Files filter */
-  HashSet<File> filter = null;
+  Set<File> filter = null;
 
   /** number of editable items (all panels) */
   int iEditable = 0;
@@ -570,7 +571,7 @@ public class PropertiesWizard extends JajukJDialog implements ITechnicalStrings,
           // If several items, take first value found
           if (bAllEquals) {
             String s = pa.getHumanValue(meta.getName());
-            if (s.indexOf(",") != -1) {
+            if (s.indexOf(',') != -1) {
               String[] sTab = s.split(",");
               StringBuilder sb = new StringBuilder();
               sb.append("<html>");
@@ -660,25 +661,25 @@ public class PropertiesWizard extends JajukJDialog implements ITechnicalStrings,
           // can only be a set a files
           String sValue = alItems.get(0).getStringValue(sProperty);
           StringTokenizer st = new StringTokenizer(sValue, ",");
-          List<Item> alItems = new ArrayList<Item>(3);
+          List<Item> items = new ArrayList<Item>(3);
           while (st.hasMoreTokens()) {
             String sPlf = st.nextToken();
             Item pa = PlaylistManager.getInstance().getPlaylistByID(sPlf);
             if (pa != null) {
-              alItems.add(pa);
+              items.add(pa);
             }
           }
-          new PropertiesWizard(alItems);
+          new PropertiesWizard(items);
           // show properties window for this item
         } else {
           String sValue = alItems.get(0).getStringValue(sProperty);
           // can be only an ID
           Item pa = ItemManager.getItemManager(sProperty).getItemByID(sValue);
           if (pa != null) {
-            List<Item> alItems = new ArrayList<Item>(1);
-            alItems.add(pa);
+            List<Item> items = new ArrayList<Item>(1);
+            items.add(pa);
             // show properties window for this item
-            new PropertiesWizard(alItems);
+            new PropertiesWizard(items);
           }
         }
       }

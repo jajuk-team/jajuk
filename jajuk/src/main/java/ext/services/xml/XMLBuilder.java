@@ -27,6 +27,12 @@ import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 
 public class XMLBuilder {
+  /**
+   * private constructor to avoid instantiating utility class
+   */
+  private XMLBuilder() {
+  }
+
 
   public static Document getXMLDocument(String xml) {
     if ((null != xml) && (xml.length() != 0)) {

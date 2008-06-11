@@ -43,7 +43,7 @@ import org.jajuk.events.Observer;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.MD5Processor;
 import org.jajuk.util.Messages;
-import org.jajuk.util.UtilSystem; 
+import org.jajuk.util.UtilSystem;
 import org.jajuk.util.error.CannotRenameException;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.filters.JajukPredicates;

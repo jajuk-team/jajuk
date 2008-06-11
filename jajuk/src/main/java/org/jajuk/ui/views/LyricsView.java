@@ -53,8 +53,8 @@ import org.jajuk.ui.actions.JajukActions;
 import org.jajuk.ui.helpers.FontManager;
 import org.jajuk.ui.helpers.FontManager.JajukFont;
 import org.jajuk.util.Messages;
-import org.jajuk.util.UtilGUI;
 import org.jajuk.util.UtilFeatures;
+import org.jajuk.util.UtilGUI;
 import org.jajuk.util.log.Log;
 import org.jdesktop.swingx.JXBusyLabel;
 

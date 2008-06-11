@@ -43,7 +43,7 @@ import org.jajuk.events.ObservationManager;
 import org.jajuk.ui.helpers.ItemMoveManager;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
-import org.jajuk.util.UtilGUI; 
+import org.jajuk.util.UtilGUI;
 import org.jajuk.util.UtilSystem;
 import org.jajuk.util.log.Log;
 

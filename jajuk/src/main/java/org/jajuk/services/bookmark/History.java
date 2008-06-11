@@ -57,7 +57,7 @@ import org.xml.sax.helpers.DefaultHandler;
 /**
  * Stores all files user read
  */
-public class History extends DefaultHandler implements ITechnicalStrings, ErrorHandler, Observer {
+public final class History extends DefaultHandler implements ITechnicalStrings, ErrorHandler, Observer {
   /** Self instance */
   private static History history;
 
@@ -94,7 +94,7 @@ public class History extends DefaultHandler implements ITechnicalStrings, ErrorH
   }
 
   public Set<JajukEvents> getRegistrationKeys() {
-    HashSet<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
+    Set<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
     eventSubjectSet.add(JajukEvents.EVENT_FILE_LAUNCHED);
     eventSubjectSet.add(JajukEvents.EVENT_DEVICE_REFRESH);
     eventSubjectSet.add(JajukEvents.EVENT_CLEAR_HISTORY);

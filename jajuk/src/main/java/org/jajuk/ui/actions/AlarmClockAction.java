@@ -58,8 +58,9 @@ public class AlarmClockAction extends ActionBase {
   @Override
   public void perform(ActionEvent evt) throws JajukException {
     AlarmClockDialog acDialog = new AlarmClockDialog();
-    if (!acDialog.getChoice())
+    if (!acDialog.getChoice()) {
       return;
+    }
 
     hours = ConfigurationManager.getInt(ALARM_TIME_HOUR);
     minutes = ConfigurationManager.getInt(ALARM_TIME_MINUTES);

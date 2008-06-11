@@ -31,7 +31,7 @@ import org.jajuk.base.Item;
 import org.jajuk.base.Style;
 import org.jajuk.base.Year;
 import org.jajuk.util.ITechnicalStrings;
-import org.jajuk.util.UtilSystem; 
+import org.jajuk.util.UtilSystem;
 
 /**
  * This class exports music contents to HTML.

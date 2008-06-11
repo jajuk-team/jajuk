@@ -43,7 +43,7 @@ import org.jajuk.base.TrackManager;
 import org.jajuk.base.Year;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Messages;
-import org.jajuk.util.UtilString; 
+import org.jajuk.util.UtilString;
 import org.jajuk.util.UtilSystem;
 
 /**
@@ -52,9 +52,9 @@ import org.jajuk.util.UtilSystem;
 public class XMLExporter extends Exporter implements ITechnicalStrings {
 
   /** Private Constants */
-  private final static String NEWLINE = "\n";
+  private static final String NEWLINE = "\n";
 
-  private final static String XML_HEADER = "<?xml version='1.0' encoding='UTF-8'?>";
+  private static final String XML_HEADER = "<?xml version='1.0' encoding='UTF-8'?>";
 
   private BufferedWriter writer;
 
@@ -425,8 +425,6 @@ public class XMLExporter extends Exporter implements ITechnicalStrings {
           .getString("Property_comment")));
       writer.write(Tag.closeTag("i18n"));
       writer.write(Tag.closeTag(XML_COLLECTION));
-    } catch (Exception e) {
-      throw e;
     } finally {
       writer.flush();
       writer.close();
@@ -445,6 +443,12 @@ public class XMLExporter extends Exporter implements ITechnicalStrings {
  * tags, or full tagging with data.
  */
 class Tag {
+  /**
+   * private constructor to avoid instantiating utility class
+   */
+  private Tag() {
+  }
+
   public static String openTag(String tagname) {
     return "<" + tagname + ">";
   }

@@ -101,13 +101,16 @@ public class AudioScrobblerAlbumsRunnable implements Runnable {
             break;
           }
           if (!validToken(t)) { // Ignore tokens without alphanumerics
-            if (tokensAnalyzed == 0 && !st.hasMoreTokens()) // Only this token
+            if (tokensAnalyzed == 0 && !st.hasMoreTokens()) {// Only this token
               matches = false;
-            else
+            }
+            else {
               continue;
+            }
           }
-          if (!track.getAlbum().getName2().toLowerCase().contains(t.toLowerCase()))
+          if (!track.getAlbum().getName2().toLowerCase().contains(t.toLowerCase())) {
             matches = false;
+          }
           tokensAnalyzed++;
         }
         if (matches) {

@@ -29,6 +29,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
@@ -150,7 +151,7 @@ public class AmbienceWizard extends Wizard implements ITechnicalStrings {
         final StylesSelectionDialog dialog = new StylesSelectionDialog(null);
         dialog.setSelection(ambience.getStyles());
         dialog.setVisible(true);
-        final HashSet<Style> styles = dialog.getSelectedStyles();
+        final Set<Style> styles = dialog.getSelectedStyles();
         // check if at least one style has been selected
         if (styles.size() == 0) {
           return;

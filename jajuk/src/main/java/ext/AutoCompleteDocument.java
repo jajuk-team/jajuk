@@ -210,8 +210,9 @@ public class AutoCompleteDocument extends PlainDocument {
   private LookupResult lookupItem(String pattern) {
     // iterate over all items to find an exact match
     LookupResult ret = findMatch(pattern, true);
-    if(ret != null)
+    if(ret != null) {
       return ret;
+    }
 
     // check if the currently selected item matches
     Object selectedItem = adaptor.getSelectedItem();
@@ -225,8 +226,9 @@ public class AutoCompleteDocument extends PlainDocument {
     }
     // search for any matching item, if the currently selected does not match
     ret = findMatch(pattern, false);
-    if(ret != null)
+    if(ret != null) {
       return ret;
+    }
 
     // no item starts with the pattern => return null
     return new LookupResult(null, "");

@@ -58,6 +58,13 @@ public class LyricsService {
   private static Map<String, IProvider> providers = null;
   private static IProvider current = null;
 
+  /** 
+   * Empty private constructor to avoid instantiating utility class
+   */
+  private LyricsService() {
+    
+  }
+  
   /**
    * Loads the appropriate providers from the providers XML definition file.
    * 
@@ -65,7 +72,7 @@ public class LyricsService {
    */
   @SuppressWarnings("unchecked")
   public static Map<String, IProvider> loadProviders() {
-    final Map<String, IProvider> providers = new HashMap<String, IProvider>();
+    final Map<String, IProvider> lProviders = new HashMap<String, IProvider>();
 
     Log.debug("Loading Providers");
     try {
@@ -73,7 +80,11 @@ public class LyricsService {
           ITechnicalStrings.FILE_LYRICS_CONF_PATH.openStream()));
       final StringBuilder xml = new StringBuilder();
 
-      for (String line = null; (line = reader.readLine()) != null;) {
+      for (String line = null; ;) {
+        line = reader.readLine(); 
+        if(line != null) {
+          break;
+        }
         xml.append(line);
       }
       final Document xmlDoc = XMLBuilder.getXMLDocument(xml.toString());
@@ -87,7 +98,7 @@ public class LyricsService {
           final Element e = ((Element) n);
           final String key = e.getTagName();
 
-          if ((key != null) && key.toLowerCase().equals("provider")) {
+          if ((key != null) && key.equalsIgnoreCase("provider")) {
             final String className = e.getAttribute("class");
             final String url = e.getAttribute("url");
 
@@ -99,7 +110,7 @@ public class LyricsService {
                 final IProvider provider = constructor.newInstance(url);
 
                 if (provider.getSource() != null) {
-                  providers.put(provider.getSource(), provider);
+                  lProviders.put(provider.getSource(), provider);
                   Log.debug(" added provider " + provider.getSource());
                 }
               } catch (final ClassNotFoundException ex) {
@@ -127,7 +138,7 @@ public class LyricsService {
     } catch (final IOException e) {
       Log.warn("IO Exception while loading " + ITechnicalStrings.FILE_LYRICS_CONF_PATH);
     }
-    return (providers);
+    return (lProviders);
   }
 
   /**

@@ -20,6 +20,11 @@
 package org.jajuk.services.reporting;
 
 public class ExporterFactory {
+  /** 
+   * private constructor to avoid instantiating utility class
+   */
+  private ExporterFactory() {
+  }  
 
   /**
    * This methods returns an instance of Exporter.

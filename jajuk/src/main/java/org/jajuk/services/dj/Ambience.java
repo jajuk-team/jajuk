@@ -126,7 +126,7 @@ public class Ambience implements Comparable<Ambience> {
     return this.styles;
   }
 
-  public void setStyles(HashSet<Style> styles) {
+  public void setStyles(Set<Style> styles) {
     this.styles = styles;
   }
 

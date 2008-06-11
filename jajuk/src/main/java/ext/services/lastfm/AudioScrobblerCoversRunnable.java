@@ -37,16 +37,18 @@ public class AudioScrobblerCoversRunnable implements Runnable {
   }
 
   public void run() {
-    if (albums != null)
+    if (albums != null) {
       for (int i = 0; i < albums.size(); i++) {
         Image img = null;
         if (!interrupted) {
           img = service.getSmallImage(albums.get(i));
         }
 
-        if (!interrupted)
+        if (!interrupted) {
           listener.notifyCoverRetrieved(albums.get(i), img);
+        }
       }
+    }
   }
 
   protected void interrupt() {

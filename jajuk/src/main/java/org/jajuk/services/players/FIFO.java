@@ -60,7 +60,7 @@ import org.jajuk.util.log.Log;
  * even ouside AWT dispatcher thread
  * </p>
  */
-public class FIFO implements ITechnicalStrings {
+public final class FIFO implements ITechnicalStrings {
 
   /** Currently played track index */
   private int index;
@@ -78,7 +78,7 @@ public class FIFO implements ITechnicalStrings {
   private static volatile boolean bStop = true;
 
   /** Self instance */
-  static private FIFO fifo = null;
+  private static FIFO fifo = null;
 
   /** First played file flag* */
   private static boolean bFirstFile = true;
@@ -689,12 +689,12 @@ public class FIFO implements ITechnicalStrings {
         return;
       }
       while (!bOK) {
-        int index = addPrevious();
+        int localindex = addPrevious();
         Directory dirTested = null;
-        if (alFIFO.get(index) == null) {
+        if (alFIFO.get(localindex) == null) {
           return;
         } else {
-          File file = alFIFO.get(index).getFile();
+          File file = alFIFO.get(localindex).getFile();
           dirTested = file.getDirectory();
           if (dir.equals(dirTested)) { // yet in the same album
             continue;
@@ -834,8 +834,7 @@ public class FIFO implements ITechnicalStrings {
    */
   public StackItem getCurrentItem() {
     if (index < alFIFO.size()) {
-      StackItem item = alFIFO.get(index);
-      return item;
+      return alFIFO.get(index);
     } else {
       return null;
     }
@@ -1039,16 +1038,16 @@ public class FIFO implements ITechnicalStrings {
    * 
    * @param index
    */
-  public void goTo(int pIndex) {
+  public void goTo(final int pIndex) {
     bStop = false;
-    int index = pIndex;
+    int localindex = pIndex;
     try {
       if (containsRepeatedItem(alFIFO)) {
         // if there are some tracks in repeat, mode
-        if (getItem(index).isRepeat()) {
+        if (getItem(localindex).isRepeat()) {
           // the selected line is in repeat mode, ok,
           // keep repeat mode and just change index
-          this.index = index;
+          this.index = localindex;
         } else {
           // the selected line was not a repeated item,
           // take it as a which to reset repeat mode
@@ -1057,17 +1056,17 @@ public class FIFO implements ITechnicalStrings {
           properties.put(DETAIL_SELECTION, FALSE);
           ObservationManager.notify(new Event(JajukEvents.EVENT_REPEAT_MODE_STATUS_CHANGED,
               properties));
-          remove(0, index - 1);
-          index = 0;
+          remove(0, localindex - 1);
+          localindex = 0;
         }
       } else {
-        remove(0, index - 1);
-        index = 0;
+        remove(0, localindex - 1);
+        localindex = 0;
       }
       // need to stop before launching! this fix a
       // wrong EOM event in BasicPlayer
       Player.stop(false);
-      launch(index);
+      launch(localindex);
     } catch (Exception e) {
       Log.error(e);
     } finally {
@@ -1183,14 +1182,14 @@ public class FIFO implements ITechnicalStrings {
     java.io.File file = UtilSystem.getConfFileByPath(FILE_FIFO);
     PrintWriter writer = new PrintWriter(
         new BufferedOutputStream(new FileOutputStream(file, false)));
-    int index = 0;
+    int localindex = 0;
     for (StackItem st : alFIFO) {
-      if (index > 0) {
+      if (localindex > 0) {
         // do not store current track (otherwise, it
         // will be duplicate at startup)
         writer.println(st.getFile().getID());
       }
-      index++;
+      localindex++;
     }
     writer.flush();
     writer.close();

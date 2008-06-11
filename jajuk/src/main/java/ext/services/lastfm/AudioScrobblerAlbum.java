@@ -66,8 +66,9 @@ public class AudioScrobblerAlbum {
         .getElementsByTagName("track");
 
     album.tracks = new ArrayList<AudioScrobblerTrack>();
-    for (int i = 0; i < tracks.getLength(); i++)
+    for (int i = 0; i < tracks.getLength(); i++) {
       album.tracks.add(AudioScrobblerTrack.getTrack((Element) tracks.item(i)));
+    }
 
     return album;
   }
@@ -110,8 +111,9 @@ public class AudioScrobblerAlbum {
   }
 
   public String getYear() {
-    if (releaseDate == null)
+    if (releaseDate == null) {
       return "";
+    }
     Calendar c = Calendar.getInstance();
     c.setTime(releaseDate);
     return Integer.toString(c.get(Calendar.YEAR));

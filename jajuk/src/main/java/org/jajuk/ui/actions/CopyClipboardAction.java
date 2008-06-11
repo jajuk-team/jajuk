@@ -25,7 +25,7 @@ import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
 
 import org.jajuk.util.IconLoader;
-import org.jajuk.util.Messages; 
+import org.jajuk.util.Messages;
 import org.jajuk.util.UtilFeatures;
 import org.jajuk.util.error.JajukException;
 
