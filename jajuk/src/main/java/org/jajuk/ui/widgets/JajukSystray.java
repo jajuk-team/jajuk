@@ -302,7 +302,7 @@ public class JajukSystray extends CommandJPanel {
         dialog.add(jl);
         dialog.pack();
         Point location = new Point(e.getX() - dialog.getWidth(), e.getY()
-            - (10 + dialog.getHeight()));
+            - (20 + dialog.getHeight()));
         dialog.setLocation(location);
         dialog.setVisible(true);
         // The toFront() is required under windows when main window is not
