@@ -36,7 +36,7 @@ import org.jajuk.util.log.Log;
  */
 public class LyrcProvider extends GenericProvider {
 
-  private static final String suggestionsURL = "http://www.lyrc.com.ar/en/";
+  private static final String SUGGESTIONS_URL = "http://www.lyrc.com.ar/en/";
 
   /**
    * @param querySource
@@ -112,7 +112,7 @@ public class LyrcProvider extends GenericProvider {
           }
         }
         if (matches) {
-          final String suggestionURL = suggestionsURL.concat(suggestions.get(suggestion));
+          final String suggestionURL = SUGGESTIONS_URL.concat(suggestions.get(suggestion));
 
           Log.debug("Found suggestion " + suggestion);
           try {

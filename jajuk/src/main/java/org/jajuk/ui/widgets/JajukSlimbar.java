@@ -92,7 +92,7 @@ import org.jajuk.util.log.Log;
  * Singleton
  * </p>
  */
-public class JajukSlimbar extends JFrame implements ITechnicalStrings, Observer,
+public final class JajukSlimbar extends JFrame implements ITechnicalStrings, Observer,
     MouseWheelListener, ListSelectionListener, ActionListener {
 
   private static final long serialVersionUID = 1L;

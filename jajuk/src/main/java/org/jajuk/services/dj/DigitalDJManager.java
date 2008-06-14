@@ -59,7 +59,7 @@ import org.xml.sax.helpers.DefaultHandler;
  * Singleton
  * </p>
  */
-public class DigitalDJManager implements ITechnicalStrings, Observer {
+public final class DigitalDJManager implements ITechnicalStrings, Observer {
 
   /** List of registrated DJs ID->DJ */
   private Map<String, DigitalDJ> djs;
@@ -108,8 +108,8 @@ public class DigitalDJManager implements ITechnicalStrings, Observer {
    */
   public Set<String> getDJNames() {
     Set<String> hsNames = new HashSet<String>(10);
-    for (DigitalDJ dj : djs.values()) {
-      hsNames.add(dj.getName());
+    for (DigitalDJ lDJ : djs.values()) {
+      hsNames.add(lDJ.getName());
     }
     return hsNames;
   }
@@ -119,9 +119,9 @@ public class DigitalDJManager implements ITechnicalStrings, Observer {
    * @return DJ by name
    */
   public DigitalDJ getDJByName(String sName) {
-    for (DigitalDJ dj : djs.values()) {
-      if (dj.getName().equals(sName)) {
-        return dj;
+    for (DigitalDJ lDJ : djs.values()) {
+      if (lDJ.getName().equals(sName)) {
+        return lDJ;
       }
     }
     return null;
@@ -188,13 +188,13 @@ public class DigitalDJManager implements ITechnicalStrings, Observer {
     if (JajukEvents.EVENT_AMBIENCE_REMOVED.equals(event.getSubject())) {
       Properties properties = event.getDetails();
       String sID = (String) properties.get(DETAIL_CONTENT);
-      for (DigitalDJ dj : djs.values()) {
-        if (dj instanceof AmbienceDigitalDJ
-            && ((AmbienceDigitalDJ) dj).getAmbience().getID().equals(sID)) {
-          int i = Messages.getChoice(Messages.getString("DigitalDJWizard.61") + " " + dj.getName()
+      for (DigitalDJ lDJ : djs.values()) {
+        if (lDJ instanceof AmbienceDigitalDJ
+            && ((AmbienceDigitalDJ) lDJ).getAmbience().getID().equals(sID)) {
+          int i = Messages.getChoice(Messages.getString("DigitalDJWizard.61") + " " + lDJ.getName()
               + " ?", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
           if (i == JOptionPane.YES_OPTION) {
-            remove(dj);
+            remove(lDJ);
           } else {
             return;
           }
@@ -220,10 +220,10 @@ public class DigitalDJManager implements ITechnicalStrings, Observer {
       for (File element : files) {
         try { // try each DJ to continue others if one fails
           DigitalDJFactory factory = DigitalDJFactory.getFactory(element);
-          DigitalDJ dj = factory.getDJ(element);
-          djs.put(dj.getID(), dj);
-          if (dj.getID().equals(ConfigurationManager.getProperty(CONF_DEFAULT_DJ))) {
-            current = dj;
+          DigitalDJ lDJ = factory.getDJ(element);
+          djs.put(lDJ.getID(), lDJ);
+          if (lDJ.getID().equals(ConfigurationManager.getProperty(CONF_DEFAULT_DJ))) {
+            current = lDJ;
           }
         } catch (Exception e) {
           Log.error(144, "{{" + element.getAbsolutePath() + "}}", e);
@@ -234,11 +234,11 @@ public class DigitalDJManager implements ITechnicalStrings, Observer {
     }
   }
 
-  static public DigitalDJ getCurrentDJ() {
+  public static DigitalDJ getCurrentDJ() {
     return current;
   }
 
-  static public void setCurrentDJ(DigitalDJ dj) {
+  public static void setCurrentDJ(DigitalDJ dj) {
     current = dj;
   }
 

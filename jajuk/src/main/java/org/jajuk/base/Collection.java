@@ -52,8 +52,18 @@ import org.xml.sax.helpers.DefaultHandler;
  * <p>
  * Singletton
  */
-public class Collection extends DefaultHandler implements ITechnicalStrings, ErrorHandler,
+public final class Collection extends DefaultHandler implements ITechnicalStrings, ErrorHandler,
     Serializable {
+
+  /**
+   * 
+   */
+  private static final String TAG_CLOSE_NEWLINE = ">\n";
+
+  /**
+   * 
+   */
+  private static final String TAB_CLOSE_TAG_START = "\t</";
 
   private static final long serialVersionUID = 1L;
 
@@ -69,7 +79,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
   private Map<String, String> hmWrongRightTrackID = new HashMap<String, String>();
 
   /** upgrade for album IDs */
-  public Map<String, String> hmWrongRightAlbumID = new HashMap<String, String>();
+  private Map<String, String> hmWrongRightAlbumID = new HashMap<String, String>();
 
   /** upgrade for author IDs */
   private Map<String, String> hmWrongRightAuthorID = new HashMap<String, String>();
@@ -142,7 +152,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 
   private static final short STAGE_YEARS = 10;
 
-  private static final DateFormat additionFormatter = UtilString.getAdditionDateFormatter();
+  private static final DateFormat ADDITION_FORMATTER = UtilString.getAdditionDateFormatter();
 
   /** Auto commit thread */
   private static Thread tAutoCommit = new Thread("Collection Auto Commit Thread") {
@@ -182,7 +192,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
    * sessions
    */
   public static void commit(File collectionFile) throws IOException {
-    long lTime = System.currentTimeMillis();
+    long time = System.currentTimeMillis();
     String sCharset = ConfigurationManager.getProperty(CONF_COLLECTION_CHARSET);
     BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(
         collectionFile), sCharset), 1000000);
@@ -194,9 +204,9 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
       bw.write(type.toXml());
     }
     StringBuilder sb = new StringBuilder(40);
-    sb.append("\t</");
+    sb.append(TAB_CLOSE_TAG_START);
     sb.append(TypeManager.getInstance().getLabel());
-    sb.append(">\n");
+    sb.append(TAG_CLOSE_NEWLINE);
     bw.write(sb.toString());
     // devices
     bw.write(DeviceManager.getInstance().toXML());
@@ -204,9 +214,9 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
       bw.write(device.toXml());
     }
     sb = new StringBuilder(40);
-    sb.append("\t</");
+    sb.append(TAB_CLOSE_TAG_START);
     sb.append(DeviceManager.getInstance().getLabel());
-    sb.append(">\n");
+    sb.append(TAG_CLOSE_NEWLINE);
     bw.write(sb.toString());
     // styles
     bw.write(StyleManager.getInstance().toXML());
@@ -214,9 +224,9 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
       bw.write(style.toXml());
     }
     sb = new StringBuilder(40);
-    sb.append("\t</");
+    sb.append(TAB_CLOSE_TAG_START);
     sb.append(StyleManager.getInstance().getLabel());
-    sb.append(">\n");
+    sb.append(TAG_CLOSE_NEWLINE);
     bw.write(sb.toString());
     // authors
     bw.write(AuthorManager.getInstance().toXML());
@@ -224,9 +234,9 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
       bw.write(author.toXml());
     }
     sb = new StringBuilder(40);
-    sb.append("\t</");
+    sb.append(TAB_CLOSE_TAG_START);
     sb.append(AuthorManager.getInstance().getLabel());
-    sb.append(">\n");
+    sb.append(TAG_CLOSE_NEWLINE);
     bw.write(sb.toString());
     // albums
     bw.write(AlbumManager.getInstance().toXML());
@@ -234,9 +244,9 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
       bw.write(album.toXml());
     }
     sb = new StringBuilder(40);
-    sb.append("\t</");
+    sb.append(TAB_CLOSE_TAG_START);
     sb.append(AlbumManager.getInstance().getLabel());
-    sb.append(">\n");
+    sb.append(TAG_CLOSE_NEWLINE);
     bw.write(sb.toString());
     // years
     bw.write(YearManager.getInstance().toXML());
@@ -244,9 +254,9 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
       bw.write(year.toXml());
     }
     sb = new StringBuilder(40);
-    sb.append("\t</");
+    sb.append(TAB_CLOSE_TAG_START);
     sb.append(YearManager.getInstance().getLabel());
-    sb.append(">\n");
+    sb.append(TAG_CLOSE_NEWLINE);
     bw.write(sb.toString());
     // tracks
     bw.write(TrackManager.getInstance().toXML());
@@ -257,9 +267,9 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
       }
     }
     sb = new StringBuilder(200);
-    sb.append("\t</");
+    sb.append(TAB_CLOSE_TAG_START);
     sb.append(TrackManager.getInstance().getLabel());
-    sb.append(">\n");
+    sb.append(TAG_CLOSE_NEWLINE);
     bw.write(sb.toString());
     // directories
     bw.write(DirectoryManager.getInstance().toXML());
@@ -267,9 +277,9 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
       bw.write(directory.toXml());
     }
     sb = new StringBuilder(100);
-    sb.append("\t</");
+    sb.append(TAB_CLOSE_TAG_START);
     sb.append(DirectoryManager.getInstance().getLabel());
-    sb.append(">\n");
+    sb.append(TAG_CLOSE_NEWLINE);
     bw.write(sb.toString());
     // files
     bw.write(FileManager.getInstance().toXML());
@@ -277,9 +287,9 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
       bw.write(file.toXml());
     }
     sb = new StringBuilder(200);
-    sb.append("\t</");
+    sb.append(TAB_CLOSE_TAG_START);
     sb.append(FileManager.getInstance().getLabel());
-    sb.append(">\n");
+    sb.append(TAG_CLOSE_NEWLINE);
     bw.write(sb.toString());
     // playlists
     bw.write(PlaylistManager.getInstance().toXML());
@@ -287,15 +297,15 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
       bw.write(playlistFile.toXml());
     }
     sb = new StringBuilder(200);
-    sb.append("\t</");
+    sb.append(TAB_CLOSE_TAG_START);
     sb.append(PlaylistManager.getInstance().getLabel());
-    sb.append(">\n");
+    sb.append(TAG_CLOSE_NEWLINE);
     bw.write(sb.toString());
     // end of collection
-    bw.write("</" + XML_COLLECTION + ">\n");
+    bw.write("</" + XML_COLLECTION + TAG_CLOSE_NEWLINE);
     bw.flush();
     bw.close();
-    Log.debug("Collection commited in " + (System.currentTimeMillis() - lTime) + " ms");
+    Log.debug("Collection commited in " + (System.currentTimeMillis() - time) + " ms");
   }
 
   /**
@@ -509,20 +519,18 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
           }
           sTrackId = attributes.getValue(XML_TRACK).intern();
           // UPGRADE check if track Id is right
-          if (hmWrongRightTrackID.size() > 0) {
+          if ((hmWrongRightTrackID.size() > 0) &&
             // replace wrong by right ID
-            if (hmWrongRightTrackID.containsKey(sTrackId)) {
-              sTrackId = hmWrongRightTrackID.get(sTrackId);
-            }
+            (hmWrongRightTrackID.containsKey(sTrackId))) {
+            sTrackId = hmWrongRightTrackID.get(sTrackId);
           }
           track = TrackManager.getInstance().getTrackByID(sTrackId);
           sParentID = attributes.getValue(XML_DIRECTORY).intern();
           // UPGRADE check parent ID is right
-          if (hmWrongRightDirectoryID.size() > 0) {
+          if ((hmWrongRightDirectoryID.size() > 0) &&
             // replace wrong by right ID
-            if (hmWrongRightDirectoryID.containsKey(sParentID)) {
-              sParentID = hmWrongRightDirectoryID.get(sParentID);
-            }
+            (hmWrongRightDirectoryID.containsKey(sParentID))) {
+            sParentID = hmWrongRightDirectoryID.get(sParentID);
           }
           dParent = DirectoryManager.getInstance().getDirectoryByID(sParentID);
           if (dParent == null || track == null) { // more checkups
@@ -567,10 +575,9 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
           //dParent = null;
           sParentID = attributes.getValue(XML_DIRECTORY_PARENT).intern();
           // UPGRADE
-          if (hmWrongRightDirectoryID.size() > 0) {
-            if (hmWrongRightDirectoryID.containsKey(sParentID)) {
-              sParentID = hmWrongRightDirectoryID.get(sParentID);
-            }
+          if ((hmWrongRightDirectoryID.size() > 0) &&
+            (hmWrongRightDirectoryID.containsKey(sParentID))) {
+            sParentID = hmWrongRightDirectoryID.get(sParentID);
           }
           if (!"-1".equals(sParentID)) {
             // Parent directory should be already referenced
@@ -585,10 +592,9 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
           }
           sDeviceID = attributes.getValue(XML_DEVICE).intern();
           // take upgraded device ID if needed
-          if (hmWrongRightDeviceID.size() > 0) {
-            if (hmWrongRightDeviceID.containsKey(sDeviceID)) {
-              sDeviceID = hmWrongRightDeviceID.get(sDeviceID);
-            }
+          if ((hmWrongRightDeviceID.size() > 0) &&
+            (hmWrongRightDeviceID.containsKey(sDeviceID))) {
+            sDeviceID = hmWrongRightDeviceID.get(sDeviceID);
           }
           Device device = DeviceManager.getInstance().getDeviceByID(sDeviceID);
           if (device == null) { // check device exists
@@ -616,18 +622,16 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
           sTrackName = attributes.getValue(XML_TRACK_NAME).intern();
           // album
           String sAlbumID = attributes.getValue(XML_TRACK_ALBUM).intern();
-          if (hmWrongRightAlbumID.size() > 0) {
-            if (hmWrongRightAlbumID.containsKey(sAlbumID)) {
-              sAlbumID = hmWrongRightAlbumID.get(sAlbumID);
-            }
+          if ((hmWrongRightAlbumID.size() > 0) &&
+            (hmWrongRightAlbumID.containsKey(sAlbumID))) {
+            sAlbumID = hmWrongRightAlbumID.get(sAlbumID);
           }
           album = AlbumManager.getInstance().getAlbumByID(sAlbumID);
           // Style
           String sStyleID = attributes.getValue(XML_TRACK_STYLE).intern();
-          if (hmWrongRightStyleID.size() > 0) {
-            if (hmWrongRightStyleID.containsKey(sStyleID)) {
-              sStyleID = hmWrongRightStyleID.get(sStyleID);
-            }
+          if ((hmWrongRightStyleID.size() > 0) &&
+            (hmWrongRightStyleID.containsKey(sStyleID))) {
+            sStyleID = hmWrongRightStyleID.get(sStyleID);
           }
           style = StyleManager.getInstance().getStyleByID(sStyleID);
           // Year
@@ -639,10 +643,9 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
           }
           // Author
           String sAuthorID = attributes.getValue(XML_TRACK_AUTHOR).intern();
-          if (hmWrongRightAuthorID.size() > 0) {
-            if (hmWrongRightAuthorID.containsKey(sAuthorID)) {
-              sAuthorID = hmWrongRightAuthorID.get(sAuthorID);
-            }
+          if ((hmWrongRightAuthorID.size() > 0) &&
+            (hmWrongRightAuthorID.containsKey(sAuthorID))) {
+            sAuthorID = hmWrongRightAuthorID.get(sAuthorID);
           }
           author = AuthorManager.getInstance().getAuthorByID(sAuthorID);
           long length = Long.parseLong(attributes.getValue(XML_TRACK_LENGTH));
@@ -653,7 +656,10 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
           }
           type = TypeManager.getInstance().getTypeByID(typeID);
           // more checkups
-          if (album == null || author == null || style == null || type == null) {
+          if (album == null || author == null) {
+            return;
+          }
+          if (style == null || type == null) {
             return;
           }
 //          long lYear = 0;
@@ -688,7 +694,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
             }
           }
           // Date format should be OK
-          Date dAdditionDate = additionFormatter.parse(attributes.getValue(attributes
+          Date dAdditionDate = ADDITION_FORMATTER.parse(attributes.getValue(attributes
               .getIndex(XML_TRACK_DISCOVERY_DATE)));
           track = TrackManager.getInstance().registerTrack(sRightID, sTrackName, album, style,
               author, length, year, lOrder, type);
@@ -762,11 +768,10 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
         case STAGE_PLAYLIST_FILES:
           sParentID = attributes.getValue(XML_DIRECTORY).intern();
           // UPGRADE check parent ID is right
-          if (hmWrongRightDirectoryID.size() > 0) {
+          if ((hmWrongRightDirectoryID.size() > 0) &&
             // replace wrong by right ID
-            if (hmWrongRightDirectoryID.containsKey(sParentID)) {
-              sParentID = hmWrongRightDirectoryID.get(sParentID);
-            }
+            (hmWrongRightDirectoryID.containsKey(sParentID))) {
+            sParentID = hmWrongRightDirectoryID.get(sParentID);
           }
           dParent = DirectoryManager.getInstance().getDirectoryByID(sParentID);
           if (dParent == null) { // check directory is exists
@@ -838,5 +843,9 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
    */
   public Map<String, String> getHmWrongRightFileID() {
     return hmWrongRightFileID;
+  }
+
+  public Map<String, String> getWrongRightAlbumIDs() {
+    return this.hmWrongRightAlbumID;
   }
 }

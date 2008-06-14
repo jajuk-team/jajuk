@@ -233,41 +233,41 @@ public class WikipediaView extends ViewAdapter implements ITechnicalStrings, Obs
       @Override
       public void run() {
         try {
-          String search = null;
+          String lSearch = null;
           if (FIFO.getInstance().getCurrentFile() != null) {
             if (type == Type.AUTHOR) {
-              search = FIFO.getInstance().getCurrentFile().getTrack().getAuthor().getName2();
+              lSearch = FIFO.getInstance().getCurrentFile().getTrack().getAuthor().getName2();
               // don't display page if item is unknown
-              if (Messages.getString(UNKNOWN_AUTHOR).equals(search)) {
-                search = null;
+              if (Messages.getString(UNKNOWN_AUTHOR).equals(lSearch)) {
+                lSearch = null;
               }
             } else if (type == Type.ALBUM) {
-              search = FIFO.getInstance().getCurrentFile().getTrack().getAlbum().getName2();
+              lSearch = FIFO.getInstance().getCurrentFile().getTrack().getAlbum().getName2();
               // don't display page if item is unknown
-              if (Messages.getString(UNKNOWN_ALBUM).equals(search)) {
-                search = null;
+              if (Messages.getString(UNKNOWN_ALBUM).equals(lSearch)) {
+                lSearch = null;
               }
             } else if (type == Type.TRACK) {
-              search = FIFO.getInstance().getCurrentFile().getTrack().getName();
+              lSearch = FIFO.getInstance().getCurrentFile().getTrack().getName();
             }
           }
           // If search is still null, display an nothing found page
-          if (search == null) {
+          if (lSearch == null) {
             browser.setUnknow();
             return;
           }
           // Avoid reloading an existing page
-          if (!bForceReload && search.equals(WikipediaView.this.search)) {
+          if (!bForceReload && lSearch.equals(WikipediaView.this.search)) {
             return;
           }
           // Store the search to avoid future identical searches
-          WikipediaView.this.search = search;
+          WikipediaView.this.search = lSearch;
 
           URL url = new URL(("http://"
               + Messages.getLocalForDesc((String) jcbLanguage.getSelectedItem())
-              + ".wikipedia.org/wiki/" + search).replaceAll(" ", "_"));
+              + ".wikipedia.org/wiki/" + lSearch).replaceAll(" ", "_"));
           Log.debug("Wikipedia search: " + url);
-          UtilFeatures.copyData = url.toString();
+          UtilFeatures.setCopyData(url.toString());
           jbLaunchInExternalBrowser.putClientProperty(DETAIL_CONTENT, url.toExternalForm());
           browser.setURL(url);
         } catch (Exception e) {

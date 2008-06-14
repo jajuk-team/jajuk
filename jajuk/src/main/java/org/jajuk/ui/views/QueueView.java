@@ -268,7 +268,7 @@ public class QueueView extends PlaylistView {
         // bound exceptions
         try {
           JajukEvents subject = event.getSubject();
-          editorTable.acceptColumnsEvents = false; // flag reloading to avoid
+          editorTable.setAcceptColumnsEvents(false); // flag reloading to avoid
           // wrong
           if (JajukEvents.EVENT_QUEUE_NEED_REFRESH.equals(subject)
               || JajukEvents.EVENT_DEVICE_REFRESH.equals(subject)
@@ -323,7 +323,7 @@ public class QueueView extends PlaylistView {
         } catch (Exception e) {
           Log.error(e);
         } finally {
-          editorTable.acceptColumnsEvents = true;
+          editorTable.setAcceptColumnsEvents(true);
           // Update number of tracks remaining
           jlTitle.setText(" [" + FIFO.getInstance().getFIFO().size() + "]");
         }

@@ -76,7 +76,7 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
   private static Properties propertiesEn;
 
   /** ConfigurationManager Locales */
-  public static final String[] locales = { "en", "fr", "de", "nl", "es", "ca", "ko", "el", "ru",
+  public static final String[] LOCALES = { "en", "fr", "de", "nl", "es", "ca", "ko", "el", "ru",
       "gl" };
 
   /**
@@ -86,7 +86,7 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
   static {
     // Register locals, needed by ConfigurationManager to choose
     // default language
-    for (final String locale : locales) {
+    for (final String locale : LOCALES) {
       Messages.registerLocal(locale);
     }
     // Set default local if available
@@ -167,11 +167,11 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
     final String prefix = base + ".";
 
     try {
-      final Properties properties = getProperties();
+      final Properties lProperties = getProperties();
       final Properties defaultProperties = getPropertiesEn();
 
       for (int i = 0;; i++) {
-        String sOut = properties.getProperty(prefix + i);
+        String sOut = lProperties.getProperty(prefix + i);
 
         if (sOut == null) {
           // this property is unknown for this local, try in English
@@ -310,7 +310,7 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
    * @throws Exception
    */
   private static Properties parseLangpack(final String sLocal) throws Exception {
-    final Properties properties = new Properties();
+    final Properties lProperties = new Properties();
     // Choose right jajuk_<lang>.properties file to load
     final StringBuilder sbFilename = new StringBuilder(FILE_LANGPACK_PART1);
     if (!sLocal.equals("en")) { // for english, properties file is
@@ -325,48 +325,44 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
     url = UtilSystem.getResource("org/jajuk/i18n/" + sbFilename.toString());
     // parse it, actually it is a big properties file as CDATA in an XML
     // file
-    try {
-      final SAXParserFactory spf = SAXParserFactory.newInstance();
-      spf.setValidating(false);
-      spf.setNamespaceAware(false);
-      final SAXParser saxParser = spf.newSAXParser();
-      saxParser.parse(url.openStream(), new DefaultHandler() {
-        // this buffer will contain the entire properties strings
-        StringBuilder sb = new StringBuilder(15000);
+    final SAXParserFactory spf = SAXParserFactory.newInstance();
+    spf.setValidating(false);
+    spf.setNamespaceAware(false);
+    final SAXParser saxParser = spf.newSAXParser();
+    saxParser.parse(url.openStream(), new DefaultHandler() {
+      // this buffer will contain the entire properties strings
+      StringBuilder sb = new StringBuilder(15000);
 
-        // call for each element strings, actually will be called
-        // several time if the element is large (our case : large CDATA)
-        @Override
-        public void characters(final char[] ch, final int start, final int length)
-            throws SAXException {
-          sb.append(ch, start, length);
-        }
+      // call for each element strings, actually will be called
+      // several time if the element is large (our case : large CDATA)
+      @Override
+      public void characters(final char[] ch, final int start, final int length)
+          throws SAXException {
+        sb.append(ch, start, length);
+      }
 
-        // call when closing the tag (</body> in our case )
-        @Override
-        public void endElement(final String uri, final String localName, final String qName)
-            throws SAXException {
-          final String sWhole = sb.toString();
-          // ok, parse it ( comments start with #)
-          final StringTokenizer st = new StringTokenizer(sWhole, "\n");
-          while (st.hasMoreTokens()) {
-            final String sLine = st.nextToken();
-            if ((sLine.length() > 0) && !sLine.startsWith("#") && (sLine.indexOf('=') != -1)) {
-              final StringTokenizer stLine = new StringTokenizer(sLine, "=");
-              // get full value after the '=', we don't use the
-              // stringtokenizer to allow
-              // using = characters in the value
-              final String sValue = sLine.substring(sLine.indexOf('=') + 1);
-              // trim to ignore space at begin end end of lines
-              properties.put(stLine.nextToken().trim(), sValue);
-            }
+      // call when closing the tag (</body> in our case )
+      @Override
+      public void endElement(final String uri, final String localName, final String qName)
+          throws SAXException {
+        final String sWhole = sb.toString();
+        // ok, parse it ( comments start with #)
+        final StringTokenizer st = new StringTokenizer(sWhole, "\n");
+        while (st.hasMoreTokens()) {
+          final String sLine = st.nextToken();
+          if ((sLine.length() > 0) && !sLine.startsWith("#") && (sLine.indexOf('=') != -1)) {
+            final StringTokenizer stLine = new StringTokenizer(sLine, "=");
+            // get full value after the '=', we don't use the
+            // stringtokenizer to allow
+            // using = characters in the value
+            final String sValue = sLine.substring(sLine.indexOf('=') + 1);
+            // trim to ignore space at begin end end of lines
+            lProperties.put(stLine.nextToken().trim(), sValue);
           }
         }
-      });
-      return properties;
-    } catch (final Exception e) {
-      throw e;
-    }
+      }
+    });
+    return lProperties;
   }
 
   /**

@@ -51,17 +51,17 @@ public final class JSplashLabel extends JLabel {
   /**
    * Used to draw the text string.
    */
-  private String m_text = null;
+  private String mText = null;
 
   /**
    * Used to draw the copyright notice
    */
-  private String m_copyright = null;
+  private String mCopyright = null;
 
   /**
    * Font to use when drawing the text.
    */
-  private Font m_font = null;
+  private Font mFont = null;
 
   /**
    * Constructor.
@@ -73,10 +73,8 @@ public final class JSplashLabel extends JLabel {
    *          The string to draw (can be null).
    * @param f
    *          The font to use (can be null).
-   * @param c
-   *          The color to use (can be null).
    */
-  public JSplashLabel(URL url, String copyright, String s, Font f, Color c) {
+  public JSplashLabel(URL url, String copyright, String s, Font f) {
     super();
 
     ImageIcon icon = new ImageIcon(url);
@@ -85,11 +83,11 @@ public final class JSplashLabel extends JLabel {
       setText("Cannot load splash screen: " + url);
     } else {
       setIcon(icon);
-      m_copyright = copyright;
-      m_text = s;
-      m_font = f;
-      if (m_font != null) {
-        setFont(m_font);
+      mCopyright = copyright;
+      mText = s;
+      mFont = f;
+      if (mFont != null) {
+        setFont(mFont);
       }
     }
   }
@@ -105,16 +103,16 @@ public final class JSplashLabel extends JLabel {
   public void paint(Graphics g) {
     super.paint(g);
 
-    if (m_text != null) {
+    if (mText != null) {
       g.setColor(Color.BLACK);
       // Draw copyright notice
       FontMetrics fm = g.getFontMetrics();
-      int width = fm.stringWidth(m_copyright) + 50;
+      int width = fm.stringWidth(mCopyright) + 50;
       int height = fm.getHeight();
-      g.drawString(m_copyright, getWidth() - width, (getHeight() - height) - 20);
+      g.drawString(mCopyright, getWidth() - width, (getHeight() - height) - 20);
 
       // Draw release
-      g.drawString(m_text, getWidth() - width, (getHeight() - height));
+      g.drawString(mText, getWidth() - width, (getHeight() - height));
     }
   }
 

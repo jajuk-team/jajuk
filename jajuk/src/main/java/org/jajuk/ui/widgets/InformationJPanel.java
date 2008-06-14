@@ -61,7 +61,7 @@ import org.jajuk.util.log.Log;
 /**
  * Status / information panel ( static view )
  */
-public class InformationJPanel extends JPanel implements ITechnicalStrings, Observer,
+public final class InformationJPanel extends JPanel implements ITechnicalStrings, Observer,
     ChangeListener, MouseWheelListener {
 
   private static final long serialVersionUID = 1L;
@@ -317,9 +317,9 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings, Obse
     } catch (Exception e) {
       Log.debug(e);
     }
-    float lTime_percent = 0f;
+    float lTimePercent = 0f;
     if (lTime > 0) {
-      lTime_percent = (float) ((float) lTime / (float) length * 100.0);
+      lTimePercent = (float) ((float) lTime / (float) length * 100.0);
     }
     switch (timeFormat) {
     case 0: {
@@ -332,11 +332,11 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings, Obse
       break;
     }
     case 2: {
-      string = df.format(lTime_percent) + " % / " + UtilString.formatTimeBySec(length);
+      string = df.format(lTimePercent) + " % / " + UtilString.formatTimeBySec(length);
       break;
     }
     case 3: {
-      string = df.format(lTime_percent - 100f) + " % / " + UtilString.formatTimeBySec(length);
+      string = df.format(lTimePercent - 100f) + " % / " + UtilString.formatTimeBySec(length);
       break;
     }
     default: {
@@ -458,8 +458,8 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings, Obse
                   + Messages.getString("InformationJPanel.8"));
               Object[] stArgs = { file.getTrack().getName(),
                   file.getTrack().getAuthor().getName2(), file.getTrack().getAlbum().getName2() };
-              String sMessage = sMessageFormat.format(stArgs);
-              setMessage(sMessage, InformationJPanel.INFORMATIVE);
+              String message = sMessageFormat.format(stArgs);
+              setMessage(message, InformationJPanel.INFORMATIVE);
             }
           } else if (JajukEvents.EVENT_WEBRADIO_LAUNCHED.equals(subject)) {
             if (event.getDetails() == null) {
@@ -467,8 +467,8 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings, Obse
             }
             WebRadio radio = (WebRadio) event.getDetails().get(DETAIL_CONTENT);
             if (radio != null) {
-              String sMessage = Messages.getString("FIFO.14") + " " + radio.getName();
-              setMessage(sMessage, InformationJPanel.INFORMATIVE);
+              String message = Messages.getString("FIFO.14") + " " + radio.getName();
+              setMessage(message, InformationJPanel.INFORMATIVE);
             }
           } else if (JajukEvents.EVENT_PLAYER_PAUSE.equals(subject)) {
             jsPosition.setEnabled(false);

@@ -438,21 +438,21 @@ public class Track extends LogicalItem implements Comparable<Track> {
   @Override
   public String getHumanValue(String sKey) {
     if (XML_ALBUM.equals(sKey)) {
-      Album album = AlbumManager.getInstance().getAlbumByID(getStringValue(sKey));
-      if (album != null) { // can be null after a fresh change
-        return album.getName2();
+      Album lAlbum = AlbumManager.getInstance().getAlbumByID(getStringValue(sKey));
+      if (lAlbum != null) { // can be null after a fresh change
+        return lAlbum.getName2();
       }
       return null;
     } else if (XML_AUTHOR.equals(sKey)) {
-      Author author = AuthorManager.getInstance().getAuthorByID(getStringValue(sKey));
-      if (author != null) { // can be null after a fresh change
-        return author.getName2();
+      Author lAuthor = AuthorManager.getInstance().getAuthorByID(getStringValue(sKey));
+      if (lAuthor != null) { // can be null after a fresh change
+        return lAuthor.getName2();
       }
       return null;
     } else if (XML_STYLE.equals(sKey)) {
-      Style style = StyleManager.getInstance().getStyleByID(getStringValue(sKey));
-      if (style != null) { // can be null after a fresh change
-        return style.getName2();
+      Style lStyle = StyleManager.getInstance().getStyleByID(getStringValue(sKey));
+      if (lStyle != null) { // can be null after a fresh change
+        return lStyle.getName2();
       }
       return null;
     } else if (XML_TRACK_LENGTH.equals(sKey)) {

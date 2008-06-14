@@ -44,7 +44,7 @@ public class CopyClipboardAction extends ActionBase {
 
   @Override
   public void perform(ActionEvent evt) throws JajukException {
-    StringSelection data = new StringSelection(UtilFeatures.copyData);
+    StringSelection data = new StringSelection(UtilFeatures.getCopyData());
     Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
     clipboard.setContents(data, data);
   }

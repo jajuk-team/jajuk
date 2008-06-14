@@ -130,7 +130,11 @@ public abstract class PerspectiveAdapter extends DockingDesktop implements IPers
     BufferedReader in = new BufferedReader(new FileReader(saveFile));
     String line = null;
     boolean stop = false;
-    for (; (line = in.readLine()) != null;) {
+    for (; ;) {
+      line = in.readLine();
+      if(line == null)
+        break;
+      
       if (line.indexOf("<TabGroups>") != -1) {
         stop = true;
       }
@@ -138,7 +142,7 @@ public abstract class PerspectiveAdapter extends DockingDesktop implements IPers
         stop = false;
       }
       if (!stop && line.indexOf("</TabGroups>") == -1) {
-        sb.append(line + "\n");
+        sb.append(line).append('\n');
       }
     }
     // write file again

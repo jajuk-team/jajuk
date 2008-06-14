@@ -22,6 +22,7 @@ package org.jajuk.services.reporting;
 
 import java.io.BufferedWriter;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.List;
@@ -63,7 +64,7 @@ public class XMLExporter extends Exporter implements ITechnicalStrings {
 
   /** PUBLIC METHODS */
 
-  public XMLExporter() throws Exception {
+  public XMLExporter() throws IOException {
     cache = UtilSystem
         .getConfFileByPath(FILE_REPORTING_CACHE_FILE + "_XML_" + System.currentTimeMillis());
     writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(cache, false), "UTF-8"));
@@ -164,7 +165,7 @@ public class XMLExporter extends Exporter implements ITechnicalStrings {
    */
   public void process(Directory directory) throws Exception {
     if (directory != null) {
-      tagDirectory(directory, 0);
+      tagDirectory(directory);
     }
   }
 
@@ -179,7 +180,7 @@ public class XMLExporter extends Exporter implements ITechnicalStrings {
    */
   public void process(Device device) throws Exception {
     if (device != null) {
-      tagDevice(device, 0);
+      tagDevice(device);
     }
   }
 
@@ -236,7 +237,7 @@ public class XMLExporter extends Exporter implements ITechnicalStrings {
     writer.write(addTabs(level) + Tag.closeTag(XML_FILE) + NEWLINE);
   }
 
-  private void tagDirectory(Directory directory, int level) throws Exception {
+  private void tagDirectory(Directory directory) throws Exception {
     // Make sure we have a directory.
     if (directory != null) {
       writer.write(Tag.openTag(XML_DIRECTORY) + NEWLINE);
@@ -261,7 +262,7 @@ public class XMLExporter extends Exporter implements ITechnicalStrings {
     }
   }
 
-  private void tagDevice(Device device, int level) throws Exception {
+  private void tagDevice(Device device) throws Exception {
     String sID = device.getID();
     writer.write(Tag.openTag(XML_DEVICE) + NEWLINE);
     writer.write(addTabs(1) + Tag.tagData(XML_ID, sID) + NEWLINE);
@@ -442,7 +443,7 @@ public class XMLExporter extends Exporter implements ITechnicalStrings {
  * This class will create taggings. It will create either open tags, closed
  * tags, or full tagging with data.
  */
-class Tag {
+final class Tag {
   /**
    * private constructor to avoid instantiating utility class
    */

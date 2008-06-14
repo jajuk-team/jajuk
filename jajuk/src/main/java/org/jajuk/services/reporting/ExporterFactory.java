@@ -19,7 +19,9 @@
  */
 package org.jajuk.services.reporting;
 
-public class ExporterFactory {
+import java.io.IOException;
+
+public final class ExporterFactory {
   /** 
    * private constructor to avoid instantiating utility class
    */
@@ -33,7 +35,7 @@ public class ExporterFactory {
    *          Exporter type (.xml or .html)
    * @return Returns an instance of XMLExporter.
    */
-  public static Exporter createExporter(String extension) throws Exception {
+  public static Exporter createExporter(String extension) throws IOException {
     if ("html".equals(extension)) {
       return new HTMLExporter();
     } else {

@@ -140,11 +140,10 @@ public class FirstTimeWizard extends JFrame implements ITechnicalStrings, Action
       final boolean bShowHelp = jcbHelp.isSelected();
       final String sPATH = workspacePath.getUrl().trim();
       // Check workspace directory
-      if (!sPATH.equals("")) {
-        if (!new File(sPATH).canRead()) {
-          Messages.showErrorMessage(165);
-          return;
-        }
+      if ((!sPATH.equals("")) &&
+        (!new File(sPATH).canRead())) {
+        Messages.showErrorMessage(165);
+        return;
       }
       // Set Workspace directory
       try {
@@ -173,8 +172,7 @@ public class FirstTimeWizard extends JFrame implements ITechnicalStrings, Action
             try {
               Main.canLaunchRefresh.wait();
             } catch (final InterruptedException e) {
-              // TODO Auto-generated catch block
-              e.printStackTrace();
+              Log.error(e);
             }
           }
           // Create a directory device
@@ -211,8 +209,8 @@ public class FirstTimeWizard extends JFrame implements ITechnicalStrings, Action
 
   private void initUI() {
     setTitle(Messages.getString("FirstTimeWizard.0"));
-    final int iX_SEPARATOR = 10;
-    final int iY_SEPARATOR = 10;
+    final int iXSEPARATOR = 10;
+    final int iYSEPARATOR = 10;
     final double p = TableLayoutConstants.PREFERRED;
     jlLeftIcon = new JLabel(UtilGUI.getImage(ITechnicalStrings.IMAGE_SEARCH));
     jlLeftIcon.setBorder(new EmptyBorder(0, 20, 0, 0));
@@ -249,23 +247,23 @@ public class FirstTimeWizard extends JFrame implements ITechnicalStrings, Action
     jpButtons.add(jbOk);
     jpButtons.add(jbCancel);
     final JPanel jpFileSelection = new JPanel();
-    jpFileSelection.setLayout(new HorizontalLayout(iX_SEPARATOR));
+    jpFileSelection.setLayout(new HorizontalLayout(iXSEPARATOR));
     jpFileSelection.add(jbFileSelection);
     jpFileSelection.add(jlFileSelection);
     advanced = new JXCollapsiblePane();
     // Build the toggle link used to expand / collapse the panel
     final ToggleLink toggle = new ToggleLink(Messages.getString("FirstTimeWizard.6"), advanced);
-    advanced.setLayout(new VerticalLayout(iY_SEPARATOR));
+    advanced.setLayout(new VerticalLayout(iYSEPARATOR));
     advanced.setCollapsed(true);
     advanced.add(jlWorkspace);
     advanced.add(workspacePath);
     advanced.add(jcbHelp);
 
-    final double[][] size = new double[][] { { p, iX_SEPARATOR, p, iX_SEPARATOR },
-        { iY_SEPARATOR, p, 60, p, p, p, p, iY_SEPARATOR } };
+    final double[][] size = new double[][] { { p, iXSEPARATOR, p, iXSEPARATOR },
+        { iYSEPARATOR, p, 60, p, p, p, p, iYSEPARATOR } };
     final TableLayout layout = new TableLayout(size);
-    layout.setHGap(iX_SEPARATOR);
-    layout.setVGap(iY_SEPARATOR);
+    layout.setHGap(iXSEPARATOR);
+    layout.setVGap(iYSEPARATOR);
 
     jpMain = (JPanel) getContentPane();
     jpMain.setLayout(layout);

@@ -115,15 +115,14 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, ITechnicalStrings, Basi
       player.stop();
     }
     player.open(new File(file.getAbsolutePath()));
-    if (fPosition > 0.0f) {
+    if ((fPosition > 0.0f) && 
       // (position*fPosition(%))*1000(ms) /24 because 1 frame =24ms
       // test if this is a audio format supporting seeking
       // Note: fio.getName() is better here as it will do less and not create
       // java.io.File in File
-      if (TypeManager.getInstance().getTypeByExtension(UtilSystem.getExtension(file.getName()))
-          .getBooleanValue(XML_TYPE_SEEK_SUPPORTED)) {
-        seek(fPosition);
-      }
+      (TypeManager.getInstance().getTypeByExtension(UtilSystem.getExtension(file.getName()))
+          .getBooleanValue(XML_TYPE_SEEK_SUPPORTED))) {
+      seek(fPosition);
     }
     player.play();
     setVolume(fVolume);
@@ -386,7 +385,6 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, ITechnicalStrings, Basi
    * @see org.jajuk.players.IPlayerImpl#play(org.jajuk.base.WebRadio, float)
    */
   public void play(WebRadio radio, float fVolume) throws Exception {
-    // TODO Auto-generated method stub
-
+    // not needed right now
   }
 }

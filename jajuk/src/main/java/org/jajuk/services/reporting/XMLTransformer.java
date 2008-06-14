@@ -45,7 +45,7 @@ import org.xml.sax.SAXException;
 /**
  * This class will take a XML file and either convert it to HTML or PDF.
  */
-public class XMLTransformer {
+public final class XMLTransformer {
   
   /** 
    * Private constructor to prevent instantiation of utility class.

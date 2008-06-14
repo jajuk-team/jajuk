@@ -27,16 +27,13 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
-import org.jajuk.base.Album;
-import org.jajuk.base.Author;
 import org.jajuk.base.Device;
 import org.jajuk.base.Directory;
 import org.jajuk.base.Item;
+import org.jajuk.base.LogicalItem;
 import org.jajuk.base.Playlist;
-import org.jajuk.base.Style;
 import org.jajuk.base.Track;
 import org.jajuk.base.TrackManager;
-import org.jajuk.base.Year;
 import org.jajuk.services.dj.Ambience;
 import org.jajuk.services.players.StackItem;
 import org.jajuk.util.error.JajukException;
@@ -45,15 +42,15 @@ import org.jajuk.util.log.Log;
 /**
  * General use utilities methods
  */
-public class UtilFeatures implements ITechnicalStrings {
+public final class UtilFeatures implements ITechnicalStrings {
 
  /** contains clipboard data */
-  public static String copyData;
+  private static String copyData;
 
   /**
    * Genres
    */
-  public static final String[] genres = { "Blues", "Classic Rock", "Country", "Dance", "Disco",
+  public static final String[] GENRES = { "Blues", "Classic Rock", "Country", "Dance", "Disco",
       "Funk", "Grunge", "Hip-Hop", "Jazz", "Metal", "New Age", "Oldies", "Other", "Pop", "R&B",
       "Rap", "Reggae", "Rock", "Techno", "Industrial", "Alternative", "Ska", "Death Metal",
       "Pranks", "Soundtrack", "Euro-Techno", "Ambient", "Trip-Hop", "Vocal", "Jazz+Funk", "Fusion",
@@ -180,8 +177,7 @@ public class UtilFeatures implements ITechnicalStrings {
       if (item instanceof Track) {
         files.add(((Track) item).getPlayeableFile(ConfigurationManager
             .getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED)));
-      } else if (item instanceof Album || item instanceof Style || item instanceof Author
-          || item instanceof Year) {
+      } else if (item instanceof LogicalItem) {
         Set<Track> tracks = TrackManager.getInstance().getAssociatedTracks(item);
         for (Track track : tracks) {
           files.add(track.getPlayeableFile(ConfigurationManager
@@ -227,7 +223,7 @@ public class UtilFeatures implements ITechnicalStrings {
   /** Return a genre string for a given genre id * */
   public static String getStringGenre(final int i) {
     if ((i >= 0) && (i < 126)) {
-      return genres[i];
+      return GENRES[i];
     } else {
       return Messages.getString("unknown_style");
     }
@@ -308,6 +304,14 @@ public class UtilFeatures implements ITechnicalStrings {
       }
     }
     return milliseconds;
+  }
+
+  public static String getCopyData() {
+    return copyData;
+  }
+
+  public static void setCopyData(String copyData) {
+    UtilFeatures.copyData = copyData;
   }
 
  

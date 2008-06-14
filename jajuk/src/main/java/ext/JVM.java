@@ -75,26 +75,26 @@ public class JVM {
   /**
    * Constructor for the OS object
    */
-  public JVM(String p_JavaVersion) {
-    if (p_JavaVersion.startsWith("1.9.")) {
+  public JVM(String pJavaVersion) {
+    if (pJavaVersion.startsWith("1.9.")) {
       jdkVersion = JDK1_9;
-    } else if (p_JavaVersion.startsWith("1.8.")) {
+    } else if (pJavaVersion.startsWith("1.8.")) {
       jdkVersion = JDK1_8;
-    } else if (p_JavaVersion.startsWith("1.7.")) {
+    } else if (pJavaVersion.startsWith("1.7.")) {
       jdkVersion = JDK1_7;
-    } else if (p_JavaVersion.startsWith("1.6.")) {
+    } else if (pJavaVersion.startsWith("1.6.")) {
       jdkVersion = JDK1_6;
-    } else if (p_JavaVersion.startsWith("1.5.")) {
+    } else if (pJavaVersion.startsWith("1.5.")) {
       jdkVersion = JDK1_5;
-    } else if (p_JavaVersion.startsWith("1.4.")) {
+    } else if (pJavaVersion.startsWith("1.4.")) {
       jdkVersion = JDK1_4;
-    } else if (p_JavaVersion.startsWith("1.3.")) {
+    } else if (pJavaVersion.startsWith("1.3.")) {
       jdkVersion = JDK1_3;
-    } else if (p_JavaVersion.startsWith("1.2.")) {
+    } else if (pJavaVersion.startsWith("1.2.")) {
       jdkVersion = JDK1_2;
-    } else if (p_JavaVersion.startsWith("1.1.")) {
+    } else if (pJavaVersion.startsWith("1.1.")) {
       jdkVersion = JDK1_1;
-    } else if (p_JavaVersion.startsWith("1.0.")) {
+    } else if (pJavaVersion.startsWith("1.0.")) {
       jdkVersion = JDK1_0;
     } else {
       // unknown version, assume 1.5
@@ -102,8 +102,8 @@ public class JVM {
     }
   }
 
-  public boolean isOrLater(int p_Version) {
-    return jdkVersion >= p_Version;
+  public boolean isOrLater(int pVersion) {
+    return jdkVersion >= pVersion;
   }
 
   public boolean isOneDotOne() {
@@ -134,7 +134,7 @@ public class JVM {
     return jdkVersion == JDK1_7;
   }
 
-  public boolean isOneDotHeight() {
+  public boolean isOneDotEight() {
     return jdkVersion == JDK1_8;
   }
 

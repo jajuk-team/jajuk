@@ -47,7 +47,7 @@ import org.jajuk.util.Messages;
 /**
  * Ambience manager
  */
-public class AmbienceManager implements ITechnicalStrings, Observer {
+public final class AmbienceManager implements ITechnicalStrings, Observer {
 
   /** Ambience id-> ambience */
   private Map<String, Ambience> ambiences = new HashMap<String, Ambience>(10);

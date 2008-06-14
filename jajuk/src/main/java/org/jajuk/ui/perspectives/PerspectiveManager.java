@@ -49,7 +49,7 @@ import org.jajuk.util.log.Log;
 /**
  * Perspectives Manager
  */
-public class PerspectiveManager implements ITechnicalStrings {
+public final class PerspectiveManager implements ITechnicalStrings {
   /** Current perspective */
   private static IPerspective currentPerspective = null;
 

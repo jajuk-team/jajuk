@@ -27,7 +27,7 @@ package ext;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
-public class XMLUtils {
+public final class XMLUtils {
   /**
    * private constructor to avoid instantiating utility class
    */

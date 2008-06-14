@@ -87,8 +87,8 @@ public class SimpleDeviceWizard extends JajukJDialog implements ITechnicalString
    */
   public SimpleDeviceWizard() {
     setTitle(Messages.getString("SimpleDeviceWizard.0"));
-    final int iX_SEPARATOR = 10;
-    final int iY_SEPARATOR = 10;
+    final int iXSEPARATOR = 10;
+    final int iYSEPARATOR = 10;
     jlLeftIcon = new JLabel(UtilGUI.getImage(ITechnicalStrings.IMAGE_SEARCH));
     jpRightPanel = new JPanel();
     jlFileSelection = new JLabel(Messages.getString("FirstTimeWizard.2"));
@@ -101,7 +101,7 @@ public class SimpleDeviceWizard extends JajukJDialog implements ITechnicalString
     jlMins = new JLabel(Messages.getString("DeviceWizard.54"));
     final JPanel jpRefresh = new JPanel();
     final double sizeRefresh[][] = {
-        { TableLayoutConstants.PREFERRED, iX_SEPARATOR, 100, iX_SEPARATOR,
+        { TableLayoutConstants.PREFERRED, iXSEPARATOR, 100, iXSEPARATOR,
             TableLayoutConstants.PREFERRED, 20 }, { 20 } };
     jpRefresh.setLayout(new TableLayout(sizeRefresh));
     jpRefresh.add(jlRefreshTime, "0,0");
@@ -124,7 +124,7 @@ public class SimpleDeviceWizard extends JajukJDialog implements ITechnicalString
     jpFileSelection.add(Box.createHorizontalStrut(10));
     jpFileSelection.add(jlFileSelection);
 
-    jpRightPanel.setLayout(new VerticalLayout(iY_SEPARATOR));
+    jpRightPanel.setLayout(new VerticalLayout(iYSEPARATOR));
     jpRightPanel.add(jpFileSelection);
     jpRightPanel.add(jpRefresh);
     jpRightPanel.add(jpButtons);

@@ -80,7 +80,7 @@ import org.jajuk.util.log.Log;
  * <p>
  * Singleton
  */
-public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings, Observer {
+public final class JajukJMenuBar extends JMenuBar implements ITechnicalStrings, Observer {
 
   private static final long serialVersionUID = 1L;
 
@@ -112,13 +112,13 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings, Observ
 
   JCheckBoxMenuItem jcbSyncTableTree;
 
-  public JCheckBoxMenuItem jcbmiRepeat;
+  private JCheckBoxMenuItem jcbmiRepeat;
 
-  public JCheckBoxMenuItem jcbmiShuffle;
+  private JCheckBoxMenuItem jcbmiShuffle;
 
-  public JCheckBoxMenuItem jcbmiContinue;
+  private JCheckBoxMenuItem jcbmiContinue;
 
-  public JCheckBoxMenuItem jcbmiIntro;
+  private JCheckBoxMenuItem jcbmiIntro;
 
   JMenu smart;
 
@@ -384,7 +384,7 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings, Observ
     ObservationManager.register(this);
   }
 
-  static public synchronized JajukJMenuBar getInstance() {
+  public static synchronized JajukJMenuBar getInstance() {
     if (jjmb == null) {
       jjmb = new JajukJMenuBar();
     }
@@ -438,4 +438,21 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings, Observ
       jcbSyncTableTree.setSelected(ConfigurationManager.getBoolean(CONF_OPTIONS_SYNC_TABLE_TREE));
     }
   }
+
+  public void setRepeatSelected(final boolean b) {
+    jcbmiRepeat.setSelected(b);
+  }
+  
+  public void setShuffleSelected(final boolean b) {
+    jcbmiShuffle.setSelected(b);
+  }
+
+  public void setContinueSelected(final boolean b) {
+    jcbmiContinue.setSelected(b);
+  }
+  
+  public void setIntroSelected(final boolean b) {
+    jcbmiIntro.setSelected(b);
+  }
+
 }

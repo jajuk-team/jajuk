@@ -27,7 +27,7 @@ import java.util.TreeSet;
 /**
  * Convenient class to manage years
  */
-public class YearManager extends ItemManager {
+public final class YearManager extends ItemManager {
   /** Self instance */
   private static YearManager singleton;
 

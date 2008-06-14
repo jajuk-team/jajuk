@@ -45,7 +45,11 @@ public class WebRadioPlayerImpl extends AbstractMPlayerImpl {
       try {
         BufferedReader in = new BufferedReader(new InputStreamReader(proc.getInputStream()));
         String line = null;
-        for (; (line = in.readLine()) != null;) {
+        for (; ;) {
+          line = in.readLine();
+          if(line == null)
+            break;
+          
           bOpening = false;
           // Search for Exiting (...) pattern
           if (line.matches(".*\\x2e\\x2e\\x2e.*\\(.*\\).*")) {

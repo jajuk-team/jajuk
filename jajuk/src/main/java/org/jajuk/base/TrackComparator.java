@@ -52,7 +52,7 @@ public class TrackComparator implements Comparator<Track> {
 
   public static final int ORDER = 7;
 
-  private static final DateFormat formatter = UtilString.getAdditionDateFormatter();
+  private static final DateFormat FORMATTER = UtilString.getAdditionDateFormatter();
 
   /**
    * Constructor
@@ -104,7 +104,7 @@ public class TrackComparator implements Comparator<Track> {
       break;
     // discovery date / album
     case DISCOVERY_ALBUM:
-      sHashCompare = new StringBuilder().append(formatter.format(track.getDiscoveryDate())).append(
+      sHashCompare = new StringBuilder().append(FORMATTER.format(track.getDiscoveryDate())).append(
           track.getAlbum().getName2()).append(track.getName()).toString();
       break;
     // Rate / album

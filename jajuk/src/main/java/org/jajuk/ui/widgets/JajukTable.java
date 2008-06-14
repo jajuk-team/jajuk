@@ -33,7 +33,6 @@ import java.util.StringTokenizer;
 
 import javax.swing.JPopupMenu;
 import javax.swing.JTable;
-import javax.swing.event.ChangeEvent;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.event.TableColumnModelEvent;
@@ -82,9 +81,9 @@ public class JajukTable extends JXTable implements ITechnicalStrings, ListSelect
   private ILaunchCommand command;
 
   /** Model refreshing flag */
-  public volatile boolean acceptColumnsEvents = false;
+  private volatile boolean acceptColumnsEvents = false;
 
-  private static final DateFormat formatter = UtilString.getLocaleDateFormatter();
+  private static final DateFormat FORMATTER = UtilString.getLocaleDateFormatter();
 
   /**
    * Constructor
@@ -136,7 +135,7 @@ public class JajukTable extends JXTable implements ITechnicalStrings, ListSelect
    */
   @SuppressWarnings("unchecked")
   public void showColumns(List<String> colsToShow) {
-    boolean acceptcolumnEventSave = acceptColumnsEvents;
+    boolean acceptColumnsEventsSave = acceptColumnsEvents;
     // Ignore columns event during these actions
     acceptColumnsEvents = false;
     Iterator it = ((DefaultTableColumnModelExt) getColumnModel()).getColumns(false).iterator();
@@ -147,7 +146,7 @@ public class JajukTable extends JXTable implements ITechnicalStrings, ListSelect
       }
     }
     reorderColumns();
-    acceptColumnsEvents = acceptcolumnEventSave;
+    acceptColumnsEvents = acceptColumnsEventsSave;
   }
 
   /*
@@ -262,16 +261,6 @@ public class JajukTable extends JXTable implements ITechnicalStrings, ListSelect
     }
   }
 
-  @Override
-  public void columnMarginChanged(ChangeEvent arg0) {
-    super.columnMarginChanged(arg0);
-  }
-
-  @Override
-  public void columnSelectionChanged(ListSelectionEvent arg0) {
-    super.columnSelectionChanged(arg0);
-  }
-
   /**
    * 
    * Create the jtable visible columns conf
@@ -332,7 +321,7 @@ public class JajukTable extends JXTable implements ITechnicalStrings, ListSelect
     } else if (o instanceof IconLabel) {
       return ((IconLabel) o).getTooltip();
     } else if (o instanceof Date) {
-      return formatter.format((Date) o);
+      return FORMATTER.format((Date) o);
     } else {
       return o.toString();
     }
@@ -401,8 +390,7 @@ public class JajukTable extends JXTable implements ITechnicalStrings, ListSelect
    * @see java.awt.event.MouseListener#mouseClicked(java.awt.event.MouseEvent)
    */
   public void mouseClicked(MouseEvent e) {
-    // TODO Auto-generated method stub
-
+    // nothing to do here for now
   }
 
   /*
@@ -411,8 +399,7 @@ public class JajukTable extends JXTable implements ITechnicalStrings, ListSelect
    * @see java.awt.event.MouseListener#mouseEntered(java.awt.event.MouseEvent)
    */
   public void mouseEntered(MouseEvent e) {
-    // TODO Auto-generated method stub
-
+    // nothing to do here for now
   }
 
   /*
@@ -421,8 +408,7 @@ public class JajukTable extends JXTable implements ITechnicalStrings, ListSelect
    * @see java.awt.event.MouseListener#mouseExited(java.awt.event.MouseEvent)
    */
   public void mouseExited(MouseEvent e) {
-    // TODO Auto-generated method stub
-
+    // nothing to do here for now
   }
 
   /*
@@ -453,6 +439,10 @@ public class JajukTable extends JXTable implements ITechnicalStrings, ListSelect
 
   public void setCommand(ILaunchCommand command) {
     this.command = command;
+  }
+
+  public void setAcceptColumnsEvents(boolean acceptColumnsEvents) {
+    this.acceptColumnsEvents = acceptColumnsEvents;
   }
 
 }

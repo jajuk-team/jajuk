@@ -97,7 +97,7 @@ public class EntaggedTagImpl implements ITagImpl, ITechnicalStrings {
     if (sOut.matches("\\(.*\\).*")) {
       sOut = sOut.substring(1, sOut.indexOf(')'));
       try {
-        sOut = UtilFeatures.genres[Integer.parseInt(sOut)];
+        sOut = UtilFeatures.GENRES[Integer.parseInt(sOut)];
       } catch (Exception e) {
         return ""; // error, return unknown
       }
@@ -105,8 +105,8 @@ public class EntaggedTagImpl implements ITagImpl, ITechnicalStrings {
     // If genre is a number mapping a known style, use this style
     try {
       int number = Integer.parseInt(sOut);
-      if (number >= 0 && number < UtilFeatures.genres.length) {
-        sOut = UtilFeatures.genres[number];
+      if (number >= 0 && number < UtilFeatures.GENRES.length) {
+        sOut = UtilFeatures.GENRES[number];
       }
     } catch (NumberFormatException e) {
       // nothing wrong here

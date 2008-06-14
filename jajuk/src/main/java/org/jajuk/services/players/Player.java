@@ -40,7 +40,7 @@ import org.jajuk.util.log.Log;
 /**
  * abstract class for music player, independent from real implementation
  */
-public class Player implements ITechnicalStrings {
+public final class Player implements ITechnicalStrings {
 
   /** Current file read */
   private static File fCurrent;

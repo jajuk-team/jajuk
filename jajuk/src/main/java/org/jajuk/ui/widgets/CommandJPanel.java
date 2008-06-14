@@ -832,7 +832,7 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
           if (ObservationManager.getDetail(event, DETAIL_ORIGIN).equals(DETAIL_SPECIAL_MODE_NORMAL)) {
             // deselect shuffle mode
             ConfigurationManager.setProperty(CONF_STATE_SHUFFLE, FALSE);
-            JajukJMenuBar.getInstance().jcbmiShuffle.setSelected(false);
+            JajukJMenuBar.getInstance().setShuffleSelected(false);
             CommandJPanel.getInstance().jbRandom.setSelected(false);
             // computes planned tracks
             FIFO.getInstance().computesPlanned(true);
@@ -841,7 +841,7 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
           if (ObservationManager.getDetail(event, DETAIL_SELECTION).equals(FALSE)) {
             // deselect repeat mode
             ConfigurationManager.setProperty(CONF_STATE_REPEAT, FALSE);
-            JajukJMenuBar.getInstance().jcbmiRepeat.setSelected(false);
+            JajukJMenuBar.getInstance().setRepeatSelected(false);
             CommandJPanel.getInstance().jbRepeat.setSelected(false);
           }
         } else if (JajukEvents.EVENT_FILE_LAUNCHED.equals(subject)) {

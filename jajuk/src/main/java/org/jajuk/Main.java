@@ -112,7 +112,7 @@ import org.jvnet.substance.watermark.SubstanceNoneWatermark;
 /**
  * Jajuk launching class
  */
-public class Main implements ITechnicalStrings {
+public final class Main implements ITechnicalStrings {
 
   /** Left side perspective selection panel */
   private static PerspectiveBarJPanel perspectiveBar;
@@ -169,12 +169,12 @@ public class Main implements ITechnicalStrings {
   public static String workspace;
 
   /** DeviceTypes Identification strings */
-  private static final String[] deviceTypes = { "Device_type.directory", "Device_type.file_cd",
+  private static final String[] DEVICE_TYPES = { "Device_type.directory", "Device_type.file_cd",
       "Device_type.network_drive", "Device_type.extdd", "Device_type.player" };
 
-  private static final String[] configChecks = { FILE_CONFIGURATION, FILE_HISTORY };
+  private static final String[] CONFIG_CHECKS = { FILE_CONFIGURATION, FILE_HISTORY };
 
-  private static final String[] dirChecks = {
+  private static final String[] DIR_CHECKS = {
       // internal pictures cache directory
       FILE_CACHE + '/' + FILE_INTERNAL_CACHE,
       // thumbnails directories and sub-directories
@@ -278,7 +278,7 @@ public class Main implements ITechnicalStrings {
 
           sc = new JSplash(IMAGES_SPLASHSCREEN, true, true, false, JAJUK_COPYRIGHT, JAJUK_VERSION
               + " \"" + JAJUK_CODENAME + "\"" + " " + JAJUK_VERSION_DATE, FontManager.getInstance()
-              .getFont(JajukFont.SPLASH), null);
+              .getFont(JajukFont.SPLASH));
           sc.setTitle(Messages.getString("JajukWindow.3"));
           sc.setProgress(0, Messages.getString("SplashScreen.0"));
           // Actually show the splashscreen only if required
@@ -330,7 +330,7 @@ public class Main implements ITechnicalStrings {
       sessionIdFile.mkdir();
 
       // Register device types
-      for (final String deviceTypeId : deviceTypes) {
+      for (final String deviceTypeId : DEVICE_TYPES) {
         DeviceManager.getInstance().registerDeviceType(Messages.getString(deviceTypeId));
       }
       // registers supported audio supports and default properties
@@ -499,7 +499,7 @@ public class Main implements ITechnicalStrings {
     }
 
     // checking required internal configuration files
-    for (final String check : configChecks) {
+    for (final String check : CONFIG_CHECKS) {
       final File file = UtilSystem.getConfFileByPath(check);
 
       if (!file.exists()) {
@@ -510,7 +510,7 @@ public class Main implements ITechnicalStrings {
     }
 
     // checking required internal directories
-    for (final String check : dirChecks) {
+    for (final String check : DIR_CHECKS) {
       final File file = UtilSystem.getConfFileByPath(check);
 
       if (!file.exists() && !file.mkdir()) {
@@ -576,7 +576,7 @@ public class Main implements ITechnicalStrings {
 
           // Force rebuilding thumbs (after an album id hashcode
           // method change for eg)
-          if (Collection.getInstance().hmWrongRightAlbumID.size() > 0) {
+          if (Collection.getInstance().getWrongRightAlbumIDs().size() > 0) {
             // Launch thumbs creation in another process
             ThumbnailsMaker.launchAllSizes(true);
           }

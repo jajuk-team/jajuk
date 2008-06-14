@@ -45,7 +45,7 @@ import org.jajuk.util.log.Log;
  * singleton
  * </p>
  */
-public class LastFmManager implements Observer, ITechnicalStrings {
+public final class LastFmManager implements Observer, ITechnicalStrings {
   /** Self instance */
   private static LastFmManager self;
 
@@ -63,7 +63,7 @@ public class LastFmManager implements Observer, ITechnicalStrings {
     }
   }
 
-  static public LastFmManager getInstance() {
+  public static LastFmManager getInstance() {
     if (self == null) {
       self = new LastFmManager();
       // populate configuration

@@ -79,13 +79,13 @@ import javax.swing.UIManager;
  */
 public final class ActionManager {
 
-  private static final EnumMap<JajukActions, ActionBase> map = new EnumMap<JajukActions, ActionBase>(
+  private static final EnumMap<JajukActions, ActionBase> MAP = new EnumMap<JajukActions, ActionBase>(
       JajukActions.class);
 
-  private static final List<KeyStroke> strokeList = new ArrayList<KeyStroke>();
+  private static final List<KeyStroke> STROKE_LIST = new ArrayList<KeyStroke>();
 
   /** Self instance */
-  public static ActionManager self = null;
+  private static ActionManager self = null;
 
   /**
    * 
@@ -206,7 +206,7 @@ public final class ActionManager {
    *         <code>JajukActions</code>.
    */
   public static ActionBase getAction(JajukActions action) {
-    ActionBase actionBase = map.get(action);
+    ActionBase actionBase = MAP.get(action);
     if (actionBase == null) {
       throw new ExceptionInInitializerError("No action mapping found for " + action);
     }
@@ -228,12 +228,12 @@ public final class ActionManager {
    *          Remove default keystrokes from look and feel.
    */
   private static void installAction(JajukActions name, ActionBase action, boolean removeFromLAF) {
-    map.put(name, action);
+    MAP.put(name, action);
 
     if (removeFromLAF) {
       KeyStroke stroke = (KeyStroke) action.getValue(ActionBase.ACCELERATOR_KEY);
       if (stroke != null) {
-        strokeList.add(stroke);
+        STROKE_LIST.add(stroke);
       }
     }
   }
@@ -246,7 +246,7 @@ public final class ActionManager {
     InputMap tableMap = (InputMap) UIManager.get("Table.ancestorInputMap");
     InputMap treeMap = (InputMap) UIManager.get("Tree.focusInputMap");
 
-    for (KeyStroke stroke : strokeList) {
+    for (KeyStroke stroke : STROKE_LIST) {
       tableMap.remove(stroke);
       treeMap.remove(stroke);
     }

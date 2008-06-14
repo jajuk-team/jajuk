@@ -35,7 +35,7 @@ import org.jajuk.ui.perspectives.IPerspective;
 /**
  * View Factory, creates view item and manages their ID
  */
-public class ViewFactory {
+public final class ViewFactory {
 
   /** Maps view class -> view instances set */
   private static Map<Class<?>, Set<IView>> hmClassesInstances = new HashMap<Class<?>, Set<IView>>();

@@ -51,7 +51,7 @@ public class RepeatModeAction extends ActionBase {
     boolean b = ConfigurationManager.getBoolean(CONF_STATE_REPEAT);
     ConfigurationManager.setProperty(CONF_STATE_REPEAT, Boolean.toString(!b));
 
-    JajukJMenuBar.getInstance().jcbmiRepeat.setSelected(!b);
+    JajukJMenuBar.getInstance().setRepeatSelected(!b);
     CommandJPanel.getInstance().jbRepeat.setSelected(!b);
 
     if (!b) { // enabled button

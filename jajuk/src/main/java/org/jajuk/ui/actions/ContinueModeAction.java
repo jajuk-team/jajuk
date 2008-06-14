@@ -50,7 +50,7 @@ public class ContinueModeAction extends ActionBase {
     boolean b = ConfigurationManager.getBoolean(CONF_STATE_CONTINUE);
     ConfigurationManager.setProperty(CONF_STATE_CONTINUE, Boolean.toString(!b));
 
-    JajukJMenuBar.getInstance().jcbmiContinue.setSelected(!b);
+    JajukJMenuBar.getInstance().setContinueSelected(!b);
     CommandJPanel.getInstance().jbContinue.setSelected(!b);
 
     if (!b) { // enabled button

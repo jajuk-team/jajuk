@@ -65,7 +65,7 @@ public final class StyleManager extends ItemManager {
     registerProperty(new PropertyMetaInformation(XML_EXPANDED, false, false, false, false, true,
         Boolean.class, false));
     // create default style list
-    stylesList = new Vector<String>(Arrays.asList(UtilFeatures.genres));
+    stylesList = new Vector<String>(Arrays.asList(UtilFeatures.GENRES));
     Collections.sort(stylesList);
   }
 

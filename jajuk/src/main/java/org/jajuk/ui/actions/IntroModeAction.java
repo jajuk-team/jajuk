@@ -39,7 +39,7 @@ public class IntroModeAction extends ActionBase {
   public void perform(ActionEvent evt) {
     boolean b = Boolean.valueOf(ConfigurationManager.getProperty(CONF_STATE_INTRO));
     ConfigurationManager.setProperty(CONF_STATE_INTRO, Boolean.toString(!b));
-    JajukJMenuBar.getInstance().jcbmiIntro.setSelected(!b);
+    JajukJMenuBar.getInstance().setIntroSelected(!b);
     CommandJPanel.getInstance().jbIntro.setSelected(!b);
   }
 }

@@ -97,19 +97,19 @@ public class LyricsView extends ViewAdapter implements Observer {
     final PanelBuilder builder = new PanelBuilder(layout);
     final CellConstraints cc = new CellConstraints();
     p = builder.getPanel();
-    final JTextArea textarea = getTextarea();
+    final JTextArea ta = getTextarea();
     final JLabel author = getJlAuthor();
     final JLabel title = getJlTitle();
-    final JScrollPane jsp = getJsp();
+    final JScrollPane jScrollPane = getJsp();
     final FontManager fmgr = FontManager.getInstance();
 
     setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-    textarea.setLineWrap(true);
-    textarea.setWrapStyleWord(true);
-    textarea.setEditable(false);
-    textarea.setMargin(new Insets(10, 10, 10, 10));
-    textarea.setFont(fmgr.getFont(JajukFont.BOLD));
-    textarea.addMouseListener(new MouseAdapter() {
+    ta.setLineWrap(true);
+    ta.setWrapStyleWord(true);
+    ta.setEditable(false);
+    ta.setMargin(new Insets(10, 10, 10, 10));
+    ta.setFont(fmgr.getFont(JajukFont.BOLD));
+    ta.addMouseListener(new MouseAdapter() {
 
       @Override
       public void mousePressed(final MouseEvent e) {
@@ -128,11 +128,11 @@ public class LyricsView extends ViewAdapter implements Observer {
     });
     author.setFont(fmgr.getFont(JajukFont.PLAIN_L));
     title.setFont(fmgr.getFont(JajukFont.PLAIN_XL));
-    textarea.setFont(fmgr.getFont(JajukFont.PLAIN));
+    ta.setFont(fmgr.getFont(JajukFont.PLAIN));
     // Add items
     builder.add(jlTitle, cc.xy(2, 2));
     builder.add(jlAuthor, cc.xy(2, 4));
-    builder.add(jsp, cc.xy(2, 6));
+    builder.add(jScrollPane, cc.xy(2, 6));
     setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
     add(p);
     ObservationManager.register(this);
@@ -259,7 +259,7 @@ public class LyricsView extends ViewAdapter implements Observer {
           });
           jlAuthor.setText(track.getAuthor().getName2());
           jlTitle.setText(track.getName());
-          UtilFeatures.copyData = sURL;
+          UtilFeatures.setCopyData(sURL);
           jsp.setVisible(true);
           revalidate();
           repaint();

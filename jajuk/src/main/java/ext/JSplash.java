@@ -72,22 +72,22 @@ public final class JSplash extends JFrame implements ITechnicalStrings {
   /**
    * Progress bar to use in the splash screen.
    */
-  private JProgressBar m_progress = null;
+  private JProgressBar mProgress = null;
 
   /**
    * Check for whether to use the progress bar or not.
    */
-  private boolean m_progressBar = false;
+  private boolean mProgressBar = false;
 
   /**
    * Check for whether to use progress bar messages or not.
    */
-  private boolean m_progressBarMessages = false;
+  private boolean mProgressBarMessages = false;
 
   /**
    * Check for whether to use percentage values or not.
    */
-  private boolean m_progressBarPercent = false;
+  private boolean mProgressBarPercent = false;
 
   /**
    * Constructor for the splash window.
@@ -116,14 +116,14 @@ public final class JSplash extends JFrame implements ITechnicalStrings {
    *          the other, NOT both).
    */
   public JSplash(URL url, boolean progress, boolean messages, boolean percent,
-      String copyrightString, String versionString, Font versionStringFont, Color versionStringColor) {
+      String copyrightString, String versionString, Font versionStringFont) {
     super();
     setTitle(Messages.getString("JajukWindow.17"));
 
     // check if we can load the icon
     URL icon = UtilSystem.getResource(JAJUK_ICON);
     if (null == icon) {
-      throw new RuntimeException(
+      throw new IllegalArgumentException(
           "Resource not found in Classpath. Can not load icon from location: " + JAJUK_ICON);
     }
 
@@ -131,9 +131,9 @@ public final class JSplash extends JFrame implements ITechnicalStrings {
     setIconImage(new ImageIcon(icon).getImage());
     setUndecorated(true);
 
-    m_progressBar = progress;
-    m_progressBarMessages = messages;
-    m_progressBarPercent = percent;
+    mProgressBar = progress;
+    mProgressBarMessages = messages;
+    mProgressBarPercent = percent;
 
     // build a panel with a black line for border,
     // and set it as the content pane
@@ -143,8 +143,7 @@ public final class JSplash extends JFrame implements ITechnicalStrings {
     setContentPane(panel);
 
     // build a label and set it's icon
-    JSplashLabel label = new JSplashLabel(url, copyrightString, versionString, versionStringFont,
-        versionStringColor);
+    JSplashLabel label = new JSplashLabel(url, copyrightString, versionString, versionStringFont);
 
     // build a progress bar and a tips of the day scrolling text
     String totd = Messages.getNextTipOfTheDay();
@@ -160,24 +159,24 @@ public final class JSplash extends JFrame implements ITechnicalStrings {
     JPanel jpTotdAndProgress = new JPanel(layout);
     jpTotdAndProgress.setBorder(new EmptyBorder(4, 5, 0, 5));
     scrollingText.start();
-    if (m_progressBar) {
-      m_progress = new JProgressBar();
+    if (mProgressBar) {
+      mProgress = new JProgressBar();
 
-      if (m_progressBarMessages || m_progressBarPercent) {
-        m_progress.setStringPainted(true);
+      if (mProgressBarMessages || mProgressBarPercent) {
+        mProgress.setStringPainted(true);
       } else {
-        m_progress.setStringPainted(false);
+        mProgress.setStringPainted(false);
       }
 
-      if (m_progressBarMessages && !m_progressBarPercent) {
-        m_progress.setString("");
+      if (mProgressBarMessages && !mProgressBarPercent) {
+        mProgress.setString("");
       }
 
-      m_progress.setMaximum(100);
-      m_progress.setMinimum(0);
-      m_progress.setValue(0);
-      m_progress.setFont(FontManager.getInstance().getFont(JajukFont.SPLASH_PROGRESS));
-      jpTotdAndProgress.add(m_progress);
+      mProgress.setMaximum(100);
+      mProgress.setMinimum(0);
+      mProgress.setValue(0);
+      mProgress.setFont(FontManager.getInstance().getFont(JajukFont.SPLASH_PROGRESS));
+      jpTotdAndProgress.add(mProgress);
       jpTotdAndProgress.add(scrollingText);
 
     }
@@ -185,7 +184,7 @@ public final class JSplash extends JFrame implements ITechnicalStrings {
     // add the components to the panel
     getContentPane().add(label, BorderLayout.CENTER);
 
-    if (m_progressBar) {
+    if (mProgressBar) {
       getContentPane().add(jpTotdAndProgress, BorderLayout.SOUTH);
     }
 
@@ -221,8 +220,8 @@ public final class JSplash extends JFrame implements ITechnicalStrings {
    *          The progress indicator value.
    */
   public void setProgress(int value) {
-    if (m_progressBar && value >= 0 && value <= 100) {
-      m_progress.setValue(value);
+    if (mProgressBar && value >= 0 && value <= 100) {
+      mProgress.setValue(value);
     }
   }
 
@@ -240,8 +239,8 @@ public final class JSplash extends JFrame implements ITechnicalStrings {
     setProgress(value);
     repaint();
 
-    if (m_progressBarMessages && !m_progressBarPercent && msg != null) {
-      m_progress.setString(msg);
+    if (mProgressBarMessages && !mProgressBarPercent && msg != null) {
+      mProgress.setString(msg);
     }
   }
 

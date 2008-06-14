@@ -66,7 +66,7 @@ public class PropertyMetaInformation implements ITechnicalStrings {
   private String sHumanType;
 
   /** Today */
-  static public final Date TODAY = new Date();
+  public static final Date TODAY = new Date();
 
   /**
    * constructor

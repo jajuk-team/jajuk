@@ -53,7 +53,7 @@ import org.w3c.dom.NodeList;
  * notify about various valid sources, so we could propose various inputs to the
  * user)
  */
-public class LyricsService {
+public final class LyricsService {
 
   private static Map<String, IProvider> providers = null;
   private static IProvider current = null;

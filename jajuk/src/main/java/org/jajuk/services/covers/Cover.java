@@ -57,7 +57,7 @@ public class Cover implements Comparable<Cover>, ITechnicalStrings {
   private File file;
 
   /** Default cover image */
-  private static final ImageIcon iiDefaultCover = UtilGUI.getImage(IMAGES_SPLASHSCREEN);
+  private static final ImageIcon DEFAULT_COVER_ICON = UtilGUI.getImage(IMAGES_SPLASHSCREEN);
 
   /** Default URL */
   private static URL urlDefault = null;
@@ -174,7 +174,7 @@ public class Cover implements Comparable<Cover>, ITechnicalStrings {
   public Image getImage() throws Exception {
     // default cover image is cached in memory for perfs
     if (getURL().equals(urlDefault)) {
-      return iiDefaultCover.getImage();
+      return DEFAULT_COVER_ICON.getImage();
     }
     long l = System.currentTimeMillis();
     if (!file.exists() || file.length() == 0) {

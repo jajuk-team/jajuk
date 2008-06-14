@@ -38,7 +38,7 @@ import org.jajuk.util.log.Log;
 /**
  * Convenient class to manage playlists
  */
-public class PlaylistManager extends ItemManager implements Observer {
+public final class PlaylistManager extends ItemManager implements Observer {
   /** Self instance */
   private static PlaylistManager singleton;
 
@@ -216,7 +216,7 @@ public class PlaylistManager extends ItemManager implements Observer {
       try {
         plfOld.getFio().renameTo(ioNew);
       } catch (Exception e) {
-        throw new JajukException(134);
+        throw new JajukException(134, e);
       }
       // OK, remove old file and register this new file
       hmItems.remove(plfOld.getID());
@@ -244,7 +244,7 @@ public class PlaylistManager extends ItemManager implements Observer {
         File fileOld = (File) properties.get(DETAIL_OLD);
         // search references in playlists
         Iterator<Playlist> it = hmItems.values().iterator();
-        for (int i = 0; it.hasNext(); i++) {
+        for (; it.hasNext();) {
           Playlist plf = it.next();
           if (plf.isReady()) { // check only in mounted
             // playlists, note that we can't

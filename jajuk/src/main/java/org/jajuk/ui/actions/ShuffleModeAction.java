@@ -49,7 +49,7 @@ public class ShuffleModeAction extends ActionBase {
     boolean b = ConfigurationManager.getBoolean(CONF_STATE_SHUFFLE);
     ConfigurationManager.setProperty(CONF_STATE_SHUFFLE, Boolean.toString(!b));
 
-    JajukJMenuBar.getInstance().jcbmiShuffle.setSelected(!b);
+    JajukJMenuBar.getInstance().setShuffleSelected(!b);
     CommandJPanel.getInstance().jbRandom.setSelected(!b);
     if (!b) { // enabled button
       FIFO.getInstance().shuffle(); // shuffle current selection

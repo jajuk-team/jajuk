@@ -148,8 +148,8 @@ public class DeviceWizard extends JFrame implements ActionListener, ITechnicalSt
     jpMain.setLayout(new BoxLayout(jpMain, BoxLayout.Y_AXIS));
     jp1 = new JPanel();
     jp1.setBorder(BorderFactory.createEmptyBorder(25, 15, 0, 15));
-    final int iX_SEPARATOR = 5;
-    final double size1[][] = { { 0.5, iX_SEPARATOR, 0.45, iX_SEPARATOR, 40 },
+    final int iXSEPARATOR = 5;
+    final double size1[][] = { { 0.5, iXSEPARATOR, 0.45, iXSEPARATOR, 40 },
         { 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20 } };
     jp1.setLayout(new TableLayout(size1));
     jlType = new JLabel(Messages.getString("DeviceWizard.1"));

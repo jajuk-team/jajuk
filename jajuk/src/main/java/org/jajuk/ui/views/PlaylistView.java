@@ -476,7 +476,7 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
         // bound exceptions
         try {
           JajukEvents subject = event.getSubject();
-          editorTable.acceptColumnsEvents = false; // flag reloading to avoid
+          editorTable.setAcceptColumnsEvents(false); // flag reloading to avoid
           // wrong
           // column changed of playlist
           // current playlist has changed
@@ -534,7 +534,7 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
         } catch (Exception e) {
           Log.error(e);
         } finally {
-          editorTable.acceptColumnsEvents = true;
+          editorTable.setAcceptColumnsEvents(true);
         }
       }
     });
@@ -905,8 +905,8 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
                   // double click on any column and edition state false
                   || nbClicks == 2) {
                 // selected row in view
-                Playlist plf = (Playlist) jtable.getSelection().get(0);
-                List<File> alFiles = UtilFeatures.getPlayableFiles(plf);
+                Playlist playlist = (Playlist) jtable.getSelection().get(0);
+                List<File> alFiles = UtilFeatures.getPlayableFiles(playlist);
                 if (alFiles.size() > 0) {
                   // launch it
                   FIFO.getInstance().push(
@@ -914,7 +914,7 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
                           .getBoolean(CONF_STATE_REPEAT), true),
                       ConfigurationManager.getBoolean(CONF_OPTIONS_PUSH_ON_CLICK));
                 } else {
-                  Messages.showErrorMessage(10, plf.getName());
+                  Messages.showErrorMessage(10, playlist.getName());
                 }
               }
             }

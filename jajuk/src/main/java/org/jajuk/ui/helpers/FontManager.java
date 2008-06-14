@@ -45,7 +45,7 @@ import org.jvnet.substance.fonts.FontSet;
 /**
  * Manages Jajuk fonts, stores or update them
  */
-public class FontManager implements ITechnicalStrings, Observer {
+public final class FontManager implements ITechnicalStrings, Observer {
 
   public enum JajukFont {
     DEFAULT, PLAIN, PLAIN_S, PLAIN_L, PLAIN_XL, BOLD, BOLD_L, BOLD_XL, BOLD_XXL, BOLD_TITLE, PERSPECTIVES, PLANNED, SEARCHBOX, SPLASH, SPLASH_PROGRESS, VIEW_FONT
@@ -55,7 +55,7 @@ public class FontManager implements ITechnicalStrings, Observer {
 
   private static FontManager self;
 
-  private static final JLabel jl = new JLabel();
+  private static final JLabel JL = new JLabel();
 
   // No instantiation
   private FontManager() {
@@ -148,7 +148,7 @@ public class FontManager implements ITechnicalStrings, Observer {
   public static int getRowsForText(String text, Font font, int maxSize) {
     int resu = 0;
     int usedSize = 0;
-    FontMetrics fm = jl.getFontMetrics(font);
+    FontMetrics fm = JL.getFontMetrics(font);
     for (int i = 0; i < text.length() - 1; i++) {
       usedSize = fm.stringWidth(text.substring(0, i));
       resu++;

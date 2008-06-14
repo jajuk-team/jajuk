@@ -341,7 +341,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
       @SuppressWarnings("unchecked")
       public void run() {
         try {
-          jtable.acceptColumnsEvents = false; // flag reloading to avoid wrong
+          jtable.setAcceptColumnsEvents(false); // flag reloading to avoid wrong
           // column
           // events
           JajukEvents subject = event.getSubject();
@@ -430,7 +430,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
           // after first time wizard
           revalidate();
           repaint();
-          jtable.acceptColumnsEvents = true; // make sure to remove this flag
+          jtable.setAcceptColumnsEvents(true); // make sure to remove this flag
         }
       }
     });
