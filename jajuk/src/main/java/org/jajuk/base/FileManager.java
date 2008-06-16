@@ -52,7 +52,7 @@ import org.jajuk.util.log.Log;
 /**
  * Convenient class to manage files
  */
-public class FileManager extends ItemManager implements Observer {
+public final class FileManager extends ItemManager implements Observer {
   /** Best of files */
   private List<File> alBestofFiles = new ArrayList<File>(20);
 

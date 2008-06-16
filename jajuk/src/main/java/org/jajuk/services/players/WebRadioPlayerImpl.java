@@ -47,8 +47,9 @@ public class WebRadioPlayerImpl extends AbstractMPlayerImpl {
         String line = null;
         for (; ;) {
           line = in.readLine();
-          if(line == null)
+          if(line == null) {
             break;
+          }
           
           bOpening = false;
           // Search for Exiting (...) pattern

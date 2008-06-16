@@ -36,7 +36,7 @@ import org.jajuk.util.log.Log;
  * <p>
  * static class
  */
-public class TypeManager extends ItemManager {
+public final class TypeManager extends ItemManager {
   /** extensions->types */
   private Map<String, Type> hmSupportedTypes = new HashMap<String, Type>(10);
 

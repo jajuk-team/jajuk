@@ -37,7 +37,7 @@ import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.log.Log;
 
-public class NetworkUtils implements ITechnicalStrings {
+public final class NetworkUtils implements ITechnicalStrings {
 
   private NetworkUtils() {
     // default hidden constructor for utility classes

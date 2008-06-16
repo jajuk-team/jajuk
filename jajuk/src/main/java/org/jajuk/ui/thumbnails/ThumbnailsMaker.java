@@ -54,7 +54,7 @@ import org.jajuk.util.log.Log;
  * process is done.
  * 
  */
-public class ThumbnailsMaker implements ITechnicalStrings {
+public final class ThumbnailsMaker implements ITechnicalStrings {
 
   private static boolean bAlreadyRunning = false;
 

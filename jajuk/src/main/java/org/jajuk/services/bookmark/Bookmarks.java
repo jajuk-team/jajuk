@@ -34,7 +34,7 @@ import org.jajuk.util.log.Log;
  * Manages bookmarks
  * 
  */
-public class Bookmarks implements ITechnicalStrings {
+public final class Bookmarks implements ITechnicalStrings {
 
   /** Singleton self-instance */
   private static Bookmarks bookmarks;

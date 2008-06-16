@@ -26,7 +26,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 
-public class XMLBuilder {
+public final class XMLBuilder {
   /**
    * private constructor to avoid instantiating utility class
    */

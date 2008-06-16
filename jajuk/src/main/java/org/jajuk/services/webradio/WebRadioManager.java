@@ -102,7 +102,9 @@ public final class WebRadioManager extends DefaultHandler implements ITechnicalS
       Log.error(e);
       // Remove file if it is corrupted so it will be downloaded again
       // next time
-      fwebradios.delete();
+      if(!fwebradios.delete()) {
+        Log.warn("Could not delete file " + fwebradios.toString());
+      }
     }
   }
 

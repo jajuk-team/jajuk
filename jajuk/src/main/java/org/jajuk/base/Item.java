@@ -115,7 +115,8 @@ public abstract class Item implements Serializable, ITechnicalStrings {
    */
   @Override
   public boolean equals(Object otherItem) {
-    if (otherItem == null) {
+    // this also handles null
+    if (!(otherItem instanceof Item)) {
       return false;
     }
     return getID().equals(((Item) otherItem).getID());

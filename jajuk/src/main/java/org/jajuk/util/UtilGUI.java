@@ -74,7 +74,7 @@ import org.jvnet.substance.watermark.WatermarkInfo;
 /**
  * Set of GUI convenient methods
  */
-public class UtilGUI implements ITechnicalStrings {
+public final class UtilGUI implements ITechnicalStrings {
 
   /* different types of Cursors that are available */
   public static final Cursor WAIT_CURSOR = new Cursor(Cursor.WAIT_CURSOR);

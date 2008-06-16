@@ -128,28 +128,36 @@ public abstract class PerspectiveAdapter extends DockingDesktop implements IPers
     // creating phantom views)
     StringBuilder sb = new StringBuilder();
     BufferedReader in = new BufferedReader(new FileReader(saveFile));
-    String line = null;
-    boolean stop = false;
-    for (; ;) {
-      line = in.readLine();
-      if(line == null)
-        break;
-      
-      if (line.indexOf("<TabGroups>") != -1) {
-        stop = true;
+    try {
+      String line = null;
+      boolean stop = false;
+      for (;;) {
+        line = in.readLine();
+        if (line == null) {
+          break;
+        }
+
+        if (line.indexOf("<TabGroups>") != -1) {
+          stop = true;
+        }
+        if (line.indexOf("</TabGroups>") != -1) {
+          stop = false;
+        }
+        if (!stop && line.indexOf("</TabGroups>") == -1) {
+          sb.append(line).append('\n');
+        }
       }
-      if (line.indexOf("</TabGroups>") != -1) {
-        stop = false;
-      }
-      if (!stop && line.indexOf("</TabGroups>") == -1) {
-        sb.append(line).append('\n');
-      }
+    } finally {
+      in.close();
     }
     // write file again
     out = new BufferedOutputStream(new FileOutputStream(saveFile));
-    out.write(sb.toString().getBytes());
-    out.flush();
-    out.close();
+    try {
+      out.write(sb.toString().getBytes());
+      out.flush();
+    } finally {
+      out.close();
+    }
   }
 
   /*
@@ -165,8 +173,8 @@ public abstract class PerspectiveAdapter extends DockingDesktop implements IPers
     // perspective conf from the jar
     URL url = loadFile.toURI().toURL();
     if (!loadFile.exists()) {
-      url = UtilSystem.getResource(FILE_DEFAULT_PERSPECTIVES_PATH + '/' + getClass().getSimpleName()
-          + ".xml");
+      url = UtilSystem.getResource(FILE_DEFAULT_PERSPECTIVES_PATH + '/'
+          + getClass().getSimpleName() + ".xml");
     }
     BufferedInputStream in = new BufferedInputStream(url.openStream());
     // then, load the workspace
@@ -194,8 +202,8 @@ public abstract class PerspectiveAdapter extends DockingDesktop implements IPers
       // default conf
       Log.error(e);
       Log.debug("Error parsing conf file, use defaults - " + getID());
-      url = UtilSystem.getResource(FILE_DEFAULT_PERSPECTIVES_PATH + '/' + getClass().getSimpleName()
-          + ".xml");
+      url = UtilSystem.getResource(FILE_DEFAULT_PERSPECTIVES_PATH + '/'
+          + getClass().getSimpleName() + ".xml");
       in = new BufferedInputStream(url.openStream());
       ctx.readXML(in);
     } finally {
@@ -224,7 +232,9 @@ public abstract class PerspectiveAdapter extends DockingDesktop implements IPers
       // Remove current conf file to force using default file from the
       // jar
       File loadFile = UtilSystem.getConfFileByPath(getClass().getSimpleName() + ".xml");
-      loadFile.delete();
+      if(!loadFile.delete()) {
+        Log.warn("Could not delete file " + loadFile.toString());
+      }
       // Remove all registered dockables
       DockableState[] ds = getDockables();
       for (DockableState element : ds) {

@@ -353,12 +353,8 @@ public class JajukTable extends JXTable implements ITechnicalStrings, ListSelect
     selection.clear();
     int[] rows = getSelectedRows();
     for (int element : rows) {
-      Object o = model.getItemAt(convertRowIndexToModel(element));
-      // Make sure the model contains jajuk items
-      if (!(o instanceof Item)) {
-        return;
-      }
-      selection.add((Item) o);
+      Item o = model.getItemAt(convertRowIndexToModel(element));
+      selection.add(o);
     }
   }
 

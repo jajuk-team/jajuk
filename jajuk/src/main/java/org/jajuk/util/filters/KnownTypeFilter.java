@@ -30,7 +30,7 @@ import org.jajuk.util.UtilSystem;
  * 
  * Known type filter
  */
-public class KnownTypeFilter extends JajukFileFilter {
+public final class KnownTypeFilter extends JajukFileFilter {
 
   /** Self instance */
   protected static KnownTypeFilter self = null;

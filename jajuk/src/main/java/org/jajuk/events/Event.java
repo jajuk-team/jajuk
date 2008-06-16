@@ -85,6 +85,10 @@ public class Event {
    */
   @Override
   public boolean equals(Object obj) {
+    if(!(obj instanceof Event)) {
+      return false;
+    }
+
     Event event = (Event) obj;
     boolean bOut = false;
     if (this.subject.equals(event.getSubject())) {

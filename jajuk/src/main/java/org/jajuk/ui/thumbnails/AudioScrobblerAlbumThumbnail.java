@@ -168,10 +168,10 @@ public class AudioScrobblerAlbumThumbnail extends AbstractThumbnail {
   public String getDescription() {
     // populate album detail
     if (album.getTracks() == null) {
-      AudioScrobblerAlbum album = AudioScrobblerService.getInstance().getAlbum(
+      AudioScrobblerAlbum lAlbum = AudioScrobblerService.getInstance().getAlbum(
           this.album.getArtist(), this.album.getTitle());
-      if (album != null) {
-        this.album = album;
+      if (lAlbum != null) {
+        this.album = lAlbum;
       }
     }
     Color bgcolor = SubstanceLookAndFeel.getActiveColorScheme().getUltraLightColor();

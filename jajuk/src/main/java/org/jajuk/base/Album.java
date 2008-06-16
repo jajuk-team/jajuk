@@ -212,13 +212,13 @@ public class Album extends LogicalItem implements Comparable<Album> {
     File fDir = null; // analyzed directory
     // search for local covers in all directories mapping the current track
     // to reach other devices covers and display them together
-    Set<Track> tracks = TrackManager.getInstance().getAssociatedTracks(this);
-    if (tracks.size() == 0) {
+    Set<Track> lTracks = TrackManager.getInstance().getAssociatedTracks(this);
+    if (lTracks.size() == 0) {
       return null;
     }
     // List if directories we have to look in
     Set<Directory> dirs = new HashSet<Directory>(2);
-    for (Track track : tracks) {
+    for (Track track : lTracks) {
       for (org.jajuk.base.File file : track.getFiles()) {
         if (file.isReady()) {
           // note that hashset ensures directory unicity

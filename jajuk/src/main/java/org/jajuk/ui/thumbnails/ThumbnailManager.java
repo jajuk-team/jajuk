@@ -43,7 +43,7 @@ import org.jajuk.util.log.Log;
 /**
  * Manage thumbnails
  */
-public class ThumbnailManager implements ITechnicalStrings {
+public final class ThumbnailManager implements ITechnicalStrings {
 
   /** No instances */
   private ThumbnailManager() {
@@ -61,7 +61,9 @@ public class ThumbnailManager implements ITechnicalStrings {
       File[] files = fThumb.listFiles();
       for (File file : files) {
         if (!file.getAbsolutePath().matches(".*" + FILE_THUMB_NO_COVER)) {
-          file.delete();
+          if(!file.delete()) {
+            Log.warn("Could not delete " + file.toString());
+          }
         }
       }
       // Refresh default cover

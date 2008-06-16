@@ -31,10 +31,10 @@ import org.jajuk.util.UtilSystem;
  * 
  * Playlist filter
  */
-public class PlaylistFilter extends JajukFileFilter {
+public final class PlaylistFilter extends JajukFileFilter {
 
   /** Self instance */
-  protected static PlaylistFilter self = null;
+  private static PlaylistFilter self = null;
 
   /**
    * 

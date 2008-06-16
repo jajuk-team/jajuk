@@ -25,10 +25,10 @@ import org.jajuk.util.JajukFileFilter;
  * 
  * Image filter
  */
-public class ImageFilter extends JajukFileFilter {
+public final class ImageFilter extends JajukFileFilter {
 
   /** Self instance */
-  protected static ImageFilter self = null;
+  private static ImageFilter self = null;
 
   /**
    * 

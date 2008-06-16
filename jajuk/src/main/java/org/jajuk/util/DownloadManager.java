@@ -48,7 +48,7 @@ import org.jajuk.util.log.Log;
 /**
  * Manages network downloads
  */
-public class DownloadManager implements ITechnicalStrings {
+public final class DownloadManager implements ITechnicalStrings {
 
   private static Proxy proxy;
 

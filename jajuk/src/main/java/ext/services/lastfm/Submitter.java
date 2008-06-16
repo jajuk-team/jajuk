@@ -33,7 +33,7 @@ import org.jajuk.base.Track;
 import org.jajuk.util.DownloadManager;
 import org.jajuk.util.log.Log;
 
-public class Submitter {
+public final class Submitter {
 
   /**
    * Max num of retries

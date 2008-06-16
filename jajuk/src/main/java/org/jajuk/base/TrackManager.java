@@ -47,7 +47,7 @@ import org.jajuk.util.error.NoneAccessibleFileException;
  * 
  * @TODO Refactor this error detection system (isChangePbm)
  */
-public class TrackManager extends ItemManager implements Observer {
+public final class TrackManager extends ItemManager implements Observer {
   /** Self instance */
   private static TrackManager singleton;
 
@@ -55,7 +55,7 @@ public class TrackManager extends ItemManager implements Observer {
    * Number of tracks that cannot be fully removed as it still contains files on
    * unmounted devices
    */
-  public static int nbFilesRemaining = 0;
+  private static int nbFilesRemaining = 0;
 
   /** Max rate */
   private long lMaxRate = 0l;
@@ -703,5 +703,13 @@ public class TrackManager extends ItemManager implements Observer {
       }
     }
     return tsResu;
+  }
+
+  public static int getFilesRemaining() {
+    return nbFilesRemaining;
+  }
+
+  public static void resetFilesRemaining() {
+    TrackManager.nbFilesRemaining = 0;
   }
 }

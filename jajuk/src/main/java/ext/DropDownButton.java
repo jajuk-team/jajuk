@@ -43,7 +43,7 @@ public abstract class DropDownButton extends JajukButton implements ChangeListen
     if (icon.getIconWidth() < 20) {
       arrowButton = new JajukButton(IconLoader.ICON_DROP_DOWN_16X16);
     } else {
-      arrowButton = new JajukButton(IconLoader.ICON_DROP_DOWN_32x32);
+      arrowButton = new JajukButton(IconLoader.ICON_DROP_DOWN_32X32);
     }
     getModel().addChangeListener(this);
     arrowButton.getModel().addChangeListener(this);

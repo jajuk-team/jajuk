@@ -30,10 +30,10 @@ import org.jajuk.util.UtilSystem;
  * 
  * Audio filter
  */
-public class AudioFilter extends JajukFileFilter {
+public final class AudioFilter extends JajukFileFilter {
 
   /** Self instance */
-  protected static AudioFilter self = null;
+  private static AudioFilter self = null;
 
   /**
    * 

@@ -35,7 +35,7 @@ import org.jajuk.util.error.JajukException;
  * <p>
  * Singleton
  */
-public class Log implements ITechnicalStrings {
+public final class Log implements ITechnicalStrings {
   // verbosity consts
   public static final int FATAL = 0;
 

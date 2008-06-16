@@ -30,7 +30,7 @@ import org.jajuk.util.Messages;
  * Singleton
  * </p>
  */
-public class DirectoryFilter extends JajukFileFilter {
+public final class DirectoryFilter extends JajukFileFilter {
 
   /** Self instance */
   private static DirectoryFilter self = null;

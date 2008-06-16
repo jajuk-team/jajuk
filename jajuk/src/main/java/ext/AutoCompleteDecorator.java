@@ -82,7 +82,7 @@ import org.jdesktop.swingx.autocomplete.TextComponentAdaptor;
  * 
  * @author Thomas Bierhance
  */
-public class AutoCompleteDecorator {
+public final class AutoCompleteDecorator {
   /**
    * private constructor to avoid instantiating utility class
    */

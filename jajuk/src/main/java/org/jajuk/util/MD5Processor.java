@@ -30,7 +30,7 @@ import org.jajuk.util.log.Log;
  * base
  */
 
-public class MD5Processor {
+public final class MD5Processor {
   /** 
    * private constructor to avoid instantiating utility class
    */

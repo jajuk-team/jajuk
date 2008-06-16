@@ -36,7 +36,7 @@ import org.jajuk.util.error.JajukException;
 /**
  * Set of convenient classes for string manipulation
  */
-public class UtilString implements ITechnicalStrings{
+public final class UtilString implements ITechnicalStrings{
   /**
    * private constructor to avoid instantiating utility class
    */
@@ -78,7 +78,7 @@ public class UtilString implements ITechnicalStrings{
         }
       }
     }
-    return out;
+    return ret;
   }
 
   /**

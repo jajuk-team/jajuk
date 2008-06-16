@@ -42,7 +42,7 @@ public class AudioScrobblerAlbum {
   private String smallCoverURL;
   private List<AudioScrobblerTrack> tracks;
 
-  private static final SimpleDateFormat df = new SimpleDateFormat("d MMM yyyy, HH:mm", Locale.US);
+  private static final SimpleDateFormat DATE_FORMATTER = new SimpleDateFormat("d MMM yyyy, HH:mm", Locale.US);
 
   protected static AudioScrobblerAlbum getAlbum(Document xml) {
     AudioScrobblerAlbum album = new AudioScrobblerAlbum();
@@ -53,7 +53,7 @@ public class AudioScrobblerAlbum {
     album.title = element.getAttribute("title");
     album.url = ext.XMLUtils.getChildElementContent(element, "url");
     try {
-      album.releaseDate = df.parse(ext.XMLUtils.getChildElementContent(element, "releasedate")
+      album.releaseDate = DATE_FORMATTER.parse(ext.XMLUtils.getChildElementContent(element, "releasedate")
           .trim());
     } catch (ParseException e) {
       album.releaseDate = null;
@@ -88,7 +88,7 @@ public class AudioScrobblerAlbum {
       album.url = XMLUtils.getChildElementContent(alb, "url");
       try {
         String date = XMLUtils.getChildElementContent(alb, "releasedate").trim();
-        album.releaseDate = df.parse(date);
+        album.releaseDate = DATE_FORMATTER.parse(date);
       } catch (ParseException e) {
         album.releaseDate = null;
       }

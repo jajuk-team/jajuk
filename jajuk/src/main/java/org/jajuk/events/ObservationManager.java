@@ -35,7 +35,7 @@ import org.jajuk.util.log.Log;
  * <p>
  * All notification methods are synchronized to assure event order
  */
-public class ObservationManager implements ITechnicalStrings {
+public final class ObservationManager implements ITechnicalStrings {
 
   /** one event -> list of components */
   static ObserverRegistry observerRegistry = new ObserverRegistry();

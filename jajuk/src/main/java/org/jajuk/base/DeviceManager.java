@@ -45,7 +45,7 @@ import org.jajuk.util.log.Log;
 /**
  * Convenient class to manage devices
  */
-public class DeviceManager extends ItemManager {
+public final class DeviceManager extends ItemManager {
   /** Supported device types names */
   private List<String> alDevicesTypes = new ArrayList<String>(10);
 

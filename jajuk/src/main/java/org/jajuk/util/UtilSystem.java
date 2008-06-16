@@ -57,7 +57,7 @@ import org.jajuk.util.log.Log;
 /**
  * Set of convenient methods for system and IO
  */
-public class UtilSystem implements ITechnicalStrings {
+public final class UtilSystem implements ITechnicalStrings {
 
   /** MPlayer status possible values * */
   public static enum MPlayerStatus {
@@ -645,18 +645,22 @@ public class UtilSystem implements ITechnicalStrings {
       // check MPlayer release : 1.0pre8 min
       proc = Runtime.getRuntime().exec(new String[] { fullPath, "-input", "cmdlist" }); //$NON-NLS-2$ 
       final BufferedReader in = new BufferedReader(new InputStreamReader(proc.getInputStream()));
-      String line = null;
-      mplayerStatus = UtilSystem.MPlayerStatus.MPLAYER_STATUS_WRONG_VERSION;
-      for (;;) {
-        line = in.readLine();
-        if (line == null) {
-          break;
-        }
+      try {
+        String line = null;
+        mplayerStatus = UtilSystem.MPlayerStatus.MPLAYER_STATUS_WRONG_VERSION;
+        for (;;) {
+          line = in.readLine();
+          if (line == null) {
+            break;
+          }
 
-        if (line.matches("get_time_pos.*")) {
-          mplayerStatus = UtilSystem.MPlayerStatus.MPLAYER_STATUS_OK;
-          break;
+          if (line.matches("get_time_pos.*")) {
+            mplayerStatus = UtilSystem.MPlayerStatus.MPLAYER_STATUS_OK;
+            break;
+          }
         }
+      } finally {
+        in.close();
       }
     } catch (final Exception e) {
       mplayerStatus = UtilSystem.MPlayerStatus.MPLAYER_STATUS_NOT_FOUND;

@@ -490,7 +490,7 @@ public class IconLoader implements ITechnicalStrings {
   public static final ImageIcon ICON_STAR_4 = new ImageIcon(UtilSystem
       .getResource("icons/16x16/star4_16x16.png"));
 
-  public static final ImageIcon ICON_DROP_DOWN_32x32 = new ImageIcon(UtilSystem
+  public static final ImageIcon ICON_DROP_DOWN_32X32 = new ImageIcon(UtilSystem
       .getResource("icons/32x32/dropdown_32x32.png"));
 
   public static final ImageIcon ICON_DROP_DOWN_16X16 = new ImageIcon(UtilSystem

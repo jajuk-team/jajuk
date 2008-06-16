@@ -726,14 +726,14 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
     jcbAccuracy.addItem(IconLoader.ICON_AUTHOR);
     jcbAccuracy.addItem(IconLoader.ICON_ALBUM);
     jcbAccuracy.addItem(IconLoader.ICON_TRACK);
-    int index = 1; // medium accuracy
+    int i = 1; // medium accuracy
     try {
-      index = ConfigurationManager.getInt(ITechnicalStrings.CONF_COVERS_ACCURACY + "_"
+      i = ConfigurationManager.getInt(ITechnicalStrings.CONF_COVERS_ACCURACY + "_"
           + ((getPerspective() == null) ? "popup" : getPerspective().getID()));
     } catch (final Exception e) {
       // Will reach this point at first launch
     }
-    jcbAccuracy.setSelectedIndex(index);
+    jcbAccuracy.setSelectedIndex(i);
     jcbAccuracy.addActionListener(this);
 
     jtb.add(jbPrevious);
@@ -836,7 +836,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
       setCursor(UtilGUI.DEFAULT_CURSOR);
       searching(false);
       Log.error(e);
-      throw new JajukException(0);
+      throw new JajukException(0, e);
     }
     final int iDisplayAreaHeight = CoverView.this.getHeight() - 30;
     final int iDisplayAreaWidth = CoverView.this.getWidth() - 8;
@@ -1078,13 +1078,13 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
       displayCurrentCover();
       return;
     }
-    
-    if(fCurrent == null) {
-      throw new IllegalArgumentException("Internal Error: Unexpected value, " +
-          "variable should not be empty. fCurrent: " + fCurrent +
-          " dirReference: " + dirReference);
+
+    if (fCurrent == null) {
+      throw new IllegalArgumentException("Internal Error: Unexpected value, "
+          + "variable should not be empty. fCurrent: " + fCurrent + " dirReference: "
+          + dirReference);
     }
-    
+
     // search for local covers in all directories mapping
     // the current track to reach other devices covers and
     // display them together
@@ -1161,18 +1161,19 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
                 Log.debug("Found Cover: {{" + url.toString() + "}}");
                 alCovers.add(cover);
               }
+            } catch (TimeOutException e) {
+              Log.error(e);
+              // can occur in case of
+              // timeout during cover download
+              CoverView.iErrorCounter++;
+              if (CoverView.iErrorCounter == ITechnicalStrings.STOP_TO_SEARCH) {
+                Log.warn("Too many connection fails, stop to search for covers online");
+                InformationJPanel.getInstance().setMessage(Messages.getString("Error.030"),
+                    InformationJPanel.WARNING);
+              } 
             } catch (final Exception e) {
               Log.error(e); // can occur in case of
-              // timeout or error
-              // during cover download
-              if (e instanceof TimeOutException) {
-                CoverView.iErrorCounter++;
-                if (CoverView.iErrorCounter == ITechnicalStrings.STOP_TO_SEARCH) {
-                  Log.warn("Too many connection fails, stop to search for covers online");
-                  InformationJPanel.getInstance().setMessage(Messages.getString("Error.030"),
-                      InformationJPanel.WARNING);
-                }
-              }
+              // error during cover download
             }
           }
           if (iEventID != iLocalEventID) {
@@ -1182,20 +1183,18 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
             return;
           }
         }
-      } catch (final Exception e) {
-        if (e instanceof TimeOutException) {
-          Log.warn(e.getMessage());
-          // can occur in case of timeout or error during
-          // covers list download
-          CoverView.iErrorCounter++;
-          if (CoverView.iErrorCounter == ITechnicalStrings.STOP_TO_SEARCH) {
-            Log.warn("Too many connection fails," + " stop to search for covers online");
-            InformationJPanel.getInstance().setMessage(Messages.getString("Error.030"),
-                InformationJPanel.WARNING);
-          }
-        } else {
-          Log.error(e);
+      } catch (final TimeOutException e) {
+        Log.warn(e.getMessage());
+        // can occur in case of timeout or error during
+        // covers list download
+        CoverView.iErrorCounter++;
+        if (CoverView.iErrorCounter == ITechnicalStrings.STOP_TO_SEARCH) {
+          Log.warn("Too many connection fails," + " stop to search for covers online");
+          InformationJPanel.getInstance().setMessage(Messages.getString("Error.030"),
+              InformationJPanel.WARNING);
         }
+      } catch (final Exception e) {
+        Log.error(e);
       }
     }
     if (alCovers.size() == 0) {// add the default cover if none

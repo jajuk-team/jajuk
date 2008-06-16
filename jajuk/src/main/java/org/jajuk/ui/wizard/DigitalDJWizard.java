@@ -1260,8 +1260,8 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings {
       add(new JScrollPane(jpAmbiences), "0,1");
       // DJ change, set right ambience
       if (ActionSelectionPanel.ACTION_CHANGE.equals(data.get(KEY_ACTION))) {
-        DigitalDJ dj = (DigitalDJ) data.get(KEY_CHANGE);
-        Ambience ambience = ((AmbienceDigitalDJ) dj).getAmbience();
+        DigitalDJ lDJ = (DigitalDJ) data.get(KEY_CHANGE);
+        Ambience ambience = ((AmbienceDigitalDJ) lDJ).getAmbience();
         index = 0;
         for (Ambience a : ambiences) {
           if (a.equals(ambience)) {

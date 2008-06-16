@@ -46,7 +46,7 @@ import org.jdesktop.swingx.JXPanel;
 /**
  * Menu bar used to choose the current perspective.
  */
-public class PerspectiveBarJPanel extends JXPanel implements ITechnicalStrings {
+public final class PerspectiveBarJPanel extends JXPanel implements ITechnicalStrings {
 
   private static final long serialVersionUID = 1L;
 

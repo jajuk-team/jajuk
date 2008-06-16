@@ -794,7 +794,7 @@ public class PropertiesWizard extends JajukJDialog implements ITechnicalStrings,
            * first changed value in failure, after, current track will have
            * changed and will no more contain unmounted files
            */
-          if (TrackManager.nbFilesRemaining > 0) {
+          if (TrackManager.getFilesRemaining() > 0) {
             Messages.showWarningMessage(Messages.getString("Error.138"));
           }
         }
@@ -829,7 +829,7 @@ public class PropertiesWizard extends JajukJDialog implements ITechnicalStrings,
       } finally {
         UtilGUI.stopWaiting();
         // Reset track remaining issues
-        TrackManager.nbFilesRemaining = 0;
+        TrackManager.resetFilesRemaining();
       }
     }
 

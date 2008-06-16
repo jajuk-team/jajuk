@@ -80,7 +80,7 @@ public class HistoryItem {
   public String toString() {
     File file = FileManager.getInstance().getFileByID(getFileId());
     if (file == null) {
-      return null;
+      return "";
     }
     StringBuilder sbAuthor = new StringBuilder(file.getTrack().getAuthor().getName2());
     String sDate = History.getInstance().getDateFormatter().format(new Date(getDate()));

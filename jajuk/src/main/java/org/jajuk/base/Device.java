@@ -88,7 +88,7 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
   private java.io.File fio;
 
   /** Device mount point* */
-  private static final String sMountPoint = "";
+  private static final String MOUNT_POINT = "";
 
   /** Mounted device flag */
   private boolean bMounted = false;
@@ -352,7 +352,7 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
    * @return Returns the unix mount point.
    */
   public String getMountPoint() {
-    return sMountPoint;
+    return MOUNT_POINT;
   }
 
   /**
@@ -668,12 +668,10 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
         return true;
       }
       return false;
-    } catch (final Exception e) { // and regular ones logged
+    } catch (final RuntimeException e) {
       // runtime errors are thrown
-      if(e instanceof RuntimeException) {
-        throw (RuntimeException)e;
-      }
-      
+      throw e;
+    } catch (final Exception e) {
       // and regular ones logged
       Log.error(e);
       return false;
@@ -813,12 +811,10 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
       }
       InformationJPanel.getInstance().setMessage(sOut, InformationJPanel.INFORMATIVE);
       Log.debug(sOut);
-    } catch (final Exception e) {
+    } catch (final RuntimeException e) {
       // runtime errors are thrown
-      if(e instanceof RuntimeException) {
-        throw (RuntimeException)e;
-      }
-      
+      throw e;
+    } catch (final Exception e) {
       // and regular ones logged
       Log.error(e);
     } finally {
@@ -894,8 +890,8 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
       }
       // create it if needed
       final File fileNewDir = new File(new StringBuilder(dest.getUrl()).append(sPath).toString());
-      if (bNeedCreate) {
-        fileNewDir.mkdirs();
+      if (bNeedCreate && !fileNewDir.mkdirs()) {
+        Log.warn("Could not create directory " + fileNewDir);
       }
       // synchronize files
       final File fileSrc = new File(new StringBuilder(dSrc.getUrl()).append(sPath).toString());
@@ -1014,7 +1010,7 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
   public String toString() {
     return "Device[ID=" + getID() + " Name=" + getName() + " Type="
         + DeviceManager.getInstance().getDeviceType(getLongValue(ITechnicalStrings.XML_TYPE))
-        + " URL=" + sUrl + " Mount point=" + sMountPoint + "]";
+        + " URL=" + sUrl + " Mount point=" + MOUNT_POINT + "]";
   }
 
   /**

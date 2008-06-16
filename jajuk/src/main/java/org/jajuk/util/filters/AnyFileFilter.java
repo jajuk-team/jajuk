@@ -30,10 +30,10 @@ import org.jajuk.util.JajukFileFilter;
  * Singleton
  * </p>
  */
-public class AnyFileFilter extends JajukFileFilter {
+public final class AnyFileFilter extends JajukFileFilter {
 
   /** Self instance */
-  protected static AnyFileFilter self = null;
+  private static AnyFileFilter self = null;
 
   /**
    * 

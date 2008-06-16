@@ -34,7 +34,7 @@ import org.jajuk.services.players.StackItem;
  * Singleton
  * </p>
  */
-public class JajukTimer {
+public final class JajukTimer {
 
   /** Self instance */
   private static JajukTimer timer;
