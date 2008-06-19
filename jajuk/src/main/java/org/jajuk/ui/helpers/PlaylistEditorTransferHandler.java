@@ -50,7 +50,7 @@ public class PlaylistEditorTransferHandler extends TransferHandler implements IT
 
   private JTable jtable;
 
-  public static int iSelectedRow = 0;
+  private static int iSelectedRow = 0;
 
   /** Constructor */
   public PlaylistEditorTransferHandler(JTable jtable) {

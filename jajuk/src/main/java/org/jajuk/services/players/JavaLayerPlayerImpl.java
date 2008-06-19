@@ -375,7 +375,7 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, ITechnicalStrings, Basi
     return lDuration;
   }
 
-  public int Scrobble() {
+  public int scrobble() {
     return 1;
   }
 

@@ -365,7 +365,7 @@ public class JajukTable extends JXTable implements ITechnicalStrings, ListSelect
   public void handlePopup(final MouseEvent e) {
     int iSelectedRow = rowAtPoint(e.getPoint());
     // Store real row index
-    TableTransferHandler.iSelectedRow = iSelectedRow;
+    TableTransferHandler.setSelectedRow(iSelectedRow);
     // right click on a selected node set if none or 1 node is
     // selected, a right click on another node
     // select it if more than 1, we keep selection and display a
@@ -419,7 +419,7 @@ public class JajukTable extends JXTable implements ITechnicalStrings, ListSelect
       command.launch(e.getClickCount());
       int iSelectedRow = rowAtPoint(e.getPoint());
       // Store real row index for drag and drop
-      TableTransferHandler.iSelectedRow = iSelectedRow;
+      TableTransferHandler.setSelectedRow(iSelectedRow);
     }
   }
 

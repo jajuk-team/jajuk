@@ -47,7 +47,7 @@ public final class StyleManager extends ItemManager {
   private static StyleManager singleton;
 
   /* List of all known styles */
-  public static Vector<String> stylesList;
+  private static Vector<String> stylesList;
 
   /**
    * No constructor available, only static access

@@ -282,10 +282,10 @@ public class AlarmClockDialog extends JDialog implements ActionListener, ItemLis
 
   public void valueChanged(final ListSelectionEvent e) {
     if (!e.getValueIsAdjusting()) {
-      final SearchResult sr = sbSearch.alResults.get(sbSearch.jlist.getSelectedIndex());
+      final SearchResult sr = sbSearch.getResult(sbSearch.getSelectedIndex());
       sbSearch.setText(sr.getFile().getTrack().getName());
       ConfigurationManager.setProperty(ITechnicalStrings.CONF_ALARM_FILE, sr.getFile().getID());
-      sbSearch.popup.hide();
+      sbSearch.hidePopup();
     }
   }
 

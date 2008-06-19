@@ -40,7 +40,7 @@ public class TableTransferHandler extends TransferHandler implements ITechnicalS
 
   private JTable jtable;
 
-  public static int iSelectedRow = 0;
+  private static int iSelectedRow = 0;
 
   /** Constructor */
   public TableTransferHandler(JTable jtable) {
@@ -76,6 +76,10 @@ public class TableTransferHandler extends TransferHandler implements ITechnicalS
   @Override
   public int getSourceActions(JComponent c) {
     return COPY_OR_MOVE;
+  }
+
+  public static void setSelectedRow(int selectedRow) {
+    iSelectedRow = selectedRow;
   }
 
 }

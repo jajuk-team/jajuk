@@ -50,7 +50,7 @@ public class ShuffleModeAction extends ActionBase {
     ConfigurationManager.setProperty(CONF_STATE_SHUFFLE, Boolean.toString(!b));
 
     JajukJMenuBar.getInstance().setShuffleSelected(!b);
-    CommandJPanel.getInstance().jbRandom.setSelected(!b);
+    CommandJPanel.getInstance().setRandomSelected(!b);
     if (!b) { // enabled button
       FIFO.getInstance().shuffle(); // shuffle current selection
       // now make sure we can't have a single repeated file after a

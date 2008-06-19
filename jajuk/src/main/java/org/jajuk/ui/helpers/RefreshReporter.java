@@ -57,10 +57,10 @@ public class RefreshReporter {
   private long lRefreshDateStart;
 
   /** Number of new files found during refresh for stats */
-  public int iNbNewFiles;
+  private int iNbNewFiles;
 
   /** Number of corrupted files found during refresh for stats */
-  public int iNbCorruptedFiles;
+  private int iNbCorruptedFiles;
 
   public RefreshReporter(Device device) {
     this.device = device;

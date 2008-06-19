@@ -37,7 +37,7 @@ public class RestoreAllViewsAction extends ActionBase implements ITechnicalStrin
 
   private static final long serialVersionUID = 1L;
 
-  public static boolean fullRestore = false;
+  private static boolean fullRestore = false;
 
   RestoreAllViewsAction() {
     super(Messages.getString("JajukJMenuBar.26"), IconLoader.ICON_RESTORE_ALL_VIEWS, true);
@@ -74,5 +74,9 @@ public class RestoreAllViewsAction extends ActionBase implements ITechnicalStrin
       }
     }.start();
 
+  }
+
+  public static boolean isFullRestore() {
+    return fullRestore;
   }
 }

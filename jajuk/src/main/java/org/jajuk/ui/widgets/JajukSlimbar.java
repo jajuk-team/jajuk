@@ -535,7 +535,7 @@ public final class JajukSlimbar extends JFrame implements ITechnicalStrings, Obs
       @Override
       public Object construct() {
         if (!e.getValueIsAdjusting()) {
-          SearchResult sr = sbSearch.alResults.get(sbSearch.jlist.getSelectedIndex());
+          SearchResult sr = sbSearch.getResult(sbSearch.getSelectedIndex());
           try {
             // If user selected a file
             if (sr.getType() == SearchResultType.FILE) {
@@ -557,7 +557,7 @@ public final class JajukSlimbar extends JFrame implements ITechnicalStrings, Obs
       @Override
       public void finished() {
         if (!e.getValueIsAdjusting()) {
-          sbSearch.popup.hide();
+          sbSearch.hidePopup();
           requestFocusInWindow();
         }
       }

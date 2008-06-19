@@ -81,6 +81,7 @@ import org.jajuk.ui.helpers.TransferableTreeNode;
 import org.jajuk.ui.helpers.TreeRootElement;
 import org.jajuk.ui.helpers.TreeTransferHandler;
 import org.jajuk.ui.helpers.FontManager.JajukFont;
+import org.jajuk.ui.helpers.ItemMoveManager.MoveActions;
 import org.jajuk.ui.perspectives.PerspectiveManager;
 import org.jajuk.ui.widgets.InformationJPanel;
 import org.jajuk.ui.wizard.DeviceWizard;
@@ -835,8 +836,8 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
       UtilGUI.waiting();
       for (Item item : alSelected) {
         // Check if user made a global cancel
-        if (RefactorAction.bStopAll) {
-          RefactorAction.bStopAll = false;
+        if (RefactorAction.isStopAll()) {
+          RefactorAction.resetStopAll();
           return;
         }
         // If user selected a device, take associated directory
@@ -906,7 +907,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
       jmiPaste.setEnabled(true);
       jmenu.repaint();
     } else if (e.getSource() == jmiPaste) {
-      if ("Cut".equals(ItemMoveManager.getInstance().getAction())) {
+      if (MoveActions.CUT.equals(ItemMoveManager.getInstance().getAction())) {
         jmiPaste.setEnabled(false);
         jmenu.repaint();
       }

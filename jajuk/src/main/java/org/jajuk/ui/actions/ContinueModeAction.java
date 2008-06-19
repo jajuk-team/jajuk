@@ -51,10 +51,10 @@ public class ContinueModeAction extends ActionBase {
     ConfigurationManager.setProperty(CONF_STATE_CONTINUE, Boolean.toString(!b));
 
     JajukJMenuBar.getInstance().setContinueSelected(!b);
-    CommandJPanel.getInstance().jbContinue.setSelected(!b);
+    CommandJPanel.getInstance().setContinueSelected(!b);
 
     if (!b) { // enabled button
-      CommandJPanel.getInstance().jbContinue.setBorder(BorderFactory.createLoweredBevelBorder());
+      CommandJPanel.getInstance().setContinueBorder(BorderFactory.createLoweredBevelBorder());
       if (FIFO.isStopped()) {
         // if nothing playing, play next track if possible
         StackItem item = FIFO.getInstance().getLastPlayed();

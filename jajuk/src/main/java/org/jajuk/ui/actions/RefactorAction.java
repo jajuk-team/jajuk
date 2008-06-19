@@ -45,7 +45,7 @@ import org.jajuk.util.log.Log;
 
 public class RefactorAction implements ITechnicalStrings {
 
-  public static boolean bStopAll = false;
+  private static boolean bStopAll = false;
 
   private static String sFS = java.io.File.separator;
 
@@ -210,5 +210,13 @@ public class RefactorAction implements ITechnicalStrings {
           InformationJPanel.INFORMATIVE);
     }
 
+  }
+
+  public static boolean isStopAll() {
+    return bStopAll;
+  }
+  
+  public static void resetStopAll() {
+    bStopAll = false;
   }
 }

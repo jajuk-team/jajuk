@@ -77,14 +77,14 @@ public class SearchBox extends JTextField implements KeyListener {
   private static final int MIN_CRITERIA_LENGTH = 2;
 
   /** Search result */
-  public List<SearchResult> alResults;
+  private List<SearchResult> alResults;
 
   /** Typed string */
   private String sTyped;
 
-  public Popup popup;
+  private Popup popup;
 
-  public JList jlist;
+  private JList jlist;
 
   private long lDateTyped;
 
@@ -108,7 +108,7 @@ public class SearchBox extends JTextField implements KeyListener {
   /**
    * Display results as a jlabel with an icon
    */
-  class SearchListRenderer extends JPanel implements ListCellRenderer {
+  static class SearchListRenderer extends JPanel implements ListCellRenderer {
     private static final long serialVersionUID = 8975989658927794678L;
 
     public Component getListCellRendererComponent(JList list, Object value, int index,
@@ -197,9 +197,9 @@ public class SearchBox extends JTextField implements KeyListener {
       if (sTyped.length() >= MIN_CRITERIA_LENGTH) {
         // second test to get sure user didn't
         // typed before entering this method
-        Set<SearchResult> tsResu = TrackManager.getInstance().search(sTyped.toString());
+        Set<SearchResult> tsResu = TrackManager.getInstance().search(sTyped);
         // Add web radio names
-        tsResu.addAll(WebRadioManager.getInstance().search(sTyped.toString()));
+        tsResu.addAll(WebRadioManager.getInstance().search(sTyped));
         if (tsResu.size() > 0) {
           DefaultListModel model = new DefaultListModel();
           alResults = new ArrayList<SearchResult>();
@@ -256,4 +256,15 @@ public class SearchBox extends JTextField implements KeyListener {
     }
   }
 
+  public int getSelectedIndex() {
+    return jlist.getSelectedIndex();
+  }
+  
+  public SearchResult getResult(final int index) {
+    return alResults.get(index);
+  }
+  
+  public void hidePopup() {
+    popup.hide();
+  }
 }

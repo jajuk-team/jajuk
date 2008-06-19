@@ -75,6 +75,7 @@ import javax.swing.JToolBar;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
+import javax.swing.border.Border;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionEvent;
@@ -140,13 +141,13 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
 
   DropDownButton jbIncRate;
 
-  public JajukToggleButton jbRepeat;
+  private JajukToggleButton jbRepeat;
 
-  public JajukToggleButton jbRandom;
+  private JajukToggleButton jbRandom;
 
-  public JajukToggleButton jbContinue;
+  private JajukToggleButton jbContinue;
 
-  public JajukToggleButton jbIntro;
+  private JajukToggleButton jbIntro;
 
   JToolBar jtbSpecial;
 
@@ -198,7 +199,7 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
 
   JSlider jsVolume;
 
-  public JajukToggleButton jbMute;
+  private JajukToggleButton jbMute;
 
   // variables declaration
   /** Repeat mode flag */
@@ -682,7 +683,7 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
       @Override
       public Object construct() {
         if (!e.getValueIsAdjusting()) {
-          SearchResult sr = sbSearch.alResults.get(sbSearch.jlist.getSelectedIndex());
+          SearchResult sr = sbSearch.getResult(sbSearch.getSelectedIndex());
           try {
             // If user selected a file
             if (sr.getType() == SearchResultType.FILE) {
@@ -704,7 +705,7 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
       @Override
       public void finished() {
         if (!e.getValueIsAdjusting()) {
-          sbSearch.popup.hide();
+          sbSearch.hidePopup();
           requestFocusInWindow();
         }
       }
@@ -1072,4 +1073,27 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
     }
   }
 
+  public void setRepeatSelected(final boolean b) {
+    this.jbRepeat.setSelected(b);
+  }
+
+  public void setRandomSelected(final boolean b) {
+    this.jbRandom.setSelected(b);
+  }
+
+  public void setContinueSelected(final boolean b) {
+    this.jbContinue.setSelected(b);
+  }
+
+  public void setContinueBorder(final Border border) {
+    this.jbContinue.setBorder(border);
+  }
+  
+  public void setIntroSelected(final boolean b) {
+    this.jbIntro.setSelected(b);
+  }
+
+//  public void setMuteSelected(final boolean b) {
+//    this.jbMute.setSelected(b);
+//  }
 }

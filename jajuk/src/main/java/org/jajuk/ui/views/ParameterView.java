@@ -670,7 +670,9 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
         try {
           final java.io.File fWorkspace = new java.io.File(psJajukWorkspace.getUrl());
           if (!fWorkspace.exists()) {
-            fWorkspace.mkdirs();
+            if(!fWorkspace.mkdirs()) {
+              Log.warn("Could not create directory " + fWorkspace.toString());
+            }
           }
           if (!fWorkspace.canRead()) {
             throw new Exception("Cannot write to proposed Workspace");
@@ -1806,10 +1808,10 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
    */
   public void valueChanged(final ListSelectionEvent e) {
     if (!e.getValueIsAdjusting()) {
-      final SearchResult sr = sbSearch.alResults.get(sbSearch.jlist.getSelectedIndex());
+      final SearchResult sr = sbSearch.getResult(sbSearch.getSelectedIndex());
       sbSearch.setText(sr.getFile().getTrack().getName());
       ConfigurationManager.setProperty(ITechnicalStrings.CONF_STARTUP_FILE, sr.getFile().getID());
-      sbSearch.popup.hide();
+      sbSearch.hidePopup();
     }
   }
 

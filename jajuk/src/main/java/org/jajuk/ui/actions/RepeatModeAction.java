@@ -52,7 +52,7 @@ public class RepeatModeAction extends ActionBase {
     ConfigurationManager.setProperty(CONF_STATE_REPEAT, Boolean.toString(!b));
 
     JajukJMenuBar.getInstance().setRepeatSelected(!b);
-    CommandJPanel.getInstance().jbRepeat.setSelected(!b);
+    CommandJPanel.getInstance().setRepeatSelected(!b);
 
     if (!b) { // enabled button
       // if FIFO is not void, repeat over current item
