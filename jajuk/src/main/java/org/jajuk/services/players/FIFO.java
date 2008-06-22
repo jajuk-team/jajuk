@@ -75,7 +75,7 @@ public final class FIFO implements ITechnicalStrings {
   private volatile List<StackItem> alPlanned;
 
   /** Stop flag* */
-  private static volatile boolean bStop = true;
+  private volatile boolean bStop = true;
 
   /** Self instance */
   private static FIFO fifo = null;
@@ -465,6 +465,7 @@ public final class FIFO implements ITechnicalStrings {
       ObservationManager.notify(new Event(JajukEvents.EVENT_PLAYER_PLAY));
       // set was_playing state
       ConfigurationManager.setProperty(CONF_STATE_WAS_PLAYING, TRUE);
+
       File fCurrent = getCurrentFile();
       boolean bPlayOK = false;
       if (bFirstFile && !ConfigurationManager.getBoolean(CONF_STATE_INTRO)
@@ -494,7 +495,7 @@ public final class FIFO implements ITechnicalStrings {
           pDetails.put(DETAIL_OLD, itemLast);
         }
         pDetails.put(DETAIL_CURRENT_FILE_ID, fCurrent.getID());
-        pDetails.put(DETAIL_CURRENT_DATE, new Long(System.currentTimeMillis()));
+        pDetails.put(DETAIL_CURRENT_DATE, Long.valueOf(System.currentTimeMillis()));
         ObservationManager.notify(new Event(JajukEvents.EVENT_FILE_LAUNCHED, pDetails));
         // save the last played track (even files in error are stored here as
         // we need this for computes next track to launch after an error)
@@ -918,7 +919,7 @@ public final class FIFO implements ITechnicalStrings {
    * @return Returns the bStop.
    */
   public static boolean isStopped() {
-    return bStop;
+    return getInstance().bStop;
   }
 
   /**

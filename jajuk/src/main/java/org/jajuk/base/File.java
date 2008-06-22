@@ -329,18 +329,18 @@ public class File extends PhysicalItem implements Comparable<File>, ITechnicalSt
     // rebuild any
     StringBuilder sb = new StringBuilder(100);
     File file = this;
-    Track track = file.getTrack();
+    Track lTrack = file.getTrack();
     sb.append(super.getAny()); // add all files-based properties
     // now add others properties
     sb.append(file.getDirectory().getDevice().getName());
-    sb.append(track.getName());
-    sb.append(track.getStyle().getName2());
-    sb.append(track.getAuthor().getName2());
-    sb.append(track.getAlbum().getName2());
-    sb.append(track.getDuration());
-    sb.append(track.getRate());
-    sb.append(track.getValue(XML_TRACK_COMMENT));// custom properties now
-    sb.append(track.getValue(XML_TRACK_ORDER));// custom properties now
+    sb.append(lTrack.getName());
+    sb.append(lTrack.getStyle().getName2());
+    sb.append(lTrack.getAuthor().getName2());
+    sb.append(lTrack.getAlbum().getName2());
+    sb.append(lTrack.getDuration());
+    sb.append(lTrack.getRate());
+    sb.append(lTrack.getValue(XML_TRACK_COMMENT));// custom properties now
+    sb.append(lTrack.getValue(XML_TRACK_ORDER));// custom properties now
     return sb.toString();
   }
 

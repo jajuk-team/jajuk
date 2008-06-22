@@ -284,9 +284,11 @@ public class DeviceView extends ViewAdapter implements IView, ITechnicalStrings,
       dw.setVisible(true);
       return;
     }
+    
     if (diSelected == null) { // test a device is selected
       return;
     }
+    
     if (ae.getActionCommand().equals(JajukEvents.EVENT_DEVICE_DELETE.toString())) {
       DeviceManager.getInstance().removeDevice(diSelected.getDevice());
       jpDevices.remove(diSelected);
@@ -326,9 +328,9 @@ public class DeviceView extends ViewAdapter implements IView, ITechnicalStrings,
           }
         }
       }.start();
-    } else if (ae.getActionCommand().equals(JajukEvents.EVENT_WIZARD.toString())) {
+    } /*else if (ae.getActionCommand().equals(JajukEvents.EVENT_WIZARD.toString())) {
 
-    }
+    }*/
   }
 
   /*

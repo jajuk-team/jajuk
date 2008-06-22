@@ -323,11 +323,11 @@ public interface ITechnicalStrings {
   String CLI_TEST = "test";
 
   // Tells jajuk to use Power Pack behavior
-  final String CLI_POWER_PACK = "powerpack";
+  String CLI_POWER_PACK = "powerpack";
 
-  final String FREE_MUSIC_DIR = "Music";
+  String FREE_MUSIC_DIR = "Music";
 
-  final String FREE_MUSIC_DEVICE_NAME = "Music-jukeboxPowerPack";
+  String FREE_MUSIC_DEVICE_NAME = "Music-jukeboxPowerPack";
 
   // players impls
   String PLAYER_IMPL_JAVALAYER = "org.jajuk.services.players.JavaLayerPlayerImpl";

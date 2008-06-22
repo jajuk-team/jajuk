@@ -128,7 +128,8 @@ public final class ThumbnailsMaker implements ITechnicalStrings {
     // don't figured out so far how to
     // build proper JAR path. We keep things like it for the moment, pictures
     // are built in the main JVM instead of separated ones
-    final String jarPath = new File(UtilSystem.getJarLocation(Main.class).toURI()).getAbsolutePath()
+    final String jarPath = new File(UtilSystem.getJarLocation(Main.class).toURI())
+        .getAbsolutePath()
         + File.separator + "jajuk.jar";
     final List<String> commands = new ArrayList<String>(10);
     commands.add(jvmPath);
@@ -172,8 +173,7 @@ public final class ThumbnailsMaker implements ITechnicalStrings {
    *          size: thumb size like 100, or 300
    */
   public static void main(final String[] args) {
-    new ThumbnailsMaker(Integer.parseInt(args[0]), Boolean.parseBoolean(args[1]), args[2]
-        .toString());
+    new ThumbnailsMaker(Integer.parseInt(args[0]), Boolean.parseBoolean(args[1]), args[2]);
   }
 
   private int size = 0;

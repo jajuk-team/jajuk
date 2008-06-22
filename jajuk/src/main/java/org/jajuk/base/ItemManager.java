@@ -257,13 +257,12 @@ public abstract class ItemManager implements ITechnicalStrings {
       while (it.hasNext()) {
         Item item = it.next();
         // check if this item still maps some tracks
-        if (!hsItems.contains(item)) {
-          // For styles, keep it even if none track uses it if it is a
-          // default style
-          if (!(this instanceof StyleManager && !StyleManager.getInstance().getStylesList()
-              .contains(item.getName()))) {
-            it.remove();
-          }
+        if ((!hsItems.contains(item)) &&
+        // For styles, keep it even if none track uses it if it is a
+            // default style
+            (!(this instanceof StyleManager && !StyleManager.getInstance().getStylesList()
+                .contains(item.getName())))) {
+          it.remove();
         }
       }
     }
@@ -361,10 +360,10 @@ public abstract class ItemManager implements ITechnicalStrings {
             (String) oValue);
       }
     } else if (itemToChange instanceof Directory) {
-      if (XML_NAME.equals(sKey)) { // file name
+      if (!XML_NAME.equals(sKey)) { // file name
         // TBI newItem =
         // DirectoryManager.getInstance().changeDirectoryName((Directory)itemToChange,(String)oValue);
-      } else { // others properties
+      //} else { // others properties
         itemToChange.setProperty(sKey, oValue);
       }
     } else if (itemToChange instanceof Device) {

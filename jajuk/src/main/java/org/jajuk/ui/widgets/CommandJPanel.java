@@ -365,7 +365,8 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
     // make it not floatable as this behavior is managed by vldocking
     jtbModes.setFloatable(false);
     jtbModes.setRollover(true);
-    jbRepeat = new JajukToggleButton(ActionManager.getAction(JajukActions.REPEAT_MODE_STATUS_CHANGE));
+    jbRepeat = new JajukToggleButton(ActionManager
+        .getAction(JajukActions.REPEAT_MODE_STATUS_CHANGE));
     jbRepeat.setSelected(ConfigurationManager.getBoolean(CONF_STATE_REPEAT));
     jbRandom = new JajukToggleButton(ActionManager
         .getAction(JajukActions.SHUFFLE_MODE_STATUS_CHANGED));
@@ -762,7 +763,7 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
           ActionManager.getAction(PREVIOUS_ALBUM).setEnabled(bQueueNotVoid);
           ActionManager.getAction(PREVIOUS_TRACK).setEnabled(bQueueNotVoid);
           ActionManager.getAction(NEXT_TRACK).setEnabled(bQueueNotVoid);
-          
+
           ActionManager.getAction(PLAY_PAUSE_TRACK).setIcon(IconLoader.ICON_PLAY);
           ActionManager.getAction(PLAY_PAUSE_TRACK).setName(Messages.getString("JajukWindow.12"));
           ActionManager.getAction(STOP_TRACK).setEnabled(false);
@@ -881,11 +882,10 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
           ActionManager.getAction(NEXT_TRACK).setEnabled(true);
           ActionManager.getAction(STOP_TRACK).setEnabled(true);
           populateWebRadios();
-        } else if (JajukEvents.EVENT_MUTE_STATE.equals(event.getSubject())) {
-          // Update mute icon look when changing the volume
-          if (!Player.isMuted()) {
-            MuteAction.setVolumeIcon(getCurrentVolume());
-          }
+        } else if ((JajukEvents.EVENT_MUTE_STATE.equals(event.getSubject())) &&
+        // Update mute icon look when changing the volume
+            (!Player.isMuted())) {
+          MuteAction.setVolumeIcon(getCurrentVolume());
         }
 
       }
@@ -1088,12 +1088,12 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
   public void setContinueBorder(final Border border) {
     this.jbContinue.setBorder(border);
   }
-  
+
   public void setIntroSelected(final boolean b) {
     this.jbIntro.setSelected(b);
   }
 
-//  public void setMuteSelected(final boolean b) {
-//    this.jbMute.setSelected(b);
-//  }
+  // public void setMuteSelected(final boolean b) {
+  // this.jbMute.setSelected(b);
+  // }
 }

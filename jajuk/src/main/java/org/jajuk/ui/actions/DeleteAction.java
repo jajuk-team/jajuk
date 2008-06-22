@@ -54,8 +54,8 @@ public class DeleteAction extends ActionBase {
   private static final long serialVersionUID = 1L;
 
   DeleteAction() {
-    super(Messages.getString("FilesTreeView.7"), IconLoader.ICON_DELETE, KeyStroke.getKeyStroke(
-        "DELETE"), true, false);
+    super(Messages.getString("FilesTreeView.7"), IconLoader.ICON_DELETE, KeyStroke
+        .getKeyStroke("DELETE"), true, false);
     setShortDescription(Messages.getString("FilesTreeView.7"));
   }
 
@@ -82,19 +82,18 @@ public class DeleteAction extends ActionBase {
         }
       } else if (item instanceof Directory) {
         alDirs.add((Directory) item);
-      } else if (item instanceof Playlist) {
-        if (ConfigurationManager.getBoolean(CONF_CONFIRMATIONS_DELETE_FILE)) {
-          // file delete confirmation
-          Playlist plf = (Playlist) item;
-          String sFileToDelete = plf.getAbsolutePath();
-          String sMessage = Messages.getString("Confirmation_delete") + "\n" + sFileToDelete;
-          int i = Messages.getChoice(sMessage, JOptionPane.YES_NO_CANCEL_OPTION,
-              JOptionPane.WARNING_MESSAGE);
-          if (i == JOptionPane.YES_OPTION) {
-            PlaylistManager.getInstance().removePlaylistFile(plf);
-            // requires device refresh
-            ObservationManager.notify(new Event(JajukEvents.EVENT_DEVICE_REFRESH));
-          }
+      } else if ((item instanceof Playlist)
+          && (ConfigurationManager.getBoolean(CONF_CONFIRMATIONS_DELETE_FILE))) {
+        // file delete confirmation
+        Playlist plf = (Playlist) item;
+        String sFileToDelete = plf.getAbsolutePath();
+        String sMessage = Messages.getString("Confirmation_delete") + "\n" + sFileToDelete;
+        int i = Messages.getChoice(sMessage, JOptionPane.YES_NO_CANCEL_OPTION,
+            JOptionPane.WARNING_MESSAGE);
+        if (i == JOptionPane.YES_OPTION) {
+          PlaylistManager.getInstance().removePlaylistFile(plf);
+          // requires device refresh
+          ObservationManager.notify(new Event(JajukEvents.EVENT_DEVICE_REFRESH));
         }
       }
     }
@@ -180,17 +179,17 @@ public class DeleteAction extends ActionBase {
       // Ask if a confirmation is required
       if (ConfigurationManager.getBoolean(CONF_CONFIRMATIONS_DELETE_FILE)) {
         String sFiles = "";
-        int Count = 0;
+        int count = 0;
         for (Directory d : alDirs) {
           sFiles += d.getName() + "\n";
-          Count += d.getFilesRecursively().size();
+          count += d.getFilesRecursively().size();
           for (File f : d.getFilesRecursively()) {
             sFiles += "  + " + f.getName() + "\n";
           }
 
         }
         int iResu = Messages.getChoice(Messages.getString("Confirmation_delete_dirs") + " : \n"
-            + sFiles + "\n" + Count + " " + Messages.getString("Confirmation_file_number"),
+            + sFiles + "\n" + count + " " + Messages.getString("Confirmation_file_number"),
             JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);
         if (iResu != JOptionPane.YES_OPTION) {
           return;

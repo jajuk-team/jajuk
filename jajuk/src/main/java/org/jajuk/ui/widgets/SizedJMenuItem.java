@@ -56,11 +56,11 @@ public class SizedJMenuItem extends JMenuItem {
    * @param height
    *          fixed icon height
    */
-  public SizedJMenuItem(Action action, int width, int height) {
-    super(action);
-    //this.width = width;
-    //this.height = height;
-  }
+//  public SizedJMenuItem(Action action, int width, int height) {
+//    super(action);
+//    //this.width = width;
+//    //this.height = height;
+//  }
 
   @Override
   public void setIcon(Icon icon) {

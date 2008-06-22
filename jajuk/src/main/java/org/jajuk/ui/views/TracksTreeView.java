@@ -237,11 +237,13 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener, 
     treeModel.addTreeModelListener(new TreeModelListener() {
 
       public void treeNodesChanged(TreeModelEvent e) {
-        DefaultMutableTreeNode node;
-        node = (DefaultMutableTreeNode) (e.getTreePath().getLastPathComponent());
+        DefaultMutableTreeNode node = 
+          (DefaultMutableTreeNode) (e.getTreePath().getLastPathComponent());
 
         if(node != null) {
           int index = e.getChildIndices()[0];
+          // FIXME:  the assignment to node is useless here, 
+          // what is the point of this whole method??
           node = (DefaultMutableTreeNode) (node.getChildAt(index));
         }
       }
@@ -868,7 +870,7 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener, 
   public void cleanTree() {
     AuthorNode amisc = new AuthorNode(AuthorManager.getInstance().registerAuthor("Misc"));
 
-    DefaultMutableTreeNode authorNode = new DefaultMutableTreeNode();
+    DefaultMutableTreeNode authorNode = null;
     DefaultMutableTreeNode albumNode = new DefaultMutableTreeNode();
     AlbumNode misc;
     Enumeration eAuthor = top.children();

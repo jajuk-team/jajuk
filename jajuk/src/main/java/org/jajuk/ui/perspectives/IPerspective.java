@@ -37,14 +37,14 @@ public interface IPerspective {
    */
   String getID();
 
-  abstract String getDesc();
+  String getDesc();
 
   /**
    * Return the icon
    * 
    * @return perspective icon
    */
-  abstract ImageIcon getIcon();
+  ImageIcon getIcon();
 
   /**
    * Set icon
@@ -83,5 +83,4 @@ public interface IPerspective {
    * As been selected flag
    */
   void setAsBeenSelected(boolean b);
-
 }
