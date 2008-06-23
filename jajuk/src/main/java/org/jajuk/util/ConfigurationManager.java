@@ -182,7 +182,7 @@ public final class ConfigurationManager implements ITechnicalStrings {
     // -1 : max available buffer set default trace level, debug in debug
     // mode and warning in normal mode
     defaults.put(CONF_AUDIO_BUFFER_SIZE, "-1");
-    if (Main.bIdeMode) {
+    if (Main.isIdeMode()) {
       defaults.put(CONF_OPTIONS_LOG_LEVEL, Integer.toString(Log.DEBUG));
     } else {
       defaults.put(CONF_OPTIONS_LOG_LEVEL, Integer.toString(Log.WARNING));

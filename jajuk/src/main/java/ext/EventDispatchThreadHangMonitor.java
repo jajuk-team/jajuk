@@ -82,7 +82,7 @@ public final class EventDispatchThreadHangMonitor extends EventQueue {
         return;
       }
       // check if elasped time is not exceed (used only in test mode)
-      if (Main.bTestMode && timeSoFar() > UNREASONABLE_DISPATCH_DURATION_MS_TEST) {
+      if (Main.isTestMode() && timeSoFar() > UNREASONABLE_DISPATCH_DURATION_MS_TEST) {
         reportHang();
       }
     }

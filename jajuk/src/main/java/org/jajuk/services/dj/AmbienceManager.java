@@ -84,7 +84,7 @@ public final class AmbienceManager implements ITechnicalStrings, Observer {
    */
   public void load() {
     // if first startup, define default ambiences
-    if (Main.bFirstSession) {
+    if (Main.isFirstSession()) {
       createDefaultAmbiences();
       return;
     }

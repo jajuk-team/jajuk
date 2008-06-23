@@ -663,7 +663,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     }
 
     // If jajuk home changes, write new path in bootstrap file
-    if ((Main.workspace != null) && !Main.workspace.equals(psJajukWorkspace.getUrl())) {
+    if ((Main.getWorkspace() != null) && !Main.getWorkspace().equals(psJajukWorkspace.getUrl())) {
       // Check workspace directory
       if (!psJajukWorkspace.getUrl().trim().equals("")) {
         // Check workspace presence and create it if required
@@ -692,18 +692,18 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
         // bPreviousPathExist is true if destination workspace already exists,
         // it is then only a workspace switch
         if (!new java.io.File(psJajukWorkspace.getUrl() + '/'
-            + (Main.bTestMode ? ".jajuk_test_" + ITechnicalStrings.TEST_VERSION : ".jajuk"))
+            + (Main.isTestMode() ? ".jajuk_test_" + ITechnicalStrings.TEST_VERSION : ".jajuk"))
             .exists()) {
           UtilGUI.waiting();
           final java.io.File from = UtilSystem.getConfFileByPath("");
           final java.io.File dest = new java.io.File(newWorkspace + '/'
-              + (Main.bTestMode ? ".jajuk_test_" + ITechnicalStrings.TEST_VERSION : ".jajuk"));
+              + (Main.isTestMode() ? ".jajuk_test_" + ITechnicalStrings.TEST_VERSION : ".jajuk"));
           UtilSystem.copyRecursively(from, dest);
           bPreviousPathExist = false;
           // Change the workspace so the very last conf (like current track)
           // will be saved directly to target workspace. We don't do this if the
           // workspace already exist to avoir overwritting other configuration.
-          Main.workspace = psJajukWorkspace.getUrl();
+          Main.setWorkspace(psJajukWorkspace.getUrl());
         }
         // OK, now write down the bootstrap file if
         // everything's OK
@@ -1248,7 +1248,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     jlJajukWorkspace = new JLabel(Messages.getString("ParameterView.207"));
     jlJajukWorkspace.setToolTipText(Messages.getString("ParameterView.208"));
     // Directory selection
-    psJajukWorkspace = new PathSelector(Main.workspace);
+    psJajukWorkspace = new PathSelector(Main.getWorkspace());
     psJajukWorkspace.setToolTipText(Messages.getString("ParameterView.208"));
     jcbCheckUpdates = new JCheckBox(Messages.getString("ParameterView.234"));
     jcbCheckUpdates.setToolTipText(Messages.getString("ParameterView.234"));

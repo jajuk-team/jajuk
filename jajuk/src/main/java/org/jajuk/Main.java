@@ -121,16 +121,16 @@ public final class Main implements ITechnicalStrings {
   private static JPanel jpFrame;
 
   /** specific perspective panel */
-  public static JPanel perspectivePanel;
+  private static JPanel perspectivePanel;
 
   /** splash screen */
   private static JSplash sc;
 
   /** Debug mode */
-  public static boolean bIdeMode = false;
+  private static boolean bIdeMode = false;
 
   /** Test mode */
-  public static boolean bTestMode = false;
+  private static boolean bTestMode = false;
 
   /** Jukebox power pack flag* */
   private static boolean bPowerPack = false;
@@ -139,7 +139,7 @@ public final class Main implements ITechnicalStrings {
    * Thumb maker flag, true if this class is executed from the Thumb maker
    * process *
    */
-  public static boolean bThumbMaker = false;
+  private static boolean bThumbMaker = false;
 
   /** UI launched flag */
   private static boolean bUILauched = false;
@@ -151,22 +151,22 @@ public final class Main implements ITechnicalStrings {
   private static boolean bUpgraded = false;
 
   /** Is it the first session ever ? */
-  public static boolean bFirstSession = false;
+  private static boolean bFirstSession = false;
 
   /** Does this session follows a crash recover ? */
   private static boolean bCrashRecover = false;
 
   /** Lock used to trigger a first time wizard device creation and refresh * */
-  public static short[] canLaunchRefresh = new short[0];
+  private static short[] canLaunchRefresh = new short[0];
 
   /** Lock used to trigger first time wizard window close* */
-  public static short[] isFirstTimeWizardClosed = new short[0];
+  private static short[] isFirstTimeWizardClosed = new short[0];
 
   /** Mplayer state */
   private static UtilSystem.MPlayerStatus mplayerStatus;
 
   /** Workspace PATH* */
-  public static String workspace;
+  private static String workspace;
 
   /** DeviceTypes Identification strings */
   private static final String[] DEVICE_TYPES = { "Device_type.directory", "Device_type.file_cd",
@@ -208,25 +208,9 @@ public final class Main implements ITechnicalStrings {
             + JVM.current());
         System.exit(2); // error code 2 : wrong JVM
       }
-      // set command line options
-      for (final String element : args) {
-        // Tells jajuk it is inside the IDE (useful to find right
-        // location for images and jar resources)
-        if (element.equals("-" + CLI_IDE)) {
-          bIdeMode = true;
-        }
-        // Tells jajuk to use a .jajuk_test repository
-        // The information can be given from CLI using
-        // -test=[test|notest] option
-        // or using the "test" env variable
-        final String test = System.getProperty("test");
-        if (element.equals("-" + CLI_TEST) || ((test != null) && test.equals("test"))) {
-          bTestMode = true;
-        }
-        if (element.equals("-" + CLI_POWER_PACK)) {
-          bPowerPack = true;
-        }
-      }
+      // set flags from command line options
+      handleCommandline(args);
+
       // perform initial checkups and create needed files
       initialCheckups();
 
@@ -292,17 +276,7 @@ public final class Main implements ITechnicalStrings {
       DownloadManager.setDefaultProxySettings();
 
       // Registers ItemManager managers
-      ItemManager.registerItemManager(org.jajuk.base.Album.class, AlbumManager.getInstance());
-      ItemManager.registerItemManager(org.jajuk.base.Author.class, AuthorManager.getInstance());
-      ItemManager.registerItemManager(org.jajuk.base.Device.class, DeviceManager.getInstance());
-      ItemManager.registerItemManager(org.jajuk.base.File.class, FileManager.getInstance());
-      ItemManager.registerItemManager(org.jajuk.base.Directory.class, DirectoryManager
-          .getInstance());
-      ItemManager.registerItemManager(org.jajuk.base.Playlist.class, PlaylistManager.getInstance());
-      ItemManager.registerItemManager(org.jajuk.base.Style.class, StyleManager.getInstance());
-      ItemManager.registerItemManager(org.jajuk.base.Track.class, TrackManager.getInstance());
-      ItemManager.registerItemManager(org.jajuk.base.Type.class, TypeManager.getInstance());
-      ItemManager.registerItemManager(org.jajuk.base.Year.class, YearManager.getInstance());
+      registerItemManagers();
 
       // Upgrade configuration from previous releases
       UpgradeManager.upgradeStep1();
@@ -327,7 +301,9 @@ public final class Main implements ITechnicalStrings {
       sessionIdFile = UtilSystem.getConfFileByPath(FILE_SESSIONS + '/' + sHostname + '_'
           + System.getProperty("user.name") + '_'
           + new SimpleDateFormat("yyyyMMdd-kk:mm:ss").format(UtilSystem.TODAY));
-      sessionIdFile.mkdir();
+      if(!sessionIdFile.mkdir()) {
+        Log.warn("Could not create directory for session: " + sessionIdFile);
+      }
 
       // Register device types
       for (final String deviceTypeId : DEVICE_TYPES) {
@@ -366,7 +342,7 @@ public final class Main implements ITechnicalStrings {
       startupAsyncAfterCollectionLoad();
 
       // Auto mount devices, freeze for SMB drives
-      // if network is not reacheable
+      // if network is not reachable
       // Do not start this if first session, it is causes concurrency with
       // first refresh thread
       if (!bFirstSession) {
@@ -420,12 +396,58 @@ public final class Main implements ITechnicalStrings {
       error.printStackTrace();
       Log.error(106, error);
       ExitService.exit(1);
-    } finally { // make sure to close splashscreen in all cases (ie if
-      // UI is not started)
+    } finally { // make sure to close splashscreen in all cases 
+      // (i.e. if UI is not started)
       if (sc != null) {
         sc.setProgress(100);
         sc.splashOff();
         sc = null;
+      }
+    }
+  }
+
+  /** Register all the different managers for the types of items that we know about
+   * 
+   */
+  private static void registerItemManagers() {
+    ItemManager.registerItemManager(org.jajuk.base.Album.class, AlbumManager.getInstance());
+    ItemManager.registerItemManager(org.jajuk.base.Author.class, AuthorManager.getInstance());
+    ItemManager.registerItemManager(org.jajuk.base.Device.class, DeviceManager.getInstance());
+    ItemManager.registerItemManager(org.jajuk.base.File.class, FileManager.getInstance());
+    ItemManager.registerItemManager(org.jajuk.base.Directory.class, DirectoryManager
+        .getInstance());
+    ItemManager.registerItemManager(org.jajuk.base.Playlist.class, PlaylistManager.getInstance());
+    ItemManager.registerItemManager(org.jajuk.base.Style.class, StyleManager.getInstance());
+    ItemManager.registerItemManager(org.jajuk.base.Track.class, TrackManager.getInstance());
+    ItemManager.registerItemManager(org.jajuk.base.Type.class, TypeManager.getInstance());
+    ItemManager.registerItemManager(org.jajuk.base.Year.class, YearManager.getInstance());
+  }
+
+  /** Walks through the commandline arguments and sets flags for any
+   * one that we recognize.
+   * 
+   * @param args The list of commandline arguments that is passed to main()
+   */
+  private static void handleCommandline(final String[] args) {
+    // walk through all arguments and check if there is one that we recognize
+    for (final String element : args) {
+      // Tells jajuk it is inside the IDE (useful to find right
+      // location for images and jar resources)
+      if (element.equals("-" + CLI_IDE)) {
+        bIdeMode = true;
+      }
+      // Tells jajuk to use a .jajuk_test repository
+      // The information can be given from CLI using
+      // -test=[test|notest] option
+      // or using the "test" env variable
+      final String test = System.getProperty("test");
+      if (element.equals("-" + CLI_TEST) || ((test != null) && test.equals("test"))) {
+
+        bTestMode = true;
+      }
+      
+      if (element.equals("-" + CLI_POWER_PACK)) {
+        bPowerPack = true;
       }
     }
   }
@@ -452,7 +474,7 @@ public final class Main implements ITechnicalStrings {
             .canRead()) {
           Main.workspace = sPath;
         }
-      } catch (final Exception e) {
+      } catch (final IOException e) {
         System.out.println("Cannot read bootstrap file, using ~ directory");
         Main.workspace = System.getProperty("user.home");
       }
@@ -483,7 +505,9 @@ public final class Main implements ITechnicalStrings {
     // check for jajuk directory
     final File fWorkspace = new File(workspace);
     if (!fWorkspace.exists()) {
-      fWorkspace.mkdirs(); // create the directory if it doesn't exist
+      if(!fWorkspace.mkdirs()) { // create the directory if it doesn't exist
+        Log.warn("Could not create directory " + fWorkspace.toString());
+      }
     }
     // check for image cache presence and create the workspace/.jajuk
     // directory
@@ -494,7 +518,9 @@ public final class Main implements ITechnicalStrings {
       // Empty cache
       final File[] cacheFiles = fCache.listFiles();
       for (final File element : cacheFiles) {
-        element.delete();
+        if(!element.delete()) {
+          Log.warn("Could not delete file " + element.toString());
+        }          
       }
     }
 
@@ -621,7 +647,9 @@ public final class Main implements ITechnicalStrings {
             // make sure to delete corrupted mplayer in case of
             // download problem
             if (fMPlayer.length() != MPLAYER_EXE_SIZE) {
-              fMPlayer.delete();
+              if(!fMPlayer.delete()) {
+                Log.warn("Could not delete file " + fMPlayer);
+              }
               mplayerStatus = UtilSystem.MPlayerStatus.MPLAYER_STATUS_JNLP_DOWNLOAD_PBM;
             }
           } catch (IOException e) {
@@ -696,7 +724,9 @@ public final class Main implements ITechnicalStrings {
     // Create concurrent session directory if needed
     final File sessions = UtilSystem.getConfFileByPath(FILE_SESSIONS);
     if (!sessions.exists()) {
-      sessions.mkdir();
+      if(!sessions.mkdir()) {
+        Log.warn("Could not create directory " + sessions.toString());
+      }
     }
     // Check for concurrent session
     final File[] files = sessions.listFiles();
@@ -728,7 +758,9 @@ public final class Main implements ITechnicalStrings {
     boolean bParsingOK = true;
     try {
       if (fCollectionExitProof.exists()) {
-        fCollectionExitProof.delete(); // delete this file created just
+        if(!fCollectionExitProof.delete()) { // delete this file created just
+          Log.warn("Could not delete file " + fCollectionExitProof.toString());
+        }
         // after collection exit commit
         Collection.load(UtilSystem.getConfFileByPath(FILE_COLLECTION));
       } else {
@@ -1162,4 +1194,58 @@ public final class Main implements ITechnicalStrings {
     return sessionIdFile;
   }
 
+  public static JPanel getPerspectivePanel() {
+    return perspectivePanel;
+  }
+
+  public static boolean isIdeMode() {
+    return bIdeMode;
+  }
+
+  public static boolean isTestMode() {
+    return bTestMode;
+  }
+
+  public static boolean isFirstSession() {
+    return bFirstSession;
+  }
+
+  public static String getWorkspace() {
+    return workspace;
+  }
+  
+  public static void setWorkspace(String workspace) {
+    Main.workspace = workspace;
+  }
+
+  public static void initializeFromThumbnailsMaker(final boolean bTest, 
+      final String workspace) {
+    Main.bTestMode = bTest;
+    Main.workspace = workspace;
+    Main.bThumbMaker = true;
+    
+  }
+
+  /** Notify the system about the first time wizard being closed.
+   * 
+   */
+  public static void notifyFirstTimeWizardClosed() {
+    synchronized (Main.isFirstTimeWizardClosed) {
+      Main.isFirstTimeWizardClosed.notify();
+    }
+  }
+
+  /**
+   * 
+   */
+  public static void waitForLaunchRefresh() {
+    synchronized (Main.canLaunchRefresh) {
+      try {
+        Main.canLaunchRefresh.wait();
+      } catch (final InterruptedException e) {
+        Log.error(e);
+      }
+    }
+  }
 }
+ 

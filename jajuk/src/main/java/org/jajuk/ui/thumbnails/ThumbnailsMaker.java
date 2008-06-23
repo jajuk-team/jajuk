@@ -145,7 +145,7 @@ public final class ThumbnailsMaker implements ITechnicalStrings {
       cp += element.getAbsolutePath() + ThumbnailsMaker.getJarSeparator();
     }
     // If we are not in dev, add jajuk jar itself to the classpath
-    if (!Main.bIdeMode) {
+    if (!Main.isIdeMode()) {
       cp += ThumbnailsMaker.getJarSeparator() + jarPath;
     }
     // remove last separator
@@ -157,9 +157,9 @@ public final class ThumbnailsMaker implements ITechnicalStrings {
     // Add size as a program argument
     commands.add(Integer.toString(size));
     // Add the test status
-    commands.add(Boolean.toString(Main.bTestMode));
+    commands.add(Boolean.toString(Main.isTestMode()));
     // Add the workspace value
-    commands.add(Main.workspace);
+    commands.add(Main.getWorkspace());
     Log.debug("Use command:" + commands);
     // We use this class and not ProcessBuilder as it hangs under windows
     // probably because of stream reading
@@ -204,9 +204,7 @@ public final class ThumbnailsMaker implements ITechnicalStrings {
 
   private void buildThumbs() throws Exception {
     final long lTime = System.currentTimeMillis();
-    Main.bTestMode = bTest;
-    Main.workspace = workspace;
-    Main.bThumbMaker = true;
+    Main.initializeFromThumbnailsMaker(bTest, workspace);
     // log startup depends on : setExecLocation, initialCheckups
     Log.getInstance();
     Log.setVerbosity(Log.FATAL);

@@ -183,7 +183,9 @@ public final class UtilSystem implements ITechnicalStrings {
         if (((lUsedMB - file.length()) / 1048576 > iMB) && (alFiles.size() > 0)) {
           final File fileToDelete = alFiles.get(0);
           if (fileToDelete != null) {
-            fileToDelete.delete();
+            if(!fileToDelete.delete()) {
+              Log.warn("Could not delete file " + fileToDelete);
+            }
           }
         }
       }
@@ -286,7 +288,9 @@ public final class UtilSystem implements ITechnicalStrings {
    */
   public static void copyRecursively(final File src, final File dst) throws Exception {
     if (src.isDirectory()) {
-      dst.mkdirs();
+      if(!dst.mkdirs()) {
+        Log.warn("Could not create directory structure " + dst.toString());
+      }
       final String list[] = src.list();
       for (final String element : list) {
         final String dest1 = dst.getAbsolutePath() + '/' + element;
@@ -392,7 +396,9 @@ public final class UtilSystem implements ITechnicalStrings {
           UtilSystem.deleteFile(file);
         }
       }
-      dir.delete();
+      if(!dir.delete()) {
+        Log.warn("Could not delete directory " + dir);
+      }
     } else {
       UtilSystem.deleteFile(dir);
     }
@@ -408,7 +414,9 @@ public final class UtilSystem implements ITechnicalStrings {
   public static void deleteFile(final File file) throws Exception {
     Log.debug("Deleting: " + file.getAbsolutePath());
     if (file.isFile() && file.exists()) {
-      file.delete();
+      if(!file.delete()) {
+        Log.warn("Could not delete file " + file);
+      }
       // check that file has been really deleted (sometimes,
       // we get no exception)
       if (file.exists()) {
@@ -517,11 +525,11 @@ public final class UtilSystem implements ITechnicalStrings {
    */
   public static final File getConfFileByPath(final String sPATH) {
     String sRoot = System.getProperty("user.home");
-    if ((Main.workspace != null) && !Main.workspace.trim().equals("")) {
-      sRoot = Main.workspace;
+    if ((Main.getWorkspace() != null) && !Main.getWorkspace().trim().equals("")) {
+      sRoot = Main.getWorkspace();
     }
     return new File(sRoot + '/'
-        + (Main.bTestMode ? ".jajuk_test_" + ITechnicalStrings.TEST_VERSION : ".jajuk") + '/'
+        + (Main.isTestMode() ? ".jajuk_test_" + ITechnicalStrings.TEST_VERSION : ".jajuk") + '/'
         + sPATH);
   }
 
@@ -697,7 +705,7 @@ public final class UtilSystem implements ITechnicalStrings {
         // the file is downloaded again. This url is used only when
         // using
         // stand-alone version
-        if (Main.bIdeMode) {
+        if (Main.isIdeMode()) {
           // If under dev, take mplayer exe file from the packjaging
           // directory
           sPATH = "./src/packaging";

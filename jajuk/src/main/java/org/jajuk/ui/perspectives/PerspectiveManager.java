@@ -93,7 +93,9 @@ public final class PerspectiveManager implements ITechnicalStrings {
         // jar
         File loadFile = UtilSystem.getConfFileByPath(perspective.getClass().getSimpleName() + ".xml");
         if (loadFile.exists()) {
-          loadFile.delete();
+          if(!loadFile.delete()) {
+            Log.warn("Could not delete file " + loadFile);
+          }
         }
       }
     }
@@ -161,17 +163,17 @@ public final class PerspectiveManager implements ITechnicalStrings {
           view.onPerspectiveSelection();
         }
         // Clear the perspective panel
-        JPanel perspectivePanel = Main.perspectivePanel;
+        JPanel perspectivePanel = Main.getPerspectivePanel();
         if (perspectivePanel.getComponentCount() > 0) {
           Component[] components = perspectivePanel.getComponents();
           for (Component element : components) {
             perspectivePanel.remove(element);
           }
         }
-        Main.perspectivePanel.add(perspective.getContentPane(), BorderLayout.CENTER);
+        perspectivePanel.add(perspective.getContentPane(), BorderLayout.CENTER);
         // refresh UI
-        Main.perspectivePanel.revalidate();
-        Main.perspectivePanel.repaint();
+        perspectivePanel.revalidate();
+        perspectivePanel.repaint();
         // Select right item in perspective selector
         PerspectiveBarJPanel.getInstance().setActivated(perspective);
         // store perspective selection

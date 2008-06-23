@@ -46,7 +46,9 @@ public final class UpgradeManager implements ITechnicalStrings {
   public static void upgradeStep1() throws Exception {
     // --For jajuk < 0.2 : remove backup file : collection~.xml
     File file = UtilSystem.getConfFileByPath(FILE_COLLECTION + "~");
-    file.delete();
+    if(!file.delete()) {
+      Log.warn("Could not delete file " + file);
+    }
     // upgrade code; if upgrade from <1.2, set default ambiences
     String sRelease = ConfigurationManager.getProperty(CONF_RELEASE);
     if (sRelease == null || sRelease.matches("0..*") || sRelease.matches("1.0..*")
@@ -159,7 +161,7 @@ public final class UpgradeManager implements ITechnicalStrings {
    */
   public static void checkForUpdate() {
     // If test mode, don't try to update
-    if (Main.bTestMode) {
+    if (Main.isTestMode()) {
       return;
     }
     // Try to download current jajuk PAD file

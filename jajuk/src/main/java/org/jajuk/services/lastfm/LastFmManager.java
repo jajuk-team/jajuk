@@ -26,6 +26,7 @@ import ext.services.lastfm.SubmitterException;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.jajuk.Main;
 import org.jajuk.base.File;
 import org.jajuk.events.Event;
 import org.jajuk.events.JajukEvents;
@@ -57,13 +58,13 @@ public final class LastFmManager implements Observer, ITechnicalStrings {
     if (!ConfigurationManager.getBoolean(CONF_AUDIOSCROBBLER_ENABLE)
     // don't dhow this message if first jajuk launch: already too many
         // popups
-        && !org.jajuk.Main.bFirstSession) {
+        && !Main.isFirstSession()) {
       Messages.showHideableWarningMessage(Messages.getString("LastFmManager.0"),
           CONF_NOT_SHOW_AGAIN_LASTFM_DISABLED);
     }
   }
 
-  public static LastFmManager getInstance() {
+  public static synchronized LastFmManager getInstance() {
     if (self == null) {
       self = new LastFmManager();
       // populate configuration

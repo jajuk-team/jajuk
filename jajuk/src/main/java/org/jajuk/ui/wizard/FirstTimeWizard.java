@@ -113,9 +113,7 @@ public class FirstTimeWizard extends JFrame implements ITechnicalStrings, Action
     if (e.getSource() == jbCancel) {
       dispose(); // close window
       // alert Main to continue startup
-      synchronized (Main.isFirstTimeWizardClosed) {
-        Main.isFirstTimeWizardClosed.notify();
-      }
+      Main.notifyFirstTimeWizardClosed();
     } else if (e.getSource() == jbFileSelection) {
       final JajukFileChooser jfc = new JajukFileChooser(new JajukFileFilter(DirectoryFilter
           .getInstance()));
@@ -153,7 +151,7 @@ public class FirstTimeWizard extends JFrame implements ITechnicalStrings, Action
         bw.flush();
         bw.close();
         // Store the workspace PATH
-        Main.workspace = sPATH;
+        Main.setWorkspace(sPATH);
       } catch (final Exception ex) {
         Messages.showErrorMessage(24);
         Log.debug("Cannot write bootstrap file");
@@ -161,20 +159,13 @@ public class FirstTimeWizard extends JFrame implements ITechnicalStrings, Action
       // Close window
       dispose();
       // Notify Main to continue startup
-      synchronized (Main.isFirstTimeWizardClosed) {
-        Main.isFirstTimeWizardClosed.notify();
-      }
+      Main.notifyFirstTimeWizardClosed();
       new Thread() {
         @Override
         public void run() {
           // Wait for context loading (default configuration...)
-          synchronized (Main.canLaunchRefresh) {
-            try {
-              Main.canLaunchRefresh.wait();
-            } catch (final InterruptedException e) {
-              Log.error(e);
-            }
-          }
+          Main.waitForLaunchRefresh();
+          
           // Create a directory device
           final Device device = DeviceManager.getInstance().registerDevice(fDir.getName(), 0,
               fDir.getAbsolutePath());
