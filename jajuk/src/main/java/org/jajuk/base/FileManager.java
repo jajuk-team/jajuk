@@ -59,6 +59,13 @@ public final class FileManager extends ItemManager implements Observer {
   /** Self instance */
   private static FileManager singleton;
 
+  private static Random rand;
+  
+  static {
+    rand = new Random();
+    rand.setSeed(System.currentTimeMillis());
+  }
+  
   /** File comparator based on rate */
   private Comparator<File> rateComparator = new Comparator<File>() {
     public int compare(File file1, File file2) {
@@ -349,7 +356,8 @@ public final class FileManager extends ItemManager implements Observer {
    * @return
    */
   public File getShuffleFile() {
-    int index = (int) (new Random().nextFloat() * hmItems.size());
+    int index = rand.nextInt(hmItems.size());
+	Log.debug("Randomly choosing " + index + " for next file.");
     List<File> files = new ArrayList<File>(FileManager.getInstance().getFiles());
     if (files.size() == 0) {
       return null;
