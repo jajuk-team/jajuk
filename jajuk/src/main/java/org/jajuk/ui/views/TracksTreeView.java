@@ -29,7 +29,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -88,6 +87,7 @@ import org.jajuk.ui.helpers.FontManager.JajukFont;
 import org.jajuk.ui.perspectives.PerspectiveManager;
 import org.jajuk.ui.widgets.InformationJPanel;
 import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilGUI;
@@ -156,8 +156,72 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener, 
   public void initUI() {
     super.initUI();
     // ComboBox sort
+    JPanel jpsort = initSort();
+
+    // Collection menu
+    jmenuCollection = new JPopupMenu();
+
+    // Collection Report
+    Action actionReportCollection = ActionManager.getAction(JajukActions.CREATE_REPORT);
+    jmiCollectionReport = new JMenuItem(actionReportCollection);
+    // Add custom data to this component in order to allow the ReportAction
+    // to be able to get it
+    jmiCollectionReport.putClientProperty(DETAIL_ORIGIN, COLLECTION_LOGICAL);
+    jmenuCollection.add(jmiCollectionReport);
+
+    // Find duplicate files
+    Action actionDuplicateFiles = ActionManager.getAction(JajukActions.FIND_DUPLICATE_FILES);
+    jmiCollectionDuplicateFiles = new JMenuItem(actionDuplicateFiles);
+    jmenuCollection.add(jmiCollectionDuplicateFiles);
+
+    // Album details
+    final JMenuItem jmiShowAlbumDetails = new JMenuItem(ActionManager
+        .getAction(JajukActions.SHOW_ALBUM_DETAILS));
+    jmiShowAlbumDetails.putClientProperty(DETAIL_SELECTION, alSelected);
+
+    top = new TreeRootElement(Messages.getString("TracksTreeView.27"));
+
+    // Register on the list for subject we are interested in
+    ObservationManager.register(this);
+
+    // populate the tree
+    populateTree();
+
+    // create tree
+    createTree();
+
+    jtree.setCellRenderer(new TracksTreeCellRenderer());
+    DefaultTreeModel treeModel = new DefaultTreeModel(top);
+    // Tree model listener to detect changes in the tree structure
+    treeModel.addTreeModelListener(new TracksTreeModelListener());
+
+    // Tree selection listener to detect a selection
+    jtree.addTreeSelectionListener(new TracksTreeSelectionListener());
+
+    // Listen for double click
+    jtree.addMouseListener(new TracksMouseAdapter(jmiShowAlbumDetails));
+
+    // Expansion analyze to keep expended state
+    jtree.addTreeExpansionListener(new TracksTreeExpansionListener());
+    jtree.setAutoscrolls(true);
+    // DND support
+    new TreeTransferHandler(jtree, DnDConstants.ACTION_COPY_OR_MOVE, true);
+    jspTree = new JScrollPane(jtree);
+    jspTree.setBorder(BorderFactory.createEmptyBorder(0, 1, 0, 0));
+    double[][] dSize = { { TableLayout.FILL }, { 5, TableLayout.PREFERRED, 5, TableLayout.FILL } };
+    setLayout(new TableLayout(dSize));
+    add(jpsort, "0,1");
+    add(jspTree, "0,3");
+    expand();
+  }
+
+  /**
+   * @return
+   */
+  private JPanel initSort() {
     double[][] dSizeSort = { { 5, TableLayout.PREFERRED, 5, TableLayout.FILL },
         { TableLayout.PREFERRED } };
+
     JPanel jpsort = new JPanel();
     jpsort.setLayout(new TableLayout(dSizeSort));
     jlSort = new JLabel(Messages.getString("Sort"));
@@ -177,333 +241,7 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener, 
     jcbSort.addActionListener(this);
     jpsort.add(jlSort, "1,0");
     jpsort.add(jcbSort, "3,0");
-
-    // Collection menu
-    jmenuCollection = new JPopupMenu();
-
-    Action actionReportCollection = ActionManager.getAction(JajukActions.CREATE_REPORT);
-    jmiCollectionReport = new JMenuItem(actionReportCollection);
-    // Add custom data to this component in order to allow the ReportAction
-    // to be able to get it
-    jmiCollectionReport.putClientProperty(DETAIL_ORIGIN, COLLECTION_LOGICAL);
-    jmenuCollection.add(jmiCollectionReport);
-
-    Action actionDuplicateFiles = ActionManager.getAction(JajukActions.FIND_DUPLICATE_FILES);
-    jmiCollectionDuplicateFiles = new JMenuItem(actionDuplicateFiles);
-    jmenuCollection.add(jmiCollectionDuplicateFiles);
-
-    final JMenuItem jmiShowAlbumDetails = new JMenuItem(ActionManager
-        .getAction(JajukActions.SHOW_ALBUM_DETAILS));
-    jmiShowAlbumDetails.putClientProperty(DETAIL_SELECTION, alSelected);
-
-    top = new TreeRootElement(Messages.getString("TracksTreeView.27"));
-
-    // Register on the list for subject we are interested in
-    ObservationManager.register(this);
-    // populate the tree
-    populateTree();
-    // create tree
-    createTree();
-    jtree.setCellRenderer(new SubstanceDefaultTreeCellRenderer() {
-      private static final long serialVersionUID = 1L;
-
-      @Override
-      public Component getTreeCellRendererComponent(JTree tree, Object value, boolean sel,
-          boolean expanded, boolean leaf, int row, boolean hasFocus) {
-        super.getTreeCellRendererComponent(tree, value, sel, expanded, leaf, row, hasFocus);
-        setFont(FontManager.getInstance().getFont(JajukFont.PLAIN));
-        if (value instanceof StyleNode) {
-          setIcon(IconLoader.ICON_STYLE);
-        } else if (value instanceof AuthorNode) {
-          setIcon(IconLoader.ICON_AUTHOR);
-        } else if (value instanceof YearNode) {
-          setIcon(IconLoader.ICON_YEAR);
-        } else if (value instanceof AlbumNode) {
-          setIcon(IconLoader.ICON_ALBUM);
-        } else if (value instanceof TrackNode) {
-          setIcon(IconLoader.ICON_TRACK);
-          // Discovery date filter
-        } else if (value instanceof DiscoveryDateNode) {
-          setIcon(IconLoader.ICON_DISCOVERY_DATE);
-          // collection node
-        } else {
-          setIcon(IconLoader.ICON_LIST);
-        }
-        return this;
-      }
-    });
-    DefaultTreeModel treeModel = new DefaultTreeModel(top);
-    // Tree model listener to detect changes in the tree structure
-    treeModel.addTreeModelListener(new TreeModelListener() {
-
-      public void treeNodesChanged(TreeModelEvent e) {
-        DefaultMutableTreeNode node = 
-          (DefaultMutableTreeNode) (e.getTreePath().getLastPathComponent());
-
-        if(node != null) {
-          int index = e.getChildIndices()[0];
-          // FIXME:  the assignment to node is useless here, 
-          // what is the point of this whole method??
-          node = (DefaultMutableTreeNode) (node.getChildAt(index));
-        }
-      }
-
-      public void treeNodesInserted(TreeModelEvent e) {
-      }
-
-      public void treeNodesRemoved(TreeModelEvent e) {
-      }
-
-      public void treeStructureChanged(TreeModelEvent e) {
-      }
-    });
-
-    // Tree selection listener to detect a selection
-    jtree.addTreeSelectionListener(new TreeSelectionListener() {
-      @SuppressWarnings("unchecked")
-      public void valueChanged(TreeSelectionEvent e) {
-        // Avoid concurrency with the mouse listener
-        synchronized (lock) {
-          TreePath[] tpSelected = jtree.getSelectionModel().getSelectionPaths();
-          if (tpSelected == null) {
-            return;
-          }
-          int items = 0;
-          // get all components recursively
-          alSelected.clear();
-          selectedRecursively.clear();
-          for (TreePath element : tpSelected) {
-            Object o = element.getLastPathComponent();
-            if (o instanceof TreeRootElement) {
-              // collection node
-              items = TrackManager.getInstance().getElementCount();
-              selectedRecursively.addAll(TrackManager.getInstance().getTracks());
-              break;
-            } else if (o instanceof TransferableTreeNode) {
-              // this is a standard node except "by date"
-              // discovery
-              // nodes
-              alSelected.add((Item) ((TransferableTreeNode) o).getData());
-            }
-            // return all child nodes recursively
-            Enumeration<DefaultMutableTreeNode> e2 = ((DefaultMutableTreeNode) o)
-                .depthFirstEnumeration();
-            while (e2.hasMoreElements()) {
-              DefaultMutableTreeNode node = e2.nextElement();
-              if (node instanceof TrackNode) {
-                Track track = ((TrackNode) node).getTrack();
-                // don't count the same track several time
-                // if user select directory and then tracks
-                // inside
-                selectedRecursively.add(track);
-                items++;
-              }
-            }
-          }
-          StringBuilder sbOut = new StringBuilder().append(items).append(
-              Messages.getString("TracksTreeView.31"));
-          InformationJPanel.getInstance().setSelection(sbOut.toString());
-          if (ConfigurationManager.getBoolean(CONF_OPTIONS_SYNC_TABLE_TREE)) {
-            // if table is synchronized with tree, notify the
-            // selection change
-            Properties properties = new Properties();
-            properties.put(DETAIL_SELECTION, selectedRecursively);
-            properties.put(DETAIL_ORIGIN, PerspectiveManager.getCurrentPerspective().getID());
-            ObservationManager.notify(new Event(JajukEvents.EVENT_SYNC_TREE_TABLE, properties));
-          }
-        }
-      }
-    });
-    // Listen for double click
-    MouseListener ml = new MouseAdapter() {
-
-      @Override
-      public void mousePressed(MouseEvent e) {
-        if (e.isPopupTrigger()) {
-          handlePopup(e);
-          // Left click
-        } else if ((e.getModifiersEx() & MouseEvent.CTRL_DOWN_MASK) == 0) {
-          // Avoid concurrency with the selection listener
-          synchronized (lock) {
-            TreePath path = jtree.getPathForLocation(e.getX(), e.getY());
-            if (path == null) {
-              return;
-            }
-            if (e.getClickCount() == 2) {
-              Object o = path.getLastPathComponent();
-              if (o instanceof TrackNode) {
-                Track track = ((TrackNode) o).getTrack();
-                File file = track.getPlayeableFile(false);
-                if (file != null) {
-                  try {
-                    FIFO.getInstance().push(
-                        new StackItem(file, ConfigurationManager.getBoolean(CONF_STATE_REPEAT),
-                            true), ConfigurationManager.getBoolean(CONF_OPTIONS_PUSH_ON_CLICK));
-                  } catch (JajukException je) {
-                    Log.error(je);
-                  }
-                } else {
-                  Messages.showErrorMessage(10, track.getName());
-                }
-              }
-            }
-
-          }
-        }
-      }
-
-      @Override
-      public void mouseReleased(MouseEvent e) {
-        if (e.isPopupTrigger()) {
-          handlePopup(e);
-        }
-      }
-
-      @SuppressWarnings("unchecked")
-      public void handlePopup(final MouseEvent e) {
-        TreePath path = jtree.getPathForLocation(e.getX(), e.getY());
-        if (path == null) {
-          return;
-        }
-        // right click on a selected node set right click behavior
-        // identical to konqueror tree:
-        // if none or 1 node is selected, a right click on
-        // another node select it. if more than 1, we keep selection and
-        // display a popup for them
-        if (jtree.getSelectionCount() < 2) {
-          jtree.getSelectionModel().setSelectionPath(path);
-        }
-        paths = jtree.getSelectionModel().getSelectionPaths();
-        alTracks = new ArrayList<Track>(100);
-        // test mix between types ( not allowed )
-        String sClass = paths[0].getLastPathComponent().getClass().toString();
-        for (int i = 0; i < paths.length; i++) {
-          if (!paths[i].getLastPathComponent().getClass().toString().equals(sClass)) {
-            return;
-          }
-        }
-        // get all components recursively
-        for (TreePath element : paths) {
-          Object o = element.getLastPathComponent();
-          Enumeration<DefaultMutableTreeNode> e2 = ((DefaultMutableTreeNode) o)
-              .depthFirstEnumeration();
-          // return all childs nodes recursively
-          while (e2.hasMoreElements()) {
-            DefaultMutableTreeNode node = e2.nextElement();
-            if (node instanceof TrackNode) {
-              Track track = ((TrackNode) node).getTrack();
-              if (track.getPlayeableFile(false) != null) {
-                alTracks.add(((TrackNode) node).getTrack());
-              }
-            }
-          }
-        }
-        // display menus according node type
-        if (paths[0].getLastPathComponent() instanceof TrackNode) {
-          jmenu = new JPopupMenu();
-          jmenu.add(jmiPlay);
-          jmenu.add(jmiPush);
-          jmenu.add(jmiAddFavorite);
-          jmenu.add(jmiDelete);
-          jmenu.add(jmiProperties);
-          jmenu.show(jtree, e.getX(), e.getY());
-        } else if (paths[0].getLastPathComponent() instanceof AlbumNode) {
-          jmenu = new JPopupMenu();
-          jmenu.add(jmiPlay);
-          jmenu.add(jmiPush);
-          jmenu.add(jmiPlayShuffle);
-          jmenu.add(jmiPlayRepeat);
-          jmenu.add(jmiAddFavorite);
-          jmenu.add(jmiCDDBWizard);
-          jmenu.add(jmiReport);
-          jmenu.add(jmiShowAlbumDetails);
-          jmenu.add(jmiDelete);
-          jmenu.add(jmiProperties);
-          jmenu.show(jtree, e.getX(), e.getY());
-        } else if (paths[0].getLastPathComponent() instanceof AuthorNode) {
-          jmenu = new JPopupMenu();
-          jmenu.add(jmiPlay);
-          jmenu.add(jmiPush);
-          jmenu.add(jmiPlayShuffle);
-          jmenu.add(jmiPlayRepeat);
-          jmenu.add(jmiAddFavorite);
-          jmenu.add(jmiReport);
-          jmenu.add(jmiDelete);
-          jmenu.add(jmiProperties);
-          jmenu.show(jtree, e.getX(), e.getY());
-        } else if (paths[0].getLastPathComponent() instanceof StyleNode) {
-          jmenu = new JPopupMenu();
-          jmenu.add(jmiPlay);
-          jmenu.add(jmiPush);
-          jmenu.add(jmiPlayShuffle);
-          jmenu.add(jmiPlayRepeat);
-          jmenu.add(jmiAddFavorite);
-          jmenu.add(jmiReport);
-          jmenu.add(jmiDelete);
-          jmenu.add(jmiProperties);
-          jmenu.show(jtree, e.getX(), e.getY());
-        } else if (paths[0].getLastPathComponent() instanceof YearNode) {
-          jmenu = new JPopupMenu();
-          jmenu.add(jmiPlay);
-          jmenu.add(jmiPush);
-          jmenu.add(jmiPlayShuffle);
-          jmenu.add(jmiPlayRepeat);
-          jmenu.add(jmiAddFavorite);
-          jmenu.add(jmiProperties);
-          jmenu.show(jtree, e.getX(), e.getY());
-        } else if (paths[0].getLastPathComponent() instanceof DefaultMutableTreeNode) {
-          jmenuCollection.show(jtree, e.getX(), e.getY());
-        }
-      }
-    };
-
-    jtree.addMouseListener(ml);
-    // Expansion analyze to keep expended state
-    jtree.addTreeExpansionListener(new TreeExpansionListener() {
-      public void treeCollapsed(TreeExpansionEvent event) {
-        Object o = event.getPath().getLastPathComponent();
-        if (o instanceof StyleNode) {
-          Style style = ((StyleNode) o).getStyle();
-          style.removeProperty(XML_EXPANDED);
-        } else if (o instanceof AuthorNode) {
-          Author author = ((AuthorNode) o).getAuthor();
-          author.removeProperty(XML_EXPANDED);
-        } else if (o instanceof AlbumNode) {
-          Album album = ((AlbumNode) o).getAlbum();
-          album.removeProperty(XML_EXPANDED);
-        } else if (o instanceof YearNode) {
-          Year year = ((YearNode) o).getYear();
-          year.removeProperty(XML_EXPANDED);
-        }
-      }
-
-      public void treeExpanded(TreeExpansionEvent event) {
-        Object o = event.getPath().getLastPathComponent();
-        if (o instanceof StyleNode) {
-          Style style = ((StyleNode) o).getStyle();
-          style.setProperty(XML_EXPANDED, true);
-        } else if (o instanceof AuthorNode) {
-          Author author = ((AuthorNode) o).getAuthor();
-          author.setProperty(XML_EXPANDED, true);
-        } else if (o instanceof AlbumNode) {
-          Album album = ((AlbumNode) o).getAlbum();
-          album.setProperty(XML_EXPANDED, true);
-        } else if (o instanceof YearNode) {
-          Year year = ((YearNode) o).getYear();
-          year.setProperty(XML_EXPANDED, true);
-        }
-      }
-    });
-    jtree.setAutoscrolls(true);
-    // DND support
-    new TreeTransferHandler(jtree, DnDConstants.ACTION_COPY_OR_MOVE, true);
-    jspTree = new JScrollPane(jtree);
-    jspTree.setBorder(BorderFactory.createEmptyBorder(0, 1, 0, 0));
-    double[][] dSize = { { TableLayout.FILL }, { 5, TableLayout.PREFERRED, 5, TableLayout.FILL } };
-    setLayout(new TableLayout(dSize));
-    add(jpsort, "0,1");
-    add(jspTree, "0,3");
-    expand();
+    return jpsort;
   }
 
   /** Fill the tree */
@@ -933,31 +671,26 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener, 
   void expand() {
     // expand all
     for (int i = 0; i < jtree.getRowCount(); i++) {
+      boolean bExp = false;
+      
       Object o = jtree.getPathForRow(i).getLastPathComponent();
       if (o instanceof StyleNode) {
         Style style = ((StyleNode) o).getStyle();
-        boolean bExp = style.getBooleanValue(XML_EXPANDED);
-        if (bExp) {
-          jtree.expandRow(i);
-        }
+        bExp = style.getBooleanValue(XML_EXPANDED);
       } else if (o instanceof AuthorNode) {
         Author author = ((AuthorNode) o).getAuthor();
-        boolean bExp = author.getBooleanValue(XML_EXPANDED);
-        if (bExp) {
-          jtree.expandRow(i);
-        }
+        bExp = author.getBooleanValue(XML_EXPANDED);
       } else if (o instanceof AlbumNode) {
         Album album = ((AlbumNode) o).getAlbum();
-        boolean bExp = album.getBooleanValue(XML_EXPANDED);
-        if (bExp) {
-          jtree.expandRow(i);
-        }
+        bExp = album.getBooleanValue(XML_EXPANDED);
       } else if (o instanceof YearNode) {
         Year year = ((YearNode) o).getYear();
-        boolean bExp = year.getBooleanValue(XML_EXPANDED);
-        if (bExp) {
-          jtree.expandRow(i);
-        }
+        bExp = year.getBooleanValue(XML_EXPANDED);
+      }
+
+      // now expand row if it should be expanded
+      if (bExp) {
+        jtree.expandRow(i);
       }
     }
   }
@@ -968,6 +701,236 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener, 
   public List<Track> getTrackSelection() {
     return alTracks;
   }
+
+  // needs to be inner class as it accesses various members
+  class TracksTreeSelectionListener implements TreeSelectionListener {
+    public void valueChanged(TreeSelectionEvent e) {
+      // Avoid concurrency with the mouse listener
+      synchronized (lock) {
+        TreePath[] tpSelected = jtree.getSelectionModel().getSelectionPaths();
+        if (tpSelected == null) {
+          return;
+        }
+
+        // get all components recursively
+        alSelected.clear();
+        selectedRecursively.clear();
+        int items = handleSelected(tpSelected);
+        
+        StringBuilder sbOut = new StringBuilder().append(items).append(
+            Messages.getString("TracksTreeView.31"));
+        InformationJPanel.getInstance().setSelection(sbOut.toString());
+        if (ConfigurationManager.getBoolean(CONF_OPTIONS_SYNC_TABLE_TREE)) {
+          // if table is synchronized with tree, notify the
+          // selection change
+          Properties properties = new Properties();
+          properties.put(DETAIL_SELECTION, selectedRecursively);
+          properties.put(DETAIL_ORIGIN, PerspectiveManager.getCurrentPerspective().getID());
+          ObservationManager.notify(new Event(JajukEvents.EVENT_SYNC_TREE_TABLE, properties));
+        }
+      }
+    }
+
+    /**
+     * @param tpSelected
+     * @return
+     */
+    @SuppressWarnings("unchecked")
+    private int handleSelected(TreePath[] tpSelected) {
+      int items = 0;
+      for (TreePath element : tpSelected) {
+        Object o = element.getLastPathComponent();
+        if (o instanceof TreeRootElement) {
+          // collection node
+          items = TrackManager.getInstance().getElementCount();
+          selectedRecursively.addAll(TrackManager.getInstance().getTracks());
+          break;
+        } else if (o instanceof TransferableTreeNode) {
+          // this is a standard node except "by date"
+          // discovery
+          // nodes
+          alSelected.add((Item) ((TransferableTreeNode) o).getData());
+        }
+
+        // return all child nodes recursively
+        Enumeration<DefaultMutableTreeNode> e2 = ((DefaultMutableTreeNode) o)
+            .depthFirstEnumeration();
+        while (e2.hasMoreElements()) {
+          DefaultMutableTreeNode node = e2.nextElement();
+          if (node instanceof TrackNode) {
+            Track track = ((TrackNode) node).getTrack();
+            // don't count the same track several time
+            // if user select directory and then tracks
+            // inside
+            selectedRecursively.add(track);
+            items++;
+          }
+        }
+      }
+      return items;
+    }
+  }
+  
+  class TracksMouseAdapter extends MouseAdapter {
+    private final JMenuItem jmiShowAlbumDetails;
+    
+    public TracksMouseAdapter(JMenuItem jmiShowAlbumDetails) {
+      super();
+      this.jmiShowAlbumDetails = jmiShowAlbumDetails;
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+      if (e.isPopupTrigger()) {
+        handlePopup(e);
+        // Left click
+      } else if ((e.getModifiersEx() & MouseEvent.CTRL_DOWN_MASK) == 0) {
+        handleMouseEvent(e);
+      }
+    }
+
+    /**
+     * @param e
+     */
+    private void handleMouseEvent(MouseEvent e) {
+      // Avoid concurrency with the selection listener
+      synchronized (lock) {
+        TreePath path = jtree.getPathForLocation(e.getX(), e.getY());
+        if (path != null && e.getClickCount() == 2) {
+          Object o = path.getLastPathComponent();
+          if (o instanceof TrackNode) {
+            Track track = ((TrackNode) o).getTrack();
+            File file = track.getPlayeableFile(false);
+            if (file != null) {
+              try {
+                FIFO.getInstance().push(
+                    new StackItem(file, ConfigurationManager.getBoolean(CONF_STATE_REPEAT),
+                        true), ConfigurationManager.getBoolean(CONF_OPTIONS_PUSH_ON_CLICK));
+              } catch (JajukException je) {
+                Log.error(je);
+              }
+            } else {
+              Messages.showErrorMessage(10, track.getName());
+            }
+          }
+        }
+      }
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+      if (e.isPopupTrigger()) {
+        handlePopup(e);
+      }
+    }
+
+    @SuppressWarnings("unchecked")
+    public void handlePopup(final MouseEvent e) {
+      TreePath path = jtree.getPathForLocation(e.getX(), e.getY());
+      if (path == null) {
+        return;
+      }
+      // right click on a selected node set right click behavior
+      // identical to konqueror tree:
+      // if none or 1 node is selected, a right click on
+      // another node select it. if more than 1, we keep selection and
+      // display a popup for them
+      if (jtree.getSelectionCount() < 2) {
+        jtree.getSelectionModel().setSelectionPath(path);
+      }
+      paths = jtree.getSelectionModel().getSelectionPaths();
+      alTracks = new ArrayList<Track>(100);
+
+      // test mix between types ( not allowed )
+      String sClass = paths[0].getLastPathComponent().getClass().toString();
+      for (int i = 0; i < paths.length; i++) {
+        if (!paths[i].getLastPathComponent().getClass().toString().equals(sClass)) {
+          return;
+        }
+      }
+
+      // get all components recursively
+      for (TreePath element : paths) {
+        Object o = element.getLastPathComponent();
+        Enumeration<DefaultMutableTreeNode> e2 = ((DefaultMutableTreeNode) o)
+            .depthFirstEnumeration();
+        // return all childs nodes recursively
+        while (e2.hasMoreElements()) {
+          DefaultMutableTreeNode node = e2.nextElement();
+          if (node instanceof TrackNode) {
+            Track track = ((TrackNode) node).getTrack();
+            if (track.getPlayeableFile(false) != null) {
+              alTracks.add(((TrackNode) node).getTrack());
+            }
+          }
+        }
+      }
+
+      // display menus according node type
+      buildMenu(e);
+    }
+
+    /**
+     * @param e
+     */
+    private void buildMenu(final MouseEvent e) {
+      if (paths[0].getLastPathComponent() instanceof TrackNode) {
+        jmenu = new JPopupMenu();
+        jmenu.add(jmiPlay);
+        jmenu.add(jmiPush);
+        jmenu.add(jmiAddFavorite);
+        jmenu.add(jmiDelete);
+        jmenu.add(jmiProperties);
+        jmenu.show(jtree, e.getX(), e.getY());
+      } else if (paths[0].getLastPathComponent() instanceof AlbumNode) {
+        jmenu = new JPopupMenu();
+        jmenu.add(jmiPlay);
+        jmenu.add(jmiPush);
+        jmenu.add(jmiPlayShuffle);
+        jmenu.add(jmiPlayRepeat);
+        jmenu.add(jmiAddFavorite);
+        jmenu.add(jmiCDDBWizard);
+        jmenu.add(jmiReport);
+        jmenu.add(jmiShowAlbumDetails);
+        jmenu.add(jmiDelete);
+        jmenu.add(jmiProperties);
+        jmenu.show(jtree, e.getX(), e.getY());
+      } else if (paths[0].getLastPathComponent() instanceof AuthorNode) {
+        jmenu = new JPopupMenu();
+        jmenu.add(jmiPlay);
+        jmenu.add(jmiPush);
+        jmenu.add(jmiPlayShuffle);
+        jmenu.add(jmiPlayRepeat);
+        jmenu.add(jmiAddFavorite);
+        jmenu.add(jmiReport);
+        jmenu.add(jmiDelete);
+        jmenu.add(jmiProperties);
+        jmenu.show(jtree, e.getX(), e.getY());
+      } else if (paths[0].getLastPathComponent() instanceof StyleNode) {
+        jmenu = new JPopupMenu();
+        jmenu.add(jmiPlay);
+        jmenu.add(jmiPush);
+        jmenu.add(jmiPlayShuffle);
+        jmenu.add(jmiPlayRepeat);
+        jmenu.add(jmiAddFavorite);
+        jmenu.add(jmiReport);
+        jmenu.add(jmiDelete);
+        jmenu.add(jmiProperties);
+        jmenu.show(jtree, e.getX(), e.getY());
+      } else if (paths[0].getLastPathComponent() instanceof YearNode) {
+        jmenu = new JPopupMenu();
+        jmenu.add(jmiPlay);
+        jmenu.add(jmiPush);
+        jmenu.add(jmiPlayShuffle);
+        jmenu.add(jmiPlayRepeat);
+        jmenu.add(jmiAddFavorite);
+        jmenu.add(jmiProperties);
+        jmenu.show(jtree, e.getX(), e.getY());
+      } else if (paths[0].getLastPathComponent() instanceof DefaultMutableTreeNode) {
+        jmenuCollection.show(jtree, e.getX(), e.getY());
+      }
+    }
+  }  
 }
 
 /**
@@ -1157,4 +1120,95 @@ class DiscoveryDateNode extends DefaultMutableTreeNode {
 
   private static final long serialVersionUID = 7123195836014138019L;
 
+}
+
+class TracksTreeCellRenderer extends SubstanceDefaultTreeCellRenderer {
+  private static final long serialVersionUID = 1L;
+
+  @Override
+  public Component getTreeCellRendererComponent(JTree tree, Object value, boolean sel,
+      boolean expanded, boolean leaf, int row, boolean hasFocus) {
+    super.getTreeCellRendererComponent(tree, value, sel, expanded, leaf, row, hasFocus);
+    setFont(FontManager.getInstance().getFont(JajukFont.PLAIN));
+
+    if (value instanceof StyleNode) {
+      setIcon(IconLoader.ICON_STYLE);
+    } else if (value instanceof AuthorNode) {
+      setIcon(IconLoader.ICON_AUTHOR);
+    } else if (value instanceof YearNode) {
+      setIcon(IconLoader.ICON_YEAR);
+    } else if (value instanceof AlbumNode) {
+      setIcon(IconLoader.ICON_ALBUM);
+    } else if (value instanceof TrackNode) {
+      setIcon(IconLoader.ICON_TRACK);
+      // Discovery date filter
+    } else if (value instanceof DiscoveryDateNode) {
+      setIcon(IconLoader.ICON_DISCOVERY_DATE);
+      // collection node
+    } else {
+      setIcon(IconLoader.ICON_LIST);
+    }
+
+    return this;
+  }
+}
+
+class TracksTreeModelListener implements TreeModelListener {
+
+  public void treeNodesChanged(TreeModelEvent e) {
+    DefaultMutableTreeNode node = 
+      (DefaultMutableTreeNode) (e.getTreePath().getLastPathComponent());
+
+    if(node != null) {
+      int index = e.getChildIndices()[0];
+      // FIXME:  the assignment to node is useless here, 
+      // what is the point of this whole method??
+      node = (DefaultMutableTreeNode) (node.getChildAt(index));
+    }
+  }
+
+  public void treeNodesInserted(TreeModelEvent e) {
+  }
+
+  public void treeNodesRemoved(TreeModelEvent e) {
+  }
+
+  public void treeStructureChanged(TreeModelEvent e) {
+  }
+}
+
+class TracksTreeExpansionListener implements TreeExpansionListener {
+  public void treeCollapsed(TreeExpansionEvent event) {
+    Object o = event.getPath().getLastPathComponent();
+    if (o instanceof StyleNode) {
+      Style style = ((StyleNode) o).getStyle();
+      style.removeProperty(ITechnicalStrings.XML_EXPANDED);
+    } else if (o instanceof AuthorNode) {
+      Author author = ((AuthorNode) o).getAuthor();
+      author.removeProperty(ITechnicalStrings.XML_EXPANDED);
+    } else if (o instanceof AlbumNode) {
+      Album album = ((AlbumNode) o).getAlbum();
+      album.removeProperty(ITechnicalStrings.XML_EXPANDED);
+    } else if (o instanceof YearNode) {
+      Year year = ((YearNode) o).getYear();
+      year.removeProperty(ITechnicalStrings.XML_EXPANDED);
+    }
+  }
+
+  public void treeExpanded(TreeExpansionEvent event) {
+    Object o = event.getPath().getLastPathComponent();
+    if (o instanceof StyleNode) {
+      Style style = ((StyleNode) o).getStyle();
+      style.setProperty(ITechnicalStrings.XML_EXPANDED, true);
+    } else if (o instanceof AuthorNode) {
+      Author author = ((AuthorNode) o).getAuthor();
+      author.setProperty(ITechnicalStrings.XML_EXPANDED, true);
+    } else if (o instanceof AlbumNode) {
+      Album album = ((AlbumNode) o).getAlbum();
+      album.setProperty(ITechnicalStrings.XML_EXPANDED, true);
+    } else if (o instanceof YearNode) {
+      Year year = ((YearNode) o).getYear();
+      year.setProperty(ITechnicalStrings.XML_EXPANDED, true);
+    }
+  }
 }
