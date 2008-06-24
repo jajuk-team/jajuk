@@ -154,57 +154,92 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
    * @return whether some items have been removed
    */
   public boolean cleanRemovedFiles() {
-    boolean bChanges = false;
     long l = System.currentTimeMillis();
+    // directories cleanup
+    boolean bChanges = cleanDirectories();
+
+    // files cleanup
+    bChanges = bChanges | cleanFiles();
+
+    // Playlist cleanup
+    bChanges = bChanges | cleanPlaylist();
+
+    // clear history to remove old files referenced in it
+    if (ConfigurationManager.getProperty(ITechnicalStrings.CONF_HISTORY) != null) {
+      History.getInstance().clear(
+          Integer.parseInt(ConfigurationManager.getProperty(ITechnicalStrings.CONF_HISTORY)));
+    }
+
+    // delete old history items
+    l = System.currentTimeMillis() - l;
+    Log.debug("Old file references cleaned in: "
+        + ((l < 1000) ? l + " ms" : l / 1000 + " s, changes: " + bChanges));
+
+    return bChanges;
+  }
+
+  /**
+   * Walk through all Playlists and remove the ones for the current device
+   * 
+   * @return true if there was any playlist removed
+   */
+  private boolean cleanPlaylist() {
+    boolean bChanges = false;
+    final Set<Playlist> plfiles = PlaylistManager.getInstance().getPlaylists();
+    for (final Playlist plf : plfiles) {
+      if (!ExitService.isExiting() && plf.getDirectory().getDevice().equals(this) && plf.isReady()
+          && !plf.getFio().exists()) {
+        PlaylistManager.getInstance().removePlaylistFile(plf);
+        Log.debug("Removed: " + plf);
+        bChanges = true;
+      }
+    }
+    return bChanges;
+  }
+
+  /**
+   * Walk through tall Files and remove the ones for the current device.
+   * 
+   * @return true if there was any file removed.
+   */
+  private boolean cleanFiles() {
+    boolean bChanges = false;
+    final Set<org.jajuk.base.File> files = FileManager.getInstance().getFiles();
+    for (final org.jajuk.base.File file : files) {
+      if (!ExitService.isExiting() && file.getDirectory().getDevice().equals(this)
+          && file.isReady() &&
+          // Remove file if it doesn't exist any more or if it is a iTunes
+          // file (useful for jajuk < 1.4)
+          (!file.getIO().exists() || file.getName().startsWith("._"))) {
+        FileManager.getInstance().removeFile(file);
+        Log.debug("Removed: " + file);
+        bChanges = true;
+      }
+    }
+
+    return bChanges;
+  }
+
+  /**
+   * Walks through all directories and removes the ones for this device.
+   * 
+   * @return true if there was any directory removed
+   */
+  private boolean cleanDirectories() {
+    boolean bChanges = false;
     // need to use a shallow copy to avoid concurrent exceptions
     final Set<Directory> dirs = DirectoryManager.getInstance().getDirectories();
-    // directories cleanup
+
     for (final Item item : dirs) {
       final Directory dir = (Directory) item;
-      if (!ExitService.isExiting() && 
-          dir.getDevice().equals(this) && 
-          dir.getDevice().isMounted() &&
-          !dir.getFio().exists()) {
+      if (!ExitService.isExiting() && dir.getDevice().equals(this) && dir.getDevice().isMounted()
+          && !dir.getFio().exists()) {
         // note that associated files are removed too
         DirectoryManager.getInstance().removeDirectory(dir.getID());
         Log.debug("Removed: " + dir);
         bChanges = true;
       }
     }
-    // files cleanup
-    final Set<org.jajuk.base.File> files = FileManager.getInstance().getFiles();
-    for (final org.jajuk.base.File file : files) {
-      if (!ExitService.isExiting() && 
-          file.getDirectory().getDevice().equals(this) && 
-          file.isReady() && 
-        // Remove file if it doesn't exist any more or if it is a iTunes
-        // file (useful for jajuk < 1.4)
-        (!file.getIO().exists() || file.getName().startsWith("._"))) {
-        FileManager.getInstance().removeFile(file);
-        Log.debug("Removed: " + file);
-        bChanges = true;
-      }
-    }
-    // Playlist cleanup
-    final Set<Playlist> plfiles = PlaylistManager.getInstance().getPlaylists();
-    for (final Playlist plf : plfiles) {
-      if (!ExitService.isExiting() && 
-          plf.getDirectory().getDevice().equals(this) && 
-          plf.isReady() && 
-          !plf.getFio().exists()) {
-        PlaylistManager.getInstance().removePlaylistFile(plf);
-        Log.debug("Removed: " + plf);
-        bChanges = true;
-      }
-    }
-    // clear history to remove old files referenced in it
-    if (ConfigurationManager.getProperty(ITechnicalStrings.CONF_HISTORY) != null) {
-      History.getInstance().clear(
-          Integer.parseInt(ConfigurationManager.getProperty(ITechnicalStrings.CONF_HISTORY)));
-    }
-    // delete old history items
-    l = System.currentTimeMillis() - l;
-    Log.debug("Old file references cleaned in: " + ((l < 1000) ? l + " ms" : l / 1000 + " s"));
     return bChanges;
   }
 
@@ -297,45 +332,41 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
    */
   @Override
   public ImageIcon getIconRepresentation() {
-    ImageIcon icon = null;
     switch ((int) getType()) {
     case 0:
-      if (isMounted()) {
-        icon = IconLoader.ICON_DEVICE_DIRECTORY_MOUNTED_SMALL;
-      } else {
-        icon = IconLoader.ICON_DEVICE_DIRECTORY_UNMOUNTED_SMALL;
-      }
-      break;
+      return setIcon(IconLoader.ICON_DEVICE_DIRECTORY_MOUNTED_SMALL,
+          IconLoader.ICON_DEVICE_DIRECTORY_UNMOUNTED_SMALL);
     case 1:
-      if (isMounted()) {
-        icon = IconLoader.ICON_DEVICE_CD_MOUNTED_SMALL;
-      } else {
-        icon = IconLoader.ICON_DEVICE_CD_UNMOUNTED_SMALL;
-      }
-      break;
+      return setIcon(IconLoader.ICON_DEVICE_CD_MOUNTED_SMALL,
+          IconLoader.ICON_DEVICE_CD_UNMOUNTED_SMALL);
     case 2:
-      if (isMounted()) {
-        icon = IconLoader.ICON_DEVICE_NETWORK_DRIVE_MOUNTED_SMALL;
-      } else {
-        icon = IconLoader.ICON_DEVICE_NETWORK_DRIVE_UNMOUNTED_SMALL;
-      }
-      break;
+      return setIcon(IconLoader.ICON_DEVICE_NETWORK_DRIVE_MOUNTED_SMALL,
+          IconLoader.ICON_DEVICE_NETWORK_DRIVE_UNMOUNTED_SMALL);
     case 3:
-      if (isMounted()) {
-        icon = IconLoader.ICON_DEVICE_EXT_DD_MOUNTED_SMALL;
-      } else {
-        icon = IconLoader.ICON_DEVICE_EXT_DD_UNMOUNTED_SMALL;
-      }
-      break;
+      return setIcon(IconLoader.ICON_DEVICE_EXT_DD_MOUNTED_SMALL,
+          IconLoader.ICON_DEVICE_EXT_DD_UNMOUNTED_SMALL);
     case 4:
-      if (isMounted()) {
-        icon = IconLoader.ICON_DEVICE_PLAYER_MOUNTED_SMALL;
-      } else {
-        icon = IconLoader.ICON_DEVICE_PLAYER_UNMOUNTED_SMALL;
-      }
-      break;
+      return setIcon(IconLoader.ICON_DEVICE_PLAYER_MOUNTED_SMALL,
+          IconLoader.ICON_DEVICE_PLAYER_UNMOUNTED_SMALL);
+    default:
+      Log.warn("Unknown type of device detected: " + getType());
+      return null;
     }
-    return icon;
+  }
+
+  /**
+   * @param mountedIcon
+   *          TODO
+   * @param unmountedIcon
+   *          TODO
+   * @return
+   */
+  private ImageIcon setIcon(ImageIcon mountedIcon, ImageIcon unmountedIcon) {
+    if (isMounted()) {
+      return mountedIcon;
+    } else {
+      return unmountedIcon;
+    }
   }
 
   /*
@@ -464,7 +495,8 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
       // is closed brutally with control-C or shutdown and that exit hook
       // have no time to perform commit)
       try {
-        org.jajuk.base.Collection.commit(UtilSystem.getConfFileByPath(ITechnicalStrings.FILE_COLLECTION));
+        org.jajuk.base.Collection.commit(UtilSystem
+            .getConfFileByPath(ITechnicalStrings.FILE_COLLECTION));
       } catch (final IOException e) {
         Log.error(e);
       }
@@ -514,7 +546,7 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
         return;
       }
     }
-    // Here the device is considerated as mounted
+    // Here the device is considered as mounted
     bMounted = true;
     // notify views to refresh if needed
     if (bUIRefresh) {
