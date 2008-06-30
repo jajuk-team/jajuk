@@ -103,7 +103,9 @@ public final class PlaylistManager extends ItemManager implements Observer {
           + java.io.File.separatorChar + plf.getName();
       java.io.File fileToDelete = new java.io.File(sFileToDelete);
       if (fileToDelete.exists()) {
-        fileToDelete.delete();
+        if(!fileToDelete.delete()) {
+          Log.warn("Could not delete file: " + fileToDelete.toString());
+        }
         // check that file has been really deleted (sometimes, we get no
         // exception)
         if (fileToDelete.exists()) {

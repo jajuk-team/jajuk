@@ -203,8 +203,15 @@ public class Cover implements Comparable<Cover>, ITechnicalStrings {
    */
   @Override
   public boolean equals(Object o) {
-    boolean bOut = false;
+    // this also handles null by definition
+    if(!(o instanceof Cover)) {
+      return false;
+    }
+    
+    // we have an item of type Cover, so we can cast it safely
     Cover cOther = (Cover) o;
+    
+    // check for default cover type
     if (getType() == Cover.ABSOLUTE_DEFAULT_COVER
         || cOther.getType() == Cover.ABSOLUTE_DEFAULT_COVER) {
       return (cOther.getType() == getType()); // either both are
@@ -212,15 +219,16 @@ public class Cover implements Comparable<Cover>, ITechnicalStrings {
       // one is not and so,
       // they are unequal
     }
+    
     // here, all url are not null
-    // for local covers, we concidere that 2 covers with the same file name
+    // for local covers, we consider that 2 covers with the same file name
     // are identical even if they are in different directories
     if (getType() != Cover.REMOTE_COVER) {
       return UtilSystem.getOnlyFile(url.getFile()).equals(UtilSystem.getOnlyFile(cOther.getURL().getFile()));
     }
+
     // Remote cover
-    bOut = url.getFile().equals(cOther.getURL().getFile());
-    return bOut;
+    return url.getFile().equals(cOther.getURL().getFile());
   }
 
   /**

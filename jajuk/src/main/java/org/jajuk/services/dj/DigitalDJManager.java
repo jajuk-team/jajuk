@@ -331,7 +331,9 @@ abstract class DigitalDJFactory extends DefaultHandler implements ITechnicalStri
     catch (Exception e) {
       Log.error(e);
       Log.debug("Corrupted DJ: " + file.getAbsolutePath() + " deleted");
-      file.delete();
+      if(!file.delete()) {
+        Log.warn("Could not delete file: " + file.toString());
+      }
     }
     if (XML_DJ_PROPORTION_CLASS.equals(factoryType)) {
       return new DigitalDJFactoryProportionImpl();

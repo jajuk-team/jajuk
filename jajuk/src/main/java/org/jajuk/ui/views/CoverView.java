@@ -191,83 +191,213 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
    */
   public void actionPerformed(final ActionEvent e) {
     if (e.getSource() == jcbAccuracy) {
-      // Note that we have to store/retrieve accuracy using an id. When
-      // this view is used from a popup, we can't use perspective id
-      ConfigurationManager.setProperty(ITechnicalStrings.CONF_COVERS_ACCURACY + "_"
-          + ((getPerspective() == null) ? "popup" : getPerspective().getID()), Integer
-          .toString(jcbAccuracy.getSelectedIndex()));
-
-      new Thread() {
-        @Override
-        public void run() {
-          // force refresh
-          if (getPerspective() == null) {
-            dirReference = null;
-          }
-          update(new Event(JajukEvents.EVENT_COVER_NEED_REFRESH));
-        }
-      }.start();
+      handleAccuracy();
     } else if (e.getSource() == jbPrevious) { // previous : show a
-      // better cover
-      bGotoBetter = true;
-      index++;
-      if (index > alCovers.size() - 1) {
-        index = 0;
-      }
-      displayCurrentCover();
-      bGotoBetter = false; // make sure default behavior is to go
-      // to worse covers
+      handlePrevious();
     } else if (e.getSource() == jbNext) { // next : show a worse cover
-      bGotoBetter = false;
+      handleNext();
+    } else if (e.getSource() == jbDelete) { // delete a local cover
+      handleDelete();
+    } else if (e.getSource() == jbDefault) {
+      handleDefault();
+    }
+    else if ((e.getSource() == jbSave)
+        && ((e.getModifiers() & ActionEvent.CTRL_MASK) == ActionEvent.CTRL_MASK)) {
+      // save a file as... (can be local now)
+      handleSaveAs();
+    } else if (e.getSource() == jbSave) {
+      handleSave();
+    }
+  }
+
+  /**
+   * 
+   */
+  private void handleAccuracy() {
+    // Note that we have to store/retrieve accuracy using an id. When
+    // this view is used from a popup, we can't use perspective id
+    ConfigurationManager.setProperty(ITechnicalStrings.CONF_COVERS_ACCURACY + "_"
+        + ((getPerspective() == null) ? "popup" : getPerspective().getID()), Integer
+        .toString(jcbAccuracy.getSelectedIndex()));
+
+    new Thread() {
+      @Override
+      public void run() {
+        // force refresh
+        if (getPerspective() == null) {
+          dirReference = null;
+        }
+        update(new Event(JajukEvents.EVENT_COVER_NEED_REFRESH));
+      }
+    }.start();
+  }
+
+  /**
+   * 
+   */
+  private void handlePrevious() {
+    // better cover
+    bGotoBetter = true;
+    index++;
+    if (index > alCovers.size() - 1) {
+      index = 0;
+    }
+    displayCurrentCover();
+    bGotoBetter = false; // make sure default behavior is to go
+    // to worse covers
+  }
+
+  /**
+   * 
+   */
+  private void handleNext() {
+    bGotoBetter = false;
+    index--;
+    if (index < 0) {
+      index = alCovers.size() - 1;
+    }
+    displayCurrentCover();
+  }
+
+  /**
+   * 
+   */
+  private void handleDelete() {
+    final Cover cover = alCovers.get(index);
+    // show confirmation message if required
+    if (ConfigurationManager.getBoolean(ITechnicalStrings.CONF_CONFIRMATIONS_DELETE_COVER)) {
+      final int iResu = Messages.getChoice(Messages.getString("Confirmation_delete_cover")
+          + " : " + cover.getURL().getFile(), JOptionPane.YES_NO_CANCEL_OPTION,
+          JOptionPane.WARNING_MESSAGE);
+      if (iResu != JOptionPane.YES_OPTION) {
+        return;
+      }
+    }
+
+    // yet there? ok, delete the cover
+    try {
+      final File file = new File(cover.getURL().getFile());
+      if (file.isFile() && file.exists()) {
+        if (!file.delete()) {
+          throw new Exception("Deleting file " + file.toString() + " failed");
+        }
+      } else { // not a file, must have a problem
+        throw new Exception("Encountered file which either is not a file or does not exist: " + file);
+      }
+    } catch (final Exception ioe) {
+      Log.error(131, ioe);
+      Messages.showErrorMessage(131);
+      return;
+    }
+    
+    // If this was the absolute cover, remove the reference in the
+    // collection
+    if (cover.getType() == Cover.ABSOLUTE_DEFAULT_COVER) {
+      dirReference.removeProperty("default_cover");
+    }
+    
+    // reorganize covers
+    synchronized (bLock) {
+      alCovers.remove(index);
       index--;
       if (index < 0) {
         index = alCovers.size() - 1;
       }
-      displayCurrentCover();
-    } else if (e.getSource() == jbDelete) { // delete a local cover
-      final Cover cover = alCovers.get(index);
-      // show confirmation message if required
-      if (ConfigurationManager.getBoolean(ITechnicalStrings.CONF_CONFIRMATIONS_DELETE_COVER)) {
-        final int iResu = Messages.getChoice(Messages.getString("Confirmation_delete_cover")
-            + " : " + cover.getURL().getFile(), JOptionPane.YES_NO_CANCEL_OPTION,
-            JOptionPane.WARNING_MESSAGE);
-        if (iResu != JOptionPane.YES_OPTION) {
+      ObservationManager.notify(new Event(JajukEvents.EVENT_COVER_NEED_REFRESH));
+      if (fileReference != null) {
+        update(new Event(JajukEvents.EVENT_COVER_NEED_REFRESH));
+      }
+    }
+  }
+
+  /**
+   * 
+   */
+  private void handleSave() {
+    // save a file with its original name
+    new Thread() {
+      @Override
+      public void run() {
+        final Cover cover = alCovers.get(index);
+        // should not happen, only remote covers here
+        if (cover.getType() != Cover.REMOTE_COVER) {
+          Log.debug("Try to save a local cover");
           return;
         }
-      }
-      // yet there? ok, delete the cover
-      try {
-        final File file = new File(cover.getURL().getFile());
-        if (file.isFile() && file.exists()) {
-          if (!file.delete()) {
-            throw new Exception("Deleting file " + file.toString() + " failed");
+        String sFilePath = null;
+        sFilePath = dirReference.getFio().getPath() + "/"
+            + UtilSystem.getOnlyFile(cover.getURL().toString());
+        // Add a jajuk suffix to know this cover has been downloaded
+        // by jajuk
+        final int pos = sFilePath.lastIndexOf('.');
+        sFilePath = new StringBuilder(sFilePath).insert(pos,
+            ITechnicalStrings.FILE_JAJUK_DOWNLOADED_FILES_SUFFIX).toString();
+        try {
+          // copy file from cache
+          final File fSource = DownloadManager.downloadCover(cover.getURL(), cover
+              .getDownloadID());
+          final File file = new File(sFilePath);
+          UtilSystem.copy(fSource, file);
+          InformationJPanel.getInstance().setMessage(Messages.getString("CoverView.11"),
+              InformationJPanel.INFORMATIVE);
+          final Cover cover2 = new Cover(file.toURI().toURL(), Cover.ABSOLUTE_DEFAULT_COVER);
+          if (!alCovers.contains(cover2)) {
+            alCovers.add(cover2);
+            setFoundText();
           }
-        } else { // not a file, must have a problem
-          throw new Exception("");
-        }
-      } catch (final Exception ioe) {
-        Log.error(131, ioe);
-        Messages.showErrorMessage(131);
-        return;
-      }
-      // If this was the absolute cover, remove the reference in the
-      // collection
-      if (cover.getType() == Cover.ABSOLUTE_DEFAULT_COVER) {
-        dirReference.removeProperty("default_cover");
-      }
-      // reorganize covers
-      synchronized (bLock) {
-        alCovers.remove(index);
-        index--;
-        if (index < 0) {
-          index = alCovers.size() - 1;
-        }
-        ObservationManager.notify(new Event(JajukEvents.EVENT_COVER_NEED_REFRESH));
-        if (fileReference != null) {
-          update(new Event(JajukEvents.EVENT_COVER_NEED_REFRESH));
+          ObservationManager.notify(new Event(JajukEvents.EVENT_COVER_NEED_REFRESH));
+          // add new cover in others cover views
+        } catch (final Exception ex) {
+          Log.error(24, ex);
+          Messages.showErrorMessage(24);
         }
       }
-    } else if (e.getSource() == jbDefault) { // choose a default
+    }.start();
+  }
+
+  /**
+   * 
+   */
+  private void handleSaveAs() {
+    new Thread() {
+      @Override
+      public void run() {
+        final Cover cover = alCovers.get(index);
+        final JajukFileChooser jfchooser = new JajukFileChooser(new JajukFileFilter(GIFFilter
+            .getInstance(), PNGFilter.getInstance(), JPGFilter.getInstance()));
+        jfchooser.setAcceptDirectories(true);
+        jfchooser.setCurrentDirectory(dirReference.getFio());
+        jfchooser.setDialogTitle(Messages.getString("CoverView.10"));
+        final File finalFile = new File(dirReference.getFio().getPath() + "/"
+            + UtilSystem.getOnlyFile(cover.getURL().toString()));
+        jfchooser.setSelectedFile(finalFile);
+        final int returnVal = jfchooser.showSaveDialog(JajukWindow.getInstance());
+        File fNew = null;
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+          fNew = jfchooser.getSelectedFile();
+          // if user try to save as without changing file name
+          if (fNew.getAbsolutePath().equals(cover.getFile().getAbsolutePath())) {
+            return;
+          }
+          try {
+            UtilSystem.copy(cover.getFile(), fNew);
+            InformationJPanel.getInstance().setMessage(Messages.getString("CoverView.11"),
+                InformationJPanel.INFORMATIVE);
+            ObservationManager.notify(new Event(JajukEvents.EVENT_COVER_NEED_REFRESH));
+          } catch (final Exception ex) {
+            Log.error(24, ex);
+            Messages.showErrorMessage(24);
+          }
+        }
+      }
+    }.start();
+  }
+
+  /**
+   * 
+   */
+  private void handleDefault() {
+    { // choose a default
       // first commit this cover on the disk if it is a remote cover
       final Cover cover = alCovers.get(index);
       final String sFilename = UtilSystem.getOnlyFile(cover.getURL().toString());
@@ -309,83 +439,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
       ObservationManager.notify(new Event(JajukEvents.EVENT_COVER_DEFAULT_CHANGED));
       // then make it the default cover in this directory
       dirReference.setProperty("default_cover", UtilSystem.getOnlyFile(sFilename));
-    } else if ((e.getSource() == jbSave)
-        && ((e.getModifiers() & ActionEvent.CTRL_MASK) == ActionEvent.CTRL_MASK)) {
-      // save a file as... (can be local now)
-      new Thread() {
-        @Override
-        public void run() {
-          final Cover cover = alCovers.get(index);
-          final JajukFileChooser jfchooser = new JajukFileChooser(new JajukFileFilter(GIFFilter
-              .getInstance(), PNGFilter.getInstance(), JPGFilter.getInstance()));
-          jfchooser.setAcceptDirectories(true);
-          jfchooser.setCurrentDirectory(dirReference.getFio());
-          jfchooser.setDialogTitle(Messages.getString("CoverView.10"));
-          final File finalFile = new File(dirReference.getFio().getPath() + "/"
-              + UtilSystem.getOnlyFile(cover.getURL().toString()));
-          jfchooser.setSelectedFile(finalFile);
-          final int returnVal = jfchooser.showSaveDialog(JajukWindow.getInstance());
-          File fNew = null;
-          if (returnVal == JFileChooser.APPROVE_OPTION) {
-            fNew = jfchooser.getSelectedFile();
-            // if user try to save as without changing file name
-            if (fNew.getAbsolutePath().equals(cover.getFile().getAbsolutePath())) {
-              return;
-            }
-            try {
-              UtilSystem.copy(cover.getFile(), fNew);
-              InformationJPanel.getInstance().setMessage(Messages.getString("CoverView.11"),
-                  InformationJPanel.INFORMATIVE);
-              ObservationManager.notify(new Event(JajukEvents.EVENT_COVER_NEED_REFRESH));
-            } catch (final Exception ex) {
-              Log.error(24, ex);
-              Messages.showErrorMessage(24);
-            }
-          }
-        }
-      }.start();
-    } else if (e.getSource() == jbSave) {
-      // save a file with its original name
-      new Thread() {
-        @Override
-        public void run() {
-          final Cover cover = alCovers.get(index);
-          // should not happen, only remote covers here
-          if (cover.getType() != Cover.REMOTE_COVER) {
-            Log.debug("Try to save a local cover");
-            return;
-          }
-          String sFilePath = null;
-          sFilePath = dirReference.getFio().getPath() + "/"
-              + UtilSystem.getOnlyFile(cover.getURL().toString());
-          // Add a jajuk suffix to know this cover has been downloaded
-          // by jajuk
-          final int pos = sFilePath.lastIndexOf('.');
-          sFilePath = new StringBuilder(sFilePath).insert(pos,
-              ITechnicalStrings.FILE_JAJUK_DOWNLOADED_FILES_SUFFIX).toString();
-          try {
-            // copy file from cache
-            final File fSource = DownloadManager.downloadCover(cover.getURL(), cover
-                .getDownloadID());
-            final File file = new File(sFilePath);
-            UtilSystem.copy(fSource, file);
-            InformationJPanel.getInstance().setMessage(Messages.getString("CoverView.11"),
-                InformationJPanel.INFORMATIVE);
-            final Cover cover2 = new Cover(file.toURI().toURL(), Cover.ABSOLUTE_DEFAULT_COVER);
-            if (!alCovers.contains(cover2)) {
-              alCovers.add(cover2);
-              setFoundText();
-            }
-            ObservationManager.notify(new Event(JajukEvents.EVENT_COVER_NEED_REFRESH));
-            // add new cover in others cover views
-          } catch (final Exception ex) {
-            Log.error(24, ex);
-            Messages.showErrorMessage(24);
-          }
-        }
-      }.start();
     }
-
   }
 
   /*

@@ -670,7 +670,7 @@ public final class UtilSystem implements ITechnicalStrings {
       } finally {
         in.close();
       }
-    } catch (final Exception e) {
+    } catch (final IOException e) {
       mplayerStatus = UtilSystem.MPlayerStatus.MPLAYER_STATUS_NOT_FOUND;
     }
     return mplayerStatus;

@@ -33,6 +33,7 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.Vector;
 
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
@@ -57,7 +58,8 @@ import org.xml.sax.helpers.DefaultHandler;
 /**
  * Stores all files user read
  */
-public final class History extends DefaultHandler implements ITechnicalStrings, ErrorHandler, Observer {
+public final class History extends DefaultHandler implements ITechnicalStrings, ErrorHandler,
+    Observer {
   /** Self instance */
   private static History history;
 
@@ -194,7 +196,7 @@ public final class History extends DefaultHandler implements ITechnicalStrings, 
     it = vHistory.iterator();
     while (it.hasNext()) {
       HistoryItem hi = it.next();
-      if (hi.getDate() < (System.currentTimeMillis() - (iDays * ITechnicalStrings.MILLISECONDS_IN_A_DAY))) {
+      if (hi.getDate() < (System.currentTimeMillis() - (((long) iDays) * ITechnicalStrings.MILLISECONDS_IN_A_DAY))) {
         it.remove();
       }
     }
@@ -240,7 +242,21 @@ public final class History extends DefaultHandler implements ITechnicalStrings, 
       getInstance().clear(Integer.parseInt(ConfigurationManager.getProperty(CONF_HISTORY))); // delete
       // old
       // history items
-    } catch (Exception e) {
+    } catch (IOException e) {
+      Log.error(new JajukException(119));
+      try {
+        commit(); // this history looks corrupted, write a void one
+      } catch (Exception e2) {
+        Log.error(e2);
+      }
+    } catch (SAXException e) {
+      Log.error(new JajukException(119));
+      try {
+        commit(); // this history looks corrupted, write a void one
+      } catch (Exception e2) {
+        Log.error(e2);
+      }
+    } catch (ParserConfigurationException e) {
       Log.error(new JajukException(119));
       try {
         commit(); // this history looks corrupted, write a void one

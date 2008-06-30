@@ -41,6 +41,7 @@ import org.jajuk.ui.widgets.JajukWindow;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
+import org.jajuk.util.log.Log;
 import org.jfree.ui.about.AboutPanel;
 import org.jfree.ui.about.Licences;
 import org.jfree.ui.about.SystemPropertiesPanel;
@@ -116,7 +117,7 @@ public class AboutWindow extends JDialog implements ITechnicalStrings {
             jd.setLocationRelativeTo(JajukWindow.getInstance());
             jd.setVisible(true);
           } catch (Exception e) {
-            // No logs
+            Log.debug("Ignoring exception in AboutWindow: ", e);
           }
         }
       }

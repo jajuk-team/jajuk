@@ -92,9 +92,13 @@ public abstract class AbstractMPlayerImpl implements IPlayerImpl, ITechnicalStri
   protected void sendCommand(String command) {
     if (proc != null) {
       PrintStream out = new PrintStream(proc.getOutputStream());
-      // Do not use println() : it doesn't work under windows
-      out.print(command + '\n');
-      out.flush();
+      try {
+        // Do not use println() : it doesn't work under windows
+        out.print(command + '\n');
+        out.flush();
+      } finally {
+        out.close();
+      }
     }
   }
 

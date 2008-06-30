@@ -58,13 +58,13 @@ public final class LyricsService {
   private static Map<String, IProvider> providers = null;
   private static IProvider current = null;
 
-  /** 
+  /**
    * Empty private constructor to avoid instantiating utility class
    */
   private LyricsService() {
-    
+
   }
-  
+
   /**
    * Loads the appropriate providers from the providers XML definition file.
    * 
@@ -76,17 +76,21 @@ public final class LyricsService {
 
     Log.debug("Loading Providers");
     try {
+      final StringBuilder xml = new StringBuilder();
       final BufferedReader reader = new BufferedReader(new InputStreamReader(
           ITechnicalStrings.FILE_LYRICS_CONF_PATH.openStream()));
-      final StringBuilder xml = new StringBuilder();
-
-      for (String line = null; ;) {
-        line = reader.readLine(); 
-        if(line != null) {
-          break;
+      try {
+        for (String line = null;;) {
+          line = reader.readLine();
+          if (line != null) {
+            break;
+          }
+          xml.append(line);
         }
-        xml.append(line);
+      } finally {
+        reader.close();
       }
+
       final Document xmlDoc = XMLBuilder.getXMLDocument(xml.toString());
       final NodeList children = xmlDoc.getDocumentElement().getChildNodes();
       final int length = children.getLength();

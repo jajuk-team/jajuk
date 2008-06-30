@@ -161,10 +161,12 @@ public class Ambience implements Comparable<Ambience> {
    */
   @Override
   public boolean equals(Object o) {
-    Ambience ambienceOther = (Ambience) o;
-    if (o == null) {
+    // also catches null by definition
+    if(!(o instanceof Ambience))  {
       return false;
     }
+    
+    Ambience ambienceOther = (Ambience) o;
     return this.sName.equals(ambienceOther.getName())
         && this.styles.equals(ambienceOther.getStyles());
   }

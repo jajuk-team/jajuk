@@ -346,9 +346,11 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
    */
   @Override
   public boolean equals(final Object otherPlaylistFile) {
-    if (otherPlaylistFile == null) {
+    // also catches null by definition
+    if (!(otherPlaylistFile instanceof Playlist)) {
       return false;
     }
+
     final Playlist plfOther = (Playlist) otherPlaylistFile;
     return (getID().equals(plfOther.getID()) && (plfOther.getType() == type));
   }
@@ -791,7 +793,10 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
           final SimpleDateFormat stamp = new SimpleDateFormat("ddMMyyyy-HHmm");
           final String dirName = "Party-" + stamp.format(curDate);
           final java.io.File destDir = new java.io.File(fDir.getAbsolutePath() + "/" + dirName);
-          destDir.mkdir();
+          if(!destDir.mkdir()) {
+            Log.warn("Could not create destination directory " + destDir);
+          }
+            
           final java.io.File file = new java.io.File(destDir.getAbsolutePath() + "/playlist.m3u");
           try {
             final BufferedWriter bw = new BufferedWriter(new FileWriter(file));

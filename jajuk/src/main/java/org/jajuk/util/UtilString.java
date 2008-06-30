@@ -36,7 +36,13 @@ import org.jajuk.util.error.JajukException;
 /**
  * Set of convenient classes for string manipulation
  */
-public final class UtilString implements ITechnicalStrings{
+public final class UtilString implements ITechnicalStrings {
+  
+  /**
+   * The list of characters that we need to escape in strings
+   */
+  private final static String ESCAPE_CHARACTERS = "\\[](){}.*+?$^|-";
+  
   /**
    * private constructor to avoid instantiating utility class
    */
@@ -120,8 +126,8 @@ public final class UtilString implements ITechnicalStrings{
    * @param track
    * @return
    */
-  static String applyTrackPattern(final String sPattern, final boolean normalize,
-      final String out, final Track track) {
+  static String applyTrackPattern(final String sPattern, final boolean normalize, final String out,
+      final Track track) {
     String ret = out;
     String sValue;
     if (sPattern.contains(ITechnicalStrings.PATTERN_TRACKNAME)) {
@@ -147,16 +153,15 @@ public final class UtilString implements ITechnicalStrings{
    * @return
    * @throws JajukException
    */
-  static String applyTrackOrderPattern(final org.jajuk.base.File file,
-      final String sPattern, final boolean bMandatory, final String out, final Track track)
-      throws JajukException {
-    String ret = out;
+  static String applyTrackOrderPattern(final org.jajuk.base.File file, final String sPattern,
+      final boolean bMandatory, final String out, final Track track) throws JajukException {
     if (sPattern.contains(ITechnicalStrings.PATTERN_TRACKORDER)) {
+      // override Order from filename if not set explicitly
       long lOrder = track.getOrder();
       if (lOrder == 0) {
         final String sFilename = file.getName();
         if (Character.isDigit(sFilename.charAt(0))) {
-          final String sTo = file.getName().substring(0, 3).trim().replaceAll("[^0-9]", "");
+          final String sTo = sFilename.substring(0, 3).trim().replaceAll("[^0-9]", "");
           for (final char c : sTo.toCharArray()) {
             if (!Character.isDigit(c)) {
               throw new JajukException(152, file.getAbsolutePath());
@@ -170,14 +175,17 @@ public final class UtilString implements ITechnicalStrings{
             lOrder = 0;
           }
         }
-      }
+      } 
+
+      // prepend one digit numbers with "0"
       if (lOrder < 10) {
-        ret = ret.replace(ITechnicalStrings.PATTERN_TRACKORDER, "0" + lOrder);
+        return out.replace(ITechnicalStrings.PATTERN_TRACKORDER, "0" + lOrder);
       } else {
-        ret = ret.replace(ITechnicalStrings.PATTERN_TRACKORDER, lOrder + "");
+        return out.replace(ITechnicalStrings.PATTERN_TRACKORDER, lOrder + "");
       }
     }
-    return ret;
+    else
+      return out;
   }
 
   /**
@@ -218,7 +226,7 @@ public final class UtilString implements ITechnicalStrings{
     return ret;
   }
 
-   /**
+  /**
    * Apply the Author pattern.
    * 
    * @param file
@@ -256,7 +264,7 @@ public final class UtilString implements ITechnicalStrings{
     return ret;
   }
 
-   /**
+  /**
    * Apply a pattern. This replaces certain patterns in the provided Pattern
    * with information from the file and returns the result.
    * 
@@ -352,71 +360,13 @@ public final class UtilString implements ITechnicalStrings{
     StringBuffer buffer = new StringBuffer(2 * length);
     for (int i = 0; i != length; i++) {
       char c = s.charAt(i);
-      switch (c) {
-      case '\\':
+      
+      // if we have a character that needs to be escaped, we prepend backslash before it
+      if(ESCAPE_CHARACTERS.indexOf(c) != -1)
         buffer.append('\\');
-        buffer.append('\\');
-        break;
-      case '[':
-        buffer.append('\\');
-        buffer.append('[');
-        break;
-      case ']':
-        buffer.append('\\');
-        buffer.append(']');
-        break;
-      case '(':
-        buffer.append('\\');
-        buffer.append('(');
-        break;
-      case ')':
-        buffer.append('\\');
-        buffer.append(')');
-        break;
-      case '{':
-        buffer.append('\\');
-        buffer.append('{');
-        break;
-      case '}':
-        buffer.append('\\');
-        buffer.append('}');
-        break;
-      case '.':
-        buffer.append('\\');
-        buffer.append('.');
-        break;
-      case '*':
-        buffer.append('\\');
-        buffer.append('*');
-        break;
-      case '+':
-        buffer.append('\\');
-        buffer.append('+');
-        break;
-      case '?':
-        buffer.append('\\');
-        buffer.append('?');
-        break;
-      case '$':
-        buffer.append('\\');
-        buffer.append('$');
-        break;
-      case '^':
-        buffer.append('\\');
-        buffer.append('^');
-        break;
-      case '|':
-        buffer.append('\\');
-        buffer.append('|');
-        break;
-      case '-':
-        buffer.append('\\');
-        buffer.append('-');
-        break;
-      default:
-        buffer.append(c);
-        break;
-      }
+
+      // now append the actual character
+      buffer.append(c);
     }
     return buffer.toString();
   }
@@ -447,8 +397,8 @@ public final class UtilString implements ITechnicalStrings{
     }
     return sValue;
   }
-  
-   /**
+
+  /**
    * @return locale date formatter instance
    */
   public static DateFormat getLocaleDateFormatter() {
@@ -519,8 +469,8 @@ public final class UtilString implements ITechnicalStrings{
     if (hours > 0) {
       sbResult.append(UtilString.padNumber(hours, 2)).append(":");
     }
-    return sbResult.append(UtilString.padNumber(mins, 2)).append(":").append(UtilString.padNumber(secs, 2))
-        .toString();
+    return sbResult.append(UtilString.padNumber(mins, 2)).append(":").append(
+        UtilString.padNumber(secs, 2)).toString();
   }
 
   /**
@@ -539,6 +489,28 @@ public final class UtilString implements ITechnicalStrings{
    * @return
    */
   public static String formatXML(final String s) {
+    String sOut = replaceReservedXMLChars(s);
+    final StringBuilder sbOut = new StringBuilder(sOut.length());
+    /*
+     * Transform String to XML-valid characters. XML 1.0 specs ; Character Range
+     * [2] Char ::= #x9 | #xA | #xD | [#x20-#xD7FF] | [#xE000-#xFFFD] |
+     * [#x10000-#x10FFFF] any Unicode character, excluding the surrogate blocks,
+     * FFFE, and FFFF.
+     */
+    for (int i = 0; i < sOut.length(); i++) {
+      final char c = sOut.charAt(i);
+      if (UtilString.isChar(c)) {
+        sbOut.append(c);
+      }
+    }
+    return sbOut.toString();
+  }
+
+  /**
+   * @param s
+   * @return
+   */
+  private static String replaceReservedXMLChars(final String s) {
     String sOut = s;
     if (s.contains("&")) {
       sOut = sOut.replaceAll("&", "&amp;");
@@ -555,20 +527,7 @@ public final class UtilString implements ITechnicalStrings{
     if (s.contains(">")) {
       sOut = sOut.replaceAll(">", "&gt;");
     }
-    final StringBuilder sbOut = new StringBuilder(sOut.length());
-    /*
-     * Transform String to XML-valid characters. XML 1.0 specs ; Character Range
-     * [2] Char ::= #x9 | #xA | #xD | [#x20-#xD7FF] | [#xE000-#xFFFD] |
-     * [#x10000-#x10FFFF] any Unicode character, excluding the surrogate blocks,
-     * FFFE, and FFFF.
-     */
-    for (int i = 0; i < sOut.length(); i++) {
-      final char c = sOut.charAt(i);
-      if (UtilString.isChar(c)) {
-        sbOut.append(c);
-      }
-    }
-    return sbOut.toString();
+    return sOut;
   }
 
   /**
@@ -609,7 +568,7 @@ public final class UtilString implements ITechnicalStrings{
     properties.remove("deployment.user.security.trusted.certs");
     properties.remove("deployment.user.security.trusted.clientauthcerts");
     properties.remove("jajuk.log");
-  
+
     return properties;
   }
 
@@ -630,7 +589,6 @@ public final class UtilString implements ITechnicalStrings{
     return sOut;
   }
 
- 
   /**
    * @param ucs4char
    *          char to test
@@ -785,5 +743,5 @@ public final class UtilString implements ITechnicalStrings{
     }
     return true;
   }
-  
+
 }
