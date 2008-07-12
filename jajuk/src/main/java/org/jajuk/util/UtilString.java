@@ -184,8 +184,8 @@ public final class UtilString implements ITechnicalStrings {
         return out.replace(ITechnicalStrings.PATTERN_TRACKORDER, lOrder + "");
       }
     }
-    else
-      return out;
+
+    return out;
   }
 
   /**
@@ -362,8 +362,9 @@ public final class UtilString implements ITechnicalStrings {
       char c = s.charAt(i);
       
       // if we have a character that needs to be escaped, we prepend backslash before it
-      if(ESCAPE_CHARACTERS.indexOf(c) != -1)
+      if(ESCAPE_CHARACTERS.indexOf(c) != -1) {
         buffer.append('\\');
+      }
 
       // now append the actual character
       buffer.append(c);
