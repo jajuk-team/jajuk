@@ -81,10 +81,10 @@ public final class Player implements ITechnicalStrings {
    * @return true if play is OK
    */
   public static boolean play(final File file, final float fPosition, final long length) {
-    if(file == null) {
+    if (file == null) {
       throw new IllegalArgumentException("Cannot play empty file.");
     }
-      
+
     fCurrent = file;
     try {
       // Choose the player
@@ -236,27 +236,8 @@ public final class Player implements ITechnicalStrings {
    * @throws Exception
    */
   public static void mute() {
-    try {
-      Player.bMute = !Player.bMute;
-      if (playerImpl == null) { // none current player, leave
-        return;
-      }
-      if (Player.bMute) {
-        if (playerImpl1 != null) {
-          playerImpl1.setVolume(0.0f);
-        }
-        if (playerImpl2 != null) {
-          playerImpl2.setVolume(0.0f);
-        }
-      } else {
-        // already muted, unmute it by setting the
-        // volume previous mute
-        playerImpl.setVolume(ConfigurationManager.getFloat(CONF_VOLUME));
-      }
-
-    } catch (Exception e) {
-      Log.error(e);
-    }
+    Player.bMute = !Player.bMute;
+    mute(Player.bMute);
   }
 
   /**
