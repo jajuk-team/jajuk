@@ -184,7 +184,15 @@
       <artifactId>filters</artifactId>
       <version>2.0.235</version>
     </dependency>
+    <dependency>
+      <groupId>org.jaudiotagger</groupId>
+      <artifactId>jaudiotagger</artifactId>
+      <version>1.126</version>
+      <scope>system</scope>
+      <systemPath>${basedir}/lib/jaudiotagger-1.126.jar</systemPath>
+    </dependency>
   </dependencies>
+  
   <reporting>
     <plugins>
       <plugin>

@@ -26,7 +26,7 @@
         	<extension name='BasicPlayer' href='basic_player.jnlp'/>
         	<extension name='CommonsCodec' href='commons_codec.jnlp'/>
         	<extension name='CommonsLogging' href='commons_logging.jnlp'/>
-        	<extension name='EntaggedAudioformats' href='entagged_audioformats.jnlp'/>
+        	<extension name='tags' href='tags.jnlp'/>
         	<extension name='Jfreechart' href='jfreechart.jnlp'/>
         	<extension name='JCommon' href='jcommon.jnlp'/>
         	<extension name='Substance Look And Feel' href='substance.jnlp'/>

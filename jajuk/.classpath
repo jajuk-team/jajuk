@@ -37,5 +37,6 @@
 	<classpathentry kind="lib" path="lib/swingx-2007_12_30.jar"/>
 	<classpathentry kind="lib" path="lib/qdwizard-2.0.4.jar"/>
 	<classpathentry kind="lib" path="lib/substance-4.3.5.jar"/>
+	<classpathentry kind="lib" path="lib/jaudiotagger-1.126.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

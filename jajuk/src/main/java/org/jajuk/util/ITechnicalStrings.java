@@ -226,7 +226,7 @@ public interface ITechnicalStrings {
   String FILE_DJ_DIR = "djs";
 
   String FILE_WEB_RADIOS_REPOS = "webradios.xml";
-  
+
   String FILE_FIFO = "fifo.lst";
 
   String FILE_MPLAYER_EXE = "mplayer.exe";
@@ -241,11 +241,13 @@ public interface ITechnicalStrings {
 
   String FILE_REPORTING_CSS_ALL_FILENAME = "report-all.css";
 
-  URL FILE_REPORTING_CSS_ALL_PATH = UtilSystem.getResource("xslt/" + FILE_REPORTING_CSS_ALL_FILENAME);
+  URL FILE_REPORTING_CSS_ALL_PATH = UtilSystem.getResource("xslt/"
+      + FILE_REPORTING_CSS_ALL_FILENAME);
 
   String FILE_REPORTING_CSS_PRINT_FILENAME = "report-print.css";
 
-  URL FILE_REPORTING_CSS_PRINT_PATH = UtilSystem.getResource("xslt/" + FILE_REPORTING_CSS_PRINT_FILENAME);
+  URL FILE_REPORTING_CSS_PRINT_PATH = UtilSystem.getResource("xslt/"
+      + FILE_REPORTING_CSS_PRINT_FILENAME);
 
   String FILE_BACKGROUND_IMAGE = "background.jpg";
 
@@ -349,6 +351,8 @@ public interface ITechnicalStrings {
 
   String TAG_IMPL_ENTAGGED = "org.jajuk.services.tags.EntaggedTagImpl";
 
+  String TAG_IMPL_JAUDIOTAGGER = "org.jajuk.services.tags.JAudioTaggerTagImpl";
+
   // device types
   String DEVICE_TYPE_DIRECTORY = "Device_type.directory";
 
@@ -356,40 +360,7 @@ public interface ITechnicalStrings {
 
   String DEVICE_TYPE_USBKEY = "Device_type.usbkey";
 
-  // Types properties
-  String TYPE_PROPERTY_TECH_DESC_MP3 = "mp3";
-
-  String TYPE_PROPERTY_TECH_DESC_MP2 = "mp2";
-
-  String TYPE_PROPERTY_TECH_DESC_OGG = "ogg";
-
-  String TYPE_PROPERTY_TECH_DESC_AIFF = "aiff";
-
-  String TYPE_PROPERTY_TECH_DESC_WAVE = "wave";
-
-  String TYPE_PROPERTY_TECH_DESC_AU = "au";
-
-  String TYPE_PROPERTY_TECH_DESC_SPEEX = "speex";
-
-  String TYPE_PROPERTY_TECH_DESC_FLAC = "flac";
-
-  String TYPE_PROPERTY_TECH_DESC_MPC = "mpc";
-
-  String TYPE_PROPERTY_TECH_DESC_WMA = "wma";
-
-  String TYPE_PROPERTY_TECH_DESC_APE = "ape";
-
-  String TYPE_PROPERTY_TECH_DESC_AAC = "aac";
-
-  String TYPE_PROPERTY_TECH_DESC_RAM = "ram";
-
-  String TYPE_PROPERTY_TECH_DESC_RADIO = "radio";
-
-  String TYPE_PROPERTY_TECH_DESC_VIDEO = "Video steam";
-  
-  String TYPE_PROPERTY_TECH_WAVPACK = "wv";
-
-  // Devices sync mode
+   // Devices sync mode
   String DEVICE_SYNCHRO_MODE_BI = "bi";
 
   String DEVICE_SYNCHRO_MODE_UNI = "uni";
@@ -986,10 +957,7 @@ public interface ITechnicalStrings {
 
   String XML_TYPE_SEEK_SUPPORTED = "seek";
 
-  // type description as given in the steam
-  String XML_TYPE_TECH_DESC = "tech_desc";
-
-  // icon used in the physical tree
+   // icon used in the physical tree
   String XML_TYPE_ICON = "icon";
 
   // comment tag
@@ -1077,7 +1045,7 @@ public interface ITechnicalStrings {
    * property name equals to meta information attributes names without pbm)
    */
   String[] XML_RESERVED_ATTRIBUTE_NAMES = { XML_NAME, XML_ID, XML_TYPE_EXTENSION,
-      XML_TYPE_PLAYER_IMPL, XML_TYPE_TAG_IMPL, XML_TYPE_TECH_DESC, XML_TYPE_SEEK_SUPPORTED,
+      XML_TYPE_PLAYER_IMPL, XML_TYPE_TAG_IMPL, XML_TYPE_SEEK_SUPPORTED,
       XML_TYPE_ICON, XML_TYPE_IS_MUSIC, XML_TYPE, XML_URL, XML_DEVICE_AUTO_MOUNT,
       XML_DEVICE_AUTO_REFRESH, XML_EXPANDED, XML_DEVICE_MOUNT_POINT, XML_ALBUM, XML_AUTHOR,
       XML_STYLE, XML_TRACK_LENGTH, XML_YEAR, XML_TRACK_RATE, XML_FILES, XML_TRACK_HITS,

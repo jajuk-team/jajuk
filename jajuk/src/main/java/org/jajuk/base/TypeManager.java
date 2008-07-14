@@ -70,9 +70,6 @@ public final class TypeManager extends ItemManager {
     // Seek
     registerProperty(new PropertyMetaInformation(XML_TYPE_SEEK_SUPPORTED, false, false, true,
         false, false, Boolean.class, null));
-    // Tech desc
-    registerProperty(new PropertyMetaInformation(XML_TYPE_TECH_DESC, false, false, true, false,
-        false, String.class, null));
     // Icon
     registerProperty(new PropertyMetaInformation(XML_TYPE_ICON, false, false, false, false, false,
         String.class, null));
@@ -140,24 +137,7 @@ public final class TypeManager extends ItemManager {
     return hmSupportedTypes.get(sExtension);
   }
 
-  /**
-   * Return type for a given technical description
-   * 
-   * @param sTechDesc
-   * @return associated type or null if none found
-   */
-  public Type getTypeByTechDesc(String sTechDesc) {
-    Iterator<Type> it = hmSupportedTypes.values().iterator();
-    while (it.hasNext()) {
-      Type type = it.next();
-      if (type.getStringValue(XML_TYPE_TECH_DESC).equalsIgnoreCase(sTechDesc)) {
-        return type;
-      }
-    }
-    return null;
-  }
-
-  /**
+   /**
    * Return all music types
    * 
    * @return
@@ -235,10 +215,9 @@ public final class TypeManager extends ItemManager {
   public static void registerTypesNoMplayer() throws Exception {
     // mp3
     Type type = TypeManager.getInstance().registerType(Messages.getString("Type.mp3"), EXT_MP3,
-        Class.forName(PLAYER_IMPL_JAVALAYER), Class.forName(TAG_IMPL_ENTAGGED));
+        Class.forName(PLAYER_IMPL_JAVALAYER), Class.forName(TAG_IMPL_JAUDIOTAGGER));
     type.setProperty(XML_TYPE_IS_MUSIC, true);
     type.setProperty(XML_TYPE_SEEK_SUPPORTED, true);
-    type.setProperty(XML_TYPE_TECH_DESC, TYPE_PROPERTY_TECH_DESC_MP3);
     // Do not use IconLoader to get icon, it takes too much time to
     // load all icons
     type.setProperty(XML_TYPE_ICON, UtilSystem.getResource("icons/16x16/type_mp3_16x16.png")
@@ -250,10 +229,9 @@ public final class TypeManager extends ItemManager {
     type.setProperty(XML_TYPE_SEEK_SUPPORTED, false);
     // Ogg vorbis
     type = TypeManager.getInstance().registerType(Messages.getString("Type.ogg"), EXT_OGG,
-        Class.forName(PLAYER_IMPL_JAVALAYER), Class.forName(TAG_IMPL_ENTAGGED));
+        Class.forName(PLAYER_IMPL_JAVALAYER), Class.forName(TAG_IMPL_JAUDIOTAGGER));
     type.setProperty(XML_TYPE_IS_MUSIC, true);
     type.setProperty(XML_TYPE_SEEK_SUPPORTED, false);
-    type.setProperty(XML_TYPE_TECH_DESC, TYPE_PROPERTY_TECH_DESC_OGG);
     type.setProperty(XML_TYPE_ICON, UtilSystem.getResource("icons/16x16/type_ogg_16x16.png")
         .toExternalForm());
     // Wave
@@ -261,7 +239,6 @@ public final class TypeManager extends ItemManager {
         Class.forName(PLAYER_IMPL_JAVALAYER), Class.forName(TAG_IMPL_NO_TAGS));
     type.setProperty(XML_TYPE_IS_MUSIC, true);
     type.setProperty(XML_TYPE_SEEK_SUPPORTED, true);
-    type.setProperty(XML_TYPE_TECH_DESC, TYPE_PROPERTY_TECH_DESC_WAVE);
     type.setProperty(XML_TYPE_ICON, UtilSystem.getResource("icons/16x16/type_wav_16x16.png")
         .toExternalForm());
     // au
@@ -269,7 +246,6 @@ public final class TypeManager extends ItemManager {
         Class.forName(PLAYER_IMPL_JAVALAYER), Class.forName(TAG_IMPL_NO_TAGS));
     type.setProperty(XML_TYPE_IS_MUSIC, true);
     type.setProperty(XML_TYPE_SEEK_SUPPORTED, false);
-    type.setProperty(XML_TYPE_TECH_DESC, TYPE_PROPERTY_TECH_DESC_AU);
     type.setProperty(XML_TYPE_ICON, UtilSystem.getResource("icons/16x16/type_wav_16x16.png")
         .toExternalForm());
   }
@@ -286,10 +262,9 @@ public final class TypeManager extends ItemManager {
   public static void registerTypesMplayerAvailable() throws Exception {
     // mp3
     Type type = TypeManager.getInstance().registerType(Messages.getString("Type.mp3"), EXT_MP3,
-        Class.forName(PLAYER_IMPL_MPLAYER), Class.forName(TAG_IMPL_ENTAGGED));
+        Class.forName(PLAYER_IMPL_MPLAYER), Class.forName(TAG_IMPL_JAUDIOTAGGER));
     type.setProperty(XML_TYPE_IS_MUSIC, true);
     type.setProperty(XML_TYPE_SEEK_SUPPORTED, true);
-    type.setProperty(XML_TYPE_TECH_DESC, TYPE_PROPERTY_TECH_DESC_MP3);
     type.setProperty(XML_TYPE_ICON, UtilSystem.getResource("icons/16x16/type_mp3_16x16.png")
         .toExternalForm());
     // playlists
@@ -299,10 +274,9 @@ public final class TypeManager extends ItemManager {
     type.setProperty(XML_TYPE_SEEK_SUPPORTED, false);
     // Ogg vorbis
     type = TypeManager.getInstance().registerType(Messages.getString("Type.ogg"), EXT_OGG,
-        Class.forName(PLAYER_IMPL_MPLAYER), Class.forName(TAG_IMPL_ENTAGGED));
+        Class.forName(PLAYER_IMPL_MPLAYER), Class.forName(TAG_IMPL_JAUDIOTAGGER));
     type.setProperty(XML_TYPE_IS_MUSIC, true);
     type.setProperty(XML_TYPE_SEEK_SUPPORTED, true);
-    type.setProperty(XML_TYPE_TECH_DESC, TYPE_PROPERTY_TECH_DESC_OGG);
     type.setProperty(XML_TYPE_ICON, UtilSystem.getResource("icons/16x16/type_ogg_16x16.png")
         .toExternalForm());
     // Wav
@@ -310,7 +284,6 @@ public final class TypeManager extends ItemManager {
         Class.forName(PLAYER_IMPL_MPLAYER), Class.forName(TAG_IMPL_NO_TAGS));
     type.setProperty(XML_TYPE_IS_MUSIC, true);
     type.setProperty(XML_TYPE_SEEK_SUPPORTED, true);
-    type.setProperty(XML_TYPE_TECH_DESC, TYPE_PROPERTY_TECH_DESC_WAVE);
     type.setProperty(XML_TYPE_ICON, UtilSystem.getResource("icons/16x16/type_wav_16x16.png")
         .toExternalForm());
     // au
@@ -318,55 +291,48 @@ public final class TypeManager extends ItemManager {
         Class.forName(PLAYER_IMPL_MPLAYER), Class.forName(TAG_IMPL_NO_TAGS));
     type.setProperty(XML_TYPE_IS_MUSIC, true);
     type.setProperty(XML_TYPE_SEEK_SUPPORTED, true);
-    type.setProperty(XML_TYPE_TECH_DESC, TYPE_PROPERTY_TECH_DESC_AU);
     type.setProperty(XML_TYPE_ICON, UtilSystem.getResource("icons/16x16/type_wav_16x16.png")
         .toExternalForm());
     // flac
     type = TypeManager.getInstance().registerType(Messages.getString("Type.flac"), EXT_FLAC,
-        Class.forName(PLAYER_IMPL_MPLAYER), Class.forName(TAG_IMPL_ENTAGGED));
+        Class.forName(PLAYER_IMPL_MPLAYER), Class.forName(TAG_IMPL_JAUDIOTAGGER));
     type.setProperty(XML_TYPE_IS_MUSIC, true);
     type.setProperty(XML_TYPE_SEEK_SUPPORTED, true);
-    type.setProperty(XML_TYPE_TECH_DESC, TYPE_PROPERTY_TECH_DESC_FLAC);
     type.setProperty(XML_TYPE_ICON, UtilSystem.getResource("icons/16x16/type_flac_16x16.png")
         .toExternalForm());
     // WMA
     type = TypeManager.getInstance().registerType(Messages.getString("Type.wma"), EXT_WMA,
-        Class.forName(PLAYER_IMPL_MPLAYER), Class.forName(TAG_IMPL_ENTAGGED));
+        Class.forName(PLAYER_IMPL_MPLAYER), Class.forName(TAG_IMPL_JAUDIOTAGGER));
     type.setProperty(XML_TYPE_IS_MUSIC, true);
     type.setProperty(XML_TYPE_SEEK_SUPPORTED, true);
-    type.setProperty(XML_TYPE_TECH_DESC, TYPE_PROPERTY_TECH_DESC_WMA);
     type.setProperty(XML_TYPE_ICON, UtilSystem.getResource("icons/16x16/type_wma_16x16.png")
         .toExternalForm());
     // AAC
     type = TypeManager.getInstance().registerType(Messages.getString("Type.aac"), EXT_AAC,
-        Class.forName(PLAYER_IMPL_MPLAYER), null);
+        Class.forName(PLAYER_IMPL_MPLAYER), Class.forName(TAG_IMPL_JAUDIOTAGGER));
     type.setProperty(XML_TYPE_IS_MUSIC, true);
     type.setProperty(XML_TYPE_SEEK_SUPPORTED, true);
-    type.setProperty(XML_TYPE_TECH_DESC, TYPE_PROPERTY_TECH_DESC_AAC);
     type.setProperty(XML_TYPE_ICON, UtilSystem.getResource("icons/16x16/type_aac_16x16.png")
         .toExternalForm());
     // M4A (=AAC)
     type = TypeManager.getInstance().registerType(Messages.getString("Type.aac"), EXT_M4A,
-        Class.forName(PLAYER_IMPL_MPLAYER), null);
+        Class.forName(PLAYER_IMPL_MPLAYER), Class.forName(TAG_IMPL_JAUDIOTAGGER));
     type.setProperty(XML_TYPE_IS_MUSIC, true);
     type.setProperty(XML_TYPE_SEEK_SUPPORTED, true);
-    type.setProperty(XML_TYPE_TECH_DESC, TYPE_PROPERTY_TECH_DESC_AAC);
     type.setProperty(XML_TYPE_ICON, UtilSystem.getResource("icons/16x16/type_aac_16x16.png")
         .toExternalForm());
     // Real audio
     type = TypeManager.getInstance().registerType(Messages.getString("Type.real"), EXT_REAL,
-        Class.forName(PLAYER_IMPL_MPLAYER), null);
+        Class.forName(PLAYER_IMPL_MPLAYER), Class.forName(TAG_IMPL_JAUDIOTAGGER));
     type.setProperty(XML_TYPE_IS_MUSIC, true);
     type.setProperty(XML_TYPE_SEEK_SUPPORTED, true);
-    type.setProperty(XML_TYPE_TECH_DESC, TYPE_PROPERTY_TECH_DESC_RAM);
     type.setProperty(XML_TYPE_ICON, UtilSystem.getResource("icons/16x16/type_ram_16x16.png")
         .toExternalForm());
     // mp2
     type = TypeManager.getInstance().registerType(Messages.getString("Type.mp2"), EXT_MP2,
-        Class.forName(PLAYER_IMPL_MPLAYER), Class.forName(TAG_IMPL_ENTAGGED));
+        Class.forName(PLAYER_IMPL_MPLAYER), Class.forName(TAG_IMPL_JAUDIOTAGGER));
     type.setProperty(XML_TYPE_IS_MUSIC, true);
     type.setProperty(XML_TYPE_SEEK_SUPPORTED, true);
-    type.setProperty(XML_TYPE_TECH_DESC, TYPE_PROPERTY_TECH_DESC_MP2);
     type.setProperty(XML_TYPE_ICON, UtilSystem.getResource("icons/16x16/type_mp2_16x16.png")
         .toExternalForm());
     // web radios
@@ -374,21 +340,18 @@ public final class TypeManager extends ItemManager {
         Class.forName(PLAYER_IMPL_WEBRADIOS), null);
     type.setProperty(XML_TYPE_IS_MUSIC, true);
     type.setProperty(XML_TYPE_SEEK_SUPPORTED, true);
-    type.setProperty(XML_TYPE_TECH_DESC, TYPE_PROPERTY_TECH_DESC_RADIO);
     // APE
     type = TypeManager.getInstance().registerType(Messages.getString("Type.ape"), EXT_APE,
-        Class.forName(PLAYER_IMPL_MPLAYER), Class.forName(TAG_IMPL_ENTAGGED));
+        Class.forName(PLAYER_IMPL_MPLAYER), Class.forName(TAG_IMPL_JAUDIOTAGGER));
     type.setProperty(XML_TYPE_IS_MUSIC, true);
     type.setProperty(XML_TYPE_SEEK_SUPPORTED, TRUE);
-    type.setProperty(XML_TYPE_TECH_DESC, TYPE_PROPERTY_TECH_DESC_APE);
     type.setProperty(XML_TYPE_ICON, UtilSystem.getResource("icons/16x16/type_ape_16x16.png")
         .toExternalForm());
-    // MAC
+    // MAC = APE
     type = TypeManager.getInstance().registerType(Messages.getString("Type.mac"), EXT_MAC,
-        Class.forName(PLAYER_IMPL_MPLAYER), Class.forName(TAG_IMPL_ENTAGGED));
+        Class.forName(PLAYER_IMPL_MPLAYER), Class.forName(TAG_IMPL_JAUDIOTAGGER));
     type.setProperty(XML_TYPE_IS_MUSIC, true);
     type.setProperty(XML_TYPE_SEEK_SUPPORTED, TRUE);
-    type.setProperty(XML_TYPE_TECH_DESC, TYPE_PROPERTY_TECH_DESC_APE);
     type.setProperty(XML_TYPE_ICON, UtilSystem.getResource("icons/16x16/type_ape_16x16.png")
         .toExternalForm());
     // MPC
@@ -396,7 +359,6 @@ public final class TypeManager extends ItemManager {
         Class.forName(PLAYER_IMPL_MPLAYER), null);
     type.setProperty(XML_TYPE_IS_MUSIC, true);
     type.setProperty(XML_TYPE_SEEK_SUPPORTED, TRUE);
-    type.setProperty(XML_TYPE_TECH_DESC, TYPE_PROPERTY_TECH_DESC_MPC);
     // Change the MPC icon here if you find one
     type.setProperty(XML_TYPE_ICON, UtilSystem.getResource("icons/16x16/type_mp3_16x16.png")
         .toExternalForm());
@@ -404,7 +366,6 @@ public final class TypeManager extends ItemManager {
         Class.forName(PLAYER_IMPL_MPLAYER), null);
     type.setProperty(XML_TYPE_IS_MUSIC, true);
     type.setProperty(XML_TYPE_SEEK_SUPPORTED, TRUE);
-    type.setProperty(XML_TYPE_TECH_DESC, TYPE_PROPERTY_TECH_DESC_MPC);
     // Change the MPC icon here if you find one
     type.setProperty(XML_TYPE_ICON, UtilSystem.getResource("icons/16x16/type_mp3_16x16.png")
         .toExternalForm());
@@ -414,7 +375,6 @@ public final class TypeManager extends ItemManager {
         Class.forName(PLAYER_IMPL_MPLAYER), null);
     type.setProperty(XML_TYPE_IS_MUSIC, true);
     type.setProperty(XML_TYPE_SEEK_SUPPORTED, TRUE);
-    type.setProperty(XML_TYPE_TECH_DESC, TYPE_PROPERTY_TECH_DESC_VIDEO);
     type.setProperty(XML_TYPE_ICON, UtilSystem.getResource("icons/16x16/type_video_16x16.png")
         .toExternalForm());
     // mpg
@@ -422,7 +382,13 @@ public final class TypeManager extends ItemManager {
         Class.forName(PLAYER_IMPL_MPLAYER), null);
     type.setProperty(XML_TYPE_IS_MUSIC, true);
     type.setProperty(XML_TYPE_SEEK_SUPPORTED, TRUE);
-    type.setProperty(XML_TYPE_TECH_DESC, TYPE_PROPERTY_TECH_DESC_VIDEO);
+    type.setProperty(XML_TYPE_ICON, UtilSystem.getResource("icons/16x16/type_video_16x16.png")
+        .toExternalForm());
+    // MP4
+    type = TypeManager.getInstance().registerType(Messages.getString("Type.video"), EXT_MP4,
+        Class.forName(PLAYER_IMPL_MPLAYER), Class.forName(TAG_IMPL_JAUDIOTAGGER));
+    type.setProperty(XML_TYPE_IS_MUSIC, true);
+    type.setProperty(XML_TYPE_SEEK_SUPPORTED, TRUE);
     type.setProperty(XML_TYPE_ICON, UtilSystem.getResource("icons/16x16/type_video_16x16.png")
         .toExternalForm());
     // mpeg
@@ -430,7 +396,6 @@ public final class TypeManager extends ItemManager {
         Class.forName(PLAYER_IMPL_MPLAYER), null);
     type.setProperty(XML_TYPE_IS_MUSIC, true);
     type.setProperty(XML_TYPE_SEEK_SUPPORTED, TRUE);
-    type.setProperty(XML_TYPE_TECH_DESC, TYPE_PROPERTY_TECH_DESC_VIDEO);
     type.setProperty(XML_TYPE_ICON, UtilSystem.getResource("icons/16x16/type_video_16x16.png")
         .toExternalForm());
     // mkv
@@ -438,15 +403,6 @@ public final class TypeManager extends ItemManager {
         Class.forName(PLAYER_IMPL_MPLAYER), null);
     type.setProperty(XML_TYPE_IS_MUSIC, true);
     type.setProperty(XML_TYPE_SEEK_SUPPORTED, TRUE);
-    type.setProperty(XML_TYPE_TECH_DESC, TYPE_PROPERTY_TECH_DESC_VIDEO);
-    type.setProperty(XML_TYPE_ICON, UtilSystem.getResource("icons/16x16/type_video_16x16.png")
-        .toExternalForm());
-    // mp4
-    type = TypeManager.getInstance().registerType(Messages.getString("Type.video"), EXT_MP4,
-        Class.forName(PLAYER_IMPL_MPLAYER), null);
-    type.setProperty(XML_TYPE_IS_MUSIC, true);
-    type.setProperty(XML_TYPE_SEEK_SUPPORTED, TRUE);
-    type.setProperty(XML_TYPE_TECH_DESC, TYPE_PROPERTY_TECH_DESC_VIDEO);
     type.setProperty(XML_TYPE_ICON, UtilSystem.getResource("icons/16x16/type_video_16x16.png")
         .toExternalForm());
     // asf
@@ -454,7 +410,6 @@ public final class TypeManager extends ItemManager {
         Class.forName(PLAYER_IMPL_MPLAYER), null);
     type.setProperty(XML_TYPE_IS_MUSIC, true);
     type.setProperty(XML_TYPE_SEEK_SUPPORTED, TRUE);
-    type.setProperty(XML_TYPE_TECH_DESC, TYPE_PROPERTY_TECH_DESC_VIDEO);
     type.setProperty(XML_TYPE_ICON, UtilSystem.getResource("icons/16x16/type_video_16x16.png")
         .toExternalForm());
     // wmv
@@ -462,7 +417,6 @@ public final class TypeManager extends ItemManager {
         Class.forName(PLAYER_IMPL_MPLAYER), null);
     type.setProperty(XML_TYPE_IS_MUSIC, true);
     type.setProperty(XML_TYPE_SEEK_SUPPORTED, TRUE);
-    type.setProperty(XML_TYPE_TECH_DESC, TYPE_PROPERTY_TECH_DESC_VIDEO);
     type.setProperty(XML_TYPE_ICON, UtilSystem.getResource("icons/16x16/type_video_16x16.png")
         .toExternalForm());
     // mov
@@ -470,7 +424,6 @@ public final class TypeManager extends ItemManager {
         Class.forName(PLAYER_IMPL_MPLAYER), null);
     type.setProperty(XML_TYPE_IS_MUSIC, true);
     type.setProperty(XML_TYPE_SEEK_SUPPORTED, TRUE);
-    type.setProperty(XML_TYPE_TECH_DESC, TYPE_PROPERTY_TECH_DESC_VIDEO);
     type.setProperty(XML_TYPE_ICON, UtilSystem.getResource("icons/16x16/type_video_16x16.png")
         .toExternalForm());
     // ogm
@@ -478,7 +431,6 @@ public final class TypeManager extends ItemManager {
         Class.forName(PLAYER_IMPL_MPLAYER), null);
     type.setProperty(XML_TYPE_IS_MUSIC, true);
     type.setProperty(XML_TYPE_SEEK_SUPPORTED, TRUE);
-    type.setProperty(XML_TYPE_TECH_DESC, TYPE_PROPERTY_TECH_DESC_VIDEO);
     type.setProperty(XML_TYPE_ICON, UtilSystem.getResource("icons/16x16/type_video_16x16.png")
         .toExternalForm());
     // WavPack
@@ -486,8 +438,8 @@ public final class TypeManager extends ItemManager {
         Class.forName(PLAYER_IMPL_MPLAYER), null);
     type.setProperty(XML_TYPE_IS_MUSIC, true);
     type.setProperty(XML_TYPE_SEEK_SUPPORTED, TRUE);
-    type.setProperty(XML_TYPE_TECH_DESC, TYPE_PROPERTY_TECH_WAVPACK);
-    // Official logo contains text and doesn't display well in 16x16, take wav logo 
+    // Official logo contains text and doesn't display well in 16x16, take wav
+    // logo
     type.setProperty(XML_TYPE_ICON, UtilSystem.getResource("icons/16x16/type_wav_16x16.png")
         .toExternalForm());
   }

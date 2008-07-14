@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
     <jnlp spec="1.0+" codebase="$$codebase" href="entagged_audioformats.jnlp">
     <information>
-        <title>EntaggedAudioFormats</title>
-        <vendor>Entagged Team</vendor>
+        <title>Tag librairies</title>
+        <vendor>Entagged and JAudiotagger Team</vendor>
     </information>
     <resources>
         <jar href="entagged-audioformats-0.15.jar" version='VERSION_REPLACED_BY_ANT'/>
+        <jar href="jaudiotagger-1.126.jar" version='VERSION_REPLACED_BY_ANT'/>
     </resources>
     <security> 
            <all-permissions/>
