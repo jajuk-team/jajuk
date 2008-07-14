@@ -48,7 +48,7 @@ public class EntaggedTagImpl implements ITagImpl, ITechnicalStrings {
   public String getTrackName() throws Exception {
     String sOut = tag.getFirstTitle();
     if (sOut == null) {
-      return ""; // doing that, the item wil be the default jajuk unknown
+      return ""; // doing that, the item will be the default jajuk unknown
       // string
     }
     return sOut;
@@ -77,7 +77,7 @@ public class EntaggedTagImpl implements ITagImpl, ITechnicalStrings {
     String sOut = tag.getFirstArtist();
     if (sOut == null) {
       return "";
-      // doing that, the item wil be the default jajuk unknown string
+      // doing that, the item will be the default jajuk unknown string
     }
     return sOut;
   }
@@ -243,23 +243,6 @@ public class EntaggedTagImpl implements ITagImpl, ITechnicalStrings {
     } catch (Throwable t) { // can throw OutOfMemory errors
       throw new JajukException(103, fio.toString(), t);
     }
-  }
-
-  /*
-   * (non-Javadoc)
-   * 
-   * @see org.jajuk.tag.ITagImpl#getTagItem(java.lang.String)
-   */
-  public String getTagItem(String sTagItem) throws Exception {
-    return null;
-  }
-
-  /*
-   * (non-Javadoc)
-   * 
-   * @see org.jajuk.tag.ITagImpl#setTagItem(java.lang.String, java.lang.String)
-   */
-  public void setTagItem(String sTagItem, String sValue) throws Exception {
   }
 
   /*

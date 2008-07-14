@@ -71,11 +71,6 @@ public interface ITagImpl {
   long getOrder() throws Exception;
 
   /**
-   * @return specific property or null if property not tagged
-   */
-  String getTagItem(String sTagItem) throws Exception;
-
-  /**
    * @param sTrackName
    */
   void setTrackName(String sTrackName) throws Exception;
@@ -119,11 +114,6 @@ public interface ITagImpl {
    * @throws Exception
    */
   void setOrder(long lOrder) throws Exception;
-
-  /**
-   * @return Set a specific property
-   */
-  void setTagItem(String sTagItem, String sValue) throws Exception;
 
   /**
    * Commit all changes in the tag

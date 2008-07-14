@@ -208,10 +208,10 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, ITechnicalStrings, Basi
       return;
     }
     if (mPlayingData.containsKey("audio.type") && player != null) {
-      Type type = TypeManager.getInstance().getTypeByTechDesc(
+      Type type = TypeManager.getInstance().getTypeByExtension(
           (String) mPlayingData.get("audio.type"));
       // Seek support for MP3. and WAVE
-      if (type.getBooleanValue(XML_TYPE_SEEK_SUPPORTED)
+      if (type != null && type.getBooleanValue(XML_TYPE_SEEK_SUPPORTED)
           && mPlayingData.containsKey("audio.length.bytes")) {
         int iAudioLength = ((Integer) mPlayingData.get("audio.length.bytes")).intValue();
         long skipBytes = Math.round(iAudioLength * posValue);

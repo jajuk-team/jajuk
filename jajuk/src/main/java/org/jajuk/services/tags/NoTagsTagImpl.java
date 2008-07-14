@@ -185,23 +185,6 @@ public class NoTagsTagImpl implements ITagImpl {
   /*
    * (non-Javadoc)
    * 
-   * @see org.jajuk.tag.ITagImpl#getTagItem(java.lang.String)
-   */
-  public String getTagItem(String sTagItem) throws Exception {
-    return null;
-  }
-
-  /*
-   * (non-Javadoc)
-   * 
-   * @see org.jajuk.tag.ITagImpl#setTagItem(java.lang.String, java.lang.String)
-   */
-  public void setTagItem(String sTagItem, String sValue) throws Exception {
-  }
-
-  /*
-   * (non-Javadoc)
-   * 
    * @see org.jajuk.tag.ITagImpl#commit()
    */
   public void commit() throws Exception {

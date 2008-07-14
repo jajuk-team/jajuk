@@ -301,7 +301,7 @@ public final class Main implements ITechnicalStrings {
       sessionIdFile = UtilSystem.getConfFileByPath(FILE_SESSIONS + '/' + sHostname + '_'
           + System.getProperty("user.name") + '_'
           + new SimpleDateFormat("yyyyMMdd-kk:mm:ss").format(UtilSystem.TODAY));
-      if(!sessionIdFile.mkdir()) {
+      if (!sessionIdFile.mkdir()) {
         Log.warn("Could not create directory for session: " + sessionIdFile);
       }
 
@@ -396,7 +396,7 @@ public final class Main implements ITechnicalStrings {
       error.printStackTrace();
       Log.error(106, error);
       ExitService.exit(1);
-    } finally { // make sure to close splashscreen in all cases 
+    } finally { // make sure to close splashscreen in all cases
       // (i.e. if UI is not started)
       if (sc != null) {
         sc.setProgress(100);
@@ -406,7 +406,9 @@ public final class Main implements ITechnicalStrings {
     }
   }
 
-  /** Register all the different managers for the types of items that we know about
+  /**
+   * Register all the different managers for the types of items that we know
+   * about
    * 
    */
   private static void registerItemManagers() {
@@ -414,8 +416,7 @@ public final class Main implements ITechnicalStrings {
     ItemManager.registerItemManager(org.jajuk.base.Author.class, AuthorManager.getInstance());
     ItemManager.registerItemManager(org.jajuk.base.Device.class, DeviceManager.getInstance());
     ItemManager.registerItemManager(org.jajuk.base.File.class, FileManager.getInstance());
-    ItemManager.registerItemManager(org.jajuk.base.Directory.class, DirectoryManager
-        .getInstance());
+    ItemManager.registerItemManager(org.jajuk.base.Directory.class, DirectoryManager.getInstance());
     ItemManager.registerItemManager(org.jajuk.base.Playlist.class, PlaylistManager.getInstance());
     ItemManager.registerItemManager(org.jajuk.base.Style.class, StyleManager.getInstance());
     ItemManager.registerItemManager(org.jajuk.base.Track.class, TrackManager.getInstance());
@@ -423,10 +424,12 @@ public final class Main implements ITechnicalStrings {
     ItemManager.registerItemManager(org.jajuk.base.Year.class, YearManager.getInstance());
   }
 
-  /** Walks through the commandline arguments and sets flags for any
-   * one that we recognize.
+  /**
+   * Walks through the commandline arguments and sets flags for any one that we
+   * recognize.
    * 
-   * @param args The list of commandline arguments that is passed to main()
+   * @param args
+   *          The list of commandline arguments that is passed to main()
    */
   private static void handleCommandline(final String[] args) {
     // walk through all arguments and check if there is one that we recognize
@@ -445,7 +448,7 @@ public final class Main implements ITechnicalStrings {
 
         bTestMode = true;
       }
-      
+
       if (element.equals("-" + CLI_POWER_PACK)) {
         bPowerPack = true;
       }
@@ -505,7 +508,7 @@ public final class Main implements ITechnicalStrings {
     // check for jajuk directory
     final File fWorkspace = new File(workspace);
     if (!fWorkspace.exists()) {
-      if(!fWorkspace.mkdirs()) { // create the directory if it doesn't exist
+      if (!fWorkspace.mkdirs()) { // create the directory if it doesn't exist
         Log.warn("Could not create directory " + fWorkspace.toString());
       }
     }
@@ -518,9 +521,9 @@ public final class Main implements ITechnicalStrings {
       // Empty cache
       final File[] cacheFiles = fCache.listFiles();
       for (final File element : cacheFiles) {
-        if(!element.delete()) {
+        if (element.isFile() && !element.delete()) {
           Log.warn("Could not delete file " + element.toString());
-        }          
+        }
       }
     }
 
@@ -647,7 +650,7 @@ public final class Main implements ITechnicalStrings {
             // make sure to delete corrupted mplayer in case of
             // download problem
             if (fMPlayer.length() != MPLAYER_EXE_SIZE) {
-              if(!fMPlayer.delete()) {
+              if (!fMPlayer.delete()) {
                 Log.warn("Could not delete file " + fMPlayer);
               }
               mplayerStatus = UtilSystem.MPlayerStatus.MPLAYER_STATUS_JNLP_DOWNLOAD_PBM;
@@ -724,7 +727,7 @@ public final class Main implements ITechnicalStrings {
     // Create concurrent session directory if needed
     final File sessions = UtilSystem.getConfFileByPath(FILE_SESSIONS);
     if (!sessions.exists()) {
-      if(!sessions.mkdir()) {
+      if (!sessions.mkdir()) {
         Log.warn("Could not create directory " + sessions.toString());
       }
     }
@@ -758,7 +761,7 @@ public final class Main implements ITechnicalStrings {
     boolean bParsingOK = true;
     try {
       if (fCollectionExitProof.exists()) {
-        if(!fCollectionExitProof.delete()) { // delete this file created just
+        if (!fCollectionExitProof.delete()) { // delete this file created just
           Log.warn("Could not delete file " + fCollectionExitProof.toString());
         }
         // after collection exit commit
@@ -910,12 +913,12 @@ public final class Main implements ITechnicalStrings {
               final BufferedReader br = new BufferedReader(new FileReader(UtilSystem
                   .getConfFileByPath(FILE_FIFO)));
               String s = null;
-              for (; ;) {
+              for (;;) {
                 s = br.readLine();
-                if(s == null) {
+                if (s == null) {
                   break;
                 }
-                
+
                 final org.jajuk.base.File file = FileManager.getInstance().getFileByID(s);
                 if ((file != null) && file.isReady()) {
                   alToPlay.add(file);
@@ -1213,20 +1216,20 @@ public final class Main implements ITechnicalStrings {
   public static String getWorkspace() {
     return workspace;
   }
-  
+
   public static void setWorkspace(String workspace) {
     Main.workspace = workspace;
   }
 
-  public static void initializeFromThumbnailsMaker(final boolean bTest, 
-      final String workspace) {
+  public static void initializeFromThumbnailsMaker(final boolean bTest, final String workspace) {
     Main.bTestMode = bTest;
     Main.workspace = workspace;
     Main.bThumbMaker = true;
-    
+
   }
 
-  /** Notify the system about the first time wizard being closed.
+  /**
+   * Notify the system about the first time wizard being closed.
    * 
    */
   public static void notifyFirstTimeWizardClosed() {
@@ -1248,4 +1251,3 @@ public final class Main implements ITechnicalStrings {
     }
   }
 }
- 
