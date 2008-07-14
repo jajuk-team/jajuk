@@ -31,10 +31,10 @@ import javazoom.jlgui.basicplayer.BasicPlayerListener;
 import org.jajuk.util.UtilFeatures;
 
 /**
- * Tager implementationfor formats without tags and read by BasicPlayer API
+ * Tagger implementation for formats without tags and read by BasicPlayer API
  */
 public class NoTagsTagImpl implements ITagImpl {
-  /** Analysed file */
+  /** Analyzed file */
   File fio;
 
   /** Current file data */
@@ -56,7 +56,7 @@ public class NoTagsTagImpl implements ITagImpl {
    * @see org.jajuk.base.ITagImpl#getAlbumName()
    */
   public String getAlbumName() throws Exception {
-    return ""; // doing that, the item wil be the default jajuk unknown
+    return ""; // doing that, the item will be the default jajuk unknown
     // string
   }
 
@@ -66,7 +66,7 @@ public class NoTagsTagImpl implements ITagImpl {
    * @see org.jajuk.base.ITagImpl#getAuthorName()
    */
   public String getAuthorName() throws Exception {
-    return ""; // doing that, the item wil be the default jajuk unknown
+    return ""; // doing that, the item will be the default jajuk unknown
     // string
   }
 
@@ -76,7 +76,7 @@ public class NoTagsTagImpl implements ITagImpl {
    * @see org.jajuk.base.ITagImpl#getStyleName()
    */
   public String getStyleName() throws Exception {
-    return ""; // doing that, the item wil be the default jajuk unknown
+    return ""; // doing that, the item will be the default jajuk unknown
     // string
   }
 
@@ -118,7 +118,7 @@ public class NoTagsTagImpl implements ITagImpl {
    * @see org.jajuk.base.ITagImpl#getComment()
    */
   public String getComment() throws Exception {
-    return ""; // by doing that, the item wil be the default jajuk
+    return ""; // by doing that, the item will be the default jajuk
     // unknown string
   }
 

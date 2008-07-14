@@ -319,7 +319,7 @@ public final class FIFO implements ITechnicalStrings {
         if (!bAppend || !Player.isPlaying()) {
           // if we have a play or nothing is playing
           index = 0;
-          launch(index);
+          launch();
         }
         // computes planned tracks
         computesPlanned(true);
@@ -436,7 +436,7 @@ public final class FIFO implements ITechnicalStrings {
         }
       } else {
         // something more in FIFO
-        launch(index);
+        launch();
       }
       // computes planned tracks
       computesPlanned(false);
@@ -449,12 +449,12 @@ public final class FIFO implements ITechnicalStrings {
   }
 
   /**
-   * Lauch track at given index in the fifo
+   * Launch track at given index in the fifo
    * 
    * @param int
    *          index
    */
-  private void launch(int index) {
+  private void launch() {
     try {
       UtilGUI.waiting();
       // intro workaround : intro mode is only read at track launch
@@ -659,7 +659,8 @@ public final class FIFO implements ITechnicalStrings {
       }
       JajukTimer.getInstance().reset();
       JajukTimer.getInstance().addTrackTime(alFIFO);
-      launch(addPrevious());
+      addPrevious();
+      launch();
     } catch (Exception e) {
       Log.error(e);
     } finally {
@@ -713,7 +714,7 @@ public final class FIFO implements ITechnicalStrings {
           }
         }
       }
-      launch(index);
+      launch();
     } catch (Exception e) {
       Log.error(e);
     } finally {
@@ -1067,7 +1068,7 @@ public final class FIFO implements ITechnicalStrings {
       // need to stop before launching! this fix a
       // wrong EOM event in BasicPlayer
       Player.stop(false);
-      launch(localindex);
+      launch();
     } catch (Exception e) {
       Log.error(e);
     } finally {
