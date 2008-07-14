@@ -22,6 +22,11 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
 public class XMLUtils {
+  /**
+   * private constructor to avoid instantiating utility class
+   */
+  private XMLUtils() {
+  }
 
   public static Element getChildElement(Element el, String tagName) {
     if (el == null) {
