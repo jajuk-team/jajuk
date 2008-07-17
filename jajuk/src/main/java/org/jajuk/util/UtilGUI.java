@@ -36,6 +36,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Map;
+import java.util.StringTokenizer;
 
 import javax.imageio.ImageIO;
 import javax.swing.Box;
@@ -47,6 +48,8 @@ import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
@@ -200,6 +203,29 @@ public final class UtilGUI implements ITechnicalStrings {
       Log.error(e);
     }
     return ii;
+  }
+  
+  /**
+   * 
+   * @param sText
+   *          text to display, lines separated by \n characters
+   * @param limit :
+   *          max number of lines to be displayed without scroller
+   * @return formated message: either a string, or a textarea
+   */
+  public static Object getLimitedMessage(final String sText, final int limit) {
+    final int iNbLines = new StringTokenizer(sText, "\n").countTokens();
+    Object message = null;
+    if (iNbLines > limit) {
+      final JTextArea area = new JTextArea(sText);
+      area.setRows(10);
+      area.setColumns(50);
+      area.setLineWrap(true);
+      message = new JScrollPane(area);
+    } else {
+      message = sText;
+    }
+    return message;
   }
 
   /**

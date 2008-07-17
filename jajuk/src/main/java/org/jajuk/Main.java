@@ -732,7 +732,7 @@ public final class Main implements ITechnicalStrings {
       }
     }
     // Check for concurrent session
-    final File[] files = sessions.listFiles();
+    File[] files = sessions.listFiles();
     // display a warning if sessions directory contains some others users
     // We ignore presence of ourself session id that can be caused by a
     // crash
@@ -742,8 +742,37 @@ public final class Main implements ITechnicalStrings {
         details.append(element.getName());
         details.append('\n');
       }
-      Messages.showHideableWarningMessage(Messages.getString("Warning.2") + details.toString(),
-          CONF_NOT_SHOW_AGAIN_CONCURRENT_SESSION);
+      final JOptionPane optionPane = UtilGUI.getNarrowOptionPane(72);
+      optionPane.setMessage(UtilGUI.getLimitedMessage(Messages.getString("Warning.2")
+          + details.toString(), 20));
+      final Object[] options = { Messages.getString("Ok"), Messages.getString("Hide"),
+          Messages.getString("Purge") };
+      optionPane.setOptions(options);
+      optionPane.setMessageType(JOptionPane.WARNING_MESSAGE);
+      final JDialog dialog = optionPane.createDialog(null, Messages.getString("Warning"));
+      dialog.setAlwaysOnTop(true);
+      // keep it modal (useful at startup)
+      dialog.setModal(true);
+      dialog.pack();
+      dialog.setLocationRelativeTo(JajukWindow.getInstance());
+      dialog.setVisible(true);
+      if (Messages.getString("Hide").equals(optionPane.getValue())) {
+        // Not show again
+        ConfigurationManager.setProperty(CONF_NOT_SHOW_AGAIN_CONCURRENT_SESSION, TRUE);
+      } else if (Messages.getString("Purge").equals(optionPane.getValue())) {
+        try {
+          // Clean up old locks directories in session folder
+          files = sessions.listFiles();
+          for (int i = 0; i < files.length; i++) {
+            if (!files[i].delete()) {
+              throw new Exception("Cannot delete : " + files[i].getAbsolutePath());
+            }
+          }
+        } catch (Exception e) {
+          Messages.showDetailedErrorMessage(131, e.getMessage(), "");
+          Log.error(131);
+        }
+      }
     }
   }
 

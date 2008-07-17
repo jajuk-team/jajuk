@@ -457,29 +457,6 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
   }
 
   /**
-   * 
-   * @param sText
-   *          text to display, lines separated by \n characters
-   * @param limit :
-   *          max number of lines to be displayed without scroller
-   * @return formated message: either a string, or a textarea
-   */
-  protected static Object getLimitedMessage(final String sText, final int limit) {
-    final int iNbLines = new StringTokenizer(sText, "\n").countTokens();
-    Object message = null;
-    if (iNbLines > limit) {
-      final JTextArea area = new JTextArea(sText);
-      area.setRows(10);
-      area.setColumns(50);
-      area.setLineWrap(true);
-      message = new JScrollPane(area);
-    } else {
-      message = sText;
-    }
-    return message;
-  }
-
-  /**
    * Show a dialog with specified error message and infosup
    * 
    * @param code
@@ -606,7 +583,7 @@ class ConfirmDialog extends JajukDialog {
       optionPane.setOptionType(optionsType);
     }
     optionPane.setMessageType(iType);
-    optionPane.setMessage(Messages.getLimitedMessage(sText, 20));
+    optionPane.setMessage(UtilGUI.getLimitedMessage(sText, 20));
     final JDialog dialog = optionPane.createDialog(null, sTitle);
     dialog.setModal(true);
     dialog.setAlwaysOnTop(true);
@@ -717,7 +694,7 @@ class HideableMessageDialog extends JajukDialog {
   HideableMessageDialog(final String sText, final String sTitle, final String sProperty,
       final int iType, final Icon icon) {
     final JOptionPane optionPane = UtilGUI.getNarrowOptionPane(72);
-    optionPane.setMessage(Messages.getLimitedMessage(sText, 20));
+    optionPane.setMessage(UtilGUI.getLimitedMessage(sText, 20));
     final Object[] options = { Messages.getString("Ok"), Messages.getString("Hide") };
     optionPane.setOptions(options);
     optionPane.setMessageType(iType);
@@ -731,7 +708,7 @@ class HideableMessageDialog extends JajukDialog {
     dialog.pack();
     dialog.setLocationRelativeTo(JajukWindow.getInstance());
     dialog.setVisible(true);
-    if (optionPane.getValue().equals(Messages.getString("Hide"))) {
+    if (Messages.getString("Hide").equals(optionPane.getValue())) {
       // Not show again
       ConfigurationManager.setProperty(sProperty, TRUE);
     }
@@ -755,7 +732,7 @@ class ErrorMessageDialog extends JajukDialog {
    */
   ErrorMessageDialog(final int code, final String sInfoSup) {
     final JOptionPane optionPane = UtilGUI.getNarrowOptionPane(72);
-    optionPane.setMessage(Messages.getLimitedMessage(Messages.getErrorMessage(code)
+    optionPane.setMessage(UtilGUI.getLimitedMessage(Messages.getErrorMessage(code)
         + (sInfoSup != null ? (" : " + sInfoSup) : ""), 20));
     final Object[] options = { Messages.getString("Ok") };
     optionPane.setOptions(options);
