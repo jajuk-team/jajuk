@@ -418,6 +418,8 @@ public interface ITechnicalStrings {
   String EXT_AAC = "aac";
   String EXT_M4A = "m4a";
   String EXT_REAL = "ram";
+  String EXT_REAL_RM = "rm";
+  String EXT_REAL_RA = "ra";
   String EXT_RADIO = "radio";
   String EXT_AVI = "avi";
   String EXT_MPG = "mpg";
