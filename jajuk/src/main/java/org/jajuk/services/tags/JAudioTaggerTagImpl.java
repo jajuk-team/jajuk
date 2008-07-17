@@ -23,11 +23,11 @@ import java.io.File;
 
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.UtilFeatures;
+import org.jajuk.util.UtilString;
 import org.jajuk.util.error.JajukException;
 import org.jaudiotagger.audio.AudioFile;
 import org.jaudiotagger.audio.AudioFileIO;
 import org.jaudiotagger.tag.Tag;
-import org.jaudiotagger.tag.TagFieldKey;
 
 /**
  * {@link ITagImpl} Implementation based on <a
@@ -35,11 +35,6 @@ import org.jaudiotagger.tag.TagFieldKey;
  */
 public class JAudioTaggerTagImpl implements ITagImpl, ITechnicalStrings {
 
-  /**
-   * If no value could be read by the audio library, this value is returned. (in
-   * order to prevent <code>null</code> values).<br>
-   */
-  private static final String NO_VALUE = "";
   /**
    * the current audio file instance (set by {@link #setFile(File)}).<br>
    */
@@ -60,28 +55,13 @@ public class JAudioTaggerTagImpl implements ITagImpl, ITechnicalStrings {
     this.audioFile.commit();
   }
 
-  /**
-   * Returns the first value for the specified tag field.<br>
-   * 
-   * @param field
-   *          tag field key identifying the desired value.
-   * @return first value if contained, otherwise {@link #NO_VALUE}.<br>
-   */
-  private String getValue(TagFieldKey field) {
-    String result = this.tag.getFirst(field);
-    if (result == null) {
-      result = NO_VALUE;
-    }
-    return result;
-  }
-
-  /*
+   /*
    * (non-Javadoc)
    * 
    * @see org.jajuk.services.tags.ITagImpl#getAlbumName()
    */
   public String getAlbumName() throws Exception {
-    return getValue(TagFieldKey.ALBUM);
+    return this.tag.getFirstAlbum();
   }
 
   /*
@@ -90,7 +70,7 @@ public class JAudioTaggerTagImpl implements ITagImpl, ITechnicalStrings {
    * @see org.jajuk.services.tags.ITagImpl#getAuthorName()
    */
   public String getAuthorName() throws Exception {
-    return getValue(TagFieldKey.ARTIST);
+    return this.tag.getFirstArtist();
   }
 
   /*
@@ -99,7 +79,7 @@ public class JAudioTaggerTagImpl implements ITagImpl, ITechnicalStrings {
    * @see org.jajuk.services.tags.ITagImpl#getComment()
    */
   public String getComment() throws Exception {
-    return getValue(TagFieldKey.COMMENT);
+    return this.tag.getFirstComment();
   }
 
   /*
@@ -117,8 +97,8 @@ public class JAudioTaggerTagImpl implements ITagImpl, ITechnicalStrings {
    * @see org.jajuk.services.tags.ITagImpl#getOrder()
    */
   public long getOrder() throws Exception {
-    String sOrder = getValue(TagFieldKey.TRACK);
-    if (NO_VALUE.equals(sOrder)) {
+    String sOrder = this.tag.getFirstTrack();
+    if (UtilString.isVoid(sOrder)) {
       return 0;
     }
     if (sOrder.matches(".*/.*")) {
@@ -142,8 +122,8 @@ public class JAudioTaggerTagImpl implements ITagImpl, ITechnicalStrings {
    * @see org.jajuk.services.tags.ITagImpl#getStyleName()
    */
   public String getStyleName() throws Exception {
-    String result = getValue(TagFieldKey.GENRE);
-    if ("genre".equals(result)) {
+    String result = this.tag.getFirstGenre();
+    if (UtilString.isVoid(result) ||  "genre".equals(result)) {
       // the item will be the default jajuk unknown string
       return "";
     }
@@ -174,7 +154,7 @@ public class JAudioTaggerTagImpl implements ITagImpl, ITechnicalStrings {
    * @see org.jajuk.services.tags.ITagImpl#getTrackName()
    */
   public String getTrackName() throws Exception {
-    return getValue(TagFieldKey.TITLE);
+    return this.tag.getFirstTitle();
   }
 
   /*
@@ -183,8 +163,8 @@ public class JAudioTaggerTagImpl implements ITagImpl, ITechnicalStrings {
    * @see org.jajuk.services.tags.ITagImpl#getYear()
    */
   public String getYear() throws Exception {
-    String result = getValue(TagFieldKey.YEAR);
-    if (NO_VALUE.equals(result)) {
+    String result = this.tag.getFirstYear();
+    if (UtilString.isVoid(result)) {
       result = "0";
     } else {
       Long.parseLong(result);
