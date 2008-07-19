@@ -55,7 +55,7 @@ public class JAudioTaggerTagImpl implements ITagImpl, ITechnicalStrings {
     this.audioFile.commit();
   }
 
-   /*
+  /*
    * (non-Javadoc)
    * 
    * @see org.jajuk.services.tags.ITagImpl#getAlbumName()
@@ -123,7 +123,7 @@ public class JAudioTaggerTagImpl implements ITagImpl, ITechnicalStrings {
    */
   public String getStyleName() throws Exception {
     String result = this.tag.getFirstGenre();
-    if (UtilString.isVoid(result) ||  "genre".equals(result)) {
+    if (UtilString.isVoid(result) || "genre".equals(result)) {
       // the item will be the default jajuk unknown string
       return "";
     }
@@ -148,7 +148,7 @@ public class JAudioTaggerTagImpl implements ITagImpl, ITechnicalStrings {
     return result;
   }
 
-    /*
+  /*
    * (non-Javadoc)
    * 
    * @see org.jajuk.services.tags.ITagImpl#getTrackName()
@@ -228,10 +228,12 @@ public class JAudioTaggerTagImpl implements ITagImpl, ITechnicalStrings {
    * @see org.jajuk.services.tags.ITagImpl#setStyleName(java.lang.String)
    */
   public void setStyleName(String style) throws Exception {
+    // Workaround for mp4 genre - Allows genres not in genre list to be written
+    tag.deleteTagField(org.jaudiotagger.tag.TagFieldKey.GENRE);
     this.tag.setGenre(style);
   }
 
-   /*
+  /*
    * (non-Javadoc)
    * 
    * @see org.jajuk.services.tags.ITagImpl#setTrackName(java.lang.String)
