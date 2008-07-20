@@ -51,6 +51,7 @@ public class ShowPropertiesAction extends SelectionAction {
   ShowPropertiesAction() {
     super(Messages.getString("TracksTableView.14"), IconLoader.ICON_PROPERTIES, true);
     setShortDescription(Messages.getString("ShowPropertiesAction.0"));
+    setAcceleratorKey("alt ENTER");
   }
 
   /*
