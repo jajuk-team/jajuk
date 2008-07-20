@@ -35,6 +35,6 @@ public class StopTrackAction extends ActionBase {
 
   @Override
   public void perform(ActionEvent evt) {
-    FIFO.getInstance().stopRequest();
+    FIFO.stopRequest();
   }
 }

@@ -36,7 +36,7 @@ import org.jajuk.base.TrackComparator;
 import org.jajuk.base.TrackManager;
 import org.jajuk.base.Type;
 import org.jajuk.ui.widgets.IconLabel;
-import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.Conf;
 import org.jajuk.util.Filter;
 import org.jajuk.util.Messages;
 
@@ -57,7 +57,7 @@ public class TracksTableModel extends JajukTableModel {
    */
   public TracksTableModel() {
     super(13);
-    setEditable(ConfigurationManager.getBoolean(CONF_TRACKS_TABLE_EDITION));
+    setEditable(Conf.getBoolean(CONF_TRACKS_TABLE_EDITION));
     // Columns names
     // First column is play icon, need to set a space character
     // for proper display in some look and feel
@@ -118,7 +118,7 @@ public class TracksTableModel extends JajukTableModel {
       boolean bShowWithTree = true;
       List<Track> alToShow = null;
       // look at selection
-      boolean bSyncWithTreeOption = ConfigurationManager.getBoolean(CONF_OPTIONS_SYNC_TABLE_TREE);
+      boolean bSyncWithTreeOption = Conf.getBoolean(CONF_OPTIONS_SYNC_TABLE_TREE);
       Set<Track> alTracks = TrackManager.getInstance().getTracks();
       alToShow = new ArrayList<Track>(alTracks.size());
       for (Track track : alTracks) {
@@ -134,7 +134,7 @@ public class TracksTableModel extends JajukTableModel {
         }
       }
       // Filter values using given pattern
-      Filter filter = new Filter(property, sPattern, true, ConfigurationManager
+      Filter filter = new Filter(property, sPattern, true, Conf
           .getBoolean(CONF_REGEXP));
       Filter.filterItems(alToShow, filter);
       // sort by album

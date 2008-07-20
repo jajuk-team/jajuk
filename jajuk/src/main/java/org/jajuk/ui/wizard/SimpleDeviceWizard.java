@@ -39,7 +39,7 @@ import org.jajuk.base.Device;
 import org.jajuk.base.DeviceManager;
 import org.jajuk.ui.widgets.JajukFileChooser;
 import org.jajuk.ui.widgets.JajukJDialog;
-import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukFileFilter;
 import org.jajuk.util.Messages;
@@ -52,7 +52,7 @@ import org.jdesktop.swingx.VerticalLayout;
  * Simple device creation wiard that creates a directory device given a
  * directory
  */
-public class SimpleDeviceWizard extends JajukJDialog implements ITechnicalStrings, ActionListener {
+public class SimpleDeviceWizard extends JajukJDialog implements Const, ActionListener {
   private static final long serialVersionUID = 1L;
 
   JLabel jlLeftIcon;
@@ -89,7 +89,7 @@ public class SimpleDeviceWizard extends JajukJDialog implements ITechnicalString
     setTitle(Messages.getString("SimpleDeviceWizard.0"));
     final int iXSEPARATOR = 10;
     final int iYSEPARATOR = 10;
-    jlLeftIcon = new JLabel(UtilGUI.getImage(ITechnicalStrings.IMAGE_SEARCH));
+    jlLeftIcon = new JLabel(UtilGUI.getImage(Const.IMAGE_SEARCH));
     jpRightPanel = new JPanel();
     jlFileSelection = new JLabel(Messages.getString("FirstTimeWizard.2"));
     jbFileSelection = new JButton(IconLoader.ICON_OPEN_DIR);
@@ -182,7 +182,7 @@ public class SimpleDeviceWizard extends JajukJDialog implements ITechnicalString
         // Create a directory device
         final Device device = DeviceManager.getInstance().registerDevice(deviceName, 0,
             fDir.getAbsolutePath());
-        device.setProperty(ITechnicalStrings.XML_DEVICE_AUTO_MOUNT, true);
+        device.setProperty(Const.XML_DEVICE_AUTO_MOUNT, true);
         // Set refresh time
         double dRefreshTime = 5d;
         try {
@@ -193,7 +193,7 @@ public class SimpleDeviceWizard extends JajukJDialog implements ITechnicalString
         } catch (final NumberFormatException e1) {
           dRefreshTime = 0;
         }
-        device.setProperty(ITechnicalStrings.XML_DEVICE_AUTO_REFRESH, dRefreshTime);
+        device.setProperty(Const.XML_DEVICE_AUTO_REFRESH, dRefreshTime);
         try {
           device.refresh(true, false);
         } catch (final Exception e2) {

@@ -27,7 +27,7 @@ import org.jajuk.base.FileManager;
 import org.jajuk.services.dj.Ambience;
 import org.jajuk.services.dj.AmbienceManager;
 import org.jajuk.services.players.FIFO;
-import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.Conf;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilFeatures;
@@ -41,7 +41,7 @@ public class GlobalRandomAction extends ActionBase {
     super(Messages.getString("JajukWindow.6"), IconLoader.ICON_SHUFFLE_GLOBAL, true);
     String sTooltip = Messages.getString("JajukWindow.23");
     Ambience ambience = AmbienceManager.getInstance().getAmbience(
-        ConfigurationManager.getProperty(CONF_DEFAULT_AMBIENCE));
+        Conf.getString(CONF_DEFAULT_AMBIENCE));
     if (ambience != null) {
       String sAmbience = ambience.getName();
       sTooltip = "<html>" + Messages.getString("JajukWindow.23") + "<p><b>" + sAmbience
@@ -64,8 +64,8 @@ public class GlobalRandomAction extends ActionBase {
           alToPlay = alToPlay.subList(0, NB_TRACKS_ON_ACTION);
         }
         // Push them
-        FIFO.getInstance().push(
-            UtilFeatures.createStackItems(alToPlay, ConfigurationManager.getBoolean(CONF_STATE_REPEAT),
+        FIFO.push(
+            UtilFeatures.createStackItems(alToPlay, Conf.getBoolean(CONF_STATE_REPEAT),
                 false), false);
       }
     }.start();

@@ -30,8 +30,8 @@ import javax.help.JHelp;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
-import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Conf;
+import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
 import org.jajuk.util.log.Log;
@@ -41,7 +41,7 @@ import org.jajuk.util.log.Log;
  * <p>
  * Help perspective *
  */
-public class HelpWindow extends JFrame implements ITechnicalStrings {
+public class HelpWindow extends JFrame implements Const {
 
   private static final long serialVersionUID = 1L;
 
@@ -76,8 +76,8 @@ public class HelpWindow extends JFrame implements ITechnicalStrings {
   public void initUI() {
     try {
       ClassLoader cl = HelpWindow.class.getClassLoader();
-      URL url = HelpSet.findHelpSet(cl, "jajuk.hs", new Locale(ConfigurationManager
-          .getProperty(CONF_OPTIONS_LANGUAGE)));
+      URL url = HelpSet.findHelpSet(cl, "jajuk.hs", new Locale(Conf
+          .getString(CONF_OPTIONS_LANGUAGE)));
       hs = new HelpSet(null, url);
       hb = hs.createHelpBroker();
       jhelp = new JHelp(hs);

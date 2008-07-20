@@ -24,8 +24,8 @@ import java.io.File;
 import org.jajuk.base.Type;
 import org.jajuk.base.TypeManager;
 import org.jajuk.ui.widgets.InformationJPanel;
-import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Conf;
+import org.jajuk.util.Const;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilString;
 import org.jajuk.util.UtilSystem;
@@ -35,7 +35,7 @@ import org.jajuk.util.log.Log;
 /**
  * abstract tag, independent from real implementation
  */
-public class Tag implements ITechnicalStrings {
+public class Tag implements Const {
 
   /** Current tag impl* */
   private ITagImpl tagImpl;
@@ -121,7 +121,7 @@ public class Tag implements ITechnicalStrings {
       Log.info("Wrong album name:{{" + fio.getName() + "}}");
     }
     if (sAlbumlName == null) { // album tag cannot be found
-      if (Boolean.valueOf(ConfigurationManager.getProperty(CONF_TAGS_USE_PARENT_DIR))
+      if (Boolean.valueOf(Conf.getString(CONF_TAGS_USE_PARENT_DIR))
           .booleanValue()) {
         sAlbumlName = fio.getParentFile().getName().intern();
         // if album is not found, take current directory as album name

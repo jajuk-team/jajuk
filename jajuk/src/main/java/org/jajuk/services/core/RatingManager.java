@@ -24,7 +24,7 @@ import org.jajuk.base.FileManager;
 import org.jajuk.events.Event;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
-import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Const;
 import org.jajuk.util.log.Log;
 
 /**
@@ -37,7 +37,7 @@ import org.jajuk.util.log.Log;
  * Singleton
  * <p>
  */
-public final class RatingManager extends Thread implements ITechnicalStrings {
+public final class RatingManager extends Thread implements Const {
 
   private static RatingManager self;
 

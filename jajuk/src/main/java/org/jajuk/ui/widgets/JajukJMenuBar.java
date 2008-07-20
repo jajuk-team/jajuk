@@ -68,8 +68,8 @@ import org.jajuk.ui.perspectives.PerspectiveAdapter;
 import org.jajuk.ui.perspectives.PerspectiveManager;
 import org.jajuk.ui.views.IView;
 import org.jajuk.ui.views.ViewFactory;
-import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Conf;
+import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UpgradeManager;
@@ -80,7 +80,7 @@ import org.jajuk.util.log.Log;
  * <p>
  * Singleton
  */
-public final class JajukJMenuBar extends JMenuBar implements ITechnicalStrings, Observer {
+public final class JajukJMenuBar extends JMenuBar implements Const, Observer {
 
   private static final long serialVersionUID = 1L;
 
@@ -226,13 +226,13 @@ public final class JajukJMenuBar extends JMenuBar implements ITechnicalStrings, 
     mode.setMnemonic(ActionUtil.getMnemonic(modeText));
 
     jcbmiRepeat = new JCheckBoxMenuItem(ActionManager.getAction(REPEAT_MODE_STATUS_CHANGE));
-    jcbmiRepeat.setSelected(ConfigurationManager.getBoolean(CONF_STATE_REPEAT));
+    jcbmiRepeat.setSelected(Conf.getBoolean(CONF_STATE_REPEAT));
     jcbmiShuffle = new JCheckBoxMenuItem(ActionManager.getAction(SHUFFLE_MODE_STATUS_CHANGED));
-    jcbmiShuffle.setSelected(ConfigurationManager.getBoolean(CONF_STATE_SHUFFLE));
+    jcbmiShuffle.setSelected(Conf.getBoolean(CONF_STATE_SHUFFLE));
     jcbmiContinue = new JCheckBoxMenuItem(ActionManager.getAction(CONTINUE_MODE_STATUS_CHANGED));
-    jcbmiContinue.setSelected(ConfigurationManager.getBoolean(CONF_STATE_CONTINUE));
+    jcbmiContinue.setSelected(Conf.getBoolean(CONF_STATE_CONTINUE));
     jcbmiIntro = new JCheckBoxMenuItem(ActionManager.getAction(INTRO_MODE_STATUS_CHANGED));
-    jcbmiIntro.setSelected(ConfigurationManager.getBoolean(CONF_STATE_INTRO));
+    jcbmiIntro.setSelected(Conf.getBoolean(CONF_STATE_INTRO));
 
     mode.add(jcbmiRepeat);
     mode.add(jcbmiShuffle);
@@ -278,14 +278,14 @@ public final class JajukJMenuBar extends JMenuBar implements ITechnicalStrings, 
     jmiOptions = new JMenuItem(ActionManager.getAction(OPTIONS));
 
     jmiUnmounted = new JCheckBoxMenuItem(ActionManager.getAction(JajukActions.UNMOUNTED));
-    jmiUnmounted.setSelected(ConfigurationManager.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED));
+    jmiUnmounted.setSelected(Conf.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED));
     jmiUnmounted.putClientProperty(DETAIL_ORIGIN, jmiUnmounted);
 
     jcbShowPopups = new JCheckBoxMenuItem(Messages.getString("ParameterView.228"));
-    jcbShowPopups.setSelected(ConfigurationManager.getBoolean(CONF_SHOW_POPUPS));
+    jcbShowPopups.setSelected(Conf.getBoolean(CONF_SHOW_POPUPS));
     jcbShowPopups.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
-        ConfigurationManager.setProperty(CONF_SHOW_POPUPS, Boolean.toString(jcbShowPopups
+        Conf.setProperty(CONF_SHOW_POPUPS, Boolean.toString(jcbShowPopups
             .isSelected()));
         // force parameter view to take this into account
         ObservationManager.notify(new Event(JajukEvents.EVENT_PARAMETERS_CHANGE));
@@ -294,10 +294,10 @@ public final class JajukJMenuBar extends JMenuBar implements ITechnicalStrings, 
 
     jcbSyncTableTree = new JCheckBoxMenuItem(Messages.getString("ParameterView.183"));
     jcbSyncTableTree.setToolTipText(Messages.getString("ParameterView.184"));
-    jcbSyncTableTree.setSelected(ConfigurationManager.getBoolean(CONF_OPTIONS_SYNC_TABLE_TREE));
+    jcbSyncTableTree.setSelected(Conf.getBoolean(CONF_OPTIONS_SYNC_TABLE_TREE));
     jcbSyncTableTree.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
-        ConfigurationManager.setProperty(CONF_OPTIONS_SYNC_TABLE_TREE, Boolean
+        Conf.setProperty(CONF_OPTIONS_SYNC_TABLE_TREE, Boolean
             .toString(jcbSyncTableTree.isSelected()));
         // force parameter view to take this into account
         ObservationManager.notify(new Event(JajukEvents.EVENT_PARAMETERS_CHANGE));
@@ -378,7 +378,7 @@ public final class JajukJMenuBar extends JMenuBar implements ITechnicalStrings, 
       }
 
     };
-    if (ConfigurationManager.getBoolean(CONF_CHECK_FOR_UPDATE)) {
+    if (Conf.getBoolean(CONF_CHECK_FOR_UPDATE)) {
       sw.start();
     }
     ObservationManager.register(this);
@@ -433,9 +433,9 @@ public final class JajukJMenuBar extends JMenuBar implements ITechnicalStrings, 
    */
   public void update(Event event) {
     if (JajukEvents.EVENT_PARAMETERS_CHANGE.equals(event.getSubject())) {
-      jcbShowPopups.setSelected(ConfigurationManager.getBoolean(CONF_SHOW_POPUPS));
-      jmiUnmounted.setSelected(ConfigurationManager.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED));
-      jcbSyncTableTree.setSelected(ConfigurationManager.getBoolean(CONF_OPTIONS_SYNC_TABLE_TREE));
+      jcbShowPopups.setSelected(Conf.getBoolean(CONF_SHOW_POPUPS));
+      jmiUnmounted.setSelected(Conf.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED));
+      jcbSyncTableTree.setSelected(Conf.getBoolean(CONF_OPTIONS_SYNC_TABLE_TREE));
     }
   }
 

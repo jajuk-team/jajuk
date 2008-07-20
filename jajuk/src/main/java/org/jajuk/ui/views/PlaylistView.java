@@ -78,8 +78,8 @@ import org.jajuk.ui.widgets.JajukButton;
 import org.jajuk.ui.widgets.JajukJSplitPane;
 import org.jajuk.ui.widgets.JajukTable;
 import org.jajuk.ui.widgets.SmartPlaylist;
-import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Conf;
+import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilFeatures;
@@ -176,9 +176,9 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
           if ((files == null) || (files.size() == 0)) {
             Messages.showErrorMessage(18);
           } else {
-            FIFO.getInstance().push(
-                UtilFeatures.createStackItems(UtilFeatures.applyPlayOption(files), ConfigurationManager
-                    .getBoolean(ITechnicalStrings.CONF_STATE_REPEAT), true), false);
+            FIFO.push(
+                UtilFeatures.createStackItems(UtilFeatures.applyPlayOption(files), Conf
+                    .getBoolean(Const.CONF_STATE_REPEAT), true), false);
           }
         } else { // user changed of smart playlist selection
           selectSmartPlaylist(sp);
@@ -362,8 +362,8 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
             // We launch all tracks from this
             // position
             // to the end of playlist
-            FIFO.getInstance().push(editorModel.getItemsFrom(editorTable.getSelectedRow()),
-                ConfigurationManager.getBoolean(CONF_OPTIONS_PUSH_ON_CLICK));
+            FIFO.push(editorModel.getItemsFrom(editorTable.getSelectedRow()),
+                Conf.getBoolean(CONF_OPTIONS_PUSH_ON_CLICK));
           }
         }
       }
@@ -549,7 +549,7 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
       setButtonState();
     }
     try {
-      editorModel.setItems(UtilFeatures.createStackItems(plf.getFiles(), ConfigurationManager
+      editorModel.setItems(UtilFeatures.createStackItems(plf.getFiles(), Conf
           .getBoolean(CONF_STATE_REPEAT), true)); // PERF
       ((JajukTableModel) editorTable.getModel()).populateModel(editorTable.getColumnsConf());
     } catch (JajukException je) { // don't trace because
@@ -909,10 +909,10 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
                 List<File> alFiles = UtilFeatures.getPlayableFiles(playlist);
                 if (alFiles.size() > 0) {
                   // launch it
-                  FIFO.getInstance().push(
-                      UtilFeatures.createStackItems(alFiles, ConfigurationManager
+                  FIFO.push(
+                      UtilFeatures.createStackItems(alFiles, Conf
                           .getBoolean(CONF_STATE_REPEAT), true),
-                      ConfigurationManager.getBoolean(CONF_OPTIONS_PUSH_ON_CLICK));
+                      Conf.getBoolean(CONF_OPTIONS_PUSH_ON_CLICK));
                 } else {
                   Messages.showErrorMessage(10, playlist.getName());
                 }

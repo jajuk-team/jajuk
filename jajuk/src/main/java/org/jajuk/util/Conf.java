@@ -36,7 +36,7 @@ import org.jajuk.util.log.Log;
  * <p>
  * Singleton
  */
-public final class ConfigurationManager implements ITechnicalStrings {
+public final class Conf implements Const {
 
   /** Properties in memory */
   private static volatile Properties properties = new Properties();
@@ -44,22 +44,7 @@ public final class ConfigurationManager implements ITechnicalStrings {
   /** Default properties cache */
   private static volatile Properties defaults = new Properties();
 
-  /** Self instance* */
-  private static ConfigurationManager cm;
-
-  /** Singleton accessor */
-  public static synchronized ConfigurationManager getInstance() {
-    if (cm == null) {
-      cm = new ConfigurationManager();
-    }
-    return cm;
-  }
-
-  /**
-   * Constructor
-   * 
-   */
-  private ConfigurationManager() {
+  static {
     setDefaultProperties();
     properties = (Properties) properties.clone();
   }
@@ -71,7 +56,7 @@ public final class ConfigurationManager implements ITechnicalStrings {
    *          Name of the property.
    * @return String Value of the property named pName.
    */
-  public static String getProperty(String pName) {
+  public static String getString(String pName) {
     return properties.getProperty(pName);
   }
 
@@ -268,7 +253,7 @@ public final class ConfigurationManager implements ITechnicalStrings {
     defaults.put(CONF_OPTIONS_HOTKEYS, FALSE);
     defaults.put(CONF_MPLAYER_ARGS, "");
     defaults.put(CONF_ENV_VARIABLES, "");
-    if (ConfigurationManager.getBoolean(CONF_SHOW_TIP_ON_STARTUP)) {
+    if (Conf.getBoolean(CONF_SHOW_TIP_ON_STARTUP)) {
       // In that case, we keep previous value if it was false to avoid
       // displaying the tips after user makes a "defaults" in preferences view
       defaults.put(CONF_SHOW_TIP_ON_STARTUP, TRUE);
@@ -298,6 +283,7 @@ public final class ConfigurationManager implements ITechnicalStrings {
     defaults.put(CONF_FORCE_TRAY_SHUTDOWN, FALSE);
     defaults.put(CONF_FORMAT_TIME_ELAPSED, "0");
     defaults.put(CONF_SLIMBAR_POSITION, "0,0");
+    defaults.put(CONF_LYRICS_PROVIDERS, "org.jajuk.services.lyrics.providers.LyrcProvider");
     // Make a copy of default values
     properties = (Properties) defaults.clone();
   }

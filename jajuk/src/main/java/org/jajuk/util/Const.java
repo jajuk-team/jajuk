@@ -24,7 +24,7 @@ import java.net.URL;
 /**
  * Contains all technical/ non-translatable strings
  */
-public interface ITechnicalStrings {
+public interface Const {
 
   // Misc
   /** Information bar and command bar default vertical size in pixels */
@@ -232,8 +232,6 @@ public interface ITechnicalStrings {
   String FILE_MPLAYER_EXE = "mplayer.exe";
 
   String FILE_TOOLBARS_CONF = "toolbars.xml";
-
-  URL FILE_LYRICS_CONF_PATH = UtilSystem.getResource("xml/lyrics.xml");
 
   String FILE_DEFAULT_PERSPECTIVES_PATH = "perspectives";
 
@@ -601,6 +599,9 @@ public interface ITechnicalStrings {
 
   /** Slimbar position */
   String CONF_SLIMBAR_POSITION = "jajuk.slimbar_pos";
+  
+  /** List of lyrics providers separated by ','*/
+  String CONF_LYRICS_PROVIDERS = "jajuk.lyrics.providers";
 
   /** Gain (float) */
   String CONF_VOLUME = "jajuk.volume";

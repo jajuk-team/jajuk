@@ -47,8 +47,8 @@ import org.jajuk.ui.helpers.ILaunchCommand;
 import org.jajuk.ui.helpers.JajukCellRenderer;
 import org.jajuk.ui.helpers.JajukTableModel;
 import org.jajuk.ui.helpers.TableTransferHandler;
-import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Conf;
+import org.jajuk.util.Const;
 import org.jajuk.util.UtilString;
 import org.jdesktop.swingx.JXTable;
 import org.jdesktop.swingx.table.DefaultTableColumnModelExt;
@@ -65,7 +65,7 @@ import org.jdesktop.swingx.table.TableColumnExt;
  * <p>
  * Bring a menu displayed on right click
  */
-public class JajukTable extends JXTable implements ITechnicalStrings, ListSelectionListener,
+public class JajukTable extends JXTable implements Const, ListSelectionListener,
     java.awt.event.MouseListener {
 
   private static final long serialVersionUID = 1L;
@@ -155,7 +155,7 @@ public class JajukTable extends JXTable implements ITechnicalStrings, ListSelect
   private void reorderColumns() {
     // Build the index array
     List<String> index = new ArrayList<String>(10);
-    StringTokenizer st = new StringTokenizer(ConfigurationManager.getProperty(this.sConf), ",");
+    StringTokenizer st = new StringTokenizer(Conf.getString(this.sConf), ",");
     while (st.hasMoreTokens()) {
       index.add(st.nextToken());
     }
@@ -192,7 +192,7 @@ public class JajukTable extends JXTable implements ITechnicalStrings, ListSelect
    */
   public List<String> getColumnsConf() {
     List<String> alOut = new ArrayList<String>(10);
-    String value = ConfigurationManager.getProperty(sConf);
+    String value = Conf.getString(sConf);
     StringTokenizer st = new StringTokenizer(value, ",");
     while (st.hasMoreTokens()) {
       alOut.add(st.nextToken());
@@ -211,8 +211,8 @@ public class JajukTable extends JXTable implements ITechnicalStrings, ListSelect
     }
     List<String> alOut = getColumnsConf();
     if (!alOut.contains(property)) {
-      String value = ConfigurationManager.getProperty(sConf);
-      ConfigurationManager.setProperty(sConf, value + "," + property);
+      String value = Conf.getString(sConf);
+      Conf.setProperty(sConf, value + "," + property);
     }
   }
 
@@ -227,7 +227,7 @@ public class JajukTable extends JXTable implements ITechnicalStrings, ListSelect
     }
     List<String> alOut = getColumnsConf();
     alOut.remove(property);
-    ConfigurationManager.setProperty(sConf, getColumnsConf(alOut));
+    Conf.setProperty(sConf, getColumnsConf(alOut));
   }
 
   private void columnChange() {
@@ -281,7 +281,7 @@ public class JajukTable extends JXTable implements ITechnicalStrings, ListSelect
     } else {
       value = sb.toString();
     }
-    ConfigurationManager.setProperty(sConf, value);
+    Conf.setProperty(sConf, value);
   }
 
   /**

@@ -48,7 +48,7 @@ import org.jajuk.util.log.Log;
 /**
  * Manages network downloads
  */
-public final class DownloadManager implements ITechnicalStrings {
+public final class DownloadManager implements Const {
 
   private static Proxy proxy;
 
@@ -72,7 +72,7 @@ public final class DownloadManager implements ITechnicalStrings {
       return alOut;
     }
     // Select cover size
-    int i = ConfigurationManager.getInt(CONF_COVERS_SIZE);
+    int i = Conf.getInt(CONF_COVERS_SIZE);
     String size = null;
     switch (i) {
     case 0: // small only
@@ -204,16 +204,16 @@ public final class DownloadManager implements ITechnicalStrings {
    * 
    */
   public synchronized static void setDefaultProxySettings() {
-    String sProxyHost = ConfigurationManager.getProperty(CONF_NETWORK_PROXY_HOSTNAME);
-    int iProxyPort = ConfigurationManager.getInt(CONF_NETWORK_PROXY_PORT);
-    String sProxyLogin = ConfigurationManager.getProperty(CONF_NETWORK_PROXY_LOGIN);
-    String sProxyPwd = ConfigurationManager.getProperty(CONF_NETWORK_PROXY_PWD);
+    String sProxyHost = Conf.getString(CONF_NETWORK_PROXY_HOSTNAME);
+    int iProxyPort = Conf.getInt(CONF_NETWORK_PROXY_PORT);
+    String sProxyLogin = Conf.getString(CONF_NETWORK_PROXY_LOGIN);
+    String sProxyPwd = Conf.getString(CONF_NETWORK_PROXY_PWD);
     Type proxyType = Type.DIRECT;
-    if (ConfigurationManager.getBoolean(CONF_NETWORK_USE_PROXY)) {
+    if (Conf.getBoolean(CONF_NETWORK_USE_PROXY)) {
       // Set default proxy value
-      if (PROXY_TYPE_HTTP.equals(ConfigurationManager.getProperty(CONF_NETWORK_PROXY_TYPE))) {
+      if (PROXY_TYPE_HTTP.equals(Conf.getString(CONF_NETWORK_PROXY_TYPE))) {
         proxyType = Type.HTTP;
-      } else if (PROXY_TYPE_SOCKS.equals(ConfigurationManager.getProperty(CONF_NETWORK_PROXY_TYPE))) {
+      } else if (PROXY_TYPE_SOCKS.equals(Conf.getString(CONF_NETWORK_PROXY_TYPE))) {
         proxyType = Type.SOCKS;
       }
       try {
@@ -226,20 +226,20 @@ public final class DownloadManager implements ITechnicalStrings {
     // Set system defaults proxy values, if we don't use DownloadManager
     // methods
     // see http://java.sun.com/j2se/1.4.2/docs/guide/net/properties.html
-    if (ConfigurationManager.getBoolean(CONF_NETWORK_USE_PROXY)) {
+    if (Conf.getBoolean(CONF_NETWORK_USE_PROXY)) {
       System.getProperties().put("proxySet", "true");
-      if (PROXY_TYPE_HTTP.equals(ConfigurationManager.getProperty(CONF_NETWORK_PROXY_TYPE))) {
+      if (PROXY_TYPE_HTTP.equals(Conf.getString(CONF_NETWORK_PROXY_TYPE))) {
         System.setProperty("http.proxyHost", sProxyHost);
         System.setProperty("http.proxyPort", Integer.toString(iProxyPort));
-      } else if (PROXY_TYPE_SOCKS.equals(ConfigurationManager.getProperty(CONF_NETWORK_PROXY_TYPE))) {
+      } else if (PROXY_TYPE_SOCKS.equals(Conf.getString(CONF_NETWORK_PROXY_TYPE))) {
         System.setProperty("socksProxyHost", sProxyHost);
         System.setProperty("socksProxyPort ", Integer.toString(iProxyPort));
       }
       Authenticator.setDefault(new Authenticator() {
         @Override
         protected PasswordAuthentication getPasswordAuthentication() {
-          String user = ConfigurationManager.getProperty(CONF_NETWORK_PROXY_LOGIN);
-          char[] pwd = UtilString.rot13(ConfigurationManager.getProperty(CONF_NETWORK_PROXY_PWD))
+          String user = Conf.getString(CONF_NETWORK_PROXY_LOGIN);
+          char[] pwd = UtilString.rot13(Conf.getString(CONF_NETWORK_PROXY_PWD))
               .toCharArray();
           return new PasswordAuthentication(user, pwd);
         }

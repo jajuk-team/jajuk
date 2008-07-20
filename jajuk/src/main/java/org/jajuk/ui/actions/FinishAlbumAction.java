@@ -44,15 +44,15 @@ public class FinishAlbumAction extends ActionBase {
 
   @Override
   public void perform(ActionEvent evt) throws JajukException {
-    StackItem item = FIFO.getInstance().getCurrentItem();// stores
+    StackItem item = FIFO.getCurrentItem();// stores
     // current item
-    FIFO.getInstance().clear(); // clear fifo
+    FIFO.clear(); // clear fifo
     Directory dir = item.getFile().getDirectory();
     // then re-add current item
-    FIFO.getInstance().push(
+    FIFO.push(
         UtilFeatures.createStackItems(dir.getFilesFromFile(item.getFile()), item.isRepeat(), item
             .isUserLaunch()), true);
-    FIFO.getInstance().computesPlanned(true); // update planned list
+    FIFO.computesPlanned(true); // update planned list
     Properties properties = new Properties();
     properties.put(DETAIL_ORIGIN, DETAIL_SPECIAL_MODE_NORMAL);
     ObservationManager.notify(new Event(JajukEvents.EVENT_SPECIAL_MODE, properties));

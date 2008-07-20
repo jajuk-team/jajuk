@@ -27,7 +27,7 @@ import org.jajuk.base.FileManager;
 import org.jajuk.services.dj.Ambience;
 import org.jajuk.services.dj.AmbienceManager;
 import org.jajuk.services.players.FIFO;
-import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.Conf;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilFeatures;
@@ -53,8 +53,8 @@ public class NoveltiesAction extends ActionBase {
       alToPlay = alToPlay.subList(0, NB_TRACKS_ON_ACTION);
     }
     if (alToPlay != null && alToPlay.size() > 0) {
-      FIFO.getInstance().push(
-          UtilFeatures.createStackItems(UtilFeatures.applyPlayOption(alToPlay), ConfigurationManager
+      FIFO.push(
+          UtilFeatures.createStackItems(UtilFeatures.applyPlayOption(alToPlay), Conf
               .getBoolean(CONF_STATE_REPEAT), false), false);
     } else { // none novelty found
       Messages.showWarningMessage(Messages.getString("Error.127"));

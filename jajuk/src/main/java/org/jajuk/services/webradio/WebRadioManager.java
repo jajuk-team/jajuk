@@ -34,9 +34,9 @@ import javax.xml.parsers.SAXParserFactory;
 
 import org.jajuk.base.FileManager;
 import org.jajuk.base.SearchResult;
-import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.Conf;
 import org.jajuk.util.DownloadManager;
-import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Const;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilString;
 import org.jajuk.util.UtilSystem;
@@ -51,7 +51,7 @@ import org.xml.sax.helpers.DefaultHandler;
  * Singleton
  * </p>
  */
-public final class WebRadioManager extends DefaultHandler implements ITechnicalStrings {
+public final class WebRadioManager extends DefaultHandler implements Const {
 
   private static Set<WebRadio> webradios = new TreeSet<WebRadio>();
 
@@ -154,7 +154,7 @@ public final class WebRadioManager extends DefaultHandler implements ITechnicalS
       return;
     }
     File out = UtilSystem.getConfFileByPath(FILE_WEB_RADIOS_REPOS);
-    String sCharset = ConfigurationManager.getProperty(CONF_COLLECTION_CHARSET);
+    String sCharset = Conf.getString(CONF_COLLECTION_CHARSET);
     BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(out),
         sCharset), 1000000);
     bw.write("<?xml version='1.0' encoding='" + sCharset + "'?>\n");
@@ -301,7 +301,7 @@ public final class WebRadioManager extends DefaultHandler implements ITechnicalS
    */
   public static String getCurrentWebRadioTooltip() {
     String tooltipWebRadio = Messages.getString("CommandJPanel.25");
-    String defaultRadio = ConfigurationManager.getProperty(CONF_DEFAULT_WEB_RADIO);
+    String defaultRadio = Conf.getString(CONF_DEFAULT_WEB_RADIO);
     if (WebRadioManager.getInstance().getWebRadioByName(defaultRadio) != null) {
       tooltipWebRadio = "<html>" + tooltipWebRadio + "<p><b>" + defaultRadio + "</b></html>";
     }

@@ -28,7 +28,7 @@ import java.net.URL;
 import javax.swing.ImageIcon;
 
 import org.jajuk.util.DownloadManager;
-import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Const;
 import org.jajuk.util.UtilFeatures;
 import org.jajuk.util.UtilGUI;
 import org.jajuk.util.UtilSystem;
@@ -37,7 +37,7 @@ import org.jajuk.util.log.Log;
 /**
  * A cover, encapsulates URL, files and manages cover priority to display
  */
-public class Cover implements Comparable<Cover>, ITechnicalStrings {
+public class Cover implements Comparable<Cover>, Const {
 
   public static final int LOCAL_COVER = 0;
 

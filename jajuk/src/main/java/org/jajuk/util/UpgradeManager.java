@@ -30,7 +30,7 @@ import org.jajuk.util.log.Log;
 /**
  * Maintain all behavior needed upgrades from releases to releases
  */
-public final class UpgradeManager implements ITechnicalStrings {
+public final class UpgradeManager implements Const {
 
   private static String newVersionName;
 
@@ -50,15 +50,15 @@ public final class UpgradeManager implements ITechnicalStrings {
       Log.warn("Could not delete file " + file);
     }
     // upgrade code; if upgrade from <1.2, set default ambiences
-    String sRelease = ConfigurationManager.getProperty(CONF_RELEASE);
+    String sRelease = Conf.getString(CONF_RELEASE);
     if (sRelease == null || sRelease.matches("0..*") || sRelease.matches("1.0..*")
         || sRelease.matches("1.1.*")) {
       AmbienceManager.getInstance().createDefaultAmbiences();
     }
     // - For Jajuk < 1.3 : changed track pattern from %track to %title
-    String sPattern = ConfigurationManager.getProperty(CONF_REFACTOR_PATTERN);
+    String sPattern = Conf.getString(CONF_REFACTOR_PATTERN);
     if (sPattern.contains("track")) {
-      ConfigurationManager
+      Conf
           .setProperty(CONF_REFACTOR_PATTERN, sPattern.replaceAll("track", "title"));
     }
     // - for Jajuk < 1.3: no more use of .ser files
@@ -72,13 +72,13 @@ public final class UpgradeManager implements ITechnicalStrings {
     }
     // - for jajuk 1.3: wrong option name: "false" instead of
     // "jajuk.options.use_hotkeys"
-    String sUseHotkeys = ConfigurationManager.getProperty("false");
+    String sUseHotkeys = Conf.getString("false");
     if (sUseHotkeys != null) {
       if (sUseHotkeys.equalsIgnoreCase(FALSE) || sUseHotkeys.equalsIgnoreCase(TRUE)) {
-        ConfigurationManager.setProperty(CONF_OPTIONS_HOTKEYS, sUseHotkeys);
-        ConfigurationManager.removeProperty("false");
+        Conf.setProperty(CONF_OPTIONS_HOTKEYS, sUseHotkeys);
+        Conf.removeProperty("false");
       } else {
-        ConfigurationManager.setProperty(CONF_OPTIONS_HOTKEYS, FALSE);
+        Conf.setProperty(CONF_OPTIONS_HOTKEYS, FALSE);
       }
     }
     // for jajuk <1.4 (or early 1.4), some perspectives have been renamed
@@ -104,24 +104,24 @@ public final class UpgradeManager implements ITechnicalStrings {
     }
     // For Jajuk < 1.6
     // Perspective buttons
-    if (ConfigurationManager.getInt(ITechnicalStrings.CONF_PERSPECTIVE_ICONS_SIZE) > 45) {
-      ConfigurationManager.setProperty(ITechnicalStrings.CONF_PERSPECTIVE_ICONS_SIZE, "45");
+    if (Conf.getInt(Const.CONF_PERSPECTIVE_ICONS_SIZE) > 45) {
+      Conf.setProperty(Const.CONF_PERSPECTIVE_ICONS_SIZE, "45");
     }
     // For Jajuk 1.5 and jajuk 1.6 columns conf id changed
-    if (ConfigurationManager.getProperty(CONF_PLAYLIST_REPOSITORY_COLUMNS).matches(".*0.*")) {
-      ConfigurationManager.setDefaultProperty(CONF_PLAYLIST_REPOSITORY_COLUMNS);
+    if (Conf.getString(CONF_PLAYLIST_REPOSITORY_COLUMNS).matches(".*0.*")) {
+      Conf.setDefaultProperty(CONF_PLAYLIST_REPOSITORY_COLUMNS);
     }
-    if (ConfigurationManager.getProperty(CONF_QUEUE_COLUMNS).matches(".*0.*")) {
-      ConfigurationManager.setDefaultProperty(CONF_QUEUE_COLUMNS);
+    if (Conf.getString(CONF_QUEUE_COLUMNS).matches(".*0.*")) {
+      Conf.setDefaultProperty(CONF_QUEUE_COLUMNS);
     }
-    if (ConfigurationManager.getProperty(CONF_PLAYLIST_EDITOR_COLUMNS).matches(".*0.*")) {
-      ConfigurationManager.setDefaultProperty(CONF_PLAYLIST_EDITOR_COLUMNS);
+    if (Conf.getString(CONF_PLAYLIST_EDITOR_COLUMNS).matches(".*0.*")) {
+      Conf.setDefaultProperty(CONF_PLAYLIST_EDITOR_COLUMNS);
     }
 
     // For Jajuk < 1.7, elaspsed time format variable name changed
-    if (ConfigurationManager.containsProperty("format")) {
-      ConfigurationManager.setProperty(CONF_FORMAT_TIME_ELAPSED, ConfigurationManager
-          .getProperty("format"));
+    if (Conf.containsProperty("format")) {
+      Conf.setProperty(CONF_FORMAT_TIME_ELAPSED, Conf
+          .getString("format"));
     }
 
     // TO DO AFTER AN UPGRADE

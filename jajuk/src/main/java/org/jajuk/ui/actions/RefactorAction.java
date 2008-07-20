@@ -33,8 +33,8 @@ import org.jajuk.events.Event;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.ui.widgets.InformationJPanel;
-import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Conf;
+import org.jajuk.util.Const;
 import org.jajuk.util.JajukFileFilter;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilGUI;
@@ -43,7 +43,7 @@ import org.jajuk.util.error.JajukException;
 import org.jajuk.util.filters.NotAudioFilter;
 import org.jajuk.util.log.Log;
 
-public class RefactorAction implements ITechnicalStrings {
+public class RefactorAction implements Const {
 
   private static boolean bStopAll = false;
 
@@ -70,7 +70,7 @@ public class RefactorAction implements ITechnicalStrings {
     for (final File f : alFiles) {
       sFiles += f.getName() + "\n";
     }
-    if (ConfigurationManager.getBoolean(ITechnicalStrings.CONF_CONFIRMATIONS_REFACTOR_FILES)) {
+    if (Conf.getBoolean(Const.CONF_CONFIRMATIONS_REFACTOR_FILES)) {
       final int iResu = Messages.getChoice(Messages.getString("Confirmation_refactor_files")
           + " : \n" + sFiles, JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);
       if (iResu != JOptionPane.YES_OPTION) {
@@ -103,8 +103,8 @@ public class RefactorAction implements ITechnicalStrings {
     for (final File fCurrent : alFiles) {
       final Track tCurrent = fCurrent.getTrack();
       try {
-        filename = UtilString.applyPattern(fCurrent, ConfigurationManager
-            .getProperty(ITechnicalStrings.CONF_REFACTOR_PATTERN), true, true);
+        filename = UtilString.applyPattern(fCurrent, Conf
+            .getString(Const.CONF_REFACTOR_PATTERN), true, true);
       } catch (final JajukException je) {
         sErrors += je.getMessage() + '\n';
         continue;

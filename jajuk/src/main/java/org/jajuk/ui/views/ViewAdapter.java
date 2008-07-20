@@ -26,13 +26,13 @@ import java.awt.Component;
 import java.awt.event.ComponentEvent;
 
 import org.jajuk.ui.perspectives.IPerspective;
-import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Const;
 import org.jdesktop.swingx.JXPanel;
 
 /**
  * Default implementation for views
  */
-public abstract class ViewAdapter extends JXPanel implements IView, ITechnicalStrings, Comparable<IView> {
+public abstract class ViewAdapter extends JXPanel implements IView, Const, Comparable<IView> {
 
   /** Populated state */
   private boolean bIsPopulated = false;

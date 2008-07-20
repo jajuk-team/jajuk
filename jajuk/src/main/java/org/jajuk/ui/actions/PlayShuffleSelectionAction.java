@@ -26,7 +26,7 @@ import java.util.Random;
 
 import org.jajuk.base.File;
 import org.jajuk.services.players.FIFO;
-import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.Conf;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilFeatures;
@@ -61,8 +61,8 @@ public class PlayShuffleSelectionAction extends SelectionAction {
     super.perform(e);
     List<File> files = UtilFeatures.getPlayableFiles(selection);
     Collections.shuffle(files, new Random());
-    FIFO.getInstance().push(
-        UtilFeatures.createStackItems(UtilFeatures.applyPlayOption(files), ConfigurationManager
+    FIFO.push(
+        UtilFeatures.createStackItems(UtilFeatures.applyPlayOption(files), Conf
             .getBoolean(CONF_STATE_REPEAT), true), false);
   }
 

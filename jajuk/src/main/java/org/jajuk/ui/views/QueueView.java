@@ -61,7 +61,7 @@ import org.jajuk.ui.helpers.PlaylistEditorTransferHandler;
 import org.jajuk.ui.helpers.PlaylistTableModel;
 import org.jajuk.ui.widgets.JajukButton;
 import org.jajuk.ui.widgets.JajukTable;
-import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.Conf;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilGUI;
@@ -109,7 +109,7 @@ public class QueueView extends PlaylistView {
     jbAddShuffle = new JajukButton(IconLoader.ICON_ADD_SHUFFLE);
     jbAddShuffle.setToolTipText(Messages.getString("AbstractPlaylistEditorView.10"));
     jbAddShuffle.addActionListener(this);
-    jlTitle = new JLabel(" [" + FIFO.getInstance().getFIFO().size() + "]");
+    jlTitle = new JLabel(" [" + FIFO.getFIFO().size() + "]");
 
     jbClear = new JajukButton(IconLoader.ICON_CLEAR);
     jbClear.setToolTipText(Messages.getString("QueueView.1"));
@@ -211,10 +211,10 @@ public class QueueView extends PlaylistView {
             // we can't launch a planned
             // track, leave
             item.setPlanned(false);
-            item.setRepeat(ConfigurationManager.getBoolean(CONF_STATE_REPEAT));
+            item.setRepeat(Conf.getBoolean(CONF_STATE_REPEAT));
             item.setUserLaunch(true);
-            FIFO.getInstance().push(item,
-                ConfigurationManager.getBoolean(CONF_OPTIONS_PUSH_ON_CLICK));
+            FIFO.push(item,
+                Conf.getBoolean(CONF_OPTIONS_PUSH_ON_CLICK));
           } else { // non planned items
             goToSelection();
           }
@@ -224,7 +224,7 @@ public class QueueView extends PlaylistView {
   }
 
   private void goToSelection() {
-    FIFO.getInstance().goTo(editorTable.getSelectedRow());
+    FIFO.goTo(editorTable.getSelectedRow());
     // remove selection for planned tracks
     ListSelectionModel lsm = editorTable.getSelectionModel();
     bSettingSelection = true;
@@ -325,7 +325,7 @@ public class QueueView extends PlaylistView {
         } finally {
           editorTable.setAcceptColumnsEvents(true);
           // Update number of tracks remaining
-          jlTitle.setText(" [" + FIFO.getInstance().getFIFO().size() + "]");
+          jlTitle.setText(" [" + FIFO.getFIFO().size() + "]");
         }
       }
     });
@@ -337,8 +337,8 @@ public class QueueView extends PlaylistView {
     if (editorTable.getSelectionModel().getMinSelectionIndex() == -1) {
       setDefaultButtonState();
     }
-    editorModel.setItems(FIFO.getInstance().getFIFO());
-    editorModel.setPlanned(FIFO.getInstance().getPlanned());
+    editorModel.setItems(FIFO.getFIFO());
+    editorModel.setPlanned(FIFO.getPlanned());
     ((JajukTableModel) editorTable.getModel()).populateModel(editorTable.getColumnsConf());
     int[] rows = editorTable.getSelectedRows();
     // save selection
@@ -405,10 +405,10 @@ public class QueueView extends PlaylistView {
         int iRow = editorTable.getSelectedRow();
         if (iRow < 0
         // no row is selected, add to the end
-            || iRow > FIFO.getInstance().getFIFO().size()) {
+            || iRow > FIFO.getFIFO().size()) {
           // row can be on planned track if user select a planned track and if
           // fifo is reduced after tracks have been played
-          iRow = FIFO.getInstance().getFIFO().size();
+          iRow = FIFO.getFIFO().size();
         }
         File file = FileManager.getInstance().getShuffleFile();
         try {
@@ -421,9 +421,9 @@ public class QueueView extends PlaylistView {
         refreshQueue();
       } else if (ae.getSource() == jbClear) {
         // Stop the player
-        FIFO.getInstance().stopRequest();
+        FIFO.stopRequest();
         // Reset the FIFO
-        FIFO.getInstance().reset(); // reinit all variables
+        FIFO.reset(); // reinit all variables
         // Request all GUI reset
         ObservationManager.notify(new Event(JajukEvents.EVENT_ZERO));
       }
@@ -486,7 +486,7 @@ public class QueueView extends PlaylistView {
       if (// multiple selection not supported
       selection.getMinSelectionIndex() == 0
       // can't add track at current track position
-          || selectedRow > FIFO.getInstance().getFIFO().size()
+          || selectedRow > FIFO.getFIFO().size()
       // no add for planned track but user can add over first planned
       // track to expand FIFO
       ) {

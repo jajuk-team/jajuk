@@ -37,8 +37,8 @@ import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.ui.views.IView;
 import org.jajuk.ui.widgets.PerspectiveBarJPanel;
-import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Conf;
+import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilGUI;
@@ -49,7 +49,7 @@ import org.jajuk.util.log.Log;
 /**
  * Perspectives Manager
  */
-public final class PerspectiveManager implements ITechnicalStrings {
+public final class PerspectiveManager implements Const {
   /** Current perspective */
   private static IPerspective currentPerspective = null;
 
@@ -121,7 +121,7 @@ public final class PerspectiveManager implements ITechnicalStrings {
       String sPerspective = Main.getDefaultPerspective();
       // Check if a default perspective is forced
       if (sPerspective == null) {
-        sPerspective = ConfigurationManager.getProperty(CONF_PERSPECTIVE_DEFAULT);
+        sPerspective = Conf.getString(CONF_PERSPECTIVE_DEFAULT);
         // no? take the configuration ( user last perspective)
       }
       perspective = hmNameInstance.get(sPerspective);
@@ -177,7 +177,7 @@ public final class PerspectiveManager implements ITechnicalStrings {
         // Select right item in perspective selector
         PerspectiveBarJPanel.getInstance().setActivated(perspective);
         // store perspective selection
-        ConfigurationManager.setProperty(CONF_PERSPECTIVE_DEFAULT, perspective.getID());
+        Conf.setProperty(CONF_PERSPECTIVE_DEFAULT, perspective.getID());
         UtilGUI.stopWaiting();
         // Emit a event
         ObservationManager.notify(new Event(JajukEvents.EVENT_PERPECTIVE_CHANGED,
@@ -240,12 +240,12 @@ public final class PerspectiveManager implements ITechnicalStrings {
    */
   public static void registerDefaultPerspectives() {
     reset();
-    int iconSize = ConfigurationManager.getInt(CONF_PERSPECTIVE_ICONS_SIZE);
+    int iconSize = Conf.getInt(CONF_PERSPECTIVE_ICONS_SIZE);
     IPerspective perspective = null;
     // Simple perspective
     perspective = new SimplePerspective();
     ImageIcon icon = IconLoader.ICON_PERSPECTIVE_SIMPLE;
-    if (ConfigurationManager.getInt(CONF_PERSPECTIVE_ICONS_SIZE) != 40) {
+    if (Conf.getInt(CONF_PERSPECTIVE_ICONS_SIZE) != 40) {
       icon = UtilGUI.getResizedImage(icon, iconSize, iconSize);
     }
     perspective.setIcon(icon);
@@ -254,7 +254,7 @@ public final class PerspectiveManager implements ITechnicalStrings {
     // Files perspective
     perspective = new FilesPerspective();
     icon = IconLoader.ICON_PERSPECTIVE_PHYSICAL;
-    if (ConfigurationManager.getInt(CONF_PERSPECTIVE_ICONS_SIZE) != 40) {
+    if (Conf.getInt(CONF_PERSPECTIVE_ICONS_SIZE) != 40) {
       icon = UtilGUI.getResizedImage(icon, iconSize, iconSize);
     }
     perspective.setIcon(icon);
@@ -263,7 +263,7 @@ public final class PerspectiveManager implements ITechnicalStrings {
     // Tracks perspective
     perspective = new TracksPerspective();
     icon = IconLoader.ICON_PERSPECTIVE_LOGICAL;
-    if (ConfigurationManager.getInt(CONF_PERSPECTIVE_ICONS_SIZE) != 40) {
+    if (Conf.getInt(CONF_PERSPECTIVE_ICONS_SIZE) != 40) {
       icon = UtilGUI.getResizedImage(icon, iconSize, iconSize);
     }
     perspective.setIcon(icon);
@@ -272,7 +272,7 @@ public final class PerspectiveManager implements ITechnicalStrings {
     // Catalog perspective
     perspective = new AlbumsPerspective();
     icon = IconLoader.ICON_PERSPECTIVE_CATALOG;
-    if (ConfigurationManager.getInt(CONF_PERSPECTIVE_ICONS_SIZE) != 40) {
+    if (Conf.getInt(CONF_PERSPECTIVE_ICONS_SIZE) != 40) {
       icon = UtilGUI.getResizedImage(icon, iconSize, iconSize);
     }
     perspective.setIcon(icon);
@@ -281,7 +281,7 @@ public final class PerspectiveManager implements ITechnicalStrings {
     // Playlists perspective
     perspective = new PlaylistsPerspective();
     icon = IconLoader.ICON_PERSPECTIVE_PLAYLISTS;
-    if (ConfigurationManager.getInt(CONF_PERSPECTIVE_ICONS_SIZE) != 40) {
+    if (Conf.getInt(CONF_PERSPECTIVE_ICONS_SIZE) != 40) {
       icon = UtilGUI.getResizedImage(icon, iconSize, iconSize);
     }
     perspective.setIcon(icon);
@@ -290,7 +290,7 @@ public final class PerspectiveManager implements ITechnicalStrings {
     // Display perspective
     perspective = new DisplayPerspective();
     icon = IconLoader.ICON_PERSPECTIVE_PLAYER;
-    if (ConfigurationManager.getInt(CONF_PERSPECTIVE_ICONS_SIZE) != 40) {
+    if (Conf.getInt(CONF_PERSPECTIVE_ICONS_SIZE) != 40) {
       icon = UtilGUI.getResizedImage(icon, iconSize, iconSize);
     }
     perspective.setIcon(icon);
@@ -299,7 +299,7 @@ public final class PerspectiveManager implements ITechnicalStrings {
     // Information perspective
     perspective = new InfoPerspective();
     icon = IconLoader.ICON_PERSPECTIVE_INFORMATION;
-    if (ConfigurationManager.getInt(CONF_PERSPECTIVE_ICONS_SIZE) != 40) {
+    if (Conf.getInt(CONF_PERSPECTIVE_ICONS_SIZE) != 40) {
       icon = UtilGUI.getResizedImage(icon, iconSize, iconSize);
     }
     perspective.setIcon(icon);
@@ -308,7 +308,7 @@ public final class PerspectiveManager implements ITechnicalStrings {
     // Configuration perspective
     perspective = new ConfigurationPerspective();
     icon = IconLoader.ICON_PERSPECTIVE_CONFIGURATION;
-    if (ConfigurationManager.getInt(CONF_PERSPECTIVE_ICONS_SIZE) != 40) {
+    if (Conf.getInt(CONF_PERSPECTIVE_ICONS_SIZE) != 40) {
       icon = UtilGUI.getResizedImage(icon, iconSize, iconSize);
     }
     perspective.setIcon(icon);
@@ -317,7 +317,7 @@ public final class PerspectiveManager implements ITechnicalStrings {
     // Stats perspective
     perspective = new StatPerspective();
     icon = IconLoader.ICON_PERSPECTIVE_STATISTICS;
-    if (ConfigurationManager.getInt(CONF_PERSPECTIVE_ICONS_SIZE) != 40) {
+    if (Conf.getInt(CONF_PERSPECTIVE_ICONS_SIZE) != 40) {
       icon = UtilGUI.getResizedImage(icon, iconSize, iconSize);
     }
     perspective.setIcon(icon);

@@ -22,7 +22,7 @@ package org.jajuk.util.filters;
 import java.io.File;
 
 import org.jajuk.base.TypeManager;
-import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Const;
 import org.jajuk.util.JajukFileFilter;
 import org.jajuk.util.UtilSystem;
 
@@ -70,7 +70,7 @@ public final class NotAudioFilter extends JajukFileFilter {
       if (mgr.isExtensionSupported(extension)) {
         // check it is an audio file
         return !(Boolean) mgr.getTypeByExtension(extension).getValue(
-            ITechnicalStrings.XML_TYPE_IS_MUSIC);
+            Const.XML_TYPE_IS_MUSIC);
       }
     }
     // unknown type : not an audio file

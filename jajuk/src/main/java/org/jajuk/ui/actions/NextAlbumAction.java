@@ -47,7 +47,7 @@ public class NextAlbumAction extends ActionBase {
         // Take FIFO lock
         synchronized (FIFO.MUTEX) {
           try {
-            FIFO.getInstance().playNextAlbum();
+            FIFO.playNextAlbum();
           } catch (Exception e) {
             Log.error(e);
           }

@@ -60,8 +60,8 @@ import org.jajuk.ui.thumbnails.AudioScrobblerAlbumThumbnail;
 import org.jajuk.ui.thumbnails.AudioScrobblerAuthorThumbnail;
 import org.jajuk.ui.thumbnails.LocalAlbumThumbnail;
 import org.jajuk.ui.thumbnails.ThumbnailManager;
-import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Conf;
+import org.jajuk.util.Const;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilGUI;
 import org.jajuk.util.log.Log;
@@ -71,7 +71,7 @@ import org.jdesktop.swingx.JXBusyLabel;
  * Show suggested albums based on current collection (bestof, novelties) and
  * LAstFM
  */
-public class SuggestionView extends ViewAdapter implements ITechnicalStrings, Observer {
+public class SuggestionView extends ViewAdapter implements Const, Observer {
 
   private static final long serialVersionUID = 1L;
 
@@ -235,14 +235,14 @@ public class SuggestionView extends ViewAdapter implements ITechnicalStrings, Ob
 
   private void refreshLastFMCollectionTabs() {
     String newAuthor = null;
-    File current = FIFO.getInstance().getCurrentFile();
+    File current = FIFO.getCurrentFile();
     if (current != null) {
       newAuthor = current.getTrack().getAuthor().getName2();
     }
     // if none track playing
     if (current == null
     // Last.FM infos is disable
-        || !ConfigurationManager.getBoolean(CONF_LASTFM_INFO)
+        || !Conf.getBoolean(CONF_LASTFM_INFO)
         // If unknown author
         || (newAuthor == null || newAuthor.equals(Messages.getString(UNKNOWN_AUTHOR)))) {
       // Set empty panels
@@ -317,13 +317,13 @@ public class SuggestionView extends ViewAdapter implements ITechnicalStrings, Ob
     if (search) {
       if (type == SuggestionType.BEST_OF) {
         albumsPrefered = AlbumManager.getInstance().getBestOfAlbums(
-            ConfigurationManager.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED), NB_BESTOF_ALBUMS);
+            Conf.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED), NB_BESTOF_ALBUMS);
       } else if (type == SuggestionType.NEWEST) {
         albumsNewest = AlbumManager.getInstance().getNewestAlbums(
-            ConfigurationManager.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED), NB_BESTOF_ALBUMS);
+            Conf.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED), NB_BESTOF_ALBUMS);
       } else if (type == SuggestionType.RARE) {
         albumsRare = AlbumManager.getInstance().getRarelyListenAlbums(
-            ConfigurationManager.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED), NB_BESTOF_ALBUMS);
+            Conf.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED), NB_BESTOF_ALBUMS);
       }
     }
     if (type == SuggestionType.BEST_OF) {

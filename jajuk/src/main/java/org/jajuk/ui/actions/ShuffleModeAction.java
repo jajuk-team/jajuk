@@ -27,7 +27,7 @@ import org.jajuk.events.ObservationManager;
 import org.jajuk.services.players.FIFO;
 import org.jajuk.ui.widgets.CommandJPanel;
 import org.jajuk.ui.widgets.JajukJMenuBar;
-import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.Conf;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
 
@@ -46,21 +46,21 @@ public class ShuffleModeAction extends ActionBase {
    */
   @Override
   public void perform(ActionEvent evt) {
-    boolean b = ConfigurationManager.getBoolean(CONF_STATE_SHUFFLE);
-    ConfigurationManager.setProperty(CONF_STATE_SHUFFLE, Boolean.toString(!b));
+    boolean b = Conf.getBoolean(CONF_STATE_SHUFFLE);
+    Conf.setProperty(CONF_STATE_SHUFFLE, Boolean.toString(!b));
 
     JajukJMenuBar.getInstance().setShuffleSelected(!b);
     CommandJPanel.getInstance().setRandomSelected(!b);
     if (!b) { // enabled button
-      FIFO.getInstance().shuffle(); // shuffle current selection
+      FIFO.shuffle(); // shuffle current selection
       // now make sure we can't have a single repeated file after a
       // non-repeated file (by design)
-      if (FIFO.getInstance().containsRepeat() && !FIFO.getInstance().containsOnlyRepeat()) {
-        FIFO.getInstance().setRepeatModeToAll(false); // yes?
+      if (FIFO.containsRepeat() && !FIFO.containsOnlyRepeat()) {
+        FIFO.setRepeatModeToAll(false); // yes?
         // un-repeat all
       }
       // computes planned tracks
-      FIFO.getInstance().computesPlanned(true);
+      FIFO.computesPlanned(true);
       // Refresh Queue View
       ObservationManager.notify(new Event(JajukEvents.EVENT_QUEUE_NEED_REFRESH));
     }

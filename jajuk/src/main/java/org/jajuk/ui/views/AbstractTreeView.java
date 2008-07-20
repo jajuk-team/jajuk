@@ -107,7 +107,7 @@ public abstract class AbstractTreeView extends ViewAdapter {
   int pos;
   
   /**
-   * Used to differentiate user action tree collapse from code tree colapse*
+   * Used to differentiate user action tree collapse from code tree collapse
    */
   boolean bAutoCollapse = false;
 
@@ -177,6 +177,10 @@ public abstract class AbstractTreeView extends ViewAdapter {
     action = ActionManager.getAction(JajukActions.PASTE);
     inputMap.put(KeyStroke.getKeyStroke("ctrl V"), "paste");
     actionMap.put("paste", action);
+    // Properties ALT/ENTER
+    action = ActionManager.getAction(JajukActions.SHOW_PROPERTIES);
+    inputMap.put(KeyStroke.getKeyStroke("alt ENTER"), "properties");
+    actionMap.put("properties", action);
   }
 
   public void update(Event event) {

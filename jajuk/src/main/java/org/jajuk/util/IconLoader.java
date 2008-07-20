@@ -31,13 +31,13 @@ import javax.swing.ImageIcon;
  * Use: IconLoader.ICON_LOGO
  * </p>
  */
-public class IconLoader implements ITechnicalStrings {
+public class IconLoader implements Const {
 
   /** No covers image cache : size:default icon */
   public static final Map<String, ImageIcon> NOCOVERSCACHE = new HashMap<String, ImageIcon>(10);
 
   public static final ImageIcon ICON_NO_COVER = new ImageIcon(UtilSystem.getResource("images/included/"
-      + ITechnicalStrings.FILE_THUMB_NO_COVER));
+      + Const.FILE_THUMB_NO_COVER));
 
   public static final ImageIcon ICON_LOGO = new ImageIcon(UtilSystem
       .getResource("icons/64x64/jajuk-icon_64x64.png"));
@@ -557,17 +557,17 @@ public class IconLoader implements ITechnicalStrings {
       .getResource("icons/16x16/alarm_16x16.png"));
 
   static {
-    IconLoader.NOCOVERSCACHE.put(ITechnicalStrings.THUMBNAIL_SIZE_50X50, UtilGUI.getResizedImage(
+    IconLoader.NOCOVERSCACHE.put(Const.THUMBNAIL_SIZE_50X50, UtilGUI.getResizedImage(
         IconLoader.ICON_NO_COVER, 50, 50));
-    IconLoader.NOCOVERSCACHE.put(ITechnicalStrings.THUMBNAIL_SIZE_100X100, UtilGUI.getResizedImage(
+    IconLoader.NOCOVERSCACHE.put(Const.THUMBNAIL_SIZE_100X100, UtilGUI.getResizedImage(
         IconLoader.ICON_NO_COVER, 100, 100));
-    IconLoader.NOCOVERSCACHE.put(ITechnicalStrings.THUMBNAIL_SIZE_150X150, UtilGUI.getResizedImage(
+    IconLoader.NOCOVERSCACHE.put(Const.THUMBNAIL_SIZE_150X150, UtilGUI.getResizedImage(
         IconLoader.ICON_NO_COVER, 150, 150));
-    IconLoader.NOCOVERSCACHE.put(ITechnicalStrings.THUMBNAIL_SIZE_200X200, UtilGUI.getResizedImage(
+    IconLoader.NOCOVERSCACHE.put(Const.THUMBNAIL_SIZE_200X200, UtilGUI.getResizedImage(
         IconLoader.ICON_NO_COVER, 200, 200));
-    IconLoader.NOCOVERSCACHE.put(ITechnicalStrings.THUMBNAIL_SIZE_250X250, UtilGUI.getResizedImage(
+    IconLoader.NOCOVERSCACHE.put(Const.THUMBNAIL_SIZE_250X250, UtilGUI.getResizedImage(
         IconLoader.ICON_NO_COVER, 250, 250));
-    IconLoader.NOCOVERSCACHE.put(ITechnicalStrings.THUMBNAIL_SIZE_300X300, UtilGUI.getResizedImage(
+    IconLoader.NOCOVERSCACHE.put(Const.THUMBNAIL_SIZE_300X300, UtilGUI.getResizedImage(
         IconLoader.ICON_NO_COVER, 300, 300));
   }
 }

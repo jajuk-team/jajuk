@@ -72,7 +72,7 @@ import org.jajuk.ui.widgets.InformationJPanel;
 import org.jajuk.ui.widgets.JajukJDialog;
 import org.jajuk.ui.widgets.JajukWindow;
 import org.jajuk.ui.widgets.OKCancelPanel;
-import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilGUI;
@@ -87,7 +87,7 @@ import org.jdesktop.swingx.VerticalLayout;
 /**
  * ItemManager properties wizard for any jajuk item
  */
-public class PropertiesWizard extends JajukJDialog implements ITechnicalStrings, ActionListener {
+public class PropertiesWizard extends JajukJDialog implements Const, ActionListener {
 
   private static final long serialVersionUID = 1L;
 
@@ -132,9 +132,9 @@ public class PropertiesWizard extends JajukJDialog implements ITechnicalStrings,
     if (alItems.size() > 1) {
       bMerged = true;
     }
-    panel1 = new PropertiesPanel(alItems, alItems.size() == 1 ? UtilString.getLimitedString((alItems
-        .get(0)).getDesc(), 50) : Messages.getString("PropertiesWizard.6") + " [" + alItems.size()
-        + "]", bMerged);
+    panel1 = new PropertiesPanel(alItems, alItems.size() == 1 ? UtilString.getLimitedString(
+        (alItems.get(0)).getDesc(), 50) : Messages.getString("PropertiesWizard.6") + " ["
+        + alItems.size() + "]", bMerged);
     CellConstraints cc = new CellConstraints();
     PanelBuilder builder = new PanelBuilder(new FormLayout("5dlu,p:grow,5dlu",
         "1dlu,fill:p,5dlu,p,3dlu"));
@@ -180,8 +180,8 @@ public class PropertiesWizard extends JajukJDialog implements ITechnicalStrings,
     }
     if (alItems1.size() > 0) {
       if (alItems1.size() == 1) {
-        panel1 = new PropertiesPanel(alItems1,
-            UtilString.getLimitedString(alItems1.get(0).getDesc(), 50), false);
+        panel1 = new PropertiesPanel(alItems1, UtilString.getLimitedString(alItems1.get(0)
+            .getDesc(), 50), false);
       } else {
         panel1 = new PropertiesPanel(alItems1, UtilString.formatPropertyDesc(Messages
             .getString("PropertiesWizard.6")
@@ -191,8 +191,8 @@ public class PropertiesWizard extends JajukJDialog implements ITechnicalStrings,
     }
     if (alItems2.size() > 0) {
       if (alItems2.size() == 1) {
-        panel2 = new PropertiesPanel(alItems2,
-            UtilString.getLimitedString(alItems2.get(0).getDesc(), 50), false);
+        panel2 = new PropertiesPanel(alItems2, UtilString.getLimitedString(alItems2.get(0)
+            .getDesc(), 50), false);
       } else {
         panel2 = new PropertiesPanel(alItems2, UtilString.formatPropertyDesc(alItems2.size() + " "
             + Messages.getString("Property_tracks")), true);
@@ -622,8 +622,8 @@ public class PropertiesWizard extends JajukJDialog implements ITechnicalStrings,
       // Add widgets
       int i = 0;
       int j = 4;
-      //for (PropertyMetaInformation meta : alToDisplay) {
-      for(int k = 0;k < alToDisplay.size();k++) {
+      // for (PropertyMetaInformation meta : alToDisplay) {
+      for (int k = 0; k < alToDisplay.size(); k++) {
         builder.add(widgets[i][0], cc.xy(2, j));
         builder.add(widgets[i][1], cc.xy(4, j));
         if (widgets[i][2] != null) { // link widget can be null
@@ -691,6 +691,9 @@ public class PropertiesWizard extends JajukJDialog implements ITechnicalStrings,
     protected void save() throws Exception {
       try {
         UtilGUI.waiting();
+        // We remove autocommit state to group commit to tags for several tags
+        // of a single file
+        TrackManager.getInstance().setAutocommit(false);
         Object oValue = null;
         Item newItem = null;
         // list of actually changed tracks (used by out message)
@@ -706,11 +709,11 @@ public class PropertiesWizard extends JajukJDialog implements ITechnicalStrings,
         List<Item> alInError = new ArrayList<Item>(itemsToChange.size());
         // details for errors
         String sDetails = "";
-        // Now we have all items to consider, write tags for each
-        // property to change
+
+        // Check typed value format, display error message only once per
+        // property
         for (PropertyMetaInformation meta : hmPropertyToChange.keySet()) {
           for (int i = 0; i < itemsToChange.size(); i++) {
-            Item item = itemsToChange.get(i);
             // New value
             oValue = hmPropertyToChange.get(meta);
             // Check it is not null for non custom properties. Note that
@@ -721,17 +724,26 @@ public class PropertiesWizard extends JajukJDialog implements ITechnicalStrings,
               Messages.showErrorMessage(137, '{' + meta.getName() + '}');
               return;
             }
+          }
+        }
+
+        // Now we have all items to consider, write tags for each
+        // property to change
+        for (int i = 0; i < itemsToChange.size(); i++) {
+          for (PropertyMetaInformation meta : hmPropertyToChange.keySet()) {
+            Item item = itemsToChange.get(i);
+            // New value
+            oValue = hmPropertyToChange.get(meta);
             // Old value
             String sOldValue = item.getHumanValue(meta.getName());
             if ((sOldValue != null && !UtilString.format(oValue, meta, true).equals(sOldValue))) {
               try {
-                // if we change track properties for only one file
                 newItem = ItemManager.changeItem(item, meta.getName(), oValue, filter);
               }
               // none accessible file for this track, for this error,
               // we display an error and leave completely
               catch (NoneAccessibleFileException none) {
-                none.printStackTrace();
+                Log.error(none);
                 Messages.showErrorMessage(none.getCode(), item.getHumanValue(XML_NAME));
                 // close window to avoid reseting all properties to
                 // old values
@@ -741,7 +753,9 @@ public class PropertiesWizard extends JajukJDialog implements ITechnicalStrings,
               // cannot rename file, for this error, we display an
               // error and leave completely
               catch (CannotRenameException cre) {
+                Log.error(cre);
                 Messages.showErrorMessage(cre.getCode());
+                dispose();
                 return;
               }
               // probably error writing a tag, store track reference
@@ -786,18 +800,27 @@ public class PropertiesWizard extends JajukJDialog implements ITechnicalStrings,
               }
             }
           }
-          /*
-           * Display a warning message if some tracks cannot be removed as it
-           * contains unmounted files.
-           * 
-           * If multi-items mode, note that this message will appear only for
-           * first changed value in failure, after, current track will have
-           * changed and will no more contain unmounted files
-           */
-          if (TrackManager.getFilesRemaining() > 0) {
-            Messages.showWarningMessage(Messages.getString("Error.138"));
+          // Require full commit for all changed tags on the current file
+          Set<Item> errors = TrackManager.getInstance().commit();
+          // Note : errors should contain a single track
+          for (Item item : errors) {
+            if (!alInError.contains(item)) {
+              alInError.add(item);
+            }
           }
         }
+        /*
+         * Display a warning message if some tracks cannot be removed as it
+         * contains unmounted files.
+         * 
+         * If multi-items mode, note that this message will appear only for
+         * first changed value in failure, after, current track will have
+         * changed and will no more contain unmounted files
+         */
+        if (TrackManager.getFilesRemaining() > 0) {
+          Messages.showWarningMessage(Messages.getString("Error.138"));
+        }
+        
         // display a message for file write issues
         if (alInError.size() > 0) {
           String sInfo = "";
@@ -830,6 +853,8 @@ public class PropertiesWizard extends JajukJDialog implements ITechnicalStrings,
         UtilGUI.stopWaiting();
         // Reset track remaining issues
         TrackManager.resetFilesRemaining();
+        // Reset autocommit state
+        TrackManager.getInstance().setAutocommit(true);
       }
     }
 

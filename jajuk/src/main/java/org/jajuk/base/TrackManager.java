@@ -23,6 +23,7 @@ package org.jajuk.base;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -36,11 +37,12 @@ import org.jajuk.events.ObservationManager;
 import org.jajuk.events.Observer;
 import org.jajuk.services.players.FIFO;
 import org.jajuk.services.tags.Tag;
-import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.Conf;
 import org.jajuk.util.MD5Processor;
 import org.jajuk.util.Messages;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.error.NoneAccessibleFileException;
+import org.jajuk.util.log.Log;
 
 /**
  * Convenient class to manage Tracks
@@ -59,6 +61,12 @@ public final class TrackManager extends ItemManager implements Observer {
 
   /** Max rate */
   private long lMaxRate = 0l;
+
+  /** Autocommit flag for tags * */
+  private boolean bAutocommit = true;
+
+  /** Set of tags to commit */
+  private HashMap<Tag, Track> tagsToCommit = new HashMap<Tag, Track>(10);
 
   /**
    * No constructor available, only static access
@@ -172,6 +180,29 @@ public final class TrackManager extends ItemManager implements Observer {
   }
 
   /**
+   * Commit tags
+   * 
+   * @return a set of tracks in error (size=0 if everything's ok)
+   */
+  public Set<Item> commit() {
+    Set<Item> errors = new TreeSet<Item>();
+    Iterator<Tag> it = tagsToCommit.keySet().iterator();
+    while (it.hasNext()){
+      Tag tag = null;
+      try {
+        tag = it.next();
+        tag.commit();
+      } catch (Exception e) {
+        Log.error(e);
+        errors.add(tagsToCommit.get(tag));
+      } finally {
+        it.remove();
+      }
+    }
+    return errors;
+  }
+
+  /**
    * Change a track album
    * 
    * @param old
@@ -199,13 +230,17 @@ public final class TrackManager extends ItemManager implements Observer {
       for (File file : alReady) {
         Tag tag = new Tag(file.getIO());
         tag.setAlbumName(sNewAlbum);
-        tag.commit();
+        if (bAutocommit) {
+          tag.commit();
+        } else {
+          tagsToCommit.put(tag, track);
+        }
       }
       // Remove the track from the old album
       track.getAlbum().tracks.remove(track);
       // if current track album name is changed, notify it
-      if (FIFO.getInstance().getCurrentFile() != null
-          && FIFO.getInstance().getCurrentFile().getTrack().getAlbum().equals(track.getAlbum())) {
+      if (FIFO.getCurrentFile() != null
+          && FIFO.getCurrentFile().getTrack().getAlbum().equals(track.getAlbum())) {
         ObservationManager.notify(new Event(JajukEvents.EVENT_ALBUM_CHANGED));
       }
       // register the new album
@@ -249,11 +284,15 @@ public final class TrackManager extends ItemManager implements Observer {
         final Tag tag = new Tag(file.getIO());
 
         tag.setAuthorName(sNewAuthor);
-        tag.commit();
+        if (bAutocommit) {
+          tag.commit();
+        } else {
+          tagsToCommit.put(tag, track);
+        }
       }
       // if current track author name is changed, notify it
-      if (FIFO.getInstance().getCurrentFile() != null
-          && FIFO.getInstance().getCurrentFile().getTrack().getAuthor().equals(track.getAuthor())) {
+      if (FIFO.getCurrentFile() != null
+          && FIFO.getCurrentFile().getTrack().getAuthor().equals(track.getAuthor())) {
         ObservationManager.notify(new Event(JajukEvents.EVENT_AUTHOR_CHANGED));
       }
       // register the new item
@@ -297,7 +336,11 @@ public final class TrackManager extends ItemManager implements Observer {
         final Tag tag = new Tag(file.getIO());
 
         tag.setStyleName(sNewStyle);
-        tag.commit();
+        if (bAutocommit) {
+          tag.commit();
+        } else {
+          tagsToCommit.put(tag, track);
+        }
       }
       // register the new item
       Style newStyle = StyleManager.getInstance().registerStyle(sNewStyle);
@@ -322,8 +365,7 @@ public final class TrackManager extends ItemManager implements Observer {
    *          files we want to deal with
    * @return new track or null if wrong format
    */
-  public Track changeTrackYear(Track track, String newItem, Set<File> filter)
-      throws JajukException {
+  public Track changeTrackYear(Track track, String newItem, Set<File> filter) throws JajukException {
     synchronized (TrackManager.getInstance().getLock()) {
       // check there is actually a change
       if (track.getYear().getName().equals(newItem)) {
@@ -345,7 +387,11 @@ public final class TrackManager extends ItemManager implements Observer {
         final Tag tag = new Tag(file.getIO());
 
         tag.setYear(newItem);
-        tag.commit();
+        if (bAutocommit) {
+          tag.commit();
+        } else {
+          tagsToCommit.put(tag, track);
+        }
       }
       // Register new item
       Year newYear = YearManager.getInstance().registerYear(newItem);
@@ -384,7 +430,11 @@ public final class TrackManager extends ItemManager implements Observer {
       for (File file : alReady) {
         Tag tag = new Tag(file.getIO());
         tag.setComment(sNewItem);
-        tag.commit();
+        if (bAutocommit) {
+          tag.commit();
+        } else {
+          tagsToCommit.put(tag, track);
+        }
       }
       track.setComment(sNewItem);
       return track;
@@ -449,7 +499,11 @@ public final class TrackManager extends ItemManager implements Observer {
       for (File file : alReady) {
         Tag tag = new Tag(file.getIO());
         tag.setOrder(lNewOrder);
-        tag.commit();
+        if (bAutocommit) {
+          tag.commit();
+        } else {
+          tagsToCommit.put(tag, track);
+        }
       }
       Track newTrack = registerTrack(track.getName(), track.getAlbum(), track.getStyle(), track
           .getAuthor(), track.getDuration(), track.getYear(), lNewOrder, track.getType());
@@ -486,14 +540,17 @@ public final class TrackManager extends ItemManager implements Observer {
       for (File file : alReady) {
         Tag tag = new Tag(file.getIO());
         tag.setTrackName(sNewItem);
-        tag.commit();
+        if (bAutocommit) {
+          tag.commit();
+        } else {
+          tagsToCommit.put(tag, track);
+        }
       }
       Track newTrack = registerTrack(sNewItem, track.getAlbum(), track.getStyle(), track
           .getAuthor(), track.getDuration(), track.getYear(), track.getOrder(), track.getType());
       postChange(track, newTrack, filter);
       // if current track name is changed, notify it
-      if (FIFO.getInstance().getCurrentFile() != null
-          && FIFO.getInstance().getCurrentFile().getTrack().equals(track)) {
+      if (FIFO.getCurrentFile() != null && FIFO.getCurrentFile().getTrack().equals(track)) {
         ObservationManager.notify(new Event(JajukEvents.EVENT_TRACK_CHANGED));
       }
       return newTrack;
@@ -629,7 +686,7 @@ public final class TrackManager extends ItemManager implements Observer {
   }
 
   public TrackComparator getComparator() {
-    return new TrackComparator(ConfigurationManager.getInt(CONF_LOGICAL_TREE_SORT_ORDER));
+    return new TrackComparator(Conf.getInt(CONF_LOGICAL_TREE_SORT_ORDER));
   }
 
   /**
@@ -693,8 +750,7 @@ public final class TrackManager extends ItemManager implements Observer {
     Set<SearchResult> tsResu = new TreeSet<SearchResult>();
     for (Object item : hmItems.values()) {
       Track track = (Track) item;
-      File playable = track.getPlayeableFile(ConfigurationManager
-          .getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED));
+      File playable = track.getPlayeableFile(Conf.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED));
       if (playable != null) {
         String sResu = track.getAny();
         if (sResu.toLowerCase().indexOf(criteria.toLowerCase()) != -1) {
@@ -711,5 +767,22 @@ public final class TrackManager extends ItemManager implements Observer {
 
   public static void resetFilesRemaining() {
     TrackManager.nbFilesRemaining = 0;
+  }
+
+  /**
+   * 
+   * @return autocommit behavior for tags
+   */
+  public boolean isAutocommit() {
+    return this.bAutocommit;
+  }
+
+  /**
+   * Set autocommit behavior for tags
+   * 
+   * @param autocommit
+   */
+  public void setAutocommit(boolean autocommit) {
+    this.bAutocommit = autocommit;
   }
 }

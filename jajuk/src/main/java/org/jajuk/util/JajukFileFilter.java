@@ -41,7 +41,7 @@ import javax.swing.filechooser.FileFilter;
  *      extension by filter) and or/and argument given as an argument
  * 
  */
-public class JajukFileFilter extends FileFilter implements java.io.FileFilter, ITechnicalStrings {
+public class JajukFileFilter extends FileFilter implements java.io.FileFilter, Const {
 
   /** Filters */
   private JajukFileFilter[] filters = {};

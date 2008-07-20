@@ -45,8 +45,8 @@ import org.jajuk.events.Observer;
 import org.jajuk.services.players.FIFO;
 import org.jajuk.services.webradio.WebRadio;
 import org.jajuk.ui.widgets.JajukWindow;
-import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Conf;
+import org.jajuk.util.Const;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilString;
 import org.jajuk.util.error.JajukException;
@@ -55,7 +55,7 @@ import org.jajuk.util.log.Log;
 /**
  * Animation-based view
  */
-public class AnimationView extends ViewAdapter implements ITechnicalStrings, Observer,
+public class AnimationView extends ViewAdapter implements Const, Observer,
     ComponentListener {
 
   private static final long serialVersionUID = 1L;
@@ -100,7 +100,7 @@ public class AnimationView extends ViewAdapter implements ITechnicalStrings, Obs
     if (FIFO.isStopped()) {
       update(new Event(JajukEvents.EVENT_ZERO));
     } else {// check if a track or a webradio has already been launched
-      if (FIFO.getInstance().isPlayingRadio()) {
+      if (FIFO.isPlayingRadio()) {
         update(new Event(JajukEvents.EVENT_WEBRADIO_LAUNCHED, ObservationManager
             .getDetailsLastOccurence(JajukEvents.EVENT_WEBRADIO_LAUNCHED)));
       } else {
@@ -175,12 +175,12 @@ public class AnimationView extends ViewAdapter implements ITechnicalStrings, Obs
   public void update(Event event) {
     JajukEvents subject = event.getSubject();
     if (subject.equals(JajukEvents.EVENT_FILE_LAUNCHED)) {
-      File file = FIFO.getInstance().getCurrentFile();
+      File file = FIFO.getCurrentFile();
       if (file != null) {
         String s = "";
         try {
-          s = UtilString.applyPattern(file, ConfigurationManager
-              .getProperty(CONF_ANIMATION_PATTERN), false, false);
+          s = UtilString.applyPattern(file, Conf
+              .getString(CONF_ANIMATION_PATTERN), false, false);
         } catch (JajukException e) {
           Log.error(e);
         }
@@ -210,7 +210,7 @@ public class AnimationView extends ViewAdapter implements ITechnicalStrings, Obs
         if (FIFO.isStopped()) {
           update(new Event(JajukEvents.EVENT_ZERO));
         } else {
-          if (FIFO.getInstance().isPlayingRadio()) {
+          if (FIFO.isPlayingRadio()) {
             update(new Event(JajukEvents.EVENT_WEBRADIO_LAUNCHED, ObservationManager
                 .getDetailsLastOccurence(JajukEvents.EVENT_WEBRADIO_LAUNCHED)));
           } else {

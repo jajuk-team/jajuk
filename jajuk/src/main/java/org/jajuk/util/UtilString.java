@@ -36,7 +36,7 @@ import org.jajuk.util.error.JajukException;
 /**
  * Set of convenient classes for string manipulation
  */
-public final class UtilString implements ITechnicalStrings {
+public final class UtilString implements Const {
   
   /**
    * The list of characters that we need to escape in strings
@@ -68,19 +68,19 @@ public final class UtilString implements ITechnicalStrings {
       throws JajukException {
     String ret = out;
     String sValue;
-    if (sPattern.contains(ITechnicalStrings.PATTERN_ALBUM)) {
+    if (sPattern.contains(Const.PATTERN_ALBUM)) {
       sValue = track.getAlbum().getName();
       if (normalize) {
         sValue = UtilSystem.getNormalizedFilename(sValue);
       }
-      if (!sValue.equals(ITechnicalStrings.UNKNOWN_ALBUM)) {
-        ret = ret.replace(ITechnicalStrings.PATTERN_ALBUM, AlbumManager.format(sValue));
+      if (!sValue.equals(Const.UNKNOWN_ALBUM)) {
+        ret = ret.replace(Const.PATTERN_ALBUM, AlbumManager.format(sValue));
       } else {
         if (bMandatory) {
           throw new JajukException(149, file.getAbsolutePath());
         } else {
-          ret = ret.replace(ITechnicalStrings.PATTERN_ALBUM, Messages
-              .getString(ITechnicalStrings.UNKNOWN_ALBUM));
+          ret = ret.replace(Const.PATTERN_ALBUM, Messages
+              .getString(Const.UNKNOWN_ALBUM));
         }
       }
     }
@@ -103,14 +103,14 @@ public final class UtilString implements ITechnicalStrings {
   static String applyYearPattern(final org.jajuk.base.File file, final String sPattern,
       final boolean bMandatory, final String out, final Track track) throws JajukException {
     String ret = out;
-    if (sPattern.contains(ITechnicalStrings.PATTERN_YEAR)) {
+    if (sPattern.contains(Const.PATTERN_YEAR)) {
       if (track.getYear().getValue() != 0) {
-        ret = ret.replace(ITechnicalStrings.PATTERN_YEAR, track.getYear().getValue() + "");
+        ret = ret.replace(Const.PATTERN_YEAR, track.getYear().getValue() + "");
       } else {
         if (bMandatory) {
           throw new JajukException(148, file.getAbsolutePath());
         } else {
-          ret = ret.replace(ITechnicalStrings.PATTERN_YEAR, "?");
+          ret = ret.replace(Const.PATTERN_YEAR, "?");
         }
       }
     }
@@ -130,12 +130,12 @@ public final class UtilString implements ITechnicalStrings {
       final Track track) {
     String ret = out;
     String sValue;
-    if (sPattern.contains(ITechnicalStrings.PATTERN_TRACKNAME)) {
+    if (sPattern.contains(Const.PATTERN_TRACKNAME)) {
       sValue = track.getName();
       if (normalize) {
         sValue = UtilSystem.getNormalizedFilename(sValue);
       }
-      ret = ret.replace(ITechnicalStrings.PATTERN_TRACKNAME, sValue);
+      ret = ret.replace(Const.PATTERN_TRACKNAME, sValue);
     }
     return ret;
   }
@@ -155,7 +155,7 @@ public final class UtilString implements ITechnicalStrings {
    */
   static String applyTrackOrderPattern(final org.jajuk.base.File file, final String sPattern,
       final boolean bMandatory, final String out, final Track track) throws JajukException {
-    if (sPattern.contains(ITechnicalStrings.PATTERN_TRACKORDER)) {
+    if (sPattern.contains(Const.PATTERN_TRACKORDER)) {
       // override Order from filename if not set explicitly
       long lOrder = track.getOrder();
       if (lOrder == 0) {
@@ -179,9 +179,9 @@ public final class UtilString implements ITechnicalStrings {
 
       // prepend one digit numbers with "0"
       if (lOrder < 10) {
-        return out.replace(ITechnicalStrings.PATTERN_TRACKORDER, "0" + lOrder);
+        return out.replace(Const.PATTERN_TRACKORDER, "0" + lOrder);
       } else {
-        return out.replace(ITechnicalStrings.PATTERN_TRACKORDER, lOrder + "");
+        return out.replace(Const.PATTERN_TRACKORDER, lOrder + "");
       }
     }
 
@@ -207,19 +207,19 @@ public final class UtilString implements ITechnicalStrings {
       throws JajukException {
     String ret = out;
     String sValue;
-    if (sPattern.contains(ITechnicalStrings.PATTERN_STYLE)) {
+    if (sPattern.contains(Const.PATTERN_STYLE)) {
       sValue = track.getStyle().getName();
       if (normalize) {
         sValue = UtilSystem.getNormalizedFilename(sValue);
       }
-      if (!sValue.equals(ITechnicalStrings.UNKNOWN_STYLE)) {
-        ret = ret.replace(ITechnicalStrings.PATTERN_STYLE, StyleManager.format(sValue));
+      if (!sValue.equals(Const.UNKNOWN_STYLE)) {
+        ret = ret.replace(Const.PATTERN_STYLE, StyleManager.format(sValue));
       } else {
         if (bMandatory) {
           throw new JajukException(153, file.getAbsolutePath());
         } else {
-          ret = ret.replace(ITechnicalStrings.PATTERN_STYLE, Messages
-              .getString(ITechnicalStrings.UNKNOWN_STYLE));
+          ret = ret.replace(Const.PATTERN_STYLE, Messages
+              .getString(Const.UNKNOWN_STYLE));
         }
       }
     }
@@ -245,19 +245,19 @@ public final class UtilString implements ITechnicalStrings {
       throws JajukException {
     String ret = out;
     String sValue;
-    if (sPattern.contains(ITechnicalStrings.PATTERN_AUTHOR)) {
+    if (sPattern.contains(Const.PATTERN_AUTHOR)) {
       sValue = track.getAuthor().getName();
       if (normalize) {
         sValue = UtilSystem.getNormalizedFilename(sValue);
       }
-      if (!sValue.equals(ITechnicalStrings.UNKNOWN_AUTHOR)) {
-        ret = ret.replaceAll(ITechnicalStrings.PATTERN_AUTHOR, AuthorManager.format(sValue));
+      if (!sValue.equals(Const.UNKNOWN_AUTHOR)) {
+        ret = ret.replaceAll(Const.PATTERN_AUTHOR, AuthorManager.format(sValue));
       } else {
         if (bMandatory) {
           throw new JajukException(150, file.getAbsolutePath());
         } else {
-          ret = ret.replaceAll(ITechnicalStrings.PATTERN_AUTHOR, Messages
-              .getString(ITechnicalStrings.UNKNOWN_AUTHOR));
+          ret = ret.replaceAll(Const.PATTERN_AUTHOR, Messages
+              .getString(Const.UNKNOWN_AUTHOR));
         }
       }
     }
@@ -341,7 +341,7 @@ public final class UtilString implements ITechnicalStrings {
   public static String buildTitle(final org.jajuk.base.File file) {
     // We use trailing pattern to allow scripting like MSN plugins to
     // detect jajuk frames and extract current track
-    String title = ConfigurationManager.getProperty(ITechnicalStrings.CONF_FRAME_TITLE_PATTERN);
+    String title = Conf.getString(Const.CONF_FRAME_TITLE_PATTERN);
     title = title.replaceAll(PATTERN_TRACKNAME, file.getTrack().getName());
     title = title.replaceAll(PATTERN_ALBUM, file.getTrack().getAlbum().getName2());
     title = title.replaceAll(PATTERN_AUTHOR, file.getTrack().getAuthor().getName2());
@@ -535,14 +535,14 @@ public final class UtilString implements ITechnicalStrings {
    * @return Addition date simple format instance
    */
   public static DateFormat getAdditionDateFormatter() {
-    return new SimpleDateFormat(ITechnicalStrings.ADDITION_DATE_FORMAT);
+    return new SimpleDateFormat(Const.ADDITION_DATE_FORMAT);
   }
 
   /**
    * @return Anonymized Jajuk properties (for log or quality agent)
    */
   public static Properties getAnonymizedJajukProperties() {
-    final Properties properties = (Properties) ConfigurationManager.getProperties().clone();
+    final Properties properties = (Properties) Conf.getProperties().clone();
     // We remove sensible data from logs
     properties.remove("jajuk.network.proxy_login");
     properties.remove("jajuk.network.proxy_port");

@@ -25,7 +25,7 @@ import java.util.List;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.apache.log4j.xml.DOMConfigurator;
-import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Const;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilSystem;
 import org.jajuk.util.error.JajukException;
@@ -35,7 +35,7 @@ import org.jajuk.util.error.JajukException;
  * <p>
  * Singleton
  */
-public final class Log implements ITechnicalStrings {
+public final class Log implements Const {
   // verbosity consts
   public static final int FATAL = 0;
 

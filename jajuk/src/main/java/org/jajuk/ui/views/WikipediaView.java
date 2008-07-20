@@ -47,8 +47,8 @@ import org.jajuk.ui.actions.ActionBase;
 import org.jajuk.ui.actions.ActionManager;
 import org.jajuk.ui.actions.JajukActions;
 import org.jajuk.ui.widgets.JajukHtmlPanel;
-import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Conf;
+import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilFeatures;
@@ -57,7 +57,7 @@ import org.jajuk.util.log.Log;
 /**
  * Wikipedia view
  */
-public class WikipediaView extends ViewAdapter implements ITechnicalStrings, Observer,
+public class WikipediaView extends ViewAdapter implements Const, Observer,
     ActionListener {
 
   private static final long serialVersionUID = 1L;
@@ -112,8 +112,8 @@ public class WikipediaView extends ViewAdapter implements ITechnicalStrings, Obs
       jcbLanguage.addItem(sDesc);
     }
     // get stored language
-    jcbLanguage.setSelectedItem(Messages.getDescForLocal(ConfigurationManager
-        .getProperty(CONF_WIKIPEDIA_LANGUAGE)));
+    jcbLanguage.setSelectedItem(Messages.getDescForLocal(Conf
+        .getString(CONF_WIKIPEDIA_LANGUAGE)));
     jcbLanguage.addActionListener(this);
     // Buttons
     ActionBase aCopy = ActionManager.getAction(JajukActions.COPY_TO_CLIPBOARD);
@@ -168,7 +168,7 @@ public class WikipediaView extends ViewAdapter implements ITechnicalStrings, Obs
     // Display default page at startup is none track launch
     // avoid to launch this if a track is playing
     // to avoid thread concurrency
-    if (FIFO.getInstance().getCurrentFile() == null) {
+    if (FIFO.getCurrentFile() == null) {
       reset();
     }
 
@@ -202,7 +202,7 @@ public class WikipediaView extends ViewAdapter implements ITechnicalStrings, Obs
     if (subject.equals(JajukEvents.EVENT_FILE_LAUNCHED)
         || subject.equals(JajukEvents.EVENT_PERPECTIVE_CHANGED)) {
       // If current state is stopped, reset page
-      if (FIFO.getInstance().getCurrentFile() == null) {
+      if (FIFO.getCurrentFile() == null) {
         reset();
         return;
       }
@@ -234,21 +234,21 @@ public class WikipediaView extends ViewAdapter implements ITechnicalStrings, Obs
       public void run() {
         try {
           String lSearch = null;
-          if (FIFO.getInstance().getCurrentFile() != null) {
+          if (FIFO.getCurrentFile() != null) {
             if (type == Type.AUTHOR) {
-              lSearch = FIFO.getInstance().getCurrentFile().getTrack().getAuthor().getName2();
+              lSearch = FIFO.getCurrentFile().getTrack().getAuthor().getName2();
               // don't display page if item is unknown
               if (Messages.getString(UNKNOWN_AUTHOR).equals(lSearch)) {
                 lSearch = null;
               }
             } else if (type == Type.ALBUM) {
-              lSearch = FIFO.getInstance().getCurrentFile().getTrack().getAlbum().getName2();
+              lSearch = FIFO.getCurrentFile().getTrack().getAlbum().getName2();
               // don't display page if item is unknown
               if (Messages.getString(UNKNOWN_ALBUM).equals(lSearch)) {
                 lSearch = null;
               }
             } else if (type == Type.TRACK) {
-              lSearch = FIFO.getInstance().getCurrentFile().getTrack().getName();
+              lSearch = FIFO.getCurrentFile().getTrack().getName();
             }
           }
           // If search is still null, display an nothing found page
@@ -309,7 +309,7 @@ public class WikipediaView extends ViewAdapter implements ITechnicalStrings, Obs
   public void actionPerformed(ActionEvent arg0) {
     if (arg0.getSource() == jcbLanguage) {
       // update index
-      ConfigurationManager.setProperty(CONF_WIKIPEDIA_LANGUAGE, Messages
+      Conf.setProperty(CONF_WIKIPEDIA_LANGUAGE, Messages
           .getLocalForDesc((String) jcbLanguage.getSelectedItem()));
       // force launch wikipedia search for this language
       launchSearch(true);

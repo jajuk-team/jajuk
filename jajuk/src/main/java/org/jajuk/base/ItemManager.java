@@ -30,7 +30,7 @@ import java.util.Set;
 
 import org.apache.commons.collections.bidimap.TreeBidiMap;
 import org.jajuk.util.Filter;
-import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Const;
 import org.jajuk.util.Messages;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
@@ -38,7 +38,7 @@ import org.jajuk.util.log.Log;
 /**
  * Managers parent class
  */
-public abstract class ItemManager implements ITechnicalStrings {
+public abstract class ItemManager implements Const {
 
   /** Items collection* */
   protected TreeBidiMap hmItems = new TreeBidiMap();

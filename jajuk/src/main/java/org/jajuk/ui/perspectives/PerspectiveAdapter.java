@@ -42,7 +42,7 @@ import javax.swing.ImageIcon;
 
 import org.jajuk.ui.views.IView;
 import org.jajuk.ui.views.ViewFactory;
-import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Const;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilSystem;
 import org.jajuk.util.log.Log;
@@ -51,7 +51,7 @@ import org.jajuk.util.log.Log;
  * Perspective adapter, provide default implementation for perspectives
  */
 public abstract class PerspectiveAdapter extends DockingDesktop implements IPerspective,
-    ITechnicalStrings {
+    Const {
   /** Perspective id (class) */
   private String sID;
 

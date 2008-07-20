@@ -52,7 +52,7 @@ import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.events.Observer;
 import org.jajuk.ui.wizard.DeviceWizard;
-import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilGUI;
@@ -62,7 +62,7 @@ import org.jajuk.util.UtilGUI;
  * <p>
  * Configuration perspective
  */
-public class DeviceView extends ViewAdapter implements IView, ITechnicalStrings, ActionListener,
+public class DeviceView extends ViewAdapter implements IView, Const, ActionListener,
     Observer, MouseListener {
   private static final long serialVersionUID = 1L;
 

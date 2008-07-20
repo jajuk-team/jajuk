@@ -30,7 +30,7 @@ import javax.swing.ImageIcon;
 
 import org.jajuk.services.tags.Tag;
 import org.jajuk.ui.helpers.RefreshReporter;
-import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.Conf;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilSystem;
@@ -337,7 +337,7 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
           long lastModified = filelist[i].lastModified();
 
           // Use file date if the "force file date" option is used
-          if (ConfigurationManager.getBoolean(CONF_FORCE_FILE_DATE)) {
+          if (Conf.getBoolean(CONF_FORCE_FILE_DATE)) {
             track.setDiscoveryDate(new Date(lastModified));
           } else if (TrackManager.getInstance().getElementCount() > trackNumber) {
             // Update discovery date only if it is a new track
@@ -460,7 +460,7 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
    */
   public boolean shouldBeHidden() {
     if (getDevice().isMounted()
-        || !ConfigurationManager.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED)) {
+        || !Conf.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED)) {
       return false;
     }
     return true;

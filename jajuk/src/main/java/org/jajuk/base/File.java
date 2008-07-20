@@ -24,8 +24,10 @@ import java.net.URL;
 
 import javax.swing.ImageIcon;
 
-import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.services.players.FIFO;
+import org.jajuk.ui.thumbnails.ThumbnailManager;
+import org.jajuk.util.Conf;
+import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilString;
@@ -37,7 +39,7 @@ import org.jajuk.util.log.Log;
  * <p>
  * Physical item
  */
-public class File extends PhysicalItem implements Comparable<File>, ITechnicalStrings {
+public class File extends PhysicalItem implements Comparable<File>, Const {
 
   private static final long serialVersionUID = 1L;
 
@@ -145,11 +147,12 @@ public class File extends PhysicalItem implements Comparable<File>, ITechnicalSt
    * @return associated type
    */
   public Type getType() {
-    String extension = UtilSystem.getExtension(this.getName()); // getName() is better
-                                                          // here as it will do
-                                                          // less and not create
-                                                          // java.io.File in
-                                                          // File
+    String extension = UtilSystem.getExtension(this.getName()); // getName() is
+    // better
+    // here as it will do
+    // less and not create
+    // java.io.File in
+    // File
     if (extension != null) {
       return TypeManager.getInstance().getTypeByExtension(extension);
     }
@@ -263,7 +266,7 @@ public class File extends PhysicalItem implements Comparable<File>, ITechnicalSt
    */
   public boolean shouldBeHidden() {
     if (getDirectory().getDevice().isMounted()
-        || !ConfigurationManager.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED)) {
+        || !Conf.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED)) {
       return false;
     }
     return true;
@@ -358,9 +361,10 @@ public class File extends PhysicalItem implements Comparable<File>, ITechnicalSt
   @Override
   public ImageIcon getIconRepresentation() {
     ImageIcon icon = null;
-    String ext = UtilSystem.getExtension(getName()); // getName() is better here as
-                                                // it will do less and not
-                                                // create java.io.File in File
+    String ext = UtilSystem.getExtension(getName()); // getName() is better
+    // here as
+    // it will do less and not
+    // create java.io.File in File
     Type type = TypeManager.getInstance().getTypeByExtension(ext);
     // Find associated icon with this type
     URL iconUrl = null;
@@ -391,4 +395,66 @@ public class File extends PhysicalItem implements Comparable<File>, ITechnicalSt
     setProperty(XML_NAME, name);
     this.name = name;
   }
+
+  /**
+   * 
+   * @return text to be displayed in the tray ballon and tooltip with HTML
+   *         formating that is used correctly under Linux
+   */
+  public String getHTMLFormatText() {
+    String sOut = "";
+    sOut += "<HTML><br>";
+    String size = "100x100";
+    int maxSize = 30;
+    ThumbnailManager.refreshThumbnail(FIFO.getCurrentFile().getTrack().getAlbum(), size);
+    java.io.File cover = UtilSystem.getConfFileByPath(FILE_THUMBS + '/' + size + '/'
+        + FIFO.getCurrentFile().getTrack().getAlbum().getID() + '.' + EXT_THUMB);
+    if (cover.canRead()) {
+      sOut += "<p ALIGN=center><img src='file:" + cover.getAbsolutePath() + "'/></p><br>";
+    }
+    // We use gray color for font because, due to a JDIC bug under
+    // Linux, the
+    // balloon background is white even if the the look and feel is dark
+    // (like ebony)
+    // but the look and feel makes the text white is it is black
+    // initialy
+    // so text is white on white is the balloon. It must be displayed in
+    // the tooltip too
+    // and this issue doesn't affect the tray tooltip. This color is the
+    // only one to be correctly displayed
+    // in a dark and a light background at the same time
+    sOut += "<p><font color='#484848'><b>"
+        + UtilString.getLimitedString(getTrack().getName(), maxSize) + "</b></font></p>";
+    String sAuthor = UtilString.getLimitedString(getTrack().getAuthor().getName(), maxSize);
+    if (!sAuthor.equals(UNKNOWN_AUTHOR)) {
+      sOut += "<p><font color='#484848'>" + sAuthor + "</font></p>";
+    }
+    String sAlbum = UtilString.getLimitedString(getTrack().getAlbum().getName(), maxSize);
+    if (!sAlbum.equals(UNKNOWN_ALBUM)) {
+      sOut += "<p><font color='#484848'>" + sAlbum + "</font></p>";
+    }
+    sOut += "</HTML>";
+    return sOut;
+  }
+
+  /**
+   * 
+   * @return Text to be displayed in the tootip and baloon under windows.
+   * 
+   */
+  public final String getBasicFormatText() {
+    String sOut = "";
+    sOut = "";
+    String sAuthor = getTrack().getAuthor().getName();
+    if (!sAuthor.equals(UNKNOWN_AUTHOR)) {
+      sOut += sAuthor + " / ";
+    }
+    String sAlbum = getTrack().getAlbum().getName();
+    if (!sAlbum.equals(UNKNOWN_ALBUM)) {
+      sOut += sAlbum + " / ";
+    }
+    sOut += getTrack().getName();
+    return sOut;
+  }
+
 }

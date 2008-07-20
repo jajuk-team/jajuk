@@ -28,7 +28,7 @@ import org.jajuk.base.StyleManager;
 import org.jajuk.services.dj.DigitalDJ;
 import org.jajuk.services.dj.DigitalDJManager;
 import org.jajuk.services.players.FIFO;
-import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.Conf;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilFeatures;
@@ -52,9 +52,9 @@ public class DJAction extends ActionBase {
         @Override
         public void run() {
           DigitalDJ dj = DigitalDJManager.getInstance().getDJByID(
-              ConfigurationManager.getProperty(CONF_DEFAULT_DJ));
+              Conf.getString(CONF_DEFAULT_DJ));
           if (dj != null) {
-            ConfigurationManager.setProperty(CONF_FADE_DURATION, Integer.toString(dj
+            Conf.setProperty(CONF_FADE_DURATION, Integer.toString(dj
                 .getFadingDuration()));
             UtilGUI.waiting();
             List<File> al = dj.generatePlaylist();
@@ -64,8 +64,8 @@ public class DJAction extends ActionBase {
               Messages.showErrorMessage(158);
               return;
             }
-            FIFO.getInstance().push(
-                UtilFeatures.createStackItems(UtilFeatures.applyPlayOption(al), ConfigurationManager
+            FIFO.push(
+                UtilFeatures.createStackItems(UtilFeatures.applyPlayOption(al), Conf
                     .getBoolean(CONF_STATE_REPEAT), false), false);
           } else {
             Messages.showErrorMessage(157);

@@ -31,8 +31,8 @@ import org.jajuk.base.Type;
 import org.jajuk.base.TypeManager;
 import org.jajuk.services.core.RatingManager;
 import org.jajuk.services.webradio.WebRadio;
-import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Conf;
+import org.jajuk.util.Const;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilFeatures;
 import org.jajuk.util.UtilSystem;
@@ -41,7 +41,7 @@ import org.jajuk.util.log.Log;
 /**
  * Jajuk player implementation based on javazoom BasicPlayer
  */
-public class JavaLayerPlayerImpl implements IPlayerImpl, ITechnicalStrings, BasicPlayerListener {
+public class JavaLayerPlayerImpl implements IPlayerImpl, Const, BasicPlayerListener {
 
   /** Current player */
   private BasicPlayer player;
@@ -105,9 +105,9 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, ITechnicalStrings, Basi
     this.bHasBeenRated = false;
     // Instantiate player is needed
     if (player == null) {
-      BasicPlayer.EXTERNAL_BUFFER_SIZE = ConfigurationManager.getInt(CONF_BUFFER_SIZE);
+      BasicPlayer.EXTERNAL_BUFFER_SIZE = Conf.getInt(CONF_BUFFER_SIZE);
       player = new BasicPlayer();
-      player.setLineBufferSize(ConfigurationManager.getInt(CONF_AUDIO_BUFFER_SIZE));
+      player.setLineBufferSize(Conf.getInt(CONF_AUDIO_BUFFER_SIZE));
       player.addBasicPlayerListener(this); // set listener
     }
     // make sure to stop any current player
@@ -208,8 +208,9 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, ITechnicalStrings, Basi
       return;
     }
     if (mPlayingData.containsKey("audio.type") && player != null) {
-      Type type = TypeManager.getInstance().getTypeByExtension(
-          (String) mPlayingData.get("audio.type"));
+      String audioType = (String) mPlayingData.get("audio.type");
+      audioType = audioType.toLowerCase();
+      Type type = TypeManager.getInstance().getTypeByExtension(audioType);
       // Seek support for MP3. and WAVE
       if (type != null && type.getBooleanValue(XML_TYPE_SEEK_SUPPORTED)
           && mPlayingData.containsKey("audio.length.bytes")) {
@@ -259,7 +260,7 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, ITechnicalStrings, Basi
       Map mProperties) {
     if ((System.currentTimeMillis() - lDateLastUpdate) > PROGRESS_STEP) {
       lDateLastUpdate = System.currentTimeMillis();
-      this.iFadeDuration = 1000 * ConfigurationManager.getInt(CONF_FADE_DURATION);
+      this.iFadeDuration = 1000 * Conf.getInt(CONF_FADE_DURATION);
       if (bFading) {
         // computes the volume we have to sub to reach zero at last
         // progress()
@@ -281,7 +282,7 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, ITechnicalStrings, Basi
       if (mPlayingData.containsKey("audio.length.bytes")) {
         int byteslength = ((Integer) mPlayingData.get("audio.length.bytes")).intValue();
         fPos = (byteslength != 0) ? (float) iBytesread / (float) byteslength : 0;
-        ConfigurationManager.setProperty(CONF_STARTUP_LAST_POSITION, Float.toString(fPos));
+        Conf.setProperty(CONF_STARTUP_LAST_POSITION, Float.toString(fPos));
         lTime = (long) (lDuration * fPos);
       }
       // check if the track get rate increasing level (INC_RATE_TIME
@@ -315,7 +316,7 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, ITechnicalStrings, Basi
           new Thread() {
             @Override
             public void run() {
-              FIFO.getInstance().finished();
+              FIFO.finished();
             }
           }.start();
         }
@@ -327,7 +328,7 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, ITechnicalStrings, Basi
         new Thread() {
           @Override
           public void run() {
-            FIFO.getInstance().finished();
+            FIFO.finished();
           }
         }.start();
       }
@@ -349,7 +350,7 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, ITechnicalStrings, Basi
       RatingManager.setRateHasChanged(true);
       if (!bFading) { // if using crossfade, ignore end of file
         System.gc();// Benefit from end of file to perform a full gc
-        FIFO.getInstance().finished();
+        FIFO.finished();
       }
       bFading = false;
       break;

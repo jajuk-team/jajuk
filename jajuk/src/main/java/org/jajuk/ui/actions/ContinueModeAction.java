@@ -31,7 +31,7 @@ import org.jajuk.services.players.FIFO;
 import org.jajuk.services.players.StackItem;
 import org.jajuk.ui.widgets.CommandJPanel;
 import org.jajuk.ui.widgets.JajukJMenuBar;
-import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.Conf;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
 import org.jajuk.util.error.JajukException;
@@ -47,8 +47,8 @@ public class ContinueModeAction extends ActionBase {
 
   @Override
   public void perform(ActionEvent evt) throws JajukException {
-    boolean b = ConfigurationManager.getBoolean(CONF_STATE_CONTINUE);
-    ConfigurationManager.setProperty(CONF_STATE_CONTINUE, Boolean.toString(!b));
+    boolean b = Conf.getBoolean(CONF_STATE_CONTINUE);
+    Conf.setProperty(CONF_STATE_CONTINUE, Boolean.toString(!b));
 
     JajukJMenuBar.getInstance().setContinueSelected(!b);
     CommandJPanel.getInstance().setContinueSelected(!b);
@@ -57,15 +57,15 @@ public class ContinueModeAction extends ActionBase {
       CommandJPanel.getInstance().setContinueBorder(BorderFactory.createLoweredBevelBorder());
       if (FIFO.isStopped()) {
         // if nothing playing, play next track if possible
-        StackItem item = FIFO.getInstance().getLastPlayed();
+        StackItem item = FIFO.getLastPlayed();
         if (item != null) {
-          FIFO.getInstance().push(
+          FIFO.push(
               new StackItem(FileManager.getInstance().getNextFile(item.getFile())), false);
         }
       }
     }
     // computes planned tracks
-    FIFO.getInstance().computesPlanned(false);
+    FIFO.computesPlanned(false);
     // Refresh Queue View
     ObservationManager.notify(new Event(JajukEvents.EVENT_QUEUE_NEED_REFRESH));
   }

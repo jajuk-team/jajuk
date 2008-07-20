@@ -27,7 +27,7 @@ import org.jajuk.base.FileManager;
 import org.jajuk.services.dj.Ambience;
 import org.jajuk.services.dj.AmbienceManager;
 import org.jajuk.services.players.FIFO;
-import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.Conf;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilFeatures;
@@ -52,8 +52,8 @@ public class BestOfAction extends ActionBase {
     if (alToPlay.size() > NB_TRACKS_ON_ACTION) {
       alToPlay = alToPlay.subList(0, NB_TRACKS_ON_ACTION);
     }
-    FIFO.getInstance().push(
-        UtilFeatures.createStackItems(alToPlay, ConfigurationManager.getBoolean(CONF_STATE_REPEAT), false),
+    FIFO.push(
+        UtilFeatures.createStackItems(alToPlay, Conf.getBoolean(CONF_STATE_REPEAT), false),
         false);
   }
 }

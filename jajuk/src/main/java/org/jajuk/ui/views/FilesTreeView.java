@@ -85,7 +85,7 @@ import org.jajuk.ui.helpers.ItemMoveManager.MoveActions;
 import org.jajuk.ui.perspectives.PerspectiveManager;
 import org.jajuk.ui.widgets.InformationJPanel;
 import org.jajuk.ui.wizard.DeviceWizard;
-import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.Conf;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilFeatures;
@@ -556,7 +556,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
           sbOut.append(lSize).append(Messages.getString("FilesTreeView.54"));
         }
         InformationJPanel.getInstance().setSelection(sbOut.toString());
-        if (ConfigurationManager.getBoolean(CONF_OPTIONS_SYNC_TABLE_TREE)) {
+        if (Conf.getBoolean(CONF_OPTIONS_SYNC_TABLE_TREE)) {
           // if table is synchronized with tree, notify the
           // selection change
           Properties properties = new Properties();
@@ -609,9 +609,9 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
             if (o instanceof FileNode) {
               File file = ((FileNode) o).getFile();
               try {
-                FIFO.getInstance().push(
-                    new StackItem(file, ConfigurationManager.getBoolean(CONF_STATE_REPEAT), true),
-                    ConfigurationManager.getBoolean(CONF_OPTIONS_PUSH_ON_CLICK));
+                FIFO.push(
+                    new StackItem(file, Conf.getBoolean(CONF_STATE_REPEAT), true),
+                    Conf.getBoolean(CONF_OPTIONS_PUSH_ON_CLICK));
               } catch (JajukException je) {
                 Log.error(je);
               }
@@ -633,9 +633,9 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
                 Messages.showErrorMessage(18);
                 return;
               } else {
-                FIFO.getInstance().push(
+                FIFO.push(
                     UtilFeatures.createStackItems(UtilFeatures.applyPlayOption(alToPlay),
-                        ConfigurationManager.getBoolean(CONF_STATE_REPEAT), true), false);
+                        Conf.getBoolean(CONF_STATE_REPEAT), true), false);
               }
             }
           }

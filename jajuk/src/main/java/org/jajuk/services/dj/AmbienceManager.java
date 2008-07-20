@@ -40,14 +40,14 @@ import org.jajuk.events.Event;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.events.Observer;
-import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Conf;
+import org.jajuk.util.Const;
 import org.jajuk.util.Messages;
 
 /**
  * Ambience manager
  */
-public final class AmbienceManager implements ITechnicalStrings, Observer {
+public final class AmbienceManager implements Const, Observer {
 
   /** Ambience id-> ambience */
   private Map<String, Ambience> ambiences = new HashMap<String, Ambience>(10);
@@ -88,7 +88,7 @@ public final class AmbienceManager implements ITechnicalStrings, Observer {
       createDefaultAmbiences();
       return;
     }
-    Properties properties = ConfigurationManager.getProperties();
+    Properties properties = Conf.getProperties();
     Enumeration<Object> e = properties.keys();
     while (e.hasMoreElements()) {
       String sKey = (String) e.nextElement();
@@ -169,7 +169,7 @@ public final class AmbienceManager implements ITechnicalStrings, Observer {
    * @return currently selected ambience or null if "all" ambience selected
    */
   public Ambience getSelectedAmbience() {
-    String sDefault = ConfigurationManager.getProperty(CONF_DEFAULT_AMBIENCE);
+    String sDefault = Conf.getString(CONF_DEFAULT_AMBIENCE);
     return getAmbience(sDefault);
   }
 
@@ -200,7 +200,7 @@ public final class AmbienceManager implements ITechnicalStrings, Observer {
    */
   public void commit() {
     // first, remove all ambiences from configuration
-    Properties properties = ConfigurationManager.getProperties();
+    Properties properties = Conf.getProperties();
     Iterator<Object> it = properties.keySet().iterator();
     while (it.hasNext()) {
       String sKey = (String) it.next();
@@ -216,7 +216,7 @@ public final class AmbienceManager implements ITechnicalStrings, Observer {
           styles += style.getID() + ',';
         }
         styles = styles.substring(0, styles.length() - 1);
-        ConfigurationManager.setProperty(AMBIENCE_PREFIX + ambience.getID() + '/'
+        Conf.setProperty(AMBIENCE_PREFIX + ambience.getID() + '/'
             + ambience.getName(), styles);
       }
     }

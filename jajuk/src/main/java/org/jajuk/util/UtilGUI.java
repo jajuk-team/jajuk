@@ -77,7 +77,7 @@ import org.jvnet.substance.watermark.WatermarkInfo;
 /**
  * Set of GUI convenient methods
  */
-public final class UtilGUI implements ITechnicalStrings {
+public final class UtilGUI implements Const {
 
   /* different types of Cursors that are available */
   public static final Cursor WAIT_CURSOR = new Cursor(Cursor.WAIT_CURSOR);
@@ -303,7 +303,7 @@ public final class UtilGUI implements ITechnicalStrings {
   public static void setLookAndFeel(final String pTheme) {
     try {
       // Set substance laf
-      UIManager.setLookAndFeel(ITechnicalStrings.LNF_SUBSTANCE_CLASS);
+      UIManager.setLookAndFeel(Const.LNF_SUBSTANCE_CLASS);
       // hide some useless elements such locker for not editable labels
       UIManager.put(SubstanceLookAndFeel.NO_EXTRA_ELEMENTS, Boolean.TRUE);
       UIManager.put(SubstanceLookAndFeel.WATERMARK_TO_BLEED, Boolean.TRUE);
@@ -313,7 +313,7 @@ public final class UtilGUI implements ITechnicalStrings {
       final Map<String, ThemeInfo> themes = SubstanceLookAndFeel.getAllThemes();
       String t = pTheme;
       if (themes.get(t) == null) {
-        t = ITechnicalStrings.LNF_DEFAULT_THEME;
+        t = Const.LNF_DEFAULT_THEME;
       }
       // Set substance theme
       SubstanceLookAndFeel.setCurrentTheme(themes.get(t).getClassName());
@@ -374,11 +374,11 @@ public final class UtilGUI implements ITechnicalStrings {
       // the image watermark is not included in the list for unknown
       // reasons
           (!"Image".equals(watermark))) {
-        watermark = ITechnicalStrings.LNF_DEFAULT_WATERMARK;
+        watermark = Const.LNF_DEFAULT_WATERMARK;
       }
       // Set the watermark
-      final String image = ConfigurationManager
-          .getProperty(ITechnicalStrings.CONF_OPTIONS_WATERMARK_IMAGE);
+      final String image = Conf
+          .getString(Const.CONF_OPTIONS_WATERMARK_IMAGE);
       if ("Image".equals(watermark)) {
         // Check that the backgroud image is readable
         if (new File(image).exists()) {
@@ -394,8 +394,8 @@ public final class UtilGUI implements ITechnicalStrings {
       }
     } catch (final Exception e) {
       Log.error(e);
-      ConfigurationManager.setProperty(ITechnicalStrings.CONF_OPTIONS_WATERMARK,
-          ITechnicalStrings.LNF_DEFAULT_WATERMARK);
+      Conf.setProperty(Const.CONF_OPTIONS_WATERMARK,
+          Const.LNF_DEFAULT_WATERMARK);
     }
   }
 

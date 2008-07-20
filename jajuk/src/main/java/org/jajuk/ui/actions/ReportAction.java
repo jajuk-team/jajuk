@@ -29,7 +29,7 @@ import org.jajuk.base.Item;
 import org.jajuk.services.reporting.Exporter;
 import org.jajuk.services.reporting.ExporterFactory;
 import org.jajuk.ui.widgets.JajukFileChooser;
-import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukFileFilter;
 import org.jajuk.util.Messages;
@@ -56,10 +56,10 @@ public class ReportAction extends ActionBase {
   public void perform(final ActionEvent e) throws JajukException {
     final JComponent source = (JComponent) e.getSource();
     // First item
-    final String type = (String) source.getClientProperty(ITechnicalStrings.DETAIL_ORIGIN);
+    final String type = (String) source.getClientProperty(Const.DETAIL_ORIGIN);
     // Get required data from the tree (selected node and node type)
     final List<Item> alSelected = (List<Item>) source
-        .getClientProperty(ITechnicalStrings.DETAIL_SELECTION);
+        .getClientProperty(Const.DETAIL_SELECTION);
     // Display a save as dialog
     final JajukFileFilter filter = new JajukFileFilter(XMLFilter.getInstance(), HTMLFilter
         .getInstance());
@@ -68,8 +68,8 @@ public class ReportAction extends ActionBase {
     chooser.setAcceptDirectories(true);
     chooser.setDialogTitle(Messages.getString("TracksTreeView.33"));
     // set a default file name
-    if (ITechnicalStrings.COLLECTION_LOGICAL.equals(type)
-        || ITechnicalStrings.COLLECTION_PHYSICAL.equals(type)) {
+    if (Const.COLLECTION_LOGICAL.equals(type)
+        || Const.COLLECTION_PHYSICAL.equals(type)) {
       // collection node selected, use file name 'collection"
       chooser.setSelectedFile(new java.io.File(Messages.getString("ReportAction.17")));
     } else {
@@ -100,11 +100,11 @@ public class ReportAction extends ActionBase {
             // Create an exporter according to file extension
             final Exporter exporter = ExporterFactory.createExporter(filetypename);
             // Full logical collection report
-            if (ITechnicalStrings.COLLECTION_LOGICAL.equals(type)) {
+            if (Const.COLLECTION_LOGICAL.equals(type)) {
               exporter.processCollection(Exporter.LOGICAL_COLLECTION);
             }
             // Full physical collection report
-            else if (ITechnicalStrings.COLLECTION_PHYSICAL.equals(type)) {
+            else if (Const.COLLECTION_PHYSICAL.equals(type)) {
               exporter.processCollection(Exporter.PHYSICAL_COLLECTION);
             }
             // Normal report on an item or a set of items

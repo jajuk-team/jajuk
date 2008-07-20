@@ -34,15 +34,15 @@ import org.jajuk.base.PropertyMetaInformation;
 import org.jajuk.base.TrackManager;
 import org.jajuk.base.Type;
 import org.jajuk.ui.widgets.IconLabel;
-import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.Conf;
 import org.jajuk.util.Filter;
-import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Const;
 import org.jajuk.util.Messages;
 
 /**
  * Table model used for physical table view
  */
-public class FilesTableModel extends JajukTableModel implements ITechnicalStrings {
+public class FilesTableModel extends JajukTableModel implements Const {
 
   private static final long serialVersionUID = 1L;
 
@@ -56,7 +56,7 @@ public class FilesTableModel extends JajukTableModel implements ITechnicalString
    */
   public FilesTableModel() {
     super(18);
-    setEditable(ConfigurationManager.getBoolean(CONF_FILES_TABLE_EDITION));
+    setEditable(Conf.getBoolean(CONF_FILES_TABLE_EDITION));
     // Columns names
     // First column is play icon, need to set a space character
     // for proper display in some look and feel
@@ -145,7 +145,7 @@ public class FilesTableModel extends JajukTableModel implements ITechnicalString
       // option if needed
       boolean bShowWithTree = true;
       // look at selection
-      boolean bSyncWithTreeOption = ConfigurationManager.getBoolean(CONF_OPTIONS_SYNC_TABLE_TREE);
+      boolean bSyncWithTreeOption = Conf.getBoolean(CONF_OPTIONS_SYNC_TABLE_TREE);
       Set<File> files = FileManager.getInstance().getFiles();
       alToShow = new ArrayList<File>(files.size() / 2);
       oItems = new Item[iRowNum];
@@ -164,7 +164,7 @@ public class FilesTableModel extends JajukTableModel implements ITechnicalString
         }
       }
       // Filter files
-      Filter filter = new Filter(sPropertyName, sPattern, true, ConfigurationManager
+      Filter filter = new Filter(sPropertyName, sPattern, true, Conf
           .getBoolean(CONF_REGEXP));
       Filter.filterItems(alToShow, filter);
 

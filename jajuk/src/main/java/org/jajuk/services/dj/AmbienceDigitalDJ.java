@@ -25,13 +25,13 @@ import java.util.List;
 
 import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
-import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Const;
 import org.jajuk.util.Messages;
 
 /**
  * Ambience DJ
  */
-public class AmbienceDigitalDJ extends DigitalDJ implements ITechnicalStrings {
+public class AmbienceDigitalDJ extends DigitalDJ implements Const {
 
   /** Used ambience */
   private Ambience ambience;

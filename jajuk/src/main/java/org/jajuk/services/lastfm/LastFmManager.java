@@ -32,9 +32,9 @@ import org.jajuk.events.Event;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.events.Observer;
-import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.Conf;
 import org.jajuk.util.DownloadManager;
-import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Const;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilString;
 import org.jajuk.util.log.Log;
@@ -46,7 +46,7 @@ import org.jajuk.util.log.Log;
  * singleton
  * </p>
  */
-public final class LastFmManager implements Observer, ITechnicalStrings {
+public final class LastFmManager implements Observer, Const {
   /** Self instance */
   private static LastFmManager self;
 
@@ -55,7 +55,7 @@ public final class LastFmManager implements Observer, ITechnicalStrings {
     ObservationManager.register(this);
     // Display an hideable message to user if audioscrobber is disable
     // Show this message only one time by jajuk session
-    if (!ConfigurationManager.getBoolean(CONF_AUDIOSCROBBLER_ENABLE)
+    if (!Conf.getBoolean(CONF_AUDIOSCROBBLER_ENABLE)
     // don't dhow this message if first jajuk launch: already too many
         // popups
         && !Main.isFirstSession()) {
@@ -86,8 +86,8 @@ public final class LastFmManager implements Observer, ITechnicalStrings {
 
   public void configure() {
     Submitter.setPassword(UtilString
-        .rot13(ConfigurationManager.getProperty(CONF_AUDIOSCROBBLER_PASSWORD)));
-    Submitter.setUser(ConfigurationManager.getProperty(CONF_AUDIOSCROBBLER_USER));
+        .rot13(Conf.getString(CONF_AUDIOSCROBBLER_PASSWORD)));
+    Submitter.setUser(Conf.getString(CONF_AUDIOSCROBBLER_USER));
     Submitter.setProxy(DownloadManager.getProxy());
   }
 
@@ -101,14 +101,14 @@ public final class LastFmManager implements Observer, ITechnicalStrings {
       new Thread() {
         @Override
         public void run() {
-          if (ConfigurationManager.getBoolean(CONF_AUDIOSCROBBLER_ENABLE)) {
+          if (Conf.getBoolean(CONF_AUDIOSCROBBLER_ENABLE)) {
             File file = (File) event.getDetails().get(DETAIL_CURRENT_FILE);
             long playedTime = file.getTrack().getDuration();
             // If we are in intro mode, computes actually listened
             // time
-            if (ConfigurationManager.getBoolean(CONF_STATE_INTRO)) {
-              playedTime = (playedTime * ConfigurationManager.getInt(CONF_OPTIONS_INTRO_BEGIN) / 100)
-                  - ConfigurationManager.getInt(CONF_OPTIONS_INTRO_BEGIN);
+            if (Conf.getBoolean(CONF_STATE_INTRO)) {
+              playedTime = (playedTime * Conf.getInt(CONF_OPTIONS_INTRO_BEGIN) / 100)
+                  - Conf.getInt(CONF_OPTIONS_INTRO_BEGIN);
             }
             try {
               Submitter.submitTrack(file.getTrack(), playedTime);

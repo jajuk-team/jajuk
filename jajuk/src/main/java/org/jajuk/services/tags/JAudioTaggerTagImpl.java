@@ -21,7 +21,7 @@ package org.jajuk.services.tags;
 
 import java.io.File;
 
-import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Const;
 import org.jajuk.util.UtilFeatures;
 import org.jajuk.util.UtilString;
 import org.jajuk.util.error.JajukException;
@@ -33,7 +33,7 @@ import org.jaudiotagger.tag.Tag;
  * {@link ITagImpl} Implementation based on <a
  * href="https://jaudiotagger.dev.java.net">JAudiotagger</a>
  */
-public class JAudioTaggerTagImpl implements ITagImpl, ITechnicalStrings {
+public class JAudioTaggerTagImpl implements ITagImpl, Const {
 
   /**
    * the current audio file instance (set by {@link #setFile(File)}).<br>

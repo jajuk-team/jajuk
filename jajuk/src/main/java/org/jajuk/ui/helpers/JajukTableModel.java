@@ -29,13 +29,13 @@ import javax.swing.ImageIcon;
 import javax.swing.table.DefaultTableModel;
 
 import org.jajuk.base.Item;
-import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 
 /**
  * Jajuk table model, adds identifier to model
  */
-public abstract class JajukTableModel extends DefaultTableModel implements ITechnicalStrings {
+public abstract class JajukTableModel extends DefaultTableModel implements Const {
 
   /** Column identifiers */
   volatile protected List<String> idList = new ArrayList<String>(10);

@@ -27,7 +27,7 @@ import java.util.Properties;
 import java.util.Queue;
 import java.util.Set;
 
-import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Const;
 import org.jajuk.util.log.Log;
 
 /**
@@ -35,7 +35,7 @@ import org.jajuk.util.log.Log;
  * <p>
  * All notification methods are synchronized to assure event order
  */
-public final class ObservationManager implements ITechnicalStrings {
+public final class ObservationManager implements Const {
 
   /** one event -> list of components */
   static ObserverRegistry observerRegistry = new ObserverRegistry();

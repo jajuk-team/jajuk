@@ -27,7 +27,7 @@ import java.util.StringTokenizer;
 
 import org.jajuk.services.core.RatingManager;
 import org.jajuk.services.webradio.WebRadio;
-import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.Conf;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 
@@ -125,7 +125,7 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
             st.nextToken();
             lTime = (int) (Float.parseFloat(st.nextToken()) * 1000);
             // Store current position for use at next startup
-            ConfigurationManager.setProperty(CONF_STARTUP_LAST_POSITION, Float
+            Conf.setProperty(CONF_STARTUP_LAST_POSITION, Float
                 .toString(getCurrentPosition()));
             // check if the track get rate increasing level
             // (INC_RATE_TIME secs or intro length)
@@ -149,7 +149,7 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
               fadingVolume = fVolume;
               // force a finished (that doesn't stop but only
               // make a FIFO request to switch track)
-              FIFO.getInstance().finished();
+              FIFO.finished();
             }
             // If fading, decrease sound progressively
             if (bFading) {
@@ -180,7 +180,7 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
                 && (lTime - (fPosition * lDuration)) > length) {
               // length=-1 means there is no max length
               bFading = false;
-              FIFO.getInstance().finished();
+              FIFO.finished();
             }
           } else if (line.matches("ANS_LENGTH.*")) {
             StringTokenizer st = new StringTokenizer(line, "=");
@@ -208,7 +208,7 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
                   && !bOpening) {
                 // Benefit from end of file to perform a full gc
                 System.gc();
-                FIFO.getInstance().finished();
+                FIFO.finished();
               } else {
                 // If fading, next track has already been
                 // launched
@@ -246,14 +246,14 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
     this.bOpening = true;
     this.bHasBeenRated = false;
     this.bEOF = false;
-    this.iFadeDuration = 1000 * ConfigurationManager.getInt(CONF_FADE_DURATION);
+    this.iFadeDuration = 1000 * Conf.getInt(CONF_FADE_DURATION);
     ProcessBuilder pb = new ProcessBuilder(buildCommand(file.getAbsolutePath()));
     Log.debug("Using this Mplayer command: {{" + pb.command() + "}}");
     // Set all environment variables format: var1=xxx var2=yyy
     try {
       Map<String, String> env = pb.environment();
       StringTokenizer st = new StringTokenizer(
-          ConfigurationManager.getProperty(CONF_ENV_VARIABLES), " ");
+          Conf.getString(CONF_ENV_VARIABLES), " ");
       while (st.hasMoreTokens()) {
         StringTokenizer st2 = new StringTokenizer(st.nextToken(), "=");
         env.put(st2.nextToken(), st2.nextToken());

@@ -30,12 +30,12 @@ import java.util.Random;
 import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
 import org.jajuk.base.Style;
-import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Const;
 
 /**
  * A proportion (10% JAZZ, 20% ROCK...) digital DJ
  */
-public class ProportionDigitalDJ extends DigitalDJ implements ITechnicalStrings {
+public class ProportionDigitalDJ extends DigitalDJ implements Const {
 
   /** Set of proportions */
   private List<Proportion> proportions;

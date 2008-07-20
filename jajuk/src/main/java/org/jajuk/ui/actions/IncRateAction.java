@@ -27,7 +27,7 @@ import org.jajuk.events.Event;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.services.players.FIFO;
-import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.Conf;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
 import org.jajuk.util.error.JajukException;
@@ -47,10 +47,10 @@ public class IncRateAction extends ActionBase {
 
   @Override
   public void perform(ActionEvent evt) throws JajukException {
-    File file = FIFO.getInstance().getCurrentFile();
+    File file = FIFO.getCurrentFile();
     if (file != null) {
       Track track = file.getTrack();
-      track.setRate(track.getRate() + ConfigurationManager.getInt(CONF_INC_RATING));
+      track.setRate(track.getRate() + Conf.getInt(CONF_INC_RATING));
     }
     // Force immediate rating refresh (without using the rating manager)
     ObservationManager.notify(new Event(JajukEvents.EVENT_RATE_CHANGED));

@@ -42,7 +42,7 @@ import org.jajuk.base.StyleManager;
 import org.jajuk.base.Track;
 import org.jajuk.base.TrackManager;
 import org.jajuk.base.Year;
-import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Const;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilString;
 import org.jajuk.util.UtilSystem;
@@ -50,7 +50,7 @@ import org.jajuk.util.UtilSystem;
 /**
  * This class exports music contents to XML.
  */
-public class XMLExporter extends Exporter implements ITechnicalStrings {
+public class XMLExporter extends Exporter implements Const {
 
   /** Private Constants */
   private static final String NEWLINE = "\n";

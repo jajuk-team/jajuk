@@ -55,8 +55,8 @@ import org.jajuk.base.TrackManager;
 import org.jajuk.base.YearManager;
 import org.jajuk.services.players.FIFO;
 import org.jajuk.ui.wizard.PropertiesWizard;
-import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Conf;
+import org.jajuk.util.Const;
 import org.jajuk.util.UtilFeatures;
 import org.jajuk.util.UtilGUI;
 import org.jajuk.util.log.Log;
@@ -69,7 +69,7 @@ import org.jvnet.substance.SubstanceLookAndFeel;
  * It is displayed nicely from provided jlabel position
  * </p>
  */
-public class ThumbnailPopup extends JDialog implements ITechnicalStrings {
+public class ThumbnailPopup extends JDialog implements Const {
 
   private static final long serialVersionUID = -8131528719972829954L;
 
@@ -126,8 +126,8 @@ public class ThumbnailPopup extends JDialog implements ITechnicalStrings {
             List<org.jajuk.base.File> toPlay = new ArrayList<org.jajuk.base.File>(1);
             File file = track.getPlayeableFile(true);
             toPlay.add(file);
-            FIFO.getInstance().push(
-                UtilFeatures.createStackItems(UtilFeatures.applyPlayOption(toPlay), ConfigurationManager
+            FIFO.push(
+                UtilFeatures.createStackItems(UtilFeatures.applyPlayOption(toPlay), Conf
                     .getBoolean(CONF_STATE_REPEAT), true), false);
           }
         }

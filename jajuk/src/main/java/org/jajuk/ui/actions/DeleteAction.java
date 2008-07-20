@@ -43,7 +43,7 @@ import org.jajuk.events.Event;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.ui.widgets.InformationJPanel;
-import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.Conf;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilGUI;
@@ -83,7 +83,7 @@ public class DeleteAction extends ActionBase {
       } else if (item instanceof Directory) {
         alDirs.add((Directory) item);
       } else if ((item instanceof Playlist)
-          && (ConfigurationManager.getBoolean(CONF_CONFIRMATIONS_DELETE_FILE))) {
+          && (Conf.getBoolean(CONF_CONFIRMATIONS_DELETE_FILE))) {
         // file delete confirmation
         Playlist plf = (Playlist) item;
         String sFileToDelete = plf.getAbsolutePath();
@@ -100,7 +100,7 @@ public class DeleteAction extends ActionBase {
 
     if (alFiles.size() > 0) {
       // Ask if a confirmation is required
-      if (ConfigurationManager.getBoolean(CONF_CONFIRMATIONS_DELETE_FILE)) {
+      if (Conf.getBoolean(CONF_CONFIRMATIONS_DELETE_FILE)) {
         String sFiles = "";
         for (File f : alFiles) {
           sFiles += f.getName() + "\n";
@@ -177,7 +177,7 @@ public class DeleteAction extends ActionBase {
 
     if (alDirs.size() > 0) {
       // Ask if a confirmation is required
-      if (ConfigurationManager.getBoolean(CONF_CONFIRMATIONS_DELETE_FILE)) {
+      if (Conf.getBoolean(CONF_CONFIRMATIONS_DELETE_FILE)) {
         String sFiles = "";
         int count = 0;
         for (Directory d : alDirs) {

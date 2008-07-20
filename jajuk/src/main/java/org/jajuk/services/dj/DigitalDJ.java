@@ -27,12 +27,12 @@ import java.util.Set;
 
 import org.jajuk.base.File;
 import org.jajuk.base.Track;
-import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Const;
 
 /**
  * Digital DJ
  */
-public abstract class DigitalDJ implements ITechnicalStrings, Comparable<DigitalDJ> {
+public abstract class DigitalDJ implements Const, Comparable<DigitalDJ> {
 
   /** DJ unique ID */
   private String sID;

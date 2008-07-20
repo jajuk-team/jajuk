@@ -28,7 +28,7 @@ import java.util.Set;
 
 import javax.swing.ImageIcon;
 
-import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.Conf;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilString;
@@ -406,7 +406,7 @@ public class Track extends LogicalItem implements Comparable<Track> {
    */
   public boolean shouldBeHidden() {
     if (getPlayeableFile(true) != null
-        || !ConfigurationManager.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED)) {
+        || !Conf.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED)) {
       return false;
     }
     return true;

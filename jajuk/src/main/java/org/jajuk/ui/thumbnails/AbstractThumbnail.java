@@ -58,8 +58,8 @@ import org.jajuk.ui.actions.ActionManager;
 import org.jajuk.ui.actions.JajukActions;
 import org.jajuk.ui.views.CoverView;
 import org.jajuk.ui.widgets.JajukWindow;
-import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Conf;
+import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilGUI;
@@ -70,7 +70,7 @@ import org.jajuk.util.log.Log;
  * and some features like dnd, menu item to play, search cover, album popup
  * display...
  */
-public abstract class AbstractThumbnail extends JPanel implements ITechnicalStrings,
+public abstract class AbstractThumbnail extends JPanel implements Const,
     ActionListener, Transferable {
 
   /** Size */
@@ -143,7 +143,7 @@ public abstract class AbstractThumbnail extends JPanel implements ITechnicalStri
             last = mouseOverItem;
             // Finally display the popup (Leave if user unselected
             // the option "Show catalog popups"
-            if (ConfigurationManager.getBoolean(CONF_SHOW_POPUPS)) {
+            if (Conf.getBoolean(CONF_SHOW_POPUPS)) {
               mouseOverItem.displayPopup();
             }
           }

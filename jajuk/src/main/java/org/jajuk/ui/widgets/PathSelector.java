@@ -34,7 +34,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukFileFilter;
 import org.jajuk.util.Messages;
@@ -44,7 +44,7 @@ import org.jajuk.util.filters.DirectoryFilter;
  * This is a widgets that contains an editable textfield given a PATH and a PATH
  * selection button opening up a file selector
  */
-public class PathSelector extends JPanel implements ITechnicalStrings {
+public class PathSelector extends JPanel implements Const {
 
   private static final long serialVersionUID = -8370527665529267952L;
 

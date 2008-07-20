@@ -57,7 +57,7 @@ import org.jajuk.util.log.Log;
 /**
  * Set of convenient methods for system and IO
  */
-public final class UtilSystem implements ITechnicalStrings {
+public final class UtilSystem implements Const {
 
   /** MPlayer status possible values * */
   public static enum MPlayerStatus {
@@ -157,7 +157,7 @@ public final class UtilSystem implements ITechnicalStrings {
    */
   public static void backupFile(final File file, final int iMB) {
     try {
-      if (Integer.parseInt(ConfigurationManager.getProperty(ITechnicalStrings.CONF_BACKUP_SIZE)) <= 0) { // 0 or
+      if (Integer.parseInt(Conf.getString(Const.CONF_BACKUP_SIZE)) <= 0) { // 0 or
         // less
         // means
         // no backup
@@ -467,8 +467,8 @@ public final class UtilSystem implements ITechnicalStrings {
           // Create the output file (clobbering the file if it
           // exists).
           final FileOutputStream file = new FileOutputStream(UtilSystem
-              .getConfFileByPath(ITechnicalStrings.FILE_CACHE + '/'
-                  + ITechnicalStrings.FILE_INTERNAL_CACHE + '/' + destName));
+              .getConfFileByPath(Const.FILE_CACHE + '/'
+                  + Const.FILE_INTERNAL_CACHE + '/' + destName));
           try {
             // Allocate a buffer for reading the entry data.
             final byte[] buffer = new byte[1024];
@@ -508,10 +508,10 @@ public final class UtilSystem implements ITechnicalStrings {
   public static File getCachePath(final URL url, final String id) {
     File out = null;
     if (id == null) {
-      out = UtilSystem.getConfFileByPath(ITechnicalStrings.FILE_CACHE + '/'
+      out = UtilSystem.getConfFileByPath(Const.FILE_CACHE + '/'
           + UtilSystem.getOnlyFile(url.toString()));
     } else {
-      out = UtilSystem.getConfFileByPath(ITechnicalStrings.FILE_CACHE + '/' + id + '_'
+      out = UtilSystem.getConfFileByPath(Const.FILE_CACHE + '/' + id + '_'
           + UtilSystem.getOnlyFile(url.toString()));
     }
     return out;
@@ -529,7 +529,7 @@ public final class UtilSystem implements ITechnicalStrings {
       sRoot = Main.getWorkspace();
     }
     return new File(sRoot + '/'
-        + (Main.isTestMode() ? ".jajuk_test_" + ITechnicalStrings.TEST_VERSION : ".jajuk") + '/'
+        + (Main.isTestMode() ? ".jajuk_test_" + Const.TEST_VERSION : ".jajuk") + '/'
         + sPATH);
   }
 
@@ -605,7 +605,7 @@ public final class UtilSystem implements ITechnicalStrings {
     }
     // If still no hostname, return a default value
     if (sHostname == null) {
-      sHostname = ITechnicalStrings.DEFAULT_HOSTNAME;
+      sHostname = Const.DEFAULT_HOSTNAME;
     }
     return sHostname;
   }
@@ -623,16 +623,16 @@ public final class UtilSystem implements ITechnicalStrings {
    * @return MPLayer binary MAC full path
    */
   public static String getMPlayerOSXPath() {
-    final String forced = ConfigurationManager
-        .getProperty(ITechnicalStrings.CONF_MPLAYER_PATH_FORCED);
+    final String forced = Conf
+        .getString(Const.CONF_MPLAYER_PATH_FORCED);
     if (!UtilString.isVoid(forced)) {
       return forced;
     } else if (UtilSystem.isUnderOSXintel()
-        && new File(ITechnicalStrings.FILE_DEFAULT_MPLAYER_X86_OSX_PATH).exists()) {
-      return ITechnicalStrings.FILE_DEFAULT_MPLAYER_X86_OSX_PATH;
+        && new File(Const.FILE_DEFAULT_MPLAYER_X86_OSX_PATH).exists()) {
+      return Const.FILE_DEFAULT_MPLAYER_X86_OSX_PATH;
     } else if (UtilSystem.isUnderOSXpower()
-        && new File(ITechnicalStrings.FILE_DEFAULT_MPLAYER_POWER_OSX_PATH).exists()) {
-      return ITechnicalStrings.FILE_DEFAULT_MPLAYER_POWER_OSX_PATH;
+        && new File(Const.FILE_DEFAULT_MPLAYER_POWER_OSX_PATH).exists()) {
+      return Const.FILE_DEFAULT_MPLAYER_POWER_OSX_PATH;
     } else {
       // Simply return mplayer from PATH, works if app is launch from CLI
       return "mplayer";
@@ -714,7 +714,7 @@ public final class UtilSystem implements ITechnicalStrings {
               .getAbsolutePath();
         }
         // Add MPlayer file name
-        file = new File(sPATH + '/' + ITechnicalStrings.FILE_MPLAYER_EXE);
+        file = new File(sPATH + '/' + Const.FILE_MPLAYER_EXE);
         if (file.exists() && file.length() == MPLAYER_EXE_SIZE) {
           UtilSystem.mplayerPath = file;
         } else {
@@ -722,7 +722,7 @@ public final class UtilSystem implements ITechnicalStrings {
           // installed along with aTunes. In this case, mplayer is
           // found in sPATH\win_tools\ directory. Hence, changed sPATH
           // Note that we don't test mplayer.exe size in this case
-          file = new File(sPATH + "/win_tools/" + ITechnicalStrings.FILE_MPLAYER_EXE);
+          file = new File(sPATH + "/win_tools/" + Const.FILE_MPLAYER_EXE);
           if (file.exists()) {
             UtilSystem.mplayerPath = file;
           }
@@ -900,7 +900,7 @@ public final class UtilSystem implements ITechnicalStrings {
     final float fTotal = Runtime.getRuntime().totalMemory();
     final float fFree = Runtime.getRuntime().freeMemory();
     final float fLevel = (fTotal - fFree) / fTotal;
-    return fLevel >= ITechnicalStrings.NEED_FULL_GC_LEVEL;
+    return fLevel >= Const.NEED_FULL_GC_LEVEL;
   }
 
   /**
@@ -1009,7 +1009,7 @@ public final class UtilSystem implements ITechnicalStrings {
    * Clear locale images cache
    */
   public static void clearCache() {
-    final File fCache = getConfFileByPath(ITechnicalStrings.FILE_CACHE);
+    final File fCache = getConfFileByPath(Const.FILE_CACHE);
     final File[] files = fCache.listFiles();
     for (final File element : files) {
       element.delete();

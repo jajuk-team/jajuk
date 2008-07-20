@@ -43,8 +43,8 @@ import org.jajuk.events.Event;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.events.Observer;
-import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Conf;
+import org.jajuk.util.Const;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilSystem;
 import org.jajuk.util.error.JajukException;
@@ -58,7 +58,7 @@ import org.xml.sax.helpers.DefaultHandler;
 /**
  * Stores all files user read
  */
-public final class History extends DefaultHandler implements ITechnicalStrings, ErrorHandler,
+public final class History extends DefaultHandler implements Const, ErrorHandler,
     Observer {
   /** Self instance */
   private static History history;
@@ -116,7 +116,7 @@ public final class History extends DefaultHandler implements ITechnicalStrings, 
 
   /** Add an history item */
   public synchronized void addItem(String sFileId, long lDate) {
-    if (ConfigurationManager.getProperty(CONF_HISTORY).equals("0")) { // no
+    if (Conf.getString(CONF_HISTORY).equals("0")) { // no
       // history
       // 
       return;
@@ -196,7 +196,7 @@ public final class History extends DefaultHandler implements ITechnicalStrings, 
     it = vHistory.iterator();
     while (it.hasNext()) {
       HistoryItem hi = it.next();
-      if (hi.getDate() < (System.currentTimeMillis() - (((long) iDays) * ITechnicalStrings.MILLISECONDS_IN_A_DAY))) {
+      if (hi.getDate() < (System.currentTimeMillis() - (((long) iDays) * Const.MILLISECONDS_IN_A_DAY))) {
         it.remove();
       }
     }
@@ -239,7 +239,7 @@ public final class History extends DefaultHandler implements ITechnicalStrings, 
       SAXParser saxParser = spf.newSAXParser();
       File frt = UtilSystem.getConfFileByPath(FILE_HISTORY);
       saxParser.parse(frt.toURI().toURL().toString(), getInstance());
-      getInstance().clear(Integer.parseInt(ConfigurationManager.getProperty(CONF_HISTORY))); // delete
+      getInstance().clear(Integer.parseInt(Conf.getString(CONF_HISTORY))); // delete
       // old
       // history items
     } catch (IOException e) {

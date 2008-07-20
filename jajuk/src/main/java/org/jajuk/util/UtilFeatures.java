@@ -42,7 +42,7 @@ import org.jajuk.util.log.Log;
 /**
  * General use utilities methods
  */
-public final class UtilFeatures implements ITechnicalStrings {
+public final class UtilFeatures implements Const {
 
  /** contains clipboard data */
   private static String copyData;
@@ -78,7 +78,7 @@ public final class UtilFeatures implements ITechnicalStrings {
    */
   @SuppressWarnings("unchecked")
   public static List<org.jajuk.base.File> applyPlayOption(final List<org.jajuk.base.File> alFiles) {
-    if (ConfigurationManager.getBoolean(ITechnicalStrings.CONF_STATE_SHUFFLE)) {
+    if (Conf.getBoolean(Const.CONF_STATE_SHUFFLE)) {
       // we need all these casts for clone() to be callable here
       final List<org.jajuk.base.File> alFilesToPlay = (List<org.jajuk.base.File>) ((ArrayList<org.jajuk.base.File>) alFiles)
           .clone();
@@ -175,12 +175,12 @@ public final class UtilFeatures implements ITechnicalStrings {
     for (Item item : selection) {
       // computes logical selection if any
       if (item instanceof Track) {
-        files.add(((Track) item).getPlayeableFile(ConfigurationManager
+        files.add(((Track) item).getPlayeableFile(Conf
             .getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED)));
       } else if (item instanceof LogicalItem) {
         Set<Track> tracks = TrackManager.getInstance().getAssociatedTracks(item);
         for (Track track : tracks) {
-          files.add(track.getPlayeableFile(ConfigurationManager
+          files.add(track.getPlayeableFile(Conf
               .getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED)));
         }
       }
@@ -238,7 +238,7 @@ public final class UtilFeatures implements ITechnicalStrings {
    * @return whether the given filename is an absolute default cover
    */
   public static boolean isAbsoluteDefaultCover(final Directory directory, final String sFilename) {
-    final String sDefault = directory.getStringValue(ITechnicalStrings.XML_DIRECTORY_DEFAULT_COVER);
+    final String sDefault = directory.getStringValue(Const.XML_DIRECTORY_DEFAULT_COVER);
     if ((sDefault != null) && sDefault.equals(sFilename)) {
       return true;
     }
@@ -250,12 +250,12 @@ public final class UtilFeatures implements ITechnicalStrings {
    * @return whether the given filename is a standard cover or not
    */
   public static boolean isStandardCover(final String sFileName) {
-    return sFileName.toLowerCase().matches(".*" + ITechnicalStrings.FILE_DEFAULT_COVER + ".*")
-        || sFileName.toLowerCase().matches(".*" + ITechnicalStrings.FILE_DEFAULT_COVER_2 + ".*")
+    return sFileName.toLowerCase().matches(".*" + Const.FILE_DEFAULT_COVER + ".*")
+        || sFileName.toLowerCase().matches(".*" + Const.FILE_DEFAULT_COVER_2 + ".*")
         // just for previous compatibility, now it is a directory
         // property
         || sFileName.toLowerCase().matches(
-            ".*" + ITechnicalStrings.FILE_ABSOLUTE_DEFAULT_COVER + ".*");
+            ".*" + Const.FILE_ABSOLUTE_DEFAULT_COVER + ".*");
 
   }
 

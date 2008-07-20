@@ -52,8 +52,8 @@ import org.jajuk.services.players.FIFO;
 import org.jajuk.services.players.Player;
 import org.jajuk.services.webradio.WebRadio;
 import org.jajuk.ui.helpers.JajukTimer;
-import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Conf;
+import org.jajuk.util.Const;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilString;
 import org.jajuk.util.log.Log;
@@ -61,7 +61,7 @@ import org.jajuk.util.log.Log;
 /**
  * Status / information panel ( static view )
  */
-public final class InformationJPanel extends JPanel implements ITechnicalStrings, Observer,
+public final class InformationJPanel extends JPanel implements Const, Observer,
     ChangeListener, MouseWheelListener {
 
   private static final long serialVersionUID = 1L;
@@ -184,8 +184,8 @@ public final class InformationJPanel extends JPanel implements ITechnicalStrings
     jlCurrent.addMouseListener(new MouseAdapter() {
       @Override
       public void mouseClicked(MouseEvent e) {
-        int currentFormat = ConfigurationManager.getInt(CONF_FORMAT_TIME_ELAPSED);
-        ConfigurationManager.setProperty(CONF_FORMAT_TIME_ELAPSED, Integer
+        int currentFormat = Conf.getInt(CONF_FORMAT_TIME_ELAPSED);
+        Conf.setProperty(CONF_FORMAT_TIME_ELAPSED, Integer
             .toString(((currentFormat + 1) % FORMAT_TIME_ELAPSED_MAX)));
       }
     });
@@ -209,7 +209,7 @@ public final class InformationJPanel extends JPanel implements ITechnicalStrings
     }
     // Check if a track or a webradio has been launch before this view is
     // visible
-    if (FIFO.getInstance().isPlayingRadio()) {
+    if (FIFO.isPlayingRadio()) {
       update(new Event(JajukEvents.EVENT_WEBRADIO_LAUNCHED, ObservationManager
           .getDetailsLastOccurence(JajukEvents.EVENT_WEBRADIO_LAUNCHED)));
     } else {
@@ -313,7 +313,7 @@ public final class InformationJPanel extends JPanel implements ITechnicalStrings
     // Set the required decimal precision for percentage here
     DecimalFormat df = new DecimalFormat("0"); // (0.##) for 2 decimal places
     try {
-      timeFormat = ConfigurationManager.getInt(ITechnicalStrings.CONF_FORMAT_TIME_ELAPSED);
+      timeFormat = Conf.getInt(Const.CONF_FORMAT_TIME_ELAPSED);
     } catch (Exception e) {
       Log.debug(e);
     }
@@ -416,7 +416,7 @@ public final class InformationJPanel extends JPanel implements ITechnicalStrings
             long lTime = JajukTimer.getInstance().getCurrentTrackEllapsedTime();
             int iPos = (int) (100 * JajukTimer.getInstance().getCurrentTrackPosition());
             String sCurrentTotalMessage = UtilString.formatTimeBySec(timeToPlay);
-            setTotalTimeMessage(sCurrentTotalMessage + " [" + FIFO.getInstance().getFIFO().size()
+            setTotalTimeMessage(sCurrentTotalMessage + " [" + FIFO.getFIFO().size()
                 + "]");
             setCurrentTimeMessage(lTime, length);
             // Make sure to enable the slider
@@ -446,13 +446,13 @@ public final class InformationJPanel extends JPanel implements ITechnicalStrings
             // a seek that could fail with some formats
             jsPosition.setValue(0);
             // reset startup position
-            ConfigurationManager.setProperty(CONF_STARTUP_LAST_POSITION, "0");
+            Conf.setProperty(CONF_STARTUP_LAST_POSITION, "0");
             setTotalTimeMessage("00:00:00");
             setMessage(Messages.getString("JajukWindow.18"), InformationJPanel.INFORMATIVE);
             jsPosition.addMouseWheelListener(InformationJPanel.this);
             jsPosition.addChangeListener(InformationJPanel.this);
           } else if (JajukEvents.EVENT_FILE_LAUNCHED.equals(subject)) {
-            File file = FIFO.getInstance().getCurrentFile();
+            File file = FIFO.getCurrentFile();
             if (file != null) {
               MessageFormat sMessageFormat = new MessageFormat(Messages.getString("FIFO.10") + " "
                   + Messages.getString("InformationJPanel.8"));

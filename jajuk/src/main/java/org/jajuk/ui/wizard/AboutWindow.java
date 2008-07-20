@@ -38,7 +38,7 @@ import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 
 import org.jajuk.ui.widgets.JajukWindow;
-import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
 import org.jajuk.util.log.Log;
@@ -51,7 +51,7 @@ import org.jfree.ui.about.SystemPropertiesPanel;
  * <p>
  * Help perspective *
  */
-public class AboutWindow extends JDialog implements ITechnicalStrings {
+public class AboutWindow extends JDialog implements Const {
 
   private static final long serialVersionUID = 1L;
 

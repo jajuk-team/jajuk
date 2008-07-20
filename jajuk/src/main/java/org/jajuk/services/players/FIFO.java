@@ -44,8 +44,8 @@ import org.jajuk.services.core.RatingManager;
 import org.jajuk.services.dj.AmbienceManager;
 import org.jajuk.services.webradio.WebRadio;
 import org.jajuk.ui.helpers.JajukTimer;
-import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Conf;
+import org.jajuk.util.Const;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilGUI;
 import org.jajuk.util.UtilSystem;
@@ -60,34 +60,31 @@ import org.jajuk.util.log.Log;
  * even ouside AWT dispatcher thread
  * </p>
  */
-public final class FIFO implements ITechnicalStrings {
+public final class FIFO implements Const {
 
   /** Currently played track index */
-  private int index;
+  private static int index;
 
   /** Last played track */
-  private StackItem itemLast;
+  private static StackItem itemLast;
 
   /** Fifo itself, contains jajuk File objects */
-  private volatile List<StackItem> alFIFO;
+  private static volatile List<StackItem> alFIFO = new ArrayList<StackItem>(50);
 
   /** Planned tracks */
-  private volatile List<StackItem> alPlanned;
+  private static volatile List<StackItem> alPlanned = new ArrayList<StackItem>(10);
 
   /** Stop flag* */
-  private volatile boolean bStop = true;
-
-  /** Self instance */
-  private static FIFO fifo = null;
+  private static volatile boolean bStop = true;
 
   /** First played file flag* */
   private static boolean bFirstFile = true;
 
   /** Whether we are currently playing radio */
-  private boolean playingRadio = false;
+  private static boolean playingRadio = false;
 
   /** Current played radio */
-  private WebRadio currentRadio;
+  private static WebRadio currentRadio;
 
   /**
    * Shared mutex for locking.
@@ -95,30 +92,17 @@ public final class FIFO implements ITechnicalStrings {
   public static final byte[] MUTEX = new byte[0];
 
   /**
-   * Singleton access
-   * 
-   * @return
-   */
-  public static FIFO getInstance() {
-    if (fifo == null) {
-      fifo = new FIFO();
-    }
-    return fifo;
-  }
-
-  /**
-   * constructor
+   * No constructor, this class is used statically only
    */
   private FIFO() {
-    reset();
   }
 
   /**
    * FIFO total reinitialization
    */
-  public void reset() {
-    alFIFO = new ArrayList<StackItem>(50);
-    alPlanned = new ArrayList<StackItem>(10);
+  public static void reset() {
+    alFIFO.clear();
+    alPlanned.clear();
     JajukTimer.getInstance().reset();
     index = 0;
     itemLast = null;
@@ -129,7 +113,7 @@ public final class FIFO implements ITechnicalStrings {
    * 
    * @param bRepeat
    */
-  public void setRepeatModeToAll(boolean bRepeat) {
+  public static void setRepeatModeToAll(boolean bRepeat) {
     for (StackItem item : alFIFO) {
       item.setRepeat(bRepeat);
     }
@@ -142,14 +126,14 @@ public final class FIFO implements ITechnicalStrings {
    * @param alItems
    * @param bAppend
    */
-  public void push(final List<StackItem> alItems, final boolean bAppend) {
+  public static void push(final List<StackItem> alItems, final boolean bAppend) {
     Thread t = new Thread() { // do it in a thread to make UI more
       // reactive
       @Override
       public void run() {
         try {
           UtilGUI.waiting();
-          pushCommand(alItems, bAppend);
+          FIFO.pushCommand(alItems, bAppend);
         } catch (Exception e) {
           Log.error(e);
         } finally {
@@ -170,7 +154,7 @@ public final class FIFO implements ITechnicalStrings {
    * @param item
    * @param bAppend
    */
-  public void push(final StackItem item, final boolean bAppend) {
+  public static void push(final StackItem item, final boolean bAppend) {
     Thread t = new Thread() {
       // do it in a thread to make UI more reactive
       @Override
@@ -197,7 +181,7 @@ public final class FIFO implements ITechnicalStrings {
    * @param radio
    *          webradio to launch
    */
-  public void launchRadio(WebRadio radio) {
+  public static void launchRadio(WebRadio radio) {
     try {
       UtilGUI.waiting();
       currentRadio = radio;
@@ -207,7 +191,7 @@ public final class FIFO implements ITechnicalStrings {
         Log.debug("Now playing :" + radio.toString());
         playingRadio = true;
         // Store current radio for next startup
-        ConfigurationManager.setProperty(CONF_DEFAULT_WEB_RADIO, radio.getName());
+        Conf.setProperty(CONF_DEFAULT_WEB_RADIO, radio.getName());
         // Send an event that a track has been launched
         Properties pDetails = new Properties();
         pDetails.put(DETAIL_CONTENT, radio);
@@ -232,7 +216,7 @@ public final class FIFO implements ITechnicalStrings {
    * @param bAppend
    *          keep previous files or stop them to start a new one ?
    */
-  private void pushCommand(List<StackItem> alItems, boolean bAppend) {
+  private static void pushCommand(List<StackItem> alItems, boolean bAppend) {
     try {
       // wake up FIFO if stopped
       bStop = false;
@@ -285,7 +269,7 @@ public final class FIFO implements ITechnicalStrings {
           }
         }
       }
-      synchronized (this) {
+      synchronized (FIFO.class) {
         // test if we have yet some files to consider
         if (alItems.size() == 0) {
           return;
@@ -310,7 +294,7 @@ public final class FIFO implements ITechnicalStrings {
         // selection contains at least a single repeated item, all the fifo is
         // repeated. If selection contains no repeated item, the full fifo is
         // unrepeated
-        if (containsRepeatedItem(alItems) || ConfigurationManager.getBoolean(CONF_STATE_REPEAT)) {
+        if (containsRepeatedItem(alItems) || Conf.getBoolean(CONF_STATE_REPEAT)) {
           setRepeatModeToAll(true);
         } else {
           setRepeatModeToAll(false);
@@ -333,7 +317,7 @@ public final class FIFO implements ITechnicalStrings {
    * @param items
    * @return whether a stack item list contains a least one repeated item
    */
-  private boolean containsRepeatedItem(List<StackItem> items) {
+  private static boolean containsRepeatedItem(List<StackItem> items) {
     for (StackItem item : items) {
       if (item.isRepeat()) {
         return true;
@@ -346,7 +330,7 @@ public final class FIFO implements ITechnicalStrings {
    * @param items
    * @return whether FIFO contains a least one repeated item
    */
-  public boolean containsRepeat() {
+  public static boolean containsRepeat() {
     for (StackItem item : alFIFO) {
       if (item.isRepeat()) {
         return true;
@@ -363,7 +347,7 @@ public final class FIFO implements ITechnicalStrings {
    * @param bAppend
    *          keep previous files or stop them to start a new one ?
    */
-  private void pushCommand(StackItem item, boolean bAppend) {
+  private static void pushCommand(StackItem item, boolean bAppend) {
     List<StackItem> alFiles = new ArrayList<StackItem>(1);
     alFiles.add(item);
     pushCommand(alFiles, bAppend);
@@ -373,7 +357,7 @@ public final class FIFO implements ITechnicalStrings {
    * Finished method, called by the PlayerImpl when the track is finished
    * 
    */
-  public void finished() {
+  public static void finished() {
     try {
       // If no playing item, just leave
       if (getCurrentItem() == null) {
@@ -407,7 +391,7 @@ public final class FIFO implements ITechnicalStrings {
       }
       if (alFIFO.size() == 0) { // nothing more to play
         // check if we in continue mode
-        if (ConfigurationManager.getBoolean(CONF_STATE_CONTINUE) && itemLast != null) {
+        if (Conf.getBoolean(CONF_STATE_CONTINUE) && itemLast != null) {
           File file = null;
           // if some tracks are planned (can be 0 if planned size=0)
           if (alPlanned.size() != 0) {
@@ -454,33 +438,33 @@ public final class FIFO implements ITechnicalStrings {
    * @param int
    *          index
    */
-  private void launch() {
+  private static void launch() {
     try {
       UtilGUI.waiting();
       // intro workaround : intro mode is only read at track launch
       // and can't be set during the play
-      ConfigurationManager.getBoolean(CONF_STATE_INTRO);
+      Conf.getBoolean(CONF_STATE_INTRO);
       // notify to devices like commandJPanel to update UI when the play
       // button has been pressed
       ObservationManager.notify(new Event(JajukEvents.EVENT_PLAYER_PLAY));
       // set was_playing state
-      ConfigurationManager.setProperty(CONF_STATE_WAS_PLAYING, TRUE);
+      Conf.setProperty(CONF_STATE_WAS_PLAYING, TRUE);
 
       File fCurrent = getCurrentFile();
       boolean bPlayOK = false;
-      if (bFirstFile && !ConfigurationManager.getBoolean(CONF_STATE_INTRO)
-          && ConfigurationManager.getProperty(CONF_STARTUP_MODE).equals(STARTUP_MODE_LAST_KEEP_POS)) {
+      if (bFirstFile && !Conf.getBoolean(CONF_STATE_INTRO)
+          && Conf.getString(CONF_STARTUP_MODE).equals(STARTUP_MODE_LAST_KEEP_POS)) {
         // if it is the first played file of the session and we are in
         // startup mode keep position
-        float fPos = ConfigurationManager.getFloat(CONF_STARTUP_LAST_POSITION);
+        float fPos = Conf.getFloat(CONF_STARTUP_LAST_POSITION);
         // play it
         bPlayOK = Player.play(fCurrent, fPos, TO_THE_END);
       } else {
-        if (ConfigurationManager.getBoolean(CONF_STATE_INTRO)) {
+        if (Conf.getBoolean(CONF_STATE_INTRO)) {
           // intro mode enabled
-          bPlayOK = Player.play(fCurrent, Float.parseFloat(ConfigurationManager
-              .getProperty(CONF_OPTIONS_INTRO_BEGIN)) / 100, 1000 * Integer
-              .parseInt(ConfigurationManager.getProperty(CONF_OPTIONS_INTRO_LENGTH)));
+          bPlayOK = Player.play(fCurrent, Float.parseFloat(Conf
+              .getString(CONF_OPTIONS_INTRO_BEGIN)) / 100, 1000 * Integer
+              .parseInt(Conf.getString(CONF_OPTIONS_INTRO_LENGTH)));
         } else {
           // play it
           bPlayOK = Player.play(fCurrent, 0.0f, TO_THE_END);
@@ -491,7 +475,7 @@ public final class FIFO implements ITechnicalStrings {
         Log.debug("Now playing :" + fCurrent);
         // Send an event that a track has been launched
         Properties pDetails = new Properties();
-        if (itemLast != null){
+        if (itemLast != null) {
           pDetails.put(DETAIL_OLD, itemLast);
         }
         pDetails.put(DETAIL_CURRENT_FILE_ID, fCurrent.getID());
@@ -523,7 +507,7 @@ public final class FIFO implements ITechnicalStrings {
           itemLast = null;
         }
 
-        FIFO.getInstance().finished();
+        FIFO.finished();
       }
     } catch (Throwable t) {// catch even Errors (OutOfMemory for example)
       Log.error(122, t);
@@ -537,8 +521,8 @@ public final class FIFO implements ITechnicalStrings {
    * 
    * @param index
    */
-  public void setIndex(int index) {
-    this.index = index;
+  public static void setIndex(int index) {
+    FIFO.index = index;
   }
 
   /**
@@ -547,10 +531,10 @@ public final class FIFO implements ITechnicalStrings {
    * @param bClear :
    *          clear planned tracks stack
    */
-  public void computesPlanned(boolean bClear) {
+  public static void computesPlanned(boolean bClear) {
     // Check if we are in continue mode and we have some tracks in FIFO, if
     // not : no planned tracks
-    if (!ConfigurationManager.getBoolean(CONF_STATE_CONTINUE) || containsRepeat()
+    if (!Conf.getBoolean(CONF_STATE_CONTINUE) || containsRepeat()
         || alFIFO.size() == 0) {
       alPlanned.clear();
       return;
@@ -560,7 +544,7 @@ public final class FIFO implements ITechnicalStrings {
     }
     int iPlannedSize = alPlanned.size();
     // Add required tracks
-    for (int i = 0; i < (ConfigurationManager.getInt(CONF_OPTIONS_VISIBLE_PLANNED) - iPlannedSize); i++) {
+    for (int i = 0; i < (Conf.getInt(CONF_OPTIONS_VISIBLE_PLANNED) - iPlannedSize); i++) {
       StackItem item = null;
       StackItem siLast = null; // last item in fifo or planned
       // if planned stack contains yet some tracks
@@ -572,7 +556,7 @@ public final class FIFO implements ITechnicalStrings {
       }
       try {
         // if random mode, add shuffle tracks
-        if (ConfigurationManager.getBoolean(CONF_STATE_SHUFFLE)) {
+        if (Conf.getBoolean(CONF_STATE_SHUFFLE)) {
           item = new StackItem(FileManager.getInstance().getShuffleFile(), false);
         } else {
           // if fifo contains yet some tracks to play
@@ -601,7 +585,7 @@ public final class FIFO implements ITechnicalStrings {
    * previous plays
    * 
    */
-  public void clear() {
+  public static void clear() {
     alFIFO.clear();
     alPlanned.clear();
   }
@@ -610,7 +594,7 @@ public final class FIFO implements ITechnicalStrings {
    * 
    * @return whether the FIFO contains only repeated files
    */
-  public boolean containsOnlyRepeat() {
+  public static boolean containsOnlyRepeat() {
     for (StackItem item : alFIFO) {
       if (!item.isRepeat()) {
         return false;
@@ -625,7 +609,7 @@ public final class FIFO implements ITechnicalStrings {
    * @return new index of current file
    * @throws Exception
    */
-  private int addPrevious() throws Exception {
+  private static int addPrevious() throws Exception {
     StackItem itemFirst = getItem(0);
     if (itemFirst != null) {
       if (index > 0) { // if we have some repeat files
@@ -638,7 +622,7 @@ public final class FIFO implements ITechnicalStrings {
           // first is not repeated, just insert previous
           // file from collection
           StackItem item = new StackItem(FileManager.getInstance().getPreviousFile(
-              (alFIFO.get(0)).getFile()), ConfigurationManager.getBoolean(CONF_STATE_REPEAT), true);
+              (alFIFO.get(0)).getFile()), Conf.getBoolean(CONF_STATE_REPEAT), true);
           alFIFO.add(0, item);
           index = 0;
         }
@@ -650,7 +634,7 @@ public final class FIFO implements ITechnicalStrings {
   /**
    * Play previous track
    */
-  public void playPrevious() {
+  public static void playPrevious() {
     try {
       bStop = false;
       // if playing, stop all playing players
@@ -671,7 +655,7 @@ public final class FIFO implements ITechnicalStrings {
   /**
    * Play previous album
    */
-  public void playPreviousAlbum() {
+  public static void playPreviousAlbum() {
     try {
       bStop = false;
       // if playing, stop all playing players
@@ -726,7 +710,7 @@ public final class FIFO implements ITechnicalStrings {
   /**
    * Play next track in selection
    */
-  public void playNext() {
+  public static void playNext() {
     try {
       bStop = false;
       // if playing, stop current
@@ -740,7 +724,7 @@ public final class FIFO implements ITechnicalStrings {
         // file
         pushCommand(itemLast, false);
       } else { // really nothing? play a shuffle track from collection
-        pushCommand(new StackItem(FileManager.getInstance().getShuffleFile(), ConfigurationManager
+        pushCommand(new StackItem(FileManager.getInstance().getShuffleFile(), Conf
             .getBoolean(CONF_STATE_REPEAT), false), false);
       }
     } catch (Exception e) {
@@ -753,7 +737,7 @@ public final class FIFO implements ITechnicalStrings {
   /**
    * Play next track in selection
    */
-  public void playNextAlbum() {
+  public static void playNextAlbum() {
     try {
       bStop = false;
       // if playing, stop all playing players
@@ -798,7 +782,7 @@ public final class FIFO implements ITechnicalStrings {
             fileNext = FileManager.getInstance().getNextFile(fileNext);
             // look for the next different album
             if (fileNext != null && !fileNext.getDirectory().equals(dir)) {
-              pushCommand(new StackItem(fileNext, ConfigurationManager
+              pushCommand(new StackItem(fileNext, Conf
                   .getBoolean(CONF_STATE_REPEAT), false), false); // play
               // it
               return;
@@ -809,7 +793,7 @@ public final class FIFO implements ITechnicalStrings {
         // file
         pushCommand(itemLast, false);
       } else { // really nothing? play a shuffle track from collection
-        pushCommand(new StackItem(FileManager.getInstance().getShuffleFile(), ConfigurationManager
+        pushCommand(new StackItem(FileManager.getInstance().getShuffleFile(), Conf
             .getBoolean(CONF_STATE_REPEAT), false), false);
       }
     } catch (Exception e) {
@@ -824,7 +808,7 @@ public final class FIFO implements ITechnicalStrings {
    * 
    * @return File
    */
-  public File getCurrentFile() {
+  public static File getCurrentFile() {
     StackItem item = getCurrentItem();
     return (item == null) ? null : item.getFile();
   }
@@ -834,7 +818,7 @@ public final class FIFO implements ITechnicalStrings {
    * 
    * @return stack item
    */
-  public StackItem getCurrentItem() {
+  public static StackItem getCurrentItem() {
     if (index < alFIFO.size()) {
       return alFIFO.get(index);
     } else {
@@ -849,7 +833,7 @@ public final class FIFO implements ITechnicalStrings {
    *          index
    * @return stack item
    */
-  public StackItem getItem(int index) {
+  public static StackItem getItem(int index) {
     return alFIFO.get(index);
   }
 
@@ -858,7 +842,7 @@ public final class FIFO implements ITechnicalStrings {
    * 
    * @return index
    */
-  private int getLastRepeatedItem() {
+  private static int getLastRepeatedItem() {
     int i = -1;
     Iterator<StackItem> iterator = alFIFO.iterator();
     while (iterator.hasNext()) {
@@ -880,15 +864,14 @@ public final class FIFO implements ITechnicalStrings {
    * @return
    */
   public static boolean canUnmount(Device device) {
-    if (fifo == null || isStopped()) { // currently
-      // stopped
+    if (isStopped()) { // currently stopped
       return true;
     }
-    if (getInstance().getCurrentFile().getDirectory().getDevice().equals(device)) {
+    if (getCurrentFile().getDirectory().getDevice().equals(device)) {
       // is current track on this device?
       return false;
     }
-    Iterator<StackItem> it = getInstance().alFIFO.iterator();
+    Iterator<StackItem> it = alFIFO.iterator();
     // are next tracks in fifo on this device?
     while (it.hasNext()) {
       StackItem item = it.next();
@@ -903,13 +886,13 @@ public final class FIFO implements ITechnicalStrings {
   /**
    * Stop request.
    */
-  public void stopRequest() {
+  public static void stopRequest() {
     // fifo is over ( stop request ) , reinit labels in information panel
     // before exiting
     bStop = true;
     // set was playing state if it is not a stop called by jajuk exit
     if (!ExitService.isExiting()) {
-      ConfigurationManager.setProperty(CONF_STATE_WAS_PLAYING, FALSE);
+      Conf.setProperty(CONF_STATE_WAS_PLAYING, FALSE);
     }
     Player.stop(true); // stop player
     // notify views like commandJPanel to update ui
@@ -920,15 +903,15 @@ public final class FIFO implements ITechnicalStrings {
    * @return Returns the bStop.
    */
   public static boolean isStopped() {
-    return getInstance().bStop;
+    return bStop;
   }
 
   /**
    * @return Returns a shallow copy of the fifo
    */
   @SuppressWarnings("unchecked")
-  public List<StackItem> getFIFO() {
-    return (List<StackItem>) ((ArrayList<StackItem>)alFIFO).clone();
+  public static List<StackItem> getFIFO() {
+    return (List<StackItem>) ((ArrayList<StackItem>) alFIFO).clone();
   }
 
   /**
@@ -936,14 +919,14 @@ public final class FIFO implements ITechnicalStrings {
    * 
    * @return FIFO size (do not use getFIFO().size() for performance reasons)
    */
-  public int getFIFOSize() {
+  public static int getFIFOSize() {
     return alFIFO.size();
   }
 
   /**
    * Shuffle the FIFO, used when user select the Random mode
    */
-  public void shuffle() {
+  public static void shuffle() {
     if (alFIFO.size() > 1) {
       if (isStopped()) {
         Collections.shuffle(alFIFO, new Random());
@@ -964,7 +947,7 @@ public final class FIFO implements ITechnicalStrings {
    * @param file
    * @param iPos
    */
-  public void insert(StackItem item, int iPos) {
+  public static void insert(StackItem item, int iPos) {
     List<StackItem> alStack = new ArrayList<StackItem>(1);
     alStack.add(item);
     insert(alStack, iPos);
@@ -980,7 +963,7 @@ public final class FIFO implements ITechnicalStrings {
    * @param file
    * @param iPos
    */
-  public void insert(List<StackItem> alFiles, int iPos) {
+  public static void insert(List<StackItem> alFiles, int iPos) {
     if (iPos <= alFIFO.size()) {
       // add in the FIFO, accept a file at
       // size() position to allow increasing
@@ -998,7 +981,7 @@ public final class FIFO implements ITechnicalStrings {
    * 
    * @param index
    */
-  public void up(int index) {
+  public static void up(int index) {
     if (index == 0 || index == alFIFO.size()) {
       // Can't put up first track in queue or
       // first planned track.
@@ -1022,7 +1005,7 @@ public final class FIFO implements ITechnicalStrings {
    * 
    * @param index
    */
-  public void down(int index) {
+  public static void down(int index) {
     if (index == 0 || index == alFIFO.size() - 1 || index == alFIFO.size() + alPlanned.size() - 1) {
       // Can't put down current track, nor last track in FIFO, nor last
       // planned track. This should be already made by ui behavior
@@ -1040,7 +1023,7 @@ public final class FIFO implements ITechnicalStrings {
    * 
    * @param index
    */
-  public void goTo(final int pIndex) {
+  public static void goTo(final int pIndex) {
     bStop = false;
     int localindex = pIndex;
     try {
@@ -1049,7 +1032,7 @@ public final class FIFO implements ITechnicalStrings {
         if (getItem(localindex).isRepeat()) {
           // the selected line is in repeat mode, ok,
           // keep repeat mode and just change index
-          this.index = localindex;
+          FIFO.index = localindex;
         } else {
           // the selected line was not a repeated item,
           // take it as a which to reset repeat mode
@@ -1085,7 +1068,7 @@ public final class FIFO implements ITechnicalStrings {
    * @param stop
    *          index
    */
-  public void remove(int iStart, int iStop) {
+  public static void remove(int iStart, int iStop) {
     if (iStart <= iStop && iStart >= 0 && iStop < alFIFO.size() + alPlanned.size()) {
       // check size drop items from the end to the begining
       for (int i = iStop; i >= iStart; i--) {
@@ -1113,7 +1096,7 @@ public final class FIFO implements ITechnicalStrings {
    * 
    * @return Last Stack item in FIFO
    */
-  public StackItem getLast() {
+  public static StackItem getLast() {
     if (alFIFO.size() == 0) {
       return null;
     }
@@ -1124,14 +1107,14 @@ public final class FIFO implements ITechnicalStrings {
    * 
    * @return Last played item
    */
-  public StackItem getLastPlayed() {
+  public static StackItem getLastPlayed() {
     return itemLast;
   }
 
   /**
    * @return Returns the index.
    */
-  public int getIndex() {
+  public static int getIndex() {
     return index;
   }
 
@@ -1139,8 +1122,8 @@ public final class FIFO implements ITechnicalStrings {
    * @return Returns a shallow copy of planned files
    */
   @SuppressWarnings("unchecked")
-  public List<StackItem> getPlanned() {
-    return (List<StackItem>) ((ArrayList<StackItem>)alPlanned).clone();
+  public static List<StackItem> getPlanned() {
+    return (List<StackItem>) ((ArrayList<StackItem>) alPlanned).clone();
   }
 
   /**
@@ -1159,9 +1142,9 @@ public final class FIFO implements ITechnicalStrings {
    *          Device to clean
    */
   @SuppressWarnings("unchecked")
-  public void cleanDevice(Device device) {
+  public static void cleanDevice(Device device) {
     if (alFIFO.size() > 0) {
-      List<StackItem> alFIFOCopy = (List<StackItem>) ((ArrayList<StackItem>)alFIFO).clone();
+      List<StackItem> alFIFOCopy = (List<StackItem>) ((ArrayList<StackItem>) alFIFO).clone();
       if (alFIFO.size() > 1) { // keep first item (being played)
         for (int i = 1; i < alFIFO.size(); i++) {
           StackItem item = alFIFO.get(i);
@@ -1180,7 +1163,7 @@ public final class FIFO implements ITechnicalStrings {
   /**
    * Store current FIFO as a list
    */
-  public void commit() throws IOException {
+  public static void commit() throws IOException {
     java.io.File file = UtilSystem.getConfFileByPath(FILE_FIFO);
     PrintWriter writer = new PrintWriter(
         new BufferedOutputStream(new FileOutputStream(file, false)));
@@ -1197,11 +1180,28 @@ public final class FIFO implements ITechnicalStrings {
     writer.close();
   }
 
-  public boolean isPlayingRadio() {
-    return this.playingRadio;
+  public static boolean isPlayingRadio() {
+    return FIFO.playingRadio;
   }
 
-  public WebRadio getCurrentRadio() {
-    return this.currentRadio;
+  public static WebRadio getCurrentRadio() {
+    return FIFO.currentRadio;
   }
+
+  /**
+   * @return a string representation for current played item or stop state
+   */
+  public static String getCurrentFileTitle() {
+    String title = null;
+    File file = FIFO.getCurrentFile();
+    if (FIFO.isPlayingRadio()) {
+      title = FIFO.getCurrentRadio().getName();
+    } else if (file != null && !FIFO.isStopped()) {
+      title = file.getHTMLFormatText();
+    } else {
+      title = Messages.getString("JajukWindow.18");
+    }
+    return title;
+  }
+
 }

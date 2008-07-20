@@ -56,10 +56,10 @@ public class NextTrackAction extends ActionBase {
       ActionManager.getAction(JajukActions.NEXT_ALBUM).actionPerformed(evt);
     } else {
       // if playing a radio, launch next radio station
-      if (FIFO.getInstance().isPlayingRadio()) {
+      if (FIFO.isPlayingRadio()) {
         final List<WebRadio> radios = new ArrayList<WebRadio>(WebRadioManager.getInstance()
             .getWebRadios());
-        int index = radios.indexOf(FIFO.getInstance().getCurrentRadio());
+        int index = radios.indexOf(FIFO.getCurrentRadio());
         if (index == radios.size() - 1) {
           index = 0;
         } else {
@@ -69,7 +69,7 @@ public class NextTrackAction extends ActionBase {
         new Thread() {
           @Override
           public void run() {
-            FIFO.getInstance().launchRadio(radios.get(i));
+            FIFO.launchRadio(radios.get(i));
           }
         }.start();
 
@@ -80,7 +80,7 @@ public class NextTrackAction extends ActionBase {
           public void run() {
             synchronized (FIFO.MUTEX) {
               try {
-                FIFO.getInstance().playNext();
+                FIFO.playNext();
               } catch (Exception e) {
                 Log.error(e);
               }

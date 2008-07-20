@@ -25,8 +25,8 @@ import java.util.List;
 
 import org.jajuk.base.File;
 import org.jajuk.services.webradio.WebRadio;
-import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Conf;
+import org.jajuk.util.Const;
 import org.jajuk.util.UtilString;
 import org.jajuk.util.UtilSystem;
 import org.jajuk.util.log.Log;
@@ -34,7 +34,7 @@ import org.jajuk.util.log.Log;
 /**
  * Mplayer player implementation
  */
-public abstract class AbstractMPlayerImpl implements IPlayerImpl, ITechnicalStrings {
+public abstract class AbstractMPlayerImpl implements IPlayerImpl, Const {
 
   /** Stored Volume */
   float fVolume;
@@ -119,7 +119,7 @@ public abstract class AbstractMPlayerImpl implements IPlayerImpl, ITechnicalStri
   List<String> buildCommand(String url) {
     String sCommand = "mplayer";
     // Use any forced mplayer path
-    String forced = ConfigurationManager.getProperty(CONF_MPLAYER_PATH_FORCED);
+    String forced = Conf.getString(CONF_MPLAYER_PATH_FORCED);
     if (!UtilString.isVoid(forced)) {
       sCommand = forced;
     } else {
@@ -129,7 +129,7 @@ public abstract class AbstractMPlayerImpl implements IPlayerImpl, ITechnicalStri
         sCommand = UtilSystem.getMPlayerOSXPath();
       }
     }
-    String sAdditionalArgs = ConfigurationManager.getProperty(CONF_MPLAYER_ARGS);
+    String sAdditionalArgs = Conf.getString(CONF_MPLAYER_ARGS);
     // Build command
     List<String> cmd = new ArrayList<String>(10);
     cmd.add(sCommand);
@@ -149,7 +149,7 @@ public abstract class AbstractMPlayerImpl implements IPlayerImpl, ITechnicalStri
     // ~/.mplayer/config file. User can set a large cache for video for ie.
     String cacheSize = "500";
     // 500Kb, mplayer starts before the cache is filled up
-    if (!ConfigurationManager.getProperty(CONF_MPLAYER_ARGS).matches(".*-cache.*")) {
+    if (!Conf.getString(CONF_MPLAYER_ARGS).matches(".*-cache.*")) {
       // If user already forced a cache value, do not overwrite it
       cmd.add("-cache");
       cmd.add(cacheSize);

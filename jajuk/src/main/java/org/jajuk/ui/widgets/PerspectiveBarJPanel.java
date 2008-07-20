@@ -38,15 +38,15 @@ import org.jajuk.ui.helpers.FontManager;
 import org.jajuk.ui.helpers.FontManager.JajukFont;
 import org.jajuk.ui.perspectives.IPerspective;
 import org.jajuk.ui.perspectives.PerspectiveManager;
-import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Conf;
+import org.jajuk.util.Const;
 import org.jajuk.util.UtilString;
 import org.jdesktop.swingx.JXPanel;
 
 /**
  * Menu bar used to choose the current perspective.
  */
-public final class PerspectiveBarJPanel extends JXPanel implements ITechnicalStrings {
+public final class PerspectiveBarJPanel extends JXPanel implements Const {
 
   private static final long serialVersionUID = 1L;
 
@@ -92,7 +92,7 @@ public final class PerspectiveBarJPanel extends JXPanel implements ITechnicalStr
     while (it.hasNext()) {
       final IPerspective perspective = it.next();
       Font font = FontManager.getInstance().getFont(JajukFont.PERSPECTIVES);
-      int iconSize = ConfigurationManager.getInt(CONF_PERSPECTIVE_ICONS_SIZE);
+      int iconSize = Conf.getInt(CONF_PERSPECTIVE_ICONS_SIZE);
       JButton jb = new JButton(perspective.getIcon());
       jb.setToolTipText(perspective.getDesc());
       jb.setBorder(new EmptyBorder(5, 5, 0, 5));

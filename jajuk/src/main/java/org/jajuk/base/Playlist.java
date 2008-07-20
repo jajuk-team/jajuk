@@ -43,8 +43,8 @@ import org.jajuk.services.players.FIFO;
 import org.jajuk.services.players.StackItem;
 import org.jajuk.ui.widgets.JajukFileChooser;
 import org.jajuk.ui.widgets.JajukWindow;
-import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Conf;
+import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukFileFilter;
 import org.jajuk.util.Messages;
@@ -106,7 +106,7 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
       final Directory dParentDirectory) {
     super(sId, sName);
     this.dParentDirectory = dParentDirectory;
-    setProperty(ITechnicalStrings.XML_DIRECTORY, dParentDirectory == null ? "-1" : dParentDirectory
+    setProperty(Const.XML_DIRECTORY, dParentDirectory == null ? "-1" : dParentDirectory
         .getID().intern());
     this.type = type;
   }
@@ -156,17 +156,17 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
       // set repeat mode : if previous item is repeated, repeat as
       // well
       if (index > 0) {
-        final StackItem itemPrevious = FIFO.getInstance().getItem(index - 1);
+        final StackItem itemPrevious = FIFO.getItem(index - 1);
         if ((itemPrevious != null) && itemPrevious.isRepeat()) {
           item.setRepeat(true);
         } else {
           item.setRepeat(false);
         }
         // insert this track in the fifo
-        FIFO.getInstance().insert(item, index);
+        FIFO.insert(item, index);
       } else {
         // start immediately playing
-        FIFO.getInstance().push(item, false);
+        FIFO.push(item, false);
       }
     } else {
       getFiles().add(index, file);
@@ -206,7 +206,7 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
       // playlist
       Bookmarks.getInstance().clear();
     } else if (getType() == Type.QUEUE) {
-      FIFO.getInstance().clear();
+      FIFO.clear();
     } else {
       alFiles.clear();
     }
@@ -230,7 +230,7 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
          */
         temp = new java.io.File(getAbsolutePath() + '~');
         bw = new BufferedWriter(new FileWriter(temp));
-        bw.write(ITechnicalStrings.PLAYLIST_NOTE);
+        bw.write(Const.PLAYLIST_NOTE);
         bw.newLine();
         final Iterator<File> it = getFiles().iterator();
         while (it.hasNext()) {
@@ -327,7 +327,7 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
     if (type == Type.BOOKMARK) {
       Bookmarks.getInstance().down(index);
     } else if (type == Type.QUEUE) {
-      FIFO.getInstance().down(index);
+      FIFO.down(index);
     } else if ((alFiles != null) && (index < alFiles.size() - 1)) {
       // the last track cannot go depper
       final File file = alFiles.get(index + 1); // save n+1 file
@@ -423,7 +423,7 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
           // selection on this playlist (otherwise the event reset
           // selection).
           getDirectory().getDevice().mount(
-              ConfigurationManager.getBoolean(ITechnicalStrings.CONF_OPTIONS_HIDE_UNMOUNTED));
+              Conf.getBoolean(Const.CONF_OPTIONS_HIDE_UNMOUNTED));
         } catch (final Exception e) {
           throw new JajukException(141, getFio().getAbsolutePath(), e);
         }
@@ -447,7 +447,7 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
       alFiles = FileManager.getInstance().getBestOfFiles();
     } else if (type.equals(Type.NOVELTIES)) {
       alFiles = FileManager.getInstance().getGlobalNoveltiesPlaylist(
-          ConfigurationManager.getBoolean(ITechnicalStrings.CONF_OPTIONS_HIDE_UNMOUNTED));
+          Conf.getBoolean(Const.CONF_OPTIONS_HIDE_UNMOUNTED));
     } else if (type.equals(Type.BOOKMARK)) {
       alFiles = Bookmarks.getInstance().getFiles();
     } else if (type.equals(Type.NEW) && (alFiles == null)) {
@@ -473,7 +473,7 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
    */
   @Override
   public String getHumanValue(final String sKey) {
-    if (ITechnicalStrings.XML_DIRECTORY.equals(sKey)) {
+    if (Const.XML_DIRECTORY.equals(sKey)) {
       final Directory dParent = DirectoryManager.getInstance().getDirectoryByID(
           getStringValue(sKey));
       return dParent.getFio().getAbsolutePath();
@@ -499,7 +499,7 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
    */
   @Override
   public final String getLabel() {
-    return ITechnicalStrings.XML_PLAYLIST_FILE;
+    return Const.XML_PLAYLIST_FILE;
   }
 
   /**
@@ -593,9 +593,9 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
     if ((alFiles == null) || (alFiles.size() == 0)) {
       Messages.showErrorMessage(18);
     } else {
-      FIFO.getInstance().push(
-          UtilFeatures.createStackItems(UtilFeatures.applyPlayOption(alFiles), ConfigurationManager
-              .getBoolean(ITechnicalStrings.CONF_STATE_REPEAT), true), false);
+      FIFO.push(
+          UtilFeatures.createStackItems(UtilFeatures.applyPlayOption(alFiles), Conf
+              .getBoolean(Const.CONF_STATE_REPEAT), true), false);
     }
   }
 
@@ -608,7 +608,7 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
     if (type == Type.BOOKMARK) {
       Bookmarks.getInstance().remove(index);
     } else if (type == Type.QUEUE) {
-      FIFO.getInstance().remove(index, index);
+      FIFO.remove(index, index);
     } else {
       alFiles.remove(index);
     }
@@ -633,14 +633,14 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
         }
       }
     } else if (type == Type.QUEUE) {
-      final Iterator<StackItem> it = FIFO.getInstance().getFIFO().iterator();
+      final Iterator<StackItem> it = FIFO.getFIFO().iterator();
       for (int i = 0; it.hasNext(); i++) {
         final File fileToTest = it.next().getFile();
         if (fileToTest.equals(fOld)) {
-          FIFO.getInstance().remove(i, i); // just remove
+          FIFO.remove(i, i); // just remove
           final List<StackItem> al = new ArrayList<StackItem>(1);
           al.add(new StackItem(fNew));
-          FIFO.getInstance().insert(al, i);
+          FIFO.insert(al, i);
         }
       }
     } else {
@@ -675,40 +675,40 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
         .getInstance()));
     jfchooser.setDialogType(JFileChooser.SAVE_DIALOG);
     jfchooser.setAcceptDirectories(true);
-    String sPlaylist = ITechnicalStrings.DEFAULT_PLAYLIST_FILE;
+    String sPlaylist = Const.DEFAULT_PLAYLIST_FILE;
     // computes new playlist
     alFiles = getFiles();
     if (alFiles.size() > 0) {
       final File file = alFiles.get(0);
       if (getType() == Type.BESTOF) {
         sPlaylist = file.getDevice().getUrl() + java.io.File.separatorChar
-            + ITechnicalStrings.FILE_DEFAULT_BESTOF_PLAYLIST;
+            + Const.FILE_DEFAULT_BESTOF_PLAYLIST;
       } else if (getType() == Type.BOOKMARK) {
         sPlaylist = file.getDevice().getUrl() + java.io.File.separatorChar
-            + ITechnicalStrings.FILE_DEFAULT_BOOKMARKS_PLAYLIST;
+            + Const.FILE_DEFAULT_BOOKMARKS_PLAYLIST;
       } else if (getType() == Type.NOVELTIES) {
         sPlaylist = file.getDevice().getUrl() + java.io.File.separatorChar
-            + ITechnicalStrings.FILE_DEFAULT_NOVELTIES_PLAYLIST;
+            + Const.FILE_DEFAULT_NOVELTIES_PLAYLIST;
       } else if (getType() == Type.QUEUE) {
         sPlaylist = file.getDevice().getUrl() + java.io.File.separatorChar
-            + ITechnicalStrings.FILE_DEFAULT_QUEUE_PLAYLIST
+            + Const.FILE_DEFAULT_QUEUE_PLAYLIST
             + UtilString.getAdditionDateFormatter().format(new Date());
       } else {
         sPlaylist = file.getDirectory().getAbsolutePath() + java.io.File.separatorChar
-            + file.getTrack().getHumanValue(ITechnicalStrings.XML_ALBUM);
+            + file.getTrack().getHumanValue(Const.XML_ALBUM);
       }
     } else {
       return;
     }
-    jfchooser.setSelectedFile(new java.io.File(sPlaylist + "." + ITechnicalStrings.EXT_PLAYLIST));
+    jfchooser.setSelectedFile(new java.io.File(sPlaylist + "." + Const.EXT_PLAYLIST));
     final int returnVal = jfchooser.showSaveDialog(JajukWindow.getInstance());
     if (returnVal == JFileChooser.APPROVE_OPTION) {
       java.io.File file = jfchooser.getSelectedFile();
       // add automatically the extension if required
-      if (file.getAbsolutePath().endsWith(ITechnicalStrings.EXT_PLAYLIST)) {
+      if (file.getAbsolutePath().endsWith(Const.EXT_PLAYLIST)) {
         file = new java.io.File(file.getAbsolutePath());
       } else {
-        file = new java.io.File(file.getAbsolutePath() + "." + ITechnicalStrings.EXT_PLAYLIST);
+        file = new java.io.File(file.getAbsolutePath() + "." + Const.EXT_PLAYLIST);
       }
 
       // set new file path ( this playlist is a special playlist, just in
@@ -755,7 +755,7 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
    */
   protected void setParentDirectory(final Directory parentDirectory) {
     dParentDirectory = parentDirectory;
-    setProperty(ITechnicalStrings.XML_DIRECTORY, parentDirectory == null ? "-1" : parentDirectory
+    setProperty(Const.XML_DIRECTORY, parentDirectory == null ? "-1" : parentDirectory
         .getID());
   }
 
@@ -766,7 +766,7 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
    */
   public boolean shouldBeHidden() {
     if (getDirectory().getDevice().isMounted()
-        || (!ConfigurationManager.getBoolean(ITechnicalStrings.CONF_OPTIONS_HIDE_UNMOUNTED))) {
+        || (!Conf.getBoolean(Const.CONF_OPTIONS_HIDE_UNMOUNTED))) {
       // option "only display mounted devices"
       return false;
     }
@@ -800,7 +800,7 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
           final java.io.File file = new java.io.File(destDir.getAbsolutePath() + "/playlist.m3u");
           try {
             final BufferedWriter bw = new BufferedWriter(new FileWriter(file));
-            bw.write(ITechnicalStrings.PLAYLIST_NOTE);
+            bw.write(Const.PLAYLIST_NOTE);
             for (final File entry : alFiles) {
               UtilSystem.copyToDir(entry.getIO(), destDir);
               bw.newLine();
@@ -846,7 +846,7 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
     if (type == Type.BOOKMARK) {
       Bookmarks.getInstance().up(index);
     } else if (type == Playlist.Type.QUEUE) {
-      FIFO.getInstance().up(index);
+      FIFO.up(index);
     } else if ((alFiles != null) && (index > 0)) { // the first track
       // cannot go further
       final File file = alFiles.get(index - 1); // save n-1 file

@@ -34,8 +34,8 @@ import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
 import org.jajuk.services.core.ExitService;
-import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Conf;
+import org.jajuk.util.Const;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilString;
 import org.jajuk.util.UtilSystem;
@@ -52,7 +52,7 @@ import org.xml.sax.helpers.DefaultHandler;
  * <p>
  * Singletton
  */
-public final class Collection extends DefaultHandler implements ITechnicalStrings, ErrorHandler,
+public final class Collection extends DefaultHandler implements Const, ErrorHandler,
     Serializable {
 
   /**
@@ -193,7 +193,7 @@ public final class Collection extends DefaultHandler implements ITechnicalString
    */
   public static void commit(File collectionFile) throws IOException {
     long time = System.currentTimeMillis();
-    String sCharset = ConfigurationManager.getProperty(CONF_COLLECTION_CHARSET);
+    String sCharset = Conf.getString(CONF_COLLECTION_CHARSET);
     BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(
         collectionFile), sCharset), 1000000);
     bw.write("<?xml version='1.0' encoding='" + sCharset + "'?>\n");

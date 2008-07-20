@@ -50,7 +50,7 @@ import org.jajuk.services.webradio.WebRadioManager;
 import org.jajuk.ui.helpers.FontManager;
 import org.jajuk.ui.helpers.FontManager.JajukFont;
 import org.jajuk.ui.widgets.JajukWindow;
-import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilGUI;
@@ -61,7 +61,7 @@ import org.qdwizard.Wizard;
 /**
  * WebRadio management wizard
  */
-public class WebRadioWizard extends Wizard implements ITechnicalStrings {
+public class WebRadioWizard extends Wizard implements Const {
 
   /** web radios* */
   static List<WebRadio> radios;

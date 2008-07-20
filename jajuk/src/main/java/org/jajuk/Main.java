@@ -93,9 +93,9 @@ import org.jajuk.ui.widgets.JajukWindow;
 import org.jajuk.ui.widgets.PerspectiveBarJPanel;
 import org.jajuk.ui.wizard.FirstTimeWizard;
 import org.jajuk.ui.wizard.TipOfTheDayWizard;
-import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.Conf;
 import org.jajuk.util.DownloadManager;
-import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UpgradeManager;
@@ -112,7 +112,7 @@ import org.jvnet.substance.watermark.SubstanceNoneWatermark;
 /**
  * Jajuk launching class
  */
-public final class Main implements ITechnicalStrings {
+public final class Main implements Const {
 
   /** Left side perspective selection panel */
   private static PerspectiveBarJPanel perspectiveBar;
@@ -218,15 +218,11 @@ public final class Main implements ITechnicalStrings {
       Log.getInstance();
       Log.setVerbosity(Log.DEBUG);
 
-      // Configuration manager startup. Depends on: initialCheckups,
-      // registerLocal
-      ConfigurationManager.getInstance();
-
       // Load user configuration. Depends on: initialCheckups
-      ConfigurationManager.load();
+      Conf.load();
 
       // Upgrade detection. Depends on: Configuration manager load
-      final String sRelease = ConfigurationManager.getProperty(CONF_RELEASE);
+      final String sRelease = Conf.getString(CONF_RELEASE);
 
       // check if it is a new major 'x.y' release: 1.2 != 1.3 for instance
       if (!bFirstSession
@@ -236,18 +232,18 @@ public final class Main implements ITechnicalStrings {
         bUpgraded = true;
       }
       // Now set current release in the conf
-      ConfigurationManager.setProperty(CONF_RELEASE, JAJUK_VERSION);
+      Conf.setProperty(CONF_RELEASE, JAJUK_VERSION);
 
       // Set actual log verbosity. Depends on:
-      // ConfigurationManager.load
+      // Conf.load
       if (!bTestMode) {
         // test mode is always in debug mode
         Log
             .setVerbosity(Integer
-                .parseInt(ConfigurationManager.getProperty(CONF_OPTIONS_LOG_LEVEL)));
+                .parseInt(Conf.getString(CONF_OPTIONS_LOG_LEVEL)));
       }
       // Set locale. setSystemLocal
-      Messages.setLocal(ConfigurationManager.getProperty(CONF_OPTIONS_LANGUAGE));
+      Messages.setLocal(Conf.getString(CONF_OPTIONS_LANGUAGE));
 
       // Launch splashscreen. Depends on: log.setVerbosity,
       // configurationManager.load (for local)
@@ -257,7 +253,7 @@ public final class Main implements ITechnicalStrings {
           FontManager.getInstance().setDefaultFont();
 
           // Set window look and feel and watermarks
-          UtilGUI.setLookAndFeel(ConfigurationManager.getProperty(CONF_OPTIONS_LNF));
+          UtilGUI.setLookAndFeel(Conf.getString(CONF_OPTIONS_LNF));
           SubstanceLookAndFeel.setCurrentWatermark(new SubstanceNoneWatermark());
 
           sc = new JSplash(IMAGES_SPLASHSCREEN, true, true, false, JAJUK_COPYRIGHT, JAJUK_VERSION
@@ -266,7 +262,7 @@ public final class Main implements ITechnicalStrings {
           sc.setTitle(Messages.getString("JajukWindow.3"));
           sc.setProgress(0, Messages.getString("SplashScreen.0"));
           // Actually show the splashscreen only if required
-          if (ConfigurationManager.getInt(CONF_STARTUP_DISPLAY) == DISPLAY_MODE_WINDOW_TRAY) {
+          if (Conf.getInt(CONF_STARTUP_DISPLAY) == DISPLAY_MODE_WINDOW_TRAY) {
             sc.splashOn();
           }
         }
@@ -364,7 +360,7 @@ public final class Main implements ITechnicalStrings {
       ActionManager.getInstance();
 
       // show window if set in the systray conf.
-      if (ConfigurationManager.getInt(CONF_STARTUP_DISPLAY) == DISPLAY_MODE_WINDOW_TRAY) {
+      if (Conf.getInt(CONF_STARTUP_DISPLAY) == DISPLAY_MODE_WINDOW_TRAY) {
         // Display progress
         sc.setProgress(80, Messages.getString("SplashScreen.3"));
         launchWindow();
@@ -374,7 +370,7 @@ public final class Main implements ITechnicalStrings {
       launchTray();
 
       // Start the slimbar if required
-      if (ConfigurationManager.getInt(CONF_STARTUP_DISPLAY) == DISPLAY_MODE_SLIMBAR_TRAY) {
+      if (Conf.getInt(CONF_STARTUP_DISPLAY) == DISPLAY_MODE_SLIMBAR_TRAY) {
         launchSlimbar();
       }
 
@@ -534,7 +530,7 @@ public final class Main implements ITechnicalStrings {
       if (!file.exists()) {
         // if config file doesn't exit, create
         // it with default values
-        org.jajuk.util.ConfigurationManager.commit();
+        org.jajuk.util.Conf.commit();
       }
     }
 
@@ -588,7 +584,7 @@ public final class Main implements ITechnicalStrings {
           Runtime.getRuntime().addShutdownHook(exit);
 
           // backup the collection
-          UtilSystem.backupFile(UtilSystem.getConfFileByPath(FILE_COLLECTION), ConfigurationManager
+          UtilSystem.backupFile(UtilSystem.getConfFileByPath(FILE_COLLECTION), Conf
               .getInt(CONF_BACKUP_SIZE));
 
           // Clean the collection up
@@ -664,7 +660,7 @@ public final class Main implements ITechnicalStrings {
       // using external standard distributions
       else {
         // If a forced mplayer path is defined, test it
-        final String forced = ConfigurationManager.getProperty(CONF_MPLAYER_PATH_FORCED);
+        final String forced = Conf.getString(CONF_MPLAYER_PATH_FORCED);
         if (!UtilString.isVoid(forced)) {
           // Test forced path
           mplayerStatus = UtilSystem.getMplayerStatus(forced);
@@ -692,7 +688,7 @@ public final class Main implements ITechnicalStrings {
         Log.debug("Mplayer status=" + mplayerStatus);
         if (mplayerStatus != UtilSystem.MPlayerStatus.MPLAYER_STATUS_OK) {
           // Test if user didn't already select "don't show again"
-          if (!ConfigurationManager.getBoolean(CONF_NOT_SHOW_AGAIN_PLAYER)) {
+          if (!Conf.getBoolean(CONF_NOT_SHOW_AGAIN_PLAYER)) {
             if (mplayerStatus == UtilSystem.MPlayerStatus.MPLAYER_STATUS_NOT_FOUND) {
               // No mplayer
               Messages.showHideableWarningMessage(Messages.getString("Warning.0"),
@@ -758,7 +754,7 @@ public final class Main implements ITechnicalStrings {
       dialog.setVisible(true);
       if (Messages.getString("Hide").equals(optionPane.getValue())) {
         // Not show again
-        ConfigurationManager.setProperty(CONF_NOT_SHOW_AGAIN_CONCURRENT_SESSION, TRUE);
+        Conf.setProperty(CONF_NOT_SHOW_AGAIN_CONCURRENT_SESSION, TRUE);
       } else if (Messages.getString("Purge").equals(optionPane.getValue())) {
         try {
           // Clean up old locks directories in session folder
@@ -864,31 +860,31 @@ public final class Main implements ITechnicalStrings {
   private static void launchInitialTrack() {
     List<org.jajuk.base.File> alToPlay = new ArrayList<org.jajuk.base.File>();
     org.jajuk.base.File fileToPlay = null;
-    if (!ConfigurationManager.getProperty(CONF_STARTUP_MODE).equals(STARTUP_MODE_NOTHING)) {
-      if (ConfigurationManager.getProperty(CONF_STARTUP_MODE).equals(STARTUP_MODE_LAST)
-          || ConfigurationManager.getProperty(CONF_STARTUP_MODE).equals(STARTUP_MODE_LAST_KEEP_POS)
-          || ConfigurationManager.getProperty(CONF_STARTUP_MODE).equals(STARTUP_MODE_FILE)) {
+    if (!Conf.getString(CONF_STARTUP_MODE).equals(STARTUP_MODE_NOTHING)) {
+      if (Conf.getString(CONF_STARTUP_MODE).equals(STARTUP_MODE_LAST)
+          || Conf.getString(CONF_STARTUP_MODE).equals(STARTUP_MODE_LAST_KEEP_POS)
+          || Conf.getString(CONF_STARTUP_MODE).equals(STARTUP_MODE_FILE)) {
 
-        if (ConfigurationManager.getProperty(CONF_STARTUP_MODE).equals(STARTUP_MODE_FILE)) {
+        if (Conf.getString(CONF_STARTUP_MODE).equals(STARTUP_MODE_FILE)) {
           fileToPlay = FileManager.getInstance().getFileByID(
-              ConfigurationManager.getProperty(CONF_STARTUP_FILE));
+              Conf.getString(CONF_STARTUP_FILE));
         } else {
           // If we were playing a webradio when leaving, launch it
-          if (ConfigurationManager.getBoolean(CONF_WEBRADIO_WAS_PLAYING)) {
+          if (Conf.getBoolean(CONF_WEBRADIO_WAS_PLAYING)) {
             final WebRadio radio = WebRadioManager.getInstance().getWebRadioByName(
-                ConfigurationManager.getProperty(CONF_DEFAULT_WEB_RADIO));
+                Conf.getString(CONF_DEFAULT_WEB_RADIO));
             if (radio != null) {
               new Thread("WebRadio launch thread") {
                 @Override
                 public void run() {
-                  FIFO.getInstance().launchRadio(radio);
+                  FIFO.launchRadio(radio);
                 }
               }.start();
             }
             return;
           }
           // last file from beginning or last file keep position
-          else if (ConfigurationManager.getBoolean(CONF_STATE_WAS_PLAYING)
+          else if (Conf.getBoolean(CONF_STATE_WAS_PLAYING)
               && (History.getInstance().getHistory().size() > 0)) {
             // make sure user didn't exit jajuk in the stopped state
             // and that history is not void
@@ -931,8 +927,8 @@ public final class Main implements ITechnicalStrings {
         }
         // For last tracks playing, add all ready files from last
         // session stored FIFO
-        if (ConfigurationManager.getProperty(CONF_STARTUP_MODE).equals(STARTUP_MODE_LAST)
-            || ConfigurationManager.getProperty(CONF_STARTUP_MODE).equals(
+        if (Conf.getString(CONF_STARTUP_MODE).equals(STARTUP_MODE_LAST)
+            || Conf.getString(CONF_STARTUP_MODE).equals(
                 STARTUP_MODE_LAST_KEEP_POS)) {
           final File fifo = UtilSystem.getConfFileByPath(FILE_FIFO);
           if (!fifo.exists()) {
@@ -959,11 +955,11 @@ public final class Main implements ITechnicalStrings {
             }
           }
         }
-      } else if (ConfigurationManager.getProperty(CONF_STARTUP_MODE).equals(STARTUP_MODE_SHUFFLE)) {
+      } else if (Conf.getString(CONF_STARTUP_MODE).equals(STARTUP_MODE_SHUFFLE)) {
         alToPlay = FileManager.getInstance().getGlobalShufflePlaylist();
-      } else if (ConfigurationManager.getProperty(CONF_STARTUP_MODE).equals(STARTUP_MODE_BESTOF)) {
+      } else if (Conf.getString(CONF_STARTUP_MODE).equals(STARTUP_MODE_BESTOF)) {
         alToPlay = FileManager.getInstance().getGlobalBestofPlaylist();
-      } else if (ConfigurationManager.getProperty(CONF_STARTUP_MODE).equals(STARTUP_MODE_NOVELTIES)) {
+      } else if (Conf.getString(CONF_STARTUP_MODE).equals(STARTUP_MODE_NOVELTIES)) {
         alToPlay = FileManager.getInstance().getGlobalNoveltiesPlaylist();
         if ((alToPlay != null) && (alToPlay.size() > 0)) {
           // shuffle the selection
@@ -976,8 +972,8 @@ public final class Main implements ITechnicalStrings {
       }
       // launch selected file
       if ((alToPlay != null) && (alToPlay.size() > 0)) {
-        FIFO.getInstance().push(
-            UtilFeatures.createStackItems(alToPlay, ConfigurationManager
+        FIFO.push(
+            UtilFeatures.createStackItems(alToPlay, Conf
                 .getBoolean(CONF_STATE_REPEAT), false), false);
       }
     }
@@ -1067,7 +1063,7 @@ public final class Main implements ITechnicalStrings {
           JajukWindow.getInstance().setVisible(true);
 
           // Apply watermark
-          UtilGUI.setWatermark(ConfigurationManager.getProperty(CONF_OPTIONS_WATERMARK));
+          UtilGUI.setWatermark(Conf.getString(CONF_OPTIONS_WATERMARK));
 
           // Apply size and location again
           // (required by Gnome for ie to fix the 0-sized maximized
@@ -1092,7 +1088,7 @@ public final class Main implements ITechnicalStrings {
 
           // Display tip of the day if required (not at the first
           // session)
-          if (ConfigurationManager.getBoolean(CONF_SHOW_TIP_ON_STARTUP) && !bFirstSession) {
+          if (Conf.getBoolean(CONF_SHOW_TIP_ON_STARTUP) && !bFirstSession) {
             final TipOfTheDayWizard tipsView = new TipOfTheDayWizard();
             tipsView.setLocationRelativeTo(JajukWindow.getInstance());
             tipsView.setVisible(true);
@@ -1125,7 +1121,7 @@ public final class Main implements ITechnicalStrings {
   /** Launch tray */
   private static void launchTray() throws Exception {
     // Skip the tray launching if user forced it to hide
-    if (ConfigurationManager.getBoolean(CONF_FORCE_TRAY_SHUTDOWN)) {
+    if (Conf.getBoolean(CONF_FORCE_TRAY_SHUTDOWN)) {
       Log.debug("Tray shutdown forced");
       return;
     }

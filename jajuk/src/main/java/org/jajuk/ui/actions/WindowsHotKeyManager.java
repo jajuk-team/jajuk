@@ -32,8 +32,8 @@ import javax.swing.KeyStroke;
 import org.jajuk.events.Event;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
-import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Conf;
+import org.jajuk.util.Const;
 import org.jajuk.util.log.Log;
 
 /**
@@ -43,7 +43,7 @@ import org.jajuk.util.log.Log;
  * Jintellitype jar
  * </p>
  */
-public abstract class WindowsHotKeyManager extends AbstractAction implements ITechnicalStrings {
+public abstract class WindowsHotKeyManager extends AbstractAction implements Const {
 
   /** Maps hotkeylisteners with the event ID */
   private static Map<Integer, ActionBase> hmIndexAction = new HashMap<Integer, ActionBase>(20);
@@ -116,7 +116,7 @@ public abstract class WindowsHotKeyManager extends AbstractAction implements ITe
 
       public void onHotKey(int key) {
         // Leave if user disabled hotkeys
-        if (!ConfigurationManager.getBoolean(CONF_OPTIONS_HOTKEYS)) {
+        if (!Conf.getBoolean(CONF_OPTIONS_HOTKEYS)) {
           return;
         }
         // Check it is the right listener that caught the event

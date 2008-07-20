@@ -34,7 +34,7 @@ import javax.swing.ImageIcon;
 import org.jajuk.base.Album;
 import org.jajuk.base.Track;
 import org.jajuk.base.TrackManager;
-import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.UtilGUI;
 import org.jajuk.util.UtilSystem;
@@ -43,7 +43,7 @@ import org.jajuk.util.log.Log;
 /**
  * Manage thumbnails
  */
-public final class ThumbnailManager implements ITechnicalStrings {
+public final class ThumbnailManager implements Const {
 
   /** No instances */
   private ThumbnailManager() {
@@ -53,7 +53,7 @@ public final class ThumbnailManager implements ITechnicalStrings {
    * Delete all thumbs for a given size
    * 
    * @param size
-   *          size, eg: ITechnicalStrings.THUMBNAIL_SIZE_150x150
+   *          size, eg: Const.THUMBNAIL_SIZE_150x150
    */
   public static void cleanThumbs(String size) {
     File fThumb = UtilSystem.getConfFileByPath(FILE_THUMBS + '/' + size);
@@ -169,8 +169,8 @@ public final class ThumbnailManager implements ITechnicalStrings {
    * @return whether a new cover has been created
    */
   public static boolean refreshThumbnail(final Album album, final String size) {
-    final File fThumb = UtilSystem.getConfFileByPath(ITechnicalStrings.FILE_THUMBS + '/' + size + '/'
-        + album.getID() + '.' + ITechnicalStrings.EXT_THUMB);
+    final File fThumb = UtilSystem.getConfFileByPath(Const.FILE_THUMBS + '/' + size + '/'
+        + album.getID() + '.' + Const.EXT_THUMB);
     File fCover = null;
     if (!fThumb.exists()) {
       // search for local covers in all directories mapping the

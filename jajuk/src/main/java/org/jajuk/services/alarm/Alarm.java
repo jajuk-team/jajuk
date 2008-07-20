@@ -24,8 +24,8 @@ import java.util.List;
 
 import org.jajuk.base.File;
 import org.jajuk.services.players.FIFO;
-import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Conf;
+import org.jajuk.util.Const;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilFeatures;
 import org.jajuk.util.UtilString;
@@ -33,7 +33,7 @@ import org.jajuk.util.UtilString;
 /**
  * An Alarm
  */
-public class Alarm implements ITechnicalStrings {
+public class Alarm implements Const {
   private String alarmTime;
   private List<File> alToPlay;
   private String alarmAction;
@@ -52,13 +52,13 @@ public class Alarm implements ITechnicalStrings {
   }
 
   public void wakeUpSleeper() {
-    if (alarmAction.equals(ITechnicalStrings.ALARM_START_MODE)) {
-      FIFO.getInstance()
+    if (alarmAction.equals(Const.ALARM_START_MODE)) {
+      FIFO
           .push(
-              UtilFeatures.createStackItems(alToPlay, ConfigurationManager.getBoolean(CONF_STATE_REPEAT),
+              UtilFeatures.createStackItems(alToPlay, Conf.getBoolean(CONF_STATE_REPEAT),
                   false), false);
     } else {
-      FIFO.getInstance().stopRequest();
+      FIFO.stopRequest();
     }
     if (!isDaily()) {
       AlarmManager.getInstance().removeAlarm(this);

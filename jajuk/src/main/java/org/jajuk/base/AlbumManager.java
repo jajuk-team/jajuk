@@ -38,7 +38,7 @@ import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.events.Observer;
 import org.jajuk.services.players.FIFO;
-import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.Conf;
 import org.jajuk.util.MD5Processor;
 import org.jajuk.util.error.JajukException;
 
@@ -150,8 +150,8 @@ public final class AlbumManager extends ItemManager implements Observer {
       }
     }
     // if current track album name is changed, notify it
-    if (FIFO.getInstance().getCurrentFile() != null
-        && FIFO.getInstance().getCurrentFile().getTrack().getAlbum().equals(old)) {
+    if (FIFO.getCurrentFile() != null
+        && FIFO.getCurrentFile().getTrack().getAlbum().equals(old)) {
       ObservationManager.notify(new Event(JajukEvents.EVENT_ALBUM_CHANGED));
     }
     return newItem;
@@ -416,7 +416,7 @@ public final class AlbumManager extends ItemManager implements Observer {
     Map<Album, Integer> cacheNb = new HashMap<Album, Integer>(AlbumManager.getInstance()
         .getElementCount());
     for (Track track : TrackManager.getInstance().getTracks()) {
-      if (track.getPlayeableFile(ConfigurationManager.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED)) != null) {
+      if (track.getPlayeableFile(Conf.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED)) != null) {
         float newRate = 0f;
         Integer nb = cacheNb.get(track.getAlbum());
         if (nb == null) {

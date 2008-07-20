@@ -27,7 +27,7 @@ import javax.swing.JComponent;
 import org.jajuk.events.Event;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
-import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.Conf;
 import org.jajuk.util.Messages;
 
 /**
@@ -46,8 +46,8 @@ public class HideShowMountedDevicesAction extends ActionBase {
     JComponent source = (JComponent) e.getSource();
     Object o = source.getClientProperty(DETAIL_ORIGIN);
     JCheckBoxMenuItem jmiUnmounted = (JCheckBoxMenuItem) o;
-    boolean bHideUnmountedStatus = ConfigurationManager.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED);
-    ConfigurationManager.setProperty(CONF_OPTIONS_HIDE_UNMOUNTED, Boolean
+    boolean bHideUnmountedStatus = Conf.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED);
+    Conf.setProperty(CONF_OPTIONS_HIDE_UNMOUNTED, Boolean
         .toString(!bHideUnmountedStatus));
     jmiUnmounted.setSelected(!bHideUnmountedStatus);
     ObservationManager.notify(new Event(JajukEvents.EVENT_PARAMETERS_CHANGE));

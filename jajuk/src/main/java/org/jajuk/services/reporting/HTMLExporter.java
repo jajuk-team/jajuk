@@ -30,13 +30,13 @@ import org.jajuk.base.Directory;
 import org.jajuk.base.Item;
 import org.jajuk.base.Style;
 import org.jajuk.base.Year;
-import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Const;
 import org.jajuk.util.UtilSystem;
 
 /**
  * This class exports music contents to HTML.
  */
-public class HTMLExporter extends Exporter implements ITechnicalStrings {
+public class HTMLExporter extends Exporter implements Const {
 
   /** PUBLIC METHODS */
 

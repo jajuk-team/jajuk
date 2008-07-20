@@ -25,7 +25,7 @@ import java.util.Date;
 import org.apache.commons.collections.Predicate;
 import org.jajuk.base.File;
 import org.jajuk.base.Track;
-import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Const;
 
 /**
  * List of Predicates (filter criteria)
@@ -58,7 +58,7 @@ public class JajukPredicates {
       }
       Track track = (Track) o;
       Date now = new Date();
-      int iTrackAge = (int) ((now.getTime() - track.getDiscoveryDate().getTime()) / ITechnicalStrings.MILLISECONDS_IN_A_DAY);
+      int iTrackAge = (int) ((now.getTime() - track.getDiscoveryDate().getTime()) / Const.MILLISECONDS_IN_A_DAY);
       if (iTrackAge <= iAge) {
         return true;
       }

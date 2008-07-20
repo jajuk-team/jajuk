@@ -32,9 +32,9 @@ import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.Conf;
 import org.jajuk.util.DownloadManager;
-import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Const;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilGUI;
 import org.jajuk.util.UtilSystem;
@@ -49,7 +49,7 @@ import org.xamjwg.html.test.SimpleHtmlRendererContext;
 /**
  * Type description
  */
-public class JajukHtmlPanel extends HtmlPanel implements ITechnicalStrings {
+public class JajukHtmlPanel extends HtmlPanel implements Const {
 
   private static final long serialVersionUID = -4033441908072591661L;
 
@@ -96,8 +96,8 @@ public class JajukHtmlPanel extends HtmlPanel implements ITechnicalStrings {
     // TODO: language should be retrieved from the combo box and not from the
     // user settings, but dunno how to get that...
     sPage = sPage.replaceAll("href=\"/", "href=\"http://"
-        + Messages.getLocalForDesc(Messages.getDescForLocal(ConfigurationManager
-            .getProperty(CONF_WIKIPEDIA_LANGUAGE))) + ".wikipedia.org/");
+        + Messages.getLocalForDesc(Messages.getDescForLocal(Conf
+            .getString(CONF_WIKIPEDIA_LANGUAGE))) + ".wikipedia.org/");
     // Display the page
     showPage(sPage, page);
     // Set current url as a tooltip

@@ -30,15 +30,15 @@ import org.jajuk.services.players.FIFO;
 import org.jajuk.services.players.Player;
 import org.jajuk.services.webradio.WebRadioManager;
 import org.jajuk.ui.actions.ActionBase;
-import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Conf;
+import org.jajuk.util.Const;
 import org.jajuk.util.UtilSystem;
 import org.jajuk.util.log.Log;
 
 /**
  * All code related to jajuk exit
  */
-public class ExitService extends Thread implements ITechnicalStrings {
+public class ExitService extends Thread implements Const {
 
   /** Exit code */
   private static int iExitCode = 0;
@@ -59,7 +59,7 @@ public class ExitService extends Thread implements ITechnicalStrings {
     try {
       if (iExitCode == 0) {
         // Store current FIFO for next session
-        FIFO.getInstance().commit();
+        FIFO.commit();
         // commit only if exit is safe (to avoid
         // commiting
         // empty collection) commit ambiences
@@ -67,11 +67,11 @@ public class ExitService extends Thread implements ITechnicalStrings {
         // Commit webradios
         WebRadioManager.getInstance().commit();
         // Store webradio state
-        ConfigurationManager.setProperty(CONF_WEBRADIO_WAS_PLAYING, Boolean.toString(FIFO
-            .getInstance().isPlayingRadio()));
+        Conf.setProperty(CONF_WEBRADIO_WAS_PLAYING, Boolean.toString(FIFO
+            .isPlayingRadio()));
 
         // commit configuration
-        org.jajuk.util.ConfigurationManager.commit();
+        org.jajuk.util.Conf.commit();
         // commit history
         History.commit();
         // Commit collection if not refreshing

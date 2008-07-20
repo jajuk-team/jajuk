@@ -27,13 +27,13 @@ import javax.swing.JComponent;
 import javax.swing.TransferHandler;
 
 import org.jajuk.ui.thumbnails.LocalAlbumThumbnail;
-import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Const;
 
 /**
  * DND handler for table
  */
 
-public class CatalogViewTransferHandler extends TransferHandler implements ITechnicalStrings {
+public class CatalogViewTransferHandler extends TransferHandler implements Const {
 
   private static final long serialVersionUID = 1L;
 

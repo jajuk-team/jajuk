@@ -69,8 +69,8 @@ import org.jajuk.ui.helpers.TableTransferHandler;
 import org.jajuk.ui.widgets.InformationJPanel;
 import org.jajuk.ui.widgets.JajukTable;
 import org.jajuk.ui.widgets.JajukToggleButton;
-import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Conf;
+import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilGUI;
@@ -88,7 +88,7 @@ import org.jdesktop.swingx.table.TableColumnExt;
  * views
  */
 public abstract class AbstractTableView extends ViewAdapter implements ActionListener,
-    ItemListener, TableModelListener, ITechnicalStrings, Observer {
+    ItemListener, TableModelListener, Const, Observer {
 
   JajukTable jtable;
 
@@ -448,6 +448,11 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
     Action action = ActionManager.getAction(JajukActions.DELETE);
     inputMap.put(KeyStroke.getKeyStroke("DELETE"), "delete");
     actionMap.put("delete", action);
+    
+    // Properties ALT/ENTER
+    action = ActionManager.getAction(JajukActions.SHOW_PROPERTIES);
+    inputMap.put(KeyStroke.getKeyStroke("alt ENTER"), "properties");
+    actionMap.put("properties", action);
   }
 
   /** Fill the table */
@@ -557,7 +562,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
   public void actionPerformed(final ActionEvent e) {
     // Editable state
     if (e.getSource() == jtbEditable) {
-      ConfigurationManager.setProperty(editableConf, Boolean.toString(jtbEditable.isSelected()));
+      Conf.setProperty(editableConf, Boolean.toString(jtbEditable.isSelected()));
       model.setEditable(jtbEditable.isSelected());
       return;
     }

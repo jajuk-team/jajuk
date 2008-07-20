@@ -26,7 +26,7 @@ import java.util.StringTokenizer;
 
 import org.jajuk.base.File;
 import org.jajuk.services.webradio.WebRadio;
-import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.Conf;
 import org.jajuk.util.UtilString;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
@@ -85,20 +85,20 @@ public class WebRadioPlayerImpl extends AbstractMPlayerImpl {
     try {
       Map<String, String> env = pb.environment();
       StringTokenizer st = new StringTokenizer(
-          ConfigurationManager.getProperty(CONF_ENV_VARIABLES), " ");
+          Conf.getString(CONF_ENV_VARIABLES), " ");
       while (st.hasMoreTokens()) {
         StringTokenizer st2 = new StringTokenizer(st.nextToken(), "=");
         env.put(st2.nextToken(), st2.nextToken());
       }
       // If needed, set proxy settings in format:
       // http_proxy=http://username:password@proxy.example.org:8080
-      if (ConfigurationManager.getBoolean(CONF_NETWORK_USE_PROXY)) {
-        String sLogin = ConfigurationManager.getProperty(CONF_NETWORK_PROXY_LOGIN).trim();
-        String sHost = ConfigurationManager.getProperty(CONF_NETWORK_PROXY_HOSTNAME).trim();
-        int port = ConfigurationManager.getInt(CONF_NETWORK_PROXY_PORT);
+      if (Conf.getBoolean(CONF_NETWORK_USE_PROXY)) {
+        String sLogin = Conf.getString(CONF_NETWORK_PROXY_LOGIN).trim();
+        String sHost = Conf.getString(CONF_NETWORK_PROXY_HOSTNAME).trim();
+        int port = Conf.getInt(CONF_NETWORK_PROXY_PORT);
         // Non anonymous proxy
         if (!UtilString.isVoid(sLogin)) {
-          String sPwd = UtilString.rot13(ConfigurationManager.getProperty(CONF_NETWORK_PROXY_PWD));
+          String sPwd = UtilString.rot13(Conf.getString(CONF_NETWORK_PROXY_PWD));
           String sProxyConf = "http://" + sLogin + ':' + sPwd + '@' + sHost + ':' + port;
           env.put("http_proxy", sProxyConf);
           Log.debug("Using these proxy settings: " + sProxyConf);

@@ -32,15 +32,15 @@ import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.services.webradio.WebRadio;
 import org.jajuk.ui.widgets.InformationJPanel;
-import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Conf;
+import org.jajuk.util.Const;
 import org.jajuk.util.Messages;
 import org.jajuk.util.log.Log;
 
 /**
  * abstract class for music player, independent from real implementation
  */
-public final class Player implements ITechnicalStrings {
+public final class Player implements Const {
 
   /** Current file read */
   private static File fCurrent;
@@ -123,7 +123,7 @@ public final class Player implements ITechnicalStrings {
             playerImpl.play(fCurrent, fPosition, length, 0.0f);
           } else {
             playerImpl
-                .play(fCurrent, fPosition, length, ConfigurationManager.getFloat(CONF_VOLUME));
+                .play(fCurrent, fPosition, length, Conf.getFloat(CONF_VOLUME));
           }
           bWaitingLine = false;
         } catch (Exception bpe) {
@@ -136,7 +136,7 @@ public final class Player implements ITechnicalStrings {
               InformationJPanel.WARNING);
           try {
             // wait for the line
-            FIFO.getInstance().wait(WAIT_AFTER_ERROR);
+            FIFO.class.wait(WAIT_AFTER_ERROR);
           } catch (InterruptedException e1) {
             e1.printStackTrace();
           }
@@ -180,7 +180,7 @@ public final class Player implements ITechnicalStrings {
           if (bMute) {
             playerImpl.play(radio, 0.0f);
           } else {
-            playerImpl.play(radio, ConfigurationManager.getFloat(CONF_VOLUME));
+            playerImpl.play(radio, Conf.getFloat(CONF_VOLUME));
           }
           bWaitingLine = false;
         } catch (Exception bpe) {
@@ -193,7 +193,7 @@ public final class Player implements ITechnicalStrings {
               InformationJPanel.WARNING);
           try {
             // wait for the line
-            FIFO.getInstance().wait(WAIT_AFTER_ERROR);
+            FIFO.class.wait(WAIT_AFTER_ERROR);
           } catch (InterruptedException e1) {
             e1.printStackTrace();
           }
@@ -259,7 +259,7 @@ public final class Player implements ITechnicalStrings {
           playerImpl2.setVolume(0.0f);
         }
       } else {
-        playerImpl.setVolume(ConfigurationManager.getFloat(CONF_VOLUME));
+        playerImpl.setVolume(Conf.getFloat(CONF_VOLUME));
       }
       Player.bMute = pMute;
     } catch (Exception e) {
@@ -286,7 +286,7 @@ public final class Player implements ITechnicalStrings {
   public static void setVolume(float pVolume) {
     float fVolume = pVolume;
     try {
-      ConfigurationManager.setProperty(CONF_VOLUME, Float.toString(fVolume));
+      Conf.setProperty(CONF_VOLUME, Float.toString(fVolume));
       if (playerImpl != null) {
         // check, it can be over 1 for unknown reason
         if (fVolume < 0.0f) {

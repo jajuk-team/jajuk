@@ -40,7 +40,7 @@ import org.jajuk.events.Event;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.events.Observer;
-import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.Conf;
 import org.jajuk.util.MD5Processor;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilSystem;
@@ -375,11 +375,11 @@ public final class FileManager extends ItemManager implements Observer {
     List<File> alEligibleFiles = getReadyFiles();
     Collections.shuffle(alEligibleFiles, new Random());
     // song level, just shuffle full collection
-    if (ConfigurationManager.getProperty(CONF_GLOBAL_RANDOM_MODE).equals(MODE_TRACK)) {
+    if (Conf.getString(CONF_GLOBAL_RANDOM_MODE).equals(MODE_TRACK)) {
       return alEligibleFiles;
     }
     // (not shuffle) Album / album
-    else if (ConfigurationManager.getProperty(CONF_GLOBAL_RANDOM_MODE).equals(MODE_ALBUM2)) {
+    else if (Conf.getString(CONF_GLOBAL_RANDOM_MODE).equals(MODE_ALBUM2)) {
       final List<Album> albums = new ArrayList<Album>(AlbumManager.getInstance().getAlbums());
       Collections.shuffle(albums, new Random());
       // We need an index (bennch: 45* faster)
@@ -446,7 +446,7 @@ public final class FileManager extends ItemManager implements Observer {
     // take tracks matching required age
     Set<Track> tracks = TrackManager.getInstance().getTracks();
     Iterator<Track> it = new FilterIterator(tracks.iterator(), new JajukPredicates.AgePredicate(
-        ConfigurationManager.getInt(CONF_OPTIONS_NOVELTIES_AGE)));
+        Conf.getInt(CONF_OPTIONS_NOVELTIES_AGE)));
     while (it.hasNext()) {
       Track track = it.next();
       File file = track.getPlayeableFile(bHideUnmounted);
@@ -476,7 +476,7 @@ public final class FileManager extends ItemManager implements Observer {
   public List<File> getShuffleNoveltiesPlaylist() {
     List<File> alEligibleFiles = getGlobalNoveltiesPlaylist(true);
     // song level, just shuffle full collection
-    if (ConfigurationManager.getProperty(CONF_NOVELTIES_MODE).equals(MODE_TRACK)) {
+    if (Conf.getString(CONF_NOVELTIES_MODE).equals(MODE_TRACK)) {
       Collections.shuffle(alEligibleFiles);
       return alEligibleFiles;
     }
@@ -568,13 +568,13 @@ public final class FileManager extends ItemManager implements Observer {
 
   public void refreshBestOfFiles() {
     int iNbBestofFiles = Integer
-        .parseInt(ConfigurationManager.getProperty(CONF_BESTOF_TRACKS_SIZE));
+        .parseInt(Conf.getString(CONF_BESTOF_TRACKS_SIZE));
     // clear data
     alBestofFiles.clear();
     // create a temporary table to remove unmounted files
     List<File> alEligibleFiles = new ArrayList<File>(iNbBestofFiles);
     for (Track track : TrackManager.getInstance().getTracks()) {
-      File file = track.getPlayeableFile(ConfigurationManager
+      File file = track.getPlayeableFile(Conf
           .getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED));
       if (file != null) {
         alEligibleFiles.add(file);

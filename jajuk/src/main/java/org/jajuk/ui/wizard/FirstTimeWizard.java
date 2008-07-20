@@ -47,7 +47,7 @@ import org.jajuk.base.DeviceManager;
 import org.jajuk.ui.widgets.JajukFileChooser;
 import org.jajuk.ui.widgets.PathSelector;
 import org.jajuk.ui.widgets.ToggleLink;
-import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukFileFilter;
 import org.jajuk.util.Messages;
@@ -61,7 +61,7 @@ import org.jdesktop.swingx.VerticalLayout;
 /**
  * First time Wizard
  */
-public class FirstTimeWizard extends JFrame implements ITechnicalStrings, ActionListener {
+public class FirstTimeWizard extends JFrame implements Const, ActionListener {
   private static final long serialVersionUID = 1L;
 
   JLabel jlLeftIcon;
@@ -145,7 +145,7 @@ public class FirstTimeWizard extends JFrame implements ITechnicalStrings, Action
       }
       // Set Workspace directory
       try {
-        final java.io.File bootstrap = new java.io.File(ITechnicalStrings.FILE_BOOTSTRAP);
+        final java.io.File bootstrap = new java.io.File(Const.FILE_BOOTSTRAP);
         final BufferedWriter bw = new BufferedWriter(new FileWriter(bootstrap));
         bw.write(sPATH);
         bw.flush();
@@ -169,7 +169,7 @@ public class FirstTimeWizard extends JFrame implements ITechnicalStrings, Action
           // Create a directory device
           final Device device = DeviceManager.getInstance().registerDevice(fDir.getName(), 0,
               fDir.getAbsolutePath());
-          device.setProperty(ITechnicalStrings.XML_DEVICE_AUTO_MOUNT, true);
+          device.setProperty(Const.XML_DEVICE_AUTO_MOUNT, true);
           // Set refresh time
           double dRefreshTime = 5d;
           try {
@@ -180,7 +180,7 @@ public class FirstTimeWizard extends JFrame implements ITechnicalStrings, Action
           } catch (final NumberFormatException e1) {
             dRefreshTime = 0;
           }
-          device.setProperty(ITechnicalStrings.XML_DEVICE_AUTO_REFRESH, dRefreshTime);
+          device.setProperty(Const.XML_DEVICE_AUTO_REFRESH, dRefreshTime);
           try {
             // Refresh device synchronously
             device.refresh(false, false);
@@ -203,7 +203,7 @@ public class FirstTimeWizard extends JFrame implements ITechnicalStrings, Action
     final int iXSEPARATOR = 10;
     final int iYSEPARATOR = 10;
     final double p = TableLayoutConstants.PREFERRED;
-    jlLeftIcon = new JLabel(UtilGUI.getImage(ITechnicalStrings.IMAGE_SEARCH));
+    jlLeftIcon = new JLabel(UtilGUI.getImage(Const.IMAGE_SEARCH));
     jlLeftIcon.setBorder(new EmptyBorder(0, 20, 0, 0));
     jpRightPanel = new JPanel();
     jlWelcome = new JLabel(Messages.getString("FirstTimeWizard.1"));

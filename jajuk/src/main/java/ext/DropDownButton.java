@@ -28,11 +28,11 @@ import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 
 import org.jajuk.ui.widgets.JajukButton;
-import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 
 public abstract class DropDownButton extends JajukButton implements ChangeListener,
-    PopupMenuListener, ActionListener, PropertyChangeListener, ITechnicalStrings {
+    PopupMenuListener, ActionListener, PropertyChangeListener, Const {
 
   private final JButton arrowButton;
 

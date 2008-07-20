@@ -27,14 +27,14 @@ import entagged.audioformats.Tag;
 import java.io.File;
 import java.util.List;
 
-import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Const;
 import org.jajuk.util.UtilFeatures;
 import org.jajuk.util.error.JajukException;
 
 /**
  * jlGui MP3 tager implementation
  */
-public class EntaggedTagImpl implements ITagImpl, ITechnicalStrings {
+public class EntaggedTagImpl implements ITagImpl, Const {
 
   private Tag tag;
 

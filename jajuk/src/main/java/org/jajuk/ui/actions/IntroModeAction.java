@@ -23,7 +23,7 @@ import java.awt.event.ActionEvent;
 
 import org.jajuk.ui.widgets.CommandJPanel;
 import org.jajuk.ui.widgets.JajukJMenuBar;
-import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.Conf;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
 
@@ -37,8 +37,8 @@ public class IntroModeAction extends ActionBase {
 
   @Override
   public void perform(ActionEvent evt) {
-    boolean b = Boolean.valueOf(ConfigurationManager.getProperty(CONF_STATE_INTRO));
-    ConfigurationManager.setProperty(CONF_STATE_INTRO, Boolean.toString(!b));
+    boolean b = Boolean.valueOf(Conf.getString(CONF_STATE_INTRO));
+    Conf.setProperty(CONF_STATE_INTRO, Boolean.toString(!b));
     JajukJMenuBar.getInstance().setIntroSelected(!b);
     CommandJPanel.getInstance().setIntroSelected(!b);
   }

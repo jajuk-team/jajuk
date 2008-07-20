@@ -33,7 +33,7 @@ import org.jajuk.ui.actions.JajukActions;
 import org.jajuk.ui.helpers.ILaunchCommand;
 import org.jajuk.ui.helpers.JajukTableModel;
 import org.jajuk.ui.helpers.TracksTableModel;
-import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.Conf;
 import org.jajuk.util.Messages;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
@@ -102,9 +102,9 @@ public class TracksTableView extends AbstractTableView {
               if (file != null) {
                 try {
                   // launch it
-                  FIFO.getInstance().push(
-                      new StackItem(file, ConfigurationManager.getBoolean(CONF_STATE_REPEAT)),
-                      ConfigurationManager.getBoolean(CONF_OPTIONS_PUSH_ON_CLICK));
+                  FIFO.push(
+                      new StackItem(file, Conf.getBoolean(CONF_STATE_REPEAT)),
+                      Conf.getBoolean(CONF_OPTIONS_PUSH_ON_CLICK));
 
                 } catch (JajukException je) {
                   Log.error(je);
@@ -140,7 +140,7 @@ public class TracksTableView extends AbstractTableView {
    */
   @Override
   void initTable() {
-    boolean bEditable = ConfigurationManager.getBoolean(CONF_TRACKS_TABLE_EDITION);
+    boolean bEditable = Conf.getBoolean(CONF_TRACKS_TABLE_EDITION);
     jtbEditable.setSelected(bEditable);
   }
 

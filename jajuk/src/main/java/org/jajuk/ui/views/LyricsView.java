@@ -55,7 +55,6 @@ import org.jajuk.ui.helpers.FontManager.JajukFont;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilFeatures;
 import org.jajuk.util.UtilGUI;
-import org.jajuk.util.log.Log;
 import org.jdesktop.swingx.JXBusyLabel;
 
 /**
@@ -138,7 +137,7 @@ public class LyricsView extends ViewAdapter implements Observer {
     ObservationManager.register(this);
     reset();
     // check if a track has already been launched
-    if (FIFO.getInstance().isPlayingRadio()) {
+    if (FIFO.isPlayingRadio()) {
       update(new Event(JajukEvents.EVENT_WEBRADIO_LAUNCHED, ObservationManager
           .getDetailsLastOccurence(JajukEvents.EVENT_WEBRADIO_LAUNCHED)));
     } else if (!FIFO.isStopped()) {
@@ -179,10 +178,8 @@ public class LyricsView extends ViewAdapter implements Observer {
    */
   public void update(final Event event) {
     final JajukEvents subject = event.getSubject();
-
-    Log.debug("updating lyrics view");
     if (subject.equals(JajukEvents.EVENT_FILE_LAUNCHED)) {
-      final File file = FIFO.getInstance().getCurrentFile();
+      final File file = FIFO.getCurrentFile();
       // file is null is view started with no playing track (the event is
       // simulated in initUI())
       if (file == null) {
@@ -202,10 +199,9 @@ public class LyricsView extends ViewAdapter implements Observer {
         @Override
         public void run() {
 
-          track = FIFO.getInstance().getCurrentFile().getTrack();
+          track = FIFO.getCurrentFile().getTrack();
           // Launch lyrics service asynchronously and out of the
           // AWT dispatcher thread
-          Log.debug("calling LyricsService");
           lyrics = LyricsService.getLyrics(track.getAuthor().getName2(), track.getName());
           if (lyrics != null) {
             sURL = LyricsService.getCurrentProvider().getQueryString(track.getAuthor().getName2(),

@@ -109,8 +109,8 @@ import org.jajuk.ui.helpers.FontManager;
 import org.jajuk.ui.helpers.JajukTimer;
 import org.jajuk.ui.helpers.FontManager.JajukFont;
 import org.jajuk.ui.wizard.AmbienceWizard;
-import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Conf;
+import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
 import org.jajuk.util.error.JajukException;
@@ -123,7 +123,7 @@ import org.jdesktop.swingx.JXPanel;
  * Singleton
  * </p>
  */
-public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionListener,
+public class CommandJPanel extends JXPanel implements Const, ActionListener,
     ListSelectionListener, ChangeListener, Observer, MouseWheelListener {
 
   private static final long serialVersionUID = 1L;
@@ -235,7 +235,7 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
         // Reset combo to last selected item
         ambiencesCombo.removeActionListener(ambienceListener);
         Ambience defaultAmbience = AmbienceManager.getInstance().getAmbience(
-            ConfigurationManager.getProperty(CONF_DEFAULT_AMBIENCE));
+            Conf.getString(CONF_DEFAULT_AMBIENCE));
         if (defaultAmbience != null) {
           for (int i = 0; i < ambiencesCombo.getItemCount(); i++) {
             if (((JLabel) ambiencesCombo.getItemAt(i)).getText().equals(defaultAmbience.getName())) {
@@ -251,12 +251,12 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
       // Selected 'Any" ambience
       else if (ambiencesCombo.getSelectedIndex() == 1) {
         // reset default ambience
-        ConfigurationManager.setProperty(CONF_DEFAULT_AMBIENCE, "");
+        Conf.setProperty(CONF_DEFAULT_AMBIENCE, "");
         ObservationManager.notify(new Event(JajukEvents.EVENT_AMBIENCES_SELECTION_CHANGE));
       } else {// Selected an ambience
         Ambience ambience = AmbienceManager.getInstance().getAmbienceByName(
             ((JLabel) ambiencesCombo.getSelectedItem()).getText());
-        ConfigurationManager.setProperty(CONF_DEFAULT_AMBIENCE, ambience.getID());
+        Conf.setProperty(CONF_DEFAULT_AMBIENCE, ambience.getID());
         ObservationManager.notify(new Event(JajukEvents.EVENT_AMBIENCES_SELECTION_CHANGE));
       }
     }
@@ -313,13 +313,13 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
     for (int i = 1; i <= 10; i++) {
       final int j = i;
       JMenuItem jmi = new JMenuItem("+" + i);
-      if (ConfigurationManager.getInt(CONF_INC_RATING) == i) {
+      if (Conf.getInt(CONF_INC_RATING) == i) {
         jmi.setFont(FontManager.getInstance().getFont(JajukFont.BOLD));
       }
       // Store selected value
       jmi.addActionListener(new ActionListener() {
         public void actionPerformed(ActionEvent e) {
-          ConfigurationManager.setProperty(CONF_INC_RATING, "" + j);
+          Conf.setProperty(CONF_INC_RATING, "" + j);
         }
       });
       jpmIncRating.add(jmi);
@@ -367,15 +367,15 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
     jtbModes.setRollover(true);
     jbRepeat = new JajukToggleButton(ActionManager
         .getAction(JajukActions.REPEAT_MODE_STATUS_CHANGE));
-    jbRepeat.setSelected(ConfigurationManager.getBoolean(CONF_STATE_REPEAT));
+    jbRepeat.setSelected(Conf.getBoolean(CONF_STATE_REPEAT));
     jbRandom = new JajukToggleButton(ActionManager
         .getAction(JajukActions.SHUFFLE_MODE_STATUS_CHANGED));
-    jbRandom.setSelected(ConfigurationManager.getBoolean(CONF_STATE_SHUFFLE));
+    jbRandom.setSelected(Conf.getBoolean(CONF_STATE_SHUFFLE));
     jbContinue = new JajukToggleButton(ActionManager
         .getAction(JajukActions.CONTINUE_MODE_STATUS_CHANGED));
-    jbContinue.setSelected(ConfigurationManager.getBoolean(CONF_STATE_CONTINUE));
+    jbContinue.setSelected(Conf.getBoolean(CONF_STATE_CONTINUE));
     jbIntro = new JajukToggleButton(ActionManager.getAction(JajukActions.INTRO_MODE_STATUS_CHANGED));
-    jbIntro.setSelected(ConfigurationManager.getBoolean(CONF_STATE_INTRO));
+    jbIntro.setSelected(Conf.getBoolean(CONF_STATE_INTRO));
     jtbModes.add(jbRepeat);
     jtbModes.addSeparator();
     jtbModes.add(jbRandom);
@@ -391,7 +391,7 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
         ActionManager.getAction(JajukActions.INCREASE_VOLUME));
 
     jpVolume.setLayout(new BoxLayout(jpVolume, BoxLayout.X_AXIS));
-    int iVolume = (int) (100 * ConfigurationManager.getFloat(CONF_VOLUME));
+    int iVolume = (int) (100 * Conf.getFloat(CONF_VOLUME));
     if (iVolume > 100) { // can occur in some undefined cases
       iVolume = 100;
     }
@@ -450,9 +450,9 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
     // Shuffle album / album
     jmiShuffleModeAlbum2 = new JRadioButtonMenuItem(Messages.getString("CommandJPanel.22"));
     jmiShuffleModeAlbum2.addActionListener(this);
-    if (ConfigurationManager.getProperty(CONF_GLOBAL_RANDOM_MODE).equals(MODE_TRACK)) {
+    if (Conf.getString(CONF_GLOBAL_RANDOM_MODE).equals(MODE_TRACK)) {
       jmiShuffleModeSong.setSelected(true);
-    } else if (ConfigurationManager.getProperty(CONF_GLOBAL_RANDOM_MODE).equals(MODE_ALBUM2)) {
+    } else if (Conf.getString(CONF_GLOBAL_RANDOM_MODE).equals(MODE_ALBUM2)) {
       jmiShuffleModeAlbum2.setSelected(true);
     } else {
       jmiShuffleModeAlbum.setSelected(true);
@@ -482,7 +482,7 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
     jmiNoveltiesModeSong.addActionListener(this);
     jmiNoveltiesModeAlbum = new JRadioButtonMenuItem(Messages.getString("CommandJPanel.22"));
     jmiNoveltiesModeAlbum.addActionListener(this);
-    if (ConfigurationManager.getProperty(CONF_NOVELTIES_MODE).equals(MODE_TRACK)) {
+    if (Conf.getString(CONF_NOVELTIES_MODE).equals(MODE_TRACK)) {
       jmiNoveltiesModeSong.setSelected(true);
     } else {
       jmiNoveltiesModeAlbum.setSelected(true);
@@ -589,7 +589,7 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
     ObservationManager.register(CommandJPanel.this);
 
     // if a track is playing, display right state
-    if (FIFO.getInstance().isPlayingRadio()) {
+    if (FIFO.isPlayingRadio()) {
       // update initial state
       update(new Event(JajukEvents.EVENT_WEBRADIO_LAUNCHED));
     } else if (!FIFO.isStopped()) {
@@ -643,9 +643,9 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
           org.jajuk.base.File file = FileManager.getInstance().getFileByID(hi.getFileId());
           if (file != null) {
             try {
-              FIFO.getInstance().push(
-                  new StackItem(file, ConfigurationManager.getBoolean(CONF_STATE_REPEAT), true),
-                  ConfigurationManager.getBoolean(CONF_OPTIONS_PUSH_ON_CLICK));
+              FIFO.push(
+                  new StackItem(file, Conf.getBoolean(CONF_STATE_REPEAT), true),
+                  Conf.getBoolean(CONF_OPTIONS_PUSH_ON_CLICK));
             } catch (JajukException je) {
               // can be thrown if file is null
             }
@@ -655,17 +655,17 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
           }
         }
       } else if (ae.getSource().equals(jmiNoveltiesModeSong)) {
-        ConfigurationManager.setProperty(CONF_NOVELTIES_MODE, MODE_TRACK);
+        Conf.setProperty(CONF_NOVELTIES_MODE, MODE_TRACK);
       } else if (ae.getSource().equals(jmiNoveltiesModeAlbum)) {
-        ConfigurationManager.setProperty(CONF_NOVELTIES_MODE, MODE_ALBUM);
+        Conf.setProperty(CONF_NOVELTIES_MODE, MODE_ALBUM);
       } else if (ae.getSource().equals(jmiShuffleModeSong)) {
-        ConfigurationManager.setProperty(CONF_GLOBAL_RANDOM_MODE, MODE_TRACK);
+        Conf.setProperty(CONF_GLOBAL_RANDOM_MODE, MODE_TRACK);
       } else if (ae.getSource().equals(jmiShuffleModeAlbum)) {
-        ConfigurationManager.setProperty(CONF_GLOBAL_RANDOM_MODE, MODE_ALBUM);
+        Conf.setProperty(CONF_GLOBAL_RANDOM_MODE, MODE_ALBUM);
       } else if (ae.getSource().equals(jmiShuffleModeAlbum2)) {
-        ConfigurationManager.setProperty(CONF_GLOBAL_RANDOM_MODE, MODE_ALBUM2);
+        Conf.setProperty(CONF_GLOBAL_RANDOM_MODE, MODE_ALBUM2);
       } else if (ae.getSource().equals(jmiShuffleModeAlbum2)) {
-        ConfigurationManager.setProperty(CONF_GLOBAL_RANDOM_MODE, MODE_ALBUM2);
+        Conf.setProperty(CONF_GLOBAL_RANDOM_MODE, MODE_ALBUM2);
       }
     } catch (Exception e) {
       Log.error(e);
@@ -688,13 +688,13 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
           try {
             // If user selected a file
             if (sr.getType() == SearchResultType.FILE) {
-              FIFO.getInstance().push(
-                  new StackItem(sr.getFile(), ConfigurationManager.getBoolean(CONF_STATE_REPEAT),
-                      true), ConfigurationManager.getBoolean(CONF_OPTIONS_PUSH_ON_CLICK));
+              FIFO.push(
+                  new StackItem(sr.getFile(), Conf.getBoolean(CONF_STATE_REPEAT),
+                      true), Conf.getBoolean(CONF_OPTIONS_PUSH_ON_CLICK));
             }
             // User selected a web radio
             else if (sr.getType() == SearchResultType.WEBRADIO) {
-              FIFO.getInstance().launchRadio(sr.getWebradio());
+              FIFO.launchRadio(sr.getWebradio());
             }
           } catch (JajukException je) {
             Log.error(je);
@@ -757,7 +757,7 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
           ActionManager.getAction(REWIND_TRACK).setEnabled(false);
           // Enable the play button to allow restarting the queue but disable if
           // the queue is void
-          boolean bQueueNotVoid = (FIFO.getInstance().getFIFO().size() > 0);
+          boolean bQueueNotVoid = (FIFO.getFIFO().size() > 0);
           ActionManager.getAction(PLAY_PAUSE_TRACK).setEnabled(bQueueNotVoid);
           ActionManager.getAction(NEXT_ALBUM).setEnabled(bQueueNotVoid);
           ActionManager.getAction(PREVIOUS_ALBUM).setEnabled(bQueueNotVoid);
@@ -774,7 +774,7 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
           // track (selection must change to throw an ActionEvent)
           jcbHistory.setSelectedIndex(-1);
           // reset startup position
-          ConfigurationManager.setProperty(CONF_STARTUP_LAST_POSITION, "0");
+          Conf.setProperty(CONF_STARTUP_LAST_POSITION, "0");
         } else if (JajukEvents.EVENT_ZERO.equals(subject)) {
           ActionManager.getAction(PREVIOUS_TRACK).setEnabled(false);
           ActionManager.getAction(NEXT_TRACK).setEnabled(false);
@@ -791,7 +791,7 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
           // track (selection must change to throw an ActionEvent)
           jcbHistory.setSelectedIndex(-1);
           // reset startup position
-          ConfigurationManager.setProperty(CONF_STARTUP_LAST_POSITION, "0");
+          Conf.setProperty(CONF_STARTUP_LAST_POSITION, "0");
         } else if (JajukEvents.EVENT_PLAYER_PLAY.equals(subject)) {
           jbIncRate.setEnabled(true);
           ActionManager.getAction(PREVIOUS_TRACK).setEnabled(true);
@@ -833,16 +833,16 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
         } else if (JajukEvents.EVENT_SPECIAL_MODE.equals(subject)) {
           if (ObservationManager.getDetail(event, DETAIL_ORIGIN).equals(DETAIL_SPECIAL_MODE_NORMAL)) {
             // deselect shuffle mode
-            ConfigurationManager.setProperty(CONF_STATE_SHUFFLE, FALSE);
+            Conf.setProperty(CONF_STATE_SHUFFLE, FALSE);
             JajukJMenuBar.getInstance().setShuffleSelected(false);
             CommandJPanel.getInstance().jbRandom.setSelected(false);
             // computes planned tracks
-            FIFO.getInstance().computesPlanned(true);
+            FIFO.computesPlanned(true);
           }
         } else if (JajukEvents.EVENT_REPEAT_MODE_STATUS_CHANGED.equals(subject)) {
           if (ObservationManager.getDetail(event, DETAIL_SELECTION).equals(FALSE)) {
             // deselect repeat mode
-            ConfigurationManager.setProperty(CONF_STATE_REPEAT, FALSE);
+            Conf.setProperty(CONF_STATE_REPEAT, FALSE);
             JajukJMenuBar.getInstance().setRepeatSelected(false);
             CommandJPanel.getInstance().jbRepeat.setSelected(false);
           }
@@ -939,7 +939,7 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
             IconLoader.ICON_DIGITAL_DJ_16X16);
         jmi.addActionListener(new ActionListener() {
           public void actionPerformed(ActionEvent arg0) {
-            ConfigurationManager.setProperty(CONF_DEFAULT_DJ, dj.getID());
+            Conf.setProperty(CONF_DEFAULT_DJ, dj.getID());
             DigitalDJManager.setCurrentDJ(dj);
             // force to reselect the item
             populateDJs();
@@ -950,7 +950,7 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
           }
         });
         popupDDJ.add(jmi);
-        jmi.setSelected(ConfigurationManager.getProperty(CONF_DEFAULT_DJ).equals(dj.getID()));
+        jmi.setSelected(Conf.getString(CONF_DEFAULT_DJ).equals(dj.getID()));
       }
     } catch (Exception e) {
       Log.error(e);
@@ -979,7 +979,7 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
     }
     // Select right item
     Ambience defaultAmbience = AmbienceManager.getInstance().getAmbience(
-        ConfigurationManager.getProperty(CONF_DEFAULT_AMBIENCE));
+        Conf.getString(CONF_DEFAULT_AMBIENCE));
     if (defaultAmbience != null) {
       for (int i = 0; i < ambiencesCombo.getItemCount(); i++) {
         if (((JLabel) ambiencesCombo.getItemAt(i)).getText().equals(defaultAmbience.getName())) {
@@ -1016,7 +1016,7 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
         XCheckedButton jmi = new XCheckedButton(radio.getName());
         jmi.addActionListener(new ActionListener() {
           public void actionPerformed(ActionEvent e) {
-            ConfigurationManager.setProperty(CONF_DEFAULT_WEB_RADIO, radio.getName());
+            Conf.setProperty(CONF_DEFAULT_WEB_RADIO, radio.getName());
             // force to reselect the item
             populateWebRadios();
             // update action tooltip on main button with right item
@@ -1025,7 +1025,7 @@ public class CommandJPanel extends JXPanel implements ITechnicalStrings, ActionL
                 + radio.getName() + "</b></p></html>");
           }
         });
-        jmi.setSelected(ConfigurationManager.getProperty(CONF_DEFAULT_WEB_RADIO).equals(
+        jmi.setSelected(Conf.getString(CONF_DEFAULT_WEB_RADIO).equals(
             radio.getName()));
         // Show the check icon
         jmi.setDisplayCheck(true);

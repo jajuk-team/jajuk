@@ -24,7 +24,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Date;
 
-import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Const;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilString;
 import org.jajuk.util.UtilSystem;
@@ -33,7 +33,7 @@ import org.jajuk.util.log.Log;
 /**
  * A Jajuk property meta information
  */
-public class PropertyMetaInformation implements ITechnicalStrings {
+public class PropertyMetaInformation implements Const {
 
   /** Property name */
   private String sName;

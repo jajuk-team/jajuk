@@ -42,7 +42,7 @@ import org.jajuk.ui.helpers.ILaunchCommand;
 import org.jajuk.ui.helpers.JajukTableModel;
 import org.jajuk.ui.thumbnails.LocalAlbumThumbnail;
 import org.jajuk.ui.thumbnails.ThumbnailPopup;
-import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.Conf;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilFeatures;
 import org.jajuk.util.UtilGUI;
@@ -113,10 +113,10 @@ public class AlbumsTableView extends AbstractTableView {
               List<File> alFiles = UtilFeatures.getPlayableFiles(album);
               if (alFiles.size() > 0) {
                 // launch it
-                FIFO.getInstance().push(
-                    UtilFeatures.createStackItems(alFiles, ConfigurationManager
+                FIFO.push(
+                    UtilFeatures.createStackItems(alFiles, Conf
                         .getBoolean(CONF_STATE_REPEAT), true),
-                    ConfigurationManager.getBoolean(CONF_OPTIONS_PUSH_ON_CLICK));
+                    Conf.getBoolean(CONF_OPTIONS_PUSH_ON_CLICK));
 
               } else {
                 Messages.showErrorMessage(10, album.getName2());
@@ -130,7 +130,7 @@ public class AlbumsTableView extends AbstractTableView {
           Album current = null;
 
           public void mouseMoved(MouseEvent e) {
-            if (!ConfigurationManager.getBoolean(CONF_SHOW_POPUPS)) {
+            if (!Conf.getBoolean(CONF_SHOW_POPUPS)) {
               return;
             }
             // Do not use getLocationOnScreen() method to support JRE 1.5
@@ -193,7 +193,7 @@ public class AlbumsTableView extends AbstractTableView {
    */
   @Override
   void initTable() {
-    jtbEditable.setSelected(ConfigurationManager.getBoolean(CONF_ALBUMS_TABLE_EDITION));
+    jtbEditable.setSelected(Conf.getBoolean(CONF_ALBUMS_TABLE_EDITION));
     // Disable edit button, edition not yet implemented
     jtbEditable.setVisible(false);
   }

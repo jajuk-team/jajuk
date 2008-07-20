@@ -43,15 +43,15 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import org.jajuk.base.SearchResult;
-import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Conf;
+import org.jajuk.util.Const;
 import org.jajuk.util.Messages;
 
 /**
  * Alarm Clock Dialog window
  */
 public class AlarmClockDialog extends JDialog implements ActionListener, ItemListener,
-    ITechnicalStrings, ListSelectionListener {
+    Const, ListSelectionListener {
   private static final long serialVersionUID = 1L;
 
   JPanel jpAlarmClock;
@@ -136,8 +136,8 @@ public class AlarmClockDialog extends JDialog implements ActionListener, ItemLis
     jpAction = new JPanel();
     jlAlarmAction = new JLabel(Messages.getString("AlarmDialog.4"));
     scbAlarmOption = new SteppedComboBox();
-    scbAlarmOption.addItem(ITechnicalStrings.ALARM_START_MODE);
-    scbAlarmOption.addItem(ITechnicalStrings.ALARM_STOP_MODE);
+    scbAlarmOption.addItem(Const.ALARM_START_MODE);
+    scbAlarmOption.addItem(Const.ALARM_STOP_MODE);
     scbAlarmOption.setToolTipText(Messages.getString("AlarmDialog.5"));
     scbAlarmOption.addActionListener(this);
     jpAction.add(jlAlarmAction);
@@ -236,9 +236,9 @@ public class AlarmClockDialog extends JDialog implements ActionListener, ItemLis
   }
 
   public void actionPerformed(final ActionEvent e) {
-    ConfigurationManager.setProperty(CONF_ALARM_ACTION, "" + scbAlarmOption.getSelectedItem());
-    if (ConfigurationManager.getProperty(ITechnicalStrings.CONF_ALARM_ACTION).equals(
-        ITechnicalStrings.ALARM_START_MODE)) {
+    Conf.setProperty(CONF_ALARM_ACTION, "" + scbAlarmOption.getSelectedItem());
+    if (Conf.getString(Const.CONF_ALARM_ACTION).equals(
+        Const.ALARM_START_MODE)) {
       jlChoice.setEnabled(true);
       jrbShuffle.setEnabled(true);
       jrbBestof.setEnabled(true);
@@ -258,7 +258,7 @@ public class AlarmClockDialog extends JDialog implements ActionListener, ItemLis
         jtfMessage.setEnabled(true);
       } else {
         jtfMessage.setEnabled(false);
-        ConfigurationManager.setProperty(ALARM_MESSAGE, "");
+        Conf.setProperty(ALARM_MESSAGE, "");
       }
     } else if (e.getSource() == jbOK) {
       if (jtfHour.getText().isEmpty()) {
@@ -284,7 +284,7 @@ public class AlarmClockDialog extends JDialog implements ActionListener, ItemLis
     if (!e.getValueIsAdjusting()) {
       final SearchResult sr = sbSearch.getResult(sbSearch.getSelectedIndex());
       sbSearch.setText(sr.getFile().getTrack().getName());
-      ConfigurationManager.setProperty(ITechnicalStrings.CONF_ALARM_FILE, sr.getFile().getID());
+      Conf.setProperty(Const.CONF_ALARM_FILE, sr.getFile().getID());
       sbSearch.hidePopup();
     }
   }
@@ -296,27 +296,27 @@ public class AlarmClockDialog extends JDialog implements ActionListener, ItemLis
     if (jtfSeconds.getText().isEmpty()) {
       jtfSeconds.setText("00");
     }
-    ConfigurationManager.setProperty(ALARM_TIME_HOUR, "" + jtfHour.getText());
-    ConfigurationManager.setProperty(ALARM_TIME_MINUTES, "" + jtfMinutes.getText());
-    ConfigurationManager.setProperty(ALARM_TIME_SECONDS, "" + jtfSeconds.getText());
-    ConfigurationManager.setProperty(ALARM_MESSAGE, "" + jtfMessage.getText());
+    Conf.setProperty(ALARM_TIME_HOUR, "" + jtfHour.getText());
+    Conf.setProperty(ALARM_TIME_MINUTES, "" + jtfMinutes.getText());
+    Conf.setProperty(ALARM_TIME_SECONDS, "" + jtfSeconds.getText());
+    Conf.setProperty(ALARM_MESSAGE, "" + jtfMessage.getText());
     if (jcbDaily.isSelected()) {
-      ConfigurationManager.setProperty(CONF_ALARM_DAILY, "" + true);
+      Conf.setProperty(CONF_ALARM_DAILY, "" + true);
     } else {
-      ConfigurationManager.setProperty(CONF_ALARM_DAILY, "" + false);
+      Conf.setProperty(CONF_ALARM_DAILY, "" + false);
     }
     if (jrbShuffle.isSelected()) {
-      ConfigurationManager.setProperty(ITechnicalStrings.CONF_ALARM_MODE,
-          ITechnicalStrings.STARTUP_MODE_SHUFFLE);
+      Conf.setProperty(Const.CONF_ALARM_MODE,
+          Const.STARTUP_MODE_SHUFFLE);
     } else if (jrbFile.isSelected()) {
-      ConfigurationManager.setProperty(ITechnicalStrings.CONF_ALARM_MODE,
-          ITechnicalStrings.STARTUP_MODE_FILE);
+      Conf.setProperty(Const.CONF_ALARM_MODE,
+          Const.STARTUP_MODE_FILE);
     } else if (jrbBestof.isSelected()) {
-      ConfigurationManager.setProperty(ITechnicalStrings.CONF_ALARM_MODE,
-          ITechnicalStrings.STARTUP_MODE_BESTOF);
+      Conf.setProperty(Const.CONF_ALARM_MODE,
+          Const.STARTUP_MODE_BESTOF);
     } else if (jrbNovelties.isSelected()) {
-      ConfigurationManager.setProperty(ITechnicalStrings.CONF_ALARM_MODE,
-          ITechnicalStrings.STARTUP_MODE_NOVELTIES);
+      Conf.setProperty(Const.CONF_ALARM_MODE,
+          Const.STARTUP_MODE_NOVELTIES);
     }
   }
 

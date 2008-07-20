@@ -86,8 +86,8 @@ import org.jajuk.ui.helpers.TreeTransferHandler;
 import org.jajuk.ui.helpers.FontManager.JajukFont;
 import org.jajuk.ui.perspectives.PerspectiveManager;
 import org.jajuk.ui.widgets.InformationJPanel;
-import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Conf;
+import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilGUI;
@@ -236,7 +236,7 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener, 
                                                               // Discovery Date
     jcbSort.addItem(Messages.getString("Property_rate")); // sort by rate
     jcbSort.addItem(Messages.getString("Property_hits")); // sort by hits
-    jcbSort.setSelectedIndex(ConfigurationManager.getInt(CONF_LOGICAL_TREE_SORT_ORDER));
+    jcbSort.setSelectedIndex(Conf.getInt(CONF_LOGICAL_TREE_SORT_ORDER));
     jcbSort.setActionCommand(JajukEvents.EVENT_LOGICAL_TREE_SORT.toString());
     jcbSort.addActionListener(this);
     jpsort.add(jlSort, "1,0");
@@ -248,7 +248,7 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener, 
 
   @Override
   public void populateTree() {
-    switch (ConfigurationManager.getInt(CONF_LOGICAL_TREE_SORT_ORDER)) {
+    switch (Conf.getInt(CONF_LOGICAL_TREE_SORT_ORDER)) {
     case TrackComparator.STYLE_AUTHOR_ALBUM:
       populateTreeByStyle();
       break;
@@ -647,7 +647,7 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener, 
         @Override
         public Object construct() {
           // Set comparator
-          ConfigurationManager.setProperty(CONF_LOGICAL_TREE_SORT_ORDER, Integer.toString(jcbSort
+          Conf.setProperty(CONF_LOGICAL_TREE_SORT_ORDER, Integer.toString(jcbSort
               .getSelectedIndex()));
           populateTree();
           return null;
@@ -720,7 +720,7 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener, 
         StringBuilder sbOut = new StringBuilder().append(items).append(
             Messages.getString("TracksTreeView.31"));
         InformationJPanel.getInstance().setSelection(sbOut.toString());
-        if (ConfigurationManager.getBoolean(CONF_OPTIONS_SYNC_TABLE_TREE)) {
+        if (Conf.getBoolean(CONF_OPTIONS_SYNC_TABLE_TREE)) {
           // if table is synchronized with tree, notify the
           // selection change
           Properties properties = new Properties();
@@ -803,9 +803,9 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener, 
             File file = track.getPlayeableFile(false);
             if (file != null) {
               try {
-                FIFO.getInstance().push(
-                    new StackItem(file, ConfigurationManager.getBoolean(CONF_STATE_REPEAT),
-                        true), ConfigurationManager.getBoolean(CONF_OPTIONS_PUSH_ON_CLICK));
+                FIFO.push(
+                    new StackItem(file, Conf.getBoolean(CONF_STATE_REPEAT),
+                        true), Conf.getBoolean(CONF_OPTIONS_PUSH_ON_CLICK));
               } catch (JajukException je) {
                 Log.error(je);
               }
@@ -1182,16 +1182,16 @@ class TracksTreeExpansionListener implements TreeExpansionListener {
     Object o = event.getPath().getLastPathComponent();
     if (o instanceof StyleNode) {
       Style style = ((StyleNode) o).getStyle();
-      style.removeProperty(ITechnicalStrings.XML_EXPANDED);
+      style.removeProperty(Const.XML_EXPANDED);
     } else if (o instanceof AuthorNode) {
       Author author = ((AuthorNode) o).getAuthor();
-      author.removeProperty(ITechnicalStrings.XML_EXPANDED);
+      author.removeProperty(Const.XML_EXPANDED);
     } else if (o instanceof AlbumNode) {
       Album album = ((AlbumNode) o).getAlbum();
-      album.removeProperty(ITechnicalStrings.XML_EXPANDED);
+      album.removeProperty(Const.XML_EXPANDED);
     } else if (o instanceof YearNode) {
       Year year = ((YearNode) o).getYear();
-      year.removeProperty(ITechnicalStrings.XML_EXPANDED);
+      year.removeProperty(Const.XML_EXPANDED);
     }
   }
 
@@ -1199,16 +1199,16 @@ class TracksTreeExpansionListener implements TreeExpansionListener {
     Object o = event.getPath().getLastPathComponent();
     if (o instanceof StyleNode) {
       Style style = ((StyleNode) o).getStyle();
-      style.setProperty(ITechnicalStrings.XML_EXPANDED, true);
+      style.setProperty(Const.XML_EXPANDED, true);
     } else if (o instanceof AuthorNode) {
       Author author = ((AuthorNode) o).getAuthor();
-      author.setProperty(ITechnicalStrings.XML_EXPANDED, true);
+      author.setProperty(Const.XML_EXPANDED, true);
     } else if (o instanceof AlbumNode) {
       Album album = ((AlbumNode) o).getAlbum();
-      album.setProperty(ITechnicalStrings.XML_EXPANDED, true);
+      album.setProperty(Const.XML_EXPANDED, true);
     } else if (o instanceof YearNode) {
       Year year = ((YearNode) o).getYear();
-      year.setProperty(ITechnicalStrings.XML_EXPANDED, true);
+      year.setProperty(Const.XML_EXPANDED, true);
     }
   }
 }

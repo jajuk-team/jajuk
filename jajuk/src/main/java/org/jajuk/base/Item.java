@@ -29,7 +29,7 @@ import java.util.Map;
 import javax.swing.ImageIcon;
 
 import org.jajuk.ui.widgets.IconLabel;
-import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.UtilString;
 import org.jajuk.util.log.Log;
@@ -43,7 +43,7 @@ import org.xml.sax.Attributes;
  * file size
  * </p>
  */
-public abstract class Item implements Serializable, ITechnicalStrings {
+public abstract class Item implements Serializable, Const {
 
   /**
    * We cache the ID to avoid getting it from properties for CPU performance

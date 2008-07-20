@@ -25,8 +25,8 @@ import javax.swing.AbstractAction;
 import javax.swing.Icon;
 import javax.swing.KeyStroke;
 
-import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Conf;
+import org.jajuk.util.Const;
 import org.jajuk.util.UtilSystem;
 import org.jajuk.util.log.Log;
 
@@ -35,7 +35,7 @@ import org.jajuk.util.log.Log;
  * options to create actions, just leaving open the necessity of implementing
  * the {@link #actionPerformed(java.awt.event.ActionEvent)} method.
  */
-public abstract class ActionBase extends AbstractAction implements ITechnicalStrings {
+public abstract class ActionBase extends AbstractAction implements Const {
 
   /** Is this action an hotkey ? */
   private boolean bHotkey = false;
@@ -73,7 +73,7 @@ public abstract class ActionBase extends AbstractAction implements ITechnicalStr
   protected ActionBase(String pName, Icon icon, KeyStroke stroke, boolean enabled, boolean bHotkey) {
     // check hotkeys are enabled (false by default)
     this.bHotkey = UtilSystem.isUnderWindows() && bHotkey
-        && ConfigurationManager.getBoolean(CONF_OPTIONS_HOTKEYS);
+        && Conf.getBoolean(CONF_OPTIONS_HOTKEYS);
     String name = pName;
     if (name != null) {
       int mnemonic = ActionUtil.getMnemonic(name);

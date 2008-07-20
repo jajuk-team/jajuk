@@ -41,8 +41,8 @@ import org.jajuk.services.players.FIFO;
 import org.jajuk.ui.helpers.RefreshReporter;
 import org.jajuk.ui.thumbnails.ThumbnailsMaker;
 import org.jajuk.ui.widgets.InformationJPanel;
-import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Conf;
+import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukFileFilter;
 import org.jajuk.util.Messages;
@@ -62,7 +62,7 @@ import org.xml.sax.Attributes;
  * <p>
  * Physical item
  */
-public class Device extends PhysicalItem implements ITechnicalStrings, Comparable<Device> {
+public class Device extends PhysicalItem implements Const, Comparable<Device> {
 
   private static final long serialVersionUID = 1L;
 
@@ -165,9 +165,9 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
     bChanges = bChanges | cleanPlaylist();
 
     // clear history to remove old files referenced in it
-    if (ConfigurationManager.getProperty(ITechnicalStrings.CONF_HISTORY) != null) {
+    if (Conf.getString(Const.CONF_HISTORY) != null) {
       History.getInstance().clear(
-          Integer.parseInt(ConfigurationManager.getProperty(ITechnicalStrings.CONF_HISTORY)));
+          Integer.parseInt(Conf.getString(Const.CONF_HISTORY)));
     }
 
     // delete old history items
@@ -270,7 +270,7 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
    * @return
    */
   public String getDeviceTypeS() {
-    return DeviceManager.getInstance().getDeviceType(getLongValue(ITechnicalStrings.XML_TYPE));
+    return DeviceManager.getInstance().getDeviceType(getLongValue(Const.XML_TYPE));
   }
 
   /**
@@ -317,7 +317,7 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
    */
   @Override
   public String getHumanValue(final String sKey) {
-    if (ITechnicalStrings.XML_TYPE.equals(sKey)) {
+    if (Const.XML_TYPE.equals(sKey)) {
       final long lType = getLongValue(sKey);
       return DeviceManager.getInstance().getDeviceType(lType);
     } else {// default
@@ -376,7 +376,7 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
    */
   @Override
   public final String getLabel() {
-    return ITechnicalStrings.XML_DEVICE;
+    return Const.XML_DEVICE;
   }
 
   /**
@@ -398,7 +398,7 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
    * @return
    */
   public long getType() {
-    return getLongValue(ITechnicalStrings.XML_TYPE);
+    return getLongValue(Const.XML_TYPE);
   }
 
   /**
@@ -496,7 +496,7 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
       // have no time to perform commit)
       try {
         org.jajuk.base.Collection.commit(UtilSystem
-            .getConfFileByPath(ITechnicalStrings.FILE_COLLECTION));
+            .getConfFileByPath(Const.FILE_COLLECTION));
       } catch (final IOException e) {
         Log.error(e);
       }
@@ -571,9 +571,9 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
         final PropertyMetaInformation meta = getMeta(sProperty);
         // compatibility code for <1.1 : auto-refresh is now a double,
         // no more a boolean
-        if (meta.getName().equals(ITechnicalStrings.XML_DEVICE_AUTO_REFRESH)
-            && (sValue.equalsIgnoreCase(ITechnicalStrings.TRUE) || sValue
-                .equalsIgnoreCase(ITechnicalStrings.FALSE))) {
+        if (meta.getName().equals(Const.XML_DEVICE_AUTO_REFRESH)
+            && (sValue.equalsIgnoreCase(Const.TRUE) || sValue
+                .equalsIgnoreCase(Const.FALSE))) {
           switch ((int) getType()) {
           case TYPE_DIRECTORY: // directory
             sValue = "0.5d";
@@ -681,7 +681,7 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
       if (bDeepScan && Log.isDebugEnabled()) {
         Log.debug("Starting refresh of device : " + this);
       }
-      final File fTop = new File(getStringValue(ITechnicalStrings.XML_URL));
+      final File fTop = new File(getStringValue(Const.XML_URL));
       if (!fTop.exists()) {
         Messages.showErrorMessage(101);
         return false;
@@ -736,7 +736,7 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
    */
   public void setUrl(final String url) {
     sUrl = url;
-    setProperty(ITechnicalStrings.XML_URL, url);
+    setProperty(Const.XML_URL, url);
     fio = new File(url);
     /** Reset files */
     for (final org.jajuk.base.File file : FileManager.getInstance().getFiles()) {
@@ -761,7 +761,7 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
    */
   public void synchronize(final boolean bAsynchronous) {
     // Check a source device is defined
-    if (UtilString.isVoid((String) getValue(ITechnicalStrings.XML_DEVICE_SYNCHRO_SOURCE))) {
+    if (UtilString.isVoid((String) getValue(Const.XML_DEVICE_SYNCHRO_SOURCE))) {
       Messages.showErrorMessage(171);
       return;
     }
@@ -803,10 +803,10 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
       iNbCreatedFilesSrc = 0;
       iNbDeletedFiles = 0;
       lVolume = 0;
-      final boolean bidi = (getValue(ITechnicalStrings.XML_DEVICE_SYNCHRO_MODE)
-          .equals(ITechnicalStrings.DEVICE_SYNCHRO_MODE_BI));
+      final boolean bidi = (getValue(Const.XML_DEVICE_SYNCHRO_MODE)
+          .equals(Const.DEVICE_SYNCHRO_MODE_BI));
       // check this device is synchronized
-      final String sIdSrc = (String) getValue(ITechnicalStrings.XML_DEVICE_SYNCHRO_SOURCE);
+      final String sIdSrc = (String) getValue(Const.XML_DEVICE_SYNCHRO_SOURCE);
       if ((sIdSrc == null) || sIdSrc.equals(getID())) {
         // cannot synchro with itself
         return;
@@ -873,7 +873,7 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
       final Directory dir = it.next();
       if (dir.getDevice().equals(dSrc)) {
         // don't take desynchronized dirs into account
-        if (dir.getBooleanValue(ITechnicalStrings.XML_DIRECTORY_SYNCHRONIZED)) {
+        if (dir.getBooleanValue(Const.XML_DIRECTORY_SYNCHRONIZED)) {
           hsSourceDirs.add(dir);
         } else {
           hsDesynchroPaths.add(dir.getRelativePath());
@@ -884,7 +884,7 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
     while (it.hasNext()) {
       final Directory dir = it.next();
       if (dir.getDevice().equals(dest)) {
-        if (dir.getBooleanValue(ITechnicalStrings.XML_DIRECTORY_SYNCHRONIZED)) {
+        if (dir.getBooleanValue(Const.XML_DIRECTORY_SYNCHRONIZED)) {
           // don't take desynchronized dirs into account
           hsDestDirs.add(dir);
         } else {
@@ -995,7 +995,7 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
       UtilGUI.stopWaiting();
       return false;
     }
-    if (getLongValue(ITechnicalStrings.XML_TYPE) != 5) { // not a remote device
+    if (getLongValue(Const.XML_TYPE) != 5) { // not a remote device
       final File file = new File(sUrl);
       if (file.exists() && file.canRead()) { // see if the url exists
         // and is readable
@@ -1041,7 +1041,7 @@ public class Device extends PhysicalItem implements ITechnicalStrings, Comparabl
   @Override
   public String toString() {
     return "Device[ID=" + getID() + " Name=" + getName() + " Type="
-        + DeviceManager.getInstance().getDeviceType(getLongValue(ITechnicalStrings.XML_TYPE))
+        + DeviceManager.getInstance().getDeviceType(getLongValue(Const.XML_TYPE))
         + " URL=" + sUrl + " Mount point=" + MOUNT_POINT + "]";
   }
 

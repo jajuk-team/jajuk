@@ -28,7 +28,7 @@ import org.jajuk.services.players.FIFO;
 import org.jajuk.services.players.StackItem;
 import org.jajuk.ui.widgets.CommandJPanel;
 import org.jajuk.ui.widgets.JajukJMenuBar;
-import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.Conf;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
 
@@ -48,29 +48,29 @@ public class RepeatModeAction extends ActionBase {
   @Override
   public void perform(ActionEvent evt) {
 
-    boolean b = ConfigurationManager.getBoolean(CONF_STATE_REPEAT);
-    ConfigurationManager.setProperty(CONF_STATE_REPEAT, Boolean.toString(!b));
+    boolean b = Conf.getBoolean(CONF_STATE_REPEAT);
+    Conf.setProperty(CONF_STATE_REPEAT, Boolean.toString(!b));
 
     JajukJMenuBar.getInstance().setRepeatSelected(!b);
     CommandJPanel.getInstance().setRepeatSelected(!b);
 
     if (!b) { // enabled button
       // if FIFO is not void, repeat over current item
-      StackItem item = FIFO.getInstance().getCurrentItem();
-      if (item != null && FIFO.getInstance().getIndex() == 0) {
+      StackItem item = FIFO.getCurrentItem();
+      if (item != null && FIFO.getIndex() == 0) {
         // only non-repeated items need to be set and
         // in this case, index = 0 or bug
         item.setRepeat(true);
       }
     } else {// disable repeat mode
       // remove repeat mode to all items
-      FIFO.getInstance().setRepeatModeToAll(false);
+      FIFO.setRepeatModeToAll(false);
       // remove tracks before current position
-      FIFO.getInstance().remove(0, FIFO.getInstance().getIndex() - 1);
-      FIFO.getInstance().setIndex(0); // select first track
+      FIFO.remove(0, FIFO.getIndex() - 1);
+      FIFO.setIndex(0); // select first track
     }
     // computes planned tracks
-    FIFO.getInstance().computesPlanned(false);
+    FIFO.computesPlanned(false);
     // Refresh Queue View
     ObservationManager.notify(new Event(JajukEvents.EVENT_QUEUE_NEED_REFRESH));
   }

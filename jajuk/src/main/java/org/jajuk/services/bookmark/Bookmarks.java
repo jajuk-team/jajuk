@@ -26,15 +26,15 @@ import java.util.StringTokenizer;
 
 import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
-import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Conf;
+import org.jajuk.util.Const;
 import org.jajuk.util.log.Log;
 
 /**
  * Manages bookmarks
  * 
  */
-public final class Bookmarks implements ITechnicalStrings {
+public final class Bookmarks implements Const {
 
   /** Singleton self-instance */
   private static Bookmarks bookmarks;
@@ -51,7 +51,7 @@ public final class Bookmarks implements ITechnicalStrings {
 
   /** Private constructor */
   private Bookmarks() {
-    String sBookmarks = ConfigurationManager.getProperty(CONF_BOOKMARKS);
+    String sBookmarks = Conf.getString(CONF_BOOKMARKS);
     if (sBookmarks == null || "".equals(sBookmarks.trim())) {
       return;
     }
@@ -89,7 +89,7 @@ public final class Bookmarks implements ITechnicalStrings {
    */
   public void clear() {
     alFiles.clear();
-    ConfigurationManager.setProperty(CONF_BOOKMARKS, "");
+    Conf.setProperty(CONF_BOOKMARKS, "");
   }
 
   /**
@@ -103,7 +103,7 @@ public final class Bookmarks implements ITechnicalStrings {
       File file = alFiles.get(index + 1); // save n+1 file
       alFiles.set(index + 1, alFiles.get(index));
       alFiles.set(index, file); // n+1 file becomes nth file
-      ConfigurationManager.setProperty(CONF_BOOKMARKS, toString());
+      Conf.setProperty(CONF_BOOKMARKS, toString());
     }
   }
 
@@ -117,7 +117,7 @@ public final class Bookmarks implements ITechnicalStrings {
       File file = alFiles.get(index - 1); // save n-1 file
       alFiles.set(index - 1, alFiles.get(index));
       alFiles.set(index, file); // n-1 file becomes nth file
-      ConfigurationManager.setProperty(CONF_BOOKMARKS, toString());
+      Conf.setProperty(CONF_BOOKMARKS, toString());
     }
   }
 
@@ -128,7 +128,7 @@ public final class Bookmarks implements ITechnicalStrings {
    */
   public synchronized void remove(int index) {
     alFiles.remove(index);
-    ConfigurationManager.setProperty(CONF_BOOKMARKS, toString());
+    Conf.setProperty(CONF_BOOKMARKS, toString());
   }
 
   /**
@@ -138,7 +138,7 @@ public final class Bookmarks implements ITechnicalStrings {
    */
   public synchronized void addFile(int index, File file) {
     alFiles.add(index, file);
-    ConfigurationManager.setProperty(CONF_BOOKMARKS, toString());
+    Conf.setProperty(CONF_BOOKMARKS, toString());
   }
 
   /**

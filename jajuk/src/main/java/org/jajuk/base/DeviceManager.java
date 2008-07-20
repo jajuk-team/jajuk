@@ -36,7 +36,7 @@ import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.services.core.ExitService;
 import org.jajuk.services.players.FIFO;
-import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.Conf;
 import org.jajuk.util.MD5Processor;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilSystem;
@@ -254,7 +254,7 @@ public final class DeviceManager extends ItemManager {
   public void removeDevice(Device device) {
     synchronized (DeviceManager.getInstance().getLock()) {
       // show confirmation message if required
-      if (ConfigurationManager.getBoolean(CONF_CONFIRMATIONS_REMOVE_DEVICE)) {
+      if (Conf.getBoolean(CONF_CONFIRMATIONS_REMOVE_DEVICE)) {
         int iResu = Messages.getChoice(Messages.getString("Confirmation_remove_device"),
             JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
         if (iResu != JOptionPane.YES_OPTION) {

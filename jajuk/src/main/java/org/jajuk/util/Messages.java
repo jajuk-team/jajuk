@@ -51,7 +51,7 @@ import org.xml.sax.helpers.DefaultHandler;
  * Singleton
  * </p>
  */
-public class Messages extends DefaultHandler implements ITechnicalStrings {
+public class Messages extends DefaultHandler implements Const {
   /** Local ( language) to be used, default is English */
   private static String sLocal = "en";
 
@@ -75,7 +75,7 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
   /** English messages used as default* */
   private static Properties propertiesEn;
 
-  /** ConfigurationManager Locales */
+  /** Conf Locales */
   public static final String[] LOCALES = { "en", "fr", "de", "nl", "es", "ca", "ko", "el", "ru",
       "gl" };
 
@@ -84,7 +84,7 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
    * wizard for ie) but this value can be overwritten later in startup process
    */
   static {
-    // Register locals, needed by ConfigurationManager to choose
+    // Register locals, needed by Conf to choose
     // default language
     for (final String locale : LOCALES) {
       Messages.registerLocal(locale);
@@ -203,13 +203,13 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
     try {
       String totd = null;
       // index contains the index of the last provided totd
-      int index = ConfigurationManager.getInt(CONF_TIP_OF_DAY_INDEX);
+      int index = Conf.getInt(CONF_TIP_OF_DAY_INDEX);
       // display the next one
       totd = Messages.getString("TipOfTheDay." + index);
       //Remove <img> tags
       totd = totd.replaceAll("<.*>", "");
       // Increment and save index
-      ConfigurationManager.setProperty(CONF_TIP_OF_DAY_INDEX, String.valueOf((index + 1)
+      Conf.setProperty(CONF_TIP_OF_DAY_INDEX, String.valueOf((index + 1)
           % Messages.getAll("TipOfTheDay").length));
       return totd;
     } catch (Exception e) {
@@ -297,7 +297,7 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
    * @param sLocal
    */
   public static void setLocal(final String sLocal) throws Exception {
-    ConfigurationManager.setProperty(CONF_OPTIONS_LANGUAGE, sLocal);
+    Conf.setProperty(CONF_OPTIONS_LANGUAGE, sLocal);
     properties = null; // make sure to reinitialize cached strings
     Messages.sLocal = sLocal;
   }
@@ -438,7 +438,7 @@ public class Messages extends DefaultHandler implements ITechnicalStrings {
    */
   public static void showHideableWarningMessage(final String sMessage, final String sProperty) {
     // User required to hide this message
-    if (ConfigurationManager.getBoolean(sProperty)) {
+    if (Conf.getBoolean(sProperty)) {
       return;
     }
     final HideableMessageDialog message = new HideableMessageDialog(sMessage,
@@ -710,7 +710,7 @@ class HideableMessageDialog extends JajukDialog {
     dialog.setVisible(true);
     if (Messages.getString("Hide").equals(optionPane.getValue())) {
       // Not show again
-      ConfigurationManager.setProperty(sProperty, TRUE);
+      Conf.setProperty(sProperty, TRUE);
     }
   }
 
@@ -747,7 +747,7 @@ class ErrorMessageDialog extends JajukDialog {
   }
 }
 
-abstract class JajukDialog implements ITechnicalStrings {
+abstract class JajukDialog implements Const {
   /** Dialog output */
   protected int iResu = -2;
 

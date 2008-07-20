@@ -35,8 +35,8 @@ import org.jajuk.events.Event;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.events.Observer;
-import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Conf;
+import org.jajuk.util.Const;
 import org.jajuk.util.log.Log;
 import org.jvnet.substance.SubstanceLookAndFeel;
 import org.jvnet.substance.fonts.FontPolicy;
@@ -45,7 +45,7 @@ import org.jvnet.substance.fonts.FontSet;
 /**
  * Manages Jajuk fonts, stores or update them
  */
-public final class FontManager implements ITechnicalStrings, Observer {
+public final class FontManager implements Const, Observer {
 
   public enum JajukFont {
     DEFAULT, PLAIN, PLAIN_S, PLAIN_L, PLAIN_XL, BOLD, BOLD_L, BOLD_XL, BOLD_XXL, BOLD_TITLE, PERSPECTIVES, PLANNED, SEARCHBOX, SPLASH, SPLASH_PROGRESS, VIEW_FONT
@@ -78,29 +78,29 @@ public final class FontManager implements ITechnicalStrings, Observer {
     fontCache.put(JajukFont.SPLASH, new Font("verdana", Font.PLAIN, 12));
     fontCache.put(JajukFont.SPLASH_PROGRESS, new Font("verdana", Font.BOLD, 12));
     // Bold
-    fontCache.put(JajukFont.BOLD, new Font("verdana", Font.BOLD, ConfigurationManager
+    fontCache.put(JajukFont.BOLD, new Font("verdana", Font.BOLD, Conf
         .getInt(CONF_FONTS_SIZE)));
-    fontCache.put(JajukFont.BOLD_L, new Font("verdana", Font.BOLD, ConfigurationManager
+    fontCache.put(JajukFont.BOLD_L, new Font("verdana", Font.BOLD, Conf
         .getInt(CONF_FONTS_SIZE) + 2));
-    fontCache.put(JajukFont.BOLD_XL, new Font("verdana", Font.BOLD, ConfigurationManager
+    fontCache.put(JajukFont.BOLD_XL, new Font("verdana", Font.BOLD, Conf
         .getInt(CONF_FONTS_SIZE) + 4));
-    fontCache.put(JajukFont.BOLD_XXL, new Font("verdana", Font.BOLD, ConfigurationManager
+    fontCache.put(JajukFont.BOLD_XXL, new Font("verdana", Font.BOLD, Conf
         .getInt(CONF_FONTS_SIZE) + 6));
     // Plain
-    fontCache.put(JajukFont.DEFAULT, new Font("verdana", Font.PLAIN, ConfigurationManager
+    fontCache.put(JajukFont.DEFAULT, new Font("verdana", Font.PLAIN, Conf
         .getInt(CONF_FONTS_SIZE)));
-    fontCache.put(JajukFont.PLAIN, new Font("verdana", Font.PLAIN, ConfigurationManager
+    fontCache.put(JajukFont.PLAIN, new Font("verdana", Font.PLAIN, Conf
         .getInt(CONF_FONTS_SIZE)));
-    fontCache.put(JajukFont.PLAIN_S, new Font("verdana", Font.PLAIN, ConfigurationManager
+    fontCache.put(JajukFont.PLAIN_S, new Font("verdana", Font.PLAIN, Conf
         .getInt(CONF_FONTS_SIZE) - 2));
-    fontCache.put(JajukFont.PLAIN_L, new Font("verdana", Font.PLAIN, ConfigurationManager
+    fontCache.put(JajukFont.PLAIN_L, new Font("verdana", Font.PLAIN, Conf
         .getInt(CONF_FONTS_SIZE) + 2));
-    fontCache.put(JajukFont.PLAIN_XL, new Font("verdana", Font.PLAIN, ConfigurationManager
+    fontCache.put(JajukFont.PLAIN_XL, new Font("verdana", Font.PLAIN, Conf
         .getInt(CONF_FONTS_SIZE) + 4));
     // Italic
-    fontCache.put(JajukFont.PLANNED, new Font("serif", Font.ITALIC, ConfigurationManager
+    fontCache.put(JajukFont.PLANNED, new Font("serif", Font.ITALIC, Conf
         .getInt(CONF_FONTS_SIZE)));
-    Font font = new Font("verdana", Font.PLAIN, ConfigurationManager.getInt(CONF_FONTS_SIZE));
+    Font font = new Font("verdana", Font.PLAIN, Conf.getInt(CONF_FONTS_SIZE));
     fontCache.put(JajukFont.VIEW_FONT, font);
   }
 

@@ -30,8 +30,8 @@ import org.jajuk.base.FileManager;
 import org.jajuk.services.alarm.Alarm;
 import org.jajuk.services.alarm.AlarmManager;
 import org.jajuk.ui.widgets.AlarmClockDialog;
-import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Conf;
+import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
 import org.jajuk.util.error.JajukException;
@@ -62,26 +62,26 @@ public class AlarmClockAction extends ActionBase {
       return;
     }
 
-    hours = ConfigurationManager.getInt(ALARM_TIME_HOUR);
-    minutes = ConfigurationManager.getInt(ALARM_TIME_MINUTES);
-    seconds = ConfigurationManager.getInt(ALARM_TIME_SECONDS);
+    hours = Conf.getInt(ALARM_TIME_HOUR);
+    minutes = Conf.getInt(ALARM_TIME_MINUTES);
+    seconds = Conf.getInt(ALARM_TIME_SECONDS);
 
-    alarmDaily = ConfigurationManager.getBoolean(CONF_ALARM_DAILY);
+    alarmDaily = Conf.getBoolean(CONF_ALARM_DAILY);
 
-    alarmMessage = ConfigurationManager.getProperty(ALARM_MESSAGE);
-    String alarmAction = ConfigurationManager.getProperty(CONF_ALARM_ACTION);
+    alarmMessage = Conf.getString(ALARM_MESSAGE);
+    String alarmAction = Conf.getString(CONF_ALARM_ACTION);
 
-    if (alarmAction.equals(ITechnicalStrings.ALARM_START_MODE)) {
+    if (alarmAction.equals(Const.ALARM_START_MODE)) {
       alToPlay = new ArrayList<File>();
-      if (ConfigurationManager.getProperty(CONF_ALARM_MODE).equals(STARTUP_MODE_FILE)) {
+      if (Conf.getString(CONF_ALARM_MODE).equals(STARTUP_MODE_FILE)) {
         File fileToPlay = FileManager.getInstance().getFileByID(
-            ConfigurationManager.getProperty(CONF_ALARM_FILE));
+            Conf.getString(CONF_ALARM_FILE));
         alToPlay.add(fileToPlay);
-      } else if (ConfigurationManager.getProperty(CONF_ALARM_MODE).equals(STARTUP_MODE_SHUFFLE)) {
+      } else if (Conf.getString(CONF_ALARM_MODE).equals(STARTUP_MODE_SHUFFLE)) {
         alToPlay = FileManager.getInstance().getGlobalShufflePlaylist();
-      } else if (ConfigurationManager.getProperty(CONF_ALARM_MODE).equals(STARTUP_MODE_BESTOF)) {
+      } else if (Conf.getString(CONF_ALARM_MODE).equals(STARTUP_MODE_BESTOF)) {
         alToPlay = FileManager.getInstance().getGlobalBestofPlaylist();
-      } else if (ConfigurationManager.getProperty(CONF_ALARM_MODE).equals(STARTUP_MODE_NOVELTIES)) {
+      } else if (Conf.getString(CONF_ALARM_MODE).equals(STARTUP_MODE_NOVELTIES)) {
         alToPlay = FileManager.getInstance().getGlobalNoveltiesPlaylist();
       }
     }

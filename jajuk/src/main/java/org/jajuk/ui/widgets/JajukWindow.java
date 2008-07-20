@@ -41,8 +41,8 @@ import org.jajuk.services.players.FIFO;
 import org.jajuk.services.webradio.WebRadio;
 import org.jajuk.ui.actions.ActionManager;
 import org.jajuk.ui.actions.JajukActions;
-import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Conf;
+import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilString;
@@ -53,7 +53,7 @@ import org.jajuk.util.log.Log;
  * <p>
  * Singleton
  */
-public class JajukWindow extends JFrame implements ITechnicalStrings, Observer {
+public class JajukWindow extends JFrame implements Const, Observer {
 
   private static final long serialVersionUID = 1L;
 
@@ -93,7 +93,7 @@ public class JajukWindow extends JFrame implements ITechnicalStrings, Observer {
     System.setProperty("apple.awt.showGrowBox", "false");
 
     jw = this;
-    bVisible = (ConfigurationManager.getInt(CONF_STARTUP_DISPLAY) == DISPLAY_MODE_WINDOW_TRAY);
+    bVisible = (Conf.getInt(CONF_STARTUP_DISPLAY) == DISPLAY_MODE_WINDOW_TRAY);
     setTitle(Messages.getString("JajukWindow.17"));
     setIconImage(IconLoader.ICON_LOGO.getImage());
     setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -160,7 +160,7 @@ public class JajukWindow extends JFrame implements ITechnicalStrings, Observer {
       Log.debug("Frame moved or resized, new bounds=" + sValue);
     }
     // Store the new position
-    ConfigurationManager.setProperty(CONF_WINDOW_POSITION, sValue);
+    Conf.setProperty(CONF_WINDOW_POSITION, sValue);
   }
 
   /**
@@ -169,7 +169,7 @@ public class JajukWindow extends JFrame implements ITechnicalStrings, Observer {
    */
   public void applyStoredSize() {
     // Note that defaults sizes (for very first startup) are set in
-    // ConfigurationManager.setDefaultProperties() method ,see
+    // Conf.setDefaultProperties() method ,see
     // CONF_WINDOW_POSITION
     int iScreenWidth = (int) (Toolkit.getDefaultToolkit().getScreenSize().getWidth());
     int iScreenHeight = (int) (Toolkit.getDefaultToolkit().getScreenSize().getHeight());
@@ -178,7 +178,7 @@ public class JajukWindow extends JFrame implements ITechnicalStrings, Observer {
     int iHorizSize = 0;
     int iVertSize = 0;
     // Forced frame position ?
-    String sForcedValue = ConfigurationManager.getProperty(CONF_FRAME_POS_FORCED);
+    String sForcedValue = Conf.getString(CONF_FRAME_POS_FORCED);
     if (sForcedValue != null && !sForcedValue.trim().equals("")) {
       try {
         StringTokenizer st = new StringTokenizer(sForcedValue, ",");
@@ -203,7 +203,7 @@ public class JajukWindow extends JFrame implements ITechnicalStrings, Observer {
       return;
     }
     // read stored position and size
-    String sPosition = ConfigurationManager.getProperty(CONF_WINDOW_POSITION);
+    String sPosition = Conf.getString(CONF_WINDOW_POSITION);
     // If user left jajuk maximized, reset this simple configuration
     if (sPosition.equals(FRAME_MAXIMIZED)) {
       // Always set a size that is used when un-maximalizing the frame
@@ -252,7 +252,7 @@ public class JajukWindow extends JFrame implements ITechnicalStrings, Observer {
     SwingUtilities.invokeLater(new Runnable() {
       public void run() {
         if (subject.equals(JajukEvents.EVENT_FILE_LAUNCHED)) {
-          File file = FIFO.getInstance().getCurrentFile();
+          File file = FIFO.getCurrentFile();
           if (file != null) {
             setTitle(UtilString.buildTitle(file));
           }
@@ -260,7 +260,7 @@ public class JajukWindow extends JFrame implements ITechnicalStrings, Observer {
             || subject.equals(JajukEvents.EVENT_PLAYER_STOP)) {
           setTitle(Messages.getString("JajukWindow.17"));
         } else if (subject.equals(JajukEvents.EVENT_WEBRADIO_LAUNCHED)) {
-          WebRadio radio = FIFO.getInstance().getCurrentRadio();
+          WebRadio radio = FIFO.getCurrentRadio();
           if (radio != null) {
             // We use vertical bar to allow scripting like MSN plugins to
             // detect jajuk frames and extract current track

@@ -33,7 +33,7 @@ import org.jajuk.base.Playlist;
 import org.jajuk.base.PlaylistManager;
 import org.jajuk.base.PropertyMetaInformation;
 import org.jajuk.ui.widgets.IconLabel;
-import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.Conf;
 import org.jajuk.util.Filter;
 import org.jajuk.util.Messages;
 
@@ -93,14 +93,14 @@ public class PlaylistRepositoryTableModel extends JajukTableModel {
       List<String> columnsToShow) {
     List<Playlist> alToShow = new ArrayList<Playlist>(PlaylistManager.getInstance().getPlaylists());
     // OK, begin by filtering using any provided pattern
-    Filter filter = new Filter(sPropertyName, sPattern, true, ConfigurationManager
+    Filter filter = new Filter(sPropertyName, sPattern, true, Conf
         .getBoolean(CONF_REGEXP));
     Filter.filterItems(alToShow, filter);
 
     Iterator<Playlist> it = null;
 
     // Filter unmounted files if required
-    if (ConfigurationManager.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED)) {
+    if (Conf.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED)) {
       it = alToShow.iterator();
       while (it.hasNext()) {
         Playlist plf = it.next();

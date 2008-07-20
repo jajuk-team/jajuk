@@ -143,7 +143,7 @@ public final class JajukTimer {
    *         to play). Returns -1 if repeat mode
    */
   public long getTotalTimeToPlay() {
-    if (FIFO.getInstance().containsRepeat()) {
+    if (FIFO.containsRepeat()) {
       // if repeat mode, total
       // time has no sense
       return -1;

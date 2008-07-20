@@ -41,8 +41,7 @@ import org.jajuk.base.StyleManager;
 import org.jajuk.base.TrackManager;
 import org.jajuk.base.TypeManager;
 import org.jajuk.base.YearManager;
-import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Const;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilSystem;
 import org.jajuk.util.filters.JarFilter;
@@ -54,7 +53,7 @@ import org.jajuk.util.log.Log;
  * process is done.
  * 
  */
-public final class ThumbnailsMaker implements ITechnicalStrings {
+public final class ThumbnailsMaker implements Const {
 
   private static boolean bAlreadyRunning = false;
 
@@ -77,7 +76,7 @@ public final class ThumbnailsMaker implements ITechnicalStrings {
    *          do you have to wait all process done ?
    */
   public static void launchAllSizes(final boolean bSynchronous) {
-    // We need this mutex to make sure auto-refresh cannto launch several times
+    // We need this mutex to make sure auto-refresh cannot launch several times
     // the full thumbs rebuild:
     // autorefresh at time t launch this method asynchronously, then autorefresh
     // at t+n relaunch it..
@@ -225,19 +224,17 @@ public final class ThumbnailsMaker implements ITechnicalStrings {
     DeviceManager.getInstance().registerDeviceType(Messages.getString("Device_type.network_drive"));
     DeviceManager.getInstance().registerDeviceType(Messages.getString("Device_type.extdd"));
     DeviceManager.getInstance().registerDeviceType(Messages.getString("Device_type.player"));
-    // Load conf (required to get forced mplayer path for ie)
-    ConfigurationManager.getInstance();
     // registers supported audio supports and default properties
     Main.registerTypes();
     // load collection
-    Collection.load(UtilSystem.getConfFileByPath(ITechnicalStrings.FILE_COLLECTION));
+    Collection.load(UtilSystem.getConfFileByPath(Const.FILE_COLLECTION));
     // Mount devices
     Main.autoMount();
     final java.util.Set<Album> albums = AlbumManager.getInstance().getAlbums();
     // For each album, create the associated thumb
     for (final Album album : albums) {
       // Leave if jajuk leaved
-      if (UtilSystem.getConfFileByPath(ITechnicalStrings.FILE_COLLECTION_EXIT_PROOF).exists()) {
+      if (UtilSystem.getConfFileByPath(Const.FILE_COLLECTION_EXIT_PROOF).exists()) {
         Log.debug("Parent Jajuk closed, leaving now...");
         return;
       }

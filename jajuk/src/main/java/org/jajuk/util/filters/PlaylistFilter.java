@@ -23,7 +23,7 @@ import java.io.File;
 
 import org.jajuk.base.Type;
 import org.jajuk.base.TypeManager;
-import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Const;
 import org.jajuk.util.JajukFileFilter;
 import org.jajuk.util.UtilSystem;
 
@@ -71,7 +71,7 @@ public final class PlaylistFilter extends JajukFileFilter {
       // check extension is known
       if (mgr.isExtensionSupported(extension)) {
         // check it is a playlist
-        final Type playlist = mgr.getTypeByExtension(ITechnicalStrings.EXT_PLAYLIST);
+        final Type playlist = mgr.getTypeByExtension(Const.EXT_PLAYLIST);
         return mgr.getTypeByExtension(extension).equals(playlist);
       }
     }
@@ -85,6 +85,6 @@ public final class PlaylistFilter extends JajukFileFilter {
    */
   @Override
   public String getDescription() {
-    return ITechnicalStrings.EXT_PLAYLIST;
+    return Const.EXT_PLAYLIST;
   }
 }

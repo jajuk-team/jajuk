@@ -27,7 +27,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Const;
 import org.jajuk.util.JajukFileFilter;
 import org.jajuk.util.MD5Processor;
 import org.jajuk.util.UtilSystem;
@@ -106,30 +106,30 @@ public final class DirectoryManager extends ItemManager {
     super();
     // ---register properties---
     // ID
-    registerProperty(new PropertyMetaInformation(ITechnicalStrings.XML_ID, false, true, false,
+    registerProperty(new PropertyMetaInformation(Const.XML_ID, false, true, false,
         false, false, String.class, null));
     // Name test with (getParentDirectory() != null); //name editable only
     // for standard
     // directories, not root
-    registerProperty(new PropertyMetaInformation(ITechnicalStrings.XML_NAME, false, true, true,
+    registerProperty(new PropertyMetaInformation(Const.XML_NAME, false, true, true,
         false, false, String.class, null)); // edition to
     // yet
     // implemented
     // TBI
     // Parent
-    registerProperty(new PropertyMetaInformation(ITechnicalStrings.XML_DIRECTORY_PARENT, false,
+    registerProperty(new PropertyMetaInformation(Const.XML_DIRECTORY_PARENT, false,
         true, true, false, false, String.class, null));
     // Device
-    registerProperty(new PropertyMetaInformation(ITechnicalStrings.XML_DEVICE, false, true, true,
+    registerProperty(new PropertyMetaInformation(Const.XML_DEVICE, false, true, true,
         false, false, String.class, null));
     // Expand
-    registerProperty(new PropertyMetaInformation(ITechnicalStrings.XML_EXPANDED, false, false,
+    registerProperty(new PropertyMetaInformation(Const.XML_EXPANDED, false, false,
         false, false, true, Boolean.class, false));
     // Synchonized directory
-    registerProperty(new PropertyMetaInformation(ITechnicalStrings.XML_DIRECTORY_SYNCHRONIZED,
+    registerProperty(new PropertyMetaInformation(Const.XML_DIRECTORY_SYNCHRONIZED,
         false, false, true, false, false, Boolean.class, true));
     // Default cover
-    registerProperty(new PropertyMetaInformation(ITechnicalStrings.XML_DIRECTORY_DEFAULT_COVER,
+    registerProperty(new PropertyMetaInformation(Const.XML_DIRECTORY_DEFAULT_COVER,
         false, false, true, false, false, String.class, null));
   }
 
@@ -195,7 +195,7 @@ public final class DirectoryManager extends ItemManager {
    */
   @Override
   public String getLabel() {
-    return ITechnicalStrings.XML_DIRECTORIES;
+    return Const.XML_DIRECTORIES;
   }
 
   /**

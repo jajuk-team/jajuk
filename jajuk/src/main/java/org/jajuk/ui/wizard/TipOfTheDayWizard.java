@@ -36,12 +36,12 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
-import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Conf;
+import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
 
-public class TipOfTheDayWizard extends JFrame implements ITechnicalStrings {
+public class TipOfTheDayWizard extends JFrame implements Const {
 
   private static final long serialVersionUID = 1L;
 
@@ -59,10 +59,10 @@ public class TipOfTheDayWizard extends JFrame implements ITechnicalStrings {
     super(Messages.getString("TipOfTheDayView.0"));
     setAlwaysOnTop(true);
     setIconImage(IconLoader.ICON_LOGO.getImage());
-    this.iLastTip = (ConfigurationManager.getInt(CONF_TIP_OF_DAY_INDEX) - 1) % TIPS.length;
+    this.iLastTip = (Conf.getInt(CONF_TIP_OF_DAY_INDEX) - 1) % TIPS.length;
 
     cbShow = new JCheckBox(Messages.getString("TipOfTheDayView.2"));
-    cbShow.setSelected(ConfigurationManager.getBoolean(CONF_SHOW_TIP_ON_STARTUP));
+    cbShow.setSelected(Conf.getBoolean(CONF_SHOW_TIP_ON_STARTUP));
 
     tipArea = new JTextArea();
     tipArea.setWrapStyleWord(true);
@@ -161,9 +161,9 @@ public class TipOfTheDayWizard extends JFrame implements ITechnicalStrings {
     if (flag) {
       toFront();
     } else {
-      ConfigurationManager.setProperty(CONF_TIP_OF_DAY_INDEX, String.valueOf((iLastTip + 1)
+      Conf.setProperty(CONF_TIP_OF_DAY_INDEX, String.valueOf((iLastTip + 1)
           % TIPS.length));
-      ConfigurationManager.setProperty(CONF_SHOW_TIP_ON_STARTUP, String
+      Conf.setProperty(CONF_SHOW_TIP_ON_STARTUP, String
           .valueOf(cbShow.isSelected()));
     }
   }

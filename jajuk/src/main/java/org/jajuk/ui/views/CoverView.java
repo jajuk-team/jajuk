@@ -72,9 +72,9 @@ import org.jajuk.ui.widgets.InformationJPanel;
 import org.jajuk.ui.widgets.JajukButton;
 import org.jajuk.ui.widgets.JajukFileChooser;
 import org.jajuk.ui.widgets.JajukWindow;
-import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.Conf;
 import org.jajuk.util.DownloadManager;
-import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukFileFilter;
 import org.jajuk.util.Messages;
@@ -94,7 +94,7 @@ import org.jdesktop.swingx.border.DropShadowBorder;
  * Cover view. Displays an image for the current album
  */
 public class CoverView extends ViewAdapter implements Observer, ComponentListener, ActionListener,
-    ITechnicalStrings {
+    Const {
 
   private static final long serialVersionUID = 1L;
 
@@ -216,7 +216,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
   private void handleAccuracy() {
     // Note that we have to store/retrieve accuracy using an id. When
     // this view is used from a popup, we can't use perspective id
-    ConfigurationManager.setProperty(ITechnicalStrings.CONF_COVERS_ACCURACY + "_"
+    Conf.setProperty(Const.CONF_COVERS_ACCURACY + "_"
         + ((getPerspective() == null) ? "popup" : getPerspective().getID()), Integer
         .toString(jcbAccuracy.getSelectedIndex()));
 
@@ -265,7 +265,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
   private void handleDelete() {
     final Cover cover = alCovers.get(index);
     // show confirmation message if required
-    if (ConfigurationManager.getBoolean(ITechnicalStrings.CONF_CONFIRMATIONS_DELETE_COVER)) {
+    if (Conf.getBoolean(Const.CONF_CONFIRMATIONS_DELETE_COVER)) {
       final int iResu = Messages.getChoice(Messages.getString("Confirmation_delete_cover")
           + " : " + cover.getURL().getFile(), JOptionPane.YES_NO_CANCEL_OPTION,
           JOptionPane.WARNING_MESSAGE);
@@ -331,7 +331,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
         // by jajuk
         final int pos = sFilePath.lastIndexOf('.');
         sFilePath = new StringBuilder(sFilePath).insert(pos,
-            ITechnicalStrings.FILE_JAJUK_DOWNLOADED_FILES_SUFFIX).toString();
+            Const.FILE_JAJUK_DOWNLOADED_FILES_SUFFIX).toString();
         try {
           // copy file from cache
           final File fSource = DownloadManager.downloadCover(cover.getURL(), cover
@@ -407,7 +407,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
         // jajuk
         final int pos = sFilePath.lastIndexOf('.');
         sFilePath = new StringBuilder(sFilePath).insert(pos,
-            ITechnicalStrings.FILE_JAJUK_DOWNLOADED_FILES_SUFFIX).toString();
+            Const.FILE_JAJUK_DOWNLOADED_FILES_SUFFIX).toString();
         try {
           // copy file from cache
           final File fSource = DownloadManager.downloadCover(cover.getURL(), cover.getDownloadID());
@@ -421,7 +421,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
           // Remove previous thumbs to avoid using outdated images
           org.jajuk.base.File fCurrent = fileReference;
           if (fCurrent == null) {
-            fCurrent = FIFO.getInstance().getCurrentFile();
+            fCurrent = FIFO.getCurrentFile();
           }
           ThumbnailManager.cleanThumbs(fCurrent.getTrack().getAlbum());
           refreshThumbs(cover);
@@ -470,7 +470,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
     String sQuery = "";
     int iAccuracy = 0;
     try {
-      iAccuracy = ConfigurationManager.getInt(ITechnicalStrings.CONF_COVERS_ACCURACY + "_"
+      iAccuracy = Conf.getInt(Const.CONF_COVERS_ACCURACY + "_"
           + ((getPerspective() == null) ? "popup" : getPerspective().getID()));
     } catch (final Exception e) {
       // can append if accuracy never set
@@ -782,7 +782,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
     jcbAccuracy.addItem(IconLoader.ICON_TRACK);
     int i = 1; // medium accuracy
     try {
-      i = ConfigurationManager.getInt(ITechnicalStrings.CONF_COVERS_ACCURACY + "_"
+      i = Conf.getInt(Const.CONF_COVERS_ACCURACY + "_"
           + ((getPerspective() == null) ? "popup" : getPerspective().getID()));
     } catch (final Exception e) {
       // Will reach this point at first launch
@@ -823,7 +823,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
     try {
       // instantiate default cover
       if (CoverView.coverDefault == null) {
-        CoverView.coverDefault = new Cover(ITechnicalStrings.IMAGES_SPLASHSCREEN,
+        CoverView.coverDefault = new Cover(Const.IMAGES_SPLASHSCREEN,
             Cover.DEFAULT_COVER);
       }
     } catch (final Exception e) {
@@ -845,7 +845,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
               Log.error(e);
             }
             // check if a track has already been launched
-            if (FIFO.getInstance().isPlayingRadio()) {
+            if (FIFO.isPlayingRadio()) {
               update(new Event(JajukEvents.EVENT_WEBRADIO_LAUNCHED, ObservationManager
                   .getDetailsLastOccurence(JajukEvents.EVENT_WEBRADIO_LAUNCHED)));
             } else {
@@ -948,9 +948,9 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
     try {
       for (int i = 0; i < 4; i++) {
         final Album album = dirReference.getFiles().iterator().next().getTrack().getAlbum();
-        final File fThumb = UtilSystem.getConfFileByPath(ITechnicalStrings.FILE_THUMBS + '/'
+        final File fThumb = UtilSystem.getConfFileByPath(Const.FILE_THUMBS + '/'
             + (50 + 50 * i) + "x" + (50 + 50 * i) + '/' + album.getID() + '.'
-            + ITechnicalStrings.EXT_THUMB);
+            + Const.EXT_THUMB);
         ThumbnailManager.createThumbnail(cover.getFile(), fThumb, (50 + 50 * i));
       }
     } catch (final Exception ex) {
@@ -1053,7 +1053,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
           if (last == null // first track, display cover
               // if we are always in the same directory, just leave to
               // save cpu
-              || (!last.getDirectory().equals(FIFO.getInstance().getCurrentFile().getDirectory()))
+              || (!last.getDirectory().equals(FIFO.getCurrentFile().getDirectory()))
               || bForceCoverReload) {
             // Ignore this event if a reference file has been set and if
             // this event has already been handled
@@ -1063,7 +1063,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
             refreshCovers(iLocalEventID);
           }
           // case just for a cover change without reload
-          else if ((ConfigurationManager.getBoolean(CONF_COVERS_SHUFFLE))) {
+          else if ((Conf.getBoolean(CONF_COVERS_SHUFFLE))) {
             // Ignore this event if a reference file has been set
             if (fileReference != null) {
               return;
@@ -1115,7 +1115,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
     // check if a file has been given for this cover view
     // if not, take current cover
     if (fCurrent == null) {
-      fCurrent = FIFO.getInstance().getCurrentFile();
+      fCurrent = FIFO.getCurrentFile();
     }
     // no current cover
     if (fCurrent == null) {
@@ -1157,7 +1157,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
       // whether an absolute cover (unique) has been found
       for (int i = 0; (files != null) && (i < files.length); i++) {
         // check size to avoid out of memory errors
-        if (files[i].length() > ITechnicalStrings.MAX_COVER_SIZE * 1024) {
+        if (files[i].length() > Const.MAX_COVER_SIZE * 1024) {
           continue;
         }
         final JajukFileFilter filter = ImageFilter.getInstance();
@@ -1182,8 +1182,8 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
     // then we search for web covers online if max
     // connection errors number is not reached or if user
     // already managed to connect
-    if (ConfigurationManager.getBoolean(ITechnicalStrings.CONF_COVERS_AUTO_COVER)
-        && (CoverView.bOnceConnected || (CoverView.iErrorCounter < ITechnicalStrings.STOP_TO_SEARCH))) {
+    if (Conf.getBoolean(Const.CONF_COVERS_AUTO_COVER)
+        && (CoverView.bOnceConnected || (CoverView.iErrorCounter < Const.STOP_TO_SEARCH))) {
       try {
         final String sQuery = createQuery(fCurrent);
         Log.debug("Query={{" + sQuery + "}}");
@@ -1194,9 +1194,9 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
           alUrls = DownloadManager.getRemoteCoversList(sQuery);
           CoverView.bOnceConnected = true;
           // user managed once to connect to the web
-          if (alUrls.size() > ITechnicalStrings.MAX_REMOTE_COVERS) {
+          if (alUrls.size() > Const.MAX_REMOTE_COVERS) {
             // limit number of remote covers
-            alUrls = new ArrayList<URL>(alUrls.subList(0, ITechnicalStrings.MAX_REMOTE_COVERS));
+            alUrls = new ArrayList<URL>(alUrls.subList(0, Const.MAX_REMOTE_COVERS));
           }
           Collections.reverse(alUrls);
           // set best results to be displayed first
@@ -1220,7 +1220,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
               // can occur in case of
               // timeout during cover download
               CoverView.iErrorCounter++;
-              if (CoverView.iErrorCounter == ITechnicalStrings.STOP_TO_SEARCH) {
+              if (CoverView.iErrorCounter == Const.STOP_TO_SEARCH) {
                 Log.warn("Too many connection fails, stop to search for covers online");
                 InformationJPanel.getInstance().setMessage(Messages.getString("Error.030"),
                     InformationJPanel.WARNING);
@@ -1242,7 +1242,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
         // can occur in case of timeout or error during
         // covers list download
         CoverView.iErrorCounter++;
-        if (CoverView.iErrorCounter == ITechnicalStrings.STOP_TO_SEARCH) {
+        if (CoverView.iErrorCounter == Const.STOP_TO_SEARCH) {
           Log.warn("Too many connection fails," + " stop to search for covers online");
           InformationJPanel.getInstance().setMessage(Messages.getString("Error.030"),
               InformationJPanel.WARNING);
@@ -1257,7 +1257,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
     }
     Collections.sort(alCovers); // sort the list
     Log.debug("Local cover list: {{" + alCovers + "}}");
-    if (ConfigurationManager.getBoolean(ITechnicalStrings.CONF_COVERS_SHUFFLE)) {
+    if (Conf.getBoolean(Const.CONF_COVERS_SHUFFLE)) {
       // choose a random cover
       index = (int) (Math.random() * alCovers.size());
     } else {

@@ -29,7 +29,7 @@ import org.jajuk.ui.perspectives.PerspectiveManager;
 import org.jajuk.ui.widgets.JajukSlimbar;
 import org.jajuk.ui.widgets.JajukSystray;
 import org.jajuk.ui.widgets.JajukWindow;
-import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.Conf;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
 import org.jajuk.util.log.Log;
@@ -48,7 +48,7 @@ public class ExitAction extends ActionBase {
   @Override
   public void perform(ActionEvent evt) {
     // Ask if a confirmation is required
-    if (ConfigurationManager.getBoolean(CONF_CONFIRMATIONS_EXIT)) {
+    if (Conf.getBoolean(CONF_CONFIRMATIONS_EXIT)) {
       int iResu = Messages.getChoice(Messages.getString("Confirmation_exit"),
           JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);
       if (iResu != JOptionPane.YES_OPTION) {
@@ -75,17 +75,17 @@ public class ExitAction extends ActionBase {
 
       // Store window/tray/slimbar configuration
       if (JajukSlimbar.isLoaded() && JajukSlimbar.getInstance().isVisible()) {
-        ConfigurationManager.setProperty(CONF_STARTUP_DISPLAY, Integer
+        Conf.setProperty(CONF_STARTUP_DISPLAY, Integer
             .toString(DISPLAY_MODE_SLIMBAR_TRAY));
       }
       if (JajukWindow.isLoaded() && JajukWindow.getInstance().isVisible()) {
-        ConfigurationManager.setProperty(CONF_STARTUP_DISPLAY, Integer
+        Conf.setProperty(CONF_STARTUP_DISPLAY, Integer
             .toString(DISPLAY_MODE_WINDOW_TRAY));
       }
 
       if (!(JajukSlimbar.isLoaded() && JajukSlimbar.getInstance().isVisible())
           && !(JajukWindow.isLoaded() && JajukWindow.getInstance().isVisible())) {
-        ConfigurationManager.setProperty(CONF_STARTUP_DISPLAY, Integer.toString(DISPLAY_MODE_TRAY));
+        Conf.setProperty(CONF_STARTUP_DISPLAY, Integer.toString(DISPLAY_MODE_TRAY));
       }
 
       // hide window ASAP

@@ -44,8 +44,8 @@ import org.jajuk.events.Event;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.events.Observer;
-import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Conf;
+import org.jajuk.util.Const;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilSystem;
 import org.jajuk.util.log.Log;
@@ -59,7 +59,7 @@ import org.xml.sax.helpers.DefaultHandler;
  * Singleton
  * </p>
  */
-public final class DigitalDJManager implements ITechnicalStrings, Observer {
+public final class DigitalDJManager implements Const, Observer {
 
   /** List of registrated DJs ID->DJ */
   private Map<String, DigitalDJ> djs;
@@ -161,8 +161,8 @@ public final class DigitalDJManager implements ITechnicalStrings, Observer {
     djs.remove(dj.getID());
     UtilSystem.getConfFileByPath(FILE_DJ_DIR + "/" + dj.getID() + "." + XML_DJ_EXTENSION).delete();
     // reset default DJ if this DJ was default
-    if (ConfigurationManager.getProperty(CONF_DEFAULT_DJ).equals(dj.getID())) {
-      ConfigurationManager.setProperty(CONF_DEFAULT_DJ, "");
+    if (Conf.getString(CONF_DEFAULT_DJ).equals(dj.getID())) {
+      Conf.setProperty(CONF_DEFAULT_DJ, "");
     }
     // alert command panel
     ObservationManager.notify(new Event(JajukEvents.EVENT_DJS_CHANGE));
@@ -222,7 +222,7 @@ public final class DigitalDJManager implements ITechnicalStrings, Observer {
           DigitalDJFactory factory = DigitalDJFactory.getFactory(element);
           DigitalDJ lDJ = factory.getDJ(element);
           djs.put(lDJ.getID(), lDJ);
-          if (lDJ.getID().equals(ConfigurationManager.getProperty(CONF_DEFAULT_DJ))) {
+          if (lDJ.getID().equals(Conf.getString(CONF_DEFAULT_DJ))) {
             current = lDJ;
           }
         } catch (Exception e) {
@@ -247,7 +247,7 @@ public final class DigitalDJManager implements ITechnicalStrings, Observer {
 /**
  * This class is responsible for creating different factories
  */
-abstract class DigitalDJFactory extends DefaultHandler implements ITechnicalStrings {
+abstract class DigitalDJFactory extends DefaultHandler implements Const {
 
   /** Factory type (class name) */
   private static String factoryType;

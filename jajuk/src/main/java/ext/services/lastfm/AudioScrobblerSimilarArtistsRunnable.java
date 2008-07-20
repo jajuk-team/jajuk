@@ -20,9 +20,9 @@ package ext.services.lastfm;
 
 import java.awt.Image;
 
-import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Const;
 
-public class AudioScrobblerSimilarArtistsRunnable implements Runnable, ITechnicalStrings {
+public class AudioScrobblerSimilarArtistsRunnable implements Runnable, Const {
 
   private AudioScrobblerListener listener;
 

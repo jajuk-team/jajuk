@@ -28,13 +28,13 @@ import javax.swing.TransferHandler;
 
 import org.jajuk.base.FileManager;
 import org.jajuk.ui.widgets.JajukTable;
-import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Const;
 
 /**
  * DND handler for table
  */
 
-public class TableTransferHandler extends TransferHandler implements ITechnicalStrings {
+public class TableTransferHandler extends TransferHandler implements Const {
 
   private static final long serialVersionUID = 1L;
 

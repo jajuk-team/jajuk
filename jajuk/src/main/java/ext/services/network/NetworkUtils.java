@@ -33,11 +33,11 @@ import java.net.Proxy.Type;
 
 import javax.imageio.ImageIO;
 
-import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Conf;
+import org.jajuk.util.Const;
 import org.jajuk.util.log.Log;
 
-public final class NetworkUtils implements ITechnicalStrings {
+public final class NetworkUtils implements Const {
 
   private NetworkUtils() {
     // default hidden constructor for utility classes
@@ -63,7 +63,7 @@ public final class NetworkUtils implements ITechnicalStrings {
   }
 
   private static void setConfiguration(HttpURLConnection connection) {
-    connection.setConnectTimeout(1000 * ConfigurationManager.getInt(CONF_NETWORK_CONNECTION_TO));
+    connection.setConnectTimeout(1000 * Conf.getInt(CONF_NETWORK_CONNECTION_TO));
     // Google needs this
     connection.addRequestProperty("Accept",
         "image/gif, image/x-xbitmap, image/jpeg, image/pjpeg, */*");

@@ -69,8 +69,8 @@ import org.jajuk.ui.helpers.FontManager;
 import org.jajuk.ui.helpers.FontManager.JajukFont;
 import org.jajuk.ui.widgets.JajukWindow;
 import org.jajuk.ui.widgets.StylesSelectionDialog;
-import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Conf;
+import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilGUI;
@@ -81,7 +81,7 @@ import org.qdwizard.Wizard;
 /**
  * DJ creation wizard
  */
-public class DigitalDJWizard extends Wizard implements ITechnicalStrings {
+public class DigitalDJWizard extends Wizard implements Const {
 
   /** Wizard action */
   private static final String KEY_ACTION = "ACTION";
@@ -1427,7 +1427,7 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings {
       DigitalDJManager.commit(dj);
       // If first DJ, select it as default
       if (DigitalDJManager.getInstance().getDJs().size() == 1) {
-        ConfigurationManager.setProperty(CONF_DEFAULT_DJ, dj.getID());
+        Conf.setProperty(CONF_DEFAULT_DJ, dj.getID());
       }
     } else if (ActionSelectionPanel.ACTION_CHANGE.equals(sAction)) {
       String sType = (String) data.get(KEY_DJ_TYPE);

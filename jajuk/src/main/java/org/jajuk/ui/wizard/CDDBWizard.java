@@ -66,13 +66,13 @@ import org.jajuk.ui.widgets.JajukTable;
 import org.jajuk.ui.widgets.JajukWindow;
 import org.jajuk.ui.widgets.OKCancelPanel;
 import org.jajuk.ui.widgets.SteppedComboBox;
-import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Const;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilGUI;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 
-public class CDDBWizard extends JajukJDialog implements ITechnicalStrings, ActionListener,
+public class CDDBWizard extends JajukJDialog implements Const, ActionListener,
     TableColumnModelListener, TableModelListener, MouseListener {
 
   private static final long serialVersionUID = 1L;

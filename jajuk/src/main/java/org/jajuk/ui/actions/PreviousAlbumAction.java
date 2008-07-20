@@ -47,7 +47,7 @@ public class PreviousAlbumAction extends ActionBase {
       public void run() {
         synchronized (FIFO.MUTEX) {
           try {
-            FIFO.getInstance().playPreviousAlbum();
+            FIFO.playPreviousAlbum();
           } catch (Exception e) {
             Log.error(e);
           }

@@ -34,7 +34,7 @@ import org.jajuk.base.PropertyMetaInformation;
 import org.jajuk.base.Style;
 import org.jajuk.base.Year;
 import org.jajuk.ui.widgets.IconLabel;
-import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.Conf;
 import org.jajuk.util.Filter;
 import org.jajuk.util.Messages;
 
@@ -55,7 +55,7 @@ public class AlbumsTableModel extends JajukTableModel {
    */
   public AlbumsTableModel() {
     super(10);
-    setEditable(ConfigurationManager.getBoolean(CONF_ALBUMS_TABLE_EDITION));
+    setEditable(Conf.getBoolean(CONF_ALBUMS_TABLE_EDITION));
     // Columns names
     // First column is play icon, need to set a space character
     // for proper display in some look and feel
@@ -119,7 +119,7 @@ public class AlbumsTableModel extends JajukTableModel {
       List<String> columnsToShow) {
     List<Album> alToShow = new ArrayList<Album>(AlbumManager.getInstance().getAlbums());
     // OK, begin by filtering using any provided pattern
-    Filter filter = new Filter(sPropertyName, sPattern, true, ConfigurationManager
+    Filter filter = new Filter(sPropertyName, sPattern, true, Conf
         .getBoolean(CONF_REGEXP));
     Filter.filterItems(alToShow, filter);
 
@@ -127,7 +127,7 @@ public class AlbumsTableModel extends JajukTableModel {
     Iterator<Album> it = alToShow.iterator();
     while (it.hasNext()) {
       Album album = it.next();
-      if (ConfigurationManager.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED)
+      if (Conf.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED)
           && !album.containsReadyFiles()) {
         it.remove();
       }

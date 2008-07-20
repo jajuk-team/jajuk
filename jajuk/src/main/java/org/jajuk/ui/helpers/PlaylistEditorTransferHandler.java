@@ -35,8 +35,8 @@ import org.jajuk.base.Playlist;
 import org.jajuk.services.players.FIFO;
 import org.jajuk.ui.views.PlaylistView;
 import org.jajuk.ui.widgets.JajukTable;
-import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Conf;
+import org.jajuk.util.Const;
 import org.jajuk.util.UtilFeatures;
 import org.jajuk.util.log.Log;
 
@@ -44,7 +44,7 @@ import org.jajuk.util.log.Log;
  * DND handler for table
  */
 
-public class PlaylistEditorTransferHandler extends TransferHandler implements ITechnicalStrings {
+public class PlaylistEditorTransferHandler extends TransferHandler implements Const {
 
   private static final long serialVersionUID = 1L;
 
@@ -124,10 +124,10 @@ public class PlaylistEditorTransferHandler extends TransferHandler implements IT
         List<File> alSelectedFiles = UtilFeatures.getPlayableFiles((Item) oData);
         // queue case
         if (plf.getType() == Playlist.Type.QUEUE) {
-          FIFO.getInstance().push(
-              UtilFeatures.createStackItems(UtilFeatures.applyPlayOption(alSelectedFiles), ConfigurationManager
+          FIFO.push(
+              UtilFeatures.createStackItems(UtilFeatures.applyPlayOption(alSelectedFiles), Conf
                   .getBoolean(CONF_STATE_REPEAT), true),
-              ConfigurationManager.getBoolean(CONF_OPTIONS_DEFAULT_ACTION_DROP));
+              Conf.getBoolean(CONF_OPTIONS_DEFAULT_ACTION_DROP));
         }
         // normal or new playlist case
         else if (plf.getType() == Playlist.Type.NORMAL || plf.getType() == Playlist.Type.NEW

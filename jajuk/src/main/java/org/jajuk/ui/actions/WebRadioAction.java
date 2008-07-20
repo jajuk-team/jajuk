@@ -25,7 +25,7 @@ import java.awt.event.ActionEvent;
 import org.jajuk.services.players.FIFO;
 import org.jajuk.services.webradio.WebRadio;
 import org.jajuk.services.webradio.WebRadioManager;
-import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.Conf;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
 import org.jajuk.util.error.JajukException;
@@ -45,8 +45,8 @@ public class WebRadioAction extends ActionBase {
       @Override
       public void run() {
         WebRadio radio = WebRadioManager.getInstance().getWebRadioByName(
-            ConfigurationManager.getProperty(CONF_DEFAULT_WEB_RADIO));
-        FIFO.getInstance().launchRadio(radio);
+            Conf.getString(CONF_DEFAULT_WEB_RADIO));
+        FIFO.launchRadio(radio);
       }
     }.start();
   }

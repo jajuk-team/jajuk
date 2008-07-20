@@ -29,7 +29,7 @@ import javax.swing.JTable;
 
 import org.jajuk.ui.helpers.FontManager.JajukFont;
 import org.jajuk.ui.widgets.IconLabel;
-import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Const;
 import org.jajuk.util.UtilString;
 import org.jvnet.substance.SubstanceDefaultTableCellRenderer;
 
@@ -43,7 +43,7 @@ import org.jvnet.substance.SubstanceDefaultTableCellRenderer;
  * </p>
  */
 public class JajukCellRenderer extends SubstanceDefaultTableCellRenderer implements
-    ITechnicalStrings {
+    Const {
 
   private static final long serialVersionUID = 154545454L;
 

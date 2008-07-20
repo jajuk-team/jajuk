@@ -54,8 +54,8 @@ import org.jajuk.ui.helpers.FontManager;
 import org.jajuk.ui.helpers.FontManager.JajukFont;
 import org.jajuk.ui.widgets.JajukWindow;
 import org.jajuk.ui.widgets.StylesSelectionDialog;
-import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Conf;
+import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilGUI;
@@ -66,7 +66,7 @@ import org.qdwizard.Wizard;
 /**
  * Ambiences management wizard
  */
-public class AmbienceWizard extends Wizard implements ITechnicalStrings {
+public class AmbienceWizard extends Wizard implements Const {
 
   public static class AmbiencePanel extends Screen implements ActionListener {
 
@@ -366,7 +366,7 @@ public class AmbienceWizard extends Wizard implements ITechnicalStrings {
 
   public AmbienceWizard() {
     super(Messages.getString("DigitalDJWizard.56"), AmbiencePanel.class, UtilGUI
-        .getImage(ITechnicalStrings.IMAGE_DJ), JajukWindow.getInstance(), new Locale(Messages
+        .getImage(Const.IMAGE_DJ), JajukWindow.getInstance(), new Locale(Messages
         .getLocale()), 700, 600);
   }
 
@@ -383,7 +383,7 @@ public class AmbienceWizard extends Wizard implements ITechnicalStrings {
     // commit it to avoid it is lost before the app close
     AmbienceManager.getInstance().commit();
     try {
-      ConfigurationManager.commit();
+      Conf.commit();
     } catch (final Exception e) {
       Log.error(113, e);
       Messages.showErrorMessage(113);
