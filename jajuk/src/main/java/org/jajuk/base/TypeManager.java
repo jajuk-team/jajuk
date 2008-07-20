@@ -307,26 +307,12 @@ public final class TypeManager extends ItemManager {
     type.setProperty(XML_TYPE_SEEK_SUPPORTED, true);
     type.setProperty(XML_TYPE_ICON, UtilSystem.getResource("icons/16x16/type_wma_16x16.png")
         .toExternalForm());
-    // AAC
-    type = TypeManager.getInstance().registerType(Messages.getString("Type.aac"), EXT_AAC,
-        Class.forName(PLAYER_IMPL_MPLAYER), Class.forName(TAG_IMPL_JAUDIOTAGGER));
-    type.setProperty(XML_TYPE_IS_MUSIC, true);
-    type.setProperty(XML_TYPE_SEEK_SUPPORTED, true);
-    type.setProperty(XML_TYPE_ICON, UtilSystem.getResource("icons/16x16/type_aac_16x16.png")
-        .toExternalForm());
-    // M4A (=AAC)
+    // M4A
     type = TypeManager.getInstance().registerType(Messages.getString("Type.aac"), EXT_M4A,
         Class.forName(PLAYER_IMPL_MPLAYER), Class.forName(TAG_IMPL_JAUDIOTAGGER));
     type.setProperty(XML_TYPE_IS_MUSIC, true);
     type.setProperty(XML_TYPE_SEEK_SUPPORTED, true);
     type.setProperty(XML_TYPE_ICON, UtilSystem.getResource("icons/16x16/type_aac_16x16.png")
-        .toExternalForm());
-    // Real audio (.ram)
-    type = TypeManager.getInstance().registerType(Messages.getString("Type.real"), EXT_REAL,
-        Class.forName(PLAYER_IMPL_MPLAYER), Class.forName(TAG_IMPL_JAUDIOTAGGER));
-    type.setProperty(XML_TYPE_IS_MUSIC, true);
-    type.setProperty(XML_TYPE_SEEK_SUPPORTED, true);
-    type.setProperty(XML_TYPE_ICON, UtilSystem.getResource("icons/16x16/type_ram_16x16.png")
         .toExternalForm());
     // Real audio (.rm)
     type = TypeManager.getInstance().registerType(Messages.getString("Type.real"), EXT_REAL_RM,
