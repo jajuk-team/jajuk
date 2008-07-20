@@ -27,7 +27,6 @@ import ext.JXTrayIcon;
 import ext.SliderMenuItem;
 
 import java.awt.AWTException;
-import java.awt.Color;
 import java.awt.Point;
 import java.awt.SystemTray;
 import java.awt.TrayIcon;
@@ -42,17 +41,13 @@ import java.util.Properties;
 import java.util.Set;
 
 import javax.swing.JCheckBoxMenuItem;
-import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
-import javax.swing.JRootPane;
 import javax.swing.JSlider;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
-import javax.swing.border.EmptyBorder;
-import javax.swing.border.LineBorder;
 import javax.swing.event.ChangeEvent;
 
 import org.jajuk.base.File;
@@ -69,11 +64,9 @@ import org.jajuk.ui.actions.JajukActions;
 import org.jajuk.ui.helpers.FontManager;
 import org.jajuk.ui.helpers.JajukTimer;
 import org.jajuk.ui.helpers.FontManager.JajukFont;
-import org.jajuk.ui.thumbnails.ThumbnailManager;
-import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.Conf;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
-import org.jajuk.util.UtilString;
 import org.jajuk.util.UtilSystem;
 import org.jajuk.util.log.Log;
 
@@ -131,7 +124,7 @@ public class JajukSystray extends CommandJPanel {
   private static JajukSystray jsystray;
 
   /** HTML Tooltip */
-  JDialog dialog;
+  JajukBalloon balloon;
 
   /** Swing Timer to refresh the component */
   private Timer timer = new Timer(JajukTimer.DEFAULT_HEARTBEAT, new ActionListener() {
@@ -193,7 +186,7 @@ public class JajukSystray extends CommandJPanel {
     jmiNovelties = new SizedJMenuItem(ActionManager.getAction(JajukActions.NOVELTIES));
 
     jcbmiShowBalloon = new JCheckBoxMenuItem(Messages.getString("ParameterView.185"));
-    jcbmiShowBalloon.setState(ConfigurationManager.getBoolean(CONF_UI_SHOW_BALLOON));
+    jcbmiShowBalloon.setState(Conf.getBoolean(CONF_UI_SHOW_BALLOON));
     jcbmiShowBalloon.addActionListener(this);
     jcbmiShowBalloon.setToolTipText(Messages.getString("ParameterView.185"));
 
@@ -207,7 +200,7 @@ public class JajukSystray extends CommandJPanel {
     jsPosition.addMouseWheelListener(this);
     jsPosition.addChangeListener(this);
 
-    int iVolume = (int) (100 * ConfigurationManager.getFloat(CONF_VOLUME));
+    int iVolume = (int) (100 * Conf.getFloat(CONF_VOLUME));
     if (iVolume > 100) { // can occur in some undefined cases
       iVolume = 100;
     }
@@ -280,47 +273,15 @@ public class JajukSystray extends CommandJPanel {
           return;
         }
         dateLastMove = System.currentTimeMillis();
-        String title = null;
-        File file = FIFO.getInstance().getCurrentFile();
-        if (FIFO.getInstance().isPlayingRadio()) {
-          title = FIFO.getInstance().getCurrentRadio().getName();
-        } else if (file != null && !FIFO.isStopped()) {
-          title = getHTMLFormatText(file);
-        } else {
-          title = Messages.getString("JajukWindow.18");
-        }
-        if (dialog != null) {
+        String title = FIFO.getCurrentFileTitle();
+        if (balloon != null && balloon.isVisible()) {
           return;
         }
-        dialog = new JDialog();
-        dialog.setUndecorated(true);
-        dialog.getRootPane().setWindowDecorationStyle(JRootPane.NONE);
-        dialog.getRootPane().setBorder(new LineBorder(Color.BLACK));
-        JLabel jl = new JLabel(title);
-        jl.setFont(FontManager.getInstance().getFont(JajukFont.DEFAULT));
-        jl.setBorder(new EmptyBorder(5, 5, 5, 5));
-        dialog.add(jl);
-        dialog.pack();
-        Point location = new Point(e.getX() - dialog.getWidth(), e.getY()
-            - (20 + dialog.getHeight()));
-        dialog.setLocation(location);
-        dialog.setVisible(true);
-        // The toFront() is required under windows when main window is not
-        // visible
-        dialog.toFront();
-        // Dispose the dialog after 5 seconds
-        new Thread() {
-          @Override
-          public void run() {
-            try {
-              Thread.sleep(3000);
-              dialog.dispose();
-              dialog = null;
-            } catch (InterruptedException e) {
-              Log.error(e);
-            }
-          }
-        }.start();
+        balloon = new JajukBalloon(title);
+        Point location = new Point(e.getX() - balloon.getWidth(), e.getY()
+            - (20 + balloon.getHeight()));
+        balloon.setLocation(location);
+        balloon.display();
       }
     });
     trayIcon.setJPopuMenu(jmenu);
@@ -348,7 +309,7 @@ public class JajukSystray extends CommandJPanel {
     ObservationManager.register(this);
 
     // check if a file has been already started
-    if (FIFO.getInstance().isPlayingRadio()) {
+    if (FIFO.isPlayingRadio()) {
       // update initial state
       update(new Event(JajukEvents.EVENT_WEBRADIO_LAUNCHED));
     } else if (!FIFO.isStopped()) {
@@ -389,7 +350,7 @@ public class JajukSystray extends CommandJPanel {
     // with the thread
     try {
       if (e.getSource() == jcbmiShowBalloon) {
-        ConfigurationManager.setProperty(CONF_UI_SHOW_BALLOON, Boolean.toString(jcbmiShowBalloon
+        Conf.setProperty(CONF_UI_SHOW_BALLOON, Boolean.toString(jcbmiShowBalloon
             .getState()));
         // Launch an event that can be trapped by the tray to
         // synchronize the state
@@ -435,15 +396,20 @@ public class JajukSystray extends CommandJPanel {
           File file = FileManager.getInstance().getFileByID(
               (String) ObservationManager.getDetail(event, DETAIL_CURRENT_FILE_ID));
           String sOut = "";
-          sOut = getBasicFormatText(file);
+          if (file != null) {
+            sOut = file.getBasicFormatText();
+          } else {
+            // display a "Ready to play" message
+            sOut = Messages.getString("JajukWindow.18");
+          }
           // check show balloon option
-          if (ConfigurationManager.getBoolean(CONF_UI_SHOW_BALLOON)) {
+          if (Conf.getBoolean(CONF_UI_SHOW_BALLOON)) {
             trayIcon.displayMessage(Messages.getString("JajukWindow.35"), sOut,
                 TrayIcon.MessageType.INFO);
           }
 
         } else if (JajukEvents.EVENT_WEBRADIO_LAUNCHED.equals(subject)) {
-          // WebRadio radio = FIFO.getInstance().getCurrentRadio();
+          // WebRadio radio = FIFO.getCurrentRadio();
           // Enable webradio navigation actions
           ActionManager.getAction(PREVIOUS_TRACK).setEnabled(true);
           ActionManager.getAction(NEXT_TRACK).setEnabled(true);
@@ -451,7 +417,7 @@ public class JajukSystray extends CommandJPanel {
         } else if (JajukEvents.EVENT_PLAYER_STOP.equals(subject)) {
           // Enable the play button to allow restarting the queue but disable if
           // the queue is void
-          boolean bQueueNotVoid = (FIFO.getInstance().getFIFO().size() > 0);
+          boolean bQueueNotVoid = (FIFO.getFIFO().size() > 0);
           jmiPlayPause.setEnabled(bQueueNotVoid);
           jmiNext.setEnabled(bQueueNotVoid);
           jmiPrevious.setEnabled(bQueueNotVoid);
@@ -533,7 +499,7 @@ public class JajukSystray extends CommandJPanel {
           }
           populateAmbiences();
         } else if (JajukEvents.EVENT_PARAMETERS_CHANGE.equals(subject)) {
-          jcbmiShowBalloon.setState(ConfigurationManager.getBoolean(CONF_UI_SHOW_BALLOON));
+          jcbmiShowBalloon.setState(Conf.getBoolean(CONF_UI_SHOW_BALLOON));
         }
       }
 
@@ -550,82 +516,6 @@ public class JajukSystray extends CommandJPanel {
   }
 
   /**
-   * 
-   * @param file
-   *          current played file
-   * @return text to be displayed in the tray ballon and tooltip with HTML
-   *         formating that is used correctly under Linux
-   */
-  public String getHTMLFormatText(File file) {
-    String sOut = "";
-    if (file != null) {
-      sOut += "<HTML><br>";
-      String size = "100x100";
-      int maxSize = 30;
-      ThumbnailManager.refreshThumbnail(FIFO.getInstance().getCurrentFile().getTrack().getAlbum(),
-          size);
-      java.io.File cover = UtilSystem.getConfFileByPath(FILE_THUMBS + '/' + size + '/'
-          + FIFO.getInstance().getCurrentFile().getTrack().getAlbum().getID() + '.' + EXT_THUMB);
-      if (cover.canRead()) {
-        sOut += "<p ALIGN=center><img src='file:" + cover.getAbsolutePath() + "'/></p><br>";
-      }
-      // We use gray color for font because, due to a JDIC bug under
-      // Linux, the
-      // balloon background is white even if the the look and feel is dark
-      // (like ebony)
-      // but the look and feel makes the text white is it is black
-      // initialy
-      // so text is white on white is the balloon. It must be displayed in
-      // the tooltip too
-      // and this issue doesn't affect the tray tooltip. This color is the
-      // only one to be correctly displayed
-      // in a dark and a light background at the same time
-      sOut += "<p><font color='#484848'><b>"
-          + UtilString.getLimitedString(file.getTrack().getName(), maxSize) + "</b></font></p>";
-      String sAuthor = UtilString.getLimitedString(file.getTrack().getAuthor().getName(), maxSize);
-      if (!sAuthor.equals(UNKNOWN_AUTHOR)) {
-        sOut += "<p><font color='#484848'>" + sAuthor + "</font></p>";
-      }
-      String sAlbum = UtilString.getLimitedString(file.getTrack().getAlbum().getName(), maxSize);
-      if (!sAlbum.equals(UNKNOWN_ALBUM)) {
-        sOut += "<p><font color='#484848'>" + sAlbum + "</font></p>";
-      }
-      sOut += "</HTML>";
-    } else {
-      // display a "Ready to play" message
-      sOut = Messages.getString("JajukWindow.18");
-    }
-    return sOut;
-  }
-
-  /**
-   * 
-   * @param file
-   *          current played file
-   * @return Text to be displayed in the tootip and baloon under windows.
-   * 
-   */
-  public final String getBasicFormatText(File file) {
-    String sOut = "";
-    if (file != null) {
-      sOut = "";
-      String sAuthor = file.getTrack().getAuthor().getName();
-      if (!sAuthor.equals(UNKNOWN_AUTHOR)) {
-        sOut += sAuthor + " / ";
-      }
-      String sAlbum = file.getTrack().getAlbum().getName();
-      if (!sAlbum.equals(UNKNOWN_ALBUM)) {
-        sOut += sAlbum + " / ";
-      }
-      sOut += file.getTrack().getName();
-    } else {
-      // display a "Ready to play" message
-      sOut = Messages.getString("JajukWindow.18");
-    }
-    return sOut;
-  }
-
-  /**
    * Populate ambiences
    * 
    */
@@ -639,11 +529,11 @@ public class JajukSystray extends CommandJPanel {
         JMenuItem all = jmAmbience.getItem(0);
         if (jmi.equals(all)) {
           // reset default ambience
-          ConfigurationManager.setProperty(CONF_DEFAULT_AMBIENCE, "");
+          Conf.setProperty(CONF_DEFAULT_AMBIENCE, "");
         } else {// Selected an ambience
           Ambience ambience = AmbienceManager.getInstance().getAmbienceByName(
               jmi.getActionCommand());
-          ConfigurationManager.setProperty(CONF_DEFAULT_AMBIENCE, ambience.getID());
+          Conf.setProperty(CONF_DEFAULT_AMBIENCE, ambience.getID());
         }
         jmi.setFont(FontManager.getInstance().getFont(JajukFont.BOLD));
         ObservationManager.notify(new Event(JajukEvents.EVENT_AMBIENCES_SELECTION_CHANGE));
@@ -661,7 +551,7 @@ public class JajukSystray extends CommandJPanel {
     // Add available ambiences
     for (Ambience ambience : AmbienceManager.getInstance().getAmbiences()) {
       JMenuItem jmi = new JMenuItem(ambience.getName());
-      if (ConfigurationManager.getProperty(CONF_DEFAULT_AMBIENCE).equals(ambience.getID())) {
+      if (Conf.getString(CONF_DEFAULT_AMBIENCE).equals(ambience.getID())) {
         jmiAll.setFont(FontManager.getInstance().getFont(JajukFont.PLAIN));
         jmi.setFont(FontManager.getInstance().getFont(JajukFont.BOLD));
       }

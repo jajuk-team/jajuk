@@ -78,8 +78,8 @@ import org.jajuk.ui.actions.JajukActions;
 import org.jajuk.ui.actions.MuteAction;
 import org.jajuk.ui.helpers.FontManager;
 import org.jajuk.ui.helpers.FontManager.JajukFont;
-import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Conf;
+import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilString;
@@ -92,10 +92,12 @@ import org.jajuk.util.log.Log;
  * Singleton
  * </p>
  */
-public final class JajukSlimbar extends JFrame implements ITechnicalStrings, Observer,
+public final class JajukSlimbar extends JFrame implements Const, Observer,
     MouseWheelListener, ListSelectionListener, ActionListener {
 
   private static final long serialVersionUID = 1L;
+
+  private JButton jbInfo;
 
   private SizedButton jbPrevious;
 
@@ -161,7 +163,7 @@ public final class JajukSlimbar extends JFrame implements ITechnicalStrings, Obs
       point = new Point((int) (point.getX() - relativePoint.getX()),
           (int) (point.getY() - relativePoint.getY()));
       setLocation(point);
-      ConfigurationManager.setProperty(CONF_SLIMBAR_POSITION, (int) point.getX() + ","
+      Conf.setProperty(CONF_SLIMBAR_POSITION, (int) point.getX() + ","
           + (int) point.getY());
     }
   };
@@ -205,6 +207,9 @@ public final class JajukSlimbar extends JFrame implements ITechnicalStrings, Obs
         }
       }
     });
+
+    jbInfo = new JButton(IconLoader.ICON_INFO);
+    jbInfo.addActionListener(this);
 
     JToolBar jtbPlay = new JToolBar();
     jtbPlay.setBorder(null);
@@ -272,13 +277,13 @@ public final class JajukSlimbar extends JFrame implements ITechnicalStrings, Obs
     for (int i = 1; i <= 10; i++) {
       final int j = i;
       JMenuItem jmi = new JMenuItem("+" + i);
-      if (ConfigurationManager.getInt(CONF_INC_RATING) == i) {
+      if (Conf.getInt(CONF_INC_RATING) == i) {
         jmi.setFont(FontManager.getInstance().getFont(JajukFont.BOLD));
       }
       // Store selected value
       jmi.addActionListener(new ActionListener() {
         public void actionPerformed(ActionEvent e) {
-          ConfigurationManager.setProperty(CONF_INC_RATING, "" + j);
+          Conf.setProperty(CONF_INC_RATING, "" + j);
         }
       });
       jpmIncRating.add(jmi);
@@ -297,7 +302,7 @@ public final class JajukSlimbar extends JFrame implements ITechnicalStrings, Obs
     JToolBar jtbTools = new JToolBar();
     jtbTools.setBorder(null);
 
-    int iVolume = (int) (100 * ConfigurationManager.getFloat(CONF_VOLUME));
+    int iVolume = (int) (100 * Conf.getFloat(CONF_VOLUME));
     if (iVolume > 100) { // can occur in some undefined cases
       iVolume = 100;
     }
@@ -327,6 +332,8 @@ public final class JajukSlimbar extends JFrame implements ITechnicalStrings, Obs
     slimJajuk.setRollover(true);
 
     slimJajuk.add(Box.createHorizontalStrut(4));
+    slimJajuk.add(jbInfo);
+    slimJajuk.addSeparator();
     slimJajuk.add(sbSearch);
     slimJajuk.addSeparator();
     slimJajuk.add(jtbSmart);
@@ -337,7 +344,7 @@ public final class JajukSlimbar extends JFrame implements ITechnicalStrings, Obs
     slimJajuk.add(Box.createHorizontalStrut(2));
 
     slimJajuk.setBorder(BorderFactory.createRaisedBevelBorder());
-    
+
     getRootPane().setToolTipText(getPlayerInfo());
 
     add(slimJajuk);
@@ -349,7 +356,7 @@ public final class JajukSlimbar extends JFrame implements ITechnicalStrings, Obs
     setAlwaysOnTop(true);
 
     // Set location
-    String lastPosition = ConfigurationManager.getProperty(CONF_SLIMBAR_POSITION);
+    String lastPosition = Conf.getString(CONF_SLIMBAR_POSITION);
     int x = 0;
     int y = 0;
     int iScreenWidth = (int) (Toolkit.getDefaultToolkit().getScreenSize().getWidth());
@@ -376,7 +383,7 @@ public final class JajukSlimbar extends JFrame implements ITechnicalStrings, Obs
     pack();
     // Force initial UI refresh
     // check if a file has been already started
-    if (FIFO.getInstance().isPlayingRadio()) {
+    if (FIFO.isPlayingRadio()) {
       // update initial state
       update(new Event(JajukEvents.EVENT_WEBRADIO_LAUNCHED));
     } else if (!FIFO.isStopped()) {
@@ -390,13 +397,13 @@ public final class JajukSlimbar extends JFrame implements ITechnicalStrings, Obs
   }
 
   private void updateCurrentTitle() {
-    File file = FIFO.getInstance().getCurrentFile();
-    if (FIFO.getInstance().isPlayingRadio()) {
-      title = FIFO.getInstance().getCurrentRadio().getName();
+    File file = FIFO.getCurrentFile();
+    if (FIFO.isPlayingRadio()) {
+      title = FIFO.getCurrentRadio().getName();
       rating = Messages.getString("IncRateAction.0");
     } else if (file != null && !FIFO.isStopped()) {
-      title = UtilString.buildTitle(FIFO.getInstance().getCurrentFile());
-      rating = Long.toString(FIFO.getInstance().getCurrentFile().getTrack().getRate());
+      title = UtilString.buildTitle(FIFO.getCurrentFile());
+      rating = Long.toString(FIFO.getCurrentFile().getTrack().getRate());
     } else {
       title = Messages.getString("JajukWindow.18");
       rating = Messages.getString("IncRateAction.0");
@@ -407,6 +414,7 @@ public final class JajukSlimbar extends JFrame implements ITechnicalStrings, Obs
       public void run() {
         setTitle(title);
         jbPlayPause.setToolTipText(title);
+        jbInfo.setToolTipText(title);
         jbIncRate.setToolTipText(rating);
       }
 
@@ -419,13 +427,12 @@ public final class JajukSlimbar extends JFrame implements ITechnicalStrings, Obs
    */
   public String getPlayerInfo() {
     try {
-      String currentTrack = UtilString.buildTitle(FIFO.getInstance().getCurrentFile());
+      String currentTrack = UtilString.buildTitle(FIFO.getCurrentFile());
       String nextTrack = "";
       try {
-        nextTrack = UtilString.buildTitle(FIFO.getInstance().getItem(FIFO.getInstance().getIndex() + 1)
-            .getFile());
+        nextTrack = UtilString.buildTitle(FIFO.getItem(FIFO.getIndex() + 1).getFile());
       } catch (Exception e) {
-        nextTrack = UtilString.buildTitle(FIFO.getInstance().getPlanned().get(0).getFile());
+        nextTrack = UtilString.buildTitle(FIFO.getPlanned().get(0).getFile());
       }
       return "  |  Playing: " + currentTrack + "  |  Next: " + nextTrack;
     } catch (Exception e) {
@@ -507,7 +514,7 @@ public final class JajukSlimbar extends JFrame implements ITechnicalStrings, Obs
       updateCurrentTitle();
       // Enable the play button to allow restarting the queue but disable if
       // the queue is void
-      boolean bQueueNotVoid = (FIFO.getInstance().getFIFO().size() > 0);
+      boolean bQueueNotVoid = (FIFO.getFIFO().size() > 0);
       ActionManager.getAction(PREVIOUS_TRACK).setEnabled(bQueueNotVoid);
       ActionManager.getAction(NEXT_TRACK).setEnabled(bQueueNotVoid);
       ActionManager.getAction(PLAY_PAUSE_TRACK).setEnabled(bQueueNotVoid);
@@ -539,13 +546,13 @@ public final class JajukSlimbar extends JFrame implements ITechnicalStrings, Obs
           try {
             // If user selected a file
             if (sr.getType() == SearchResultType.FILE) {
-              FIFO.getInstance().push(
-                  new StackItem(sr.getFile(), ConfigurationManager.getBoolean(CONF_STATE_REPEAT),
-                      true), ConfigurationManager.getBoolean(CONF_OPTIONS_PUSH_ON_CLICK));
+              FIFO.push(new StackItem(sr.getFile(), Conf
+                  .getBoolean(CONF_STATE_REPEAT), true), Conf
+                  .getBoolean(CONF_OPTIONS_PUSH_ON_CLICK));
             }
             // User selected a web radio
             else if (sr.getType() == SearchResultType.WEBRADIO) {
-              FIFO.getInstance().launchRadio(sr.getWebradio());
+              FIFO.launchRadio(sr.getWebradio());
             }
           } catch (JajukException je) {
             Log.error(je);
@@ -578,6 +585,21 @@ public final class JajukSlimbar extends JFrame implements ITechnicalStrings, Obs
     } else if (ae.getSource() == jbFinishAlbum) {
       jddbSmart.setAction(ActionManager.getAction(JajukActions.FINISH_ALBUM));
       jddbSmart.setIcon(IconLoader.ICON_FINISH_ALBUM_16X16);
+    } else if (ae.getSource() == jbInfo) {
+      String title = FIFO.getCurrentFileTitle();
+      JajukBalloon balloon = new JajukBalloon(title);
+      Point buttonLocation = jbInfo.getLocationOnScreen();
+      Point location = null;
+      // If slimbar is too height in the screen, display the popup bellow it
+      if (buttonLocation.y < balloon.getHeight() + 10){
+        location = new Point(buttonLocation.x, buttonLocation.y + 25);
+      }
+      else{
+        location = new Point(buttonLocation.x, buttonLocation.y
+          - (5 + balloon.getHeight()));
+      }
+      balloon.setLocation(location);
+      balloon.display();
     }
   }
 }
