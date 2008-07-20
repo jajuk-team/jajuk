@@ -56,6 +56,7 @@ import javax.swing.JTextField;
 import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
+import javax.swing.border.LineBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
@@ -217,7 +218,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
     // --Top (most used) control items
     jpControlTop = new JPanel();
     jpControlTop.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
-    jlSorter = new JLabel(Messages.getString("Sort"));
+    jlSorter = new JLabel(Messages.getString("Sort") + " ");
     jcbSorter = new SteppedComboBox();
     jcbSorter.setEditable(false);
     // note that a single album can contains tracks with different authors
@@ -231,11 +232,10 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
     jtbSort.setFloatable(false);
     jtbSort.setRollover(true);
     jtbSort.add(jlSorter);
-    jtbSort.addSeparator();
     jtbSort.add(jcbSorter);
 
-    jlFilter = new JLabel(Messages.getString("AbstractTableView.0"));
-    jlContains = new JLabel(Messages.getString("AbstractTableView.7"));
+    jlFilter = new JLabel(Messages.getString("AbstractTableView.0") + " ");
+    jlContains = new JLabel("   "+Messages.getString("AbstractTableView.7")+" ");
     jcbFilter = new SteppedComboBox();
     jcbFilter.setEditable(false);
     // note that a single album can contains tracks with different authors
@@ -249,13 +249,6 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
     }
     jcbFilter.setSelectedIndex(Conf.getInt(CONF_THUMBS_FILTER));
     jcbFilter.addActionListener(this);
-    JToolBar jtbFilter = new JToolBar();
-    jtbFilter.setFloatable(false);
-    jtbFilter.setRollover(true);
-    jtbFilter.add(jlFilter);
-    jtbFilter.addSeparator();
-    jtbFilter.add(jcbFilter);
-
     jtfValue = new JTextField(10);
     jtfValue.setForeground(new Color(172, 172, 172));
     jtfValue.setBorder(BorderFactory.createLineBorder(Color.BLUE));
@@ -270,7 +263,15 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
         }
       }
     });
-
+    JToolBar jtbFilter = new JToolBar();
+    jtbFilter.setFloatable(false);
+    jtbFilter.setRollover(true);
+    jtbFilter.add(jlFilter);
+    jtbFilter.add(jcbFilter);
+    jtbFilter.add(jlContains);
+    jtbFilter.add(jtfValue);
+    
+    
     JToolBar jtbPage = new JToolBar();
     jtbPage.setFloatable(false);
     jtbPage.setRollover(true);
@@ -286,19 +287,14 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
     jtbPage.add(jbPrev);
     jtbPage.add(jcbPage);
     jtbPage.add(jbNext);
-
-    double sizeControlTop[][] = {
-        { 10, TableLayout.PREFERRED, TableLayout.PREFERRED, TableLayout.PREFERRED,
-            TableLayout.PREFERRED, 200, 10 }, { 30 } };
+    double p = TableLayout.PREFERRED;
+    double sizeControlTop[][] = { { 10, p, 20, p, 20, p, 10 }, { p } };
 
     TableLayout layoutTop = new TableLayout(sizeControlTop);
-    layoutTop.setHGap(20);
     jpControlTop.setLayout(layoutTop);
-    jpControlTop.add(jtbSort, "1,0");
-    jpControlTop.add(jtbFilter, "2,0");
-    jpControlTop.add(jlContains, "3,0,r,c");
-    jpControlTop.add(jtfValue, "4,0,c,c");
-    jpControlTop.add(jtbPage, "5,0");
+    jpControlTop.add(jtbFilter, "1,0,l,c");
+    jpControlTop.add(jtbSort, "3,0,l,c");
+    jpControlTop.add(jtbPage, "5,0,l,c");
 
     // --Bottom (less used) items
     jcbShowNoCover = new JCheckBox(Messages.getString("CatalogView.2"));
@@ -360,8 +356,6 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 
     });
 
-    double p = TableLayout.PREFERRED;
-
     double sizeControlBottom[][] = { { p, p, p, TableLayout.FILL, 5 }, { p } };
     TableLayout layoutBottom = new TableLayout(sizeControlBottom);
     layoutBottom.setHGap(20);
@@ -370,7 +364,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
     jpControlBottom.add(jcbShowNoCover, "0,0");
     jpControlBottom.add(jlSize, "1,0");
     jpControlBottom.add(jsSize, "2,0,c,c");
-    
+
     // Covers
     jpItems = new FlowScrollPanel();
     Dimension dim = new Dimension(getWidth(), getHeight());
@@ -384,9 +378,9 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
     double size[][] = { { TableLayout.FILL },
         { TableLayout.PREFERRED, 5, TableLayout.FILL, 5, TableLayout.PREFERRED, 5 } };
     setLayout(new TableLayout(size));
-    add(jpControlTop, "0,0");
+    add(jpControlTop, "0,0,l,c");
     add(jsp, "0,2");
-    add(jpControlBottom, "0,4");
+    add(jpControlBottom, "0,4,l,c");
 
     populateCatalog();
 
@@ -565,8 +559,8 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 
           // Now process each album
           Set<Directory> directories = new HashSet<Directory>(albums.size());
-          List<LocalAlbumThumbnail> alItemsToDisplay = new ArrayList<LocalAlbumThumbnail>(
-              albums.size());
+          List<LocalAlbumThumbnail> alItemsToDisplay = new ArrayList<LocalAlbumThumbnail>(albums
+              .size());
           for (Object it : albums) {
             Album album = (Album) it;
             // if hide unmounted tracks is set, continue
@@ -756,14 +750,12 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
       }
       bNeedSearch = true;
       lDateTyped = System.currentTimeMillis();
-      Conf.setProperty(CONF_THUMBS_FILTER, Integer.toString(jcbFilter
-          .getSelectedIndex()));
+      Conf.setProperty(CONF_THUMBS_FILTER, Integer.toString(jcbFilter.getSelectedIndex()));
     } else if (e.getSource() == jcbSorter) {
       bNeedSearch = true;
       lDateTyped = System.currentTimeMillis();
-      Conf.setProperty(CONF_THUMBS_SORTER, Integer.toString(jcbSorter
-          .getSelectedIndex()));
-     } else if (e.getSource() == jcbShowNoCover) {
+      Conf.setProperty(CONF_THUMBS_SORTER, Integer.toString(jcbSorter.getSelectedIndex()));
+    } else if (e.getSource() == jcbShowNoCover) {
       Conf.setProperty(CONF_THUMBS_SHOW_WITHOUT_COVER, Boolean
           .toString(jcbShowNoCover.isSelected()));
       // display thumbs
