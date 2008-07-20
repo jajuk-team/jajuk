@@ -49,7 +49,6 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSlider;
@@ -75,12 +74,9 @@ import org.jajuk.ui.helpers.DefaultMouseWheelListener;
 import org.jajuk.ui.helpers.FontManager;
 import org.jajuk.ui.helpers.FontManager.JajukFont;
 import org.jajuk.ui.thumbnails.LocalAlbumThumbnail;
-import org.jajuk.ui.thumbnails.ThumbnailManager;
-import org.jajuk.ui.thumbnails.ThumbnailsMaker;
 import org.jajuk.ui.widgets.InformationJPanel;
-import org.jajuk.ui.widgets.JajukButton;
 import org.jajuk.ui.widgets.SteppedComboBox;
-import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.Conf;
 import org.jajuk.util.Filter;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
@@ -122,8 +118,6 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
   JCheckBox jcbShowNoCover;
 
   JSlider jsSize;
-
-  JButton jbRefresh;
 
   FlowScrollPanel jpItems;
 
@@ -231,7 +225,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
     for (PropertyMetaInformation meta : alSorters) {
       jcbSorter.addItem(meta.getHumanName());
     }
-    jcbSorter.setSelectedIndex(ConfigurationManager.getInt(CONF_THUMBS_SORTER));
+    jcbSorter.setSelectedIndex(Conf.getInt(CONF_THUMBS_SORTER));
     jcbSorter.addActionListener(this);
     JToolBar jtbSort = new JToolBar();
     jtbSort.setFloatable(false);
@@ -253,7 +247,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
         jcbFilter.addItem(meta.getHumanName());
       }
     }
-    jcbFilter.setSelectedIndex(ConfigurationManager.getInt(CONF_THUMBS_FILTER));
+    jcbFilter.setSelectedIndex(Conf.getInt(CONF_THUMBS_FILTER));
     jcbFilter.addActionListener(this);
     JToolBar jtbFilter = new JToolBar();
     jtbFilter.setFloatable(false);
@@ -308,7 +302,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 
     // --Bottom (less used) items
     jcbShowNoCover = new JCheckBox(Messages.getString("CatalogView.2"));
-    jcbShowNoCover.setSelected(ConfigurationManager.getBoolean(CONF_THUMBS_SHOW_WITHOUT_COVER));
+    jcbShowNoCover.setSelected(Conf.getBoolean(CONF_THUMBS_SHOW_WITHOUT_COVER));
     jcbShowNoCover.addActionListener(this);
 
     JLabel jlSize = new JLabel(Messages.getString("CatalogView.15"));
@@ -331,7 +325,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
         }
         super.mouseWheelMoved(mwe);
         // Store size
-        ConfigurationManager.setProperty(CONF_THUMBS_SIZE, sizes.get(jsSize.getValue()));
+        Conf.setProperty(CONF_THUMBS_SIZE, sizes.get(jsSize.getValue()));
         // display thumbs
         populateCatalog();
         // Add again the change listener
@@ -339,7 +333,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
       }
 
     });
-    int index = sizes.indexOf(ConfigurationManager.getProperty(CONF_THUMBS_SIZE));
+    int index = sizes.indexOf(Conf.getString(CONF_THUMBS_SIZE));
     if (index < 0) {
       index = 2; // 150x150 if a problem occurs
     }
@@ -355,7 +349,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
           return;
         }
         // Store size
-        ConfigurationManager.setProperty(CONF_THUMBS_SIZE, sizes.get(jsSize.getValue()));
+        Conf.setProperty(CONF_THUMBS_SIZE, sizes.get(jsSize.getValue()));
         // display thumbs
         populateCatalog();
         // Adjust tooltips
@@ -366,9 +360,6 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 
     });
 
-    jbRefresh = new JajukButton(Messages.getString("CatalogView.19"), IconLoader.ICON_REFRESH);
-    jbRefresh.setToolTipText(Messages.getString("CatalogView.3"));
-    jbRefresh.addActionListener(this);
     double p = TableLayout.PREFERRED;
 
     double sizeControlBottom[][] = { { p, p, p, TableLayout.FILL, 5 }, { p } };
@@ -379,8 +370,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
     jpControlBottom.add(jcbShowNoCover, "0,0");
     jpControlBottom.add(jlSize, "1,0");
     jpControlBottom.add(jsSize, "2,0,c,c");
-    jpControlBottom.add(jbRefresh, "3,0,r,c");
-
+    
     // Covers
     jpItems = new FlowScrollPanel();
     Dimension dim = new Dimension(getWidth(), getHeight());
@@ -419,7 +409,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
     // n albums
     String sMessage = AlbumManager.getInstance().getAlbums().size() + " "
         + Messages.getString("CatalogView.16");
-    int albumsPerPage = ConfigurationManager.getInt(CONF_CATALOG_PAGE_SIZE);
+    int albumsPerPage = Conf.getInt(CONF_CATALOG_PAGE_SIZE);
     // n albums / page
     if (albumsPerPage > 0) {
       sMessage += " - " + albumsPerPage + Messages.getString("CatalogView.17");
@@ -580,7 +570,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
           for (Object it : albums) {
             Album album = (Album) it;
             // if hide unmounted tracks is set, continue
-            if (ConfigurationManager.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED)) {
+            if (Conf.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED)) {
               // test if album contains at least one mounted file
               tracks = TrackManager.getInstance().getAssociatedTracks(album);
               if (tracks.size() > 0) {
@@ -621,7 +611,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
             }
           }
           // computes the number of pages
-          int iSize = ConfigurationManager.getInt(CONF_CATALOG_PAGE_SIZE);
+          int iSize = Conf.getInt(CONF_CATALOG_PAGE_SIZE);
           if (iSize == 0) {
             iNbPages = 1;
           } else {
@@ -652,9 +642,9 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
             if (page < (iNbPages - 1)) {
               // if last page, take simply to total number of
               // items to display
-              max = (page + 1) * ConfigurationManager.getInt(CONF_CATALOG_PAGE_SIZE);
+              max = (page + 1) * Conf.getInt(CONF_CATALOG_PAGE_SIZE);
             }
-            for (int i = page * ConfigurationManager.getInt(CONF_CATALOG_PAGE_SIZE); i < max; i++) {
+            for (int i = page * Conf.getInt(CONF_CATALOG_PAGE_SIZE); i < max; i++) {
               LocalAlbumThumbnail it = alItemsToDisplay.get(i);
               // populate item (construct UI) only when needed
               it.populate();
@@ -766,44 +756,15 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
       }
       bNeedSearch = true;
       lDateTyped = System.currentTimeMillis();
-      ConfigurationManager.setProperty(CONF_THUMBS_FILTER, Integer.toString(jcbFilter
+      Conf.setProperty(CONF_THUMBS_FILTER, Integer.toString(jcbFilter
           .getSelectedIndex()));
     } else if (e.getSource() == jcbSorter) {
       bNeedSearch = true;
       lDateTyped = System.currentTimeMillis();
-      ConfigurationManager.setProperty(CONF_THUMBS_SORTER, Integer.toString(jcbSorter
+      Conf.setProperty(CONF_THUMBS_SORTER, Integer.toString(jcbSorter
           .getSelectedIndex()));
-    } else if (e.getSource() == jbRefresh) {
-      int resu = Messages.getChoice(Messages.getString("Confirmation_rebuild_thumbs"),
-          JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);
-      if (resu != JOptionPane.YES_OPTION) {
-        return;
-      }
-      ThumbnailManager.cleanThumbs(THUMBNAIL_SIZE_50X50);
-      ThumbnailManager.cleanThumbs(THUMBNAIL_SIZE_100X100);
-      ThumbnailManager.cleanThumbs(THUMBNAIL_SIZE_150X150);
-      ThumbnailManager.cleanThumbs(THUMBNAIL_SIZE_200X200);
-      ThumbnailManager.cleanThumbs(THUMBNAIL_SIZE_250X250);
-      ThumbnailManager.cleanThumbs(THUMBNAIL_SIZE_300X300);
-      UtilGUI.waiting();
-      SwingWorker sw = new SwingWorker() {
-        @Override
-        public Object construct() {
-          // Launch thumbs creation in another process
-          ThumbnailsMaker.launchAllSizes(true);
-          return null;
-        }
-
-        @Override
-        public void finished() {
-          // display thumbs
-          populateCatalog();
-          UtilGUI.stopWaiting();
-        }
-      };
-      sw.start();
-    } else if (e.getSource() == jcbShowNoCover) {
-      ConfigurationManager.setProperty(CONF_THUMBS_SHOW_WITHOUT_COVER, Boolean
+     } else if (e.getSource() == jcbShowNoCover) {
+      Conf.setProperty(CONF_THUMBS_SHOW_WITHOUT_COVER, Boolean
           .toString(jcbShowNoCover.isSelected()));
       // display thumbs
       populateCatalog();

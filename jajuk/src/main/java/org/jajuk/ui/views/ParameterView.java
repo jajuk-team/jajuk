@@ -78,14 +78,17 @@ import org.jajuk.services.core.RatingManager;
 import org.jajuk.services.lastfm.LastFmManager;
 import org.jajuk.ui.helpers.DefaultMouseWheelListener;
 import org.jajuk.ui.helpers.PatternInputVerifier;
+import org.jajuk.ui.thumbnails.ThumbnailManager;
+import org.jajuk.ui.thumbnails.ThumbnailsMaker;
 import org.jajuk.ui.widgets.InformationJPanel;
+import org.jajuk.ui.widgets.JajukButton;
 import org.jajuk.ui.widgets.PathSelector;
 import org.jajuk.ui.widgets.SearchBox;
 import org.jajuk.ui.widgets.SteppedComboBox;
 import org.jajuk.ui.widgets.ToggleLink;
-import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.Conf;
+import org.jajuk.util.Const;
 import org.jajuk.util.DownloadManager;
-import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukFileFilter;
 import org.jajuk.util.Messages;
@@ -317,6 +320,8 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 
   JSlider jsCatalogPages;
 
+  JButton jbCatalogRefresh;
+
   JCheckBox jcbShowPopups;
 
   JPanel jpUI;
@@ -355,7 +360,6 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
    * 
    */
   public ParameterView() {
-
   }
 
   /*
@@ -369,7 +373,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
       public void run() {
         if (e.getSource() == jbClearHistory) {
           // show confirmation message if required
-          if (ConfigurationManager.getBoolean(ITechnicalStrings.CONF_CONFIRMATIONS_CLEAR_HISTORY)) {
+          if (Conf.getBoolean(Const.CONF_CONFIRMATIONS_CLEAR_HISTORY)) {
             final int iResu = Messages.getChoice(Messages.getString("Confirmation_clear_history"),
                 JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
             if (iResu != JOptionPane.YES_OPTION) {
@@ -379,7 +383,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
           ObservationManager.notify(new Event(JajukEvents.EVENT_CLEAR_HISTORY));
         } else if (e.getSource() == jbResetRatings) {
           // show confirmation message if required
-          if (ConfigurationManager.getBoolean(ITechnicalStrings.CONF_CONFIRMATIONS_RESET_RATINGS)) {
+          if (Conf.getBoolean(Const.CONF_CONFIRMATIONS_RESET_RATINGS)) {
             final int iResu = Messages.getChoice(Messages.getString("Confirmation_reset_ratings"),
                 JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
             if (iResu != JOptionPane.YES_OPTION) {
@@ -399,7 +403,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
           applyParameters();
           // Notify any client than wait for parameters updates
           final Properties details = new Properties();
-          details.put(ITechnicalStrings.DETAIL_ORIGIN, this);
+          details.put(Const.DETAIL_ORIGIN, this);
           if (someOptionsAppliedAtNextStartup) {
             // Inform user that some parameters will apply only at next startup
             Messages.showInfoMessage(Messages.getString("ParameterView.198"));
@@ -409,7 +413,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
           int resu = Messages.getChoice(Messages.getString("Confirmation_defaults"),
               JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);
           if (resu == JOptionPane.OK_OPTION) {
-            ConfigurationManager.setDefaultProperties();
+            Conf.setDefaultProperties();
             updateSelection();// update UI
             InformationJPanel.getInstance().setMessage(Messages.getString("ParameterView.110"),
                 InformationJPanel.INFORMATIVE);
@@ -420,7 +424,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
           // if backup option is unchecked, reset backup size
           if (jcbBackup.isSelected()) {
             backupSize.setEnabled(true);
-            backupSize.setValue(ConfigurationManager.getInt(ITechnicalStrings.CONF_BACKUP_SIZE));
+            backupSize.setValue(Conf.getInt(Const.CONF_BACKUP_SIZE));
           } else {
             backupSize.setEnabled(false);
             backupSize.setValue(0);
@@ -468,10 +472,27 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
           someOptionsAppliedAtNextStartup = true;
         } else if (e.getSource().equals(scbWatermarks)) {
           // Enable image selection if image watermark
-          boolean bImage = scbWatermarks.getSelectedItem().equals(
-              ITechnicalStrings.LNF_WATERMARK_IMAGE);
+          boolean bImage = scbWatermarks.getSelectedItem().equals(Const.LNF_WATERMARK_IMAGE);
           jlWatermarkImage.setEnabled(bImage);
           pathWatermarkFile.setEnabled(bImage);
+        } else if (e.getSource() == jbCatalogRefresh) {
+          int resu = Messages.getChoice(Messages.getString("Confirmation_rebuild_thumbs"),
+              JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);
+          if (resu != JOptionPane.YES_OPTION) {
+            return;
+          }
+          ThumbnailManager.cleanThumbs(THUMBNAIL_SIZE_50X50);
+          ThumbnailManager.cleanThumbs(THUMBNAIL_SIZE_100X100);
+          ThumbnailManager.cleanThumbs(THUMBNAIL_SIZE_150X150);
+          ThumbnailManager.cleanThumbs(THUMBNAIL_SIZE_200X200);
+          ThumbnailManager.cleanThumbs(THUMBNAIL_SIZE_250X250);
+          ThumbnailManager.cleanThumbs(THUMBNAIL_SIZE_300X300);
+          // Display the catalog view voided
+          ObservationManager.notify(new Event(JajukEvents.EVENT_DEVICE_REFRESH));
+          // Launch thumbs creation in another process
+          ThumbnailsMaker.launchAllSizes(true);
+          // Display the catalog view filed
+          ObservationManager.notify(new Event(JajukEvents.EVENT_DEVICE_REFRESH));
         }
       }
     }.start();
@@ -480,186 +501,152 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
   private void applyParameters() {
     // **Read all parameters**
     // Options
-    ConfigurationManager.setProperty(ITechnicalStrings.CONF_OPTIONS_HIDE_UNMOUNTED, Boolean
-        .toString(jcbDisplayUnmounted.isSelected()));
-    ConfigurationManager.setProperty(ITechnicalStrings.CONF_OPTIONS_PUSH_ON_CLICK, Boolean
-        .toString(jcbDefaultActionClick.isSelected()));
-    ConfigurationManager.setProperty(ITechnicalStrings.CONF_OPTIONS_DEFAULT_ACTION_DROP, Boolean
-        .toString(jcbDefaultActionDrop.isSelected()));
-    ConfigurationManager.setProperty(ITechnicalStrings.CONF_OPTIONS_SYNC_TABLE_TREE, Boolean
-        .toString(jcbSyncTableTree.isSelected()));
-    ConfigurationManager.setProperty(ITechnicalStrings.CONF_OPTIONS_HOTKEYS, Boolean
-        .toString(jcbHotkeys.isSelected()));
-    ConfigurationManager.setProperty(ITechnicalStrings.CONF_AUDIOSCROBBLER_ENABLE, Boolean
-        .toString(jcbAudioScrobbler.isSelected()));
-    ConfigurationManager.setProperty(ITechnicalStrings.CONF_LASTFM_INFO, Boolean
-        .toString(jcbEnableLastFMInformation.isSelected()));
-    ConfigurationManager.setProperty(ITechnicalStrings.CONF_AUDIOSCROBBLER_USER, jtfASUser
-        .getText());
-    ConfigurationManager.setProperty(ITechnicalStrings.CONF_AUDIOSCROBBLER_PASSWORD, UtilString
-        .rot13(new String(jpfASPassword.getPassword())));
+    Conf.setProperty(Const.CONF_OPTIONS_HIDE_UNMOUNTED, Boolean.toString(jcbDisplayUnmounted
+        .isSelected()));
+    Conf.setProperty(Const.CONF_OPTIONS_PUSH_ON_CLICK, Boolean.toString(jcbDefaultActionClick
+        .isSelected()));
+    Conf.setProperty(Const.CONF_OPTIONS_DEFAULT_ACTION_DROP, Boolean.toString(jcbDefaultActionDrop
+        .isSelected()));
+    Conf.setProperty(Const.CONF_OPTIONS_SYNC_TABLE_TREE, Boolean.toString(jcbSyncTableTree
+        .isSelected()));
+    Conf.setProperty(Const.CONF_OPTIONS_HOTKEYS, Boolean.toString(jcbHotkeys.isSelected()));
+    Conf.setProperty(Const.CONF_AUDIOSCROBBLER_ENABLE, Boolean.toString(jcbAudioScrobbler
+        .isSelected()));
+    Conf.setProperty(Const.CONF_LASTFM_INFO, Boolean.toString(jcbEnableLastFMInformation
+        .isSelected()));
+    Conf.setProperty(Const.CONF_AUDIOSCROBBLER_USER, jtfASUser.getText());
+    Conf.setProperty(Const.CONF_AUDIOSCROBBLER_PASSWORD, UtilString.rot13(new String(jpfASPassword
+        .getPassword())));
     final int iLogLevel = scbLogLevel.getSelectedIndex();
     Log.setVerbosity(iLogLevel);
-    ConfigurationManager.setProperty(ITechnicalStrings.CONF_OPTIONS_LOG_LEVEL, Integer
-        .toString(iLogLevel));
-    ConfigurationManager.setProperty(ITechnicalStrings.CONF_OPTIONS_INTRO_BEGIN, Integer
-        .toString(introPosition.getValue()));
-    ConfigurationManager.setProperty(ITechnicalStrings.CONF_OPTIONS_INTRO_LENGTH, Integer
-        .toString(introLength.getValue()));
-    ConfigurationManager.setProperty(ITechnicalStrings.CONF_TAGS_USE_PARENT_DIR, Boolean
-        .toString(jcbUseParentDir.isSelected()));
+    Conf.setProperty(Const.CONF_OPTIONS_LOG_LEVEL, Integer.toString(iLogLevel));
+    Conf.setProperty(Const.CONF_OPTIONS_INTRO_BEGIN, Integer.toString(introPosition.getValue()));
+    Conf.setProperty(Const.CONF_OPTIONS_INTRO_LENGTH, Integer.toString(introLength.getValue()));
+    Conf
+        .setProperty(Const.CONF_TAGS_USE_PARENT_DIR, Boolean.toString(jcbUseParentDir.isSelected()));
     final String sBestofSize = jtfBestofSize.getText();
     if (!sBestofSize.equals("")) {
-      ConfigurationManager.setProperty(ITechnicalStrings.CONF_BESTOF_TRACKS_SIZE, sBestofSize);
+      Conf.setProperty(Const.CONF_BESTOF_TRACKS_SIZE, sBestofSize);
     }
     final String sLocal = Messages.getLocalForDesc(((JLabel) scbLanguage.getSelectedItem())
         .getText());
-    ConfigurationManager.setProperty(ITechnicalStrings.CONF_OPTIONS_LANGUAGE, sLocal);
+    Conf.setProperty(Const.CONF_OPTIONS_LANGUAGE, sLocal);
     // force refresh of bestof files
     RatingManager.setRateHasChanged(true);
     final String sNoveltiesAge = jtfNoveltiesAge.getText();
     if (!sNoveltiesAge.equals("")) {
-      ConfigurationManager.setProperty(ITechnicalStrings.CONF_OPTIONS_NOVELTIES_AGE, sNoveltiesAge);
+      Conf.setProperty(Const.CONF_OPTIONS_NOVELTIES_AGE, sNoveltiesAge);
     }
     final String sVisiblePlanned = jtfVisiblePlanned.getText();
     if (!sVisiblePlanned.equals("")) {
-      ConfigurationManager.setProperty(ITechnicalStrings.CONF_OPTIONS_VISIBLE_PLANNED,
-          sVisiblePlanned);
+      Conf.setProperty(Const.CONF_OPTIONS_VISIBLE_PLANNED, sVisiblePlanned);
     }
-    final int oldDuration = ConfigurationManager.getInt(ITechnicalStrings.CONF_FADE_DURATION);
+    final int oldDuration = Conf.getInt(Const.CONF_FADE_DURATION);
     // Show an hideable message if user set cross fade under linux for sound
     // server information
-    if (UtilSystem.isUnderLinux() && (oldDuration == 0) && (oldDuration != crossFadeDuration.getValue())) {
+    if (UtilSystem.isUnderLinux() && (oldDuration == 0)
+        && (oldDuration != crossFadeDuration.getValue())) {
       Messages.showHideableWarningMessage(Messages.getString("ParameterView.210"),
-          ITechnicalStrings.CONF_NOT_SHOW_AGAIN_CROSS_FADE);
+          Const.CONF_NOT_SHOW_AGAIN_CROSS_FADE);
     }
-    ConfigurationManager.setProperty(ITechnicalStrings.CONF_FADE_DURATION, Integer
-        .toString(crossFadeDuration.getValue()));
+    Conf.setProperty(Const.CONF_FADE_DURATION, Integer.toString(crossFadeDuration.getValue()));
     // Startup
     if (jrbNothing.isSelected()) {
-      ConfigurationManager.setProperty(ITechnicalStrings.CONF_STARTUP_MODE,
-          ITechnicalStrings.STARTUP_MODE_NOTHING);
+      Conf.setProperty(Const.CONF_STARTUP_MODE, Const.STARTUP_MODE_NOTHING);
     } else if (jrbLast.isSelected()) {
-      ConfigurationManager.setProperty(ITechnicalStrings.CONF_STARTUP_MODE,
-          ITechnicalStrings.STARTUP_MODE_LAST);
+      Conf.setProperty(Const.CONF_STARTUP_MODE, Const.STARTUP_MODE_LAST);
     } else if (jrbLastKeepPos.isSelected()) {
-      ConfigurationManager.setProperty(ITechnicalStrings.CONF_STARTUP_MODE,
-          ITechnicalStrings.STARTUP_MODE_LAST_KEEP_POS);
+      Conf.setProperty(Const.CONF_STARTUP_MODE, Const.STARTUP_MODE_LAST_KEEP_POS);
     } else if (jrbShuffle.isSelected()) {
-      ConfigurationManager.setProperty(ITechnicalStrings.CONF_STARTUP_MODE,
-          ITechnicalStrings.STARTUP_MODE_SHUFFLE);
+      Conf.setProperty(Const.CONF_STARTUP_MODE, Const.STARTUP_MODE_SHUFFLE);
     } else if (jrbFile.isSelected()) {
-      ConfigurationManager.setProperty(ITechnicalStrings.CONF_STARTUP_MODE,
-          ITechnicalStrings.STARTUP_MODE_FILE);
+      Conf.setProperty(Const.CONF_STARTUP_MODE, Const.STARTUP_MODE_FILE);
     } else if (jrbBestof.isSelected()) {
-      ConfigurationManager.setProperty(ITechnicalStrings.CONF_STARTUP_MODE,
-          ITechnicalStrings.STARTUP_MODE_BESTOF);
+      Conf.setProperty(Const.CONF_STARTUP_MODE, Const.STARTUP_MODE_BESTOF);
     } else if (jrbNovelties.isSelected()) {
-      ConfigurationManager.setProperty(ITechnicalStrings.CONF_STARTUP_MODE,
-          ITechnicalStrings.STARTUP_MODE_NOVELTIES);
+      Conf.setProperty(Const.CONF_STARTUP_MODE, Const.STARTUP_MODE_NOVELTIES);
     }
     // Confirmations
-    ConfigurationManager.setProperty(ITechnicalStrings.CONF_CONFIRMATIONS_DELETE_FILE, Boolean
-        .toString(jcbBeforeDelete.isSelected()));
-    ConfigurationManager.setProperty(ITechnicalStrings.CONF_CONFIRMATIONS_EXIT, Boolean
-        .toString(jcbBeforeExit.isSelected()));
-    ConfigurationManager.setProperty(ITechnicalStrings.CONF_CONFIRMATIONS_REMOVE_DEVICE, Boolean
-        .toString(jcbBeforeRemoveDevice.isSelected()));
-    ConfigurationManager.setProperty(ITechnicalStrings.CONF_CONFIRMATIONS_DELETE_COVER, Boolean
-        .toString(jcbBeforeDeleteCover.isSelected()));
-    ConfigurationManager.setProperty(ITechnicalStrings.CONF_CONFIRMATIONS_CLEAR_HISTORY, Boolean
+    Conf.setProperty(Const.CONF_CONFIRMATIONS_DELETE_FILE, Boolean.toString(jcbBeforeDelete
+        .isSelected()));
+    Conf.setProperty(Const.CONF_CONFIRMATIONS_EXIT, Boolean.toString(jcbBeforeExit.isSelected()));
+    Conf.setProperty(Const.CONF_CONFIRMATIONS_REMOVE_DEVICE, Boolean.toString(jcbBeforeRemoveDevice
+        .isSelected()));
+    Conf.setProperty(Const.CONF_CONFIRMATIONS_DELETE_COVER, Boolean.toString(jcbBeforeDeleteCover
+        .isSelected()));
+    Conf.setProperty(Const.CONF_CONFIRMATIONS_CLEAR_HISTORY, Boolean
         .toString(jcbBeforeClearingHistory.isSelected()));
-    ConfigurationManager.setProperty(ITechnicalStrings.CONF_CONFIRMATIONS_RESET_RATINGS, Boolean
+    Conf.setProperty(Const.CONF_CONFIRMATIONS_RESET_RATINGS, Boolean
         .toString(jcbBeforeResetingRatings.isSelected()));
     // History
     final String sHistoryDuration = jtfHistory.getText();
     if (!sHistoryDuration.equals("")) {
-      ConfigurationManager.setProperty(ITechnicalStrings.CONF_HISTORY, sHistoryDuration);
+      Conf.setProperty(Const.CONF_HISTORY, sHistoryDuration);
     }
     // Patterns
     // Get and check reorg pattern
     final String sPattern = jtfRefactorPattern.getText();
-    ConfigurationManager.setProperty(ITechnicalStrings.CONF_REFACTOR_PATTERN, sPattern);
-    ConfigurationManager.setProperty(ITechnicalStrings.CONF_ANIMATION_PATTERN, jtfAnimationPattern
-        .getText());
-    ConfigurationManager.setProperty(ITechnicalStrings.CONF_FRAME_TITLE_PATTERN, jtfFrameTitle
-        .getText());
+    Conf.setProperty(Const.CONF_REFACTOR_PATTERN, sPattern);
+    Conf.setProperty(Const.CONF_ANIMATION_PATTERN, jtfAnimationPattern.getText());
+    Conf.setProperty(Const.CONF_FRAME_TITLE_PATTERN, jtfFrameTitle.getText());
 
     // Advanced
-    ConfigurationManager.setProperty(ITechnicalStrings.CONF_BACKUP_SIZE, Integer
-        .toString(backupSize.getValue()));
-    ConfigurationManager.setProperty(ITechnicalStrings.CONF_COLLECTION_CHARSET,
-        jcbCollectionEncoding.getSelectedItem().toString());
-    ConfigurationManager.setProperty(ITechnicalStrings.CONF_REGEXP, Boolean.toString(jcbRegexp
-        .isSelected()));
-    ConfigurationManager.setProperty(ITechnicalStrings.CONF_CHECK_FOR_UPDATE, Boolean
-        .toString(jcbCheckUpdates.isSelected()));
-    ConfigurationManager.setProperty(ITechnicalStrings.CONF_FORCE_FILE_DATE, Boolean
-        .toString(jcbForceFileDate.isSelected()));
+    Conf.setProperty(Const.CONF_BACKUP_SIZE, Integer.toString(backupSize.getValue()));
+    Conf.setProperty(Const.CONF_COLLECTION_CHARSET, jcbCollectionEncoding.getSelectedItem()
+        .toString());
+    Conf.setProperty(Const.CONF_REGEXP, Boolean.toString(jcbRegexp.isSelected()));
+    Conf.setProperty(Const.CONF_CHECK_FOR_UPDATE, Boolean.toString(jcbCheckUpdates.isSelected()));
+    Conf.setProperty(Const.CONF_FORCE_FILE_DATE, Boolean.toString(jcbForceFileDate.isSelected()));
     // Apply new mplayer path and display a warning message if changed
-    final String oldMplayerPath = ConfigurationManager
-        .getProperty(ITechnicalStrings.CONF_MPLAYER_PATH_FORCED);
+    final String oldMplayerPath = Conf.getString(Const.CONF_MPLAYER_PATH_FORCED);
     if (!(oldMplayerPath.equals(jtfMPlayerPath.getText()))) {
-      Messages.showInfoMessage(Messages.getString("ParameterView.198"));
+      this.someOptionsAppliedAtNextStartup = true;
     }
-    ConfigurationManager.setProperty(ITechnicalStrings.CONF_MPLAYER_PATH_FORCED, jtfMPlayerPath
-        .getText());
-    ConfigurationManager.setProperty(ITechnicalStrings.CONF_MPLAYER_ARGS, jtfMPlayerArgs.getText());
-    ConfigurationManager.setProperty(ITechnicalStrings.CONF_ENV_VARIABLES, jtfEnvVariables
-        .getText());
+    Conf.setProperty(Const.CONF_MPLAYER_PATH_FORCED, jtfMPlayerPath.getText());
+    Conf.setProperty(Const.CONF_MPLAYER_ARGS, jtfMPlayerArgs.getText());
+    Conf.setProperty(Const.CONF_ENV_VARIABLES, jtfEnvVariables.getText());
     // UI
-    ConfigurationManager.setProperty(ITechnicalStrings.CONF_CATALOG_PAGE_SIZE, Integer
-        .toString(jsCatalogPages.getValue()));
-    ConfigurationManager.setProperty(ITechnicalStrings.CONF_SHOW_POPUPS, Boolean
-        .toString(jcbShowPopups.isSelected()));
-    final int oldFont = ConfigurationManager.getInt(ITechnicalStrings.CONF_FONTS_SIZE);
-    boolean bFontMessagedisplayed = false;
+    Conf.setProperty(Const.CONF_CATALOG_PAGE_SIZE, Integer.toString(jsCatalogPages.getValue()));
+    Conf.setProperty(Const.CONF_SHOW_POPUPS, Boolean.toString(jcbShowPopups.isSelected()));
+    final int oldFont = Conf.getInt(Const.CONF_FONTS_SIZE);
     // Display a message if font size changed
     if (oldFont != jsFonts.getValue()) {
-      Messages.showInfoMessage(Messages.getString("ParameterView.227"));
-      bFontMessagedisplayed = true;
+      someOptionsAppliedAtNextStartup = true;
     }
-    ConfigurationManager.setProperty(ITechnicalStrings.CONF_FONTS_SIZE, Integer.toString(jsFonts
-        .getValue()));
+    Conf.setProperty(Const.CONF_FONTS_SIZE, Integer.toString(jsFonts.getValue()));
 
-    final int oldPerspectiveSize = ConfigurationManager
-        .getInt(ITechnicalStrings.CONF_PERSPECTIVE_ICONS_SIZE);
+    final int oldPerspectiveSize = Conf.getInt(Const.CONF_PERSPECTIVE_ICONS_SIZE);
     // If we perspective size changed and no font message have been already
     // displayed, display a message
-    if (oldPerspectiveSize != jsPerspectiveSize.getValue() && !bFontMessagedisplayed) {
-      Messages.showInfoMessage(Messages.getString("ParameterView.198"));
+    if (oldPerspectiveSize != jsPerspectiveSize.getValue()) {
+      someOptionsAppliedAtNextStartup = true;
     }
-    ConfigurationManager.setProperty(ITechnicalStrings.CONF_PERSPECTIVE_ICONS_SIZE, Integer
-        .toString(jsPerspectiveSize.getValue()));
+    Conf.setProperty(Const.CONF_PERSPECTIVE_ICONS_SIZE, Integer.toString(jsPerspectiveSize
+        .getValue()));
     // LAF change
-    final String oldTheme = ConfigurationManager.getProperty(ITechnicalStrings.CONF_OPTIONS_LNF);
-    ConfigurationManager.setProperty(ITechnicalStrings.CONF_OPTIONS_LNF, (String) scbLAF
-        .getSelectedItem());
+    final String oldTheme = Conf.getString(Const.CONF_OPTIONS_LNF);
+    Conf.setProperty(Const.CONF_OPTIONS_LNF, (String) scbLAF.getSelectedItem());
     if (!oldTheme.equals(scbLAF.getSelectedItem())) {
       // theme will be applied at next startup
       Messages.showHideableWarningMessage(Messages.getString("ParameterView.233"),
-          ITechnicalStrings.CONF_NOT_SHOW_AGAIN_LAF_CHANGE);
+          Const.CONF_NOT_SHOW_AGAIN_LAF_CHANGE);
       bLAFMessage = true;
     }
     // Watermarks change
-    final String oldWatermark = ConfigurationManager
-        .getProperty(ITechnicalStrings.CONF_OPTIONS_WATERMARK);
-    ConfigurationManager.setProperty(ITechnicalStrings.CONF_OPTIONS_WATERMARK,
-        (String) scbWatermarks.getSelectedItem());
+    final String oldWatermark = Conf.getString(Const.CONF_OPTIONS_WATERMARK);
+    Conf.setProperty(Const.CONF_OPTIONS_WATERMARK, (String) scbWatermarks.getSelectedItem());
     final String watermark = (String) scbWatermarks.getSelectedItem();
     if (!oldWatermark.equals(watermark) && !bLAFMessage) {
       Messages.showHideableWarningMessage(Messages.getString("ParameterView.233"),
-          ITechnicalStrings.CONF_NOT_SHOW_AGAIN_LAF_CHANGE);
+          Const.CONF_NOT_SHOW_AGAIN_LAF_CHANGE);
     }
     // theme Image change
-    final String oldImage = ConfigurationManager
-        .getProperty(ITechnicalStrings.CONF_OPTIONS_WATERMARK_IMAGE);
-    ConfigurationManager.setProperty(ITechnicalStrings.CONF_OPTIONS_WATERMARK_IMAGE,
-        pathWatermarkFile.getUrl());
+    final String oldImage = Conf.getString(Const.CONF_OPTIONS_WATERMARK_IMAGE);
+    Conf.setProperty(Const.CONF_OPTIONS_WATERMARK_IMAGE, pathWatermarkFile.getUrl());
     final String image = pathWatermarkFile.getUrl();
     if (oldImage != null && !oldImage.equals(image) && !bLAFMessage) {
       Messages.showHideableWarningMessage(Messages.getString("ParameterView.233"),
-          ITechnicalStrings.CONF_NOT_SHOW_AGAIN_LAF_CHANGE);
+          Const.CONF_NOT_SHOW_AGAIN_LAF_CHANGE);
     }
 
     // If jajuk home changes, write new path in bootstrap file
@@ -670,7 +657,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
         try {
           final java.io.File fWorkspace = new java.io.File(psJajukWorkspace.getUrl());
           if (!fWorkspace.exists()) {
-            if(!fWorkspace.mkdirs()) {
+            if (!fWorkspace.mkdirs()) {
               Log.warn("Could not create directory " + fWorkspace.toString());
             }
           }
@@ -692,12 +679,11 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
         // bPreviousPathExist is true if destination workspace already exists,
         // it is then only a workspace switch
         if (!new java.io.File(psJajukWorkspace.getUrl() + '/'
-            + (Main.isTestMode() ? ".jajuk_test_" + ITechnicalStrings.TEST_VERSION : ".jajuk"))
-            .exists()) {
+            + (Main.isTestMode() ? ".jajuk_test_" + Const.TEST_VERSION : ".jajuk")).exists()) {
           UtilGUI.waiting();
           final java.io.File from = UtilSystem.getConfFileByPath("");
           final java.io.File dest = new java.io.File(newWorkspace + '/'
-              + (Main.isTestMode() ? ".jajuk_test_" + ITechnicalStrings.TEST_VERSION : ".jajuk"));
+              + (Main.isTestMode() ? ".jajuk_test_" + Const.TEST_VERSION : ".jajuk"));
           UtilSystem.copyRecursively(from, dest);
           bPreviousPathExist = false;
           // Change the workspace so the very last conf (like current track)
@@ -707,7 +693,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
         }
         // OK, now write down the bootstrap file if
         // everything's OK
-        final java.io.File bootstrap = new java.io.File(ITechnicalStrings.FILE_BOOTSTRAP);
+        final java.io.File bootstrap = new java.io.File(Const.FILE_BOOTSTRAP);
         final BufferedWriter bw = new BufferedWriter(new FileWriter(bootstrap));
         bw.write(newWorkspace);
         bw.flush();
@@ -733,40 +719,30 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     }
 
     // Network
-    ConfigurationManager.setProperty(ITechnicalStrings.CONF_NETWORK_USE_PROXY, Boolean
-        .toString(!jcbProxyNone.isSelected()));
+    Conf.setProperty(Const.CONF_NETWORK_USE_PROXY, Boolean.toString(!jcbProxyNone.isSelected()));
     if (jcbProxyHttp.isSelected()) {
-      ConfigurationManager.setProperty(ITechnicalStrings.CONF_NETWORK_PROXY_TYPE,
-          ITechnicalStrings.PROXY_TYPE_HTTP);
+      Conf.setProperty(Const.CONF_NETWORK_PROXY_TYPE, Const.PROXY_TYPE_HTTP);
     } else if (jcbProxySocks.isSelected()) {
-      ConfigurationManager.setProperty(ITechnicalStrings.CONF_NETWORK_PROXY_TYPE,
-          ITechnicalStrings.PROXY_TYPE_SOCKS);
+      Conf.setProperty(Const.CONF_NETWORK_PROXY_TYPE, Const.PROXY_TYPE_SOCKS);
     }
-    ConfigurationManager.setProperty(ITechnicalStrings.CONF_NETWORK_PROXY_HOSTNAME,
-        jtfProxyHostname.getText());
-    ConfigurationManager.setProperty(ITechnicalStrings.CONF_NETWORK_PROXY_PORT, jtfProxyPort
-        .getText());
-    ConfigurationManager.setProperty(ITechnicalStrings.CONF_NETWORK_PROXY_LOGIN, jtfProxyLogin
-        .getText());
-    ConfigurationManager.setProperty(ITechnicalStrings.CONF_NETWORK_PROXY_PWD, UtilString
-        .rot13(new String(jtfProxyPwd.getPassword())));
-    ConfigurationManager.setProperty(ITechnicalStrings.CONF_NETWORK_CONNECTION_TO, Integer
-        .toString(connectionTO.getValue()));
+    Conf.setProperty(Const.CONF_NETWORK_PROXY_HOSTNAME, jtfProxyHostname.getText());
+    Conf.setProperty(Const.CONF_NETWORK_PROXY_PORT, jtfProxyPort.getText());
+    Conf.setProperty(Const.CONF_NETWORK_PROXY_LOGIN, jtfProxyLogin.getText());
+    Conf.setProperty(Const.CONF_NETWORK_PROXY_PWD, UtilString.rot13(new String(jtfProxyPwd
+        .getPassword())));
+    Conf.setProperty(Const.CONF_NETWORK_CONNECTION_TO, Integer.toString(connectionTO.getValue()));
     // Force global reload of proxy variables
     DownloadManager.setDefaultProxySettings();
     // Covers
-    ConfigurationManager.setProperty(ITechnicalStrings.CONF_COVERS_AUTO_COVER, Boolean
-        .toString(jcbAutoCover.isSelected()));
-    ConfigurationManager.setProperty(ITechnicalStrings.CONF_COVERS_SHUFFLE, Boolean
-        .toString(jcbShuffleCover.isSelected()));
-    ConfigurationManager.setProperty(ITechnicalStrings.CONF_COVERS_SIZE, Integer
-        .toString(jcbCoverSize.getSelectedIndex()));
+    Conf.setProperty(Const.CONF_COVERS_AUTO_COVER, Boolean.toString(jcbAutoCover.isSelected()));
+    Conf.setProperty(Const.CONF_COVERS_SHUFFLE, Boolean.toString(jcbShuffleCover.isSelected()));
+    Conf.setProperty(Const.CONF_COVERS_SIZE, Integer.toString(jcbCoverSize.getSelectedIndex()));
     // Force LastFM manager configuration reload
     LastFmManager.getInstance().configure();
 
     // configuration
     try {
-      ConfigurationManager.commit();
+      Conf.commit();
     } catch (final Exception e) {
       Log.error(113, e);
       Messages.showErrorMessage(113);
@@ -809,16 +785,14 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 
       public void actionPerformed(ActionEvent e) {
         // Store configuration
-        ConfigurationManager.setProperty(ITechnicalStrings.CONF_UI_SHOW_BALLOON, Boolean
-            .toString(jcbShowBaloon.isSelected()));
-        ConfigurationManager.setProperty(ITechnicalStrings.CONF_SHOW_POPUPS, Boolean
-            .toString(jcbShowPopups.isSelected()));
-        ConfigurationManager.setProperty(ITechnicalStrings.CONF_OPTIONS_SYNC_TABLE_TREE, Boolean
-            .toString(jcbSyncTableTree.isSelected()));
+        Conf.setProperty(Const.CONF_UI_SHOW_BALLOON, Boolean.toString(jcbShowBaloon.isSelected()));
+        Conf.setProperty(Const.CONF_SHOW_POPUPS, Boolean.toString(jcbShowPopups.isSelected()));
+        Conf.setProperty(Const.CONF_OPTIONS_SYNC_TABLE_TREE, Boolean.toString(jcbSyncTableTree
+            .isSelected()));
         // Launch an event that can be trapped by the tray to
         // synchronize the state
         Properties details = new Properties();
-        details.put(ITechnicalStrings.DETAIL_ORIGIN, ParameterView.this);
+        details.put(Const.DETAIL_ORIGIN, ParameterView.this);
         ObservationManager.notify(new Event(JajukEvents.EVENT_PARAMETERS_CHANGE, details));
       }
 
@@ -905,14 +879,14 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     // disabled by default, is enabled only if jrbFile is enabled
     sbSearch.setEnabled(false);
     // set chosen track in file selection
-    final String sFileId = ConfigurationManager.getProperty(ITechnicalStrings.CONF_STARTUP_FILE);
+    final String sFileId = Conf.getString(Const.CONF_STARTUP_FILE);
     if (!"".equals(sFileId)) {
       final File file = FileManager.getInstance().getFileByID(sFileId);
       if (file != null) {
         sbSearch.setText(file.getTrack().getName());
       } else {
         // the file exists no more, remove its id as startup file
-        ConfigurationManager.setProperty(ITechnicalStrings.CONF_STARTUP_FILE, "");
+        Conf.setProperty(Const.CONF_STARTUP_FILE, "");
       }
     }
     sbSearch.setToolTipText(Messages.getString("ParameterView.18"));
@@ -1221,7 +1195,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     jcbCollectionEncoding = new JComboBox();
     jcbCollectionEncoding.setToolTipText(Messages.getString("ParameterView.121"));
     jcbRegexp = new JCheckBox(Messages.getString("ParameterView.113"));
-    jcbRegexp.setSelected(ConfigurationManager.getBoolean(ITechnicalStrings.CONF_REGEXP));
+    jcbRegexp.setSelected(Conf.getBoolean(Const.CONF_REGEXP));
     jcbRegexp.setToolTipText(Messages.getString("ParameterView.114"));
     jcbCollectionEncoding.addItem("UTF-8");
     jcbCollectionEncoding.addItem("UTF-16");
@@ -1252,12 +1226,10 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     psJajukWorkspace.setToolTipText(Messages.getString("ParameterView.208"));
     jcbCheckUpdates = new JCheckBox(Messages.getString("ParameterView.234"));
     jcbCheckUpdates.setToolTipText(Messages.getString("ParameterView.234"));
-    jcbCheckUpdates.setSelected(ConfigurationManager
-        .getBoolean(ITechnicalStrings.CONF_CHECK_FOR_UPDATE));
+    jcbCheckUpdates.setSelected(Conf.getBoolean(Const.CONF_CHECK_FOR_UPDATE));
     jcbForceFileDate = new JCheckBox(Messages.getString("ParameterView.244"));
     jcbForceFileDate.setToolTipText(Messages.getString("ParameterView.245"));
-    jcbForceFileDate.setSelected(ConfigurationManager
-        .getBoolean(ITechnicalStrings.CONF_FORCE_FILE_DATE));
+    jcbForceFileDate.setSelected(Conf.getBoolean(Const.CONF_FORCE_FILE_DATE));
     final double sizeAdvanced[][] = { { p, p }, { p, p, p, p, p, p, p, p, p, p } };
     final TableLayout layoutAdvanced = new TableLayout(sizeAdvanced);
     layoutAdvanced.setHGap(iXSeparator);
@@ -1430,8 +1402,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     // Catalog view
     jlCatalogPages = new JLabel(Messages.getString("ParameterView.221"));
     jlCatalogPages.setToolTipText(Messages.getString("ParameterView.222"));
-    jsCatalogPages = new JSlider(0, 1000, ConfigurationManager
-        .getInt(ITechnicalStrings.CONF_CATALOG_PAGE_SIZE));
+    jsCatalogPages = new JSlider(0, 1000, Conf.getInt(Const.CONF_CATALOG_PAGE_SIZE));
     jsCatalogPages.setMinorTickSpacing(100);
     jsCatalogPages.setMajorTickSpacing(200);
     jsCatalogPages.setPaintTicks(true);
@@ -1445,14 +1416,17 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     jcbShowPopups = new JCheckBox(Messages.getString("ParameterView.228"));
     jcbShowPopups.addActionListener(alUI);
     JLabel jlPerspectiveSize = new JLabel(Messages.getString("ParameterView.246"));
-    jsPerspectiveSize = new JSlider(16, 45, ConfigurationManager
-        .getInt(ITechnicalStrings.CONF_PERSPECTIVE_ICONS_SIZE));
+    jsPerspectiveSize = new JSlider(16, 45, Conf.getInt(Const.CONF_PERSPECTIVE_ICONS_SIZE));
     jsPerspectiveSize.setSnapToTicks(true);
     jsPerspectiveSize.setMajorTickSpacing(8);
     jsPerspectiveSize.setMinorTickSpacing(1);
     jsPerspectiveSize.setPaintTicks(true);
     jsPerspectiveSize.setPaintLabels(true);
     jsPerspectiveSize.setToolTipText(Messages.getString("ParameterView.246"));
+    jbCatalogRefresh = new JajukButton(Messages.getString("CatalogView.19"),
+        IconLoader.ICON_REFRESH);
+    jbCatalogRefresh.setToolTipText(Messages.getString("CatalogView.3"));
+    jbCatalogRefresh.addActionListener(this);
     final JXCollapsiblePane catalogView = new JXCollapsiblePane();
     catalogView.setLayout(new VerticalLayout(10));
     catalogView.setCollapsed(true);
@@ -1462,10 +1436,11 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     jpCatalogSize.add(jlCatalogPages);
     jpCatalogSize.add(jsCatalogPages);
     catalogView.add(jpCatalogSize);
+    catalogView.add(jbCatalogRefresh);
 
     // Font selector
     jlFonts = new JLabel(Messages.getString("ParameterView.223"));
-    jsFonts = new JSlider(8, 16, ConfigurationManager.getInt(ITechnicalStrings.CONF_FONTS_SIZE));
+    jsFonts = new JSlider(8, 16, Conf.getInt(Const.CONF_FONTS_SIZE));
     jsFonts.setSnapToTicks(true);
     jsFonts.setMajorTickSpacing(1);
     jsFonts.setMinorTickSpacing(1);
@@ -1501,7 +1476,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     final Set<String> watermarks = new TreeSet<String>(mapWatermarks.keySet());
     // Add image watermark that is not included by default for unknown
     // reason
-    watermarks.add(ITechnicalStrings.LNF_WATERMARK_IMAGE);
+    watermarks.add(Const.LNF_WATERMARK_IMAGE);
     // Add each watermark to the combo box
     for (final String watermark : watermarks) {
       scbWatermarks.addItem(watermark);
@@ -1513,8 +1488,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     // Watermark file selection
     final JajukFileFilter filter = new JajukFileFilter(ImageFilter.getInstance());
     filter.setAcceptDirectories(true);
-    pathWatermarkFile = new PathSelector(filter, ConfigurationManager
-        .getProperty(ITechnicalStrings.CONF_OPTIONS_WATERMARK_IMAGE));
+    pathWatermarkFile = new PathSelector(filter, Conf.getString(Const.CONF_OPTIONS_WATERMARK_IMAGE));
     // Add items
     jpUI.add(jlFonts, "0,0");
     jpUI.add(jsFonts, "1,0");
@@ -1571,7 +1545,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     jtpMain.addTab(Messages.getString("ParameterView.115"), new JajukJScrollPane(jpAdvanced));
     try {
       // Reload stored selected index
-      jtpMain.setSelectedIndex(ConfigurationManager.getInt(ITechnicalStrings.CONF_OPTIONS_TAB));
+      jtpMain.setSelectedIndex(Conf.getInt(Const.CONF_OPTIONS_TAB));
     } catch (final Exception e) {
       // an error can occur if a new release brings or remove tabs
       Log.error(e);
@@ -1604,8 +1578,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
    */
   public void stateChanged(final ChangeEvent e) {
     // when changing tab, store it for future jajuk sessions
-    ConfigurationManager.setProperty(ITechnicalStrings.CONF_OPTIONS_TAB, Integer.toString(jtpMain
-        .getSelectedIndex()));
+    Conf.setProperty(Const.CONF_OPTIONS_TAB, Integer.toString(jtpMain.getSelectedIndex()));
   }
 
   /*
@@ -1618,9 +1591,8 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     if (JajukEvents.EVENT_PARAMETERS_CHANGE.equals(subject)) {
       // Ignore this event is thrown by this view itself (to avoid loosing
       // already set options)
-      if ((event.getDetails() != null)
-          && (event.getDetails().get(ITechnicalStrings.DETAIL_ORIGIN) != null)
-          && event.getDetails().get(ITechnicalStrings.DETAIL_ORIGIN).equals(this)) {
+      if ((event.getDetails() != null) && (event.getDetails().get(Const.DETAIL_ORIGIN) != null)
+          && event.getDetails().get(Const.DETAIL_ORIGIN).equals(this)) {
         return;
       }
       updateSelection();
@@ -1631,58 +1603,40 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
    * Set widgets to specified value in options
    */
   private void updateSelection() {
-    jtfHistory.setText(ConfigurationManager.getProperty(ITechnicalStrings.CONF_HISTORY));
-    if (ConfigurationManager.getProperty(ITechnicalStrings.CONF_STARTUP_MODE).equals(
-        ITechnicalStrings.STARTUP_MODE_FILE)) {
+    jtfHistory.setText(Conf.getString(Const.CONF_HISTORY));
+    if (Conf.getString(Const.CONF_STARTUP_MODE).equals(Const.STARTUP_MODE_FILE)) {
       jrbFile.setSelected(true);
       sbSearch.setEnabled(true);
-    } else if (ConfigurationManager.getProperty(ITechnicalStrings.CONF_STARTUP_MODE).equals(
-        ITechnicalStrings.STARTUP_MODE_LAST)) {
+    } else if (Conf.getString(Const.CONF_STARTUP_MODE).equals(Const.STARTUP_MODE_LAST)) {
       jrbLast.setSelected(true);
-    } else if (ConfigurationManager.getProperty(ITechnicalStrings.CONF_STARTUP_MODE).equals(
-        ITechnicalStrings.STARTUP_MODE_LAST_KEEP_POS)) {
+    } else if (Conf.getString(Const.CONF_STARTUP_MODE).equals(Const.STARTUP_MODE_LAST_KEEP_POS)) {
       jrbLastKeepPos.setSelected(true);
-    } else if (ConfigurationManager.getProperty(ITechnicalStrings.CONF_STARTUP_MODE).equals(
-        ITechnicalStrings.STARTUP_MODE_NOTHING)) {
+    } else if (Conf.getString(Const.CONF_STARTUP_MODE).equals(Const.STARTUP_MODE_NOTHING)) {
       jrbNothing.setSelected(true);
-    } else if (ConfigurationManager.getProperty(ITechnicalStrings.CONF_STARTUP_MODE).equals(
-        ITechnicalStrings.STARTUP_MODE_SHUFFLE)) {
+    } else if (Conf.getString(Const.CONF_STARTUP_MODE).equals(Const.STARTUP_MODE_SHUFFLE)) {
       jrbShuffle.setSelected(true);
-    } else if (ConfigurationManager.getProperty(ITechnicalStrings.CONF_STARTUP_MODE).equals(
-        ITechnicalStrings.STARTUP_MODE_BESTOF)) {
+    } else if (Conf.getString(Const.CONF_STARTUP_MODE).equals(Const.STARTUP_MODE_BESTOF)) {
       jrbBestof.setSelected(true);
-    } else if (ConfigurationManager.getProperty(ITechnicalStrings.CONF_STARTUP_MODE).equals(
-        ITechnicalStrings.STARTUP_MODE_NOVELTIES)) {
+    } else if (Conf.getString(Const.CONF_STARTUP_MODE).equals(Const.STARTUP_MODE_NOVELTIES)) {
       jrbNovelties.setSelected(true);
     }
     // Confirmations
-    jcbBeforeDelete.setSelected(ConfigurationManager
-        .getBoolean(ITechnicalStrings.CONF_CONFIRMATIONS_DELETE_FILE));
-    jcbBeforeExit.setSelected(ConfigurationManager
-        .getBoolean(ITechnicalStrings.CONF_CONFIRMATIONS_EXIT));
-    jcbBeforeRemoveDevice.setSelected(ConfigurationManager
-        .getBoolean(ITechnicalStrings.CONF_CONFIRMATIONS_REMOVE_DEVICE));
-    jcbBeforeDeleteCover.setSelected(ConfigurationManager
-        .getBoolean(ITechnicalStrings.CONF_CONFIRMATIONS_DELETE_COVER));
-    jcbBeforeClearingHistory.setSelected(ConfigurationManager
-        .getBoolean(ITechnicalStrings.CONF_CONFIRMATIONS_CLEAR_HISTORY));
-    jcbBeforeResetingRatings.setSelected(ConfigurationManager
-        .getBoolean(ITechnicalStrings.CONF_CONFIRMATIONS_RESET_RATINGS));
-    jcbBeforeRefactorFiles.setSelected(ConfigurationManager
-        .getBoolean(ITechnicalStrings.CONF_CONFIRMATIONS_REFACTOR_FILES));
+    jcbBeforeDelete.setSelected(Conf.getBoolean(Const.CONF_CONFIRMATIONS_DELETE_FILE));
+    jcbBeforeExit.setSelected(Conf.getBoolean(Const.CONF_CONFIRMATIONS_EXIT));
+    jcbBeforeRemoveDevice.setSelected(Conf.getBoolean(Const.CONF_CONFIRMATIONS_REMOVE_DEVICE));
+    jcbBeforeDeleteCover.setSelected(Conf.getBoolean(Const.CONF_CONFIRMATIONS_DELETE_COVER));
+    jcbBeforeClearingHistory.setSelected(Conf.getBoolean(Const.CONF_CONFIRMATIONS_CLEAR_HISTORY));
+    jcbBeforeResetingRatings.setSelected(Conf.getBoolean(Const.CONF_CONFIRMATIONS_RESET_RATINGS));
+    jcbBeforeRefactorFiles.setSelected(Conf.getBoolean(Const.CONF_CONFIRMATIONS_REFACTOR_FILES));
     // options
-    jcbDisplayUnmounted.setSelected(ConfigurationManager
-        .getBoolean(ITechnicalStrings.CONF_OPTIONS_HIDE_UNMOUNTED));
-    jcbDefaultActionClick.setSelected(ConfigurationManager
-        .getBoolean(ITechnicalStrings.CONF_OPTIONS_PUSH_ON_CLICK));
-    jcbDefaultActionDrop.setSelected(ConfigurationManager
-        .getBoolean(ITechnicalStrings.CONF_OPTIONS_DEFAULT_ACTION_DROP));
-    jcbHotkeys.setSelected(ConfigurationManager.getBoolean(ITechnicalStrings.CONF_OPTIONS_HOTKEYS));
+    jcbDisplayUnmounted.setSelected(Conf.getBoolean(Const.CONF_OPTIONS_HIDE_UNMOUNTED));
+    jcbDefaultActionClick.setSelected(Conf.getBoolean(Const.CONF_OPTIONS_PUSH_ON_CLICK));
+    jcbDefaultActionDrop.setSelected(Conf.getBoolean(Const.CONF_OPTIONS_DEFAULT_ACTION_DROP));
+    jcbHotkeys.setSelected(Conf.getBoolean(Const.CONF_OPTIONS_HOTKEYS));
 
-    jcbSyncTableTree.setSelected(ConfigurationManager
-        .getBoolean(ITechnicalStrings.CONF_OPTIONS_SYNC_TABLE_TREE));
-    String rightLanguageDesc = Messages.getDescForLocal(ConfigurationManager
-        .getProperty(ITechnicalStrings.CONF_OPTIONS_LANGUAGE));
+    jcbSyncTableTree.setSelected(Conf.getBoolean(Const.CONF_OPTIONS_SYNC_TABLE_TREE));
+    String rightLanguageDesc = Messages
+        .getDescForLocal(Conf.getString(Const.CONF_OPTIONS_LANGUAGE));
     // Select the right language
     int index = 0;
     for (String desc : Messages.getDescs()) {
@@ -1693,21 +1647,16 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
       index++;
     }
     scbLanguage.addActionListener(this);
-    scbLogLevel.setSelectedIndex(Integer.parseInt(ConfigurationManager
-        .getProperty(ITechnicalStrings.CONF_OPTIONS_LOG_LEVEL)));
-    introLength.setValue(ConfigurationManager.getInt(ITechnicalStrings.CONF_OPTIONS_INTRO_LENGTH));
-    introPosition.setValue(ConfigurationManager.getInt(ITechnicalStrings.CONF_OPTIONS_INTRO_BEGIN));
-    jtfBestofSize.setText(ConfigurationManager
-        .getProperty(ITechnicalStrings.CONF_BESTOF_TRACKS_SIZE));
-    jtfNoveltiesAge.setText(ConfigurationManager
-        .getProperty(ITechnicalStrings.CONF_OPTIONS_NOVELTIES_AGE));
-    jtfVisiblePlanned.setText(ConfigurationManager
-        .getProperty(ITechnicalStrings.CONF_OPTIONS_VISIBLE_PLANNED));
-    crossFadeDuration.setValue(ConfigurationManager.getInt(ITechnicalStrings.CONF_FADE_DURATION));
-    jcbUseParentDir.setSelected(ConfigurationManager
-        .getBoolean(ITechnicalStrings.CONF_TAGS_USE_PARENT_DIR));
+    scbLogLevel.setSelectedIndex(Integer.parseInt(Conf.getString(Const.CONF_OPTIONS_LOG_LEVEL)));
+    introLength.setValue(Conf.getInt(Const.CONF_OPTIONS_INTRO_LENGTH));
+    introPosition.setValue(Conf.getInt(Const.CONF_OPTIONS_INTRO_BEGIN));
+    jtfBestofSize.setText(Conf.getString(Const.CONF_BESTOF_TRACKS_SIZE));
+    jtfNoveltiesAge.setText(Conf.getString(Const.CONF_OPTIONS_NOVELTIES_AGE));
+    jtfVisiblePlanned.setText(Conf.getString(Const.CONF_OPTIONS_VISIBLE_PLANNED));
+    crossFadeDuration.setValue(Conf.getInt(Const.CONF_FADE_DURATION));
+    jcbUseParentDir.setSelected(Conf.getBoolean(Const.CONF_TAGS_USE_PARENT_DIR));
     // advanced
-    final int iBackupSize = ConfigurationManager.getInt(ITechnicalStrings.CONF_BACKUP_SIZE);
+    final int iBackupSize = Conf.getInt(Const.CONF_BACKUP_SIZE);
     if (iBackupSize <= 0) { // backup size =0 means no backup
       jcbBackup.setSelected(false);
       backupSize.setEnabled(false);
@@ -1716,89 +1665,67 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
       backupSize.setEnabled(true);
     }
     backupSize.setValue(iBackupSize);
-    jcbCollectionEncoding.setSelectedItem(ConfigurationManager
-        .getProperty(ITechnicalStrings.CONF_COLLECTION_CHARSET));
-    jtfRefactorPattern.setText(ConfigurationManager
-        .getProperty(ITechnicalStrings.CONF_REFACTOR_PATTERN));
-    jtfAnimationPattern.setText(ConfigurationManager
-        .getProperty(ITechnicalStrings.CONF_ANIMATION_PATTERN));
-    jtfFrameTitle.setText(ConfigurationManager
-        .getProperty(ITechnicalStrings.CONF_FRAME_TITLE_PATTERN));
-    jtfMPlayerPath.setText(ConfigurationManager
-        .getProperty(ITechnicalStrings.CONF_MPLAYER_PATH_FORCED));
-    jtfMPlayerArgs.setText(ConfigurationManager.getProperty(ITechnicalStrings.CONF_MPLAYER_ARGS));
-    jtfEnvVariables.setText(ConfigurationManager.getProperty(ITechnicalStrings.CONF_ENV_VARIABLES));
+    jcbCollectionEncoding.setSelectedItem(Conf.getString(Const.CONF_COLLECTION_CHARSET));
+    jtfRefactorPattern.setText(Conf.getString(Const.CONF_REFACTOR_PATTERN));
+    jtfAnimationPattern.setText(Conf.getString(Const.CONF_ANIMATION_PATTERN));
+    jtfFrameTitle.setText(Conf.getString(Const.CONF_FRAME_TITLE_PATTERN));
+    jtfMPlayerPath.setText(Conf.getString(Const.CONF_MPLAYER_PATH_FORCED));
+    jtfMPlayerArgs.setText(Conf.getString(Const.CONF_MPLAYER_ARGS));
+    jtfEnvVariables.setText(Conf.getString(Const.CONF_ENV_VARIABLES));
     // network
-    final boolean bUseProxy = ConfigurationManager
-        .getBoolean(ITechnicalStrings.CONF_NETWORK_USE_PROXY);
+    final boolean bUseProxy = Conf.getBoolean(Const.CONF_NETWORK_USE_PROXY);
     jcbProxyNone.setSelected(bUseProxy);
-    jtfProxyHostname.setText(ConfigurationManager
-        .getProperty(ITechnicalStrings.CONF_NETWORK_PROXY_HOSTNAME));
+    jtfProxyHostname.setText(Conf.getString(Const.CONF_NETWORK_PROXY_HOSTNAME));
     jtfProxyHostname.setEnabled(bUseProxy);
     jlProxyHostname.setEnabled(bUseProxy);
-    jtfProxyPort.setText(ConfigurationManager
-        .getProperty(ITechnicalStrings.CONF_NETWORK_PROXY_PORT));
+    jtfProxyPort.setText(Conf.getString(Const.CONF_NETWORK_PROXY_PORT));
     jtfProxyPort.setEnabled(bUseProxy);
     jlProxyPort.setEnabled(bUseProxy);
-    jtfProxyLogin.setText(ConfigurationManager
-        .getProperty(ITechnicalStrings.CONF_NETWORK_PROXY_LOGIN));
+    jtfProxyLogin.setText(Conf.getString(Const.CONF_NETWORK_PROXY_LOGIN));
     jtfProxyLogin.setEnabled(bUseProxy);
     jlProxyLogin.setEnabled(bUseProxy);
-    jtfProxyPwd.setText(UtilString.rot13(ConfigurationManager
-        .getProperty(ITechnicalStrings.CONF_NETWORK_PROXY_PWD)));
+    jtfProxyPwd.setText(UtilString.rot13(Conf.getString(Const.CONF_NETWORK_PROXY_PWD)));
     jtfProxyPwd.setEnabled(bUseProxy);
     jlProxyPwd.setEnabled(bUseProxy);
-    connectionTO
-        .setValue(ConfigurationManager.getInt(ITechnicalStrings.CONF_NETWORK_CONNECTION_TO));
-    if (!ConfigurationManager.getBoolean(ITechnicalStrings.CONF_NETWORK_USE_PROXY)) {
+    connectionTO.setValue(Conf.getInt(Const.CONF_NETWORK_CONNECTION_TO));
+    if (!Conf.getBoolean(Const.CONF_NETWORK_USE_PROXY)) {
       jcbProxyNone.setSelected(true);
-    } else if (ITechnicalStrings.PROXY_TYPE_HTTP.equals(ConfigurationManager
-        .getProperty(ITechnicalStrings.CONF_NETWORK_PROXY_TYPE))) {
+    } else if (Const.PROXY_TYPE_HTTP.equals(Conf.getString(Const.CONF_NETWORK_PROXY_TYPE))) {
       jcbProxyHttp.setSelected(true);
-    } else if (ITechnicalStrings.PROXY_TYPE_SOCKS.equals(ConfigurationManager
-        .getProperty(ITechnicalStrings.CONF_NETWORK_PROXY_TYPE))) {
+    } else if (Const.PROXY_TYPE_SOCKS.equals(Conf.getString(Const.CONF_NETWORK_PROXY_TYPE))) {
       jcbProxySocks.setSelected(true);
     }
     // Covers
-    jcbAutoCover.setSelected(ConfigurationManager
-        .getBoolean(ITechnicalStrings.CONF_COVERS_AUTO_COVER));
-    jlCoverSize.setEnabled(ConfigurationManager
-        .getBoolean(ITechnicalStrings.CONF_COVERS_AUTO_COVER));
-    jcbCoverSize.setEnabled(ConfigurationManager
-        .getBoolean(ITechnicalStrings.CONF_COVERS_AUTO_COVER));
-    jcbCoverSize.setSelectedIndex(ConfigurationManager.getInt(ITechnicalStrings.CONF_COVERS_SIZE));
-    jcbShuffleCover.setSelected(ConfigurationManager
-        .getBoolean(ITechnicalStrings.CONF_COVERS_SHUFFLE));
-    jcbAudioScrobbler.setSelected(ConfigurationManager
-        .getBoolean(ITechnicalStrings.CONF_AUDIOSCROBBLER_ENABLE));
-    jcbEnableLastFMInformation.setSelected(ConfigurationManager
-        .getBoolean(ITechnicalStrings.CONF_LASTFM_INFO));
-    jtfASUser.setText(ConfigurationManager.getProperty(ITechnicalStrings.CONF_AUDIOSCROBBLER_USER));
-    jpfASPassword.setText(UtilString.rot13(ConfigurationManager
-        .getProperty(ITechnicalStrings.CONF_AUDIOSCROBBLER_PASSWORD)));
-    if (!ConfigurationManager.getBoolean(ITechnicalStrings.CONF_AUDIOSCROBBLER_ENABLE)) {
+    jcbAutoCover.setSelected(Conf.getBoolean(Const.CONF_COVERS_AUTO_COVER));
+    jlCoverSize.setEnabled(Conf.getBoolean(Const.CONF_COVERS_AUTO_COVER));
+    jcbCoverSize.setEnabled(Conf.getBoolean(Const.CONF_COVERS_AUTO_COVER));
+    jcbCoverSize.setSelectedIndex(Conf.getInt(Const.CONF_COVERS_SIZE));
+    jcbShuffleCover.setSelected(Conf.getBoolean(Const.CONF_COVERS_SHUFFLE));
+    jcbAudioScrobbler.setSelected(Conf.getBoolean(Const.CONF_AUDIOSCROBBLER_ENABLE));
+    jcbEnableLastFMInformation.setSelected(Conf.getBoolean(Const.CONF_LASTFM_INFO));
+    jtfASUser.setText(Conf.getString(Const.CONF_AUDIOSCROBBLER_USER));
+    jpfASPassword.setText(UtilString.rot13(Conf.getString(Const.CONF_AUDIOSCROBBLER_PASSWORD)));
+    if (!Conf.getBoolean(Const.CONF_AUDIOSCROBBLER_ENABLE)) {
       jlASUser.setEnabled(false);
       jtfASUser.setEnabled(false);
       jlASPassword.setEnabled(false);
       jpfASPassword.setEnabled(false);
     }
     // UI
-    jcbShowBaloon.setSelected(ConfigurationManager
-        .getBoolean(ITechnicalStrings.CONF_UI_SHOW_BALLOON));
-    jcbShowPopups.setSelected(ConfigurationManager.getBoolean(ITechnicalStrings.CONF_SHOW_POPUPS));
+    jcbShowBaloon.setSelected(Conf.getBoolean(Const.CONF_UI_SHOW_BALLOON));
+    jcbShowPopups.setSelected(Conf.getBoolean(Const.CONF_SHOW_POPUPS));
     // Enable image selection if image watermark
-    jlWatermarkImage.setEnabled(ConfigurationManager.getProperty(
-        ITechnicalStrings.CONF_OPTIONS_WATERMARK).equals(ITechnicalStrings.LNF_WATERMARK_IMAGE));
-    pathWatermarkFile.setEnabled(ConfigurationManager.getProperty(
-        ITechnicalStrings.CONF_OPTIONS_WATERMARK).equals(ITechnicalStrings.LNF_WATERMARK_IMAGE));
+    jlWatermarkImage.setEnabled(Conf.getString(Const.CONF_OPTIONS_WATERMARK).equals(
+        Const.LNF_WATERMARK_IMAGE));
+    pathWatermarkFile.setEnabled(Conf.getString(Const.CONF_OPTIONS_WATERMARK).equals(
+        Const.LNF_WATERMARK_IMAGE));
     scbLAF.removeActionListener(this);
-    scbLAF.setSelectedItem(ConfigurationManager.getProperty(ITechnicalStrings.CONF_OPTIONS_LNF));
+    scbLAF.setSelectedItem(Conf.getString(Const.CONF_OPTIONS_LNF));
     scbLAF.addActionListener(this);
     scbWatermarks.removeActionListener(this);
-    scbWatermarks.setSelectedItem(ConfigurationManager
-        .getProperty(ITechnicalStrings.CONF_OPTIONS_WATERMARK));
+    scbWatermarks.setSelectedItem(Conf.getString(Const.CONF_OPTIONS_WATERMARK));
     scbWatermarks.addActionListener(this);
-    jsPerspectiveSize.setValue(ConfigurationManager.getInt(CONF_PERSPECTIVE_ICONS_SIZE));
+    jsPerspectiveSize.setValue(Conf.getInt(CONF_PERSPECTIVE_ICONS_SIZE));
   }
 
   /*
@@ -1810,7 +1737,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     if (!e.getValueIsAdjusting()) {
       final SearchResult sr = sbSearch.getResult(sbSearch.getSelectedIndex());
       sbSearch.setText(sr.getFile().getTrack().getName());
-      ConfigurationManager.setProperty(ITechnicalStrings.CONF_STARTUP_FILE, sr.getFile().getID());
+      Conf.setProperty(Const.CONF_STARTUP_FILE, sr.getFile().getID());
       sbSearch.hidePopup();
     }
   }
