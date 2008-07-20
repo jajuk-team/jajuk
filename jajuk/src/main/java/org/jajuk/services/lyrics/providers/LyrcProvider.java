@@ -38,10 +38,7 @@ public class LyrcProvider extends GenericProvider {
 
   private static final String SUGGESTIONS_URL = "http://www.lyrc.com.ar/en/";
 
-  /**
-   * @param querySource
-   */
-  public LyrcProvider(final String querySource) {
+  public LyrcProvider() {
     super("http://www.lyrc.com.ar/en/tema1en.php?artist=%artist&songname=%title");
   }
 

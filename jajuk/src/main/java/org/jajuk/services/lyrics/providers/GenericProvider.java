@@ -26,7 +26,7 @@ import java.net.URL;
 import java.net.URLEncoder;
 
 import org.jajuk.util.DownloadManager;
-import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Const;
 import org.jajuk.util.log.Log;
 
 /**
@@ -50,14 +50,14 @@ public class GenericProvider implements IProvider {
     String queryString = getQuerySource();
 
     try {
-      queryString = queryString.replace(ITechnicalStrings.PATTERN_AUTHOR,
+      queryString = queryString.replace(Const.PATTERN_AUTHOR,
           (artist != null) ? URLEncoder.encode(artist, "ISO-8859-1") : "");
-      queryString = queryString.replace(ITechnicalStrings.PATTERN_TRACKNAME,
+      queryString = queryString.replace(Const.PATTERN_TRACKNAME,
           (title != null) ? URLEncoder.encode(title, "ISO-8859-1") : "");
     } catch (final UnsupportedEncodingException e) {
       Log.warn("Could not URL encode artist {{" + artist + "}} and song title {{" + title + "}}");
     }
-    return (queryString);
+    return queryString;
   }
 
   protected URL getQueryURL(final String artist, final String title) {
@@ -66,7 +66,7 @@ public class GenericProvider implements IProvider {
     } catch (final MalformedURLException e) {
       Log.warn("Invalid lyrics provider [" + querySource + "]");
     }
-    return (null);
+    return null;
   }
 
   /*
@@ -86,7 +86,7 @@ public class GenericProvider implements IProvider {
         Log.warn("Could not retrieve URL [" + url + "]");
       }
     }
-    return (text);
+    return text;
   }
 
   /*
@@ -95,7 +95,7 @@ public class GenericProvider implements IProvider {
    * @see ext.services.lyrics.providers.IProvider#getQuerySource()
    */
   public String getQuerySource() {
-    return (querySource);
+    return querySource;
   }
 
   /*
@@ -111,7 +111,7 @@ public class GenericProvider implements IProvider {
         Log.warn("Invalid lyrics provider [" + querySource + "]");
       }
     }
-    return (source);
+    return source;
   }
 
 }
