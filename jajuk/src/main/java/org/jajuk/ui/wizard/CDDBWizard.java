@@ -263,7 +263,6 @@ public class CDDBWizard extends JajukJDialog implements Const, ActionListener,
     jtable = new JajukTable(model, true, null);
     jtable.selectAll();
     jtable.getColumnModel().addColumnModelListener(this);
-    // new TableTransferHandler(jtable, DnDConstants.ACTION_COPY_OR_MOVE);
     jtable.packAll();
     return jtable;
   }

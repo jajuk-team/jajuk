@@ -56,7 +56,6 @@ import javax.swing.JTextField;
 import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
-import javax.swing.border.LineBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
