@@ -20,11 +20,14 @@
 package org.jajuk.services.tags;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.util.logging.LogManager;
 
 import org.jajuk.util.Const;
 import org.jajuk.util.UtilFeatures;
 import org.jajuk.util.UtilString;
 import org.jajuk.util.error.JajukException;
+import org.jajuk.util.log.Log;
 import org.jaudiotagger.audio.AudioFile;
 import org.jaudiotagger.audio.AudioFileIO;
 import org.jaudiotagger.tag.Tag;
@@ -34,6 +37,15 @@ import org.jaudiotagger.tag.Tag;
  * href="https://jaudiotagger.dev.java.net">JAudiotagger</a>
  */
 public class JAudioTaggerTagImpl implements ITagImpl, Const {
+  
+  static{
+    //Disable Jaudiotagger logs
+    try {
+      LogManager.getLogManager().readConfiguration(new FileInputStream(new File(FILE_JRE_LOG_CONF.toURI())));
+    } catch (Exception e) {
+      Log.error(e);
+    } 
+  }
 
   /**
    * the current audio file instance (set by {@link #setFile(File)}).<br>
