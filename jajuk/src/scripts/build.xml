@@ -7,7 +7,7 @@
 
 	<!--Distribution release 
 	!!! DO NOT USE '-' CHARACTER IN VERSION !!!-->
-	<property name='version' value='1.7_test1' /> 
+	<property name='version' value='1.7_snapshot1' /> 
 
 	<!--Previous release used for JNLP incremental upgrade-->
 	<property name='previous_version' value='null' />
@@ -208,7 +208,8 @@
 			<fileset file='${javadir}/org/jajuk/i18n/*.properties' />
 		</copy>
 		<copy todir='${distdir}/${classdir}/org/jajuk/util/log'>
-			<fileset file='${javadir}/org/jajuk/util/log/jajuk-log4j-conf.xml' />
+			<fileset file='${javadir}/org/jajuk/util/log/*.xml' />
+			<fileset file='${javadir}/org/jajuk/util/log/*.properties' />
 		</copy>
 		<copy todir='${distdir}/${classdir}/perspectives'>
 			<fileset file='${srcdir}/main/resources/perspectives/*.xml' />
@@ -267,7 +268,7 @@
 	</target>
 
 
-	<target name='package_all' description='o Create all packages' depends='package_jar_sign,package_helpjar_sign,package_izpack,package_rpm,package_source,package_sfx,package_jnlp,package_macos'>
+	<target name='package_all' description='o Create all packages' depends='package_izpack,package_rpm,package_source,package_sfx,package_jnlp,package_macos'>
 		<echo message='Successfully built packages:' />
 		<echo message=' Jajuk Jar file in:     ${distdir}/bin/${jarname}' />
 		<echo message=' Help Jar file in:      ${distdir}/bin/${helpsetjarname}.jar' />
@@ -277,47 +278,6 @@
 		<echo message=' MAC OS X in:           ${distdir}/jajuk-macos-${version}.zip' />
 		<echo message=' Source archive in:     ${sourcesdist}' />
 		<echo message=' JNLP war file in:      ${rootdir}/jajuk-trunk-${test}.war' />
-	</target>
-
-
-	<target name='package_jar_sign' description='o Create Jajuk jar file and sign it' depends='package_jar'>
-		<!--Sign jajuk jars (others are signed manually once) -->
-		<!--for security reason (this file is commited with keystore password), 
-    keystore password is changed after this script execution, password is temporary -->
-		<signjar jar="${distdir}/bin/${jarname}" alias="jajukteam" storepass="passpass" />
-		<signjar jar="${distdir}/lib/animation-1.2.0.jar" alias="jajukteam" storepass="passpass" />
-		<signjar jar="${distdir}/lib/basicplayer-3.0.jar" alias="jajukteam" storepass="passpass" />
-		<signjar jar="${distdir}/lib/cobra-0.96.5R2.jar" alias="jajukteam" storepass="passpass" />
-		<signjar jar="${distdir}/lib/commons-codec-1.3.jar" alias="jajukteam" storepass="passpass" />
-		<signjar jar="${distdir}/lib/commons-collections-3.2.jar" alias="jajukteam" storepass="passpass" />
-		<signjar jar="${distdir}/lib/commons-logging-1.0.jar" alias="jajukteam" storepass="passpass" />
-		<signjar jar="${distdir}/lib/entagged-audioformats-0.15.jar" alias="jajukteam" storepass="passpass" />
-		<signjar jar="${distdir}/lib/entagged-freedb-0.04.jar" alias="jajukteam" storepass="passpass" />
-		<signjar jar="${distdir}/lib/forms-1.1.0.jar" alias="jajukteam" storepass="passpass" />
-		<signjar jar="${distdir}/lib/jcommon-1.0.0.jar" alias="jajukteam" storepass="passpass" />
-		<signjar jar="${distdir}/lib/jfreechart-1.0.1.jar" alias="jajukteam" storepass="passpass" />
-		<signjar jar="${distdir}/lib/jh_reduced-2.0.2.jar" alias="jajukteam" storepass="passpass" />
-		<signjar jar="${distdir}/lib/jintellitype-1.3.jar" alias="jajukteam" storepass="passpass" />
-		<signjar jar="${distdir}/lib/jlayer-1.0.jar" alias="jajukteam" storepass="passpass" />
-		<signjar jar="${distdir}/lib/jogg-0.0.7.jar" alias="jajukteam" storepass="passpass" />
-		<signjar jar="${distdir}/lib/jorbis-0.0.13.jar" alias="jajukteam" storepass="passpass" />
-		<signjar jar="${distdir}/lib/js-0.96.5R2.jar" alias="jajukteam" storepass="passpass" />
-		<signjar jar="${distdir}/lib/jspeex-0.9.3.jar" alias="jajukteam" storepass="passpass" />
-		<signjar jar="${distdir}/lib/log4j_reduced-1.2.6.jar" alias="jajukteam" storepass="passpass" />
-		<signjar jar="${distdir}/lib/mp3spi-1.9.4.jar" alias="jajukteam" storepass="passpass" />
-		<signjar jar="${distdir}/lib/qdwizard-2.0.4.jar" alias="jajukteam" storepass="passpass" />
-		<signjar jar="${distdir}/lib/substance-4.3.5.jar" alias="jajukteam" storepass="passpass" />
-		<signjar jar="${distdir}/lib/swingx-2007_12_30.jar" alias="jajukteam" storepass="passpass" />
-		<signjar jar="${distdir}/lib/tablelayout-20070421.jar" alias="jajukteam" storepass="passpass" />
-		<signjar jar="${distdir}/lib/tritonus_share-release.jar" alias="jajukteam" storepass="passpass" />
-		<signjar jar="${distdir}/lib/vldocking-2.1.4.jar" alias="jajukteam" storepass="passpass" />
-		<signjar jar="${distdir}/lib/vorbisspi-1.0.1.jar" alias="jajukteam" storepass="passpass" />
-	</target>
-
-
-	<target name='package_helpjar_sign' description='o Create Jajuk help jar files and sign it' depends='package_helpjar'>
-		<echo message='Sign help jar files' />
-		<signjar jar="${distdir}/bin/${helpsetjarname}.jar" alias="jajukteam" storepass="passpass" />
 	</target>
 
 
