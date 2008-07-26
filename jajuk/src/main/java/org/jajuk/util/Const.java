@@ -207,6 +207,8 @@ public interface Const {
 
   URL FILE_LOG4J_CONF = UtilSystem.getResource("org/jajuk/util/log/jajuk-log4j-conf.xml");
 
+  URL FILE_JRE_LOG_CONF = UtilSystem.getResource("org/jajuk/util/log/logging.properties");
+
   String FILE_CACHE = "cache";
 
   String FILE_INTERNAL_CACHE = "internal";
