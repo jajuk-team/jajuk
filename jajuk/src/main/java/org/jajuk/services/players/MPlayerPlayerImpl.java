@@ -118,6 +118,8 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
             break;
           }
 
+          // produces lots of output: Log.debug("Output from MPlayer: " + line);
+          
           if (line.matches(".*ANS_TIME_POSITION.*")) {
             // Stream no more opening
             bOpening = false;

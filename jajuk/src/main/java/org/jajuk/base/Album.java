@@ -133,30 +133,13 @@ public class Album extends LogicalItem implements Comparable<Album> {
     // We compute here all pseudo keys (non album real attributes) that can be
     // required on an album
     if (XML_AUTHOR.equals(sKey)) {
-      Author author = getAuthor();
-      if (author != null) {
-        return author.getName2();
-      } else {
-        // More than one author, display void string
-        return "";
-      }
+      return handleAuthor();
     } else if (XML_ALBUM.equals(sKey)) {
       return getName2();
     } else if (XML_STYLE.equals(sKey)) {
-      Style style = getStyle();
-      if (style != null) {
-        return style.getName2();
-      } else {
-        // More than one style, display void string
-        return "";
-      }
+      return handleStyle();
     } else if (XML_YEAR.equals(sKey)) {
-      Year year = getYear();
-      if (year != null) {
-        return Long.toString(year.getValue());
-      } else {
-        return "";
-      }
+      return handleYear();
     } else if (XML_TRACK_RATE.equals(sKey)) {
       return Long.toString(getRate());
     } else if (XML_TRACK_LENGTH.equals(sKey)) {
@@ -172,6 +155,44 @@ public class Album extends LogicalItem implements Comparable<Album> {
     }
     // default
     return super.getHumanValue(sKey);
+  }
+
+  /**
+   * @return
+   */
+  private String handleAuthor() {
+    Author author = getAuthor();
+    if (author != null) {
+      return author.getName2();
+    } else {
+      // More than one author, display void string
+      return "";
+    }
+  }
+
+  /**
+   * @return
+   */
+  private String handleStyle() {
+    Style style = getStyle();
+    if (style != null) {
+      return style.getName2();
+    } else {
+      // More than one style, display void string
+      return "";
+    }
+  }
+
+  /**
+   * @return
+   */
+  private String handleYear() {
+    Year year = getYear();
+    if (year != null) {
+      return Long.toString(year.getValue());
+    } else {
+      return "";
+    }
   }
 
   /**

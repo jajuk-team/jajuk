@@ -139,8 +139,8 @@ public final class Main implements Const {
    * Thumb maker flag, true if this class is executed from the Thumb maker
    * process *
    */
-  private static boolean bThumbMaker = false;
-
+  // private static boolean bThumbMaker = false;
+  
   /** UI launched flag */
   private static boolean bUILauched = false;
 
@@ -501,13 +501,15 @@ public final class Main implements Const {
     if (workspace == null) {
       workspace = System.getProperty("user.home");
     }
+
     // check for jajuk directory
     final File fWorkspace = new File(workspace);
-    if (!fWorkspace.exists()) {
-      if (!fWorkspace.mkdirs()) { // create the directory if it doesn't exist
-        Log.warn("Could not create directory " + fWorkspace.toString());
-      }
+    if (!fWorkspace.exists() && (!fWorkspace.mkdirs())) { // create the
+      // directory if it
+      // doesn't exist
+      Log.warn("Could not create directory " + fWorkspace.toString());
     }
+
     // check for image cache presence and create the workspace/.jajuk
     // directory
     final File fCache = UtilSystem.getConfFileByPath(FILE_CACHE);
@@ -722,11 +724,10 @@ public final class Main implements Const {
     // files
     // Create concurrent session directory if needed
     final File sessions = UtilSystem.getConfFileByPath(FILE_SESSIONS);
-    if (!sessions.exists()) {
-      if (!sessions.mkdir()) {
-        Log.warn("Could not create directory " + sessions.toString());
-      }
+    if (!sessions.exists() && !sessions.mkdir()) {
+      Log.warn("Could not create directory " + sessions.toString());
     }
+
     // Check for concurrent session
     File[] files = sessions.listFiles();
     // display a warning if sessions directory contains some others users
@@ -1249,7 +1250,7 @@ public final class Main implements Const {
   public static void initializeFromThumbnailsMaker(final boolean bTest, final String workspace) {
     Main.bTestMode = bTest;
     Main.workspace = workspace;
-    Main.bThumbMaker = true;
+    // Main.bThumbMaker = true;
 
   }
 

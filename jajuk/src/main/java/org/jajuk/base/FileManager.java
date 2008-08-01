@@ -217,10 +217,12 @@ public final class FileManager extends ItemManager implements Observer {
       }
       // try to rename file on disk
       try {
-        fileOld.getIO().renameTo(fileNew);
+        if(!fileOld.getIO().renameTo(fileNew))
+          throw new CannotRenameException(134);
       } catch (Exception e) {
-        throw new CannotRenameException(134);
+        throw new CannotRenameException(134, e);
       }
+
       // OK, remove old file and register this new file
       removeFile(fileOld);
       if (!hmItems.containsKey(sNewId)) {
