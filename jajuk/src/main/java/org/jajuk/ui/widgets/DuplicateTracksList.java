@@ -37,8 +37,9 @@ import javax.swing.JScrollPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import org.jajuk.base.DirectoryManager;
 import org.jajuk.base.File;
+import org.jajuk.base.FileManager;
+import org.jajuk.events.Event;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.util.Messages;
@@ -59,11 +60,11 @@ public class DuplicateTracksList extends JPanel implements ListSelectionListener
   private JButton selectAllButton;
   private JButton closeButton;
 
-  public DuplicateTracksList(List<List<File>> files, JButton jbClose) {
+  public DuplicateTracksList(List<List<File>> Files, JButton jbClose) {
     super(new BorderLayout());
-    allFiles = files;
+    allFiles = Files;
     closeButton = jbClose;
-    populateList(files);
+    populateList(Files);
 
     list = new JList(listModel);
     list.addListSelectionListener(this);
@@ -91,7 +92,7 @@ public class DuplicateTracksList extends JPanel implements ListSelectionListener
     add(buttonPane, BorderLayout.PAGE_END);
   }
 
-  public final void populateList(List<List<File>> allFiles) {
+  public void populateList(List<List<File>> allFiles) {
     flatFilesList = new ArrayList<File>();
     for (List<File> lFiles : allFiles) {
       for (File f : lFiles) {
@@ -122,24 +123,27 @@ public class DuplicateTracksList extends JPanel implements ListSelectionListener
         return;
       }
 
+      // Delete physically files from disk and from collection
       for (int i : indices) {
         try {
           UtilSystem.deleteFile(flatFilesList.get(i).getIO());
-          DirectoryManager.refreshDirectory(flatFilesList.get(i).getDirectory());
+          FileManager.getInstance().removeFile(flatFilesList.get(i));
         } catch (Exception ioe) {
           Log.error(131, ioe);
         }
       }
 
+      // Remove table rows
+      int deletedRows = 0;
       for (int i : indices) {
-        listModel.remove(i);
-        flatFilesList.remove(i);
-        deleteFilefromList(i);
+        listModel.removeElement(i - deletedRows);
+        flatFilesList.remove(i - deletedRows);
+        deleteFilefromList(i - deletedRows);
+        deletedRows++;
       }
 
       populateList(allFiles);
-      ObservationManager.notify(new org.jajuk.events.Event(
-          JajukEvents.EVENT_DEVICE_REFRESH));
+      ObservationManager.notify(new Event(JajukEvents.EVENT_DEVICE_REFRESH));
     }
 
     private void deleteFilefromList(int index) {
@@ -147,11 +151,10 @@ public class DuplicateTracksList extends JPanel implements ListSelectionListener
       for (int r = 0; r < allFiles.size(); r++) {
         for (int c = 0; c < allFiles.get(r).size(); c++) {
           if (count == index) {
-            if (allFiles.get(r).size() <= 2) {
+            if (allFiles.get(r).size() <= 2)
               allFiles.remove(r);
-            } else {
+            else
               allFiles.get(r).remove(c);
-            }
           }
           count++;
         }
@@ -161,7 +164,7 @@ public class DuplicateTracksList extends JPanel implements ListSelectionListener
     private String getSelectedFiles(int indices[]) {
       String sFiles = "";
       for (int k : indices) {
-        sFiles += flatFilesList.get(k).getName() + "\n";
+        sFiles += "* " + flatFilesList.get(k).getAbsolutePath() + "\n";
       }
       return sFiles;
     }
@@ -178,16 +181,15 @@ public class DuplicateTracksList extends JPanel implements ListSelectionListener
         }
       }
       int[] indices = new int[iList.size()];
-      for (int k = 0; k < iList.size(); k++) {
+      for (int k = 0; k < iList.size(); k++)
         indices[k] = iList.get(k);
-      }
 
       list.setSelectedIndices(indices);
     }
   }
 
   public void valueChanged(ListSelectionEvent e) {
-    if (!e.getValueIsAdjusting()) {
+    if (e.getValueIsAdjusting() == false) {
 
       if (list.getSelectedIndex() == -1) {
         // No selection, disable delete button.
