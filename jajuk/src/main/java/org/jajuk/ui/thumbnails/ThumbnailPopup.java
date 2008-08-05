@@ -126,20 +126,26 @@ public class ThumbnailPopup extends JDialog implements Const {
             List<org.jajuk.base.File> toPlay = new ArrayList<org.jajuk.base.File>(1);
             File file = track.getPlayeableFile(true);
             toPlay.add(file);
-            FIFO.push(
-                UtilFeatures.createStackItems(UtilFeatures.applyPlayOption(toPlay), Conf
-                    .getBoolean(CONF_STATE_REPEAT), true), false);
+            FIFO.push(UtilFeatures.createStackItems(UtilFeatures.applyPlayOption(toPlay), Conf
+                .getBoolean(CONF_STATE_REPEAT), true), false);
           }
         }
         // change cursor on entering or leaving
         // hyperlinks
-        // This doesn't work under JRE 1.5 (at least
-        // under Linux), Sun issue ?
         else if (e.getEventType() == EventType.ENTERED) {
-          text.setCursor(UtilGUI.LINK_CURSOR);
+          SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+              text.setCursor(UtilGUI.LINK_CURSOR);
+            }
+          });
         } else if (e.getEventType() == EventType.EXITED) {
-          text.setCursor(UtilGUI.DEFAULT_CURSOR);
+          SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+              text.setCursor(UtilGUI.DEFAULT_CURSOR);
+            }
+          });
         }
+
       }
     });
     final JScrollPane jspText = new JScrollPane(text);
