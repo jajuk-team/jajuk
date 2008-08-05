@@ -115,6 +115,7 @@ public class AnimationView extends ViewAdapter implements Const, Observer,
     eventSubjectSet.add(JajukEvents.EVENT_FILE_LAUNCHED);
     eventSubjectSet.add(JajukEvents.EVENT_WEBRADIO_LAUNCHED);
     eventSubjectSet.add(JajukEvents.EVENT_ZERO);
+    eventSubjectSet.add(JajukEvents.EVENT_PLAYER_STOP);
     return eventSubjectSet;
   }
 
@@ -186,7 +187,8 @@ public class AnimationView extends ViewAdapter implements Const, Observer,
         }
         setText(s);
       }
-    } else if (subject.equals(JajukEvents.EVENT_ZERO)) {
+    } else if (subject.equals(JajukEvents.EVENT_ZERO)
+        || subject.equals(JajukEvents.EVENT_PLAYER_STOP)) {
       setText(Messages.getString("JajukWindow.18"));
     } else if (subject.equals(JajukEvents.EVENT_WEBRADIO_LAUNCHED)) {
       WebRadio radio = (WebRadio) event.getDetails().get(DETAIL_CONTENT);
