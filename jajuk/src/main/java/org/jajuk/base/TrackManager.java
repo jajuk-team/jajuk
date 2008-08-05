@@ -290,6 +290,9 @@ public final class TrackManager extends ItemManager implements Observer {
           tagsToCommit.put(tag, track);
         }
       }
+      // Remove the track from the old album
+      track.getAlbum().tracks.remove(track);
+      
       // if current track author name is changed, notify it
       if (FIFO.getCurrentFile() != null
           && FIFO.getCurrentFile().getTrack().getAuthor().equals(track.getAuthor())) {
@@ -342,6 +345,9 @@ public final class TrackManager extends ItemManager implements Observer {
           tagsToCommit.put(tag, track);
         }
       }
+      // Remove the track from the old album
+      track.getAlbum().tracks.remove(track);
+      
       // register the new item
       Style newStyle = StyleManager.getInstance().registerStyle(sNewStyle);
       Track newTrack = registerTrack(track.getName(), track.getAlbum(), newStyle,
@@ -393,6 +399,9 @@ public final class TrackManager extends ItemManager implements Observer {
           tagsToCommit.put(tag, track);
         }
       }
+      // Remove the track from the old album
+      track.getAlbum().tracks.remove(track);
+      
       // Register new item
       Year newYear = YearManager.getInstance().registerYear(newItem);
       Track newTrack = registerTrack(track.getName(), track.getAlbum(), track.getStyle(), track
@@ -436,6 +445,9 @@ public final class TrackManager extends ItemManager implements Observer {
           tagsToCommit.put(tag, track);
         }
       }
+      // Remove the track from the old album
+      track.getAlbum().tracks.remove(track);
+      
       track.setComment(sNewItem);
       return track;
     }
@@ -505,6 +517,10 @@ public final class TrackManager extends ItemManager implements Observer {
           tagsToCommit.put(tag, track);
         }
       }
+      
+      // Remove the track from the old album
+      track.getAlbum().tracks.remove(track);
+      
       Track newTrack = registerTrack(track.getName(), track.getAlbum(), track.getStyle(), track
           .getAuthor(), track.getDuration(), track.getYear(), lNewOrder, track.getType());
       postChange(track, newTrack, filter);
@@ -546,6 +562,10 @@ public final class TrackManager extends ItemManager implements Observer {
           tagsToCommit.put(tag, track);
         }
       }
+      
+      // Remove the track from the old album
+      track.getAlbum().tracks.remove(track);
+      
       Track newTrack = registerTrack(sNewItem, track.getAlbum(), track.getStyle(), track
           .getAuthor(), track.getDuration(), track.getYear(), track.getOrder(), track.getType());
       postChange(track, newTrack, filter);
