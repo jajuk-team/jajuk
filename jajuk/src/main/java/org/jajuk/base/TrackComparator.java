@@ -52,7 +52,7 @@ public class TrackComparator implements Comparator<Track> {
 
   public static final int ORDER = 7;
 
-  private static final DateFormat FORMATTER = UtilString.getAdditionDateFormatter();
+  private static final DateFormat formatter = UtilString.getAdditionDateFormatter();
 
   /**
    * Constructor
@@ -80,37 +80,37 @@ public class TrackComparator implements Comparator<Track> {
     // Style/author/album
     case STYLE_AUTHOR_ALBUM:
       sHashCompare = new StringBuilder().append(track.getStyle().getName2()).append(
-          track.getAuthor().getName2())// need 2 spaces to make
-          // a right sorting (ex:
-          // Rock and Rock & Roll)
-          .append(track.getAlbum().getName2()).append(track.getName()).toString();
+          track.getAuthor().getName2())
+          .append(track.getAlbum().getName2()).append(UtilString.padNumber(track.getOrder(), 5)).append(
+              track.getName()).toString();
       break;
     // Author/album
     case AUTHOR_ALBUM:
-      // need 2 spaces to make a right sorting (ex: Rock and Rock & Roll)
       sHashCompare = new StringBuilder().append(track.getAuthor().getName2()).append(
-          track.getAlbum().getName2()).append(track.getName()).toString();
+          track.getAlbum().getName2()).append(UtilString.padNumber(track.getOrder(), 5)).append(
+          track.getName()).toString();
       break;
     // Album
     case ALBUM:
-      sHashCompare = new StringBuilder().append(track.getAlbum().getName2())
-          .append(track.getName()).toString();
+      sHashCompare = new StringBuilder().append(track.getAlbum().getName2()).append(
+          UtilString.padNumber(track.getOrder(), 5)).append(track.getName()).toString();
       break;
     // Year / album
     case YEAR_ALBUM:
       sHashCompare = new StringBuilder().append(
-          UtilString.padNumber(999999999 - track.getYear().getValue(), 10)).append(track.getName())
-          .toString();
+          UtilString.padNumber(999999999 - track.getYear().getValue(), 10)).append(
+          UtilString.padNumber(track.getOrder(), 5)).append(track.getName()).toString();
       break;
     // discovery date / album
     case DISCOVERY_ALBUM:
-      sHashCompare = new StringBuilder().append(FORMATTER.format(track.getDiscoveryDate())).append(
-          track.getAlbum().getName2()).append(track.getName()).toString();
+      sHashCompare = new StringBuilder().append(formatter.format(track.getDiscoveryDate())).append(
+          track.getAlbum().getName2()).append(UtilString.padNumber(track.getOrder(), 5)).append(
+          track.getName()).toString();
       break;
     // Rate / album
     case RATE_ALBUM:
       sHashCompare = new StringBuilder().append(UtilString.padNumber(999999999 - track.getRate(), 10))
-          .append(track.getName()).toString();
+          .append(UtilString.padNumber(track.getOrder(), 5)).append(track.getName()).toString();
       break;
     // Hits / album
     case HITS_ALBUM:
@@ -136,15 +136,6 @@ public class TrackComparator implements Comparator<Track> {
   public int compare(Track track1, Track track2) {
     if (track1.equals(track2)) {
       return 0;
-    }
-    // if track # is given, sort by # in a same album, otherwise, sort
-    // alphabetically
-    if (track2.getAlbum().equals(track1.getAlbum())
-        && track2.getAuthor().equals(track1.getAuthor())
-        && track2.getStyle().equals(track1.getStyle()) && (track1.getOrder() != track2.getOrder())) {
-      // do not use year as an album can contains tracks with
-      // different year but we want to keep order
-      return (int) (track1.getOrder() - track2.getOrder());
     }
     String sHashCompare = getCompareString(track1);
     String sHashCompareOther = getCompareString(track2);

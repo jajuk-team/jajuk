@@ -271,7 +271,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
     jtable.setTransferHandler(new TableTransferHandler(jtable));
     jtable.showColumns(jtable.getColumnsConf());
     applyFilter(null, null);
-    jtable.setSortOrder(1, SortOrder.ASCENDING);
+    jtable.setSortOrder(0, SortOrder.ASCENDING);
     jtable.setHighlighters(UtilGUI.getAlternateHighlighter());
     jtable.packTable(5);
     // Register on the list for subject we are interested in
