@@ -106,31 +106,31 @@ public final class DirectoryManager extends ItemManager {
     super();
     // ---register properties---
     // ID
-    registerProperty(new PropertyMetaInformation(Const.XML_ID, false, true, false,
-        false, false, String.class, null));
+    registerProperty(new PropertyMetaInformation(Const.XML_ID, false, true, false, false, false,
+        String.class, null));
     // Name test with (getParentDirectory() != null); //name editable only
     // for standard
     // directories, not root
-    registerProperty(new PropertyMetaInformation(Const.XML_NAME, false, true, true,
-        false, false, String.class, null)); // edition to
+    registerProperty(new PropertyMetaInformation(Const.XML_NAME, false, true, true, false, false,
+        String.class, null)); // edition to
     // yet
     // implemented
     // TBI
     // Parent
-    registerProperty(new PropertyMetaInformation(Const.XML_DIRECTORY_PARENT, false,
-        true, true, false, false, String.class, null));
-    // Device
-    registerProperty(new PropertyMetaInformation(Const.XML_DEVICE, false, true, true,
+    registerProperty(new PropertyMetaInformation(Const.XML_DIRECTORY_PARENT, false, true, true,
         false, false, String.class, null));
+    // Device
+    registerProperty(new PropertyMetaInformation(Const.XML_DEVICE, false, true, true, false, false,
+        String.class, null));
     // Expand
-    registerProperty(new PropertyMetaInformation(Const.XML_EXPANDED, false, false,
-        false, false, true, Boolean.class, false));
+    registerProperty(new PropertyMetaInformation(Const.XML_EXPANDED, false, false, false, false,
+        true, Boolean.class, false));
     // Synchonized directory
-    registerProperty(new PropertyMetaInformation(Const.XML_DIRECTORY_SYNCHRONIZED,
-        false, false, true, false, false, Boolean.class, true));
+    registerProperty(new PropertyMetaInformation(Const.XML_DIRECTORY_SYNCHRONIZED, false, false,
+        true, false, false, Boolean.class, true));
     // Default cover
-    registerProperty(new PropertyMetaInformation(Const.XML_DIRECTORY_DEFAULT_COVER,
-        false, false, true, false, false, String.class, null));
+    registerProperty(new PropertyMetaInformation(Const.XML_DIRECTORY_DEFAULT_COVER, false, false,
+        true, false, false, String.class, null));
   }
 
   /**
@@ -260,19 +260,15 @@ public final class DirectoryManager extends ItemManager {
         // removed
         return;
       }
-      synchronized (FileManager.getInstance().getLock()) {
-        // remove all files
-        // need to use a shallow copy to avoid concurent exceptions
-        final List<File> alFiles = new ArrayList<File>(dir.getFiles());
-        for (final File file : alFiles) {
-          FileManager.getInstance().removeFile(file);
-        }
+      // remove all files
+      // need to use a shallow copy to avoid concurent exceptions
+      final List<File> alFiles = new ArrayList<File>(dir.getFiles());
+      for (final File file : alFiles) {
+        FileManager.getInstance().removeFile(file);
       }
-      synchronized (PlaylistManager.getInstance().getLock()) {
-        // remove all playlists
-        for (final Playlist plf : dir.getPlaylistFiles()) {
-          PlaylistManager.getInstance().removeItem(plf.getID());
-        }
+      // remove all playlists
+      for (final Playlist plf : dir.getPlaylistFiles()) {
+        PlaylistManager.getInstance().removeItem(plf.getID());
       }
       // remove all sub dirs
       final Iterator<Directory> it = dir.getDirectories().iterator();
