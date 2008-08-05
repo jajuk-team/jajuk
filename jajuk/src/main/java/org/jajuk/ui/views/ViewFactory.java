@@ -51,10 +51,12 @@ public final class ViewFactory {
   /**
    * Create a new view instance
    * 
-   * @param className
-   * @return
+   * @param className view class
+   * @param perspective view perspective
+   * @param id integer id used as vldocking key id
+   * @return the created view
    */
-  public static IView createView(Class<?> className, IPerspective perspective) {
+    public static IView createView(Class className, IPerspective perspective, int id) {
     Set<IView> views = hmClassesInstances.get(className);
     if (views == null) {
       views = new LinkedHashSet<IView>();
@@ -66,13 +68,7 @@ public final class ViewFactory {
     } catch (Exception e) {
       throw new RuntimeException(e);
     }
-    // Set ID using a random number to discriminate same views (same view in
-    // the same perspective are in different perspectives)
-    // do not use sequential numbers as the serialization views order is not
-    // deterministic
-    // and it may conduct VLDocking to ignore some views if XXX/3 is parsed
-    // before XXX/2 for ie
-    view.setID(className.getName() + '/' + (int) (Integer.MAX_VALUE * random.nextDouble()));
+    view.setID(className.getName() + '/' + id);
     view.setPerspective(perspective);
     // store the new view
     views.add(view);

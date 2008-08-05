@@ -44,6 +44,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.util.HashSet;
+import java.util.Random;
 import java.util.Set;
 
 import javax.swing.Box;
@@ -170,6 +171,8 @@ public final class JajukJMenuBar extends JMenuBar implements Const, Observer {
 
   JButton jbSlim;
 
+  private static Random random = new Random();
+
   private JajukJMenuBar() {
     setOpaque(true);
     setAlignmentX(0.0f);
@@ -210,7 +213,8 @@ public final class JajukJMenuBar extends JMenuBar implements Const, Observer {
           // Simply add the new view in the current perspective
           PerspectiveAdapter current = (PerspectiveAdapter) PerspectiveManager
               .getCurrentPerspective();
-          IView newView = ViewFactory.createView(view, current);
+          IView newView = ViewFactory.createView(view, current, (int) (Integer.MAX_VALUE * random
+              .nextDouble()));
           newView.initUI();
           newView.setIsPopulated(true);
           current.addDockable(newView);
@@ -285,8 +289,7 @@ public final class JajukJMenuBar extends JMenuBar implements Const, Observer {
     jcbShowPopups.setSelected(Conf.getBoolean(CONF_SHOW_POPUPS));
     jcbShowPopups.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
-        Conf.setProperty(CONF_SHOW_POPUPS, Boolean.toString(jcbShowPopups
-            .isSelected()));
+        Conf.setProperty(CONF_SHOW_POPUPS, Boolean.toString(jcbShowPopups.isSelected()));
         // force parameter view to take this into account
         ObservationManager.notify(new Event(JajukEvents.EVENT_PARAMETERS_CHANGE));
       }
@@ -297,8 +300,8 @@ public final class JajukJMenuBar extends JMenuBar implements Const, Observer {
     jcbSyncTableTree.setSelected(Conf.getBoolean(CONF_OPTIONS_SYNC_TABLE_TREE));
     jcbSyncTableTree.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
-        Conf.setProperty(CONF_OPTIONS_SYNC_TABLE_TREE, Boolean
-            .toString(jcbSyncTableTree.isSelected()));
+        Conf.setProperty(CONF_OPTIONS_SYNC_TABLE_TREE, Boolean.toString(jcbSyncTableTree
+            .isSelected()));
         // force parameter view to take this into account
         ObservationManager.notify(new Event(JajukEvents.EVENT_PARAMETERS_CHANGE));
       }
@@ -442,7 +445,7 @@ public final class JajukJMenuBar extends JMenuBar implements Const, Observer {
   public void setRepeatSelected(final boolean b) {
     jcbmiRepeat.setSelected(b);
   }
-  
+
   public void setShuffleSelected(final boolean b) {
     jcbmiShuffle.setSelected(b);
   }
@@ -450,7 +453,7 @@ public final class JajukJMenuBar extends JMenuBar implements Const, Observer {
   public void setContinueSelected(final boolean b) {
     jcbmiContinue.setSelected(b);
   }
-  
+
   public void setIntroSelected(final boolean b) {
     jcbmiIntro.setSelected(b);
   }

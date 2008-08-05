@@ -50,8 +50,7 @@ import org.jajuk.util.log.Log;
 /**
  * Perspective adapter, provide default implementation for perspectives
  */
-public abstract class PerspectiveAdapter extends DockingDesktop implements IPerspective,
-    Const {
+public abstract class PerspectiveAdapter extends DockingDesktop implements IPerspective, Const {
   /** Perspective id (class) */
   private String sID;
 
@@ -123,41 +122,6 @@ public abstract class PerspectiveAdapter extends DockingDesktop implements IPers
     writeXML(out);
     out.flush();
     out.close();
-    // Now reopen the file and remove everything between <TabGroups> and
-    // </TabGroups> due to a bug in VLDocking (otherwise, VLDocking force
-    // creating phantom views)
-    StringBuilder sb = new StringBuilder();
-    BufferedReader in = new BufferedReader(new FileReader(saveFile));
-    try {
-      String line = null;
-      boolean stop = false;
-      for (;;) {
-        line = in.readLine();
-        if (line == null) {
-          break;
-        }
-
-        if (line.indexOf("<TabGroups>") != -1) {
-          stop = true;
-        }
-        if (line.indexOf("</TabGroups>") != -1) {
-          stop = false;
-        }
-        if (!stop && line.indexOf("</TabGroups>") == -1) {
-          sb.append(line).append('\n');
-        }
-      }
-    } finally {
-      in.close();
-    }
-    // write file again
-    out = new BufferedOutputStream(new FileOutputStream(saveFile));
-    try {
-      out.write(sb.toString().getBytes());
-      out.flush();
-    } finally {
-      out.close();
-    }
   }
 
   /*
@@ -185,7 +149,8 @@ public abstract class PerspectiveAdapter extends DockingDesktop implements IPers
         try {
           StringTokenizer st = new StringTokenizer(keyName, "/");
           String className = st.nextToken();
-          view = ViewFactory.createView(Class.forName(className), PerspectiveAdapter.this);
+          int id = Integer.parseInt(st.nextToken());
+          view = ViewFactory.createView(Class.forName(className), PerspectiveAdapter.this, id);
         } catch (Exception e) {
           Log.error(e);
         }
@@ -232,7 +197,7 @@ public abstract class PerspectiveAdapter extends DockingDesktop implements IPers
       // Remove current conf file to force using default file from the
       // jar
       File loadFile = UtilSystem.getConfFileByPath(getClass().getSimpleName() + ".xml");
-      if(!loadFile.delete()) {
+      if (!loadFile.delete()) {
         Log.warn("Could not delete file " + loadFile.toString());
       }
       // Remove all registered dockables
