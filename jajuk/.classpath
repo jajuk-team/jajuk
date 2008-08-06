@@ -22,7 +22,6 @@
 	<classpathentry kind="lib" path="lib/commons-collections-3.2.jar"/>
 	<classpathentry kind="lib" path="lib/tablelayout-20070421.jar"/>
 	<classpathentry kind="lib" path="jajuk-help.jar"/>
-	<classpathentry kind="lib" path="lib/vldocking-2.1.4.jar"/>
 	<classpathentry kind="lib" path="lib/basicplayer-3.0.jar">
 		<attributes>
 			<attribute name="javadoc_location" value="http://www.javazoom.net/jlgui/docs/docs2.3/"/>
@@ -38,5 +37,6 @@
 	<classpathentry kind="lib" path="lib/qdwizard-2.0.4.jar"/>
 	<classpathentry kind="lib" path="lib/substance-4.3.5.jar"/>
 	<classpathentry kind="lib" path="lib/jaudiotagger-1.126.jar"/>
+	<classpathentry kind="lib" path="lib/vldocking-2.1.5.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

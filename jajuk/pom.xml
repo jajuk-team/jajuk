@@ -120,7 +120,7 @@
       <artifactId>vldocking</artifactId>
       <version>2.1.4</version>
       <scope>system</scope>
-      <systemPath>${basedir}/lib/vldocking-2.1.4.jar</systemPath>
+      <systemPath>${basedir}/lib/vldocking-2.1.5.jar</systemPath>
     </dependency>
     <dependency>
       <groupId>Entagged</groupId>
