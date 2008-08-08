@@ -231,9 +231,14 @@ public class JajukTable extends JXTable implements Const, ListSelectionListener,
   }
 
   private void columnChange() {
-    if (acceptColumnsEvents) { // ignore this column change when reloading
-      // model
-      createColumnsConf();
+    // ignore this column change when reloading
+    // model
+    if (acceptColumnsEvents) {
+      // If a property is given to store the column, create the new columns
+      // configuration
+      if (this.sConf != null) {
+        createColumnsConf();
+      }
       // Force table rebuilding
       Properties details = new Properties();
       details.put(DETAIL_CONTENT, this);

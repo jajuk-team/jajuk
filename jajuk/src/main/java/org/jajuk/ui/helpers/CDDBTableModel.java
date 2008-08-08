@@ -100,8 +100,7 @@ public class CDDBTableModel extends JajukTableModel {
    */
   @Override
   public void populateModel(String property, String pattern, List<String> columnsToShow) {
-    // TODO Auto-generated method stub
-
+    // Doesn't apply here
   }
 
 }

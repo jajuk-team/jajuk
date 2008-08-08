@@ -21,15 +21,17 @@ package org.jajuk.ui.actions;
 
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 import org.jajuk.base.Item;
 import org.jajuk.base.Track;
+import org.jajuk.base.TrackComparator;
 import org.jajuk.base.TrackManager;
 import org.jajuk.ui.wizard.CDDBWizard;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
-import org.jajuk.util.UtilGUI;
 
 /**
  * Find tags from CDDB on selection
@@ -64,10 +66,13 @@ public class CDDBSelectionAction extends SelectionAction {
       return;
     }
     // Build a list of tracks from various items
-    List<Track> tracks = new ArrayList<Track>(selection.size());
-    for (Item item : selection) {
-      tracks.addAll(TrackManager.getInstance().getAssociatedTracks(item));
-    }
+    Item item = selection.get(0);
+    Set<Track> tracksSet = TrackManager.getInstance().getAssociatedTracks(item);
+    List<Track> tracks = new ArrayList<Track>(tracksSet);
+    
+    // Sort tracks
+    Collections.sort(tracks,new TrackComparator(TrackComparator.ORDER));
+    
     // Note that the CDDBWizard uses a swing worker
     new CDDBWizard(tracks);
   }

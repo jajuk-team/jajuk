@@ -564,28 +564,8 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
           properties.put(DETAIL_ORIGIN, PerspectiveManager.getCurrentPerspective().getID());
           ObservationManager.notify(new Event(JajukEvents.EVENT_SYNC_TREE_TABLE, properties));
         }
-        // Check CDDB requests
-        if (alSelected.size() > 0 // alSelected = 0 for collection
-            // selection
-            && alSelected.get(0) instanceof Directory) {
-          boolean bShowCDDB = false;
-          for (Item item : alSelected) {
-            // check it is a directory (can be a file if user
-            // selects n files + n directories)
-            if (!(item instanceof Directory)) {
-              continue;
-            }
-            // if at least one selected dir contains a file,
-            // show option
-            if (item instanceof Directory) {
-              Directory dir = (Directory) item;
-              if (dir.getFiles().size() > 0) {
-                bShowCDDB = true;
-              }
-            }
-          }
-          jmiCDDBWizard.setEnabled(bShowCDDB);
-        }
+        // Enable CDDB retagging only for a single directory selection
+        jmiCDDBWizard.setEnabled(alSelected.size() == 1 && alSelected.get(0) instanceof Directory);
       }
     }
   }
@@ -609,9 +589,8 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
             if (o instanceof FileNode) {
               File file = ((FileNode) o).getFile();
               try {
-                FIFO.push(
-                    new StackItem(file, Conf.getBoolean(CONF_STATE_REPEAT), true),
-                    Conf.getBoolean(CONF_OPTIONS_PUSH_ON_CLICK));
+                FIFO.push(new StackItem(file, Conf.getBoolean(CONF_STATE_REPEAT), true), Conf
+                    .getBoolean(CONF_OPTIONS_PUSH_ON_CLICK));
               } catch (JajukException je) {
                 Log.error(je);
               }
@@ -633,9 +612,8 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
                 Messages.showErrorMessage(18);
                 return;
               } else {
-                FIFO.push(
-                    UtilFeatures.createStackItems(UtilFeatures.applyPlayOption(alToPlay),
-                        Conf.getBoolean(CONF_STATE_REPEAT), true), false);
+                FIFO.push(UtilFeatures.createStackItems(UtilFeatures.applyPlayOption(alToPlay),
+                    Conf.getBoolean(CONF_STATE_REPEAT), true), false);
               }
             }
           }

@@ -83,7 +83,7 @@ public class CDDBWizard extends JajukJDialog implements Const, ActionListener {
   double p = TableLayout.PREFERRED;
 
   /** Items to be retagged */
-  List<CDDBTrack> alTracks;
+  List<CDDBTrack> alCddbTracks;
 
   /** Freedb Items */
   Freedb fdb;
@@ -96,64 +96,15 @@ public class CDDBWizard extends JajukJDialog implements Const, ActionListener {
 
   Vector<String> comboAlbums;
 
-  private class NavigationPanel extends JPanel {
-
-    private static final long serialVersionUID = 1L;
-
-    JLabel label;
-
-    JLabel jlCurrent;
-
-    JPanel jpButtons;
-
-    /**
-     * Navigation panel
-     * 
-     */
-    NavigationPanel() {
-      // Albums List
-      label = new JLabel(Messages.getString("CDDBWizard.5"));
-      jcbAlbum = new SteppedComboBox();
-
-      // add all matches
-      jcbAlbum.setModel(new DefaultComboBoxModel(comboAlbums));
-      jcbAlbum.setSelectedIndex(jcbAlbum.getSelectedIndex());
-      jcbAlbum.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent arg0) {
-          // change the table model
-          model = populateModel();
-          jtable.setModel(model);
-          jtable.selectAll();
-        }
-      });
-
-      // Show the number of matches found
-      jlCurrent = new JLabel(foundAlbums.length + " " + Messages.getString("CDDBWizard.18"));
-
-      double sizeControl[][] = {
-          { TableLayout.FILL, p, TableLayout.FILL, TableLayout.FILL, TableLayout.FILL },
-          { 10, p, 10 } };
-
-      TableLayout layout = new TableLayout(sizeControl);
-      layout.setHGap(10);
-
-      setLayout(layout);
-
-      add(label, "1,1");
-      add(jcbAlbum, "3,1");
-      add(jlCurrent, "5,1");
-    }
-  }
-
   /**
    * CDDB wizard
    * 
    * @param dir
    *          directory to retag
    */
-  public CDDBWizard(final List<Track> alGivenTracks) {
+  public CDDBWizard(final List<Track> tracks) {
     UtilGUI.waiting();
-    
+
     // windows title: absolute path name of the given directory
     setTitle(Messages.getString("CDDBWizard.19"));
     SwingWorker sw = new SwingWorker() {
@@ -161,30 +112,30 @@ public class CDDBWizard extends JajukJDialog implements Const, ActionListener {
       @Override
       public Object construct() {
         try {
-
           // Put an error message if no tracks were found
-          if (alGivenTracks.size() == 0) {
+          if (tracks.size() == 0) {
             return null;
           } else {
             // Convert given tracks into CDDBTracks
-            alTracks = new ArrayList<CDDBTrack>(alGivenTracks.size());
-            for (Track t : alGivenTracks) {
+            alCddbTracks = new ArrayList<CDDBTrack>(tracks.size());
+            for (Track t : tracks) {
               CDDBTrack track = new CDDBTrack(t);
-              if (!alTracks.contains(track)) {
-                alTracks.add(track);
+              if (!alCddbTracks.contains(track)) {
+                alCddbTracks.add(track);
               }
             }
             // Perform CDDB Query and display an error message if CDDB query
             // don't found any match
-            if (performQuery() == 0) {
+            CDDBTrack[] cddbtracks = alCddbTracks.toArray(new CDDBTrack[alCddbTracks.size()]);
+            int results = performQuery(cddbtracks); 
+            if ( results == 0) {
               Messages.showInfoMessage(Messages.getString("CDDBWizard.12"));
               return null;
             }
           }
         } catch (Exception e) {
           Log.error(e);
-        }
-        finally{
+        } finally {
           UtilGUI.stopWaiting();
         }
         return null;
@@ -195,8 +146,8 @@ public class CDDBWizard extends JajukJDialog implements Const, ActionListener {
         if (foundAlbums != null && foundAlbums.length > 0) {
           // create Main panel
           jpMain = new JPanel();
-          jtable = populateTable();
           jpNav = new NavigationPanel();
+          jtable = populateTable();
           okc = new OKCancelPanel(CDDBWizard.this, Messages.getString("Apply"), Messages
               .getString("Close"));
 
@@ -226,7 +177,7 @@ public class CDDBWizard extends JajukJDialog implements Const, ActionListener {
     }
     // Re-populate model
     model = new CDDBTableModel();
-    model.populateModel(alTracks,fdbReader);
+    model.populateModel(alCddbTracks, fdbReader);
     model.fireTableDataChanged();
     return model;
   }
@@ -248,9 +199,14 @@ public class CDDBWizard extends JajukJDialog implements Const, ActionListener {
     setVisible(true);
   }
 
-  public int performQuery() {
+  /**
+   * Perform the actual freedb query
+   * @param cddbtracks
+   * @return number of results (0 if no result). -1 if a technical problem occured.
+   */
+  public int performQuery(CDDBTrack[] cddbtracks) {
     fdb = new Freedb();
-    fdbAlbum = new FreedbAlbum(this.alTracks.toArray(new CDDBTrack[this.alTracks.size()]));
+    fdbAlbum = new FreedbAlbum(cddbtracks);
     try {
       foundAlbums = fdb.query(fdbAlbum);
       comboAlbums = new Vector<String>(foundAlbums.length);
@@ -266,9 +222,18 @@ public class CDDBWizard extends JajukJDialog implements Const, ActionListener {
       }
       return foundAlbums.length;
     } catch (FreedbException e) {
+      // freedb throws a Freedb exception for network problem or no match found
+      // we want to display an error message only in the first case
+      if (e.getMessage().toLowerCase().indexOf("no match") == -1) {
+        Messages.showErrorMessage(174);
+        return -1;
+      }
+      Log.debug(e.getLocalizedMessage());
+      return 0;
+    } catch (Exception e) {
       Log.debug(e.getLocalizedMessage());
       Messages.showErrorMessage(174);
-      return 0;
+      return -1;
     }
   }
 
@@ -281,7 +246,7 @@ public class CDDBWizard extends JajukJDialog implements Const, ActionListener {
         // Unset autommit to tags so we write to file only once for all changed
         // tags for a single file
         TrackManager.getInstance().setAutocommit(false);
-        Track track = alTracks.get(iRow).getTrack();
+        Track track = alCddbTracks.get(iRow).getTrack();
         try {
           String sValue = fdbReader.getAlbum();
           if (sValue != null && sValue.trim().length() > 0) {
@@ -345,6 +310,58 @@ public class CDDBWizard extends JajukJDialog implements Const, ActionListener {
           retagFiles();
         }
       }.start();
+    }
+  }
+
+  /**
+   * Navigation panel class
+   */
+  private class NavigationPanel extends JPanel {
+
+    private static final long serialVersionUID = 1L;
+
+    JLabel label;
+
+    JLabel jlCurrent;
+
+    JPanel jpButtons;
+
+    /**
+     * Navigation panel
+     * 
+     */
+    NavigationPanel() {
+      // Albums List
+      label = new JLabel(Messages.getString("CDDBWizard.5"));
+      jcbAlbum = new SteppedComboBox();
+
+      // add all matches
+      jcbAlbum.setModel(new DefaultComboBoxModel(comboAlbums));
+      jcbAlbum.setSelectedIndex(jcbAlbum.getSelectedIndex());
+      jcbAlbum.addActionListener(new ActionListener() {
+        public void actionPerformed(ActionEvent arg0) {
+          // Update table
+          model = populateModel();
+          jtable.setModel(model);
+          jtable.selectAll();
+        }
+      });
+
+      // Show the number of matches found
+      jlCurrent = new JLabel(foundAlbums.length + " " + Messages.getString("CDDBWizard.18"));
+
+      double sizeControl[][] = {
+          { TableLayout.FILL, p, TableLayout.FILL, TableLayout.FILL, TableLayout.FILL },
+          { 10, p, 10 } };
+
+      TableLayout layout = new TableLayout(sizeControl);
+      layout.setHGap(10);
+
+      setLayout(layout);
+
+      add(label, "1,1");
+      add(jcbAlbum, "3,1");
+      add(jlCurrent, "5,1");
     }
   }
 
