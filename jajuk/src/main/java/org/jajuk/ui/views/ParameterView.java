@@ -510,12 +510,12 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     Conf.setProperty(Const.CONF_OPTIONS_SYNC_TABLE_TREE, Boolean.toString(jcbSyncTableTree
         .isSelected()));
     Conf.setProperty(Const.CONF_OPTIONS_HOTKEYS, Boolean.toString(jcbHotkeys.isSelected()));
-    Conf.setProperty(Const.CONF_AUDIOSCROBBLER_ENABLE, Boolean.toString(jcbAudioScrobbler
+    Conf.setProperty(Const.CONF_LASTFM_ENABLE, Boolean.toString(jcbAudioScrobbler
         .isSelected()));
     Conf.setProperty(Const.CONF_LASTFM_INFO, Boolean.toString(jcbEnableLastFMInformation
         .isSelected()));
-    Conf.setProperty(Const.CONF_AUDIOSCROBBLER_USER, jtfASUser.getText());
-    Conf.setProperty(Const.CONF_AUDIOSCROBBLER_PASSWORD, UtilString.rot13(new String(jpfASPassword
+    Conf.setProperty(Const.CONF_LASTFM_USER, jtfASUser.getText());
+    Conf.setProperty(Const.CONF_LASTFM_PASSWORD, UtilString.rot13(new String(jpfASPassword
         .getPassword())));
     final int iLogLevel = scbLogLevel.getSelectedIndex();
     Log.setVerbosity(iLogLevel);
@@ -1701,11 +1701,11 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     jcbCoverSize.setEnabled(Conf.getBoolean(Const.CONF_COVERS_AUTO_COVER));
     jcbCoverSize.setSelectedIndex(Conf.getInt(Const.CONF_COVERS_SIZE));
     jcbShuffleCover.setSelected(Conf.getBoolean(Const.CONF_COVERS_SHUFFLE));
-    jcbAudioScrobbler.setSelected(Conf.getBoolean(Const.CONF_AUDIOSCROBBLER_ENABLE));
+    jcbAudioScrobbler.setSelected(Conf.getBoolean(Const.CONF_LASTFM_ENABLE));
     jcbEnableLastFMInformation.setSelected(Conf.getBoolean(Const.CONF_LASTFM_INFO));
-    jtfASUser.setText(Conf.getString(Const.CONF_AUDIOSCROBBLER_USER));
-    jpfASPassword.setText(UtilString.rot13(Conf.getString(Const.CONF_AUDIOSCROBBLER_PASSWORD)));
-    if (!Conf.getBoolean(Const.CONF_AUDIOSCROBBLER_ENABLE)) {
+    jtfASUser.setText(Conf.getString(Const.CONF_LASTFM_USER));
+    jpfASPassword.setText(UtilString.rot13(Conf.getString(Const.CONF_LASTFM_PASSWORD)));
+    if (!Conf.getBoolean(Const.CONF_LASTFM_ENABLE)) {
       jlASUser.setEnabled(false);
       jtfASUser.setEnabled(false);
       jlASPassword.setEnabled(false);

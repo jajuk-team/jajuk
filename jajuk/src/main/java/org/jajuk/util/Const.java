@@ -629,11 +629,11 @@ public interface Const {
 
   String CONF_NETWORK_PROXY_PWD = "jajuk.network.proxy_pwd";
 
-  String CONF_AUDIOSCROBBLER_ENABLE = "jajuk.network.audioscrobbler";
+  String CONF_LASTFM_ENABLE = "jajuk.network.audioscrobbler";
 
-  String CONF_AUDIOSCROBBLER_USER = "jajuk.network.ASUser";
+  String CONF_LASTFM_USER = "jajuk.network.ASUser";
 
-  String CONF_AUDIOSCROBBLER_PASSWORD = "jajuk.network.ASPassword";
+  String CONF_LASTFM_PASSWORD = "jajuk.network.ASPassword";
 
   String CONF_COVERS_AUTO_COVER = "jajuk.covers.auto_cover";
 
