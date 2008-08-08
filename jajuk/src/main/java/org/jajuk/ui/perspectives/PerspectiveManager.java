@@ -62,12 +62,12 @@ public final class PerspectiveManager implements Const {
    */
   private static Set<IPerspective> perspectives = new LinkedHashSet<IPerspective>(10);
 
-  /** 
+  /**
    * private constructor to avoid instantiating utility class
    */
   private PerspectiveManager() {
   }
-  
+
   /**
    * Reset registered perspectives
    * 
@@ -91,9 +91,10 @@ public final class PerspectiveManager implements Const {
       for (IPerspective perspective : getPerspectives()) {
         // Remove current conf file to force using default file from the
         // jar
-        File loadFile = UtilSystem.getConfFileByPath(perspective.getClass().getSimpleName() + ".xml");
+        File loadFile = UtilSystem.getConfFileByPath(perspective.getClass().getSimpleName()
+            + ".xml");
         if (loadFile.exists()) {
-          if(!loadFile.delete()) {
+          if (!loadFile.delete()) {
             Log.warn("Could not delete file " + loadFile);
           }
         }
@@ -115,20 +116,16 @@ public final class PerspectiveManager implements Const {
   public static void init() {
     // Use Simple perspective as a default
     IPerspective perspective = hmNameInstance.get(SimplePerspective.class.getName());
-    // If it is a crash recover, force physical perspective to avoid
-    // being locked on a buggy perspective like Information
-    if (!Main.isCrashRecover()) {
-      String sPerspective = Main.getDefaultPerspective();
-      // Check if a default perspective is forced
-      if (sPerspective == null) {
-        sPerspective = Conf.getString(CONF_PERSPECTIVE_DEFAULT);
-        // no? take the configuration ( user last perspective)
-      }
-      perspective = hmNameInstance.get(sPerspective);
-      // If perspective is no more known, take first perspective found
-      if (perspective == null) {
-        perspective = perspectives.iterator().next();
-      }
+    String sPerspective = Main.getDefaultPerspective();
+    // Check if a default perspective is forced
+    if (sPerspective == null) {
+      sPerspective = Conf.getString(CONF_PERSPECTIVE_DEFAULT);
+      // no? take the configuration ( user last perspective)
+    }
+    perspective = hmNameInstance.get(sPerspective);
+    // If perspective is no more known, take first perspective found
+    if (perspective == null) {
+      perspective = perspectives.iterator().next();
     }
     setCurrentPerspective(perspective);
   }

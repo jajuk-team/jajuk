@@ -457,4 +457,12 @@ public abstract class ItemManager implements Const {
     }
   }
 
+  /**
+   * Clear any entries from this manager
+   */
+  public void clear(){
+    hmItems.clear();
+    hmPropertiesMetaInformation.clear();
+  }
+  
 }

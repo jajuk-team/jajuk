@@ -166,18 +166,19 @@ public interface Const {
 
   String JAJUK_CODENAME = "Firestarter";
 
+  /** Extention to the .jajuk_test directory in test mode only */
+  String TEST_VERSION = "1.7";
+
   String JAJUK_VERSION_DATE = "Build: DATE_REPLACED_BY_ANT";
 
   String JAJUK_COPYRIGHT = "Copyright 2004-2008 The Jajuk Team";
 
-  // Files and paths
+  // -- Files and paths --
+  
   /** Bootstrap file that contains jajuk configuration user directory* */
   String FILE_BOOTSTRAP = System.getProperty("user.home") + "/.jajuk_bootstrap";
 
   String FILE_COLLECTION = "collection.xml";
-
-  // Void file created after exit collection file
-  String FILE_COLLECTION_EXIT_PROOF = "exit_proof";
 
   String FILE_REPORTING_CACHE_FILE = "cache/report";
 
@@ -198,10 +199,7 @@ public interface Const {
   String FILE_LANGPACK_PART1 = "jajuk";
 
   String FILE_LANGPACK_PART2 = ".properties";
-
-  /** Extention to the .jajuk_test directory in test mode only */
-  String TEST_VERSION = "1.7";
-
+  
   // logs
   String FILE_LOGS = "jajuk.log";
 

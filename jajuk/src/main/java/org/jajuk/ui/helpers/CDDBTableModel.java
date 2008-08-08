@@ -28,12 +28,11 @@ import org.jajuk.base.Item;
 import org.jajuk.base.Track;
 import org.jajuk.services.cddb.CDDBTrack;
 import org.jajuk.util.Messages;
+import org.jajuk.util.UtilString;
 
 public class CDDBTableModel extends JajukTableModel {
 
   private static final long serialVersionUID = 1L;
-
-  List<CDDBTrack> cddbTracks;
 
   /**
    * Model constructor
@@ -43,13 +42,16 @@ public class CDDBTableModel extends JajukTableModel {
    * @param sColName
    *          columns names
    */
-  public CDDBTableModel(List<CDDBTrack> alItems) {
-    super(5);
-    this.cddbTracks = alItems;
+  public CDDBTableModel() {
+    super(4);
 
     // Current Album title
     vColNames.add(Messages.getString("CDDBWizard.3"));
     idList.add("CDDBWizard.1");
+
+    // Filename
+    vColNames.add(Messages.getString("CDDBWizard.1"));
+    idList.add("CDDBWizard.2");
 
     // Current Track title
     vColNames.add(Messages.getString("CDDBWizard.2"));
@@ -63,37 +65,43 @@ public class CDDBTableModel extends JajukTableModel {
   /**
    * Fill model with tracks
    */
-  public void populateModel(FreedbReadResult fdbReader) {
-    iRowNum = cddbTracks.size();
+  public void populateModel(List<CDDBTrack> currentTracks, FreedbReadResult fdbReader) {
+    iRowNum = currentTracks.size();
     int iColNum = iNumberStandardCols;
     oValues = new Object[iRowNum][iColNum];
     oItems = new Item[iRowNum];
     bCellEditable = new boolean[iRowNum][iColNum];
-    Iterator<CDDBTrack> it = cddbTracks.iterator();
+    Iterator<CDDBTrack> it = currentTracks.iterator();
     for (int iRow = 0; it.hasNext(); iRow++) {
       Track track = it.next().getTrack();
       setItemAt(iRow, track);
       // Id
       oItems[iRow] = track;
-      // File name
+      // Album name
       oValues[iRow][0] = track.getAlbum().getName2();
       bCellEditable[iRow][0] = false;
-      // Album
-      oValues[iRow][1] = track.getName();
+      // files name
+      oValues[iRow][1] = UtilString.getLimitedString(track.getFilesString(), 40);
       bCellEditable[iRow][1] = false;
-      // Author
-      oValues[iRow][2] = fdbReader.getTrackTitle(iRow);
+      // Current Track name
+      oValues[iRow][2] = track.getName();
       bCellEditable[iRow][2] = false;
+      // Proposed track name
+      oValues[iRow][3] = fdbReader.getTrackTitle(iRow);
+      bCellEditable[iRow][3] = false;
     }
   }
 
-  /* (non-Javadoc)
-   * @see org.jajuk.ui.helpers.JajukTableModel#populateModel(java.lang.String, java.lang.String, java.util.List)
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.jajuk.ui.helpers.JajukTableModel#populateModel(java.lang.String,
+   *      java.lang.String, java.util.List)
    */
   @Override
   public void populateModel(String property, String pattern, List<String> columnsToShow) {
     // TODO Auto-generated method stub
-    
+
   }
-  
+
 }

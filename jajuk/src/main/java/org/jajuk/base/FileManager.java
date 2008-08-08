@@ -271,13 +271,13 @@ public final class FileManager extends ItemManager implements Observer {
   }
 
   /**
-   * Clean all references for the given device
+   * Clear all references for the given device
    * 
    * @param sId :
    *          Device id
    */
   @SuppressWarnings("unchecked")
-  public void cleanDevice(String sId) {
+  public void clearDevice(String sId) {
     synchronized (FileManager.getInstance().getLock()) {
       Iterator<File> it = hmItems.values().iterator();
       while (it.hasNext()) {
@@ -292,7 +292,7 @@ public final class FileManager extends ItemManager implements Observer {
       while (it.hasNext()) {
         File file = it.next();
         if (file.getDirectory() == null || file.getDirectory().getDevice().getID().equals(sId)) {
-          it.remove(); // this is the right way to remove entry
+          it.remove(); 
         }
       }
     }

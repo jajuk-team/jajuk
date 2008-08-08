@@ -135,12 +135,9 @@ public final class Main implements Const {
   /** Jukebox power pack flag* */
   private static boolean bPowerPack = false;
 
-  /**
-   * Thumb maker flag, true if this class is executed from the Thumb maker
-   * process *
-   */
-  // private static boolean bThumbMaker = false;
-  
+  /** Does a collection parsing error occured ? * */
+  private static boolean bCollectionLoadRecover = true;
+
   /** UI launched flag */
   private static boolean bUILauched = false;
 
@@ -152,9 +149,6 @@ public final class Main implements Const {
 
   /** Is it the first session ever ? */
   private static boolean bFirstSession = false;
-
-  /** Does this session follows a crash recover ? */
-  private static boolean bCrashRecover = false;
 
   /** Lock used to trigger a first time wizard device creation and refresh * */
   private static short[] canLaunchRefresh = new short[0];
@@ -238,9 +232,7 @@ public final class Main implements Const {
       // Conf.load
       if (!bTestMode) {
         // test mode is always in debug mode
-        Log
-            .setVerbosity(Integer
-                .parseInt(Conf.getString(CONF_OPTIONS_LOG_LEVEL)));
+        Log.setVerbosity(Integer.parseInt(Conf.getString(CONF_OPTIONS_LOG_LEVEL)));
       }
       // Set locale. setSystemLocal
       Messages.setLocal(Conf.getString(CONF_OPTIONS_LANGUAGE));
@@ -501,15 +493,13 @@ public final class Main implements Const {
     if (workspace == null) {
       workspace = System.getProperty("user.home");
     }
-
     // check for jajuk directory
     final File fWorkspace = new File(workspace);
-    if (!fWorkspace.exists() && (!fWorkspace.mkdirs())) { // create the
-      // directory if it
-      // doesn't exist
-      Log.warn("Could not create directory " + fWorkspace.toString());
+    if (!fWorkspace.exists()) {
+      if (!fWorkspace.mkdirs()) { // create the directory if it doesn't exist
+        Log.warn("Could not create directory " + fWorkspace.toString());
+      }
     }
-
     // check for image cache presence and create the workspace/.jajuk
     // directory
     final File fCache = UtilSystem.getConfFileByPath(FILE_CACHE);
@@ -585,19 +575,21 @@ public final class Main implements Const {
           exit.setPriority(Thread.MAX_PRIORITY);
           Runtime.getRuntime().addShutdownHook(exit);
 
-          // backup the collection
-          UtilSystem.backupFile(UtilSystem.getConfFileByPath(FILE_COLLECTION), Conf
-              .getInt(CONF_BACKUP_SIZE));
+          // backup the collection if no parsing error occured
+          if (!bCollectionLoadRecover) {
+            UtilSystem.backupFile(UtilSystem.getConfFileByPath(FILE_COLLECTION), Conf
+                .getInt(CONF_BACKUP_SIZE));
+          }
 
           // Clean the collection up
-          Collection.cleanup();
+          Collection.cleanupLogical();
 
           // Refresh max album rating
           AlbumManager.getInstance().refreshMaxRating();
 
           // Launch auto-refresh thread
           DeviceManager.getInstance().startAutoRefreshThread();
-
+          
           // Start rating manager thread
           RatingManager.getInstance().start();
 
@@ -721,13 +713,13 @@ public final class Main implements Const {
    */
   private static void checkOtherSession() {
     // Check for remote concurrent users using the same configuration
-    // files
-    // Create concurrent session directory if needed
+    // files. Create concurrent session directory if needed
     final File sessions = UtilSystem.getConfFileByPath(FILE_SESSIONS);
-    if (!sessions.exists() && !sessions.mkdir()) {
-      Log.warn("Could not create directory " + sessions.toString());
+    if (!sessions.exists()) {
+      if (!sessions.mkdir()) {
+        Log.warn("Could not create directory " + sessions.toString());
+      }
     }
-
     // Check for concurrent session
     File[] files = sessions.listFiles();
     // display a warning if sessions directory contains some others users
@@ -782,36 +774,14 @@ public final class Main implements Const {
       return;
     }
     final File fCollection = UtilSystem.getConfFileByPath(FILE_COLLECTION);
-    final File fCollectionExitProof = UtilSystem.getConfFileByPath(FILE_COLLECTION_EXIT_PROOF);
-    // check if previous exit was OK
-    boolean bParsingOK = true;
     try {
-      if (fCollectionExitProof.exists()) {
-        if (!fCollectionExitProof.delete()) { // delete this file created just
-          Log.warn("Could not delete file " + fCollectionExitProof.toString());
-        }
-        // after collection exit commit
-        Collection.load(UtilSystem.getConfFileByPath(FILE_COLLECTION));
-      } else {
-        bCrashRecover = true;
-        throw new JajukException(5);
-      }
+      Collection.load(UtilSystem.getConfFileByPath(FILE_COLLECTION));
+      bCollectionLoadRecover = false;
     } catch (final Exception e) {
       Log.error(5, fCollection.getAbsolutePath(), e);
-      Log
-          .debug("Jajuk was not closed properly during previous session or multi-instance, try to load previous collection file");
-      try {
-        // try to load collection file as we may arrive here when several
-        // concurrent sessions of jajuk are running on the same box
-        Collection.load(UtilSystem.getConfFileByPath(FILE_COLLECTION));
-      } catch (final Exception e2) {
-        // not better? strange...
-        Log.error(5, fCollection.getAbsolutePath(), e2);
-        bParsingOK = false;
-      }
-    }
-    if (!bParsingOK) { // even final collection file parsing failed
-      // (very unlikely), try to restore a backup file
+      Log.debug("Jajuk was not closed properly during previous session, "
+          + "we try to load a backup file");
+      // try to restore a backup file
       final File[] fBackups = UtilSystem.getConfFileByPath("").listFiles(new FilenameFilter() {
         public boolean accept(File dir, String name) {
           if (name.indexOf("backup") != -1) {
@@ -826,9 +796,13 @@ public final class Main implements Const {
       Collections.reverse(alBackupFiles); // newest first now
       final Iterator<File> it = alBackupFiles.iterator();
       // parse all backup files, newest first
+      boolean bParsingOK = false;
       while (!bParsingOK && it.hasNext()) {
         final File file = it.next();
         try {
+          // Clean previous collection
+          Collection.clearCollection();
+          // Load the backup file
           Collection.load(file);
           bParsingOK = true;
           final int i = Messages.getChoice(Messages.getString("Error.133") + ":\n"
@@ -841,10 +815,9 @@ public final class Main implements Const {
           Log.error(5, file.getAbsolutePath(), e2);
         }
       }
-      if (!bParsingOK) { // not better? ok, commit and load a void
-        // collection
-        Collection.cleanup();
-        DeviceManager.getInstance().cleanAllDevices();
+      if (!bParsingOK) { // not better? ok, commit a void
+        // collection (and a void collection is loaded)
+        Collection.clearCollection();
         System.gc();
         try {
           Collection.commit(UtilSystem.getConfFileByPath(FILE_COLLECTION));
@@ -867,8 +840,7 @@ public final class Main implements Const {
           || Conf.getString(CONF_STARTUP_MODE).equals(STARTUP_MODE_FILE)) {
 
         if (Conf.getString(CONF_STARTUP_MODE).equals(STARTUP_MODE_FILE)) {
-          fileToPlay = FileManager.getInstance().getFileByID(
-              Conf.getString(CONF_STARTUP_FILE));
+          fileToPlay = FileManager.getInstance().getFileByID(Conf.getString(CONF_STARTUP_FILE));
         } else {
           // If we were playing a webradio when leaving, launch it
           if (Conf.getBoolean(CONF_WEBRADIO_WAS_PLAYING)) {
@@ -929,8 +901,7 @@ public final class Main implements Const {
         // For last tracks playing, add all ready files from last
         // session stored FIFO
         if (Conf.getString(CONF_STARTUP_MODE).equals(STARTUP_MODE_LAST)
-            || Conf.getString(CONF_STARTUP_MODE).equals(
-                STARTUP_MODE_LAST_KEEP_POS)) {
+            || Conf.getString(CONF_STARTUP_MODE).equals(STARTUP_MODE_LAST_KEEP_POS)) {
           final File fifo = UtilSystem.getConfFileByPath(FILE_FIFO);
           if (!fifo.exists()) {
             Log.debug("No fifo file");
@@ -973,9 +944,8 @@ public final class Main implements Const {
       }
       // launch selected file
       if ((alToPlay != null) && (alToPlay.size() > 0)) {
-        FIFO.push(
-            UtilFeatures.createStackItems(alToPlay, Conf
-                .getBoolean(CONF_STATE_REPEAT), false), false);
+        FIFO.push(UtilFeatures
+            .createStackItems(alToPlay, Conf.getBoolean(CONF_STATE_REPEAT), false), false);
       }
     }
   }
@@ -1181,10 +1151,6 @@ public final class Main implements Const {
     return bUpgraded;
   }
 
-  public static boolean isCrashRecover() {
-    return bCrashRecover;
-  }
-
   /**
    * Create automatically a free music directory (currently ../Music directory
    * relatively to jajuk.jar file) that contains free music packaged with
@@ -1250,9 +1216,7 @@ public final class Main implements Const {
   public static void initializeFromThumbnailsMaker(final boolean bTest, final String workspace) {
     Main.bTestMode = bTest;
     Main.workspace = workspace;
-    // Main.bThumbMaker = true;
-
-  }
+   }
 
   /**
    * Notify the system about the first time wizard being closed.

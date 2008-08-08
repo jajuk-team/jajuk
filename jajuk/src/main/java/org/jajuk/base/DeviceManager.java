@@ -282,10 +282,10 @@ public final class DeviceManager extends ItemManager {
       }
       hmItems.remove(device.getID());
       DirectoryManager.getInstance().cleanDevice(device.getID());
-      FileManager.getInstance().cleanDevice(device.getID());
+      FileManager.getInstance().clearDevice(device.getID());
       PlaylistManager.getInstance().cleanDevice(device.getID());
       // Clean the collection up
-      org.jajuk.base.Collection.cleanup();
+      org.jajuk.base.Collection.cleanupLogical();
       // remove synchronization if another device was synchronized
       // with this device
       Iterator<Device> it = hmItems.values().iterator();
@@ -333,7 +333,7 @@ public final class DeviceManager extends ItemManager {
         if (device.getType() == Device.TYPE_CD) {
           continue;
         }
-        FileManager.getInstance().cleanDevice(device.getName());
+        FileManager.getInstance().clearDevice(device.getName());
         DirectoryManager.getInstance().cleanDevice(device.getName());
         PlaylistManager.getInstance().cleanDevice(device.getName());
       }

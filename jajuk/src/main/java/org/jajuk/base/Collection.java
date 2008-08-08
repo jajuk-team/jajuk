@@ -198,16 +198,7 @@ public final class Collection extends DefaultHandler implements Const, ErrorHand
         collectionFile), sCharset), 1000000);
     bw.write("<?xml version='1.0' encoding='" + sCharset + "'?>\n");
     bw.write("<" + XML_COLLECTION + " " + XML_VERSION + "='" + JAJUK_VERSION + "'>\n");
-    // types
-    bw.write(TypeManager.getInstance().toXML());
-    for (Type type : TypeManager.getInstance().getTypes()) {
-      bw.write(type.toXml());
-    }
     StringBuilder sb = new StringBuilder(40);
-    sb.append(TAB_CLOSE_TAG_START);
-    sb.append(TypeManager.getInstance().getLabel());
-    sb.append(TAG_CLOSE_NEWLINE);
-    bw.write(sb.toString());
     // devices
     bw.write(DeviceManager.getInstance().toXML());
     for (Device device : DeviceManager.getInstance().getDevices()) {
@@ -313,29 +304,24 @@ public final class Collection extends DefaultHandler implements Const, ErrorHand
    * 
    */
   public static void load(File file) throws Exception {
+    Log.debug("Loading: " + file.getName());
     lTime = System.currentTimeMillis();
-    // make sure to clean everything in memory
-    cleanup();
-    DeviceManager.getInstance().cleanAllDevices();
     SAXParserFactory spf = SAXParserFactory.newInstance();
     spf.setValidating(false);
     spf.setNamespaceAware(false);
     SAXParser saxParser = spf.newSAXParser();
-    File frt = file;
-    if (!frt.exists()) {
+    if (!file.exists()) {
       throw new JajukException(005);
     }
-    saxParser.parse(frt.toURI().toURL().toString(), getInstance());
+    saxParser.parse(file.toURI().toURL().toString(), getInstance());
     // start auto commit thread
     tAutoCommit.start();
   }
 
   /**
    * Perform a collection clean up for logical items ( delete orphan data )
-   * 
-   * @return
    */
-  public static synchronized void cleanup() {
+  public static synchronized void cleanupLogical() {
     // Tracks cleanup
     TrackManager.getInstance().cleanup();
     // Styles cleanup
@@ -344,6 +330,23 @@ public final class Collection extends DefaultHandler implements Const, ErrorHand
     AuthorManager.getInstance().cleanup();
     // albums cleanup
     AlbumManager.getInstance().cleanup();
+    // years cleanup
+    YearManager.getInstance().cleanup();
+  }
+  
+   /**
+   * Clear the full collection
+   * Note that we don't clear TypeManager as it is not read from a file but filled programmaticaly
+   */
+  public static synchronized void clearCollection() {
+    TrackManager.getInstance().clear();
+    StyleManager.getInstance().clear();
+    AuthorManager.getInstance().clear();
+    AlbumManager.getInstance().clear();
+    YearManager.getInstance().clear();
+    FileManager.getInstance().clear();
+    DirectoryManager.getInstance().clear();
+    PlaylistManager.getInstance().clear();
   }
 
   /**
@@ -453,9 +456,10 @@ public final class Collection extends DefaultHandler implements Const, ErrorHand
           stage = STAGE_YEARS;
           needCheckID = true;
         } else if (XML_TYPES.equals(sQName)) {
+          // This is here for pre-1.7 collections, after we don't commit types anymore (they are set programmaticaly)
           manager = TypeManager.getInstance();
           stage = STAGE_TYPES;
-          needCheckID = true;
+          needCheckID = false;
         } else if (XML_PROPERTY.equals(sQName)) {
           // A property description
           String sPropertyName = attributes.getValue(XML_NAME).intern();
@@ -662,15 +666,6 @@ public final class Collection extends DefaultHandler implements Const, ErrorHand
           if (style == null || type == null) {
             return;
           }
-//          long lYear = 0;
-//          try {
-//            lYear = Integer.parseInt(attributes.getValue(XML_YEAR));
-//          } catch (Exception e) {
-//            if (Log.isDebugEnabled()) {
-//              // wrong format
-//              Log.debug(Messages.getString("Error.137") + ":" + sTrackName);
-//            }
-//          }
           // Idem for order
           long lOrder = 0l;
           try {

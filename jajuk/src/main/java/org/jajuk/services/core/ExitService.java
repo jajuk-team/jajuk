@@ -77,8 +77,6 @@ public class ExitService extends Thread implements Const {
         // Commit collection if not refreshing
         if (!DeviceManager.getInstance().isAnyDeviceRefreshing()) {
           Collection.commit(UtilSystem.getConfFileByPath(FILE_COLLECTION));
-          // create a proof file
-          UtilSystem.createEmptyFile(UtilSystem.getConfFileByPath(FILE_COLLECTION_EXIT_PROOF));
         }
         /* release keystrokes resources */
         ActionBase.cleanup();

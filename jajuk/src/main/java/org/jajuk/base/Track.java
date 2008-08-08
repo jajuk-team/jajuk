@@ -489,6 +489,20 @@ public class Track extends LogicalItem implements Comparable<Track> {
     return IconLoader.ICON_TRACK;
   }
   
+  /**
+   * 
+   * @return a list of associated files in format : file1,file2...
+   */
+  public String getFilesString(){
+    StringBuilder sb = new StringBuilder(100);
+    for (File file:alFiles){
+      sb.append(file.getName());
+      sb.append(',');
+    }
+    // Remove trailing ','
+    sb.deleteCharAt(sb.length()-1);
+    return sb.toString();
+  }
    
 
 

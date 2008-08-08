@@ -234,7 +234,7 @@ public final class ThumbnailsMaker implements Const {
     // For each album, create the associated thumb
     for (final Album album : albums) {
       // Leave if jajuk leaved
-      if (UtilSystem.getConfFileByPath(Const.FILE_COLLECTION_EXIT_PROOF).exists()) {
+      if (!Main.getSessionIdFile().exists()) {
         Log.debug("Parent Jajuk closed, leaving now...");
         return;
       }
