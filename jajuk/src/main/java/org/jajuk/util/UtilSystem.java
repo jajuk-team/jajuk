@@ -30,6 +30,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.net.InetAddress;
 import java.net.URL;
 import java.nio.ByteBuffer;
@@ -183,7 +184,7 @@ public final class UtilSystem implements Const {
         if (((lUsedMB - file.length()) / 1048576 > iMB) && (alFiles.size() > 0)) {
           final File fileToDelete = alFiles.get(0);
           if (fileToDelete != null) {
-            if(!fileToDelete.delete()) {
+            if (!fileToDelete.delete()) {
               Log.warn("Could not delete file " + fileToDelete);
             }
           }
@@ -288,7 +289,7 @@ public final class UtilSystem implements Const {
    */
   public static void copyRecursively(final File src, final File dst) throws Exception {
     if (src.isDirectory()) {
-      if(!dst.mkdirs()) {
+      if (!dst.mkdirs()) {
         Log.warn("Could not create directory structure " + dst.toString());
       }
       final String list[] = src.list();
@@ -396,7 +397,7 @@ public final class UtilSystem implements Const {
           UtilSystem.deleteFile(file);
         }
       }
-      if(!dir.delete()) {
+      if (!dir.delete()) {
         Log.warn("Could not delete directory " + dir);
       }
     } else {
@@ -414,7 +415,7 @@ public final class UtilSystem implements Const {
   public static void deleteFile(final File file) throws Exception {
     Log.debug("Deleting: " + file.getAbsolutePath());
     if (file.isFile() && file.exists()) {
-      if(!file.delete()) {
+      if (!file.delete()) {
         Log.warn("Could not delete file " + file);
       }
       // check that file has been really deleted (sometimes,
@@ -467,8 +468,8 @@ public final class UtilSystem implements Const {
           // Create the output file (clobbering the file if it
           // exists).
           final FileOutputStream file = new FileOutputStream(UtilSystem
-              .getConfFileByPath(Const.FILE_CACHE + '/'
-                  + Const.FILE_INTERNAL_CACHE + '/' + destName));
+              .getConfFileByPath(Const.FILE_CACHE + '/' + Const.FILE_INTERNAL_CACHE + '/'
+                  + destName));
           try {
             // Allocate a buffer for reading the entry data.
             final byte[] buffer = new byte[1024];
@@ -529,8 +530,7 @@ public final class UtilSystem implements Const {
       sRoot = Main.getWorkspace();
     }
     return new File(sRoot + '/'
-        + (Main.isTestMode() ? ".jajuk_test_" + Const.TEST_VERSION : ".jajuk") + '/'
-        + sPATH);
+        + (Main.isTestMode() ? ".jajuk_test_" + Const.TEST_VERSION : ".jajuk") + '/' + sPATH);
   }
 
   /**
@@ -623,8 +623,7 @@ public final class UtilSystem implements Const {
    * @return MPLayer binary MAC full path
    */
   public static String getMPlayerOSXPath() {
-    final String forced = Conf
-        .getString(Const.CONF_MPLAYER_PATH_FORCED);
+    final String forced = Conf.getString(Const.CONF_MPLAYER_PATH_FORCED);
     if (!UtilString.isVoid(forced)) {
       return forced;
     } else if (UtilSystem.isUnderOSXintel()
@@ -1022,6 +1021,40 @@ public final class UtilSystem implements Const {
 
   public static JajukFileFilter getFileFilter() {
     return fileFilter;
+  }
+
+  /**
+   * Replace a string inside a given file
+   * @param file the file
+   * @param oldS the string to replace
+   * @param newS the new string
+   * @param encoding the encoding of the file
+   * @return whether some replacements occurred
+   */
+  public static boolean replaceInFile(File file, String oldS, String newS, String encoding) {
+    try {
+      StringBuilder sb = new StringBuilder((int) file.length());
+      BufferedReader br = null;
+      br = new BufferedReader(new InputStreamReader(new FileInputStream(file), encoding));
+      String sLine = null;
+      while ((sLine = br.readLine()) != null) {
+        sb.append(sLine + '\n');
+      }
+      br.close();
+      String s = sb.toString();
+      if (s.indexOf(oldS) != -1) {
+        s = s.replaceAll(oldS, newS);
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file),
+            encoding));
+        bw.write(s);
+        bw.flush();
+        bw.close();
+        return true;
+      }
+    } catch (Exception e) {
+      Log.error(e);
+    }
+    return false;
   }
 
 }

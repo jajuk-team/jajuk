@@ -21,6 +21,7 @@
 package org.jajuk.util;
 
 import java.io.File;
+import java.io.FileFilter;
 import java.net.URL;
 
 import org.jajuk.Main;
@@ -34,98 +35,133 @@ public final class UpgradeManager implements Const {
 
   private static String newVersionName;
 
-  /** 
+  /**
    * private constructor to avoid instantiating utility class
    */
   private UpgradeManager() {
   }
-  
+
   /**
    * Actions to migrate an existing installation Step1 just at startup
    */
   public static void upgradeStep1() throws Exception {
-    // --For jajuk < 0.2 : remove backup file : collection~.xml
-    File file = UtilSystem.getConfFileByPath(FILE_COLLECTION + "~");
-    if(!file.delete()) {
-      Log.warn("Could not delete file " + file);
-    }
-    // upgrade code; if upgrade from <1.2, set default ambiences
-    String sRelease = Conf.getString(CONF_RELEASE);
-    if (sRelease == null || sRelease.matches("0..*") || sRelease.matches("1.0..*")
-        || sRelease.matches("1.1.*")) {
-      AmbienceManager.getInstance().createDefaultAmbiences();
-    }
-    // - For Jajuk < 1.3 : changed track pattern from %track to %title
-    String sPattern = Conf.getString(CONF_REFACTOR_PATTERN);
-    if (sPattern.contains("track")) {
-      Conf
-          .setProperty(CONF_REFACTOR_PATTERN, sPattern.replaceAll("track", "title"));
-    }
-    // - for Jajuk < 1.3: no more use of .ser files
-    file = UtilSystem.getConfFileByPath("");
-    File[] files = file.listFiles();
-    for (File element : files) {
-      // delete all .ser files
-      if (UtilSystem.getExtension(element).equals("ser")) {
-        element.delete();
+    // Migrate djs from jajuk < 1.6 (DJ classes changed)
+    File[] files = UtilSystem.getConfFileByPath(FILE_DJ_DIR).listFiles(new FileFilter() {
+      public boolean accept(File file) {
+        if (file.isFile() && file.getPath().endsWith('.' + XML_DJ_EXTENSION)) {
+          return true;
+        }
+        return false;
+      }
+    });
+    for (File dj : files) {
+      if (UtilSystem.replaceInFile(dj, "org.jajuk.dj.ProportionDigitalDJ", XML_DJ_PROPORTION_CLASS,
+          "UTF-8")) {
+        Log.info("Migrated DJ file: " + dj.getName());
+      }
+      if (UtilSystem.replaceInFile(dj, "org.jajuk.dj.TransitionDigitalDJ", XML_DJ_TRANSITION_CLASS,
+          "UTF-8")) {
+        Log.info("Migrated DJ file: " + dj.getName());
+      }
+      if (UtilSystem.replaceInFile(dj, "org.jajuk.dj.AmbienceDigitalDJ", XML_DJ_AMBIENCE_CLASS,
+          "UTF-8")) {
+        Log.info("Migrated DJ file: " + dj.getName());
       }
     }
-    // - for jajuk 1.3: wrong option name: "false" instead of
-    // "jajuk.options.use_hotkeys"
-    String sUseHotkeys = Conf.getString("false");
-    if (sUseHotkeys != null) {
-      if (sUseHotkeys.equalsIgnoreCase(FALSE) || sUseHotkeys.equalsIgnoreCase(TRUE)) {
-        Conf.setProperty(CONF_OPTIONS_HOTKEYS, sUseHotkeys);
-        Conf.removeProperty("false");
-      } else {
-        Conf.setProperty(CONF_OPTIONS_HOTKEYS, FALSE);
-      }
-    }
-    // for jajuk <1.4 (or early 1.4), some perspectives have been renamed
-    File fPerspective = UtilSystem.getConfFileByPath("LogicalPerspective.xml");
-    if (fPerspective.exists()) {
-      fPerspective.delete();
-    }
-    fPerspective = UtilSystem.getConfFileByPath("PhysicalPerspective.xml");
-    if (fPerspective.exists()) {
-      fPerspective.delete();
-    }
-    fPerspective = UtilSystem.getConfFileByPath("CatalogPerspective.xml");
-    if (fPerspective.exists()) {
-      fPerspective.delete();
-    }
-    fPerspective = UtilSystem.getConfFileByPath("PlayerPerspective.xml");
-    if (fPerspective.exists()) {
-      fPerspective.delete();
-    }
-    fPerspective = UtilSystem.getConfFileByPath("HelpPerspective.xml");
-    if (fPerspective.exists()) {
-      fPerspective.delete();
-    }
-    // For Jajuk < 1.6
-    // Perspective buttons
-    if (Conf.getInt(Const.CONF_PERSPECTIVE_ICONS_SIZE) > 45) {
-      Conf.setProperty(Const.CONF_PERSPECTIVE_ICONS_SIZE, "45");
-    }
-    // For Jajuk 1.5 and jajuk 1.6 columns conf id changed
-    if (Conf.getString(CONF_PLAYLIST_REPOSITORY_COLUMNS).matches(".*0.*")) {
-      Conf.setDefaultProperty(CONF_PLAYLIST_REPOSITORY_COLUMNS);
-    }
-    if (Conf.getString(CONF_QUEUE_COLUMNS).matches(".*0.*")) {
-      Conf.setDefaultProperty(CONF_QUEUE_COLUMNS);
-    }
-    if (Conf.getString(CONF_PLAYLIST_EDITOR_COLUMNS).matches(".*0.*")) {
-      Conf.setDefaultProperty(CONF_PLAYLIST_EDITOR_COLUMNS);
-    }
-
-    // For Jajuk < 1.7, elaspsed time format variable name changed
-    if (Conf.containsProperty("format")) {
-      Conf.setProperty(CONF_FORMAT_TIME_ELAPSED, Conf
-          .getString("format"));
-    }
-
-    // TO DO AFTER AN UPGRADE
     if (Main.isUpgradeDetected()) {
+      // --For jajuk < 0.2 : remove backup file : collection~.xml
+      File file = UtilSystem.getConfFileByPath(FILE_COLLECTION + "~");
+      if (!file.delete()) {
+        Log.warn("Could not delete file " + file);
+      }
+      // upgrade code; if upgrade from <1.2, set default ambiences
+      String sRelease = Conf.getString(CONF_RELEASE);
+      if (sRelease == null || sRelease.matches("0..*") || sRelease.matches("1.0..*")
+          || sRelease.matches("1.1.*")) {
+        AmbienceManager.getInstance().createDefaultAmbiences();
+      }
+      // - For Jajuk < 1.3 : changed track pattern from %track to %title
+      String sPattern = Conf.getString(CONF_REFACTOR_PATTERN);
+      if (sPattern.contains("track")) {
+        Conf.setProperty(CONF_REFACTOR_PATTERN, sPattern.replaceAll("track", "title"));
+      }
+      // - for Jajuk < 1.3: no more use of .ser files
+      file = UtilSystem.getConfFileByPath("");
+      files = file.listFiles();
+      for (File element : files) {
+        // delete all .ser files
+        if (UtilSystem.getExtension(element).equals("ser")) {
+          element.delete();
+        }
+      }
+      // - for jajuk 1.3: wrong option name: "false" instead of
+      // "jajuk.options.use_hotkeys"
+      String sUseHotkeys = Conf.getString("false");
+      if (sUseHotkeys != null) {
+        if (sUseHotkeys.equalsIgnoreCase(FALSE) || sUseHotkeys.equalsIgnoreCase(TRUE)) {
+          Conf.setProperty(CONF_OPTIONS_HOTKEYS, sUseHotkeys);
+          Conf.removeProperty("false");
+        } else {
+          Conf.setProperty(CONF_OPTIONS_HOTKEYS, FALSE);
+        }
+      }
+      // for jajuk <1.4 (or early 1.4), some perspectives have been renamed
+      File fPerspective = UtilSystem.getConfFileByPath("LogicalPerspective.xml");
+      if (fPerspective.exists()) {
+        fPerspective.delete();
+      }
+      fPerspective = UtilSystem.getConfFileByPath("PhysicalPerspective.xml");
+      if (fPerspective.exists()) {
+        fPerspective.delete();
+      }
+      fPerspective = UtilSystem.getConfFileByPath("CatalogPerspective.xml");
+      if (fPerspective.exists()) {
+        fPerspective.delete();
+      }
+      fPerspective = UtilSystem.getConfFileByPath("PlayerPerspective.xml");
+      if (fPerspective.exists()) {
+        fPerspective.delete();
+      }
+      fPerspective = UtilSystem.getConfFileByPath("HelpPerspective.xml");
+      if (fPerspective.exists()) {
+        fPerspective.delete();
+      }
+      // For Jajuk < 1.6
+      // Perspective buttons
+      if (Conf.getInt(Const.CONF_PERSPECTIVE_ICONS_SIZE) > 45) {
+        Conf.setProperty(Const.CONF_PERSPECTIVE_ICONS_SIZE, "45");
+      }
+      // For Jajuk 1.5 and jajuk 1.6 columns conf id changed
+      if (Conf.getString(CONF_PLAYLIST_REPOSITORY_COLUMNS).matches(".*0.*")) {
+        Conf.setDefaultProperty(CONF_PLAYLIST_REPOSITORY_COLUMNS);
+      }
+      if (Conf.getString(CONF_QUEUE_COLUMNS).matches(".*0.*")) {
+        Conf.setDefaultProperty(CONF_QUEUE_COLUMNS);
+      }
+      if (Conf.getString(CONF_PLAYLIST_EDITOR_COLUMNS).matches(".*0.*")) {
+        Conf.setDefaultProperty(CONF_PLAYLIST_EDITOR_COLUMNS);
+      }
+
+      // For Jajuk < 1.7, elapsed time format variable name changed
+      if (Conf.containsProperty("format")) {
+        Conf.setProperty(CONF_FORMAT_TIME_ELAPSED, Conf.getString("format"));
+      }
+
+      /*
+       * Migrate djs from jajuk < 1.6 (DJ classes changed) files =
+       * UtilSystem.getConfFileByPath(FILE_DJ_DIR).listFiles(new FileFilter() {
+       * public boolean accept(File file) { if (file.isFile() &&
+       * file.getPath().endsWith('.' + XML_DJ_EXTENSION)) { return true; }
+       * return false; } }); boolean changes = false; for (File dj : files) {
+       * changes = UtilSystem.replaceInFile(dj,
+       * "org.jajuk.dj.ProportionDigitalDJ", XML_DJ_PROPORTION_CLASS, "UTF-8");
+       * changes = UtilSystem.replaceInFile(dj,
+       * "org.jajuk.dj.TransitionDigitalDJ", XML_DJ_TRANSITION_CLASS, "UTF-8");
+       * changes = UtilSystem.replaceInFile(dj,
+       * "org.jajuk.dj.AmbienceDigitalDJ", XML_DJ_AMBIENCE_CLASS, "UTF-8"); if
+       * (changes) { Log.info("Migrated DJ file: " + dj.getName()); } }
+       */
+
       // - for Jajuk < 1.3: force nocover icon replacement
       File fThumbs = UtilSystem.getConfFileByPath(FILE_THUMBS + "/50x50/" + FILE_THUMB_NO_COVER);
       if (fThumbs.exists()) {

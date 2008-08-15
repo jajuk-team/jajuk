@@ -48,6 +48,7 @@ import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilSystem;
+import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -142,8 +143,8 @@ public final class DigitalDJManager implements Const, Observer {
    */
   public static void commit(DigitalDJ dj) {
     try {
-      BufferedWriter bw = new BufferedWriter(new FileWriter(UtilSystem.getConfFileByPath(FILE_DJ_DIR
-          + "/" + dj.getID() + "." + XML_DJ_EXTENSION)));
+      BufferedWriter bw = new BufferedWriter(new FileWriter(UtilSystem
+          .getConfFileByPath(FILE_DJ_DIR + "/" + dj.getID() + "." + XML_DJ_EXTENSION)));
       bw.write(dj.toXML());
       bw.flush();
       bw.close();
@@ -299,7 +300,7 @@ abstract class DigitalDJFactory extends DefaultHandler implements Const {
       }
     }
 
-    /** Non geenral tags operations */
+    /** Non general tags operations */
     abstract protected void othersTags(String sQname, Attributes attributes);
   }
 
@@ -318,7 +319,6 @@ abstract class DigitalDJFactory extends DefaultHandler implements Const {
         /**
          * Called when we start an element
          */
-        @Override
         public void startElement(String sUri, String s, String sQName, Attributes attributes)
             throws SAXException {
           if (XML_DJ_DJ.equals(sQName)) {
@@ -326,6 +326,16 @@ abstract class DigitalDJFactory extends DefaultHandler implements Const {
           }
         }
       });
+      if (XML_DJ_PROPORTION_CLASS.equals(factoryType)) {
+        return new DigitalDJFactoryProportionImpl();
+      } else if (XML_DJ_TRANSITION_CLASS.equals(factoryType)) {
+        return new DigitalDJFactoryTransitionImpl();
+      } else if (XML_DJ_AMBIENCE_CLASS.equals(factoryType)) {
+        return new DigitalDJFactoryAmbienceImpl();
+      } else {
+        // Delete the file
+        throw new JajukException(-1);
+      }
     }
     // Error parsing the DJ ? delete it
     catch (Exception e) {
@@ -334,13 +344,6 @@ abstract class DigitalDJFactory extends DefaultHandler implements Const {
       if(!file.delete()) {
         Log.warn("Could not delete file: " + file.toString());
       }
-    }
-    if (XML_DJ_PROPORTION_CLASS.equals(factoryType)) {
-      return new DigitalDJFactoryProportionImpl();
-    } else if (XML_DJ_TRANSITION_CLASS.equals(factoryType)) {
-      return new DigitalDJFactoryTransitionImpl();
-    } else if (XML_DJ_AMBIENCE_CLASS.equals(factoryType)) {
-      return new DigitalDJFactoryAmbienceImpl();
     }
     return null;
   }
