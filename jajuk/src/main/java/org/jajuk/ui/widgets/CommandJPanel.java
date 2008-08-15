@@ -392,8 +392,12 @@ public class CommandJPanel extends JXPanel implements Const, ActionListener,
 
     jpVolume.setLayout(new BoxLayout(jpVolume, BoxLayout.X_AXIS));
     int iVolume = (int) (100 * Conf.getFloat(CONF_VOLUME));
-    if (iVolume > 100) { // can occur in some undefined cases
+    // Perform bounds test, -1 or >100 can occur in some undefined cases (see #1169)
+    if (iVolume > 100) {
       iVolume = 100;
+    }
+    else if (iVolume < 0){
+      iVolume = 0;
     }
     jsVolume = new JSlider(0, 100, iVolume);
     jsVolume.setToolTipText(iVolume + " %");
