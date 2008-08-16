@@ -82,8 +82,7 @@ public class DeleteAction extends ActionBase {
         }
       } else if (item instanceof Directory) {
         alDirs.add((Directory) item);
-      } else if ((item instanceof Playlist)
-          && (Conf.getBoolean(CONF_CONFIRMATIONS_DELETE_FILE))) {
+      } else if ((item instanceof Playlist) && (Conf.getBoolean(CONF_CONFIRMATIONS_DELETE_FILE))) {
         // file delete confirmation
         Playlist plf = (Playlist) item;
         String sFileToDelete = plf.getAbsolutePath();
@@ -140,6 +139,8 @@ public class DeleteAction extends ActionBase {
             }
             Messages.showWarningMessage(Messages.getErrorMessage(172) + "\n\n" + rejString);
           }
+          // requires device refresh
+          ObservationManager.notify(new Event(JajukEvents.EVENT_DEVICE_REFRESH));
         }
       }.start();
 
@@ -171,6 +172,8 @@ public class DeleteAction extends ActionBase {
             }
             Messages.showWarningMessage(Messages.getErrorMessage(173) + "\n\n" + rejString);
           }
+          // requires device refresh
+          ObservationManager.notify(new Event(JajukEvents.EVENT_DEVICE_REFRESH));
         }
       }
     }
@@ -218,9 +221,10 @@ public class DeleteAction extends ActionBase {
             }
             Messages.showWarningMessage(Messages.getErrorMessage(173) + "\n\n" + rejString);
           }
+          // requires device refresh
+          ObservationManager.notify(new Event(JajukEvents.EVENT_DEVICE_REFRESH));
         }
       }.start();
     }
-    ObservationManager.notify(new Event(JajukEvents.EVENT_DEVICE_REFRESH));
   }
 }
