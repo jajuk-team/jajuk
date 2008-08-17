@@ -28,12 +28,19 @@ import java.util.TreeSet;
 
 import javax.swing.ImageIcon;
 
+import org.jajuk.events.Event;
+import org.jajuk.events.JajukEvents;
+import org.jajuk.events.ObservationManager;
 import org.jajuk.services.tags.Tag;
 import org.jajuk.ui.helpers.RefreshReporter;
+import org.jajuk.ui.widgets.InformationJPanel;
 import org.jajuk.util.Conf;
 import org.jajuk.util.IconLoader;
+import org.jajuk.util.JajukFileFilter;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilSystem;
+import org.jajuk.util.error.JajukException;
+import org.jajuk.util.filters.DirectoryFilter;
 import org.jajuk.util.log.Log;
 
 /**
@@ -323,7 +330,8 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
           Style style = StyleManager.getInstance().registerStyle(sStyle);
           Year year = YearManager.getInstance().registerYear(sYear);
           Author author = AuthorManager.getInstance().registerAuthor(sAuthorName);
-          Type type = TypeManager.getInstance().getTypeByExtension(UtilSystem.getExtension(filelist[i]));
+          Type type = TypeManager.getInstance().getTypeByExtension(
+              UtilSystem.getExtension(filelist[i]));
           // Store number of tracks in collection (note that the
           // collection is locked)
           long trackNumber = TrackManager.getInstance().getElementCount();
@@ -360,7 +368,7 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
           // found file comment but we changing a comment, we will
           // apply to all files for a track
           track.setComment(sComment);
-          // Make sure to refresh fiel size
+          // Make sure to refresh file size
           file.setProperty(XML_SIZE, filelist[i].length());
         } else { // playlist
           String sId = PlaylistManager.createID(filelist[i].getName(), this);
@@ -459,8 +467,7 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
    * @return whether this item should be hidden with hide option
    */
   public boolean shouldBeHidden() {
-    if (getDevice().isMounted()
-        || !Conf.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED)) {
+    if (getDevice().isMounted() || !Conf.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED)) {
       return false;
     }
     return true;
@@ -488,7 +495,8 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
   @Override
   public String getHumanValue(String sKey) {
     if (XML_DIRECTORY_PARENT.equals(sKey)) {
-      Directory parentdir = DirectoryManager.getInstance().getDirectoryByID((String) getValue(sKey));
+      Directory parentdir = DirectoryManager.getInstance()
+          .getDirectoryByID((String) getValue(sKey));
       if (parentdir == null) {
         return ""; // no parent directory
       } else {
@@ -535,6 +543,69 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
   protected void setName(String name) {
     setProperty(XML_NAME, name);
     this.name = name;
+  }
+
+  /**
+   * Refresh synchronously the directory recursively
+   * 
+   * @param deep
+   *          refresh ?
+   * @param a
+   *          refresh reporter or null
+   */
+  public void refresh(boolean deep, RefreshReporter reporter) throws JajukException {
+    final java.io.File dirList[] = getFio().listFiles(
+        new JajukFileFilter(DirectoryFilter.getInstance()));
+    if (dirList != null && dirList.length != 0) {
+      for (final java.io.File f : dirList) {
+        final Directory dir = DirectoryManager.getInstance().registerDirectory(f.getName(), this,
+            getDevice());
+        dir.refresh(deep, reporter);
+      }
+    } else {
+      scan(deep, reporter);
+    }
+  }
+
+  /**
+   * Refresh : scan asynchronously the directory to find tracks
+   * 
+   * @param bAsynchronous :
+   *          set asynchronous or synchronous mode
+   * @param bAsk:
+   *          should we ask user if he wants to perform a deep or fast scan?
+   *          default=deep
+   */
+  public void manualRefresh(final boolean bAsynchronous, final boolean bAsk) {
+    final RefreshReporter reporter = new RefreshReporter(getDevice());
+    final Thread t = new Thread() {
+      @Override
+      public void run() {
+        try {
+          int result = getDevice().prepareRefresh(bAsk);
+          if (result == Device.OPTION_REFRESH_CANCEL) {
+            return;
+          }
+          InformationJPanel.getInstance().setMessage(
+              Messages.getString("ActionRefresh.1") + ": " + getName(), 1);
+          boolean deep = (result == Device.OPTION_REFRESH_DEEP);
+          refresh(deep, reporter);
+          ObservationManager.notify(new Event(JajukEvents.EVENT_DEVICE_REFRESH));
+          reporter.done();
+        } catch (JajukException e) {
+          Messages.showErrorMessage(e.getCode());
+          Log.debug(e);
+          return;
+        }
+      }
+    };
+    if (bAsynchronous) {
+      t.setPriority(Thread.MIN_PRIORITY);
+      t.start();
+    } else {
+      // simply call the run method
+      t.run();
+    }
   }
 
 }

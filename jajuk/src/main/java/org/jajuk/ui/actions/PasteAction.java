@@ -45,6 +45,7 @@ import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilGUI;
 import org.jajuk.util.UtilSystem;
+import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 
 public class PasteAction extends ActionBase {
@@ -134,13 +135,18 @@ public class PasteAction extends ActionBase {
               UtilSystem.copyRecursively(src, dst);
               UtilSystem.deleteDir(src);
               DirectoryManager.getInstance().removeDirectory(d.getID());
-              DirectoryManager.refreshDirectory(destDir);
+              destDir.refresh(false,null);
             } catch (Exception ioe) {
               Log.error(131, ioe);
               Messages.showErrorMessage(131);
             }
           }
-          DirectoryManager.refreshDirectory(destDir);
+          try {
+            destDir.refresh(false,null);
+          } catch (JajukException e) {
+            Log.error(e);
+            Messages.showErrorMessage(e.getCode());
+          }
         } else if (moveAction == ItemMoveManager.MoveActions.COPY) {
           Log.debug("Inside Copy");
           for (File f : alFiles) {
@@ -176,7 +182,12 @@ public class PasteAction extends ActionBase {
               Messages.showErrorMessage(131);
             }
           }
-          DirectoryManager.refreshDirectory(destDir);
+          try {
+            destDir.refresh(false,null);
+          } catch (JajukException e) {
+            Log.error(e);
+            Messages.showErrorMessage(e.getCode());
+          }
         }
         ObservationManager.notify(new Event(JajukEvents.EVENT_DEVICE_REFRESH));
         UtilGUI.stopWaiting();

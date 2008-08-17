@@ -28,10 +28,8 @@ import java.util.List;
 import java.util.Set;
 
 import org.jajuk.util.Const;
-import org.jajuk.util.JajukFileFilter;
 import org.jajuk.util.MD5Processor;
 import org.jajuk.util.UtilSystem;
-import org.jajuk.util.filters.DirectoryFilter;
 
 /**
  * Convenient class to manage directories
@@ -79,27 +77,7 @@ public final class DirectoryManager extends ItemManager {
     return DirectoryManager.singleton;
   }
 
-  /**
-   * Register a directory for refreshing
-   * 
-   * @param Directory
-   *          d
-   */
-  public static void refreshDirectory(final Directory d) {
-    final java.io.File dirList[] = d.getFio().listFiles(
-        new JajukFileFilter(DirectoryFilter.getInstance()));
-    if ((dirList != null) && (dirList.length != 0)) {
-      for (final java.io.File f : dirList) {
-        final Directory dir = DirectoryManager.getInstance().registerDirectory(f.getName(), d,
-            d.getDevice());
-        DirectoryManager.refreshDirectory(dir);
-      }
-    } else {
-      d.scan(true, null);
-    }
-  }
-
-  /**
+   /**
    * No constructor available, only static access
    */
   private DirectoryManager() {

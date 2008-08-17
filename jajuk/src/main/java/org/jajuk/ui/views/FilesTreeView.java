@@ -566,6 +566,12 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
         }
         // Enable CDDB retagging only for a single directory selection
         jmiCDDBWizard.setEnabled(alSelected.size() == 1 && alSelected.get(0) instanceof Directory);
+        
+        // Enable device refresh for a single item
+        jmiDevRefresh.setEnabled(alSelected.size() == 1 && alSelected.get(0) instanceof Device);
+        
+        // Enable directory refresh for a single item
+        jmiDirRefresh.setEnabled(alSelected.size() == 1 && alSelected.get(0) instanceof Directory);
       }
     }
   }

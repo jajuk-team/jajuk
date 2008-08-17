@@ -43,8 +43,8 @@ public class RefreshReporter {
 
   // Refresh dialog
   private RefreshDialog rdialog;
-  
-  private int progress = 0; 
+
+  private int progress = 0;
 
   private int dirTotal = 0;
 
@@ -57,18 +57,27 @@ public class RefreshReporter {
   private long lRefreshDateStart;
 
   /** Number of new files found during refresh for stats */
-  private int iNbNewFiles;
+  private int iNbNewFiles = 0;
 
   /** Number of corrupted files found during refresh for stats */
-  private int iNbCorruptedFiles;
+  private int iNbCorruptedFiles = 0;
 
   public RefreshReporter(Device device) {
     this.device = device;
+    // Keep this date capture: it is used by directories refresh that don't call
+    // the startup() method
+    lDateStart = System.currentTimeMillis();
   }
 
   public void startup() {
-    rdialog = new RefreshDialog();
+    // reset all values as this object is reused
+    progress = 0;
+    dirTotal = 0;
+    dirCount = 0;
+    iNbNewFiles = 0;
+    iNbCorruptedFiles = 0;
     lDateStart = System.currentTimeMillis();
+    rdialog = new RefreshDialog();
     rdialog.setTitle(Messages.getString("RefreshDialog.2") + " " + device.getName());
     // Computes the number of directories
     rdialog.setAction(Messages.getString("RefreshDialog.0"), IconLoader.ICON_INFO);
@@ -115,7 +124,7 @@ public class RefreshReporter {
       rdialog.setRefreshing(new StringBuilder(Messages.getString("Device.44")).append(' ').append(
           dir.getRelativePath()).toString());
       progress = 30 + (int) (70 * (float) dirCount / dirTotal);
-      if (progress > 100){
+      if (progress > 100) {
         progress = 100;
       }
       rdialog.setProgress(progress);
@@ -135,10 +144,13 @@ public class RefreshReporter {
   }
 
   public void done() {
-    // Close refresh dialog
-    rdialog.dispose();
-    // Close title timer
-    updateDialogTitle.stop();
+    // rdialog is null for directories refresh
+    if (rdialog != null) {
+      // Close refresh dialog
+      rdialog.dispose();
+      // Close title timer
+      updateDialogTitle.stop();
+    }
     // Display end of refresh message with stats
     String message = buildFinalMessage(System.currentTimeMillis() - lDateStart);
     Messages.showInfoMessage(message);

@@ -175,7 +175,7 @@ public final class ActionManager {
     // MISC
     installAction(FIND_DUPLICATE_FILES, new FindDuplicateTracksAction(), false);
     installAction(JajukActions.COPY_TO_CLIPBOARD, new CopyClipboardAction(), false);
-    installAction(REFRESH, new RefreshDirectoryAction(), false);
+    installAction(REFRESH, new RefreshAction(), false);
     installAction(ALARM_CLOCK, new AlarmClockAction(), false);
     installAction(JajukActions.SHOW_ALBUM_DETAILS, new ShowAlbumDetailsAction(), false);
     installAction(JajukActions.SLIM_JAJUK, new SlimbarAction(), false);

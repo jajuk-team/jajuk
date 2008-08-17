@@ -1177,7 +1177,7 @@ public final class Main implements Const {
           device.setProperty(XML_DEVICE_AUTO_MOUNT, true);
           device.setProperty(XML_DEVICE_AUTO_REFRESH, 0.5d);
           device.mount();
-          device.refreshCommand(true, false);
+          device.refreshCommand(true);
         }
       } catch (Exception e) {
         Log.error(e);

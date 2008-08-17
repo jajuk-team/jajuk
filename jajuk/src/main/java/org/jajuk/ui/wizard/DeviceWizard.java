@@ -355,7 +355,7 @@ public class DeviceWizard extends JFrame implements ActionListener, Const {
           // try to remount the device
           device.mount();
           // Keep previous references when changing device url
-          device.refreshCommand(false, false);
+          device.refreshCommand(false);
           // Force a cleanup *after* the refresh
           device.cleanRemovedFiles();
         } catch (final Exception e2) {

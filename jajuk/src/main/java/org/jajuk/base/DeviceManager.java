@@ -399,16 +399,13 @@ public final class DeviceManager extends ItemManager {
           // cleanup device
           bNeedUIRefresh = bNeedUIRefresh | device.cleanRemovedFiles();
           // logical or, not an error ! refresh it
-          bNeedUIRefresh = bNeedUIRefresh | device.refreshCommand(bNeedDeepAfterUpgrade, false);
+          bNeedUIRefresh = bNeedUIRefresh | device.refreshCommand(bNeedDeepAfterUpgrade);
         }
       }
 
       // //cleanup logical items
       if (bNeedUIRefresh) {
-        TrackManager.getInstance().cleanup();
-        StyleManager.getInstance().cleanup();
-        AlbumManager.getInstance().cleanup();
-        AuthorManager.getInstance().cleanup();
+        Collection.cleanupLogical();
         // notify views to refresh
         ObservationManager.notify(new Event(JajukEvents.EVENT_DEVICE_REFRESH));
       }

@@ -103,8 +103,8 @@ public class RefactorAction implements Const {
     for (final File fCurrent : alFiles) {
       final Track tCurrent = fCurrent.getTrack();
       try {
-        filename = UtilString.applyPattern(fCurrent, Conf
-            .getString(Const.CONF_REFACTOR_PATTERN), true, true);
+        filename = UtilString.applyPattern(fCurrent, Conf.getString(Const.CONF_REFACTOR_PATTERN),
+            true, true);
       } catch (final JajukException je) {
         sErrors += je.getMessage() + '\n';
         continue;
@@ -141,7 +141,8 @@ public class RefactorAction implements Const {
               .renameTo(new java.io.File(fNew.getParent() + RefactorAction.sFS + fCover.getName()));
         }
       } catch (Exception e) {
-        // This exception can be thrown by instance if default cover is not readable
+        // This exception can be thrown by instance if default cover is not
+        // readable
         Log.error(e);
       }
       // Rename audio files
@@ -200,7 +201,12 @@ public class RefactorAction implements Const {
     }
     // Refresh and cleanup required directories
     for (final Directory dir : toBeRefreshed) {
-      DirectoryManager.refreshDirectory(dir);
+      try {
+        dir.refresh(false,null);
+      } catch (JajukException e) {
+        Log.error(e);
+        Messages.showErrorMessage(e.getCode());
+      }
       dir.getDevice().cleanRemovedFiles();
     }
     if (!sErrors.equals("")) {
@@ -215,7 +221,7 @@ public class RefactorAction implements Const {
   public static boolean isStopAll() {
     return bStopAll;
   }
-  
+
   public static void resetStopAll() {
     bStopAll = false;
   }

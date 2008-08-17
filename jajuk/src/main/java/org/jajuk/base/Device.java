@@ -66,9 +66,9 @@ public class Device extends PhysicalItem implements Const, Comparable<Device> {
 
   private static final long serialVersionUID = 1L;
 
-  private static final int OPTION_REFRESH_DEEP = 1;
+  protected static final int OPTION_REFRESH_DEEP = 1;
 
-  private static final int OPTION_REFRESH_CANCEL = 2;
+  protected static final int OPTION_REFRESH_CANCEL = 2;
 
   // Device type constants
   public static final int TYPE_DIRECTORY = 0;
@@ -108,6 +108,9 @@ public class Device extends PhysicalItem implements Const, Comparable<Device> {
   /** Number of dirs in this device before refresh */
   private int iNbDirsBeforeRefresh;
 
+  /** Number of playlists in this device before refresh */
+  private int iNbPlaylistsBeforeRefresh;
+
   /** Number of created files on source device during synchro ( for stats ) */
   private int iNbCreatedFilesSrc;
 
@@ -125,7 +128,8 @@ public class Device extends PhysicalItem implements Const, Comparable<Device> {
   /** date last refresh */
   long lDateLastRefresh;
 
-  RefreshReporter reporter;
+  /** Progess reporter **/
+  private RefreshReporter reporter;
 
   /**
    * Device constructor
@@ -166,8 +170,7 @@ public class Device extends PhysicalItem implements Const, Comparable<Device> {
 
     // clear history to remove old files referenced in it
     if (Conf.getString(Const.CONF_HISTORY) != null) {
-      History.getInstance().clear(
-          Integer.parseInt(Conf.getString(Const.CONF_HISTORY)));
+      History.getInstance().clear(Integer.parseInt(Conf.getString(Const.CONF_HISTORY)));
     }
 
     // delete old history items
@@ -451,52 +454,33 @@ public class Device extends PhysicalItem implements Const, Comparable<Device> {
   private void manualRefresh(final boolean bAsk) {
     try {
       reporter = new RefreshReporter(this);
-      int i = Device.OPTION_REFRESH_DEEP;
-      if (bAsk) {
-        final Object[] possibleValues = { Messages.getString("FilesTreeView.60"),// fast
-            Messages.getString("FilesTreeView.61"),// deep
-            Messages.getString("Cancel") };// cancel
-        i = JOptionPane.showOptionDialog(null, Messages.getString("FilesTreeView.59"), Messages
-            .getString("Option"), JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null,
-            possibleValues, possibleValues[0]);
-        if (i == Device.OPTION_REFRESH_CANCEL) { // Cancel
+      int i = 0;
+      try {
+        i = prepareRefresh(bAsk);
+        if (i == OPTION_REFRESH_CANCEL) {
           return;
         }
-      }
-      final Device device = this;
-      if (!device.isMounted()) {
-        try {
-          device.mount();
-        } catch (final Exception e) {
-          Log.error(11, "{{" + getName() + "}}", e); // mount failed
-          Messages.showErrorMessage(11, getName());
-          return;
-        }
-      }
-      if (bAlreadyRefreshing) {
-        Messages.showErrorMessage(107);
+        bAlreadyRefreshing = true;
+      } catch (JajukException je) {
+        Messages.showErrorMessage(je.getCode());
+        Log.debug(je);
         return;
       }
-      bAlreadyRefreshing = true;
       reporter.startup();
       // clean old files up (takes a while)
       cleanRemovedFiles();
       reporter.cleanupDone();
       // Actual refresh
-      refreshCommand((i == Device.OPTION_REFRESH_DEEP), true);
+      refreshCommand((i == Device.OPTION_REFRESH_DEEP));
       // notify views to refresh
       ObservationManager.notify(new Event(JajukEvents.EVENT_DEVICE_REFRESH));
       // cleanup logical items
-      TrackManager.getInstance().cleanup();
-      StyleManager.getInstance().cleanup();
-      AlbumManager.getInstance().cleanup();
-      AuthorManager.getInstance().cleanup();
+      org.jajuk.base.Collection.cleanupLogical();
       // commit collection at each refresh (can be useful if application
       // is closed brutally with control-C or shutdown and that exit hook
       // have no time to perform commit)
       try {
-        org.jajuk.base.Collection.commit(UtilSystem
-            .getConfFileByPath(Const.FILE_COLLECTION));
+        org.jajuk.base.Collection.commit(UtilSystem.getConfFileByPath(Const.FILE_COLLECTION));
       } catch (final IOException e) {
         Log.error(e);
       }
@@ -505,6 +489,44 @@ public class Device extends PhysicalItem implements Const, Comparable<Device> {
       // Make sure to unlock refreshing
       bAlreadyRefreshing = false;
     }
+  }
+
+  /**
+   * Prepare manual refresh
+   * 
+   * @param bAsk
+   * @return the user choice (deep or fast)
+   * @throws JajukException
+   *           if user canceled, device cannot be refreshed or device already
+   *           refreshing
+   */
+  public int prepareRefresh(final boolean bAsk) throws JajukException {
+    int i = Device.OPTION_REFRESH_DEEP;
+    if (bAsk) {
+      final Object[] possibleValues = { Messages.getString("FilesTreeView.60"),// fast
+          Messages.getString("FilesTreeView.61"),// deep
+          Messages.getString("Cancel") };// cancel
+      i = JOptionPane.showOptionDialog(null, Messages.getString("FilesTreeView.59"), Messages
+          .getString("Option"), JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null,
+          possibleValues, possibleValues[0]);
+      if (i == Device.OPTION_REFRESH_CANCEL) { // Cancel
+        return Device.OPTION_REFRESH_CANCEL;
+      }
+    }
+    final Device device = this;
+    if (!device.isMounted()) {
+      try {
+        device.mount();
+      } catch (final Exception e) {
+        Log.error(11, "{{" + getName() + "}}", e); // mount failed
+        Messages.showErrorMessage(11, getName());
+        throw new JajukException(11);
+      }
+    }
+    if (bAlreadyRefreshing) {
+      throw new JajukException(107);
+    }
+    return i;
   }
 
   /**
@@ -572,8 +594,7 @@ public class Device extends PhysicalItem implements Const, Comparable<Device> {
         // compatibility code for <1.1 : auto-refresh is now a double,
         // no more a boolean
         if (meta.getName().equals(Const.XML_DEVICE_AUTO_REFRESH)
-            && (sValue.equalsIgnoreCase(Const.TRUE) || sValue
-                .equalsIgnoreCase(Const.FALSE))) {
+            && (sValue.equalsIgnoreCase(Const.TRUE) || sValue.equalsIgnoreCase(Const.FALSE))) {
           switch ((int) getType()) {
           case TYPE_DIRECTORY: // directory
             sValue = "0.5d";
@@ -605,7 +626,7 @@ public class Device extends PhysicalItem implements Const, Comparable<Device> {
    * Refresh : scan asynchronously the device to find tracks
    * 
    * @param bAsynchronous :
-   *          set asynchonous or synchronous mode
+   *          set asynchronous or synchronous mode
    * @param bAsk:
    *          should we ask user if he wants to perform a deep or fast scan?
    *          default=deep
@@ -618,7 +639,7 @@ public class Device extends PhysicalItem implements Const, Comparable<Device> {
    * Refresh : scan asynchronously the device to find tracks
    * 
    * @param bAsynchronous :
-   *          set asynchonous or synchronous mode
+   *          set asynchronous or synchronous mode
    * @param bAsk:
    *          should we ask user if he wants to perform a deep or fast scan?
    *          default=deep
@@ -642,10 +663,10 @@ public class Device extends PhysicalItem implements Const, Comparable<Device> {
   /**
    * The refresh itself
    * 
-   * @return true if some changes occured in device
+   * @return true if some changes occurred in device
    * 
    */
-  public synchronized boolean refreshCommand(final boolean bDeepScan, final boolean bManual) {
+  public synchronized boolean refreshCommand(final boolean bDeepScan) {
     try {
       bAlreadyRefreshing = true;
       if (reporter == null) {
@@ -677,6 +698,7 @@ public class Device extends PhysicalItem implements Const, Comparable<Device> {
       }
       iNbFilesBeforeRefresh = FileManager.getInstance().getElementCount();
       iNbDirsBeforeRefresh = DirectoryManager.getInstance().getElementCount();
+      iNbPlaylistsBeforeRefresh = PlaylistManager.getInstance().getElementCount();
 
       if (bDeepScan && Log.isDebugEnabled()) {
         Log.debug("Starting refresh of device : " + this);
@@ -699,6 +721,13 @@ public class Device extends PhysicalItem implements Const, Comparable<Device> {
         ThumbnailsMaker.launchAllSizes(false);
         return true;
       }
+      // force a GUI refresh if new files or directories discovered or have been
+      // removed
+      else if (((FileManager.getInstance().getElementCount() - iNbFilesBeforeRefresh) != 0)
+          || ((DirectoryManager.getInstance().getElementCount() - iNbDirsBeforeRefresh) != 0)
+          || ((PlaylistManager.getInstance().getElementCount() - iNbPlaylistsBeforeRefresh) != 0)) {
+        return true;
+      }
       return false;
     } catch (final RuntimeException e) {
       // runtime errors are thrown
@@ -707,8 +736,8 @@ public class Device extends PhysicalItem implements Const, Comparable<Device> {
       // and regular ones logged
       Log.error(e);
       return false;
-    } finally { // make sure to unlock refreshing even if an error
-      // occured
+    } finally {
+      // make sure to unlock refreshing even if an error occurred
       bAlreadyRefreshing = false;
       // Notify the reporter of the actual refresh startup
       reporter.refreshDone();
@@ -813,11 +842,11 @@ public class Device extends PhysicalItem implements Const, Comparable<Device> {
       }
       final Device dSrc = DeviceManager.getInstance().getDeviceByID(sIdSrc);
       // perform a fast refresh
-      refreshCommand(false, true);
+      refreshCommand(false);
       // if bidi sync, refresh the other device as well (new file can
       // have been copied to it)
       if (bidi) {
-        dSrc.refreshCommand(false, true);
+        dSrc.refreshCommand(false);
       }
       // start message
       InformationJPanel.getInstance().setMessage(
@@ -835,11 +864,11 @@ public class Device extends PhysicalItem implements Const, Comparable<Device> {
           iNbCreatedFilesSrc + iNbCreatedFilesDest).append(Messages.getString("Device.35")).append(
           lVolume / 1048576).append(Messages.getString("Device.36")).toString();
       // perform a fast refresh
-      refreshCommand(false, true);
+      refreshCommand(false);
       // if bidi sync, refresh the other device as well (new file can
       // have been copied to it)
       if (bidi) {
-        dSrc.refreshCommand(false, true);
+        dSrc.refreshCommand(false);
       }
       InformationJPanel.getInstance().setMessage(sOut, InformationJPanel.INFORMATIVE);
       Log.debug(sOut);
@@ -1041,8 +1070,8 @@ public class Device extends PhysicalItem implements Const, Comparable<Device> {
   @Override
   public String toString() {
     return "Device[ID=" + getID() + " Name=" + getName() + " Type="
-        + DeviceManager.getInstance().getDeviceType(getLongValue(Const.XML_TYPE))
-        + " URL=" + sUrl + " Mount point=" + MOUNT_POINT + "]";
+        + DeviceManager.getInstance().getDeviceType(getLongValue(Const.XML_TYPE)) + " URL=" + sUrl
+        + " Mount point=" + MOUNT_POINT + "]";
   }
 
   /**
@@ -1077,4 +1106,5 @@ public class Device extends PhysicalItem implements Const, Comparable<Device> {
       ObservationManager.notify(new Event(JajukEvents.EVENT_DEVICE_UNMOUNT));
     }
   }
+
 }

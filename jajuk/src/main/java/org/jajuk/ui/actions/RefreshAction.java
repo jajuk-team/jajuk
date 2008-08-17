@@ -25,25 +25,20 @@ import java.util.List;
 
 import javax.swing.JComponent;
 
+import org.jajuk.base.Device;
 import org.jajuk.base.Directory;
-import org.jajuk.base.DirectoryManager;
-import org.jajuk.base.File;
 import org.jajuk.base.Item;
-import org.jajuk.events.Event;
-import org.jajuk.events.JajukEvents;
-import org.jajuk.events.ObservationManager;
 import org.jajuk.ui.widgets.InformationJPanel;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
-import org.jajuk.util.UtilGUI;
 
-public class RefreshDirectoryAction extends ActionBase {
+public class RefreshAction extends ActionBase {
   /**
    * 
    */
   private static final long serialVersionUID = 1L;
 
-  RefreshDirectoryAction() {
+  RefreshAction() {
     super(Messages.getString("ActionRefresh.0"), IconLoader.ICON_REFRESH, true);
     setShortDescription(Messages.getString("ActionRefresh.0"));
   }
@@ -53,26 +48,23 @@ public class RefreshDirectoryAction extends ActionBase {
   public void perform(ActionEvent e) {
     JComponent source = (JComponent) e.getSource();
     // Get required data from the tree (selected node and node type)
+    // A single item (directory or device) is allowed
     final List<Item> alSelected = (ArrayList<Item>) source.getClientProperty(DETAIL_SELECTION);
     Item item = alSelected.get(0);
     final Directory dir;
     if (item instanceof Directory) {
       dir = (Directory) item;
-    } else {
-      dir = ((File) item).getDirectory();
+      new Thread() {
+        public void run() {
+          dir.manualRefresh(false, true);
+        }
+      }.start();
+    } else if (item instanceof Device) {
+      Device device = (Device) item;
+      // ask user if he wants to make deep or
+      // fast scan
+      device.refresh(true, true);
     }
-    new Thread() {
-      @Override
-      public void run() {
-        UtilGUI.waiting();
-        InformationJPanel.getInstance().setMessage(
-            Messages.getString("ActionRefresh.1") + ": " + dir.getName(), 1);
-        DirectoryManager.refreshDirectory(dir);
-        ObservationManager.notify(new Event(JajukEvents.EVENT_DEVICE_REFRESH));
-        InformationJPanel.getInstance().setMessage(Messages.getString("ActionRefresh.2"), 1);
-        UtilGUI.stopWaiting();
-      }
-    }.start();
 
   }
 }

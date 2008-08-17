@@ -65,7 +65,7 @@ public class NewFolderAction extends ActionBase {
             Messages.showWarningMessage(Messages.getString("NewFolderAction.2"));
             return;
           }
-          ((Directory) currentItem).getDevice().refreshCommand(false, false);
+          ((Directory) currentItem).getDevice().refreshCommand(false);
         } catch (Exception er) {
           Log.error(er);
         }
@@ -80,7 +80,7 @@ public class NewFolderAction extends ActionBase {
             Messages.showWarningMessage(Messages.getString("NewFolderAction.2"));
             return;
           }
-          ((Device) currentItem).refreshCommand(false, false);
+          ((Device) currentItem).refreshCommand(false);
         } catch (Exception er) {
           Log.error(er);
         }
