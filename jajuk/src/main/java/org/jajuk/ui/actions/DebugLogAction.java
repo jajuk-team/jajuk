@@ -41,7 +41,7 @@ import org.jajuk.util.Messages;
 import org.jajuk.util.UtilString;
 import org.jajuk.util.log.Log;
 
-public class DebugLogAction extends ActionBase {
+public class DebugLogAction extends JajukAction {
   private static final long serialVersionUID = 1L;
 
   DebugLogAction() {

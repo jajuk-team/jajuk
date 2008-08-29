@@ -43,7 +43,7 @@ import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.events.Observer;
 import org.jajuk.services.players.FIFO;
-import org.jajuk.ui.actions.ActionBase;
+import org.jajuk.ui.actions.JajukAction;
 import org.jajuk.ui.actions.ActionManager;
 import org.jajuk.ui.actions.JajukActions;
 import org.jajuk.ui.widgets.JajukHtmlPanel;
@@ -116,7 +116,7 @@ public class WikipediaView extends ViewAdapter implements Const, Observer,
         .getString(CONF_WIKIPEDIA_LANGUAGE)));
     jcbLanguage.addActionListener(this);
     // Buttons
-    ActionBase aCopy = ActionManager.getAction(JajukActions.COPY_TO_CLIPBOARD);
+    JajukAction aCopy = ActionManager.getAction(JajukActions.COPY_TO_CLIPBOARD);
     jbCopy = new JButton(aCopy);
     jbLaunchInExternalBrowser = new JButton(ActionManager.getAction(JajukActions.LAUNCH_IN_BROWSER));
     // Remove text inside the buttons

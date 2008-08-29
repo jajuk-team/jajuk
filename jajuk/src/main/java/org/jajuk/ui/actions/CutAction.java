@@ -33,7 +33,7 @@ import org.jajuk.util.Messages;
  * Action class for Cut
  */
 
-public class CutAction extends ActionBase {
+public class CutAction extends JajukAction {
 
   private static final long serialVersionUID = 1L;
 

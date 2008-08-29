@@ -32,7 +32,7 @@ import org.jajuk.util.Conf;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
 
-public class RepeatModeAction extends ActionBase {
+public class RepeatModeAction extends JajukAction {
   private static final long serialVersionUID = 1L;
 
   RepeatModeAction() {

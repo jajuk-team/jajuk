@@ -53,7 +53,7 @@ import javax.swing.TransferHandler;
 import org.jajuk.base.Item;
 import org.jajuk.base.Track;
 import org.jajuk.base.TrackManager;
-import org.jajuk.ui.actions.ActionBase;
+import org.jajuk.ui.actions.JajukAction;
 import org.jajuk.ui.actions.ActionManager;
 import org.jajuk.ui.actions.JajukActions;
 import org.jajuk.ui.views.CoverView;
@@ -230,7 +230,7 @@ public abstract class AbstractThumbnail extends JPanel implements Const,
     jmiCDDBWizard.putClientProperty(DETAIL_SELECTION, getItem());
     jmiProperties = new JMenuItem(ActionManager.getAction(JajukActions.SHOW_PROPERTIES));
     jmiProperties.putClientProperty(DETAIL_SELECTION, getItem());
-    ActionBase actionOpenLastFM = ActionManager.getAction(JajukActions.LAUNCH_IN_BROWSER);
+    JajukAction actionOpenLastFM = ActionManager.getAction(JajukActions.LAUNCH_IN_BROWSER);
     // Change action label
     jmiOpenLastFMSite = new JMenuItem(actionOpenLastFM);
     jmiOpenLastFMSite.setText(Messages.getString("AbstractThumbnail.0"));

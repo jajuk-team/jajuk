@@ -116,6 +116,15 @@ public final class TrackManager extends ItemManager implements Observer {
     // Track order
     registerProperty(new PropertyMetaInformation(XML_TRACK_ORDER, false, true, true, true, false,
         Long.class, null));
+    // Track preference factor
+    registerProperty(new PropertyMetaInformation(XML_TRACK_PREFERENCE, false, false, true, true, true,
+        Long.class, 0l));
+    // Track total playtime
+    registerProperty(new PropertyMetaInformation(XML_TRACK_TOTAL_PLAYTIME, false, false, true, false, false,
+        Long.class, 0l));
+    // Track ban status
+    registerProperty(new PropertyMetaInformation(XML_TRACK_BANNED, false, false, true, true, false,
+        Boolean.class, false));
     // ---subscriptions---
     ObservationManager.register(this);
   }

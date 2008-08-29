@@ -100,7 +100,7 @@ import org.jajuk.services.players.Player;
 import org.jajuk.services.players.StackItem;
 import org.jajuk.services.webradio.WebRadio;
 import org.jajuk.services.webradio.WebRadioManager;
-import org.jajuk.ui.actions.ActionBase;
+import org.jajuk.ui.actions.JajukAction;
 import org.jajuk.ui.actions.ActionManager;
 import org.jajuk.ui.actions.ActionUtil;
 import org.jajuk.ui.actions.JajukActions;
@@ -307,12 +307,12 @@ public class CommandJPanel extends JXPanel implements Const, ActionListener,
     JLabel jlHistory = new JLabel(IconLoader.ICON_HISTORY);
     jlHistory.setToolTipText(Messages.getString("CommandJPanel.0"));
     // - Increase rating button
-    ActionBase actionIncRate = ActionManager.getAction(JajukActions.INC_RATE);
+    JajukAction actionIncRate = ActionManager.getAction(JajukActions.INC_RATE);
     actionIncRate.setName(null);
     final JPopupMenu jpmIncRating = new JPopupMenu();
-    for (int i = 1; i <= 10; i++) {
+    for (int i = 3; i >=-3; i--) {
       final int j = i;
-      JMenuItem jmi = new JMenuItem("+" + i);
+      JMenuItem jmi = new JMenuItem(Integer.toString(i));
       if (Conf.getInt(CONF_INC_RATING) == i) {
         jmi.setFont(FontManager.getInstance().getFont(JajukFont.BOLD));
       }
@@ -872,7 +872,7 @@ public class CommandJPanel extends JXPanel implements Const, ActionListener,
           populateDJs();
           // If no more DJ, change the tooltip
           if (DigitalDJManager.getInstance().getDJs().size() == 0) {
-            ActionBase action = ActionManager.getAction(JajukActions.DJ);
+            JajukAction action = ActionManager.getAction(JajukActions.DJ);
             action.setShortDescription(Messages.getString("CommandJPanel.18"));
           }
         } else if (JajukEvents.EVENT_AMBIENCES_CHANGE.equals(event.getSubject())
@@ -904,7 +904,7 @@ public class CommandJPanel extends JXPanel implements Const, ActionListener,
   private void updateTooltips() {
     // Selected 'Any" ambience
     if (ambiencesCombo.getSelectedIndex() == 1) {
-      ActionBase action = ActionManager.getAction(JajukActions.NOVELTIES);
+      JajukAction action = ActionManager.getAction(JajukActions.NOVELTIES);
       action.setShortDescription(Messages.getString("JajukWindow.31"));
       action = ActionManager.getAction(JajukActions.BEST_OF);
       action.setShortDescription(Messages.getString("JajukWindow.24"));
@@ -913,7 +913,7 @@ public class CommandJPanel extends JXPanel implements Const, ActionListener,
     } else {// Selected an ambience
       Ambience ambience = AmbienceManager.getInstance().getAmbienceByName(
           ((JLabel) ambiencesCombo.getSelectedItem()).getText());
-      ActionBase action = ActionManager.getAction(JajukActions.NOVELTIES);
+      JajukAction action = ActionManager.getAction(JajukActions.NOVELTIES);
       action.setShortDescription("<html>" + Messages.getString("JajukWindow.31") + "<p><b>"
           + ambience.getName() + "</b></p></html>");
       action = ActionManager.getAction(JajukActions.SHUFFLE_GLOBAL);
@@ -948,7 +948,7 @@ public class CommandJPanel extends JXPanel implements Const, ActionListener,
             // force to reselect the item
             populateDJs();
             // update action tooltip on main button with right item
-            ActionBase action = ActionManager.getAction(JajukActions.DJ);
+            JajukAction action = ActionManager.getAction(JajukActions.DJ);
             action.setShortDescription("<html>" + Messages.getString("CommandJPanel.18") + "<p><b>"
                 + dj.getName() + "</b></p></html>");
           }
@@ -1009,7 +1009,7 @@ public class CommandJPanel extends JXPanel implements Const, ActionListener,
       // Clear previous elements
       popupWebRadio.removeAll();
       // Add configure radios item
-      ActionBase actionConf = ActionManager.getAction(JajukActions.CONFIGURE_WEBRADIOS);
+      JajukAction actionConf = ActionManager.getAction(JajukActions.CONFIGURE_WEBRADIOS);
       XCheckedButton jmiConf = new XCheckedButton(actionConf);
       // Set icon so it is correctly displayed after a selection
       jmiConf.setCheckedIcon((ImageIcon) actionConf.getValue(Action.SMALL_ICON));
@@ -1024,7 +1024,7 @@ public class CommandJPanel extends JXPanel implements Const, ActionListener,
             // force to reselect the item
             populateWebRadios();
             // update action tooltip on main button with right item
-            ActionBase action = ActionManager.getAction(JajukActions.WEB_RADIO);
+            JajukAction action = ActionManager.getAction(JajukActions.WEB_RADIO);
             action.setShortDescription("<html>" + Messages.getString("CommandJPanel.25") + "<p><b>"
                 + radio.getName() + "</b></p></html>");
           }

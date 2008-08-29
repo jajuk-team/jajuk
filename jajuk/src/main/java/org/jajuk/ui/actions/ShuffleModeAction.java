@@ -31,7 +31,7 @@ import org.jajuk.util.Conf;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
 
-public class ShuffleModeAction extends ActionBase {
+public class ShuffleModeAction extends JajukAction {
   private static final long serialVersionUID = 1L;
 
   ShuffleModeAction() {

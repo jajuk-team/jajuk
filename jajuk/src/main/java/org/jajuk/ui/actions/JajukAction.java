@@ -35,10 +35,13 @@ import org.jajuk.util.log.Log;
  * options to create actions, just leaving open the necessity of implementing
  * the {@link #actionPerformed(java.awt.event.ActionEvent)} method.
  */
-public abstract class ActionBase extends AbstractAction implements Const {
+public abstract class JajukAction extends AbstractAction implements Const {
 
   /** Is this action an hotkey ? */
   private boolean bHotkey = false;
+  
+  /** enable state */
+  private boolean bEnable = true;
 
   // Instantiate a static jintellitype object
   static {
@@ -70,7 +73,7 @@ public abstract class ActionBase extends AbstractAction implements Const {
    *          Is this command should be enabled even when jajuk has not the
    *          focus (has a effect under windows only)
    */
-  protected ActionBase(String pName, Icon icon, KeyStroke stroke, boolean enabled, boolean bHotkey) {
+  protected JajukAction(String pName, Icon icon, KeyStroke stroke, boolean enabled, boolean bHotkey) {
     // check hotkeys are enabled (false by default)
     this.bHotkey = UtilSystem.isUnderWindows() && bHotkey
         && Conf.getBoolean(CONF_OPTIONS_HOTKEYS);
@@ -90,7 +93,7 @@ public abstract class ActionBase extends AbstractAction implements Const {
       if (this.bHotkey) {
         try {
           Class.forName("org.jajuk.ui.actions.WindowsHotKeyManager").getMethod("registerHotKey",
-              new Class[] { KeyStroke.class, ActionBase.class }).invoke(null,
+              new Class[] { KeyStroke.class, JajukAction.class }).invoke(null,
               new Object[] { stroke, this });
         } catch (Exception e) {
           Log.error(e);
@@ -123,7 +126,7 @@ public abstract class ActionBase extends AbstractAction implements Const {
    *          Is this command should be enabled even when jajuk has not the
    *          focus (has a effect under windows only)
    */
-  protected ActionBase(String name, Icon icon, String stroke, boolean enabled, boolean bHotkey) {
+  protected JajukAction(String name, Icon icon, String stroke, boolean enabled, boolean bHotkey) {
     this(name, icon, KeyStroke.getKeyStroke(stroke), enabled, bHotkey);
   }
 
@@ -143,7 +146,7 @@ public abstract class ActionBase extends AbstractAction implements Const {
    *          Is this command should be enabled even when jajuk has not the
    *          focus (has a effect under windows only)
    */
-  protected ActionBase(String name, KeyStroke stroke, boolean enabled, boolean bHotkey) {
+  protected JajukAction(String name, KeyStroke stroke, boolean enabled, boolean bHotkey) {
     this(name, null, stroke, enabled, bHotkey);
   }
 
@@ -166,7 +169,7 @@ public abstract class ActionBase extends AbstractAction implements Const {
    *          Is this command should be enabled even when jajuk has not the
    *          focus (has a effect under windows only)
    */
-  protected ActionBase(String name, String stroke, boolean enabled, boolean bHotkey) {
+  protected JajukAction(String name, String stroke, boolean enabled, boolean bHotkey) {
     this(name, null, stroke, enabled, bHotkey);
   }
 
@@ -184,7 +187,7 @@ public abstract class ActionBase extends AbstractAction implements Const {
    *          focus (has a effect under windows only)
    * @see javax.swing.KeyStroke#getKeyStroke(String)
    */
-  protected ActionBase(Icon icon, KeyStroke stroke, boolean enabled, boolean bHotkey) {
+  protected JajukAction(Icon icon, KeyStroke stroke, boolean enabled, boolean bHotkey) {
     this(null, icon, stroke, enabled, bHotkey);
   }
 
@@ -205,7 +208,7 @@ public abstract class ActionBase extends AbstractAction implements Const {
    *          focus (has a effect under windows only)
    * @see javax.swing.KeyStroke#getKeyStroke(String)
    */
-  protected ActionBase(Icon icon, String stroke, boolean enabled, boolean bHotkey) {
+  protected JajukAction(Icon icon, String stroke, boolean enabled, boolean bHotkey) {
     this(null, icon, stroke, enabled, bHotkey);
   }
 
@@ -222,7 +225,7 @@ public abstract class ActionBase extends AbstractAction implements Const {
    * @param enabled
    *          By default enable or disable the action.
    */
-  protected ActionBase(String name, Icon icon, boolean enabled) {
+  protected JajukAction(String name, Icon icon, boolean enabled) {
     this(name, icon, (KeyStroke) null, enabled, false);
   }
 
@@ -234,7 +237,7 @@ public abstract class ActionBase extends AbstractAction implements Const {
    * @param enabled
    *          By default enable or disable the action.
    */
-  protected ActionBase(Icon icon, boolean enabled) {
+  protected JajukAction(Icon icon, boolean enabled) {
     this(null, icon, (KeyStroke) null, enabled, false);
   }
 
@@ -249,7 +252,7 @@ public abstract class ActionBase extends AbstractAction implements Const {
    * @param enabled
    *          By default enable or disable the action.
    */
-  protected ActionBase(String name, boolean enabled) {
+  protected JajukAction(String name, boolean enabled) {
     this(name, null, (KeyStroke) null, enabled, false);
   }
 
@@ -365,7 +368,7 @@ public abstract class ActionBase extends AbstractAction implements Const {
   public abstract void perform(ActionEvent evt) throws Exception;
 
   /**
-   * Free intellipad ressources
+   * Free intellipad resources
    */
   public static void cleanup() throws Exception {
     if (UtilSystem.isUnderWindows()) {
@@ -380,6 +383,14 @@ public abstract class ActionBase extends AbstractAction implements Const {
    */
   public boolean isHotkey() {
     return this.bHotkey;
+  }
+  
+  /**
+   * Enable or disable the action
+   * @param enable
+   */
+  protected void enable(boolean enable){
+    this.bEnable = enable;
   }
 
 }

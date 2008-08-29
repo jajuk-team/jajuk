@@ -27,7 +27,7 @@ import org.jajuk.services.players.Player;
  * Action class for decreasing the volume. Installed keystroke:
  * <code>CTRL + DOWN ARROW</code>.
  */
-public class DecreaseVolumeAction extends ActionBase {
+public class DecreaseVolumeAction extends JajukAction {
   private static final long serialVersionUID = 1L;
 
   DecreaseVolumeAction() {

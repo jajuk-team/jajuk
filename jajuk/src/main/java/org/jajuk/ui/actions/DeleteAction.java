@@ -50,7 +50,7 @@ import org.jajuk.util.UtilGUI;
 import org.jajuk.util.UtilSystem;
 import org.jajuk.util.log.Log;
 
-public class DeleteAction extends ActionBase {
+public class DeleteAction extends JajukAction {
   private static final long serialVersionUID = 1L;
 
   DeleteAction() {

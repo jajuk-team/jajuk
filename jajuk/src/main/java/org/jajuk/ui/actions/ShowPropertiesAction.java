@@ -57,7 +57,7 @@ public class ShowPropertiesAction extends SelectionAction {
   /*
    * (non-Javadoc)
    * 
-   * @see org.jajuk.ui.actions.ActionBase#perform(java.awt.event.ActionEvent)
+   * @see org.jajuk.ui.actions.JajukAction#perform(java.awt.event.ActionEvent)
    */
   @SuppressWarnings("unchecked")
   @Override

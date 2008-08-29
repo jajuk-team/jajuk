@@ -32,7 +32,7 @@ import org.jajuk.util.Messages;
 /**
  * Action of clicking on the mute button
  */
-public class MuteAction extends ActionBase {
+public class MuteAction extends JajukAction {
   private static final long serialVersionUID = 1L;
 
   MuteAction() {

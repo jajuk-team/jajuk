@@ -28,7 +28,7 @@ import org.jajuk.util.Messages;
 /**
  * Action for displaying the tip of the day.
  */
-public class ShowAboutAction extends ActionBase {
+public class ShowAboutAction extends JajukAction {
 
   private static final long serialVersionUID = 1L;
 

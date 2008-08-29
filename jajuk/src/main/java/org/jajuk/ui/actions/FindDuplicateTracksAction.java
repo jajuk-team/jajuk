@@ -40,7 +40,7 @@ import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilGUI;
 
-public class FindDuplicateTracksAction extends ActionBase {
+public class FindDuplicateTracksAction extends JajukAction {
 
   private static final long serialVersionUID = 1L;
 

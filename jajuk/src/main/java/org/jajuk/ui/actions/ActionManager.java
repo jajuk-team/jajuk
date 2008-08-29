@@ -79,7 +79,7 @@ import javax.swing.UIManager;
  */
 public final class ActionManager {
 
-  private static final EnumMap<JajukActions, ActionBase> MAP = new EnumMap<JajukActions, ActionBase>(
+  private static final EnumMap<JajukActions, JajukAction> MAP = new EnumMap<JajukActions, JajukAction>(
       JajukActions.class);
 
   private static final List<KeyStroke> STROKE_LIST = new ArrayList<KeyStroke>();
@@ -123,7 +123,7 @@ public final class ActionManager {
     installAction(PLAY_PAUSE_TRACK, new PlayPauseAction(), false);
     installAction(STOP_TRACK, new StopTrackAction(), false);
     installAction(FAST_FORWARD_TRACK, new ForwardTrackAction(), true);
-    installAction(JajukActions.INC_RATE, new IncRateAction(), true);
+    installAction(JajukActions.INC_RATE, new ChangeTrackPreferenceAction(), true);
 
     // CommandJPanel: Volume control
     installAction(DECREASE_VOLUME, new DecreaseVolumeAction(), true);
@@ -202,11 +202,11 @@ public final class ActionManager {
   /**
    * @param action
    *          The <code>JajukActions</code> to get.
-   * @return The <code>ActionBase</code> implementation linked to the
+   * @return The <code>JajukAction</code> implementation linked to the
    *         <code>JajukActions</code>.
    */
-  public static ActionBase getAction(JajukActions action) {
-    ActionBase actionBase = MAP.get(action);
+  public static JajukAction getAction(JajukActions action) {
+    JajukAction actionBase = MAP.get(action);
     if (actionBase == null) {
       throw new ExceptionInInitializerError("No action mapping found for " + action);
     }
@@ -227,11 +227,11 @@ public final class ActionManager {
    * @param removeFromLAF
    *          Remove default keystrokes from look and feel.
    */
-  private static void installAction(JajukActions name, ActionBase action, boolean removeFromLAF) {
+  private static void installAction(JajukActions name, JajukAction action, boolean removeFromLAF) {
     MAP.put(name, action);
 
     if (removeFromLAF) {
-      KeyStroke stroke = (KeyStroke) action.getValue(ActionBase.ACCELERATOR_KEY);
+      KeyStroke stroke = (KeyStroke) action.getValue(JajukAction.ACCELERATOR_KEY);
       if (stroke != null) {
         STROKE_LIST.add(stroke);
       }
@@ -250,5 +250,14 @@ public final class ActionManager {
       tableMap.remove(stroke);
       treeMap.remove(stroke);
     }
+  }
+  
+  /**
+   * Enable or disable the action
+   * @param the action
+   * @param enable
+   */
+  public void enable(JajukAction action, boolean enable){
+    action.enable(enable);
   }
 }

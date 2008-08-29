@@ -32,7 +32,7 @@ import org.jajuk.util.log.Log;
  * Action class for jumping to the next album. Installed keystroke:
  * <code>CTRL + SHIFT + RIGHT ARROW</code>.
  */
-public class NextAlbumAction extends ActionBase {
+public class NextAlbumAction extends JajukAction {
   private static final long serialVersionUID = 1L;
 
   NextAlbumAction() {

@@ -28,7 +28,7 @@ import org.jajuk.util.Messages;
 /**
  * Action for configure WebRadios
  */
-public class WebRadioConfigurationAction extends ActionBase {
+public class WebRadioConfigurationAction extends JajukAction {
 
   /**
    * 

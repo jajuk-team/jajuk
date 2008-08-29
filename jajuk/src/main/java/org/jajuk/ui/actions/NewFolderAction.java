@@ -36,7 +36,7 @@ import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
 import org.jajuk.util.log.Log;
 
-public class NewFolderAction extends ActionBase {
+public class NewFolderAction extends JajukAction {
   private static final long serialVersionUID = 1L;
 
   NewFolderAction() {

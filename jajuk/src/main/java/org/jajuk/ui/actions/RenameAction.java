@@ -38,7 +38,7 @@ import org.jajuk.util.Messages;
 import org.jajuk.util.UtilGUI;
 import org.jajuk.util.log.Log;
 
-public class RenameAction extends ActionBase {
+public class RenameAction extends JajukAction {
   private static final long serialVersionUID = 1L;
 
   RenameAction() {

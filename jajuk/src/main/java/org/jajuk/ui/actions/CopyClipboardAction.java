@@ -33,7 +33,7 @@ import org.jajuk.util.error.JajukException;
  * 
  * Copy to clipboard the string stored in UtilFeatures.copyData
  */
-public class CopyClipboardAction extends ActionBase {
+public class CopyClipboardAction extends JajukAction {
 
   private static final long serialVersionUID = 1L;
 

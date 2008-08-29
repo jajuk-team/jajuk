@@ -27,7 +27,7 @@ import org.jajuk.util.Conf;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
 
-public class IntroModeAction extends ActionBase {
+public class IntroModeAction extends JajukAction {
   private static final long serialVersionUID = 1L;
 
   IntroModeAction() {

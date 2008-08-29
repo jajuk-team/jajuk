@@ -33,7 +33,7 @@ import org.jajuk.util.Messages;
 import org.jajuk.util.UtilFeatures;
 import org.jajuk.util.error.JajukException;
 
-public class FinishAlbumAction extends ActionBase {
+public class FinishAlbumAction extends JajukAction {
 
   private static final long serialVersionUID = 1L;
 

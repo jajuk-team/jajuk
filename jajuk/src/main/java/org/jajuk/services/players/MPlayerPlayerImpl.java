@@ -25,7 +25,7 @@ import java.io.InputStreamReader;
 import java.util.Map;
 import java.util.StringTokenizer;
 
-import org.jajuk.services.core.RatingManager;
+import org.jajuk.base.Track;
 import org.jajuk.services.webradio.WebRadio;
 import org.jajuk.util.Conf;
 import org.jajuk.util.error.JajukException;
@@ -73,8 +73,7 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
   private volatile boolean bPaused = false;
 
   /** Inc rating flag */
-  private boolean bHasBeenRated = false;
-
+  // private boolean bHasBeenRated = false;
   /**
    * Position and elapsed time getter
    */
@@ -85,11 +84,24 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
 
     @Override
     public void run() {
+      int comp = 1;
+      Track current = fCurrent.getTrack();
       while (!bStop) { // stop this thread when exiting
         try {
           if (!bPaused && !bStop) {
             // a get_percent_pos resumes (mplayer issue)
             sendCommand("get_time_pos");
+            // every 10 time units, increase actual play time. We wait this
+            // delay for perfs and for precision
+            if (comp % 10 == 0) {
+              // Increase actual play time
+              // End of file: increase actual play time to the track
+              // Perf note : this full action takes less much than 1 ms
+              long trackPlaytime = current.getLongValue(XML_TRACK_TOTAL_PLAYTIME);
+              long newValue = PROGRESS_STEP / 100 + trackPlaytime;
+              current.setProperty(XML_TRACK_TOTAL_PLAYTIME, +newValue);
+            }
+            comp++;
           }
           Thread.sleep(PROGRESS_STEP);
         } catch (Exception e) {
@@ -113,13 +125,13 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
         BufferedReader in = new BufferedReader(new InputStreamReader(proc.getInputStream()));
         String line = null;
         for (; true;) {
-          line = in.readLine(); 
-          if(line == null) {
+          line = in.readLine();
+          if (line == null) {
             break;
           }
 
           // produces lots of output: Log.debug("Output from MPlayer: " + line);
-          
+
           if (line.matches(".*ANS_TIME_POSITION.*")) {
             // Stream no more opening
             bOpening = false;
@@ -127,19 +139,19 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
             st.nextToken();
             lTime = (int) (Float.parseFloat(st.nextToken()) * 1000);
             // Store current position for use at next startup
-            Conf.setProperty(CONF_STARTUP_LAST_POSITION, Float
-                .toString(getCurrentPosition()));
+            Conf.setProperty(CONF_STARTUP_LAST_POSITION, Float.toString(getCurrentPosition()));
             // check if the track get rate increasing level
             // (INC_RATE_TIME secs or intro length)
-            if (!bHasBeenRated
-                && (lTime >= (INC_RATE_TIME * 1000) || (length != TO_THE_END && lTime > length))) {
-              // inc rate by 1 if file is played at least
-              // INC_RATE_TIME secs
-              fCurrent.getTrack().setRate(fCurrent.getTrack().getRate() + 1);
-              // Alert rating manager that something changed
-              RatingManager.setRateHasChanged(true);
-              bHasBeenRated = true;
-            }
+            // if (!bHasBeenRated
+            // && (lTime >= (INC_RATE_TIME * 1000) || (length != TO_THE_END &&
+            // lTime > length))) {
+            // inc rate by 1 if file is played at least
+            // INC_RATE_TIME secs
+            // fCurrent.getTrack().setRate(fCurrent.getTrack().getRate() + 1);
+            // Alert rating manager that something changed
+            // RatingManager.setRateHasChanged(true);
+            // bHasBeenRated = true;*/
+            // }
 
             // Cross-Fade test
             if (!bFading && iFadeDuration > 0 && lDuration > 0
@@ -194,11 +206,12 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
             bEOF = true;
             // Launch next track
             try {
-              // End of file: inc rate by 1 if file is fully
+
+              // inc rate by 1 if file is fully
               // played
-              fCurrent.getTrack().setRate(fCurrent.getTrack().getRate() + 1);
+              // fCurrent.getTrack().setRate(fCurrent.getTrack().getRate() + 1);
               // Alert rating manager that something changed
-              RatingManager.setRateHasChanged(true);
+              // RatingManager.setRateHasChanged(true);
               // If using crossfade, ignore end of file
               if (!bFading
               // Do not launch next track if not opening: it means
@@ -230,6 +243,7 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
     }
   }
 
+ 
   /*
    * (non-Javadoc)
    * 
@@ -246,7 +260,7 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
     this.bFading = false;
     this.fCurrent = file;
     this.bOpening = true;
-    this.bHasBeenRated = false;
+    // this.bHasBeenRated = false;
     this.bEOF = false;
     this.iFadeDuration = 1000 * Conf.getInt(CONF_FADE_DURATION);
     ProcessBuilder pb = new ProcessBuilder(buildCommand(file.getAbsolutePath()));
@@ -254,8 +268,7 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
     // Set all environment variables format: var1=xxx var2=yyy
     try {
       Map<String, String> env = pb.environment();
-      StringTokenizer st = new StringTokenizer(
-          Conf.getString(CONF_ENV_VARIABLES), " ");
+      StringTokenizer st = new StringTokenizer(Conf.getString(CONF_ENV_VARIABLES), " ");
       while (st.hasMoreTokens()) {
         StringTokenizer st2 = new StringTokenizer(st.nextToken(), "=");
         env.put(st2.nextToken(), st2.nextToken());

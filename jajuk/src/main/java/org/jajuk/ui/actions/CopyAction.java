@@ -33,7 +33,7 @@ import org.jajuk.util.Messages;
  * Action class for Copy
  */
 
-public class CopyAction extends ActionBase {
+public class CopyAction extends JajukAction {
 
   private static final long serialVersionUID = 1L;
 

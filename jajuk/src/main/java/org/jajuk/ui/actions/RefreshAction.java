@@ -32,7 +32,7 @@ import org.jajuk.ui.widgets.InformationJPanel;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
 
-public class RefreshAction extends ActionBase {
+public class RefreshAction extends JajukAction {
   /**
    * 
    */

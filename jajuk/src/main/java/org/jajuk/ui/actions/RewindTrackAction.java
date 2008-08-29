@@ -29,7 +29,7 @@ import org.jajuk.util.Messages;
  * Action class for rewinding the current track. Installed keystroke:
  * <code>CTRL + ALT + LEFT ARROW</code>.
  */
-public class RewindTrackAction extends ActionBase {
+public class RewindTrackAction extends JajukAction {
 
   private static final long serialVersionUID = 1L;
 

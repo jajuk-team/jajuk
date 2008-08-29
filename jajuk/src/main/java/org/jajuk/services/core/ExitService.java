@@ -29,7 +29,7 @@ import org.jajuk.services.dj.AmbienceManager;
 import org.jajuk.services.players.FIFO;
 import org.jajuk.services.players.Player;
 import org.jajuk.services.webradio.WebRadioManager;
-import org.jajuk.ui.actions.ActionBase;
+import org.jajuk.ui.actions.JajukAction;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.UtilSystem;
@@ -79,7 +79,7 @@ public class ExitService extends Thread implements Const {
           Collection.commit(UtilSystem.getConfFileByPath(FILE_COLLECTION));
         }
         /* release keystrokes resources */
-        ActionBase.cleanup();
+        JajukAction.cleanup();
 
         // Remove localhost_<user> session files
         // (can occur when network is not available)

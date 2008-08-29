@@ -32,7 +32,7 @@ import org.jajuk.util.log.Log;
  * Action class for jumping to the previous album. Installed keystroke:
  * <code>CTRL + SHIFT + LEFT ARROW</code>.
  */
-public class PreviousAlbumAction extends ActionBase {
+public class PreviousAlbumAction extends JajukAction {
 
   private static final long serialVersionUID = 1L;
 

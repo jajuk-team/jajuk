@@ -26,7 +26,7 @@ import org.jajuk.util.Messages;
 import org.jajuk.util.UpgradeManager;
 import org.jajuk.util.error.JajukException;
 
-public class CheckForUpdateAction extends ActionBase {
+public class CheckForUpdateAction extends JajukAction {
 
   private static final long serialVersionUID = 1L;
 

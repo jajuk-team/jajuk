@@ -34,7 +34,7 @@ import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
 import org.jajuk.util.log.Log;
 
-public class ExitAction extends ActionBase {
+public class ExitAction extends JajukAction {
   /**
    * 
    */

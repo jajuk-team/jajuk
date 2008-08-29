@@ -355,7 +355,6 @@ public final class FIFO implements Const {
 
   /**
    * Finished method, called by the PlayerImpl when the track is finished
-   * 
    */
   public static void finished() {
     try {
@@ -490,7 +489,6 @@ public final class FIFO implements Const {
         bFirstFile = false;
         // add hits number
         fCurrent.getTrack().incHits(); // inc hits number
-        fCurrent.getTrack().incSessionHits();// inc session hits
         RatingManager.setRateHasChanged(true);
       } else {
         // Problem launching the track, try next one
@@ -506,7 +504,6 @@ public final class FIFO implements Const {
         } else {
           itemLast = null;
         }
-
         FIFO.finished();
       }
     } catch (Throwable t) {// catch even Errors (OutOfMemory for example)

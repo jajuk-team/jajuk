@@ -27,7 +27,7 @@ import org.jajuk.services.players.Player;
  * Action class for increasing the volume. Installed keystroke:
  * <code>CTRL + UP ARROW</code>.
  */
-public class IncreaseVolumeAction extends ActionBase {
+public class IncreaseVolumeAction extends JajukAction {
 
   private static final long serialVersionUID = 1L;
 

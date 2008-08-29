@@ -34,7 +34,7 @@ import org.jajuk.util.log.Log;
 /**
  * Action for displaying the tip of the day.
  */
-public class QualityAction extends ActionBase {
+public class QualityAction extends JajukAction {
 
   private static final long serialVersionUID = 1L;
 

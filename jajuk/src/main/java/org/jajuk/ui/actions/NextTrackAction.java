@@ -38,7 +38,7 @@ import org.jajuk.util.log.Log;
  * Action class for jumping to the next track. Installed keystroke:
  * <code>CTRL + RIGHT ARROW</code>.
  */
-public class NextTrackAction extends ActionBase {
+public class NextTrackAction extends JajukAction {
   private static final long serialVersionUID = 1L;
 
   NextTrackAction() {

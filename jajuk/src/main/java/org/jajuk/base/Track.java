@@ -32,6 +32,7 @@ import org.jajuk.util.Conf;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilString;
+import org.jajuk.util.log.Log;
 
 /**
  * A track
@@ -62,9 +63,6 @@ public class Track extends LogicalItem implements Comparable<Track> {
 
   /** Track associated files */
   private List<File> alFiles = new ArrayList<File>(1);
-
-  /** Number of hits for current jajuk session */
-  private int iSessionHits = 0;
 
   /**
    * Track constructor
@@ -357,15 +355,39 @@ public class Track extends LogicalItem implements Comparable<Track> {
   }
 
   /**
+   * Set track preference (from -3 to 3: -3: hate, -2=dislike, -1=poor, +1=like,
+   * +2=love +3=crazy). The preference is a factor given by the user to increase
+   * or decrease a track rate.
+   * 
+   * @param preference
+   *          from -3 to 3
+   */
+  public void setPreference(long preference) {
+    if (preference < -3 || preference > 3) {
+      Log.warn("Try to set preference to undifined value, action ignored");
+      return;
+    }
+    setProperty(XML_TRACK_PREFERENCE, preference);
+    computeRate();
+  }
+
+  /**
+   * Compute final track rate
+   */
+  private void computeRate() {
+    long rate = 0;
+    // Store max rate
+    if (rate > TrackManager.getInstance().getMaxRate()) {
+      TrackManager.getInstance().setMaxRate(rate);
+    }
+  }
+
+  /**
    * @param rate
    *          The lRate to set.
    */
   public void setRate(long rate) {
     setProperty(XML_TRACK_RATE, rate);
-    // Store max rate
-    if (rate > TrackManager.getInstance().getMaxRate()) {
-      TrackManager.getInstance().setMaxRate(rate);
-    }
   }
 
   /**
@@ -385,28 +407,12 @@ public class Track extends LogicalItem implements Comparable<Track> {
   }
 
   /**
-   * @return Returns the iSessionHits.
-   */
-  public int getSessionHits() {
-    return iSessionHits;
-  }
-
-  /**
-   * @param sessionHits
-   *          The iSessionHits to inc.
-   */
-  public void incSessionHits() {
-    iSessionHits++;
-  }
-
-  /**
    * Return whether this item should be hidden with hide option
    * 
    * @return whether this item should be hidden with hide option
    */
   public boolean shouldBeHidden() {
-    if (getPlayeableFile(true) != null
-        || !Conf.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED)) {
+    if (getPlayeableFile(true) != null || !Conf.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED)) {
       return false;
     }
     return true;
@@ -488,22 +494,20 @@ public class Track extends LogicalItem implements Comparable<Track> {
   public ImageIcon getIconRepresentation() {
     return IconLoader.ICON_TRACK;
   }
-  
+
   /**
    * 
    * @return a list of associated files in format : file1,file2...
    */
-  public String getFilesString(){
+  public String getFilesString() {
     StringBuilder sb = new StringBuilder(100);
-    for (File file:alFiles){
+    for (File file : alFiles) {
       sb.append(file.getName());
       sb.append(',');
     }
     // Remove trailing ','
-    sb.deleteCharAt(sb.length()-1);
+    sb.deleteCharAt(sb.length() - 1);
     return sb.toString();
   }
-   
-
 
 }

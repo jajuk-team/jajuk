@@ -33,7 +33,7 @@ import org.jajuk.util.Messages;
 /**
  * Action to hide slim bar.
  */
-public class SlimbarAction extends ActionBase {
+public class SlimbarAction extends JajukAction {
 
   private static final long serialVersionUID = 1L;
 

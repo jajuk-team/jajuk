@@ -28,7 +28,7 @@ import org.jajuk.util.Messages;
 /**
  * Action for displaying the online help
  */
-public class HelpRequiredAction extends ActionBase {
+public class HelpRequiredAction extends JajukAction {
 
   private static final long serialVersionUID = 1L;
 

@@ -28,7 +28,7 @@ import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
 import org.jajuk.util.error.JajukException;
 
-public class RestoreViewsAction extends ActionBase implements Const {
+public class RestoreViewsAction extends JajukAction implements Const {
 
   private static final long serialVersionUID = 1L;
 

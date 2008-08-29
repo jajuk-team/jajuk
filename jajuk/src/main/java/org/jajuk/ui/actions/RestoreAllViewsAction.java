@@ -33,7 +33,7 @@ import org.jajuk.util.Messages;
 import org.jajuk.util.UtilSystem;
 import org.jajuk.util.error.JajukException;
 
-public class RestoreAllViewsAction extends ActionBase implements Const {
+public class RestoreAllViewsAction extends JajukAction implements Const {
 
   private static final long serialVersionUID = 1L;
 

@@ -46,7 +46,7 @@ import org.jajuk.util.log.Log;
 public abstract class WindowsHotKeyManager extends AbstractAction implements Const {
 
   /** Maps hotkeylisteners with the event ID */
-  private static Map<Integer, ActionBase> hmIndexAction = new HashMap<Integer, ActionBase>(20);
+  private static Map<Integer, JajukAction> hmIndexAction = new HashMap<Integer, JajukAction>(20);
 
   /**
    * Jintellitype object used for hotkeys and intellitype events management
@@ -103,7 +103,7 @@ public abstract class WindowsHotKeyManager extends AbstractAction implements Con
 
   }
 
-  public static void registerHotKey(KeyStroke stroke, final ActionBase ab) {
+  public static void registerHotKey(KeyStroke stroke, final JajukAction ab) {
     // under windows, use hotkey that can be used even when window
     // has not the focus. Note that all keys are nor hotkeys (given
     // by bHotkey flag)

@@ -26,7 +26,7 @@ import org.jajuk.services.players.Player;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
 
-public class PlayPauseAction extends ActionBase {
+public class PlayPauseAction extends JajukAction {
 
   private static final long serialVersionUID = 1L;
 

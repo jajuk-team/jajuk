@@ -29,7 +29,7 @@ import org.jajuk.util.Messages;
  * Action class for fast forwarding the current track. Installed keystroke:
  * <code>CTRL + ALT + RIGHT ARROW</code>.
  */
-public class ForwardTrackAction extends ActionBase {
+public class ForwardTrackAction extends JajukAction {
 
   private static final long serialVersionUID = 1L;
 

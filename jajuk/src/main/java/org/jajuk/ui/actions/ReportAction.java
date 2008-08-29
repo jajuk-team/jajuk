@@ -42,7 +42,7 @@ import org.jajuk.util.log.Log;
 /**
  * Report collection as a file
  */
-public class ReportAction extends ActionBase {
+public class ReportAction extends JajukAction {
 
   private static final long serialVersionUID = 1L;
 

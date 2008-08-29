@@ -35,7 +35,7 @@ import org.jajuk.util.UtilFeatures;
 import org.jajuk.util.UtilGUI;
 import org.jajuk.util.error.JajukException;
 
-public class DJAction extends ActionBase {
+public class DJAction extends JajukAction {
 
   private static final long serialVersionUID = 1L;
 

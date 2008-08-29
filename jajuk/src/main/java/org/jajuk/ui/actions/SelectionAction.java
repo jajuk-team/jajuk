@@ -32,7 +32,7 @@ import org.jajuk.base.Item;
 /**
  * Convenient abstract class to factorize operations on selection
  */
-public abstract class SelectionAction extends ActionBase {
+public abstract class SelectionAction extends JajukAction {
 
   List<Item> selection = null;
 
@@ -43,7 +43,7 @@ public abstract class SelectionAction extends ActionBase {
   /*
    * (non-Javadoc)
    * 
-   * @see org.jajuk.ui.actions.ActionBase#perform(java.awt.event.ActionEvent)
+   * @see org.jajuk.ui.actions.JajukAction#perform(java.awt.event.ActionEvent)
    */
   @SuppressWarnings("unchecked")
   @Override

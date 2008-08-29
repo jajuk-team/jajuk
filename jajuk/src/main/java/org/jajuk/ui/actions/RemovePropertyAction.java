@@ -26,7 +26,7 @@ import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
 import org.jajuk.util.error.JajukException;
 
-public class RemovePropertyAction extends ActionBase {
+public class RemovePropertyAction extends JajukAction {
 
   private static final long serialVersionUID = 1L;
 

@@ -25,7 +25,7 @@ import org.jajuk.services.players.FIFO;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
 
-public class StopTrackAction extends ActionBase {
+public class StopTrackAction extends JajukAction {
   private static final long serialVersionUID = 1L;
 
   StopTrackAction() {

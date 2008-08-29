@@ -48,7 +48,7 @@ import org.jajuk.util.UtilSystem;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 
-public class PasteAction extends ActionBase {
+public class PasteAction extends JajukAction {
 
   private static final long serialVersionUID = 1L;
 

@@ -28,7 +28,7 @@ import org.jajuk.util.Messages;
 /**
  * Action for configure ambiences
  */
-public class AmbienceConfigurationAction extends ActionBase {
+public class AmbienceConfigurationAction extends JajukAction {
 
   private static final long serialVersionUID = 1L;
 

@@ -34,13 +34,13 @@ import org.jajuk.util.error.JajukException;
 
 /**
  * 
- * Manual increase of rate
+ * Manual preference change
  */
-public class IncRateAction extends ActionBase {
+public class ChangeTrackPreferenceAction extends JajukAction {
 
   private static final long serialVersionUID = 1L;
 
-  IncRateAction() {
+  ChangeTrackPreferenceAction() {
     super(Messages.getString("IncRateAction.0"), IconLoader.ICON_INC_RATING, true);
     setShortDescription(Messages.getString("IncRateAction.0"));
   }
@@ -50,7 +50,7 @@ public class IncRateAction extends ActionBase {
     File file = FIFO.getCurrentFile();
     if (file != null) {
       Track track = file.getTrack();
-      track.setRate(track.getRate() + Conf.getInt(CONF_INC_RATING));
+      track.setPreference(Conf.getInt(CONF_INC_RATING));
     }
     // Force immediate rating refresh (without using the rating manager)
     ObservationManager.notify(new Event(JajukEvents.EVENT_RATE_CHANGED));

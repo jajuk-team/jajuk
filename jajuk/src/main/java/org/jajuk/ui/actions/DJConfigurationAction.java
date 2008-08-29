@@ -28,7 +28,7 @@ import org.jajuk.util.Messages;
 /**
  * Action for configure DJs
  */
-public class DJConfigurationAction extends ActionBase {
+public class DJConfigurationAction extends JajukAction {
 
   /**
    * 
