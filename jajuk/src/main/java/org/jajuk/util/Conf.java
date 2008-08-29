@@ -28,6 +28,7 @@ import java.io.OutputStream;
 import java.util.Properties;
 
 import org.jajuk.Main;
+import org.jajuk.ui.actions.JajukActions;
 import org.jajuk.ui.perspectives.SimplePerspective;
 import org.jajuk.util.log.Log;
 
@@ -272,18 +273,21 @@ public final class Conf implements Const {
     defaults.put(CONF_LASTFM_INFO, TRUE);
     defaults.put(CONF_WEBRADIO_WAS_PLAYING, FALSE);
     defaults.put(CONF_PERSPECTIVE_ICONS_SIZE, "32");
-    // NOT SHOW AGAIN
-    defaults.put(CONF_NOT_SHOW_AGAIN_LASTFM_DISABLED, FALSE);
-    defaults.put(CONF_NOT_SHOW_AGAIN_PLAYER, FALSE);
-    defaults.put(CONF_NOT_SHOW_AGAIN_CONCURRENT_SESSION, FALSE);
-    defaults.put(CONF_NOT_SHOW_AGAIN_CROSS_FADE, FALSE);
-    defaults.put(CONF_NOT_SHOW_AGAIN_LAF_CHANGE, FALSE);
     defaults.put(CONF_FRAME_TITLE_PATTERN, '~' + PATTERN_TRACKNAME + " (" + PATTERN_AUTHOR + ")~");
     defaults.put(CONF_SHOW_DUPLICATE_PLAYLISTS, FALSE);
     defaults.put(CONF_FORCE_TRAY_SHUTDOWN, FALSE);
     defaults.put(CONF_FORMAT_TIME_ELAPSED, "0");
     defaults.put(CONF_SLIMBAR_POSITION, "0,0");
     defaults.put(CONF_LYRICS_PROVIDERS, "org.jajuk.services.lyrics.providers.LyrcProvider");
+    defaults.put(CONF_SLIMBAR_SMART_MODE, JajukActions.SHUFFLE_GLOBAL.toString());
+    
+    // NOT SHOW AGAIN
+    defaults.put(CONF_NOT_SHOW_AGAIN_LASTFM_DISABLED, FALSE);
+    defaults.put(CONF_NOT_SHOW_AGAIN_PLAYER, FALSE);
+    defaults.put(CONF_NOT_SHOW_AGAIN_CONCURRENT_SESSION, FALSE);
+    defaults.put(CONF_NOT_SHOW_AGAIN_CROSS_FADE, FALSE);
+    defaults.put(CONF_NOT_SHOW_AGAIN_LAF_CHANGE, FALSE);
+    
     // Make a copy of default values
     properties = (Properties) defaults.clone();
   }

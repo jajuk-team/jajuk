@@ -174,7 +174,7 @@ public interface Const {
   String JAJUK_COPYRIGHT = "Copyright 2004-2008 The Jajuk Team";
 
   // -- Files and paths --
-  
+
   /** Bootstrap file that contains jajuk configuration user directory* */
   String FILE_BOOTSTRAP = System.getProperty("user.home") + "/.jajuk_bootstrap";
 
@@ -199,7 +199,7 @@ public interface Const {
   String FILE_LANGPACK_PART1 = "jajuk";
 
   String FILE_LANGPACK_PART2 = ".properties";
-  
+
   // logs
   String FILE_LOGS = "jajuk.log";
 
@@ -358,7 +358,7 @@ public interface Const {
 
   String DEVICE_TYPE_USBKEY = "Device_type.usbkey";
 
-   // Devices sync mode
+  // Devices sync mode
   String DEVICE_SYNCHRO_MODE_BI = "bi";
 
   String DEVICE_SYNCHRO_MODE_UNI = "uni";
@@ -599,8 +599,8 @@ public interface Const {
 
   /** Slimbar position */
   String CONF_SLIMBAR_POSITION = "jajuk.slimbar_pos";
-  
-  /** List of lyrics providers separated by ','*/
+
+  /** List of lyrics providers separated by ',' */
   String CONF_LYRICS_PROVIDERS = "jajuk.lyrics.providers";
 
   /** Gain (float) */
@@ -801,6 +801,9 @@ public interface Const {
   /** Force hiding the tray */
   String CONF_FORCE_TRAY_SHUTDOWN = "jajuk.force_tray_shutdown";
 
+  /** Smart mode selected in slimbar */
+  String CONF_SLIMBAR_SMART_MODE = "jajuk.ui.slimbar.smart_mode";
+
   /** Shuffle/novelties mode */
   String MODE_ALBUM = "album";
 
@@ -920,6 +923,12 @@ public interface Const {
 
   String XML_TRACK_ORDER = "order";
 
+  String XML_TRACK_PREFERENCE = "pf";
+
+  String XML_TRACK_TOTAL_PLAYTIME = "tpt";
+
+  String XML_TRACK_BANNED = "ban";
+
   String XML_PLAYLIST = "playlist";
 
   String XML_NAME = "name";
@@ -960,7 +969,7 @@ public interface Const {
 
   String XML_TYPE_SEEK_SUPPORTED = "seek";
 
-   // icon used in the physical tree
+  // icon used in the physical tree
   String XML_TYPE_ICON = "icon";
 
   // comment tag
@@ -1048,17 +1057,14 @@ public interface Const {
    * property name equals to meta information attributes names without pbm)
    */
   String[] XML_RESERVED_ATTRIBUTE_NAMES = { XML_NAME, XML_ID, XML_TYPE_EXTENSION,
-      XML_TYPE_PLAYER_IMPL, XML_TYPE_TAG_IMPL, XML_TYPE_SEEK_SUPPORTED,
-      XML_TYPE_ICON, XML_TYPE_IS_MUSIC, XML_TYPE, XML_URL, XML_DEVICE_AUTO_MOUNT,
-      XML_DEVICE_AUTO_REFRESH, XML_EXPANDED, XML_DEVICE_MOUNT_POINT, XML_ALBUM, XML_AUTHOR,
-      XML_STYLE, XML_TRACK_LENGTH, XML_YEAR, XML_TRACK_RATE, XML_FILES, XML_TRACK_HITS,
-      XML_TRACK_DISCOVERY_DATE, XML_DIRECTORY_PARENT, XML_DEVICE, XML_DIRECTORY, XML_TRACK,
-      XML_SIZE, XML_QUALITY, XML_PLAYLIST_FILES, XML_TRACK_COMMENT, XML_ANY, XML_TRACK_ORDER,
-      XML_DEVICE_SYNCHRO_MODE, XML_DEVICE_SYNCHRO_SOURCE, XML_FILE_DATE }; // contains
-
-  // variables
-  // names
-
+      XML_TYPE_PLAYER_IMPL, XML_TYPE_TAG_IMPL, XML_TYPE_SEEK_SUPPORTED, XML_TYPE_ICON,
+      XML_TYPE_IS_MUSIC, XML_TYPE, XML_URL, XML_DEVICE_AUTO_MOUNT, XML_DEVICE_AUTO_REFRESH,
+      XML_EXPANDED, XML_DEVICE_MOUNT_POINT, XML_ALBUM, XML_AUTHOR, XML_STYLE, XML_TRACK_LENGTH,
+      XML_YEAR, XML_TRACK_RATE, XML_FILES, XML_TRACK_HITS, XML_TRACK_DISCOVERY_DATE,
+      XML_DIRECTORY_PARENT, XML_DEVICE, XML_DIRECTORY, XML_TRACK, XML_SIZE, XML_QUALITY,
+      XML_PLAYLIST_FILES, XML_TRACK_COMMENT, XML_ANY, XML_TRACK_ORDER, XML_DEVICE_SYNCHRO_MODE,
+      XML_DEVICE_SYNCHRO_SOURCE, XML_FILE_DATE, XML_TRACK_TOTAL_PLAYTIME, XML_TRACK_PREFERENCE,XML_TRACK_BANNED };
+  
   String PROPERTY_SEPARATOR = "Property_";
 
   // Formats

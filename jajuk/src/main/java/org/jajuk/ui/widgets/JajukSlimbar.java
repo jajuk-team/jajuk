@@ -71,7 +71,7 @@ import org.jajuk.events.Observer;
 import org.jajuk.services.players.FIFO;
 import org.jajuk.services.players.Player;
 import org.jajuk.services.players.StackItem;
-import org.jajuk.ui.actions.ActionBase;
+import org.jajuk.ui.actions.JajukAction;
 import org.jajuk.ui.actions.ActionManager;
 import org.jajuk.ui.actions.ActionUtil;
 import org.jajuk.ui.actions.JajukActions;
@@ -92,8 +92,8 @@ import org.jajuk.util.log.Log;
  * Singleton
  * </p>
  */
-public final class JajukSlimbar extends JFrame implements Const, Observer,
-    MouseWheelListener, ListSelectionListener, ActionListener {
+public final class JajukSlimbar extends JFrame implements Const, Observer, MouseWheelListener,
+    ListSelectionListener, ActionListener {
 
   private static final long serialVersionUID = 1L;
 
@@ -119,7 +119,7 @@ public final class JajukSlimbar extends JFrame implements Const, Observer,
 
   private JMenuItem jbRandom;
 
-  private JMenuItem jbFinishAlbum;
+  private SizedButton jbFinishAlbum;
 
   private JButton jbMaximize;
 
@@ -163,8 +163,7 @@ public final class JajukSlimbar extends JFrame implements Const, Observer,
       point = new Point((int) (point.getX() - relativePoint.getX()),
           (int) (point.getY() - relativePoint.getY()));
       setLocation(point);
-      Conf.setProperty(CONF_SLIMBAR_POSITION, (int) point.getX() + ","
-          + (int) point.getY());
+      Conf.setProperty(CONF_SLIMBAR_POSITION, (int) point.getX() + "," + (int) point.getY());
     }
   };
 
@@ -257,26 +256,30 @@ public final class JajukSlimbar extends JFrame implements Const, Observer,
     jbRandom.setIcon(IconLoader.ICON_SHUFFLE_GLOBAL_16X16);
     jbRandom.addActionListener(this);
 
-    jbFinishAlbum = new JMenuItem(ActionManager.getAction(JajukActions.FINISH_ALBUM));
-    jbFinishAlbum.setIcon(IconLoader.ICON_FINISH_ALBUM_16X16);
-    jbFinishAlbum.addActionListener(this);
-
     jpmSmart = new JPopupMenu();
+    jpmSmart.add(jbRandom);
     jpmSmart.add(jbBestof);
     jpmSmart.add(jbNovelties);
-    jpmSmart.add(jbRandom);
-    jpmSmart.add(jbFinishAlbum);
     jddbSmart.addToToolBar(jtbSmart);
     jddbSmart.addMouseMotionListener(motionAdapter);
-    jddbSmart.setAction(ActionManager.getAction(JajukActions.BEST_OF));
-    jddbSmart.setIcon(IconLoader.ICON_BESTOF_16X16);
+    
+    if (JajukActions.SHUFFLE_GLOBAL.toString().equals(Conf.getString(CONF_SLIMBAR_SMART_MODE))) {
+      jddbSmart.setAction(ActionManager.getAction(JajukActions.SHUFFLE_GLOBAL));
+      jddbSmart.setIcon(IconLoader.ICON_SHUFFLE_GLOBAL_16X16);
+    } else if (JajukActions.BEST_OF.toString().equals(Conf.getString(CONF_SLIMBAR_SMART_MODE))) {
+      jddbSmart.setAction(ActionManager.getAction(JajukActions.BEST_OF));
+      jddbSmart.setIcon(IconLoader.ICON_BESTOF_16X16);
+    } else if (JajukActions.NOVELTIES.toString().equals(Conf.getString(CONF_SLIMBAR_SMART_MODE))) {
+      jddbSmart.setAction(ActionManager.getAction(JajukActions.NOVELTIES));
+      jddbSmart.setIcon(IconLoader.ICON_NOVELTIES_16X16);
+    }
 
-    ActionBase actionIncRate = ActionManager.getAction(JajukActions.INC_RATE);
+    JajukAction actionIncRate = ActionManager.getAction(JajukActions.INC_RATE);
     actionIncRate.setName(null);
     final JPopupMenu jpmIncRating = new JPopupMenu();
-    for (int i = 1; i <= 10; i++) {
+    for (int i = 3; i >= -3; i--) {
       final int j = i;
-      JMenuItem jmi = new JMenuItem("+" + i);
+      JMenuItem jmi = new JMenuItem(Integer.toString(i));
       if (Conf.getInt(CONF_INC_RATING) == i) {
         jmi.setFont(FontManager.getInstance().getFont(JajukFont.BOLD));
       }
@@ -319,6 +322,10 @@ public final class JajukSlimbar extends JFrame implements Const, Observer,
     jtbTools.add(jbVolume);
     jtbTools.addSeparator();
     jtbTools.add(jbMaximize);
+    jtbTools.add(new SizedButton(ActionManager.getAction(JajukActions.EXIT),16,16,false));
+
+    // Continue
+    jbFinishAlbum = new SizedButton(ActionManager.getAction(JajukActions.FINISH_ALBUM));
 
     // Search
     sbSearch = new SearchBox(this);
@@ -337,6 +344,7 @@ public final class JajukSlimbar extends JFrame implements Const, Observer,
     slimJajuk.add(sbSearch);
     slimJajuk.addSeparator();
     slimJajuk.add(jtbSmart);
+    slimJajuk.add(jbFinishAlbum);
     slimJajuk.addSeparator();
     slimJajuk.add(jtbPlay);
     slimJajuk.addSeparator();
@@ -546,8 +554,7 @@ public final class JajukSlimbar extends JFrame implements Const, Observer,
           try {
             // If user selected a file
             if (sr.getType() == SearchResultType.FILE) {
-              FIFO.push(new StackItem(sr.getFile(), Conf
-                  .getBoolean(CONF_STATE_REPEAT), true), Conf
+              FIFO.push(new StackItem(sr.getFile(), Conf.getBoolean(CONF_STATE_REPEAT), true), Conf
                   .getBoolean(CONF_OPTIONS_PUSH_ON_CLICK));
             }
             // User selected a web radio
@@ -576,27 +583,25 @@ public final class JajukSlimbar extends JFrame implements Const, Observer,
     if (ae.getSource() == jbBestof) {
       jddbSmart.setAction(ActionManager.getAction(JajukActions.BEST_OF));
       jddbSmart.setIcon(IconLoader.ICON_BESTOF_16X16);
+      Conf.setProperty(CONF_SLIMBAR_SMART_MODE, JajukActions.BEST_OF.toString());
     } else if (ae.getSource() == jbNovelties) {
       jddbSmart.setAction(ActionManager.getAction(JajukActions.NOVELTIES));
       jddbSmart.setIcon(IconLoader.ICON_NOVELTIES_16X16);
+      Conf.setProperty(CONF_SLIMBAR_SMART_MODE, JajukActions.NOVELTIES.toString());
     } else if (ae.getSource() == jbRandom) {
       jddbSmart.setAction(ActionManager.getAction(JajukActions.SHUFFLE_GLOBAL));
       jddbSmart.setIcon(IconLoader.ICON_SHUFFLE_GLOBAL_16X16);
-    } else if (ae.getSource() == jbFinishAlbum) {
-      jddbSmart.setAction(ActionManager.getAction(JajukActions.FINISH_ALBUM));
-      jddbSmart.setIcon(IconLoader.ICON_FINISH_ALBUM_16X16);
+      Conf.setProperty(CONF_SLIMBAR_SMART_MODE, JajukActions.SHUFFLE_GLOBAL.toString());
     } else if (ae.getSource() == jbInfo) {
       String title = FIFO.getCurrentFileTitle();
       JajukBalloon balloon = new JajukBalloon(title);
       Point buttonLocation = jbInfo.getLocationOnScreen();
       Point location = null;
       // If slimbar is too height in the screen, display the popup bellow it
-      if (buttonLocation.y < balloon.getHeight() + 10){
+      if (buttonLocation.y < balloon.getHeight() + 10) {
         location = new Point(buttonLocation.x, buttonLocation.y + 25);
-      }
-      else{
-        location = new Point(buttonLocation.x, buttonLocation.y
-          - (5 + balloon.getHeight()));
+      } else {
+        location = new Point(buttonLocation.x, buttonLocation.y - (5 + balloon.getHeight()));
       }
       balloon.setLocation(location);
       balloon.display();
