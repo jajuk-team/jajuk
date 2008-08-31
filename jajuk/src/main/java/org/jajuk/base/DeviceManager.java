@@ -30,7 +30,6 @@ import java.util.Set;
 
 import javax.swing.JOptionPane;
 
-import org.jajuk.Main;
 import org.jajuk.events.Event;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
@@ -39,6 +38,7 @@ import org.jajuk.services.players.FIFO;
 import org.jajuk.util.Conf;
 import org.jajuk.util.MD5Processor;
 import org.jajuk.util.Messages;
+import org.jajuk.util.UpgradeManager;
 import org.jajuk.util.UtilSystem;
 import org.jajuk.util.log.Log;
 
@@ -390,7 +390,7 @@ public final class DeviceManager extends ItemManager {
         if (!device.isRefreshing() && files != null && files.length > 0) {
           // Check if this device should be deep-refresh after an
           // upgrade
-          boolean bNeedDeepAfterUpgrade = Main.isUpgradeDetected()
+          boolean bNeedDeepAfterUpgrade = UpgradeManager.isUpgradeDetected()
               && !devicesDeepRefreshed.contains(device);
           if (bNeedDeepAfterUpgrade) {
             // Store this device to avoid duplicate deep refreshes

@@ -43,6 +43,7 @@ import org.jajuk.events.Observer;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.Messages;
+import org.jajuk.util.UpgradeManager;
 
 /**
  * Ambience manager
@@ -84,7 +85,7 @@ public final class AmbienceManager implements Const, Observer {
    */
   public void load() {
     // if first startup, define default ambiences
-    if (Main.isFirstSession()) {
+    if (UpgradeManager.isFirstSesion()) {
       createDefaultAmbiences();
       return;
     }

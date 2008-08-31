@@ -155,4 +155,9 @@ public enum JajukEvents {
   EVENT_FILE_COPIED,
   // Covers should be refreshed
   EVENT_COVER_NEED_REFRESH,
+  // Ratings have been reset
+  EVENT_RATE_RESET,
+  // suggestion view should be refreshed
+  EVENT_SUGGESTIONS_REFRESH,
+  
 }

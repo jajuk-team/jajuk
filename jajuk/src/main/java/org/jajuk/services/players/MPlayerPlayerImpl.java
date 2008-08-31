@@ -64,7 +64,7 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
    * Progress step in ms, do not set less than 300 or 400 to avoid using too
    * much CPU
    */
-  private static final int PROGRESS_STEP = 400;
+  private static final int PROGRESS_STEP = 500;
 
   /** current file */
   private org.jajuk.base.File fCurrent;
@@ -91,9 +91,9 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
           if (!bPaused && !bStop) {
             // a get_percent_pos resumes (mplayer issue)
             sendCommand("get_time_pos");
-            // every 10 time units, increase actual play time. We wait this
+            // every 2 time units, increase actual play time. We wait this
             // delay for perfs and for precision
-            if (comp % 10 == 0) {
+            if (comp % 2 == 0) {
               // Increase actual play time
               // End of file: increase actual play time to the track
               // Perf note : this full action takes less much than 1 ms
@@ -140,19 +140,6 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
             lTime = (int) (Float.parseFloat(st.nextToken()) * 1000);
             // Store current position for use at next startup
             Conf.setProperty(CONF_STARTUP_LAST_POSITION, Float.toString(getCurrentPosition()));
-            // check if the track get rate increasing level
-            // (INC_RATE_TIME secs or intro length)
-            // if (!bHasBeenRated
-            // && (lTime >= (INC_RATE_TIME * 1000) || (length != TO_THE_END &&
-            // lTime > length))) {
-            // inc rate by 1 if file is played at least
-            // INC_RATE_TIME secs
-            // fCurrent.getTrack().setRate(fCurrent.getTrack().getRate() + 1);
-            // Alert rating manager that something changed
-            // RatingManager.setRateHasChanged(true);
-            // bHasBeenRated = true;*/
-            // }
-
             // Cross-Fade test
             if (!bFading && iFadeDuration > 0 && lDuration > 0
             // can be null before getting length
@@ -206,6 +193,8 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
             bEOF = true;
             // Launch next track
             try {
+              // Update track rate
+              fCurrent.getTrack().updateRate();
 
               // inc rate by 1 if file is fully
               // played
@@ -243,7 +232,13 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
     }
   }
 
- 
+  public void stop() throws Exception {
+    // Update track rate
+    fCurrent.getTrack().updateRate();
+    // Call generic stop
+    super.stop();
+  }
+
   /*
    * (non-Javadoc)
    * 

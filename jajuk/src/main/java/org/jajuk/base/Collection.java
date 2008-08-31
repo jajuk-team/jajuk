@@ -52,8 +52,7 @@ import org.xml.sax.helpers.DefaultHandler;
  * <p>
  * Singletton
  */
-public final class Collection extends DefaultHandler implements Const, ErrorHandler,
-    Serializable {
+public final class Collection extends DefaultHandler implements Const, ErrorHandler, Serializable {
 
   /**
    * 
@@ -333,10 +332,10 @@ public final class Collection extends DefaultHandler implements Const, ErrorHand
     // years cleanup
     YearManager.getInstance().cleanup();
   }
-  
-   /**
-   * Clear the full collection
-   * Note that we don't clear TypeManager as it is not read from a file but filled programmaticaly
+
+  /**
+   * Clear the full collection Note that we don't clear TypeManager as it is not
+   * read from a file but filled programmaticaly
    */
   public static synchronized void clearCollection() {
     TrackManager.getInstance().clear();
@@ -456,7 +455,8 @@ public final class Collection extends DefaultHandler implements Const, ErrorHand
           stage = STAGE_YEARS;
           needCheckID = true;
         } else if (XML_TYPES.equals(sQName)) {
-          // This is here for pre-1.7 collections, after we don't commit types anymore (they are set programmaticaly)
+          // This is here for pre-1.7 collections, after we don't commit types
+          // anymore (they are set programmaticaly)
           manager = TypeManager.getInstance();
           stage = STAGE_TYPES;
           needCheckID = false;
@@ -576,7 +576,7 @@ public final class Collection extends DefaultHandler implements Const, ErrorHand
           file.populateProperties(attributes);
           break;
         case STAGE_DIRECTORIES:
-          //dParent = null;
+          // dParent = null;
           sParentID = attributes.getValue(XML_DIRECTORY_PARENT).intern();
           // UPGRADE
           if ((hmWrongRightDirectoryID.size() > 0) &&
@@ -693,7 +693,7 @@ public final class Collection extends DefaultHandler implements Const, ErrorHand
               .getIndex(XML_TRACK_DISCOVERY_DATE)));
           track = TrackManager.getInstance().registerTrack(sRightID, sTrackName, album, style,
               author, length, year, lOrder, type);
-          track.setRate(Long.parseLong(attributes.getValue(XML_TRACK_RATE)));
+          TrackManager.getInstance().changeTrackRate(track,Long.parseLong(attributes.getValue(XML_TRACK_RATE)));
           track.setHits(Long.parseLong(attributes.getValue(XML_TRACK_HITS)));
           track.setDiscoveryDate(dAdditionDate);
           String sComment = attributes.getValue(XML_TRACK_COMMENT).intern();

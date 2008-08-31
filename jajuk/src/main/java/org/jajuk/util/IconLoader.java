@@ -36,8 +36,8 @@ public class IconLoader implements Const {
   /** No covers image cache : size:default icon */
   public static final Map<String, ImageIcon> NOCOVERSCACHE = new HashMap<String, ImageIcon>(10);
 
-  public static final ImageIcon ICON_NO_COVER = new ImageIcon(UtilSystem.getResource("images/included/"
-      + Const.FILE_THUMB_NO_COVER));
+  public static final ImageIcon ICON_NO_COVER = new ImageIcon(UtilSystem
+      .getResource("images/included/" + Const.FILE_THUMB_NO_COVER));
 
   public static final ImageIcon ICON_LOGO = new ImageIcon(UtilSystem
       .getResource("icons/64x64/jajuk-icon_64x64.png"));
@@ -289,8 +289,8 @@ public class IconLoader implements Const {
   public static final ImageIcon ICON_DEVICE_NETWORK_DRIVE_MOUNTED_SMALL = new ImageIcon(UtilSystem
       .getResource("icons/22x22/nfs_mount_22x22.png"));
 
-  public static final ImageIcon ICON_DEVICE_NETWORK_DRIVE_UNMOUNTED_SMALL = new ImageIcon(UtilSystem
-      .getResource("icons/22x22/nfs_unmount_22x22.png"));
+  public static final ImageIcon ICON_DEVICE_NETWORK_DRIVE_UNMOUNTED_SMALL = new ImageIcon(
+      UtilSystem.getResource("icons/22x22/nfs_unmount_22x22.png"));
 
   public static final ImageIcon ICON_DEVICE_DIRECTORY_MOUNTED_SMALL = new ImageIcon(UtilSystem
       .getResource("icons/22x22/folder_mount_22x22.png"));
@@ -477,7 +477,7 @@ public class IconLoader implements Const {
 
   public static final ImageIcon ICON_STAR_0 = new ImageIcon(UtilSystem
       .getResource("icons/16x16/star0_16x16.png"));
-  
+
   public static final ImageIcon ICON_STAR_1 = new ImageIcon(UtilSystem
       .getResource("icons/16x16/star1_16x16.png"));
 
@@ -555,6 +555,15 @@ public class IconLoader implements Const {
 
   public static final ImageIcon ICON_ALARM = new ImageIcon(UtilSystem
       .getResource("icons/16x16/alarm_16x16.png"));
+
+  public static final ImageIcon ICON_BAN = new ImageIcon(UtilSystem
+      .getResource("icons/16x16/ban_16x16.png"));
+
+  public static final ImageIcon ICON_LIKE = new ImageIcon(UtilSystem
+      .getResource("icons/16x16/like_16x16.png"));
+
+  public static final ImageIcon ICON_DISLIKE = new ImageIcon(UtilSystem
+      .getResource("icons/16x16/dislike_16x16.png"));
 
   static {
     IconLoader.NOCOVERSCACHE.put(Const.THUMBNAIL_SIZE_50X50, UtilGUI.getResizedImage(

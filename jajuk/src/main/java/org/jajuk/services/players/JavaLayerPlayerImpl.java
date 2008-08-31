@@ -27,15 +27,17 @@ import javazoom.jlgui.basicplayer.BasicPlayer;
 import javazoom.jlgui.basicplayer.BasicPlayerEvent;
 import javazoom.jlgui.basicplayer.BasicPlayerListener;
 
+import org.jajuk.base.Track;
+import org.jajuk.base.TrackManager;
 import org.jajuk.base.Type;
 import org.jajuk.base.TypeManager;
-import org.jajuk.services.core.RatingManager;
 import org.jajuk.services.webradio.WebRadio;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilFeatures;
 import org.jajuk.util.UtilSystem;
+import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 
 /**
@@ -53,7 +55,7 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, Const, BasicPlayerListe
   private long lDateLastUpdate = System.currentTimeMillis();
 
   /** current track info */
-  private Map<String,Object> mPlayingData;
+  private Map<String, Object> mPlayingData;
 
   /** Current position in % */
   private float fPos;
@@ -115,13 +117,13 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, Const, BasicPlayerListe
       player.stop();
     }
     player.open(new File(file.getAbsolutePath()));
-    if ((fPosition > 0.0f) && 
-      // (position*fPosition(%))*1000(ms) /24 because 1 frame =24ms
-      // test if this is a audio format supporting seeking
-      // Note: fio.getName() is better here as it will do less and not create
-      // java.io.File in File
-      (TypeManager.getInstance().getTypeByExtension(UtilSystem.getExtension(file.getName()))
-          .getBooleanValue(XML_TYPE_SEEK_SUPPORTED))) {
+    if ((fPosition > 0.0f) &&
+    // (position*fPosition(%))*1000(ms) /24 because 1 frame =24ms
+        // test if this is a audio format supporting seeking
+        // Note: fio.getName() is better here as it will do less and not create
+        // java.io.File in File
+        (TypeManager.getInstance().getTypeByExtension(UtilSystem.getExtension(file.getName()))
+            .getBooleanValue(XML_TYPE_SEEK_SUPPORTED))) {
       seek(fPosition);
     }
     player.play();
@@ -256,8 +258,7 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, Const, BasicPlayerListe
    * Progress listener implementation. Called several times by sec
    */
   @SuppressWarnings("unchecked")
-  public void progress(int iBytesread, long lMicroseconds, byte[] bPcmdata,
-      Map mProperties) {
+  public void progress(int iBytesread, long lMicroseconds, byte[] bPcmdata, Map mProperties) {
     if ((System.currentTimeMillis() - lDateLastUpdate) > PROGRESS_STEP) {
       lDateLastUpdate = System.currentTimeMillis();
       this.iFadeDuration = 1000 * Conf.getInt(CONF_FADE_DURATION);
@@ -290,10 +291,12 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, Const, BasicPlayerListe
       if (!bHasBeenRated
           && (lTime >= INC_RATE_TIME * 1000 || (length != TO_THE_END && lTime > length))) {
         // inc rate by 1 if file is played at least INC_RATE_TIME secs
-        fCurrent.getTrack().setRate(fCurrent.getTrack().getRate() + 1);
-        // Alert rating manager that something changed
-        RatingManager.setRateHasChanged(true);
-        bHasBeenRated = true;
+        try {
+          TrackManager.getInstance().changeTrackRate(fCurrent.getTrack(),
+              fCurrent.getTrack().getRate() + 1);
+        } catch (JajukException e) {
+          Log.error(e);
+        }
       }
       // Cross-Fade test
       if (iFadeDuration > 0 && lTime > (lDuration - iFadeDuration)) {
@@ -345,9 +348,12 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, Const, BasicPlayerListe
     switch (bpe.getCode()) {
     case BasicPlayerEvent.EOM:
       // inc rate by 1 if file is fully played
-      fCurrent.getTrack().setRate(fCurrent.getTrack().getRate() + 1);
-      // Alert rating manager that something changed
-      RatingManager.setRateHasChanged(true);
+      Track track = fCurrent.getTrack();
+      try {
+        TrackManager.getInstance().changeTrackRate(track, track.getRate() + 1);
+      } catch (JajukException e) {
+        Log.error(e);
+      }
       if (!bFading) { // if using crossfade, ignore end of file
         System.gc();// Benefit from end of file to perform a full gc
         FIFO.finished();

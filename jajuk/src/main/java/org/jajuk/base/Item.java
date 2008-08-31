@@ -439,7 +439,7 @@ public abstract class Item implements Serializable, Const {
   public int getStarsNumber() {
     long lInterval = 1;
     if (this instanceof Track) {
-      lInterval = TrackManager.getInstance().getMaxRate();
+      lInterval = 100;
     } else if (this instanceof Album) {
       lInterval = AlbumManager.getInstance().getMaxRate();
     } else if (this instanceof Playlist) {

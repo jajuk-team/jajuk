@@ -182,6 +182,7 @@ public class SuggestionView extends ViewAdapter implements Const, Observer {
     eventSubjectSet.add(JajukEvents.EVENT_FILE_LAUNCHED);
     eventSubjectSet.add(JajukEvents.EVENT_PARAMETERS_CHANGE);
     eventSubjectSet.add(JajukEvents.EVENT_COVER_DEFAULT_CHANGED);
+    eventSubjectSet.add(JajukEvents.EVENT_SUGGESTIONS_REFRESH);
     return eventSubjectSet;
   }
 
@@ -408,7 +409,8 @@ public class SuggestionView extends ViewAdapter implements Const, Observer {
       // The show/hide unmounted may have changed, refresh local
       // collection panels
       refreshLastFMCollectionTabs();
-    } else if (subject.equals(JajukEvents.EVENT_COVER_DEFAULT_CHANGED)) {
+    } else if (subject.equals(JajukEvents.EVENT_COVER_DEFAULT_CHANGED)
+        || subject.equals(JajukEvents.EVENT_SUGGESTIONS_REFRESH)) {
       // New default cover, refresh the view
       refreshLocalCollectionTabs(false);
     }

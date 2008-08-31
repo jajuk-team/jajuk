@@ -41,6 +41,7 @@ import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
+import org.jajuk.util.UpgradeManager;
 import org.jajuk.util.UtilGUI;
 import org.jajuk.util.UtilSystem;
 import org.jajuk.util.error.JajukException;
@@ -84,7 +85,7 @@ public final class PerspectiveManager implements Const {
    */
   public static void load() throws JajukException {
     registerDefaultPerspectives();
-    if (Main.isUpgradeDetected()) {
+    if (UpgradeManager.isUpgradeDetected()) {
       // upgrade message
       Messages.showInfoMessage(Messages.getString("Note.0"));
       // force loading of defaults perspectives

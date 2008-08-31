@@ -40,7 +40,6 @@ import org.jajuk.events.Event;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.services.core.ExitService;
-import org.jajuk.services.core.RatingManager;
 import org.jajuk.services.dj.AmbienceManager;
 import org.jajuk.services.webradio.WebRadio;
 import org.jajuk.ui.helpers.JajukTimer;
@@ -359,13 +358,14 @@ public final class FIFO implements Const {
   public static void finished() {
     try {
       // If no playing item, just leave
-      if (getCurrentItem() == null) {
+      StackItem current = getCurrentItem();
+      if (current == null) {
         return;
       }
       Properties details = new Properties();
       details.put(DETAIL_CURRENT_FILE, getCurrentFile());
       ObservationManager.notify(new Event(JajukEvents.EVENT_FILE_FINISHED, details));
-      if (getCurrentItem().isRepeat()) {
+      if (current.isRepeat()) {
         // if the track was in repeat mode, don't remove it from the
         // fifo but inc index
         // find the next item is in repeat mode if any
@@ -489,7 +489,6 @@ public final class FIFO implements Const {
         bFirstFile = false;
         // add hits number
         fCurrent.getTrack().incHits(); // inc hits number
-        RatingManager.setRateHasChanged(true);
       } else {
         // Problem launching the track, try next one
         try {

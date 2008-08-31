@@ -144,12 +144,6 @@ public final class Main implements Const {
   /** default perspective to choose, if null, we take the configuration one */
   private static String sPerspective;
 
-  /** Is it a minor or major X.Y upgrade */
-  private static boolean bUpgraded = false;
-
-  /** Is it the first session ever ? */
-  private static boolean bFirstSession = false;
-
   /** Lock used to trigger a first time wizard device creation and refresh * */
   private static short[] canLaunchRefresh = new short[0];
 
@@ -215,18 +209,8 @@ public final class Main implements Const {
       // Load user configuration. Depends on: initialCheckups
       Conf.load();
 
-      // Upgrade detection. Depends on: Configuration manager load
-      final String sRelease = Conf.getString(CONF_RELEASE);
-
-      // check if it is a new major 'x.y' release: 1.2 != 1.3 for instance
-      if (!bFirstSession
-      // if first session, not taken as an upgrade
-          && ((sRelease == null) || // null for jajuk releases < 1.2
-          !sRelease.substring(0, 3).equals(JAJUK_VERSION.substring(0, 3)))) {
-        bUpgraded = true;
-      }
-      // Now set current release in the conf
-      Conf.setProperty(CONF_RELEASE, JAJUK_VERSION);
+      // Detect current release
+      UpgradeManager.detectRelease();
 
       // Set actual log verbosity. Depends on:
       // Conf.load
@@ -311,6 +295,9 @@ public final class Main implements Const {
       // Load collection
       loadCollection();
 
+      // Upgrade step2
+      UpgradeManager.upgradeStep2();
+
       // Display progress
       sc.setProgress(70, Messages.getString("SplashScreen.2"));
 
@@ -333,7 +320,7 @@ public final class Main implements Const {
       // if network is not reachable
       // Do not start this if first session, it is causes concurrency with
       // first refresh thread
-      if (!bFirstSession) {
+      if (!UpgradeManager.isFirstSesion()) {
         autoMount();
       }
 
@@ -343,7 +330,7 @@ public final class Main implements Const {
 
       // Launch startup track if any (but don't start it if firsdt session
       // because the first refresh is probably still running)
-      if (!bFirstSession) {
+      if (!UpgradeManager.isFirstSesion()) {
         launchInitialTrack();
       }
 
@@ -477,7 +464,7 @@ public final class Main implements Const {
         // exists (upgrade from < 1.4)
         && !fDefaultWorkspace.canRead()) {
       // First time session ever
-      bFirstSession = true;
+      UpgradeManager.setFirstSession();
       // display the first time wizard
       SwingUtilities.invokeLater(new Runnable() {
         public void run() {
@@ -589,7 +576,7 @@ public final class Main implements Const {
 
           // Launch auto-refresh thread
           DeviceManager.getInstance().startAutoRefreshThread();
-          
+
           // Start rating manager thread
           RatingManager.getInstance().start();
 
@@ -769,7 +756,7 @@ public final class Main implements Const {
    * Load persisted collection file
    */
   private static void loadCollection() {
-    if (bFirstSession) {
+    if (UpgradeManager.isFirstSesion()) {
       Log.info("First session, collection will be created");
       return;
     }
@@ -1054,12 +1041,9 @@ public final class Main implements Const {
           builder.add(perspectivePanel, cc.xy(1, 1));
           jpFrame.add(builder.getPanel(), BorderLayout.CENTER);
 
-          // Upgrade step2
-          UpgradeManager.upgradeStep2();
-
           // Display tip of the day if required (not at the first
           // session)
-          if (Conf.getBoolean(CONF_SHOW_TIP_ON_STARTUP) && !bFirstSession) {
+          if (Conf.getBoolean(CONF_SHOW_TIP_ON_STARTUP) && !UpgradeManager.isFirstSesion()) {
             final TipOfTheDayWizard tipsView = new TipOfTheDayWizard();
             tipsView.setLocationRelativeTo(JajukWindow.getInstance());
             tipsView.setVisible(true);
@@ -1144,14 +1128,6 @@ public final class Main implements Const {
   }
 
   /**
-   * @return true if it is the first session after a minor or major upgrade
-   *         session
-   */
-  public static boolean isUpgradeDetected() {
-    return bUpgraded;
-  }
-
-  /**
    * Create automatically a free music directory (currently ../Music directory
    * relatively to jajuk.jar file) that contains free music packaged with
    * Jukebox Power Pack releases
@@ -1201,10 +1177,6 @@ public final class Main implements Const {
     return bTestMode;
   }
 
-  public static boolean isFirstSession() {
-    return bFirstSession;
-  }
-
   public static String getWorkspace() {
     return workspace;
   }
@@ -1216,7 +1188,7 @@ public final class Main implements Const {
   public static void initializeFromThumbnailsMaker(final boolean bTest, final String workspace) {
     Main.bTestMode = bTest;
     Main.workspace = workspace;
-   }
+  }
 
   /**
    * Notify the system about the first time wizard being closed.

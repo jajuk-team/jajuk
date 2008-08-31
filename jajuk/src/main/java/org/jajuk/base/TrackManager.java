@@ -59,10 +59,7 @@ public final class TrackManager extends ItemManager implements Observer {
    */
   private static int nbFilesRemaining = 0;
 
-  /** Max rate */
-  private long lMaxRate = 0l;
-
-  /** Autocommit flag for tags * */
+   /** Autocommit flag for tags * */
   private boolean bAutocommit = true;
 
   /** Set of tags to commit */
@@ -717,21 +714,7 @@ public final class TrackManager extends ItemManager implements Observer {
   public TrackComparator getComparator() {
     return new TrackComparator(Conf.getInt(CONF_LOGICAL_TREE_SORT_ORDER));
   }
-
-  /**
-   * @return maximum rating between all tracks
-   */
-  public long getMaxRate() {
-    return lMaxRate;
-  }
-
-  /**
-   * Set max rate
-   */
-  public void setMaxRate(long lRate) {
-    this.lMaxRate = lRate;
-  }
-
+  
   /**
    * @param sID
    *          Item ID

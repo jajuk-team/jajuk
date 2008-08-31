@@ -391,11 +391,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
             }
           }
           if (!DeviceManager.getInstance().isAnyDeviceRefreshing()) {
-            // make sure none device is refreshing
-            for (final Track track : TrackManager.getInstance().getTracks()) {
-              track.setRate(0);
-            }
-            ObservationManager.notify(new Event(JajukEvents.EVENT_DEVICE_REFRESH));
+            ObservationManager.notify(new Event(JajukEvents.EVENT_RATE_RESET));
           } else {
             Messages.showErrorMessage(120);
           }
@@ -510,8 +506,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     Conf.setProperty(Const.CONF_OPTIONS_SYNC_TABLE_TREE, Boolean.toString(jcbSyncTableTree
         .isSelected()));
     Conf.setProperty(Const.CONF_OPTIONS_HOTKEYS, Boolean.toString(jcbHotkeys.isSelected()));
-    Conf.setProperty(Const.CONF_LASTFM_ENABLE, Boolean.toString(jcbAudioScrobbler
-        .isSelected()));
+    Conf.setProperty(Const.CONF_LASTFM_ENABLE, Boolean.toString(jcbAudioScrobbler.isSelected()));
     Conf.setProperty(Const.CONF_LASTFM_INFO, Boolean.toString(jcbEnableLastFMInformation
         .isSelected()));
     Conf.setProperty(Const.CONF_LASTFM_USER, jtfASUser.getText());
