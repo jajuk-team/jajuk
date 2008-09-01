@@ -34,7 +34,6 @@ import static org.jajuk.ui.actions.JajukActions.STOP_TRACK;
 import com.jgoodies.forms.builder.PanelBuilder;
 import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
-import com.vlsolutions.swing.toolbars.ToolBarPanel;
 
 import ext.DropDownButton;
 import ext.SwingWorker;
@@ -100,9 +99,9 @@ import org.jajuk.services.players.Player;
 import org.jajuk.services.players.StackItem;
 import org.jajuk.services.webradio.WebRadio;
 import org.jajuk.services.webradio.WebRadioManager;
-import org.jajuk.ui.actions.JajukAction;
 import org.jajuk.ui.actions.ActionManager;
 import org.jajuk.ui.actions.ActionUtil;
+import org.jajuk.ui.actions.JajukAction;
 import org.jajuk.ui.actions.JajukActions;
 import org.jajuk.ui.actions.MuteAction;
 import org.jajuk.ui.helpers.FontManager;
@@ -131,15 +130,12 @@ public class CommandJPanel extends JXPanel implements Const, ActionListener,
   // singleton
   private static CommandJPanel command;
 
-  // Toolbar panel
-  ToolBarPanel topPanel;
-
   // widgets declaration
-  SearchBox sbSearch;
+  private SearchBox sbSearch;
 
-  SteppedComboBox jcbHistory;
+  private SteppedComboBox jcbHistory;
 
-  DropDownButton jbIncRate;
+  private DropDownButton jbIncRate;
 
   private JajukToggleButton jbRepeat;
 
@@ -149,55 +145,63 @@ public class CommandJPanel extends JXPanel implements Const, ActionListener,
 
   private JajukToggleButton jbIntro;
 
-  JToolBar jtbSpecial;
+  private JToolBar jtbSpecial;
 
-  DropDownButton ddbGlobalRandom;
+  private DropDownButton ddbGlobalRandom;
 
-  JRadioButtonMenuItem jmiShuffleModeSong;
+  private JRadioButtonMenuItem jmiShuffleModeSong;
 
-  JRadioButtonMenuItem jmiShuffleModeAlbum;
+  private JRadioButtonMenuItem jmiShuffleModeAlbum;
 
-  JRadioButtonMenuItem jmiShuffleModeAlbum2;
+  private JRadioButtonMenuItem jmiShuffleModeAlbum2;
 
-  JPopupMenu popupGlobalRandom;
+  private JPopupMenu popupGlobalRandom;
 
-  JajukButton jbBestof;
+  private JajukButton jbBestof;
 
-  DropDownButton ddbNovelties;
+  private DropDownButton ddbNovelties;
 
-  JPopupMenu popupNovelties;
+  private JPopupMenu popupNovelties;
 
-  DropDownButton ddbWebRadio;
+  private DropDownButton ddbWebRadio;
 
-  XJPopupMenu popupWebRadio;
+  private XJPopupMenu popupWebRadio;
 
-  JRadioButtonMenuItem jmiNoveltiesModeSong;
+  private JRadioButtonMenuItem jmiNoveltiesModeSong;
 
-  JRadioButtonMenuItem jmiNoveltiesModeAlbum;
+  private JRadioButtonMenuItem jmiNoveltiesModeAlbum;
 
-  JajukButton jbNorm;
+  private JajukButton jbNorm;
 
-  DropDownButton ddbDDJ;
+  private DropDownButton ddbDDJ;
 
-  JPopupMenu popupDDJ;
+  private JPopupMenu popupDDJ;
 
-  SteppedComboBox ambiencesCombo;
+  private SteppedComboBox ambiencesCombo;
 
-  JButton jbPrevious;
+  private JButton jbPrevious;
 
-  JButton jbNext;
+  private JButton jbNext;
 
-  JPressButton jbRew;
+  private JPressButton jbRew;
 
-  JButton jbPlayPause;
+  private JButton jbPlayPause;
 
-  JButton jbStop;
+  private JButton jbStop;
 
-  JPressButton jbFwd;
+  private JPressButton jbFwd;
 
-  JPanel jpVolume;
+  private JPanel jpVolume;
 
-  JSlider jsVolume;
+  private JSlider jsVolume;
+  
+  private JToolBar jtbPreferences;
+  
+  private JButton jbLike;
+  
+  private JButton jbDislike;
+  
+  private JButton jbBan;
 
   private JajukToggleButton jbMute;
 
@@ -561,7 +565,12 @@ public class CommandJPanel extends JXPanel implements Const, ActionListener,
     jtbPlay.add(jbStop);
     jtbPlay.add(jbFwd);
     jtbPlay.add(jbNext);
-
+    
+    // Preference toolbar
+    jtbPreferences = new JToolBar();
+    jtbPreferences.setBorder(null);
+    jtbPreferences.setFloatable(false);
+    
     // Add items
     FormLayout layout = new FormLayout(
     // --columns
