@@ -392,5 +392,12 @@ public abstract class JajukAction extends AbstractAction implements Const {
   protected void enable(boolean enable){
     this.bEnable = enable;
   }
+  
+  /**
+   * @return enable state for the action
+   */
+  protected boolean isEnable(){
+    return this.bEnable;
+  }
 
 }

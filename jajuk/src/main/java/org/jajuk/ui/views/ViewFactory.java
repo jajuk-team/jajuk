@@ -27,7 +27,6 @@ import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 import java.util.Set;
 
 import org.jajuk.ui.perspectives.IPerspective;
@@ -40,9 +39,7 @@ public final class ViewFactory {
   /** Maps view class -> view instances set */
   private static Map<Class<?>, Set<IView>> hmClassesInstances = new HashMap<Class<?>, Set<IView>>();
 
-  private static Random random = new Random();
-
-  /**
+   /**
    * No instantiation *
    */
   private ViewFactory() {

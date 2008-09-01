@@ -33,7 +33,6 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.StringTokenizer;
 
-import org.jajuk.Main;
 import org.jajuk.base.Style;
 import org.jajuk.base.StyleManager;
 import org.jajuk.events.Event;

@@ -28,7 +28,6 @@ import javax.swing.JComponent;
 import org.jajuk.base.Device;
 import org.jajuk.base.Directory;
 import org.jajuk.base.Item;
-import org.jajuk.ui.widgets.InformationJPanel;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
 
