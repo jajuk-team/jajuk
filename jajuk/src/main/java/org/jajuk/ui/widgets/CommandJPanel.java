@@ -193,7 +193,7 @@ public class CommandJPanel extends JXPanel implements Const, ActionListener,
 
   private JPanel jpVolume;
 
-  private JSlider jsVolume;
+  JSlider jsVolume;
   
   private JToolBar jtbPreferences;
   
@@ -628,7 +628,7 @@ public class CommandJPanel extends JXPanel implements Const, ActionListener,
     eventSubjectSet.add(JajukEvents.EVENT_SPECIAL_MODE);
     eventSubjectSet.add(JajukEvents.EVENT_ZERO);
     eventSubjectSet.add(JajukEvents.EVENT_MUTE_STATE);
-    eventSubjectSet.add(JajukEvents.EVENT_REPEAT_MODE_STATUS_CHANGED);
+    eventSubjectSet.add(JajukEvents.REPEAT_MODE_STATUS_CHANGED);
     eventSubjectSet.add(JajukEvents.EVENT_FILE_LAUNCHED);
     eventSubjectSet.add(JajukEvents.EVENT_CLEAR_HISTORY);
     eventSubjectSet.add(JajukEvents.EVENT_VOLUME_CHANGED);
@@ -852,7 +852,7 @@ public class CommandJPanel extends JXPanel implements Const, ActionListener,
             // computes planned tracks
             FIFO.computesPlanned(true);
           }
-        } else if (JajukEvents.EVENT_REPEAT_MODE_STATUS_CHANGED.equals(subject)) {
+        } else if (JajukEvents.REPEAT_MODE_STATUS_CHANGED.equals(subject)) {
           if (ObservationManager.getDetail(event, DETAIL_SELECTION).equals(FALSE)) {
             // deselect repeat mode
             Conf.setProperty(CONF_STATE_REPEAT, FALSE);
