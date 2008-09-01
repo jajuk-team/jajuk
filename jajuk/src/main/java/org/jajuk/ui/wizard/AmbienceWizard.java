@@ -135,7 +135,7 @@ public class AmbienceWizard extends Wizard implements Const {
         refreshScreen();
       }
       // in all cases, notify command panel
-      ObservationManager.notify(new Event(JajukEvents.EVENT_AMBIENCES_CHANGE));
+      ObservationManager.notify(new Event(JajukEvents.AMBIENCES_CHANGE));
     }
 
     /**
@@ -389,7 +389,7 @@ public class AmbienceWizard extends Wizard implements Const {
       Messages.showErrorMessage(113);
     }
     // Refresh UI
-    ObservationManager.notify(new Event(JajukEvents.EVENT_AMBIENCES_CHANGE));
+    ObservationManager.notify(new Event(JajukEvents.AMBIENCES_CHANGE));
 
   }
 

@@ -64,7 +64,7 @@ public final class AmbienceManager implements Const, Observer {
 
   public Set<JajukEvents> getRegistrationKeys() {
     Set<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
-    eventSubjectSet.add(JajukEvents.EVENT_STYLE_NAME_CHANGED);
+    eventSubjectSet.add(JajukEvents.STYLE_NAME_CHANGED);
     return eventSubjectSet;
   }
 
@@ -180,7 +180,7 @@ public final class AmbienceManager implements Const, Observer {
    */
   public void update(Event event) {
     JajukEvents subject = event.getSubject();
-    if (JajukEvents.EVENT_STYLE_NAME_CHANGED.equals(subject)) {
+    if (JajukEvents.STYLE_NAME_CHANGED.equals(subject)) {
       Properties properties = event.getDetails();
       Style old = (Style) properties.get(DETAIL_OLD);
       Style newStyle = (Style) properties.get(DETAIL_NEW);
@@ -233,7 +233,7 @@ public final class AmbienceManager implements Const, Observer {
     // Propagate the event
     Properties properties = new Properties();
     properties.put(DETAIL_CONTENT, sAmbienceID);
-    ObservationManager.notify(new Event(JajukEvents.EVENT_AMBIENCE_REMOVED, properties));
+    ObservationManager.notify(new Event(JajukEvents.AMBIENCE_REMOVED, properties));
   }
 
   /**

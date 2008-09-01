@@ -176,18 +176,18 @@ public class WikipediaView extends ViewAdapter implements Const, Observer,
     ObservationManager.register(WikipediaView.this);
 
     // force event
-    update(new Event(JajukEvents.EVENT_FILE_LAUNCHED, ObservationManager
-        .getDetailsLastOccurence(JajukEvents.EVENT_FILE_LAUNCHED)));
+    update(new Event(JajukEvents.FILE_LAUNCHED, ObservationManager
+        .getDetailsLastOccurence(JajukEvents.FILE_LAUNCHED)));
   }
 
   public Set<JajukEvents> getRegistrationKeys() {
     Set<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
-    eventSubjectSet.add(JajukEvents.EVENT_FILE_LAUNCHED);
-    eventSubjectSet.add(JajukEvents.EVENT_ZERO);
-    eventSubjectSet.add(JajukEvents.EVENT_AUTHOR_CHANGED);
-    eventSubjectSet.add(JajukEvents.EVENT_ALBUM_CHANGED);
-    eventSubjectSet.add(JajukEvents.EVENT_TRACK_CHANGED);
-    eventSubjectSet.add(JajukEvents.EVENT_PERPECTIVE_CHANGED);
+    eventSubjectSet.add(JajukEvents.FILE_LAUNCHED);
+    eventSubjectSet.add(JajukEvents.ZERO);
+    eventSubjectSet.add(JajukEvents.AUTHOR_CHANGED);
+    eventSubjectSet.add(JajukEvents.ALBUM_CHANGED);
+    eventSubjectSet.add(JajukEvents.TRACK_CHANGED);
+    eventSubjectSet.add(JajukEvents.PERPECTIVE_CHANGED);
     return eventSubjectSet;
   }
 
@@ -199,8 +199,8 @@ public class WikipediaView extends ViewAdapter implements Const, Observer,
   public void update(Event event) {
     JajukEvents subject = event.getSubject();
     // Make a search after a stop period
-    if (subject.equals(JajukEvents.EVENT_FILE_LAUNCHED)
-        || subject.equals(JajukEvents.EVENT_PERPECTIVE_CHANGED)) {
+    if (subject.equals(JajukEvents.FILE_LAUNCHED)
+        || subject.equals(JajukEvents.PERPECTIVE_CHANGED)) {
       // If current state is stopped, reset page
       if (FIFO.getCurrentFile() == null) {
         reset();
@@ -210,15 +210,15 @@ public class WikipediaView extends ViewAdapter implements Const, Observer,
       launchSearch(false);
     }
     // Reset the page when stopping
-    else if (subject.equals(JajukEvents.EVENT_ZERO)) {
+    else if (subject.equals(JajukEvents.ZERO)) {
       reset();
     }
     // User changed current track tags, so we have to reload
     // new author wikipedia page
-    else if (subject.equals(JajukEvents.EVENT_AUTHOR_CHANGED)
-        || subject.equals(JajukEvents.EVENT_ALBUM_CHANGED)
-        || subject.equals(JajukEvents.EVENT_TRACK_CHANGED)) {
-      update(new Event(JajukEvents.EVENT_FILE_LAUNCHED));
+    else if (subject.equals(JajukEvents.AUTHOR_CHANGED)
+        || subject.equals(JajukEvents.ALBUM_CHANGED)
+        || subject.equals(JajukEvents.TRACK_CHANGED)) {
+      update(new Event(JajukEvents.FILE_LAUNCHED));
     }
   }
 

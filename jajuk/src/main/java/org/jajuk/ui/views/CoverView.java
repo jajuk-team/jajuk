@@ -227,7 +227,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
         if (getPerspective() == null) {
           dirReference = null;
         }
-        update(new Event(JajukEvents.EVENT_COVER_NEED_REFRESH));
+        update(new Event(JajukEvents.COVER_NEED_REFRESH));
       }
     }.start();
   }
@@ -303,9 +303,9 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
       if (index < 0) {
         index = alCovers.size() - 1;
       }
-      ObservationManager.notify(new Event(JajukEvents.EVENT_COVER_NEED_REFRESH));
+      ObservationManager.notify(new Event(JajukEvents.COVER_NEED_REFRESH));
       if (fileReference != null) {
-        update(new Event(JajukEvents.EVENT_COVER_NEED_REFRESH));
+        update(new Event(JajukEvents.COVER_NEED_REFRESH));
       }
     }
   }
@@ -345,7 +345,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
             alCovers.add(cover2);
             setFoundText();
           }
-          ObservationManager.notify(new Event(JajukEvents.EVENT_COVER_NEED_REFRESH));
+          ObservationManager.notify(new Event(JajukEvents.COVER_NEED_REFRESH));
           // add new cover in others cover views
         } catch (final Exception ex) {
           Log.error(24, ex);
@@ -383,7 +383,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
             UtilSystem.copy(cover.getFile(), fNew);
             InformationJPanel.getInstance().setMessage(Messages.getString("CoverView.11"),
                 InformationJPanel.INFORMATIVE);
-            ObservationManager.notify(new Event(JajukEvents.EVENT_COVER_NEED_REFRESH));
+            ObservationManager.notify(new Event(JajukEvents.COVER_NEED_REFRESH));
           } catch (final Exception ex) {
             Log.error(24, ex);
             Messages.showErrorMessage(24);
@@ -436,7 +436,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
         InformationJPanel.getInstance().setMessage(Messages.getString("CoverView.8"),
             InformationJPanel.INFORMATIVE);
       }
-      ObservationManager.notify(new Event(JajukEvents.EVENT_COVER_DEFAULT_CHANGED));
+      ObservationManager.notify(new Event(JajukEvents.COVER_DEFAULT_CHANGED));
       // then make it the default cover in this directory
       dirReference.setProperty("default_cover", UtilSystem.getOnlyFile(sFilename));
     }
@@ -697,10 +697,10 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
 
   public Set<JajukEvents> getRegistrationKeys() {
     final Set<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
-    eventSubjectSet.add(JajukEvents.EVENT_FILE_LAUNCHED);
-    eventSubjectSet.add(JajukEvents.EVENT_ZERO);
-    eventSubjectSet.add(JajukEvents.EVENT_PLAYER_STOP);
-    eventSubjectSet.add(JajukEvents.EVENT_COVER_NEED_REFRESH);
+    eventSubjectSet.add(JajukEvents.FILE_LAUNCHED);
+    eventSubjectSet.add(JajukEvents.ZERO);
+    eventSubjectSet.add(JajukEvents.PLAYER_STOP);
+    eventSubjectSet.add(JajukEvents.COVER_NEED_REFRESH);
     return eventSubjectSet;
   }
 
@@ -832,7 +832,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
     add(jpControl, "0,0");
     if (fileReference == null) {
       if (FIFO.isStopped()) {
-        update(new Event(JajukEvents.EVENT_ZERO));
+        update(new Event(JajukEvents.ZERO));
       } else {
         // request cover refresh after a while to make sure the window owns its
         // definitive dimension so we avoid the cover to resize at startup
@@ -846,17 +846,17 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
             }
             // check if a track has already been launched
             if (FIFO.isPlayingRadio()) {
-              update(new Event(JajukEvents.EVENT_WEBRADIO_LAUNCHED, ObservationManager
-                  .getDetailsLastOccurence(JajukEvents.EVENT_WEBRADIO_LAUNCHED)));
+              update(new Event(JajukEvents.WEBRADIO_LAUNCHED, ObservationManager
+                  .getDetailsLastOccurence(JajukEvents.WEBRADIO_LAUNCHED)));
             } else {
-              update(new Event(JajukEvents.EVENT_FILE_LAUNCHED));
+              update(new Event(JajukEvents.FILE_LAUNCHED));
             }
 
           }
         }.start();
       }
     } else {
-      update(new Event(JajukEvents.EVENT_COVER_NEED_REFRESH));
+      update(new Event(JajukEvents.COVER_NEED_REFRESH));
     }
   }
 
@@ -1040,7 +1040,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
         // When receiving this event, check if we should change the cover or not
         // (we don't change cover if playing another track of the same album
         // except if option shuffle cover is set)
-        if (JajukEvents.EVENT_FILE_LAUNCHED.equals(subject)) {
+        if (JajukEvents.FILE_LAUNCHED.equals(subject)) {
           org.jajuk.base.File last = null;
           Properties details = event.getDetails();
           if (details != null) {
@@ -1072,9 +1072,9 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
             index = (int) (Math.random() * alCovers.size() - 1);
             displayCurrentCover();
           }
-        } else if (JajukEvents.EVENT_ZERO.equals(subject)
-            || JajukEvents.EVENT_WEBRADIO_LAUNCHED.equals(subject)
-            || JajukEvents.EVENT_PLAYER_STOP.equals(subject)) {
+        } else if (JajukEvents.ZERO.equals(subject)
+            || JajukEvents.WEBRADIO_LAUNCHED.equals(subject)
+            || JajukEvents.PLAYER_STOP.equals(subject)) {
           // Ignore this event if a reference file has been set
           if (fileReference != null) {
             return;
@@ -1088,7 +1088,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
           dirReference = null;
           // Force cover to reload at next track
           bForceCoverReload = true;
-        } else if (JajukEvents.EVENT_COVER_NEED_REFRESH.equals(subject)) {
+        } else if (JajukEvents.COVER_NEED_REFRESH.equals(subject)) {
           refreshCovers(iLocalEventID);
         }
       } catch (final Exception e) {

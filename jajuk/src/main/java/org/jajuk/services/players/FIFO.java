@@ -137,7 +137,7 @@ public final class FIFO implements Const {
           Log.error(e);
         } finally {
           // refresh playlist editor
-          ObservationManager.notify(new Event(JajukEvents.EVENT_QUEUE_NEED_REFRESH));
+          ObservationManager.notify(new Event(JajukEvents.QUEUE_NEED_REFRESH));
           UtilGUI.stopWaiting();
         }
       }
@@ -165,7 +165,7 @@ public final class FIFO implements Const {
           Log.error(e);
         } finally {
           // refresh queue
-          ObservationManager.notify(new Event(JajukEvents.EVENT_QUEUE_NEED_REFRESH));
+          ObservationManager.notify(new Event(JajukEvents.QUEUE_NEED_REFRESH));
           UtilGUI.stopWaiting();
         }
       }
@@ -195,8 +195,8 @@ public final class FIFO implements Const {
         Properties pDetails = new Properties();
         pDetails.put(DETAIL_CONTENT, radio);
         // reset all UI
-        ObservationManager.notify(new Event(JajukEvents.EVENT_ZERO));
-        ObservationManager.notify(new Event(JajukEvents.EVENT_WEBRADIO_LAUNCHED, pDetails));
+        ObservationManager.notify(new Event(JajukEvents.ZERO));
+        ObservationManager.notify(new Event(JajukEvents.WEBRADIO_LAUNCHED, pDetails));
         bStop = true;
       }
     } catch (Throwable t) {// catch even Errors (OutOfMemory for example)
@@ -364,7 +364,7 @@ public final class FIFO implements Const {
       }
       Properties details = new Properties();
       details.put(DETAIL_CURRENT_FILE, getCurrentFile());
-      ObservationManager.notify(new Event(JajukEvents.EVENT_FILE_FINISHED, details));
+      ObservationManager.notify(new Event(JajukEvents.FILE_FINISHED, details));
       if (current.isRepeat()) {
         // if the track was in repeat mode, don't remove it from the
         // fifo but inc index
@@ -408,13 +408,13 @@ public final class FIFO implements Const {
             // probably end of collection option "restart" off
             JajukTimer.getInstance().reset();
             bStop = true;
-            ObservationManager.notify(new Event(JajukEvents.EVENT_ZERO));
+            ObservationManager.notify(new Event(JajukEvents.ZERO));
           }
         } else {
           // no ? just reset UI and leave
           JajukTimer.getInstance().reset();
           bStop = true;
-          ObservationManager.notify(new Event(JajukEvents.EVENT_ZERO));
+          ObservationManager.notify(new Event(JajukEvents.ZERO));
           return;
         }
       } else {
@@ -427,7 +427,7 @@ public final class FIFO implements Const {
       Log.error(e);
     } finally {
       // refresh playlist editor
-      ObservationManager.notify(new Event(JajukEvents.EVENT_QUEUE_NEED_REFRESH));
+      ObservationManager.notify(new Event(JajukEvents.QUEUE_NEED_REFRESH));
     }
   }
 
@@ -445,7 +445,7 @@ public final class FIFO implements Const {
       Conf.getBoolean(CONF_STATE_INTRO);
       // notify to devices like commandJPanel to update UI when the play
       // button has been pressed
-      ObservationManager.notify(new Event(JajukEvents.EVENT_PLAYER_PLAY));
+      ObservationManager.notify(new Event(JajukEvents.PLAYER_PLAY));
       // set was_playing state
       Conf.setProperty(CONF_STATE_WAS_PLAYING, TRUE);
 
@@ -479,7 +479,7 @@ public final class FIFO implements Const {
         }
         pDetails.put(DETAIL_CURRENT_FILE_ID, fCurrent.getID());
         pDetails.put(DETAIL_CURRENT_DATE, Long.valueOf(System.currentTimeMillis()));
-        ObservationManager.notify(new Event(JajukEvents.EVENT_FILE_LAUNCHED, pDetails));
+        ObservationManager.notify(new Event(JajukEvents.FILE_LAUNCHED, pDetails));
         // save the last played track (even files in error are stored here as
         // we need this for computes next track to launch after an error)
         // We have to set this line here as we make directory change analyse
@@ -644,7 +644,7 @@ public final class FIFO implements Const {
     } catch (Exception e) {
       Log.error(e);
     } finally {
-      ObservationManager.notify(new Event(JajukEvents.EVENT_QUEUE_NEED_REFRESH));
+      ObservationManager.notify(new Event(JajukEvents.QUEUE_NEED_REFRESH));
     }
   }
 
@@ -699,7 +699,7 @@ public final class FIFO implements Const {
       Log.error(e);
     } finally {
       // Refresh playlist editor
-      ObservationManager.notify(new Event(JajukEvents.EVENT_QUEUE_NEED_REFRESH));
+      ObservationManager.notify(new Event(JajukEvents.QUEUE_NEED_REFRESH));
     }
   }
 
@@ -726,7 +726,7 @@ public final class FIFO implements Const {
     } catch (Exception e) {
       Log.error(e);
     } finally {
-      ObservationManager.notify(new Event(JajukEvents.EVENT_QUEUE_NEED_REFRESH));
+      ObservationManager.notify(new Event(JajukEvents.QUEUE_NEED_REFRESH));
     }
   }
 
@@ -795,7 +795,7 @@ public final class FIFO implements Const {
     } catch (Exception e) {
       Log.error(e);
     } finally {
-      ObservationManager.notify(new Event(JajukEvents.EVENT_QUEUE_NEED_REFRESH));
+      ObservationManager.notify(new Event(JajukEvents.QUEUE_NEED_REFRESH));
     }
   }
 
@@ -892,7 +892,7 @@ public final class FIFO implements Const {
     }
     Player.stop(true); // stop player
     // notify views like commandJPanel to update ui
-    ObservationManager.notify(new Event(JajukEvents.EVENT_PLAYER_STOP));
+    ObservationManager.notify(new Event(JajukEvents.PLAYER_STOP));
   }
 
   /**
@@ -948,7 +948,7 @@ public final class FIFO implements Const {
     alStack.add(item);
     insert(alStack, iPos);
     // refresh queue
-    ObservationManager.notify(new Event(JajukEvents.EVENT_QUEUE_NEED_REFRESH));
+    ObservationManager.notify(new Event(JajukEvents.QUEUE_NEED_REFRESH));
 
   }
 
@@ -969,7 +969,7 @@ public final class FIFO implements Const {
     }
     computesPlanned(false);
     // refresh queue
-    ObservationManager.notify(new Event(JajukEvents.EVENT_QUEUE_NEED_REFRESH));
+    ObservationManager.notify(new Event(JajukEvents.QUEUE_NEED_REFRESH));
   }
 
   /**
@@ -1035,7 +1035,7 @@ public final class FIFO implements Const {
           setRepeatModeToAll(false);
           Properties properties = new Properties();
           properties.put(DETAIL_SELECTION, FALSE);
-          ObservationManager.notify(new Event(JajukEvents.EVENT_REPEAT_MODE_STATUS_CHANGED,
+          ObservationManager.notify(new Event(JajukEvents.REPEAT_MODE_STATUS_CHANGED,
               properties));
           remove(0, localindex - 1);
           localindex = 0;
@@ -1052,7 +1052,7 @@ public final class FIFO implements Const {
       Log.error(e);
     } finally {
       // refresh playlist editor
-      ObservationManager.notify(new Event(JajukEvents.EVENT_QUEUE_NEED_REFRESH));
+      ObservationManager.notify(new Event(JajukEvents.QUEUE_NEED_REFRESH));
     }
   }
 

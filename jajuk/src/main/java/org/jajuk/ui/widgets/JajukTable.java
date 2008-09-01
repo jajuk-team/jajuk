@@ -242,7 +242,7 @@ public class JajukTable extends JXTable implements Const, ListSelectionListener,
       // Force table rebuilding
       Properties details = new Properties();
       details.put(DETAIL_CONTENT, this);
-      ObservationManager.notify(new Event(JajukEvents.EVENT_VIEW_REFRESH_REQUEST, details));
+      ObservationManager.notify(new Event(JajukEvents.VIEW_REFRESH_REQUEST, details));
     }
   }
 

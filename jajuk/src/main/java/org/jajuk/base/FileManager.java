@@ -235,7 +235,7 @@ public final class FileManager extends ItemManager implements Observer {
       // change directory reference
       dir.changeFile(fileOld, fNew);
       // Notify interested items (like history manager)
-      ObservationManager.notifySync(new Event(JajukEvents.EVENT_FILE_NAME_CHANGED, properties));
+      ObservationManager.notifySync(new Event(JajukEvents.FILE_NAME_CHANGED, properties));
       return fNew;
     }
   }

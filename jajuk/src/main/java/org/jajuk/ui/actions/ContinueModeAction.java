@@ -67,6 +67,6 @@ public class ContinueModeAction extends JajukAction {
     // computes planned tracks
     FIFO.computesPlanned(false);
     // Refresh Queue View
-    ObservationManager.notify(new Event(JajukEvents.EVENT_QUEUE_NEED_REFRESH));
+    ObservationManager.notify(new Event(JajukEvents.QUEUE_NEED_REFRESH));
   }
 }

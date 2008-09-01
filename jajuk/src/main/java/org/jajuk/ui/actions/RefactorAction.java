@@ -87,7 +87,7 @@ public class RefactorAction implements Const {
       public void run() {
         UtilGUI.waiting();
         refactor();
-        ObservationManager.notify(new Event(JajukEvents.EVENT_DEVICE_REFRESH));
+        ObservationManager.notify(new Event(JajukEvents.DEVICE_REFRESH));
       }
     }.start();
     UtilGUI.stopWaiting();

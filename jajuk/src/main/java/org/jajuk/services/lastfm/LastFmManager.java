@@ -82,7 +82,7 @@ public final class LastFmManager implements Observer, Const {
    */
   public Set<JajukEvents> getRegistrationKeys() {
     Set<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
-    eventSubjectSet.add(JajukEvents.EVENT_FILE_FINISHED);
+    eventSubjectSet.add(JajukEvents.FILE_FINISHED);
     return eventSubjectSet;
   }
 
@@ -98,7 +98,7 @@ public final class LastFmManager implements Observer, Const {
    * @see org.jajuk.base.Observer#update(org.jajuk.base.Event)
    */
   public void update(final Event event) {
-    if (JajukEvents.EVENT_FILE_FINISHED == event.getSubject()) {
+    if (JajukEvents.FILE_FINISHED == event.getSubject()) {
       new Thread() {
         @Override
         public void run() {

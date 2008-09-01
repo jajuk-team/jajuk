@@ -88,7 +88,7 @@ public class NextTrackAction extends JajukAction {
               // changing of track
               if (Player.isPaused()) {
                 Player.setPaused(false);
-                ObservationManager.notify(new Event(JajukEvents.EVENT_PLAYER_RESUME));
+                ObservationManager.notify(new Event(JajukEvents.PLAYER_RESUME));
               }
             }
           }

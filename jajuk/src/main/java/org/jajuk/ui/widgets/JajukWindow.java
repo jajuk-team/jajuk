@@ -127,16 +127,16 @@ public class JajukWindow extends JFrame implements Const, Observer {
     });
 
     // display correct title if a track is launched at startup
-    update(new Event(JajukEvents.EVENT_FILE_LAUNCHED, ObservationManager
-        .getDetailsLastOccurence(JajukEvents.EVENT_FILE_LAUNCHED)));
+    update(new Event(JajukEvents.FILE_LAUNCHED, ObservationManager
+        .getDetailsLastOccurence(JajukEvents.FILE_LAUNCHED)));
   }
 
   public Set<JajukEvents> getRegistrationKeys() {
     Set<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
-    eventSubjectSet.add(JajukEvents.EVENT_FILE_LAUNCHED);
-    eventSubjectSet.add(JajukEvents.EVENT_WEBRADIO_LAUNCHED);
-    eventSubjectSet.add(JajukEvents.EVENT_ZERO);
-    eventSubjectSet.add(JajukEvents.EVENT_PLAYER_STOP);
+    eventSubjectSet.add(JajukEvents.FILE_LAUNCHED);
+    eventSubjectSet.add(JajukEvents.WEBRADIO_LAUNCHED);
+    eventSubjectSet.add(JajukEvents.ZERO);
+    eventSubjectSet.add(JajukEvents.PLAYER_STOP);
     return eventSubjectSet;
   }
 
@@ -251,15 +251,15 @@ public class JajukWindow extends JFrame implements Const, Observer {
     final JajukEvents subject = event.getSubject();
     SwingUtilities.invokeLater(new Runnable() {
       public void run() {
-        if (subject.equals(JajukEvents.EVENT_FILE_LAUNCHED)) {
+        if (subject.equals(JajukEvents.FILE_LAUNCHED)) {
           File file = FIFO.getCurrentFile();
           if (file != null) {
             setTitle(UtilString.buildTitle(file));
           }
-        } else if (subject.equals(JajukEvents.EVENT_ZERO)
-            || subject.equals(JajukEvents.EVENT_PLAYER_STOP)) {
+        } else if (subject.equals(JajukEvents.ZERO)
+            || subject.equals(JajukEvents.PLAYER_STOP)) {
           setTitle(Messages.getString("JajukWindow.17"));
-        } else if (subject.equals(JajukEvents.EVENT_WEBRADIO_LAUNCHED)) {
+        } else if (subject.equals(JajukEvents.WEBRADIO_LAUNCHED)) {
           WebRadio radio = FIFO.getCurrentRadio();
           if (radio != null) {
             // We use vertical bar to allow scripting like MSN plugins to

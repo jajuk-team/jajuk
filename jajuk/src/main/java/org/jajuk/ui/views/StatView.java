@@ -90,14 +90,14 @@ public class StatView extends ViewAdapter implements Observer {
     double[][] size = new double[][] { { 0.5f, 10, 0.5f }, { 0.5f, 10, 0.5f } };
     setLayout(new TableLayout(size));
     ObservationManager.register(this);
-    update(new Event(JajukEvents.EVENT_DEVICE_REFRESH, ObservationManager
-        .getDetailsLastOccurence(JajukEvents.EVENT_DEVICE_REFRESH)));
+    update(new Event(JajukEvents.DEVICE_REFRESH, ObservationManager
+        .getDetailsLastOccurence(JajukEvents.DEVICE_REFRESH)));
   }
 
   public Set<JajukEvents> getRegistrationKeys() {
     Set<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
-    eventSubjectSet.add(JajukEvents.EVENT_DEVICE_DELETE);
-    eventSubjectSet.add(JajukEvents.EVENT_DEVICE_REFRESH);
+    eventSubjectSet.add(JajukEvents.DEVICE_DELETE);
+    eventSubjectSet.add(JajukEvents.DEVICE_REFRESH);
     return eventSubjectSet;
   }
 
@@ -360,8 +360,8 @@ public class StatView extends ViewAdapter implements Observer {
    */
   public void update(Event event) {
     JajukEvents subject = event.getSubject();
-    if (JajukEvents.EVENT_DEVICE_REFRESH.equals(subject)
-        || JajukEvents.EVENT_DEVICE_DELETE.equals(subject)) {
+    if (JajukEvents.DEVICE_REFRESH.equals(subject)
+        || JajukEvents.DEVICE_DELETE.equals(subject)) {
       UtilGUI.waiting();
       if (getComponentCount() > 0) {
         removeAll();

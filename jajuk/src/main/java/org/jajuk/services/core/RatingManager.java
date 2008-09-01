@@ -85,7 +85,7 @@ public final class RatingManager extends Thread implements Const, Observer {
       }
       if (bRateHasChanged) {
         // refresh to update rates
-        ObservationManager.notify(new Event(JajukEvents.EVENT_RATE_CHANGED));
+        ObservationManager.notify(new Event(JajukEvents.RATE_CHANGED));
         bRateHasChanged = false;
       }
 
@@ -136,7 +136,7 @@ public final class RatingManager extends Thread implements Const, Observer {
    */
   public Set<JajukEvents> getRegistrationKeys() {
     Set<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
-    eventSubjectSet.add(JajukEvents.EVENT_RATE_RESET);
+    eventSubjectSet.add(JajukEvents.RATE_RESET);
     return eventSubjectSet;
   }
 
@@ -147,7 +147,7 @@ public final class RatingManager extends Thread implements Const, Observer {
    */
   public void update(Event event) {
     JajukEvents subject = event.getSubject();
-    if (subject.equals(JajukEvents.EVENT_RATE_RESET)) {
+    if (subject.equals(JajukEvents.RATE_RESET)) {
       // Reset playcount
       setMaxPlaycount(0);
       // Reset rates
@@ -159,11 +159,11 @@ public final class RatingManager extends Thread implements Const, Observer {
           return;
         }
       }
-      ObservationManager.notify(new Event(JajukEvents.EVENT_DEVICE_REFRESH));
+      ObservationManager.notify(new Event(JajukEvents.DEVICE_REFRESH));
       // Force suggestion view refresh. Not that the suggestion view doesn't
       // subscribe to EVENt_RATE_RESET event directly because we don't ensure
       // that the view will trap the event only after this class
-      ObservationManager.notify(new Event(JajukEvents.EVENT_SUGGESTIONS_REFRESH));
+      ObservationManager.notify(new Event(JajukEvents.SUGGESTIONS_REFRESH));
       // Computes bestof
       FileManager.getInstance().refreshBestOfFiles();
     }

@@ -127,7 +127,7 @@ public abstract class WindowsHotKeyManager extends AbstractAction implements Con
           } catch (Throwable e2) {
             Log.error(e2);
           } finally {
-            ObservationManager.notify(new Event(JajukEvents.EVENT_QUEUE_NEED_REFRESH));
+            ObservationManager.notify(new Event(JajukEvents.QUEUE_NEED_REFRESH));
           }
         }
       }

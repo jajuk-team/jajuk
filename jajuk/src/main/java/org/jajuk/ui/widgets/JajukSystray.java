@@ -129,7 +129,7 @@ public class JajukSystray extends CommandJPanel {
   /** Swing Timer to refresh the component */
   private Timer timer = new Timer(JajukTimer.DEFAULT_HEARTBEAT, new ActionListener() {
     public void actionPerformed(ActionEvent e) {
-      update(new Event(JajukEvents.EVENT_HEART_BEAT));
+      update(new Event(JajukEvents.HEART_BEAT));
     }
   });
 
@@ -311,13 +311,13 @@ public class JajukSystray extends CommandJPanel {
     // check if a file has been already started
     if (FIFO.isPlayingRadio()) {
       // update initial state
-      update(new Event(JajukEvents.EVENT_WEBRADIO_LAUNCHED));
+      update(new Event(JajukEvents.WEBRADIO_LAUNCHED));
     } else if (!FIFO.isStopped()) {
       // update initial state
-      update(new Event(JajukEvents.EVENT_PLAYER_PLAY, ObservationManager
-          .getDetailsLastOccurence(JajukEvents.EVENT_PLAYER_PLAY)));
+      update(new Event(JajukEvents.PLAYER_PLAY, ObservationManager
+          .getDetailsLastOccurence(JajukEvents.PLAYER_PLAY)));
     } else {
-      update(new Event(JajukEvents.EVENT_PLAYER_STOP));
+      update(new Event(JajukEvents.PLAYER_STOP));
     }
 
   }
@@ -325,19 +325,19 @@ public class JajukSystray extends CommandJPanel {
   @Override
   public Set<JajukEvents> getRegistrationKeys() {
     Set<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
-    eventSubjectSet.add(JajukEvents.EVENT_ZERO);
-    eventSubjectSet.add(JajukEvents.EVENT_FILE_LAUNCHED);
-    eventSubjectSet.add(JajukEvents.EVENT_PLAYER_PAUSE);
-    eventSubjectSet.add(JajukEvents.EVENT_PLAYER_PLAY);
-    eventSubjectSet.add(JajukEvents.EVENT_PLAYER_RESUME);
-    eventSubjectSet.add(JajukEvents.EVENT_PLAYER_STOP);
-    eventSubjectSet.add(JajukEvents.EVENT_MUTE_STATE);
-    eventSubjectSet.add(JajukEvents.EVENT_HEART_BEAT);
-    eventSubjectSet.add(JajukEvents.EVENT_VOLUME_CHANGED);
-    eventSubjectSet.add(JajukEvents.EVENT_AMBIENCES_CHANGE);
-    eventSubjectSet.add(JajukEvents.EVENT_AMBIENCES_SELECTION_CHANGE);
-    eventSubjectSet.add(JajukEvents.EVENT_PARAMETERS_CHANGE);
-    eventSubjectSet.add(JajukEvents.EVENT_WEBRADIO_LAUNCHED);
+    eventSubjectSet.add(JajukEvents.ZERO);
+    eventSubjectSet.add(JajukEvents.FILE_LAUNCHED);
+    eventSubjectSet.add(JajukEvents.PLAYER_PAUSE);
+    eventSubjectSet.add(JajukEvents.PLAYER_PLAY);
+    eventSubjectSet.add(JajukEvents.PLAYER_RESUME);
+    eventSubjectSet.add(JajukEvents.PLAYER_STOP);
+    eventSubjectSet.add(JajukEvents.MUTE_STATE);
+    eventSubjectSet.add(JajukEvents.HEART_BEAT);
+    eventSubjectSet.add(JajukEvents.VOLUME_CHANGED);
+    eventSubjectSet.add(JajukEvents.AMBIENCES_CHANGE);
+    eventSubjectSet.add(JajukEvents.AMBIENCES_SELECTION_CHANGE);
+    eventSubjectSet.add(JajukEvents.PARAMETERS_CHANGE);
+    eventSubjectSet.add(JajukEvents.WEBRADIO_LAUNCHED);
     return eventSubjectSet;
   }
 
@@ -356,13 +356,13 @@ public class JajukSystray extends CommandJPanel {
         // synchronize the state
         Properties details = new Properties();
         details.put(DETAIL_ORIGIN, this);
-        ObservationManager.notify(new Event(JajukEvents.EVENT_PARAMETERS_CHANGE, details));
+        ObservationManager.notify(new Event(JajukEvents.PARAMETERS_CHANGE, details));
       }
 
     } catch (Exception e2) {
       Log.error(e2);
     } finally {
-      ObservationManager.notify(new Event(JajukEvents.EVENT_QUEUE_NEED_REFRESH));
+      ObservationManager.notify(new Event(JajukEvents.QUEUE_NEED_REFRESH));
     }
   }
 
@@ -376,7 +376,7 @@ public class JajukSystray extends CommandJPanel {
     SwingUtilities.invokeLater(new Runnable() {
       public void run() {
         JajukEvents subject = event.getSubject();
-        if (JajukEvents.EVENT_FILE_LAUNCHED.equals(subject)) {
+        if (JajukEvents.FILE_LAUNCHED.equals(subject)) {
           // remove and re-add listener to make sure not to add it
           // twice
           jsPosition.removeMouseWheelListener(JajukSystray.this);
@@ -408,13 +408,13 @@ public class JajukSystray extends CommandJPanel {
                 TrayIcon.MessageType.INFO);
           }
 
-        } else if (JajukEvents.EVENT_WEBRADIO_LAUNCHED.equals(subject)) {
+        } else if (JajukEvents.WEBRADIO_LAUNCHED.equals(subject)) {
           // WebRadio radio = FIFO.getCurrentRadio();
           // Enable webradio navigation actions
           ActionManager.getAction(PREVIOUS_TRACK).setEnabled(true);
           ActionManager.getAction(NEXT_TRACK).setEnabled(true);
           ActionManager.getAction(STOP_TRACK).setEnabled(true);
-        } else if (JajukEvents.EVENT_PLAYER_STOP.equals(subject)) {
+        } else if (JajukEvents.PLAYER_STOP.equals(subject)) {
           // Enable the play button to allow restarting the queue but disable if
           // the queue is void
           boolean bQueueNotVoid = (FIFO.getFIFO().size() > 0);
@@ -427,7 +427,7 @@ public class JajukSystray extends CommandJPanel {
           jsPosition.setEnabled(false);
           jsPosition.setValue(0);
           jmiFinishAlbum.setEnabled(false);
-        } else if (JajukEvents.EVENT_ZERO.equals(subject)) {
+        } else if (JajukEvents.ZERO.equals(subject)) {
           jmiPlayPause.setEnabled(false);
           jmiStop.setEnabled(false);
           jmiNext.setEnabled(false);
@@ -437,7 +437,7 @@ public class JajukSystray extends CommandJPanel {
           jsPosition.setEnabled(false);
           jsPosition.setValue(0);
           jmiFinishAlbum.setEnabled(false);
-        } else if (JajukEvents.EVENT_PLAYER_PLAY.equals(subject)) {
+        } else if (JajukEvents.PLAYER_PLAY.equals(subject)) {
           jsPosition.removeMouseWheelListener(JajukSystray.this);
           jsPosition.addMouseWheelListener(JajukSystray.this);
           jsPosition.removeChangeListener(JajukSystray.this);
@@ -447,14 +447,14 @@ public class JajukSystray extends CommandJPanel {
           jmiStop.setEnabled(true);
           jmiNext.setEnabled(true);
           jmiFinishAlbum.setEnabled(true);
-        } else if (JajukEvents.EVENT_PLAYER_PAUSE.equals(subject)) {
+        } else if (JajukEvents.PLAYER_PAUSE.equals(subject)) {
           // Apply basic CommandJPanel actions
           JajukSystray.super.update(event);
           // disable position
           jsPosition.setEnabled(false);
           jsPosition.removeMouseWheelListener(JajukSystray.this);
           jsPosition.removeChangeListener(JajukSystray.this);
-        } else if (JajukEvents.EVENT_PLAYER_RESUME.equals(subject)) {
+        } else if (JajukEvents.PLAYER_RESUME.equals(subject)) {
           // Apply basic CommandJPanel actions
           JajukSystray.super.update(event);
           // disable position
@@ -466,9 +466,9 @@ public class JajukSystray extends CommandJPanel {
             jsPosition.addChangeListener(JajukSystray.this);
           }
           jsPosition.setEnabled(true);
-        } else if (JajukEvents.EVENT_VOLUME_CHANGED.equals(event.getSubject())) {
+        } else if (JajukEvents.VOLUME_CHANGED.equals(event.getSubject())) {
           JajukSystray.super.update(event);
-        } else if (JajukEvents.EVENT_HEART_BEAT.equals(subject) && !FIFO.isStopped()
+        } else if (JajukEvents.HEART_BEAT.equals(subject) && !FIFO.isStopped()
             && !Player.isPaused()) {
           int iPos = (int) (100 * JajukTimer.getInstance().getCurrentTrackPosition());
           // Make sure to enable the slider
@@ -488,8 +488,8 @@ public class JajukSystray extends CommandJPanel {
           jsPosition.removeChangeListener(JajukSystray.this);
           jsPosition.setValue(iPos);
           jsPosition.addChangeListener(JajukSystray.this);
-        } else if (JajukEvents.EVENT_AMBIENCES_CHANGE.equals(subject)
-            || JajukEvents.EVENT_AMBIENCES_SELECTION_CHANGE.equals(subject)) {
+        } else if (JajukEvents.AMBIENCES_CHANGE.equals(subject)
+            || JajukEvents.AMBIENCES_SELECTION_CHANGE.equals(subject)) {
           Ambience ambience = AmbienceManager.getInstance().getSelectedAmbience();
           if (ambience != null) {
             jmAmbience.setText(Messages.getString("JajukWindow.36") + " "
@@ -498,7 +498,7 @@ public class JajukSystray extends CommandJPanel {
             jmAmbience.setText(Messages.getString("JajukWindow.37"));
           }
           populateAmbiences();
-        } else if (JajukEvents.EVENT_PARAMETERS_CHANGE.equals(subject)) {
+        } else if (JajukEvents.PARAMETERS_CHANGE.equals(subject)) {
           jcbmiShowBalloon.setState(Conf.getBoolean(CONF_UI_SHOW_BALLOON));
         }
       }
@@ -536,7 +536,7 @@ public class JajukSystray extends CommandJPanel {
           Conf.setProperty(CONF_DEFAULT_AMBIENCE, ambience.getID());
         }
         jmi.setFont(FontManager.getInstance().getFont(JajukFont.BOLD));
-        ObservationManager.notify(new Event(JajukEvents.EVENT_AMBIENCES_SELECTION_CHANGE));
+        ObservationManager.notify(new Event(JajukEvents.AMBIENCES_SELECTION_CHANGE));
       }
     };
     // Remove all item

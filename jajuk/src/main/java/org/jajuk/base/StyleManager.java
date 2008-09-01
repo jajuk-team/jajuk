@@ -170,7 +170,7 @@ public final class StyleManager extends ItemManager {
       properties.put(DETAIL_OLD, old);
       properties.put(DETAIL_NEW, newItem);
       // Notify interested items (like ambience manager)
-      ObservationManager.notifySync(new Event(JajukEvents.EVENT_STYLE_NAME_CHANGED, properties));
+      ObservationManager.notifySync(new Event(JajukEvents.STYLE_NAME_CHANGED, properties));
       return newItem;
     }
   }

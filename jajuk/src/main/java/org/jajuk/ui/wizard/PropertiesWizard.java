@@ -250,8 +250,8 @@ public class PropertiesWizard extends JajukJDialog implements Const, ActionListe
           } finally {
             // -UI refresh-
             // clear tables selection
-            ObservationManager.notify(new Event(JajukEvents.EVENT_TABLE_CLEAR_SELECTION));
-            ObservationManager.notify(new Event(JajukEvents.EVENT_DEVICE_REFRESH));
+            ObservationManager.notify(new Event(JajukEvents.TABLE_CLEAR_SELECTION));
+            ObservationManager.notify(new Event(JajukEvents.DEVICE_REFRESH));
           }
         }
       };

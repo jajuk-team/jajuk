@@ -146,7 +146,7 @@ public final class Player implements Const {
     } catch (final Throwable t) {
       Properties pDetails = new Properties();
       pDetails.put(DETAIL_CONTENT, file);
-      ObservationManager.notifySync(new Event(JajukEvents.EVENT_PLAY_ERROR, pDetails));
+      ObservationManager.notifySync(new Event(JajukEvents.PLAY_ERROR, pDetails));
       Log.error(7, Messages.getString("Player.0") + "{{" + fCurrent.getAbsolutePath() + "}}", t);
       return false;
     }
@@ -203,7 +203,7 @@ public final class Player implements Const {
     } catch (final Throwable t) {
       Properties pDetails = new Properties();
       pDetails.put(DETAIL_CONTENT, radio);
-      ObservationManager.notifySync(new Event(JajukEvents.EVENT_PLAY_ERROR, pDetails));
+      ObservationManager.notifySync(new Event(JajukEvents.PLAY_ERROR, pDetails));
       Log.error(7, Messages.getString("Player.0") + radio.getUrl() + "}}", t);
       return false;
     }
@@ -295,7 +295,7 @@ public final class Player implements Const {
           fVolume = 1.0f;
         }
         playerImpl.setVolume(fVolume);
-        ObservationManager.notify(new Event(JajukEvents.EVENT_VOLUME_CHANGED));
+        ObservationManager.notify(new Event(JajukEvents.VOLUME_CHANGED));
       }
     } catch (Exception e) {
       Log.error(e);

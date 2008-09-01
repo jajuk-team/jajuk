@@ -76,7 +76,7 @@ public final class AlbumManager extends ItemManager implements Observer {
 
   public Set<JajukEvents> getRegistrationKeys() {
     Set<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
-    eventSubjectSet.add(JajukEvents.EVENT_FILE_LAUNCHED);
+    eventSubjectSet.add(JajukEvents.FILE_LAUNCHED);
     return eventSubjectSet;
   }
 
@@ -152,7 +152,7 @@ public final class AlbumManager extends ItemManager implements Observer {
     // if current track album name is changed, notify it
     if (FIFO.getCurrentFile() != null
         && FIFO.getCurrentFile().getTrack().getAlbum().equals(old)) {
-      ObservationManager.notify(new Event(JajukEvents.EVENT_ALBUM_CHANGED));
+      ObservationManager.notify(new Event(JajukEvents.ALBUM_CHANGED));
     }
     return newItem;
   }
@@ -447,7 +447,7 @@ public final class AlbumManager extends ItemManager implements Observer {
    * @see org.jajuk.base.Observer#update(org.jajuk.base.Event)
    */
   public void update(Event event) {
-    if ((event.getSubject() == JajukEvents.EVENT_FILE_LAUNCHED) &&
+    if ((event.getSubject() == JajukEvents.FILE_LAUNCHED) &&
       // Compute album max rating every 10 tracks launches
       (comp % 10 == 0)) {
       refreshMaxRating();

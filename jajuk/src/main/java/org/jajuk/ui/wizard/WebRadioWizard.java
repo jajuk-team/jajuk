@@ -371,7 +371,7 @@ public class WebRadioWizard extends Wizard implements Const {
       Log.error(e);
     }
     // Refresh UI
-    ObservationManager.notify(new Event(JajukEvents.EVENT_WEBRADIOS_CHANGE));
+    ObservationManager.notify(new Event(JajukEvents.WEBRADIOS_CHANGE));
   }
 
 }

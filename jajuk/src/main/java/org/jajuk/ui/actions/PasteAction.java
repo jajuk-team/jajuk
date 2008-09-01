@@ -189,7 +189,7 @@ public class PasteAction extends JajukAction {
             Messages.showErrorMessage(e.getCode());
           }
         }
-        ObservationManager.notify(new Event(JajukEvents.EVENT_DEVICE_REFRESH));
+        ObservationManager.notify(new Event(JajukEvents.DEVICE_REFRESH));
         UtilGUI.stopWaiting();
       }
     }.start();

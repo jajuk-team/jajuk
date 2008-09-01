@@ -393,13 +393,13 @@ public final class JajukSlimbar extends JFrame implements Const, Observer, Mouse
     // check if a file has been already started
     if (FIFO.isPlayingRadio()) {
       // update initial state
-      update(new Event(JajukEvents.EVENT_WEBRADIO_LAUNCHED));
+      update(new Event(JajukEvents.WEBRADIO_LAUNCHED));
     } else if (!FIFO.isStopped()) {
       // update initial state
-      update(new Event(JajukEvents.EVENT_PLAYER_PLAY, ObservationManager
-          .getDetailsLastOccurence(JajukEvents.EVENT_PLAYER_PLAY)));
+      update(new Event(JajukEvents.PLAYER_PLAY, ObservationManager
+          .getDetailsLastOccurence(JajukEvents.PLAYER_PLAY)));
     } else {
-      update(new Event(JajukEvents.EVENT_PLAYER_STOP));
+      update(new Event(JajukEvents.PLAYER_STOP));
     }
     bInitialized = true;
   }
@@ -487,20 +487,20 @@ public final class JajukSlimbar extends JFrame implements Const, Observer, Mouse
 
   public Set<JajukEvents> getRegistrationKeys() {
     Set<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
-    eventSubjectSet.add(JajukEvents.EVENT_FILE_LAUNCHED);
-    eventSubjectSet.add(JajukEvents.EVENT_WEBRADIO_LAUNCHED);
-    eventSubjectSet.add(JajukEvents.EVENT_PLAYER_PAUSE);
-    eventSubjectSet.add(JajukEvents.EVENT_PLAYER_RESUME);
-    eventSubjectSet.add(JajukEvents.EVENT_QUEUE_NEED_REFRESH);
-    eventSubjectSet.add(JajukEvents.EVENT_PLAYER_STOP);
-    eventSubjectSet.add(JajukEvents.EVENT_MUTE_STATE);
-    eventSubjectSet.add(JajukEvents.EVENT_RATE_CHANGED);
+    eventSubjectSet.add(JajukEvents.FILE_LAUNCHED);
+    eventSubjectSet.add(JajukEvents.WEBRADIO_LAUNCHED);
+    eventSubjectSet.add(JajukEvents.PLAYER_PAUSE);
+    eventSubjectSet.add(JajukEvents.PLAYER_RESUME);
+    eventSubjectSet.add(JajukEvents.QUEUE_NEED_REFRESH);
+    eventSubjectSet.add(JajukEvents.PLAYER_STOP);
+    eventSubjectSet.add(JajukEvents.MUTE_STATE);
+    eventSubjectSet.add(JajukEvents.RATE_CHANGED);
     return eventSubjectSet;
   }
 
   public void update(final Event event) {
     JajukEvents subject = event.getSubject();
-    if (JajukEvents.EVENT_FILE_LAUNCHED.equals(subject)) {
+    if (JajukEvents.FILE_LAUNCHED.equals(subject)) {
       updateCurrentTitle();
       ActionManager.getAction(PREVIOUS_TRACK).setEnabled(true);
       ActionManager.getAction(NEXT_TRACK).setEnabled(true);
@@ -511,13 +511,13 @@ public final class JajukSlimbar extends JFrame implements Const, Observer, Mouse
       ActionManager.getAction(NEXT_ALBUM).setEnabled(true);
       ActionManager.getAction(PREVIOUS_ALBUM).setEnabled(true);
       ActionManager.getAction(FINISH_ALBUM).setEnabled(true);
-    } else if (JajukEvents.EVENT_PLAYER_PAUSE.equals(subject)) {
+    } else if (JajukEvents.PLAYER_PAUSE.equals(subject)) {
       jbPlayPause.setIcon(IconLoader.ICON_PLAY_16X16);
-    } else if (JajukEvents.EVENT_PLAYER_RESUME.equals(subject)) {
+    } else if (JajukEvents.PLAYER_RESUME.equals(subject)) {
       jbPlayPause.setIcon(IconLoader.ICON_PAUSE_16X16);
-    } else if (JajukEvents.EVENT_MUTE_STATE.equals(subject)) {
+    } else if (JajukEvents.MUTE_STATE.equals(subject)) {
       MuteAction.setVolumeIcon(100 * Player.getCurrentVolume());
-    } else if (JajukEvents.EVENT_PLAYER_STOP.equals(subject)) {
+    } else if (JajukEvents.PLAYER_STOP.equals(subject)) {
       // reset title
       updateCurrentTitle();
       // Enable the play button to allow restarting the queue but disable if
@@ -534,12 +534,12 @@ public final class JajukSlimbar extends JFrame implements Const, Observer, Mouse
       ActionManager.getAction(STOP_TRACK).setEnabled(false);
       ActionManager.getAction(FAST_FORWARD_TRACK).setEnabled(false);
       ActionManager.getAction(FINISH_ALBUM).setEnabled(false);
-    } else if (JajukEvents.EVENT_WEBRADIO_LAUNCHED.equals(event.getSubject())) {
+    } else if (JajukEvents.WEBRADIO_LAUNCHED.equals(event.getSubject())) {
       updateCurrentTitle();
       ActionManager.getAction(PREVIOUS_TRACK).setEnabled(true);
       ActionManager.getAction(NEXT_TRACK).setEnabled(true);
       ActionManager.getAction(STOP_TRACK).setEnabled(true);
-    } else if (JajukEvents.EVENT_RATE_CHANGED.equals(event.getSubject())) {
+    } else if (JajukEvents.RATE_CHANGED.equals(event.getSubject())) {
       // Update rate button tooltip
       updateCurrentTitle();
     }

@@ -64,7 +64,7 @@ public class RenameAction extends JajukAction {
               UtilGUI.waiting();
               FileManager.getInstance().changeFileName((File) currentItem, newName);
               ((File) currentItem).getDirectory().refresh(false,null);
-              ObservationManager.notify(new Event(JajukEvents.EVENT_DEVICE_REFRESH));
+              ObservationManager.notify(new Event(JajukEvents.DEVICE_REFRESH));
             } catch (Exception er) {
               Log.error(er);
             } finally {
@@ -83,7 +83,7 @@ public class RenameAction extends JajukAction {
               ((Directory) currentItem).getFio().renameTo(newFile);
               DirectoryManager.getInstance().removeDirectory(((Directory) currentItem).getID());
               (((Directory) currentItem).getParentDirectory()).refresh(false,null);
-              ObservationManager.notify(new Event(JajukEvents.EVENT_DEVICE_REFRESH));
+              ObservationManager.notify(new Event(JajukEvents.DEVICE_REFRESH));
             } catch (Exception er) {
               Log.error(er);
             } finally {

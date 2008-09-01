@@ -185,9 +185,9 @@ public abstract class AbstractTreeView extends ViewAdapter {
 
   public void update(Event event) {
     final JajukEvents subject = event.getSubject();
-    if (subject.equals(JajukEvents.EVENT_DEVICE_MOUNT)
-        || subject.equals(JajukEvents.EVENT_DEVICE_UNMOUNT)
-        || subject.equals(JajukEvents.EVENT_DEVICE_REFRESH)) {
+    if (subject.equals(JajukEvents.DEVICE_MOUNT)
+        || subject.equals(JajukEvents.DEVICE_UNMOUNT)
+        || subject.equals(JajukEvents.DEVICE_REFRESH)) {
       SwingWorker sw = new SwingWorker() {
         @Override
         public Object construct() {

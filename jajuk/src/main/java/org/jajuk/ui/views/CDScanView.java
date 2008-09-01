@@ -95,7 +95,7 @@ public class CDScanView extends ViewAdapter implements ActionListener {
               DeviceManager.getInstance().removeDevice(device);
               Messages.showErrorMessage(16);
               // refresh views
-              ObservationManager.notify(new Event(JajukEvents.EVENT_DEVICE_REFRESH));
+              ObservationManager.notify(new Event(JajukEvents.DEVICE_REFRESH));
             }
           }
           return null;

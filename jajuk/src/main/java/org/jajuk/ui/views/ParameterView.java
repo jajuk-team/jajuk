@@ -378,7 +378,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
               return;
             }
           }
-          ObservationManager.notify(new Event(JajukEvents.EVENT_CLEAR_HISTORY));
+          ObservationManager.notify(new Event(JajukEvents.CLEAR_HISTORY));
         } else if (e.getSource() == jbResetRatings) {
           // show confirmation message if required
           if (Conf.getBoolean(Const.CONF_CONFIRMATIONS_RESET_RATINGS)) {
@@ -389,7 +389,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
             }
           }
           if (!DeviceManager.getInstance().isAnyDeviceRefreshing()) {
-            ObservationManager.notify(new Event(JajukEvents.EVENT_RATE_RESET));
+            ObservationManager.notify(new Event(JajukEvents.RATE_RESET));
           } else {
             Messages.showErrorMessage(120);
           }
@@ -482,11 +482,11 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
           ThumbnailManager.cleanThumbs(THUMBNAIL_SIZE_250X250);
           ThumbnailManager.cleanThumbs(THUMBNAIL_SIZE_300X300);
           // Display the catalog view voided
-          ObservationManager.notify(new Event(JajukEvents.EVENT_DEVICE_REFRESH));
+          ObservationManager.notify(new Event(JajukEvents.DEVICE_REFRESH));
           // Launch thumbs creation in another process
           ThumbnailsMaker.launchAllSizes(true);
           // Display the catalog view filed
-          ObservationManager.notify(new Event(JajukEvents.EVENT_DEVICE_REFRESH));
+          ObservationManager.notify(new Event(JajukEvents.DEVICE_REFRESH));
         }
       }
     }.start();
@@ -741,7 +741,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
       Messages.showErrorMessage(113);
     }
     // Force a full refresh (useful for catalog view for instance)
-    ObservationManager.notify(new Event(JajukEvents.EVENT_DEVICE_REFRESH));
+    ObservationManager.notify(new Event(JajukEvents.DEVICE_REFRESH));
     // display a message
     InformationJPanel.getInstance().setMessage(Messages.getString("ParameterView.109"),
         InformationJPanel.INFORMATIVE);
@@ -758,7 +758,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 
   public Set<JajukEvents> getRegistrationKeys() {
     final Set<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
-    eventSubjectSet.add(JajukEvents.EVENT_PARAMETERS_CHANGE);
+    eventSubjectSet.add(JajukEvents.PARAMETERS_CHANGE);
     return eventSubjectSet;
   }
 
@@ -786,7 +786,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
         // synchronize the state
         Properties details = new Properties();
         details.put(Const.DETAIL_ORIGIN, ParameterView.this);
-        ObservationManager.notify(new Event(JajukEvents.EVENT_PARAMETERS_CHANGE, details));
+        ObservationManager.notify(new Event(JajukEvents.PARAMETERS_CHANGE, details));
       }
 
     };
@@ -1581,7 +1581,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
    */
   public void update(final Event event) {
     final JajukEvents subject = event.getSubject();
-    if (JajukEvents.EVENT_PARAMETERS_CHANGE.equals(subject)) {
+    if (JajukEvents.PARAMETERS_CHANGE.equals(subject)) {
       // Ignore this event is thrown by this view itself (to avoid loosing
       // already set options)
       if ((event.getDetails() != null) && (event.getDetails().get(Const.DETAIL_ORIGIN) != null)

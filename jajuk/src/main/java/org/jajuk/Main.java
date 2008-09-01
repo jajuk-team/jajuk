@@ -873,7 +873,7 @@ public final class Main implements Const {
               final Properties pDetail = new Properties();
               pDetail.put(DETAIL_CONTENT, fileToPlay);
               pDetail.put(DETAIL_REASON, "010");
-              ObservationManager.notify(new Event(JajukEvents.EVENT_PLAY_ERROR, pDetail));
+              ObservationManager.notify(new Event(JajukEvents.PLAY_ERROR, pDetail));
               FIFO.setFirstFile(false); // no more first file
             }
           }

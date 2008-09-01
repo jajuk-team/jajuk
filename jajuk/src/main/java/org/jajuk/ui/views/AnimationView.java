@@ -98,24 +98,24 @@ public class AnimationView extends ViewAdapter implements Const, Observer,
 
     ObservationManager.register(this);
     if (FIFO.isStopped()) {
-      update(new Event(JajukEvents.EVENT_ZERO));
+      update(new Event(JajukEvents.ZERO));
     } else {// check if a track or a webradio has already been launched
       if (FIFO.isPlayingRadio()) {
-        update(new Event(JajukEvents.EVENT_WEBRADIO_LAUNCHED, ObservationManager
-            .getDetailsLastOccurence(JajukEvents.EVENT_WEBRADIO_LAUNCHED)));
+        update(new Event(JajukEvents.WEBRADIO_LAUNCHED, ObservationManager
+            .getDetailsLastOccurence(JajukEvents.WEBRADIO_LAUNCHED)));
       } else {
-        update(new Event(JajukEvents.EVENT_FILE_LAUNCHED, ObservationManager
-            .getDetailsLastOccurence(JajukEvents.EVENT_FILE_LAUNCHED)));
+        update(new Event(JajukEvents.FILE_LAUNCHED, ObservationManager
+            .getDetailsLastOccurence(JajukEvents.FILE_LAUNCHED)));
       }
     }
   }
 
   public Set<JajukEvents> getRegistrationKeys() {
     Set<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
-    eventSubjectSet.add(JajukEvents.EVENT_FILE_LAUNCHED);
-    eventSubjectSet.add(JajukEvents.EVENT_WEBRADIO_LAUNCHED);
-    eventSubjectSet.add(JajukEvents.EVENT_ZERO);
-    eventSubjectSet.add(JajukEvents.EVENT_PLAYER_STOP);
+    eventSubjectSet.add(JajukEvents.FILE_LAUNCHED);
+    eventSubjectSet.add(JajukEvents.WEBRADIO_LAUNCHED);
+    eventSubjectSet.add(JajukEvents.ZERO);
+    eventSubjectSet.add(JajukEvents.PLAYER_STOP);
     return eventSubjectSet;
   }
 
@@ -175,7 +175,7 @@ public class AnimationView extends ViewAdapter implements Const, Observer,
    */
   public void update(Event event) {
     JajukEvents subject = event.getSubject();
-    if (subject.equals(JajukEvents.EVENT_FILE_LAUNCHED)) {
+    if (subject.equals(JajukEvents.FILE_LAUNCHED)) {
       File file = FIFO.getCurrentFile();
       if (file != null) {
         String s = "";
@@ -187,10 +187,10 @@ public class AnimationView extends ViewAdapter implements Const, Observer,
         }
         setText(s);
       }
-    } else if (subject.equals(JajukEvents.EVENT_ZERO)
-        || subject.equals(JajukEvents.EVENT_PLAYER_STOP)) {
+    } else if (subject.equals(JajukEvents.ZERO)
+        || subject.equals(JajukEvents.PLAYER_STOP)) {
       setText(Messages.getString("JajukWindow.18"));
-    } else if (subject.equals(JajukEvents.EVENT_WEBRADIO_LAUNCHED)) {
+    } else if (subject.equals(JajukEvents.WEBRADIO_LAUNCHED)) {
       WebRadio radio = (WebRadio) event.getDetails().get(DETAIL_CONTENT);
       if (radio != null) {
         setText(radio.getName());
@@ -210,14 +210,14 @@ public class AnimationView extends ViewAdapter implements Const, Observer,
         iSize = SwingUtilities.getRootPane(AnimationView.this).getWidth(); // current
         // width
         if (FIFO.isStopped()) {
-          update(new Event(JajukEvents.EVENT_ZERO));
+          update(new Event(JajukEvents.ZERO));
         } else {
           if (FIFO.isPlayingRadio()) {
-            update(new Event(JajukEvents.EVENT_WEBRADIO_LAUNCHED, ObservationManager
-                .getDetailsLastOccurence(JajukEvents.EVENT_WEBRADIO_LAUNCHED)));
+            update(new Event(JajukEvents.WEBRADIO_LAUNCHED, ObservationManager
+                .getDetailsLastOccurence(JajukEvents.WEBRADIO_LAUNCHED)));
           } else {
-            update(new Event(JajukEvents.EVENT_FILE_LAUNCHED, ObservationManager
-                .getDetailsLastOccurence(JajukEvents.EVENT_FILE_LAUNCHED)));
+            update(new Event(JajukEvents.FILE_LAUNCHED, ObservationManager
+                .getDetailsLastOccurence(JajukEvents.FILE_LAUNCHED)));
           }
         }
       }

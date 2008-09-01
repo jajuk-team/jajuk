@@ -218,7 +218,7 @@ public class NewPropertyWizard extends CustomPropertyWizard implements KeyListen
       im.applyNewProperty(meta);
       Properties properties = new Properties();
       properties.put(DETAIL_CONTENT, sProperty);
-      Event event = new Event(JajukEvents.EVENT_CUSTOM_PROPERTIES_ADD, properties);
+      Event event = new Event(JajukEvents.CUSTOM_PROPERTIES_ADD, properties);
       ObservationManager.notify(event);
       dispose();
     } else if (ae.getSource().equals(this.okp.getCancelButton())) {

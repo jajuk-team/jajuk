@@ -224,7 +224,7 @@ public class CommandJPanel extends JXPanel implements Const, ActionListener,
   /** Swing Timer to refresh the component */
   private Timer timer = new Timer(JajukTimer.DEFAULT_HEARTBEAT, new ActionListener() {
     public void actionPerformed(ActionEvent e) {
-      update(new Event(JajukEvents.EVENT_HEART_BEAT));
+      update(new Event(JajukEvents.HEART_BEAT));
     }
   });
 
@@ -256,12 +256,12 @@ public class CommandJPanel extends JXPanel implements Const, ActionListener,
       else if (ambiencesCombo.getSelectedIndex() == 1) {
         // reset default ambience
         Conf.setProperty(CONF_DEFAULT_AMBIENCE, "");
-        ObservationManager.notify(new Event(JajukEvents.EVENT_AMBIENCES_SELECTION_CHANGE));
+        ObservationManager.notify(new Event(JajukEvents.AMBIENCES_SELECTION_CHANGE));
       } else {// Selected an ambience
         Ambience ambience = AmbienceManager.getInstance().getAmbienceByName(
             ((JLabel) ambiencesCombo.getSelectedItem()).getText());
         Conf.setProperty(CONF_DEFAULT_AMBIENCE, ambience.getID());
-        ObservationManager.notify(new Event(JajukEvents.EVENT_AMBIENCES_SELECTION_CHANGE));
+        ObservationManager.notify(new Event(JajukEvents.AMBIENCES_SELECTION_CHANGE));
       }
     }
   }
@@ -604,15 +604,15 @@ public class CommandJPanel extends JXPanel implements Const, ActionListener,
     // if a track is playing, display right state
     if (FIFO.isPlayingRadio()) {
       // update initial state
-      update(new Event(JajukEvents.EVENT_WEBRADIO_LAUNCHED));
+      update(new Event(JajukEvents.WEBRADIO_LAUNCHED));
     } else if (!FIFO.isStopped()) {
       // update initial state
-      update(new Event(JajukEvents.EVENT_PLAYER_PLAY, ObservationManager
-          .getDetailsLastOccurence(JajukEvents.EVENT_PLAYER_PLAY)));
+      update(new Event(JajukEvents.PLAYER_PLAY, ObservationManager
+          .getDetailsLastOccurence(JajukEvents.PLAYER_PLAY)));
       // update the history bar
-      update(new Event(JajukEvents.EVENT_FILE_LAUNCHED));
+      update(new Event(JajukEvents.FILE_LAUNCHED));
     } else {
-      update(new Event(JajukEvents.EVENT_PLAYER_STOP));
+      update(new Event(JajukEvents.PLAYER_STOP));
     }
     // start timer
     timer.start();
@@ -620,23 +620,23 @@ public class CommandJPanel extends JXPanel implements Const, ActionListener,
 
   public Set<JajukEvents> getRegistrationKeys() {
     Set<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
-    eventSubjectSet.add(JajukEvents.EVENT_PLAYER_PLAY);
-    eventSubjectSet.add(JajukEvents.EVENT_PLAYER_STOP);
-    eventSubjectSet.add(JajukEvents.EVENT_PLAYER_PAUSE);
-    eventSubjectSet.add(JajukEvents.EVENT_PLAYER_RESUME);
-    eventSubjectSet.add(JajukEvents.EVENT_PLAY_ERROR);
-    eventSubjectSet.add(JajukEvents.EVENT_SPECIAL_MODE);
-    eventSubjectSet.add(JajukEvents.EVENT_ZERO);
-    eventSubjectSet.add(JajukEvents.EVENT_MUTE_STATE);
+    eventSubjectSet.add(JajukEvents.PLAYER_PLAY);
+    eventSubjectSet.add(JajukEvents.PLAYER_STOP);
+    eventSubjectSet.add(JajukEvents.PLAYER_PAUSE);
+    eventSubjectSet.add(JajukEvents.PLAYER_RESUME);
+    eventSubjectSet.add(JajukEvents.PLAY_ERROR);
+    eventSubjectSet.add(JajukEvents.SPECIAL_MODE);
+    eventSubjectSet.add(JajukEvents.ZERO);
+    eventSubjectSet.add(JajukEvents.MUTE_STATE);
     eventSubjectSet.add(JajukEvents.REPEAT_MODE_STATUS_CHANGED);
-    eventSubjectSet.add(JajukEvents.EVENT_FILE_LAUNCHED);
-    eventSubjectSet.add(JajukEvents.EVENT_CLEAR_HISTORY);
-    eventSubjectSet.add(JajukEvents.EVENT_VOLUME_CHANGED);
-    eventSubjectSet.add(JajukEvents.EVENT_DJS_CHANGE);
-    eventSubjectSet.add(JajukEvents.EVENT_AMBIENCES_CHANGE);
-    eventSubjectSet.add(JajukEvents.EVENT_WEBRADIOS_CHANGE);
-    eventSubjectSet.add(JajukEvents.EVENT_AMBIENCES_SELECTION_CHANGE);
-    eventSubjectSet.add(JajukEvents.EVENT_WEBRADIO_LAUNCHED);
+    eventSubjectSet.add(JajukEvents.FILE_LAUNCHED);
+    eventSubjectSet.add(JajukEvents.CLEAR_HISTORY);
+    eventSubjectSet.add(JajukEvents.VOLUME_CHANGED);
+    eventSubjectSet.add(JajukEvents.DJS_CHANGE);
+    eventSubjectSet.add(JajukEvents.AMBIENCES_CHANGE);
+    eventSubjectSet.add(JajukEvents.WEBRADIOS_CHANGE);
+    eventSubjectSet.add(JajukEvents.AMBIENCES_SELECTION_CHANGE);
+    eventSubjectSet.add(JajukEvents.WEBRADIO_LAUNCHED);
     return eventSubjectSet;
   }
 
@@ -683,7 +683,7 @@ public class CommandJPanel extends JXPanel implements Const, ActionListener,
     } catch (Exception e) {
       Log.error(e);
     } finally {
-      ObservationManager.notify(new Event(JajukEvents.EVENT_QUEUE_NEED_REFRESH));
+      ObservationManager.notify(new Event(JajukEvents.QUEUE_NEED_REFRESH));
     }
   }
 
@@ -766,7 +766,7 @@ public class CommandJPanel extends JXPanel implements Const, ActionListener,
     SwingUtilities.invokeLater(new Runnable() {
       public void run() {
         JajukEvents subject = event.getSubject();
-        if (JajukEvents.EVENT_PLAYER_STOP.equals(subject)) {
+        if (JajukEvents.PLAYER_STOP.equals(subject)) {
           ActionManager.getAction(REWIND_TRACK).setEnabled(false);
           // Enable the play button to allow restarting the queue but disable if
           // the queue is void
@@ -788,7 +788,7 @@ public class CommandJPanel extends JXPanel implements Const, ActionListener,
           jcbHistory.setSelectedIndex(-1);
           // reset startup position
           Conf.setProperty(CONF_STARTUP_LAST_POSITION, "0");
-        } else if (JajukEvents.EVENT_ZERO.equals(subject)) {
+        } else if (JajukEvents.ZERO.equals(subject)) {
           ActionManager.getAction(PREVIOUS_TRACK).setEnabled(false);
           ActionManager.getAction(NEXT_TRACK).setEnabled(false);
           ActionManager.getAction(REWIND_TRACK).setEnabled(false);
@@ -805,7 +805,7 @@ public class CommandJPanel extends JXPanel implements Const, ActionListener,
           jcbHistory.setSelectedIndex(-1);
           // reset startup position
           Conf.setProperty(CONF_STARTUP_LAST_POSITION, "0");
-        } else if (JajukEvents.EVENT_PLAYER_PLAY.equals(subject)) {
+        } else if (JajukEvents.PLAYER_PLAY.equals(subject)) {
           jbIncRate.setEnabled(true);
           ActionManager.getAction(PREVIOUS_TRACK).setEnabled(true);
           ActionManager.getAction(NEXT_TRACK).setEnabled(true);
@@ -820,7 +820,7 @@ public class CommandJPanel extends JXPanel implements Const, ActionListener,
           // thrown by the information panel, not directly the
           // PlayPauseAction
           ActionManager.getAction(PLAY_PAUSE_TRACK).setIcon(IconLoader.ICON_PAUSE);
-        } else if (JajukEvents.EVENT_PLAYER_PAUSE.equals(subject)) {
+        } else if (JajukEvents.PLAYER_PAUSE.equals(subject)) {
           // Disable volume control when pausing to fix an mplayer
           // issue:
           // setting the volume resume the file
@@ -832,7 +832,7 @@ public class CommandJPanel extends JXPanel implements Const, ActionListener,
           // thrown by the information panel, not directly the
           // PlayPauseAction
           ActionManager.getAction(PLAY_PAUSE_TRACK).setIcon(IconLoader.ICON_PLAY);
-        } else if (JajukEvents.EVENT_PLAYER_RESUME.equals(subject)) {
+        } else if (JajukEvents.PLAYER_RESUME.equals(subject)) {
           // Enable the volume when resuming (fix a mplayer issue, see
           // above)
           jsVolume.setEnabled(true);
@@ -843,7 +843,7 @@ public class CommandJPanel extends JXPanel implements Const, ActionListener,
           // thrown by the information panel, not directly the
           // PlayPauseAction
           ActionManager.getAction(PLAY_PAUSE_TRACK).setIcon(IconLoader.ICON_PAUSE);
-        } else if (JajukEvents.EVENT_SPECIAL_MODE.equals(subject)) {
+        } else if (JajukEvents.SPECIAL_MODE.equals(subject)) {
           if (ObservationManager.getDetail(event, DETAIL_ORIGIN).equals(DETAIL_SPECIAL_MODE_NORMAL)) {
             // deselect shuffle mode
             Conf.setProperty(CONF_STATE_SHUFFLE, FALSE);
@@ -859,7 +859,7 @@ public class CommandJPanel extends JXPanel implements Const, ActionListener,
             JajukJMenuBar.getInstance().setRepeatSelected(false);
             CommandJPanel.getInstance().jbRepeat.setSelected(false);
           }
-        } else if (JajukEvents.EVENT_FILE_LAUNCHED.equals(subject)) {
+        } else if (JajukEvents.FILE_LAUNCHED.equals(subject)) {
           // Remove history listener, otherwise you'll get a looping
           // event generation
           jcbHistory.removeActionListener(CommandJPanel.this);
@@ -867,35 +867,35 @@ public class CommandJPanel extends JXPanel implements Const, ActionListener,
             jcbHistory.setSelectedIndex(0);
           }
           jcbHistory.addActionListener(CommandJPanel.this);
-        } else if (JajukEvents.EVENT_CLEAR_HISTORY.equals(event.getSubject())) {
+        } else if (JajukEvents.CLEAR_HISTORY.equals(event.getSubject())) {
           // clear selection bar (data itself is clear
           // from the model by History class)
           jcbHistory.setSelectedItem(null);
-        } else if (JajukEvents.EVENT_VOLUME_CHANGED.equals(event.getSubject())) {
+        } else if (JajukEvents.VOLUME_CHANGED.equals(event.getSubject())) {
           jsVolume.removeChangeListener(CommandJPanel.this);
           jsVolume.setValue((int) (100 * Player.getCurrentVolume()));
           jsVolume.addChangeListener(CommandJPanel.this);
           jbMute.setSelected(Player.isMuted());
           MuteAction.setVolumeIcon(100 * Player.getCurrentVolume());
-        } else if (JajukEvents.EVENT_DJS_CHANGE.equals(event.getSubject())) {
+        } else if (JajukEvents.DJS_CHANGE.equals(event.getSubject())) {
           populateDJs();
           // If no more DJ, change the tooltip
           if (DigitalDJManager.getInstance().getDJs().size() == 0) {
             JajukAction action = ActionManager.getAction(JajukActions.DJ);
             action.setShortDescription(Messages.getString("CommandJPanel.18"));
           }
-        } else if (JajukEvents.EVENT_AMBIENCES_CHANGE.equals(event.getSubject())
-            || JajukEvents.EVENT_AMBIENCES_SELECTION_CHANGE.equals(event.getSubject())) {
+        } else if (JajukEvents.AMBIENCES_CHANGE.equals(event.getSubject())
+            || JajukEvents.AMBIENCES_SELECTION_CHANGE.equals(event.getSubject())) {
           populateAmbiences();
           updateTooltips();
-        } else if (JajukEvents.EVENT_WEBRADIOS_CHANGE.equals(event.getSubject())) {
+        } else if (JajukEvents.WEBRADIOS_CHANGE.equals(event.getSubject())) {
           populateWebRadios();
-        } else if (JajukEvents.EVENT_WEBRADIO_LAUNCHED.equals(event.getSubject())) {
+        } else if (JajukEvents.WEBRADIO_LAUNCHED.equals(event.getSubject())) {
           ActionManager.getAction(PREVIOUS_TRACK).setEnabled(true);
           ActionManager.getAction(NEXT_TRACK).setEnabled(true);
           ActionManager.getAction(STOP_TRACK).setEnabled(true);
           populateWebRadios();
-        } else if ((JajukEvents.EVENT_MUTE_STATE.equals(event.getSubject())) &&
+        } else if ((JajukEvents.MUTE_STATE.equals(event.getSubject())) &&
         // Update mute icon look when changing the volume
             (!Player.isMuted())) {
           MuteAction.setVolumeIcon(getCurrentVolume());

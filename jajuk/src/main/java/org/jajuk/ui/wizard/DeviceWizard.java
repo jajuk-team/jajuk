@@ -363,7 +363,7 @@ public class DeviceWizard extends JFrame implements ActionListener, Const {
           Messages.showErrorMessage(112, device.getName());
         }
       }
-      ObservationManager.notify(new Event(JajukEvents.EVENT_DEVICE_REFRESH));
+      ObservationManager.notify(new Event(JajukEvents.DEVICE_REFRESH));
       dispose();
       if (bNew) {
         InformationJPanel.getInstance().setMessage(Messages.getString("DeviceWizard.44"),

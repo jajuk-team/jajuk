@@ -590,7 +590,7 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
               Messages.getString("ActionRefresh.1") + ": " + getName(), 1);
           boolean deep = (result == Device.OPTION_REFRESH_DEEP);
           refresh(deep, reporter);
-          ObservationManager.notify(new Event(JajukEvents.EVENT_DEVICE_REFRESH));
+          ObservationManager.notify(new Event(JajukEvents.DEVICE_REFRESH));
           reporter.done();
         } catch (JajukException e) {
           Messages.showErrorMessage(e.getCode());

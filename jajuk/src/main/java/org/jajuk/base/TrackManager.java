@@ -127,7 +127,7 @@ public final class TrackManager extends ItemManager implements Observer {
   }
 
   public Set<JajukEvents> getRegistrationKeys() {
-    return Collections.singleton(JajukEvents.EVENT_FILE_NAME_CHANGED);
+    return Collections.singleton(JajukEvents.FILE_NAME_CHANGED);
   }
 
   /**
@@ -247,7 +247,7 @@ public final class TrackManager extends ItemManager implements Observer {
       // if current track album name is changed, notify it
       if (FIFO.getCurrentFile() != null
           && FIFO.getCurrentFile().getTrack().getAlbum().equals(track.getAlbum())) {
-        ObservationManager.notify(new Event(JajukEvents.EVENT_ALBUM_CHANGED));
+        ObservationManager.notify(new Event(JajukEvents.ALBUM_CHANGED));
       }
       // register the new album
       Album newAlbum = AlbumManager.getInstance().registerAlbum(sNewAlbum);
@@ -302,7 +302,7 @@ public final class TrackManager extends ItemManager implements Observer {
       // if current track author name is changed, notify it
       if (FIFO.getCurrentFile() != null
           && FIFO.getCurrentFile().getTrack().getAuthor().equals(track.getAuthor())) {
-        ObservationManager.notify(new Event(JajukEvents.EVENT_AUTHOR_CHANGED));
+        ObservationManager.notify(new Event(JajukEvents.AUTHOR_CHANGED));
       }
       // register the new item
       Author newAuthor = AuthorManager.getInstance().registerAuthor(sNewAuthor);
@@ -577,7 +577,7 @@ public final class TrackManager extends ItemManager implements Observer {
       postChange(track, newTrack, filter);
       // if current track name is changed, notify it
       if (FIFO.getCurrentFile() != null && FIFO.getCurrentFile().getTrack().equals(track)) {
-        ObservationManager.notify(new Event(JajukEvents.EVENT_TRACK_CHANGED));
+        ObservationManager.notify(new Event(JajukEvents.TRACK_CHANGED));
       }
       return newTrack;
     }
@@ -659,7 +659,7 @@ public final class TrackManager extends ItemManager implements Observer {
    */
   public void update(Event event) {
     JajukEvents subject = event.getSubject();
-    if (JajukEvents.EVENT_FILE_NAME_CHANGED.equals(subject)) {
+    if (JajukEvents.FILE_NAME_CHANGED.equals(subject)) {
       Properties properties = event.getDetails();
       File fNew = (File) properties.get(DETAIL_NEW);
       File fileOld = (File) properties.get(DETAIL_OLD);

@@ -473,7 +473,7 @@ public class Device extends PhysicalItem implements Const, Comparable<Device> {
       // Actual refresh
       refreshCommand((i == Device.OPTION_REFRESH_DEEP));
       // notify views to refresh
-      ObservationManager.notify(new Event(JajukEvents.EVENT_DEVICE_REFRESH));
+      ObservationManager.notify(new Event(JajukEvents.DEVICE_REFRESH));
       // cleanup logical items
       org.jajuk.base.Collection.cleanupLogical();
       // commit collection at each refresh (can be useful if application
@@ -572,9 +572,9 @@ public class Device extends PhysicalItem implements Const, Comparable<Device> {
     bMounted = true;
     // notify views to refresh if needed
     if (bUIRefresh) {
-      ObservationManager.notify(new Event(JajukEvents.EVENT_DEVICE_MOUNT));
+      ObservationManager.notify(new Event(JajukEvents.DEVICE_MOUNT));
     }
-    ObservationManager.notify(new Event(JajukEvents.EVENT_DEVICE_REFRESH));
+    ObservationManager.notify(new Event(JajukEvents.DEVICE_REFRESH));
   }
 
   /**
@@ -1103,7 +1103,7 @@ public class Device extends PhysicalItem implements Const, Comparable<Device> {
     }
     bMounted = false;
     if (bUIRefresh) {
-      ObservationManager.notify(new Event(JajukEvents.EVENT_DEVICE_UNMOUNT));
+      ObservationManager.notify(new Event(JajukEvents.DEVICE_UNMOUNT));
     }
   }
 

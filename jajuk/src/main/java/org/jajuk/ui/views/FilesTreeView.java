@@ -161,11 +161,11 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
 
   public Set<JajukEvents> getRegistrationKeys() {
     Set<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
-    eventSubjectSet.add(JajukEvents.EVENT_FILE_LAUNCHED);
-    eventSubjectSet.add(JajukEvents.EVENT_DEVICE_MOUNT);
-    eventSubjectSet.add(JajukEvents.EVENT_DEVICE_UNMOUNT);
-    eventSubjectSet.add(JajukEvents.EVENT_DEVICE_REFRESH);
-    eventSubjectSet.add(JajukEvents.EVENT_CDDB_WIZARD);
+    eventSubjectSet.add(JajukEvents.FILE_LAUNCHED);
+    eventSubjectSet.add(JajukEvents.DEVICE_MOUNT);
+    eventSubjectSet.add(JajukEvents.DEVICE_UNMOUNT);
+    eventSubjectSet.add(JajukEvents.DEVICE_REFRESH);
+    eventSubjectSet.add(JajukEvents.CDDB_WIZARD);
     return eventSubjectSet;
   }
 
@@ -562,7 +562,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
           Properties properties = new Properties();
           properties.put(DETAIL_SELECTION, selectedRecursively);
           properties.put(DETAIL_ORIGIN, PerspectiveManager.getCurrentPerspective().getID());
-          ObservationManager.notify(new Event(JajukEvents.EVENT_SYNC_TREE_TABLE, properties));
+          ObservationManager.notify(new Event(JajukEvents.SYNC_TREE_TABLE, properties));
         }
         // Enable CDDB retagging only for a single directory selection
         jmiCDDBWizard.setEnabled(alSelected.size() == 1 && alSelected.get(0) instanceof Directory);

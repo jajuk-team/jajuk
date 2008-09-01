@@ -381,9 +381,9 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 
   public Set<JajukEvents> getRegistrationKeys() {
     Set<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
-    eventSubjectSet.add(JajukEvents.EVENT_DEVICE_REFRESH);
-    eventSubjectSet.add(JajukEvents.EVENT_COVER_DEFAULT_CHANGED);
-    eventSubjectSet.add(JajukEvents.EVENT_PARAMETERS_CHANGE);
+    eventSubjectSet.add(JajukEvents.DEVICE_REFRESH);
+    eventSubjectSet.add(JajukEvents.COVER_DEFAULT_CHANGED);
+    eventSubjectSet.add(JajukEvents.PARAMETERS_CHANGE);
     return eventSubjectSet;
   }
 
@@ -410,8 +410,8 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
    * @see org.jajuk.ui.Observer#update(java.lang.String)
    */
   public void update(Event event) {
-    if (JajukEvents.EVENT_DEVICE_REFRESH.equals(event.getSubject())
-        || JajukEvents.EVENT_COVER_DEFAULT_CHANGED.equals(event.getSubject())) {
+    if (JajukEvents.DEVICE_REFRESH.equals(event.getSubject())
+        || JajukEvents.COVER_DEFAULT_CHANGED.equals(event.getSubject())) {
       // save selected item
       LocalAlbumThumbnail oldItem = CatalogView.this.item;
       // reset paging

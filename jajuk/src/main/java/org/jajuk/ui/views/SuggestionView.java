@@ -179,10 +179,10 @@ public class SuggestionView extends ViewAdapter implements Const, Observer {
 
   public Set<JajukEvents> getRegistrationKeys() {
     Set<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
-    eventSubjectSet.add(JajukEvents.EVENT_FILE_LAUNCHED);
-    eventSubjectSet.add(JajukEvents.EVENT_PARAMETERS_CHANGE);
-    eventSubjectSet.add(JajukEvents.EVENT_COVER_DEFAULT_CHANGED);
-    eventSubjectSet.add(JajukEvents.EVENT_SUGGESTIONS_REFRESH);
+    eventSubjectSet.add(JajukEvents.FILE_LAUNCHED);
+    eventSubjectSet.add(JajukEvents.PARAMETERS_CHANGE);
+    eventSubjectSet.add(JajukEvents.COVER_DEFAULT_CHANGED);
+    eventSubjectSet.add(JajukEvents.SUGGESTIONS_REFRESH);
     return eventSubjectSet;
   }
 
@@ -397,7 +397,7 @@ public class SuggestionView extends ViewAdapter implements Const, Observer {
    */
   public void update(Event event) {
     JajukEvents subject = event.getSubject();
-    if (subject.equals(JajukEvents.EVENT_FILE_LAUNCHED)) {
+    if (subject.equals(JajukEvents.FILE_LAUNCHED)) {
       comp++;
       // Change local collection suggestions every 10 track plays
       if (comp % 10 == 0) {
@@ -405,12 +405,12 @@ public class SuggestionView extends ViewAdapter implements Const, Observer {
       }
       // update last.fm panels
       refreshLastFMCollectionTabs();
-    } else if (subject.equals(JajukEvents.EVENT_PARAMETERS_CHANGE) && isLastFMTabsVisible()) {
+    } else if (subject.equals(JajukEvents.PARAMETERS_CHANGE) && isLastFMTabsVisible()) {
       // The show/hide unmounted may have changed, refresh local
       // collection panels
       refreshLastFMCollectionTabs();
-    } else if (subject.equals(JajukEvents.EVENT_COVER_DEFAULT_CHANGED)
-        || subject.equals(JajukEvents.EVENT_SUGGESTIONS_REFRESH)) {
+    } else if (subject.equals(JajukEvents.COVER_DEFAULT_CHANGED)
+        || subject.equals(JajukEvents.SUGGESTIONS_REFRESH)) {
       // New default cover, refresh the view
       refreshLocalCollectionTabs(false);
     }

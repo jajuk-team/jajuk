@@ -138,11 +138,11 @@ public class LyricsView extends ViewAdapter implements Observer {
     reset();
     // check if a track has already been launched
     if (FIFO.isPlayingRadio()) {
-      update(new Event(JajukEvents.EVENT_WEBRADIO_LAUNCHED, ObservationManager
-          .getDetailsLastOccurence(JajukEvents.EVENT_WEBRADIO_LAUNCHED)));
+      update(new Event(JajukEvents.WEBRADIO_LAUNCHED, ObservationManager
+          .getDetailsLastOccurence(JajukEvents.WEBRADIO_LAUNCHED)));
     } else if (!FIFO.isStopped()) {
-      update(new Event(JajukEvents.EVENT_FILE_LAUNCHED, ObservationManager
-          .getDetailsLastOccurence(JajukEvents.EVENT_FILE_LAUNCHED)));
+      update(new Event(JajukEvents.FILE_LAUNCHED, ObservationManager
+          .getDetailsLastOccurence(JajukEvents.FILE_LAUNCHED)));
     }
   }
 
@@ -163,11 +163,11 @@ public class LyricsView extends ViewAdapter implements Observer {
   public Set<JajukEvents> getRegistrationKeys() {
     final Set<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
 
-    eventSubjectSet.add(JajukEvents.EVENT_FILE_LAUNCHED);
-    eventSubjectSet.add(JajukEvents.EVENT_ZERO);
-    eventSubjectSet.add(JajukEvents.EVENT_PLAYER_STOP);
-    eventSubjectSet.add(JajukEvents.EVENT_WEBRADIO_LAUNCHED);
-    eventSubjectSet.add(JajukEvents.EVENT_LYRICS_DOWNLOADED);
+    eventSubjectSet.add(JajukEvents.FILE_LAUNCHED);
+    eventSubjectSet.add(JajukEvents.ZERO);
+    eventSubjectSet.add(JajukEvents.PLAYER_STOP);
+    eventSubjectSet.add(JajukEvents.WEBRADIO_LAUNCHED);
+    eventSubjectSet.add(JajukEvents.LYRICS_DOWNLOADED);
     return eventSubjectSet;
   }
 
@@ -178,7 +178,7 @@ public class LyricsView extends ViewAdapter implements Observer {
    */
   public void update(final Event event) {
     final JajukEvents subject = event.getSubject();
-    if (subject.equals(JajukEvents.EVENT_FILE_LAUNCHED)) {
+    if (subject.equals(JajukEvents.FILE_LAUNCHED)) {
       final File file = FIFO.getCurrentFile();
       // file is null is view started with no playing track (the event is
       // simulated in initUI())
@@ -210,14 +210,14 @@ public class LyricsView extends ViewAdapter implements Observer {
             sURL = "<none>";
           }
           // Notify to make UI changes
-          ObservationManager.notify(new Event(JajukEvents.EVENT_LYRICS_DOWNLOADED));
+          ObservationManager.notify(new Event(JajukEvents.LYRICS_DOWNLOADED));
         }
 
       }.start();
-    } else if (JajukEvents.EVENT_ZERO.equals(subject)
-        || JajukEvents.EVENT_PLAYER_STOP.equals(subject)) {
+    } else if (JajukEvents.ZERO.equals(subject)
+        || JajukEvents.PLAYER_STOP.equals(subject)) {
       reset();
-    } else if (subject.equals(JajukEvents.EVENT_WEBRADIO_LAUNCHED)) {
+    } else if (subject.equals(JajukEvents.WEBRADIO_LAUNCHED)) {
       SwingUtilities.invokeLater(new Runnable() {
 
         public void run() {
@@ -231,7 +231,7 @@ public class LyricsView extends ViewAdapter implements Observer {
         }
 
       });
-    } else if (subject.equals(JajukEvents.EVENT_LYRICS_DOWNLOADED)) {
+    } else if (subject.equals(JajukEvents.LYRICS_DOWNLOADED)) {
       SwingUtilities.invokeLater(new Runnable() {
 
         public void run() {

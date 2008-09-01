@@ -131,7 +131,7 @@ public final class FontManager implements Const, Observer {
   public Set<JajukEvents> getRegistrationKeys() {
     Set<JajukEvents> subjects = new HashSet<JajukEvents>(2);
     // Register parameter changes to check new font size
-    subjects.add(JajukEvents.EVENT_PARAMETERS_CHANGE);
+    subjects.add(JajukEvents.PARAMETERS_CHANGE);
     return subjects;
   }
 
@@ -166,7 +166,7 @@ public final class FontManager implements Const, Observer {
    */
   public void update(Event event) {
     JajukEvents subject = event.getSubject();
-    if (JajukEvents.EVENT_PARAMETERS_CHANGE.equals(subject)) {
+    if (JajukEvents.PARAMETERS_CHANGE.equals(subject)) {
       // force to register again all fonts to get new sizes
       registerFonts();
     }

@@ -92,7 +92,7 @@ public class DeleteAction extends JajukAction {
         if (i == JOptionPane.YES_OPTION) {
           PlaylistManager.getInstance().removePlaylistFile(plf);
           // requires device refresh
-          ObservationManager.notify(new Event(JajukEvents.EVENT_DEVICE_REFRESH));
+          ObservationManager.notify(new Event(JajukEvents.DEVICE_REFRESH));
         }
       }
     }
@@ -140,7 +140,7 @@ public class DeleteAction extends JajukAction {
             Messages.showWarningMessage(Messages.getErrorMessage(172) + "\n\n" + rejString);
           }
           // requires device refresh
-          ObservationManager.notify(new Event(JajukEvents.EVENT_DEVICE_REFRESH));
+          ObservationManager.notify(new Event(JajukEvents.DEVICE_REFRESH));
         }
       }.start();
 
@@ -173,7 +173,7 @@ public class DeleteAction extends JajukAction {
             Messages.showWarningMessage(Messages.getErrorMessage(173) + "\n\n" + rejString);
           }
           // requires device refresh
-          ObservationManager.notify(new Event(JajukEvents.EVENT_DEVICE_REFRESH));
+          ObservationManager.notify(new Event(JajukEvents.DEVICE_REFRESH));
         }
       }
     }
@@ -222,7 +222,7 @@ public class DeleteAction extends JajukAction {
             Messages.showWarningMessage(Messages.getErrorMessage(173) + "\n\n" + rejString);
           }
           // requires device refresh
-          ObservationManager.notify(new Event(JajukEvents.EVENT_DEVICE_REFRESH));
+          ObservationManager.notify(new Event(JajukEvents.DEVICE_REFRESH));
         }
       }.start();
     }

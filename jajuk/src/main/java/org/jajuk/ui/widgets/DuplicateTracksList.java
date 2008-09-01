@@ -143,7 +143,7 @@ public class DuplicateTracksList extends JPanel implements ListSelectionListener
       }
 
       populateList(allFiles);
-      ObservationManager.notify(new Event(JajukEvents.EVENT_DEVICE_REFRESH));
+      ObservationManager.notify(new Event(JajukEvents.DEVICE_REFRESH));
     }
 
     private void deleteFilefromList(int index) {

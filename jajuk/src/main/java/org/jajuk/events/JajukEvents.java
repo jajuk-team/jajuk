@@ -21,143 +21,115 @@
 package org.jajuk.events;
 
 public enum JajukEvents {
-  // exit has be required
-  EVENT_EXIT,
   // repeat mode changed
-  EVENT_REPEAT_MODE_STATUS_CHANGED,
-  // shuffle mode changed
-  EVENT_SHUFFLE_MODE_STATUS_CHANGED,
-  // continue mode changed
-  EVENT_CONTINUE_MODE_STATUS_CHANGED,
-  // intro mode changed
-  EVENT_INTRO_MODE_STATUS_CHANGED,
+  REPEAT_MODE_STATUS_CHANGED,
   // new device
-  EVENT_DEVICE_NEW,
+  DEVICE_NEW,
   // removed device
-  EVENT_DEVICE_DELETE,
+  DEVICE_DELETE,
   // parameters change
-  EVENT_PARAMETERS_CHANGE,
+  PARAMETERS_CHANGE,
   // device properties display
-  EVENT_DEVICE_PROPERTIES,
+  DEVICE_PROPERTIES,
   // mount device
-  EVENT_DEVICE_MOUNT,
+  DEVICE_MOUNT,
   // unmount a device
-  EVENT_DEVICE_UNMOUNT,
+  DEVICE_UNMOUNT,
   // test a device
-  EVENT_DEVICE_TEST,
+  DEVICE_TEST,
   // refresh a device
-  EVENT_DEVICE_REFRESH,
+  DEVICE_REFRESH,
   // sync. a device
-  EVENT_DEVICE_SYNCHRO,
+  DEVICE_SYNCHRO,
   // refresh a view is required
-  EVENT_VIEW_REFRESH_REQUEST,
-  // close a view
-  EVENT_VIEW_CLOSE_REQUEST,
-  // show a view
-  EVENT_VIEW_SHOW_REQUEST,
-  // change
-  EVENT_VIEW_SHOW_STATUS_CHANGED_REQUEST,
-  // The help should be displayed
-  EVENT_VIEW_RESTORE_DEFAULTS, EVENT_VIEW_COMMAND_SELECT_HISTORY_ITEM, EVENT_HELP_REQUIRED,
+  VIEW_REFRESH_REQUEST,
   // the stop button has been pressed
-  EVENT_PLAYER_STOP,
+  PLAYER_STOP,
   // the play button has been pressed
-  EVENT_PLAYER_PLAY,
+  PLAYER_PLAY,
   // the pause button has been pressed
-  EVENT_PLAYER_PAUSE,
+  PLAYER_PAUSE,
   // the resume button has been pressed
-  EVENT_PLAYER_RESUME,
+  PLAYER_RESUME,
   // Queue should be refreshed
-  EVENT_QUEUE_NEED_REFRESH,
+  QUEUE_NEED_REFRESH,
   // a file has been launched by the fifo
-  EVENT_FILE_LAUNCHED,
+  FILE_LAUNCHED,
   // heart beat for general use to refresh subscribers
   // every n secs
-  EVENT_HEART_BEAT,
+  HEART_BEAT,
   // a web radio has been launched
-  EVENT_WEBRADIO_LAUNCHED,
+  WEBRADIO_LAUNCHED,
   // a reinit has been required
-  EVENT_ZERO,
-  // a new element has been added in the history
-  EVENT_ADD_HISTORY_ITEM,
+  ZERO,
   // special mode (global shuffle, novelties, bestof...)
-  EVENT_SPECIAL_MODE,
-  // an error occured during a play
-  EVENT_PLAY_ERROR,
-  // send at the end of a track
-  EVENT_PLAY_FINISHED,
+  SPECIAL_MODE,
+  // an error occurred during a play
+  PLAY_ERROR,
   // mute state changed
-  EVENT_MUTE_STATE,
+  MUTE_STATE,
   // sync table and tree views
-  EVENT_SYNC_TREE_TABLE,
+  SYNC_TREE_TABLE,
   // clear history
-  EVENT_CLEAR_HISTORY,
+  CLEAR_HISTORY,
   // launch first time wizard
-  EVENT_WIZARD,
-  // quality feedback agent
-  EVENT_QUALITY,
+  WIZARD,
   // volume changed
-  EVENT_VOLUME_CHANGED,
-  // create a new property
-  EVENT_CREATE_PROPERTY,
-  // delete property
-  EVENT_DELETE_PROPERTY,
+  VOLUME_CHANGED,
   // new custom property
-  EVENT_CUSTOM_PROPERTIES_ADD,
+  CUSTOM_PROPERTIES_ADD,
   // remove custom property
-  EVENT_CUSTOM_PROPERTIES_REMOVE,
+  CUSTOM_PROPERTIES_REMOVE,
   // file name change
-  EVENT_FILE_NAME_CHANGED,
+  FILE_NAME_CHANGED,
   // Style name change
-  EVENT_STYLE_NAME_CHANGED,
+  STYLE_NAME_CHANGED,
   // file rate change
-  EVENT_RATE_CHANGED,
-  // show tip of the day
-  EVENT_TIP_OF_THE_DAY,
+  RATE_CHANGED,
   // Cddb wizard required
-  EVENT_CDDB_WIZARD,
+  CDDB_WIZARD,
   // logical tree osrt method changed
-  EVENT_LOGICAL_TREE_SORT,
+  LOGICAL_TREE_SORT,
   // cover default changed
-  EVENT_COVER_DEFAULT_CHANGED,
+  COVER_DEFAULT_CHANGED,
   // clear table selection
-  EVENT_TABLE_CLEAR_SELECTION,
+  TABLE_CLEAR_SELECTION,
   // DJ creation or removal
-  EVENT_DJS_CHANGE,
+  DJS_CHANGE,
   // One or more ambiences have been
   // removed/added/changed
-  EVENT_AMBIENCES_CHANGE,
+  AMBIENCES_CHANGE,
   // One or more webradios have been
   // removed/added/changed
-  EVENT_WEBRADIOS_CHANGE,
+  WEBRADIOS_CHANGE,
   // user changed current ambience
-  EVENT_AMBIENCES_SELECTION_CHANGE,
+  AMBIENCES_SELECTION_CHANGE,
   // An ambience has been removed
-  EVENT_AMBIENCE_REMOVED,
+  AMBIENCE_REMOVED,
   // Current played track author name has been
   // changed
-  EVENT_AUTHOR_CHANGED,
+  AUTHOR_CHANGED,
   // Current played track album name has been
   // changed
-  EVENT_ALBUM_CHANGED,
+  ALBUM_CHANGED,
   // Current played track album name has been
   // changed
-  EVENT_TRACK_CHANGED,
+  TRACK_CHANGED,
   // Language changed
-  EVENT_LANGUAGE_CHANGED,
+  LANGUAGE_CHANGED,
   // Perspective changed
-  EVENT_PERPECTIVE_CHANGED,
+  PERPECTIVE_CHANGED,
   // Current track is finished
-  EVENT_FILE_FINISHED,
+  FILE_FINISHED,
   // Lyrics data has been downloaded
-  EVENT_LYRICS_DOWNLOADED,
+  LYRICS_DOWNLOADED,
   // A file has been copied (used by prepare party)
-  EVENT_FILE_COPIED,
+  FILE_COPIED,
   // Covers should be refreshed
-  EVENT_COVER_NEED_REFRESH,
+  COVER_NEED_REFRESH,
   // Ratings have been reset
-  EVENT_RATE_RESET,
+  RATE_RESET,
   // suggestion view should be refreshed
-  EVENT_SUGGESTIONS_REFRESH,
+  SUGGESTIONS_REFRESH,
   
 }

@@ -55,6 +55,6 @@ public class FinishAlbumAction extends JajukAction {
     FIFO.computesPlanned(true); // update planned list
     Properties properties = new Properties();
     properties.put(DETAIL_ORIGIN, DETAIL_SPECIAL_MODE_NORMAL);
-    ObservationManager.notify(new Event(JajukEvents.EVENT_SPECIAL_MODE, properties));
+    ObservationManager.notify(new Event(JajukEvents.SPECIAL_MODE, properties));
   }
 }

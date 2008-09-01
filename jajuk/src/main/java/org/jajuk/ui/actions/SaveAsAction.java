@@ -63,7 +63,7 @@ public class SaveAsAction extends JajukAction {
         playlist.saveAs();
         InformationJPanel.getInstance().setMessage(
             Messages.getString("AbstractPlaylistEditorView.22"), InformationJPanel.INFORMATIVE);
-        ObservationManager.notify(new Event(JajukEvents.EVENT_DEVICE_REFRESH));
+        ObservationManager.notify(new Event(JajukEvents.DEVICE_REFRESH));
       } catch (JajukException je) {
         Log.error(je);
         Messages.showErrorMessage(je.getCode());

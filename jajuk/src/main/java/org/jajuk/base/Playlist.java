@@ -808,14 +808,14 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
               // Notify that a file has been copied
               Properties properties = new Properties();
               properties.put(DETAIL_CONTENT, entry.getName());
-              ObservationManager.notify(new Event(JajukEvents.EVENT_FILE_COPIED, properties));
+              ObservationManager.notify(new Event(JajukEvents.FILE_COPIED, properties));
             }
 
             bw.flush();
             bw.close();
             // Send a last event with null properties to inform the client that
             // the party is done
-            ObservationManager.notify(new Event(JajukEvents.EVENT_FILE_COPIED));
+            ObservationManager.notify(new Event(JajukEvents.FILE_COPIED));
 
           } catch (final Exception e) {
             Log.error(e);

@@ -435,12 +435,12 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
 
   public Set<JajukEvents> getRegistrationKeys() {
     Set<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
-    eventSubjectSet.add(JajukEvents.EVENT_CUSTOM_PROPERTIES_ADD);
-    eventSubjectSet.add(JajukEvents.EVENT_CUSTOM_PROPERTIES_REMOVE);
-    eventSubjectSet.add(JajukEvents.EVENT_DEVICE_REFRESH);
-    eventSubjectSet.add(JajukEvents.EVENT_FILE_COPIED);
-    eventSubjectSet.add(JajukEvents.EVENT_VIEW_REFRESH_REQUEST);
-    eventSubjectSet.add(JajukEvents.EVENT_QUEUE_NEED_REFRESH);
+    eventSubjectSet.add(JajukEvents.CUSTOM_PROPERTIES_ADD);
+    eventSubjectSet.add(JajukEvents.CUSTOM_PROPERTIES_REMOVE);
+    eventSubjectSet.add(JajukEvents.DEVICE_REFRESH);
+    eventSubjectSet.add(JajukEvents.FILE_COPIED);
+    eventSubjectSet.add(JajukEvents.VIEW_REFRESH_REQUEST);
+    eventSubjectSet.add(JajukEvents.QUEUE_NEED_REFRESH);
     return eventSubjectSet;
   }
 
@@ -480,11 +480,11 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
           // wrong
           // column changed of playlist
           // current playlist has changed
-          if (JajukEvents.EVENT_DEVICE_REFRESH.equals(subject)
+          if (JajukEvents.DEVICE_REFRESH.equals(subject)
           // We listen this event to paint the new running track in table
-              || JajukEvents.EVENT_QUEUE_NEED_REFRESH.equals(subject)) {
+              || JajukEvents.QUEUE_NEED_REFRESH.equals(subject)) {
             refreshCurrentPlaylist();
-          } else if (JajukEvents.EVENT_FILE_COPIED.equals(subject)) {
+          } else if (JajukEvents.FILE_COPIED.equals(subject)) {
             Properties properties = event.getDetails();
             if (properties == null) {
               // if no property, the party is done
@@ -497,7 +497,7 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
                         InformationJPanel.INFORMATIVE);
               }
             }
-          } else if (JajukEvents.EVENT_CUSTOM_PROPERTIES_ADD.equals(subject)) {
+          } else if (JajukEvents.CUSTOM_PROPERTIES_ADD.equals(subject)) {
             Properties properties = event.getDetails();
             if (properties == null) {
               // can be null at view populate
@@ -510,7 +510,7 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
             setRenderers();
             editorTable.addColumnIntoConf((String) properties.get(DETAIL_CONTENT));
             editorTable.showColumns(editorTable.getColumnsConf());
-          } else if (JajukEvents.EVENT_CUSTOM_PROPERTIES_REMOVE.equals(subject)) {
+          } else if (JajukEvents.CUSTOM_PROPERTIES_REMOVE.equals(subject)) {
             Properties properties = event.getDetails();
             if (properties == null) { // can be null at view
               // populate
@@ -523,7 +523,7 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
             // remove item from configuration cols
             editorTable.removeColumnFromConf((String) properties.get(DETAIL_CONTENT));
             editorTable.showColumns(editorTable.getColumnsConf());
-          } else if (JajukEvents.EVENT_VIEW_REFRESH_REQUEST.equals(subject)) {
+          } else if (JajukEvents.VIEW_REFRESH_REQUEST.equals(subject)) {
             // force filter to refresh if the events has been triggered by the
             // table itself after a column change
             JTable table = (JTable) event.getDetails().get(DETAIL_CONTENT);
@@ -658,7 +658,7 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
             plf.saveAs();
             // Force a table refresh to show the new playlist if it has been
             // saved in a known device
-            ObservationManager.notify(new Event(JajukEvents.EVENT_DEVICE_REFRESH));
+            ObservationManager.notify(new Event(JajukEvents.DEVICE_REFRESH));
           } catch (JajukException je) {
             Log.error(je);
             Messages.showErrorMessage(je.getCode());

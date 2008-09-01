@@ -291,7 +291,7 @@ public final class JajukJMenuBar extends JMenuBar implements Const, Observer {
       public void actionPerformed(ActionEvent e) {
         Conf.setProperty(CONF_SHOW_POPUPS, Boolean.toString(jcbShowPopups.isSelected()));
         // force parameter view to take this into account
-        ObservationManager.notify(new Event(JajukEvents.EVENT_PARAMETERS_CHANGE));
+        ObservationManager.notify(new Event(JajukEvents.PARAMETERS_CHANGE));
       }
     });
 
@@ -303,7 +303,7 @@ public final class JajukJMenuBar extends JMenuBar implements Const, Observer {
         Conf.setProperty(CONF_OPTIONS_SYNC_TABLE_TREE, Boolean.toString(jcbSyncTableTree
             .isSelected()));
         // force parameter view to take this into account
-        ObservationManager.notify(new Event(JajukEvents.EVENT_PARAMETERS_CHANGE));
+        ObservationManager.notify(new Event(JajukEvents.PARAMETERS_CHANGE));
       }
     });
 
@@ -396,7 +396,7 @@ public final class JajukJMenuBar extends JMenuBar implements Const, Observer {
 
   public Set<JajukEvents> getRegistrationKeys() {
     Set<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
-    eventSubjectSet.add(JajukEvents.EVENT_PARAMETERS_CHANGE);
+    eventSubjectSet.add(JajukEvents.PARAMETERS_CHANGE);
     return eventSubjectSet;
   }
 
@@ -435,7 +435,7 @@ public final class JajukJMenuBar extends JMenuBar implements Const, Observer {
    * @see org.jajuk.ui.Observer#update(java.lang.String)
    */
   public void update(Event event) {
-    if (JajukEvents.EVENT_PARAMETERS_CHANGE.equals(event.getSubject())) {
+    if (JajukEvents.PARAMETERS_CHANGE.equals(event.getSubject())) {
       jcbShowPopups.setSelected(Conf.getBoolean(CONF_SHOW_POPUPS));
       jmiUnmounted.setSelected(Conf.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED));
       jcbSyncTableTree.setSelected(Conf.getBoolean(CONF_OPTIONS_SYNC_TABLE_TREE));

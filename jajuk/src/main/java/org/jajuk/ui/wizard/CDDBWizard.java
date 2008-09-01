@@ -294,7 +294,7 @@ public class CDDBWizard extends JajukJDialog implements Const, ActionListener {
       }
       InformationJPanel.getInstance().setMessage(Messages.getString("Success"),
           InformationJPanel.INFORMATIVE);
-      ObservationManager.notify(new Event(JajukEvents.EVENT_DEVICE_REFRESH));
+      ObservationManager.notify(new Event(JajukEvents.DEVICE_REFRESH));
     }
   }
 

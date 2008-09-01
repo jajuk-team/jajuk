@@ -1456,6 +1456,6 @@ public class DigitalDJWizard extends Wizard implements Const {
       DigitalDJManager.commit(dj);
     }
     // Refresh command panel (usefull for ie if DJ names changed)
-    ObservationManager.notify(new Event(JajukEvents.EVENT_DJS_CHANGE));
+    ObservationManager.notify(new Event(JajukEvents.DJS_CHANGE));
   }
 }

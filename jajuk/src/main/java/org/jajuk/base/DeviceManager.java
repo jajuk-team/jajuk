@@ -407,7 +407,7 @@ public final class DeviceManager extends ItemManager {
       if (bNeedUIRefresh) {
         Collection.cleanupLogical();
         // notify views to refresh
-        ObservationManager.notify(new Event(JajukEvents.EVENT_DEVICE_REFRESH));
+        ObservationManager.notify(new Event(JajukEvents.DEVICE_REFRESH));
       }
       // Display end of refresh message with stats
       l = System.currentTimeMillis() - l;

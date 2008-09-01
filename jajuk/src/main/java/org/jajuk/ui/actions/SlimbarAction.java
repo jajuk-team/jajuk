@@ -63,6 +63,6 @@ public class SlimbarAction extends JajukAction {
       JajukWindow.getInstance().display(false);
     }
     // Notify that slimbar visibility change (menu bar is interested in it)
-    ObservationManager.notify(new Event(JajukEvents.EVENT_PARAMETERS_CHANGE));
+    ObservationManager.notify(new Event(JajukEvents.PARAMETERS_CHANGE));
   }
 }

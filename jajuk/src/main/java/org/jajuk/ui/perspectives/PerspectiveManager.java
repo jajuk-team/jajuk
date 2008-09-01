@@ -178,8 +178,8 @@ public final class PerspectiveManager implements Const {
         Conf.setProperty(CONF_PERSPECTIVE_DEFAULT, perspective.getID());
         UtilGUI.stopWaiting();
         // Emit a event
-        ObservationManager.notify(new Event(JajukEvents.EVENT_PERPECTIVE_CHANGED,
-            ObservationManager.getDetailsLastOccurence(JajukEvents.EVENT_FILE_LAUNCHED)));
+        ObservationManager.notify(new Event(JajukEvents.PERPECTIVE_CHANGED,
+            ObservationManager.getDetailsLastOccurence(JajukEvents.FILE_LAUNCHED)));
       }
     });
   }

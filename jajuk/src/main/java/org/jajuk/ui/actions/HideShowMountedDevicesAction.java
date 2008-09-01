@@ -50,7 +50,7 @@ public class HideShowMountedDevicesAction extends JajukAction {
     Conf.setProperty(CONF_OPTIONS_HIDE_UNMOUNTED, Boolean
         .toString(!bHideUnmountedStatus));
     jmiUnmounted.setSelected(!bHideUnmountedStatus);
-    ObservationManager.notify(new Event(JajukEvents.EVENT_PARAMETERS_CHANGE));
-    ObservationManager.notify(new Event(JajukEvents.EVENT_DEVICE_REFRESH));
+    ObservationManager.notify(new Event(JajukEvents.PARAMETERS_CHANGE));
+    ObservationManager.notify(new Event(JajukEvents.DEVICE_REFRESH));
   }
 }

@@ -87,7 +87,7 @@ public final class InformationJPanel extends JPanel implements Const, Observer,
   private Timer timer = new Timer(JajukTimer.DEFAULT_HEARTBEAT, new ActionListener() {
 
     public void actionPerformed(ActionEvent e) {
-      update(new Event(JajukEvents.EVENT_HEART_BEAT));
+      update(new Event(JajukEvents.HEART_BEAT));
     }
   });
 
@@ -200,21 +200,21 @@ public final class InformationJPanel extends JPanel implements Const, Observer,
 
     // check if some track has been launched before the view has been
     // displayed
-    update(new Event(JajukEvents.EVENT_FILE_LAUNCHED, ObservationManager
-        .getDetailsLastOccurence(JajukEvents.EVENT_FILE_LAUNCHED)));
+    update(new Event(JajukEvents.FILE_LAUNCHED, ObservationManager
+        .getDetailsLastOccurence(JajukEvents.FILE_LAUNCHED)));
     // check if some errors occured before the view has been displayed
-    if (ObservationManager.containsEvent(JajukEvents.EVENT_PLAY_ERROR)) {
-      update(new Event(JajukEvents.EVENT_PLAY_ERROR, ObservationManager
-          .getDetailsLastOccurence(JajukEvents.EVENT_PLAY_ERROR)));
+    if (ObservationManager.containsEvent(JajukEvents.PLAY_ERROR)) {
+      update(new Event(JajukEvents.PLAY_ERROR, ObservationManager
+          .getDetailsLastOccurence(JajukEvents.PLAY_ERROR)));
     }
     // Check if a track or a webradio has been launch before this view is
     // visible
     if (FIFO.isPlayingRadio()) {
-      update(new Event(JajukEvents.EVENT_WEBRADIO_LAUNCHED, ObservationManager
-          .getDetailsLastOccurence(JajukEvents.EVENT_WEBRADIO_LAUNCHED)));
+      update(new Event(JajukEvents.WEBRADIO_LAUNCHED, ObservationManager
+          .getDetailsLastOccurence(JajukEvents.WEBRADIO_LAUNCHED)));
     } else {
-      update(new Event(JajukEvents.EVENT_FILE_LAUNCHED, ObservationManager
-          .getDetailsLastOccurence(JajukEvents.EVENT_FILE_LAUNCHED)));
+      update(new Event(JajukEvents.FILE_LAUNCHED, ObservationManager
+          .getDetailsLastOccurence(JajukEvents.FILE_LAUNCHED)));
     }
     // register for given events
     ObservationManager.register(this);
@@ -224,13 +224,13 @@ public final class InformationJPanel extends JPanel implements Const, Observer,
 
   public Set<JajukEvents> getRegistrationKeys() {
     Set<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
-    eventSubjectSet.add(JajukEvents.EVENT_ZERO);
-    eventSubjectSet.add(JajukEvents.EVENT_FILE_LAUNCHED);
-    eventSubjectSet.add(JajukEvents.EVENT_PLAY_ERROR);
-    eventSubjectSet.add(JajukEvents.EVENT_WEBRADIO_LAUNCHED);
-    eventSubjectSet.add(JajukEvents.EVENT_PLAYER_PAUSE);
-    eventSubjectSet.add(JajukEvents.EVENT_PLAYER_RESUME);
-    eventSubjectSet.add(JajukEvents.EVENT_PLAYER_STOP);
+    eventSubjectSet.add(JajukEvents.ZERO);
+    eventSubjectSet.add(JajukEvents.FILE_LAUNCHED);
+    eventSubjectSet.add(JajukEvents.PLAY_ERROR);
+    eventSubjectSet.add(JajukEvents.WEBRADIO_LAUNCHED);
+    eventSubjectSet.add(JajukEvents.PLAYER_PAUSE);
+    eventSubjectSet.add(JajukEvents.PLAYER_RESUME);
+    eventSubjectSet.add(JajukEvents.PLAYER_STOP);
     return eventSubjectSet;
   }
 
@@ -365,7 +365,7 @@ public final class InformationJPanel extends JPanel implements Const, Observer,
     // do not insert this subject inside the invokeLater because we have to
     // leave the awt dispatcher called inside the setMessage and THEN, sleep
     // for 2 secs.
-    if (JajukEvents.EVENT_PLAY_ERROR.equals(subject)) {
+    if (JajukEvents.PLAY_ERROR.equals(subject)) {
       try {
         // we synchronize this code to make sure error message is
         // visible all 2
@@ -410,7 +410,7 @@ public final class InformationJPanel extends JPanel implements Const, Observer,
       final long timeToPlay = JajukTimer.getInstance().getTotalTimeToPlay();
       SwingUtilities.invokeLater(new Runnable() {
         public void run() {
-          if (JajukEvents.EVENT_HEART_BEAT.equals(subject) && !FIFO.isStopped()
+          if (JajukEvents.HEART_BEAT.equals(subject) && !FIFO.isStopped()
               && !Player.isPaused()) {
             long length = JajukTimer.getInstance().getCurrentTrackTotalTime();
             long lTime = JajukTimer.getInstance().getCurrentTrackEllapsedTime();
@@ -436,8 +436,8 @@ public final class InformationJPanel extends JPanel implements Const, Observer,
             jsPosition.removeChangeListener(InformationJPanel.this);
             jsPosition.setValue(iPos);
             jsPosition.addChangeListener(InformationJPanel.this);
-          } else if (JajukEvents.EVENT_ZERO.equals(subject)
-              || JajukEvents.EVENT_PLAYER_STOP.equals(subject)) {
+          } else if (JajukEvents.ZERO.equals(subject)
+              || JajukEvents.PLAYER_STOP.equals(subject)) {
             setCurrentTimeMessage(0, 0);
             jsPosition.setEnabled(false);
             jsPosition.removeMouseWheelListener(InformationJPanel.this);
@@ -451,7 +451,7 @@ public final class InformationJPanel extends JPanel implements Const, Observer,
             setMessage(Messages.getString("JajukWindow.18"), InformationJPanel.INFORMATIVE);
             jsPosition.addMouseWheelListener(InformationJPanel.this);
             jsPosition.addChangeListener(InformationJPanel.this);
-          } else if (JajukEvents.EVENT_FILE_LAUNCHED.equals(subject)) {
+          } else if (JajukEvents.FILE_LAUNCHED.equals(subject)) {
             File file = FIFO.getCurrentFile();
             if (file != null) {
               MessageFormat sMessageFormat = new MessageFormat(Messages.getString("FIFO.10") + " "
@@ -461,7 +461,7 @@ public final class InformationJPanel extends JPanel implements Const, Observer,
               String message = sMessageFormat.format(stArgs);
               setMessage(message, InformationJPanel.INFORMATIVE);
             }
-          } else if (JajukEvents.EVENT_WEBRADIO_LAUNCHED.equals(subject)) {
+          } else if (JajukEvents.WEBRADIO_LAUNCHED.equals(subject)) {
             if (event.getDetails() == null) {
               return;
             }
@@ -470,11 +470,11 @@ public final class InformationJPanel extends JPanel implements Const, Observer,
               String message = Messages.getString("FIFO.14") + " " + radio.getName();
               setMessage(message, InformationJPanel.INFORMATIVE);
             }
-          } else if (JajukEvents.EVENT_PLAYER_PAUSE.equals(subject)) {
+          } else if (JajukEvents.PLAYER_PAUSE.equals(subject)) {
             jsPosition.setEnabled(false);
             jsPosition.removeMouseWheelListener(InformationJPanel.this);
             jsPosition.removeChangeListener(InformationJPanel.this);
-          } else if (JajukEvents.EVENT_PLAYER_RESUME.equals(subject)) {
+          } else if (JajukEvents.PLAYER_RESUME.equals(subject)) {
             // Avoid adding listeners twice
             if (jsPosition.getMouseWheelListeners().length == 0) {
               jsPosition.addMouseWheelListener(InformationJPanel.this);

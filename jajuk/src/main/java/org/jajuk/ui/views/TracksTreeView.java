@@ -140,10 +140,10 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener, 
 
   public Set<JajukEvents> getRegistrationKeys() {
     Set<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
-    eventSubjectSet.add(JajukEvents.EVENT_FILE_LAUNCHED);
-    eventSubjectSet.add(JajukEvents.EVENT_DEVICE_MOUNT);
-    eventSubjectSet.add(JajukEvents.EVENT_DEVICE_UNMOUNT);
-    eventSubjectSet.add(JajukEvents.EVENT_DEVICE_REFRESH);
+    eventSubjectSet.add(JajukEvents.FILE_LAUNCHED);
+    eventSubjectSet.add(JajukEvents.DEVICE_MOUNT);
+    eventSubjectSet.add(JajukEvents.DEVICE_UNMOUNT);
+    eventSubjectSet.add(JajukEvents.DEVICE_REFRESH);
     return eventSubjectSet;
   }
 
@@ -237,7 +237,7 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener, 
     jcbSort.addItem(Messages.getString("Property_rate")); // sort by rate
     jcbSort.addItem(Messages.getString("Property_hits")); // sort by hits
     jcbSort.setSelectedIndex(Conf.getInt(CONF_LOGICAL_TREE_SORT_ORDER));
-    jcbSort.setActionCommand(JajukEvents.EVENT_LOGICAL_TREE_SORT.toString());
+    jcbSort.setActionCommand(JajukEvents.LOGICAL_TREE_SORT.toString());
     jcbSort.addActionListener(this);
     jpsort.add(jlSort, "1,0");
     jpsort.add(jcbSort, "3,0");
@@ -726,7 +726,7 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener, 
           Properties properties = new Properties();
           properties.put(DETAIL_SELECTION, selectedRecursively);
           properties.put(DETAIL_ORIGIN, PerspectiveManager.getCurrentPerspective().getID());
-          ObservationManager.notify(new Event(JajukEvents.EVENT_SYNC_TREE_TABLE, properties));
+          ObservationManager.notify(new Event(JajukEvents.SYNC_TREE_TABLE, properties));
         }
       }
     }

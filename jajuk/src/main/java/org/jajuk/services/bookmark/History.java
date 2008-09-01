@@ -84,12 +84,12 @@ public final class History extends DefaultHandler implements Const, ErrorHandler
   private History() {
     ObservationManager.register(this);
     // check if something has already started
-    if (ObservationManager.getDetailLastOccurence(JajukEvents.EVENT_FILE_LAUNCHED,
+    if (ObservationManager.getDetailLastOccurence(JajukEvents.FILE_LAUNCHED,
         DETAIL_CURRENT_FILE_ID) != null
-        && ObservationManager.getDetailLastOccurence(JajukEvents.EVENT_FILE_LAUNCHED,
+        && ObservationManager.getDetailLastOccurence(JajukEvents.FILE_LAUNCHED,
             DETAIL_CURRENT_DATE) != null) {
-      update(new Event(JajukEvents.EVENT_FILE_LAUNCHED, ObservationManager
-          .getDetailsLastOccurence(JajukEvents.EVENT_FILE_LAUNCHED)));
+      update(new Event(JajukEvents.FILE_LAUNCHED, ObservationManager
+          .getDetailsLastOccurence(JajukEvents.FILE_LAUNCHED)));
     }
     // Fill date formater
     formatter = new SimpleDateFormat(Messages.getString("HistoryItem.0"));
@@ -97,12 +97,12 @@ public final class History extends DefaultHandler implements Const, ErrorHandler
 
   public Set<JajukEvents> getRegistrationKeys() {
     Set<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
-    eventSubjectSet.add(JajukEvents.EVENT_FILE_LAUNCHED);
-    eventSubjectSet.add(JajukEvents.EVENT_DEVICE_REFRESH);
-    eventSubjectSet.add(JajukEvents.EVENT_CLEAR_HISTORY);
-    eventSubjectSet.add(JajukEvents.EVENT_FILE_NAME_CHANGED);
-    eventSubjectSet.add(JajukEvents.EVENT_LANGUAGE_CHANGED);
-    eventSubjectSet.add(JajukEvents.EVENT_WEBRADIO_LAUNCHED);
+    eventSubjectSet.add(JajukEvents.FILE_LAUNCHED);
+    eventSubjectSet.add(JajukEvents.DEVICE_REFRESH);
+    eventSubjectSet.add(JajukEvents.CLEAR_HISTORY);
+    eventSubjectSet.add(JajukEvents.FILE_NAME_CHANGED);
+    eventSubjectSet.add(JajukEvents.LANGUAGE_CHANGED);
+    eventSubjectSet.add(JajukEvents.WEBRADIO_LAUNCHED);
     return eventSubjectSet;
   }
 
@@ -386,18 +386,18 @@ public final class History extends DefaultHandler implements Const, ErrorHandler
   public void update(Event event) {
     JajukEvents subject = event.getSubject();
     try {
-      if (JajukEvents.EVENT_FILE_LAUNCHED.equals(subject)) {
+      if (JajukEvents.FILE_LAUNCHED.equals(subject)) {
         String sFileID = (String) ObservationManager.getDetail(event, DETAIL_CURRENT_FILE_ID);
         long lDate = ((Long) ObservationManager.getDetail(event, DETAIL_CURRENT_DATE)).longValue();
         addItem(sFileID, lDate);
-      } else if (JajukEvents.EVENT_DEVICE_REFRESH.equals(subject)) {
+      } else if (JajukEvents.DEVICE_REFRESH.equals(subject)) {
         cleanup();
-      } else if (JajukEvents.EVENT_CLEAR_HISTORY.equals(subject)) {
+      } else if (JajukEvents.CLEAR_HISTORY.equals(subject)) {
         clear();
-      } else if (JajukEvents.EVENT_LANGUAGE_CHANGED.equals(subject)) {
+      } else if (JajukEvents.LANGUAGE_CHANGED.equals(subject)) {
         // reset formatter
         formatter = new SimpleDateFormat(Messages.getString("HistoryItem.0"));
-      } else if (JajukEvents.EVENT_FILE_NAME_CHANGED.equals(subject)) {
+      } else if (JajukEvents.FILE_NAME_CHANGED.equals(subject)) {
         Properties properties = event.getDetails();
         org.jajuk.base.File fileOld = (org.jajuk.base.File) properties.get(DETAIL_OLD);
         org.jajuk.base.File fNew = (org.jajuk.base.File) properties.get(DETAIL_NEW);

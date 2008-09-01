@@ -236,13 +236,13 @@ public class QueueView extends PlaylistView {
   @Override
   public Set<JajukEvents> getRegistrationKeys() {
     Set<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
-    eventSubjectSet.add(JajukEvents.EVENT_QUEUE_NEED_REFRESH);
-    eventSubjectSet.add(JajukEvents.EVENT_FILE_LAUNCHED);
-    eventSubjectSet.add(JajukEvents.EVENT_DEVICE_REFRESH);
-    eventSubjectSet.add(JajukEvents.EVENT_CUSTOM_PROPERTIES_ADD);
-    eventSubjectSet.add(JajukEvents.EVENT_CUSTOM_PROPERTIES_REMOVE);
-    eventSubjectSet.add(JajukEvents.EVENT_VIEW_REFRESH_REQUEST);
-    eventSubjectSet.add(JajukEvents.EVENT_RATE_CHANGED);
+    eventSubjectSet.add(JajukEvents.QUEUE_NEED_REFRESH);
+    eventSubjectSet.add(JajukEvents.FILE_LAUNCHED);
+    eventSubjectSet.add(JajukEvents.DEVICE_REFRESH);
+    eventSubjectSet.add(JajukEvents.CUSTOM_PROPERTIES_ADD);
+    eventSubjectSet.add(JajukEvents.CUSTOM_PROPERTIES_REMOVE);
+    eventSubjectSet.add(JajukEvents.VIEW_REFRESH_REQUEST);
+    eventSubjectSet.add(JajukEvents.RATE_CHANGED);
     return eventSubjectSet;
   }
 
@@ -270,13 +270,13 @@ public class QueueView extends PlaylistView {
           JajukEvents subject = event.getSubject();
           editorTable.setAcceptColumnsEvents(false); // flag reloading to avoid
           // wrong
-          if (JajukEvents.EVENT_QUEUE_NEED_REFRESH.equals(subject)
-              || JajukEvents.EVENT_DEVICE_REFRESH.equals(subject)
-              || JajukEvents.EVENT_RATE_CHANGED.equals(subject)) {
+          if (JajukEvents.QUEUE_NEED_REFRESH.equals(subject)
+              || JajukEvents.DEVICE_REFRESH.equals(subject)
+              || JajukEvents.RATE_CHANGED.equals(subject)) {
             editorModel.getItems().clear();
             editorModel.getPlanned().clear();
             refreshQueue();
-          } else if (JajukEvents.EVENT_CUSTOM_PROPERTIES_ADD.equals(subject)) {
+          } else if (JajukEvents.CUSTOM_PROPERTIES_ADD.equals(subject)) {
             Properties properties = event.getDetails();
             if (properties == null) {
               // can be null at view populate
@@ -293,7 +293,7 @@ public class QueueView extends PlaylistView {
             editorModel.getItems().clear();
             editorModel.getPlanned().clear();
             refreshQueue();
-          } else if (JajukEvents.EVENT_CUSTOM_PROPERTIES_REMOVE.equals(subject)) {
+          } else if (JajukEvents.CUSTOM_PROPERTIES_REMOVE.equals(subject)) {
             Properties properties = event.getDetails();
             if (properties == null) { // can be null at view
               // populate
@@ -310,7 +310,7 @@ public class QueueView extends PlaylistView {
             editorModel.getItems().clear();
             editorModel.getPlanned().clear();
             refreshQueue();
-          } else if (JajukEvents.EVENT_VIEW_REFRESH_REQUEST.equals(subject)) {
+          } else if (JajukEvents.VIEW_REFRESH_REQUEST.equals(subject)) {
             // force filter to refresh if the events has been triggered by the
             // table itself after a column change
             JTable table = (JTable) event.getDetails().get(DETAIL_CONTENT);
@@ -377,7 +377,7 @@ public class QueueView extends PlaylistView {
         // special playlist, same behavior than a save as
         plf.saveAs();
         // notify playlist repository to refresh
-        ObservationManager.notify(new Event(JajukEvents.EVENT_DEVICE_REFRESH));
+        ObservationManager.notify(new Event(JajukEvents.DEVICE_REFRESH));
       } else if (ae.getSource() == jbDown || ae.getSource() == jbUp
           || ae.getSource() == jmiFileDown || ae.getSource() == jmiFileUp) {
         int iRow = editorTable.getSelectedRow();
@@ -425,7 +425,7 @@ public class QueueView extends PlaylistView {
         // Reset the FIFO
         FIFO.reset(); // reinit all variables
         // Request all GUI reset
-        ObservationManager.notify(new Event(JajukEvents.EVENT_ZERO));
+        ObservationManager.notify(new Event(JajukEvents.ZERO));
       }
 
     } catch (Exception e2) {

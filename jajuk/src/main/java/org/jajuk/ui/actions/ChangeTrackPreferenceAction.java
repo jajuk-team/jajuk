@@ -53,6 +53,6 @@ public class ChangeTrackPreferenceAction extends JajukAction {
       track.setPreference(Conf.getInt(CONF_INC_RATING));
     }
     // Force immediate rating refresh (without using the rating manager)
-    ObservationManager.notify(new Event(JajukEvents.EVENT_RATE_CHANGED));
+    ObservationManager.notify(new Event(JajukEvents.RATE_CHANGED));
   }
 }

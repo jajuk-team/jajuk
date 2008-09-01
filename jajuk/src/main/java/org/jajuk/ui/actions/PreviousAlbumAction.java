@@ -55,7 +55,7 @@ public class PreviousAlbumAction extends JajukAction {
             // pause button
             // when changing of track
             Player.setPaused(false);
-            ObservationManager.notify(new Event(JajukEvents.EVENT_PLAYER_RESUME)); // notify
+            ObservationManager.notify(new Event(JajukEvents.PLAYER_RESUME)); // notify
             // of
             // this event
           }
