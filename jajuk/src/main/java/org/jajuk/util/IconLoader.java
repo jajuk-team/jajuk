@@ -559,12 +559,6 @@ public class IconLoader implements Const {
   public static final ImageIcon ICON_BAN = new ImageIcon(UtilSystem
       .getResource("icons/16x16/ban_16x16.png"));
 
-  public static final ImageIcon ICON_LIKE = new ImageIcon(UtilSystem
-      .getResource("icons/16x16/like_16x16.png"));
-
-  public static final ImageIcon ICON_DISLIKE = new ImageIcon(UtilSystem
-      .getResource("icons/16x16/dislike_16x16.png"));
-
   static {
     IconLoader.NOCOVERSCACHE.put(Const.THUMBNAIL_SIZE_50X50, UtilGUI.getResizedImage(
         IconLoader.ICON_NO_COVER, 50, 50));
