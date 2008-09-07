@@ -31,16 +31,17 @@ import javax.swing.ImageIcon;
 import org.jajuk.events.Event;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
+import org.jajuk.services.bookmark.History;
+import org.jajuk.services.core.ExitService;
 import org.jajuk.services.tags.Tag;
 import org.jajuk.ui.helpers.RefreshReporter;
 import org.jajuk.ui.widgets.InformationJPanel;
 import org.jajuk.util.Conf;
+import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
-import org.jajuk.util.JajukFileFilter;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilSystem;
 import org.jajuk.util.error.JajukException;
-import org.jajuk.util.filters.DirectoryFilter;
 import org.jajuk.util.log.Log;
 
 /**
@@ -554,16 +555,14 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
    *          refresh reporter or null
    */
   public void refresh(boolean deep, RefreshReporter reporter) throws JajukException {
-    final java.io.File dirList[] = getFio().listFiles(
-        new JajukFileFilter(DirectoryFilter.getInstance()));
-    if (dirList != null && dirList.length != 0) {
-      for (final java.io.File f : dirList) {
-        final Directory dir = DirectoryManager.getInstance().registerDirectory(f.getName(), this,
-            getDevice());
-        dir.refresh(deep, reporter);
+    scan(deep, reporter);
+    final java.io.File[] files = getFio().listFiles(UtilSystem.getDirFilter());
+    if (files != null) {
+      for (final java.io.File element : files) {
+        final Directory subdir = DirectoryManager.getInstance().registerDirectory(
+            element.getName(), this, getDevice());
+        subdir.refresh(deep, reporter);
       }
-    } else {
-      scan(deep, reporter);
     }
   }
 
@@ -587,8 +586,11 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
             return;
           }
           InformationJPanel.getInstance().setMessage(
-              Messages.getString("ActionRefresh.1") + ": " + getName(), 1);
+              Messages.getString("ActionRefresh.1") + " : " + Directory.this.getName(), 1);
           boolean deep = (result == Device.OPTION_REFRESH_DEEP);
+          // Cleanup old files/directories/playlists
+          cleanRemovedFiles();
+          // Actual refresh
           refresh(deep, reporter);
           ObservationManager.notify(new Event(JajukEvents.DEVICE_REFRESH));
           reporter.done();
@@ -605,6 +607,90 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
     } else {
       // simply call the run method
       t.run();
+    }
+  }
+
+  /**
+   * Scan directory to cleanup removed files and playlists
+   * 
+   * @return whether some items have been removed
+   */
+  public boolean cleanRemovedFiles() {
+    boolean bChanges = false;
+    // need to use a shallow copy to avoid concurrent exceptions
+    final Set<Directory> dirs = DirectoryManager.getInstance().getDirectories();
+    // directories cleanup
+    for (final Item item : dirs) {
+      final Directory dir = (Directory) item;
+      if (!ExitService.isExiting() && dir.getDevice().isMounted() && dir.isChildOf(this)) {
+        if (!dir.getFio().exists()) {
+          // note that associated files are removed too
+          DirectoryManager.getInstance().removeDirectory(dir.getID());
+          Log.debug("Removed: " + dir);
+          bChanges = true;
+        }
+      }
+    }
+    // files cleanup
+    final Set<org.jajuk.base.File> files = FileManager.getInstance().getFiles();
+    for (final org.jajuk.base.File file : files) {
+      if (!ExitService.isExiting()
+          // Only take into consideration files from this directory or from
+          // sub-directories
+          && (file.getDirectory().equals(this) || file.getDirectory().isChildOf(this))
+          && file.isReady()) {
+        // Remove file if it doesn't exist any more or if it is a iTunes
+        // file (useful for jajuk < 1.4)
+        if (!file.getIO().exists() || file.getName().startsWith("._")) {
+          FileManager.getInstance().removeFile(file);
+          Log.debug("Removed: " + file);
+          bChanges = true;
+        }
+      }
+    }
+    // Playlist cleanup
+    final Set<Playlist> plfiles = PlaylistManager.getInstance().getPlaylists();
+    for (final Playlist plf : plfiles) {
+      if (!ExitService.isExiting()
+          // Only take into consideration files from this directory or from
+          // sub-directories
+          && (plf.getDirectory().equals(this) || plf.getDirectory().isChildOf(this))
+          && plf.isReady()) {
+        if (!plf.getFio().exists()) {
+          PlaylistManager.getInstance().removePlaylistFile(plf);
+          Log.debug("Removed: " + plf);
+          bChanges = true;
+        }
+      }
+    }
+    // clear history to remove old files referenced in it
+    if (Conf.getString(Const.CONF_HISTORY) != null) {
+      History.getInstance().clear(Integer.parseInt(Conf.getString(Const.CONF_HISTORY)));
+    }
+    return bChanges;
+  }
+
+  /**
+   * Return true is this is a child directory of the specified directory
+   * 
+   * @param directory
+   *          ancestor directory
+   * @return
+   */
+  public boolean isChildOf(Directory directory) {
+    Directory dirTested = getParentDirectory();
+    if (dirTested == null) {
+      return false;
+    }
+    while (true) {
+      if (dirTested.equals(directory)) {
+        return true;
+      } else {
+        dirTested = dirTested.getParentDirectory();
+        if (dirTested == null) {
+          return false;
+        }
+      }
     }
   }
 

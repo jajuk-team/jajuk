@@ -53,11 +53,7 @@ public class RefreshAction extends JajukAction {
     final Directory dir;
     if (item instanceof Directory) {
       dir = (Directory) item;
-      new Thread() {
-        public void run() {
-          dir.manualRefresh(false, true);
-        }
-      }.start();
+      dir.manualRefresh(true, true);
     } else if (item instanceof Device) {
       Device device = (Device) item;
       // ask user if he wants to make deep or

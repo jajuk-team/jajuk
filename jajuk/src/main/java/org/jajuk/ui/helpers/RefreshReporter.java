@@ -27,6 +27,7 @@ import javax.swing.Timer;
 
 import org.jajuk.base.Device;
 import org.jajuk.base.Directory;
+import org.jajuk.ui.widgets.InformationJPanel;
 import org.jajuk.ui.wizard.RefreshDialog;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
@@ -154,6 +155,7 @@ public class RefreshReporter {
     // Display end of refresh message with stats
     String message = buildFinalMessage(System.currentTimeMillis() - lDateStart);
     Messages.showInfoMessage(message);
+    InformationJPanel.getInstance().setMessage(message, 1);
   }
 
   /**
