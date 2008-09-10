@@ -46,6 +46,7 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.swing.BorderFactory;
+import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
@@ -217,6 +218,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
     jtbSort.setFloatable(false);
     jtbSort.setRollover(true);
     jtbSort.add(jlSorter);
+    jtbSort.add(Box.createHorizontalStrut(5));
     jtbSort.add(jcbSorter);
 
     jlFilter = new JLabel(Messages.getString("AbstractTableView.0") + " ");
@@ -234,7 +236,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
     }
     jcbFilter.setSelectedIndex(Conf.getInt(CONF_THUMBS_FILTER));
     jcbFilter.addActionListener(this);
-    jtfValue = new JTextField(10);
+    jtfValue = new JTextField(5);
     jtfValue.setForeground(new Color(172, 172, 172));
     jtfValue.setBorder(BorderFactory.createLineBorder(Color.BLUE));
     jtfValue.setFont(FontManager.getInstance().getFont(JajukFont.BOLD_XXL));
@@ -243,11 +245,11 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
     jtbFilter.setFloatable(false);
     jtbFilter.setRollover(true);
     jtbFilter.add(jlFilter);
+    jtbFilter.add(Box.createHorizontalStrut(5));
     jtbFilter.add(jcbFilter);
     jtbFilter.add(jlContains);
     jtbFilter.add(jtfValue);
-    
-    
+        
     JToolBar jtbPage = new JToolBar();
     jtbPage.setFloatable(false);
     jtbPage.setRollover(true);
@@ -264,9 +266,10 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
     jtbPage.add(jcbPage);
     jtbPage.add(jbNext);
     double p = TableLayout.PREFERRED;
-    double sizeControlTop[][] = { { 10, p, 20, p, 20, p, 10 }, { p } };
+    double sizeControlTop[][] = { { 10, p, p, p, 20, p, 10 }, { p } };
 
     TableLayout layoutTop = new TableLayout(sizeControlTop);
+    layoutTop.setHGap(5);
     jpControlTop.setLayout(layoutTop);
     jpControlTop.add(jtbFilter, "1,0,l,c");
     jpControlTop.add(jtbSort, "3,0,l,c");
