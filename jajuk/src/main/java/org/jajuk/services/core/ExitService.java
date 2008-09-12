@@ -67,14 +67,25 @@ public class ExitService extends Thread implements Const {
         // Commit webradios
         WebRadioManager.getInstance().commit();
         // Store webradio state
-        Conf.setProperty(CONF_WEBRADIO_WAS_PLAYING, Boolean.toString(FIFO
-            .isPlayingRadio()));
+        Conf.setProperty(CONF_WEBRADIO_WAS_PLAYING, Boolean.toString(FIFO.isPlayingRadio()));
 
         // commit configuration
         org.jajuk.util.Conf.commit();
         // commit history
         History.commit();
-        // Commit collection if not refreshing
+        // Wait few secs if some devices are still refreshing, a kill signal has
+        // been sent to them
+        if (DeviceManager.getInstance().isAnyDeviceRefreshing()) {
+          for (int i = 0; i < 10; i++) {
+            if (DeviceManager.getInstance().isAnyDeviceRefreshing()) {
+              Thread.sleep(1000);
+              Log.debug("Exiting waiting for refresh process end...");
+            } else {
+              continue;
+            }
+          }
+        }
+        // Commit collection if not still refreshing
         if (!DeviceManager.getInstance().isAnyDeviceRefreshing()) {
           Collection.commit(UtilSystem.getConfFileByPath(FILE_COLLECTION));
         }

@@ -272,6 +272,10 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
       return;
     }
     for (int i = 0; i < filelist.length; i++) {
+      //Leave ASAP if exit request
+      if (ExitService.isExiting()){
+        return;
+      }
       try { // check errors for each file
         // Check file name is correct (useful to fix name encoding
         // issues)

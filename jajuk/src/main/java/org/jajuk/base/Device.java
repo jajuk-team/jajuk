@@ -752,6 +752,10 @@ public class Device extends PhysicalItem implements Const, Comparable<Device> {
     final File[] files = dir.getFio().listFiles(UtilSystem.getDirFilter());
     if (files != null) {
       for (final File element : files) {
+        // Leave ASAP if exit request
+        if (ExitService.isExiting()) {
+          return;
+        }
         final Directory subDir = DirectoryManager.getInstance().registerDirectory(
             element.getName(), dir, this);
         scanRecursively(subDir, bDeepScan);
