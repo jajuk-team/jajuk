@@ -133,7 +133,7 @@ public final class ObservationManager implements Const {
   }
 
   /**
-   * Return whether the event already occured at least once
+   * Return whether the event already occurred at least once
    * 
    * @param subject
    * @return

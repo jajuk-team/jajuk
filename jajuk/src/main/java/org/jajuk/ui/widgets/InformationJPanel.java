@@ -202,7 +202,7 @@ public final class InformationJPanel extends JPanel implements Const, Observer,
     // displayed
     update(new Event(JajukEvents.FILE_LAUNCHED, ObservationManager
         .getDetailsLastOccurence(JajukEvents.FILE_LAUNCHED)));
-    // check if some errors occured before the view has been displayed
+    // check if some errors occurred before the view has been displayed
     if (ObservationManager.containsEvent(JajukEvents.PLAY_ERROR)) {
       update(new Event(JajukEvents.PLAY_ERROR, ObservationManager
           .getDetailsLastOccurence(JajukEvents.PLAY_ERROR)));

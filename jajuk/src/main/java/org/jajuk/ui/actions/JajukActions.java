@@ -225,7 +225,7 @@ public enum JajukActions {
   FINISH_ALBUM,
 
   /**
-   * Used when an error occured during a play.
+   * Used when an error occurred during a play.
    */
   PLAY_ERROR,
 

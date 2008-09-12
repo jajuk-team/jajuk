@@ -965,7 +965,7 @@ public class Device extends PhysicalItem implements Const, Comparable<Device> {
         for (final File element : fSrcFiles) {
           final File[] files = fileNewDir.listFiles(filter);
           if (files == null) {
-            // fileNewDir is not a directory or an error occured (
+            // fileNewDir is not a directory or an error occurred (
             // read/write right ? )
             continue;
           }

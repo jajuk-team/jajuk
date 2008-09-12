@@ -202,7 +202,7 @@ public class CDDBWizard extends JajukJDialog implements Const, ActionListener {
   /**
    * Perform the actual freedb query
    * @param cddbtracks
-   * @return number of results (0 if no result). -1 if a technical problem occured.
+   * @return number of results (0 if no result). -1 if a technical problem occurred.
    */
   public int performQuery(CDDBTrack[] cddbtracks) {
     fdb = new Freedb();

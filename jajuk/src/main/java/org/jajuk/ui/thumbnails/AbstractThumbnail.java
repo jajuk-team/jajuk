@@ -239,10 +239,11 @@ public abstract class AbstractThumbnail extends JPanel implements Const,
     // (setVisible(false)) menu items that are not available in their
     // context
     jmenu.add(jmiPlay);
+    jmenu.addSeparator();
     jmenu.add(jmiPush);
-    jmenu.add(jmiDelete);
     jmenu.add(jmiPlayShuffle);
     jmenu.add(jmiPlayRepeat);
+    jmenu.add(jmiDelete);
     jmenu.add(jmiCDDBWizard);
     jmenu.add(jmiGetCovers);
     jmenu.add(jmiShowPopup);

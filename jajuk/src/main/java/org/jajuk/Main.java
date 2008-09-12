@@ -135,7 +135,7 @@ public final class Main implements Const {
   /** Jukebox power pack flag* */
   private static boolean bPowerPack = false;
 
-  /** Does a collection parsing error occured ? * */
+  /** Does a collection parsing error occurred ? * */
   private static boolean bCollectionLoadRecover = true;
 
   /** UI launched flag */
@@ -562,7 +562,7 @@ public final class Main implements Const {
           exit.setPriority(Thread.MAX_PRIORITY);
           Runtime.getRuntime().addShutdownHook(exit);
 
-          // backup the collection if no parsing error occured
+          // backup the collection if no parsing error occurred
           if (!bCollectionLoadRecover) {
             UtilSystem.backupFile(UtilSystem.getConfFileByPath(FILE_COLLECTION), Conf
                 .getInt(CONF_BACKUP_SIZE));

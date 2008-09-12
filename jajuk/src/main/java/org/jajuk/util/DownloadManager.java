@@ -150,7 +150,7 @@ public final class DownloadManager implements Const {
    * 
    * @param url
    *          to download
-   * @return created file or null if a problem occured
+   * @return created file or null if a problem occurred
    * @throws URISyntaxException If the URL cannot be converted to an URI. 
    * @throws IOException If a network problem occurs or a temporary file cannot be written.
    */
@@ -188,7 +188,7 @@ public final class DownloadManager implements Const {
    * @param url
    *          to download
    * @throws Exception
-   * @return result as an array of bytes, null if a problem occured
+   * @return result as an array of bytes, null if a problem occurred
    */
   public static String downloadHtml(URL url, String charset) throws Exception {
     return NetworkUtils.readURL(NetworkUtils.getConnection(url, proxy), charset);
