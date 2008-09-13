@@ -351,17 +351,24 @@ public class DeviceWizard extends JFrame implements ActionListener, Const {
         }
       } else if (sInitialURL != null && !sInitialURL.equals(jtfUrl.getText())) {
         // If user changed the URL, force refresh
-        try {
-          // try to remount the device
-          device.mount();
-          // Keep previous references when changing device url
-          device.refreshCommand(false);
-          // Force a cleanup *after* the refresh
-          device.cleanRemovedFiles();
-        } catch (final Exception e2) {
-          Log.error(112, device.getName(), e2);
-          Messages.showErrorMessage(112, device.getName());
-        }
+        new Thread() {
+          public void run() {
+            try {
+              // try to remount the device
+              if (!device.isMounted()) {
+                device.mount();
+              }
+              // Keep previous references when changing device url
+              device.refreshCommand(false);
+              // Force a cleanup *after* the refresh
+              device.cleanRemovedFiles();
+              ObservationManager.notify(new Event(JajukEvents.DEVICE_REFRESH));
+            } catch (final Exception e2) {
+              Log.error(112, device.getName(), e2);
+              Messages.showErrorMessage(112, device.getName());
+            }
+          }
+        }.start();
       }
       ObservationManager.notify(new Event(JajukEvents.DEVICE_REFRESH));
       dispose();
