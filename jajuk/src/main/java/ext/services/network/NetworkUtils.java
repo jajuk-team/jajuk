@@ -54,7 +54,12 @@ public final class NetworkUtils implements Const {
     Log.debug("Opening Connection With: {{" + url + "}}");
     HttpURLConnection connection;
     if (proxy == null) {
-      connection = (HttpURLConnection) url.openConnection();
+      URLConnection urlconnection = url.openConnection();
+      if(urlconnection instanceof HttpURLConnection) {
+        connection = (HttpURLConnection) urlconnection;
+      } else {
+        throw new IllegalArgumentException("URL to connect to is not a HttpURL: " + url.toString());
+      }
     } else {
       connection = (HttpURLConnection) proxy.getConnection(url);
     }
