@@ -22,6 +22,8 @@ package org.jajuk.ui.wizard;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.net.URL;
@@ -137,6 +139,17 @@ public class AboutWindow extends JDialog implements Const {
     jtp.addTab(Messages.getString("AboutView.8"), jpLicence);
     jtp.addTab(Messages.getString("AboutView.9"), spp);
     add(jtp);
+
+    // Add key listener to enable Escape key to close the window
+    this.addKeyListener(new KeyAdapter() {
+      @Override
+      public void keyPressed(KeyEvent e) {
+        // allow to close the dialog with Escape
+        if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+          dispose();
+        }
+      }
+    });
   }
 
   /*
@@ -147,5 +160,4 @@ public class AboutWindow extends JDialog implements Const {
   public String getDesc() {
     return Messages.getString("AboutView.10");
   }
-
 }
