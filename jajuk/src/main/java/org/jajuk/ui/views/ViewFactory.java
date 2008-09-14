@@ -53,7 +53,7 @@ public final class ViewFactory {
    * @param id integer id used as vldocking key id
    * @return the created view
    */
-    public static IView createView(Class className, IPerspective perspective, int id) {
+    public static IView createView(Class<?> className, IPerspective perspective, int id) {
     Set<IView> views = hmClassesInstances.get(className);
     if (views == null) {
       views = new LinkedHashSet<IView>();
