@@ -44,7 +44,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.util.HashSet;
-import java.util.Random;
 import java.util.Set;
 
 import javax.swing.Box;
@@ -74,6 +73,7 @@ import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UpgradeManager;
+import org.jajuk.util.UtilSystem;
 import org.jajuk.util.log.Log;
 
 /**
@@ -171,8 +171,6 @@ public final class JajukJMenuBar extends JMenuBar implements Const, Observer {
 
   JButton jbSlim;
 
-  private static Random random = new Random();
-
   private JajukJMenuBar() {
     setAlignmentX(0.0f);
     // File menu
@@ -212,8 +210,8 @@ public final class JajukJMenuBar extends JMenuBar implements Const, Observer {
           // Simply add the new view in the current perspective
           PerspectiveAdapter current = (PerspectiveAdapter) PerspectiveManager
               .getCurrentPerspective();
-          IView newView = ViewFactory.createView(view, current, (int) (Integer.MAX_VALUE * random
-              .nextDouble()));
+          IView newView = ViewFactory.createView(view, current,
+              (int) (Integer.MAX_VALUE * UtilSystem.getRandom().nextDouble()));
           newView.initUI();
           newView.setIsPopulated(true);
           current.addDockable(newView);

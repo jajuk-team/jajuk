@@ -24,7 +24,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 import java.util.Set;
 
 import org.jajuk.base.Device;
@@ -82,7 +81,7 @@ public final class UtilFeatures implements Const {
       // we need all these casts for clone() to be callable here
       final List<org.jajuk.base.File> alFilesToPlay = (List<org.jajuk.base.File>) ((ArrayList<org.jajuk.base.File>) alFiles)
           .clone();
-      Collections.shuffle(alFilesToPlay, new Random());
+      Collections.shuffle(alFilesToPlay, UtilSystem.getRandom());
       return alFilesToPlay;
     }
     return alFiles;

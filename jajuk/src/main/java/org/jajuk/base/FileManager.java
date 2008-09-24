@@ -61,11 +61,6 @@ public final class FileManager extends ItemManager implements Observer {
 
   private static Random rand;
   
-  static {
-    rand = new Random();
-    rand.setSeed(System.currentTimeMillis());
-  }
-  
   /** File comparator based on rate */
   private Comparator<File> rateComparator = new Comparator<File>() {
     public int compare(File file1, File file2) {
@@ -375,7 +370,7 @@ public final class FileManager extends ItemManager implements Observer {
    */
   public List<File> getGlobalShufflePlaylist() {
     List<File> alEligibleFiles = getReadyFiles();
-    Collections.shuffle(alEligibleFiles, new Random());
+    Collections.shuffle(alEligibleFiles, UtilSystem.getRandom());
     // song level, just shuffle full collection
     if (Conf.getString(CONF_GLOBAL_RANDOM_MODE).equals(MODE_TRACK)) {
       return alEligibleFiles;
@@ -383,7 +378,7 @@ public final class FileManager extends ItemManager implements Observer {
     // (not shuffle) Album / album
     else if (Conf.getString(CONF_GLOBAL_RANDOM_MODE).equals(MODE_ALBUM2)) {
       final List<Album> albums = new ArrayList<Album>(AlbumManager.getInstance().getAlbums());
-      Collections.shuffle(albums, new Random());
+      Collections.shuffle(albums, UtilSystem.getRandom());
       // We need an index (bennch: 45* faster)
       final Map<Album, Integer> index = new HashMap<Album, Integer>();
       for (Album album : albums) {
@@ -514,10 +509,10 @@ public final class FileManager extends ItemManager implements Observer {
     List<File> out = new ArrayList<File>(alEligibleFiles.size());
     List<Album> albums = new ArrayList<Album>(albumsFiles.keySet());
     // we need to force a new shuffle as internal hashmap arrange items
-    Collections.shuffle(albums, new Random());
+    Collections.shuffle(albums, UtilSystem.getRandom());
     for (Album album : albums) {
       List<File> files = albumsFiles.get(album);
-      Collections.shuffle(files, new Random());
+      Collections.shuffle(files, UtilSystem.getRandom());
       out.addAll(files);
     }
     return out;
@@ -549,7 +544,7 @@ public final class FileManager extends ItemManager implements Observer {
         sup = al.size();
       }
       alBest = new ArrayList<File>(al.subList(0, sup - 1));
-      Collections.shuffle(alBest, new Random()); // shufflelize
+      Collections.shuffle(alBest, UtilSystem.getRandom()); // shuffle
     }
     return alBest;
   }

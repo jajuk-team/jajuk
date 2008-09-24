@@ -28,7 +28,6 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
-import java.util.Random;
 
 import javax.swing.JOptionPane;
 
@@ -925,12 +924,12 @@ public final class FIFO implements Const {
   public static void shuffle() {
     if (alFIFO.size() > 1) {
       if (isStopped()) {
-        Collections.shuffle(alFIFO, new Random());
+        Collections.shuffle(alFIFO, UtilSystem.getRandom());
       } else {
         // Make sure current track is kept to its position
         // so remove it and add it again after shuffling
         alFIFO.remove(0);
-        Collections.shuffle(alFIFO, new Random());
+        Collections.shuffle(alFIFO, UtilSystem.getRandom());
         alFIFO.add(0, itemLast);
       }
     }

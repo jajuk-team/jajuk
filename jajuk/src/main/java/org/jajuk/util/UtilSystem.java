@@ -42,6 +42,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.StringTokenizer;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
@@ -67,6 +68,9 @@ public final class UtilSystem implements Const {
 
   /** Current date cached (for performances) * */
   public static final Date TODAY = new Date();
+
+  /** Central random object for all Jajuk * */
+  private static final Random random = new Random();
 
   /**
    * Are we under Linux ? *
@@ -159,14 +163,11 @@ public final class UtilSystem implements Const {
   public static void backupFile(final File file, final int iMB) {
     try {
       if (Integer.parseInt(Conf.getString(Const.CONF_BACKUP_SIZE)) <= 0) { // 0 or
-        // less
-        // means
-        // no backup
+        // less means no backup
         return;
       }
       // calculates total size in MB for the file to backup and its
-      // backup
-      // files
+      // backup files
       long lUsedMB = 0;
       final List<File> alFiles = new ArrayList<File>(10);
       final File[] files = new File(file.getAbsolutePath()).getParentFile().listFiles();
@@ -1025,10 +1026,15 @@ public final class UtilSystem implements Const {
 
   /**
    * Replace a string inside a given file
-   * @param file the file
-   * @param oldS the string to replace
-   * @param newS the new string
-   * @param encoding the encoding of the file
+   * 
+   * @param file
+   *          the file
+   * @param oldS
+   *          the string to replace
+   * @param newS
+   *          the new string
+   * @param encoding
+   *          the encoding of the file
    * @return whether some replacements occurred
    */
   public static boolean replaceInFile(File file, String oldS, String newS, String encoding) {
@@ -1055,6 +1061,19 @@ public final class UtilSystem implements Const {
       Log.error(e);
     }
     return false;
+  }
+
+  /**
+   * This method returns a single random object that can be used anywhere in
+   * jajuk It has to be a singleton to get a good shuffling. Indeed, Random()
+   * object are seeded by default with current nano date but in some cases, two
+   * random could be created at the same exact date in different threads or the same.
+   * 
+   * 
+   * @return Jajuk singleton random object
+   */
+  public static Random getRandom() {
+    return UtilSystem.random;
   }
 
 }

@@ -44,7 +44,6 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
-import java.util.Random;
 
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -931,7 +930,7 @@ public final class Main implements Const {
         alToPlay = FileManager.getInstance().getGlobalNoveltiesPlaylist();
         if ((alToPlay != null) && (alToPlay.size() > 0)) {
           // shuffle the selection
-          Collections.shuffle(alToPlay, new Random());
+          Collections.shuffle(alToPlay, UtilSystem.getRandom());
         } else {
           // Alert user that no novelties have been found
           InformationJPanel.getInstance().setMessage(Messages.getString("Error.127"),

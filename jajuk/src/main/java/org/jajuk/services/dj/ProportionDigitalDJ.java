@@ -25,12 +25,12 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 
 import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
 import org.jajuk.base.Style;
 import org.jajuk.util.Const;
+import org.jajuk.util.UtilSystem;
 
 /**
  * A proportion (10% JAZZ, 20% ROCK...) digital DJ
@@ -119,7 +119,7 @@ public class ProportionDigitalDJ extends DigitalDJ implements Const {
       }
     }
     // shuffle selection
-    Collections.shuffle(out, new Random());
+    Collections.shuffle(out, UtilSystem.getRandom());
     return out;
   }
 

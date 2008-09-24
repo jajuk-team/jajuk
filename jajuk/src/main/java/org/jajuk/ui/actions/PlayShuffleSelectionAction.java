@@ -22,7 +22,6 @@ package org.jajuk.ui.actions;
 import java.awt.event.ActionEvent;
 import java.util.Collections;
 import java.util.List;
-import java.util.Random;
 
 import org.jajuk.base.File;
 import org.jajuk.services.players.FIFO;
@@ -30,6 +29,7 @@ import org.jajuk.util.Conf;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilFeatures;
+import org.jajuk.util.UtilSystem;
 
 /**
  * Play shuffle a selection
@@ -60,7 +60,7 @@ public class PlayShuffleSelectionAction extends SelectionAction {
   public void perform(ActionEvent e) throws Exception {
     super.perform(e);
     List<File> files = UtilFeatures.getPlayableFiles(selection);
-    Collections.shuffle(files, new Random());
+    Collections.shuffle(files, UtilSystem.getRandom());
     FIFO.push(
         UtilFeatures.createStackItems(UtilFeatures.applyPlayOption(files), Conf
             .getBoolean(CONF_STATE_REPEAT), true), false);
