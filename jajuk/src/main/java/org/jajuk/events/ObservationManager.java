@@ -158,7 +158,7 @@ public final class ObservationManager implements Const {
       if (!t.isAlive()) {
         t.start();
       }
-      vFIFO.add(event); // add event in FIFO fo future use
+      vFIFO.add(event); // add event in FIFO for future use
     }
   }
 

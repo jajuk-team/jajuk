@@ -139,8 +139,7 @@ public final class InformationJPanel extends JPanel implements Const, Observer,
     setLayout(new TableLayout(size));
 
     // message bar
-    JToolBar jtbMessage = new JToolBar();
-    jtbMessage.setFloatable(false);
+    JToolBar jtbMessage = new JajukJToolbar();
     // Set a zero minimum size to allow user to reduce window width
     jtbMessage.setMinimumSize(new Dimension(0, 0));
     // We use toolbar to display vertical separator lines
@@ -151,18 +150,14 @@ public final class InformationJPanel extends JPanel implements Const, Observer,
     jtbMessage.addSeparator();
 
     // selection bar
-    JToolBar jtbSelection = new JToolBar();
-    jtbSelection.setFloatable(false);
-    jtbMessage.setMinimumSize(new Dimension(0, 0));
+    JToolBar jtbSelection = new JajukJToolbar();
     jlSelection = new JLabel();
     jtbSelection.add(jlSelection);
     jtbSelection.add(Box.createHorizontalGlue());
     jtbSelection.addSeparator();
 
     // total progress bar
-    JToolBar jtbTotal = new JToolBar();
-    jtbTotal.setMinimumSize(new Dimension(0, 0));
-    jtbTotal.setFloatable(false);
+    JToolBar jtbTotal = new JajukJToolbar();
     jlTotal = new JLabel();
     jlTotal.setToolTipText(Messages.getString("InformationJPanel.5"));
     jtbTotal.add(jlTotal);
@@ -170,12 +165,11 @@ public final class InformationJPanel extends JPanel implements Const, Observer,
     jtbTotal.addSeparator();
 
     // current progress bar
-    JToolBar jtbProgress = new JToolBar();
-    jtbProgress.setMinimumSize(new Dimension(0, 0));
-    jtbProgress.setFloatable(false);
+    JToolBar jtbProgress = new JajukJToolbar();
     jtbProgress.setToolTipText(Messages.getString("InformationJPanel.7"));
     jsPosition = new JSlider(0, 100, 0);
     jsPosition.addChangeListener(this);
+    jsPosition.setOpaque(false);
     jsPosition.addMouseWheelListener(InformationJPanel.this);
     jsPosition.setEnabled(false);
     jtbProgress.add(jsPosition);

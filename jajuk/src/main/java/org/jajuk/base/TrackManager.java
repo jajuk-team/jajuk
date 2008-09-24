@@ -39,7 +39,6 @@ import org.jajuk.services.players.FIFO;
 import org.jajuk.services.tags.Tag;
 import org.jajuk.util.Conf;
 import org.jajuk.util.MD5Processor;
-import org.jajuk.util.Messages;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.error.NoneAccessibleFileException;
 import org.jajuk.util.log.Log;
@@ -385,7 +384,6 @@ public final class TrackManager extends ItemManager implements Observer {
       }
       long lNewItem = Long.parseLong(newItem);
       if (lNewItem < 0 || lNewItem > 10000) {
-        Messages.showErrorMessage(137);
         throw new JajukException(137);
       }
       List<File> alReady = null;
@@ -476,7 +474,6 @@ public final class TrackManager extends ItemManager implements Observer {
       }
       // check format
       if (lNew < 0) {
-        Messages.showErrorMessage(137);
         throw new JajukException(137);
       }
       track.setRate(lNew);
@@ -504,8 +501,7 @@ public final class TrackManager extends ItemManager implements Observer {
       }
       // check format
       if (lNewOrder < 0) {
-        Messages.showErrorMessage(137);
-        return null;
+        throw new JajukException(137);
       }
       List<File> alReady = null;
       // check if files are accessible

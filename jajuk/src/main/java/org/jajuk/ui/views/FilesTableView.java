@@ -20,8 +20,6 @@
 
 package org.jajuk.ui.views;
 
-import ext.SwingWorker;
-
 import javax.swing.JMenuItem;
 
 import org.jajuk.base.File;
@@ -63,64 +61,51 @@ public class FilesTableView extends AbstractTableView {
 
   public void initUI() {
     // Perform common table view initializations
-    SwingWorker sw = new SwingWorker() {
-      @Override
-      public Object construct() {
-        FilesTableView.super.construct();
-        // File menu
-        jmiFilePlayDirectory = new JMenuItem(ActionManager
-            .getAction(JajukActions.PLAY_DIRECTORY_SELECTION));
-        jmiFilePlayDirectory.putClientProperty(DETAIL_SELECTION, jtable.getSelection());
-        jtable.getMenu().add(jmiFilePlayDirectory);
-        // Add this generic menu item manually to ensure it's the last one in
-        // the list for GUI reasons
-        jtable.getMenu().add(jmiBookmark);
-        jtable.getMenu().add(jmiProperties);
+    FilesTableView.super.construct();
+    // File menu
+    jmiFilePlayDirectory = new JMenuItem(ActionManager
+        .getAction(JajukActions.PLAY_DIRECTORY_SELECTION));
+    jmiFilePlayDirectory.putClientProperty(DETAIL_SELECTION, jtable.getSelection());
+    jtable.getMenu().add(jmiFilePlayDirectory);
+    // Add this generic menu item manually to ensure it's the last one in
+    // the list for GUI reasons
+    jtable.getMenu().add(jmiBookmark);
+    jtable.getMenu().add(jmiProperties);
 
-        // Add specific behavior on left click
-        jtable.setCommand(new ILaunchCommand() {
-          public void launch(int nbClicks) {
-            int iSelectedCol = jtable.getSelectedColumn();
-            
-            if(jtable.getSelectedColumnCount() != 1) {
-              return;
-            }
-            
-            if(jtable.convertColumnIndexToModel(iSelectedCol) != 0) {
-              return;
-            }
-            
-            // selected column in view Test click on play icon
-            // launch track only if only first column is selected (fixes issue
-            // with Ctrl-A)
-            if (// click on play icon
-                nbClicks == 2 && !jtbEditable.isSelected()) {
-              // double click on any column and edition state false
-              // selected row in view
-              File file = (File) model.getItemAt(jtable.convertRowIndexToModel(jtable
-                  .getSelectedRow()));
-              try {
-                // launch it
-                FIFO.push(
-                    new StackItem(file, Conf.getBoolean(CONF_STATE_REPEAT), true),
-                    Conf.getBoolean(CONF_OPTIONS_PUSH_ON_CLICK));
+    // Add specific behavior on left click
+    jtable.setCommand(new ILaunchCommand() {
+      public void launch(int nbClicks) {
+        int iSelectedCol = jtable.getSelectedColumn();
 
-              } catch (JajukException je) {
-                Log.error(je);
-              }
-            }
+        if (jtable.getSelectedColumnCount() != 1) {
+          return;
+        }
+
+        if (jtable.convertColumnIndexToModel(iSelectedCol) != 0) {
+          return;
+        }
+
+        // selected column in view Test click on play icon
+        // launch track only if only first column is selected (fixes issue
+        // with Ctrl-A)
+        if (// click on play icon
+        nbClicks == 2 && !jtbEditable.isSelected()) {
+          // double click on any column and edition state false
+          // selected row in view
+          File file = (File) model
+              .getItemAt(jtable.convertRowIndexToModel(jtable.getSelectedRow()));
+          try {
+            // launch it
+            FIFO.push(new StackItem(file, Conf.getBoolean(CONF_STATE_REPEAT), true), Conf
+                .getBoolean(CONF_OPTIONS_PUSH_ON_CLICK));
+
+          } catch (JajukException je) {
+            Log.error(je);
           }
-        });
-        return null;
+        }
       }
-
-      @Override
-      public void finished() {
-        FilesTableView.super.finished();
-      }
-    };
-    sw.start();
-
+    });
+    FilesTableView.super.finished();
   }
 
   /** populate the table */

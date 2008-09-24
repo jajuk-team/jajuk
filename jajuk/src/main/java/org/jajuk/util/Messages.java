@@ -21,6 +21,7 @@ package org.jajuk.util;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -37,6 +38,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.SwingUtilities;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
@@ -180,9 +182,8 @@ public class Messages extends DefaultHandler implements Const {
           if (sOut == null) {
             break;
           }
-        }
-        else{
-          //Remove HTML tags
+        } else {
+          // Remove HTML tags
           sOut = sOut.replaceAll("<.*>", "");
         }
         msgs.add(sOut);
@@ -206,7 +207,7 @@ public class Messages extends DefaultHandler implements Const {
       int index = Conf.getInt(CONF_TIP_OF_DAY_INDEX);
       // display the next one
       totd = Messages.getString("TipOfTheDay." + index);
-      //Remove <img> tags
+      // Remove <img> tags
       totd = totd.replaceAll("<.*>", "");
       // Increment and save index
       Conf.setProperty(CONF_TIP_OF_DAY_INDEX, String.valueOf((index + 1)
@@ -441,9 +442,21 @@ public class Messages extends DefaultHandler implements Const {
     if (Conf.getBoolean(sProperty)) {
       return;
     }
-    final HideableMessageDialog message = new HideableMessageDialog(sMessage,
-        getTitleForType(JOptionPane.WARNING_MESSAGE), sProperty, JOptionPane.WARNING_MESSAGE, null);
-    message.getResu();
+    try {
+      SwingUtilities.invokeAndWait(new Runnable() {
+        public void run() {
+          final HideableMessageDialog message = new HideableMessageDialog(sMessage,
+              getTitleForType(JOptionPane.WARNING_MESSAGE), sProperty, JOptionPane.WARNING_MESSAGE,
+              null);
+          message.getResu();
+        }
+
+      });
+    } catch (InterruptedException e) {
+      Log.error(e);
+    } catch (InvocationTargetException e) {
+      Log.error(e);
+    }
   }
 
   /**
@@ -452,8 +465,12 @@ public class Messages extends DefaultHandler implements Const {
    * @param sMessage
    */
   public static void showInfoMessage(final String sMessage, final Icon icon) {
-    new DetailsMessageDialog(sMessage, getTitleForType(JOptionPane.INFORMATION_MESSAGE),
-        JOptionPane.INFORMATION_MESSAGE, null, icon);
+    SwingUtilities.invokeLater(new Runnable() {
+      public void run() {
+        new DetailsMessageDialog(sMessage, getTitleForType(JOptionPane.INFORMATION_MESSAGE),
+            JOptionPane.INFORMATION_MESSAGE, null, icon);
+      }
+    });
   }
 
   /**
@@ -463,7 +480,11 @@ public class Messages extends DefaultHandler implements Const {
    * @param sInfoSup
    */
   public static void showErrorMessage(final int code, final String sInfoSup) {
-    new ErrorMessageDialog(code, sInfoSup);
+    SwingUtilities.invokeLater(new Runnable() {
+      public void run() {
+        new ErrorMessageDialog(code, sInfoSup);
+      }
+    });
   }
 
   /**
@@ -483,8 +504,12 @@ public class Messages extends DefaultHandler implements Const {
    */
   public static void showDetailedErrorMessage(final int code, final String sInfoSup,
       final String sDetails) {
-    new DetailsMessageDialog(Messages.getErrorMessage(code) + " : " + sInfoSup,
-        getTitleForType(JOptionPane.ERROR_MESSAGE), JOptionPane.ERROR_MESSAGE, sDetails, null);
+    SwingUtilities.invokeLater(new Runnable() {
+      public void run() {
+        new DetailsMessageDialog(Messages.getErrorMessage(code) + " : " + sInfoSup,
+            getTitleForType(JOptionPane.ERROR_MESSAGE), JOptionPane.ERROR_MESSAGE, sDetails, null);
+      }
+    });
   }
 
   /**
@@ -494,9 +519,13 @@ public class Messages extends DefaultHandler implements Const {
    * @param sInfoSup
    */
   public static void showInfoMessage(final String sMessage, final String sInfoSup) {
-    new DetailsMessageDialog(sMessage + " : " + sInfoSup,
-        getTitleForType(JOptionPane.INFORMATION_MESSAGE), JOptionPane.INFORMATION_MESSAGE, null,
-        null);
+    SwingUtilities.invokeLater(new Runnable() {
+      public void run() {
+        new DetailsMessageDialog(sMessage + " : " + sInfoSup,
+            getTitleForType(JOptionPane.INFORMATION_MESSAGE), JOptionPane.INFORMATION_MESSAGE,
+            null, null);
+      }
+    });
   }
 
   /**
@@ -505,8 +534,12 @@ public class Messages extends DefaultHandler implements Const {
    * @param sMessage
    */
   public static void showInfoMessage(final String sMessage) {
-    new DetailsMessageDialog(sMessage, getTitleForType(JOptionPane.INFORMATION_MESSAGE),
-        JOptionPane.INFORMATION_MESSAGE, null, null);
+    SwingUtilities.invokeLater(new Runnable() {
+      public void run() {
+        new DetailsMessageDialog(sMessage, getTitleForType(JOptionPane.INFORMATION_MESSAGE),
+            JOptionPane.INFORMATION_MESSAGE, null, null);
+      }
+    });
   }
 
   /**

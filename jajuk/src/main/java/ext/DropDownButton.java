@@ -28,6 +28,7 @@ import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 
 import org.jajuk.ui.widgets.JajukButton;
+import org.jajuk.ui.widgets.JajukJToolbar;
 import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 
@@ -112,12 +113,8 @@ public abstract class DropDownButton extends JajukButton implements ChangeListen
   protected abstract JPopupMenu getPopupMenu();
 
   public JButton addToToolBar(JToolBar toolbar) {
-    JToolBar tempBar = new JToolBar();
-    tempBar.setBorder(null);
-    tempBar.setRollover(true);
+    JToolBar tempBar = new JajukJToolbar();
     tempBar.setAlignmentX(0.5f);
-    tempBar.setRollover(true);
-    tempBar.setFloatable(false);
     tempBar.add(this);
     tempBar.add(arrowButton);
     toolbar.add(tempBar);

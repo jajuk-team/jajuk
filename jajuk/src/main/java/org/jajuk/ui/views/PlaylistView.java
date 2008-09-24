@@ -76,6 +76,7 @@ import org.jajuk.ui.helpers.PlaylistTableModel;
 import org.jajuk.ui.widgets.InformationJPanel;
 import org.jajuk.ui.widgets.JajukButton;
 import org.jajuk.ui.widgets.JajukJSplitPane;
+import org.jajuk.ui.widgets.JajukJToolbar;
 import org.jajuk.ui.widgets.JajukTable;
 import org.jajuk.ui.widgets.SmartPlaylist;
 import org.jajuk.util.Conf;
@@ -271,10 +272,8 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
     jbPrepParty.setToolTipText(Messages.getString("AbstractPlaylistEditorView.27"));
     jbPrepParty.addActionListener(this);
     jlTitle = new JLabel("");
-    JToolBar jtb = new JToolBar();
-    jtb.setRollover(true);
-    jtb.setBorder(null);
-
+    JToolBar jtb = new JajukJToolbar();
+    
     jtb.add(jbRun);
     jtb.add(jbSave);
     jtb.add(jbRemove);

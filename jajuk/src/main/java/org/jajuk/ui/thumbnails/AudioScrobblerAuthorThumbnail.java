@@ -47,7 +47,6 @@ import org.jajuk.util.UtilString;
 import org.jajuk.util.UtilSystem;
 import org.jajuk.util.log.Log;
 import org.jdesktop.swingx.VerticalLayout;
-import org.jvnet.substance.SubstanceLookAndFeel;
 
 /**
  * Last.FM Album thumb represented as artists label + (optionally) others text
@@ -74,7 +73,6 @@ public class AudioScrobblerAuthorThumbnail extends AbstractThumbnail {
 
   @Override
   public void populate() throws Exception {
-    jlIcon = new JLabel();
 
     SwingWorker sw = new SwingWorker() {
 
@@ -106,6 +104,7 @@ public class AudioScrobblerAuthorThumbnail extends AbstractThumbnail {
 
       @Override
       public void finished() {
+        jlIcon = new JLabel();
         super.finished();
         postPopulate();
         jlIcon.setIcon(ii);
@@ -161,11 +160,11 @@ public class AudioScrobblerAuthorThumbnail extends AbstractThumbnail {
    */
   @Override
   public String getDescription() {
-    Color bgcolor = SubstanceLookAndFeel.getActiveColorScheme().getUltraLightColor();
-    Color fgcolor = SubstanceLookAndFeel.getActiveColorScheme().getForegroundColor();
+    Color bgcolor = UtilGUI.getUltraLightColor();
+    Color fgcolor = UtilGUI.getForegroundColor();
     String sOut = "<html bgcolor='#" + UtilGUI.getHTMLColor(bgcolor) + "'><TABLE color='"
-        + UtilGUI.getHTMLColor(fgcolor) + "'><TR><TD VALIGN='TOP'> <b>" + "<a href='file://" + XML_URL
-        + '?' + author.getUrl() + "'>" + author.getName() + "</a>" + "</b><br><br>";
+        + UtilGUI.getHTMLColor(fgcolor) + "'><TR><TD VALIGN='TOP'> <b>" + "<a href='file://"
+        + XML_URL + '?' + author.getUrl() + "'>" + author.getName() + "</a>" + "</b><br><br>";
     // display picture
     sOut += "<img src='" + author.getImageUrl() + "'></TD>";
     // Show each album for this Author

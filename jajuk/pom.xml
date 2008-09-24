@@ -89,7 +89,7 @@
       <artifactId>substance</artifactId>
       <version>4.2dev</version>
       <scope>system</scope>
-      <systemPath>${basedir}/lib/substance-4.3.5.jar</systemPath>
+      <systemPath>${basedir}/lib/substance-5.0_jajuk.jar</systemPath>
     </dependency>
     <dependency>
       <groupId>net.sf.qdwizard</groupId>

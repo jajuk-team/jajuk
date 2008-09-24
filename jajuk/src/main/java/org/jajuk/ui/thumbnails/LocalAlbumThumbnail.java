@@ -51,7 +51,6 @@ import org.jajuk.util.UtilString;
 import org.jajuk.util.UtilSystem;
 import org.jajuk.util.log.Log;
 import org.jdesktop.swingx.VerticalLayout;
-import org.jvnet.substance.SubstanceLookAndFeel;
 
 /**
  * Album thumb represented as album cover + (optionally) others text information
@@ -181,8 +180,8 @@ public class LocalAlbumThumbnail extends AbstractThumbnail {
     List<Track> tracks = new ArrayList<Track>(TrackManager.getInstance().getAssociatedTracks(album));
     Collections.sort(tracks, new TrackComparator(TrackComparator.ORDER));
     Track firstTrack = tracks.iterator().next();
-    Color bgcolor = SubstanceLookAndFeel.getActiveColorScheme().getUltraLightColor();
-    Color fgcolor = SubstanceLookAndFeel.getActiveColorScheme().getForegroundColor();
+    Color bgcolor = UtilGUI.getUltraLightColor();
+    Color fgcolor = UtilGUI.getForegroundColor();
     String sOut = "<html bgcolor='#" + UtilGUI.getHTMLColor(bgcolor) + "'><TABLE color='"
         + UtilGUI.getHTMLColor(fgcolor) + "'><TR><TD VALIGN='TOP'> <b>" + album.getName2()
         + "</b><br><br>";

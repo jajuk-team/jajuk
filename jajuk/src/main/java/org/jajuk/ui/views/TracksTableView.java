@@ -20,8 +20,6 @@
 
 package org.jajuk.ui.views;
 
-import ext.SwingWorker;
-
 import javax.swing.JMenuItem;
 
 import org.jajuk.base.File;
@@ -68,62 +66,49 @@ public class TracksTableView extends AbstractTableView {
 
   public void initUI() {
     // Perform common table view initializations
-    SwingWorker sw = new SwingWorker() {
-      @Override
-      public Object construct() {
-        TracksTableView.super.construct();
-        // Track menu
-        jmiTrackPlayAlbum = new JMenuItem(ActionManager.getAction(JajukActions.PLAY_ALBUM_SELECTION));
-        jmiTrackPlayAlbum.putClientProperty(DETAIL_SELECTION, jtable.getSelection());
-        jmiTrackPlayAuthor = new JMenuItem(ActionManager
-            .getAction(JajukActions.PLAY_AUTHOR_SELECTION));
-        jmiTrackPlayAuthor.putClientProperty(DETAIL_SELECTION, jtable.getSelection());
-        jtable.getMenu().add(jmiTrackPlayAlbum);
-        jtable.getMenu().add(jmiTrackPlayAuthor);
-        // Add this generic menu item manually to ensure it's the last one in
-        // the list for GUI reasons
-        jtable.getMenu().add(jmiBookmark);
-        jtable.getMenu().add(jmiProperties);
-        // Add specific behavior on left click
-        jtable.setCommand(new ILaunchCommand() {
-          public void launch(int nbClicks) {
-            int iSelectedCol = jtable.getSelectedColumn();
-            // selected column in view Test click on play icon launch track only
-            // if only first column is selected (fixes issue with
-            // Ctrl-A)
-            if (jtable.getSelectedColumnCount() == 1
-            // click on play icon
-                && (jtable.convertColumnIndexToModel(iSelectedCol) == 0)
-                // double click on any column and edition state false
-                || (nbClicks == 2 && !jtbEditable.isSelected())) {
-              // selected row in view
-              Track track = (Track) jtable.getSelection().get(0);
-              File file = track.getPlayeableFile(false);
-              if (file != null) {
-                try {
-                  // launch it
-                  FIFO.push(
-                      new StackItem(file, Conf.getBoolean(CONF_STATE_REPEAT)),
-                      Conf.getBoolean(CONF_OPTIONS_PUSH_ON_CLICK));
+    TracksTableView.super.construct();
+    // Track menu
+    jmiTrackPlayAlbum = new JMenuItem(ActionManager.getAction(JajukActions.PLAY_ALBUM_SELECTION));
+    jmiTrackPlayAlbum.putClientProperty(DETAIL_SELECTION, jtable.getSelection());
+    jmiTrackPlayAuthor = new JMenuItem(ActionManager.getAction(JajukActions.PLAY_AUTHOR_SELECTION));
+    jmiTrackPlayAuthor.putClientProperty(DETAIL_SELECTION, jtable.getSelection());
+    jtable.getMenu().add(jmiTrackPlayAlbum);
+    jtable.getMenu().add(jmiTrackPlayAuthor);
+    // Add this generic menu item manually to ensure it's the last one in
+    // the list for GUI reasons
+    jtable.getMenu().add(jmiBookmark);
+    jtable.getMenu().add(jmiProperties);
+    // Add specific behavior on left click
+    jtable.setCommand(new ILaunchCommand() {
+      public void launch(int nbClicks) {
+        int iSelectedCol = jtable.getSelectedColumn();
+        // selected column in view Test click on play icon launch track only
+        // if only first column is selected (fixes issue with
+        // Ctrl-A)
+        if (jtable.getSelectedColumnCount() == 1
+        // click on play icon
+            && (jtable.convertColumnIndexToModel(iSelectedCol) == 0)
+            // double click on any column and edition state false
+            || (nbClicks == 2 && !jtbEditable.isSelected())) {
+          // selected row in view
+          Track track = (Track) jtable.getSelection().get(0);
+          File file = track.getPlayeableFile(false);
+          if (file != null) {
+            try {
+              // launch it
+              FIFO.push(new StackItem(file, Conf.getBoolean(CONF_STATE_REPEAT)), Conf
+                  .getBoolean(CONF_OPTIONS_PUSH_ON_CLICK));
 
-                } catch (JajukException je) {
-                  Log.error(je);
-                }
-              } else {
-                Messages.showErrorMessage(10, track.getName());
-              }
+            } catch (JajukException je) {
+              Log.error(je);
             }
+          } else {
+            Messages.showErrorMessage(10, track.getName());
           }
-        });
-        return null;
+        }
       }
-
-      @Override
-      public void finished() {
-        TracksTableView.super.finished();
-      }
-    };
-    sw.start();
+    });
+    TracksTableView.super.finished();
   }
 
   /** Fill the table */

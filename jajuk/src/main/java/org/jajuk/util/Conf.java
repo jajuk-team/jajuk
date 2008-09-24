@@ -264,7 +264,6 @@ public final class Conf implements Const {
     defaults.put(CONF_FONTS_SIZE, "12");
     defaults.put(CONF_MPLAYER_PATH_FORCED, "");
     defaults.put(CONF_INC_RATING, "5");
-    defaults.put(CONF_OPTIONS_WATERMARK, LNF_DEFAULT_WATERMARK);
     defaults.put(CONF_OPTIONS_LNF, LNF_DEFAULT_THEME);
     defaults.put(CONF_DEFAULT_WEB_RADIO, DEFAULT_WEBRADIO);
     defaults.put(CONF_CHECK_FOR_UPDATE, TRUE);

@@ -35,8 +35,8 @@
 	<classpathentry kind="lib" path="lib/jintellitype-1.3.jar"/>
 	<classpathentry kind="lib" path="lib/swingx-2007_12_30.jar"/>
 	<classpathentry kind="lib" path="lib/qdwizard-2.0.4.jar"/>
-	<classpathentry kind="lib" path="lib/substance-4.3.5.jar"/>
 	<classpathentry kind="lib" path="lib/jaudiotagger-1.126.jar"/>
-	<classpathentry kind="lib" path="lib/vldocking-2.1.5.jar"/>
+	<classpathentry kind="lib" path="lib/vldocking-2.1.5.jar" sourcepath="/prog/api/vldocking-2.1.5/src"/>
+	<classpathentry kind="lib" path="lib/substance-5.0_jajuk.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

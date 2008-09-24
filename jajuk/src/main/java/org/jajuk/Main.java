@@ -33,6 +33,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FilenameFilter;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.net.InetAddress;
 import java.net.URL;
 import java.net.UnknownHostException;
@@ -94,8 +95,8 @@ import org.jajuk.ui.widgets.PerspectiveBarJPanel;
 import org.jajuk.ui.wizard.FirstTimeWizard;
 import org.jajuk.ui.wizard.TipOfTheDayWizard;
 import org.jajuk.util.Conf;
-import org.jajuk.util.DownloadManager;
 import org.jajuk.util.Const;
+import org.jajuk.util.DownloadManager;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UpgradeManager;
@@ -106,8 +107,6 @@ import org.jajuk.util.UtilSystem;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 import org.jdesktop.swingx.JXPanel;
-import org.jvnet.substance.SubstanceLookAndFeel;
-import org.jvnet.substance.watermark.SubstanceNoneWatermark;
 
 /**
  * Jajuk launching class
@@ -221,17 +220,15 @@ public final class Main implements Const {
       // Set locale. setSystemLocal
       Messages.setLocal(Conf.getString(CONF_OPTIONS_LANGUAGE));
 
+      // Set window look and feel (must be done out of EDT)
+      UtilGUI.setLookAndFeel(Conf.getString(CONF_OPTIONS_LNF));
+
       // Launch splashscreen. Depends on: log.setVerbosity,
       // configurationManager.load (for local)
       SwingUtilities.invokeAndWait(new Runnable() {
         public void run() {
           // Set default fonts
           FontManager.getInstance().setDefaultFont();
-
-          // Set window look and feel and watermarks
-          UtilGUI.setLookAndFeel(Conf.getString(CONF_OPTIONS_LNF));
-          SubstanceLookAndFeel.setCurrentWatermark(new SubstanceNoneWatermark());
-
           sc = new JSplash(IMAGES_SPLASHSCREEN, true, true, false, JAJUK_COPYRIGHT, JAJUK_VERSION
               + " \"" + JAJUK_CODENAME + "\"" + " " + JAJUK_VERSION_DATE, FontManager.getInstance()
               .getFont(JajukFont.SPLASH));
@@ -699,56 +696,68 @@ public final class Main implements Const {
    * 
    */
   private static void checkOtherSession() {
-    // Check for remote concurrent users using the same configuration
-    // files. Create concurrent session directory if needed
-    final File sessions = UtilSystem.getConfFileByPath(FILE_SESSIONS);
-    if (!sessions.exists()) {
-      if (!sessions.mkdir()) {
-        Log.warn("Could not create directory " + sessions.toString());
-      }
-    }
-    // Check for concurrent session
-    File[] files = sessions.listFiles();
-    // display a warning if sessions directory contains some others users
-    // We ignore presence of ourself session id that can be caused by a
-    // crash
-    if (files.length > 0) {
-      StringBuilder details = new StringBuilder();
-      for (File element : files) {
-        details.append(element.getName());
-        details.append('\n');
-      }
-      final JOptionPane optionPane = UtilGUI.getNarrowOptionPane(72);
-      optionPane.setMessage(UtilGUI.getLimitedMessage(Messages.getString("Warning.2")
-          + details.toString(), 20));
-      final Object[] options = { Messages.getString("Ok"), Messages.getString("Hide"),
-          Messages.getString("Purge") };
-      optionPane.setOptions(options);
-      optionPane.setMessageType(JOptionPane.WARNING_MESSAGE);
-      final JDialog dialog = optionPane.createDialog(null, Messages.getString("Warning"));
-      dialog.setAlwaysOnTop(true);
-      // keep it modal (useful at startup)
-      dialog.setModal(true);
-      dialog.pack();
-      dialog.setLocationRelativeTo(JajukWindow.getInstance());
-      dialog.setVisible(true);
-      if (Messages.getString("Hide").equals(optionPane.getValue())) {
-        // Not show again
-        Conf.setProperty(CONF_NOT_SHOW_AGAIN_CONCURRENT_SESSION, TRUE);
-      } else if (Messages.getString("Purge").equals(optionPane.getValue())) {
-        try {
-          // Clean up old locks directories in session folder
-          files = sessions.listFiles();
-          for (int i = 0; i < files.length; i++) {
-            if (!files[i].delete()) {
-              throw new Exception("Cannot delete : " + files[i].getAbsolutePath());
+
+    try {
+      SwingUtilities.invokeAndWait(new Runnable() {
+        public void run() {
+          // Check for remote concurrent users using the same configuration
+          // files. Create concurrent session directory if needed
+          File sessions = UtilSystem.getConfFileByPath(FILE_SESSIONS);
+          if (!sessions.exists()) {
+            if (!sessions.mkdir()) {
+              Log.warn("Could not create directory " + sessions.toString());
             }
           }
-        } catch (Exception e) {
-          Messages.showDetailedErrorMessage(131, e.getMessage(), "");
-          Log.error(131);
+          // Check for concurrent session
+          File[] files = sessions.listFiles();
+          // display a warning if sessions directory contains some others users
+          // We ignore presence of ourself session id that can be caused by a
+          // crash
+          if (files.length > 0) {
+            StringBuilder details = new StringBuilder();
+            for (File element : files) {
+              details.append(element.getName());
+              details.append('\n');
+            }
+            final JOptionPane optionPane = UtilGUI.getNarrowOptionPane(72);
+            optionPane.setMessage(UtilGUI.getLimitedMessage(Messages.getString("Warning.2")
+                + details.toString(), 20));
+            final Object[] options = { Messages.getString("Ok"), Messages.getString("Hide"),
+                Messages.getString("Purge") };
+            optionPane.setOptions(options);
+            optionPane.setMessageType(JOptionPane.WARNING_MESSAGE);
+            final JDialog dialog = optionPane.createDialog(null, Messages.getString("Warning"));
+            dialog.setAlwaysOnTop(true);
+            // keep it modal (useful at startup)
+            dialog.setModal(true);
+            dialog.pack();
+            dialog.setIconImage(IconLoader.ICON_LOGO_FRAME.getImage());
+            dialog.setLocationRelativeTo(JajukWindow.getInstance());
+            dialog.setVisible(true);
+            if (Messages.getString("Hide").equals(optionPane.getValue())) {
+              // Not show again
+              Conf.setProperty(CONF_NOT_SHOW_AGAIN_CONCURRENT_SESSION, TRUE);
+            } else if (Messages.getString("Purge").equals(optionPane.getValue())) {
+              try {
+                // Clean up old locks directories in session folder
+                files = sessions.listFiles();
+                for (int i = 0; i < files.length; i++) {
+                  if (!files[i].delete()) {
+                    throw new Exception("Cannot delete : " + files[i].getAbsolutePath());
+                  }
+                }
+              } catch (Exception e) {
+                Messages.showDetailedErrorMessage(131, e.getMessage(), "");
+                Log.error(131);
+              }
+            }
+          }
         }
-      }
+      });
+    } catch (InterruptedException e) {
+      Log.error(e);
+    } catch (InvocationTargetException e) {
+      Log.error(e);
     }
   }
 
@@ -970,11 +979,6 @@ public final class Main implements Const {
     SwingUtilities.invokeLater(new Runnable() {
       public void run() {
         try {
-          // Init perf monitor
-          if (bTestMode) {
-            ext.EventDispatchThreadHangMonitor.initMonitoring();
-          }
-
           // Light drag and drop for VLDocking
           UIManager.put("DragControler.paintBackgroundUnderDragRect", Boolean.FALSE);
           DockingUISettings.getInstance().installUI();
@@ -1019,9 +1023,6 @@ public final class Main implements Const {
 
           // Display the frame
           JajukWindow.getInstance().setVisible(true);
-
-          // Apply watermark
-          UtilGUI.setWatermark(Conf.getString(CONF_OPTIONS_WATERMARK));
 
           // Apply size and location again
           // (required by Gnome for ie to fix the 0-sized maximized

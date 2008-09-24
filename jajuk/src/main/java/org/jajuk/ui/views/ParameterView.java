@@ -88,19 +88,16 @@ import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.DownloadManager;
 import org.jajuk.util.IconLoader;
-import org.jajuk.util.JajukFileFilter;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilGUI;
 import org.jajuk.util.UtilString;
 import org.jajuk.util.UtilSystem;
-import org.jajuk.util.filters.ImageFilter;
 import org.jajuk.util.log.Log;
 import org.jdesktop.swingx.HorizontalLayout;
 import org.jdesktop.swingx.JXCollapsiblePane;
 import org.jdesktop.swingx.VerticalLayout;
 import org.jvnet.substance.SubstanceLookAndFeel;
-import org.jvnet.substance.theme.ThemeInfo;
-import org.jvnet.substance.watermark.WatermarkInfo;
+import org.jvnet.substance.skin.SkinInfo;
 
 /**
  * View used to set Jajuk parameters.
@@ -189,14 +186,6 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
   JLabel jlLAF;
 
   SteppedComboBox scbLAF;
-
-  JLabel jlWatermarks;
-
-  JLabel jlWatermarkImage;
-
-  SteppedComboBox scbWatermarks;
-
-  PathSelector pathWatermarkFile;
 
   JLabel jlLogLevel;
 
@@ -464,11 +453,6 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
           }
         } else if (e.getSource() == jcbHotkeys) {
           someOptionsAppliedAtNextStartup = true;
-        } else if (e.getSource().equals(scbWatermarks)) {
-          // Enable image selection if image watermark
-          boolean bImage = scbWatermarks.getSelectedItem().equals(Const.LNF_WATERMARK_IMAGE);
-          jlWatermarkImage.setEnabled(bImage);
-          pathWatermarkFile.setEnabled(bImage);
         } else if (e.getSource() == jbCatalogRefresh) {
           int resu = Messages.getChoice(Messages.getString("Confirmation_rebuild_thumbs"),
               JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);
@@ -625,23 +609,6 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
           Const.CONF_NOT_SHOW_AGAIN_LAF_CHANGE);
       bLAFMessage = true;
     }
-    // Watermarks change
-    final String oldWatermark = Conf.getString(Const.CONF_OPTIONS_WATERMARK);
-    Conf.setProperty(Const.CONF_OPTIONS_WATERMARK, (String) scbWatermarks.getSelectedItem());
-    final String watermark = (String) scbWatermarks.getSelectedItem();
-    if (!oldWatermark.equals(watermark) && !bLAFMessage) {
-      Messages.showHideableWarningMessage(Messages.getString("ParameterView.233"),
-          Const.CONF_NOT_SHOW_AGAIN_LAF_CHANGE);
-    }
-    // theme Image change
-    final String oldImage = Conf.getString(Const.CONF_OPTIONS_WATERMARK_IMAGE);
-    Conf.setProperty(Const.CONF_OPTIONS_WATERMARK_IMAGE, pathWatermarkFile.getUrl());
-    final String image = pathWatermarkFile.getUrl();
-    if (oldImage != null && !oldImage.equals(image) && !bLAFMessage) {
-      Messages.showHideableWarningMessage(Messages.getString("ParameterView.233"),
-          Const.CONF_NOT_SHOW_AGAIN_LAF_CHANGE);
-    }
-
     // If jajuk home changes, write new path in bootstrap file
     if ((Main.getWorkspace() != null) && !Main.getWorkspace().equals(psJajukWorkspace.getUrl())) {
       // Check workspace directory
@@ -1387,7 +1354,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 
     // -- User interface --
     jpUI = new JPanel();
-    final double sizeUI[][] = { { p, p }, { p, p, p, p, p, p, p, p, p, p } };
+    final double sizeUI[][] = { { p, p }, { p, p, p, p, p, p, p, p } };
     final TableLayout layoutUI = new TableLayout(sizeUI);
     layoutUI.setHGap(iXSeparator);
     layoutUI.setVGap(iYSeparator);
@@ -1450,47 +1417,19 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     jlLAF = new JLabel(Messages.getString("ParameterView.43"));
     jlLAF.setToolTipText(Messages.getString("ParameterView.44"));
     scbLAF = new SteppedComboBox();
-    final Map<String, ThemeInfo> map = SubstanceLookAndFeel.getAllThemes();
-    // Use a tree set to sort themes alphabeticaly
+    final Map<String, SkinInfo> map = SubstanceLookAndFeel.getAllSkins();
+    // Use a tree set to sort themes alphabetically
     final Set<String> themes = new TreeSet<String>(map.keySet());
     // Add each theme to the combo box
     for (final String theme : themes) {
       scbLAF.addItem(theme);
     }
     scbLAF.setToolTipText(Messages.getString("ParameterView.44"));
-    // Watermarks
-    jlWatermarks = new JLabel(Messages.getString("ParameterView.230"));
-    jlWatermarks.setToolTipText(Messages.getString("ParameterView.231"));
-    jlWatermarkImage = new JLabel(Messages.getString("ParameterView.232"));
-    jlWatermarkImage.setToolTipText(Messages.getString("ParameterView.232"));
-    scbWatermarks = new SteppedComboBox();
-    final Map<String, WatermarkInfo> mapWatermarks = SubstanceLookAndFeel.getAllWatermarks();
-    // Use a tree set to sort watermarks alphabetically
-    final Set<String> watermarks = new TreeSet<String>(mapWatermarks.keySet());
-    // Add image watermark that is not included by default for unknown
-    // reason
-    watermarks.add(Const.LNF_WATERMARK_IMAGE);
-    // Add each watermark to the combo box
-    for (final String watermark : watermarks) {
-      scbWatermarks.addItem(watermark);
-    }
-    scbWatermarks.setToolTipText(Messages.getString("ParameterView.231"));
-    // We have to listen to dynamic changes to enable/disable the watermark file
-    // file selector
-    scbWatermarks.addActionListener(this);
-    // Watermark file selection
-    final JajukFileFilter filter = new JajukFileFilter(ImageFilter.getInstance());
-    filter.setAcceptDirectories(true);
-    pathWatermarkFile = new PathSelector(filter, Conf.getString(Const.CONF_OPTIONS_WATERMARK_IMAGE));
     // Add items
     jpUI.add(jlFonts, "0,0");
     jpUI.add(jsFonts, "1,0");
     jpUI.add(jlLAF, "0,1");
     jpUI.add(scbLAF, "1,1");
-    jpUI.add(jlWatermarks, "0,2");
-    jpUI.add(scbWatermarks, "1,2");
-    jpUI.add(jlWatermarkImage, "0,3");
-    jpUI.add(pathWatermarkFile, "1,3");
     jpUI.add(jcbShowPopups, "0,4");
     jpUI.add(jcbShowBaloon, "0,5");
     jpUI.add(toggle, "0,6");
@@ -1515,7 +1454,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     final double size[][] = { { 0.99 }, { 0.9, 0.10 } };
     setLayout(new TableLayout(size));
     // add main panels
-    jtpMain = new JTabbedPane(SwingConstants.LEFT);
+    jtpMain = new JTabbedPane(SwingConstants.TOP);
     // ScrollPane without border
     class JajukJScrollPane extends JScrollPane {
       private static final long serialVersionUID = 4564343623724771988L;
@@ -1707,17 +1646,9 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     // UI
     jcbShowBaloon.setSelected(Conf.getBoolean(Const.CONF_UI_SHOW_BALLOON));
     jcbShowPopups.setSelected(Conf.getBoolean(Const.CONF_SHOW_POPUPS));
-    // Enable image selection if image watermark
-    jlWatermarkImage.setEnabled(Conf.getString(Const.CONF_OPTIONS_WATERMARK).equals(
-        Const.LNF_WATERMARK_IMAGE));
-    pathWatermarkFile.setEnabled(Conf.getString(Const.CONF_OPTIONS_WATERMARK).equals(
-        Const.LNF_WATERMARK_IMAGE));
     scbLAF.removeActionListener(this);
     scbLAF.setSelectedItem(Conf.getString(Const.CONF_OPTIONS_LNF));
     scbLAF.addActionListener(this);
-    scbWatermarks.removeActionListener(this);
-    scbWatermarks.setSelectedItem(Conf.getString(Const.CONF_OPTIONS_WATERMARK));
-    scbWatermarks.addActionListener(this);
     jsPerspectiveSize.setValue(Conf.getInt(CONF_PERSPECTIVE_ICONS_SIZE));
   }
 

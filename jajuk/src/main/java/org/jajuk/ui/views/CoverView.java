@@ -71,6 +71,7 @@ import org.jajuk.ui.thumbnails.ThumbnailManager;
 import org.jajuk.ui.widgets.InformationJPanel;
 import org.jajuk.ui.widgets.JajukButton;
 import org.jajuk.ui.widgets.JajukFileChooser;
+import org.jajuk.ui.widgets.JajukJToolbar;
 import org.jajuk.ui.widgets.JajukWindow;
 import org.jajuk.util.Conf;
 import org.jajuk.util.DownloadManager;
@@ -717,9 +718,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
     // Control panel
     jpControl = new JPanel();
     jpControl.setBorder(BorderFactory.createEtchedBorder());
-    final JToolBar jtb = new JToolBar();
-    jtb.setRollover(true);
-    jtb.setBorder(null);
+    final JToolBar jtb = new JajukJToolbar();
     jbPrevious = new JajukButton(IconLoader.ICON_PREVIOUS);
     jbPrevious.addActionListener(this);
     jbPrevious.setToolTipText(Messages.getString("CoverView.4"));

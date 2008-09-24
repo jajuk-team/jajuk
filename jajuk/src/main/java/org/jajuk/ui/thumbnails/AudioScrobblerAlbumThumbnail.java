@@ -48,7 +48,6 @@ import org.jajuk.util.UtilString;
 import org.jajuk.util.UtilSystem;
 import org.jajuk.util.log.Log;
 import org.jdesktop.swingx.VerticalLayout;
-import org.jvnet.substance.SubstanceLookAndFeel;
 
 /**
  * Last.FM Album thumb represented as album cover + (optionally) others text
@@ -174,8 +173,8 @@ public class AudioScrobblerAlbumThumbnail extends AbstractThumbnail {
         this.album = lAlbum;
       }
     }
-    Color bgcolor = SubstanceLookAndFeel.getActiveColorScheme().getUltraLightColor();
-    Color fgcolor = SubstanceLookAndFeel.getActiveColorScheme().getForegroundColor();
+    Color bgcolor = UtilGUI.getUltraLightColor();
+    Color fgcolor = UtilGUI.getForegroundColor();
     String sOut = "<html bgcolor='#" + UtilGUI.getHTMLColor(bgcolor) + "'><TABLE color='"
         + UtilGUI.getHTMLColor(fgcolor) + "'><TR><TD VALIGN='TOP'> <b>" + "<a href='file://" + XML_URL
         + '?' + album.getUrl() + "'>" + album.getTitle() + "</a>" + "</b><br><br>";

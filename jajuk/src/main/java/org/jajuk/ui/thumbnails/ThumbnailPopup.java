@@ -60,7 +60,6 @@ import org.jajuk.util.Const;
 import org.jajuk.util.UtilFeatures;
 import org.jajuk.util.UtilGUI;
 import org.jajuk.util.log.Log;
-import org.jvnet.substance.SubstanceLookAndFeel;
 
 /**
  * HTML popup displayed over a thumbnail, it details album informations and
@@ -96,7 +95,7 @@ public class ThumbnailPopup extends JDialog implements Const {
     jp.setLayout(new TableLayout(size));
     final JEditorPane text = new JEditorPane("text/html", description);
     text.setEditable(false);
-    text.setBackground(SubstanceLookAndFeel.getActiveColorScheme().getUltraLightColor());
+    text.setBackground(UtilGUI.getUltraLightColor());
     text.addHyperlinkListener(new HyperlinkListener() {
       public void hyperlinkUpdate(HyperlinkEvent e) {
         if (e.getEventType() == EventType.ACTIVATED) {

@@ -210,9 +210,7 @@ public final class JajukSlimbar extends JFrame implements Const, Observer, Mouse
     jbInfo = new JButton(IconLoader.ICON_INFO);
     jbInfo.addActionListener(this);
 
-    JToolBar jtbPlay = new JToolBar();
-    jtbPlay.setBorder(null);
-    jtbPlay.setRollover(true);
+    JToolBar jtbPlay = new JajukJToolbar();
     ActionUtil.installKeystrokes(jtbPlay, ActionManager.getAction(NEXT_ALBUM), ActionManager
         .getAction(PREVIOUS_ALBUM));
     jbPrevious = new SizedButton(ActionManager.getAction(PREVIOUS_TRACK), 16, 16, false);
@@ -232,9 +230,8 @@ public final class JajukSlimbar extends JFrame implements Const, Observer, Mouse
     jtbPlay.add(jbStop);
     jtbPlay.add(jbNext);
 
-    JToolBar jtbSmart = new JToolBar();
-    jtbSmart.setBorder(null);
-
+    JToolBar jtbSmart = new JajukJToolbar();
+    
     jddbSmart = new DropDownButton(IconLoader.ICON_INC_RATING) {
       private static final long serialVersionUID = 1L;
 
@@ -302,9 +299,8 @@ public final class JajukSlimbar extends JFrame implements Const, Observer, Mouse
     jbIncRate.setAction(actionIncRate);
     jbIncRate.addToToolBar(jtbSmart);
 
-    JToolBar jtbTools = new JToolBar();
-    jtbTools.setBorder(null);
-
+    JToolBar jtbTools = new JajukJToolbar();
+    
     int iVolume = (int) (100 * Conf.getFloat(CONF_VOLUME));
     if (iVolume > 100) { // can occur in some undefined cases
       iVolume = 100;
@@ -333,11 +329,8 @@ public final class JajukSlimbar extends JFrame implements Const, Observer, Mouse
     sbSearch.setMaximumSize(new Dimension(22, 18));
     sbSearch.addMouseMotionListener(motionAdapter);
 
-    slimJajuk = new JToolBar();
-    slimJajuk.setBorder(null);
-    slimJajuk.setFloatable(false);
-    slimJajuk.setRollover(true);
-
+    slimJajuk = new JajukJToolbar();
+    
     slimJajuk.add(Box.createHorizontalStrut(4));
     slimJajuk.add(jbInfo);
     slimJajuk.addSeparator();

@@ -86,9 +86,8 @@ public final class PerspectiveBarJPanel extends JXPanel implements Const {
    */
   public void update() {
     // Perspectives tool bar
-    jtbPerspective = new JToolBar(JToolBar.VERTICAL);
+    jtbPerspective = new JajukJToolbar(JToolBar.VERTICAL);
     Iterator<IPerspective> it = PerspectiveManager.getPerspectives().iterator();
-//    int index = 0;
     while (it.hasNext()) {
       final IPerspective perspective = it.next();
       Font font = FontManager.getInstance().getFont(JajukFont.PERSPECTIVES);
@@ -114,7 +113,6 @@ public final class PerspectiveBarJPanel extends JXPanel implements Const {
       });
       jtbPerspective.add(jb);
       alButtons.add(jb);
-//      index++;
     }
     setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
     JScrollPane jsp = new JScrollPane(jtbPerspective);

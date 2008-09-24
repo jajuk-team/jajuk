@@ -533,24 +533,11 @@ public interface Const {
 
   String CONF_OPTIONS_LNF = "jajuk.options.lnf";
 
-  String CONF_OPTIONS_WATERMARK = "jajuk.options.watermark";
-
-  String CONF_OPTIONS_WATERMARK_IMAGE = "jajuk.options.watermark.image";
-
   String CONF_OPTIONS_NOVELTIES_AGE = "jajuk.options.novelties";
 
   // Look and Feel
-  /** Substance Look and feel class * */
-  String LNF_SUBSTANCE_CLASS = "org.jvnet.substance.SubstanceLookAndFeel";
-
-  /** Default substance theme * */
-  String LNF_DEFAULT_THEME = "Steel Blue";
-
-  /** Default substance watermark * */
-  String LNF_DEFAULT_WATERMARK = "None";
-
-  /** Image watermark */
-  String LNF_WATERMARK_IMAGE = "Image";
+  /** Substance default theme * */
+  String LNF_DEFAULT_THEME = "Moderate";
 
   /** Number of visible planned tracks */
   String CONF_OPTIONS_VISIBLE_PLANNED = "jajuk.options.visible_planned";
@@ -756,7 +743,7 @@ public interface Const {
   /** Animation pattern* */
   String CONF_ANIMATION_PATTERN = "jajuk.animation_pattern";
 
-  /** Initial frame size/position forced value* */
+  /** Initial frame size/position forced value * */
   String CONF_FRAME_POS_FORCED = "jajuk.frame.forced_position";
 
   // Forced mplayer path
@@ -1063,8 +1050,9 @@ public interface Const {
       XML_YEAR, XML_TRACK_RATE, XML_FILES, XML_TRACK_HITS, XML_TRACK_DISCOVERY_DATE,
       XML_DIRECTORY_PARENT, XML_DEVICE, XML_DIRECTORY, XML_TRACK, XML_SIZE, XML_QUALITY,
       XML_PLAYLIST_FILES, XML_TRACK_COMMENT, XML_ANY, XML_TRACK_ORDER, XML_DEVICE_SYNCHRO_MODE,
-      XML_DEVICE_SYNCHRO_SOURCE, XML_FILE_DATE, XML_TRACK_TOTAL_PLAYTIME, XML_TRACK_PREFERENCE,XML_TRACK_BANNED };
-  
+      XML_DEVICE_SYNCHRO_SOURCE, XML_FILE_DATE, XML_TRACK_TOTAL_PLAYTIME, XML_TRACK_PREFERENCE,
+      XML_TRACK_BANNED };
+
   String PROPERTY_SEPARATOR = "Property_";
 
   // Formats

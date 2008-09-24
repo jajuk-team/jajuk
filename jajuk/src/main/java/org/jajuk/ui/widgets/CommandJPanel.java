@@ -352,8 +352,7 @@ public class CommandJPanel extends JXPanel implements Const, ActionListener,
     jcbHistory.setMinimumSize(new Dimension(0, 25));
     jcbHistory.setToolTipText(Messages.getString("CommandJPanel.0"));
     jcbHistory.addActionListener(CommandJPanel.this);
-    JToolBar jtbIncRate = new JToolBar();
-    jtbIncRate.setFloatable(false);
+    JToolBar jtbIncRate = new JajukJToolbar();
     jbIncRate.addToToolBar(jtbIncRate);
     double[][] sizeHistory = new double[][] {
         { 3, TableLayout.PREFERRED, 3, TableLayout.FILL, 10, TableLayout.PREFERRED }, { 25 } };
@@ -364,11 +363,8 @@ public class CommandJPanel extends JXPanel implements Const, ActionListener,
 
     // Mode toolbar
     // we need an inner toolbar to apply size properly
-    JToolBar jtbModes = new JToolBar();
-    jtbModes.setBorder(null);
+    JToolBar jtbModes = new JajukJToolbar();
     // make it not floatable as this behavior is managed by vldocking
-    jtbModes.setFloatable(false);
-    jtbModes.setRollover(true);
     jbRepeat = new JajukToggleButton(ActionManager
         .getAction(JajukActions.REPEAT_MODE_STATUS_CHANGE));
     jbRepeat.setSelected(Conf.getBoolean(CONF_STATE_REPEAT));
@@ -435,10 +431,7 @@ public class CommandJPanel extends JXPanel implements Const, ActionListener,
     populateAmbiences();
     ambienceListener = new AmbienceListener();
     ambiencesCombo.addActionListener(ambienceListener);
-    jtbSpecial = new JToolBar();
-    jtbSpecial.setBorder(null);
-    jtbSpecial.setRollover(true);
-    jtbSpecial.setFloatable(false);
+    jtbSpecial = new JajukJToolbar();
     ddbGlobalRandom = new DropDownButton(IconLoader.ICON_SHUFFLE_GLOBAL) {
       private static final long serialVersionUID = 1L;
 
@@ -538,18 +531,11 @@ public class CommandJPanel extends JXPanel implements Const, ActionListener,
     jtbSpecial.add(jbNorm);
 
     // Radio tool bar
-    JToolBar jtbWebRadio = new JToolBar();
-    jtbWebRadio.setBorder(null);
-    jtbWebRadio.setRollover(true);
-    jtbWebRadio.setFloatable(false);
+    JToolBar jtbWebRadio = new JajukJToolbar();
     ddbWebRadio.addToToolBar(jtbWebRadio);
 
     // Play toolbar
-    JToolBar jtbPlay = new JToolBar();
-    jtbPlay.setBorder(null);
-    jtbPlay.setFloatable(false);
-    // add some space to get generic size
-    jtbPlay.setRollover(true);
+    JToolBar jtbPlay = new JajukJToolbar();
     ActionUtil.installKeystrokes(jtbPlay, ActionManager.getAction(NEXT_ALBUM), ActionManager
         .getAction(PREVIOUS_ALBUM));
     jbPrevious = new JajukButton(ActionManager.getAction(PREVIOUS_TRACK));
@@ -567,9 +553,7 @@ public class CommandJPanel extends JXPanel implements Const, ActionListener,
     jtbPlay.add(jbNext);
     
     // Preference toolbar
-    jtbPreferences = new JToolBar();
-    jtbPreferences.setBorder(null);
-    jtbPreferences.setFloatable(false);
+    jtbPreferences = new JajukJToolbar();
     
     // Add items
     FormLayout layout = new FormLayout(

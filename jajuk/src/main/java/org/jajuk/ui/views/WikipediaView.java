@@ -47,6 +47,7 @@ import org.jajuk.ui.actions.JajukAction;
 import org.jajuk.ui.actions.ActionManager;
 import org.jajuk.ui.actions.JajukActions;
 import org.jajuk.ui.widgets.JajukHtmlPanel;
+import org.jajuk.ui.widgets.JajukJToolbar;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
@@ -139,9 +140,7 @@ public class WikipediaView extends ViewAdapter implements Const, Observer,
     bg.add(jbAlbumSearch);
     bg.add(jbTrackSearch);
 
-    JToolBar jtb = new JToolBar();
-    jtb.setFloatable(false);
-    jtb.setRollover(true);
+    JToolBar jtb = new JajukJToolbar();
     jtb.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
     // Add items
     jtb.add(jbAuthorSearch);

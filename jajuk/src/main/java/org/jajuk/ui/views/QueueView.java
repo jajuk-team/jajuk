@@ -60,6 +60,7 @@ import org.jajuk.ui.helpers.PlayHighlighterPredicate;
 import org.jajuk.ui.helpers.PlaylistEditorTransferHandler;
 import org.jajuk.ui.helpers.PlaylistTableModel;
 import org.jajuk.ui.widgets.JajukButton;
+import org.jajuk.ui.widgets.JajukJToolbar;
 import org.jajuk.ui.widgets.JajukTable;
 import org.jajuk.util.Conf;
 import org.jajuk.util.IconLoader;
@@ -115,10 +116,8 @@ public class QueueView extends PlaylistView {
     jbClear.setToolTipText(Messages.getString("QueueView.1"));
     jbClear.addActionListener(this);
 
-    JToolBar jtb = new JToolBar();
-    jtb.setRollover(true);
-    jtb.setBorder(null);
-
+    JToolBar jtb = new JajukJToolbar();
+    
     jtb.add(jbSave);
     jtb.add(jbRemove);
     jtb.add(jbAddShuffle);

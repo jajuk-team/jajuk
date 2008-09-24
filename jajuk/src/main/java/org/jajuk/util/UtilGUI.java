@@ -66,13 +66,10 @@ import org.jajuk.util.log.Log;
 import org.jdesktop.swingx.decorator.Highlighter;
 import org.jdesktop.swingx.decorator.HighlighterFactory;
 import org.jvnet.substance.SubstanceLookAndFeel;
-import org.jvnet.substance.color.ColorScheme;
-import org.jvnet.substance.theme.SubstanceTheme;
-import org.jvnet.substance.theme.ThemeInfo;
-import org.jvnet.substance.utils.SubstanceConstants;
-import org.jvnet.substance.watermark.SubstanceImageWatermark;
-import org.jvnet.substance.watermark.SubstanceNoneWatermark;
-import org.jvnet.substance.watermark.WatermarkInfo;
+import org.jvnet.substance.api.SubstanceColorScheme;
+import org.jvnet.substance.api.SubstanceSkin;
+import org.jvnet.substance.skin.SkinInfo;
+import org.jvnet.substance.skin.SubstanceBusinessLookAndFeel;
 
 /**
  * Set of GUI convenient methods
@@ -86,8 +83,11 @@ public final class UtilGUI implements Const {
 
   // Current cursor that is displayed
   private static Cursor currentCursor = DEFAULT_CURSOR;
-  
+
   private static Highlighter defaultHighlighter;
+
+  /** Current active color scheme * */
+  private static SubstanceColorScheme colorScheme;
 
   /** Set cursor thread, stored to avoid construction */
   private static Thread setCursorThread = new Thread("Cursor setter thread") {
@@ -106,12 +106,12 @@ public final class UtilGUI implements Const {
     }
   };
 
-  /** 
+  /**
    * Private constructor to prevent instantiation of utility class.
    */
   private UtilGUI() {
   }
-  
+
   /**
    * Display a given image in a frame (for debuging purpose)
    * 
@@ -179,7 +179,7 @@ public final class UtilGUI implements Const {
   public static String getHTMLColor(final Color color) {
     return Long.toString(color.getRed(), 16) + Long.toString(color.getGreen(), 16)
         + Long.toString(color.getBlue(), 16);
-  
+
   }
 
   /**
@@ -198,13 +198,13 @@ public final class UtilGUI implements Const {
         ii = new ImageIcon(url);
         UtilSystem.iconCache.put(sURL, ii);
       }
-  
+
     } catch (final Exception e) {
       Log.error(e);
     }
     return ii;
   }
-  
+
   /**
    * 
    * @param sText
@@ -240,13 +240,13 @@ public final class UtilGUI implements Const {
     // Our inner class definition
     class NarrowOptionPane extends JOptionPane {
       private static final long serialVersionUID = 1L;
-  
+
       int maxCharactersPerLineCount;
-  
+
       NarrowOptionPane(final int maxCharactersPerLineCount) {
         this.maxCharactersPerLineCount = maxCharactersPerLineCount;
       }
-  
+
       @Override
       public int getMaxCharactersPerLineCount() {
         return maxCharactersPerLineCount;
@@ -302,32 +302,36 @@ public final class UtilGUI implements Const {
    */
   public static void setLookAndFeel(final String pTheme) {
     try {
-      // Set substance laf
-      UIManager.setLookAndFeel(Const.LNF_SUBSTANCE_CLASS);
-      // hide some useless elements such locker for not editable labels
-      UIManager.put(SubstanceLookAndFeel.NO_EXTRA_ELEMENTS, Boolean.TRUE);
-      UIManager.put(SubstanceLookAndFeel.WATERMARK_TO_BLEED, Boolean.TRUE);
-      UIManager.put(SubstanceLookAndFeel.ENABLE_INVERTED_THEMES, Boolean.TRUE);
-      UIManager.put(SubstanceLookAndFeel.ENABLE_NEGATED_THEMES, Boolean.TRUE);
       // Check the theme is known, if not take the default theme
-      final Map<String, ThemeInfo> themes = SubstanceLookAndFeel.getAllThemes();
-      String t = pTheme;
-      if (themes.get(t) == null) {
-        t = Const.LNF_DEFAULT_THEME;
+      final Map<String, SkinInfo> themes = SubstanceLookAndFeel.getAllSkins();
+      String theme = pTheme;
+      if (themes.get(theme) == null) {
+        theme = Const.LNF_DEFAULT_THEME;
+        Conf.setProperty(CONF_OPTIONS_LNF, Const.LNF_DEFAULT_THEME);
       }
+
       // Set substance theme
-      SubstanceLookAndFeel.setCurrentTheme(themes.get(t).getClassName());
+      UIManager.setLookAndFeel(new SubstanceBusinessLookAndFeel());
+
+      // Set substance LAF
+      SubstanceLookAndFeel.setSkin(themes.get(theme).getClassName());
+      
+      // hide some useless elements such locker for not editable labels
+      UIManager.put(SubstanceLookAndFeel.SHOW_EXTRA_WIDGETS, Boolean.FALSE);
+
+      // Store current color scheme (cannot change for the wall session)
+      colorScheme = SubstanceLookAndFeel.getCurrentSkin().getMainActiveColorScheme();
     } catch (final Exception e) {
       Log.error(e);
     }
     // Set view foreground colors
-    SubstanceTheme theme = SubstanceLookAndFeel.getTheme();
-    ColorScheme scheme = theme.getColorScheme();
+    SubstanceSkin theme = SubstanceLookAndFeel.getCurrentSkin();
+    SubstanceColorScheme scheme = theme.getMainActiveColorScheme();
     Color foregroundActive = null;
     Color foregroundInactive = null;
     Color backgroundActive = null;
     Color backgroundInactive = null;
-    if (theme.getKind().equals(SubstanceTheme.ThemeKind.DARK)) {
+    if (scheme.isDark()) {
       foregroundActive = Color.BLACK;
       foregroundInactive = Color.WHITE;
       backgroundActive = scheme.getUltraLightColor();
@@ -357,46 +361,6 @@ public final class UtilGUI implements Const {
    */
   public static void setShuffleLocation(final Window window, final int iFromTop, final int iFromLeft) {
     window.setLocation((int) (Math.random() * iFromTop), (int) (Math.random() * iFromLeft));
-  }
-
-  /**
-   * Set a watermark
-   * 
-   * @param watermark
-   *          name
-   */
-  public static void setWatermark(final String pWatermark) {
-    try {
-      String watermark = pWatermark;
-      // Check the watermark is known, if not take the default one
-      final Map<String, WatermarkInfo> watermarks = SubstanceLookAndFeel.getAllWatermarks();
-      if ((watermarks.get(watermark) == null) &&
-      // the image watermark is not included in the list for unknown
-      // reasons
-          (!"Image".equals(watermark))) {
-        watermark = Const.LNF_DEFAULT_WATERMARK;
-      }
-      // Set the watermark
-      final String image = Conf
-          .getString(Const.CONF_OPTIONS_WATERMARK_IMAGE);
-      if ("Image".equals(watermark)) {
-        // Check that the backgroud image is readable
-        if (new File(image).exists()) {
-          SubstanceLookAndFeel.setCurrentWatermark(new SubstanceImageWatermark(image));
-          SubstanceLookAndFeel
-              .setImageWatermarkKind(SubstanceConstants.ImageWatermarkKind.SCREEN_CENTER_SCALE);
-        } else {
-          // None watermark
-          SubstanceLookAndFeel.setCurrentWatermark(new SubstanceNoneWatermark());
-        }
-      } else {
-        SubstanceLookAndFeel.setCurrentWatermark(watermarks.get(watermark).getClassName());
-      }
-    } catch (final Exception e) {
-      Log.error(e);
-      Conf.setProperty(Const.CONF_OPTIONS_WATERMARK,
-          Const.LNF_DEFAULT_WATERMARK);
-    }
   }
 
   /**
@@ -468,7 +432,7 @@ public final class UtilGUI implements Const {
   public static void updateAllUIs() {
     Frame frames[];
     frames = Frame.getFrames();
-  
+
     for (final Frame element : frames) {
       UtilGUI.updateWindowUI(element);
     }
@@ -493,30 +457,30 @@ public final class UtilGUI implements Const {
   }
 
   private static void updateComponentTreeUI0(final Component c) {
-  
+
     Component[] children = null;
-  
+
     if (c instanceof JToolBar) {
       children = ((JToolBar) c).getComponents();
-  
+
       if (children != null) {
         for (final Component element : children) {
           UtilGUI.updateComponentTreeUI0(element);
         }
       }
-  
+
       ((JComponent) c).updateUI();
     } else {
       if (c instanceof JComponent) {
         ((JComponent) c).updateUI();
       }
-  
+
       if (c instanceof JMenu) {
         children = ((JMenu) c).getMenuComponents();
       } else if (c instanceof Container) {
         children = ((Container) c).getComponents();
       }
-  
+
       if (children != null) {
         for (final Component element : children) {
           UtilGUI.updateComponentTreeUI0(element);
@@ -538,9 +502,9 @@ public final class UtilGUI implements Const {
       UtilGUI.updateComponentTreeUI(window);
     } catch (final Exception exception) {
     }
-  
+
     final Window windows[] = window.getOwnedWindows();
-  
+
     for (final Window element : windows) {
       UtilGUI.updateWindowUI(element);
     }
@@ -553,11 +517,11 @@ public final class UtilGUI implements Const {
     if (defaultHighlighter != null) {
       return defaultHighlighter;
     }
-    SubstanceTheme theme = SubstanceLookAndFeel.getTheme();
-    ColorScheme scheme = theme.getColorScheme();
+    SubstanceSkin theme = SubstanceLookAndFeel.getCurrentSkin();
+    SubstanceColorScheme scheme = theme.getMainActiveColorScheme();
     Color color1 = null;
     // Color color2 = null;
-    if (theme.getKind().equals(SubstanceTheme.ThemeKind.DARK)) {
+    if (scheme.isDark()) {
       color1 = scheme.getDarkColor();
     } else {
       color1 = new Color(230, 235, 240);
@@ -576,12 +540,27 @@ public final class UtilGUI implements Const {
    */
   public static boolean isOver(Point location, Dimension dimension) {
     java.awt.Point p = MouseInfo.getPointerInfo().getLocation();
-    
-    if(p.getX() <= location.getX() || p.getY() <= location.getY()) {
+
+    if (p.getX() <= location.getX() || p.getY() <= location.getY()) {
       return false;
     }
-    
-    return (p.getX() < (dimension.getWidth() + location.getX()) && 
-        p.getY() < (dimension.getHeight() + location.getY()));
+
+    return (p.getX() < (dimension.getWidth() + location.getX()) && p.getY() < (dimension
+        .getHeight() + location.getY()));
   }
+
+  /**
+   * @return ultralight color for current color scheme
+   */
+  static public Color getUltraLightColor() {
+    return colorScheme.getUltraLightColor();
+  }
+
+  /**
+   * @return foreground color for current color scheme
+   */
+  static public Color getForegroundColor() {
+    return colorScheme.getForegroundColor();
+  }
+
 }

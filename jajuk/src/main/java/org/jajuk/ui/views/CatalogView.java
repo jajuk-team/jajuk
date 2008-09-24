@@ -76,6 +76,7 @@ import org.jajuk.ui.helpers.FontManager;
 import org.jajuk.ui.helpers.FontManager.JajukFont;
 import org.jajuk.ui.thumbnails.LocalAlbumThumbnail;
 import org.jajuk.ui.widgets.InformationJPanel;
+import org.jajuk.ui.widgets.JajukJToolbar;
 import org.jajuk.ui.widgets.SteppedComboBox;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Filter;
@@ -214,9 +215,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
     }
     jcbSorter.setSelectedIndex(Conf.getInt(CONF_THUMBS_SORTER));
     jcbSorter.addActionListener(this);
-    JToolBar jtbSort = new JToolBar();
-    jtbSort.setFloatable(false);
-    jtbSort.setRollover(true);
+    JToolBar jtbSort = new JajukJToolbar();
     jtbSort.add(jlSorter);
     jtbSort.add(Box.createHorizontalStrut(5));
     jtbSort.add(jcbSorter);
@@ -241,16 +240,14 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
     jtfValue.setBorder(BorderFactory.createLineBorder(Color.BLUE));
     jtfValue.setFont(FontManager.getInstance().getFont(JajukFont.BOLD_XXL));
     jtfValue.addKeyListener(new CatalogViewKeyAdaptor());
-    JToolBar jtbFilter = new JToolBar();
-    jtbFilter.setFloatable(false);
-    jtbFilter.setRollover(true);
+    JToolBar jtbFilter = new JajukJToolbar();
     jtbFilter.add(jlFilter);
     jtbFilter.add(Box.createHorizontalStrut(5));
     jtbFilter.add(jcbFilter);
     jtbFilter.add(jlContains);
     jtbFilter.add(jtfValue);
         
-    JToolBar jtbPage = new JToolBar();
+    JToolBar jtbPage = new JajukJToolbar();
     jtbPage.setFloatable(false);
     jtbPage.setRollover(true);
     jbPrev = new JButton(IconLoader.ICON_PREVIOUS);

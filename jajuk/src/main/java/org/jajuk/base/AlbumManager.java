@@ -357,7 +357,7 @@ public final class AlbumManager extends ItemManager implements Observer {
     List<Album> sortedAlbums = new ArrayList<Album>(cache.keySet());
     Collections.sort(sortedAlbums, new Comparator<Album>() {
       public int compare(Album o1, Album o2) {
-        // We inverte comparaison as we want lowest scores
+        // We inverse comparison as we want lowest scores
         return (int) (cache.get(o2) - cache.get(o1));
       }
     });

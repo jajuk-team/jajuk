@@ -98,6 +98,10 @@ public class SuggestionView extends ViewAdapter implements Const, Observer {
   List<Album> albumsNewest;
   List<Album> albumsPrefered;
   List<Album> albumsRare;
+  
+  List<AudioScrobblerAlbum> lastfmAlbums;
+  List<AudioScrobblerArtist> lastfmAuthors;
+  
 
   /** Currently selected thumb */
   AbstractThumbnail selectedThumb;
@@ -215,14 +219,25 @@ public class SuggestionView extends ViewAdapter implements Const, Observer {
 
       @Override
       public Object construct() {
-        jsp1 = getLocalSuggestionsPanel(SuggestionType.BEST_OF, search);
-        jsp2 = getLocalSuggestionsPanel(SuggestionType.NEWEST, search);
-        jsp3 = getLocalSuggestionsPanel(SuggestionType.RARE, search);
+        if (search) {
+          albumsPrefered = AlbumManager.getInstance().getBestOfAlbums(
+              Conf.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED), NB_BESTOF_ALBUMS);
+          resfreshThumbs(albumsPrefered);
+          albumsNewest = AlbumManager.getInstance().getNewestAlbums(
+              Conf.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED), NB_BESTOF_ALBUMS);
+          resfreshThumbs(albumsNewest);
+          albumsRare = AlbumManager.getInstance().getRarelyListenAlbums(
+              Conf.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED), NB_BESTOF_ALBUMS);
+          resfreshThumbs(albumsRare);
+        }
         return null;
       }
 
       @Override
       public void finished() {
+        jsp1 = getLocalSuggestionsPanel(SuggestionType.BEST_OF);
+        jsp2 = getLocalSuggestionsPanel(SuggestionType.NEWEST);
+        jsp3 = getLocalSuggestionsPanel(SuggestionType.RARE);
         // If panel is void, add a void panel as a null object keeps
         // previous element
         tabs.setComponentAt(0, (jsp1 == null) ? new JPanel() : jsp1);
@@ -232,6 +247,20 @@ public class SuggestionView extends ViewAdapter implements Const, Observer {
       }
     };
     sw.start();
+  }
+
+  /**
+   * Make sure to create thumbs for the provided list of albums
+   * 
+   * @param albums
+   */
+  private void resfreshThumbs(List<Album> albums) {
+    if (albums != null && albums.size() > 0) {
+      for (Album album : albums) {
+        // Try creating the thumbnail
+        ThumbnailManager.refreshThumbnail(album, "100x100");
+      }
+    }
   }
 
   private void refreshLastFMCollectionTabs() {
@@ -277,37 +306,54 @@ public class SuggestionView extends ViewAdapter implements Const, Observer {
     // Use a swing worker as construct takes a lot of time
     SwingWorker sw = new SwingWorker() {
       JScrollPane jsp1;
-
       JScrollPane jsp2;
 
       @Override
       public Object construct() {
-        try {
-          jsp1 = getLastFMSuggestionsPanel(SuggestionType.OTHERS_ALBUMS);
-          jsp2 = getLastFMSuggestionsPanel(SuggestionType.SIMILAR_AUTHORS);
-        } catch (Exception e) {
-          Log.error(e);
+        lastfmAlbums = AudioScrobblerService.getInstance().getAlbumList(author);
+        if (lastfmAlbums != null && lastfmAlbums.size() > 0) {
+          for (AudioScrobblerAlbum album : lastfmAlbums) {
+            AudioScrobblerAlbumThumbnail thumb = new AudioScrobblerAlbumThumbnail(album);
+            try {
+              thumb.populate();
+            } catch (Exception e) {
+              Log.error(e);
+            }
+          }
+        }
+        AudioScrobblerSimilarArtists similar = AudioScrobblerService.getInstance()
+            .getSimilarArtists(author);
+        if (similar != null) {
+          lastfmAuthors = similar.getArtists();
+          for (AudioScrobblerArtist similarAuthor : lastfmAuthors) {
+            AudioScrobblerAuthorThumbnail thumb = new AudioScrobblerAuthorThumbnail(similarAuthor);
+            try {
+              thumb.populate();
+            } catch (Exception e) {
+              Log.error(e);
+            }
+          }
         }
         return null;
       }
 
       @Override
       public void finished() {
-        tabs.setComponentAt(3, (jsp1 == null) ? new JPanel() : jsp1);
-        tabs.setComponentAt(4, (jsp2 == null) ? new JPanel() : jsp2);
-        super.finished();
+        try {
+          jsp1 = getLastFMSuggestionsPanel(SuggestionType.OTHERS_ALBUMS);
+          jsp2 = getLastFMSuggestionsPanel(SuggestionType.SIMILAR_AUTHORS);
+          tabs.setComponentAt(3, (jsp1 == null) ? new JPanel() : jsp1);
+          tabs.setComponentAt(4, (jsp2 == null) ? new JPanel() : jsp2);
+          super.finished();
+        } catch (Exception e) {
+          Log.error(e);
+        }
       }
-
     };
     sw.start();
   }
 
-  // private void clearLastFMPanels() {
-  // tabs.setComponentAt(3, new JPanel());
-  // tabs.setComponentAt(4, new JPanel());
-  // }
-
-  private JScrollPane getLocalSuggestionsPanel(SuggestionType type, boolean search) {
+  private JScrollPane getLocalSuggestionsPanel(SuggestionType type) {
     FlowScrollPanel out = new FlowScrollPanel();
     out.setLayout(new FlowLayout(FlowLayout.LEFT));
     JScrollPane jsp = new JScrollPane(out, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
@@ -315,18 +361,6 @@ public class SuggestionView extends ViewAdapter implements Const, Observer {
     jsp.setBorder(null);
     out.setScroller(jsp);
     List<Album> albums = null;
-    if (search) {
-      if (type == SuggestionType.BEST_OF) {
-        albumsPrefered = AlbumManager.getInstance().getBestOfAlbums(
-            Conf.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED), NB_BESTOF_ALBUMS);
-      } else if (type == SuggestionType.NEWEST) {
-        albumsNewest = AlbumManager.getInstance().getNewestAlbums(
-            Conf.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED), NB_BESTOF_ALBUMS);
-      } else if (type == SuggestionType.RARE) {
-        albumsRare = AlbumManager.getInstance().getRarelyListenAlbums(
-            Conf.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED), NB_BESTOF_ALBUMS);
-      }
-    }
     if (type == SuggestionType.BEST_OF) {
       albums = albumsPrefered;
     } else if (type == SuggestionType.NEWEST) {
@@ -336,8 +370,6 @@ public class SuggestionView extends ViewAdapter implements Const, Observer {
     }
     if (albums != null && albums.size() > 0) {
       for (Album album : albums) {
-        // Try creating the thumbnail
-        ThumbnailManager.refreshThumbnail(album, "100x100");
         LocalAlbumThumbnail thumb = new LocalAlbumThumbnail(album, 100, false);
         thumb.populate();
         thumb.getIcon().addMouseListener(new ThumbMouseListener());
@@ -357,11 +389,9 @@ public class SuggestionView extends ViewAdapter implements Const, Observer {
     out.setScroller(jsp);
     out.setLayout(new FlowLayout(FlowLayout.LEFT));
     if (type == SuggestionType.OTHERS_ALBUMS) {
-      List<AudioScrobblerAlbum> albums = AudioScrobblerService.getInstance().getAlbumList(author);
-      if (albums != null && albums.size() > 0) {
-        for (AudioScrobblerAlbum album : albums) {
+      if (lastfmAlbums != null && lastfmAlbums.size() > 0) {
+        for (AudioScrobblerAlbum album : lastfmAlbums) {
           AudioScrobblerAlbumThumbnail thumb = new AudioScrobblerAlbumThumbnail(album);
-          thumb.populate();
           thumb.getIcon().addMouseListener(new ThumbMouseListener());
           out.add(thumb);
         }
@@ -371,13 +401,9 @@ public class SuggestionView extends ViewAdapter implements Const, Observer {
         out.add(UtilGUI.getCentredPanel(new JLabel(Messages.getString("SuggestionView.7"))));
       }
     } else if (type == SuggestionType.SIMILAR_AUTHORS) {
-      AudioScrobblerSimilarArtists similar = AudioScrobblerService.getInstance().getSimilarArtists(
-          author);
-      if (similar != null) {
-        List<AudioScrobblerArtist> authors = similar.getArtists();
-        for (AudioScrobblerArtist similarAuthor : authors) {
+      if (lastfmAuthors != null) {
+        for (AudioScrobblerArtist similarAuthor : lastfmAuthors) {
           AudioScrobblerAuthorThumbnail thumb = new AudioScrobblerAuthorThumbnail(similarAuthor);
-          thumb.populate();
           thumb.getIcon().addMouseListener(new ThumbMouseListener());
           out.add(thumb);
         }
