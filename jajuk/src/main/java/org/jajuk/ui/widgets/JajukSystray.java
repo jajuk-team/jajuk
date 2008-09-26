@@ -252,11 +252,7 @@ public class JajukSystray extends CommandJPanel {
     jmenu.add(jmPosition);
     jmenu.addSeparator();
     jmenu.add(jmiExit);
-    // Add a void item that would simply close the tray if clicked, avoid
-    // setting "exit" as last item to prevent unwanted exit
-    jmenu.add(new JMenuItem(" "));
-    jmenu.add(new JMenuItem(" "));
-
+  
     trayIcon = new JXTrayIcon(IconLoader.ICON_TRAY.getImage());
     if (UtilSystem.isUnderWindows()) {
       // auto-resize looks OK under Windows but is ugly under Linux/KDE
