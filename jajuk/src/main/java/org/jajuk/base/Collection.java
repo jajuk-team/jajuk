@@ -545,7 +545,7 @@ public final class Collection extends DefaultHandler implements Const, ErrorHand
           try {
             String sQuality = attributes.getValue(XML_QUALITY);
             if (sQuality != null) {
-              lQuality = Integer.parseInt(sQuality);
+              lQuality = UtilString.fastLongParser(sQuality);
             }
           } catch (Exception e) {
             if (Log.isDebugEnabled()) {
@@ -667,7 +667,7 @@ public final class Collection extends DefaultHandler implements Const, ErrorHand
           // Idem for order
           long lOrder = 0l;
           try {
-            lOrder = Integer.parseInt(attributes.getValue(XML_TRACK_ORDER));
+            lOrder = UtilString.fastLongParser(attributes.getValue(XML_TRACK_ORDER));
           } catch (Exception e) {
             if (Log.isDebugEnabled()) {
               // wrong format

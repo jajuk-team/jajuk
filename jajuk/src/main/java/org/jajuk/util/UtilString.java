@@ -37,12 +37,12 @@ import org.jajuk.util.error.JajukException;
  * Set of convenient classes for string manipulation
  */
 public final class UtilString implements Const {
-  
+
   /**
    * The list of characters that we need to escape in strings
    */
   private final static String ESCAPE_CHARACTERS = "\\[](){}.*+?$^|-";
-  
+
   /**
    * private constructor to avoid instantiating utility class
    */
@@ -79,8 +79,7 @@ public final class UtilString implements Const {
         if (bMandatory) {
           throw new JajukException(149, file.getAbsolutePath());
         } else {
-          ret = ret.replace(Const.PATTERN_ALBUM, Messages
-              .getString(Const.UNKNOWN_ALBUM));
+          ret = ret.replace(Const.PATTERN_ALBUM, Messages.getString(Const.UNKNOWN_ALBUM));
         }
       }
     }
@@ -175,7 +174,7 @@ public final class UtilString implements Const {
             lOrder = 0;
           }
         }
-      } 
+      }
 
       // prepend one digit numbers with "0"
       if (lOrder < 10) {
@@ -218,8 +217,7 @@ public final class UtilString implements Const {
         if (bMandatory) {
           throw new JajukException(153, file.getAbsolutePath());
         } else {
-          ret = ret.replace(Const.PATTERN_STYLE, Messages
-              .getString(Const.UNKNOWN_STYLE));
+          ret = ret.replace(Const.PATTERN_STYLE, Messages.getString(Const.UNKNOWN_STYLE));
         }
       }
     }
@@ -256,8 +254,7 @@ public final class UtilString implements Const {
         if (bMandatory) {
           throw new JajukException(150, file.getAbsolutePath());
         } else {
-          ret = ret.replaceAll(Const.PATTERN_AUTHOR, Messages
-              .getString(Const.UNKNOWN_AUTHOR));
+          ret = ret.replaceAll(Const.PATTERN_AUTHOR, Messages.getString(Const.UNKNOWN_AUTHOR));
         }
       }
     }
@@ -360,9 +357,10 @@ public final class UtilString implements Const {
     StringBuffer buffer = new StringBuffer(2 * length);
     for (int i = 0; i != length; i++) {
       char c = s.charAt(i);
-      
-      // if we have a character that needs to be escaped, we prepend backslash before it
-      if(ESCAPE_CHARACTERS.indexOf(c) != -1) {
+
+      // if we have a character that needs to be escaped, we prepend backslash
+      // before it
+      if (ESCAPE_CHARACTERS.indexOf(c) != -1) {
         buffer.append('\\');
       }
 
@@ -672,13 +670,27 @@ public final class UtilString implements Const {
     } else if (cType.equals(Date.class)) {
       oDefaultValue = getAdditionDateFormatter().parseObject(sValue);
     } else if (cType.equals(Long.class)) {
-      oDefaultValue = Long.parseLong(sValue);
+      oDefaultValue = fastLongParser(sValue);
     } else if (cType.equals(Double.class)) {
       oDefaultValue = Double.parseDouble(sValue);
     } else if (cType.equals(Class.class)) {
       oDefaultValue = Class.forName(sValue);
     }
     return oDefaultValue;
+  }
+
+  /**
+   * Fast long parser, low level check, remplacement of Long.parseLong()
+   * @param in must be a set of digits with a size > 0
+   * @return
+   */
+  public static long fastLongParser(String in) {
+    long out = in.charAt(0) - 48;
+    for (int i = 1; i < in.length(); i++) {
+      int digit = in.charAt(i) - 33;
+      out += digit * 10 * i;
+    }
+    return out;
   }
 
   /**
