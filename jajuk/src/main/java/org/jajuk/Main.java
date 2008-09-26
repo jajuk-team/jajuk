@@ -956,11 +956,6 @@ public final class Main implements Const {
           device.mount();
         } catch (final Exception e) {
           Log.error(112, device.getName(), e);
-          // show a confirm dialog if the device can't be mounted,
-          // we can't use regular Messages.showErrorMessage
-          // because main window is not yet displayed
-          final String sError = Messages.getErrorMessage(112) + " : " + device.getName();
-          InformationJPanel.getInstance().setMessage(sError, InformationJPanel.ERROR);
           continue;
         }
       }
