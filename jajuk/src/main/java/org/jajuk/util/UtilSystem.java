@@ -43,7 +43,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-import java.util.StringTokenizer;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
@@ -551,18 +550,21 @@ public final class UtilSystem implements Const {
    * @return
    */
   public static String getExtension(final String filename) {
-    final StringTokenizer st = new StringTokenizer(filename, ".");
-    String sExt = "";
-    if (st.countTokens() > 1) {
-      while (st.hasMoreTokens()) {
-        sExt = st.nextToken();
-      }
+    int dotIndex = filename.lastIndexOf('.');
+    // File without point
+    if (dotIndex == -1) {
+      return "";
     }
-    return sExt.toLowerCase();
+    if (dotIndex > 0) {
+      return filename.substring(dotIndex + 1, filename.length());
+    } else {
+      // File beginning by a point (unix hidden file)
+      return filename;
+    }
   }
 
   /**
-   * Additional file checkusm used to prevent bug 886098. Simply return some
+   * Additional file checksum used to prevent bug #886098. Simply return some
    * bytes read at the middle of the file
    * <p>
    * uses nio api for performances
@@ -1067,7 +1069,8 @@ public final class UtilSystem implements Const {
    * This method returns a single random object that can be used anywhere in
    * jajuk It has to be a singleton to get a good shuffling. Indeed, Random()
    * object are seeded by default with current nano date but in some cases, two
-   * random could be created at the same exact date in different threads or the same.
+   * random could be created at the same exact date in different threads or the
+   * same.
    * 
    * 
    * @return Jajuk singleton random object

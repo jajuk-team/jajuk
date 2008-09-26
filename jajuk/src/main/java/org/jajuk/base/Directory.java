@@ -292,7 +292,7 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
         }
         if (bIsMusic) {
           String name = filelist[i].getName();
-          String sId = FileManager.createID(name, this).intern();
+          String sId = FileManager.createID(name, this);
           // check the file is not already known in database
           org.jajuk.base.File fileRef = FileManager.getInstance().getFileByID(sId);
           // Set name again to make sure Windows users will see actual

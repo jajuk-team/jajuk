@@ -107,7 +107,7 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
     super(sId, sName);
     this.dParentDirectory = dParentDirectory;
     setProperty(Const.XML_DIRECTORY, dParentDirectory == null ? "-1" : dParentDirectory
-        .getID().intern());
+        .getID());
     this.type = type;
   }
 

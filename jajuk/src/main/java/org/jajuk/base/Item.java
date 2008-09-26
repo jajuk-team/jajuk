@@ -22,8 +22,8 @@ package org.jajuk.base;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedHashMap;
 import java.util.Map;
 
 import javax.swing.ImageIcon;
@@ -61,7 +61,7 @@ public abstract class Item implements Serializable, Const {
    * Item properties, singleton use very high load factor as this size will not
    * change often
    */
-  private Map<String, Object> properties = new LinkedHashMap<String, Object>(2, 1f);
+  private Map<String, Object> properties = new HashMap<String, Object>(2, 1f);
 
   /**
    * Constructor

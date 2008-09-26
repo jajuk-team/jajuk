@@ -22,6 +22,7 @@ package org.jajuk.base;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -29,8 +30,8 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.collections.bidimap.TreeBidiMap;
-import org.jajuk.util.Filter;
 import org.jajuk.util.Const;
+import org.jajuk.util.Filter;
 import org.jajuk.util.Messages;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
@@ -51,7 +52,7 @@ public abstract class ItemManager implements Const {
       10);
 
   /** Maps properties meta information name and object */
-  private LinkedHashMap<String, PropertyMetaInformation> hmPropertiesMetaInformation = new LinkedHashMap<String, PropertyMetaInformation>(
+  private HashMap<String, PropertyMetaInformation> hmPropertiesMetaInformation = new LinkedHashMap<String, PropertyMetaInformation>(
       10);
 
   /** Manager lock, should be synchronized before any iteration on items */

@@ -31,12 +31,22 @@ import org.jajuk.util.log.Log;
  */
 
 public final class MD5Processor {
-  /** 
+
+  private static MessageDigest msgDigest;
+
+  static {
+    try {
+      msgDigest = MessageDigest.getInstance("MD5");
+    } catch (NoSuchAlgorithmException e) {
+      Log.error(e);
+    }
+  }
+
+  /**
    * private constructor to avoid instantiating utility class
    */
   private MD5Processor() {
   }
-  
 
   /**
    * MD5 hashcoding, return a hashcode
@@ -46,15 +56,8 @@ public final class MD5Processor {
    * @return hashed output
    */
   public static final String hash(String sIn) {
-    java.security.MessageDigest msgDigest;
-    try {
-      msgDigest = MessageDigest.getInstance("MD5");
-    } catch (NoSuchAlgorithmException e) {
-      Log.error(e);
-      return null;
-    }
     msgDigest.update(sIn.getBytes());
     byte[] digest = msgDigest.digest();
-    return new BigInteger(digest).abs().toString(36).intern();
+    return new BigInteger(digest).abs().toString(36);
   }
 }

@@ -150,8 +150,7 @@ public final class AlbumManager extends ItemManager implements Observer {
       }
     }
     // if current track album name is changed, notify it
-    if (FIFO.getCurrentFile() != null
-        && FIFO.getCurrentFile().getTrack().getAlbum().equals(old)) {
+    if (FIFO.getCurrentFile() != null && FIFO.getCurrentFile().getTrack().getAlbum().equals(old)) {
       ObservationManager.notify(new Event(JajukEvents.ALBUM_CHANGED));
     }
     return newItem;
@@ -448,8 +447,8 @@ public final class AlbumManager extends ItemManager implements Observer {
    */
   public void update(Event event) {
     if ((event.getSubject() == JajukEvents.FILE_LAUNCHED) &&
-      // Compute album max rating every 10 tracks launches
-      (comp % 10 == 0)) {
+    // Compute album max rating every 10 tracks launches
+        (comp % 10 == 0)) {
       refreshMaxRating();
     }
   }

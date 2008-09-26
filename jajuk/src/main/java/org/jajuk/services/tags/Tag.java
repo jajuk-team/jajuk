@@ -81,15 +81,15 @@ public class Tag implements Const {
    */
   public String getTrackName() {
     // by default, track name is the file name without extension
-    String sTrackName = UtilSystem.removeExtension(fio.getName()).intern();
+    String sTrackName = UtilSystem.removeExtension(fio.getName());
     if (tagImpl == null) { // if the type doesn't support tags ( like wav )
       return sTrackName;
     }
-    String sTemp = "".intern();
+    String sTemp = "";
     try {
-      sTemp = tagImpl.getTrackName().trim().intern();
+      sTemp = tagImpl.getTrackName().trim();
       if (!"".equals(sTemp)) {
-        sTrackName = UtilString.formatTag(sTemp).intern(); // remove the
+        sTrackName = UtilString.formatTag(sTemp); // remove the
         // extension
       }
     } catch (Exception e) {
@@ -106,9 +106,9 @@ public class Tag implements Const {
       return UNKNOWN_ALBUM;
     }
     String sAlbumlName = null;
-    String sTemp = "".intern();
+    String sTemp = "";
     try {
-      sTemp = tagImpl.getAlbumName().trim().intern();
+      sTemp = tagImpl.getAlbumName().trim();
       if (Messages.getString(UNKNOWN_ALBUM).equals(sTemp)) {
         // it is done to avoid duplicates unknown styles if
         // the tag is the real string "unknown" in the
@@ -123,14 +123,14 @@ public class Tag implements Const {
     if (sAlbumlName == null) { // album tag cannot be found
       if (Boolean.valueOf(Conf.getString(CONF_TAGS_USE_PARENT_DIR))
           .booleanValue()) {
-        sAlbumlName = fio.getParentFile().getName().intern();
+        sAlbumlName = fio.getParentFile().getName();
         // if album is not found, take current directory as album name
       } else {
         sAlbumlName = Messages.getString(UNKNOWN_ALBUM);
         // unknwon album
       }
     }
-    sAlbumlName = UtilString.formatTag(sAlbumlName).intern();
+    sAlbumlName = UtilString.formatTag(sAlbumlName);
     return sAlbumlName;
   }
 
@@ -143,16 +143,16 @@ public class Tag implements Const {
     if (tagImpl == null) {
       return sAuthorName;
     }
-    String sTemp = "".intern();
+    String sTemp = "";
     try {
-      sTemp = tagImpl.getAuthorName().trim().intern();
+      sTemp = tagImpl.getAuthorName().trim();
       if (Messages.getString(UNKNOWN_AUTHOR).equals(sTemp)) {
         // it is done to avoid duplicates unknown styles if
         // the tag is the real string "unknown" in the
         // current language
         sAuthorName = UNKNOWN_AUTHOR;
       } else if (!"".equals(sTemp)) {
-        sAuthorName = UtilString.formatTag(sTemp).intern();
+        sAuthorName = UtilString.formatTag(sTemp);
       }
     } catch (Exception e) {
       Log.info("Wrong author name:{{" + fio.getName() + "}}");
@@ -170,9 +170,9 @@ public class Tag implements Const {
     if (tagImpl == null) {
       return style;
     }
-    String sTemp = "".intern();
+    String sTemp = "";
     try {
-      sTemp = tagImpl.getStyleName().trim().intern();
+      sTemp = tagImpl.getStyleName().trim();
       if (Messages.getString(UNKNOWN_STYLE).equals(sTemp)) {
         // it is done to avoid duplicates unknown styles if
         // the tag is the real string "unknown" in the
@@ -182,7 +182,7 @@ public class Tag implements Const {
         if (sTemp.equals("unknown")) {
           sTemp = style;
         }
-        style = UtilString.formatTag(sTemp).intern();
+        style = UtilString.formatTag(sTemp);
       }
     } catch (Exception e) {
       Log.info("Wrong style name:" + fio.getName());
@@ -247,16 +247,16 @@ public class Tag implements Const {
    * @return comment
    */
   public String getComment() {
-    String sComment = "".intern();
+    String sComment = "";
     // if the type doesn't support tags ( like wav )
     if (tagImpl == null) {
       return sComment;
     }
-    String sTemp = "".intern();
+    String sTemp = "";
     try {
-      sTemp = tagImpl.getComment().intern();
+      sTemp = tagImpl.getComment();
       if (sTemp != null && !sTemp.equals("")) {
-        sComment = UtilString.formatTag(sTemp).intern();
+        sComment = UtilString.formatTag(sTemp);
       }
     } catch (Exception e) {
       Log.info("Wrong comment:{{" + fio.getName() + "}}");
