@@ -553,6 +553,7 @@ public final class Main implements Const {
       @Override
       public void run() {
         try {
+          
           // start exit hook
           final ExitService exit = new ExitService();
           exit.setPriority(Thread.MAX_PRIORITY);
@@ -563,7 +564,10 @@ public final class Main implements Const {
             UtilSystem.backupFile(UtilSystem.getConfFileByPath(FILE_COLLECTION), Conf
                 .getInt(CONF_BACKUP_SIZE));
           }
-
+          
+          // Wait few secs to avoid GUI startup perturbations
+          Thread.sleep(10000);
+        
           // Clean the collection up
           Collection.cleanupLogical();
 

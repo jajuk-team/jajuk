@@ -586,7 +586,8 @@ public final class Collection extends DefaultHandler implements Const, ErrorHand
               && (hmWrongRightDirectoryID.containsKey(sParentID))) {
             sParentID = hmWrongRightDirectoryID.get(sParentID);
           }
-          if (!"-1".equals(sParentID)) {
+          // We use intern() here for performances
+          if (sParentID != "-1") {
             // Parent directory should be already referenced
             // because of order conservation
             dParent = DirectoryManager.getInstance().getDirectoryByID(sParentID);
