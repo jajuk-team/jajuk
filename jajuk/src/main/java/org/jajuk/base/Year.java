@@ -23,6 +23,7 @@ import javax.swing.ImageIcon;
 
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.Messages;
+import org.jajuk.util.UtilString;
 
 /**
  * 
@@ -42,7 +43,7 @@ public class Year extends LogicalItem implements Comparable<Year> {
    */
   public Year(String sId, String sValue) {
     super(sId, sValue);
-    this.value = Long.parseLong(sValue);
+    this.value = UtilString.fastLongParser(sValue);
   }
 
   /*

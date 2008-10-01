@@ -665,7 +665,7 @@ public final class UtilString implements Const {
       } else if (sValue.equals("n")) {
         oDefaultValue = false;
       } else {
-        oDefaultValue = Boolean.parseBoolean(sValue);
+        oDefaultValue = fastBooleanParser(sValue);
       }
     } else if (cType.equals(Date.class)) {
       oDefaultValue = getAdditionDateFormatter().parseObject(sValue);
@@ -685,13 +685,28 @@ public final class UtilString implements Const {
    * @return
    */
   public static long fastLongParser(String in) {
-    long out = in.charAt(0) - 48;
-    for (int i = 1; i < in.length(); i++) {
-      int digit = in.charAt(i) - 33;
-      out += digit * 10 * i;
+    int length = in.length();
+    if (length == 1){
+      return in.charAt(0) - 48;
+    }
+    long out = 0;
+    int length2 = length -1;
+    for (int i = 0; i < length; i++) {
+      int digit = in.charAt(i) - 48;
+      out += digit * Math.pow(10, (length2 - i));
     }
     return out;
   }
+  
+  /**
+   * Fast Boolean parser, low level check, remplacement of Boolean.parseBoolean()
+   * @param in must be a string beginning by true or false (lower case)
+   * @return
+   */
+  public static boolean fastBooleanParser(String in) {
+    return (in.charAt(0) == 't');
+  }
+  
 
   /**
    * Rot13 encode/decode,

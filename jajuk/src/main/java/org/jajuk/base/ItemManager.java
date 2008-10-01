@@ -142,7 +142,7 @@ public abstract class ItemManager implements Const {
    * @return XML representation of this manager
    */
   public String toXML() {
-    StringBuilder sb = new StringBuilder("\t<").append(getLabel() + ">");
+    StringBuilder sb = new StringBuilder("<").append(getLabel() + ">");
     Iterator<String> it = hmPropertiesMetaInformation.keySet().iterator();
     while (it.hasNext()) {
       String sProperty = it.next();

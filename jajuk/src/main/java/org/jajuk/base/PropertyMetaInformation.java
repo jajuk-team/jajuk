@@ -191,7 +191,7 @@ public class PropertyMetaInformation implements Const {
     } catch (Exception e) { // should to occur at this point
       Log.error(e);
     }
-    return "\t\t<" + XML_PROPERTY + " " + XML_NAME + "='" + UtilString.formatXML(sName) + "' "
+    return '<' + XML_PROPERTY + " " + XML_NAME + "='" + UtilString.formatXML(sName) + "' "
         + XML_CUSTOM + "='" + bCustom + "' " + XML_CONSTRUCTOR + "='" + bConstructor + "' "
         + XML_VISIBLE + "='" + bShouldBeDisplayed + "' " + XML_EDITABLE + "='" + bEditable + "' "
         + XML_UNIQUE + "='" + bMergeable + "' " + XML_TYPE + "='" + cType.getName() + "' "

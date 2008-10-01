@@ -265,7 +265,7 @@ public abstract class Item implements Serializable, Const {
    */
   public String toXml() {
     try {
-      StringBuilder sb = new StringBuilder("\t\t<").append(getLabel());
+      StringBuilder sb = new StringBuilder("<").append(getLabel());
       sb.append(getPropertiesXml());
       sb.append("/>\n");
       return sb.toString();

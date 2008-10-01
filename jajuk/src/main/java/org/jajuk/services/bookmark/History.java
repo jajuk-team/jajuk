@@ -46,6 +46,7 @@ import org.jajuk.events.Observer;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.Messages;
+import org.jajuk.util.UtilString;
 import org.jajuk.util.UtilSystem;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
@@ -352,7 +353,7 @@ public final class History extends DefaultHandler implements Const, ErrorHandler
   public void startElement(String sUri, String sName, String sQName, Attributes attributes)
       throws SAXException {
     if (sQName.equals("history")) {
-      History.lDateStart = Long.parseLong(attributes.getValue(attributes.getIndex("begin_date")));
+      History.lDateStart = UtilString.fastLongParser(attributes.getValue(attributes.getIndex("begin_date")));
     } else if (sQName.equals("play")) {
       String sID = attributes.getValue(attributes.getIndex("file"));
       // check id has not been changed
@@ -363,7 +364,7 @@ public final class History extends DefaultHandler implements Const, ErrorHandler
       }
       // test if this file is still kwown int the collection
       if (FileManager.getInstance().getFileByID(sID) != null) {
-        HistoryItem hi = new HistoryItem(sID, Long.parseLong(attributes.getValue(attributes
+        HistoryItem hi = new HistoryItem(sID, UtilString.fastLongParser(attributes.getValue(attributes
             .getIndex("date"))));
         vHistory.add(hi);
       }

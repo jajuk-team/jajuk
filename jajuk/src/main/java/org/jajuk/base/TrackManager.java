@@ -39,6 +39,7 @@ import org.jajuk.services.players.FIFO;
 import org.jajuk.services.tags.Tag;
 import org.jajuk.util.Conf;
 import org.jajuk.util.MD5Processor;
+import org.jajuk.util.UtilString;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.error.NoneAccessibleFileException;
 import org.jajuk.util.log.Log;
@@ -382,7 +383,7 @@ public final class TrackManager extends ItemManager implements Observer {
       if (track.getYear().getName().equals(newItem)) {
         return track;
       }
-      long lNewItem = Long.parseLong(newItem);
+      long lNewItem = UtilString.fastLongParser(newItem);
       if (lNewItem < 0 || lNewItem > 10000) {
         throw new JajukException(137);
       }
