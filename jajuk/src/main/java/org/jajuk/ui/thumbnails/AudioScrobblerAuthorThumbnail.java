@@ -73,6 +73,7 @@ public class AudioScrobblerAuthorThumbnail extends AbstractThumbnail {
 
   @Override
   public void populate() throws Exception {
+    jlIcon = new JLabel();
 
     SwingWorker sw = new SwingWorker() {
 
@@ -104,7 +105,6 @@ public class AudioScrobblerAuthorThumbnail extends AbstractThumbnail {
 
       @Override
       public void finished() {
-        jlIcon = new JLabel();
         super.finished();
         postPopulate();
         jlIcon.setIcon(ii);
@@ -163,8 +163,8 @@ public class AudioScrobblerAuthorThumbnail extends AbstractThumbnail {
     Color bgcolor = UtilGUI.getUltraLightColor();
     Color fgcolor = UtilGUI.getForegroundColor();
     String sOut = "<html bgcolor='#" + UtilGUI.getHTMLColor(bgcolor) + "'><TABLE color='"
-        + UtilGUI.getHTMLColor(fgcolor) + "'><TR><TD VALIGN='TOP'> <b>" + "<a href='file://"
-        + XML_URL + '?' + author.getUrl() + "'>" + author.getName() + "</a>" + "</b><br><br>";
+        + UtilGUI.getHTMLColor(fgcolor) + "'><TR><TD VALIGN='TOP'> <b>" + "<a href='file://" + XML_URL
+        + '?' + author.getUrl() + "'>" + author.getName() + "</a>" + "</b><br><br>";
     // display picture
     sOut += "<img src='" + author.getImageUrl() + "'></TD>";
     // Show each album for this Author
