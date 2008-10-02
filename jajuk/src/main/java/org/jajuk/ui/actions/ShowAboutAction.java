@@ -23,6 +23,7 @@ import java.awt.event.ActionEvent;
 
 import org.jajuk.ui.wizard.AboutWindow;
 import org.jajuk.util.IconLoader;
+import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 
 /**
@@ -33,7 +34,7 @@ public class ShowAboutAction extends JajukAction {
   private static final long serialVersionUID = 1L;
 
   ShowAboutAction() {
-    super(Messages.getString("JajukWindow.5"), IconLoader.ICON_INFO, true);
+    super(Messages.getString("JajukWindow.5"), IconLoader.getIcon(JajukIcons.INFO), true);
     setShortDescription(Messages.getString("JajukWindow.22"));
   }
 

@@ -64,6 +64,7 @@ import org.jajuk.ui.widgets.JajukWindow;
 import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukFileFilter;
+import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 import org.jajuk.util.filters.DirectoryFilter;
 import org.jajuk.util.log.Log;
@@ -164,7 +165,7 @@ public class DeviceWizard extends JFrame implements ActionListener, Const {
     jlUrl = new JLabel(Messages.getString("DeviceWizard.3"));
     jtfUrl = new JTextField();
     jtfUrl.setToolTipText(Messages.getString("DeviceWizard.46"));
-    jbUrl = new JButton(IconLoader.ICON_OPEN_FILE);
+    jbUrl = new JButton(IconLoader.getIcon(JajukIcons.OPEN_FILE));
     jbUrl.setToolTipText(Messages.getString("DeviceWizard.43"));
     jbUrl.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
     jbUrl.addActionListener(this);

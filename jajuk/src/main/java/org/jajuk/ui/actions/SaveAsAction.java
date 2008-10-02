@@ -30,6 +30,7 @@ import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.ui.widgets.InformationJPanel;
 import org.jajuk.util.IconLoader;
+import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
@@ -42,7 +43,7 @@ public class SaveAsAction extends JajukAction {
   private static final long serialVersionUID = 1L;
 
   SaveAsAction() {
-    super(Messages.getString("PhysicalPlaylistRepositoryView.2"), IconLoader.ICON_SAVE_AS, true);
+    super(Messages.getString("PhysicalPlaylistRepositoryView.2"), IconLoader.getIcon(JajukIcons.SAVE_AS), true);
   }
 
   /**

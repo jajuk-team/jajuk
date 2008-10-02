@@ -44,6 +44,7 @@ import org.jajuk.ui.actions.JajukActions;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
+import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilString;
 import org.jajuk.util.log.Log;
@@ -95,7 +96,7 @@ public class JajukWindow extends JFrame implements Const, Observer {
     jw = this;
     bVisible = (Conf.getInt(CONF_STARTUP_DISPLAY) == DISPLAY_MODE_WINDOW_TRAY);
     setTitle(Messages.getString("JajukWindow.17"));
-    setIconImage(IconLoader.ICON_LOGO.getImage());
+    setIconImage(IconLoader.getIcon(JajukIcons.LOGO).getImage());
     setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
     // register for given events
     ObservationManager.register(this);

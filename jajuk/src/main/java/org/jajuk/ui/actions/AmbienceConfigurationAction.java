@@ -23,6 +23,7 @@ import java.awt.event.ActionEvent;
 
 import org.jajuk.ui.wizard.AmbienceWizard;
 import org.jajuk.util.IconLoader;
+import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 
 /**
@@ -33,7 +34,7 @@ public class AmbienceConfigurationAction extends JajukAction {
   private static final long serialVersionUID = 1L;
 
   AmbienceConfigurationAction() {
-    super(Messages.getString("CommandJPanel.19"), IconLoader.ICON_STYLE, true);
+    super(Messages.getString("CommandJPanel.19"), IconLoader.getIcon(JajukIcons.STYLE), true);
   }
 
   @Override

@@ -25,6 +25,7 @@ import java.util.List;
 import javax.swing.ImageIcon;
 
 import org.jajuk.util.IconLoader;
+import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 
 /**
@@ -151,7 +152,7 @@ public class Style extends LogicalItem implements Comparable<Style> {
    */
   @Override
   public ImageIcon getIconRepresentation() {
-    return IconLoader.ICON_STYLE;
+    return IconLoader.getIcon(JajukIcons.STYLE);
   }
 
 }

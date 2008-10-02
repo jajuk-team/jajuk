@@ -27,6 +27,7 @@ import org.jajuk.base.Item;
 import org.jajuk.base.Track;
 import org.jajuk.base.TrackManager;
 import org.jajuk.util.IconLoader;
+import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 
 public class BanSelectionAction extends SelectionAction {
@@ -40,7 +41,7 @@ public class BanSelectionAction extends SelectionAction {
    * </p>
    */
   BanSelectionAction() {
-    super(Messages.getString("BanSelectionAction.0"), IconLoader.ICON_BAN, true);
+    super(Messages.getString("BanSelectionAction.0"), IconLoader.getIcon(JajukIcons.BAN), true);
     setShortDescription(Messages.getString("BanSelectionAction.1"));
   }
 

@@ -33,8 +33,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.jajuk.util.Conf;
-import org.jajuk.util.DownloadManager;
 import org.jajuk.util.Const;
+import org.jajuk.util.DownloadManager;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilGUI;
 import org.jajuk.util.UtilSystem;

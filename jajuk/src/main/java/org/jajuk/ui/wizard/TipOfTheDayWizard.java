@@ -39,6 +39,7 @@ import javax.swing.JTextArea;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
+import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 
 public class TipOfTheDayWizard extends JFrame implements Const {
@@ -58,7 +59,7 @@ public class TipOfTheDayWizard extends JFrame implements Const {
   public TipOfTheDayWizard() {
     super(Messages.getString("TipOfTheDayView.0"));
     setAlwaysOnTop(true);
-    setIconImage(IconLoader.ICON_LOGO.getImage());
+    setIconImage(IconLoader.getIcon(JajukIcons.LOGO).getImage());
     this.iLastTip = (Conf.getInt(CONF_TIP_OF_DAY_INDEX) - 1) % TIPS.length;
 
     cbShow = new JCheckBox(Messages.getString("TipOfTheDayView.2"));
@@ -70,7 +71,7 @@ public class TipOfTheDayWizard extends JFrame implements Const {
     tipArea.setEditable(false);
 
     lCounter = new JLabel("999/999");
-    JButton bNext = new JButton(IconLoader.ICON_NEXT);
+    JButton bNext = new JButton(IconLoader.getIcon(JajukIcons.NEXT));
     bNext.setMargin(new Insets(1, 1, 1, 1));
     bNext.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent actionevent) {
@@ -79,7 +80,7 @@ public class TipOfTheDayWizard extends JFrame implements Const {
       }
     });
 
-    JButton bPrevious = new JButton(IconLoader.ICON_PREVIOUS);
+    JButton bPrevious = new JButton(IconLoader.getIcon(JajukIcons.PREVIOUS));
     bPrevious.setMargin(new Insets(1, 1, 1, 1));
     bPrevious.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent actionevent) {
@@ -91,7 +92,7 @@ public class TipOfTheDayWizard extends JFrame implements Const {
       }
     });
 
-    JButton bClose = new JButton(IconLoader.ICON_OK);
+    JButton bClose = new JButton(IconLoader.getIcon(JajukIcons.OK));
     bClose.setMaximumSize(bClose.getPreferredSize());
     bClose.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent actionevent) {
@@ -105,7 +106,7 @@ public class TipOfTheDayWizard extends JFrame implements Const {
     JLabel lTitle = new JLabel(Messages.getString("TipOfTheDayView.1"), JLabel.LEFT);
     Font fTitle = lTitle.getFont();
     lTitle.setFont(new Font(fTitle.getName(), fTitle.getStyle(), (int) (fTitle.getSize() * 1.3)));
-    JLabel lIcon = new JLabel(IconLoader.ICON_TIP, JLabel.LEFT);
+    JLabel lIcon = new JLabel(IconLoader.getIcon(JajukIcons.TIP), JLabel.LEFT);
 
     JPanel pTop = new JPanel(new BorderLayout());
     pTop.add(lIcon, BorderLayout.WEST);

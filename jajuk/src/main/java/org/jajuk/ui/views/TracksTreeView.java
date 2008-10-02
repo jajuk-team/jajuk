@@ -89,6 +89,7 @@ import org.jajuk.ui.widgets.InformationJPanel;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
+import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilGUI;
 import org.jajuk.util.error.JajukException;
@@ -1133,21 +1134,21 @@ class TracksTreeCellRenderer extends SubstanceDefaultTreeCellRenderer {
     setFont(FontManager.getInstance().getFont(JajukFont.PLAIN));
 
     if (value instanceof StyleNode) {
-      setIcon(IconLoader.ICON_STYLE);
+      setIcon(IconLoader.getIcon(JajukIcons.STYLE));
     } else if (value instanceof AuthorNode) {
-      setIcon(IconLoader.ICON_AUTHOR);
+      setIcon(IconLoader.getIcon(JajukIcons.AUTHOR));
     } else if (value instanceof YearNode) {
-      setIcon(IconLoader.ICON_YEAR);
+      setIcon(IconLoader.getIcon(JajukIcons.YEAR));
     } else if (value instanceof AlbumNode) {
-      setIcon(IconLoader.ICON_ALBUM);
+      setIcon(IconLoader.getIcon(JajukIcons.ALBUM));
     } else if (value instanceof TrackNode) {
-      setIcon(IconLoader.ICON_TRACK);
+      setIcon(IconLoader.getIcon(JajukIcons.TRACK));
       // Discovery date filter
     } else if (value instanceof DiscoveryDateNode) {
-      setIcon(IconLoader.ICON_DISCOVERY_DATE);
+      setIcon(IconLoader.getIcon(JajukIcons.DISCOVERY_DATE));
       // collection node
     } else {
-      setIcon(IconLoader.ICON_LIST);
+      setIcon(IconLoader.getIcon(JajukIcons.LIST));
     }
 
     return this;

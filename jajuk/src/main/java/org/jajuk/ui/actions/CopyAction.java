@@ -27,6 +27,7 @@ import javax.swing.JComponent;
 import org.jajuk.base.Item;
 import org.jajuk.ui.helpers.ItemMoveManager;
 import org.jajuk.util.IconLoader;
+import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 
 /**
@@ -38,7 +39,7 @@ public class CopyAction extends JajukAction {
   private static final long serialVersionUID = 1L;
 
   CopyAction() {
-    super(Messages.getString("FilesTreeView.3"), IconLoader.ICON_COPY, "ctrl C", true, false);
+    super(Messages.getString("FilesTreeView.3"), IconLoader.getIcon(JajukIcons.COPY), "ctrl C", true, false);
     setShortDescription(Messages.getString("FilesTreeView.3"));
   }
 

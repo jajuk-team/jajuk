@@ -27,6 +27,7 @@ import javax.swing.SwingUtilities;
 
 import org.jajuk.services.players.Player;
 import org.jajuk.util.IconLoader;
+import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 
 /**
@@ -36,7 +37,7 @@ public class MuteAction extends JajukAction {
   private static final long serialVersionUID = 1L;
 
   MuteAction() {
-    super(Messages.getString("JajukWindow.2"), IconLoader.ICON_VOLUME_LEVEL1, "F8", true, true);
+    super(Messages.getString("JajukWindow.2"), IconLoader.getIcon(JajukIcons.VOLUME_LEVEL1), "F8", true, true);
     setShortDescription(Messages.getString("JajukWindow.19"));
   }
 
@@ -60,13 +61,13 @@ public class MuteAction extends JajukAction {
    */
   public static void setVolumeIcon(final float fVolume) {
     if (fVolume <= 0) {
-      ActionManager.getAction(MUTE_STATE).setIcon(IconLoader.ICON_MUTED);
+      ActionManager.getAction(MUTE_STATE).setIcon(IconLoader.getIcon(JajukIcons.MUTED));
     } else if (fVolume <= 33) {
-      ActionManager.getAction(MUTE_STATE).setIcon(IconLoader.ICON_VOLUME_LEVEL1);
+      ActionManager.getAction(MUTE_STATE).setIcon(IconLoader.getIcon(JajukIcons.VOLUME_LEVEL1));
     } else if (fVolume <= 66) {
-      ActionManager.getAction(MUTE_STATE).setIcon(IconLoader.ICON_VOLUME_LEVEL2);
+      ActionManager.getAction(MUTE_STATE).setIcon(IconLoader.getIcon(JajukIcons.VOLUME_LEVEL2));
     } else {
-      ActionManager.getAction(MUTE_STATE).setIcon(IconLoader.ICON_VOLUME_LEVEL3);
+      ActionManager.getAction(MUTE_STATE).setIcon(IconLoader.getIcon(JajukIcons.VOLUME_LEVEL3));
     }
   }
 }

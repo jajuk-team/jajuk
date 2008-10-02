@@ -31,6 +31,7 @@ import javax.swing.ImageIcon;
 import org.jajuk.ui.widgets.IconLabel;
 import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
+import org.jajuk.util.JajukIcons;
 import org.jajuk.util.UtilString;
 import org.jajuk.util.log.Log;
 import org.xml.sax.Attributes;
@@ -119,7 +120,9 @@ public abstract class Item implements Serializable, Const {
     if (!(otherItem instanceof Item)) {
       return false;
     }
-    return getID().equals(((Item) otherItem).getID());
+    // [Perf] We can compare with an == operator here because 
+    // all ID are stored into String intern() buffer
+    return getID() == ((Item) otherItem).getID();
   }
 
   /*
@@ -410,19 +413,19 @@ public abstract class Item implements Serializable, Const {
     IconLabel ilRate = null;
     switch (starsNumber) {
     case 0:
-      ilRate = new IconLabel(IconLoader.ICON_STAR_0, "", null, null, null, Long.toString(rate));
+      ilRate = new IconLabel(IconLoader.getIcon(JajukIcons.STAR_0), "", null, null, null, Long.toString(rate));
       break;
     case 1:
-      ilRate = new IconLabel(IconLoader.ICON_STAR_1, "", null, null, null, Long.toString(rate));
+      ilRate = new IconLabel(IconLoader.getIcon(JajukIcons.STAR_1), "", null, null, null, Long.toString(rate));
       break;
     case 2:
-      ilRate = new IconLabel(IconLoader.ICON_STAR_2, "", null, null, null, Long.toString(rate));
+      ilRate = new IconLabel(IconLoader.getIcon(JajukIcons.STAR_2), "", null, null, null, Long.toString(rate));
       break;
     case 3:
-      ilRate = new IconLabel(IconLoader.ICON_STAR_3, "", null, null, null, Long.toString(rate));
+      ilRate = new IconLabel(IconLoader.getIcon(JajukIcons.STAR_3), "", null, null, null, Long.toString(rate));
       break;
     case 4:
-      ilRate = new IconLabel(IconLoader.ICON_STAR_4, "", null, null, null, Long.toString(rate));
+      ilRate = new IconLabel(IconLoader.getIcon(JajukIcons.STAR_4), "", null, null, null, Long.toString(rate));
       break;
     default:
       return null;

@@ -111,6 +111,7 @@ import org.jajuk.ui.wizard.AmbienceWizard;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
+import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
@@ -293,7 +294,7 @@ public class CommandJPanel extends JXPanel implements Const, ActionListener,
     double[][] sizeSearch = new double[][] { { 3, TableLayout.PREFERRED, 3, 100 }, { 25 } };
     JPanel jpSearch = new JPanel(new TableLayout(sizeSearch));
     sbSearch = new SearchBox(CommandJPanel.this);
-    JLabel jlSearch = new JLabel(IconLoader.ICON_SEARCH);
+    JLabel jlSearch = new JLabel(IconLoader.getIcon(JajukIcons.SEARCH));
     jlSearch.setToolTipText(Messages.getString("CommandJPanel.23"));
     // Clear search text when clicking on the search icon
     jlSearch.addMouseListener(new MouseAdapter() {
@@ -308,7 +309,7 @@ public class CommandJPanel extends JXPanel implements Const, ActionListener,
     // History
     JPanel jpHistory = new JPanel();
     jcbHistory = new SteppedComboBox();
-    JLabel jlHistory = new JLabel(IconLoader.ICON_HISTORY);
+    JLabel jlHistory = new JLabel(IconLoader.getIcon(JajukIcons.HISTORY));
     jlHistory.setToolTipText(Messages.getString("CommandJPanel.0"));
     // - Increase rating button
     JajukAction actionIncRate = ActionManager.getAction(JajukActions.INC_RATE);
@@ -328,7 +329,7 @@ public class CommandJPanel extends JXPanel implements Const, ActionListener,
       });
       jpmIncRating.add(jmi);
     }
-    jbIncRate = new DropDownButton(IconLoader.ICON_INC_RATING) {
+    jbIncRate = new DropDownButton(IconLoader.getIcon(JajukIcons.INC_RATING)) {
       private static final long serialVersionUID = 1L;
 
       @Override
@@ -432,7 +433,7 @@ public class CommandJPanel extends JXPanel implements Const, ActionListener,
     ambienceListener = new AmbienceListener();
     ambiencesCombo.addActionListener(ambienceListener);
     jtbSpecial = new JajukJToolbar();
-    ddbGlobalRandom = new DropDownButton(IconLoader.ICON_SHUFFLE_GLOBAL) {
+    ddbGlobalRandom = new DropDownButton(IconLoader.getIcon(JajukIcons.SHUFFLE_GLOBAL)) {
       private static final long serialVersionUID = 1L;
 
       @Override
@@ -469,7 +470,7 @@ public class CommandJPanel extends JXPanel implements Const, ActionListener,
 
     jbBestof = new JajukButton(ActionManager.getAction(JajukActions.BEST_OF));
 
-    ddbNovelties = new DropDownButton(IconLoader.ICON_NOVELTIES) {
+    ddbNovelties = new DropDownButton(IconLoader.getIcon(JajukIcons.NOVELTIES)) {
       private static final long serialVersionUID = 1L;
 
       @Override
@@ -497,7 +498,7 @@ public class CommandJPanel extends JXPanel implements Const, ActionListener,
 
     jbNorm = new JajukButton(ActionManager.getAction(FINISH_ALBUM));
     popupDDJ = new JPopupMenu();
-    ddbDDJ = new DropDownButton(IconLoader.ICON_DIGITAL_DJ) {
+    ddbDDJ = new DropDownButton(IconLoader.getIcon(JajukIcons.DIGITAL_DJ)) {
       private static final long serialVersionUID = 1L;
 
       @Override
@@ -511,7 +512,7 @@ public class CommandJPanel extends JXPanel implements Const, ActionListener,
     ddbDDJ.setText("");
 
     popupWebRadio = new XJPopupMenu(JajukWindow.getInstance());
-    ddbWebRadio = new DropDownButton(IconLoader.ICON_WEBRADIO) {
+    ddbWebRadio = new DropDownButton(IconLoader.getIcon(JajukIcons.WEBRADIO)) {
       private static final long serialVersionUID = 1L;
 
       @Override
@@ -761,7 +762,7 @@ public class CommandJPanel extends JXPanel implements Const, ActionListener,
           ActionManager.getAction(PREVIOUS_TRACK).setEnabled(bQueueNotVoid);
           ActionManager.getAction(NEXT_TRACK).setEnabled(bQueueNotVoid);
 
-          ActionManager.getAction(PLAY_PAUSE_TRACK).setIcon(IconLoader.ICON_PLAY);
+          ActionManager.getAction(PLAY_PAUSE_TRACK).setIcon(IconLoader.getIcon(JajukIcons.PLAY));
           ActionManager.getAction(PLAY_PAUSE_TRACK).setName(Messages.getString("JajukWindow.12"));
           ActionManager.getAction(STOP_TRACK).setEnabled(false);
           ActionManager.getAction(FAST_FORWARD_TRACK).setEnabled(false);
@@ -782,7 +783,7 @@ public class CommandJPanel extends JXPanel implements Const, ActionListener,
           ActionManager.getAction(NEXT_ALBUM).setEnabled(false);
           ActionManager.getAction(PREVIOUS_ALBUM).setEnabled(false);
           ActionManager.getAction(FINISH_ALBUM).setEnabled(false);
-          ActionManager.getAction(PLAY_PAUSE_TRACK).setIcon(IconLoader.ICON_PAUSE);
+          ActionManager.getAction(PLAY_PAUSE_TRACK).setIcon(IconLoader.getIcon(JajukIcons.PAUSE));
           jbIncRate.setEnabled(false);
           // Reset history so user can launch again stopped
           // track (selection must change to throw an ActionEvent)
@@ -803,7 +804,7 @@ public class CommandJPanel extends JXPanel implements Const, ActionListener,
           // We need to set the icon here because the event can be
           // thrown by the information panel, not directly the
           // PlayPauseAction
-          ActionManager.getAction(PLAY_PAUSE_TRACK).setIcon(IconLoader.ICON_PAUSE);
+          ActionManager.getAction(PLAY_PAUSE_TRACK).setIcon(IconLoader.getIcon(JajukIcons.PAUSE));
         } else if (JajukEvents.PLAYER_PAUSE.equals(subject)) {
           // Disable volume control when pausing to fix an mplayer
           // issue:
@@ -815,7 +816,7 @@ public class CommandJPanel extends JXPanel implements Const, ActionListener,
           // We need to set the icon here because the event can be
           // thrown by the information panel, not directly the
           // PlayPauseAction
-          ActionManager.getAction(PLAY_PAUSE_TRACK).setIcon(IconLoader.ICON_PLAY);
+          ActionManager.getAction(PLAY_PAUSE_TRACK).setIcon(IconLoader.getIcon(JajukIcons.PLAY));
         } else if (JajukEvents.PLAYER_RESUME.equals(subject)) {
           // Enable the volume when resuming (fix a mplayer issue, see
           // above)
@@ -826,7 +827,7 @@ public class CommandJPanel extends JXPanel implements Const, ActionListener,
           // We need to set the icon here because the event can be
           // thrown by the information panel, not directly the
           // PlayPauseAction
-          ActionManager.getAction(PLAY_PAUSE_TRACK).setIcon(IconLoader.ICON_PAUSE);
+          ActionManager.getAction(PLAY_PAUSE_TRACK).setIcon(IconLoader.getIcon(JajukIcons.PAUSE));
         } else if (JajukEvents.SPECIAL_MODE.equals(subject)) {
           if (ObservationManager.getDetail(event, DETAIL_ORIGIN).equals(DETAIL_SPECIAL_MODE_NORMAL)) {
             // deselect shuffle mode
@@ -933,7 +934,7 @@ public class CommandJPanel extends JXPanel implements Const, ActionListener,
       while (it.hasNext()) {
         final DigitalDJ dj = it.next();
         JCheckBoxMenuItem jmi = new JCheckBoxMenuItem(dj.getName(),
-            IconLoader.ICON_DIGITAL_DJ_16X16);
+            IconLoader.getIcon(JajukIcons.DIGITAL_DJ_16X16));
         jmi.addActionListener(new ActionListener() {
           public void actionPerformed(ActionEvent arg0) {
             Conf.setProperty(CONF_DEFAULT_DJ, dj.getID());
@@ -966,12 +967,12 @@ public class CommandJPanel extends JXPanel implements Const, ActionListener,
     }
     ambiencesCombo.removeAllItems();
     ambiencesCombo.addItem(new JLabel(Messages.getString("CommandJPanel.19"),
-        IconLoader.ICON_CONFIGURATION, SwingConstants.LEFT));
+        IconLoader.getIcon(JajukIcons.CONFIGURATION), SwingConstants.LEFT));
     ambiencesCombo.addItem(new JLabel("<html><i>" + Messages.getString("DigitalDJWizard.64")
-        + "</i></html>", IconLoader.ICON_STYLE, SwingConstants.LEFT));
+        + "</i></html>", IconLoader.getIcon(JajukIcons.STYLE), SwingConstants.LEFT));
     // Add available ambiences
     for (final Ambience ambience : AmbienceManager.getInstance().getAmbiences()) {
-      ambiencesCombo.addItem(new JLabel(ambience.getName(), IconLoader.ICON_STYLE,
+      ambiencesCombo.addItem(new JLabel(ambience.getName(), IconLoader.getIcon(JajukIcons.STYLE),
           SwingConstants.LEFT));
     }
     // Select right item

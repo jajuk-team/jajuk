@@ -24,6 +24,7 @@ import java.awt.event.ActionEvent;
 import org.jajuk.ui.widgets.JajukWindow;
 import org.jajuk.ui.wizard.NewPropertyWizard;
 import org.jajuk.util.IconLoader;
+import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 import org.jajuk.util.error.JajukException;
 
@@ -32,7 +33,7 @@ public class NewPropertyAction extends JajukAction {
   private static final long serialVersionUID = 1L;
 
   NewPropertyAction() {
-    super(Messages.getString("JajukJMenuBar.6"), IconLoader.ICON_NEW, true);
+    super(Messages.getString("JajukJMenuBar.6"), IconLoader.getIcon(JajukIcons.NEW), true);
     setShortDescription(Messages.getString("JajukJMenuBar.6"));
   }
 

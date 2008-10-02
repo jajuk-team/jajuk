@@ -81,6 +81,7 @@ import org.jajuk.ui.widgets.SteppedComboBox;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Filter;
 import org.jajuk.util.IconLoader;
+import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilGUI;
 
@@ -250,10 +251,10 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
     JToolBar jtbPage = new JajukJToolbar();
     jtbPage.setFloatable(false);
     jtbPage.setRollover(true);
-    jbPrev = new JButton(IconLoader.ICON_PREVIOUS);
+    jbPrev = new JButton(IconLoader.getIcon(JajukIcons.PREVIOUS));
     jbPrev.setToolTipText(Messages.getString("CatalogView.12"));
     jbPrev.addActionListener(this);
-    jbNext = new JButton(IconLoader.ICON_NEXT);
+    jbNext = new JButton(IconLoader.getIcon(JajukIcons.NEXT));
     jbNext.setToolTipText(Messages.getString("CatalogView.13"));
     jbNext.addActionListener(this);
     jcbPage = new SteppedComboBox();

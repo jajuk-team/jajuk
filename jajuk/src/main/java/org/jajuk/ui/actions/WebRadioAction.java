@@ -27,6 +27,7 @@ import org.jajuk.services.webradio.WebRadio;
 import org.jajuk.services.webradio.WebRadioManager;
 import org.jajuk.util.Conf;
 import org.jajuk.util.IconLoader;
+import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 import org.jajuk.util.error.JajukException;
 
@@ -35,7 +36,7 @@ public class WebRadioAction extends JajukAction {
   private static final long serialVersionUID = 1L;
 
   WebRadioAction() {
-    super(Messages.getString("CommandJPanel.25"), IconLoader.ICON_WEBRADIO, true);
+    super(Messages.getString("CommandJPanel.25"), IconLoader.getIcon(JajukIcons.WEBRADIO), true);
     setShortDescription(WebRadioManager.getCurrentWebRadioTooltip());
   }
 

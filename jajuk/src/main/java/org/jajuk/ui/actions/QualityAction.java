@@ -27,6 +27,7 @@ import java.awt.event.ActionEvent;
 import java.net.URI;
 
 import org.jajuk.util.IconLoader;
+import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilString;
 import org.jajuk.util.log.Log;
@@ -39,7 +40,7 @@ public class QualityAction extends JajukAction {
   private static final long serialVersionUID = 1L;
 
   QualityAction() {
-    super(Messages.getString("JajukJMenuBar.19"), IconLoader.ICON_EDIT, true);
+    super(Messages.getString("JajukJMenuBar.19"), IconLoader.getIcon(JajukIcons.EDIT), true);
   }
 
   /**

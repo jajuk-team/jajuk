@@ -57,6 +57,7 @@ import org.jajuk.ui.widgets.StylesSelectionDialog;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
+import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilGUI;
 import org.jajuk.util.log.Log;
@@ -248,7 +249,7 @@ public class AmbienceWizard extends Wizard implements Const {
         }
         final Ambience ambience = AmbienceWizard.ambiences.get(index);
         // style list
-        final JButton jbStyle = new JButton(IconLoader.ICON_STYLE);
+        final JButton jbStyle = new JButton(IconLoader.getIcon(JajukIcons.STYLE));
         if (ambience.getName().length() == 0) {
           jbStyle.setEnabled(false);
         }
@@ -316,13 +317,13 @@ public class AmbienceWizard extends Wizard implements Const {
       // button layout
       final double[][] dButtons = { { 10, 0.33, 5, 0.33, 5, 0.33, 10 }, { 20 } };
       jpButtons = new JPanel(new TableLayout(dButtons));
-      jbNew = new JButton(Messages.getString("DigitalDJWizard.32"), IconLoader.ICON_NEW);
+      jbNew = new JButton(Messages.getString("DigitalDJWizard.32"), IconLoader.getIcon(JajukIcons.NEW));
       jbNew.addActionListener(this);
       jbNew.setToolTipText(Messages.getString("DigitalDJWizard.33"));
-      jbDelete = new JButton(Messages.getString("DigitalDJWizard.34"), IconLoader.ICON_DELETE);
+      jbDelete = new JButton(Messages.getString("DigitalDJWizard.34"), IconLoader.getIcon(JajukIcons.DELETE));
       jbDelete.addActionListener(this);
       jbDelete.setToolTipText(Messages.getString("DigitalDJWizard.35"));
-      jbDefaults = new JButton(Messages.getString("DigitalDJWizard.62"), IconLoader.ICON_DEFAULTS);
+      jbDefaults = new JButton(Messages.getString("DigitalDJWizard.62"), IconLoader.getIcon(JajukIcons.DEFAULTS));
       jbDefaults.addActionListener(this);
       jbDefaults.setToolTipText(Messages.getString("DigitalDJWizard.63"));
       jpButtons.add(jbNew, "1,0");

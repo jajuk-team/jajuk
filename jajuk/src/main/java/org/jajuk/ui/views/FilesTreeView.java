@@ -87,6 +87,7 @@ import org.jajuk.ui.widgets.InformationJPanel;
 import org.jajuk.ui.wizard.DeviceWizard;
 import org.jajuk.util.Conf;
 import org.jajuk.util.IconLoader;
+import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilFeatures;
 import org.jajuk.util.UtilGUI;
@@ -198,35 +199,35 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
     jmiDirRefresh.putClientProperty(DETAIL_SELECTION, alSelected);
     jmiDirRefresh.addActionListener(this);
     jmiDirDesynchro = new JMenuItem(Messages.getString("FilesTreeView.14"),
-        IconLoader.ICON_DIRECTORY_DESYNCHRO);
+        IconLoader.getIcon(JajukIcons.DIRECTORY_DESYNCHRO));
     jmiDirDesynchro.addActionListener(this);
     jmiDirResynchro = new JMenuItem(Messages.getString("FilesTreeView.15"),
-        IconLoader.ICON_DIRECTORY_SYNCHRO);
+        IconLoader.getIcon(JajukIcons.DIRECTORY_SYNCHRO));
     jmiDirResynchro.addActionListener(this);
     jmiDirCreatePlaylist = new JMenuItem(Messages.getString("FilesTreeView.16"));
     jmiDirCreatePlaylist.setEnabled(false);
     jmiDirCreatePlaylist.addActionListener(this);
     jmiDirRefactor = new JMenuItem(Messages.getString(("FilesTreeView.62")),
-        IconLoader.ICON_REORGANIZE);
+        IconLoader.getIcon(JajukIcons.REORGANIZE));
     jmiDirRefactor.addActionListener(this);
 
     // Device menu
-    jmiDevMount = new JMenuItem(Messages.getString("FilesTreeView.28"), IconLoader.ICON_UNMOUNT);
+    jmiDevMount = new JMenuItem(Messages.getString("FilesTreeView.28"), IconLoader.getIcon(JajukIcons.UNMOUNT));
     jmiDevMount.addActionListener(this);
-    jmiDevUnmount = new JMenuItem(Messages.getString("FilesTreeView.29"), IconLoader.ICON_UNMOUNT);
+    jmiDevUnmount = new JMenuItem(Messages.getString("FilesTreeView.29"), IconLoader.getIcon(JajukIcons.UNMOUNT));
     jmiDevUnmount.addActionListener(this);
-    jmiDevRefresh = new JMenuItem(Messages.getString("FilesTreeView.30"), IconLoader.ICON_REFRESH);
+    jmiDevRefresh = new JMenuItem(Messages.getString("FilesTreeView.30"), IconLoader.getIcon(JajukIcons.REFRESH));
     jmiDevRefresh.addActionListener(this);
     jmiDevSynchronize = new JMenuItem(Messages.getString("FilesTreeView.31"),
-        IconLoader.ICON_SYNCHRO);
+        IconLoader.getIcon(JajukIcons.SYNCHRO));
     jmiDevSynchronize.addActionListener(this);
-    jmiDevTest = new JMenuItem(Messages.getString("FilesTreeView.32"), IconLoader.ICON_TEST);
+    jmiDevTest = new JMenuItem(Messages.getString("FilesTreeView.32"), IconLoader.getIcon(JajukIcons.TEST));
     jmiDevTest.addActionListener(this);
     jmiDevConfiguration = new JMenuItem(Messages.getString("FilesTreeView.55"),
-        IconLoader.ICON_CONFIGURATION);
+        IconLoader.getIcon(JajukIcons.CONFIGURATION));
     jmiDevConfiguration.addActionListener(this);
     jmiDevOrganize = new JMenuItem(Messages.getString(("FilesTreeView.62")),
-        IconLoader.ICON_REORGANIZE);
+        IconLoader.getIcon(JajukIcons.REORGANIZE));
     jmiDevOrganize.addActionListener(this);
 
     // playlist menu
@@ -426,9 +427,9 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
         public void run() {
           Device device = ((DeviceNode) (paths[0].getLastPathComponent())).getDevice();
           if (device.test()) {
-            Messages.showInfoMessage(Messages.getString("DeviceView.21"), IconLoader.ICON_OK);
+            Messages.showInfoMessage(Messages.getString("DeviceView.21"), IconLoader.getIcon(JajukIcons.OK));
           } else {
-            Messages.showInfoMessage(Messages.getString("DeviceView.22"), IconLoader.ICON_KO);
+            Messages.showInfoMessage(Messages.getString("DeviceView.22"), IconLoader.getIcon(JajukIcons.KO));
           }
         }
       }.start();
@@ -1018,50 +1019,50 @@ class FilesTreeCellRenderer extends SubstanceDefaultTreeCellRenderer {
         }
       }
       if (icon == null) {
-        setIcon(IconLoader.ICON_TYPE_WAV);
+        setIcon(IconLoader.getIcon(JajukIcons.TYPE_WAV));
       } else {
         setIcon(new ImageIcon(icon));
       }
     } else if (value instanceof PlaylistFileNode) {
       setBorder(null);
-      setIcon(IconLoader.ICON_PLAYLIST_FILE);
+      setIcon(IconLoader.getIcon(JajukIcons.PLAYLIST_FILE));
     } else if (value instanceof DeviceNode) {
       setBorder(BorderFactory.createEmptyBorder(2, 0, 3, 0));
       Device device = ((DeviceNode) value).getDevice();
       switch ((int) device.getType()) {
       case 0:
         if (device.isMounted()) {
-          setIcon(IconLoader.ICON_DEVICE_DIRECTORY_MOUNTED_SMALL);
+          setIcon(IconLoader.getIcon(JajukIcons.DEVICE_DIRECTORY_MOUNTED_SMALL));
         } else {
-          setIcon(IconLoader.ICON_DEVICE_DIRECTORY_UNMOUNTED_SMALL);
+          setIcon(IconLoader.getIcon(JajukIcons.DEVICE_DIRECTORY_UNMOUNTED_SMALL));
         }
         break;
       case 1:
         if (device.isMounted()) {
-          setIcon(IconLoader.ICON_DEVICE_CD_MOUNTED_SMALL);
+          setIcon(IconLoader.getIcon(JajukIcons.DEVICE_CD_MOUNTED_SMALL));
         } else {
-          setIcon(IconLoader.ICON_DEVICE_CD_UNMOUNTED_SMALL);
+          setIcon(IconLoader.getIcon(JajukIcons.DEVICE_CD_UNMOUNTED_SMALL));
         }
         break;
       case 2:
         if (device.isMounted()) {
-          setIcon(IconLoader.ICON_DEVICE_NETWORK_DRIVE_MOUNTED_SMALL);
+          setIcon(IconLoader.getIcon(JajukIcons.DEVICE_NETWORK_DRIVE_MOUNTED_SMALL));
         } else {
-          setIcon(IconLoader.ICON_DEVICE_NETWORK_DRIVE_UNMOUNTED_SMALL);
+          setIcon(IconLoader.getIcon(JajukIcons.DEVICE_NETWORK_DRIVE_UNMOUNTED_SMALL));
         }
         break;
       case 3:
         if (device.isMounted()) {
-          setIcon(IconLoader.ICON_DEVICE_EXT_DD_MOUNTED_SMALL);
+          setIcon(IconLoader.getIcon(JajukIcons.DEVICE_EXT_DD_MOUNTED_SMALL));
         } else {
-          setIcon(IconLoader.ICON_DEVICE_EXT_DD_UNMOUNTED_SMALL);
+          setIcon(IconLoader.getIcon(JajukIcons.DEVICE_EXT_DD_UNMOUNTED_SMALL));
         }
         break;
       case 4:
         if (device.isMounted()) {
-          setIcon(IconLoader.ICON_DEVICE_PLAYER_MOUNTED_SMALL);
+          setIcon(IconLoader.getIcon(JajukIcons.DEVICE_PLAYER_MOUNTED_SMALL));
         } else {
-          setIcon(IconLoader.ICON_DEVICE_PLAYER_UNMOUNTED_SMALL);
+          setIcon(IconLoader.getIcon(JajukIcons.DEVICE_PLAYER_UNMOUNTED_SMALL));
         }
         break;
       }
@@ -1070,13 +1071,13 @@ class FilesTreeCellRenderer extends SubstanceDefaultTreeCellRenderer {
       Directory dir = ((DirectoryNode) value).getDirectory();
       boolean bSynchro = dir.getBooleanValue(FilesTreeView.XML_DIRECTORY_SYNCHRONIZED);
       if (bSynchro) { // means this device is not synchronized
-        setIcon(IconLoader.ICON_DIRECTORY_SYNCHRO);
+        setIcon(IconLoader.getIcon(JajukIcons.DIRECTORY_SYNCHRO));
       } else {
-        setIcon(IconLoader.ICON_DIRECTORY_DESYNCHRO);
+        setIcon(IconLoader.getIcon(JajukIcons.DIRECTORY_DESYNCHRO));
       }
       // collection node
     } else {
-      setIcon(IconLoader.ICON_LIST);
+      setIcon(IconLoader.getIcon(JajukIcons.LIST));
     }
     return this;
   }

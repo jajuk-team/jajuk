@@ -29,6 +29,7 @@ import org.jajuk.events.ObservationManager;
 import org.jajuk.services.players.FIFO;
 import org.jajuk.services.players.StackItem;
 import org.jajuk.util.IconLoader;
+import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilFeatures;
 import org.jajuk.util.error.JajukException;
@@ -38,7 +39,7 @@ public class FinishAlbumAction extends JajukAction {
   private static final long serialVersionUID = 1L;
 
   FinishAlbumAction() {
-    super(Messages.getString("JajukWindow.16"), IconLoader.ICON_FINISH_ALBUM, !FIFO.isStopped());
+    super(Messages.getString("JajukWindow.16"), IconLoader.getIcon(JajukIcons.FINISH_ALBUM), !FIFO.isStopped());
     setShortDescription(Messages.getString("JajukWindow.32"));
   }
 

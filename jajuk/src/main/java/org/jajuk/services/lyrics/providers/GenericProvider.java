@@ -25,8 +25,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 
-import org.jajuk.util.DownloadManager;
 import org.jajuk.util.Const;
+import org.jajuk.util.DownloadManager;
 import org.jajuk.util.log.Log;
 
 /**

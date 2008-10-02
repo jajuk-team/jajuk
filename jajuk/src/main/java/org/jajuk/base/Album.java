@@ -31,6 +31,7 @@ import java.util.regex.PatternSyntaxException;
 import javax.swing.ImageIcon;
 
 import org.jajuk.util.IconLoader;
+import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilFeatures;
 import org.jajuk.util.UtilString;
@@ -306,7 +307,7 @@ public class Album extends LogicalItem implements Comparable<Album> {
    */
   @Override
   public ImageIcon getIconRepresentation() {
-    return IconLoader.ICON_ALBUM;
+    return IconLoader.getIcon(JajukIcons.ALBUM);
   }
 
   /**
@@ -332,13 +333,13 @@ public class Album extends LogicalItem implements Comparable<Album> {
         + EXT_THUMB);
     // Check if thumb already exists
     if (!fCover.exists() || fCover.length() == 0) {
-      return IconLoader.NOCOVERSCACHE.get(size);
+      return IconLoader.getNoCoverIcon(size);
     }
     // Create the image using Toolkit and not ImageIO API to be able to
     // flush all the image data
     Image img = Toolkit.getDefaultToolkit().getImage(fCover.getAbsolutePath());
     ImageIcon icon = new ImageIcon(img);
-    // Free thumb memory (DO IT AFTER FULL ImageIcon loading, see previosu line)
+    // Free thumb memory (DO IT AFTER FULL ImageIcon loading, see previous line)
     img.flush();
     // accelerate GC cleanup
     img = null;

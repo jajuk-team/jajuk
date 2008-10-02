@@ -97,6 +97,7 @@ import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.DownloadManager;
 import org.jajuk.util.IconLoader;
+import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UpgradeManager;
 import org.jajuk.util.UtilFeatures;
@@ -283,10 +284,6 @@ public final class Main implements Const {
       // Display progress
       // sc can be null if not already loaded. Done for perfs
       sc.setProgress(10, Messages.getString("SplashScreen.1"));
-
-      // Start operations that can be done asynchronously during
-      // collection loading
-      startupAsyncBeforeCollectionLoad();
 
       // Load collection
       loadCollection();
@@ -525,16 +522,16 @@ public final class Main implements Const {
         ImageIcon ii = null;
         switch (i) {
         case 1:
-          ii = IconLoader.ICON_STAR_1;
+          ii = IconLoader.getIcon(JajukIcons.STAR_1);
           break;
         case 2:
-          ii = IconLoader.ICON_STAR_2;
+          ii = IconLoader.getIcon(JajukIcons.STAR_2);
           break;
         case 3:
-          ii = IconLoader.ICON_STAR_3;
+          ii = IconLoader.getIcon(JajukIcons.STAR_3);
           break;
         case 4:
-          ii = IconLoader.ICON_STAR_4;
+          ii = IconLoader.getIcon(JajukIcons.STAR_4);
           break;
         default:
           throw new IllegalArgumentException(
@@ -593,18 +590,6 @@ public final class Main implements Const {
     }.start();
   }
 
-  /**
-   * Asynchronous tasks executed at startup at the same time (for perf)
-   */
-  private static void startupAsyncBeforeCollectionLoad() {
-    new Thread("Startup Async Before Collection Load Thread") {
-      @Override
-      public void run() {
-        // Force loading all icons now
-        IconLoader.ICON_ACCURACY_HIGH.toString();
-      }
-    }.start();
-  }
 
   /**
    * Registers supported audio supports and default properties
@@ -734,7 +719,7 @@ public final class Main implements Const {
             // keep it modal (useful at startup)
             dialog.setModal(true);
             dialog.pack();
-            dialog.setIconImage(IconLoader.ICON_LOGO_FRAME.getImage());
+            dialog.setIconImage(IconLoader.getIcon(JajukIcons.LOGO_FRAME).getImage());
             dialog.setLocationRelativeTo(JajukWindow.getInstance());
             dialog.setVisible(true);
             if (Messages.getString("Hide").equals(optionPane.getValue())) {

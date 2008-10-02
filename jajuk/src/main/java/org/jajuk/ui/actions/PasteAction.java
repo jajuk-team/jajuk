@@ -42,6 +42,7 @@ import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.ui.helpers.ItemMoveManager;
 import org.jajuk.util.IconLoader;
+import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilGUI;
 import org.jajuk.util.UtilSystem;
@@ -53,7 +54,7 @@ public class PasteAction extends JajukAction {
   private static final long serialVersionUID = 1L;
 
   PasteAction() {
-    super(Messages.getString("ActionMove.0"), IconLoader.ICON_PASTE, "ctrl V", true, false);
+    super(Messages.getString("ActionMove.0"), IconLoader.getIcon(JajukIcons.PASTE), "ctrl V", true, false);
     setShortDescription(Messages.getString("ActionMove.0"));
   }
 

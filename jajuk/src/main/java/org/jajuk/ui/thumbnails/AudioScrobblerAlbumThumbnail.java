@@ -42,6 +42,7 @@ import org.jajuk.ui.helpers.FontManager;
 import org.jajuk.ui.helpers.FontManager.JajukFont;
 import org.jajuk.util.DownloadManager;
 import org.jajuk.util.IconLoader;
+import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilGUI;
 import org.jajuk.util.UtilString;
@@ -115,7 +116,7 @@ public class AudioScrobblerAlbumThumbnail extends AbstractThumbnail {
         JLabel jlTitle;
         if (AlbumManager.getInstance().getAlbumByName(album.getTitle()) != null) {
           // Album known in collection, display its name in bold
-          jlTitle = new JLabel(UtilString.getLimitedString(album.getTitle(), 15), IconLoader.ICON_ALBUM,
+          jlTitle = new JLabel(UtilString.getLimitedString(album.getTitle(), 15), IconLoader.getIcon(JajukIcons.ALBUM),
               JLabel.CENTER);
           jlTitle.setFont(FontManager.getInstance().getFont(JajukFont.BOLD));
         } else {

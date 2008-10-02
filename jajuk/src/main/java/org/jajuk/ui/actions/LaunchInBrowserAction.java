@@ -26,6 +26,7 @@ import java.net.URI;
 import javax.swing.JComponent;
 
 import org.jajuk.util.IconLoader;
+import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
@@ -40,7 +41,7 @@ public class LaunchInBrowserAction extends JajukAction {
 
   LaunchInBrowserAction() {
     // this action is available only under linux and windows for now
-    super(Messages.getString("LaunchInBrowserAction.0"), IconLoader.ICON_LAUNCH, (Desktop
+    super(Messages.getString("LaunchInBrowserAction.0"), IconLoader.getIcon(JajukIcons.LAUNCH), (Desktop
         .isDesktopSupported()));
     setShortDescription(Messages.getString("LaunchInBrowserAction.0"));
   }

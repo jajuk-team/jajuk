@@ -22,6 +22,7 @@ package org.jajuk.ui.actions;
 import java.awt.event.ActionEvent;
 
 import org.jajuk.util.IconLoader;
+import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UpgradeManager;
 import org.jajuk.util.error.JajukException;
@@ -31,7 +32,7 @@ public class CheckForUpdateAction extends JajukAction {
   private static final long serialVersionUID = 1L;
 
   CheckForUpdateAction() {
-    super(Messages.getString("JajukJMenuBar.27"), IconLoader.ICON_UPDATE_MANAGER, true);
+    super(Messages.getString("JajukJMenuBar.27"), IconLoader.getIcon(JajukIcons.UPDATE_MANAGER), true);
     setShortDescription(Messages.getString("JajukJMenuBar.27"));
   }
 

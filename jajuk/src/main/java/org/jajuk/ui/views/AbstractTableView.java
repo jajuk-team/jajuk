@@ -72,6 +72,7 @@ import org.jajuk.ui.widgets.JajukToggleButton;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
+import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilGUI;
 import org.jajuk.util.error.CannotRenameException;
@@ -224,7 +225,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
     // Control panel
     jpControl = new JPanel();
     jpControl.setBorder(BorderFactory.createEtchedBorder());
-    jtbEditable = new JajukToggleButton(IconLoader.ICON_EDIT);
+    jtbEditable = new JajukToggleButton(IconLoader.getIcon(JajukIcons.EDIT));
     jtbEditable.setToolTipText(Messages.getString("AbstractTableView.11"));
     jtbEditable.addActionListener(this);
     jlFilter = new JLabel(Messages.getString("AbstractTableView.0"));

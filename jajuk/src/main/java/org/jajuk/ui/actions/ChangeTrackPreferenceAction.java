@@ -29,6 +29,7 @@ import org.jajuk.events.ObservationManager;
 import org.jajuk.services.players.FIFO;
 import org.jajuk.util.Conf;
 import org.jajuk.util.IconLoader;
+import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 import org.jajuk.util.error.JajukException;
 
@@ -41,7 +42,7 @@ public class ChangeTrackPreferenceAction extends JajukAction {
   private static final long serialVersionUID = 1L;
 
   ChangeTrackPreferenceAction() {
-    super(Messages.getString("IncRateAction.0"), IconLoader.ICON_INC_RATING, true);
+    super(Messages.getString("IncRateAction.0"), IconLoader.getIcon(JajukIcons.INC_RATING), true);
     setShortDescription(Messages.getString("IncRateAction.0"));
   }
 

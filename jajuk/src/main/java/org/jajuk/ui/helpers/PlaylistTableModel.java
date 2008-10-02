@@ -34,6 +34,7 @@ import org.jajuk.services.players.StackItem;
 import org.jajuk.ui.helpers.FontManager.JajukFont;
 import org.jajuk.ui.widgets.IconLabel;
 import org.jajuk.util.IconLoader;
+import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 
 /**
@@ -228,21 +229,21 @@ public class PlaylistTableModel extends JajukTableModel {
       // Play
       if (bQueue) {
         if (bPlanned) {
-          oValues[iRow][0] = new IconLabel(IconLoader.ICON_TRACK_FIFO_PLANNED, "", null, null,
+          oValues[iRow][0] = new IconLabel(IconLoader.getIcon(JajukIcons.TRACK_FIFO_PLANNED), "", null, null,
               font, Messages.getString("AbstractPlaylistEditorView.20"));
         } else {
           if (item.isRepeat()) {
             // normal file, repeated
-            oValues[iRow][0] = new IconLabel(IconLoader.ICON_TRACK_FIFO_REPEAT, "", null, null,
+            oValues[iRow][0] = new IconLabel(IconLoader.getIcon(JajukIcons.TRACK_FIFO_REPEAT), "", null, null,
                 font, Messages.getString("AbstractPlaylistEditorView.19"));
           } else {
             // normal file, not repeated
-            oValues[iRow][0] = new IconLabel(IconLoader.ICON_TRACK_FIFO_NORM, "", null, null, font,
+            oValues[iRow][0] = new IconLabel(IconLoader.getIcon(JajukIcons.TRACK_FIFO_NORM), "", null, null, font,
                 Messages.getString("AbstractPlaylistEditorView.18"));
           }
         }
       } else {
-        oValues[iRow][0] = new IconLabel(IconLoader.ICON_TRACK_FIFO_NORM, "", null, null, font,
+        oValues[iRow][0] = new IconLabel(IconLoader.getIcon(JajukIcons.TRACK_FIFO_NORM), "", null, null, font,
             Messages.getString("AbstractPlaylistEditorView.18"));
       }
 

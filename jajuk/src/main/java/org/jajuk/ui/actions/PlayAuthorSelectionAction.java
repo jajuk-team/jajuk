@@ -28,6 +28,7 @@ import org.jajuk.base.Track;
 import org.jajuk.services.players.FIFO;
 import org.jajuk.util.Conf;
 import org.jajuk.util.IconLoader;
+import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilFeatures;
 
@@ -47,7 +48,7 @@ public class PlayAuthorSelectionAction extends SelectionAction {
   private static final long serialVersionUID = -8078402652430413821L;
 
   PlayAuthorSelectionAction() {
-    super(Messages.getString("TracksTableView.12"), IconLoader.ICON_AUTHOR, true);
+    super(Messages.getString("TracksTableView.12"), IconLoader.getIcon(JajukIcons.AUTHOR), true);
     setShortDescription(Messages.getString("TracksTableView.12"));
   }
 

@@ -23,6 +23,7 @@ import java.awt.event.ActionEvent;
 
 import org.jajuk.ui.wizard.WebRadioWizard;
 import org.jajuk.util.IconLoader;
+import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 
 /**
@@ -36,7 +37,7 @@ public class WebRadioConfigurationAction extends JajukAction {
   private static final long serialVersionUID = 1L;
 
   WebRadioConfigurationAction() {
-    super(Messages.getString("CommandJPanel.24"), IconLoader.ICON_CONFIGURATION, true);
+    super(Messages.getString("CommandJPanel.24"), IconLoader.getIcon(JajukIcons.CONFIGURATION), true);
   }
 
   @Override

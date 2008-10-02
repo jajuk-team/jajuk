@@ -30,13 +30,14 @@ import org.jajuk.ui.widgets.CommandJPanel;
 import org.jajuk.ui.widgets.JajukJMenuBar;
 import org.jajuk.util.Conf;
 import org.jajuk.util.IconLoader;
+import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 
 public class RepeatModeAction extends JajukAction {
   private static final long serialVersionUID = 1L;
 
   RepeatModeAction() {
-    super(Messages.getString("JajukJMenuBar.10"), IconLoader.ICON_REPEAT, "ctrl T", true, false);
+    super(Messages.getString("JajukJMenuBar.10"), IconLoader.getIcon(JajukIcons.REPEAT), "ctrl T", true, false);
     setShortDescription(Messages.getString("CommandJPanel.1"));
   }
 

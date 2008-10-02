@@ -45,6 +45,7 @@ import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukFileFilter;
+import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilGUI;
 import org.jajuk.util.UtilString;
@@ -337,20 +338,20 @@ public class Device extends PhysicalItem implements Const, Comparable<Device> {
   public ImageIcon getIconRepresentation() {
     switch ((int) getType()) {
     case 0:
-      return setIcon(IconLoader.ICON_DEVICE_DIRECTORY_MOUNTED_SMALL,
-          IconLoader.ICON_DEVICE_DIRECTORY_UNMOUNTED_SMALL);
+      return setIcon(IconLoader.getIcon(JajukIcons.DEVICE_DIRECTORY_MOUNTED_SMALL),
+          IconLoader.getIcon(JajukIcons.DEVICE_DIRECTORY_UNMOUNTED_SMALL));
     case 1:
-      return setIcon(IconLoader.ICON_DEVICE_CD_MOUNTED_SMALL,
-          IconLoader.ICON_DEVICE_CD_UNMOUNTED_SMALL);
+      return setIcon(IconLoader.getIcon(JajukIcons.DEVICE_CD_MOUNTED_SMALL),
+          IconLoader.getIcon(JajukIcons.DEVICE_CD_UNMOUNTED_SMALL));
     case 2:
-      return setIcon(IconLoader.ICON_DEVICE_NETWORK_DRIVE_MOUNTED_SMALL,
-          IconLoader.ICON_DEVICE_NETWORK_DRIVE_UNMOUNTED_SMALL);
+      return setIcon(IconLoader.getIcon(JajukIcons.DEVICE_NETWORK_DRIVE_MOUNTED_SMALL),
+          IconLoader.getIcon(JajukIcons.DEVICE_NETWORK_DRIVE_UNMOUNTED_SMALL));
     case 3:
-      return setIcon(IconLoader.ICON_DEVICE_EXT_DD_MOUNTED_SMALL,
-          IconLoader.ICON_DEVICE_EXT_DD_UNMOUNTED_SMALL);
+      return setIcon(IconLoader.getIcon(JajukIcons.DEVICE_EXT_DD_MOUNTED_SMALL),
+          IconLoader.getIcon(JajukIcons.DEVICE_EXT_DD_UNMOUNTED_SMALL));
     case 4:
-      return setIcon(IconLoader.ICON_DEVICE_PLAYER_MOUNTED_SMALL,
-          IconLoader.ICON_DEVICE_PLAYER_UNMOUNTED_SMALL);
+      return setIcon(IconLoader.getIcon(JajukIcons.DEVICE_PLAYER_MOUNTED_SMALL),
+          IconLoader.getIcon(JajukIcons.DEVICE_PLAYER_UNMOUNTED_SMALL));
     default:
       Log.warn("Unknown type of device detected: " + getType());
       return null;

@@ -23,6 +23,7 @@ import java.awt.event.ActionEvent;
 
 import org.jajuk.ui.wizard.HelpWindow;
 import org.jajuk.util.IconLoader;
+import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 
 /**
@@ -33,7 +34,7 @@ public class HelpRequiredAction extends JajukAction {
   private static final long serialVersionUID = 1L;
 
   HelpRequiredAction() {
-    super(Messages.getString("JajukJMenuBar.15"), IconLoader.ICON_INFO, "F1", true, false);
+    super(Messages.getString("JajukJMenuBar.15"), IconLoader.getIcon(JajukIcons.INFO), "F1", true, false);
   }
 
   @Override

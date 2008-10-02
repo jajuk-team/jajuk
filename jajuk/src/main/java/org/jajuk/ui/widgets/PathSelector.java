@@ -37,6 +37,7 @@ import javax.swing.JTextField;
 import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukFileFilter;
+import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 import org.jajuk.util.filters.DirectoryFilter;
 
@@ -143,7 +144,7 @@ public class PathSelector extends JPanel implements Const {
     }
     jtfUrl.setToolTipText(Messages.getString("Path"));
     jtfUrl.setBorder(BorderFactory.createLineBorder(Color.BLUE));
-    button = new JButton(IconLoader.ICON_OPEN_FILE);
+    button = new JButton(IconLoader.getIcon(JajukIcons.OPEN_FILE));
     button.setToolTipText(Messages.getString("Path"));
     // Add items
     add(jtfUrl, "0,0");

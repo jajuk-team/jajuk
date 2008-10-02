@@ -47,6 +47,7 @@ import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukFileFilter;
+import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilFeatures;
 import org.jajuk.util.UtilGUI;
@@ -352,7 +353,9 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
     }
 
     final Playlist plfOther = (Playlist) otherPlaylistFile;
-    return (getID().equals(plfOther.getID()) && (plfOther.getType() == type));
+     // [Perf] We can compare with an == operator here because 
+    // all ID are stored into String intern() buffer
+    return (getID() == plfOther.getID() && (plfOther.getType() == type));
   }
 
   @Override
@@ -489,7 +492,7 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
    */
   @Override
   public ImageIcon getIconRepresentation() {
-    return IconLoader.ICON_PLAYLIST_FILE;
+    return IconLoader.getIcon(JajukIcons.PLAYLIST_FILE);
   }
 
   /*

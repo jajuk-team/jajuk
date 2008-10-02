@@ -34,6 +34,7 @@ import org.jajuk.events.Event;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.util.IconLoader;
+import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilGUI;
 import org.jajuk.util.log.Log;
@@ -42,7 +43,7 @@ public class RenameAction extends JajukAction {
   private static final long serialVersionUID = 1L;
 
   RenameAction() {
-    super(Messages.getString("RenameAction.0"), IconLoader.ICON_EDIT, true);
+    super(Messages.getString("RenameAction.0"), IconLoader.getIcon(JajukIcons.EDIT), true);
     setShortDescription(Messages.getString("RenameAction.0"));
   }
 

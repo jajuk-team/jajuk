@@ -25,6 +25,7 @@ import java.util.List;
 import org.jajuk.base.File;
 import org.jajuk.services.bookmark.Bookmarks;
 import org.jajuk.util.IconLoader;
+import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilFeatures;
 
@@ -43,7 +44,7 @@ public class BookmarkSelectionAction extends SelectionAction {
   private static final long serialVersionUID = -8078402652430413821L;
 
   BookmarkSelectionAction() {
-    super(Messages.getString("TracksTableView.15"), IconLoader.ICON_BOOKMARK_FOLDERS, true);
+    super(Messages.getString("TracksTableView.15"), IconLoader.getIcon(JajukIcons.BOOKMARK_FOLDERS), true);
     setShortDescription(Messages.getString("TracksTableView.15"));
   }
 

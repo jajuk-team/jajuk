@@ -22,6 +22,7 @@ package org.jajuk.base;
 import javax.swing.ImageIcon;
 
 import org.jajuk.util.IconLoader;
+import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 
 /**
@@ -126,6 +127,6 @@ public class Author extends LogicalItem implements Comparable<Author> {
    */
   @Override
   public ImageIcon getIconRepresentation() {
-    return IconLoader.ICON_AUTHOR;
+    return IconLoader.getIcon(JajukIcons.AUTHOR);
   }
 }

@@ -43,14 +43,15 @@ import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.events.Observer;
 import org.jajuk.services.players.FIFO;
-import org.jajuk.ui.actions.JajukAction;
 import org.jajuk.ui.actions.ActionManager;
+import org.jajuk.ui.actions.JajukAction;
 import org.jajuk.ui.actions.JajukActions;
 import org.jajuk.ui.widgets.JajukHtmlPanel;
 import org.jajuk.ui.widgets.JajukJToolbar;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
+import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilFeatures;
 import org.jajuk.util.log.Log;
@@ -124,15 +125,15 @@ public class WikipediaView extends ViewAdapter implements Const, Observer,
     jbLaunchInExternalBrowser.setText(null);
     jbCopy.setText(null);
     ButtonGroup bg = new ButtonGroup();
-    jbAuthorSearch = new JToggleButton(IconLoader.ICON_AUTHOR, false);
+    jbAuthorSearch = new JToggleButton(IconLoader.getIcon(JajukIcons.AUTHOR), false);
     jbAuthorSearch.setToolTipText(Messages.getString("WikipediaView.5"));
     // Select author search (default)
     jbAuthorSearch.setSelected(true);
     jbAuthorSearch.addActionListener(this);
-    jbAlbumSearch = new JToggleButton(IconLoader.ICON_ALBUM, true);
+    jbAlbumSearch = new JToggleButton(IconLoader.getIcon(JajukIcons.ALBUM), true);
     jbAlbumSearch.setToolTipText(Messages.getString("WikipediaView.6"));
     jbAlbumSearch.addActionListener(this);
-    jbTrackSearch = new JToggleButton(IconLoader.ICON_TRACK, false);
+    jbTrackSearch = new JToggleButton(IconLoader.getIcon(JajukIcons.TRACK), false);
     jbTrackSearch.setToolTipText(Messages.getString("WikipediaView.7"));
     jbTrackSearch.addActionListener(this);
     // Group this three mutual exclusive buttons

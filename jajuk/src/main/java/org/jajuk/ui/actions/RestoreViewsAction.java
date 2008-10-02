@@ -25,6 +25,7 @@ import org.jajuk.ui.perspectives.IPerspective;
 import org.jajuk.ui.perspectives.PerspectiveManager;
 import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
+import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 import org.jajuk.util.error.JajukException;
 
@@ -33,7 +34,7 @@ public class RestoreViewsAction extends JajukAction implements Const {
   private static final long serialVersionUID = 1L;
 
   RestoreViewsAction() {
-    super(Messages.getString("JajukJMenuBar.17"), IconLoader.ICON_REFRESH, true);
+    super(Messages.getString("JajukJMenuBar.17"), IconLoader.getIcon(JajukIcons.REFRESH), true);
     setShortDescription(Messages.getString("JajukJMenuBar.17"));
   }
 

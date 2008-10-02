@@ -31,6 +31,7 @@ import org.jajuk.ui.widgets.JajukButton;
 import org.jajuk.ui.widgets.JajukJToolbar;
 import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
+import org.jajuk.util.JajukIcons;
 
 public abstract class DropDownButton extends JajukButton implements ChangeListener,
     PopupMenuListener, ActionListener, PropertyChangeListener, Const {
@@ -42,9 +43,9 @@ public abstract class DropDownButton extends JajukButton implements ChangeListen
   public DropDownButton(ImageIcon icon) {
     super(icon);
     if (icon.getIconWidth() < 20) {
-      arrowButton = new JajukButton(IconLoader.ICON_DROP_DOWN_16X16);
+      arrowButton = new JajukButton(IconLoader.getIcon(JajukIcons.DROP_DOWN_16X16));
     } else {
-      arrowButton = new JajukButton(IconLoader.ICON_DROP_DOWN_32X32);
+      arrowButton = new JajukButton(IconLoader.getIcon(JajukIcons.DROP_DOWN_32X32));
     }
     getModel().addChangeListener(this);
     arrowButton.getModel().addChangeListener(this);

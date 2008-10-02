@@ -66,6 +66,7 @@ import org.jajuk.ui.helpers.JajukTimer;
 import org.jajuk.ui.helpers.FontManager.JajukFont;
 import org.jajuk.util.Conf;
 import org.jajuk.util.IconLoader;
+import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilSystem;
 import org.jajuk.util.log.Log;
@@ -217,12 +218,12 @@ public class JajukSystray extends CommandJPanel {
     populateAmbiences();
     // Volume menu
     JMenu jmVolume = new JMenu(Messages.getString("JajukWindow.33"));
-    jmVolume.setIcon(IconLoader.ICON_VOLUME);
+    jmVolume.setIcon(IconLoader.getIcon(JajukIcons.VOLUME));
     jmVolume.add(jsVolume);
 
     // Position menu
     JMenu jmPosition = new JMenu(Messages.getString("JajukWindow.34"));
-    jmPosition.setIcon(IconLoader.ICON_POSITION);
+    jmPosition.setIcon(IconLoader.getIcon(JajukIcons.POSITION));
     jmPosition.add(jsPosition);
 
     // Add a title. Important: do not add a JLabel, it present action event
@@ -253,7 +254,7 @@ public class JajukSystray extends CommandJPanel {
     jmenu.addSeparator();
     jmenu.add(jmiExit);
   
-    trayIcon = new JXTrayIcon(IconLoader.ICON_TRAY.getImage());
+    trayIcon = new JXTrayIcon(IconLoader.getIcon(JajukIcons.TRAY).getImage());
     if (UtilSystem.isUnderWindows()) {
       // auto-resize looks OK under Windows but is ugly under Linux/KDE
       trayIcon.setImageAutoSize(true);

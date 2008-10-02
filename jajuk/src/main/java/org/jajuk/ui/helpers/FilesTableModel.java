@@ -35,8 +35,8 @@ import org.jajuk.base.TrackManager;
 import org.jajuk.base.Type;
 import org.jajuk.ui.widgets.IconLabel;
 import org.jajuk.util.Conf;
-import org.jajuk.util.Filter;
 import org.jajuk.util.Const;
+import org.jajuk.util.Filter;
 import org.jajuk.util.Messages;
 
 /**

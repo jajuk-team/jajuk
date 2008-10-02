@@ -30,6 +30,7 @@ import org.jajuk.services.dj.DigitalDJManager;
 import org.jajuk.services.players.FIFO;
 import org.jajuk.util.Conf;
 import org.jajuk.util.IconLoader;
+import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilFeatures;
 import org.jajuk.util.UtilGUI;
@@ -40,7 +41,7 @@ public class DJAction extends JajukAction {
   private static final long serialVersionUID = 1L;
 
   DJAction() {
-    super(Messages.getString("CommandJPanel.16"), IconLoader.ICON_DIGITAL_DJ, true);
+    super(Messages.getString("CommandJPanel.16"), IconLoader.getIcon(JajukIcons.DIGITAL_DJ), true);
   }
 
   @Override

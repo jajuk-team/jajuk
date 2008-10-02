@@ -24,6 +24,7 @@ import java.awt.event.ActionEvent;
 import org.jajuk.ui.perspectives.ConfigurationPerspective;
 import org.jajuk.ui.perspectives.PerspectiveManager;
 import org.jajuk.util.IconLoader;
+import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 
 /**
@@ -34,7 +35,7 @@ public class ConfigurationRequiredAction extends JajukAction {
   private static final long serialVersionUID = 1L;
 
   ConfigurationRequiredAction() {
-    super(Messages.getString("JajukJMenuBar.22"), IconLoader.ICON_CONFIGURATION, true);
+    super(Messages.getString("JajukJMenuBar.22"), IconLoader.getIcon(JajukIcons.CONFIGURATION), true);
   }
 
   @Override

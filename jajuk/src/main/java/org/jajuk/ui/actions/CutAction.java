@@ -27,6 +27,7 @@ import javax.swing.JComponent;
 import org.jajuk.base.Item;
 import org.jajuk.ui.helpers.ItemMoveManager;
 import org.jajuk.util.IconLoader;
+import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 
 /**
@@ -38,7 +39,7 @@ public class CutAction extends JajukAction {
   private static final long serialVersionUID = 1L;
 
   CutAction() {
-    super(Messages.getString("FilesTreeView.4"), IconLoader.ICON_CUT, "ctrl X", true, false);
+    super(Messages.getString("FilesTreeView.4"), IconLoader.getIcon(JajukIcons.CUT), "ctrl X", true, false);
     setShortDescription(Messages.getString("FilesTreeView.4"));
   }
 

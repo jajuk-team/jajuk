@@ -26,6 +26,7 @@ import org.jajuk.base.File;
 import org.jajuk.services.players.FIFO;
 import org.jajuk.util.Conf;
 import org.jajuk.util.IconLoader;
+import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilFeatures;
 
@@ -44,7 +45,7 @@ public class PlaySelectionAction extends SelectionAction {
   private static final long serialVersionUID = -8078402652430413821L;
 
   PlaySelectionAction() {
-    super(Messages.getString("TracksTableView.7"), IconLoader.ICON_PLAY_16X16, true);
+    super(Messages.getString("TracksTableView.7"), IconLoader.getIcon(JajukIcons.PLAY_16X16), true);
     setShortDescription(Messages.getString("TracksTableView.7"));
   }
 

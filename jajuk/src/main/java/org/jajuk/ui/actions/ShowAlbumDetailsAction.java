@@ -28,6 +28,7 @@ import org.jajuk.base.Album;
 import org.jajuk.ui.thumbnails.LocalAlbumThumbnail;
 import org.jajuk.ui.thumbnails.ThumbnailPopup;
 import org.jajuk.util.IconLoader;
+import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 
 /**
@@ -44,7 +45,7 @@ public class ShowAlbumDetailsAction extends JajukAction {
   private static final long serialVersionUID = -8078402652430413821L;
 
   ShowAlbumDetailsAction() {
-    super(Messages.getString("CatalogView.20"), IconLoader.ICON_POPUP, true);
+    super(Messages.getString("CatalogView.20"), IconLoader.getIcon(JajukIcons.POPUP), true);
     setShortDescription(Messages.getString("CatalogView.20"));
   }
 

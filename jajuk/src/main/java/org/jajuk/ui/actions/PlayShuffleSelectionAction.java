@@ -27,6 +27,7 @@ import org.jajuk.base.File;
 import org.jajuk.services.players.FIFO;
 import org.jajuk.util.Conf;
 import org.jajuk.util.IconLoader;
+import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilFeatures;
 import org.jajuk.util.UtilSystem;
@@ -46,7 +47,7 @@ public class PlayShuffleSelectionAction extends SelectionAction {
   private static final long serialVersionUID = -8078402652430413821L;
 
   PlayShuffleSelectionAction() {
-    super(Messages.getString("TracksTableView.9"), IconLoader.ICON_SHUFFLE, true);
+    super(Messages.getString("TracksTableView.9"), IconLoader.getIcon(JajukIcons.SHUFFLE), true);
     setShortDescription(Messages.getString("TracksTableView.9"));
   }
 

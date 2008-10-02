@@ -24,6 +24,7 @@ import javax.swing.JDialog;
 
 import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
+import org.jajuk.util.JajukIcons;
 
 /**
  * Custom JDialog
@@ -35,7 +36,7 @@ public class JajukJDialog extends JDialog implements Const {
   public JajukJDialog() {
     // Show jajuk logo as default icon (it is useful for 1.6 as we
     // can't use the 1.6 JDialog.setIcon for now as long as we support 1.5)
-    ((java.awt.Frame) getOwner()).setIconImage(IconLoader.ICON_LOGO_FRAME.getImage());
+    ((java.awt.Frame) getOwner()).setIconImage(IconLoader.getIcon(JajukIcons.LOGO_FRAME).getImage());
   }
 
 }

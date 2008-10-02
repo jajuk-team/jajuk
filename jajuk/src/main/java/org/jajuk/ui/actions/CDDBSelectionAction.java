@@ -31,6 +31,7 @@ import org.jajuk.base.TrackComparator;
 import org.jajuk.base.TrackManager;
 import org.jajuk.ui.wizard.CDDBWizard;
 import org.jajuk.util.IconLoader;
+import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 
 /**
@@ -48,7 +49,7 @@ public class CDDBSelectionAction extends SelectionAction {
   private static final long serialVersionUID = -8078402652430413821L;
 
   CDDBSelectionAction() {
-    super(Messages.getString("TracksTreeView.34"), IconLoader.ICON_CDDB, true);
+    super(Messages.getString("TracksTreeView.34"), IconLoader.getIcon(JajukIcons.CDDB), true);
     setShortDescription(Messages.getString("TracksTreeView.34"));
   }
 

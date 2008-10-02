@@ -37,6 +37,7 @@ import org.jajuk.ui.helpers.FontManager;
 import org.jajuk.ui.helpers.FontManager.JajukFont;
 import org.jajuk.ui.widgets.JajukWindow;
 import org.jajuk.util.IconLoader;
+import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilString;
 import org.jajuk.util.log.Log;
@@ -45,7 +46,7 @@ public class DebugLogAction extends JajukAction {
   private static final long serialVersionUID = 1L;
 
   DebugLogAction() {
-    super(Messages.getString("JajukJMenuBar.23"), IconLoader.ICON_TRACES, true);
+    super(Messages.getString("JajukJMenuBar.23"), IconLoader.getIcon(JajukIcons.TRACES), true);
     setShortDescription(Messages.getString("JajukJMenuBar.23"));
   }
 

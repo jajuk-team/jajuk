@@ -23,6 +23,7 @@ import java.awt.event.ActionEvent;
 
 import org.jajuk.services.players.Player;
 import org.jajuk.util.IconLoader;
+import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 
 /**
@@ -36,7 +37,7 @@ public class ForwardTrackAction extends JajukAction {
   private static final float JUMP_SIZE = 0.1f;
 
   ForwardTrackAction() {
-    super(IconLoader.ICON_FWD, "alt F10", false, true);
+    super(IconLoader.getIcon(JajukIcons.FWD), "alt F10", false, true);
     setShortDescription(Messages.getString("CommandJPanel.13"));
   }
 

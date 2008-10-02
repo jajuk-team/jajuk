@@ -74,10 +74,11 @@ import org.jajuk.ui.widgets.JajukFileChooser;
 import org.jajuk.ui.widgets.JajukJToolbar;
 import org.jajuk.ui.widgets.JajukWindow;
 import org.jajuk.util.Conf;
-import org.jajuk.util.DownloadManager;
 import org.jajuk.util.Const;
+import org.jajuk.util.DownloadManager;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukFileFilter;
+import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilFeatures;
 import org.jajuk.util.UtilGUI;
@@ -719,24 +720,24 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
     jpControl = new JPanel();
     jpControl.setBorder(BorderFactory.createEtchedBorder());
     final JToolBar jtb = new JajukJToolbar();
-    jbPrevious = new JajukButton(IconLoader.ICON_PREVIOUS);
+    jbPrevious = new JajukButton(IconLoader.getIcon(JajukIcons.PREVIOUS));
     jbPrevious.addActionListener(this);
     jbPrevious.setToolTipText(Messages.getString("CoverView.4"));
-    jbNext = new JajukButton(IconLoader.ICON_NEXT);
+    jbNext = new JajukButton(IconLoader.getIcon(JajukIcons.NEXT));
     jbNext.addActionListener(this);
     jbNext.setToolTipText(Messages.getString("CoverView.5"));
-    jbDelete = new JajukButton(IconLoader.ICON_DELETE);
+    jbDelete = new JajukButton(IconLoader.getIcon(JajukIcons.DELETE));
     jbDelete.addActionListener(this);
     jbDelete.setToolTipText(Messages.getString("CoverView.2"));
-    jbSave = new JajukButton(IconLoader.ICON_SAVE);
+    jbSave = new JajukButton(IconLoader.getIcon(JajukIcons.SAVE));
     jbSave.addActionListener(this);
     jbSave.setToolTipText(Messages.getString("CoverView.6"));
-    jbDefault = new JajukButton(IconLoader.ICON_DEFAULT_COVER);
+    jbDefault = new JajukButton(IconLoader.getIcon(JajukIcons.DEFAULT_COVER));
     jbDefault.addActionListener(this);
     jbDefault.setToolTipText(Messages.getString("CoverView.8"));
     jlSize = new JLabel("");
     jlFound = new JLabel("");
-    jlSearching = new JLabel("", IconLoader.ICON_NET_SEARCH, SwingConstants.CENTER);
+    jlSearching = new JLabel("", IconLoader.getIcon(JajukIcons.NET_SEARCH), SwingConstants.CENTER);
     jcbAccuracy = new JComboBox();
     // Add tooltips on combo items
     jcbAccuracy.setRenderer(new BasicComboBoxRenderer() {
@@ -773,12 +774,12 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
     jcbAccuracy.setMinimumSize(new Dimension(20, 0));
     jcbAccuracy.setToolTipText(Messages.getString("ParameterView.155"));
 
-    jcbAccuracy.addItem(IconLoader.ICON_ACCURACY_LOW);
-    jcbAccuracy.addItem(IconLoader.ICON_ACCURACY_MEDIUM);
-    jcbAccuracy.addItem(IconLoader.ICON_ACCURACY_HIGH);
-    jcbAccuracy.addItem(IconLoader.ICON_AUTHOR);
-    jcbAccuracy.addItem(IconLoader.ICON_ALBUM);
-    jcbAccuracy.addItem(IconLoader.ICON_TRACK);
+    jcbAccuracy.addItem(IconLoader.getIcon(JajukIcons.ACCURACY_LOW));
+    jcbAccuracy.addItem(IconLoader.getIcon(JajukIcons.ACCURACY_MEDIUM));
+    jcbAccuracy.addItem(IconLoader.getIcon(JajukIcons.ACCURACY_HIGH));
+    jcbAccuracy.addItem(IconLoader.getIcon(JajukIcons.AUTHOR));
+    jcbAccuracy.addItem(IconLoader.getIcon(JajukIcons.ALBUM));
+    jcbAccuracy.addItem(IconLoader.getIcon(JajukIcons.TRACK));
     int i = 1; // medium accuracy
     try {
       i = Conf.getInt(Const.CONF_COVERS_ACCURACY + "_"
@@ -966,7 +967,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
     SwingUtilities.invokeLater(new Runnable() {
       public void run() {
         if (bSearching) {
-          jlSearching.setIcon(IconLoader.ICON_NET_SEARCH);
+          jlSearching.setIcon(IconLoader.getIcon(JajukIcons.NET_SEARCH));
         } else {
           jlSearching.setIcon(null);
         }

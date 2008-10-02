@@ -33,6 +33,7 @@ import javax.swing.SwingUtilities;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
+import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 import org.jajuk.util.log.Log;
 
@@ -61,7 +62,7 @@ public class HelpWindow extends JFrame implements Const {
         initUI();
         setLocationByPlatform(true);
         setSize(new Dimension(800, 600));
-        setIconImage(IconLoader.ICON_LOGO.getImage());
+        setIconImage(IconLoader.getIcon(JajukIcons.LOGO).getImage());
         setVisible(true);
       }
 

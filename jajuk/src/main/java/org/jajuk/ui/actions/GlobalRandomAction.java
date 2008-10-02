@@ -29,6 +29,7 @@ import org.jajuk.services.dj.AmbienceManager;
 import org.jajuk.services.players.FIFO;
 import org.jajuk.util.Conf;
 import org.jajuk.util.IconLoader;
+import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilFeatures;
 import org.jajuk.util.error.JajukException;
@@ -38,7 +39,7 @@ public class GlobalRandomAction extends JajukAction {
   private static final long serialVersionUID = 1L;
 
   GlobalRandomAction() {
-    super(Messages.getString("JajukWindow.6"), IconLoader.ICON_SHUFFLE_GLOBAL, true);
+    super(Messages.getString("JajukWindow.6"), IconLoader.getIcon(JajukIcons.SHUFFLE_GLOBAL), true);
     String sTooltip = Messages.getString("JajukWindow.23");
     Ambience ambience = AmbienceManager.getInstance().getAmbience(
         Conf.getString(CONF_DEFAULT_AMBIENCE));

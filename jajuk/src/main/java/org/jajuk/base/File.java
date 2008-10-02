@@ -29,6 +29,7 @@ import org.jajuk.ui.thumbnails.ThumbnailManager;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
+import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilString;
 import org.jajuk.util.UtilSystem;
@@ -378,7 +379,7 @@ public class File extends PhysicalItem implements Comparable<File>, Const {
       }
     }
     if (iconUrl == null) {
-      icon = IconLoader.ICON_TYPE_WAV;
+      icon = IconLoader.getIcon(JajukIcons.TYPE_WAV);
     } else {
       icon = new ImageIcon(iconUrl);
     }

@@ -27,8 +27,8 @@ import java.net.URL;
 
 import javax.swing.ImageIcon;
 
-import org.jajuk.util.DownloadManager;
 import org.jajuk.util.Const;
+import org.jajuk.util.DownloadManager;
 import org.jajuk.util.UtilFeatures;
 import org.jajuk.util.UtilGUI;
 import org.jajuk.util.UtilSystem;

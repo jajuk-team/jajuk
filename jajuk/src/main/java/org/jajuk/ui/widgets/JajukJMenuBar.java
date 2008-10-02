@@ -71,6 +71,7 @@ import org.jajuk.ui.views.ViewFactory;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
+import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UpgradeManager;
 import org.jajuk.util.UtilSystem;
@@ -200,7 +201,7 @@ public final class JajukJMenuBar extends JMenuBar implements Const, Observer {
     for (final Class<? extends IView> view : ViewFactory.getKnownViews()) {
       JMenuItem jmi = null;
       try {
-        jmi = new JMenuItem(view.newInstance().getDesc(), IconLoader.ICON_LOGO_FRAME);
+        jmi = new JMenuItem(view.newInstance().getDesc(), IconLoader.getIcon(JajukIcons.LOGO_FRAME));
       } catch (Exception e1) {
         Log.error(e1);
         continue;
@@ -258,7 +259,7 @@ public final class JajukJMenuBar extends JMenuBar implements Const, Observer {
     jmialarmClock = new JMenuItem(ActionManager.getAction(JajukActions.ALARM_CLOCK));
     jmReminders = new JMenu(Messages.getString("AlarmClock.1"));
     for (final Alarm alarm : AlarmManager.getInstance().getAllAlarms()) {
-      JMenuItem jma = new JMenuItem(alarm.getAlarmTime(), IconLoader.ICON_ALARM);
+      JMenuItem jma = new JMenuItem(alarm.getAlarmTime(), IconLoader.getIcon(JajukIcons.ALARM));
       jmReminders.add(jma);
       jmReminders.addSeparator();
     }
@@ -271,10 +272,10 @@ public final class JajukJMenuBar extends JMenuBar implements Const, Observer {
     configuration = new JMenu(Messages.getString("JajukJMenuBar.21"));
     jmiDJ = new JMenuItem(ActionManager.getAction(CONFIGURE_DJS));
     // Overwrite default icon
-    jmiDJ.setIcon(IconLoader.ICON_DIGITAL_DJ_16X16);
+    jmiDJ.setIcon(IconLoader.getIcon(JajukIcons.DIGITAL_DJ_16X16));
     jmiAmbience = new JMenuItem(ActionManager.getAction(CONFIGURE_AMBIENCES));
     jmiWebradios = new JMenuItem(ActionManager.getAction(JajukActions.CONFIGURE_WEBRADIOS));
-    jmiWebradios.setIcon(IconLoader.ICON_WEBRADIO_16X16);
+    jmiWebradios.setIcon(IconLoader.getIcon(JajukIcons.WEBRADIO_16X16));
     jmiWizard = new JMenuItem(ActionManager.getAction(SIMPLE_DEVICE_WIZARD));
     jmiOptions = new JMenuItem(ActionManager.getAction(OPTIONS));
 
@@ -366,7 +367,7 @@ public final class JajukJMenuBar extends JMenuBar implements Const, Observer {
       public void finished() {
         // add the new release label if required
         if (UpgradeManager.getNewVersionName() != null) {
-          jlUpdate = new JLabel(" ", IconLoader.ICON_UPDATE_MANAGER, JLabel.RIGHT);
+          jlUpdate = new JLabel(" ", IconLoader.getIcon(JajukIcons.UPDATE_MANAGER), JLabel.RIGHT);
           String newRelease = UpgradeManager.getNewVersionName();
           if (newRelease != null) {
             jlUpdate.setToolTipText(Messages.getString("UpdateManager.0") + newRelease
@@ -404,7 +405,7 @@ public final class JajukJMenuBar extends JMenuBar implements Const, Observer {
         jmReminders.add(Messages.getString("AlarmClock.2"));
       } else {
         for (final Alarm alarm : AlarmManager.getInstance().getAllAlarms()) {
-          JMenuItem jma = new JMenuItem(alarm.getAlarmText(), IconLoader.ICON_ALARM);
+          JMenuItem jma = new JMenuItem(alarm.getAlarmText(), IconLoader.getIcon(JajukIcons.ALARM));
           jma.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
               int iResu = Messages.getChoice(Messages.getString("Confirmation_alarm_stop"),

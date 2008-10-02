@@ -24,6 +24,7 @@ import java.awt.event.ActionEvent;
 import org.jajuk.ui.widgets.JajukWindow;
 import org.jajuk.ui.wizard.SimpleDeviceWizard;
 import org.jajuk.util.IconLoader;
+import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 
 /**
@@ -34,7 +35,7 @@ public class SimpleDeviceWizardAction extends JajukAction {
   private static final long serialVersionUID = 1L;
 
   SimpleDeviceWizardAction() {
-    super(Messages.getString("JajukJMenuBar.18"), IconLoader.ICON_WIZARD, true);
+    super(Messages.getString("JajukJMenuBar.18"), IconLoader.getIcon(JajukIcons.WIZARD), true);
   }
 
   /**

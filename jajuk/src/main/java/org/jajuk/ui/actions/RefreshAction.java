@@ -29,6 +29,7 @@ import org.jajuk.base.Device;
 import org.jajuk.base.Directory;
 import org.jajuk.base.Item;
 import org.jajuk.util.IconLoader;
+import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 
 public class RefreshAction extends JajukAction {
@@ -38,7 +39,7 @@ public class RefreshAction extends JajukAction {
   private static final long serialVersionUID = 1L;
 
   RefreshAction() {
-    super(Messages.getString("ActionRefresh.0"), IconLoader.ICON_REFRESH, true);
+    super(Messages.getString("ActionRefresh.0"), IconLoader.getIcon(JajukIcons.REFRESH), true);
     setShortDescription(Messages.getString("ActionRefresh.0"));
   }
 

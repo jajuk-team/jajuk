@@ -31,6 +31,7 @@ import org.jajuk.services.players.Player;
 import org.jajuk.services.webradio.WebRadio;
 import org.jajuk.services.webradio.WebRadioManager;
 import org.jajuk.util.IconLoader;
+import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 import org.jajuk.util.log.Log;
 
@@ -43,7 +44,7 @@ public class PreviousTrackAction extends JajukAction {
   private static final long serialVersionUID = 1L;
 
   PreviousTrackAction() {
-    super(Messages.getString("JajukWindow.13"), IconLoader.ICON_PLAYER_PREVIOUS, "F9", false, true);
+    super(Messages.getString("JajukWindow.13"), IconLoader.getIcon(JajukIcons.PLAYER_PREVIOUS), "F9", false, true);
     setShortDescription(Messages.getString("JajukWindow.29"));
   }
 

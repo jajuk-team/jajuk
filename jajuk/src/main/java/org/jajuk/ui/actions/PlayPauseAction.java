@@ -24,6 +24,7 @@ import java.awt.event.ActionEvent;
 import org.jajuk.services.players.FIFO;
 import org.jajuk.services.players.Player;
 import org.jajuk.util.IconLoader;
+import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 
 public class PlayPauseAction extends JajukAction {
@@ -31,7 +32,7 @@ public class PlayPauseAction extends JajukAction {
   private static final long serialVersionUID = 1L;
 
   PlayPauseAction() {
-    super(Messages.getString("JajukWindow.10"), IconLoader.ICON_PAUSE, "ctrl P", false, true);
+    super(Messages.getString("JajukWindow.10"), IconLoader.getIcon(JajukIcons.PAUSE), "ctrl P", false, true);
     setShortDescription(Messages.getString("JajukWindow.26"));
   }
 
@@ -40,16 +41,16 @@ public class PlayPauseAction extends JajukAction {
     if (FIFO.isStopped()) {
       FIFO.goTo(0);
       // ObservationManager.notify(new Event(JajukEvents.PLAYER_RESUME));
-      setIcon(IconLoader.ICON_PAUSE);
+      setIcon(IconLoader.getIcon(JajukIcons.PAUSE));
       setName(Messages.getString("JajukWindow.12"));
     } else if (Player.isPaused()) { // player was paused, resume it
       Player.resume();
-      setIcon(IconLoader.ICON_PAUSE);
+      setIcon(IconLoader.getIcon(JajukIcons.PAUSE));
       setName(Messages.getString("JajukWindow.10"));
     } else { // player is not paused, pause it
       Player.pause();
       // notify of this event
-      setIcon(IconLoader.ICON_PLAY);
+      setIcon(IconLoader.getIcon(JajukIcons.PLAY));
       setName(Messages.getString("JajukWindow.12"));
     }
   }

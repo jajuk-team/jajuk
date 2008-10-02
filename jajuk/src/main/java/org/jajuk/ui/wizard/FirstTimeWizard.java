@@ -50,6 +50,7 @@ import org.jajuk.ui.widgets.ToggleLink;
 import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukFileFilter;
+import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilGUI;
 import org.jajuk.util.filters.DirectoryFilter;
@@ -208,7 +209,7 @@ public class FirstTimeWizard extends JFrame implements Const, ActionListener {
     jpRightPanel = new JPanel();
     jlWelcome = new JLabel(Messages.getString("FirstTimeWizard.1"));
     jlFileSelection = new JLabel(Messages.getString("FirstTimeWizard.2"));
-    jbFileSelection = new JButton(IconLoader.ICON_OPEN_DIR);
+    jbFileSelection = new JButton(IconLoader.getIcon(JajukIcons.OPEN_DIR));
     jbFileSelection.addActionListener(this);
     final JLabel jlWorkspace = new JLabel(Messages.getString("FirstTimeWizard.7"));
     jlWorkspace.setToolTipText(Messages.getString("FirstTimeWizard.7"));

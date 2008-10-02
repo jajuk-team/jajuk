@@ -31,6 +31,7 @@ import org.jajuk.base.Track;
 import org.jajuk.base.TrackManager;
 import org.jajuk.ui.wizard.PropertiesWizard;
 import org.jajuk.util.IconLoader;
+import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 
 /**
@@ -49,7 +50,7 @@ public class ShowPropertiesAction extends SelectionAction {
   private static final long serialVersionUID = -8078402652430413821L;
 
   ShowPropertiesAction() {
-    super(Messages.getString("TracksTableView.14"), IconLoader.ICON_PROPERTIES, true);
+    super(Messages.getString("TracksTableView.14"), IconLoader.getIcon(JajukIcons.PROPERTIES), true);
     setShortDescription(Messages.getString("ShowPropertiesAction.0"));
     setAcceleratorKey("alt ENTER");
   }

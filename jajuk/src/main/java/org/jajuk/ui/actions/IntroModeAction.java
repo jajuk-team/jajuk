@@ -25,13 +25,14 @@ import org.jajuk.ui.widgets.CommandJPanel;
 import org.jajuk.ui.widgets.JajukJMenuBar;
 import org.jajuk.util.Conf;
 import org.jajuk.util.IconLoader;
+import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 
 public class IntroModeAction extends JajukAction {
   private static final long serialVersionUID = 1L;
 
   IntroModeAction() {
-    super(Messages.getString("JajukJMenuBar.13"), IconLoader.ICON_INTRO, true);
+    super(Messages.getString("JajukJMenuBar.13"), IconLoader.getIcon(JajukIcons.INTRO), true);
     setShortDescription(Messages.getString("CommandJPanel.4"));
   }
 

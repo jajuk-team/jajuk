@@ -31,6 +31,7 @@ import org.jajuk.ui.widgets.JajukSystray;
 import org.jajuk.ui.widgets.JajukWindow;
 import org.jajuk.util.Conf;
 import org.jajuk.util.IconLoader;
+import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 import org.jajuk.util.log.Log;
 
@@ -41,7 +42,7 @@ public class ExitAction extends JajukAction {
   private static final long serialVersionUID = 1L;
 
   ExitAction() {
-    super(Messages.getString("JajukWindow.4"), IconLoader.ICON_EXIT, "alt X", true, false);
+    super(Messages.getString("JajukWindow.4"), IconLoader.getIcon(JajukIcons.EXIT), "alt X", true, false);
     setShortDescription(Messages.getString("JajukWindow.21"));
   }
 

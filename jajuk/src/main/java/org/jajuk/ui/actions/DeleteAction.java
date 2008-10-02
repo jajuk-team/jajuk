@@ -45,6 +45,7 @@ import org.jajuk.events.ObservationManager;
 import org.jajuk.ui.widgets.InformationJPanel;
 import org.jajuk.util.Conf;
 import org.jajuk.util.IconLoader;
+import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilGUI;
 import org.jajuk.util.UtilSystem;
@@ -54,7 +55,7 @@ public class DeleteAction extends JajukAction {
   private static final long serialVersionUID = 1L;
 
   DeleteAction() {
-    super(Messages.getString("FilesTreeView.7"), IconLoader.ICON_DELETE, KeyStroke
+    super(Messages.getString("FilesTreeView.7"), IconLoader.getIcon(JajukIcons.DELETE), KeyStroke
         .getKeyStroke("DELETE"), true, false);
     setShortDescription(Messages.getString("FilesTreeView.7"));
   }

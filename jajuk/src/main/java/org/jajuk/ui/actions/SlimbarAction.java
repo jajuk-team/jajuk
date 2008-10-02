@@ -28,6 +28,7 @@ import org.jajuk.events.ObservationManager;
 import org.jajuk.ui.widgets.JajukSlimbar;
 import org.jajuk.ui.widgets.JajukWindow;
 import org.jajuk.util.IconLoader;
+import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 
 /**
@@ -38,7 +39,7 @@ public class SlimbarAction extends JajukAction {
   private static final long serialVersionUID = 1L;
 
   SlimbarAction() {
-    super(Messages.getString("JajukSlimWindow.0"), IconLoader.ICON_FULL_WINDOW, true);
+    super(Messages.getString("JajukSlimWindow.0"), IconLoader.getIcon(JajukIcons.FULL_WINDOW), true);
     setShortDescription(Messages.getString("JajukSlimWindow.0"));
   }
 

@@ -34,6 +34,7 @@ import org.jajuk.events.Event;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.util.IconLoader;
+import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 import org.jajuk.util.log.Log;
 
@@ -41,7 +42,7 @@ public class NewFolderAction extends JajukAction {
   private static final long serialVersionUID = 1L;
 
   NewFolderAction() {
-    super(Messages.getString("NewFolderAction.0"), IconLoader.ICON_DIRECTORY_SYNCHRO, true);
+    super(Messages.getString("NewFolderAction.0"), IconLoader.getIcon(JajukIcons.DIRECTORY_SYNCHRO), true);
     setShortDescription(Messages.getString("NewFolderAction.0"));
   }
 

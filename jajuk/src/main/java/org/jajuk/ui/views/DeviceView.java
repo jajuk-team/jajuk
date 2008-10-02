@@ -54,6 +54,7 @@ import org.jajuk.events.Observer;
 import org.jajuk.ui.wizard.DeviceWizard;
 import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
+import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilGUI;
 
@@ -112,38 +113,38 @@ public class DeviceView extends ViewAdapter implements IView, Const, ActionListe
     // Popup menus
     jpmenu = new JPopupMenu();
 
-    jmiMount = new JMenuItem(Messages.getString("DeviceView.8"), IconLoader.ICON_MOUNT);
+    jmiMount = new JMenuItem(Messages.getString("DeviceView.8"), IconLoader.getIcon(JajukIcons.MOUNT));
     jmiMount.addActionListener(this);
     jmiMount.setActionCommand(JajukEvents.DEVICE_MOUNT.toString());
     jpmenu.add(jmiMount);
 
-    jmiUnmount = new JMenuItem(Messages.getString("DeviceView.9"), IconLoader.ICON_UNMOUNT);
+    jmiUnmount = new JMenuItem(Messages.getString("DeviceView.9"), IconLoader.getIcon(JajukIcons.UNMOUNT));
     jmiUnmount.addActionListener(this);
     jmiUnmount.setActionCommand(JajukEvents.DEVICE_UNMOUNT.toString());
     jpmenu.add(jmiUnmount);
 
-    jmiRefresh = new JMenuItem(Messages.getString("DeviceView.11"), IconLoader.ICON_REFRESH);
+    jmiRefresh = new JMenuItem(Messages.getString("DeviceView.11"), IconLoader.getIcon(JajukIcons.REFRESH));
     jmiRefresh.addActionListener(this);
     jmiRefresh.setActionCommand(JajukEvents.DEVICE_REFRESH.toString());
     jpmenu.add(jmiRefresh);
 
-    jmiTest = new JMenuItem(Messages.getString("DeviceView.10"), IconLoader.ICON_TEST);
+    jmiTest = new JMenuItem(Messages.getString("DeviceView.10"), IconLoader.getIcon(JajukIcons.TEST));
     jmiTest.addActionListener(this);
     jmiTest.setActionCommand(JajukEvents.DEVICE_TEST.toString());
     jpmenu.add(jmiTest);
 
-    jmiSynchronize = new JMenuItem(Messages.getString("DeviceView.12"), IconLoader.ICON_SYNCHRO);
+    jmiSynchronize = new JMenuItem(Messages.getString("DeviceView.12"), IconLoader.getIcon(JajukIcons.SYNCHRO));
     jmiSynchronize.addActionListener(this);
     jmiSynchronize.setActionCommand(JajukEvents.DEVICE_SYNCHRO.toString());
     jpmenu.add(jmiSynchronize);
 
-    jmiDelete = new JMenuItem(Messages.getString("DeviceView.13"), IconLoader.ICON_DELETE);
+    jmiDelete = new JMenuItem(Messages.getString("DeviceView.13"), IconLoader.getIcon(JajukIcons.DELETE));
     jmiDelete.addActionListener(this);
     jmiDelete.setActionCommand(JajukEvents.DEVICE_DELETE.toString());
     jpmenu.add(jmiDelete);
 
     jmiProperties = new JMenuItem(Messages.getString("DeviceView.14"),
-        IconLoader.ICON_CONFIGURATION);
+        IconLoader.getIcon(JajukIcons.CONFIGURATION));
     jmiProperties.addActionListener(this);
     jmiProperties.setActionCommand(JajukEvents.DEVICE_PROPERTIES.toString());
     jpmenu.add(jmiProperties);
@@ -175,7 +176,7 @@ public class DeviceView extends ViewAdapter implements IView, Const, ActionListe
         jpDevices.removeAll();
       }
       // New device
-      DeviceItem diNew = new DeviceItem(IconLoader.ICON_DEVICE_NEW, Messages
+      DeviceItem diNew = new DeviceItem(IconLoader.getIcon(JajukIcons.DEVICE_NEW), Messages
           .getString("DeviceView.17"), null);
       diNew.setToolTipText(Messages.getString("DeviceView.18"));
       jpDevices.add(diNew);
@@ -192,47 +193,47 @@ public class DeviceView extends ViewAdapter implements IView, Const, ActionListe
       Iterator<Device> it = DeviceManager.getInstance().getDevices().iterator();
       while (it.hasNext()) {
         final Device device = it.next();
-        ImageIcon icon = IconLoader.ICON_DEVICE_DIRECTORY_MOUNTED;
+        ImageIcon icon = IconLoader.getIcon(JajukIcons.DEVICE_DIRECTORY_MOUNTED);
         String sTooltip = "";
         switch ((int) device.getType()) {
         case 0:
           sTooltip = Messages.getString("Device_type.directory");
           if (device.isMounted()) {
-            icon = IconLoader.ICON_DEVICE_DIRECTORY_MOUNTED;
+            icon = IconLoader.getIcon(JajukIcons.DEVICE_DIRECTORY_MOUNTED);
           } else {
-            icon = IconLoader.ICON_DEVICE_DIRECTORY_UNMOUNTED;
+            icon = IconLoader.getIcon(JajukIcons.DEVICE_DIRECTORY_UNMOUNTED);
           }
           break;
         case 1:
           sTooltip = Messages.getString("Device_type.file_cd");
           if (device.isMounted()) {
-            icon = IconLoader.ICON_DEVICE_CD_MOUNTED;
+            icon = IconLoader.getIcon(JajukIcons.DEVICE_CD_MOUNTED);
           } else {
-            icon = IconLoader.ICON_DEVICE_CD_UNMOUNTED;
+            icon = IconLoader.getIcon(JajukIcons.DEVICE_CD_UNMOUNTED);
           }
           break;
         case 2:
           sTooltip = Messages.getString("Device_type.network_drive");
           if (device.isMounted()) {
-            icon = IconLoader.ICON_DEVICE_NETWORK_DRIVE_MOUNTED;
+            icon = IconLoader.getIcon(JajukIcons.DEVICE_NETWORK_DRIVE_MOUNTED);
           } else {
-            icon = IconLoader.ICON_DEVICE_NETWORK_DRIVE_UNMOUNTED;
+            icon = IconLoader.getIcon(JajukIcons.DEVICE_NETWORK_DRIVE_UNMOUNTED);
           }
           break;
         case 3:
           sTooltip = Messages.getString("Device_type.extdd");
           if (device.isMounted()) {
-            icon = IconLoader.ICON_DEVICE_EXT_DD_MOUNTED;
+            icon = IconLoader.getIcon(JajukIcons.DEVICE_EXT_DD_MOUNTED);
           } else {
-            icon = IconLoader.ICON_DEVICE_EXT_DD_UNMOUNTED;
+            icon = IconLoader.getIcon(JajukIcons.DEVICE_EXT_DD_UNMOUNTED);
           }
           break;
         case 4:
           sTooltip = Messages.getString("Device_type.player");
           if (device.isMounted()) {
-            icon = IconLoader.ICON_DEVICE_PLAYER_MOUNTED;
+            icon = IconLoader.getIcon(JajukIcons.DEVICE_PLAYER_MOUNTED);
           } else {
-            icon = IconLoader.ICON_DEVICE_PLAYER_UNMOUNTED;
+            icon = IconLoader.getIcon(JajukIcons.DEVICE_PLAYER_UNMOUNTED);
           }
           break;
         }
@@ -322,9 +323,9 @@ public class DeviceView extends ViewAdapter implements IView, Const, ActionListe
         @Override
         public void run() {
           if (diSelected.getDevice().test()) {
-            Messages.showInfoMessage(Messages.getString("DeviceView.21"), IconLoader.ICON_OK);
+            Messages.showInfoMessage(Messages.getString("DeviceView.21"), IconLoader.getIcon(JajukIcons.OK));
           } else {
-            Messages.showInfoMessage(Messages.getString("DeviceView.22"), IconLoader.ICON_KO);
+            Messages.showInfoMessage(Messages.getString("DeviceView.22"), IconLoader.getIcon(JajukIcons.KO));
           }
         }
       }.start();

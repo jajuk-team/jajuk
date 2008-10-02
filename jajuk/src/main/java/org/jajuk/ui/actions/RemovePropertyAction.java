@@ -23,6 +23,7 @@ import java.awt.event.ActionEvent;
 
 import org.jajuk.ui.wizard.RemovePropertyWizard;
 import org.jajuk.util.IconLoader;
+import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 import org.jajuk.util.error.JajukException;
 
@@ -31,7 +32,7 @@ public class RemovePropertyAction extends JajukAction {
   private static final long serialVersionUID = 1L;
 
   RemovePropertyAction() {
-    super(Messages.getString("JajukJMenuBar.7"), IconLoader.ICON_DELETE, true);
+    super(Messages.getString("JajukJMenuBar.7"), IconLoader.getIcon(JajukIcons.DELETE), true);
     setShortDescription(Messages.getString("JajukJMenuBar.7"));
   }
 

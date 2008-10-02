@@ -42,6 +42,7 @@ import org.jajuk.ui.widgets.JajukJDialog;
 import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukFileFilter;
+import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilGUI;
 import org.jajuk.util.filters.DirectoryFilter;
@@ -92,7 +93,7 @@ public class SimpleDeviceWizard extends JajukJDialog implements Const, ActionLis
     jlLeftIcon = new JLabel(UtilGUI.getImage(Const.IMAGE_SEARCH));
     jpRightPanel = new JPanel();
     jlFileSelection = new JLabel(Messages.getString("FirstTimeWizard.2"));
-    jbFileSelection = new JButton(IconLoader.ICON_OPEN_DIR);
+    jbFileSelection = new JButton(IconLoader.getIcon(JajukIcons.OPEN_DIR));
     jbFileSelection.addActionListener(this);
 
     // Refresh time

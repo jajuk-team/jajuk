@@ -64,6 +64,7 @@ import org.jajuk.ui.widgets.JajukJToolbar;
 import org.jajuk.ui.widgets.JajukTable;
 import org.jajuk.util.Conf;
 import org.jajuk.util.IconLoader;
+import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilGUI;
 import org.jajuk.util.error.JajukException;
@@ -95,24 +96,24 @@ public class QueueView extends PlaylistView {
     TableLayout layout = new TableLayout(sizeControl);
     layout.setHGap(2);
     jpEditorControl.setLayout(layout);
-    jbSave = new JajukButton(IconLoader.ICON_SAVE);
+    jbSave = new JajukButton(IconLoader.getIcon(JajukIcons.SAVE));
     jbSave.setToolTipText(Messages.getString("AbstractPlaylistEditorView.3"));
     jbSave.addActionListener(this);
-    jbRemove = new JajukButton(IconLoader.ICON_REMOVE);
+    jbRemove = new JajukButton(IconLoader.getIcon(JajukIcons.REMOVE));
     jbRemove.setToolTipText(Messages.getString("AbstractPlaylistEditorView.5"));
     jbRemove.addActionListener(this);
-    jbUp = new JajukButton(IconLoader.ICON_UP);
+    jbUp = new JajukButton(IconLoader.getIcon(JajukIcons.UP));
     jbUp.setToolTipText(Messages.getString("AbstractPlaylistEditorView.6"));
     jbUp.addActionListener(this);
-    jbDown = new JajukButton(IconLoader.ICON_DOWN);
+    jbDown = new JajukButton(IconLoader.getIcon(JajukIcons.DOWN));
     jbDown.setToolTipText(Messages.getString("AbstractPlaylistEditorView.7"));
     jbDown.addActionListener(this);
-    jbAddShuffle = new JajukButton(IconLoader.ICON_ADD_SHUFFLE);
+    jbAddShuffle = new JajukButton(IconLoader.getIcon(JajukIcons.ADD_SHUFFLE));
     jbAddShuffle.setToolTipText(Messages.getString("AbstractPlaylistEditorView.10"));
     jbAddShuffle.addActionListener(this);
     jlTitle = new JLabel(" [" + FIFO.getFIFO().size() + "]");
 
-    jbClear = new JajukButton(IconLoader.ICON_CLEAR);
+    jbClear = new JajukButton(IconLoader.getIcon(JajukIcons.CLEAR));
     jbClear.setToolTipText(Messages.getString("QueueView.1"));
     jbClear.addActionListener(this);
 
@@ -151,7 +152,7 @@ public class QueueView extends PlaylistView {
     jsp.setBorder(BorderFactory.createEmptyBorder(0, 1, 0, 0));
     add(jsp, "0,1");
     // menu items
-    jmiFilePlay = new JMenuItem(Messages.getString("TracksTableView.7"), IconLoader.ICON_PLAY_16X16);
+    jmiFilePlay = new JMenuItem(Messages.getString("TracksTableView.7"), IconLoader.getIcon(JajukIcons.PLAY_16X16));
     // We don't use regular action for the play because it has very special
     // behavior here in the queue view : it must go to selection without keeping
     // previous FIFO
@@ -167,10 +168,10 @@ public class QueueView extends PlaylistView {
     jmiFileProperties = new JMenuItem(ActionManager.getAction(JajukActions.SHOW_PROPERTIES));
     jmiFileProperties.putClientProperty(DETAIL_SELECTION, editorTable.getSelection());
     jmiFileUp = new JMenuItem(Messages.getString("AbstractPlaylistEditorView.6"),
-        IconLoader.ICON_UP);
+        IconLoader.getIcon(JajukIcons.UP));
     jmiFileUp.addActionListener(this);
     jmiFileDown = new JMenuItem(Messages.getString("AbstractPlaylistEditorView.7"),
-        IconLoader.ICON_DOWN);
+        IconLoader.getIcon(JajukIcons.DOWN));
     jmiFileDown.addActionListener(this);
     editorTable.getMenu().add(jmiFilePlay);
     editorTable.getMenu().add(jmiFilePush);

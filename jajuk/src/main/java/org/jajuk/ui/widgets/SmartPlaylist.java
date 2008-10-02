@@ -27,6 +27,7 @@ import javax.swing.JPanel;
 import org.jajuk.base.Playlist;
 import org.jajuk.base.Playlist.Type;
 import org.jajuk.util.IconLoader;
+import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 
 /**
@@ -52,16 +53,16 @@ public class SmartPlaylist extends JPanel {
   public SmartPlaylist(Playlist.Type type) {
     this.type = type;
     if (type == Type.NEW) {
-      jlIcon = new JLabel(IconLoader.ICON_PLAYLIST_NEW);
+      jlIcon = new JLabel(IconLoader.getIcon(JajukIcons.PLAYLIST_NEW));
       plf = new Playlist(Type.NEW, null, getName(), null);
     } else if (type == Type.BESTOF) {
-      jlIcon = new JLabel(IconLoader.ICON_PLAYLIST_BESTOF);
+      jlIcon = new JLabel(IconLoader.getIcon(JajukIcons.PLAYLIST_BESTOF));
       plf = new Playlist(Type.BESTOF, null, getName(), null);
     } else if (type == Type.BOOKMARK) {
-      jlIcon = new JLabel(IconLoader.ICON_PLAYLIST_BOOKMARK);
+      jlIcon = new JLabel(IconLoader.getIcon(JajukIcons.PLAYLIST_BOOKMARK));
       plf = new Playlist(Type.BOOKMARK, null, getName(), null);
     } else if (type == Type.NOVELTIES) {
-      jlIcon = new JLabel(IconLoader.ICON_PLAYLIST_NOVELTIES);
+      jlIcon = new JLabel(IconLoader.getIcon(JajukIcons.PLAYLIST_NOVELTIES));
       plf = new Playlist(Type.NOVELTIES, null, getName(), null);
     }
     setToolTipText(getName());

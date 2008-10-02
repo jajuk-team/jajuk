@@ -29,6 +29,7 @@ import org.jajuk.services.dj.AmbienceManager;
 import org.jajuk.services.players.FIFO;
 import org.jajuk.util.Conf;
 import org.jajuk.util.IconLoader;
+import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilFeatures;
 import org.jajuk.util.error.JajukException;
@@ -38,7 +39,7 @@ public class BestOfAction extends JajukAction {
   private static final long serialVersionUID = 1L;
 
   BestOfAction() {
-    super(Messages.getString("JajukWindow.7"), IconLoader.ICON_BESTOF, true);
+    super(Messages.getString("JajukWindow.7"), IconLoader.getIcon(JajukIcons.BESTOF), true);
     setShortDescription(Messages.getString("JajukWindow.24"));
   }
 

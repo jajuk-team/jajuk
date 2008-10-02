@@ -23,13 +23,14 @@ import java.awt.event.ActionEvent;
 
 import org.jajuk.services.players.FIFO;
 import org.jajuk.util.IconLoader;
+import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 
 public class StopTrackAction extends JajukAction {
   private static final long serialVersionUID = 1L;
 
   StopTrackAction() {
-    super(Messages.getString("JajukWindow.11"), IconLoader.ICON_STOP, "ctrl S", false, false);
+    super(Messages.getString("JajukWindow.11"), IconLoader.getIcon(JajukIcons.STOP), "ctrl S", false, false);
     setShortDescription(Messages.getString("JajukWindow.27"));
   }
 

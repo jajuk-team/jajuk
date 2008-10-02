@@ -25,6 +25,7 @@ import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
 
 import org.jajuk.util.IconLoader;
+import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilFeatures;
 import org.jajuk.util.error.JajukException;
@@ -38,7 +39,7 @@ public class CopyClipboardAction extends JajukAction {
   private static final long serialVersionUID = 1L;
 
   CopyClipboardAction() {
-    super(Messages.getString("CopyClipboardAction.0"), IconLoader.ICON_COPY, true);
+    super(Messages.getString("CopyClipboardAction.0"), IconLoader.getIcon(JajukIcons.COPY), true);
     setShortDescription(Messages.getString("CopyClipboardAction.0"));
   }
 

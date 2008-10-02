@@ -43,6 +43,7 @@ import org.jajuk.events.ObservationManager;
 import org.jajuk.ui.widgets.JajukFileChooser;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukFileFilter;
+import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 import org.jajuk.util.filters.DirectoryFilter;
 
@@ -159,10 +160,10 @@ public class CDScanView extends ViewAdapter implements ActionListener {
     jlMountPoint.setToolTipText(Messages.getString("CDScanView.4"));
     jtfMountPoint = new JTextField(10);
     jtfMountPoint.setToolTipText(Messages.getString("CDScanView.5"));
-    jbScan = new JButton(Messages.getString("CDScanView.6"), IconLoader.ICON_REFRESH);
+    jbScan = new JButton(Messages.getString("CDScanView.6"), IconLoader.getIcon(JajukIcons.REFRESH));
     jbScan.setToolTipText(Messages.getString("CDScanView.18"));
     jbScan.addActionListener(this);
-    jbUrl = new JButton(IconLoader.ICON_OPEN_FILE);
+    jbUrl = new JButton(IconLoader.getIcon(JajukIcons.OPEN_FILE));
     jbUrl.setToolTipText(Messages.getString("CDScanView.19"));
     jbUrl.addActionListener(this);
     add(jlName, "1,1");

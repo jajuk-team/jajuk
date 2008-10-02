@@ -71,9 +71,9 @@ import org.jajuk.events.Observer;
 import org.jajuk.services.players.FIFO;
 import org.jajuk.services.players.Player;
 import org.jajuk.services.players.StackItem;
-import org.jajuk.ui.actions.JajukAction;
 import org.jajuk.ui.actions.ActionManager;
 import org.jajuk.ui.actions.ActionUtil;
+import org.jajuk.ui.actions.JajukAction;
 import org.jajuk.ui.actions.JajukActions;
 import org.jajuk.ui.actions.MuteAction;
 import org.jajuk.ui.helpers.FontManager;
@@ -81,6 +81,7 @@ import org.jajuk.ui.helpers.FontManager.JajukFont;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
+import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilString;
 import org.jajuk.util.error.JajukException;
@@ -192,7 +193,7 @@ public final class JajukSlimbar extends JFrame implements Const, Observer, Mouse
   }
 
   public void initUI() {
-    setIconImage(IconLoader.ICON_LOGO.getImage());
+    setIconImage(IconLoader.getIcon(JajukIcons.LOGO).getImage());
 
     addWindowListener(new WindowAdapter() {
 
@@ -207,7 +208,7 @@ public final class JajukSlimbar extends JFrame implements Const, Observer, Mouse
       }
     });
 
-    jbInfo = new JButton(IconLoader.ICON_INFO);
+    jbInfo = new JButton(IconLoader.getIcon(JajukIcons.INFO));
     jbInfo.addActionListener(this);
 
     JToolBar jtbPlay = new JajukJToolbar();
@@ -232,7 +233,7 @@ public final class JajukSlimbar extends JFrame implements Const, Observer, Mouse
 
     JToolBar jtbSmart = new JajukJToolbar();
     
-    jddbSmart = new DropDownButton(IconLoader.ICON_INC_RATING) {
+    jddbSmart = new DropDownButton(IconLoader.getIcon(JajukIcons.INC_RATING)) {
       private static final long serialVersionUID = 1L;
 
       @Override
@@ -242,15 +243,15 @@ public final class JajukSlimbar extends JFrame implements Const, Observer, Mouse
     };
 
     jbBestof = new JMenuItem(ActionManager.getAction(JajukActions.BEST_OF));
-    jbBestof.setIcon(IconLoader.ICON_BESTOF_16X16);
+    jbBestof.setIcon(IconLoader.getIcon(JajukIcons.BESTOF_16X16));
     jbBestof.addActionListener(this);
 
     jbNovelties = new JMenuItem(ActionManager.getAction(JajukActions.NOVELTIES));
-    jbNovelties.setIcon(IconLoader.ICON_NOVELTIES_16X16);
+    jbNovelties.setIcon(IconLoader.getIcon(JajukIcons.NOVELTIES_16X16));
     jbNovelties.addActionListener(this);
 
     jbRandom = new JMenuItem(ActionManager.getAction(JajukActions.SHUFFLE_GLOBAL));
-    jbRandom.setIcon(IconLoader.ICON_SHUFFLE_GLOBAL_16X16);
+    jbRandom.setIcon(IconLoader.getIcon(JajukIcons.SHUFFLE_GLOBAL_16X16));
     jbRandom.addActionListener(this);
 
     jpmSmart = new JPopupMenu();
@@ -262,13 +263,13 @@ public final class JajukSlimbar extends JFrame implements Const, Observer, Mouse
     
     if (JajukActions.SHUFFLE_GLOBAL.toString().equals(Conf.getString(CONF_SLIMBAR_SMART_MODE))) {
       jddbSmart.setAction(ActionManager.getAction(JajukActions.SHUFFLE_GLOBAL));
-      jddbSmart.setIcon(IconLoader.ICON_SHUFFLE_GLOBAL_16X16);
+      jddbSmart.setIcon(IconLoader.getIcon(JajukIcons.SHUFFLE_GLOBAL_16X16));
     } else if (JajukActions.BEST_OF.toString().equals(Conf.getString(CONF_SLIMBAR_SMART_MODE))) {
       jddbSmart.setAction(ActionManager.getAction(JajukActions.BEST_OF));
-      jddbSmart.setIcon(IconLoader.ICON_BESTOF_16X16);
+      jddbSmart.setIcon(IconLoader.getIcon(JajukIcons.BESTOF_16X16));
     } else if (JajukActions.NOVELTIES.toString().equals(Conf.getString(CONF_SLIMBAR_SMART_MODE))) {
       jddbSmart.setAction(ActionManager.getAction(JajukActions.NOVELTIES));
-      jddbSmart.setIcon(IconLoader.ICON_NOVELTIES_16X16);
+      jddbSmart.setIcon(IconLoader.getIcon(JajukIcons.NOVELTIES_16X16));
     }
 
     JajukAction actionIncRate = ActionManager.getAction(JajukActions.INC_RATE);
@@ -288,7 +289,7 @@ public final class JajukSlimbar extends JFrame implements Const, Observer, Mouse
       });
       jpmIncRating.add(jmi);
     }
-    jbIncRate = new DropDownButton(IconLoader.ICON_INC_RATING) {
+    jbIncRate = new DropDownButton(IconLoader.getIcon(JajukIcons.INC_RATING)) {
       private static final long serialVersionUID = 1L;
 
       @Override
@@ -505,9 +506,9 @@ public final class JajukSlimbar extends JFrame implements Const, Observer, Mouse
       ActionManager.getAction(PREVIOUS_ALBUM).setEnabled(true);
       ActionManager.getAction(FINISH_ALBUM).setEnabled(true);
     } else if (JajukEvents.PLAYER_PAUSE.equals(subject)) {
-      jbPlayPause.setIcon(IconLoader.ICON_PLAY_16X16);
+      jbPlayPause.setIcon(IconLoader.getIcon(JajukIcons.PLAY_16X16));
     } else if (JajukEvents.PLAYER_RESUME.equals(subject)) {
-      jbPlayPause.setIcon(IconLoader.ICON_PAUSE_16X16);
+      jbPlayPause.setIcon(IconLoader.getIcon(JajukIcons.PAUSE_16X16));
     } else if (JajukEvents.MUTE_STATE.equals(subject)) {
       MuteAction.setVolumeIcon(100 * Player.getCurrentVolume());
     } else if (JajukEvents.PLAYER_STOP.equals(subject)) {
@@ -522,7 +523,7 @@ public final class JajukSlimbar extends JFrame implements Const, Observer, Mouse
       ActionManager.getAction(NEXT_ALBUM).setEnabled(bQueueNotVoid);
       ActionManager.getAction(PREVIOUS_ALBUM).setEnabled(bQueueNotVoid);
       ActionManager.getAction(REWIND_TRACK).setEnabled(false);
-      ActionManager.getAction(PLAY_PAUSE_TRACK).setIcon(IconLoader.ICON_PLAY);
+      ActionManager.getAction(PLAY_PAUSE_TRACK).setIcon(IconLoader.getIcon(JajukIcons.PLAY));
       ActionManager.getAction(PLAY_PAUSE_TRACK).setName(Messages.getString("JajukWindow.12"));
       ActionManager.getAction(STOP_TRACK).setEnabled(false);
       ActionManager.getAction(FAST_FORWARD_TRACK).setEnabled(false);
@@ -575,15 +576,15 @@ public final class JajukSlimbar extends JFrame implements Const, Observer, Mouse
   public void actionPerformed(final ActionEvent ae) {
     if (ae.getSource() == jbBestof) {
       jddbSmart.setAction(ActionManager.getAction(JajukActions.BEST_OF));
-      jddbSmart.setIcon(IconLoader.ICON_BESTOF_16X16);
+      jddbSmart.setIcon(IconLoader.getIcon(JajukIcons.BESTOF_16X16));
       Conf.setProperty(CONF_SLIMBAR_SMART_MODE, JajukActions.BEST_OF.toString());
     } else if (ae.getSource() == jbNovelties) {
       jddbSmart.setAction(ActionManager.getAction(JajukActions.NOVELTIES));
-      jddbSmart.setIcon(IconLoader.ICON_NOVELTIES_16X16);
+      jddbSmart.setIcon(IconLoader.getIcon(JajukIcons.NOVELTIES_16X16));
       Conf.setProperty(CONF_SLIMBAR_SMART_MODE, JajukActions.NOVELTIES.toString());
     } else if (ae.getSource() == jbRandom) {
       jddbSmart.setAction(ActionManager.getAction(JajukActions.SHUFFLE_GLOBAL));
-      jddbSmart.setIcon(IconLoader.ICON_SHUFFLE_GLOBAL_16X16);
+      jddbSmart.setIcon(IconLoader.getIcon(JajukIcons.SHUFFLE_GLOBAL_16X16));
       Conf.setProperty(CONF_SLIMBAR_SMART_MODE, JajukActions.SHUFFLE_GLOBAL.toString());
     } else if (ae.getSource() == jbInfo) {
       String title = FIFO.getCurrentFileTitle();

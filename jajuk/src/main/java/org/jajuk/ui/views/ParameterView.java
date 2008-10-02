@@ -88,6 +88,7 @@ import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.DownloadManager;
 import org.jajuk.util.IconLoader;
+import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilGUI;
 import org.jajuk.util.UtilString;
@@ -793,10 +794,10 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
       }
     });
     jtfHistory.setToolTipText(Messages.getString("ParameterView.2"));
-    jbClearHistory = new JButton(Messages.getString("ParameterView.3"), IconLoader.ICON_CLEAR);
+    jbClearHistory = new JButton(Messages.getString("ParameterView.3"), IconLoader.getIcon(JajukIcons.CLEAR));
     jbClearHistory.setToolTipText(Messages.getString("ParameterView.4"));
     jbClearHistory.addActionListener(this);
-    jbResetRatings = new JButton(Messages.getString("ParameterView.186"), IconLoader.ICON_CLEAR);
+    jbResetRatings = new JButton(Messages.getString("ParameterView.186"), IconLoader.getIcon(JajukIcons.CLEAR));
     jbResetRatings.setToolTipText(Messages.getString("ParameterView.187"));
     jbResetRatings.addActionListener(this);
     jpHistory.add(jlHistory, "0,0");
@@ -1384,7 +1385,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     jsPerspectiveSize.setPaintLabels(true);
     jsPerspectiveSize.setToolTipText(Messages.getString("ParameterView.246"));
     jbCatalogRefresh = new JajukButton(Messages.getString("CatalogView.19"),
-        IconLoader.ICON_REFRESH);
+        IconLoader.getIcon(JajukIcons.REFRESH));
     jbCatalogRefresh.setToolTipText(Messages.getString("CatalogView.3"));
     jbCatalogRefresh.addActionListener(this);
     final JXCollapsiblePane catalogView = new JXCollapsiblePane();
@@ -1441,11 +1442,11 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     final Dimension dim = new Dimension(200, 20);
     jpOKCancel = new JPanel();
     jpOKCancel.setLayout(new FlowLayout());
-    jbOK = new JButton(Messages.getString("ParameterView.85"), IconLoader.ICON_OK);
+    jbOK = new JButton(Messages.getString("ParameterView.85"), IconLoader.getIcon(JajukIcons.OK));
     jbOK.setPreferredSize(dim);
     jbOK.addActionListener(this);
     jpOKCancel.add(jbOK);
-    jbDefault = new JButton(Messages.getString("ParameterView.86"), IconLoader.ICON_DEFAULTS_BIG);
+    jbDefault = new JButton(Messages.getString("ParameterView.86"), IconLoader.getIcon(JajukIcons.DEFAULTS_BIG));
     jbDefault.setPreferredSize(dim);
     jbDefault.addActionListener(this);
     jpOKCancel.add(jbDefault);

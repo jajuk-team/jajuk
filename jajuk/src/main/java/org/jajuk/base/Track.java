@@ -31,6 +31,7 @@ import javax.swing.ImageIcon;
 import org.jajuk.services.core.RatingManager;
 import org.jajuk.util.Conf;
 import org.jajuk.util.IconLoader;
+import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilString;
 import org.jajuk.util.log.Log;
@@ -531,7 +532,7 @@ public class Track extends LogicalItem implements Comparable<Track> {
    */
   @Override
   public ImageIcon getIconRepresentation() {
-    return IconLoader.ICON_TRACK;
+    return IconLoader.getIcon(JajukIcons.TRACK);
   }
 
   /**

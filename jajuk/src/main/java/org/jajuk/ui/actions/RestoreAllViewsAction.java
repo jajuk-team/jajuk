@@ -29,6 +29,7 @@ import org.jajuk.ui.perspectives.IPerspective;
 import org.jajuk.ui.perspectives.PerspectiveManager;
 import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
+import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilSystem;
 import org.jajuk.util.error.JajukException;
@@ -40,7 +41,7 @@ public class RestoreAllViewsAction extends JajukAction implements Const {
   private static boolean fullRestore = false;
 
   RestoreAllViewsAction() {
-    super(Messages.getString("JajukJMenuBar.26"), IconLoader.ICON_RESTORE_ALL_VIEWS, true);
+    super(Messages.getString("JajukJMenuBar.26"), IconLoader.getIcon(JajukIcons.RESTORE_ALL_VIEWS), true);
     setShortDescription(Messages.getString("JajukJMenuBar.26"));
   }
 

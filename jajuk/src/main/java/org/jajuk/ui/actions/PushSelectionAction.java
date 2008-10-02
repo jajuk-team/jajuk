@@ -29,6 +29,7 @@ import org.jajuk.base.Item;
 import org.jajuk.services.players.FIFO;
 import org.jajuk.util.Conf;
 import org.jajuk.util.IconLoader;
+import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilFeatures;
 
@@ -47,7 +48,7 @@ public class PushSelectionAction extends JajukAction {
   private static final long serialVersionUID = -8078402652430413821L;
 
   PushSelectionAction() {
-    super(Messages.getString("TracksTableView.8"), IconLoader.ICON_PUSH, true);
+    super(Messages.getString("TracksTableView.8"), IconLoader.getIcon(JajukIcons.PUSH), true);
     setShortDescription(Messages.getString("TracksTableView.8"));
   }
 

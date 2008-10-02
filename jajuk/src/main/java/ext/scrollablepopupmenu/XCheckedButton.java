@@ -18,6 +18,7 @@ import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.basic.BasicButtonUI;
 
 import org.jajuk.util.IconLoader;
+import org.jajuk.util.JajukIcons;
 
 /**
  * @author balajihe from
@@ -139,11 +140,11 @@ public class XCheckedButton extends JButton {
   public void displayIcon(boolean checkedFlag) {
     if (checkedFlag && isDisplayCheck()) {
       if (checkedIcon == null) {
-        checkedIcon = IconLoader.ICON_OK;
+        checkedIcon = IconLoader.getIcon(JajukIcons.OK);
       }
       this.setIcon(checkedIcon);
     } else {
-      this.setIcon(IconLoader.ICON_EMPTY);
+      this.setIcon(IconLoader.getIcon(JajukIcons.EMPTY));
     }
     this.repaint();
   }

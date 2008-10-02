@@ -36,6 +36,7 @@ import org.jajuk.base.Track;
 import org.jajuk.base.TrackManager;
 import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
+import org.jajuk.util.JajukIcons;
 import org.jajuk.util.UtilGUI;
 import org.jajuk.util.UtilSystem;
 import org.jajuk.util.log.Log;
@@ -71,7 +72,7 @@ public final class ThumbnailManager implements Const {
       fDefault.delete();
       try {
         int iSize = Integer.parseInt(new StringTokenizer(size, "x").nextToken());
-        createThumbnail(IconLoader.ICON_NO_COVER, fDefault, iSize);
+        createThumbnail(IconLoader.getIcon(JajukIcons.NO_COVER), fDefault, iSize);
       } catch (Exception e) {
         Log.error(e);
       }

@@ -33,6 +33,7 @@ import org.jajuk.ui.widgets.AlarmClockDialog;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
+import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 import org.jajuk.util.error.JajukException;
 
@@ -51,7 +52,7 @@ public class AlarmClockAction extends JajukAction {
   private static boolean alarmDaily;
 
   AlarmClockAction() {
-    super(Messages.getString("AlarmClock.0"), IconLoader.ICON_ALARM, true);
+    super(Messages.getString("AlarmClock.0"), IconLoader.getIcon(JajukIcons.ALARM), true);
     setShortDescription(Messages.getString("AlarmClock.0"));
   }
 

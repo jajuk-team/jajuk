@@ -39,6 +39,7 @@ import org.jajuk.ui.widgets.InformationJPanel;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
+import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilSystem;
 import org.jajuk.util.error.JajukException;
@@ -532,9 +533,9 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
     ImageIcon icon = null;
     // is this device synchronized?
     if (getBooleanValue(XML_DIRECTORY_SYNCHRONIZED)) {
-      icon = IconLoader.ICON_DIRECTORY_SYNCHRO;
+      icon = IconLoader.getIcon(JajukIcons.DIRECTORY_SYNCHRO);
     } else {
-      icon = IconLoader.ICON_DIRECTORY_DESYNCHRO;
+      icon = IconLoader.getIcon(JajukIcons.DIRECTORY_DESYNCHRO);
     }
     return icon;
   }

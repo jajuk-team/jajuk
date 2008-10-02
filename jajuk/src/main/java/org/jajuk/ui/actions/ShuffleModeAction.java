@@ -29,13 +29,14 @@ import org.jajuk.ui.widgets.CommandJPanel;
 import org.jajuk.ui.widgets.JajukJMenuBar;
 import org.jajuk.util.Conf;
 import org.jajuk.util.IconLoader;
+import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 
 public class ShuffleModeAction extends JajukAction {
   private static final long serialVersionUID = 1L;
 
   ShuffleModeAction() {
-    super(Messages.getString("JajukJMenuBar.11"), IconLoader.ICON_SHUFFLE, "ctrl H", true, false);
+    super(Messages.getString("JajukJMenuBar.11"), IconLoader.getIcon(JajukIcons.SHUFFLE), "ctrl H", true, false);
     setShortDescription(Messages.getString("CommandJPanel.2"));
   }
 

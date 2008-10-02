@@ -82,6 +82,7 @@ import org.jajuk.ui.widgets.SmartPlaylist;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
+import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilFeatures;
 import org.jajuk.util.UtilGUI;
@@ -247,28 +248,28 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
     TableLayout layout = new TableLayout(sizeControl);
     layout.setHGap(2);
     jpEditorControl.setLayout(layout);
-    jbRun = new JajukButton(IconLoader.ICON_RUN);
+    jbRun = new JajukButton(IconLoader.getIcon(JajukIcons.RUN));
     jbRun.setToolTipText(Messages.getString("AbstractPlaylistEditorView.2"));
     jbRun.addActionListener(this);
-    jbSave = new JajukButton(IconLoader.ICON_SAVE);
+    jbSave = new JajukButton(IconLoader.getIcon(JajukIcons.SAVE));
     jbSave.setToolTipText(Messages.getString("AbstractPlaylistEditorView.3"));
     jbSave.addActionListener(this);
-    jbRemove = new JajukButton(IconLoader.ICON_REMOVE);
+    jbRemove = new JajukButton(IconLoader.getIcon(JajukIcons.REMOVE));
     jbRemove.setToolTipText(Messages.getString("AbstractPlaylistEditorView.5"));
     jbRemove.addActionListener(this);
-    jbUp = new JajukButton(IconLoader.ICON_UP);
+    jbUp = new JajukButton(IconLoader.getIcon(JajukIcons.UP));
     jbUp.setToolTipText(Messages.getString("AbstractPlaylistEditorView.6"));
     jbUp.addActionListener(this);
-    jbDown = new JajukButton(IconLoader.ICON_DOWN);
+    jbDown = new JajukButton(IconLoader.getIcon(JajukIcons.DOWN));
     jbDown.setToolTipText(Messages.getString("AbstractPlaylistEditorView.7"));
     jbDown.addActionListener(this);
-    jbAddShuffle = new JajukButton(IconLoader.ICON_ADD_SHUFFLE);
+    jbAddShuffle = new JajukButton(IconLoader.getIcon(JajukIcons.ADD_SHUFFLE));
     jbAddShuffle.setToolTipText(Messages.getString("AbstractPlaylistEditorView.10"));
     jbAddShuffle.addActionListener(this);
-    jbClear = new JajukButton(IconLoader.ICON_CLEAR);
+    jbClear = new JajukButton(IconLoader.getIcon(JajukIcons.CLEAR));
     jbClear.setToolTipText(Messages.getString("AbstractPlaylistEditorView.9"));
     jbClear.addActionListener(this);
-    jbPrepParty = new JajukButton(IconLoader.ICON_EXT_DRIVE);
+    jbPrepParty = new JajukButton(IconLoader.getIcon(JajukIcons.EXT_DRIVE));
     jbPrepParty.setToolTipText(Messages.getString("AbstractPlaylistEditorView.27"));
     jbPrepParty.addActionListener(this);
     jlTitle = new JLabel("");
@@ -318,10 +319,10 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
     jmiFileProperties = new JMenuItem(ActionManager.getAction(JajukActions.SHOW_PROPERTIES));
     jmiFileProperties.putClientProperty(DETAIL_SELECTION, editorTable.getSelection());
     jmiFileUp = new JMenuItem(Messages.getString("AbstractPlaylistEditorView.6"),
-        IconLoader.ICON_UP);
+        IconLoader.getIcon(JajukIcons.UP));
     jmiFileUp.addActionListener(this);
     jmiFileDown = new JMenuItem(Messages.getString("AbstractPlaylistEditorView.7"),
-        IconLoader.ICON_DOWN);
+        IconLoader.getIcon(JajukIcons.DOWN));
     jmiFileDown.addActionListener(this);
 
     editorTable.getMenu().add(jmiFilePlay);
@@ -572,20 +573,20 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
     // set title label
     jlTitle.setText(plf.getName());
     if (plf.getType() == Playlist.Type.BESTOF) {
-      jlTitle.setIcon(IconLoader.ICON_BESTOF_16X16);
+      jlTitle.setIcon(IconLoader.getIcon(JajukIcons.BESTOF_16X16));
     } else if (plf.getType() == Playlist.Type.BOOKMARK) {
-      jlTitle.setIcon(IconLoader.ICON_PLAYLIST_BOOKMARK_SMALL);
+      jlTitle.setIcon(IconLoader.getIcon(JajukIcons.PLAYLIST_BOOKMARK_SMALL));
     } else if (plf.getType() == Playlist.Type.NEW) {
-      jlTitle.setIcon(IconLoader.ICON_PLAYLIST_NEW_SMALL);
+      jlTitle.setIcon(IconLoader.getIcon(JajukIcons.PLAYLIST_NEW_SMALL));
     } else if (plf.getType() == Playlist.Type.NOVELTIES) {
-      jlTitle.setIcon(IconLoader.ICON_NOVELTIES_16X16);
+      jlTitle.setIcon(IconLoader.getIcon(JajukIcons.NOVELTIES_16X16));
     } else {
       // remove last smart playlist item border
       if (spSelected != null) {
         spSelected.getIcon().setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         spSelected = null;
       }
-      jlTitle.setIcon(IconLoader.ICON_PLAYLIST_FILE);
+      jlTitle.setIcon(IconLoader.getIcon(JajukIcons.PLAYLIST_FILE));
     }
     jlTitle.setToolTipText(plf.getName());
     setButtonState();

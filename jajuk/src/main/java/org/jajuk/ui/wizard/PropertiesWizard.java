@@ -74,6 +74,7 @@ import org.jajuk.ui.widgets.JajukWindow;
 import org.jajuk.ui.widgets.OKCancelPanel;
 import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
+import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilGUI;
 import org.jajuk.util.UtilString;
@@ -590,7 +591,7 @@ public class PropertiesWizard extends JajukJDialog implements Const, ActionListe
         }
         // Link
         if (isLinkable(meta)) {
-          JButton jbLink = new JButton(IconLoader.ICON_PROPERTIES);
+          JButton jbLink = new JButton(IconLoader.getIcon(JajukIcons.PROPERTIES));
           jbLink.addActionListener(this);
           jbLink.setActionCommand("link");
           jbLink.setToolTipText(Messages.getString("PropertiesWizard.12"));

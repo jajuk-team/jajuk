@@ -22,6 +22,7 @@ package org.jajuk.base;
 import javax.swing.ImageIcon;
 
 import org.jajuk.util.IconLoader;
+import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilString;
 
@@ -110,6 +111,6 @@ public class Year extends LogicalItem implements Comparable<Year> {
    */
   @Override
   public ImageIcon getIconRepresentation() {
-    return IconLoader.ICON_YEAR;
+    return IconLoader.getIcon(JajukIcons.YEAR);
   }
 }

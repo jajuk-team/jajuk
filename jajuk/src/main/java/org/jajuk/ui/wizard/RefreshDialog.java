@@ -28,6 +28,7 @@ import javax.swing.JProgressBar;
 import javax.swing.SwingUtilities;
 
 import org.jajuk.util.IconLoader;
+import org.jajuk.util.JajukIcons;
 import org.jdesktop.swingx.JXBusyLabel;
 
 /**
@@ -52,7 +53,7 @@ public class RefreshDialog extends JFrame {
     SwingUtilities.invokeLater(new Runnable() {
       public void run() {
         setUndecorated(true);
-        setIconImage(IconLoader.ICON_LOGO.getImage());
+        setIconImage(IconLoader.getIcon(JajukIcons.LOGO).getImage());
         jlAction = new JXBusyLabel();
         progress = new JProgressBar(0, 100);
         jlRefreshing = new JLabel();

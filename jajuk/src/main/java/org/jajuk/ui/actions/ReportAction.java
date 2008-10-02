@@ -32,6 +32,7 @@ import org.jajuk.ui.widgets.JajukFileChooser;
 import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukFileFilter;
+import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilGUI;
 import org.jajuk.util.error.JajukException;
@@ -47,7 +48,7 @@ public class ReportAction extends JajukAction {
   private static final long serialVersionUID = 1L;
 
   ReportAction() {
-    super(Messages.getString("TracksTreeView.33"), IconLoader.ICON_REPORT, true);
+    super(Messages.getString("TracksTreeView.33"), IconLoader.getIcon(JajukIcons.REPORT), true);
     setShortDescription(Messages.getString("TracksTreeView.33"));
   }
 

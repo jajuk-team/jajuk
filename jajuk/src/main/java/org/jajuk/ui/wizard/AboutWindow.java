@@ -42,6 +42,7 @@ import javax.swing.SwingUtilities;
 import org.jajuk.ui.widgets.JajukWindow;
 import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
+import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 import org.jajuk.util.log.Log;
 import org.jfree.ui.about.AboutPanel;
@@ -131,7 +132,7 @@ public class AboutWindow extends JDialog implements Const {
     jpAbout.setLayout(new BoxLayout(jpAbout, BoxLayout.Y_AXIS));
     ap = new AboutPanel("Jajuk", JAJUK_VERSION + " \"" + JAJUK_CODENAME + "\"" + " "
         + JAJUK_VERSION_DATE, "<html>Copyright 2003,2007<br>Jajuk team</html>", INFOS,
-        IconLoader.ICON_LOGO.getImage());
+        IconLoader.getIcon(JajukIcons.LOGO).getImage());
     jpAbout.add(ap);
     jpAbout.add(Box.createVerticalGlue());
     spp = new SystemPropertiesPanel();

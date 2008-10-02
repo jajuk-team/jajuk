@@ -56,6 +56,7 @@ import org.jajuk.services.webradio.WebRadioManager;
 import org.jajuk.ui.helpers.FontManager;
 import org.jajuk.ui.helpers.FontManager.JajukFont;
 import org.jajuk.util.IconLoader;
+import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilGUI;
 import org.jajuk.util.log.Log;
@@ -120,7 +121,7 @@ public class SearchBox extends JTextField implements KeyListener {
         jl = new JLabel(sr.getResu(), sr.getFile().getIconRepresentation(),
             SwingConstants.HORIZONTAL);
       } else if (sr.getType() == SearchResultType.WEBRADIO) {
-        jl = new JLabel(sr.getResu(), IconLoader.ICON_WEBRADIO_16X16, SwingConstants.HORIZONTAL);
+        jl = new JLabel(sr.getResu(), IconLoader.getIcon(JajukIcons.WEBRADIO_16X16), SwingConstants.HORIZONTAL);
       }
       jp.add(jl, BorderLayout.WEST);
       return jp;

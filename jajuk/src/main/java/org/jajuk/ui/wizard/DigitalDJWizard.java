@@ -72,6 +72,7 @@ import org.jajuk.ui.widgets.StylesSelectionDialog;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
+import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilGUI;
 import org.qdwizard.ClearPoint;
@@ -735,7 +736,7 @@ public class DigitalDJWizard extends Wizard implements Const {
       // now add all known transitions
       for (int index = 0; index < alTransitions.size(); index++) {
         // Delete button
-        JButton jbDelete = new JButton(IconLoader.ICON_DELETE);
+        JButton jbDelete = new JButton(IconLoader.getIcon(JajukIcons.DELETE));
         jbDelete.addActionListener(new ActionListener() {
 
           public void actionPerformed(ActionEvent ae) {
@@ -751,7 +752,7 @@ public class DigitalDJWizard extends Wizard implements Const {
         jbDelete.setToolTipText(Messages.getString("DigitalDJWizard.21"));
         widgets[index][0] = jbDelete;
         // From style list
-        JButton jbFrom = new JButton(IconLoader.ICON_LIST);
+        JButton jbFrom = new JButton(IconLoader.getIcon(JajukIcons.LIST));
         Transition transition = alTransitions.get(index);
         if (transition.getFrom().getStyles().size() > 0) {
           jbFrom.setText(transition.getFromString());
@@ -766,7 +767,7 @@ public class DigitalDJWizard extends Wizard implements Const {
         jbFrom.setToolTipText(Messages.getString("DigitalDJWizard.22"));
         widgets[index][1] = jbFrom;
         // To style list
-        JButton jbTo = new JButton(IconLoader.ICON_LIST);
+        JButton jbTo = new JButton(IconLoader.getIcon(JajukIcons.LIST));
         if (transition.getTo().getStyles().size() > 0) {
           jbTo.setText(transition.getToString());
           jbTo.setToolTipText(transition.getToString());
@@ -1003,7 +1004,7 @@ public class DigitalDJWizard extends Wizard implements Const {
       // now add all known proportions
       for (int index = 0; index < proportions.size(); index++) {
         // Delete button
-        JButton jbDelete = new JButton(IconLoader.ICON_DELETE);
+        JButton jbDelete = new JButton(IconLoader.getIcon(JajukIcons.DELETE));
         jbDelete.addActionListener(new ActionListener() {
 
           public void actionPerformed(ActionEvent ae) {
@@ -1019,7 +1020,7 @@ public class DigitalDJWizard extends Wizard implements Const {
         jbDelete.setToolTipText(Messages.getString("DigitalDJWizard.21"));
         widgets[index][0] = jbDelete;
         // style list
-        JButton jbStyle = new JButton(IconLoader.ICON_LIST);
+        JButton jbStyle = new JButton(IconLoader.getIcon(JajukIcons.LIST));
         Proportion proportion = proportions.get(index);
         if (proportion.getStyles() != null) {
           jbStyle.setText(proportion.getStylesDesc());

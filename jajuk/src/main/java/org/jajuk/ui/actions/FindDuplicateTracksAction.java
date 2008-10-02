@@ -37,6 +37,7 @@ import org.jajuk.base.TrackManager;
 import org.jajuk.ui.widgets.DuplicateTracksList;
 import org.jajuk.ui.widgets.JajukWindow;
 import org.jajuk.util.IconLoader;
+import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilGUI;
 
@@ -45,7 +46,7 @@ public class FindDuplicateTracksAction extends JajukAction {
   private static final long serialVersionUID = 1L;
 
   FindDuplicateTracksAction() {
-    super(Messages.getString("FindDuplicateTracksAction.2"), IconLoader.ICON_SEARCH, true);
+    super(Messages.getString("FindDuplicateTracksAction.2"), IconLoader.getIcon(JajukIcons.SEARCH), true);
     setShortDescription(Messages.getString("FindDuplicateTracksAction.2"));
   }
 

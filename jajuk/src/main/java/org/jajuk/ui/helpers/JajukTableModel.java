@@ -31,6 +31,7 @@ import javax.swing.table.DefaultTableModel;
 import org.jajuk.base.Item;
 import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
+import org.jajuk.util.JajukIcons;
 
 /**
  * Jajuk table model, adds identifier to model
@@ -47,10 +48,10 @@ public abstract class JajukTableModel extends DefaultTableModel implements Const
   protected Object[][] oValues;
 
   // Play icon in cache
-  protected static final ImageIcon PLAY_ICON = IconLoader.ICON_PLAY_TABLE;
+  protected static final ImageIcon PLAY_ICON = IconLoader.getIcon(JajukIcons.PLAY_TABLE);
 
   // Unmount Play icon in cache
-  protected static final ImageIcon UNMOUNT_PLAY_ICON = IconLoader.ICON_UNKNOWN;
+  protected static final ImageIcon UNMOUNT_PLAY_ICON = IconLoader.getIcon(JajukIcons.UNKNOWN);
 
   /** Objects */
   protected Item[] oItems;

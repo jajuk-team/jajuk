@@ -33,6 +33,7 @@ import org.jajuk.ui.widgets.CommandJPanel;
 import org.jajuk.ui.widgets.JajukJMenuBar;
 import org.jajuk.util.Conf;
 import org.jajuk.util.IconLoader;
+import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 import org.jajuk.util.error.JajukException;
 
@@ -41,7 +42,7 @@ public class ContinueModeAction extends JajukAction {
   private static final long serialVersionUID = 1L;
 
   ContinueModeAction() {
-    super(Messages.getString("JajukJMenuBar.12"), IconLoader.ICON_CONTINUE, true);
+    super(Messages.getString("JajukJMenuBar.12"), IconLoader.getIcon(JajukIcons.CONTINUE), true);
     setShortDescription(Messages.getString("CommandJPanel.3"));
   }
 

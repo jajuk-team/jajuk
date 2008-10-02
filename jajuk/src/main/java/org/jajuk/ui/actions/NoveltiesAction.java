@@ -29,6 +29,7 @@ import org.jajuk.services.dj.AmbienceManager;
 import org.jajuk.services.players.FIFO;
 import org.jajuk.util.Conf;
 import org.jajuk.util.IconLoader;
+import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilFeatures;
 import org.jajuk.util.error.JajukException;
@@ -38,7 +39,7 @@ public class NoveltiesAction extends JajukAction {
   private static final long serialVersionUID = 1L;
 
   NoveltiesAction() {
-    super(Messages.getString("JajukWindow.15"), IconLoader.ICON_NOVELTIES, true);
+    super(Messages.getString("JajukWindow.15"), IconLoader.getIcon(JajukIcons.NOVELTIES), true);
     setShortDescription(Messages.getString("JajukWindow.31"));
   }
 

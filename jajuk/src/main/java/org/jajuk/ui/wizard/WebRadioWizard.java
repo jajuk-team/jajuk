@@ -52,6 +52,7 @@ import org.jajuk.ui.helpers.FontManager.JajukFont;
 import org.jajuk.ui.widgets.JajukWindow;
 import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
+import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilGUI;
 import org.jajuk.util.log.Log;
@@ -111,13 +112,13 @@ public class WebRadioWizard extends Wizard implements Const {
       // button layout
       double[][] dButtons = { { 10, 0.33, 5, 0.33, 5, 0.33, 10 }, { 20 } };
       jpButtons = new JPanel(new TableLayout(dButtons));
-      jbNew = new JButton(Messages.getString("RadioWizard.2"), IconLoader.ICON_NEW);
+      jbNew = new JButton(Messages.getString("RadioWizard.2"), IconLoader.getIcon(JajukIcons.NEW));
       jbNew.addActionListener(this);
       jbNew.setToolTipText(Messages.getString("RadioWizard.2"));
-      jbDelete = new JButton(Messages.getString("RadioWizard.3"), IconLoader.ICON_DELETE);
+      jbDelete = new JButton(Messages.getString("RadioWizard.3"), IconLoader.getIcon(JajukIcons.DELETE));
       jbDelete.addActionListener(this);
       jbDelete.setToolTipText(Messages.getString("RadioWizard.3"));
-      jbDefaults = new JButton(Messages.getString("RadioWizard.4"), IconLoader.ICON_DEFAULTS);
+      jbDefaults = new JButton(Messages.getString("RadioWizard.4"), IconLoader.getIcon(JajukIcons.DEFAULTS));
       jbDefaults.addActionListener(this);
       jbDefaults.setToolTipText(Messages.getString("RadioWizard.4"));
       jpButtons.add(jbNew, "1,0");
