@@ -7,7 +7,7 @@
 
 	<!--Distribution release 
 	!!! DO NOT USE '-' CHARACTER IN VERSION !!!-->
-	<property name='version' value='1.7_snapshot5' /> 
+	<property name='version' value='1.7_snapshot6' />
 
 	<!--Previous release used for JNLP incremental upgrade-->
 	<property name='previous_version' value='null' />
@@ -27,7 +27,7 @@
 	<property name='conf_homeuser' value='/home/bflorat' />
 	<property name='conf_uploaddir' value='${rootdir}/upload' />
 	<property name='conf_jarbundler' value='/prog/jarbundler-1.9' />-->
-	
+
 
 	<!-- Conf for Jajuk Continuous Integration  server -->
 	<property name='conf_izpackdir' value='/svn-jajuk/tools/IzPack' />
@@ -258,7 +258,6 @@
 		</exec>
 		<!-- jar creation -->
 		<jar jarfile='${distdir}/bin/${helpsetjarname}.jar' basedir='${helpdir}/default' />
-		<signjar jar="${distdir}/bin/${helpsetjarname}.jar" alias="jajukteam" storepass="passpass" />
 		<!-- Copy jajuk jar in the workspace -->
 		<copy todir='${basedir}'>
 			<fileset file='${distdir}/bin/${helpsetjarname}*.jar' />
@@ -401,6 +400,13 @@
 			</fileset>
 		</copy>
 		-->
+		<!-- Sign all jars -->
+		<signjar alias="jajukteam" storepass="passpass">
+			<fileset dir='${jnlpdir}'>
+				<include name='*.jar' />
+			</fileset>
+		</signjar>
+
 
 		<!-- Create the war file -->
 		<war destfile='${rootdir}/jajuk-trunk-${test}.war' webxml='${srcdir}/packaging/jnlp/web.xml'>
