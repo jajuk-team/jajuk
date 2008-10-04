@@ -841,8 +841,7 @@ public final class Main implements Const {
             return;
           }
           // last file from beginning or last file keep position
-          else if (Conf.getBoolean(CONF_STATE_WAS_PLAYING)
-              && (History.getInstance().getHistory().size() > 0)) {
+          else if (History.getInstance().getHistory().size() > 0) {
             // make sure user didn't exit jajuk in the stopped state
             // and that history is not void
             fileToPlay = FileManager.getInstance().getFileByID(History.getInstance().getLastFile());

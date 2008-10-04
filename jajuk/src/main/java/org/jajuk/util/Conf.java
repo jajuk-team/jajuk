@@ -147,7 +147,6 @@ public final class Conf implements Const {
     defaults.put(CONF_STATE_SHUFFLE, FALSE);
     defaults.put(CONF_STATE_CONTINUE, FALSE);
     defaults.put(CONF_STATE_INTRO, FALSE);
-    defaults.put(CONF_STATE_WAS_PLAYING, FALSE);
     // no startup file by default
     defaults.put(CONF_STARTUP_FILE, "");
     defaults.put(CONF_STARTUP_MODE, STARTUP_MODE_LAST_KEEP_POS);

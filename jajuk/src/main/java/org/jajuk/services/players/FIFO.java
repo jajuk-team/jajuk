@@ -445,9 +445,7 @@ public final class FIFO implements Const {
       // notify to devices like commandJPanel to update UI when the play
       // button has been pressed
       ObservationManager.notify(new Event(JajukEvents.PLAYER_PLAY));
-      // set was_playing state
-      Conf.setProperty(CONF_STATE_WAS_PLAYING, TRUE);
-
+      
       File fCurrent = getCurrentFile();
       boolean bPlayOK = false;
       if (bFirstFile && !Conf.getBoolean(CONF_STATE_INTRO)
@@ -885,10 +883,6 @@ public final class FIFO implements Const {
     // fifo is over ( stop request ) , reinit labels in information panel
     // before exiting
     bStop = true;
-    // set was playing state if it is not a stop called by jajuk exit
-    if (!ExitService.isExiting()) {
-      Conf.setProperty(CONF_STATE_WAS_PLAYING, FALSE);
-    }
     Player.stop(true); // stop player
     // notify views like commandJPanel to update ui
     ObservationManager.notify(new Event(JajukEvents.PLAYER_STOP));

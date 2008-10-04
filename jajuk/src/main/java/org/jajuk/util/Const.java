@@ -500,9 +500,6 @@ public interface Const {
 
   String CONF_STATE_INTRO = "jajuk.state.mode.intro";
 
-  /** Whether user exited jajuk in stop state or playing state */
-  String CONF_STATE_WAS_PLAYING = "jajuk.state.was_playing";
-
   String CONF_STARTUP_FILE = "jajuk.startup.file";
 
   String CONF_STARTUP_MODE = "jajuk.startup.mode";
