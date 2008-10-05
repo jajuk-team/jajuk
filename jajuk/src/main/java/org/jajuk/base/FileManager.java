@@ -398,11 +398,11 @@ public final class FileManager extends ItemManager implements Observer {
   }
 
   /**
-   * Return a shuffle mounted file from the noveties
+   * Return a shuffle mounted file from the novelties
    * 
    * @return
    */
-  public synchronized File getNoveltyFile() {
+  public File getNoveltyFile() {
     List<File> alEligibleFiles = getGlobalNoveltiesPlaylist();
     return alEligibleFiles.get((int) (Math.random() * alEligibleFiles.size()));
   }
@@ -413,7 +413,7 @@ public final class FileManager extends ItemManager implements Observer {
    * @return The entire accessible novelties collection (can return a void
    *         collection)
    */
-  public synchronized List<org.jajuk.base.File> getGlobalNoveltiesPlaylist() {
+  public List<org.jajuk.base.File> getGlobalNoveltiesPlaylist() {
     return getGlobalNoveltiesPlaylist(true);
   }
 
@@ -653,7 +653,7 @@ public final class FileManager extends ItemManager implements Observer {
    * @param file
    * @return
    */
-  public synchronized boolean isVeryfirstFile(File file) {
+  public boolean isVeryfirstFile(File file) {
     Set<Item> files = getItems();
     if (file == null || hmItems.size() == 0) {
       return false;

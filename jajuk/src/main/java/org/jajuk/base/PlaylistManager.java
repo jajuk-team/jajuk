@@ -228,7 +228,7 @@ public final class PlaylistManager extends ItemManager implements Observer {
    * @see org.jajuk.base.Observer#update(org.jajuk.base.Event)
    */
   @SuppressWarnings("unchecked")
-  public synchronized void update(Event event) {
+  public void update(Event event) {
     JajukEvents subject = event.getSubject();
     if (JajukEvents.FILE_NAME_CHANGED.equals(subject)) {
       Properties properties = event.getDetails();

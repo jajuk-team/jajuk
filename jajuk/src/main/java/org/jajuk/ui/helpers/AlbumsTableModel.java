@@ -115,7 +115,7 @@ public class AlbumsTableModel extends JajukTableModel {
    */
   @Override
   @SuppressWarnings("unchecked")
-  public synchronized void populateModel(String sPropertyName, String sPattern,
+  public void populateModel(String sPropertyName, String sPattern,
       List<String> columnsToShow) {
     List<Album> alToShow = new ArrayList<Album>(AlbumManager.getInstance().getAlbums());
     // OK, begin by filtering using any provided pattern

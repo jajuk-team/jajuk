@@ -272,12 +272,12 @@ public abstract class ItemManager implements Const {
   /** Return all registated items with filter applied */
   @SuppressWarnings("unchecked")
   public synchronized Collection<Item> getItems(Filter filter) {
-      return Filter.filterItems(new ArrayList<Item>(hmItems.values()), filter);
+    return Filter.filterItems(new ArrayList<Item>(hmItems.values()), filter);
   }
 
   /** Remove a given item */
   public synchronized void removeItem(String sID) {
-      hmItems.remove(sID);
+    hmItems.remove(sID);
   }
 
   /**
@@ -410,8 +410,8 @@ public abstract class ItemManager implements Const {
    * 
    * @return number of item
    */
-  public synchronized int getElementCount() {
-      return hmItems.size();
+  public int getElementCount() {
+    return hmItems.size();
   }
 
   /**
@@ -419,14 +419,14 @@ public abstract class ItemManager implements Const {
    *          Item ID
    * @return Item
    */
-  public synchronized Item getItemByID(String sID) {
-      return (Item) hmItems.get(sID);
+  public Item getItemByID(String sID) {
+    return (Item) hmItems.get(sID);
   }
 
   /** Return all registred items */
   @SuppressWarnings("unchecked")
   protected synchronized Set<Item> getItems() {
-      return hmItems.inverseBidiMap().keySet();
+    return hmItems.inverseBidiMap().keySet();
   }
 
   /**

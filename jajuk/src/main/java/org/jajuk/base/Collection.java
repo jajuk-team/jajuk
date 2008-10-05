@@ -334,11 +334,7 @@ public final class Collection extends DefaultHandler implements Const, ErrorHand
    * read from a file but filled programmatically
    */
   public static synchronized void clearCollection() {
-    TrackManager.getInstance().clear();
-    StyleManager.getInstance().clear();
-    AuthorManager.getInstance().clear();
-    AlbumManager.getInstance().clear();
-    YearManager.getInstance().clear();
+    cleanupLogical();
     FileManager.getInstance().clear();
     DirectoryManager.getInstance().clear();
     PlaylistManager.getInstance().clear();

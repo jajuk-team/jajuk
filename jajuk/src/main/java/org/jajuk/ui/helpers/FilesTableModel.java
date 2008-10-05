@@ -138,7 +138,6 @@ public class FilesTableModel extends JajukTableModel implements Const {
   @Override
   public void populateModel(String sPropertyName, String sPattern,
       List<String> columnsToShow) {
-    synchronized (FileManager.getInstance()) {
       // This should be monitor filemanager to avoid NPE when changing items
       List<File> alToShow = null;
       // Filter mounted files if needed and apply sync table with tree
@@ -397,10 +396,8 @@ public class FilesTableModel extends JajukTableModel implements Const {
             bCellEditable[iRow][iNumberStandardCols + i] = false;
           } else {
             bCellEditable[iRow][iNumberStandardCols + i] = true;
-          }
         }
       }
     }
   }
-
 }

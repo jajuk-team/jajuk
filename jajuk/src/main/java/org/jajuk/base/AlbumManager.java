@@ -168,7 +168,7 @@ public final class AlbumManager extends ItemManager implements Observer {
    * @param sName
    * @return
    */
-  public static synchronized String format(String sName) {
+  public static String format(String sName) {
     String sOut;
     sOut = sName.trim(); // suppress spaces at the begin and the end
     sOut = sOut.replace('-', ' '); // move - to space

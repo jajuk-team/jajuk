@@ -189,7 +189,7 @@ public final class AuthorManager extends ItemManager {
    * 
    * @return authors as a string list (used for authors combos)
    */
-  public static synchronized Vector<String> getAuthorsList() {
+  public static Vector<String> getAuthorsList() {
     return authorsList;
   }
 
@@ -206,7 +206,7 @@ public final class AuthorManager extends ItemManager {
    * 
    * @return albums list
    */
-  public synchronized Set<Author> getAuthors() {
+  public Set<Author> getAuthors() {
     Set<Author> authorSet = new LinkedHashSet<Author>();
     for (Item item : getItems()) {
       authorSet.add((Author) item);

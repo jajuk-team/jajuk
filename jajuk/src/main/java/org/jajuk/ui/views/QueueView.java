@@ -264,8 +264,7 @@ public class QueueView extends PlaylistView {
   @Override
   public void update(final Event event) {
     SwingUtilities.invokeLater(new Runnable() {
-      public synchronized void run() { // NEED TO SYNC to avoid out out
-        // bound exceptions
+      public void run() { 
         try {
           JajukEvents subject = event.getSubject();
           editorTable.setAcceptColumnsEvents(false); // flag reloading to avoid

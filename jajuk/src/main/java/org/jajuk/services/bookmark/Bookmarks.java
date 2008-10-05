@@ -42,7 +42,7 @@ public final class Bookmarks implements Const {
   /** Bookmarks files */
   List<File> alFiles = new ArrayList<File>(100);
 
-  public static synchronized Bookmarks getInstance() {
+  public static Bookmarks getInstance() {
     if (bookmarks == null) {
       bookmarks = new Bookmarks();
     }

@@ -109,7 +109,7 @@ public class PlaylistTableModel extends JajukTableModel {
    * Create columns configuration
    * 
    */
-  public final synchronized void prepareColumns() {
+  public final void prepareColumns() {
     vColNames.clear();
     idList.clear();
 
@@ -193,7 +193,7 @@ public class PlaylistTableModel extends JajukTableModel {
    * Fill model with data using an optional filter property
    */
   @Override
-  public synchronized void populateModel(String sPropertyName, String sPattern,
+  public void populateModel(String sPropertyName, String sPattern,
       List<String> columnsToShow) {
     iRowNum = alItems.size() + alPlanned.size();
     oValues = new Object[iRowNum][iNumberStandardCols

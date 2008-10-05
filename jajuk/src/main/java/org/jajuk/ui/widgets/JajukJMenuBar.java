@@ -385,7 +385,7 @@ public final class JajukJMenuBar extends JMenuBar implements Const, Observer {
     ObservationManager.register(this);
   }
 
-  public static synchronized JajukJMenuBar getInstance() {
+  public static JajukJMenuBar getInstance() {
     if (jjmb == null) {
       jjmb = new JajukJMenuBar();
     }

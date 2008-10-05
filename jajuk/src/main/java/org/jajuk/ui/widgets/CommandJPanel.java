@@ -273,7 +273,7 @@ public class CommandJPanel extends JXPanel implements Const, ActionListener,
   /**
    * @return singleton
    */
-  public static synchronized CommandJPanel getInstance() {
+  public static CommandJPanel getInstance() {
     if (command == null) {
       command = new CommandJPanel();
     }

@@ -114,14 +114,14 @@ public final class LyricsService implements Const {
    * 
    * @return the map of loaded providers
    */
-  public static synchronized Map<String, IProvider> getProviders() {
+  public static Map<String, IProvider> getProviders() {
     if (providers == null) {
       providers = loadProviders();
     }
     return providers;
   }
 
-  public static synchronized IProvider getCurrentProvider() {
+  public static IProvider getCurrentProvider() {
     return current;
   }
 }

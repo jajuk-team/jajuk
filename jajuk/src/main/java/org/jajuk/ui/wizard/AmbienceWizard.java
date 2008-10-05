@@ -146,34 +146,32 @@ public class AmbienceWizard extends Wizard implements Const {
      *          row
      */
     private void addStyle(final int row) {
-      synchronized (StyleManager.getInstance()) {
-        final Ambience ambience = AmbienceWizard.ambiences.get(row);
-        // create list of styles used in current selection
-        final StylesSelectionDialog dialog = new StylesSelectionDialog(null);
-        dialog.setSelection(ambience.getStyles());
-        dialog.setVisible(true);
-        final Set<Style> styles = dialog.getSelectedStyles();
-        // check if at least one style has been selected
-        if (styles.size() == 0) {
-          return;
-        }
-        String sText = "";
-        // reset old styles
-        ambience.setStyles(new HashSet<Style>(10));
-        for (final Style style : styles) {
-          ambience.addStyle(style);
-          sText += style.getName2() + ',';
-        }
-        sText = sText.substring(0, sText.length() - 1);
-        // Set button text
-        ((JButton) widgets[row][2]).setText(sText);
-        // if we have ambience name and some styles, register the
-        // ambience
-        if ((ambience.getName().length() > 0) && (ambience.getStyles().size() > 0)) {
-          // no more error message if at least one ambience
-          setProblem(null);
-          jbNew.setEnabled(true);
-        }
+      final Ambience ambience = AmbienceWizard.ambiences.get(row);
+      // create list of styles used in current selection
+      final StylesSelectionDialog dialog = new StylesSelectionDialog(null);
+      dialog.setSelection(ambience.getStyles());
+      dialog.setVisible(true);
+      final Set<Style> styles = dialog.getSelectedStyles();
+      // check if at least one style has been selected
+      if (styles.size() == 0) {
+        return;
+      }
+      String sText = "";
+      // reset old styles
+      ambience.setStyles(new HashSet<Style>(10));
+      for (final Style style : styles) {
+        ambience.addStyle(style);
+        sText += style.getName2() + ',';
+      }
+      sText = sText.substring(0, sText.length() - 1);
+      // Set button text
+      ((JButton) widgets[row][2]).setText(sText);
+      // if we have ambience name and some styles, register the
+      // ambience
+      if ((ambience.getName().length() > 0) && (ambience.getStyles().size() > 0)) {
+        // no more error message if at least one ambience
+        setProblem(null);
+        jbNew.setEnabled(true);
       }
     }
 
@@ -317,13 +315,16 @@ public class AmbienceWizard extends Wizard implements Const {
       // button layout
       final double[][] dButtons = { { 10, 0.33, 5, 0.33, 5, 0.33, 10 }, { 20 } };
       jpButtons = new JPanel(new TableLayout(dButtons));
-      jbNew = new JButton(Messages.getString("DigitalDJWizard.32"), IconLoader.getIcon(JajukIcons.NEW));
+      jbNew = new JButton(Messages.getString("DigitalDJWizard.32"), IconLoader
+          .getIcon(JajukIcons.NEW));
       jbNew.addActionListener(this);
       jbNew.setToolTipText(Messages.getString("DigitalDJWizard.33"));
-      jbDelete = new JButton(Messages.getString("DigitalDJWizard.34"), IconLoader.getIcon(JajukIcons.DELETE));
+      jbDelete = new JButton(Messages.getString("DigitalDJWizard.34"), IconLoader
+          .getIcon(JajukIcons.DELETE));
       jbDelete.addActionListener(this);
       jbDelete.setToolTipText(Messages.getString("DigitalDJWizard.35"));
-      jbDefaults = new JButton(Messages.getString("DigitalDJWizard.62"), IconLoader.getIcon(JajukIcons.DEFAULTS));
+      jbDefaults = new JButton(Messages.getString("DigitalDJWizard.62"), IconLoader
+          .getIcon(JajukIcons.DEFAULTS));
       jbDefaults.addActionListener(this);
       jbDefaults.setToolTipText(Messages.getString("DigitalDJWizard.63"));
       jpButtons.add(jbNew, "1,0");
@@ -367,8 +368,8 @@ public class AmbienceWizard extends Wizard implements Const {
 
   public AmbienceWizard() {
     super(Messages.getString("DigitalDJWizard.56"), AmbiencePanel.class, UtilGUI
-        .getImage(Const.IMAGE_DJ), JajukWindow.getInstance(), new Locale(Messages
-        .getLocale()), 700, 600);
+        .getImage(Const.IMAGE_DJ), JajukWindow.getInstance(), new Locale(Messages.getLocale()),
+        700, 600);
   }
 
   /*

@@ -288,7 +288,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
 
   /** Fill the tree */
   @Override
-  public synchronized void populateTree() {
+  public void populateTree() {
     top.removeAllChildren();
     // add devices
     Iterator<Device> it1 = DeviceManager.getInstance().getDevices().iterator();

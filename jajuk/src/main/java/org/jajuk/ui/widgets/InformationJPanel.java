@@ -96,7 +96,7 @@ public final class InformationJPanel extends JPanel implements Const, Observer,
    * 
    * @return
    */
-  public static synchronized InformationJPanel getInstance() {
+  public static InformationJPanel getInstance() {
     if (ijp == null) {
       ijp = new InformationJPanel();
     }

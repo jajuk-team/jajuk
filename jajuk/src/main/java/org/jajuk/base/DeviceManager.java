@@ -171,7 +171,7 @@ public final class DeviceManager extends ItemManager {
    * @return 0:ok or error code
    */
   @SuppressWarnings("unchecked")
-  public synchronized int checkDeviceAvailablity(String sName, int iDeviceType, String sUrl,
+  public int checkDeviceAvailablity(String sName, int iDeviceType, String sUrl,
       boolean bNew) {
     // don't check if it is a CD as all CDs may use the same mount point
     if (iDeviceType == Device.TYPE_CD) {
@@ -299,7 +299,7 @@ public final class DeviceManager extends ItemManager {
   /**
    * @return whether any device is currently refreshing
    */
-  public synchronized boolean isAnyDeviceRefreshing() {
+  public boolean isAnyDeviceRefreshing() {
     boolean bOut = false;
     Iterator<Device> it = DeviceManager.getInstance().getDevices().iterator();
     while (it.hasNext()) {

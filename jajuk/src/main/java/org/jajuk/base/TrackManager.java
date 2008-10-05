@@ -606,9 +606,7 @@ public final class TrackManager extends ItemManager implements Observer {
         }
       }
       if (track.getFiles().size() == 0) { // the track don't map
-        // anymore to any
-        // physical
-        // item, just remove it
+        // anymore to any physical item, just remove it
         itTracks.remove();
       }
     }

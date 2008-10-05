@@ -209,7 +209,7 @@ public final class StyleManager extends ItemManager {
   /**
    * @return Human readable registrated style list
    */
-  public synchronized Vector<String> getStylesList() {
+  public Vector<String> getStylesList() {
     return stylesList;
   }
 

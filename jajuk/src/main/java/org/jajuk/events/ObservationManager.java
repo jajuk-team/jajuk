@@ -31,7 +31,7 @@ import org.jajuk.util.Const;
 import org.jajuk.util.log.Log;
 
 /**
- * This is a mediator managing relationships between subjets and observers
+ * This is a mediator managing relationships between subjects and observers
  * <p>
  * All notification methods are synchronized to assure event order
  */

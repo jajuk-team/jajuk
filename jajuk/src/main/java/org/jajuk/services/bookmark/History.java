@@ -74,7 +74,7 @@ public final class History extends DefaultHandler implements Const, ErrorHandler
   private SimpleDateFormat formatter;
 
   /** Instance getter */
-  public static synchronized History getInstance() {
+  public static History getInstance() {
     if (history == null) {
       history = new History();
     }
@@ -111,12 +111,12 @@ public final class History extends DefaultHandler implements Const, ErrorHandler
    * 
    * @return the history
    */
-  public synchronized Vector<HistoryItem> getHistory() {
+  public Vector<HistoryItem> getHistory() {
     return vHistory;
   }
 
   /** Add an history item */
-  public synchronized void addItem(String sFileId, long lDate) {
+  public void addItem(String sFileId, long lDate) {
     if (Conf.getString(CONF_HISTORY).equals("0")) { // no
       // history
       // 
@@ -146,7 +146,7 @@ public final class History extends DefaultHandler implements Const, ErrorHandler
   }
 
   /** Clear history */
-  public synchronized void clear() {
+  public void clear() {
     vHistory.clear();
   }
 
@@ -154,7 +154,7 @@ public final class History extends DefaultHandler implements Const, ErrorHandler
    * Cleanup history of dead items (removed files after a refresh)
    * 
    */
-  public synchronized void cleanup() {
+  public void cleanup() {
     Iterator<HistoryItem> it = vHistory.iterator();
     while (it.hasNext()) {
       HistoryItem hi = it.next();
@@ -170,7 +170,7 @@ public final class History extends DefaultHandler implements Const, ErrorHandler
    * @param sIDOld
    * @param sIDNew
    */
-  public synchronized void changeID(String sIDOld, String sIDNew) {
+  public void changeID(String sIDOld, String sIDNew) {
     for (int i = 0; i < vHistory.size(); i++) {
       HistoryItem hi = vHistory.get(i);
       if (hi.getFileId().equals(sIDOld)) {
@@ -181,7 +181,7 @@ public final class History extends DefaultHandler implements Const, ErrorHandler
   }
 
   /** Clear history for all history items before iDays days */
-  public synchronized void clear(int iDays) {
+  public void clear(int iDays) {
     // Begins by clearing deleted files
     Iterator<HistoryItem> it = vHistory.iterator();
     while (it.hasNext()) {
@@ -271,7 +271,7 @@ public final class History extends DefaultHandler implements Const, ErrorHandler
    * 
    * @return id of last played registered track or null if history is empty
    */
-  public synchronized String getLastFile() {
+  public String getLastFile() {
     HistoryItem hiLast = null;
     if (vHistory.size() == 0) {
       return null;
@@ -289,7 +289,7 @@ public final class History extends DefaultHandler implements Const, ErrorHandler
    * @param index
    * @return
    */
-  public synchronized HistoryItem getHistoryItem(int index) {
+  public HistoryItem getHistoryItem(int index) {
     return (index >= 0 ? (HistoryItem) vHistory.get(index) : null);
   }
 
@@ -413,7 +413,7 @@ public final class History extends DefaultHandler implements Const, ErrorHandler
 
   /**
    * 
-   * @return Cached date formater
+   * @return Cached date formatter
    */
   public SimpleDateFormat getDateFormatter() {
     return this.formatter;

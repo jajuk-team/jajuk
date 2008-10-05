@@ -66,7 +66,7 @@ public final class PerspectiveBarJPanel extends JXPanel implements Const {
    * 
    * @return
    */
-  public static synchronized PerspectiveBarJPanel getInstance() {
+  public static PerspectiveBarJPanel getInstance() {
     if (pb == null) {
       pb = new PerspectiveBarJPanel();
     }

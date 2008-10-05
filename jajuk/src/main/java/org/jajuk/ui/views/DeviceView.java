@@ -175,7 +175,7 @@ public class DeviceView extends ViewAdapter implements IView, Const, ActionListe
     return eventSubjectSet;
   }
 
-  private synchronized void refreshDevices() {
+  private void refreshDevices() {
     // remove all devices
     if (jpDevices.getComponentCount() > 0) {
       jpDevices.removeAll();
@@ -274,7 +274,7 @@ public class DeviceView extends ViewAdapter implements IView, Const, ActionListe
    * 
    * @return
    */
-  public static synchronized DeviceView getInstance() {
+  public static DeviceView getInstance() {
     if (dv == null) {
       dv = new DeviceView();
     }

@@ -66,7 +66,7 @@ public final class LastFmManager implements Observer, Const {
     }
   }
 
-  public static synchronized LastFmManager getInstance() {
+  public static LastFmManager getInstance() {
     if (self == null) {
       self = new LastFmManager();
       // populate configuration

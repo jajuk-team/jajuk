@@ -472,8 +472,7 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
    */
   public void update(final Event event) {
     SwingUtilities.invokeLater(new Runnable() {
-      public synchronized void run() { // NEED TO SYNC to avoid out of
-        // bound exceptions
+      public void run() { 
         try {
           JajukEvents subject = event.getSubject();
           editorTable.setAcceptColumnsEvents(false); // flag reloading to avoid
