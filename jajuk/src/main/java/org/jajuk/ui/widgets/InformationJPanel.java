@@ -362,8 +362,7 @@ public final class InformationJPanel extends JPanel implements Const, Observer,
     if (JajukEvents.PLAY_ERROR.equals(subject)) {
       try {
         // we synchronize this code to make sure error message is
-        // visible all 2
-        // secs
+        // visible all 2 secs
         synchronized (this) {
           // reset data
           setCurrentTimeMessage(0, 0);

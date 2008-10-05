@@ -63,8 +63,8 @@ import org.jajuk.util.UtilGUI;
  * <p>
  * Configuration perspective
  */
-public class DeviceView extends ViewAdapter implements IView, Const, ActionListener,
-    Observer, MouseListener {
+public class DeviceView extends ViewAdapter implements IView, Const, ActionListener, Observer,
+    MouseListener {
   private static final long serialVersionUID = 1L;
 
   private static DeviceView dv; // self instance
@@ -113,38 +113,44 @@ public class DeviceView extends ViewAdapter implements IView, Const, ActionListe
     // Popup menus
     jpmenu = new JPopupMenu();
 
-    jmiMount = new JMenuItem(Messages.getString("DeviceView.8"), IconLoader.getIcon(JajukIcons.MOUNT));
+    jmiMount = new JMenuItem(Messages.getString("DeviceView.8"), IconLoader
+        .getIcon(JajukIcons.MOUNT));
     jmiMount.addActionListener(this);
     jmiMount.setActionCommand(JajukEvents.DEVICE_MOUNT.toString());
     jpmenu.add(jmiMount);
 
-    jmiUnmount = new JMenuItem(Messages.getString("DeviceView.9"), IconLoader.getIcon(JajukIcons.UNMOUNT));
+    jmiUnmount = new JMenuItem(Messages.getString("DeviceView.9"), IconLoader
+        .getIcon(JajukIcons.UNMOUNT));
     jmiUnmount.addActionListener(this);
     jmiUnmount.setActionCommand(JajukEvents.DEVICE_UNMOUNT.toString());
     jpmenu.add(jmiUnmount);
 
-    jmiRefresh = new JMenuItem(Messages.getString("DeviceView.11"), IconLoader.getIcon(JajukIcons.REFRESH));
+    jmiRefresh = new JMenuItem(Messages.getString("DeviceView.11"), IconLoader
+        .getIcon(JajukIcons.REFRESH));
     jmiRefresh.addActionListener(this);
     jmiRefresh.setActionCommand(JajukEvents.DEVICE_REFRESH.toString());
     jpmenu.add(jmiRefresh);
 
-    jmiTest = new JMenuItem(Messages.getString("DeviceView.10"), IconLoader.getIcon(JajukIcons.TEST));
+    jmiTest = new JMenuItem(Messages.getString("DeviceView.10"), IconLoader
+        .getIcon(JajukIcons.TEST));
     jmiTest.addActionListener(this);
     jmiTest.setActionCommand(JajukEvents.DEVICE_TEST.toString());
     jpmenu.add(jmiTest);
 
-    jmiSynchronize = new JMenuItem(Messages.getString("DeviceView.12"), IconLoader.getIcon(JajukIcons.SYNCHRO));
+    jmiSynchronize = new JMenuItem(Messages.getString("DeviceView.12"), IconLoader
+        .getIcon(JajukIcons.SYNCHRO));
     jmiSynchronize.addActionListener(this);
     jmiSynchronize.setActionCommand(JajukEvents.DEVICE_SYNCHRO.toString());
     jpmenu.add(jmiSynchronize);
 
-    jmiDelete = new JMenuItem(Messages.getString("DeviceView.13"), IconLoader.getIcon(JajukIcons.DELETE));
+    jmiDelete = new JMenuItem(Messages.getString("DeviceView.13"), IconLoader
+        .getIcon(JajukIcons.DELETE));
     jmiDelete.addActionListener(this);
     jmiDelete.setActionCommand(JajukEvents.DEVICE_DELETE.toString());
     jpmenu.add(jmiDelete);
 
-    jmiProperties = new JMenuItem(Messages.getString("DeviceView.14"),
-        IconLoader.getIcon(JajukIcons.CONFIGURATION));
+    jmiProperties = new JMenuItem(Messages.getString("DeviceView.14"), IconLoader
+        .getIcon(JajukIcons.CONFIGURATION));
     jmiProperties.addActionListener(this);
     jmiProperties.setActionCommand(JajukEvents.DEVICE_PROPERTIES.toString());
     jpmenu.add(jmiProperties);
@@ -169,80 +175,78 @@ public class DeviceView extends ViewAdapter implements IView, Const, ActionListe
     return eventSubjectSet;
   }
 
-  private void refreshDevices() {
-    synchronized (DeviceManager.getInstance().getLock()) {
-      // remove all devices
-      if (jpDevices.getComponentCount() > 0) {
-        jpDevices.removeAll();
+  private synchronized void refreshDevices() {
+    // remove all devices
+    if (jpDevices.getComponentCount() > 0) {
+      jpDevices.removeAll();
+    }
+    // New device
+    DeviceItem diNew = new DeviceItem(IconLoader.getIcon(JajukIcons.DEVICE_NEW), Messages
+        .getString("DeviceView.17"), null);
+    diNew.setToolTipText(Messages.getString("DeviceView.18"));
+    jpDevices.add(diNew);
+    diNew.addMouseListener(new MouseAdapter() {
+      @Override
+      public void mouseClicked(MouseEvent e) {
+        DeviceWizard dw = new DeviceWizard();
+        dw.updateWidgetsDefault();
+        dw.pack();
+        dw.setVisible(true);
       }
-      // New device
-      DeviceItem diNew = new DeviceItem(IconLoader.getIcon(JajukIcons.DEVICE_NEW), Messages
-          .getString("DeviceView.17"), null);
-      diNew.setToolTipText(Messages.getString("DeviceView.18"));
-      jpDevices.add(diNew);
-      diNew.addMouseListener(new MouseAdapter() {
-        @Override
-        public void mouseClicked(MouseEvent e) {
-          DeviceWizard dw = new DeviceWizard();
-          dw.updateWidgetsDefault();
-          dw.pack();
-          dw.setVisible(true);
+    });
+    // Add devices
+    Iterator<Device> it = DeviceManager.getInstance().getDevices().iterator();
+    while (it.hasNext()) {
+      final Device device = it.next();
+      ImageIcon icon = IconLoader.getIcon(JajukIcons.DEVICE_DIRECTORY_MOUNTED);
+      String sTooltip = "";
+      switch ((int) device.getType()) {
+      case 0:
+        sTooltip = Messages.getString("Device_type.directory");
+        if (device.isMounted()) {
+          icon = IconLoader.getIcon(JajukIcons.DEVICE_DIRECTORY_MOUNTED);
+        } else {
+          icon = IconLoader.getIcon(JajukIcons.DEVICE_DIRECTORY_UNMOUNTED);
         }
-      });
-      // Add devices
-      Iterator<Device> it = DeviceManager.getInstance().getDevices().iterator();
-      while (it.hasNext()) {
-        final Device device = it.next();
-        ImageIcon icon = IconLoader.getIcon(JajukIcons.DEVICE_DIRECTORY_MOUNTED);
-        String sTooltip = "";
-        switch ((int) device.getType()) {
-        case 0:
-          sTooltip = Messages.getString("Device_type.directory");
-          if (device.isMounted()) {
-            icon = IconLoader.getIcon(JajukIcons.DEVICE_DIRECTORY_MOUNTED);
-          } else {
-            icon = IconLoader.getIcon(JajukIcons.DEVICE_DIRECTORY_UNMOUNTED);
-          }
-          break;
-        case 1:
-          sTooltip = Messages.getString("Device_type.file_cd");
-          if (device.isMounted()) {
-            icon = IconLoader.getIcon(JajukIcons.DEVICE_CD_MOUNTED);
-          } else {
-            icon = IconLoader.getIcon(JajukIcons.DEVICE_CD_UNMOUNTED);
-          }
-          break;
-        case 2:
-          sTooltip = Messages.getString("Device_type.network_drive");
-          if (device.isMounted()) {
-            icon = IconLoader.getIcon(JajukIcons.DEVICE_NETWORK_DRIVE_MOUNTED);
-          } else {
-            icon = IconLoader.getIcon(JajukIcons.DEVICE_NETWORK_DRIVE_UNMOUNTED);
-          }
-          break;
-        case 3:
-          sTooltip = Messages.getString("Device_type.extdd");
-          if (device.isMounted()) {
-            icon = IconLoader.getIcon(JajukIcons.DEVICE_EXT_DD_MOUNTED);
-          } else {
-            icon = IconLoader.getIcon(JajukIcons.DEVICE_EXT_DD_UNMOUNTED);
-          }
-          break;
-        case 4:
-          sTooltip = Messages.getString("Device_type.player");
-          if (device.isMounted()) {
-            icon = IconLoader.getIcon(JajukIcons.DEVICE_PLAYER_MOUNTED);
-          } else {
-            icon = IconLoader.getIcon(JajukIcons.DEVICE_PLAYER_UNMOUNTED);
-          }
-          break;
+        break;
+      case 1:
+        sTooltip = Messages.getString("Device_type.file_cd");
+        if (device.isMounted()) {
+          icon = IconLoader.getIcon(JajukIcons.DEVICE_CD_MOUNTED);
+        } else {
+          icon = IconLoader.getIcon(JajukIcons.DEVICE_CD_UNMOUNTED);
         }
-        DeviceItem di = new DeviceItem(icon, device.getName(), device);
-        di.setToolTipText(sTooltip);
-        di.addMouseListener(this);
-        di.setToolTipText(device.getDeviceTypeS());
-        jpDevices.add(di);
+        break;
+      case 2:
+        sTooltip = Messages.getString("Device_type.network_drive");
+        if (device.isMounted()) {
+          icon = IconLoader.getIcon(JajukIcons.DEVICE_NETWORK_DRIVE_MOUNTED);
+        } else {
+          icon = IconLoader.getIcon(JajukIcons.DEVICE_NETWORK_DRIVE_UNMOUNTED);
+        }
+        break;
+      case 3:
+        sTooltip = Messages.getString("Device_type.extdd");
+        if (device.isMounted()) {
+          icon = IconLoader.getIcon(JajukIcons.DEVICE_EXT_DD_MOUNTED);
+        } else {
+          icon = IconLoader.getIcon(JajukIcons.DEVICE_EXT_DD_UNMOUNTED);
+        }
+        break;
+      case 4:
+        sTooltip = Messages.getString("Device_type.player");
+        if (device.isMounted()) {
+          icon = IconLoader.getIcon(JajukIcons.DEVICE_PLAYER_MOUNTED);
+        } else {
+          icon = IconLoader.getIcon(JajukIcons.DEVICE_PLAYER_UNMOUNTED);
+        }
+        break;
       }
+      DeviceItem di = new DeviceItem(icon, device.getName(), device);
+      di.setToolTipText(sTooltip);
+      di.addMouseListener(this);
+      di.setToolTipText(device.getDeviceTypeS());
+      jpDevices.add(di);
     }
   }
 
@@ -285,11 +289,11 @@ public class DeviceView extends ViewAdapter implements IView, Const, ActionListe
       dw.setVisible(true);
       return;
     }
-    
+
     if (diSelected == null) { // test a device is selected
       return;
     }
-    
+
     if (ae.getActionCommand().equals(JajukEvents.DEVICE_DELETE.toString())) {
       DeviceManager.getInstance().removeDevice(diSelected.getDevice());
       jpDevices.remove(diSelected);
@@ -323,15 +327,18 @@ public class DeviceView extends ViewAdapter implements IView, Const, ActionListe
         @Override
         public void run() {
           if (diSelected.getDevice().test()) {
-            Messages.showInfoMessage(Messages.getString("DeviceView.21"), IconLoader.getIcon(JajukIcons.OK));
+            Messages.showInfoMessage(Messages.getString("DeviceView.21"), IconLoader
+                .getIcon(JajukIcons.OK));
           } else {
-            Messages.showInfoMessage(Messages.getString("DeviceView.22"), IconLoader.getIcon(JajukIcons.KO));
+            Messages.showInfoMessage(Messages.getString("DeviceView.22"), IconLoader
+                .getIcon(JajukIcons.KO));
           }
         }
       }.start();
-    } /*else if (ae.getActionCommand().equals(JajukEvents.WIZARD.toString())) {
-
-    }*/
+    } /*
+       * else if (ae.getActionCommand().equals(JajukEvents.WIZARD.toString())) {
+       *  }
+       */
   }
 
   /*
@@ -350,8 +357,7 @@ public class DeviceView extends ViewAdapter implements IView, Const, ActionListe
    */
   public void update(Event event) {
     JajukEvents subject = event.getSubject();
-    if (JajukEvents.DEVICE_MOUNT.equals(subject)
-        || JajukEvents.DEVICE_UNMOUNT.equals(subject)
+    if (JajukEvents.DEVICE_MOUNT.equals(subject) || JajukEvents.DEVICE_UNMOUNT.equals(subject)
         || JajukEvents.DEVICE_REFRESH.equals(subject)) {
       SwingUtilities.invokeLater(new Runnable() {
         public void run() {

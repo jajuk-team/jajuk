@@ -168,7 +168,7 @@ public final class Collection extends DefaultHandler implements Const, ErrorHand
   };
 
   /** Instance getter */
-  public static synchronized Collection getInstance() {
+  public static Collection getInstance() {
     if (collection == null) {
       collection = new Collection();
     }

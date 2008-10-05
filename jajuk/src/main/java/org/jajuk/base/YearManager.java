@@ -73,16 +73,14 @@ public final class YearManager extends ItemManager {
    * 
    * @param sName
    */
-  public Year registerYear(String sId, String pYear) {
-    synchronized (YearManager.getInstance().getLock()) {
-      Year year = (Year) hmItems.get(sId);
-      if (year != null) {
-        return year;
-      }
-      year = new Year(sId, pYear);
-      hmItems.put(sId, year);
+  public synchronized Year registerYear(String sId, String pYear) {
+    Year year = (Year) hmItems.get(sId);
+    if (year != null) {
       return year;
     }
+    year = new Year(sId, pYear);
+    hmItems.put(sId, year);
+    return year;
   }
 
   /*
@@ -108,12 +106,10 @@ public final class YearManager extends ItemManager {
    * 
    * @return years list
    */
-  public Set<Year> getYears() {
+  public synchronized Set<Year> getYears() {
     Set<Year> yearSet = new LinkedHashSet<Year>();
-    synchronized (getLock()) {
-      for (Item item : getItems()) {
-        yearSet.add((Year) item);
-      }
+    for (Item item : getItems()) {
+      yearSet.add((Year) item);
     }
     return yearSet;
   }
@@ -124,22 +120,20 @@ public final class YearManager extends ItemManager {
    * @param item
    * @return
    */
-  public Set<Year> getAssociatedYears(Item item) {
-    synchronized (YearManager.getInstance().getLock()) {
-      Set<Year> out = new TreeSet<Year>();
-      for (Object item2 : hmItems.values()) {
-        Year year = (Year) item2;
-        if (item instanceof Track && ((Track) item).getYear().equals(year)) {
-          out.add(year);
-        } else {
-          Set<Track> tracks = TrackManager.getInstance().getAssociatedTracks(item);
-          for (Track track : tracks) {
-            out.add(track.getYear());
-          }
+  public synchronized Set<Year> getAssociatedYears(Item item) {
+    Set<Year> out = new TreeSet<Year>();
+    for (Object item2 : hmItems.values()) {
+      Year year = (Year) item2;
+      if (item instanceof Track && ((Track) item).getYear().equals(year)) {
+        out.add(year);
+      } else {
+        Set<Track> tracks = TrackManager.getInstance().getAssociatedTracks(item);
+        for (Track track : tracks) {
+          out.add(track.getYear());
         }
       }
-      return out;
     }
+    return out;
   }
 
 }

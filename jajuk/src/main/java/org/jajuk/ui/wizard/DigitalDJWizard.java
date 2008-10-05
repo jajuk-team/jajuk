@@ -831,7 +831,7 @@ public class DigitalDJWizard extends Wizard implements Const {
      *          is it a from button ?
      */
     private void addStyle(int row, boolean bFrom) {
-      synchronized (StyleManager.getInstance().getLock()) {
+      synchronized (StyleManager.getInstance()) {
         Transition transition = alTransitions.get(row);
         // create list of styles used in existing transitions
         Set<Style> disabledStyles = new HashSet<Style>();
@@ -1108,7 +1108,7 @@ public class DigitalDJWizard extends Wizard implements Const {
      *          row
      */
     private void addStyle(int row) {
-      synchronized (StyleManager.getInstance().getLock()) {
+      synchronized (StyleManager.getInstance()) {
         Proportion proportion = proportions.get(row);
         // create list of styles used in existing transitions
         Set<Style> disabledStyles = new HashSet<Style>();

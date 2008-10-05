@@ -98,28 +98,26 @@ public final class AuthorManager extends ItemManager {
    * 
    * @param sName
    */
-  public Author registerAuthor(String sId, String sName) {
-    synchronized (AuthorManager.getInstance().getLock()) {
-      Author author = (Author) hmItems.get(sId);
-      if (author != null) {
-        return author;
-      }
-      author = new Author(sId, sName);
-      hmItems.put(sId, author);
-      // add it in styles list if new
-      if (!authorsList.contains(sName)) {
-        authorsList.add(author.getName2());
-      }
-      // Sort items ignoring case
-      Collections.sort(authorsList, new Comparator<String>() {
-
-        public int compare(String o1, String o2) {
-          return o1.compareToIgnoreCase(o2);
-        }
-
-      });
+  public synchronized Author registerAuthor(String sId, String sName) {
+    Author author = (Author) hmItems.get(sId);
+    if (author != null) {
       return author;
     }
+    author = new Author(sId, sName);
+    hmItems.put(sId, author);
+    // add it in styles list if new
+    if (!authorsList.contains(sName)) {
+      authorsList.add(author.getName2());
+    }
+    // Sort items ignoring case
+    Collections.sort(authorsList, new Comparator<String>() {
+
+      public int compare(String o1, String o2) {
+        return o1.compareToIgnoreCase(o2);
+      }
+
+    });
+    return author;
   }
 
   /**
@@ -130,7 +128,7 @@ public final class AuthorManager extends ItemManager {
    * @return new album
    */
   public Author changeAuthorName(Author old, String sNewName) throws JajukException {
-    synchronized (TrackManager.getInstance().getLock()) {
+    synchronized (TrackManager.getInstance()) {
       // check there is actually a change
       if (old.getName2().equals(sNewName)) {
         return old;
@@ -145,8 +143,7 @@ public final class AuthorManager extends ItemManager {
         }
       }
       // if current track author name is changed, notify it
-      if (FIFO.getCurrentFile() != null
-          && FIFO.getCurrentFile().getTrack().getAuthor().equals(old)) {
+      if (FIFO.getCurrentFile() != null && FIFO.getCurrentFile().getTrack().getAuthor().equals(old)) {
         ObservationManager.notify(new Event(JajukEvents.AUTHOR_CHANGED));
       }
       return newItem;
@@ -193,9 +190,7 @@ public final class AuthorManager extends ItemManager {
    * @return authors as a string list (used for authors combos)
    */
   public static synchronized Vector<String> getAuthorsList() {
-    synchronized (getInstance().getLock()) {
-      return authorsList;
-    }
+    return authorsList;
   }
 
   /**
@@ -211,12 +206,10 @@ public final class AuthorManager extends ItemManager {
    * 
    * @return albums list
    */
-  public Set<Author> getAuthors() {
+  public synchronized Set<Author> getAuthors() {
     Set<Author> authorSet = new LinkedHashSet<Author>();
-    synchronized (getLock()) {
-      for (Item item : getItems()) {
-        authorSet.add((Author) item);
-      }
+    for (Item item : getItems()) {
+      authorSet.add((Author) item);
     }
     return authorSet;
   }
@@ -227,21 +220,19 @@ public final class AuthorManager extends ItemManager {
    * @param item
    * @return
    */
-  public Set<Author> getAssociatedAuthors(Item item) {
-    synchronized (AuthorManager.getInstance().getLock()) {
-      Set<Author> out = new TreeSet<Author>();
-      // If item is a track, return Authors containing this track
-      if (item instanceof Track) {
-        // we can return as a track has only one Author
-        out.add(((Track) item).getAuthor());
-      } else {
-        Set<Track> tracks = TrackManager.getInstance().getAssociatedTracks(item);
-        for (Track track : tracks) {
-          out.add(track.getAuthor());
-        }
+  public synchronized Set<Author> getAssociatedAuthors(Item item) {
+    Set<Author> out = new TreeSet<Author>();
+    // If item is a track, return Authors containing this track
+    if (item instanceof Track) {
+      // we can return as a track has only one Author
+      out.add(((Track) item).getAuthor());
+    } else {
+      Set<Track> tracks = TrackManager.getInstance().getAssociatedTracks(item);
+      for (Track track : tracks) {
+        out.add(track.getAuthor());
       }
-      return out;
     }
+    return out;
   }
 
   /**

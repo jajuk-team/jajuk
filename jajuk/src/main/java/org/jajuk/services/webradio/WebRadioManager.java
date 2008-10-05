@@ -247,7 +247,7 @@ public final class WebRadioManager extends DefaultHandler implements Const {
    * @return
    */
   public Set<SearchResult> search(String sCriteria) {
-    synchronized (FileManager.getInstance().getLock()) {
+    synchronized (FileManager.getInstance()) {
       Set<SearchResult> tsResu = new TreeSet<SearchResult>();
       for (WebRadio radio : webradios) {
         if (radio.getName().toLowerCase().indexOf(sCriteria.toLowerCase()) != -1) {

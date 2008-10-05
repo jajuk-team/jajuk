@@ -110,7 +110,7 @@ public class TracksTableModel extends JajukTableModel {
   @Override
   public synchronized void populateModel(String property, String sPattern,
       List<String> columnsToShow) {
-    synchronized (TrackManager.getInstance().getLock()) {
+    synchronized (TrackManager.getInstance()) {
       // This should be monitor filemanager to avoid NPE when changing items
 
       // Filter mounted files if needed and apply sync table with tree option

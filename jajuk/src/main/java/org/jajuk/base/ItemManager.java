@@ -55,9 +55,6 @@ public abstract class ItemManager implements Const {
   private HashMap<String, PropertyMetaInformation> hmPropertiesMetaInformation = new LinkedHashMap<String, PropertyMetaInformation>(
       10);
 
-  /** Manager lock, should be synchronized before any iteration on items */
-  private byte[] bLock = new byte[0];
-
   /**
    * Constructor
    */
@@ -113,26 +110,22 @@ public abstract class ItemManager implements Const {
 
   /** Remove a custom property to all items for the given manager */
   @SuppressWarnings("unchecked")
-  public void applyRemoveProperty(PropertyMetaInformation meta) {
-    synchronized (getLock()) {
-      Collection<Item> items = hmItems.values();
-      if (items != null) {
-        for (Item item : items) {
-          item.removeProperty(meta.getName());
-        }
+  public synchronized void applyRemoveProperty(PropertyMetaInformation meta) {
+    Collection<Item> items = hmItems.values();
+    if (items != null) {
+      for (Item item : items) {
+        item.removeProperty(meta.getName());
       }
     }
   }
 
   /** Add a custom property to all items for the given manager */
   @SuppressWarnings("unchecked")
-  public void applyNewProperty(PropertyMetaInformation meta) {
-    synchronized (getLock()) {
-      Collection<Item> items = hmItems.values();
-      if (items != null) {
-        for (Item item : items) {
-          item.setProperty(meta.getName(), meta.getDefaultValue());
-        }
+  public synchronized void applyNewProperty(PropertyMetaInformation meta) {
+    Collection<Item> items = hmItems.values();
+    if (items != null) {
+      for (Item item : items) {
+        item.setProperty(meta.getName(), meta.getDefaultValue());
       }
     }
   }
@@ -240,31 +233,29 @@ public abstract class ItemManager implements Const {
    * Perform an cleanup : delete useless items
    */
   @SuppressWarnings("unchecked")
-  public void cleanup() {
-    synchronized (getLock()) {
-      // build used items set
-      Set<Item> hsItems = new HashSet<Item>(1000);
-      for (Item item : TrackManager.getInstance().getTracks()) {
-        Track track = (Track) item;
-        if (this instanceof AlbumManager) {
-          hsItems.add(track.getAlbum());
-        } else if (this instanceof AuthorManager) {
-          hsItems.add(track.getAuthor());
-        } else if (this instanceof StyleManager) {
-          hsItems.add(track.getStyle());
-        }
+  public synchronized void cleanup() {
+    // build used items set
+    Set<Item> hsItems = new HashSet<Item>(1000);
+    for (Item item : TrackManager.getInstance().getTracks()) {
+      Track track = (Track) item;
+      if (this instanceof AlbumManager) {
+        hsItems.add(track.getAlbum());
+      } else if (this instanceof AuthorManager) {
+        hsItems.add(track.getAuthor());
+      } else if (this instanceof StyleManager) {
+        hsItems.add(track.getStyle());
       }
-      Iterator<Item> it = hmItems.values().iterator();
-      while (it.hasNext()) {
-        Item item = it.next();
-        // check if this item still maps some tracks
-        if ((!hsItems.contains(item)) &&
-        // For styles, keep it even if none track uses it if it is a
-            // default style
-            (!(this instanceof StyleManager && !StyleManager.getInstance().getStylesList()
-                .contains(item.getName())))) {
-          it.remove();
-        }
+    }
+    Iterator<Item> it = hmItems.values().iterator();
+    while (it.hasNext()) {
+      Item item = it.next();
+      // check if this item still maps some tracks
+      if ((!hsItems.contains(item)) &&
+      // For styles, keep it even if none track uses it if it is a
+          // default style
+          (!(this instanceof StyleManager && !StyleManager.getInstance().getStylesList().contains(
+              item.getName())))) {
+        it.remove();
       }
     }
   }
@@ -272,27 +263,21 @@ public abstract class ItemManager implements Const {
   /**
    * Perform a cleanup for a given item
    */
-  public void cleanup(Item item) {
-    synchronized (getLock()) {
-      if (TrackManager.getInstance().getAssociatedTracks(item).size() == 0) {
-        hmItems.remove(item.getID());
-      }
+  public synchronized void cleanup(Item item) {
+    if (TrackManager.getInstance().getAssociatedTracks(item).size() == 0) {
+      hmItems.remove(item.getID());
     }
   }
 
-  /** Return all registred items with filter applied */
+  /** Return all registated items with filter applied */
   @SuppressWarnings("unchecked")
-  public Collection<Item> getItems(Filter filter) {
-    synchronized (getLock()) {
+  public synchronized Collection<Item> getItems(Filter filter) {
       return Filter.filterItems(new ArrayList<Item>(hmItems.values()), filter);
-    }
   }
 
   /** Remove a given item */
   public synchronized void removeItem(String sID) {
-    synchronized (getLock()) {
       hmItems.remove(sID);
-    }
   }
 
   /**
@@ -364,7 +349,7 @@ public abstract class ItemManager implements Const {
       if (!XML_NAME.equals(sKey)) { // file name
         // TBI newItem =
         // DirectoryManager.getInstance().changeDirectoryName((Directory)itemToChange,(String)oValue);
-      //} else { // others properties
+        // } else { // others properties
         itemToChange.setProperty(sKey, oValue);
       }
     } else if (itemToChange instanceof Device) {
@@ -423,20 +408,10 @@ public abstract class ItemManager implements Const {
 
   /**
    * 
-   * @return MUTEX used to avoid concurrent access to items
-   */
-  public byte[] getLock() {
-    return bLock;
-  }
-
-  /**
-   * 
    * @return number of item
    */
-  public int getElementCount() {
-    synchronized (getLock()) {
+  public synchronized int getElementCount() {
       return hmItems.size();
-    }
   }
 
   /**
@@ -444,26 +419,22 @@ public abstract class ItemManager implements Const {
    *          Item ID
    * @return Item
    */
-  public Item getItemByID(String sID) {
-    synchronized (getLock()) {
+  public synchronized Item getItemByID(String sID) {
       return (Item) hmItems.get(sID);
-    }
   }
 
   /** Return all registred items */
   @SuppressWarnings("unchecked")
-  protected Set<Item> getItems() {
-    synchronized (getLock()) {
+  protected synchronized Set<Item> getItems() {
       return hmItems.inverseBidiMap().keySet();
-    }
   }
 
   /**
    * Clear any entries from this manager
    */
-  public void clear(){
+  public void clear() {
     hmItems.clear();
     hmPropertiesMetaInformation.clear();
   }
-  
+
 }

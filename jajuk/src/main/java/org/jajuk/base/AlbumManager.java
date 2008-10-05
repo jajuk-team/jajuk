@@ -116,16 +116,14 @@ public final class AlbumManager extends ItemManager implements Observer {
    * 
    * @param sName
    */
-  public Album registerAlbum(String sId, String sName) {
-    synchronized (TrackManager.getInstance().getLock()) {
-      Album album = (Album) hmItems.get(sId);
-      if (album != null) {
-        return album;
-      }
-      album = new Album(sId, sName);
-      hmItems.put(sId, album);
+  public synchronized Album registerAlbum(String sId, String sName) {
+    Album album = (Album) hmItems.get(sId);
+    if (album != null) {
       return album;
     }
+    album = new Album(sId, sName);
+    hmItems.put(sId, album);
+    return album;
   }
 
   /**
@@ -204,12 +202,10 @@ public final class AlbumManager extends ItemManager implements Observer {
    * 
    * @return albums list
    */
-  public Set<Album> getAlbums() {
+  public synchronized Set<Album> getAlbums() {
     Set<Album> albumSet = new LinkedHashSet<Album>();
-    synchronized (getLock()) {
-      for (Item item : getItems()) {
-        albumSet.add((Album) item);
-      }
+    for (Item item : getItems()) {
+      albumSet.add((Album) item);
     }
     return albumSet;
   }
@@ -220,21 +216,19 @@ public final class AlbumManager extends ItemManager implements Observer {
    * @param item
    * @return
    */
-  public Set<Album> getAssociatedAlbums(Item item) {
-    synchronized (AlbumManager.getInstance().getLock()) {
-      Set<Album> out = new TreeSet<Album>();
-      // If item is a track, return albums containing this track
-      if (item instanceof Track) {
-        // we can return as a track has only one album
-        out.add(((Track) item).getAlbum());
-      } else {
-        Set<Track> tracks = TrackManager.getInstance().getAssociatedTracks(item);
-        for (Track track : tracks) {
-          out.add(track.getAlbum());
-        }
+  public synchronized Set<Album> getAssociatedAlbums(Item item) {
+    Set<Album> out = new TreeSet<Album>();
+    // If item is a track, return albums containing this track
+    if (item instanceof Track) {
+      // we can return as a track has only one album
+      out.add(((Track) item).getAlbum());
+    } else {
+      Set<Track> tracks = TrackManager.getInstance().getAssociatedTracks(item);
+      for (Track track : tracks) {
+        out.add(track.getAlbum());
       }
-      return out;
     }
+    return out;
   }
 
   /**

@@ -105,28 +105,26 @@ public final class StyleManager extends ItemManager {
    * 
    * @param sName
    */
-  public Style registerStyle(String sId, String sName) {
-    synchronized (StyleManager.getInstance().getLock()) {
-      Style style = (Style) hmItems.get(sId);
-      if (style != null) {
-        return style;
-      }
-      style = new Style(sId, sName);
-      hmItems.put(sId, style);
-      // add it in styles list if new
-      if (!stylesList.contains(sName)) {
-        stylesList.add(style.getName2());
-      }
-      // Sort items ignoring case
-      Collections.sort(stylesList, new Comparator<String>() {
-
-        public int compare(String o1, String o2) {
-          return o1.compareToIgnoreCase(o2);
-        }
-
-      });
+  public synchronized Style registerStyle(String sId, String sName) {
+    Style style = (Style) hmItems.get(sId);
+    if (style != null) {
       return style;
     }
+    style = new Style(sId, sName);
+    hmItems.put(sId, style);
+    // add it in styles list if new
+    if (!stylesList.contains(sName)) {
+      stylesList.add(style.getName2());
+    }
+    // Sort items ignoring case
+    Collections.sort(stylesList, new Comparator<String>() {
+
+      public int compare(String o1, String o2) {
+        return o1.compareToIgnoreCase(o2);
+      }
+
+    });
+    return style;
   }
 
   /**
@@ -147,7 +145,7 @@ public final class StyleManager extends ItemManager {
    * @return new item
    */
   public synchronized Style changeStyleName(Style old, String sNewName) throws JajukException {
-    synchronized (TrackManager.getInstance().getLock()) {
+    synchronized (TrackManager.getInstance()) {
       // check there is actually a change
       if (old.getName2().equals(sNewName)) {
         return old;
@@ -212,9 +210,7 @@ public final class StyleManager extends ItemManager {
    * @return Human readable registrated style list
    */
   public synchronized Vector<String> getStylesList() {
-    synchronized (StyleManager.getInstance().getLock()) {
-      return stylesList;
-    }
+    return stylesList;
   }
 
   /**
@@ -230,12 +226,10 @@ public final class StyleManager extends ItemManager {
    * 
    * @return styles list
    */
-  public Set<Style> getStyles() {
+  public synchronized Set<Style> getStyles() {
     Set<Style> styleSet = new LinkedHashSet<Style>();
-    synchronized (getLock()) {
-      for (Item item : getItems()) {
-        styleSet.add((Style) item);
-      }
+    for (Item item : getItems()) {
+      styleSet.add((Style) item);
     }
     return styleSet;
   }
@@ -246,21 +240,19 @@ public final class StyleManager extends ItemManager {
    * @param item
    * @return
    */
-  public Set<Style> getAssociatedStyles(Item item) {
-    synchronized (StyleManager.getInstance().getLock()) {
-      Set<Style> out = new TreeSet<Style>();
-      for (Object item2 : hmItems.values()) {
-        Style style = (Style) item2;
-        if (item instanceof Track && ((Track) item).getStyle().equals(style)) {
-          out.add(style);
-        } else {
-          Set<Track> tracks = TrackManager.getInstance().getAssociatedTracks(item);
-          for (Track track : tracks) {
-            out.add(track.getStyle());
-          }
+  public synchronized Set<Style> getAssociatedStyles(Item item) {
+    Set<Style> out = new TreeSet<Style>();
+    for (Object item2 : hmItems.values()) {
+      Style style = (Style) item2;
+      if (item instanceof Track && ((Track) item).getStyle().equals(style)) {
+        out.add(style);
+      } else {
+        Set<Track> tracks = TrackManager.getInstance().getAssociatedTracks(item);
+        for (Track track : tracks) {
+          out.add(track.getStyle());
         }
       }
-      return out;
     }
+    return out;
   }
 }

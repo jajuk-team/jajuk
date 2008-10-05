@@ -137,7 +137,7 @@ public final class TypeManager extends ItemManager {
     return hmSupportedTypes.get(sExtension);
   }
 
-   /**
+  /**
    * Return all music types
    * 
    * @return
@@ -193,12 +193,10 @@ public final class TypeManager extends ItemManager {
    * 
    * @return types list
    */
-  public Set<Type> getTypes() {
+  public synchronized Set<Type> getTypes() {
     Set<Type> typeSet = new LinkedHashSet<Type>();
-    synchronized (getLock()) {
-      for (Item item : getItems()) {
-        typeSet.add((Type) item);
-      }
+    for (Item item : getItems()) {
+      typeSet.add((Type) item);
     }
     return typeSet;
   }

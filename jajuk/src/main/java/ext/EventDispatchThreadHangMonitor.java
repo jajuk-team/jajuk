@@ -81,7 +81,7 @@ public final class EventDispatchThreadHangMonitor extends EventQueue {
         // event that gets dispatched.
         return;
       }
-      // check if elasped time is not exceed (used only in test mode)
+      // check if elapsed time is not exceed (used only in test mode)
       if (Main.isTestMode() && timeSoFar() > UNREASONABLE_DISPATCH_DURATION_MS_TEST) {
         reportHang();
       }

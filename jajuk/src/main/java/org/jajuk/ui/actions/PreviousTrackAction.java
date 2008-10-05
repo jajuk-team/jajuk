@@ -85,8 +85,7 @@ public class PreviousTrackAction extends JajukAction {
                 Log.error(e);
               }
               // Player was paused, reset pause button when
-              // changing of
-              // track
+              // changing of track
               if (Player.isPaused()) {
                 Player.setPaused(false);
                 ObservationManager.notify(new Event(JajukEvents.PLAYER_RESUME));

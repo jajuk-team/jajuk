@@ -59,7 +59,7 @@ public final class TrackManager extends ItemManager implements Observer {
    */
   private static int nbFilesRemaining = 0;
 
-   /** Autocommit flag for tags * */
+  /** Autocommit flag for tags * */
   private boolean bAutocommit = true;
 
   /** Set of tags to commit */
@@ -114,11 +114,11 @@ public final class TrackManager extends ItemManager implements Observer {
     registerProperty(new PropertyMetaInformation(XML_TRACK_ORDER, false, true, true, true, false,
         Long.class, null));
     // Track preference factor
-    registerProperty(new PropertyMetaInformation(XML_TRACK_PREFERENCE, false, false, true, true, true,
-        Long.class, 0l));
+    registerProperty(new PropertyMetaInformation(XML_TRACK_PREFERENCE, false, false, true, true,
+        true, Long.class, 0l));
     // Track total playtime
-    registerProperty(new PropertyMetaInformation(XML_TRACK_TOTAL_PLAYTIME, false, false, true, false, false,
-        Long.class, 0l));
+    registerProperty(new PropertyMetaInformation(XML_TRACK_TOTAL_PLAYTIME, false, false, true,
+        false, false, Long.class, 0l));
     // Track ban status
     registerProperty(new PropertyMetaInformation(XML_TRACK_BANNED, false, false, true, true, false,
         Boolean.class, false));
@@ -170,19 +170,17 @@ public final class TrackManager extends ItemManager implements Observer {
    * 
    * @param sName
    */
-  public Track registerTrack(String sId, String sName, Album album, Style style, Author author,
-      long length, Year year, long lOrder, Type type) {
-    synchronized (TrackManager.getInstance().getLock()) {
-      Track track = (Track) hmItems.get(sId);
-      if (track != null) {
-        return track;
-      }
-      track = new Track(sId, sName, album, style, author, length, year, lOrder, type);
-      hmItems.put(sId, track);
-      // For performances, add the track to the album cache
-      album.tracks.add(track);
+  public synchronized Track registerTrack(String sId, String sName, Album album, Style style,
+      Author author, long length, Year year, long lOrder, Type type) {
+    Track track = (Track) hmItems.get(sId);
+    if (track != null) {
       return track;
     }
+    track = new Track(sId, sName, album, style, author, length, year, lOrder, type);
+    hmItems.put(sId, track);
+    // For performances, add the track to the album cache
+    album.tracks.add(track);
+    return track;
   }
 
   /**
@@ -193,7 +191,7 @@ public final class TrackManager extends ItemManager implements Observer {
   public Set<Item> commit() {
     Set<Item> errors = new TreeSet<Item>();
     Iterator<Tag> it = tagsToCommit.keySet().iterator();
-    while (it.hasNext()){
+    while (it.hasNext()) {
       Tag tag = null;
       try {
         tag = it.next();
@@ -219,46 +217,43 @@ public final class TrackManager extends ItemManager implements Observer {
    *          files we want to deal with
    * @return new track
    */
-  public Track changeTrackAlbum(Track track, String sNewAlbum, Set<File> filter)
+  public synchronized Track changeTrackAlbum(Track track, String sNewAlbum, Set<File> filter)
       throws JajukException {
-    synchronized (TrackManager.getInstance().getLock()) {
-      // check there is actually a change
-      if (track.getAlbum().getName2().equals(sNewAlbum)) {
-        return track;
-      }
-      List<File> alReady = null;
-      // check if files are accessible
-      alReady = track.getReadyFiles(filter);
-      if (alReady.size() == 0) {
-        throw new NoneAccessibleFileException(10);
-      }
-      // change tag in files
-      for (File file : alReady) {
-        Tag tag = new Tag(file.getIO());
-        tag.setAlbumName(sNewAlbum);
-        if (bAutocommit) {
-          tag.commit();
-        } else {
-          tagsToCommit.put(tag, track);
-        }
-      }
-      // Remove the track from the old album
-      track.getAlbum().tracks.remove(track);
-      // if current track album name is changed, notify it
-      if (FIFO.getCurrentFile() != null
-          && FIFO.getCurrentFile().getTrack().getAlbum().equals(track.getAlbum())) {
-        ObservationManager.notify(new Event(JajukEvents.ALBUM_CHANGED));
-      }
-      // register the new album
-      Album newAlbum = AlbumManager.getInstance().registerAlbum(sNewAlbum);
-      Track newTrack = registerTrack(track.getName(), newAlbum, track.getStyle(),
-          track.getAuthor(), track.getDuration(), track.getYear(), track.getOrder(), track
-              .getType());
-      postChange(track, newTrack, filter);
-      // remove this album if no more references
-      AlbumManager.getInstance().cleanup(track.getAlbum());
-      return newTrack;
+    // check there is actually a change
+    if (track.getAlbum().getName2().equals(sNewAlbum)) {
+      return track;
     }
+    List<File> alReady = null;
+    // check if files are accessible
+    alReady = track.getReadyFiles(filter);
+    if (alReady.size() == 0) {
+      throw new NoneAccessibleFileException(10);
+    }
+    // change tag in files
+    for (File file : alReady) {
+      Tag tag = new Tag(file.getIO());
+      tag.setAlbumName(sNewAlbum);
+      if (bAutocommit) {
+        tag.commit();
+      } else {
+        tagsToCommit.put(tag, track);
+      }
+    }
+    // Remove the track from the old album
+    track.getAlbum().tracks.remove(track);
+    // if current track album name is changed, notify it
+    if (FIFO.getCurrentFile() != null
+        && FIFO.getCurrentFile().getTrack().getAlbum().equals(track.getAlbum())) {
+      ObservationManager.notify(new Event(JajukEvents.ALBUM_CHANGED));
+    }
+    // register the new album
+    Album newAlbum = AlbumManager.getInstance().registerAlbum(sNewAlbum);
+    Track newTrack = registerTrack(track.getName(), newAlbum, track.getStyle(), track.getAuthor(),
+        track.getDuration(), track.getYear(), track.getOrder(), track.getType());
+    postChange(track, newTrack, filter);
+    // remove this album if no more references
+    AlbumManager.getInstance().cleanup(track.getAlbum());
+    return newTrack;
   }
 
   /**
@@ -272,47 +267,45 @@ public final class TrackManager extends ItemManager implements Observer {
    *          files we want to deal with
    * @return new track
    */
-  public Track changeTrackAuthor(Track track, String sNewAuthor, Set<File> filter)
+  public synchronized Track changeTrackAuthor(Track track, String sNewAuthor, Set<File> filter)
       throws JajukException {
-    synchronized (TrackManager.getInstance().getLock()) {
-      // check there is actually a change
-      if (track.getAuthor().getName2().equals(sNewAuthor)) {
-        return track;
-      }
-      List<File> alReady = null;
-      // check if files are accessible
-      alReady = track.getReadyFiles(filter);
-      if (alReady.size() == 0) {
-        throw new NoneAccessibleFileException(10);
-      }
-      // change tag in files
-      for (final File file : alReady) {
-        final Tag tag = new Tag(file.getIO());
-
-        tag.setAuthorName(sNewAuthor);
-        if (bAutocommit) {
-          tag.commit();
-        } else {
-          tagsToCommit.put(tag, track);
-        }
-      }
-      // Remove the track from the old album
-      track.getAlbum().tracks.remove(track);
-      
-      // if current track author name is changed, notify it
-      if (FIFO.getCurrentFile() != null
-          && FIFO.getCurrentFile().getTrack().getAuthor().equals(track.getAuthor())) {
-        ObservationManager.notify(new Event(JajukEvents.AUTHOR_CHANGED));
-      }
-      // register the new item
-      Author newAuthor = AuthorManager.getInstance().registerAuthor(sNewAuthor);
-      Track newTrack = registerTrack(track.getName(), track.getAlbum(), track.getStyle(),
-          newAuthor, track.getDuration(), track.getYear(), track.getOrder(), track.getType());
-      postChange(track, newTrack, filter);
-      // remove this item if no more references
-      AuthorManager.getInstance().cleanup(track.getAuthor());
-      return newTrack;
+    // check there is actually a change
+    if (track.getAuthor().getName2().equals(sNewAuthor)) {
+      return track;
     }
+    List<File> alReady = null;
+    // check if files are accessible
+    alReady = track.getReadyFiles(filter);
+    if (alReady.size() == 0) {
+      throw new NoneAccessibleFileException(10);
+    }
+    // change tag in files
+    for (final File file : alReady) {
+      final Tag tag = new Tag(file.getIO());
+
+      tag.setAuthorName(sNewAuthor);
+      if (bAutocommit) {
+        tag.commit();
+      } else {
+        tagsToCommit.put(tag, track);
+      }
+    }
+    // Remove the track from the old album
+    track.getAlbum().tracks.remove(track);
+
+    // if current track author name is changed, notify it
+    if (FIFO.getCurrentFile() != null
+        && FIFO.getCurrentFile().getTrack().getAuthor().equals(track.getAuthor())) {
+      ObservationManager.notify(new Event(JajukEvents.AUTHOR_CHANGED));
+    }
+    // register the new item
+    Author newAuthor = AuthorManager.getInstance().registerAuthor(sNewAuthor);
+    Track newTrack = registerTrack(track.getName(), track.getAlbum(), track.getStyle(), newAuthor,
+        track.getDuration(), track.getYear(), track.getOrder(), track.getType());
+    postChange(track, newTrack, filter);
+    // remove this item if no more references
+    AuthorManager.getInstance().cleanup(track.getAuthor());
+    return newTrack;
   }
 
   /**
@@ -326,44 +319,41 @@ public final class TrackManager extends ItemManager implements Observer {
    *          files we want to deal with
    * @return new track
    */
-  public Track changeTrackStyle(Track track, String sNewStyle, Set<File> filter)
+  public synchronized Track changeTrackStyle(Track track, String sNewStyle, Set<File> filter)
       throws JajukException {
-    synchronized (TrackManager.getInstance().getLock()) {
-      // check there is actually a change
+    // check there is actually a change
 
-      if (track.getStyle().getName2().equals(sNewStyle)) {
-        return track;
-      }
-      List<File> alReady = null;
-      // check if files are accessible
-      alReady = track.getReadyFiles(filter);
-      if (alReady.size() == 0) {
-        throw new NoneAccessibleFileException(10);
-      }
-      // change tag in files
-      for (final File file : alReady) {
-        final Tag tag = new Tag(file.getIO());
-
-        tag.setStyleName(sNewStyle);
-        if (bAutocommit) {
-          tag.commit();
-        } else {
-          tagsToCommit.put(tag, track);
-        }
-      }
-      // Remove the track from the old album
-      track.getAlbum().tracks.remove(track);
-      
-      // register the new item
-      Style newStyle = StyleManager.getInstance().registerStyle(sNewStyle);
-      Track newTrack = registerTrack(track.getName(), track.getAlbum(), newStyle,
-          track.getAuthor(), track.getDuration(), track.getYear(), track.getOrder(), track
-              .getType());
-      postChange(track, newTrack, filter);
-      // remove this item if no more references
-      StyleManager.getInstance().cleanup(track.getStyle());
-      return newTrack;
+    if (track.getStyle().getName2().equals(sNewStyle)) {
+      return track;
     }
+    List<File> alReady = null;
+    // check if files are accessible
+    alReady = track.getReadyFiles(filter);
+    if (alReady.size() == 0) {
+      throw new NoneAccessibleFileException(10);
+    }
+    // change tag in files
+    for (final File file : alReady) {
+      final Tag tag = new Tag(file.getIO());
+
+      tag.setStyleName(sNewStyle);
+      if (bAutocommit) {
+        tag.commit();
+      } else {
+        tagsToCommit.put(tag, track);
+      }
+    }
+    // Remove the track from the old album
+    track.getAlbum().tracks.remove(track);
+
+    // register the new item
+    Style newStyle = StyleManager.getInstance().registerStyle(sNewStyle);
+    Track newTrack = registerTrack(track.getName(), track.getAlbum(), newStyle, track.getAuthor(),
+        track.getDuration(), track.getYear(), track.getOrder(), track.getType());
+    postChange(track, newTrack, filter);
+    // remove this item if no more references
+    StyleManager.getInstance().cleanup(track.getStyle());
+    return newTrack;
   }
 
   /**
@@ -377,43 +367,42 @@ public final class TrackManager extends ItemManager implements Observer {
    *          files we want to deal with
    * @return new track or null if wrong format
    */
-  public Track changeTrackYear(Track track, String newItem, Set<File> filter) throws JajukException {
-    synchronized (TrackManager.getInstance().getLock()) {
-      // check there is actually a change
-      if (track.getYear().getName().equals(newItem)) {
-        return track;
-      }
-      long lNewItem = UtilString.fastLongParser(newItem);
-      if (lNewItem < 0 || lNewItem > 10000) {
-        throw new JajukException(137);
-      }
-      List<File> alReady = null;
-      // check if files are accessible
-      alReady = track.getReadyFiles(filter);
-      if (alReady.size() == 0) {
-        throw new NoneAccessibleFileException(10);
-      }
-      // change tag in files
-      for (final File file : alReady) {
-        final Tag tag = new Tag(file.getIO());
-
-        tag.setYear(newItem);
-        if (bAutocommit) {
-          tag.commit();
-        } else {
-          tagsToCommit.put(tag, track);
-        }
-      }
-      // Remove the track from the old album
-      track.getAlbum().tracks.remove(track);
-      
-      // Register new item
-      Year newYear = YearManager.getInstance().registerYear(newItem);
-      Track newTrack = registerTrack(track.getName(), track.getAlbum(), track.getStyle(), track
-          .getAuthor(), track.getDuration(), newYear, track.getOrder(), track.getType());
-      postChange(track, newTrack, filter);
-      return newTrack;
+  public synchronized Track changeTrackYear(Track track, String newItem, Set<File> filter)
+      throws JajukException {
+    // check there is actually a change
+    if (track.getYear().getName().equals(newItem)) {
+      return track;
     }
+    long lNewItem = UtilString.fastLongParser(newItem);
+    if (lNewItem < 0 || lNewItem > 10000) {
+      throw new JajukException(137);
+    }
+    List<File> alReady = null;
+    // check if files are accessible
+    alReady = track.getReadyFiles(filter);
+    if (alReady.size() == 0) {
+      throw new NoneAccessibleFileException(10);
+    }
+    // change tag in files
+    for (final File file : alReady) {
+      final Tag tag = new Tag(file.getIO());
+
+      tag.setYear(newItem);
+      if (bAutocommit) {
+        tag.commit();
+      } else {
+        tagsToCommit.put(tag, track);
+      }
+    }
+    // Remove the track from the old album
+    track.getAlbum().tracks.remove(track);
+
+    // Register new item
+    Year newYear = YearManager.getInstance().registerYear(newItem);
+    Track newTrack = registerTrack(track.getName(), track.getAlbum(), track.getStyle(), track
+        .getAuthor(), track.getDuration(), newYear, track.getOrder(), track.getType());
+    postChange(track, newTrack, filter);
+    return newTrack;
   }
 
   /**
@@ -427,35 +416,33 @@ public final class TrackManager extends ItemManager implements Observer {
    *          files we want to deal with
    * @return new track or null if wronf format
    */
-  public Track changeTrackComment(Track track, String sNewItem, Set<File> filter)
+  public synchronized Track changeTrackComment(Track track, String sNewItem, Set<File> filter)
       throws JajukException {
-    synchronized (TrackManager.getInstance().getLock()) {
-      // check there is actually a change
-      if (track.getComment().equals(sNewItem)) {
-        return track;
-      }
-      List<File> alReady = null;
-      // check if files are accessible
-      alReady = track.getReadyFiles(filter);
-      if (alReady.size() == 0) {
-        throw new NoneAccessibleFileException(10);
-      }
-      // change tag in files
-      for (File file : alReady) {
-        Tag tag = new Tag(file.getIO());
-        tag.setComment(sNewItem);
-        if (bAutocommit) {
-          tag.commit();
-        } else {
-          tagsToCommit.put(tag, track);
-        }
-      }
-      // Remove the track from the old album
-      track.getAlbum().tracks.remove(track);
-      
-      track.setComment(sNewItem);
+    // check there is actually a change
+    if (track.getComment().equals(sNewItem)) {
       return track;
     }
+    List<File> alReady = null;
+    // check if files are accessible
+    alReady = track.getReadyFiles(filter);
+    if (alReady.size() == 0) {
+      throw new NoneAccessibleFileException(10);
+    }
+    // change tag in files
+    for (File file : alReady) {
+      Tag tag = new Tag(file.getIO());
+      tag.setComment(sNewItem);
+      if (bAutocommit) {
+        tag.commit();
+      } else {
+        tagsToCommit.put(tag, track);
+      }
+    }
+    // Remove the track from the old album
+    track.getAlbum().tracks.remove(track);
+
+    track.setComment(sNewItem);
+    return track;
   }
 
   /**
@@ -467,19 +454,17 @@ public final class TrackManager extends ItemManager implements Observer {
    *          item name
    * @return new track or null if wrong format
    */
-  public Track changeTrackRate(Track track, long lNew) throws JajukException {
-    synchronized (TrackManager.getInstance().getLock()) {
-      // check there is actually a change
-      if (track.getRate() == lNew) {
-        return track;
-      }
-      // check format
-      if (lNew < 0) {
-        throw new JajukException(137);
-      }
-      track.setRate(lNew);
+  public synchronized Track changeTrackRate(Track track, long lNew) throws JajukException {
+    // check there is actually a change
+    if (track.getRate() == lNew) {
       return track;
     }
+    // check format
+    if (lNew < 0) {
+      throw new JajukException(137);
+    }
+    track.setRate(lNew);
+    return track;
   }
 
   /**
@@ -493,42 +478,40 @@ public final class TrackManager extends ItemManager implements Observer {
    *          files we want to deal with
    * @return new track or null if wronf format
    */
-  public Track changeTrackOrder(Track track, long lNewOrder, Set<File> filter)
+  public synchronized Track changeTrackOrder(Track track, long lNewOrder, Set<File> filter)
       throws JajukException {
-    synchronized (TrackManager.getInstance().getLock()) {
-      // check there is actually a change
-      if (track.getOrder() == lNewOrder) {
-        return track;
-      }
-      // check format
-      if (lNewOrder < 0) {
-        throw new JajukException(137);
-      }
-      List<File> alReady = null;
-      // check if files are accessible
-      alReady = track.getReadyFiles(filter);
-      if (alReady.size() == 0) {
-        throw new NoneAccessibleFileException(10);
-      }
-      // change tag in files
-      for (File file : alReady) {
-        Tag tag = new Tag(file.getIO());
-        tag.setOrder(lNewOrder);
-        if (bAutocommit) {
-          tag.commit();
-        } else {
-          tagsToCommit.put(tag, track);
-        }
-      }
-      
-      // Remove the track from the old album
-      track.getAlbum().tracks.remove(track);
-      
-      Track newTrack = registerTrack(track.getName(), track.getAlbum(), track.getStyle(), track
-          .getAuthor(), track.getDuration(), track.getYear(), lNewOrder, track.getType());
-      postChange(track, newTrack, filter);
-      return newTrack;
+    // check there is actually a change
+    if (track.getOrder() == lNewOrder) {
+      return track;
     }
+    // check format
+    if (lNewOrder < 0) {
+      throw new JajukException(137);
+    }
+    List<File> alReady = null;
+    // check if files are accessible
+    alReady = track.getReadyFiles(filter);
+    if (alReady.size() == 0) {
+      throw new NoneAccessibleFileException(10);
+    }
+    // change tag in files
+    for (File file : alReady) {
+      Tag tag = new Tag(file.getIO());
+      tag.setOrder(lNewOrder);
+      if (bAutocommit) {
+        tag.commit();
+      } else {
+        tagsToCommit.put(tag, track);
+      }
+    }
+
+    // Remove the track from the old album
+    track.getAlbum().tracks.remove(track);
+
+    Track newTrack = registerTrack(track.getName(), track.getAlbum(), track.getStyle(), track
+        .getAuthor(), track.getDuration(), track.getYear(), lNewOrder, track.getType());
+    postChange(track, newTrack, filter);
+    return newTrack;
   }
 
   /**
@@ -542,69 +525,63 @@ public final class TrackManager extends ItemManager implements Observer {
    *          files we want to deal with
    * @return new track
    */
-  public Track changeTrackName(Track track, String sNewItem, Set<File> filter)
+  public synchronized Track changeTrackName(Track track, String sNewItem, Set<File> filter)
       throws JajukException {
-    synchronized (TrackManager.getInstance().getLock()) {
-      // check there is actually a change
-      if (track.getName().equals(sNewItem)) {
-        return track;
+    // check there is actually a change
+    if (track.getName().equals(sNewItem)) {
+      return track;
+    }
+    List<File> alReady = null;
+    // check if files are accessible
+    alReady = track.getReadyFiles(filter);
+    if (alReady.size() == 0) {
+      throw new NoneAccessibleFileException(10);
+    }
+    // change tag in files
+    for (File file : alReady) {
+      Tag tag = new Tag(file.getIO());
+      tag.setTrackName(sNewItem);
+      if (bAutocommit) {
+        tag.commit();
+      } else {
+        tagsToCommit.put(tag, track);
       }
-      List<File> alReady = null;
-      // check if files are accessible
-      alReady = track.getReadyFiles(filter);
-      if (alReady.size() == 0) {
-        throw new NoneAccessibleFileException(10);
-      }
-      // change tag in files
-      for (File file : alReady) {
-        Tag tag = new Tag(file.getIO());
-        tag.setTrackName(sNewItem);
-        if (bAutocommit) {
-          tag.commit();
-        } else {
-          tagsToCommit.put(tag, track);
-        }
-      }
-      
-      // Remove the track from the old album
-      track.getAlbum().tracks.remove(track);
-      
-      Track newTrack = registerTrack(sNewItem, track.getAlbum(), track.getStyle(), track
-          .getAuthor(), track.getDuration(), track.getYear(), track.getOrder(), track.getType());
-      postChange(track, newTrack, filter);
-      // if current track name is changed, notify it
-      if (FIFO.getCurrentFile() != null && FIFO.getCurrentFile().getTrack().equals(track)) {
-        ObservationManager.notify(new Event(JajukEvents.TRACK_CHANGED));
-      }
-      return newTrack;
+    }
+
+    // Remove the track from the old album
+    track.getAlbum().tracks.remove(track);
+
+    Track newTrack = registerTrack(sNewItem, track.getAlbum(), track.getStyle(), track.getAuthor(),
+        track.getDuration(), track.getYear(), track.getOrder(), track.getType());
+    postChange(track, newTrack, filter);
+    // if current track name is changed, notify it
+    if (FIFO.getCurrentFile() != null && FIFO.getCurrentFile().getTrack().equals(track)) {
+      ObservationManager.notify(new Event(JajukEvents.TRACK_CHANGED));
+    }
+    return newTrack;
+  }
+
+  private synchronized void updateFilesReferences(Track oldTrack, Track newTrack, Set<File> filter) {
+    // Reset files property before adding new files
+    for (File file : oldTrack.getReadyFiles(filter)) {
+      file.setTrack(newTrack);// set new track for the changed file
+      newTrack.addFile(file); // add changed file
+      oldTrack.removeFile(file); // remove file from old track
     }
   }
 
-  private void updateFilesReferences(Track oldTrack, Track newTrack, Set<File> filter) {
-    synchronized (TrackManager.getInstance().getLock()) {
-      // Reset files property before adding new files
-      for (File file : oldTrack.getReadyFiles(filter)) {
-        file.setTrack(newTrack);// set new track for the changed file
-        newTrack.addFile(file); // add changed file
-        oldTrack.removeFile(file); // remove file from old track
-      }
-    }
-  }
-
-  private void postChange(Track track, Track newTrack, Set<File> filter) {
-    synchronized (TrackManager.getInstance().getLock()) {
-      // re apply old properties from old item
-      newTrack.cloneProperties(track);
-      // update files references
-      updateFilesReferences(track, newTrack, filter);
-      if (track.getFiles().size() == 0) { // normal case: old track has no
-        // more associated
-        // tracks, remove it
-        removeItem(track.getID());// remove old track
-      } else { // some files have not been changed because located on
-        // unmounted devices
-        nbFilesRemaining++;
-      }
+  private synchronized void postChange(Track track, Track newTrack, Set<File> filter) {
+    // re apply old properties from old item
+    newTrack.cloneProperties(track);
+    // update files references
+    updateFilesReferences(track, newTrack, filter);
+    if (track.getFiles().size() == 0) { // normal case: old track has no
+      // more associated
+      // tracks, remove it
+      removeItem(track.getID());// remove old track
+    } else { // some files have not been changed because located on
+      // unmounted devices
+      nbFilesRemaining++;
     }
   }
 
@@ -613,28 +590,26 @@ public final class TrackManager extends ItemManager implements Observer {
    */
   @Override
   @SuppressWarnings("unchecked")
-  public void cleanup() {
-    synchronized (TrackManager.getInstance().getLock()) {
-      Iterator<Track> itTracks = hmItems.values().iterator();
-      while (itTracks.hasNext()) {
-        Track track = itTracks.next();
-        if (track.getFiles().size() == 0) { // no associated file
-          itTracks.remove();
-          continue;
+  public synchronized void cleanup() {
+    Iterator<Track> itTracks = hmItems.values().iterator();
+    while (itTracks.hasNext()) {
+      Track track = itTracks.next();
+      if (track.getFiles().size() == 0) { // no associated file
+        itTracks.remove();
+        continue;
+      }
+      Iterator itFiles = track.getFiles().iterator();
+      while (itFiles.hasNext()) {
+        org.jajuk.base.File file = (org.jajuk.base.File) itFiles.next();
+        if (FileManager.getInstance().getFileByID(file.getID()) == null) {
+          itFiles.remove();// no? remove it from the track
         }
-        Iterator itFiles = track.getFiles().iterator();
-        while (itFiles.hasNext()) {
-          org.jajuk.base.File file = (org.jajuk.base.File) itFiles.next();
-          if (FileManager.getInstance().getFileByID(file.getID()) == null) {
-            itFiles.remove();// no? remove it from the track
-          }
-        }
-        if (track.getFiles().size() == 0) { // the track don't map
-          // anymore to any
-          // physical
-          // item, just remove it
-          itTracks.remove();
-        }
+      }
+      if (track.getFiles().size() == 0) { // the track don't map
+        // anymore to any
+        // physical
+        // item, just remove it
+        itTracks.remove();
       }
     }
   }
@@ -672,46 +647,44 @@ public final class TrackManager extends ItemManager implements Observer {
    * @param item
    * @return
    */
-  public Set<Track> getAssociatedTracks(Item item) {
-    synchronized (TrackManager.getInstance().getLock()) {
-      if (item instanceof Album) {
-        // check the album cache
-        Set<Track> tracks = ((Album) item).tracks;
-        if (tracks.size() > 0) {
-          return tracks;
-        }
+  public synchronized Set<Track> getAssociatedTracks(Item item) {
+    if (item instanceof Album) {
+      // check the album cache
+      Set<Track> tracks = ((Album) item).tracks;
+      if (tracks.size() > 0) {
+        return tracks;
       }
-      Set<Track> out = new TreeSet<Track>(new TrackComparator(TrackComparator.ALBUM));
-      // If the item is itself a track, simply return it
-      if (item instanceof Track) {
-        out.add((Track) item);
-        return out;
-      } else if (item instanceof File) {
-        out.add(((File) item).getTrack());
-        return out;
-      } else if (item instanceof Directory) {
-        Directory dir = (Directory) item;
-        for (File file : dir.getFilesRecursively()) {
-          out.add(file.getTrack());
-        }
-      }
-      for (Object item2 : hmItems.values()) {
-        Track track = (Track) item2;
-        if ((item instanceof Album && track.getAlbum().equals(item))
-            || (item instanceof Author && track.getAuthor().equals(item))
-            || (item instanceof Year && track.getYear().equals(item))
-            || (item instanceof Style && track.getStyle().equals(item))) {
-          out.add(track);
-        }
-      }
-      return out;
     }
+    Set<Track> out = new TreeSet<Track>(new TrackComparator(TrackComparator.ALBUM));
+    // If the item is itself a track, simply return it
+    if (item instanceof Track) {
+      out.add((Track) item);
+      return out;
+    } else if (item instanceof File) {
+      out.add(((File) item).getTrack());
+      return out;
+    } else if (item instanceof Directory) {
+      Directory dir = (Directory) item;
+      for (File file : dir.getFilesRecursively()) {
+        out.add(file.getTrack());
+      }
+    }
+    for (Object item2 : hmItems.values()) {
+      Track track = (Track) item2;
+      if ((item instanceof Album && track.getAlbum().equals(item))
+          || (item instanceof Author && track.getAuthor().equals(item))
+          || (item instanceof Year && track.getYear().equals(item))
+          || (item instanceof Style && track.getStyle().equals(item))) {
+        out.add(track);
+      }
+    }
+    return out;
   }
 
   public TrackComparator getComparator() {
     return new TrackComparator(Conf.getInt(CONF_LOGICAL_TREE_SORT_ORDER));
   }
-  
+
   /**
    * @param sID
    *          Item ID
@@ -725,12 +698,10 @@ public final class TrackManager extends ItemManager implements Observer {
    * 
    * @return ordered tracks list
    */
-  public Set<Track> getTracks() {
+  public synchronized Set<Track> getTracks() {
     Set<Track> tracks = new LinkedHashSet<Track>();
-    synchronized (getLock()) {
-      for (Item item : getItems()) {
-        tracks.add((Track) item);
-      }
+    for (Item item : getItems()) {
+      tracks.add((Track) item);
     }
     return tracks;
   }
@@ -739,12 +710,10 @@ public final class TrackManager extends ItemManager implements Observer {
    * 
    * @return unsorted tracks list
    */
-  public List<Track> getTracksAsList() {
+  public synchronized List<Track> getTracksAsList() {
     List<Track> tracks = new ArrayList<Track>(getItems().size());
-    synchronized (getLock()) {
-      for (Item item : getItems()) {
-        tracks.add((Track) item);
-      }
+    for (Item item : getItems()) {
+      tracks.add((Track) item);
     }
     return tracks;
   }

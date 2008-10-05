@@ -146,7 +146,7 @@ public class AmbienceWizard extends Wizard implements Const {
      *          row
      */
     private void addStyle(final int row) {
-      synchronized (StyleManager.getInstance().getLock()) {
+      synchronized (StyleManager.getInstance()) {
         final Ambience ambience = AmbienceWizard.ambiences.get(row);
         // create list of styles used in current selection
         final StylesSelectionDialog dialog = new StylesSelectionDialog(null);

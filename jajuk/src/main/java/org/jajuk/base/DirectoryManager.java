@@ -77,7 +77,7 @@ public final class DirectoryManager extends ItemManager {
     return DirectoryManager.singleton;
   }
 
-   /**
+  /**
    * No constructor available, only static access
    */
   private DirectoryManager() {
@@ -118,14 +118,12 @@ public final class DirectoryManager extends ItemManager {
    *          Device id
    */
   @SuppressWarnings("unchecked")
-  public void cleanDevice(final String sId) {
-    synchronized (DirectoryManager.getInstance().getLock()) {
-      final Iterator<String> it = hmItems.keySet().iterator();
-      while (it.hasNext()) {
-        final Directory directory = getDirectoryByID(it.next());
-        if (directory.getDevice().getID().equals(sId)) {
-          it.remove();
-        }
+  public synchronized void cleanDevice(final String sId) {
+    final Iterator<String> it = hmItems.keySet().iterator();
+    while (it.hasNext()) {
+      final Directory directory = getDirectoryByID(it.next());
+      if (directory.getDevice().getID().equals(sId)) {
+        it.remove();
       }
     }
   }
@@ -134,12 +132,10 @@ public final class DirectoryManager extends ItemManager {
    * 
    * @return directories list
    */
-  public Set<Directory> getDirectories() {
+  public synchronized Set<Directory> getDirectories() {
     final Set<Directory> directorySet = new LinkedHashSet<Directory>();
-    synchronized (getLock()) {
-      for (final Item item : getItems()) {
-        directorySet.add((Directory) item);
-      }
+    for (final Item item : getItems()) {
+      directorySet.add((Directory) item);
     }
     return directorySet;
   }
@@ -154,16 +150,14 @@ public final class DirectoryManager extends ItemManager {
   }
 
   @SuppressWarnings("unchecked")
-  public Directory getDirectoryForIO(final java.io.File fio) {
-    synchronized (DirectoryManager.getInstance().getLock()) {
-      final Collection<Directory> dirs = hmItems.values();
-      for (Directory dir : dirs) {
-        if (dir.getFio().equals(fio)) {
-          return dir;
-        }
+  public synchronized Directory getDirectoryForIO(final java.io.File fio) {
+    final Collection<Directory> dirs = hmItems.values();
+    for (Directory dir : dirs) {
+      if (dir.getFio().equals(fio)) {
+        return dir;
       }
-      return null;
     }
+    return null;
   }
 
   /*
@@ -190,12 +184,10 @@ public final class DirectoryManager extends ItemManager {
    * 
    * @param sName
    */
-  public Directory registerDirectory(final String sName, final Directory dParent,
+  public synchronized Directory registerDirectory(final String sName, final Directory dParent,
       final Device device) {
-    synchronized (DirectoryManager.getInstance().getLock()) {
-      return registerDirectory(DirectoryManager.createID(sName, device, dParent), sName, dParent,
-          device);
-    }
+    return registerDirectory(DirectoryManager.createID(sName, device, dParent), sName, dParent,
+        device);
   }
 
   /**
@@ -203,26 +195,24 @@ public final class DirectoryManager extends ItemManager {
    * 
    * @param sName
    */
-  public Directory registerDirectory(final String sId, final String sName, final Directory dParent,
-      final Device device) {
-    synchronized (DirectoryManager.getInstance().getLock()) {
-      final Directory dir = (Directory) hmItems.get(sId);
-      if (dir != null) {
-        // Set name again because under Windows, dir name case could
-        // have changed but
-        // we keep the same directory object
-        dir.setName(sName);
-        return dir;
-      }
-      Directory directory = null;
-      directory = new Directory(sId, sName, dParent, device);
-      if (dParent != null) {
-        // add the directory to parent
-        dParent.addDirectory(directory);
-      }
-      hmItems.put(sId, directory);
-      return directory;
+  public synchronized Directory registerDirectory(final String sId, final String sName,
+      final Directory dParent, final Device device) {
+    final Directory dir = (Directory) hmItems.get(sId);
+    if (dir != null) {
+      // Set name again because under Windows, dir name case could
+      // have changed but
+      // we keep the same directory object
+      dir.setName(sName);
+      return dir;
     }
+    Directory directory = null;
+    directory = new Directory(sId, sName, dParent, device);
+    if (dParent != null) {
+      // add the directory to parent
+      dParent.addDirectory(directory);
+    }
+    hmItems.put(sId, directory);
+    return directory;
   }
 
   /**
@@ -231,33 +221,31 @@ public final class DirectoryManager extends ItemManager {
    * 
    * @param sId
    */
-  public void removeDirectory(final String sId) {
-    synchronized (DirectoryManager.getInstance().getLock()) {
-      final Directory dir = getDirectoryByID(sId);
-      if (dir == null) {// check the directory has not already been
-        // removed
-        return;
-      }
-      // remove all files
-      // need to use a shallow copy to avoid concurent exceptions
-      final List<File> alFiles = new ArrayList<File>(dir.getFiles());
-      for (final File file : alFiles) {
-        FileManager.getInstance().removeFile(file);
-      }
-      // remove all playlists
-      for (final Playlist plf : dir.getPlaylistFiles()) {
-        PlaylistManager.getInstance().removeItem(plf.getID());
-      }
-      // remove all sub dirs
-      final Iterator<Directory> it = dir.getDirectories().iterator();
-      while (it.hasNext()) {
-        final Directory dSub = it.next();
-        removeDirectory(dSub.getID()); // self call
-        // remove it
-        it.remove();
-      }
-      // remove this dir from collection
-      hmItems.remove(dir.getID());
+  public synchronized void removeDirectory(final String sId) {
+    final Directory dir = getDirectoryByID(sId);
+    if (dir == null) {// check the directory has not already been
+      // removed
+      return;
     }
+    // remove all files
+    // need to use a shallow copy to avoid concurrent exceptions
+    final List<File> alFiles = new ArrayList<File>(dir.getFiles());
+    for (final File file : alFiles) {
+      FileManager.getInstance().removeFile(file);
+    }
+    // remove all playlists
+    for (final Playlist plf : dir.getPlaylistFiles()) {
+      PlaylistManager.getInstance().removeItem(plf.getID());
+    }
+    // remove all sub dirs
+    final Iterator<Directory> it = dir.getDirectories().iterator();
+    while (it.hasNext()) {
+      final Directory dSub = it.next();
+      removeDirectory(dSub.getID()); // self call
+      // remove it
+      it.remove();
+    }
+    // remove this dir from collection
+    hmItems.remove(dir.getID());
   }
 }

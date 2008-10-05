@@ -142,14 +142,12 @@ public final class DeviceManager extends ItemManager {
    * @param sName
    * @return device
    */
-  public Device registerDevice(String sId, String sName, long lDeviceType, String sUrl) {
-    synchronized (DeviceManager.getInstance().getLock()) {
-      Device device = new Device(sId, sName);
-      device.setProperty(XML_TYPE, lDeviceType);
-      device.setUrl(sUrl);
-      hmItems.put(sId, device);
-      return device;
-    }
+  public synchronized Device registerDevice(String sId, String sName, long lDeviceType, String sUrl) {
+    Device device = new Device(sId, sName);
+    device.setProperty(XML_TYPE, lDeviceType);
+    device.setUrl(sUrl);
+    hmItems.put(sId, device);
+    return device;
   }
 
   /**
@@ -173,43 +171,42 @@ public final class DeviceManager extends ItemManager {
    * @return 0:ok or error code
    */
   @SuppressWarnings("unchecked")
-  public int checkDeviceAvailablity(String sName, int iDeviceType, String sUrl, boolean bNew) {
-    synchronized (DeviceManager.getInstance().getLock()) {
-      // don't check if it is a CD as all CDs may use the same mount point
-      if (iDeviceType == Device.TYPE_CD) {
-        return 0;
-      }
-      // check name and path
-      Iterator<Device> it = hmItems.values().iterator();
-      while (it.hasNext()) {
-        Device deviceToCheck = it.next();
-        // If we check an existing device unchanged, just leave
-        if (!bNew && sUrl.equals(deviceToCheck.getUrl())) {
-          continue;
-        }
-        if (bNew && (sName.toLowerCase().equals(deviceToCheck.getName().toLowerCase()))) {
-          return 19;
-        }
-        String sUrlChecked = deviceToCheck.getUrl();
-        // check it is not a sub-directory of an existing device
-        File fNew = new File(sUrl);
-        File fChecked = new File(sUrlChecked);
-        if (fNew.equals(fChecked) || UtilSystem.isDescendant(fNew, fChecked)
-            || UtilSystem.isAncestor(fNew, fChecked)) {
-          return 29;
-        }
-      }
-      // check availability
-      if (iDeviceType != 2) { // not a remote device, TBI for remote
-        // test directory is available
-        File file = new File(sUrl);
-        // check if the url exists and is readable
-        if (!file.exists() || !file.canRead()) {
-          return 143;
-        }
-      }
+  public synchronized int checkDeviceAvailablity(String sName, int iDeviceType, String sUrl,
+      boolean bNew) {
+    // don't check if it is a CD as all CDs may use the same mount point
+    if (iDeviceType == Device.TYPE_CD) {
       return 0;
     }
+    // check name and path
+    Iterator<Device> it = hmItems.values().iterator();
+    while (it.hasNext()) {
+      Device deviceToCheck = it.next();
+      // If we check an existing device unchanged, just leave
+      if (!bNew && sUrl.equals(deviceToCheck.getUrl())) {
+        continue;
+      }
+      if (bNew && (sName.toLowerCase().equals(deviceToCheck.getName().toLowerCase()))) {
+        return 19;
+      }
+      String sUrlChecked = deviceToCheck.getUrl();
+      // check it is not a sub-directory of an existing device
+      File fNew = new File(sUrl);
+      File fChecked = new File(sUrlChecked);
+      if (fNew.equals(fChecked) || UtilSystem.isDescendant(fNew, fChecked)
+          || UtilSystem.isAncestor(fNew, fChecked)) {
+        return 29;
+      }
+    }
+    // check availability
+    if (iDeviceType != 2) { // not a remote device, TBI for remote
+      // test directory is available
+      File file = new File(sUrl);
+      // check if the url exists and is readable
+      if (!file.exists() || !file.canRead()) {
+        return 143;
+      }
+    }
+    return 0;
   }
 
   /**
@@ -251,51 +248,49 @@ public final class DeviceManager extends ItemManager {
    * @param device
    */
   @SuppressWarnings("unchecked")
-  public void removeDevice(Device device) {
-    synchronized (DeviceManager.getInstance().getLock()) {
-      // show confirmation message if required
-      if (Conf.getBoolean(CONF_CONFIRMATIONS_REMOVE_DEVICE)) {
-        int iResu = Messages.getChoice(Messages.getString("Confirmation_remove_device"),
-            JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
-        if (iResu != JOptionPane.YES_OPTION) {
-          return;
-        }
+  public synchronized void removeDevice(Device device) {
+    // show confirmation message if required
+    if (Conf.getBoolean(CONF_CONFIRMATIONS_REMOVE_DEVICE)) {
+      int iResu = Messages.getChoice(Messages.getString("Confirmation_remove_device"),
+          JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
+      if (iResu != JOptionPane.YES_OPTION) {
+        return;
       }
-      // if device is refreshing or synchronizing, just leave
-      if (device.isSynchronizing() || device.isRefreshing()) {
+    }
+    // if device is refreshing or synchronizing, just leave
+    if (device.isSynchronizing() || device.isRefreshing()) {
+      Messages.showErrorMessage(13);
+      return;
+    }
+    // check if device can be unmounted
+    if (!FIFO.canUnmount(device)) {
+      Messages.showErrorMessage(121);
+      return;
+    }
+    // if it is mounted, try to unmount it
+    if (device.isMounted()) {
+      try {
+        device.unmount();
+      } catch (Exception e) {
         Messages.showErrorMessage(13);
         return;
       }
-      // check if device can be unmounted
-      if (!FIFO.canUnmount(device)) {
-        Messages.showErrorMessage(121);
-        return;
-      }
-      // if it is mounted, try to unmount it
-      if (device.isMounted()) {
-        try {
-          device.unmount();
-        } catch (Exception e) {
-          Messages.showErrorMessage(13);
-          return;
-        }
-      }
-      hmItems.remove(device.getID());
-      DirectoryManager.getInstance().cleanDevice(device.getID());
-      FileManager.getInstance().clearDevice(device.getID());
-      PlaylistManager.getInstance().cleanDevice(device.getID());
-      // Clean the collection up
-      org.jajuk.base.Collection.cleanupLogical();
-      // remove synchronization if another device was synchronized
-      // with this device
-      Iterator<Device> it = hmItems.values().iterator();
-      while (it.hasNext()) {
-        Device deviceToCheck = it.next();
-        if (deviceToCheck.containsProperty(XML_DEVICE_SYNCHRO_SOURCE)) {
-          String sSyncSource = deviceToCheck.getStringValue(XML_DEVICE_SYNCHRO_SOURCE);
-          if (sSyncSource.equals(device.getID())) {
-            deviceToCheck.removeProperty(XML_DEVICE_SYNCHRO_SOURCE);
-          }
+    }
+    hmItems.remove(device.getID());
+    DirectoryManager.getInstance().cleanDevice(device.getID());
+    FileManager.getInstance().clearDevice(device.getID());
+    PlaylistManager.getInstance().cleanDevice(device.getID());
+    // Clean the collection up
+    org.jajuk.base.Collection.cleanupLogical();
+    // remove synchronization if another device was synchronized
+    // with this device
+    Iterator<Device> it = hmItems.values().iterator();
+    while (it.hasNext()) {
+      Device deviceToCheck = it.next();
+      if (deviceToCheck.containsProperty(XML_DEVICE_SYNCHRO_SOURCE)) {
+        String sSyncSource = deviceToCheck.getStringValue(XML_DEVICE_SYNCHRO_SOURCE);
+        if (sSyncSource.equals(device.getID())) {
+          deviceToCheck.removeProperty(XML_DEVICE_SYNCHRO_SOURCE);
         }
       }
     }
@@ -304,19 +299,17 @@ public final class DeviceManager extends ItemManager {
   /**
    * @return whether any device is currently refreshing
    */
-  public boolean isAnyDeviceRefreshing() {
-    synchronized (DeviceManager.getInstance().getLock()) {
-      boolean bOut = false;
-      Iterator<Device> it = DeviceManager.getInstance().getDevices().iterator();
-      while (it.hasNext()) {
-        Device device = it.next();
-        if (device.isRefreshing()) {
-          bOut = true;
-          break;
-        }
+  public synchronized boolean isAnyDeviceRefreshing() {
+    boolean bOut = false;
+    Iterator<Device> it = DeviceManager.getInstance().getDevices().iterator();
+    while (it.hasNext()) {
+      Device device = it.next();
+      if (device.isRefreshing()) {
+        bOut = true;
+        break;
       }
-      return bOut;
     }
+    return bOut;
   }
 
   /**
@@ -324,21 +317,19 @@ public final class DeviceManager extends ItemManager {
    */
   @SuppressWarnings("unchecked")
   public synchronized void cleanAllDevices() {
-    synchronized (DeviceManager.getInstance().getLock()) {
-      Iterator<Device> it = hmItems.values().iterator();
-      while (it.hasNext()) {
-        Device device = it.next();
-        // Do not auto-refresh CD as several CD may share the same mount
-        // point
-        if (device.getType() == Device.TYPE_CD) {
-          continue;
-        }
-        FileManager.getInstance().clearDevice(device.getName());
-        DirectoryManager.getInstance().cleanDevice(device.getName());
-        PlaylistManager.getInstance().cleanDevice(device.getName());
+    Iterator<Device> it = hmItems.values().iterator();
+    while (it.hasNext()) {
+      Device device = it.next();
+      // Do not auto-refresh CD as several CD may share the same mount
+      // point
+      if (device.getType() == Device.TYPE_CD) {
+        continue;
       }
-      hmItems.clear();
+      FileManager.getInstance().clearDevice(device.getName());
+      DirectoryManager.getInstance().cleanDevice(device.getName());
+      PlaylistManager.getInstance().cleanDevice(device.getName());
     }
+    hmItems.clear();
   }
 
   /*
@@ -431,12 +422,10 @@ public final class DeviceManager extends ItemManager {
    * 
    * @return devices list
    */
-  public Set<Device> getDevices() {
+  public synchronized Set<Device> getDevices() {
     Set<Device> deviceSet = new LinkedHashSet<Device>();
-    synchronized (getLock()) {
-      for (Item item : getItems()) {
-        deviceSet.add((Device) item);
-      }
+    for (Item item : getItems()) {
+      deviceSet.add((Device) item);
     }
     return deviceSet;
   }

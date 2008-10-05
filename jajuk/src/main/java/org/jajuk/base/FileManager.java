@@ -60,7 +60,7 @@ public final class FileManager extends ItemManager implements Observer {
   private static FileManager singleton;
 
   private static Random rand;
-  
+
   /** File comparator based on rate */
   private Comparator<File> rateComparator = new Comparator<File>() {
     public int compare(File file1, File file2) {
@@ -120,30 +120,28 @@ public final class FileManager extends ItemManager implements Observer {
    * 
    * @param sName
    */
-  public File registerFile(String sId, String sName, Directory directory, Track track, long lSize,
-      long lQuality) {
-    synchronized (FileManager.getInstance().getLock()) {
-      File file = (File) hmItems.get(sId);
-      if (file == null) {
-        file = new File(sId, sName, directory, track, lSize, lQuality);
-        hmItems.put(sId, file);
-        // add to directory
-        file.getDirectory().addFile(file);
-        if (directory.getDevice().isRefreshing() && Log.isDebugEnabled()) {
-          Log.debug("registrated new file: " + file);
-        }
-      } else {
-        // If file already exist and the track has changed, make changes
-        // Set name again because under Windows, the file name case
-        // could have changed but we keep the same file object
-        file.setName(sName);
+  public synchronized File registerFile(String sId, String sName, Directory directory, Track track,
+      long lSize, long lQuality) {
+    File file = (File) hmItems.get(sId);
+    if (file == null) {
+      file = new File(sId, sName, directory, track, lSize, lQuality);
+      hmItems.put(sId, file);
+      // add to directory
+      file.getDirectory().addFile(file);
+      if (directory.getDevice().isRefreshing() && Log.isDebugEnabled()) {
+        Log.debug("registrated new file: " + file);
       }
-      // add this file to track
-      file.setTrack(track);
-      // make sure the file is added
-      track.addFile(file);
-      return file;
+    } else {
+      // If file already exist and the track has changed, make changes
+      // Set name again because under Windows, the file name case
+      // could have changed but we keep the same file object
+      file.setName(sName);
     }
+    // add this file to track
+    file.setTrack(track);
+    // make sure the file is added
+    track.addFile(file);
+    return file;
   }
 
   /**
@@ -175,64 +173,63 @@ public final class FileManager extends ItemManager implements Observer {
    * @param sNewName
    * @return new file
    */
-  public File changeFileName(org.jajuk.base.File fileOld, String sNewName) throws JajukException {
-    synchronized (FileManager.getInstance().getLock()) {
-      // check given name is different
+  public synchronized File changeFileName(org.jajuk.base.File fileOld, String sNewName)
+      throws JajukException {
+    // check given name is different
 
-      if (fileOld.getName().equals(sNewName)) {
-        return fileOld;
-      }
-      // check if this file still exists
-      if (!fileOld.getIO().exists()) {
-        throw new CannotRenameException(135);
-      }
-      java.io.File fileNew = new java.io.File(fileOld.getIO().getParentFile().getAbsolutePath()
-          + java.io.File.separator + sNewName);
-      // recalculate file ID
-      Directory dir = fileOld.getDirectory();
-      String sNewId = MD5Processor.hash(new StringBuilder(dir.getDevice().getName()).append(
-          dir.getDevice().getUrl()).append(dir.getRelativePath()).append(sNewName).toString());
-      // create a new file (with own fio and sAbs)
-      org.jajuk.base.File fNew = new File(sNewId, sNewName, fileOld.getDirectory(), fileOld
-          .getTrack(), fileOld.getSize(), fileOld.getQuality());
-      // transfert all properties (inc id and name)
-      fNew.setProperties(fileOld.getProperties());
-      fNew.setProperty(XML_ID, sNewId); // reset new id and name
-      fNew.setProperty(XML_NAME, sNewName); // reset new id and name
-      // check file name and extension
-      if (!(UtilSystem.getExtension(fileNew).equals(UtilSystem.getExtension(fileOld.getIO())))) {
-        // no extension change
-        throw new CannotRenameException(134);
-      }
-      // check if future file exists (under windows, file.exists
-      // return true even with
-      // different case so we test file name is different)
-      if (!fileNew.getName().equalsIgnoreCase(fileOld.getName()) && fileNew.exists()) {
-        throw new CannotRenameException(134);
-      }
-      // try to rename file on disk
-      try {
-        if(!fileOld.getIO().renameTo(fileNew))
-          throw new CannotRenameException(134);
-      } catch (Exception e) {
-        throw new CannotRenameException(134, e);
-      }
-
-      // OK, remove old file and register this new file
-      removeFile(fileOld);
-      if (!hmItems.containsKey(sNewId)) {
-        hmItems.put(sNewId, fNew);
-      }
-      // notify everybody for the file change
-      Properties properties = new Properties();
-      properties.put(DETAIL_OLD, fileOld);
-      properties.put(DETAIL_NEW, fNew);
-      // change directory reference
-      dir.changeFile(fileOld, fNew);
-      // Notify interested items (like history manager)
-      ObservationManager.notifySync(new Event(JajukEvents.FILE_NAME_CHANGED, properties));
-      return fNew;
+    if (fileOld.getName().equals(sNewName)) {
+      return fileOld;
     }
+    // check if this file still exists
+    if (!fileOld.getIO().exists()) {
+      throw new CannotRenameException(135);
+    }
+    java.io.File fileNew = new java.io.File(fileOld.getIO().getParentFile().getAbsolutePath()
+        + java.io.File.separator + sNewName);
+    // recalculate file ID
+    Directory dir = fileOld.getDirectory();
+    String sNewId = MD5Processor.hash(new StringBuilder(dir.getDevice().getName()).append(
+        dir.getDevice().getUrl()).append(dir.getRelativePath()).append(sNewName).toString());
+    // create a new file (with own fio and sAbs)
+    org.jajuk.base.File fNew = new File(sNewId, sNewName, fileOld.getDirectory(), fileOld
+        .getTrack(), fileOld.getSize(), fileOld.getQuality());
+    // transfert all properties (inc id and name)
+    fNew.setProperties(fileOld.getProperties());
+    fNew.setProperty(XML_ID, sNewId); // reset new id and name
+    fNew.setProperty(XML_NAME, sNewName); // reset new id and name
+    // check file name and extension
+    if (!(UtilSystem.getExtension(fileNew).equals(UtilSystem.getExtension(fileOld.getIO())))) {
+      // no extension change
+      throw new CannotRenameException(134);
+    }
+    // check if future file exists (under windows, file.exists
+    // return true even with
+    // different case so we test file name is different)
+    if (!fileNew.getName().equalsIgnoreCase(fileOld.getName()) && fileNew.exists()) {
+      throw new CannotRenameException(134);
+    }
+    // try to rename file on disk
+    try {
+      if (!fileOld.getIO().renameTo(fileNew))
+        throw new CannotRenameException(134);
+    } catch (Exception e) {
+      throw new CannotRenameException(134, e);
+    }
+
+    // OK, remove old file and register this new file
+    removeFile(fileOld);
+    if (!hmItems.containsKey(sNewId)) {
+      hmItems.put(sNewId, fNew);
+    }
+    // notify everybody for the file change
+    Properties properties = new Properties();
+    properties.put(DETAIL_OLD, fileOld);
+    properties.put(DETAIL_NEW, fNew);
+    // change directory reference
+    dir.changeFile(fileOld, fNew);
+    // Notify interested items (like history manager)
+    ObservationManager.notifySync(new Event(JajukEvents.FILE_NAME_CHANGED, properties));
+    return fNew;
   }
 
   /**
@@ -244,25 +241,23 @@ public final class FileManager extends ItemManager implements Observer {
    *          new dir
    * @return new file or null if an error occurs
    */
-  public File changeFileDirectory(File old, Directory newDir) {
-    synchronized (FileManager.getInstance().getLock()) {
-      // recalculate file ID
-      String sNewId = MD5Processor.hash(new StringBuilder(newDir.getDevice().getName()).append(
-          newDir.getDevice().getUrl()).append(newDir.getRelativePath()).append(old.getName())
-          .toString());
-      // create a new file (with own fio and sAbs)
-      File fNew = new File(sNewId, old.getName(), newDir, old.getTrack(), old.getSize(), old
-          .getQuality());
-      fNew.setProperties(old.getProperties()); // transfert all
-      // properties (inc id)
-      fNew.setProperty(XML_ID, sNewId); // reset new id and name
-      // OK, remove old file and register this new file
-      removeFile(old);
-      if (!hmItems.containsKey(sNewId)) {
-        hmItems.put(sNewId, fNew);
-      }
-      return fNew;
+  public synchronized File changeFileDirectory(File old, Directory newDir) {
+    // recalculate file ID
+    String sNewId = MD5Processor.hash(new StringBuilder(newDir.getDevice().getName()).append(
+        newDir.getDevice().getUrl()).append(newDir.getRelativePath()).append(old.getName())
+        .toString());
+    // create a new file (with own fio and sAbs)
+    File fNew = new File(sNewId, old.getName(), newDir, old.getTrack(), old.getSize(), old
+        .getQuality());
+    fNew.setProperties(old.getProperties()); // transfert all
+    // properties (inc id)
+    fNew.setProperty(XML_ID, sNewId); // reset new id and name
+    // OK, remove old file and register this new file
+    removeFile(old);
+    if (!hmItems.containsKey(sNewId)) {
+      hmItems.put(sNewId, fNew);
     }
+    return fNew;
   }
 
   /**
@@ -272,23 +267,21 @@ public final class FileManager extends ItemManager implements Observer {
    *          Device id
    */
   @SuppressWarnings("unchecked")
-  public void clearDevice(String sId) {
-    synchronized (FileManager.getInstance().getLock()) {
-      Iterator<File> it = hmItems.values().iterator();
-      while (it.hasNext()) {
-        File file = it.next();
-        if (file.getDirectory() == null || file.getDirectory().getDevice().getID().equals(sId)) {
-          it.remove(); // this is the right way to remove entry
-          // in the hashmap
-        }
+  public synchronized void clearDevice(String sId) {
+    Iterator<File> it = hmItems.values().iterator();
+    while (it.hasNext()) {
+      File file = it.next();
+      if (file.getDirectory() == null || file.getDirectory().getDevice().getID().equals(sId)) {
+        it.remove(); // this is the right way to remove entry
+        // in the hashmap
       }
-      // cleanup sorted array
-      it = hmItems.values().iterator();
-      while (it.hasNext()) {
-        File file = it.next();
-        if (file.getDirectory() == null || file.getDirectory().getDevice().getID().equals(sId)) {
-          it.remove(); 
-        }
+    }
+    // cleanup sorted array
+    it = hmItems.values().iterator();
+    while (it.hasNext()) {
+      File file = it.next();
+      if (file.getDirectory() == null || file.getDirectory().getDevice().getID().equals(sId)) {
+        it.remove();
       }
     }
   }
@@ -298,11 +291,9 @@ public final class FileManager extends ItemManager implements Observer {
    * 
    * @param file
    */
-  public void removeFile(File file) {
-    synchronized (FileManager.getInstance().getLock()) {
-      hmItems.remove(file.getID());
-      file.getDirectory().removeFile(file);
-    }
+  public synchronized void removeFile(File file) {
+    hmItems.remove(file.getID());
+    file.getDirectory().removeFile(file);
   }
 
   /**
@@ -314,22 +305,20 @@ public final class FileManager extends ItemManager implements Observer {
    */
 
   @SuppressWarnings("unchecked")
-  public File getFileByPath(String sPath) {
-    synchronized (FileManager.getInstance().getLock()) {
-      File fOut = null;
-      java.io.File fToCompare = new java.io.File(sPath);
-      Iterator<File> it = hmItems.values().iterator();
-      while (it.hasNext()) {
-        File file = it.next();
-        // we compare io files and not paths
-        // to avoid dealing with path name issues
-        if (file.getIO().equals(fToCompare)) {
-          fOut = file;
-          break;
-        }
+  public synchronized File getFileByPath(String sPath) {
+    File fOut = null;
+    java.io.File fToCompare = new java.io.File(sPath);
+    Iterator<File> it = hmItems.values().iterator();
+    while (it.hasNext()) {
+      File file = it.next();
+      // we compare io files and not paths
+      // to avoid dealing with path name issues
+      if (file.getIO().equals(fToCompare)) {
+        fOut = file;
+        break;
       }
-      return fOut;
     }
+    return fOut;
   }
 
   /**
@@ -339,7 +328,8 @@ public final class FileManager extends ItemManager implements Observer {
   public List<File> getReadyFiles() {
     Set<File> files = null;
     files = FileManager.getInstance().getFiles();
-    Iterator<File> it = new FilterIterator(files.iterator(), new JajukPredicates.ReadyFilePredicate());
+    Iterator<File> it = new FilterIterator(files.iterator(),
+        new JajukPredicates.ReadyFilePredicate());
     List<File> out = new ArrayList<File>(files.size() / 2);
     while (it.hasNext()) {
       out.add(it.next());
@@ -354,7 +344,7 @@ public final class FileManager extends ItemManager implements Observer {
    */
   public File getShuffleFile() {
     int index = rand.nextInt(hmItems.size());
-	Log.debug("Randomly choosing " + index + " for next file.");
+    Log.debug("Randomly choosing " + index + " for next file.");
     List<File> files = new ArrayList<File>(FileManager.getInstance().getFiles());
     if (files.size() == 0) {
       return null;
@@ -413,10 +403,8 @@ public final class FileManager extends ItemManager implements Observer {
    * @return
    */
   public synchronized File getNoveltyFile() {
-    synchronized (FileManager.getInstance().getLock()) {
-      List<File> alEligibleFiles = getGlobalNoveltiesPlaylist();
-      return alEligibleFiles.get((int) (Math.random() * alEligibleFiles.size()));
-    }
+    List<File> alEligibleFiles = getGlobalNoveltiesPlaylist();
+    return alEligibleFiles.get((int) (Math.random() * alEligibleFiles.size()));
   }
 
   /**
@@ -425,10 +413,8 @@ public final class FileManager extends ItemManager implements Observer {
    * @return The entire accessible novelties collection (can return a void
    *         collection)
    */
-  public List<org.jajuk.base.File> getGlobalNoveltiesPlaylist() {
-    synchronized (FileManager.getInstance().getLock()) {
-      return getGlobalNoveltiesPlaylist(true);
-    }
+  public synchronized List<org.jajuk.base.File> getGlobalNoveltiesPlaylist() {
+    return getGlobalNoveltiesPlaylist(true);
   }
 
   /**
@@ -492,8 +478,7 @@ public final class FileManager extends ItemManager implements Observer {
   private List<File> getShuffledFilesByAlbum(List<File> alEligibleFiles) {
     // start with filling a set of albums containing
     // at least one ready file
-    Map<Album, List<File>> albumsFiles = new HashMap<Album, List<File>>(
-        alEligibleFiles.size() / 10);
+    Map<Album, List<File>> albumsFiles = new HashMap<Album, List<File>>(alEligibleFiles.size() / 10);
     for (File file : alEligibleFiles) {
       // maintain a map between each albums and
       // eligible files
@@ -564,15 +549,13 @@ public final class FileManager extends ItemManager implements Observer {
   }
 
   public void refreshBestOfFiles() {
-    int iNbBestofFiles = Integer
-        .parseInt(Conf.getString(CONF_BESTOF_TRACKS_SIZE));
+    int iNbBestofFiles = Integer.parseInt(Conf.getString(CONF_BESTOF_TRACKS_SIZE));
     // clear data
     alBestofFiles.clear();
     // create a temporary table to remove unmounted files
     List<File> alEligibleFiles = new ArrayList<File>(iNbBestofFiles);
     for (Track track : TrackManager.getInstance().getTracks()) {
-      File file = track.getPlayeableFile(Conf
-          .getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED));
+      File file = track.getPlayeableFile(Conf.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED));
       if (file != null) {
         alEligibleFiles.add(file);
       }
@@ -593,41 +576,39 @@ public final class FileManager extends ItemManager implements Observer {
    *          a file
    * @return next file from entire collection
    */
-  public File getNextFile(File file) {
-    synchronized (FileManager.getInstance().getLock()) {
-      Set<Item> files = getItems();
-      File fileNext = null;
-      if (file == null) {
-        return fileNext;
-      }
-      // look for a correct file from index to collection end
-      boolean bStarted = false;
-      Iterator<Item> it = files.iterator();
-      while (it.hasNext()) {
-        fileNext = (File) it.next();
-        if (bStarted) {
-          if (fileNext.isReady()) {
-            return fileNext;
-          }
-        } else {
-          if (fileNext.equals(file)) {
-            bStarted = true; // OK, begin to concidere files
-            // from this one
-          }
-        }
-      }
-      // ok restart from collection from begining
-      it = files.iterator();
-      while (it.hasNext()) {
-        fileNext = (File) it.next();
-        if (fileNext.isReady()) { // file must be on a mounted
-          // device not refreshing
+  public synchronized File getNextFile(File file) {
+    Set<Item> files = getItems();
+    File fileNext = null;
+    if (file == null) {
+      return fileNext;
+    }
+    // look for a correct file from index to collection end
+    boolean bStarted = false;
+    Iterator<Item> it = files.iterator();
+    while (it.hasNext()) {
+      fileNext = (File) it.next();
+      if (bStarted) {
+        if (fileNext.isReady()) {
           return fileNext;
         }
+      } else {
+        if (fileNext.equals(file)) {
+          bStarted = true; // OK, begin to concidere files
+          // from this one
+        }
       }
-      // none ready file
-      return null;
     }
+    // ok restart from collection from begining
+    it = files.iterator();
+    while (it.hasNext()) {
+      fileNext = (File) it.next();
+      if (fileNext.isReady()) { // file must be on a mounted
+        // device not refreshing
+        return fileNext;
+      }
+    }
+    // none ready file
+    return null;
   }
 
   /**
@@ -637,35 +618,33 @@ public final class FileManager extends ItemManager implements Observer {
    *          a file
    * @return previous file from entire collection
    */
-  public File getPreviousFile(File file) {
-    synchronized (FileManager.getInstance().getLock()) {
-      Set<Item> files = getItems();
-      if (file == null) {
-        return null;
-      }
-      File filePrevious = null;
-      List<Item> alSortedFiles = new ArrayList<Item>(files);
-      int i = alSortedFiles.indexOf(file);
-      // test if this file is the very first one
-      if (i == 0) {
-        Messages.showErrorMessage(128);
-        return null;
-      }
-      // look for a correct file from index to collection begin
-      boolean bOk = false;
-      for (int index = i - 1; index >= 0; index--) {
-        filePrevious = (File) alSortedFiles.get(index);
-        if (filePrevious.isReady()) { // file must be on a mounted
-          // device not refreshing
-          bOk = true;
-          break;
-        }
-      }
-      if (bOk) {
-        return filePrevious;
-      }
+  public synchronized File getPreviousFile(File file) {
+    Set<Item> files = getItems();
+    if (file == null) {
       return null;
     }
+    File filePrevious = null;
+    List<Item> alSortedFiles = new ArrayList<Item>(files);
+    int i = alSortedFiles.indexOf(file);
+    // test if this file is the very first one
+    if (i == 0) {
+      Messages.showErrorMessage(128);
+      return null;
+    }
+    // look for a correct file from index to collection begin
+    boolean bOk = false;
+    for (int index = i - 1; index >= 0; index--) {
+      filePrevious = (File) alSortedFiles.get(index);
+      if (filePrevious.isReady()) { // file must be on a mounted
+        // device not refreshing
+        bOk = true;
+        break;
+      }
+    }
+    if (bOk) {
+      return filePrevious;
+    }
+    return null;
   }
 
   /**
@@ -674,40 +653,36 @@ public final class FileManager extends ItemManager implements Observer {
    * @param file
    * @return
    */
-  public boolean isVeryfirstFile(File file) {
-    synchronized (FileManager.getInstance().getLock()) {
-      Set<Item> files = getItems();
-      if (file == null || hmItems.size() == 0) {
-        return false;
-      }
-      Iterator<Item> it = files.iterator();
-      File first = (File) it.next();
-      return (file.equals(first));
+  public synchronized boolean isVeryfirstFile(File file) {
+    Set<Item> files = getItems();
+    if (file == null || hmItems.size() == 0) {
+      return false;
     }
+    Iterator<Item> it = files.iterator();
+    File first = (File) it.next();
+    return (file.equals(first));
   }
 
   /**
    * @param file
    * @return All files in the same directory than the given one
    */
-  public Set<File> getAllDirectory(File file) {
-    synchronized (getLock()) {
-      Set<Item> files = getItems();
-      if (file == null) {
-        return null;
-      }
-      Set<File> out = new TreeSet<File>();
-      Directory dir = file.getDirectory();
-      Iterator<Item> it = files.iterator();
-      while (it.hasNext()) {
-        File f = (File) it.next();
-        Directory d = f.getDirectory();
-        if (d.equals(dir)) {
-          out.add(f);
-        }
-      }
-      return out;
+  public synchronized Set<File> getAllDirectory(File file) {
+    Set<Item> files = getItems();
+    if (file == null) {
+      return null;
     }
+    Set<File> out = new TreeSet<File>();
+    Directory dir = file.getDirectory();
+    Iterator<Item> it = files.iterator();
+    while (it.hasNext()) {
+      File f = (File) it.next();
+      Directory d = f.getDirectory();
+      if (d.equals(dir)) {
+        out.add(f);
+      }
+    }
+    return out;
   }
 
   /**
@@ -715,30 +690,28 @@ public final class FileManager extends ItemManager implements Observer {
    * @return All files in the same directory from the given one (includes the
    *         one)
    */
-  public Set<File> getAllDirectoryFrom(File file) {
-    synchronized (getLock()) {
-      if (file == null) {
-        return null;
-      }
-      Set<Item> files = getItems();
-      Set<File> out = new TreeSet<File>();
-      Directory dir = file.getDirectory();
-      Iterator<Item> it = files.iterator();
-      boolean bSeenTheOne = false;
-      while (it.hasNext()) {
-        File f = (File) it.next();
-        if (f.equals(file)) {
-          bSeenTheOne = true;
+  public synchronized Set<File> getAllDirectoryFrom(File file) {
+    if (file == null) {
+      return null;
+    }
+    Set<Item> files = getItems();
+    Set<File> out = new TreeSet<File>();
+    Directory dir = file.getDirectory();
+    Iterator<Item> it = files.iterator();
+    boolean bSeenTheOne = false;
+    while (it.hasNext()) {
+      File f = (File) it.next();
+      if (f.equals(file)) {
+        bSeenTheOne = true;
+        out.add(f);
+      } else {
+        Directory d = f.getDirectory();
+        if (d.equals(dir) && bSeenTheOne) {
           out.add(f);
-        } else {
-          Directory d = f.getDirectory();
-          if (d.equals(dir) && bSeenTheOne) {
-            out.add(f);
-          }
         }
       }
-      return out;
     }
+    return out;
   }
 
   /*
@@ -776,12 +749,10 @@ public final class FileManager extends ItemManager implements Observer {
    * 
    * @return files set
    */
-  public Set<File> getFiles() {
+  public synchronized Set<File> getFiles() {
     Set<File> fileSet = new LinkedHashSet<File>();
-    synchronized (getLock()) {
-      for (Item item : getItems()) {
-        fileSet.add((File) item);
-      }
+    for (Item item : getItems()) {
+      fileSet.add((File) item);
     }
     return fileSet;
   }

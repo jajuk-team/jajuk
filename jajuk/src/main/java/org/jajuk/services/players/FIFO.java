@@ -38,7 +38,6 @@ import org.jajuk.base.FileManager;
 import org.jajuk.events.Event;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
-import org.jajuk.services.core.ExitService;
 import org.jajuk.services.dj.AmbienceManager;
 import org.jajuk.services.webradio.WebRadio;
 import org.jajuk.ui.helpers.JajukTimer;
@@ -267,7 +266,7 @@ public final class FIFO implements Const {
           }
         }
       }
-      synchronized (FIFO.class) {
+      synchronized (FIFO.MUTEX) {
         // test if we have yet some files to consider
         if (alItems.size() == 0) {
           return;
