@@ -144,7 +144,7 @@ public final class StyleManager extends ItemManager {
    * @param sNewName
    * @return new item
    */
-  public synchronized Style changeStyleName(Style old, String sNewName) throws JajukException {
+  public Style changeStyleName(Style old, String sNewName) throws JajukException {
     synchronized (TrackManager.getInstance()) {
       // check there is actually a change
       if (old.getName2().equals(sNewName)) {

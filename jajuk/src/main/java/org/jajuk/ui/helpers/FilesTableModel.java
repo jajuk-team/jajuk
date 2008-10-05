@@ -136,7 +136,7 @@ public class FilesTableModel extends JajukTableModel implements Const {
    * Fill model with data using an optional filter property and pattern
    */
   @Override
-  public synchronized void populateModel(String sPropertyName, String sPattern,
+  public void populateModel(String sPropertyName, String sPattern,
       List<String> columnsToShow) {
     synchronized (FileManager.getInstance()) {
       // This should be monitor filemanager to avoid NPE when changing items
