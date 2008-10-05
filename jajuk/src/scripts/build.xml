@@ -7,7 +7,7 @@
 
 	<!--Distribution release 
 	!!! DO NOT USE '-' CHARACTER IN VERSION !!!-->
-	<property name='version' value='1.7_snapshot6' />
+	<property name='version' value='1.7_snapshot7' />
 
 	<!--Previous release used for JNLP incremental upgrade-->
 	<property name='previous_version' value='null' />
@@ -19,7 +19,7 @@
 	<!-- | Configuration paths | -->
 	<!-- ======================= -->
 
-	<!-- Conf for local build
+	<!-- Conf for local build 
 	<property name='conf_izpackdir' value='/prog/IzPack' />
 	<property name='conf_jsmoothgendir' value='/prog/jsmooth-0.9.7' />
 	<property name='conf_javahelpdir' value='/prog/api/jh/javahelp' />
@@ -27,9 +27,9 @@
 	<property name='conf_homeuser' value='/home/bflorat' />
 	<property name='conf_uploaddir' value='${rootdir}/upload' />
 	<property name='conf_jarbundler' value='/prog/jarbundler-1.9' />-->
+	
 
-
-	<!-- Conf for Jajuk Continuous Integration  server -->
+	<!-- Conf for Jajuk Continuous Integration  server --> 
 	<property name='conf_izpackdir' value='/svn-jajuk/tools/IzPack' />
 	<property name='conf_jsmoothgendir' value='/svn-jajuk/tools/jsmooth-0.9.9-7' />
 	<property name='conf_javahelpdir' value='/svn-jajuk/tools/javahelp/jh2.0/javahelp' />
@@ -403,7 +403,7 @@
 		<!-- Sign all jars -->
 		<signjar alias="jajukteam" storepass="passpass">
 			<fileset dir='${jnlpdir}'>
-				<include name='*.jar' />
+				<include name='**/*.jar' />
 			</fileset>
 		</signjar>
 
@@ -563,7 +563,7 @@
 	</target>
 
 
-	<!-- Signes and upload packages-->
+	<!-- Create hash files and upload packages-->
 	<target name='deploy_new_release' description='o Put all generated packages and checksums into Jajuk webserver repository directory' depends='package_all'>
 		<mkdir dir='${conf_uploaddir}' />
 		<copy todir='${conf_uploaddir}'>
