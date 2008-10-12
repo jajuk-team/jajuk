@@ -43,7 +43,6 @@ import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
 
 import org.jajuk.base.Style;
-import org.jajuk.base.StyleManager;
 import org.jajuk.events.Event;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;

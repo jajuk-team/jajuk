@@ -19,6 +19,7 @@
  */
 package org.jajuk.util;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -248,7 +249,8 @@ public final class UtilFeatures implements Const {
    * @param sFileName
    * @return whether the given filename is a standard cover or not
    */
-  public static boolean isStandardCover(final String sFileName) {
+  public static boolean isStandardCover(final File file) {
+    String sFileName = file.getName();
     return sFileName.toLowerCase().matches(".*" + Const.FILE_DEFAULT_COVER + ".*")
         || sFileName.toLowerCase().matches(".*" + Const.FILE_DEFAULT_COVER_2 + ".*")
         // just for previous compatibility, now it is a directory

@@ -29,7 +29,6 @@ import javax.swing.ImageIcon;
 
 import org.jajuk.util.Const;
 import org.jajuk.util.DownloadManager;
-import org.jajuk.util.UtilFeatures;
 import org.jajuk.util.UtilGUI;
 import org.jajuk.util.UtilSystem;
 import org.jajuk.util.log.Log;
@@ -39,19 +38,23 @@ import org.jajuk.util.log.Log;
  */
 public class Cover implements Comparable<Cover>, Const {
 
-  public static final int LOCAL_COVER = 0;
-
-  public static final int REMOTE_COVER = 1;
-
-  public static final int DEFAULT_COVER = 2;
-
-  public static final int ABSOLUTE_DEFAULT_COVER = 3;
+  /**
+   * Covers type enumeration.
+   * <p>NO_COVER : default jajuk cover displayed when no other is available</p>
+   * <p>LOCAL_COVER : cover located on the disk and not a standard one</p>
+   * <p>STANDARD COVER : cover located on the disk with a obvious name (cover.png, front.png...)  </p>
+   * <p>REMOTE_COVER : cover from the web (HTTP protocol)</p>
+   * <p>SELECTED_COVER : local cover selected by user as the default local cover to display in thumbs.. </p>  
+   */
+  public enum CoverType {
+    NO_COVER, REMOTE_COVER, LOCAL_COVER, STANDARD_COVER, SELECTED_COVER 
+  }
 
   /** Cover URL* */
   private URL url;
 
   /** Cover Type */
-  private int iType;
+  private CoverType type;
 
   /** Associated file */
   private File file;
@@ -59,96 +62,57 @@ public class Cover implements Comparable<Cover>, Const {
   /** Default cover image */
   private static final ImageIcon DEFAULT_COVER_ICON = UtilGUI.getImage(IMAGES_SPLASHSCREEN);
 
-  /** Default URL */
-  private static URL urlDefault = null;
-
   /** Download id */
   private String id;
 
-  static {
-    urlDefault = IMAGES_SPLASHSCREEN;
-  }
-
   /**
-   * Constructor
+   * Constructor for remote covers
    * 
    * @param sUrl
-   *          cover url : absolute path for a local file, http url for a remote
-   *          file
-   * @param iType
+   *          cover url : http url
+   * @param type
    */
-  public Cover(final URL url, final int iType) throws Exception {
+  public Cover(final URL url, final CoverType type) throws Exception {
     this.url = url;
-    this.iType = iType;
+    this.type = type;
     // Create an unique id for this cover
-    id = Long.toString((long) (System.currentTimeMillis() * Math.random()));
-    if (iType == Cover.LOCAL_COVER || iType == Cover.DEFAULT_COVER
-        || iType == Cover.ABSOLUTE_DEFAULT_COVER) {
-      this.file = new File(url.getFile());
-    } else if (iType == Cover.REMOTE_COVER) {
+    id = Long.toString((long) (System.currentTimeMillis() * UtilSystem.getRandom().nextDouble()));
+    // only remote and no_cover are created by URL (file:// for no_cover, the image is inside the jajuk jar)
+    if (type == CoverType.REMOTE_COVER || type == CoverType.NO_COVER) {
       this.file = UtilSystem.getCachePath(url, id);
     }
   }
 
+  /**
+   * Constructor for local covers
+   * 
+   * @param file
+   *          cover file
+   * @param type
+   */
+  public Cover(final File localFile, final CoverType type) throws Exception {
+    this.type = type;
+    this.file = localFile;
+    this.url = new URL("file://" + file.getAbsolutePath());
+    // Create an unique id for this cover
+    id = Long.toString((long) (System.currentTimeMillis() * UtilSystem.getRandom().nextDouble()));
+  }
+
   /*
    * (non-Javadoc)
-   * 
+   * The priority order is : SELECTED > STANDARD > LOCAL > REMOTE > NO_COVER
    * @see java.lang.Comparable#compareTo(java.lang.Object)
    */
   public int compareTo(Cover cOther) {
-    // check if the 2 covers are identical
-    if (cOther.equals(this)) {
-      return 0;
-    }
-    // check absolute covers
-    if (getType() == ABSOLUTE_DEFAULT_COVER) {
-      return 1;
-    } else if (cOther.getType() == ABSOLUTE_DEFAULT_COVER) {
-      return -1;
-    }
-    // Default cover is the less priority
-    if (getType() == DEFAULT_COVER) {
-      if (cOther.getType() == DEFAULT_COVER) {
-        return 0; // i'm a default cover and the other too
-      } else {
-        return -1; // i'm a default cover and the other not
-      }
-    }
-    // local covers are prioritary upon remote ones :
-    else if (getType() == LOCAL_COVER) {
-      if (cOther.getType() != LOCAL_COVER) { // the other is not a
-        // local cover
-        return 1; // i'm a local cover and the other not
-      } else { // both are local covers, analyse name
-        String sFile = UtilSystem.getOnlyFile(getURL().getFile());
-        String sOtherFile = UtilSystem.getOnlyFile(cOther.getURL().getFile());
-        // files named "cover" or "front" are prioritary upon others :
-        if (UtilFeatures.isStandardCover(sFile)) {
-          if (UtilFeatures.isStandardCover(sOtherFile)) {
-            return 0; // both are local-standard covers
-          } else {
-            return 1; // i'm a local standard cover and the
-            // other is only a local non-standard
-            // cover
-          }
-        } else {
-          if (UtilFeatures.isStandardCover(sOtherFile)) {
-            return -1;// i'm a local cover and the other is
-            // local standard cover
-          } else {
-            return 0; // both are local non-standard covers
-          }
-        }
-      }
-    }
-    return 0; // any other case
+    // We leverage the enum ordering for comparison
+    return getType().ordinal() - cOther.getType().ordinal();
   }
 
   /**
-   * @return Returns the iType.
+   * @return Returns the type.
    */
-  public int getType() {
-    return iType;
+  public CoverType getType() {
+    return type;
   }
 
   /**
@@ -173,7 +137,7 @@ public class Cover implements Comparable<Cover>, Const {
    */
   public Image getImage() throws Exception {
     // default cover image is cached in memory for perfs
-    if (getURL().equals(urlDefault)) {
+    if (getType() == CoverType.NO_COVER) {
       return DEFAULT_COVER_ICON.getImage();
     }
     long l = System.currentTimeMillis();
@@ -186,7 +150,7 @@ public class Cover implements Comparable<Cover>, Const {
       // Mediatracker as read method is synchronous)
       image = Toolkit.getDefaultToolkit().getImage(getFile().getAbsolutePath());
     }
-    Log.debug("Loaded {{" + url.toString() + "}} in  " + (System.currentTimeMillis() - l) + " ms");
+    Log.debug("Loaded {{" + url + "}} in  " + (System.currentTimeMillis() - l) + " ms");
     return image;
   }
 
@@ -195,7 +159,7 @@ public class Cover implements Comparable<Cover>, Const {
    */
   @Override
   public String toString() {
-    return "Type=" + iType + " URL=" + url;
+    return "Type=" + type + " URL=" + url;
   }
 
   /**
@@ -204,31 +168,20 @@ public class Cover implements Comparable<Cover>, Const {
   @Override
   public boolean equals(Object o) {
     // this also handles null by definition
-    if(!(o instanceof Cover)) {
+    if (!(o instanceof Cover)) {
       return false;
     }
-    
+
     // we have an item of type Cover, so we can cast it safely
     Cover cOther = (Cover) o;
-    
-    // check for default cover type
-    if (getType() == Cover.ABSOLUTE_DEFAULT_COVER
-        || cOther.getType() == Cover.ABSOLUTE_DEFAULT_COVER) {
-      return (cOther.getType() == getType()); // either both are
-      // default cover, either
-      // one is not and so,
-      // they are unequal
-    }
-    
-    // here, all url are not null
-    // for local covers, we consider that 2 covers with the same file name
-    // are identical even if they are in different directories
-    if (getType() != Cover.REMOTE_COVER) {
-      return UtilSystem.getOnlyFile(url.getFile()).equals(UtilSystem.getOnlyFile(cOther.getURL().getFile()));
+
+    // check type
+    if (getType() != cOther.getType()) {
+      return false;
     }
 
-    // Remote cover
-    return url.getFile().equals(cOther.getURL().getFile());
+    // From here, types are equals
+    return url.equals(cOther.getURL());
   }
 
   /**
@@ -237,7 +190,7 @@ public class Cover implements Comparable<Cover>, Const {
    */
   @Override
   public int hashCode() {
-    return this.url.hashCode() + iType;
+    return this.url.hashCode() + type.ordinal();
   }
 
   public File getFile() {

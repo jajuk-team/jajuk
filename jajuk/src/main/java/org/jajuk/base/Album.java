@@ -272,7 +272,7 @@ public class Album extends LogicalItem implements Comparable<Album> {
           String sExt = UtilSystem.getExtension(files[i]);
           if (sExt.equalsIgnoreCase("jpg") || sExt.equalsIgnoreCase("png")
               || sExt.equalsIgnoreCase("gif")) {
-            if (UtilFeatures.isStandardCover(files[i].getAbsolutePath())) {
+            if (UtilFeatures.isStandardCover(files[i])) {
               return files[i];
             }
           }

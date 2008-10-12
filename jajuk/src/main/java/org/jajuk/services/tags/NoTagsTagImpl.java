@@ -38,7 +38,7 @@ public class NoTagsTagImpl implements ITagImpl {
   File fio;
 
   /** Current file data */
-  Map<String,Object> mapInfo;
+  Map<String, Object> mapInfo;
 
   /*
    * (non-Javadoc)
@@ -95,8 +95,7 @@ public class NoTagsTagImpl implements ITagImpl {
       }
 
       @SuppressWarnings("unchecked")
-      public void progress(int iBytesread, long lMicroseconds, byte[] bPcmdata,
-          Map mProperties) {
+      public void progress(int iBytesread, long lMicroseconds, byte[] bPcmdata, Map mProperties) {
       }
 
       public void stateUpdated(BasicPlayerEvent bpe) {
@@ -162,7 +161,8 @@ public class NoTagsTagImpl implements ITagImpl {
    * 
    * @see org.jajuk.base.ITagImpl#setLength(long)
    */
-  public void setLength(long length) throws Exception {
+  public void setLength(@SuppressWarnings("unused")
+  long length) throws Exception {
   }
 
   /*
@@ -170,7 +170,8 @@ public class NoTagsTagImpl implements ITagImpl {
    * 
    * @see org.jajuk.base.ITagImpl#setQuality(java.lang.String)
    */
-  public void setQuality(String sQuality) throws Exception {
+  public void setQuality(@SuppressWarnings("unused")
+  String sQuality) throws Exception {
   }
 
   /*

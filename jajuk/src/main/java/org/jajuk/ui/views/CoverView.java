@@ -65,6 +65,7 @@ import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.events.Observer;
 import org.jajuk.services.covers.Cover;
+import org.jajuk.services.covers.Cover.CoverType;
 import org.jajuk.services.players.FIFO;
 import org.jajuk.services.players.StackItem;
 import org.jajuk.ui.thumbnails.ThumbnailManager;
@@ -100,8 +101,8 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
 
   private static final long serialVersionUID = 1L;
 
-  /** Default cover */
-  private static Cover coverDefault;
+  /** No cover cover */
+  private static Cover nocover;
 
   /** Error counter to check connection availability */
   private static int iErrorCounter = 0;
@@ -202,8 +203,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
       handleDelete();
     } else if (e.getSource() == jbDefault) {
       handleDefault();
-    }
-    else if ((e.getSource() == jbSave)
+    } else if ((e.getSource() == jbSave)
         && ((e.getModifiers() & ActionEvent.CTRL_MASK) == ActionEvent.CTRL_MASK)) {
       // save a file as... (can be local now)
       handleSaveAs();
@@ -268,9 +268,10 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
     final Cover cover = alCovers.get(index);
     // show confirmation message if required
     if (Conf.getBoolean(Const.CONF_CONFIRMATIONS_DELETE_COVER)) {
-      final int iResu = Messages.getChoice(Messages.getString("Confirmation_delete_cover")
-          + " : " + cover.getURL().getFile(), JOptionPane.YES_NO_CANCEL_OPTION,
-          JOptionPane.WARNING_MESSAGE);
+      final int iResu = Messages
+          .getChoice(Messages.getString("Confirmation_delete_cover") + " : "
+              + cover.getURL().getFile(), JOptionPane.YES_NO_CANCEL_OPTION,
+              JOptionPane.WARNING_MESSAGE);
       if (iResu != JOptionPane.YES_OPTION) {
         return;
       }
@@ -284,20 +285,21 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
           throw new Exception("Deleting file " + file.toString() + " failed");
         }
       } else { // not a file, must have a problem
-        throw new Exception("Encountered file which either is not a file or does not exist: " + file);
+        throw new Exception("Encountered file which either is not a file or does not exist: "
+            + file);
       }
     } catch (final Exception ioe) {
       Log.error(131, ioe);
       Messages.showErrorMessage(131);
       return;
     }
-    
+
     // If this was the absolute cover, remove the reference in the
     // collection
-    if (cover.getType() == Cover.ABSOLUTE_DEFAULT_COVER) {
+    if (cover.getType() == CoverType.SELECTED_COVER) {
       dirReference.removeProperty("default_cover");
     }
-    
+
     // reorganize covers
     synchronized (bLock) {
       alCovers.remove(index);
@@ -322,7 +324,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
       public void run() {
         final Cover cover = alCovers.get(index);
         // should not happen, only remote covers here
-        if (cover.getType() != Cover.REMOTE_COVER) {
+        if (cover.getType() != CoverType.REMOTE_COVER) {
           Log.debug("Try to save a local cover");
           return;
         }
@@ -336,13 +338,12 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
             Const.FILE_JAJUK_DOWNLOADED_FILES_SUFFIX).toString();
         try {
           // copy file from cache
-          final File fSource = DownloadManager.downloadCover(cover.getURL(), cover
-              .getDownloadID());
+          final File fSource = DownloadManager.downloadCover(cover.getURL(), cover.getDownloadID());
           final File file = new File(sFilePath);
           UtilSystem.copy(fSource, file);
           InformationJPanel.getInstance().setMessage(Messages.getString("CoverView.11"),
               InformationJPanel.INFORMATIVE);
-          final Cover cover2 = new Cover(file.toURI().toURL(), Cover.ABSOLUTE_DEFAULT_COVER);
+          final Cover cover2 = new Cover(file, CoverType.SELECTED_COVER);
           if (!alCovers.contains(cover2)) {
             alCovers.add(cover2);
             setFoundText();
@@ -403,7 +404,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
       // first commit this cover on the disk if it is a remote cover
       final Cover cover = alCovers.get(index);
       final String sFilename = UtilSystem.getOnlyFile(cover.getURL().toString());
-      if (cover.getType() == Cover.REMOTE_COVER) {
+      if (cover.getType() == CoverType.REMOTE_COVER) {
         String sFilePath = dirReference.getFio().getPath() + "/" + sFilename;
         // Add a jajuk suffix to know this cover has been downloaded by
         // jajuk
@@ -415,7 +416,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
           final File fSource = DownloadManager.downloadCover(cover.getURL(), cover.getDownloadID());
           final File file = new File(sFilePath);
           UtilSystem.copy(fSource, file);
-          final Cover cover2 = new Cover(file.toURI().toURL(), Cover.ABSOLUTE_DEFAULT_COVER);
+          final Cover cover2 = new Cover(file, CoverType.SELECTED_COVER);
           if (!alCovers.contains(cover2)) {
             alCovers.add(cover2);
             setFoundText();
@@ -537,14 +538,14 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
   private void displayCover(final int index) {
     if ((alCovers.size() == 0) || (index >= alCovers.size()) || (index < 0)) {
       // just a check
-      alCovers.add(CoverView.coverDefault); // display default cover by default
+      alCovers.add(CoverView.nocover); // display nocover by default
       displayCover(0);
       return;
     }
     final Cover cover = alCovers.get(index); // take image at the given index
     final URL url = cover.getURL();
     // enable delete button only for local covers
-    if ((cover.getType() == Cover.LOCAL_COVER) || (cover.getType() == Cover.ABSOLUTE_DEFAULT_COVER)) {
+    if ((cover.getType() == CoverType.LOCAL_COVER) || (cover.getType() == CoverType.SELECTED_COVER)) {
       jbDelete.setEnabled(true);
     } else {
       jbDelete.setEnabled(false);
@@ -552,7 +553,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
     if (url != null) {
       jbSave.setEnabled(false);
       String sType = " (L)"; // local cover
-      if (cover.getType() == Cover.REMOTE_COVER) {
+      if (cover.getType() == CoverType.REMOTE_COVER) {
         sType = "(@)"; // Web cover
         jbSave.setEnabled(true);
       }
@@ -613,7 +614,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
           // remove listener to avoid looping
           if (alCovers.size() == 0) {
             // should not append
-            alCovers.add(CoverView.coverDefault);
+            alCovers.add(CoverView.nocover);
             // Add at last the default cover if all remote cover has
             // been discarded
             try {
@@ -623,7 +624,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
             }
             return null;
           }
-          if ((alCovers.size() == 1) && ((alCovers.get(0)).getType() == Cover.DEFAULT_COVER)) {
+          if ((alCovers.size() == 1) && ((alCovers.get(0)).getType() == CoverType.NO_COVER)) {
             // only a default cover
             try {
               prepareDisplay(0);
@@ -658,7 +659,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
           }
           // if this code is executed, it means than no available
           // cover was found, then display default cover
-          alCovers.add(CoverView.coverDefault); // Add at last the default cover
+          alCovers.add(CoverView.nocover); // Add at last the default cover
           // if all remote cover has been discarded
           try {
             index = 0;
@@ -822,9 +823,8 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
     }
     try {
       // instantiate default cover
-      if (CoverView.coverDefault == null) {
-        CoverView.coverDefault = new Cover(Const.IMAGES_SPLASHSCREEN,
-            Cover.DEFAULT_COVER);
+      if (CoverView.nocover == null) {
+        CoverView.nocover = new Cover(Const.IMAGES_SPLASHSCREEN, CoverType.NO_COVER);
       }
     } catch (final Exception e) {
       Log.error(e);
@@ -948,9 +948,8 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
     try {
       for (int i = 0; i < 4; i++) {
         final Album album = dirReference.getFiles().iterator().next().getTrack().getAlbum();
-        final File fThumb = UtilSystem.getConfFileByPath(Const.FILE_THUMBS + '/'
-            + (50 + 50 * i) + "x" + (50 + 50 * i) + '/' + album.getID() + '.'
-            + Const.EXT_THUMB);
+        final File fThumb = UtilSystem.getConfFileByPath(Const.FILE_THUMBS + '/' + (50 + 50 * i)
+            + "x" + (50 + 50 * i) + '/' + album.getID() + '.' + Const.EXT_THUMB);
         ThumbnailManager.createThumbnail(cover.getFile(), fThumb, (50 + 50 * i));
       }
     } catch (final Exception ex) {
@@ -1082,7 +1081,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
           setFoundText("");
           setSizeText("");
           alCovers.clear();
-          alCovers.add(CoverView.coverDefault); // add the default cover
+          alCovers.add(CoverView.nocover); // add the default cover
           index = 0;
           displayCurrentCover();
           dirReference = null;
@@ -1127,7 +1126,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
     // remove all existing covers
     alCovers.clear();
     if (dirReference == null) {
-      alCovers.add(CoverView.coverDefault);
+      alCovers.add(CoverView.nocover);
       index = 0;
       displayCurrentCover();
       return;
@@ -1165,13 +1164,18 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
           if (!bAbsoluteCover
               && UtilFeatures.isAbsoluteDefaultCover(fCurrent.getDirectory(), files[i].getName())) {
             // test the cover is not already used
-            final Cover cover = new Cover(files[i].toURI().toURL(), Cover.ABSOLUTE_DEFAULT_COVER);
+            final Cover cover = new Cover(files[i], CoverType.SELECTED_COVER);
             if (!alCovers.contains(cover)) {
               alCovers.add(cover);
             }
             bAbsoluteCover = true;
-          } else { // normal local cover
-            final Cover cover = new Cover(files[i].toURI().toURL(), Cover.LOCAL_COVER);
+          } else { // normal or standard local cover
+            Cover cover = null;
+            if (UtilFeatures.isStandardCover(files[i])) {
+              cover = new Cover(files[i], CoverType.STANDARD_COVER);
+            } else {
+              cover = new Cover(files[i], CoverType.LOCAL_COVER);
+            }
             if (!alCovers.contains(cover)) {
               alCovers.add(cover);
             }
@@ -1207,7 +1211,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
             // and stop if a signal has been emitted
             final URL url = it2.next();
             try {
-              final Cover cover = new Cover(url, Cover.REMOTE_COVER);
+              final Cover cover = new Cover(url, CoverType.REMOTE_COVER);
               // Create a cover with given url ( image
               // will be really downloaded when
               // required if no preload)
@@ -1224,7 +1228,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
                 Log.warn("Too many connection fails, stop to search for covers online");
                 InformationJPanel.getInstance().setMessage(Messages.getString("Error.030"),
                     InformationJPanel.WARNING);
-              } 
+              }
             } catch (final Exception e) {
               Log.error(e); // can occur in case of
               // error during cover download
@@ -1253,7 +1257,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
     }
     if (alCovers.size() == 0) {// add the default cover if none
       // other cover has been found
-      alCovers.add(CoverView.coverDefault);
+      alCovers.add(CoverView.nocover);
     }
     Collections.sort(alCovers); // sort the list
     Log.debug("Local cover list: {{" + alCovers + "}}");
