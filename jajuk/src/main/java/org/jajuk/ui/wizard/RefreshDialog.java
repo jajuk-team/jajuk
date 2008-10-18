@@ -37,9 +37,6 @@ import org.jdesktop.swingx.JXBusyLabel;
  */
 public class RefreshDialog extends JFrame {
 
-  /**
-   * 
-   */
   private static final long serialVersionUID = -7883506101436294760L;
 
   private JXBusyLabel jlAction;
@@ -48,14 +45,23 @@ public class RefreshDialog extends JFrame {
 
   private JLabel jlRefreshing;
 
-  public RefreshDialog() {
-    super();
+  private boolean indeterminate = false;
+
+  /**
+   * Refresh dialog (labels and a progress bar)
+   * 
+   * @param indeterminate
+   *          whether the progress is indeterminate or not
+   */
+  public RefreshDialog(final boolean indeterminate) {
+    this.indeterminate = indeterminate;
     SwingUtilities.invokeLater(new Runnable() {
       public void run() {
         setUndecorated(true);
         setIconImage(IconLoader.getIcon(JajukIcons.LOGO).getImage());
         jlAction = new JXBusyLabel();
         progress = new JProgressBar(0, 100);
+        progress.setIndeterminate(indeterminate);
         jlRefreshing = new JLabel();
         double[][] dSize = new double[][] { { 5, 500, 5 }, { 5, 30, 5, 20, 5, 20, 5 } };
         setLayout(new TableLayout(dSize));
@@ -93,11 +99,13 @@ public class RefreshDialog extends JFrame {
    *          position from 0 to 100
    */
   public void setProgress(final int pos) {
-    SwingUtilities.invokeLater(new Runnable() {
-      public void run() {
-        progress.setValue(pos);
-      }
-    });
+    if (!this.indeterminate) {
+      SwingUtilities.invokeLater(new Runnable() {
+        public void run() {
+          progress.setValue(pos);
+        }
+      });
+    }
   }
 
 }

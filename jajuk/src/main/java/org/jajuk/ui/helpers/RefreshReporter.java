@@ -27,12 +27,13 @@ import javax.swing.Timer;
 
 import org.jajuk.base.Device;
 import org.jajuk.base.Directory;
+import org.jajuk.base.DirectoryManager;
 import org.jajuk.ui.widgets.InformationJPanel;
 import org.jajuk.ui.wizard.RefreshDialog;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
-import org.jajuk.util.UtilSystem;
+import org.jajuk.util.ReadOnlyIterator;
 import org.jajuk.util.log.Log;
 
 /**
@@ -46,11 +47,11 @@ public class RefreshReporter {
   // Refresh dialog
   private RefreshDialog rdialog;
 
-  private int progress = 0;
+  private int progress;
 
-  private int dirTotal = 0;
+  private int dirTotal;
 
-  private int dirCount = 0;
+  private int dirCount;
 
   /** Manual refresh date start* */
   private long lDateStart;
@@ -59,10 +60,10 @@ public class RefreshReporter {
   private long lRefreshDateStart;
 
   /** Number of new files found during refresh for stats */
-  private int iNbNewFiles = 0;
+  private int iNbNewFiles;
 
   /** Number of corrupted files found during refresh for stats */
-  private int iNbCorruptedFiles = 0;
+  private int iNbCorruptedFiles;
 
   public RefreshReporter(Device device) {
     this.device = device;
@@ -73,22 +74,34 @@ public class RefreshReporter {
 
   public void startup() {
     // reset all values as this object is reused
-    progress = 0;
-    dirTotal = 0;
-    dirCount = 0;
-    iNbNewFiles = 0;
-    iNbCorruptedFiles = 0;
-    lDateStart = System.currentTimeMillis();
-    rdialog = new RefreshDialog();
-    rdialog.setTitle(Messages.getString("RefreshDialog.2") + " " + device.getName());
+    this.progress = 0;
+    this.dirTotal = -1;
+    this.dirCount = 0;
+    this.iNbNewFiles = 0;
+    this.iNbCorruptedFiles = 0;
+    this.lDateStart = System.currentTimeMillis();
+    ReadOnlyIterator<Directory> dirs = DirectoryManager.getInstance().getDirectoriesIterator();
+    while (dirs.hasNext()) {
+      if (dirs.next().getDevice().equals(device)) {
+        dirTotal++;
+      }
+    }
+    // To avoid "freezing" at 100% if new files have been added since last refresh, take 
+    // 10 % of new files
+    dirTotal *= 1.1;
+    
+    // if <0  directories count -> the progress bar is in indeterminate state
+    this.rdialog = new RefreshDialog((dirTotal < 0));
+    this.rdialog.setTitle(Messages.getString("RefreshDialog.2") + " " + device.getName());
     // Computes the number of directories
-    rdialog.setAction(Messages.getString("RefreshDialog.0"), IconLoader.getIcon(JajukIcons.INFO));
+    this.rdialog.setAction(Messages.getString("RefreshDialog.0"), IconLoader.getIcon(JajukIcons.INFO));
     // Count directories, takes a while, do not execute in AWT thread
-    // We add 1 directory because we have to keep into account the root
-    // directory
-    dirTotal = UtilSystem.countDirectories(device.getFio()) + 1;
-    rdialog.setAction(Messages.getString("RefreshDialog.3"), IconLoader.getIcon(JajukIcons.INFO));
-    rdialog.setProgress(10);
+    // If we already refreshed the device, use previous size as best
+    // guess. If it is the first refresh don't count (user reported that it is
+    // too long in some cases), but display a default slider
+    
+    this.rdialog.setAction(Messages.getString("RefreshDialog.3"), IconLoader.getIcon(JajukIcons.INFO));
+    this.rdialog.setProgress(10);
   }
 
   public void notifyCorruptedFile() {
@@ -117,8 +130,12 @@ public class RefreshReporter {
   public void cleanupDone() {
     // Cleanup represents about 20% of the total workload
     rdialog.setProgress(20);
-    rdialog.setAction(Messages.getString("RefreshDialog.1"), IconLoader.getIcon(JajukIcons.REFRESH));
-    updateDialogTitle.start();
+    rdialog
+        .setAction(Messages.getString("RefreshDialog.1"), IconLoader.getIcon(JajukIcons.REFRESH));
+    // Update counter only if final directory count is known
+    if (dirTotal > 0){
+      updateDialogTitle.start();
+    }
   }
 
   public void updateState(Directory dir) {
