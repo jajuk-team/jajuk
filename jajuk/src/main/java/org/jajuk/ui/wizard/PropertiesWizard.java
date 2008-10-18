@@ -33,6 +33,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -802,7 +803,8 @@ public class PropertiesWizard extends JajukJDialog implements Const, ActionListe
             }
           }
           // Require full commit for all changed tags on the current file
-          Set<Item> errors = TrackManager.getInstance().commit();
+          List<Track> errors = TrackManager.getInstance().commit();
+          Collections.sort(errors);
           // Note : errors should contain a single track
           for (Item item : errors) {
             if (!alInError.contains(item)) {

@@ -25,7 +25,7 @@ import java.awt.Image;
 import java.awt.MediaTracker;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.util.Set;
+import java.util.List;
 import java.util.StringTokenizer;
 
 import javax.imageio.ImageIO;
@@ -177,7 +177,7 @@ public final class ThumbnailManager implements Const {
       // search for local covers in all directories mapping the
       // current track to reach other
       // devices covers and display them together
-      final Set<Track> tracks = TrackManager.getInstance().getAssociatedTracks(album);
+      final List<Track> tracks = TrackManager.getInstance().getAssociatedTracks(album);
       if (tracks.size() == 0) {
         return false;
       }

@@ -230,7 +230,10 @@ public final class ThumbnailsMaker implements Const {
     Collection.load(UtilSystem.getConfFileByPath(Const.FILE_COLLECTION));
     // Mount devices
     Main.autoMount();
-    final java.util.Set<Album> albums = AlbumManager.getInstance().getAlbums();
+    final List<Album> albums = AlbumManager.getInstance().getAlbums();
+     // Sort the albums
+    //Collections.sort(albums);
+    
     // For each album, create the associated thumb
     for (final Album album : albums) {
       // Leave if jajuk leaved

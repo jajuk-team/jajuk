@@ -30,9 +30,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-import java.util.Set;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
@@ -198,14 +197,15 @@ public class SearchBox extends JTextField implements KeyListener {
       if (sTyped.length() >= MIN_CRITERIA_LENGTH) {
         // second test to get sure user didn't
         // typed before entering this method
-        Set<SearchResult> tsResu = TrackManager.getInstance().search(sTyped);
+        List<SearchResult> resu = TrackManager.getInstance().search(sTyped);
         // Add web radio names
-        tsResu.addAll(WebRadioManager.getInstance().search(sTyped));
-        if (tsResu.size() > 0) {
+        resu.addAll(WebRadioManager.getInstance().search(sTyped));
+        // Sort the whole list
+        Collections.sort(resu);
+        if (resu.size() > 0) {
           DefaultListModel model = new DefaultListModel();
-          alResults = new ArrayList<SearchResult>();
-          alResults.addAll(tsResu);
-          for (SearchResult sr : tsResu) {
+          this.alResults = resu;
+          for (SearchResult sr : resu) {
             model.addElement(sr);
           }
           jlist = new JList(model);

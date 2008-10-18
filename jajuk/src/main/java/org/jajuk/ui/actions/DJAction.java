@@ -46,7 +46,7 @@ public class DJAction extends JajukAction {
 
   @Override
   public void perform(ActionEvent evt) throws JajukException {
-    if (StyleManager.getInstance().getStyles().size() == 0) {
+    if (StyleManager.getInstance().getElementCount() == 0) {
       Messages.showErrorMessage(156); // void collection error
     } else {
       new Thread() {

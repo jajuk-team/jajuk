@@ -39,6 +39,7 @@ import org.jajuk.ui.widgets.JajukWindow;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
+import org.jajuk.util.ReadOnlyIterator;
 import org.jajuk.util.UtilGUI;
 
 public class FindDuplicateTracksAction extends JajukAction {
@@ -53,7 +54,9 @@ public class FindDuplicateTracksAction extends JajukAction {
   @Override
   public void perform(ActionEvent evt) throws Exception {
     List<List<File>> duplicateFilesList = new ArrayList<List<File>>();
-    for (Track track : TrackManager.getInstance().getTracks()) {
+    ReadOnlyIterator<Track> tracks = TrackManager.getInstance().getTracksIterator();
+    while (tracks.hasNext()){
+      Track track = tracks.next();
       List<File> trackFileList = track.getFiles();
       if (trackFileList.size() > 1) {
         duplicateFilesList.add(trackFileList);

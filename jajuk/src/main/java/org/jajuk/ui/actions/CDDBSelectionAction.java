@@ -23,7 +23,6 @@ import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Set;
 
 import org.jajuk.base.Item;
 import org.jajuk.base.Track;
@@ -68,7 +67,7 @@ public class CDDBSelectionAction extends SelectionAction {
     }
     // Build a list of tracks from various items
     Item item = selection.get(0);
-    Set<Track> tracksSet = TrackManager.getInstance().getAssociatedTracks(item);
+    List<Track> tracksSet = TrackManager.getInstance().getAssociatedTracks(item);
     List<Track> tracks = new ArrayList<Track>(tracksSet);
     
     // Sort tracks

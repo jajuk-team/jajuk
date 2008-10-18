@@ -20,7 +20,6 @@
 
 package org.jajuk.ui.helpers;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -117,7 +116,7 @@ public class AlbumsTableModel extends JajukTableModel {
   @SuppressWarnings("unchecked")
   public void populateModel(String sPropertyName, String sPattern,
       List<String> columnsToShow) {
-    List<Album> alToShow = new ArrayList<Album>(AlbumManager.getInstance().getAlbums());
+    List<Album> alToShow = AlbumManager.getInstance().getAlbums();
     // OK, begin by filtering using any provided pattern
     Filter filter = new Filter(sPropertyName, sPattern, true, Conf
         .getBoolean(CONF_REGEXP));
@@ -132,6 +131,8 @@ public class AlbumsTableModel extends JajukTableModel {
         it.remove();
       }
     }
+    // Sort the result
+    //Collections.sort(alToShow);
     int iColNum = iNumberStandardCols + AlbumManager.getInstance().getCustomProperties().size();
     iRowNum = alToShow.size();
     oValues = new Object[iRowNum][iColNum];

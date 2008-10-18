@@ -20,14 +20,14 @@
 
 package org.jajuk.ui.helpers;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections.Predicate;
 import org.jajuk.base.File;
 import org.jajuk.base.Item;
 import org.jajuk.base.PropertyMetaInformation;
@@ -109,31 +109,34 @@ public class TracksTableModel extends JajukTableModel {
 
   @Override
   public void populateModel(String property, String sPattern, List<String> columnsToShow) {
-    // Filter mounted files if needed and apply sync table with tree option
-    // if needed
-    boolean bShowWithTree = true;
-    List<Track> alToShow = null;
-    // look at selection
-    boolean bSyncWithTreeOption = Conf.getBoolean(CONF_OPTIONS_SYNC_TABLE_TREE);
-    Set<Track> alTracks = TrackManager.getInstance().getTracks();
-    alToShow = new ArrayList<Track>(alTracks.size());
-    for (Track track : alTracks) {
-      bShowWithTree = !bSyncWithTreeOption // no tree/table sync option
-          // tree selection = null means none selection have been
-          // done so far
-          || treeSelection == null
-          // check if the tree selection contains the current file
-          || (treeSelection.size() > 0 && treeSelection.contains(track));
-      // show it if no sync option or if item is in the selection
-      if (!track.shouldBeHidden() && bShowWithTree) {
-        alToShow.add(track);
+    
+    // This should be monitor file manager to avoid NPE when changing items
+    List<Track> alToShow = TrackManager.getInstance().getTracks();
+       
+    // Filter mounted files if needed and apply sync table with tree
+    // option if needed
+    final boolean bSyncWithTreeOption = Conf.getBoolean(CONF_OPTIONS_SYNC_TABLE_TREE);
+    oItems = new Item[iRowNum];
+    CollectionUtils.filter(alToShow, new Predicate() {
+
+      public boolean evaluate(Object o) {
+        Track track = (Track) o;
+        // show it if no sync option or if item is in the selection
+        boolean bShowWithTree = !bSyncWithTreeOption 
+            // tree selection = null means none election have been
+            // selected in tree so far
+            || treeSelection == null
+            // check if the tree selection contains the current file
+            || (treeSelection.size() > 0 && treeSelection.contains(track));
+        return (!track.shouldBeHidden() && bShowWithTree);
       }
-    }
+    });
+    
     // Filter values using given pattern
     Filter filter = new Filter(property, sPattern, true, Conf.getBoolean(CONF_REGEXP));
     Filter.filterItems(alToShow, filter);
     // sort by album
-    Collections.sort(alToShow, new TrackComparator(2));
+    Collections.sort(alToShow, new TrackComparator(TrackComparator.ALBUM));
     Iterator<Track> it = alToShow.iterator();
     int iColNum = iNumberStandardCols + TrackManager.getInstance().getCustomProperties().size();
     iRowNum = alToShow.size();

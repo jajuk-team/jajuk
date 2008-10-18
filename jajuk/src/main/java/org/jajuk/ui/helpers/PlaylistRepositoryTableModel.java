@@ -20,7 +20,6 @@
 
 package org.jajuk.ui.helpers;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -91,7 +90,8 @@ public class PlaylistRepositoryTableModel extends JajukTableModel {
   @SuppressWarnings("unchecked")
   public void populateModel(String sPropertyName, String sPattern,
       List<String> columnsToShow) {
-    List<Playlist> alToShow = new ArrayList<Playlist>(PlaylistManager.getInstance().getPlaylists());
+    List<Playlist> alToShow = PlaylistManager.getInstance().getPlaylists();
+    //Collections.sort(alToShow);
     // OK, begin by filtering using any provided pattern
     Filter filter = new Filter(sPropertyName, sPattern, true, Conf
         .getBoolean(CONF_REGEXP));

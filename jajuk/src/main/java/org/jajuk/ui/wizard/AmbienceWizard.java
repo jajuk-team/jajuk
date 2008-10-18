@@ -96,10 +96,8 @@ public class AmbienceWizard extends Wizard implements Const {
      */
     public void actionPerformed(final ActionEvent ae) {
       if (ae.getSource() == jbNew) {
-        AmbienceWizard.ambiences.add(new Ambience(Long.toString(System.currentTimeMillis()), "")); // create
-        // a
-        // void
-        // ambience
+        // create a void ambience
+        AmbienceWizard.ambiences.add(new Ambience(Long.toString(System.currentTimeMillis()), "")); 
         Collections.sort(AmbienceWizard.ambiences);
         // refresh screen
         refreshScreen();

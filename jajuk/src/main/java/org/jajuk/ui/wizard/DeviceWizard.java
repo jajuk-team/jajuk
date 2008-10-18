@@ -32,7 +32,6 @@ import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.text.NumberFormat;
 import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -75,60 +74,60 @@ import org.jajuk.util.log.Log;
 public class DeviceWizard extends JFrame implements ActionListener, Const {
   private static final long serialVersionUID = 1L;
 
-  JPanel jpMain;
+  private JPanel jpMain;
 
-  JPanel jp1;
+  private JPanel jp1;
 
-  JLabel jlType;
+  private JLabel jlType;
 
-  JComboBox jcbType;
+  private JComboBox jcbType;
 
-  JLabel jlName;
+  private JLabel jlName;
 
-  JTextField jtfName;
+  private JTextField jtfName;
 
-  JLabel jlUrl;
+  private JLabel jlUrl;
 
-  JTextField jtfUrl;
+  private JTextField jtfUrl;
 
-  JButton jbUrl;
+  private JButton jbUrl;
 
-  JCheckBox jcbRefresh;
+  private JCheckBox jcbRefresh;
 
-  JCheckBox jcbAutoMount;
+  private JCheckBox jcbAutoMount;
 
-  JLabel jlAutoRefresh;
+  private JLabel jlAutoRefresh;
 
-  JFormattedTextField jftfAutoRefresh;
+  private JFormattedTextField jftfAutoRefresh;
 
-  JLabel jlMinutes;
+  private JLabel jlMinutes;
 
-  JCheckBox jcboxSynchronized;
+  private JCheckBox jcboxSynchronized;
 
-  JComboBox jcbSynchronized;
+  private JComboBox jcbSynchronized;
 
-  JPanel jp2;
+  private JPanel jp2;
 
-  ButtonGroup bgSynchro;
+  private ButtonGroup bgSynchro;
 
-  JRadioButton jrbBidirSynchro;
+  private JRadioButton jrbBidirSynchro;
 
-  JRadioButton jrbUnidirSynchro;
+  private JRadioButton jrbUnidirSynchro;
 
-  JPanel jpButtons;
+  private JPanel jpButtons;
 
-  JButton jbOk;
+  private JButton jbOk;
 
-  JButton jbCancel;
+  private JButton jbCancel;
 
   /** New device flag */
   private boolean bNew = true;
 
   /** Current device */
-  Device device;
+  private Device device;
 
   /** All devices expect itself */
-  List<Device> alDevices = new ArrayList<Device>(10);
+  private List<Device> devices;
 
   /** Initial URL* */
   private String sInitialURL;
@@ -137,6 +136,9 @@ public class DeviceWizard extends JFrame implements ActionListener, Const {
    * Device wizard by default, is used for void configuration
    */
   public DeviceWizard() {
+    devices = DeviceManager.getInstance().getDevices();
+    //Collections.sort(devices);
+
     addWindowListener(new WindowAdapter() {
       @Override
       public void windowActivated(final WindowEvent e) {
@@ -155,6 +157,7 @@ public class DeviceWizard extends JFrame implements ActionListener, Const {
     jp1.setLayout(new TableLayout(size1));
     jlType = new JLabel(Messages.getString("DeviceWizard.1"));
     jcbType = new JComboBox();
+
     final Iterator<String> itDevicesTypes = DeviceManager.getInstance().getDeviceTypes();
     while (itDevicesTypes.hasNext()) {
       jcbType.addItem(itDevicesTypes.next());
@@ -204,11 +207,8 @@ public class DeviceWizard extends JFrame implements ActionListener, Const {
     jcboxSynchronized.addActionListener(this);
     jcbSynchronized = new JComboBox();
     // populate combo
-    final Iterator<Device> it = DeviceManager.getInstance().getDevices().iterator();
-    while (it.hasNext()) {
-      final Device device2 = it.next();
-      alDevices.add(device2);
-      jcbSynchronized.addItem(device2.getName());
+    for (Device device : devices) {
+      jcbSynchronized.addItem(device.getName());
     }
     jcbSynchronized.setEnabled(false);
     jcbSynchronized.setToolTipText(Messages.getString("DeviceWizard.52"));
@@ -321,19 +321,17 @@ public class DeviceWizard extends JFrame implements ActionListener, Const {
             jcbType.getSelectedIndex(), jtfUrl.getText());
       }
       device.setProperty(Const.XML_DEVICE_AUTO_MOUNT, jcbAutoMount.isSelected());
-      device.setProperty(Const.XML_DEVICE_AUTO_REFRESH, new Double(jftfAutoRefresh
-          .getValue().toString()));
+      device.setProperty(Const.XML_DEVICE_AUTO_REFRESH, new Double(jftfAutoRefresh.getValue()
+          .toString()));
       device.setProperty(Const.XML_TYPE, new Long(jcbType.getSelectedIndex()));
       device.setUrl(jtfUrl.getText());
       if (jcbSynchronized.isEnabled() && (jcbSynchronized.getSelectedItem() != null)) {
-        device.setProperty(Const.XML_DEVICE_SYNCHRO_SOURCE, alDevices.get(
+        device.setProperty(Const.XML_DEVICE_SYNCHRO_SOURCE, devices.get(
             jcbSynchronized.getSelectedIndex()).getID());
         if (jrbBidirSynchro.isSelected()) {
-          device.setProperty(Const.XML_DEVICE_SYNCHRO_MODE,
-              Const.DEVICE_SYNCHRO_MODE_BI);
+          device.setProperty(Const.XML_DEVICE_SYNCHRO_MODE, Const.DEVICE_SYNCHRO_MODE_BI);
         } else {
-          device.setProperty(Const.XML_DEVICE_SYNCHRO_MODE,
-              Const.DEVICE_SYNCHRO_MODE_UNI);
+          device.setProperty(Const.XML_DEVICE_SYNCHRO_MODE, Const.DEVICE_SYNCHRO_MODE_UNI);
         }
       } else { // no synchro
         device.removeProperty(Const.XML_DEVICE_SYNCHRO_MODE);
@@ -440,14 +438,14 @@ public class DeviceWizard extends JFrame implements ActionListener, Const {
     setTitle(Messages.getString("DeviceWizard.0") + " : " + device.getName());
     this.device = device;
     jcbSynchronized.removeAllItems();
-    alDevices.clear();
+    devices.clear();
     // set default values for widgets
     updateWidgetsDefault();
-    final Iterator<Device> it = DeviceManager.getInstance().getDevices().iterator();
-    while (it.hasNext()) {
-      final Device device2 = it.next();
+    List<Device> devices = DeviceManager.getInstance().getDevices();
+    //Collections.sort(devices);
+    for (Device device2 : devices) {
       if (!device2.equals(device)) {
-        alDevices.add(device2);
+        devices.add(device2);
         jcbSynchronized.addItem(device2.getName());
       }
     }
@@ -472,17 +470,15 @@ public class DeviceWizard extends JFrame implements ActionListener, Const {
       jrbBidirSynchro.setEnabled(false);
     }
     if (device.containsProperty(Const.XML_DEVICE_SYNCHRO_SOURCE)) {
-      final String sSynchroSource = device
-          .getStringValue(Const.XML_DEVICE_SYNCHRO_SOURCE);
+      final String sSynchroSource = device.getStringValue(Const.XML_DEVICE_SYNCHRO_SOURCE);
       jrbBidirSynchro.setEnabled(true);
       jrbUnidirSynchro.setEnabled(true);
       jcboxSynchronized.setSelected(true);
       jcboxSynchronized.setEnabled(true);
       jcbSynchronized.setEnabled(true);
-      jcbSynchronized.setSelectedIndex(alDevices.indexOf(DeviceManager.getInstance().getDeviceByID(
+      jcbSynchronized.setSelectedIndex(devices.indexOf(DeviceManager.getInstance().getDeviceByID(
           sSynchroSource)));
-      if (Const.DEVICE_SYNCHRO_MODE_BI.equals(device
-          .getValue(Const.XML_DEVICE_SYNCHRO_MODE))) {
+      if (Const.DEVICE_SYNCHRO_MODE_BI.equals(device.getValue(Const.XML_DEVICE_SYNCHRO_MODE))) {
         jrbBidirSynchro.setSelected(true);
       } else {
         jrbUnidirSynchro.setSelected(true);

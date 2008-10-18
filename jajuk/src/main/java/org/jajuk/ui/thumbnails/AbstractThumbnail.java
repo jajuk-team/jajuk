@@ -37,7 +37,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import javax.swing.Action;
 import javax.swing.BorderFactory;
@@ -376,7 +375,7 @@ public abstract class AbstractThumbnail extends JPanel implements Const,
    */
   public void actionPerformed(ActionEvent e) {
     // Menu items
-    Set<Track> tracks = TrackManager.getInstance().getAssociatedTracks(getItem());
+    List<Track> tracks = TrackManager.getInstance().getAssociatedTracks(getItem());
     for (Track track : tracks) {
       org.jajuk.base.File file = track.getPlayeableFile(false);
       if (file != null) {
@@ -390,7 +389,7 @@ public abstract class AbstractThumbnail extends JPanel implements Const,
         public void run() {
           JDialog jd = new JDialog(JajukWindow.getInstance(), Messages.getString("CatalogView.18"));
           org.jajuk.base.File file = null;
-          Set<Track> tracks = TrackManager.getInstance().getAssociatedTracks(getItem());
+          List<Track> tracks = TrackManager.getInstance().getAssociatedTracks(getItem());
           if (tracks.size() > 0) {
             // Take first track found
             Track track = tracks.iterator().next();

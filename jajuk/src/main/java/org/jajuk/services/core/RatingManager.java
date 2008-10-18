@@ -31,6 +31,7 @@ import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.events.Observer;
 import org.jajuk.util.Const;
+import org.jajuk.util.ReadOnlyIterator;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 
@@ -61,7 +62,7 @@ public final class RatingManager extends Thread implements Const, Observer {
     // set thread name
     super("Rating Manager Thread");
     setPriority(Thread.MIN_PRIORITY);
-      // Look for events
+    // Look for events
     ObservationManager.register(this);
   }
 
@@ -151,9 +152,11 @@ public final class RatingManager extends Thread implements Const, Observer {
       // Reset playcount
       setMaxPlaycount(0);
       // Reset rates
-      for (final Track track : TrackManager.getInstance().getTracks()) {
+      ReadOnlyIterator<Track> it = TrackManager.getInstance().getTracksIterator();
+      while (it.hasNext()) {
+        Track track = it.next();
         try {
-          TrackManager.getInstance().changeTrackRate(track,0l);
+          TrackManager.getInstance().changeTrackRate(track, 0l);
         } catch (JajukException e) {
           Log.error(e);
           return;

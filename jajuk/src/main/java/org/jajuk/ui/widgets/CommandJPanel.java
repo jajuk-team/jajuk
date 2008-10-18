@@ -123,8 +123,8 @@ import org.jdesktop.swingx.JXPanel;
  * Singleton
  * </p>
  */
-public class CommandJPanel extends JXPanel implements Const, ActionListener,
-    ListSelectionListener, ChangeListener, Observer, MouseWheelListener {
+public class CommandJPanel extends JXPanel implements Const, ActionListener, ListSelectionListener,
+    ChangeListener, Observer, MouseWheelListener {
 
   private static final long serialVersionUID = 1L;
 
@@ -135,8 +135,6 @@ public class CommandJPanel extends JXPanel implements Const, ActionListener,
   private SearchBox sbSearch;
 
   private SteppedComboBox jcbHistory;
-
-  private DropDownButton jbIncRate;
 
   private JajukToggleButton jbRepeat;
 
@@ -195,13 +193,9 @@ public class CommandJPanel extends JXPanel implements Const, ActionListener,
   private JPanel jpVolume;
 
   JSlider jsVolume;
-  
-  private JToolBar jtbPreferences;
-  
-  private JButton jbLike;
-  
-  private JButton jbDislike;
-  
+
+  private EvaluationToolbar evaltoobar;
+
   private JButton jbBan;
 
   private JajukToggleButton jbMute;
@@ -315,7 +309,7 @@ public class CommandJPanel extends JXPanel implements Const, ActionListener,
     JajukAction actionIncRate = ActionManager.getAction(JajukActions.INC_RATE);
     actionIncRate.setName(null);
     final JPopupMenu jpmIncRating = new JPopupMenu();
-    for (int i = 3; i >=-3; i--) {
+    for (int i = 3; i >= -3; i--) {
       final int j = i;
       JMenuItem jmi = new JMenuItem(Integer.toString(i));
       if (Conf.getInt(CONF_INC_RATING) == i) {
@@ -329,15 +323,6 @@ public class CommandJPanel extends JXPanel implements Const, ActionListener,
       });
       jpmIncRating.add(jmi);
     }
-    jbIncRate = new DropDownButton(IconLoader.getIcon(JajukIcons.INC_RATING)) {
-      private static final long serialVersionUID = 1L;
-
-      @Override
-      protected JPopupMenu getPopupMenu() {
-        return jpmIncRating;
-      }
-    };
-    jbIncRate.setAction(actionIncRate);
     // we use a combo box model to make sure we get good performances after
     // rebuilding the entire model like after a refresh
     jcbHistory.setModel(new DefaultComboBoxModel(History.getInstance().getHistory()));
@@ -353,14 +338,13 @@ public class CommandJPanel extends JXPanel implements Const, ActionListener,
     jcbHistory.setMinimumSize(new Dimension(0, 25));
     jcbHistory.setToolTipText(Messages.getString("CommandJPanel.0"));
     jcbHistory.addActionListener(CommandJPanel.this);
-    JToolBar jtbIncRate = new JajukJToolbar();
-    jbIncRate.addToToolBar(jtbIncRate);
+    evaltoobar = new EvaluationToolbar();
     double[][] sizeHistory = new double[][] {
-        { 3, TableLayout.PREFERRED, 3, TableLayout.FILL, 10, TableLayout.PREFERRED }, { 25 } };
+        { 3, TableLayout.PREFERRED, 3, TableLayout.FILL, 10, TableLayout.PREFERRED, 5 }, { 25 } };
     jpHistory.setLayout(new TableLayout(sizeHistory));
     jpHistory.add(jlHistory, "1,0");
     jpHistory.add(jcbHistory, "3,0");
-    jpHistory.add(jtbIncRate, "5,0");
+    jpHistory.add(evaltoobar, "5,0");
 
     // Mode toolbar
     // we need an inner toolbar to apply size properly
@@ -393,11 +377,11 @@ public class CommandJPanel extends JXPanel implements Const, ActionListener,
 
     jpVolume.setLayout(new BoxLayout(jpVolume, BoxLayout.X_AXIS));
     int iVolume = (int) (100 * Conf.getFloat(CONF_VOLUME));
-    // Perform bounds test, -1 or >100 can occur in some undefined cases (see #1169)
+    // Perform bounds test, -1 or >100 can occur in some undefined cases (see
+    // #1169)
     if (iVolume > 100) {
       iVolume = 100;
-    }
-    else if (iVolume < 0){
+    } else if (iVolume < 0) {
       iVolume = 0;
     }
     jsVolume = new JSlider(0, 100, iVolume);
@@ -552,10 +536,7 @@ public class CommandJPanel extends JXPanel implements Const, ActionListener,
     jtbPlay.add(jbStop);
     jtbPlay.add(jbFwd);
     jtbPlay.add(jbNext);
-    
-    // Preference toolbar
-    jtbPreferences = new JajukJToolbar();
-    
+
     // Add items
     FormLayout layout = new FormLayout(
     // --columns
@@ -641,9 +622,8 @@ public class CommandJPanel extends JXPanel implements Const, ActionListener,
           org.jajuk.base.File file = FileManager.getInstance().getFileByID(hi.getFileId());
           if (file != null) {
             try {
-              FIFO.push(
-                  new StackItem(file, Conf.getBoolean(CONF_STATE_REPEAT), true),
-                  Conf.getBoolean(CONF_OPTIONS_PUSH_ON_CLICK));
+              FIFO.push(new StackItem(file, Conf.getBoolean(CONF_STATE_REPEAT), true), Conf
+                  .getBoolean(CONF_OPTIONS_PUSH_ON_CLICK));
             } catch (JajukException je) {
               // can be thrown if file is null
             }
@@ -686,9 +666,8 @@ public class CommandJPanel extends JXPanel implements Const, ActionListener,
           try {
             // If user selected a file
             if (sr.getType() == SearchResultType.FILE) {
-              FIFO.push(
-                  new StackItem(sr.getFile(), Conf.getBoolean(CONF_STATE_REPEAT),
-                      true), Conf.getBoolean(CONF_OPTIONS_PUSH_ON_CLICK));
+              FIFO.push(new StackItem(sr.getFile(), Conf.getBoolean(CONF_STATE_REPEAT), true), Conf
+                  .getBoolean(CONF_OPTIONS_PUSH_ON_CLICK));
             }
             // User selected a web radio
             else if (sr.getType() == SearchResultType.WEBRADIO) {
@@ -767,7 +746,7 @@ public class CommandJPanel extends JXPanel implements Const, ActionListener,
           ActionManager.getAction(STOP_TRACK).setEnabled(false);
           ActionManager.getAction(FAST_FORWARD_TRACK).setEnabled(false);
           ActionManager.getAction(FINISH_ALBUM).setEnabled(false);
-          jbIncRate.setEnabled(false);
+          evaltoobar.setEnabled(false);
           // Reset history so user can launch again stopped
           // track (selection must change to throw an ActionEvent)
           jcbHistory.setSelectedIndex(-1);
@@ -784,14 +763,14 @@ public class CommandJPanel extends JXPanel implements Const, ActionListener,
           ActionManager.getAction(PREVIOUS_ALBUM).setEnabled(false);
           ActionManager.getAction(FINISH_ALBUM).setEnabled(false);
           ActionManager.getAction(PLAY_PAUSE_TRACK).setIcon(IconLoader.getIcon(JajukIcons.PAUSE));
-          jbIncRate.setEnabled(false);
+          evaltoobar.setEnabled(false);
           // Reset history so user can launch again stopped
           // track (selection must change to throw an ActionEvent)
           jcbHistory.setSelectedIndex(-1);
           // reset startup position
           Conf.setProperty(CONF_STARTUP_LAST_POSITION, "0");
         } else if (JajukEvents.PLAYER_PLAY.equals(subject)) {
-          jbIncRate.setEnabled(true);
+          evaltoobar.setEnabled(true);
           ActionManager.getAction(PREVIOUS_TRACK).setEnabled(true);
           ActionManager.getAction(NEXT_TRACK).setEnabled(true);
           ActionManager.getAction(REWIND_TRACK).setEnabled(true);
@@ -933,8 +912,8 @@ public class CommandJPanel extends JXPanel implements Const, ActionListener,
       Iterator<DigitalDJ> it = DigitalDJManager.getInstance().getDJs().iterator();
       while (it.hasNext()) {
         final DigitalDJ dj = it.next();
-        JCheckBoxMenuItem jmi = new JCheckBoxMenuItem(dj.getName(),
-            IconLoader.getIcon(JajukIcons.DIGITAL_DJ_16X16));
+        JCheckBoxMenuItem jmi = new JCheckBoxMenuItem(dj.getName(), IconLoader
+            .getIcon(JajukIcons.DIGITAL_DJ_16X16));
         jmi.addActionListener(new ActionListener() {
           public void actionPerformed(ActionEvent arg0) {
             Conf.setProperty(CONF_DEFAULT_DJ, dj.getID());
@@ -966,8 +945,8 @@ public class CommandJPanel extends JXPanel implements Const, ActionListener,
       ambiencesCombo.removeItemListener(element);
     }
     ambiencesCombo.removeAllItems();
-    ambiencesCombo.addItem(new JLabel(Messages.getString("CommandJPanel.19"),
-        IconLoader.getIcon(JajukIcons.CONFIGURATION), SwingConstants.LEFT));
+    ambiencesCombo.addItem(new JLabel(Messages.getString("CommandJPanel.19"), IconLoader
+        .getIcon(JajukIcons.CONFIGURATION), SwingConstants.LEFT));
     ambiencesCombo.addItem(new JLabel("<html><i>" + Messages.getString("DigitalDJWizard.64")
         + "</i></html>", IconLoader.getIcon(JajukIcons.STYLE), SwingConstants.LEFT));
     // Add available ambiences
@@ -1023,8 +1002,7 @@ public class CommandJPanel extends JXPanel implements Const, ActionListener,
                 + radio.getName() + "</b></p></html>");
           }
         });
-        jmi.setSelected(Conf.getString(CONF_DEFAULT_WEB_RADIO).equals(
-            radio.getName()));
+        jmi.setSelected(Conf.getString(CONF_DEFAULT_WEB_RADIO).equals(radio.getName()));
         // Show the check icon
         jmi.setDisplayCheck(true);
         popupWebRadio.add(jmi);
