@@ -35,7 +35,7 @@ import org.jajuk.util.UtilSystem;
 /**
  * A proportion (10% JAZZ, 20% ROCK...) digital DJ
  */
-public class ProportionDigitalDJ extends DigitalDJ implements Const {
+public class ProportionDigitalDJ extends DigitalDJ {
 
   /** Set of proportions */
   private List<Proportion> proportions;
@@ -58,7 +58,7 @@ public class ProportionDigitalDJ extends DigitalDJ implements Const {
     List<File> out = new ArrayList<File>(100);
     out = getSequence();
     if (!bUnicity && out.size() > 0) {
-      while (out.size() < MIN_TRACKS_NUMBER_WITHOUT_UNICITY) {
+      while (out.size() < Const.MIN_TRACKS_NUMBER_WITHOUT_UNICITY) {
         out.addAll(getSequence());
       }
     }
@@ -139,7 +139,7 @@ public class ProportionDigitalDJ extends DigitalDJ implements Const {
   public String toXML() {
     StringBuilder sb = new StringBuilder(2000);
     sb.append(toXMLGeneralParameters());
-    sb.append("\t<" + XML_DJ_PROPORTIONS + ">\n");
+    sb.append("\t<" + Const.XML_DJ_PROPORTIONS + ">\n");
     for (Proportion proportion : proportions) {
       String stylesDesc = "";
       for (Style style : proportion.getStyles()) {
@@ -147,11 +147,11 @@ public class ProportionDigitalDJ extends DigitalDJ implements Const {
       }
       // remove trailing coma
       stylesDesc = stylesDesc.substring(0, stylesDesc.length() - 1);
-      sb.append("\t\t<" + XML_DJ_PROPORTION + " " + XML_DJ_STYLES + "='" + stylesDesc + "' "
-          + XML_DJ_VALUE + "='" + proportion.getProportion() + "'/>\n");
+      sb.append("\t\t<" + Const.XML_DJ_PROPORTION + " " + Const.XML_DJ_STYLES + "='" + stylesDesc
+          + "' " + Const.XML_DJ_VALUE + "='" + proportion.getProportion() + "'/>\n");
     }
-    sb.append("\t</" + XML_DJ_PROPORTIONS + ">\n");
-    sb.append("</" + XML_DJ_DJ + ">\n");
+    sb.append("\t</" + Const.XML_DJ_PROPORTIONS + ">\n");
+    sb.append("</" + Const.XML_DJ_DJ + ">\n");
     return sb.toString();
   }
 

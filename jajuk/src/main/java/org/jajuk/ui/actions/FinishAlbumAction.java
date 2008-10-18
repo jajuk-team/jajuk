@@ -28,6 +28,7 @@ import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.services.players.FIFO;
 import org.jajuk.services.players.StackItem;
+import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
@@ -39,7 +40,8 @@ public class FinishAlbumAction extends JajukAction {
   private static final long serialVersionUID = 1L;
 
   FinishAlbumAction() {
-    super(Messages.getString("JajukWindow.16"), IconLoader.getIcon(JajukIcons.FINISH_ALBUM), !FIFO.isStopped());
+    super(Messages.getString("JajukWindow.16"), IconLoader.getIcon(JajukIcons.FINISH_ALBUM), !FIFO
+        .isStopped());
     setShortDescription(Messages.getString("JajukWindow.32"));
   }
 
@@ -50,12 +52,11 @@ public class FinishAlbumAction extends JajukAction {
     FIFO.clear(); // clear fifo
     Directory dir = item.getFile().getDirectory();
     // then re-add current item
-    FIFO.push(
-        UtilFeatures.createStackItems(dir.getFilesFromFile(item.getFile()), item.isRepeat(), item
-            .isUserLaunch()), true);
+    FIFO.push(UtilFeatures.createStackItems(dir.getFilesFromFile(item.getFile()), item.isRepeat(),
+        item.isUserLaunch()), true);
     FIFO.computesPlanned(true); // update planned list
     Properties properties = new Properties();
-    properties.put(DETAIL_ORIGIN, DETAIL_SPECIAL_MODE_NORMAL);
+    properties.put(Const.DETAIL_ORIGIN, Const.DETAIL_SPECIAL_MODE_NORMAL);
     ObservationManager.notify(new Event(JajukEvents.SPECIAL_MODE, properties));
   }
 }

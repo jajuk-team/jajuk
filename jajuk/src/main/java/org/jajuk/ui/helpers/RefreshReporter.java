@@ -86,21 +86,24 @@ public class RefreshReporter {
         dirTotal++;
       }
     }
-    // To avoid "freezing" at 100% if new files have been added since last refresh, take 
+    // To avoid "freezing" at 100% if new files have been added since last
+    // refresh, take
     // 10 % of new files
     dirTotal *= 1.1;
-    
-    // if <0  directories count -> the progress bar is in indeterminate state
+
+    // if <0 directories count -> the progress bar is in indeterminate state
     this.rdialog = new RefreshDialog((dirTotal < 0));
     this.rdialog.setTitle(Messages.getString("RefreshDialog.2") + " " + device.getName());
     // Computes the number of directories
-    this.rdialog.setAction(Messages.getString("RefreshDialog.0"), IconLoader.getIcon(JajukIcons.INFO));
+    this.rdialog.setAction(Messages.getString("RefreshDialog.0"), IconLoader
+        .getIcon(JajukIcons.INFO));
     // Count directories, takes a while, do not execute in AWT thread
     // If we already refreshed the device, use previous size as best
     // guess. If it is the first refresh don't count (user reported that it is
     // too long in some cases), but display a default slider
-    
-    this.rdialog.setAction(Messages.getString("RefreshDialog.3"), IconLoader.getIcon(JajukIcons.INFO));
+
+    this.rdialog.setAction(Messages.getString("RefreshDialog.3"), IconLoader
+        .getIcon(JajukIcons.INFO));
     this.rdialog.setProgress(10);
   }
 
@@ -133,7 +136,7 @@ public class RefreshReporter {
     rdialog
         .setAction(Messages.getString("RefreshDialog.1"), IconLoader.getIcon(JajukIcons.REFRESH));
     // Update counter only if final directory count is known
-    if (dirTotal > 0){
+    if (dirTotal > 0) {
       updateDialogTitle.start();
     }
   }

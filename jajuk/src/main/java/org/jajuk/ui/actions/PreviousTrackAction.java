@@ -44,7 +44,8 @@ public class PreviousTrackAction extends JajukAction {
   private static final long serialVersionUID = 1L;
 
   PreviousTrackAction() {
-    super(Messages.getString("JajukWindow.13"), IconLoader.getIcon(JajukIcons.PLAYER_PREVIOUS), "F9", false, true);
+    super(Messages.getString("JajukWindow.13"), IconLoader.getIcon(JajukIcons.PLAYER_PREVIOUS),
+        "F9", false, true);
     setShortDescription(Messages.getString("JajukWindow.29"));
   }
 

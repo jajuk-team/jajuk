@@ -49,7 +49,7 @@ import org.xamjwg.html.test.SimpleHtmlRendererContext;
 /**
  * Type description
  */
-public class JajukHtmlPanel extends HtmlPanel implements Const {
+public class JajukHtmlPanel extends HtmlPanel {
 
   private static final long serialVersionUID = -4033441908072591661L;
 
@@ -76,7 +76,7 @@ public class JajukHtmlPanel extends HtmlPanel implements Const {
    */
   public void setURL(URL url) throws Exception {
     setCursor(UtilGUI.WAIT_CURSOR);
-    File page = new File(UtilSystem.getConfFileByPath(FILE_CACHE).getAbsolutePath() + '/'
+    File page = new File(UtilSystem.getConfFileByPath(Const.FILE_CACHE).getAbsolutePath() + '/'
         + UtilSystem.getOnlyFile(url.toString() + ".html"));
     String sPage = DownloadManager.downloadHtml(url);
     // Remove scripting
@@ -97,7 +97,7 @@ public class JajukHtmlPanel extends HtmlPanel implements Const {
     // user settings, but dunno how to get that...
     sPage = sPage.replaceAll("href=\"/", "href=\"http://"
         + Messages.getLocalForDesc(Messages.getDescForLocal(Conf
-            .getString(CONF_WIKIPEDIA_LANGUAGE))) + ".wikipedia.org/");
+            .getString(Const.CONF_WIKIPEDIA_LANGUAGE))) + ".wikipedia.org/");
     // Display the page
     showPage(sPage, page);
     // Set current url as a tooltip
@@ -112,7 +112,7 @@ public class JajukHtmlPanel extends HtmlPanel implements Const {
    * @throws Exception
    */
   public void setUnknow() throws Exception {
-    File page = new File(UtilSystem.getConfFileByPath(FILE_CACHE).getAbsolutePath() + '/'
+    File page = new File(UtilSystem.getConfFileByPath(Const.FILE_CACHE).getAbsolutePath() + '/'
         + "noresult.html");
     String sPage = "<html><body><h1>" + Messages.getString("WikipediaView.3")
         + "</h1></body></html>";

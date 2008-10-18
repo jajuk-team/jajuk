@@ -42,8 +42,7 @@ import org.jvnet.substance.api.renderers.SubstanceDefaultTableCellRenderer;
  * http://java.sun.com/docs/books/tutorial/uiswing/components/table.html#editrender
  * </p>
  */
-public class JajukCellRenderer extends SubstanceDefaultTableCellRenderer implements
-    Const {
+public class JajukCellRenderer extends SubstanceDefaultTableCellRenderer implements Const {
 
   private static final long serialVersionUID = 154545454L;
 

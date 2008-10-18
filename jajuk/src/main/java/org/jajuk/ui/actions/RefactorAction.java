@@ -43,7 +43,7 @@ import org.jajuk.util.error.JajukException;
 import org.jajuk.util.filters.NotAudioFilter;
 import org.jajuk.util.log.Log;
 
-public class RefactorAction implements Const {
+public class RefactorAction {
 
   private static boolean bStopAll = false;
 
@@ -202,7 +202,7 @@ public class RefactorAction implements Const {
     // Refresh and cleanup required directories
     for (final Directory dir : toBeRefreshed) {
       try {
-        dir.refresh(false,null);
+        dir.refresh(false, null);
       } catch (JajukException e) {
         Log.error(e);
         Messages.showErrorMessage(e.getCode());

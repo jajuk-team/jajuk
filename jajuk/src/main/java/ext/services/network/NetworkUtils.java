@@ -37,7 +37,7 @@ import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.log.Log;
 
-public final class NetworkUtils implements Const {
+public final class NetworkUtils {
 
   private NetworkUtils() {
     // default hidden constructor for utility classes
@@ -55,7 +55,7 @@ public final class NetworkUtils implements Const {
     HttpURLConnection connection;
     if (proxy == null) {
       URLConnection urlconnection = url.openConnection();
-      if(urlconnection instanceof HttpURLConnection) {
+      if (urlconnection instanceof HttpURLConnection) {
         connection = (HttpURLConnection) urlconnection;
       } else {
         throw new IllegalArgumentException("URL to connect to is not a HttpURL: " + url.toString());
@@ -68,7 +68,7 @@ public final class NetworkUtils implements Const {
   }
 
   private static void setConfiguration(HttpURLConnection connection) {
-    connection.setConnectTimeout(1000 * Conf.getInt(CONF_NETWORK_CONNECTION_TO));
+    connection.setConnectTimeout(1000 * Conf.getInt(Const.CONF_NETWORK_CONNECTION_TO));
     // Google needs this
     connection.addRequestProperty("Accept",
         "image/gif, image/x-xbitmap, image/jpeg, image/pjpeg, */*");

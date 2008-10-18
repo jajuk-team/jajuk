@@ -35,6 +35,7 @@ import org.jajuk.base.PropertyMetaInformation;
 import org.jajuk.events.Event;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
+import org.jajuk.util.Const;
 import org.jajuk.util.Messages;
 
 /**
@@ -82,7 +83,7 @@ public class RemovePropertyWizard extends CustomPropertyWizard {
       String sProperty = jcbName.getSelectedItem().toString();
       im.removeProperty(sProperty);
       Properties properties = new Properties();
-      properties.put(DETAIL_CONTENT, sProperty);
+      properties.put(Const.DETAIL_CONTENT, sProperty);
       Event event = new Event(JajukEvents.CUSTOM_PROPERTIES_REMOVE, properties);
       ObservationManager.notify(event);
       dispose();

@@ -36,6 +36,7 @@ import org.jajuk.events.Observer;
 import org.jajuk.services.players.FIFO;
 import org.jajuk.services.tags.Tag;
 import org.jajuk.util.Conf;
+import org.jajuk.util.Const;
 import org.jajuk.util.MD5Processor;
 import org.jajuk.util.ReadOnlyIterator;
 import org.jajuk.util.UtilString;
@@ -70,56 +71,56 @@ public final class TrackManager extends ItemManager implements Observer {
     super();
     // ---register properties---
     // ID
-    registerProperty(new PropertyMetaInformation(XML_ID, false, true, false, false, false,
+    registerProperty(new PropertyMetaInformation(Const.XML_ID, false, true, false, false, false,
         String.class, null));
     // Name
-    registerProperty(new PropertyMetaInformation(XML_NAME, false, true, true, true, false,
+    registerProperty(new PropertyMetaInformation(Const.XML_NAME, false, true, true, true, false,
         String.class, null));
     // Album
-    registerProperty(new PropertyMetaInformation(XML_ALBUM, false, true, true, true, true,
+    registerProperty(new PropertyMetaInformation(Const.XML_ALBUM, false, true, true, true, true,
         String.class, null));
     // Style
-    registerProperty(new PropertyMetaInformation(XML_STYLE, false, true, true, true, true,
+    registerProperty(new PropertyMetaInformation(Const.XML_STYLE, false, true, true, true, true,
         String.class, null));
     // Author
-    registerProperty(new PropertyMetaInformation(XML_AUTHOR, false, true, true, true, true,
+    registerProperty(new PropertyMetaInformation(Const.XML_AUTHOR, false, true, true, true, true,
         String.class, null));
     // Length
-    registerProperty(new PropertyMetaInformation(XML_TRACK_LENGTH, false, true, true, false, false,
-        Long.class, null));
+    registerProperty(new PropertyMetaInformation(Const.XML_TRACK_LENGTH, false, true, true, false,
+        false, Long.class, null));
     // Type
-    registerProperty(new PropertyMetaInformation(XML_TRACK_TYPE, false, true, true, false, false,
-        Long.class, null));
+    registerProperty(new PropertyMetaInformation(Const.XML_TRACK_TYPE, false, true, true, false,
+        false, Long.class, null));
     // Year
-    registerProperty(new PropertyMetaInformation(XML_YEAR, false, true, true, true, true,
+    registerProperty(new PropertyMetaInformation(Const.XML_YEAR, false, true, true, true, true,
         Long.class, 0));
     // Rate
-    registerProperty(new PropertyMetaInformation(XML_TRACK_RATE, false, false, true, true, true,
-        Long.class, 0));
+    registerProperty(new PropertyMetaInformation(Const.XML_TRACK_RATE, false, false, true, true,
+        true, Long.class, 0));
     // Files
-    registerProperty(new PropertyMetaInformation(XML_FILES, false, false, true, false, false,
+    registerProperty(new PropertyMetaInformation(Const.XML_FILES, false, false, true, false, false,
         String.class, null));
     // Hits
-    registerProperty(new PropertyMetaInformation(XML_TRACK_HITS, false, false, true, false, false,
-        Long.class, 0));
+    registerProperty(new PropertyMetaInformation(Const.XML_TRACK_HITS, false, false, true, false,
+        false, Long.class, 0));
     // Addition date
-    registerProperty(new PropertyMetaInformation(XML_TRACK_DISCOVERY_DATE, false, false, true,
-        true, true, Date.class, null));
+    registerProperty(new PropertyMetaInformation(Const.XML_TRACK_DISCOVERY_DATE, false, false,
+        true, true, true, Date.class, null));
     // Comment
-    registerProperty(new PropertyMetaInformation(XML_TRACK_COMMENT, false, false, true, true, true,
-        String.class, null));
+    registerProperty(new PropertyMetaInformation(Const.XML_TRACK_COMMENT, false, false, true, true,
+        true, String.class, null));
     // Track order
-    registerProperty(new PropertyMetaInformation(XML_TRACK_ORDER, false, true, true, true, false,
-        Long.class, null));
+    registerProperty(new PropertyMetaInformation(Const.XML_TRACK_ORDER, false, true, true, true,
+        false, Long.class, null));
     // Track preference factor
-    registerProperty(new PropertyMetaInformation(XML_TRACK_PREFERENCE, false, false, true, true,
-        true, Long.class, 0l));
+    registerProperty(new PropertyMetaInformation(Const.XML_TRACK_PREFERENCE, false, false, true,
+        true, true, Long.class, 0l));
     // Track total playtime
-    registerProperty(new PropertyMetaInformation(XML_TRACK_TOTAL_PLAYTIME, false, false, true,
-        false, false, Long.class, 0l));
+    registerProperty(new PropertyMetaInformation(Const.XML_TRACK_TOTAL_PLAYTIME, false, false,
+        true, false, false, Long.class, 0l));
     // Track ban status
-    registerProperty(new PropertyMetaInformation(XML_TRACK_BANNED, false, false, true, true, false,
-        Boolean.class, false));
+    registerProperty(new PropertyMetaInformation(Const.XML_TRACK_BANNED, false, false, true, true,
+        false, Boolean.class, false));
     // ---subscriptions---
     ObservationManager.register(this);
   }
@@ -610,7 +611,7 @@ public final class TrackManager extends ItemManager implements Observer {
    */
   @Override
   public String getLabel() {
-    return XML_TRACKS;
+    return Const.XML_TRACKS;
   }
 
   /*
@@ -622,8 +623,8 @@ public final class TrackManager extends ItemManager implements Observer {
     JajukEvents subject = event.getSubject();
     if (JajukEvents.FILE_NAME_CHANGED.equals(subject)) {
       Properties properties = event.getDetails();
-      File fNew = (File) properties.get(DETAIL_NEW);
-      File fileOld = (File) properties.get(DETAIL_OLD);
+      File fNew = (File) properties.get(Const.DETAIL_NEW);
+      File fileOld = (File) properties.get(Const.DETAIL_OLD);
       Track track = fileOld.getTrack();
       track.removeFile(fileOld);
       track.addFile(fNew);
@@ -632,7 +633,9 @@ public final class TrackManager extends ItemManager implements Observer {
 
   /**
    * Get ordered tracks list associated with this item
-   * <p> This is a shallow copy only </p>
+   * <p>
+   * This is a shallow copy only
+   * </p>
    * 
    * @param item
    * @return
@@ -682,7 +685,7 @@ public final class TrackManager extends ItemManager implements Observer {
   }
 
   public TrackComparator getComparator() {
-    return new TrackComparator(Conf.getInt(CONF_LOGICAL_TREE_SORT_ORDER));
+    return new TrackComparator(Conf.getInt(Const.CONF_LOGICAL_TREE_SORT_ORDER));
   }
 
   /**
@@ -719,10 +722,10 @@ public final class TrackManager extends ItemManager implements Observer {
    * @return an ordered list of available files
    */
   public List<SearchResult> search(String criteria) {
-    boolean hide = Conf.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED);
+    boolean hide = Conf.getBoolean(Const.CONF_OPTIONS_HIDE_UNMOUNTED);
     List<SearchResult> resu = new ArrayList<SearchResult>();
     ReadOnlyIterator<Track> tracks = getTracksIterator();
-    while (tracks.hasNext()){
+    while (tracks.hasNext()) {
       Track track = tracks.next();
       File playable = track.getPlayeableFile(hide);
       if (playable != null) {

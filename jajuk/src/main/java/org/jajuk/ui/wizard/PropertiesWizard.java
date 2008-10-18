@@ -89,7 +89,7 @@ import org.jdesktop.swingx.VerticalLayout;
 /**
  * ItemManager properties wizard for any jajuk item
  */
-public class PropertiesWizard extends JajukJDialog implements Const, ActionListener {
+public class PropertiesWizard extends JajukJDialog implements ActionListener {
 
   private static final long serialVersionUID = 1L;
 
@@ -272,13 +272,15 @@ public class PropertiesWizard extends JajukJDialog implements Const, ActionListe
    */
   public boolean isLinkable(PropertyMetaInformation meta) {
     String sKey = meta.getName();
-    return sKey.equals(XML_DEVICE) || sKey.equals(XML_TRACK) || sKey.equals(XML_DEVICE)
-        || sKey.equals(XML_TRACK) || sKey.equals(XML_ALBUM) || sKey.equals(XML_AUTHOR)
-        || sKey.equals(XML_YEAR) || sKey.equals(XML_STYLE) || sKey.equals(XML_DIRECTORY)
-        || sKey.equals(XML_FILE) || sKey.equals(XML_PLAYLIST) || sKey.equals(XML_PLAYLIST_FILE)
-        || sKey.equals(XML_FILES) || sKey.equals(XML_PLAYLIST_FILES)
+    return sKey.equals(Const.XML_DEVICE) || sKey.equals(Const.XML_TRACK)
+        || sKey.equals(Const.XML_DEVICE) || sKey.equals(Const.XML_TRACK)
+        || sKey.equals(Const.XML_ALBUM) || sKey.equals(Const.XML_AUTHOR)
+        || sKey.equals(Const.XML_YEAR) || sKey.equals(Const.XML_STYLE)
+        || sKey.equals(Const.XML_DIRECTORY) || sKey.equals(Const.XML_FILE)
+        || sKey.equals(Const.XML_PLAYLIST) || sKey.equals(Const.XML_PLAYLIST_FILE)
+        || sKey.equals(Const.XML_FILES) || sKey.equals(Const.XML_PLAYLIST_FILES)
         // avoid confusing between music types and device types
-        || (sKey.equals(XML_TYPE) && !(alItems.get(0) instanceof Device));
+        || (sKey.equals(Const.XML_TYPE) && !(alItems.get(0) instanceof Device));
   }
 
   /**
@@ -471,7 +473,7 @@ public class PropertiesWizard extends JajukJDialog implements Const, ActionListe
             widgets[index][1] = jtfValue;
           } else if (meta.getType().equals(String.class)
           // for styles
-              && meta.getName().equals(XML_STYLE)) {
+              && meta.getName().equals(Const.XML_STYLE)) {
             Vector<String> styles = StyleManager.getInstance().getStylesList();
             final JComboBox jcb = new JComboBox(styles);
             jcb.setEditable(true);
@@ -480,7 +482,7 @@ public class PropertiesWizard extends JajukJDialog implements Const, ActionListe
             // set current style to combo
             int i = -1;
             int comp = 0;
-            String sCurrentStyle = pa.getHumanValue(XML_STYLE);
+            String sCurrentStyle = pa.getHumanValue(Const.XML_STYLE);
             for (String s : styles) {
               if (s.equals(sCurrentStyle)) {
                 i = comp;
@@ -511,7 +513,7 @@ public class PropertiesWizard extends JajukJDialog implements Const, ActionListe
               }
             });
             widgets[index][1] = jcb;
-          } else if (meta.getType().equals(String.class) && meta.getName().equals(XML_AUTHOR)) {
+          } else if (meta.getType().equals(String.class) && meta.getName().equals(Const.XML_AUTHOR)) {
             // for authors
             Vector<String> authors = AuthorManager.getAuthorsList();
             final JComboBox jcb = new JComboBox(authors);
@@ -521,7 +523,7 @@ public class PropertiesWizard extends JajukJDialog implements Const, ActionListe
             // set current style to combo
             int i = -1;
             int comp = 0;
-            String sCurrentAuthor = pa.getHumanValue(XML_AUTHOR);
+            String sCurrentAuthor = pa.getHumanValue(Const.XML_AUTHOR);
             for (String s : authors) {
               if (s.equals(sCurrentAuthor)) {
                 i = comp;
@@ -653,13 +655,13 @@ public class PropertiesWizard extends JajukJDialog implements Const, ActionListe
       if (ae.getActionCommand().equals("link")) {
         PropertyMetaInformation meta = alToDisplay.get(getWidgetIndex((JComponent) ae.getSource()));
         String sProperty = meta.getName();
-        if (XML_FILES.equals(sProperty)) {
+        if (Const.XML_FILES.equals(sProperty)) {
           Track track = (Track) alItems.get(0);
           List<Item> alFiles = new ArrayList<Item>(track.getFiles().size());
           alFiles.addAll(track.getFiles());
           // show properties window for this item
           new PropertiesWizard(alFiles);
-        } else if (XML_PLAYLIST_FILES.equals(sProperty)) {
+        } else if (Const.XML_PLAYLIST_FILES.equals(sProperty)) {
           // can only be a set a files
           String sValue = alItems.get(0).getStringValue(sProperty);
           StringTokenizer st = new StringTokenizer(sValue, ",");
@@ -721,7 +723,7 @@ public class PropertiesWizard extends JajukJDialog implements Const, ActionListe
             // Check it is not null for non custom properties. Note that
             // we also allow void values for comments
             if (oValue == null || (oValue.toString().trim().length() == 0)
-                && !(meta.isCustom() || meta.getName().equals(XML_TRACK_COMMENT))) {
+                && !(meta.isCustom() || meta.getName().equals(Const.XML_TRACK_COMMENT))) {
               Log.error(137, '{' + meta.getName() + '}', null);
               Messages.showErrorMessage(137, '{' + meta.getName() + '}');
               return;
@@ -746,7 +748,7 @@ public class PropertiesWizard extends JajukJDialog implements Const, ActionListe
               // we display an error and leave completely
               catch (NoneAccessibleFileException none) {
                 Log.error(none);
-                Messages.showErrorMessage(none.getCode(), item.getHumanValue(XML_NAME));
+                Messages.showErrorMessage(none.getCode(), item.getHumanValue(Const.XML_NAME));
                 // close window to avoid reseting all properties to
                 // old values
                 dispose();
@@ -823,7 +825,7 @@ public class PropertiesWizard extends JajukJDialog implements Const, ActionListe
         if (TrackManager.getFilesRemaining() > 0) {
           Messages.showWarningMessage(Messages.getString("Error.138"));
         }
-        
+
         // display a message for file write issues
         if (alInError.size() > 0) {
           String sInfo = "";
@@ -834,7 +836,7 @@ public class PropertiesWizard extends JajukJDialog implements Const, ActionListe
               sInfo += "\n...";
               break;
             }
-            sInfo += "\n" + item.getHumanValue(XML_NAME);
+            sInfo += "\n" + item.getHumanValue(Const.XML_NAME);
             index++;
           }
           Messages.showDetailedErrorMessage(104, sInfo, sDetails);

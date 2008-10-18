@@ -29,6 +29,7 @@ import java.util.Set;
 import org.jajuk.events.Event;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.Observer;
+import org.jajuk.util.Const;
 import org.jajuk.util.MD5Processor;
 import org.jajuk.util.Messages;
 import org.jajuk.util.ReadOnlyIterator;
@@ -50,14 +51,14 @@ public final class PlaylistManager extends ItemManager implements Observer {
     super();
     // ---register properties---
     // ID
-    registerProperty(new PropertyMetaInformation(XML_ID, false, true, false, false, false,
+    registerProperty(new PropertyMetaInformation(Const.XML_ID, false, true, false, false, false,
         String.class, null));
     // Name
-    registerProperty(new PropertyMetaInformation(XML_NAME, false, true, true, true, false,
+    registerProperty(new PropertyMetaInformation(Const.XML_NAME, false, true, true, true, false,
         String.class, null));
     // Directory
-    registerProperty(new PropertyMetaInformation(XML_DIRECTORY, false, true, true, false, false,
-        String.class, null));
+    registerProperty(new PropertyMetaInformation(Const.XML_DIRECTORY, false, true, true, false,
+        false, String.class, null));
   }
 
   /**
@@ -154,7 +155,7 @@ public final class PlaylistManager extends ItemManager implements Observer {
    */
   @Override
   public String getLabel() {
-    return XML_PLAYLIST_FILES;
+    return Const.XML_PLAYLIST_FILES;
   }
 
   /**
@@ -185,13 +186,13 @@ public final class PlaylistManager extends ItemManager implements Observer {
     // properties
     // (inc id and
     // name)
-    plfNew.setProperty(XML_ID, sNewId); // reset new id and name
-    plfNew.setProperty(XML_NAME, sNewName); // reset new id and name
+    plfNew.setProperty(Const.XML_ID, sNewId); // reset new id and name
+    plfNew.setProperty(Const.XML_NAME, sNewName); // reset new id and name
     // check file name and extension
     if (plfNew.getName().lastIndexOf('.') != plfNew.getName().indexOf('.')// just
         // one
         // '.'
-        || !(UtilSystem.getExtension(ioNew).equals(EXT_PLAYLIST))) { // check
+        || !(UtilSystem.getExtension(ioNew).equals(Const.EXT_PLAYLIST))) { // check
       // extension
       Messages.showErrorMessage(134);
       throw new JajukException(134);
@@ -226,8 +227,8 @@ public final class PlaylistManager extends ItemManager implements Observer {
     JajukEvents subject = event.getSubject();
     if (JajukEvents.FILE_NAME_CHANGED.equals(subject)) {
       Properties properties = event.getDetails();
-      File fNew = (File) properties.get(DETAIL_NEW);
-      File fileOld = (File) properties.get(DETAIL_OLD);
+      File fNew = (File) properties.get(Const.DETAIL_NEW);
+      File fileOld = (File) properties.get(Const.DETAIL_OLD);
       // search references in playlists
       ReadOnlyIterator<Playlist> it = getPlaylistsIterator();
       while (it.hasNext()) {

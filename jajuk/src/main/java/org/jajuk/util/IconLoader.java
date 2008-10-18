@@ -31,9 +31,9 @@ import javax.swing.ImageIcon;
  * Use: IconLoader.getIcon(JajukIcons.<icon name>)
  * </p>
  */
-public class IconLoader implements Const {
+public class IconLoader {
 
- /** No covers image cache : size:default icon */
+  /** No covers image cache : size:default icon */
   public static Map<String, ImageIcon> nocoverCache = new HashMap<String, ImageIcon>(10);
 
   /** Icons cache * */
@@ -44,31 +44,31 @@ public class IconLoader implements Const {
    */
   private IconLoader() {
   }
-  
+
   /**
-   * @param nocover size with format "<width>x<height>"
+   * @param nocover
+   *          size with format "<width>x<height>"
    * @return the nocover icon for specified size
    */
   public static ImageIcon getNoCoverIcon(String size) {
-    if (Const.THUMBNAIL_SIZE_50X50.equals(size)){
+    if (Const.THUMBNAIL_SIZE_50X50.equals(size)) {
       return getIcon(JajukIcons.NO_COVER_50X50);
     }
-    if (Const.THUMBNAIL_SIZE_100X100.equals(size)){
+    if (Const.THUMBNAIL_SIZE_100X100.equals(size)) {
       return getIcon(JajukIcons.NO_COVER_100X100);
     }
-    if (Const.THUMBNAIL_SIZE_150X150.equals(size)){
+    if (Const.THUMBNAIL_SIZE_150X150.equals(size)) {
       return getIcon(JajukIcons.NO_COVER_150X150);
     }
-    if (Const.THUMBNAIL_SIZE_200X200.equals(size)){
+    if (Const.THUMBNAIL_SIZE_200X200.equals(size)) {
       return getIcon(JajukIcons.NO_COVER_200X200);
     }
-    if (Const.THUMBNAIL_SIZE_250X250.equals(size)){
+    if (Const.THUMBNAIL_SIZE_250X250.equals(size)) {
       return getIcon(JajukIcons.NO_COVER_250X250);
     }
-    if (Const.THUMBNAIL_SIZE_300X300.equals(size)){
+    if (Const.THUMBNAIL_SIZE_300X300.equals(size)) {
       return getIcon(JajukIcons.NO_COVER_300X300);
-    }
-    else{
+    } else {
       return null;
     }
   }
@@ -808,31 +808,31 @@ public class IconLoader implements Const {
     else if (icon == JajukIcons.BAN) {
       out = new ImageIcon(UtilSystem.getResource("icons/16x16/ban_16x16.png"));
     }
-    
+
     else if (icon == JajukIcons.PREFERENCE_ADORE) {
       out = new ImageIcon(UtilSystem.getResource("icons/16x16/preference-adore_16x16.png"));
     }
-    
+
     else if (icon == JajukIcons.PREFERENCE_DONTLIKE) {
       out = new ImageIcon(UtilSystem.getResource("icons/16x16/preference-dontlike_16x16.png"));
     }
-    
+
     else if (icon == JajukIcons.PREFERENCE_DONTLIKEMUCH) {
       out = new ImageIcon(UtilSystem.getResource("icons/16x16/preference-dontlikemuch_16x16.png"));
     }
-    
+
     else if (icon == JajukIcons.PREFERENCE_HATE) {
       out = new ImageIcon(UtilSystem.getResource("icons/16x16/preference-hate_16x16.png"));
     }
-    
+
     else if (icon == JajukIcons.PREFERENCE_LIKE) {
       out = new ImageIcon(UtilSystem.getResource("icons/16x16/preference-like_16x16.png"));
     }
-    
+
     else if (icon == JajukIcons.PREFERENCE_LOVE) {
       out = new ImageIcon(UtilSystem.getResource("icons/16x16/preference-love_16x16.png"));
     }
-    
+
     // Cache the result
     if (!cache.containsKey(icon)) {
       cache.put(icon, out);

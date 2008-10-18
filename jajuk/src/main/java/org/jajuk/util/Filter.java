@@ -85,8 +85,8 @@ public class Filter {
   /**
    * Filter a list.
    * <p>
-   * Work on the input collection (for
-   * performance reasons and to save memory we don't create a new list)
+   * Work on the input collection (for performance reasons and to save memory we
+   * don't create a new list)
    * </p>
    * <p>
    * This filter is not thread safe.
@@ -99,7 +99,7 @@ public class Filter {
   @SuppressWarnings("unchecked")
   public static void filterItems(List<? extends Item> list, Filter filter) {
     if (filter == null || filter.getValue() == null) {
-      return ;
+      return;
     }
     // Check if property is not the "fake" any property
     boolean bAny = (filter.getProperty() == null || "any".equals(filter.getProperty()));
@@ -108,7 +108,7 @@ public class Filter {
     String checked = filter.getValue();
     // If checked is void, return the list as it
     if (UtilString.isVoid(checked)) {
-      return ;
+      return;
     }
     // If pattern is wrong, return a void list
     try {
@@ -116,7 +116,7 @@ public class Filter {
     } catch (PatternSyntaxException e) {
       Log.debug("Wrong regexp pattern: " + checked);
       list.clear();
-      return ;
+      return;
     }
 
     Iterator it = list.iterator();
@@ -159,7 +159,7 @@ public class Filter {
         it.remove();
       }
     }
-    return ;
+    return;
   }
 
 }

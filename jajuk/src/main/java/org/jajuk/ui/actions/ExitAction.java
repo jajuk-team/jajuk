@@ -30,6 +30,7 @@ import org.jajuk.ui.widgets.JajukSlimbar;
 import org.jajuk.ui.widgets.JajukSystray;
 import org.jajuk.ui.widgets.JajukWindow;
 import org.jajuk.util.Conf;
+import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
@@ -42,14 +43,15 @@ public class ExitAction extends JajukAction {
   private static final long serialVersionUID = 1L;
 
   ExitAction() {
-    super(Messages.getString("JajukWindow.4"), IconLoader.getIcon(JajukIcons.EXIT), "alt X", true, false);
+    super(Messages.getString("JajukWindow.4"), IconLoader.getIcon(JajukIcons.EXIT), "alt X", true,
+        false);
     setShortDescription(Messages.getString("JajukWindow.21"));
   }
 
   @Override
   public void perform(ActionEvent evt) {
     // Ask if a confirmation is required
-    if (Conf.getBoolean(CONF_CONFIRMATIONS_EXIT)) {
+    if (Conf.getBoolean(Const.CONF_CONFIRMATIONS_EXIT)) {
       int iResu = Messages.getChoice(Messages.getString("Confirmation_exit"),
           JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);
       if (iResu != JOptionPane.YES_OPTION) {
@@ -76,17 +78,17 @@ public class ExitAction extends JajukAction {
 
       // Store window/tray/slimbar configuration
       if (JajukSlimbar.isLoaded() && JajukSlimbar.getInstance().isVisible()) {
-        Conf.setProperty(CONF_STARTUP_DISPLAY, Integer
-            .toString(DISPLAY_MODE_SLIMBAR_TRAY));
+        Conf.setProperty(Const.CONF_STARTUP_DISPLAY, Integer
+            .toString(Const.DISPLAY_MODE_SLIMBAR_TRAY));
       }
       if (JajukWindow.isLoaded() && JajukWindow.getInstance().isVisible()) {
-        Conf.setProperty(CONF_STARTUP_DISPLAY, Integer
-            .toString(DISPLAY_MODE_WINDOW_TRAY));
+        Conf.setProperty(Const.CONF_STARTUP_DISPLAY, Integer
+            .toString(Const.DISPLAY_MODE_WINDOW_TRAY));
       }
 
       if (!(JajukSlimbar.isLoaded() && JajukSlimbar.getInstance().isVisible())
           && !(JajukWindow.isLoaded() && JajukWindow.getInstance().isVisible())) {
-        Conf.setProperty(CONF_STARTUP_DISPLAY, Integer.toString(DISPLAY_MODE_TRAY));
+        Conf.setProperty(Const.CONF_STARTUP_DISPLAY, Integer.toString(Const.DISPLAY_MODE_TRAY));
       }
 
       // hide window ASAP

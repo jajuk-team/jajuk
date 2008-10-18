@@ -74,9 +74,9 @@ public abstract class Item implements Serializable, Const {
    */
   Item(final String sId, final String sName) {
     this.sID = sId;
-    setProperty(XML_ID, sId);
+    setProperty(Const.XML_ID, sId);
     this.name = sName;
-    setProperty(XML_NAME, sName);
+    setProperty(Const.XML_NAME, sName);
   }
 
   /**
@@ -116,7 +116,7 @@ public abstract class Item implements Serializable, Const {
    */
   @Override
   public boolean equals(Object otherItem) {
-    // [Perf] We can compare with an == operator here because 
+    // [Perf] We can compare with an == operator here because
     // all ID are stored into String intern() buffer
     return getID() == ((Item) otherItem).getID();
   }
@@ -409,19 +409,24 @@ public abstract class Item implements Serializable, Const {
     IconLabel ilRate = null;
     switch (starsNumber) {
     case 0:
-      ilRate = new IconLabel(IconLoader.getIcon(JajukIcons.STAR_0), "", null, null, null, Long.toString(rate));
+      ilRate = new IconLabel(IconLoader.getIcon(JajukIcons.STAR_0), "", null, null, null, Long
+          .toString(rate));
       break;
     case 1:
-      ilRate = new IconLabel(IconLoader.getIcon(JajukIcons.STAR_1), "", null, null, null, Long.toString(rate));
+      ilRate = new IconLabel(IconLoader.getIcon(JajukIcons.STAR_1), "", null, null, null, Long
+          .toString(rate));
       break;
     case 2:
-      ilRate = new IconLabel(IconLoader.getIcon(JajukIcons.STAR_2), "", null, null, null, Long.toString(rate));
+      ilRate = new IconLabel(IconLoader.getIcon(JajukIcons.STAR_2), "", null, null, null, Long
+          .toString(rate));
       break;
     case 3:
-      ilRate = new IconLabel(IconLoader.getIcon(JajukIcons.STAR_3), "", null, null, null, Long.toString(rate));
+      ilRate = new IconLabel(IconLoader.getIcon(JajukIcons.STAR_3), "", null, null, null, Long
+          .toString(rate));
       break;
     case 4:
-      ilRate = new IconLabel(IconLoader.getIcon(JajukIcons.STAR_4), "", null, null, null, Long.toString(rate));
+      ilRate = new IconLabel(IconLoader.getIcon(JajukIcons.STAR_4), "", null, null, null, Long
+          .toString(rate));
       break;
     default:
       return null;
@@ -430,11 +435,11 @@ public abstract class Item implements Serializable, Const {
     return ilRate;
   }
 
-   /**
-     * @param the
-     *          rate
-     * @return Number of stars for a given item rate
-     */
+  /**
+   * @param the
+   *          rate
+   * @return Number of stars for a given item rate
+   */
   public int getStarsNumber() {
     long lInterval = 1;
     if (this instanceof Track) {
@@ -458,12 +463,13 @@ public abstract class Item implements Serializable, Const {
       return 4;
     }
   }
-  
+
   /**
    * Item rate. Should be overwritten by sub classes
+   * 
    * @return item rate if item supports rating or -1 otherwise
    */
-  public long getRate(){
+  public long getRate() {
     return -1;
   }
 

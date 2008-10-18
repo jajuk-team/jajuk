@@ -28,23 +28,23 @@ import org.jajuk.base.Track;
  */
 public class CDDBTrack implements FreedbTrack {
 
-    Track track;
+  Track track;
 
-    public CDDBTrack(Track track) {
-      this.track = track;
-    }
+  public CDDBTrack(Track track) {
+    this.track = track;
+  }
 
-    public int getLength() {
-      return (int) track.getDuration();
-
-    }
-
-    public float getPreciseLength() {
-      return track.getDuration();
-    }
-    
-    public Track getTrack(){
-      return track;
-    }
+  public int getLength() {
+    return (int) track.getDuration();
 
   }
+
+  public float getPreciseLength() {
+    return track.getDuration();
+  }
+
+  public Track getTrack() {
+    return track;
+  }
+
+}

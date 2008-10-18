@@ -28,6 +28,7 @@ import org.jajuk.services.players.FIFO;
 import org.jajuk.ui.widgets.CommandJPanel;
 import org.jajuk.ui.widgets.JajukJMenuBar;
 import org.jajuk.util.Conf;
+import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
@@ -36,7 +37,8 @@ public class ShuffleModeAction extends JajukAction {
   private static final long serialVersionUID = 1L;
 
   ShuffleModeAction() {
-    super(Messages.getString("JajukJMenuBar.11"), IconLoader.getIcon(JajukIcons.SHUFFLE), "ctrl H", true, false);
+    super(Messages.getString("JajukJMenuBar.11"), IconLoader.getIcon(JajukIcons.SHUFFLE), "ctrl H",
+        true, false);
     setShortDescription(Messages.getString("CommandJPanel.2"));
   }
 
@@ -47,8 +49,8 @@ public class ShuffleModeAction extends JajukAction {
    */
   @Override
   public void perform(ActionEvent evt) {
-    boolean b = Conf.getBoolean(CONF_STATE_SHUFFLE);
-    Conf.setProperty(CONF_STATE_SHUFFLE, Boolean.toString(!b));
+    boolean b = Conf.getBoolean(Const.CONF_STATE_SHUFFLE);
+    Conf.setProperty(Const.CONF_STATE_SHUFFLE, Boolean.toString(!b));
 
     JajukJMenuBar.getInstance().setShuffleSelected(!b);
     CommandJPanel.getInstance().setRandomSelected(!b);

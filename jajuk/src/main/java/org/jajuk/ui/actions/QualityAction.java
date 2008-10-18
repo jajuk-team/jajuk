@@ -26,6 +26,7 @@ import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
 import java.net.URI;
 
+import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
@@ -51,7 +52,7 @@ public class QualityAction extends JajukAction {
   @Override
   public void perform(ActionEvent evt) {
     String sBody = "";
-    sBody += "Version: " + JAJUK_VERSION + '\n';
+    sBody += "Version: " + Const.JAJUK_VERSION + '\n';
     sBody += UtilString.getAnonymizedSystemProperties().toString() + '\n';
     sBody += UtilString.getAnonymizedJajukProperties().toString() + '\n';
     for (String line : Log.getSpool()) {

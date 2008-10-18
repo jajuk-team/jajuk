@@ -117,7 +117,7 @@ public final class DirectoryManager extends ItemManager {
    */
   @SuppressWarnings("unchecked")
   public synchronized void cleanDevice(final String sId) {
-    for( Directory directory : getDirectories()){
+    for (Directory directory : getDirectories()) {
       if (directory.getDevice().getID().equals(sId)) {
         removeItem(directory);
       }
@@ -157,8 +157,8 @@ public final class DirectoryManager extends ItemManager {
    * @return Directory matching the io file
    */
   public synchronized Directory getDirectoryForIO(final java.io.File fio) {
-    ReadOnlyIterator< Directory> dirs = getDirectoriesIterator();
-    while (dirs.hasNext()){
+    ReadOnlyIterator<Directory> dirs = getDirectoriesIterator();
+    while (dirs.hasNext()) {
       Directory dir = dirs.next();
       if (dir.getFio().equals(fio)) {
         return dir;

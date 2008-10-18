@@ -36,7 +36,7 @@ import org.jajuk.util.error.JajukException;
 /**
  * Set of convenient classes for string manipulation
  */
-public final class UtilString implements Const {
+public final class UtilString {
 
   /**
    * The list of characters that we need to escape in strings
@@ -339,12 +339,12 @@ public final class UtilString implements Const {
     // We use trailing pattern to allow scripting like MSN plugins to
     // detect jajuk frames and extract current track
     String title = Conf.getString(Const.CONF_FRAME_TITLE_PATTERN);
-    title = title.replaceAll(PATTERN_TRACKNAME, file.getTrack().getName());
-    title = title.replaceAll(PATTERN_ALBUM, file.getTrack().getAlbum().getName2());
-    title = title.replaceAll(PATTERN_AUTHOR, file.getTrack().getAuthor().getName2());
-    title = title.replaceAll(PATTERN_STYLE, file.getTrack().getStyle().getName2());
-    title = title.replaceAll(PATTERN_TRACKORDER, Long.toString(file.getTrack().getOrder()));
-    title = title.replaceAll(PATTERN_YEAR, file.getTrack().getYear().getName2());
+    title = title.replaceAll(Const.PATTERN_TRACKNAME, file.getTrack().getName());
+    title = title.replaceAll(Const.PATTERN_ALBUM, file.getTrack().getAlbum().getName2());
+    title = title.replaceAll(Const.PATTERN_AUTHOR, file.getTrack().getAuthor().getName2());
+    title = title.replaceAll(Const.PATTERN_STYLE, file.getTrack().getStyle().getName2());
+    title = title.replaceAll(Const.PATTERN_TRACKORDER, Long.toString(file.getTrack().getOrder()));
+    title = title.replaceAll(Const.PATTERN_YEAR, file.getTrack().getYear().getName2());
     return title;
   }
 
@@ -681,32 +681,36 @@ public final class UtilString implements Const {
 
   /**
    * Fast long parser, low level check, remplacement of Long.parseLong()
-   * @param in must be a set of digits with a size > 0
+   * 
+   * @param in
+   *          must be a set of digits with a size > 0
    * @return
    */
   public static long fastLongParser(String in) {
     int length = in.length();
-    if (length == 1){
+    if (length == 1) {
       return in.charAt(0) - 48;
     }
     long out = 0;
-    int length2 = length -1;
+    int length2 = length - 1;
     for (int i = 0; i < length; i++) {
       int digit = in.charAt(i) - 48;
       out += digit * Math.pow(10, (length2 - i));
     }
     return out;
   }
-  
+
   /**
-   * Fast Boolean parser, low level check, remplacement of Boolean.parseBoolean()
-   * @param in must be a string beginning by true or false (lower case)
+   * Fast Boolean parser, low level check, remplacement of
+   * Boolean.parseBoolean()
+   * 
+   * @param in
+   *          must be a string beginning by true or false (lower case)
    * @return
    */
   public static boolean fastBooleanParser(String in) {
     return (in.charAt(0) == 't');
   }
-  
 
   /**
    * Rot13 encode/decode,

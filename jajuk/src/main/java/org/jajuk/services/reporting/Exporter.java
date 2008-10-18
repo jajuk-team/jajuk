@@ -24,13 +24,12 @@ import java.io.File;
 import java.util.List;
 
 import org.jajuk.base.Item;
-import org.jajuk.util.Const;
 import org.jajuk.util.UtilSystem;
 
 /**
  * The base abstract class for exporting music contents to different formats.
  */
-public abstract class Exporter implements Const {
+public abstract class Exporter {
 
   /** Public Constants */
   public static final int PHYSICAL_COLLECTION = 0;

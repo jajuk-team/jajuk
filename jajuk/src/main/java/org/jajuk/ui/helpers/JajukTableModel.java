@@ -29,14 +29,13 @@ import javax.swing.ImageIcon;
 import javax.swing.table.DefaultTableModel;
 
 import org.jajuk.base.Item;
-import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 
 /**
  * Jajuk table model, adds identifier to model
  */
-public abstract class JajukTableModel extends DefaultTableModel implements Const {
+public abstract class JajukTableModel extends DefaultTableModel {
 
   /** Column identifiers */
   volatile protected List<String> idList = new ArrayList<String>(10);
@@ -198,8 +197,7 @@ public abstract class JajukTableModel extends DefaultTableModel implements Const
    *          is useful for models for memory performances as model doesn't fill
    *          values for hidden columns
    */
-  public abstract void populateModel(String sProperty, String sPattern,
-      List<String> columnsToShow);
+  public abstract void populateModel(String sProperty, String sPattern, List<String> columnsToShow);
 
   /**
    * Fill model with data

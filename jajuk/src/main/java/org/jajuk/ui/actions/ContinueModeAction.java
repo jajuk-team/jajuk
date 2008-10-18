@@ -32,6 +32,7 @@ import org.jajuk.services.players.StackItem;
 import org.jajuk.ui.widgets.CommandJPanel;
 import org.jajuk.ui.widgets.JajukJMenuBar;
 import org.jajuk.util.Conf;
+import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
@@ -48,8 +49,8 @@ public class ContinueModeAction extends JajukAction {
 
   @Override
   public void perform(ActionEvent evt) throws JajukException {
-    boolean b = Conf.getBoolean(CONF_STATE_CONTINUE);
-    Conf.setProperty(CONF_STATE_CONTINUE, Boolean.toString(!b));
+    boolean b = Conf.getBoolean(Const.CONF_STATE_CONTINUE);
+    Conf.setProperty(Const.CONF_STATE_CONTINUE, Boolean.toString(!b));
 
     JajukJMenuBar.getInstance().setContinueSelected(!b);
     CommandJPanel.getInstance().setContinueSelected(!b);
@@ -60,8 +61,7 @@ public class ContinueModeAction extends JajukAction {
         // if nothing playing, play next track if possible
         StackItem item = FIFO.getLastPlayed();
         if (item != null) {
-          FIFO.push(
-              new StackItem(FileManager.getInstance().getNextFile(item.getFile())), false);
+          FIFO.push(new StackItem(FileManager.getInstance().getNextFile(item.getFile())), false);
         }
       }
     }

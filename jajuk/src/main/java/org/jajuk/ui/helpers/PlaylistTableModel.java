@@ -33,6 +33,7 @@ import org.jajuk.base.TrackManager;
 import org.jajuk.services.players.StackItem;
 import org.jajuk.ui.helpers.FontManager.JajukFont;
 import org.jajuk.ui.widgets.IconLabel;
+import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
@@ -115,65 +116,65 @@ public class PlaylistTableModel extends JajukTableModel {
 
     // State icon (play/repeat/planned)
     vColNames.add("");
-    idList.add(XML_PLAY);
+    idList.add(Const.XML_PLAY);
 
     // Track name
     // Note we display "title" and not "name" for this property for
     // clearness
     vColNames.add(Messages.getString("AbstractPlaylistEditorView.0"));
-    idList.add(XML_TRACK_NAME);
+    idList.add(Const.XML_TRACK_NAME);
 
     // Album
-    vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_TRACK_ALBUM));
-    idList.add(XML_TRACK_ALBUM);
+    vColNames.add(Messages.getString(Const.PROPERTY_SEPARATOR + Const.XML_TRACK_ALBUM));
+    idList.add(Const.XML_TRACK_ALBUM);
 
     // Author
-    vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_TRACK_AUTHOR));
-    idList.add(XML_TRACK_AUTHOR);
+    vColNames.add(Messages.getString(Const.PROPERTY_SEPARATOR + Const.XML_TRACK_AUTHOR));
+    idList.add(Const.XML_TRACK_AUTHOR);
 
     // Style
-    vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_TRACK_STYLE));
-    idList.add(XML_TRACK_STYLE);
+    vColNames.add(Messages.getString(Const.PROPERTY_SEPARATOR + Const.XML_TRACK_STYLE));
+    idList.add(Const.XML_TRACK_STYLE);
 
     // Stars
-    vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_TRACK_RATE));
-    idList.add(XML_TRACK_RATE);
+    vColNames.add(Messages.getString(Const.PROPERTY_SEPARATOR + Const.XML_TRACK_RATE));
+    idList.add(Const.XML_TRACK_RATE);
 
     // Year
-    vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_YEAR));
-    idList.add(XML_YEAR);
+    vColNames.add(Messages.getString(Const.PROPERTY_SEPARATOR + Const.XML_YEAR));
+    idList.add(Const.XML_YEAR);
 
     // Length
-    vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_TRACK_LENGTH));
-    idList.add(XML_TRACK_LENGTH);
+    vColNames.add(Messages.getString(Const.PROPERTY_SEPARATOR + Const.XML_TRACK_LENGTH));
+    idList.add(Const.XML_TRACK_LENGTH);
 
     // comments
-    vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_TRACK_COMMENT));
-    idList.add(XML_TRACK_COMMENT);
+    vColNames.add(Messages.getString(Const.PROPERTY_SEPARATOR + Const.XML_TRACK_COMMENT));
+    idList.add(Const.XML_TRACK_COMMENT);
 
     // Added date
-    vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_TRACK_DISCOVERY_DATE));
-    idList.add(XML_TRACK_DISCOVERY_DATE);
+    vColNames.add(Messages.getString(Const.PROPERTY_SEPARATOR + Const.XML_TRACK_DISCOVERY_DATE));
+    idList.add(Const.XML_TRACK_DISCOVERY_DATE);
 
     // Order
-    vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_TRACK_ORDER));
-    idList.add(XML_TRACK_ORDER);
+    vColNames.add(Messages.getString(Const.PROPERTY_SEPARATOR + Const.XML_TRACK_ORDER));
+    idList.add(Const.XML_TRACK_ORDER);
 
     // Device
-    vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_DEVICE));
-    idList.add(XML_DEVICE);
+    vColNames.add(Messages.getString(Const.PROPERTY_SEPARATOR + Const.XML_DEVICE));
+    idList.add(Const.XML_DEVICE);
 
     // Directory
-    vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_DIRECTORY));
-    idList.add(XML_DIRECTORY);
+    vColNames.add(Messages.getString(Const.PROPERTY_SEPARATOR + Const.XML_DIRECTORY));
+    idList.add(Const.XML_DIRECTORY);
 
     // File name
     vColNames.add(Messages.getString("Property_filename"));
-    idList.add(XML_FILE);
+    idList.add(Const.XML_FILE);
 
     // Hits
     vColNames.add(Messages.getString("Property_hits"));
-    idList.add(XML_TRACK_HITS);
+    idList.add(Const.XML_TRACK_HITS);
 
     // custom properties now
     // for tracks
@@ -193,28 +194,28 @@ public class PlaylistTableModel extends JajukTableModel {
    * Fill model with data using an optional filter property
    */
   @Override
-  public void populateModel(String sPropertyName, String sPattern,
-      List<String> columnsToShow) {
+  public void populateModel(String sPropertyName, String sPattern, List<String> columnsToShow) {
     iRowNum = alItems.size() + alPlanned.size();
     oValues = new Object[iRowNum][iNumberStandardCols
         + TrackManager.getInstance().getCustomProperties().size()
         + FileManager.getInstance().getCustomProperties().size()];
 
     // For perfs, prepare columns visibility
-    boolean bName = (columnsToShow != null && columnsToShow.contains(XML_NAME));
-    boolean bAlbum = (columnsToShow != null && columnsToShow.contains(XML_ALBUM));
-    boolean bAuthor = (columnsToShow != null && columnsToShow.contains(XML_AUTHOR));
-    boolean bStyle = (columnsToShow != null && columnsToShow.contains(XML_STYLE));
-    boolean bYear = (columnsToShow != null && columnsToShow.contains(XML_YEAR));
-    boolean bRate = (columnsToShow != null && columnsToShow.contains(XML_TRACK_RATE));
-    boolean bLength = (columnsToShow != null && columnsToShow.contains(XML_TRACK_LENGTH));
-    boolean bComment = (columnsToShow != null && columnsToShow.contains(XML_TRACK_COMMENT));
-    boolean bDiscovery = (columnsToShow != null && columnsToShow.contains(XML_TRACK_DISCOVERY_DATE));
-    boolean bOrder = (columnsToShow != null && columnsToShow.contains(XML_TRACK_ORDER));
-    boolean bHits = (columnsToShow != null && columnsToShow.contains(XML_TRACK_HITS));
-    boolean bDirectory = (columnsToShow != null && columnsToShow.contains(XML_DIRECTORY));
-    boolean bDevice = (columnsToShow != null && columnsToShow.contains(XML_DEVICE));
-    boolean bFileName = (columnsToShow != null && columnsToShow.contains(XML_FILE));
+    boolean bName = (columnsToShow != null && columnsToShow.contains(Const.XML_NAME));
+    boolean bAlbum = (columnsToShow != null && columnsToShow.contains(Const.XML_ALBUM));
+    boolean bAuthor = (columnsToShow != null && columnsToShow.contains(Const.XML_AUTHOR));
+    boolean bStyle = (columnsToShow != null && columnsToShow.contains(Const.XML_STYLE));
+    boolean bYear = (columnsToShow != null && columnsToShow.contains(Const.XML_YEAR));
+    boolean bRate = (columnsToShow != null && columnsToShow.contains(Const.XML_TRACK_RATE));
+    boolean bLength = (columnsToShow != null && columnsToShow.contains(Const.XML_TRACK_LENGTH));
+    boolean bComment = (columnsToShow != null && columnsToShow.contains(Const.XML_TRACK_COMMENT));
+    boolean bDiscovery = (columnsToShow != null && columnsToShow
+        .contains(Const.XML_TRACK_DISCOVERY_DATE));
+    boolean bOrder = (columnsToShow != null && columnsToShow.contains(Const.XML_TRACK_ORDER));
+    boolean bHits = (columnsToShow != null && columnsToShow.contains(Const.XML_TRACK_HITS));
+    boolean bDirectory = (columnsToShow != null && columnsToShow.contains(Const.XML_DIRECTORY));
+    boolean bDevice = (columnsToShow != null && columnsToShow.contains(Const.XML_DEVICE));
+    boolean bFileName = (columnsToShow != null && columnsToShow.contains(Const.XML_FILE));
 
     for (int iRow = 0; iRow < iRowNum; iRow++) {
       boolean bPlanned = false;
@@ -229,22 +230,22 @@ public class PlaylistTableModel extends JajukTableModel {
       // Play
       if (bQueue) {
         if (bPlanned) {
-          oValues[iRow][0] = new IconLabel(IconLoader.getIcon(JajukIcons.TRACK_FIFO_PLANNED), "", null, null,
-              font, Messages.getString("AbstractPlaylistEditorView.20"));
+          oValues[iRow][0] = new IconLabel(IconLoader.getIcon(JajukIcons.TRACK_FIFO_PLANNED), "",
+              null, null, font, Messages.getString("AbstractPlaylistEditorView.20"));
         } else {
           if (item.isRepeat()) {
             // normal file, repeated
-            oValues[iRow][0] = new IconLabel(IconLoader.getIcon(JajukIcons.TRACK_FIFO_REPEAT), "", null, null,
-                font, Messages.getString("AbstractPlaylistEditorView.19"));
+            oValues[iRow][0] = new IconLabel(IconLoader.getIcon(JajukIcons.TRACK_FIFO_REPEAT), "",
+                null, null, font, Messages.getString("AbstractPlaylistEditorView.19"));
           } else {
             // normal file, not repeated
-            oValues[iRow][0] = new IconLabel(IconLoader.getIcon(JajukIcons.TRACK_FIFO_NORM), "", null, null, font,
-                Messages.getString("AbstractPlaylistEditorView.18"));
+            oValues[iRow][0] = new IconLabel(IconLoader.getIcon(JajukIcons.TRACK_FIFO_NORM), "",
+                null, null, font, Messages.getString("AbstractPlaylistEditorView.18"));
           }
         }
       } else {
-        oValues[iRow][0] = new IconLabel(IconLoader.getIcon(JajukIcons.TRACK_FIFO_NORM), "", null, null, font,
-            Messages.getString("AbstractPlaylistEditorView.18"));
+        oValues[iRow][0] = new IconLabel(IconLoader.getIcon(JajukIcons.TRACK_FIFO_NORM), "", null,
+            null, font, Messages.getString("AbstractPlaylistEditorView.18"));
       }
 
       // Track name
@@ -298,7 +299,7 @@ public class PlaylistTableModel extends JajukTableModel {
 
       // Comment
       if (bComment) {
-        oValues[iRow][8] = bf.getTrack().getStringValue(XML_TRACK_COMMENT);
+        oValues[iRow][8] = bf.getTrack().getStringValue(Const.XML_TRACK_COMMENT);
       } else {
         oValues[iRow][8] = "";
       }

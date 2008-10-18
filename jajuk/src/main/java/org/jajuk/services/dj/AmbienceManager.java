@@ -47,7 +47,7 @@ import org.jajuk.util.UpgradeManager;
 /**
  * Ambience manager
  */
-public final class AmbienceManager implements Const, Observer {
+public final class AmbienceManager implements Observer {
 
   /** Ambience id-> ambience */
   private Map<String, Ambience> ambiences = new HashMap<String, Ambience>(10);
@@ -92,7 +92,7 @@ public final class AmbienceManager implements Const, Observer {
     Enumeration<Object> e = properties.keys();
     while (e.hasMoreElements()) {
       String sKey = (String) e.nextElement();
-      if (sKey.matches(AMBIENCE_PREFIX + ".*")) {
+      if (sKey.matches(Const.AMBIENCE_PREFIX + ".*")) {
         Set<Style> styles = new HashSet<Style>(10);
         StringTokenizer st = new StringTokenizer((String) properties.get(sKey), ",");
         while (st.hasMoreTokens()) {
@@ -101,7 +101,7 @@ public final class AmbienceManager implements Const, Observer {
             styles.add(style);
           }
         }
-        String ambienceDesc = sKey.substring(AMBIENCE_PREFIX.length());
+        String ambienceDesc = sKey.substring(Const.AMBIENCE_PREFIX.length());
         int index = ambienceDesc.indexOf('/');
         if (index == -1) {
           continue;
@@ -169,7 +169,7 @@ public final class AmbienceManager implements Const, Observer {
    * @return currently selected ambience or null if "all" ambience selected
    */
   public Ambience getSelectedAmbience() {
-    String sDefault = Conf.getString(CONF_DEFAULT_AMBIENCE);
+    String sDefault = Conf.getString(Const.CONF_DEFAULT_AMBIENCE);
     return getAmbience(sDefault);
   }
 
@@ -182,8 +182,8 @@ public final class AmbienceManager implements Const, Observer {
     JajukEvents subject = event.getSubject();
     if (JajukEvents.STYLE_NAME_CHANGED.equals(subject)) {
       Properties properties = event.getDetails();
-      Style old = (Style) properties.get(DETAIL_OLD);
-      Style newStyle = (Style) properties.get(DETAIL_NEW);
+      Style old = (Style) properties.get(Const.DETAIL_OLD);
+      Style newStyle = (Style) properties.get(Const.DETAIL_NEW);
       // replace style into all styles
       for (Ambience ambience : ambiences.values()) {
         if (ambience.getStyles().contains(old)) {
@@ -204,7 +204,7 @@ public final class AmbienceManager implements Const, Observer {
     Iterator<Object> it = properties.keySet().iterator();
     while (it.hasNext()) {
       String sKey = (String) it.next();
-      if (sKey.startsWith(AMBIENCE_PREFIX)) {
+      if (sKey.startsWith(Const.AMBIENCE_PREFIX)) {
         it.remove();
       }
     }
@@ -216,8 +216,8 @@ public final class AmbienceManager implements Const, Observer {
           styles += style.getID() + ',';
         }
         styles = styles.substring(0, styles.length() - 1);
-        Conf.setProperty(AMBIENCE_PREFIX + ambience.getID() + '/'
-            + ambience.getName(), styles);
+        Conf.setProperty(Const.AMBIENCE_PREFIX + ambience.getID() + '/' + ambience.getName(),
+            styles);
       }
     }
   }
@@ -232,7 +232,7 @@ public final class AmbienceManager implements Const, Observer {
     this.ambiences.remove(sAmbienceID);
     // Propagate the event
     Properties properties = new Properties();
-    properties.put(DETAIL_CONTENT, sAmbienceID);
+    properties.put(Const.DETAIL_CONTENT, sAmbienceID);
     ObservationManager.notify(new Event(JajukEvents.AMBIENCE_REMOVED, properties));
   }
 

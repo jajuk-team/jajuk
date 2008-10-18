@@ -24,6 +24,7 @@ import java.awt.event.ActionEvent;
 import org.jajuk.base.File;
 import org.jajuk.base.Track;
 import org.jajuk.services.players.FIFO;
+import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
@@ -46,7 +47,7 @@ public class BanCurrentAction extends SelectionAction {
     File current = FIFO.getCurrentFile();
     if (current != null) {
       Track track = current.getTrack();
-      track.setProperty(XML_TRACK_BANNED, true);
+      track.setProperty(Const.XML_TRACK_BANNED, true);
     }
   }
 }

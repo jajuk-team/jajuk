@@ -35,7 +35,8 @@ public class ConfigurationRequiredAction extends JajukAction {
   private static final long serialVersionUID = 1L;
 
   ConfigurationRequiredAction() {
-    super(Messages.getString("JajukJMenuBar.22"), IconLoader.getIcon(JajukIcons.CONFIGURATION), true);
+    super(Messages.getString("JajukJMenuBar.22"), IconLoader.getIcon(JajukIcons.CONFIGURATION),
+        true);
   }
 
   @Override

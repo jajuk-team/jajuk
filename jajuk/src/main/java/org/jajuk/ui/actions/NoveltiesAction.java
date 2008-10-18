@@ -28,6 +28,7 @@ import org.jajuk.services.dj.Ambience;
 import org.jajuk.services.dj.AmbienceManager;
 import org.jajuk.services.players.FIFO;
 import org.jajuk.util.Conf;
+import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
@@ -50,13 +51,12 @@ public class NoveltiesAction extends JajukAction {
         .getShuffleNoveltiesPlaylist(), ambience);
     // For perfs (mainly playlist editor view refresh), we set a ceil for tracks
     // number
-    if (alToPlay.size() > NB_TRACKS_ON_ACTION) {
-      alToPlay = alToPlay.subList(0, NB_TRACKS_ON_ACTION);
+    if (alToPlay.size() > Const.NB_TRACKS_ON_ACTION) {
+      alToPlay = alToPlay.subList(0, Const.NB_TRACKS_ON_ACTION);
     }
     if (alToPlay != null && alToPlay.size() > 0) {
-      FIFO.push(
-          UtilFeatures.createStackItems(UtilFeatures.applyPlayOption(alToPlay), Conf
-              .getBoolean(CONF_STATE_REPEAT), false), false);
+      FIFO.push(UtilFeatures.createStackItems(UtilFeatures.applyPlayOption(alToPlay), Conf
+          .getBoolean(Const.CONF_STATE_REPEAT), false), false);
     } else { // none novelty found
       Messages.showWarningMessage(Messages.getString("Error.127"));
     }

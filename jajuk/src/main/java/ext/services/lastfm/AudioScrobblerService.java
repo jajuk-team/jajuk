@@ -108,7 +108,7 @@ public final class AudioScrobblerService {
       if (SHOW_ALBUMS_WITHOUT_COVER) {
         return albums;
       }
-      
+
       List<AudioScrobblerAlbum> result = new ArrayList<AudioScrobblerAlbum>();
       for (AudioScrobblerAlbum a : albums) {
         if (!a.getSmallCoverURL().endsWith(NO_COVER_URL)) {

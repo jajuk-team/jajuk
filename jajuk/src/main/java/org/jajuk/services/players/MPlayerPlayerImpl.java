@@ -28,6 +28,7 @@ import java.util.StringTokenizer;
 import org.jajuk.base.Track;
 import org.jajuk.services.webradio.WebRadio;
 import org.jajuk.util.Conf;
+import org.jajuk.util.Const;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 
@@ -97,9 +98,9 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
               // Increase actual play time
               // End of file: increase actual play time to the track
               // Perf note : this full action takes less much than 1 ms
-              long trackPlaytime = current.getLongValue(XML_TRACK_TOTAL_PLAYTIME);
+              long trackPlaytime = current.getLongValue(Const.XML_TRACK_TOTAL_PLAYTIME);
               long newValue = PROGRESS_STEP / 100 + trackPlaytime;
-              current.setProperty(XML_TRACK_TOTAL_PLAYTIME, +newValue);
+              current.setProperty(Const.XML_TRACK_TOTAL_PLAYTIME, +newValue);
             }
             comp++;
           }
@@ -139,7 +140,8 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
             st.nextToken();
             lTime = (int) (Float.parseFloat(st.nextToken()) * 1000);
             // Store current position for use at next startup
-            Conf.setProperty(CONF_STARTUP_LAST_POSITION, Float.toString(getCurrentPosition()));
+            Conf
+                .setProperty(Const.CONF_STARTUP_LAST_POSITION, Float.toString(getCurrentPosition()));
             // Cross-Fade test
             if (!bFading && iFadeDuration > 0 && lDuration > 0
             // can be null before getting length
@@ -257,13 +259,13 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
     this.bOpening = true;
     // this.bHasBeenRated = false;
     this.bEOF = false;
-    this.iFadeDuration = 1000 * Conf.getInt(CONF_FADE_DURATION);
+    this.iFadeDuration = 1000 * Conf.getInt(Const.CONF_FADE_DURATION);
     ProcessBuilder pb = new ProcessBuilder(buildCommand(file.getAbsolutePath()));
     Log.debug("Using this Mplayer command: {{" + pb.command() + "}}");
     // Set all environment variables format: var1=xxx var2=yyy
     try {
       Map<String, String> env = pb.environment();
-      StringTokenizer st = new StringTokenizer(Conf.getString(CONF_ENV_VARIABLES), " ");
+      StringTokenizer st = new StringTokenizer(Conf.getString(Const.CONF_ENV_VARIABLES), " ");
       while (st.hasMoreTokens()) {
         StringTokenizer st2 = new StringTokenizer(st.nextToken(), "=");
         env.put(st2.nextToken(), st2.nextToken());

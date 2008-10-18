@@ -37,6 +37,7 @@ import org.jajuk.base.TrackManager;
 import org.jajuk.base.Type;
 import org.jajuk.ui.widgets.IconLabel;
 import org.jajuk.util.Conf;
+import org.jajuk.util.Const;
 import org.jajuk.util.Filter;
 import org.jajuk.util.Messages;
 
@@ -57,48 +58,48 @@ public class TracksTableModel extends JajukTableModel {
    */
   public TracksTableModel() {
     super(13);
-    setEditable(Conf.getBoolean(CONF_TRACKS_TABLE_EDITION));
+    setEditable(Conf.getBoolean(Const.CONF_TRACKS_TABLE_EDITION));
     // Columns names
     // First column is play icon, need to set a space character
     // for proper display in some look and feel
     vColNames.add(" ");
-    idList.add(XML_PLAY);
+    idList.add(Const.XML_PLAY);
 
-    vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_NAME));
-    idList.add(XML_NAME);
+    vColNames.add(Messages.getString(Const.PROPERTY_SEPARATOR + Const.XML_NAME));
+    idList.add(Const.XML_NAME);
 
-    vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_ALBUM));
-    idList.add(XML_ALBUM);
+    vColNames.add(Messages.getString(Const.PROPERTY_SEPARATOR + Const.XML_ALBUM));
+    idList.add(Const.XML_ALBUM);
 
-    vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_AUTHOR));
-    idList.add(XML_AUTHOR);
+    vColNames.add(Messages.getString(Const.PROPERTY_SEPARATOR + Const.XML_AUTHOR));
+    idList.add(Const.XML_AUTHOR);
 
-    vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_STYLE));
-    idList.add(XML_STYLE);
+    vColNames.add(Messages.getString(Const.PROPERTY_SEPARATOR + Const.XML_STYLE));
+    idList.add(Const.XML_STYLE);
 
-    vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_TRACK_RATE));
-    idList.add(XML_TRACK_RATE);
+    vColNames.add(Messages.getString(Const.PROPERTY_SEPARATOR + Const.XML_TRACK_RATE));
+    idList.add(Const.XML_TRACK_RATE);
 
-    vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_TRACK_LENGTH));
-    idList.add(XML_TRACK_LENGTH);
+    vColNames.add(Messages.getString(Const.PROPERTY_SEPARATOR + Const.XML_TRACK_LENGTH));
+    idList.add(Const.XML_TRACK_LENGTH);
 
-    vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_TRACK_COMMENT));
-    idList.add(XML_TRACK_COMMENT);
+    vColNames.add(Messages.getString(Const.PROPERTY_SEPARATOR + Const.XML_TRACK_COMMENT));
+    idList.add(Const.XML_TRACK_COMMENT);
 
-    vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_TRACK_DISCOVERY_DATE));
-    idList.add(XML_TRACK_DISCOVERY_DATE);
+    vColNames.add(Messages.getString(Const.PROPERTY_SEPARATOR + Const.XML_TRACK_DISCOVERY_DATE));
+    idList.add(Const.XML_TRACK_DISCOVERY_DATE);
 
-    vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_TRACK_ORDER));
-    idList.add(XML_TRACK_ORDER);
+    vColNames.add(Messages.getString(Const.PROPERTY_SEPARATOR + Const.XML_TRACK_ORDER));
+    idList.add(Const.XML_TRACK_ORDER);
 
-    vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_YEAR));
-    idList.add(XML_YEAR);
+    vColNames.add(Messages.getString(Const.PROPERTY_SEPARATOR + Const.XML_YEAR));
+    idList.add(Const.XML_YEAR);
 
-    vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_TRACK_HITS));
-    idList.add(XML_TRACK_HITS);
+    vColNames.add(Messages.getString(Const.PROPERTY_SEPARATOR + Const.XML_TRACK_HITS));
+    idList.add(Const.XML_TRACK_HITS);
 
-    vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_FILES));
-    idList.add(XML_FILES);
+    vColNames.add(Messages.getString(Const.PROPERTY_SEPARATOR + Const.XML_FILES));
+    idList.add(Const.XML_FILES);
 
     // custom properties now
     for (PropertyMetaInformation meta : TrackManager.getInstance().getCustomProperties()) {
@@ -109,21 +110,21 @@ public class TracksTableModel extends JajukTableModel {
 
   @Override
   public void populateModel(String property, String sPattern, List<String> columnsToShow) {
-    
+
     // This should be monitor file manager to avoid NPE when changing items
     List<Track> alToShow = TrackManager.getInstance().getTracks();
-       
+
     // Filter mounted files if needed and apply sync table with tree
     // option if needed
-    final boolean bSyncWithTreeOption = Conf.getBoolean(CONF_OPTIONS_SYNC_TABLE_TREE);
+    final boolean bSyncWithTreeOption = Conf.getBoolean(Const.CONF_OPTIONS_SYNC_TABLE_TREE);
     oItems = new Item[iRowNum];
     CollectionUtils.filter(alToShow, new Predicate() {
 
       public boolean evaluate(Object o) {
         Track track = (Track) o;
         // show it if no sync option or if item is in the selection
-        boolean bShowWithTree = !bSyncWithTreeOption 
-            // tree selection = null means none election have been
+        boolean bShowWithTree = !bSyncWithTreeOption
+        // tree selection = null means none election have been
             // selected in tree so far
             || treeSelection == null
             // check if the tree selection contains the current file
@@ -131,9 +132,9 @@ public class TracksTableModel extends JajukTableModel {
         return (!track.shouldBeHidden() && bShowWithTree);
       }
     });
-    
+
     // Filter values using given pattern
-    Filter filter = new Filter(property, sPattern, true, Conf.getBoolean(CONF_REGEXP));
+    Filter filter = new Filter(property, sPattern, true, Conf.getBoolean(Const.CONF_REGEXP));
     Filter.filterItems(alToShow, filter);
     // sort by album
     Collections.sort(alToShow, new TrackComparator(TrackComparator.ALBUM));
@@ -146,18 +147,19 @@ public class TracksTableModel extends JajukTableModel {
     bCellEditable = new boolean[iRowNum][iColNum];
 
     // For perfs, prepare columns visibility
-    boolean bName = (columnsToShow != null && columnsToShow.contains(XML_NAME));
-    boolean bAlbum = (columnsToShow != null && columnsToShow.contains(XML_ALBUM));
-    boolean bAuthor = (columnsToShow != null && columnsToShow.contains(XML_AUTHOR));
-    boolean bStyle = (columnsToShow != null && columnsToShow.contains(XML_STYLE));
-    boolean bRate = (columnsToShow != null && columnsToShow.contains(XML_TRACK_RATE));
-    boolean bLength = (columnsToShow != null && columnsToShow.contains(XML_TRACK_LENGTH));
-    boolean bComment = (columnsToShow != null && columnsToShow.contains(XML_TRACK_COMMENT));
-    boolean bDiscovery = (columnsToShow != null && columnsToShow.contains(XML_TRACK_DISCOVERY_DATE));
-    boolean bOrder = (columnsToShow != null && columnsToShow.contains(XML_TRACK_ORDER));
-    boolean bYear = (columnsToShow != null && columnsToShow.contains(XML_YEAR));
-    boolean bHits = (columnsToShow != null && columnsToShow.contains(XML_TRACK_HITS));
-    boolean bFiles = (columnsToShow != null && columnsToShow.contains(XML_FILES));
+    boolean bName = (columnsToShow != null && columnsToShow.contains(Const.XML_NAME));
+    boolean bAlbum = (columnsToShow != null && columnsToShow.contains(Const.XML_ALBUM));
+    boolean bAuthor = (columnsToShow != null && columnsToShow.contains(Const.XML_AUTHOR));
+    boolean bStyle = (columnsToShow != null && columnsToShow.contains(Const.XML_STYLE));
+    boolean bRate = (columnsToShow != null && columnsToShow.contains(Const.XML_TRACK_RATE));
+    boolean bLength = (columnsToShow != null && columnsToShow.contains(Const.XML_TRACK_LENGTH));
+    boolean bComment = (columnsToShow != null && columnsToShow.contains(Const.XML_TRACK_COMMENT));
+    boolean bDiscovery = (columnsToShow != null && columnsToShow
+        .contains(Const.XML_TRACK_DISCOVERY_DATE));
+    boolean bOrder = (columnsToShow != null && columnsToShow.contains(Const.XML_TRACK_ORDER));
+    boolean bYear = (columnsToShow != null && columnsToShow.contains(Const.XML_YEAR));
+    boolean bHits = (columnsToShow != null && columnsToShow.contains(Const.XML_TRACK_HITS));
+    boolean bFiles = (columnsToShow != null && columnsToShow.contains(Const.XML_FILES));
 
     for (int iRow = 0; it.hasNext(); iRow++) {
       Track track = it.next();
@@ -238,7 +240,7 @@ public class TracksTableModel extends JajukTableModel {
 
       // Comment
       if (bComment) {
-        oValues[iRow][7] = track.getValue(XML_TRACK_COMMENT);
+        oValues[iRow][7] = track.getValue(Const.XML_TRACK_COMMENT);
       } else {
         oValues[iRow][7] = "";
       }

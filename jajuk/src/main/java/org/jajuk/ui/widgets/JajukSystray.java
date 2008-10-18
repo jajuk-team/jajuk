@@ -65,6 +65,7 @@ import org.jajuk.ui.helpers.FontManager;
 import org.jajuk.ui.helpers.JajukTimer;
 import org.jajuk.ui.helpers.FontManager.JajukFont;
 import org.jajuk.util.Conf;
+import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
@@ -187,7 +188,7 @@ public class JajukSystray extends CommandJPanel {
     jmiNovelties = new SizedJMenuItem(ActionManager.getAction(JajukActions.NOVELTIES));
 
     jcbmiShowBalloon = new JCheckBoxMenuItem(Messages.getString("ParameterView.185"));
-    jcbmiShowBalloon.setState(Conf.getBoolean(CONF_UI_SHOW_BALLOON));
+    jcbmiShowBalloon.setState(Conf.getBoolean(Const.CONF_UI_SHOW_BALLOON));
     jcbmiShowBalloon.addActionListener(this);
     jcbmiShowBalloon.setToolTipText(Messages.getString("ParameterView.185"));
 
@@ -201,7 +202,7 @@ public class JajukSystray extends CommandJPanel {
     jsPosition.addMouseWheelListener(this);
     jsPosition.addChangeListener(this);
 
-    int iVolume = (int) (100 * Conf.getFloat(CONF_VOLUME));
+    int iVolume = (int) (100 * Conf.getFloat(Const.CONF_VOLUME));
     if (iVolume > 100) { // can occur in some undefined cases
       iVolume = 100;
     }
@@ -253,7 +254,7 @@ public class JajukSystray extends CommandJPanel {
     jmenu.add(jmPosition);
     jmenu.addSeparator();
     jmenu.add(jmiExit);
-  
+
     trayIcon = new JXTrayIcon(IconLoader.getIcon(JajukIcons.TRAY).getImage());
     if (UtilSystem.isUnderWindows()) {
       // auto-resize looks OK under Windows but is ugly under Linux/KDE
@@ -347,12 +348,11 @@ public class JajukSystray extends CommandJPanel {
     // with the thread
     try {
       if (e.getSource() == jcbmiShowBalloon) {
-        Conf.setProperty(CONF_UI_SHOW_BALLOON, Boolean.toString(jcbmiShowBalloon
-            .getState()));
+        Conf.setProperty(Const.CONF_UI_SHOW_BALLOON, Boolean.toString(jcbmiShowBalloon.getState()));
         // Launch an event that can be trapped by the tray to
         // synchronize the state
         Properties details = new Properties();
-        details.put(DETAIL_ORIGIN, this);
+        details.put(Const.DETAIL_ORIGIN, this);
         ObservationManager.notify(new Event(JajukEvents.PARAMETERS_CHANGE, details));
       }
 
@@ -386,12 +386,12 @@ public class JajukSystray extends CommandJPanel {
           jmiNext.setEnabled(true);
           jmiPrevious.setEnabled(true);
           jmiFinishAlbum.setEnabled(true);
-          String sID = (String) ObservationManager.getDetail(event, DETAIL_CURRENT_FILE_ID);
+          String sID = (String) ObservationManager.getDetail(event, Const.DETAIL_CURRENT_FILE_ID);
           if (sID == null) {
             return;
           }
           File file = FileManager.getInstance().getFileByID(
-              (String) ObservationManager.getDetail(event, DETAIL_CURRENT_FILE_ID));
+              (String) ObservationManager.getDetail(event, Const.DETAIL_CURRENT_FILE_ID));
           String sOut = "";
           if (file != null) {
             sOut = file.getBasicFormatText();
@@ -400,7 +400,7 @@ public class JajukSystray extends CommandJPanel {
             sOut = Messages.getString("JajukWindow.18");
           }
           // check show balloon option
-          if (Conf.getBoolean(CONF_UI_SHOW_BALLOON)) {
+          if (Conf.getBoolean(Const.CONF_UI_SHOW_BALLOON)) {
             trayIcon.displayMessage(Messages.getString("JajukWindow.35"), sOut,
                 TrayIcon.MessageType.INFO);
           }
@@ -496,7 +496,7 @@ public class JajukSystray extends CommandJPanel {
           }
           populateAmbiences();
         } else if (JajukEvents.PARAMETERS_CHANGE.equals(subject)) {
-          jcbmiShowBalloon.setState(Conf.getBoolean(CONF_UI_SHOW_BALLOON));
+          jcbmiShowBalloon.setState(Conf.getBoolean(Const.CONF_UI_SHOW_BALLOON));
         }
       }
 
@@ -526,11 +526,11 @@ public class JajukSystray extends CommandJPanel {
         JMenuItem all = jmAmbience.getItem(0);
         if (jmi.equals(all)) {
           // reset default ambience
-          Conf.setProperty(CONF_DEFAULT_AMBIENCE, "");
+          Conf.setProperty(Const.CONF_DEFAULT_AMBIENCE, "");
         } else {// Selected an ambience
           Ambience ambience = AmbienceManager.getInstance().getAmbienceByName(
               jmi.getActionCommand());
-          Conf.setProperty(CONF_DEFAULT_AMBIENCE, ambience.getID());
+          Conf.setProperty(Const.CONF_DEFAULT_AMBIENCE, ambience.getID());
         }
         jmi.setFont(FontManager.getInstance().getFont(JajukFont.BOLD));
         ObservationManager.notify(new Event(JajukEvents.AMBIENCES_SELECTION_CHANGE));
@@ -548,7 +548,7 @@ public class JajukSystray extends CommandJPanel {
     // Add available ambiences
     for (Ambience ambience : AmbienceManager.getInstance().getAmbiences()) {
       JMenuItem jmi = new JMenuItem(ambience.getName());
-      if (Conf.getString(CONF_DEFAULT_AMBIENCE).equals(ambience.getID())) {
+      if (Conf.getString(Const.CONF_DEFAULT_AMBIENCE).equals(ambience.getID())) {
         jmiAll.setFont(FontManager.getInstance().getFont(JajukFont.PLAIN));
         jmi.setFont(FontManager.getInstance().getFont(JajukFont.BOLD));
       }

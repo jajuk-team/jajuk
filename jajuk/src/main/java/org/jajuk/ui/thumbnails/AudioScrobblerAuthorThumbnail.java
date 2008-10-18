@@ -41,6 +41,7 @@ import org.jajuk.base.AuthorManager;
 import org.jajuk.base.Item;
 import org.jajuk.ui.helpers.FontManager;
 import org.jajuk.ui.helpers.FontManager.JajukFont;
+import org.jajuk.util.Const;
 import org.jajuk.util.DownloadManager;
 import org.jajuk.util.UtilGUI;
 import org.jajuk.util.UtilString;
@@ -87,7 +88,7 @@ public class AudioScrobblerAuthorThumbnail extends AbstractThumbnail {
           // Download the picture and store file reference (to
           // generate the popup thumb for ie)
           fCover = DownloadManager.downloadCover(remote, Long.toString(System.currentTimeMillis()));
-          fThumb = UtilSystem.getConfFileByPath(FILE_CACHE + "/" + System.currentTimeMillis()
+          fThumb = UtilSystem.getConfFileByPath(Const.FILE_CACHE + "/" + System.currentTimeMillis()
               + "_100x100." + UtilSystem.getExtension(fCover));
           // Create the image using Toolkit and not ImageIO API to be able to
           // flush all the image data
@@ -132,7 +133,7 @@ public class AudioScrobblerAuthorThumbnail extends AbstractThumbnail {
           jmenu.remove(jmiProperties);
         }
         // Set URL to open
-        jmiOpenLastFMSite.putClientProperty(DETAIL_CONTENT, author.getUrl());
+        jmiOpenLastFMSite.putClientProperty(Const.DETAIL_CONTENT, author.getUrl());
       }
 
     };
@@ -163,8 +164,8 @@ public class AudioScrobblerAuthorThumbnail extends AbstractThumbnail {
     Color bgcolor = UtilGUI.getUltraLightColor();
     Color fgcolor = UtilGUI.getForegroundColor();
     String sOut = "<html bgcolor='#" + UtilGUI.getHTMLColor(bgcolor) + "'><TABLE color='"
-        + UtilGUI.getHTMLColor(fgcolor) + "'><TR><TD VALIGN='TOP'> <b>" + "<a href='file://" + XML_URL
-        + '?' + author.getUrl() + "'>" + author.getName() + "</a>" + "</b><br><br>";
+        + UtilGUI.getHTMLColor(fgcolor) + "'><TR><TD VALIGN='TOP'> <b>" + "<a href='file://"
+        + Const.XML_URL + '?' + author.getUrl() + "'>" + author.getName() + "</a>" + "</b><br><br>";
     // display picture
     sOut += "<img src='" + author.getImageUrl() + "'></TD>";
     // Show each album for this Author
@@ -177,7 +178,7 @@ public class AudioScrobblerAuthorThumbnail extends AbstractThumbnail {
         if (!UtilString.isVoid(album.getYear())) {
           sOut += album.getYear() + " ";
         }
-        sOut += "<a href='file://" + XML_URL + '?' + album.getUrl() + "'>" + album.getTitle()
+        sOut += "<a href='file://" + Const.XML_URL + '?' + album.getUrl() + "'>" + album.getTitle()
             + "</a>" + "</b><br>";
       }
     }

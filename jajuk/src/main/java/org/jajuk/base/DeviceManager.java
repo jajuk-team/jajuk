@@ -35,6 +35,7 @@ import org.jajuk.events.ObservationManager;
 import org.jajuk.services.core.ExitService;
 import org.jajuk.services.players.FIFO;
 import org.jajuk.util.Conf;
+import org.jajuk.util.Const;
 import org.jajuk.util.MD5Processor;
 import org.jajuk.util.Messages;
 import org.jajuk.util.ReadOnlyIterator;
@@ -64,7 +65,7 @@ public final class DeviceManager extends ItemManager {
     public void run() {
       while (!ExitService.isExiting()) {
         try {
-          Thread.sleep(AUTO_REFRESH_DELAY);
+          Thread.sleep(Const.AUTO_REFRESH_DELAY);
           refreshAllDevices();
         } catch (Exception e) {
           Log.error(e);
@@ -82,31 +83,31 @@ public final class DeviceManager extends ItemManager {
     super();
     // register properties
     // ID
-    registerProperty(new PropertyMetaInformation(XML_ID, false, true, false, false, false,
+    registerProperty(new PropertyMetaInformation(Const.XML_ID, false, true, false, false, false,
         String.class, null));
     // Name
-    registerProperty(new PropertyMetaInformation(XML_NAME, false, true, true, false, false,
+    registerProperty(new PropertyMetaInformation(Const.XML_NAME, false, true, true, false, false,
         String.class, null));
     // Type
-    registerProperty(new PropertyMetaInformation(XML_TYPE, false, true, true, false, false,
+    registerProperty(new PropertyMetaInformation(Const.XML_TYPE, false, true, true, false, false,
         Long.class, null));
     // URL
-    registerProperty(new PropertyMetaInformation(XML_URL, false, true, true, false, false,
+    registerProperty(new PropertyMetaInformation(Const.XML_URL, false, true, true, false, false,
         Long.class, null));
     // Auto-mount
-    registerProperty(new PropertyMetaInformation(XML_DEVICE_AUTO_MOUNT, false, true, true, false,
-        false, Boolean.class, null));
+    registerProperty(new PropertyMetaInformation(Const.XML_DEVICE_AUTO_MOUNT, false, true, true,
+        false, false, Boolean.class, null));
     // Auto-refresh
-    registerProperty(new PropertyMetaInformation(XML_DEVICE_AUTO_REFRESH, false, true, true, false,
-        false, Double.class, 0d));
+    registerProperty(new PropertyMetaInformation(Const.XML_DEVICE_AUTO_REFRESH, false, true, true,
+        false, false, Double.class, 0d));
     // Expand
-    registerProperty(new PropertyMetaInformation(XML_EXPANDED, false, false, false, false, true,
-        Boolean.class, false));
+    registerProperty(new PropertyMetaInformation(Const.XML_EXPANDED, false, false, false, false,
+        true, Boolean.class, false));
     // Synchro source
-    registerProperty(new PropertyMetaInformation(XML_DEVICE_SYNCHRO_SOURCE, false, false, true,
-        false, false, String.class, null));
+    registerProperty(new PropertyMetaInformation(Const.XML_DEVICE_SYNCHRO_SOURCE, false, false,
+        true, false, false, String.class, null));
     // Synchro mode
-    registerProperty(new PropertyMetaInformation(XML_DEVICE_SYNCHRO_MODE, false, false, true,
+    registerProperty(new PropertyMetaInformation(Const.XML_DEVICE_SYNCHRO_MODE, false, false, true,
         false, false, String.class, null));
   }
 
@@ -144,7 +145,7 @@ public final class DeviceManager extends ItemManager {
    */
   public synchronized Device registerDevice(String sId, String sName, long lDeviceType, String sUrl) {
     Device device = new Device(sId, sName);
-    device.setProperty(XML_TYPE, lDeviceType);
+    device.setProperty(Const.XML_TYPE, lDeviceType);
     device.setUrl(sUrl);
     registerItem(device);
     return device;
@@ -247,7 +248,7 @@ public final class DeviceManager extends ItemManager {
   @SuppressWarnings("unchecked")
   public synchronized void removeDevice(Device device) {
     // show confirmation message if required
-    if (Conf.getBoolean(CONF_CONFIRMATIONS_REMOVE_DEVICE)) {
+    if (Conf.getBoolean(Const.CONF_CONFIRMATIONS_REMOVE_DEVICE)) {
       int iResu = Messages.getChoice(Messages.getString("Confirmation_remove_device"),
           JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
       if (iResu != JOptionPane.YES_OPTION) {
@@ -282,10 +283,10 @@ public final class DeviceManager extends ItemManager {
     // remove synchronization if another device was synchronized
     // with this device
     for (Device deviceToCheck : getDevices()) {
-      if (deviceToCheck.containsProperty(XML_DEVICE_SYNCHRO_SOURCE)) {
-        String sSyncSource = deviceToCheck.getStringValue(XML_DEVICE_SYNCHRO_SOURCE);
+      if (deviceToCheck.containsProperty(Const.XML_DEVICE_SYNCHRO_SOURCE)) {
+        String sSyncSource = deviceToCheck.getStringValue(Const.XML_DEVICE_SYNCHRO_SOURCE);
         if (sSyncSource.equals(device.getID())) {
-          deviceToCheck.removeProperty(XML_DEVICE_SYNCHRO_SOURCE);
+          deviceToCheck.removeProperty(Const.XML_DEVICE_SYNCHRO_SOURCE);
         }
       }
     }
@@ -332,7 +333,7 @@ public final class DeviceManager extends ItemManager {
    */
   @Override
   public String getLabel() {
-    return XML_DEVICES;
+    return Const.XML_DEVICES;
   }
 
   public long getDateLastGlobalRefresh() {
@@ -359,7 +360,7 @@ public final class DeviceManager extends ItemManager {
         if (device.getType() == Device.TYPE_CD) {
           continue;
         }
-        double frequency = 60000 * device.getDoubleValue(XML_DEVICE_AUTO_REFRESH);
+        double frequency = 60000 * device.getDoubleValue(Const.XML_DEVICE_AUTO_REFRESH);
         // check if this device needs auto-refresh
         if (frequency == 0d
             || device.getDateLastRefresh() > (System.currentTimeMillis() - frequency)) {

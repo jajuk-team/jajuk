@@ -31,6 +31,7 @@ import java.util.regex.PatternSyntaxException;
 
 import javax.swing.ImageIcon;
 
+import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
@@ -134,25 +135,25 @@ public class Album extends LogicalItem implements Comparable<Album> {
   public String getHumanValue(String sKey) {
     // We compute here all pseudo keys (non album real attributes) that can be
     // required on an album
-    if (XML_AUTHOR.equals(sKey)) {
+    if (Const.XML_AUTHOR.equals(sKey)) {
       return handleAuthor();
-    } else if (XML_ALBUM.equals(sKey)) {
+    } else if (Const.XML_ALBUM.equals(sKey)) {
       return getName2();
-    } else if (XML_STYLE.equals(sKey)) {
+    } else if (Const.XML_STYLE.equals(sKey)) {
       return handleStyle();
-    } else if (XML_YEAR.equals(sKey)) {
+    } else if (Const.XML_YEAR.equals(sKey)) {
       return handleYear();
-    } else if (XML_TRACK_RATE.equals(sKey)) {
+    } else if (Const.XML_TRACK_RATE.equals(sKey)) {
       return Long.toString(getRate());
-    } else if (XML_TRACK_LENGTH.equals(sKey)) {
+    } else if (Const.XML_TRACK_LENGTH.equals(sKey)) {
       return Long.toString(getDuration());
-    } else if (XML_TRACKS.equals(sKey)) {
+    } else if (Const.XML_TRACKS.equals(sKey)) {
       return Integer.toString(getNbOfTracks());
-    } else if (XML_TRACK_DISCOVERY_DATE.equals(sKey)) {
+    } else if (Const.XML_TRACK_DISCOVERY_DATE.equals(sKey)) {
       return UtilString.getLocaleDateFormatter().format(getDiscoveryDate());
-    } else if (XML_TRACK_HITS.equals(sKey)) {
+    } else if (Const.XML_TRACK_HITS.equals(sKey)) {
       return Long.toString(getHits());
-    } else if (XML_ANY.equals(sKey)) {
+    } else if (Const.XML_ANY.equals(sKey)) {
       return getAny();
     }
     // default
@@ -216,13 +217,13 @@ public class Album extends LogicalItem implements Comparable<Album> {
     }
     Year year = getYear();
     if (year != null) {
-      sb.append(getHumanValue(XML_YEAR));
+      sb.append(getHumanValue(Const.XML_YEAR));
     }
-    sb.append(getHumanValue(XML_TRACK_RATE));
-    sb.append(getHumanValue(XML_TRACK_LENGTH));
-    sb.append(getHumanValue(XML_TRACKS));
-    sb.append(getHumanValue(XML_TRACK_DISCOVERY_DATE));
-    sb.append(getHumanValue(XML_TRACK_HITS));
+    sb.append(getHumanValue(Const.XML_TRACK_RATE));
+    sb.append(getHumanValue(Const.XML_TRACK_LENGTH));
+    sb.append(getHumanValue(Const.XML_TRACKS));
+    sb.append(getHumanValue(Const.XML_TRACK_DISCOVERY_DATE));
+    sb.append(getHumanValue(Const.XML_TRACK_HITS));
     return sb.toString();
   }
 
@@ -251,7 +252,7 @@ public class Album extends LogicalItem implements Comparable<Album> {
     }
     // look for absolute cover in collection
     for (Directory dir : dirs) {
-      String sAbsolut = dir.getStringValue(XML_DIRECTORY_DEFAULT_COVER);
+      String sAbsolut = dir.getStringValue(Const.XML_DIRECTORY_DEFAULT_COVER);
       if (!UtilString.isVoid(sAbsolut.trim())) {
         File fAbsoluteDefault = new File(dir.getAbsolutePath() + '/' + sAbsolut);
         if (fAbsoluteDefault.exists()) {
@@ -330,7 +331,7 @@ public class Album extends LogicalItem implements Comparable<Album> {
    * @return album thumb for given size
    */
   public ImageIcon getThumbnail(String size) {
-    File fCover = UtilSystem.getConfFileByPath(FILE_THUMBS + '/' + size + '/' + getID() + '.'
+    File fCover = UtilSystem.getConfFileByPath(Const.FILE_THUMBS + '/' + size + '/' + getID() + '.'
         + EXT_THUMB);
     // Check if thumb already exists
     if (!fCover.exists() || fCover.length() == 0) {
@@ -458,9 +459,9 @@ public class Album extends LogicalItem implements Comparable<Album> {
       return true;
     }
     String sValue = null;
-    if (XML_ALBUM.equals(property)) {
+    if (Const.XML_ALBUM.equals(property)) {
       sValue = getName2();
-    } else if (XML_STYLE.equals(property)) {
+    } else if (Const.XML_STYLE.equals(property)) {
       Style style = getStyle();
       if (style == null) {
         return false;
@@ -498,16 +499,15 @@ public class Album extends LogicalItem implements Comparable<Album> {
   protected List<Track> getTracksCache() {
     return this.cache;
   }
-  
+
   /**
    * 
    * @return a track from this album
    */
-  public Track getAnyTrack(){
-    if (cache.size() == 0){
+  public Track getAnyTrack() {
+    if (cache.size() == 0) {
       return null;
-    }
-    else{
+    } else {
       return cache.get(0);
     }
   }

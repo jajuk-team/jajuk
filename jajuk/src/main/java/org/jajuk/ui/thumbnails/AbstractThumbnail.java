@@ -70,8 +70,7 @@ import org.jajuk.util.log.Log;
  * and some features like dnd, menu item to play, search cover, album popup
  * display...
  */
-public abstract class AbstractThumbnail extends JPanel implements Const,
-    ActionListener, Transferable {
+public abstract class AbstractThumbnail extends JPanel implements ActionListener, Transferable {
 
   /** Size */
   int size;
@@ -143,7 +142,7 @@ public abstract class AbstractThumbnail extends JPanel implements Const,
             last = mouseOverItem;
             // Finally display the popup (Leave if user unselected
             // the option "Show catalog popups"
-            if (Conf.getBoolean(CONF_SHOW_POPUPS)) {
+            if (Conf.getBoolean(Const.CONF_SHOW_POPUPS)) {
               mouseOverItem.displayPopup();
             }
           }
@@ -210,26 +209,28 @@ public abstract class AbstractThumbnail extends JPanel implements Const,
     // Album menu
     jmenu = new JPopupMenu();
     jmiPlay = new JMenuItem(ActionManager.getAction(JajukActions.PLAY_SELECTION));
-    jmiPlay.putClientProperty(DETAIL_SELECTION, getItem());
+    jmiPlay.putClientProperty(Const.DETAIL_SELECTION, getItem());
     jmiPush = new JMenuItem(ActionManager.getAction(JajukActions.PUSH_SELECTION));
-    jmiPush.putClientProperty(DETAIL_SELECTION, alSelected);
+    jmiPush.putClientProperty(Const.DETAIL_SELECTION, alSelected);
     jmiPush.addActionListener(this);
     Action actionDeleteFile = ActionManager.getAction(JajukActions.DELETE);
     jmiDelete = new JMenuItem(actionDeleteFile);
-    jmiDelete.putClientProperty(DETAIL_SELECTION, alSelected);
+    jmiDelete.putClientProperty(Const.DETAIL_SELECTION, alSelected);
     jmiDelete.addActionListener(this);
     jmiPlayShuffle = new JMenuItem(ActionManager.getAction(JajukActions.PLAY_SHUFFLE_SELECTION));
-    jmiPlayShuffle.putClientProperty(DETAIL_SELECTION, getItem());
+    jmiPlayShuffle.putClientProperty(Const.DETAIL_SELECTION, getItem());
     jmiPlayRepeat = new JMenuItem(ActionManager.getAction(JajukActions.PLAY_REPEAT_SELECTION));
-    jmiPlayRepeat.putClientProperty(DETAIL_SELECTION, getItem());
-    jmiGetCovers = new JMenuItem(Messages.getString("CatalogView.7"), IconLoader.getIcon(JajukIcons.COVER_16X16));
+    jmiPlayRepeat.putClientProperty(Const.DETAIL_SELECTION, getItem());
+    jmiGetCovers = new JMenuItem(Messages.getString("CatalogView.7"), IconLoader
+        .getIcon(JajukIcons.COVER_16X16));
     jmiGetCovers.addActionListener(this);
-    jmiShowPopup = new JMenuItem(Messages.getString("CatalogView.20"), IconLoader.getIcon(JajukIcons.POPUP));
+    jmiShowPopup = new JMenuItem(Messages.getString("CatalogView.20"), IconLoader
+        .getIcon(JajukIcons.POPUP));
     jmiShowPopup.addActionListener(this);
     jmiCDDBWizard = new JMenuItem(ActionManager.getAction(JajukActions.CDDB_SELECTION));
-    jmiCDDBWizard.putClientProperty(DETAIL_SELECTION, getItem());
+    jmiCDDBWizard.putClientProperty(Const.DETAIL_SELECTION, getItem());
     jmiProperties = new JMenuItem(ActionManager.getAction(JajukActions.SHOW_PROPERTIES));
-    jmiProperties.putClientProperty(DETAIL_SELECTION, getItem());
+    jmiProperties.putClientProperty(Const.DETAIL_SELECTION, getItem());
     JajukAction actionOpenLastFM = ActionManager.getAction(JajukActions.LAUNCH_IN_BROWSER);
     // Change action label
     jmiOpenLastFMSite = new JMenuItem(actionOpenLastFM);

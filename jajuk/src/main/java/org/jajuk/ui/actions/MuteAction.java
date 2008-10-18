@@ -37,7 +37,8 @@ public class MuteAction extends JajukAction {
   private static final long serialVersionUID = 1L;
 
   MuteAction() {
-    super(Messages.getString("JajukWindow.2"), IconLoader.getIcon(JajukIcons.VOLUME_LEVEL1), "F8", true, true);
+    super(Messages.getString("JajukWindow.2"), IconLoader.getIcon(JajukIcons.VOLUME_LEVEL1), "F8",
+        true, true);
     setShortDescription(Messages.getString("JajukWindow.19"));
   }
 

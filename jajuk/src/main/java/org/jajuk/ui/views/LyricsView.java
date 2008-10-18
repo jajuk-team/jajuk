@@ -52,6 +52,7 @@ import org.jajuk.ui.actions.ActionManager;
 import org.jajuk.ui.actions.JajukActions;
 import org.jajuk.ui.helpers.FontManager;
 import org.jajuk.ui.helpers.FontManager.JajukFont;
+import org.jajuk.util.Const;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilFeatures;
 import org.jajuk.util.UtilGUI;
@@ -150,7 +151,7 @@ public class LyricsView extends ViewAdapter implements Observer {
     final JPopupMenu menu = new JPopupMenu();
 
     menu.add(getJmiCopyToClipboard());
-    getJmiLaunchInBrowser().putClientProperty(DETAIL_CONTENT, sURL);
+    getJmiLaunchInBrowser().putClientProperty(Const.DETAIL_CONTENT, sURL);
     menu.add(getJmiLaunchInBrowser());
     menu.show(getTextarea(), e.getX(), e.getY());
   }
@@ -214,14 +215,13 @@ public class LyricsView extends ViewAdapter implements Observer {
         }
 
       }.start();
-    } else if (JajukEvents.ZERO.equals(subject)
-        || JajukEvents.PLAYER_STOP.equals(subject)) {
+    } else if (JajukEvents.ZERO.equals(subject) || JajukEvents.PLAYER_STOP.equals(subject)) {
       reset();
     } else if (subject.equals(JajukEvents.WEBRADIO_LAUNCHED)) {
       SwingUtilities.invokeLater(new Runnable() {
 
         public void run() {
-          final WebRadio radio = (WebRadio) event.getDetails().get(DETAIL_CONTENT);
+          final WebRadio radio = (WebRadio) event.getDetails().get(Const.DETAIL_CONTENT);
 
           if (radio != null) {
             jlTitle.setText(radio.getName());

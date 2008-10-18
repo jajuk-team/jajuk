@@ -122,7 +122,7 @@ public class AutoCompleteDocument extends PlainDocument {
     if (selecting) {
       return;
     }
-    
+
     super.remove(offs, len);
     if (!strictMatching) {
       setSelectedItem(getText(0, getLength()), getText(0, getLength()));
@@ -137,7 +137,7 @@ public class AutoCompleteDocument extends PlainDocument {
     if (selecting) {
       return;
     }
-    
+
     // insert the string into the document
     super.insertString(offs, str, a);
     // lookup and select a matching item
@@ -210,7 +210,7 @@ public class AutoCompleteDocument extends PlainDocument {
   private LookupResult lookupItem(String pattern) {
     // iterate over all items to find an exact match
     LookupResult ret = findMatch(pattern, true);
-    if(ret != null) {
+    if (ret != null) {
       return ret;
     }
 
@@ -226,7 +226,7 @@ public class AutoCompleteDocument extends PlainDocument {
     }
     // search for any matching item, if the currently selected does not match
     ret = findMatch(pattern, false);
-    if(ret != null) {
+    if (ret != null) {
       return ret;
     }
 
@@ -243,17 +243,17 @@ public class AutoCompleteDocument extends PlainDocument {
       Object currentItem = adaptor.getItem(i);
       possibleStrings = stringConverter.getPossibleStringsForItem(currentItem);
       if (possibleStrings != null) {
-        // check if current item exactly matches the pattern 
+        // check if current item exactly matches the pattern
         // or starts with the string depending on flag
         for (String element : possibleStrings) {
-          if ((exactMatch && element.equals(pattern)) ||
-              (!exactMatch && startsWith(element, pattern))) {
+          if ((exactMatch && element.equals(pattern))
+              || (!exactMatch && startsWith(element, pattern))) {
             return new LookupResult(currentItem, element);
           }
         }
       }
     }
-    
+
     return null;
   }
 
@@ -282,7 +282,7 @@ public class AutoCompleteDocument extends PlainDocument {
     if (base.length() < prefix.length()) {
       return false;
     }
-    
+
     return base.regionMatches(false, 0, prefix, 0, prefix.length());
   }
 

@@ -63,26 +63,26 @@ public class AlarmClockAction extends JajukAction {
       return;
     }
 
-    hours = Conf.getInt(ALARM_TIME_HOUR);
-    minutes = Conf.getInt(ALARM_TIME_MINUTES);
-    seconds = Conf.getInt(ALARM_TIME_SECONDS);
+    hours = Conf.getInt(Const.ALARM_TIME_HOUR);
+    minutes = Conf.getInt(Const.ALARM_TIME_MINUTES);
+    seconds = Conf.getInt(Const.ALARM_TIME_SECONDS);
 
-    alarmDaily = Conf.getBoolean(CONF_ALARM_DAILY);
+    alarmDaily = Conf.getBoolean(Const.CONF_ALARM_DAILY);
 
-    alarmMessage = Conf.getString(ALARM_MESSAGE);
-    String alarmAction = Conf.getString(CONF_ALARM_ACTION);
+    alarmMessage = Conf.getString(Const.ALARM_MESSAGE);
+    String alarmAction = Conf.getString(Const.CONF_ALARM_ACTION);
 
     if (alarmAction.equals(Const.ALARM_START_MODE)) {
       alToPlay = new ArrayList<File>();
-      if (Conf.getString(CONF_ALARM_MODE).equals(STARTUP_MODE_FILE)) {
+      if (Conf.getString(Const.CONF_ALARM_MODE).equals(Const.STARTUP_MODE_FILE)) {
         File fileToPlay = FileManager.getInstance().getFileByID(
-            Conf.getString(CONF_ALARM_FILE));
+            Conf.getString(Const.CONF_ALARM_FILE));
         alToPlay.add(fileToPlay);
-      } else if (Conf.getString(CONF_ALARM_MODE).equals(STARTUP_MODE_SHUFFLE)) {
+      } else if (Conf.getString(Const.CONF_ALARM_MODE).equals(Const.STARTUP_MODE_SHUFFLE)) {
         alToPlay = FileManager.getInstance().getGlobalShufflePlaylist();
-      } else if (Conf.getString(CONF_ALARM_MODE).equals(STARTUP_MODE_BESTOF)) {
+      } else if (Conf.getString(Const.CONF_ALARM_MODE).equals(Const.STARTUP_MODE_BESTOF)) {
         alToPlay = FileManager.getInstance().getGlobalBestofPlaylist();
-      } else if (Conf.getString(CONF_ALARM_MODE).equals(STARTUP_MODE_NOVELTIES)) {
+      } else if (Conf.getString(Const.CONF_ALARM_MODE).equals(Const.STARTUP_MODE_NOVELTIES)) {
         alToPlay = FileManager.getInstance().getGlobalNoveltiesPlaylist();
       }
     }

@@ -1044,7 +1044,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
           org.jajuk.base.File last = null;
           Properties details = event.getDetails();
           if (details != null) {
-            StackItem item = (StackItem) details.get(DETAIL_OLD);
+            StackItem item = (StackItem) details.get(Const.DETAIL_OLD);
             if (item != null) {
               last = item.getFile();
             }
@@ -1063,7 +1063,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
             refreshCovers(iLocalEventID);
           }
           // case just for a cover change without reload
-          else if ((Conf.getBoolean(CONF_COVERS_SHUFFLE))) {
+          else if ((Conf.getBoolean(Const.CONF_COVERS_SHUFFLE))) {
             // Ignore this event if a reference file has been set
             if (fileReference != null) {
               return;

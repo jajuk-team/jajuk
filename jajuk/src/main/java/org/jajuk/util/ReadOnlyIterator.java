@@ -21,26 +21,25 @@ package org.jajuk.util;
 
 import java.util.Iterator;
 
-
 /**
- * A convenient class that prevent remove() method from an iterator
- * <br>Generic class
+ * A convenient class that prevent remove() method from an iterator <br>
+ * Generic class
  */
 public class ReadOnlyIterator<V> {
 
-  /** Managed iterator **/
+  /** Managed iterator * */
   Iterator<V> iterator;
-  
-  public ReadOnlyIterator(Iterator<V> it){
+
+  public ReadOnlyIterator(Iterator<V> it) {
     this.iterator = it;
   }
-  
-  public V next(){
+
+  public V next() {
     return iterator.next();
   }
-  
-  public boolean hasNext(){
+
+  public boolean hasNext() {
     return iterator.hasNext();
   }
-  
+
 }

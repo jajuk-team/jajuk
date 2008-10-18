@@ -42,7 +42,7 @@ import org.jajuk.util.Messages;
 /**
  * Table model used for physical table view
  */
-public class FilesTableModel extends JajukTableModel implements Const {
+public class FilesTableModel extends JajukTableModel {
 
   private static final long serialVersionUID = 1L;
 
@@ -56,63 +56,63 @@ public class FilesTableModel extends JajukTableModel implements Const {
    */
   public FilesTableModel() {
     super(18);
-    setEditable(Conf.getBoolean(CONF_FILES_TABLE_EDITION));
+    setEditable(Conf.getBoolean(Const.CONF_FILES_TABLE_EDITION));
     // Columns names
     // First column is play icon, need to set a space character
     // for proper display in some look and feel
     vColNames.add(" ");
-    idList.add(XML_PLAY);
+    idList.add(Const.XML_PLAY);
 
-    vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_NAME));
-    idList.add(XML_TRACK);
+    vColNames.add(Messages.getString(Const.PROPERTY_SEPARATOR + Const.XML_NAME));
+    idList.add(Const.XML_TRACK);
 
-    vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_ALBUM));
-    idList.add(XML_ALBUM);
+    vColNames.add(Messages.getString(Const.PROPERTY_SEPARATOR + Const.XML_ALBUM));
+    idList.add(Const.XML_ALBUM);
 
-    vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_AUTHOR));
-    idList.add(XML_AUTHOR);
+    vColNames.add(Messages.getString(Const.PROPERTY_SEPARATOR + Const.XML_AUTHOR));
+    idList.add(Const.XML_AUTHOR);
 
-    vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_STYLE));
-    idList.add(XML_STYLE);
+    vColNames.add(Messages.getString(Const.PROPERTY_SEPARATOR + Const.XML_STYLE));
+    idList.add(Const.XML_STYLE);
 
-    vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_TRACK_RATE));
-    idList.add(XML_TRACK_RATE);
+    vColNames.add(Messages.getString(Const.PROPERTY_SEPARATOR + Const.XML_TRACK_RATE));
+    idList.add(Const.XML_TRACK_RATE);
 
-    vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_TRACK_LENGTH));
-    idList.add(XML_TRACK_LENGTH);
+    vColNames.add(Messages.getString(Const.PROPERTY_SEPARATOR + Const.XML_TRACK_LENGTH));
+    idList.add(Const.XML_TRACK_LENGTH);
 
-    vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_DEVICE));
-    idList.add(XML_DEVICE);
+    vColNames.add(Messages.getString(Const.PROPERTY_SEPARATOR + Const.XML_DEVICE));
+    idList.add(Const.XML_DEVICE);
 
-    vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_FILE_NAME));
-    idList.add(XML_NAME);
+    vColNames.add(Messages.getString(Const.PROPERTY_SEPARATOR + Const.XML_FILE_NAME));
+    idList.add(Const.XML_NAME);
 
-    vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_TRACK_COMMENT));
-    idList.add(XML_TRACK_COMMENT);
+    vColNames.add(Messages.getString(Const.PROPERTY_SEPARATOR + Const.XML_TRACK_COMMENT));
+    idList.add(Const.XML_TRACK_COMMENT);
 
-    vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_QUALITY));
-    idList.add(XML_QUALITY);
+    vColNames.add(Messages.getString(Const.PROPERTY_SEPARATOR + Const.XML_QUALITY));
+    idList.add(Const.XML_QUALITY);
 
-    vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_SIZE));
-    idList.add(XML_SIZE);
+    vColNames.add(Messages.getString(Const.PROPERTY_SEPARATOR + Const.XML_SIZE));
+    idList.add(Const.XML_SIZE);
 
-    vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_TRACK_ORDER));
-    idList.add(XML_TRACK_ORDER);
+    vColNames.add(Messages.getString(Const.PROPERTY_SEPARATOR + Const.XML_TRACK_ORDER));
+    idList.add(Const.XML_TRACK_ORDER);
 
-    vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_YEAR));
-    idList.add(XML_YEAR);
+    vColNames.add(Messages.getString(Const.PROPERTY_SEPARATOR + Const.XML_YEAR));
+    idList.add(Const.XML_YEAR);
 
-    vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_DIRECTORY));
-    idList.add(XML_DIRECTORY);
+    vColNames.add(Messages.getString(Const.PROPERTY_SEPARATOR + Const.XML_DIRECTORY));
+    idList.add(Const.XML_DIRECTORY);
 
-    vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_FILE_DATE));
-    idList.add(XML_FILE_DATE);
+    vColNames.add(Messages.getString(Const.PROPERTY_SEPARATOR + Const.XML_FILE_DATE));
+    idList.add(Const.XML_FILE_DATE);
 
-    vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_TRACK_HITS));
-    idList.add(XML_TRACK_HITS);
+    vColNames.add(Messages.getString(Const.PROPERTY_SEPARATOR + Const.XML_TRACK_HITS));
+    idList.add(Const.XML_TRACK_HITS);
 
-    vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_TRACK_DISCOVERY_DATE));
-    idList.add(XML_TRACK_DISCOVERY_DATE);
+    vColNames.add(Messages.getString(Const.PROPERTY_SEPARATOR + Const.XML_TRACK_DISCOVERY_DATE));
+    idList.add(Const.XML_TRACK_DISCOVERY_DATE);
 
     // -- Custom properties now--
     // for files
@@ -139,18 +139,18 @@ public class FilesTableModel extends JajukTableModel implements Const {
   public void populateModel(String sPropertyName, String sPattern, List<String> columnsToShow) {
     // This should be monitor file manager to avoid NPE when changing items
     List<File> alToShow = FileManager.getInstance().getFiles();
-    //Collections.sort(alToShow);
+    // Collections.sort(alToShow);
     // Filter mounted files if needed and apply sync table with tree
     // option if needed
-    final boolean bSyncWithTreeOption = Conf.getBoolean(CONF_OPTIONS_SYNC_TABLE_TREE);
+    final boolean bSyncWithTreeOption = Conf.getBoolean(Const.CONF_OPTIONS_SYNC_TABLE_TREE);
     oItems = new Item[iRowNum];
     CollectionUtils.filter(alToShow, new Predicate() {
 
       public boolean evaluate(Object o) {
         File file = (File) o;
         // show it if no sync option or if item is in the selection
-        boolean bShowWithTree = !bSyncWithTreeOption 
-            // tree selection = null means none election have been
+        boolean bShowWithTree = !bSyncWithTreeOption
+        // tree selection = null means none election have been
             // selected in tree so far
             || treeSelection == null
             // check if the tree selection contains the current file
@@ -159,7 +159,7 @@ public class FilesTableModel extends JajukTableModel implements Const {
       }
     });
     // Filter files
-    Filter filter = new Filter(sPropertyName, sPattern, true, Conf.getBoolean(CONF_REGEXP));
+    Filter filter = new Filter(sPropertyName, sPattern, true, Conf.getBoolean(Const.CONF_REGEXP));
     Filter.filterItems(alToShow, filter);
 
     Iterator<File> it = alToShow.iterator();
@@ -172,23 +172,24 @@ public class FilesTableModel extends JajukTableModel implements Const {
     bCellEditable = new boolean[iRowNum][iColNum];
 
     // For perfs, prepare columns visibility
-    boolean bTrackName = (columnsToShow != null && columnsToShow.contains(XML_TRACK));
-    boolean bAlbum = (columnsToShow != null && columnsToShow.contains(XML_ALBUM));
-    boolean bAuthor = (columnsToShow != null && columnsToShow.contains(XML_AUTHOR));
-    boolean bStyle = (columnsToShow != null && columnsToShow.contains(XML_STYLE));
-    boolean bRate = (columnsToShow != null && columnsToShow.contains(XML_TRACK_RATE));
-    boolean bLength = (columnsToShow != null && columnsToShow.contains(XML_TRACK_LENGTH));
-    boolean bDevice = (columnsToShow != null && columnsToShow.contains(XML_DEVICE));
-    boolean bFileName = (columnsToShow != null && columnsToShow.contains(XML_NAME));
-    boolean bComment = (columnsToShow != null && columnsToShow.contains(XML_TRACK_COMMENT));
-    boolean bQuality = (columnsToShow != null && columnsToShow.contains(XML_QUALITY));
-    boolean bSize = (columnsToShow != null && columnsToShow.contains(XML_SIZE));
-    boolean bDiscovery = (columnsToShow != null && columnsToShow.contains(XML_TRACK_DISCOVERY_DATE));
-    boolean bOrder = (columnsToShow != null && columnsToShow.contains(XML_TRACK_ORDER));
-    boolean bYear = (columnsToShow != null && columnsToShow.contains(XML_YEAR));
-    boolean bDirectory = (columnsToShow != null && columnsToShow.contains(XML_DIRECTORY));
-    boolean bFileDate = (columnsToShow != null && columnsToShow.contains(XML_FILE_DATE));
-    boolean bHits = (columnsToShow != null && columnsToShow.contains(XML_TRACK_HITS));
+    boolean bTrackName = (columnsToShow != null && columnsToShow.contains(Const.XML_TRACK));
+    boolean bAlbum = (columnsToShow != null && columnsToShow.contains(Const.XML_ALBUM));
+    boolean bAuthor = (columnsToShow != null && columnsToShow.contains(Const.XML_AUTHOR));
+    boolean bStyle = (columnsToShow != null && columnsToShow.contains(Const.XML_STYLE));
+    boolean bRate = (columnsToShow != null && columnsToShow.contains(Const.XML_TRACK_RATE));
+    boolean bLength = (columnsToShow != null && columnsToShow.contains(Const.XML_TRACK_LENGTH));
+    boolean bDevice = (columnsToShow != null && columnsToShow.contains(Const.XML_DEVICE));
+    boolean bFileName = (columnsToShow != null && columnsToShow.contains(Const.XML_NAME));
+    boolean bComment = (columnsToShow != null && columnsToShow.contains(Const.XML_TRACK_COMMENT));
+    boolean bQuality = (columnsToShow != null && columnsToShow.contains(Const.XML_QUALITY));
+    boolean bSize = (columnsToShow != null && columnsToShow.contains(Const.XML_SIZE));
+    boolean bDiscovery = (columnsToShow != null && columnsToShow
+        .contains(Const.XML_TRACK_DISCOVERY_DATE));
+    boolean bOrder = (columnsToShow != null && columnsToShow.contains(Const.XML_TRACK_ORDER));
+    boolean bYear = (columnsToShow != null && columnsToShow.contains(Const.XML_YEAR));
+    boolean bDirectory = (columnsToShow != null && columnsToShow.contains(Const.XML_DIRECTORY));
+    boolean bFileDate = (columnsToShow != null && columnsToShow.contains(Const.XML_FILE_DATE));
+    boolean bHits = (columnsToShow != null && columnsToShow.contains(Const.XML_TRACK_HITS));
 
     for (int iRow = 0; it.hasNext(); iRow++) {
       File file = it.next();
@@ -281,7 +282,7 @@ public class FilesTableModel extends JajukTableModel implements Const {
 
       // Comment
       if (bComment) {
-        oValues[iRow][9] = file.getTrack().getValue(XML_TRACK_COMMENT);
+        oValues[iRow][9] = file.getTrack().getValue(Const.XML_TRACK_COMMENT);
       } else {
         oValues[iRow][9] = "";
       }
@@ -330,7 +331,7 @@ public class FilesTableModel extends JajukTableModel implements Const {
 
       // file date
       if (bFileDate) {
-        oValues[iRow][15] = file.getDateValue(XML_FILE_DATE);
+        oValues[iRow][15] = file.getDateValue(Const.XML_FILE_DATE);
       } else {
         oValues[iRow][15] = "";
       }

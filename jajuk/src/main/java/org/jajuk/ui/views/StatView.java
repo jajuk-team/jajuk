@@ -174,7 +174,7 @@ public class StatView extends ViewAdapter implements Observer {
       long lTotalSize = 0;
       double dOthers = 0;
       List<Device> devices = DeviceManager.getInstance().getDevices();
-      //Collections.sort(devices);
+      // Collections.sort(devices);
       long[] lSizes = new long[DeviceManager.getInstance().getElementCount()];
       ReadOnlyIterator<File> it = FileManager.getInstance().getFilesIterator();
       while (it.hasNext()) {

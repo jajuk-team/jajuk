@@ -39,6 +39,7 @@ import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.events.Observer;
 import org.jajuk.util.Conf;
+import org.jajuk.util.Const;
 import org.jajuk.util.MD5Processor;
 import org.jajuk.util.Messages;
 import org.jajuk.util.ReadOnlyIterator;
@@ -80,26 +81,26 @@ public final class FileManager extends ItemManager implements Observer {
     super();
     // ---register properties---
     // ID
-    registerProperty(new PropertyMetaInformation(XML_ID, false, true, false, false, false,
+    registerProperty(new PropertyMetaInformation(Const.XML_ID, false, true, false, false, false,
         String.class, null));
     // Name
-    registerProperty(new PropertyMetaInformation(XML_NAME, false, true, true, true, false,
+    registerProperty(new PropertyMetaInformation(Const.XML_NAME, false, true, true, true, false,
         String.class, null));
     // Directory
-    registerProperty(new PropertyMetaInformation(XML_DIRECTORY, false, true, true, false, true,
-        String.class, null));
+    registerProperty(new PropertyMetaInformation(Const.XML_DIRECTORY, false, true, true, false,
+        true, String.class, null));
     // Track
-    registerProperty(new PropertyMetaInformation(XML_TRACK, false, true, true, false, false,
+    registerProperty(new PropertyMetaInformation(Const.XML_TRACK, false, true, true, false, false,
         String.class, null));
     // Size
-    registerProperty(new PropertyMetaInformation(XML_SIZE, false, true, true, false, false,
+    registerProperty(new PropertyMetaInformation(Const.XML_SIZE, false, true, true, false, false,
         Long.class, null));
     // Quality
-    registerProperty(new PropertyMetaInformation(XML_QUALITY, false, true, true, false, false,
-        Long.class, 0));
+    registerProperty(new PropertyMetaInformation(Const.XML_QUALITY, false, true, true, false,
+        false, Long.class, 0));
     // Date
-    registerProperty(new PropertyMetaInformation(XML_FILE_DATE, false, false, true, false, false,
-        Date.class, new Date()));
+    registerProperty(new PropertyMetaInformation(Const.XML_FILE_DATE, false, false, true, false,
+        false, Date.class, new Date()));
   }
 
   /**
@@ -184,8 +185,8 @@ public final class FileManager extends ItemManager implements Observer {
         .getTrack(), fileOld.getSize(), fileOld.getQuality());
     // transfert all properties (inc id and name)
     fNew.setProperties(fileOld.getProperties());
-    fNew.setProperty(XML_ID, sNewId); // reset new id and name
-    fNew.setProperty(XML_NAME, sNewName); // reset new id and name
+    fNew.setProperty(Const.XML_ID, sNewId); // reset new id and name
+    fNew.setProperty(Const.XML_NAME, sNewName); // reset new id and name
     // check file name and extension
     if (!(UtilSystem.getExtension(fileNew).equals(UtilSystem.getExtension(fileOld.getIO())))) {
       // no extension change
@@ -210,8 +211,8 @@ public final class FileManager extends ItemManager implements Observer {
     registerItem(fNew);
     // notify everybody for the file change
     Properties properties = new Properties();
-    properties.put(DETAIL_OLD, fileOld);
-    properties.put(DETAIL_NEW, fNew);
+    properties.put(Const.DETAIL_OLD, fileOld);
+    properties.put(Const.DETAIL_NEW, fNew);
     // change directory reference
     dir.changeFile(fileOld, fNew);
     // Notify interested items (like history manager)
@@ -238,7 +239,7 @@ public final class FileManager extends ItemManager implements Observer {
         .getQuality());
     fNew.setProperties(old.getProperties()); // transfert all
     // properties (inc id)
-    fNew.setProperty(XML_ID, sNewId); // reset new id and name
+    fNew.setProperty(Const.XML_ID, sNewId); // reset new id and name
     // OK, remove old file and register this new file
     removeFile(old);
     registerItem(fNew);
@@ -334,11 +335,11 @@ public final class FileManager extends ItemManager implements Observer {
     // shuffle
     Collections.shuffle(alEligibleFiles, UtilSystem.getRandom());
     // song level, just shuffle full collection
-    if (Conf.getString(CONF_GLOBAL_RANDOM_MODE).equals(MODE_TRACK)) {
+    if (Conf.getString(Const.CONF_GLOBAL_RANDOM_MODE).equals(Const.MODE_TRACK)) {
       return alEligibleFiles;
     }
     // (not shuffle) Album / album
-    else if (Conf.getString(CONF_GLOBAL_RANDOM_MODE).equals(MODE_ALBUM2)) {
+    else if (Conf.getString(Const.CONF_GLOBAL_RANDOM_MODE).equals(Const.MODE_ALBUM2)) {
       final List<Album> albums = AlbumManager.getInstance().getAlbums();
       Collections.shuffle(albums, UtilSystem.getRandom());
       // We need an index (bench: 45* faster)
@@ -401,7 +402,7 @@ public final class FileManager extends ItemManager implements Observer {
     // take tracks matching required age
     List<Track> tracks = TrackManager.getInstance().getTracks();
     Iterator<Track> it = new FilterIterator(tracks.iterator(), new JajukPredicates.AgePredicate(
-        Conf.getInt(CONF_OPTIONS_NOVELTIES_AGE)));
+        Conf.getInt(Const.CONF_OPTIONS_NOVELTIES_AGE)));
     while (it.hasNext()) {
       Track track = it.next();
       File file = track.getPlayeableFile(bHideUnmounted);
@@ -431,7 +432,7 @@ public final class FileManager extends ItemManager implements Observer {
   public List<File> getShuffleNoveltiesPlaylist() {
     List<File> alEligibleFiles = getGlobalNoveltiesPlaylist(true);
     // song level, just shuffle full collection
-    if (Conf.getString(CONF_NOVELTIES_MODE).equals(MODE_TRACK)) {
+    if (Conf.getString(Const.CONF_NOVELTIES_MODE).equals(Const.MODE_TRACK)) {
       Collections.shuffle(alEligibleFiles);
       return alEligibleFiles;
     }
@@ -497,7 +498,7 @@ public final class FileManager extends ItemManager implements Observer {
     List<File> alBest = new ArrayList<File>();
     if (al.size() > 0) {
       // find superior interval value
-      int sup = (int) ((BESTOF_PROPORTION) * al.size());
+      int sup = (int) ((Const.BESTOF_PROPORTION) * al.size());
       if (sup < 0) {
         sup = al.size();
       }
@@ -522,7 +523,7 @@ public final class FileManager extends ItemManager implements Observer {
   }
 
   public void refreshBestOfFiles() {
-    int iNbBestofFiles = Integer.parseInt(Conf.getString(CONF_BESTOF_TRACKS_SIZE));
+    int iNbBestofFiles = Integer.parseInt(Conf.getString(Const.CONF_BESTOF_TRACKS_SIZE));
     // clear data
     alBestofFiles.clear();
     // create a temporary table to remove unmounted files
@@ -530,7 +531,7 @@ public final class FileManager extends ItemManager implements Observer {
     ReadOnlyIterator<Track> it = TrackManager.getInstance().getTracksIterator();
     while (it.hasNext()) {
       Track track = it.next();
-      File file = track.getPlayeableFile(Conf.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED));
+      File file = track.getPlayeableFile(Conf.getBoolean(Const.CONF_OPTIONS_HIDE_UNMOUNTED));
       if (file != null) {
         alEligibleFiles.add(file);
       }
@@ -640,7 +641,7 @@ public final class FileManager extends ItemManager implements Observer {
    */
   @Override
   public String getLabel() {
-    return XML_FILES;
+    return Const.XML_FILES;
   }
 
   /*

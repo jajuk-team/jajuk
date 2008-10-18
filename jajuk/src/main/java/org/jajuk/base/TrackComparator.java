@@ -80,9 +80,8 @@ public class TrackComparator implements Comparator<Track> {
     // Style/author/album
     case STYLE_AUTHOR_ALBUM:
       sHashCompare = new StringBuilder().append(track.getStyle().getName2()).append(
-          track.getAuthor().getName2())
-          .append(track.getAlbum().getName2()).append(UtilString.padNumber(track.getOrder(), 5)).append(
-              track.getName()).toString();
+          track.getAuthor().getName2()).append(track.getAlbum().getName2()).append(
+          UtilString.padNumber(track.getOrder(), 5)).append(track.getName()).toString();
       break;
     // Author/album
     case AUTHOR_ALBUM:
@@ -109,13 +108,14 @@ public class TrackComparator implements Comparator<Track> {
       break;
     // Rate / album
     case RATE_ALBUM:
-      sHashCompare = new StringBuilder().append(UtilString.padNumber(999999999 - track.getRate(), 10))
-          .append(UtilString.padNumber(track.getOrder(), 5)).append(track.getName()).toString();
+      sHashCompare = new StringBuilder().append(
+          UtilString.padNumber(999999999 - track.getRate(), 10)).append(
+          UtilString.padNumber(track.getOrder(), 5)).append(track.getName()).toString();
       break;
     // Hits / album
     case HITS_ALBUM:
-      sHashCompare = new StringBuilder().append(UtilString.padNumber(999999999 - track.getHits(), 10))
-          .append(track.getName()).toString();
+      sHashCompare = new StringBuilder().append(
+          UtilString.padNumber(999999999 - track.getHits(), 10)).append(track.getName()).toString();
       break;
     // Order / track name
     case ORDER:

@@ -66,7 +66,7 @@ import org.qdwizard.Wizard;
 /**
  * Ambiences management wizard
  */
-public class AmbienceWizard extends Wizard implements Const {
+public class AmbienceWizard extends Wizard {
 
   public static class AmbiencePanel extends Screen implements ActionListener {
 
@@ -97,7 +97,7 @@ public class AmbienceWizard extends Wizard implements Const {
     public void actionPerformed(final ActionEvent ae) {
       if (ae.getSource() == jbNew) {
         // create a void ambience
-        AmbienceWizard.ambiences.add(new Ambience(Long.toString(System.currentTimeMillis()), "")); 
+        AmbienceWizard.ambiences.add(new Ambience(Long.toString(System.currentTimeMillis()), ""));
         Collections.sort(AmbienceWizard.ambiences);
         // refresh screen
         refreshScreen();

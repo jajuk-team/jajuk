@@ -57,7 +57,7 @@ public class JajukBalloon extends JDialog {
     add(jl);
     pack();
   }
-  
+
   /**
    * Show the baloon and hide it after few secs
    */

@@ -51,7 +51,7 @@ import org.xml.sax.helpers.DefaultHandler;
 /**
  * Items root container
  */
-public final class Collection extends DefaultHandler implements Const, ErrorHandler, Serializable {
+public final class Collection extends DefaultHandler implements ErrorHandler, Serializable {
 
   private static final String TAG_CLOSE_NEWLINE = ">\n";
 
@@ -154,13 +154,13 @@ public final class Collection extends DefaultHandler implements Const, ErrorHand
     public void run() {
       while (!ExitService.isExiting()) {
         try {
-          Thread.sleep(AUTO_COMMIT_DELAY);
+          Thread.sleep(Const.AUTO_COMMIT_DELAY);
           Log.debug("Auto commit");
           // commit collection at each refresh (can be useful
           // if application is closed brutally with control-C or
           // shutdown and that exit hook have no time to perform
           // commit)
-          org.jajuk.base.Collection.commit(UtilSystem.getConfFileByPath(FILE_COLLECTION));
+          org.jajuk.base.Collection.commit(UtilSystem.getConfFileByPath(Const.FILE_COLLECTION));
         } catch (Exception e) {
           Log.error(e);
         }
@@ -186,11 +186,12 @@ public final class Collection extends DefaultHandler implements Const, ErrorHand
    */
   public static void commit(File collectionFile) throws IOException {
     long time = System.currentTimeMillis();
-    String sCharset = Conf.getString(CONF_COLLECTION_CHARSET);
+    String sCharset = Conf.getString(Const.CONF_COLLECTION_CHARSET);
     BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(
         collectionFile), sCharset), 1000000);
     bw.write("<?xml version='1.0' encoding='" + sCharset + "'?>\n");
-    bw.write("<" + XML_COLLECTION + " " + XML_VERSION + "='" + JAJUK_VERSION + "'>\n");
+    bw.write("<" + Const.XML_COLLECTION + " " + Const.XML_VERSION + "='" + Const.JAJUK_VERSION
+        + "'>\n");
     StringBuilder sb = new StringBuilder(40);
 
     // Devices
@@ -260,7 +261,7 @@ public final class Collection extends DefaultHandler implements Const, ErrorHand
     while (tracks.hasNext()) {
       Track track = tracks.next();
       // We clean up all orphan tracks
-      if (track.getFiles().size() > 0) { 
+      if (track.getFiles().size() > 0) {
         bw.write(track.toXml());
       }
     }
@@ -308,7 +309,7 @@ public final class Collection extends DefaultHandler implements Const, ErrorHand
     bw.write(sb.toString());
 
     // end of collection
-    bw.write("</" + XML_COLLECTION + TAG_CLOSE_NEWLINE);
+    bw.write("</" + Const.XML_COLLECTION + TAG_CLOSE_NEWLINE);
     bw.flush();
     bw.close();
     Log.debug("Collection commited in " + (System.currentTimeMillis() - time) + " ms");
@@ -434,72 +435,72 @@ public final class Collection extends DefaultHandler implements Const, ErrorHand
   public void startElement(String sUri, String s, String sQName, Attributes attributes)
       throws SAXException {
     try {
-      int idIndex = attributes.getIndex(XML_ID);
+      int idIndex = attributes.getIndex(Const.XML_ID);
       // [PERF] Manage top tags to set current stage. Manages 'properties'
       // tags as well
       if (idIndex == -1) {
-        if (XML_DEVICES == sQName) {
+        if (Const.XML_DEVICES == sQName) {
           manager = DeviceManager.getInstance();
           stage = STAGE_DEVICES;
           needCheckID = true;
-        } else if (XML_ALBUMS == sQName) {
+        } else if (Const.XML_ALBUMS == sQName) {
           manager = AlbumManager.getInstance();
           stage = STAGE_ALBUMS;
           needCheckID = true;
-        } else if (XML_AUTHORS == sQName) {
+        } else if (Const.XML_AUTHORS == sQName) {
           manager = AuthorManager.getInstance();
           stage = STAGE_AUTHORS;
           needCheckID = true;
-        } else if (XML_DIRECTORIES == sQName) {
+        } else if (Const.XML_DIRECTORIES == sQName) {
           manager = DirectoryManager.getInstance();
           stage = STAGE_DIRECTORIES;
           needCheckID = true;
-        } else if (XML_FILES == sQName) {
+        } else if (Const.XML_FILES == sQName) {
           manager = FileManager.getInstance();
           stage = STAGE_FILES;
           needCheckID = true;
-        } else if (XML_PLAYLISTS == sQName) {
+        } else if (Const.XML_PLAYLISTS == sQName) {
           // This code is here for Jajuk < 1.6 compatibility
           manager = PlaylistManager.getInstance();
           stage = STAGE_PLAYLISTS;
           needCheckID = true;
-        } else if (XML_PLAYLIST_FILES == sQName) {
+        } else if (Const.XML_PLAYLIST_FILES == sQName) {
           manager = PlaylistManager.getInstance();
           stage = STAGE_PLAYLIST_FILES;
           needCheckID = true;
-        } else if (XML_STYLES == sQName) {
+        } else if (Const.XML_STYLES == sQName) {
           manager = StyleManager.getInstance();
           stage = STAGE_STYLES;
           needCheckID = true;
-        } else if (XML_TRACKS == sQName) {
+        } else if (Const.XML_TRACKS == sQName) {
           manager = TrackManager.getInstance();
           stage = STAGE_TRACKS;
           needCheckID = true;
-        } else if (XML_YEARS == sQName) {
+        } else if (Const.XML_YEARS == sQName) {
           manager = YearManager.getInstance();
           stage = STAGE_YEARS;
           needCheckID = true;
-        } else if (XML_TYPES == sQName) {
+        } else if (Const.XML_TYPES == sQName) {
           // This is here for pre-1.7 collections, after we don't commit types
           // anymore (they are set programmatically)
           manager = TypeManager.getInstance();
           stage = STAGE_TYPES;
           needCheckID = false;
-        } else if (XML_PROPERTY == sQName) {
+        } else if (Const.XML_PROPERTY == sQName) {
           // A property description
-          String sPropertyName = attributes.getValue(XML_NAME).intern();
+          String sPropertyName = attributes.getValue(Const.XML_NAME).intern();
           boolean bCustom = Boolean.parseBoolean(attributes.getValue(attributes
-              .getIndex(XML_CUSTOM)));
+              .getIndex(Const.XML_CUSTOM)));
           boolean bConstructor = Boolean.parseBoolean(attributes.getValue(attributes
-              .getIndex(XML_CONSTRUCTOR)));
+              .getIndex(Const.XML_CONSTRUCTOR)));
           boolean bShouldBeDisplayed = Boolean.parseBoolean(attributes.getValue(attributes
-              .getIndex(XML_VISIBLE)));
+              .getIndex(Const.XML_VISIBLE)));
           boolean bEditable = Boolean.parseBoolean(attributes.getValue(attributes
-              .getIndex(XML_EDITABLE)));
+              .getIndex(Const.XML_EDITABLE)));
           boolean bUnique = Boolean.parseBoolean(attributes.getValue(attributes
-              .getIndex(XML_UNIQUE)));
-          Class<?> cType = Class.forName(attributes.getValue(XML_TYPE));
-          String sDefaultValue = attributes.getValue(XML_DEFAULT_VALUE).intern();
+              .getIndex(Const.XML_UNIQUE)));
+          Class<?> cType = Class.forName(attributes.getValue(Const.XML_TYPE));
+          String sDefaultValue = attributes.getValue(Const.XML_DEFAULT_VALUE).intern();
           Object oDefaultValue = null;
           if (sDefaultValue != null && sDefaultValue.length() > 0) {
             try {
@@ -531,7 +532,7 @@ public final class Collection extends DefaultHandler implements Const, ErrorHand
           Type type = null;
           Directory dParent = null;
           Track track = null;
-          sItemName = attributes.getValue(XML_NAME);
+          sItemName = attributes.getValue(Const.XML_NAME);
           // Check file type is still registered, it can be
           // useful for ie if mplayer is no more available
           String ext = UtilSystem.getExtension(sItemName);
@@ -539,7 +540,7 @@ public final class Collection extends DefaultHandler implements Const, ErrorHand
           if (type == null) {
             return;
           }
-          String sTrackId = attributes.getValue(XML_TRACK).intern();
+          String sTrackId = attributes.getValue(Const.XML_TRACK).intern();
           // UPGRADE check if track Id is right
           if ((hmWrongRightTrackID.size() > 0) &&
           // replace wrong by right ID
@@ -547,7 +548,7 @@ public final class Collection extends DefaultHandler implements Const, ErrorHand
             sTrackId = hmWrongRightTrackID.get(sTrackId);
           }
           track = TrackManager.getInstance().getTrackByID(sTrackId);
-          String sParentID = attributes.getValue(XML_DIRECTORY).intern();
+          String sParentID = attributes.getValue(Const.XML_DIRECTORY).intern();
           // UPGRADE check parent ID is right
           if ((hmWrongRightDirectoryID.size() > 0) &&
           // replace wrong by right ID
@@ -559,7 +560,7 @@ public final class Collection extends DefaultHandler implements Const, ErrorHand
             return;
           }
 
-          String size = attributes.getValue(XML_SIZE);
+          String size = attributes.getValue(Const.XML_SIZE);
           if (size != null) {
             lSize = UtilString.fastLongParser(size);
           }
@@ -568,7 +569,7 @@ public final class Collection extends DefaultHandler implements Const, ErrorHand
           // upgrades)
           long lQuality = 0;
           try {
-            String sQuality = attributes.getValue(XML_QUALITY);
+            String sQuality = attributes.getValue(Const.XML_QUALITY);
             if (sQuality != null) {
               lQuality = UtilString.fastLongParser(sQuality);
             }
@@ -576,7 +577,7 @@ public final class Collection extends DefaultHandler implements Const, ErrorHand
             if (Log.isDebugEnabled()) {
               // wrong format
               Log.debug(Messages.getString("Error.137") + ":" + sItemName + " Value: "
-                  + attributes.getValue(XML_QUALITY) + " Error:" + e.getMessage()); // wrong
+                  + attributes.getValue(Const.XML_QUALITY) + " Error:" + e.getMessage()); // wrong
             }
           }
           sID = attributes.getValue(idIndex).intern();
@@ -599,7 +600,7 @@ public final class Collection extends DefaultHandler implements Const, ErrorHand
           dParent = null;
 
           // dParent = null;
-          sParentID = attributes.getValue(XML_DIRECTORY_PARENT).intern();
+          sParentID = attributes.getValue(Const.XML_DIRECTORY_PARENT).intern();
           // UPGRADE
           if ((hmWrongRightDirectoryID.size() > 0)
               && (hmWrongRightDirectoryID.containsKey(sParentID))) {
@@ -615,7 +616,7 @@ public final class Collection extends DefaultHandler implements Const, ErrorHand
               return;
             }
           }
-          String sDeviceID = attributes.getValue(XML_DEVICE).intern();
+          String sDeviceID = attributes.getValue(Const.XML_DEVICE).intern();
           // take upgraded device ID if needed
           if ((hmWrongRightDeviceID.size() > 0) && (hmWrongRightDeviceID.containsKey(sDeviceID))) {
             sDeviceID = hmWrongRightDeviceID.get(sDeviceID);
@@ -624,7 +625,7 @@ public final class Collection extends DefaultHandler implements Const, ErrorHand
           if (device == null) { // check device exists
             return;
           }
-          sItemName = attributes.getValue(XML_NAME);
+          sItemName = attributes.getValue(Const.XML_NAME);
           sID = attributes.getValue(idIndex).intern();
           // UPGRADE test
           sRightID = sID;
@@ -646,35 +647,35 @@ public final class Collection extends DefaultHandler implements Const, ErrorHand
           Album album = null;
           Author author = null;
           sID = attributes.getValue(idIndex).intern();
-          String sTrackName = attributes.getValue(XML_TRACK_NAME);
+          String sTrackName = attributes.getValue(Const.XML_TRACK_NAME);
           // album
-          String sAlbumID = attributes.getValue(XML_TRACK_ALBUM).intern();
+          String sAlbumID = attributes.getValue(Const.XML_TRACK_ALBUM).intern();
           if ((hmWrongRightAlbumID.size() > 0) && (hmWrongRightAlbumID.containsKey(sAlbumID))) {
             sAlbumID = hmWrongRightAlbumID.get(sAlbumID);
           }
           album = AlbumManager.getInstance().getAlbumByID(sAlbumID);
           // Style
-          String sStyleID = attributes.getValue(XML_TRACK_STYLE).intern();
+          String sStyleID = attributes.getValue(Const.XML_TRACK_STYLE).intern();
           if ((hmWrongRightStyleID.size() > 0) && (hmWrongRightStyleID.containsKey(sStyleID))) {
             sStyleID = hmWrongRightStyleID.get(sStyleID);
           }
           style = StyleManager.getInstance().getStyleByID(sStyleID);
           // Year
-          String sYearID = attributes.getValue(XML_TRACK_YEAR).intern();
+          String sYearID = attributes.getValue(Const.XML_TRACK_YEAR).intern();
           Year year = YearManager.getInstance().getYearByID(sYearID);
           // For jajuk < 1.4
           if (year == null) {
             year = YearManager.getInstance().registerYear(sYearID, sYearID);
           }
           // Author
-          String sAuthorID = attributes.getValue(XML_TRACK_AUTHOR).intern();
+          String sAuthorID = attributes.getValue(Const.XML_TRACK_AUTHOR).intern();
           if ((hmWrongRightAuthorID.size() > 0) && (hmWrongRightAuthorID.containsKey(sAuthorID))) {
             sAuthorID = hmWrongRightAuthorID.get(sAuthorID);
           }
           author = AuthorManager.getInstance().getAuthorByID(sAuthorID);
-          long length = UtilString.fastLongParser(attributes.getValue(XML_TRACK_LENGTH));
+          long length = UtilString.fastLongParser(attributes.getValue(Const.XML_TRACK_LENGTH));
           // Type
-          String typeID = attributes.getValue(XML_TYPE).intern();
+          String typeID = attributes.getValue(Const.XML_TYPE).intern();
           if (needCheckConversions) {
             if (conversion.containsKey(typeID)) {
               typeID = conversion.get(typeID);
@@ -693,7 +694,7 @@ public final class Collection extends DefaultHandler implements Const, ErrorHand
           // Idem for order
           long lOrder = 0l;
           try {
-            lOrder = UtilString.fastLongParser(attributes.getValue(XML_TRACK_ORDER));
+            lOrder = UtilString.fastLongParser(attributes.getValue(Const.XML_TRACK_ORDER));
           } catch (Exception e) {
             if (Log.isDebugEnabled()) {
               // wrong format
@@ -714,14 +715,14 @@ public final class Collection extends DefaultHandler implements Const, ErrorHand
           }
           // Date format should be OK
           Date dAdditionDate = ADDITION_FORMATTER.parse(attributes.getValue(attributes
-              .getIndex(XML_TRACK_DISCOVERY_DATE)));
+              .getIndex(Const.XML_TRACK_DISCOVERY_DATE)));
           track = TrackManager.getInstance().registerTrack(sRightID, sTrackName, album, style,
               author, length, year, lOrder, type);
           TrackManager.getInstance().changeTrackRate(track,
-              UtilString.fastLongParser(attributes.getValue(XML_TRACK_RATE)));
-          track.setHits(UtilString.fastLongParser(attributes.getValue(XML_TRACK_HITS)));
+              UtilString.fastLongParser(attributes.getValue(Const.XML_TRACK_RATE)));
+          track.setHits(UtilString.fastLongParser(attributes.getValue(Const.XML_TRACK_HITS)));
           track.setDiscoveryDate(dAdditionDate);
-          String sComment = attributes.getValue(XML_TRACK_COMMENT).intern();
+          String sComment = attributes.getValue(Const.XML_TRACK_COMMENT).intern();
           if (sComment == null) {
             sComment = "";
           }
@@ -730,7 +731,7 @@ public final class Collection extends DefaultHandler implements Const, ErrorHand
           break;
         case STAGE_ALBUMS:
           sID = attributes.getValue(idIndex).intern();
-          sItemName = attributes.getValue(XML_NAME).intern();
+          sItemName = attributes.getValue(Const.XML_NAME).intern();
           // UPGRADE test
           sRightID = sID;
           if (needCheckID) {
@@ -749,7 +750,7 @@ public final class Collection extends DefaultHandler implements Const, ErrorHand
           break;
         case STAGE_AUTHORS:
           sID = attributes.getValue(idIndex).intern();
-          sItemName = attributes.getValue(XML_NAME).intern();
+          sItemName = attributes.getValue(Const.XML_NAME).intern();
           // UPGRADE test
           sRightID = sID;
           if (needCheckID) {
@@ -768,7 +769,7 @@ public final class Collection extends DefaultHandler implements Const, ErrorHand
           break;
         case STAGE_STYLES:
           sID = attributes.getValue(idIndex).intern();
-          sItemName = attributes.getValue(XML_NAME).intern();
+          sItemName = attributes.getValue(Const.XML_NAME).intern();
           // UPGRADE test
           sRightID = sID;
           if (needCheckID) {
@@ -786,7 +787,7 @@ public final class Collection extends DefaultHandler implements Const, ErrorHand
           }
           break;
         case STAGE_PLAYLIST_FILES:
-          sParentID = attributes.getValue(XML_DIRECTORY).intern();
+          sParentID = attributes.getValue(Const.XML_DIRECTORY).intern();
           // UPGRADE check parent ID is right
           if ((hmWrongRightDirectoryID.size() > 0) &&
           // replace wrong by right ID
@@ -798,7 +799,7 @@ public final class Collection extends DefaultHandler implements Const, ErrorHand
             return;
           }
           sID = attributes.getValue(idIndex).intern();
-          sItemName = attributes.getValue(XML_NAME);
+          sItemName = attributes.getValue(Const.XML_NAME);
           // UPGRADE test
           sRightID = sID;
           if (needCheckID) {
@@ -820,8 +821,8 @@ public final class Collection extends DefaultHandler implements Const, ErrorHand
         case STAGE_DEVICES:
           device = null;
           sID = attributes.getValue(idIndex).intern();
-          sItemName = attributes.getValue(XML_NAME);
-          long lType = UtilString.fastLongParser(attributes.getValue(XML_TYPE));
+          sItemName = attributes.getValue(Const.XML_NAME);
+          long lType = UtilString.fastLongParser(attributes.getValue(Const.XML_TYPE));
           // UPGRADE test
           sRightID = sID;
           if (needCheckID) {
@@ -833,7 +834,7 @@ public final class Collection extends DefaultHandler implements Const, ErrorHand
               hmWrongRightDeviceID.put(sID, sRightID);
             }
           }
-          String sURL = attributes.getValue(XML_URL);
+          String sURL = attributes.getValue(Const.XML_URL);
           device = DeviceManager.getInstance().registerDevice(sRightID, sItemName, lType, sURL);
           if (device != null) {
             device.populateProperties(attributes);
@@ -841,7 +842,7 @@ public final class Collection extends DefaultHandler implements Const, ErrorHand
           break;
         case STAGE_YEARS:
           sID = attributes.getValue(idIndex).intern();
-          sItemName = attributes.getValue(XML_NAME).intern();
+          sItemName = attributes.getValue(Const.XML_NAME).intern();
           year = YearManager.getInstance().registerYear(sID, sItemName);
           if (year != null) {
             year.populateProperties(attributes);

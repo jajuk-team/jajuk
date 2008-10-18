@@ -59,8 +59,7 @@ import org.xml.sax.helpers.DefaultHandler;
 /**
  * Stores all files user read
  */
-public final class History extends DefaultHandler implements Const, ErrorHandler,
-    Observer {
+public final class History extends DefaultHandler implements ErrorHandler, Observer {
   /** Self instance */
   private static History history;
 
@@ -86,9 +85,9 @@ public final class History extends DefaultHandler implements Const, ErrorHandler
     ObservationManager.register(this);
     // check if something has already started
     if (ObservationManager.getDetailLastOccurence(JajukEvents.FILE_LAUNCHED,
-        DETAIL_CURRENT_FILE_ID) != null
+        Const.DETAIL_CURRENT_FILE_ID) != null
         && ObservationManager.getDetailLastOccurence(JajukEvents.FILE_LAUNCHED,
-            DETAIL_CURRENT_DATE) != null) {
+            Const.DETAIL_CURRENT_DATE) != null) {
       update(new Event(JajukEvents.FILE_LAUNCHED, ObservationManager
           .getDetailsLastOccurence(JajukEvents.FILE_LAUNCHED)));
     }
@@ -117,7 +116,7 @@ public final class History extends DefaultHandler implements Const, ErrorHandler
 
   /** Add an history item */
   public void addItem(String sFileId, long lDate) {
-    if (Conf.getString(CONF_HISTORY).equals("0")) { // no
+    if (Conf.getString(Const.CONF_HISTORY).equals("0")) { // no
       // history
       // 
       return;
@@ -137,7 +136,7 @@ public final class History extends DefaultHandler implements Const, ErrorHandler
       }
       vHistory.add(0, hi); // keep only most recent date
       // test maximum history size, if >, remove oldest item
-      if (vHistory.size() > MAX_HISTORY_SIZE) {
+      if (vHistory.size() > Const.MAX_HISTORY_SIZE) {
         vHistory.remove(vHistory.size() - 1);
       }
     } else { // first element in history
@@ -214,9 +213,9 @@ public final class History extends DefaultHandler implements Const, ErrorHandler
       lDateStart = System.currentTimeMillis();
     }
     BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(UtilSystem
-        .getConfFileByPath(FILE_HISTORY)), "UTF-8"));
+        .getConfFileByPath(Const.FILE_HISTORY)), "UTF-8"));
     bw.write("<?xml version='1.0' encoding='UTF-8'?>\n");
-    bw.write("<history jajuk_version='" + JAJUK_VERSION + "' begin_date='"
+    bw.write("<historyConst.JAJUK_VERSION='" + Const.JAJUK_VERSION + "' begin_date='"
         + Long.toString(lDateStart) + "'>\n");
     Iterator<HistoryItem> it = vHistory.iterator();
     while (it.hasNext()) {
@@ -238,9 +237,9 @@ public final class History extends DefaultHandler implements Const, ErrorHandler
       SAXParserFactory spf = SAXParserFactory.newInstance();
       spf.setValidating(false);
       SAXParser saxParser = spf.newSAXParser();
-      File frt = UtilSystem.getConfFileByPath(FILE_HISTORY);
+      File frt = UtilSystem.getConfFileByPath(Const.FILE_HISTORY);
       saxParser.parse(frt.toURI().toURL().toString(), getInstance());
-      getInstance().clear(Integer.parseInt(Conf.getString(CONF_HISTORY))); // delete
+      getInstance().clear(Integer.parseInt(Conf.getString(Const.CONF_HISTORY))); // delete
       // old
       // history items
     } catch (IOException e) {
@@ -353,7 +352,8 @@ public final class History extends DefaultHandler implements Const, ErrorHandler
   public void startElement(String sUri, String sName, String sQName, Attributes attributes)
       throws SAXException {
     if (sQName.equals("history")) {
-      History.lDateStart = UtilString.fastLongParser(attributes.getValue(attributes.getIndex("begin_date")));
+      History.lDateStart = UtilString.fastLongParser(attributes.getValue(attributes
+          .getIndex("begin_date")));
     } else if (sQName.equals("play")) {
       String sID = attributes.getValue(attributes.getIndex("file"));
       // check id has not been changed
@@ -364,8 +364,8 @@ public final class History extends DefaultHandler implements Const, ErrorHandler
       }
       // test if this file is still kwown int the collection
       if (FileManager.getInstance().getFileByID(sID) != null) {
-        HistoryItem hi = new HistoryItem(sID, UtilString.fastLongParser(attributes.getValue(attributes
-            .getIndex("date"))));
+        HistoryItem hi = new HistoryItem(sID, UtilString.fastLongParser(attributes
+            .getValue(attributes.getIndex("date"))));
         vHistory.add(hi);
       }
     }
@@ -388,8 +388,9 @@ public final class History extends DefaultHandler implements Const, ErrorHandler
     JajukEvents subject = event.getSubject();
     try {
       if (JajukEvents.FILE_LAUNCHED.equals(subject)) {
-        String sFileID = (String) ObservationManager.getDetail(event, DETAIL_CURRENT_FILE_ID);
-        long lDate = ((Long) ObservationManager.getDetail(event, DETAIL_CURRENT_DATE)).longValue();
+        String sFileID = (String) ObservationManager.getDetail(event, Const.DETAIL_CURRENT_FILE_ID);
+        long lDate = ((Long) ObservationManager.getDetail(event, Const.DETAIL_CURRENT_DATE))
+            .longValue();
         addItem(sFileID, lDate);
       } else if (JajukEvents.DEVICE_REFRESH.equals(subject)) {
         cleanup();
@@ -400,8 +401,8 @@ public final class History extends DefaultHandler implements Const, ErrorHandler
         formatter = new SimpleDateFormat(Messages.getString("HistoryItem.0"));
       } else if (JajukEvents.FILE_NAME_CHANGED.equals(subject)) {
         Properties properties = event.getDetails();
-        org.jajuk.base.File fileOld = (org.jajuk.base.File) properties.get(DETAIL_OLD);
-        org.jajuk.base.File fNew = (org.jajuk.base.File) properties.get(DETAIL_NEW);
+        org.jajuk.base.File fileOld = (org.jajuk.base.File) properties.get(Const.DETAIL_OLD);
+        org.jajuk.base.File fNew = (org.jajuk.base.File) properties.get(Const.DETAIL_NEW);
         // change id in history
         changeID(fileOld.getID(), fNew.getID());
       }

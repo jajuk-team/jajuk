@@ -26,6 +26,7 @@ import javax.swing.JComponent;
 
 import org.jajuk.base.Item;
 import org.jajuk.ui.helpers.ItemMoveManager;
+import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
@@ -39,7 +40,8 @@ public class CopyAction extends JajukAction {
   private static final long serialVersionUID = 1L;
 
   CopyAction() {
-    super(Messages.getString("FilesTreeView.3"), IconLoader.getIcon(JajukIcons.COPY), "ctrl C", true, false);
+    super(Messages.getString("FilesTreeView.3"), IconLoader.getIcon(JajukIcons.COPY), "ctrl C",
+        true, false);
     setShortDescription(Messages.getString("FilesTreeView.3"));
   }
 
@@ -47,7 +49,7 @@ public class CopyAction extends JajukAction {
   @SuppressWarnings("unchecked")
   public void perform(ActionEvent e) {
     JComponent source = (JComponent) e.getSource();
-    List<Item> alSelected = (List<Item>) source.getClientProperty(DETAIL_SELECTION);
+    List<Item> alSelected = (List<Item>) source.getClientProperty(Const.DETAIL_SELECTION);
 
     ItemMoveManager.getInstance().removeAll();
     ItemMoveManager.getInstance().addItems(alSelected);

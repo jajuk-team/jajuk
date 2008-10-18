@@ -123,7 +123,7 @@ import org.jdesktop.swingx.JXPanel;
  * Singleton
  * </p>
  */
-public class CommandJPanel extends JXPanel implements Const, ActionListener, ListSelectionListener,
+public class CommandJPanel extends JXPanel implements ActionListener, ListSelectionListener,
     ChangeListener, Observer, MouseWheelListener {
 
   private static final long serialVersionUID = 1L;
@@ -234,7 +234,7 @@ public class CommandJPanel extends JXPanel implements Const, ActionListener, Lis
         // Reset combo to last selected item
         ambiencesCombo.removeActionListener(ambienceListener);
         Ambience defaultAmbience = AmbienceManager.getInstance().getAmbience(
-            Conf.getString(CONF_DEFAULT_AMBIENCE));
+            Conf.getString(Const.CONF_DEFAULT_AMBIENCE));
         if (defaultAmbience != null) {
           for (int i = 0; i < ambiencesCombo.getItemCount(); i++) {
             if (((JLabel) ambiencesCombo.getItemAt(i)).getText().equals(defaultAmbience.getName())) {
@@ -250,12 +250,12 @@ public class CommandJPanel extends JXPanel implements Const, ActionListener, Lis
       // Selected 'Any" ambience
       else if (ambiencesCombo.getSelectedIndex() == 1) {
         // reset default ambience
-        Conf.setProperty(CONF_DEFAULT_AMBIENCE, "");
+        Conf.setProperty(Const.CONF_DEFAULT_AMBIENCE, "");
         ObservationManager.notify(new Event(JajukEvents.AMBIENCES_SELECTION_CHANGE));
       } else {// Selected an ambience
         Ambience ambience = AmbienceManager.getInstance().getAmbienceByName(
             ((JLabel) ambiencesCombo.getSelectedItem()).getText());
-        Conf.setProperty(CONF_DEFAULT_AMBIENCE, ambience.getID());
+        Conf.setProperty(Const.CONF_DEFAULT_AMBIENCE, ambience.getID());
         ObservationManager.notify(new Event(JajukEvents.AMBIENCES_SELECTION_CHANGE));
       }
     }
@@ -312,13 +312,13 @@ public class CommandJPanel extends JXPanel implements Const, ActionListener, Lis
     for (int i = 3; i >= -3; i--) {
       final int j = i;
       JMenuItem jmi = new JMenuItem(Integer.toString(i));
-      if (Conf.getInt(CONF_INC_RATING) == i) {
+      if (Conf.getInt(Const.CONF_INC_RATING) == i) {
         jmi.setFont(FontManager.getInstance().getFont(JajukFont.BOLD));
       }
       // Store selected value
       jmi.addActionListener(new ActionListener() {
         public void actionPerformed(ActionEvent e) {
-          Conf.setProperty(CONF_INC_RATING, "" + j);
+          Conf.setProperty(Const.CONF_INC_RATING, "" + j);
         }
       });
       jpmIncRating.add(jmi);
@@ -352,15 +352,15 @@ public class CommandJPanel extends JXPanel implements Const, ActionListener, Lis
     // make it not floatable as this behavior is managed by vldocking
     jbRepeat = new JajukToggleButton(ActionManager
         .getAction(JajukActions.REPEAT_MODE_STATUS_CHANGE));
-    jbRepeat.setSelected(Conf.getBoolean(CONF_STATE_REPEAT));
+    jbRepeat.setSelected(Conf.getBoolean(Const.CONF_STATE_REPEAT));
     jbRandom = new JajukToggleButton(ActionManager
         .getAction(JajukActions.SHUFFLE_MODE_STATUS_CHANGED));
-    jbRandom.setSelected(Conf.getBoolean(CONF_STATE_SHUFFLE));
+    jbRandom.setSelected(Conf.getBoolean(Const.CONF_STATE_SHUFFLE));
     jbContinue = new JajukToggleButton(ActionManager
         .getAction(JajukActions.CONTINUE_MODE_STATUS_CHANGED));
-    jbContinue.setSelected(Conf.getBoolean(CONF_STATE_CONTINUE));
+    jbContinue.setSelected(Conf.getBoolean(Const.CONF_STATE_CONTINUE));
     jbIntro = new JajukToggleButton(ActionManager.getAction(JajukActions.INTRO_MODE_STATUS_CHANGED));
-    jbIntro.setSelected(Conf.getBoolean(CONF_STATE_INTRO));
+    jbIntro.setSelected(Conf.getBoolean(Const.CONF_STATE_INTRO));
     jtbModes.add(jbRepeat);
     jtbModes.addSeparator();
     jtbModes.add(jbRandom);
@@ -376,7 +376,7 @@ public class CommandJPanel extends JXPanel implements Const, ActionListener, Lis
         ActionManager.getAction(JajukActions.INCREASE_VOLUME));
 
     jpVolume.setLayout(new BoxLayout(jpVolume, BoxLayout.X_AXIS));
-    int iVolume = (int) (100 * Conf.getFloat(CONF_VOLUME));
+    int iVolume = (int) (100 * Conf.getFloat(Const.CONF_VOLUME));
     // Perform bounds test, -1 or >100 can occur in some undefined cases (see
     // #1169)
     if (iVolume > 100) {
@@ -436,9 +436,9 @@ public class CommandJPanel extends JXPanel implements Const, ActionListener, Lis
     // Shuffle album / album
     jmiShuffleModeAlbum2 = new JRadioButtonMenuItem(Messages.getString("CommandJPanel.22"));
     jmiShuffleModeAlbum2.addActionListener(this);
-    if (Conf.getString(CONF_GLOBAL_RANDOM_MODE).equals(MODE_TRACK)) {
+    if (Conf.getString(Const.CONF_GLOBAL_RANDOM_MODE).equals(Const.MODE_TRACK)) {
       jmiShuffleModeSong.setSelected(true);
-    } else if (Conf.getString(CONF_GLOBAL_RANDOM_MODE).equals(MODE_ALBUM2)) {
+    } else if (Conf.getString(Const.CONF_GLOBAL_RANDOM_MODE).equals(Const.MODE_ALBUM2)) {
       jmiShuffleModeAlbum2.setSelected(true);
     } else {
       jmiShuffleModeAlbum.setSelected(true);
@@ -468,7 +468,7 @@ public class CommandJPanel extends JXPanel implements Const, ActionListener, Lis
     jmiNoveltiesModeSong.addActionListener(this);
     jmiNoveltiesModeAlbum = new JRadioButtonMenuItem(Messages.getString("CommandJPanel.22"));
     jmiNoveltiesModeAlbum.addActionListener(this);
-    if (Conf.getString(CONF_NOVELTIES_MODE).equals(MODE_TRACK)) {
+    if (Conf.getString(Const.CONF_NOVELTIES_MODE).equals(Const.MODE_TRACK)) {
       jmiNoveltiesModeSong.setSelected(true);
     } else {
       jmiNoveltiesModeAlbum.setSelected(true);
@@ -622,8 +622,8 @@ public class CommandJPanel extends JXPanel implements Const, ActionListener, Lis
           org.jajuk.base.File file = FileManager.getInstance().getFileByID(hi.getFileId());
           if (file != null) {
             try {
-              FIFO.push(new StackItem(file, Conf.getBoolean(CONF_STATE_REPEAT), true), Conf
-                  .getBoolean(CONF_OPTIONS_PUSH_ON_CLICK));
+              FIFO.push(new StackItem(file, Conf.getBoolean(Const.CONF_STATE_REPEAT), true), Conf
+                  .getBoolean(Const.CONF_OPTIONS_PUSH_ON_CLICK));
             } catch (JajukException je) {
               // can be thrown if file is null
             }
@@ -633,17 +633,17 @@ public class CommandJPanel extends JXPanel implements Const, ActionListener, Lis
           }
         }
       } else if (ae.getSource().equals(jmiNoveltiesModeSong)) {
-        Conf.setProperty(CONF_NOVELTIES_MODE, MODE_TRACK);
+        Conf.setProperty(Const.CONF_NOVELTIES_MODE, Const.MODE_TRACK);
       } else if (ae.getSource().equals(jmiNoveltiesModeAlbum)) {
-        Conf.setProperty(CONF_NOVELTIES_MODE, MODE_ALBUM);
+        Conf.setProperty(Const.CONF_NOVELTIES_MODE, Const.MODE_ALBUM);
       } else if (ae.getSource().equals(jmiShuffleModeSong)) {
-        Conf.setProperty(CONF_GLOBAL_RANDOM_MODE, MODE_TRACK);
+        Conf.setProperty(Const.CONF_GLOBAL_RANDOM_MODE, Const.MODE_TRACK);
       } else if (ae.getSource().equals(jmiShuffleModeAlbum)) {
-        Conf.setProperty(CONF_GLOBAL_RANDOM_MODE, MODE_ALBUM);
+        Conf.setProperty(Const.CONF_GLOBAL_RANDOM_MODE, Const.MODE_ALBUM);
       } else if (ae.getSource().equals(jmiShuffleModeAlbum2)) {
-        Conf.setProperty(CONF_GLOBAL_RANDOM_MODE, MODE_ALBUM2);
+        Conf.setProperty(Const.CONF_GLOBAL_RANDOM_MODE, Const.MODE_ALBUM2);
       } else if (ae.getSource().equals(jmiShuffleModeAlbum2)) {
-        Conf.setProperty(CONF_GLOBAL_RANDOM_MODE, MODE_ALBUM2);
+        Conf.setProperty(Const.CONF_GLOBAL_RANDOM_MODE, Const.MODE_ALBUM2);
       }
     } catch (Exception e) {
       Log.error(e);
@@ -666,8 +666,9 @@ public class CommandJPanel extends JXPanel implements Const, ActionListener, Lis
           try {
             // If user selected a file
             if (sr.getType() == SearchResultType.FILE) {
-              FIFO.push(new StackItem(sr.getFile(), Conf.getBoolean(CONF_STATE_REPEAT), true), Conf
-                  .getBoolean(CONF_OPTIONS_PUSH_ON_CLICK));
+              FIFO.push(
+                  new StackItem(sr.getFile(), Conf.getBoolean(Const.CONF_STATE_REPEAT), true), Conf
+                      .getBoolean(Const.CONF_OPTIONS_PUSH_ON_CLICK));
             }
             // User selected a web radio
             else if (sr.getType() == SearchResultType.WEBRADIO) {
@@ -751,7 +752,7 @@ public class CommandJPanel extends JXPanel implements Const, ActionListener, Lis
           // track (selection must change to throw an ActionEvent)
           jcbHistory.setSelectedIndex(-1);
           // reset startup position
-          Conf.setProperty(CONF_STARTUP_LAST_POSITION, "0");
+          Conf.setProperty(Const.CONF_STARTUP_LAST_POSITION, "0");
         } else if (JajukEvents.ZERO.equals(subject)) {
           ActionManager.getAction(PREVIOUS_TRACK).setEnabled(false);
           ActionManager.getAction(NEXT_TRACK).setEnabled(false);
@@ -768,7 +769,7 @@ public class CommandJPanel extends JXPanel implements Const, ActionListener, Lis
           // track (selection must change to throw an ActionEvent)
           jcbHistory.setSelectedIndex(-1);
           // reset startup position
-          Conf.setProperty(CONF_STARTUP_LAST_POSITION, "0");
+          Conf.setProperty(Const.CONF_STARTUP_LAST_POSITION, "0");
         } else if (JajukEvents.PLAYER_PLAY.equals(subject)) {
           evaltoobar.setEnabled(true);
           ActionManager.getAction(PREVIOUS_TRACK).setEnabled(true);
@@ -808,18 +809,19 @@ public class CommandJPanel extends JXPanel implements Const, ActionListener, Lis
           // PlayPauseAction
           ActionManager.getAction(PLAY_PAUSE_TRACK).setIcon(IconLoader.getIcon(JajukIcons.PAUSE));
         } else if (JajukEvents.SPECIAL_MODE.equals(subject)) {
-          if (ObservationManager.getDetail(event, DETAIL_ORIGIN).equals(DETAIL_SPECIAL_MODE_NORMAL)) {
+          if (ObservationManager.getDetail(event, Const.DETAIL_ORIGIN).equals(
+              Const.DETAIL_SPECIAL_MODE_NORMAL)) {
             // deselect shuffle mode
-            Conf.setProperty(CONF_STATE_SHUFFLE, FALSE);
+            Conf.setProperty(Const.CONF_STATE_SHUFFLE, Const.FALSE);
             JajukJMenuBar.getInstance().setShuffleSelected(false);
             CommandJPanel.getInstance().jbRandom.setSelected(false);
             // computes planned tracks
             FIFO.computesPlanned(true);
           }
         } else if (JajukEvents.REPEAT_MODE_STATUS_CHANGED.equals(subject)) {
-          if (ObservationManager.getDetail(event, DETAIL_SELECTION).equals(FALSE)) {
+          if (ObservationManager.getDetail(event, Const.DETAIL_SELECTION).equals(Const.FALSE)) {
             // deselect repeat mode
-            Conf.setProperty(CONF_STATE_REPEAT, FALSE);
+            Conf.setProperty(Const.CONF_STATE_REPEAT, Const.FALSE);
             JajukJMenuBar.getInstance().setRepeatSelected(false);
             CommandJPanel.getInstance().jbRepeat.setSelected(false);
           }
@@ -916,7 +918,7 @@ public class CommandJPanel extends JXPanel implements Const, ActionListener, Lis
             .getIcon(JajukIcons.DIGITAL_DJ_16X16));
         jmi.addActionListener(new ActionListener() {
           public void actionPerformed(ActionEvent arg0) {
-            Conf.setProperty(CONF_DEFAULT_DJ, dj.getID());
+            Conf.setProperty(Const.CONF_DEFAULT_DJ, dj.getID());
             DigitalDJManager.setCurrentDJ(dj);
             // force to reselect the item
             populateDJs();
@@ -927,7 +929,7 @@ public class CommandJPanel extends JXPanel implements Const, ActionListener, Lis
           }
         });
         popupDDJ.add(jmi);
-        jmi.setSelected(Conf.getString(CONF_DEFAULT_DJ).equals(dj.getID()));
+        jmi.setSelected(Conf.getString(Const.CONF_DEFAULT_DJ).equals(dj.getID()));
       }
     } catch (Exception e) {
       Log.error(e);
@@ -956,7 +958,7 @@ public class CommandJPanel extends JXPanel implements Const, ActionListener, Lis
     }
     // Select right item
     Ambience defaultAmbience = AmbienceManager.getInstance().getAmbience(
-        Conf.getString(CONF_DEFAULT_AMBIENCE));
+        Conf.getString(Const.CONF_DEFAULT_AMBIENCE));
     if (defaultAmbience != null) {
       for (int i = 0; i < ambiencesCombo.getItemCount(); i++) {
         if (((JLabel) ambiencesCombo.getItemAt(i)).getText().equals(defaultAmbience.getName())) {
@@ -993,7 +995,7 @@ public class CommandJPanel extends JXPanel implements Const, ActionListener, Lis
         XCheckedButton jmi = new XCheckedButton(radio.getName());
         jmi.addActionListener(new ActionListener() {
           public void actionPerformed(ActionEvent e) {
-            Conf.setProperty(CONF_DEFAULT_WEB_RADIO, radio.getName());
+            Conf.setProperty(Const.CONF_DEFAULT_WEB_RADIO, radio.getName());
             // force to reselect the item
             populateWebRadios();
             // update action tooltip on main button with right item
@@ -1002,7 +1004,7 @@ public class CommandJPanel extends JXPanel implements Const, ActionListener, Lis
                 + radio.getName() + "</b></p></html>");
           }
         });
-        jmi.setSelected(Conf.getString(CONF_DEFAULT_WEB_RADIO).equals(radio.getName()));
+        jmi.setSelected(Conf.getString(Const.CONF_DEFAULT_WEB_RADIO).equals(radio.getName()));
         // Show the check icon
         jmi.setDisplayCheck(true);
         popupWebRadio.add(jmi);

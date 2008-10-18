@@ -98,7 +98,8 @@ public abstract class AbstractMPlayerImpl implements IPlayerImpl, Const {
       out.flush();
 
       // don't close out here otherwise the output stream of the Process
-      // will be closed as well and subsequent sendCommant() calls will silently fail!!
+      // will be closed as well and subsequent sendCommant() calls will silently
+      // fail!!
     }
   }
 
@@ -119,7 +120,7 @@ public abstract class AbstractMPlayerImpl implements IPlayerImpl, Const {
   List<String> buildCommand(String url) {
     String sCommand = "mplayer";
     // Use any forced mplayer path
-    String forced = Conf.getString(CONF_MPLAYER_PATH_FORCED);
+    String forced = Conf.getString(Const.CONF_MPLAYER_PATH_FORCED);
     if (!UtilString.isVoid(forced)) {
       sCommand = forced;
     } else {
@@ -129,7 +130,7 @@ public abstract class AbstractMPlayerImpl implements IPlayerImpl, Const {
         sCommand = UtilSystem.getMPlayerOSXPath();
       }
     }
-    String sAdditionalArgs = Conf.getString(CONF_MPLAYER_ARGS);
+    String sAdditionalArgs = Conf.getString(Const.CONF_MPLAYER_ARGS);
     // Build command
     List<String> cmd = new ArrayList<String>(10);
     cmd.add(sCommand);
@@ -149,7 +150,7 @@ public abstract class AbstractMPlayerImpl implements IPlayerImpl, Const {
     // ~/.mplayer/config file. User can set a large cache for video for ie.
     String cacheSize = "500";
     // 500Kb, mplayer starts before the cache is filled up
-    if (!Conf.getString(CONF_MPLAYER_ARGS).matches(".*-cache.*")) {
+    if (!Conf.getString(Const.CONF_MPLAYER_ARGS).matches(".*-cache.*")) {
       // If user already forced a cache value, do not overwrite it
       cmd.add("-cache");
       cmd.add(cacheSize);

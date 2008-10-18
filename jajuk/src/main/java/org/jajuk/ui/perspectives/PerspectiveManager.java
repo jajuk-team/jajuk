@@ -51,7 +51,7 @@ import org.jajuk.util.log.Log;
 /**
  * Perspectives Manager
  */
-public final class PerspectiveManager implements Const {
+public final class PerspectiveManager {
   /** Current perspective */
   private static IPerspective currentPerspective = null;
 
@@ -121,7 +121,7 @@ public final class PerspectiveManager implements Const {
     String sPerspective = Main.getDefaultPerspective();
     // Check if a default perspective is forced
     if (sPerspective == null) {
-      sPerspective = Conf.getString(CONF_PERSPECTIVE_DEFAULT);
+      sPerspective = Conf.getString(Const.CONF_PERSPECTIVE_DEFAULT);
       // no? take the configuration ( user last perspective)
     }
     perspective = hmNameInstance.get(sPerspective);
@@ -176,11 +176,11 @@ public final class PerspectiveManager implements Const {
         // Select right item in perspective selector
         PerspectiveBarJPanel.getInstance().setActivated(perspective);
         // store perspective selection
-        Conf.setProperty(CONF_PERSPECTIVE_DEFAULT, perspective.getID());
+        Conf.setProperty(Const.CONF_PERSPECTIVE_DEFAULT, perspective.getID());
         UtilGUI.stopWaiting();
         // Emit a event
-        ObservationManager.notify(new Event(JajukEvents.PERPECTIVE_CHANGED,
-            ObservationManager.getDetailsLastOccurence(JajukEvents.FILE_LAUNCHED)));
+        ObservationManager.notify(new Event(JajukEvents.PERPECTIVE_CHANGED, ObservationManager
+            .getDetailsLastOccurence(JajukEvents.FILE_LAUNCHED)));
       }
     });
   }
@@ -239,12 +239,12 @@ public final class PerspectiveManager implements Const {
    */
   public static void registerDefaultPerspectives() {
     reset();
-    int iconSize = Conf.getInt(CONF_PERSPECTIVE_ICONS_SIZE);
+    int iconSize = Conf.getInt(Const.CONF_PERSPECTIVE_ICONS_SIZE);
     IPerspective perspective = null;
     // Simple perspective
     perspective = new SimplePerspective();
     ImageIcon icon = IconLoader.getIcon(JajukIcons.PERSPECTIVE_SIMPLE);
-    if (Conf.getInt(CONF_PERSPECTIVE_ICONS_SIZE) != 40) {
+    if (Conf.getInt(Const.CONF_PERSPECTIVE_ICONS_SIZE) != 40) {
       icon = UtilGUI.getResizedImage(icon, iconSize, iconSize);
     }
     perspective.setIcon(icon);
@@ -253,7 +253,7 @@ public final class PerspectiveManager implements Const {
     // Files perspective
     perspective = new FilesPerspective();
     icon = IconLoader.getIcon(JajukIcons.PERSPECTIVE_PHYSICAL);
-    if (Conf.getInt(CONF_PERSPECTIVE_ICONS_SIZE) != 40) {
+    if (Conf.getInt(Const.CONF_PERSPECTIVE_ICONS_SIZE) != 40) {
       icon = UtilGUI.getResizedImage(icon, iconSize, iconSize);
     }
     perspective.setIcon(icon);
@@ -262,7 +262,7 @@ public final class PerspectiveManager implements Const {
     // Tracks perspective
     perspective = new TracksPerspective();
     icon = IconLoader.getIcon(JajukIcons.PERSPECTIVE_LOGICAL);
-    if (Conf.getInt(CONF_PERSPECTIVE_ICONS_SIZE) != 40) {
+    if (Conf.getInt(Const.CONF_PERSPECTIVE_ICONS_SIZE) != 40) {
       icon = UtilGUI.getResizedImage(icon, iconSize, iconSize);
     }
     perspective.setIcon(icon);
@@ -271,7 +271,7 @@ public final class PerspectiveManager implements Const {
     // Catalog perspective
     perspective = new AlbumsPerspective();
     icon = IconLoader.getIcon(JajukIcons.PERSPECTIVE_CATALOG);
-    if (Conf.getInt(CONF_PERSPECTIVE_ICONS_SIZE) != 40) {
+    if (Conf.getInt(Const.CONF_PERSPECTIVE_ICONS_SIZE) != 40) {
       icon = UtilGUI.getResizedImage(icon, iconSize, iconSize);
     }
     perspective.setIcon(icon);
@@ -280,7 +280,7 @@ public final class PerspectiveManager implements Const {
     // Playlists perspective
     perspective = new PlaylistsPerspective();
     icon = IconLoader.getIcon(JajukIcons.PERSPECTIVE_PLAYLISTS);
-    if (Conf.getInt(CONF_PERSPECTIVE_ICONS_SIZE) != 40) {
+    if (Conf.getInt(Const.CONF_PERSPECTIVE_ICONS_SIZE) != 40) {
       icon = UtilGUI.getResizedImage(icon, iconSize, iconSize);
     }
     perspective.setIcon(icon);
@@ -289,7 +289,7 @@ public final class PerspectiveManager implements Const {
     // Display perspective
     perspective = new DisplayPerspective();
     icon = IconLoader.getIcon(JajukIcons.PERSPECTIVE_PLAYER);
-    if (Conf.getInt(CONF_PERSPECTIVE_ICONS_SIZE) != 40) {
+    if (Conf.getInt(Const.CONF_PERSPECTIVE_ICONS_SIZE) != 40) {
       icon = UtilGUI.getResizedImage(icon, iconSize, iconSize);
     }
     perspective.setIcon(icon);
@@ -298,7 +298,7 @@ public final class PerspectiveManager implements Const {
     // Information perspective
     perspective = new InfoPerspective();
     icon = IconLoader.getIcon(JajukIcons.PERSPECTIVE_INFORMATION);
-    if (Conf.getInt(CONF_PERSPECTIVE_ICONS_SIZE) != 40) {
+    if (Conf.getInt(Const.CONF_PERSPECTIVE_ICONS_SIZE) != 40) {
       icon = UtilGUI.getResizedImage(icon, iconSize, iconSize);
     }
     perspective.setIcon(icon);
@@ -307,7 +307,7 @@ public final class PerspectiveManager implements Const {
     // Configuration perspective
     perspective = new ConfigurationPerspective();
     icon = IconLoader.getIcon(JajukIcons.PERSPECTIVE_CONFIGURATION);
-    if (Conf.getInt(CONF_PERSPECTIVE_ICONS_SIZE) != 40) {
+    if (Conf.getInt(Const.CONF_PERSPECTIVE_ICONS_SIZE) != 40) {
       icon = UtilGUI.getResizedImage(icon, iconSize, iconSize);
     }
     perspective.setIcon(icon);
@@ -316,7 +316,7 @@ public final class PerspectiveManager implements Const {
     // Stats perspective
     perspective = new StatPerspective();
     icon = IconLoader.getIcon(JajukIcons.PERSPECTIVE_STATISTICS);
-    if (Conf.getInt(CONF_PERSPECTIVE_ICONS_SIZE) != 40) {
+    if (Conf.getInt(Const.CONF_PERSPECTIVE_ICONS_SIZE) != 40) {
       icon = UtilGUI.getResizedImage(icon, iconSize, iconSize);
     }
     perspective.setIcon(icon);

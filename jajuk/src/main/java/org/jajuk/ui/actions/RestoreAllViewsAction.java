@@ -34,14 +34,15 @@ import org.jajuk.util.Messages;
 import org.jajuk.util.UtilSystem;
 import org.jajuk.util.error.JajukException;
 
-public class RestoreAllViewsAction extends JajukAction implements Const {
+public class RestoreAllViewsAction extends JajukAction {
 
   private static final long serialVersionUID = 1L;
 
   private static boolean fullRestore = false;
 
   RestoreAllViewsAction() {
-    super(Messages.getString("JajukJMenuBar.26"), IconLoader.getIcon(JajukIcons.RESTORE_ALL_VIEWS), true);
+    super(Messages.getString("JajukJMenuBar.26"), IconLoader.getIcon(JajukIcons.RESTORE_ALL_VIEWS),
+        true);
     setShortDescription(Messages.getString("JajukJMenuBar.26"));
   }
 
@@ -58,11 +59,12 @@ public class RestoreAllViewsAction extends JajukAction implements Const {
         }
         // Drop all perspectives conf
         for (IPerspective perspective : PerspectiveManager.getPerspectives()) {
-          File loadFile = UtilSystem.getConfFileByPath(perspective.getClass().getSimpleName() + ".xml");
+          File loadFile = UtilSystem.getConfFileByPath(perspective.getClass().getSimpleName()
+              + ".xml");
           loadFile.delete();
         }
         // Delete toolbars configuration too
-        UtilSystem.getConfFileByPath(FILE_TOOLBARS_CONF).delete();
+        UtilSystem.getConfFileByPath(Const.FILE_TOOLBARS_CONF).delete();
         // Indicates to not commiting current configuration
         fullRestore = true;
         // Exit Jajuk

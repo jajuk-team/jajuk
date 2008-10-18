@@ -74,7 +74,7 @@ import org.jvnet.substance.skin.SubstanceBusinessLookAndFeel;
 /**
  * Set of GUI convenient methods
  */
-public final class UtilGUI implements Const {
+public final class UtilGUI {
 
   /* different types of Cursors that are available */
   public static final Cursor WAIT_CURSOR = new Cursor(Cursor.WAIT_CURSOR);
@@ -307,7 +307,7 @@ public final class UtilGUI implements Const {
       String theme = pTheme;
       if (themes.get(theme) == null) {
         theme = Const.LNF_DEFAULT_THEME;
-        Conf.setProperty(CONF_OPTIONS_LNF, Const.LNF_DEFAULT_THEME);
+        Conf.setProperty(Const.CONF_OPTIONS_LNF, Const.LNF_DEFAULT_THEME);
       }
 
       // Set substance theme
@@ -315,7 +315,7 @@ public final class UtilGUI implements Const {
 
       // Set substance LAF
       SubstanceLookAndFeel.setSkin(themes.get(theme).getClassName());
-      
+
       // hide some useless elements such locker for not editable labels
       UIManager.put(SubstanceLookAndFeel.SHOW_EXTRA_WIDGETS, Boolean.FALSE);
 

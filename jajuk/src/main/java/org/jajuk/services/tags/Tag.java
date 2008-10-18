@@ -35,7 +35,7 @@ import org.jajuk.util.log.Log;
 /**
  * abstract tag, independent from real implementation
  */
-public class Tag implements Const {
+public class Tag {
 
   /** Current tag impl* */
   private ITagImpl tagImpl;
@@ -103,17 +103,17 @@ public class Tag implements Const {
    */
   public String getAlbumName() {
     if (tagImpl == null) { // if the type doesn't support tags ( like wav )
-      return UNKNOWN_ALBUM;
+      return Const.UNKNOWN_ALBUM;
     }
     String sAlbumlName = null;
     String sTemp = "";
     try {
       sTemp = tagImpl.getAlbumName().trim();
-      if (Messages.getString(UNKNOWN_ALBUM).equals(sTemp)) {
+      if (Messages.getString(Const.UNKNOWN_ALBUM).equals(sTemp)) {
         // it is done to avoid duplicates unknown styles if
         // the tag is the real string "unknown" in the
         // current language
-        sAlbumlName = UNKNOWN_ALBUM;
+        sAlbumlName = Const.UNKNOWN_ALBUM;
       } else if (!"".equals(sTemp)) {
         sAlbumlName = sTemp;
       }
@@ -121,12 +121,11 @@ public class Tag implements Const {
       Log.info("Wrong album name:{{" + fio.getName() + "}}");
     }
     if (sAlbumlName == null) { // album tag cannot be found
-      if (Boolean.valueOf(Conf.getString(CONF_TAGS_USE_PARENT_DIR))
-          .booleanValue()) {
+      if (Boolean.valueOf(Conf.getString(Const.CONF_TAGS_USE_PARENT_DIR)).booleanValue()) {
         sAlbumlName = fio.getParentFile().getName();
         // if album is not found, take current directory as album name
       } else {
-        sAlbumlName = Messages.getString(UNKNOWN_ALBUM);
+        sAlbumlName = Messages.getString(Const.UNKNOWN_ALBUM);
         // unknwon album
       }
     }
@@ -138,7 +137,7 @@ public class Tag implements Const {
    * @return author name
    */
   public String getAuthorName() {
-    String sAuthorName = UNKNOWN_AUTHOR;
+    String sAuthorName = Const.UNKNOWN_AUTHOR;
     // if the type doesn't support tags ( like wav )
     if (tagImpl == null) {
       return sAuthorName;
@@ -146,11 +145,11 @@ public class Tag implements Const {
     String sTemp = "";
     try {
       sTemp = tagImpl.getAuthorName().trim();
-      if (Messages.getString(UNKNOWN_AUTHOR).equals(sTemp)) {
+      if (Messages.getString(Const.UNKNOWN_AUTHOR).equals(sTemp)) {
         // it is done to avoid duplicates unknown styles if
         // the tag is the real string "unknown" in the
         // current language
-        sAuthorName = UNKNOWN_AUTHOR;
+        sAuthorName = Const.UNKNOWN_AUTHOR;
       } else if (!"".equals(sTemp)) {
         sAuthorName = UtilString.formatTag(sTemp);
       }
@@ -165,7 +164,7 @@ public class Tag implements Const {
    * @return style name
    */
   public String getStyleName() {
-    String style = UNKNOWN_STYLE;
+    String style = Const.UNKNOWN_STYLE;
     // if the type doesn't support tags ( like wav )
     if (tagImpl == null) {
       return style;
@@ -173,11 +172,11 @@ public class Tag implements Const {
     String sTemp = "";
     try {
       sTemp = tagImpl.getStyleName().trim();
-      if (Messages.getString(UNKNOWN_STYLE).equals(sTemp)) {
+      if (Messages.getString(Const.UNKNOWN_STYLE).equals(sTemp)) {
         // it is done to avoid duplicates unknown styles if
         // the tag is the real string "unknown" in the
         // current language
-        style = UNKNOWN_STYLE;
+        style = Const.UNKNOWN_STYLE;
       } else if (!"".equals(sTemp)) {
         if (sTemp.equals("unknown")) {
           sTemp = style;

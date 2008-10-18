@@ -30,7 +30,6 @@ import org.jajuk.events.Event;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.events.Observer;
-import org.jajuk.util.Const;
 import org.jajuk.util.ReadOnlyIterator;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
@@ -45,7 +44,7 @@ import org.jajuk.util.log.Log;
  * Singleton
  * <p>
  */
-public final class RatingManager extends Thread implements Const, Observer {
+public final class RatingManager extends Thread implements Observer {
 
   private static RatingManager self;
 

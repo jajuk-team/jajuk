@@ -33,6 +33,7 @@ import org.jajuk.base.PlaylistManager;
 import org.jajuk.base.PropertyMetaInformation;
 import org.jajuk.ui.widgets.IconLabel;
 import org.jajuk.util.Conf;
+import org.jajuk.util.Const;
 import org.jajuk.util.Filter;
 import org.jajuk.util.Messages;
 
@@ -58,19 +59,19 @@ public class PlaylistRepositoryTableModel extends JajukTableModel {
     // First column is play icon, need to set a space character
     // for proper display in some look and feel
     vColNames.add(" ");
-    idList.add(XML_PLAY);
+    idList.add(Const.XML_PLAY);
 
-    vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_NAME));
-    idList.add(XML_NAME);
+    vColNames.add(Messages.getString(Const.PROPERTY_SEPARATOR + Const.XML_NAME));
+    idList.add(Const.XML_NAME);
 
-    vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_DEVICE));
-    idList.add(XML_DEVICE);
+    vColNames.add(Messages.getString(Const.PROPERTY_SEPARATOR + Const.XML_DEVICE));
+    idList.add(Const.XML_DEVICE);
 
-    vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_DIRECTORY));
-    idList.add(XML_DIRECTORY);
+    vColNames.add(Messages.getString(Const.PROPERTY_SEPARATOR + Const.XML_DIRECTORY));
+    idList.add(Const.XML_DIRECTORY);
 
-    vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_PATH));
-    idList.add(XML_PATH);
+    vColNames.add(Messages.getString(Const.PROPERTY_SEPARATOR + Const.XML_PATH));
+    idList.add(Const.XML_PATH);
 
     // custom properties now
     for (PropertyMetaInformation meta : PlaylistManager.getInstance().getCustomProperties()) {
@@ -88,19 +89,17 @@ public class PlaylistRepositoryTableModel extends JajukTableModel {
    */
   @Override
   @SuppressWarnings("unchecked")
-  public void populateModel(String sPropertyName, String sPattern,
-      List<String> columnsToShow) {
+  public void populateModel(String sPropertyName, String sPattern, List<String> columnsToShow) {
     List<Playlist> alToShow = PlaylistManager.getInstance().getPlaylists();
-    //Collections.sort(alToShow);
+    // Collections.sort(alToShow);
     // OK, begin by filtering using any provided pattern
-    Filter filter = new Filter(sPropertyName, sPattern, true, Conf
-        .getBoolean(CONF_REGEXP));
+    Filter filter = new Filter(sPropertyName, sPattern, true, Conf.getBoolean(Const.CONF_REGEXP));
     Filter.filterItems(alToShow, filter);
 
     Iterator<Playlist> it = null;
 
     // Filter unmounted files if required
-    if (Conf.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED)) {
+    if (Conf.getBoolean(Const.CONF_OPTIONS_HIDE_UNMOUNTED)) {
       it = alToShow.iterator();
       while (it.hasNext()) {
         Playlist plf = it.next();
@@ -120,10 +119,10 @@ public class PlaylistRepositoryTableModel extends JajukTableModel {
     bEditable = true;
 
     // For perfs, prepare columns visibility
-    boolean bName = (columnsToShow != null && columnsToShow.contains(XML_NAME));
-    boolean bDevice = (columnsToShow != null && columnsToShow.contains(XML_DEVICE));
-    boolean bDirectory = (columnsToShow != null && columnsToShow.contains(XML_DIRECTORY));
-    boolean bPath = (columnsToShow != null && columnsToShow.contains(XML_PATH));
+    boolean bName = (columnsToShow != null && columnsToShow.contains(Const.XML_NAME));
+    boolean bDevice = (columnsToShow != null && columnsToShow.contains(Const.XML_DEVICE));
+    boolean bDirectory = (columnsToShow != null && columnsToShow.contains(Const.XML_DIRECTORY));
+    boolean bPath = (columnsToShow != null && columnsToShow.contains(Const.XML_PATH));
 
     it = alToShow.iterator();
     for (int iRow = 0; it.hasNext(); iRow++) {

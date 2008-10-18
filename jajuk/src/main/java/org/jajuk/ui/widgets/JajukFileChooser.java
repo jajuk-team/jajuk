@@ -26,7 +26,6 @@ import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileSystemView;
 
-import org.jajuk.util.Const;
 import org.jajuk.util.JajukFileFilter;
 import org.jajuk.util.Messages;
 
@@ -34,7 +33,7 @@ import org.jajuk.util.Messages;
  * Music-oriented file chooser
  * 
  */
-public class JajukFileChooser extends JFileChooser implements Const {
+public class JajukFileChooser extends JFileChooser {
 
   private static final long serialVersionUID = 1L;
 

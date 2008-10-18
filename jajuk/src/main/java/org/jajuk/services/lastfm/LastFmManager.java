@@ -55,12 +55,12 @@ public final class LastFmManager implements Observer, Const {
     ObservationManager.register(this);
     // Display an hideable message to user if audioscrobber is disable
     // Show this message only one time by jajuk session
-    if (!Conf.getBoolean(CONF_LASTFM_ENABLE)
+    if (!Conf.getBoolean(Const.CONF_LASTFM_ENABLE)
     // don't show this message if first jajuk launch: already too many
         // popups.
         && !UpgradeManager.isFirstSesion()
         // don't show neither if last.fm login is already provided but disabled
-        && UtilString.isVoid(Conf.getString(CONF_LASTFM_USER))) {
+        && UtilString.isVoid(Conf.getString(Const.CONF_LASTFM_USER))) {
       Messages.showHideableWarningMessage(Messages.getString("LastFmManager.0"),
           CONF_NOT_SHOW_AGAIN_LASTFM_DISABLED);
     }
@@ -87,8 +87,8 @@ public final class LastFmManager implements Observer, Const {
   }
 
   public void configure() {
-    Submitter.setPassword(UtilString.rot13(Conf.getString(CONF_LASTFM_PASSWORD)));
-    Submitter.setUser(Conf.getString(CONF_LASTFM_USER));
+    Submitter.setPassword(UtilString.rot13(Conf.getString(Const.CONF_LASTFM_PASSWORD)));
+    Submitter.setUser(Conf.getString(Const.CONF_LASTFM_USER));
     Submitter.setProxy(DownloadManager.getProxy());
   }
 
@@ -102,14 +102,14 @@ public final class LastFmManager implements Observer, Const {
       new Thread() {
         @Override
         public void run() {
-          if (Conf.getBoolean(CONF_LASTFM_ENABLE)) {
-            File file = (File) event.getDetails().get(DETAIL_CURRENT_FILE);
+          if (Conf.getBoolean(Const.CONF_LASTFM_ENABLE)) {
+            File file = (File) event.getDetails().get(Const.DETAIL_CURRENT_FILE);
             long playedTime = file.getTrack().getDuration();
             // If we are in intro mode, computes actually listened
             // time
-            if (Conf.getBoolean(CONF_STATE_INTRO)) {
-              playedTime = (playedTime * Conf.getInt(CONF_OPTIONS_INTRO_BEGIN) / 100)
-                  - Conf.getInt(CONF_OPTIONS_INTRO_BEGIN);
+            if (Conf.getBoolean(Const.CONF_STATE_INTRO)) {
+              playedTime = (playedTime * Conf.getInt(Const.CONF_OPTIONS_INTRO_BEGIN) / 100)
+                  - Conf.getInt(Const.CONF_OPTIONS_INTRO_BEGIN);
             }
             try {
               Submitter.submitTrack(file.getTrack(), playedTime);

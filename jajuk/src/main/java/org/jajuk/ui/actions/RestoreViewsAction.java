@@ -23,13 +23,12 @@ import java.awt.event.ActionEvent;
 
 import org.jajuk.ui.perspectives.IPerspective;
 import org.jajuk.ui.perspectives.PerspectiveManager;
-import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 import org.jajuk.util.error.JajukException;
 
-public class RestoreViewsAction extends JajukAction implements Const {
+public class RestoreViewsAction extends JajukAction {
 
   private static final long serialVersionUID = 1L;
 

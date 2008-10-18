@@ -33,7 +33,7 @@ import org.jajuk.util.UtilString;
 /**
  * An Alarm
  */
-public class Alarm implements Const {
+public class Alarm {
   private String alarmTime;
   private List<File> alToPlay;
   private String alarmAction;
@@ -53,10 +53,8 @@ public class Alarm implements Const {
 
   public void wakeUpSleeper() {
     if (alarmAction.equals(Const.ALARM_START_MODE)) {
-      FIFO
-          .push(
-              UtilFeatures.createStackItems(alToPlay, Conf.getBoolean(CONF_STATE_REPEAT),
-                  false), false);
+      FIFO.push(UtilFeatures.createStackItems(alToPlay, Conf.getBoolean(Const.CONF_STATE_REPEAT),
+          false), false);
     } else {
       FIFO.stopRequest();
     }
@@ -84,8 +82,7 @@ public class Alarm implements Const {
       return Messages.getString("Stop") + ": " + alarmMessage + " "
           + (isDaily() ? Messages.getString("AlarmDialog.8") : "") + " "
           + Messages.getString("AlarmClock.3") + " @ " + getAlarmTime();
-    }
-    else {
+    } else {
       return Messages.getString("Stop") + ": "
           + (isDaily() ? Messages.getString("AlarmDialog.8") : "") + " "
           + Messages.getString("AlarmClock.3") + " @ " + getAlarmTime();

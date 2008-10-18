@@ -54,7 +54,7 @@ import org.jfree.ui.about.SystemPropertiesPanel;
  * <p>
  * Help perspective *
  */
-public class AboutWindow extends JDialog implements Const {
+public class AboutWindow extends JDialog {
 
   private static final long serialVersionUID = 1L;
 
@@ -130,8 +130,8 @@ public class AboutWindow extends JDialog implements Const {
     jtp = new JTabbedPane();
     JPanel jpAbout = new JPanel();
     jpAbout.setLayout(new BoxLayout(jpAbout, BoxLayout.Y_AXIS));
-    ap = new AboutPanel("Jajuk", JAJUK_VERSION + " \"" + JAJUK_CODENAME + "\"" + " "
-        + JAJUK_VERSION_DATE, "<html>Copyright 2003,2007<br>Jajuk team</html>", INFOS,
+    ap = new AboutPanel("Jajuk", Const.JAJUK_VERSION + " \"" + Const.JAJUK_CODENAME + "\"" + " "
+        + Const.JAJUK_VERSION_DATE, "<html>Copyright 2003,2007<br>Jajuk team</html>", INFOS,
         IconLoader.getIcon(JajukIcons.LOGO).getImage());
     jpAbout.add(ap);
     jpAbout.add(Box.createVerticalGlue());

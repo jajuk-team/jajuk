@@ -43,7 +43,7 @@ import org.jajuk.util.log.Log;
  * Jintellitype jar
  * </p>
  */
-public abstract class WindowsHotKeyManager extends AbstractAction implements Const {
+public abstract class WindowsHotKeyManager extends AbstractAction {
 
   /** Maps hotkeylisteners with the event ID */
   private static Map<Integer, JajukAction> hmIndexAction = new HashMap<Integer, JajukAction>(20);
@@ -116,7 +116,7 @@ public abstract class WindowsHotKeyManager extends AbstractAction implements Con
 
       public void onHotKey(int key) {
         // Leave if user disabled hotkeys
-        if (!Conf.getBoolean(CONF_OPTIONS_HOTKEYS)) {
+        if (!Conf.getBoolean(Const.CONF_OPTIONS_HOTKEYS)) {
           return;
         }
         // Check it is the right listener that caught the event
@@ -139,7 +139,7 @@ public abstract class WindowsHotKeyManager extends AbstractAction implements Con
    * Free Jintellipad resources
    */
   public static void cleanup() {
-    if(jintellitype != null) {
+    if (jintellitype != null) {
       jintellitype.cleanUp();
     }
   }

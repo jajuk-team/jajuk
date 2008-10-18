@@ -31,6 +31,7 @@ import org.jajuk.events.Event;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.services.players.FIFO;
+import org.jajuk.util.Const;
 import org.jajuk.util.MD5Processor;
 import org.jajuk.util.ReadOnlyIterator;
 import org.jajuk.util.error.JajukException;
@@ -52,14 +53,14 @@ public final class AuthorManager extends ItemManager {
     super();
     // register properties
     // ID
-    registerProperty(new PropertyMetaInformation(XML_ID, false, true, false, false, false,
+    registerProperty(new PropertyMetaInformation(Const.XML_ID, false, true, false, false, false,
         String.class, null));
     // Name
-    registerProperty(new PropertyMetaInformation(XML_NAME, false, true, true, true, false,
+    registerProperty(new PropertyMetaInformation(Const.XML_NAME, false, true, true, true, false,
         String.class, null));
     // Expand
-    registerProperty(new PropertyMetaInformation(XML_EXPANDED, false, false, false, false, true,
-        Boolean.class, false));
+    registerProperty(new PropertyMetaInformation(Const.XML_EXPANDED, false, false, false, false,
+        true, Boolean.class, false));
     // create author list
   }
 
@@ -178,7 +179,7 @@ public final class AuthorManager extends ItemManager {
    */
   @Override
   public String getLabel() {
-    return XML_AUTHORS;
+    return Const.XML_AUTHORS;
   }
 
   /**

@@ -62,7 +62,7 @@ import org.xml.sax.Attributes;
  * <p>
  * Physical item
  */
-public class Device extends PhysicalItem implements Const, Comparable<Device> {
+public class Device extends PhysicalItem implements Comparable<Device> {
 
   private static final long serialVersionUID = 1L;
 

@@ -41,9 +41,9 @@ import org.jajuk.util.log.Log;
 /**
  * General use utilities methods
  */
-public final class UtilFeatures implements Const {
+public final class UtilFeatures {
 
- /** contains clipboard data */
+  /** contains clipboard data */
   private static String copyData;
 
   /**
@@ -175,12 +175,11 @@ public final class UtilFeatures implements Const {
       // computes logical selection if any
       if (item instanceof Track) {
         files.add(((Track) item).getPlayeableFile(Conf
-            .getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED)));
+            .getBoolean(Const.CONF_OPTIONS_HIDE_UNMOUNTED)));
       } else if (item instanceof LogicalItem) {
         List<Track> tracks = TrackManager.getInstance().getAssociatedTracks(item);
         for (Track track : tracks) {
-          files.add(track.getPlayeableFile(Conf
-              .getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED)));
+          files.add(track.getPlayeableFile(Conf.getBoolean(Const.CONF_OPTIONS_HIDE_UNMOUNTED)));
         }
       }
       // computes physical selection if any
@@ -201,7 +200,7 @@ public final class UtilFeatures implements Const {
     return files;
   }
 
-   /**
+  /**
    * @param col
    * @return a single shuffle element from a list, null if none element in
    *         provided collection
@@ -254,8 +253,7 @@ public final class UtilFeatures implements Const {
         || sFileName.toLowerCase().matches(".*" + Const.FILE_DEFAULT_COVER_2 + ".*")
         // just for previous compatibility, now it is a directory
         // property
-        || sFileName.toLowerCase().matches(
-            ".*" + Const.FILE_ABSOLUTE_DEFAULT_COVER + ".*");
+        || sFileName.toLowerCase().matches(".*" + Const.FILE_ABSOLUTE_DEFAULT_COVER + ".*");
 
   }
 
@@ -264,8 +262,8 @@ public final class UtilFeatures implements Const {
    */
   private UtilFeatures() {
   }
-  
-   /**
+
+  /**
    * Try to compute time length in milliseconds using BasicPlayer API. (code
    * from jlGui 2.3)
    */
@@ -314,5 +312,4 @@ public final class UtilFeatures implements Const {
     UtilFeatures.copyData = copyData;
   }
 
- 
 }

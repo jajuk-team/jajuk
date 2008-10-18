@@ -53,7 +53,7 @@ import org.xml.sax.helpers.DefaultHandler;
  * Singleton
  * </p>
  */
-public class Messages extends DefaultHandler implements Const {
+public class Messages extends DefaultHandler {
   /** Local ( language) to be used, default is English */
   private static String sLocal = "en";
 
@@ -204,13 +204,13 @@ public class Messages extends DefaultHandler implements Const {
     try {
       String totd = null;
       // index contains the index of the last provided totd
-      int index = Conf.getInt(CONF_TIP_OF_DAY_INDEX);
+      int index = Conf.getInt(Const.CONF_TIP_OF_DAY_INDEX);
       // display the next one
       totd = Messages.getString("TipOfTheDay." + index);
       // Remove <img> tags
       totd = totd.replaceAll("<.*>", "");
       // Increment and save index
-      Conf.setProperty(CONF_TIP_OF_DAY_INDEX, String.valueOf((index + 1)
+      Conf.setProperty(Const.CONF_TIP_OF_DAY_INDEX, String.valueOf((index + 1)
           % Messages.getAll("TipOfTheDay").length));
       return totd;
     } catch (Exception e) {
@@ -298,7 +298,7 @@ public class Messages extends DefaultHandler implements Const {
    * @param sLocal
    */
   public static void setLocal(final String sLocal) throws Exception {
-    Conf.setProperty(CONF_OPTIONS_LANGUAGE, sLocal);
+    Conf.setProperty(Const.CONF_OPTIONS_LANGUAGE, sLocal);
     properties = null; // make sure to reinitialize cached strings
     Messages.sLocal = sLocal;
   }
@@ -313,12 +313,12 @@ public class Messages extends DefaultHandler implements Const {
   private static Properties parseLangpack(final String sLocal) throws Exception {
     final Properties lProperties = new Properties();
     // Choose right jajuk_<lang>.properties file to load
-    final StringBuilder sbFilename = new StringBuilder(FILE_LANGPACK_PART1);
+    final StringBuilder sbFilename = new StringBuilder(Const.FILE_LANGPACK_PART1);
     if (!sLocal.equals("en")) { // for english, properties file is
       // simply jajuk.properties
       sbFilename.append('_').append(sLocal);
     }
-    sbFilename.append(FILE_LANGPACK_PART2);
+    sbFilename.append(Const.FILE_LANGPACK_PART2);
     URL url;
     // property file URL, either in the jajuk.jar jar
     // (normal execution) or found as regular file if in
@@ -743,7 +743,7 @@ class HideableMessageDialog extends JajukDialog {
     dialog.setVisible(true);
     if (Messages.getString("Hide").equals(optionPane.getValue())) {
       // Not show again
-      Conf.setProperty(sProperty, TRUE);
+      Conf.setProperty(sProperty, Const.TRUE);
     }
   }
 
@@ -780,7 +780,7 @@ class ErrorMessageDialog extends JajukDialog {
   }
 }
 
-abstract class JajukDialog implements Const {
+abstract class JajukDialog {
   /** Dialog output */
   protected int iResu = -2;
 

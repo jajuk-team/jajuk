@@ -34,7 +34,7 @@ import org.jajuk.util.log.Log;
  * Manages bookmarks
  * 
  */
-public final class Bookmarks implements Const {
+public final class Bookmarks {
 
   /** Singleton self-instance */
   private static Bookmarks bookmarks;
@@ -51,7 +51,7 @@ public final class Bookmarks implements Const {
 
   /** Private constructor */
   private Bookmarks() {
-    String sBookmarks = Conf.getString(CONF_BOOKMARKS);
+    String sBookmarks = Conf.getString(Const.CONF_BOOKMARKS);
     if (sBookmarks == null || "".equals(sBookmarks.trim())) {
       return;
     }
@@ -89,7 +89,7 @@ public final class Bookmarks implements Const {
    */
   public void clear() {
     alFiles.clear();
-    Conf.setProperty(CONF_BOOKMARKS, "");
+    Conf.setProperty(Const.CONF_BOOKMARKS, "");
   }
 
   /**
@@ -103,7 +103,7 @@ public final class Bookmarks implements Const {
       File file = alFiles.get(index + 1); // save n+1 file
       alFiles.set(index + 1, alFiles.get(index));
       alFiles.set(index, file); // n+1 file becomes nth file
-      Conf.setProperty(CONF_BOOKMARKS, toString());
+      Conf.setProperty(Const.CONF_BOOKMARKS, toString());
     }
   }
 
@@ -117,7 +117,7 @@ public final class Bookmarks implements Const {
       File file = alFiles.get(index - 1); // save n-1 file
       alFiles.set(index - 1, alFiles.get(index));
       alFiles.set(index, file); // n-1 file becomes nth file
-      Conf.setProperty(CONF_BOOKMARKS, toString());
+      Conf.setProperty(Const.CONF_BOOKMARKS, toString());
     }
   }
 
@@ -128,7 +128,7 @@ public final class Bookmarks implements Const {
    */
   public synchronized void remove(int index) {
     alFiles.remove(index);
-    Conf.setProperty(CONF_BOOKMARKS, toString());
+    Conf.setProperty(Const.CONF_BOOKMARKS, toString());
   }
 
   /**
@@ -138,7 +138,7 @@ public final class Bookmarks implements Const {
    */
   public synchronized void addFile(int index, File file) {
     alFiles.add(index, file);
-    Conf.setProperty(CONF_BOOKMARKS, toString());
+    Conf.setProperty(Const.CONF_BOOKMARKS, toString());
   }
 
   /**

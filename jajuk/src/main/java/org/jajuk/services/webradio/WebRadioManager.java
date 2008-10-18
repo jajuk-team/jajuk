@@ -51,7 +51,7 @@ import org.xml.sax.helpers.DefaultHandler;
  * Singleton
  * </p>
  */
-public final class WebRadioManager extends DefaultHandler implements Const {
+public final class WebRadioManager extends DefaultHandler {
 
   private static Set<WebRadio> webradios = new TreeSet<WebRadio>();
 
@@ -73,7 +73,7 @@ public final class WebRadioManager extends DefaultHandler implements Const {
 
   private WebRadioManager() {
     // check for webradio repository file
-    fwebradios = UtilSystem.getConfFileByPath(FILE_WEB_RADIOS_REPOS);
+    fwebradios = UtilSystem.getConfFileByPath(Const.FILE_WEB_RADIOS_REPOS);
     if (!fwebradios.exists()) {
       // download the stream list and load it asynchronously to avoid
       // freezing unconnected people
@@ -102,7 +102,7 @@ public final class WebRadioManager extends DefaultHandler implements Const {
       Log.error(e);
       // Remove file if it is corrupted so it will be downloaded again
       // next time
-      if(!fwebradios.delete()) {
+      if (!fwebradios.delete()) {
         Log.warn("Could not delete file " + fwebradios.toString());
       }
     }
@@ -117,8 +117,8 @@ public final class WebRadioManager extends DefaultHandler implements Const {
     // try to download the default directory (from jajuk SVN trunk
     // directly)
     try {
-      DownloadManager.download(new URL(URL_DEFAULT_WEBRADIOS), UtilSystem
-          .getConfFileByPath(FILE_WEB_RADIOS_REPOS));
+      DownloadManager.download(new URL(Const.URL_DEFAULT_WEBRADIOS), UtilSystem
+          .getConfFileByPath(Const.FILE_WEB_RADIOS_REPOS));
     } catch (Exception e) {
       Log.error(e);
     }
@@ -153,19 +153,21 @@ public final class WebRadioManager extends DefaultHandler implements Const {
     if (webradios.size() == 0) {
       return;
     }
-    File out = UtilSystem.getConfFileByPath(FILE_WEB_RADIOS_REPOS);
-    String sCharset = Conf.getString(CONF_COLLECTION_CHARSET);
+    File out = UtilSystem.getConfFileByPath(Const.FILE_WEB_RADIOS_REPOS);
+    String sCharset = Conf.getString(Const.CONF_COLLECTION_CHARSET);
     BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(out),
         sCharset), 1000000);
     bw.write("<?xml version='1.0' encoding='" + sCharset + "'?>\n");
-    bw.write("<" + XML_STREAMS + " " + XML_VERSION + "='" + JAJUK_VERSION + "'>\n");
+    bw.write("<" + Const.XML_STREAMS + " " + Const.XML_VERSION + "='" + Const.JAJUK_VERSION
+        + "'>\n");
     // Manage each stream
     for (WebRadio radio : webradios) {
-      bw.write("\t<" + XML_STREAM + " " + XML_NAME + "='" + UtilString.formatXML(radio.getName()) + "' "
-          + XML_URL + "='" + UtilString.formatXML(radio.getUrl()) + "'/>\n");
+      bw.write("\t<" + Const.XML_STREAM + " " + Const.XML_NAME + "='"
+          + UtilString.formatXML(radio.getName()) + "' " + Const.XML_URL + "='"
+          + UtilString.formatXML(radio.getUrl()) + "'/>\n");
     }
     // close
-    bw.write("</" + XML_STREAMS + ">\n");
+    bw.write("</" + Const.XML_STREAMS + ">\n");
     bw.flush();
     bw.close();
   }
@@ -179,7 +181,7 @@ public final class WebRadioManager extends DefaultHandler implements Const {
     // Download repository
     downloadRepository();
     // Check file now exists and not void
-    File out = UtilSystem.getConfFileByPath(FILE_WEB_RADIOS_REPOS);
+    File out = UtilSystem.getConfFileByPath(Const.FILE_WEB_RADIOS_REPOS);
     if (!out.exists() || out.length() == 0) {
       // show an "operation failed' message to users
       throw new IOException("Cannot download or parse webradio repository");
@@ -196,15 +198,15 @@ public final class WebRadioManager extends DefaultHandler implements Const {
     try {
       if (XML_RADIO.equals(sQName)) {
         inRadio = true;
-      } else if (XML_STREAM.equals(sQName)) {
-        String name = attributes.getValue(attributes.getIndex(XML_NAME));
-        String url = attributes.getValue(attributes.getIndex(XML_URL));
+      } else if (Const.XML_STREAM.equals(sQName)) {
+        String name = attributes.getValue(attributes.getIndex(Const.XML_NAME));
+        String url = attributes.getValue(attributes.getIndex(Const.XML_URL));
         WebRadio radio = new WebRadio(name, url);
         webradios.add(radio);
-      } else if (inRadio) {        
-        if (XML_NAME.equals(sQName)) {
+      } else if (inRadio) {
+        if (Const.XML_NAME.equals(sQName)) {
           buffer = new StringBuilder();
-        } else if (XML_URL.equals(sQName)) {
+        } else if (Const.XML_URL.equals(sQName)) {
           buffer = new StringBuilder();
         }
       }
@@ -216,8 +218,8 @@ public final class WebRadioManager extends DefaultHandler implements Const {
 
   @Override
   public void characters(char[] ch, int start, int length) throws SAXException {
-    String s  = new String(ch, start, length);
-    if (buffer != null) { 
+    String s = new String(ch, start, length);
+    if (buffer != null) {
       buffer.append(s);
     }
   }
@@ -233,9 +235,9 @@ public final class WebRadioManager extends DefaultHandler implements Const {
       WebRadio radio = new WebRadio(radioName, radioUrl);
       webradios.add(radio);
       inRadio = false;
-    } else if (XML_NAME.equals(qName)) {
+    } else if (Const.XML_NAME.equals(qName)) {
       radioName = buffer.toString();
-    } else if (XML_URL.equals(qName)) {
+    } else if (Const.XML_URL.equals(qName)) {
       radioUrl = buffer.toString();
     }
   }
@@ -264,7 +266,7 @@ public final class WebRadioManager extends DefaultHandler implements Const {
    */
   @SuppressWarnings("unchecked")
   public Set<WebRadio> getWebRadios() {
-    return (Set<WebRadio>) ((TreeSet<WebRadio>)webradios).clone();
+    return (Set<WebRadio>) ((TreeSet<WebRadio>) webradios).clone();
   }
 
   /**
@@ -301,7 +303,7 @@ public final class WebRadioManager extends DefaultHandler implements Const {
    */
   public static String getCurrentWebRadioTooltip() {
     String tooltipWebRadio = Messages.getString("CommandJPanel.25");
-    String defaultRadio = Conf.getString(CONF_DEFAULT_WEB_RADIO);
+    String defaultRadio = Conf.getString(Const.CONF_DEFAULT_WEB_RADIO);
     if (WebRadioManager.getInstance().getWebRadioByName(defaultRadio) != null) {
       tooltipWebRadio = "<html>" + tooltipWebRadio + "<p><b>" + defaultRadio + "</b></html>";
     }

@@ -43,6 +43,7 @@ import org.jajuk.ui.helpers.JajukTableModel;
 import org.jajuk.ui.thumbnails.LocalAlbumThumbnail;
 import org.jajuk.ui.thumbnails.ThumbnailPopup;
 import org.jajuk.util.Conf;
+import org.jajuk.util.Const;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilFeatures;
 import org.jajuk.util.UtilGUI;
@@ -83,9 +84,9 @@ public class AlbumsTableView extends AbstractTableView {
         AlbumsTableView.super.construct();
         JMenuItem jmiShowAlbumDetails = new JMenuItem(ActionManager
             .getAction(JajukActions.SHOW_ALBUM_DETAILS));
-        jmiShowAlbumDetails.putClientProperty(DETAIL_SELECTION, jtable.getSelection());
+        jmiShowAlbumDetails.putClientProperty(Const.DETAIL_SELECTION, jtable.getSelection());
         JMenuItem jmiReport = new JMenuItem(ActionManager.getAction(JajukActions.CREATE_REPORT));
-        jmiReport.putClientProperty(DETAIL_SELECTION, jtable.getSelection());
+        jmiReport.putClientProperty(Const.DETAIL_SELECTION, jtable.getSelection());
         // Add this generic menu item manually to ensure it's the last one in
         // the list for GUI reasons
         jtable.getMenu().add(jmiDelete);
@@ -113,10 +114,9 @@ public class AlbumsTableView extends AbstractTableView {
               List<File> alFiles = UtilFeatures.getPlayableFiles(album);
               if (alFiles.size() > 0) {
                 // launch it
-                FIFO.push(
-                    UtilFeatures.createStackItems(alFiles, Conf
-                        .getBoolean(CONF_STATE_REPEAT), true),
-                    Conf.getBoolean(CONF_OPTIONS_PUSH_ON_CLICK));
+                FIFO.push(UtilFeatures.createStackItems(alFiles, Conf
+                    .getBoolean(Const.CONF_STATE_REPEAT), true), Conf
+                    .getBoolean(Const.CONF_OPTIONS_PUSH_ON_CLICK));
 
               } else {
                 Messages.showErrorMessage(10, album.getName2());
@@ -130,7 +130,7 @@ public class AlbumsTableView extends AbstractTableView {
           Album current = null;
 
           public void mouseMoved(MouseEvent e) {
-            if (!Conf.getBoolean(CONF_SHOW_POPUPS)) {
+            if (!Conf.getBoolean(Const.CONF_SHOW_POPUPS)) {
               return;
             }
             // Do not use getLocationOnScreen() method to support JRE 1.5
@@ -193,7 +193,7 @@ public class AlbumsTableView extends AbstractTableView {
    */
   @Override
   void initTable() {
-    jtbEditable.setSelected(Conf.getBoolean(CONF_ALBUMS_TABLE_EDITION));
+    jtbEditable.setSelected(Conf.getBoolean(Const.CONF_ALBUMS_TABLE_EDITION));
     // Disable edit button, edition not yet implemented
     jtbEditable.setVisible(false);
   }

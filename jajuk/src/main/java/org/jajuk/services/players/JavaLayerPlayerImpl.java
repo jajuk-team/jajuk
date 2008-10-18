@@ -107,9 +107,9 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, Const, BasicPlayerListe
     this.bHasBeenRated = false;
     // Instantiate player is needed
     if (player == null) {
-      BasicPlayer.EXTERNAL_BUFFER_SIZE = Conf.getInt(CONF_BUFFER_SIZE);
+      BasicPlayer.EXTERNAL_BUFFER_SIZE = Conf.getInt(Const.CONF_BUFFER_SIZE);
       player = new BasicPlayer();
-      player.setLineBufferSize(Conf.getInt(CONF_AUDIO_BUFFER_SIZE));
+      player.setLineBufferSize(Conf.getInt(Const.CONF_AUDIO_BUFFER_SIZE));
       player.addBasicPlayerListener(this); // set listener
     }
     // make sure to stop any current player
@@ -123,7 +123,7 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, Const, BasicPlayerListe
         // Note: fio.getName() is better here as it will do less and not create
         // java.io.File in File
         (TypeManager.getInstance().getTypeByExtension(UtilSystem.getExtension(file.getName()))
-            .getBooleanValue(XML_TYPE_SEEK_SUPPORTED))) {
+            .getBooleanValue(Const.XML_TYPE_SEEK_SUPPORTED))) {
       seek(fPosition);
     }
     player.play();
@@ -214,7 +214,7 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, Const, BasicPlayerListe
       audioType = audioType.toLowerCase();
       Type type = TypeManager.getInstance().getTypeByExtension(audioType);
       // Seek support for MP3. and WAVE
-      if (type != null && type.getBooleanValue(XML_TYPE_SEEK_SUPPORTED)
+      if (type != null && type.getBooleanValue(Const.XML_TYPE_SEEK_SUPPORTED)
           && mPlayingData.containsKey("audio.length.bytes")) {
         int iAudioLength = ((Integer) mPlayingData.get("audio.length.bytes")).intValue();
         long skipBytes = Math.round(iAudioLength * posValue);
@@ -261,7 +261,7 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, Const, BasicPlayerListe
   public void progress(int iBytesread, long lMicroseconds, byte[] bPcmdata, Map mProperties) {
     if ((System.currentTimeMillis() - lDateLastUpdate) > PROGRESS_STEP) {
       lDateLastUpdate = System.currentTimeMillis();
-      this.iFadeDuration = 1000 * Conf.getInt(CONF_FADE_DURATION);
+      this.iFadeDuration = 1000 * Conf.getInt(Const.CONF_FADE_DURATION);
       if (bFading) {
         // computes the volume we have to sub to reach zero at last
         // progress()
@@ -283,7 +283,7 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, Const, BasicPlayerListe
       if (mPlayingData.containsKey("audio.length.bytes")) {
         int byteslength = ((Integer) mPlayingData.get("audio.length.bytes")).intValue();
         fPos = (byteslength != 0) ? (float) iBytesread / (float) byteslength : 0;
-        Conf.setProperty(CONF_STARTUP_LAST_POSITION, Float.toString(fPos));
+        Conf.setProperty(Const.CONF_STARTUP_LAST_POSITION, Float.toString(fPos));
         lTime = (long) (lDuration * fPos);
       }
       // check if the track get rate increasing level (INC_RATE_TIME

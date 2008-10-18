@@ -41,7 +41,7 @@ import org.jajuk.util.log.Log;
 /**
  * Managers parent class
  */
-public abstract class ItemManager implements Const {
+public abstract class ItemManager {
 
   /**
    * Maps item classes -> instance, must be a linked map for ordering (mandatory
@@ -72,7 +72,7 @@ public abstract class ItemManager implements Const {
   private Collection<Item> items = startupItems;
 
   /**
-   * Item manager default constructor 
+   * Item manager default constructor
    */
   ItemManager() {
   }
@@ -138,8 +138,8 @@ public abstract class ItemManager implements Const {
    */
   public static String getHumanType(String sKey) {
     String sOut = sKey;
-    if (Messages.contains(PROPERTY_SEPARATOR + sKey)) {
-      return Messages.getString(PROPERTY_SEPARATOR + sKey);
+    if (Messages.contains(Const.PROPERTY_SEPARATOR + sKey)) {
+      return Messages.getString(Const.PROPERTY_SEPARATOR + sKey);
     }
     return sOut;
   }
@@ -234,23 +234,23 @@ public abstract class ItemManager implements Const {
    * @return
    */
   public static ItemManager getItemManager(String sProperty) {
-    if (XML_DEVICE.equals(sProperty)) {
+    if (Const.XML_DEVICE.equals(sProperty)) {
       return DeviceManager.getInstance();
-    } else if (XML_TRACK.equals(sProperty)) {
+    } else if (Const.XML_TRACK.equals(sProperty)) {
       return TrackManager.getInstance();
-    } else if (XML_ALBUM.equals(sProperty)) {
+    } else if (Const.XML_ALBUM.equals(sProperty)) {
       return AlbumManager.getInstance();
-    } else if (XML_AUTHOR.equals(sProperty)) {
+    } else if (Const.XML_AUTHOR.equals(sProperty)) {
       return AuthorManager.getInstance();
-    } else if (XML_STYLE.equals(sProperty)) {
+    } else if (Const.XML_STYLE.equals(sProperty)) {
       return StyleManager.getInstance();
-    } else if (XML_DIRECTORY.equals(sProperty)) {
+    } else if (Const.XML_DIRECTORY.equals(sProperty)) {
       return DirectoryManager.getInstance();
-    } else if (XML_FILE.equals(sProperty)) {
+    } else if (Const.XML_FILE.equals(sProperty)) {
       return FileManager.getInstance();
-    } else if (XML_PLAYLIST_FILE.equals(sProperty)) {
+    } else if (Const.XML_PLAYLIST_FILE.equals(sProperty)) {
       return PlaylistManager.getInstance();
-    } else if (XML_TYPE.equals(sProperty)) {
+    } else if (Const.XML_TYPE.equals(sProperty)) {
       return TypeManager.getInstance();
     } else {
       return null;
@@ -360,30 +360,30 @@ public abstract class ItemManager implements Const {
     Item newItem = itemToChange;
     if (itemToChange instanceof File) {
       File file = (File) itemToChange;
-      if (XML_NAME.equals(sKey)) { // file name
+      if (Const.XML_NAME.equals(sKey)) { // file name
         newItem = FileManager.getInstance().changeFileName((File) itemToChange, (String) oValue);
-      } else if (XML_TRACK.equals(sKey)) { // track name
+      } else if (Const.XML_TRACK.equals(sKey)) { // track name
         newItem = TrackManager.getInstance().changeTrackName(file.getTrack(), (String) oValue,
             filter);
-      } else if (XML_STYLE.equals(sKey)) {
+      } else if (Const.XML_STYLE.equals(sKey)) {
         newItem = TrackManager.getInstance().changeTrackStyle(file.getTrack(), (String) oValue,
             filter);
-      } else if (XML_ALBUM.equals(sKey)) {
+      } else if (Const.XML_ALBUM.equals(sKey)) {
         newItem = TrackManager.getInstance().changeTrackAlbum(file.getTrack(), (String) oValue,
             filter);
-      } else if (XML_AUTHOR.equals(sKey)) {
+      } else if (Const.XML_AUTHOR.equals(sKey)) {
         newItem = TrackManager.getInstance().changeTrackAuthor(file.getTrack(), (String) oValue,
             filter);
-      } else if (XML_TRACK_COMMENT.equals(sKey)) {
+      } else if (Const.XML_TRACK_COMMENT.equals(sKey)) {
         newItem = TrackManager.getInstance().changeTrackComment(file.getTrack(), (String) oValue,
             filter);
-      } else if (XML_TRACK_ORDER.equals(sKey)) {
+      } else if (Const.XML_TRACK_ORDER.equals(sKey)) {
         newItem = TrackManager.getInstance().changeTrackOrder(file.getTrack(), (Long) oValue,
             filter);
-      } else if (XML_YEAR.equals(sKey)) {
+      } else if (Const.XML_YEAR.equals(sKey)) {
         newItem = TrackManager.getInstance().changeTrackYear(file.getTrack(),
             String.valueOf(oValue), filter);
-      } else if (XML_TRACK_RATE.equals(sKey)) {
+      } else if (Const.XML_TRACK_RATE.equals(sKey)) {
         newItem = TrackManager.getInstance().changeTrackRate(file.getTrack(), (Long) oValue);
       } else { // others properties
         itemToChange.setProperty(sKey, oValue);
@@ -394,12 +394,12 @@ public abstract class ItemManager implements Const {
         newItem = file;
       }
     } else if (itemToChange instanceof Playlist) {
-      if (XML_NAME.equals(sKey)) { // playlistfile name
+      if (Const.XML_NAME.equals(sKey)) { // playlistfile name
         newItem = PlaylistManager.getInstance().changePlaylistFileName((Playlist) itemToChange,
             (String) oValue);
       }
     } else if (itemToChange instanceof Directory) {
-      if (!XML_NAME.equals(sKey)) { // file name
+      if (!Const.XML_NAME.equals(sKey)) { // file name
         // TBI newItem =
         // DirectoryManager.getInstance().changeDirectoryName((Directory)itemToChange,(String)oValue);
         // } else { // others properties
@@ -408,47 +408,47 @@ public abstract class ItemManager implements Const {
     } else if (itemToChange instanceof Device) {
       itemToChange.setProperty(sKey, oValue);
     } else if (itemToChange instanceof Track) {
-      if (XML_NAME.equals(sKey)) {
+      if (Const.XML_NAME.equals(sKey)) {
         newItem = TrackManager.getInstance().changeTrackName((Track) itemToChange, (String) oValue,
             filter);
-      } else if (XML_STYLE.equals(sKey)) {
+      } else if (Const.XML_STYLE.equals(sKey)) {
         newItem = TrackManager.getInstance().changeTrackStyle((Track) itemToChange,
             (String) oValue, filter);
-      } else if (XML_ALBUM.equals(sKey)) {
+      } else if (Const.XML_ALBUM.equals(sKey)) {
         newItem = TrackManager.getInstance().changeTrackAlbum((Track) itemToChange,
             (String) oValue, filter);
-      } else if (XML_AUTHOR.equals(sKey)) {
+      } else if (Const.XML_AUTHOR.equals(sKey)) {
         newItem = TrackManager.getInstance().changeTrackAuthor((Track) itemToChange,
             (String) oValue, filter);
-      } else if (XML_TRACK_COMMENT.equals(sKey)) {
+      } else if (Const.XML_TRACK_COMMENT.equals(sKey)) {
         newItem = TrackManager.getInstance().changeTrackComment((Track) itemToChange,
             (String) oValue, filter);
-      } else if (XML_TRACK_ORDER.equals(sKey)) {
+      } else if (Const.XML_TRACK_ORDER.equals(sKey)) {
         newItem = TrackManager.getInstance().changeTrackOrder((Track) itemToChange, (Long) oValue,
             filter);
-      } else if (XML_YEAR.equals(sKey)) {
+      } else if (Const.XML_YEAR.equals(sKey)) {
         newItem = TrackManager.getInstance().changeTrackYear((Track) itemToChange,
             String.valueOf(oValue), filter);
-      } else if (XML_TRACK_RATE.equals(sKey)) {
+      } else if (Const.XML_TRACK_RATE.equals(sKey)) {
         newItem = TrackManager.getInstance().changeTrackRate((Track) itemToChange, (Long) oValue);
       } else { // others properties
         itemToChange.setProperty(sKey, oValue);
       }
     } else if (itemToChange instanceof Album) {
-      if (XML_NAME.equals(sKey)) {
+      if (Const.XML_NAME.equals(sKey)) {
         newItem = AlbumManager.getInstance().changeAlbumName((Album) itemToChange, (String) oValue);
       } else { // others properties
         itemToChange.setProperty(sKey, oValue);
       }
     } else if (itemToChange instanceof Author) {
-      if (XML_NAME.equals(sKey)) {
+      if (Const.XML_NAME.equals(sKey)) {
         newItem = AuthorManager.getInstance().changeAuthorName((Author) itemToChange,
             (String) oValue);
       } else { // others properties
         itemToChange.setProperty(sKey, oValue);
       }
     } else if (itemToChange instanceof Style) {
-      if (XML_NAME.equals(sKey)) {
+      if (Const.XML_NAME.equals(sKey)) {
         newItem = StyleManager.getInstance().changeStyleName((Style) itemToChange, (String) oValue);
       } else { // others properties
         itemToChange.setProperty(sKey, oValue);

@@ -40,6 +40,7 @@ import org.jajuk.base.AlbumManager;
 import org.jajuk.base.Item;
 import org.jajuk.ui.helpers.FontManager;
 import org.jajuk.ui.helpers.FontManager.JajukFont;
+import org.jajuk.util.Const;
 import org.jajuk.util.DownloadManager;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
@@ -89,8 +90,8 @@ public class AudioScrobblerAlbumThumbnail extends AbstractThumbnail {
           // Download image and store file reference (to generate the
           // popup thumb for ie)
           fCover = DownloadManager.downloadCover(remote, Long.toString(System.currentTimeMillis()));
-          fThumb = UtilSystem.getConfFileByPath(FILE_CACHE + "/" + System.currentTimeMillis() + '.'
-              + UtilSystem.getExtension(fCover));
+          fThumb = UtilSystem.getConfFileByPath(Const.FILE_CACHE + "/" + System.currentTimeMillis()
+              + '.' + UtilSystem.getExtension(fCover));
           // Create the image using Toolkit and not ImageIO API to be able to
           // flush all the image data
           ImageIcon downloadedImage = new ImageIcon(Toolkit.getDefaultToolkit().getImage(
@@ -116,8 +117,8 @@ public class AudioScrobblerAlbumThumbnail extends AbstractThumbnail {
         JLabel jlTitle;
         if (AlbumManager.getInstance().getAlbumByName(album.getTitle()) != null) {
           // Album known in collection, display its name in bold
-          jlTitle = new JLabel(UtilString.getLimitedString(album.getTitle(), 15), IconLoader.getIcon(JajukIcons.ALBUM),
-              JLabel.CENTER);
+          jlTitle = new JLabel(UtilString.getLimitedString(album.getTitle(), 15), IconLoader
+              .getIcon(JajukIcons.ALBUM), JLabel.CENTER);
           jlTitle.setFont(FontManager.getInstance().getFont(JajukFont.BOLD));
         } else {
           jlTitle = new JLabel(UtilString.getLimitedString(album.getTitle(), 15));
@@ -137,7 +138,7 @@ public class AudioScrobblerAlbumThumbnail extends AbstractThumbnail {
           jmenu.remove(jmiProperties);
         }
         // Set URL to open
-        jmiOpenLastFMSite.putClientProperty(DETAIL_CONTENT, album.getUrl());
+        jmiOpenLastFMSite.putClientProperty(Const.DETAIL_CONTENT, album.getUrl());
 
       }
 
@@ -177,14 +178,14 @@ public class AudioScrobblerAlbumThumbnail extends AbstractThumbnail {
     Color bgcolor = UtilGUI.getUltraLightColor();
     Color fgcolor = UtilGUI.getForegroundColor();
     String sOut = "<html bgcolor='#" + UtilGUI.getHTMLColor(bgcolor) + "'><TABLE color='"
-        + UtilGUI.getHTMLColor(fgcolor) + "'><TR><TD VALIGN='TOP'> <b>" + "<a href='file://" + XML_URL
-        + '?' + album.getUrl() + "'>" + album.getTitle() + "</a>" + "</b><br><br>";
+        + UtilGUI.getHTMLColor(fgcolor) + "'><TR><TD VALIGN='TOP'> <b>" + "<a href='file://"
+        + Const.XML_URL + '?' + album.getUrl() + "'>" + album.getTitle() + "</a>" + "</b><br><br>";
     // display cover
     sOut += "<img src='" + album.getCoverURL() + "'><br>";
     // Display author as global value only if it is a single author album
     // We use file://<item type>?<item id> as HTML hyperlink format
-    sOut += "<br>" + Messages.getString("Property_author") + " : " + "<a href='file://" + XML_URL
-        + '?' + album.getArtistUrl() + "'>" + album.getArtist() + "</a>";
+    sOut += "<br>" + Messages.getString("Property_author") + " : " + "<a href='file://"
+        + Const.XML_URL + '?' + album.getArtistUrl() + "'>" + album.getArtist() + "</a>";
     // Display year if available
     String year = album.getYear();
     if (!UtilString.isVoid(year)) {
@@ -194,7 +195,7 @@ public class AudioScrobblerAlbumThumbnail extends AbstractThumbnail {
     // Show each track detail if available
     if (album.getTracks() != null) {
       for (AudioScrobblerTrack track : album.getTracks()) {
-        sOut += "<b>" + "<a href='file://" + XML_URL + '?' + track.getUrl() + "'>"
+        sOut += "<b>" + "<a href='file://" + Const.XML_URL + '?' + track.getUrl() + "'>"
             + track.getTitle() + "</a></b><br>";
       }
     }

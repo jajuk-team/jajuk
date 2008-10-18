@@ -57,7 +57,7 @@ import org.jajuk.util.log.Log;
 /**
  * Set of convenient methods for system and IO
  */
-public final class UtilSystem implements Const {
+public final class UtilSystem {
 
   /** MPlayer status possible values * */
   public static enum MPlayerStatus {
@@ -645,8 +645,8 @@ public final class UtilSystem implements Const {
     // Check in ~/.jajuk directory (used by webstart distribution
     // installers). Test exe size as well to detect unfinished downloads of
     // mplayer.exe in JNLP mode
-    file = UtilSystem.getConfFileByPath(FILE_MPLAYER_EXE);
-    if (file.exists() && file.length() == MPLAYER_EXE_SIZE) {
+    file = UtilSystem.getConfFileByPath(Const.FILE_MPLAYER_EXE);
+    if (file.exists() && file.length() == Const.MPLAYER_EXE_SIZE) {
       UtilSystem.mplayerPath = file;
       return UtilSystem.mplayerPath;
     } else {
@@ -663,7 +663,7 @@ public final class UtilSystem implements Const {
         // using
         // stand-alone version
         if (Main.isIdeMode()) {
-          // If under dev, take mplayer exe file from the packjaging
+          // If under dev, take mplayer exe file from the packaging
           // directory
           sPATH = "./src/packaging";
         } else {
@@ -672,7 +672,7 @@ public final class UtilSystem implements Const {
         }
         // Add MPlayer file name
         file = new File(sPATH + '/' + Const.FILE_MPLAYER_EXE);
-        if (file.exists() && file.length() == MPLAYER_EXE_SIZE) {
+        if (file.exists() && file.length() == Const.MPLAYER_EXE_SIZE) {
           UtilSystem.mplayerPath = file;
         } else {
           // For bundle project, Jajuk should check if mplayer was

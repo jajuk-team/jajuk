@@ -45,6 +45,7 @@ import org.jajuk.events.Event;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.ui.actions.ActionManager;
 import org.jajuk.ui.actions.JajukActions;
+import org.jajuk.util.Const;
 import org.jdesktop.swingx.JXTree;
 
 /**
@@ -105,7 +106,7 @@ public abstract class AbstractTreeView extends ViewAdapter {
 
   /** Jtree scroller position* */
   int pos;
-  
+
   /**
    * Used to differentiate user action tree collapse from code tree collapse
    */
@@ -121,47 +122,47 @@ public abstract class AbstractTreeView extends ViewAdapter {
 
   public void initUI() {
     jmiPlay = new JMenuItem(ActionManager.getAction(JajukActions.PLAY_SELECTION));
-    jmiPlay.putClientProperty(DETAIL_SELECTION, alSelected);
+    jmiPlay.putClientProperty(Const.DETAIL_SELECTION, alSelected);
     jmiPush = new JMenuItem(ActionManager.getAction(JajukActions.PUSH_SELECTION));
-    jmiPush.putClientProperty(DETAIL_SELECTION, alSelected);
+    jmiPush.putClientProperty(Const.DETAIL_SELECTION, alSelected);
     jmiPlayShuffle = new JMenuItem(ActionManager.getAction(JajukActions.PLAY_SHUFFLE_SELECTION));
-    jmiPlayShuffle.putClientProperty(DETAIL_SELECTION, alSelected);
+    jmiPlayShuffle.putClientProperty(Const.DETAIL_SELECTION, alSelected);
     jmiPlayRepeat = new JMenuItem(ActionManager.getAction(JajukActions.PLAY_REPEAT_SELECTION));
-    jmiPlayRepeat.putClientProperty(DETAIL_SELECTION, alSelected);
+    jmiPlayRepeat.putClientProperty(Const.DETAIL_SELECTION, alSelected);
     jmiCut = new JMenuItem(ActionManager.getAction(JajukActions.CUT));
-    jmiCut.putClientProperty(DETAIL_SELECTION, alSelected);
+    jmiCut.putClientProperty(Const.DETAIL_SELECTION, alSelected);
     jmiCopy = new JMenuItem(ActionManager.getAction(JajukActions.COPY));
-    jmiCopy.putClientProperty(DETAIL_SELECTION, alSelected);
+    jmiCopy.putClientProperty(Const.DETAIL_SELECTION, alSelected);
     jmiPaste = new JMenuItem(ActionManager.getAction(JajukActions.PASTE));
-    jmiPaste.putClientProperty(DETAIL_SELECTION, alSelected);
+    jmiPaste.putClientProperty(Const.DETAIL_SELECTION, alSelected);
     jmiRename = new JMenuItem(ActionManager.getAction(JajukActions.RENAME));
-    jmiRename.putClientProperty(DETAIL_SELECTION, alSelected);
+    jmiRename.putClientProperty(Const.DETAIL_SELECTION, alSelected);
     jmiDelete = new JMenuItem(ActionManager.getAction(JajukActions.DELETE));
-    jmiDelete.putClientProperty(DETAIL_SELECTION, alSelected);
+    jmiDelete.putClientProperty(Const.DETAIL_SELECTION, alSelected);
     jmiNewFolder = new JMenuItem(ActionManager.getAction(JajukActions.NEW_FOLDER));
-    jmiNewFolder.putClientProperty(DETAIL_SELECTION, alSelected);
+    jmiNewFolder.putClientProperty(Const.DETAIL_SELECTION, alSelected);
     jmiAddFavorite = new JMenuItem(ActionManager.getAction(JajukActions.BOOKMARK_SELECTION));
-    jmiAddFavorite.putClientProperty(DETAIL_SELECTION, alSelected);
+    jmiAddFavorite.putClientProperty(Const.DETAIL_SELECTION, alSelected);
     jmiCDDBWizard = new JMenuItem(ActionManager.getAction(JajukActions.CDDB_SELECTION));
-    jmiCDDBWizard.putClientProperty(DETAIL_SELECTION, alSelected);
+    jmiCDDBWizard.putClientProperty(Const.DETAIL_SELECTION, alSelected);
     jmiReport = new JMenuItem(ActionManager.getAction(JajukActions.CREATE_REPORT));
     // Add custom data to this component in order to allow the ReportAction
     // to be able to get it
-    jmiReport.putClientProperty(DETAIL_ORIGIN, XML_STYLE);
-    jmiReport.putClientProperty(DETAIL_SELECTION, alSelected);
+    jmiReport.putClientProperty(Const.DETAIL_ORIGIN, XML_STYLE);
+    jmiReport.putClientProperty(Const.DETAIL_SELECTION, alSelected);
     jmiProperties = new JMenuItem(ActionManager.getAction(JajukActions.SHOW_PROPERTIES));
-    jmiProperties.putClientProperty(DETAIL_SELECTION, alSelected);
+    jmiProperties.putClientProperty(Const.DETAIL_SELECTION, alSelected);
   }
 
   abstract void populateTree();
 
   abstract void expand();
-  
+
   /**
    * Add keystroke support on the tree
    */
   private void setKeystrokes() {
-    jtree.putClientProperty(DETAIL_SELECTION, alSelected);
+    jtree.putClientProperty(Const.DETAIL_SELECTION, alSelected);
     InputMap inputMap = jtree.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     ActionMap actionMap = jtree.getActionMap();
 
@@ -185,8 +186,7 @@ public abstract class AbstractTreeView extends ViewAdapter {
 
   public void update(Event event) {
     final JajukEvents subject = event.getSubject();
-    if (subject.equals(JajukEvents.DEVICE_MOUNT)
-        || subject.equals(JajukEvents.DEVICE_UNMOUNT)
+    if (subject.equals(JajukEvents.DEVICE_MOUNT) || subject.equals(JajukEvents.DEVICE_UNMOUNT)
         || subject.equals(JajukEvents.DEVICE_REFRESH)) {
       SwingWorker sw = new SwingWorker() {
         @Override

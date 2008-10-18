@@ -101,7 +101,8 @@ public final class AutoCompleteDecorator {
    *          <tt>true</tt>, if only given items should be allowed to be
    *          entered
    */
-  public static void decorate(JTextComponent textComponent, List<Object> items, boolean strictMatching) {
+  public static void decorate(JTextComponent textComponent, List<Object> items,
+      boolean strictMatching) {
     decorate(textComponent, items, strictMatching, ObjectToStringConverter.DEFAULT_IMPLEMENTATION);
   }
 
@@ -119,8 +120,8 @@ public final class AutoCompleteDecorator {
    * @param stringConverter
    *          the converter used to transform items to strings
    */
-  public static void decorate(JTextComponent textComponent, List<Object> items, boolean strictMatching,
-      ObjectToStringConverter stringConverter) {
+  public static void decorate(JTextComponent textComponent, List<Object> items,
+      boolean strictMatching, ObjectToStringConverter stringConverter) {
     AbstractAutoCompleteAdaptor adaptor = new TextComponentAdaptor(textComponent, items);
     AutoCompleteDocument document = new AutoCompleteDocument(adaptor, strictMatching,
         stringConverter);
@@ -202,7 +203,7 @@ public final class AutoCompleteDecorator {
         if (keyEvent.isActionKey()) {
           return;
         }
-        
+
         // don't popup if the combobox isn't visible anyway
         if (comboBox.isDisplayable() && !comboBox.isPopupVisible()) {
           int keyCode = keyEvent.getKeyCode();

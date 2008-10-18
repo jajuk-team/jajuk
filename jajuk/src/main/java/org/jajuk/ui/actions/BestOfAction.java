@@ -28,6 +28,7 @@ import org.jajuk.services.dj.Ambience;
 import org.jajuk.services.dj.AmbienceManager;
 import org.jajuk.services.players.FIFO;
 import org.jajuk.util.Conf;
+import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
@@ -46,15 +47,14 @@ public class BestOfAction extends JajukAction {
   @Override
   public void perform(ActionEvent evt) throws JajukException {
     Ambience ambience = AmbienceManager.getInstance().getSelectedAmbience();
-    List<File> alToPlay = UtilFeatures.filterByAmbience(
-        FileManager.getInstance().getGlobalBestofPlaylist(), ambience);
+    List<File> alToPlay = UtilFeatures.filterByAmbience(FileManager.getInstance()
+        .getGlobalBestofPlaylist(), ambience);
     // For perfs (mainly playlist editor view refresh), we set a ceil for tracks
     // number
-    if (alToPlay.size() > NB_TRACKS_ON_ACTION) {
-      alToPlay = alToPlay.subList(0, NB_TRACKS_ON_ACTION);
+    if (alToPlay.size() > Const.NB_TRACKS_ON_ACTION) {
+      alToPlay = alToPlay.subList(0, Const.NB_TRACKS_ON_ACTION);
     }
-    FIFO.push(
-        UtilFeatures.createStackItems(alToPlay, Conf.getBoolean(CONF_STATE_REPEAT), false),
-        false);
+    FIFO.push(UtilFeatures.createStackItems(alToPlay, Conf.getBoolean(Const.CONF_STATE_REPEAT),
+        false), false);
   }
 }

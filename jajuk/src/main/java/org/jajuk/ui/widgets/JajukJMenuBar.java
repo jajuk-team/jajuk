@@ -82,7 +82,7 @@ import org.jajuk.util.log.Log;
  * <p>
  * Singleton
  */
-public final class JajukJMenuBar extends JMenuBar implements Const, Observer {
+public final class JajukJMenuBar extends JMenuBar implements Observer {
 
   private static final long serialVersionUID = 1L;
 
@@ -228,13 +228,13 @@ public final class JajukJMenuBar extends JMenuBar implements Const, Observer {
     mode.setMnemonic(ActionUtil.getMnemonic(modeText));
 
     jcbmiRepeat = new JCheckBoxMenuItem(ActionManager.getAction(REPEAT_MODE_STATUS_CHANGE));
-    jcbmiRepeat.setSelected(Conf.getBoolean(CONF_STATE_REPEAT));
+    jcbmiRepeat.setSelected(Conf.getBoolean(Const.CONF_STATE_REPEAT));
     jcbmiShuffle = new JCheckBoxMenuItem(ActionManager.getAction(SHUFFLE_MODE_STATUS_CHANGED));
-    jcbmiShuffle.setSelected(Conf.getBoolean(CONF_STATE_SHUFFLE));
+    jcbmiShuffle.setSelected(Conf.getBoolean(Const.CONF_STATE_SHUFFLE));
     jcbmiContinue = new JCheckBoxMenuItem(ActionManager.getAction(CONTINUE_MODE_STATUS_CHANGED));
-    jcbmiContinue.setSelected(Conf.getBoolean(CONF_STATE_CONTINUE));
+    jcbmiContinue.setSelected(Conf.getBoolean(Const.CONF_STATE_CONTINUE));
     jcbmiIntro = new JCheckBoxMenuItem(ActionManager.getAction(INTRO_MODE_STATUS_CHANGED));
-    jcbmiIntro.setSelected(Conf.getBoolean(CONF_STATE_INTRO));
+    jcbmiIntro.setSelected(Conf.getBoolean(Const.CONF_STATE_INTRO));
 
     mode.add(jcbmiRepeat);
     mode.add(jcbmiShuffle);
@@ -280,14 +280,14 @@ public final class JajukJMenuBar extends JMenuBar implements Const, Observer {
     jmiOptions = new JMenuItem(ActionManager.getAction(OPTIONS));
 
     jmiUnmounted = new JCheckBoxMenuItem(ActionManager.getAction(JajukActions.UNMOUNTED));
-    jmiUnmounted.setSelected(Conf.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED));
-    jmiUnmounted.putClientProperty(DETAIL_ORIGIN, jmiUnmounted);
+    jmiUnmounted.setSelected(Conf.getBoolean(Const.CONF_OPTIONS_HIDE_UNMOUNTED));
+    jmiUnmounted.putClientProperty(Const.DETAIL_ORIGIN, jmiUnmounted);
 
     jcbShowPopups = new JCheckBoxMenuItem(Messages.getString("ParameterView.228"));
-    jcbShowPopups.setSelected(Conf.getBoolean(CONF_SHOW_POPUPS));
+    jcbShowPopups.setSelected(Conf.getBoolean(Const.CONF_SHOW_POPUPS));
     jcbShowPopups.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
-        Conf.setProperty(CONF_SHOW_POPUPS, Boolean.toString(jcbShowPopups.isSelected()));
+        Conf.setProperty(Const.CONF_SHOW_POPUPS, Boolean.toString(jcbShowPopups.isSelected()));
         // force parameter view to take this into account
         ObservationManager.notify(new Event(JajukEvents.PARAMETERS_CHANGE));
       }
@@ -295,10 +295,10 @@ public final class JajukJMenuBar extends JMenuBar implements Const, Observer {
 
     jcbSyncTableTree = new JCheckBoxMenuItem(Messages.getString("ParameterView.183"));
     jcbSyncTableTree.setToolTipText(Messages.getString("ParameterView.184"));
-    jcbSyncTableTree.setSelected(Conf.getBoolean(CONF_OPTIONS_SYNC_TABLE_TREE));
+    jcbSyncTableTree.setSelected(Conf.getBoolean(Const.CONF_OPTIONS_SYNC_TABLE_TREE));
     jcbSyncTableTree.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
-        Conf.setProperty(CONF_OPTIONS_SYNC_TABLE_TREE, Boolean.toString(jcbSyncTableTree
+        Conf.setProperty(Const.CONF_OPTIONS_SYNC_TABLE_TREE, Boolean.toString(jcbSyncTableTree
             .isSelected()));
         // force parameter view to take this into account
         ObservationManager.notify(new Event(JajukEvents.PARAMETERS_CHANGE));
@@ -379,7 +379,7 @@ public final class JajukJMenuBar extends JMenuBar implements Const, Observer {
       }
 
     };
-    if (Conf.getBoolean(CONF_CHECK_FOR_UPDATE)) {
+    if (Conf.getBoolean(Const.CONF_CHECK_FOR_UPDATE)) {
       sw.start();
     }
     ObservationManager.register(this);
@@ -434,9 +434,9 @@ public final class JajukJMenuBar extends JMenuBar implements Const, Observer {
    */
   public void update(Event event) {
     if (JajukEvents.PARAMETERS_CHANGE.equals(event.getSubject())) {
-      jcbShowPopups.setSelected(Conf.getBoolean(CONF_SHOW_POPUPS));
-      jmiUnmounted.setSelected(Conf.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED));
-      jcbSyncTableTree.setSelected(Conf.getBoolean(CONF_OPTIONS_SYNC_TABLE_TREE));
+      jcbShowPopups.setSelected(Conf.getBoolean(Const.CONF_SHOW_POPUPS));
+      jmiUnmounted.setSelected(Conf.getBoolean(Const.CONF_OPTIONS_HIDE_UNMOUNTED));
+      jcbSyncTableTree.setSelected(Conf.getBoolean(Const.CONF_OPTIONS_SYNC_TABLE_TREE));
     }
   }
 

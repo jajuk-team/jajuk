@@ -179,7 +179,8 @@ public class StackItem implements Cloneable {
    */
   @Override
   public int hashCode() {
-    // ignore three boolean parameters for now and just use the file as hashcode...
+    // ignore three boolean parameters for now and just use the file as
+    // hashcode...
     return file.hashCode();
   }
 

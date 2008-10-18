@@ -32,7 +32,8 @@ public class CheckForUpdateAction extends JajukAction {
   private static final long serialVersionUID = 1L;
 
   CheckForUpdateAction() {
-    super(Messages.getString("JajukJMenuBar.27"), IconLoader.getIcon(JajukIcons.UPDATE_MANAGER), true);
+    super(Messages.getString("JajukJMenuBar.27"), IconLoader.getIcon(JajukIcons.UPDATE_MANAGER),
+        true);
     setShortDescription(Messages.getString("JajukJMenuBar.27"));
   }
 

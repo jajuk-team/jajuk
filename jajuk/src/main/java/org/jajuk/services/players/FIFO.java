@@ -57,7 +57,7 @@ import org.jajuk.util.log.Log;
  * even ouside AWT dispatcher thread
  * </p>
  */
-public final class FIFO implements Const {
+public final class FIFO {
 
   /** Currently played track index */
   private static int index;
@@ -188,10 +188,10 @@ public final class FIFO implements Const {
         Log.debug("Now playing :" + radio.toString());
         playingRadio = true;
         // Store current radio for next startup
-        Conf.setProperty(CONF_DEFAULT_WEB_RADIO, radio.getName());
+        Conf.setProperty(Const.CONF_DEFAULT_WEB_RADIO, radio.getName());
         // Send an event that a track has been launched
         Properties pDetails = new Properties();
-        pDetails.put(DETAIL_CONTENT, radio);
+        pDetails.put(Const.DETAIL_CONTENT, radio);
         // reset all UI
         ObservationManager.notify(new Event(JajukEvents.ZERO));
         ObservationManager.notify(new Event(JajukEvents.WEBRADIO_LAUNCHED, pDetails));
@@ -291,7 +291,7 @@ public final class FIFO implements Const {
         // selection contains at least a single repeated item, all the fifo is
         // repeated. If selection contains no repeated item, the full fifo is
         // unrepeated
-        if (containsRepeatedItem(alItems) || Conf.getBoolean(CONF_STATE_REPEAT)) {
+        if (containsRepeatedItem(alItems) || Conf.getBoolean(Const.CONF_STATE_REPEAT)) {
           setRepeatModeToAll(true);
         } else {
           setRepeatModeToAll(false);
@@ -361,7 +361,7 @@ public final class FIFO implements Const {
         return;
       }
       Properties details = new Properties();
-      details.put(DETAIL_CURRENT_FILE, getCurrentFile());
+      details.put(Const.DETAIL_CURRENT_FILE, getCurrentFile());
       ObservationManager.notify(new Event(JajukEvents.FILE_FINISHED, details));
       if (current.isRepeat()) {
         // if the track was in repeat mode, don't remove it from the
@@ -388,7 +388,7 @@ public final class FIFO implements Const {
       }
       if (alFIFO.size() == 0) { // nothing more to play
         // check if we in continue mode
-        if (Conf.getBoolean(CONF_STATE_CONTINUE) && itemLast != null) {
+        if (Conf.getBoolean(Const.CONF_STATE_CONTINUE) && itemLast != null) {
           File file = null;
           // if some tracks are planned (can be 0 if planned size=0)
           if (alPlanned.size() != 0) {
@@ -440,29 +440,29 @@ public final class FIFO implements Const {
       UtilGUI.waiting();
       // intro workaround : intro mode is only read at track launch
       // and can't be set during the play
-      Conf.getBoolean(CONF_STATE_INTRO);
+      Conf.getBoolean(Const.CONF_STATE_INTRO);
       // notify to devices like commandJPanel to update UI when the play
       // button has been pressed
       ObservationManager.notify(new Event(JajukEvents.PLAYER_PLAY));
-      
+
       File fCurrent = getCurrentFile();
       boolean bPlayOK = false;
-      if (bFirstFile && !Conf.getBoolean(CONF_STATE_INTRO)
-          && Conf.getString(CONF_STARTUP_MODE).equals(STARTUP_MODE_LAST_KEEP_POS)) {
+      if (bFirstFile && !Conf.getBoolean(Const.CONF_STATE_INTRO)
+          && Conf.getString(Const.CONF_STARTUP_MODE).equals(Const.STARTUP_MODE_LAST_KEEP_POS)) {
         // if it is the first played file of the session and we are in
         // startup mode keep position
-        float fPos = Conf.getFloat(CONF_STARTUP_LAST_POSITION);
+        float fPos = Conf.getFloat(Const.CONF_STARTUP_LAST_POSITION);
         // play it
-        bPlayOK = Player.play(fCurrent, fPos, TO_THE_END);
+        bPlayOK = Player.play(fCurrent, fPos, Const.TO_THE_END);
       } else {
-        if (Conf.getBoolean(CONF_STATE_INTRO)) {
+        if (Conf.getBoolean(Const.CONF_STATE_INTRO)) {
           // intro mode enabled
           bPlayOK = Player.play(fCurrent, Float.parseFloat(Conf
-              .getString(CONF_OPTIONS_INTRO_BEGIN)) / 100, 1000 * Integer
-              .parseInt(Conf.getString(CONF_OPTIONS_INTRO_LENGTH)));
+              .getString(Const.CONF_OPTIONS_INTRO_BEGIN)) / 100, 1000 * Integer.parseInt(Conf
+              .getString(Const.CONF_OPTIONS_INTRO_LENGTH)));
         } else {
           // play it
-          bPlayOK = Player.play(fCurrent, 0.0f, TO_THE_END);
+          bPlayOK = Player.play(fCurrent, 0.0f, Const.TO_THE_END);
         }
       }
 
@@ -471,10 +471,10 @@ public final class FIFO implements Const {
         // Send an event that a track has been launched
         Properties pDetails = new Properties();
         if (itemLast != null) {
-          pDetails.put(DETAIL_OLD, itemLast);
+          pDetails.put(Const.DETAIL_OLD, itemLast);
         }
-        pDetails.put(DETAIL_CURRENT_FILE_ID, fCurrent.getID());
-        pDetails.put(DETAIL_CURRENT_DATE, Long.valueOf(System.currentTimeMillis()));
+        pDetails.put(Const.DETAIL_CURRENT_FILE_ID, fCurrent.getID());
+        pDetails.put(Const.DETAIL_CURRENT_DATE, Long.valueOf(System.currentTimeMillis()));
         ObservationManager.notify(new Event(JajukEvents.FILE_LAUNCHED, pDetails));
         // save the last played track (even files in error are stored here as
         // we need this for computes next track to launch after an error)
@@ -488,7 +488,7 @@ public final class FIFO implements Const {
       } else {
         // Problem launching the track, try next one
         try {
-          Thread.sleep(WAIT_AFTER_ERROR);
+          Thread.sleep(Const.WAIT_AFTER_ERROR);
         } catch (InterruptedException e) {
           Log.error(e);
         }
@@ -526,8 +526,7 @@ public final class FIFO implements Const {
   public static void computesPlanned(boolean bClear) {
     // Check if we are in continue mode and we have some tracks in FIFO, if
     // not : no planned tracks
-    if (!Conf.getBoolean(CONF_STATE_CONTINUE) || containsRepeat()
-        || alFIFO.size() == 0) {
+    if (!Conf.getBoolean(Const.CONF_STATE_CONTINUE) || containsRepeat() || alFIFO.size() == 0) {
       alPlanned.clear();
       return;
     }
@@ -536,7 +535,7 @@ public final class FIFO implements Const {
     }
     int iPlannedSize = alPlanned.size();
     // Add required tracks
-    for (int i = 0; i < (Conf.getInt(CONF_OPTIONS_VISIBLE_PLANNED) - iPlannedSize); i++) {
+    for (int i = 0; i < (Conf.getInt(Const.CONF_OPTIONS_VISIBLE_PLANNED) - iPlannedSize); i++) {
       StackItem item = null;
       StackItem siLast = null; // last item in fifo or planned
       // if planned stack contains yet some tracks
@@ -548,7 +547,7 @@ public final class FIFO implements Const {
       }
       try {
         // if random mode, add shuffle tracks
-        if (Conf.getBoolean(CONF_STATE_SHUFFLE)) {
+        if (Conf.getBoolean(Const.CONF_STATE_SHUFFLE)) {
           item = new StackItem(FileManager.getInstance().getShuffleFile(), false);
         } else {
           // if fifo contains yet some tracks to play
@@ -557,7 +556,7 @@ public final class FIFO implements Const {
           } else { // nothing in fifo, take first files in
             // collection
             List<File> files = FileManager.getInstance().getFiles();
-            //Collections.sort(files);
+            // Collections.sort(files);
             item = new StackItem(files.get(0), false);
           }
         }
@@ -615,7 +614,7 @@ public final class FIFO implements Const {
           // first is not repeated, just insert previous
           // file from collection
           StackItem item = new StackItem(FileManager.getInstance().getPreviousFile(
-              (alFIFO.get(0)).getFile()), Conf.getBoolean(CONF_STATE_REPEAT), true);
+              (alFIFO.get(0)).getFile()), Conf.getBoolean(Const.CONF_STATE_REPEAT), true);
           alFIFO.add(0, item);
           index = 0;
         }
@@ -718,7 +717,7 @@ public final class FIFO implements Const {
         pushCommand(itemLast, false);
       } else { // really nothing? play a shuffle track from collection
         pushCommand(new StackItem(FileManager.getInstance().getShuffleFile(), Conf
-            .getBoolean(CONF_STATE_REPEAT), false), false);
+            .getBoolean(Const.CONF_STATE_REPEAT), false), false);
       }
     } catch (Exception e) {
       Log.error(e);
@@ -775,8 +774,8 @@ public final class FIFO implements Const {
             fileNext = FileManager.getInstance().getNextFile(fileNext);
             // look for the next different album
             if (fileNext != null && !fileNext.getDirectory().equals(dir)) {
-              pushCommand(new StackItem(fileNext, Conf
-                  .getBoolean(CONF_STATE_REPEAT), false), false); // play
+              pushCommand(new StackItem(fileNext, Conf.getBoolean(Const.CONF_STATE_REPEAT), false),
+                  false); // play
               // it
               return;
             }
@@ -787,7 +786,7 @@ public final class FIFO implements Const {
         pushCommand(itemLast, false);
       } else { // really nothing? play a shuffle track from collection
         pushCommand(new StackItem(FileManager.getInstance().getShuffleFile(), Conf
-            .getBoolean(CONF_STATE_REPEAT), false), false);
+            .getBoolean(Const.CONF_STATE_REPEAT), false), false);
       }
     } catch (Exception e) {
       Log.error(e);
@@ -1027,9 +1026,8 @@ public final class FIFO implements Const {
           // take it as a which to reset repeat mode
           setRepeatModeToAll(false);
           Properties properties = new Properties();
-          properties.put(DETAIL_SELECTION, FALSE);
-          ObservationManager.notify(new Event(JajukEvents.REPEAT_MODE_STATUS_CHANGED,
-              properties));
+          properties.put(Const.DETAIL_SELECTION, Const.FALSE);
+          ObservationManager.notify(new Event(JajukEvents.REPEAT_MODE_STATUS_CHANGED, properties));
           remove(0, localindex - 1);
           localindex = 0;
         }
@@ -1153,7 +1151,7 @@ public final class FIFO implements Const {
    * Store current FIFO as a list
    */
   public static void commit() throws IOException {
-    java.io.File file = UtilSystem.getConfFileByPath(FILE_FIFO);
+    java.io.File file = UtilSystem.getConfFileByPath(Const.FILE_FIFO);
     PrintWriter writer = new PrintWriter(
         new BufferedOutputStream(new FileOutputStream(file, false)));
     int localindex = 0;

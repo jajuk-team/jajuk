@@ -76,6 +76,7 @@ import org.jajuk.ui.widgets.InformationJPanel;
 import org.jajuk.ui.widgets.JajukJToolbar;
 import org.jajuk.ui.widgets.SteppedComboBox;
 import org.jajuk.util.Conf;
+import org.jajuk.util.Const;
 import org.jajuk.util.Filter;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
@@ -211,7 +212,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
     for (PropertyMetaInformation meta : alSorters) {
       jcbSorter.addItem(meta.getHumanName());
     }
-    jcbSorter.setSelectedIndex(Conf.getInt(CONF_THUMBS_SORTER));
+    jcbSorter.setSelectedIndex(Conf.getInt(Const.CONF_THUMBS_SORTER));
     jcbSorter.addActionListener(this);
     JToolBar jtbSort = new JajukJToolbar();
     jtbSort.add(jlSorter);
@@ -231,7 +232,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
         jcbFilter.addItem(meta.getHumanName());
       }
     }
-    jcbFilter.setSelectedIndex(Conf.getInt(CONF_THUMBS_FILTER));
+    jcbFilter.setSelectedIndex(Conf.getInt(Const.CONF_THUMBS_FILTER));
     jcbFilter.addActionListener(this);
     jtfValue = new JTextField(5);
     jtfValue.setForeground(new Color(172, 172, 172));
@@ -272,7 +273,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 
     // --Bottom (less used) items
     jcbShowNoCover = new JCheckBox(Messages.getString("CatalogView.2"));
-    jcbShowNoCover.setSelected(Conf.getBoolean(CONF_THUMBS_SHOW_WITHOUT_COVER));
+    jcbShowNoCover.setSelected(Conf.getBoolean(Const.CONF_THUMBS_SHOW_WITHOUT_COVER));
     jcbShowNoCover.addActionListener(this);
 
     JLabel jlSize = new JLabel(Messages.getString("CatalogView.15"));
@@ -284,7 +285,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
     jsSize.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
     jsSize.addMouseWheelListener(new CatalogViewMouseWheelListener(jsSize));
 
-    int index = sizes.indexOf(Conf.getString(CONF_THUMBS_SIZE));
+    int index = sizes.indexOf(Conf.getString(Const.CONF_THUMBS_SIZE));
     if (index < 0) {
       index = 2; // 150x150 if a problem occurs
     }
@@ -324,19 +325,19 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
   private void initMetaInformation() {
     alFilters = new ArrayList<PropertyMetaInformation>(10);
     alFilters.add(null); // All
-    alFilters.add(TrackManager.getInstance().getMetaInformation(XML_TRACK_STYLE));
-    alFilters.add(TrackManager.getInstance().getMetaInformation(XML_TRACK_AUTHOR));
-    alFilters.add(TrackManager.getInstance().getMetaInformation(XML_TRACK_ALBUM));
-    alFilters.add(TrackManager.getInstance().getMetaInformation(XML_YEAR));
+    alFilters.add(TrackManager.getInstance().getMetaInformation(Const.XML_TRACK_STYLE));
+    alFilters.add(TrackManager.getInstance().getMetaInformation(Const.XML_TRACK_AUTHOR));
+    alFilters.add(TrackManager.getInstance().getMetaInformation(Const.XML_TRACK_ALBUM));
+    alFilters.add(TrackManager.getInstance().getMetaInformation(Const.XML_YEAR));
 
     alSorters = new ArrayList<PropertyMetaInformation>(10);
-    alSorters.add(TrackManager.getInstance().getMetaInformation(XML_TRACK_STYLE));
-    alSorters.add(TrackManager.getInstance().getMetaInformation(XML_TRACK_AUTHOR));
-    alSorters.add(TrackManager.getInstance().getMetaInformation(XML_TRACK_ALBUM));
-    alSorters.add(TrackManager.getInstance().getMetaInformation(XML_YEAR));
-    alSorters.add(TrackManager.getInstance().getMetaInformation(XML_TRACK_DISCOVERY_DATE));
-    alSorters.add(TrackManager.getInstance().getMetaInformation(XML_TRACK_RATE));
-    alSorters.add(TrackManager.getInstance().getMetaInformation(XML_TRACK_HITS));
+    alSorters.add(TrackManager.getInstance().getMetaInformation(Const.XML_TRACK_STYLE));
+    alSorters.add(TrackManager.getInstance().getMetaInformation(Const.XML_TRACK_AUTHOR));
+    alSorters.add(TrackManager.getInstance().getMetaInformation(Const.XML_TRACK_ALBUM));
+    alSorters.add(TrackManager.getInstance().getMetaInformation(Const.XML_YEAR));
+    alSorters.add(TrackManager.getInstance().getMetaInformation(Const.XML_TRACK_DISCOVERY_DATE));
+    alSorters.add(TrackManager.getInstance().getMetaInformation(Const.XML_TRACK_RATE));
+    alSorters.add(TrackManager.getInstance().getMetaInformation(Const.XML_TRACK_HITS));
   }
 
   /**
@@ -369,7 +370,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
     // n albums
     String sMessage = AlbumManager.getInstance().getElementCount() + " "
         + Messages.getString("CatalogView.16");
-    int albumsPerPage = Conf.getInt(CONF_CATALOG_PAGE_SIZE);
+    int albumsPerPage = Conf.getInt(Const.CONF_CATALOG_PAGE_SIZE);
     // n albums / page
     if (albumsPerPage > 0) {
       sMessage += " - " + albumsPerPage + Messages.getString("CatalogView.17");
@@ -454,14 +455,14 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
       }
       bNeedSearch = true;
       lDateTyped = System.currentTimeMillis();
-      Conf.setProperty(CONF_THUMBS_FILTER, Integer.toString(jcbFilter.getSelectedIndex()));
+      Conf.setProperty(Const.CONF_THUMBS_FILTER, Integer.toString(jcbFilter.getSelectedIndex()));
     } else if (e.getSource() == jcbSorter) {
       bNeedSearch = true;
       lDateTyped = System.currentTimeMillis();
-      Conf.setProperty(CONF_THUMBS_SORTER, Integer.toString(jcbSorter.getSelectedIndex()));
+      Conf.setProperty(Const.CONF_THUMBS_SORTER, Integer.toString(jcbSorter.getSelectedIndex()));
     } else if (e.getSource() == jcbShowNoCover) {
-      Conf.setProperty(CONF_THUMBS_SHOW_WITHOUT_COVER, Boolean
-          .toString(jcbShowNoCover.isSelected()));
+      Conf.setProperty(Const.CONF_THUMBS_SHOW_WITHOUT_COVER, Boolean.toString(jcbShowNoCover
+          .isSelected()));
       // display thumbs
       populateCatalog();
     } else if (e.getSource() == jbPrev) {
@@ -521,7 +522,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
       }
       super.mouseWheelMoved(mwe);
       // Store size
-      Conf.setProperty(CONF_THUMBS_SIZE, sizes.get(jsSize.getValue()));
+      Conf.setProperty(Const.CONF_THUMBS_SIZE, sizes.get(jsSize.getValue()));
       // display thumbs
       populateCatalog();
       // Add again the change listener
@@ -538,7 +539,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
         return;
       }
       // Store size
-      Conf.setProperty(CONF_THUMBS_SIZE, sizes.get(jsSize.getValue()));
+      Conf.setProperty(Const.CONF_THUMBS_SIZE, sizes.get(jsSize.getValue()));
       // display thumbs
       populateCatalog();
       // Adjust tooltips
@@ -676,7 +677,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
         for (Object it : albums) {
           Album album = (Album) it;
           // if hide unmounted tracks is set, continue
-          if (Conf.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED)) {
+          if (Conf.getBoolean(Const.CONF_OPTIONS_HIDE_UNMOUNTED)) {
             // test if album contains at least one mounted file
             List<Track> trackset = TrackManager.getInstance().getAssociatedTracks(album);
             if (trackset.size() > 0) {
@@ -717,7 +718,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
           }
         }
         // computes the number of pages
-        int iSize = Conf.getInt(CONF_CATALOG_PAGE_SIZE);
+        int iSize = Conf.getInt(Const.CONF_CATALOG_PAGE_SIZE);
         if (iSize == 0) {
           iNbPages = 1;
         } else {
@@ -748,9 +749,9 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
           if (page < (iNbPages - 1)) {
             // if last page, take simply to total number of
             // items to display
-            max = (page + 1) * Conf.getInt(CONF_CATALOG_PAGE_SIZE);
+            max = (page + 1) * Conf.getInt(Const.CONF_CATALOG_PAGE_SIZE);
           }
-          for (int i = page * Conf.getInt(CONF_CATALOG_PAGE_SIZE); i < max; i++) {
+          for (int i = page * Conf.getInt(Const.CONF_CATALOG_PAGE_SIZE); i < max; i++) {
             LocalAlbumThumbnail it = alItemsToDisplay.get(i);
             // populate item (construct UI) only when needed
             it.populate();

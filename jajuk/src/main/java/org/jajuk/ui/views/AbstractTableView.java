@@ -188,30 +188,30 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
 
     // Add generic menus
     jmiPlay = new JMenuItem(ActionManager.getAction(JajukActions.PLAY_SELECTION));
-    jmiPlay.putClientProperty(DETAIL_SELECTION, jtable.getSelection());
+    jmiPlay.putClientProperty(Const.DETAIL_SELECTION, jtable.getSelection());
     jtable.getMenu().add(jmiPlay);
 
     jmiPush = new JMenuItem(ActionManager.getAction(JajukActions.PUSH_SELECTION));
-    jmiPush.putClientProperty(DETAIL_SELECTION, jtable.getSelection());
+    jmiPush.putClientProperty(Const.DETAIL_SELECTION, jtable.getSelection());
     jtable.getMenu().add(jmiPush);
 
     jmiDelete = new JMenuItem(ActionManager.getAction(JajukActions.DELETE));
-    jmiDelete.putClientProperty(DETAIL_SELECTION, jtable.getSelection());
+    jmiDelete.putClientProperty(Const.DETAIL_SELECTION, jtable.getSelection());
     jtable.getMenu().add(jmiDelete);
 
     jmiPlayRepeat = new JMenuItem(ActionManager.getAction(JajukActions.PLAY_REPEAT_SELECTION));
-    jmiPlayRepeat.putClientProperty(DETAIL_SELECTION, jtable.getSelection());
+    jmiPlayRepeat.putClientProperty(Const.DETAIL_SELECTION, jtable.getSelection());
     jtable.getMenu().add(jmiPlayRepeat);
 
     jmiPlayShuffle = new JMenuItem(ActionManager.getAction(JajukActions.PLAY_SHUFFLE_SELECTION));
-    jmiPlayShuffle.putClientProperty(DETAIL_SELECTION, jtable.getSelection());
+    jmiPlayShuffle.putClientProperty(Const.DETAIL_SELECTION, jtable.getSelection());
     jtable.getMenu().add(jmiPlayShuffle);
 
     jmiBookmark = new JMenuItem(ActionManager.getAction(JajukActions.BOOKMARK_SELECTION));
-    jmiBookmark.putClientProperty(DETAIL_SELECTION, jtable.getSelection());
+    jmiBookmark.putClientProperty(Const.DETAIL_SELECTION, jtable.getSelection());
 
     jmiProperties = new JMenuItem(ActionManager.getAction(JajukActions.SHOW_PROPERTIES));
-    jmiProperties.putClientProperty(DETAIL_SELECTION, jtable.getSelection());
+    jmiProperties.putClientProperty(Const.DETAIL_SELECTION, jtable.getSelection());
     return null;
   }
 
@@ -286,7 +286,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
     initTable(); // perform type-specific init
     // Start filtering thread
     filteringThread.start();
-    //Register keystrokes
+    // Register keystrokes
     setKeystrokes();
   }
 
@@ -358,11 +358,12 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
             // Consume only events from the same perspective for
             // table/tree synchronization
             if (event.getDetails() != null
-                && !(event.getDetails().getProperty(DETAIL_ORIGIN).equals(getPerspective().getID()))) {
+                && !(event.getDetails().getProperty(Const.DETAIL_ORIGIN).equals(getPerspective()
+                    .getID()))) {
               return;
             }
             // Update model tree selection
-            model.setTreeSelection((Set<Item>) event.getDetails().get(DETAIL_SELECTION));
+            model.setTreeSelection((Set<Item>) event.getDetails().get(Const.DETAIL_SELECTION));
             // force redisplay to apply the filter
             jtable.clearSelection();
             // force filter to refresh
@@ -378,14 +379,15 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
           } else if (JajukEvents.VIEW_REFRESH_REQUEST.equals(subject)) {
             // force filter to refresh if the events has been triggered by the
             // table itself after a column change
-            JTable table = (JTable) event.getDetails().get(DETAIL_CONTENT);
+            JTable table = (JTable) event.getDetails().get(Const.DETAIL_CONTENT);
             if (table.equals(jtable)) {
               applyFilter(sAppliedCriteria, sAppliedFilter);
             }
           } else if (JajukEvents.RATE_CHANGED.equals(subject)) {
             // Ignore the refresh if the event comes from the table itself
             Properties properties = event.getDetails();
-            if (properties != null && AbstractTableView.this.equals(properties.get(DETAIL_ORIGIN))) {
+            if (properties != null
+                && AbstractTableView.this.equals(properties.get(Const.DETAIL_ORIGIN))) {
               return;
             }
             // Keep current selection and nb of rows
@@ -404,10 +406,10 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
             jtable.setModel(model);
             setCellEditors();
             // add new item in configuration cols
-            jtable.addColumnIntoConf((String) properties.get(DETAIL_CONTENT));
+            jtable.addColumnIntoConf((String) properties.get(Const.DETAIL_CONTENT));
             jtable.showColumns(jtable.getColumnsConf());
             applyFilter(sAppliedCriteria, sAppliedFilter);
-            jcbProperty.addItem(properties.get(DETAIL_CONTENT));
+            jcbProperty.addItem(properties.get(Const.DETAIL_CONTENT));
           } else if (JajukEvents.CUSTOM_PROPERTIES_REMOVE.equals(subject)) {
             Properties properties = event.getDetails();
             if (properties == null) { // can be null at view
@@ -419,10 +421,10 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
             model.addTableModelListener(AbstractTableView.this);
             jtable.setModel(model);
             setCellEditors();
-            jtable.addColumnIntoConf((String) properties.get(DETAIL_CONTENT));
+            jtable.addColumnIntoConf((String) properties.get(Const.DETAIL_CONTENT));
             jtable.showColumns(jtable.getColumnsConf());
             applyFilter(sAppliedCriteria, sAppliedFilter);
-            jcbProperty.removeItem(properties.get(DETAIL_CONTENT));
+            jcbProperty.removeItem(properties.get(Const.DETAIL_CONTENT));
           }
         } catch (Exception e) {
           Log.error(e);
@@ -436,12 +438,12 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
       }
     });
   }
-  
-   /**
+
+  /**
    * Add keystroke support on the tree
    */
   private void setKeystrokes() {
-    jtable.putClientProperty(DETAIL_SELECTION, jtable.getSelection());
+    jtable.putClientProperty(Const.DETAIL_SELECTION, jtable.getSelection());
     InputMap inputMap = jtable.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     ActionMap actionMap = jtable.getActionMap();
 
@@ -449,7 +451,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
     Action action = ActionManager.getAction(JajukActions.DELETE);
     inputMap.put(KeyStroke.getKeyStroke("DELETE"), "delete");
     actionMap.put("delete", action);
-    
+
     // Properties ALT/ENTER
     action = ActionManager.getAction(JajukActions.SHOW_PROPERTIES);
     inputMap.put(KeyStroke.getKeyStroke("alt ENTER"), "properties");
@@ -465,7 +467,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
       String sIdentifier = model.getIdentifier(col.getModelIndex());
       // create a combo box for styles, note that we can't add new
       // styles dynamically
-      if (XML_STYLE.equals(sIdentifier)) {
+      if (Const.XML_STYLE.equals(sIdentifier)) {
         JComboBox jcb = new JComboBox(StyleManager.getInstance().getStylesList());
         jcb.setEditable(true);
         AutoCompleteDecorator.decorate(jcb);
@@ -474,17 +476,17 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
       }
       // create a combo box for authors, note that we can't add new
       // authors dynamically
-      if (XML_AUTHOR.equals(sIdentifier)) {
+      if (Const.XML_AUTHOR.equals(sIdentifier)) {
         JComboBox jcb = new JComboBox(AuthorManager.getAuthorsList());
         jcb.setEditable(true);
         AutoCompleteDecorator.decorate(jcb);
         col.setCellEditor(new ComboBoxCellEditor(jcb));
       }
       // create a button for playing
-      else if (XML_PLAY.equals(sIdentifier)) {
+      else if (Const.XML_PLAY.equals(sIdentifier)) {
         col.setMinWidth(PLAY_COLUMN_SIZE);
         col.setMaxWidth(PLAY_COLUMN_SIZE);
-      } else if (XML_TRACK_RATE.equals(sIdentifier)) {
+      } else if (Const.XML_TRACK_RATE.equals(sIdentifier)) {
         col.setMinWidth(RATE_COLUMN_SIZE);
         col.setMaxWidth(RATE_COLUMN_SIZE);
       }
@@ -523,7 +525,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
       Set<File> filter = null;
       if (item instanceof File) {
         filter = new HashSet<File>();
-        filter.add((File)item);
+        filter.add((File) item);
       }
       Item itemNew = ItemManager.changeItem(item, sKey, oValue, filter);
       model.setItemAt(e.getFirstRow(), itemNew); // update model
@@ -533,7 +535,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
           InformationJPanel.INFORMATIVE);
       // Require refresh of all tables
       Properties properties = new Properties();
-      properties.put(DETAIL_ORIGIN, AbstractTableView.this);
+      properties.put(Const.DETAIL_ORIGIN, AbstractTableView.this);
       ObservationManager.notify(new Event(JajukEvents.RATE_CHANGED, properties));
 
     } catch (NoneAccessibleFileException none) {

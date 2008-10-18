@@ -43,7 +43,8 @@ public class NextTrackAction extends JajukAction {
   private static final long serialVersionUID = 1L;
 
   NextTrackAction() {
-    super(Messages.getString("JajukWindow.14"), IconLoader.getIcon(JajukIcons.PLAYER_NEXT), "F10", false, true);
+    super(Messages.getString("JajukWindow.14"), IconLoader.getIcon(JajukIcons.PLAYER_NEXT), "F10",
+        false, true);
     setShortDescription(Messages.getString("JajukWindow.30"));
   }
 

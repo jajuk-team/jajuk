@@ -26,6 +26,7 @@ import org.jajuk.services.players.FIFO;
 import org.jajuk.services.webradio.WebRadio;
 import org.jajuk.services.webradio.WebRadioManager;
 import org.jajuk.util.Conf;
+import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
@@ -46,7 +47,7 @@ public class WebRadioAction extends JajukAction {
       @Override
       public void run() {
         WebRadio radio = WebRadioManager.getInstance().getWebRadioByName(
-            Conf.getString(CONF_DEFAULT_WEB_RADIO));
+            Conf.getString(Const.CONF_DEFAULT_WEB_RADIO));
         FIFO.launchRadio(radio);
       }
     }.start();

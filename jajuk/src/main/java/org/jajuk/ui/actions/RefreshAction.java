@@ -28,6 +28,7 @@ import javax.swing.JComponent;
 import org.jajuk.base.Device;
 import org.jajuk.base.Directory;
 import org.jajuk.base.Item;
+import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
@@ -49,7 +50,8 @@ public class RefreshAction extends JajukAction {
     JComponent source = (JComponent) e.getSource();
     // Get required data from the tree (selected node and node type)
     // A single item (directory or device) is allowed
-    final List<Item> alSelected = (ArrayList<Item>) source.getClientProperty(DETAIL_SELECTION);
+    final List<Item> alSelected = (ArrayList<Item>) source
+        .getClientProperty(Const.DETAIL_SELECTION);
     Item item = alSelected.get(0);
     final Directory dir;
     if (item instanceof Directory) {

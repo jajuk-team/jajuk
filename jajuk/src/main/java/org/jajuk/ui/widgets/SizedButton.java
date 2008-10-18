@@ -33,9 +33,9 @@ public class SizedButton extends JButton {
 
   private static final long serialVersionUID = -3859493434696496345L;
 
-  //private int width = 16;
+  // private int width = 16;
 
-  //private int height = 16;
+  // private int height = 16;
 
   private boolean showText = false;
 
@@ -62,8 +62,8 @@ public class SizedButton extends JButton {
    */
   public SizedButton(Action action, int width, int height, boolean bText) {
     super(action);
-    //this.width = width;
-    //this.height = height;
+    // this.width = width;
+    // this.height = height;
     this.showText = bText;
   }
 

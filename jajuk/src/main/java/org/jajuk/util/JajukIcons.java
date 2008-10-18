@@ -373,16 +373,16 @@ public enum JajukIcons {
   ALARM,
 
   BAN,
-  
+
   PREFERENCE_HATE,
-  
+
   PREFERENCE_DONTLIKE,
-  
+
   PREFERENCE_DONTLIKEMUCH,
 
   PREFERENCE_LIKE,
-  
+
   PREFERENCE_LOVE,
-  
+
   PREFERENCE_ADORE,
 }

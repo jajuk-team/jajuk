@@ -81,7 +81,8 @@ public class Transition {
   @Override
   public int hashCode() {
     // for now just combine name and id to a hashcode
-    // idea taken from http://www.geocities.com/technofundo/tech/java/equalhash.html
+    // idea taken from
+    // http://www.geocities.com/technofundo/tech/java/equalhash.html
     int hash = 7;
     hash = 31 * hash + getFrom().hashCode();
     hash = 31 * hash + getTo().hashCode();

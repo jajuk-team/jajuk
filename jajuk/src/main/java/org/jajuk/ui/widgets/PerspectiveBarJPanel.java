@@ -46,7 +46,7 @@ import org.jdesktop.swingx.JXPanel;
 /**
  * Menu bar used to choose the current perspective.
  */
-public final class PerspectiveBarJPanel extends JXPanel implements Const {
+public final class PerspectiveBarJPanel extends JXPanel {
 
   private static final long serialVersionUID = 1L;
 
@@ -91,14 +91,15 @@ public final class PerspectiveBarJPanel extends JXPanel implements Const {
     while (it.hasNext()) {
       final IPerspective perspective = it.next();
       Font font = FontManager.getInstance().getFont(JajukFont.PERSPECTIVES);
-      int iconSize = Conf.getInt(CONF_PERSPECTIVE_ICONS_SIZE);
+      int iconSize = Conf.getInt(Const.CONF_PERSPECTIVE_ICONS_SIZE);
       JButton jb = new JButton(perspective.getIcon());
       jb.setToolTipText(perspective.getDesc());
       jb.setBorder(new EmptyBorder(5, 5, 0, 5));
       if (iconSize >= 32) {
         int glyphSize = font.getSize();
         // Limit perspective label to icon width
-        String desc = UtilString.getLimitedString(perspective.getDesc(), 3 + (iconSize / glyphSize));
+        String desc = UtilString
+            .getLimitedString(perspective.getDesc(), 3 + (iconSize / glyphSize));
         // No text for icon < 32 pixels in width: too narrow
         jb.setText(desc);
       }

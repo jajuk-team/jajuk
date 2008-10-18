@@ -22,7 +22,6 @@ package org.jajuk.events;
 
 import java.util.Properties;
 
-
 /**
  * Jajuk event (Observer pattern)
  */
@@ -85,7 +84,7 @@ public class Event {
    */
   @Override
   public boolean equals(Object obj) {
-    if(!(obj instanceof Event)) {
+    if (!(obj instanceof Event)) {
       return false;
     }
 
@@ -104,14 +103,15 @@ public class Event {
 
   @Override
   public int hashCode() {
-    // very simple implementation, needs to be revisited if this object is used heavily in HashMaps/HashSets
+    // very simple implementation, needs to be revisited if this object is used
+    // heavily in HashMaps/HashSets
     // for now just combine name and id to a hashcode
-    // idea taken from http://www.geocities.com/technofundo/tech/java/equalhash.html
+    // idea taken from
+    // http://www.geocities.com/technofundo/tech/java/equalhash.html
     int hash = 7;
     hash = 31 * hash + subject.hashCode();
     hash = 31 * hash + pDetails.hashCode();
     return hash;
   }
-  
-  
+
 }

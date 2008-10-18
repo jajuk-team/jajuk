@@ -50,8 +50,8 @@ import org.jajuk.util.Messages;
 /**
  * Alarm Clock Dialog window
  */
-public class AlarmClockDialog extends JDialog implements ActionListener, ItemListener,
-    Const, ListSelectionListener {
+public class AlarmClockDialog extends JDialog implements ActionListener, ItemListener, Const,
+    ListSelectionListener {
   private static final long serialVersionUID = 1L;
 
   JPanel jpAlarmClock;
@@ -236,9 +236,8 @@ public class AlarmClockDialog extends JDialog implements ActionListener, ItemLis
   }
 
   public void actionPerformed(final ActionEvent e) {
-    Conf.setProperty(CONF_ALARM_ACTION, "" + scbAlarmOption.getSelectedItem());
-    if (Conf.getString(Const.CONF_ALARM_ACTION).equals(
-        Const.ALARM_START_MODE)) {
+    Conf.setProperty(Const.CONF_ALARM_ACTION, "" + scbAlarmOption.getSelectedItem());
+    if (Conf.getString(Const.CONF_ALARM_ACTION).equals(Const.ALARM_START_MODE)) {
       jlChoice.setEnabled(true);
       jrbShuffle.setEnabled(true);
       jrbBestof.setEnabled(true);
@@ -301,22 +300,18 @@ public class AlarmClockDialog extends JDialog implements ActionListener, ItemLis
     Conf.setProperty(ALARM_TIME_SECONDS, "" + jtfSeconds.getText());
     Conf.setProperty(ALARM_MESSAGE, "" + jtfMessage.getText());
     if (jcbDaily.isSelected()) {
-      Conf.setProperty(CONF_ALARM_DAILY, "" + true);
+      Conf.setProperty(Const.CONF_ALARM_DAILY, "" + true);
     } else {
-      Conf.setProperty(CONF_ALARM_DAILY, "" + false);
+      Conf.setProperty(Const.CONF_ALARM_DAILY, "" + false);
     }
     if (jrbShuffle.isSelected()) {
-      Conf.setProperty(Const.CONF_ALARM_MODE,
-          Const.STARTUP_MODE_SHUFFLE);
+      Conf.setProperty(Const.CONF_ALARM_MODE, Const.STARTUP_MODE_SHUFFLE);
     } else if (jrbFile.isSelected()) {
-      Conf.setProperty(Const.CONF_ALARM_MODE,
-          Const.STARTUP_MODE_FILE);
+      Conf.setProperty(Const.CONF_ALARM_MODE, Const.STARTUP_MODE_FILE);
     } else if (jrbBestof.isSelected()) {
-      Conf.setProperty(Const.CONF_ALARM_MODE,
-          Const.STARTUP_MODE_BESTOF);
+      Conf.setProperty(Const.CONF_ALARM_MODE, Const.STARTUP_MODE_BESTOF);
     } else if (jrbNovelties.isSelected()) {
-      Conf.setProperty(Const.CONF_ALARM_MODE,
-          Const.STARTUP_MODE_NOVELTIES);
+      Conf.setProperty(Const.CONF_ALARM_MODE, Const.STARTUP_MODE_NOVELTIES);
     }
   }
 

@@ -42,8 +42,8 @@ public class PlayHighlighterPredicate implements HighlightPredicate {
   }
 
   public boolean isHighlighted(Component renderer, ComponentAdapter adapter) {
-    if (FIFO.isStopped()){
-     return false; 
+    if (FIFO.isStopped()) {
+      return false;
     }
     Item item = model.getItemAt(adapter.row);
     if (item instanceof File) {

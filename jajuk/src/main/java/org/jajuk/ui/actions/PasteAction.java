@@ -41,6 +41,7 @@ import org.jajuk.events.Event;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.ui.helpers.ItemMoveManager;
+import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
@@ -54,7 +55,8 @@ public class PasteAction extends JajukAction {
   private static final long serialVersionUID = 1L;
 
   PasteAction() {
-    super(Messages.getString("ActionMove.0"), IconLoader.getIcon(JajukIcons.PASTE), "ctrl V", true, false);
+    super(Messages.getString("ActionMove.0"), IconLoader.getIcon(JajukIcons.PASTE), "ctrl V", true,
+        false);
     setShortDescription(Messages.getString("ActionMove.0"));
   }
 
@@ -62,7 +64,7 @@ public class PasteAction extends JajukAction {
   @SuppressWarnings("unchecked")
   public void perform(ActionEvent e) {
     JComponent source = (JComponent) e.getSource();
-    final List<Item> alSelected = (List<Item>) source.getClientProperty(DETAIL_SELECTION);
+    final List<Item> alSelected = (List<Item>) source.getClientProperty(Const.DETAIL_SELECTION);
     final List<Item> moveItems = ItemMoveManager.getInstance().getAll();
     final ItemMoveManager.MoveActions moveAction = ItemMoveManager.getInstance().getAction();
 
@@ -136,14 +138,14 @@ public class PasteAction extends JajukAction {
               UtilSystem.copyRecursively(src, dst);
               UtilSystem.deleteDir(src);
               DirectoryManager.getInstance().removeDirectory(d.getID());
-              destDir.refresh(false,null);
+              destDir.refresh(false, null);
             } catch (Exception ioe) {
               Log.error(131, ioe);
               Messages.showErrorMessage(131);
             }
           }
           try {
-            destDir.refresh(false,null);
+            destDir.refresh(false, null);
           } catch (JajukException e) {
             Log.error(e);
             Messages.showErrorMessage(e.getCode());
@@ -184,7 +186,7 @@ public class PasteAction extends JajukAction {
             }
           }
           try {
-            destDir.refresh(false,null);
+            destDir.refresh(false, null);
           } catch (JajukException e) {
             Log.error(e);
             Messages.showErrorMessage(e.getCode());

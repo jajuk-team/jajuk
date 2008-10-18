@@ -38,7 +38,7 @@ import org.jajuk.util.log.Log;
 /**
  * All code related to jajuk exit
  */
-public class ExitService extends Thread implements Const {
+public class ExitService extends Thread {
 
   /** Exit code */
   private static int iExitCode = 0;
@@ -67,7 +67,7 @@ public class ExitService extends Thread implements Const {
         // Commit webradios
         WebRadioManager.getInstance().commit();
         // Store webradio state
-        Conf.setProperty(CONF_WEBRADIO_WAS_PLAYING, Boolean.toString(FIFO.isPlayingRadio()));
+        Conf.setProperty(Const.CONF_WEBRADIO_WAS_PLAYING, Boolean.toString(FIFO.isPlayingRadio()));
 
         // commit configuration
         org.jajuk.util.Conf.commit();
@@ -87,14 +87,14 @@ public class ExitService extends Thread implements Const {
         }
         // Commit collection if not still refreshing
         if (!DeviceManager.getInstance().isAnyDeviceRefreshing()) {
-          Collection.commit(UtilSystem.getConfFileByPath(FILE_COLLECTION));
+          Collection.commit(UtilSystem.getConfFileByPath(Const.FILE_COLLECTION));
         }
         /* release keystrokes resources */
         JajukAction.cleanup();
 
         // Remove localhost_<user> session files
         // (can occur when network is not available)
-        File[] files = UtilSystem.getConfFileByPath(FILE_SESSIONS).listFiles();
+        File[] files = UtilSystem.getConfFileByPath(Const.FILE_SESSIONS).listFiles();
         if (files != null) {
           for (File element : files) {
             if (element.getName().indexOf("localhost") != -1) {

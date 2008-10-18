@@ -35,7 +35,7 @@ import org.jajuk.util.error.JajukException;
  * <p>
  * Singleton
  */
-public final class Log implements Const {
+public final class Log {
   // verbosity consts
   public static final int FATAL = 0;
 
@@ -75,15 +75,16 @@ public final class Log implements Const {
   private Log() {
     try {
       // set env variable used in the log4j conf file
-      System.setProperty("jajuk.log", UtilSystem.getConfFileByPath(FILE_LOGS).getAbsolutePath());
-      DOMConfigurator.configure(FILE_LOG4J_CONF);
+      System.setProperty("jajuk.log", UtilSystem.getConfFileByPath(Const.FILE_LOGS)
+          .getAbsolutePath());
+      DOMConfigurator.configure(Const.FILE_LOG4J_CONF);
       loggerRoot = Logger.getRootLogger();
       logger = Logger.getLogger(Log.class.getName());
       loggerHttp = Logger.getLogger("org.apache.commons.httpclient");
-      alSpool = new ArrayList<String>(FEEDBACK_LINES);
+      alSpool = new ArrayList<String>(Const.FEEDBACK_LINES);
       // message for logging system start
       Log.info("******************JAJUK******************");
-      Log.info("Version: " + JAJUK_VERSION);
+      Log.info("Version: " + Const.JAJUK_VERSION);
     } catch (Exception e) {
       Log.stack(e);
     }
@@ -390,7 +391,7 @@ public final class Log implements Const {
    */
   private static void spool(String sMessage) {
     // we have to make some room
-    if (alSpool.size() > FEEDBACK_LINES) {
+    if (alSpool.size() > Const.FEEDBACK_LINES) {
       alSpool.remove(0);
     }
     try {
@@ -424,7 +425,7 @@ public final class Log implements Const {
    */
   @SuppressWarnings("unchecked")
   public static List<String> getSpool() {
-    return (List<String>) ((ArrayList<String>)alSpool).clone();
+    return (List<String>) ((ArrayList<String>) alSpool).clone();
   }
 
 }

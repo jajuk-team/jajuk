@@ -35,11 +35,11 @@ import org.jajuk.util.log.Log;
  * options to create actions, just leaving open the necessity of implementing
  * the {@link #actionPerformed(java.awt.event.ActionEvent)} method.
  */
-public abstract class JajukAction extends AbstractAction implements Const {
+public abstract class JajukAction extends AbstractAction {
 
   /** Is this action an hotkey ? */
   private boolean bHotkey = false;
-  
+
   /** enable state */
   private boolean bEnable = true;
 
@@ -48,7 +48,7 @@ public abstract class JajukAction extends AbstractAction implements Const {
     if (UtilSystem.isUnderWindows()) {
       try {
         Class.forName("org.jajuk.ui.actions.WindowsHotKeyManager")
-            .getMethod("registerJIntellitype").invoke(null, (Object[])null);
+            .getMethod("registerJIntellitype").invoke(null, (Object[]) null);
       } catch (Exception e) {
         Log.error(e);
       }
@@ -76,7 +76,7 @@ public abstract class JajukAction extends AbstractAction implements Const {
   protected JajukAction(String pName, Icon icon, KeyStroke stroke, boolean enabled, boolean bHotkey) {
     // check hotkeys are enabled (false by default)
     this.bHotkey = UtilSystem.isUnderWindows() && bHotkey
-        && Conf.getBoolean(CONF_OPTIONS_HOTKEYS);
+        && Conf.getBoolean(Const.CONF_OPTIONS_HOTKEYS);
     String name = pName;
     if (name != null) {
       int mnemonic = ActionUtil.getMnemonic(name);
@@ -373,7 +373,7 @@ public abstract class JajukAction extends AbstractAction implements Const {
   public static void cleanup() throws Exception {
     if (UtilSystem.isUnderWindows()) {
       Class.forName("org.jajuk.ui.actions.WindowsHotKeyManager").getMethod("cleanup").invoke(null,
-          (Object[])null);
+          (Object[]) null);
     }
   }
 
@@ -384,19 +384,20 @@ public abstract class JajukAction extends AbstractAction implements Const {
   public boolean isHotkey() {
     return this.bHotkey;
   }
-  
+
   /**
    * Enable or disable the action
+   * 
    * @param enable
    */
-  protected void enable(boolean enable){
+  protected void enable(boolean enable) {
     this.bEnable = enable;
   }
-  
+
   /**
    * @return enable state for the action
    */
-  protected boolean isEnable(){
+  protected boolean isEnable() {
     return this.bEnable;
   }
 

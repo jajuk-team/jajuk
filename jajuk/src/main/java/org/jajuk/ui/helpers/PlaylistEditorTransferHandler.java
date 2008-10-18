@@ -44,7 +44,7 @@ import org.jajuk.util.log.Log;
  * DND handler for table
  */
 
-public class PlaylistEditorTransferHandler extends TransferHandler implements Const {
+public class PlaylistEditorTransferHandler extends TransferHandler {
 
   private static final long serialVersionUID = 1L;
 
@@ -124,10 +124,9 @@ public class PlaylistEditorTransferHandler extends TransferHandler implements Co
         List<File> alSelectedFiles = UtilFeatures.getPlayableFiles((Item) oData);
         // queue case
         if (plf.getType() == Playlist.Type.QUEUE) {
-          FIFO.push(
-              UtilFeatures.createStackItems(UtilFeatures.applyPlayOption(alSelectedFiles), Conf
-                  .getBoolean(CONF_STATE_REPEAT), true),
-              Conf.getBoolean(CONF_OPTIONS_DEFAULT_ACTION_DROP));
+          FIFO.push(UtilFeatures.createStackItems(UtilFeatures.applyPlayOption(alSelectedFiles),
+              Conf.getBoolean(Const.CONF_STATE_REPEAT), true), Conf
+              .getBoolean(Const.CONF_OPTIONS_DEFAULT_ACTION_DROP));
         }
         // normal or new playlist case
         else if (plf.getType() == Playlist.Type.NORMAL || plf.getType() == Playlist.Type.NEW

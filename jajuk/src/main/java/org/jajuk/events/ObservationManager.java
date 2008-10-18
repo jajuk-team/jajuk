@@ -27,7 +27,6 @@ import java.util.Properties;
 import java.util.Queue;
 import java.util.Set;
 
-import org.jajuk.util.Const;
 import org.jajuk.util.log.Log;
 
 /**
@@ -35,7 +34,7 @@ import org.jajuk.util.log.Log;
  * <p>
  * All notification methods are synchronized to assure event order
  */
-public final class ObservationManager implements Const {
+public final class ObservationManager {
 
   /** one event -> list of components */
   static ObserverRegistry observerRegistry = new ObserverRegistry();
@@ -44,8 +43,7 @@ public final class ObservationManager implements Const {
    * Last event for a given subject (used for new objects that just registrated
    * to this subject)
    */
-  static Map<JajukEvents, Properties> hLastEventBySubject = new HashMap<JajukEvents, Properties>(
-      10);
+  static Map<JajukEvents, Properties> hLastEventBySubject = new HashMap<JajukEvents, Properties>(10);
 
   static volatile Queue<Event> vFIFO = new LinkedList<Event>();
 
@@ -60,10 +58,10 @@ public final class ObservationManager implements Const {
         }
 
         final Event event = vFIFO.poll();
-        if(event != null) {
+        if (event != null) {
           new Thread("Observation Manager Sync Notify Thread") { // launch
-                                                                  // action
-                                                                  // asynchronously
+            // action
+            // asynchronously
             @Override
             public void run() {
               notifySync(event);
@@ -74,12 +72,12 @@ public final class ObservationManager implements Const {
     }
   };
 
-  /** 
+  /**
    * Empty constructor to avoid instantiating utility class
    */
   private ObservationManager() {
   }
-  
+
   /**
    * Register a component for a given subject
    * 

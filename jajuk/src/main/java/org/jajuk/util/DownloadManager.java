@@ -48,19 +48,19 @@ import org.jajuk.util.log.Log;
 /**
  * Manages network downloads
  */
-public final class DownloadManager implements Const {
+public final class DownloadManager {
 
   private static Proxy proxy;
 
   /** Maps urls and associated files in cache */
   private static Map<URI, String> urlCache = new HashMap<URI, String>(100);
 
-  /** 
+  /**
    * private constructor to avoid instantiating utility class
    */
   private DownloadManager() {
   }
-  
+
   /**
    * @param search
    * @return a list of urls
@@ -72,7 +72,7 @@ public final class DownloadManager implements Const {
       return alOut;
     }
     // Select cover size
-    int i = Conf.getInt(CONF_COVERS_SIZE);
+    int i = Conf.getInt(Const.CONF_COVERS_SIZE);
     String size = null;
     switch (i) {
     case 0: // small only
@@ -129,7 +129,8 @@ public final class DownloadManager implements Const {
    *          to download
    * @param Use
    *          cache : store file in image cache
-   * @throws IOException If a network problem occurs.
+   * @throws IOException
+   *           If a network problem occurs.
    */
   public static void download(URL url, File fDestination) throws IOException {
     HttpURLConnection connection = NetworkUtils.getConnection(url, proxy);
@@ -151,8 +152,11 @@ public final class DownloadManager implements Const {
    * @param url
    *          to download
    * @return created file or null if a problem occurred
-   * @throws URISyntaxException If the URL cannot be converted to an URI. 
-   * @throws IOException If a network problem occurs or a temporary file cannot be written.
+   * @throws URISyntaxException
+   *           If the URL cannot be converted to an URI.
+   * @throws IOException
+   *           If a network problem occurs or a temporary file cannot be
+   *           written.
    */
   public static File downloadCover(URL url, String pID) throws URISyntaxException, IOException {
     String id = pID;
@@ -204,16 +208,16 @@ public final class DownloadManager implements Const {
    * 
    */
   public synchronized static void setDefaultProxySettings() {
-    String sProxyHost = Conf.getString(CONF_NETWORK_PROXY_HOSTNAME);
-    int iProxyPort = Conf.getInt(CONF_NETWORK_PROXY_PORT);
-    String sProxyLogin = Conf.getString(CONF_NETWORK_PROXY_LOGIN);
-    String sProxyPwd = Conf.getString(CONF_NETWORK_PROXY_PWD);
+    String sProxyHost = Conf.getString(Const.CONF_NETWORK_PROXY_HOSTNAME);
+    int iProxyPort = Conf.getInt(Const.CONF_NETWORK_PROXY_PORT);
+    String sProxyLogin = Conf.getString(Const.CONF_NETWORK_PROXY_LOGIN);
+    String sProxyPwd = Conf.getString(Const.CONF_NETWORK_PROXY_PWD);
     Type proxyType = Type.DIRECT;
-    if (Conf.getBoolean(CONF_NETWORK_USE_PROXY)) {
+    if (Conf.getBoolean(Const.CONF_NETWORK_USE_PROXY)) {
       // Set default proxy value
-      if (PROXY_TYPE_HTTP.equals(Conf.getString(CONF_NETWORK_PROXY_TYPE))) {
+      if (Const.PROXY_TYPE_HTTP.equals(Conf.getString(Const.CONF_NETWORK_PROXY_TYPE))) {
         proxyType = Type.HTTP;
-      } else if (PROXY_TYPE_SOCKS.equals(Conf.getString(CONF_NETWORK_PROXY_TYPE))) {
+      } else if (Const.PROXY_TYPE_SOCKS.equals(Conf.getString(Const.CONF_NETWORK_PROXY_TYPE))) {
         proxyType = Type.SOCKS;
       }
       try {
@@ -226,21 +230,20 @@ public final class DownloadManager implements Const {
     // Set system defaults proxy values, if we don't use DownloadManager
     // methods
     // see http://java.sun.com/j2se/1.4.2/docs/guide/net/properties.html
-    if (Conf.getBoolean(CONF_NETWORK_USE_PROXY)) {
+    if (Conf.getBoolean(Const.CONF_NETWORK_USE_PROXY)) {
       System.getProperties().put("proxySet", "true");
-      if (PROXY_TYPE_HTTP.equals(Conf.getString(CONF_NETWORK_PROXY_TYPE))) {
+      if (Const.PROXY_TYPE_HTTP.equals(Conf.getString(Const.CONF_NETWORK_PROXY_TYPE))) {
         System.setProperty("http.proxyHost", sProxyHost);
         System.setProperty("http.proxyPort", Integer.toString(iProxyPort));
-      } else if (PROXY_TYPE_SOCKS.equals(Conf.getString(CONF_NETWORK_PROXY_TYPE))) {
+      } else if (Const.PROXY_TYPE_SOCKS.equals(Conf.getString(Const.CONF_NETWORK_PROXY_TYPE))) {
         System.setProperty("socksProxyHost", sProxyHost);
         System.setProperty("socksProxyPort ", Integer.toString(iProxyPort));
       }
       Authenticator.setDefault(new Authenticator() {
         @Override
         protected PasswordAuthentication getPasswordAuthentication() {
-          String user = Conf.getString(CONF_NETWORK_PROXY_LOGIN);
-          char[] pwd = UtilString.rot13(Conf.getString(CONF_NETWORK_PROXY_PWD))
-              .toCharArray();
+          String user = Conf.getString(Const.CONF_NETWORK_PROXY_LOGIN);
+          char[] pwd = UtilString.rot13(Conf.getString(Const.CONF_NETWORK_PROXY_PWD)).toCharArray();
           return new PasswordAuthentication(user, pwd);
         }
       });

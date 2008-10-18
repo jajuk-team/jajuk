@@ -32,6 +32,7 @@ import org.jajuk.ui.helpers.ILaunchCommand;
 import org.jajuk.ui.helpers.JajukTableModel;
 import org.jajuk.ui.helpers.TracksTableModel;
 import org.jajuk.util.Conf;
+import org.jajuk.util.Const;
 import org.jajuk.util.Messages;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
@@ -69,9 +70,9 @@ public class TracksTableView extends AbstractTableView {
     TracksTableView.super.construct();
     // Track menu
     jmiTrackPlayAlbum = new JMenuItem(ActionManager.getAction(JajukActions.PLAY_ALBUM_SELECTION));
-    jmiTrackPlayAlbum.putClientProperty(DETAIL_SELECTION, jtable.getSelection());
+    jmiTrackPlayAlbum.putClientProperty(Const.DETAIL_SELECTION, jtable.getSelection());
     jmiTrackPlayAuthor = new JMenuItem(ActionManager.getAction(JajukActions.PLAY_AUTHOR_SELECTION));
-    jmiTrackPlayAuthor.putClientProperty(DETAIL_SELECTION, jtable.getSelection());
+    jmiTrackPlayAuthor.putClientProperty(Const.DETAIL_SELECTION, jtable.getSelection());
     jtable.getMenu().add(jmiTrackPlayAlbum);
     jtable.getMenu().add(jmiTrackPlayAuthor);
     // Add this generic menu item manually to ensure it's the last one in
@@ -96,8 +97,8 @@ public class TracksTableView extends AbstractTableView {
           if (file != null) {
             try {
               // launch it
-              FIFO.push(new StackItem(file, Conf.getBoolean(CONF_STATE_REPEAT)), Conf
-                  .getBoolean(CONF_OPTIONS_PUSH_ON_CLICK));
+              FIFO.push(new StackItem(file, Conf.getBoolean(Const.CONF_STATE_REPEAT)), Conf
+                  .getBoolean(Const.CONF_OPTIONS_PUSH_ON_CLICK));
 
             } catch (JajukException je) {
               Log.error(je);
@@ -125,7 +126,7 @@ public class TracksTableView extends AbstractTableView {
    */
   @Override
   void initTable() {
-    boolean bEditable = Conf.getBoolean(CONF_TRACKS_TABLE_EDITION);
+    boolean bEditable = Conf.getBoolean(Const.CONF_TRACKS_TABLE_EDITION);
     jtbEditable.setSelected(bEditable);
   }
 

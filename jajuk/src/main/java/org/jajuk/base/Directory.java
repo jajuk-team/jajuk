@@ -83,9 +83,9 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
   public Directory(String sId, String sName, Directory dParent, Device device) {
     super(sId, sName);
     this.dParent = dParent;
-    setProperty(XML_DIRECTORY_PARENT, (dParent == null ? "-1" : dParent.getID()));
+    setProperty(Const.XML_DIRECTORY_PARENT, (dParent == null ? "-1" : dParent.getID()));
     this.device = device;
-    setProperty(XML_DEVICE, device.getID());
+    setProperty(Const.XML_DEVICE, device.getID());
     this.fio = new File(device.getUrl() + getRelativePath());
   }
 
@@ -273,8 +273,8 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
       return;
     }
     for (int i = 0; i < filelist.length; i++) {
-      //Leave ASAP if exit request
-      if (ExitService.isExiting()){
+      // Leave ASAP if exit request
+      if (ExitService.isExiting()) {
         return;
       }
       try { // check errors for each file
@@ -286,7 +286,7 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
           continue;
         }
         boolean bIsMusic = (Boolean) TypeManager.getInstance().getTypeByExtension(
-            UtilSystem.getExtension(filelist[i])).getValue(XML_TYPE_IS_MUSIC);
+            UtilSystem.getExtension(filelist[i])).getValue(Const.XML_TYPE_IS_MUSIC);
         // Ignore iTunes files
         if (filelist[i].getName().startsWith("._")) {
           continue;
@@ -351,7 +351,7 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
           long lastModified = filelist[i].lastModified();
 
           // Use file date if the "force file date" option is used
-          if (Conf.getBoolean(CONF_FORCE_FILE_DATE)) {
+          if (Conf.getBoolean(Const.CONF_FORCE_FILE_DATE)) {
             track.setDiscoveryDate(new Date(lastModified));
           } else if (TrackManager.getInstance().getElementCount() > trackNumber) {
             // Update discovery date only if it is a new track
@@ -369,13 +369,13 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
           org.jajuk.base.File file = FileManager.getInstance().registerFile(sId,
               filelist[i].getName(), this, track, filelist[i].length(), lQuality);
           // Set file date
-          file.setProperty(XML_FILE_DATE, new Date(lastModified));
+          file.setProperty(Const.XML_FILE_DATE, new Date(lastModified));
           // Comment is at the track level, note that we take last
           // found file comment but we changing a comment, we will
           // apply to all files for a track
           track.setComment(sComment);
           // Make sure to refresh file size
-          file.setProperty(XML_SIZE, filelist[i].length());
+          file.setProperty(Const.XML_SIZE, filelist[i].length());
         } else { // playlist
           String sId = PlaylistManager.createID(filelist[i].getName(), this);
           Playlist plfRef = PlaylistManager.getInstance().getPlaylistByID(sId);
@@ -473,7 +473,7 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
    * @return whether this item should be hidden with hide option
    */
   public boolean shouldBeHidden() {
-    if (getDevice().isMounted() || !Conf.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED)) {
+    if (getDevice().isMounted() || !Conf.getBoolean(Const.CONF_OPTIONS_HIDE_UNMOUNTED)) {
       return false;
     }
     return true;
@@ -500,7 +500,7 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
    */
   @Override
   public String getHumanValue(String sKey) {
-    if (XML_DIRECTORY_PARENT.equals(sKey)) {
+    if (Const.XML_DIRECTORY_PARENT.equals(sKey)) {
       Directory parentdir = DirectoryManager.getInstance()
           .getDirectoryByID((String) getValue(sKey));
       if (parentdir == null) {
@@ -508,10 +508,10 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
       } else {
         return parentdir.getFio().getAbsolutePath();
       }
-    } else if (XML_DEVICE.equals(sKey)) {
+    } else if (Const.XML_DEVICE.equals(sKey)) {
       return (DeviceManager.getInstance().getDeviceByID((String) getValue(sKey))).getName();
     }
-    if (XML_NAME.equals(sKey)) {
+    if (Const.XML_NAME.equals(sKey)) {
       if (dParent == null) { // if no parent, take device name
         return getDevice().getUrl();
       } else {
@@ -532,7 +532,7 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
   public ImageIcon getIconRepresentation() {
     ImageIcon icon = null;
     // is this device synchronized?
-    if (getBooleanValue(XML_DIRECTORY_SYNCHRONIZED)) {
+    if (getBooleanValue(Const.XML_DIRECTORY_SYNCHRONIZED)) {
       icon = IconLoader.getIcon(JajukIcons.DIRECTORY_SYNCHRO);
     } else {
       icon = IconLoader.getIcon(JajukIcons.DIRECTORY_DESYNCHRO);
@@ -547,7 +547,7 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
    *          Item name
    */
   protected void setName(String name) {
-    setProperty(XML_NAME, name);
+    setProperty(Const.XML_NAME, name);
     this.name = name;
   }
 

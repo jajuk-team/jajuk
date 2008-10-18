@@ -42,7 +42,7 @@ import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 
-public class TipOfTheDayWizard extends JFrame implements Const {
+public class TipOfTheDayWizard extends JFrame {
 
   private static final long serialVersionUID = 1L;
 
@@ -60,10 +60,10 @@ public class TipOfTheDayWizard extends JFrame implements Const {
     super(Messages.getString("TipOfTheDayView.0"));
     setAlwaysOnTop(true);
     setIconImage(IconLoader.getIcon(JajukIcons.LOGO).getImage());
-    this.iLastTip = (Conf.getInt(CONF_TIP_OF_DAY_INDEX) - 1) % TIPS.length;
+    this.iLastTip = (Conf.getInt(Const.CONF_TIP_OF_DAY_INDEX) - 1) % TIPS.length;
 
     cbShow = new JCheckBox(Messages.getString("TipOfTheDayView.2"));
-    cbShow.setSelected(Conf.getBoolean(CONF_SHOW_TIP_ON_STARTUP));
+    cbShow.setSelected(Conf.getBoolean(Const.CONF_SHOW_TIP_ON_STARTUP));
 
     tipArea = new JTextArea();
     tipArea.setWrapStyleWord(true);
@@ -151,7 +151,7 @@ public class TipOfTheDayWizard extends JFrame implements Const {
       i = 0;
     }
     tipArea.setText(TIPS[i]);
-    lCounter.setText((new StringBuilder()).append("").append(i).append("/").append(TIPS.length -1)
+    lCounter.setText((new StringBuilder()).append("").append(i).append("/").append(TIPS.length - 1)
         .toString());
     tipArea.setCaretPosition(0);
   }
@@ -162,10 +162,8 @@ public class TipOfTheDayWizard extends JFrame implements Const {
     if (flag) {
       toFront();
     } else {
-      Conf.setProperty(CONF_TIP_OF_DAY_INDEX, String.valueOf((iLastTip + 1)
-          % TIPS.length));
-      Conf.setProperty(CONF_SHOW_TIP_ON_STARTUP, String
-          .valueOf(cbShow.isSelected()));
+      Conf.setProperty(Const.CONF_TIP_OF_DAY_INDEX, String.valueOf((iLastTip + 1) % TIPS.length));
+      Conf.setProperty(Const.CONF_SHOW_TIP_ON_STARTUP, String.valueOf(cbShow.isSelected()));
     }
   }
 }

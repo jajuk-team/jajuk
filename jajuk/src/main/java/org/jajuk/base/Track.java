@@ -30,6 +30,7 @@ import javax.swing.ImageIcon;
 
 import org.jajuk.services.core.RatingManager;
 import org.jajuk.util.Conf;
+import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
@@ -84,28 +85,28 @@ public class Track extends LogicalItem implements Comparable<Track> {
     super(sId, sName);
     // album
     this.album = album;
-    setProperty(XML_ALBUM, album.getID());
+    setProperty(Const.XML_ALBUM, album.getID());
     // style
     this.style = style;
-    setProperty(XML_STYLE, style.getID());
+    setProperty(Const.XML_STYLE, style.getID());
     // author
     this.author = author;
-    setProperty(XML_AUTHOR, author.getID());
+    setProperty(Const.XML_AUTHOR, author.getID());
     // Length
     this.length = length;
-    setProperty(XML_TRACK_LENGTH, length);
+    setProperty(Const.XML_TRACK_LENGTH, length);
     // Type
     this.type = type;
-    setProperty(XML_TYPE, type.getID());
+    setProperty(Const.XML_TYPE, type.getID());
     // Year
     this.year = year;
-    setProperty(XML_YEAR, year.getID());
+    setProperty(Const.XML_YEAR, year.getID());
     // Order
-    setProperty(XML_TRACK_ORDER, lOrder);
+    setProperty(Const.XML_TRACK_ORDER, lOrder);
     // Rate
-    setProperty(XML_TRACK_RATE, 0l);
+    setProperty(Const.XML_TRACK_RATE, 0l);
     // Hits
-    setProperty(XML_TRACK_HITS, 0l);
+    setProperty(Const.XML_TRACK_HITS, 0l);
   }
 
   /**
@@ -253,14 +254,14 @@ public class Track extends LogicalItem implements Comparable<Track> {
    * @return
    */
   public long getHits() {
-    return getLongValue(XML_TRACK_HITS);
+    return getLongValue(Const.XML_TRACK_HITS);
   }
 
   /**
    * @return
    */
   public String getComment() {
-    return getStringValue(XML_TRACK_COMMENT);
+    return getStringValue(Const.XML_TRACK_COMMENT);
   }
 
   /**
@@ -269,7 +270,7 @@ public class Track extends LogicalItem implements Comparable<Track> {
    * @return
    */
   public long getOrder() {
-    return getLongValue(XML_TRACK_ORDER);
+    return getLongValue(Const.XML_TRACK_ORDER);
   }
 
   /**
@@ -291,7 +292,7 @@ public class Track extends LogicalItem implements Comparable<Track> {
    */
   @Override
   public long getRate() {
-    return getLongValue(XML_TRACK_RATE);
+    return getLongValue(Const.XML_TRACK_RATE);
   }
 
   /**
@@ -299,7 +300,7 @@ public class Track extends LogicalItem implements Comparable<Track> {
    *         collection)
    */
   public Date getDiscoveryDate() {
-    return getDateValue(XML_TRACK_DISCOVERY_DATE);
+    return getDateValue(Const.XML_TRACK_DISCOVERY_DATE);
   }
 
   /**
@@ -349,7 +350,7 @@ public class Track extends LogicalItem implements Comparable<Track> {
    *          The iHits to set.
    */
   public void setHits(long hits) {
-    setProperty(XML_TRACK_HITS, hits);
+    setProperty(Const.XML_TRACK_HITS, hits);
     // Store max playcount
     if (hits > RatingManager.getMaxPlaycount()) {
       RatingManager.setMaxPlaycount(hits);
@@ -377,7 +378,7 @@ public class Track extends LogicalItem implements Comparable<Track> {
       Log.warn("Try to set preference to undefined value, action ignored");
       return;
     }
-    setProperty(XML_TRACK_PREFERENCE, preference);
+    setProperty(Const.XML_TRACK_PREFERENCE, preference);
     updateRate();
   }
 
@@ -392,15 +393,16 @@ public class Track extends LogicalItem implements Comparable<Track> {
     long rate = 0;
     // Normalize values to avoid division by zero
     long duration = getDuration();
-    if (duration <= 0){
+    if (duration <= 0) {
       duration = 1;
     }
     long playcount = getHits();
-    if (playcount <= 0){
+    if (playcount <= 0) {
       playcount = 1;
     }
     // Compute playtime rate = total play time / (playcount * track length)
-    float playtimeRate = (float)getLongValue(XML_TRACK_TOTAL_PLAYTIME) / (playcount * duration);
+    float playtimeRate = (float) getLongValue(Const.XML_TRACK_TOTAL_PLAYTIME)
+        / (playcount * duration);
     // If playtimeRate > 1, a problem occurred, set 0.5
     if (playtimeRate > 1) {
       Log.debug("Playtime rate > 1 for: " + getName());
@@ -415,7 +417,7 @@ public class Track extends LogicalItem implements Comparable<Track> {
     float intermediateRate = (0.75f * playtimeRate) + (0.25f * playcountRate);
     // Final rate is intermediateRate in whish we apply the user preference from
     // -3 (hate) to 3 (adore)
-    long preference = getLongValue(XML_TRACK_PREFERENCE);
+    long preference = getLongValue(Const.XML_TRACK_PREFERENCE);
     rate = Math.round(100 * (intermediateRate + (preference + Math.abs(preference)) / 2)
         / (Math.abs(preference) + 1));
     // Apply new rate
@@ -427,7 +429,7 @@ public class Track extends LogicalItem implements Comparable<Track> {
    *          The lRate to set.
    */
   protected void setRate(long rate) {
-    setProperty(XML_TRACK_RATE, rate);
+    setProperty(Const.XML_TRACK_RATE, rate);
   }
 
   /**
@@ -435,7 +437,7 @@ public class Track extends LogicalItem implements Comparable<Track> {
    *          The lRate to set.
    */
   public void setComment(String sComment) {
-    setProperty(XML_TRACK_COMMENT, sComment);
+    setProperty(Const.XML_TRACK_COMMENT, sComment);
   }
 
   /**
@@ -443,7 +445,7 @@ public class Track extends LogicalItem implements Comparable<Track> {
    *          The sAdditionDate to set.
    */
   public void setDiscoveryDate(Date additionDate) {
-    setProperty(XML_TRACK_DISCOVERY_DATE, additionDate);
+    setProperty(Const.XML_TRACK_DISCOVERY_DATE, additionDate);
   }
 
   /**
@@ -452,7 +454,7 @@ public class Track extends LogicalItem implements Comparable<Track> {
    * @return whether this item should be hidden with hide option
    */
   public boolean shouldBeHidden() {
-    if (getPlayeableFile(true) != null || !Conf.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED)) {
+    if (getPlayeableFile(true) != null || !Conf.getBoolean(Const.CONF_OPTIONS_HIDE_UNMOUNTED)) {
       return false;
     }
     return true;
@@ -483,31 +485,31 @@ public class Track extends LogicalItem implements Comparable<Track> {
    */
   @Override
   public String getHumanValue(String sKey) {
-    if (XML_ALBUM.equals(sKey)) {
+    if (Const.XML_ALBUM.equals(sKey)) {
       Album lAlbum = AlbumManager.getInstance().getAlbumByID(getStringValue(sKey));
       if (lAlbum != null) { // can be null after a fresh change
         return lAlbum.getName2();
       }
       return null;
-    } else if (XML_AUTHOR.equals(sKey)) {
+    } else if (Const.XML_AUTHOR.equals(sKey)) {
       Author lAuthor = AuthorManager.getInstance().getAuthorByID(getStringValue(sKey));
       if (lAuthor != null) { // can be null after a fresh change
         return lAuthor.getName2();
       }
       return null;
-    } else if (XML_STYLE.equals(sKey)) {
+    } else if (Const.XML_STYLE.equals(sKey)) {
       Style lStyle = StyleManager.getInstance().getStyleByID(getStringValue(sKey));
       if (lStyle != null) { // can be null after a fresh change
         return lStyle.getName2();
       }
       return null;
-    } else if (XML_TRACK_LENGTH.equals(sKey)) {
+    } else if (Const.XML_TRACK_LENGTH.equals(sKey)) {
       return UtilString.formatTimeBySec(length);
-    } else if (XML_TYPE.equals(sKey)) {
+    } else if (Const.XML_TYPE.equals(sKey)) {
       return (TypeManager.getInstance().getTypeByID(getStringValue(sKey))).getName();
-    } else if (XML_YEAR.equals(sKey)) {
+    } else if (Const.XML_YEAR.equals(sKey)) {
       return getStringValue(sKey);
-    } else if (XML_FILES.equals(sKey)) {
+    } else if (Const.XML_FILES.equals(sKey)) {
       final StringBuilder sbOut = new StringBuilder();
 
       for (final File file : alFiles) {
@@ -516,9 +518,9 @@ public class Track extends LogicalItem implements Comparable<Track> {
       }
       return sbOut.substring(0, sbOut.length() - 1); // remove last
       // ','
-    } else if (XML_TRACK_DISCOVERY_DATE.equals(sKey)) {
+    } else if (Const.XML_TRACK_DISCOVERY_DATE.equals(sKey)) {
       return UtilString.getLocaleDateFormatter().format(getDiscoveryDate());
-    } else if (XML_ANY.equals(sKey)) {
+    } else if (Const.XML_ANY.equals(sKey)) {
       return getAny();
     } else {// default
       return super.getHumanValue(sKey);

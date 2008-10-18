@@ -22,7 +22,6 @@ package org.jajuk.events;
 
 import java.util.Set;
 
-
 /**
  * GoF Observer pattern Observer
  */

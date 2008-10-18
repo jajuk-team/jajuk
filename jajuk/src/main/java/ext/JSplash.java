@@ -42,7 +42,6 @@ import javax.swing.border.EmptyBorder;
 
 import org.jajuk.ui.helpers.FontManager;
 import org.jajuk.ui.helpers.FontManager.JajukFont;
-import org.jajuk.util.Const;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilSystem;
 
@@ -63,7 +62,7 @@ import org.jajuk.util.UtilSystem;
  *        <p>
  *        Adapted to Jajuk by The Jajuk Team
  */
-public final class JSplash extends JFrame implements Const {
+public final class JSplash extends JFrame {
 
   private static final long serialVersionUID = 1L;
 
@@ -193,7 +192,7 @@ public final class JSplash extends JFrame implements Const {
 
     // center on screen
     setLocationRelativeTo(this);
- 
+
   }
 
   /**

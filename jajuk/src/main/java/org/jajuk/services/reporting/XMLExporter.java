@@ -50,7 +50,7 @@ import org.jajuk.util.UtilSystem;
 /**
  * This class exports music contents to XML.
  */
-public class XMLExporter extends Exporter implements Const {
+public class XMLExporter extends Exporter {
 
   /** Private Constants */
   private static final String NEWLINE = "\n";
@@ -65,7 +65,7 @@ public class XMLExporter extends Exporter implements Const {
   /** PUBLIC METHODS */
 
   public XMLExporter() throws IOException {
-    cache = UtilSystem.getConfFileByPath(FILE_REPORTING_CACHE_FILE + "_XML_"
+    cache = UtilSystem.getConfFileByPath(Const.FILE_REPORTING_CACHE_FILE + "_XML_"
         + System.currentTimeMillis());
     writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(cache, false), "UTF-8"));
   }
@@ -204,14 +204,14 @@ public class XMLExporter extends Exporter implements Const {
   private void exportDirectoryHelper(int level, Directory directory) throws Exception {
     // Get the children
     List<Directory> children = new ArrayList<Directory>(directory.getDirectories());
-    writer.write(addTabs(level) + Tag.openTag(XML_DIRECTORY) + NEWLINE);
+    writer.write(addTabs(level) + Tag.openTag(Const.XML_DIRECTORY) + NEWLINE);
     String sName = UtilString.formatXML(directory.getName());
     String sID = UtilString.formatXML(directory.getID());
     String sPath = UtilString.formatXML(directory.getAbsolutePath());
     // Tag directory data.
-    writer.write(addTabs(level + 1) + Tag.tagData(XML_ID, sID) + NEWLINE);
-    writer.write(addTabs(level + 1) + Tag.tagData(XML_NAME, sName) + NEWLINE);
-    writer.write(addTabs(level + 1) + Tag.tagData(XML_PATH, sPath) + NEWLINE);
+    writer.write(addTabs(level + 1) + Tag.tagData(Const.XML_ID, sID) + NEWLINE);
+    writer.write(addTabs(level + 1) + Tag.tagData(Const.XML_NAME, sName) + NEWLINE);
+    writer.write(addTabs(level + 1) + Tag.tagData(Const.XML_PATH, sPath) + NEWLINE);
     // Tag children directories
     for (Directory d : children) {
       exportDirectoryHelper(level + 1, d);
@@ -220,7 +220,7 @@ public class XMLExporter extends Exporter implements Const {
     for (org.jajuk.base.File file : directory.getFiles()) {
       tagFile(file, level + 1);
     }
-    writer.write(addTabs(level) + Tag.closeTag(XML_DIRECTORY) + NEWLINE);
+    writer.write(addTabs(level) + Tag.closeTag(Const.XML_DIRECTORY) + NEWLINE);
   }
 
   private void tagFile(org.jajuk.base.File file, int level) throws Exception {
@@ -228,27 +228,27 @@ public class XMLExporter extends Exporter implements Const {
     String sName = UtilString.formatXML(file.getName());
     String sPath = UtilString.formatXML(file.getAbsolutePath());
     long lSize = file.getSize();
-    writer.write(addTabs(level) + Tag.openTag(XML_FILE) + NEWLINE);
-    writer.write(addTabs(level + 1) + Tag.tagData(XML_ID, sFileID) + NEWLINE);
-    writer.write(addTabs(level + 1) + Tag.tagData(XML_NAME, sName) + NEWLINE);
-    writer.write(addTabs(level + 1) + Tag.tagData(XML_PATH, sPath) + NEWLINE);
-    writer.write(addTabs(level + 1) + Tag.tagData(XML_SIZE, lSize) + NEWLINE);
+    writer.write(addTabs(level) + Tag.openTag(Const.XML_FILE) + NEWLINE);
+    writer.write(addTabs(level + 1) + Tag.tagData(Const.XML_ID, sFileID) + NEWLINE);
+    writer.write(addTabs(level + 1) + Tag.tagData(Const.XML_NAME, sName) + NEWLINE);
+    writer.write(addTabs(level + 1) + Tag.tagData(Const.XML_PATH, sPath) + NEWLINE);
+    writer.write(addTabs(level + 1) + Tag.tagData(Const.XML_SIZE, lSize) + NEWLINE);
     tagTrack(file.getTrack(), level + 1);
-    writer.write(addTabs(level) + Tag.closeTag(XML_FILE) + NEWLINE);
+    writer.write(addTabs(level) + Tag.closeTag(Const.XML_FILE) + NEWLINE);
   }
 
   private void tagDirectory(Directory directory) throws Exception {
     // Make sure we have a directory.
     if (directory != null) {
-      writer.write(Tag.openTag(XML_DIRECTORY) + NEWLINE);
+      writer.write(Tag.openTag(Const.XML_DIRECTORY) + NEWLINE);
       String sName = UtilString.formatXML(directory.getName());
       String sPath = UtilString.formatXML(directory.getAbsolutePath());
       String sID = directory.getID();
 
       // Tag directory data.
-      writer.write(addTabs(1) + Tag.tagData(XML_ID, sID) + NEWLINE);
-      writer.write(addTabs(1) + Tag.tagData(XML_NAME, sName) + NEWLINE);
-      writer.write(addTabs(1) + Tag.tagData(XML_PATH, sPath) + NEWLINE);
+      writer.write(addTabs(1) + Tag.tagData(Const.XML_ID, sID) + NEWLINE);
+      writer.write(addTabs(1) + Tag.tagData(Const.XML_NAME, sName) + NEWLINE);
+      writer.write(addTabs(1) + Tag.tagData(Const.XML_PATH, sPath) + NEWLINE);
 
       // Tag directory children data.
       for (Directory d : new ArrayList<Directory>(directory.getDirectories())) {
@@ -258,20 +258,20 @@ public class XMLExporter extends Exporter implements Const {
       for (org.jajuk.base.File file : directory.getFiles()) {
         tagFile(file, 1);
       }
-      writer.write(Tag.closeTag(XML_DIRECTORY) + NEWLINE);
+      writer.write(Tag.closeTag(Const.XML_DIRECTORY) + NEWLINE);
     }
   }
 
   private void tagDevice(Device device) throws Exception {
     String sID = device.getID();
-    writer.write(Tag.openTag(XML_DEVICE) + NEWLINE);
-    writer.write(addTabs(1) + Tag.tagData(XML_ID, sID) + NEWLINE);
-    writer.write(addTabs(1) + Tag.tagData(XML_NAME, UtilString.formatXML(device.getName()))
+    writer.write(Tag.openTag(Const.XML_DEVICE) + NEWLINE);
+    writer.write(addTabs(1) + Tag.tagData(Const.XML_ID, sID) + NEWLINE);
+    writer.write(addTabs(1) + Tag.tagData(Const.XML_NAME, UtilString.formatXML(device.getName()))
         + NEWLINE);
-    writer.write(addTabs(1) + Tag.tagData(XML_TYPE, UtilString.formatXML(device.getDeviceTypeS()))
+    writer.write(addTabs(1)
+        + Tag.tagData(Const.XML_TYPE, UtilString.formatXML(device.getDeviceTypeS())) + NEWLINE);
+    writer.write(addTabs(1) + Tag.tagData(Const.XML_URL, UtilString.formatXML(device.getUrl()))
         + NEWLINE);
-    writer
-        .write(addTabs(1) + Tag.tagData(XML_URL, UtilString.formatXML(device.getUrl())) + NEWLINE);
     Directory dir = DirectoryManager.getInstance().getDirectoryForIO(device.getFio());
     // check void devices
     if (dir != null) {
@@ -285,7 +285,7 @@ public class XMLExporter extends Exporter implements Const {
         tagFile(file, 1);
       }
     }
-    writer.write(Tag.closeTag(XML_DEVICE) + NEWLINE);
+    writer.write(Tag.closeTag(Const.XML_DEVICE) + NEWLINE);
   }
 
   private void tagTrack(Track track, int level) throws Exception {
@@ -298,19 +298,20 @@ public class XMLExporter extends Exporter implements Const {
     long lTrackRate = track.getRate();
     String sTrackComment = UtilString.formatXML(track.getComment());
     long lTrackOrder = track.getOrder();
-    writer.write(addTabs(level) + Tag.openTag(XML_TRACK) + NEWLINE);
-    writer.write(addTabs(level + 1) + Tag.tagData(XML_ID, sTrackID) + NEWLINE);
-    writer.write(addTabs(level + 1) + Tag.tagData(XML_TRACK_NAME, sTrackName) + NEWLINE);
-    writer.write(addTabs(level + 1) + Tag.tagData(XML_TRACK_STYLE, sTrackStyle) + NEWLINE);
-    writer.write(addTabs(level + 1) + Tag.tagData(XML_TRACK_AUTHOR, sTrackAuthor) + NEWLINE);
+    writer.write(addTabs(level) + Tag.openTag(Const.XML_TRACK) + NEWLINE);
+    writer.write(addTabs(level + 1) + Tag.tagData(Const.XML_ID, sTrackID) + NEWLINE);
+    writer.write(addTabs(level + 1) + Tag.tagData(Const.XML_TRACK_NAME, sTrackName) + NEWLINE);
+    writer.write(addTabs(level + 1) + Tag.tagData(Const.XML_TRACK_STYLE, sTrackStyle) + NEWLINE);
+    writer.write(addTabs(level + 1) + Tag.tagData(Const.XML_TRACK_AUTHOR, sTrackAuthor) + NEWLINE);
     writer.write(addTabs(level + 1)
-        + Tag.tagData(XML_TRACK_LENGTH, UtilString.formatTimeBySec(lTrackLength)) + NEWLINE);
-    writer.write(addTabs(level + 1) + Tag.tagData(XML_TRACK_RATE, lTrackRate) + NEWLINE);
-    writer.write(addTabs(level + 1) + Tag.tagData(XML_TRACK_COMMENT, sTrackComment) + NEWLINE);
+        + Tag.tagData(Const.XML_TRACK_LENGTH, UtilString.formatTimeBySec(lTrackLength)) + NEWLINE);
+    writer.write(addTabs(level + 1) + Tag.tagData(Const.XML_TRACK_RATE, lTrackRate) + NEWLINE);
+    writer
+        .write(addTabs(level + 1) + Tag.tagData(Const.XML_TRACK_COMMENT, sTrackComment) + NEWLINE);
     writer.write(addTabs(level + 1)
-        + Tag.tagData(XML_TRACK_ORDER, UtilString.padNumber(lTrackOrder, 2)) + NEWLINE);
-    writer.write(addTabs(level + 1) + Tag.tagData(XML_TRACK_ALBUM, sTrackAlbum) + NEWLINE);
-    writer.write(addTabs(level) + Tag.closeTag(XML_TRACK) + NEWLINE);
+        + Tag.tagData(Const.XML_TRACK_ORDER, UtilString.padNumber(lTrackOrder, 2)) + NEWLINE);
+    writer.write(addTabs(level + 1) + Tag.tagData(Const.XML_TRACK_ALBUM, sTrackAlbum) + NEWLINE);
+    writer.write(addTabs(level) + Tag.closeTag(Const.XML_TRACK) + NEWLINE);
   }
 
   private void tagAlbum(Album album, int level) throws Exception {
@@ -325,12 +326,12 @@ public class XMLExporter extends Exporter implements Const {
       sAuthorName = UtilString.formatXML(tracks.iterator().next().getAuthor().getName2());
       sYear = tracks.iterator().next().getYear().getName2();
     }
-    writer.write(addTabs(level) + Tag.openTag(XML_ALBUM) + NEWLINE);
-    writer.write(addTabs(level + 1) + Tag.tagData(XML_ID, sAlbumID) + NEWLINE);
-    writer.write(addTabs(level + 1) + Tag.tagData(XML_NAME, sAlbumName) + NEWLINE);
-    writer.write(addTabs(level + 1) + Tag.tagData(XML_AUTHOR, sAuthorName) + NEWLINE);
-    writer.write(addTabs(level + 1) + Tag.tagData(XML_STYLE, sStyleName) + NEWLINE);
-    writer.write(addTabs(level + 1) + Tag.tagData(XML_YEAR, sYear) + NEWLINE);
+    writer.write(addTabs(level) + Tag.openTag(Const.XML_ALBUM) + NEWLINE);
+    writer.write(addTabs(level + 1) + Tag.tagData(Const.XML_ID, sAlbumID) + NEWLINE);
+    writer.write(addTabs(level + 1) + Tag.tagData(Const.XML_NAME, sAlbumName) + NEWLINE);
+    writer.write(addTabs(level + 1) + Tag.tagData(Const.XML_AUTHOR, sAuthorName) + NEWLINE);
+    writer.write(addTabs(level + 1) + Tag.tagData(Const.XML_STYLE, sStyleName) + NEWLINE);
+    writer.write(addTabs(level + 1) + Tag.tagData(Const.XML_YEAR, sYear) + NEWLINE);
     // For full collection, we don't show detailed tracks for performance
     // reasons
     if (showTracks) {
@@ -338,54 +339,54 @@ public class XMLExporter extends Exporter implements Const {
         tagTrack(track, level + 1);
       }
     }
-    writer.write(addTabs(level) + Tag.closeTag(XML_ALBUM) + NEWLINE);
+    writer.write(addTabs(level) + Tag.closeTag(Const.XML_ALBUM) + NEWLINE);
   }
 
   private void tagAuthor(Author author, int level) throws Exception {
     String sAuthorID = author.getID();
     String sAuthorName = UtilString.formatXML(author.getName2());
-    writer.write(addTabs(level) + Tag.openTag(XML_AUTHOR) + NEWLINE);
-    writer.write(addTabs(level + 1) + Tag.tagData(XML_ID, sAuthorID) + NEWLINE);
-    writer.write(addTabs(level + 1) + Tag.tagData(XML_NAME, sAuthorName) + NEWLINE);
+    writer.write(addTabs(level) + Tag.openTag(Const.XML_AUTHOR) + NEWLINE);
+    writer.write(addTabs(level + 1) + Tag.tagData(Const.XML_ID, sAuthorID) + NEWLINE);
+    writer.write(addTabs(level + 1) + Tag.tagData(Const.XML_NAME, sAuthorName) + NEWLINE);
     List<Album> albums = AlbumManager.getInstance().getAssociatedAlbums(author);
-    //Collections.sort(albums);
+    // Collections.sort(albums);
     for (Album album : albums) {
       tagAlbum(album, level + 1);
     }
-    writer.write(addTabs(level) + Tag.closeTag(XML_AUTHOR) + NEWLINE);
+    writer.write(addTabs(level) + Tag.closeTag(Const.XML_AUTHOR) + NEWLINE);
   }
 
   private void tagYear(Year year, int level) throws Exception {
     String sYearID = year.getID();
     String sYearName = year.getName();
-    writer.write(addTabs(level) + Tag.openTag(XML_YEAR) + NEWLINE);
-    writer.write(addTabs(level + 1) + Tag.tagData(XML_ID, sYearID) + NEWLINE);
-    writer.write(addTabs(level + 1) + Tag.tagData(XML_NAME, sYearName) + NEWLINE);
+    writer.write(addTabs(level) + Tag.openTag(Const.XML_YEAR) + NEWLINE);
+    writer.write(addTabs(level + 1) + Tag.tagData(Const.XML_ID, sYearID) + NEWLINE);
+    writer.write(addTabs(level + 1) + Tag.tagData(Const.XML_NAME, sYearName) + NEWLINE);
     List<Album> albums = AlbumManager.getInstance().getAssociatedAlbums(year);
-    //Collections.sort(albums);
+    // Collections.sort(albums);
     for (Album album : albums) {
       tagAlbum(album, level + 1);
     }
-    writer.write(addTabs(level) + Tag.closeTag(XML_YEAR) + NEWLINE);
+    writer.write(addTabs(level) + Tag.closeTag(Const.XML_YEAR) + NEWLINE);
   }
 
   private void tagStyle(Style style, int level) throws Exception {
     String sStyleID = style.getID();
     String sStyleName = UtilString.formatXML(style.getName2());
-    writer.write(addTabs(level) + Tag.openTag(XML_STYLE) + NEWLINE);
-    writer.write(addTabs(level + 1) + Tag.tagData(XML_ID, sStyleID) + NEWLINE);
-    writer.write(addTabs(level + 1) + Tag.tagData(XML_NAME, sStyleName) + NEWLINE);
+    writer.write(addTabs(level) + Tag.openTag(Const.XML_STYLE) + NEWLINE);
+    writer.write(addTabs(level + 1) + Tag.tagData(Const.XML_ID, sStyleID) + NEWLINE);
+    writer.write(addTabs(level + 1) + Tag.tagData(Const.XML_NAME, sStyleName) + NEWLINE);
     List<Album> albums = AlbumManager.getInstance().getAssociatedAlbums(style);
-    //Collections.sort(albums);
+    // Collections.sort(albums);
     for (Album album : albums) {
       tagAlbum(album, level + 1);
     }
     List<Author> authors = AuthorManager.getInstance().getAssociatedAuthors(style);
-    //Collections.sort(authors);
+    // Collections.sort(authors);
     for (Author author : authors) {
       tagAuthor(author, level + 1);
     }
-    writer.write(addTabs(level) + Tag.closeTag(XML_STYLE) + NEWLINE);
+    writer.write(addTabs(level) + Tag.closeTag(Const.XML_STYLE) + NEWLINE);
   }
 
   private String addTabs(int num) {
@@ -406,7 +407,7 @@ public class XMLExporter extends Exporter implements Const {
   @Override
   public void process(List<Item> collection) throws Exception {
     try {
-      writer.write(XML_HEADER + NEWLINE + Tag.openTag(XML_COLLECTION) + NEWLINE);
+      writer.write(XML_HEADER + NEWLINE + Tag.openTag(Const.XML_COLLECTION) + NEWLINE);
       // Sort the collection thanks a tree set (we can't use Collections.sort()
       // here due to generics)
       TreeSet<Item> ts = new TreeSet<Item>();
@@ -440,7 +441,7 @@ public class XMLExporter extends Exporter implements Const {
       writer.write('\t' + Tag.tagData("ReportAction.comment", Messages
           .getString("Property_comment")));
       writer.write(Tag.closeTag("i18n"));
-      writer.write(Tag.closeTag(XML_COLLECTION));
+      writer.write(Tag.closeTag(Const.XML_COLLECTION));
     } finally {
       writer.flush();
       writer.close();

@@ -43,6 +43,7 @@ import org.jajuk.base.PropertyMetaInformation;
 import org.jajuk.events.Event;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
+import org.jajuk.util.Const;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilString;
 import org.jdesktop.swingx.JXDatePicker;
@@ -91,11 +92,11 @@ public class NewPropertyWizard extends CustomPropertyWizard implements KeyListen
     // Type, class
     jlClass = new JLabel(Messages.getString("NewPropertyWizard.3"));
     jcbClass = new JComboBox();
-    jcbClass.addItem(Messages.getString(FORMAT_STRING));
-    jcbClass.addItem(Messages.getString(FORMAT_NUMBER));
-    jcbClass.addItem(Messages.getString(FORMAT_FLOAT));
-    jcbClass.addItem(Messages.getString(FORMAT_BOOLEAN));
-    jcbClass.addItem(Messages.getString(FORMAT_DATE));
+    jcbClass.addItem(Messages.getString(Const.FORMAT_STRING));
+    jcbClass.addItem(Messages.getString(Const.FORMAT_NUMBER));
+    jcbClass.addItem(Messages.getString(Const.FORMAT_FLOAT));
+    jcbClass.addItem(Messages.getString(Const.FORMAT_BOOLEAN));
+    jcbClass.addItem(Messages.getString(Const.FORMAT_DATE));
     jcbClass.addItemListener(this);
     // Default
     jlDefault = new JLabel(Messages.getString("NewPropertyWizard.5"));
@@ -146,14 +147,13 @@ public class NewPropertyWizard extends CustomPropertyWizard implements KeyListen
   public void actionPerformed(ActionEvent ae) {
     if (ae.getSource().equals(this.okp.getOKButton())) {
       // check the property is not already used internally
-      for (String element : XML_RESERVED_ATTRIBUTE_NAMES) {
+      for (String element : Const.XML_RESERVED_ATTRIBUTE_NAMES) {
         /*
          * check user can't create a property that is the localized name of an
          * existing standard attribute. Note that a potential bug can occur if
          * user change language
          */
-        if (element.equalsIgnoreCase(jtfName.getText())
-            || jtfName.getText().matches(",")) {
+        if (element.equalsIgnoreCase(jtfName.getText()) || jtfName.getText().matches(",")) {
           Messages.showErrorMessage(110);
           return;
         }
@@ -217,7 +217,7 @@ public class NewPropertyWizard extends CustomPropertyWizard implements KeyListen
       im.registerProperty(meta);
       im.applyNewProperty(meta);
       Properties properties = new Properties();
-      properties.put(DETAIL_CONTENT, sProperty);
+      properties.put(Const.DETAIL_CONTENT, sProperty);
       Event event = new Event(JajukEvents.CUSTOM_PROPERTIES_ADD, properties);
       ObservationManager.notify(event);
       dispose();

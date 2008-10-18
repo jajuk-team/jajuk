@@ -33,7 +33,7 @@ import org.jajuk.util.log.Log;
 /**
  * A Jajuk property meta information
  */
-public class PropertyMetaInformation implements Const {
+public class PropertyMetaInformation {
 
   /** Property name */
   private String sName;
@@ -191,11 +191,12 @@ public class PropertyMetaInformation implements Const {
     } catch (Exception e) { // should to occur at this point
       Log.error(e);
     }
-    return '<' + XML_PROPERTY + " " + XML_NAME + "='" + UtilString.formatXML(sName) + "' "
-        + XML_CUSTOM + "='" + bCustom + "' " + XML_CONSTRUCTOR + "='" + bConstructor + "' "
-        + XML_VISIBLE + "='" + bShouldBeDisplayed + "' " + XML_EDITABLE + "='" + bEditable + "' "
-        + XML_UNIQUE + "='" + bMergeable + "' " + XML_TYPE + "='" + cType.getName() + "' "
-        + XML_DEFAULT_VALUE + "='" + UtilString.formatXML(sDefault) + "'/>";
+    return '<' + Const.XML_PROPERTY + " " + Const.XML_NAME + "='" + UtilString.formatXML(sName)
+        + "' " + Const.XML_CUSTOM + "='" + bCustom + "' " + Const.XML_CONSTRUCTOR + "='"
+        + bConstructor + "' " + Const.XML_VISIBLE + "='" + bShouldBeDisplayed + "' "
+        + Const.XML_EDITABLE + "='" + bEditable + "' " + Const.XML_UNIQUE + "='" + bMergeable
+        + "' " + Const.XML_TYPE + "='" + cType.getName() + "' " + Const.XML_DEFAULT_VALUE + "='"
+        + UtilString.formatXML(sDefault) + "'/>";
   }
 
   public Object getDefaultValue() {

@@ -33,6 +33,7 @@ import org.jajuk.base.Item;
 import org.jajuk.events.Event;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
+import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
@@ -52,7 +53,7 @@ public class RenameAction extends JajukAction {
   public void perform(ActionEvent e) {
     JComponent source = (JComponent) e.getSource();
     // Get required data from the tree (selected node and node type)
-    final List<Item> alSelected = (List<Item>) source.getClientProperty(DETAIL_SELECTION);
+    final List<Item> alSelected = (List<Item>) source.getClientProperty(Const.DETAIL_SELECTION);
     final Item currentItem = alSelected.get(0);
     new Thread() {
       @Override
@@ -64,7 +65,7 @@ public class RenameAction extends JajukAction {
             try {
               UtilGUI.waiting();
               FileManager.getInstance().changeFileName((File) currentItem, newName);
-              ((File) currentItem).getDirectory().refresh(false,null);
+              ((File) currentItem).getDirectory().refresh(false, null);
               ObservationManager.notify(new Event(JajukEvents.DEVICE_REFRESH));
             } catch (Exception er) {
               Log.error(er);
@@ -83,7 +84,7 @@ public class RenameAction extends JajukAction {
                   + "/" + newName);
               ((Directory) currentItem).getFio().renameTo(newFile);
               DirectoryManager.getInstance().removeDirectory(((Directory) currentItem).getID());
-              (((Directory) currentItem).getParentDirectory()).refresh(false,null);
+              (((Directory) currentItem).getParentDirectory()).refresh(false, null);
               ObservationManager.notify(new Event(JajukEvents.DEVICE_REFRESH));
             } catch (Exception er) {
               Log.error(er);

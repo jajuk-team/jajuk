@@ -96,7 +96,6 @@ import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 import org.jvnet.substance.api.renderers.SubstanceDefaultTreeCellRenderer;
 
-
 /**
  * Logical tree view
  */
@@ -168,7 +167,7 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener, 
     jmiCollectionReport = new JMenuItem(actionReportCollection);
     // Add custom data to this component in order to allow the ReportAction
     // to be able to get it
-    jmiCollectionReport.putClientProperty(DETAIL_ORIGIN, COLLECTION_LOGICAL);
+    jmiCollectionReport.putClientProperty(Const.DETAIL_ORIGIN, COLLECTION_LOGICAL);
     jmenuCollection.add(jmiCollectionReport);
 
     // Find duplicate files
@@ -179,7 +178,7 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener, 
     // Album details
     final JMenuItem jmiShowAlbumDetails = new JMenuItem(ActionManager
         .getAction(JajukActions.SHOW_ALBUM_DETAILS));
-    jmiShowAlbumDetails.putClientProperty(DETAIL_SELECTION, alSelected);
+    jmiShowAlbumDetails.putClientProperty(Const.DETAIL_SELECTION, alSelected);
 
     top = new TreeRootElement(Messages.getString("TracksTreeView.27"));
 
@@ -229,16 +228,16 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener, 
     jlSort = new JLabel(Messages.getString("Sort"));
     jcbSort = new JComboBox();
     jcbSort.addItem(Messages.getString("Property_style")); // sort by
-                                                            // Genre/Artist/Album
+    // Genre/Artist/Album
     jcbSort.addItem(Messages.getString("Property_author")); // sort by
-                                                            // Artist/Album
+    // Artist/Album
     jcbSort.addItem(Messages.getString("Property_album")); // sort by Album
     jcbSort.addItem(Messages.getString("Property_year")); // sort by Year
     jcbSort.addItem(Messages.getString("TracksTreeView.35")); // sort by
-                                                              // Discovery Date
+    // Discovery Date
     jcbSort.addItem(Messages.getString("Property_rate")); // sort by rate
     jcbSort.addItem(Messages.getString("Property_hits")); // sort by hits
-    jcbSort.setSelectedIndex(Conf.getInt(CONF_LOGICAL_TREE_SORT_ORDER));
+    jcbSort.setSelectedIndex(Conf.getInt(Const.CONF_LOGICAL_TREE_SORT_ORDER));
     jcbSort.setActionCommand(JajukEvents.LOGICAL_TREE_SORT.toString());
     jcbSort.addActionListener(this);
     jpsort.add(jlSort, "1,0");
@@ -250,7 +249,7 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener, 
 
   @Override
   public void populateTree() {
-    switch (Conf.getInt(CONF_LOGICAL_TREE_SORT_ORDER)) {
+    switch (Conf.getInt(Const.CONF_LOGICAL_TREE_SORT_ORDER)) {
     case TrackComparator.STYLE_AUTHOR_ALBUM:
       populateTreeByStyle();
       break;
@@ -283,7 +282,7 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener, 
     List<Track> tracks = TrackManager.getInstance().getTracks();
     long l = System.currentTimeMillis();
     Collections.sort(tracks, TrackManager.getInstance().getComparator());
-    System.out.println("here="+(System.currentTimeMillis()-l));
+    System.out.println("here=" + (System.currentTimeMillis() - l));
     for (Track track : tracks) {
       if (!track.shouldBeHidden()) {
         StyleNode styleNode = null;
@@ -651,7 +650,7 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener, 
         @Override
         public Object construct() {
           // Set comparator
-          Conf.setProperty(CONF_LOGICAL_TREE_SORT_ORDER, Integer.toString(jcbSort
+          Conf.setProperty(Const.CONF_LOGICAL_TREE_SORT_ORDER, Integer.toString(jcbSort
               .getSelectedIndex()));
           populateTree();
           return null;
@@ -667,7 +666,7 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener, 
     }
   }
 
-   /**
+  /**
    * Manages auto-expand
    * 
    */
@@ -676,20 +675,20 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener, 
     // expand all
     for (int i = 0; i < jtree.getRowCount(); i++) {
       boolean bExp = false;
-      
+
       Object o = jtree.getPathForRow(i).getLastPathComponent();
       if (o instanceof StyleNode) {
         Style style = ((StyleNode) o).getStyle();
-        bExp = style.getBooleanValue(XML_EXPANDED);
+        bExp = style.getBooleanValue(Const.XML_EXPANDED);
       } else if (o instanceof AuthorNode) {
         Author author = ((AuthorNode) o).getAuthor();
-        bExp = author.getBooleanValue(XML_EXPANDED);
+        bExp = author.getBooleanValue(Const.XML_EXPANDED);
       } else if (o instanceof AlbumNode) {
         Album album = ((AlbumNode) o).getAlbum();
-        bExp = album.getBooleanValue(XML_EXPANDED);
+        bExp = album.getBooleanValue(Const.XML_EXPANDED);
       } else if (o instanceof YearNode) {
         Year year = ((YearNode) o).getYear();
-        bExp = year.getBooleanValue(XML_EXPANDED);
+        bExp = year.getBooleanValue(Const.XML_EXPANDED);
       }
 
       // now expand row if it should be expanded
@@ -720,16 +719,16 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener, 
         alSelected.clear();
         selectedRecursively.clear();
         int items = handleSelected(tpSelected);
-        
+
         StringBuilder sbOut = new StringBuilder().append(items).append(
             Messages.getString("TracksTreeView.31"));
         InformationJPanel.getInstance().setSelection(sbOut.toString());
-        if (Conf.getBoolean(CONF_OPTIONS_SYNC_TABLE_TREE)) {
+        if (Conf.getBoolean(Const.CONF_OPTIONS_SYNC_TABLE_TREE)) {
           // if table is synchronized with tree, notify the
           // selection change
           Properties properties = new Properties();
-          properties.put(DETAIL_SELECTION, selectedRecursively);
-          properties.put(DETAIL_ORIGIN, PerspectiveManager.getCurrentPerspective().getID());
+          properties.put(Const.DETAIL_SELECTION, selectedRecursively);
+          properties.put(Const.DETAIL_ORIGIN, PerspectiveManager.getCurrentPerspective().getID());
           ObservationManager.notify(new Event(JajukEvents.SYNC_TREE_TABLE, properties));
         }
       }
@@ -748,7 +747,7 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener, 
           // collection node
           items = TrackManager.getInstance().getElementCount();
           List<Track> allTracks = TrackManager.getInstance().getTracks();
-          //Collections.sort(allTracks);
+          // Collections.sort(allTracks);
           selectedRecursively.addAll(allTracks);
           break;
         } else if (o instanceof TransferableTreeNode) {
@@ -776,10 +775,10 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener, 
       return items;
     }
   }
-  
+
   class TracksMouseAdapter extends MouseAdapter {
     private final JMenuItem jmiShowAlbumDetails;
-    
+
     public TracksMouseAdapter(JMenuItem jmiShowAlbumDetails) {
       super();
       this.jmiShowAlbumDetails = jmiShowAlbumDetails;
@@ -809,9 +808,8 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener, 
             File file = track.getPlayeableFile(false);
             if (file != null) {
               try {
-                FIFO.push(
-                    new StackItem(file, Conf.getBoolean(CONF_STATE_REPEAT),
-                        true), Conf.getBoolean(CONF_OPTIONS_PUSH_ON_CLICK));
+                FIFO.push(new StackItem(file, Conf.getBoolean(Const.CONF_STATE_REPEAT), true), Conf
+                    .getBoolean(Const.CONF_OPTIONS_PUSH_ON_CLICK));
               } catch (JajukException je) {
                 Log.error(je);
               }
@@ -936,7 +934,7 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener, 
         jmenuCollection.show(jtree, e.getX(), e.getY());
       }
     }
-  }  
+  }
 }
 
 /**
@@ -1162,12 +1160,11 @@ class TracksTreeCellRenderer extends SubstanceDefaultTreeCellRenderer {
 class TracksTreeModelListener implements TreeModelListener {
 
   public void treeNodesChanged(TreeModelEvent e) {
-    DefaultMutableTreeNode node = 
-      (DefaultMutableTreeNode) (e.getTreePath().getLastPathComponent());
+    DefaultMutableTreeNode node = (DefaultMutableTreeNode) (e.getTreePath().getLastPathComponent());
 
-    if(node != null) {
+    if (node != null) {
       int index = e.getChildIndices()[0];
-      // FIXME:  the assignment to node is useless here, 
+      // FIXME: the assignment to node is useless here,
       // what is the point of this whole method??
       node = (DefaultMutableTreeNode) (node.getChildAt(index));
     }

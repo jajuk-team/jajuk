@@ -34,6 +34,7 @@ import org.jajuk.base.Style;
 import org.jajuk.base.Year;
 import org.jajuk.ui.widgets.IconLabel;
 import org.jajuk.util.Conf;
+import org.jajuk.util.Const;
 import org.jajuk.util.Filter;
 import org.jajuk.util.Messages;
 
@@ -54,49 +55,49 @@ public class AlbumsTableModel extends JajukTableModel {
    */
   public AlbumsTableModel() {
     super(10);
-    setEditable(Conf.getBoolean(CONF_ALBUMS_TABLE_EDITION));
+    setEditable(Conf.getBoolean(Const.CONF_ALBUMS_TABLE_EDITION));
     // Columns names
     // First column is play icon, need to set a space character
     // for proper display in some look and feel
     vColNames.add(" ");
-    idList.add(XML_PLAY);
+    idList.add(Const.XML_PLAY);
 
-    vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_ALBUM));
-    idList.add(XML_ALBUM);
+    vColNames.add(Messages.getString(Const.PROPERTY_SEPARATOR + Const.XML_ALBUM));
+    idList.add(Const.XML_ALBUM);
 
     // First track found author. If different authors in album, will be
     // displayed in italic
-    vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_AUTHOR));
-    idList.add(XML_AUTHOR);
+    vColNames.add(Messages.getString(Const.PROPERTY_SEPARATOR + Const.XML_AUTHOR));
+    idList.add(Const.XML_AUTHOR);
 
     // First track found style. If different styles in album, will be
     // displayed in italic
-    vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_STYLE));
-    idList.add(XML_STYLE);
+    vColNames.add(Messages.getString(Const.PROPERTY_SEPARATOR + Const.XML_STYLE));
+    idList.add(Const.XML_STYLE);
 
     // First found track year, italic if different values
-    vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_YEAR));
-    idList.add(XML_YEAR);
+    vColNames.add(Messages.getString(Const.PROPERTY_SEPARATOR + Const.XML_YEAR));
+    idList.add(Const.XML_YEAR);
 
     // Album rate (average of its tracks rate)
-    vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_TRACK_RATE));
-    idList.add(XML_TRACK_RATE);
+    vColNames.add(Messages.getString(Const.PROPERTY_SEPARATOR + Const.XML_TRACK_RATE));
+    idList.add(Const.XML_TRACK_RATE);
 
     // Total album length
-    vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_TRACK_LENGTH));
-    idList.add(XML_TRACK_LENGTH);
+    vColNames.add(Messages.getString(Const.PROPERTY_SEPARATOR + Const.XML_TRACK_LENGTH));
+    idList.add(Const.XML_TRACK_LENGTH);
 
     // Number of tracks
     vColNames.add(Messages.getString("AlbumsTableView.1"));
-    idList.add(XML_TRACKS);
+    idList.add(Const.XML_TRACKS);
 
     // First found track discovery date
-    vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_TRACK_DISCOVERY_DATE));
-    idList.add(XML_TRACK_DISCOVERY_DATE);
+    vColNames.add(Messages.getString(Const.PROPERTY_SEPARATOR + Const.XML_TRACK_DISCOVERY_DATE));
+    idList.add(Const.XML_TRACK_DISCOVERY_DATE);
 
     // Sum of all tracks hits
-    vColNames.add(Messages.getString(PROPERTY_SEPARATOR + XML_TRACK_HITS));
-    idList.add(XML_TRACK_HITS);
+    vColNames.add(Messages.getString(Const.PROPERTY_SEPARATOR + Const.XML_TRACK_HITS));
+    idList.add(Const.XML_TRACK_HITS);
 
     // custom properties now
     for (PropertyMetaInformation meta : AlbumManager.getInstance().getCustomProperties()) {
@@ -114,25 +115,22 @@ public class AlbumsTableModel extends JajukTableModel {
    */
   @Override
   @SuppressWarnings("unchecked")
-  public void populateModel(String sPropertyName, String sPattern,
-      List<String> columnsToShow) {
+  public void populateModel(String sPropertyName, String sPattern, List<String> columnsToShow) {
     List<Album> alToShow = AlbumManager.getInstance().getAlbums();
     // OK, begin by filtering using any provided pattern
-    Filter filter = new Filter(sPropertyName, sPattern, true, Conf
-        .getBoolean(CONF_REGEXP));
+    Filter filter = new Filter(sPropertyName, sPattern, true, Conf.getBoolean(Const.CONF_REGEXP));
     Filter.filterItems(alToShow, filter);
 
     // Filter unmounted files if required
     Iterator<Album> it = alToShow.iterator();
     while (it.hasNext()) {
       Album album = it.next();
-      if (Conf.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED)
-          && !album.containsReadyFiles()) {
+      if (Conf.getBoolean(Const.CONF_OPTIONS_HIDE_UNMOUNTED) && !album.containsReadyFiles()) {
         it.remove();
       }
     }
     // Sort the result
-    //Collections.sort(alToShow);
+    // Collections.sort(alToShow);
     int iColNum = iNumberStandardCols + AlbumManager.getInstance().getCustomProperties().size();
     iRowNum = alToShow.size();
     oValues = new Object[iRowNum][iColNum];
@@ -143,15 +141,16 @@ public class AlbumsTableModel extends JajukTableModel {
     it = alToShow.iterator();
 
     // For perfs, prepare columns visibility
-    boolean bAlbum = (columnsToShow != null && columnsToShow.contains(XML_ALBUM));
-    boolean bAuthor = (columnsToShow != null && columnsToShow.contains(XML_AUTHOR));
-    boolean bStyle = (columnsToShow != null && columnsToShow.contains(XML_STYLE));
-    boolean bYear = (columnsToShow != null && columnsToShow.contains(XML_YEAR));
-    boolean bRate = (columnsToShow != null && columnsToShow.contains(XML_TRACK_RATE));
-    boolean bLength = (columnsToShow != null && columnsToShow.contains(XML_TRACK_LENGTH));
-    boolean bTrackNb = (columnsToShow != null && columnsToShow.contains(XML_TRACKS));
-    boolean bDiscovery = (columnsToShow != null && columnsToShow.contains(XML_TRACK_DISCOVERY_DATE));
-    boolean bHits = (columnsToShow != null && columnsToShow.contains(XML_TRACK_HITS));
+    boolean bAlbum = (columnsToShow != null && columnsToShow.contains(Const.XML_ALBUM));
+    boolean bAuthor = (columnsToShow != null && columnsToShow.contains(Const.XML_AUTHOR));
+    boolean bStyle = (columnsToShow != null && columnsToShow.contains(Const.XML_STYLE));
+    boolean bYear = (columnsToShow != null && columnsToShow.contains(Const.XML_YEAR));
+    boolean bRate = (columnsToShow != null && columnsToShow.contains(Const.XML_TRACK_RATE));
+    boolean bLength = (columnsToShow != null && columnsToShow.contains(Const.XML_TRACK_LENGTH));
+    boolean bTrackNb = (columnsToShow != null && columnsToShow.contains(Const.XML_TRACKS));
+    boolean bDiscovery = (columnsToShow != null && columnsToShow
+        .contains(Const.XML_TRACK_DISCOVERY_DATE));
+    boolean bHits = (columnsToShow != null && columnsToShow.contains(Const.XML_TRACK_HITS));
 
     for (int iRow = 0; it.hasNext(); iRow++) {
       Album album = it.next();

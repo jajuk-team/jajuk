@@ -24,6 +24,7 @@ import java.util.List;
 
 import javax.swing.ImageIcon;
 
+import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
@@ -124,7 +125,7 @@ public class Style extends LogicalItem implements Comparable<Style> {
    */
   @Override
   public final String getHumanValue(String sKey) {
-    if (XML_NAME.equals(sKey)) {
+    if (Const.XML_NAME.equals(sKey)) {
       return getName2();
     } else {// default
       return super.getHumanValue(sKey);
@@ -138,7 +139,7 @@ public class Style extends LogicalItem implements Comparable<Style> {
   public List<Track> getTracksRecursively() {
     List<Track> alTracks = new ArrayList<Track>(1000);
     ReadOnlyIterator<Track> it = TrackManager.getInstance().getTracksIterator();
-    while (it.hasNext()){
+    while (it.hasNext()) {
       Track track = it.next();
       if (track.getStyle().equals(this)) {
         alTracks.add(track);

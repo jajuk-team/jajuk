@@ -25,6 +25,7 @@ import java.net.URI;
 
 import javax.swing.JComponent;
 
+import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
@@ -32,7 +33,7 @@ import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 
 /**
- *  
+ * 
  * Launch the URL from UtilFeatures.url in the default browser
  */
 public class LaunchInBrowserAction extends JajukAction {
@@ -41,8 +42,8 @@ public class LaunchInBrowserAction extends JajukAction {
 
   LaunchInBrowserAction() {
     // this action is available only under linux and windows for now
-    super(Messages.getString("LaunchInBrowserAction.0"), IconLoader.getIcon(JajukIcons.LAUNCH), (Desktop
-        .isDesktopSupported()));
+    super(Messages.getString("LaunchInBrowserAction.0"), IconLoader.getIcon(JajukIcons.LAUNCH),
+        (Desktop.isDesktopSupported()));
     setShortDescription(Messages.getString("LaunchInBrowserAction.0"));
   }
 
@@ -50,7 +51,7 @@ public class LaunchInBrowserAction extends JajukAction {
   public void perform(ActionEvent evt) throws JajukException {
     try {
       JComponent source = (JComponent) evt.getSource();
-      String url = (String) source.getClientProperty(DETAIL_CONTENT);
+      String url = (String) source.getClientProperty(Const.DETAIL_CONTENT);
       Desktop.getDesktop().browse(new URI(url));
     } catch (Exception e) {
       Log.error(e);

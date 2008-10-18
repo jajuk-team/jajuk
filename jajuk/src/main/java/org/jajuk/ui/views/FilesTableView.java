@@ -31,6 +31,7 @@ import org.jajuk.ui.helpers.FilesTableModel;
 import org.jajuk.ui.helpers.ILaunchCommand;
 import org.jajuk.ui.helpers.JajukTableModel;
 import org.jajuk.util.Conf;
+import org.jajuk.util.Const;
 import org.jajuk.util.Messages;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
@@ -65,7 +66,7 @@ public class FilesTableView extends AbstractTableView {
     // File menu
     jmiFilePlayDirectory = new JMenuItem(ActionManager
         .getAction(JajukActions.PLAY_DIRECTORY_SELECTION));
-    jmiFilePlayDirectory.putClientProperty(DETAIL_SELECTION, jtable.getSelection());
+    jmiFilePlayDirectory.putClientProperty(Const.DETAIL_SELECTION, jtable.getSelection());
     jtable.getMenu().add(jmiFilePlayDirectory);
     // Add this generic menu item manually to ensure it's the last one in
     // the list for GUI reasons
@@ -96,8 +97,8 @@ public class FilesTableView extends AbstractTableView {
               .getItemAt(jtable.convertRowIndexToModel(jtable.getSelectedRow()));
           try {
             // launch it
-            FIFO.push(new StackItem(file, Conf.getBoolean(CONF_STATE_REPEAT), true), Conf
-                .getBoolean(CONF_OPTIONS_PUSH_ON_CLICK));
+            FIFO.push(new StackItem(file, Conf.getBoolean(Const.CONF_STATE_REPEAT), true), Conf
+                .getBoolean(Const.CONF_OPTIONS_PUSH_ON_CLICK));
 
           } catch (JajukException je) {
             Log.error(je);
@@ -122,7 +123,7 @@ public class FilesTableView extends AbstractTableView {
    */
   @Override
   void initTable() {
-    boolean bEditable = Conf.getBoolean(CONF_FILES_TABLE_EDITION);
+    boolean bEditable = Conf.getBoolean(Const.CONF_FILES_TABLE_EDITION);
     jtbEditable.setSelected(bEditable);
   }
 

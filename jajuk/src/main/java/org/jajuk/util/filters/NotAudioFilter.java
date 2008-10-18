@@ -69,8 +69,7 @@ public final class NotAudioFilter extends JajukFileFilter {
       // check extension is known
       if (mgr.isExtensionSupported(extension)) {
         // check it is an audio file
-        return !(Boolean) mgr.getTypeByExtension(extension).getValue(
-            Const.XML_TYPE_IS_MUSIC);
+        return !(Boolean) mgr.getTypeByExtension(extension).getValue(Const.XML_TYPE_IS_MUSIC);
       }
     }
     // unknown type : not an audio file

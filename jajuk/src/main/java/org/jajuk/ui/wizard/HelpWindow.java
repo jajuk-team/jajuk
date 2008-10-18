@@ -42,7 +42,7 @@ import org.jajuk.util.log.Log;
  * <p>
  * Help perspective *
  */
-public class HelpWindow extends JFrame implements Const {
+public class HelpWindow extends JFrame {
 
   private static final long serialVersionUID = 1L;
 
@@ -78,7 +78,7 @@ public class HelpWindow extends JFrame implements Const {
     try {
       ClassLoader cl = HelpWindow.class.getClassLoader();
       URL url = HelpSet.findHelpSet(cl, "jajuk.hs", new Locale(Conf
-          .getString(CONF_OPTIONS_LANGUAGE)));
+          .getString(Const.CONF_OPTIONS_LANGUAGE)));
       hs = new HelpSet(null, url);
       hb = hs.createHelpBroker();
       jhelp = new JHelp(hs);

@@ -29,6 +29,7 @@ import org.jajuk.events.Event;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.ui.widgets.InformationJPanel;
+import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
@@ -43,7 +44,8 @@ public class SaveAsAction extends JajukAction {
   private static final long serialVersionUID = 1L;
 
   SaveAsAction() {
-    super(Messages.getString("PhysicalPlaylistRepositoryView.2"), IconLoader.getIcon(JajukIcons.SAVE_AS), true);
+    super(Messages.getString("PhysicalPlaylistRepositoryView.2"), IconLoader
+        .getIcon(JajukIcons.SAVE_AS), true);
   }
 
   /**
@@ -56,7 +58,7 @@ public class SaveAsAction extends JajukAction {
   public void perform(ActionEvent e) {
     JComponent source = (JComponent) e.getSource();
     // @TODO Do better here, accept a single playlist for ie
-    Object o = source.getClientProperty(DETAIL_SELECTION);
+    Object o = source.getClientProperty(Const.DETAIL_SELECTION);
     if (o instanceof List) {
       try {
         List<Playlist> playlists = (List<Playlist>) o;

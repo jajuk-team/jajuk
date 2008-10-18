@@ -93,7 +93,7 @@ import org.jajuk.util.log.Log;
  * Singleton
  * </p>
  */
-public final class JajukSlimbar extends JFrame implements Const, Observer, MouseWheelListener,
+public final class JajukSlimbar extends JFrame implements Observer, MouseWheelListener,
     ListSelectionListener, ActionListener {
 
   private static final long serialVersionUID = 1L;
@@ -164,7 +164,7 @@ public final class JajukSlimbar extends JFrame implements Const, Observer, Mouse
       point = new Point((int) (point.getX() - relativePoint.getX()),
           (int) (point.getY() - relativePoint.getY()));
       setLocation(point);
-      Conf.setProperty(CONF_SLIMBAR_POSITION, (int) point.getX() + "," + (int) point.getY());
+      Conf.setProperty(Const.CONF_SLIMBAR_POSITION, (int) point.getX() + "," + (int) point.getY());
     }
   };
 
@@ -232,7 +232,7 @@ public final class JajukSlimbar extends JFrame implements Const, Observer, Mouse
     jtbPlay.add(jbNext);
 
     JToolBar jtbSmart = new JajukJToolbar();
-    
+
     jddbSmart = new DropDownButton(IconLoader.getIcon(JajukIcons.INC_RATING)) {
       private static final long serialVersionUID = 1L;
 
@@ -260,14 +260,17 @@ public final class JajukSlimbar extends JFrame implements Const, Observer, Mouse
     jpmSmart.add(jbNovelties);
     jddbSmart.addToToolBar(jtbSmart);
     jddbSmart.addMouseMotionListener(motionAdapter);
-    
-    if (JajukActions.SHUFFLE_GLOBAL.toString().equals(Conf.getString(CONF_SLIMBAR_SMART_MODE))) {
+
+    if (JajukActions.SHUFFLE_GLOBAL.toString()
+        .equals(Conf.getString(Const.CONF_SLIMBAR_SMART_MODE))) {
       jddbSmart.setAction(ActionManager.getAction(JajukActions.SHUFFLE_GLOBAL));
       jddbSmart.setIcon(IconLoader.getIcon(JajukIcons.SHUFFLE_GLOBAL_16X16));
-    } else if (JajukActions.BEST_OF.toString().equals(Conf.getString(CONF_SLIMBAR_SMART_MODE))) {
+    } else if (JajukActions.BEST_OF.toString()
+        .equals(Conf.getString(Const.CONF_SLIMBAR_SMART_MODE))) {
       jddbSmart.setAction(ActionManager.getAction(JajukActions.BEST_OF));
       jddbSmart.setIcon(IconLoader.getIcon(JajukIcons.BESTOF_16X16));
-    } else if (JajukActions.NOVELTIES.toString().equals(Conf.getString(CONF_SLIMBAR_SMART_MODE))) {
+    } else if (JajukActions.NOVELTIES.toString().equals(
+        Conf.getString(Const.CONF_SLIMBAR_SMART_MODE))) {
       jddbSmart.setAction(ActionManager.getAction(JajukActions.NOVELTIES));
       jddbSmart.setIcon(IconLoader.getIcon(JajukIcons.NOVELTIES_16X16));
     }
@@ -278,13 +281,13 @@ public final class JajukSlimbar extends JFrame implements Const, Observer, Mouse
     for (int i = 3; i >= -3; i--) {
       final int j = i;
       JMenuItem jmi = new JMenuItem(Integer.toString(i));
-      if (Conf.getInt(CONF_INC_RATING) == i) {
+      if (Conf.getInt(Const.CONF_INC_RATING) == i) {
         jmi.setFont(FontManager.getInstance().getFont(JajukFont.BOLD));
       }
       // Store selected value
       jmi.addActionListener(new ActionListener() {
         public void actionPerformed(ActionEvent e) {
-          Conf.setProperty(CONF_INC_RATING, "" + j);
+          Conf.setProperty(Const.CONF_INC_RATING, "" + j);
         }
       });
       jpmIncRating.add(jmi);
@@ -301,8 +304,8 @@ public final class JajukSlimbar extends JFrame implements Const, Observer, Mouse
     jbIncRate.addToToolBar(jtbSmart);
 
     JToolBar jtbTools = new JajukJToolbar();
-    
-    int iVolume = (int) (100 * Conf.getFloat(CONF_VOLUME));
+
+    int iVolume = (int) (100 * Conf.getFloat(Const.CONF_VOLUME));
     if (iVolume > 100) { // can occur in some undefined cases
       iVolume = 100;
     }
@@ -319,7 +322,7 @@ public final class JajukSlimbar extends JFrame implements Const, Observer, Mouse
     jtbTools.add(jbVolume);
     jtbTools.addSeparator();
     jtbTools.add(jbMaximize);
-    jtbTools.add(new SizedButton(ActionManager.getAction(JajukActions.EXIT),16,16,false));
+    jtbTools.add(new SizedButton(ActionManager.getAction(JajukActions.EXIT), 16, 16, false));
 
     // Continue
     jbFinishAlbum = new SizedButton(ActionManager.getAction(JajukActions.FINISH_ALBUM));
@@ -331,7 +334,7 @@ public final class JajukSlimbar extends JFrame implements Const, Observer, Mouse
     sbSearch.addMouseMotionListener(motionAdapter);
 
     slimJajuk = new JajukJToolbar();
-    
+
     slimJajuk.add(Box.createHorizontalStrut(4));
     slimJajuk.add(jbInfo);
     slimJajuk.addSeparator();
@@ -358,7 +361,7 @@ public final class JajukSlimbar extends JFrame implements Const, Observer, Mouse
     setAlwaysOnTop(true);
 
     // Set location
-    String lastPosition = Conf.getString(CONF_SLIMBAR_POSITION);
+    String lastPosition = Conf.getString(Const.CONF_SLIMBAR_POSITION);
     int x = 0;
     int y = 0;
     int iScreenWidth = (int) (Toolkit.getDefaultToolkit().getScreenSize().getWidth());
@@ -548,8 +551,9 @@ public final class JajukSlimbar extends JFrame implements Const, Observer, Mouse
           try {
             // If user selected a file
             if (sr.getType() == SearchResultType.FILE) {
-              FIFO.push(new StackItem(sr.getFile(), Conf.getBoolean(CONF_STATE_REPEAT), true), Conf
-                  .getBoolean(CONF_OPTIONS_PUSH_ON_CLICK));
+              FIFO.push(
+                  new StackItem(sr.getFile(), Conf.getBoolean(Const.CONF_STATE_REPEAT), true), Conf
+                      .getBoolean(Const.CONF_OPTIONS_PUSH_ON_CLICK));
             }
             // User selected a web radio
             else if (sr.getType() == SearchResultType.WEBRADIO) {
@@ -577,15 +581,15 @@ public final class JajukSlimbar extends JFrame implements Const, Observer, Mouse
     if (ae.getSource() == jbBestof) {
       jddbSmart.setAction(ActionManager.getAction(JajukActions.BEST_OF));
       jddbSmart.setIcon(IconLoader.getIcon(JajukIcons.BESTOF_16X16));
-      Conf.setProperty(CONF_SLIMBAR_SMART_MODE, JajukActions.BEST_OF.toString());
+      Conf.setProperty(Const.CONF_SLIMBAR_SMART_MODE, JajukActions.BEST_OF.toString());
     } else if (ae.getSource() == jbNovelties) {
       jddbSmart.setAction(ActionManager.getAction(JajukActions.NOVELTIES));
       jddbSmart.setIcon(IconLoader.getIcon(JajukIcons.NOVELTIES_16X16));
-      Conf.setProperty(CONF_SLIMBAR_SMART_MODE, JajukActions.NOVELTIES.toString());
+      Conf.setProperty(Const.CONF_SLIMBAR_SMART_MODE, JajukActions.NOVELTIES.toString());
     } else if (ae.getSource() == jbRandom) {
       jddbSmart.setAction(ActionManager.getAction(JajukActions.SHUFFLE_GLOBAL));
       jddbSmart.setIcon(IconLoader.getIcon(JajukIcons.SHUFFLE_GLOBAL_16X16));
-      Conf.setProperty(CONF_SLIMBAR_SMART_MODE, JajukActions.SHUFFLE_GLOBAL.toString());
+      Conf.setProperty(Const.CONF_SLIMBAR_SMART_MODE, JajukActions.SHUFFLE_GLOBAL.toString());
     } else if (ae.getSource() == jbInfo) {
       String title = FIFO.getCurrentFileTitle();
       JajukBalloon balloon = new JajukBalloon(title);

@@ -28,6 +28,7 @@ import org.jajuk.services.dj.Ambience;
 import org.jajuk.services.dj.AmbienceManager;
 import org.jajuk.services.players.FIFO;
 import org.jajuk.util.Conf;
+import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
@@ -42,7 +43,7 @@ public class GlobalRandomAction extends JajukAction {
     super(Messages.getString("JajukWindow.6"), IconLoader.getIcon(JajukIcons.SHUFFLE_GLOBAL), true);
     String sTooltip = Messages.getString("JajukWindow.23");
     Ambience ambience = AmbienceManager.getInstance().getAmbience(
-        Conf.getString(CONF_DEFAULT_AMBIENCE));
+        Conf.getString(Const.CONF_DEFAULT_AMBIENCE));
     if (ambience != null) {
       String sAmbience = ambience.getName();
       sTooltip = "<html>" + Messages.getString("JajukWindow.23") + "<p><b>" + sAmbience
@@ -61,13 +62,12 @@ public class GlobalRandomAction extends JajukAction {
             .getGlobalShufflePlaylist(), ambience);
         // For perfs (mainly playlist editor view refresh), we set a ceil for
         // tracks number
-        if (alToPlay.size() > NB_TRACKS_ON_ACTION) {
-          alToPlay = alToPlay.subList(0, NB_TRACKS_ON_ACTION);
+        if (alToPlay.size() > Const.NB_TRACKS_ON_ACTION) {
+          alToPlay = alToPlay.subList(0, Const.NB_TRACKS_ON_ACTION);
         }
         // Push them
-        FIFO.push(
-            UtilFeatures.createStackItems(alToPlay, Conf.getBoolean(CONF_STATE_REPEAT),
-                false), false);
+        FIFO.push(UtilFeatures.createStackItems(alToPlay, Conf.getBoolean(Const.CONF_STATE_REPEAT),
+            false), false);
       }
     }.start();
   }

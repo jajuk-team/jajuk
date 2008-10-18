@@ -66,11 +66,11 @@ public class File extends PhysicalItem implements Comparable<File>, Const {
   public File(String sId, String sName, Directory directory, Track track, long lSize, long lQuality) {
     super(sId, sName);
     this.directory = directory;
-    setProperty(XML_DIRECTORY, directory.getID());
+    setProperty(Const.XML_DIRECTORY, directory.getID());
     this.track = track;
-    setProperty(XML_TRACK, track.getID());
-    setProperty(XML_SIZE, lSize);
-    setProperty(XML_QUALITY, lQuality);
+    setProperty(Const.XML_TRACK, track.getID());
+    setProperty(Const.XML_SIZE, lSize);
+    setProperty(Const.XML_QUALITY, lQuality);
   }
 
   /*
@@ -127,7 +127,7 @@ public class File extends PhysicalItem implements Comparable<File>, Const {
    * @return
    */
   public long getSize() {
-    return getLongValue(XML_SIZE);
+    return getLongValue(Const.XML_SIZE);
   }
 
   /**
@@ -164,7 +164,7 @@ public class File extends PhysicalItem implements Comparable<File>, Const {
    * @return
    */
   public long getQuality() {
-    return getLongValue(XML_QUALITY);
+    return getLongValue(Const.XML_QUALITY);
   }
 
   /**
@@ -263,7 +263,7 @@ public class File extends PhysicalItem implements Comparable<File>, Const {
    */
   public boolean shouldBeHidden() {
     if (getDirectory().getDevice().isMounted()
-        || !Conf.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED)) {
+        || !Conf.getBoolean(Const.CONF_OPTIONS_HIDE_UNMOUNTED)) {
       return false;
     }
     return true;
@@ -275,7 +275,7 @@ public class File extends PhysicalItem implements Comparable<File>, Const {
    */
   public void setTrack(Track track) {
     this.track = track;
-    setProperty(XML_TRACK, track.getID());
+    setProperty(Const.XML_TRACK, track.getID());
   }
 
   /**
@@ -293,28 +293,28 @@ public class File extends PhysicalItem implements Comparable<File>, Const {
    */
   @Override
   public String getHumanValue(String sKey) {
-    if (XML_DIRECTORY.equals(sKey)) {
+    if (Const.XML_DIRECTORY.equals(sKey)) {
       Directory dParent = DirectoryManager.getInstance().getDirectoryByID(getStringValue(sKey));
       return dParent.getFio().getAbsolutePath();
-    } else if (XML_TRACK.equals(sKey)) {
+    } else if (Const.XML_TRACK.equals(sKey)) {
       return getTrack().getName();
-    } else if (XML_SIZE.equals(sKey)) {
+    } else if (Const.XML_SIZE.equals(sKey)) {
       return (Math.round(getSize() / 10485.76) / 100f) + Messages.getString("FilesTreeView.54");
-    } else if (XML_QUALITY.equals(sKey)) {
+    } else if (Const.XML_QUALITY.equals(sKey)) {
       return getQuality() + Messages.getString("FIFO.13");
-    } else if (XML_ALBUM.equals(sKey)) {
+    } else if (Const.XML_ALBUM.equals(sKey)) {
       return getTrack().getAlbum().getName2();
-    } else if (XML_STYLE.equals(sKey)) {
+    } else if (Const.XML_STYLE.equals(sKey)) {
       return getTrack().getStyle().getName2();
-    } else if (XML_AUTHOR.equals(sKey)) {
+    } else if (Const.XML_AUTHOR.equals(sKey)) {
       return getTrack().getAuthor().getName2();
-    } else if (XML_TRACK_LENGTH.equals(sKey)) {
+    } else if (Const.XML_TRACK_LENGTH.equals(sKey)) {
       return UtilString.formatTimeBySec(getTrack().getDuration());
-    } else if (XML_TRACK_RATE.equals(sKey)) {
+    } else if (Const.XML_TRACK_RATE.equals(sKey)) {
       return Long.toString(getTrack().getRate());
-    } else if (XML_DEVICE.equals(sKey)) {
+    } else if (Const.XML_DEVICE.equals(sKey)) {
       return getDirectory().getDevice().getName();
-    } else if (XML_ANY.equals(sKey)) {
+    } else if (Const.XML_ANY.equals(sKey)) {
       return getAny();
     } else {// default
       return super.getHumanValue(sKey);
@@ -339,8 +339,8 @@ public class File extends PhysicalItem implements Comparable<File>, Const {
     sb.append(lTrack.getAlbum().getName2());
     sb.append(lTrack.getDuration());
     sb.append(lTrack.getRate());
-    sb.append(lTrack.getValue(XML_TRACK_COMMENT));// custom properties now
-    sb.append(lTrack.getValue(XML_TRACK_ORDER));// custom properties now
+    sb.append(lTrack.getValue(Const.XML_TRACK_COMMENT));// custom properties now
+    sb.append(lTrack.getValue(Const.XML_TRACK_ORDER));// custom properties now
     return sb.toString();
   }
 
@@ -367,7 +367,7 @@ public class File extends PhysicalItem implements Comparable<File>, Const {
     URL iconUrl = null;
     String sIcon;
     if (type != null) {
-      sIcon = (String) type.getProperties().get(XML_TYPE_ICON);
+      sIcon = (String) type.getProperties().get(Const.XML_TYPE_ICON);
       try {
         iconUrl = new URL(sIcon);
       } catch (MalformedURLException e) {
@@ -389,7 +389,7 @@ public class File extends PhysicalItem implements Comparable<File>, Const {
    *          Item name
    */
   protected void setName(String name) {
-    setProperty(XML_NAME, name);
+    setProperty(Const.XML_NAME, name);
     this.name = name;
   }
 
@@ -404,7 +404,7 @@ public class File extends PhysicalItem implements Comparable<File>, Const {
     String size = "100x100";
     int maxSize = 30;
     ThumbnailManager.refreshThumbnail(FIFO.getCurrentFile().getTrack().getAlbum(), size);
-    java.io.File cover = UtilSystem.getConfFileByPath(FILE_THUMBS + '/' + size + '/'
+    java.io.File cover = UtilSystem.getConfFileByPath(Const.FILE_THUMBS + '/' + size + '/'
         + FIFO.getCurrentFile().getTrack().getAlbum().getID() + '.' + EXT_THUMB);
     if (cover.canRead()) {
       sOut += "<p ALIGN=center><img src='file:" + cover.getAbsolutePath() + "'/></p><br>";

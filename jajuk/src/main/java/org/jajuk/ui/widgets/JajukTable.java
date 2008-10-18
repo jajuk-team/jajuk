@@ -65,7 +65,7 @@ import org.jdesktop.swingx.table.TableColumnExt;
  * <p>
  * Bring a menu displayed on right click
  */
-public class JajukTable extends JXTable implements Const, ListSelectionListener,
+public class JajukTable extends JXTable implements ListSelectionListener,
     java.awt.event.MouseListener {
 
   private static final long serialVersionUID = 1L;
@@ -241,7 +241,7 @@ public class JajukTable extends JXTable implements Const, ListSelectionListener,
       }
       // Force table rebuilding
       Properties details = new Properties();
-      details.put(DETAIL_CONTENT, this);
+      details.put(Const.DETAIL_CONTENT, this);
       ObservationManager.notify(new Event(JajukEvents.VIEW_REFRESH_REQUEST, details));
     }
   }

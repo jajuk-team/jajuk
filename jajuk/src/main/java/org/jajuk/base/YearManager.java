@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.jajuk.util.Const;
 import org.jajuk.util.ReadOnlyIterator;
 
 /**
@@ -40,14 +41,14 @@ public final class YearManager extends ItemManager {
     super();
     // register properties
     // ID
-    registerProperty(new PropertyMetaInformation(XML_ID, false, true, false, false, false,
+    registerProperty(new PropertyMetaInformation(Const.XML_ID, false, true, false, false, false,
         String.class, null));
     // Name
-    registerProperty(new PropertyMetaInformation(XML_NAME, false, true, true, true, false,
+    registerProperty(new PropertyMetaInformation(Const.XML_NAME, false, true, true, true, false,
         String.class, null));
     // Expand
-    registerProperty(new PropertyMetaInformation(XML_EXPANDED, false, false, false, false, true,
-        Boolean.class, false));
+    registerProperty(new PropertyMetaInformation(Const.XML_EXPANDED, false, false, false, false,
+        true, Boolean.class, false));
   }
 
   /**
@@ -88,7 +89,7 @@ public final class YearManager extends ItemManager {
    */
   @Override
   public String getLabel() {
-    return XML_YEARS;
+    return Const.XML_YEARS;
   }
 
   /**
@@ -108,14 +109,14 @@ public final class YearManager extends ItemManager {
   public synchronized List<Year> getYears() {
     return (List<Year>) getItems();
   }
-  
+
   /**
    * 
    * @return years iterator
    */
   @SuppressWarnings("unchecked")
   public synchronized ReadOnlyIterator<Year> getYearsIterator() {
-    return new ReadOnlyIterator<Year>((Iterator<Year>)getItemsIterator());
+    return new ReadOnlyIterator<Year>((Iterator<Year>) getItemsIterator());
   }
 
   /**

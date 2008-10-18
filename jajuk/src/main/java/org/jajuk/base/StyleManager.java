@@ -32,6 +32,7 @@ import java.util.Vector;
 import org.jajuk.events.Event;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
+import org.jajuk.util.Const;
 import org.jajuk.util.MD5Processor;
 import org.jajuk.util.ReadOnlyIterator;
 import org.jajuk.util.UtilFeatures;
@@ -54,14 +55,14 @@ public final class StyleManager extends ItemManager {
     super();
     // register properties
     // ID
-    registerProperty(new PropertyMetaInformation(XML_ID, false, true, false, false, false,
+    registerProperty(new PropertyMetaInformation(Const.XML_ID, false, true, false, false, false,
         String.class, null));
     // Name
-    registerProperty(new PropertyMetaInformation(XML_NAME, false, true, true, true, false,
+    registerProperty(new PropertyMetaInformation(Const.XML_NAME, false, true, true, true, false,
         String.class, null));
     // Expand
-    registerProperty(new PropertyMetaInformation(XML_EXPANDED, false, false, false, false, true,
-        Boolean.class, false));
+    registerProperty(new PropertyMetaInformation(Const.XML_EXPANDED, false, false, false, false,
+        true, Boolean.class, false));
     // create default style list
     stylesList = new Vector<String>(Arrays.asList(UtilFeatures.GENRES));
     Collections.sort(stylesList);
@@ -168,8 +169,8 @@ public final class StyleManager extends ItemManager {
       }
       // notify everybody for the file change
       Properties properties = new Properties();
-      properties.put(DETAIL_OLD, old);
-      properties.put(DETAIL_NEW, newItem);
+      properties.put(Const.DETAIL_OLD, old);
+      properties.put(Const.DETAIL_NEW, newItem);
       // Notify interested items (like ambience manager)
       ObservationManager.notifySync(new Event(JajukEvents.STYLE_NAME_CHANGED, properties));
       return newItem;
@@ -206,7 +207,7 @@ public final class StyleManager extends ItemManager {
    */
   @Override
   public String getLabel() {
-    return XML_STYLES;
+    return Const.XML_STYLES;
   }
 
   /**

@@ -28,6 +28,7 @@ import java.util.Map;
 import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
 import org.jajuk.base.Style;
+import org.jajuk.util.Const;
 import org.jajuk.util.UtilFeatures;
 
 /**
@@ -152,10 +153,10 @@ public class TransitionDigitalDJ extends DigitalDJ {
     // compute number of items to add
     int items = global.size() - 1; // by default, collection size (minus
     // one already added)
-    if (!bUnicity && items < MIN_TRACKS_NUMBER_WITHOUT_UNICITY) {
+    if (!bUnicity && items < Const.MIN_TRACKS_NUMBER_WITHOUT_UNICITY) {
       // under a limit, if collection is too small and no unicity, use
       // several times the same files
-      items = MIN_TRACKS_NUMBER_WITHOUT_UNICITY;
+      items = Const.MIN_TRACKS_NUMBER_WITHOUT_UNICITY;
     }
     // initialize current ambience with firs track ambience (can be null for
     // unsorted tracks)
@@ -220,15 +221,16 @@ public class TransitionDigitalDJ extends DigitalDJ {
   public String toXML() {
     StringBuilder sb = new StringBuilder(2000);
     sb.append(toXMLGeneralParameters());
-    sb.append("\t<" + XML_DJ_TRANSITIONS + " " + XML_DJ_STARTUP_STYLE + "='"
+    sb.append("\t<" + Const.XML_DJ_TRANSITIONS + " " + Const.XML_DJ_STARTUP_STYLE + "='"
         + getStartupStyle().getID() + "'>\n");
     for (Transition transition : transitions) {
-      sb.append("\t\t<" + XML_DJ_TRANSITION + " " + XML_DJ_FROM + "='"
-          + transition.getFrom().toXML() + "' " + XML_DJ_TO + "='" + transition.getTo().toXML()
-          + "' " + XML_DJ_NUMBER + "='" + transition.getNbTracks() + "'/>\n");
+      sb.append("\t\t<" + Const.XML_DJ_TRANSITION + " " + Const.XML_DJ_FROM + "='"
+          + transition.getFrom().toXML() + "' " + Const.XML_DJ_TO + "='"
+          + transition.getTo().toXML() + "' " + Const.XML_DJ_NUMBER + "='"
+          + transition.getNbTracks() + "'/>\n");
     }
-    sb.append("\t</" + XML_DJ_TRANSITIONS + ">\n");
-    sb.append("</" + XML_DJ_DJ + ">\n");
+    sb.append("\t</" + Const.XML_DJ_TRANSITIONS + ">\n");
+    sb.append("</" + Const.XML_DJ_DJ + ">\n");
     return sb.toString();
   }
 

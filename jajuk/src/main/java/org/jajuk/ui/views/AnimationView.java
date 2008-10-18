@@ -55,8 +55,7 @@ import org.jajuk.util.log.Log;
 /**
  * Animation-based view
  */
-public class AnimationView extends ViewAdapter implements Const, Observer,
-    ComponentListener {
+public class AnimationView extends ViewAdapter implements Observer, ComponentListener {
 
   private static final long serialVersionUID = 1L;
 
@@ -180,18 +179,17 @@ public class AnimationView extends ViewAdapter implements Const, Observer,
       if (file != null) {
         String s = "";
         try {
-          s = UtilString.applyPattern(file, Conf
-              .getString(CONF_ANIMATION_PATTERN), false, false);
+          s = UtilString.applyPattern(file, Conf.getString(Const.CONF_ANIMATION_PATTERN), false,
+              false);
         } catch (JajukException e) {
           Log.error(e);
         }
         setText(s);
       }
-    } else if (subject.equals(JajukEvents.ZERO)
-        || subject.equals(JajukEvents.PLAYER_STOP)) {
+    } else if (subject.equals(JajukEvents.ZERO) || subject.equals(JajukEvents.PLAYER_STOP)) {
       setText(Messages.getString("JajukWindow.18"));
     } else if (subject.equals(JajukEvents.WEBRADIO_LAUNCHED)) {
-      WebRadio radio = (WebRadio) event.getDetails().get(DETAIL_CONTENT);
+      WebRadio radio = (WebRadio) event.getDetails().get(Const.DETAIL_CONTENT);
       if (radio != null) {
         setText(radio.getName());
       }

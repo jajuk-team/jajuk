@@ -71,7 +71,7 @@ import org.jdesktop.swingx.JXBusyLabel;
  * Show suggested albums based on current collection (bestof, novelties) and
  * LAstFM
  */
-public class SuggestionView extends ViewAdapter implements Const, Observer {
+public class SuggestionView extends ViewAdapter implements Observer {
 
   private static final long serialVersionUID = 1L;
 
@@ -243,7 +243,7 @@ public class SuggestionView extends ViewAdapter implements Const, Observer {
     // if none track playing
     if (current == null
     // Last.FM infos is disable
-        || !Conf.getBoolean(CONF_LASTFM_INFO)
+        || !Conf.getBoolean(Const.CONF_LASTFM_INFO)
         // If unknown author
         || (newAuthor == null || newAuthor.equals(Messages.getString(UNKNOWN_AUTHOR)))) {
       // Set empty panels
@@ -318,13 +318,13 @@ public class SuggestionView extends ViewAdapter implements Const, Observer {
     if (search) {
       if (type == SuggestionType.BEST_OF) {
         albumsPrefered = AlbumManager.getInstance().getBestOfAlbums(
-            Conf.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED), NB_BESTOF_ALBUMS);
+            Conf.getBoolean(Const.CONF_OPTIONS_HIDE_UNMOUNTED), NB_BESTOF_ALBUMS);
       } else if (type == SuggestionType.NEWEST) {
         albumsNewest = AlbumManager.getInstance().getNewestAlbums(
-            Conf.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED), NB_BESTOF_ALBUMS);
+            Conf.getBoolean(Const.CONF_OPTIONS_HIDE_UNMOUNTED), NB_BESTOF_ALBUMS);
       } else if (type == SuggestionType.RARE) {
         albumsRare = AlbumManager.getInstance().getRarelyListenAlbums(
-            Conf.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED), NB_BESTOF_ALBUMS);
+            Conf.getBoolean(Const.CONF_OPTIONS_HIDE_UNMOUNTED), NB_BESTOF_ALBUMS);
       }
     }
     if (type == SuggestionType.BEST_OF) {

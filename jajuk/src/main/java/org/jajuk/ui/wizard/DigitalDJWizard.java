@@ -82,7 +82,7 @@ import org.qdwizard.Wizard;
 /**
  * DJ creation wizard
  */
-public class DigitalDJWizard extends Wizard implements Const {
+public class DigitalDJWizard extends Wizard {
 
   /** Wizard action */
   private static final String KEY_ACTION = "ACTION";
@@ -677,16 +677,16 @@ public class DigitalDJWizard extends Wizard implements Const {
       final Vector<String> styles = StyleManager.getInstance().getStylesList();
       if (ActionSelectionPanel.ACTION_CHANGE.equals(data.get(KEY_ACTION))) {
         TransitionDigitalDJ dj = (TransitionDigitalDJ) data.get(KEY_CHANGE);
-        alTransitions = (List<Transition>) ((ArrayList<Transition>)dj.getTransitions()).clone();
+        alTransitions = (List<Transition>) ((ArrayList<Transition>) dj.getTransitions()).clone();
         data.put(KEY_TRANSITIONS, getCleanedTransitions());
-        alTransitions.add(new Transition(DEFAULT_TRANSITION_TRACK_NUMBER)); // add
+        alTransitions.add(new Transition(Const.DEFAULT_TRANSITION_TRACK_NUMBER)); // add
         // a
         // void
         // transition
         data.put(KEY_STARTUP_STYLE, dj.getStartupStyle());
       } else { // DJ creation
         alTransitions = new ArrayList<Transition>(10);
-        alTransitions.add(new Transition(DEFAULT_TRANSITION_TRACK_NUMBER)); // add
+        alTransitions.add(new Transition(Const.DEFAULT_TRANSITION_TRACK_NUMBER)); // add
         // a
         // void
         // transition
@@ -960,7 +960,8 @@ public class DigitalDJWizard extends Wizard implements Const {
     public void initUI() {
       if (ActionSelectionPanel.ACTION_CHANGE.equals(data.get(KEY_ACTION))) {
         DigitalDJ dj = (DigitalDJ) data.get(KEY_CHANGE);
-        proportions = (List<Proportion>) ((ArrayList<Proportion>)((ProportionDigitalDJ) dj).getProportions()).clone();
+        proportions = (List<Proportion>) ((ArrayList<Proportion>) ((ProportionDigitalDJ) dj)
+            .getProportions()).clone();
         data.put(KEY_PROPORTIONS, getCleanedProportions());
         proportions.add(new Proportion()); // add a void item
       } else {
@@ -1377,7 +1378,7 @@ public class DigitalDJWizard extends Wizard implements Const {
 
   public DigitalDJWizard() {
     super(Messages.getString("DigitalDJWizard.4"), ActionSelectionPanel.class, UtilGUI
-        .getImage(IMAGE_DJ), JajukWindow.getInstance(), new Locale(Messages.getLocale()));
+        .getImage(Const.IMAGE_DJ), JajukWindow.getInstance(), new Locale(Messages.getLocale()));
   }
 
   /*
@@ -1412,9 +1413,8 @@ public class DigitalDJWizard extends Wizard implements Const {
         ((TransitionDigitalDJ) dj).setTransitions(transitions);
         Style startup = (Style) data.get(KEY_STARTUP_STYLE);
         ((TransitionDigitalDJ) dj).setStartupStyle(startup);
-      }
-      else {
-        throw new IllegalArgumentException("Unknown type of DJ: " + sType); 
+      } else {
+        throw new IllegalArgumentException("Unknown type of DJ: " + sType);
       }
       int iFadeDuration = (Integer) data.get(KEY_FADE_DURATION);
       int iRateLevel = (Integer) data.get(KEY_RATINGS_LEVEL);
@@ -1428,7 +1428,7 @@ public class DigitalDJWizard extends Wizard implements Const {
       DigitalDJManager.commit(dj);
       // If first DJ, select it as default
       if (DigitalDJManager.getInstance().getDJs().size() == 1) {
-        Conf.setProperty(CONF_DEFAULT_DJ, dj.getID());
+        Conf.setProperty(Const.CONF_DEFAULT_DJ, dj.getID());
       }
     } else if (ActionSelectionPanel.ACTION_CHANGE.equals(sAction)) {
       String sType = (String) data.get(KEY_DJ_TYPE);

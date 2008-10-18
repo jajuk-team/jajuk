@@ -103,8 +103,7 @@ public class AudioScrobblerAlbumsRunnable implements Runnable {
           if (!validToken(t)) { // Ignore tokens without alphanumerics
             if (tokensAnalyzed == 0 && !st.hasMoreTokens()) {// Only this token
               matches = false;
-            }
-            else {
+            } else {
               continue;
             }
           }

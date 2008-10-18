@@ -120,7 +120,8 @@ public class SearchBox extends JTextField implements KeyListener {
         jl = new JLabel(sr.getResu(), sr.getFile().getIconRepresentation(),
             SwingConstants.HORIZONTAL);
       } else if (sr.getType() == SearchResultType.WEBRADIO) {
-        jl = new JLabel(sr.getResu(), IconLoader.getIcon(JajukIcons.WEBRADIO_16X16), SwingConstants.HORIZONTAL);
+        jl = new JLabel(sr.getResu(), IconLoader.getIcon(JajukIcons.WEBRADIO_16X16),
+            SwingConstants.HORIZONTAL);
       }
       jp.add(jl, BorderLayout.WEST);
       return jp;
@@ -260,11 +261,11 @@ public class SearchBox extends JTextField implements KeyListener {
   public int getSelectedIndex() {
     return jlist.getSelectedIndex();
   }
-  
+
   public SearchResult getResult(final int index) {
     return alResults.get(index);
   }
-  
+
   public void hidePopup() {
     popup.hide();
   }

@@ -50,7 +50,6 @@ import org.jajuk.services.webradio.WebRadioManager;
 import org.jajuk.ui.helpers.FontManager;
 import org.jajuk.ui.helpers.FontManager.JajukFont;
 import org.jajuk.ui.widgets.JajukWindow;
-import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
@@ -62,7 +61,7 @@ import org.qdwizard.Wizard;
 /**
  * WebRadio management wizard
  */
-public class WebRadioWizard extends Wizard implements Const {
+public class WebRadioWizard extends Wizard {
 
   /** web radios* */
   static List<WebRadio> radios;
@@ -115,10 +114,12 @@ public class WebRadioWizard extends Wizard implements Const {
       jbNew = new JButton(Messages.getString("RadioWizard.2"), IconLoader.getIcon(JajukIcons.NEW));
       jbNew.addActionListener(this);
       jbNew.setToolTipText(Messages.getString("RadioWizard.2"));
-      jbDelete = new JButton(Messages.getString("RadioWizard.3"), IconLoader.getIcon(JajukIcons.DELETE));
+      jbDelete = new JButton(Messages.getString("RadioWizard.3"), IconLoader
+          .getIcon(JajukIcons.DELETE));
       jbDelete.addActionListener(this);
       jbDelete.setToolTipText(Messages.getString("RadioWizard.3"));
-      jbDefaults = new JButton(Messages.getString("RadioWizard.4"), IconLoader.getIcon(JajukIcons.DEFAULTS));
+      jbDefaults = new JButton(Messages.getString("RadioWizard.4"), IconLoader
+          .getIcon(JajukIcons.DEFAULTS));
       jbDefaults.addActionListener(this);
       jbDefaults.setToolTipText(Messages.getString("RadioWizard.4"));
       jpButtons.add(jbNew, "1,0");
@@ -302,8 +303,7 @@ public class WebRadioWizard extends Wizard implements Const {
           // show an "operation failed' message to users
           Messages.showErrorMessage(169);
           Log.error(e);
-        }
-        finally{
+        } finally {
           UtilGUI.stopWaiting();
         }
         // refresh screen

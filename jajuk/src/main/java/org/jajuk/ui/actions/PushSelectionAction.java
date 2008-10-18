@@ -28,6 +28,7 @@ import org.jajuk.base.File;
 import org.jajuk.base.Item;
 import org.jajuk.services.players.FIFO;
 import org.jajuk.util.Conf;
+import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
@@ -61,14 +62,13 @@ public class PushSelectionAction extends JajukAction {
   @Override
   public void perform(ActionEvent e) throws Exception {
     JComponent source = (JComponent) e.getSource();
-    final List<Item> selection = (List<Item>) source.getClientProperty(DETAIL_SELECTION);
+    final List<Item> selection = (List<Item>) source.getClientProperty(Const.DETAIL_SELECTION);
     if (selection.size() == 0) {
       return;
     }
     List<File> files = UtilFeatures.getPlayableFiles(selection);
-    FIFO.push(
-        UtilFeatures.createStackItems(UtilFeatures.applyPlayOption(files), Conf
-            .getBoolean(CONF_STATE_REPEAT), true), true);
+    FIFO.push(UtilFeatures.createStackItems(UtilFeatures.applyPlayOption(files), Conf
+        .getBoolean(Const.CONF_STATE_REPEAT), true), true);
   }
 
 }

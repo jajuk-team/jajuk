@@ -54,7 +54,7 @@ import org.jajuk.util.log.Log;
  * <p>
  * Singleton
  */
-public class JajukWindow extends JFrame implements Const, Observer {
+public class JajukWindow extends JFrame implements Observer {
 
   private static final long serialVersionUID = 1L;
 
@@ -94,7 +94,7 @@ public class JajukWindow extends JFrame implements Const, Observer {
     System.setProperty("apple.awt.showGrowBox", "false");
 
     jw = this;
-    bVisible = (Conf.getInt(CONF_STARTUP_DISPLAY) == DISPLAY_MODE_WINDOW_TRAY);
+    bVisible = (Conf.getInt(Const.CONF_STARTUP_DISPLAY) == Const.DISPLAY_MODE_WINDOW_TRAY);
     setTitle(Messages.getString("JajukWindow.17"));
     setIconImage(IconLoader.getIcon(JajukIcons.LOGO).getImage());
     setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -154,14 +154,14 @@ public class JajukWindow extends JFrame implements Const, Observer {
     if (Toolkit.getDefaultToolkit().isFrameStateSupported(Frame.MAXIMIZED_BOTH)
         && (getExtendedState() & Frame.MAXIMIZED_BOTH) == Frame.MAXIMIZED_BOTH) {
       Log.debug("Frame maximized");
-      sValue = FRAME_MAXIMIZED;
+      sValue = Const.FRAME_MAXIMIZED;
     } else {
       sValue = (int) getLocationOnScreen().getX() + "," + (int) getLocationOnScreen().getY() + ","
           + getBounds().width + "," + getBounds().height;
       Log.debug("Frame moved or resized, new bounds=" + sValue);
     }
     // Store the new position
-    Conf.setProperty(CONF_WINDOW_POSITION, sValue);
+    Conf.setProperty(Const.CONF_WINDOW_POSITION, sValue);
   }
 
   /**
@@ -179,7 +179,7 @@ public class JajukWindow extends JFrame implements Const, Observer {
     int iHorizSize = 0;
     int iVertSize = 0;
     // Forced frame position ?
-    String sForcedValue = Conf.getString(CONF_FRAME_POS_FORCED);
+    String sForcedValue = Conf.getString(Const.CONF_FRAME_POS_FORCED);
     if (sForcedValue != null && !sForcedValue.trim().equals("")) {
       try {
         StringTokenizer st = new StringTokenizer(sForcedValue, ",");
@@ -191,25 +191,25 @@ public class JajukWindow extends JFrame implements Const, Observer {
       } catch (Exception e) {
         // Wrong forced value
         Log.error(e);
-        setBounds(FRAME_INITIAL_BORDER, FRAME_INITIAL_BORDER, iScreenWidth - 2
-            * FRAME_INITIAL_BORDER, iScreenHeight - 2 * FRAME_INITIAL_BORDER);
+        setBounds(Const.FRAME_INITIAL_BORDER, Const.FRAME_INITIAL_BORDER, iScreenWidth - 2
+            * Const.FRAME_INITIAL_BORDER, iScreenHeight - 2 * Const.FRAME_INITIAL_BORDER);
       }
       return;
     }
     // Detect strange or buggy Window Manager like XGL using this test
     // and apply default size for them
     if (!Toolkit.getDefaultToolkit().isFrameStateSupported(Frame.MAXIMIZED_BOTH)) {
-      setBounds(FRAME_INITIAL_BORDER, FRAME_INITIAL_BORDER,
-          iScreenWidth - 2 * FRAME_INITIAL_BORDER, iScreenHeight - 2 * FRAME_INITIAL_BORDER);
+      setBounds(Const.FRAME_INITIAL_BORDER, Const.FRAME_INITIAL_BORDER, iScreenWidth - 2
+          * Const.FRAME_INITIAL_BORDER, iScreenHeight - 2 * Const.FRAME_INITIAL_BORDER);
       return;
     }
     // read stored position and size
-    String sPosition = Conf.getString(CONF_WINDOW_POSITION);
+    String sPosition = Conf.getString(Const.CONF_WINDOW_POSITION);
     // If user left jajuk maximized, reset this simple configuration
-    if (sPosition.equals(FRAME_MAXIMIZED)) {
+    if (sPosition.equals(Const.FRAME_MAXIMIZED)) {
       // Always set a size that is used when un-maximalizing the frame
-      setBounds(FRAME_INITIAL_BORDER, FRAME_INITIAL_BORDER,
-          iScreenWidth - 2 * FRAME_INITIAL_BORDER, iScreenHeight - 2 * FRAME_INITIAL_BORDER);
+      setBounds(Const.FRAME_INITIAL_BORDER, Const.FRAME_INITIAL_BORDER, iScreenWidth - 2
+          * Const.FRAME_INITIAL_BORDER, iScreenHeight - 2 * Const.FRAME_INITIAL_BORDER);
       if (Toolkit.getDefaultToolkit().isFrameStateSupported(Frame.MAXIMIZED_BOTH)) {
         setExtendedState(Frame.MAXIMIZED_BOTH);
       }
@@ -219,12 +219,12 @@ public class JajukWindow extends JFrame implements Const, Observer {
     iX = Integer.parseInt(st.nextToken());
     // if X position is higher than screen width, set default
     if (iX < 0 || iX > iScreenWidth) {
-      iX = FRAME_INITIAL_BORDER;
+      iX = Const.FRAME_INITIAL_BORDER;
     }
     iY = Integer.parseInt(st.nextToken());
     // if Y position is higher than screen height, set default
     if (iY < 0 || iY > iScreenHeight) {
-      iY = FRAME_INITIAL_BORDER;
+      iY = Const.FRAME_INITIAL_BORDER;
     }
     iHorizSize = Integer.parseInt(st.nextToken());
     // if zero horiz size or
@@ -232,12 +232,12 @@ public class JajukWindow extends JFrame implements Const, Observer {
     // for ie),
     // set max size available (minus some space to deal with task bars)
     if (iHorizSize <= 0 || iHorizSize > iScreenWidth) {
-      iHorizSize = iScreenWidth - 2 * FRAME_INITIAL_BORDER;
+      iHorizSize = iScreenWidth - 2 * Const.FRAME_INITIAL_BORDER;
     }
     // Same for width
     iVertSize = Integer.parseInt(st.nextToken());
     if (iVertSize <= 0 || iVertSize > iScreenHeight) {
-      iVertSize = iScreenHeight - 2 * FRAME_INITIAL_BORDER;
+      iVertSize = iScreenHeight - 2 * Const.FRAME_INITIAL_BORDER;
     }
     setLocation(iX, iY);
     setSize(iHorizSize, iVertSize);
@@ -257,8 +257,7 @@ public class JajukWindow extends JFrame implements Const, Observer {
           if (file != null) {
             setTitle(UtilString.buildTitle(file));
           }
-        } else if (subject.equals(JajukEvents.ZERO)
-            || subject.equals(JajukEvents.PLAYER_STOP)) {
+        } else if (subject.equals(JajukEvents.ZERO) || subject.equals(JajukEvents.PLAYER_STOP)) {
           setTitle(Messages.getString("JajukWindow.17"));
         } else if (subject.equals(JajukEvents.WEBRADIO_LAUNCHED)) {
           WebRadio radio = FIFO.getCurrentRadio();

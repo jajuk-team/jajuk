@@ -59,8 +59,7 @@ import org.jajuk.util.log.Log;
 /**
  * Wikipedia view
  */
-public class WikipediaView extends ViewAdapter implements Const, Observer,
-    ActionListener {
+public class WikipediaView extends ViewAdapter implements Observer, ActionListener {
 
   private static final long serialVersionUID = 1L;
 
@@ -115,7 +114,7 @@ public class WikipediaView extends ViewAdapter implements Const, Observer,
     }
     // get stored language
     jcbLanguage.setSelectedItem(Messages.getDescForLocal(Conf
-        .getString(CONF_WIKIPEDIA_LANGUAGE)));
+        .getString(Const.CONF_WIKIPEDIA_LANGUAGE)));
     jcbLanguage.addActionListener(this);
     // Buttons
     JajukAction aCopy = ActionManager.getAction(JajukActions.COPY_TO_CLIPBOARD);
@@ -199,8 +198,7 @@ public class WikipediaView extends ViewAdapter implements Const, Observer,
   public void update(Event event) {
     JajukEvents subject = event.getSubject();
     // Make a search after a stop period
-    if (subject.equals(JajukEvents.FILE_LAUNCHED)
-        || subject.equals(JajukEvents.PERPECTIVE_CHANGED)) {
+    if (subject.equals(JajukEvents.FILE_LAUNCHED) || subject.equals(JajukEvents.PERPECTIVE_CHANGED)) {
       // If current state is stopped, reset page
       if (FIFO.getCurrentFile() == null) {
         reset();
@@ -216,8 +214,7 @@ public class WikipediaView extends ViewAdapter implements Const, Observer,
     // User changed current track tags, so we have to reload
     // new author wikipedia page
     else if (subject.equals(JajukEvents.AUTHOR_CHANGED)
-        || subject.equals(JajukEvents.ALBUM_CHANGED)
-        || subject.equals(JajukEvents.TRACK_CHANGED)) {
+        || subject.equals(JajukEvents.ALBUM_CHANGED) || subject.equals(JajukEvents.TRACK_CHANGED)) {
       update(new Event(JajukEvents.FILE_LAUNCHED));
     }
   }
@@ -268,7 +265,7 @@ public class WikipediaView extends ViewAdapter implements Const, Observer,
               + ".wikipedia.org/wiki/" + lSearch).replaceAll(" ", "_"));
           Log.debug("Wikipedia search: " + url);
           UtilFeatures.setCopyData(url.toString());
-          jbLaunchInExternalBrowser.putClientProperty(DETAIL_CONTENT, url.toExternalForm());
+          jbLaunchInExternalBrowser.putClientProperty(Const.DETAIL_CONTENT, url.toExternalForm());
           browser.setURL(url);
         } catch (Exception e) {
           Log.error(e);
@@ -309,8 +306,8 @@ public class WikipediaView extends ViewAdapter implements Const, Observer,
   public void actionPerformed(ActionEvent arg0) {
     if (arg0.getSource() == jcbLanguage) {
       // update index
-      Conf.setProperty(CONF_WIKIPEDIA_LANGUAGE, Messages
-          .getLocalForDesc((String) jcbLanguage.getSelectedItem()));
+      Conf.setProperty(Const.CONF_WIKIPEDIA_LANGUAGE, Messages.getLocalForDesc((String) jcbLanguage
+          .getSelectedItem()));
       // force launch wikipedia search for this language
       launchSearch(true);
     } else if (arg0.getSource() == jbAlbumSearch) {

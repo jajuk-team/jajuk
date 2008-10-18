@@ -19,7 +19,6 @@
  */
 package org.jajuk.ui.actions;
 
-
 import static org.jajuk.ui.actions.JajukActions.ALARM_CLOCK;
 import static org.jajuk.ui.actions.JajukActions.ALL_VIEW_RESTORE_DEFAULTS;
 import static org.jajuk.ui.actions.JajukActions.BAN;
@@ -222,7 +221,7 @@ public final class ActionManager {
     if (Desktop.isDesktopSupported()) {
       installAction(LAUNCH_IN_BROWSER, new LaunchInBrowserAction(), false);
     }
-    
+
   }
 
   /**
@@ -242,9 +241,8 @@ public final class ActionManager {
   /**
    * Installs a new action in the action manager. If <code>removeFromLAF</code>
    * is <code>true</code>, then the keystroke attached to the action will be
-   * stored in list. To remove these keystrokes from the
-   * <code>InputMap</code>s of the different components, call
-   * {@link #uninstallStrokes()}.
+   * stored in list. To remove these keystrokes from the <code>InputMap</code>s
+   * of the different components, call {@link #uninstallStrokes()}.
    * 
    * @param name
    *          The name for the action.
@@ -277,13 +275,15 @@ public final class ActionManager {
       treeMap.remove(stroke);
     }
   }
-  
+
   /**
    * Enable or disable the action
-   * @param the action
+   * 
+   * @param the
+   *          action
    * @param enable
    */
-  public void enable(JajukAction action, boolean enable){
+  public void enable(JajukAction action, boolean enable) {
     action.enable(enable);
   }
 }

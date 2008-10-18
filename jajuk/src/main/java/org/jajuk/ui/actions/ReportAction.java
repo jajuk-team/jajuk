@@ -59,8 +59,7 @@ public class ReportAction extends JajukAction {
     // First item
     final String type = (String) source.getClientProperty(Const.DETAIL_ORIGIN);
     // Get required data from the tree (selected node and node type)
-    final List<Item> alSelected = (List<Item>) source
-        .getClientProperty(Const.DETAIL_SELECTION);
+    final List<Item> alSelected = (List<Item>) source.getClientProperty(Const.DETAIL_SELECTION);
     // Display a save as dialog
     final JajukFileFilter filter = new JajukFileFilter(XMLFilter.getInstance(), HTMLFilter
         .getInstance());
@@ -69,8 +68,7 @@ public class ReportAction extends JajukAction {
     chooser.setAcceptDirectories(true);
     chooser.setDialogTitle(Messages.getString("TracksTreeView.33"));
     // set a default file name
-    if (Const.COLLECTION_LOGICAL.equals(type)
-        || Const.COLLECTION_PHYSICAL.equals(type)) {
+    if (Const.COLLECTION_LOGICAL.equals(type) || Const.COLLECTION_PHYSICAL.equals(type)) {
       // collection node selected, use file name 'collection"
       chooser.setSelectedFile(new java.io.File(Messages.getString("ReportAction.17")));
     } else {

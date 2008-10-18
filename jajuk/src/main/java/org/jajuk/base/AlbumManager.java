@@ -38,6 +38,7 @@ import org.jajuk.events.ObservationManager;
 import org.jajuk.events.Observer;
 import org.jajuk.services.players.FIFO;
 import org.jajuk.util.Conf;
+import org.jajuk.util.Const;
 import org.jajuk.util.MD5Processor;
 import org.jajuk.util.ReadOnlyIterator;
 import org.jajuk.util.error.JajukException;
@@ -50,7 +51,7 @@ public final class AlbumManager extends ItemManager implements Observer {
   /** Self instance */
   private static AlbumManager singleton;
 
-   /** Album max rating */
+  /** Album max rating */
   private long maxRate = 0l;
 
   int comp = 0;
@@ -62,14 +63,14 @@ public final class AlbumManager extends ItemManager implements Observer {
     super();
     // register properties
     // ID
-    registerProperty(new PropertyMetaInformation(XML_ID, false, true, false, false, false,
+    registerProperty(new PropertyMetaInformation(Const.XML_ID, false, true, false, false, false,
         String.class, null));
     // Name
-    registerProperty(new PropertyMetaInformation(XML_NAME, false, true, true, true, false,
+    registerProperty(new PropertyMetaInformation(Const.XML_NAME, false, true, true, true, false,
         String.class, null));
     // Expand
-    registerProperty(new PropertyMetaInformation(XML_EXPANDED, false, false, false, false, true,
-        Boolean.class, false));
+    registerProperty(new PropertyMetaInformation(Const.XML_EXPANDED, false, false, false, false,
+        true, Boolean.class, false));
     // Register events
     ObservationManager.register(this);
   }
@@ -138,7 +139,7 @@ public final class AlbumManager extends ItemManager implements Observer {
     // re apply old properties from old item
     newItem.cloneProperties(old);
     // update tracks
-    for(Track track: TrackManager.getInstance().getTracks()){
+    for (Track track : TrackManager.getInstance().getTracks()) {
       if (track.getAlbum().equals(old)) {
         TrackManager.getInstance().changeTrackAlbum(track, sNewName, null);
       }
@@ -182,7 +183,7 @@ public final class AlbumManager extends ItemManager implements Observer {
    */
   @Override
   public String getLabel() {
-    return XML_ALBUMS;
+    return Const.XML_ALBUMS;
   }
 
   /**
@@ -420,9 +421,9 @@ public final class AlbumManager extends ItemManager implements Observer {
     Map<Album, Integer> cacheNb = new HashMap<Album, Integer>(AlbumManager.getInstance()
         .getElementCount());
     ReadOnlyIterator<Track> it = TrackManager.getInstance().getTracksIterator();
-    while (it.hasNext()){
+    while (it.hasNext()) {
       Track track = it.next();
-      if (track.getPlayeableFile(Conf.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED)) != null) {
+      if (track.getPlayeableFile(Conf.getBoolean(Const.CONF_OPTIONS_HIDE_UNMOUNTED)) != null) {
         float newRate = 0f;
         Integer nb = cacheNb.get(track.getAlbum());
         if (nb == null) {

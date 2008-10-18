@@ -50,10 +50,10 @@ public class GenericProvider implements IProvider {
     String queryString = getQuerySource();
 
     try {
-      queryString = queryString.replace(Const.PATTERN_AUTHOR,
-          (artist != null) ? URLEncoder.encode(artist, "ISO-8859-1") : "");
-      queryString = queryString.replace(Const.PATTERN_TRACKNAME,
-          (title != null) ? URLEncoder.encode(title, "ISO-8859-1") : "");
+      queryString = queryString.replace(Const.PATTERN_AUTHOR, (artist != null) ? URLEncoder.encode(
+          artist, "ISO-8859-1") : "");
+      queryString = queryString.replace(Const.PATTERN_TRACKNAME, (title != null) ? URLEncoder
+          .encode(title, "ISO-8859-1") : "");
     } catch (final UnsupportedEncodingException e) {
       Log.warn("Could not URL encode artist {{" + artist + "}} and song title {{" + title + "}}");
     }

@@ -37,14 +37,15 @@ import org.jaudiotagger.tag.Tag;
  * href="https://jaudiotagger.dev.java.net">JAudiotagger</a>
  */
 public class JAudioTaggerTagImpl implements ITagImpl, Const {
-  
-  static{
-    //Disable Jaudiotagger logs
+
+  static {
+    // Disable Jaudiotagger logs
     try {
-      LogManager.getLogManager().readConfiguration(new FileInputStream(new File(FILE_JRE_LOG_CONF.toURI())));
+      LogManager.getLogManager().readConfiguration(
+          new FileInputStream(new File(FILE_JRE_LOG_CONF.toURI())));
     } catch (Exception e) {
       Log.error(e);
-    } 
+    }
   }
 
   /**

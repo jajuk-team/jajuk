@@ -32,7 +32,8 @@ public class PlayPauseAction extends JajukAction {
   private static final long serialVersionUID = 1L;
 
   PlayPauseAction() {
-    super(Messages.getString("JajukWindow.10"), IconLoader.getIcon(JajukIcons.PAUSE), "ctrl P", false, true);
+    super(Messages.getString("JajukWindow.10"), IconLoader.getIcon(JajukIcons.PAUSE), "ctrl P",
+        false, true);
     setShortDescription(Messages.getString("JajukWindow.26"));
   }
 

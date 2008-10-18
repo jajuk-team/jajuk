@@ -36,12 +36,12 @@ import org.jajuk.util.UtilSystem;
 /**
  * This class exports music contents to HTML.
  */
-public class HTMLExporter extends Exporter implements Const {
+public class HTMLExporter extends Exporter {
 
   /** PUBLIC METHODS */
 
   public HTMLExporter() {
-    cache = UtilSystem.getConfFileByPath(FILE_REPORTING_CACHE_FILE + "_html_"
+    cache = UtilSystem.getConfFileByPath(Const.FILE_REPORTING_CACHE_FILE + "_html_"
         + System.currentTimeMillis());
   }
 
@@ -56,13 +56,13 @@ public class HTMLExporter extends Exporter implements Const {
     if (type == PHYSICAL_COLLECTION) {
       // Create an xml tagging of the collection.
       xmlExporter.processCollection(PHYSICAL_COLLECTION);
-      XMLTransformer.xmlToHTML(xmlExporter.getCacheFile(), cache, XSLT_DEVICE);
+      XMLTransformer.xmlToHTML(xmlExporter.getCacheFile(), cache, Const.XSLT_DEVICE);
       // Else if we are exporting the logical genre collection...
     } else if (type == LOGICAL_COLLECTION) {
       // Create an xml tagging of the collection.
       xmlExporter.setShowTracks(false);
       xmlExporter.processCollection(LOGICAL_COLLECTION);
-      XMLTransformer.xmlToHTML(xmlExporter.getCacheFile(), cache, XSLT_COLLECTION_LOGICAL);
+      XMLTransformer.xmlToHTML(xmlExporter.getCacheFile(), cache, Const.XSLT_COLLECTION_LOGICAL);
     }
   }
 
@@ -79,17 +79,17 @@ public class HTMLExporter extends Exporter implements Const {
     xmlExporter.process(collection);
     Item first = collection.get(0);
     if (first instanceof Style) {
-      XMLTransformer.xmlToHTML(xmlExporter.getCacheFile(), cache, XSLT_STYLE);
+      XMLTransformer.xmlToHTML(xmlExporter.getCacheFile(), cache, Const.XSLT_STYLE);
     } else if (first instanceof Author) {
-      XMLTransformer.xmlToHTML(xmlExporter.getCacheFile(), cache, XSLT_AUTHOR);
+      XMLTransformer.xmlToHTML(xmlExporter.getCacheFile(), cache, Const.XSLT_AUTHOR);
     } else if (first instanceof Year) {
-      XMLTransformer.xmlToHTML(xmlExporter.getCacheFile(), cache, XSLT_YEAR);
+      XMLTransformer.xmlToHTML(xmlExporter.getCacheFile(), cache, Const.XSLT_YEAR);
     } else if (first instanceof Album) {
-      XMLTransformer.xmlToHTML(xmlExporter.getCacheFile(), cache, XSLT_ALBUM);
+      XMLTransformer.xmlToHTML(xmlExporter.getCacheFile(), cache, Const.XSLT_ALBUM);
     } else if (first instanceof Device) {
-      XMLTransformer.xmlToHTML(xmlExporter.getCacheFile(), cache, XSLT_DEVICE);
+      XMLTransformer.xmlToHTML(xmlExporter.getCacheFile(), cache, Const.XSLT_DEVICE);
     } else if (first instanceof Directory) {
-      XMLTransformer.xmlToHTML(xmlExporter.getCacheFile(), cache, XSLT_DIRECTORY);
+      XMLTransformer.xmlToHTML(xmlExporter.getCacheFile(), cache, Const.XSLT_DIRECTORY);
     }
   }
 
@@ -97,9 +97,9 @@ public class HTMLExporter extends Exporter implements Const {
   public void saveToFile(String sPath) throws Exception {
     super.saveToFile(sPath);
     // Copy CSS files
-    String sCSSAll = new File(sPath).getParent() + '/' + FILE_REPORTING_CSS_ALL_FILENAME;
-    String sCSSPrint = new File(sPath).getParent() + '/' + FILE_REPORTING_CSS_PRINT_FILENAME;
-    UtilSystem.copy(FILE_REPORTING_CSS_ALL_PATH, sCSSAll);
-    UtilSystem.copy(FILE_REPORTING_CSS_PRINT_PATH, sCSSPrint);
+    String sCSSAll = new File(sPath).getParent() + '/' + Const.FILE_REPORTING_CSS_ALL_FILENAME;
+    String sCSSPrint = new File(sPath).getParent() + '/' + Const.FILE_REPORTING_CSS_PRINT_FILENAME;
+    UtilSystem.copy(Const.FILE_REPORTING_CSS_ALL_PATH, sCSSAll);
+    UtilSystem.copy(Const.FILE_REPORTING_CSS_PRINT_PATH, sCSSPrint);
   }
 }

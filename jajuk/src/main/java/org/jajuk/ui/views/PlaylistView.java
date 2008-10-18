@@ -178,9 +178,8 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
           if ((files == null) || (files.size() == 0)) {
             Messages.showErrorMessage(18);
           } else {
-            FIFO.push(
-                UtilFeatures.createStackItems(UtilFeatures.applyPlayOption(files), Conf
-                    .getBoolean(Const.CONF_STATE_REPEAT), true), false);
+            FIFO.push(UtilFeatures.createStackItems(UtilFeatures.applyPlayOption(files), Conf
+                .getBoolean(Const.CONF_STATE_REPEAT), true), false);
           }
         } else { // user changed of smart playlist selection
           selectSmartPlaylist(sp);
@@ -274,7 +273,7 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
     jbPrepParty.addActionListener(this);
     jlTitle = new JLabel("");
     JToolBar jtb = new JajukJToolbar();
-    
+
     jtb.add(jbRun);
     jtb.add(jbSave);
     jtb.add(jbRemove);
@@ -311,18 +310,18 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
     jpEditor.add(jsp, "0,1");
     // menu items
     jmiFilePlay = new JMenuItem(ActionManager.getAction(JajukActions.PLAY_SELECTION));
-    jmiFilePlay.putClientProperty(DETAIL_SELECTION, editorTable.getSelection());
+    jmiFilePlay.putClientProperty(Const.DETAIL_SELECTION, editorTable.getSelection());
     jmiFilePush = new JMenuItem(ActionManager.getAction(JajukActions.PUSH_SELECTION));
-    jmiFilePush.putClientProperty(DETAIL_SELECTION, editorTable.getSelection());
+    jmiFilePush.putClientProperty(Const.DETAIL_SELECTION, editorTable.getSelection());
     jmiFileAddFavorites = new JMenuItem(ActionManager.getAction(JajukActions.BOOKMARK_SELECTION));
-    jmiFileAddFavorites.putClientProperty(DETAIL_SELECTION, editorTable.getSelection());
+    jmiFileAddFavorites.putClientProperty(Const.DETAIL_SELECTION, editorTable.getSelection());
     jmiFileProperties = new JMenuItem(ActionManager.getAction(JajukActions.SHOW_PROPERTIES));
-    jmiFileProperties.putClientProperty(DETAIL_SELECTION, editorTable.getSelection());
-    jmiFileUp = new JMenuItem(Messages.getString("AbstractPlaylistEditorView.6"),
-        IconLoader.getIcon(JajukIcons.UP));
+    jmiFileProperties.putClientProperty(Const.DETAIL_SELECTION, editorTable.getSelection());
+    jmiFileUp = new JMenuItem(Messages.getString("AbstractPlaylistEditorView.6"), IconLoader
+        .getIcon(JajukIcons.UP));
     jmiFileUp.addActionListener(this);
-    jmiFileDown = new JMenuItem(Messages.getString("AbstractPlaylistEditorView.7"),
-        IconLoader.getIcon(JajukIcons.DOWN));
+    jmiFileDown = new JMenuItem(Messages.getString("AbstractPlaylistEditorView.7"), IconLoader
+        .getIcon(JajukIcons.DOWN));
     jmiFileDown.addActionListener(this);
 
     editorTable.getMenu().add(jmiFilePlay);
@@ -362,8 +361,8 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
             // We launch all tracks from this
             // position
             // to the end of playlist
-            FIFO.push(editorModel.getItemsFrom(editorTable.getSelectedRow()),
-                Conf.getBoolean(CONF_OPTIONS_PUSH_ON_CLICK));
+            FIFO.push(editorModel.getItemsFrom(editorTable.getSelectedRow()), Conf
+                .getBoolean(Const.CONF_OPTIONS_PUSH_ON_CLICK));
           }
         }
       }
@@ -373,7 +372,7 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
     jpmenu = new JPopupMenu();
 
     jmiPlay = new JMenuItem(ActionManager.getAction(JajukActions.PLAY_SELECTION));
-    jmiPlay.putClientProperty(DETAIL_SELECTION, selectedFiles);
+    jmiPlay.putClientProperty(Const.DETAIL_SELECTION, selectedFiles);
     jpmenu.add(jmiPlay);
 
     jmiDelete = new JMenuItem(Messages.getString("PhysicalPlaylistRepositoryView.3"));
@@ -389,7 +388,7 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
     jpmenu.add(jmiPrepParty);
 
     jmiProperties = new JMenuItem(ActionManager.getAction(JajukActions.SHOW_PROPERTIES));
-    jmiProperties.putClientProperty(DETAIL_SELECTION, editorTable.getSelection());
+    jmiProperties.putClientProperty(Const.DETAIL_SELECTION, editorTable.getSelection());
     jpmenu.add(jmiProperties);
 
   }
@@ -472,7 +471,7 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
    */
   public void update(final Event event) {
     SwingUtilities.invokeLater(new Runnable() {
-      public void run() { 
+      public void run() {
         try {
           JajukEvents subject = event.getSubject();
           editorTable.setAcceptColumnsEvents(false); // flag reloading to avoid
@@ -489,7 +488,7 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
               // if no property, the party is done
               InformationJPanel.getInstance().setMessage("", InformationJPanel.INFORMATIVE);
             } else {
-              String filename = properties.getProperty(DETAIL_CONTENT);
+              String filename = properties.getProperty(Const.DETAIL_CONTENT);
               if (filename != null) {
                 InformationJPanel.getInstance()
                     .setMessage(Messages.getString("Device.31") + filename + "]",
@@ -507,7 +506,7 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
             editorModel.populateModel(editorTable.getColumnsConf());
             editorTable.setModel(editorModel);
             setRenderers();
-            editorTable.addColumnIntoConf((String) properties.get(DETAIL_CONTENT));
+            editorTable.addColumnIntoConf((String) properties.get(Const.DETAIL_CONTENT));
             editorTable.showColumns(editorTable.getColumnsConf());
           } else if (JajukEvents.CUSTOM_PROPERTIES_REMOVE.equals(subject)) {
             Properties properties = event.getDetails();
@@ -520,12 +519,12 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
             editorTable.setModel(editorModel);
             setRenderers();
             // remove item from configuration cols
-            editorTable.removeColumnFromConf((String) properties.get(DETAIL_CONTENT));
+            editorTable.removeColumnFromConf((String) properties.get(Const.DETAIL_CONTENT));
             editorTable.showColumns(editorTable.getColumnsConf());
           } else if (JajukEvents.VIEW_REFRESH_REQUEST.equals(subject)) {
             // force filter to refresh if the events has been triggered by the
             // table itself after a column change
-            JTable table = (JTable) event.getDetails().get(DETAIL_CONTENT);
+            JTable table = (JTable) event.getDetails().get(Const.DETAIL_CONTENT);
             if (table.equals(editorTable)) {
               refreshCurrentPlaylist();
             }
@@ -549,7 +548,7 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
     }
     try {
       editorModel.setItems(UtilFeatures.createStackItems(plf.getFiles(), Conf
-          .getBoolean(CONF_STATE_REPEAT), true)); // PERF
+          .getBoolean(Const.CONF_STATE_REPEAT), true)); // PERF
       ((JajukTableModel) editorTable.getModel()).populateModel(editorTable.getColumnsConf());
     } catch (JajukException je) { // don't trace because
       // it is called in a loop
@@ -884,7 +883,7 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
           PlaylistRepository.super.construct();
 
           jmiRepositorySaveAs = new JMenuItem(ActionManager.getAction(JajukActions.SAVE_AS));
-          jmiRepositorySaveAs.putClientProperty(DETAIL_SELECTION, jtable.getSelection());
+          jmiRepositorySaveAs.putClientProperty(Const.DETAIL_SELECTION, jtable.getSelection());
           jtable.getMenu().add(jmiRepositorySaveAs);
 
           // Add this generic menu item manually to ensure it's the last one in
@@ -908,10 +907,9 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
                 List<File> alFiles = UtilFeatures.getPlayableFiles(playlist);
                 if (alFiles.size() > 0) {
                   // launch it
-                  FIFO.push(
-                      UtilFeatures.createStackItems(alFiles, Conf
-                          .getBoolean(CONF_STATE_REPEAT), true),
-                      Conf.getBoolean(CONF_OPTIONS_PUSH_ON_CLICK));
+                  FIFO.push(UtilFeatures.createStackItems(alFiles, Conf
+                      .getBoolean(Const.CONF_STATE_REPEAT), true), Conf
+                      .getBoolean(Const.CONF_OPTIONS_PUSH_ON_CLICK));
                 } else {
                   Messages.showErrorMessage(10, playlist.getName());
                 }
@@ -976,14 +974,14 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
      * 
      * @param e
      */
-//    private void showMenu(MouseEvent e) {
-//      // cannot delete special playlists
-//      jmiDelete.setEnabled(false);
-//      // Save as is only for special playlists
-//      jmiProperties.setEnabled(false);
-//
-//      jmiPlay.setEnabled(true);
-//      jtable.getMenu().show(e.getComponent(), e.getX(), e.getY());
-//    }
+    // private void showMenu(MouseEvent e) {
+    // // cannot delete special playlists
+    // jmiDelete.setEnabled(false);
+    // // Save as is only for special playlists
+    // jmiProperties.setEnabled(false);
+    //
+    // jmiPlay.setEnabled(true);
+    // jtable.getMenu().show(e.getComponent(), e.getX(), e.getY());
+    // }
   }
 }

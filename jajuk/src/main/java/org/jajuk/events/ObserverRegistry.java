@@ -30,8 +30,8 @@ import java.util.Map;
 import org.jajuk.util.log.Log;
 
 class ObserverRegistry {
-  private Map<JajukEvents, List<Observer>> hEventComponents = 
-    new Hashtable<JajukEvents, List<Observer>>(10);
+  private Map<JajukEvents, List<Observer>> hEventComponents = new Hashtable<JajukEvents, List<Observer>>(
+      10);
 
   @SuppressWarnings("unchecked")
   void notifySync(Event event) {
@@ -41,7 +41,7 @@ class ObserverRegistry {
       return;
     }
     // Iterate on a cloned list to avoid concurrent exceptions
-    alComponents = (List<Observer>)((ArrayList<Observer>) alComponents).clone();
+    alComponents = (List<Observer>) ((ArrayList<Observer>) alComponents).clone();
     Iterator<Observer> it = alComponents.iterator();
     while (it.hasNext()) {
       Observer obs = null;

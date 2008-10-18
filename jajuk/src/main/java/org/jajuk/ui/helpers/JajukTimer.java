@@ -79,7 +79,7 @@ public final class JajukTimer {
     Iterator<StackItem> it = alFiles.iterator();
     while (it.hasNext()) {
       Object o = it.next();
-      
+
       // instanceof also checks for null by definition
       if (o instanceof File) {
         addTrackTime((File) o);

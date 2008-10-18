@@ -37,7 +37,8 @@ public class WebRadioConfigurationAction extends JajukAction {
   private static final long serialVersionUID = 1L;
 
   WebRadioConfigurationAction() {
-    super(Messages.getString("CommandJPanel.24"), IconLoader.getIcon(JajukIcons.CONFIGURATION), true);
+    super(Messages.getString("CommandJPanel.24"), IconLoader.getIcon(JajukIcons.CONFIGURATION),
+        true);
   }
 
   @Override

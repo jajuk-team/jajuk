@@ -162,10 +162,10 @@ public class Ambience implements Comparable<Ambience> {
   @Override
   public boolean equals(Object o) {
     // also catches null by definition
-    if(!(o instanceof Ambience))  {
+    if (!(o instanceof Ambience)) {
       return false;
     }
-    
+
     Ambience ambienceOther = (Ambience) o;
     return this.sName.equals(ambienceOther.getName())
         && this.styles.equals(ambienceOther.getStyles());
@@ -174,7 +174,8 @@ public class Ambience implements Comparable<Ambience> {
   @Override
   public int hashCode() {
     // for now just combine name and id to a hashcode
-    // idea taken from http://www.geocities.com/technofundo/tech/java/equalhash.html
+    // idea taken from
+    // http://www.geocities.com/technofundo/tech/java/equalhash.html
     int hash = 7;
     hash = 31 * hash + sName.hashCode();
     hash = 31 * hash + sID.hashCode();

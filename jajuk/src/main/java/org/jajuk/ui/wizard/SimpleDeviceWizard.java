@@ -53,7 +53,7 @@ import org.jdesktop.swingx.VerticalLayout;
  * Simple device creation wiard that creates a directory device given a
  * directory
  */
-public class SimpleDeviceWizard extends JajukJDialog implements Const, ActionListener {
+public class SimpleDeviceWizard extends JajukJDialog implements ActionListener {
   private static final long serialVersionUID = 1L;
 
   JLabel jlLeftIcon;

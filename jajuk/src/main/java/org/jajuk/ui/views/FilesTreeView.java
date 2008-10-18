@@ -87,6 +87,7 @@ import org.jajuk.ui.perspectives.PerspectiveManager;
 import org.jajuk.ui.widgets.InformationJPanel;
 import org.jajuk.ui.wizard.DeviceWizard;
 import org.jajuk.util.Conf;
+import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
@@ -187,7 +188,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
     jmiCollectionReport = new JMenuItem(actionReportCollection);
     // Add custom data to this component in order to allow the ReportAction
     // to be able to get it
-    jmiCollectionReport.putClientProperty(DETAIL_ORIGIN, COLLECTION_PHYSICAL);
+    jmiCollectionReport.putClientProperty(Const.DETAIL_ORIGIN, COLLECTION_PHYSICAL);
     jmenuCollection.add(jmiCollectionReport);
 
     Action actionDuplicateFiles = ActionManager.getAction(JajukActions.FIND_DUPLICATE_FILES);
@@ -197,7 +198,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
     // Directory menu
     Action actionRefreshDir = ActionManager.getAction(JajukActions.REFRESH);
     jmiDirRefresh = new JMenuItem(actionRefreshDir);
-    jmiDirRefresh.putClientProperty(DETAIL_SELECTION, alSelected);
+    jmiDirRefresh.putClientProperty(Const.DETAIL_SELECTION, alSelected);
     jmiDirRefresh.addActionListener(this);
     jmiDirDesynchro = new JMenuItem(Messages.getString("FilesTreeView.14"), IconLoader
         .getIcon(JajukIcons.DIRECTORY_DESYNCHRO));
@@ -304,7 +305,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
     }
     // add directories
     List<Directory> directories = DirectoryManager.getInstance().getDirectories();
-    //Collections.sort(directories);
+    // Collections.sort(directories);
     for (Directory directory : directories) {
       if (directory.shouldBeHidden()) {
         continue;
@@ -345,7 +346,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
 
     // add playlists
     List<Playlist> playlists = PlaylistManager.getInstance().getPlaylists();
-    //Collections.sort(playlists);
+    // Collections.sort(playlists);
     Iterator<Playlist> it4 = playlists.iterator();
     while (it4.hasNext()) {
       Playlist playlistFile = it4.next();
@@ -439,13 +440,13 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
       }.start();
     } else if (e.getSource() == jmiDirDesynchro) {
       for (Directory dir : alDirs) {
-        dir.setProperty(XML_DIRECTORY_SYNCHRONIZED, false);
+        dir.setProperty(Const.XML_DIRECTORY_SYNCHRONIZED, false);
       }
       jtree.revalidate();
       jtree.repaint();
     } else if (e.getSource() == jmiDirResynchro) {
       for (Directory dir : alDirs) {
-        dir.setProperty(XML_DIRECTORY_SYNCHRONIZED, true);
+        dir.setProperty(Const.XML_DIRECTORY_SYNCHRONIZED, true);
       }
       jtree.revalidate();
       jtree.repaint();
@@ -487,7 +488,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
       Object o = jtree.getPathForRow(i).getLastPathComponent();
       if (o instanceof DeviceNode) {
         Device device = ((DeviceNode) o).getDevice();
-        if (device.getBooleanValue(XML_EXPANDED)) {
+        if (device.getBooleanValue(Const.XML_EXPANDED)) {
           jtree.expandRow(i);
         }
         // Collapse node (useful to hide an live-unmounteddevice for ie
@@ -497,7 +498,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
         }
       } else if (o instanceof DirectoryNode) {
         Directory dir = ((DirectoryNode) o).getDirectory();
-        if (dir.getBooleanValue(XML_EXPANDED)) {
+        if (dir.getBooleanValue(Const.XML_EXPANDED)) {
           jtree.expandRow(i);
         }
       }
@@ -561,12 +562,12 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
           sbOut.append(lSize).append(Messages.getString("FilesTreeView.54"));
         }
         InformationJPanel.getInstance().setSelection(sbOut.toString());
-        if (Conf.getBoolean(CONF_OPTIONS_SYNC_TABLE_TREE)) {
+        if (Conf.getBoolean(Const.CONF_OPTIONS_SYNC_TABLE_TREE)) {
           // if table is synchronized with tree, notify the
           // selection change
           Properties properties = new Properties();
-          properties.put(DETAIL_SELECTION, selectedRecursively);
-          properties.put(DETAIL_ORIGIN, PerspectiveManager.getCurrentPerspective().getID());
+          properties.put(Const.DETAIL_SELECTION, selectedRecursively);
+          properties.put(Const.DETAIL_ORIGIN, PerspectiveManager.getCurrentPerspective().getID());
           ObservationManager.notify(new Event(JajukEvents.SYNC_TREE_TABLE, properties));
         }
         // Enable CDDB retagging only for a single directory selection
@@ -600,8 +601,8 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
             if (o instanceof FileNode) {
               File file = ((FileNode) o).getFile();
               try {
-                FIFO.push(new StackItem(file, Conf.getBoolean(CONF_STATE_REPEAT), true), Conf
-                    .getBoolean(CONF_OPTIONS_PUSH_ON_CLICK));
+                FIFO.push(new StackItem(file, Conf.getBoolean(Const.CONF_STATE_REPEAT), true), Conf
+                    .getBoolean(Const.CONF_OPTIONS_PUSH_ON_CLICK));
               } catch (JajukException je) {
                 Log.error(je);
               }
@@ -624,7 +625,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
                 return;
               } else {
                 FIFO.push(UtilFeatures.createStackItems(UtilFeatures.applyPlayOption(alToPlay),
-                    Conf.getBoolean(CONF_STATE_REPEAT), true), false);
+                    Conf.getBoolean(Const.CONF_STATE_REPEAT), true), false);
               }
             }
           }
@@ -787,7 +788,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
         jmenu.add(jmiProperties);
         Device device = ((DeviceNode) paths[0].getLastPathComponent()).getDevice();
         // if the device is not synchronized
-        if (device.getValue(XML_DEVICE_SYNCHRO_SOURCE).equals("")) {
+        if (device.getValue(Const.XML_DEVICE_SYNCHRO_SOURCE).equals("")) {
           jmiDevSynchronize.setEnabled(false);
         } else {
           jmiDevSynchronize.setEnabled(true);
@@ -820,10 +821,10 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
       Object o = event.getPath().getLastPathComponent();
       if (o instanceof DirectoryNode && !bAutoCollapse) {
         Directory dir = ((DirectoryNode) o).getDirectory();
-        dir.removeProperty(XML_EXPANDED);
+        dir.removeProperty(Const.XML_EXPANDED);
       } else if (o instanceof DeviceNode && !bAutoCollapse) {
         Device device = ((DeviceNode) o).getDevice();
-        device.removeProperty(XML_EXPANDED);
+        device.removeProperty(Const.XML_EXPANDED);
       }
     }
 
@@ -831,10 +832,10 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
       Object o = event.getPath().getLastPathComponent();
       if (o instanceof DirectoryNode && !bAutoCollapse) {
         Directory dir = ((DirectoryNode) o).getDirectory();
-        dir.setProperty(XML_EXPANDED, true);
+        dir.setProperty(Const.XML_EXPANDED, true);
       } else if (o instanceof DeviceNode && !bAutoCollapse) {
         Device device = ((DeviceNode) o).getDevice();
-        device.setProperty(XML_EXPANDED, true);
+        device.setProperty(Const.XML_EXPANDED, true);
       }
 
     }

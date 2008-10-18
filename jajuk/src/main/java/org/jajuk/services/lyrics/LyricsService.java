@@ -45,7 +45,7 @@ import org.jajuk.util.log.Log;
  * notify about various valid sources, so we could propose various inputs to the
  * user)
  */
-public final class LyricsService implements Const {
+public final class LyricsService {
 
   private static Map<String, IProvider> providers = null;
   private static IProvider current = null;
@@ -66,8 +66,7 @@ public final class LyricsService implements Const {
   public static Map<String, IProvider> loadProviders() {
     final Map<String, IProvider> lProviders = new HashMap<String, IProvider>();
     try {
-      StringTokenizer st = new StringTokenizer(Conf
-          .getString(CONF_LYRICS_PROVIDERS), ",");
+      StringTokenizer st = new StringTokenizer(Conf.getString(Const.CONF_LYRICS_PROVIDERS), ",");
       while (st.hasMoreTokens()) {
         String providerClass = st.nextToken();
         if (!UtilString.isVoid(providerClass)) {

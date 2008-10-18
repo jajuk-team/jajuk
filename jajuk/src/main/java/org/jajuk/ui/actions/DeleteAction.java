@@ -44,6 +44,7 @@ import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.ui.widgets.InformationJPanel;
 import org.jajuk.util.Conf;
+import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
@@ -65,7 +66,7 @@ public class DeleteAction extends JajukAction {
   public void perform(ActionEvent e) {
     JComponent source = (JComponent) e.getSource();
     // Get required data from the tree (selected node and node type)
-    final List<Item> alSelected = (List<Item>) source.getClientProperty(DETAIL_SELECTION);
+    final List<Item> alSelected = (List<Item>) source.getClientProperty(Const.DETAIL_SELECTION);
     final List<File> alFiles = new ArrayList<File>(alSelected.size());
     final List<File> rejFiles = new ArrayList<File>(alSelected.size());
     final List<Directory> alDirs = new ArrayList<Directory>(alSelected.size());
@@ -83,7 +84,8 @@ public class DeleteAction extends JajukAction {
         }
       } else if (item instanceof Directory) {
         alDirs.add((Directory) item);
-      } else if ((item instanceof Playlist) && (Conf.getBoolean(CONF_CONFIRMATIONS_DELETE_FILE))) {
+      } else if ((item instanceof Playlist)
+          && (Conf.getBoolean(Const.CONF_CONFIRMATIONS_DELETE_FILE))) {
         // file delete confirmation
         Playlist plf = (Playlist) item;
         String sFileToDelete = plf.getAbsolutePath();
@@ -100,7 +102,7 @@ public class DeleteAction extends JajukAction {
 
     if (alFiles.size() > 0) {
       // Ask if a confirmation is required
-      if (Conf.getBoolean(CONF_CONFIRMATIONS_DELETE_FILE)) {
+      if (Conf.getBoolean(Const.CONF_CONFIRMATIONS_DELETE_FILE)) {
         String sFiles = "";
         for (File f : alFiles) {
           sFiles += f.getName() + "\n";
@@ -181,7 +183,7 @@ public class DeleteAction extends JajukAction {
 
     if (alDirs.size() > 0) {
       // Ask if a confirmation is required
-      if (Conf.getBoolean(CONF_CONFIRMATIONS_DELETE_FILE)) {
+      if (Conf.getBoolean(Const.CONF_CONFIRMATIONS_DELETE_FILE)) {
         String sFiles = "";
         int count = 0;
         for (Directory d : alDirs) {

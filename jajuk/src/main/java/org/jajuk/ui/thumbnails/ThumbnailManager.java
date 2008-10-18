@@ -44,7 +44,7 @@ import org.jajuk.util.log.Log;
 /**
  * Manage thumbnails
  */
-public final class ThumbnailManager implements Const {
+public final class ThumbnailManager {
 
   /** No instances */
   private ThumbnailManager() {
@@ -57,18 +57,19 @@ public final class ThumbnailManager implements Const {
    *          size, eg: Const.THUMBNAIL_SIZE_150x150
    */
   public static void cleanThumbs(String size) {
-    File fThumb = UtilSystem.getConfFileByPath(FILE_THUMBS + '/' + size);
+    File fThumb = UtilSystem.getConfFileByPath(Const.FILE_THUMBS + '/' + size);
     if (fThumb.exists()) {
       File[] files = fThumb.listFiles();
       for (File file : files) {
-        if (!file.getAbsolutePath().matches(".*" + FILE_THUMB_NO_COVER)) {
-          if(!file.delete()) {
+        if (!file.getAbsolutePath().matches(".*" + Const.FILE_THUMB_NO_COVER)) {
+          if (!file.delete()) {
             Log.warn("Could not delete " + file.toString());
           }
         }
       }
       // Refresh default cover
-      File fDefault = UtilSystem.getConfFileByPath(FILE_THUMBS + "/" + size + "/" + FILE_THUMB_NO_COVER);
+      File fDefault = UtilSystem.getConfFileByPath(Const.FILE_THUMBS + "/" + size + "/"
+          + Const.FILE_THUMB_NO_COVER);
       fDefault.delete();
       try {
         int iSize = Integer.parseInt(new StringTokenizer(size, "x").nextToken());
@@ -86,8 +87,8 @@ public final class ThumbnailManager implements Const {
    */
   public static void cleanThumbs(Album album) {
     for (int size = 0; size < 6; size++) {
-      File fThumb = UtilSystem.getConfFileByPath(FILE_THUMBS + '/' + 50 * size + '/' + album.getID()
-          + ".jpg");
+      File fThumb = UtilSystem.getConfFileByPath(Const.FILE_THUMBS + '/' + 50 * size + '/'
+          + album.getID() + ".jpg");
       if (fThumb.exists()) {
         boolean out = fThumb.delete();
         if (!out) {
@@ -153,8 +154,8 @@ public final class ThumbnailManager implements Const {
     }
     // draw original image to thumbnail image object and
     // scale it to the new size on-the-fly
-    final BufferedImage thumbImage = UtilGUI.toBufferedImage(image, !(UtilSystem.getExtension(thumb)
-        .equalsIgnoreCase("jpg")), thumbWidth, thumbHeight);
+    final BufferedImage thumbImage = UtilGUI.toBufferedImage(image, !(UtilSystem
+        .getExtension(thumb).equalsIgnoreCase("jpg")), thumbWidth, thumbHeight);
     // Need alpha only for png and gif files
     // save thumbnail image to OUTFILE
     ImageIO.write(thumbImage, UtilSystem.getExtension(thumb), thumb);

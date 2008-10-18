@@ -37,7 +37,8 @@ public class DJConfigurationAction extends JajukAction {
   private static final long serialVersionUID = 1L;
 
   DJConfigurationAction() {
-    super(Messages.getString("CommandJPanel.17"), IconLoader.getIcon(JajukIcons.CONFIGURATION), true);
+    super(Messages.getString("CommandJPanel.17"), IconLoader.getIcon(JajukIcons.CONFIGURATION),
+        true);
   }
 
   @Override

@@ -26,7 +26,6 @@ import javax.swing.JFormattedTextField;
 import javax.swing.JOptionPane;
 
 import org.jajuk.ui.widgets.JajukWindow;
-import org.jajuk.util.Const;
 import org.jajuk.util.Messages;
 
 /**
@@ -34,7 +33,7 @@ import org.jajuk.util.Messages;
  * one / as this pattern verifier is used for organizer and organizer need to
  * create at least one directory to avoid mess on disk
  */
-public class PatternInputVerifier extends InputVerifier implements Const {
+public class PatternInputVerifier extends InputVerifier {
 
   /*
    * (non-Javadoc)

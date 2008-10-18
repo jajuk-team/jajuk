@@ -111,7 +111,7 @@ import org.jdesktop.swingx.JXPanel;
 /**
  * Jajuk launching class
  */
-public final class Main implements Const {
+public final class Main {
 
   /** Left side perspective selection panel */
   private static PerspectiveBarJPanel perspectiveBar;
@@ -159,18 +159,20 @@ public final class Main implements Const {
   private static final String[] DEVICE_TYPES = { "Device_type.directory", "Device_type.file_cd",
       "Device_type.network_drive", "Device_type.extdd", "Device_type.player" };
 
-  private static final String[] CONFIG_CHECKS = { FILE_CONFIGURATION, FILE_HISTORY };
+  private static final String[] CONFIG_CHECKS = { Const.FILE_CONFIGURATION, Const.FILE_HISTORY };
 
   private static final String[] DIR_CHECKS = {
       // internal pictures cache directory
-      FILE_CACHE + '/' + FILE_INTERNAL_CACHE,
+      Const.FILE_CACHE + '/' + Const.FILE_INTERNAL_CACHE,
       // thumbnails directories and sub-directories
-      FILE_THUMBS, FILE_THUMBS + "/" + THUMBNAIL_SIZE_50X50,
-      FILE_THUMBS + "/" + THUMBNAIL_SIZE_100X100, FILE_THUMBS + "/" + THUMBNAIL_SIZE_150X150,
-      FILE_THUMBS + "/" + THUMBNAIL_SIZE_200X200, FILE_THUMBS + "/" + THUMBNAIL_SIZE_250X250,
-      FILE_THUMBS + "/" + THUMBNAIL_SIZE_300X300,
+      Const.FILE_THUMBS, Const.FILE_THUMBS + "/" + Const.THUMBNAIL_SIZE_50X50,
+      Const.FILE_THUMBS + "/" + Const.THUMBNAIL_SIZE_100X100,
+      Const.FILE_THUMBS + "/" + Const.THUMBNAIL_SIZE_150X150,
+      Const.FILE_THUMBS + "/" + Const.THUMBNAIL_SIZE_200X200,
+      Const.FILE_THUMBS + "/" + Const.THUMBNAIL_SIZE_250X250,
+      Const.FILE_THUMBS + "/" + Const.THUMBNAIL_SIZE_300X300,
       // DJs directories
-      FILE_DJ_DIR };
+      Const.FILE_DJ_DIR };
 
   /** Directory used to flag the current jajuk session */
   private static File sessionIdFile;
@@ -215,13 +217,13 @@ public final class Main implements Const {
       // Conf.load
       if (!bTestMode) {
         // test mode is always in debug mode
-        Log.setVerbosity(Integer.parseInt(Conf.getString(CONF_OPTIONS_LOG_LEVEL)));
+        Log.setVerbosity(Integer.parseInt(Conf.getString(Const.CONF_OPTIONS_LOG_LEVEL)));
       }
       // Set locale. setSystemLocal
-      Messages.setLocal(Conf.getString(CONF_OPTIONS_LANGUAGE));
+      Messages.setLocal(Conf.getString(Const.CONF_OPTIONS_LANGUAGE));
 
       // Set window look and feel (must be done out of EDT)
-      UtilGUI.setLookAndFeel(Conf.getString(CONF_OPTIONS_LNF));
+      UtilGUI.setLookAndFeel(Conf.getString(Const.CONF_OPTIONS_LNF));
 
       // Launch splashscreen. Depends on: log.setVerbosity,
       // configurationManager.load (for local)
@@ -229,13 +231,13 @@ public final class Main implements Const {
         public void run() {
           // Set default fonts
           FontManager.getInstance().setDefaultFont();
-          sc = new JSplash(IMAGES_SPLASHSCREEN, true, true, false, JAJUK_COPYRIGHT, JAJUK_VERSION
-              + " \"" + JAJUK_CODENAME + "\"" + " " + JAJUK_VERSION_DATE, FontManager.getInstance()
-              .getFont(JajukFont.SPLASH));
+          sc = new JSplash(Const.IMAGES_SPLASHSCREEN, true, true, false, Const.JAJUK_COPYRIGHT,
+              Const.JAJUK_VERSION + " \"" + Const.JAJUK_CODENAME + "\"" + " "
+                  + Const.JAJUK_VERSION_DATE, FontManager.getInstance().getFont(JajukFont.SPLASH));
           sc.setTitle(Messages.getString("JajukWindow.3"));
           sc.setProgress(0, Messages.getString("SplashScreen.0"));
           // Actually show the splashscreen only if required
-          if (Conf.getInt(CONF_STARTUP_DISPLAY) == DISPLAY_MODE_WINDOW_TRAY) {
+          if (Conf.getInt(Const.CONF_STARTUP_DISPLAY) == Const.DISPLAY_MODE_WINDOW_TRAY) {
             sc.splashOn();
           }
         }
@@ -267,7 +269,7 @@ public final class Main implements Const {
       } catch (final UnknownHostException e) {
         sHostname = "localhost";
       }
-      sessionIdFile = UtilSystem.getConfFileByPath(FILE_SESSIONS + '/' + sHostname + '_'
+      sessionIdFile = UtilSystem.getConfFileByPath(Const.FILE_SESSIONS + '/' + sHostname + '_'
           + System.getProperty("user.name") + '_'
           + new SimpleDateFormat("yyyyMMdd-kk:mm:ss").format(UtilSystem.TODAY));
       if (!sessionIdFile.mkdir()) {
@@ -332,7 +334,7 @@ public final class Main implements Const {
       ActionManager.getInstance();
 
       // show window if set in the systray conf.
-      if (Conf.getInt(CONF_STARTUP_DISPLAY) == DISPLAY_MODE_WINDOW_TRAY) {
+      if (Conf.getInt(Const.CONF_STARTUP_DISPLAY) == Const.DISPLAY_MODE_WINDOW_TRAY) {
         // Display progress
         sc.setProgress(80, Messages.getString("SplashScreen.3"));
         launchWindow();
@@ -342,10 +344,10 @@ public final class Main implements Const {
       launchTray();
 
       // Start the slimbar if required
-      if (Conf.getInt(CONF_STARTUP_DISPLAY) == DISPLAY_MODE_SLIMBAR_TRAY) {
+      if (Conf.getInt(Const.CONF_STARTUP_DISPLAY) == Const.DISPLAY_MODE_SLIMBAR_TRAY) {
         launchSlimbar();
       }
-      
+
     } catch (final JajukException je) { // last chance to catch any error for
       // logging purpose
       Log.error(je);
@@ -404,7 +406,7 @@ public final class Main implements Const {
     for (final String element : args) {
       // Tells jajuk it is inside the IDE (useful to find right
       // location for images and jar resources)
-      if (element.equals("-" + CLI_IDE)) {
+      if (element.equals("-" + Const.CLI_IDE)) {
         bIdeMode = true;
       }
       // Tells jajuk to use a .jajuk_test repository
@@ -412,12 +414,12 @@ public final class Main implements Const {
       // -test=[test|notest] option
       // or using the "test" env variable
       final String test = System.getProperty("test");
-      if (element.equals("-" + CLI_TEST) || ((test != null) && test.equals("test"))) {
+      if (element.equals("-" + Const.CLI_TEST) || ((test != null) && test.equals("test"))) {
 
         bTestMode = true;
       }
 
-      if (element.equals("-" + CLI_POWER_PACK)) {
+      if (element.equals("-" + Const.CLI_POWER_PACK)) {
         bPowerPack = true;
       }
     }
@@ -430,7 +432,7 @@ public final class Main implements Const {
    */
   public static void initialCheckups() throws Exception {
     // Check for bootstrap file presence
-    final File bootstrap = new File(FILE_BOOTSTRAP);
+    final File bootstrap = new File(Const.FILE_BOOTSTRAP);
     // Default workspace: ~/.jajuk
     final File fDefaultWorkspace = UtilSystem.getConfFileByPath("");
     if (bootstrap.canRead()) {
@@ -441,8 +443,8 @@ public final class Main implements Const {
         final String sPath = br.readLine();
         br.close();
         // Check if the repository can be found
-        if (new File(sPath + '/' + (Main.bTestMode ? ".jajuk_test_" + TEST_VERSION : ".jajuk"))
-            .canRead()) {
+        if (new File(sPath + '/'
+            + (Main.bTestMode ? ".jajuk_test_" + Const.TEST_VERSION : ".jajuk")).canRead()) {
           Main.workspace = sPath;
         }
       } catch (final IOException e) {
@@ -482,7 +484,7 @@ public final class Main implements Const {
     }
     // check for image cache presence and create the workspace/.jajuk
     // directory
-    final File fCache = UtilSystem.getConfFileByPath(FILE_CACHE);
+    final File fCache = UtilSystem.getConfFileByPath(Const.FILE_CACHE);
     if (!fCache.exists()) {
       fCache.mkdirs();
     } else {
@@ -558,8 +560,8 @@ public final class Main implements Const {
 
           // backup the collection if no parsing error occurred
           if (!bCollectionLoadRecover) {
-            UtilSystem.backupFile(UtilSystem.getConfFileByPath(FILE_COLLECTION), Conf
-                .getInt(CONF_BACKUP_SIZE));
+            UtilSystem.backupFile(UtilSystem.getConfFileByPath(Const.FILE_COLLECTION), Conf
+                .getInt(Const.CONF_BACKUP_SIZE));
           }
 
           // Wait few secs to avoid GUI startup perturbations
@@ -576,8 +578,8 @@ public final class Main implements Const {
 
           // Start rating manager thread
           RatingManager.getInstance().start();
-          
-          // Switch to sorted mode 
+
+          // Switch to sorted mode
           ItemManager.switchAllManagersToOrderState();
 
           // Force rebuilding thumbs (after an album id hashcode
@@ -608,12 +610,12 @@ public final class Main implements Const {
             if (sc != null) {
               sc.setProgress(5, Messages.getString("Main.22"));
             }
-            Log.debug("Download Mplayer from: " + URL_MPLAYER);
-            File fMPlayer = UtilSystem.getConfFileByPath(FILE_MPLAYER_EXE);
-            DownloadManager.download(new URL(URL_MPLAYER), fMPlayer);
+            Log.debug("Download Mplayer from: " + Const.URL_MPLAYER);
+            File fMPlayer = UtilSystem.getConfFileByPath(Const.FILE_MPLAYER_EXE);
+            DownloadManager.download(new URL(Const.URL_MPLAYER), fMPlayer);
             // make sure to delete corrupted mplayer in case of
             // download problem
-            if (fMPlayer.length() != MPLAYER_EXE_SIZE) {
+            if (fMPlayer.length() != Const.MPLAYER_EXE_SIZE) {
               if (!fMPlayer.delete()) {
                 Log.warn("Could not delete file " + fMPlayer);
               }
@@ -628,7 +630,7 @@ public final class Main implements Const {
       // using external standard distributions
       else {
         // If a forced mplayer path is defined, test it
-        final String forced = Conf.getString(CONF_MPLAYER_PATH_FORCED);
+        final String forced = Conf.getString(Const.CONF_MPLAYER_PATH_FORCED);
         if (!UtilString.isVoid(forced)) {
           // Test forced path
           mplayerStatus = UtilSystem.getMplayerStatus(forced);
@@ -643,9 +645,10 @@ public final class Main implements Const {
           if (mplayerStatus != UtilSystem.MPlayerStatus.MPLAYER_STATUS_OK) {
             // OK, try to find MPlayer in standards OSX directories
             if (UtilSystem.isUnderOSXpower()) {
-              mplayerStatus = UtilSystem.getMplayerStatus(FILE_DEFAULT_MPLAYER_POWER_OSX_PATH);
+              mplayerStatus = UtilSystem
+                  .getMplayerStatus(Const.FILE_DEFAULT_MPLAYER_POWER_OSX_PATH);
             } else {
-              mplayerStatus = UtilSystem.getMplayerStatus(FILE_DEFAULT_MPLAYER_X86_OSX_PATH);
+              mplayerStatus = UtilSystem.getMplayerStatus(Const.FILE_DEFAULT_MPLAYER_X86_OSX_PATH);
             }
           }
         }
@@ -656,20 +659,20 @@ public final class Main implements Const {
         Log.debug("Mplayer status=" + mplayerStatus);
         if (mplayerStatus != UtilSystem.MPlayerStatus.MPLAYER_STATUS_OK) {
           // Test if user didn't already select "don't show again"
-          if (!Conf.getBoolean(CONF_NOT_SHOW_AGAIN_PLAYER)) {
+          if (!Conf.getBoolean(Const.CONF_NOT_SHOW_AGAIN_PLAYER)) {
             if (mplayerStatus == UtilSystem.MPlayerStatus.MPLAYER_STATUS_NOT_FOUND) {
               // No mplayer
               Messages.showHideableWarningMessage(Messages.getString("Warning.0"),
-                  CONF_NOT_SHOW_AGAIN_PLAYER);
+                  Const.CONF_NOT_SHOW_AGAIN_PLAYER);
             } else if (mplayerStatus == UtilSystem.MPlayerStatus.MPLAYER_STATUS_WRONG_VERSION) {
               // wrong mplayer release
               Messages.showHideableWarningMessage(Messages.getString("Warning.1"),
-                  CONF_NOT_SHOW_AGAIN_PLAYER);
+                  Const.CONF_NOT_SHOW_AGAIN_PLAYER);
             }
           } else if (mplayerStatus == UtilSystem.MPlayerStatus.MPLAYER_STATUS_JNLP_DOWNLOAD_PBM) {
             // wrong mplayer release
             Messages.showHideableWarningMessage(Messages.getString("Warning.3"),
-                CONF_NOT_SHOW_AGAIN_PLAYER);
+                Const.CONF_NOT_SHOW_AGAIN_PLAYER);
           }
         }
         TypeManager.registerTypesNoMplayer();
@@ -692,7 +695,7 @@ public final class Main implements Const {
         public void run() {
           // Check for remote concurrent users using the same configuration
           // files. Create concurrent session directory if needed
-          File sessions = UtilSystem.getConfFileByPath(FILE_SESSIONS);
+          File sessions = UtilSystem.getConfFileByPath(Const.FILE_SESSIONS);
           if (!sessions.exists()) {
             if (!sessions.mkdir()) {
               Log.warn("Could not create directory " + sessions.toString());
@@ -726,7 +729,7 @@ public final class Main implements Const {
             dialog.setVisible(true);
             if (Messages.getString("Hide").equals(optionPane.getValue())) {
               // Not show again
-              Conf.setProperty(CONF_NOT_SHOW_AGAIN_CONCURRENT_SESSION, TRUE);
+              Conf.setProperty(Const.CONF_NOT_SHOW_AGAIN_CONCURRENT_SESSION, Const.TRUE);
             } else if (Messages.getString("Purge").equals(optionPane.getValue())) {
               try {
                 // Clean up old locks directories in session folder
@@ -759,9 +762,9 @@ public final class Main implements Const {
       Log.info("First session, collection will be created");
       return;
     }
-    final File fCollection = UtilSystem.getConfFileByPath(FILE_COLLECTION);
+    final File fCollection = UtilSystem.getConfFileByPath(Const.FILE_COLLECTION);
     try {
-      Collection.load(UtilSystem.getConfFileByPath(FILE_COLLECTION));
+      Collection.load(UtilSystem.getConfFileByPath(Const.FILE_COLLECTION));
       bCollectionLoadRecover = false;
     } catch (final Exception e) {
       Log.error(5, fCollection.getAbsolutePath(), e);
@@ -806,7 +809,7 @@ public final class Main implements Const {
         Collection.clearCollection();
         System.gc();
         try {
-          Collection.commit(UtilSystem.getConfFileByPath(FILE_COLLECTION));
+          Collection.commit(UtilSystem.getConfFileByPath(Const.FILE_COLLECTION));
         } catch (final Exception e2) {
           Log.error(e2);
         }
@@ -820,18 +823,19 @@ public final class Main implements Const {
   private static void launchInitialTrack() {
     List<org.jajuk.base.File> alToPlay = new ArrayList<org.jajuk.base.File>();
     org.jajuk.base.File fileToPlay = null;
-    if (!Conf.getString(CONF_STARTUP_MODE).equals(STARTUP_MODE_NOTHING)) {
-      if (Conf.getString(CONF_STARTUP_MODE).equals(STARTUP_MODE_LAST)
-          || Conf.getString(CONF_STARTUP_MODE).equals(STARTUP_MODE_LAST_KEEP_POS)
-          || Conf.getString(CONF_STARTUP_MODE).equals(STARTUP_MODE_FILE)) {
+    if (!Conf.getString(Const.CONF_STARTUP_MODE).equals(Const.STARTUP_MODE_NOTHING)) {
+      if (Conf.getString(Const.CONF_STARTUP_MODE).equals(Const.STARTUP_MODE_LAST)
+          || Conf.getString(Const.CONF_STARTUP_MODE).equals(Const.STARTUP_MODE_LAST_KEEP_POS)
+          || Conf.getString(Const.CONF_STARTUP_MODE).equals(Const.STARTUP_MODE_FILE)) {
 
-        if (Conf.getString(CONF_STARTUP_MODE).equals(STARTUP_MODE_FILE)) {
-          fileToPlay = FileManager.getInstance().getFileByID(Conf.getString(CONF_STARTUP_FILE));
+        if (Conf.getString(Const.CONF_STARTUP_MODE).equals(Const.STARTUP_MODE_FILE)) {
+          fileToPlay = FileManager.getInstance().getFileByID(
+              Conf.getString(Const.CONF_STARTUP_FILE));
         } else {
           // If we were playing a webradio when leaving, launch it
-          if (Conf.getBoolean(CONF_WEBRADIO_WAS_PLAYING)) {
+          if (Conf.getBoolean(Const.CONF_WEBRADIO_WAS_PLAYING)) {
             final WebRadio radio = WebRadioManager.getInstance().getWebRadioByName(
-                Conf.getString(CONF_DEFAULT_WEB_RADIO));
+                Conf.getString(Const.CONF_DEFAULT_WEB_RADIO));
             if (radio != null) {
               new Thread("WebRadio launch thread") {
                 @Override
@@ -869,8 +873,8 @@ public final class Main implements Const {
             } catch (final Exception e) {
               Log.debug("Mount failed");
               final Properties pDetail = new Properties();
-              pDetail.put(DETAIL_CONTENT, fileToPlay);
-              pDetail.put(DETAIL_REASON, "010");
+              pDetail.put(Const.DETAIL_CONTENT, fileToPlay);
+              pDetail.put(Const.DETAIL_REASON, "010");
               ObservationManager.notify(new Event(JajukEvents.PLAY_ERROR, pDetail));
               FIFO.setFirstFile(false); // no more first file
             }
@@ -885,15 +889,15 @@ public final class Main implements Const {
         }
         // For last tracks playing, add all ready files from last
         // session stored FIFO
-        if (Conf.getString(CONF_STARTUP_MODE).equals(STARTUP_MODE_LAST)
-            || Conf.getString(CONF_STARTUP_MODE).equals(STARTUP_MODE_LAST_KEEP_POS)) {
-          final File fifo = UtilSystem.getConfFileByPath(FILE_FIFO);
+        if (Conf.getString(Const.CONF_STARTUP_MODE).equals(Const.STARTUP_MODE_LAST)
+            || Conf.getString(Const.CONF_STARTUP_MODE).equals(Const.STARTUP_MODE_LAST_KEEP_POS)) {
+          final File fifo = UtilSystem.getConfFileByPath(Const.FILE_FIFO);
           if (!fifo.exists()) {
             Log.debug("No fifo file");
           } else {
             try {
               final BufferedReader br = new BufferedReader(new FileReader(UtilSystem
-                  .getConfFileByPath(FILE_FIFO)));
+                  .getConfFileByPath(Const.FILE_FIFO)));
               String s = null;
               for (;;) {
                 s = br.readLine();
@@ -912,11 +916,11 @@ public final class Main implements Const {
             }
           }
         }
-      } else if (Conf.getString(CONF_STARTUP_MODE).equals(STARTUP_MODE_SHUFFLE)) {
+      } else if (Conf.getString(Const.CONF_STARTUP_MODE).equals(Const.STARTUP_MODE_SHUFFLE)) {
         alToPlay = FileManager.getInstance().getGlobalShufflePlaylist();
-      } else if (Conf.getString(CONF_STARTUP_MODE).equals(STARTUP_MODE_BESTOF)) {
+      } else if (Conf.getString(Const.CONF_STARTUP_MODE).equals(Const.STARTUP_MODE_BESTOF)) {
         alToPlay = FileManager.getInstance().getGlobalBestofPlaylist();
-      } else if (Conf.getString(CONF_STARTUP_MODE).equals(STARTUP_MODE_NOVELTIES)) {
+      } else if (Conf.getString(Const.CONF_STARTUP_MODE).equals(Const.STARTUP_MODE_NOVELTIES)) {
         alToPlay = FileManager.getInstance().getGlobalNoveltiesPlaylist();
         if ((alToPlay != null) && (alToPlay.size() > 0)) {
           // shuffle the selection
@@ -929,8 +933,8 @@ public final class Main implements Const {
       }
       // launch selected file
       if ((alToPlay != null) && (alToPlay.size() > 0)) {
-        FIFO.push(UtilFeatures
-            .createStackItems(alToPlay, Conf.getBoolean(CONF_STATE_REPEAT), false), false);
+        FIFO.push(UtilFeatures.createStackItems(alToPlay, Conf.getBoolean(Const.CONF_STATE_REPEAT),
+            false), false);
       }
     }
   }
@@ -941,7 +945,7 @@ public final class Main implements Const {
    */
   public static void autoMount() {
     for (final Device device : DeviceManager.getInstance().getDevices()) {
-      if (device.getBooleanValue(XML_DEVICE_AUTO_MOUNT)) {
+      if (device.getBooleanValue(Const.XML_DEVICE_AUTO_MOUNT)) {
         try {
           device.mount();
         } catch (final Exception e) {
@@ -1028,7 +1032,7 @@ public final class Main implements Const {
 
           // Display tip of the day if required (not at the first
           // session)
-          if (Conf.getBoolean(CONF_SHOW_TIP_ON_STARTUP) && !UpgradeManager.isFirstSesion()) {
+          if (Conf.getBoolean(Const.CONF_SHOW_TIP_ON_STARTUP) && !UpgradeManager.isFirstSesion()) {
             final TipOfTheDayWizard tipsView = new TipOfTheDayWizard();
             tipsView.setLocationRelativeTo(JajukWindow.getInstance());
             tipsView.setVisible(true);
@@ -1061,7 +1065,7 @@ public final class Main implements Const {
   /** Launch tray */
   private static void launchTray() throws Exception {
     // Skip the tray launching if user forced it to hide
-    if (Conf.getBoolean(CONF_FORCE_TRAY_SHUTDOWN)) {
+    if (Conf.getBoolean(Const.CONF_FORCE_TRAY_SHUTDOWN)) {
       Log.debug("Tray shutdown forced");
       return;
     }
@@ -1122,21 +1126,21 @@ public final class Main implements Const {
       try {
         // Check if this device don't already exit
         for (Device device : DeviceManager.getInstance().getDevices()) {
-          if (FREE_MUSIC_DEVICE_NAME.equals(device.getName())) {
+          if (Const.FREE_MUSIC_DEVICE_NAME.equals(device.getName())) {
             return;
           }
         }
         // Check for ../Music file presence
         String music = new File(UtilSystem.getJarLocation(Main.class).toURI()).getParentFile()
             .getParentFile().getAbsolutePath();
-        music += '/' + FREE_MUSIC_DIR;
+        music += '/' + Const.FREE_MUSIC_DIR;
         File fMusic = new File(music);
         Log.debug("Powerpack detected, tested path: " + fMusic.getAbsolutePath());
         if (fMusic.exists()) {
-          Device device = DeviceManager.getInstance().registerDevice(FREE_MUSIC_DEVICE_NAME,
+          Device device = DeviceManager.getInstance().registerDevice(Const.FREE_MUSIC_DEVICE_NAME,
               Device.TYPE_DIRECTORY, fMusic.getAbsolutePath());
-          device.setProperty(XML_DEVICE_AUTO_MOUNT, true);
-          device.setProperty(XML_DEVICE_AUTO_REFRESH, 0.5d);
+          device.setProperty(Const.XML_DEVICE_AUTO_MOUNT, true);
+          device.setProperty(Const.XML_DEVICE_AUTO_REFRESH, 0.5d);
           device.mount();
           device.refreshCommand(true);
         }

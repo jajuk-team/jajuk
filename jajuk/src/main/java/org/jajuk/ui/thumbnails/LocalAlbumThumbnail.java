@@ -45,6 +45,7 @@ import org.jajuk.base.TrackManager;
 import org.jajuk.ui.helpers.CatalogViewTransferHandler;
 import org.jajuk.ui.helpers.FontManager;
 import org.jajuk.ui.helpers.FontManager.JajukFont;
+import org.jajuk.util.Const;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilGUI;
 import org.jajuk.util.UtilString;
@@ -87,8 +88,8 @@ public class LocalAlbumThumbnail extends AbstractThumbnail {
     super(size);
     this.album = album;
     this.bShowFullText = bShowText;
-    this.fCover = UtilSystem.getConfFileByPath(FILE_THUMBS + '/' + size + 'x' + size + '/'
-        + album.getID() + '.' + EXT_THUMB);
+    this.fCover = UtilSystem.getConfFileByPath(Const.FILE_THUMBS + '/' + size + 'x' + size + '/'
+        + album.getID() + '.' + Const.EXT_THUMB);
   }
 
   @Override
@@ -175,8 +176,8 @@ public class LocalAlbumThumbnail extends AbstractThumbnail {
   public String getDescription() {
     String size = "200x200";
     ThumbnailManager.refreshThumbnail(album, size);
-    java.io.File cover = UtilSystem.getConfFileByPath(FILE_THUMBS + '/' + size + '/'
-        + album.getID() + '.' + EXT_THUMB);
+    java.io.File cover = UtilSystem.getConfFileByPath(Const.FILE_THUMBS + '/' + size + '/'
+        + album.getID() + '.' + Const.EXT_THUMB);
     List<Track> tracks = new ArrayList<Track>(TrackManager.getInstance().getAssociatedTracks(album));
     Collections.sort(tracks, new TrackComparator(TrackComparator.ORDER));
     Track firstTrack = tracks.iterator().next();
@@ -192,19 +193,20 @@ public class LocalAlbumThumbnail extends AbstractThumbnail {
     // Display author as global value only if it is a single author album
     // We use file://<item type>?<item id> as HTML hyperlink format
     if (album.getAuthor() != null) {
-      sOut += "<br>" + Messages.getString("Property_author") + ": <a href='file://" + XML_AUTHOR
-          + '?' + firstTrack.getAuthor().getID() + "'>" + firstTrack.getAuthor().getName2()
-          + "</a>";
+      sOut += "<br>" + Messages.getString("Property_author") + ": <a href='file://"
+          + Const.XML_AUTHOR + '?' + firstTrack.getAuthor().getID() + "'>"
+          + firstTrack.getAuthor().getName2() + "</a>";
     }
     // Display style
     if (album.getStyle() != null) {
-      sOut += "<br>" + Messages.getString("Property_style") + ": <a href='file://" + XML_STYLE
-          + '?' + firstTrack.getStyle().getID() + "'>" + firstTrack.getStyle().getName2() + "</a>";
+      sOut += "<br>" + Messages.getString("Property_style") + ": <a href='file://"
+          + Const.XML_STYLE + '?' + firstTrack.getStyle().getID() + "'>"
+          + firstTrack.getStyle().getName2() + "</a>";
     }
     // Display year
     if (album.getYear() != null) {
-      sOut += "<br>" + Messages.getString("Property_year") + ": <a href='file://" + XML_YEAR + '?'
-          + firstTrack.getYear().getID() + "'>" + firstTrack.getYear().getName() + "</a>";
+      sOut += "<br>" + Messages.getString("Property_year") + ": <a href='file://" + Const.XML_YEAR
+          + '?' + firstTrack.getYear().getID() + "'>" + firstTrack.getYear().getName() + "</a>";
     }
     // display rating (average of each track rating)
     try {
@@ -228,8 +230,8 @@ public class LocalAlbumThumbnail extends AbstractThumbnail {
       if (track.getOrder() > 0) {
         sOut += UtilString.padNumber(track.getOrder(), 2) + ": ";
       }
-      sOut += "<b>" + "<a href='file://" + XML_TRACK + '?' + track.getID() + "'>" + track.getName()
-          + "</a>" + " (";
+      sOut += "<b>" + "<a href='file://" + Const.XML_TRACK + '?' + track.getID() + "'>"
+          + track.getName() + "</a>" + " (";
       sOut += UtilString.formatTimeBySec(track.getDuration()) + ") </b>";
       if (album.getYear() == null && track.getYear().getValue() != 0) {
         sOut += " - " + track.getYear().getValue() + "   ";
@@ -237,7 +239,7 @@ public class LocalAlbumThumbnail extends AbstractThumbnail {
       // Show author if known and if it is not already shown at album
       // level
       if (album.getAuthor() == null
-          && !track.getAuthor().getName2().equals(Messages.getString(UNKNOWN_AUTHOR))) {
+          && !track.getAuthor().getName2().equals(Messages.getString(Const.UNKNOWN_AUTHOR))) {
         sOut += " - " + track.getAuthor().getName2() + "   ";
       }
     }

@@ -23,6 +23,7 @@ import java.io.File;
 
 import org.jajuk.base.Type;
 import org.jajuk.base.TypeManager;
+import org.jajuk.util.Const;
 import org.jajuk.util.JajukFileFilter;
 import org.jajuk.util.UtilSystem;
 
@@ -74,7 +75,7 @@ public final class AudioFilter extends JajukFileFilter {
       // check extension is known
       if (TypeManager.getInstance().isExtensionSupported(extension)) {
         // check it is an audio file
-        return (Boolean) mgr.getTypeByExtension(extension).getValue(XML_TYPE_IS_MUSIC);
+        return (Boolean) mgr.getTypeByExtension(extension).getValue(Const.XML_TYPE_IS_MUSIC);
       }
       return false;
     }

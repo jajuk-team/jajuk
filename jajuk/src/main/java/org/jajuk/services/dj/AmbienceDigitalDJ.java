@@ -31,7 +31,7 @@ import org.jajuk.util.Messages;
 /**
  * Ambience DJ
  */
-public class AmbienceDigitalDJ extends DigitalDJ implements Const {
+public class AmbienceDigitalDJ extends DigitalDJ {
 
   /** Used ambience */
   private Ambience ambience;
@@ -56,7 +56,7 @@ public class AmbienceDigitalDJ extends DigitalDJ implements Const {
     }
     List<File> out = getSequence();
     if (!bUnicity && out.size() > 0) {
-      while (out.size() < MIN_TRACKS_NUMBER_WITHOUT_UNICITY) {
+      while (out.size() < Const.MIN_TRACKS_NUMBER_WITHOUT_UNICITY) {
         out.addAll(getSequence());
       }
     }
@@ -98,9 +98,9 @@ public class AmbienceDigitalDJ extends DigitalDJ implements Const {
   public String toXML() {
     StringBuilder sb = new StringBuilder(2000);
     sb.append(toXMLGeneralParameters());
-    sb.append("\t<" + XML_DJ_AMBIENCE + " " + XML_DJ_VALUE + "='");
+    sb.append("\t<" + Const.XML_DJ_AMBIENCE + " " + Const.XML_DJ_VALUE + "='");
     sb.append(ambience.getID() + "'/>\n");
-    sb.append("</" + XML_DJ_DJ + ">\n");
+    sb.append("</" + Const.XML_DJ_DJ + ">\n");
     return sb.toString();
   }
 

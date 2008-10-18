@@ -107,8 +107,7 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
       final Directory dParentDirectory) {
     super(sId, sName);
     this.dParentDirectory = dParentDirectory;
-    setProperty(Const.XML_DIRECTORY, dParentDirectory == null ? "-1" : dParentDirectory
-        .getID());
+    setProperty(Const.XML_DIRECTORY, dParentDirectory == null ? "-1" : dParentDirectory.getID());
     this.type = type;
   }
 
@@ -353,7 +352,7 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
     }
 
     final Playlist plfOther = (Playlist) otherPlaylistFile;
-     // [Perf] We can compare with an == operator here because 
+    // [Perf] We can compare with an == operator here because
     // all ID are stored into String intern() buffer
     return (getID() == plfOther.getID() && (plfOther.getType() == type));
   }
@@ -425,8 +424,7 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
           // mount. Note that we don't refresh UI to keep
           // selection on this playlist (otherwise the event reset
           // selection).
-          getDirectory().getDevice().mount(
-              Conf.getBoolean(Const.CONF_OPTIONS_HIDE_UNMOUNTED));
+          getDirectory().getDevice().mount(Conf.getBoolean(Const.CONF_OPTIONS_HIDE_UNMOUNTED));
         } catch (final Exception e) {
           throw new JajukException(141, getFio().getAbsolutePath(), e);
         }
@@ -596,9 +594,8 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
     if ((alFiles == null) || (alFiles.size() == 0)) {
       Messages.showErrorMessage(18);
     } else {
-      FIFO.push(
-          UtilFeatures.createStackItems(UtilFeatures.applyPlayOption(alFiles), Conf
-              .getBoolean(Const.CONF_STATE_REPEAT), true), false);
+      FIFO.push(UtilFeatures.createStackItems(UtilFeatures.applyPlayOption(alFiles), Conf
+          .getBoolean(Const.CONF_STATE_REPEAT), true), false);
     }
   }
 
@@ -758,8 +755,7 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
    */
   protected void setParentDirectory(final Directory parentDirectory) {
     dParentDirectory = parentDirectory;
-    setProperty(Const.XML_DIRECTORY, parentDirectory == null ? "-1" : parentDirectory
-        .getID());
+    setProperty(Const.XML_DIRECTORY, parentDirectory == null ? "-1" : parentDirectory.getID());
   }
 
   /**
@@ -796,10 +792,10 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
           final SimpleDateFormat stamp = new SimpleDateFormat("ddMMyyyy-HHmm");
           final String dirName = "Party-" + stamp.format(curDate);
           final java.io.File destDir = new java.io.File(fDir.getAbsolutePath() + "/" + dirName);
-          if(!destDir.mkdir()) {
+          if (!destDir.mkdir()) {
             Log.warn("Could not create destination directory " + destDir);
           }
-            
+
           final java.io.File file = new java.io.File(destDir.getAbsolutePath() + "/playlist.m3u");
           try {
             final BufferedWriter bw = new BufferedWriter(new FileWriter(file));
@@ -810,7 +806,7 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
               bw.write(entry.getAbsolutePath());
               // Notify that a file has been copied
               Properties properties = new Properties();
-              properties.put(DETAIL_CONTENT, entry.getName());
+              properties.put(Const.DETAIL_CONTENT, entry.getName());
               ObservationManager.notify(new Event(JajukEvents.FILE_COPIED, properties));
             }
 
@@ -901,6 +897,5 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
   public int getNbOfTracks() {
     return alFiles.size();
   }
-  
- 
+
 }

@@ -28,6 +28,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 
 import org.jajuk.base.Item;
+import org.jajuk.util.Const;
 
 /**
  * Convenient abstract class to factorize operations on selection
@@ -49,12 +50,12 @@ public abstract class SelectionAction extends JajukAction {
   @Override
   public void perform(ActionEvent e) throws Exception {
     JComponent source = (JComponent) e.getSource();
-    Object o = source.getClientProperty(DETAIL_SELECTION);
+    Object o = source.getClientProperty(Const.DETAIL_SELECTION);
     if (o instanceof Item) {
       selection = new ArrayList<Item>(1);
       selection.add((Item) o);
     } else if (o instanceof List) {
-      selection = (List<Item>) source.getClientProperty(DETAIL_SELECTION);
+      selection = (List<Item>) source.getClientProperty(Const.DETAIL_SELECTION);
     } else if (o instanceof Set) {
       selection = new ArrayList<Item>((Set<Item>) o);
     }

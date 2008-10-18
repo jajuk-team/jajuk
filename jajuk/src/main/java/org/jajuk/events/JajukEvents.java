@@ -131,5 +131,5 @@ public enum JajukEvents {
   RATE_RESET,
   // suggestion view should be refreshed
   SUGGESTIONS_REFRESH,
-  
+
 }

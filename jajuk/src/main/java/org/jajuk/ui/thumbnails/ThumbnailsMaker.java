@@ -53,7 +53,7 @@ import org.jajuk.util.log.Log;
  * process is done.
  * 
  */
-public final class ThumbnailsMaker implements Const {
+public final class ThumbnailsMaker {
 
   private static boolean bAlreadyRunning = false;
 
@@ -231,9 +231,9 @@ public final class ThumbnailsMaker implements Const {
     // Mount devices
     Main.autoMount();
     final List<Album> albums = AlbumManager.getInstance().getAlbums();
-     // Sort the albums
-    //Collections.sort(albums);
-    
+    // Sort the albums
+    // Collections.sort(albums);
+
     // For each album, create the associated thumb
     for (final Album album : albums) {
       // Leave if jajuk leaved

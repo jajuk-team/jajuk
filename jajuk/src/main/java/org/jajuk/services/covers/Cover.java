@@ -40,14 +40,26 @@ public class Cover implements Comparable<Cover>, Const {
 
   /**
    * Covers type enumeration.
-   * <p>NO_COVER : default jajuk cover displayed when no other is available</p>
-   * <p>LOCAL_COVER : cover located on the disk and not a standard one</p>
-   * <p>STANDARD COVER : cover located on the disk with a obvious name (cover.png, front.png...)  </p>
-   * <p>REMOTE_COVER : cover from the web (HTTP protocol)</p>
-   * <p>SELECTED_COVER : local cover selected by user as the default local cover to display in thumbs.. </p>  
+   * <p>
+   * NO_COVER : default jajuk cover displayed when no other is available
+   * </p>
+   * <p>
+   * LOCAL_COVER : cover located on the disk and not a standard one
+   * </p>
+   * <p>
+   * STANDARD COVER : cover located on the disk with a obvious name (cover.png,
+   * front.png...)
+   * </p>
+   * <p>
+   * REMOTE_COVER : cover from the web (HTTP protocol)
+   * </p>
+   * <p>
+   * SELECTED_COVER : local cover selected by user as the default local cover to
+   * display in thumbs..
+   * </p>
    */
   public enum CoverType {
-    NO_COVER, REMOTE_COVER, LOCAL_COVER, STANDARD_COVER, SELECTED_COVER 
+    NO_COVER, REMOTE_COVER, LOCAL_COVER, STANDARD_COVER, SELECTED_COVER
   }
 
   /** Cover URL* */
@@ -77,7 +89,8 @@ public class Cover implements Comparable<Cover>, Const {
     this.type = type;
     // Create an unique id for this cover
     id = Long.toString((long) (System.currentTimeMillis() * UtilSystem.getRandom().nextDouble()));
-    // only remote and no_cover are created by URL (file:// for no_cover, the image is inside the jajuk jar)
+    // only remote and no_cover are created by URL (file:// for no_cover, the
+    // image is inside the jajuk jar)
     if (type == CoverType.REMOTE_COVER || type == CoverType.NO_COVER) {
       this.file = UtilSystem.getCachePath(url, id);
     }
@@ -99,8 +112,9 @@ public class Cover implements Comparable<Cover>, Const {
   }
 
   /*
-   * (non-Javadoc)
-   * The priority order is : SELECTED > STANDARD > LOCAL > REMOTE > NO_COVER
+   * (non-Javadoc) The priority order is : SELECTED > STANDARD > LOCAL > REMOTE >
+   * NO_COVER
+   * 
    * @see java.lang.Comparable#compareTo(java.lang.Object)
    */
   public int compareTo(Cover cOther) {

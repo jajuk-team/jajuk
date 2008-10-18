@@ -62,7 +62,7 @@ import org.jdesktop.swingx.VerticalLayout;
 /**
  * First time Wizard
  */
-public class FirstTimeWizard extends JFrame implements Const, ActionListener {
+public class FirstTimeWizard extends JFrame implements ActionListener {
   private static final long serialVersionUID = 1L;
 
   JLabel jlLeftIcon;
@@ -139,8 +139,7 @@ public class FirstTimeWizard extends JFrame implements Const, ActionListener {
       final boolean bShowHelp = jcbHelp.isSelected();
       final String sPATH = workspacePath.getUrl().trim();
       // Check workspace directory
-      if ((!sPATH.equals("")) &&
-        (!new File(sPATH).canRead())) {
+      if ((!sPATH.equals("")) && (!new File(sPATH).canRead())) {
         Messages.showErrorMessage(165);
         return;
       }
@@ -166,7 +165,7 @@ public class FirstTimeWizard extends JFrame implements Const, ActionListener {
         public void run() {
           // Wait for context loading (default configuration...)
           Main.waitForLaunchRefresh();
-          
+
           // Create a directory device
           final Device device = DeviceManager.getInstance().registerDevice(fDir.getName(), 0,
               fDir.getAbsolutePath());

@@ -63,6 +63,7 @@ import org.jajuk.ui.widgets.JajukButton;
 import org.jajuk.ui.widgets.JajukJToolbar;
 import org.jajuk.ui.widgets.JajukTable;
 import org.jajuk.util.Conf;
+import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
@@ -118,7 +119,7 @@ public class QueueView extends PlaylistView {
     jbClear.addActionListener(this);
 
     JToolBar jtb = new JajukJToolbar();
-    
+
     jtb.add(jbSave);
     jtb.add(jbRemove);
     jtb.add(jbAddShuffle);
@@ -152,7 +153,8 @@ public class QueueView extends PlaylistView {
     jsp.setBorder(BorderFactory.createEmptyBorder(0, 1, 0, 0));
     add(jsp, "0,1");
     // menu items
-    jmiFilePlay = new JMenuItem(Messages.getString("TracksTableView.7"), IconLoader.getIcon(JajukIcons.PLAY_16X16));
+    jmiFilePlay = new JMenuItem(Messages.getString("TracksTableView.7"), IconLoader
+        .getIcon(JajukIcons.PLAY_16X16));
     // We don't use regular action for the play because it has very special
     // behavior here in the queue view : it must go to selection without keeping
     // previous FIFO
@@ -162,16 +164,16 @@ public class QueueView extends PlaylistView {
       }
     });
     jmiFilePush = new JMenuItem(ActionManager.getAction(JajukActions.PUSH_SELECTION));
-    jmiFilePush.putClientProperty(DETAIL_SELECTION, editorTable.getSelection());
+    jmiFilePush.putClientProperty(Const.DETAIL_SELECTION, editorTable.getSelection());
     jmiFileAddFavorites = new JMenuItem(ActionManager.getAction(JajukActions.BOOKMARK_SELECTION));
-    jmiFileAddFavorites.putClientProperty(DETAIL_SELECTION, editorTable.getSelection());
+    jmiFileAddFavorites.putClientProperty(Const.DETAIL_SELECTION, editorTable.getSelection());
     jmiFileProperties = new JMenuItem(ActionManager.getAction(JajukActions.SHOW_PROPERTIES));
-    jmiFileProperties.putClientProperty(DETAIL_SELECTION, editorTable.getSelection());
-    jmiFileUp = new JMenuItem(Messages.getString("AbstractPlaylistEditorView.6"),
-        IconLoader.getIcon(JajukIcons.UP));
+    jmiFileProperties.putClientProperty(Const.DETAIL_SELECTION, editorTable.getSelection());
+    jmiFileUp = new JMenuItem(Messages.getString("AbstractPlaylistEditorView.6"), IconLoader
+        .getIcon(JajukIcons.UP));
     jmiFileUp.addActionListener(this);
-    jmiFileDown = new JMenuItem(Messages.getString("AbstractPlaylistEditorView.7"),
-        IconLoader.getIcon(JajukIcons.DOWN));
+    jmiFileDown = new JMenuItem(Messages.getString("AbstractPlaylistEditorView.7"), IconLoader
+        .getIcon(JajukIcons.DOWN));
     jmiFileDown.addActionListener(this);
     editorTable.getMenu().add(jmiFilePlay);
     editorTable.getMenu().add(jmiFilePush);
@@ -211,10 +213,9 @@ public class QueueView extends PlaylistView {
             // we can't launch a planned
             // track, leave
             item.setPlanned(false);
-            item.setRepeat(Conf.getBoolean(CONF_STATE_REPEAT));
+            item.setRepeat(Conf.getBoolean(Const.CONF_STATE_REPEAT));
             item.setUserLaunch(true);
-            FIFO.push(item,
-                Conf.getBoolean(CONF_OPTIONS_PUSH_ON_CLICK));
+            FIFO.push(item, Conf.getBoolean(Const.CONF_OPTIONS_PUSH_ON_CLICK));
           } else { // non planned items
             goToSelection();
           }
@@ -264,7 +265,7 @@ public class QueueView extends PlaylistView {
   @Override
   public void update(final Event event) {
     SwingUtilities.invokeLater(new Runnable() {
-      public void run() { 
+      public void run() {
         try {
           JajukEvents subject = event.getSubject();
           editorTable.setAcceptColumnsEvents(false); // flag reloading to avoid
@@ -286,7 +287,7 @@ public class QueueView extends PlaylistView {
             editorModel.populateModel(editorTable.getColumnsConf());
             editorTable.setModel(editorModel);
             setRenderers();
-            editorTable.addColumnIntoConf((String) properties.get(DETAIL_CONTENT));
+            editorTable.addColumnIntoConf((String) properties.get(Const.DETAIL_CONTENT));
             editorTable.showColumns(editorTable.getColumnsConf());
 
             editorModel.getItems().clear();
@@ -303,7 +304,7 @@ public class QueueView extends PlaylistView {
             editorTable.setModel(editorModel);
             setRenderers();
             // remove item from configuration cols
-            editorTable.removeColumnFromConf((String) properties.get(DETAIL_CONTENT));
+            editorTable.removeColumnFromConf((String) properties.get(Const.DETAIL_CONTENT));
             editorTable.showColumns(editorTable.getColumnsConf());
 
             editorModel.getItems().clear();
@@ -312,7 +313,7 @@ public class QueueView extends PlaylistView {
           } else if (JajukEvents.VIEW_REFRESH_REQUEST.equals(subject)) {
             // force filter to refresh if the events has been triggered by the
             // table itself after a column change
-            JTable table = (JTable) event.getDetails().get(DETAIL_CONTENT);
+            JTable table = (JTable) event.getDetails().get(Const.DETAIL_CONTENT);
             if (table.equals(editorTable)) {
               editorModel.getItems().clear();
               editorModel.getPlanned().clear();

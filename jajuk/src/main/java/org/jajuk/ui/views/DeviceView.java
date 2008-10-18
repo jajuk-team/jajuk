@@ -196,7 +196,7 @@ public class DeviceView extends ViewAdapter implements IView, Const, ActionListe
     });
     // Add devices
     List<Device> devices = DeviceManager.getInstance().getDevices();
-    //Collections.sort(devices);
+    // Collections.sort(devices);
     for (Device device : devices) {
       ImageIcon icon = IconLoader.getIcon(JajukIcons.DEVICE_DIRECTORY_MOUNTED);
       String sTooltip = "";
@@ -417,7 +417,7 @@ public class DeviceView extends ViewAdapter implements IView, Const, ActionListe
       return;
     }
     // remove options for non synchronized devices
-    if (diSelected.getDevice().containsProperty(XML_DEVICE_SYNCHRO_SOURCE)) {
+    if (diSelected.getDevice().containsProperty(Const.XML_DEVICE_SYNCHRO_SOURCE)) {
       jmiSynchronize.setEnabled(true);
     } else {
       jmiSynchronize.setEnabled(false);

@@ -26,6 +26,7 @@ import org.jajuk.base.Directory;
 import org.jajuk.base.File;
 import org.jajuk.services.players.FIFO;
 import org.jajuk.util.Conf;
+import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
@@ -47,7 +48,8 @@ public class PlayDirectorySelectionAction extends SelectionAction {
   private static final long serialVersionUID = -8078402652430413821L;
 
   PlayDirectorySelectionAction() {
-    super(Messages.getString("FilesTableView.15"), IconLoader.getIcon(JajukIcons.DIRECTORY_SYNCHRO), true);
+    super(Messages.getString("FilesTableView.15"),
+        IconLoader.getIcon(JajukIcons.DIRECTORY_SYNCHRO), true);
     setShortDescription(Messages.getString("FilesTableView.15"));
   }
 
@@ -66,9 +68,8 @@ public class PlayDirectorySelectionAction extends SelectionAction {
     // Select all files from the first found directory
     Directory dir = ((File) selection.get(0)).getDirectory();
     List<File> files = UtilFeatures.getPlayableFiles(dir);
-    FIFO.push(
-        UtilFeatures.createStackItems(UtilFeatures.applyPlayOption(files), Conf
-            .getBoolean(CONF_STATE_REPEAT), true), false);
+    FIFO.push(UtilFeatures.createStackItems(UtilFeatures.applyPlayOption(files), Conf
+        .getBoolean(Const.CONF_STATE_REPEAT), true), false);
   }
 
 }

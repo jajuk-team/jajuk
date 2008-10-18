@@ -28,6 +28,7 @@ import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.services.players.FIFO;
 import org.jajuk.util.Conf;
+import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
@@ -51,7 +52,7 @@ public class ChangeTrackPreferenceAction extends JajukAction {
     File file = FIFO.getCurrentFile();
     if (file != null) {
       Track track = file.getTrack();
-      track.setPreference(Conf.getInt(CONF_INC_RATING));
+      track.setPreference(Conf.getInt(Const.CONF_INC_RATING));
     }
     // Force immediate rating refresh (without using the rating manager)
     ObservationManager.notify(new Event(JajukEvents.RATE_CHANGED));

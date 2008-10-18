@@ -40,7 +40,7 @@ import org.jajuk.util.log.Log;
 /**
  * abstract class for music player, independent from real implementation
  */
-public final class Player implements Const {
+public final class Player {
 
   /** Current file read */
   private static File fCurrent;
@@ -95,7 +95,7 @@ public final class Player implements Const {
         playerImpl = playerImpl1;
       }
       // player 1 not null, test if it is fading
-      else if (playerImpl1.getState() != FADING_STATUS) {
+      else if (playerImpl1.getState() != Const.FADING_STATUS) {
         // stop it
         playerImpl1.stop();
         playerImpl1 = cPlayer.newInstance();
@@ -122,8 +122,7 @@ public final class Player implements Const {
           if (bMute) {
             playerImpl.play(fCurrent, fPosition, length, 0.0f);
           } else {
-            playerImpl
-                .play(fCurrent, fPosition, length, Conf.getFloat(CONF_VOLUME));
+            playerImpl.play(fCurrent, fPosition, length, Conf.getFloat(Const.CONF_VOLUME));
           }
           bWaitingLine = false;
         } catch (Exception bpe) {
@@ -136,7 +135,7 @@ public final class Player implements Const {
               InformationJPanel.WARNING);
           try {
             // wait for the line
-            FIFO.class.wait(WAIT_AFTER_ERROR);
+            FIFO.class.wait(Const.WAIT_AFTER_ERROR);
           } catch (InterruptedException e1) {
             e1.printStackTrace();
           }
@@ -145,7 +144,7 @@ public final class Player implements Const {
       return true;
     } catch (final Throwable t) {
       Properties pDetails = new Properties();
-      pDetails.put(DETAIL_CONTENT, file);
+      pDetails.put(Const.DETAIL_CONTENT, file);
       ObservationManager.notifySync(new Event(JajukEvents.PLAY_ERROR, pDetails));
       Log.error(7, Messages.getString("Player.0") + "{{" + fCurrent.getAbsolutePath() + "}}", t);
       return false;
@@ -160,13 +159,13 @@ public final class Player implements Const {
   public static boolean play(WebRadio radio) {
     try {
       // check mplayer availability
-      if (TypeManager.getInstance().getTypeByExtension(EXT_RADIO) == null) {
+      if (TypeManager.getInstance().getTypeByExtension(Const.EXT_RADIO) == null) {
         Messages.showWarningMessage(Messages.getString("Warning.4"));
         return false;
       }
       playerImpl = null;
       // Choose the player
-      Class<IPlayerImpl> cPlayer = TypeManager.getInstance().getTypeByExtension(EXT_RADIO)
+      Class<IPlayerImpl> cPlayer = TypeManager.getInstance().getTypeByExtension(Const.EXT_RADIO)
           .getPlayerClass();
       // Stop all streams
       stop(true);
@@ -180,7 +179,7 @@ public final class Player implements Const {
           if (bMute) {
             playerImpl.play(radio, 0.0f);
           } else {
-            playerImpl.play(radio, Conf.getFloat(CONF_VOLUME));
+            playerImpl.play(radio, Conf.getFloat(Const.CONF_VOLUME));
           }
           bWaitingLine = false;
         } catch (Exception bpe) {
@@ -193,7 +192,7 @@ public final class Player implements Const {
               InformationJPanel.WARNING);
           try {
             // wait for the line
-            FIFO.class.wait(WAIT_AFTER_ERROR);
+            FIFO.class.wait(Const.WAIT_AFTER_ERROR);
           } catch (InterruptedException e1) {
             e1.printStackTrace();
           }
@@ -202,7 +201,7 @@ public final class Player implements Const {
       return true;
     } catch (final Throwable t) {
       Properties pDetails = new Properties();
-      pDetails.put(DETAIL_CONTENT, radio);
+      pDetails.put(Const.DETAIL_CONTENT, radio);
       ObservationManager.notifySync(new Event(JajukEvents.PLAY_ERROR, pDetails));
       Log.error(7, Messages.getString("Player.0") + radio.getUrl() + "}}", t);
       return false;
@@ -217,10 +216,10 @@ public final class Player implements Const {
    */
   public static void stop(boolean bAll) {
     try {
-      if (playerImpl1 != null && (playerImpl1.getState() != FADING_STATUS || bAll)) {
+      if (playerImpl1 != null && (playerImpl1.getState() != Const.FADING_STATUS || bAll)) {
         playerImpl1.stop();
       }
-      if (playerImpl2 != null && (playerImpl2.getState() != FADING_STATUS || bAll)) {
+      if (playerImpl2 != null && (playerImpl2.getState() != Const.FADING_STATUS || bAll)) {
         playerImpl2.stop();
       }
       bPaused = false; // cancel any current pause
@@ -259,7 +258,7 @@ public final class Player implements Const {
           playerImpl2.setVolume(0.0f);
         }
       } else {
-        playerImpl.setVolume(Conf.getFloat(CONF_VOLUME));
+        playerImpl.setVolume(Conf.getFloat(Const.CONF_VOLUME));
       }
       Player.bMute = pMute;
     } catch (Exception e) {
@@ -286,7 +285,7 @@ public final class Player implements Const {
   public static void setVolume(float pVolume) {
     float fVolume = pVolume;
     try {
-      Conf.setProperty(CONF_VOLUME, Float.toString(fVolume));
+      Conf.setProperty(Const.CONF_VOLUME, Float.toString(fVolume));
       if (playerImpl != null) {
         // check, it can be over 1 for unknown reason
         if (fVolume < 0.0f) {

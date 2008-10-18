@@ -72,7 +72,8 @@ public class Proportion {
 
   @Override
   public int hashCode() {
-    // for now just use ambience for the hashCode, not sure if we should include the 
+    // for now just use ambience for the hashCode, not sure if we should include
+    // the
     // proportion value as well...
     return ambience.hashCode();
   }

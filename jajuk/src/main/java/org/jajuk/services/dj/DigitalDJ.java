@@ -32,7 +32,7 @@ import org.jajuk.util.Const;
 /**
  * Digital DJ
  */
-public abstract class DigitalDJ implements Const, Comparable<DigitalDJ> {
+public abstract class DigitalDJ implements Comparable<DigitalDJ> {
 
   /** DJ unique ID */
   private String sID;
@@ -93,13 +93,13 @@ public abstract class DigitalDJ implements Const, Comparable<DigitalDJ> {
   protected String toXMLGeneralParameters() {
     StringBuilder sb = new StringBuilder();
     sb.append("<?xml version='1.0' encoding='UTF-8'?>\n");
-    sb.append("<" + XML_DJ_DJ + " " + XML_VERSION + "='" + JAJUK_VERSION + "' " + XML_ID + "='"
-        + sID + "' " + XML_NAME + "='" + sName + "' " + XML_TYPE + "='" + this.getClass().getName()
-        + "'>\n");
-    sb.append("\t<" + XML_DJ_GENERAL + " ");
-    sb.append(XML_DJ_RATING_LEVEL + "='" + iRatingLevel + "' ");
-    sb.append(XML_DJ_UNICITY + "='" + bUnicity + "' ");
-    sb.append(XML_DJ_FADE_DURATION + "='" + iFadingDuration + "'/>\n");
+    sb.append("<" + Const.XML_DJ_DJ + " " + Const.XML_VERSION + "='" + Const.JAJUK_VERSION + "' "
+        + Const.XML_ID + "='" + sID + "' " + Const.XML_NAME + "='" + sName + "' " + Const.XML_TYPE
+        + "='" + this.getClass().getName() + "'>\n");
+    sb.append("\t<" + Const.XML_DJ_GENERAL + " ");
+    sb.append(Const.XML_DJ_RATING_LEVEL + "='" + iRatingLevel + "' ");
+    sb.append(Const.XML_DJ_UNICITY + "='" + bUnicity + "' ");
+    sb.append(Const.XML_DJ_FADE_DURATION + "='" + iFadingDuration + "'/>\n");
     return sb.toString();
   }
 

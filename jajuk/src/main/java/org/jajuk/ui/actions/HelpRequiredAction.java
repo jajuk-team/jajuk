@@ -34,7 +34,8 @@ public class HelpRequiredAction extends JajukAction {
   private static final long serialVersionUID = 1L;
 
   HelpRequiredAction() {
-    super(Messages.getString("JajukJMenuBar.15"), IconLoader.getIcon(JajukIcons.INFO), "F1", true, false);
+    super(Messages.getString("JajukJMenuBar.15"), IconLoader.getIcon(JajukIcons.INFO), "F1", true,
+        false);
   }
 
   @Override

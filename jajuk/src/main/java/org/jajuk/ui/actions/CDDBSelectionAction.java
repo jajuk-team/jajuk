@@ -69,10 +69,10 @@ public class CDDBSelectionAction extends SelectionAction {
     Item item = selection.get(0);
     List<Track> tracksSet = TrackManager.getInstance().getAssociatedTracks(item);
     List<Track> tracks = new ArrayList<Track>(tracksSet);
-    
+
     // Sort tracks
-    Collections.sort(tracks,new TrackComparator(TrackComparator.ORDER));
-    
+    Collections.sort(tracks, new TrackComparator(TrackComparator.ORDER));
+
     // Note that the CDDBWizard uses a swing worker
     new CDDBWizard(tracks);
   }

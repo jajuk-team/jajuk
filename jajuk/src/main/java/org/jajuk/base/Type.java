@@ -25,6 +25,7 @@ import javax.swing.ImageIcon;
 
 import org.jajuk.services.players.IPlayerImpl;
 import org.jajuk.services.tags.ITagImpl;
+import org.jajuk.util.Const;
 import org.jajuk.util.Messages;
 import org.jajuk.util.log.Log;
 
@@ -64,11 +65,11 @@ public class Type extends PhysicalItem implements Comparable<Type> {
     super(sId, sName);
     this.cPlayerImpl = cPlayerImpl;
     this.sExtension = sExtension;
-    setProperty(XML_TYPE_EXTENSION, sExtension);
-    setProperty(XML_TYPE_PLAYER_IMPL, cPlayerImpl);
+    setProperty(Const.XML_TYPE_EXTENSION, sExtension);
+    setProperty(Const.XML_TYPE_PLAYER_IMPL, cPlayerImpl);
     this.cTagImpl = cTagImpl;
     if (cTagImpl != null) { // can be null for playlists
-      setProperty(XML_TYPE_TAG_IMPL, cTagImpl);
+      setProperty(Const.XML_TYPE_TAG_IMPL, cTagImpl);
     }
   }
 

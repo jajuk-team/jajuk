@@ -33,7 +33,6 @@ public final class XMLBuilder {
   private XMLBuilder() {
   }
 
-
   public static Document getXMLDocument(String xml) {
     if ((null != xml) && (xml.length() != 0)) {
       try {

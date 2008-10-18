@@ -21,6 +21,7 @@ package org.jajuk.base;
 
 import javax.swing.ImageIcon;
 
+import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
@@ -113,7 +114,7 @@ public class Author extends LogicalItem implements Comparable<Author> {
    */
   @Override
   public String getHumanValue(String sKey) {
-    if (XML_NAME.equals(sKey)) {
+    if (Const.XML_NAME.equals(sKey)) {
       return getName2();
     }
     // default

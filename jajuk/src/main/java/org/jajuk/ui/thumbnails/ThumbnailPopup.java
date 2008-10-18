@@ -68,7 +68,7 @@ import org.jajuk.util.log.Log;
  * It is displayed nicely from provided jlabel position
  * </p>
  */
-public class ThumbnailPopup extends JDialog implements Const {
+public class ThumbnailPopup extends JDialog {
 
   private static final long serialVersionUID = -8131528719972829954L;
 
@@ -100,25 +100,25 @@ public class ThumbnailPopup extends JDialog implements Const {
       public void hyperlinkUpdate(HyperlinkEvent e) {
         if (e.getEventType() == EventType.ACTIVATED) {
           URL url = e.getURL();
-          if (XML_AUTHOR.equals(url.getHost())) {
+          if (Const.XML_AUTHOR.equals(url.getHost())) {
             List<Item> items = new ArrayList<Item>(1);
             items.add(AuthorManager.getInstance().getItemByID(url.getQuery()));
             new PropertiesWizard(items);
-          } else if (XML_STYLE.equals(url.getHost())) {
+          } else if (Const.XML_STYLE.equals(url.getHost())) {
             List<Item> items = new ArrayList<Item>(1);
             items.add(StyleManager.getInstance().getItemByID(url.getQuery()));
             new PropertiesWizard(items);
-          } else if (XML_YEAR.equals(url.getHost())) {
+          } else if (Const.XML_YEAR.equals(url.getHost())) {
             List<Item> items = new ArrayList<Item>(1);
             items.add(YearManager.getInstance().getItemByID(url.getQuery()));
             new PropertiesWizard(items);
-          } else if (XML_URL.equals(url.getHost())) {
+          } else if (Const.XML_URL.equals(url.getHost())) {
             try {
               java.awt.Desktop.getDesktop().browse(new URI(url.getQuery()));
             } catch (Exception e1) {
               Log.error(e1);
             }
-          } else if (XML_TRACK.equals(url.getHost())) {
+          } else if (Const.XML_TRACK.equals(url.getHost())) {
             List<Item> items = new ArrayList<Item>(1);
             Track track = (Track) TrackManager.getInstance().getItemByID(url.getQuery());
             items.add(track);
@@ -126,7 +126,7 @@ public class ThumbnailPopup extends JDialog implements Const {
             File file = track.getPlayeableFile(true);
             toPlay.add(file);
             FIFO.push(UtilFeatures.createStackItems(UtilFeatures.applyPlayOption(toPlay), Conf
-                .getBoolean(CONF_STATE_REPEAT), true), false);
+                .getBoolean(Const.CONF_STATE_REPEAT), true), false);
           }
         }
         // change cursor on entering or leaving

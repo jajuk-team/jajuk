@@ -29,6 +29,7 @@ import org.jajuk.services.players.StackItem;
 import org.jajuk.ui.widgets.CommandJPanel;
 import org.jajuk.ui.widgets.JajukJMenuBar;
 import org.jajuk.util.Conf;
+import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
@@ -37,7 +38,8 @@ public class RepeatModeAction extends JajukAction {
   private static final long serialVersionUID = 1L;
 
   RepeatModeAction() {
-    super(Messages.getString("JajukJMenuBar.10"), IconLoader.getIcon(JajukIcons.REPEAT), "ctrl T", true, false);
+    super(Messages.getString("JajukJMenuBar.10"), IconLoader.getIcon(JajukIcons.REPEAT), "ctrl T",
+        true, false);
     setShortDescription(Messages.getString("CommandJPanel.1"));
   }
 
@@ -49,8 +51,8 @@ public class RepeatModeAction extends JajukAction {
   @Override
   public void perform(ActionEvent evt) {
 
-    boolean b = Conf.getBoolean(CONF_STATE_REPEAT);
-    Conf.setProperty(CONF_STATE_REPEAT, Boolean.toString(!b));
+    boolean b = Conf.getBoolean(Const.CONF_STATE_REPEAT);
+    Conf.setProperty(Const.CONF_STATE_REPEAT, Boolean.toString(!b));
 
     JajukJMenuBar.getInstance().setRepeatSelected(!b);
     CommandJPanel.getInstance().setRepeatSelected(!b);

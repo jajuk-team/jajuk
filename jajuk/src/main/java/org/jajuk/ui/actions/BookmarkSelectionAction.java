@@ -44,7 +44,8 @@ public class BookmarkSelectionAction extends SelectionAction {
   private static final long serialVersionUID = -8078402652430413821L;
 
   BookmarkSelectionAction() {
-    super(Messages.getString("TracksTableView.15"), IconLoader.getIcon(JajukIcons.BOOKMARK_FOLDERS), true);
+    super(Messages.getString("TracksTableView.15"),
+        IconLoader.getIcon(JajukIcons.BOOKMARK_FOLDERS), true);
     setShortDescription(Messages.getString("TracksTableView.15"));
   }
 

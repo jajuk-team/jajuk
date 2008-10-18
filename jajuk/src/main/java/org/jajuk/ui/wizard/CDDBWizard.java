@@ -53,14 +53,13 @@ import org.jajuk.ui.widgets.JajukTable;
 import org.jajuk.ui.widgets.JajukWindow;
 import org.jajuk.ui.widgets.OKCancelPanel;
 import org.jajuk.ui.widgets.SteppedComboBox;
-import org.jajuk.util.Const;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilGUI;
 import org.jajuk.util.UtilString;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 
-public class CDDBWizard extends JajukJDialog implements Const, ActionListener {
+public class CDDBWizard extends JajukJDialog implements ActionListener {
 
   private static final long serialVersionUID = 1L;
 
@@ -127,8 +126,8 @@ public class CDDBWizard extends JajukJDialog implements Const, ActionListener {
             // Perform CDDB Query and display an error message if CDDB query
             // don't found any match
             CDDBTrack[] cddbtracks = alCddbTracks.toArray(new CDDBTrack[alCddbTracks.size()]);
-            int results = performQuery(cddbtracks); 
-            if ( results == 0) {
+            int results = performQuery(cddbtracks);
+            if (results == 0) {
               Messages.showInfoMessage(Messages.getString("CDDBWizard.12"));
               return null;
             }
@@ -201,8 +200,10 @@ public class CDDBWizard extends JajukJDialog implements Const, ActionListener {
 
   /**
    * Perform the actual freedb query
+   * 
    * @param cddbtracks
-   * @return number of results (0 if no result). -1 if a technical problem occurred.
+   * @return number of results (0 if no result). -1 if a technical problem
+   *         occurred.
    */
   public int performQuery(CDDBTrack[] cddbtracks) {
     fdb = new Freedb();

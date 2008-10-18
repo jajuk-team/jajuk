@@ -204,18 +204,21 @@ public final class Conf implements Const {
     defaults.put(CONF_TRACKS_TABLE_EDITION, FALSE);
     defaults.put(CONF_FILES_TABLE_EDITION, FALSE);
     defaults.put(CONF_ALBUMS_TABLE_EDITION, FALSE);
-    defaults.put(CONF_FILES_TABLE_COLUMNS, XML_PLAY + ',' + XML_TRACK + ',' + XML_ALBUM + ','
-        + XML_AUTHOR + ',' + XML_TRACK_STYLE + ',' + XML_TRACK_RATE + ',' + XML_TRACK_LENGTH);
-    defaults.put(CONF_TRACKS_TABLE_COLUMNS, XML_PLAY + ',' + XML_NAME + ',' + XML_ALBUM + ','
-        + XML_AUTHOR + ',' + XML_TRACK_STYLE + ',' + XML_TRACK_LENGTH + ',' + ',' + XML_TRACK_RATE);
-    defaults.put(CONF_PLAYLIST_EDITOR_COLUMNS, XML_PLAY + ',' + XML_TRACK_NAME + ',' + ','
-        + XML_TRACK_AUTHOR + ',' + XML_TRACK_RATE);
-    defaults.put(CONF_PLAYLIST_REPOSITORY_COLUMNS, XML_PLAY + ',' + XML_NAME);
-    defaults.put(CONF_QUEUE_COLUMNS, XML_PLAY + ',' + XML_TRACK_NAME + ',' + ',' + XML_TRACK_AUTHOR
-        + ',' + XML_TRACK_RATE);
-    defaults.put(CONF_ALBUMS_TABLE_COLUMNS, XML_PLAY + ',' + XML_ALBUM + ',' + XML_AUTHOR + ','
-        + XML_STYLE + ',' + XML_YEAR + ',' + XML_TRACK_RATE + ',' + XML_TRACK_LENGTH + ','
-        + XML_TRACKS + ',' + XML_TRACK_DISCOVERY_DATE);
+    defaults.put(CONF_FILES_TABLE_COLUMNS, XML_PLAY + ',' + Const.XML_TRACK + ',' + Const.XML_ALBUM
+        + ',' + Const.XML_AUTHOR + ',' + Const.XML_TRACK_STYLE + ',' + Const.XML_TRACK_RATE + ','
+        + Const.XML_TRACK_LENGTH);
+    defaults.put(CONF_TRACKS_TABLE_COLUMNS, XML_PLAY + ',' + Const.XML_NAME + ',' + Const.XML_ALBUM
+        + ',' + Const.XML_AUTHOR + ',' + Const.XML_TRACK_STYLE + ',' + Const.XML_TRACK_LENGTH + ','
+        + ',' + Const.XML_TRACK_RATE);
+    defaults.put(CONF_PLAYLIST_EDITOR_COLUMNS, XML_PLAY + ',' + Const.XML_TRACK_NAME + ',' + ','
+        + Const.XML_TRACK_AUTHOR + ',' + Const.XML_TRACK_RATE);
+    defaults.put(CONF_PLAYLIST_REPOSITORY_COLUMNS, XML_PLAY + ',' + Const.XML_NAME);
+    defaults.put(CONF_QUEUE_COLUMNS, XML_PLAY + ',' + Const.XML_TRACK_NAME + ',' + ','
+        + Const.XML_TRACK_AUTHOR + ',' + Const.XML_TRACK_RATE);
+    defaults.put(CONF_ALBUMS_TABLE_COLUMNS, XML_PLAY + ',' + Const.XML_ALBUM + ','
+        + Const.XML_AUTHOR + ',' + Const.XML_STYLE + ',' + Const.XML_YEAR + ','
+        + Const.XML_TRACK_RATE + ',' + Const.XML_TRACK_LENGTH + ',' + Const.XML_TRACKS + ','
+        + Const.XML_TRACK_DISCOVERY_DATE);
     // Default Window position: X,Y,X_size,Y_size
     int width = (int) (Toolkit.getDefaultToolkit().getScreenSize().getWidth());
     // Limit initial screen size (reported as problematic by some users on dual
@@ -278,14 +281,14 @@ public final class Conf implements Const {
     defaults.put(CONF_SLIMBAR_POSITION, "0,0");
     defaults.put(CONF_LYRICS_PROVIDERS, "org.jajuk.services.lyrics.providers.LyrcProvider");
     defaults.put(CONF_SLIMBAR_SMART_MODE, JajukActions.SHUFFLE_GLOBAL.toString());
-    
+
     // NOT SHOW AGAIN
     defaults.put(CONF_NOT_SHOW_AGAIN_LASTFM_DISABLED, FALSE);
     defaults.put(CONF_NOT_SHOW_AGAIN_PLAYER, FALSE);
     defaults.put(CONF_NOT_SHOW_AGAIN_CONCURRENT_SESSION, FALSE);
     defaults.put(CONF_NOT_SHOW_AGAIN_CROSS_FADE, FALSE);
     defaults.put(CONF_NOT_SHOW_AGAIN_LAF_CHANGE, FALSE);
-    
+
     // Make a copy of default values
     properties = (Properties) defaults.clone();
   }
@@ -302,7 +305,7 @@ public final class Conf implements Const {
 
   /** Commit properties in a file */
   public static void commit() throws Exception {
-    OutputStream str = new FileOutputStream(UtilSystem.getConfFileByPath(FILE_CONFIGURATION));
+    OutputStream str = new FileOutputStream(UtilSystem.getConfFileByPath(Const.FILE_CONFIGURATION));
     try {
       properties.store(str, "User configuration");
     } finally {
@@ -322,7 +325,7 @@ public final class Conf implements Const {
   /** Load properties from in file */
   public static void load() {
     try {
-      InputStream str = new FileInputStream(UtilSystem.getConfFileByPath(FILE_CONFIGURATION));
+      InputStream str = new FileInputStream(UtilSystem.getConfFileByPath(Const.FILE_CONFIGURATION));
       try {
         properties.load(str);
       } finally {

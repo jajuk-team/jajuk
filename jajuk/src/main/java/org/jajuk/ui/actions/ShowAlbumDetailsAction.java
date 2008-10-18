@@ -27,6 +27,7 @@ import javax.swing.JComponent;
 import org.jajuk.base.Album;
 import org.jajuk.ui.thumbnails.LocalAlbumThumbnail;
 import org.jajuk.ui.thumbnails.ThumbnailPopup;
+import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
@@ -58,7 +59,7 @@ public class ShowAlbumDetailsAction extends JajukAction {
   @Override
   public void perform(ActionEvent e) throws Exception {
     JComponent source = (JComponent) e.getSource();
-    Object o = source.getClientProperty(DETAIL_SELECTION);
+    Object o = source.getClientProperty(Const.DETAIL_SELECTION);
     Album album = null;
     if (o instanceof Album) {
       album = (Album) o;

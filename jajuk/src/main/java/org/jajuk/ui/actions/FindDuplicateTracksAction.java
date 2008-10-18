@@ -47,7 +47,8 @@ public class FindDuplicateTracksAction extends JajukAction {
   private static final long serialVersionUID = 1L;
 
   FindDuplicateTracksAction() {
-    super(Messages.getString("FindDuplicateTracksAction.2"), IconLoader.getIcon(JajukIcons.SEARCH), true);
+    super(Messages.getString("FindDuplicateTracksAction.2"), IconLoader.getIcon(JajukIcons.SEARCH),
+        true);
     setShortDescription(Messages.getString("FindDuplicateTracksAction.2"));
   }
 
@@ -55,7 +56,7 @@ public class FindDuplicateTracksAction extends JajukAction {
   public void perform(ActionEvent evt) throws Exception {
     List<List<File>> duplicateFilesList = new ArrayList<List<File>>();
     ReadOnlyIterator<Track> tracks = TrackManager.getInstance().getTracksIterator();
-    while (tracks.hasNext()){
+    while (tracks.hasNext()) {
       Track track = tracks.next();
       List<File> trackFileList = track.getFiles();
       if (trackFileList.size() > 1) {
@@ -92,13 +93,13 @@ public class FindDuplicateTracksAction extends JajukAction {
     }
   }
 
-//  private String convertToString(List<File> duplicateFilesList) {
-//    StringBuilder buffer = new StringBuilder();
-//    for (File file : duplicateFilesList) {
-//      buffer.append('\t');
-//      buffer.append(file.getName());
-//      buffer.append('\n');
-//    }
-//    return buffer.toString();
-//  }
+  // private String convertToString(List<File> duplicateFilesList) {
+  // StringBuilder buffer = new StringBuilder();
+  // for (File file : duplicateFilesList) {
+  // buffer.append('\t');
+  // buffer.append(file.getName());
+  // buffer.append('\n');
+  // }
+  // return buffer.toString();
+  // }
 }

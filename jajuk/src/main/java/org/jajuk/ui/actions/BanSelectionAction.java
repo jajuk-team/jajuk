@@ -26,6 +26,7 @@ import java.util.List;
 import org.jajuk.base.Item;
 import org.jajuk.base.Track;
 import org.jajuk.base.TrackManager;
+import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
@@ -59,7 +60,7 @@ public class BanSelectionAction extends SelectionAction {
     }
     // Then ban them all !
     for (Track track : tracks) {
-      track.setProperty(XML_TRACK_BANNED, true);
+      track.setProperty(Const.XML_TRACK_BANNED, true);
     }
   }
 }

@@ -61,8 +61,8 @@ import org.jajuk.util.log.Log;
 /**
  * Status / information panel ( static view )
  */
-public final class InformationJPanel extends JPanel implements Const, Observer,
-    ChangeListener, MouseWheelListener {
+public final class InformationJPanel extends JPanel implements Observer, ChangeListener,
+    MouseWheelListener {
 
   private static final long serialVersionUID = 1L;
 
@@ -178,9 +178,9 @@ public final class InformationJPanel extends JPanel implements Const, Observer,
     jlCurrent.addMouseListener(new MouseAdapter() {
       @Override
       public void mouseClicked(MouseEvent e) {
-        int currentFormat = Conf.getInt(CONF_FORMAT_TIME_ELAPSED);
-        Conf.setProperty(CONF_FORMAT_TIME_ELAPSED, Integer
-            .toString(((currentFormat + 1) % FORMAT_TIME_ELAPSED_MAX)));
+        int currentFormat = Conf.getInt(Const.CONF_FORMAT_TIME_ELAPSED);
+        Conf.setProperty(Const.CONF_FORMAT_TIME_ELAPSED, Integer
+            .toString(((currentFormat + 1) % Const.FORMAT_TIME_ELAPSED_MAX)));
       }
     });
     jtbProgress.add(jlCurrent);
@@ -367,16 +367,17 @@ public final class InformationJPanel extends JPanel implements Const, Observer,
           // reset data
           setCurrentTimeMessage(0, 0);
           // set error message
-          Object o = ObservationManager.getDetail(event, DETAIL_CONTENT);
+          Object o = ObservationManager.getDetail(event, Const.DETAIL_CONTENT);
           // current item is a file
           if (o instanceof File) {
             File fCurrent = (File) o;
 
             // display associated error code is given
-            String sReason = (String) ObservationManager.getDetail(event, DETAIL_REASON);
+            String sReason = (String) ObservationManager.getDetail(event, Const.DETAIL_REASON);
             if (sReason != null) {
-              setMessage(Messages.getString("Error." + sReason) + ": "
-                  + fCurrent.getAbsolutePath(), InformationJPanel.ERROR);
+              setMessage(
+                  Messages.getString("Error." + sReason) + ": " + fCurrent.getAbsolutePath(),
+                  InformationJPanel.ERROR);
             } else {// default message
               setMessage(Messages.getString("Error.007") + ": " + fCurrent.getAbsolutePath(),
                   InformationJPanel.ERROR);
@@ -385,7 +386,7 @@ public final class InformationJPanel extends JPanel implements Const, Observer,
             WebRadio radio = (WebRadio) o;
 
             // display associated error code is given
-            String sReason = (String) ObservationManager.getDetail(event, DETAIL_REASON);
+            String sReason = (String) ObservationManager.getDetail(event, Const.DETAIL_REASON);
             if (sReason != null) {
               setMessage(Messages.getString("Error." + sReason) + ": " + radio.toString(),
                   InformationJPanel.ERROR);
@@ -403,14 +404,12 @@ public final class InformationJPanel extends JPanel implements Const, Observer,
       final long timeToPlay = JajukTimer.getInstance().getTotalTimeToPlay();
       SwingUtilities.invokeLater(new Runnable() {
         public void run() {
-          if (JajukEvents.HEART_BEAT.equals(subject) && !FIFO.isStopped()
-              && !Player.isPaused()) {
+          if (JajukEvents.HEART_BEAT.equals(subject) && !FIFO.isStopped() && !Player.isPaused()) {
             long length = JajukTimer.getInstance().getCurrentTrackTotalTime();
             long lTime = JajukTimer.getInstance().getCurrentTrackEllapsedTime();
             int iPos = (int) (100 * JajukTimer.getInstance().getCurrentTrackPosition());
             String sCurrentTotalMessage = UtilString.formatTimeBySec(timeToPlay);
-            setTotalTimeMessage(sCurrentTotalMessage + " [" + FIFO.getFIFO().size()
-                + "]");
+            setTotalTimeMessage(sCurrentTotalMessage + " [" + FIFO.getFIFO().size() + "]");
             setCurrentTimeMessage(lTime, length);
             // Make sure to enable the slider
             if (!jsPosition.isEnabled()) {
@@ -429,8 +428,7 @@ public final class InformationJPanel extends JPanel implements Const, Observer,
             jsPosition.removeChangeListener(InformationJPanel.this);
             jsPosition.setValue(iPos);
             jsPosition.addChangeListener(InformationJPanel.this);
-          } else if (JajukEvents.ZERO.equals(subject)
-              || JajukEvents.PLAYER_STOP.equals(subject)) {
+          } else if (JajukEvents.ZERO.equals(subject) || JajukEvents.PLAYER_STOP.equals(subject)) {
             setCurrentTimeMessage(0, 0);
             jsPosition.setEnabled(false);
             jsPosition.removeMouseWheelListener(InformationJPanel.this);
@@ -439,7 +437,7 @@ public final class InformationJPanel extends JPanel implements Const, Observer,
             // a seek that could fail with some formats
             jsPosition.setValue(0);
             // reset startup position
-            Conf.setProperty(CONF_STARTUP_LAST_POSITION, "0");
+            Conf.setProperty(Const.CONF_STARTUP_LAST_POSITION, "0");
             setTotalTimeMessage("00:00:00");
             setMessage(Messages.getString("JajukWindow.18"), InformationJPanel.INFORMATIVE);
             jsPosition.addMouseWheelListener(InformationJPanel.this);
@@ -458,7 +456,7 @@ public final class InformationJPanel extends JPanel implements Const, Observer,
             if (event.getDetails() == null) {
               return;
             }
-            WebRadio radio = (WebRadio) event.getDetails().get(DETAIL_CONTENT);
+            WebRadio radio = (WebRadio) event.getDetails().get(Const.DETAIL_CONTENT);
             if (radio != null) {
               String message = Messages.getString("FIFO.14") + " " + radio.getName();
               setMessage(message, InformationJPanel.INFORMATIVE);
