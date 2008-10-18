@@ -483,4 +483,8 @@ public enum JajukActions {
    * Save as
    */
   SAVE_AS,
+  /**
+   * Ban selection
+   */
+  BAN
 }

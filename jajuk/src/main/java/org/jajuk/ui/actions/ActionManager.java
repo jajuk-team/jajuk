@@ -19,12 +19,21 @@
  */
 package org.jajuk.ui.actions;
 
+
 import static org.jajuk.ui.actions.JajukActions.ALARM_CLOCK;
+import static org.jajuk.ui.actions.JajukActions.ALL_VIEW_RESTORE_DEFAULTS;
+import static org.jajuk.ui.actions.JajukActions.BAN;
 import static org.jajuk.ui.actions.JajukActions.BEST_OF;
+import static org.jajuk.ui.actions.JajukActions.BOOKMARK_SELECTION;
+import static org.jajuk.ui.actions.JajukActions.CDDB_SELECTION;
+import static org.jajuk.ui.actions.JajukActions.CHECK_FOR_UPDATES;
 import static org.jajuk.ui.actions.JajukActions.CONFIGURE_AMBIENCES;
 import static org.jajuk.ui.actions.JajukActions.CONFIGURE_DJS;
+import static org.jajuk.ui.actions.JajukActions.CONFIGURE_WEBRADIOS;
 import static org.jajuk.ui.actions.JajukActions.CONTINUE_MODE_STATUS_CHANGED;
 import static org.jajuk.ui.actions.JajukActions.COPY;
+import static org.jajuk.ui.actions.JajukActions.COPY_TO_CLIPBOARD;
+import static org.jajuk.ui.actions.JajukActions.CREATE_REPORT;
 import static org.jajuk.ui.actions.JajukActions.CUSTOM_PROPERTIES_ADD;
 import static org.jajuk.ui.actions.JajukActions.CUSTOM_PROPERTIES_REMOVE;
 import static org.jajuk.ui.actions.JajukActions.CUT;
@@ -37,7 +46,9 @@ import static org.jajuk.ui.actions.JajukActions.FIND_DUPLICATE_FILES;
 import static org.jajuk.ui.actions.JajukActions.FINISH_ALBUM;
 import static org.jajuk.ui.actions.JajukActions.HELP_REQUIRED;
 import static org.jajuk.ui.actions.JajukActions.INCREASE_VOLUME;
+import static org.jajuk.ui.actions.JajukActions.INC_RATE;
 import static org.jajuk.ui.actions.JajukActions.INTRO_MODE_STATUS_CHANGED;
+import static org.jajuk.ui.actions.JajukActions.LAUNCH_IN_BROWSER;
 import static org.jajuk.ui.actions.JajukActions.MUTE_STATE;
 import static org.jajuk.ui.actions.JajukActions.NEW_FOLDER;
 import static org.jajuk.ui.actions.JajukActions.NEXT_ALBUM;
@@ -45,22 +56,35 @@ import static org.jajuk.ui.actions.JajukActions.NEXT_TRACK;
 import static org.jajuk.ui.actions.JajukActions.NOVELTIES;
 import static org.jajuk.ui.actions.JajukActions.OPTIONS;
 import static org.jajuk.ui.actions.JajukActions.PASTE;
+import static org.jajuk.ui.actions.JajukActions.PLAY_ALBUM_SELECTION;
+import static org.jajuk.ui.actions.JajukActions.PLAY_AUTHOR_SELECTION;
+import static org.jajuk.ui.actions.JajukActions.PLAY_DIRECTORY_SELECTION;
 import static org.jajuk.ui.actions.JajukActions.PLAY_PAUSE_TRACK;
+import static org.jajuk.ui.actions.JajukActions.PLAY_REPEAT_SELECTION;
+import static org.jajuk.ui.actions.JajukActions.PLAY_SELECTION;
+import static org.jajuk.ui.actions.JajukActions.PLAY_SHUFFLE_SELECTION;
 import static org.jajuk.ui.actions.JajukActions.PREVIOUS_ALBUM;
 import static org.jajuk.ui.actions.JajukActions.PREVIOUS_TRACK;
+import static org.jajuk.ui.actions.JajukActions.PUSH_SELECTION;
 import static org.jajuk.ui.actions.JajukActions.QUALITY;
 import static org.jajuk.ui.actions.JajukActions.REFRESH;
 import static org.jajuk.ui.actions.JajukActions.RENAME;
 import static org.jajuk.ui.actions.JajukActions.REPEAT_MODE_STATUS_CHANGE;
 import static org.jajuk.ui.actions.JajukActions.REWIND_TRACK;
+import static org.jajuk.ui.actions.JajukActions.SAVE_AS;
 import static org.jajuk.ui.actions.JajukActions.SHOW_ABOUT;
+import static org.jajuk.ui.actions.JajukActions.SHOW_ALBUM_DETAILS;
+import static org.jajuk.ui.actions.JajukActions.SHOW_PROPERTIES;
 import static org.jajuk.ui.actions.JajukActions.SHOW_TRACES;
 import static org.jajuk.ui.actions.JajukActions.SHUFFLE_GLOBAL;
 import static org.jajuk.ui.actions.JajukActions.SHUFFLE_MODE_STATUS_CHANGED;
 import static org.jajuk.ui.actions.JajukActions.SIMPLE_DEVICE_WIZARD;
+import static org.jajuk.ui.actions.JajukActions.SLIM_JAJUK;
 import static org.jajuk.ui.actions.JajukActions.STOP_TRACK;
 import static org.jajuk.ui.actions.JajukActions.TIP_OF_THE_DAY;
+import static org.jajuk.ui.actions.JajukActions.UNMOUNTED;
 import static org.jajuk.ui.actions.JajukActions.VIEW_RESTORE_DEFAULTS;
+import static org.jajuk.ui.actions.JajukActions.WEB_RADIO;
 
 import java.awt.Desktop;
 import java.util.ArrayList;
@@ -112,7 +136,7 @@ public final class ActionManager {
     installAction(DJ, new DJAction(), false);
     installAction(NOVELTIES, new NoveltiesAction(), false);
     installAction(FINISH_ALBUM, new FinishAlbumAction(), false);
-    installAction(JajukActions.WEB_RADIO, new WebRadioAction(), false);
+    installAction(WEB_RADIO, new WebRadioAction(), false);
 
     // CommandJPanel: Play Panel
     installAction(PREVIOUS_TRACK, new PreviousTrackAction(), true);
@@ -123,7 +147,7 @@ public final class ActionManager {
     installAction(PLAY_PAUSE_TRACK, new PlayPauseAction(), false);
     installAction(STOP_TRACK, new StopTrackAction(), false);
     installAction(FAST_FORWARD_TRACK, new ForwardTrackAction(), true);
-    installAction(JajukActions.INC_RATE, new ChangeTrackPreferenceAction(), true);
+    installAction(INC_RATE, new ChangeTrackPreferenceAction(), true);
 
     // CommandJPanel: Volume control
     installAction(DECREASE_VOLUME, new DecreaseVolumeAction(), true);
@@ -135,7 +159,7 @@ public final class ActionManager {
 
     // JajukJMenuBar: views
     installAction(VIEW_RESTORE_DEFAULTS, new RestoreViewsAction(), false);
-    installAction(JajukActions.ALL_VIEW_RESTORE_DEFAULTS, new RestoreAllViewsAction(), false);
+    installAction(ALL_VIEW_RESTORE_DEFAULTS, new RestoreAllViewsAction(), false);
 
     // JajukJMenuBar: attributes
     installAction(CUSTOM_PROPERTIES_ADD, new NewPropertyAction(), false);
@@ -143,11 +167,11 @@ public final class ActionManager {
 
     // JajukJMenuBar: configuration
     installAction(CONFIGURE_DJS, new DJConfigurationAction(), false);
-    installAction(JajukActions.CONFIGURE_WEBRADIOS, new WebRadioConfigurationAction(), false);
+    installAction(CONFIGURE_WEBRADIOS, new WebRadioConfigurationAction(), false);
     installAction(CONFIGURE_AMBIENCES, new AmbienceConfigurationAction(), false);
     installAction(SIMPLE_DEVICE_WIZARD, new SimpleDeviceWizardAction(), false);
     installAction(OPTIONS, new ConfigurationRequiredAction(), false);
-    installAction(JajukActions.UNMOUNTED, new HideShowMountedDevicesAction(), false);
+    installAction(UNMOUNTED, new HideShowMountedDevicesAction(), false);
 
     // JajukJMenuBar: Help Menu
     installAction(HELP_REQUIRED, new HelpRequiredAction(), false);
@@ -159,10 +183,10 @@ public final class ActionManager {
     }
     installAction(SHOW_TRACES, new DebugLogAction(), false);
     installAction(TIP_OF_THE_DAY, new TipOfTheDayAction(), false);
-    installAction(JajukActions.CHECK_FOR_UPDATES, new CheckForUpdateAction(), false);
+    installAction(CHECK_FOR_UPDATES, new CheckForUpdateAction(), false);
 
     // Export
-    installAction(JajukActions.CREATE_REPORT, new ReportAction(), false);
+    installAction(CREATE_REPORT, new ReportAction(), false);
 
     // File Actions
     installAction(CUT, new CutAction(), false);
@@ -174,29 +198,31 @@ public final class ActionManager {
 
     // MISC
     installAction(FIND_DUPLICATE_FILES, new FindDuplicateTracksAction(), false);
-    installAction(JajukActions.COPY_TO_CLIPBOARD, new CopyClipboardAction(), false);
+    installAction(COPY_TO_CLIPBOARD, new CopyClipboardAction(), false);
     installAction(REFRESH, new RefreshAction(), false);
     installAction(ALARM_CLOCK, new AlarmClockAction(), false);
-    installAction(JajukActions.SHOW_ALBUM_DETAILS, new ShowAlbumDetailsAction(), false);
-    installAction(JajukActions.SLIM_JAJUK, new SlimbarAction(), false);
+    installAction(SHOW_ALBUM_DETAILS, new ShowAlbumDetailsAction(), false);
+    installAction(SLIM_JAJUK, new SlimbarAction(), false);
+    installAction(BAN, new BanCurrentAction(), false);
 
     // Selection actions
-    installAction(JajukActions.SHOW_PROPERTIES, new ShowPropertiesAction(), false);
-    installAction(JajukActions.PLAY_SELECTION, new PlaySelectionAction(), false);
-    installAction(JajukActions.PLAY_SHUFFLE_SELECTION, new PlayShuffleSelectionAction(), false);
-    installAction(JajukActions.PLAY_REPEAT_SELECTION, new PlayRepeatSelectionAction(), false);
-    installAction(JajukActions.PUSH_SELECTION, new PushSelectionAction(), false);
-    installAction(JajukActions.BOOKMARK_SELECTION, new BookmarkSelectionAction(), false);
-    installAction(JajukActions.PLAY_ALBUM_SELECTION, new PlayAlbumSelectionAction(), false);
-    installAction(JajukActions.PLAY_AUTHOR_SELECTION, new PlayAuthorSelectionAction(), false);
-    installAction(JajukActions.PLAY_DIRECTORY_SELECTION, new PlayDirectorySelectionAction(), false);
-    installAction(JajukActions.CDDB_SELECTION, new CDDBSelectionAction(), false);
-    installAction(JajukActions.SAVE_AS, new SaveAsAction(), false);
+    installAction(SHOW_PROPERTIES, new ShowPropertiesAction(), false);
+    installAction(PLAY_SELECTION, new PlaySelectionAction(), false);
+    installAction(PLAY_SHUFFLE_SELECTION, new PlayShuffleSelectionAction(), false);
+    installAction(PLAY_REPEAT_SELECTION, new PlayRepeatSelectionAction(), false);
+    installAction(PUSH_SELECTION, new PushSelectionAction(), false);
+    installAction(BOOKMARK_SELECTION, new BookmarkSelectionAction(), false);
+    installAction(PLAY_ALBUM_SELECTION, new PlayAlbumSelectionAction(), false);
+    installAction(PLAY_AUTHOR_SELECTION, new PlayAuthorSelectionAction(), false);
+    installAction(PLAY_DIRECTORY_SELECTION, new PlayDirectorySelectionAction(), false);
+    installAction(CDDB_SELECTION, new CDDBSelectionAction(), false);
+    installAction(SAVE_AS, new SaveAsAction(), false);
     // Install this action only if Desktop class is supported, it is used to
     // open default web browser
     if (Desktop.isDesktopSupported()) {
-      installAction(JajukActions.LAUNCH_IN_BROWSER, new LaunchInBrowserAction(), false);
+      installAction(LAUNCH_IN_BROWSER, new LaunchInBrowserAction(), false);
     }
+    
   }
 
   /**
@@ -216,7 +242,7 @@ public final class ActionManager {
   /**
    * Installs a new action in the action manager. If <code>removeFromLAF</code>
    * is <code>true</code>, then the keystroke attached to the action will be
-   * stored in list. To remove the these keystrokes from the
+   * stored in list. To remove these keystrokes from the
    * <code>InputMap</code>s of the different components, call
    * {@link #uninstallStrokes()}.
    * 
