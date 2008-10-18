@@ -20,9 +20,11 @@
 
 package org.jajuk.base;
 
-import java.util.LinkedHashSet;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+import org.jajuk.util.ReadOnlyIterator;
 
 /**
  * Convenient class to manage years
@@ -74,12 +76,8 @@ public final class YearManager extends ItemManager {
    * @param sName
    */
   public synchronized Year registerYear(String sId, String pYear) {
-    Year year = (Year) hmItems.get(sId);
-    if (year != null) {
-      return year;
-    }
-    year = new Year(sId, pYear);
-    hmItems.put(sId, year);
+    Year year = new Year(sId, pYear);
+    registerItem(year);
     return year;
   }
 
@@ -99,38 +97,42 @@ public final class YearManager extends ItemManager {
    * @return Element
    */
   public Year getYearByID(String sID) {
-    return (Year) hmItems.get(sID);
+    return (Year) getItemByID(sID);
   }
 
   /**
    * 
-   * @return years list
+   * @return ordered years list
    */
-  public synchronized Set<Year> getYears() {
-    Set<Year> yearSet = new LinkedHashSet<Year>();
-    for (Item item : getItems()) {
-      yearSet.add((Year) item);
-    }
-    return yearSet;
+  @SuppressWarnings("unchecked")
+  public synchronized List<Year> getYears() {
+    return (List<Year>) getItems();
+  }
+  
+  /**
+   * 
+   * @return years iterator
+   */
+  @SuppressWarnings("unchecked")
+  public synchronized ReadOnlyIterator<Year> getYearsIterator() {
+    return new ReadOnlyIterator<Year>((Iterator<Year>)getItemsIterator());
   }
 
   /**
-   * Get years associated with this item
+   * Get ordered years associated with this item
    * 
    * @param item
    * @return
    */
-  public synchronized Set<Year> getAssociatedYears(Item item) {
-    Set<Year> out = new TreeSet<Year>();
-    for (Object item2 : hmItems.values()) {
-      Year year = (Year) item2;
-      if (item instanceof Track && ((Track) item).getYear().equals(year)) {
-        out.add(year);
-      } else {
-        Set<Track> tracks = TrackManager.getInstance().getAssociatedTracks(item);
-        for (Track track : tracks) {
-          out.add(track.getYear());
-        }
+  public synchronized List<Year> getAssociatedYears(Item item) {
+    List<Year> out = new ArrayList<Year>(1);
+    // [Perf] If item is a track, just return its Year
+    if (item instanceof Track) {
+      out.add(((Track) item).getYear());
+    } else {
+      List<Track> tracks = TrackManager.getInstance().getAssociatedTracks(item);
+      for (Track track : tracks) {
+        out.add(track.getYear());
       }
     }
     return out;

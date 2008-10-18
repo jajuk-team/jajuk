@@ -25,11 +25,9 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Properties;
 import java.util.Set;
-import java.util.TreeSet;
 
 import org.jajuk.events.Event;
 import org.jajuk.events.JajukEvents;
@@ -39,6 +37,7 @@ import org.jajuk.services.players.FIFO;
 import org.jajuk.services.tags.Tag;
 import org.jajuk.util.Conf;
 import org.jajuk.util.MD5Processor;
+import org.jajuk.util.ReadOnlyIterator;
 import org.jajuk.util.UtilString;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.error.NoneAccessibleFileException;
@@ -47,7 +46,6 @@ import org.jajuk.util.log.Log;
 /**
  * Convenient class to manage Tracks
  * 
- * @TODO Refactor this error detection system (isChangePbm)
  */
 public final class TrackManager extends ItemManager implements Observer {
   /** Self instance */
@@ -172,24 +170,20 @@ public final class TrackManager extends ItemManager implements Observer {
    */
   public synchronized Track registerTrack(String sId, String sName, Album album, Style style,
       Author author, long length, Year year, long lOrder, Type type) {
-    Track track = (Track) hmItems.get(sId);
-    if (track != null) {
-      return track;
-    }
-    track = new Track(sId, sName, album, style, author, length, year, lOrder, type);
-    hmItems.put(sId, track);
+    Track track = new Track(sId, sName, album, style, author, length, year, lOrder, type);
+    registerItem(track);
     // For performances, add the track to the album cache
-    album.tracks.add(track);
+    album.getTracksCache().add(track);
     return track;
   }
 
   /**
    * Commit tags
    * 
-   * @return a set of tracks in error (size=0 if everything's ok)
+   * @return an ordered list of tracks in error (size=0 if everything's ok)
    */
-  public Set<Item> commit() {
-    Set<Item> errors = new TreeSet<Item>();
+  public List<Track> commit() {
+    List<Track> errors = new ArrayList<Track>();
     Iterator<Tag> it = tagsToCommit.keySet().iterator();
     while (it.hasNext()) {
       Tag tag = null;
@@ -240,7 +234,7 @@ public final class TrackManager extends ItemManager implements Observer {
       }
     }
     // Remove the track from the old album
-    track.getAlbum().tracks.remove(track);
+    track.getAlbum().getTracksCache().remove(track);
     // if current track album name is changed, notify it
     if (FIFO.getCurrentFile() != null
         && FIFO.getCurrentFile().getTrack().getAlbum().equals(track.getAlbum())) {
@@ -291,7 +285,7 @@ public final class TrackManager extends ItemManager implements Observer {
       }
     }
     // Remove the track from the old album
-    track.getAlbum().tracks.remove(track);
+    track.getAlbum().getTracksCache().remove(track);
 
     // if current track author name is changed, notify it
     if (FIFO.getCurrentFile() != null
@@ -344,7 +338,7 @@ public final class TrackManager extends ItemManager implements Observer {
       }
     }
     // Remove the track from the old album
-    track.getAlbum().tracks.remove(track);
+    track.getAlbum().getTracksCache().remove(track);
 
     // register the new item
     Style newStyle = StyleManager.getInstance().registerStyle(sNewStyle);
@@ -395,7 +389,7 @@ public final class TrackManager extends ItemManager implements Observer {
       }
     }
     // Remove the track from the old album
-    track.getAlbum().tracks.remove(track);
+    track.getAlbum().getTracksCache().remove(track);
 
     // Register new item
     Year newYear = YearManager.getInstance().registerYear(newItem);
@@ -439,7 +433,7 @@ public final class TrackManager extends ItemManager implements Observer {
       }
     }
     // Remove the track from the old album
-    track.getAlbum().tracks.remove(track);
+    track.getAlbum().getTracksCache().remove(track);
 
     track.setComment(sNewItem);
     return track;
@@ -506,7 +500,7 @@ public final class TrackManager extends ItemManager implements Observer {
     }
 
     // Remove the track from the old album
-    track.getAlbum().tracks.remove(track);
+    track.getAlbum().getTracksCache().remove(track);
 
     Track newTrack = registerTrack(track.getName(), track.getAlbum(), track.getStyle(), track
         .getAuthor(), track.getDuration(), track.getYear(), lNewOrder, track.getType());
@@ -549,7 +543,7 @@ public final class TrackManager extends ItemManager implements Observer {
     }
 
     // Remove the track from the old album
-    track.getAlbum().tracks.remove(track);
+    track.getAlbum().getTracksCache().remove(track);
 
     Track newTrack = registerTrack(sNewItem, track.getAlbum(), track.getStyle(), track.getAuthor(),
         track.getDuration(), track.getYear(), track.getOrder(), track.getType());
@@ -578,7 +572,7 @@ public final class TrackManager extends ItemManager implements Observer {
     if (track.getFiles().size() == 0) { // normal case: old track has no
       // more associated
       // tracks, remove it
-      removeItem(track.getID());// remove old track
+      removeItem(track);// remove old track
     } else { // some files have not been changed because located on
       // unmounted devices
       nbFilesRemaining++;
@@ -591,23 +585,20 @@ public final class TrackManager extends ItemManager implements Observer {
   @Override
   @SuppressWarnings("unchecked")
   public synchronized void cleanup() {
-    Iterator<Track> itTracks = hmItems.values().iterator();
-    while (itTracks.hasNext()) {
-      Track track = itTracks.next();
+    for (Track track : getTracks()) {
       if (track.getFiles().size() == 0) { // no associated file
-        itTracks.remove();
+        removeItem(track);
         continue;
       }
-      Iterator itFiles = track.getFiles().iterator();
-      while (itFiles.hasNext()) {
-        org.jajuk.base.File file = (org.jajuk.base.File) itFiles.next();
+      // Cleanup all files no more attached to a track
+      for (File file : track.getFiles()) {
         if (FileManager.getInstance().getFileByID(file.getID()) == null) {
-          itFiles.remove();// no? remove it from the track
+          FileManager.getInstance().removeFile(file);
         }
       }
       if (track.getFiles().size() == 0) { // the track don't map
         // anymore to any physical item, just remove it
-        itTracks.remove();
+        removeItem(track);
       }
     }
   }
@@ -640,39 +631,50 @@ public final class TrackManager extends ItemManager implements Observer {
   }
 
   /**
-   * Get ordered tracks associated with this item
+   * Get ordered tracks list associated with this item
+   * <p> This is a shallow copy only </p>
    * 
    * @param item
    * @return
    */
-  public synchronized Set<Track> getAssociatedTracks(Item item) {
+  @SuppressWarnings("unchecked")
+  public synchronized List<Track> getAssociatedTracks(Item item) {
     if (item instanceof Album) {
       // check the album cache
-      Set<Track> tracks = ((Album) item).tracks;
+      List<Track> tracks = ((Album) item).getTracksCache();
       if (tracks.size() > 0) {
         return tracks;
       }
     }
-    Set<Track> out = new TreeSet<Track>(new TrackComparator(TrackComparator.ALBUM));
     // If the item is itself a track, simply return it
     if (item instanceof Track) {
+      List<Track> out = new ArrayList<Track>(1);
       out.add((Track) item);
       return out;
     } else if (item instanceof File) {
+      List<Track> out = new ArrayList<Track>(1);
       out.add(((File) item).getTrack());
       return out;
     } else if (item instanceof Directory) {
       Directory dir = (Directory) item;
+      List<Track> out = new ArrayList<Track>(dir.getFiles().size());
       for (File file : dir.getFilesRecursively()) {
-        out.add(file.getTrack());
+        Track track = file.getTrack();
+        // Caution, do not add dups
+        if (!out.contains(track)) {
+          out.add(file.getTrack());
+        }
       }
+      return out;
     }
-    for (Object item2 : hmItems.values()) {
-      Track track = (Track) item2;
-      if ((item instanceof Album && track.getAlbum().equals(item))
-          || (item instanceof Author && track.getAuthor().equals(item))
+    List<Track> out = new ArrayList<Track>(10);
+    ReadOnlyIterator<Item> items = (ReadOnlyIterator<Item>) getItemsIterator();
+    while (items.hasNext()) {
+      Track track = (Track) items.next();
+      if ((item instanceof Author && track.getAuthor().equals(item))
           || (item instanceof Year && track.getYear().equals(item))
           || (item instanceof Style && track.getStyle().equals(item))) {
+        // Note: no need to check dups here
         out.add(track);
       }
     }
@@ -689,52 +691,48 @@ public final class TrackManager extends ItemManager implements Observer {
    * @return item
    */
   public Track getTrackByID(String sID) {
-    return (Track) hmItems.get(sID);
+    return (Track) getItemByID(sID);
   }
 
   /**
    * 
    * @return ordered tracks list
    */
-  public synchronized Set<Track> getTracks() {
-    Set<Track> tracks = new LinkedHashSet<Track>();
-    for (Item item : getItems()) {
-      tracks.add((Track) item);
-    }
-    return tracks;
+  @SuppressWarnings("unchecked")
+  public synchronized List<Track> getTracks() {
+    return (List<Track>) getItems();
   }
 
   /**
    * 
-   * @return unsorted tracks list
+   * @return tracks iterator
    */
-  public synchronized List<Track> getTracksAsList() {
-    List<Track> tracks = new ArrayList<Track>(getItems().size());
-    for (Item item : getItems()) {
-      tracks.add((Track) item);
-    }
-    return tracks;
+  @SuppressWarnings("unchecked")
+  public synchronized ReadOnlyIterator<Track> getTracksIterator() {
+    return new ReadOnlyIterator<Track>((Iterator<Track>) getItemsIterator());
   }
 
   /**
    * Perform a search in all files names with given criteria
    * 
    * @param sCriteria
-   * @return a tree set of available files
+   * @return an ordered list of available files
    */
-  public Set<SearchResult> search(String criteria) {
-    Set<SearchResult> tsResu = new TreeSet<SearchResult>();
-    for (Object item : hmItems.values()) {
-      Track track = (Track) item;
-      File playable = track.getPlayeableFile(Conf.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED));
+  public List<SearchResult> search(String criteria) {
+    boolean hide = Conf.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED);
+    List<SearchResult> resu = new ArrayList<SearchResult>();
+    ReadOnlyIterator<Track> tracks = getTracksIterator();
+    while (tracks.hasNext()){
+      Track track = tracks.next();
+      File playable = track.getPlayeableFile(hide);
       if (playable != null) {
         String sResu = track.getAny();
         if (sResu.toLowerCase().indexOf(criteria.toLowerCase()) != -1) {
-          tsResu.add(new SearchResult(playable, playable.toStringSearch()));
+          resu.add(new SearchResult(playable, playable.toStringSearch()));
         }
       }
     }
-    return tsResu;
+    return resu;
   }
 
   public static int getFilesRemaining() {

@@ -23,9 +23,7 @@ import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -47,6 +45,7 @@ import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukFileFilter;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
+import org.jajuk.util.ReadOnlyIterator;
 import org.jajuk.util.UtilGUI;
 import org.jajuk.util.UtilString;
 import org.jajuk.util.UtilSystem;
@@ -129,7 +128,7 @@ public class Device extends PhysicalItem implements Const, Comparable<Device> {
   /** date last refresh */
   long lDateLastRefresh;
 
-  /** Progess reporter **/
+  /** Progess reporter * */
   private RefreshReporter reporter;
 
   /**
@@ -189,7 +188,7 @@ public class Device extends PhysicalItem implements Const, Comparable<Device> {
    */
   private boolean cleanPlaylist() {
     boolean bChanges = false;
-    final Set<Playlist> plfiles = PlaylistManager.getInstance().getPlaylists();
+    final List<Playlist> plfiles = PlaylistManager.getInstance().getPlaylists();
     for (final Playlist plf : plfiles) {
       if (!ExitService.isExiting() && plf.getDirectory().getDevice().equals(this) && plf.isReady()
           && !plf.getFio().exists()) {
@@ -208,7 +207,7 @@ public class Device extends PhysicalItem implements Const, Comparable<Device> {
    */
   private boolean cleanFiles() {
     boolean bChanges = false;
-    final Set<org.jajuk.base.File> files = FileManager.getInstance().getFiles();
+    final List<org.jajuk.base.File> files = FileManager.getInstance().getFiles();
     for (final org.jajuk.base.File file : files) {
       if (!ExitService.isExiting() && file.getDirectory().getDevice().equals(this)
           && file.isReady() &&
@@ -232,7 +231,7 @@ public class Device extends PhysicalItem implements Const, Comparable<Device> {
   private boolean cleanDirectories() {
     boolean bChanges = false;
     // need to use a shallow copy to avoid concurrent exceptions
-    final Set<Directory> dirs = DirectoryManager.getInstance().getDirectories();
+    final List<Directory> dirs = DirectoryManager.getInstance().getDirectories();
 
     for (final Item item : dirs) {
       final Directory dir = (Directory) item;
@@ -285,21 +284,14 @@ public class Device extends PhysicalItem implements Const, Comparable<Device> {
   }
 
   /**
-   * return child files recursively
+   * return ordered child files recursively
+   * 
    * 
    * @return child files recursively
    */
   public List<org.jajuk.base.File> getFilesRecursively() {
     // looks for the root directory for this device
-    Directory dirRoot = null;
-    final Collection<Directory> dirs = DirectoryManager.getInstance().getDirectories();
-    final Iterator<Directory> it = dirs.iterator();
-    while (it.hasNext()) {
-      final Directory dir = it.next();
-      if (dir.getDevice().equals(this) && dir.getFio().equals(fio)) {
-        dirRoot = dir;
-      }
-    }
+    Directory dirRoot = DirectoryManager.getInstance().getDirectoryForIO(this.getFio());
     List<org.jajuk.base.File> alFiles = new ArrayList<org.jajuk.base.File>(100);
     if (dirRoot != null) {
       alFiles = dirRoot.getFilesRecursively();
@@ -338,20 +330,20 @@ public class Device extends PhysicalItem implements Const, Comparable<Device> {
   public ImageIcon getIconRepresentation() {
     switch ((int) getType()) {
     case 0:
-      return setIcon(IconLoader.getIcon(JajukIcons.DEVICE_DIRECTORY_MOUNTED_SMALL),
-          IconLoader.getIcon(JajukIcons.DEVICE_DIRECTORY_UNMOUNTED_SMALL));
+      return setIcon(IconLoader.getIcon(JajukIcons.DEVICE_DIRECTORY_MOUNTED_SMALL), IconLoader
+          .getIcon(JajukIcons.DEVICE_DIRECTORY_UNMOUNTED_SMALL));
     case 1:
-      return setIcon(IconLoader.getIcon(JajukIcons.DEVICE_CD_MOUNTED_SMALL),
-          IconLoader.getIcon(JajukIcons.DEVICE_CD_UNMOUNTED_SMALL));
+      return setIcon(IconLoader.getIcon(JajukIcons.DEVICE_CD_MOUNTED_SMALL), IconLoader
+          .getIcon(JajukIcons.DEVICE_CD_UNMOUNTED_SMALL));
     case 2:
-      return setIcon(IconLoader.getIcon(JajukIcons.DEVICE_NETWORK_DRIVE_MOUNTED_SMALL),
-          IconLoader.getIcon(JajukIcons.DEVICE_NETWORK_DRIVE_UNMOUNTED_SMALL));
+      return setIcon(IconLoader.getIcon(JajukIcons.DEVICE_NETWORK_DRIVE_MOUNTED_SMALL), IconLoader
+          .getIcon(JajukIcons.DEVICE_NETWORK_DRIVE_UNMOUNTED_SMALL));
     case 3:
-      return setIcon(IconLoader.getIcon(JajukIcons.DEVICE_EXT_DD_MOUNTED_SMALL),
-          IconLoader.getIcon(JajukIcons.DEVICE_EXT_DD_UNMOUNTED_SMALL));
+      return setIcon(IconLoader.getIcon(JajukIcons.DEVICE_EXT_DD_MOUNTED_SMALL), IconLoader
+          .getIcon(JajukIcons.DEVICE_EXT_DD_UNMOUNTED_SMALL));
     case 4:
-      return setIcon(IconLoader.getIcon(JajukIcons.DEVICE_PLAYER_MOUNTED_SMALL),
-          IconLoader.getIcon(JajukIcons.DEVICE_PLAYER_UNMOUNTED_SMALL));
+      return setIcon(IconLoader.getIcon(JajukIcons.DEVICE_PLAYER_MOUNTED_SMALL), IconLoader
+          .getIcon(JajukIcons.DEVICE_PLAYER_UNMOUNTED_SMALL));
     default:
       Log.warn("Unknown type of device detected: " + getType());
       return null;
@@ -902,9 +894,8 @@ public class Device extends PhysicalItem implements Const, Comparable<Device> {
     final Set<String> hsDesynchroPaths = new HashSet<String>(10);
     final Set<Directory> hsDestDirs = new HashSet<Directory>(100);
     int iNbCreatedFiles = 0;
-    Iterator<Directory> it = DirectoryManager.getInstance().getDirectories().iterator();
-    while (it.hasNext()) {
-      final Directory dir = it.next();
+    List<Directory> dirs = DirectoryManager.getInstance().getDirectories();
+    for (Directory dir : dirs) {
       if (dir.getDevice().equals(dSrc)) {
         // don't take desynchronized dirs into account
         if (dir.getBooleanValue(Const.XML_DIRECTORY_SYNCHRONIZED)) {
@@ -914,9 +905,7 @@ public class Device extends PhysicalItem implements Const, Comparable<Device> {
         }
       }
     }
-    it = DirectoryManager.getInstance().getDirectories().iterator();
-    while (it.hasNext()) {
-      final Directory dir = it.next();
+    for (Directory dir : dirs) {
       if (dir.getDevice().equals(dest)) {
         if (dir.getBooleanValue(Const.XML_DIRECTORY_SYNCHRONIZED)) {
           // don't take desynchronized dirs into account
@@ -927,27 +916,22 @@ public class Device extends PhysicalItem implements Const, Comparable<Device> {
       }
     }
 
-    it = hsSourceDirs.iterator();
-    Iterator<Directory> it2;
     // handle known extensions and image files
     final FileFilter filter = new JajukFileFilter(false, new JajukFileFilter[] {
         KnownTypeFilter.getInstance(), ImageFilter.getInstance() });
-    while (it.hasNext()) {
+    for (Directory dir : hsSourceDirs) {
       // give a chance to exit during sync
       if (ExitService.isExiting()) {
         return iNbCreatedFiles;
       }
       boolean bNeedCreate = true;
-      final Directory dir = it.next();
       final String sPath = dir.getRelativePath();
       // check the directory on source is not desynchronized. If it
       // is, leave without checking files
       if (hsDesynchroPaths.contains(sPath)) {
         continue;
       }
-      it2 = hsDestDirs.iterator();
-      while (it2.hasNext()) {
-        final Directory dir2 = it2.next();
+      for (Directory dir2 : hsDestDirs) {
         if (dir2.getRelativePath().equals(sPath)) {
           // directory already exists on this device
           bNeedCreate = false;
@@ -1035,7 +1019,7 @@ public class Device extends PhysicalItem implements Const, Comparable<Device> {
         // and is readable
         // check if this device was void
         boolean bVoid = true;
-        final Iterator<org.jajuk.base.File> it = FileManager.getInstance().getFiles().iterator();
+        ReadOnlyIterator<org.jajuk.base.File> it = FileManager.getInstance().getFilesIterator();
         while (it.hasNext()) {
           final org.jajuk.base.File f = it.next();
           if (f.getDirectory().getDevice().equals(this)) {

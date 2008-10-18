@@ -25,17 +25,15 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Properties;
-import java.util.Set;
-import java.util.TreeSet;
 import java.util.Vector;
 
 import org.jajuk.events.Event;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.util.MD5Processor;
+import org.jajuk.util.ReadOnlyIterator;
 import org.jajuk.util.UtilFeatures;
 import org.jajuk.util.error.JajukException;
 
@@ -106,35 +104,40 @@ public final class StyleManager extends ItemManager {
    * @param sName
    */
   public synchronized Style registerStyle(String sId, String sName) {
-    Style style = (Style) hmItems.get(sId);
-    if (style != null) {
-      return style;
-    }
-    style = new Style(sId, sName);
-    hmItems.put(sId, style);
+    Style style = new Style(sId, sName);
+    registerItem(style);
     // add it in styles list if new
     if (!stylesList.contains(sName)) {
       stylesList.add(style.getName2());
+      // Sort items ignoring case
+      Collections.sort(stylesList, new Comparator<String>() {
+
+        public int compare(String o1, String o2) {
+          return o1.compareToIgnoreCase(o2);
+        }
+
+      });
     }
-    // Sort items ignoring case
-    Collections.sort(stylesList, new Comparator<String>() {
-
-      public int compare(String o1, String o2) {
-        return o1.compareToIgnoreCase(o2);
-      }
-
-    });
     return style;
   }
 
   /**
    * Return style by name
    * 
-   * @param sName
+   * @param name
    * @return
    */
-  public Style getStyleByName(String sName) {
-    return registerStyle(sName);
+  public Style getStyleByName(String name) {
+    Style out = null;
+    for (ReadOnlyIterator<Style> it = getStylesIterator(); it.hasNext();) {
+      Style style = it.next();
+      // [Perf], we use == because these strings are intern()alized
+      if (style.getName() == name) {
+        out = style;
+        break;
+      }
+    }
+    return out;
   }
 
   /**
@@ -154,7 +157,7 @@ public final class StyleManager extends ItemManager {
       // re apply old properties from old item
       newItem.cloneProperties(old);
       // update tracks
-      List<Track> alTracks = new ArrayList<Track>(TrackManager.getInstance().getTracks());
+      List<Track> alTracks = TrackManager.getInstance().getTracks();
       // we need to create a new list to avoid concurrent exceptions
       Iterator<Track> it = alTracks.iterator();
       while (it.hasNext()) {
@@ -207,7 +210,8 @@ public final class StyleManager extends ItemManager {
   }
 
   /**
-   * @return Human readable registrated style list
+   * @return Human readable list of registrated styles <br>
+   *         ordered (alphabeticaly)
    */
   public Vector<String> getStylesList() {
     return stylesList;
@@ -219,38 +223,42 @@ public final class StyleManager extends ItemManager {
    * @return item
    */
   public Style getStyleByID(String sID) {
-    return (Style) hmItems.get(sID);
+    return (Style) getItemByID(sID);
   }
 
   /**
    * 
-   * @return styles list
+   * @return ordered styles list
    */
-  public synchronized Set<Style> getStyles() {
-    Set<Style> styleSet = new LinkedHashSet<Style>();
-    for (Item item : getItems()) {
-      styleSet.add((Style) item);
-    }
-    return styleSet;
+  @SuppressWarnings("unchecked")
+  public synchronized List<Style> getStyles() {
+    return (List<Style>) getItems();
   }
 
   /**
-   * Get styles associated with this item
+   * 
+   * @return styles iterator
+   */
+  @SuppressWarnings("unchecked")
+  public synchronized ReadOnlyIterator<Style> getStylesIterator() {
+    return new ReadOnlyIterator<Style>((Iterator<Style>) getItemsIterator());
+  }
+
+  /**
+   * Get ordered list of styles associated with this item
    * 
    * @param item
    * @return
    */
-  public synchronized Set<Style> getAssociatedStyles(Item item) {
-    Set<Style> out = new TreeSet<Style>();
-    for (Object item2 : hmItems.values()) {
-      Style style = (Style) item2;
-      if (item instanceof Track && ((Track) item).getStyle().equals(style)) {
-        out.add(style);
-      } else {
-        Set<Track> tracks = TrackManager.getInstance().getAssociatedTracks(item);
-        for (Track track : tracks) {
-          out.add(track.getStyle());
-        }
+  public synchronized List<Style> getAssociatedStyles(Item item) {
+    List<Style> out = new ArrayList<Style>(1);
+    // [Perf] If item is a track, just return its style
+    if (item instanceof Track) {
+      out.add(((Track) item).getStyle());
+    } else {
+      List<Track> tracks = TrackManager.getInstance().getAssociatedTracks(item);
+      for (Track track : tracks) {
+        out.add(track.getStyle());
       }
     }
     return out;

@@ -24,7 +24,6 @@ import info.clearthought.layout.TableLayout;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -45,6 +44,7 @@ import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.events.Observer;
 import org.jajuk.util.Messages;
+import org.jajuk.util.ReadOnlyIterator;
 import org.jajuk.util.UtilGUI;
 import org.jajuk.util.UtilString;
 import org.jajuk.util.log.Log;
@@ -113,7 +113,7 @@ public class StatView extends ViewAdapter implements Observer {
       JFreeChart jfchart = null;
       // data
       pdata = new DefaultPieDataset();
-      Iterator<Style> it = StyleManager.getInstance().getStyles().iterator();
+      ReadOnlyIterator<Style> it = StyleManager.getInstance().getStylesIterator();
       int iTotal = 0;
       double dOthers = 0;
       TreeMap<String, Integer> tm = new TreeMap<String, Integer>();
@@ -173,16 +173,17 @@ public class StatView extends ViewAdapter implements Observer {
       // prepare devices
       long lTotalSize = 0;
       double dOthers = 0;
-      List<Device> alDevices = new ArrayList<Device>(DeviceManager.getInstance().getDevices());
+      List<Device> devices = DeviceManager.getInstance().getDevices();
+      //Collections.sort(devices);
       long[] lSizes = new long[DeviceManager.getInstance().getElementCount()];
-      for (File file : FileManager.getInstance().getFiles()) {
+      ReadOnlyIterator<File> it = FileManager.getInstance().getFilesIterator();
+      while (it.hasNext()) {
+        File file = it.next();
         lTotalSize += file.getSize();
-        lSizes[alDevices.indexOf(file.getDirectory().getDevice())] += file.getSize();
+        lSizes[devices.indexOf(file.getDirectory().getDevice())] += file.getSize();
       }
-      Iterator<Device> itDevices = DeviceManager.getInstance().getDevices().iterator();
-      while (itDevices.hasNext()) {
-        Device device = itDevices.next();
-        long lSize = lSizes[alDevices.indexOf(device)];
+      for (Device device : devices) {
+        long lSize = lSizes[devices.indexOf(device)];
         if (lTotalSize > 0 && (double) lSize / lTotalSize < 0.05) {
           // less than 5% -> go to others
           dOthers += lSize;
@@ -230,9 +231,9 @@ public class StatView extends ViewAdapter implements Observer {
       // contains size ( in Go ) for each month, first cell is before
       // data
       int[] iMonths = getMonths(iMonthsNumber);
-      Iterator<Track> it = TrackManager.getInstance().getTracks().iterator();
-      while (it.hasNext()) {
-        Track track = it.next();
+      ReadOnlyIterator<Track> tracks = TrackManager.getInstance().getTracksIterator();
+      while (tracks.hasNext()) {
+        Track track = tracks.next();
         int i = Integer.parseInt(additionFormatter.format(track.getDiscoveryDate())) / 100;
         for (int j = 0; j < iMonthsNumber + 1; j++) {
           if (i <= iMonths[j]) {
@@ -295,9 +296,9 @@ public class StatView extends ViewAdapter implements Observer {
       // data
       int iTracksByMonth[] = new int[iMonthsNumber + 1];
       int[] iMounts = getMonths(iMonthsNumber);
-      Iterator<Track> it = TrackManager.getInstance().getTracks().iterator();
-      while (it.hasNext()) {
-        Track track = it.next();
+      ReadOnlyIterator<Track> tracks = TrackManager.getInstance().getTracksIterator();
+      while (tracks.hasNext()) {
+        Track track = tracks.next();
         int i = Integer.parseInt(additionFormatter.format(track.getDiscoveryDate())) / 100;
         for (int j = 0; j < iMonthsNumber + 1; j++) {
           if (i <= iMounts[j]) {
@@ -305,10 +306,11 @@ public class StatView extends ViewAdapter implements Observer {
           }
         }
       }
-      
+
       double[][] data = new double[1][iMonthsNumber + 1];
-      // cannot use System.arraycopy() here because we have different types in the arrays...
-      //      System.arraycopy(iTracksByMonth, 0, data[0], 0, iMonthsNumber);
+      // cannot use System.arraycopy() here because we have different types in
+      // the arrays...
+      // System.arraycopy(iTracksByMonth, 0, data[0], 0, iMonthsNumber);
       for (int i = 0; i < iMonthsNumber + 1; i++) {
         data[0][i] = iTracksByMonth[i];
       }
@@ -360,8 +362,7 @@ public class StatView extends ViewAdapter implements Observer {
    */
   public void update(Event event) {
     JajukEvents subject = event.getSubject();
-    if (JajukEvents.DEVICE_REFRESH.equals(subject)
-        || JajukEvents.DEVICE_DELETE.equals(subject)) {
+    if (JajukEvents.DEVICE_REFRESH.equals(subject) || JajukEvents.DEVICE_DELETE.equals(subject)) {
       UtilGUI.waiting();
       if (getComponentCount() > 0) {
         removeAll();

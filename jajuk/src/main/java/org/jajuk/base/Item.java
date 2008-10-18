@@ -116,10 +116,6 @@ public abstract class Item implements Serializable, Const {
    */
   @Override
   public boolean equals(Object otherItem) {
-    // this also handles null
-    if (!(otherItem instanceof Item)) {
-      return false;
-    }
     // [Perf] We can compare with an == operator here because 
     // all ID are stored into String intern() buffer
     return getID() == ((Item) otherItem).getID();

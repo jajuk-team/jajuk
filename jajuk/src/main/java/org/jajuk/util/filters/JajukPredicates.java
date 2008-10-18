@@ -79,12 +79,25 @@ public class JajukPredicates {
      * @see org.apache.commons.collections.Predicate#evaluate(java.lang.Object)
      */
     public boolean evaluate(Object o) {
-      // this also returns false for null
-      if (!(o instanceof File)) {
-        return false;
-      }
-      
-      return ((File)o).isReady();
+      return ((File) o).isReady();
+    }
+
+  }
+
+  /**
+   * 
+   * Banned filtering predicate Applied on files only
+   */
+  public static class BannedFilePredicate implements Predicate {
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.apache.commons.collections.Predicate#evaluate(java.lang.Object)
+     */
+    public boolean evaluate(Object o) {
+      Track track = ((File) o).getTrack();
+      return !(track.getBooleanValue(Const.XML_TRACK_BANNED));
     }
 
   }

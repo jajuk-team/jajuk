@@ -24,7 +24,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -38,6 +37,7 @@ import org.jajuk.services.players.FIFO;
 import org.jajuk.util.Conf;
 import org.jajuk.util.MD5Processor;
 import org.jajuk.util.Messages;
+import org.jajuk.util.ReadOnlyIterator;
 import org.jajuk.util.UpgradeManager;
 import org.jajuk.util.UtilSystem;
 import org.jajuk.util.log.Log;
@@ -146,7 +146,7 @@ public final class DeviceManager extends ItemManager {
     Device device = new Device(sId, sName);
     device.setProperty(XML_TYPE, lDeviceType);
     device.setUrl(sUrl);
-    hmItems.put(sId, device);
+    registerItem(device);
     return device;
   }
 
@@ -171,16 +171,13 @@ public final class DeviceManager extends ItemManager {
    * @return 0:ok or error code
    */
   @SuppressWarnings("unchecked")
-  public int checkDeviceAvailablity(String sName, int iDeviceType, String sUrl,
-      boolean bNew) {
+  public int checkDeviceAvailablity(String sName, int iDeviceType, String sUrl, boolean bNew) {
     // don't check if it is a CD as all CDs may use the same mount point
     if (iDeviceType == Device.TYPE_CD) {
       return 0;
     }
     // check name and path
-    Iterator<Device> it = hmItems.values().iterator();
-    while (it.hasNext()) {
-      Device deviceToCheck = it.next();
+    for (Device deviceToCheck : DeviceManager.getInstance().getDevices()) {
       // If we check an existing device unchanged, just leave
       if (!bNew && sUrl.equals(deviceToCheck.getUrl())) {
         continue;
@@ -276,7 +273,7 @@ public final class DeviceManager extends ItemManager {
         return;
       }
     }
-    hmItems.remove(device.getID());
+    removeItem(device);
     DirectoryManager.getInstance().cleanDevice(device.getID());
     FileManager.getInstance().clearDevice(device.getID());
     PlaylistManager.getInstance().cleanDevice(device.getID());
@@ -284,9 +281,7 @@ public final class DeviceManager extends ItemManager {
     org.jajuk.base.Collection.cleanupLogical();
     // remove synchronization if another device was synchronized
     // with this device
-    Iterator<Device> it = hmItems.values().iterator();
-    while (it.hasNext()) {
-      Device deviceToCheck = it.next();
+    for (Device deviceToCheck : getDevices()) {
       if (deviceToCheck.containsProperty(XML_DEVICE_SYNCHRO_SOURCE)) {
         String sSyncSource = deviceToCheck.getStringValue(XML_DEVICE_SYNCHRO_SOURCE);
         if (sSyncSource.equals(device.getID())) {
@@ -301,7 +296,7 @@ public final class DeviceManager extends ItemManager {
    */
   public boolean isAnyDeviceRefreshing() {
     boolean bOut = false;
-    Iterator<Device> it = DeviceManager.getInstance().getDevices().iterator();
+    ReadOnlyIterator<Device> it = DeviceManager.getInstance().getDevicesIterator();
     while (it.hasNext()) {
       Device device = it.next();
       if (device.isRefreshing()) {
@@ -317,9 +312,7 @@ public final class DeviceManager extends ItemManager {
    */
   @SuppressWarnings("unchecked")
   public synchronized void cleanAllDevices() {
-    Iterator<Device> it = hmItems.values().iterator();
-    while (it.hasNext()) {
-      Device device = it.next();
+    for (Device device : getDevices()) {
       // Do not auto-refresh CD as several CD may share the same mount
       // point
       if (device.getType() == Device.TYPE_CD) {
@@ -329,7 +322,7 @@ public final class DeviceManager extends ItemManager {
       DirectoryManager.getInstance().cleanDevice(device.getName());
       PlaylistManager.getInstance().cleanDevice(device.getName());
     }
-    hmItems.clear();
+    clear();
   }
 
   /*
@@ -360,8 +353,7 @@ public final class DeviceManager extends ItemManager {
       long l = System.currentTimeMillis();
       lDateLastGlobalRefresh = System.currentTimeMillis();
       boolean bNeedUIRefresh = false;
-      for (Item item : getDevices()) {
-        Device device = (Device) item;
+      for (Device device : getDevices()) {
         // Do not auto-refresh CD as several CD may share the same mount
         // point
         if (device.getType() == Device.TYPE_CD) {
@@ -415,18 +407,24 @@ public final class DeviceManager extends ItemManager {
    * @return Element
    */
   public Device getDeviceByID(String sID) {
-    return (Device) hmItems.get(sID);
+    return (Device) getItemByID(sID);
   }
 
   /**
    * 
-   * @return devices list
+   * @return ordered devices list
    */
-  public synchronized Set<Device> getDevices() {
-    Set<Device> deviceSet = new LinkedHashSet<Device>();
-    for (Item item : getItems()) {
-      deviceSet.add((Device) item);
-    }
-    return deviceSet;
+  @SuppressWarnings("unchecked")
+  public synchronized List<Device> getDevices() {
+    return (List<Device>) getItems();
+  }
+
+  /**
+   * 
+   * @return devices iterator
+   */
+  @SuppressWarnings("unchecked")
+  public synchronized ReadOnlyIterator<Device> getDevicesIterator() {
+    return new ReadOnlyIterator<Device>((Iterator<Device>) getItemsIterator());
   }
 }

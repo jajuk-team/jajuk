@@ -22,7 +22,7 @@ package org.jajuk.base;
 
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Properties;
 import java.util.Set;
 
@@ -31,6 +31,7 @@ import org.jajuk.events.JajukEvents;
 import org.jajuk.events.Observer;
 import org.jajuk.util.MD5Processor;
 import org.jajuk.util.Messages;
+import org.jajuk.util.ReadOnlyIterator;
 import org.jajuk.util.UtilSystem;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
@@ -113,7 +114,7 @@ public final class PlaylistManager extends ItemManager implements Observer {
     }
     plf.getDirectory().removePlaylistFile(plf);
     // remove playlist
-    removeItem(plf.getID());
+    removeItem(plf);
   }
 
   /**
@@ -123,15 +124,12 @@ public final class PlaylistManager extends ItemManager implements Observer {
    */
   public synchronized Playlist registerPlaylistFile(String sId, String sName,
       Directory dParentDirectory) throws Exception {
-    if (!hmItems.containsKey(sId)) {
-      Playlist playlistFile = null;
-      playlistFile = new Playlist(sId, sName, dParentDirectory);
-      hmItems.put(sId, playlistFile);
-      if (dParentDirectory.getDevice().isRefreshing()) {
-        Log.debug("Registered new playlist: " + playlistFile);
-      }
+    Playlist playlistFile = new Playlist(sId, sName, dParentDirectory);
+    registerItem(playlistFile);
+    if (dParentDirectory.getDevice().isRefreshing()) {
+      Log.debug("Registered new playlist: " + playlistFile);
     }
-    return (Playlist) hmItems.get(sId);
+    return playlistFile;
   }
 
   /**
@@ -142,11 +140,9 @@ public final class PlaylistManager extends ItemManager implements Observer {
    */
   @SuppressWarnings("unchecked")
   public synchronized void cleanDevice(String sId) {
-    Iterator<Playlist> it = hmItems.values().iterator();
-    while (it.hasNext()) {
-      Playlist plf = it.next();
+    for (Playlist plf : getPlaylists()) {
       if (plf.getDirectory() == null || plf.getDirectory().getDevice().getID().equals(sId)) {
-        it.remove();
+        removeItem(plf);
       }
     }
   }
@@ -213,10 +209,8 @@ public final class PlaylistManager extends ItemManager implements Observer {
       throw new JajukException(134, e);
     }
     // OK, remove old file and register this new file
-    hmItems.remove(plfOld.getID());
-    if (!hmItems.containsKey(sNewId)) {
-      hmItems.put(sNewId, plfNew);
-    }
+    removeItem(plfOld);
+    registerItem(plfNew);
     // change directory reference
     plfNew.getDirectory().changePlaylistFile(plfOld, plfNew);
     return plfNew;
@@ -235,8 +229,8 @@ public final class PlaylistManager extends ItemManager implements Observer {
       File fNew = (File) properties.get(DETAIL_NEW);
       File fileOld = (File) properties.get(DETAIL_OLD);
       // search references in playlists
-      Iterator<Playlist> it = hmItems.values().iterator();
-      for (; it.hasNext();) {
+      ReadOnlyIterator<Playlist> it = getPlaylistsIterator();
+      while (it.hasNext()) {
         Playlist plf = it.next();
         if (plf.isReady()) { // check only in mounted
           // playlists, note that we can't
@@ -265,18 +259,24 @@ public final class PlaylistManager extends ItemManager implements Observer {
    * @return item
    */
   public Playlist getPlaylistByID(String sID) {
-    return (Playlist) hmItems.get(sID);
+    return (Playlist) getItemByID(sID);
   }
 
   /**
    * 
-   * @return playlists
+   * @return ordered playlists list
    */
-  public synchronized Set<Playlist> getPlaylists() {
-    Set<Playlist> playListSet = new LinkedHashSet<Playlist>();
-    for (Item item : getItems()) {
-      playListSet.add((Playlist) item);
-    }
-    return playListSet;
+  @SuppressWarnings("unchecked")
+  public synchronized List<Playlist> getPlaylists() {
+    return (List<Playlist>) getItems();
+  }
+
+  /**
+   * 
+   * @return playlists iterator
+   */
+  @SuppressWarnings("unchecked")
+  public synchronized ReadOnlyIterator<Playlist> getPlaylistsIterator() {
+    return new ReadOnlyIterator<Playlist>((Iterator<Playlist>) getItemsIterator());
   }
 }

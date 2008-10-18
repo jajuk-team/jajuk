@@ -556,8 +556,9 @@ public final class FIFO implements Const {
             item = new StackItem(FileManager.getInstance().getNextFile(siLast.getFile()), false);
           } else { // nothing in fifo, take first files in
             // collection
-            File file = (File) FileManager.getInstance().getFiles().toArray()[i];
-            item = new StackItem(file, false);
+            List<File> files = FileManager.getInstance().getFiles();
+            //Collections.sort(files);
+            item = new StackItem(files.get(0), false);
           }
         }
       } catch (JajukException je) {

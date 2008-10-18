@@ -27,11 +27,10 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedHashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.TreeSet;
 
 import org.jajuk.events.Event;
 import org.jajuk.events.JajukEvents;
@@ -40,6 +39,7 @@ import org.jajuk.events.Observer;
 import org.jajuk.services.players.FIFO;
 import org.jajuk.util.Conf;
 import org.jajuk.util.MD5Processor;
+import org.jajuk.util.ReadOnlyIterator;
 import org.jajuk.util.error.JajukException;
 
 /**
@@ -50,7 +50,7 @@ public final class AlbumManager extends ItemManager implements Observer {
   /** Self instance */
   private static AlbumManager singleton;
 
-  /** Album max rating */
+   /** Album max rating */
   private long maxRate = 0l;
 
   int comp = 0;
@@ -117,12 +117,8 @@ public final class AlbumManager extends ItemManager implements Observer {
    * @param sName
    */
   public synchronized Album registerAlbum(String sId, String sName) {
-    Album album = (Album) hmItems.get(sId);
-    if (album != null) {
-      return album;
-    }
-    album = new Album(sId, sName);
-    hmItems.put(sId, album);
+    Album album = new Album(sId, sName);
+    registerItem(album);
     return album;
   }
 
@@ -142,7 +138,7 @@ public final class AlbumManager extends ItemManager implements Observer {
     // re apply old properties from old item
     newItem.cloneProperties(old);
     // update tracks
-    for (Track track : TrackManager.getInstance().getTracks()) {
+    for(Track track: TrackManager.getInstance().getTracks()){
       if (track.getAlbum().equals(old)) {
         TrackManager.getInstance().changeTrackAlbum(track, sNewName, null);
       }
@@ -195,44 +191,53 @@ public final class AlbumManager extends ItemManager implements Observer {
    * @return Element
    */
   public Album getAlbumByID(String sID) {
-    return (Album) hmItems.get(sID);
+    return (Album) getItemByID(sID);
   }
 
   /**
    * 
-   * @return albums list
+   * @return ordered albums list
    */
-  public synchronized Set<Album> getAlbums() {
-    Set<Album> albumSet = new LinkedHashSet<Album>();
-    for (Item item : getItems()) {
-      albumSet.add((Album) item);
-    }
-    return albumSet;
+  @SuppressWarnings("unchecked")
+  public synchronized List<Album> getAlbums() {
+    return (List<Album>) getItems();
   }
 
   /**
-   * Get albums associated with this item
+   * 
+   * @return albums iterator
+   */
+  @SuppressWarnings("unchecked")
+  public synchronized ReadOnlyIterator<Album> getAlbumsIterator() {
+    return new ReadOnlyIterator<Album>((Iterator<Album>) getItemsIterator());
+  }
+
+  /**
+   * Get sorted list of albums associated with this item
    * 
    * @param item
-   * @return
+   * @return a list of item, void list if no result
    */
-  public synchronized Set<Album> getAssociatedAlbums(Item item) {
-    Set<Album> out = new TreeSet<Album>();
-    // If item is a track, return albums containing this track
+  @SuppressWarnings("unchecked")
+  public synchronized List<Album> getAssociatedAlbums(Item item) {
+    List<Album> out = new ArrayList<Album>(1);
+    // [Perf] If item is a track, just return its album
     if (item instanceof Track) {
-      // we can return as a track has only one album
       out.add(((Track) item).getAlbum());
     } else {
-      Set<Track> tracks = TrackManager.getInstance().getAssociatedTracks(item);
-      for (Track track : tracks) {
-        out.add(track.getAlbum());
+      ReadOnlyIterator<Album> albums = getAlbumsIterator();
+      while (albums.hasNext()) {
+        Album album = albums.next();
+        if (album.getTracksCache().contains(item)) {
+          out.add(album);
+        }
       }
     }
     return out;
   }
 
   /**
-   * Return top albums based on the average of each album rating
+   * Return sorted top albums based on the average of each album rating
    * 
    * @param bHideUnmounted
    *          if true, unmounted albums are not chosen
@@ -251,7 +256,9 @@ public final class AlbumManager extends ItemManager implements Observer {
     // for average
     Map<Album, Integer> cacheNb = new HashMap<Album, Integer>(AlbumManager.getInstance()
         .getElementCount());
-    for (Track track : TrackManager.getInstance().getTracks()) {
+    ReadOnlyIterator<Track> it = TrackManager.getInstance().getTracksIterator();
+    while (it.hasNext()) {
+      Track track = it.next();
       if (track.getPlayeableFile(bHideUnmounted) != null) {
         float newRate = 0f;
         Integer nb = cacheNb.get(track.getAlbum());
@@ -280,7 +287,7 @@ public final class AlbumManager extends ItemManager implements Observer {
   }
 
   /**
-   * Return newest albums
+   * Return ordered list of newest albums
    * 
    * @param bHideUnmounted
    *          if true, unmounted albums are not chosen
@@ -294,7 +301,9 @@ public final class AlbumManager extends ItemManager implements Observer {
     // This hashmap contains album-> discovery date
     final Map<Album, Date> cache = new HashMap<Album, Date>(AlbumManager.getInstance()
         .getElementCount());
-    for (Track track : TrackManager.getInstance().getTracks()) {
+    ReadOnlyIterator<Track> it = TrackManager.getInstance().getTracksIterator();
+    while (it.hasNext()) {
+      Track track = it.next();
       if (track.getPlayeableFile(bHideUnmounted) != null) {
         cache.put(track.getAlbum(), track.getDiscoveryDate());
       }
@@ -310,7 +319,7 @@ public final class AlbumManager extends ItemManager implements Observer {
   }
 
   /**
-   * Return rarely listen albums
+   * Return ordered rarely listen albums list
    * 
    * @param bHideUnmounted
    *          if true, unmounted albums are not chosen
@@ -329,7 +338,9 @@ public final class AlbumManager extends ItemManager implements Observer {
     // for average
     Map<Album, Integer> cacheNb = new HashMap<Album, Integer>(AlbumManager.getInstance()
         .getElementCount());
-    for (Track track : TrackManager.getInstance().getTracks()) {
+    ReadOnlyIterator<Track> it = TrackManager.getInstance().getTracksIterator();
+    while (it.hasNext()) {
+      Track track = it.next();
       if (track.getPlayeableFile(bHideUnmounted) != null) {
         float newHits = 0f;
         Integer nb = cacheNb.get(track.getAlbum());
@@ -408,7 +419,9 @@ public final class AlbumManager extends ItemManager implements Observer {
     // for average
     Map<Album, Integer> cacheNb = new HashMap<Album, Integer>(AlbumManager.getInstance()
         .getElementCount());
-    for (Track track : TrackManager.getInstance().getTracks()) {
+    ReadOnlyIterator<Track> it = TrackManager.getInstance().getTracksIterator();
+    while (it.hasNext()){
+      Track track = it.next();
       if (track.getPlayeableFile(Conf.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED)) != null) {
         float newRate = 0f;
         Integer nb = cacheNb.get(track.getAlbum());
@@ -454,8 +467,10 @@ public final class AlbumManager extends ItemManager implements Observer {
    */
   public Album getAlbumByName(String name) {
     Album out = null;
-    for (Album album : getAlbums()) {
-      if (album.getName().trim().toLowerCase().indexOf(name.trim().toLowerCase()) != -1) {
+    for (ReadOnlyIterator<Album> it = getAlbumsIterator(); it.hasNext();) {
+      Album album = it.next();
+      // [Perf], we use == because these strings are intern()alized
+      if (album.getName() == name) {
         out = album;
         break;
       }

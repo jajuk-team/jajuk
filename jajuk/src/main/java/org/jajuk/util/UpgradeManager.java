@@ -224,7 +224,9 @@ public final class UpgradeManager implements Const {
 
           // Start by finding max (old) rating
           long maxRating = 0;
-          for (Track track : TrackManager.getInstance().getTracks()) {
+          ReadOnlyIterator<Track> tracks = TrackManager.getInstance().getTracksIterator();
+          while (tracks.hasNext()) {
+            Track track = tracks.next();
             if (track.getRate() > maxRating) {
               maxRating = track.getRate();
             }

@@ -808,6 +808,31 @@ public class IconLoader implements Const {
     else if (icon == JajukIcons.BAN) {
       out = new ImageIcon(UtilSystem.getResource("icons/16x16/ban_16x16.png"));
     }
+    
+    else if (icon == JajukIcons.PREFERENCE_ADORE) {
+      out = new ImageIcon(UtilSystem.getResource("icons/16x16/preference-adore_16x16.png"));
+    }
+    
+    else if (icon == JajukIcons.PREFERENCE_DONTLIKE) {
+      out = new ImageIcon(UtilSystem.getResource("icons/16x16/preference-dontlike_16x16.png"));
+    }
+    
+    else if (icon == JajukIcons.PREFERENCE_DONTLIKEMUCH) {
+      out = new ImageIcon(UtilSystem.getResource("icons/16x16/preference-dontlikemuch_16x16.png"));
+    }
+    
+    else if (icon == JajukIcons.PREFERENCE_HATE) {
+      out = new ImageIcon(UtilSystem.getResource("icons/16x16/preference-hate_16x16.png"));
+    }
+    
+    else if (icon == JajukIcons.PREFERENCE_LIKE) {
+      out = new ImageIcon(UtilSystem.getResource("icons/16x16/preference-like_16x16.png"));
+    }
+    
+    else if (icon == JajukIcons.PREFERENCE_LOVE) {
+      out = new ImageIcon(UtilSystem.getResource("icons/16x16/preference-love_16x16.png"));
+    }
+    
     // Cache the result
     if (!cache.containsKey(icon)) {
       cache.put(icon, out);

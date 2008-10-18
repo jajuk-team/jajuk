@@ -26,7 +26,7 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
+import java.util.TreeSet;
 
 import org.jajuk.base.Album;
 import org.jajuk.base.AlbumManager;
@@ -65,8 +65,8 @@ public class XMLExporter extends Exporter implements Const {
   /** PUBLIC METHODS */
 
   public XMLExporter() throws IOException {
-    cache = UtilSystem
-        .getConfFileByPath(FILE_REPORTING_CACHE_FILE + "_XML_" + System.currentTimeMillis());
+    cache = UtilSystem.getConfFileByPath(FILE_REPORTING_CACHE_FILE + "_XML_"
+        + System.currentTimeMillis());
     writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(cache, false), "UTF-8"));
   }
 
@@ -187,15 +187,15 @@ public class XMLExporter extends Exporter implements Const {
   /**
    * @see Exporter.processColllection
    */
-  @Override
+  @SuppressWarnings("unchecked")
   public void processCollection(int type) throws Exception {
     // If we are tagging the physical collection...
     if (type == XMLExporter.PHYSICAL_COLLECTION) {
       // Same effect than selecting all devices
-      process(new ArrayList<Item>(DeviceManager.getInstance().getDevices()));
+      process((List<Item>) DeviceManager.getInstance().getItems());
     } else if (type == LOGICAL_COLLECTION) {
       // Same effect than selecting all styles
-      process(new ArrayList<Item>(StyleManager.getInstance().getStyles()));
+      process((List<Item>) StyleManager.getInstance().getItems());
     }
   }
 
@@ -266,10 +266,12 @@ public class XMLExporter extends Exporter implements Const {
     String sID = device.getID();
     writer.write(Tag.openTag(XML_DEVICE) + NEWLINE);
     writer.write(addTabs(1) + Tag.tagData(XML_ID, sID) + NEWLINE);
-    writer.write(addTabs(1) + Tag.tagData(XML_NAME, UtilString.formatXML(device.getName())) + NEWLINE);
+    writer.write(addTabs(1) + Tag.tagData(XML_NAME, UtilString.formatXML(device.getName()))
+        + NEWLINE);
     writer.write(addTabs(1) + Tag.tagData(XML_TYPE, UtilString.formatXML(device.getDeviceTypeS()))
         + NEWLINE);
-    writer.write(addTabs(1) + Tag.tagData(XML_URL, UtilString.formatXML(device.getUrl())) + NEWLINE);
+    writer
+        .write(addTabs(1) + Tag.tagData(XML_URL, UtilString.formatXML(device.getUrl())) + NEWLINE);
     Directory dir = DirectoryManager.getInstance().getDirectoryForIO(device.getFio());
     // check void devices
     if (dir != null) {
@@ -305,8 +307,8 @@ public class XMLExporter extends Exporter implements Const {
         + Tag.tagData(XML_TRACK_LENGTH, UtilString.formatTimeBySec(lTrackLength)) + NEWLINE);
     writer.write(addTabs(level + 1) + Tag.tagData(XML_TRACK_RATE, lTrackRate) + NEWLINE);
     writer.write(addTabs(level + 1) + Tag.tagData(XML_TRACK_COMMENT, sTrackComment) + NEWLINE);
-    writer.write(addTabs(level + 1) + Tag.tagData(XML_TRACK_ORDER, UtilString.padNumber(lTrackOrder, 2))
-        + NEWLINE);
+    writer.write(addTabs(level + 1)
+        + Tag.tagData(XML_TRACK_ORDER, UtilString.padNumber(lTrackOrder, 2)) + NEWLINE);
     writer.write(addTabs(level + 1) + Tag.tagData(XML_TRACK_ALBUM, sTrackAlbum) + NEWLINE);
     writer.write(addTabs(level) + Tag.closeTag(XML_TRACK) + NEWLINE);
   }
@@ -317,7 +319,7 @@ public class XMLExporter extends Exporter implements Const {
     String sStyleName = "";
     String sAuthorName = "";
     String sYear = "";
-    Set<Track> tracks = TrackManager.getInstance().getAssociatedTracks(album);
+    List<Track> tracks = TrackManager.getInstance().getAssociatedTracks(album);
     if (tracks.size() > 0) {
       sStyleName = UtilString.formatXML(tracks.iterator().next().getStyle().getName2());
       sAuthorName = UtilString.formatXML(tracks.iterator().next().getAuthor().getName2());
@@ -345,7 +347,8 @@ public class XMLExporter extends Exporter implements Const {
     writer.write(addTabs(level) + Tag.openTag(XML_AUTHOR) + NEWLINE);
     writer.write(addTabs(level + 1) + Tag.tagData(XML_ID, sAuthorID) + NEWLINE);
     writer.write(addTabs(level + 1) + Tag.tagData(XML_NAME, sAuthorName) + NEWLINE);
-    Set<Album> albums = AlbumManager.getInstance().getAssociatedAlbums(author);
+    List<Album> albums = AlbumManager.getInstance().getAssociatedAlbums(author);
+    //Collections.sort(albums);
     for (Album album : albums) {
       tagAlbum(album, level + 1);
     }
@@ -358,7 +361,9 @@ public class XMLExporter extends Exporter implements Const {
     writer.write(addTabs(level) + Tag.openTag(XML_YEAR) + NEWLINE);
     writer.write(addTabs(level + 1) + Tag.tagData(XML_ID, sYearID) + NEWLINE);
     writer.write(addTabs(level + 1) + Tag.tagData(XML_NAME, sYearName) + NEWLINE);
-    for (Album album : AlbumManager.getInstance().getAssociatedAlbums(year)) {
+    List<Album> albums = AlbumManager.getInstance().getAssociatedAlbums(year);
+    //Collections.sort(albums);
+    for (Album album : albums) {
       tagAlbum(album, level + 1);
     }
     writer.write(addTabs(level) + Tag.closeTag(XML_YEAR) + NEWLINE);
@@ -370,10 +375,14 @@ public class XMLExporter extends Exporter implements Const {
     writer.write(addTabs(level) + Tag.openTag(XML_STYLE) + NEWLINE);
     writer.write(addTabs(level + 1) + Tag.tagData(XML_ID, sStyleID) + NEWLINE);
     writer.write(addTabs(level + 1) + Tag.tagData(XML_NAME, sStyleName) + NEWLINE);
-    for (Album album : AlbumManager.getInstance().getAssociatedAlbums(style)) {
+    List<Album> albums = AlbumManager.getInstance().getAssociatedAlbums(style);
+    //Collections.sort(albums);
+    for (Album album : albums) {
       tagAlbum(album, level + 1);
     }
-    for (Author author : AuthorManager.getInstance().getAssociatedAuthors(style)) {
+    List<Author> authors = AuthorManager.getInstance().getAssociatedAuthors(style);
+    //Collections.sort(authors);
+    for (Author author : authors) {
       tagAuthor(author, level + 1);
     }
     writer.write(addTabs(level) + Tag.closeTag(XML_STYLE) + NEWLINE);
@@ -398,7 +407,13 @@ public class XMLExporter extends Exporter implements Const {
   public void process(List<Item> collection) throws Exception {
     try {
       writer.write(XML_HEADER + NEWLINE + Tag.openTag(XML_COLLECTION) + NEWLINE);
+      // Sort the collection thanks a tree set (we can't use Collections.sort()
+      // here due to generics)
+      TreeSet<Item> ts = new TreeSet<Item>();
       for (Item item : collection) {
+        ts.add(item);
+      }
+      for (Item item : ts) {
         process(item);
       }
       // Add I18N nodes

@@ -36,13 +36,10 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import javax.swing.BorderFactory;
@@ -222,7 +219,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
     jtbSort.add(jcbSorter);
 
     jlFilter = new JLabel(Messages.getString("AbstractTableView.0") + " ");
-    jlContains = new JLabel("   "+Messages.getString("AbstractTableView.7")+" ");
+    jlContains = new JLabel("   " + Messages.getString("AbstractTableView.7") + " ");
     jcbFilter = new SteppedComboBox();
     jcbFilter.setEditable(false);
     // note that a single album can contains tracks with different authors
@@ -247,7 +244,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
     jtbFilter.add(jcbFilter);
     jtbFilter.add(jlContains);
     jtbFilter.add(jtfValue);
-        
+
     JToolBar jtbPage = new JajukJToolbar();
     jtbPage.setFloatable(false);
     jtbPage.setRollover(true);
@@ -370,7 +367,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
   private void showFacts() {
     // display facts in the information panel
     // n albums
-    String sMessage = AlbumManager.getInstance().getAlbums().size() + " "
+    String sMessage = AlbumManager.getInstance().getElementCount() + " "
         + Messages.getString("CatalogView.16");
     int albumsPerPage = Conf.getInt(CONF_CATALOG_PAGE_SIZE);
     // n albums / page
@@ -576,6 +573,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
         if (jpItems.getComponentCount() > 0) {
           jpItems.removeAll();
         }
+        @SuppressWarnings("unused")
         Filter filter = null;
         if (jtfValue.getText().length() > 0) {
           PropertyMetaInformation meta = alFilters.get(jcbFilter.getSelectedIndex());
@@ -583,9 +581,9 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
               false);
         }
         List<Album> albums = null;
-        final Map<Album, Track> hmAlbumTrack = new HashMap<Album, Track>();
         // filter albums matching tracks
-        Collection<Item> alAllTracks = TrackManager.getInstance().getItems(filter);
+        List<Track> alAllTracks = TrackManager.getInstance().getTracks();
+        Filter.filterItems(alAllTracks, filter);
         albums = new ArrayList<Album>(alAllTracks.size() / 10);
         // keep matching albums
         for (Item it : alAllTracks) {
@@ -595,19 +593,6 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
             albums.add(album);
           }
         }
-        // Find a matching track for each album and store it for
-        // perfs
-        Set<Track> tracks = TrackManager.getInstance().getTracks();
-        for (Album album : albums) {
-          for (Track track : tracks) {
-            if (track.getAlbum().equals(album)) {
-              hmAlbumTrack.put(album, track);
-              break;
-            }
-            hmAlbumTrack.put(album, null);
-          }
-        }
-
         // sort albums
         final int index = jcbSorter.getSelectedIndex();
         Collections.sort(albums, new Comparator<Album>() {
@@ -620,8 +605,8 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
             // TODO: get two tracks of album and compare Author,
             // if
             // !=, set Author to "Various Artist"
-            Track track1 = hmAlbumTrack.get(album1);
-            Track track2 = hmAlbumTrack.get(album2);
+            Track track1 = album1.getAnyTrack();
+            Track track2 = album2.getAnyTrack();
 
             // check tracks (normally useless)
             if (track1 == null || track2 == null) {
@@ -693,10 +678,10 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
           // if hide unmounted tracks is set, continue
           if (Conf.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED)) {
             // test if album contains at least one mounted file
-            tracks = TrackManager.getInstance().getAssociatedTracks(album);
-            if (tracks.size() > 0) {
+            List<Track> trackset = TrackManager.getInstance().getAssociatedTracks(album);
+            if (trackset.size() > 0) {
               boolean bOK = false;
-              for (Track track : tracks) {
+              for (Track track : trackset) {
                 if (track.getReadyFiles().size() > 0) {
                   bOK = true;
                   break;
@@ -711,7 +696,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
           }
           // Take first track of album (to get detailed
           // information)
-          Track anyTrack = hmAlbumTrack.get(album);
+          Track anyTrack = album.getAnyTrack();
           if (anyTrack != null) {
             // Take the directory of any file of the track
             List<org.jajuk.base.File> fileList = anyTrack.getFiles();

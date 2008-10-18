@@ -20,11 +20,11 @@
 
 package org.jajuk.base;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.LinkedHashSet;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Vector;
 
 import org.jajuk.events.Event;
@@ -32,6 +32,7 @@ import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.services.players.FIFO;
 import org.jajuk.util.MD5Processor;
+import org.jajuk.util.ReadOnlyIterator;
 import org.jajuk.util.error.JajukException;
 
 /**
@@ -99,24 +100,19 @@ public final class AuthorManager extends ItemManager {
    * @param sName
    */
   public synchronized Author registerAuthor(String sId, String sName) {
-    Author author = (Author) hmItems.get(sId);
-    if (author != null) {
-      return author;
-    }
-    author = new Author(sId, sName);
-    hmItems.put(sId, author);
+    Author author = new Author(sId, sName);
+    registerItem(author);
     // add it in styles list if new
     if (!authorsList.contains(sName)) {
       authorsList.add(author.getName2());
+      // Sort items ignoring case
+      Collections.sort(authorsList, new Comparator<String>() {
+        public int compare(String o1, String o2) {
+          return o1.compareToIgnoreCase(o2);
+        }
+      });
     }
-    // Sort items ignoring case
-    Collections.sort(authorsList, new Comparator<String>() {
 
-      public int compare(String o1, String o2) {
-        return o1.compareToIgnoreCase(o2);
-      }
-
-    });
     return author;
   }
 
@@ -199,35 +195,40 @@ public final class AuthorManager extends ItemManager {
    * @return Element
    */
   public Author getAuthorByID(String sID) {
-    return (Author) hmItems.get(sID);
+    return (Author) getItemByID(sID);
   }
 
   /**
    * 
-   * @return albums list
+   * @return ordered albums list
    */
-  public Set<Author> getAuthors() {
-    Set<Author> authorSet = new LinkedHashSet<Author>();
-    for (Item item : getItems()) {
-      authorSet.add((Author) item);
-    }
-    return authorSet;
+  @SuppressWarnings("unchecked")
+  public List<Author> getAuthors() {
+    return (List<Author>) getItems();
   }
 
   /**
-   * Get authors associated with this item
+   * 
+   * @return authors iterator
+   */
+  @SuppressWarnings("unchecked")
+  public synchronized ReadOnlyIterator<Author> getAuthorsIterator() {
+    return new ReadOnlyIterator<Author>((Iterator<Author>) getItemsIterator());
+  }
+
+  /**
+   * Get ordered list of authors associated with this item
    * 
    * @param item
    * @return
    */
-  public synchronized Set<Author> getAssociatedAuthors(Item item) {
-    Set<Author> out = new TreeSet<Author>();
-    // If item is a track, return Authors containing this track
+  public synchronized List<Author> getAssociatedAuthors(Item item) {
+    List<Author> out = new ArrayList<Author>(1);
+    // [Perf] If item is a track, just return its author
     if (item instanceof Track) {
-      // we can return as a track has only one Author
       out.add(((Track) item).getAuthor());
     } else {
-      Set<Track> tracks = TrackManager.getInstance().getAssociatedTracks(item);
+      List<Track> tracks = TrackManager.getInstance().getAssociatedTracks(item);
       for (Track track : tracks) {
         out.add(track.getAuthor());
       }
@@ -241,8 +242,10 @@ public final class AuthorManager extends ItemManager {
    */
   public Author getAuthorByName(String name) {
     Author out = null;
-    for (Author author : getAuthors()) {
-      if (author.getName().trim().toLowerCase().indexOf(name.trim().toLowerCase()) != -1) {
+    for (ReadOnlyIterator<Author> it = getAuthorsIterator(); it.hasNext();) {
+      Author author = it.next();
+      // [Perf], we use == because these strings are intern()alized
+      if (author.getName() == name) {
         out = author;
         break;
       }

@@ -21,14 +21,12 @@
 package org.jajuk.base;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Iterator;
-import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.jajuk.util.Const;
 import org.jajuk.util.MD5Processor;
+import org.jajuk.util.ReadOnlyIterator;
 import org.jajuk.util.UtilSystem;
 
 /**
@@ -119,40 +117,49 @@ public final class DirectoryManager extends ItemManager {
    */
   @SuppressWarnings("unchecked")
   public synchronized void cleanDevice(final String sId) {
-    final Iterator<String> it = hmItems.keySet().iterator();
-    while (it.hasNext()) {
-      final Directory directory = getDirectoryByID(it.next());
+    for( Directory directory : getDirectories()){
       if (directory.getDevice().getID().equals(sId)) {
-        it.remove();
+        removeItem(directory);
       }
     }
   }
 
   /**
    * 
-   * @return directories list
+   * @return ordered directories list
    */
-  public synchronized Set<Directory> getDirectories() {
-    final Set<Directory> directorySet = new LinkedHashSet<Directory>();
-    for (final Item item : getItems()) {
-      directorySet.add((Directory) item);
-    }
-    return directorySet;
+  @SuppressWarnings("unchecked")
+  public synchronized List<Directory> getDirectories() {
+    return (List<Directory>) getItems();
+  }
+
+  /**
+   * 
+   * @return directories iterator
+   */
+  @SuppressWarnings("unchecked")
+  public synchronized ReadOnlyIterator<Directory> getDirectoriesIterator() {
+    return new ReadOnlyIterator<Directory>((Iterator<Directory>) getItemsIterator());
   }
 
   /**
    * @param sID
    *          Item ID
-   * @return Element
+   * @return Directory matching the id
    */
   public Directory getDirectoryByID(final String sID) {
-    return (Directory) hmItems.get(sID);
+    return (Directory) getItemByID(sID);
   }
 
-  @SuppressWarnings("unchecked")
+  /**
+   * @param sID
+   *          Item ID
+   * @return Directory matching the io file
+   */
   public synchronized Directory getDirectoryForIO(final java.io.File fio) {
-    final Collection<Directory> dirs = hmItems.values();
-    for (Directory dir : dirs) {
+    ReadOnlyIterator< Directory> dirs = getDirectoriesIterator();
+    while (dirs.hasNext()){
+      Directory dir = dirs.next();
       if (dir.getFio().equals(fio)) {
         return dir;
       }
@@ -197,21 +204,12 @@ public final class DirectoryManager extends ItemManager {
    */
   public synchronized Directory registerDirectory(final String sId, final String sName,
       final Directory dParent, final Device device) {
-    final Directory dir = (Directory) hmItems.get(sId);
-    if (dir != null) {
-      // Set name again because under Windows, dir name case could
-      // have changed but
-      // we keep the same directory object
-      dir.setName(sName);
-      return dir;
-    }
-    Directory directory = null;
-    directory = new Directory(sId, sName, dParent, device);
+    Directory directory = new Directory(sId, sName, dParent, device);
     if (dParent != null) {
       // add the directory to parent
       dParent.addDirectory(directory);
     }
-    hmItems.put(sId, directory);
+    registerItem(directory);
     return directory;
   }
 
@@ -235,7 +233,7 @@ public final class DirectoryManager extends ItemManager {
     }
     // remove all playlists
     for (final Playlist plf : dir.getPlaylistFiles()) {
-      PlaylistManager.getInstance().removeItem(plf.getID());
+      PlaylistManager.getInstance().removeItem(plf);
     }
     // remove all sub dirs
     final Iterator<Directory> it = dir.getDirectories().iterator();
@@ -246,6 +244,6 @@ public final class DirectoryManager extends ItemManager {
       it.remove();
     }
     // remove this dir from collection
-    hmItems.remove(dir.getID());
+    removeItem(dir);
   }
 }

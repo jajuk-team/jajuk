@@ -49,7 +49,6 @@ import java.util.jar.JarFile;
 import javax.swing.ImageIcon;
 
 import org.jajuk.Main;
-import org.jajuk.services.core.ExitService;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.filters.DirectoryFilter;
 import org.jajuk.util.filters.KnownTypeFilter;
@@ -323,50 +322,6 @@ public final class UtilSystem implements Const {
     fcDest.transferFrom(fcSrc, 0, fcSrc.size());
     fcSrc.close();
     fcDest.close();
-  }
-
-  public static int countDirectories(final File root) {
-    int count = 0;
-    // index init
-    File fCurrent = root;
-    final int[] indexTab = new int[100]; // directory index
-    for (int i = 0; i < 100; i++) { // init
-      indexTab[i] = -1;
-    }
-    int iDeep = 0; // deep
-    File dParent = root;
-    // Start actual scan
-    while ((iDeep >= 0) && !ExitService.isExiting()) {
-      // only directories
-      final File[] files = fCurrent.listFiles(UtilSystem.dirFilter);
-      // files is null if fCurrent is a not a directory
-      if ((files == null) || (files.length == 0)) {
-        // re-init for next time we will reach this deep
-        indexTab[iDeep] = -1;
-        iDeep--; // come up
-        fCurrent = fCurrent.getParentFile();
-        if (dParent != null) {
-          dParent = dParent.getParentFile();
-        }
-      } else {
-        if (indexTab[iDeep] < files.length - 1) {
-          // enter sub-directory
-          indexTab[iDeep]++; // inc index for next time we
-          // will reach this deep
-          fCurrent = files[indexTab[iDeep]];
-          count++;
-          iDeep++;
-        } else {
-          indexTab[iDeep] = -1;
-          iDeep--;
-          fCurrent = fCurrent.getParentFile();
-          if (dParent != null) {
-            dParent = dParent.getParentFile();
-          }
-        }
-      }
-    }
-    return count;
   }
 
   /**

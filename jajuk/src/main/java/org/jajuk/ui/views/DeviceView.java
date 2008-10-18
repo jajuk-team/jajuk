@@ -32,7 +32,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.HashSet;
-import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 import javax.swing.BorderFactory;
@@ -195,9 +195,9 @@ public class DeviceView extends ViewAdapter implements IView, Const, ActionListe
       }
     });
     // Add devices
-    Iterator<Device> it = DeviceManager.getInstance().getDevices().iterator();
-    while (it.hasNext()) {
-      final Device device = it.next();
+    List<Device> devices = DeviceManager.getInstance().getDevices();
+    //Collections.sort(devices);
+    for (Device device : devices) {
       ImageIcon icon = IconLoader.getIcon(JajukIcons.DEVICE_DIRECTORY_MOUNTED);
       String sTooltip = "";
       switch ((int) device.getType()) {
@@ -336,8 +336,7 @@ public class DeviceView extends ViewAdapter implements IView, Const, ActionListe
         }
       }.start();
     } /*
-       * else if (ae.getActionCommand().equals(JajukEvents.WIZARD.toString())) {
-       *  }
+       * else if (ae.getActionCommand().equals(JajukEvents.WIZARD.toString())) { }
        */
   }
 

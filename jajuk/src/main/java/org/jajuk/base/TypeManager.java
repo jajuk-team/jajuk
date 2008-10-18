@@ -22,12 +22,11 @@ package org.jajuk.base;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.jajuk.util.Messages;
+import org.jajuk.util.ReadOnlyIterator;
 import org.jajuk.util.UtilSystem;
 import org.jajuk.util.log.Log;
 
@@ -109,7 +108,7 @@ public final class TypeManager extends ItemManager {
     Type type = null;
     try {
       type = new Type(sId, sName, sExtension, cPlayerImpl, cTagImpl);
-      hmItems.put(sId, type);
+      registerItem(type);
       hmSupportedTypes.put(type.getExtension(), type);
     } catch (Exception e) {
       Log.error(109, "sPlayerImpl=" + cPlayerImpl + " sTagImpl=" + cTagImpl, e);
@@ -186,19 +185,25 @@ public final class TypeManager extends ItemManager {
    * @return item
    */
   public Type getTypeByID(String sID) {
-    return (Type) hmItems.get(sID);
+    return (Type) getItemByID(sID);
   }
 
   /**
    * 
    * @return types list
    */
-  public synchronized Set<Type> getTypes() {
-    Set<Type> typeSet = new LinkedHashSet<Type>();
-    for (Item item : getItems()) {
-      typeSet.add((Type) item);
-    }
-    return typeSet;
+  @SuppressWarnings("unchecked")
+  public synchronized List<Type> getTypes() {
+   return (List<Type>)getItems();
+  }
+  
+  /**
+   * 
+   * @return types iterator
+   */
+  @SuppressWarnings("unchecked")
+  public synchronized ReadOnlyIterator<Type> getTypesIterator() {
+    return new ReadOnlyIterator<Type>((Iterator<Type>)getItemsIterator());
   }
 
   /**

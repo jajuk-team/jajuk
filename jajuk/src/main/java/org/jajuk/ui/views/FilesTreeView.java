@@ -29,6 +29,7 @@ import java.awt.event.MouseEvent;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -198,36 +199,40 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
     jmiDirRefresh = new JMenuItem(actionRefreshDir);
     jmiDirRefresh.putClientProperty(DETAIL_SELECTION, alSelected);
     jmiDirRefresh.addActionListener(this);
-    jmiDirDesynchro = new JMenuItem(Messages.getString("FilesTreeView.14"),
-        IconLoader.getIcon(JajukIcons.DIRECTORY_DESYNCHRO));
+    jmiDirDesynchro = new JMenuItem(Messages.getString("FilesTreeView.14"), IconLoader
+        .getIcon(JajukIcons.DIRECTORY_DESYNCHRO));
     jmiDirDesynchro.addActionListener(this);
-    jmiDirResynchro = new JMenuItem(Messages.getString("FilesTreeView.15"),
-        IconLoader.getIcon(JajukIcons.DIRECTORY_SYNCHRO));
+    jmiDirResynchro = new JMenuItem(Messages.getString("FilesTreeView.15"), IconLoader
+        .getIcon(JajukIcons.DIRECTORY_SYNCHRO));
     jmiDirResynchro.addActionListener(this);
     jmiDirCreatePlaylist = new JMenuItem(Messages.getString("FilesTreeView.16"));
     jmiDirCreatePlaylist.setEnabled(false);
     jmiDirCreatePlaylist.addActionListener(this);
-    jmiDirRefactor = new JMenuItem(Messages.getString(("FilesTreeView.62")),
-        IconLoader.getIcon(JajukIcons.REORGANIZE));
+    jmiDirRefactor = new JMenuItem(Messages.getString(("FilesTreeView.62")), IconLoader
+        .getIcon(JajukIcons.REORGANIZE));
     jmiDirRefactor.addActionListener(this);
 
     // Device menu
-    jmiDevMount = new JMenuItem(Messages.getString("FilesTreeView.28"), IconLoader.getIcon(JajukIcons.UNMOUNT));
+    jmiDevMount = new JMenuItem(Messages.getString("FilesTreeView.28"), IconLoader
+        .getIcon(JajukIcons.UNMOUNT));
     jmiDevMount.addActionListener(this);
-    jmiDevUnmount = new JMenuItem(Messages.getString("FilesTreeView.29"), IconLoader.getIcon(JajukIcons.UNMOUNT));
+    jmiDevUnmount = new JMenuItem(Messages.getString("FilesTreeView.29"), IconLoader
+        .getIcon(JajukIcons.UNMOUNT));
     jmiDevUnmount.addActionListener(this);
-    jmiDevRefresh = new JMenuItem(Messages.getString("FilesTreeView.30"), IconLoader.getIcon(JajukIcons.REFRESH));
+    jmiDevRefresh = new JMenuItem(Messages.getString("FilesTreeView.30"), IconLoader
+        .getIcon(JajukIcons.REFRESH));
     jmiDevRefresh.addActionListener(this);
-    jmiDevSynchronize = new JMenuItem(Messages.getString("FilesTreeView.31"),
-        IconLoader.getIcon(JajukIcons.SYNCHRO));
+    jmiDevSynchronize = new JMenuItem(Messages.getString("FilesTreeView.31"), IconLoader
+        .getIcon(JajukIcons.SYNCHRO));
     jmiDevSynchronize.addActionListener(this);
-    jmiDevTest = new JMenuItem(Messages.getString("FilesTreeView.32"), IconLoader.getIcon(JajukIcons.TEST));
+    jmiDevTest = new JMenuItem(Messages.getString("FilesTreeView.32"), IconLoader
+        .getIcon(JajukIcons.TEST));
     jmiDevTest.addActionListener(this);
-    jmiDevConfiguration = new JMenuItem(Messages.getString("FilesTreeView.55"),
-        IconLoader.getIcon(JajukIcons.CONFIGURATION));
+    jmiDevConfiguration = new JMenuItem(Messages.getString("FilesTreeView.55"), IconLoader
+        .getIcon(JajukIcons.CONFIGURATION));
     jmiDevConfiguration.addActionListener(this);
-    jmiDevOrganize = new JMenuItem(Messages.getString(("FilesTreeView.62")),
-        IconLoader.getIcon(JajukIcons.REORGANIZE));
+    jmiDevOrganize = new JMenuItem(Messages.getString(("FilesTreeView.62")), IconLoader
+        .getIcon(JajukIcons.REORGANIZE));
     jmiDevOrganize.addActionListener(this);
 
     // playlist menu
@@ -291,18 +296,16 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
   public void populateTree() {
     top.removeAllChildren();
     // add devices
-    Iterator<Device> it1 = DeviceManager.getInstance().getDevices().iterator();
-    while (it1.hasNext()) {
-      Device device = it1.next();
+    List<Device> devices = DeviceManager.getInstance().getDevices();
+    Collections.sort(devices);
+    for (Device device : devices) {
       DefaultMutableTreeNode nodeDevice = new DeviceNode(device);
       top.add(nodeDevice);
     }
     // add directories
-    List<Directory> directories = null;
-    directories = new ArrayList<Directory>(DirectoryManager.getInstance().getDirectories());
-    Iterator<Directory> it2 = directories.iterator();
-    while (it2.hasNext()) {
-      Directory directory = it2.next();
+    List<Directory> directories = DirectoryManager.getInstance().getDirectories();
+    //Collections.sort(directories);
+    for (Directory directory : directories) {
       if (directory.shouldBeHidden()) {
         continue;
       }
@@ -324,10 +327,8 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
       }
     }
     // add files
-    List<File> files = new ArrayList<File>(FileManager.getInstance().getFiles());
-    Iterator<File> it3 = files.iterator();
-    while (it3.hasNext()) {
-      File file = it3.next();
+    List<File> files = FileManager.getInstance().getFiles();
+    for (File file : files) {
       if (file.shouldBeHidden()) { // should be hidden by option
         continue;
       }
@@ -343,7 +344,8 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
     }
 
     // add playlists
-    List<Playlist> playlists = new ArrayList<Playlist>(PlaylistManager.getInstance().getPlaylists());
+    List<Playlist> playlists = PlaylistManager.getInstance().getPlaylists();
+    //Collections.sort(playlists);
     Iterator<Playlist> it4 = playlists.iterator();
     while (it4.hasNext()) {
       Playlist playlistFile = it4.next();
@@ -427,9 +429,11 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
         public void run() {
           Device device = ((DeviceNode) (paths[0].getLastPathComponent())).getDevice();
           if (device.test()) {
-            Messages.showInfoMessage(Messages.getString("DeviceView.21"), IconLoader.getIcon(JajukIcons.OK));
+            Messages.showInfoMessage(Messages.getString("DeviceView.21"), IconLoader
+                .getIcon(JajukIcons.OK));
           } else {
-            Messages.showInfoMessage(Messages.getString("DeviceView.22"), IconLoader.getIcon(JajukIcons.KO));
+            Messages.showInfoMessage(Messages.getString("DeviceView.22"), IconLoader
+                .getIcon(JajukIcons.KO));
           }
         }
       }.start();
@@ -567,10 +571,10 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
         }
         // Enable CDDB retagging only for a single directory selection
         jmiCDDBWizard.setEnabled(alSelected.size() == 1 && alSelected.get(0) instanceof Directory);
-        
+
         // Enable device refresh for a single item
         jmiDevRefresh.setEnabled(alSelected.size() == 1 && alSelected.get(0) instanceof Device);
-        
+
         // Enable directory refresh for a single item
         jmiDirRefresh.setEnabled(alSelected.size() == 1 && alSelected.get(0) instanceof Directory);
       }

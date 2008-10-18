@@ -85,7 +85,7 @@ public class Filter {
   /**
    * Filter a list.
    * <p>
-   * The same collection is returned with non-matching items removed (for
+   * Work on the input collection (for
    * performance reasons and to save memory we don't create a new list)
    * </p>
    * <p>
@@ -95,12 +95,11 @@ public class Filter {
    * @param in
    *          input list
    * @param filter
-   * @return filtered list, void list if none match
    */
   @SuppressWarnings("unchecked")
-  public static List<Item> filterItems(List<? extends Item> list, Filter filter) {
+  public static void filterItems(List<? extends Item> list, Filter filter) {
     if (filter == null || filter.getValue() == null) {
-      return (List<Item>) list;
+      return ;
     }
     // Check if property is not the "fake" any property
     boolean bAny = (filter.getProperty() == null || "any".equals(filter.getProperty()));
@@ -109,7 +108,7 @@ public class Filter {
     String checked = filter.getValue();
     // If checked is void, return the list as it
     if (UtilString.isVoid(checked)) {
-      return (List<Item>) list;
+      return ;
     }
     // If pattern is wrong, return a void list
     try {
@@ -117,7 +116,7 @@ public class Filter {
     } catch (PatternSyntaxException e) {
       Log.debug("Wrong regexp pattern: " + checked);
       list.clear();
-      return (List<Item>) list;
+      return ;
     }
 
     Iterator it = list.iterator();
@@ -160,7 +159,7 @@ public class Filter {
         it.remove();
       }
     }
-    return (List<Item>) list;
+    return ;
   }
 
 }

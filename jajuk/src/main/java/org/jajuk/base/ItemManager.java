@@ -27,11 +27,13 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.TreeSet;
 
-import org.apache.commons.collections.bidimap.TreeBidiMap;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections.Predicate;
 import org.jajuk.util.Const;
-import org.jajuk.util.Filter;
 import org.jajuk.util.Messages;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
@@ -40,9 +42,6 @@ import org.jajuk.util.log.Log;
  * Managers parent class
  */
 public abstract class ItemManager implements Const {
-
-  /** Items collection* */
-  protected TreeBidiMap hmItems = new TreeBidiMap();
 
   /**
    * Maps item classes -> instance, must be a linked map for ordering (mandatory
@@ -55,11 +54,55 @@ public abstract class ItemManager implements Const {
   private HashMap<String, PropertyMetaInformation> hmPropertiesMetaInformation = new LinkedHashMap<String, PropertyMetaInformation>(
       10);
 
+  /*****************************************************************************
+   * Items collection
+   * <p>
+   * We use a concrete type here and not an upper bounded wildcard type (?
+   * extends Item) because this prevent from calling methods in it like
+   * put(String,Album)
+   * </p>
+   ****************************************************************************/
+
+  private Set<Item> finalItems = new TreeSet<Item>();
+
+  private List<Item> startupItems = new ArrayList<Item>(100);
+
+  private Map<String, Item> internalMap = new HashMap<String, Item>(100);
+
+  private Collection<Item> items = startupItems;
+
   /**
-   * Constructor
+   * Item manager default constructor 
    */
   ItemManager() {
-    super();
+  }
+
+  /**
+   * Switch all item managers to ordered mode See
+   * ItemManager.switchToOrderState() for more details
+   */
+  public static synchronized void switchAllManagersToOrderState() {
+    Log.debug("Switching to sorted mode");
+    for (ItemManager manager : hmItemManagers.values()) {
+      manager.switchToOrderState();
+    }
+  }
+
+  /**
+   * Switch this item manager to order mode This feature allows faster
+   * collection loading As collection.xml contains ordered elements, we simply a
+   * use an arraylist to store items first, then few seconds after startup and
+   * before user could make changes to the collection, we populate a treeset
+   * from the arraylist and begin ti use it.
+   * 
+   */
+  public synchronized void switchToOrderState() {
+    for (Item item : startupItems) {
+      finalItems.add(item);
+    }
+    items = finalItems;
+    // Free startup memory
+    startupItems = null;
   }
 
   /**
@@ -111,22 +154,24 @@ public abstract class ItemManager implements Const {
   /** Remove a custom property to all items for the given manager */
   @SuppressWarnings("unchecked")
   public synchronized void applyRemoveProperty(PropertyMetaInformation meta) {
-    Collection<Item> items = hmItems.values();
-    if (items != null) {
-      for (Item item : items) {
-        item.removeProperty(meta.getName());
-      }
+    for (Item item : items) {
+      item.removeProperty(meta.getName());
     }
   }
+
+  /**
+   * Generic method to access to a parametrized list of items
+   * 
+   * @return the item-parametrized list
+   * 
+   * protected abstract HashMap<String, Item> getItemsMap();
+   */
 
   /** Add a custom property to all items for the given manager */
   @SuppressWarnings("unchecked")
   public synchronized void applyNewProperty(PropertyMetaInformation meta) {
-    Collection<Item> items = hmItems.values();
-    if (items != null) {
-      for (Item item : items) {
-        item.setProperty(meta.getName(), meta.getDefaultValue());
-      }
+    for (Item item : items) {
+      item.setProperty(meta.getName(), meta.getDefaultValue());
     }
   }
 
@@ -246,7 +291,7 @@ public abstract class ItemManager implements Const {
         hsItems.add(track.getStyle());
       }
     }
-    Iterator<Item> it = hmItems.values().iterator();
+    Iterator<Item> it = hsItems.iterator();
     while (it.hasNext()) {
       Item item = it.next();
       // check if this item still maps some tracks
@@ -263,21 +308,29 @@ public abstract class ItemManager implements Const {
   /**
    * Perform a cleanup for a given item
    */
-  public synchronized void cleanup(Item item) {
+  protected synchronized void cleanup(Item item) {
     if (TrackManager.getInstance().getAssociatedTracks(item).size() == 0) {
-      hmItems.remove(item.getID());
+      removeItem(item);
     }
   }
 
-  /** Return all registated items with filter applied */
-  @SuppressWarnings("unchecked")
-  public synchronized Collection<Item> getItems(Filter filter) {
-    return Filter.filterItems(new ArrayList<Item>(hmItems.values()), filter);
+  /** Remove a given item */
+  protected synchronized void removeItem(Item item) {
+    if (item != null) {
+      items.remove(item);
+      internalMap.remove(item.getID());
+    }
   }
 
-  /** Remove a given item */
-  public synchronized void removeItem(String sID) {
-    hmItems.remove(sID);
+  /**
+   * Register a given item
+   * 
+   * @param item :
+   *          the item to add
+   */
+  protected synchronized void registerItem(Item item) {
+    items.add(item);
+    internalMap.put(item.getID(), item);
   }
 
   /**
@@ -411,7 +464,7 @@ public abstract class ItemManager implements Const {
    * @return number of item
    */
   public int getElementCount() {
-    return hmItems.size();
+    return items.size();
   }
 
   /**
@@ -420,20 +473,46 @@ public abstract class ItemManager implements Const {
    * @return Item
    */
   public Item getItemByID(String sID) {
-    return (Item) hmItems.get(sID);
+    Item item = internalMap.get(sID);
+    return item;
   }
 
-  /** Return all registred items */
-  @SuppressWarnings("unchecked")
-  protected synchronized Set<Item> getItems() {
-    return hmItems.inverseBidiMap().keySet();
+  /**
+   * Return a shallow copy of all registrated items
+   * 
+   * @return a shallow copy of all registrated items
+   */
+  public synchronized List<? extends Item> getItems() {
+    return new ArrayList<Item>(items);
+  }
+
+  /**
+   * Return a shallow copy of all registrated items filtered using the provided
+   * predicate*
+   * 
+   * @arg predicate : the predicate
+   * @return a shallow copy of all registrated items filtered using the provided
+   */
+  public synchronized List<? extends Item> getFilteredItems(Predicate predicate) {
+    ArrayList<Item> itemsCopy = new ArrayList<Item>(items);
+    CollectionUtils.filter(itemsCopy, predicate);
+    return itemsCopy;
+  }
+
+  /*****************************************************************************
+   * Return all registrated enumeration CAUTION : do not call remove() on this
+   * iterator, you should remove effective items
+   ****************************************************************************/
+  protected synchronized Iterator<? extends Item> getItemsIterator() {
+    return items.iterator();
   }
 
   /**
    * Clear any entries from this manager
    */
   public void clear() {
-    hmItems.clear();
+    items.clear();
+    internalMap.clear();
     hmPropertiesMetaInformation.clear();
   }
 

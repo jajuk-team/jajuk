@@ -197,10 +197,6 @@ public class File extends PhysicalItem implements Comparable<File>, Const {
    * @return comparaison result
    */
   public int compareTo(File otherFile) {
-    // Perf: leave if directories are equals
-    if (otherFile.equals(this)) {
-      return 0;
-    }
     // Begin by comparing file parent directory for perf
     if (directory.equals(otherFile.getDirectory())) {
       // If both files are in the same directory, sort by track order

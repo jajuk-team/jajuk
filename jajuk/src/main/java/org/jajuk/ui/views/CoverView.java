@@ -772,7 +772,8 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
         return this;
       }
     });
-    jcbAccuracy.setMinimumSize(new Dimension(20, 0));
+    jcbAccuracy.setMinimumSize(new Dimension(40, 0));
+    jcbAccuracy.setPreferredSize(new Dimension(40, 0));
     jcbAccuracy.setToolTipText(Messages.getString("ParameterView.155"));
 
     jcbAccuracy.addItem(IconLoader.getIcon(JajukIcons.ACCURACY_LOW));

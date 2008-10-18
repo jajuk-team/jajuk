@@ -22,10 +22,11 @@ package org.jajuk.base;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
-import java.util.TreeSet;
 import java.util.regex.PatternSyntaxException;
 
 import javax.swing.ImageIcon;
@@ -50,7 +51,7 @@ public class Album extends LogicalItem implements Comparable<Album> {
   private static TrackComparator basicComparator = new TrackComparator(TrackComparator.ALBUM);
 
   /** For perfs, we cache the associated tracks */
-  protected Set<Track> tracks = new TreeSet<Track>(basicComparator);
+  private List<Track> cache = new ArrayList<Track>(10);
 
   /**
    * Album constructor
@@ -234,7 +235,7 @@ public class Album extends LogicalItem implements Comparable<Album> {
     File fDir = null; // analyzed directory
     // search for local covers in all directories mapping the current track
     // to reach other devices covers and display them together
-    Set<Track> lTracks = TrackManager.getInstance().getAssociatedTracks(this);
+    List<Track> lTracks = TrackManager.getInstance().getAssociatedTracks(this);
     if (lTracks.size() == 0) {
       return null;
     }
@@ -251,7 +252,7 @@ public class Album extends LogicalItem implements Comparable<Album> {
     // look for absolute cover in collection
     for (Directory dir : dirs) {
       String sAbsolut = dir.getStringValue(XML_DIRECTORY_DEFAULT_COVER);
-      if (sAbsolut != null && !"".equals(sAbsolut.trim())) {
+      if (!UtilString.isVoid(sAbsolut.trim())) {
         File fAbsoluteDefault = new File(dir.getAbsolutePath() + '/' + sAbsolut);
         if (fAbsoluteDefault.exists()) {
           return fAbsoluteDefault;
@@ -316,7 +317,7 @@ public class Album extends LogicalItem implements Comparable<Album> {
   @Override
   public long getRate() {
     long rate = 0;
-    for (Track track : tracks) {
+    for (Track track : cache) {
       rate += track.getRate();
     }
     return rate;
@@ -353,7 +354,7 @@ public class Album extends LogicalItem implements Comparable<Album> {
    */
   public Style getStyle() {
     Set<Style> styles = new HashSet<Style>(1);
-    for (Track track : tracks) {
+    for (Track track : cache) {
       styles.add(track.getStyle());
     }
     // If different styles, the album style is null
@@ -371,7 +372,7 @@ public class Album extends LogicalItem implements Comparable<Album> {
    */
   public Author getAuthor() {
     Set<Author> authors = new HashSet<Author>(1);
-    for (Track track : tracks) {
+    for (Track track : cache) {
       authors.add(track.getAuthor());
     }
     // If different Authors, the album Author is null
@@ -389,7 +390,7 @@ public class Album extends LogicalItem implements Comparable<Album> {
    */
   public Year getYear() {
     Set<Year> years = new HashSet<Year>(1);
-    for (Track track : tracks) {
+    for (Track track : cache) {
       years.add(track.getYear());
     }
     // If different Authors, the album Author is null
@@ -405,7 +406,7 @@ public class Album extends LogicalItem implements Comparable<Album> {
    */
   public long getDuration() {
     long length = 0;
-    for (Track track : tracks) {
+    for (Track track : cache) {
       length += track.getDuration();
     }
     return length;
@@ -415,7 +416,7 @@ public class Album extends LogicalItem implements Comparable<Album> {
    * @return album nb of tracks
    */
   public int getNbOfTracks() {
-    return tracks.size();
+    return cache.size();
   }
 
   /**
@@ -423,17 +424,17 @@ public class Album extends LogicalItem implements Comparable<Album> {
    */
   public long getHits() {
     int hits = 0;
-    for (Track track : tracks) {
+    for (Track track : cache) {
       hits += track.getHits();
     }
     return hits;
   }
 
   /**
-   * @return wether the album contains a least one available track
+   * @return whether the album contains a least one available track
    */
   public boolean containsReadyFiles() {
-    for (Track track : tracks) {
+    for (Track track : cache) {
       if (track.getReadyFiles().size() > 0) {
         return true;
       }
@@ -445,8 +446,8 @@ public class Album extends LogicalItem implements Comparable<Album> {
    * @return First found track discovery date
    */
   public Date getDiscoveryDate() {
-    if (tracks.size() > 0) {
-      return tracks.iterator().next().getDiscoveryDate();
+    if (cache.size() > 0) {
+      return cache.iterator().next().getDiscoveryDate();
     } else {
       return null;
     }
@@ -484,10 +485,31 @@ public class Album extends LogicalItem implements Comparable<Album> {
   }
 
   /**
-   * Reset tracks references
+   * Reset tracks cache
    */
   protected void resetTracks() {
-    tracks.clear();
+    cache.clear();
+  }
+
+  /**
+   * 
+   * @return ordered tracks cache for this album (perf)
+   */
+  protected List<Track> getTracksCache() {
+    return this.cache;
+  }
+  
+  /**
+   * 
+   * @return a track from this album
+   */
+  public Track getAnyTrack(){
+    if (cache.size() == 0){
+      return null;
+    }
+    else{
+      return cache.get(0);
+    }
   }
 
 }

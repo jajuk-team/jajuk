@@ -19,6 +19,8 @@
  */
 package org.jajuk.base;
 
+import java.util.List;
+
 import javax.swing.ImageIcon;
 
 import org.jajuk.services.players.IPlayerImpl;
@@ -154,7 +156,7 @@ public class Type extends PhysicalItem implements Comparable<Type> {
     return "Type[ID=" + getID() + " Name=" + getName() + " ; Extension=" + sExtension + "]";
   }
 
-  public static String[] getExtensionsFromTypes(final java.util.Collection<Type> types) {
+  public static String[] getExtensionsFromTypes(final List<Type> types) {
     String[] extensions = {};
 
     if (types != null) {

@@ -221,7 +221,7 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
   }
 
   /**
-   * return child files recursively
+   * return ordered child files recursively
    * 
    * @return child files recursively
    */
@@ -623,7 +623,7 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
   public boolean cleanRemovedFiles() {
     boolean bChanges = false;
     // need to use a shallow copy to avoid concurrent exceptions
-    final Set<Directory> dirs = DirectoryManager.getInstance().getDirectories();
+    final List<Directory> dirs = DirectoryManager.getInstance().getDirectories();
     // directories cleanup
     for (final Item item : dirs) {
       final Directory dir = (Directory) item;
@@ -637,7 +637,7 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
       }
     }
     // files cleanup
-    final Set<org.jajuk.base.File> files = FileManager.getInstance().getFiles();
+    final List<org.jajuk.base.File> files = FileManager.getInstance().getFiles();
     for (final org.jajuk.base.File file : files) {
       if (!ExitService.isExiting()
           // Only take into consideration files from this directory or from
@@ -654,7 +654,7 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
       }
     }
     // Playlist cleanup
-    final Set<Playlist> plfiles = PlaylistManager.getInstance().getPlaylists();
+    final List<Playlist> plfiles = PlaylistManager.getInstance().getPlaylists();
     for (final Playlist plf : plfiles) {
       if (!ExitService.isExiting()
           // Only take into consideration files from this directory or from

@@ -25,7 +25,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.jajuk.base.Device;
 import org.jajuk.base.Directory;
@@ -178,7 +177,7 @@ public final class UtilFeatures implements Const {
         files.add(((Track) item).getPlayeableFile(Conf
             .getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED)));
       } else if (item instanceof LogicalItem) {
-        Set<Track> tracks = TrackManager.getInstance().getAssociatedTracks(item);
+        List<Track> tracks = TrackManager.getInstance().getAssociatedTracks(item);
         for (Track track : tracks) {
           files.add(track.getPlayeableFile(Conf
               .getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED)));

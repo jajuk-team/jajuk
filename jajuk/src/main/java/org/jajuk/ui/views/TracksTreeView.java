@@ -280,8 +280,10 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener, 
   public void populateTreeByStyle() {
     // delete previous tree
     top.removeAllChildren();
-    List<Track> tracks = TrackManager.getInstance().getTracksAsList();
+    List<Track> tracks = TrackManager.getInstance().getTracks();
+    long l = System.currentTimeMillis();
     Collections.sort(tracks, TrackManager.getInstance().getComparator());
+    System.out.println("here="+(System.currentTimeMillis()-l));
     for (Track track : tracks) {
       if (!track.shouldBeHidden()) {
         StyleNode styleNode = null;
@@ -358,7 +360,7 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener, 
   public void populateTreeByAuthor() {
     // delete previous tree
     top.removeAllChildren();
-    List<Track> tracks = TrackManager.getInstance().getTracksAsList();
+    List<Track> tracks = TrackManager.getInstance().getTracks();
     Collections.sort(tracks, TrackManager.getInstance().getComparator());
     for (Track track : tracks) {
       if (!track.shouldBeHidden()) {
@@ -417,7 +419,7 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener, 
   public void populateTreeByYear() {
     // delete previous tree
     top.removeAllChildren();
-    List<Track> tracks = TrackManager.getInstance().getTracksAsList();
+    List<Track> tracks = TrackManager.getInstance().getTracks();
     Collections.sort(tracks, TrackManager.getInstance().getComparator());
     for (Track track : tracks) {
       if (!track.shouldBeHidden()) {
@@ -473,7 +475,7 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener, 
   public void populateTreeByAlbum() {
     // delete previous tree
     top.removeAllChildren();
-    List<Track> tracks = TrackManager.getInstance().getTracksAsList();
+    List<Track> tracks = TrackManager.getInstance().getTracks();
     Collections.sort(tracks, TrackManager.getInstance().getComparator());
     for (Track track : tracks) {
       if (!track.shouldBeHidden()) {
@@ -486,7 +488,7 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener, 
   public void populateTreeByDiscovery() {
     // delete previous tree
     top.removeAllChildren();
-    List<Track> tracks = TrackManager.getInstance().getTracksAsList();
+    List<Track> tracks = TrackManager.getInstance().getTracks();
     Collections.sort(tracks, TrackManager.getInstance().getComparator());
     // Create separator nodes
     DefaultMutableTreeNode nodeWeekly = new DiscoveryDateNode(Messages
@@ -551,7 +553,7 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener, 
   public void populateTreeByRate() {
     // delete previous tree
     top.removeAllChildren();
-    List<Track> tracks = TrackManager.getInstance().getTracksAsList();
+    List<Track> tracks = TrackManager.getInstance().getTracks();
     Collections.sort(tracks, TrackManager.getInstance().getComparator());
     for (Track track : tracks) {
       if (!track.shouldBeHidden()) {
@@ -564,7 +566,7 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener, 
   public void populateTreeByHits() {
     // delete previous tree
     top.removeAllChildren();
-    List<Track> tracks = TrackManager.getInstance().getTracksAsList();
+    List<Track> tracks = TrackManager.getInstance().getTracks();
     Collections.sort(tracks, TrackManager.getInstance().getComparator());
     for (Track track : tracks) {
       if (!track.shouldBeHidden()) {
@@ -745,7 +747,9 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener, 
         if (o instanceof TreeRootElement) {
           // collection node
           items = TrackManager.getInstance().getElementCount();
-          selectedRecursively.addAll(TrackManager.getInstance().getTracks());
+          List<Track> allTracks = TrackManager.getInstance().getTracks();
+          //Collections.sort(allTracks);
+          selectedRecursively.addAll(allTracks);
           break;
         } else if (o instanceof TransferableTreeNode) {
           // this is a standard node except "by date"

@@ -27,6 +27,7 @@ import javax.swing.ImageIcon;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
+import org.jajuk.util.ReadOnlyIterator;
 
 /**
  * A music style ( jazz, rock...)
@@ -136,8 +137,9 @@ public class Style extends LogicalItem implements Comparable<Style> {
    */
   public List<Track> getTracksRecursively() {
     List<Track> alTracks = new ArrayList<Track>(1000);
-    for (Item item : TrackManager.getInstance().getTracks()) {
-      Track track = (Track) item;
+    ReadOnlyIterator<Track> it = TrackManager.getInstance().getTracksIterator();
+    while (it.hasNext()){
+      Track track = it.next();
       if (track.getStyle().equals(this)) {
         alTracks.add(track);
       }

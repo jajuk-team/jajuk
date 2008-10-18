@@ -345,7 +345,7 @@ public final class Main implements Const {
       if (Conf.getInt(CONF_STARTUP_DISPLAY) == DISPLAY_MODE_SLIMBAR_TRAY) {
         launchSlimbar();
       }
-
+      
     } catch (final JajukException je) { // last chance to catch any error for
       // logging purpose
       Log.error(je);
@@ -550,7 +550,7 @@ public final class Main implements Const {
       @Override
       public void run() {
         try {
-          
+
           // start exit hook
           final ExitService exit = new ExitService();
           exit.setPriority(Thread.MAX_PRIORITY);
@@ -561,10 +561,10 @@ public final class Main implements Const {
             UtilSystem.backupFile(UtilSystem.getConfFileByPath(FILE_COLLECTION), Conf
                 .getInt(CONF_BACKUP_SIZE));
           }
-          
+
           // Wait few secs to avoid GUI startup perturbations
           Thread.sleep(10000);
-        
+
           // Clean the collection up
           Collection.cleanupLogical();
 
@@ -576,6 +576,9 @@ public final class Main implements Const {
 
           // Start rating manager thread
           RatingManager.getInstance().start();
+          
+          // Switch to sorted mode 
+          ItemManager.switchAllManagersToOrderState();
 
           // Force rebuilding thumbs (after an album id hashcode
           // method change for eg)
@@ -589,7 +592,6 @@ public final class Main implements Const {
       }
     }.start();
   }
-
 
   /**
    * Registers supported audio supports and default properties

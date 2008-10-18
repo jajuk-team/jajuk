@@ -37,6 +37,7 @@ import org.jajuk.services.core.ExitService;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.Messages;
+import org.jajuk.util.ReadOnlyIterator;
 import org.jajuk.util.UtilString;
 import org.jajuk.util.UtilSystem;
 import org.jajuk.util.error.JajukException;
@@ -52,7 +53,7 @@ import org.xml.sax.helpers.DefaultHandler;
  */
 public final class Collection extends DefaultHandler implements Const, ErrorHandler, Serializable {
 
-  private static final String TAG_CLOSE_NEWLINE = ">";
+  private static final String TAG_CLOSE_NEWLINE = ">\n";
 
   private static final String TAB_CLOSE_TAG_START = "</";
 
@@ -191,39 +192,48 @@ public final class Collection extends DefaultHandler implements Const, ErrorHand
     bw.write("<?xml version='1.0' encoding='" + sCharset + "'?>\n");
     bw.write("<" + XML_COLLECTION + " " + XML_VERSION + "='" + JAJUK_VERSION + "'>\n");
     StringBuilder sb = new StringBuilder(40);
-    // devices
+
+    // Devices
+    ReadOnlyIterator<Device> devices = DeviceManager.getInstance().getDevicesIterator();
     bw.write(DeviceManager.getInstance().toXML());
-    for (Device device : DeviceManager.getInstance().getDevices()) {
-      bw.write(device.toXml());
+    while (devices.hasNext()) {
+      bw.write(devices.next().toXml());
     }
     sb = new StringBuilder(40);
     sb.append(TAB_CLOSE_TAG_START);
     sb.append(DeviceManager.getInstance().getLabel());
     sb.append(TAG_CLOSE_NEWLINE);
     bw.write(sb.toString());
-    // styles
+
+    // Styles
+    ReadOnlyIterator<Style> styles = StyleManager.getInstance().getStylesIterator();
     bw.write(StyleManager.getInstance().toXML());
-    for (Style style : StyleManager.getInstance().getStyles()) {
-      bw.write(style.toXml());
+    while (styles.hasNext()) {
+      bw.write(styles.next().toXml());
     }
     sb = new StringBuilder(40);
     sb.append(TAB_CLOSE_TAG_START);
     sb.append(StyleManager.getInstance().getLabel());
     sb.append(TAG_CLOSE_NEWLINE);
     bw.write(sb.toString());
-    // authors
+
+    // Authors
+    ReadOnlyIterator<Author> authors = AuthorManager.getInstance().getAuthorsIterator();
     bw.write(AuthorManager.getInstance().toXML());
-    for (Author author : AuthorManager.getInstance().getAuthors()) {
-      bw.write(author.toXml());
+    while (authors.hasNext()) {
+      bw.write(authors.next().toXml());
     }
     sb = new StringBuilder(40);
     sb.append(TAB_CLOSE_TAG_START);
     sb.append(AuthorManager.getInstance().getLabel());
     sb.append(TAG_CLOSE_NEWLINE);
     bw.write(sb.toString());
-    // albums
+
+    // Albums
+    ReadOnlyIterator<Album> albums = AlbumManager.getInstance().getAlbumsIterator();
     bw.write(AlbumManager.getInstance().toXML());
-    for (Album album : AlbumManager.getInstance().getAlbums()) {
+    while (albums.hasNext()) {
+      Album album = albums.next();
       bw.write(album.toXml());
     }
     sb = new StringBuilder(40);
@@ -231,21 +241,26 @@ public final class Collection extends DefaultHandler implements Const, ErrorHand
     sb.append(AlbumManager.getInstance().getLabel());
     sb.append(TAG_CLOSE_NEWLINE);
     bw.write(sb.toString());
-    // years
+
+    // Years
+    ReadOnlyIterator<Year> years = YearManager.getInstance().getYearsIterator();
     bw.write(YearManager.getInstance().toXML());
-    for (Year year : YearManager.getInstance().getYears()) {
-      bw.write(year.toXml());
+    while (years.hasNext()) {
+      bw.write(years.next().toXml());
     }
     sb = new StringBuilder(40);
     sb.append(TAB_CLOSE_TAG_START);
     sb.append(YearManager.getInstance().getLabel());
     sb.append(TAG_CLOSE_NEWLINE);
     bw.write(sb.toString());
-    // tracks
+
+    // Tracks
+    ReadOnlyIterator<Track> tracks = TrackManager.getInstance().getTracksIterator();
     bw.write(TrackManager.getInstance().toXML());
-    for (Track track : TrackManager.getInstance().getTracks()) {
-      if (track.getFiles().size() > 0) { // this way we clean up all
-        // orphan tracks
+    while (tracks.hasNext()) {
+      Track track = tracks.next();
+      // We clean up all orphan tracks
+      if (track.getFiles().size() > 0) { 
         bw.write(track.toXml());
       }
     }
@@ -254,9 +269,12 @@ public final class Collection extends DefaultHandler implements Const, ErrorHand
     sb.append(TrackManager.getInstance().getLabel());
     sb.append(TAG_CLOSE_NEWLINE);
     bw.write(sb.toString());
-    // directories
+
+    // Directories
+    ReadOnlyIterator<Directory> dirs = DirectoryManager.getInstance().getDirectoriesIterator();
     bw.write(DirectoryManager.getInstance().toXML());
-    for (Directory directory : DirectoryManager.getInstance().getDirectories()) {
+    while (dirs.hasNext()) {
+      Directory directory = dirs.next();
       bw.write(directory.toXml());
     }
     sb = new StringBuilder(100);
@@ -264,26 +282,31 @@ public final class Collection extends DefaultHandler implements Const, ErrorHand
     sb.append(DirectoryManager.getInstance().getLabel());
     sb.append(TAG_CLOSE_NEWLINE);
     bw.write(sb.toString());
-    // files
+
+    // Files
+    ReadOnlyIterator<org.jajuk.base.File> files = FileManager.getInstance().getFilesIterator();
     bw.write(FileManager.getInstance().toXML());
-    for (org.jajuk.base.File file : FileManager.getInstance().getFiles()) {
-      bw.write(file.toXml());
+    while (files.hasNext()) {
+      bw.write(files.next().toXml());
     }
     sb = new StringBuilder(200);
     sb.append(TAB_CLOSE_TAG_START);
     sb.append(FileManager.getInstance().getLabel());
     sb.append(TAG_CLOSE_NEWLINE);
     bw.write(sb.toString());
+
     // playlists
+    ReadOnlyIterator<Playlist> playlists = PlaylistManager.getInstance().getPlaylistsIterator();
     bw.write(PlaylistManager.getInstance().toXML());
-    for (Playlist playlistFile : PlaylistManager.getInstance().getPlaylists()) {
-      bw.write(playlistFile.toXml());
+    while (playlists.hasNext()) {
+      bw.write(playlists.next().toXml());
     }
     sb = new StringBuilder(200);
     sb.append(TAB_CLOSE_TAG_START);
     sb.append(PlaylistManager.getInstance().getLabel());
     sb.append(TAG_CLOSE_NEWLINE);
     bw.write(sb.toString());
+
     // end of collection
     bw.write("</" + XML_COLLECTION + TAG_CLOSE_NEWLINE);
     bw.flush();
@@ -538,7 +561,7 @@ public final class Collection extends DefaultHandler implements Const, ErrorHand
 
           String size = attributes.getValue(XML_SIZE);
           if (size != null) {
-            lSize =  UtilString.fastLongParser(size);
+            lSize = UtilString.fastLongParser(size);
           }
 
           // Quality analyze, handle format problems (mainly for
@@ -560,8 +583,8 @@ public final class Collection extends DefaultHandler implements Const, ErrorHand
           // UPGRADE test
           sRightID = sID;
           if (needCheckID) {
-            sRightID = FileManager.createID(sItemName, dParent);
-            if (sRightID.equals(sID)) {
+            sRightID = FileManager.createID(sItemName, dParent).intern();
+            if (sRightID == sID) {
               needCheckID = false;
             } else {
               Log.debug("** Wrong file Id, upgraded: " + sItemName);
@@ -606,8 +629,8 @@ public final class Collection extends DefaultHandler implements Const, ErrorHand
           // UPGRADE test
           sRightID = sID;
           if (needCheckID) {
-            sRightID = DirectoryManager.createID(sItemName, device, dParent);
-            if (sRightID.equals(sID)) {
+            sRightID = DirectoryManager.createID(sItemName, device, dParent).intern();
+            if (sRightID == sID) {
               needCheckID = false;
             } else {
               Log.debug("** Wrong directory Id, upgraded: " + sItemName);
@@ -649,9 +672,9 @@ public final class Collection extends DefaultHandler implements Const, ErrorHand
             sAuthorID = hmWrongRightAuthorID.get(sAuthorID);
           }
           author = AuthorManager.getInstance().getAuthorByID(sAuthorID);
-          long length =  UtilString.fastLongParser(attributes.getValue(XML_TRACK_LENGTH));
+          long length = UtilString.fastLongParser(attributes.getValue(XML_TRACK_LENGTH));
           // Type
-          String typeID = attributes.getValue(XML_TYPE);
+          String typeID = attributes.getValue(XML_TYPE).intern();
           if (needCheckConversions) {
             if (conversion.containsKey(typeID)) {
               typeID = conversion.get(typeID);
@@ -681,8 +704,8 @@ public final class Collection extends DefaultHandler implements Const, ErrorHand
           sRightID = sID;
           if (needCheckID) {
             sRightID = TrackManager.createID(sTrackName, album, style, author, length, year,
-                lOrder, type);
-            if (sRightID.equals(sID)) {
+                lOrder, type).intern();
+            if (sRightID == sID) {
               needCheckID = false;
             } else {
               Log.debug("** Wrong Track Id, upgraded: " + sTrackName);
@@ -695,8 +718,8 @@ public final class Collection extends DefaultHandler implements Const, ErrorHand
           track = TrackManager.getInstance().registerTrack(sRightID, sTrackName, album, style,
               author, length, year, lOrder, type);
           TrackManager.getInstance().changeTrackRate(track,
-               UtilString.fastLongParser(attributes.getValue(XML_TRACK_RATE)));
-          track.setHits( UtilString.fastLongParser(attributes.getValue(XML_TRACK_HITS)));
+              UtilString.fastLongParser(attributes.getValue(XML_TRACK_RATE)));
+          track.setHits(UtilString.fastLongParser(attributes.getValue(XML_TRACK_HITS)));
           track.setDiscoveryDate(dAdditionDate);
           String sComment = attributes.getValue(XML_TRACK_COMMENT).intern();
           if (sComment == null) {
@@ -711,8 +734,8 @@ public final class Collection extends DefaultHandler implements Const, ErrorHand
           // UPGRADE test
           sRightID = sID;
           if (needCheckID) {
-            sRightID = AlbumManager.createID(sItemName);
-            if (sRightID.equals(sID)) {
+            sRightID = AlbumManager.createID(sItemName).intern();
+            if (sRightID == sID) {
               needCheckID = false;
             } else {
               Log.debug("** Wrong album Id, upgraded: " + sItemName);
@@ -730,8 +753,8 @@ public final class Collection extends DefaultHandler implements Const, ErrorHand
           // UPGRADE test
           sRightID = sID;
           if (needCheckID) {
-            sRightID = AuthorManager.createID(sItemName);
-            if (sRightID.equals(sID)) {
+            sRightID = AuthorManager.createID(sItemName).intern();
+            if (sRightID == sID) {
               needCheckID = false;
             } else {
               Log.debug("** Wrong author Id, upgraded: " + sItemName);
@@ -749,8 +772,8 @@ public final class Collection extends DefaultHandler implements Const, ErrorHand
           // UPGRADE test
           sRightID = sID;
           if (needCheckID) {
-            sRightID = StyleManager.createID(sItemName);
-            if (sRightID.equals(sID)) {
+            sRightID = StyleManager.createID(sItemName).intern();
+            if (sRightID == sID) {
               needCheckID = false;
             } else {
               Log.debug("** Wrong style Id, upgraded: " + sItemName);
@@ -779,8 +802,8 @@ public final class Collection extends DefaultHandler implements Const, ErrorHand
           // UPGRADE test
           sRightID = sID;
           if (needCheckID) {
-            sRightID = PlaylistManager.createID(sItemName, dParent);
-            if (sRightID.equals(sID)) {
+            sRightID = PlaylistManager.createID(sItemName, dParent).intern();
+            if (sRightID == sID) {
               needCheckID = false;
             } else {
               Log.debug("** Wrong playlist Id, upgraded: " + sItemName);
@@ -798,12 +821,12 @@ public final class Collection extends DefaultHandler implements Const, ErrorHand
           device = null;
           sID = attributes.getValue(idIndex).intern();
           sItemName = attributes.getValue(XML_NAME);
-          long lType =  UtilString.fastLongParser(attributes.getValue(XML_TYPE));
+          long lType = UtilString.fastLongParser(attributes.getValue(XML_TYPE));
           // UPGRADE test
           sRightID = sID;
           if (needCheckID) {
-            sRightID = DeviceManager.createID(sItemName);
-            if (sRightID.equals(sID)) {
+            sRightID = DeviceManager.createID(sItemName).intern();
+            if (sRightID == sID) {
               needCheckID = false;
             } else {
               Log.debug("** Wrong device Id, upgraded: " + sItemName);
