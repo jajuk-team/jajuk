@@ -215,7 +215,7 @@ public final class History extends DefaultHandler implements ErrorHandler, Obser
     BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(UtilSystem
         .getConfFileByPath(Const.FILE_HISTORY)), "UTF-8"));
     bw.write("<?xml version='1.0' encoding='UTF-8'?>\n");
-    bw.write("<historyConst.JAJUK_VERSION='" + Const.JAJUK_VERSION + "' begin_date='"
+    bw.write("<history JAJUK_VERSION='" + Const.JAJUK_VERSION + "' begin_date='"
         + Long.toString(lDateStart) + "'>\n");
     Iterator<HistoryItem> it = vHistory.iterator();
     while (it.hasNext()) {
@@ -250,6 +250,7 @@ public final class History extends DefaultHandler implements ErrorHandler, Obser
         Log.error(e2);
       }
     } catch (SAXException e) {
+      Log.error(e);
       Log.error(new JajukException(119));
       try {
         commit(); // this history looks corrupted, write a void one
