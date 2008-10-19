@@ -52,12 +52,9 @@ import javax.swing.JTree;
 import javax.swing.SwingUtilities;
 import javax.swing.event.TreeExpansionEvent;
 import javax.swing.event.TreeExpansionListener;
-import javax.swing.event.TreeModelEvent;
-import javax.swing.event.TreeModelListener;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 
 import org.jajuk.base.Album;
@@ -68,9 +65,9 @@ import org.jajuk.base.File;
 import org.jajuk.base.Item;
 import org.jajuk.base.Style;
 import org.jajuk.base.Track;
-import org.jajuk.base.TrackComparator;
 import org.jajuk.base.TrackManager;
 import org.jajuk.base.Year;
+import org.jajuk.base.TrackComparator.TrackComparatorType;
 import org.jajuk.events.Event;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
@@ -192,10 +189,7 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener, 
     createTree();
 
     jtree.setCellRenderer(new TracksTreeCellRenderer());
-    DefaultTreeModel treeModel = new DefaultTreeModel(top);
-    // Tree model listener to detect changes in the tree structure
-    treeModel.addTreeModelListener(new TracksTreeModelListener());
-
+  
     // Tree selection listener to detect a selection
     jtree.addTreeSelectionListener(new TracksTreeSelectionListener());
 
@@ -249,28 +243,33 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener, 
 
   @Override
   public void populateTree() {
-    switch (Conf.getInt(Const.CONF_LOGICAL_TREE_SORT_ORDER)) {
-    case TrackComparator.STYLE_AUTHOR_ALBUM:
+    TrackComparatorType comparatorType = TrackComparatorType.values()[Conf
+        .getInt(Const.CONF_LOGICAL_TREE_SORT_ORDER)];
+    if (comparatorType == TrackComparatorType.STYLE_AUTHOR_ALBUM) {
       populateTreeByStyle();
-      break;
-    case TrackComparator.AUTHOR_ALBUM:
+    }// Author/album
+    else if (comparatorType == TrackComparatorType.AUTHOR_ALBUM) {
       populateTreeByAuthor();
-      break;
-    case TrackComparator.ALBUM:
+    }
+    // Album
+    else if (comparatorType == TrackComparatorType.ALBUM) {
       populateTreeByAlbum();
-      break;
-    case TrackComparator.YEAR_ALBUM:
+    }
+    // Year / album
+    if (comparatorType == TrackComparatorType.YEAR_ALBUM) {
       populateTreeByYear();
-      break;
-    case TrackComparator.DISCOVERY_ALBUM:
+    }
+    // discovery date / album
+    else if (comparatorType == TrackComparatorType.DISCOVERY_ALBUM) {
       populateTreeByDiscovery();
-      break;
-    case TrackComparator.RATE_ALBUM:
+    }
+    // Rate / album
+    else if (comparatorType == TrackComparatorType.RATE_ALBUM) {
       populateTreeByRate();
-      break;
-    case TrackComparator.HITS_ALBUM:
+    }
+    // Hits / album
+    else if (comparatorType == TrackComparatorType.HITS_ALBUM) {
       populateTreeByHits();
-      break;
     }
   }
 
@@ -280,9 +279,7 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener, 
     // delete previous tree
     top.removeAllChildren();
     List<Track> tracks = TrackManager.getInstance().getTracks();
-    long l = System.currentTimeMillis();
     Collections.sort(tracks, TrackManager.getInstance().getComparator());
-    System.out.println("here=" + (System.currentTimeMillis() - l));
     for (Track track : tracks) {
       if (!track.shouldBeHidden()) {
         StyleNode styleNode = null;
@@ -1154,29 +1151,6 @@ class TracksTreeCellRenderer extends SubstanceDefaultTreeCellRenderer {
     }
 
     return this;
-  }
-}
-
-class TracksTreeModelListener implements TreeModelListener {
-
-  public void treeNodesChanged(TreeModelEvent e) {
-    DefaultMutableTreeNode node = (DefaultMutableTreeNode) (e.getTreePath().getLastPathComponent());
-
-    if (node != null) {
-      int index = e.getChildIndices()[0];
-      // FIXME: the assignment to node is useless here,
-      // what is the point of this whole method??
-      node = (DefaultMutableTreeNode) (node.getChildAt(index));
-    }
-  }
-
-  public void treeNodesInserted(TreeModelEvent e) {
-  }
-
-  public void treeNodesRemoved(TreeModelEvent e) {
-  }
-
-  public void treeStructureChanged(TreeModelEvent e) {
   }
 }
 

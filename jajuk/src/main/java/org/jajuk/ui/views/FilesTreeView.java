@@ -49,12 +49,9 @@ import javax.swing.JScrollPane;
 import javax.swing.JTree;
 import javax.swing.event.TreeExpansionEvent;
 import javax.swing.event.TreeExpansionListener;
-import javax.swing.event.TreeModelEvent;
-import javax.swing.event.TreeModelListener;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 
 import org.jajuk.base.Device;
@@ -269,10 +266,6 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
     createTree();
 
     jtree.setCellRenderer(new FilesTreeCellRenderer());
-    DefaultTreeModel treeModel = new DefaultTreeModel(top);
-    // Tree model listener to detect changes in the tree structure
-    treeModel.addTreeModelListener(new FilesModelListener());
-
     // Tree selection listener to detect a selection (single click
     // , manages simple or multiple selections)
     jtree.addTreeSelectionListener(new FilesTreeSelectionListener());
@@ -1086,27 +1079,4 @@ class FilesTreeCellRenderer extends SubstanceDefaultTreeCellRenderer {
     }
     return this;
   }
-}
-
-class FilesModelListener implements TreeModelListener {
-
-  public void treeNodesChanged(TreeModelEvent e) {
-    DefaultMutableTreeNode node;
-    node = (DefaultMutableTreeNode) (e.getTreePath().getLastPathComponent());
-
-    if (node != null) {
-      int index = e.getChildIndices()[0];
-      node = (DefaultMutableTreeNode) (node.getChildAt(index));
-    }
-  }
-
-  public void treeNodesInserted(TreeModelEvent e) {
-  }
-
-  public void treeNodesRemoved(TreeModelEvent e) {
-  }
-
-  public void treeStructureChanged(TreeModelEvent e) {
-  }
-
 }

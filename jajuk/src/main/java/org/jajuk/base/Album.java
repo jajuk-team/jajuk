@@ -31,6 +31,7 @@ import java.util.regex.PatternSyntaxException;
 
 import javax.swing.ImageIcon;
 
+import org.jajuk.base.TrackComparator.TrackComparatorType;
 import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
@@ -49,7 +50,7 @@ public class Album extends LogicalItem implements Comparable<Album> {
 
   private static final long serialVersionUID = 1L;
 
-  private static TrackComparator basicComparator = new TrackComparator(TrackComparator.ALBUM);
+  private static TrackComparator basicComparator = new TrackComparator(TrackComparatorType.ALBUM);
 
   /** For perfs, we cache the associated tracks */
   private List<Track> cache = new ArrayList<Track>(10);

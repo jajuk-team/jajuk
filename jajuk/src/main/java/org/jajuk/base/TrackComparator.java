@@ -33,24 +33,30 @@ public class TrackComparator implements Comparator<Track> {
   /**
    * Sorting method
    */
-  private int iSortingMethod = 0;
+  private TrackComparatorType comparatorType = TrackComparatorType.STYLE_AUTHOR_ALBUM;
 
-  /** sorting methods constants */
-  public static final int STYLE_AUTHOR_ALBUM = 0;
+  /** Sorting methods constants */
+  public enum TrackComparatorType {
+    STYLE_AUTHOR_ALBUM, AUTHOR_ALBUM, ALBUM, YEAR_ALBUM, DISCOVERY_ALBUM, RATE_ALBUM, HITS_ALBUM, ORDER
+  }
 
-  public static final int AUTHOR_ALBUM = 1;
-
-  public static final int ALBUM = 2;
-
-  public static final int YEAR_ALBUM = 3;
-
-  public static final int DISCOVERY_ALBUM = 4;
-
-  public static final int RATE_ALBUM = 5;
-
-  public static final int HITS_ALBUM = 6;
-
-  public static final int ORDER = 7;
+  /*
+   * public static final int STYLE_AUTHOR_ALBUM = 0;
+   * 
+   * public static final int AUTHOR_ALBUM = 1;
+   * 
+   * public static final int ALBUM = 2;
+   * 
+   * public static final int YEAR_ALBUM = 3;
+   * 
+   * public static final int DISCOVERY_ALBUM = 4;
+   * 
+   * public static final int RATE_ALBUM = 5;
+   * 
+   * public static final int HITS_ALBUM = 6;
+   * 
+   * public static final int ORDER = 7;
+   */
 
   private static final DateFormat formatter = UtilString.getAdditionDateFormatter();
 
@@ -60,8 +66,8 @@ public class TrackComparator implements Comparator<Track> {
    * @param iSortingMethod
    *          Sorting method
    */
-  public TrackComparator(int iSortingMethod) {
-    this.iSortingMethod = iSortingMethod;
+  public TrackComparator(TrackComparatorType comparatorType) {
+    this.comparatorType = comparatorType;
   }
 
   /**
@@ -76,52 +82,49 @@ public class TrackComparator implements Comparator<Track> {
     // differentiate 2 tracks with all the same attributes
     // note we need to use year because in sorted set, we must differentiate
     // 2 tracks with different years
-    switch (iSortingMethod) {
     // Style/author/album
-    case STYLE_AUTHOR_ALBUM:
+    if (comparatorType == TrackComparatorType.STYLE_AUTHOR_ALBUM) {
       sHashCompare = new StringBuilder().append(track.getStyle().getName2()).append(
           track.getAuthor().getName2()).append(track.getAlbum().getName2()).append(
           UtilString.padNumber(track.getOrder(), 5)).append(track.getName()).toString();
-      break;
-    // Author/album
-    case AUTHOR_ALBUM:
+    }// Author/album
+    else if (comparatorType == TrackComparatorType.AUTHOR_ALBUM) {
       sHashCompare = new StringBuilder().append(track.getAuthor().getName2()).append(
           track.getAlbum().getName2()).append(UtilString.padNumber(track.getOrder(), 5)).append(
           track.getName()).toString();
-      break;
+    }
     // Album
-    case ALBUM:
+    else if (comparatorType == TrackComparatorType.ALBUM) {
       sHashCompare = new StringBuilder().append(track.getAlbum().getName2()).append(
           UtilString.padNumber(track.getOrder(), 5)).append(track.getName()).toString();
-      break;
+    }
     // Year / album
-    case YEAR_ALBUM:
+    if (comparatorType == TrackComparatorType.YEAR_ALBUM) {
       sHashCompare = new StringBuilder().append(
           UtilString.padNumber(999999999 - track.getYear().getValue(), 10)).append(
           UtilString.padNumber(track.getOrder(), 5)).append(track.getName()).toString();
-      break;
+    }
     // discovery date / album
-    case DISCOVERY_ALBUM:
+    else if (comparatorType == TrackComparatorType.DISCOVERY_ALBUM) {
       sHashCompare = new StringBuilder().append(formatter.format(track.getDiscoveryDate())).append(
           track.getAlbum().getName2()).append(UtilString.padNumber(track.getOrder(), 5)).append(
           track.getName()).toString();
-      break;
+    }
     // Rate / album
-    case RATE_ALBUM:
+    else if (comparatorType == TrackComparatorType.RATE_ALBUM) {
       sHashCompare = new StringBuilder().append(
           UtilString.padNumber(999999999 - track.getRate(), 10)).append(
           UtilString.padNumber(track.getOrder(), 5)).append(track.getName()).toString();
-      break;
+    }
     // Hits / album
-    case HITS_ALBUM:
+    else if (comparatorType == TrackComparatorType.HITS_ALBUM) {
       sHashCompare = new StringBuilder().append(
           UtilString.padNumber(999999999 - track.getHits(), 10)).append(track.getName()).toString();
-      break;
+    }
     // Order / track name
-    case ORDER:
+    else if (comparatorType == TrackComparatorType.ORDER) {
       sHashCompare = new StringBuilder().append(
           UtilString.padNumber(track.getOrder(), 5) + track.getName()).toString();
-      break;
     }
     return sHashCompare;
   }

@@ -23,7 +23,6 @@ package org.jajuk.base;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -35,6 +34,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.Predicate;
 import org.jajuk.util.Const;
 import org.jajuk.util.Messages;
+import org.jajuk.util.ReadOnlyIterator;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 
@@ -279,23 +279,43 @@ public abstract class ItemManager {
    */
   @SuppressWarnings("unchecked")
   public synchronized void cleanup() {
+    // Prefetch item manager type for performances
+    short managerType = 0; // Album
+    if (this instanceof AuthorManager) {
+      managerType = 1;
+    } else if (this instanceof StyleManager) {
+      managerType = 2;
+    } else if (this instanceof YearManager) {
+      managerType = 3;
+    }
+
     // build used items set
-    Set<Item> hsItems = new HashSet<Item>(1000);
-    for (Item item : TrackManager.getInstance().getTracks()) {
-      Track track = (Track) item;
-      if (this instanceof AlbumManager) {
-        hsItems.add(track.getAlbum());
-      } else if (this instanceof AuthorManager) {
-        hsItems.add(track.getAuthor());
-      } else if (this instanceof StyleManager) {
-        hsItems.add(track.getStyle());
+    List<Item> items = new ArrayList<Item>(100);
+    ReadOnlyIterator<Track> tracks = TrackManager.getInstance().getTracksIterator();
+    while (tracks.hasNext()) {
+      Track track = tracks.next();
+      switch (managerType) {
+      case 0:
+        items.add(track.getAlbum());
+        break;
+      case 1:
+        items.add(track.getAuthor());
+        break;
+      case 2:
+        items.add(track.getStyle());
+        break;
+      case 3:
+        items.add(track.getYear());
+        break;
       }
     }
-    Iterator<Item> it = hsItems.iterator();
+    // Now iterate over this manager items to check if it is present in the
+    // items list
+    Iterator<Item> it = (Iterator<Item>) getItemsIterator();
     while (it.hasNext()) {
       Item item = it.next();
-      // check if this item still maps some tracks
-      if ((!hsItems.contains(item)) &&
+     // check if this item still maps some tracks
+      if ((!items.contains(item)) &&
       // For styles, keep it even if none track uses it if it is a
           // default style
           (!(this instanceof StyleManager && !StyleManager.getInstance().getStylesList().contains(

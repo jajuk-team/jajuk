@@ -33,7 +33,6 @@ import java.util.Properties;
 import java.util.Set;
 
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.collections.iterators.FilterIterator;
 import org.jajuk.events.Event;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
@@ -330,7 +329,7 @@ public final class FileManager extends ItemManager implements Observer {
    */
   public List<File> getGlobalShufflePlaylist() {
     List<File> alEligibleFiles = getReadyFiles();
-    // filter banned tracks
+    // filter banned files
     CollectionUtils.filter(alEligibleFiles, new JajukPredicates.BannedFilePredicate());
     // shuffle
     Collections.shuffle(alEligibleFiles, UtilSystem.getRandom());
@@ -399,12 +398,13 @@ public final class FileManager extends ItemManager implements Observer {
   @SuppressWarnings("unchecked")
   public List<File> getGlobalNoveltiesPlaylist(boolean bHideUnmounted) {
     List<File> alEligibleFiles = new ArrayList<File>(1000);
-    // take tracks matching required age
     List<Track> tracks = TrackManager.getInstance().getTracks();
-    Iterator<Track> it = new FilterIterator(tracks.iterator(), new JajukPredicates.AgePredicate(
-        Conf.getInt(Const.CONF_OPTIONS_NOVELTIES_AGE)));
-    while (it.hasNext()) {
-      Track track = it.next();
+    // Filter by age
+    CollectionUtils.filter(tracks, new JajukPredicates.AgePredicate(Conf
+        .getInt(Const.CONF_OPTIONS_NOVELTIES_AGE)));
+    // filter banned tracks
+    CollectionUtils.filter(tracks, new JajukPredicates.BannedTrackPredicate());
+    for (Track track : tracks) {
       File file = track.getPlayeableFile(bHideUnmounted);
       // try to get a mounted file
       // (can return null)
@@ -481,7 +481,7 @@ public final class FileManager extends ItemManager implements Observer {
    */
   private List<File> getSortedByRate() {
     // use only mounted files
-    List<File> alEligibleFiles = new ArrayList<File>(getReadyFiles());
+    List<File> alEligibleFiles = getReadyFiles();
     // now sort by rate
     Collections.sort(alEligibleFiles, rateComparator);
     return alEligibleFiles;
@@ -495,15 +495,17 @@ public final class FileManager extends ItemManager implements Observer {
    */
   public List<File> getGlobalBestofPlaylist() {
     List<File> al = getSortedByRate();
-    List<File> alBest = new ArrayList<File>();
+    // Filter banned files
+    CollectionUtils.filter(al, new JajukPredicates.BannedFilePredicate());
+    List<File> alBest = null;
     if (al.size() > 0) {
       // find superior interval value
       int sup = (int) ((Const.BESTOF_PROPORTION) * al.size());
       if (sup < 0) {
         sup = al.size();
       }
-      alBest = new ArrayList<File>(al.subList(0, sup - 1));
-      Collections.shuffle(alBest, UtilSystem.getRandom()); // shuffle
+      alBest = al.subList(0, sup - 1);
+      Collections.shuffle(alBest, UtilSystem.getRandom());
     }
     return alBest;
   }
@@ -528,15 +530,17 @@ public final class FileManager extends ItemManager implements Observer {
     alBestofFiles.clear();
     // create a temporary table to remove unmounted files
     List<File> alEligibleFiles = new ArrayList<File>(iNbBestofFiles);
-    ReadOnlyIterator<Track> it = TrackManager.getInstance().getTracksIterator();
-    while (it.hasNext()) {
-      Track track = it.next();
+    List<Track> tracks = TrackManager.getInstance().getTracks();
+    // filter banned tracks
+    CollectionUtils.filter(tracks, new JajukPredicates.BannedTrackPredicate());
+    for (Track track : tracks) {
       File file = track.getPlayeableFile(Conf.getBoolean(Const.CONF_OPTIONS_HIDE_UNMOUNTED));
       if (file != null) {
         alEligibleFiles.add(file);
       }
     }
     Collections.sort(alEligibleFiles, rateComparator);
+    // Keep as much items as we can
     int i = 0;
     while (i < alEligibleFiles.size() && i < iNbBestofFiles) {
       File file = alEligibleFiles.get(i);

@@ -42,6 +42,7 @@ import org.jajuk.base.Item;
 import org.jajuk.base.Track;
 import org.jajuk.base.TrackComparator;
 import org.jajuk.base.TrackManager;
+import org.jajuk.base.TrackComparator.TrackComparatorType;
 import org.jajuk.ui.helpers.CatalogViewTransferHandler;
 import org.jajuk.ui.helpers.FontManager;
 import org.jajuk.ui.helpers.FontManager.JajukFont;
@@ -179,7 +180,7 @@ public class LocalAlbumThumbnail extends AbstractThumbnail {
     java.io.File cover = UtilSystem.getConfFileByPath(Const.FILE_THUMBS + '/' + size + '/'
         + album.getID() + '.' + Const.EXT_THUMB);
     List<Track> tracks = new ArrayList<Track>(TrackManager.getInstance().getAssociatedTracks(album));
-    Collections.sort(tracks, new TrackComparator(TrackComparator.ORDER));
+    Collections.sort(tracks, new TrackComparator(TrackComparatorType.ORDER));
     Track firstTrack = tracks.iterator().next();
     Color bgcolor = UtilGUI.getUltraLightColor();
     Color fgcolor = UtilGUI.getForegroundColor();

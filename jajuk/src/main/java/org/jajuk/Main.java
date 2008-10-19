@@ -289,10 +289,13 @@ public final class Main {
 
       // Load collection
       loadCollection();
-
+      
       // Upgrade step2
       UpgradeManager.upgradeStep2();
 
+      // Clean the collection up
+      Collection.cleanupLogical();
+    
       // Display progress
       sc.setProgress(70, Messages.getString("SplashScreen.2"));
 
@@ -564,15 +567,12 @@ public final class Main {
                 .getInt(Const.CONF_BACKUP_SIZE));
           }
 
-          // Wait few secs to avoid GUI startup perturbations
-          Thread.sleep(10000);
-
-          // Clean the collection up
-          Collection.cleanupLogical();
-
           // Refresh max album rating
           AlbumManager.getInstance().refreshMaxRating();
 
+          // Wait few secs to avoid GUI startup perturbations
+          Thread.sleep(10000);
+          
           // Launch auto-refresh thread
           DeviceManager.getInstance().startAutoRefreshThread();
 
@@ -789,7 +789,7 @@ public final class Main {
       while (!bParsingOK && it.hasNext()) {
         final File file = it.next();
         try {
-          // Clean previous collection
+          // Clear all previous collection
           Collection.clearCollection();
           // Load the backup file
           Collection.load(file);

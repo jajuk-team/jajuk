@@ -29,6 +29,7 @@ import java.util.List;
 import java.util.Properties;
 import java.util.Set;
 
+import org.jajuk.base.TrackComparator.TrackComparatorType;
 import org.jajuk.events.Event;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
@@ -671,7 +672,7 @@ public final class TrackManager extends ItemManager implements Observer {
       return out;
     }
     List<Track> out = new ArrayList<Track>(10);
-    ReadOnlyIterator<Item> items = (ReadOnlyIterator<Item>) getItemsIterator();
+    Iterator<Item> items = (Iterator<Item>)getItemsIterator();
     while (items.hasNext()) {
       Track track = (Track) items.next();
       if ((item instanceof Author && track.getAuthor().equals(item))
@@ -685,7 +686,8 @@ public final class TrackManager extends ItemManager implements Observer {
   }
 
   public TrackComparator getComparator() {
-    return new TrackComparator(Conf.getInt(Const.CONF_LOGICAL_TREE_SORT_ORDER));
+    return new TrackComparator(TrackComparatorType.values()[Conf
+        .getInt(Const.CONF_LOGICAL_TREE_SORT_ORDER)]);
   }
 
   /**

@@ -20,6 +20,7 @@
 
 package org.jajuk.base;
 
+import org.jajuk.base.TrackComparator.TrackComparatorType;
 import org.jajuk.services.webradio.WebRadio;
 
 /**
@@ -33,7 +34,7 @@ public class SearchResult implements Comparable<SearchResult> {
   }
 
   /** We use a track comparator (style/author/album) to sort results * */
-  TrackComparator comparator = new TrackComparator(TrackComparator.STYLE_AUTHOR_ALBUM);
+  TrackComparator comparator = new TrackComparator(TrackComparatorType.STYLE_AUTHOR_ALBUM);
 
   /** The associated file */
   File file;

@@ -86,7 +86,25 @@ public class JajukPredicates {
 
   /**
    * 
-   * Banned filtering predicate Applied on files only
+   * Banned filtering predicate Applied against tracks only
+   */
+  public static class BannedTrackPredicate implements Predicate {
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.apache.commons.collections.Predicate#evaluate(java.lang.Object)
+     */
+    public boolean evaluate(Object o) {
+      Track track = (Track) o;
+      return !(track.getBooleanValue(Const.XML_TRACK_BANNED));
+    }
+
+  }
+  
+  /**
+   * 
+   * Banned filtering predicate Applied against files only
    */
   public static class BannedFilePredicate implements Predicate {
 
@@ -98,6 +116,24 @@ public class JajukPredicates {
     public boolean evaluate(Object o) {
       Track track = ((File) o).getTrack();
       return !(track.getBooleanValue(Const.XML_TRACK_BANNED));
+    }
+
+  }
+
+  /**
+   * 
+   * Any file available predicate, applies against tracks only
+   */
+  public static class AnyFileReady implements Predicate {
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.apache.commons.collections.Predicate#evaluate(java.lang.Object)
+     */
+    public boolean evaluate(Object o) {
+      Track track = ((File) o).getTrack();
+      return track.getPlayeableFile(true) != null;
     }
 
   }

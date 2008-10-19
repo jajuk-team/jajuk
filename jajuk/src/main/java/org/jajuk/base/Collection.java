@@ -358,7 +358,11 @@ public final class Collection extends DefaultHandler implements ErrorHandler, Se
    * read from a file but filled programmatically
    */
   public static synchronized void clearCollection() {
-    cleanupLogical();
+    TrackManager.getInstance().clear();
+    StyleManager.getInstance().clear();
+    AuthorManager.getInstance().clear();
+    AlbumManager.getInstance().clear();
+    YearManager.getInstance().clear();
     FileManager.getInstance().clear();
     DirectoryManager.getInstance().clear();
     PlaylistManager.getInstance().clear();

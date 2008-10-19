@@ -1072,6 +1072,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
             index = (int) (Math.random() * alCovers.size() - 1);
             displayCurrentCover();
           }
+          enableCommands(true);
         } else if (JajukEvents.ZERO.equals(subject)
             || JajukEvents.WEBRADIO_LAUNCHED.equals(subject)
             || JajukEvents.PLAYER_STOP.equals(subject)) {
@@ -1088,6 +1089,8 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
           dirReference = null;
           // Force cover to reload at next track
           bForceCoverReload = true;
+          // disable commands
+          enableCommands(false);
         } else if (JajukEvents.COVER_NEED_REFRESH.equals(subject)) {
           refreshCovers(iLocalEventID);
         }
@@ -1097,6 +1100,27 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
         searching(false); // hide searching icon
       }
     }
+  }
+
+  /**
+   * Convenient method to massively enable/disable this view buttons
+   * 
+   * @param enable
+   */
+  private void enableCommands(final boolean enable) {
+    SwingUtilities.invokeLater(new Runnable() {
+
+      public void run() {
+        jcbAccuracy.setEnabled(enable);
+        jbDefault.setEnabled(enable);
+        jbDelete.setEnabled(enable);
+        jbNext.setEnabled(enable);
+        jbPrevious.setEnabled(enable);
+        jbSave.setEnabled(enable);
+        jlFound.setVisible(enable);
+        jlSize.setVisible(enable);
+      }
+    });
   }
 
   /**

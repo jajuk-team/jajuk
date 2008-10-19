@@ -35,6 +35,7 @@ import org.jajuk.base.Track;
 import org.jajuk.base.TrackComparator;
 import org.jajuk.base.TrackManager;
 import org.jajuk.base.Type;
+import org.jajuk.base.TrackComparator.TrackComparatorType;
 import org.jajuk.ui.widgets.IconLabel;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
@@ -137,7 +138,7 @@ public class TracksTableModel extends JajukTableModel {
     Filter filter = new Filter(property, sPattern, true, Conf.getBoolean(Const.CONF_REGEXP));
     Filter.filterItems(alToShow, filter);
     // sort by album
-    Collections.sort(alToShow, new TrackComparator(TrackComparator.ALBUM));
+    Collections.sort(alToShow, new TrackComparator(TrackComparatorType.ALBUM));
     Iterator<Track> it = alToShow.iterator();
     int iColNum = iNumberStandardCols + TrackManager.getInstance().getCustomProperties().size();
     iRowNum = alToShow.size();
