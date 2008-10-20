@@ -5,9 +5,9 @@
 <project default='package_jar' name='jajuk' basedir='../..'>
 	<!--VARIABLES-->
 
-	<!--Distribution release 
+	<!--Distribution release  
 	!!! DO NOT USE '-' CHARACTER IN VERSION !!!-->
-	<property name='version' value='1.7_snapshot9' />
+	<property name='version' value='1.7_snapshot10' />
 
 	<!--Previous release used for JNLP incremental upgrade-->
 	<property name='previous_version' value='null' />
