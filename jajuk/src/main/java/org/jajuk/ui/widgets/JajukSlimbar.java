@@ -393,8 +393,8 @@ public final class JajukSlimbar extends JFrame implements Observer, MouseWheelLi
       update(new Event(JajukEvents.WEBRADIO_LAUNCHED));
     } else if (!FIFO.isStopped()) {
       // update initial state
-      update(new Event(JajukEvents.PLAYER_PLAY, ObservationManager
-          .getDetailsLastOccurence(JajukEvents.PLAYER_PLAY)));
+      update(new Event(JajukEvents.FILE_LAUNCHED, ObservationManager
+          .getDetailsLastOccurence(JajukEvents.FILE_LAUNCHED)));
     } else {
       update(new Event(JajukEvents.PLAYER_STOP));
     }
