@@ -35,10 +35,8 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.Action;
 import javax.swing.BorderFactory;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
@@ -74,8 +72,6 @@ public abstract class AbstractThumbnail extends JPanel implements ActionListener
 
   /** Size */
   int size;
-
-  List<Item> alSelected = new ArrayList<Item>(100);
 
   protected JLabel jlIcon;
 
@@ -211,12 +207,9 @@ public abstract class AbstractThumbnail extends JPanel implements ActionListener
     jmiPlay = new JMenuItem(ActionManager.getAction(JajukActions.PLAY_SELECTION));
     jmiPlay.putClientProperty(Const.DETAIL_SELECTION, getItem());
     jmiPush = new JMenuItem(ActionManager.getAction(JajukActions.PUSH_SELECTION));
-    jmiPush.putClientProperty(Const.DETAIL_SELECTION, alSelected);
-    jmiPush.addActionListener(this);
-    Action actionDeleteFile = ActionManager.getAction(JajukActions.DELETE);
-    jmiDelete = new JMenuItem(actionDeleteFile);
-    jmiDelete.putClientProperty(Const.DETAIL_SELECTION, alSelected);
-    jmiDelete.addActionListener(this);
+    jmiPush.putClientProperty(Const.DETAIL_SELECTION, getItem());
+    jmiDelete = new JMenuItem(ActionManager.getAction(JajukActions.DELETE));
+    jmiDelete.putClientProperty(Const.DETAIL_SELECTION, getItem());
     jmiPlayShuffle = new JMenuItem(ActionManager.getAction(JajukActions.PLAY_SHUFFLE_SELECTION));
     jmiPlayShuffle.putClientProperty(Const.DETAIL_SELECTION, getItem());
     jmiPlayRepeat = new JMenuItem(ActionManager.getAction(JajukActions.PLAY_REPEAT_SELECTION));
@@ -240,15 +233,17 @@ public abstract class AbstractThumbnail extends JPanel implements ActionListener
     // (setVisible(false)) menu items that are not available in their
     // context
     jmenu.add(jmiPlay);
-    jmenu.addSeparator();
     jmenu.add(jmiPush);
     jmenu.add(jmiPlayShuffle);
     jmenu.add(jmiPlayRepeat);
+    jmenu.addSeparator();
     jmenu.add(jmiDelete);
+    jmenu.addSeparator();
     jmenu.add(jmiCDDBWizard);
     jmenu.add(jmiGetCovers);
     jmenu.add(jmiShowPopup);
     jmenu.add(jmiOpenLastFMSite);
+    jmenu.addSeparator();
     jmenu.add(jmiProperties);
 
     jlIcon.addMouseMotionListener(new MouseMotionAdapter() {
@@ -375,14 +370,6 @@ public abstract class AbstractThumbnail extends JPanel implements ActionListener
    * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
    */
   public void actionPerformed(ActionEvent e) {
-    // Menu items
-    List<Track> tracks = TrackManager.getInstance().getAssociatedTracks(getItem());
-    for (Track track : tracks) {
-      org.jajuk.base.File file = track.getPlayeableFile(false);
-      if (file != null) {
-        alSelected.add(file);
-      }
-    }
     if (e.getSource() == jmiGetCovers) {
       // This item is enabled only for albums
       new Thread() {

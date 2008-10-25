@@ -25,6 +25,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.jajuk.base.Device;
 import org.jajuk.base.Directory;
 import org.jajuk.base.Item;
@@ -36,6 +37,7 @@ import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.Filter;
 import org.jajuk.util.Messages;
+import org.jajuk.util.filters.JajukPredicates;
 
 /**
  * Table model used holding playlist repository data
@@ -95,6 +97,11 @@ public class PlaylistRepositoryTableModel extends JajukTableModel {
     // OK, begin by filtering using any provided pattern
     Filter filter = new Filter(sPropertyName, sPattern, true, Conf.getBoolean(Const.CONF_REGEXP));
     Filter.filterItems(alToShow, filter);
+
+    // filter unavailable playlists
+    if (Conf.getBoolean(Const.CONF_OPTIONS_HIDE_UNMOUNTED)) {
+      CollectionUtils.filter(alToShow, new JajukPredicates.ReadyPlaylistPredicate());
+    }
 
     Iterator<Playlist> it = null;
 

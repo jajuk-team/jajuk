@@ -534,7 +534,7 @@ public interface Const {
 
   // Look and Feel
   /** Substance default theme * */
-  String LNF_DEFAULT_THEME = "Moderate";
+  String LNF_DEFAULT_THEME = "Nebula";
 
   /** Number of visible planned tracks */
   String CONF_OPTIONS_VISIBLE_PLANNED = "jajuk.options.visible_planned";

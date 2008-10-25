@@ -90,9 +90,13 @@ public class AlbumsTableView extends AbstractTableView {
         // Add this generic menu item manually to ensure it's the last one in
         // the list for GUI reasons
         jtable.getMenu().add(jmiDelete);
-        jtable.getMenu().add(jmiBookmark);
+        jtable.getMenu().addSeparator();
         jtable.getMenu().add(jmiReport);
         jtable.getMenu().add(jmiShowAlbumDetails);
+        jtable.getMenu().addSeparator();
+        jtable.getMenu().add(jmiBookmark);
+        jtable.getMenu().add(pjmTracks);
+        jtable.getMenu().addSeparator();
         jtable.getMenu().add(jmiProperties);
         // Add specific behavior on left click
         jtable.setCommand(new ILaunchCommand() {

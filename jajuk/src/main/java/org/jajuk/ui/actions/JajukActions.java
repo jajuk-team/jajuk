@@ -484,7 +484,44 @@ public enum JajukActions {
    */
   SAVE_AS,
   /**
+   * Ban current item
+   */
+  BAN,
+  /**
    * Ban selection
    */
-  BAN
+  BAN_SELECTION,
+  /**
+   * Un-Ban selection
+   */
+  UN_BAN_SELECTION,
+  /**
+   * Set adore preference to selection
+   */
+  PREFERENCE_ADORE,
+  /**
+   * Set love preference to selection
+   */
+  PREFERENCE_LOVE,
+  /**
+   * Set like preference to selection
+   */
+  PREFERENCE_LIKE,
+  /**
+   * Set average preference to selection
+   */
+  PREFERENCE_AVERAGE,
+  /**
+   * Set poor preference to selection
+   */
+  PREFERENCE_POOR,
+  /**
+   * Set hate preference to selection
+   */
+  PREFERENCE_HATE,
+  /**
+   * Prepare party
+   */
+  PREPARE_PARTY,
+
 }

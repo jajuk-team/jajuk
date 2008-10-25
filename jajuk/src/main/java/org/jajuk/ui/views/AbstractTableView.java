@@ -65,6 +65,7 @@ import org.jajuk.events.Observer;
 import org.jajuk.ui.actions.ActionManager;
 import org.jajuk.ui.actions.JajukActions;
 import org.jajuk.ui.helpers.JajukTableModel;
+import org.jajuk.ui.helpers.PreferencesJMenu;
 import org.jajuk.ui.helpers.TableTransferHandler;
 import org.jajuk.ui.widgets.InformationJPanel;
 import org.jajuk.ui.widgets.JajukTable;
@@ -93,26 +94,26 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
 
   JajukTable jtable;
 
-  JPanel jpControl;
+  private JPanel jpControl;
 
   JajukToggleButton jtbEditable;
 
-  JLabel jlFilter;
+  private JLabel jlFilter;
 
-  JComboBox jcbProperty;
+  private JComboBox jcbProperty;
 
-  JLabel jlEquals;
+  private JLabel jlEquals;
 
-  JTextField jtfValue;
+  private JTextField jtfValue;
 
   /** Table model */
   JajukTableModel model;
 
   /** Currently applied filter */
-  String sAppliedFilter = "";
+  private String sAppliedFilter = "";
 
   /** Currently applied criteria */
-  String sAppliedCriteria;
+  private String sAppliedCriteria;
 
   /** Do search panel need a search */
   private boolean bNeedSearch = false;
@@ -139,6 +140,8 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
   JMenuItem jmiPlayShuffle;
   JMenuItem jmiBookmark;
   JMenuItem jmiProperties;
+  
+  PreferencesJMenu pjmTracks;
 
   /**
    * Launches a thread used to perform dynamic filtering when user is typing
@@ -194,11 +197,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
     jmiPush = new JMenuItem(ActionManager.getAction(JajukActions.PUSH_SELECTION));
     jmiPush.putClientProperty(Const.DETAIL_SELECTION, jtable.getSelection());
     jtable.getMenu().add(jmiPush);
-
-    jmiDelete = new JMenuItem(ActionManager.getAction(JajukActions.DELETE));
-    jmiDelete.putClientProperty(Const.DETAIL_SELECTION, jtable.getSelection());
-    jtable.getMenu().add(jmiDelete);
-
+    
     jmiPlayRepeat = new JMenuItem(ActionManager.getAction(JajukActions.PLAY_REPEAT_SELECTION));
     jmiPlayRepeat.putClientProperty(Const.DETAIL_SELECTION, jtable.getSelection());
     jtable.getMenu().add(jmiPlayRepeat);
@@ -207,11 +206,20 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
     jmiPlayShuffle.putClientProperty(Const.DETAIL_SELECTION, jtable.getSelection());
     jtable.getMenu().add(jmiPlayShuffle);
 
+    jtable.getMenu().addSeparator();
+
+    jmiDelete = new JMenuItem(ActionManager.getAction(JajukActions.DELETE));
+    jmiDelete.putClientProperty(Const.DETAIL_SELECTION, jtable.getSelection());
+    jtable.getMenu().add(jmiDelete);
+
     jmiBookmark = new JMenuItem(ActionManager.getAction(JajukActions.BOOKMARK_SELECTION));
     jmiBookmark.putClientProperty(Const.DETAIL_SELECTION, jtable.getSelection());
 
     jmiProperties = new JMenuItem(ActionManager.getAction(JajukActions.SHOW_PROPERTIES));
     jmiProperties.putClientProperty(Const.DETAIL_SELECTION, jtable.getSelection());
+    
+    pjmTracks = new PreferencesJMenu(jtable.getSelection());
+        
     return null;
   }
 

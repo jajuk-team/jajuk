@@ -15,46 +15,52 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $$Revision: 2403 $$
+ *  $$Revision: 4113 $$
  */
 package org.jajuk.ui.actions;
 
 import java.awt.event.ActionEvent;
+import java.util.ArrayList;
+import java.util.List;
 
-import org.jajuk.base.File;
+import org.jajuk.base.Item;
 import org.jajuk.base.Track;
-import org.jajuk.events.Event;
-import org.jajuk.events.JajukEvents;
-import org.jajuk.events.ObservationManager;
-import org.jajuk.services.players.FIFO;
-import org.jajuk.util.Conf;
+import org.jajuk.base.TrackManager;
 import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
-import org.jajuk.util.error.JajukException;
 
-/**
- * 
- * Manual preference change of current played track
- */
-public class ChangeTrackPreferenceAction extends JajukAction {
+public class AverageSelectionAction extends SelectionAction {
 
   private static final long serialVersionUID = 1L;
 
-  ChangeTrackPreferenceAction() {
-    super(Messages.getString("IncRateAction.0"), IconLoader.getIcon(JajukIcons.INC_RATING), true);
-    setShortDescription(Messages.getString("IncRateAction.0"));
+  /**
+   * Set average preference to a selection
+   * <p>
+   * Selection action
+   * </p>
+   */
+  AverageSelectionAction() {
+    super(Messages.getString("Preference.3"), IconLoader.getIcon(JajukIcons.PREFERENCE_AVERAGE), true);
+    setShortDescription(Messages.getString("Preference.3"));
   }
 
   @Override
-  public void perform(ActionEvent evt) throws JajukException {
-    File file = FIFO.getCurrentFile();
-    if (file != null) {
-      Track track = file.getTrack();
-      track.setPreference(Conf.getInt(Const.CONF_INC_RATING));
+  public void perform(ActionEvent e) throws Exception {
+    super.perform(e);
+    // Check selection is not void
+    if (selection.size() == 0) {
+      return;
     }
-    // Force immediate rating refresh (without using the rating manager)
-    ObservationManager.notify(new Event(JajukEvents.RATE_CHANGED));
+    // Extract tracks of each item
+    List<Track> tracks = new ArrayList<Track>(selection.size());
+    for (Item item : selection) {
+      tracks.addAll(TrackManager.getInstance().getAssociatedTracks(item));
+    }
+    // Set the preference
+    for (Track track : tracks) {
+      track.setProperty(Const.XML_TRACK_PREFERENCE, -1);
+    }
   }
 }

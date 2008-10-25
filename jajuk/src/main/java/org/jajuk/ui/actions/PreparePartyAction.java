@@ -15,46 +15,40 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $$Revision: 2403 $$
+ *  $$Revision: 3156 $$
  */
 package org.jajuk.ui.actions;
 
 import java.awt.event.ActionEvent;
 
-import org.jajuk.base.File;
-import org.jajuk.base.Track;
-import org.jajuk.events.Event;
-import org.jajuk.events.JajukEvents;
-import org.jajuk.events.ObservationManager;
-import org.jajuk.services.players.FIFO;
-import org.jajuk.util.Conf;
+import javax.swing.JComponent;
+
+import org.jajuk.base.Playlist;
 import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 import org.jajuk.util.error.JajukException;
+import org.jajuk.util.log.Log;
 
-/**
- * 
- * Manual preference change of current played track
- */
-public class ChangeTrackPreferenceAction extends JajukAction {
+public class PreparePartyAction extends JajukAction {
 
   private static final long serialVersionUID = 1L;
 
-  ChangeTrackPreferenceAction() {
-    super(Messages.getString("IncRateAction.0"), IconLoader.getIcon(JajukIcons.INC_RATING), true);
-    setShortDescription(Messages.getString("IncRateAction.0"));
+  PreparePartyAction() {
+    super(Messages.getString("AbstractPlaylistEditorView.27"), IconLoader
+        .getIcon(JajukIcons.PREPARE_PARTY), true);
+    setShortDescription(Messages.getString("AbstractPlaylistEditorView.27"));
   }
 
   @Override
-  public void perform(ActionEvent evt) throws JajukException {
-    File file = FIFO.getCurrentFile();
-    if (file != null) {
-      Track track = file.getTrack();
-      track.setPreference(Conf.getInt(Const.CONF_INC_RATING));
+  public void perform(ActionEvent e) throws JajukException {
+    JComponent source = (JComponent) e.getSource();
+    Object o = source.getClientProperty(Const.DETAIL_SELECTION);
+    try {
+      ((Playlist) o).prepareParty();
+    } catch (Exception e1) {
+      Log.error(e1);
     }
-    // Force immediate rating refresh (without using the rating manager)
-    ObservationManager.notify(new Event(JajukEvents.RATE_CHANGED));
   }
 }

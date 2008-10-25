@@ -45,6 +45,7 @@ import org.jajuk.base.TrackManager;
 import org.jajuk.base.TrackComparator.TrackComparatorType;
 import org.jajuk.ui.helpers.CatalogViewTransferHandler;
 import org.jajuk.ui.helpers.FontManager;
+import org.jajuk.ui.helpers.PreferencesJMenu;
 import org.jajuk.ui.helpers.FontManager.JajukFont;
 import org.jajuk.util.Const;
 import org.jajuk.util.Messages;
@@ -74,6 +75,8 @@ public class LocalAlbumThumbnail extends AbstractThumbnail {
   JLabel jlAlbum;
 
   private boolean bShowFullText;
+
+  private PreferencesJMenu pjmFiles;
 
   /**
    * Constructor
@@ -146,6 +149,9 @@ public class LocalAlbumThumbnail extends AbstractThumbnail {
     // Add dnd support
     jlIcon.setTransferHandler(new CatalogViewTransferHandler(this));
     postPopulate();
+    // Add the preference menu in popup
+    pjmFiles = new PreferencesJMenu(getItem());
+    jmenu.add(pjmFiles,10);
     // disable inadequate menu items
     jmenu.remove(jmiOpenLastFMSite);
   }

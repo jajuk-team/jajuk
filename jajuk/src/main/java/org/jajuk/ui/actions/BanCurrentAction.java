@@ -23,6 +23,9 @@ import java.awt.event.ActionEvent;
 
 import org.jajuk.base.File;
 import org.jajuk.base.Track;
+import org.jajuk.events.Event;
+import org.jajuk.events.JajukEvents;
+import org.jajuk.events.ObservationManager;
 import org.jajuk.services.players.FIFO;
 import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
@@ -48,6 +51,8 @@ public class BanCurrentAction extends SelectionAction {
     if (current != null) {
       Track track = current.getTrack();
       track.setProperty(Const.XML_TRACK_BANNED, true);
+      // Request a GUI refresh
+      ObservationManager.notify(new Event(JajukEvents.RATE_CHANGED));
     }
   }
 }

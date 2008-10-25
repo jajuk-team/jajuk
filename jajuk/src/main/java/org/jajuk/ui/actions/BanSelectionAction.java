@@ -26,6 +26,9 @@ import java.util.List;
 import org.jajuk.base.Item;
 import org.jajuk.base.Track;
 import org.jajuk.base.TrackManager;
+import org.jajuk.events.Event;
+import org.jajuk.events.JajukEvents;
+import org.jajuk.events.ObservationManager;
 import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
@@ -36,7 +39,8 @@ public class BanSelectionAction extends SelectionAction {
   private static final long serialVersionUID = 1L;
 
   /**
-   * The Ban action is used to ban a track so it is never selected
+   * The Ban action is used to ban a set of tracks so they will never be
+   * proposed by jajuk automatic selections
    * <p>
    * Selection action
    * </p>
@@ -62,5 +66,7 @@ public class BanSelectionAction extends SelectionAction {
     for (Track track : tracks) {
       track.setProperty(Const.XML_TRACK_BANNED, true);
     }
+    // Request a GUI refresh
+    ObservationManager.notify(new Event(JajukEvents.RATE_CHANGED));
   }
 }

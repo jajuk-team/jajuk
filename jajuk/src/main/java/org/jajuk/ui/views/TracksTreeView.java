@@ -77,6 +77,7 @@ import org.jajuk.services.players.StackItem;
 import org.jajuk.ui.actions.ActionManager;
 import org.jajuk.ui.actions.JajukActions;
 import org.jajuk.ui.helpers.FontManager;
+import org.jajuk.ui.helpers.PreferencesJMenu;
 import org.jajuk.ui.helpers.TransferableTreeNode;
 import org.jajuk.ui.helpers.TreeRootElement;
 import org.jajuk.ui.helpers.TreeTransferHandler;
@@ -101,28 +102,31 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener, 
   private static final long serialVersionUID = 1L;
 
   /** Track selection */
-  List<Track> alTracks;
+  private List<Track> alTracks;
 
-  JPopupMenu jmenuCollection;
+  private JPopupMenu jmenuCollection;
 
-  ButtonGroup btCollection;
+  private ButtonGroup btCollection;
 
-  JRadioButtonMenuItem jmiCollectionStyle;
+  private JRadioButtonMenuItem jmiCollectionStyle;
 
-  JRadioButtonMenuItem jmiCollectionAuthor;
+  private JRadioButtonMenuItem jmiCollectionAuthor;
 
-  JRadioButtonMenuItem jmiCollectionAlbum;
+  private JRadioButtonMenuItem jmiCollectionAlbum;
 
-  JRadioButtonMenuItem jmiCollectionProperties;
+  private JRadioButtonMenuItem jmiCollectionProperties;
 
-  JMenuItem jmiCollectionReport;
+  private JMenuItem jmiCollectionReport;
 
-  JMenuItem jmiCollectionDuplicateFiles;
+  private JMenuItem jmiCollectionDuplicateFiles;
 
-  JLabel jlSort;
+  private JLabel jlSort;
 
-  JComboBox jcbSort;
-
+  private JComboBox jcbSort;
+  
+  private PreferencesJMenu pjmTracks;
+  
+  
   /*
    * (non-Javadoc)
    * 
@@ -181,7 +185,10 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener, 
 
     // Register on the list for subject we are interested in
     ObservationManager.register(this);
-
+    
+    // Create the preference menus
+    pjmTracks = new PreferencesJMenu(alSelected);
+    
     // populate the tree
     populateTree();
 
@@ -879,8 +886,12 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener, 
         jmenu = new JPopupMenu();
         jmenu.add(jmiPlay);
         jmenu.add(jmiPush);
-        jmenu.add(jmiAddFavorite);
+        jmenu.addSeparator();
         jmenu.add(jmiDelete);
+        jmenu.addSeparator();
+        jmenu.add(jmiAddFavorite);
+        jmenu.add(pjmTracks);
+        jmenu.addSeparator();
         jmenu.add(jmiProperties);
         jmenu.show(jtree, e.getX(), e.getY());
       } else if (paths[0].getLastPathComponent() instanceof AlbumNode) {
@@ -889,11 +900,16 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener, 
         jmenu.add(jmiPush);
         jmenu.add(jmiPlayShuffle);
         jmenu.add(jmiPlayRepeat);
-        jmenu.add(jmiAddFavorite);
+        jmenu.addSeparator();
+        jmenu.add(jmiDelete);
+        jmenu.addSeparator();
         jmenu.add(jmiCDDBWizard);
         jmenu.add(jmiReport);
         jmenu.add(jmiShowAlbumDetails);
-        jmenu.add(jmiDelete);
+        jmenu.addSeparator();
+        jmenu.add(jmiAddFavorite);
+        jmenu.add(pjmTracks);
+        jmenu.addSeparator();
         jmenu.add(jmiProperties);
         jmenu.show(jtree, e.getX(), e.getY());
       } else if (paths[0].getLastPathComponent() instanceof AuthorNode) {
@@ -902,9 +918,13 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener, 
         jmenu.add(jmiPush);
         jmenu.add(jmiPlayShuffle);
         jmenu.add(jmiPlayRepeat);
-        jmenu.add(jmiAddFavorite);
-        jmenu.add(jmiReport);
+        jmenu.addSeparator();
         jmenu.add(jmiDelete);
+        jmenu.addSeparator();
+        jmenu.add(jmiReport);
+        jmenu.addSeparator();
+        jmenu.add(pjmTracks);
+        jmenu.addSeparator();
         jmenu.add(jmiProperties);
         jmenu.show(jtree, e.getX(), e.getY());
       } else if (paths[0].getLastPathComponent() instanceof StyleNode) {
@@ -913,9 +933,13 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener, 
         jmenu.add(jmiPush);
         jmenu.add(jmiPlayShuffle);
         jmenu.add(jmiPlayRepeat);
-        jmenu.add(jmiAddFavorite);
-        jmenu.add(jmiReport);
+        jmenu.addSeparator();
         jmenu.add(jmiDelete);
+        jmenu.addSeparator();
+        jmenu.add(jmiReport);
+        jmenu.addSeparator();
+        jmenu.add(pjmTracks);
+        jmenu.addSeparator();
         jmenu.add(jmiProperties);
         jmenu.show(jtree, e.getX(), e.getY());
       } else if (paths[0].getLastPathComponent() instanceof YearNode) {
@@ -924,7 +948,9 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener, 
         jmenu.add(jmiPush);
         jmenu.add(jmiPlayShuffle);
         jmenu.add(jmiPlayRepeat);
-        jmenu.add(jmiAddFavorite);
+        jmenu.addSeparator();
+        jmenu.add(pjmTracks);
+        jmenu.addSeparator();
         jmenu.add(jmiProperties);
         jmenu.show(jtree, e.getX(), e.getY());
       } else if (paths[0].getLastPathComponent() instanceof DefaultMutableTreeNode) {

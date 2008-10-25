@@ -44,12 +44,12 @@ public class TracksTableView extends AbstractTableView {
 
   private static final long serialVersionUID = 1L;
 
-  JMenuItem jmiTrackPlayAlbum;
+  private JMenuItem jmiTrackPlayAlbum;
 
-  JMenuItem jmiTrackPlayAuthor;
+  private JMenuItem jmiTrackPlayAuthor;
 
-  JMenuItem jmiTrackAddFavorite;
-
+  private JMenuItem jmiTrackAddFavorite;
+  
   public TracksTableView() {
     super();
     columnsConf = CONF_TRACKS_TABLE_COLUMNS;
@@ -73,11 +73,14 @@ public class TracksTableView extends AbstractTableView {
     jmiTrackPlayAlbum.putClientProperty(Const.DETAIL_SELECTION, jtable.getSelection());
     jmiTrackPlayAuthor = new JMenuItem(ActionManager.getAction(JajukActions.PLAY_AUTHOR_SELECTION));
     jmiTrackPlayAuthor.putClientProperty(Const.DETAIL_SELECTION, jtable.getSelection());
-    jtable.getMenu().add(jmiTrackPlayAlbum);
-    jtable.getMenu().add(jmiTrackPlayAuthor);
+    jtable.getMenu().add(jmiTrackPlayAlbum,4);
+    jtable.getMenu().add(jmiTrackPlayAuthor,5);
     // Add this generic menu item manually to ensure it's the last one in
     // the list for GUI reasons
+    jtable.getMenu().addSeparator();
     jtable.getMenu().add(jmiBookmark);
+    jtable.getMenu().add(pjmTracks);
+    jtable.getMenu().addSeparator();
     jtable.getMenu().add(jmiProperties);
     // Add specific behavior on left click
     jtable.setCommand(new ILaunchCommand() {

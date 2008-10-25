@@ -75,6 +75,7 @@ import org.jajuk.ui.actions.JajukActions;
 import org.jajuk.ui.actions.RefactorAction;
 import org.jajuk.ui.helpers.FontManager;
 import org.jajuk.ui.helpers.ItemMoveManager;
+import org.jajuk.ui.helpers.PreferencesJMenu;
 import org.jajuk.ui.helpers.TransferableTreeNode;
 import org.jajuk.ui.helpers.TreeRootElement;
 import org.jajuk.ui.helpers.TreeTransferHandler;
@@ -126,6 +127,8 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
 
   JMenuItem jmiDirRefactor;
 
+  PreferencesJMenu pjmDir;
+
   JMenuItem jmiDevMount;
 
   JMenuItem jmiDevUnmount;
@@ -140,11 +143,15 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
 
   JMenuItem jmiDevConfiguration;
 
+  JMenuItem jmiDevDelete;
+
   JMenuItem jmiPlaylistFileCopy;
 
   JMenuItem jmiPlaylistFileCut;
 
   JMenuItem jmiPlaylistFilePaste;
+
+  PreferencesJMenu pjmFiles;
 
   /*
    * (non-Javadoc)
@@ -209,6 +216,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
     jmiDirRefactor = new JMenuItem(Messages.getString(("FilesTreeView.62")), IconLoader
         .getIcon(JajukIcons.REORGANIZE));
     jmiDirRefactor.addActionListener(this);
+    pjmDir = new PreferencesJMenu(alSelected);
 
     // Device menu
     jmiDevMount = new JMenuItem(Messages.getString("FilesTreeView.28"), IconLoader
@@ -229,12 +237,14 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
     jmiDevConfiguration = new JMenuItem(Messages.getString("FilesTreeView.55"), IconLoader
         .getIcon(JajukIcons.CONFIGURATION));
     jmiDevConfiguration.addActionListener(this);
+    jmiDevDelete = new JMenuItem(Messages.getString("DeviceView.13"), IconLoader
+        .getIcon(JajukIcons.DELETE));
+    jmiDevDelete.addActionListener(this);
     jmiDevOrganize = new JMenuItem(Messages.getString(("FilesTreeView.62")), IconLoader
         .getIcon(JajukIcons.REORGANIZE));
     jmiDevOrganize.addActionListener(this);
 
     // playlist menu
-    // File menu
     jmiPlaylistFileCopy = new JMenuItem(Messages.getString("FilesTreeView.40"));
     jmiPlaylistFileCopy.setEnabled(false);
     jmiPlaylistFileCopy.addActionListener(this);
@@ -244,6 +254,9 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
     jmiPlaylistFilePaste = new JMenuItem(Messages.getString("FilesTreeView.42"));
     jmiPlaylistFilePaste.setEnabled(false);
     jmiPlaylistFilePaste.addActionListener(this);
+
+    // File menu
+    pjmFiles = new PreferencesJMenu(alSelected);
 
     // Add Action Listener
     jmiCopy.addActionListener(this);
@@ -457,6 +470,12 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
       dw.updateWidgets(device);
       dw.pack();
       dw.setVisible(true);
+    }
+    else if (e.getSource() == jmiDevDelete) {
+      Device device = ((DeviceNode) paths[0].getLastPathComponent()).getDevice();
+      DeviceManager.getInstance().removeDevice(device);
+      // refresh views
+      ObservationManager.notify(new Event(JajukEvents.DEVICE_REFRESH));
     }
   }
 
@@ -723,11 +742,15 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
         jmenu = new JPopupMenu();
         jmenu.add(jmiPlay);
         jmenu.add(jmiPush);
+        jmenu.addSeparator();
         jmenu.add(jmiCut);
         jmenu.add(jmiCopy);
         jmenu.add(jmiRename);
-        jmenu.add(jmiAddFavorite);
         jmenu.add(jmiDelete);
+        jmenu.addSeparator();
+        jmenu.add(jmiAddFavorite);
+        jmenu.add(pjmFiles);
+        jmenu.addSeparator();
         jmenu.add(jmiProperties);
         jmenu.show(jtree, e.getX(), e.getY());
       } else if (paths[0].getLastPathComponent() instanceof DirectoryNode) {
@@ -736,19 +759,24 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
         jmenu.add(jmiPush);
         jmenu.add(jmiPlayShuffle);
         jmenu.add(jmiPlayRepeat);
-        jmenu.add(jmiDirRefresh);
+        jmenu.addSeparator();
         jmenu.add(jmiCut);
         jmenu.add(jmiCopy);
         jmenu.add(jmiPaste);
-        jmenu.add(jmiRename);
         jmenu.add(jmiNewFolder);
+        jmenu.add(jmiDelete);
+        jmenu.addSeparator();
+        jmenu.add(jmiDirRefresh);
+        jmenu.add(jmiRename);
         jmenu.add(jmiDirDesynchro);
         jmenu.add(jmiDirResynchro);
-        jmenu.add(jmiAddFavorite);
+        jmenu.addSeparator();
         jmenu.add(jmiCDDBWizard);
         jmenu.add(jmiReport);
         jmenu.add(jmiDirRefactor);
-        jmenu.add(jmiDelete);
+        jmenu.addSeparator();
+        jmenu.add(pjmDir);
+        jmenu.addSeparator();
         jmenu.add(jmiProperties);
         jmenu.show(jtree, e.getX(), e.getY());
       } else if (paths[0].getLastPathComponent() instanceof PlaylistFileNode) {
@@ -757,8 +785,9 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
         jmenu.add(jmiPush);
         jmenu.add(jmiPlayShuffle);
         jmenu.add(jmiPlayRepeat);
-        jmenu.add(jmiAddFavorite);
+        jmenu.addSeparator();
         jmenu.add(jmiDelete);
+        jmenu.addSeparator();
         jmenu.add(jmiProperties);
         jmenu.show(jtree, e.getX(), e.getY());
       } else if (paths[0].getLastPathComponent() instanceof DeviceNode) {
@@ -768,16 +797,21 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
         jmenu.add(jmiPaste);
         jmenu.add(jmiPlayShuffle);
         jmenu.add(jmiPlayRepeat);
+        jmenu.addSeparator();
         jmenu.add(jmiNewFolder);
         jmenu.add(jmiDevMount);
         jmenu.add(jmiDevUnmount);
         jmenu.add(jmiDevRefresh);
+        jmenu.add(jmiDevSynchronize);
+        jmenu.addSeparator();
         jmenu.add(jmiDevTest);
         jmenu.add(jmiCDDBWizard);
         jmenu.add(jmiDevOrganize);
         jmenu.add(jmiReport);
-        jmenu.add(jmiDevSynchronize);
+        jmenu.addSeparator();
+        jmenu.add(jmiDevDelete);
         jmenu.add(jmiDevConfiguration);
+        jmenu.addSeparator();
         jmenu.add(jmiProperties);
         Device device = ((DeviceNode) paths[0].getLastPathComponent()).getDevice();
         // if the device is not synchronized

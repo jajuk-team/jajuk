@@ -747,6 +747,7 @@ public class CommandJPanel extends JXPanel implements ActionListener, ListSelect
           ActionManager.getAction(STOP_TRACK).setEnabled(false);
           ActionManager.getAction(FAST_FORWARD_TRACK).setEnabled(false);
           ActionManager.getAction(FINISH_ALBUM).setEnabled(false);
+          evaltoobar.setPreference(0);
           evaltoobar.setEnabled(false);
           // Reset history so user can launch again stopped
           // track (selection must change to throw an ActionEvent)
@@ -765,13 +766,13 @@ public class CommandJPanel extends JXPanel implements ActionListener, ListSelect
           ActionManager.getAction(FINISH_ALBUM).setEnabled(false);
           ActionManager.getAction(PLAY_PAUSE_TRACK).setIcon(IconLoader.getIcon(JajukIcons.PAUSE));
           evaltoobar.setEnabled(false);
+          evaltoobar.setPreference(0);
           // Reset history so user can launch again stopped
           // track (selection must change to throw an ActionEvent)
           jcbHistory.setSelectedIndex(-1);
           // reset startup position
           Conf.setProperty(Const.CONF_STARTUP_LAST_POSITION, "0");
         } else if (JajukEvents.PLAYER_PLAY.equals(subject)) {
-          evaltoobar.setEnabled(true);
           ActionManager.getAction(PREVIOUS_TRACK).setEnabled(true);
           ActionManager.getAction(NEXT_TRACK).setEnabled(true);
           ActionManager.getAction(REWIND_TRACK).setEnabled(true);
@@ -833,6 +834,11 @@ public class CommandJPanel extends JXPanel implements ActionListener, ListSelect
             jcbHistory.setSelectedIndex(0);
           }
           jcbHistory.addActionListener(CommandJPanel.this);
+          // Update evaluation toolbar
+          evaltoobar.setEnabled(true);
+          evaltoobar.setPreference(FIFO.getCurrentFile().getTrack().getLongValue(
+              Const.XML_TRACK_PREFERENCE));
+          System.out.println(FIFO.getCurrentFile().getTrack());
         } else if (JajukEvents.CLEAR_HISTORY.equals(event.getSubject())) {
           // clear selection bar (data itself is clear
           // from the model by History class)

@@ -21,12 +21,20 @@ package org.jajuk.ui.widgets;
 
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JComboBox;
 import javax.swing.JList;
 import javax.swing.border.EmptyBorder;
 import javax.swing.plaf.basic.BasicComboBoxRenderer;
 
+import org.jajuk.base.File;
+import org.jajuk.base.Track;
+import org.jajuk.events.Event;
+import org.jajuk.events.JajukEvents;
+import org.jajuk.events.ObservationManager;
+import org.jajuk.services.players.FIFO;
 import org.jajuk.ui.actions.ActionManager;
 import org.jajuk.ui.actions.JajukActions;
 import org.jajuk.util.IconLoader;
@@ -49,11 +57,13 @@ public class EvaluationToolbar extends JajukJToolbar {
 
   JComboBox jcbPreference;
 
+  ActionListener listener;
+
   public EvaluationToolbar() {
     jbBan = new JajukButton(ActionManager.getAction(JajukActions.BAN));
     // Preference combo:
     /*
-     * track preference (from -3 to 3: -3: hate, -2=dislike, -1=poor, +1=like,
+     * track preference (from -3 to 3: -3: hate, -2=dislike, -1=ok, +1=like,
      * +2=love +3=crazy). The preference is a factor given by the user to
      * increase or decrease a track rate.
      */
@@ -76,13 +86,16 @@ public class EvaluationToolbar extends JajukJToolbar {
         case 2:
           setToolTipText(Messages.getString("Preference.4"));
           break;
+        // Empty string for default state : no preference set
         case 3:
-          setToolTipText(Messages.getString("Preference.3"));
           break;
         case 4:
-          setToolTipText(Messages.getString("Preference.2"));
+          setToolTipText(Messages.getString("Preference.3"));
           break;
         case 5:
+          setToolTipText(Messages.getString("Preference.2"));
+          break;
+        case 6:
           setToolTipText(Messages.getString("Preference.1"));
           break;
         }
@@ -97,12 +110,38 @@ public class EvaluationToolbar extends JajukJToolbar {
     jcbPreference.addItem(IconLoader.getIcon(JajukIcons.PREFERENCE_ADORE));
     jcbPreference.addItem(IconLoader.getIcon(JajukIcons.PREFERENCE_LOVE));
     jcbPreference.addItem(IconLoader.getIcon(JajukIcons.PREFERENCE_LIKE));
-    jcbPreference.addItem(IconLoader.getIcon(JajukIcons.PREFERENCE_DONTLIKEMUCH));
-    jcbPreference.addItem(IconLoader.getIcon(JajukIcons.PREFERENCE_DONTLIKE));
+    // Empty string for default state : no preference set
+    jcbPreference.addItem(IconLoader.getIcon(JajukIcons.PREFERENCE_UNKNOWN));
+    jcbPreference.addItem(IconLoader.getIcon(JajukIcons.PREFERENCE_AVERAGE));
+    jcbPreference.addItem(IconLoader.getIcon(JajukIcons.PREFERENCE_POOR));
     jcbPreference.addItem(IconLoader.getIcon(JajukIcons.PREFERENCE_HATE));
 
+    listener = new ActionListener() {
+
+      public void actionPerformed(ActionEvent e) {
+        File file = FIFO.getCurrentFile();
+        if (file != null) {
+          Track track = file.getTrack();
+          track.setPreference(3 - jcbPreference.getSelectedIndex());
+        }
+        // Force immediate rating refresh (without using the rating manager)
+        ObservationManager.notify(new Event(JajukEvents.RATE_CHANGED));
+      }
+    };
+
+    jcbPreference.addActionListener(listener);
     add(jbBan);
     add(jcbPreference);
   }
 
+  /**
+   * Set right combo selection for given selection
+   * 
+   * @param preference
+   */
+  public void setPreference(long preference) {
+    jcbPreference.removeActionListener(listener);
+    jcbPreference.setSelectedIndex(-1 * (int) preference + 3);
+    jcbPreference.addActionListener(listener);
+  }
 }

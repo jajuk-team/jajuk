@@ -28,6 +28,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 
 import org.jajuk.base.Item;
+import org.jajuk.base.Playlist;
 import org.jajuk.util.Const;
 
 /**
@@ -58,6 +59,10 @@ public abstract class SelectionAction extends JajukAction {
       selection = (List<Item>) source.getClientProperty(Const.DETAIL_SELECTION);
     } else if (o instanceof Set) {
       selection = new ArrayList<Item>((Set<Item>) o);
+    } else if (o instanceof Playlist) {
+      selection = new ArrayList<Item>(1);
+      Playlist pl = (Playlist) o;
+      selection.addAll(pl.getFiles());
     }
   }
 }

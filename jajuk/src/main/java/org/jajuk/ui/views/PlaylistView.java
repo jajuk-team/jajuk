@@ -33,6 +33,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Properties;
@@ -73,6 +74,7 @@ import org.jajuk.ui.helpers.PlayHighlighterPredicate;
 import org.jajuk.ui.helpers.PlaylistEditorTransferHandler;
 import org.jajuk.ui.helpers.PlaylistRepositoryTableModel;
 import org.jajuk.ui.helpers.PlaylistTableModel;
+import org.jajuk.ui.helpers.PreferencesJMenu;
 import org.jajuk.ui.widgets.InformationJPanel;
 import org.jajuk.ui.widgets.JajukButton;
 import org.jajuk.ui.widgets.JajukJSplitPane;
@@ -101,13 +103,13 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
 
   /*
    * Some widgets are private to make sure QueueView that extends this class
-   * will use them
+   * will not use them TODO : refactoring : check for unifying smart and regular
+   * playlists (a single mouse adapter for ie)
    */
-
-  JajukJSplitPane split;
+  private JajukJSplitPane split;
 
   // --Editor--
-  JPanel jpEditor;
+  private JPanel jpEditor;
   JPanel jpEditorControl;
   private JajukButton jbRun;
   JajukButton jbSave;
@@ -130,34 +132,31 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
   /** Selection set flag */
   boolean bSettingSelection = false;
   /** Last selected directory using add button */
-  java.io.File fileLast;
+  private java.io.File fileLast;
   /** Editor Model */
   protected PlaylistTableModel editorModel;
+  private PreferencesJMenu pjmFiles;
 
   // --- Repository ---
-  PlaylistRepository repositoryPanel;
-  SmartPlaylist spNew;
-  SmartPlaylist spNovelties;
-  SmartPlaylist spBookmark;
-  SmartPlaylist spBestof;
+  private PlaylistRepository repositoryPanel;
+  private SmartPlaylist spNew;
+  private SmartPlaylist spNovelties;
+  private SmartPlaylist spBookmark;
+  private SmartPlaylist spBestof;
 
   /** Selected smart playlist */
-  SmartPlaylist spSelected;
+  private SmartPlaylist spSelected;
 
   List<File> selectedFiles = new ArrayList<File>(20);
 
+  /**
+   * Generic menu for playlist (shared by smart and regular playlists)
+   */
   JPopupMenu jpmenu;
 
-  JMenuItem jmiPlay;
-
-  JMenuItem jmiSaveAs;
-
-  JMenuItem jmiDelete;
-
-  JMenuItem jmiProperties;
-
-  JMenuItem jmiPrepParty;
-
+  /**
+   * Mouse adapter for smart playlist items
+   */
   MouseAdapter ma = new MouseAdapter() {
 
     @Override
@@ -209,12 +208,11 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
      * Display the playlist menu
      */
     private void showMenu(MouseEvent e) {
-      jmiDelete.setEnabled(true);
-      jmiSaveAs.setEnabled(false);
-      jmiProperties.setEnabled(true);
-      jmiPlay.setEnabled(true);
-      jmiPrepParty.setEnabled(true);
-      jpmenu.show(e.getComponent(), e.getX(), e.getY());
+      // We use for smart playlists panels the same popup menu than the one from
+      // the repository table
+      // but we disable some items like delete or properties
+      List<Integer> indexToDisable = Arrays.asList(new Integer[] { 4, 7, 8 });
+      repositoryPanel.jtable.getMenu(indexToDisable).show(e.getComponent(), e.getX(), e.getY());
     }
   };
 
@@ -268,9 +266,8 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
     jbClear = new JajukButton(IconLoader.getIcon(JajukIcons.CLEAR));
     jbClear.setToolTipText(Messages.getString("AbstractPlaylistEditorView.9"));
     jbClear.addActionListener(this);
-    jbPrepParty = new JajukButton(IconLoader.getIcon(JajukIcons.EXT_DRIVE));
-    jbPrepParty.setToolTipText(Messages.getString("AbstractPlaylistEditorView.27"));
-    jbPrepParty.addActionListener(this);
+    jbPrepParty = new JajukButton(ActionManager.getAction(JajukActions.PREPARE_PARTY));
+    jbPrepParty.setText(null);
     jlTitle = new JLabel("");
     JToolBar jtb = new JajukJToolbar();
 
@@ -308,28 +305,11 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
     JScrollPane jsp = new JScrollPane(editorTable);
     jsp.setBorder(BorderFactory.createEmptyBorder(0, 1, 0, 0));
     jpEditor.add(jsp, "0,1");
-    // menu items
+
     jmiFilePlay = new JMenuItem(ActionManager.getAction(JajukActions.PLAY_SELECTION));
     jmiFilePlay.putClientProperty(Const.DETAIL_SELECTION, editorTable.getSelection());
-    jmiFilePush = new JMenuItem(ActionManager.getAction(JajukActions.PUSH_SELECTION));
-    jmiFilePush.putClientProperty(Const.DETAIL_SELECTION, editorTable.getSelection());
-    jmiFileAddFavorites = new JMenuItem(ActionManager.getAction(JajukActions.BOOKMARK_SELECTION));
-    jmiFileAddFavorites.putClientProperty(Const.DETAIL_SELECTION, editorTable.getSelection());
-    jmiFileProperties = new JMenuItem(ActionManager.getAction(JajukActions.SHOW_PROPERTIES));
-    jmiFileProperties.putClientProperty(Const.DETAIL_SELECTION, editorTable.getSelection());
-    jmiFileUp = new JMenuItem(Messages.getString("AbstractPlaylistEditorView.6"), IconLoader
-        .getIcon(JajukIcons.UP));
-    jmiFileUp.addActionListener(this);
-    jmiFileDown = new JMenuItem(Messages.getString("AbstractPlaylistEditorView.7"), IconLoader
-        .getIcon(JajukIcons.DOWN));
-    jmiFileDown.addActionListener(this);
 
-    editorTable.getMenu().add(jmiFilePlay);
-    editorTable.getMenu().add(jmiFilePush);
-    editorTable.getMenu().add(jmiFileAddFavorites);
-    editorTable.getMenu().add(jmiFileUp);
-    editorTable.getMenu().add(jmiFileDown);
-    editorTable.getMenu().add(jmiFileProperties);
+    initMenuItems();
 
     ColorHighlighter colorHighlighter = new ColorHighlighter(Color.ORANGE, null,
         new PlayHighlighterPredicate(editorModel));
@@ -367,29 +347,38 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
         }
       }
     });
+  }
 
-    // Popup menus
-    jpmenu = new JPopupMenu();
+  /**
+   * This factorizes edit panel code between regular playlist view and queue
+   * view for all menu items except the play that is queue-specific
+   */
+  void initMenuItems() {
+    // menu items
+    jmiFilePush = new JMenuItem(ActionManager.getAction(JajukActions.PUSH_SELECTION));
+    jmiFilePush.putClientProperty(Const.DETAIL_SELECTION, editorTable.getSelection());
+    jmiFileAddFavorites = new JMenuItem(ActionManager.getAction(JajukActions.BOOKMARK_SELECTION));
+    jmiFileAddFavorites.putClientProperty(Const.DETAIL_SELECTION, editorTable.getSelection());
+    jmiFileProperties = new JMenuItem(ActionManager.getAction(JajukActions.SHOW_PROPERTIES));
+    jmiFileProperties.putClientProperty(Const.DETAIL_SELECTION, editorTable.getSelection());
+    jmiFileUp = new JMenuItem(Messages.getString("AbstractPlaylistEditorView.6"), IconLoader
+        .getIcon(JajukIcons.UP));
+    jmiFileUp.addActionListener(this);
+    jmiFileDown = new JMenuItem(Messages.getString("AbstractPlaylistEditorView.7"), IconLoader
+        .getIcon(JajukIcons.DOWN));
+    jmiFileDown.addActionListener(this);
+    pjmFiles = new PreferencesJMenu(editorTable.getSelection());
 
-    jmiPlay = new JMenuItem(ActionManager.getAction(JajukActions.PLAY_SELECTION));
-    jmiPlay.putClientProperty(Const.DETAIL_SELECTION, selectedFiles);
-    jpmenu.add(jmiPlay);
-
-    jmiDelete = new JMenuItem(Messages.getString("PhysicalPlaylistRepositoryView.3"));
-    jmiDelete.addActionListener(this);
-    jpmenu.add(jmiDelete);
-
-    jmiSaveAs = new JMenuItem(Messages.getString("PhysicalPlaylistRepositoryView.2"));
-    jmiSaveAs.addActionListener(this);
-    jpmenu.add(jmiSaveAs);
-
-    jmiPrepParty = new JMenuItem(Messages.getString("PhysicalPlaylistRepositoryView.19"));
-    jmiPrepParty.addActionListener(this);
-    jpmenu.add(jmiPrepParty);
-
-    jmiProperties = new JMenuItem(ActionManager.getAction(JajukActions.SHOW_PROPERTIES));
-    jmiProperties.putClientProperty(Const.DETAIL_SELECTION, editorTable.getSelection());
-    jpmenu.add(jmiProperties);
+    editorTable.getMenu().add(jmiFilePlay);
+    editorTable.getMenu().add(jmiFilePush);
+    editorTable.getMenu().addSeparator();
+    editorTable.getMenu().add(jmiFileUp);
+    editorTable.getMenu().add(jmiFileDown);
+    editorTable.getMenu().addSeparator();
+    editorTable.getMenu().add(jmiFileAddFavorites);
+    editorTable.getMenu().add(pjmFiles);
+    editorTable.getMenu().addSeparator();
+    editorTable.getMenu().add(jmiFileProperties);
 
   }
 
@@ -568,6 +557,9 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
     // remove selection
     editorTable.getSelectionModel().clearSelection();
     PlaylistView.this.plf = plf;
+    jbPrepParty.putClientProperty(Const.DETAIL_SELECTION, plf);
+    pjmFiles.putClientProperty(Const.DETAIL_SELECTION, plf);
+
     // set title label
     jlTitle.setText(plf.getName());
     if (plf.getType() == Playlist.Type.BESTOF) {
@@ -697,8 +689,6 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
           Messages.showErrorMessage(je.getCode());
           Log.error(je);
         }
-      } else if (ae.getSource() == jbPrepParty) {
-        plf.prepareParty();
       }
     } catch (Exception e2) {
       Log.error(e2);
@@ -830,7 +820,7 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
 
   /**
    * This class is not a view but the playlist upper panel of the PlaylistView
-   * It leverages the Abstract Playlist code (filters...s)
+   * It leverages the Abstract Playlist code (filters...)
    */
   class PlaylistRepository extends AbstractTableView implements ListSelectionListener {
 
@@ -840,6 +830,8 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
     SmartPlaylist selectedSP;
 
     JMenuItem jmiRepositorySaveAs;
+
+    JMenuItem jmiPrepareParty;
 
     MouseAdapter ma;
 
@@ -884,8 +876,15 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
 
           jmiRepositorySaveAs = new JMenuItem(ActionManager.getAction(JajukActions.SAVE_AS));
           jmiRepositorySaveAs.putClientProperty(Const.DETAIL_SELECTION, jtable.getSelection());
+
+          jmiPrepareParty = new JMenuItem(ActionManager.getAction(JajukActions.PREPARE_PARTY));
+
+          jtable.getMenu().add(jmiPrepareParty);
           jtable.getMenu().add(jmiRepositorySaveAs);
 
+          jtable.getMenu().addSeparator();
+          jtable.getMenu().add(pjmFiles);
+          jtable.getMenu().addSeparator();
           // Add this generic menu item manually to ensure it's the last one in
           // the list for GUI reasons
           jtable.getMenu().add(jmiProperties);
@@ -942,6 +941,7 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
         public void finished() {
           if (!bErrorLoading && plf != null) {
             selectPlaylist(plf);
+            jmiPrepareParty.putClientProperty(Const.DETAIL_SELECTION, plf);
           }
         }
 
@@ -969,19 +969,5 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
       sw.start();
     }
 
-    /**
-     * Display the playlist menu
-     * 
-     * @param e
-     */
-    // private void showMenu(MouseEvent e) {
-    // // cannot delete special playlists
-    // jmiDelete.setEnabled(false);
-    // // Save as is only for special playlists
-    // jmiProperties.setEnabled(false);
-    //
-    // jmiPlay.setEnabled(true);
-    // jtable.getMenu().show(e.getComponent(), e.getX(), e.getY());
-    // }
   }
 }

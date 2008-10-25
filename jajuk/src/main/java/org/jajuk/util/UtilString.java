@@ -683,7 +683,7 @@ public final class UtilString {
    * Fast long parser, low level check, remplacement of Long.parseLong()
    * 
    * @param in
-   *          must be a set of digits with a size > 0
+   *          must be a set of digits with a size > 0 and be positive
    * @return
    */
   public static long fastLongParser(String in) {

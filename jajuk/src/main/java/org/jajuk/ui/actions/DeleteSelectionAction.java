@@ -23,7 +23,6 @@ import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 
@@ -52,28 +51,27 @@ import org.jajuk.util.UtilGUI;
 import org.jajuk.util.UtilSystem;
 import org.jajuk.util.log.Log;
 
-public class DeleteAction extends JajukAction {
+public class DeleteSelectionAction extends SelectionAction {
   private static final long serialVersionUID = 1L;
 
-  DeleteAction() {
-    super(Messages.getString("FilesTreeView.7"), IconLoader.getIcon(JajukIcons.DELETE), KeyStroke
-        .getKeyStroke("DELETE"), true, false);
+  DeleteSelectionAction() {
+    super(Messages.getString("FilesTreeView.7"), IconLoader.getIcon(JajukIcons.DELETE), true);
+    setAcceleratorKey(KeyStroke.getKeyStroke("DELETE"));
     setShortDescription(Messages.getString("FilesTreeView.7"));
   }
 
   @Override
   @SuppressWarnings("unchecked")
-  public void perform(ActionEvent e) {
-    JComponent source = (JComponent) e.getSource();
+  public void perform(ActionEvent e) throws Exception {
+    super.perform(e);
     // Get required data from the tree (selected node and node type)
-    final List<Item> alSelected = (List<Item>) source.getClientProperty(Const.DETAIL_SELECTION);
-    final List<File> alFiles = new ArrayList<File>(alSelected.size());
-    final List<File> rejFiles = new ArrayList<File>(alSelected.size());
-    final List<Directory> alDirs = new ArrayList<Directory>(alSelected.size());
-    final List<Directory> rejDirs = new ArrayList<Directory>(alSelected.size());
-    final List<Directory> emptyDirs = new ArrayList<Directory>(alSelected.size());
+    final List<File> alFiles = new ArrayList<File>(selection.size());
+    final List<File> rejFiles = new ArrayList<File>(selection.size());
+    final List<Directory> alDirs = new ArrayList<Directory>(selection.size());
+    final List<Directory> rejDirs = new ArrayList<Directory>(selection.size());
+    final List<Directory> emptyDirs = new ArrayList<Directory>(selection.size());
 
-    for (Item item : alSelected) {
+    for (Item item : selection) {
       if (item instanceof File) {
         alFiles.add((File) item);
       } else if (item instanceof Track) {

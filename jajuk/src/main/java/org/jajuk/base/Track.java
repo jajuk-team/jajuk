@@ -378,6 +378,7 @@ public class Track extends LogicalItem implements Comparable<Track> {
       Log.warn("Try to set preference to undefined value, action ignored");
       return;
     }
+    Log.debug("Changed preference of " + getID() + "=" + preference);
     setProperty(Const.XML_TRACK_PREFERENCE, preference);
     updateRate();
   }

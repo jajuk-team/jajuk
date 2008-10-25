@@ -43,8 +43,8 @@ public class FilesTableView extends AbstractTableView {
 
   private static final long serialVersionUID = 1L;
 
-  JMenuItem jmiFilePlayDirectory;
-
+  private JMenuItem jmiFilePlayDirectory;
+  
   public FilesTableView() {
     super();
     columnsConf = CONF_FILES_TABLE_COLUMNS;
@@ -67,10 +67,13 @@ public class FilesTableView extends AbstractTableView {
     jmiFilePlayDirectory = new JMenuItem(ActionManager
         .getAction(JajukActions.PLAY_DIRECTORY_SELECTION));
     jmiFilePlayDirectory.putClientProperty(Const.DETAIL_SELECTION, jtable.getSelection());
-    jtable.getMenu().add(jmiFilePlayDirectory);
+    jtable.getMenu().add(jmiFilePlayDirectory,4);
     // Add this generic menu item manually to ensure it's the last one in
     // the list for GUI reasons
+    jtable.getMenu().addSeparator();
     jtable.getMenu().add(jmiBookmark);
+    jtable.getMenu().add(pjmTracks);
+    jtable.getMenu().addSeparator();
     jtable.getMenu().add(jmiProperties);
 
     // Add specific behavior on left click

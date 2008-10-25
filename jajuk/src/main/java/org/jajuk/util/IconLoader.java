@@ -808,17 +808,21 @@ public class IconLoader {
     else if (icon == JajukIcons.BAN) {
       out = new ImageIcon(UtilSystem.getResource("icons/16x16/ban_16x16.png"));
     }
+    
+    else if (icon == JajukIcons.UNBAN) {
+      out = new ImageIcon(UtilSystem.getResource("icons/16x16/ok_16x16.png"));
+    }
 
     else if (icon == JajukIcons.PREFERENCE_ADORE) {
       out = new ImageIcon(UtilSystem.getResource("icons/16x16/preference-adore_16x16.png"));
     }
 
-    else if (icon == JajukIcons.PREFERENCE_DONTLIKE) {
-      out = new ImageIcon(UtilSystem.getResource("icons/16x16/preference-dontlike_16x16.png"));
+    else if (icon == JajukIcons.PREFERENCE_AVERAGE) {
+      out = new ImageIcon(UtilSystem.getResource("icons/16x16/preference-average_16x16.png"));
     }
 
-    else if (icon == JajukIcons.PREFERENCE_DONTLIKEMUCH) {
-      out = new ImageIcon(UtilSystem.getResource("icons/16x16/preference-dontlikemuch_16x16.png"));
+    else if (icon == JajukIcons.PREFERENCE_POOR) {
+      out = new ImageIcon(UtilSystem.getResource("icons/16x16/preference-poor_16x16.png"));
     }
 
     else if (icon == JajukIcons.PREFERENCE_HATE) {
@@ -833,6 +837,14 @@ public class IconLoader {
       out = new ImageIcon(UtilSystem.getResource("icons/16x16/preference-love_16x16.png"));
     }
 
+    else if (icon == JajukIcons.PREFERENCE_UNKNOWN) {
+      out = new ImageIcon(UtilSystem.getResource("icons/16x16/preference-unknown_16x16.png"));
+    }
+    
+    else if (icon == JajukIcons.PREPARE_PARTY) {
+      out = new ImageIcon(UtilSystem.getResource("icons/16x16/ext_drive_16x16.png"));
+    }      
+    
     // Cache the result
     if (!cache.containsKey(icon)) {
       cache.put(icon, out);

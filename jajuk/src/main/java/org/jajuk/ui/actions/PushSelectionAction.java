@@ -22,10 +22,7 @@ package org.jajuk.ui.actions;
 import java.awt.event.ActionEvent;
 import java.util.List;
 
-import javax.swing.JComponent;
-
 import org.jajuk.base.File;
-import org.jajuk.base.Item;
 import org.jajuk.services.players.FIFO;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
@@ -44,7 +41,7 @@ import org.jajuk.util.UtilFeatures;
  * Selection data is provided using the swing properties DETAIL_SELECTION
  * </p>
  */
-public class PushSelectionAction extends JajukAction {
+public class PushSelectionAction extends SelectionAction {
 
   private static final long serialVersionUID = -8078402652430413821L;
 
@@ -61,11 +58,7 @@ public class PushSelectionAction extends JajukAction {
   @SuppressWarnings("unchecked")
   @Override
   public void perform(ActionEvent e) throws Exception {
-    JComponent source = (JComponent) e.getSource();
-    final List<Item> selection = (List<Item>) source.getClientProperty(Const.DETAIL_SELECTION);
-    if (selection.size() == 0) {
-      return;
-    }
+    super.perform(e);
     List<File> files = UtilFeatures.getPlayableFiles(selection);
     FIFO.push(UtilFeatures.createStackItems(UtilFeatures.applyPlayOption(files), Conf
         .getBoolean(Const.CONF_STATE_REPEAT), true), true);

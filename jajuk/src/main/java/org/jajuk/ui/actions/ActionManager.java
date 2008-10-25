@@ -19,7 +19,7 @@
  */
 package org.jajuk.ui.actions;
 
-import static org.jajuk.ui.actions.JajukActions.ALARM_CLOCK;
+import static org.jajuk.ui.actions.JajukActions.*;
 import static org.jajuk.ui.actions.JajukActions.ALL_VIEW_RESTORE_DEFAULTS;
 import static org.jajuk.ui.actions.JajukActions.BAN;
 import static org.jajuk.ui.actions.JajukActions.BEST_OF;
@@ -190,7 +190,7 @@ public final class ActionManager {
     // File Actions
     installAction(CUT, new CutAction(), false);
     installAction(COPY, new CopyAction(), false);
-    installAction(DELETE, new DeleteAction(), false);
+    installAction(DELETE, new DeleteSelectionAction(), false);
     installAction(PASTE, new PasteAction(), false);
     installAction(RENAME, new RenameAction(), false);
     installAction(NEW_FOLDER, new NewFolderAction(), false);
@@ -202,8 +202,8 @@ public final class ActionManager {
     installAction(ALARM_CLOCK, new AlarmClockAction(), false);
     installAction(SHOW_ALBUM_DETAILS, new ShowAlbumDetailsAction(), false);
     installAction(SLIM_JAJUK, new SlimbarAction(), false);
-    installAction(BAN, new BanCurrentAction(), false);
-
+    installAction(PREPARE_PARTY, new PreparePartyAction(), false);
+    
     // Selection actions
     installAction(SHOW_PROPERTIES, new ShowPropertiesAction(), false);
     installAction(PLAY_SELECTION, new PlaySelectionAction(), false);
@@ -216,6 +216,18 @@ public final class ActionManager {
     installAction(PLAY_DIRECTORY_SELECTION, new PlayDirectorySelectionAction(), false);
     installAction(CDDB_SELECTION, new CDDBSelectionAction(), false);
     installAction(SAVE_AS, new SaveAsAction(), false);
+
+    // Preferences
+    installAction(BAN, new BanCurrentAction(), false);
+    installAction(BAN_SELECTION, new BanSelectionAction(), false);
+    installAction(UN_BAN_SELECTION, new UnBanSelectionAction(), false);
+    installAction(PREFERENCE_ADORE, new AdoreSelectionAction(), false);
+    installAction(PREFERENCE_LOVE, new LoveSelectionAction(), false);
+    installAction(PREFERENCE_LIKE, new LikeSelectionAction(), false);
+    installAction(PREFERENCE_AVERAGE, new AverageSelectionAction(), false);
+    installAction(PREFERENCE_POOR, new PoorSelectionAction(), false);
+    installAction(PREFERENCE_HATE, new HateSelectionAction(), false);
+    
     // Install this action only if Desktop class is supported, it is used to
     // open default web browser
     if (Desktop.isDesktopSupported()) {

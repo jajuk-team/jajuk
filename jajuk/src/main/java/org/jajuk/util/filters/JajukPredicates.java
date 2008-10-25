@@ -24,6 +24,7 @@ import java.util.Date;
 
 import org.apache.commons.collections.Predicate;
 import org.jajuk.base.File;
+import org.jajuk.base.Playlist;
 import org.jajuk.base.Track;
 import org.jajuk.util.Const;
 
@@ -101,7 +102,7 @@ public class JajukPredicates {
     }
 
   }
-  
+
   /**
    * 
    * Banned filtering predicate Applied against files only
@@ -134,6 +135,23 @@ public class JajukPredicates {
     public boolean evaluate(Object o) {
       Track track = ((File) o).getTrack();
       return track.getPlayeableFile(true) != null;
+    }
+
+  }
+
+  /**
+   * 
+   * Playlist predicate, filter playlists located on unmounted devices
+   */
+  public static class ReadyPlaylistPredicate implements Predicate {
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.apache.commons.collections.Predicate#evaluate(java.lang.Object)
+     */
+    public boolean evaluate(Object o) {
+      return ((Playlist) o).isReady();
     }
 
   }

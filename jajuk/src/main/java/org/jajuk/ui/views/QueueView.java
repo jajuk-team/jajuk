@@ -52,8 +52,6 @@ import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.services.players.FIFO;
 import org.jajuk.services.players.StackItem;
-import org.jajuk.ui.actions.ActionManager;
-import org.jajuk.ui.actions.JajukActions;
 import org.jajuk.ui.helpers.ILaunchCommand;
 import org.jajuk.ui.helpers.JajukTableModel;
 import org.jajuk.ui.helpers.PlayHighlighterPredicate;
@@ -119,7 +117,7 @@ public class QueueView extends PlaylistView {
     jbClear.addActionListener(this);
 
     JToolBar jtb = new JajukJToolbar();
-
+    
     jtb.add(jbSave);
     jtb.add(jbRemove);
     jtb.add(jbAddShuffle);
@@ -163,24 +161,7 @@ public class QueueView extends PlaylistView {
         goToSelection();
       }
     });
-    jmiFilePush = new JMenuItem(ActionManager.getAction(JajukActions.PUSH_SELECTION));
-    jmiFilePush.putClientProperty(Const.DETAIL_SELECTION, editorTable.getSelection());
-    jmiFileAddFavorites = new JMenuItem(ActionManager.getAction(JajukActions.BOOKMARK_SELECTION));
-    jmiFileAddFavorites.putClientProperty(Const.DETAIL_SELECTION, editorTable.getSelection());
-    jmiFileProperties = new JMenuItem(ActionManager.getAction(JajukActions.SHOW_PROPERTIES));
-    jmiFileProperties.putClientProperty(Const.DETAIL_SELECTION, editorTable.getSelection());
-    jmiFileUp = new JMenuItem(Messages.getString("AbstractPlaylistEditorView.6"), IconLoader
-        .getIcon(JajukIcons.UP));
-    jmiFileUp.addActionListener(this);
-    jmiFileDown = new JMenuItem(Messages.getString("AbstractPlaylistEditorView.7"), IconLoader
-        .getIcon(JajukIcons.DOWN));
-    jmiFileDown.addActionListener(this);
-    editorTable.getMenu().add(jmiFilePlay);
-    editorTable.getMenu().add(jmiFilePush);
-    editorTable.getMenu().add(jmiFileAddFavorites);
-    editorTable.getMenu().add(jmiFileUp);
-    editorTable.getMenu().add(jmiFileDown);
-    editorTable.getMenu().add(jmiFileProperties);
+    initMenuItems();
 
     ColorHighlighter colorHighlighter = new ColorHighlighter(Color.ORANGE, null,
         new PlayHighlighterPredicate(editorModel));

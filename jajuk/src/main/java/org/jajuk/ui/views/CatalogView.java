@@ -161,8 +161,8 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 
   /** Utility list used by size selector */
   private List<String> sizes = new ArrayList<String>(10);
-
-  /** Swing Timer to refresh the component */
+  
+   /** Swing Timer to refresh the component */
   private Timer timerSearch = new Timer(WAIT_TIME, new ActionListener() {
     public void actionPerformed(ActionEvent e) {
       if (bNeedSearch && !bPopulating && (System.currentTimeMillis() - lDateTyped >= WAIT_TIME)) {
@@ -303,6 +303,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
     jpControlBottom.add(jcbShowNoCover, "0,0");
     jpControlBottom.add(jlSize, "1,0");
     jpControlBottom.add(jsSize, "2,0,c,c");
+    
 
     // Covers
     initCovers();

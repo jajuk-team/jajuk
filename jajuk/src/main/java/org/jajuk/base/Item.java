@@ -401,38 +401,42 @@ public abstract class Item implements Serializable, Const {
   public abstract ImageIcon getIconRepresentation();
 
   /**
-   * @return the stars icon
+   * @return the stars icon or ban icon if banned
    */
   public IconLabel getStars() {
-    int starsNumber = getStarsNumber();
     long rate = getRate();
-    IconLabel ilRate = null;
-    switch (starsNumber) {
-    case 0:
-      ilRate = new IconLabel(IconLoader.getIcon(JajukIcons.STAR_0), "", null, null, null, Long
-          .toString(rate));
-      break;
-    case 1:
-      ilRate = new IconLabel(IconLoader.getIcon(JajukIcons.STAR_1), "", null, null, null, Long
-          .toString(rate));
-      break;
-    case 2:
-      ilRate = new IconLabel(IconLoader.getIcon(JajukIcons.STAR_2), "", null, null, null, Long
-          .toString(rate));
-      break;
-    case 3:
-      ilRate = new IconLabel(IconLoader.getIcon(JajukIcons.STAR_3), "", null, null, null, Long
-          .toString(rate));
-      break;
-    case 4:
-      ilRate = new IconLabel(IconLoader.getIcon(JajukIcons.STAR_4), "", null, null, null, Long
-          .toString(rate));
-      break;
-    default:
-      return null;
+    if (this instanceof Track && getBooleanValue(XML_TRACK_BANNED)) {
+      return new IconLabel(IconLoader.getIcon(JajukIcons.BAN), "", null, null, null, "-1");
+    } else {
+      int starsNumber = getStarsNumber();
+      IconLabel ilRate = null;
+      switch (starsNumber) {
+      case 0:
+        ilRate = new IconLabel(IconLoader.getIcon(JajukIcons.STAR_0), "", null, null, null, Long
+            .toString(rate));
+        break;
+      case 1:
+        ilRate = new IconLabel(IconLoader.getIcon(JajukIcons.STAR_1), "", null, null, null, Long
+            .toString(rate));
+        break;
+      case 2:
+        ilRate = new IconLabel(IconLoader.getIcon(JajukIcons.STAR_2), "", null, null, null, Long
+            .toString(rate));
+        break;
+      case 3:
+        ilRate = new IconLabel(IconLoader.getIcon(JajukIcons.STAR_3), "", null, null, null, Long
+            .toString(rate));
+        break;
+      case 4:
+        ilRate = new IconLabel(IconLoader.getIcon(JajukIcons.STAR_4), "", null, null, null, Long
+            .toString(rate));
+        break;
+      default:
+        return null;
+      }
+      ilRate.setInteger(true);
+      return ilRate;
     }
-    ilRate.setInteger(true);
-    return ilRate;
   }
 
   /**
