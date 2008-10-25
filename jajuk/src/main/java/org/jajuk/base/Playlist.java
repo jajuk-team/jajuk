@@ -535,20 +535,20 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
         if (sLine.charAt(0) == '.') {
           sLine = sLine.substring(1, sLine.length());
         }
-        final StringBuilder sb = new StringBuilder(sLine);
         // comment
-        if (sb.charAt(0) == '#') {
+        if (sLine.charAt(0) == '#') {
           continue;
         } else {
           java.io.File fileTrack = null;
-          final StringBuilder sbFileDir = new StringBuilder(getDirectory().getDevice().getUrl())
-              .append(getDirectory().getRelativePath());
-          if (sLine.charAt(0) != '/') {
-            sb.insert(0, '/');
+          final StringBuilder sbFileDir = new StringBuilder(getDirectory().getDevice().getUrl());
+          sbFileDir.append(getDirectory().getRelativePath());
+          // Add a trailing / at the end of the url if required
+          if (sLine.charAt(0) != '/'){
+            sbFileDir.append("/");
           }
           // take a look relatively to playlist directory to check
           // files exists
-          fileTrack = new java.io.File(sbFileDir.append(sb).toString());
+          fileTrack = new java.io.File(sbFileDir.append(sLine).toString());
           File file = FileManager.getInstance().getFileByPath(fileTrack.getAbsolutePath());
           if (file == null) { // check if this file is known in
             // collection
