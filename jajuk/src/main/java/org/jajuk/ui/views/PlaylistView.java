@@ -127,12 +127,16 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
   JMenuItem jmiFileUp;
   JMenuItem jmiFileDown;
   JMenuItem jmiFileProperties;
+
   /** Current playlist */
   Playlist plf;
+  
   /** Selection set flag */
   boolean bSettingSelection = false;
+
   /** Last selected directory using add button */
-  private java.io.File fileLast;
+  //private java.io.File fileLast;
+
   /** Editor Model */
   protected PlaylistTableModel editorModel;
   private PreferencesJMenu pjmFiles;

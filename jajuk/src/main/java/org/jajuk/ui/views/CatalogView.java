@@ -554,7 +554,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
    * 
    */
   private class CatalogViewSwingWorker extends SwingWorker {
-    int i;
+    int value;
 
     /*
      * (non-Javadoc)
@@ -563,7 +563,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
      */
     @Override
     public Object construct() {
-      i = jsp.getVerticalScrollBar().getValue();
+      value = jsp.getVerticalScrollBar().getValue();
 
       // This synchronize fixes a strange race condition when changing
       // thumb size and finished() method is done but all thumb not
@@ -794,7 +794,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
       // queue it
       SwingUtilities.invokeLater(new Runnable() {
         public void run() {
-          jsp.getVerticalScrollBar().setValue(i);
+          jsp.getVerticalScrollBar().setValue(value);
         }
       });
       jtfValue.requestFocusInWindow();

@@ -40,13 +40,11 @@ import java.util.Set;
 
 import javax.swing.Action;
 import javax.swing.BorderFactory;
-import javax.swing.ButtonGroup;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
-import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
 import javax.swing.SwingUtilities;
@@ -106,15 +104,15 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener, 
 
   private JPopupMenu jmenuCollection;
 
-  private ButtonGroup btCollection;
+  //private ButtonGroup btCollection;
 
-  private JRadioButtonMenuItem jmiCollectionStyle;
+  //private JRadioButtonMenuItem jmiCollectionStyle;
 
-  private JRadioButtonMenuItem jmiCollectionAuthor;
+  //private JRadioButtonMenuItem jmiCollectionAuthor;
 
-  private JRadioButtonMenuItem jmiCollectionAlbum;
+  //private JRadioButtonMenuItem jmiCollectionAlbum;
 
-  private JRadioButtonMenuItem jmiCollectionProperties;
+  //private JRadioButtonMenuItem jmiCollectionProperties;
 
   private JMenuItem jmiCollectionReport;
 

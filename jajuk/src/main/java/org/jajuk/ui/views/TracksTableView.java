@@ -48,7 +48,7 @@ public class TracksTableView extends AbstractTableView {
 
   private JMenuItem jmiTrackPlayAuthor;
 
-  private JMenuItem jmiTrackAddFavorite;
+  //private JMenuItem jmiTrackAddFavorite;
   
   public TracksTableView() {
     super();

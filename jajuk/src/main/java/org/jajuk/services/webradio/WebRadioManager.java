@@ -66,8 +66,8 @@ public final class WebRadioManager extends DefaultHandler {
 
   // Webradio file XML tags static strings
   private static final String XML_RADIO = "Radio";
-  private static final String XML_URL = "url";
-  private static final String XML_NAME = "name";
+  //private static final String XML_URL = "url";
+  //private static final String XML_NAME = "name";
 
   File fwebradios;
 

@@ -187,6 +187,7 @@ public class XMLExporter extends Exporter {
   /**
    * @see Exporter.processColllection
    */
+  @Override
   @SuppressWarnings("unchecked")
   public void processCollection(int type) throws Exception {
     // If we are tagging the physical collection...
