@@ -124,11 +124,14 @@ public class PropertiesWizard extends JajukJDialog implements ActionListener {
    * @param alItems
    *          items to display
    */
-  public PropertiesWizard(java.util.List<Item> alItems) {
-    // windows title: name of the element of only one item, or "selection"
-    // word otherwise
-    setTitle(alItems.size() == 1 ? (alItems.get(0)).getDesc() : Messages
-        .getString("PropertiesWizard.6"));
+  public PropertiesWizard(List<Item> alItems) {
+    // windows title: name of the element if there is 
+    // only one item, or "selection" word otherwise
+    if(alItems.size() == 1) {
+      setTitle(alItems.get(0).getDesc());
+    } else {
+      setTitle(Messages.getString("PropertiesWizard.6"));
+    }
     this.alItems = alItems;
     boolean bMerged = false;
     if (alItems.size() > 1) {
