@@ -591,8 +591,7 @@ public final class JajukSlimbar extends JFrame implements Observer, MouseWheelLi
       jddbSmart.setIcon(IconLoader.getIcon(JajukIcons.SHUFFLE_GLOBAL_16X16));
       Conf.setProperty(Const.CONF_SLIMBAR_SMART_MODE, JajukActions.SHUFFLE_GLOBAL.toString());
     } else if (ae.getSource() == jbInfo) {
-      String title = FIFO.getCurrentFileTitle();
-      JajukBalloon balloon = new JajukBalloon(title);
+      JajukBalloon balloon = new JajukBalloon(FIFO.getCurrentFileTitle());
       Point buttonLocation = jbInfo.getLocationOnScreen();
       Point location = null;
       // If slimbar is too height in the screen, display the popup bellow it

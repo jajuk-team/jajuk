@@ -68,7 +68,7 @@ public final class UtilSystem {
   public static final Date TODAY = new Date();
 
   /** Central random object for all Jajuk * */
-  private static final Random random = new Random();
+  private static final Random RANDOM = new Random();
 
   /**
    * Are we under Linux ? *
@@ -182,10 +182,8 @@ public final class UtilSystem {
         // too much backup files, delete older
         if (((lUsedMB - file.length()) / 1048576 > iMB) && (alFiles.size() > 0)) {
           final File fileToDelete = alFiles.get(0);
-          if (fileToDelete != null) {
-            if (!fileToDelete.delete()) {
-              Log.warn("Could not delete file " + fileToDelete);
-            }
+          if ((fileToDelete != null) && (!fileToDelete.delete())) {
+            Log.warn("Could not delete file " + fileToDelete);
           }
         }
       }
@@ -1031,7 +1029,7 @@ public final class UtilSystem {
    * @return Jajuk singleton random object
    */
   public static Random getRandom() {
-    return UtilSystem.random;
+    return UtilSystem.RANDOM;
   }
 
 }

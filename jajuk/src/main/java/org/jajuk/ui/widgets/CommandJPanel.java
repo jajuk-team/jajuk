@@ -196,7 +196,7 @@ public class CommandJPanel extends JXPanel implements ActionListener, ListSelect
 
   private EvaluationToolbar evaltoobar;
 
-  private JButton jbBan;
+  //private JButton jbBan;
 
   private JajukToggleButton jbMute;
 

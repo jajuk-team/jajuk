@@ -60,11 +60,11 @@ public class DuplicateTracksList extends JPanel implements ListSelectionListener
   private JButton selectAllButton;
   private JButton closeButton;
 
-  public DuplicateTracksList(List<List<File>> Files, JButton jbClose) {
+  public DuplicateTracksList(List<List<File>> files, JButton jbClose) {
     super(new BorderLayout());
-    allFiles = Files;
+    allFiles = files;
     closeButton = jbClose;
-    populateList(Files);
+    populateList(files);
 
     list = new JList(listModel);
     list.addListSelectionListener(this);
@@ -92,7 +92,7 @@ public class DuplicateTracksList extends JPanel implements ListSelectionListener
     add(buttonPane, BorderLayout.PAGE_END);
   }
 
-  public void populateList(List<List<File>> allFiles) {
+  public final void populateList(List<List<File>> allFiles) {
     flatFilesList = new ArrayList<File>();
     for (List<File> lFiles : allFiles) {
       for (File f : lFiles) {
@@ -151,10 +151,11 @@ public class DuplicateTracksList extends JPanel implements ListSelectionListener
       for (int r = 0; r < allFiles.size(); r++) {
         for (int c = 0; c < allFiles.get(r).size(); c++) {
           if (count == index) {
-            if (allFiles.get(r).size() <= 2)
+            if (allFiles.get(r).size() <= 2) {
               allFiles.remove(r);
-            else
+            } else {
               allFiles.get(r).remove(c);
+            }
           }
           count++;
         }
@@ -181,8 +182,9 @@ public class DuplicateTracksList extends JPanel implements ListSelectionListener
         }
       }
       int[] indices = new int[iList.size()];
-      for (int k = 0; k < iList.size(); k++)
+      for (int k = 0; k < iList.size(); k++) {
         indices[k] = iList.get(k);
+      }
 
       list.setSelectedIndices(indices);
     }
