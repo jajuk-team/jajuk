@@ -43,6 +43,7 @@ import org.jajuk.events.Event;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.events.Observer;
+import org.jajuk.ui.widgets.InformationJPanel;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.Messages;
@@ -397,6 +398,8 @@ public final class History extends DefaultHandler implements ErrorHandler, Obser
         cleanup();
       } else if (JajukEvents.CLEAR_HISTORY.equals(subject)) {
         clear();
+        InformationJPanel.getInstance().setMessage(Messages.getString("ParameterView.251"),
+            InformationJPanel.INFORMATIVE);
       } else if (JajukEvents.LANGUAGE_CHANGED.equals(subject)) {
         // reset formatter
         formatter = new SimpleDateFormat(Messages.getString("HistoryItem.0"));

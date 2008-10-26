@@ -139,7 +139,7 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
 
   /** Editor Model */
   protected PlaylistTableModel editorModel;
-  private PreferencesJMenu pjmFiles;
+  private PreferencesJMenu pjmFilesEditor;
 
   // --- Repository ---
   private PlaylistRepository repositoryPanel;
@@ -215,7 +215,7 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
       // We use for smart playlists panels the same popup menu than the one from
       // the repository table
       // but we disable some items like delete or properties
-      List<Integer> indexToDisable = Arrays.asList(new Integer[] { 4, 7, 8 });
+      List<Integer> indexToDisable = Arrays.asList(new Integer[] { 4, 8 });
       repositoryPanel.jtable.getMenu(indexToDisable).show(e.getComponent(), e.getX(), e.getY());
     }
   };
@@ -371,7 +371,7 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
     jmiFileDown = new JMenuItem(Messages.getString("AbstractPlaylistEditorView.7"), IconLoader
         .getIcon(JajukIcons.DOWN));
     jmiFileDown.addActionListener(this);
-    pjmFiles = new PreferencesJMenu(editorTable.getSelection());
+    pjmFilesEditor = new PreferencesJMenu(editorTable.getSelection());
 
     editorTable.getMenu().add(jmiFilePlay);
     editorTable.getMenu().add(jmiFilePush);
@@ -380,7 +380,7 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
     editorTable.getMenu().add(jmiFileDown);
     editorTable.getMenu().addSeparator();
     editorTable.getMenu().add(jmiFileAddFavorites);
-    editorTable.getMenu().add(pjmFiles);
+    editorTable.getMenu().add(pjmFilesEditor);
     editorTable.getMenu().addSeparator();
     editorTable.getMenu().add(jmiFileProperties);
 
@@ -562,8 +562,7 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
     editorTable.getSelectionModel().clearSelection();
     PlaylistView.this.plf = plf;
     jbPrepParty.putClientProperty(Const.DETAIL_SELECTION, plf);
-    pjmFiles.putClientProperty(Const.DETAIL_SELECTION, plf);
-
+    
     // set title label
     jlTitle.setText(plf.getName());
     if (plf.getType() == Playlist.Type.BESTOF) {
@@ -838,6 +837,8 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
     JMenuItem jmiPrepareParty;
 
     MouseAdapter ma;
+    
+    private PreferencesJMenu pjmFilesRepository;
 
     public PlaylistRepository() {
       super();
@@ -882,12 +883,13 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
           jmiRepositorySaveAs.putClientProperty(Const.DETAIL_SELECTION, jtable.getSelection());
 
           jmiPrepareParty = new JMenuItem(ActionManager.getAction(JajukActions.PREPARE_PARTY));
+          pjmFilesRepository = new PreferencesJMenu(jtable.getSelection());
 
           jtable.getMenu().add(jmiPrepareParty);
           jtable.getMenu().add(jmiRepositorySaveAs);
 
           jtable.getMenu().addSeparator();
-          jtable.getMenu().add(pjmFiles);
+          jtable.getMenu().add(pjmFilesRepository);
           jtable.getMenu().addSeparator();
           // Add this generic menu item manually to ensure it's the last one in
           // the list for GUI reasons

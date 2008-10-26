@@ -122,6 +122,8 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 
   JButton jbResetRatings;
 
+  JButton jbResetPreferences;
+
   JPanel jpStart;
 
   JLabel jlStart;
@@ -380,6 +382,21 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
           }
           if (!DeviceManager.getInstance().isAnyDeviceRefreshing()) {
             ObservationManager.notify(new Event(JajukEvents.RATE_RESET));
+          } else {
+            Messages.showErrorMessage(120);
+          }
+        } else if (e.getSource() == jbResetPreferences) {
+          // show confirmation message if required
+          if (Conf.getBoolean(Const.CONF_CONFIRMATIONS_RESET_RATINGS)) {
+            final int iResu = Messages.getChoice(Messages
+                .getString("Confirmation_reset_preferences"), JOptionPane.YES_NO_CANCEL_OPTION,
+                JOptionPane.WARNING_MESSAGE);
+            if (iResu != JOptionPane.YES_OPTION) {
+              return;
+            }
+          }
+          if (!DeviceManager.getInstance().isAnyDeviceRefreshing()) {
+            ObservationManager.notify(new Event(JajukEvents.PREFERENCES_RESET));
           } else {
             Messages.showErrorMessage(120);
           }
@@ -762,7 +779,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     // --History
     jpHistory = new JPanel();
 
-    final double sizeHistory[][] = { { p, p }, { p, p } };
+    final double sizeHistory[][] = { { p, p }, { p, p, p } };
     final TableLayout layoutHistory = new TableLayout(sizeHistory);
     layoutHistory.setHGap(iXSeparator);
     layoutHistory.setVGap(iYSeparator);
@@ -798,14 +815,22 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
         .getIcon(JajukIcons.CLEAR));
     jbClearHistory.setToolTipText(Messages.getString("ParameterView.4"));
     jbClearHistory.addActionListener(this);
+
     jbResetRatings = new JButton(Messages.getString("ParameterView.186"), IconLoader
         .getIcon(JajukIcons.CLEAR));
     jbResetRatings.setToolTipText(Messages.getString("ParameterView.187"));
     jbResetRatings.addActionListener(this);
+
+    jbResetPreferences = new JButton(Messages.getString("ParameterView.249"), IconLoader
+        .getIcon(JajukIcons.CLEAR));
+    jbResetPreferences.setToolTipText(Messages.getString("ParameterView.250"));
+    jbResetPreferences.addActionListener(this);
+
     jpHistory.add(jlHistory, "0,0");
     jpHistory.add(jtfHistory, "1,0");
     jpHistory.add(jbClearHistory, "0,1");
-    jpHistory.add(jbResetRatings, "1,1");
+    jpHistory.add(jbResetRatings, "0,2");
+    jpHistory.add(jbResetPreferences, "1,2");
 
     // --Startup
     jpStart = new JPanel();

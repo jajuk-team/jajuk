@@ -837,7 +837,7 @@ public class IconLoader {
       out = new ImageIcon(UtilSystem.getResource("icons/16x16/preference-love_16x16.png"));
     }
 
-    else if (icon == JajukIcons.PREFERENCE_UNKNOWN) {
+    else if (icon == JajukIcons.PREFERENCE_UNSET) {
       out = new ImageIcon(UtilSystem.getResource("icons/16x16/preference-unknown_16x16.png"));
     }
     

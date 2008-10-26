@@ -386,7 +386,7 @@ public enum JajukIcons {
 
   PREFERENCE_ADORE,
   
-  PREFERENCE_UNKNOWN,
+  PREFERENCE_UNSET,
   
   UNBAN,
   

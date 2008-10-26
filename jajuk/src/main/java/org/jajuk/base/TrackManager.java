@@ -95,8 +95,8 @@ public final class TrackManager extends ItemManager implements Observer {
     // Year
     registerProperty(new PropertyMetaInformation(Const.XML_YEAR, false, true, true, true, true,
         Long.class, 0));
-    // Rate
-    registerProperty(new PropertyMetaInformation(Const.XML_TRACK_RATE, false, false, true, true,
+    // Rate : this is a property computed from preference and total played time, not editable
+    registerProperty(new PropertyMetaInformation(Const.XML_TRACK_RATE, false, false, true, false,
         true, Long.class, 0));
     // Files
     registerProperty(new PropertyMetaInformation(Const.XML_FILES, false, false, true, false, false,
@@ -450,16 +450,19 @@ public final class TrackManager extends ItemManager implements Observer {
    *          item name
    * @return new track or null if wrong format
    */
-  public synchronized Track changeTrackRate(Track track, long lNew) throws JajukException {
+  public synchronized Track changeTrackRate(Track track, long lNew)  {
     // check there is actually a change
     if (track.getRate() == lNew) {
       return track;
     }
-    // check format
-    if (lNew < 0) {
-      throw new JajukException(137);
+    // check format, rate in [0,100]
+    if (lNew < 0 || lNew > 100) {
+      track.setRate(0l);
+      Log.error(137);
     }
-    track.setRate(lNew);
+    else{
+      track.setRate(lNew);
+    }
     return track;
   }
 
@@ -472,7 +475,7 @@ public final class TrackManager extends ItemManager implements Observer {
    *          item order
    * @param filter
    *          files we want to deal with
-   * @return new track or null if wronf format
+   * @return new track or null if wrong  format
    */
   public synchronized Track changeTrackOrder(Track track, long lNewOrder, Set<File> filter)
       throws JajukException {

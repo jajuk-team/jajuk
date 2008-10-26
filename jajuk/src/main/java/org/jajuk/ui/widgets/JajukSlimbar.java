@@ -73,11 +73,8 @@ import org.jajuk.services.players.Player;
 import org.jajuk.services.players.StackItem;
 import org.jajuk.ui.actions.ActionManager;
 import org.jajuk.ui.actions.ActionUtil;
-import org.jajuk.ui.actions.JajukAction;
 import org.jajuk.ui.actions.JajukActions;
 import org.jajuk.ui.actions.MuteAction;
-import org.jajuk.ui.helpers.FontManager;
-import org.jajuk.ui.helpers.FontManager.JajukFont;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
@@ -108,7 +105,7 @@ public final class JajukSlimbar extends JFrame implements Observer, MouseWheelLi
 
   private SizedButton jbStop;
 
-  private DropDownButton jbIncRate;
+  private PreferenceToolbar preferences;
 
   private DropDownButton jddbSmart;
 
@@ -156,7 +153,7 @@ public final class JajukSlimbar extends JFrame implements Observer, MouseWheelLi
     @Override
     public void mouseDragged(MouseEvent e) {
       Point point = e.getLocationOnScreen();
-      // compute coordonnates of the event relative to the frame, not the screen
+      // compute coordinates of the event relative to the frame, not the screen
       // so we can compensate the frame size to avoid it to jump when applying
       // the new location
       Point relativePoint = SwingUtilities.convertPoint(((JComponent) e.getSource()).getParent(),
@@ -275,34 +272,9 @@ public final class JajukSlimbar extends JFrame implements Observer, MouseWheelLi
       jddbSmart.setIcon(IconLoader.getIcon(JajukIcons.NOVELTIES_16X16));
     }
 
-    JajukAction actionIncRate = ActionManager.getAction(JajukActions.INC_RATE);
-    actionIncRate.setName(null);
-    final JPopupMenu jpmIncRating = new JPopupMenu();
-    for (int i = 3; i >= -3; i--) {
-      final int j = i;
-      JMenuItem jmi = new JMenuItem(Integer.toString(i));
-      if (Conf.getInt(Const.CONF_INC_RATING) == i) {
-        jmi.setFont(FontManager.getInstance().getFont(JajukFont.BOLD));
-      }
-      // Store selected value
-      jmi.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          Conf.setProperty(Const.CONF_INC_RATING, "" + j);
-        }
-      });
-      jpmIncRating.add(jmi);
-    }
-    jbIncRate = new DropDownButton(IconLoader.getIcon(JajukIcons.INC_RATING)) {
-      private static final long serialVersionUID = 1L;
-
-      @Override
-      protected JPopupMenu getPopupMenu() {
-        return jpmIncRating;
-      }
-    };
-    jbIncRate.setAction(actionIncRate);
-    jbIncRate.addToToolBar(jtbSmart);
-
+    preferences = new PreferenceToolbar();
+    jtbSmart.add(preferences);
+    
     JToolBar jtbTools = new JajukJToolbar();
 
     int iVolume = (int) (100 * Conf.getFloat(Const.CONF_VOLUME));
@@ -420,7 +392,6 @@ public final class JajukSlimbar extends JFrame implements Observer, MouseWheelLi
         setTitle(title);
         jbPlayPause.setToolTipText(title);
         jbInfo.setToolTipText(title);
-        jbIncRate.setToolTipText(rating);
       }
 
     });

@@ -88,8 +88,8 @@ public class RefreshReporter {
     }
     // To avoid "freezing" at 100% if new files have been added since last
     // refresh, take
-    // 10 % of new files
-    dirTotal *= 1.1;
+    // 5 % of new files
+    dirTotal *= 1.05;
 
     // if <0 directories count -> the progress bar is in indeterminate state
     this.rdialog = new RefreshDialog((dirTotal < 0));

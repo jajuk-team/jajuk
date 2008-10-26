@@ -30,8 +30,10 @@ import org.jajuk.events.Event;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.events.Observer;
+import org.jajuk.ui.widgets.InformationJPanel;
+import org.jajuk.util.Const;
+import org.jajuk.util.Messages;
 import org.jajuk.util.ReadOnlyIterator;
-import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 
 /**
@@ -137,6 +139,7 @@ public final class RatingManager extends Thread implements Observer {
   public Set<JajukEvents> getRegistrationKeys() {
     Set<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
     eventSubjectSet.add(JajukEvents.RATE_RESET);
+    eventSubjectSet.add(JajukEvents.PREFERENCES_RESET);
     return eventSubjectSet;
   }
 
@@ -147,6 +150,7 @@ public final class RatingManager extends Thread implements Observer {
    */
   public void update(Event event) {
     JajukEvents subject = event.getSubject();
+    // Reset rate and total play time (automatic part of rating system)
     if (subject.equals(JajukEvents.RATE_RESET)) {
       // Reset playcount
       setMaxPlaycount(0);
@@ -154,12 +158,27 @@ public final class RatingManager extends Thread implements Observer {
       ReadOnlyIterator<Track> it = TrackManager.getInstance().getTracksIterator();
       while (it.hasNext()) {
         Track track = it.next();
-        try {
-          TrackManager.getInstance().changeTrackRate(track, 0l);
-        } catch (JajukException e) {
-          Log.error(e);
-          return;
-        }
+        track.setProperty(Const.XML_TRACK_RATE, 0l);
+        track.setProperty(Const.XML_TRACK_TOTAL_PLAYTIME, 0l);
+      }
+      ObservationManager.notify(new Event(JajukEvents.DEVICE_REFRESH));
+      // Force suggestion view refresh. Not that the suggestion view doesn't
+      // subscribe to EVENT_RATE_RESET event directly because we don't ensure
+      // that the view will trap the event only after this class
+      ObservationManager.notify(new Event(JajukEvents.SUGGESTIONS_REFRESH));
+      // Computes bestof
+      FileManager.getInstance().refreshBestOfFiles();
+      InformationJPanel.getInstance().setMessage(Messages.getString("ParameterView.252"),
+          InformationJPanel.INFORMATIVE);
+    }
+    // Reset the manual part of the rating system : preferences
+    else if (subject.equals(JajukEvents.PREFERENCES_RESET)) {
+      // Reset preferences
+      ReadOnlyIterator<Track> it = TrackManager.getInstance().getTracksIterator();
+      while (it.hasNext()) {
+        Track track = it.next();
+        track.setProperty(Const.XML_TRACK_PREFERENCE, 0l);
+        track.updateRate();
       }
       ObservationManager.notify(new Event(JajukEvents.DEVICE_REFRESH));
       // Force suggestion view refresh. Not that the suggestion view doesn't
@@ -168,6 +187,8 @@ public final class RatingManager extends Thread implements Observer {
       ObservationManager.notify(new Event(JajukEvents.SUGGESTIONS_REFRESH));
       // Computes bestof
       FileManager.getInstance().refreshBestOfFiles();
+      InformationJPanel.getInstance().setMessage(Messages.getString("ParameterView.253"),
+          InformationJPanel.INFORMATIVE);
     }
   }
 

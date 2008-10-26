@@ -23,9 +23,12 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.swing.JComboBox;
 import javax.swing.JList;
+import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 import javax.swing.plaf.basic.BasicComboBoxRenderer;
 
@@ -34,9 +37,11 @@ import org.jajuk.base.Track;
 import org.jajuk.events.Event;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
+import org.jajuk.events.Observer;
 import org.jajuk.services.players.FIFO;
 import org.jajuk.ui.actions.ActionManager;
 import org.jajuk.ui.actions.JajukActions;
+import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
@@ -49,7 +54,7 @@ import org.jajuk.util.Messages;
  * </p>
  * 
  */
-public class EvaluationToolbar extends JajukJToolbar {
+public class PreferenceToolbar extends JajukJToolbar implements Observer {
 
   private static final long serialVersionUID = 3869208492725759632L;
 
@@ -59,7 +64,7 @@ public class EvaluationToolbar extends JajukJToolbar {
 
   ActionListener listener;
 
-  public EvaluationToolbar() {
+  public PreferenceToolbar() {
     jbBan = new JajukButton(ActionManager.getAction(JajukActions.BAN));
     // Preference combo:
     /*
@@ -86,8 +91,8 @@ public class EvaluationToolbar extends JajukJToolbar {
         case 2:
           setToolTipText(Messages.getString("Preference.4"));
           break;
-        // Empty string for default state : no preference set
         case 3:
+          setToolTipText(Messages.getString("Preference.8"));
           break;
         case 4:
           setToolTipText(Messages.getString("Preference.3"));
@@ -110,11 +115,17 @@ public class EvaluationToolbar extends JajukJToolbar {
     jcbPreference.addItem(IconLoader.getIcon(JajukIcons.PREFERENCE_ADORE));
     jcbPreference.addItem(IconLoader.getIcon(JajukIcons.PREFERENCE_LOVE));
     jcbPreference.addItem(IconLoader.getIcon(JajukIcons.PREFERENCE_LIKE));
-    // Empty string for default state : no preference set
-    jcbPreference.addItem(IconLoader.getIcon(JajukIcons.PREFERENCE_UNKNOWN));
+    jcbPreference.addItem(IconLoader.getIcon(JajukIcons.PREFERENCE_UNSET));
     jcbPreference.addItem(IconLoader.getIcon(JajukIcons.PREFERENCE_AVERAGE));
     jcbPreference.addItem(IconLoader.getIcon(JajukIcons.PREFERENCE_POOR));
     jcbPreference.addItem(IconLoader.getIcon(JajukIcons.PREFERENCE_HATE));
+
+    // Set default to unset preference if not playing and to current track value if playing
+    if (!FIFO.isStopped()) {
+      setPreference(FIFO.getCurrentFile().getTrack().getLongValue(Const.XML_TRACK_PREFERENCE));
+    } else {
+      jcbPreference.setSelectedIndex(3);
+    }
 
     listener = new ActionListener() {
 
@@ -132,6 +143,16 @@ public class EvaluationToolbar extends JajukJToolbar {
     jcbPreference.addActionListener(listener);
     add(jbBan);
     add(jcbPreference);
+    ObservationManager.register(this);
+  }
+
+  public Set<JajukEvents> getRegistrationKeys() {
+    Set<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
+    eventSubjectSet.add(JajukEvents.RATE_CHANGED);
+    eventSubjectSet.add(JajukEvents.FILE_LAUNCHED);
+    eventSubjectSet.add(JajukEvents.ZERO);
+    eventSubjectSet.add(JajukEvents.PLAYER_STOP);
+    return eventSubjectSet;
   }
 
   /**
@@ -143,5 +164,28 @@ public class EvaluationToolbar extends JajukJToolbar {
     jcbPreference.removeActionListener(listener);
     jcbPreference.setSelectedIndex(-1 * (int) preference + 3);
     jcbPreference.addActionListener(listener);
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.jajuk.ui.Observer#update(java.lang.String)
+   */
+  public void update(final Event event) {
+    SwingUtilities.invokeLater(new Runnable() {
+      public void run() {
+        if (JajukEvents.RATE_CHANGED.equals(event.getSubject())) {
+          setPreference(FIFO.getCurrentFile().getTrack().getLongValue(Const.XML_TRACK_PREFERENCE));
+        } else if (JajukEvents.FILE_LAUNCHED.equals(event.getSubject())) {
+          // Update evaluation toolbar
+          setEnabled(true);
+          setPreference(FIFO.getCurrentFile().getTrack().getLongValue(Const.XML_TRACK_PREFERENCE));
+        } else if (JajukEvents.ZERO.equals(event.getSubject())
+            || JajukEvents.PLAYER_STOP.equals(event.getSubject())) {
+          setEnabled(false);
+          setPreference(0);
+        }
+      }
+    });
   }
 }

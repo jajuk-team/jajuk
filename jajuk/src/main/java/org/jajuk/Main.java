@@ -573,14 +573,14 @@ public final class Main {
           // Wait few secs to avoid GUI startup perturbations
           Thread.sleep(10000);
           
+          // Switch to sorted mode, must be done before starting auto-refresh thread !
+          ItemManager.switchAllManagersToOrderState();
+          
           // Launch auto-refresh thread
           DeviceManager.getInstance().startAutoRefreshThread();
 
           // Start rating manager thread
           RatingManager.getInstance().start();
-
-          // Switch to sorted mode
-          ItemManager.switchAllManagersToOrderState();
 
           // Force rebuilding thumbs (after an album id hashcode
           // method change for eg)

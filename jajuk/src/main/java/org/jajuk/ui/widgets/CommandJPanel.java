@@ -194,7 +194,7 @@ public class CommandJPanel extends JXPanel implements ActionListener, ListSelect
 
   JSlider jsVolume;
 
-  private EvaluationToolbar evaltoobar;
+  private PreferenceToolbar evaltoobar;
 
   //private JButton jbBan;
 
@@ -338,7 +338,7 @@ public class CommandJPanel extends JXPanel implements ActionListener, ListSelect
     jcbHistory.setMinimumSize(new Dimension(0, 25));
     jcbHistory.setToolTipText(Messages.getString("CommandJPanel.0"));
     jcbHistory.addActionListener(CommandJPanel.this);
-    evaltoobar = new EvaluationToolbar();
+    evaltoobar = new PreferenceToolbar();
     double[][] sizeHistory = new double[][] {
         { 3, TableLayout.PREFERRED, 3, TableLayout.FILL, 10, TableLayout.PREFERRED, 5 }, { 25 } };
     jpHistory.setLayout(new TableLayout(sizeHistory));
@@ -747,8 +747,6 @@ public class CommandJPanel extends JXPanel implements ActionListener, ListSelect
           ActionManager.getAction(STOP_TRACK).setEnabled(false);
           ActionManager.getAction(FAST_FORWARD_TRACK).setEnabled(false);
           ActionManager.getAction(FINISH_ALBUM).setEnabled(false);
-          evaltoobar.setPreference(0);
-          evaltoobar.setEnabled(false);
           // Reset history so user can launch again stopped
           // track (selection must change to throw an ActionEvent)
           jcbHistory.setSelectedIndex(-1);
@@ -765,9 +763,7 @@ public class CommandJPanel extends JXPanel implements ActionListener, ListSelect
           ActionManager.getAction(PREVIOUS_ALBUM).setEnabled(false);
           ActionManager.getAction(FINISH_ALBUM).setEnabled(false);
           ActionManager.getAction(PLAY_PAUSE_TRACK).setIcon(IconLoader.getIcon(JajukIcons.PAUSE));
-          evaltoobar.setEnabled(false);
-          evaltoobar.setPreference(0);
-          // Reset history so user can launch again stopped
+           // Reset history so user can launch again stopped
           // track (selection must change to throw an ActionEvent)
           jcbHistory.setSelectedIndex(-1);
           // reset startup position
@@ -834,11 +830,6 @@ public class CommandJPanel extends JXPanel implements ActionListener, ListSelect
             jcbHistory.setSelectedIndex(0);
           }
           jcbHistory.addActionListener(CommandJPanel.this);
-          // Update evaluation toolbar
-          evaltoobar.setEnabled(true);
-          evaltoobar.setPreference(FIFO.getCurrentFile().getTrack().getLongValue(
-              Const.XML_TRACK_PREFERENCE));
-          System.out.println(FIFO.getCurrentFile().getTrack());
         } else if (JajukEvents.CLEAR_HISTORY.equals(event.getSubject())) {
           // clear selection bar (data itself is clear
           // from the model by History class)
@@ -871,8 +862,7 @@ public class CommandJPanel extends JXPanel implements ActionListener, ListSelect
         // Update mute icon look when changing the volume
             (!Player.isMuted())) {
           MuteAction.setVolumeIcon(getCurrentVolume());
-        }
-
+        }   
       }
     });
   }
@@ -1077,7 +1067,4 @@ public class CommandJPanel extends JXPanel implements ActionListener, ListSelect
     this.jbIntro.setSelected(b);
   }
 
-  // public void setMuteSelected(final boolean b) {
-  // this.jbMute.setSelected(b);
-  // }
 }

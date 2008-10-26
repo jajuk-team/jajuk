@@ -66,6 +66,11 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
    * much CPU
    */
   private static final int PROGRESS_STEP = 500;
+  
+  /**
+   * Total play time is refreshed every TOTAL_PLAYTIME_UPDATE_INTERVAL times
+   */
+  private static final int TOTAL_PLAYTIME_UPDATE_INTERVAL = 2;
 
   /** current file */
   private org.jajuk.base.File fCurrent;
@@ -94,12 +99,12 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
             sendCommand("get_time_pos");
             // every 2 time units, increase actual play time. We wait this
             // delay for perfs and for precision
-            if (comp % 2 == 0) {
+            if (comp % TOTAL_PLAYTIME_UPDATE_INTERVAL == 0) {
               // Increase actual play time
               // End of file: increase actual play time to the track
               // Perf note : this full action takes less much than 1 ms
               long trackPlaytime = current.getLongValue(Const.XML_TRACK_TOTAL_PLAYTIME);
-              long newValue = PROGRESS_STEP / 100 + trackPlaytime;
+              long newValue = ((PROGRESS_STEP * TOTAL_PLAYTIME_UPDATE_INTERVAL) / 1000) + trackPlaytime;
               current.setProperty(Const.XML_TRACK_TOTAL_PLAYTIME, +newValue);
             }
             comp++;
@@ -197,20 +202,13 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
             try {
               // Update track rate
               fCurrent.getTrack().updateRate();
-
-              // inc rate by 1 if file is fully
-              // played
-              // fCurrent.getTrack().setRate(fCurrent.getTrack().getRate() + 1);
-              // Alert rating manager that something changed
-              // RatingManager.setRateHasChanged(true);
+              
               // If using crossfade, ignore end of file
               if (!bFading
               // Do not launch next track if not opening: it means
                   // that the file is in error (EOF comes
-                  // before any
-                  // play) and the finished() is processed by
-                  // Player
-                  // on exception processing
+                  // before any play) and the finished() is processed by
+                  // Player on exception processing
                   && !bOpening) {
                 // Benefit from end of file to perform a full gc
                 System.gc();

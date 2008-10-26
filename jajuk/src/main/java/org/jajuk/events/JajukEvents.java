@@ -127,8 +127,10 @@ public enum JajukEvents {
   FILE_COPIED,
   // Covers should be refreshed
   COVER_NEED_REFRESH,
-  // Ratings have been reset
+  // Ratings have to be reseted
   RATE_RESET,
+  // Preferences have been reset
+  PREFERENCES_RESET,
   // suggestion view should be refreshed
   SUGGESTIONS_REFRESH,
 

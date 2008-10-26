@@ -26,7 +26,9 @@ import java.util.List;
 import org.jajuk.base.Item;
 import org.jajuk.base.Track;
 import org.jajuk.base.TrackManager;
-import org.jajuk.util.Const;
+import org.jajuk.events.Event;
+import org.jajuk.events.JajukEvents;
+import org.jajuk.events.ObservationManager;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
@@ -60,7 +62,9 @@ public class HateSelectionAction extends SelectionAction {
     }
     // Set the preference
     for (Track track : tracks) {
-      track.setProperty(Const.XML_TRACK_PREFERENCE, -3);
+      track.setPreference(-3l);
     }
+    // Request a GUI refresh
+    ObservationManager.notify(new Event(JajukEvents.RATE_CHANGED));
   }
 }

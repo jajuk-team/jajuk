@@ -219,39 +219,37 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
   public void commit() throws JajukException {
     BufferedWriter bw = null;
     java.io.File temp = null;
-    if (isModified()) {
-      try {
-        /*
-         * Due to bug #1046, we use a temporary file In some special cases
-         * (reproduced under Linux, JRE SUN 1.6.0_04, CIFS mount, 777 rights
-         * file), probably due to a JRE bug, files cannot be opened
-         * (FileNotFound? Exception, permission denied) and the file is voided
-         * (0 bytes) and is closed (checked with lsof).
-         */
-        temp = new java.io.File(getAbsolutePath() + '~');
-        bw = new BufferedWriter(new FileWriter(temp));
-        bw.write(Const.PLAYLIST_NOTE);
-        bw.newLine();
-        final Iterator<File> it = getFiles().iterator();
-        while (it.hasNext()) {
-          final File file = it.next();
-          if (file.getIO().getParent().equals(fio.getParent())) {
-            bw.write(file.getName());
-          } else {
-            bw.write(file.getAbsolutePath());
-          }
-          bw.newLine();
+    try {
+      /*
+       * Due to bug #1046, we use a temporary file In some special cases
+       * (reproduced under Linux, JRE SUN 1.6.0_04, CIFS mount, 777 rights
+       * file), probably due to a JRE bug, files cannot be opened (FileNotFound?
+       * Exception, permission denied) and the file is voided (0 bytes) and is
+       * closed (checked with lsof).
+       */
+      temp = new java.io.File(getAbsolutePath() + '~');
+      bw = new BufferedWriter(new FileWriter(temp));
+      bw.write(Const.PLAYLIST_NOTE);
+      bw.newLine();
+      final Iterator<File> it = getFiles().iterator();
+      while (it.hasNext()) {
+        final File file = it.next();
+        if (file.getIO().getParent().equals(fio.getParent())) {
+          bw.write(file.getName());
+        } else {
+          bw.write(file.getAbsolutePath());
         }
-      } catch (final Exception e) {
-        throw new JajukException(28, getName(), e);
-      } finally {
-        if (bw != null) {
-          try {
-            bw.flush();
-            bw.close();
-          } catch (final IOException e1) {
-            throw new JajukException(28, getName(), e1);
-          }
+        bw.newLine();
+      }
+    } catch (final Exception e) {
+      throw new JajukException(28, getName(), e);
+    } finally {
+      if (bw != null) {
+        try {
+          bw.flush();
+          bw.close();
+        } catch (final IOException e1) {
+          throw new JajukException(28, getName(), e1);
         }
       }
 
@@ -543,7 +541,7 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
           final StringBuilder sbFileDir = new StringBuilder(getDirectory().getDevice().getUrl());
           sbFileDir.append(getDirectory().getRelativePath());
           // Add a trailing / at the end of the url if required
-          if (sLine.charAt(0) != '/'){
+          if (sLine.charAt(0) != '/') {
             sbFileDir.append("/");
           }
           // take a look relatively to playlist directory to check

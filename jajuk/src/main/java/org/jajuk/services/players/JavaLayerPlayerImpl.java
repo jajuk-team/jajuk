@@ -37,7 +37,6 @@ import org.jajuk.util.Const;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilFeatures;
 import org.jajuk.util.UtilSystem;
-import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 
 /**
@@ -75,10 +74,16 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, Const, BasicPlayerListe
   /** Fading state */
   boolean bFading = false;
 
-  /** Progress step in ms */
-  private static final int PROGRESS_STEP = 300;// need a fast refresh,
+  /**
+   * Progress step in ms, do not set less than 300 or 400 to avoid using too
+   * much CPU
+   */
+  private static final int PROGRESS_STEP = 500;
 
-  // especially for fading
+  /**
+   * Total play time is refreshed every TOTAL_PLAYTIME_UPDATE_INTERVAL times
+   */
+  private static final int TOTAL_PLAYTIME_UPDATE_INTERVAL = 2;
 
   /** Volume when starting fade */
   private float fadingVolume;
@@ -88,6 +93,9 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, Const, BasicPlayerListe
 
   /** Inc rating flag */
   private boolean bHasBeenRated = false;
+
+  /** Used to compute total played time */
+  private int comp = 1;
 
   /*
    * (non-Javadoc)
@@ -140,6 +148,8 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, Const, BasicPlayerListe
     if (player != null) {
       player.stop();
     }
+    // Update track rate
+    fCurrent.getTrack().updateRate();
   }
 
   /*
@@ -279,6 +289,16 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, Const, BasicPlayerListe
         }
         return;
       }
+      // Update total played time
+      if (comp % TOTAL_PLAYTIME_UPDATE_INTERVAL == 0) {
+        // Increase actual play time
+        // End of file: increase actual play time to the track
+        // Perf note : this full action takes less much than 1 ms
+        long trackPlaytime = fCurrent.getTrack().getLongValue(Const.XML_TRACK_TOTAL_PLAYTIME);
+        long newValue = ((PROGRESS_STEP * TOTAL_PLAYTIME_UPDATE_INTERVAL) / 1000) + trackPlaytime;
+        fCurrent.getTrack().setProperty(Const.XML_TRACK_TOTAL_PLAYTIME, +newValue);
+      }
+      comp++;
       // computes read time
       if (mPlayingData.containsKey("audio.length.bytes")) {
         int byteslength = ((Integer) mPlayingData.get("audio.length.bytes")).intValue();
@@ -291,12 +311,8 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, Const, BasicPlayerListe
       if (!bHasBeenRated
           && (lTime >= INC_RATE_TIME * 1000 || (length != TO_THE_END && lTime > length))) {
         // inc rate by 1 if file is played at least INC_RATE_TIME secs
-        try {
-          TrackManager.getInstance().changeTrackRate(fCurrent.getTrack(),
-              fCurrent.getTrack().getRate() + 1);
-        } catch (JajukException e) {
-          Log.error(e);
-        }
+        TrackManager.getInstance().changeTrackRate(fCurrent.getTrack(),
+            fCurrent.getTrack().getRate() + 1);
       }
       // Cross-Fade test
       if (iFadeDuration > 0 && lTime > (lDuration - iFadeDuration)) {
@@ -304,12 +320,6 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, Const, BasicPlayerListe
         // fade
         if (UtilSystem.needFullFC()) {
           Log.debug("Need full gc, no cross fade");
-        }
-        // Ugly hack to disable cross fade for APE files due to an
-        // entagged issue, ape length is 0 so tracks start fading
-        // when starting
-        else if (fCurrent.getType().equals(TypeManager.getInstance().getTypeByExtension("ape"))) {
-          Log.debug("APE file, no cross fade");
         } else {
           bFading = true;
           this.fadingVolume = fVolume;
@@ -320,6 +330,8 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, Const, BasicPlayerListe
             @Override
             public void run() {
               FIFO.finished();
+              // Update track rate
+              fCurrent.getTrack().updateRate();
             }
           }.start();
         }
@@ -332,6 +344,7 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, Const, BasicPlayerListe
           @Override
           public void run() {
             FIFO.finished();
+            fCurrent.getTrack().updateRate();
           }
         }.start();
       }
@@ -349,11 +362,7 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, Const, BasicPlayerListe
     case BasicPlayerEvent.EOM:
       // inc rate by 1 if file is fully played
       Track track = fCurrent.getTrack();
-      try {
-        TrackManager.getInstance().changeTrackRate(track, track.getRate() + 1);
-      } catch (JajukException e) {
-        Log.error(e);
-      }
+      TrackManager.getInstance().changeTrackRate(track, track.getRate() + 1);
       if (!bFading) { // if using crossfade, ignore end of file
         System.gc();// Benefit from end of file to perform a full gc
         FIFO.finished();

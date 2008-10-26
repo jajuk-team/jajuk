@@ -227,7 +227,7 @@ public final class ActionManager {
     installAction(PREFERENCE_AVERAGE, new AverageSelectionAction(), false);
     installAction(PREFERENCE_POOR, new PoorSelectionAction(), false);
     installAction(PREFERENCE_HATE, new HateSelectionAction(), false);
-    
+    installAction(PREFERENCE_UNSET, new UnsetPreferenceSelectionAction(), false);
     // Install this action only if Desktop class is supported, it is used to
     // open default web browser
     if (Desktop.isDesktopSupported()) {

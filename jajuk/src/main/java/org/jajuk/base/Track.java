@@ -401,7 +401,7 @@ public class Track extends LogicalItem implements Comparable<Track> {
     if (playcount <= 0) {
       playcount = 1;
     }
-    // Compute playtime rate = total play time / (playcount * track length)
+    // Compute playtime rate = total play time / (play count * track length)
     float playtimeRate = (float) getLongValue(Const.XML_TRACK_TOTAL_PLAYTIME)
         / (playcount * duration);
     // If playtimeRate > 1, a problem occurred, set 0.5
@@ -419,8 +419,9 @@ public class Track extends LogicalItem implements Comparable<Track> {
     // Final rate is intermediateRate in whish we apply the user preference from
     // -3 (hate) to 3 (adore)
     long preference = getLongValue(Const.XML_TRACK_PREFERENCE);
-    rate = Math.round(100 * (intermediateRate + (preference + Math.abs(preference)) / 2)
-        / (Math.abs(preference) + 1));
+    long absPreference = Math.abs(preference);
+    rate = Math.round(100 * (intermediateRate + (preference + absPreference) / 2)
+        / (absPreference + 1));
     // Apply new rate
     setRate(rate);
   }

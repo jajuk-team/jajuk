@@ -520,6 +520,10 @@ public enum JajukActions {
    */
   PREFERENCE_HATE,
   /**
+   * Set unset preference to selection
+   */
+  PREFERENCE_UNSET,
+  /**
    * Prepare party
    */
   PREPARE_PARTY,

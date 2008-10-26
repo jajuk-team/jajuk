@@ -43,7 +43,7 @@ public abstract class SelectionAction extends JajukAction {
   }
 
   /*
-   * (non-Javadoc)
+   * This method transforms various entries to a list of items
    * 
    * @see org.jajuk.ui.actions.JajukAction#perform(java.awt.event.ActionEvent)
    */
@@ -56,7 +56,18 @@ public abstract class SelectionAction extends JajukAction {
       selection = new ArrayList<Item>(1);
       selection.add((Item) o);
     } else if (o instanceof List) {
-      selection = (List<Item>) source.getClientProperty(Const.DETAIL_SELECTION);
+      List<Item> list = (List<Item>) o;
+      // List of playlists, replace playlist by playlist files
+      if (list.size() > 0 && list.get(0) instanceof Playlist) {
+        selection = new ArrayList<Item>(10);
+        for (Item item : list) {
+          Playlist pl = (Playlist) item;
+          selection.addAll(pl.getFiles());
+        }
+      } else {
+        // List of albums, authors ... files or tracks : just perform a cast
+        selection = (List<Item>) source.getClientProperty(Const.DETAIL_SELECTION);
+      }
     } else if (o instanceof Set) {
       selection = new ArrayList<Item>((Set<Item>) o);
     } else if (o instanceof Playlist) {

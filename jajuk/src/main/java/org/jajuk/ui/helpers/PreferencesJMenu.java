@@ -38,14 +38,15 @@ public class PreferencesJMenu extends JMenu {
 
   private static final long serialVersionUID = -4041513018474249903L;
 
-  private JMenuItem jbBan;
-  private JMenuItem jbUnBan;
-  private JMenuItem jbAdore;
-  private JMenuItem jbLove;
-  private JMenuItem jbLike;
-  private JMenuItem jbAverage;
-  private JMenuItem jbPoor;
-  private JMenuItem jbHate;
+  private JMenuItem jmiBan;
+  private JMenuItem jmiUnBan;
+  private JMenuItem jmiAdore;
+  private JMenuItem jmiLove;
+  private JMenuItem jmiLike;
+  private JMenuItem jmiUnset;
+  private JMenuItem jmiAverage;
+  private JMenuItem jmiPoor;
+  private JMenuItem jmiHate;
 
   /**
    * Constructs a Preference menu
@@ -75,39 +76,43 @@ public class PreferencesJMenu extends JMenu {
    * @param selection
    */
   private void initUI(List<? extends Item> selection) {
-    jbBan = new JMenuItem(ActionManager.getAction(JajukActions.BAN_SELECTION));
-    jbBan.putClientProperty(Const.DETAIL_SELECTION, selection);
+    jmiBan = new JMenuItem(ActionManager.getAction(JajukActions.BAN_SELECTION));
+    jmiBan.putClientProperty(Const.DETAIL_SELECTION, selection);
 
-    jbUnBan = new JMenuItem(ActionManager.getAction(JajukActions.UN_BAN_SELECTION));
-    jbUnBan.putClientProperty(Const.DETAIL_SELECTION, selection);
+    jmiUnBan = new JMenuItem(ActionManager.getAction(JajukActions.UN_BAN_SELECTION));
+    jmiUnBan.putClientProperty(Const.DETAIL_SELECTION, selection);
 
-    jbAdore = new JMenuItem(ActionManager.getAction(JajukActions.PREFERENCE_ADORE));
-    jbAdore.putClientProperty(Const.DETAIL_SELECTION, selection);
+    jmiAdore = new JMenuItem(ActionManager.getAction(JajukActions.PREFERENCE_ADORE));
+    jmiAdore.putClientProperty(Const.DETAIL_SELECTION, selection);
 
-    jbLove = new JMenuItem(ActionManager.getAction(JajukActions.PREFERENCE_LOVE));
-    jbLove.putClientProperty(Const.DETAIL_SELECTION, selection);
+    jmiLove = new JMenuItem(ActionManager.getAction(JajukActions.PREFERENCE_LOVE));
+    jmiLove.putClientProperty(Const.DETAIL_SELECTION, selection);
 
-    jbLike = new JMenuItem(ActionManager.getAction(JajukActions.PREFERENCE_LIKE));
-    jbLike.putClientProperty(Const.DETAIL_SELECTION, selection);
+    jmiLike = new JMenuItem(ActionManager.getAction(JajukActions.PREFERENCE_LIKE));
+    jmiLike.putClientProperty(Const.DETAIL_SELECTION, selection);
 
-    jbAverage = new JMenuItem(ActionManager.getAction(JajukActions.PREFERENCE_AVERAGE));
-    jbAverage.putClientProperty(Const.DETAIL_SELECTION, selection);
+    jmiUnset = new JMenuItem(ActionManager.getAction(JajukActions.PREFERENCE_UNSET));
+    jmiUnset.putClientProperty(Const.DETAIL_SELECTION, selection);
 
-    jbPoor = new JMenuItem(ActionManager.getAction(JajukActions.PREFERENCE_POOR));
-    jbPoor.putClientProperty(Const.DETAIL_SELECTION, selection);
+    jmiAverage = new JMenuItem(ActionManager.getAction(JajukActions.PREFERENCE_AVERAGE));
+    jmiAverage.putClientProperty(Const.DETAIL_SELECTION, selection);
 
-    jbHate = new JMenuItem(ActionManager.getAction(JajukActions.PREFERENCE_HATE));
-    jbHate.putClientProperty(Const.DETAIL_SELECTION, selection);
+    jmiPoor = new JMenuItem(ActionManager.getAction(JajukActions.PREFERENCE_POOR));
+    jmiPoor.putClientProperty(Const.DETAIL_SELECTION, selection);
 
-    add(jbBan);
-    add(jbUnBan);
+    jmiHate = new JMenuItem(ActionManager.getAction(JajukActions.PREFERENCE_HATE));
+    jmiHate.putClientProperty(Const.DETAIL_SELECTION, selection);
+
+    add(jmiBan);
+    add(jmiUnBan);
     addSeparator();
-    add(jbAdore);
-    add(jbLove);
-    add(jbLike);
-    add(jbAverage);
-    add(jbPoor);
-    add(jbHate);
+    add(jmiAdore);
+    add(jmiLove);
+    add(jmiLike);
+    add(jmiUnset);
+    add(jmiAverage);
+    add(jmiPoor);
+    add(jmiHate);
   }
 
 }

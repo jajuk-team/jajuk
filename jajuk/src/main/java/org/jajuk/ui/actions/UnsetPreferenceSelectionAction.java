@@ -20,40 +20,51 @@
 package org.jajuk.ui.actions;
 
 import java.awt.event.ActionEvent;
+import java.util.ArrayList;
+import java.util.List;
 
-import org.jajuk.base.File;
+import org.jajuk.base.Item;
 import org.jajuk.base.Track;
+import org.jajuk.base.TrackManager;
 import org.jajuk.events.Event;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
-import org.jajuk.services.players.FIFO;
-import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 
-public class BanCurrentAction extends SelectionAction {
+public class UnsetPreferenceSelectionAction extends SelectionAction {
 
   private static final long serialVersionUID = 1L;
 
   /**
-   * Ban / Unban current track. The Ban action is used to ban a track so it is never
-   * selected
+   * Set default preference to a selection
+   * <p>
+   * Selection action
+   * </p>
    */
-  BanCurrentAction() {
-    super(Messages.getString("BanSelectionAction.0"), IconLoader.getIcon(JajukIcons.BAN), true);
-    setShortDescription(Messages.getString("BanSelectionAction.1"));
+  UnsetPreferenceSelectionAction() {
+    super(Messages.getString("Preference.8"), IconLoader.getIcon(JajukIcons.PREFERENCE_UNSET), true);
+    setShortDescription(Messages.getString("Preference.8"));
   }
 
   @Override
   public void perform(ActionEvent e) throws Exception {
-    File current = FIFO.getCurrentFile();
-    if (current != null) {
-      Track track = current.getTrack();
-      boolean alreadyBanned = track.getBooleanValue(Const.XML_TRACK_BANNED);
-      track.setProperty(Const.XML_TRACK_BANNED, !alreadyBanned);
-      // Request a GUI refresh
-      ObservationManager.notify(new Event(JajukEvents.RATE_CHANGED));
+    super.perform(e);
+    // Check selection is not void
+    if (selection.size() == 0) {
+      return;
     }
+    // Extract tracks of each item
+    List<Track> tracks = new ArrayList<Track>(selection.size());
+    for (Item item : selection) {
+      tracks.addAll(TrackManager.getInstance().getAssociatedTracks(item));
+    }
+    // Set the preference
+    for (Track track : tracks) {
+      track.setPreference(0l);
+    }
+    // Request a GUI refresh
+    ObservationManager.notify(new Event(JajukEvents.RATE_CHANGED));
   }
 }
