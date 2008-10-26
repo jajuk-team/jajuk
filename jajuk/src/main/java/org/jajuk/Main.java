@@ -489,7 +489,9 @@ public final class Main {
     // directory
     final File fCache = UtilSystem.getConfFileByPath(Const.FILE_CACHE);
     if (!fCache.exists()) {
-      fCache.mkdirs();
+      if (!fCache.mkdirs()) {
+        Log.warn("Could not cretae directory structure " + fCache.toString());
+      }
     } else {
       // Empty cache
       final File[] cacheFiles = fCache.listFiles();
