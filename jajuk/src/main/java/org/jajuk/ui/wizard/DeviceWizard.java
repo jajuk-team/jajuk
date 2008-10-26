@@ -351,6 +351,7 @@ public class DeviceWizard extends JFrame implements ActionListener, Const {
       } else if (sInitialURL != null && !sInitialURL.equals(jtfUrl.getText())) {
         // If user changed the URL, force refresh
         new Thread() {
+          @Override
           public void run() {
             try {
               // try to remount the device
