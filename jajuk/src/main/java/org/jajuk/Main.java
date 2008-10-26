@@ -480,10 +480,8 @@ public final class Main {
     }
     // check for jajuk directory
     final File fWorkspace = new File(workspace);
-    if (!fWorkspace.exists()) {
-      if (!fWorkspace.mkdirs()) { // create the directory if it doesn't exist
-        Log.warn("Could not create directory " + fWorkspace.toString());
-      }
+    if (!fWorkspace.exists() && !fWorkspace.mkdirs()) { // create the directory if it doesn't exist
+      Log.warn("Could not create directory " + fWorkspace.toString());
     }
     // check for image cache presence and create the workspace/.jajuk
     // directory
@@ -698,10 +696,8 @@ public final class Main {
           // Check for remote concurrent users using the same configuration
           // files. Create concurrent session directory if needed
           File sessions = UtilSystem.getConfFileByPath(Const.FILE_SESSIONS);
-          if (!sessions.exists()) {
-            if (!sessions.mkdir()) {
-              Log.warn("Could not create directory " + sessions.toString());
-            }
+          if (!sessions.exists() && !sessions.mkdir()) {
+            Log.warn("Could not create directory " + sessions.toString());
           }
           // Check for concurrent session
           File[] files = sessions.listFiles();
@@ -733,17 +729,14 @@ public final class Main {
               // Not show again
               Conf.setProperty(Const.CONF_NOT_SHOW_AGAIN_CONCURRENT_SESSION, Const.TRUE);
             } else if (Messages.getString("Purge").equals(optionPane.getValue())) {
-              try {
-                // Clean up old locks directories in session folder
-                files = sessions.listFiles();
-                for (int i = 0; i < files.length; i++) {
-                  if (!files[i].delete()) {
-                    throw new Exception("Cannot delete : " + files[i].getAbsolutePath());
-                  }
+              // Clean up old locks directories in session folder
+              files = sessions.listFiles();
+              for (int i = 0; i < files.length; i++) {
+                if (!files[i].delete()) {
+                  Messages.showDetailedErrorMessage(131, "Cannot delete : " + files[i].getAbsolutePath(), "");
+                  Log.error(131);
+                  break;
                 }
-              } catch (Exception e) {
-                Messages.showDetailedErrorMessage(131, e.getMessage(), "");
-                Log.error(131);
               }
             }
           }

@@ -272,6 +272,7 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
     if (filelist == null || filelist.length == 0) { // none file, leave
       return;
     }
+
     for (int i = 0; i < filelist.length; i++) {
       // Leave ASAP if exit request
       if (ExitService.isExiting()) {
@@ -285,112 +286,21 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
               + "}}");
           continue;
         }
-        boolean bIsMusic = (Boolean) TypeManager.getInstance().getTypeByExtension(
-            UtilSystem.getExtension(filelist[i])).getValue(Const.XML_TYPE_IS_MUSIC);
+
         // Ignore iTunes files
         if (filelist[i].getName().startsWith("._")) {
           continue;
         }
+        
+
+        // check if we recognize the file as music file
+        boolean bIsMusic = (Boolean) TypeManager.getInstance().getTypeByExtension(
+            UtilSystem.getExtension(filelist[i])).getValue(Const.XML_TYPE_IS_MUSIC);
+
         if (bIsMusic) {
-          String name = filelist[i].getName();
-          String sId = FileManager.createID(name, this);
-          // check the file is not already known in database
-          org.jajuk.base.File fileRef = FileManager.getInstance().getFileByID(sId);
-          // Set name again to make sure Windows users will see actual
-          // name with right case
-          if (UtilSystem.isUnderWindows() && fileRef != null) {
-            fileRef.setName(name);
-          }
-          // if known file and no deep scan, just leave
-          if (fileRef != null && !bDeepScan) {
-            continue;
-          }
-          // New file or deep scan case
-          Tag tag = null;
-          // ignore tag error to make sure to get a
-          // tag object in all cases
-          tag = new Tag(filelist[i], true);
-          if (tag.isCorrupted()) {
-            if (reporter != null) {
-              reporter.notifyCorruptedFile();
-            }
-            Log.error(103, "{{" + filelist[i].getAbsolutePath() + "}}", null);
-          }
-          // if an error occurs, just notice it but keep the track
-          String sTrackName = tag.getTrackName();
-          String sAlbumName = tag.getAlbumName();
-          String sAuthorName = tag.getAuthorName();
-          String sStyle = tag.getStyleName();
-          long length = tag.getLength(); // length in sec
-          String sYear = tag.getYear();
-          long lQuality = tag.getQuality();
-          String sComment = tag.getComment();
-          long lOrder = tag.getOrder();
-          if (fileRef == null && reporter != null) {
-            // stats, do it here and not
-            // before because we ignore the
-            // file if we cannot read it
-            reporter.notifyNewFile();
-          }
-          Album album = AlbumManager.getInstance().registerAlbum(sAlbumName);
-          Style style = StyleManager.getInstance().registerStyle(sStyle);
-          Year year = YearManager.getInstance().registerYear(sYear);
-          Author author = AuthorManager.getInstance().registerAuthor(sAuthorName);
-          Type type = TypeManager.getInstance().getTypeByExtension(
-              UtilSystem.getExtension(filelist[i]));
-          // Store number of tracks in collection (note that the
-          // collection is locked)
-          long trackNumber = TrackManager.getInstance().getElementCount();
-          Track track = TrackManager.getInstance().registerTrack(sTrackName, album, style, author,
-              length, year, lOrder, type);
-
-          // Note date for file date property. CAUTION: do not try to
-          // check current date to accelerate refreshing if file has not
-          // been modified since last refresh as user can rename a parent
-          // directory and the files times under it are not modified
-          long lastModified = filelist[i].lastModified();
-
-          // Use file date if the "force file date" option is used
-          if (Conf.getBoolean(Const.CONF_FORCE_FILE_DATE)) {
-            track.setDiscoveryDate(new Date(lastModified));
-          } else if (TrackManager.getInstance().getElementCount() > trackNumber) {
-            // Update discovery date only if it is a new track
-
-            // A new track has been created, we can safely update
-            // the track date
-            // We don't want to update date if the track is already
-            // known, even if
-            // it is a new file because a track can map several
-            // files and discovery date
-            // is a track attribute, not file one
-            track.setDiscoveryDate(new Date());
-          }
-
-          org.jajuk.base.File file = FileManager.getInstance().registerFile(sId,
-              filelist[i].getName(), this, track, filelist[i].length(), lQuality);
-          // Set file date
-          file.setProperty(Const.XML_FILE_DATE, new Date(lastModified));
-          // Comment is at the track level, note that we take last
-          // found file comment but we changing a comment, we will
-          // apply to all files for a track
-          track.setComment(sComment);
-          // Make sure to refresh file size
-          file.setProperty(Const.XML_SIZE, filelist[i].length());
+          scanMusic(filelist[i], bDeepScan, reporter);
         } else { // playlist
-          String sId = PlaylistManager.createID(filelist[i].getName(), this);
-          Playlist plfRef = PlaylistManager.getInstance().getPlaylistByID(sId);
-          // if known playlist and no deep scan, just leave
-          if (plfRef != null && !bDeepScan) {
-            continue;
-          }
-          Playlist plFile = PlaylistManager.getInstance().registerPlaylistFile(filelist[i], this);
-          plFile.forceRefresh(); // force refresh
-          if (plfRef == null && reporter != null) {
-            // stats, do it here and not
-            // before because we ignore the
-            // file if we cannot read it
-            reporter.notifyNewFile();
-          }
+          scanPlaylist(filelist[i], bDeepScan, reporter);
         }
       } catch (Exception e) {
         Log.error(103, filelist.length > 0 ? "{{" + filelist[i].toString() + "}}" : "", e);
@@ -398,6 +308,144 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
     }
   }
 
+  /**
+   * @param filelist
+   * @param bDeepScan
+   * @param reporter
+   * @param value
+   * @throws JajukException
+   */
+  private void scanMusic(java.io.File music, boolean bDeepScan, RefreshReporter reporter)
+      throws JajukException {
+    String name = music.getName();
+    String sId = FileManager.createID(name, this);
+    // check the file is not already known in database
+    org.jajuk.base.File fileRef = FileManager.getInstance().getFileByID(sId);
+    // Set name again to make sure Windows users will see actual
+    // name with right case
+    if (UtilSystem.isUnderWindows() && fileRef != null) {
+      fileRef.setName(name);
+    }
+    
+    // if known file and no deep scan, just leave
+    if (fileRef != null && !bDeepScan) {
+      return;
+    }
+    
+    // New file or deep scan case
+
+    // ignore tag error to make sure to get a
+    // tag object in all cases
+    Tag tag = new Tag(music, true);
+    if (tag.isCorrupted()) {
+      if (reporter != null) {
+        reporter.notifyCorruptedFile();
+      }
+      Log.error(103, "{{" + music.getAbsolutePath() + "}}", null);
+    }
+    
+    // if an error occurs, just notice it but keep the track
+    String sTrackName = tag.getTrackName();
+    String sAlbumName = tag.getAlbumName();
+    String sAuthorName = tag.getAuthorName();
+    String sStyle = tag.getStyleName();
+    long length = tag.getLength(); // length in sec
+    String sYear = tag.getYear();
+    long lQuality = tag.getQuality();
+    String sComment = tag.getComment();
+    long lOrder = tag.getOrder();
+
+    if (fileRef == null && reporter != null) {
+      // stats, do it here and not
+      // before because we ignore the
+      // file if we cannot read it
+      reporter.notifyNewFile();
+    }
+    
+    registerFile(music, sId, sTrackName, sAlbumName, sAuthorName, sStyle, length, sYear, lQuality,
+        sComment, lOrder);
+  }
+
+  /**
+   * @param music
+   * @param sId
+   * @param sTrackName
+   * @param sAlbumName
+   * @param sAuthorName
+   * @param sStyle
+   * @param length
+   * @param sYear
+   * @param lQuality
+   * @param sComment
+   * @param lOrder
+   */
+  private void registerFile(java.io.File music, String sId, String sTrackName, String sAlbumName,
+      String sAuthorName, String sStyle, long length, String sYear, long lQuality, String sComment,
+      long lOrder) {
+    Album album = AlbumManager.getInstance().registerAlbum(sAlbumName);
+    Style style = StyleManager.getInstance().registerStyle(sStyle);
+    Year year = YearManager.getInstance().registerYear(sYear);
+    Author author = AuthorManager.getInstance().registerAuthor(sAuthorName);
+    Type type = TypeManager.getInstance().getTypeByExtension(
+        UtilSystem.getExtension(music));
+    // Store number of tracks in collection (note that the
+    // collection is locked)
+    long trackNumber = TrackManager.getInstance().getElementCount();
+    Track track = TrackManager.getInstance().registerTrack(sTrackName, album, style, author,
+        length, year, lOrder, type);
+
+    // Note date for file date property. CAUTION: do not try to
+    // check current date to accelerate refreshing if file has not
+    // been modified since last refresh as user can rename a parent
+    // directory and the files times under it are not modified
+    long lastModified = music.lastModified();
+
+    // Use file date if the "force file date" option is used
+    if (Conf.getBoolean(Const.CONF_FORCE_FILE_DATE)) {
+      track.setDiscoveryDate(new Date(lastModified));
+    } else if (TrackManager.getInstance().getElementCount() > trackNumber) {
+      // Update discovery date only if it is a new track
+
+      // A new track has been created, we can safely update
+      // the track date
+      // We don't want to update date if the track is already
+      // known, even if
+      // it is a new file because a track can map several
+      // files and discovery date
+      // is a track attribute, not file one
+      track.setDiscoveryDate(new Date());
+    }
+
+    org.jajuk.base.File file = FileManager.getInstance().registerFile(sId,
+        music.getName(), this, track, music.length(), lQuality);
+    // Set file date
+    file.setProperty(Const.XML_FILE_DATE, new Date(lastModified));
+    // Comment is at the track level, note that we take last
+    // found file comment but we changing a comment, we will
+    // apply to all files for a track
+    track.setComment(sComment);
+    // Make sure to refresh file size
+    file.setProperty(Const.XML_SIZE, music.length());
+  }
+
+  private void scanPlaylist(final java.io.File file, final boolean bDeepScan, final RefreshReporter reporter) 
+      throws Exception {
+    String sId = PlaylistManager.createID(file.getName(), this);
+    Playlist plfRef = PlaylistManager.getInstance().getPlaylistByID(sId);
+    // if known playlist and no deep scan, just leave
+    if (plfRef != null && !bDeepScan) {
+      return;
+    }
+    Playlist plFile = PlaylistManager.getInstance().registerPlaylistFile(file, this);
+    plFile.forceRefresh(); // force refresh
+    if (plfRef == null && reporter != null) {
+      // stats, do it here and not
+      // before because we ignore the
+      // file if we cannot read it
+      reporter.notifyNewFile();
+    }
+  }
+  
   /** Reset pre-calculated paths* */
   protected void reset() {
     fio = null;
@@ -561,9 +609,9 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
    */
   public void refresh(boolean deep, RefreshReporter reporter) throws JajukException {
     scan(deep, reporter);
-    final java.io.File[] files = getFio().listFiles(UtilSystem.getDirFilter());
-    if (files != null) {
-      for (final java.io.File element : files) {
+    final java.io.File[] lFiles = getFio().listFiles(UtilSystem.getDirFilter());
+    if (lFiles != null) {
+      for (final java.io.File element : lFiles) {
         final Directory subdir = DirectoryManager.getInstance().registerDirectory(
             element.getName(), this, getDevice());
         subdir.refresh(deep, reporter);
@@ -637,8 +685,8 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
       }
     }
     // files cleanup
-    final List<org.jajuk.base.File> files = FileManager.getInstance().getFiles();
-    for (final org.jajuk.base.File file : files) {
+    final List<org.jajuk.base.File> lFiles = FileManager.getInstance().getFiles();
+    for (final org.jajuk.base.File file : lFiles) {
       if (!ExitService.isExiting()
           // Only take into consideration files from this directory or from
           // sub-directories
