@@ -78,6 +78,7 @@ public class NewFolderAction extends JajukAction {
           if (newFolder.mkdir()) {
             // Always refresh dirs or devices asynchronously !
             new Thread() {
+              @Override
               public void run() {
                 DirectoryManager.getInstance().registerDirectory(folderName, dir, dir.getDevice());
                 ObservationManager.notify(new Event(JajukEvents.DEVICE_REFRESH));

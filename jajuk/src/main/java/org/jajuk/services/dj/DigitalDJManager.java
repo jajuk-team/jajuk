@@ -320,6 +320,7 @@ abstract class DigitalDJFactory extends DefaultHandler {
         /**
          * Called when we start an element
          */
+        @Override
         public void startElement(String sUri, String s, String sQName, Attributes attributes)
             throws SAXException {
           if (Const.XML_DJ_DJ.equals(sQName)) {

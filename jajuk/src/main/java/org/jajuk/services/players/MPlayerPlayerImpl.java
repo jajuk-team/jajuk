@@ -234,6 +234,7 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
     }
   }
 
+  @Override
   public void stop() throws Exception {
     // Update track rate
     fCurrent.getTrack().updateRate();
