@@ -104,16 +104,6 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener, 
 
   private JPopupMenu jmenuCollection;
 
-  //private ButtonGroup btCollection;
-
-  //private JRadioButtonMenuItem jmiCollectionStyle;
-
-  //private JRadioButtonMenuItem jmiCollectionAuthor;
-
-  //private JRadioButtonMenuItem jmiCollectionAlbum;
-
-  //private JRadioButtonMenuItem jmiCollectionProperties;
-
   private JMenuItem jmiCollectionReport;
 
   private JMenuItem jmiCollectionDuplicateFiles;

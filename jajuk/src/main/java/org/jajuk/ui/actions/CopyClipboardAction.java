@@ -23,29 +23,63 @@ import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
+import java.util.List;
 
+import javax.swing.JComponent;
+
+import org.jajuk.base.Directory;
+import org.jajuk.base.File;
+import org.jajuk.base.Item;
+import org.jajuk.base.Playlist;
+import org.jajuk.base.Track;
+import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
-import org.jajuk.util.UtilFeatures;
-import org.jajuk.util.error.JajukException;
 
 /**
  * 
- * Copy to clipboard the string stored in UtilFeatures.copyData
+ * Copy to clipboard the item absolute address
  */
 public class CopyClipboardAction extends JajukAction {
 
   private static final long serialVersionUID = 1L;
 
   CopyClipboardAction() {
-    super(Messages.getString("CopyClipboardAction.0"), IconLoader.getIcon(JajukIcons.COPY), true);
+    super(Messages.getString("CopyClipboardAction.0"), IconLoader
+        .getIcon(JajukIcons.COPY_TO_CLIPBOARD), true);
     setShortDescription(Messages.getString("CopyClipboardAction.0"));
   }
 
   @Override
-  public void perform(ActionEvent evt) throws JajukException {
-    StringSelection data = new StringSelection(UtilFeatures.getCopyData());
+  public void perform(ActionEvent e) throws Exception {
+    // This action expect either an item or a simple String from DETAIL_CONTENT
+    // Swing client property
+    JComponent source = (JComponent) e.getSource();
+    Object o = source.getClientProperty(Const.DETAIL_CONTENT);
+    String sData = "";
+    if (o instanceof List) {
+      @SuppressWarnings("unchecked")
+      List<Item> list = (List<Item>) o;
+      if (list.size() > 0) {
+        o = list.get(0);
+      }
+    }
+    if (o instanceof Item) {
+      Item item = (Item) o;
+      if (item instanceof File) {
+        sData = ((File) item).getAbsolutePath();
+      } else if (item instanceof Directory) {
+        sData = ((Directory) item).getAbsolutePath();
+      } else if (item instanceof Playlist) {
+        sData = ((Playlist) item).getAbsolutePath();
+      } else if (item instanceof Track) {
+        sData = ((Track) item).getFiles().get(0).getAbsolutePath();
+      }
+    } else if (o instanceof String) {
+      sData = (String) o;
+    }
+    StringSelection data = new StringSelection(sData);
     Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
     clipboard.setContents(data, data);
   }

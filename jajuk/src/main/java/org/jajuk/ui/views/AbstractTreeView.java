@@ -103,6 +103,8 @@ public abstract class AbstractTreeView extends ViewAdapter {
   JMenuItem jmiProperties;
 
   JMenuItem jmiCDDBWizard;
+  
+  JMenuItem jmiCopyURL;
 
   /** Jtree scroller position* */
   int pos;
@@ -152,6 +154,8 @@ public abstract class AbstractTreeView extends ViewAdapter {
     jmiReport.putClientProperty(Const.DETAIL_SELECTION, alSelected);
     jmiProperties = new JMenuItem(ActionManager.getAction(JajukActions.SHOW_PROPERTIES));
     jmiProperties.putClientProperty(Const.DETAIL_SELECTION, alSelected);
+    jmiCopyURL = new JMenuItem(ActionManager.getAction(JajukActions.COPY_TO_CLIPBOARD));
+    jmiCopyURL.putClientProperty(Const.DETAIL_CONTENT, alSelected);
   }
 
   abstract void populateTree();

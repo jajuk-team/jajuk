@@ -391,4 +391,6 @@ public enum JajukIcons {
   UNBAN,
   
   PREPARE_PARTY,
+  
+  COPY_TO_CLIPBOARD
 }

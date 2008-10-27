@@ -54,7 +54,6 @@ import org.jajuk.ui.helpers.FontManager;
 import org.jajuk.ui.helpers.FontManager.JajukFont;
 import org.jajuk.util.Const;
 import org.jajuk.util.Messages;
-import org.jajuk.util.UtilFeatures;
 import org.jajuk.util.UtilGUI;
 import org.jdesktop.swingx.JXBusyLabel;
 
@@ -152,6 +151,7 @@ public class LyricsView extends ViewAdapter implements Observer {
 
     menu.add(getJmiCopyToClipboard());
     getJmiLaunchInBrowser().putClientProperty(Const.DETAIL_CONTENT, sURL);
+    getJmiCopyToClipboard().putClientProperty(Const.DETAIL_CONTENT, sURL);
     menu.add(getJmiLaunchInBrowser());
     menu.show(getTextarea(), e.getX(), e.getY());
   }
@@ -255,7 +255,6 @@ public class LyricsView extends ViewAdapter implements Observer {
           });
           jlAuthor.setText(track.getAuthor().getName2());
           jlTitle.setText(track.getName());
-          UtilFeatures.setCopyData(sURL);
           jsp.setVisible(true);
           revalidate();
           repaint();

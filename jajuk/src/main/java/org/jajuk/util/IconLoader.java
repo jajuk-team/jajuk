@@ -808,7 +808,7 @@ public class IconLoader {
     else if (icon == JajukIcons.BAN) {
       out = new ImageIcon(UtilSystem.getResource("icons/16x16/ban_16x16.png"));
     }
-    
+
     else if (icon == JajukIcons.UNBAN) {
       out = new ImageIcon(UtilSystem.getResource("icons/16x16/ok_16x16.png"));
     }
@@ -840,11 +840,15 @@ public class IconLoader {
     else if (icon == JajukIcons.PREFERENCE_UNSET) {
       out = new ImageIcon(UtilSystem.getResource("icons/16x16/preference-unknown_16x16.png"));
     }
-    
+
     else if (icon == JajukIcons.PREPARE_PARTY) {
       out = new ImageIcon(UtilSystem.getResource("icons/16x16/ext_drive_16x16.png"));
-    }      
-    
+    }
+
+    else if (icon == JajukIcons.COPY_TO_CLIPBOARD) {
+      out = new ImageIcon(UtilSystem.getResource("icons/16x16/copy_url_clipboard_16x16.png"));
+    }
+
     // Cache the result
     if (!cache.containsKey(icon)) {
       cache.put(icon, out);

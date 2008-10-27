@@ -127,6 +127,8 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
 
   JMenuItem jmiDirRefactor;
 
+  JMenuItem jmiDirCopyURL;
+
   PreferencesJMenu pjmDir;
 
   JMenuItem jmiDevMount;
@@ -152,6 +154,8 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
   JMenuItem jmiPlaylistFilePaste;
 
   PreferencesJMenu pjmFiles;
+
+  JMenuItem jmiPlaylistCopyURL;
 
   /*
    * (non-Javadoc)
@@ -217,7 +221,9 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
         .getIcon(JajukIcons.REORGANIZE));
     jmiDirRefactor.addActionListener(this);
     pjmDir = new PreferencesJMenu(alSelected);
-
+    jmiDirCopyURL = new JMenuItem(ActionManager.getAction(JajukActions.COPY_TO_CLIPBOARD));
+    jmiDirCopyURL.putClientProperty(Const.DETAIL_CONTENT, alSelected);
+    
     // Device menu
     jmiDevMount = new JMenuItem(Messages.getString("FilesTreeView.28"), IconLoader
         .getIcon(JajukIcons.UNMOUNT));
@@ -254,6 +260,9 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
     jmiPlaylistFilePaste = new JMenuItem(Messages.getString("FilesTreeView.42"));
     jmiPlaylistFilePaste.setEnabled(false);
     jmiPlaylistFilePaste.addActionListener(this);
+    jmiPlaylistCopyURL = new JMenuItem(ActionManager.getAction(JajukActions.COPY_TO_CLIPBOARD));
+    jmiPlaylistCopyURL.putClientProperty(Const.DETAIL_CONTENT, alSelected);
+    
 
     // File menu
     pjmFiles = new PreferencesJMenu(alSelected);
@@ -470,8 +479,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
       dw.updateWidgets(device);
       dw.pack();
       dw.setVisible(true);
-    }
-    else if (e.getSource() == jmiDevDelete) {
+    } else if (e.getSource() == jmiDevDelete) {
       Device device = ((DeviceNode) paths[0].getLastPathComponent()).getDevice();
       DeviceManager.getInstance().removeDevice(device);
       // refresh views
@@ -590,6 +598,12 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
 
         // Enable directory refresh for a single item
         jmiDirRefresh.setEnabled(alSelected.size() == 1 && alSelected.get(0) instanceof Directory);
+
+        // Enable Copy url for a single item only
+        jmiCopyURL.setEnabled(alSelected.size() == 1 && alSelected.get(0) instanceof File);
+        jmiDirCopyURL.setEnabled(alSelected.size() == 1 && alSelected.get(0) instanceof Directory);
+        jmiPlaylistCopyURL.setEnabled(alSelected.size() == 1
+            && alSelected.get(0) instanceof Playlist);
       }
     }
   }
@@ -747,6 +761,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
         jmenu.add(jmiCopy);
         jmenu.add(jmiRename);
         jmenu.add(jmiDelete);
+        jmenu.add(jmiCopyURL);
         jmenu.addSeparator();
         jmenu.add(jmiAddFavorite);
         jmenu.add(pjmFiles);
@@ -765,6 +780,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
         jmenu.add(jmiPaste);
         jmenu.add(jmiNewFolder);
         jmenu.add(jmiDelete);
+        jmenu.add(jmiDirCopyURL);
         jmenu.addSeparator();
         jmenu.add(jmiDirRefresh);
         jmenu.add(jmiRename);
@@ -786,6 +802,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
         jmenu.add(jmiPlayShuffle);
         jmenu.add(jmiPlayRepeat);
         jmenu.addSeparator();
+        jmenu.add(jmiPlaylistCopyURL);
         jmenu.add(jmiDelete);
         jmenu.addSeparator();
         jmenu.add(jmiProperties);

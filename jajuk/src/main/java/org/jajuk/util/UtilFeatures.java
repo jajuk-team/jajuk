@@ -43,9 +43,6 @@ import org.jajuk.util.log.Log;
  */
 public final class UtilFeatures {
 
-  /** contains clipboard data */
-  private static String copyData;
-
   /**
    * Genres
    */
@@ -302,14 +299,6 @@ public final class UtilFeatures {
       }
     }
     return milliseconds;
-  }
-
-  public static String getCopyData() {
-    return copyData;
-  }
-
-  public static void setCopyData(String copyData) {
-    UtilFeatures.copyData = copyData;
   }
 
 }

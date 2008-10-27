@@ -127,16 +127,16 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
   JMenuItem jmiFileUp;
   JMenuItem jmiFileDown;
   JMenuItem jmiFileProperties;
+  JMenuItem jmiFileCopyURL;
 
   /** Current playlist */
   Playlist plf;
-  
+
   /** Selection set flag */
   boolean bSettingSelection = false;
 
   /** Last selected directory using add button */
-  //private java.io.File fileLast;
-
+  // private java.io.File fileLast;
   /** Editor Model */
   protected PlaylistTableModel editorModel;
   private PreferencesJMenu pjmFilesEditor;
@@ -372,6 +372,8 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
         .getIcon(JajukIcons.DOWN));
     jmiFileDown.addActionListener(this);
     pjmFilesEditor = new PreferencesJMenu(editorTable.getSelection());
+    jmiFileCopyURL = new JMenuItem(ActionManager.getAction(JajukActions.COPY_TO_CLIPBOARD));
+    jmiFileCopyURL.putClientProperty(Const.DETAIL_CONTENT, editorTable.getSelection());
 
     editorTable.getMenu().add(jmiFilePlay);
     editorTable.getMenu().add(jmiFilePush);
@@ -379,11 +381,12 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
     editorTable.getMenu().add(jmiFileUp);
     editorTable.getMenu().add(jmiFileDown);
     editorTable.getMenu().addSeparator();
+    editorTable.getMenu().add(jmiFileCopyURL);
+    editorTable.getMenu().addSeparator();
     editorTable.getMenu().add(jmiFileAddFavorites);
     editorTable.getMenu().add(pjmFilesEditor);
     editorTable.getMenu().addSeparator();
     editorTable.getMenu().add(jmiFileProperties);
-
   }
 
   /*
@@ -562,7 +565,7 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
     editorTable.getSelectionModel().clearSelection();
     PlaylistView.this.plf = plf;
     jbPrepParty.putClientProperty(Const.DETAIL_SELECTION, plf);
-    
+
     // set title label
     jlTitle.setText(plf.getName());
     if (plf.getType() == Playlist.Type.BESTOF) {
@@ -837,7 +840,7 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
     JMenuItem jmiPrepareParty;
 
     MouseAdapter ma;
-    
+
     private PreferencesJMenu pjmFilesRepository;
 
     public PlaylistRepository() {

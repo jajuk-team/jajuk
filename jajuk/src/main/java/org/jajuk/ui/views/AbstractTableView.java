@@ -140,6 +140,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
   JMenuItem jmiPlayShuffle;
   JMenuItem jmiBookmark;
   JMenuItem jmiProperties;
+  JMenuItem jmiFileCopyURL;
   
   PreferencesJMenu pjmTracks;
 
@@ -211,7 +212,12 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
     jmiDelete = new JMenuItem(ActionManager.getAction(JajukActions.DELETE));
     jmiDelete.putClientProperty(Const.DETAIL_SELECTION, jtable.getSelection());
     jtable.getMenu().add(jmiDelete);
-
+    
+    jmiFileCopyURL = new JMenuItem(ActionManager
+        .getAction(JajukActions.COPY_TO_CLIPBOARD));
+    jmiFileCopyURL.putClientProperty(Const.DETAIL_CONTENT, jtable.getSelection());
+    jtable.getMenu().add(jmiFileCopyURL);
+    
     jmiBookmark = new JMenuItem(ActionManager.getAction(JajukActions.BOOKMARK_SELECTION));
     jmiBookmark.putClientProperty(Const.DETAIL_SELECTION, jtable.getSelection());
 
