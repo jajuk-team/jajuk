@@ -861,7 +861,7 @@ public class PropertiesWizard extends JajukJDialog implements ActionListener {
         UtilGUI.stopWaiting();
         // Reset track remaining issues
         TrackManager.resetFilesRemaining();
-        // Reset autocommit state
+        // Reset auto-commit state
         TrackManager.getInstance().setAutocommit(true);
       }
     }

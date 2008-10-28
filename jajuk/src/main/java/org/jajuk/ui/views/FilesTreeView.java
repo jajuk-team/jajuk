@@ -223,7 +223,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
     pjmDir = new PreferencesJMenu(alSelected);
     jmiDirCopyURL = new JMenuItem(ActionManager.getAction(JajukActions.COPY_TO_CLIPBOARD));
     jmiDirCopyURL.putClientProperty(Const.DETAIL_CONTENT, alSelected);
-    
+
     // Device menu
     jmiDevMount = new JMenuItem(Messages.getString("FilesTreeView.28"), IconLoader
         .getIcon(JajukIcons.UNMOUNT));
@@ -262,10 +262,6 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
     jmiPlaylistFilePaste.addActionListener(this);
     jmiPlaylistCopyURL = new JMenuItem(ActionManager.getAction(JajukActions.COPY_TO_CLIPBOARD));
     jmiPlaylistCopyURL.putClientProperty(Const.DETAIL_CONTENT, alSelected);
-    
-
-    // File menu
-    pjmFiles = new PreferencesJMenu(alSelected);
 
     // Add Action Listener
     jmiCopy.addActionListener(this);
@@ -672,6 +668,9 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
       if (path == null) {
         return;
       }
+      // File menu
+      pjmFiles = new PreferencesJMenu(alSelected);
+
       // right click on a selected node set Right click
       // behavior identical to konqueror tree:
       // if none or 1 node is selected, a right click on

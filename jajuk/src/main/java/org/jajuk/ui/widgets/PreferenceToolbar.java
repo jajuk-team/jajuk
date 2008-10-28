@@ -45,6 +45,8 @@ import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
+import org.jajuk.util.error.JajukException;
+import org.jajuk.util.log.Log;
 
 /**
  * The evaluation toolbar is displayed in command panel and slimbar
@@ -133,7 +135,12 @@ public class PreferenceToolbar extends JajukJToolbar implements Observer {
         File file = FIFO.getCurrentFile();
         if (file != null) {
           Track track = file.getTrack();
-          track.setPreference(3 - jcbPreference.getSelectedIndex());
+          try {
+            track.setPreference(3 - jcbPreference.getSelectedIndex());
+          } catch (JajukException e1) {
+            Log.error(e1);
+            Messages.showErrorMessage(e1.getCode());
+          }
         }
         // Force immediate rating refresh (without using the rating manager)
         ObservationManager.notify(new Event(JajukEvents.RATE_CHANGED));

@@ -95,7 +95,8 @@ public final class TrackManager extends ItemManager implements Observer {
     // Year
     registerProperty(new PropertyMetaInformation(Const.XML_YEAR, false, true, true, true, true,
         Long.class, 0));
-    // Rate : this is a property computed from preference and total played time, not editable
+    // Rate : this is a property computed from preference and total played time,
+    // not editable
     registerProperty(new PropertyMetaInformation(Const.XML_TRACK_RATE, false, false, true, false,
         true, Long.class, 0));
     // Files
@@ -113,9 +114,12 @@ public final class TrackManager extends ItemManager implements Observer {
     // Track order
     registerProperty(new PropertyMetaInformation(Const.XML_TRACK_ORDER, false, true, true, true,
         false, Long.class, null));
-    // Track preference factor
+    // Track preference factor. This is not editable because when changing
+    // preference, others
+    // actions must be done (updateRate() and we want user to use contextual
+    // menus and commands instead of the properties wizard to set preference)
     registerProperty(new PropertyMetaInformation(Const.XML_TRACK_PREFERENCE, false, false, true,
-        true, true, Long.class, 0l));
+        false, true, Long.class, 0l));
     // Track total playtime
     registerProperty(new PropertyMetaInformation(Const.XML_TRACK_TOTAL_PLAYTIME, false, false,
         true, false, false, Long.class, 0l));
@@ -450,7 +454,7 @@ public final class TrackManager extends ItemManager implements Observer {
    *          item name
    * @return new track or null if wrong format
    */
-  public synchronized Track changeTrackRate(Track track, long lNew)  {
+  public synchronized Track changeTrackRate(Track track, long lNew) {
     // check there is actually a change
     if (track.getRate() == lNew) {
       return track;
@@ -459,8 +463,7 @@ public final class TrackManager extends ItemManager implements Observer {
     if (lNew < 0 || lNew > 100) {
       track.setRate(0l);
       Log.error(137);
-    }
-    else{
+    } else {
       track.setRate(lNew);
     }
     return track;
@@ -475,7 +478,7 @@ public final class TrackManager extends ItemManager implements Observer {
    *          item order
    * @param filter
    *          files we want to deal with
-   * @return new track or null if wrong  format
+   * @return new track or null if wrong format
    */
   public synchronized Track changeTrackOrder(Track track, long lNewOrder, Set<File> filter)
       throws JajukException {
@@ -675,7 +678,7 @@ public final class TrackManager extends ItemManager implements Observer {
       return out;
     }
     List<Track> out = new ArrayList<Track>(10);
-    Iterator<Item> items = (Iterator<Item>)getItemsIterator();
+    Iterator<Item> items = (Iterator<Item>) getItemsIterator();
     while (items.hasNext()) {
       Track track = (Track) items.next();
       if ((item instanceof Author && track.getAuthor().equals(item))

@@ -566,7 +566,7 @@ public final class Collection extends DefaultHandler implements ErrorHandler, Se
 
           String size = attributes.getValue(Const.XML_SIZE);
           if (size != null) {
-            lSize = UtilString.fastLongParser(size);
+            lSize = Long.parseLong(size);
           }
 
           // Quality analyze, handle format problems (mainly for

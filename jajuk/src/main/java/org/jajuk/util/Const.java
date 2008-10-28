@@ -1134,5 +1134,14 @@ public interface Const {
   // Alarms List
 
   String ALARMS_SET = "jajuk.alarms";
+  
+    // Preferences
+  public static final long PREFERENCE_ADORE=3;
+  public static final long PREFERENCE_LOVE=2;
+  public static final long PREFERENCE_LIKE=1;
+  public static final long PREFERENCE_UNSET=0;
+  public static final long PREFERENCE_AVERAGE=-1;
+  public static final long PREFERENCE_POOR=-2;
+  public static final long PREFERENCE_HATE=-3;
 
 }

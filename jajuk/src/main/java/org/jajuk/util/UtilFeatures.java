@@ -26,6 +26,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+import org.jajuk.base.Album;
 import org.jajuk.base.Device;
 import org.jajuk.base.Directory;
 import org.jajuk.base.Item;
@@ -299,6 +300,54 @@ public final class UtilFeatures {
       }
     }
     return milliseconds;
+  }
+
+  /**
+   * 
+   * @param selection
+   * @return first item in selection preference
+   */
+  public static long getPreferenceForSelection(List<? extends Item> selection) {
+    if (selection.size() == 0) {
+      return Const.PREFERENCE_UNSET;
+    }
+    Item item = selection.get(0);
+    if (item instanceof org.jajuk.base.File) {
+      return ((org.jajuk.base.File) item).getTrack().getLongValue(Const.XML_TRACK_PREFERENCE);
+    } else if (item instanceof Track) {
+      return ((Track) item).getLongValue(Const.XML_TRACK_PREFERENCE);
+    } else if (item instanceof Album) {
+      if (allTheSamePreference(selection)) {
+
+      }
+    }
+    return Const.PREFERENCE_UNSET;
+  }
+
+  /**
+   * @param selection
+   *          we expect here a list of files or tracks
+   * @return true if all items own the same preference
+   */
+  private static boolean allTheSamePreference(List<? extends Item> selection) {
+    if (selection.size() < 2) {
+      return true;
+    }
+    long preferenceFirstItem = selection.get(0).getLongValue(Const.XML_TRACK_PREFERENCE);
+    for (int i = 1; i < selection.size(); i++) {
+      Item item = selection.get(i);
+      Track track = null;
+      if (item instanceof Track) {
+        track = (Track) item;
+      } else {
+        // We expect a file
+        track = ((org.jajuk.base.File) item).getTrack();
+      }
+      if (track.getLongValue(Const.XML_TRACK_PREFERENCE) != preferenceFirstItem) {
+        return false;
+      }
+    }
+    return true;
   }
 
 }

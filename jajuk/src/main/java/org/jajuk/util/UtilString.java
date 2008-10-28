@@ -670,7 +670,7 @@ public final class UtilString {
     } else if (cType.equals(Date.class)) {
       oDefaultValue = getAdditionDateFormatter().parseObject(sValue);
     } else if (cType.equals(Long.class)) {
-      oDefaultValue = fastLongParser(sValue);
+      oDefaultValue = Long.parseLong(sValue);
     } else if (cType.equals(Double.class)) {
       oDefaultValue = Double.parseDouble(sValue);
     } else if (cType.equals(Class.class)) {
@@ -680,7 +680,10 @@ public final class UtilString {
   }
 
   /**
-   * Fast long parser, low level check, remplacement of Long.parseLong()
+   * Fast long parser, low level check, replacement of Long.parseLong()
+   * 
+   * CAUTION : do not use if the value can be negative or you will get
+   * unexpected results
    * 
    * @param in
    *          must be a set of digits with a size > 0 and be positive
@@ -701,7 +704,7 @@ public final class UtilString {
   }
 
   /**
-   * Fast Boolean parser, low level check, remplacement of
+   * Fast Boolean parser, low level check, replacement of
    * Boolean.parseBoolean()
    * 
    * @param in
