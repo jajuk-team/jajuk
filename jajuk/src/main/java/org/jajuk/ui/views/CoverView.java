@@ -543,9 +543,6 @@ public class CoverView extends ViewAdapter implements Observer, ActionListener, 
       jl.setToolTipText("<html>" + url.toString() + "<br>" + size + "K");
       setSizeText(size + "K" + sType);
       setFoundText();
-      // make sure the image is repainted to avoid overlapping covers
-      CoverView.this.revalidate();
-      CoverView.this.repaint();
     }
     // set tooltip for previous and next track
     try {
