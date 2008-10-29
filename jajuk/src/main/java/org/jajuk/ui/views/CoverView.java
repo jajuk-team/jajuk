@@ -30,6 +30,8 @@ import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
@@ -94,7 +96,8 @@ import org.jdesktop.swingx.border.DropShadowBorder;
 /**
  * Cover view. Displays an image for the current album
  */
-public class CoverView extends ViewAdapter implements Observer, ActionListener, Const {
+public class CoverView extends ViewAdapter implements Observer, ComponentListener, ActionListener,
+    Const {
 
   private static final long serialVersionUID = 1L;
 
@@ -442,6 +445,23 @@ public class CoverView extends ViewAdapter implements Observer, ActionListener, 
     }
   }
 
+  /*
+   * (non-Javadoc)
+   * 
+   * @see java.awt.event.ComponentListener#componentResized(java.awt.event.ComponentEvent)
+   */
+  @Override
+  public void componentResized(final ComponentEvent e) {
+    Log.debug("Cover resized");
+    final long lCurrentDate = System.currentTimeMillis(); // adjusting code
+    if (lCurrentDate - lDateLastResize < 500) { // display image every
+      // 500 ms to save CPU
+      lDateLastResize = lCurrentDate;
+      return;
+    }
+    displayCurrentCover();
+  }
+
   /**
    * 
    * @param file
@@ -543,6 +563,9 @@ public class CoverView extends ViewAdapter implements Observer, ActionListener, 
       jl.setToolTipText("<html>" + url.toString() + "<br>" + size + "K");
       setSizeText(size + "K" + sType);
       setFoundText();
+      // make sure the image is repainted to avoid overlapping covers
+      CoverView.this.revalidate();
+      CoverView.this.repaint();
     }
     // set tooltip for previous and next track
     try {
@@ -585,6 +608,7 @@ public class CoverView extends ViewAdapter implements Observer, ActionListener, 
       @Override
       public Object construct() {
         synchronized (bLock) {
+          removeComponentListener(CoverView.this);
           // remove listener to avoid looping
           if (alCovers.size() == 0) {
             // should not append
@@ -648,6 +672,8 @@ public class CoverView extends ViewAdapter implements Observer, ActionListener, 
       @Override
       public void finished() {
         displayCover(index);
+        removeComponentListener(CoverView.this);
+        addComponentListener(CoverView.this); // listen for resize
       }
     };
     sw.start();
@@ -803,7 +829,6 @@ public class CoverView extends ViewAdapter implements Observer, ActionListener, 
       Log.error(e);
     }
     add(jpControl, "0,0");
-
     if (fileReference == null) {
       if (FIFO.isStopped()) {
         update(new Event(JajukEvents.ZERO));
@@ -1002,6 +1027,8 @@ public class CoverView extends ViewAdapter implements Observer, ActionListener, 
    * @see org.jajuk.ui.Observer#update(java.lang.String)
    */
   public void update(final Event event) {
+    removeComponentListener(CoverView.this);
+    addComponentListener(CoverView.this); // listen for resize
     final JajukEvents subject = event.getSubject();
     iEventID = (int) (Integer.MAX_VALUE * Math.random());
     final int iLocalEventID = iEventID;
