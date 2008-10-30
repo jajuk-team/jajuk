@@ -130,7 +130,6 @@ public class AlbumsTableModel extends JajukTableModel {
       }
     }
     // Sort the result
-    // Collections.sort(alToShow);
     int iColNum = iNumberStandardCols + AlbumManager.getInstance().getCustomProperties().size();
     iRowNum = alToShow.size();
     oValues = new Object[iRowNum][iColNum];

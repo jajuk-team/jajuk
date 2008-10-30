@@ -129,8 +129,6 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
 
   JMenuItem jmiDirCopyURL;
 
-  PreferencesJMenu pjmDir;
-
   JMenuItem jmiDevMount;
 
   JMenuItem jmiDevUnmount;
@@ -153,9 +151,9 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
 
   JMenuItem jmiPlaylistFilePaste;
 
-  PreferencesJMenu pjmFiles;
-
   JMenuItem jmiPlaylistCopyURL;
+
+  private volatile boolean selectionReady = false;
 
   /*
    * (non-Javadoc)
@@ -220,7 +218,6 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
     jmiDirRefactor = new JMenuItem(Messages.getString(("FilesTreeView.62")), IconLoader
         .getIcon(JajukIcons.REORGANIZE));
     jmiDirRefactor.addActionListener(this);
-    pjmDir = new PreferencesJMenu(alSelected);
     jmiDirCopyURL = new JMenuItem(ActionManager.getAction(JajukActions.COPY_TO_CLIPBOARD));
     jmiDirCopyURL.putClientProperty(Const.DETAIL_CONTENT, alSelected);
 
@@ -316,7 +313,6 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
     }
     // add directories
     List<Directory> directories = DirectoryManager.getInstance().getDirectories();
-    // Collections.sort(directories);
     for (Directory directory : directories) {
       if (directory.shouldBeHidden()) {
         continue;
@@ -357,7 +353,6 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
 
     // add playlists
     List<Playlist> playlists = PlaylistManager.getInstance().getPlaylists();
-    // Collections.sort(playlists);
     Iterator<Playlist> it4 = playlists.iterator();
     while (it4.hasNext()) {
       Playlist playlistFile = it4.next();
@@ -524,8 +519,8 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
   class FilesTreeSelectionListener implements TreeSelectionListener {
     @SuppressWarnings("unchecked")
     public void valueChanged(TreeSelectionEvent e) {
-      // Avoid concurrency with the mouse listener
-      synchronized (lock) {
+      try {
+        selectionReady = false;
         paths = jtree.getSelectionModel().getSelectionPaths();
         // nothing selected, can be called during dnd
         if (paths == null) {
@@ -600,6 +595,8 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
         jmiDirCopyURL.setEnabled(alSelected.size() == 1 && alSelected.get(0) instanceof Directory);
         jmiPlaylistCopyURL.setEnabled(alSelected.size() == 1
             && alSelected.get(0) instanceof Playlist);
+      } finally {
+        selectionReady = true;
       }
     }
   }
@@ -608,47 +605,56 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
 
     @Override
     public void mousePressed(MouseEvent e) {
+      // Avoid concurrency with the selection listener
+      int comp = 10;
+      try {
+        while (!selectionReady && comp > 0) {
+          System.out.println("here");
+          Thread.sleep(100);
+          comp--;
+        }
+      } catch (InterruptedException e1) {
+        Log.error(e1);
+      }
+      selectionReady = false;
       if (e.isPopupTrigger()) {
         handlePopup(e);
         // Left click
       } else if ((e.getModifiersEx() & MouseEvent.CTRL_DOWN_MASK) == 0) {
-        // Avoid concurrency with the selection listener
-        synchronized (lock) {
-          TreePath path = jtree.getPathForLocation(e.getX(), e.getY());
-          if (path == null) {
-            return;
-          }
-          if (e.getClickCount() == 2) {
-            Object o = path.getLastPathComponent();
-            if (o instanceof FileNode) {
-              File file = ((FileNode) o).getFile();
-              try {
-                FIFO.push(new StackItem(file, Conf.getBoolean(Const.CONF_STATE_REPEAT), true), Conf
-                    .getBoolean(Const.CONF_OPTIONS_PUSH_ON_CLICK));
-              } catch (JajukException je) {
-                Log.error(je);
-              }
+        TreePath path = jtree.getPathForLocation(e.getX(), e.getY());
+        if (path == null) {
+          return;
+        }
+        if (e.getClickCount() == 2) {
+          Object o = path.getLastPathComponent();
+          if (o instanceof FileNode) {
+            File file = ((FileNode) o).getFile();
+            try {
+              FIFO.push(new StackItem(file, Conf.getBoolean(Const.CONF_STATE_REPEAT), true), Conf
+                  .getBoolean(Const.CONF_OPTIONS_PUSH_ON_CLICK));
+            } catch (JajukException je) {
+              Log.error(je);
             }
-            // double click on a playlist
-            else if (o instanceof PlaylistFileNode) {
-              Playlist plf = ((PlaylistFileNode) o).getPlaylistFile();
-              List<File> alToPlay = null;
-              try {
-                alToPlay = plf.getFiles();
-              } catch (JajukException je) {
-                Log.error(je.getCode(), plf.getName(), null);
-                Messages.showErrorMessage(je.getCode(), plf.getName());
-                return;
-              }
-              // check playlist contains accessible
-              // tracks
-              if (alToPlay == null || alToPlay.size() == 0) {
-                Messages.showErrorMessage(18);
-                return;
-              } else {
-                FIFO.push(UtilFeatures.createStackItems(UtilFeatures.applyPlayOption(alToPlay),
-                    Conf.getBoolean(Const.CONF_STATE_REPEAT), true), false);
-              }
+          }
+          // double click on a playlist
+          else if (o instanceof PlaylistFileNode) {
+            Playlist plf = ((PlaylistFileNode) o).getPlaylistFile();
+            List<File> alToPlay = null;
+            try {
+              alToPlay = plf.getFiles();
+            } catch (JajukException je) {
+              Log.error(je.getCode(), plf.getName(), null);
+              Messages.showErrorMessage(je.getCode(), plf.getName());
+              return;
+            }
+            // check playlist contains accessible
+            // tracks
+            if (alToPlay == null || alToPlay.size() == 0) {
+              Messages.showErrorMessage(18);
+              return;
+            } else {
+              FIFO.push(UtilFeatures.createStackItems(UtilFeatures.applyPlayOption(alToPlay), Conf
+                  .getBoolean(Const.CONF_STATE_REPEAT), true), false);
             }
           }
         }
@@ -668,8 +674,9 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
       if (path == null) {
         return;
       }
-      // File menu
-      pjmFiles = new PreferencesJMenu(alSelected);
+      // File menu. We instanciate it at each click to simplify code used to
+      // bold current preference
+      PreferencesJMenu pjmTracks = new PreferencesJMenu(alSelected);
 
       // right click on a selected node set Right click
       // behavior identical to konqueror tree:
@@ -763,7 +770,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
         jmenu.add(jmiCopyURL);
         jmenu.addSeparator();
         jmenu.add(jmiAddFavorite);
-        jmenu.add(pjmFiles);
+        jmenu.add(pjmTracks);
         jmenu.addSeparator();
         jmenu.add(jmiProperties);
         jmenu.show(jtree, e.getX(), e.getY());
@@ -790,7 +797,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
         jmenu.add(jmiReport);
         jmenu.add(jmiDirRefactor);
         jmenu.addSeparator();
-        jmenu.add(pjmDir);
+        jmenu.add(pjmTracks);
         jmenu.addSeparator();
         jmenu.add(jmiProperties);
         jmenu.show(jtree, e.getX(), e.getY());

@@ -597,7 +597,6 @@ public final class FileManager extends ItemManager implements Observer {
    */
   public synchronized File getPreviousFile(File file) {
     List<File> files = getFiles();
-    // Collections.sort(files);
     if (file == null) {
       return null;
     }

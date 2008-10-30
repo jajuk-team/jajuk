@@ -35,7 +35,6 @@ import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilString;
-import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 
 /**
@@ -67,7 +66,7 @@ public class Track extends LogicalItem implements Comparable<Track> {
 
   /** Track associated files */
   private List<File> alFiles = new ArrayList<File>(1);
-  
+
   /**
    * Track constructor
    * 
@@ -374,12 +373,14 @@ public class Track extends LogicalItem implements Comparable<Track> {
    * @param preference
    *          from -3 to 3
    */
-  public void setPreference(long preference) throws JajukException {
-    if (preference < -3 || preference > 3) {
-      throw new JajukException(176);
-    }
+  public void setPreference(long preference) {
     Log.debug("Changed preference of " + getID() + "=" + preference);
-    setProperty(Const.XML_TRACK_PREFERENCE, preference);
+    if (preference >= -3l && preference <= 3l) {
+      setProperty(Const.XML_TRACK_PREFERENCE, preference);
+    } else {
+      setProperty(Const.XML_TRACK_PREFERENCE, 0l);
+      Log.debug("Out of bounds preference for : " + getID());
+    }
     updateRate();
   }
 

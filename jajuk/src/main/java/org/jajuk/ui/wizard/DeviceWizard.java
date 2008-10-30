@@ -137,8 +137,6 @@ public class DeviceWizard extends JFrame implements ActionListener, Const {
    */
   public DeviceWizard() {
     devices = DeviceManager.getInstance().getDevices();
-    // Collections.sort(devices);
-
     addWindowListener(new WindowAdapter() {
       @Override
       public void windowActivated(final WindowEvent e) {
@@ -443,7 +441,6 @@ public class DeviceWizard extends JFrame implements ActionListener, Const {
     // set default values for widgets
     updateWidgetsDefault();
     List<Device> devices = DeviceManager.getInstance().getDevices();
-    // Collections.sort(devices);
     for (Device device2 : devices) {
       if (!device2.equals(device)) {
         devices.add(device2);

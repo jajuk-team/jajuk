@@ -196,7 +196,6 @@ public class DeviceView extends ViewAdapter implements IView, Const, ActionListe
     });
     // Add devices
     List<Device> devices = DeviceManager.getInstance().getDevices();
-    // Collections.sort(devices);
     for (Device device : devices) {
       ImageIcon icon = IconLoader.getIcon(JajukIcons.DEVICE_DIRECTORY_MOUNTED);
       String sTooltip = "";

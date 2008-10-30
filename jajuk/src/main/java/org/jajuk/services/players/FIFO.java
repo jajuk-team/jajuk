@@ -556,7 +556,6 @@ public final class FIFO {
           } else { // nothing in fifo, take first files in
             // collection
             List<File> files = FileManager.getInstance().getFiles();
-            // Collections.sort(files);
             item = new StackItem(files.get(0), false);
           }
         }

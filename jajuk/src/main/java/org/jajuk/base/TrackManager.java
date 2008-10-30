@@ -677,6 +677,25 @@ public final class TrackManager extends ItemManager implements Observer {
       }
       return out;
     }
+    else if (item instanceof Playlist) {
+      Playlist pl = (Playlist) item;
+      List<File> files;
+      try {
+        files = pl.getFiles();
+      } catch (JajukException e) {
+        Log.error(e);
+        return null;
+      }
+      List<Track> out = new ArrayList<Track>(files.size());
+      for (File file : files) {
+        Track track = file.getTrack();
+        // Caution, do not add dups
+        if (!out.contains(track)) {
+          out.add(file.getTrack());
+        }
+      }
+      return out;
+    }
     List<Track> out = new ArrayList<Track>(10);
     Iterator<Item> items = (Iterator<Item>) getItemsIterator();
     while (items.hasNext()) {

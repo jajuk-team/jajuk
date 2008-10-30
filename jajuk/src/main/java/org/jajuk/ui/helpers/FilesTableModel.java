@@ -139,7 +139,6 @@ public class FilesTableModel extends JajukTableModel {
   public void populateModel(String sPropertyName, String sPattern, List<String> columnsToShow) {
     // This should be monitor file manager to avoid NPE when changing items
     List<File> alToShow = FileManager.getInstance().getFiles();
-    // Collections.sort(alToShow);
     // Filter mounted files if needed and apply sync table with tree
     // option if needed
     final boolean bSyncWithTreeOption = Conf.getBoolean(Const.CONF_OPTIONS_SYNC_TABLE_TREE);

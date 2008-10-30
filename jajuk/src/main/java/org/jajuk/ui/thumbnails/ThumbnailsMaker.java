@@ -231,9 +231,7 @@ public final class ThumbnailsMaker {
     // Mount devices
     Main.autoMount();
     final List<Album> albums = AlbumManager.getInstance().getAlbums();
-    // Sort the albums
-    // Collections.sort(albums);
-
+  
     // For each album, create the associated thumb
     for (final Album album : albums) {
       // Leave if jajuk leaved

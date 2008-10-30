@@ -26,7 +26,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import org.jajuk.base.Album;
 import org.jajuk.base.Device;
 import org.jajuk.base.Directory;
 import org.jajuk.base.Item;
@@ -311,43 +310,26 @@ public final class UtilFeatures {
     if (selection.size() == 0) {
       return Const.PREFERENCE_UNSET;
     }
-    Item item = selection.get(0);
-    if (item instanceof org.jajuk.base.File) {
-      return ((org.jajuk.base.File) item).getTrack().getLongValue(Const.XML_TRACK_PREFERENCE);
-    } else if (item instanceof Track) {
-      return ((Track) item).getLongValue(Const.XML_TRACK_PREFERENCE);
-    } else if (item instanceof Album) {
-      if (allTheSamePreference(selection)) {
-
-      }
+    List<Track> trackList = new ArrayList<Track>(10);
+    // For each entry of the selection (can be album, year, track,
+    // directory...),
+    // we add all associated tracks and we get equals preference if any
+    for (Item i : selection) {
+      trackList.addAll(TrackManager.getInstance().getAssociatedTracks(i));
     }
-    return Const.PREFERENCE_UNSET;
-  }
-
-  /**
-   * @param selection
-   *          we expect here a list of files or tracks
-   * @return true if all items own the same preference
-   */
-  private static boolean allTheSamePreference(List<? extends Item> selection) {
-    if (selection.size() < 2) {
-      return true;
+    // List shouldn't be void but we test it for security
+    if (selection.size() == 0) {
+      return Const.PREFERENCE_UNSET;
     }
-    long preferenceFirstItem = selection.get(0).getLongValue(Const.XML_TRACK_PREFERENCE);
-    for (int i = 1; i < selection.size(); i++) {
-      Item item = selection.get(i);
-      Track track = null;
-      if (item instanceof Track) {
-        track = (Track) item;
-      } else {
-        // We expect a file
-        track = ((org.jajuk.base.File) item).getTrack();
-      }
+    Track firstTrack = trackList.get(0);
+    long preferenceFirstItem = firstTrack.getLongValue(Const.XML_TRACK_PREFERENCE);
+    for (int i = 1; i < trackList.size(); i++) {
+      Track track = trackList.get(i);
       if (track.getLongValue(Const.XML_TRACK_PREFERENCE) != preferenceFirstItem) {
-        return false;
+        return Const.PREFERENCE_UNSET;
       }
     }
-    return true;
+    return preferenceFirstItem;
   }
 
 }

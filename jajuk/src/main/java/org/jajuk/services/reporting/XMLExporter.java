@@ -350,7 +350,6 @@ public class XMLExporter extends Exporter {
     writer.write(addTabs(level + 1) + Tag.tagData(Const.XML_ID, sAuthorID) + NEWLINE);
     writer.write(addTabs(level + 1) + Tag.tagData(Const.XML_NAME, sAuthorName) + NEWLINE);
     List<Album> albums = AlbumManager.getInstance().getAssociatedAlbums(author);
-    // Collections.sort(albums);
     for (Album album : albums) {
       tagAlbum(album, level + 1);
     }
@@ -364,7 +363,6 @@ public class XMLExporter extends Exporter {
     writer.write(addTabs(level + 1) + Tag.tagData(Const.XML_ID, sYearID) + NEWLINE);
     writer.write(addTabs(level + 1) + Tag.tagData(Const.XML_NAME, sYearName) + NEWLINE);
     List<Album> albums = AlbumManager.getInstance().getAssociatedAlbums(year);
-    // Collections.sort(albums);
     for (Album album : albums) {
       tagAlbum(album, level + 1);
     }
@@ -378,12 +376,10 @@ public class XMLExporter extends Exporter {
     writer.write(addTabs(level + 1) + Tag.tagData(Const.XML_ID, sStyleID) + NEWLINE);
     writer.write(addTabs(level + 1) + Tag.tagData(Const.XML_NAME, sStyleName) + NEWLINE);
     List<Album> albums = AlbumManager.getInstance().getAssociatedAlbums(style);
-    // Collections.sort(albums);
     for (Album album : albums) {
       tagAlbum(album, level + 1);
     }
     List<Author> authors = AuthorManager.getInstance().getAssociatedAuthors(style);
-    // Collections.sort(authors);
     for (Author author : authors) {
       tagAuthor(author, level + 1);
     }
