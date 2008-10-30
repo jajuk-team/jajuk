@@ -45,8 +45,6 @@ import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
-import org.jajuk.util.error.JajukException;
-import org.jajuk.util.log.Log;
 
 /**
  * The evaluation toolbar is displayed in command panel and slimbar
@@ -122,7 +120,8 @@ public class PreferenceToolbar extends JajukJToolbar implements Observer {
     jcbPreference.addItem(IconLoader.getIcon(JajukIcons.PREFERENCE_POOR));
     jcbPreference.addItem(IconLoader.getIcon(JajukIcons.PREFERENCE_HATE));
 
-    // Set default to unset preference if not playing and to current track value if playing
+    // Set default to unset preference if not playing and to current track value
+    // if playing
     if (!FIFO.isStopped()) {
       setPreference(FIFO.getCurrentFile().getTrack().getLongValue(Const.XML_TRACK_PREFERENCE));
     } else {
@@ -135,12 +134,7 @@ public class PreferenceToolbar extends JajukJToolbar implements Observer {
         File file = FIFO.getCurrentFile();
         if (file != null) {
           Track track = file.getTrack();
-          try {
-            track.setPreference(3 - jcbPreference.getSelectedIndex());
-          } catch (JajukException e1) {
-            Log.error(e1);
-            Messages.showErrorMessage(e1.getCode());
-          }
+          track.setPreference(3 - jcbPreference.getSelectedIndex());
         }
         // Force immediate rating refresh (without using the rating manager)
         ObservationManager.notify(new Event(JajukEvents.RATE_CHANGED));
