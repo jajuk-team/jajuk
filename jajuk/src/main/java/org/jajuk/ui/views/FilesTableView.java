@@ -44,7 +44,7 @@ public class FilesTableView extends AbstractTableView {
   private static final long serialVersionUID = 1L;
 
   private JMenuItem jmiFilePlayDirectory;
-  
+
   public FilesTableView() {
     super();
     columnsConf = CONF_FILES_TABLE_COLUMNS;
@@ -67,7 +67,7 @@ public class FilesTableView extends AbstractTableView {
     jmiFilePlayDirectory = new JMenuItem(ActionManager
         .getAction(JajukActions.PLAY_DIRECTORY_SELECTION));
     jmiFilePlayDirectory.putClientProperty(Const.DETAIL_SELECTION, jtable.getSelection());
-    jtable.getMenu().add(jmiFilePlayDirectory,4);
+    jtable.getMenu().add(jmiFilePlayDirectory, 4);
     // Add this generic menu item manually to ensure it's the last one in
     // the list for GUI reasons
     jtable.getMenu().addSeparator();
@@ -79,23 +79,21 @@ public class FilesTableView extends AbstractTableView {
     // Add specific behavior on left click
     jtable.setCommand(new ILaunchCommand() {
       public void launch(int nbClicks) {
-        int iSelectedCol = jtable.getSelectedColumn();
-
+        // Ignore event if several rows are selected
         if (jtable.getSelectedColumnCount() != 1) {
           return;
         }
 
-        if (jtable.convertColumnIndexToModel(iSelectedCol) != 0) {
-          return;
-        }
+        int iSelectedCol = jtable.getSelectedColumn();
+        // Convert column selection as columns may have been moved 
+        iSelectedCol = jtable.convertColumnIndexToModel(iSelectedCol);
 
-        // selected column in view Test click on play icon
-        // launch track only if only first column is selected (fixes issue
-        // with Ctrl-A)
-        if (// click on play icon
-        nbClicks == 2 && !jtbEditable.isSelected()) {
-          // double click on any column and edition state false
-          // selected row in view
+        // We launch the selection :
+        // - In any case if user clicked on the play column (column 0)
+        // - Or in case of double click on any column when table is not editable  
+        if (iSelectedCol == 0 || // click on play icon
+            // double click on any column and edition state false
+            (nbClicks == 2 && !jtbEditable.isSelected())) {
           File file = (File) model
               .getItemAt(jtable.convertRowIndexToModel(jtable.getSelectedRow()));
           try {
