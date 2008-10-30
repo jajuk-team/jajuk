@@ -389,7 +389,7 @@ public final class Log {
    * 
    * @param sMessage
    */
-  private static void spool(String sMessage) {
+  private synchronized static void spool(String sMessage) {
     // we have to make some room
     if (alSpool.size() > Const.FEEDBACK_LINES) {
       alSpool.remove(0);
