@@ -189,7 +189,7 @@
       <artifactId>jaudiotagger</artifactId>
       <version>1.126</version>
       <scope>system</scope>
-      <systemPath>${basedir}/lib/jaudiotagger-1.126.jar</systemPath>
+      <systemPath>${basedir}/lib/jaudiotagger-1.142.jar</systemPath>
     </dependency>
   </dependencies>
   

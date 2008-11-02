@@ -6,7 +6,7 @@
     </information>
     <resources>
         <jar href="entagged-audioformats-0.15.jar" version='VERSION_REPLACED_BY_ANT'/>
-        <jar href="jaudiotagger-1.126.jar" version='VERSION_REPLACED_BY_ANT'/>
+        <jar href="jaudiotagger-1.142.jar" version='VERSION_REPLACED_BY_ANT'/>
     </resources>
     <security> 
            <all-permissions/>
