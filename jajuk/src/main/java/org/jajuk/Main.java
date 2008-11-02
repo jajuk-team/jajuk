@@ -869,7 +869,7 @@ public final class Main {
               Log.debug("Mount failed");
               final Properties pDetail = new Properties();
               pDetail.put(Const.DETAIL_CONTENT, fileToPlay);
-              pDetail.put(Const.DETAIL_REASON, "010");
+              pDetail.put(Const.DETAIL_REASON, "10");
               ObservationManager.notify(new Event(JajukEvents.PLAY_ERROR, pDetail));
               FIFO.setFirstFile(false); // no more first file
             }

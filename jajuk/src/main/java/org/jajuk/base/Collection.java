@@ -330,7 +330,7 @@ public final class Collection extends DefaultHandler implements ErrorHandler, Se
     spf.setFeature("http://xml.org/sax/features/string-interning", true);
     SAXParser saxParser = spf.newSAXParser();
     if (!file.exists()) {
-      throw new JajukException(005);
+      throw new JajukException(5);
     }
     saxParser.parse(file.toURI().toURL().toString(), getInstance());
     // start auto commit thread
