@@ -316,6 +316,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
     eventSubjectSet.add(JajukEvents.TABLE_CLEAR_SELECTION);
     eventSubjectSet.add(JajukEvents.PARAMETERS_CHANGE);
     eventSubjectSet.add(JajukEvents.VIEW_REFRESH_REQUEST);
+    eventSubjectSet.add(JajukEvents.TABLE_SELECTION_CHANGED);
     return eventSubjectSet;
   }
 
@@ -439,7 +440,11 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
             jtable.showColumns(jtable.getColumnsConf());
             applyFilter(sAppliedCriteria, sAppliedFilter);
             jcbProperty.removeItem(properties.get(Const.DETAIL_CONTENT));
+          } else if (JajukEvents.TABLE_SELECTION_CHANGED.equals(subject)) {
+            // Refresh the preference menu according to the selection
+            pjmTracks.resetUI(jtable.getSelection());
           }
+          
         } catch (Exception e) {
           Log.error(e);
         } finally {
@@ -551,7 +556,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
       Properties properties = new Properties();
       properties.put(Const.DETAIL_ORIGIN, AbstractTableView.this);
       ObservationManager.notify(new Event(JajukEvents.RATE_CHANGED, properties));
-
+     
     } catch (NoneAccessibleFileException none) {
       Messages.showErrorMessage(none.getCode());
       ((JajukTableModel) jtable.getModel()).undo(e.getFirstRow(), e.getColumn());

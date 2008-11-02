@@ -75,7 +75,6 @@ import org.jajuk.services.players.StackItem;
 import org.jajuk.ui.actions.ActionManager;
 import org.jajuk.ui.actions.JajukActions;
 import org.jajuk.ui.helpers.FontManager;
-import org.jajuk.ui.helpers.PreferencesJMenu;
 import org.jajuk.ui.helpers.TransferableTreeNode;
 import org.jajuk.ui.helpers.TreeRootElement;
 import org.jajuk.ui.helpers.TreeTransferHandler;
@@ -111,10 +110,7 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener, 
   private JLabel jlSort;
 
   private JComboBox jcbSort;
-  
-  private PreferencesJMenu pjmTracks;
-  
-  
+
   /*
    * (non-Javadoc)
    * 
@@ -173,10 +169,7 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener, 
 
     // Register on the list for subject we are interested in
     ObservationManager.register(this);
-    
-    // Create the preference menus
-    pjmTracks = new PreferencesJMenu(alSelected);
-    
+
     // populate the tree
     populateTree();
 
@@ -184,7 +177,13 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener, 
     createTree();
 
     jtree.setCellRenderer(new TracksTreeCellRenderer());
-  
+
+    /**
+     * CAUTION ! we register several listeners against this tree Swing can't
+     * ensure the order where listeners will treat them so don't count in the
+     * mouse listener to get correct selection from selection listener
+     */
+
     // Tree selection listener to detect a selection
     jtree.addTreeSelectionListener(new TracksTreeSelectionListener());
 
@@ -700,30 +699,29 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener, 
   // needs to be inner class as it accesses various members
   class TracksTreeSelectionListener implements TreeSelectionListener {
     public void valueChanged(TreeSelectionEvent e) {
-      // Avoid concurrency with the mouse listener
-      synchronized (lock) {
-        TreePath[] tpSelected = jtree.getSelectionModel().getSelectionPaths();
-        if (tpSelected == null) {
-          return;
-        }
-
-        // get all components recursively
-        alSelected.clear();
-        selectedRecursively.clear();
-        int items = handleSelected(tpSelected);
-
-        StringBuilder sbOut = new StringBuilder().append(items).append(
-            Messages.getString("TracksTreeView.31"));
-        InformationJPanel.getInstance().setSelection(sbOut.toString());
-        if (Conf.getBoolean(Const.CONF_OPTIONS_SYNC_TABLE_TREE)) {
-          // if table is synchronized with tree, notify the
-          // selection change
-          Properties properties = new Properties();
-          properties.put(Const.DETAIL_SELECTION, selectedRecursively);
-          properties.put(Const.DETAIL_ORIGIN, PerspectiveManager.getCurrentPerspective().getID());
-          ObservationManager.notify(new Event(JajukEvents.SYNC_TREE_TABLE, properties));
-        }
+      TreePath[] tpSelected = jtree.getSelectionModel().getSelectionPaths();
+      if (tpSelected == null) {
+        return;
       }
+
+      // get all components recursively
+      alSelected.clear();
+      selectedRecursively.clear();
+      int items = handleSelected(tpSelected);
+
+      StringBuilder sbOut = new StringBuilder().append(items).append(
+          Messages.getString("TracksTreeView.31"));
+      InformationJPanel.getInstance().setSelection(sbOut.toString());
+      if (Conf.getBoolean(Const.CONF_OPTIONS_SYNC_TABLE_TREE)) {
+        // if table is synchronized with tree, notify the
+        // selection change
+        Properties properties = new Properties();
+        properties.put(Const.DETAIL_SELECTION, selectedRecursively);
+        properties.put(Const.DETAIL_ORIGIN, PerspectiveManager.getCurrentPerspective().getID());
+        ObservationManager.notify(new Event(JajukEvents.SYNC_TREE_TABLE, properties));
+      }
+      // Update preference menu
+      pjmTracks.resetUI(alSelected);
     }
 
     /**
@@ -789,24 +787,21 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener, 
      * @param e
      */
     private void handleMouseEvent(MouseEvent e) {
-      // Avoid concurrency with the selection listener
-      synchronized (lock) {
-        TreePath path = jtree.getPathForLocation(e.getX(), e.getY());
-        if (path != null && e.getClickCount() == 2) {
-          Object o = path.getLastPathComponent();
-          if (o instanceof TrackNode) {
-            Track track = ((TrackNode) o).getTrack();
-            File file = track.getPlayeableFile(false);
-            if (file != null) {
-              try {
-                FIFO.push(new StackItem(file, Conf.getBoolean(Const.CONF_STATE_REPEAT), true), Conf
-                    .getBoolean(Const.CONF_OPTIONS_PUSH_ON_CLICK));
-              } catch (JajukException je) {
-                Log.error(je);
-              }
-            } else {
-              Messages.showErrorMessage(10, track.getName());
+      TreePath path = jtree.getPathForLocation(e.getX(), e.getY());
+      if (path != null && e.getClickCount() == 2) {
+        Object o = path.getLastPathComponent();
+        if (o instanceof TrackNode) {
+          Track track = ((TrackNode) o).getTrack();
+          File file = track.getPlayeableFile(false);
+          if (file != null) {
+            try {
+              FIFO.push(new StackItem(file, Conf.getBoolean(Const.CONF_STATE_REPEAT), true), Conf
+                  .getBoolean(Const.CONF_OPTIONS_PUSH_ON_CLICK));
+            } catch (JajukException je) {
+              Log.error(je);
             }
+          } else {
+            Messages.showErrorMessage(10, track.getName());
           }
         }
       }

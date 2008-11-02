@@ -131,7 +131,9 @@ public enum JajukEvents {
   RATE_RESET,
   // Preferences have been reset
   PREFERENCES_RESET,
-  // suggestion view should be refreshed
+  // Suggestion view should be refreshed
   SUGGESTIONS_REFRESH,
+  // A table selection changed
+  TABLE_SELECTION_CHANGED,
 
 }

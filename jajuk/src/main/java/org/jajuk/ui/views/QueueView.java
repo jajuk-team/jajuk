@@ -225,6 +225,7 @@ public class QueueView extends PlaylistView {
     eventSubjectSet.add(JajukEvents.CUSTOM_PROPERTIES_REMOVE);
     eventSubjectSet.add(JajukEvents.VIEW_REFRESH_REQUEST);
     eventSubjectSet.add(JajukEvents.RATE_CHANGED);
+    eventSubjectSet.add(JajukEvents.TABLE_SELECTION_CHANGED);
     return eventSubjectSet;
   }
 
@@ -300,6 +301,9 @@ public class QueueView extends PlaylistView {
               editorModel.getPlanned().clear();
               refreshQueue();
             }
+          } else if (JajukEvents.TABLE_SELECTION_CHANGED.equals(subject)) {
+            // Refresh the preference menu according to the selection
+            pjmFilesEditor.resetUI(editorTable.getSelection());
           }
         } catch (Exception e) {
           Log.error(e);

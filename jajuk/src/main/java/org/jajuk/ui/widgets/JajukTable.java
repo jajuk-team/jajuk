@@ -364,6 +364,7 @@ public class JajukTable extends JXTable implements ListSelectionListener,
       Item o = model.getItemAt(convertRowIndexToModel(element));
       selection.add(o);
     }
+    ObservationManager.notify(new Event(JajukEvents.TABLE_SELECTION_CHANGED));
   }
 
   public List<Item> getSelection() {

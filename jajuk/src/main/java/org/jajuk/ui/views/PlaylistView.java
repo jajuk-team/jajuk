@@ -139,7 +139,7 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
   // private java.io.File fileLast;
   /** Editor Model */
   protected PlaylistTableModel editorModel;
-  private PreferencesJMenu pjmFilesEditor;
+  PreferencesJMenu pjmFilesEditor;
 
   // --- Repository ---
   private PlaylistRepository repositoryPanel;
@@ -215,7 +215,7 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
       // We use for smart playlists panels the same popup menu than the one from
       // the repository table
       // but we disable some items like delete or properties
-      List<Integer> indexToDisable = Arrays.asList(new Integer[] { 4, 8 });
+      List<Integer> indexToDisable = Arrays.asList(new Integer[] { 4, 5, 8, 9 });
       repositoryPanel.jtable.getMenu(indexToDisable).show(e.getComponent(), e.getX(), e.getY());
     }
   };
@@ -436,6 +436,7 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
     eventSubjectSet.add(JajukEvents.FILE_COPIED);
     eventSubjectSet.add(JajukEvents.VIEW_REFRESH_REQUEST);
     eventSubjectSet.add(JajukEvents.QUEUE_NEED_REFRESH);
+    eventSubjectSet.add(JajukEvents.TABLE_SELECTION_CHANGED);
     return eventSubjectSet;
   }
 
@@ -475,8 +476,9 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
           // column changed of playlist
           // current playlist has changed
           if (JajukEvents.DEVICE_REFRESH.equals(subject)
-          // We listen this event to paint the new running track in table
-              || JajukEvents.QUEUE_NEED_REFRESH.equals(subject)) {
+              // We listen this event to paint the new running track in table
+              || JajukEvents.QUEUE_NEED_REFRESH.equals(subject)
+              || JajukEvents.RATE_CHANGED.equals(subject)) {
             refreshCurrentPlaylist();
           } else if (JajukEvents.FILE_COPIED.equals(subject)) {
             Properties properties = event.getDetails();
@@ -524,6 +526,9 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
             if (table.equals(editorTable)) {
               refreshCurrentPlaylist();
             }
+          } else if (JajukEvents.TABLE_SELECTION_CHANGED.equals(subject)) {
+            // Refresh the preference menu according to the selection
+            pjmFilesEditor.resetUI(editorTable.getSelection());
           }
         } catch (Exception e) {
           Log.error(e);
@@ -841,8 +846,6 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
 
     MouseAdapter ma;
 
-    private PreferencesJMenu pjmFilesRepository;
-
     public PlaylistRepository() {
       super();
       columnsConf = CONF_PLAYLIST_REPOSITORY_COLUMNS;
@@ -886,13 +889,13 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
           jmiRepositorySaveAs.putClientProperty(Const.DETAIL_SELECTION, jtable.getSelection());
 
           jmiPrepareParty = new JMenuItem(ActionManager.getAction(JajukActions.PREPARE_PARTY));
-          pjmFilesRepository = new PreferencesJMenu(jtable.getSelection());
+          pjmTracks = new PreferencesJMenu(jtable.getSelection());
 
           jtable.getMenu().add(jmiPrepareParty);
           jtable.getMenu().add(jmiRepositorySaveAs);
 
           jtable.getMenu().addSeparator();
-          jtable.getMenu().add(pjmFilesRepository);
+          jtable.getMenu().add(pjmTracks);
           jtable.getMenu().addSeparator();
           // Add this generic menu item manually to ensure it's the last one in
           // the list for GUI reasons

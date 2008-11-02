@@ -75,7 +75,6 @@ import org.jajuk.ui.actions.JajukActions;
 import org.jajuk.ui.actions.RefactorAction;
 import org.jajuk.ui.helpers.FontManager;
 import org.jajuk.ui.helpers.ItemMoveManager;
-import org.jajuk.ui.helpers.PreferencesJMenu;
 import org.jajuk.ui.helpers.TransferableTreeNode;
 import org.jajuk.ui.helpers.TreeRootElement;
 import org.jajuk.ui.helpers.TreeTransferHandler;
@@ -152,8 +151,6 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
   JMenuItem jmiPlaylistFilePaste;
 
   JMenuItem jmiPlaylistCopyURL;
-
-  private volatile boolean selectionReady = false;
 
   /*
    * (non-Javadoc)
@@ -280,6 +277,11 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
     // create tree
     createTree();
 
+    /**
+     * CAUTION ! we register several listeners against this tree Swing can't
+     * ensure the order where listeners will treat them so don't count in the
+     * mouse listener to get correct selection from selection listener
+     */
     jtree.setCellRenderer(new FilesTreeCellRenderer());
     // Tree selection listener to detect a selection (single click
     // , manages simple or multiple selections)
@@ -502,8 +504,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
         if (device.getBooleanValue(Const.XML_EXPANDED)) {
           jtree.expandRow(i);
         }
-        // Collapse node (useful to hide an live-unmounteddevice for ie
-        // )
+        // Collapse node (useful to hide an live-unmounted device for ie)
         else {
           jtree.collapseRow(i);
         }
@@ -516,107 +517,10 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
     }
   }
 
-  class FilesTreeSelectionListener implements TreeSelectionListener {
-    @SuppressWarnings("unchecked")
-    public void valueChanged(TreeSelectionEvent e) {
-      try {
-        selectionReady = false;
-        paths = jtree.getSelectionModel().getSelectionPaths();
-        // nothing selected, can be called during dnd
-        if (paths == null) {
-          return;
-        }
-        int items = 0;
-        long lSize = 0;
-        // get all components recursively
-        selectedRecursively.clear();
-        alSelected.clear();
-        for (TreePath element : paths) {
-          Object o = element.getLastPathComponent();
-          if (o instanceof TreeRootElement) {// root node
-            items = FileManager.getInstance().getElementCount();
-            selectedRecursively.addAll(FileManager.getInstance().getFiles());
-            for (Item item : selectedRecursively) {
-              lSize += ((File) item).getSize();
-            }
-            break;
-          } else {
-            Item item = (Item) ((TransferableTreeNode) o).getData();
-            alSelected.add(item);
-          }
-          // return all childs nodes recursively
-          Enumeration<DefaultMutableTreeNode> e2 = ((DefaultMutableTreeNode) o)
-              .depthFirstEnumeration();
-          while (e2.hasMoreElements()) {
-            DefaultMutableTreeNode node = e2.nextElement();
-            if (node instanceof FileNode) {
-              File file = ((FileNode) node).getFile();
-              // don't count same file twice if user
-              // select directory and then files inside
-              selectedRecursively.add(file);
-              lSize += file.getSize();
-              items++;
-            } else if (node instanceof PlaylistFileNode) {
-              Playlist plf = ((PlaylistFileNode) node).getPlaylistFile();
-              selectedRecursively.add(plf);
-              items++;
-            }
-          }
-        }
-        lSize /= 1048576; // set size in MB
-        StringBuilder sbOut = new StringBuilder().append(items).append(
-            Messages.getString("FilesTreeView.52"));
-        if (lSize > 1024) { // more than 1024 MB -> in GB
-          sbOut.append(lSize / 1024).append('.').append(lSize % 1024).append(
-              Messages.getString("FilesTreeView.53"));
-        } else {
-          sbOut.append(lSize).append(Messages.getString("FilesTreeView.54"));
-        }
-        InformationJPanel.getInstance().setSelection(sbOut.toString());
-        if (Conf.getBoolean(Const.CONF_OPTIONS_SYNC_TABLE_TREE)) {
-          // if table is synchronized with tree, notify the
-          // selection change
-          Properties properties = new Properties();
-          properties.put(Const.DETAIL_SELECTION, selectedRecursively);
-          properties.put(Const.DETAIL_ORIGIN, PerspectiveManager.getCurrentPerspective().getID());
-          ObservationManager.notify(new Event(JajukEvents.SYNC_TREE_TABLE, properties));
-        }
-        // Enable CDDB retagging only for a single directory selection
-        jmiCDDBWizard.setEnabled(alSelected.size() == 1 && alSelected.get(0) instanceof Directory);
-
-        // Enable device refresh for a single item
-        jmiDevRefresh.setEnabled(alSelected.size() == 1 && alSelected.get(0) instanceof Device);
-
-        // Enable directory refresh for a single item
-        jmiDirRefresh.setEnabled(alSelected.size() == 1 && alSelected.get(0) instanceof Directory);
-
-        // Enable Copy url for a single item only
-        jmiCopyURL.setEnabled(alSelected.size() == 1 && alSelected.get(0) instanceof File);
-        jmiDirCopyURL.setEnabled(alSelected.size() == 1 && alSelected.get(0) instanceof Directory);
-        jmiPlaylistCopyURL.setEnabled(alSelected.size() == 1
-            && alSelected.get(0) instanceof Playlist);
-      } finally {
-        selectionReady = true;
-      }
-    }
-  }
-
   class FilesMouseAdapter extends MouseAdapter {
 
     @Override
-    public void mousePressed(MouseEvent e) {
-      // Avoid concurrency with the selection listener
-      int comp = 10;
-      try {
-        while (!selectionReady && comp > 0) {
-          System.out.println("here");
-          Thread.sleep(100);
-          comp--;
-        }
-      } catch (InterruptedException e1) {
-        Log.error(e1);
-      }
-      selectionReady = false;
+    public void mousePressed(final MouseEvent e) {
       if (e.isPopupTrigger()) {
         handlePopup(e);
         // Left click
@@ -662,7 +566,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
     }
 
     @Override
-    public void mouseReleased(MouseEvent e) {
+    public void mouseReleased(final MouseEvent e) {
       if (e.isPopupTrigger()) {
         handlePopup(e);
       }
@@ -674,10 +578,6 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
       if (path == null) {
         return;
       }
-      // File menu. We instanciate it at each click to simplify code used to
-      // bold current preference
-      PreferencesJMenu pjmTracks = new PreferencesJMenu(alSelected);
-
       // right click on a selected node set Right click
       // behavior identical to konqueror tree:
       // if none or 1 node is selected, a right click on
@@ -863,6 +763,88 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
         jmenuCollection.show(jtree, e.getX(), e.getY());
       }
 
+    }
+  }
+
+  class FilesTreeSelectionListener implements TreeSelectionListener {
+    @SuppressWarnings("unchecked")
+    public void valueChanged(TreeSelectionEvent e) {
+      paths = jtree.getSelectionModel().getSelectionPaths();
+      // nothing selected, can be called during dnd
+      if (paths == null) {
+        return;
+      }
+      int items = 0;
+      long lSize = 0;
+      // get all components recursively
+      selectedRecursively.clear();
+      alSelected.clear();
+      for (TreePath element : paths) {
+        Object o = element.getLastPathComponent();
+        if (o instanceof TreeRootElement) {// root node
+          items = FileManager.getInstance().getElementCount();
+          selectedRecursively.addAll(FileManager.getInstance().getFiles());
+          for (Item item : selectedRecursively) {
+            lSize += ((File) item).getSize();
+          }
+          break;
+        } else {
+          Item item = (Item) ((TransferableTreeNode) o).getData();
+          alSelected.add(item);
+        }
+        // return all childs nodes recursively
+        Enumeration<DefaultMutableTreeNode> e2 = ((DefaultMutableTreeNode) o)
+            .depthFirstEnumeration();
+        while (e2.hasMoreElements()) {
+          DefaultMutableTreeNode node = e2.nextElement();
+          if (node instanceof FileNode) {
+            File file = ((FileNode) node).getFile();
+            // don't count same file twice if user
+            // select directory and then files inside
+            selectedRecursively.add(file);
+            lSize += file.getSize();
+            items++;
+          } else if (node instanceof PlaylistFileNode) {
+            Playlist plf = ((PlaylistFileNode) node).getPlaylistFile();
+            selectedRecursively.add(plf);
+            items++;
+          }
+        }
+      }
+      lSize /= 1048576; // set size in MB
+      StringBuilder sbOut = new StringBuilder().append(items).append(
+          Messages.getString("FilesTreeView.52"));
+      if (lSize > 1024) { // more than 1024 MB -> in GB
+        sbOut.append(lSize / 1024).append('.').append(lSize % 1024).append(
+            Messages.getString("FilesTreeView.53"));
+      } else {
+        sbOut.append(lSize).append(Messages.getString("FilesTreeView.54"));
+      }
+      InformationJPanel.getInstance().setSelection(sbOut.toString());
+      if (Conf.getBoolean(Const.CONF_OPTIONS_SYNC_TABLE_TREE)) {
+        // if table is synchronized with tree, notify the
+        // selection change
+        Properties properties = new Properties();
+        properties.put(Const.DETAIL_SELECTION, selectedRecursively);
+        properties.put(Const.DETAIL_ORIGIN, PerspectiveManager.getCurrentPerspective().getID());
+        ObservationManager.notify(new Event(JajukEvents.SYNC_TREE_TABLE, properties));
+      }
+      // Enable CDDB retagging only for a single directory selection
+      jmiCDDBWizard.setEnabled(alSelected.size() == 1 && alSelected.get(0) instanceof Directory);
+
+      // Enable device refresh for a single item
+      jmiDevRefresh.setEnabled(alSelected.size() == 1 && alSelected.get(0) instanceof Device);
+
+      // Enable directory refresh for a single item
+      jmiDirRefresh.setEnabled(alSelected.size() == 1 && alSelected.get(0) instanceof Directory);
+
+      // Enable Copy url for a single item only
+      jmiCopyURL.setEnabled(alSelected.size() == 1 && alSelected.get(0) instanceof File);
+      jmiDirCopyURL.setEnabled(alSelected.size() == 1 && alSelected.get(0) instanceof Directory);
+      jmiPlaylistCopyURL
+          .setEnabled(alSelected.size() == 1 && alSelected.get(0) instanceof Playlist);
+      // Update preference menu
+      pjmTracks.resetUI(alSelected);
     }
   }
 

@@ -45,6 +45,7 @@ import org.jajuk.events.Event;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.ui.actions.ActionManager;
 import org.jajuk.ui.actions.JajukActions;
+import org.jajuk.ui.helpers.PreferencesJMenu;
 import org.jajuk.util.Const;
 import org.jdesktop.swingx.JXTree;
 
@@ -108,8 +109,11 @@ public abstract class AbstractTreeView extends ViewAdapter {
 
   /** Jtree scroller position* */
   int pos;
+  
+  /** Preference menu */
+  PreferencesJMenu pjmTracks;
 
-  /**
+   /**
    * Used to differentiate user action tree collapse from code tree collapse
    */
   boolean bAutoCollapse = false;
@@ -156,6 +160,7 @@ public abstract class AbstractTreeView extends ViewAdapter {
     jmiProperties.putClientProperty(Const.DETAIL_SELECTION, alSelected);
     jmiCopyURL = new JMenuItem(ActionManager.getAction(JajukActions.COPY_TO_CLIPBOARD));
     jmiCopyURL.putClientProperty(Const.DETAIL_CONTENT, alSelected);
+    pjmTracks = new PreferencesJMenu(alSelected);
   }
 
   abstract void populateTree();
@@ -222,5 +227,6 @@ public abstract class AbstractTreeView extends ViewAdapter {
       repaint();
     }
   }
-
+  
+  
 }
