@@ -21,14 +21,11 @@ package org.jajuk.ui.actions;
 
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import org.jajuk.base.Item;
 import org.jajuk.base.Track;
-import org.jajuk.base.TrackComparator;
 import org.jajuk.base.TrackManager;
-import org.jajuk.base.TrackComparator.TrackComparatorType;
 import org.jajuk.ui.wizard.CDDBWizard;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
@@ -70,9 +67,6 @@ public class CDDBSelectionAction extends SelectionAction {
     Item item = selection.get(0);
     List<Track> tracksSet = TrackManager.getInstance().getAssociatedTracks(item);
     List<Track> tracks = new ArrayList<Track>(tracksSet);
-
-    // Sort tracks
-    Collections.sort(tracks, new TrackComparator(TrackComparatorType.ORDER));
 
     // Note that the CDDBWizard uses a swing worker
     new CDDBWizard(tracks);
