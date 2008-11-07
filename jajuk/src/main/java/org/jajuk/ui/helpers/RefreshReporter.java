@@ -74,22 +74,7 @@ public class RefreshReporter {
 
   public void startup() {
     // reset all values as this object is reused
-    this.progress = 0;
-    this.dirTotal = -1;
-    this.dirCount = 0;
-    this.iNbNewFiles = 0;
-    this.iNbCorruptedFiles = 0;
-    this.lDateStart = System.currentTimeMillis();
-    ReadOnlyIterator<Directory> dirs = DirectoryManager.getInstance().getDirectoriesIterator();
-    while (dirs.hasNext()) {
-      if (dirs.next().getDevice().equals(device)) {
-        dirTotal++;
-      }
-    }
-    // To avoid "freezing" at 100% if new files have been added since last
-    // refresh, take
-    // 5 % of new files
-    dirTotal *= 1.05;
+    reset();
 
     // if <0 directories count -> the progress bar is in indeterminate state
     this.rdialog = new RefreshDialog((dirTotal < 0));
@@ -107,6 +92,28 @@ public class RefreshReporter {
     this.rdialog.setProgress(10);
   }
 
+  /**
+   * Reset all values
+   */
+  public void reset(){
+    this.progress = 0;
+    this.dirTotal = -1;
+    this.dirCount = 0;
+    this.iNbNewFiles = 0;
+    this.iNbCorruptedFiles = 0;
+    this.lDateStart = System.currentTimeMillis();
+    ReadOnlyIterator<Directory> dirs = DirectoryManager.getInstance().getDirectoriesIterator();
+    while (dirs.hasNext()) {
+      if (dirs.next().getDevice().equals(device)) {
+        dirTotal++;
+      }
+    }
+    // To avoid "freezing" at 100% if new files have been added since last
+    // refresh, take
+    // 5 % of new files
+    dirTotal *= 1.05;
+  }
+  
   public void notifyCorruptedFile() {
     iNbCorruptedFiles++;
   }
@@ -128,6 +135,7 @@ public class RefreshReporter {
     long refreshTime = System.currentTimeMillis() - lRefreshDateStart;
     String message = buildFinalMessage(refreshTime);
     Log.debug(message);
+    reset();
   }
 
   public void cleanupDone() {
