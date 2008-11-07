@@ -317,8 +317,9 @@ public final class UtilFeatures {
     for (Item i : selection) {
       trackList.addAll(TrackManager.getInstance().getAssociatedTracks(i));
     }
-    // List shouldn't be void but we test it for security
-    if (selection.size() == 0) {
+    // List shouldn't be void (except on collection node selection in tree view
+    // for ie)
+    if (trackList.size() == 0) {
       return Const.PREFERENCE_UNSET;
     }
     Track firstTrack = trackList.get(0);
