@@ -284,8 +284,7 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
   /**
    * Alphabetical comparator used to display ordered lists of playlists
    * <p>
-   * Sort ignoring cases but different items with different cases should be
-   * distinct before being added into bidimap
+   * Sort ignoring cases 
    * </p>
    * 
    * @param other
@@ -300,12 +299,7 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
     final Playlist otherPlaylistFile = o;
     final String sFile = getName() + getAbsolutePath();
     final String sOtherAbs = otherPlaylistFile.getName() + otherPlaylistFile.getAbsolutePath();
-    // never return 0 here, because bidimap needs to distinct items
-    final int comp = sFile.compareToIgnoreCase(sOtherAbs);
-    if (comp == 0) {
-      return sFile.compareTo(sOtherAbs);
-    }
-    return comp;
+    return sFile.compareToIgnoreCase(sOtherAbs);
   }
 
   /**

@@ -58,6 +58,9 @@ public final class MD5Processor {
   public static final String hash(String sIn) {
     msgDigest.update(sIn.getBytes());
     byte[] digest = msgDigest.digest();
-    return new BigInteger(digest).abs().toString(36);
+    // Important : we internalize the result of this computation
+    // because all equals between items is done with '==' operator
+    // against strings and new discovered items call this method
+    return new BigInteger(digest).abs().toString(36).intern();
   }
 }

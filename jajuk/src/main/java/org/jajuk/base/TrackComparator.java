@@ -139,11 +139,6 @@ public class TrackComparator implements Comparator<Track> {
   public int compare(Track track1, Track track2) {
     String sHashCompare = getCompareString(track1);
     String sHashCompareOther = getCompareString(track2);
-    // never return 0 here, because bidimap needs to distinct items
-    int comp = sHashCompare.compareToIgnoreCase(sHashCompareOther);
-    if (comp == 0) {
-      return sHashCompare.compareTo(sHashCompareOther);
-    }
-    return comp;
+    return sHashCompare.compareToIgnoreCase(sHashCompareOther);
   }
 }

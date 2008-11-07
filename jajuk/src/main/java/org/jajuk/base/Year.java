@@ -78,7 +78,7 @@ public class Year extends LogicalItem implements Comparable<Year> {
    * 
    * @param other
    *          item to be compared
-   * @return comparaison result
+   * @return comparison result
    */
   public int compareTo(Year other) {
     return (int) (getValue() - other.getValue());

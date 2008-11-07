@@ -251,7 +251,7 @@ public class Device extends PhysicalItem implements Comparable<Device> {
    * 
    * @param other
    *          device to be compared
-   * @return comparaison result
+   * @return comparison result
    */
   public int compareTo(final Device otherDevice) {
     return getName().compareToIgnoreCase(otherDevice.getName());

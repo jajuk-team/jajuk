@@ -141,11 +141,11 @@ public class Track extends LogicalItem implements Comparable<Track> {
 
   /**
    * Default comparator for tracks, not used for sorting (use TrackComparator
-   * for that) But only for storage. We must make sure of unicity inside bidimap
+   * for that) But only for storage.
    * 
    * @param other
    *          track to be compared
-   * @return comparaison result
+   * @return comparison result 
    */
   public int compareTo(Track otherTrack) {
     return getID().compareTo(otherTrack.getID());

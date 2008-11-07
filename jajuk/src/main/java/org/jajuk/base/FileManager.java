@@ -128,7 +128,7 @@ public final class FileManager extends ItemManager implements Observer {
     }
     // add this file to track
     file.setTrack(track);
-    // make sure the file is added
+    // Add file to track
     track.addFile(file);
     return file;
   }
@@ -314,7 +314,6 @@ public final class FileManager extends ItemManager implements Observer {
    */
   public File getShuffleFile() {
     int index = UtilSystem.getRandom().nextInt(getElementCount());
-    Log.debug("Randomly choosing " + index + " for next file.");
     List<File> files = FileManager.getInstance().getFiles();
     if (files.size() == 0) {
       return null;

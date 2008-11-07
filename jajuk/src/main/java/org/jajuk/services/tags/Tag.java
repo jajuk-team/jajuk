@@ -58,7 +58,7 @@ public class Tag {
   /**
    * Tag constructor
    * 
-   * @bIgnoreError : ignore errror and keep instance
+   * @bIgnoreError : ignore error and keep instance
    * @param fio
    */
   public Tag(java.io.File fio, boolean bIgnoreErrors) throws JajukException {
@@ -89,8 +89,8 @@ public class Tag {
     try {
       sTemp = tagImpl.getTrackName().trim();
       if (!"".equals(sTemp)) {
-        sTrackName = UtilString.formatTag(sTemp); // remove the
-        // extension
+        // remove the extension
+        sTrackName = UtilString.formatTag(sTemp);
       }
     } catch (Exception e) {
       Log.info("Wrong track name:{{" + fio.getName() + "}}");
@@ -126,11 +126,12 @@ public class Tag {
         // if album is not found, take current directory as album name
       } else {
         sAlbumlName = Messages.getString(Const.UNKNOWN_ALBUM);
-        // unknwon album
       }
     }
     sAlbumlName = UtilString.formatTag(sAlbumlName);
-    return sAlbumlName;
+    // We internalize the album name as we use some comparison based on == for
+    // performances
+    return sAlbumlName.intern();
   }
 
   /**
@@ -156,7 +157,9 @@ public class Tag {
     } catch (Exception e) {
       Log.info("Wrong author name:{{" + fio.getName() + "}}");
     }
-    return sAuthorName;
+    // We internalize the author name as we use some comparison based on == for
+    // performances
+    return sAuthorName.intern();
 
   }
 
@@ -186,7 +189,9 @@ public class Tag {
     } catch (Exception e) {
       Log.info("Wrong style name:" + fio.getName());
     }
-    return style;
+    // We internalize the style name as we use some comparison based on == for
+    // performances
+    return style.intern();
 
   }
 
@@ -221,7 +226,9 @@ public class Tag {
     } catch (Exception e) {
       Log.info("Wrong year:" + fio.getName());
     }
-    return year;
+    // We internalize the year name as we use some comparison based on == for
+    // performances
+    return year.intern();
 
   }
 
@@ -260,7 +267,9 @@ public class Tag {
     } catch (Exception e) {
       Log.info("Wrong comment:{{" + fio.getName() + "}}");
     }
-    return sComment;
+    // We internalize the comments as we use some comparison based on == for
+    // performances
+    return sComment.intern();
   }
 
   /**

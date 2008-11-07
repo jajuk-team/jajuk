@@ -188,13 +188,12 @@ public class File extends PhysicalItem implements Comparable<File>, Const {
   /**
    * Alphabetical comparator used to display ordered lists of files
    * <p>
-   * Sort ignoring cases but different items with different cases should be
-   * distinct before being added into bidimap
+   * Sort ignoring cases 
    * </p>
    * 
    * @param other
    *          file to be compared
-   * @return comparaison result
+   * @return comparison result
    */
   public int compareTo(File otherFile) {
     // Begin by comparing file parent directory for perf
@@ -208,12 +207,7 @@ public class File extends PhysicalItem implements Comparable<File>, Const {
       // if same order too, simply compare file names
       String sAbs = getName();
       String sOtherAbs = otherFile.getName();
-      // never return 0 here, because bidimap needs to distinct items
-      int comp = sAbs.compareToIgnoreCase(sOtherAbs);
-      if (comp == 0) {
-        return sAbs.compareTo(sOtherAbs);
-      }
-      return comp;
+      return sAbs.compareToIgnoreCase(sOtherAbs);
     } else {
       // Files are in different directories, sort by parent directory
       return this.getDirectory().compareTo(otherFile.getDirectory());

@@ -388,8 +388,7 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
     Author author = AuthorManager.getInstance().registerAuthor(sAuthorName);
     Type type = TypeManager.getInstance().getTypeByExtension(
         UtilSystem.getExtension(music));
-    // Store number of tracks in collection (note that the
-    // collection is locked)
+    // Store number of tracks in collection 
     long trackNumber = TrackManager.getInstance().getElementCount();
     Track track = TrackManager.getInstance().registerTrack(sTrackName, album, style, author,
         length, year, lOrder, type);
@@ -490,13 +489,12 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
   /**
    * Alphabetical comparator used to display ordered lists of directories *
    * <p>
-   * Sort ignoring cases but different items with different cases should be
-   * distinct before being added into bidimap
+   * Sort ignoring cases
    * </p>
    * 
    * @param other
    *          directory to be compared
-   * @return comparaison result
+   * @return comparison result
    */
   public int compareTo(Directory otherDirectory) {
     // Perf: leave if directories are equals
@@ -507,12 +505,7 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
     String otherAbs = new StringBuilder(otherDirectory.getDevice().getName()).append(
         otherDirectory.getAbsolutePath()).toString();
     // should ignore case to get a B c ... and not Bac
-    // Never return 0 here, because bidimap needs to distinct items
-    int comp = abs.compareToIgnoreCase(otherAbs);
-    if (comp == 0) {
-      return abs.compareTo(otherAbs);
-    }
-    return comp;
+    return abs.compareToIgnoreCase(otherAbs);
   }
 
   /**
