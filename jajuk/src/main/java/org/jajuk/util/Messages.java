@@ -60,8 +60,8 @@ public class Messages extends DefaultHandler {
   /** Supported Locals */
   private static List<String> alLocals = new ArrayList<String>(10);
 
-  /** self instance for singleton */
-  private static Messages mesg;
+  /** Messages initialized flag */
+  private static boolean bInitialized = false;
 
   /** All choice option, completes JDialog options */
   public static final int ALL_OPTION = 10;
@@ -301,6 +301,7 @@ public class Messages extends DefaultHandler {
     Conf.setProperty(Const.CONF_OPTIONS_LANGUAGE, sLocal);
     properties = null; // make sure to reinitialize cached strings
     Messages.sLocal = sLocal;
+    bInitialized = true;
   }
 
   /*****************************************************************************
@@ -552,11 +553,12 @@ public class Messages extends DefaultHandler {
   /**
    * Return true if the messaging system is started, can be useful mainly at
    * startup by services ( like logs) using them to avoid dead locks
+   * Messages service is initialized after current has been set
    * 
    * @return
    */
   public static boolean isInitialized() {
-    return !(mesg == null);
+    return bInitialized;
   }
 
   /**
