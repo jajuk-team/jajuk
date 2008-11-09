@@ -188,10 +188,10 @@ public final class Log {
   public static void warn(int code, String sInfosup, Throwable t) {
     String sOut;
     if (Messages.isInitialized()) {
-      sOut = '(' + code + ") " + Messages.getErrorMessage(code)
+      sOut = "(" + code + ") " + Messages.getErrorMessage(code)
           + ((sInfosup == null) ? "" : ":" + sInfosup);
     } else {
-      sOut = '(' + code + ") " + ((sInfosup == null) ? "" : ":" + sInfosup);
+      sOut = "(" + code + ") " + ((sInfosup == null) ? "" : ":" + sInfosup);
     }
     // Just display the message if Log is not yet enabled
     if (log == null) {
@@ -224,10 +224,10 @@ public final class Log {
     }
     String sOut;
     if (Messages.isInitialized()) {
-      sOut = '(' + code + ") " + Messages.getErrorMessage(code)
+      sOut = "(" + code + ") " + Messages.getErrorMessage(code)
           + ((sInfosup == null) ? "" : ": " + sInfosup);
     } else {
-      sOut = '(' + code + ") " + ((sInfosup == null) ? "" : ":" + sInfosup);
+      sOut = "(" + code + ") " + ((sInfosup == null) ? "" : ":" + sInfosup);
     }
     spool("<font color='red'>[ERROR] " + sOut + "</font>");
     if (t != null) {
@@ -245,9 +245,9 @@ public final class Log {
   public static void error(int code) {
     String sOut;
     if (Messages.isInitialized()) {
-      sOut = '(' + code + ") " + Messages.getErrorMessage(code);
+      sOut = "(" + code + ") " + Messages.getErrorMessage(code);
     } else {
-      sOut = '(' + code + ") ";
+      sOut = "(" + code + ") ";
     }
     // Just make a print stake trace if Log is not yet enabled (example:
     // collection commit problem in initialCheckups)
