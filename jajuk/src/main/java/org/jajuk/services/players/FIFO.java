@@ -44,6 +44,7 @@ import org.jajuk.ui.helpers.JajukTimer;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.Messages;
+import org.jajuk.util.UtilFeatures;
 import org.jajuk.util.UtilGUI;
 import org.jajuk.util.UtilSystem;
 import org.jajuk.util.error.JajukException;
@@ -303,7 +304,7 @@ public final class FIFO {
           launch();
         }
         // computes planned tracks
-        computesPlanned(true);
+        computesPlanned(false);
       }
     } catch (Exception e) {
       Log.error(e);
@@ -534,22 +535,43 @@ public final class FIFO {
       alPlanned.clear();
     }
     int iPlannedSize = alPlanned.size();
-    // Add required tracks
-    for (int i = 0; i < (Conf.getInt(Const.CONF_OPTIONS_VISIBLE_PLANNED) - iPlannedSize); i++) {
-      StackItem item = null;
-      StackItem siLast = null; // last item in fifo or planned
-      // if planned stack contains yet some tracks
-      if (alPlanned.size() > 0) {
-        siLast = alPlanned.get(alPlanned.size() - 1); // last one
-      } else if (alFIFO.size() > 0) { // if fifo contains yet some
-        // tracks to play
-        siLast = alFIFO.get(alFIFO.size() - 1); // last one
+    int missingPlannedSize = Conf.getInt(Const.CONF_OPTIONS_VISIBLE_PLANNED) - iPlannedSize;
+
+    /*
+     * To compute missing planned tracks in shuffle state, we get a global
+     * shuffle list and we sub list it. This avoid calling a getShuffle() on
+     * file manager file by file because it is very costly
+     */
+    if (Conf.getBoolean(Const.CONF_STATE_SHUFFLE)) {
+      List<File> alFiles = FileManager.getInstance().getGlobalShufflePlaylist();
+      // Remove already planned tracks
+      for (StackItem item : alPlanned) {
+        if (alFiles.contains(item.getFile())) {
+          alFiles.remove(item.getFile());
+        }
       }
-      try {
-        // if random mode, add shuffle tracks
-        if (Conf.getBoolean(Const.CONF_STATE_SHUFFLE)) {
-          item = new StackItem(FileManager.getInstance().getShuffleFile(), false);
-        } else {
+      if (alFiles.size() >= missingPlannedSize) {
+        alFiles = alFiles.subList(0, missingPlannedSize - 1);
+      }
+      List<StackItem> missingPlanned = UtilFeatures.createStackItems(alFiles, Conf
+          .getBoolean(Const.CONF_STATE_REPEAT), false);
+      for (StackItem item : missingPlanned) {
+        item.setPlanned(true);
+        alPlanned.add(item);
+      }
+    } else {
+      for (int i = 0; i < missingPlannedSize; i++) {
+        @SuppressWarnings("unused")
+        StackItem item = null;
+        StackItem siLast = null; // last item in fifo or planned
+        // if planned stack contains yet some tracks
+        if (alPlanned.size() > 0) {
+          siLast = alPlanned.get(alPlanned.size() - 1); // last one
+        } else if (alFIFO.size() > 0) { // if fifo contains yet some
+          // tracks to play
+          siLast = alFIFO.get(alFIFO.size() - 1); // last one
+        }
+        try {
           // if fifo contains yet some tracks to play
           if (siLast != null) {
             item = new StackItem(FileManager.getInstance().getNextFile(siLast.getFile()), false);
@@ -558,16 +580,16 @@ public final class FIFO {
             List<File> files = FileManager.getInstance().getFiles();
             item = new StackItem(files.get(0), false);
           }
+          // Tell it is a planned item
+          item.setPlanned(true);
+          // add the new item
+          alPlanned.add(item);
+        } catch (JajukException je) {
+          // can be thrown if FileManager return a null file (like when
+          // reaching end of collection)
+          break;
         }
-      } catch (JajukException je) {
-        // can be thrown if FileManager return a null file (like when
-        // reaching end of collection)
-        break;
       }
-      // Tell it is a planned item
-      item.setPlanned(true);
-      // add the new item
-      alPlanned.add(item);
     }
   }
 

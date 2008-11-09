@@ -308,17 +308,22 @@ public final class FileManager extends ItemManager implements Observer {
   }
 
   /**
-   * Return a shuffle mounted file from the entire collection
+   * Return a shuffle mounted and unbaned file from the entire collection
+   * or null if none available using these criterias
    * 
-   * @return
+   * @return the file
    */
   public File getShuffleFile() {
-    int index = UtilSystem.getRandom().nextInt(getElementCount());
-    List<File> files = FileManager.getInstance().getFiles();
-    if (files.size() == 0) {
+    List<File> alEligibleFiles = getReadyFiles();
+    // filter banned files
+    CollectionUtils.filter(alEligibleFiles, new JajukPredicates.BannedFilePredicate());
+    int index = UtilSystem.getRandom().nextInt(alEligibleFiles.size()-1);
+    if (alEligibleFiles.size() > 0){
+      return alEligibleFiles.get(index);
+    }
+    else{
       return null;
     }
-    return files.get(index);
   }
 
   /**
