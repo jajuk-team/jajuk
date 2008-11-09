@@ -144,26 +144,6 @@ public enum JajukActions {
   COVER_CHANGE,
 
   /**
-   * Used when the stop button has been pressed.
-   */
-  PLAYER_STOP,
-
-  /**
-   * Used when the play button has been pressed.
-   */
-  PLAYER_PLAY,
-
-  /**
-   * Used when the pause button has been pressed.
-   */
-  PLAYER_PAUSE,
-
-  /**
-   * Used when the resume button has been pressed.
-   */
-  PLAYER_RESUME,
-
-  /**
    * Used when a playlist refresh is requested.
    */
   PLAYLIST_REFRESH,
@@ -174,7 +154,7 @@ public enum JajukActions {
   PLAYLIST_CHANGED,
 
   /**
-   * Used when a file has been lauched by the fifo.
+   * Used when a file has been launched by the fifo.
    */
   FILE_LAUNCHED,
 
