@@ -122,7 +122,7 @@ public class PreferenceToolbar extends JajukJToolbar implements Observer {
 
     // Set default to unset preference if not playing and to current track value
     // if playing
-    if (!FIFO.isStopped()) {
+    if (!FIFO.isStopped() && FIFO.getCurrentFile() != null) {
       setPreference(FIFO.getCurrentFile().getTrack().getLongValue(Const.XML_TRACK_PREFERENCE));
     } else {
       jcbPreference.setSelectedIndex(3);
