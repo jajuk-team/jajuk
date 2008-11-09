@@ -27,6 +27,8 @@ import java.util.StringTokenizer;
 
 import org.jajuk.base.Track;
 import org.jajuk.services.webradio.WebRadio;
+import org.jajuk.ui.actions.ActionManager;
+import org.jajuk.ui.actions.JajukActions;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.error.JajukException;
@@ -66,7 +68,7 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
    * much CPU
    */
   private static final int PROGRESS_STEP = 500;
-  
+
   /**
    * Total play time is refreshed every TOTAL_PLAYTIME_UPDATE_INTERVAL times
    */
@@ -104,7 +106,8 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
               // End of file: increase actual play time to the track
               // Perf note : this full action takes less much than 1 ms
               long trackPlaytime = current.getLongValue(Const.XML_TRACK_TOTAL_PLAYTIME);
-              long newValue = ((PROGRESS_STEP * TOTAL_PLAYTIME_UPDATE_INTERVAL) / 1000) + trackPlaytime;
+              long newValue = ((PROGRESS_STEP * TOTAL_PLAYTIME_UPDATE_INTERVAL) / 1000)
+                  + trackPlaytime;
               current.setProperty(Const.XML_TRACK_TOTAL_PLAYTIME, +newValue);
             }
             comp++;
@@ -135,12 +138,12 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
           if (line == null) {
             break;
           }
-
           // produces lots of output: Log.debug("Output from MPlayer: " + line);
 
           if (line.matches(".*ANS_TIME_POSITION.*")) {
             // Stream no more opening
             bOpening = false;
+
             StringTokenizer st = new StringTokenizer(line, "=");
             st.nextToken();
             lTime = (int) (Float.parseFloat(st.nextToken()) * 1000);
@@ -202,7 +205,7 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
             try {
               // Update track rate
               fCurrent.getTrack().updateRate();
-              
+
               // If using crossfade, ignore end of file
               if (!bFading
               // Do not launch next track if not opening: it means
@@ -367,6 +370,17 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
     if (bFading) {
       return;
     }
+    // Make sure to reset pause. Indeed, mplayer has a bug that resume
+    // playing after a volume change or a seek. We must make sure that
+    // the jajuk state is coherent with the mplayer one
+    if (Player.isPaused()) {
+      try {
+        ActionManager.getAction(JajukActions.PLAY_PAUSE_TRACK).perform(null);
+      } catch (Exception e) {
+        Log.error(e);
+      }
+    }
+
     // save current position
     String command = "seek " + (int) (100 * posValue) + " 1";
     sendCommand(command);
@@ -403,6 +417,25 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
    */
   @Override
   public void play(WebRadio radio, float volume) throws Exception {
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.jajuk.base.IPlayerImpl#setVolume(float)
+   */
+  public void setVolume(float fVolume) {
+    super.setVolume(fVolume);
+    // Make sure to reset pause. Indeed, mplayer has a bug that resume
+    // playing after a volume change or a seek. We must make sure that
+    // the jajuk state is coherent with the mplayer one
+    if (Player.isPaused()) {
+      try {
+        ActionManager.getAction(JajukActions.PLAY_PAUSE_TRACK).perform(null);
+      } catch (Exception e) {
+        Log.error(e);
+      }
+    }
   }
 
 }
