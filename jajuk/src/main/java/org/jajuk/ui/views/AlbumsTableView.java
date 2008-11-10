@@ -28,24 +28,19 @@ import java.awt.Rectangle;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
-import java.util.List;
 
 import javax.swing.JMenuItem;
 
 import org.jajuk.base.Album;
-import org.jajuk.base.File;
-import org.jajuk.services.players.FIFO;
 import org.jajuk.ui.actions.ActionManager;
 import org.jajuk.ui.actions.JajukActions;
 import org.jajuk.ui.helpers.AlbumsTableModel;
-import org.jajuk.ui.helpers.ILaunchCommand;
 import org.jajuk.ui.helpers.JajukTableModel;
 import org.jajuk.ui.thumbnails.LocalAlbumThumbnail;
 import org.jajuk.ui.thumbnails.ThumbnailPopup;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.Messages;
-import org.jajuk.util.UtilFeatures;
 import org.jajuk.util.UtilGUI;
 
 /**
@@ -98,37 +93,7 @@ public class AlbumsTableView extends AbstractTableView {
         jtable.getMenu().add(pjmTracks);
         jtable.getMenu().addSeparator();
         jtable.getMenu().add(jmiProperties);
-        // Add specific behavior on left click
-        jtable.setCommand(new ILaunchCommand() {
-          public void launch(int nbClicks) {
-            int iSelectedCol = jtable.getSelectedColumn();
-            boolean editableCol = jtable.getModel().isCellEditable(
-                jtable.convertRowIndexToModel(iSelectedCol),
-                jtable.convertColumnIndexToModel(iSelectedCol));
-            // selected column in view Test click on play icon launch track only
-            // if only first column is selected (fixes issue with
-            // Ctrl-A)
-            if (jtable.getSelectedColumnCount() == 1
-            // click on play icon
-                && (jtable.convertColumnIndexToModel(iSelectedCol) == 0)
-                // double click on any column and edition state false
-                || (nbClicks == 2 && !editableCol)) {
-              // selected row in view
-              Album album = (Album) jtable.getSelection().get(0);
-              List<File> alFiles = UtilFeatures.getPlayableFiles(album);
-              if (alFiles.size() > 0) {
-                // launch it
-                FIFO.push(UtilFeatures.createStackItems(alFiles, Conf
-                    .getBoolean(Const.CONF_STATE_REPEAT), true), Conf
-                    .getBoolean(Const.CONF_OPTIONS_PUSH_ON_CLICK));
-
-              } else {
-                Messages.showErrorMessage(10, album.getName2());
-              }
-            }
-          }
-        });
-
+       
         // Add popup feature when mouse rolls over cells
         jtable.addMouseMotionListener(new MouseMotionListener() {
           Album current = null;

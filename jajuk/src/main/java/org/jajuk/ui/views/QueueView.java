@@ -191,8 +191,6 @@ public class QueueView extends PlaylistView {
           // double click, launches selected track and all after
           StackItem item = editorModel.getStackItem(editorTable.getSelectedRow());
           if (item.isPlanned()) {
-            // we can't launch a planned
-            // track, leave
             item.setPlanned(false);
             item.setRepeat(Conf.getBoolean(Const.CONF_STATE_REPEAT));
             item.setUserLaunch(true);

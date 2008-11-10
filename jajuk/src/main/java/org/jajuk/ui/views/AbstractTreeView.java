@@ -104,16 +104,16 @@ public abstract class AbstractTreeView extends ViewAdapter {
   JMenuItem jmiProperties;
 
   JMenuItem jmiCDDBWizard;
-  
+
   JMenuItem jmiCopyURL;
 
   /** Jtree scroller position* */
   int pos;
-  
+
   /** Preference menu */
   PreferencesJMenu pjmTracks;
 
-   /**
+  /**
    * Used to differentiate user action tree collapse from code tree collapse
    */
   boolean bAutoCollapse = false;
@@ -200,7 +200,9 @@ public abstract class AbstractTreeView extends ViewAdapter {
       SwingWorker sw = new SwingWorker() {
         @Override
         public Object construct() {
-          pos = jspTree.getVerticalScrollBar().getValue();
+          if (jspTree != null) {
+            pos = jspTree.getVerticalScrollBar().getValue();
+          }
           populateTree();
           return null;
         }
@@ -227,6 +229,5 @@ public abstract class AbstractTreeView extends ViewAdapter {
       repaint();
     }
   }
-  
-  
+
 }

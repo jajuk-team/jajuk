@@ -22,20 +22,13 @@ package org.jajuk.ui.views;
 
 import javax.swing.JMenuItem;
 
-import org.jajuk.base.File;
-import org.jajuk.base.Track;
-import org.jajuk.services.players.FIFO;
-import org.jajuk.services.players.StackItem;
 import org.jajuk.ui.actions.ActionManager;
 import org.jajuk.ui.actions.JajukActions;
-import org.jajuk.ui.helpers.ILaunchCommand;
 import org.jajuk.ui.helpers.JajukTableModel;
 import org.jajuk.ui.helpers.TracksTableModel;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.Messages;
-import org.jajuk.util.error.JajukException;
-import org.jajuk.util.log.Log;
 
 /**
  * Logical table view
@@ -80,36 +73,6 @@ public class TracksTableView extends AbstractTableView {
     jtable.getMenu().add(pjmTracks);
     jtable.getMenu().addSeparator();
     jtable.getMenu().add(jmiProperties);
-    // Add specific behavior on left click
-    jtable.setCommand(new ILaunchCommand() {
-      public void launch(int nbClicks) {
-        int iSelectedCol = jtable.getSelectedColumn();
-        // selected column in view Test click on play icon launch track only
-        // if only first column is selected (fixes issue with
-        // Ctrl-A)
-        if (jtable.getSelectedColumnCount() == 1
-        // click on play icon
-            && (jtable.convertColumnIndexToModel(iSelectedCol) == 0)
-            // double click on any column and edition state false
-            || (nbClicks == 2 && !jtbEditable.isSelected())) {
-          // selected row in view
-          Track track = (Track) jtable.getSelection().get(0);
-          File file = track.getPlayeableFile(false);
-          if (file != null) {
-            try {
-              // launch it
-              FIFO.push(new StackItem(file, Conf.getBoolean(Const.CONF_STATE_REPEAT)), Conf
-                  .getBoolean(Const.CONF_OPTIONS_PUSH_ON_CLICK));
-
-            } catch (JajukException je) {
-              Log.error(je);
-            }
-          } else {
-            Messages.showErrorMessage(10, track.getName());
-          }
-        }
-      }
-    });
     TracksTableView.super.finished();
   }
 

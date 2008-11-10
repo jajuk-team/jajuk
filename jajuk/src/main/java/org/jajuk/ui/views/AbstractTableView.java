@@ -32,6 +32,7 @@ import java.awt.event.ItemListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Properties;
 import java.util.Set;
 
@@ -62,8 +63,10 @@ import org.jajuk.events.Event;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.events.Observer;
+import org.jajuk.services.players.FIFO;
 import org.jajuk.ui.actions.ActionManager;
 import org.jajuk.ui.actions.JajukActions;
+import org.jajuk.ui.helpers.ILaunchCommand;
 import org.jajuk.ui.helpers.JajukTableModel;
 import org.jajuk.ui.helpers.PreferencesJMenu;
 import org.jajuk.ui.helpers.TableTransferHandler;
@@ -75,6 +78,7 @@ import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
+import org.jajuk.util.UtilFeatures;
 import org.jajuk.util.UtilGUI;
 import org.jajuk.util.error.CannotRenameException;
 import org.jajuk.util.error.JajukException;
@@ -141,7 +145,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
   JMenuItem jmiBookmark;
   JMenuItem jmiProperties;
   JMenuItem jmiFileCopyURL;
-  
+
   PreferencesJMenu pjmTracks;
 
   /**
@@ -198,7 +202,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
     jmiPush = new JMenuItem(ActionManager.getAction(JajukActions.PUSH_SELECTION));
     jmiPush.putClientProperty(Const.DETAIL_SELECTION, jtable.getSelection());
     jtable.getMenu().add(jmiPush);
-    
+
     jmiPlayRepeat = new JMenuItem(ActionManager.getAction(JajukActions.PLAY_REPEAT_SELECTION));
     jmiPlayRepeat.putClientProperty(Const.DETAIL_SELECTION, jtable.getSelection());
     jtable.getMenu().add(jmiPlayRepeat);
@@ -212,20 +216,50 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
     jmiDelete = new JMenuItem(ActionManager.getAction(JajukActions.DELETE));
     jmiDelete.putClientProperty(Const.DETAIL_SELECTION, jtable.getSelection());
     jtable.getMenu().add(jmiDelete);
-    
-    jmiFileCopyURL = new JMenuItem(ActionManager
-        .getAction(JajukActions.COPY_TO_CLIPBOARD));
+
+    jmiFileCopyURL = new JMenuItem(ActionManager.getAction(JajukActions.COPY_TO_CLIPBOARD));
     jmiFileCopyURL.putClientProperty(Const.DETAIL_CONTENT, jtable.getSelection());
     jtable.getMenu().add(jmiFileCopyURL);
-    
+
     jmiBookmark = new JMenuItem(ActionManager.getAction(JajukActions.BOOKMARK_SELECTION));
     jmiBookmark.putClientProperty(Const.DETAIL_SELECTION, jtable.getSelection());
 
     jmiProperties = new JMenuItem(ActionManager.getAction(JajukActions.SHOW_PROPERTIES));
     jmiProperties.putClientProperty(Const.DETAIL_SELECTION, jtable.getSelection());
-    
+
     pjmTracks = new PreferencesJMenu(jtable.getSelection());
-        
+
+    // Set a default behavior for double click or click on the play column
+    jtable.setCommand(new ILaunchCommand() {
+      public void launch(int nbClicks) {
+        // Ignore event if several rows are selected
+        if (jtable.getSelectedColumnCount() != 1) {
+          return;
+        }
+
+        int iSelectedCol = jtable.getSelectedColumn();
+        // Convert column selection as columns may have been moved
+        iSelectedCol = jtable.convertColumnIndexToModel(iSelectedCol);
+
+        // We launch the selection :
+        // - In any case if user clicked on the play column (column 0)
+        // - Or in case of double click on any column when table is not editable
+        if (iSelectedCol == 0 || // click on play icon
+            // double click on any column and edition state false
+            (nbClicks == 2 && !jtbEditable.isSelected())) {
+          Item item = model.getItemAt(jtable.convertRowIndexToModel(jtable.getSelectedRow()));
+          List<File> files = UtilFeatures.getPlayableFiles(item);
+          if (files.size() > 0) {
+            // launch it
+            FIFO.push(UtilFeatures.createStackItems(UtilFeatures.applyPlayOption(files), Conf
+                .getBoolean(Const.CONF_STATE_REPEAT), true), Conf
+                .getBoolean(Const.CONF_OPTIONS_PUSH_ON_CLICK));
+          } else {
+            Messages.showErrorMessage(10, item.getName());
+          }
+        }
+      }
+    });
     return null;
   }
 
@@ -444,7 +478,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
             // Refresh the preference menu according to the selection
             pjmTracks.resetUI(jtable.getSelection());
           }
-          
+
         } catch (Exception e) {
           Log.error(e);
         } finally {
@@ -556,7 +590,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
       Properties properties = new Properties();
       properties.put(Const.DETAIL_ORIGIN, AbstractTableView.this);
       ObservationManager.notify(new Event(JajukEvents.RATE_CHANGED, properties));
-     
+
     } catch (NoneAccessibleFileException none) {
       Messages.showErrorMessage(none.getCode());
       ((JajukTableModel) jtable.getModel()).undo(e.getFirstRow(), e.getColumn());

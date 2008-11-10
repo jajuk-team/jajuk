@@ -901,33 +901,6 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
           // the list for GUI reasons
           jtable.getMenu().add(jmiProperties);
           jtable.getSelectionModel().addListSelectionListener(PlaylistRepository.this);
-          // Add specific behavior on left click
-          jtable.setCommand(new ILaunchCommand() {
-            public void launch(int nbClicks) {
-              int iSelectedCol = jtable.getSelectedColumn();
-              // selected column in view Test click on play icon launch track
-              // only if only first column is selected (fixes issue with
-              // Ctrl-A)
-              if (jtable.getSelectedColumnCount() == 1
-              // click on play icon
-                  && (jtable.convertColumnIndexToModel(iSelectedCol) == 0)
-                  // double click on any column and edition state false
-                  || nbClicks == 2) {
-                // selected row in view
-                Playlist playlist = (Playlist) jtable.getSelection().get(0);
-                List<File> alFiles = UtilFeatures.getPlayableFiles(playlist);
-                if (alFiles.size() > 0) {
-                  // launch it
-                  FIFO.push(UtilFeatures.createStackItems(alFiles, Conf
-                      .getBoolean(Const.CONF_STATE_REPEAT), true), Conf
-                      .getBoolean(Const.CONF_OPTIONS_PUSH_ON_CLICK));
-                } else {
-                  Messages.showErrorMessage(10, playlist.getName());
-                }
-              }
-            }
-          });
-
           return null;
         }
 

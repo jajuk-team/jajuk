@@ -22,19 +22,13 @@ package org.jajuk.ui.views;
 
 import javax.swing.JMenuItem;
 
-import org.jajuk.base.File;
-import org.jajuk.services.players.FIFO;
-import org.jajuk.services.players.StackItem;
 import org.jajuk.ui.actions.ActionManager;
 import org.jajuk.ui.actions.JajukActions;
 import org.jajuk.ui.helpers.FilesTableModel;
-import org.jajuk.ui.helpers.ILaunchCommand;
 import org.jajuk.ui.helpers.JajukTableModel;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.Messages;
-import org.jajuk.util.error.JajukException;
-import org.jajuk.util.log.Log;
 
 /**
  * Logical table view
@@ -75,38 +69,7 @@ public class FilesTableView extends AbstractTableView {
     jtable.getMenu().add(pjmTracks);
     jtable.getMenu().addSeparator();
     jtable.getMenu().add(jmiProperties);
-
-    // Add specific behavior on left click
-    jtable.setCommand(new ILaunchCommand() {
-      public void launch(int nbClicks) {
-        // Ignore event if several rows are selected
-        if (jtable.getSelectedColumnCount() != 1) {
-          return;
-        }
-
-        int iSelectedCol = jtable.getSelectedColumn();
-        // Convert column selection as columns may have been moved 
-        iSelectedCol = jtable.convertColumnIndexToModel(iSelectedCol);
-
-        // We launch the selection :
-        // - In any case if user clicked on the play column (column 0)
-        // - Or in case of double click on any column when table is not editable  
-        if (iSelectedCol == 0 || // click on play icon
-            // double click on any column and edition state false
-            (nbClicks == 2 && !jtbEditable.isSelected())) {
-          File file = (File) model
-              .getItemAt(jtable.convertRowIndexToModel(jtable.getSelectedRow()));
-          try {
-            // launch it
-            FIFO.push(new StackItem(file, Conf.getBoolean(Const.CONF_STATE_REPEAT), true), Conf
-                .getBoolean(Const.CONF_OPTIONS_PUSH_ON_CLICK));
-
-          } catch (JajukException je) {
-            Log.error(je);
-          }
-        }
-      }
-    });
+   
     FilesTableView.super.finished();
   }
 
