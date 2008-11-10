@@ -304,7 +304,7 @@ public final class FIFO {
           launch();
         }
         // computes planned tracks
-        computesPlanned(false);
+        computesPlanned(true);
       }
     } catch (Exception e) {
       Log.error(e);
