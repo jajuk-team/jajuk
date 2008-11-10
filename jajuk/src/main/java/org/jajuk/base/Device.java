@@ -36,6 +36,7 @@ import org.jajuk.events.ObservationManager;
 import org.jajuk.services.bookmark.History;
 import org.jajuk.services.core.ExitService;
 import org.jajuk.services.players.FIFO;
+import org.jajuk.ui.helpers.ManualDeviceRefreshReporter;
 import org.jajuk.ui.helpers.RefreshReporter;
 import org.jajuk.ui.thumbnails.ThumbnailsMaker;
 import org.jajuk.ui.widgets.InformationJPanel;
@@ -254,7 +255,14 @@ public class Device extends PhysicalItem implements Comparable<Device> {
    * @return comparison result
    */
   public int compareTo(final Device otherDevice) {
-    return getName().compareToIgnoreCase(otherDevice.getName());
+    // We must be consistent with equals, see
+    // http://java.sun.com/javase/6/docs/api/java/lang/Comparable.html
+    int comp = getName().compareToIgnoreCase(otherDevice.getName());
+    if (comp == 0) {
+      return getName().compareTo(otherDevice.getName());
+    } else {
+      return comp;
+    }
   }
 
   public long getDateLastRefresh() {
@@ -446,7 +454,7 @@ public class Device extends PhysicalItem implements Comparable<Device> {
    */
   private void manualRefresh(final boolean bAsk) {
     try {
-      reporter = new RefreshReporter(this);
+      reporter = new ManualDeviceRefreshReporter(this);
       int i = 0;
       try {
         i = prepareRefresh(bAsk);
@@ -477,7 +485,6 @@ public class Device extends PhysicalItem implements Comparable<Device> {
       } catch (final IOException e) {
         Log.error(e);
       }
-      reporter.done();
     } finally {
       // Make sure to unlock refreshing
       bAlreadyRefreshing = false;
@@ -662,6 +669,7 @@ public class Device extends PhysicalItem implements Comparable<Device> {
   public synchronized boolean refreshCommand(final boolean bDeepScan) {
     try {
       bAlreadyRefreshing = true;
+      // reporter should be set in case of manual refresh
       if (reporter == null) {
         reporter = new RefreshReporter(this);
       }
@@ -733,7 +741,9 @@ public class Device extends PhysicalItem implements Comparable<Device> {
       // make sure to unlock refreshing even if an error occurred
       bAlreadyRefreshing = false;
       // Notify the reporter of the actual refresh startup
-      reporter.refreshDone();
+      reporter.done();
+      // Reset the reporter as next time, it could be another type
+      reporter = null;
     }
   }
 

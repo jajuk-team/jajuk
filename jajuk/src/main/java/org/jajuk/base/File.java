@@ -188,7 +188,7 @@ public class File extends PhysicalItem implements Comparable<File>, Const {
   /**
    * Alphabetical comparator used to display ordered lists of files
    * <p>
-   * Sort ignoring cases 
+   * Sort ignoring cases
    * </p>
    * 
    * @param other
@@ -205,9 +205,16 @@ public class File extends PhysicalItem implements Comparable<File>, Const {
         return iOrder - iOrderOther;
       }
       // if same order too, simply compare file names
-      String sAbs = getName();
-      String sOtherAbs = otherFile.getName();
-      return sAbs.compareToIgnoreCase(sOtherAbs);
+      String abs = getName();
+      String otherAbs = otherFile.getName();
+      // We must be consistent with equals, see
+      // http://java.sun.com/javase/6/docs/api/java/lang/Comparable.html
+      int comp = abs.compareToIgnoreCase(otherAbs);
+      if (comp == 0) {
+        return abs.compareTo(otherAbs);
+      } else {
+        return comp;
+      }
     } else {
       // Files are in different directories, sort by parent directory
       return this.getDirectory().compareTo(otherFile.getDirectory());

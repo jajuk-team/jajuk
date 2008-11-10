@@ -34,6 +34,7 @@ import org.jajuk.events.ObservationManager;
 import org.jajuk.services.bookmark.History;
 import org.jajuk.services.core.ExitService;
 import org.jajuk.services.tags.Tag;
+import org.jajuk.ui.helpers.ManualDirectoryRefreshReporter;
 import org.jajuk.ui.helpers.RefreshReporter;
 import org.jajuk.ui.widgets.InformationJPanel;
 import org.jajuk.util.Conf;
@@ -291,7 +292,6 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
         if (filelist[i].getName().startsWith("._")) {
           continue;
         }
-        
 
         // check if we recognize the file as music file
         boolean bIsMusic = (Boolean) TypeManager.getInstance().getTypeByExtension(
@@ -326,12 +326,12 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
     if (UtilSystem.isUnderWindows() && fileRef != null) {
       fileRef.setName(name);
     }
-    
+
     // if known file and no deep scan, just leave
     if (fileRef != null && !bDeepScan) {
       return;
     }
-    
+
     // New file or deep scan case
 
     // ignore tag error to make sure to get a
@@ -343,7 +343,7 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
       }
       Log.error(103, "{{" + music.getAbsolutePath() + "}}", null);
     }
-    
+
     // if an error occurs, just notice it but keep the track
     String sTrackName = tag.getTrackName();
     String sAlbumName = tag.getAlbumName();
@@ -361,7 +361,7 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
       // file if we cannot read it
       reporter.notifyNewFile();
     }
-    
+
     registerFile(music, sId, sTrackName, sAlbumName, sAuthorName, sStyle, length, sYear, lQuality,
         sComment, lOrder);
   }
@@ -386,9 +386,8 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
     Style style = StyleManager.getInstance().registerStyle(sStyle);
     Year year = YearManager.getInstance().registerYear(sYear);
     Author author = AuthorManager.getInstance().registerAuthor(sAuthorName);
-    Type type = TypeManager.getInstance().getTypeByExtension(
-        UtilSystem.getExtension(music));
-    // Store number of tracks in collection 
+    Type type = TypeManager.getInstance().getTypeByExtension(UtilSystem.getExtension(music));
+    // Store number of tracks in collection
     long trackNumber = TrackManager.getInstance().getElementCount();
     Track track = TrackManager.getInstance().registerTrack(sTrackName, album, style, author,
         length, year, lOrder, type);
@@ -415,8 +414,8 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
       track.setDiscoveryDate(new Date());
     }
 
-    org.jajuk.base.File file = FileManager.getInstance().registerFile(sId,
-        music.getName(), this, track, music.length(), lQuality);
+    org.jajuk.base.File file = FileManager.getInstance().registerFile(sId, music.getName(), this,
+        track, music.length(), lQuality);
     // Set file date
     file.setProperty(Const.XML_FILE_DATE, new Date(lastModified));
     // Comment is at the track level, note that we take last
@@ -427,8 +426,8 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
     file.setProperty(Const.XML_SIZE, music.length());
   }
 
-  private void scanPlaylist(final java.io.File file, final boolean bDeepScan, final RefreshReporter reporter) 
-      throws Exception {
+  private void scanPlaylist(final java.io.File file, final boolean bDeepScan,
+      final RefreshReporter reporter) throws Exception {
     String sId = PlaylistManager.createID(file.getName(), this);
     Playlist plfRef = PlaylistManager.getInstance().getPlaylistByID(sId);
     // if known playlist and no deep scan, just leave
@@ -444,7 +443,7 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
       reporter.notifyNewFile();
     }
   }
-  
+
   /** Reset pre-calculated paths* */
   protected void reset() {
     fio = null;
@@ -487,7 +486,7 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
   }
 
   /**
-   * Alphabetical comparator used to display ordered lists of directories *
+   * Alphabetical comparator used to display ordered lists of directories
    * <p>
    * Sort ignoring cases
    * </p>
@@ -505,7 +504,14 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
     String otherAbs = new StringBuilder(otherDirectory.getDevice().getName()).append(
         otherDirectory.getAbsolutePath()).toString();
     // should ignore case to get a B c ... and not Bac
-    return abs.compareToIgnoreCase(otherAbs);
+    // We must be consistent with equals, see
+    // http://java.sun.com/javase/6/docs/api/java/lang/Comparable.html
+    int comp = abs.compareToIgnoreCase(otherAbs);
+    if (comp == 0) {
+      return abs.compareTo(otherAbs);
+    } else {
+      return comp;
+    }
   }
 
   /**
@@ -622,7 +628,7 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
    *          default=deep
    */
   public void manualRefresh(final boolean bAsynchronous, final boolean bAsk) {
-    final RefreshReporter reporter = new RefreshReporter(getDevice());
+    final RefreshReporter reporter = new ManualDirectoryRefreshReporter(getDevice());
     final Thread t = new Thread() {
       @Override
       public void run() {
@@ -634,6 +640,8 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
           InformationJPanel.getInstance().setMessage(
               Messages.getString("ActionRefresh.1") + " : " + Directory.this.getName(), 1);
           boolean deep = (result == Device.OPTION_REFRESH_DEEP);
+          // start counting
+          reporter.startup();
           // Cleanup old files/directories/playlists
           cleanRemovedFiles();
           // Actual refresh

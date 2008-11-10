@@ -284,7 +284,7 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
   /**
    * Alphabetical comparator used to display ordered lists of playlists
    * <p>
-   * Sort ignoring cases 
+   * Sort ignoring cases
    * </p>
    * 
    * @param other
@@ -297,9 +297,16 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
       return 0;
     }
     final Playlist otherPlaylistFile = o;
-    final String sFile = getName() + getAbsolutePath();
+    final String abs = getName() + getAbsolutePath();
     final String sOtherAbs = otherPlaylistFile.getName() + otherPlaylistFile.getAbsolutePath();
-    return sFile.compareToIgnoreCase(sOtherAbs);
+    // We must be consistent with equals, see
+    // http://java.sun.com/javase/6/docs/api/java/lang/Comparable.html
+    int comp = abs.compareToIgnoreCase(sOtherAbs);
+    if (comp == 0) {
+      return abs.compareTo(sOtherAbs);
+    } else {
+      return comp;
+    }
   }
 
   /**
