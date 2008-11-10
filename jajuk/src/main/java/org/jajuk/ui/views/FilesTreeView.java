@@ -29,11 +29,9 @@ import java.awt.event.MouseEvent;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -88,6 +86,7 @@ import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
+import org.jajuk.util.ReadOnlyIterator;
 import org.jajuk.util.UtilFeatures;
 import org.jajuk.util.UtilGUI;
 import org.jajuk.util.UtilSystem;
@@ -273,7 +272,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
 
     // fill the tree model
     populateTree();
-
+  
     // create tree
     createTree();
 
@@ -308,37 +307,36 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
     top.removeAllChildren();
     // add devices
     List<Device> devices = DeviceManager.getInstance().getDevices();
-    Collections.sort(devices);
     for (Device device : devices) {
       DefaultMutableTreeNode nodeDevice = new DeviceNode(device);
       top.add(nodeDevice);
     }
     // add directories
-    List<Directory> directories = DirectoryManager.getInstance().getDirectories();
-    for (Directory directory : directories) {
+    // Note that we use a readonly iterator instead of getting a shallow copy of
+    // Directory list (getDirectories()) for performances reasons
+    ReadOnlyIterator<Directory> dirs = DirectoryManager.getInstance().getDirectoriesIterator();
+    while (dirs.hasNext()) {
+      Directory directory = dirs.next();
       if (directory.shouldBeHidden()) {
         continue;
       }
-      // device root directory, do not display
+      // if device root directory, do not display
       if (directory.getParentDirectory() != null) {
         // parent directory is a device
-        if (directory.getParentDirectory().getName().equals("")) {
+        if (directory.getParentDirectory().getParentDirectory() == null) {
           DeviceNode deviceNode = DeviceNode.getDeviceNode(directory.getDevice());
-          if (deviceNode != null) {
-            deviceNode.add(new DirectoryNode(directory));
-          }
+          deviceNode.add(new DirectoryNode(directory));
         } else { // parent directory not root
           DirectoryNode parentDirectoryNode = DirectoryNode.getDirectoryNode(directory
               .getParentDirectory());
-          if (parentDirectoryNode != null) { // paranoia check
-            parentDirectoryNode.add(new DirectoryNode(directory));
-          }
+          parentDirectoryNode.add(new DirectoryNode(directory));
         }
       }
     }
     // add files
-    List<File> files = FileManager.getInstance().getFiles();
-    for (File file : files) {
+    ReadOnlyIterator<File> files = FileManager.getInstance().getFilesIterator();
+    while (files.hasNext()) {
+      File file = files.next();
       if (file.shouldBeHidden()) { // should be hidden by option
         continue;
       }
@@ -352,12 +350,10 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
         directoryNode.add(new FileNode(file));
       }
     }
-
     // add playlists
-    List<Playlist> playlists = PlaylistManager.getInstance().getPlaylists();
-    Iterator<Playlist> it4 = playlists.iterator();
-    while (it4.hasNext()) {
-      Playlist playlistFile = it4.next();
+    ReadOnlyIterator<Playlist> playlists = PlaylistManager.getInstance().getPlaylistsIterator();
+    while (playlists.hasNext()) {
+      Playlist playlistFile = playlists.next();
       // should be hidden by option
       if (playlistFile.shouldBeHidden()) {
         continue;
@@ -366,15 +362,12 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
       if (directoryNode == null) {
         // Add the playlist under the device node
         DeviceNode deviceNode = DeviceNode.getDeviceNode(playlistFile.getDirectory().getDevice());
-        if (deviceNode != null) {
-          deviceNode.add(new PlaylistFileNode(playlistFile));
-        }
+        deviceNode.add(new PlaylistFileNode(playlistFile));
       } else {
         // Add the playlist under a common directory node
         directoryNode.add(new PlaylistFileNode(playlistFile));
       }
     }
-
   }
 
   /*
@@ -915,7 +908,7 @@ class DeviceNode extends TransferableTreeNode {
   private static final long serialVersionUID = 1L;
 
   /** device -> deviceNode hashmap */
-  private static Map<Device, DeviceNode> hmDeviceDeviceNode = new HashMap<Device, DeviceNode>(100);
+  private static Map<Device, DeviceNode> hmDeviceDeviceNode = new HashMap<Device, DeviceNode>(2);
 
   /**
    * Constructor
