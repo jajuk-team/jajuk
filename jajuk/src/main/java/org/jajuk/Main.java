@@ -289,13 +289,13 @@ public final class Main {
 
       // Load collection
       loadCollection();
-      
+
       // Upgrade step2
       UpgradeManager.upgradeStep2();
 
       // Clean the collection up
       Collection.cleanupLogical();
-    
+
       // Display progress
       sc.setProgress(70, Messages.getString("SplashScreen.2"));
 
@@ -480,7 +480,8 @@ public final class Main {
     }
     // check for jajuk directory
     final File fWorkspace = new File(workspace);
-    if (!fWorkspace.exists() && !fWorkspace.mkdirs()) { // create the directory if it doesn't exist
+    if (!fWorkspace.exists() && !fWorkspace.mkdirs()) { // create the directory
+                                                        // if it doesn't exist
       Log.warn("Could not create directory " + fWorkspace.toString());
     }
     // check for image cache presence and create the workspace/.jajuk
@@ -570,12 +571,17 @@ public final class Main {
           // Refresh max album rating
           AlbumManager.getInstance().refreshMaxRating();
 
+          // Sort albums cache. We do it before the sleep because there's a
+          // chance that user launch an album as soon as the GUI is painted
+          AlbumManager.getInstance().orderCache();
+
           // Wait few secs to avoid GUI startup perturbations
           Thread.sleep(10000);
-          
-          // Switch to sorted mode, must be done before starting auto-refresh thread !
+
+          // Switch to sorted mode, must be done before starting auto-refresh
+          // thread !
           ItemManager.switchAllManagersToOrderState();
-          
+
           // Launch auto-refresh thread
           DeviceManager.getInstance().startAutoRefreshThread();
 
@@ -733,7 +739,8 @@ public final class Main {
               files = sessions.listFiles();
               for (int i = 0; i < files.length; i++) {
                 if (!files[i].delete()) {
-                  Messages.showDetailedErrorMessage(131, "Cannot delete : " + files[i].getAbsolutePath(), "");
+                  Messages.showDetailedErrorMessage(131, "Cannot delete : "
+                      + files[i].getAbsolutePath(), "");
                   Log.error(131);
                   break;
                 }

@@ -32,6 +32,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.jajuk.base.TrackComparator.TrackComparatorType;
 import org.jajuk.events.Event;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
@@ -477,6 +478,16 @@ public final class AlbumManager extends ItemManager implements Observer {
       }
     }
     return out;
+  }
+
+  /**
+   * Specialize switchToOrderState, here we sort the album cache in addition
+   */
+  public synchronized void orderCache() {
+    for (ReadOnlyIterator<Album> it = getAlbumsIterator(); it.hasNext();) {
+      Album album = it.next();
+      Collections.sort(album.getTracksCache(), new TrackComparator(TrackComparatorType.ALBUM));
+    }
   }
 
 }

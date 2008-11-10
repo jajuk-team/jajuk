@@ -49,10 +49,11 @@ public class Album extends LogicalItem implements Comparable<Album> {
 
   private static final long serialVersionUID = 1L;
 
-  //private static TrackComparator basicComparator = new TrackComparator(TrackComparatorType.ALBUM);
-
-  /** For perfs, we cache the associated tracks */
-  private List<Track> cache = new ArrayList<Track>(10);
+  /**
+   * For perfs, we cache the associated tracks. This cache is filled by the
+   * TrackManager using the getTracksCache() method
+   */
+  private List<Track> cache = new ArrayList<Track>(15);
 
   /**
    * Album constructor
@@ -448,7 +449,7 @@ public class Album extends LogicalItem implements Comparable<Album> {
    */
   public Date getDiscoveryDate() {
     if (cache.size() > 0) {
-      return cache.iterator().next().getDiscoveryDate();
+      return cache.get(0).getDiscoveryDate();
     } else {
       return null;
     }
