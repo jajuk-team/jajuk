@@ -251,7 +251,7 @@ public interface Const {
 
   String URL_MPLAYER = "http://repository.jajuk.info/mplayer/1.0rc2/mplayer.exe";
 
-  String URL_DEFAULT_WEBRADIOS = "http://svn2.assembla.com/svn/common-jukebox/common-jukebox/resources/preset_radios.xml";
+  String URL_DEFAULT_WEBRADIOS = "http://svn2.assembla.com/svn/common-jukebox/common-jukebox/src/main/resources/preset_radios.xml";
 
   // About
   String ABOUT = "<html>Jajuk version " + JAJUK_VERSION + "</html>";
