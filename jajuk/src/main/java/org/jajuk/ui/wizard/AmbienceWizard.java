@@ -52,7 +52,6 @@ import org.jajuk.services.dj.AmbienceManager;
 import org.jajuk.ui.helpers.FontManager;
 import org.jajuk.ui.helpers.FontManager.JajukFont;
 import org.jajuk.ui.widgets.JajukWindow;
-import org.jajuk.ui.widgets.StylesSelectionDialog;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
