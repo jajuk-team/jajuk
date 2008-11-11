@@ -351,9 +351,7 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
     }
 
     final Playlist plfOther = (Playlist) otherPlaylistFile;
-    // [Perf] We can compare with an == operator here because
-    // all ID are stored into String intern() buffer
-    return (getID() == plfOther.getID() && (plfOther.getType() == type));
+    return getID().equals(plfOther.getID()) && plfOther.getType() == type;
   }
 
   @Override

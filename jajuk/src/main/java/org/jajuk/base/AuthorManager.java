@@ -245,8 +245,7 @@ public final class AuthorManager extends ItemManager {
     Author out = null;
     for (ReadOnlyIterator<Author> it = getAuthorsIterator(); it.hasNext();) {
       Author author = it.next();
-      // [Perf], we use == because these strings are intern()alized
-      if (author.getName() == name) {
+      if (author.getName().equals(name)) {
         out = author;
         break;
       }

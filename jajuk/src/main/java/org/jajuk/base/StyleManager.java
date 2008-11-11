@@ -138,8 +138,7 @@ public final class StyleManager extends ItemManager {
     Style out = null;
     for (ReadOnlyIterator<Style> it = getStylesIterator(); it.hasNext();) {
       Style style = it.next();
-      // [Perf], we use == because these strings are intern()alized
-      if (style.getName() == name) {
+      if (style.getName().equals(name)) {
         out = style;
         break;
       }

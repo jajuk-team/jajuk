@@ -471,8 +471,7 @@ public final class AlbumManager extends ItemManager implements Observer {
     Album out = null;
     for (ReadOnlyIterator<Album> it = getAlbumsIterator(); it.hasNext();) {
       Album album = it.next();
-      // [Perf], we use == because these strings are intern()alized
-      if (album.getName() == name) {
+      if (album.getName().equals(name)) {
         out = album;
         break;
       }
