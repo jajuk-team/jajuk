@@ -1382,7 +1382,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 
     // -- User interface --
     jpUI = new JPanel();
-    final double sizeUI[][] = { { p, p }, { p, p, p, p, p, p, p, p } };
+    final double sizeUI[][] = { { p, p }, { p, p, p, p, p, p, p, p, p } };
     final TableLayout layoutUI = new TableLayout(sizeUI);
     layoutUI.setHGap(iXSeparator);
     layoutUI.setVGap(iYSeparator);
