@@ -63,9 +63,8 @@ public final class StyleManager extends ItemManager {
     // Expand
     registerProperty(new PropertyMetaInformation(Const.XML_EXPANDED, false, false, false, false,
         true, Boolean.class, false));
-    // create default style list
-    stylesList = new Vector<String>(Arrays.asList(UtilFeatures.GENRES));
-    Collections.sort(stylesList);
+    // Add preset styles
+    registerPresetStyles();
   }
 
   /**
@@ -112,14 +111,21 @@ public final class StyleManager extends ItemManager {
       stylesList.add(style.getName2());
       // Sort items ignoring case
       Collections.sort(stylesList, new Comparator<String>() {
-
         public int compare(String o1, String o2) {
           return o1.compareToIgnoreCase(o2);
         }
-
       });
     }
     return style;
+  }
+
+  public synchronized void registerPresetStyles() {
+    // create default style list
+    stylesList = new Vector<String>(Arrays.asList(UtilFeatures.GENRES));
+    Collections.sort(stylesList);
+    for (String style : stylesList) {
+      registerStyle(style.intern());
+    }
   }
 
   /**

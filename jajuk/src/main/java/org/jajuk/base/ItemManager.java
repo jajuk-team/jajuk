@@ -284,11 +284,11 @@ public abstract class ItemManager {
     if (this instanceof AuthorManager) {
       managerType = 1;
     } else if (this instanceof StyleManager) {
-      managerType = 2;
+      Log.debug("Style cleanup not allowed");
+      return;
     } else if (this instanceof YearManager) {
-      managerType = 3;
+      managerType = 2;
     }
-
     // build used items set
     List<Item> items = new ArrayList<Item>(100);
     ReadOnlyIterator<Track> tracks = TrackManager.getInstance().getTracksIterator();
@@ -302,9 +302,6 @@ public abstract class ItemManager {
         items.add(track.getAuthor());
         break;
       case 2:
-        items.add(track.getStyle());
-        break;
-      case 3:
         items.add(track.getYear());
         break;
       }
@@ -314,12 +311,8 @@ public abstract class ItemManager {
     Iterator<Item> it = (Iterator<Item>) getItemsIterator();
     while (it.hasNext()) {
       Item item = it.next();
-     // check if this item still maps some tracks
-      if ((!items.contains(item)) &&
-      // For styles, keep it even if none track uses it if it is a
-          // default style
-          (!(this instanceof StyleManager && !StyleManager.getInstance().getStylesList().contains(
-              item.getName())))) {
+      // check if this item still maps some tracks
+      if (!items.contains(item)){
         it.remove();
       }
     }

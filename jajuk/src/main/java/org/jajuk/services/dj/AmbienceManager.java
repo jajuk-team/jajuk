@@ -241,7 +241,7 @@ public final class AmbienceManager implements Observer {
    * 
    */
   public void createDefaultAmbiences() {
-    // Define default amience by style name
+    // Define default ambience by style name
     String[] stylesRockPop = new String[] { "Classic Rock", "Pop", "Rock", "Ska", "AlternRock",
         "Instrumental Pop", "Instrumental Rock", "Southern Rock", "Pop/Funk", "Folk-Rock",
         "Rock & Roll", "Symphonic Rock", "Ballad", "Christian Rock", "JPop", "SynthPop" };

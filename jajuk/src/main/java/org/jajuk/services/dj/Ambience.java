@@ -45,7 +45,7 @@ public class Ambience implements Comparable<Ambience> {
    * Constructor
    * 
    * @param sID
-   *          Ambience uniqe id
+   *          Ambience unique id
    * @param sName
    *          Ambience name
    * @param styles
@@ -61,7 +61,7 @@ public class Ambience implements Comparable<Ambience> {
    * Constructor
    * 
    * @param sID
-   *          Ambience uniq id
+   *          Ambience unique id
    * @param sName
    *          Ambience name
    * @param styles

@@ -338,13 +338,13 @@ public final class Collection extends DefaultHandler implements ErrorHandler, Se
   }
 
   /**
-   * Perform a collection clean up for logical items ( delete orphan data )
+   * Perform a collection clean up for logical items ( delete orphan data ) Note
+   * that we don't cleanup styles up because we want to keep styles even without
+   * associated tracks for ambiences for instance
    */
   public static synchronized void cleanupLogical() {
     // Tracks cleanup
     TrackManager.getInstance().cleanup();
-    // Styles cleanup
-    StyleManager.getInstance().cleanup();
     // Authors cleanup
     AuthorManager.getInstance().cleanup();
     // albums cleanup
