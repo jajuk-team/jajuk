@@ -200,6 +200,9 @@ public final class Main {
       // set flags from command line options
       handleCommandline(args);
 
+      // Set window look and feel (must be done out of EDT)
+      UtilGUI.setLookAndFeel(Conf.getString(Const.CONF_OPTIONS_LNF));
+
       // perform initial checkups and create needed files
       initialCheckups();
 
@@ -221,9 +224,6 @@ public final class Main {
       }
       // Set locale. setSystemLocal
       Messages.setLocal(Conf.getString(Const.CONF_OPTIONS_LANGUAGE));
-
-      // Set window look and feel (must be done out of EDT)
-      UtilGUI.setLookAndFeel(Conf.getString(Const.CONF_OPTIONS_LNF));
 
       // Launch splashscreen. Depends on: log.setVerbosity,
       // configurationManager.load (for local)
