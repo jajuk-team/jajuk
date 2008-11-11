@@ -720,7 +720,6 @@ public class PropertiesWizard extends JajukJDialog implements ActionListener {
         // Check typed value format, display error message only once per
         // property
         for (PropertyMetaInformation meta : hmPropertyToChange.keySet()) {
-          for (int i = 0; i < itemsToChange.size(); i++) {
             // New value
             oValue = hmPropertyToChange.get(meta);
             // Check it is not null for non custom properties. Note that
@@ -730,7 +729,6 @@ public class PropertiesWizard extends JajukJDialog implements ActionListener {
               Log.error(137, '{' + meta.getName() + '}', null);
               Messages.showErrorMessage(137, '{' + meta.getName() + '}');
               return;
-            }
           }
         }
 
@@ -743,7 +741,7 @@ public class PropertiesWizard extends JajukJDialog implements ActionListener {
             oValue = hmPropertyToChange.get(meta);
             // Old value
             String sOldValue = item.getHumanValue(meta.getName());
-            if ((sOldValue != null && !UtilString.format(oValue, meta, true).equals(sOldValue))) {
+            if (!UtilString.format(oValue, meta, true).equals(sOldValue)) {
               try {
                 newItem = ItemManager.changeItem(item, meta.getName(), oValue, filter);
               }
