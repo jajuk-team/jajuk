@@ -92,7 +92,7 @@ public final class History extends DefaultHandler implements ErrorHandler, Obser
       update(new Event(JajukEvents.FILE_LAUNCHED, ObservationManager
           .getDetailsLastOccurence(JajukEvents.FILE_LAUNCHED)));
     }
-    // Fill date formater
+    // Fill date formatter
     formatter = new SimpleDateFormat(Messages.getString("HistoryItem.0"));
   }
 
@@ -115,11 +115,12 @@ public final class History extends DefaultHandler implements ErrorHandler, Obser
     return vHistory;
   }
 
-  /** Add an history item */
+  /**
+   * Add an history item
+   */
   public void addItem(String sFileId, long lDate) {
-    if (Conf.getString(Const.CONF_HISTORY).equals("0")) { // no
-      // history
-      // 
+    // no history
+    if (Conf.getString(Const.CONF_HISTORY).equals("0")) {
       return;
     }
     // check the ID maps an existing file
@@ -201,7 +202,6 @@ public final class History extends DefaultHandler implements ErrorHandler, Obser
         it.remove();
       }
     }
-
   }
 
   /**
@@ -364,7 +364,7 @@ public final class History extends DefaultHandler implements ErrorHandler, Obser
         sID = hm.get(sID);
         Log.debug("upload:" + sID);
       }
-      // test if this file is still kwown int the collection
+      // test if this file is still known int the collection
       if (FileManager.getInstance().getFileByID(sID) != null) {
         HistoryItem hi = new HistoryItem(sID, UtilString.fastLongParser(attributes
             .getValue(attributes.getIndex("date"))));
