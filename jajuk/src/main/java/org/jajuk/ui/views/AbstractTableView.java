@@ -66,10 +66,12 @@ import org.jajuk.events.Observer;
 import org.jajuk.services.players.FIFO;
 import org.jajuk.ui.actions.ActionManager;
 import org.jajuk.ui.actions.JajukActions;
+import org.jajuk.ui.helpers.FontManager;
 import org.jajuk.ui.helpers.ILaunchCommand;
 import org.jajuk.ui.helpers.JajukTableModel;
 import org.jajuk.ui.helpers.PreferencesJMenu;
 import org.jajuk.ui.helpers.TableTransferHandler;
+import org.jajuk.ui.helpers.FontManager.JajukFont;
 import org.jajuk.ui.widgets.InformationJPanel;
 import org.jajuk.ui.widgets.JajukTable;
 import org.jajuk.ui.widgets.JajukToggleButton;
@@ -290,6 +292,8 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
     jlEquals = new JLabel(Messages.getString("AbstractTableView.7"));
     jtfValue = new JTextField();
     jtfValue.setBorder(BorderFactory.createLineBorder(Color.BLUE));
+    jtfValue.setFont(FontManager.getInstance().getFont(JajukFont.SEARCHBOX));
+    jtfValue.setForeground(new Color(172, 172, 172));
     jtfValue.addKeyListener(new KeyAdapter() {
       @Override
       public void keyReleased(KeyEvent e) {
@@ -301,7 +305,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
     int iXspace = 5;
     double sizeControl[][] = {
         { iXspace, 20, 3 * iXspace, TableLayout.FILL, iXspace, 0.3, TableLayout.FILL,
-            TableLayout.FILL, iXspace, 0.3, 2 }, { 5, 25, 5 } };
+            TableLayout.FILL, iXspace, 0.3, 2 }, { 5, 23, 5 } };
     TableLayout layout = new TableLayout(sizeControl);
     jpControl.setLayout(layout);
     jpControl.add(jtbEditable, "1,1");
@@ -465,7 +469,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
               // populate
               return;
             }
-            // remove item from configuration cols
+            // remove item from configuration columns
             model = populateTable();// create a new model
             model.addTableModelListener(AbstractTableView.this);
             jtable.setModel(model);
@@ -589,7 +593,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
       // Require refresh of all tables
       Properties properties = new Properties();
       properties.put(Const.DETAIL_ORIGIN, AbstractTableView.this);
-      ObservationManager.notify(new Event(JajukEvents.RATE_CHANGED, properties));
+      ObservationManager.notify(new Event(JajukEvents.DEVICE_REFRESH, properties));
 
     } catch (NoneAccessibleFileException none) {
       Messages.showErrorMessage(none.getCode());

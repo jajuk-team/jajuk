@@ -139,6 +139,8 @@ public class SearchBox extends JTextField implements KeyListener {
     addKeyListener(this);
     setToolTipText(Messages.getString("SearchBox.0"));
     setBorder(BorderFactory.createEtchedBorder());
+    // We use a font whose size cannot change with font size selected by user
+    // because the search box cannot be enlarged vertically 
     setFont(FontManager.getInstance().getFont(JajukFont.SEARCHBOX));
     Color mediumGray = new Color(172, 172, 172);
     setForeground(mediumGray);

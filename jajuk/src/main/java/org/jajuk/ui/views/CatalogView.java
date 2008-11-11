@@ -237,7 +237,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
     jtfValue = new JTextField(5);
     jtfValue.setForeground(new Color(172, 172, 172));
     jtfValue.setBorder(BorderFactory.createLineBorder(Color.BLUE));
-    jtfValue.setFont(FontManager.getInstance().getFont(JajukFont.BOLD_XXL));
+    jtfValue.setFont(FontManager.getInstance().getFont(JajukFont.SEARCHBOX));
     jtfValue.addKeyListener(new CatalogViewKeyAdaptor());
     JToolBar jtbFilter = new JajukJToolbar();
     jtbFilter.add(jlFilter);

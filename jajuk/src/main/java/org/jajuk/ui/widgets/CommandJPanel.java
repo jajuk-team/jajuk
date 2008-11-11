@@ -285,7 +285,7 @@ public class CommandJPanel extends JXPanel implements ActionListener, ListSelect
 
   public void initUI() {
     // Search
-    double[][] sizeSearch = new double[][] { { 3, TableLayout.PREFERRED, 3, 100 }, { 25 } };
+    double[][] sizeSearch = new double[][] { { 3, TableLayout.PREFERRED, 3, 100 }, { 23 } };
     JPanel jpSearch = new JPanel(new TableLayout(sizeSearch));
     sbSearch = new SearchBox(CommandJPanel.this);
     JLabel jlSearch = new JLabel(IconLoader.getIcon(JajukIcons.SEARCH));
