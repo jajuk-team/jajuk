@@ -82,9 +82,11 @@ public class HistoryItem {
     if (file == null) {
       return "";
     }
-    StringBuilder sbAuthor = new StringBuilder(file.getTrack().getAuthor().getName2());
     String sDate = History.getInstance().getDateFormatter().format(new Date(getDate()));
-    return sbAuthor.append(" / ").append(file.getTrack().getName()).append(" [").append(sDate)
-        .append("]").toString();
+    StringBuilder sb = new StringBuilder();
+    sb.append('[').append(sDate).append("] ");
+    sb.append(file.getTrack().getAuthor().getName2());
+    sb.append(" / ").append(file.getTrack().getName());
+    return sb.toString();
   }
 }
