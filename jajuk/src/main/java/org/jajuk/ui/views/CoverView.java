@@ -563,9 +563,6 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
       jl.setToolTipText("<html>" + url.toString() + "<br>" + size + "K");
       setSizeText(size + "K" + sType);
       setFoundText();
-      // make sure the image is repainted to avoid overlapping covers
-      CoverView.this.revalidate();
-      CoverView.this.repaint();
     }
     // set tooltip for previous and next track
     try {
@@ -598,6 +595,9 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
     add(jpControl, "0,0");
     add(jl, "0,2,c,c");
     searching(false);
+    // make sure the image is repainted to avoid overlapping covers
+    CoverView.this.revalidate();
+    CoverView.this.repaint();
   }
 
   /**
