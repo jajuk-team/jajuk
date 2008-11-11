@@ -123,8 +123,9 @@ public class RefreshReporter {
    * Callback method when an update state is required. Can be overwritten for
    * specific behaviors
    */
+  @SuppressWarnings("unused")
   public void updateState(Directory dir) {
-    Log.debug("State update required for : " + dir);
+    // Intentionnal NOP
   }
 
 }

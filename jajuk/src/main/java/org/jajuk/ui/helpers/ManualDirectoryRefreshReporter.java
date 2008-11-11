@@ -56,8 +56,9 @@ public class ManualDirectoryRefreshReporter extends RefreshReporter {
     Log.debug("Cleanup done");
   }
 
+  @SuppressWarnings("unused")
   public void updateState(Directory dir) {
-    Log.debug("State update required for : " + dir);
+     // Intentionnal NOP
   }
 
   public void done() {
