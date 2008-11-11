@@ -107,6 +107,7 @@ import org.jajuk.util.UtilSystem;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 import org.jdesktop.swingx.JXPanel;
+import org.jvnet.substance.skin.SubstanceBusinessLookAndFeel;
 
 /**
  * Jajuk launching class
@@ -199,9 +200,9 @@ public final class Main {
       }
       // set flags from command line options
       handleCommandline(args);
-
-      // Set window look and feel (must be done out of EDT)
-      UtilGUI.setLookAndFeel(Conf.getString(Const.CONF_OPTIONS_LNF));
+      
+      // Set substance theme
+      UIManager.setLookAndFeel(new SubstanceBusinessLookAndFeel());
 
       // perform initial checkups and create needed files
       initialCheckups();
@@ -212,6 +213,9 @@ public final class Main {
 
       // Load user configuration. Depends on: initialCheckups
       Conf.load();
+      
+       // Set window look and feel (must be done out of EDT)
+      UtilGUI.setLookAndFeel(Conf.getString(Const.CONF_OPTIONS_LNF));
 
       // Detect current release
       UpgradeManager.detectRelease();
