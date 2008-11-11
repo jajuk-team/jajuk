@@ -33,13 +33,9 @@ import java.util.List;
 import java.util.Set;
 import java.util.Vector;
 
-import javax.swing.BorderFactory;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JList;
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 import org.jajuk.base.Style;
@@ -146,15 +142,17 @@ public class StylesSelectionDialog extends JajukJDialog implements ActionListene
     // none ambience selected by default
     jcbAmbiences.setSelectedIndex(-1);
     jcbAmbiences.addActionListener(this);
-    JPanel jpAmbiences = new JPanel();
-    double[][] layoutCombo = new double[][] { { TableLayout.PREFERRED, 10, TableLayout.FILL },
-        { 20 } };
-    jpAmbiences.setLayout(new TableLayout(layoutCombo));
-    jpAmbiences.add(new JLabel(Messages.getString("DigitalDJWizard.58")), "0,0");
-    jpAmbiences.add(jcbAmbiences, "2,0");
+    double[][] sizeLayout = new double[][] { { 5, TableLayout.PREFERRED, TableLayout.PREFERRED, 5 },
+        { 5, TableLayout.PREFERRED, TableLayout.PREFERRED, TableLayout.PREFERRED, 5 } };
+    TableLayout layout = new TableLayout(sizeLayout);
+    layout.setVGap(5);
+    layout.setHGap(10);
+    setLayout(layout);
+    JLabel jlAmbience = new JLabel(Messages.getString("DigitalDJWizard.58"));
     jlist = new JList(list);
     jlist.setLayoutOrientation(JList.VERTICAL_WRAP);
-    jlist.setPreferredSize(new Dimension(600, 600));
+    JScrollPane jsp = new JScrollPane(jlist);
+    jsp.setPreferredSize(new Dimension(600, 600));
     jlist.setVisibleRowCount(-1);
     okc = new OKCancelPanel(new ActionListener() {
       public void actionPerformed(ActionEvent ae) {
@@ -168,17 +166,12 @@ public class StylesSelectionDialog extends JajukJDialog implements ActionListene
         dispose();
       }
     });
-    JPanel jp = new JPanel();
-    jp.setLayout(new BoxLayout(jp, BoxLayout.Y_AXIS));
-    jp.add(Box.createVerticalStrut(10));
-    jp.add(jpAmbiences);
-    jp.add(Box.createVerticalStrut(10));
-    jp.add(jlist);
-    jp.add(okc);
-    jp.add(Box.createVerticalStrut(10));
-    jp.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
-    add(new JScrollPane(jp));
+    add(jlAmbience, "1,1");
+    add(jcbAmbiences, "2,1");
+    add(jsp, "1,2,2,2");
+    add(okc, "1,3,2,3");
     getRootPane().setDefaultButton(okc.getOKButton());
+    // setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
   }
 
   /*
