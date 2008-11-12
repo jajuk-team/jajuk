@@ -54,21 +54,20 @@ public class SmartPlaylist extends JPanel {
     this.type = type;
     if (type == Type.NEW) {
       jlIcon = new JLabel(IconLoader.getIcon(JajukIcons.PLAYLIST_NEW));
-      plf = new Playlist(Type.NEW, null, getName(), null);
+      plf = new Playlist(Type.NEW, Integer.toString(Playlist.Type.NEW.ordinal()), getName(), null);
     } else if (type == Type.BESTOF) {
       jlIcon = new JLabel(IconLoader.getIcon(JajukIcons.PLAYLIST_BESTOF));
-      plf = new Playlist(Type.BESTOF, null, getName(), null);
+      plf = new Playlist(Type.BESTOF, Integer.toString(Playlist.Type.BESTOF.ordinal()), getName(), null);
     } else if (type == Type.BOOKMARK) {
       jlIcon = new JLabel(IconLoader.getIcon(JajukIcons.PLAYLIST_BOOKMARK));
-      plf = new Playlist(Type.BOOKMARK, null, getName(), null);
+      plf = new Playlist(Type.BOOKMARK, Integer.toString(Playlist.Type.BOOKMARK.ordinal()), getName(), null);
     } else if (type == Type.NOVELTIES) {
       jlIcon = new JLabel(IconLoader.getIcon(JajukIcons.PLAYLIST_NOVELTIES));
-      plf = new Playlist(Type.NOVELTIES, null, getName(), null);
+      plf = new Playlist(Type.NOVELTIES, Integer.toString(Playlist.Type.NOVELTIES.ordinal()), getName(), null);
     }
     setToolTipText(getName());
     add(jlIcon);
     getIcon().setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-    // new PlaylistTransferHandler(this, DnDConstants.ACTION_COPY_OR_MOVE);
   }
 
   /**
