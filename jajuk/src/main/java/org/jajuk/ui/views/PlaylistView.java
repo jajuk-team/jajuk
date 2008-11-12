@@ -383,8 +383,8 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
     editorTable.getMenu().addSeparator();
     editorTable.getMenu().add(jmiFileCopyURL);
     editorTable.getMenu().addSeparator();
-    editorTable.getMenu().add(jmiFileAddFavorites);
     editorTable.getMenu().add(pjmFilesEditor);
+    editorTable.getMenu().add(jmiFileAddFavorites);
     editorTable.getMenu().addSeparator();
     editorTable.getMenu().add(jmiFileProperties);
   }
