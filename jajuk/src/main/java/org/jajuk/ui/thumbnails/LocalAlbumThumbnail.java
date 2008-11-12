@@ -151,7 +151,7 @@ public class LocalAlbumThumbnail extends AbstractThumbnail {
     postPopulate();
     // Add the preference menu in popup
     pjmFiles = new PreferencesJMenu(getItem());
-    jmenu.add(pjmFiles,10);
+    jmenu.add(pjmFiles,9);
     // disable inadequate menu items
     jmenu.remove(jmiOpenLastFMSite);
   }
