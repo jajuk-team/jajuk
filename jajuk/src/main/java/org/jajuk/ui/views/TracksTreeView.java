@@ -871,8 +871,8 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener, 
         jmenu.addSeparator();
         jmenu.add(jmiDelete);
         jmenu.addSeparator();
-        jmenu.add(jmiAddFavorite);
         jmenu.add(pjmTracks);
+        jmenu.add(jmiAddFavorite);
         jmenu.addSeparator();
         jmenu.add(jmiProperties);
         jmenu.show(jtree, e.getX(), e.getY());

@@ -65,8 +65,8 @@ public class FilesTableView extends AbstractTableView {
     // Add this generic menu item manually to ensure it's the last one in
     // the list for GUI reasons
     jtable.getMenu().addSeparator();
-    jtable.getMenu().add(jmiBookmark);
     jtable.getMenu().add(pjmTracks);
+    jtable.getMenu().add(jmiBookmark);
     jtable.getMenu().addSeparator();
     jtable.getMenu().add(jmiProperties);
    

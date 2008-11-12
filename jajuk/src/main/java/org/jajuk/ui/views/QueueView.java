@@ -85,7 +85,8 @@ public class QueueView extends PlaylistView {
    */
   @Override
   public void initUI() {
-    plf = new Playlist(Playlist.Type.QUEUE, null, null, null);
+    plf = new Playlist(Playlist.Type.QUEUE, Integer.toString(Playlist.Type.QUEUE.ordinal()), null,
+        null);
     // Control panel
     jpEditorControl = new JPanel();
     jpEditorControl.setBorder(BorderFactory.createEtchedBorder());
@@ -117,7 +118,7 @@ public class QueueView extends PlaylistView {
     jbClear.addActionListener(this);
 
     JToolBar jtb = new JajukJToolbar();
-    
+
     jtb.add(jbSave);
     jtb.add(jbRemove);
     jtb.add(jbAddShuffle);

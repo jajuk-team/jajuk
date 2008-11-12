@@ -89,8 +89,8 @@ public class AlbumsTableView extends AbstractTableView {
         jtable.getMenu().add(jmiReport);
         jtable.getMenu().add(jmiShowAlbumDetails);
         jtable.getMenu().addSeparator();
-        jtable.getMenu().add(jmiBookmark);
         jtable.getMenu().add(pjmTracks);
+        jtable.getMenu().add(jmiBookmark);
         jtable.getMenu().addSeparator();
         jtable.getMenu().add(jmiProperties);
        

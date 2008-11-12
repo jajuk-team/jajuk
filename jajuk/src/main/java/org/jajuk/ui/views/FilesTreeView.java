@@ -662,8 +662,8 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
         jmenu.add(jmiDelete);
         jmenu.add(jmiCopyURL);
         jmenu.addSeparator();
-        jmenu.add(jmiAddFavorite);
         jmenu.add(pjmTracks);
+        jmenu.add(jmiAddFavorite);
         jmenu.addSeparator();
         jmenu.add(jmiProperties);
         jmenu.show(jtree, e.getX(), e.getY());
