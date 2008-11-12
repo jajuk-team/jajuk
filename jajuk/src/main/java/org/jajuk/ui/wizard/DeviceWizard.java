@@ -440,8 +440,8 @@ public class DeviceWizard extends JFrame implements ActionListener, Const {
     devices.clear();
     // set default values for widgets
     updateWidgetsDefault();
-    List<Device> devices = DeviceManager.getInstance().getDevices();
-    for (Device device2 : devices) {
+    List<Device> devices2 = DeviceManager.getInstance().getDevices();
+    for (Device device2 : devices2) {
       if (!device2.equals(device)) {
         devices.add(device2);
         jcbSynchronized.addItem(device2.getName());
