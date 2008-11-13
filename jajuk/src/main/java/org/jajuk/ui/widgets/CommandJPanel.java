@@ -196,8 +196,6 @@ public class CommandJPanel extends JXPanel implements ActionListener, ListSelect
 
   private PreferenceToolbar evaltoobar;
 
-  //private JButton jbBan;
-
   private JajukToggleButton jbMute;
 
   // variables declaration
@@ -763,7 +761,7 @@ public class CommandJPanel extends JXPanel implements ActionListener, ListSelect
           ActionManager.getAction(PREVIOUS_ALBUM).setEnabled(false);
           ActionManager.getAction(FINISH_ALBUM).setEnabled(false);
           ActionManager.getAction(PLAY_PAUSE_TRACK).setIcon(IconLoader.getIcon(JajukIcons.PAUSE));
-           // Reset history so user can launch again stopped
+          // Reset history so user can launch again stopped
           // track (selection must change to throw an ActionEvent)
           jcbHistory.setSelectedIndex(-1);
           // reset startup position
@@ -858,11 +856,11 @@ public class CommandJPanel extends JXPanel implements ActionListener, ListSelect
           ActionManager.getAction(NEXT_TRACK).setEnabled(true);
           ActionManager.getAction(STOP_TRACK).setEnabled(true);
           populateWebRadios();
-        } else if ((JajukEvents.MUTE_STATE.equals(event.getSubject())) &&
+        } else if (JajukEvents.MUTE_STATE.equals(event.getSubject()) &&
         // Update mute icon look when changing the volume
-            (!Player.isMuted())) {
+            !Player.isMuted()) {
           MuteAction.setVolumeIcon(getCurrentVolume());
-        }   
+        }
       }
     });
   }
