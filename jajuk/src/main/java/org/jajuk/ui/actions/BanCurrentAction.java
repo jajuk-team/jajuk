@@ -37,8 +37,8 @@ public class BanCurrentAction extends SelectionAction {
   private static final long serialVersionUID = 1L;
 
   /**
-   * Ban / Unban current track. The Ban action is used to ban a track so it is never
-   * selected
+   * Ban / Unban current track. The Ban action is used to ban a track so it is
+   * never selected
    */
   BanCurrentAction() {
     super(Messages.getString("BanSelectionAction.0"), IconLoader.getIcon(JajukIcons.BAN), true);
@@ -54,6 +54,10 @@ public class BanCurrentAction extends SelectionAction {
       track.setProperty(Const.XML_TRACK_BANNED, !alreadyBanned);
       // Request a GUI refresh
       ObservationManager.notify(new Event(JajukEvents.RATE_CHANGED));
+      // Alert GUI so we can switch buttons from ban icon to unban one
+      ObservationManager.notify(new Event(JajukEvents.BANNED));
     }
   }
+
+  
 }
