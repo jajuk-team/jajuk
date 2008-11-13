@@ -153,6 +153,7 @@ public class PreferenceToolbar extends JajukJToolbar implements Observer {
     eventSubjectSet.add(JajukEvents.FILE_LAUNCHED);
     eventSubjectSet.add(JajukEvents.ZERO);
     eventSubjectSet.add(JajukEvents.PLAYER_STOP);
+    eventSubjectSet.add(JajukEvents.BANNED);
     return eventSubjectSet;
   }
 
@@ -179,14 +180,34 @@ public class PreferenceToolbar extends JajukJToolbar implements Observer {
           setPreference(FIFO.getCurrentFile().getTrack().getLongValue(Const.XML_TRACK_PREFERENCE));
         } else if (JajukEvents.FILE_LAUNCHED.equals(event.getSubject())) {
           // Update evaluation toolbar
-          setEnabled(true);
+          jcbPreference.setEnabled(true);
+          jbBan.setEnabled(true);
           setPreference(FIFO.getCurrentFile().getTrack().getLongValue(Const.XML_TRACK_PREFERENCE));
         } else if (JajukEvents.ZERO.equals(event.getSubject())
             || JajukEvents.PLAYER_STOP.equals(event.getSubject())) {
-          setEnabled(false);
+          jcbPreference.setEnabled(false);
+          jbBan.setEnabled(false);
           setPreference(0);
+        } else if (JajukEvents.BANNED.equals(event.getSubject())) {
+         updateBanIcon();
         }
       }
     });
+  }
+
+  /**
+   * Update ban icon state according to current track
+   */
+  private void updateBanIcon() {
+    if (FIFO.getCurrentFile() == null || FIFO.isStopped()) {
+      jbBan.setIcon(IconLoader.getIcon(JajukIcons.BAN));
+    } else {
+      Track current = FIFO.getCurrentFile().getTrack();
+      if (current.getBooleanValue(Const.XML_TRACK_BANNED)) {
+        jbBan.setIcon(IconLoader.getIcon(JajukIcons.UNBAN));
+      } else {
+        jbBan.setIcon(IconLoader.getIcon(JajukIcons.BAN));
+      }
+    }
   }
 }
