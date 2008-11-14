@@ -221,6 +221,14 @@ public class JAudioTaggerTagImpl implements ITagImpl, Const {
     try {
       this.audioFile = AudioFileIO.read(fio);
       this.tag = this.audioFile.getTag();
+      // Jaudiotagger returns null if the track contains none tag
+      if (tag == null) {
+         this.tag = this.audioFile.createDefaultTag();
+         // Still null ? problem creating the tag
+         if (tag == null){
+           throw new Exception("Cannot Create empty tag");
+         }
+      }
     } catch (Throwable t) { // can throw OutOfMemory errors
       throw new JajukException(103, fio.toString(), t);
     }
