@@ -157,7 +157,7 @@ public final class Main {
   private static String workspace;
 
   /** DeviceTypes Identification strings */
-  private static final String[] DEVICE_TYPES = { "Device_type.directory", "Device_type.file_cd",
+  public static final String[] DEVICE_TYPES = { "Device_type.directory", "Device_type.file_cd",
       "Device_type.network_drive", "Device_type.extdd", "Device_type.player" };
 
   private static final String[] CONFIG_CHECKS = { Const.FILE_CONFIGURATION, Const.FILE_HISTORY };
@@ -200,7 +200,7 @@ public final class Main {
       }
       // set flags from command line options
       handleCommandline(args);
-      
+
       // Set substance theme
       UIManager.setLookAndFeel(new SubstanceBusinessLookAndFeel());
 
@@ -213,8 +213,8 @@ public final class Main {
 
       // Load user configuration. Depends on: initialCheckups
       Conf.load();
-      
-       // Set window look and feel (must be done out of EDT)
+
+      // Set window look and feel (must be done out of EDT)
       UtilGUI.setLookAndFeel(Conf.getString(Const.CONF_OPTIONS_LNF));
 
       // Detect current release
@@ -267,15 +267,7 @@ public final class Main {
       checkOtherSession();
 
       // Set a session file
-      String sHostname;
-      try {
-        sHostname = InetAddress.getLocalHost().getHostName();
-      } catch (final UnknownHostException e) {
-        sHostname = "localhost";
-      }
-      sessionIdFile = UtilSystem.getConfFileByPath(Const.FILE_SESSIONS + '/' + sHostname + '_'
-          + System.getProperty("user.name") + '_'
-          + new SimpleDateFormat("yyyyMMdd-kk:mm:ss").format(UtilSystem.TODAY));
+      sessionIdFile = getSessionIdFile();
       if (!sessionIdFile.mkdir()) {
         Log.warn("Could not create directory for session: " + sessionIdFile);
       }
@@ -388,7 +380,7 @@ public final class Main {
    * about
    * 
    */
-  private static void registerItemManagers() {
+  public static void registerItemManagers() {
     ItemManager.registerItemManager(org.jajuk.base.Album.class, AlbumManager.getInstance());
     ItemManager.registerItemManager(org.jajuk.base.Author.class, AuthorManager.getInstance());
     ItemManager.registerItemManager(org.jajuk.base.Device.class, DeviceManager.getInstance());
@@ -485,7 +477,7 @@ public final class Main {
     // check for jajuk directory
     final File fWorkspace = new File(workspace);
     if (!fWorkspace.exists() && !fWorkspace.mkdirs()) { // create the directory
-                                                        // if it doesn't exist
+      // if it doesn't exist
       Log.warn("Could not create directory " + fWorkspace.toString());
     }
     // check for image cache presence and create the workspace/.jajuk
@@ -1157,6 +1149,17 @@ public final class Main {
   }
 
   public static File getSessionIdFile() {
+    if (sessionIdFile == null) {
+      String sHostname;
+      try {
+        sHostname = InetAddress.getLocalHost().getHostName();
+      } catch (final UnknownHostException e) {
+        sHostname = "localhost";
+      }
+      sessionIdFile = UtilSystem.getConfFileByPath(Const.FILE_SESSIONS + '/' + sHostname + '_'
+          + System.getProperty("user.name") + '_'
+          + new SimpleDateFormat("yyyyMMdd-kk:mm:ss").format(UtilSystem.TODAY));
+    }
     return sessionIdFile;
   }
 

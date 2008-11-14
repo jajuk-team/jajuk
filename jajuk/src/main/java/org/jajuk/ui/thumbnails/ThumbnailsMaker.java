@@ -30,17 +30,8 @@ import org.apache.log4j.Appender;
 import org.jajuk.Main;
 import org.jajuk.base.Album;
 import org.jajuk.base.AlbumManager;
-import org.jajuk.base.AuthorManager;
 import org.jajuk.base.Collection;
 import org.jajuk.base.DeviceManager;
-import org.jajuk.base.DirectoryManager;
-import org.jajuk.base.FileManager;
-import org.jajuk.base.ItemManager;
-import org.jajuk.base.PlaylistManager;
-import org.jajuk.base.StyleManager;
-import org.jajuk.base.TrackManager;
-import org.jajuk.base.TypeManager;
-import org.jajuk.base.YearManager;
 import org.jajuk.util.Const;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilSystem;
@@ -159,6 +150,8 @@ public final class ThumbnailsMaker {
     commands.add(Boolean.toString(Main.isTestMode()));
     // Add the workspace value
     commands.add(Main.getWorkspace());
+    // Add the session Id path
+    commands.add(Main.getSessionIdFile().getAbsolutePath());
     Log.debug("Use command:" + commands);
     // We use this class and not ProcessBuilder as it hangs under windows
     // probably because of stream reading
@@ -168,11 +161,14 @@ public final class ThumbnailsMaker {
 
   /**
    * @param args :
-   *          <p>
-   *          size: thumb size like 100, or 300
+   *         size: thumb size like 100, or 300
+   *         boolean; test mode ?
+   *         workspace
+   *         session id full path
+   *         
    */
   public static void main(final String[] args) {
-    new ThumbnailsMaker(Integer.parseInt(args[0]), Boolean.parseBoolean(args[1]), args[2]);
+    new ThumbnailsMaker(Integer.parseInt(args[0]), Boolean.parseBoolean(args[1]), args[2], args[3]);
   }
 
   private int size = 0;
@@ -182,14 +178,17 @@ public final class ThumbnailsMaker {
   private boolean bTest = false;
 
   private final String workspace;
+  
+  private final File sessionId;
 
   /**
    * No instances
    */
-  private ThumbnailsMaker(final int pSize, final boolean pTest, final String pWorkspace) {
+  private ThumbnailsMaker(final int pSize, final boolean pTest, final String pWorkspace, final String pSessionIdFile) {
     size = pSize;
     bTest = pTest;
     workspace = pWorkspace;
+    sessionId = new File(pSessionIdFile);
     try {
       buildThumbs();
     } catch (final Exception e) {
@@ -201,6 +200,11 @@ public final class ThumbnailsMaker {
     System.exit(0);
   }
 
+  /**
+   * Build thumbs for given parameters
+   * We make a minimal jajuk startup here to make the process possible
+   * @throws Exception
+   */
   private void buildThumbs() throws Exception {
     final long lTime = System.currentTimeMillis();
     Main.initializeFromThumbnailsMaker(bTest, workspace);
@@ -208,22 +212,11 @@ public final class ThumbnailsMaker {
     Log.getInstance();
     Log.setVerbosity(Log.FATAL);
     Main.initialCheckups();
-    ItemManager.registerItemManager(org.jajuk.base.Album.class, AlbumManager.getInstance());
-    ItemManager.registerItemManager(org.jajuk.base.Author.class, AuthorManager.getInstance());
-    ItemManager.registerItemManager(org.jajuk.base.Device.class, DeviceManager.getInstance());
-    ItemManager.registerItemManager(org.jajuk.base.File.class, FileManager.getInstance());
-    ItemManager.registerItemManager(org.jajuk.base.Directory.class, DirectoryManager.getInstance());
-    ItemManager.registerItemManager(org.jajuk.base.Playlist.class, PlaylistManager.getInstance());
-    ItemManager.registerItemManager(org.jajuk.base.Style.class, StyleManager.getInstance());
-    ItemManager.registerItemManager(org.jajuk.base.Track.class, TrackManager.getInstance());
-    ItemManager.registerItemManager(org.jajuk.base.Type.class, TypeManager.getInstance());
-    ItemManager.registerItemManager(org.jajuk.base.Year.class, YearManager.getInstance());
+    Main.registerItemManagers();
     // Register device types
-    DeviceManager.getInstance().registerDeviceType(Messages.getString("Device_type.directory"));
-    DeviceManager.getInstance().registerDeviceType(Messages.getString("Device_type.file_cd"));
-    DeviceManager.getInstance().registerDeviceType(Messages.getString("Device_type.network_drive"));
-    DeviceManager.getInstance().registerDeviceType(Messages.getString("Device_type.extdd"));
-    DeviceManager.getInstance().registerDeviceType(Messages.getString("Device_type.player"));
+    for (final String deviceTypeId : Main.DEVICE_TYPES) {
+      DeviceManager.getInstance().registerDeviceType(Messages.getString(deviceTypeId));
+    }
     // registers supported audio supports and default properties
     Main.registerTypes();
     // load collection
@@ -231,11 +224,10 @@ public final class ThumbnailsMaker {
     // Mount devices
     Main.autoMount();
     final List<Album> albums = AlbumManager.getInstance().getAlbums();
-  
     // For each album, create the associated thumb
     for (final Album album : albums) {
       // Leave if jajuk leaved
-      if (!Main.getSessionIdFile().exists()) {
+      if (!sessionId.exists()) {
         Log.debug("Parent Jajuk closed, leaving now...");
         return;
       }
