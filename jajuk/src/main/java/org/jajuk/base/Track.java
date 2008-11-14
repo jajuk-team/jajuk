@@ -407,7 +407,7 @@ public class Track extends LogicalItem implements Comparable<Track> {
         / (playcount * duration);
     // If playtimeRate > 1, a problem occurred, set 0.5
     if (playtimeRate > 1) {
-      Log.debug("Playtime rate > 1 for: " + getName());
+      Log.warn("Playtime rate > 1 for: " + getName());
       playtimeRate = 0.5f;
     }
     // compute the playcount rate (logarithmic scale to take number of plays
