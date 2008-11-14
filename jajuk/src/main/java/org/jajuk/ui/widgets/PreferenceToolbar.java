@@ -201,12 +201,15 @@ public class PreferenceToolbar extends JajukJToolbar implements Observer {
   private void updateBanIcon() {
     if (FIFO.getCurrentFile() == null || FIFO.isStopped()) {
       jbBan.setIcon(IconLoader.getIcon(JajukIcons.BAN));
+      jbBan.setToolTipText(Messages.getString("BanSelectionAction.1"));
     } else {
       Track current = FIFO.getCurrentFile().getTrack();
       if (current.getBooleanValue(Const.XML_TRACK_BANNED)) {
         jbBan.setIcon(IconLoader.getIcon(JajukIcons.UNBAN));
+        jbBan.setToolTipText(Messages.getString("UnBanSelectionAction.1"));
       } else {
         jbBan.setIcon(IconLoader.getIcon(JajukIcons.BAN));
+        jbBan.setToolTipText(Messages.getString("BanSelectionAction.1"));
       }
     }
   }
