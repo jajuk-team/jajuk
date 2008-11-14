@@ -140,6 +140,13 @@ public interface Const {
 
   /* Number of tracks for global actions (global shuffle, bestof...) */
   int NB_TRACKS_ON_ACTION = 200;
+  
+  /**
+   * The time we wait for mplayer to start up in secs. 
+   * It can take some time on slow or
+   * heavily loaded machines...
+   */
+  public static final int MPLAYER_START_TIMEOUT = 10;
 
   /** Number of milliseconds in a day */
   int MILLISECONDS_IN_A_DAY = MILLISECONDS_IN_A_SECOND * SECONDS_IN_A_MINUTE * MINUTES_IN_AN_HOUR

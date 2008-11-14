@@ -39,12 +39,6 @@ import org.jajuk.util.log.Log;
  */
 public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
 
-  /**
-   * The time we wait for mplayer to start up. It can take some time on slow or
-   * heavily loaded machines...
-   */
-  private static final int MPLAYER_START_TIMEOUT = 30;
-
   /** Time elapsed in ms */
   private long lTime = 0;
 
