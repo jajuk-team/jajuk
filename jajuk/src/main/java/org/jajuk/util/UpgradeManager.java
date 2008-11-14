@@ -45,6 +45,9 @@ public final class UpgradeManager {
   /** Is it the first session ever ? */
   private static boolean bFirstSession = false;
 
+  /** Is it an old migration (more than 1 major release) ? */
+  private static boolean oldMigration = false;
+
   /**
    * private constructor to avoid instantiating utility class
    */
@@ -55,15 +58,28 @@ public final class UpgradeManager {
    * Detect current release and if an upgrade occurred since last startup
    */
   public static void detectRelease() {
-    // Upgrade detection. Depends on: Configuration manager load
-    final String sRelease = Conf.getString(Const.CONF_RELEASE);
+    try {
+      // Upgrade detection. Depends on: Configuration manager load
+      final String sRelease = Conf.getString(Const.CONF_RELEASE);
 
-    // check if it is a new major 'x.y' release: 1.2 != 1.3 for instance
-    if (!bFirstSession
-    // if first session, not taken as an upgrade
-        && ((sRelease == null) || // null for jajuk releases < 1.2
-        !sRelease.substring(0, 3).equals(Const.JAJUK_VERSION.substring(0, 3)))) {
-      bUpgraded = true;
+      // check if it is a new major 'x.y' release: 1.2 != 1.3 for instance
+      if (!bFirstSession
+      // if first session, not taken as an upgrade
+          && ((sRelease == null) || // null for jajuk releases < 1.2
+          !sRelease.substring(0, 3).equals(Const.JAJUK_VERSION.substring(0, 3)))) {
+        bUpgraded = true;
+        // Now check if this is an old migration. We assume than version goes
+        // this
+        // way : x.0 -> x.9 -> y.0-> y.9 ... (no x.10 or latter)
+        int currentRelease = Integer.parseInt(sRelease.charAt(0) + "" + sRelease.charAt(2));
+        int newRelease = Integer.parseInt(Const.JAJUK_VERSION.charAt(0) + ""
+            + Const.JAJUK_VERSION.charAt(2));
+        if (Math.abs(newRelease - currentRelease) > 1) {
+          oldMigration = true;
+        }
+      }
+    } catch (Exception e) {
+      Log.error(e);
     }
     // Now set current release in the conf
     Conf.setProperty(Const.CONF_RELEASE, Const.JAJUK_VERSION);
@@ -301,5 +317,9 @@ public final class UpgradeManager {
    */
   public static String getNewVersionName() {
     return newVersionName;
+  }
+
+  public static boolean isOldMigration() {
+    return oldMigration;
   }
 }

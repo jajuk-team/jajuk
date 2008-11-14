@@ -22,8 +22,10 @@ package org.jajuk.ui.perspectives;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -64,6 +66,12 @@ public final class PerspectiveManager {
    */
   private static Set<IPerspective> perspectives = new LinkedHashSet<IPerspective>(10);
 
+  /** List of perspectives that need reset from version n-1 */
+  private static List<String> perspectivesToReset = new ArrayList<String>(2);
+  static {
+    // None perspective to reset from 1.6 to 1.7
+  }
+
   /**
    * private constructor to avoid instantiating utility class
    */
@@ -87,15 +95,25 @@ public final class PerspectiveManager {
   public static void load() throws JajukException {
     registerDefaultPerspectives();
     if (UpgradeManager.isUpgradeDetected()) {
-      // upgrade message
-      Messages.showInfoMessage(Messages.getString("Note.0"));
-      // force loading of defaults perspectives
+      /*
+       * Force loading of defaults perspectives - If this is a migration from a
+       * version n-i with i >1, we force a full reset - If it is a migration
+       * from version n-1, only reset perspectives with changes (see
+       * perspectiveList)
+       */
+
+      if (UpgradeManager.isOldMigration()) {
+        // upgrade message
+        Messages.showInfoMessage(Messages.getString("Note.0"));
+      }
+
       for (IPerspective perspective : getPerspectives()) {
+        String className = perspective.getClass().getSimpleName();
         // Remove current conf file to force using default file from the
         // jar
-        File loadFile = UtilSystem.getConfFileByPath(perspective.getClass().getSimpleName()
-            + ".xml");
-        if (loadFile.exists()) {
+        File loadFile = UtilSystem.getConfFileByPath(className + ".xml");
+        if (loadFile.exists()
+            && (perspectivesToReset.contains(className) || UpgradeManager.isOldMigration())) {
           if (!loadFile.delete()) {
             Log.warn("Could not delete file " + loadFile);
           }
