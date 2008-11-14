@@ -254,6 +254,11 @@ public class JajukSystray extends CommandJPanel {
     jmenu.add(jmPosition);
     jmenu.addSeparator();
     jmenu.add(jmiExit);
+    // Add a row under Linux to fix an issue : sometimes, when left-clicking on
+    // the tray, the exit menu item is executed and then close Jajuk accidently
+    if (UtilSystem.isUnderLinux()) {
+      jmenu.add("");
+    }
 
     trayIcon = new JXTrayIcon(IconLoader.getIcon(JajukIcons.TRAY).getImage());
     if (UtilSystem.isUnderWindows()) {
