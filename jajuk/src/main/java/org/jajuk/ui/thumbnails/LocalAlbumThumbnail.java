@@ -115,7 +115,7 @@ public class LocalAlbumThumbnail extends AbstractThumbnail {
       dMain = new double[][] { { TableLayout.FILL, TableLayout.PREFERRED, TableLayout.FILL },
           { size + 10, 10, TableLayout.PREFERRED, 5, TableLayout.PREFERRED } };
       setLayout(new TableLayout(dMain));
-      int iRows = 7 + 6 * (size / 50 - 1);
+      int iRows = 7 + 7 * ((size / 50) - 1);
       Color mediumGray = new Color(172, 172, 172);
 
       Author author = AuthorManager.getInstance().getAssociatedAuthors(album).iterator().next();

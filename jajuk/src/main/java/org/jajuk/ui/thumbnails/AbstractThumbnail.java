@@ -167,30 +167,23 @@ public abstract class AbstractThumbnail extends JPanel implements ActionListener
    * display a popup over the catalog item
    */
   public void displayPopup() {
-    // Display popup out of dispatcher thread as it takes too mush time to
-    // execute and we don't risk display concurrency in this popup
-    new Thread() {
-      @Override
-      public void run() {
-        // close popup if any visible
-        if (details != null) {
-          details.dispose();
-          details = null;
-        }
-        // don't show details if the contextual popup menu
-        // is visible
-        if (jmenu.isVisible()) {
-          return;
-        }
-        UtilGUI.waiting();
-        String description = getDescription();
-        if (description != null) {
-          details = new ThumbnailPopup(description, new Rectangle(jlIcon.getLocationOnScreen(),
-              new Dimension(jlIcon.getWidth(), jlIcon.getHeight())), true);
-          UtilGUI.stopWaiting();
-        }
-      }
-    }.start();
+    // close popup if any visible
+    if (details != null) {
+      details.dispose();
+      details = null;
+    }
+    // don't show details if the contextual popup menu
+    // is visible
+    if (jmenu.isVisible()) {
+      return;
+    }
+    UtilGUI.waiting();
+    String description = getDescription();
+    if (description != null) {
+      details = new ThumbnailPopup(description, new Rectangle(jlIcon.getLocationOnScreen(),
+          new Dimension(jlIcon.getWidth(), jlIcon.getHeight())), true);
+      UtilGUI.stopWaiting();
+    }
   }
 
   public abstract void populate() throws Exception;

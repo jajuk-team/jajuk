@@ -35,11 +35,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JComponent;
-import javax.swing.JDialog;
 import javax.swing.JEditorPane;
 import javax.swing.JPanel;
 import javax.swing.JRootPane;
 import javax.swing.JScrollPane;
+import javax.swing.JWindow;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.event.HyperlinkEvent;
@@ -67,8 +67,11 @@ import org.jajuk.util.log.Log;
  * <p>
  * It is displayed nicely from provided jlabel position
  * </p>
+ * <p>
+ * We use a JWindow instead of a JDialog because the painting is faster 
+ * </p>
  */
-public class ThumbnailPopup extends JDialog {
+public class ThumbnailPopup extends JWindow {
 
   private static final long serialVersionUID = -8131528719972829954L;
 
@@ -79,23 +82,19 @@ public class ThumbnailPopup extends JDialog {
    * @param description
    *          HTML text to display (HTML 3.0)
    * @param origin :
-   *          coordonates of the origin item on whish we want to display the
+   *          coordinates of the origin item on whish we want to display the
    *          popup
    * @param autoclose :
    *          whether the popup should close when mouse leave the origin item or
    *          is displayed as a regular Dialog
    */
   public ThumbnailPopup(String description, Rectangle origin, boolean autoclose) {
-    if (autoclose) {
-      setUndecorated(true);
-      getRootPane().setWindowDecorationStyle(JRootPane.NONE);
-    }
+    getRootPane().setOpaque(true);
     jp = new JPanel();
     double[][] size = { { TableLayout.FILL }, { TableLayout.FILL } };
     jp.setLayout(new TableLayout(size));
     final JEditorPane text = new JEditorPane("text/html", description);
     text.setEditable(false);
-    text.setBackground(UtilGUI.getUltraLightColor());
     text.addHyperlinkListener(new HyperlinkListener() {
       public void hyperlinkUpdate(HyperlinkEvent e) {
         if (e.getEventType() == EventType.ACTIVATED) {
