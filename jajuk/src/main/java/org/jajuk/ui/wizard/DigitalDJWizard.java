@@ -1113,7 +1113,7 @@ public class DigitalDJWizard extends Wizard {
         // create list of styles used in existing transitions
         Set<Style> disabledStyles = new HashSet<Style>();
         for (int i = 0; i < proportions.size(); i++) {
-          if (i != row) { // do not exlude current proportion that
+          if (i != row) { // do not exclude current proportion that
             // will be selected
             disabledStyles.addAll(proportions.get(i).getStyles());
           }

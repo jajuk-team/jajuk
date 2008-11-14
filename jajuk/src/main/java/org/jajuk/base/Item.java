@@ -95,6 +95,7 @@ public abstract class Item implements Serializable, Const {
 
   /**
    * Item hashcode (used by the equals method)
+   * See http://www.geocities.com/technofundo/tech/java/equalhash.html
    */
   @Override
   public int hashCode() {

@@ -39,7 +39,7 @@ public class Ambience implements Comparable<Ambience> {
   private String sName;
 
   /** Ambience ID */
-  private String sID;
+  private final String sID;
 
   /**
    * Constructor
@@ -96,6 +96,7 @@ public class Ambience implements Comparable<Ambience> {
    * Constructor
    */
   public Ambience() {
+    this.sID = "";
     this.sName = "";
     this.styles = new HashSet<Style>(10);
   }
@@ -174,7 +175,7 @@ public class Ambience implements Comparable<Ambience> {
   @Override
   public int hashCode() {
     // for now just combine name and id to a hashcode
-    // idea taken from
+    // idea token from
     // http://www.geocities.com/technofundo/tech/java/equalhash.html
     int hash = 7;
     hash = 31 * hash + sName.hashCode();

@@ -73,8 +73,7 @@ public class Proportion {
   @Override
   public int hashCode() {
     // for now just use ambience for the hashCode, not sure if we should include
-    // the
-    // proportion value as well...
+    // the proportion value as well...
     return ambience.hashCode();
   }
 
@@ -109,7 +108,7 @@ public class Proportion {
       out += s.getName2() + ',';
     }
     if (out.length() > 0) {
-      out = out.substring(0, out.length() - 1); // remove trailling ,
+      out = out.substring(0, out.length() - 1); // remove trailing ','
     }
     return out;
   }
