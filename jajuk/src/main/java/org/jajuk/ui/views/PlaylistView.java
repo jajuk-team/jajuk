@@ -39,9 +39,12 @@ import java.util.List;
 import java.util.Properties;
 import java.util.Set;
 
+import javax.swing.ActionMap;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultListSelectionModel;
+import javax.swing.InputMap;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
@@ -50,6 +53,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTable;
 import javax.swing.JToolBar;
+import javax.swing.KeyStroke;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
 import javax.swing.event.ListSelectionEvent;
@@ -67,6 +71,7 @@ import org.jajuk.events.Observer;
 import org.jajuk.services.players.FIFO;
 import org.jajuk.services.players.StackItem;
 import org.jajuk.ui.actions.ActionManager;
+import org.jajuk.ui.actions.JajukAction;
 import org.jajuk.ui.actions.JajukActions;
 import org.jajuk.ui.helpers.ILaunchCommand;
 import org.jajuk.ui.helpers.JajukTableModel;
@@ -312,6 +317,7 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
 
     jmiFilePlay = new JMenuItem(ActionManager.getAction(JajukActions.PLAY_SELECTION));
     jmiFilePlay.putClientProperty(Const.DETAIL_SELECTION, editorTable.getSelection());
+    editorTable.putClientProperty(Const.DETAIL_SELECTION, editorTable.getSelection());
 
     initMenuItems();
 
@@ -426,6 +432,21 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
     add(split);
     // Select "New" playlist as default
     selectSmartPlaylist(spNew);
+    //Register keystrokes over table
+    setKeystrokes();
+  }
+  
+   /**
+   * Add keystroke support
+   */
+  protected void setKeystrokes() {
+    InputMap inputMap = editorTable.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+    ActionMap actionMap = editorTable.getActionMap();
+
+    // Properties ALT/ENTER
+    JajukAction action = ActionManager.getAction(JajukActions.SHOW_PROPERTIES);
+    inputMap.put(KeyStroke.getKeyStroke("alt ENTER"), "properties");
+    actionMap.put("properties", action);
   }
 
   public Set<JajukEvents> getRegistrationKeys() {

@@ -202,6 +202,9 @@ public class QueueView extends PlaylistView {
         }
       }
     });
+    //Register keystrokes over table
+    editorTable.putClientProperty(Const.DETAIL_SELECTION, editorTable.getSelection());
+    super.setKeystrokes();
   }
 
   private void goToSelection() {
