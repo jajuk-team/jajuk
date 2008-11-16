@@ -31,8 +31,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import javax.swing.Action;
+import javax.swing.ActionMap;
 import javax.swing.ImageIcon;
+import javax.swing.InputMap;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
+import javax.swing.KeyStroke;
 import javax.swing.border.EmptyBorder;
 
 import org.jajuk.base.Album;
@@ -43,6 +48,8 @@ import org.jajuk.base.Track;
 import org.jajuk.base.TrackComparator;
 import org.jajuk.base.TrackManager;
 import org.jajuk.base.TrackComparator.TrackComparatorType;
+import org.jajuk.ui.actions.ActionManager;
+import org.jajuk.ui.actions.JajukActions;
 import org.jajuk.ui.helpers.CatalogViewTransferHandler;
 import org.jajuk.ui.helpers.FontManager;
 import org.jajuk.ui.helpers.PreferencesJMenu;
@@ -151,9 +158,11 @@ public class LocalAlbumThumbnail extends AbstractThumbnail {
     postPopulate();
     // Add the preference menu in popup
     pjmFiles = new PreferencesJMenu(getItem());
-    jmenu.add(pjmFiles,9);
+    jmenu.add(pjmFiles, 9);
     // disable inadequate menu items
     jmenu.remove(jmiOpenLastFMSite);
+    // Set keystrokes
+    setKeystrokes();
   }
 
   public boolean isNoCover() {
@@ -215,14 +224,14 @@ public class LocalAlbumThumbnail extends AbstractThumbnail {
       sOut += "<br>" + Messages.getString("Property_year") + ": <a href='file://" + Const.XML_YEAR
           + '?' + firstTrack.getYear().getID() + "'>" + firstTrack.getYear().getName() + "</a>";
     }
-    // display rating (average of each track rating)
+    // display rating (sum of all tracks rating)
     try {
       sOut += "<br>"
           + Messages.getString("Property_rate")
           + ": <img src='"
           + UtilSystem.getConfFileByPath(
               "cache/internal/star" + album.getStarsNumber() + "_16x16.png").toURI().toURL()
-              .toExternalForm() + "'>";
+              .toExternalForm() + "'> (" + album.getRate() + ")";
     } catch (MalformedURLException e) {
       Log.error(e);
     }
@@ -263,6 +272,23 @@ public class LocalAlbumThumbnail extends AbstractThumbnail {
   public void launch() {
     // play the album
     jmiPlay.doClick();
+  }
+
+  /**
+   * Add keystroke support on the tree
+   */
+  private void setKeystrokes() {
+    putClientProperty(Const.DETAIL_SELECTION, album);
+    InputMap inputMap = getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+    ActionMap actionMap = getActionMap();
+    // Delete
+    Action action = ActionManager.getAction(JajukActions.DELETE);
+    inputMap.put(KeyStroke.getKeyStroke("DELETE"), "delete");
+    actionMap.put("delete", action);
+    // Properties ALT/ENTER
+    action = ActionManager.getAction(JajukActions.SHOW_PROPERTIES);
+    inputMap.put(KeyStroke.getKeyStroke("alt ENTER"), "properties");
+    actionMap.put("properties", action);
   }
 
 }

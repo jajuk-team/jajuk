@@ -331,6 +331,7 @@ public abstract class AbstractThumbnail extends JPanel implements ActionListener
    * @param b
    */
   public final void setSelected(boolean b) {
+    requestFocus();
     selected = b;
     // Reset number of clicks
     if (!b) {

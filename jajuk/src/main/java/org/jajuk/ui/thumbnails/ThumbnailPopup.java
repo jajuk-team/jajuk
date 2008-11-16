@@ -68,7 +68,7 @@ import org.jajuk.util.log.Log;
  * It is displayed nicely from provided jlabel position
  * </p>
  * <p>
- * We use a JWindow instead of a JDialog because the painting is faster 
+ * We use a JWindow instead of a JDialog because the painting is faster
  * </p>
  */
 public class ThumbnailPopup extends JWindow {
@@ -199,7 +199,7 @@ public class ThumbnailPopup extends JWindow {
   }
 
   /**
-   * Allow closing the window when pressing escape key Thanks
+   * Allow closing the window when pressing escape key. Thanks
    * http://www.javaworld.com/javaworld/javatips/javatip72/EscapeDialog.java
    */
   @Override
@@ -211,7 +211,8 @@ public class ThumbnailPopup extends JWindow {
     };
     JRootPane rootPane = new JRootPane();
     KeyStroke stroke = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0);
-    rootPane.registerKeyboardAction(actionListener, stroke, JComponent.WHEN_IN_FOCUSED_WINDOW);
+    rootPane.registerKeyboardAction(actionListener, stroke,
+        JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     return rootPane;
   }
 

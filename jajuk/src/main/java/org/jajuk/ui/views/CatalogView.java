@@ -304,7 +304,6 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
     jpControlBottom.add(jlSize, "1,0");
     jpControlBottom.add(jsSize, "2,0,c,c");
     
-
     // Covers
     initCovers();
 
@@ -650,7 +649,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
                   return track2.getAuthor().compareTo(track1.getAuthor());
                 }
               } else {
-                return track2.getYear().compareTo(track1.getYear());
+                return track1.getYear().compareTo(track2.getYear());
               }
             case 4: // Discovery date
               return track2.getDiscoveryDate().compareTo(track1.getDiscoveryDate());
