@@ -49,7 +49,7 @@ public interface Const {
   long TO_THE_END = -1;
 
   /** Time we wait after an error in ms */
-  int WAIT_AFTER_ERROR = 1000;
+  int WAIT_AFTER_ERROR = 2000;
 
   /** Default playlist name */
   String DEFAULT_PLAYLIST_FILE = "playlist";
