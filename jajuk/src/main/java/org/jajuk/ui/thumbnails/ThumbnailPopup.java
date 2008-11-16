@@ -22,10 +22,10 @@ package org.jajuk.ui.thumbnails;
 
 import info.clearthought.layout.TableLayout;
 
+import java.awt.KeyEventDispatcher;
+import java.awt.KeyboardFocusManager;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -34,13 +34,10 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.JComponent;
 import javax.swing.JEditorPane;
 import javax.swing.JPanel;
-import javax.swing.JRootPane;
 import javax.swing.JScrollPane;
 import javax.swing.JWindow;
-import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
@@ -196,24 +193,28 @@ public class ThumbnailPopup extends JWindow {
         jspText.getVerticalScrollBar().setValue(0);
       }
     });
+    setKeystrokes();
   }
 
   /**
-   * Allow closing the window when pressing escape key. Thanks
-   * http://www.javaworld.com/javaworld/javatips/javatip72/EscapeDialog.java
+   * Add keystroke to dispose the popup when escape is pressed For unknown
+   * reasons, registerKeyboardAction() against JWindow doesn't work (it does for
+   * JFrame) but we need to use JWindow for performance reasons. for that
+   * reason, we add a keyboard focus manager which is called before any focus
+   * consideration
+   * 
+   * Note that for a JFrame, we would use
+   * rootPane.registerKeyboardAction(actionListener, stroke,
+   * JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
    */
-  @Override
-  protected JRootPane createRootPane() {
-    ActionListener actionListener = new ActionListener() {
-      public void actionPerformed(ActionEvent actionEvent) {
-        dispose();
-      }
-    };
-    JRootPane rootPane = new JRootPane();
-    KeyStroke stroke = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0);
-    rootPane.registerKeyboardAction(actionListener, stroke,
-        JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
-    return rootPane;
+  private void setKeystrokes() {
+    KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(
+        new KeyEventDispatcher() {
+          public boolean dispatchKeyEvent(KeyEvent e) {
+            dispose();
+            return false;
+          }
+        });
   }
 
 }
