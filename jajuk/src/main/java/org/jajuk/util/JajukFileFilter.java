@@ -30,13 +30,13 @@ import javax.swing.filechooser.FileFilter;
  * @see https://trac.jajuk.info/wiki/JajukDevGuide#Filesfilters for direction to
  *      use
  *      <p>
- *      Exemple: new
+ *      Example: new
  *      JajukFilter(false,JajukFileFilter.DirectoryFilter.getInstance(),
  *      JajukFileFilter.AudioFilter.getInstance());
  *      </p>
  *      This class can be use by file choosers (probably a JajukFileChooser) and
  *      for engine file selection that uses the raw accept method. In the second
- *      case, it can be useful to use grouping fiters like music or report (but
+ *      case, it can be useful to use grouping filters like music or report (but
  *      it is not intended to be used by file choosers that require only one
  *      extension by filter) and or/and argument given as an argument
  * 
@@ -166,7 +166,7 @@ public class JajukFileFilter extends FileFilter implements java.io.FileFilter, C
 
   /**
    * Checks if the given file's extension matches the ones expected by the
-   * filter's registered extension. Beware that this method may be overriden.
+   * filter's registered extension. Beware that this method may be overwritten.
    * 
    * @param file
    *          the file to be filtered
@@ -198,7 +198,7 @@ public class JajukFileFilter extends FileFilter implements java.io.FileFilter, C
   /**
    * Checks if the given file should be shown, according if it is a directory
    * and that directory display is activated, or a file with a known extension.
-   * Beware that this method or the isKnownExtension may be overriden.
+   * Beware that this method or the isKnownExtension may be overwritten.
    * 
    * @param file
    *          the file to be filtered
