@@ -518,11 +518,14 @@ public final class Main {
     }
 
     // Extract star icons (used by some HTML panels)
-    for (int i = 1; i <= 4; i++) {
+    for (int i = 0; i <= 4; i++) {
       final File star = UtilSystem.getConfFileByPath("cache/internal/star" + i + "_16x16.png");
       if (!star.exists()) {
         ImageIcon ii = null;
         switch (i) {
+        case 0:
+          ii = IconLoader.getIcon(JajukIcons.STAR_0);
+          break;
         case 1:
           ii = IconLoader.getIcon(JajukIcons.STAR_1);
           break;
