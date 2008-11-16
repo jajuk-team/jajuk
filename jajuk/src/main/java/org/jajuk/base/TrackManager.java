@@ -176,7 +176,13 @@ public final class TrackManager extends ItemManager implements Observer {
    */
   public synchronized Track registerTrack(String sId, String sName, Album album, Style style,
       Author author, long length, Year year, long lOrder, Type type) {
-    Track track = new Track(sId, sName, album, style, author, length, year, lOrder, type);
+    // We absolutely need to return the same track if already registrated to
+    // avoid duplicates and properties lost
+    Track track = getTrackByID(sId);
+    if (track != null) {
+      return track;
+    }
+    track = new Track(sId, sName, album, style, author, length, year, lOrder, type);
     registerItem(track);
     // For performances, add the track to the album cache
     album.getTracksCache().add(track);
@@ -550,7 +556,7 @@ public final class TrackManager extends ItemManager implements Observer {
       }
     }
 
-    // Remove the track from the old album
+    // Remove old track from the album
     track.getAlbum().getTracksCache().remove(track);
 
     Track newTrack = registerTrack(sNewItem, track.getAlbum(), track.getStyle(), track.getAuthor(),
@@ -676,8 +682,7 @@ public final class TrackManager extends ItemManager implements Observer {
         }
       }
       return out;
-    }
-    else if (item instanceof Playlist) {
+    } else if (item instanceof Playlist) {
       Playlist pl = (Playlist) item;
       List<File> files;
       try {

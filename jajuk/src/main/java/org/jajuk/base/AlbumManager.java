@@ -38,7 +38,6 @@ import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.events.Observer;
 import org.jajuk.services.players.FIFO;
-import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.MD5Processor;
 import org.jajuk.util.ReadOnlyIterator;
@@ -119,7 +118,11 @@ public final class AlbumManager extends ItemManager implements Observer {
    * @param sName
    */
   public synchronized Album registerAlbum(String sId, String sName) {
-    Album album = new Album(sId, sName);
+    Album album = getAlbumByID(sId);
+    if (album != null) {
+      return album;
+    }
+    album = new Album(sId, sName);
     registerItem(album);
     return album;
   }
@@ -254,28 +257,10 @@ public final class AlbumManager extends ItemManager implements Observer {
     // This hashmap contains album-> album rates
     final Map<Album, Float> cacheRate = new HashMap<Album, Float>(AlbumManager.getInstance()
         .getElementCount());
-    // This hashmap contains album-> nb of tracks already taken into account
-    // for average
-    Map<Album, Integer> cacheNb = new HashMap<Album, Integer>(AlbumManager.getInstance()
-        .getElementCount());
-    ReadOnlyIterator<Track> it = TrackManager.getInstance().getTracksIterator();
+    ReadOnlyIterator<Album> it = AlbumManager.getInstance().getAlbumsIterator();
     while (it.hasNext()) {
-      Track track = it.next();
-      if (track.getPlayeableFile(bHideUnmounted) != null) {
-        float newRate = 0f;
-        Integer nb = cacheNb.get(track.getAlbum());
-        if (nb == null) {
-          nb = 0;
-        }
-        Float previousRate = cacheRate.get(track.getAlbum());
-        if (previousRate == null) {
-          newRate = track.getRate();
-        } else {
-          newRate = ((previousRate * nb) + track.getRate()) / (nb + 1);
-        }
-        cacheNb.put(track.getAlbum(), nb + 1);
-        cacheRate.put(track.getAlbum(), newRate);
-      }
+      Album album = it.next();
+      cacheRate.put(album, (float)album.getRate());
     }
     // Now sort albums by rating
     List<Album> sortedAlbums = new ArrayList<Album>(cacheRate.keySet());
@@ -417,28 +402,10 @@ public final class AlbumManager extends ItemManager implements Observer {
     // This hashmap contains album-> album rates
     final Map<Album, Float> cacheRate = new HashMap<Album, Float>(AlbumManager.getInstance()
         .getElementCount());
-    // This hashmap contains album-> nb of tracks already taken into account
-    // for average
-    Map<Album, Integer> cacheNb = new HashMap<Album, Integer>(AlbumManager.getInstance()
-        .getElementCount());
-    ReadOnlyIterator<Track> it = TrackManager.getInstance().getTracksIterator();
+    ReadOnlyIterator<Album> it = AlbumManager.getInstance().getAlbumsIterator();
     while (it.hasNext()) {
-      Track track = it.next();
-      if (track.getPlayeableFile(Conf.getBoolean(Const.CONF_OPTIONS_HIDE_UNMOUNTED)) != null) {
-        float newRate = 0f;
-        Integer nb = cacheNb.get(track.getAlbum());
-        if (nb == null) {
-          nb = 0;
-        }
-        Float previousRate = cacheRate.get(track.getAlbum());
-        if (previousRate == null) {
-          newRate = track.getRate();
-        } else {
-          newRate = ((previousRate * nb) + track.getRate()) / (nb + 1);
-        }
-        cacheNb.put(track.getAlbum(), nb + 1);
-        cacheRate.put(track.getAlbum(), newRate);
-      }
+      Album album = it.next();
+      cacheRate.put(album, (float)album.getRate());
     }
     // OK, now keep only the highest score
     for (Album album : cacheRate.keySet()) {

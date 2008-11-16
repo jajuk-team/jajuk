@@ -91,7 +91,7 @@ public final class TypeManager extends ItemManager {
    * @param type
    */
   public Type registerType(String sName, String sExtension, Class<?> cPlayerImpl, Class<?> cTagImpl) {
-    return registerType(sExtension, sName, sExtension, cPlayerImpl, cTagImpl);
+    return registerType(sExtension.toLowerCase(), sName, sExtension, cPlayerImpl, cTagImpl);
   }
 
   /**
@@ -102,11 +102,14 @@ public final class TypeManager extends ItemManager {
   @SuppressWarnings("unchecked")
   private Type registerType(String sId, String sName, String sExtension, Class cPlayerImpl,
       Class cTagImpl) {
+    Type type = getTypeByID(sId);
+    if (type != null){
+      return type;
+    }
     if (hmSupportedTypes.containsKey(sExtension)) {
       // if the type is already in memory, use it
       return hmSupportedTypes.get(sExtension);
     }
-    Type type = null;
     try {
       type = new Type(sId, sName, sExtension, cPlayerImpl, cTagImpl);
       registerItem(type);
@@ -124,7 +127,7 @@ public final class TypeManager extends ItemManager {
    * @return
    */
   public boolean isExtensionSupported(String sExt) {
-    return hmSupportedTypes.containsKey(sExt);
+    return hmSupportedTypes.containsKey(sExt.toLowerCase());
   }
 
   /**
@@ -134,7 +137,7 @@ public final class TypeManager extends ItemManager {
    * @return
    */
   public Type getTypeByExtension(String sExtension) {
-    return hmSupportedTypes.get(sExtension);
+    return hmSupportedTypes.get(sExtension.toLowerCase());
   }
 
   /**

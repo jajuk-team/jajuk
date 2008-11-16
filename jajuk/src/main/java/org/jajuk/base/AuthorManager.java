@@ -101,7 +101,11 @@ public final class AuthorManager extends ItemManager {
    * @param sName
    */
   public synchronized Author registerAuthor(String sId, String sName) {
-    Author author = new Author(sId, sName);
+    Author author = getAuthorByID(sId);
+    if (author != null) {
+      return author;
+    }
+    author = new Author(sId, sName);
     registerItem(author);
     // add it in styles list if new
     if (!authorsList.contains(sName)) {

@@ -220,7 +220,6 @@ public class Device extends PhysicalItem implements Comparable<Device> {
         bChanges = true;
       }
     }
-
     return bChanges;
   }
 

@@ -119,12 +119,16 @@ public final class FileManager extends ItemManager implements Observer {
    */
   public synchronized File registerFile(String sId, String sName, Directory directory, Track track,
       long lSize, long lQuality) {
-    File file = new File(sId, sName, directory, track, lSize, lQuality);
+    File file = getFileByID(sId);
+    if (file != null){
+      return file;
+    }
+    file = new File(sId, sName, directory, track, lSize, lQuality);
     registerItem(file);
     // add to directory
     file.getDirectory().addFile(file);
     if (directory.getDevice().isRefreshing() && Log.isDebugEnabled()) {
-      Log.debug("registrated new file: " + file);
+      Log.debug("Registrated new file: " + file);
     }
     // add this file to track
     file.setTrack(track);
@@ -269,6 +273,8 @@ public final class FileManager extends ItemManager implements Observer {
   public synchronized void removeFile(File file) {
     removeItem(file);
     file.getDirectory().removeFile(file);
+    // We need to remove the file from the track !
+    file.getTrack().removeFile(file);
   }
 
   /**

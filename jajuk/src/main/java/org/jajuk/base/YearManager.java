@@ -77,7 +77,11 @@ public final class YearManager extends ItemManager {
    * @param sName
    */
   public synchronized Year registerYear(String sId, String pYear) {
-    Year year = new Year(sId, pYear);
+    Year year = getYearByID(sId);
+    if (year != null) {
+      return year;
+    }
+    year = new Year(sId, pYear);
     registerItem(year);
     return year;
   }

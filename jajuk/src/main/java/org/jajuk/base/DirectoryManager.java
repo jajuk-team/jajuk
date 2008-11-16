@@ -204,7 +204,11 @@ public final class DirectoryManager extends ItemManager {
    */
   public synchronized Directory registerDirectory(final String sId, final String sName,
       final Directory dParent, final Device device) {
-    Directory directory = new Directory(sId, sName, dParent, device);
+    Directory directory = getDirectoryByID(sId);
+    if (directory != null){
+      return directory;
+    }
+    directory = new Directory(sId, sName, dParent, device);
     if (dParent != null) {
       // add the directory to parent
       dParent.addDirectory(directory);

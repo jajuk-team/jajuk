@@ -104,7 +104,11 @@ public final class StyleManager extends ItemManager {
    * @param sName
    */
   public synchronized Style registerStyle(String sId, String sName) {
-    Style style = new Style(sId, sName);
+    Style style = getStyleByID(sId);
+    if (style != null) {
+      return style;
+    }
+    style = new Style(sId, sName);
     registerItem(style);
     // add it in styles list if new
     if (!stylesList.contains(sName)) {

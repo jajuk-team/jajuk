@@ -294,8 +294,9 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
         }
 
         // check if we recognize the file as music file
-        boolean bIsMusic = (Boolean) TypeManager.getInstance().getTypeByExtension(
-            UtilSystem.getExtension(filelist[i])).getValue(Const.XML_TYPE_IS_MUSIC);
+        String extension = UtilSystem.getExtension(filelist[i]);
+        Type type = TypeManager.getInstance().getTypeByExtension(extension);
+        boolean bIsMusic = (Boolean) type.getValue(Const.XML_TYPE_IS_MUSIC);
 
         if (bIsMusic) {
           scanMusic(filelist[i], bDeepScan, reporter);

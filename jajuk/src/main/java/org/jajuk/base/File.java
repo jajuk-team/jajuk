@@ -410,26 +410,15 @@ public class File extends PhysicalItem implements Comparable<File>, Const {
     if (cover.canRead()) {
       sOut += "<p ALIGN=center><img src='file:" + cover.getAbsolutePath() + "'/></p><br>";
     }
-    // We use gray color for font because, due to a JDIC bug under
-    // Linux, the
-    // balloon background is white even if the the look and feel is dark
-    // (like ebony)
-    // but the look and feel makes the text white is it is black
-    // initialy
-    // so text is white on white is the balloon. It must be displayed in
-    // the tooltip too
-    // and this issue doesn't affect the tray tooltip. This color is the
-    // only one to be correctly displayed
-    // in a dark and a light background at the same time
-    sOut += "<p><font color='#484848'><b>"
+    sOut += "<p><b>"
         + UtilString.getLimitedString(getTrack().getName(), maxSize) + "</b></font></p>";
     String sAuthor = UtilString.getLimitedString(getTrack().getAuthor().getName(), maxSize);
     if (!sAuthor.equals(UNKNOWN_AUTHOR)) {
-      sOut += "<p><font color='#484848'>" + sAuthor + "</font></p>";
+      sOut += "<p>" + sAuthor + "</font></p>";
     }
     String sAlbum = UtilString.getLimitedString(getTrack().getAlbum().getName(), maxSize);
     if (!sAlbum.equals(UNKNOWN_ALBUM)) {
-      sOut += "<p><font color='#484848'>" + sAlbum + "</font></p>";
+      sOut += "<p>" + sAlbum + "</font></p>";
     }
     sOut += "</HTML>";
     return sOut;

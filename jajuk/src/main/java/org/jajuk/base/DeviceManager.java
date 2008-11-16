@@ -144,7 +144,11 @@ public final class DeviceManager extends ItemManager {
    * @return device
    */
   public synchronized Device registerDevice(String sId, String sName, long lDeviceType, String sUrl) {
-    Device device = new Device(sId, sName);
+    Device device = getDeviceByID(sId);
+    if (device != null){
+      return device;
+    }
+    device = new Device(sId, sName);
     device.setProperty(Const.XML_TYPE, lDeviceType);
     device.setUrl(sUrl);
     registerItem(device);
@@ -382,7 +386,7 @@ public final class DeviceManager extends ItemManager {
           }
           // cleanup device
           bNeedUIRefresh = bNeedUIRefresh | device.cleanRemovedFiles();
-          // logical or, not an error ! refresh it
+          // refresh the device (deep refresh forced after an upgrade)
           bNeedUIRefresh = bNeedUIRefresh | device.refreshCommand(bNeedDeepAfterUpgrade);
         }
       }
