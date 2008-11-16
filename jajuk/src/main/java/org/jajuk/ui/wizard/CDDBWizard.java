@@ -244,7 +244,8 @@ public class CDDBWizard extends JajukJDialog implements ActionListener {
       dispose();
     } else {
       for (int iRow : aIdxToTag) {
-        // Unset autommit to tags so we write to file only once for all changed
+        // Unset autocommit to tags so we write to file only once for all
+        // changed
         // tags for a single file
         TrackManager.getInstance().setAutocommit(false);
         Track track = alCddbTracks.get(iRow).getTrack();
@@ -289,6 +290,11 @@ public class CDDBWizard extends JajukJDialog implements ActionListener {
           Log.error(e);
           Messages.showErrorMessage(155, track.getName());
           dispose();
+          // Stop retagging if one track cannot be written to avoid displaying
+          // several error messages
+          // TODO a better handling could be to finish all tag writes and
+          // displaying a grouped list of failed items like in properties panel
+          break;
         } finally {
           TrackManager.getInstance().setAutocommit(true);
         }
