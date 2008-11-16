@@ -28,7 +28,10 @@ import org.jajuk.base.StyleManager;
 import org.jajuk.util.log.Log;
 
 /**
- * An ambience is a set of styles
+ * An ambience is a set of styles <br>
+ * Note that an ambience is identified by an id and not its name Several
+ * ambiences can eventually share the same name. This is because ambience is
+ * translated and can change with current locale
  */
 public class Ambience implements Comparable<Ambience> {
 
