@@ -479,7 +479,7 @@ public final class FIFO {
         ObservationManager.notify(new Event(JajukEvents.FILE_LAUNCHED, pDetails));
         // save the last played track (even files in error are stored here as
         // we need this for computes next track to launch after an error)
-        // We have to set this line here as we make directory change analyse
+        // We have to set this line here as we make directory change analyze
         // before for cover change
         itemLast = (StackItem) getCurrentItem().clone();
         playingRadio = false;
@@ -500,7 +500,16 @@ public final class FIFO {
         } else {
           itemLast = null;
         }
-        FIFO.finished();
+        // Call finished asynchronously to avoid looping
+        // We test if user required stop. Must be done here to make a chance to
+        // stop before starting a new track
+        new Thread() {
+          public void run() {
+            if (!bStop) {
+              FIFO.finished();
+            }
+          }
+        }.start();
       }
     } catch (Throwable t) {// catch even Errors (OutOfMemory for example)
       Log.error(122, t);

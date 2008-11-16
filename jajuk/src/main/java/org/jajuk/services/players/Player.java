@@ -133,12 +133,8 @@ public final class Player {
           Log.debug("Line occupied, waiting");
           InformationJPanel.getInstance().setMessage(Messages.getString("Player.0"),
               InformationJPanel.WARNING);
-          try {
-            // wait for the line
-            FIFO.class.wait(Const.WAIT_AFTER_ERROR);
-          } catch (InterruptedException e1) {
-            e1.printStackTrace();
-          }
+          // wait for the line
+          FIFO.class.wait(Const.WAIT_AFTER_ERROR);
         }
       }
       return true;
