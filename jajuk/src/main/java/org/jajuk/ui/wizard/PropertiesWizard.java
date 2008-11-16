@@ -846,7 +846,7 @@ public class PropertiesWizard extends JajukJDialog implements ActionListener {
         // display a message if user changed at least one property
         if (alChanged.size() > 0) {
           StringBuilder sbChanged = new StringBuilder();
-          sbChanged.append("{");
+          sbChanged.append("{ ");
           for (PropertyMetaInformation meta : alChanged) {
             sbChanged.append(meta.getHumanName()).append(' ');
           }
