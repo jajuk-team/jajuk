@@ -129,8 +129,6 @@ public final class JajukSlimbar extends JFrame implements Observer, MouseWheelLi
 
   private String title = "";
 
-  private String rating = "";
-
   private boolean bInitialized = false;
 
   /** True if user close the slim bar from the taskbar */
@@ -377,13 +375,10 @@ public final class JajukSlimbar extends JFrame implements Observer, MouseWheelLi
     File file = FIFO.getCurrentFile();
     if (FIFO.isPlayingRadio()) {
       title = FIFO.getCurrentRadio().getName();
-      rating = Messages.getString("IncRateAction.0");
     } else if (file != null && !FIFO.isStopped()) {
       title = UtilString.buildTitle(FIFO.getCurrentFile());
-      rating = Long.toString(FIFO.getCurrentFile().getTrack().getRate());
     } else {
       title = Messages.getString("JajukWindow.18");
-      rating = Messages.getString("IncRateAction.0");
     }
 
     SwingUtilities.invokeLater(new Runnable() {
