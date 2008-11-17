@@ -131,6 +131,8 @@ public final class JajukSlimbar extends JFrame implements Observer, MouseWheelLi
 
   private boolean bInitialized = false;
 
+  JajukBalloon balloon;
+
   /** True if user close the slim bar from the taskbar */
   private boolean closing = false;
 
@@ -205,6 +207,13 @@ public final class JajukSlimbar extends JFrame implements Observer, MouseWheelLi
 
     jbInfo = new JButton(IconLoader.getIcon(JajukIcons.INFO));
     jbInfo.addActionListener(this);
+    jbInfo.addMouseMotionListener(new MouseMotionAdapter() {
+      @Override
+      public void mouseMoved(MouseEvent e) {
+        super.mouseMoved(e);
+        showBalloon();
+      }
+    });
 
     JToolBar jtbPlay = new JajukJToolbar();
     ActionUtil.installKeystrokes(jtbPlay, ActionManager.getAction(NEXT_ALBUM), ActionManager
@@ -272,7 +281,7 @@ public final class JajukSlimbar extends JFrame implements Observer, MouseWheelLi
 
     preferences = new PreferenceToolbar();
     jtbSmart.add(preferences);
-    
+
     JToolBar jtbTools = new JajukJToolbar();
 
     int iVolume = (int) (100 * Conf.getFloat(Const.CONF_VOLUME));
@@ -557,17 +566,29 @@ public final class JajukSlimbar extends JFrame implements Observer, MouseWheelLi
       jddbSmart.setIcon(IconLoader.getIcon(JajukIcons.SHUFFLE_GLOBAL_16X16));
       Conf.setProperty(Const.CONF_SLIMBAR_SMART_MODE, JajukActions.SHUFFLE_GLOBAL.toString());
     } else if (ae.getSource() == jbInfo) {
-      JajukBalloon balloon = new JajukBalloon(FIFO.getCurrentFileTitle());
-      Point buttonLocation = jbInfo.getLocationOnScreen();
-      Point location = null;
-      // If slimbar is too height in the screen, display the popup bellow it
-      if (buttonLocation.y < balloon.getHeight() + 10) {
-        location = new Point(buttonLocation.x, buttonLocation.y + 25);
-      } else {
-        location = new Point(buttonLocation.x, buttonLocation.y - (5 + balloon.getHeight()));
-      }
-      balloon.setLocation(location);
-      balloon.display();
+      showBalloon();
     }
+  }
+
+  /**
+   * Display the current playing album balloon when moving mouse over jbInfo or
+   * when clicking on it
+   */
+  private void showBalloon() {
+    // Leave if baloon already visible
+    if (balloon != null && balloon.isVisible()) {
+      return;
+    }
+    balloon = new JajukBalloon(FIFO.getCurrentFileTitle());
+    Point buttonLocation = jbInfo.getLocationOnScreen();
+    Point location = null;
+    // If slimbar is too height in the screen, display the popup bellow it
+    if (buttonLocation.y < balloon.getHeight() + 10) {
+      location = new Point(buttonLocation.x, buttonLocation.y + 25);
+    } else {
+      location = new Point(buttonLocation.x, buttonLocation.y - (5 + balloon.getHeight()));
+    }
+    balloon.setLocation(location);
+    balloon.display();
   }
 }
