@@ -73,7 +73,6 @@ import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
-import org.jajuk.util.UtilGUI;
 import org.qdwizard.ClearPoint;
 import org.qdwizard.Screen;
 import org.qdwizard.Wizard;
@@ -1376,8 +1375,8 @@ public class DigitalDJWizard extends Wizard {
   }
 
   public DigitalDJWizard() {
-    super(Messages.getString("DigitalDJWizard.4"), ActionSelectionPanel.class, UtilGUI
-        .getImage(Const.IMAGE_DJ), JajukWindow.getInstance(), new Locale(Messages.getLocale()));
+    super(Messages.getString("DigitalDJWizard.4"), ActionSelectionPanel.class, null, JajukWindow
+        .getInstance(), new Locale(Messages.getLocale()));
   }
 
   /*
@@ -1455,7 +1454,7 @@ public class DigitalDJWizard extends Wizard {
       // commit the DJ right now
       DigitalDJManager.commit(dj);
     }
-    // Refresh command panel (usefull for ie if DJ names changed)
+    // Refresh command panel (useful for ie if DJ names changed)
     ObservationManager.notify(new Event(JajukEvents.DJS_CHANGE));
   }
 }

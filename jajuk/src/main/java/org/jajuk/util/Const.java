@@ -294,8 +294,6 @@ public interface Const {
 
   URL IMAGE_SEARCH = UtilSystem.getResource("images/included/search.png");
 
-  URL IMAGE_DJ = UtilSystem.getResource("images/included/dj.jpg");
-
   URL IMAGE_TRAY_TITLE = UtilSystem.getResource("images/included/tray_title.png");
 
   // XSLT Files

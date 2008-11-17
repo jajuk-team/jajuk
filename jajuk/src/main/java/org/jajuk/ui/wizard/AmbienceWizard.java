@@ -53,11 +53,9 @@ import org.jajuk.ui.helpers.FontManager;
 import org.jajuk.ui.helpers.FontManager.JajukFont;
 import org.jajuk.ui.widgets.JajukWindow;
 import org.jajuk.util.Conf;
-import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
-import org.jajuk.util.UtilGUI;
 import org.jajuk.util.log.Log;
 import org.qdwizard.Screen;
 import org.qdwizard.Wizard;
@@ -363,9 +361,8 @@ public class AmbienceWizard extends Wizard {
   }
 
   public AmbienceWizard() {
-    super(Messages.getString("DigitalDJWizard.56"), AmbiencePanel.class, UtilGUI
-        .getImage(Const.IMAGE_DJ), JajukWindow.getInstance(), new Locale(Messages.getLocale()),
-        700, 600);
+    super(Messages.getString("DigitalDJWizard.56"), AmbiencePanel.class, null, JajukWindow
+        .getInstance(), new Locale(Messages.getLocale()), 500, 600);
   }
 
   /*
