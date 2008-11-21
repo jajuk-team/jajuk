@@ -162,6 +162,11 @@ public abstract class AbstractMPlayerImpl implements IPlayerImpl, Const {
         cmd.add(element);
       }
     }
+    // If it is a playlist, add the -playlist option, must be the last option
+    // because options after -playlist are ignored (see mplayer man page)
+    if (url.matches("http://.*")) {
+      cmd.add("-playlist");
+    }
     cmd.add(url);
     return cmd;
   }
