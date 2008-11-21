@@ -185,7 +185,7 @@ public class DeleteSelectionAction extends SelectionAction {
         String sFiles = "";
         int count = 0;
         for (Directory d : alDirs) {
-          sFiles += d.getName() + "\n";
+          sFiles += d.getAbsolutePath() + "\n";
           count += d.getFilesRecursively().size();
           for (File f : d.getFilesRecursively()) {
             sFiles += "  + " + f.getName() + "\n";
