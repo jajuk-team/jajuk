@@ -35,7 +35,6 @@ import java.util.Set;
 
 import javax.swing.Box;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.JSlider;
 import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
@@ -55,14 +54,16 @@ import org.jajuk.ui.helpers.JajukTimer;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.Messages;
+import org.jajuk.util.UtilFeatures;
 import org.jajuk.util.UtilString;
 import org.jajuk.util.log.Log;
+import org.jdesktop.swingx.JXPanel;
 
 /**
  * Status / information panel ( static view )
  */
-public final class InformationJPanel extends JPanel implements Observer, ChangeListener,
-    MouseWheelListener {
+public final class InformationJPanel extends JXPanel implements ChangeListener,
+    MouseWheelListener, Observer {
 
   private static final long serialVersionUID = 1L;
 
@@ -192,24 +193,17 @@ public final class InformationJPanel extends JPanel implements Observer, ChangeL
     add(jtbTotal, "2,0");
     add(jtbProgress, "3,0");
 
-    // check if some track has been launched before the view has been
-    // displayed
-    update(new Event(JajukEvents.FILE_LAUNCHED, ObservationManager
-        .getDetailsLastOccurence(JajukEvents.FILE_LAUNCHED)));
+    
     // check if some errors occurred before the view has been displayed
     if (ObservationManager.containsEvent(JajukEvents.PLAY_ERROR)) {
       update(new Event(JajukEvents.PLAY_ERROR, ObservationManager
           .getDetailsLastOccurence(JajukEvents.PLAY_ERROR)));
     }
-    // Check if a track or a webradio has been launch before this view is
-    // visible
-    if (FIFO.isPlayingRadio()) {
-      update(new Event(JajukEvents.WEBRADIO_LAUNCHED, ObservationManager
-          .getDetailsLastOccurence(JajukEvents.WEBRADIO_LAUNCHED)));
-    } else {
-      update(new Event(JajukEvents.FILE_LAUNCHED, ObservationManager
-          .getDetailsLastOccurence(JajukEvents.FILE_LAUNCHED)));
-    }
+    
+    // check if some track has been launched before the view has been
+    // displayed
+    UtilFeatures.updateStatus(this);
+    
     // register for given events
     ObservationManager.register(this);
     // start timer
@@ -538,4 +532,5 @@ public final class InformationJPanel extends JPanel implements Observer, ChangeL
       jsPosition.setValue(iNew);
     }
   }
+
 }

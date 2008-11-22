@@ -53,6 +53,7 @@ import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
+import org.jajuk.util.UtilFeatures;
 import org.jajuk.util.log.Log;
 
 /**
@@ -173,9 +174,8 @@ public class WikipediaView extends ViewAdapter implements Observer, ActionListen
     // subscriptions to events
     ObservationManager.register(WikipediaView.this);
 
-    // force event
-    update(new Event(JajukEvents.FILE_LAUNCHED, ObservationManager
-        .getDetailsLastOccurence(JajukEvents.FILE_LAUNCHED)));
+    // Force initial message refresh
+    UtilFeatures.updateStatus(this);
   }
 
   public Set<JajukEvents> getRegistrationKeys() {

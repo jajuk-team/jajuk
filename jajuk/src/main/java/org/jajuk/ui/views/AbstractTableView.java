@@ -62,7 +62,6 @@ import org.jajuk.base.StyleManager;
 import org.jajuk.events.Event;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
-import org.jajuk.events.Observer;
 import org.jajuk.services.players.FIFO;
 import org.jajuk.ui.actions.ActionManager;
 import org.jajuk.ui.actions.JajukActions;
@@ -96,7 +95,7 @@ import org.jdesktop.swingx.table.TableColumnExt;
  * views
  */
 public abstract class AbstractTableView extends ViewAdapter implements ActionListener,
-    ItemListener, TableModelListener, Const, Observer {
+    ItemListener, TableModelListener {
 
   JajukTable jtable;
 

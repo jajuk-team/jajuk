@@ -69,7 +69,6 @@ import org.jajuk.base.TrackComparator.TrackComparatorType;
 import org.jajuk.events.Event;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
-import org.jajuk.events.Observer;
 import org.jajuk.services.players.FIFO;
 import org.jajuk.services.players.StackItem;
 import org.jajuk.ui.actions.ActionManager;
@@ -94,7 +93,7 @@ import org.jvnet.substance.api.renderers.SubstanceDefaultTreeCellRenderer;
 /**
  * Logical tree view
  */
-public class TracksTreeView extends AbstractTreeView implements ActionListener, Observer {
+public class TracksTreeView extends AbstractTreeView implements ActionListener {
 
   private static final long serialVersionUID = 1L;
 

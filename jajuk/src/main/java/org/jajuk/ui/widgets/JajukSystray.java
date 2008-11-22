@@ -69,6 +69,7 @@ import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
+import org.jajuk.util.UtilFeatures;
 import org.jajuk.util.UtilSystem;
 import org.jajuk.util.log.Log;
 
@@ -311,18 +312,8 @@ public class JajukSystray extends CommandJPanel {
     // Register needed events
     ObservationManager.register(this);
 
-    // check if a file has been already started
-    if (FIFO.isPlayingRadio()) {
-      // update initial state
-      update(new Event(JajukEvents.WEBRADIO_LAUNCHED));
-    } else if (!FIFO.isStopped()) {
-      // update initial state
-      update(new Event(JajukEvents.PLAYER_PLAY, ObservationManager
-          .getDetailsLastOccurence(JajukEvents.PLAYER_PLAY)));
-    } else {
-      update(new Event(JajukEvents.PLAYER_STOP));
-    }
-
+    // Force initial message refresh
+    UtilFeatures.updateStatus(this);
   }
 
   @Override

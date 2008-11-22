@@ -54,6 +54,7 @@ import org.jajuk.ui.helpers.FontManager;
 import org.jajuk.ui.helpers.FontManager.JajukFont;
 import org.jajuk.util.Const;
 import org.jajuk.util.Messages;
+import org.jajuk.util.UtilFeatures;
 import org.jajuk.util.UtilGUI;
 import org.jdesktop.swingx.JXBusyLabel;
 
@@ -135,15 +136,8 @@ public class LyricsView extends ViewAdapter implements Observer {
     setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
     add(p);
     ObservationManager.register(this);
-    reset();
-    // check if a track has already been launched
-    if (FIFO.isPlayingRadio()) {
-      update(new Event(JajukEvents.WEBRADIO_LAUNCHED, ObservationManager
-          .getDetailsLastOccurence(JajukEvents.WEBRADIO_LAUNCHED)));
-    } else if (!FIFO.isStopped()) {
-      update(new Event(JajukEvents.FILE_LAUNCHED, ObservationManager
-          .getDetailsLastOccurence(JajukEvents.FILE_LAUNCHED)));
-    }
+    // Force initial message refresh
+    UtilFeatures.updateStatus(this);
   }
 
   public void handlePopup(final MouseEvent e) {

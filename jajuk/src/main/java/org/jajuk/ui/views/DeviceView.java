@@ -50,7 +50,6 @@ import org.jajuk.base.DeviceManager;
 import org.jajuk.events.Event;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
-import org.jajuk.events.Observer;
 import org.jajuk.ui.wizard.DeviceWizard;
 import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
@@ -63,7 +62,7 @@ import org.jajuk.util.UtilGUI;
  * <p>
  * Configuration perspective
  */
-public class DeviceView extends ViewAdapter implements IView, Const, ActionListener, Observer,
+public class DeviceView extends ViewAdapter implements IView, ActionListener,
     MouseListener {
   private static final long serialVersionUID = 1L;
 

@@ -48,6 +48,7 @@ import org.jajuk.ui.widgets.JajukWindow;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.Messages;
+import org.jajuk.util.UtilFeatures;
 import org.jajuk.util.UtilString;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
@@ -94,19 +95,11 @@ public class AnimationView extends ViewAdapter implements Observer, ComponentLis
     addComponentListener(this);
     btl1 = new BasicTextLabel(" ");
     add(btl1);
+    // Force initial message refresh
+    UtilFeatures.updateStatus(this);
 
     ObservationManager.register(this);
-    if (FIFO.isStopped()) {
-      update(new Event(JajukEvents.ZERO));
-    } else {// check if a track or a webradio has already been launched
-      if (FIFO.isPlayingRadio()) {
-        update(new Event(JajukEvents.WEBRADIO_LAUNCHED, ObservationManager
-            .getDetailsLastOccurence(JajukEvents.WEBRADIO_LAUNCHED)));
-      } else {
-        update(new Event(JajukEvents.FILE_LAUNCHED, ObservationManager
-            .getDetailsLastOccurence(JajukEvents.FILE_LAUNCHED)));
-      }
-    }
+
   }
 
   public Set<JajukEvents> getRegistrationKeys() {
@@ -205,19 +198,8 @@ public class AnimationView extends ViewAdapter implements Observer, ComponentLis
   public void componentResized(ComponentEvent e) {
     SwingUtilities.invokeLater(new Runnable() {
       public void run() {
-        iSize = SwingUtilities.getRootPane(AnimationView.this).getWidth(); // current
-        // width
-        if (FIFO.isStopped()) {
-          update(new Event(JajukEvents.ZERO));
-        } else {
-          if (FIFO.isPlayingRadio()) {
-            update(new Event(JajukEvents.WEBRADIO_LAUNCHED, ObservationManager
-                .getDetailsLastOccurence(JajukEvents.WEBRADIO_LAUNCHED)));
-          } else {
-            update(new Event(JajukEvents.FILE_LAUNCHED, ObservationManager
-                .getDetailsLastOccurence(JajukEvents.FILE_LAUNCHED)));
-          }
-        }
+        iSize = SwingUtilities.getRootPane(AnimationView.this).getWidth();
+        UtilFeatures.updateStatus(AnimationView.this);
       }
     });
   }

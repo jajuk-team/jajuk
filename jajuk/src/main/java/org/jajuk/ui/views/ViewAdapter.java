@@ -25,6 +25,7 @@ import com.vlsolutions.swing.docking.DockKey;
 import java.awt.Component;
 import java.awt.event.ComponentEvent;
 
+import org.jajuk.events.Observer;
 import org.jajuk.ui.perspectives.IPerspective;
 import org.jajuk.util.Const;
 import org.jdesktop.swingx.JXPanel;
@@ -32,7 +33,8 @@ import org.jdesktop.swingx.JXPanel;
 /**
  * Default implementation for views
  */
-public abstract class ViewAdapter extends JXPanel implements IView, Const, Comparable<IView> {
+public abstract class ViewAdapter extends JXPanel implements IView, Const,
+    Comparable<IView>, Observer {
 
   /** Populated state */
   private boolean bIsPopulated = false;

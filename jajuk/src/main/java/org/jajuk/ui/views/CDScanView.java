@@ -27,6 +27,7 @@ import info.clearthought.layout.TableLayoutConstants;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.util.Set;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -179,6 +180,19 @@ public class CDScanView extends ViewAdapter implements ActionListener {
     add(root, "1,5");
     // Set default button
     root.setDefaultButton(jbScan);
+  }
+
+  /* (non-Javadoc)
+   * @see org.jajuk.events.Observer#getRegistrationKeys()
+   */
+  public Set<JajukEvents> getRegistrationKeys() {
+    return null;
+  }
+
+  /* (non-Javadoc)
+   * @see org.jajuk.events.Observer#update(org.jajuk.events.Event)
+   */
+  public void update(Event event) {
   }
 
 }

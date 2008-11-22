@@ -80,6 +80,7 @@ import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
+import org.jajuk.util.UtilFeatures;
 import org.jajuk.util.UtilString;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
@@ -365,18 +366,10 @@ public final class JajukSlimbar extends JFrame implements Observer, MouseWheelLi
       Log.error(e);
     }
     pack();
-    // Force initial UI refresh
-    // check if a file has been already started
-    if (FIFO.isPlayingRadio()) {
-      // update initial state
-      update(new Event(JajukEvents.WEBRADIO_LAUNCHED));
-    } else if (!FIFO.isStopped()) {
-      // update initial state
-      update(new Event(JajukEvents.FILE_LAUNCHED, ObservationManager
-          .getDetailsLastOccurence(JajukEvents.FILE_LAUNCHED)));
-    } else {
-      update(new Event(JajukEvents.PLAYER_STOP));
-    }
+   
+    // Force initial message refresh
+    UtilFeatures.updateStatus(this);
+    
     bInitialized = true;
   }
 
@@ -389,17 +382,13 @@ public final class JajukSlimbar extends JFrame implements Observer, MouseWheelLi
     } else {
       title = Messages.getString("JajukWindow.18");
     }
-
     SwingUtilities.invokeLater(new Runnable() {
-
       public void run() {
         setTitle(title);
         jbPlayPause.setToolTipText(title);
         jbInfo.setToolTipText(title);
       }
-
     });
-
   }
 
   /**

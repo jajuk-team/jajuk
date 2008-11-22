@@ -70,7 +70,6 @@ import org.jajuk.base.SearchResult;
 import org.jajuk.events.Event;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
-import org.jajuk.events.Observer;
 import org.jajuk.services.core.ExitService;
 import org.jajuk.services.core.RatingManager;
 import org.jajuk.services.lastfm.LastFmManager;
@@ -106,7 +105,7 @@ import org.jvnet.substance.skin.SkinInfo;
  * Configuration perspective *
  */
 public class ParameterView extends ViewAdapter implements ActionListener, ListSelectionListener,
-    ItemListener, ChangeListener, Observer {
+    ItemListener, ChangeListener {
 
   private static final long serialVersionUID = 1L;
 

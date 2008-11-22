@@ -113,6 +113,7 @@ import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
+import org.jajuk.util.UtilFeatures;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 import org.jdesktop.swingx.JXPanel;
@@ -565,19 +566,9 @@ public class CommandJPanel extends JXPanel implements ActionListener, ListSelect
     // register to player events
     ObservationManager.register(CommandJPanel.this);
 
-    // if a track is playing, display right state
-    if (FIFO.isPlayingRadio()) {
-      // update initial state
-      update(new Event(JajukEvents.WEBRADIO_LAUNCHED));
-    } else if (!FIFO.isStopped()) {
-      // update initial state
-      update(new Event(JajukEvents.PLAYER_PLAY, ObservationManager
-          .getDetailsLastOccurence(JajukEvents.PLAYER_PLAY)));
-      // update the history bar
-      update(new Event(JajukEvents.FILE_LAUNCHED));
-    } else {
-      update(new Event(JajukEvents.PLAYER_STOP));
-    }
+    //Update initial status
+    UtilFeatures.updateStatus(this);
+    
     // start timer
     timer.start();
   }
