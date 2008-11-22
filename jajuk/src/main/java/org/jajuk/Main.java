@@ -551,7 +551,7 @@ public final class Main {
    * Asynchronous tasks executed at startup at the same time (for perf)
    */
   private static void startupAsyncAfterCollectionLoad() {
-    new Thread("Startup Async After Collection Load Thread") {
+    Thread startup = new Thread("Startup Async After Collection Load Thread") {
       @Override
       public void run() {
         try {
@@ -597,7 +597,9 @@ public final class Main {
           Log.error(e);
         }
       }
-    }.start();
+    };
+    startup.setPriority(Thread.MIN_PRIORITY);
+    startup.start();
   }
 
   /**
