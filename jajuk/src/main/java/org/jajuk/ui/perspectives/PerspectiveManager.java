@@ -22,7 +22,7 @@ package org.jajuk.ui.perspectives;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.io.File;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -67,10 +67,8 @@ public final class PerspectiveManager {
   private static Set<IPerspective> perspectives = new LinkedHashSet<IPerspective>(10);
 
   /** List of perspectives that need reset from version n-1 */
-  private static List<String> perspectivesToReset = new ArrayList<String>(2);
-  static {
-    // None perspective to reset from 1.6 to 1.7
-  }
+  // None perspective to reset from 1.6 to 1.7
+  private static String[] perspectivesToReset = new String[] {};
 
   /**
    * private constructor to avoid instantiating utility class
@@ -107,6 +105,7 @@ public final class PerspectiveManager {
         Messages.showInfoMessage(Messages.getString("Note.0"));
       }
 
+      List<String> perspectivesToReset = Arrays.asList(PerspectiveManager.perspectivesToReset);
       for (IPerspective perspective : getPerspectives()) {
         String className = perspective.getClass().getSimpleName();
         // Remove current conf file to force using default file from the
