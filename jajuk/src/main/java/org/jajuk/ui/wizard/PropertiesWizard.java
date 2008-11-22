@@ -33,7 +33,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -125,9 +124,9 @@ public class PropertiesWizard extends JajukJDialog implements ActionListener {
    *          items to display
    */
   public PropertiesWizard(List<Item> alItems) {
-    // windows title: name of the element if there is 
+    // windows title: name of the element if there is
     // only one item, or "selection" word otherwise
-    if(alItems.size() == 1) {
+    if (alItems.size() == 1) {
       setTitle(alItems.get(0).getDesc());
     } else {
       setTitle(Messages.getString("PropertiesWizard.6"));
@@ -712,7 +711,7 @@ public class PropertiesWizard extends JajukJDialog implements ActionListener {
         // Computes all items to change
         // contains items to be changed
         List<Item> itemsToChange = new ArrayList<Item>(alItems);
-
+        // Items in error
         List<Item> alInError = new ArrayList<Item>(itemsToChange.size());
         // details for errors
         String sDetails = "";
@@ -720,23 +719,27 @@ public class PropertiesWizard extends JajukJDialog implements ActionListener {
         // Check typed value format, display error message only once per
         // property
         for (PropertyMetaInformation meta : hmPropertyToChange.keySet()) {
-            // New value
-            oValue = hmPropertyToChange.get(meta);
-            // Check it is not null for non custom properties. Note that
-            // we also allow void values for comments
-            if (oValue == null || (oValue.toString().trim().length() == 0)
-                && !(meta.isCustom() || meta.getName().equals(Const.XML_TRACK_COMMENT))) {
-              Log.error(137, '{' + meta.getName() + '}', null);
-              Messages.showErrorMessage(137, '{' + meta.getName() + '}');
-              return;
+          // New value
+          oValue = hmPropertyToChange.get(meta);
+          // Check it is not null for non custom properties. Note that
+          // we also allow void values for comments
+          if (oValue == null || (oValue.toString().trim().length() == 0)
+              && !(meta.isCustom() || meta.getName().equals(Const.XML_TRACK_COMMENT))) {
+            Log.error(137, '{' + meta.getName() + '}', null);
+            Messages.showErrorMessage(137, '{' + meta.getName() + '}');
+            return;
           }
         }
 
         // Now we have all items to consider, write tags for each
         // property to change
         for (int i = 0; i < itemsToChange.size(); i++) {
+          // Note that item object can be changed during the next for loop, so
+          // do not declare it there
+          Item item = null;
           for (PropertyMetaInformation meta : hmPropertyToChange.keySet()) {
-            Item item = itemsToChange.get(i);
+            item = itemsToChange.get(i);
+
             // New value
             oValue = hmPropertyToChange.get(meta);
             // Old value
@@ -806,10 +809,10 @@ public class PropertiesWizard extends JajukJDialog implements ActionListener {
             }
           }
           // Require full commit for all changed tags on the current file
-          List<Track> errors = TrackManager.getInstance().commit();
-          Collections.sort(errors);
-          // Note : errors should contain a single track
-          for (Item item : errors) {
+          try {
+            TrackManager.getInstance().commit();
+          } catch (Exception e) {
+            Log.error(e);
             if (!alInError.contains(item)) {
               alInError.add(item);
             }
