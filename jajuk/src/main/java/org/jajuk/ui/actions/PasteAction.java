@@ -41,6 +41,7 @@ import org.jajuk.events.Event;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.ui.helpers.ItemMoveManager;
+import org.jajuk.ui.widgets.InformationJPanel;
 import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
@@ -123,6 +124,7 @@ public class PasteAction extends JajukAction {
               }
             }
             try {
+              showMessage(f.getIO());
               UtilSystem.copyToDir(f.getIO(), dir);
               UtilSystem.deleteFile(f.getIO());
               FileManager.getInstance().changeFileDirectory(f, destDir);
@@ -135,6 +137,7 @@ public class PasteAction extends JajukAction {
             try {
               java.io.File src = new java.io.File(d.getAbsolutePath());
               java.io.File dst = new java.io.File(dir.getAbsolutePath() + "/" + d.getName());
+              showMessage(src);
               UtilSystem.copyRecursively(src, dst);
               UtilSystem.deleteDir(src);
               DirectoryManager.getInstance().removeDirectory(d.getID());
@@ -169,6 +172,7 @@ public class PasteAction extends JajukAction {
               }
             }
             try {
+              showMessage(f.getIO());
               UtilSystem.copyToDir(f.getIO(), dir);
             } catch (Exception ioe) {
               Log.error(131, ioe);
@@ -179,6 +183,7 @@ public class PasteAction extends JajukAction {
             try {
               java.io.File src = new java.io.File(d.getAbsolutePath());
               java.io.File dst = new java.io.File(dir.getAbsolutePath() + "/" + d.getName());
+              showMessage(src);
               UtilSystem.copyRecursively(src, dst);
             } catch (Exception ioe) {
               Log.error(131, ioe);
@@ -196,5 +201,17 @@ public class PasteAction extends JajukAction {
         UtilGUI.stopWaiting();
       }
     }.start();
+  }
+
+  /**
+   * Display currently copied file to information panel
+   * @param file
+   */
+  private void showMessage(java.io.File file) {
+    // TODO create a dedicated label
+    String message = Messages.getString("Device.42").substring(3);
+    message += file.getAbsolutePath()+"]";
+    InformationJPanel.getInstance().setMessage(message, InformationJPanel.INFORMATIVE);
+
   }
 }
