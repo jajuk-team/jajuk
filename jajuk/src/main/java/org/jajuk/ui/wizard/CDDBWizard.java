@@ -56,7 +56,6 @@ import org.jajuk.ui.widgets.SteppedComboBox;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilGUI;
 import org.jajuk.util.UtilString;
-import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 
 public class CDDBWizard extends JajukJDialog implements ActionListener {
@@ -284,9 +283,10 @@ public class CDDBWizard extends JajukJDialog implements ActionListener {
           } catch (NumberFormatException e) {
             Log.debug(e);
           }
-
+          // Commit all tags for a single file (we prefer this to make sure some
+          // tracks will be changed, so we don't commit all tags for all files)
           TrackManager.getInstance().commit();
-        } catch (JajukException e) {
+        } catch (Exception e) {
           Log.error(e);
           Messages.showErrorMessage(155, track.getName());
           dispose();
