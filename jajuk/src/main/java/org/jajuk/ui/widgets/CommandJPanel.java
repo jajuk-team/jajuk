@@ -557,9 +557,9 @@ public class CommandJPanel extends JXPanel implements ActionListener, ListSelect
     // register to player events
     ObservationManager.register(CommandJPanel.this);
 
-    //Update initial status
+    // Update initial status
     UtilFeatures.updateStatus(this);
-   
+
   }
 
   public Set<JajukEvents> getRegistrationKeys() {
@@ -836,8 +836,9 @@ public class CommandJPanel extends JXPanel implements ActionListener, ListSelect
           ActionManager.getAction(NEXT_TRACK).setEnabled(true);
           ActionManager.getAction(PLAY_PAUSE_TRACK).setEnabled(true);
           ActionManager.getAction(STOP_TRACK).setEnabled(true);
-          // Do not update webradios GUI if this event comes from the tray 
-          if (!(CommandJPanel.this instanceof JajukSystray)){
+          // Do not update webradios GUI if this event comes from the tray or
+          // slimbar
+          if (ddbWebRadio != null) {
             populateWebRadios();
           }
         } else if (JajukEvents.MUTE_STATE.equals(event.getSubject()) &&

@@ -497,9 +497,7 @@ public final class JajukSlimbar extends JFrame implements Observer, MouseWheelLi
       ActionManager.getAction(FINISH_ALBUM).setEnabled(false);
     } else if (JajukEvents.WEBRADIO_LAUNCHED.equals(event.getSubject())) {
       updateCurrentTitle();
-      ActionManager.getAction(PREVIOUS_TRACK).setEnabled(true);
-      ActionManager.getAction(NEXT_TRACK).setEnabled(true);
-      ActionManager.getAction(STOP_TRACK).setEnabled(true);
+      CommandJPanel.getInstance().update(event);
     } else if (JajukEvents.RATE_CHANGED.equals(event.getSubject())) {
       // Update rate button tooltip
       updateCurrentTitle();
