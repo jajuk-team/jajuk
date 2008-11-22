@@ -23,7 +23,7 @@ package org.jajuk.base;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
@@ -63,7 +63,7 @@ public final class TrackManager extends ItemManager implements Observer {
   private boolean bAutocommit = true;
 
   /** Set of tags to commit */
-  private HashMap<Tag, Track> tagsToCommit = new HashMap<Tag, Track>(10);
+  private Set<Tag> tagsToCommit = new HashSet<Tag>(10);
 
   /**
    * No constructor available, only static access
@@ -126,6 +126,7 @@ public final class TrackManager extends ItemManager implements Observer {
     // Track ban status
     registerProperty(new PropertyMetaInformation(Const.XML_TRACK_BANNED, false, false, true, true,
         false, Boolean.class, false));
+    
     // ---subscriptions---
     ObservationManager.register(this);
   }
@@ -192,11 +193,10 @@ public final class TrackManager extends ItemManager implements Observer {
   /**
    * Commit tags
    * 
-   * @return an ordered list of tracks in error (size=0 if everything's ok)
+   * @throw an exception is tag cannot be commited
    */
-  public List<Track> commit() {
-    List<Track> errors = new ArrayList<Track>();
-    Iterator<Tag> it = tagsToCommit.keySet().iterator();
+  public void commit() throws Exception{
+    Iterator<Tag> it = tagsToCommit.iterator();
     while (it.hasNext()) {
       Tag tag = null;
       try {
@@ -204,12 +204,10 @@ public final class TrackManager extends ItemManager implements Observer {
         tag.commit();
       } catch (Exception e) {
         Log.error(e);
-        errors.add(tagsToCommit.get(tag));
       } finally {
         it.remove();
       }
     }
-    return errors;
   }
 
   /**
@@ -242,7 +240,7 @@ public final class TrackManager extends ItemManager implements Observer {
       if (bAutocommit) {
         tag.commit();
       } else {
-        tagsToCommit.put(tag, track);
+        tagsToCommit.add(tag);
       }
     }
     // Remove the track from the old album
@@ -293,7 +291,7 @@ public final class TrackManager extends ItemManager implements Observer {
       if (bAutocommit) {
         tag.commit();
       } else {
-        tagsToCommit.put(tag, track);
+        tagsToCommit.add(tag);
       }
     }
     // Remove the track from the old album
@@ -346,7 +344,7 @@ public final class TrackManager extends ItemManager implements Observer {
       if (bAutocommit) {
         tag.commit();
       } else {
-        tagsToCommit.put(tag, track);
+        tagsToCommit.add(tag);
       }
     }
     // Remove the track from the old album
@@ -397,7 +395,7 @@ public final class TrackManager extends ItemManager implements Observer {
       if (bAutocommit) {
         tag.commit();
       } else {
-        tagsToCommit.put(tag, track);
+        tagsToCommit.add(tag);
       }
     }
     // Remove the track from the old album
@@ -441,7 +439,7 @@ public final class TrackManager extends ItemManager implements Observer {
       if (bAutocommit) {
         tag.commit();
       } else {
-        tagsToCommit.put(tag, track);
+        tagsToCommit.add(tag);
       }
     }
     // Remove the track from the old album
@@ -509,7 +507,7 @@ public final class TrackManager extends ItemManager implements Observer {
       if (bAutocommit) {
         tag.commit();
       } else {
-        tagsToCommit.put(tag, track);
+        tagsToCommit.add(tag);
       }
     }
 
@@ -552,7 +550,7 @@ public final class TrackManager extends ItemManager implements Observer {
       if (bAutocommit) {
         tag.commit();
       } else {
-        tagsToCommit.put(tag, track);
+        tagsToCommit.add(tag);
       }
     }
 

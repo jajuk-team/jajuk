@@ -120,15 +120,19 @@ public final class FileManager extends ItemManager implements Observer {
   public synchronized File registerFile(String sId, String sName, Directory directory, Track track,
       long lSize, long lQuality) {
     File file = getFileByID(sId);
-    if (file != null){
-      return file;
-    }
-    file = new File(sId, sName, directory, track, lSize, lQuality);
-    registerItem(file);
-    // add to directory
-    file.getDirectory().addFile(file);
-    if (directory.getDevice().isRefreshing() && Log.isDebugEnabled()) {
-      Log.debug("Registrated new file: " + file);
+    if (file == null) {
+      file = new File(sId, sName, directory, track, lSize, lQuality);
+      registerItem(file);
+      // add to directory
+      file.getDirectory().addFile(file);
+      if (directory.getDevice().isRefreshing() && Log.isDebugEnabled()) {
+        Log.debug("registrated new file: " + file);
+      }
+    } else {
+      // If file already exist and the track has changed, make changes
+      // Set name again because under Windows, the file name case
+      // could have changed but we keep the same file object
+      file.setName(sName);
     }
     // add this file to track
     file.setTrack(track);

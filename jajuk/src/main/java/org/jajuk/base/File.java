@@ -275,8 +275,14 @@ public class File extends PhysicalItem implements Comparable<File>, Const {
    *          The track to set.
    */
   public void setTrack(Track track) {
-    this.track = track;
-    setProperty(Const.XML_TRACK, track.getID());
+    // We remove previous track so it will be cleanup (if it maps no more
+    // files). This allow cleaning old tracks after a change of tags from others
+    // programs than jajuk
+    if (!this.track.equals(track)) {
+      this.track.removeFile(this);
+      this.track = track;
+      setProperty(Const.XML_TRACK, track.getID());
+    }
   }
 
   /**
@@ -410,8 +416,8 @@ public class File extends PhysicalItem implements Comparable<File>, Const {
     if (cover.canRead()) {
       sOut += "<p ALIGN=center><img src='file:" + cover.getAbsolutePath() + "'/></p><br>";
     }
-    sOut += "<p><b>"
-        + UtilString.getLimitedString(getTrack().getName(), maxSize) + "</b></font></p>";
+    sOut += "<p><b>" + UtilString.getLimitedString(getTrack().getName(), maxSize)
+        + "</b></font></p>";
     String sAuthor = UtilString.getLimitedString(getTrack().getAuthor().getName(), maxSize);
     if (!sAuthor.equals(UNKNOWN_AUTHOR)) {
       sOut += "<p>" + sAuthor + "</font></p>";
