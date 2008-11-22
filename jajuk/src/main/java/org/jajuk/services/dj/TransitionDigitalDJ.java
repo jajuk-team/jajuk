@@ -158,7 +158,7 @@ public class TransitionDigitalDJ extends DigitalDJ {
       // several times the same files
       items = Const.MIN_TRACKS_NUMBER_WITHOUT_UNICITY;
     }
-    // initialize current ambience with firs track ambience (can be null for
+    // initialize current ambience with first track ambience (can be null for
     // unsorted tracks)
     Ambience currentAmbience = getAmbience(out.get(0).getTrack().getStyle());
     int comp = 1; // item compt

@@ -918,7 +918,13 @@ public final class FIFO {
   }
 
   /**
-   * @return Returns the bStop.
+   * 
+   * Returns whether FIFO is stopped or not <br>
+   * Caution ! the FIFO may be stopped but current track is not void and a web
+   * radio can be playing
+   * 
+   * @return Returns whether FIFO is stopped or not
+   * 
    */
   public static boolean isStopped() {
     return bStop;
