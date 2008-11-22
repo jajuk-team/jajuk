@@ -191,6 +191,7 @@ public class JAudioTaggerTagImpl implements ITagImpl, Const {
    * @see org.jajuk.services.tags.ITagImpl#setAlbumName(java.lang.String)
    */
   public void setAlbumName(String albumName) throws Exception {
+    createTagIfNeeded();
     this.tag.setAlbum(albumName);
   }
 
@@ -200,6 +201,7 @@ public class JAudioTaggerTagImpl implements ITagImpl, Const {
    * @see org.jajuk.services.tags.ITagImpl#setAuthorName(java.lang.String)
    */
   public void setAuthorName(String authorName) throws Exception {
+    createTagIfNeeded();
     this.tag.setArtist(authorName);
   }
 
@@ -209,6 +211,7 @@ public class JAudioTaggerTagImpl implements ITagImpl, Const {
    * @see org.jajuk.services.tags.ITagImpl#setComment(java.lang.String)
    */
   public void setComment(String comment) throws Exception {
+    createTagIfNeeded();
     this.tag.setComment(comment);
   }
 
@@ -220,17 +223,29 @@ public class JAudioTaggerTagImpl implements ITagImpl, Const {
   public void setFile(File fio) throws Exception {
     try {
       this.audioFile = AudioFileIO.read(fio);
+      // Jaudiotagger returns null if the track contains none tag, we work then
+      // with null for getXXX() methods and we create a void tag in setXXX
+      // methods
       this.tag = this.audioFile.getTag();
-      // Jaudiotagger returns null if the track contains none tag
-      if (tag == null) {
-         this.tag = this.audioFile.createDefaultTag();
-         // Still null ? problem creating the tag
-         if (tag == null){
-           throw new Exception("Cannot Create empty tag");
-         }
-      }
     } catch (Throwable t) { // can throw OutOfMemory errors
       throw new JajukException(103, fio.toString(), t);
+    }
+  }
+
+  /**
+   * Create a void tag is needed
+   * 
+   * @throws Exception
+   */
+  private void createTagIfNeeded() throws Exception {
+    if (tag == null) {
+      this.tag = this.audioFile.getTagOrCreateAndSetDefault();
+      // Still null ? problem creating the tag
+      if (tag == null) {
+        throw new Exception("Cannot Create empty tag");
+      } else {
+        commit();
+      }
     }
   }
 
@@ -240,6 +255,7 @@ public class JAudioTaggerTagImpl implements ITagImpl, Const {
    * @see org.jajuk.services.tags.ITagImpl#setOrder(long)
    */
   public void setOrder(long order) throws Exception {
+    createTagIfNeeded();
     this.tag.setTrack(Long.toString(order));
   }
 
@@ -249,6 +265,7 @@ public class JAudioTaggerTagImpl implements ITagImpl, Const {
    * @see org.jajuk.services.tags.ITagImpl#setStyleName(java.lang.String)
    */
   public void setStyleName(String style) throws Exception {
+    createTagIfNeeded();
     // Workaround for mp4 genre - Allows genres not in genre list to be written
     tag.deleteTagField(org.jaudiotagger.tag.TagFieldKey.GENRE);
     this.tag.setGenre(style);
@@ -260,6 +277,7 @@ public class JAudioTaggerTagImpl implements ITagImpl, Const {
    * @see org.jajuk.services.tags.ITagImpl#setTrackName(java.lang.String)
    */
   public void setTrackName(String trackName) throws Exception {
+    createTagIfNeeded();
     this.tag.setTitle(trackName);
   }
 
@@ -269,6 +287,7 @@ public class JAudioTaggerTagImpl implements ITagImpl, Const {
    * @see org.jajuk.services.tags.ITagImpl#setYear(java.lang.String)
    */
   public void setYear(String year) throws Exception {
+    createTagIfNeeded();
     this.tag.setYear(year);
   }
 

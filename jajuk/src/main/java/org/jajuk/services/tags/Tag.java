@@ -129,8 +129,7 @@ public class Tag {
       }
     }
     sAlbumlName = UtilString.formatTag(sAlbumlName);
-    // We internalize the album name as we use some comparison based on == for
-    // performances
+    // We internalize the album name for memory saving reasons
     return sAlbumlName.intern();
   }
 
@@ -157,8 +156,7 @@ public class Tag {
     } catch (Exception e) {
       Log.info("Wrong author name:{{" + fio.getName() + "}}");
     }
-    // We internalize the author name as we use some comparison based on == for
-    // performances
+    // We internalize the author name for memory saving reasons
     return sAuthorName.intern();
 
   }
@@ -189,8 +187,7 @@ public class Tag {
     } catch (Exception e) {
       Log.info("Wrong style name:" + fio.getName());
     }
-    // We internalize the style name as we use some comparison based on == for
-    // performances
+    // We internalize the style name for memory saving reasons
     return style.intern();
 
   }
@@ -226,8 +223,7 @@ public class Tag {
     } catch (Exception e) {
       Log.info("Wrong year:" + fio.getName());
     }
-    // We internalize the year name as we use some comparison based on == for
-    // performances
+    // We internalize the year name for memory saving reasons
     return year.intern();
 
   }
@@ -267,8 +263,7 @@ public class Tag {
     } catch (Exception e) {
       Log.info("Wrong comment:{{" + fio.getName() + "}}");
     }
-    // We internalize the comments as we use some comparison based on == for
-    // performances
+    // We internalize the comments for memory saving reasons
     return sComment.intern();
   }
 
@@ -373,13 +368,14 @@ public class Tag {
    */
   public void commit() throws JajukException {
     try {
+      if (Log.isDebugEnabled()) {
+        Log.debug(Messages.getString("PropertiesWizard.11") + " " + fio.getAbsolutePath());
+      }
       tagImpl.commit();
       InformationJPanel.getInstance().setMessage(
-          Messages.getString("PropertiesWizard.11") + " " + fio.getName(),
+          Messages.getString("PropertiesWizard.11") + " " + fio.getAbsolutePath(),
           InformationJPanel.INFORMATIVE);
-      if (Log.isDebugEnabled()) {
-        Log.debug(Messages.getString("PropertiesWizard.11") + " " + fio.getName());
-      }
+      
     } catch (Exception e) {
       throw new JajukException(104, fio.getName() + "\n" + e.getMessage(), e);
     }
@@ -393,4 +389,23 @@ public class Tag {
     bCorrupted = corrupted;
   }
 
+  public File getFio() {
+    return this.fio;
+  }
+
+  public boolean equals(Object other) {
+    if (!(other instanceof Tag)) {
+      return false;
+    }
+    return this.fio.equals(((Tag) other).getFio());
+  }
+  
+  public int hashCode(){
+    return fio.getAbsolutePath().hashCode();
+  }
+  
+  public String toString(){
+    return "Tag of : "+fio.getAbsolutePath();
+  }
+    
 }
