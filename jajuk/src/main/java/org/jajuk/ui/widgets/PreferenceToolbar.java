@@ -176,8 +176,13 @@ public class PreferenceToolbar extends JajukJToolbar implements Observer {
   public void update(final Event event) {
     SwingUtilities.invokeLater(new Runnable() {
       public void run() {
+        File current = FIFO.getCurrentFile();
+        // More checks, current track can be null when playing with web radios
+        if (current == null) {
+          return;
+        }
         if (JajukEvents.RATE_CHANGED.equals(event.getSubject())) {
-          setPreference(FIFO.getCurrentFile().getTrack().getLongValue(Const.XML_TRACK_PREFERENCE));
+          setPreference(current.getTrack().getLongValue(Const.XML_TRACK_PREFERENCE));
         } else if (JajukEvents.FILE_LAUNCHED.equals(event.getSubject())) {
           // Update evaluation toolbar
           jcbPreference.setEnabled(true);
@@ -189,7 +194,7 @@ public class PreferenceToolbar extends JajukJToolbar implements Observer {
           jbBan.setEnabled(false);
           setPreference(0);
         } else if (JajukEvents.BANNED.equals(event.getSubject())) {
-         updateBanIcon();
+          updateBanIcon();
         }
       }
     });

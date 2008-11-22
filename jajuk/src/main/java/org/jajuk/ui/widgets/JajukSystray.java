@@ -20,9 +20,6 @@
 
 package org.jajuk.ui.widgets;
 
-import static org.jajuk.ui.actions.JajukActions.NEXT_TRACK;
-import static org.jajuk.ui.actions.JajukActions.PREVIOUS_TRACK;
-import static org.jajuk.ui.actions.JajukActions.STOP_TRACK;
 import ext.JXTrayIcon;
 import ext.SliderMenuItem;
 
@@ -402,11 +399,7 @@ public class JajukSystray extends CommandJPanel {
           }
 
         } else if (JajukEvents.WEBRADIO_LAUNCHED.equals(subject)) {
-          // WebRadio radio = FIFO.getCurrentRadio();
-          // Enable webradio navigation actions
-          ActionManager.getAction(PREVIOUS_TRACK).setEnabled(true);
-          ActionManager.getAction(NEXT_TRACK).setEnabled(true);
-          ActionManager.getAction(STOP_TRACK).setEnabled(true);
+          JajukSystray.super.update(event);
         } else if (JajukEvents.PLAYER_STOP.equals(subject)) {
           // Enable the play button to allow restarting the queue but disable if
           // the queue is void

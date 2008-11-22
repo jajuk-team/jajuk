@@ -54,8 +54,8 @@ import org.jajuk.util.log.Log;
  * Manages playing sequences
  * <p>
  * Avoid to synchronize these methods because they are called very often and AWT
- * dispatcher thread is frozen when JVM execute a static syncrhonized method,
- * even ouside AWT dispatcher thread
+ * dispatcher thread is frozen when JVM execute a static synchronized method,
+ * even outside AWT dispatcher thread
  * </p>
  */
 public final class FIFO {
@@ -194,9 +194,9 @@ public final class FIFO {
         Properties pDetails = new Properties();
         pDetails.put(Const.DETAIL_CONTENT, radio);
         // reset all UI
-        ObservationManager.notify(new Event(JajukEvents.ZERO));
+        ObservationManager.notifySync(new Event(JajukEvents.ZERO));
         ObservationManager.notify(new Event(JajukEvents.WEBRADIO_LAUNCHED, pDetails));
-        bStop = true;
+        bStop = false;
       }
     } catch (Throwable t) {// catch even Errors (OutOfMemory for example)
       Log.error(122, t);

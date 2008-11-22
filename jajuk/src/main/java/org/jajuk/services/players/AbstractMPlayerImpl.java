@@ -54,6 +54,9 @@ public abstract class AbstractMPlayerImpl implements IPlayerImpl, Const {
   /** Fading state */
   volatile boolean bFading = false;
 
+  /** pause flag * */
+  protected volatile boolean bPaused = false;
+
   /*
    * (non-Javadoc)
    * 
@@ -201,16 +204,7 @@ public abstract class AbstractMPlayerImpl implements IPlayerImpl, Const {
     return 0;
   }
 
-  /*
-   * (non-Javadoc)
-   * 
-   * @see org.jajuk.players.IPlayerImpl#pause()
-   */
-  public void pause() throws Exception {
-    // TODO Auto-generated method stub
-
-  }
-
+  
   /*
    * (non-Javadoc)
    * 
@@ -227,15 +221,6 @@ public abstract class AbstractMPlayerImpl implements IPlayerImpl, Const {
    */
   public abstract void play(WebRadio radio, float fVolume) throws Exception;
 
-  /*
-   * (non-Javadoc)
-   * 
-   * @see org.jajuk.players.IPlayerImpl#resume()
-   */
-  public void resume() throws Exception {
-    // TODO Auto-generated method stub
-
-  }
 
   /*
    * (non-Javadoc)
@@ -252,6 +237,26 @@ public abstract class AbstractMPlayerImpl implements IPlayerImpl, Const {
    */
   public int getState() {
     return -1;
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.jajuk.players.IPlayerImpl#pause()
+   */
+  public void pause() throws Exception {
+    bPaused = true;
+    sendCommand("pause");
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.jajuk.players.IPlayerImpl#resume()
+   */
+  public void resume() throws Exception {
+    bPaused = false;
+    sendCommand("pause");
   }
 
 }

@@ -41,7 +41,6 @@ public class PlayPauseAction extends JajukAction {
   public void perform(ActionEvent evt) {
     if (FIFO.isStopped()) {
       FIFO.goTo(0);
-      // ObservationManager.notify(new Event(JajukEvents.PLAYER_RESUME));
       setIcon(IconLoader.getIcon(JajukIcons.PAUSE));
       setName(Messages.getString("JajukWindow.12"));
     } else if (Player.isPaused()) { // player was paused, resume it

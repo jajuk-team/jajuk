@@ -73,7 +73,6 @@ import javax.swing.JSlider;
 import javax.swing.JToolBar;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
-import javax.swing.Timer;
 import javax.swing.border.Border;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -105,7 +104,6 @@ import org.jajuk.ui.actions.JajukAction;
 import org.jajuk.ui.actions.JajukActions;
 import org.jajuk.ui.actions.MuteAction;
 import org.jajuk.ui.helpers.FontManager;
-import org.jajuk.ui.helpers.JajukTimer;
 import org.jajuk.ui.helpers.FontManager.JajukFont;
 import org.jajuk.ui.wizard.AmbienceWizard;
 import org.jajuk.util.Conf;
@@ -214,13 +212,6 @@ public class CommandJPanel extends JXPanel implements ActionListener, ListSelect
 
   /** Forward or rewind jump size in track percentage */
   static final float JUMP_SIZE = 0.1f;
-
-  /** Swing Timer to refresh the component */
-  private Timer timer = new Timer(JajukTimer.DEFAULT_HEARTBEAT, new ActionListener() {
-    public void actionPerformed(ActionEvent e) {
-      update(new Event(JajukEvents.HEART_BEAT));
-    }
-  });
 
   /** Ambience combo listener */
   class AmbienceListener implements ActionListener {
@@ -568,9 +559,7 @@ public class CommandJPanel extends JXPanel implements ActionListener, ListSelect
 
     //Update initial status
     UtilFeatures.updateStatus(this);
-    
-    // start timer
-    timer.start();
+   
   }
 
   public Set<JajukEvents> getRegistrationKeys() {
@@ -845,8 +834,12 @@ public class CommandJPanel extends JXPanel implements ActionListener, ListSelect
         } else if (JajukEvents.WEBRADIO_LAUNCHED.equals(event.getSubject())) {
           ActionManager.getAction(PREVIOUS_TRACK).setEnabled(true);
           ActionManager.getAction(NEXT_TRACK).setEnabled(true);
+          ActionManager.getAction(PLAY_PAUSE_TRACK).setEnabled(true);
           ActionManager.getAction(STOP_TRACK).setEnabled(true);
-          populateWebRadios();
+          // Do not update webradios GUI if this event comes from the tray 
+          if (!(CommandJPanel.this instanceof JajukSystray)){
+            populateWebRadios();
+          }
         } else if (JajukEvents.MUTE_STATE.equals(event.getSubject()) &&
         // Update mute icon look when changing the volume
             !Player.isMuted()) {

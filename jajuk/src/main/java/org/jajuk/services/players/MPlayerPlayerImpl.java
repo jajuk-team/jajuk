@@ -71,9 +71,6 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
   /** current file */
   private org.jajuk.base.File fCurrent;
 
-  /** pause flag * */
-  private volatile boolean bPaused = false;
-
   /** Inc rating flag */
   // private boolean bHasBeenRated = false;
   /**
@@ -330,28 +327,7 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
     return lTime;
   }
 
-  /*
-   * (non-Javadoc)
-   * 
-   * @see org.jajuk.players.IPlayerImpl#pause()
-   */
-  @Override
-  public void pause() throws Exception {
-    bPaused = true;
-    sendCommand("pause");
-  }
-
-  /*
-   * (non-Javadoc)
-   * 
-   * @see org.jajuk.players.IPlayerImpl#resume()
-   */
-  @Override
-  public void resume() throws Exception {
-    bPaused = false;
-    sendCommand("pause");
-  }
-
+  
   /*
    * (non-Javadoc)
    * 
