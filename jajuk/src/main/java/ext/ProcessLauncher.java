@@ -28,6 +28,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import org.jajuk.util.log.Log;
+
 /**
  * http://ydisanto.ftp-developpez.com/tutoriels/j2se/runtime/fichiers/ProcessLauncher.java
  * ProcessLauncher permet de lancer une application externe en consommant les
@@ -124,7 +126,7 @@ public class ProcessLauncher {
    *          ligne de commande a executer
    * @return valeur de retour du processus
    */
-  public int exec(String command) throws IOException {
+  final public int  exec(String command) throws IOException {
     process = Runtime.getRuntime().exec(command);
     return execute();
   }
@@ -136,7 +138,7 @@ public class ProcessLauncher {
    *          tableau de String contenant la commande et ses parametres
    * @return valeur de retour du processus
    */
-  public int exec(String[] cmdarray) throws IOException {
+  final public int exec(String[] cmdarray) throws IOException {
     process = Runtime.getRuntime().exec(cmdarray);
     return execute();
   }
@@ -151,7 +153,7 @@ public class ProcessLauncher {
    *          variables d'environnement
    * @return valeur de retour du processus
    */
-  public int exec(String[] cmdarray, String[] envp) throws IOException {
+  final public int exec(String[] cmdarray, String[] envp) throws IOException {
     process = Runtime.getRuntime().exec(cmdarray, envp);
     return execute();
   }
@@ -168,7 +170,7 @@ public class ProcessLauncher {
    *          repertoire de travail
    * @return valeur de retour du processus
    */
-  public int exec(String[] cmdarray, String[] envp, File dir) throws IOException {
+  final public int exec(String[] cmdarray, String[] envp, File dir) throws IOException {
     process = Runtime.getRuntime().exec(cmdarray, envp, dir);
     return execute();
   }
@@ -183,7 +185,7 @@ public class ProcessLauncher {
    *          variables d'environnement
    * @return valeur de retour du processus
    */
-  public int exec(String command, String[] envp) throws IOException {
+  final public int exec(String command, String[] envp) throws IOException {
     process = Runtime.getRuntime().exec(command, envp);
     return execute();
   }
@@ -200,7 +202,7 @@ public class ProcessLauncher {
    *          repertoire de travail
    * @return valeur de retour du processus
    */
-  public int exec(String command, String[] envp, File dir) throws IOException {
+  final public int exec(String command, String[] envp, File dir) throws IOException {
     process = Runtime.getRuntime().exec(command, envp, dir);
     return execute();
   }
@@ -214,8 +216,7 @@ public class ProcessLauncher {
       try {
         process.getErrorStream().close();
       } catch (IOException e) {
-        // TODO Auto-generated catch block
-        e.printStackTrace();
+        Log.error(e);
       }
     } else {
       createStreamThread(process.getErrorStream(), err);
@@ -224,8 +225,7 @@ public class ProcessLauncher {
       try {
         process.getInputStream().close();
       } catch (IOException e) {
-        // TODO Auto-generated catch block
-        e.printStackTrace();
+        Log.error(e);
       }
     } else {
       createStreamThread(process.getInputStream(), out);
@@ -248,13 +248,13 @@ public class ProcessLauncher {
           status = process.exitValue();
         }
       } catch (InterruptedException ie) {
-        ie.printStackTrace();
+        Log.error(ie);
       }
     } else if (timeout == 0L) {
       try {
         status = process.waitFor();
       } catch (InterruptedException ie) {
-        ie.printStackTrace();
+        Log.error(ie);
       }
     }
     finished = true;
@@ -282,7 +282,7 @@ public class ProcessLauncher {
             }
           }
         } catch (IOException ioe) {
-          ioe.printStackTrace();
+          Log.error(ioe);
         }
       }
     }).start();
@@ -295,7 +295,7 @@ public class ProcessLauncher {
         try {
           process.waitFor();
         } catch (InterruptedException ie) {
-          ie.printStackTrace();
+          Log.error(ie);
         }
       }
     };
