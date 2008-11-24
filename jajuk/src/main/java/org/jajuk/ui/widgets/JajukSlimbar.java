@@ -33,6 +33,7 @@ import ext.DropDownButton;
 import ext.SwingWorker;
 
 import java.awt.Dimension;
+import java.awt.EventQueue;
 import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -47,6 +48,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.StringTokenizer;
 
+import javax.swing.Action;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.JButton;
@@ -294,6 +296,14 @@ public final class JajukSlimbar extends JFrame implements Observer, MouseWheelLi
     jbVolume.addMouseMotionListener(motionAdapter);
     jbVolume.addMouseWheelListener(this);
     jbVolume.setText(null);
+    jbVolume.addMouseMotionListener(new MouseMotionAdapter() {
+      @Override
+      public void mouseMoved(MouseEvent e) {
+        super.mouseMoved(e);
+        // Request focus to allow volume change
+        jbVolume.requestFocus();
+      }
+    });
     MuteAction.setVolumeIcon(iVolume);
 
     jbMaximize = new JajukButton(ActionManager.getAction(JajukActions.SLIM_JAJUK));
@@ -366,10 +376,10 @@ public final class JajukSlimbar extends JFrame implements Observer, MouseWheelLi
       Log.error(e);
     }
     pack();
-   
+
     // Force initial message refresh
     UtilFeatures.updateStatus(this);
-    
+
     bInitialized = true;
   }
 
@@ -439,11 +449,45 @@ public final class JajukSlimbar extends JFrame implements Observer, MouseWheelLi
       } else if (newVolume < 0) {
         newVolume = 0;
       }
-
       Player.setVolume((float) newVolume / 100);
       jbVolume.setToolTipText(newVolume + " %");
+      // Force tooltip refresh live
+      hideToolTip(jbVolume);
+      postToolTip(jbVolume);
       MuteAction.setVolumeIcon(newVolume);
     }
+  }
+
+  /**
+   * Force tooltip refresh Thanks Santhosh Kumar
+   * http://www.jroller.com/santhosh/entry/tooltips_can_say_more
+   * 
+   * @param comp
+   */
+  public static void postToolTip(JComponent comp) {
+    Action action = comp.getActionMap().get("postTip");
+    if (action == null) { // no tooltip
+      return;
+    }
+    ActionEvent ae = new ActionEvent(comp, ActionEvent.ACTION_PERFORMED, "postTip", EventQueue
+        .getMostRecentEventTime(), 0);
+    action.actionPerformed(ae);
+  }
+
+  /**
+   * Remove tooltip Thanks Santhosh Kumar
+   * http://www.jroller.com/santhosh/entry/tooltips_can_say_more
+   * 
+   * @param comp
+   */
+  public static void hideToolTip(JComponent comp) {
+    Action action = comp.getActionMap().get("hideTip");
+    if (action == null) { // no tooltip
+      return;
+    }
+    ActionEvent ae = new ActionEvent(comp, ActionEvent.ACTION_PERFORMED, "hideTip", EventQueue
+        .getMostRecentEventTime(), 0);
+    action.actionPerformed(ae);
   }
 
   public Set<JajukEvents> getRegistrationKeys() {
