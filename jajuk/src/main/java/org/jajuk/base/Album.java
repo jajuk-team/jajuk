@@ -497,7 +497,7 @@ public class Album extends LogicalItem implements Comparable<Album> {
    * 
    * @return ordered tracks cache for this album (perf)
    */
-  protected List<Track> getTracksCache() {
+  public List<Track> getTracksCache() {
     return this.cache;
   }
 
