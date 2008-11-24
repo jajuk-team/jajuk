@@ -55,9 +55,13 @@ public class PreviousTrackAction extends JajukAction {
     // tracks or between albums
     if (evt != null &&
     // evt == null when using hotkeys
+        (evt.getModifiers() & ActionEvent.CTRL_MASK) == ActionEvent.CTRL_MASK) {
+      ActionManager.getAction(JajukActions.REPLAY_ALBUM).actionPerformed(evt);
+    } else if (evt != null &&
+    // evt == null when using hotkeys
         (evt.getModifiers() & ActionEvent.SHIFT_MASK) == ActionEvent.SHIFT_MASK) {
       ActionManager.getAction(JajukActions.PREVIOUS_ALBUM).actionPerformed(evt);
-    } else {
+   } else {
       // if playing a radio, launch next radio station
       if (FIFO.isPlayingRadio()) {
         final List<WebRadio> radios = new ArrayList<WebRadio>(WebRadioManager.getInstance()
