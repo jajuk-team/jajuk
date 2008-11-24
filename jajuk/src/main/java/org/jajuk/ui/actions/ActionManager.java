@@ -139,6 +139,7 @@ public final class ActionManager {
 
     // CommandJPanel: Play Panel
     installAction(PREVIOUS_TRACK, new PreviousTrackAction(), true);
+    installAction(REPLAY_ALBUM, new ReplayAlbumAction(), true);
     installAction(NEXT_TRACK, new NextTrackAction(), true);
     installAction(PREVIOUS_ALBUM, new PreviousAlbumAction(), true);
     installAction(NEXT_ALBUM, new NextAlbumAction(), true);
