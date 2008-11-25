@@ -239,13 +239,12 @@ public class JAudioTaggerTagImpl implements ITagImpl, Const {
    */
   private void createTagIfNeeded() throws Exception {
     if (tag == null) {
-      this.tag = this.audioFile.getTagOrCreateAndSetDefault();
+      // Ignore this to force error when writting
+      /*this.tag = this.audioFile.getTagOrCreateAndSetDefault();
       // Still null ? problem creating the tag
       if (tag == null) {
         throw new Exception("Cannot Create empty tag");
-      } else {
-        commit();
-      }
+      } */
     }
   }
 
