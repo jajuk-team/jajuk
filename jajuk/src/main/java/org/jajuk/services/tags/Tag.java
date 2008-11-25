@@ -372,10 +372,13 @@ public class Tag {
         Log.debug(Messages.getString("PropertiesWizard.11") + " " + fio.getAbsolutePath());
       }
       tagImpl.commit();
+      // Display written file full path. Note that we use a limited string for
+      // parent to make sure the file name itself is visible in information panel
       InformationJPanel.getInstance().setMessage(
-          Messages.getString("PropertiesWizard.11") + " " + fio.getAbsolutePath(),
-          InformationJPanel.INFORMATIVE);
-      
+          Messages.getString("PropertiesWizard.11") + " "
+              + UtilString.getLimitedString(fio.getParentFile().getAbsolutePath(), 60)
+              + File.separatorChar + fio.getName(), InformationJPanel.INFORMATIVE);
+
     } catch (Exception e) {
       throw new JajukException(104, fio.getName() + "\n" + e.getMessage(), e);
     }
@@ -399,13 +402,13 @@ public class Tag {
     }
     return this.fio.equals(((Tag) other).getFio());
   }
-  
-  public int hashCode(){
+
+  public int hashCode() {
     return fio.getAbsolutePath().hashCode();
   }
-  
-  public String toString(){
-    return "Tag of : "+fio.getAbsolutePath();
+
+  public String toString() {
+    return "Tag of : " + fio.getAbsolutePath();
   }
-    
+
 }
