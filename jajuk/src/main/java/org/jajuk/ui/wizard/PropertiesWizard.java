@@ -222,7 +222,9 @@ public class PropertiesWizard extends JajukJDialog implements ActionListener {
     KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(
         new KeyEventDispatcher() {
           public boolean dispatchKeyEvent(KeyEvent e) {
-            dispose();
+            if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+              dispose();
+            }
             return false;
           }
         });
