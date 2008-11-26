@@ -28,6 +28,8 @@ import ext.AutoCompleteDecorator;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.KeyEventDispatcher;
+import java.awt.KeyboardFocusManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
@@ -215,6 +217,15 @@ public class PropertiesWizard extends JajukJDialog implements ActionListener {
     okc = new OKCancelPanel(this, Messages.getString("Apply"), Messages.getString("Close"));
     builder.add(okc, cc.xy(2, 4));
     jpMain = builder.getPanel();
+
+    // Add keystoke to close window when pressing escape
+    KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(
+        new KeyEventDispatcher() {
+          public boolean dispatchKeyEvent(KeyEvent e) {
+            dispose();
+            return false;
+          }
+        });
     display();
   }
 
