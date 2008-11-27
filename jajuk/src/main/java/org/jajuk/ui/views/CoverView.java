@@ -460,6 +460,8 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
       return;
     }
     displayCurrentCover();
+    CoverView.this.revalidate(); // make sure the image is repainted
+    CoverView.this.repaint(); // make sure the image is repainted
   }
 
   /**
@@ -563,6 +565,9 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
       jl.setToolTipText("<html>" + url.toString() + "<br>" + size + "K");
       setSizeText(size + "K" + sType);
       setFoundText();
+      // make sure the image is repainted to avoid overlapping covers
+      CoverView.this.revalidate();
+      CoverView.this.repaint();
     }
     // set tooltip for previous and next track
     try {
