@@ -302,6 +302,7 @@ public final class JajukSlimbar extends JFrame implements Observer, MouseWheelLi
         super.mouseMoved(e);
         // Request focus to allow volume change
         jbVolume.requestFocus();
+        toFront();
       }
     });
     MuteAction.setVolumeIcon(iVolume);
