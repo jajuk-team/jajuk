@@ -97,7 +97,7 @@ public interface Const {
   int MIN_TRACKS_NUMBER = 4;
 
   /** Min number of tracks in a DJ selection without track unicity */
-  int MIN_TRACKS_NUMBER_WITHOUT_UNICITY = 200;
+  int MIN_TRACKS_NUMBER_WITHOUT_UNICITY = 100;
 
   /** Default number of tracks in a transition */
   int DEFAULT_TRANSITION_TRACK_NUMBER = 2;
@@ -146,7 +146,7 @@ public interface Const {
    * It can take some time on slow or
    * heavily loaded machines...
    */
-  public static final int MPLAYER_START_TIMEOUT = 10;
+  int MPLAYER_START_TIMEOUT = 10;
 
   /** Number of milliseconds in a day */
   int MILLISECONDS_IN_A_DAY = MILLISECONDS_IN_A_SECOND * SECONDS_IN_A_MINUTE * MINUTES_IN_AN_HOUR
@@ -1033,8 +1033,6 @@ public interface Const {
 
   String XML_DJ_NUMBER = "number";
 
-  String XML_DJ_STARTUP_STYLE = "startup_style";
-
   String XML_SUBMISSION = "submission";
 
   String XML_STREAMS = "streams";
@@ -1141,12 +1139,12 @@ public interface Const {
   String ALARMS_SET = "jajuk.alarms";
   
     // Preferences
-  public static final long PREFERENCE_ADORE=3;
-  public static final long PREFERENCE_LOVE=2;
-  public static final long PREFERENCE_LIKE=1;
-  public static final long PREFERENCE_UNSET=0;
-  public static final long PREFERENCE_AVERAGE=-1;
-  public static final long PREFERENCE_POOR=-2;
-  public static final long PREFERENCE_HATE=-3;
+  long PREFERENCE_ADORE=3;
+  long PREFERENCE_LOVE=2;
+  long PREFERENCE_LIKE=1;
+  long PREFERENCE_UNSET=0;
+  long PREFERENCE_AVERAGE=-1;
+  long PREFERENCE_POOR=-2;
+  long PREFERENCE_HATE=-3;
 
 }
