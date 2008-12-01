@@ -394,11 +394,11 @@ public final class Main {
   }
 
   /**
-   * Walks through the commandline arguments and sets flags for any one that we
+   * Walks through the command line arguments and sets flags for any one that we
    * recognize.
    * 
    * @param args
-   *          The list of commandline arguments that is passed to main()
+   *          The list of command line arguments that is passed to main()
    */
   private static void handleCommandline(final String[] args) {
     // walk through all arguments and check if there is one that we recognize

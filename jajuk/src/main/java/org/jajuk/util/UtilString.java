@@ -704,8 +704,7 @@ public final class UtilString {
   }
 
   /**
-   * Fast Boolean parser, low level check, replacement of
-   * Boolean.parseBoolean()
+   * Fast Boolean parser, low level check, replacement of Boolean.parseBoolean()
    * 
    * @param in
    *          must be a string beginning by true or false (lower case)
