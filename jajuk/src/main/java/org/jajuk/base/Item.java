@@ -94,8 +94,8 @@ public abstract class Item implements Serializable, Const {
   }
 
   /**
-   * Item hashcode (used by the equals method)
-   * See http://www.geocities.com/technofundo/tech/java/equalhash.html
+   * Item hashcode (used by the equals method) See
+   * http://www.geocities.com/technofundo/tech/java/equalhash.html
    */
   @Override
   public int hashCode() {
@@ -295,17 +295,19 @@ public abstract class Item implements Serializable, Const {
         PropertyMetaInformation meta = getMeta(sKey);
         try {
           sValue = UtilString.format(oValue, meta, false);
+          // make sure to remove
+          // non-XML characters
+          sValue = UtilString.formatXML(sValue);
+          sb.append(' ');
+          sb.append(UtilString.formatXML(sKey));
+          sb.append("='");
+          sb.append(sValue);
+          sb.append("'");
         } catch (Exception e) { // should not occur
+          Log.debug("Key=" + sKey + " Meta=" + meta);
           Log.error(e);
         }
-        sValue = UtilString.formatXML(sValue); // make sure to remove
-        // non-XML characters
       }
-      sb.append(' ');
-      sb.append(UtilString.formatXML(sKey));
-      sb.append("='");
-      sb.append(sValue);
-      sb.append("'");
     }
     return sb.toString();
   }
