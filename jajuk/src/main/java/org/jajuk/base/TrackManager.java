@@ -126,7 +126,7 @@ public final class TrackManager extends ItemManager implements Observer {
     // Track ban status
     registerProperty(new PropertyMetaInformation(Const.XML_TRACK_BANNED, false, false, true, true,
         false, Boolean.class, false));
-    
+
     // ---subscriptions---
     ObservationManager.register(this);
   }
@@ -195,7 +195,7 @@ public final class TrackManager extends ItemManager implements Observer {
    * 
    * @throw an exception is tag cannot be commited
    */
-  public void commit() throws Exception{
+  public void commit() throws Exception {
     Iterator<Tag> it = tagsToCommit.iterator();
     while (it.hasNext()) {
       Tag tag = null;
@@ -603,7 +603,8 @@ public final class TrackManager extends ItemManager implements Observer {
         continue;
       }
       // Cleanup all files no more attached to a track
-      for (File file : track.getFiles()) {
+      // We use files shallow copy to avoid indirect concurrency exception
+      for (File file : new ArrayList<File>(track.getFiles())) {
         if (FileManager.getInstance().getFileByID(file.getID()) == null) {
           FileManager.getInstance().removeFile(file);
         }
