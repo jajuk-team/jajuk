@@ -244,8 +244,7 @@ public class CDDBWizard extends JajukJDialog implements ActionListener {
     } else {
       for (int iRow : aIdxToTag) {
         // Unset autocommit to tags so we write to file only once for all
-        // changed
-        // tags for a single file
+        // changed tags for a single file
         TrackManager.getInstance().setAutocommit(false);
         Track track = alCddbTracks.get(iRow).getTrack();
         try {
@@ -265,11 +264,11 @@ public class CDDBWizard extends JajukJDialog implements ActionListener {
           if (sValue != null && sValue.trim().length() > 0) {
             track = TrackManager.getInstance().changeTrackStyle(track, sValue, null);
           }
-          // Track# can be absent from CDDB database, ignore it it's not given
+          // Track# can be absent from CDDB database, ignore if not provided
           try {
-            int iValue = fdbReader.getTrackNumber(iRow);
-            if (iValue > 0) {
-              track = TrackManager.getInstance().changeTrackOrder(track, iValue, null);
+            long lValue = fdbReader.getTrackNumber(iRow);
+            if (lValue > 0) {
+              track = TrackManager.getInstance().changeTrackOrder(track, lValue, null);
             }
           } catch (NumberFormatException e) {
             Log.debug(e);
@@ -277,7 +276,7 @@ public class CDDBWizard extends JajukJDialog implements ActionListener {
           // Same for year
           try {
             long lValue = Long.parseLong(fdbReader.getYear());
-            if (lValue > 0 && lValue < 10000) {
+            if (lValue > 0 && lValue < 3000) { // Review this after year 3000 Fry ;-)
               track = TrackManager.getInstance().changeTrackYear(track, fdbReader.getYear(), null);
             }
           } catch (NumberFormatException e) {
