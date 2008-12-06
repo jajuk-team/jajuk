@@ -21,15 +21,19 @@
 package org.jajuk.services.dj;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
 import org.jajuk.base.Style;
 import org.jajuk.util.Const;
-import org.jajuk.util.UtilFeatures;
+import org.jajuk.util.filters.JajukPredicates;
 
 /**
  * Type description
@@ -38,9 +42,6 @@ public class TransitionDigitalDJ extends DigitalDJ {
 
   /** List of transitions, need to be a list, not a set for offset */
   private List<Transition> transitions;
-
-  /** Startup style* */
-  private Style startupStyle;
 
   /**
    * @param sID
@@ -107,78 +108,27 @@ public class TransitionDigitalDJ extends DigitalDJ {
     if (global.size() == 0) {
       return out;
     }
-    // Sort tracks by FROM ambience (set of styles)
-    Map<Ambience, List<File>> hmAmbienceFiles = new HashMap<Ambience, List<File>>(100);
-    // This list contains all files not yet sorted (used for null key)
-    List<File> alFilesToSort = (List<File>) ((ArrayList<File>) global).clone();
-    for (Transition tr : transitions) {
-      Ambience from = null;
-      if (tr != null) {
-        from = tr.getFrom();
-      }
-      List<File> files = new ArrayList<File>(100);
-      for (File file : global) {
-        if (from != null && from.getStyles().contains(file.getTrack().getStyle())) {
-          files.add(file);
-          alFilesToSort.remove(file);
-        }
-      }
-      hmAmbienceFiles.put(from, files);
-      Ambience to = null;
-      if (tr != null) {
-        to = tr.getTo();
-      }
-      files = new ArrayList(100);
-      for (File file : global) {
-        if (to != null && to.getStyles().contains(file.getTrack().getStyle())) {
-          files.add(file);
-          alFilesToSort.remove(file);
-        }
-      }
-      hmAmbienceFiles.put(to, files);
-    }
-    // fill null key
-    hmAmbienceFiles.put(null, alFilesToSort);
-    // Get first track
-    for (File file : global) {
-      if (file.getTrack().getStyle().equals(startupStyle)) {
-        out.add(file);
-        break;
-      }
-    }
-    // none matching track? add a shuffle file
-    if (out.size() == 0) {
-      out.add((File) UtilFeatures.getShuffleItem(global));
-    }
+    // Build a ambience -> files map
+    Map<Ambience, List<File>> hmAmbienceFiles = getAmbienceFilesList(global);
     // compute number of items to add
-    int items = global.size() - 1; // by default, collection size (minus
-    // one already added)
-    if (!bUnicity && items < Const.MIN_TRACKS_NUMBER_WITHOUT_UNICITY) {
+    int count = global.size();
+    if (!bUnicity && count < Const.MIN_TRACKS_NUMBER_WITHOUT_UNICITY) {
       // under a limit, if collection is too small and no unicity, use
       // several times the same files
-      items = Const.MIN_TRACKS_NUMBER_WITHOUT_UNICITY;
+      count = Const.MIN_TRACKS_NUMBER_WITHOUT_UNICITY;
     }
-    // initialize current ambience with first track ambience (can be null for
-    // unsorted tracks)
-    Ambience currentAmbience = getAmbience(out.get(0).getTrack().getStyle());
-    int comp = 1; // item compt
-    boolean bFirstTrack = true; // flag used to remove one track to
-    // selection
-    // start transition applying
-    while (comp < items) {
-      int nb = 1;
+    int comp = 1;
+    // Start transition applying
+    Ambience currentAmbience = transitions.get(0).getFrom();
+    while (comp < count) {
       Transition currentTransition = getTransition(currentAmbience);
-      if (currentTransition != null) {
-        nb = currentTransition.getNbTracks();
-        if (bFirstTrack) {
-          nb--;
-          bFirstTrack = false;
-        }
-      }
+      int nb = currentTransition.getNbTracks();
       List<File> files = hmAmbienceFiles.get(currentAmbience);
-      if (files != null && files.size() > nb) {
+      if (files != null && files.size() >= nb) {
         for (int i = 0; i < nb; i++) {
-          File file = (File) UtilFeatures.getShuffleItem(files);
+          // Get a shuffle file from the list
+          Collections.shuffle(files);
+          File file = files.get(0);
           out.add(file);
           comp++;
           // unicity in selection, remove it from this ambience
@@ -190,13 +140,37 @@ public class TransitionDigitalDJ extends DigitalDJ {
         return out;
       }
       // get next ambience
-      if (currentTransition != null) {
-        currentAmbience = currentTransition.getTo();
-      } else {
-        return out;
-      }
+      currentAmbience = currentTransition.getTo();
     }
     return out;
+  }
+
+  /**
+   * Returns a map ambience -> set of files
+   * 
+   * @param global
+   *          initial set of files to consider
+   * @return a map ambience -> set of files
+   */
+  @SuppressWarnings("unchecked")
+  private Map<Ambience, List<File>> getAmbienceFilesList(List<File> global) {
+    // Create a map ambience -> set of files
+    Map<Ambience, List<File>> hmAmbienceFiles = new HashMap<Ambience, List<File>>(5);
+    // For performance, we find unique ambiences in from and to transitions
+    Set<Ambience> ambiences = new HashSet<Ambience>(5);
+    for (Transition tr : transitions) {
+      ambiences.add(tr.getFrom());
+      ambiences.add(tr.getTo());
+    }
+    // Fill null key
+    hmAmbienceFiles.put(null, (List<File>) ((ArrayList<File>) global).clone());
+    // Fill all ambiences
+    for (Ambience ambience : ambiences) {
+      List<File> all = (List<File>) ((ArrayList<File>) global).clone();
+      CollectionUtils.filter(all, new JajukPredicates.AmbiencePredicate(ambience));
+      hmAmbienceFiles.put(ambience, all);
+    }
+    return hmAmbienceFiles;
   }
 
   /**
@@ -221,8 +195,7 @@ public class TransitionDigitalDJ extends DigitalDJ {
   public String toXML() {
     StringBuilder sb = new StringBuilder(2000);
     sb.append(toXMLGeneralParameters());
-    sb.append("\t<" + Const.XML_DJ_TRANSITIONS + " " + Const.XML_DJ_STARTUP_STYLE + "='"
-        + getStartupStyle().getID() + "'>\n");
+    sb.append("\t<" + Const.XML_DJ_TRANSITIONS + "'>\n");
     for (Transition transition : transitions) {
       sb.append("\t\t<" + Const.XML_DJ_TRANSITION + " " + Const.XML_DJ_FROM + "='"
           + transition.getFrom().toXML() + "' " + Const.XML_DJ_TO + "='"
@@ -232,14 +205,6 @@ public class TransitionDigitalDJ extends DigitalDJ {
     sb.append("\t</" + Const.XML_DJ_TRANSITIONS + ">\n");
     sb.append("</" + Const.XML_DJ_DJ + ">\n");
     return sb.toString();
-  }
-
-  public Style getStartupStyle() {
-    return this.startupStyle;
-  }
-
-  public void setStartupStyle(Style startupStyle) {
-    this.startupStyle = startupStyle;
   }
 
   public void setTransitions(List<Transition> transitions) {

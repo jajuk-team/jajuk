@@ -21,7 +21,6 @@
 package org.jajuk.services.dj;
 
 import org.jajuk.base.Style;
-import org.jajuk.util.UtilFeatures;
 
 /**
  * Represents a transition from one style to another (used by digital DJs)
@@ -108,7 +107,7 @@ public class Transition {
       out += s.getName2() + ',';
     }
     if (out.length() > 0) {
-      out = out.substring(0, out.length() - 1); // remove trailling ,
+      out = out.substring(0, out.length() - 1); // remove trailing ,
     }
     return out;
   }
@@ -122,7 +121,7 @@ public class Transition {
       out += s.getName2() + ',';
     }
     if (out.length() > 0) {
-      out = out.substring(0, out.length() - 1); // remove trailling ,
+      out = out.substring(0, out.length() - 1); // remove trailing ,
     }
     return out;
   }
@@ -157,21 +156,6 @@ public class Transition {
    */
   public void removeToStyle(Style style) {
     to.removeStyle(style);
-  }
-
-  /**
-   * 
-   * @return next style to be played or null if no idea
-   */
-  public Style getNextStyle() {
-    if (to.getStyles().size() == 0) {
-      return null;
-    } else if (to.getStyles().size() == 1) {
-      return to.getStyles().iterator().next();
-    } else {
-      // several destination styles, return a shuffle one
-      return (Style) UtilFeatures.getShuffleItem(to.getStyles());
-    }
   }
 
   public int getNbTracks() {
