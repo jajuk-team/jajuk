@@ -26,6 +26,7 @@ import org.apache.commons.collections.Predicate;
 import org.jajuk.base.File;
 import org.jajuk.base.Playlist;
 import org.jajuk.base.Track;
+import org.jajuk.services.dj.Ambience;
 import org.jajuk.util.Const;
 
 /**
@@ -152,6 +153,30 @@ public class JajukPredicates {
      */
     public boolean evaluate(Object o) {
       return ((Playlist) o).isReady();
+    }
+
+  }
+  
+  /**
+   * 
+   * Ambience predicate on files, filter by provided ambience
+   */
+  public static class AmbiencePredicate implements Predicate {
+
+    private Ambience ambience;
+    
+    public AmbiencePredicate(Ambience ambience){
+      this.ambience = ambience;
+    }
+    
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.apache.commons.collections.Predicate#evaluate(java.lang.Object)
+     */
+    public boolean evaluate(Object o) {
+      File tested = (File)o;
+      return ambience.getStyles().contains(tested.getTrack().getStyle());
     }
 
   }

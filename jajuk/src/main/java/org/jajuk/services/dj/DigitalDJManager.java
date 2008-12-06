@@ -481,9 +481,6 @@ class DigitalDJFactoryTransitionImpl extends DigitalDJFactory {
             toAmbience.addStyle(StyleManager.getInstance().getStyleByID(st.nextToken()));
           }
           transitions.add(new Transition(fromAmbience, toAmbience, number));
-        } else if (Const.XML_DJ_TRANSITIONS.equals(sQname)) {
-          startupStyle = StyleManager.getInstance().getStyleByID(
-              attributes.getValue(attributes.getIndex(Const.XML_DJ_STARTUP_STYLE)));
         }
       }
     };
@@ -496,7 +493,6 @@ class DigitalDJFactoryTransitionImpl extends DigitalDJFactory {
     dj.setRatingLevel(iRatingLevel);
     dj.setTrackUnicity(bTrackUnicity);
     dj.setTransitions(transitions);
-    dj.setStartupStyle(startupStyle);
     return dj;
   }
 

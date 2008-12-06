@@ -21,7 +21,6 @@
 package org.jajuk.services.dj;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -33,6 +32,7 @@ import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
 import org.jajuk.base.Style;
 import org.jajuk.util.Const;
+import org.jajuk.util.UtilFeatures;
 import org.jajuk.util.filters.JajukPredicates;
 
 /**
@@ -84,7 +84,7 @@ public class TransitionDigitalDJ extends DigitalDJ {
    */
   public Transition getTransition(Ambience ambience) {
     for (Transition transition : transitions) {
-      if (transition.getFrom().equals(ambience)) {
+      if (CollectionUtils.containsAny(transition.getFrom().getStyles(), ambience.getStyles())) {
         return transition;
       }
     }
@@ -92,14 +92,14 @@ public class TransitionDigitalDJ extends DigitalDJ {
   }
 
   /*
-   * (non-Javadoc)
-   * 
-   * @see org.jajuk.base.DigitalDJ#generatePlaylist()
+   * Generate the playlist 
+   * @return the playlist
    */
   @SuppressWarnings("unchecked")
   @Override
   public List<File> generatePlaylist() {
     List<File> out = new ArrayList<File>(500);
+
     // get a global shuffle selection
     List<File> global = FileManager.getInstance().getGlobalShufflePlaylist();
     // Select by rate if needed
@@ -111,27 +111,53 @@ public class TransitionDigitalDJ extends DigitalDJ {
     // Build a ambience -> files map
     Map<Ambience, List<File>> hmAmbienceFiles = getAmbienceFilesList(global);
     // compute number of items to add
-    int count = global.size();
-    if (!bUnicity && count < Const.MIN_TRACKS_NUMBER_WITHOUT_UNICITY) {
+    int items = Math.min(global.size(), Const.NB_TRACKS_ON_ACTION);
+    if (!bUnicity && items < Const.MIN_TRACKS_NUMBER_WITHOUT_UNICITY) {
       // under a limit, if collection is too small and no unicity, use
       // several times the same files
-      count = Const.MIN_TRACKS_NUMBER_WITHOUT_UNICITY;
+      items = Const.MIN_TRACKS_NUMBER_WITHOUT_UNICITY;
     }
-    int comp = 1;
-    // Start transition applying
-    Ambience currentAmbience = transitions.get(0).getFrom();
-    while (comp < count) {
+
+    // Get first track
+    for (File file : global) {
+      if (transitions.get(0).getFrom().getStyles().contains(file.getTrack().getStyle())) {
+        out.add(file);
+        // Unicity in selection, remove it from this ambience
+        if (bUnicity) {
+          List<File> files = hmAmbienceFiles.get(getAmbience(file.getTrack().getStyle()));
+          files.remove(file);
+        }
+        items--;
+        break;
+      }
+    }
+    // none matching track? return
+    if (out.size() == 0) {
+      return out;
+    }
+
+    // initialize current ambience with first track ambience (can be null for
+    // unsorted tracks)
+    Ambience currentAmbience = getAmbience(out.get(0).getTrack().getStyle());
+    // start transition applying
+    while (items > 0) {
+      // A style can be in only one transition
       Transition currentTransition = getTransition(currentAmbience);
-      int nb = currentTransition.getNbTracks();
       List<File> files = hmAmbienceFiles.get(currentAmbience);
-      if (files != null && files.size() >= nb) {
-        for (int i = 0; i < nb; i++) {
-          // Get a shuffle file from the list
-          Collections.shuffle(files);
-          File file = files.get(0);
+      int nbTracks = 2;
+      if (currentTransition != null) {
+        nbTracks = currentTransition.getNbTracks();
+      }
+      // We remove one item as it has already been added through the first track
+      if (out.size() == 1) {
+        nbTracks--;
+      }
+      if (files != null && files.size() >= nbTracks) {
+        for (int i = 0; i < nbTracks && files.size() > 0; i++) {
+          File file = (File) UtilFeatures.getShuffleItem(files);
           out.add(file);
-          comp++;
-          // unicity in selection, remove it from this ambience
+          items--;
+          // Unicity in selection, remove it from this ambience
           if (bUnicity) {
             files.remove(file);
           }
@@ -139,8 +165,11 @@ public class TransitionDigitalDJ extends DigitalDJ {
       } else { // no more tracks for this ambience ? leave
         return out;
       }
-      // get next ambience
-      currentAmbience = currentTransition.getTo();
+      if (currentTransition != null) {
+        currentAmbience = currentTransition.getTo();
+      } else {
+        break;
+      }
     }
     return out;
   }
@@ -195,7 +224,7 @@ public class TransitionDigitalDJ extends DigitalDJ {
   public String toXML() {
     StringBuilder sb = new StringBuilder(2000);
     sb.append(toXMLGeneralParameters());
-    sb.append("\t<" + Const.XML_DJ_TRANSITIONS + "'>\n");
+    sb.append("\t<" + Const.XML_DJ_TRANSITIONS + ">\n");
     for (Transition transition : transitions) {
       sb.append("\t\t<" + Const.XML_DJ_TRANSITION + " " + Const.XML_DJ_FROM + "='"
           + transition.getFrom().toXML() + "' " + Const.XML_DJ_TO + "='"

@@ -36,6 +36,7 @@ import org.jajuk.util.Messages;
 import org.jajuk.util.UtilFeatures;
 import org.jajuk.util.UtilGUI;
 import org.jajuk.util.error.JajukException;
+import org.jajuk.util.log.Log;
 
 public class DJAction extends JajukAction {
 
@@ -55,24 +56,27 @@ public class DJAction extends JajukAction {
         public void run() {
           DigitalDJ dj = DigitalDJManager.getInstance().getDJByID(
               Conf.getString(Const.CONF_DEFAULT_DJ));
-          if (dj != null) {
-            Conf.setProperty(Const.CONF_FADE_DURATION, Integer.toString(dj.getFadingDuration()));
-            UtilGUI.waiting();
-            List<File> al = null;
-            try {
+          try {
+            if (dj != null) {
+              Conf.setProperty(Const.CONF_FADE_DURATION, Integer.toString(dj.getFadingDuration()));
+              UtilGUI.waiting();
+              List<File> al = null;
               al = dj.generatePlaylist();
-            } finally {
-              UtilGUI.stopWaiting();
+              if (al != null && al.size() == 0) { // DJ constraints cannot be
+                // respected
+                Messages.showErrorMessage(158);
+                return;
+              }
+              FIFO.push(UtilFeatures.createStackItems(UtilFeatures.applyPlayOption(al), Conf
+                  .getBoolean(Const.CONF_STATE_REPEAT), false), false);
+            } else {
+              Messages.showErrorMessage(157);
             }
-            if (al != null && al.size() == 0) { // DJ constraints cannot be
-              // respected
-              Messages.showErrorMessage(158);
-              return;
-            }
-            FIFO.push(UtilFeatures.createStackItems(UtilFeatures.applyPlayOption(al), Conf
-                .getBoolean(Const.CONF_STATE_REPEAT), false), false);
-          } else {
-            Messages.showErrorMessage(157);
+          } catch (Exception e) {
+            Log.debug(e);
+            Messages.showErrorMessage(176);
+          } finally {
+            UtilGUI.stopWaiting();
           }
         }
       }.start();

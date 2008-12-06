@@ -108,7 +108,7 @@ public interface Const {
   /** Play icon columns size in pixels */
   int PLAY_COLUMN_SIZE = 20;
 
-  /** Proporion of best tracks */
+  /** Proportion of best tracks */
   float BESTOF_PROPORTION = 0.05f;
 
   /** Number of milliseconds in a second */

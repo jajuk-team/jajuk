@@ -19,7 +19,6 @@
  */
 package org.jajuk.ui.wizard;
 
-import ext.AutoCompleteDecorator;
 import info.clearthought.layout.TableLayout;
 
 import java.awt.event.ActionEvent;
@@ -30,12 +29,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
-import java.util.Vector;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -114,9 +111,6 @@ public class DigitalDJWizard extends Wizard {
 
   /** DJ to change */
   private static final String KEY_CHANGE = "CHANGE";
-
-  /** Startup style */
-  private static final String KEY_STARTUP_STYLE = "STARTUP_STYLE";
 
   /**
    * 
@@ -626,12 +620,6 @@ public class DigitalDJWizard extends Wizard {
 
     private static final long serialVersionUID = 1L;
 
-    JLabel jlStartWith;
-
-    JComboBox jcbStartwith;
-
-    JPanel jpStartwith;
-
     /** All dynamic widgets */
     JComponent[][] widgets;
 
@@ -672,52 +660,24 @@ public class DigitalDJWizard extends Wizard {
     @Override
     @SuppressWarnings("unchecked")
     public void initUI() {
-      final Vector<String> styles = StyleManager.getInstance().getStylesList();
       if (ActionSelectionPanel.ACTION_CHANGE.equals(data.get(KEY_ACTION))) {
         TransitionDigitalDJ dj = (TransitionDigitalDJ) data.get(KEY_CHANGE);
         alTransitions = (List<Transition>) ((ArrayList<Transition>) dj.getTransitions()).clone();
         data.put(KEY_TRANSITIONS, getCleanedTransitions());
-        alTransitions.add(new Transition(Const.DEFAULT_TRANSITION_TRACK_NUMBER)); // add
-        // a
-        // void
-        // transition
-        data.put(KEY_STARTUP_STYLE, dj.getStartupStyle());
+        // add a void transition
+        alTransitions.add(new Transition(Const.DEFAULT_TRANSITION_TRACK_NUMBER)); 
       } else { // DJ creation
         alTransitions = new ArrayList<Transition>(10);
-        alTransitions.add(new Transition(Const.DEFAULT_TRANSITION_TRACK_NUMBER)); // add
-        // a
-        // void
-        // transition
+        // add a void transition
+        alTransitions.add(new Transition(Const.DEFAULT_TRANSITION_TRACK_NUMBER)); 
         setProblem(Messages.getString("DigitalDJWizard.26"));
-        // set first style by default
-        data.put(KEY_STARTUP_STYLE, StyleManager.getInstance().getStyleByName(styles.get(0)));
       }
       setCanFinish(true);
-      jlStartWith = new JLabel(Messages.getString("DigitalDJWizard.25"));
-      jcbStartwith = new JComboBox(styles);
-      AutoCompleteDecorator.decorate(jcbStartwith);
-      String startup = ((Style) data.get(KEY_STARTUP_STYLE)).getName();
-      int indexStyle = styles.indexOf(startup);
-      if (indexStyle >= 0) {
-        jcbStartwith.setSelectedIndex(indexStyle);
-      }
-      jcbStartwith.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent arg0) {
-          data.put(KEY_STARTUP_STYLE, StyleManager.getInstance().getStyleByName(
-              styles.get(jcbStartwith.getSelectedIndex())));
-        }
-      });
-      jpStartwith = new JPanel();
-      double[][] dSize = { { 0.25, 10, 0.25 }, { 20 } };
-      jpStartwith.setLayout(new TableLayout(dSize));
-      jpStartwith.add(jlStartWith, "0,0");
-      jpStartwith.add(jcbStartwith, "2,0");
       // set layout
       double[][] dSizeGeneral = { { 10, 0.99, 5 },
-          { 10, TableLayout.PREFERRED, 10, TableLayout.FILL, 10 } };
+          { 10, TableLayout.FILL, 10 } };
       setLayout(new TableLayout(dSizeGeneral));
-      add(jpStartwith, "1,1");
-      add(getTransitionsPanel(), "1,3");
+      add(getTransitionsPanel(), "1,1");
     }
 
     /**
@@ -728,7 +688,7 @@ public class DigitalDJWizard extends Wizard {
       widgets = new JComponent[alTransitions.size()][4];
       JPanel out = new JPanel();
       // Delete|FROM list| To list|nb tracks
-      double[] dHoriz = { 25, 150, 150, TableLayout.PREFERRED };
+      double[] dHoriz = { 10, 25, 250, 250, TableLayout.PREFERRED };
       double[] dVert = new double[widgets.length + 2];
       dVert[0] = 20;
       // now add all known transitions
@@ -807,15 +767,15 @@ public class DigitalDJWizard extends Wizard {
       jlHeader3.setFont(FontManager.getInstance().getFont(JajukFont.BOLD));
       JLabel jlHeader4 = new JLabel(Messages.getString("DigitalDJWizard.24"));
       jlHeader4.setFont(FontManager.getInstance().getFont(JajukFont.BOLD));
-      out.add(jlHeader2, "1,0");
-      out.add(jlHeader3, "2,0");
-      out.add(jlHeader4, "3,0");
+      out.add(jlHeader2, "2,0");
+      out.add(jlHeader3, "3,0");
+      out.add(jlHeader4, "4,0");
       // Add widgets
       for (int i = 0; i < dVert.length - 2; i++) {
-        out.add(widgets[i][0], "0," + (i + 1) + ",c,c");
-        out.add(widgets[i][1], "1," + (i + 1));
-        out.add(widgets[i][2], "2," + (i + 1));
-        out.add(widgets[i][3], "3," + (i + 1) + ",c,c");
+        out.add(widgets[i][0], "1," + (i + 1) + ",c,c");
+        out.add(widgets[i][1], "2," + (i + 1));
+        out.add(widgets[i][2], "3," + (i + 1));
+        out.add(widgets[i][3], "4," + (i + 1) + ",c,c");
       }
       return new JScrollPane(out);
     }
@@ -917,8 +877,7 @@ public class DigitalDJWizard extends Wizard {
     private void refreshScreen() {
       removeAll();
       // refresh panel
-      add(jpStartwith, "1,1");
-      add(getTransitionsPanel(), "1,3");
+      add(getTransitionsPanel(), "1,1");
       revalidate();
       repaint();
     }
@@ -1409,8 +1368,6 @@ public class DigitalDJWizard extends Wizard {
         List<Transition> transitions = (List<Transition>) data.get(KEY_TRANSITIONS);
         dj = new TransitionDigitalDJ(sID);
         ((TransitionDigitalDJ) dj).setTransitions(transitions);
-        Style startup = (Style) data.get(KEY_STARTUP_STYLE);
-        ((TransitionDigitalDJ) dj).setStartupStyle(startup);
       } else {
         throw new IllegalArgumentException("Unknown type of DJ: " + sType);
       }
@@ -1440,8 +1397,6 @@ public class DigitalDJWizard extends Wizard {
       } else if (TypeSelectionPanel.DJ_TYPE_TRANSITION.equals(sType)) {
         List<Transition> transitions = (List) data.get(KEY_TRANSITIONS);
         ((TransitionDigitalDJ) dj).setTransitions(transitions);
-        Style startup = (Style) data.get(KEY_STARTUP_STYLE);
-        ((TransitionDigitalDJ) dj).setStartupStyle(startup);
       }
       String sName = (String) data.get(KEY_DJ_NAME);
       int iFadeDuration = (Integer) data.get(KEY_FADE_DURATION);

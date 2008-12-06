@@ -99,7 +99,7 @@ public class Ambience implements Comparable<Ambience> {
    * Constructor
    */
   public Ambience() {
-    this.sID = "";
+    this.sID = "" + System.currentTimeMillis();
     this.sName = "";
     this.styles = new HashSet<Style>(10);
   }
@@ -169,7 +169,6 @@ public class Ambience implements Comparable<Ambience> {
     if (!(o instanceof Ambience)) {
       return false;
     }
-
     Ambience ambienceOther = (Ambience) o;
     return this.sName.equals(ambienceOther.getName())
         && this.styles.equals(ambienceOther.getStyles());
