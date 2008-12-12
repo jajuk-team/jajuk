@@ -31,10 +31,10 @@ import javax.swing.ImageIcon;
  * Use: IconLoader.getIcon(JajukIcons.<icon name>)
  * </p>
  */
-public class IconLoader {
+final public class IconLoader {
 
   /** No covers image cache : size:default icon */
-  public static Map<String, ImageIcon> nocoverCache = new HashMap<String, ImageIcon>(10);
+  private static Map<String, ImageIcon> nocoverCache = new HashMap<String, ImageIcon>(10);
 
   /** Icons cache * */
   private static Map<JajukIcons, ImageIcon> cache = new HashMap<JajukIcons, ImageIcon>(200);
