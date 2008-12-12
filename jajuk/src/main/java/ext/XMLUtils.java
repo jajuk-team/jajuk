@@ -24,8 +24,17 @@
 
 package ext;
 
+import java.io.CharArrayReader;
+import java.io.Reader;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+
+import org.jajuk.util.log.Log;
+import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;
 
 public final class XMLUtils {
   /**
@@ -53,6 +62,27 @@ public final class XMLUtils {
   public static String getChildElementContent(Element el, String tagName) {
     Element el2 = getChildElement(el, tagName);
     return el2 == null ? "" : el2.getTextContent();
+  }
+
+  /**
+   * Return a DOM document for a given string <br>
+   * In case of parsing error, this method handles the exception and null is
+   * returned
+   * 
+   * @param xml
+   *          the string to parse
+   * @return a DOM document for a given string
+   */
+  public static Document getDocument(String xml) {
+    Document out = null;
+    try {
+      DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+      Reader reader = new CharArrayReader(xml.toCharArray());
+      out = builder.parse(new InputSource(reader));
+    } catch (Exception e) {
+      Log.error(e);
+    }
+    return out;
   }
 
 }
