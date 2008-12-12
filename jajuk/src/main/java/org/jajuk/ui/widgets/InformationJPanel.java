@@ -62,8 +62,8 @@ import org.jdesktop.swingx.JXPanel;
 /**
  * Status / information panel ( static view )
  */
-public final class InformationJPanel extends JXPanel implements ChangeListener,
-    MouseWheelListener, Observer {
+public final class InformationJPanel extends JXPanel implements ChangeListener, MouseWheelListener,
+    Observer {
 
   private static final long serialVersionUID = 1L;
 
@@ -193,17 +193,16 @@ public final class InformationJPanel extends JXPanel implements ChangeListener,
     add(jtbTotal, "2,0");
     add(jtbProgress, "3,0");
 
-    
     // check if some errors occurred before the view has been displayed
     if (ObservationManager.containsEvent(JajukEvents.PLAY_ERROR)) {
       update(new Event(JajukEvents.PLAY_ERROR, ObservationManager
           .getDetailsLastOccurence(JajukEvents.PLAY_ERROR)));
     }
-    
+
     // check if some track has been launched before the view has been
     // displayed
     UtilFeatures.updateStatus(this);
-    
+
     // register for given events
     ObservationManager.register(this);
     // start timer
@@ -363,14 +362,17 @@ public final class InformationJPanel extends JXPanel implements ChangeListener,
           // set error message
           Object o = ObservationManager.getDetail(event, Const.DETAIL_CONTENT);
           // current item is a file
+          // display associated error code is given
+          Object detail = ObservationManager.getDetail(event, Const.DETAIL_REASON);
+          int errorCode = 0;
+          if (detail != null) {
+            errorCode = Integer.parseInt((String) detail);
+          }
+          // Already playing a track
           if (o instanceof File) {
             File fCurrent = (File) o;
-
-            // display associated error code is given
-            String sReason = (String) ObservationManager.getDetail(event, Const.DETAIL_REASON);
-            if (sReason != null) {
-              setMessage(
-                  Messages.getString("Error." + sReason) + ": " + fCurrent.getAbsolutePath(),
+            if (detail != null) {
+              setMessage(Messages.getErrorMessage(errorCode) + ": " + fCurrent.getAbsolutePath(),
                   InformationJPanel.ERROR);
             } else {// default message
               setMessage(Messages.getString("Error.007") + ": " + fCurrent.getAbsolutePath(),
@@ -380,9 +382,8 @@ public final class InformationJPanel extends JXPanel implements ChangeListener,
             WebRadio radio = (WebRadio) o;
 
             // display associated error code is given
-            String sReason = (String) ObservationManager.getDetail(event, Const.DETAIL_REASON);
-            if (sReason != null) {
-              setMessage(Messages.getString("Error." + sReason) + ": " + radio.toString(),
+            if (detail != null) {
+              setMessage(Messages.getErrorMessage(errorCode) + ": " + radio.toString(),
                   InformationJPanel.ERROR);
             } else {// default message
               setMessage(Messages.getString("Error.007") + ": " + radio.toString(),
