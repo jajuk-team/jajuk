@@ -279,7 +279,6 @@ public final class Conf implements Const {
     defaults.put(CONF_FORCE_TRAY_SHUTDOWN, FALSE);
     defaults.put(CONF_FORMAT_TIME_ELAPSED, "0");
     defaults.put(CONF_SLIMBAR_POSITION, "0,0");
-    defaults.put(CONF_LYRICS_PROVIDERS, "org.jajuk.services.lyrics.providers.LyrcProvider");
     defaults.put(CONF_SLIMBAR_SMART_MODE, JajukActions.SHUFFLE_GLOBAL.toString());
 
     // NOT SHOW AGAIN

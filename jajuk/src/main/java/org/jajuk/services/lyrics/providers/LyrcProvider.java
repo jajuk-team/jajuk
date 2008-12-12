@@ -36,10 +36,10 @@ import org.jajuk.util.log.Log;
  */
 public class LyrcProvider extends GenericProvider {
 
-  private static final String SUGGESTIONS_URL = "http://www.lyrc.com.ar/en/";
+  private static final String URL = "http://www.lyrc.com.ar/en/tema1en.php?artist=%artist&songname=%title";
 
   public LyrcProvider() {
-    super("http://www.lyrc.com.ar/en/tema1en.php?artist=%artist&songname=%title");
+    super(URL);
   }
 
   private StringTokenizer getTokenizer(final String source) {
@@ -52,9 +52,8 @@ public class LyrcProvider extends GenericProvider {
    * @see ext.services.lyrics.providers.GenericProvider#getLyrics(java.lang.String,
    *      java.lang.String)
    */
-  @Override
   public String getLyrics(final String artist, final String title) {
-    String html = super.getLyrics(artist, title);
+    String html = callProvider(artist, title);
     if (html == null) {
       return null;
     } else if (html.contains("Suggestions : <br>")) {
@@ -63,7 +62,7 @@ public class LyrcProvider extends GenericProvider {
       final StringTokenizer artistTokens = getTokenizer(artist);
       final StringTokenizer titleTokens = getTokenizer(title);
 
-      // More than one posibility, find the best one
+      // More than one possibility, find the best one
       html = html.substring(html.indexOf("Suggestions : <br>"));
       html = html.substring(0, html.indexOf("<br><br"));
 
@@ -109,8 +108,7 @@ public class LyrcProvider extends GenericProvider {
           }
         }
         if (matches) {
-          final String suggestionURL = SUGGESTIONS_URL.concat(suggestions.get(suggestion));
-
+          final String suggestionURL = URL.concat(suggestions.get(suggestion));
           Log.debug("Found suggestion " + suggestion);
           try {
             final URL url = new URL(suggestionURL);
@@ -126,7 +124,7 @@ public class LyrcProvider extends GenericProvider {
       Log.debug("No suitable suggestion found");
       return (null);
     }
-    return (cleanLyrics(html));
+    return cleanLyrics(html);
   }
 
   private int getTagPosition(final String html, final String tag) {
@@ -172,6 +170,23 @@ public class LyrcProvider extends GenericProvider {
    */
   private static boolean validToken(final String token) {
     return (token.matches("[A-Za-z0-9]+"));
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.jajuk.services.lyrics.providers.ILyricsProvider#getResponseEncoding()
+   */
+  public String getResponseEncoding() {
+    return "ISO-8859-1";
+  }
+
+  /* (non-Javadoc)
+   * @see org.jajuk.services.lyrics.providers.ILyricsProvider#getWebURL(java.lang.String, java.lang.String)
+   */
+  public URL getWebURL(String artist, String title) {
+    // for this provider, the web url equals the web url
+    return getActualURL(artist, title);
   }
 
 }

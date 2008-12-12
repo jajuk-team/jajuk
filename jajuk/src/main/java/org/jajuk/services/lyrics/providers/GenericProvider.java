@@ -20,10 +20,10 @@
 
 package org.jajuk.services.lyrics.providers;
 
-import java.io.UnsupportedEncodingException;
+import ext.services.network.NetworkUtils;
+
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLEncoder;
 
 import org.jajuk.util.Const;
 import org.jajuk.util.DownloadManager;
@@ -37,54 +37,29 @@ import org.jajuk.util.log.Log;
  * The GenericProvider is used as a base class by other, more fine-grained
  * specific providers.
  */
-public class GenericProvider implements IProvider {
+abstract class GenericProvider implements ILyricsProvider {
 
   private String source = null;
-  private String querySource = null;
+  private String queryUrlTemplate = null;
 
-  public GenericProvider(final String querySource) {
-    this.querySource = querySource;
-  }
-
-  public String getQueryString(final String artist, final String title) {
-    String queryString = getQuerySource();
-
-    try {
-      queryString = queryString.replace(Const.PATTERN_AUTHOR, (artist != null) ? URLEncoder.encode(
-          artist, "ISO-8859-1") : "");
-      queryString = queryString.replace(Const.PATTERN_TRACKNAME, (title != null) ? URLEncoder
-          .encode(title, "ISO-8859-1") : "");
-    } catch (final UnsupportedEncodingException e) {
-      Log.warn("Could not URL encode artist {{" + artist + "}} and song title {{" + title + "}}");
-    }
-    return queryString;
-  }
-
-  protected URL getQueryURL(final String artist, final String title) {
-    try {
-      return (new URL(getQueryString(artist, title)));
-    } catch (final MalformedURLException e) {
-      Log.warn("Invalid lyrics provider [" + querySource + "]");
-    }
-    return null;
+  public GenericProvider(final String queryUrlTemplate) {
+    this.queryUrlTemplate = queryUrlTemplate;
   }
 
   /*
-   * (non-Javadoc)
-   * 
-   * @see ext.services.lyrics.providers.IProvider#getLyrics(java.lang.String,
-   *      java.lang.String)
+   * Call the provider @artist non encoded artist @title non encoded title
+   * @return query return or null if query fails
    */
-  public String getLyrics(final String artist, final String title) {
-    final URL url = getQueryURL(artist, title);
+  public String callProvider(final String artist, final String title) {
     String text = null;
+    try {
+      URL url = getActualURL(artist, title);
 
-    if (url != null) {
-      try {
-        text = DownloadManager.downloadHtml(url, "ISO-8859-1");
-      } catch (final Exception e) {
-        Log.warn("Could not retrieve URL [" + url + "]");
-      }
+      text = NetworkUtils.readURL(NetworkUtils.getConnection(url, DownloadManager.getProxy()),
+          getResponseEncoding());
+
+    } catch (final Exception e) {
+      Log.warn("Could not retrieve URL [" + getProviderHostname() + "]");
     }
     return text;
   }
@@ -94,8 +69,8 @@ public class GenericProvider implements IProvider {
    * 
    * @see ext.services.lyrics.providers.IProvider#getQuerySource()
    */
-  public String getQuerySource() {
-    return querySource;
+  public String getQueryURLTemplate() {
+    return queryUrlTemplate;
   }
 
   /*
@@ -103,15 +78,38 @@ public class GenericProvider implements IProvider {
    * 
    * @see ext.services.lyrics.providers.IProvider#getSource()
    */
-  public String getSource() {
+  public String getProviderHostname() {
     if (source == null) {
       try {
-        source = new URL(querySource).getHost();
+        source = new URL(queryUrlTemplate).getHost();
       } catch (final MalformedURLException e) {
-        Log.warn("Invalid lyrics provider [" + querySource + "]");
+        Log.warn("Invalid lyrics provider [" + queryUrlTemplate + "]");
       }
     }
     return source;
+  }
+
+  /**
+   * Build the actual formated and valorized URL to the provider
+   * @param artist the artist
+   * @param title the title
+   * @return URL the final url
+   * 
+   */
+  URL getActualURL(final String artist, final String title) {
+    try {
+      String queryString = getQueryURLTemplate();
+
+      queryString = queryString.replace(Const.PATTERN_AUTHOR, (artist != null) ? NetworkUtils
+          .encodeString(artist) : "");
+      queryString = queryString.replace(Const.PATTERN_TRACKNAME, (title != null) ? NetworkUtils
+          .encodeString(title) : "");
+
+      return new URL(queryString);
+    } catch (MalformedURLException e) {
+      Log.error(e);
+      return null;
+    }
   }
 
 }

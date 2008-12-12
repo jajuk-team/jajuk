@@ -589,9 +589,6 @@ public interface Const {
   /** Slimbar position */
   String CONF_SLIMBAR_POSITION = "jajuk.slimbar_pos";
 
-  /** List of lyrics providers separated by ',' */
-  String CONF_LYRICS_PROVIDERS = "jajuk.lyrics.providers";
-
   /** Gain (float) */
   String CONF_VOLUME = "jajuk.volume";
 

@@ -27,14 +27,10 @@
 
 package org.jajuk.services.lyrics;
 
-import java.lang.reflect.Constructor;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.StringTokenizer;
+import java.util.ArrayList;
+import java.util.List;
 
-import org.jajuk.services.lyrics.providers.IProvider;
-import org.jajuk.util.Conf;
-import org.jajuk.util.Const;
+import org.jajuk.services.lyrics.providers.ILyricsProvider;
 import org.jajuk.util.UtilString;
 import org.jajuk.util.log.Log;
 
@@ -44,11 +40,19 @@ import org.jajuk.util.log.Log;
  * user-selectable multi-input-sources. edit the LyricsService so that it will
  * notify about various valid sources, so we could propose various inputs to the
  * user)
+ * 
+ * For now the lyrics providers list is static and stored directly in this class
  */
 public final class LyricsService {
 
-  private static Map<String, IProvider> providers = null;
-  private static IProvider current = null;
+  private static List<ILyricsProvider> providers = null;
+  private static ILyricsProvider current = null;
+
+  /** Providers list */
+  private static String[] providersClasses = new String[] {
+      "org.jajuk.services.lyrics.providers.LyricWikiProvider",
+      "org.jajuk.services.lyrics.providers.FlyProvider",
+      "org.jajuk.services.lyrics.providers.LyrcProvider" };
 
   /**
    * Empty private constructor to avoid instantiating utility class
@@ -58,29 +62,31 @@ public final class LyricsService {
   }
 
   /**
-   * Loads the appropriate providers from the properties file.
+   * Loads the appropriate providers from the properties file. For now,
+   * providers order is static and the providersClasses array reflect jajuk
+   * authors service preferred ordering
    * 
-   * @return a map of providers loaded from the properties file
+   * @TODO this behavior could eventually be switched to a shuffle provider list
+   *       for performance or better resources usage reasons
+   * 
+   * 
    */
   @SuppressWarnings("unchecked")
-  public static Map<String, IProvider> loadProviders() {
-    final Map<String, IProvider> lProviders = new HashMap<String, IProvider>();
+  public static void loadProviders() {
+    providers = new ArrayList<ILyricsProvider>(2);
     try {
-      StringTokenizer st = new StringTokenizer(Conf.getString(Const.CONF_LYRICS_PROVIDERS), ",");
-      while (st.hasMoreTokens()) {
-        String providerClass = st.nextToken();
+      for (int i = 0; i < providersClasses.length; i++) {
+        String providerClass = providersClasses[i];
         if (!UtilString.isVoid(providerClass)) {
-          Class<IProvider> clazz = (Class<IProvider>) Class.forName(providerClass);
-          Constructor<IProvider> constructor = clazz.getConstructor();
-          IProvider provider = constructor.newInstance();
-          lProviders.put(provider.getSource(), provider);
+          Class<ILyricsProvider> clazz = (Class<ILyricsProvider>) Class.forName(providerClass);
+          ILyricsProvider provider = clazz.newInstance();
+          providers.add(provider);
           Log.debug("Added Lyrics provider " + providerClass);
         }
       }
     } catch (Exception e) {
       Log.error(e);
     }
-    return lProviders;
   }
 
   /**
@@ -98,7 +104,7 @@ public final class LyricsService {
 
     current = null;
     Log.debug("Retrieving lyrics for artist {{" + artist + "}} and song {{" + title + "}}");
-    for (final IProvider provider : getProviders().values()) {
+    for (final ILyricsProvider provider : getProviders()) {
       lyrics = provider.getLyrics(artist, title);
       current = provider;
       if (lyrics != null) {
@@ -113,14 +119,14 @@ public final class LyricsService {
    * 
    * @return the map of loaded providers
    */
-  public static Map<String, IProvider> getProviders() {
+  public static List<ILyricsProvider> getProviders() {
     if (providers == null) {
-      providers = loadProviders();
+      loadProviders();
     }
     return providers;
   }
 
-  public static IProvider getCurrentProvider() {
+  public static ILyricsProvider getCurrentProvider() {
     return current;
   }
 }

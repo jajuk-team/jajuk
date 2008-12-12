@@ -199,8 +199,8 @@ public class LyricsView extends ViewAdapter implements Observer {
           // AWT dispatcher thread
           lyrics = LyricsService.getLyrics(track.getAuthor().getName2(), track.getName());
           if (lyrics != null) {
-            sURL = LyricsService.getCurrentProvider().getQueryString(track.getAuthor().getName2(),
-                track.getName());
+            sURL = LyricsService.getCurrentProvider().getWebURL(track.getAuthor().getName2(),
+                track.getName()).toString();
           } else {
             sURL = "<none>";
           }
