@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src/main/java"/>
+	<classpathentry kind="src" path="src/test/java"/>
 	<classpathentry kind="src" path="src/main/resources"/>
-	<classpathentry kind="src" path="src/test"/>
 	<classpathentry kind="lib" path="lib/vorbisspi-1.0.1.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="lib/jlayer-1.0.jar"/>
@@ -38,5 +38,6 @@
 	<classpathentry kind="lib" path="lib/vldocking-2.1.5.jar" sourcepath="/prog/api/vldocking-2.1.5/src"/>
 	<classpathentry kind="lib" path="lib/substance-5.0_jajuk.jar"/>
 	<classpathentry kind="lib" path="lib/jaudiotagger-1.142.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
