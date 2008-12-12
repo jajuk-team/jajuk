@@ -159,7 +159,7 @@ public final class History extends DefaultHandler implements ErrorHandler, Obser
     Iterator<HistoryItem> it = vHistory.iterator();
     while (it.hasNext()) {
       HistoryItem hi = it.next();
-      if (hi.toString() == null) {
+      if (UtilString.isVoid(hi.toString())) {
         it.remove();
       }
     }
