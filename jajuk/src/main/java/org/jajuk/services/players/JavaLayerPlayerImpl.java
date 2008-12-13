@@ -331,7 +331,9 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, Const, BasicPlayerListe
             public void run() {
               FIFO.finished();
               // Update track rate
-              fCurrent.getTrack().updateRate();
+              if (getCurrentPosition() > Const.RATING_NO_UPDATE_PERIOD) {
+                fCurrent.getTrack().updateRate();
+              }
             }
           }.start();
         }
@@ -344,7 +346,9 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, Const, BasicPlayerListe
           @Override
           public void run() {
             FIFO.finished();
-            fCurrent.getTrack().updateRate();
+            if (getCurrentPosition() > Const.RATING_NO_UPDATE_PERIOD) {
+              fCurrent.getTrack().updateRate();
+            }
           }
         }.start();
       }

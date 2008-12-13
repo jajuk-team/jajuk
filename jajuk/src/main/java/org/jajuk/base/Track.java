@@ -390,7 +390,6 @@ public class Track extends LogicalItem implements Comparable<Track> {
    * @see http://trac.jajuk.info/ticket/1179
    */
   public void updateRate() {
-    RatingManager.setRateHasChanged(true);
     // rate contains final rate [0,100]
     long rate = 0;
     // Normalize values to avoid division by zero
@@ -433,6 +432,7 @@ public class Track extends LogicalItem implements Comparable<Track> {
    */
   protected void setRate(long rate) {
     setProperty(Const.XML_TRACK_RATE, rate);
+    RatingManager.setRateHasChanged(true);
   }
 
   /**

@@ -140,13 +140,18 @@ public interface Const {
 
   /* Number of tracks for global actions (global shuffle, bestof...) */
   int NB_TRACKS_ON_ACTION = 200;
-  
+
   /**
-   * The time we wait for mplayer to start up in secs. 
-   * It can take some time on slow or
-   * heavily loaded machines...
+   * The time we wait for mplayer to start up in secs. It can take some time on
+   * slow or heavily loaded machines...
    */
   int MPLAYER_START_TIMEOUT = 10;
+
+  /**
+   * Percent of the played track (ex: 0.2f = 20%) when the rating is not
+   * computed so we don't consider this playtime as significant  
+   */
+  float RATING_NO_UPDATE_PERIOD = 0.15f;
 
   /** Number of milliseconds in a day */
   int MILLISECONDS_IN_A_DAY = MILLISECONDS_IN_A_SECOND * SECONDS_IN_A_MINUTE * MINUTES_IN_AN_HOUR
@@ -1134,14 +1139,14 @@ public interface Const {
   // Alarms List
 
   String ALARMS_SET = "jajuk.alarms";
-  
-    // Preferences
-  long PREFERENCE_ADORE=3;
-  long PREFERENCE_LOVE=2;
-  long PREFERENCE_LIKE=1;
-  long PREFERENCE_UNSET=0;
-  long PREFERENCE_AVERAGE=-1;
-  long PREFERENCE_POOR=-2;
-  long PREFERENCE_HATE=-3;
+
+  // Preferences
+  long PREFERENCE_ADORE = 3;
+  long PREFERENCE_LOVE = 2;
+  long PREFERENCE_LIKE = 1;
+  long PREFERENCE_UNSET = 0;
+  long PREFERENCE_AVERAGE = -1;
+  long PREFERENCE_POOR = -2;
+  long PREFERENCE_HATE = -3;
 
 }

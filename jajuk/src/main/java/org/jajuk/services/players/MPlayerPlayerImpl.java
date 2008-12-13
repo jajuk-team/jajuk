@@ -194,8 +194,11 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
             bEOF = true;
             // Launch next track
             try {
-              // Update track rate
-              fCurrent.getTrack().updateRate();
+              // Update track rate after a starting period
+              // TODO : maybe should we disable rating update in intro mode
+              if (getCurrentPosition() > Const.RATING_NO_UPDATE_PERIOD) {
+                fCurrent.getTrack().updateRate();
+              }
 
               // If using crossfade, ignore end of file
               if (!bFading
@@ -229,7 +232,9 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
   @Override
   public void stop() throws Exception {
     // Update track rate
-    fCurrent.getTrack().updateRate();
+    if (getCurrentPosition() > Const.RATING_NO_UPDATE_PERIOD) {
+      fCurrent.getTrack().updateRate();
+    }
     // Call generic stop
     super.stop();
   }
@@ -327,7 +332,6 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
     return lTime;
   }
 
-  
   /*
    * (non-Javadoc)
    * 
