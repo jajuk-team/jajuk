@@ -1135,9 +1135,6 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
     // Reset this flag
     bForceCoverReload = false;
 
-    // clear image cache
-    UtilSystem.clearCache();
-
     org.jajuk.base.File fCurrent = fileReference;
     // check if a file has been given for this cover view
     // if not, take current cover

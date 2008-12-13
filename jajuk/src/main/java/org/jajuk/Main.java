@@ -580,6 +580,9 @@ public final class Main {
           // Switch to sorted mode, must be done before starting auto-refresh
           // thread !
           ItemManager.switchAllManagersToOrderState();
+          
+          // Clear covers images cache
+          UtilSystem.clearCache();
 
           // Launch auto-refresh thread
           DeviceManager.getInstance().startAutoRefreshThread();

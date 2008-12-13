@@ -27,6 +27,7 @@ import java.net.URL;
 
 import javax.swing.ImageIcon;
 
+import org.jajuk.services.players.FIFO;
 import org.jajuk.util.Const;
 import org.jajuk.util.DownloadManager;
 import org.jajuk.util.UtilGUI;
@@ -87,8 +88,12 @@ public class Cover implements Comparable<Cover>, Const {
   public Cover(final URL url, final CoverType type) throws Exception {
     this.url = url;
     this.type = type;
-    // Create an unique id for this cover
-    id = Long.toString((long) (System.currentTimeMillis() * UtilSystem.getRandom().nextDouble()));
+    // Create an unique id for this cover, we use the track id
+    if (FIFO.getCurrentFile() != null && !FIFO.isPlayingRadio()) {
+      id = FIFO.getCurrentFile().getTrack().getID();
+    } else {
+      id = Long.toString((long) (System.currentTimeMillis() * UtilSystem.getRandom().nextDouble()));
+    }
     // only remote and no_cover are created by URL (file:// for no_cover, the
     // image is inside the jajuk jar)
     if (type == CoverType.REMOTE_COVER || type == CoverType.NO_COVER) {
