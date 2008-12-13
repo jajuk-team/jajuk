@@ -145,6 +145,10 @@ public class PreferenceToolbar extends JajukJToolbar implements Observer {
     add(jbBan);
     add(jcbPreference);
     ObservationManager.register(this);
+    // Force initial update
+    if (FIFO.isPlayingTrack()) {
+      update(new Event(JajukEvents.FILE_LAUNCHED));
+    }
   }
 
   public Set<JajukEvents> getRegistrationKeys() {
@@ -187,6 +191,7 @@ public class PreferenceToolbar extends JajukJToolbar implements Observer {
           // Update evaluation toolbar
           jcbPreference.setEnabled(true);
           jbBan.setEnabled(true);
+          updateBanIcon();
           setPreference(FIFO.getCurrentFile().getTrack().getLongValue(Const.XML_TRACK_PREFERENCE));
         } else if (JajukEvents.ZERO.equals(event.getSubject())
             || JajukEvents.PLAYER_STOP.equals(event.getSubject())) {

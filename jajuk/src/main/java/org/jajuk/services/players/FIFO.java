@@ -1203,12 +1203,28 @@ public final class FIFO {
     writer.close();
   }
 
+  /**
+   * Return whether a web radio is being played
+   * @return whether a web radio is being played
+   */
   public static boolean isPlayingRadio() {
     return FIFO.playingRadio;
   }
 
+  /**
+   * Return current web radio if any or null otherwise
+   * @return current web radio if any or null otherwise
+   */
   public static WebRadio getCurrentRadio() {
     return FIFO.currentRadio;
+  }
+
+ /**
+   * Return whether a track is being played
+   * @return whether a track is being played
+   */
+   public static boolean isPlayingTrack() {
+    return !bStop && !isPlayingRadio();
   }
 
   /**
