@@ -217,7 +217,7 @@ public class LocalAlbumThumbnail extends AbstractThumbnail {
     if (album.getStyle() != null) {
       sOut += "<br>" + Messages.getString("Property_style") + ": <a href='file://"
           + Const.XML_STYLE + '?' + firstTrack.getStyle().getID() + "'>"
-          + firstTrack.getStyle().getName2() + "</a>";
+          + UtilString.getLimitedString(firstTrack.getStyle().getName2(),20) + "</a>";
     }
     // Display year
     if (album.getYear() != null) {
@@ -247,7 +247,7 @@ public class LocalAlbumThumbnail extends AbstractThumbnail {
         sOut += UtilString.padNumber(track.getOrder(), 2) + ": ";
       }
       sOut += "<b>" + "<a href='file://" + Const.XML_TRACK + '?' + track.getID() + "'>"
-          + track.getName() + "</a>" + " (";
+          + UtilString.getLimitedString(track.getName(),30) + "</a>" + " (";
       sOut += UtilString.formatTimeBySec(track.getDuration()) + ") </b>";
       if (album.getYear() == null && track.getYear().getValue() != 0) {
         sOut += " - " + track.getYear().getValue() + "   ";
@@ -256,7 +256,7 @@ public class LocalAlbumThumbnail extends AbstractThumbnail {
       // level
       if (album.getAuthor() == null
           && !track.getAuthor().getName2().equals(Messages.getString(Const.UNKNOWN_AUTHOR))) {
-        sOut += " - " + track.getAuthor().getName2() + "   ";
+        sOut += " - " + UtilString.getLimitedString(track.getAuthor().getName2(),20) + "   ";
       }
     }
     sOut += "</TD></TR></TABLE></html>";
