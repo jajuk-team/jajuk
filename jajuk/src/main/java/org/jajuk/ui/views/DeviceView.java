@@ -28,6 +28,8 @@ import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -62,8 +64,7 @@ import org.jajuk.util.UtilGUI;
  * <p>
  * Configuration perspective
  */
-public class DeviceView extends ViewAdapter implements IView, ActionListener,
-    MouseListener {
+public class DeviceView extends ViewAdapter implements IView, ActionListener, MouseListener {
   private static final long serialVersionUID = 1L;
 
   private static DeviceView dv; // self instance
@@ -244,6 +245,15 @@ public class DeviceView extends ViewAdapter implements IView, ActionListener,
       di.setToolTipText(sTooltip);
       di.addMouseListener(this);
       di.setToolTipText(device.getDeviceTypeS());
+      di.addKeyListener(new KeyAdapter() {
+        @Override
+        public void keyTyped(KeyEvent e) {
+          super.keyTyped(e);
+          if (e.getKeyChar() == KeyEvent.VK_DELETE) {
+            handleDelete();
+          }
+        }
+      });
       jpDevices.add(di);
     }
   }
@@ -293,10 +303,7 @@ public class DeviceView extends ViewAdapter implements IView, ActionListener,
     }
 
     if (ae.getActionCommand().equals(JajukEvents.DEVICE_DELETE.toString())) {
-      DeviceManager.getInstance().removeDevice(diSelected.getDevice());
-      jpDevices.remove(diSelected);
-      // refresh views
-      ObservationManager.notify(new Event(JajukEvents.DEVICE_REFRESH));
+      handleDelete();
     } else if (ae.getActionCommand().equals(JajukEvents.DEVICE_MOUNT.toString())) {
       try {
         diSelected.getDevice().mount();
@@ -319,9 +326,8 @@ public class DeviceView extends ViewAdapter implements IView, ActionListener,
     } else if (ae.getActionCommand().equals(JajukEvents.DEVICE_SYNCHRO.toString())) {
       diSelected.getDevice().synchronize(true);
     } else if (ae.getActionCommand().equals(JajukEvents.DEVICE_TEST.toString())) {
-      new Thread("Asynchronouse device test thread") {// test asynchronously in
-        // case of delay (samba
-        // pbm for ie)
+      // Test asynchronously in case of delay (samba issue for ie)
+      new Thread("Asynchronous device test thread") {
         @Override
         public void run() {
           if (diSelected.getDevice().test()) {
@@ -333,9 +339,17 @@ public class DeviceView extends ViewAdapter implements IView, ActionListener,
           }
         }
       }.start();
-    } /*
-       * else if (ae.getActionCommand().equals(JajukEvents.WIZARD.toString())) { }
-       */
+    }
+  }
+
+  /**
+   * Device deleting
+   */
+  void handleDelete() {
+    DeviceManager.getInstance().removeDevice(diSelected.getDevice());
+    jpDevices.remove(diSelected);
+    // refresh views
+    ObservationManager.notify(new Event(JajukEvents.DEVICE_REFRESH));
   }
 
   /*
@@ -404,12 +418,13 @@ public class DeviceView extends ViewAdapter implements IView, ActionListener,
   }
 
   private void selectItem(final MouseEvent e) {
-    boolean bSameDevice = ((diSelected != null) && e.getSource().equals(diSelected));// be
+    boolean bSameDevice = ((diSelected != null) && e.getSource().equals(diSelected));
     // remove old device item border if needed
     if (!bSameDevice && diSelected != null) {
       diSelected.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
     }
     diSelected = (DeviceItem) e.getSource();
+    diSelected.requestFocus();
     // Test if it is the "NEW" device
     if (((DeviceItem) e.getSource()).getDevice() == null) {
       return;
@@ -465,8 +480,11 @@ class DeviceItem extends JPanel {
     setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
     setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
     JLabel jlIcon = new JLabel(icon);
+    // Add some insets around the icon
+    jlIcon.setBorder(BorderFactory.createEmptyBorder(1,1,1,1));
     add(jlIcon);
     JLabel jlName = new JLabel(sName);
+    jlName.setBorder(BorderFactory.createEmptyBorder(1,1,1,1));
     add(jlName);
   }
 
@@ -484,5 +502,5 @@ class DeviceItem extends JPanel {
   public void setDevice(Device device) {
     this.device = device;
   }
-
+  
 }
