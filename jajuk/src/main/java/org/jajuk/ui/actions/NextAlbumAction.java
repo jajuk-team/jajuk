@@ -45,7 +45,7 @@ public class NextAlbumAction extends JajukAction {
       @Override
       public void run() {
         // Take FIFO lock
-        synchronized (FIFO.MUTEX) {
+        synchronized (FIFO.class) {
           try {
             FIFO.playNextAlbum();
           } catch (Exception e) {

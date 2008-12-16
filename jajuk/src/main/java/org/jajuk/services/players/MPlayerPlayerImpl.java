@@ -71,8 +71,6 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
   /** current file */
   private org.jajuk.base.File fCurrent;
 
-  /** Inc rating flag */
-  // private boolean bHasBeenRated = false;
   /**
    * Position and elapsed time getter
    */
@@ -87,7 +85,7 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
       Track current = fCurrent.getTrack();
       while (!bStop) { // stop this thread when exiting
         try {
-          if (!bPaused && !bStop) {
+          if (!bPaused) {
             // a get_percent_pos resumes (mplayer issue)
             sendCommand("get_time_pos");
             // every 2 time units, increase actual play time. We wait this
@@ -132,7 +130,7 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
           // produces lots of output: Log.debug("Output from MPlayer: " + line);
 
           if (line.matches(".*ANS_TIME_POSITION.*")) {
-            // Stream no more opening
+            // Stream is actually opened now
             bOpening = false;
 
             StringTokenizer st = new StringTokenizer(line, "=");
@@ -142,27 +140,27 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
             Conf
                 .setProperty(Const.CONF_STARTUP_LAST_POSITION, Float.toString(getCurrentPosition()));
             // Cross-Fade test
-            if (!bFading && iFadeDuration > 0 && lDuration > 0
-            // can be null before getting length
+            if (!bFading && iFadeDuration > 0
+            // Length = 0 for some buggy audio headers
+                && lDuration > 0
+                // Does fading time happened ?
                 && lTime > (lDuration - iFadeDuration)
-                // do not fade if the track is very short
-                && (lTime > 3 * iFadeDuration)) {
+                // Do not fade if the track is very short
+                && (lDuration > 3 * iFadeDuration)) {
               bFading = true;
               fadingVolume = fVolume;
-              // force a finished (that doesn't stop but only
+              // Force finishing (doesn't stop but only
               // make a FIFO request to switch track)
               FIFO.finished();
             }
             // If fading, decrease sound progressively
             if (bFading) {
               // computes the volume we have to sub to reach zero
-              // at last
-              // progress()
+              // at last progress()
               float fVolumeStep = fadingVolume
               // we double the refresh period to make sure to
                   // reach 0 at the end of iterations because
-                  // we don't
-                  // as many mplayer response as queries,
+                  // we don't as many mplayer response as queries,
                   // tested on 10 & 20 sec of fading
                   * ((float) PROGRESS_STEP / iFadeDuration);
               float fNewVolume = fVolume - fVolumeStep;
@@ -176,11 +174,14 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
                 Log.error(e);
               }
             }
-            // test end of length for intro mode
-            if (length != TO_THE_END && lDuration > 0
-            // can be null before getting length
+            // Test end of length for intro mode
+            // Length=-1 means there is no max length
+            if (length != TO_THE_END
+            // Duration = 0 in rare case due to header issue
+                && lDuration > 0
+                // Is intro length fully played ?
                 && (lTime - (fPosition * lDuration)) > length) {
-              // length=-1 means there is no max length
+              // No fading in intro mode
               bFading = false;
               FIFO.finished();
             }
@@ -194,25 +195,26 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
             bEOF = true;
             // Launch next track
             try {
+              // Do not launch next track if not opening: it means
+              // that the file is in error (EOF comes
+              // before any play) and the FIFO.finished() is processed by
+              // Player on exception processing
+              if (bOpening) {
+                bOpening = false;
+                break;
+              }
+
               // Update track rate after a starting period
               // TODO : maybe should we disable rating update in intro mode
               if (getCurrentPosition() > Const.RATING_NO_UPDATE_PERIOD) {
                 fCurrent.getTrack().updateRate();
               }
 
-              // If using crossfade, ignore end of file
-              if (!bFading
-              // Do not launch next track if not opening: it means
-                  // that the file is in error (EOF comes
-                  // before any play) and the finished() is processed by
-                  // Player on exception processing
-                  && !bOpening) {
-                // Benefit from end of file to perform a full gc
-                System.gc();
+              // If fading, ignore end of file
+              if (!bFading) {
                 FIFO.finished();
               } else {
-                // If fading, next track has already been
-                // launched
+                // If fading, next track has already been launched
                 bFading = false;
               }
             } catch (Exception e) {
@@ -255,7 +257,6 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
     this.bFading = false;
     this.fCurrent = file;
     this.bOpening = true;
-    // this.bHasBeenRated = false;
     this.bEOF = false;
     this.iFadeDuration = 1000 * Conf.getInt(Const.CONF_FADE_DURATION);
     ProcessBuilder pb = new ProcessBuilder(buildCommand(file.getAbsolutePath()));
@@ -302,9 +303,9 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
         new Thread("MPlayer process kill thread") {
           @Override
           public void start() {
-            Log.debug("OOT Mplayer process, try to kill it");
+            Log.warn("OOT Mplayer process, try to kill it");
             proc.destroy();
-            Log.debug("OK, the process should have been killed");
+            Log.warn("OK, the process should have been killed now");
           }
         }.start();
       }

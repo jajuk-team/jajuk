@@ -45,7 +45,7 @@ public class PreviousAlbumAction extends JajukAction {
     new Thread() {
       @Override
       public void run() {
-        synchronized (FIFO.MUTEX) {
+        synchronized (FIFO.class) {
           try {
             FIFO.playPreviousAlbum();
           } catch (Exception e) {

@@ -38,7 +38,6 @@ import org.jajuk.base.FileManager;
 import org.jajuk.events.Event;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
-import org.jajuk.services.dj.AmbienceManager;
 import org.jajuk.services.webradio.WebRadio;
 import org.jajuk.ui.helpers.JajukTimer;
 import org.jajuk.util.Conf;
@@ -83,11 +82,6 @@ public final class FIFO {
 
   /** Current played radio */
   private static WebRadio currentRadio;
-
-  /**
-   * Shared mutex for locking.
-   */
-  public static final byte[] MUTEX = new byte[0];
 
   /**
    * No constructor, this class is used statically only
@@ -218,17 +212,6 @@ public final class FIFO {
     try {
       // wake up FIFO if stopped
       bStop = false;
-      // display an error message if selection is void
-      if (alItems.size() == 0) {
-        // If current ambience is not "all", show selected ambience
-        // to alert user he selected it
-        if (AmbienceManager.getInstance().getSelectedAmbience() == null) {
-          Messages.showWarningMessage(Messages.getString("Error.018"));
-        } else {
-          Messages.showWarningMessage(Messages.getString("Error.164") + " "
-              + AmbienceManager.getInstance().getSelectedAmbience().getName());
-        }
-      }
       // first try to mount needed devices
       Iterator<StackItem> it = alItems.iterator();
       boolean bNoMount = false;
@@ -267,7 +250,7 @@ public final class FIFO {
           }
         }
       }
-      synchronized (FIFO.MUTEX) {
+      synchronized (FIFO.class) {
         // test if we have yet some files to consider
         if (alItems.size() == 0) {
           return;
@@ -462,7 +445,7 @@ public final class FIFO {
               .getString(Const.CONF_OPTIONS_INTRO_BEGIN)) / 100, 1000 * Integer.parseInt(Conf
               .getString(Const.CONF_OPTIONS_INTRO_LENGTH)));
         } else {
-          // play it
+          // normal mode
           bPlayOK = Player.play(fCurrent, 0.0f, Const.TO_THE_END);
         }
       }
@@ -500,16 +483,11 @@ public final class FIFO {
         } else {
           itemLast = null;
         }
-        // Call finished asynchronously to avoid looping
         // We test if user required stop. Must be done here to make a chance to
         // stop before starting a new track
-        new Thread() {
-          public void run() {
-            if (!bStop) {
-              FIFO.finished();
-            }
-          }
-        }.start();
+        if (!bStop) {
+          FIFO.finished();
+        }
       }
     } catch (Throwable t) {// catch even Errors (OutOfMemory for example)
       Log.error(122, t);
@@ -1205,6 +1183,7 @@ public final class FIFO {
 
   /**
    * Return whether a web radio is being played
+   * 
    * @return whether a web radio is being played
    */
   public static boolean isPlayingRadio() {
@@ -1213,17 +1192,19 @@ public final class FIFO {
 
   /**
    * Return current web radio if any or null otherwise
+   * 
    * @return current web radio if any or null otherwise
    */
   public static WebRadio getCurrentRadio() {
     return FIFO.currentRadio;
   }
 
- /**
+  /**
    * Return whether a track is being played
+   * 
    * @return whether a track is being played
    */
-   public static boolean isPlayingTrack() {
+  public static boolean isPlayingTrack() {
     return !bStop && !isPlayingRadio();
   }
 

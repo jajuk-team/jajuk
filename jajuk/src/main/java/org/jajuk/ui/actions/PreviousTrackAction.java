@@ -83,7 +83,7 @@ public class PreviousTrackAction extends JajukAction {
         new Thread() {
           @Override
           public void run() {
-            synchronized (FIFO.MUTEX) {
+            synchronized (FIFO.class) {
               try {
                 FIFO.playPrevious();
               } catch (Exception e) {

@@ -51,7 +51,7 @@ public class ReplayAlbumAction extends JajukAction {
     new Thread() {
       @Override
       public void run() {
-        synchronized (FIFO.MUTEX) {
+        synchronized (FIFO.class) {
           try {
             File current = FIFO.getCurrentFile();
             if (current != null) {
