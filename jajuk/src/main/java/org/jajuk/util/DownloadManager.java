@@ -31,7 +31,6 @@ import java.io.IOException;
 import java.net.Authenticator;
 import java.net.HttpURLConnection;
 import java.net.PasswordAuthentication;
-import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLEncoder;
@@ -52,8 +51,11 @@ public final class DownloadManager {
 
   private static Proxy proxy;
 
-  /** Maps urls and associated files in cache */
-  private static Map<URI, String> urlCache = new HashMap<URI, String>(100);
+  /** Maps cached urls -> file */
+  private static Map<URL, File> urlCache = new HashMap<URL, File>(100);
+
+  /** List of urls being downloaded (used to avoid concurrency) * */
+  private static List<URL> downloading = new ArrayList<URL>(2);
 
   /**
    * private constructor to avoid instantiating utility class
@@ -158,32 +160,42 @@ public final class DownloadManager {
    *           If a network problem occurs or a temporary file cannot be
    *           written.
    */
-  public static File downloadCover(URL url, String pID) throws URISyntaxException, IOException {
-    String id = pID;
-    // Check if url is known in cache
-    String idCache = urlCache.get(url.toURI());
-    if (idCache != null) {
-      id = idCache;
+  public static File downloadCover(URL url) throws IOException {
+    /*
+     * We avoid concurrency on downloading the cached image. Note that the
+     * downloading list must be synchronized to avoid concurrency when accessing
+     * it
+     */
+    try {
+      File file = UtilSystem.getCachePath(url);
+      synchronized (downloading) {
+        // check if file is not already downloaded or being downloaded
+        if (file != null && file.exists()) {
+          return file;
+        }
+        if (downloading.contains(url)) {
+          Log.debug("Already downloading : " + url);
+          return file;
+        }
+        downloading.add(url);
+      }
+      HttpURLConnection connection = NetworkUtils.getConnection(url, proxy);
+      File out = UtilSystem.getCachePath(url);
+      BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(out));
+      BufferedInputStream bis = new BufferedInputStream(connection.getInputStream());
+      int i;
+      while ((i = bis.read()) != -1) {
+        bos.write(i);
+      }
+      bos.flush();
+      bos.close();
+      bis.close();
+      connection.disconnect();
+      urlCache.put(url, file);
+      return out;
+    } finally {
+      downloading.remove(url);
     }
-    // check if file is not already downloaded or being downloaded
-    File file = UtilSystem.getCachePath(url, id);
-    if (file.exists()) {
-      return file;
-    }
-    HttpURLConnection connection = NetworkUtils.getConnection(url, proxy);
-    File out = UtilSystem.getCachePath(url, id);
-    BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(out));
-    BufferedInputStream bis = new BufferedInputStream(connection.getInputStream());
-    int i;
-    while ((i = bis.read()) != -1) {
-      bos.write(i);
-    }
-    bos.flush();
-    bos.close();
-    bis.close();
-    connection.disconnect();
-    urlCache.put(url.toURI(), id);
-    return out;
   }
 
   /**

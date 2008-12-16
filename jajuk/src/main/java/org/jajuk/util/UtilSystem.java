@@ -453,21 +453,19 @@ public final class UtilSystem {
   }
 
   /**
+   * Return destination file in cache for a given URL <br>
+   * We store the file using the URL's MD3 5 hash to ensure unicity and avoid
+   * unexpected characters in file names
+   * 
    * @param url
    *          resource URL
-   * @param id
-   *          unique identifier for the file
-   * @return Cache directory
+   * @return File in cache if any or null otherwise
+   * 
    */
-  public static File getCachePath(final URL url, final String id) {
+  public static File getCachePath(final URL url) {
     File out = null;
-    if (id == null) {
-      out = UtilSystem.getConfFileByPath(Const.FILE_CACHE + '/'
-          + UtilSystem.getOnlyFile(url.toString()));
-    } else {
-      out = UtilSystem.getConfFileByPath(Const.FILE_CACHE + '/' + id + '_'
-          + UtilSystem.getOnlyFile(url.toString()));
-    }
+    out = UtilSystem.getConfFileByPath(Const.FILE_CACHE + '/'
+        + MD5Processor.hash(url.toString()));
     return out;
   }
 

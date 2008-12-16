@@ -52,6 +52,8 @@ import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.services.players.FIFO;
 import org.jajuk.services.players.StackItem;
+import org.jajuk.ui.actions.ActionManager;
+import org.jajuk.ui.actions.JajukActions;
 import org.jajuk.ui.helpers.ILaunchCommand;
 import org.jajuk.ui.helpers.JajukTableModel;
 import org.jajuk.ui.helpers.PlayHighlighterPredicate;
@@ -202,7 +204,7 @@ public class QueueView extends PlaylistView {
         }
       }
     });
-    //Register keystrokes over table
+    // Register keystrokes over table
     editorTable.putClientProperty(Const.DETAIL_SELECTION, editorTable.getSelection());
     super.setKeystrokes();
   }
@@ -407,12 +409,13 @@ public class QueueView extends PlaylistView {
         }
         refreshQueue();
       } else if (ae.getSource() == jbClear) {
-        // Stop the player
-        FIFO.stopRequest();
         // Reset the FIFO
         FIFO.reset(); // reinit all variables
-        // Request all GUI reset
-        ObservationManager.notify(new Event(JajukEvents.ZERO));
+        try {
+          ActionManager.getAction(JajukActions.STOP_TRACK).perform(null);
+        } catch (Exception e) {
+          Log.error(e);
+        }
       }
 
     } catch (Exception e2) {
@@ -434,6 +437,12 @@ public class QueueView extends PlaylistView {
     int iLastRow = editorTable.getRowCount() - 1;
     if (iRows[0] == editorTable.getRowCount()) {
       editorTable.getSelectionModel().setSelectionInterval(iLastRow, iLastRow);
+    }
+    // If no more track, we simulate a stop
+    try {
+      ActionManager.getAction(JajukActions.STOP_TRACK).perform(null);
+    } catch (Exception e) {
+      Log.error(e);
     }
   }
 

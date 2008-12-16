@@ -1113,18 +1113,18 @@ public interface Const {
   String FRAME_MAXIMIZED = "max";
 
   // Alarm Clock
-  String ALARM_TIME_HOUR = "hour";
+  String CONF_ALARM_TIME_HOUR = "hour";
 
-  String ALARM_TIME_MINUTES = "minutes";
+  String CONF_ALARM_TIME_MINUTES = "minutes";
 
-  String ALARM_TIME_SECONDS = "seconds";
+  String CONF_ALARM_TIME_SECONDS = "seconds";
 
-  String ALARM_MESSAGE = "alarm.message";
+  String CONF_ALARM_MESSAGE = "alarm.message";
 
   // Alarm mode
-  String ALARM_START_MODE = "Start Playing";
+  String CONF_ALARM_START_MODE = "Start Playing";
 
-  String ALARM_STOP_MODE = "Stop Playing";
+  String CONF_ALARM_STOP_MODE = "Stop Playing";
 
   String CONF_ALARM_ACTION = "jajuk.alarm.action";
 
@@ -1135,10 +1135,6 @@ public interface Const {
   String CONF_ALARM_DAILY = "jajuk.alarm.daily";
 
   String CONF_FORMAT_TIME_ELAPSED = "jajuk.format_elapsed_time";
-
-  // Alarms List
-
-  String ALARMS_SET = "jajuk.alarms";
 
   // Preferences
   long PREFERENCE_ADORE = 3;

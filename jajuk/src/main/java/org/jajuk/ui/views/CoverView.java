@@ -152,9 +152,6 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
   /** Used Cover index */
   int index = 0;
 
-  /** Generic locker */
-  private final byte[] bLock = new byte[0];
-
   /** Event ID */
   private volatile int iEventID;
 
@@ -166,6 +163,9 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
 
   /** Force next track cover reload flag* */
   private boolean bForceCoverReload = true;
+
+  /** Whether the cover is being displayed */
+  private boolean bDisplaying = false;
 
   /**
    * Constructor
@@ -185,6 +185,163 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
    */
   public CoverView(final org.jajuk.base.File file) {
     fileReference = file;
+  }
+  
+   /*
+   * (non-Javadoc)
+   * 
+   * @see org.jajuk.ui.IView#display()
+   */
+  public void initUI() {
+    // global layout
+    final double size[][] = { { TableLayoutConstants.FILL },
+        { TableLayoutConstants.PREFERRED, 5, TableLayoutConstants.FILL, 5 } };
+    setLayout(new TableLayout(size));
+    // Control panel
+    jpControl = new JPanel();
+    jpControl.setBorder(BorderFactory.createEtchedBorder());
+    final JToolBar jtb = new JajukJToolbar();
+    jbPrevious = new JajukButton(IconLoader.getIcon(JajukIcons.PREVIOUS));
+    jbPrevious.addActionListener(this);
+    jbPrevious.setToolTipText(Messages.getString("CoverView.4"));
+    jbNext = new JajukButton(IconLoader.getIcon(JajukIcons.NEXT));
+    jbNext.addActionListener(this);
+    jbNext.setToolTipText(Messages.getString("CoverView.5"));
+    jbDelete = new JajukButton(IconLoader.getIcon(JajukIcons.DELETE));
+    jbDelete.addActionListener(this);
+    jbDelete.setToolTipText(Messages.getString("CoverView.2"));
+    jbSave = new JajukButton(IconLoader.getIcon(JajukIcons.SAVE));
+    jbSave.addActionListener(this);
+    jbSave.setToolTipText(Messages.getString("CoverView.6"));
+    jbDefault = new JajukButton(IconLoader.getIcon(JajukIcons.DEFAULT_COVER));
+    jbDefault.addActionListener(this);
+    jbDefault.setToolTipText(Messages.getString("CoverView.8"));
+    jlSize = new JLabel("");
+    jlFound = new JLabel("");
+    jlSearching = new JLabel("", IconLoader.getIcon(JajukIcons.NET_SEARCH), SwingConstants.CENTER);
+    jcbAccuracy = new JComboBox();
+    // Add tooltips on combo items
+    jcbAccuracy.setRenderer(new BasicComboBoxRenderer() {
+      private static final long serialVersionUID = -6943363556191659895L;
+
+      @Override
+      public Component getListCellRendererComponent(final JList list, final Object value,
+          final int index, final boolean isSelected, final boolean cellHasFocus) {
+        super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+        switch (index) {
+        case 0:
+          setToolTipText(Messages.getString("ParameterView.156"));
+          break;
+        case 1:
+          setToolTipText(Messages.getString("ParameterView.157"));
+          break;
+        case 2:
+          setToolTipText(Messages.getString("ParameterView.158"));
+          break;
+        case 3:
+          setToolTipText(Messages.getString("ParameterView.216"));
+          break;
+        case 4:
+          setToolTipText(Messages.getString("ParameterView.217"));
+          break;
+        case 5:
+          setToolTipText(Messages.getString("ParameterView.218"));
+          break;
+        }
+        setBorder(new EmptyBorder(0, 3, 0, 3));
+        return this;
+      }
+    });
+    jcbAccuracy.setMinimumSize(new Dimension(40, 0));
+    jcbAccuracy.setPreferredSize(new Dimension(40, 0));
+    jcbAccuracy.setToolTipText(Messages.getString("ParameterView.155"));
+
+    jcbAccuracy.addItem(IconLoader.getIcon(JajukIcons.ACCURACY_LOW));
+    jcbAccuracy.addItem(IconLoader.getIcon(JajukIcons.ACCURACY_MEDIUM));
+    jcbAccuracy.addItem(IconLoader.getIcon(JajukIcons.ACCURACY_HIGH));
+    jcbAccuracy.addItem(IconLoader.getIcon(JajukIcons.AUTHOR));
+    jcbAccuracy.addItem(IconLoader.getIcon(JajukIcons.ALBUM));
+    jcbAccuracy.addItem(IconLoader.getIcon(JajukIcons.TRACK));
+    int i = 1; // medium accuracy
+    try {
+      i = Conf.getInt(Const.CONF_COVERS_ACCURACY + "_"
+          + ((getPerspective() == null) ? "popup" : getPerspective().getID()));
+    } catch (final Exception e) {
+      // Will reach this point at first launch
+    }
+    jcbAccuracy.setSelectedIndex(i);
+    jcbAccuracy.addActionListener(this);
+
+    jtb.add(jbPrevious);
+    jtb.add(jbNext);
+    jtb.addSeparator();
+    jtb.add(jbDelete);
+    jtb.add(jbSave);
+    jtb.add(jbDefault);
+
+    final double sizeControl[][] = {
+    // Toolbar
+        { 5, TableLayoutConstants.PREFERRED, 10,
+        // size label
+            TableLayoutConstants.FILL, 10,
+            // nb of found covers label
+            TableLayoutConstants.FILL, 5,
+            // Accuracy combo
+            TableLayoutConstants.PREFERRED, 5,
+            // searching icon
+            25, 5 }, { 3, 30, 3 } };
+    final TableLayout layout = new TableLayout(sizeControl);
+    jpControl.setLayout(layout);
+
+    jpControl.add(jtb, "1,1");
+    jpControl.add(jlSize, "3,1,c,c");
+    jpControl.add(jlFound, "5,1");
+    jpControl.add(jcbAccuracy, "7,1");
+    jpControl.add(jlSearching, "9,1,c,c");
+    // Cover view used in catalog view should not listen events
+    if (fileReference == null) {
+      ObservationManager.register(this);
+    }
+    try {
+      // instantiate default cover
+      if (CoverView.nocover == null) {
+        CoverView.nocover = new Cover(Const.IMAGES_SPLASHSCREEN, CoverType.NO_COVER);
+      }
+    } catch (final Exception e) {
+      Log.error(e);
+    }
+    add(jpControl, "0,0");
+    // listen for resize
+    addComponentListener(CoverView.this);
+
+    if (fileReference == null) {
+      if (FIFO.isStopped()) {
+        update(new Event(JajukEvents.ZERO));
+      } else {
+        // request cover refresh after a while to make sure the window owns its
+        // definitive dimension so we avoid the cover to resize at startup
+        new Thread() {
+          @Override
+          public void run() {
+            try {
+              Thread.sleep(3000);
+            } catch (final Exception e) {
+              Log.error(e);
+            }
+            // check if a track has already been launched
+            if (FIFO.isPlayingRadio()) {
+              update(new Event(JajukEvents.WEBRADIO_LAUNCHED, ObservationManager
+                  .getDetailsLastOccurence(JajukEvents.WEBRADIO_LAUNCHED)));
+            } else {
+              update(new Event(JajukEvents.FILE_LAUNCHED));
+            }
+
+          }
+        }.start();
+      }
+    } else {
+      update(new Event(JajukEvents.COVER_NEED_REFRESH));
+    }
   }
 
   /*
@@ -213,7 +370,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
   }
 
   /**
-   * 
+   * Stores accuracy
    */
   private void handleAccuracy() {
     // Note that we have to store/retrieve accuracy using an id. When
@@ -235,7 +392,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
   }
 
   /**
-   * 
+   * Called on the previous cover button event
    */
   private void handlePrevious() {
     // better cover
@@ -250,7 +407,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
   }
 
   /**
-   * 
+   * Called on the next cover button event
    */
   private void handleNext() {
     bGotoBetter = false;
@@ -262,7 +419,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
   }
 
   /**
-   * 
+   * Called on the delete cover button event 
    */
   private void handleDelete() {
     final Cover cover = alCovers.get(index);
@@ -301,7 +458,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
     }
 
     // reorganize covers
-    synchronized (bLock) {
+    synchronized (this) {
       alCovers.remove(index);
       index--;
       if (index < 0) {
@@ -315,7 +472,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
   }
 
   /**
-   * 
+   * Called when saving a cover
    */
   private void handleSave() {
     // save a file with its original name
@@ -338,7 +495,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
             Const.FILE_JAJUK_DOWNLOADED_FILES_SUFFIX).toString();
         try {
           // copy file from cache
-          final File fSource = DownloadManager.downloadCover(cover.getURL(), cover.getDownloadID());
+          final File fSource = DownloadManager.downloadCover(cover.getURL());
           final File file = new File(sFilePath);
           UtilSystem.copy(fSource, file);
           InformationJPanel.getInstance().setMessage(Messages.getString("CoverView.11"),
@@ -359,7 +516,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
   }
 
   /**
-   * 
+   * Called when saving as a cover
    */
   private void handleSaveAs() {
     new Thread() {
@@ -397,7 +554,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
   }
 
   /**
-   * 
+   * Called when making a cover default
    */
   private void handleDefault() {
     { // choose a default
@@ -413,7 +570,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
             Const.FILE_JAJUK_DOWNLOADED_FILES_SUFFIX).toString();
         try {
           // copy file from cache
-          final File fSource = DownloadManager.downloadCover(cover.getURL(), cover.getDownloadID());
+          final File fSource = DownloadManager.downloadCover(cover.getURL());
           final File file = new File(sFilePath);
           UtilSystem.copy(fSource, file);
           final Cover cover2 = new Cover(file, CoverType.SELECTED_COVER);
@@ -612,9 +769,9 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
     final SwingWorker sw = new SwingWorker() {
       @Override
       public Object construct() {
-        synchronized (bLock) {
-          removeComponentListener(CoverView.this);
-          // remove listener to avoid looping
+        synchronized (this) {
+          // Avoid looping
+          bDisplaying = true;
           if (alCovers.size() == 0) {
             // should not append
             alCovers.add(CoverView.nocover);
@@ -677,8 +834,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
       @Override
       public void finished() {
         displayCover(index);
-        removeComponentListener(CoverView.this);
-        addComponentListener(CoverView.this); // listen for resize
+        bDisplaying = false;
       }
     };
     sw.start();
@@ -710,160 +866,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
     return eventSubjectSet;
   }
 
-  /*
-   * (non-Javadoc)
-   * 
-   * @see org.jajuk.ui.IView#display()
-   */
-  public void initUI() {
-    // global layout
-    final double size[][] = { { TableLayoutConstants.FILL },
-        { TableLayoutConstants.PREFERRED, 5, TableLayoutConstants.FILL, 5 } };
-    setLayout(new TableLayout(size));
-    // Control panel
-    jpControl = new JPanel();
-    jpControl.setBorder(BorderFactory.createEtchedBorder());
-    final JToolBar jtb = new JajukJToolbar();
-    jbPrevious = new JajukButton(IconLoader.getIcon(JajukIcons.PREVIOUS));
-    jbPrevious.addActionListener(this);
-    jbPrevious.setToolTipText(Messages.getString("CoverView.4"));
-    jbNext = new JajukButton(IconLoader.getIcon(JajukIcons.NEXT));
-    jbNext.addActionListener(this);
-    jbNext.setToolTipText(Messages.getString("CoverView.5"));
-    jbDelete = new JajukButton(IconLoader.getIcon(JajukIcons.DELETE));
-    jbDelete.addActionListener(this);
-    jbDelete.setToolTipText(Messages.getString("CoverView.2"));
-    jbSave = new JajukButton(IconLoader.getIcon(JajukIcons.SAVE));
-    jbSave.addActionListener(this);
-    jbSave.setToolTipText(Messages.getString("CoverView.6"));
-    jbDefault = new JajukButton(IconLoader.getIcon(JajukIcons.DEFAULT_COVER));
-    jbDefault.addActionListener(this);
-    jbDefault.setToolTipText(Messages.getString("CoverView.8"));
-    jlSize = new JLabel("");
-    jlFound = new JLabel("");
-    jlSearching = new JLabel("", IconLoader.getIcon(JajukIcons.NET_SEARCH), SwingConstants.CENTER);
-    jcbAccuracy = new JComboBox();
-    // Add tooltips on combo items
-    jcbAccuracy.setRenderer(new BasicComboBoxRenderer() {
-      private static final long serialVersionUID = -6943363556191659895L;
-
-      @Override
-      public Component getListCellRendererComponent(final JList list, final Object value,
-          final int index, final boolean isSelected, final boolean cellHasFocus) {
-        super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-        switch (index) {
-        case 0:
-          setToolTipText(Messages.getString("ParameterView.156"));
-          break;
-        case 1:
-          setToolTipText(Messages.getString("ParameterView.157"));
-          break;
-        case 2:
-          setToolTipText(Messages.getString("ParameterView.158"));
-          break;
-        case 3:
-          setToolTipText(Messages.getString("ParameterView.216"));
-          break;
-        case 4:
-          setToolTipText(Messages.getString("ParameterView.217"));
-          break;
-        case 5:
-          setToolTipText(Messages.getString("ParameterView.218"));
-          break;
-        }
-        setBorder(new EmptyBorder(0, 3, 0, 3));
-        return this;
-      }
-    });
-    jcbAccuracy.setMinimumSize(new Dimension(40, 0));
-    jcbAccuracy.setPreferredSize(new Dimension(40, 0));
-    jcbAccuracy.setToolTipText(Messages.getString("ParameterView.155"));
-
-    jcbAccuracy.addItem(IconLoader.getIcon(JajukIcons.ACCURACY_LOW));
-    jcbAccuracy.addItem(IconLoader.getIcon(JajukIcons.ACCURACY_MEDIUM));
-    jcbAccuracy.addItem(IconLoader.getIcon(JajukIcons.ACCURACY_HIGH));
-    jcbAccuracy.addItem(IconLoader.getIcon(JajukIcons.AUTHOR));
-    jcbAccuracy.addItem(IconLoader.getIcon(JajukIcons.ALBUM));
-    jcbAccuracy.addItem(IconLoader.getIcon(JajukIcons.TRACK));
-    int i = 1; // medium accuracy
-    try {
-      i = Conf.getInt(Const.CONF_COVERS_ACCURACY + "_"
-          + ((getPerspective() == null) ? "popup" : getPerspective().getID()));
-    } catch (final Exception e) {
-      // Will reach this point at first launch
-    }
-    jcbAccuracy.setSelectedIndex(i);
-    jcbAccuracy.addActionListener(this);
-
-    jtb.add(jbPrevious);
-    jtb.add(jbNext);
-    jtb.addSeparator();
-    jtb.add(jbDelete);
-    jtb.add(jbSave);
-    jtb.add(jbDefault);
-
-    final double sizeControl[][] = {
-    // Toolbar
-        { 5, TableLayoutConstants.PREFERRED, 10,
-        // size label
-            TableLayoutConstants.FILL, 10,
-            // nb of found covers label
-            TableLayoutConstants.FILL, 5,
-            // Accuracy combo
-            TableLayoutConstants.PREFERRED, 5,
-            // searching icon
-            25, 5 }, { 3, 30, 3 } };
-    final TableLayout layout = new TableLayout(sizeControl);
-    jpControl.setLayout(layout);
-
-    jpControl.add(jtb, "1,1");
-    jpControl.add(jlSize, "3,1,c,c");
-    jpControl.add(jlFound, "5,1");
-    jpControl.add(jcbAccuracy, "7,1");
-    jpControl.add(jlSearching, "9,1,c,c");
-    // Cover view used in catalog view should not listen events
-    if (fileReference == null) {
-      ObservationManager.register(this);
-    }
-    try {
-      // instantiate default cover
-      if (CoverView.nocover == null) {
-        CoverView.nocover = new Cover(Const.IMAGES_SPLASHSCREEN, CoverType.NO_COVER);
-      }
-    } catch (final Exception e) {
-      Log.error(e);
-    }
-    add(jpControl, "0,0");
-    if (fileReference == null) {
-      if (FIFO.isStopped()) {
-        update(new Event(JajukEvents.ZERO));
-      } else {
-        // request cover refresh after a while to make sure the window owns its
-        // definitive dimension so we avoid the cover to resize at startup
-        new Thread() {
-          @Override
-          public void run() {
-            try {
-              Thread.sleep(3000);
-            } catch (final Exception e) {
-              Log.error(e);
-            }
-            // check if a track has already been launched
-            if (FIFO.isPlayingRadio()) {
-              update(new Event(JajukEvents.WEBRADIO_LAUNCHED, ObservationManager
-                  .getDetailsLastOccurence(JajukEvents.WEBRADIO_LAUNCHED)));
-            } else {
-              update(new Event(JajukEvents.FILE_LAUNCHED));
-            }
-
-          }
-        }.start();
-      }
-    } else {
-      update(new Event(JajukEvents.COVER_NEED_REFRESH));
-    }
-  }
-
+ 
   /**
    * Long action to compute image to display (download, resizing...)
    * 
@@ -967,32 +970,24 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
    * @param bSearching
    */
   public void searching(final boolean bSearching) {
-    SwingUtilities.invokeLater(new Runnable() {
-      public void run() {
-        if (bSearching) {
-          jlSearching.setIcon(IconLoader.getIcon(JajukIcons.NET_SEARCH));
-        } else {
-          jlSearching.setIcon(null);
-        }
-      }
-    });
+    if (bSearching) {
+      jlSearching.setIcon(IconLoader.getIcon(JajukIcons.NET_SEARCH));
+    } else {
+      jlSearching.setIcon(null);
+    }
   }
 
   /**
    * Set the cover Found text
    */
   private void setFoundText() {
-    SwingUtilities.invokeLater(new Runnable() {
-      public void run() {
-        // make sure not to display negative indexes
-        int i = getCoverNumber() - index;
-        if (i < 0) {
-          Log.debug("Negative cover index: " + i);
-          i = 0;
-        }
-        jlFound.setText(i + "/" + getCoverNumber());
-      }
-    });
+    // make sure not to display negative indexes
+    int i = getCoverNumber() - index;
+    if (i < 0) {
+      Log.debug("Negative cover index: " + i);
+      i = 0;
+    }
+    jlFound.setText(i + "/" + getCoverNumber());
   }
 
   /**
@@ -1002,13 +997,9 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
    *          specified text
    */
   private void setFoundText(final String sFound) {
-    SwingUtilities.invokeLater(new Runnable() {
-      public void run() {
-        if (sFound != null) {
-          jlFound.setText(sFound);
-        }
-      }
-    });
+    if (sFound != null) {
+      jlFound.setText(sFound);
+    }
   }
 
   /**
@@ -1017,13 +1008,9 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
    * @param sFound
    */
   private void setSizeText(final String sSize) {
-    SwingUtilities.invokeLater(new Runnable() {
-      public void run() {
-        if (sSize != null) {
-          jlSize.setText(sSize);
-        }
-      }
-    });
+    if (sSize != null) {
+      jlSize.setText(sSize);
+    }
   }
 
   /*
@@ -1032,77 +1019,79 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
    * @see org.jajuk.ui.Observer#update(java.lang.String)
    */
   public void update(final Event event) {
-    removeComponentListener(CoverView.this);
-    addComponentListener(CoverView.this); // listen for resize
-    final JajukEvents subject = event.getSubject();
-    iEventID = (int) (Integer.MAX_VALUE * Math.random());
-    final int iLocalEventID = iEventID;
-    synchronized (bLock) {// block any concurrent cover update
-      try {
-        searching(true);
-        // When receiving this event, check if we should change the cover or not
-        // (we don't change cover if playing another track of the same album
-        // except if option shuffle cover is set)
-        if (JajukEvents.FILE_LAUNCHED.equals(subject)) {
-          org.jajuk.base.File last = null;
-          Properties details = event.getDetails();
-          if (details != null) {
-            StackItem item = (StackItem) details.get(Const.DETAIL_OLD);
-            if (item != null) {
-              last = item.getFile();
+    SwingUtilities.invokeLater(new Runnable() {
+      public void run() {
+
+        final JajukEvents subject = event.getSubject();
+        iEventID = (int) (Integer.MAX_VALUE * Math.random());
+        final int iLocalEventID = iEventID;
+        try {
+          searching(true);
+          // When receiving this event, check if we should change the cover or
+          // not
+          // (we don't change cover if playing another track of the same album
+          // except if option shuffle cover is set)
+          if (JajukEvents.FILE_LAUNCHED.equals(subject)) {
+            org.jajuk.base.File last = null;
+            Properties details = event.getDetails();
+            if (details != null) {
+              StackItem item = (StackItem) details.get(Const.DETAIL_OLD);
+              if (item != null) {
+                last = item.getFile();
+              }
             }
-          }
-          // all cases for a cover full refresh
-          if (last == null // first track, display cover
-              // if we are always in the same directory, just leave to
-              // save cpu
-              || (!last.getDirectory().equals(FIFO.getCurrentFile().getDirectory()))
-              || bForceCoverReload) {
-            // Ignore this event if a reference file has been set and if
-            // this event has already been handled
-            if ((fileReference != null) && (dirReference != null)) {
-              return;
+            // all cases for a cover full refresh
+            if (last == null // first track, display cover
+                // if we are always in the same directory, just leave to
+                // save cpu
+                || (!last.getDirectory().equals(FIFO.getCurrentFile().getDirectory()))
+                || bForceCoverReload) {
+              // Ignore this event if a reference file has been set and if
+              // this event has already been handled
+              if ((fileReference != null) && (dirReference != null)) {
+                return;
+              }
+              refreshCovers(iLocalEventID);
             }
-            refreshCovers(iLocalEventID);
-          }
-          // case just for a cover change without reload
-          else if ((Conf.getBoolean(Const.CONF_COVERS_SHUFFLE))) {
+            // case just for a cover change without reload
+            else if ((Conf.getBoolean(Const.CONF_COVERS_SHUFFLE))) {
+              // Ignore this event if a reference file has been set
+              if (fileReference != null) {
+                return;
+              }
+              // choose a random cover
+              index = (int) (Math.random() * alCovers.size() - 1);
+              displayCurrentCover();
+            }
+            enableCommands(true);
+          } else if (JajukEvents.ZERO.equals(subject)
+              || JajukEvents.WEBRADIO_LAUNCHED.equals(subject)
+              || JajukEvents.PLAYER_STOP.equals(subject)) {
             // Ignore this event if a reference file has been set
             if (fileReference != null) {
               return;
             }
-            // choose a random cover
-            index = (int) (Math.random() * alCovers.size() - 1);
+            setFoundText("");
+            setSizeText("");
+            alCovers.clear();
+            alCovers.add(CoverView.nocover); // add the default cover
+            index = 0;
             displayCurrentCover();
+            dirReference = null;
+            // Force cover to reload at next track
+            bForceCoverReload = true;
+            // disable commands
+            enableCommands(false);
+          } else if (JajukEvents.COVER_NEED_REFRESH.equals(subject)) {
+            refreshCovers(iLocalEventID);
           }
-          enableCommands(true);
-        } else if (JajukEvents.ZERO.equals(subject)
-            || JajukEvents.WEBRADIO_LAUNCHED.equals(subject)
-            || JajukEvents.PLAYER_STOP.equals(subject)) {
-          // Ignore this event if a reference file has been set
-          if (fileReference != null) {
-            return;
-          }
-          setFoundText("");
-          setSizeText("");
-          alCovers.clear();
-          alCovers.add(CoverView.nocover); // add the default cover
-          index = 0;
-          displayCurrentCover();
-          dirReference = null;
-          // Force cover to reload at next track
-          bForceCoverReload = true;
-          // disable commands
-          enableCommands(false);
-        } else if (JajukEvents.COVER_NEED_REFRESH.equals(subject)) {
-          refreshCovers(iLocalEventID);
+        } catch (final Exception e) {
+          Log.error(e);
+        } finally {
+          searching(false); // hide searching icon
         }
-      } catch (final Exception e) {
-        Log.error(e);
-      } finally {
-        searching(false); // hide searching icon
       }
-    }
+    });
   }
 
   /**
@@ -1111,19 +1100,14 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
    * @param enable
    */
   private void enableCommands(final boolean enable) {
-    SwingUtilities.invokeLater(new Runnable() {
-
-      public void run() {
-        jcbAccuracy.setEnabled(enable);
-        jbDefault.setEnabled(enable);
-        jbDelete.setEnabled(enable);
-        jbNext.setEnabled(enable);
-        jbPrevious.setEnabled(enable);
-        jbSave.setEnabled(enable);
-        jlFound.setVisible(enable);
-        jlSize.setVisible(enable);
-      }
-    });
+    jcbAccuracy.setEnabled(enable);
+    jbDefault.setEnabled(enable);
+    jbDelete.setEnabled(enable);
+    jbNext.setEnabled(enable);
+    jbPrevious.setEnabled(enable);
+    jbSave.setEnabled(enable);
+    jlFound.setVisible(enable);
+    jlSize.setVisible(enable);
   }
 
   /**
