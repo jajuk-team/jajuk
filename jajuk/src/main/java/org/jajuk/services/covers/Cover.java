@@ -27,7 +27,6 @@ import java.net.URL;
 
 import javax.swing.ImageIcon;
 
-import org.jajuk.services.players.FIFO;
 import org.jajuk.util.Const;
 import org.jajuk.util.DownloadManager;
 import org.jajuk.util.UtilGUI;
@@ -75,9 +74,6 @@ public class Cover implements Comparable<Cover>, Const {
   /** Default cover image */
   private static final ImageIcon DEFAULT_COVER_ICON = UtilGUI.getImage(IMAGES_SPLASHSCREEN);
 
-  /** Download id */
-  private String id;
-
   /**
    * Constructor for remote covers
    * 
@@ -88,16 +84,10 @@ public class Cover implements Comparable<Cover>, Const {
   public Cover(final URL url, final CoverType type) throws Exception {
     this.url = url;
     this.type = type;
-    // Create an unique id for this cover, we use the track id
-    if (FIFO.getCurrentFile() != null && !FIFO.isPlayingRadio()) {
-      id = FIFO.getCurrentFile().getTrack().getID();
-    } else {
-      id = Long.toString((long) (System.currentTimeMillis() * UtilSystem.getRandom().nextDouble()));
-    }
     // only remote and no_cover are created by URL (file:// for no_cover, the
     // image is inside the jajuk jar)
     if (type == CoverType.REMOTE_COVER || type == CoverType.NO_COVER) {
-      this.file = UtilSystem.getCachePath(url, id);
+      this.file = UtilSystem.getCachePath(url);
     }
   }
 
@@ -112,8 +102,6 @@ public class Cover implements Comparable<Cover>, Const {
     this.type = type;
     this.file = localFile;
     this.url = new URL("file://" + file.getAbsolutePath());
-    // Create an unique id for this cover
-    id = Long.toString((long) (System.currentTimeMillis() * UtilSystem.getRandom().nextDouble()));
   }
 
   /*
@@ -161,7 +149,7 @@ public class Cover implements Comparable<Cover>, Const {
     }
     long l = System.currentTimeMillis();
     if (!file.exists() || file.length() == 0) {
-      this.file = DownloadManager.downloadCover(url, id);
+      this.file = DownloadManager.downloadCover(url);
     }
     Image image = null;
     synchronized (Cover.class) {
@@ -216,8 +204,5 @@ public class Cover implements Comparable<Cover>, Const {
     return this.file;
   }
 
-  public String getDownloadID() {
-    return this.id;
-  }
-
+ 
 }
