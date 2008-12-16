@@ -83,11 +83,16 @@ public class AudioScrobblerAuthorThumbnail extends AbstractThumbnail {
       @Override
       public Object construct() {
         try {
+          // Check if author is null
+          String authorUrl = author.getImageUrl();
+          if (UtilString.isVoid(authorUrl)) {
+            return null;
+          }
           // Download thumb
-          URL remote = new URL(author.getImageUrl());
+          URL remote = new URL(authorUrl);
           // Download the picture and store file reference (to
           // generate the popup thumb for ie)
-          fCover = DownloadManager.downloadCover(remote, Long.toString(System.currentTimeMillis()));
+          fCover = DownloadManager.downloadCover(remote);
           fThumb = UtilSystem.getConfFileByPath(Const.FILE_CACHE + "/" + System.currentTimeMillis()
               + "_100x100." + UtilSystem.getExtension(fCover));
           // Create the image using Toolkit and not ImageIO API to be able to
@@ -106,6 +111,11 @@ public class AudioScrobblerAuthorThumbnail extends AbstractThumbnail {
 
       @Override
       public void finished() {
+        // Check if author is null
+        if (ii == null) {
+          return;
+        }
+
         super.finished();
         postPopulate();
         jlIcon.setIcon(ii);
