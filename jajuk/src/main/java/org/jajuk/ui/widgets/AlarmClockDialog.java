@@ -43,6 +43,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import org.jajuk.base.SearchResult;
+import org.jajuk.services.alarm.AlarmManager;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.Messages;
@@ -113,9 +114,9 @@ public class AlarmClockDialog extends JDialog implements ActionListener, ItemLis
 
     jtfHour = new JTextField(2);
     jtfHour.setToolTipText(Messages.getString("AlarmDialog.1"));
-    jtfMinutes = new JTextField(2);
+    jtfMinutes = new JTextField("00", 2);
     jtfMinutes.setToolTipText(Messages.getString("AlarmDialog.2"));
-    jtfSeconds = new JTextField(2);
+    jtfSeconds = new JTextField("00", 2);
     jtfSeconds.setToolTipText(Messages.getString("AlarmDialog.3"));
     jlSeparator1 = new JLabel(":");
     jlSeparator2 = new JLabel(":");
@@ -136,14 +137,13 @@ public class AlarmClockDialog extends JDialog implements ActionListener, ItemLis
     jpAction = new JPanel();
     jlAlarmAction = new JLabel(Messages.getString("AlarmDialog.4"));
     scbAlarmOption = new SteppedComboBox();
-    scbAlarmOption.addItem(Const.ALARM_START_MODE);
-    scbAlarmOption.addItem(Const.ALARM_STOP_MODE);
+    scbAlarmOption.addItem(Const.CONF_ALARM_START_MODE);
+    scbAlarmOption.addItem(Const.CONF_ALARM_STOP_MODE);
     scbAlarmOption.setToolTipText(Messages.getString("AlarmDialog.5"));
     scbAlarmOption.addActionListener(this);
     jpAction.add(jlAlarmAction);
     jpAction.add(scbAlarmOption);
     jpAction.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-    // scbAlarmOption.addActionListener(this);
 
     jpMessage = new JPanel();
     final double p = TableLayoutConstants.PREFERRED;
@@ -225,6 +225,8 @@ public class AlarmClockDialog extends JDialog implements ActionListener, ItemLis
 
     jpAlarmClock.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
+    updateValues();
+
     setTitle("Set Alarm Time");
     setMinimumSize(new Dimension(250, 100));
     setContentPane(jpAlarmClock);
@@ -235,9 +237,23 @@ public class AlarmClockDialog extends JDialog implements ActionListener, ItemLis
     setVisible(true);
   }
 
+  private void updateValues() {
+    if (AlarmManager.getInstance().getAlarm() != null) {
+      jtfHour.setText(Conf.getString(CONF_ALARM_TIME_HOUR));
+      jtfMinutes.setText(Conf.getString(CONF_ALARM_TIME_MINUTES));
+      jtfSeconds.setText(Conf.getString(CONF_ALARM_TIME_SECONDS));
+      jcbDaily.setSelected(Conf.getBoolean(CONF_ALARM_DAILY));
+      jtfMessage.setText(Conf.getString(CONF_ALARM_MESSAGE));
+      /*
+       * if (Conf.getString(CONF_ALARM_MODE)){
+       *  }
+       */
+    }
+  }
+
   public void actionPerformed(final ActionEvent e) {
     Conf.setProperty(Const.CONF_ALARM_ACTION, "" + scbAlarmOption.getSelectedItem());
-    if (Conf.getString(Const.CONF_ALARM_ACTION).equals(Const.ALARM_START_MODE)) {
+    if (Conf.getString(Const.CONF_ALARM_ACTION).equals(Const.CONF_ALARM_START_MODE)) {
       jlChoice.setEnabled(true);
       jrbShuffle.setEnabled(true);
       jrbBestof.setEnabled(true);
@@ -257,7 +273,7 @@ public class AlarmClockDialog extends JDialog implements ActionListener, ItemLis
         jtfMessage.setEnabled(true);
       } else {
         jtfMessage.setEnabled(false);
-        Conf.setProperty(ALARM_MESSAGE, "");
+        Conf.setProperty(CONF_ALARM_MESSAGE, "");
       }
     } else if (e.getSource() == jbOK) {
       if (jtfHour.getText().isEmpty()) {
@@ -295,10 +311,10 @@ public class AlarmClockDialog extends JDialog implements ActionListener, ItemLis
     if (jtfSeconds.getText().isEmpty()) {
       jtfSeconds.setText("00");
     }
-    Conf.setProperty(ALARM_TIME_HOUR, "" + jtfHour.getText());
-    Conf.setProperty(ALARM_TIME_MINUTES, "" + jtfMinutes.getText());
-    Conf.setProperty(ALARM_TIME_SECONDS, "" + jtfSeconds.getText());
-    Conf.setProperty(ALARM_MESSAGE, "" + jtfMessage.getText());
+    Conf.setProperty(CONF_ALARM_TIME_HOUR, "" + jtfHour.getText());
+    Conf.setProperty(CONF_ALARM_TIME_MINUTES, "" + jtfMinutes.getText());
+    Conf.setProperty(CONF_ALARM_TIME_SECONDS, "" + jtfSeconds.getText());
+    Conf.setProperty(CONF_ALARM_MESSAGE, "" + jtfMessage.getText());
     if (jcbDaily.isSelected()) {
       Conf.setProperty(Const.CONF_ALARM_DAILY, "" + true);
     } else {

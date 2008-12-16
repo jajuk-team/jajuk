@@ -44,7 +44,12 @@ public class Alarm {
   public Alarm(String aTime, boolean daily, List<File> alFiles, String mode, String message) {
     super();
     alarmTime = aTime;
+    // We store alarm date in jdbc HH:mm:ss format so we can use this Time class
     alarmMilliSeconds = Time.valueOf(alarmTime).getTime();
+    // If time is already elapsed, consider user selected tomorrow's time
+    if (alarmMilliSeconds > System.currentTimeMillis()) {
+      alarmMilliSeconds += 1000 * 3600;
+    }
     alToPlay = alFiles;
     alarmAction = mode;
     alarmMessage = message;
@@ -52,7 +57,7 @@ public class Alarm {
   }
 
   public void wakeUpSleeper() {
-    if (alarmAction.equals(Const.ALARM_START_MODE)) {
+    if (alarmAction.equals(Const.CONF_ALARM_START_MODE)) {
       FIFO.push(UtilFeatures.createStackItems(alToPlay, Conf.getBoolean(Const.CONF_STATE_REPEAT),
           false), false);
     } else {

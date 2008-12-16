@@ -20,9 +20,9 @@
 package org.jajuk.ui.actions;
 
 import java.awt.event.ActionEvent;
-import java.sql.Time;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 import org.jajuk.base.File;
@@ -41,15 +41,15 @@ public class AlarmClockAction extends JajukAction {
 
   private static final long serialVersionUID = 1L;
 
-  private static int hours, minutes, seconds;
+  private int hours, minutes, seconds;
 
-  private static String alarmTime, currentTime;
+  private String alarmTime;
 
   private List<File> alToPlay;
 
-  private static String alarmMessage;
+  private String alarmMessage;
 
-  private static boolean alarmDaily;
+  private boolean alarmDaily;
 
   AlarmClockAction() {
     super(Messages.getString("AlarmClock.0"), IconLoader.getIcon(JajukIcons.ALARM), true);
@@ -63,16 +63,16 @@ public class AlarmClockAction extends JajukAction {
       return;
     }
 
-    hours = Conf.getInt(Const.ALARM_TIME_HOUR);
-    minutes = Conf.getInt(Const.ALARM_TIME_MINUTES);
-    seconds = Conf.getInt(Const.ALARM_TIME_SECONDS);
+    hours = Conf.getInt(Const.CONF_ALARM_TIME_HOUR);
+    minutes = Conf.getInt(Const.CONF_ALARM_TIME_MINUTES);
+    seconds = Conf.getInt(Const.CONF_ALARM_TIME_SECONDS);
 
     alarmDaily = Conf.getBoolean(Const.CONF_ALARM_DAILY);
 
-    alarmMessage = Conf.getString(Const.ALARM_MESSAGE);
+    alarmMessage = Conf.getString(Const.CONF_ALARM_MESSAGE);
     String alarmAction = Conf.getString(Const.CONF_ALARM_ACTION);
 
-    if (alarmAction.equals(Const.ALARM_START_MODE)) {
+    if (alarmAction.equals(Const.CONF_ALARM_START_MODE)) {
       alToPlay = new ArrayList<File>();
       if (Conf.getString(Const.CONF_ALARM_MODE).equals(Const.STARTUP_MODE_FILE)) {
         File fileToPlay = FileManager.getInstance().getFileByID(
@@ -87,17 +87,14 @@ public class AlarmClockAction extends JajukAction {
       }
     }
 
-    Calendar cal = Calendar.getInstance();
     alarmTime = hours + ":" + minutes + ":" + seconds;
-    currentTime = cal.get(Calendar.HOUR_OF_DAY) + ":" + cal.get(Calendar.MINUTE) + ":"
-        + cal.get(Calendar.SECOND);
-
-    if ((Time.valueOf(alarmTime).getTime() - Time.valueOf(currentTime).getTime()) < 0
-        && !alarmDaily) {
-      Messages.showWarningMessage(Messages.getString("AlarmClock.4"));
+    try {
+      new SimpleDateFormat("HH:mm:ss").parse(alarmTime);
+    } catch (ParseException e) {
+      Messages.showErrorMessage(177);
+      return;
     }
-
     Alarm aAlarm = new Alarm(alarmTime, alarmDaily, alToPlay, alarmAction, alarmMessage);
-    AlarmManager.getInstance().addAlarm(aAlarm);
+    AlarmManager.getInstance().setAlarm(aAlarm);
   }
 }

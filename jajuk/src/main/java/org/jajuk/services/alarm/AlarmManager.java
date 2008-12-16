@@ -21,11 +21,9 @@
 
 package org.jajuk.services.alarm;
 
-import java.sql.Time;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
-
+import org.jajuk.events.Event;
+import org.jajuk.events.JajukEvents;
+import org.jajuk.events.ObservationManager;
 import org.jajuk.util.log.Log;
 
 /**
@@ -35,63 +33,49 @@ import org.jajuk.util.log.Log;
 public class AlarmManager {
   private static AlarmManager singleton;
 
-  private List<Alarm> allAlarms = new ArrayList<Alarm>(20);
+  private Alarm alarm;
+
+  /**
+   * This thread looks alarms up and call weak up when it's time
+   */
+  private Thread clock = new Thread() {
+    @Override
+    public void run() {
+      boolean bstop = false;
+      while (!bstop) {
+        try {
+          Thread.sleep(1000);
+        } catch (InterruptedException e) {
+          Log.error(e);
+        }
+        if (alarm != null && (alarm.getAlarmMilliSeconds() < System.currentTimeMillis())) {
+          alarm.wakeUpSleeper();
+        }
+      }
+    }
+  };
 
   public static AlarmManager getInstance() {
     if (singleton == null) {
       singleton = new AlarmManager();
+      // Start the clock
+      singleton.clock.start();
     }
     return singleton;
   }
-
-  public void addAlarm(Alarm aAlarm) {
-    if (allAlarms.size() == 0) {
-      allAlarms.add(aAlarm);
-      new Thread() {
-        @Override
-        public void run() {
-          boolean bstop = false;
-          while (!bstop) {
-            try {
-              Thread.sleep(1000);
-            } catch (InterruptedException e) {
-              Log.error(e);
-            }
-            if (allAlarms.size() == 0) {
-              bstop = true;
-            } else {
-              try {
-                Calendar cal = Calendar.getInstance();
-                String currentTime = cal.get(Calendar.HOUR_OF_DAY) + ":" + cal.get(Calendar.MINUTE)
-                    + ":" + cal.get(Calendar.SECOND);
-                for (Alarm alarm : allAlarms) {
-                  long timediff = Time.valueOf(currentTime).getTime()
-                      - alarm.getAlarmMilliSeconds();
-                  if (timediff > 0) {
-                    alarm.wakeUpSleeper();
-                  }
-                }
-              } catch (Exception e) {
-                Log.error(e);
-              }
-            }
-          }
-        }
-      }.start();
-    } else {
-      allAlarms.add(aAlarm);
-    }
+  
+  public Alarm getAlarm(){
+    return alarm;
   }
 
-  public void stopAlarm(Alarm aAlarm) {
-    allAlarms.remove(aAlarm);
-  }
-
-  public List<Alarm> getAllAlarms() {
-    return allAlarms;
+  public void setAlarm(Alarm aAlarm) {
+    alarm = aAlarm;
+    ObservationManager.notify(new Event(JajukEvents.ALARMS_CHANGE));
   }
 
   public void removeAlarm(Alarm aAlarm) {
-    allAlarms.remove(aAlarm);
+    alarm = aAlarm;
+    ObservationManager.notify(new Event(JajukEvents.ALARMS_CHANGE));
   }
+
 }
