@@ -104,14 +104,12 @@ public class JajukWindow extends JFrame implements Observer {
 
       @Override
       public void windowDeiconified(WindowEvent arg0) {
-        setFocusableWindowState(true);
         bVisible = true;
         toFront();
       }
 
       @Override
       public void windowIconified(WindowEvent arg0) {
-        setFocusableWindowState(false);
         bVisible = false;
       }
 
