@@ -42,7 +42,6 @@ import java.awt.BorderLayout;
 import java.awt.Desktop;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -53,14 +52,12 @@ import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 
 import org.jajuk.events.Event;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.events.Observer;
-import org.jajuk.services.alarm.Alarm;
-import org.jajuk.services.alarm.AlarmManager;
 import org.jajuk.ui.actions.ActionManager;
 import org.jajuk.ui.actions.ActionUtil;
 import org.jajuk.ui.actions.JajukActions;
@@ -166,8 +163,6 @@ public final class JajukJMenuBar extends JMenuBar implements Observer {
 
   JMenuItem jmiAbout;
 
-  JMenu jmReminders;
-
   JLabel jlUpdate;
 
   JButton jbSlim;
@@ -257,17 +252,10 @@ public final class JajukJMenuBar extends JMenuBar implements Observer {
     tools = new JMenu(Messages.getString("JajukJMenuBar.28"));
     jmiduplicateFinder = new JMenuItem(ActionManager.getAction(JajukActions.FIND_DUPLICATE_FILES));
     jmialarmClock = new JMenuItem(ActionManager.getAction(JajukActions.ALARM_CLOCK));
-    jmReminders = new JMenu(Messages.getString("AlarmClock.1"));
-    for (final Alarm alarm : AlarmManager.getInstance().getAllAlarms()) {
-      JMenuItem jma = new JMenuItem(alarm.getAlarmTime(), IconLoader.getIcon(JajukIcons.ALARM));
-      jmReminders.add(jma);
-      jmReminders.addSeparator();
-    }
     tools.add(jmiduplicateFinder);
     tools.add(jmialarmClock);
     tools.addSeparator();
-    tools.add(jmReminders);
-
+  
     // Configuration menu
     configuration = new JMenu(Messages.getString("JajukJMenuBar.21"));
     jmiDJ = new JMenuItem(ActionManager.getAction(CONFIGURE_DJS));
@@ -395,36 +383,8 @@ public final class JajukJMenuBar extends JMenuBar implements Observer {
   public Set<JajukEvents> getRegistrationKeys() {
     Set<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
     eventSubjectSet.add(JajukEvents.PARAMETERS_CHANGE);
+    eventSubjectSet.add(JajukEvents.ALARMS_CHANGE);
     return eventSubjectSet;
-  }
-
-  public void mouseMoved(MouseEvent e) {
-    if (e.getSource() == jmReminders) {
-      jmReminders.removeAll();
-      if (AlarmManager.getInstance().getAllAlarms().size() == 0) {
-        jmReminders.add(Messages.getString("AlarmClock.2"));
-      } else {
-        for (final Alarm alarm : AlarmManager.getInstance().getAllAlarms()) {
-          JMenuItem jma = new JMenuItem(alarm.getAlarmText(), IconLoader.getIcon(JajukIcons.ALARM));
-          jma.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
-              int iResu = Messages.getChoice(Messages.getString("Confirmation_alarm_stop"),
-                  JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);
-              if (iResu != JOptionPane.YES_OPTION) {
-                return;
-              }
-              AlarmManager.getInstance().stopAlarm(alarm);
-            }
-          });
-          jmReminders.add(jma);
-        }
-      }
-    }
-    tools.repaint();
-  }
-
-  public void mouseDragged(MouseEvent e) {
-    mouseMoved(e);
   }
 
   /*
@@ -432,12 +392,18 @@ public final class JajukJMenuBar extends JMenuBar implements Observer {
    * 
    * @see org.jajuk.ui.Observer#update(java.lang.String)
    */
-  public void update(Event event) {
-    if (JajukEvents.PARAMETERS_CHANGE.equals(event.getSubject())) {
-      jcbShowPopups.setSelected(Conf.getBoolean(Const.CONF_SHOW_POPUPS));
-      jmiUnmounted.setSelected(Conf.getBoolean(Const.CONF_OPTIONS_HIDE_UNMOUNTED));
-      jcbSyncTableTree.setSelected(Conf.getBoolean(Const.CONF_OPTIONS_SYNC_TABLE_TREE));
-    }
+  public void update(final Event event) {
+    SwingUtilities.invokeLater(new Runnable() {
+
+      public void run() {
+        if (JajukEvents.PARAMETERS_CHANGE.equals(event.getSubject())) {
+          jcbShowPopups.setSelected(Conf.getBoolean(Const.CONF_SHOW_POPUPS));
+          jmiUnmounted.setSelected(Conf.getBoolean(Const.CONF_OPTIONS_HIDE_UNMOUNTED));
+          jcbSyncTableTree.setSelected(Conf.getBoolean(Const.CONF_OPTIONS_SYNC_TABLE_TREE));
+        }
+      }
+
+    });
   }
 
   public void setRepeatSelected(final boolean b) {
