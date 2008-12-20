@@ -530,10 +530,10 @@ public class CommandJPanel extends JXPanel implements ActionListener, ListSelect
     // Add items
     FormLayout layout = new FormLayout(
     // --columns
-        "3dlu,fill:min(10dlu;p):grow(0.5), 3dlu, " + // ambience
-            "left:p, 2dlu" + // smart toolbar
+        "3dlu,80dlu, 3dlu, " + // ambience
+            "left:p, 15dlu," + // smart toolbar / search
+             "left:p, 2dlu" +// smart toolbar / modes
             ", min(0dlu;p):grow(0.04), 3dlu," + // glue
-            " right:p, 10dlu, " + // search /modes
             "fill:p, 5dlu, " + // history/player
             "fill:min(60dlu;p):grow(0.2),3dlu", // volume/part of
         // history
@@ -543,12 +543,12 @@ public class CommandJPanel extends JXPanel implements ActionListener, ListSelect
     // FormDebugPanel() );
     CellConstraints cc = new CellConstraints();
     // Add items
-    builder.add(jtbWebRadio, cc.xyw(2, 2, 3));// grid width = 3
+    builder.add(jtbWebRadio, cc.xyw(2, 2, 1));// grid width = 3
     builder.add(ambiencesCombo, cc.xy(2, 4));
-    builder.add(jtbSpecial, cc.xy(4, 4));
-    builder.add(jpSearch, cc.xyw(6, 2, 4));
-    builder.add(jpHistory, cc.xyw(10, 2, 4));
-    builder.add(jtbModes, cc.xy(8, 4));
+    builder.add(jtbSpecial, cc.xyw(4, 4,5));
+    builder.add(jpSearch, cc.xy(4, 2));
+    builder.add(jtbModes, cc.xy(6, 2));
+    builder.add(jpHistory, cc.xyw(10, 2, 3));
     builder.add(jtbPlay, cc.xy(10, 4));
     builder.add(jpVolume, cc.xy(12, 4));
     JPanel p = builder.getPanel();
