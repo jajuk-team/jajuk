@@ -530,7 +530,7 @@ public class CommandJPanel extends JXPanel implements ActionListener, ListSelect
     // Add items
     FormLayout layout = new FormLayout(
     // --columns
-        "3dlu,80dlu, 3dlu, " + // ambience
+        "3dlu,80dlu, fill:min(0dlu;p):grow(0.04), " + // ambience
             "left:p, 15dlu," + // smart toolbar / search
              "left:p, 2dlu" +// smart toolbar / modes
             ", min(0dlu;p):grow(0.04), 3dlu," + // glue
