@@ -19,82 +19,50 @@
  */
 package org.jajuk.services.alarm;
 
-import java.sql.Time;
+import java.util.Date;
 import java.util.List;
 
 import org.jajuk.base.File;
 import org.jajuk.services.players.FIFO;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
-import org.jajuk.util.Messages;
 import org.jajuk.util.UtilFeatures;
-import org.jajuk.util.UtilString;
 
 /**
  * An Alarm
  */
 public class Alarm {
-  private String alarmTime;
   private List<File> alToPlay;
   private String alarmAction;
-  private String alarmMessage;
-  private boolean alarmDaily;
-  private long alarmMilliSeconds;
+  private Date aTime;
 
-  public Alarm(String aTime, boolean daily, List<File> alFiles, String mode, String message) {
-    super();
-    alarmTime = aTime;
-    // We store alarm date in jdbc HH:mm:ss format so we can use this Time class
-    alarmMilliSeconds = Time.valueOf(alarmTime).getTime();
-    // If time is already elapsed, consider user selected tomorrow's time
-    if (alarmMilliSeconds > System.currentTimeMillis()) {
-      alarmMilliSeconds += 1000 * 3600;
-    }
-    alToPlay = alFiles;
-    alarmAction = mode;
-    alarmMessage = message;
-    alarmDaily = daily;
+  public Alarm(java.util.Date aTime, List<File> alFiles, String mode) {
+    this.aTime = aTime;
+    this.alToPlay = alFiles;
+    this.alarmAction = mode;
   }
 
+  /**
+   * Effective action to perform by the alarm
+   */
   public void wakeUpSleeper() {
-    if (alarmAction.equals(Const.CONF_ALARM_START_MODE)) {
+    if (alarmAction.equals(Const.ALARM_START_MODE)) {
       FIFO.push(UtilFeatures.createStackItems(alToPlay, Conf.getBoolean(Const.CONF_STATE_REPEAT),
           false), false);
     } else {
       FIFO.stopRequest();
     }
-    if (!isDaily()) {
-      AlarmManager.getInstance().removeAlarm(this);
-    } else {
-      this.alarmMilliSeconds += 24 * 3600 * 1000;
-    }
-    if (!UtilString.isVoid(alarmMessage)) {
-      Messages.showWarningMessage(Messages.getString("AlarmClock.5") + " \n" + getAlarmTime() + " "
-          + alarmMessage);
-    }
   }
 
-  public String getAlarmTime() {
-    return this.alarmTime;
+  public Date getAlarmTime() {
+    return this.aTime;
+  }
+  
+  /**
+   * Add 24 hours to current alarm
+   */
+  public void nextDay(){
+    aTime = new Date(aTime.getTime() + Const.DAY_MS);
   }
 
-  public long getAlarmMilliSeconds() {
-    return alarmMilliSeconds;
-  }
-
-  public String getAlarmText() {
-    if (!"".equals(alarmMessage)) {
-      return Messages.getString("Stop") + ": " + alarmMessage + " "
-          + (isDaily() ? Messages.getString("AlarmDialog.8") : "") + " "
-          + Messages.getString("AlarmClock.3") + " @ " + getAlarmTime();
-    } else {
-      return Messages.getString("Stop") + ": "
-          + (isDaily() ? Messages.getString("AlarmDialog.8") : "") + " "
-          + Messages.getString("AlarmClock.3") + " @ " + getAlarmTime();
-    }
-  }
-
-  public boolean isDaily() {
-    return alarmDaily;
-  }
 }

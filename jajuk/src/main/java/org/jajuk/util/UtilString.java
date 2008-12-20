@@ -324,7 +324,7 @@ public final class UtilString {
    * @param s
    * @return
    */
-  public static String encodeString(final String s) {
+  public static String encodeURL(final String s) {
     return s.replaceAll(" +", "+");
   }
 
@@ -776,6 +776,38 @@ public final class UtilString {
       }
     }
     return true;
+  }
+
+  /**
+   * Encode a string to unicode representation (ie \\uxxxx\\uyyyyy...)
+   * 
+   * @param in
+   *          string to encode
+   * @return encoded string
+   */
+  static public String encodeToUnicode(String in) {
+    StringBuilder sb = new StringBuilder(in.length() * 5);
+    for (int i = 0; i < in.length(); i++) {
+      char c = in.charAt(i);
+      byte hi = (byte) (c >>> 8);
+      byte lo = (byte) (c & 0xff);
+      sb.append("\\u");
+      sb.append(byteToHex(hi) + byteToHex(lo));
+    }
+    return sb.toString();
+  }
+
+  /**
+   * Convert byte to hexadecimal representation
+   * 
+   * @param b
+   * @return
+   */
+  static public String byteToHex(byte b) {
+    char hexDigit[] = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e',
+        'f' };
+    char[] array = { hexDigit[(b >> 4) & 0x0f], hexDigit[b & 0x0f] };
+    return new String(array);
   }
 
 }

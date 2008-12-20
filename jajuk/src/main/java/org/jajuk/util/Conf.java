@@ -280,7 +280,14 @@ public final class Conf implements Const {
     defaults.put(CONF_FORMAT_TIME_ELAPSED, "0");
     defaults.put(CONF_SLIMBAR_POSITION, "0,0");
     defaults.put(CONF_SLIMBAR_SMART_MODE, JajukActions.SHUFFLE_GLOBAL.toString());
-
+    defaults.put(CONF_ALARM_ACTION, ALARM_START_MODE);
+    defaults.put(CONF_ALARM_ENABLED, FALSE);
+    defaults.put(CONF_ALARM_FILE, "");
+    defaults.put(CONF_ALARM_MODE, STARTUP_MODE_SHUFFLE);
+    defaults.put(CONF_ALARM_TIME_HOUR, "08");
+    defaults.put(CONF_ALARM_TIME_MINUTES, "00");
+    defaults.put(CONF_ALARM_TIME_SECONDS, "00");
+    
     // NOT SHOW AGAIN
     defaults.put(CONF_NOT_SHOW_AGAIN_LASTFM_DISABLED, FALSE);
     defaults.put(CONF_NOT_SHOW_AGAIN_PLAYER, FALSE);

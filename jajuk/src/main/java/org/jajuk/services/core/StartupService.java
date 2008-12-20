@@ -38,6 +38,7 @@ import org.jajuk.base.ItemManager;
 import org.jajuk.events.Event;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
+import org.jajuk.services.alarm.AlarmManager;
 import org.jajuk.services.bookmark.History;
 import org.jajuk.services.players.FIFO;
 import org.jajuk.services.webradio.WebRadio;
@@ -221,6 +222,11 @@ public class StartupService {
 
           // Start rating manager thread
           RatingManager.getInstance().start();
+          
+          // Start alarm clock
+          if (Conf.getBoolean(Const.CONF_ALARM_ENABLED)){
+            AlarmManager.getInstance();
+          }
 
           // Force rebuilding thumbs (after an album id hashcode
           // method change for eg)

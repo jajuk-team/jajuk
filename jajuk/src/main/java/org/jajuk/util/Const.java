@@ -89,6 +89,9 @@ public interface Const {
 
   /** Need full gc memory % */
   float NEED_FULL_GC_LEVEL = 0.90f;
+  
+  /** Number of ms in 24 hours **/
+  long DAY_MS = 24 * 3600* 1000;
 
   /** Play time to get rate +1 in secs */
   int INC_RATE_TIME = 20;
@@ -1113,28 +1116,26 @@ public interface Const {
   String FRAME_MAXIMIZED = "max";
 
   // Alarm Clock
-  String CONF_ALARM_TIME_HOUR = "hour";
+  String CONF_ALARM_TIME_HOUR = "jajuk.alarm.hour";
 
-  String CONF_ALARM_TIME_MINUTES = "minutes";
+  String CONF_ALARM_TIME_MINUTES = "jajuk.alarm.minutes";
 
-  String CONF_ALARM_TIME_SECONDS = "seconds";
-
-  String CONF_ALARM_MESSAGE = "alarm.message";
-
-  // Alarm mode
-  String CONF_ALARM_START_MODE = "Start Playing";
-
-  String CONF_ALARM_STOP_MODE = "Stop Playing";
-
-  String CONF_ALARM_ACTION = "jajuk.alarm.action";
+  String CONF_ALARM_TIME_SECONDS = "jajuk.alarm.seconds";
 
   String CONF_ALARM_FILE = "jajuk.alarm.file";
 
   String CONF_ALARM_MODE = "jajuk.alarm.mode";
 
-  String CONF_ALARM_DAILY = "jajuk.alarm.daily";
-
   String CONF_FORMAT_TIME_ELAPSED = "jajuk.format_elapsed_time";
+  
+  String CONF_ALARM_ACTION = "jajuk.alarm.action";
+  
+  String CONF_ALARM_ENABLED = "jajuk.alarm.enabled";
+  
+  // Alarm mode
+  String ALARM_START_MODE = "Start Playing";
+
+  String ALARM_STOP_MODE = "Stop Playing";
 
   // Preferences
   long PREFERENCE_ADORE = 3;

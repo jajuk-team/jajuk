@@ -21,16 +21,28 @@
 
 package org.jajuk.services.alarm;
 
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import org.jajuk.base.File;
+import org.jajuk.base.FileManager;
 import org.jajuk.events.Event;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
+import org.jajuk.events.Observer;
+import org.jajuk.util.Conf;
+import org.jajuk.util.Const;
 import org.jajuk.util.log.Log;
 
 /**
  * Manages alarms
  */
 
-public class AlarmManager {
+public class AlarmManager implements Observer {
   private static AlarmManager singleton;
 
   private Alarm alarm;
@@ -48,8 +60,12 @@ public class AlarmManager {
         } catch (InterruptedException e) {
           Log.error(e);
         }
-        if (alarm != null && (alarm.getAlarmMilliSeconds() < System.currentTimeMillis())) {
+        // Wake up if the alarm is enabled and if it's time
+        if (Conf.getBoolean(Const.CONF_ALARM_ENABLED) && alarm != null
+            && System.currentTimeMillis() > alarm.getAlarmTime().getTime()) {
           alarm.wakeUpSleeper();
+          // Add 24 hours to current alarm
+          alarm.nextDay();
         }
       }
     }
@@ -60,22 +76,69 @@ public class AlarmManager {
       singleton = new AlarmManager();
       // Start the clock
       singleton.clock.start();
+      ObservationManager.register(singleton);
+      // force last event update
+      singleton.update(new Event(JajukEvents.ALARMS_CHANGE));
     }
     return singleton;
   }
-  
-  public Alarm getAlarm(){
-    return alarm;
+
+  public void update(Event event) {
+    JajukEvents subject = event.getSubject();
+    // Reset rate and total play time (automatic part of rating system)
+    if (subject.equals(JajukEvents.ALARMS_CHANGE)) {
+      Date alarmDate = null;
+      if (Conf.getBoolean(Const.CONF_ALARM_ENABLED)) {
+        int hours = Conf.getInt(Const.CONF_ALARM_TIME_HOUR);
+        int minutes = Conf.getInt(Const.CONF_ALARM_TIME_MINUTES);
+        int seconds = Conf.getInt(Const.CONF_ALARM_TIME_SECONDS);
+        String alarmAction = Conf.getString(Const.CONF_ALARM_ACTION);
+        Calendar cal = Calendar.getInstance();
+        try {
+          cal.set(Calendar.HOUR_OF_DAY, hours);
+          cal.set(Calendar.MINUTE, minutes);
+          cal.set(Calendar.SECOND, seconds);
+          // If chosen date is already past, consider that user meant
+          // tomorrow
+          alarmDate = cal.getTime();
+          if (alarmDate.before(new Date())) {
+            alarmDate = new Date(alarmDate.getTime() + Const.DAY_MS);
+          }
+        } catch (Exception e) {
+          Log.error(e);
+          return;
+        }
+        // Compute playlist if required
+        List<File> alToPlay = null;
+        if (alarmAction.equals(Const.ALARM_START_MODE)) {
+          alToPlay = new ArrayList<File>();
+          if (Conf.getString(Const.CONF_ALARM_MODE).equals(Const.STARTUP_MODE_FILE)) {
+            File fileToPlay = FileManager.getInstance().getFileByID(
+                Conf.getString(Const.CONF_ALARM_FILE));
+            alToPlay.add(fileToPlay);
+          } else if (Conf.getString(Const.CONF_ALARM_MODE).equals(Const.STARTUP_MODE_SHUFFLE)) {
+            alToPlay = FileManager.getInstance().getGlobalShufflePlaylist();
+          } else if (Conf.getString(Const.CONF_ALARM_MODE).equals(Const.STARTUP_MODE_BESTOF)) {
+            alToPlay = FileManager.getInstance().getGlobalBestofPlaylist();
+          } else if (Conf.getString(Const.CONF_ALARM_MODE).equals(Const.STARTUP_MODE_NOVELTIES)) {
+            alToPlay = FileManager.getInstance().getGlobalNoveltiesPlaylist();
+          }
+        }
+        alarm = new Alarm(alarmDate, alToPlay, alarmAction);
+      }
+    }
+
   }
 
-  public void setAlarm(Alarm aAlarm) {
-    alarm = aAlarm;
-    ObservationManager.notify(new Event(JajukEvents.ALARMS_CHANGE));
-  }
-
-  public void removeAlarm(Alarm aAlarm) {
-    alarm = aAlarm;
-    ObservationManager.notify(new Event(JajukEvents.ALARMS_CHANGE));
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.jajuk.events.Observer#getRegistrationKeys()
+   */
+  public Set<JajukEvents> getRegistrationKeys() {
+    Set<JajukEvents> keys = new HashSet<JajukEvents>();
+    keys.add(JajukEvents.ALARMS_CHANGE);
+    return keys;
   }
 
 }

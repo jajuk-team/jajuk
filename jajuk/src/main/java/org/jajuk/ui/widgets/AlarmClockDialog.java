@@ -29,11 +29,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.util.Calendar;
 
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -42,11 +44,16 @@ import javax.swing.JTextField;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import org.jajuk.base.FileManager;
 import org.jajuk.base.SearchResult;
+import org.jajuk.events.Event;
+import org.jajuk.events.JajukEvents;
+import org.jajuk.events.ObservationManager;
 import org.jajuk.services.alarm.AlarmManager;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.Messages;
+import org.jajuk.util.log.Log;
 
 /**
  * Alarm Clock Dialog window
@@ -55,112 +62,84 @@ public class AlarmClockDialog extends JDialog implements ActionListener, ItemLis
     ListSelectionListener {
   private static final long serialVersionUID = 1L;
 
-  JPanel jpAlarmClock;
+  private JPanel jpAlarmClock;
 
-  JPanel jpFields;
+  private JPanel jpFields;
 
-  JPanel jpChoices;
+  private JPanel jpChoices;
 
-  JPanel jpOKCancel;
+  private JPanel jpOKCancel;
 
-  JPanel jpAction;
+  private JPanel jpAction;
 
-  ButtonGroup bgChoices;
+  private ButtonGroup bgChoices;
 
-  JButton jbOK;
+  private JButton jbOK;
 
-  JButton jbCancel;
+  private JButton jbCancel;
 
-  JLabel jlTime;
+  private JCheckBox jcbTime;
 
-  JLabel jlChoice;
+  private JLabel jlChoice;
 
-  JLabel jlSeparator1;
+  private JLabel jlAlarmAction;
 
-  JLabel jlSeparator2;
+  private JRadioButton jrbShuffle;
 
-  JLabel jlAlarmAction;
+  private JRadioButton jrbBestof;
 
-  JRadioButton jrbShuffle;
+  private JRadioButton jrbNovelties;
 
-  JRadioButton jrbBestof;
+  private JRadioButton jrbFile;
 
-  JRadioButton jrbNovelties;
+  private JTextField jtfHour;
 
-  JRadioButton jrbFile;
+  private JTextField jtfMinutes;
 
-  JTextField jtfHour;
+  private JTextField jtfSeconds;
 
-  JTextField jtfMinutes;
+  private JComboBox jcbAlarmAction;
 
-  JTextField jtfSeconds;
+  private SearchBox sbSearch;
 
-  JCheckBox jcbDaily;
-
-  SteppedComboBox scbAlarmOption;
-
-  JPanel jpMessage;
-
-  JCheckBox jcbMessage;
-
-  JTextField jtfMessage;
-
-  SearchBox sbSearch;
-
-  boolean choice;
+  private SearchResult sr;
 
   public AlarmClockDialog() {
-    jlTime = new JLabel(Messages.getString("AlarmDialog.0"));
+    jcbTime = new JCheckBox(Messages.getString("AlarmDialog.0"));
+    jcbTime.addActionListener(this);
 
     jtfHour = new JTextField(2);
     jtfHour.setToolTipText(Messages.getString("AlarmDialog.1"));
-    jtfMinutes = new JTextField("00", 2);
+    jtfMinutes = new JTextField(2);
     jtfMinutes.setToolTipText(Messages.getString("AlarmDialog.2"));
-    jtfSeconds = new JTextField("00", 2);
+    jtfSeconds = new JTextField(2);
     jtfSeconds.setToolTipText(Messages.getString("AlarmDialog.3"));
-    jlSeparator1 = new JLabel(":");
-    jlSeparator2 = new JLabel(":");
-    jcbDaily = new JCheckBox(Messages.getString("AlarmDialog.8"));
-    jcbDaily.setToolTipText(Messages.getString("AlarmDialog.9"));
-    jcbDaily.addActionListener(this);
 
     jpFields = new JPanel();
-    jpFields.add(jlTime);
+    jpFields.add(jcbTime);
     jpFields.add(jtfHour);
-    jpFields.add(jlSeparator1);
+    jpFields.add(new JLabel(":"));
     jpFields.add(jtfMinutes);
-    jpFields.add(jlSeparator2);
+    jpFields.add(new JLabel(":"));
     jpFields.add(jtfSeconds);
-    jpFields.add(jcbDaily);
     jpFields.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
     jpAction = new JPanel();
     jlAlarmAction = new JLabel(Messages.getString("AlarmDialog.4"));
-    scbAlarmOption = new SteppedComboBox();
-    scbAlarmOption.addItem(Const.CONF_ALARM_START_MODE);
-    scbAlarmOption.addItem(Const.CONF_ALARM_STOP_MODE);
-    scbAlarmOption.setToolTipText(Messages.getString("AlarmDialog.5"));
-    scbAlarmOption.addActionListener(this);
+    jcbAlarmAction = new JComboBox();
+    jcbAlarmAction.addItem(Const.ALARM_START_MODE);
+    jcbAlarmAction.addItem(Const.ALARM_STOP_MODE);
+    jcbAlarmAction.setToolTipText(Messages.getString("AlarmDialog.5"));
+    jcbAlarmAction.addActionListener(this);
     jpAction.add(jlAlarmAction);
-    jpAction.add(scbAlarmOption);
+    jpAction.add(jcbAlarmAction);
     jpAction.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
-    jpMessage = new JPanel();
     final double p = TableLayoutConstants.PREFERRED;
     final double sizeMessage[][] = { { 100, 300 }, { p } };
     final TableLayout layoutMessage = new TableLayout(sizeMessage);
     layoutMessage.setVGap(20);
     layoutMessage.setHGap(20);
-    jpMessage.setLayout(layoutMessage);
-    jcbMessage = new JCheckBox(Messages.getString("AlarmDialog.6"));
-    jcbMessage.setToolTipText(Messages.getString("AlarmDialog.7"));
-    jcbMessage.addActionListener(this);
-    jtfMessage = new JTextField(20);
-    jtfMessage.setToolTipText(Messages.getString("AlarmDialog.7"));
-    jtfMessage.setEnabled(false);
-    jpMessage.add(jcbMessage, "0,0");
-    jpMessage.add(jtfMessage, "1,0");
-    jpMessage.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 5));
 
     jpChoices = new JPanel();
     final double sizeStart[][] = { { 150, 200 }, { p, p, p, p, p, p } };
@@ -212,80 +191,58 @@ public class AlarmClockDialog extends JDialog implements ActionListener, ItemLis
     jpOKCancel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
     jpAlarmClock = new JPanel(new FlowLayout());
-    final double sizeAlarmPanel[][] = { { 500 }, { p, p, p, p, p } };
-    final TableLayout layoutAlarmPanel = new TableLayout(sizeAlarmPanel);
+    double sizeAlarmPanel[][] = { { 500 }, { p, p, p, p } };
+    TableLayout layoutAlarmPanel = new TableLayout(sizeAlarmPanel);
     layoutStartup.setVGap(20);
     layoutStartup.setHGap(20);
     jpAlarmClock.setLayout(layoutAlarmPanel);
     jpAlarmClock.add(jpFields, "0,0");
     jpAlarmClock.add(jpAction, "0,1");
-    jpAlarmClock.add(jpMessage, "0,2");
-    jpAlarmClock.add(jpChoices, "0,3");
-    jpAlarmClock.add(jpOKCancel, "0,4");
+    jpAlarmClock.add(jpChoices, "0,2");
+    jpAlarmClock.add(jpOKCancel, "0,3");
 
     jpAlarmClock.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-    updateValues();
+    // Reload on GUI saved values
+    loadValues();
 
-    setTitle("Set Alarm Time");
+    setTitle(Messages.getString("AlarmClock.0"));
     setMinimumSize(new Dimension(250, 100));
     setContentPane(jpAlarmClock);
+
     setModal(true);
-    setAlwaysOnTop(true);
     pack();
     setLocationRelativeTo(JajukWindow.getInstance());
     setVisible(true);
   }
 
-  private void updateValues() {
-    if (AlarmManager.getInstance().getAlarm() != null) {
-      jtfHour.setText(Conf.getString(CONF_ALARM_TIME_HOUR));
-      jtfMinutes.setText(Conf.getString(CONF_ALARM_TIME_MINUTES));
-      jtfSeconds.setText(Conf.getString(CONF_ALARM_TIME_SECONDS));
-      jcbDaily.setSelected(Conf.getBoolean(CONF_ALARM_DAILY));
-      jtfMessage.setText(Conf.getString(CONF_ALARM_MESSAGE));
-      /*
-       * if (Conf.getString(CONF_ALARM_MODE)){
-       *  }
-       */
-    }
-  }
-
   public void actionPerformed(final ActionEvent e) {
-    Conf.setProperty(Const.CONF_ALARM_ACTION, "" + scbAlarmOption.getSelectedItem());
-    if (Conf.getString(Const.CONF_ALARM_ACTION).equals(Const.CONF_ALARM_START_MODE)) {
-      jlChoice.setEnabled(true);
-      jrbShuffle.setEnabled(true);
-      jrbBestof.setEnabled(true);
-      jrbNovelties.setEnabled(true);
-      jrbFile.setEnabled(true);
-      sbSearch.setEnabled(true);
-    } else {
-      jlChoice.setEnabled(false);
-      jrbShuffle.setEnabled(false);
-      jrbBestof.setEnabled(false);
-      jrbNovelties.setEnabled(false);
-      jrbFile.setEnabled(false);
-      sbSearch.setEnabled(false);
-    }
-    if (e.getSource() == jcbMessage) {
-      if (jcbMessage.isSelected()) {
-        jtfMessage.setEnabled(true);
-      } else {
-        jtfMessage.setEnabled(false);
-        Conf.setProperty(CONF_ALARM_MESSAGE, "");
-      }
+    boolean playAction = (jcbAlarmAction.getSelectedIndex() == 0);
+    if (e.getSource() == jcbAlarmAction) {
+      jlChoice.setEnabled(playAction);
+      jrbShuffle.setEnabled(playAction);
+      jrbBestof.setEnabled(playAction);
+      jrbNovelties.setEnabled(playAction);
+      jrbFile.setEnabled(playAction);
+      sbSearch.setEnabled(playAction);
     } else if (e.getSource() == jbOK) {
-      if (jtfHour.getText().isEmpty()) {
-        Messages.showWarningMessage(Messages.getString("AlarmDialog.10"));
-      } else {
-        updateParameters();
-        choice = true;
-        dispose();
-      }
+        saveValues();
     } else if (e.getSource() == jbCancel) {
-      choice = false;
       dispose();
+    } else if (e.getSource() == jcbTime) {
+      // Enable/ disable all widgets is user enables or disables the entire
+      // alarm
+      boolean enabled = jcbTime.isSelected();
+      jtfHour.setEnabled(enabled);
+      jtfMinutes.setEnabled(enabled);
+      jtfSeconds.setEnabled(enabled);
+      jcbAlarmAction.setEnabled(enabled);
+      jlChoice.setEnabled(enabled && playAction);
+      jrbShuffle.setEnabled(enabled && playAction);
+      jrbBestof.setEnabled(enabled && playAction);
+      jrbNovelties.setEnabled(enabled && playAction);
+      jrbFile.setEnabled(enabled && playAction);
+      sbSearch.setEnabled(enabled && playAction);
     }
   }
 
@@ -297,41 +254,91 @@ public class AlarmClockDialog extends JDialog implements ActionListener, ItemLis
 
   public void valueChanged(final ListSelectionEvent e) {
     if (!e.getValueIsAdjusting()) {
-      final SearchResult sr = sbSearch.getResult(sbSearch.getSelectedIndex());
+      sr = sbSearch.getResult(sbSearch.getSelectedIndex());
       sbSearch.setText(sr.getFile().getTrack().getName());
-      Conf.setProperty(Const.CONF_ALARM_FILE, sr.getFile().getID());
       sbSearch.hidePopup();
     }
   }
 
-  public void updateParameters() {
-    if (jtfMinutes.getText().isEmpty()) {
-      jtfMinutes.setText("00");
+  /**
+   * Store GUI values to persisted values
+   */
+  public void saveValues() {
+    // Parse the final alarm value
+    Calendar cal = Calendar.getInstance();
+    try {
+      cal.set(Calendar.HOUR_OF_DAY, Integer.parseInt(jtfHour.getText()));
+      cal.set(Calendar.MINUTE, Integer.parseInt(jtfMinutes.getText()));
+      cal.set(Calendar.SECOND, Integer.parseInt(jtfSeconds.getText()));
+    } catch (Exception e) {
+      Log.error(e);
+      Messages.showErrorMessage(177);
+      return;
     }
-    if (jtfSeconds.getText().isEmpty()) {
-      jtfSeconds.setText("00");
-    }
-    Conf.setProperty(CONF_ALARM_TIME_HOUR, "" + jtfHour.getText());
-    Conf.setProperty(CONF_ALARM_TIME_MINUTES, "" + jtfMinutes.getText());
-    Conf.setProperty(CONF_ALARM_TIME_SECONDS, "" + jtfSeconds.getText());
-    Conf.setProperty(CONF_ALARM_MESSAGE, "" + jtfMessage.getText());
-    if (jcbDaily.isSelected()) {
-      Conf.setProperty(Const.CONF_ALARM_DAILY, "" + true);
-    } else {
-      Conf.setProperty(Const.CONF_ALARM_DAILY, "" + false);
-    }
+    // Store values
+    Conf.setProperty(Const.CONF_ALARM_ENABLED, ((Boolean) jcbTime.isSelected()).toString());
+    Conf.setProperty(Const.CONF_ALARM_ACTION, jcbAlarmAction.getSelectedItem().toString());
+    Conf.setProperty(CONF_ALARM_TIME_HOUR, jtfHour.getText());
+    Conf.setProperty(CONF_ALARM_TIME_MINUTES, jtfMinutes.getText());
+    Conf.setProperty(CONF_ALARM_TIME_SECONDS, jtfSeconds.getText());
     if (jrbShuffle.isSelected()) {
       Conf.setProperty(Const.CONF_ALARM_MODE, Const.STARTUP_MODE_SHUFFLE);
     } else if (jrbFile.isSelected()) {
       Conf.setProperty(Const.CONF_ALARM_MODE, Const.STARTUP_MODE_FILE);
+      // sr = null means none search occurred in this session
+      if (sr != null) {
+        Conf.setProperty(Const.CONF_ALARM_FILE, sr.getFile().getID());
+      }
     } else if (jrbBestof.isSelected()) {
       Conf.setProperty(Const.CONF_ALARM_MODE, Const.STARTUP_MODE_BESTOF);
     } else if (jrbNovelties.isSelected()) {
       Conf.setProperty(Const.CONF_ALARM_MODE, Const.STARTUP_MODE_NOVELTIES);
     }
+    // Store properties in case of
+    try {
+      Conf.commit();
+    } catch (Exception e) {
+      Log.error(e);
+    }
+    // Close the window
+    dispose();
+    // Notify the Alarm manager
+    ObservationManager.notify(new Event(JajukEvents.ALARMS_CHANGE));
+    // Display a message
+    Messages.showInfoMessage(Messages.getString("Success"));
+    // Start manager up
+    AlarmManager.getInstance();
   }
 
-  public boolean getChoice() {
-    return choice;
+  /**
+   * Load persisted values to GUI
+   */
+  private void loadValues() {
+    jcbTime.setSelected(Conf.getBoolean(CONF_ALARM_ENABLED));
+    jtfHour.setText(Conf.getString(CONF_ALARM_TIME_HOUR));
+    jtfMinutes.setText(Conf.getString(CONF_ALARM_TIME_MINUTES));
+    jtfSeconds.setText(Conf.getString(CONF_ALARM_TIME_SECONDS));
+    // Alarm mode (play/stop)
+    if (ALARM_START_MODE.equals(Conf.getString(CONF_ALARM_ACTION))) {
+      jcbAlarmAction.setSelectedIndex(0);
+    } else if (ALARM_STOP_MODE.equals(Conf.getString(CONF_ALARM_ACTION))) {
+      jcbAlarmAction.setSelectedIndex(1);
+    }
+    // Alarm action
+    if (Const.STARTUP_MODE_BESTOF.equals(Conf.getString(CONF_ALARM_MODE))) {
+      jrbBestof.setSelected(true);
+    } else if (Const.STARTUP_MODE_NOVELTIES.equals(Conf.getString(CONF_ALARM_MODE))) {
+      jrbNovelties.setSelected(true);
+    } else if (Const.STARTUP_MODE_FILE.equals(Conf.getString(CONF_ALARM_MODE))) {
+      jrbFile.setSelected(true);
+      String fileName = FileManager.getInstance()
+          .getFileByID(Conf.getString(Const.CONF_ALARM_FILE)).getName();
+      sbSearch.setText(fileName);
+    } else if (Const.STARTUP_MODE_SHUFFLE.equals(Conf.getString(CONF_ALARM_MODE))) {
+      jrbShuffle.setSelected(true);
+    }
+    // Force an an action event to update enable state of widgets
+    actionPerformed(new ActionEvent(jcbTime, 0, null));
   }
+
 }
