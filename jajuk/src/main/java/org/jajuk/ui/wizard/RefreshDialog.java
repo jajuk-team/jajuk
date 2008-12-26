@@ -89,6 +89,7 @@ public class RefreshDialog extends JFrame {
     SwingUtilities.invokeLater(new Runnable() {
       public void run() {
         jlRefreshing.setText(path);
+        jlRefreshing.setToolTipText(path);
       }
     });
   }
