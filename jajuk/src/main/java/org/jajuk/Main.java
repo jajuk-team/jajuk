@@ -768,7 +768,7 @@ public final class Main {
     for (final Device device : DeviceManager.getInstance().getDevices()) {
       if (device.getBooleanValue(Const.XML_DEVICE_AUTO_MOUNT)) {
         try {
-          device.mount();
+          device.mount(false);
         } catch (final Exception e) {
           Log.error(112, device.getName(), e);
           continue;
@@ -962,7 +962,7 @@ public final class Main {
               Device.TYPE_DIRECTORY, fMusic.getAbsolutePath());
           device.setProperty(Const.XML_DEVICE_AUTO_MOUNT, true);
           device.setProperty(Const.XML_DEVICE_AUTO_REFRESH, 0.5d);
-          device.mount();
+          device.mount(false);
           device.refreshCommand(true);
         }
       } catch (Exception e) {

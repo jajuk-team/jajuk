@@ -232,7 +232,7 @@ public final class FIFO {
                 JOptionPane.INFORMATION_MESSAGE);
             if (i == JOptionPane.YES_OPTION) {
               try {
-                item.getFile().getDirectory().getDevice().mount();
+                item.getFile().getDirectory().getDevice().mount(true);
               } catch (Exception e) {
                 it.remove();
                 Log.error(e);

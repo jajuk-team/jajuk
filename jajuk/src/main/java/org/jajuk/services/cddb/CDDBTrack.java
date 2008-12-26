@@ -46,5 +46,9 @@ public class CDDBTrack implements FreedbTrack {
   public Track getTrack() {
     return track;
   }
+  
+  public String toString(){
+    return "CDDB: "+track.toString();
+  }
 
 }

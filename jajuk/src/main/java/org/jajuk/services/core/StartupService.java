@@ -107,7 +107,7 @@ public class StartupService {
             // device
             Log.debug("Startup file located on an unmounted device" + ", try to mount it");
             try {
-              fileToPlay.getDevice().mount(true);
+              fileToPlay.getDevice().mount(false);
               Log.debug("Mount OK");
               alToPlay.add(fileToPlay);
             } catch (final Exception e) {

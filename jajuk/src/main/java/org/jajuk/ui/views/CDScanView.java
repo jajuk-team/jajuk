@@ -90,7 +90,7 @@ public class CDScanView extends ViewAdapter implements ActionListener {
             device = DeviceManager.getInstance().registerDevice(jtfName.getText().trim(), 1,
                 jtfMountPoint.getText().trim());
             try {
-              device.mount();
+              device.mount(true);
               device.refresh(false); // refresh synchronously
               device.unmount(true, true);
             } catch (Exception ex) {

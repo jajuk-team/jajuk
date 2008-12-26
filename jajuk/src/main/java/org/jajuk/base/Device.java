@@ -515,7 +515,11 @@ public class Device extends PhysicalItem implements Comparable<Device> {
     final Device device = this;
     if (!device.isMounted()) {
       try {
-        device.mount();
+        int resu = device.mount(true);
+        // Leave if user canceled device mounting
+        if (resu < 0) {
+          return Device.OPTION_REFRESH_CANCEL;
+        }
       } catch (final Exception e) {
         Log.error(11, "{{" + getName() + "}}", e); // mount failed
         Messages.showErrorMessage(11, getName());
@@ -530,23 +534,17 @@ public class Device extends PhysicalItem implements Comparable<Device> {
 
   /**
    * Mount the device
-   */
-  public void mount() throws Exception {
-    mount(true);
-  }
-
-  /**
-   * Mount the device
    * 
-   * @param bUIRefresh
-   *          set whether the UI should be refreshed
+   * @param bManual
+   *          set whether mount is manual or auto
+   * @return 0 if operation succeed or a negative value otherwise
    * @throws Exception
    *           if device cannot be mounted
    */
-  public void mount(final boolean bUIRefresh) throws Exception {
+  public int mount(final boolean bManual) throws Exception {
     if (bMounted) {
       Messages.showErrorMessage(111);
-      return;
+      return 0;
     }
     try {
       final File file = new File(getUrl());
@@ -556,24 +554,31 @@ public class Device extends PhysicalItem implements Comparable<Device> {
     } catch (final Exception e) {
       throw new JajukException(11, getName(), e);
     }
-    // Cannot mount void devices because of reference garbager thread
+    /*
+     * Cannot mount void devices because of reference garbager thread ( a
+     * refresh would clear the device)
+     */
     final File file = new File(getUrl());
     if ((file.listFiles() == null) || (file.listFiles().length == 0)) {
-      final int answer = Messages.getChoice("[" + getName() + "] "
-          + Messages.getString("Confirmation_void_refresh"), JOptionPane.YES_NO_CANCEL_OPTION,
-          JOptionPane.WARNING_MESSAGE);
-      if (answer != JOptionPane.YES_OPTION) {
-        // leave if user doesn't confirm to mount the void device
-        return;
+      if (bManual) {
+        final int answer = Messages.getChoice("[" + getName() + "] "
+            + Messages.getString("Confirmation_void_refresh"), JOptionPane.YES_NO_CANCEL_OPTION,
+            JOptionPane.WARNING_MESSAGE);
+        if (answer != JOptionPane.YES_OPTION) {
+          // leave if user doesn't confirm to mount the void device
+          return -1;
+        }
+      } else {
+        // In auto mode, don't mount a void device
+        return -1;
       }
     }
     // Here the device is considered as mounted
     bMounted = true;
     // notify views to refresh if needed
-    if (bUIRefresh) {
-      ObservationManager.notify(new Event(JajukEvents.DEVICE_MOUNT));
-    }
+    ObservationManager.notify(new Event(JajukEvents.DEVICE_MOUNT));
     ObservationManager.notify(new Event(JajukEvents.DEVICE_REFRESH));
+    return 0;
   }
 
   /**
@@ -685,17 +690,6 @@ public class Device extends PhysicalItem implements Comparable<Device> {
       if (!isMounted()) {
         return false;
       }
-      // check target directory is not void because it could mean that the
-      // device is not actually system-mounted and then a refresh would
-      // clear the device, display a warning message
-      final File file = new File(getUrl());
-      if (file.exists() && ((file.list() == null) || (file.list().length == 0))) {
-        final int i = Messages.getChoice(Messages.getString("Confirmation_void_refresh"),
-            JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
-        if (i != JOptionPane.OK_OPTION) {
-          return false;
-        }
-      }
       iNbFilesBeforeRefresh = FileManager.getInstance().getElementCount();
       iNbDirsBeforeRefresh = DirectoryManager.getInstance().getElementCount();
       iNbPlaylistsBeforeRefresh = PlaylistManager.getInstance().getElementCount();
@@ -803,7 +797,7 @@ public class Device extends PhysicalItem implements Comparable<Device> {
     final Device device = this;
     if (!device.isMounted()) {
       try {
-        device.mount();
+        device.mount(true);
       } catch (final Exception e) {
         Log.error(11, "{{" + getName() + "}}", e); // mount failed
         Messages.showErrorMessage(11, getName());
@@ -1005,18 +999,11 @@ public class Device extends PhysicalItem implements Comparable<Device> {
   public boolean test() {
     UtilGUI.waiting(); // waiting cursor
     boolean bOK = false;
-    try {
-      // just wait a moment so user feels something real happens
-      // (psychological)
-      Thread.sleep(250);
-    } catch (final InterruptedException e2) {
-      Log.error(e2);
-    }
     boolean bWasMounted = bMounted; // store mounted state of device before
     // mount test
     try {
       if (!bMounted) {
-        mount(false); // try to mount
+        mount(true);
       }
     } catch (final Exception e) {
       UtilGUI.stopWaiting();

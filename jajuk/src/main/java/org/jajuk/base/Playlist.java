@@ -418,10 +418,8 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
           JOptionPane.INFORMATION_MESSAGE);
       if (i == JOptionPane.YES_OPTION) {
         try {
-          // mount. Note that we don't refresh UI to keep
-          // selection on this playlist (otherwise the event reset
-          // selection).
-          getDirectory().getDevice().mount(Conf.getBoolean(Const.CONF_OPTIONS_HIDE_UNMOUNTED));
+          // mount the device is required
+          getDirectory().getDevice().mount(true);
         } catch (final Exception e) {
           throw new JajukException(141, getFio().getAbsolutePath(), e);
         }

@@ -208,6 +208,9 @@ public final class TrackManager extends ItemManager implements Observer {
         it.remove();
       }
     }
+    // Clear the tag cache before and after a transaction to
+    // avoid memory leaks
+    Tag.clearCache();
   }
 
   /**
@@ -235,7 +238,7 @@ public final class TrackManager extends ItemManager implements Observer {
     }
     // change tag in files
     for (File file : alReady) {
-      Tag tag = new Tag(file.getIO());
+      Tag tag = Tag.getTagForFio(file.getIO());
       tag.setAlbumName(sNewAlbum);
       if (bAutocommit) {
         tag.commit();
@@ -285,7 +288,7 @@ public final class TrackManager extends ItemManager implements Observer {
     }
     // change tag in files
     for (final File file : alReady) {
-      final Tag tag = new Tag(file.getIO());
+      final Tag tag = Tag.getTagForFio(file.getIO());
 
       tag.setAuthorName(sNewAuthor);
       if (bAutocommit) {
@@ -338,7 +341,7 @@ public final class TrackManager extends ItemManager implements Observer {
     }
     // change tag in files
     for (final File file : alReady) {
-      final Tag tag = new Tag(file.getIO());
+      Tag tag = Tag.getTagForFio(file.getIO());
 
       tag.setStyleName(sNewStyle);
       if (bAutocommit) {
@@ -389,7 +392,7 @@ public final class TrackManager extends ItemManager implements Observer {
     }
     // change tag in files
     for (final File file : alReady) {
-      final Tag tag = new Tag(file.getIO());
+      Tag tag = Tag.getTagForFio(file.getIO());
 
       tag.setYear(newItem);
       if (bAutocommit) {
@@ -434,7 +437,7 @@ public final class TrackManager extends ItemManager implements Observer {
     }
     // change tag in files
     for (File file : alReady) {
-      Tag tag = new Tag(file.getIO());
+      Tag tag = Tag.getTagForFio(file.getIO());
       tag.setComment(sNewItem);
       if (bAutocommit) {
         tag.commit();
@@ -502,7 +505,7 @@ public final class TrackManager extends ItemManager implements Observer {
     }
     // change tag in files
     for (File file : alReady) {
-      Tag tag = new Tag(file.getIO());
+      Tag tag = Tag.getTagForFio(file.getIO());
       tag.setOrder(lNewOrder);
       if (bAutocommit) {
         tag.commit();
@@ -545,7 +548,7 @@ public final class TrackManager extends ItemManager implements Observer {
     }
     // change tag in files
     for (File file : alReady) {
-      Tag tag = new Tag(file.getIO());
+      Tag tag = Tag.getTagForFio(file.getIO());
       tag.setTrackName(sNewItem);
       if (bAutocommit) {
         tag.commit();

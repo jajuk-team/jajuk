@@ -305,56 +305,61 @@ public class DeviceWizard extends JFrame implements ActionListener, Const {
         setVisible(true);
         return;
       }
-      // check device availability (test name only if new device)
-      final int code = DeviceManager.getInstance().checkDeviceAvailablity(jtfName.getText(),
-          jcbType.getSelectedIndex(), jtfUrl.getText(), bNew);
-      if (code != 0) {
-        Messages.showErrorMessage(code);
-        setVisible(true); // display wizard window which has been
-        // hidden by the error window
-        return;
-      }
-      if (bNew) {
-        device = DeviceManager.getInstance().registerDevice(jtfName.getText(),
-            jcbType.getSelectedIndex(), jtfUrl.getText());
-      }
-      device.setProperty(Const.XML_DEVICE_AUTO_MOUNT, jcbAutoMount.isSelected());
-      device.setProperty(Const.XML_DEVICE_AUTO_REFRESH, new Double(jftfAutoRefresh.getValue()
-          .toString()));
-      device.setProperty(Const.XML_TYPE, new Long(jcbType.getSelectedIndex()));
-      device.setUrl(jtfUrl.getText());
-      if (jcbSynchronized.isEnabled() && (jcbSynchronized.getSelectedItem() != null)) {
-        device.setProperty(Const.XML_DEVICE_SYNCHRO_SOURCE, devices.get(
-            jcbSynchronized.getSelectedIndex()).getID());
-        if (jrbBidirSynchro.isSelected()) {
-          device.setProperty(Const.XML_DEVICE_SYNCHRO_MODE, Const.DEVICE_SYNCHRO_MODE_BI);
-        } else {
-          device.setProperty(Const.XML_DEVICE_SYNCHRO_MODE, Const.DEVICE_SYNCHRO_MODE_UNI);
-        }
-      } else { // no synchro
-        device.removeProperty(Const.XML_DEVICE_SYNCHRO_MODE);
-        device.removeProperty(Const.XML_DEVICE_SYNCHRO_SOURCE);
-      }
-      // Force deep refresh if it is a new device or if URL changed
-      if (jcbRefresh.isSelected() && bNew) {
-        try {
-          // Drop existing directory to avoid phantom directories if
-          // existing device
-          DirectoryManager.getInstance().removeDirectory(device.getID());
-          device.refresh(true);
-        } catch (final Exception e2) {
-          Log.error(112, device.getName(), e2);
-          Messages.showErrorMessage(112, device.getName());
-        }
-      } else if (sInitialURL != null && !sInitialURL.equals(jtfUrl.getText())) {
-        // If user changed the URL, force refresh
-        new Thread() {
-          @Override
-          public void run() {
+      new Thread() {
+        @Override
+        public void run() {
+          // check device availability (test name only if new device)
+          final int code = DeviceManager.getInstance().checkDeviceAvailablity(jtfName.getText(),
+              jcbType.getSelectedIndex(), jtfUrl.getText(), bNew);
+          if (code != 0) {
+            Messages.showErrorMessage(code);
+            setVisible(true); // display wizard window which has been
+            // hidden by the error window
+            return;
+          }
+          if (bNew) {
+            device = DeviceManager.getInstance().registerDevice(jtfName.getText(),
+                jcbType.getSelectedIndex(), jtfUrl.getText());
+          }
+          device.setProperty(Const.XML_DEVICE_AUTO_MOUNT, jcbAutoMount.isSelected());
+          device.setProperty(Const.XML_DEVICE_AUTO_REFRESH, new Double(jftfAutoRefresh.getValue()
+              .toString()));
+          device.setProperty(Const.XML_TYPE, new Long(jcbType.getSelectedIndex()));
+          device.setUrl(jtfUrl.getText());
+          if (jcbSynchronized.isEnabled() && (jcbSynchronized.getSelectedItem() != null)) {
+            device.setProperty(Const.XML_DEVICE_SYNCHRO_SOURCE, devices.get(
+                jcbSynchronized.getSelectedIndex()).getID());
+            if (jrbBidirSynchro.isSelected()) {
+              device.setProperty(Const.XML_DEVICE_SYNCHRO_MODE, Const.DEVICE_SYNCHRO_MODE_BI);
+            } else {
+              device.setProperty(Const.XML_DEVICE_SYNCHRO_MODE, Const.DEVICE_SYNCHRO_MODE_UNI);
+            }
+          } else { // no synchro
+            device.removeProperty(Const.XML_DEVICE_SYNCHRO_MODE);
+            device.removeProperty(Const.XML_DEVICE_SYNCHRO_SOURCE);
+          }
+          // Force deep refresh if it is a new device or if URL changed
+          if (jcbRefresh.isSelected() && bNew) {
+            try {
+              // Drop existing directory to avoid phantom directories if
+              // existing device
+              DirectoryManager.getInstance().removeDirectory(device.getID());
+              device.refresh(true);
+            } catch (final Exception e2) {
+              Log.error(112, device.getName(), e2);
+              Messages.showErrorMessage(112, device.getName());
+            }
+          } else if (sInitialURL != null && !sInitialURL.equals(jtfUrl.getText())) {
+            // If user changed the URL, force refresh
             try {
               // try to remount the device
               if (!device.isMounted()) {
-                device.mount();
+                int resu = device.mount(true);
+                // Leave if user canceled device mounting
+                if (resu < 0){
+                  dispose();
+                  return;
+                }
               }
               // Keep previous references when changing device url
               device.refreshCommand(false);
@@ -366,14 +371,14 @@ public class DeviceWizard extends JFrame implements ActionListener, Const {
               Messages.showErrorMessage(112, device.getName());
             }
           }
-        }.start();
-      }
-      ObservationManager.notify(new Event(JajukEvents.DEVICE_REFRESH));
-      dispose();
-      if (bNew) {
-        InformationJPanel.getInstance().setMessage(Messages.getString("DeviceWizard.44"),
-            InformationJPanel.INFORMATIVE);
-      }
+          ObservationManager.notify(new Event(JajukEvents.DEVICE_REFRESH));
+          dispose();
+          if (bNew) {
+            InformationJPanel.getInstance().setMessage(Messages.getString("DeviceWizard.44"),
+                InformationJPanel.INFORMATIVE);
+          }
+        }
+      }.start();
     } else if (e.getSource() == jbCancel) {
       dispose(); // close window
     } else if (e.getSource() == jbUrl) {

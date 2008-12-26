@@ -306,7 +306,7 @@ public class DeviceView extends ViewAdapter implements IView, ActionListener, Mo
       handleDelete();
     } else if (ae.getActionCommand().equals(JajukEvents.DEVICE_MOUNT.toString())) {
       try {
-        diSelected.getDevice().mount();
+        diSelected.getDevice().mount(true);
       } catch (Exception e) {
         Messages.showErrorMessage(11);
       }
