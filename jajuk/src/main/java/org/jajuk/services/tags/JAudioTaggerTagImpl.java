@@ -38,8 +38,8 @@ import org.jaudiotagger.tag.Tag;
  */
 public class JAudioTaggerTagImpl implements ITagImpl, Const {
 
+  // Disable Jaudiotagger logs
   static {
-    // Disable Jaudiotagger logs
     try {
       LogManager.getLogManager().readConfiguration(
           new FileInputStream(new File(FILE_JRE_LOG_CONF.toURI())));
@@ -239,12 +239,12 @@ public class JAudioTaggerTagImpl implements ITagImpl, Const {
    */
   private void createTagIfNeeded() throws Exception {
     if (tag == null) {
-      // Ignore this to force error when writting
-      /*this.tag = this.audioFile.getTagOrCreateAndSetDefault();
+      // Ignore this to force error when writing
+      tag = audioFile.getTagOrCreateAndSetDefault();
       // Still null ? problem creating the tag
       if (tag == null) {
         throw new Exception("Cannot Create empty tag");
-      } */
+      }
     }
   }
 

@@ -20,6 +20,8 @@
 package org.jajuk.services.tags;
 
 import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.jajuk.base.Type;
 import org.jajuk.base.TypeManager;
@@ -45,13 +47,19 @@ public class Tag {
 
   /** Is this tag corrupted ? */
   private boolean bCorrupted = false;
+  
+  /** 
+   * File -> tag cache
+   * This is required by the autocommit=false operations 
+   **/
+  static private Map<File, Tag> tagsCache = new HashMap<File, Tag>(10);
 
   /**
    * Tag constructor
    * 
    * @param fio
    */
-  public Tag(java.io.File fio) throws JajukException {
+  private Tag(java.io.File fio) throws JajukException {
     this(fio, false);
   }
 
@@ -68,6 +76,8 @@ public class Tag {
       tagImpl = type.getTagImpl();
       tagImpl.setFile(fio);
       bCorrupted = false;
+      // Cache the tag
+      tagsCache.put(fio, this);
     } catch (Exception e) {
       bCorrupted = true;
       if (!bIgnoreErrors) {
@@ -409,6 +419,28 @@ public class Tag {
 
   public String toString() {
     return "Tag of : " + fio.getAbsolutePath();
+  }
+  
+  /**
+   * Return cached tag or new tag if non already in cache
+   * @param fio the audio file containing the tag
+   * @return cached tag or new tag if non already in cache
+   * @throws JajukException
+   */
+  public static Tag getTagForFio(File fio) throws JajukException{
+    Tag tag = tagsCache.get(fio);
+    if (tag == null){
+      // Note that the tag is cached in the constructor
+      tag = new Tag(fio);
+    }
+    return tag;
+  }
+  
+  /**
+   * Clear the tags cache
+   */
+  public static void clearCache(){
+    tagsCache.clear();
   }
 
 }
