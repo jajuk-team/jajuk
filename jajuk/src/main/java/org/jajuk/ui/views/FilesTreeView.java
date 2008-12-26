@@ -272,7 +272,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
 
     // fill the tree model
     populateTree();
-  
+
     // create tree
     createTree();
 
@@ -311,12 +311,12 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
       DefaultMutableTreeNode nodeDevice = new DeviceNode(device);
       top.add(nodeDevice);
     }
-    // add directories
-    // Note that we use a readonly iterator instead of getting a shallow copy of
-    // Directory list (getDirectories()) for performances reasons
-    ReadOnlyIterator<Directory> dirs = DirectoryManager.getInstance().getDirectoriesIterator();
-    while (dirs.hasNext()) {
-      Directory directory = dirs.next();
+    /*
+     * Add directories (do not use an iterator here but a shallow copy as
+     * concurrent modifications are likely to happen)
+     */
+    List<Directory> dirs = DirectoryManager.getInstance().getDirectories();
+    for (Directory directory : dirs) {
       if (directory.shouldBeHidden()) {
         continue;
       }
@@ -399,7 +399,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
         DeviceNode node = (DeviceNode) (element.getLastPathComponent());
         Device device = node.getDevice();
         try {
-          device.mount();
+          device.mount(true);
           jtree.expandPath(new TreePath(node.getPath()));
         } catch (Exception ex) {
           Messages.showErrorMessage(11);
