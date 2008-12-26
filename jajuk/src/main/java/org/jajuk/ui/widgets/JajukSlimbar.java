@@ -397,7 +397,6 @@ public final class JajukSlimbar extends JFrame implements Observer, MouseWheelLi
       public void run() {
         setTitle(title);
         jbPlayPause.setToolTipText(title);
-        jbInfo.setToolTipText(title);
       }
     });
   }
