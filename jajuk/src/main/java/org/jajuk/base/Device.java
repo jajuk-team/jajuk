@@ -454,6 +454,7 @@ public class Device extends PhysicalItem implements Comparable<Device> {
   private void manualRefresh(final boolean bAsk) {
     try {
       reporter = new ManualDeviceRefreshReporter(this);
+      new ManualDeviceRefreshReporter(this);
       int i = 0;
       try {
         i = prepareRefresh(bAsk);
@@ -485,6 +486,9 @@ public class Device extends PhysicalItem implements Comparable<Device> {
         Log.error(e);
       }
     } finally {
+      // Do not let current reporter as a manual reporter because it would fail
+      // in NPE with auto-refresh
+      reporter = null;
       // Make sure to unlock refreshing
       bAlreadyRefreshing = false;
     }
@@ -673,7 +677,7 @@ public class Device extends PhysicalItem implements Comparable<Device> {
   public synchronized boolean refreshCommand(final boolean bDeepScan) {
     try {
       bAlreadyRefreshing = true;
-      // reporter should be set in case of manual refresh
+      // reporter is already set in case of manual refresh
       if (reporter == null) {
         reporter = new RefreshReporter(this);
       }
