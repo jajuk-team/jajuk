@@ -88,9 +88,6 @@ public class Device extends PhysicalItem implements Comparable<Device> {
   /** IO file for optimizations* */
   private java.io.File fio;
 
-  /** Device mount point* */
-  private static final String MOUNT_POINT = "";
-
   /** Mounted device flag */
   private boolean bMounted = false;
 
@@ -380,13 +377,6 @@ public class Device extends PhysicalItem implements Comparable<Device> {
   @Override
   public final String getLabel() {
     return Const.XML_DEVICE;
-  }
-
-  /**
-   * @return Returns the unix mount point.
-   */
-  public String getMountPoint() {
-    return MOUNT_POINT;
   }
 
   /**
@@ -885,6 +875,8 @@ public class Device extends PhysicalItem implements Comparable<Device> {
     } finally {
       // make sure to unlock synchronizing even if an error occurred
       bAlreadySynchronizing = false;
+      // Refresh GUI
+      ObservationManager.notify(new Event(JajukEvents.DEVICE_REFRESH));
     }
   }
 
@@ -1060,7 +1052,7 @@ public class Device extends PhysicalItem implements Comparable<Device> {
   public String toString() {
     return "Device[ID=" + getID() + " Name=" + getName() + " Type="
         + DeviceManager.getInstance().getDeviceType(getLongValue(Const.XML_TYPE)) + " URL=" + sUrl
-        + " Mount point=" + MOUNT_POINT + "]";
+        + "]";
   }
 
   /**
