@@ -36,13 +36,14 @@ import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
-import org.jajuk.base.AlbumManager;
 import org.jajuk.base.AuthorManager;
 import org.jajuk.base.Item;
 import org.jajuk.ui.helpers.FontManager;
 import org.jajuk.ui.helpers.FontManager.JajukFont;
 import org.jajuk.util.Const;
 import org.jajuk.util.DownloadManager;
+import org.jajuk.util.IconLoader;
+import org.jajuk.util.JajukIcons;
 import org.jajuk.util.UtilGUI;
 import org.jajuk.util.UtilString;
 import org.jajuk.util.UtilSystem;
@@ -58,10 +59,13 @@ public class AudioScrobblerAuthorThumbnail extends AbstractThumbnail {
   private static final long serialVersionUID = -804471264407148566L;
 
   /** Associated author */
-  AudioScrobblerArtist author;
+  private AudioScrobblerArtist author;
 
   /** Popup thumbnail cache */
-  File fThumb;
+  private File fThumb;
+
+  /** Is this author known in collection ? */
+  private boolean bKnown;
 
   /**
    * @param album :
@@ -70,6 +74,7 @@ public class AudioScrobblerAuthorThumbnail extends AbstractThumbnail {
   public AudioScrobblerAuthorThumbnail(AudioScrobblerArtist author) {
     super(100);
     this.author = author;
+    bKnown = (AuthorManager.getInstance().getAuthorByName(author.getName()) != null);
   }
 
   @Override
@@ -124,8 +129,9 @@ public class AudioScrobblerAuthorThumbnail extends AbstractThumbnail {
         add(UtilGUI.getCentredPanel(jlIcon));
         JLabel jlTitle = new JLabel(UtilString.getLimitedString(author.getName(), 15));
         jlTitle.setToolTipText(author.getName());
-        if (AlbumManager.getInstance().getAlbumByName(author.getName()) != null) {
-          // Album known in collection, display its name in bold
+        if (bKnown) {
+          // Artist known in collection, display its name in bold
+          jlTitle.setIcon(IconLoader.getIcon(JajukIcons.AUTHOR));
           jlTitle.setFont(FontManager.getInstance().getFont(JajukFont.BOLD));
         } else {
           jlTitle.setFont(FontManager.getInstance().getFont(JajukFont.PLAIN));
@@ -133,14 +139,15 @@ public class AudioScrobblerAuthorThumbnail extends AbstractThumbnail {
         add(jlTitle);
         jlIcon.setBorder(new ShadowBorder());
         // disable inadequate menu items
-        jmenu.remove(jmiCDDBWizard);
-        jmenu.remove(jmiGetCovers);
+        jmiCDDBWizard.setEnabled(false);
+        jmiGetCovers.setEnabled(false);
         if (getItem() == null) {
-          jmenu.remove(jmiPlay);
-          jmenu.remove(jmiPlayRepeat);
-          jmenu.remove(jmiPlayShuffle);
-          jmenu.remove(jmiPush);
-          jmenu.remove(jmiProperties);
+          jmiDelete.setEnabled(false);
+          jmiPlay.setEnabled(false);
+          jmiPlayRepeat.setEnabled(false);
+          jmiPlayShuffle.setEnabled(false);
+          jmiPush.setEnabled(false);
+          jmiProperties.setEnabled(false);
         }
         // Set URL to open
         jmiOpenLastFMSite.putClientProperty(Const.DETAIL_CONTENT, author.getUrl());
@@ -203,8 +210,13 @@ public class AudioScrobblerAuthorThumbnail extends AbstractThumbnail {
    */
   @Override
   public void launch() {
-    // Open the last.FM page
-    jmiOpenLastFMSite.doClick();
+    if (bKnown) {
+      // Play the author
+      jmiPlay.doClick();
+    } else {
+      // Open the last.FM page
+      jmiOpenLastFMSite.doClick();
+    }
   }
 
 }

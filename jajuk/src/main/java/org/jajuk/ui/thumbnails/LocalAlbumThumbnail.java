@@ -123,22 +123,18 @@ public class LocalAlbumThumbnail extends AbstractThumbnail {
           { size + 10, 10, TableLayout.PREFERRED, 5, TableLayout.PREFERRED } };
       setLayout(new TableLayout(dMain));
       int iRows = 7 + 7 * ((size / 50) - 1);
-      Color mediumGray = new Color(172, 172, 172);
-
+     
       Author author = AuthorManager.getInstance().getAssociatedAuthors(album).iterator().next();
       jlAuthor = new JLabel(UtilString.getLimitedString(author.getName2(), iRows));
       jlAuthor.setToolTipText(author.getName2());
       jlAuthor.setFont(FontManager.getInstance().getFont(JajukFont.BOLD));
-      jlAuthor.setForeground(mediumGray);
+     
       // we have to use a empty border to avoid getting default border
       jlAuthor.setBorder(new EmptyBorder(0, 0, 0, 0));
 
       jlAlbum = new JLabel(UtilString.getLimitedString(album.getName2(), iRows));
       jlAlbum.setToolTipText(album.getName2());
 
-      jlAuthor.setFont(FontManager.getInstance().getFont(JajukFont.BOLD));
-      jlAlbum.setFont(FontManager.getInstance().getFont(JajukFont.BOLD));
-      jlAlbum.setForeground(mediumGray);
       jlAlbum.setBorder(new EmptyBorder(0, 0, 0, 0));
       add(jlIcon, "1,0,c,c");
       add(jlAuthor, "1,2");
@@ -149,7 +145,6 @@ public class LocalAlbumThumbnail extends AbstractThumbnail {
       int iRows = 7 + 6 * (size / 50 - 1);
       JLabel jlTitle = new JLabel(UtilString.getLimitedString(album.getName2(), iRows));
       jlTitle.setToolTipText(album.getName2());
-      jlTitle.setFont(FontManager.getInstance().getFont(JajukFont.BOLD));
       jlTitle.setToolTipText(album.getName2());
       add(jlTitle);
     }

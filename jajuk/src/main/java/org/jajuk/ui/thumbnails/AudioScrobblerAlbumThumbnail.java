@@ -60,10 +60,13 @@ public class AudioScrobblerAlbumThumbnail extends AbstractThumbnail {
   private static final long serialVersionUID = -804471264407148566L;
 
   /** Associated album */
-  AudioScrobblerAlbum album;
+  private AudioScrobblerAlbum album;
 
   /** Popup thumbnail cache */
-  File fThumb;
+  private File fThumb;
+
+  /** Is this author known in collection ? */
+  private boolean bKnown;
 
   /**
    * @param album :
@@ -72,6 +75,7 @@ public class AudioScrobblerAlbumThumbnail extends AbstractThumbnail {
   public AudioScrobblerAlbumThumbnail(AudioScrobblerAlbum album) {
     super(100);
     this.album = album;
+    bKnown = (AlbumManager.getInstance().getAlbumByName(album.getTitle()) != null);
   }
 
   @Override
@@ -124,7 +128,7 @@ public class AudioScrobblerAlbumThumbnail extends AbstractThumbnail {
         // Use a panel to allow text to be bigger than image under it
         add(UtilGUI.getCentredPanel(jlIcon));
         JLabel jlTitle;
-        if (AlbumManager.getInstance().getAlbumByName(album.getTitle()) != null) {
+        if (bKnown) {
           // Album known in collection, display its name in bold
           jlTitle = new JLabel(UtilString.getLimitedString(album.getTitle(), 15), IconLoader
               .getIcon(JajukIcons.ALBUM), JLabel.CENTER);
@@ -137,14 +141,15 @@ public class AudioScrobblerAlbumThumbnail extends AbstractThumbnail {
         add(jlTitle);
         jlIcon.setBorder(new ShadowBorder());
         // disable inadequate menu items
-        jmenu.remove(jmiCDDBWizard);
-        jmenu.remove(jmiGetCovers);
+        jmiCDDBWizard.setEnabled(false);
+        jmiGetCovers.setEnabled(false);
         if (getItem() == null) {
-          jmenu.remove(jmiPlay);
-          jmenu.remove(jmiPlayRepeat);
-          jmenu.remove(jmiPlayShuffle);
-          jmenu.remove(jmiPush);
-          jmenu.remove(jmiProperties);
+          jmiDelete.setEnabled(false);
+          jmiPlay.setEnabled(false);
+          jmiPlayRepeat.setEnabled(false);
+          jmiPlayShuffle.setEnabled(false);
+          jmiPush.setEnabled(false);
+          jmiProperties.setEnabled(false);
         }
         // Set URL to open
         jmiOpenLastFMSite.putClientProperty(Const.DETAIL_CONTENT, album.getUrl());
