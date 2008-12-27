@@ -70,9 +70,10 @@ import org.jajuk.base.SearchResult;
 import org.jajuk.events.Event;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
-import org.jajuk.services.core.ExitService;
 import org.jajuk.services.core.RatingManager;
 import org.jajuk.services.lastfm.LastFmManager;
+import org.jajuk.ui.actions.ActionManager;
+import org.jajuk.ui.actions.JajukActions;
 import org.jajuk.ui.helpers.DefaultMouseWheelListener;
 import org.jajuk.ui.helpers.PatternInputVerifier;
 import org.jajuk.ui.thumbnails.ThumbnailManager;
@@ -661,12 +662,18 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
           final java.io.File from = UtilSystem.getConfFileByPath("");
           final java.io.File dest = new java.io.File(newWorkspace + '/'
               + (Main.isTestMode() ? ".jajuk_test_" + Const.TEST_VERSION : ".jajuk"));
+          // Remove the session file to avoid getting a message when switching
+          // to new workspace
+          java.io.File session = Main.getSessionIdFile();
+          session.delete();
+         
           UtilSystem.copyRecursively(from, dest);
           bPreviousPathExist = false;
           // Change the workspace so the very last conf (like current track)
           // will be saved directly to target workspace. We don't do this if the
-          // workspace already exist to avoir overwritting other configuration.
+          // workspace already exist to avoid overwriting other configuration.
           Main.setWorkspace(psJajukWorkspace.getUrl());
+          
         }
         // OK, now write down the bootstrap file if
         // everything's OK
@@ -678,17 +685,19 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
         UtilGUI.stopWaiting();
         // Display a warning message and restart Jajuk
         if (bPreviousPathExist) {
-          Messages.showInfoMessage(Messages.getString("ParameterView.247"));
+          Messages.getChoice(Messages.getString("ParameterView.247"), JOptionPane.DEFAULT_OPTION,
+              JOptionPane.INFORMATION_MESSAGE);
         } else {
-          Messages.showInfoMessage(Messages.getString("ParameterView.209"));
+          Messages.getChoice(Messages.getString("ParameterView.209"), JOptionPane.DEFAULT_OPTION,
+              JOptionPane.INFORMATION_MESSAGE);
         }
         // Exit Jajuk
-        new Thread() {
-          @Override
-          public void run() {
-            ExitService.exit(0);
-          }
-        }.start();
+        try {
+          ActionManager.getAction(JajukActions.EXIT).perform(null);
+        } catch (Exception e1) {
+          Log.error(e1);
+        }
+
       } catch (final Exception e) {
         Messages.showErrorMessage(24);
         Log.debug("Cannot write bootstrap file");
