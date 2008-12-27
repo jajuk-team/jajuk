@@ -530,9 +530,11 @@ public class CommandJPanel extends JXPanel implements ActionListener, ListSelect
     // Add items
     FormLayout layout = new FormLayout(
     // --columns
-        "3dlu,80dlu, fill:min(0dlu;p):grow(0.04), " + // ambience
-            "left:p, 15dlu," + // smart toolbar / search
-             "left:p, 2dlu" +// smart toolbar / modes
+        "3dlu,min(60dlu;pref):grow(0.02), " + // ambience
+            "fill:min(0dlu;p):grow(0.04), " + // Space between ambience and
+            // smart toolbar
+            "left:p, 15dlu," + // smart toolbar (row 0) / search (row 1)
+            "left:p, 2dlu" + // smart toolbar / modes
             ", min(0dlu;p):grow(0.04), 3dlu," + // glue
             "fill:p, 5dlu, " + // history/player
             "fill:min(60dlu;p):grow(0.2),3dlu", // volume/part of
@@ -545,7 +547,7 @@ public class CommandJPanel extends JXPanel implements ActionListener, ListSelect
     // Add items
     builder.add(jtbWebRadio, cc.xyw(2, 2, 1));// grid width = 3
     builder.add(ambiencesCombo, cc.xy(2, 4));
-    builder.add(jtbSpecial, cc.xyw(4, 4,5));
+    builder.add(jtbSpecial, cc.xyw(4, 4, 5));
     builder.add(jpSearch, cc.xy(4, 2));
     builder.add(jtbModes, cc.xy(6, 2));
     builder.add(jpHistory, cc.xyw(10, 2, 3));
