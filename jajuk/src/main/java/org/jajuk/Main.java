@@ -402,13 +402,9 @@ public final class Main {
       // Tells jajuk to use a .jajuk_test repository
       // The information can be given from CLI using
       // -test=[test|notest] option
-      // or using the "test" env variable
-      final String test = System.getProperty("test");
-      if (element.equals("-" + Const.CLI_TEST) || ((test != null) && test.equals("test"))) {
-
+      if (element.equals("-" + Const.CLI_TEST)) {
         bTestMode = true;
       }
-
       if (element.equals("-" + Const.CLI_POWER_PACK)) {
         bPowerPack = true;
       }
