@@ -241,7 +241,6 @@ public final class Conf implements Const {
     defaults.put(CONF_THUMBS_SORTER, "2"); // sort by album
     // filter on albums
     defaults.put(CONF_THUMBS_FILTER, "0");
-    defaults.put(CONF_TIP_OF_DAY_INDEX, "0");
     defaults.put(CONF_WIKIPEDIA_LANGUAGE, defaults.get(CONF_OPTIONS_LANGUAGE));
     defaults.put(CONF_FADE_DURATION, "6");
     // sort by style
@@ -256,11 +255,7 @@ public final class Conf implements Const {
     defaults.put(CONF_OPTIONS_HOTKEYS, FALSE);
     defaults.put(CONF_MPLAYER_ARGS, "");
     defaults.put(CONF_ENV_VARIABLES, "");
-    if (Conf.getBoolean(CONF_SHOW_TIP_ON_STARTUP)) {
-      // In that case, we keep previous value if it was false to avoid
-      // displaying the tips after user makes a "defaults" in preferences view
-      defaults.put(CONF_SHOW_TIP_ON_STARTUP, TRUE);
-    }
+    defaults.put(CONF_SHOW_TIP_ON_STARTUP, TRUE);
     defaults.put(CONF_CATALOG_PAGE_SIZE, "100");
     defaults.put(CONF_SHOW_POPUPS, FALSE);
     defaults.put(CONF_FONTS_SIZE, "12");
@@ -287,7 +282,7 @@ public final class Conf implements Const {
     defaults.put(CONF_ALARM_TIME_HOUR, "08");
     defaults.put(CONF_ALARM_TIME_MINUTES, "00");
     defaults.put(CONF_ALARM_TIME_SECONDS, "00");
-    
+
     // NOT SHOW AGAIN
     defaults.put(CONF_NOT_SHOW_AGAIN_LASTFM_DISABLED, FALSE);
     defaults.put(CONF_NOT_SHOW_AGAIN_PLAYER, FALSE);

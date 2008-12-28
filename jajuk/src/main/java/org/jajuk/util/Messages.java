@@ -196,22 +196,19 @@ public class Messages extends DefaultHandler {
 
   /**
    * 
-   * @return next tip of the day <br>
-   *         Note that tips of the day indexes are not always consecutive
-   *         because some may have been removed
+   * @return a shuffled tip of the day <br>
    */
-  public static String getNextTipOfTheDay() {
+  public static String getShuffleTipOfTheDay() {
     try {
       String totd = null;
+      String[] TIPS = Messages.getAll("TipOfTheDay");
       // index contains the index of the last provided totd
-      int index = Conf.getInt(Const.CONF_TIP_OF_DAY_INDEX);
+      int index = (int) (UtilSystem.getRandom().nextFloat() * (TIPS.length - 1));
       // display the next one
       totd = Messages.getString("TipOfTheDay." + index);
       // Remove <img> tags
       totd = totd.replaceAll("<.*>", "");
       // Increment and save index
-      Conf.setProperty(Const.CONF_TIP_OF_DAY_INDEX, String.valueOf((index + 1)
-          % Messages.getAll("TipOfTheDay").length));
       return totd;
     } catch (Exception e) {
       Log.error(e);

@@ -41,6 +41,7 @@ import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
+import org.jajuk.util.UtilSystem;
 
 public class TipOfTheDayWizard extends JFrame {
 
@@ -48,19 +49,18 @@ public class TipOfTheDayWizard extends JFrame {
 
   private static final String[] TIPS = Messages.getAll("TipOfTheDay");
 
-  private int iLastTip;
-
   private JCheckBox cbShow;
 
   private JTextArea tipArea;
 
   private JLabel lCounter;
 
+  private int currentIndex = 0;
+
   public TipOfTheDayWizard() {
     super(Messages.getString("TipOfTheDayView.0"));
     setAlwaysOnTop(true);
     setIconImage(IconLoader.getIcon(JajukIcons.LOGO).getImage());
-    this.iLastTip = (Conf.getInt(Const.CONF_TIP_OF_DAY_INDEX) - 1) % TIPS.length;
 
     cbShow = new JCheckBox(Messages.getString("TipOfTheDayView.2"));
     cbShow.setSelected(Conf.getBoolean(Const.CONF_SHOW_TIP_ON_STARTUP));
@@ -75,8 +75,8 @@ public class TipOfTheDayWizard extends JFrame {
     bNext.setMargin(new Insets(1, 1, 1, 1));
     bNext.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent actionevent) {
-        iLastTip = (iLastTip + 1) % TIPS.length;
-        setTip(iLastTip);
+        incIndex();
+        updateTip();
       }
     });
 
@@ -84,11 +84,8 @@ public class TipOfTheDayWizard extends JFrame {
     bPrevious.setMargin(new Insets(1, 1, 1, 1));
     bPrevious.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent actionevent) {
-        iLastTip = iLastTip - 1;
-        if (iLastTip == -1) {
-          iLastTip = TIPS.length - 1;
-        }
-        setTip(iLastTip);
+        decIndex();
+        updateTip();
       }
     });
 
@@ -137,22 +134,48 @@ public class TipOfTheDayWizard extends JFrame {
     add(pCenter, BorderLayout.CENTER);
     add(pBottom, BorderLayout.SOUTH);
 
-    setTip(this.iLastTip);
+    // Display a shuffled tip of the day
+    shuffleIndex();
+    updateTip();
+
     pack();
     if (getWidth() < 400) {
       setSize(400, getHeight());
     }
   }
 
-  public final void setTip(int p) {
-    int i = p;
-    iLastTip = i;
-    if (i >= TIPS.length) {
-      i = 0;
+  /**
+   * Show random TOTD
+   */
+  private void shuffleIndex() {
+    currentIndex = (int) (UtilSystem.getRandom().nextFloat() * (TIPS.length - 1));
+  }
+
+  /**
+   * Increment the TOTD index
+   */
+  private void incIndex() {
+    currentIndex = (currentIndex + 1) % TIPS.length;
+  }
+
+  /**
+   * Decrement the TOTD index
+   */
+  private void decIndex() {
+    if (currentIndex == 0) {
+      currentIndex = TIPS.length - 1;
+    } else {
+      currentIndex--;
     }
-    tipArea.setText(TIPS[i]);
-    lCounter.setText((new StringBuilder()).append("").append(i).append("/").append(TIPS.length - 1)
-        .toString());
+  }
+
+  /**
+   * Update the TOTD with index from Conf
+   */
+  private final void updateTip() {
+    tipArea.setText(TIPS[currentIndex]);
+    lCounter.setText((new StringBuilder()).append("").append(currentIndex + 1).append("/").append(
+        TIPS.length).toString());
     tipArea.setCaretPosition(0);
   }
 
@@ -162,7 +185,7 @@ public class TipOfTheDayWizard extends JFrame {
     if (flag) {
       toFront();
     } else {
-      Conf.setProperty(Const.CONF_TIP_OF_DAY_INDEX, String.valueOf((iLastTip + 1) % TIPS.length));
+      // Called when closing the window, inc the totd index for next display
       Conf.setProperty(Const.CONF_SHOW_TIP_ON_STARTUP, String.valueOf(cbShow.isSelected()));
     }
   }

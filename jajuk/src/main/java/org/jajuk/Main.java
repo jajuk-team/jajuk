@@ -852,7 +852,7 @@ public final class Main {
           jpFrame.add(builder.getPanel(), BorderLayout.CENTER);
 
           // Display tip of the day if required (not at the first
-          // session)
+          // session to avoid displaying too many windows once)
           if (Conf.getBoolean(Const.CONF_SHOW_TIP_ON_STARTUP) && !UpgradeManager.isFirstSesion()) {
             final TipOfTheDayWizard tipsView = new TipOfTheDayWizard();
             tipsView.setLocationRelativeTo(JajukWindow.getInstance());

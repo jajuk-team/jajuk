@@ -696,9 +696,6 @@ public interface Const {
   /** Display tips on startup */
   String CONF_SHOW_TIP_ON_STARTUP = "jajuk.tip.show_on_startup";
 
-  /** Index of current displayed tip */
-  String CONF_TIP_OF_DAY_INDEX = "jajuk.tip.index";
-
   /** Wikipedia language* */
   String CONF_WIKIPEDIA_LANGUAGE = "jajuk.wikipedia.lang";
 

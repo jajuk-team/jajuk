@@ -145,7 +145,7 @@ public final class JSplash extends JFrame {
     JSplashLabel label = new JSplashLabel(url, copyrightString, versionString, versionStringFont);
 
     // build a progress bar and a tips of the day scrolling text
-    String totd = Messages.getNextTipOfTheDay();
+    String totd = Messages.getShuffleTipOfTheDay();
     // Remove pictures urls
     if (totd.matches(".*<a.*")) {
       totd = totd.substring(0, totd.indexOf("<a"));
