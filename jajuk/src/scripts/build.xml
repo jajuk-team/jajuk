@@ -7,7 +7,7 @@
 
 	<!--Distribution release  
 	!!! DO NOT USE '-' CHARACTER IN VERSION !!!-->
-	<property name='version' value='1.7_RC16'/>
+	<property name='version' value='1.7_RC17'/>
 
 	<!--Previous release used for JNLP incremental upgrade-->
 	<property name='previous_version' value='null' />
@@ -156,12 +156,12 @@
 		</tstamp>
 		<echo message='Build time: ${build.time}' />
 		<replace dir='${distdir}/src/org/jajuk/util' value='${build.time}' encoding='UTF-8'>
-			<include name='Const' />
+			<include name='Const.java' />
 			<replacetoken>DATE_REPLACED_BY_ANT</replacetoken>
 		</replace>
 		<!-- Set release in code-->
 		<replace dir='${distdir}/src/org/jajuk/util' value='${version}' encoding='UTF-8'>
-			<include name='Const' />
+			<include name='Const.java' />
 			<replacetoken>VERSION_REPLACED_BY_ANT</replacetoken>
 		</replace>
 		<!-- Set release in user build.xml file-->
