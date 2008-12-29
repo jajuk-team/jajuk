@@ -123,13 +123,6 @@
       <systemPath>${basedir}/lib/vldocking-2.1.5.jar</systemPath>
     </dependency>
     <dependency>
-      <groupId>Entagged</groupId>
-      <artifactId>entagged-audioformats</artifactId>
-      <version>0.15</version>
-      <scope>system</scope>
-      <systemPath>${basedir}/lib/entagged-audioformats-0.15.jar</systemPath>
-    </dependency>
-    <dependency>
       <groupId>BasicPlayer</groupId>
       <artifactId>basicplayer</artifactId>
       <version>3.0</version>
@@ -187,9 +180,9 @@
     <dependency>
       <groupId>org.jaudiotagger</groupId>
       <artifactId>jaudiotagger</artifactId>
-      <version>1.126</version>
+      <version>1.178</version>
       <scope>system</scope>
-      <systemPath>${basedir}/lib/jaudiotagger-1.178.jar</systemPath>
+      <systemPath>${basedir}/lib/jaudiotagger-178.jar</systemPath>
     </dependency>
   </dependencies>
   

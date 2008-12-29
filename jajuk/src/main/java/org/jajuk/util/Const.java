@@ -360,8 +360,6 @@ public interface Const {
 
   String TAG_IMPL_NO_TAGS = "org.jajuk.services.tags.NoTagsTagImpl";
 
-  String TAG_IMPL_ENTAGGED = "org.jajuk.services.tags.EntaggedTagImpl";
-
   String TAG_IMPL_JAUDIOTAGGER = "org.jajuk.services.tags.JAudioTaggerTagImpl";
 
   // device types

@@ -2,11 +2,10 @@
     <jnlp spec="1.0+" codebase="$$codebase" href="entagged_audioformats.jnlp">
     <information>
         <title>Tag librairies</title>
-        <vendor>Entagged and JAudiotagger Team</vendor>
+        <vendor>JAudiotagger Team</vendor>
     </information>
     <resources>
-        <jar href="entagged-audioformats-0.15.jar" version='VERSION_REPLACED_BY_ANT'/>
-        <jar href="jaudiotagger-1.178.jar" version='VERSION_REPLACED_BY_ANT'/>
+        <jar href="jaudiotagger-178.jar" version='VERSION_REPLACED_BY_ANT'/>
     </resources>
     <security> 
            <all-permissions/>
