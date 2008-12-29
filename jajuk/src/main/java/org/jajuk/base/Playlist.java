@@ -784,7 +784,9 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
           UtilGUI.waiting();
           final java.io.File fDir = jfc.getSelectedFile();
           final Date curDate = new Date();
-          final SimpleDateFormat stamp = new SimpleDateFormat("ddMMyyyy-HHmm");
+          // Do not use ':' character in destination directory, it's forbidden
+          // under Windows
+          final SimpleDateFormat stamp = new SimpleDateFormat("yyyyMMdd-HHmm");
           final String dirName = "Party-" + stamp.format(curDate);
           final java.io.File destDir = new java.io.File(fDir.getAbsolutePath() + "/" + dirName);
           if (!destDir.mkdir()) {
@@ -796,9 +798,13 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
             final BufferedWriter bw = new BufferedWriter(new FileWriter(file));
             bw.write(Const.PLAYLIST_NOTE);
             for (final File entry : alFiles) {
-              UtilSystem.copyToDir(entry.getIO(), destDir);
+              java.io.File destFile = UtilSystem.copyToDir(entry.getIO(), destDir);
+              // Rename the file using its Jajuk ID to avoid naming collisions
+              String newName = destDir.getAbsolutePath() + '/' + entry.getID() + '.'
+                  + entry.getType().getExtension();
+              destFile.renameTo(new java.io.File(newName));
               bw.newLine();
-              bw.write(entry.getAbsolutePath());
+              bw.write(entry.getID() + '.' + entry.getType().getExtension());
               // Notify that a file has been copied
               Properties properties = new Properties();
               properties.put(Const.DETAIL_CONTENT, entry.getName());

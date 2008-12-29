@@ -307,8 +307,9 @@ public final class UtilSystem {
    *          file to copy
    * @param directory :
    *          destination directory
+   * @return destination file 
    */
-  public static void copyToDir(final File file, final File directory) throws Exception {
+  public static File copyToDir(final File file, final File directory) throws Exception {
     Log.debug("Copying: " + file.getAbsolutePath() + "  to : " + directory.getAbsolutePath());
     final File fileNew = new File(new StringBuilder(directory.getAbsolutePath()).append("/")
         .append(file.getName()).toString());
@@ -320,6 +321,7 @@ public final class UtilSystem {
     fcDest.transferFrom(fcSrc, 0, fcSrc.size());
     fcSrc.close();
     fcDest.close();
+    return fileNew;
   }
 
   /**
