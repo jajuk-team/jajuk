@@ -211,7 +211,7 @@ public class Device extends PhysicalItem implements Comparable<Device> {
           && file.isReady() &&
           // Remove file if it doesn't exist any more or if it is a iTunes
           // file (useful for jajuk < 1.4)
-          (!file.getIO().exists() || file.getName().startsWith("._"))) {
+          (!file.getFIO().exists() || file.getName().startsWith("._"))) {
         FileManager.getInstance().removeFile(file);
         Log.debug("Removed: " + file);
         bChanges = true;

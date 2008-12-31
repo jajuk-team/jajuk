@@ -432,11 +432,11 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
     add(split);
     // Select "New" playlist as default
     selectSmartPlaylist(spNew);
-    //Register keystrokes over table
+    // Register keystrokes over table
     setKeystrokes();
   }
-  
-   /**
+
+  /**
    * Add keystroke support
    */
   protected void setKeystrokes() {
@@ -867,6 +867,12 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
 
     MouseAdapter ma;
 
+    /**
+     * List of playlists for which we already displayed a warning message if it
+     * contains old or external entries
+     */
+    private List<Playlist> alreadyWarned = new ArrayList<Playlist>(10);
+
     public PlaylistRepository() {
       super();
       columnsConf = CONF_PLAYLIST_REPOSITORY_COLUMNS;
@@ -963,6 +969,10 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
           // load the playlist
           try {
             plf.getFiles();
+            if (!alreadyWarned.contains(plf) && plf.containsExtFiles()) {
+              Messages.showWarningMessage(Messages.getErrorMessage(142));
+              alreadyWarned.add(plf);
+            }
           } catch (JajukException e1) {
             Log.error(e1);
             Messages.showErrorMessage(17);

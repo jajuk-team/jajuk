@@ -123,8 +123,6 @@ public final class FileManager extends ItemManager implements Observer {
     if (file == null) {
       file = new File(sId, sName, directory, track, lSize, lQuality);
       registerItem(file);
-      // add to directory
-      file.getDirectory().addFile(file);
       if (directory.getDevice().isRefreshing() && Log.isDebugEnabled()) {
         Log.debug("registrated new file: " + file);
       }
@@ -178,10 +176,10 @@ public final class FileManager extends ItemManager implements Observer {
       return fileOld;
     }
     // check if this file still exists
-    if (!fileOld.getIO().exists()) {
+    if (!fileOld.getFIO().exists()) {
       throw new CannotRenameException(135);
     }
-    java.io.File fileNew = new java.io.File(fileOld.getIO().getParentFile().getAbsolutePath()
+    java.io.File fileNew = new java.io.File(fileOld.getFIO().getParentFile().getAbsolutePath()
         + java.io.File.separator + sNewName);
     // recalculate file ID
     Directory dir = fileOld.getDirectory();
@@ -195,7 +193,7 @@ public final class FileManager extends ItemManager implements Observer {
     fNew.setProperty(Const.XML_ID, sNewId); // reset new id and name
     fNew.setProperty(Const.XML_NAME, sNewName); // reset new id and name
     // check file name and extension
-    if (!(UtilSystem.getExtension(fileNew).equals(UtilSystem.getExtension(fileOld.getIO())))) {
+    if (!(UtilSystem.getExtension(fileNew).equals(UtilSystem.getExtension(fileOld.getFIO())))) {
       // no extension change
       throw new CannotRenameException(134);
     }
@@ -207,7 +205,7 @@ public final class FileManager extends ItemManager implements Observer {
     }
     // try to rename file on disk
     try {
-      if (!fileOld.getIO().renameTo(fileNew)) {
+      if (!fileOld.getFIO().renameTo(fileNew)) {
         throw new CannotRenameException(134);
       }
     } catch (Exception e) {
@@ -221,8 +219,6 @@ public final class FileManager extends ItemManager implements Observer {
     Properties properties = new Properties();
     properties.put(Const.DETAIL_OLD, fileOld);
     properties.put(Const.DETAIL_NEW, fNew);
-    // change directory reference
-    dir.changeFile(fileOld, fNew);
     // Notify interested items (like history manager)
     ObservationManager.notifySync(new Event(JajukEvents.FILE_NAME_CHANGED, properties));
     return fNew;
@@ -276,7 +272,6 @@ public final class FileManager extends ItemManager implements Observer {
    */
   public synchronized void removeFile(File file) {
     removeItem(file);
-    file.getDirectory().removeFile(file);
     // We need to remove the file from the track !
     file.getTrack().removeFile(file);
   }
@@ -298,7 +293,7 @@ public final class FileManager extends ItemManager implements Observer {
       File file = it.next();
       // we compare io files and not paths
       // to avoid dealing with path name issues
-      if (file.getIO().equals(fToCompare)) {
+      if (file.getFIO().equals(fToCompare)) {
         fOut = file;
         break;
       }

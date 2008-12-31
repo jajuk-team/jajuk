@@ -113,7 +113,6 @@ public final class PlaylistManager extends ItemManager implements Observer {
         return;
       }
     }
-    plf.getDirectory().removePlaylistFile(plf);
     // remove playlist
     removeItem(plf);
   }
@@ -216,8 +215,6 @@ public final class PlaylistManager extends ItemManager implements Observer {
     // OK, remove old file and register this new file
     removeItem(plfOld);
     registerItem(plfNew);
-    // change directory reference
-    plfNew.getDirectory().changePlaylistFile(plfOld, plfNew);
     return plfNew;
   }
 

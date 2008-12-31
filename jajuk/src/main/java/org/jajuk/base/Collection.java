@@ -819,7 +819,6 @@ public final class Collection extends DefaultHandler implements ErrorHandler, Se
               dParent);
           if (plf != null) {
             plf.populateProperties(attributes);
-            dParent.addPlaylistFile(plf);
           }
           break;
         case STAGE_DEVICES:

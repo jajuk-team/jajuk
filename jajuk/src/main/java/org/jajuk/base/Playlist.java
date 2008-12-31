@@ -234,7 +234,7 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
       final Iterator<File> it = getFiles().iterator();
       while (it.hasNext()) {
         final File file = it.next();
-        if (file.getIO().getParent().equals(fio.getParent())) {
+        if (file.getFIO().getParent().equals(fio.getParent())) {
           bw.write(file.getName());
         } else {
           bw.write(file.getAbsolutePath());
@@ -428,14 +428,11 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
       }
     }
     if ((type == Type.NORMAL) && (alFiles == null)) {
-      // normal playlist, test if list is null for perfs(avoid reading
-      // again the m3u file)
+      // normal playlist, test if list is null for performances (avoid reading
+      // the m3u file twice)
       if (getFio().exists() && getFio().canRead()) {
         // check device is mounted
         alFiles = load(); // populate playlist
-        if (containsExtFiles()) {
-          Messages.showWarningMessage(Messages.getErrorMessage(142));
-        }
       } else { // error accessing playlist
         throw new JajukException(9, getFio().getAbsolutePath());
       }
@@ -710,12 +707,6 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
       // memory )
       setFio(file);
       commit(); // write it on the disk
-      final java.io.File fDir = file.getParentFile();
-      final Directory dir = DirectoryManager.getInstance().getDirectoryForIO(fDir);
-      if (dir != null) { // the new playlist in inside collection
-        final Playlist plFile = PlaylistManager.getInstance().registerPlaylistFile(file, dir);
-        dir.addPlaylistFile(plFile);
-      }
     }
   }
 
@@ -798,7 +789,7 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
             final BufferedWriter bw = new BufferedWriter(new FileWriter(file));
             bw.write(Const.PLAYLIST_NOTE);
             for (final File entry : alFiles) {
-              java.io.File destFile = UtilSystem.copyToDir(entry.getIO(), destDir);
+              java.io.File destFile = UtilSystem.copyToDir(entry.getFIO(), destDir);
               // Rename the file using its Jajuk ID to avoid naming collisions
               String newName = destDir.getAbsolutePath() + '/' + entry.getID() + '.'
                   + entry.getType().getExtension();

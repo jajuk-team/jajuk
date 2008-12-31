@@ -121,7 +121,7 @@ public class DeleteSelectionAction extends SelectionAction {
           for (File f : alFiles) {
             try {
               Directory d = f.getDirectory();
-              UtilSystem.deleteFile(f.getIO());
+              UtilSystem.deleteFile(f.getFIO());
               FileManager.getInstance().removeFile(f);
               if (d.getFiles().size() == 0) {
                 emptyDirs.add(f.getDirectory());

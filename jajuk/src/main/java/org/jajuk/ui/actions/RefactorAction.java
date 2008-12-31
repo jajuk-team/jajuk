@@ -112,7 +112,7 @@ public class RefactorAction {
 
       filename += "." + tCurrent.getType().getExtension();
       filename = filename.replace("/", RefactorAction.sFS);
-      final java.io.File fOld = fCurrent.getIO();
+      final java.io.File fOld = fCurrent.getFIO();
       final String sPathname = fCurrent.getDevice().getFio().getPath() + RefactorAction.sFS
           + filename;
       final java.io.File fNew = new java.io.File(sPathname);

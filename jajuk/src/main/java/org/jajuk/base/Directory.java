@@ -22,9 +22,9 @@ package org.jajuk.base;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.TreeSet;
 
 import javax.swing.ImageIcon;
 
@@ -42,6 +42,7 @@ import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
+import org.jajuk.util.ReadOnlyIterator;
 import org.jajuk.util.UtilSystem;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
@@ -60,15 +61,6 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
 
   /** Directory device */
   private Device device;
-
-  /** Child directories */
-  private Set<Directory> directories = new TreeSet<Directory>();
-
-  /** Child files */
-  private Set<org.jajuk.base.File> files = new TreeSet<org.jajuk.base.File>();
-
-  /** playlists */
-  private Set<Playlist> playlistFiles = new TreeSet<Playlist>();
 
   /** IO file for optimizations* */
   private java.io.File fio;
@@ -132,58 +124,17 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
    * @return
    */
   public Set<Directory> getDirectories() {
-    return directories;
-  }
-
-  /**
-   * Add a child directory in local references
-   * 
-   * @param directory
-   */
-  public void addDirectory(Directory directory) {
-    directories.add(directory);
-  }
-
-  /**
-   * Remove a file from local references
-   * 
-   * @param file
-   */
-  public void removeFile(org.jajuk.base.File file) {
-    if (files.contains(file)) {
-      files.remove(file);
+    long l = System.currentTimeMillis();
+    Set<Directory> out = new LinkedHashSet<Directory>(2);
+    ReadOnlyIterator<Directory> it = DirectoryManager.getInstance().getDirectoriesIterator();
+    while (it.hasNext()){
+      Directory directory = it.next();
+      if (directory.getFio().getParent().equals(this.getFio())){
+        out.add(directory);
+      }
     }
-  }
-
-  /**
-   * Add a playlist in local refences
-   * 
-   * @param playlist
-   *          file
-   */
-  public void addPlaylistFile(Playlist plf) {
-    playlistFiles.add(plf);
-  }
-
-  /**
-   * Remove a playlist from local refences
-   * 
-   * @param playlist
-   *          file
-   */
-  public void removePlaylistFile(Playlist plf) {
-    if (playlistFiles.contains(plf)) {
-      playlistFiles.remove(plf);
-    }
-  }
-
-  /**
-   * Remove a child directory from local refences
-   * 
-   * @param directory
-   */
-  public void removeDirectory(Directory directory) {
-    directories.remove(directory);
+    System.out.println("getDirectory(): "+(System.currentTimeMillis()-l));
+    return out;
   }
 
   /**
@@ -192,7 +143,17 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
    * @return child files
    */
   public Set<org.jajuk.base.File> getFiles() {
-    return files;
+    long l = System.currentTimeMillis();
+    Set<org.jajuk.base.File> out = new LinkedHashSet<org.jajuk.base.File>(2);
+    ReadOnlyIterator<org.jajuk.base.File> it = FileManager.getInstance().getFilesIterator();
+    while (it.hasNext()){
+      org.jajuk.base.File file = it.next();
+      if (file.getFIO().getParent().equals(this.getFio())){
+        out.add(file);
+      }
+    }
+    System.out.println("getFile(): "+(System.currentTimeMillis()-l));
+    return out;
   }
 
   /**
@@ -201,7 +162,17 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
    * @return playlists
    */
   public Set<Playlist> getPlaylistFiles() {
-    return playlistFiles;
+     long l = System.currentTimeMillis();
+    Set<Playlist> out = new LinkedHashSet<Playlist>(2);
+    ReadOnlyIterator<Playlist> it = PlaylistManager.getInstance().getPlaylistsIterator();
+    while (it.hasNext()){
+      Playlist plf = it.next();
+      if (plf.getFio().getParent().equals(this.getFio())){
+        out.add(plf);
+      }
+    }
+    System.out.println("getPlaylist(): "+(System.currentTimeMillis()-l));
+    return out;
   }
 
   /**
@@ -210,6 +181,7 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
    * @return child files
    */
   public List<org.jajuk.base.File> getFilesFromFile(org.jajuk.base.File fileStart) {
+    Set<org.jajuk.base.File> files = getFiles();
     List<org.jajuk.base.File> alOut = new ArrayList<org.jajuk.base.File>(files.size());
     boolean bOK = false;
     for (org.jajuk.base.File file : files) {
@@ -237,29 +209,7 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
     return alFiles;
   }
 
-  /**
-   * @param directory
-   */
-  public void addFile(org.jajuk.base.File file) {
-    files.add(file);
-  }
-
-  /**
-   * @param directory
-   */
-  public void changePlaylistFile(Playlist plfOld, Playlist plfNew) {
-    playlistFiles.remove(plfOld);
-    playlistFiles.add(plfNew);
-  }
-
-  /**
-   * @param directory
-   */
-  public void changeFile(org.jajuk.base.File fileOld, org.jajuk.base.File fileNew) {
-    files.remove(fileOld);
-    files.add(fileNew);
-  }
-
+ 
   /**
    * Scan all files in a directory
    * 
@@ -696,7 +646,7 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
           && file.isReady()) {
         // Remove file if it doesn't exist any more or if it is a iTunes
         // file (useful for jajuk < 1.4)
-        if (!file.getIO().exists() || file.getName().startsWith("._")) {
+        if (!file.getFIO().exists() || file.getName().startsWith("._")) {
           FileManager.getInstance().removeFile(file);
           Log.debug("Removed: " + file);
           bChanges = true;

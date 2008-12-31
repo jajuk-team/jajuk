@@ -124,9 +124,9 @@ public class PasteAction extends JajukAction {
               }
             }
             try {
-              showMessage(f.getIO());
-              UtilSystem.copyToDir(f.getIO(), dir);
-              UtilSystem.deleteFile(f.getIO());
+              showMessage(f.getFIO());
+              UtilSystem.copyToDir(f.getFIO(), dir);
+              UtilSystem.deleteFile(f.getFIO());
               FileManager.getInstance().changeFileDirectory(f, destDir);
             } catch (Exception ioe) {
               Log.error(131, ioe);
@@ -172,8 +172,8 @@ public class PasteAction extends JajukAction {
               }
             }
             try {
-              showMessage(f.getIO());
-              UtilSystem.copyToDir(f.getIO(), dir);
+              showMessage(f.getFIO());
+              UtilSystem.copyToDir(f.getFIO(), dir);
             } catch (Exception ioe) {
               Log.error(131, ioe);
               Messages.showErrorMessage(131);

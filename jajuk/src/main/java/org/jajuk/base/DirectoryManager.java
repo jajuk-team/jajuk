@@ -209,10 +209,6 @@ public final class DirectoryManager extends ItemManager {
       return directory;
     }
     directory = new Directory(sId, sName, dParent, device);
-    if (dParent != null) {
-      // add the directory to parent
-      dParent.addDirectory(directory);
-    }
     registerItem(directory);
     return directory;
   }

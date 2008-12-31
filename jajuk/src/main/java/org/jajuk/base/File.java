@@ -250,7 +250,7 @@ public class File extends PhysicalItem implements Comparable<File>, Const {
    * 
    * @return
    */
-  public java.io.File getIO() {
+  public java.io.File getFIO() {
     if (fio == null) {
       fio = new java.io.File(getAbsolutePath());
     }

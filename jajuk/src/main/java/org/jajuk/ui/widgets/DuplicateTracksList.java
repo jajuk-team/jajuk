@@ -126,7 +126,7 @@ public class DuplicateTracksList extends JPanel implements ListSelectionListener
       // Delete physically files from disk and from collection
       for (int i : indices) {
         try {
-          UtilSystem.deleteFile(flatFilesList.get(i).getIO());
+          UtilSystem.deleteFile(flatFilesList.get(i).getFIO());
           FileManager.getInstance().removeFile(flatFilesList.get(i));
         } catch (Exception ioe) {
           Log.error(131, ioe);
