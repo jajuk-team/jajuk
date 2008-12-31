@@ -20,7 +20,8 @@
 
 package org.jajuk.ui.actions;
 
-import java.awt.Dimension;
+import com.sun.java.help.impl.SwingWorker;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -53,53 +54,59 @@ public class FindDuplicateTracksAction extends JajukAction {
   }
 
   @Override
-  public void perform(ActionEvent evt) throws Exception {
-    List<List<File>> duplicateFilesList = new ArrayList<List<File>>();
-    ReadOnlyIterator<Track> tracks = TrackManager.getInstance().getTracksIterator();
-    while (tracks.hasNext()) {
-      Track track = tracks.next();
-      List<File> trackFileList = track.getFiles();
-      if (trackFileList.size() > 1) {
-        duplicateFilesList.add(trackFileList);
-      }
-    }
-    if (duplicateFilesList.size() < 1) {
-      Messages.showInfoMessage(Messages.getString("FindDuplicateTracksAction.0"));
-    } else {
-      final JOptionPane optionPane = UtilGUI.getNarrowOptionPane(100);
-      final JDialog duplicateFiles = optionPane.createDialog(null, Messages
-          .getString("FindDuplicateTracksAction.3"));
+  public void perform(final ActionEvent evt) throws Exception {
+    UtilGUI.waiting();
+    SwingWorker sw = new SwingWorker() {
 
-      duplicateFiles.setMaximumSize(new Dimension(600, 800));
+      private List<List<File>> duplicateFilesList = null;
 
-      JButton jbClose = new JButton(Messages.getString("Close"));
-      jbClose.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          duplicateFiles.dispose();
+      @Override
+      public Object construct() {
+        duplicateFilesList = new ArrayList<List<File>>();
+        ReadOnlyIterator<Track> tracks = TrackManager.getInstance().getTracksIterator();
+        while (tracks.hasNext()) {
+          Track track = tracks.next();
+          List<File> trackFileList = track.getReadyFiles();
+          if (trackFileList.size() > 1) {
+            duplicateFilesList.add(trackFileList);
+          }
         }
-      });
+        return null;
+      }
 
-      // Create and set up the content pane.
-      JComponent newContentPane = new DuplicateTracksList(duplicateFilesList, jbClose);
-      newContentPane.setOpaque(true);
-      duplicateFiles.setContentPane(newContentPane);
+      @Override
+      public void finished() {
+        try {
+          if (duplicateFilesList.size() < 1) {
+            Messages.showInfoMessage(Messages.getString("FindDuplicateTracksAction.0"));
+          } else {
+            final JOptionPane optionPane = UtilGUI.getNarrowOptionPane(100);
+            final JDialog duplicateFiles = optionPane.createDialog(null, Messages
+                .getString("FindDuplicateTracksAction.3"));
 
-      // Display the window.
-      duplicateFiles.setModal(true);
-      duplicateFiles.setAlwaysOnTop(true);
-      duplicateFiles.pack();
-      duplicateFiles.setLocationRelativeTo(JajukWindow.getInstance());
-      duplicateFiles.setVisible(true);
-    }
+            JButton jbClose = new JButton(Messages.getString("Close"));
+            jbClose.addActionListener(new ActionListener() {
+              public void actionPerformed(ActionEvent e) {
+                duplicateFiles.dispose();
+              }
+            });
+
+            // Create and set up the content pane.
+            JComponent newContentPane = new DuplicateTracksList(duplicateFilesList, jbClose);
+            newContentPane.setOpaque(true);
+            duplicateFiles.setContentPane(newContentPane);
+
+            // Display the window.
+            duplicateFiles.pack();
+            duplicateFiles.setLocationRelativeTo(JajukWindow.getInstance());
+            duplicateFiles.setVisible(true);
+          }
+        }
+        finally {
+          UtilGUI.stopWaiting();
+        }
+      }
+    };
+    sw.start();
   }
-
-  // private String convertToString(List<File> duplicateFilesList) {
-  // StringBuilder buffer = new StringBuilder();
-  // for (File file : duplicateFilesList) {
-  // buffer.append('\t');
-  // buffer.append(file.getName());
-  // buffer.append('\n');
-  // }
-  // return buffer.toString();
-  // }
 }
