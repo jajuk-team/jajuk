@@ -31,6 +31,9 @@ import org.jajuk.util.log.Log;
 import org.jaudiotagger.audio.AudioFile;
 import org.jaudiotagger.audio.AudioFileIO;
 import org.jaudiotagger.tag.Tag;
+import org.jaudiotagger.tag.TagFieldKey;
+import org.jaudiotagger.tag.id3.ID3v1Tag;
+import org.jaudiotagger.tag.id3.ID3v24Tag;
 
 /**
  * {@link ITagImpl} Implementation based on <a
@@ -222,23 +225,26 @@ public class JAudioTaggerTagImpl implements ITagImpl, Const {
    */
   public void setFile(File fio) throws Exception {
     try {
-      this.audioFile = AudioFileIO.read(fio);
+      audioFile = AudioFileIO.read(fio);
       // Jaudiotagger returns null if the track contains none tag, we work then
       // with null for getXXX() methods and we create a void tag in setXXX
       // methods
-      this.tag = this.audioFile.getTag();
+      tag = this.audioFile.getTag();
     } catch (Throwable t) { // can throw OutOfMemory errors
       throw new JajukException(103, fio.toString(), t);
     }
   }
 
   /**
-   * Create a void tag is needed
+   * Create a void tag is needed and convert an ID3 V1.0 tag into V2.4 if any
+   * <br>Tags are committed when leaving this method
    * 
    * @throws Exception
    */
   private void createTagIfNeeded() throws Exception {
+    // No tag ? create one
     if (tag == null) {
+      Log.info("No tag, try to create a void one");
       // Ignore this to force error when writing
       tag = audioFile.getTagOrCreateAndSetDefault();
       // Still null ? problem creating the tag
@@ -246,6 +252,24 @@ public class JAudioTaggerTagImpl implements ITagImpl, Const {
         throw new Exception("Cannot Create empty tag");
       }
     }
+    // ID3 V1 (very old) tag ? convert it to ID3 V2.4 because it doesn't contain
+    // the Track# field and we need it
+    else if (tag instanceof ID3v1Tag) {
+      Log.info("ID3 V1.0 tag found, convertion to V2.4");
+      Tag newTag = new ID3v24Tag();
+      newTag.setTitle(tag.getFirstTitle());
+      newTag.setArtist(tag.getFirstArtist());
+      newTag.setAlbum(tag.getFirstAlbum());
+      newTag.setComment(tag.getFirstComment());
+      newTag.setGenre(tag.getFirstGenre());
+      newTag.setYear(tag.getFirstYear());
+      // Delete the id3 V1 tag
+      AudioFileIO.delete(audioFile);
+      // Add the new one
+      audioFile.setTag(newTag);
+      this.tag=newTag;
+    }
+
   }
 
   /*
@@ -266,8 +290,8 @@ public class JAudioTaggerTagImpl implements ITagImpl, Const {
   public void setStyleName(String style) throws Exception {
     createTagIfNeeded();
     // Workaround for mp4 genre - Allows genres not in genre list to be written
-    tag.deleteTagField(org.jaudiotagger.tag.TagFieldKey.GENRE);
-    this.tag.setGenre(style);
+    this.tag.deleteTagField(TagFieldKey.GENRE);
+    this.tag.set(tag.createTagField(TagFieldKey.GENRE, style));
   }
 
   /*
