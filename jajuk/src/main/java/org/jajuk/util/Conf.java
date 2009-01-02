@@ -188,7 +188,7 @@ public final class Conf implements Const {
     defaults.put(CONF_BESTOF_TRACKS_SIZE, "20");
     defaults.put(CONF_VOLUME, "0.5");
     defaults.put(CONF_REGEXP, FALSE);
-    defaults.put(CONF_BACKUP_SIZE, "20");
+    defaults.put(CONF_BACKUP_SIZE, "40");
     defaults.put(CONF_REFACTOR_PATTERN, PATTERN_DEFAULT_REORG);
     defaults.put(CONF_COLLECTION_CHARSET, "UTF-8");
     defaults.put(CONF_NETWORK_USE_PROXY, FALSE);
