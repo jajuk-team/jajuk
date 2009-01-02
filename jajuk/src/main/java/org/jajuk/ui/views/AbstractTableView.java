@@ -362,6 +362,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
    * model
    */
   public void applyFilter(final String sPropertyName, final String sPropertyValue) {
+    System.out.println("apply filter");
     SwingWorker sw = new SwingWorker() {
       @Override
       public Object construct() {
@@ -457,7 +458,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
             model.addTableModelListener(AbstractTableView.this);
             jtable.setModel(model);
             setCellEditors();
-            // add new item in configuration cols
+            // add new item in configuration columns
             jtable.addColumnIntoConf((String) properties.get(Const.DETAIL_CONTENT));
             jtable.showColumns(jtable.getColumnsConf());
             applyFilter(sAppliedCriteria, sAppliedFilter);

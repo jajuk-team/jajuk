@@ -225,11 +225,14 @@ public class QueueView extends PlaylistView {
     eventSubjectSet.add(JajukEvents.QUEUE_NEED_REFRESH);
     eventSubjectSet.add(JajukEvents.FILE_LAUNCHED);
     eventSubjectSet.add(JajukEvents.DEVICE_REFRESH);
+    eventSubjectSet.add(JajukEvents.DEVICE_MOUNT);
+    eventSubjectSet.add(JajukEvents.DEVICE_UNMOUNT);
     eventSubjectSet.add(JajukEvents.CUSTOM_PROPERTIES_ADD);
     eventSubjectSet.add(JajukEvents.CUSTOM_PROPERTIES_REMOVE);
     eventSubjectSet.add(JajukEvents.VIEW_REFRESH_REQUEST);
     eventSubjectSet.add(JajukEvents.RATE_CHANGED);
     eventSubjectSet.add(JajukEvents.TABLE_SELECTION_CHANGED);
+    eventSubjectSet.add(JajukEvents.PARAMETERS_CHANGE);
     return eventSubjectSet;
   }
 
@@ -258,7 +261,10 @@ public class QueueView extends PlaylistView {
           // wrong
           if (JajukEvents.QUEUE_NEED_REFRESH.equals(subject)
               || JajukEvents.DEVICE_REFRESH.equals(subject)
-              || JajukEvents.RATE_CHANGED.equals(subject)) {
+              || JajukEvents.DEVICE_MOUNT.equals(subject)
+              || JajukEvents.DEVICE_UNMOUNT.equals(subject)
+              || JajukEvents.RATE_CHANGED.equals(subject)
+              || JajukEvents.PARAMETERS_CHANGE.equals(subject)) {
             editorModel.getItems().clear();
             editorModel.getPlanned().clear();
             refreshQueue();

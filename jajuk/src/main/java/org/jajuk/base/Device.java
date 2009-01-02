@@ -571,7 +571,6 @@ public class Device extends PhysicalItem implements Comparable<Device> {
     bMounted = true;
     // notify views to refresh if needed
     ObservationManager.notify(new Event(JajukEvents.DEVICE_MOUNT));
-    ObservationManager.notify(new Event(JajukEvents.DEVICE_REFRESH));
     return 0;
   }
 

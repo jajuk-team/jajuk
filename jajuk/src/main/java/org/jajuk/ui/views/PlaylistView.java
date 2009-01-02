@@ -453,11 +453,14 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
     Set<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
     eventSubjectSet.add(JajukEvents.CUSTOM_PROPERTIES_ADD);
     eventSubjectSet.add(JajukEvents.CUSTOM_PROPERTIES_REMOVE);
+    eventSubjectSet.add(JajukEvents.DEVICE_MOUNT);
+    eventSubjectSet.add(JajukEvents.DEVICE_UNMOUNT);
     eventSubjectSet.add(JajukEvents.DEVICE_REFRESH);
     eventSubjectSet.add(JajukEvents.FILE_COPIED);
     eventSubjectSet.add(JajukEvents.VIEW_REFRESH_REQUEST);
     eventSubjectSet.add(JajukEvents.QUEUE_NEED_REFRESH);
     eventSubjectSet.add(JajukEvents.TABLE_SELECTION_CHANGED);
+    eventSubjectSet.add(JajukEvents.PARAMETERS_CHANGE);
     return eventSubjectSet;
   }
 
@@ -499,7 +502,10 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
           if (JajukEvents.DEVICE_REFRESH.equals(subject)
               // We listen this event to paint the new running track in table
               || JajukEvents.QUEUE_NEED_REFRESH.equals(subject)
-              || JajukEvents.RATE_CHANGED.equals(subject)) {
+              || JajukEvents.RATE_CHANGED.equals(subject)
+              || JajukEvents.DEVICE_MOUNT.equals(subject)
+              || JajukEvents.DEVICE_UNMOUNT.equals(subject)
+              || JajukEvents.PARAMETERS_CHANGE.equals(subject)) {
             refreshCurrentPlaylist();
           } else if (JajukEvents.FILE_COPIED.equals(subject)) {
             Properties properties = event.getDetails();

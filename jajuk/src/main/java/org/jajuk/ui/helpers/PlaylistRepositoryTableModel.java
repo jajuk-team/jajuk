@@ -104,18 +104,6 @@ public class PlaylistRepositoryTableModel extends JajukTableModel {
 
     Iterator<Playlist> it = null;
 
-    // Filter unmounted files if required
-    if (Conf.getBoolean(Const.CONF_OPTIONS_HIDE_UNMOUNTED)) {
-      it = alToShow.iterator();
-      while (it.hasNext()) {
-        Playlist plf = it.next();
-        if (!plf.getDirectory().getDevice().isMounted()) {
-          // Note: don't check .exists() or .canRead() here : it takes
-          // a long time for unmounted network drive
-          it.remove();
-        }
-      }
-    }
     int iColNum = iNumberStandardCols + PlaylistManager.getInstance().getCustomProperties().size();
     iRowNum = alToShow.size();
     oValues = new Object[iRowNum][iColNum];

@@ -487,8 +487,6 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
           ObservationManager.notify(new Event(JajukEvents.DEVICE_REFRESH));
           // Launch thumbs creation in another process
           ThumbnailsMaker.launchAllSizes(true);
-          // Display the catalog view filed
-          ObservationManager.notify(new Event(JajukEvents.DEVICE_REFRESH));
         }
       }
     }.start();
