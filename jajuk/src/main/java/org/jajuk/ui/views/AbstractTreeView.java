@@ -172,7 +172,7 @@ public abstract class AbstractTreeView extends ViewAdapter {
    */
   private void setKeystrokes() {
     jtree.putClientProperty(Const.DETAIL_SELECTION, alSelected);
-    InputMap inputMap = jtree.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+    InputMap inputMap = jtree.getInputMap(JComponent.WHEN_FOCUSED);
     ActionMap actionMap = jtree.getActionMap();
 
     // Delete
@@ -191,6 +191,10 @@ public abstract class AbstractTreeView extends ViewAdapter {
     action = ActionManager.getAction(JajukActions.SHOW_PROPERTIES);
     inputMap.put(KeyStroke.getKeyStroke("alt ENTER"), "properties");
     actionMap.put("properties", action);
+    // Rename / F2
+    action = ActionManager.getAction(JajukActions.RENAME);
+    inputMap.put(KeyStroke.getKeyStroke("F2"), "rename");
+    actionMap.put("rename", action);
   }
 
   public void update(Event event) {
