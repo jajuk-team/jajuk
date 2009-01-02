@@ -44,7 +44,8 @@ public class RenameAction extends JajukAction {
   private static final long serialVersionUID = 1L;
 
   RenameAction() {
-    super(Messages.getString("RenameAction.0"), IconLoader.getIcon(JajukIcons.EDIT), true);
+    super(Messages.getString("RenameAction.0"), IconLoader.getIcon(JajukIcons.EDIT), "F2", true,
+        false);
     setShortDescription(Messages.getString("RenameAction.0"));
   }
 
@@ -65,7 +66,6 @@ public class RenameAction extends JajukAction {
             try {
               UtilGUI.waiting();
               FileManager.getInstance().changeFileName((File) currentItem, newName);
-              ((File) currentItem).getDirectory().refresh(false, null);
               ObservationManager.notify(new Event(JajukEvents.DEVICE_REFRESH));
             } catch (Exception er) {
               Log.error(er);
@@ -74,6 +74,15 @@ public class RenameAction extends JajukAction {
             }
           }
         } else if (currentItem instanceof Directory) {
+          /*
+           * Renaming of a directory
+           * 
+           * @TODO Note that this implementation is trivial and looses all
+           * custom properties applied on files (hopefully not the tracks ones)
+           * because we simply remove the directory and force its scan again. A
+           * better implementation would clone all files recursively
+           */
+
           String newName = JOptionPane.showInputDialog(null, Messages.getString("RenameAction.2")
               + "\n\n", ((Directory) currentItem).getName());
           if ((newName != null) && (newName.length() > 0)) {

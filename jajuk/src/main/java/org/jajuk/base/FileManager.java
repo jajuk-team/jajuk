@@ -25,18 +25,15 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-import java.util.Set;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.jajuk.events.Event;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
-import org.jajuk.events.Observer;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.MD5Processor;
@@ -51,7 +48,7 @@ import org.jajuk.util.log.Log;
 /**
  * Convenient class to manage files
  */
-public final class FileManager extends ItemManager implements Observer {
+public final class FileManager extends ItemManager {
   /** Best of files */
   private List<File> alBestofFiles = new ArrayList<File>(20);
 
@@ -183,12 +180,12 @@ public final class FileManager extends ItemManager implements Observer {
         + java.io.File.separator + sNewName);
     // recalculate file ID
     Directory dir = fileOld.getDirectory();
-    String sNewId = MD5Processor.hash(new StringBuilder(dir.getDevice().getName()).append(
-        dir.getDevice().getUrl()).append(dir.getRelativePath()).append(sNewName).toString());
+    String sNewId = createID(sNewName,dir);
     // create a new file (with own fio and sAbs)
-    org.jajuk.base.File fNew = new File(sNewId, sNewName, fileOld.getDirectory(), fileOld
-        .getTrack(), fileOld.getSize(), fileOld.getQuality());
-    // transfert all properties (inc id and name)
+    Track track = fileOld.getTrack();
+    org.jajuk.base.File fNew = new File(sNewId, sNewName, fileOld.getDirectory(), track, fileOld
+        .getSize(), fileOld.getQuality());
+    // transfer all properties and reset id and name
     fNew.setProperties(fileOld.getProperties());
     fNew.setProperty(Const.XML_ID, sNewId); // reset new id and name
     fNew.setProperty(Const.XML_NAME, sNewName); // reset new id and name
@@ -215,6 +212,7 @@ public final class FileManager extends ItemManager implements Observer {
     // OK, remove old file and register this new file
     removeFile(fileOld);
     registerItem(fNew);
+    track.addFile(fNew);
     // notify everybody for the file change
     Properties properties = new Properties();
     properties.put(Const.DETAIL_OLD, fileOld);
@@ -271,9 +269,9 @@ public final class FileManager extends ItemManager implements Observer {
    * @param file
    */
   public synchronized void removeFile(File file) {
-    removeItem(file);
     // We need to remove the file from the track !
     file.getTrack().removeFile(file);
+    removeItem(file);
   }
 
   /**
@@ -313,8 +311,8 @@ public final class FileManager extends ItemManager implements Observer {
   }
 
   /**
-   * Return a shuffle mounted and unbaned file from the entire collection
-   * or null if none available using these criterias
+   * Return a shuffle mounted and unbaned file from the entire collection or
+   * null if none available using these criterias
    * 
    * @return the file
    */
@@ -322,11 +320,10 @@ public final class FileManager extends ItemManager implements Observer {
     List<File> alEligibleFiles = getReadyFiles();
     // filter banned files
     CollectionUtils.filter(alEligibleFiles, new JajukPredicates.BannedFilePredicate());
-    int index = UtilSystem.getRandom().nextInt(alEligibleFiles.size()-1);
-    if (alEligibleFiles.size() > 0){
+    int index = UtilSystem.getRandom().nextInt(alEligibleFiles.size() - 1);
+    if (alEligibleFiles.size() > 0) {
       return alEligibleFiles.get(index);
-    }
-    else{
+    } else {
       return null;
     }
   }
@@ -655,18 +652,6 @@ public final class FileManager extends ItemManager implements Observer {
   @Override
   public String getLabel() {
     return Const.XML_FILES;
-  }
-
-  /*
-   * (non-Javadoc)
-   * 
-   * @see org.jajuk.base.Observer#update(org.jajuk.base.Event)
-   */
-  public void update(Event event) {
-  }
-
-  public Set<JajukEvents> getRegistrationKeys() {
-    return new HashSet<JajukEvents>();
   }
 
   /**
