@@ -43,7 +43,7 @@ public class CDDBTableModel extends JajukTableModel {
    *          columns names
    */
   public CDDBTableModel() {
-    super(4);
+    super(6);
 
     // Current Album title
     vColNames.add(Messages.getString("CDDBWizard.3"));
@@ -60,6 +60,14 @@ public class CDDBTableModel extends JajukTableModel {
     // Proposed Track Name
     vColNames.add(Messages.getString("CDDBWizard.4"));
     idList.add("CDDBWizard.4");
+    
+     // Proposed Track style
+    vColNames.add(Messages.getString("Property_style"));
+    idList.add("Property_style");
+    
+     // Proposed Track number
+    vColNames.add(Messages.getString("Property_order"));
+    idList.add("Property_order");
   }
 
   /**
@@ -89,6 +97,12 @@ public class CDDBTableModel extends JajukTableModel {
       // Proposed track name
       oValues[iRow][3] = fdbReader.getTrackTitle(iRow);
       bCellEditable[iRow][3] = false;
+      // Proposed track genre
+      oValues[iRow][4] = fdbReader.getGenre();
+      bCellEditable[iRow][4] = false;
+      // Proposed track order
+      oValues[iRow][5] = fdbReader.getTrackNumber(iRow);
+      bCellEditable[iRow][5] = false;
     }
   }
 
