@@ -831,18 +831,7 @@ public class PropertiesWizard extends JajukJDialog implements ActionListener {
             }
           }
         }
-        /*
-         * Display a warning message if some tracks cannot be removed as it
-         * contains unmounted files.
-         * 
-         * If multi-items mode, note that this message will appear only for
-         * first changed value in failure, after, current track will have
-         * changed and will no more contain unmounted files
-         */
-        if (TrackManager.getFilesRemaining() > 0) {
-          Messages.showWarningMessage(Messages.getString("Error.138"));
-        }
-
+       
         // display a message for file write issues
         if (alInError.size() > 0) {
           String sInfo = "";
@@ -873,8 +862,6 @@ public class PropertiesWizard extends JajukJDialog implements ActionListener {
         }
       } finally {
         UtilGUI.stopWaiting();
-        // Reset track remaining issues
-        TrackManager.resetFilesRemaining();
         // Reset auto-commit state
         TrackManager.getInstance().setAutocommit(true);
       }
