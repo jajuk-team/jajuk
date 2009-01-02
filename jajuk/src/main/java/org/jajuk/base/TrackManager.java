@@ -21,19 +21,16 @@
 package org.jajuk.base;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Properties;
 import java.util.Set;
 
 import org.jajuk.base.TrackComparator.TrackComparatorType;
 import org.jajuk.events.Event;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
-import org.jajuk.events.Observer;
 import org.jajuk.services.players.FIFO;
 import org.jajuk.services.tags.Tag;
 import org.jajuk.util.Conf;
@@ -49,15 +46,9 @@ import org.jajuk.util.log.Log;
  * Convenient class to manage Tracks
  * 
  */
-public final class TrackManager extends ItemManager implements Observer {
+public final class TrackManager extends ItemManager {
   /** Self instance */
   private static TrackManager singleton;
-
-  /**
-   * Number of tracks that cannot be fully removed as it still contains files on
-   * unmounted devices
-   */
-  private static int nbFilesRemaining = 0;
 
   /** Autocommit flag for tags * */
   private boolean bAutocommit = true;
@@ -126,14 +117,9 @@ public final class TrackManager extends ItemManager implements Observer {
     // Track ban status
     registerProperty(new PropertyMetaInformation(Const.XML_TRACK_BANNED, false, false, true, true,
         false, Boolean.class, false));
-
-    // ---subscriptions---
-    ObservationManager.register(this);
   }
 
-  public Set<JajukEvents> getRegistrationKeys() {
-    return Collections.singleton(JajukEvents.FILE_NAME_CHANGED);
-  }
+ 
 
   /**
    * @return singleton
@@ -211,6 +197,10 @@ public final class TrackManager extends ItemManager implements Observer {
     // Clear the tag cache before and after a transaction to
     // avoid memory leaks
     Tag.clearCache();
+    // Force files resorting to ensure the sorting consistency, indeed, files
+    // are sorted by name *and* track order and we need to force a files resort
+    // after a order change (this is already done in case of file name change)
+    FileManager.getInstance().forceSorting();
   }
 
   /**
@@ -588,9 +578,6 @@ public final class TrackManager extends ItemManager implements Observer {
       // more associated
       // tracks, remove it
       removeItem(track);// remove old track
-    } else { // some files have not been changed because located on
-      // unmounted devices
-      nbFilesRemaining++;
     }
   }
 
@@ -633,7 +620,7 @@ public final class TrackManager extends ItemManager implements Observer {
    * (non-Javadoc)
    * 
    * @see org.jajuk.base.Observer#update(org.jajuk.base.Event)
-   */
+   
   public void update(Event event) {
     JajukEvents subject = event.getSubject();
     if (JajukEvents.FILE_NAME_CHANGED.equals(subject)) {
@@ -644,7 +631,7 @@ public final class TrackManager extends ItemManager implements Observer {
       track.removeFile(fileOld);
       track.addFile(fNew);
     }
-  }
+  }*/
 
   /**
    * Get ordered tracks list associated with this item
@@ -770,14 +757,6 @@ public final class TrackManager extends ItemManager implements Observer {
       }
     }
     return resu;
-  }
-
-  public static int getFilesRemaining() {
-    return nbFilesRemaining;
-  }
-
-  public static void resetFilesRemaining() {
-    TrackManager.nbFilesRemaining = 0;
   }
 
   /**

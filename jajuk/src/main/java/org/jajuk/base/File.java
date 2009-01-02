@@ -148,12 +148,7 @@ public class File extends PhysicalItem implements Comparable<File>, Const {
    * @return associated type
    */
   public Type getType() {
-    String extension = UtilSystem.getExtension(this.getName()); // getName() is
-    // better
-    // here as it will do
-    // less and not create
-    // java.io.File in
-    // File
+    String extension = UtilSystem.getExtension(this.getName());
     if (extension != null) {
       return TypeManager.getInstance().getTypeByExtension(extension);
     }
@@ -196,9 +191,10 @@ public class File extends PhysicalItem implements Comparable<File>, Const {
    * @return comparison result
    */
   public int compareTo(File otherFile) {
-    // Begin by comparing file parent directory for perf
+    // Begin by comparing file parent directory for performances
     if (directory.equals(otherFile.getDirectory())) {
       // If both files are in the same directory, sort by track order
+
       int iOrder = (int) getTrack().getOrder();
       int iOrderOther = (int) otherFile.getTrack().getOrder();
       if (iOrder != iOrderOther) {

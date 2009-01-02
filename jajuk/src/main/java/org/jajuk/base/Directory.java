@@ -20,6 +20,7 @@
 package org.jajuk.base;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedHashSet;
@@ -124,16 +125,14 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
    * @return
    */
   public Set<Directory> getDirectories() {
-    long l = System.currentTimeMillis();
     Set<Directory> out = new LinkedHashSet<Directory>(2);
     ReadOnlyIterator<Directory> it = DirectoryManager.getInstance().getDirectoriesIterator();
-    while (it.hasNext()){
+    while (it.hasNext()) {
       Directory directory = it.next();
-      if (directory.getFio().getParent().equals(this.getFio())){
+      if (directory.getFio().getParent().equals(this.getFio())) {
         out.add(directory);
       }
     }
-    System.out.println("getDirectory(): "+(System.currentTimeMillis()-l));
     return out;
   }
 
@@ -143,16 +142,14 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
    * @return child files
    */
   public Set<org.jajuk.base.File> getFiles() {
-    long l = System.currentTimeMillis();
     Set<org.jajuk.base.File> out = new LinkedHashSet<org.jajuk.base.File>(2);
     ReadOnlyIterator<org.jajuk.base.File> it = FileManager.getInstance().getFilesIterator();
-    while (it.hasNext()){
+    while (it.hasNext()) {
       org.jajuk.base.File file = it.next();
-      if (file.getFIO().getParent().equals(this.getFio())){
+      if (file.getFIO().getParentFile().equals(this.getFio())) {
         out.add(file);
       }
     }
-    System.out.println("getFile(): "+(System.currentTimeMillis()-l));
     return out;
   }
 
@@ -162,16 +159,14 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
    * @return playlists
    */
   public Set<Playlist> getPlaylistFiles() {
-     long l = System.currentTimeMillis();
     Set<Playlist> out = new LinkedHashSet<Playlist>(2);
     ReadOnlyIterator<Playlist> it = PlaylistManager.getInstance().getPlaylistsIterator();
-    while (it.hasNext()){
+    while (it.hasNext()) {
       Playlist plf = it.next();
-      if (plf.getFio().getParent().equals(this.getFio())){
+      if (plf.getFio().getParent().equals(this.getFio())) {
         out.add(plf);
       }
     }
-    System.out.println("getPlaylist(): "+(System.currentTimeMillis()-l));
     return out;
   }
 
@@ -209,7 +204,6 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
     return alFiles;
   }
 
- 
   /**
    * Scan all files in a directory
    * 
@@ -283,8 +277,6 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
       return;
     }
 
-    // New file or deep scan case
-
     // ignore tag error to make sure to get a
     // tag object in all cases
     Tag tag = new Tag(music, true);
@@ -333,6 +325,9 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
   private void registerFile(java.io.File music, String sId, String sTrackName, String sAlbumName,
       String sAuthorName, String sStyle, long length, String sYear, long lQuality, String sComment,
       long lOrder) {
+    if (sID.equals("959q0mr0egcunz7tt8qbzfo1")) {
+      System.currentTimeMillis();
+    }
     Album album = AlbumManager.getInstance().registerAlbum(sAlbumName);
     Style style = StyleManager.getInstance().registerStyle(sStyle);
     Year year = YearManager.getInstance().registerYear(sYear);
@@ -599,6 +594,14 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
           refresh(deep, reporter);
           ObservationManager.notify(new Event(JajukEvents.DEVICE_REFRESH));
           reporter.done();
+          // commit collection at each refresh (can be useful if application
+          // is closed brutally with control-C or shutdown and that exit hook
+          // have no time to perform commit)
+          try {
+            org.jajuk.base.Collection.commit(UtilSystem.getConfFileByPath(Const.FILE_COLLECTION));
+          } catch (final IOException e) {
+            Log.error(e);
+          }
         } catch (JajukException e) {
           Messages.showErrorMessage(e.getCode());
           Log.debug(e);

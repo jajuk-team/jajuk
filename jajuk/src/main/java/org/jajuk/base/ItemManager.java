@@ -312,7 +312,7 @@ public abstract class ItemManager {
     while (it.hasNext()) {
       Item item = it.next();
       // check if this item still maps some tracks
-      if (!items.contains(item)){
+      if (!items.contains(item)) {
         it.remove();
       }
     }
@@ -527,6 +527,21 @@ public abstract class ItemManager {
     items.clear();
     internalMap.clear();
     hmPropertiesMetaInformation.clear();
+  }
+
+  /**
+   * Force files sorting after an order change for ie Called to ensure Set
+   * sorting contract <br>
+   * We remove all items and add them all again to force sorting
+   */
+  protected synchronized void forceSorting() {
+    ArrayList<Item> itemsCopy = new ArrayList<Item>(items);
+    for (Item item : itemsCopy) {
+      removeItem(item);
+    }
+    for (Item item : itemsCopy) {
+      registerItem(item);
+    }
   }
 
 }
