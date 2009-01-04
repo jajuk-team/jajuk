@@ -68,7 +68,7 @@ public class ExitAction extends JajukAction {
       // commit perspectives if no full restore
       // engaged. Perspective should be commited before the window
       // being closed to avoid a dead lock in VLDocking
-      if (!RestoreAllViewsAction.isFullRestore()) {
+      if (!RestoreAllViewsAction.isFullRestore() && JajukWindow.isLoaded()) {
         try {
           PerspectiveManager.commit();
         } catch (Exception e) {
