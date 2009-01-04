@@ -142,7 +142,7 @@ public final class Player {
       Properties pDetails = new Properties();
       pDetails.put(Const.DETAIL_CONTENT, file);
       ObservationManager.notifySync(new Event(JajukEvents.PLAY_ERROR, pDetails));
-      Log.error(7, Messages.getString("Player.0") + "{{" + fCurrent.getAbsolutePath() + "}}", t);
+      Log.error(7, Messages.getString("Player.0") + "{{" + fCurrent.getName() + "}}", t);
       return false;
     }
   }

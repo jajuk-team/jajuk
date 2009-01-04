@@ -919,7 +919,6 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
           PlaylistRepository.super.construct();
 
           jmiRepositorySaveAs = new JMenuItem(ActionManager.getAction(JajukActions.SAVE_AS));
-          jmiRepositorySaveAs.putClientProperty(Const.DETAIL_SELECTION, jtable.getSelection());
 
           jmiPrepareParty = new JMenuItem(ActionManager.getAction(JajukActions.PREPARE_PARTY));
           pjmTracks = new PreferencesJMenu(jtable.getSelection());
@@ -960,6 +959,7 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
           if (!bErrorLoading && plf != null) {
             selectPlaylist(plf);
             jmiPrepareParty.putClientProperty(Const.DETAIL_SELECTION, plf);
+            jmiRepositorySaveAs.putClientProperty(Const.DETAIL_SELECTION, plf);
           }
         }
 

@@ -58,15 +58,15 @@ public abstract class AbstractMPlayerImpl implements IPlayerImpl, Const {
   protected volatile boolean bPaused = false;
 
   /*
-   * (non-Javadoc)
    * 
-   * @see org.jajuk.base.IPlayerImpl#stop()
+   * Kill abruptly the mplayer process (this way, killing is synchronous, and
+   * easier than sending a quit command). Do not try to send a 'quit' command to
+   * mplayer because then, it's not possible to differentiate end of file from
+   * forced quit and the fifo will comes out of control
    */
   public void stop() throws Exception {
     bFading = false;
     this.bStop = true;
-    // Kill abruptly the mplayer process (this way, killing is synchronous,
-    // and easier than sending a quit command)
     Log.debug("Stop");
     if (proc != null) {
       proc.destroy();

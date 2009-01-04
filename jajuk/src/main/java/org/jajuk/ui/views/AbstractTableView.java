@@ -362,7 +362,6 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
    * model
    */
   public void applyFilter(final String sPropertyName, final String sPropertyValue) {
-    System.out.println("apply filter");
     SwingWorker sw = new SwingWorker() {
       @Override
       public Object construct() {

@@ -169,7 +169,7 @@ public class SuggestionView extends ViewAdapter implements Observer {
     tabs.addTab(Messages.getString("SuggestionView.4"), UtilGUI.getCentredPanel(new JLabel(Messages
         .getString("SuggestionView.7"))));
     // Add panels
-    refreshLocalCollectionTabs(true);
+    refreshLocalCollectionTabs();
     // Add tabs
     setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
     add(tabs);
@@ -192,7 +192,7 @@ public class SuggestionView extends ViewAdapter implements Observer {
    * @param search
    *          force searching new thumbs, if false, just UI refresh
    */
-  private void refreshLocalCollectionTabs(final boolean search) {
+  private void refreshLocalCollectionTabs() {
     // Display a busy panel in the mean-time
     SwingUtilities.invokeLater(new Runnable() {
       public void run() {
@@ -215,9 +215,9 @@ public class SuggestionView extends ViewAdapter implements Observer {
 
       @Override
       public Object construct() {
-        jsp1 = getLocalSuggestionsPanel(SuggestionType.BEST_OF, search);
-        jsp2 = getLocalSuggestionsPanel(SuggestionType.NEWEST, search);
-        jsp3 = getLocalSuggestionsPanel(SuggestionType.RARE, search);
+        jsp1 = getLocalSuggestionsPanel(SuggestionType.BEST_OF);
+        jsp2 = getLocalSuggestionsPanel(SuggestionType.NEWEST);
+        jsp3 = getLocalSuggestionsPanel(SuggestionType.RARE);
         return null;
       }
 
@@ -302,12 +302,7 @@ public class SuggestionView extends ViewAdapter implements Observer {
     sw.start();
   }
 
-  // private void clearLastFMPanels() {
-  // tabs.setComponentAt(3, new JPanel());
-  // tabs.setComponentAt(4, new JPanel());
-  // }
-
-  private JScrollPane getLocalSuggestionsPanel(SuggestionType type, boolean search) {
+  private JScrollPane getLocalSuggestionsPanel(SuggestionType type) {
     FlowScrollPanel out = new FlowScrollPanel();
     out.setLayout(new FlowLayout(FlowLayout.LEFT));
     JScrollPane jsp = new JScrollPane(out, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
@@ -315,17 +310,15 @@ public class SuggestionView extends ViewAdapter implements Observer {
     jsp.setBorder(null);
     out.setScroller(jsp);
     List<Album> albums = null;
-    if (search) {
-      if (type == SuggestionType.BEST_OF) {
-        albumsPrefered = AlbumManager.getInstance().getBestOfAlbums(
-            Conf.getBoolean(Const.CONF_OPTIONS_HIDE_UNMOUNTED), NB_BESTOF_ALBUMS);
-      } else if (type == SuggestionType.NEWEST) {
-        albumsNewest = AlbumManager.getInstance().getNewestAlbums(
-            Conf.getBoolean(Const.CONF_OPTIONS_HIDE_UNMOUNTED), NB_BESTOF_ALBUMS);
-      } else if (type == SuggestionType.RARE) {
-        albumsRare = AlbumManager.getInstance().getRarelyListenAlbums(
-            Conf.getBoolean(Const.CONF_OPTIONS_HIDE_UNMOUNTED), NB_BESTOF_ALBUMS);
-      }
+    if (type == SuggestionType.BEST_OF) {
+      albumsPrefered = AlbumManager.getInstance().getBestOfAlbums(
+          Conf.getBoolean(Const.CONF_OPTIONS_HIDE_UNMOUNTED), NB_BESTOF_ALBUMS);
+    } else if (type == SuggestionType.NEWEST) {
+      albumsNewest = AlbumManager.getInstance().getNewestAlbums(
+          Conf.getBoolean(Const.CONF_OPTIONS_HIDE_UNMOUNTED), NB_BESTOF_ALBUMS);
+    } else if (type == SuggestionType.RARE) {
+      albumsRare = AlbumManager.getInstance().getRarelyListenAlbums(
+          Conf.getBoolean(Const.CONF_OPTIONS_HIDE_UNMOUNTED), NB_BESTOF_ALBUMS);
     }
     if (type == SuggestionType.BEST_OF) {
       albums = albumsPrefered;
@@ -401,7 +394,7 @@ public class SuggestionView extends ViewAdapter implements Observer {
       comp++;
       // Change local collection suggestions every 10 track plays
       if (comp % 10 == 0) {
-        refreshLocalCollectionTabs(true);
+        refreshLocalCollectionTabs();
       }
       // update last.fm panels
       refreshLastFMCollectionTabs();
@@ -412,7 +405,7 @@ public class SuggestionView extends ViewAdapter implements Observer {
     } else if (subject.equals(JajukEvents.COVER_DEFAULT_CHANGED)
         || subject.equals(JajukEvents.SUGGESTIONS_REFRESH)) {
       // New default cover, refresh the view
-      refreshLocalCollectionTabs(false);
+      refreshLocalCollectionTabs();
     }
   }
 

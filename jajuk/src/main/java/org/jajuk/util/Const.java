@@ -145,10 +145,10 @@ public interface Const {
   int NB_TRACKS_ON_ACTION = 200;
 
   /**
-   * The time we wait for mplayer to start up in secs. It can take some time on
+   * The time we wait for mplayer to start up in ms. It can take some time on
    * slow or heavily loaded machines...
    */
-  int MPLAYER_START_TIMEOUT = 10;
+  int MPLAYER_START_TIMEOUT = 15000;
 
   /**
    * Percent of the played track (ex: 0.2f = 20%) when the rating is not

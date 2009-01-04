@@ -375,7 +375,7 @@ public final class InformationJPanel extends JXPanel implements ChangeListener, 
               setMessage(Messages.getErrorMessage(errorCode) + ": " + fCurrent.getAbsolutePath(),
                   InformationJPanel.ERROR);
             } else {// default message
-              setMessage(Messages.getString("Error.007") + fCurrent.getAbsolutePath(),
+              setMessage(Messages.getString("Error.007") + fCurrent.getName(),
                   InformationJPanel.ERROR);
             }
           } else if (o instanceof WebRadio) {

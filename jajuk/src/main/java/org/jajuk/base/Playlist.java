@@ -328,7 +328,7 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
     } else if (type == Type.QUEUE) {
       FIFO.down(index);
     } else if ((alFiles != null) && (index < alFiles.size() - 1)) {
-      // the last track cannot go depper
+      // the last track cannot go deeper
       final File file = alFiles.get(index + 1); // save n+1 file
       alFiles.set(index + 1, alFiles.get(index));
       // n+1 file becomes nth file
