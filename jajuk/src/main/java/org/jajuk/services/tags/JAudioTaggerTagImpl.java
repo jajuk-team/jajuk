@@ -19,8 +19,8 @@
  */
 package org.jajuk.services.tags;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.util.logging.LogManager;
 
 import org.jajuk.util.Const;
@@ -45,7 +45,7 @@ public class JAudioTaggerTagImpl implements ITagImpl, Const {
   static {
     try {
       LogManager.getLogManager().readConfiguration(
-          new FileInputStream(new File(FILE_JRE_LOG_CONF.toURI())));
+          new ByteArrayInputStream("org.jaudiotagger.level = OFF".getBytes()));
     } catch (Exception e) {
       Log.error(e);
     }
@@ -237,7 +237,8 @@ public class JAudioTaggerTagImpl implements ITagImpl, Const {
 
   /**
    * Create a void tag is needed and convert an ID3 V1.0 tag into V2.4 if any
-   * <br>Tags are committed when leaving this method
+   * <br>
+   * Tags are committed when leaving this method
    * 
    * @throws Exception
    */
@@ -267,7 +268,7 @@ public class JAudioTaggerTagImpl implements ITagImpl, Const {
       AudioFileIO.delete(audioFile);
       // Add the new one
       audioFile.setTag(newTag);
-      this.tag=newTag;
+      this.tag = newTag;
     }
 
   }
