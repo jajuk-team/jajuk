@@ -21,12 +21,13 @@
 package org.jajuk.events;
 
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Queue;
 import java.util.Set;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
+import org.jajuk.services.core.ExitService;
 import org.jajuk.util.log.Log;
 
 /**
@@ -45,35 +46,55 @@ public final class ObservationManager {
    */
   static Map<JajukEvents, Properties> hLastEventBySubject = new HashMap<JajukEvents, Properties>(10);
 
-  static volatile Queue<Event> vFIFO = new LinkedList<Event>();
+  /**
+   * The queue itself. Must be synchronized, so we use a ConcurrentLinkedQueue
+   * whish is tread-safe
+   */
+  static volatile Queue<Event> queue = new ConcurrentLinkedQueue<Event>();
 
-  private static Thread t = new Thread("Observation Manager Thread") {
+  /**
+   * Observation manager thread that consumes events asynchronously
+   */
+  static class ObservationManagerThread extends Thread {
+
+    ObservationManagerThread() {
+      super("Observation Manager Thread");
+    }
+
     @Override
     public void run() {
-      while (true) {
+      // Stop to execute events is thread flag is set or if Jajuk is exiting
+      while (!ExitService.isExiting()) {
         try {
           Thread.sleep(50);
-        } catch (InterruptedException e) {
+          final Event event = queue.poll();
+          if (event != null) {
+            // launch action asynchronously
+            new Thread("Event Executor Thread") {
+              @Override
+              public void run() {
+                notifySync(event);
+              }
+            }.start();
+          }
+          // Make sure to handle any exception or error to avoid the observation
+          // system to die
+        } catch (Exception e) {
           Log.error(e);
-        }
-
-        final Event event = vFIFO.poll();
-        if (event != null) {
-          new Thread("Observation Manager Sync Notify Thread") { // launch
-            // action
-            // asynchronously
-            @Override
-            public void run() {
-              notifySync(event);
-            }
-          }.start();
+        } catch (Error error) {
+          Log.error(error);
         }
       }
     }
-  };
+  }
 
   /**
-   * Empty constructor to avoid instantiating utility class
+   * The observation fifo
+   */
+  private static ObservationManagerThread t;
+
+  /**
+   * Empty constructor to avoid instantiating this utility class
    */
   private ObservationManager() {
   }
@@ -149,14 +170,26 @@ public final class ObservationManager {
    *          the notification is synchronous or not
    */
   public static void notify(final Event event, boolean bSync) {
-    if (bSync) {
-      ObservationManager.notifySync(event);
-    } else { // do not launch it in a regular thread because AWT
-      // event dispatcher waits thread end to display
-      if (!t.isAlive()) {
-        t.start();
+    try {
+      if (bSync) {
+        ObservationManager.notifySync(event);
+      } else { // do not launch it in a regular thread because AWT
+        // event dispatcher waits thread end to display
+        queue.add(event); // add event in FIFO for future use
+        synchronized (t) {
+          if (t == null) {
+            // If the thread is terminated, a new thread must be instanciated
+            // Otherwise an IllegalThreadStateException is thrown
+            Log.debug("Observation Manager thread dead, start a new one");
+            t = new ObservationManagerThread();
+            t.start();
+          }
+        }
       }
-      vFIFO.add(event); // add event in FIFO for future use
+    } catch (Error e) {
+      // Make sure to catch any error (Memory or IllegalThreadStateException for
+      // ie, this notification musn't stop the current work)
+      Log.error(e);
     }
   }
 
