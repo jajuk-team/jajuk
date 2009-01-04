@@ -176,7 +176,9 @@ public final class ObservationManager {
       } else { // do not launch it in a regular thread because AWT
         // event dispatcher waits thread end to display
         queue.add(event); // add event in FIFO for future use
-        synchronized (t) {
+        // synchronize here to avoid creating more than one observation manager
+        // thread
+        synchronized (ObservationManager.class) {
           if (t == null) {
             // If the thread is terminated, a new thread must be instanciated
             // Otherwise an IllegalThreadStateException is thrown
