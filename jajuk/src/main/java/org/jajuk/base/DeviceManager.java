@@ -294,6 +294,8 @@ public final class DeviceManager extends ItemManager {
         }
       }
     }
+    // Force suggestion view refresh to avoid showing removed albums
+    ObservationManager.notify(new Event(JajukEvents.SUGGESTIONS_REFRESH));
   }
 
   /**
