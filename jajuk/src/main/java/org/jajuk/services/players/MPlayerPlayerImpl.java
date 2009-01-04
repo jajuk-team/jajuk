@@ -123,11 +123,18 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
         BufferedReader in = new BufferedReader(new InputStreamReader(proc.getInputStream()));
         String line = null;
         for (; true;) {
-          line = in.readLine();
-          if (line == null) {
+          try {
+            line = in.readLine();
+            if (line == null) {
+              break;
+            }
+          } catch (IOException ieo) {
+            Log.debug("Stream closed");
+            // Thrown in readLine() when killing the track (in intro mode for
+            // ie)
             break;
           }
-          // produces lots of output: Log.debug("Output from MPlayer: " + line);
+          // Very verbose : Log.debug("Output from MPlayer: " + line);
 
           if (line.matches(".*ANS_TIME_POSITION.*")) {
             // Stream is actually opened now
@@ -279,12 +286,11 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
     // start writer to mplayer thread
     new PositionThread("MPlayer writer thread").start();
     // if opening, wait
-    int i = 0;
+    long time = System.currentTimeMillis();
     // Try to open the file during 30 secs
-    while (bOpening && !bEOF && i < MPLAYER_START_TIMEOUT * 100) {
+    while (bOpening && !bEOF && (System.currentTimeMillis() - time) < MPLAYER_START_TIMEOUT) {
       try {
         Thread.sleep(10);
-        i++;
       } catch (InterruptedException e) {
         Log.error(e);
       }
@@ -310,7 +316,7 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
         }.start();
       }
       // Notify the problem opening the file
-      throw new JajukException(7, Integer.valueOf(MPLAYER_START_TIMEOUT).toString());
+      throw new JajukException(7, Integer.valueOf(MPLAYER_START_TIMEOUT).toString() + " ms");
     }
   }
 
