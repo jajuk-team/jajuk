@@ -78,7 +78,7 @@ public class JajukHtmlPanel extends HtmlPanel {
     setCursor(UtilGUI.WAIT_CURSOR);
     File page = new File(UtilSystem.getConfFileByPath(Const.FILE_CACHE).getAbsolutePath() + '/'
         + UtilSystem.getOnlyFile(url.toString() + ".html"));
-    String sPage = DownloadManager.downloadHtml(url);
+    String sPage = DownloadManager.downloadText(url);
     // Remove scripting
     int index = -1;
     int lastindex = -1;

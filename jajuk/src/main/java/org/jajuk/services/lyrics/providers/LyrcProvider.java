@@ -112,8 +112,8 @@ public class LyrcProvider extends GenericProvider {
           Log.debug("Found suggestion " + suggestion);
           try {
             final URL url = new URL(suggestionURL);
-
-            return (cleanLyrics(DownloadManager.downloadHtml(url, "ISO-8859-1")));
+            String text = DownloadManager.getTextFromCachedFile(url,getResponseEncoding());
+            return cleanLyrics(text);
           } catch (final MalformedURLException e) {
             Log.warn("Invalid lyrics source URL [" + suggestionURL + "]");
           } catch (final Exception e) {
@@ -181,8 +181,11 @@ public class LyrcProvider extends GenericProvider {
     return "ISO-8859-1";
   }
 
-  /* (non-Javadoc)
-   * @see org.jajuk.services.lyrics.providers.ILyricsProvider#getWebURL(java.lang.String, java.lang.String)
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.jajuk.services.lyrics.providers.ILyricsProvider#getWebURL(java.lang.String,
+   *      java.lang.String)
    */
   public URL getWebURL(String artist, String title) {
     // for this provider, the web url equals the web url

@@ -54,10 +54,7 @@ abstract class GenericProvider implements ILyricsProvider {
     String text = null;
     try {
       URL url = getActualURL(artist, title);
-
-      text = NetworkUtils.readURL(NetworkUtils.getConnection(url, DownloadManager.getProxy()),
-          getResponseEncoding());
-
+      text = DownloadManager.getTextFromCachedFile(url,getResponseEncoding());
     } catch (final Exception e) {
       Log.warn("Could not retrieve URL [" + getProviderHostname() + "]");
     }

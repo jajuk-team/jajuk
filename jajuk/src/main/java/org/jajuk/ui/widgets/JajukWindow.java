@@ -308,6 +308,8 @@ public class JajukWindow extends JFrame implements Observer {
           setVisible(true);
           toFront();
           setState(Frame.NORMAL);
+          // Need focus for keystrokes
+          requestFocus();
         }
         // hide
         else {

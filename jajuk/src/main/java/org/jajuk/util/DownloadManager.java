@@ -26,8 +26,10 @@ import ext.services.network.Proxy;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.Authenticator;
 import java.net.HttpURLConnection;
 import java.net.PasswordAuthentication;
@@ -53,9 +55,6 @@ public final class DownloadManager {
 
   /** Maps cached urls -> file */
   private static Map<URL, File> urlCache = new HashMap<URL, File>(100);
-
-  /** List of urls being downloaded (used to avoid concurrency) * */
-  private static List<URL> downloading = new ArrayList<URL>(2);
 
   /**
    * private constructor to avoid instantiating utility class
@@ -97,7 +96,7 @@ public final class DownloadManager {
         + URLEncoder.encode(search, "ISO-8859-1") + "&ie=ISO-8859-1&hl=en&btnG=Google+Search"
         + "&imgsz=" + size;
     Log.debug("Search URL: {{" + sSearchUrl + "}}");
-    String sRes = downloadHtml(new URL(sSearchUrl));
+    String sRes = downloadText(new URL(sSearchUrl));
     if (sRes == null || sRes.length() == 0) {
       return alOut;
     }
@@ -128,9 +127,9 @@ public final class DownloadManager {
    * Download the resource at the given url
    * 
    * @param url
-   *          to download
-   * @param Use
-   *          cache : store file in image cache
+   *          url to download
+   * @param fDestination
+   *          destination file
    * @throws IOException
    *           If a network problem occurs.
    */
@@ -149,39 +148,30 @@ public final class DownloadManager {
   }
 
   /**
-   * Download the resource at the given url
+   * Download the resource at the given url and cache it <br>
+   * If the file is already in cache, it is returned immediately <br>
+   * The cache is currently cleared at each Jajuk session startup
    * 
    * @param url
-   *          to download
-   * @return created file or null if a problem occurred
+   *          url to download
+   * @return cached file or null if a problem occurred
    * @throws URISyntaxException
    *           If the URL cannot be converted to an URI.
    * @throws IOException
    *           If a network problem occurs or a temporary file cannot be
    *           written.
    */
-  public static File downloadCover(URL url) throws IOException {
-    /*
-     * We avoid concurrency on downloading the cached image. Note that the
-     * downloading list must be synchronized to avoid concurrency when accessing
-     * it
-     */
-    try {
-      File file = UtilSystem.getCachePath(url);
-      synchronized (downloading) {
-        // check if file is not already downloaded or being downloaded
-        if (file != null && file.exists()) {
-          return file;
-        }
-        if (downloading.contains(url)) {
-          Log.debug("Already downloading : " + url);
-          return file;
-        }
-        downloading.add(url);
+  public static File downloadToCache(URL url) throws IOException {
+    File file = UtilSystem.getCachePath(url);
+    // We synchronize the (internalized) name of the cached file to avoid
+    // probable collisions between views
+    synchronized (file.getName().intern()) {
+      // check if file is not already downloaded or being downloaded
+      if (file != null && file.exists()) {
+        return file;
       }
       HttpURLConnection connection = NetworkUtils.getConnection(url, proxy);
-      File out = UtilSystem.getCachePath(url);
-      BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(out));
+      BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(file));
       BufferedInputStream bis = new BufferedInputStream(connection.getInputStream());
       int i;
       while ((i = bis.read()) != -1) {
@@ -192,9 +182,7 @@ public final class DownloadManager {
       bis.close();
       connection.disconnect();
       urlCache.put(url, file);
-      return out;
-    } finally {
-      downloading.remove(url);
+      return file;
     }
   }
 
@@ -206,13 +194,36 @@ public final class DownloadManager {
    * @throws Exception
    * @return result as an array of bytes, null if a problem occurred
    */
-  public static String downloadHtml(URL url, String charset) throws Exception {
+  public static String downloadText(URL url, String charset) throws Exception {
     return NetworkUtils.readURL(NetworkUtils.getConnection(url, proxy), charset);
   }
 
-  public static String downloadHtml(URL url) throws Exception {
-    return downloadHtml(url, "UTF-8");
+  public static String downloadText(URL url) throws Exception {
+    return downloadText(url, "UTF-8");
+  }
 
+  /**
+   * Return a string for a given URL and encoding, used to retrieve text from a
+   * cached file
+   * 
+   * @param url
+   *          url to read
+   * @param encoding
+   *          encoding of the content of the file
+   * @return a string for a given URL and encoding
+   * @throws Exception
+   */
+  public static String getTextFromCachedFile(URL url, String encoding) throws Exception {
+    File file = downloadToCache(url);
+    StringBuilder builder = new StringBuilder();
+    InputStream input = new BufferedInputStream(new FileInputStream(file));
+    byte[] array = new byte[1024];
+    int read;
+    while ((read = input.read(array)) > 0) {
+      builder.append(new String(array, 0, read, encoding));
+    }
+    input.close();
+    return builder.toString();
   }
 
   /**

@@ -495,7 +495,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
             Const.FILE_JAJUK_DOWNLOADED_FILES_SUFFIX).toString();
         try {
           // copy file from cache
-          final File fSource = DownloadManager.downloadCover(cover.getURL());
+          final File fSource = DownloadManager.downloadToCache(cover.getURL());
           final File file = new File(sFilePath);
           UtilSystem.copy(fSource, file);
           InformationJPanel.getInstance().setMessage(Messages.getString("CoverView.11"),
@@ -570,7 +570,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
             Const.FILE_JAJUK_DOWNLOADED_FILES_SUFFIX).toString();
         try {
           // copy file from cache
-          final File fSource = DownloadManager.downloadCover(cover.getURL());
+          final File fSource = DownloadManager.downloadToCache(cover.getURL());
           final File file = new File(sFilePath);
           UtilSystem.copy(fSource, file);
           final Cover cover2 = new Cover(file, CoverType.SELECTED_COVER);

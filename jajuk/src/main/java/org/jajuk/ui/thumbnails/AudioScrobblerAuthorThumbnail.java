@@ -97,7 +97,7 @@ public class AudioScrobblerAuthorThumbnail extends AbstractThumbnail {
           URL remote = new URL(authorUrl);
           // Download the picture and store file reference (to
           // generate the popup thumb for ie)
-          fCover = DownloadManager.downloadCover(remote);
+          fCover = DownloadManager.downloadToCache(remote);
           fThumb = UtilSystem.getConfFileByPath(Const.FILE_CACHE + "/" + System.currentTimeMillis()
               + "_100x100." + UtilSystem.getExtension(fCover));
           // Create the image using Toolkit and not ImageIO API to be able to

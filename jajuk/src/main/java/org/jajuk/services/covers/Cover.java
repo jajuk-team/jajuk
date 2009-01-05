@@ -149,7 +149,7 @@ public class Cover implements Comparable<Cover>, Const {
     }
     long l = System.currentTimeMillis();
     if (!file.exists() || file.length() == 0) {
-      this.file = DownloadManager.downloadCover(url);
+      this.file = DownloadManager.downloadToCache(url);
     }
     Image image = null;
     synchronized (Cover.class) {
