@@ -37,7 +37,7 @@ public class ForwardTrackAction extends JajukAction {
   private static final float JUMP_SIZE = 0.1f;
 
   ForwardTrackAction() {
-    super(IconLoader.getIcon(JajukIcons.FWD), "alt F10", false, true);
+    super(IconLoader.getIcon(JajukIcons.FWD), "altGraph F10", false, true);
     setShortDescription(Messages.getString("CommandJPanel.13"));
   }
 

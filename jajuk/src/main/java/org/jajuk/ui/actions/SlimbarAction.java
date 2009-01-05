@@ -46,12 +46,11 @@ public class SlimbarAction extends JajukAction {
   @Override
   public void perform(ActionEvent evt) throws Exception {
     JajukSlimbar slimbar = JajukSlimbar.getInstance();
-    // If slimbar is visible, hide it and show the main window
-
     /*
-     * Note that both main window and slimbar can be displayed at the same time:
-     * If the slimbar is visible and user display main window by right clicking
-     * on the tray, the main window is displayed, this is a normal behavior
+     * If slimbar is visible, hide it and show the main window. Note that both
+     * main window and slimbar can be displayed at the same time: If the slimbar
+     * is visible and user display main window by right clicking on the tray,
+     * the main window is displayed, this is a normal behavior
      */
     if (slimbar.isVisible()) {
       JajukSlimbar.getInstance().setVisible(false);
@@ -62,6 +61,8 @@ public class SlimbarAction extends JajukAction {
       }
       slimbar.setVisible(true);
       JajukWindow.getInstance().display(false);
+      // Need focus for keystrokes
+      slimbar.requestFocus();
     }
     // Notify that slimbar visibility change (menu bar is interested in it)
     ObservationManager.notify(new Event(JajukEvents.PARAMETERS_CHANGE));

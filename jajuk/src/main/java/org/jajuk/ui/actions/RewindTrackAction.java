@@ -37,7 +37,7 @@ public class RewindTrackAction extends JajukAction {
   private static final float JUMP_SIZE = 0.1f;
 
   RewindTrackAction() {
-    super(IconLoader.getIcon(JajukIcons.REW), "alt F9", false, true);
+    super(IconLoader.getIcon(JajukIcons.REW), "altGraph F9", false, true);
     setShortDescription(Messages.getString("CommandJPanel.10"));
 
   }

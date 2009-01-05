@@ -92,6 +92,7 @@ import java.util.List;
 
 import javax.swing.InputMap;
 import javax.swing.KeyStroke;
+import javax.swing.UIDefaults;
 import javax.swing.UIManager;
 
 /**
@@ -124,8 +125,8 @@ public final class ActionManager {
   private ActionManager() {
     // Private constructor to disallow instantiation.
     // CommandJPanel: Mode Panel
-    installAction(REPEAT_MODE_STATUS_CHANGE, new RepeatModeAction(), false);
-    installAction(SHUFFLE_MODE_STATUS_CHANGED, new ShuffleModeAction(), false);
+    installAction(REPEAT_MODE_STATUS_CHANGE, new RepeatModeAction(), true);
+    installAction(SHUFFLE_MODE_STATUS_CHANGED, new ShuffleModeAction(), true);
     installAction(CONTINUE_MODE_STATUS_CHANGED, new ContinueModeAction(), false);
     installAction(INTRO_MODE_STATUS_CHANGED, new IntroModeAction(), false);
 
@@ -144,15 +145,15 @@ public final class ActionManager {
     installAction(PREVIOUS_ALBUM, new PreviousAlbumAction(), true);
     installAction(NEXT_ALBUM, new NextAlbumAction(), true);
     installAction(REWIND_TRACK, new RewindTrackAction(), true);
-    installAction(PLAY_PAUSE_TRACK, new PlayPauseAction(), false);
-    installAction(STOP_TRACK, new StopTrackAction(), false);
+    installAction(PLAY_PAUSE_TRACK, new PlayPauseAction(), true);
+    installAction(STOP_TRACK, new StopTrackAction(), true);
     installAction(FAST_FORWARD_TRACK, new ForwardTrackAction(), true);
     installAction(INC_RATE, new ChangeTrackPreferenceAction(), true);
 
     // CommandJPanel: Volume control
     installAction(DECREASE_VOLUME, new DecreaseVolumeAction(), true);
     installAction(INCREASE_VOLUME, new IncreaseVolumeAction(), true);
-    installAction(MUTE_STATE, new MuteAction(), false);
+    installAction(MUTE_STATE, new MuteAction(), true);
 
     // JajukJMenuBar: File Menu
     installAction(EXIT, new ExitAction(), false);
@@ -204,9 +205,9 @@ public final class ActionManager {
     installAction(SHOW_ALBUM_DETAILS, new ShowAlbumDetailsAction(), false);
     installAction(SLIM_JAJUK, new SlimbarAction(), false);
     installAction(PREPARE_PARTY, new PreparePartyAction(), false);
-    
+
     // Selection actions
-    installAction(SHOW_PROPERTIES, new ShowPropertiesAction(), false);
+    installAction(SHOW_PROPERTIES, new ShowPropertiesAction(), true);
     installAction(PLAY_SELECTION, new PlaySelectionAction(), false);
     installAction(PLAY_SHUFFLE_SELECTION, new PlayShuffleSelectionAction(), false);
     installAction(PLAY_REPEAT_SELECTION, new PlayRepeatSelectionAction(), false);
@@ -234,6 +235,9 @@ public final class ActionManager {
     if (Desktop.isDesktopSupported()) {
       installAction(LAUNCH_IN_BROWSER, new LaunchInBrowserAction(), false);
     }
+
+    // Uninstall Look and feel keystrokes if required
+    uninstallStrokes();
 
   }
 
@@ -280,12 +284,14 @@ public final class ActionManager {
    * globally configured JaJuk keystrokes.
    */
   public static void uninstallStrokes() {
-    InputMap tableMap = (InputMap) UIManager.get("Table.ancestorInputMap");
-    InputMap treeMap = (InputMap) UIManager.get("Tree.focusInputMap");
-
-    for (KeyStroke stroke : STROKE_LIST) {
-      tableMap.remove(stroke);
-      treeMap.remove(stroke);
+    UIDefaults defaults = UIManager.getDefaults();
+    for (Object uidefault : defaults.keySet()) {
+      if (uidefault instanceof InputMap) {
+        InputMap map = (InputMap) uidefault;
+        for (KeyStroke stroke : STROKE_LIST) {
+          map.remove(stroke);
+        }
+      }
     }
   }
 
