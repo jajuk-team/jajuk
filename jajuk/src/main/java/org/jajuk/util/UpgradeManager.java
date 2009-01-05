@@ -295,7 +295,7 @@ public final class UpgradeManager {
     // Try to download current jajuk PAD file
     String sRelease = null;
     try {
-      String pad = DownloadManager.downloadHtml(new URL(Const.CHECK_FOR_UPDATE_URL));
+      String pad = DownloadManager.downloadText(new URL(Const.CHECK_FOR_UPDATE_URL));
       int beginIndex = pad.indexOf("<Program_Version>");
       int endIndex = pad.indexOf("</Program_Version>");
       sRelease = pad.substring(beginIndex + 17, endIndex);

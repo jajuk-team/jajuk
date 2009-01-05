@@ -67,7 +67,7 @@ public final class Submitter {
     String url = "http://post.audioscrobbler.com/?hs=true&p=" + protocolVersion + "&c=" + clientId
         + "&v=" + clientVer + "&u=" + user;
     try {
-      String result = DownloadManager.downloadHtml(new URL(url));
+      String result = DownloadManager.downloadText(new URL(url));
       // Parse result
       String[] lines = result.split("\n");
       if (lines[0].equals("UPTODATE")) {

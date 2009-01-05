@@ -357,7 +357,6 @@ public final class DeviceManager extends ItemManager {
         return;
       }
       bGlobalRefreshing = true;
-      long l = System.currentTimeMillis();
       lDateLastGlobalRefresh = System.currentTimeMillis();
       boolean bNeedUIRefresh = false;
       for (Device device : getDevices()) {
@@ -400,7 +399,6 @@ public final class DeviceManager extends ItemManager {
         ObservationManager.notify(new Event(JajukEvents.DEVICE_REFRESH));
       }
       // Display end of refresh message with stats
-      l = System.currentTimeMillis() - l;
     } catch (Exception e) {
       Log.error(e);
     } finally {
