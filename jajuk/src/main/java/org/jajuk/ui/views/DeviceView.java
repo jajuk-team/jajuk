@@ -424,7 +424,7 @@ public class DeviceView extends ViewAdapter implements IView, ActionListener, Mo
       diSelected.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
     }
     diSelected = (DeviceItem) e.getSource();
-    diSelected.requestFocus();
+    diSelected.requestFocusInWindow();
     // Test if it is the "NEW" device
     if (((DeviceItem) e.getSource()).getDevice() == null) {
       return;
