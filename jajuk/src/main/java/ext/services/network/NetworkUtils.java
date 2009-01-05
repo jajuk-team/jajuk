@@ -28,8 +28,6 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
-import java.net.UnknownHostException;
-import java.net.Proxy.Type;
 
 import javax.imageio.ImageIO;
 
@@ -136,13 +134,5 @@ public final class NetworkUtils {
       return s;
     }
   }
-
-  public static Proxy getProxy(ProxyBean proxy) throws UnknownHostException, IOException {
-    if (proxy == null) {
-      return null;
-    }
-
-    return new Proxy(proxy.getType().equals(ProxyBean.HTTP_PROXY) ? Type.HTTP : Type.SOCKS, proxy
-        .getUrl(), proxy.getPort(), proxy.getUser(), proxy.getPassword());
-  }
+  
 }
