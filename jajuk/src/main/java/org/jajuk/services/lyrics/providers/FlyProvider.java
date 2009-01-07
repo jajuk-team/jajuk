@@ -70,7 +70,7 @@ public class FlyProvider extends GenericProvider {
       }
       return lyrics;
     } catch (Exception e) {
-      Log.error(e);
+      Log.debug("Cannot fetch lyrics for: "+artist+"/"+title);
     }
     return lyrics;
   }
