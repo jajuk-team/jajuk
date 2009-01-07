@@ -145,7 +145,7 @@ public final class DeviceManager extends ItemManager {
    */
   public synchronized Device registerDevice(String sId, String sName, long lDeviceType, String sUrl) {
     Device device = getDeviceByID(sId);
-    if (device != null){
+    if (device != null) {
       return device;
     }
     device = new Device(sId, sName);
@@ -385,18 +385,26 @@ public final class DeviceManager extends ItemManager {
             // Store this device to avoid duplicate deep refreshes
             devicesDeepRefreshed.add(device);
           }
-          // cleanup device
-          bNeedUIRefresh = bNeedUIRefresh | device.cleanRemovedFiles();
+          // cleanup device. bLocalNeedRefresh is true if *current* device is
+          // changed. bNeedUIRefresh is changed if *any* device has changed */
+          boolean bLocalNeedRefresh = device.cleanRemovedFiles();
+          bNeedUIRefresh = bNeedUIRefresh | bLocalNeedRefresh;
           // refresh the device (deep refresh forced after an upgrade)
-          bNeedUIRefresh = bNeedUIRefresh | device.refreshCommand(bNeedDeepAfterUpgrade);
+          bLocalNeedRefresh = bLocalNeedRefresh | device.refreshCommand(bNeedDeepAfterUpgrade);
+          bNeedUIRefresh = bNeedUIRefresh | bLocalNeedRefresh;
+          if (bLocalNeedRefresh) {
+            /*
+             * notify views to refresh once the device is refreshed, do not wait
+             * all devices refreshing as it may be tool long
+             */
+            ObservationManager.notify(new Event(JajukEvents.DEVICE_REFRESH));
+          }
         }
       }
 
       // //cleanup logical items
       if (bNeedUIRefresh) {
         Collection.cleanupLogical();
-        // notify views to refresh
-        ObservationManager.notify(new Event(JajukEvents.DEVICE_REFRESH));
       }
       // Display end of refresh message with stats
     } catch (Exception e) {
