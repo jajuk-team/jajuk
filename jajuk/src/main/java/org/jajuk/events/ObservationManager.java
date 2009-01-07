@@ -237,7 +237,7 @@ public final class ObservationManager {
    * 
    * @param sEvent
    *          event name
-   * @return the detaisl or null there are not details
+   * @return the details or null there are not details
    */
   public static Properties getDetailsLastOccurence(JajukEvents subject) {
     return hLastEventBySubject.get(subject);

@@ -335,7 +335,8 @@ public final class FIFO {
   }
 
   /**
-   * Finished method, called by the PlayerImpl when the track is finished
+   * Finished method, called by the PlayerImpl when the track is finished or
+   * should be finished (in case of intro mode or crass fade)
    */
   public static void finished() {
     try {
