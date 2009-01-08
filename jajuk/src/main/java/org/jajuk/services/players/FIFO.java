@@ -1072,7 +1072,7 @@ public final class FIFO {
    */
   public static void remove(int iStart, int iStop) {
     if (iStart <= iStop && iStart >= 0 && iStop < alFIFO.size() + alPlanned.size()) {
-      // check size drop items from the end to the begining
+      // check size drop items from the end to the beginning
       for (int i = iStop; i >= iStart; i--) {
         // FIFO items
         if (i >= alFIFO.size()) {
@@ -1223,6 +1223,20 @@ public final class FIFO {
       title = Messages.getString("JajukWindow.18");
     }
     return title;
+  }
+
+  /*
+   * Force FIFO cleanup, for example after files deletion
+   */
+  public static synchronized void clean() {
+    Iterator<StackItem> it = alFIFO.iterator();
+    while (it.hasNext()) {
+      StackItem si = it.next();
+      if (FileManager.getInstance().getFileByID(si.getFile().getID()) == null) {
+        it.remove();
+      }
+    }
+    computesPlanned(true);
   }
 
 }
