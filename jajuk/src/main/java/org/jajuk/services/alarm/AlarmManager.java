@@ -50,9 +50,11 @@ public class AlarmManager implements Observer {
   /**
    * This thread looks alarms up and call weak up when it's time
    */
-  private Thread clock = new Thread() {
+  private Thread clock = new Thread("Alarm manager Thread") {
+
     @Override
     public void run() {
+      Log.debug("Starting Alarm thread");
       boolean bstop = false;
       while (!bstop) {
         try {
@@ -110,7 +112,7 @@ public class AlarmManager implements Observer {
         }
         // Compute playlist if required
         List<File> alToPlay = null;
-        if (alarmAction.equals(Const.ALARM_START_MODE)) {
+        if (alarmAction.equals(Const.ALARM_START_ACTION)) {
           alToPlay = new ArrayList<File>();
           if (Conf.getString(Const.CONF_ALARM_MODE).equals(Const.STARTUP_MODE_FILE)) {
             File fileToPlay = FileManager.getInstance().getFileByID(

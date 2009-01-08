@@ -91,7 +91,7 @@ public interface Const {
   float NEED_FULL_GC_LEVEL = 0.90f;
   
   /** Number of ms in 24 hours **/
-  long DAY_MS = 24 * 3600* 1000;
+  long DAY_MS = 24 * 3600 * 1000;
 
   /** Play time to get rate +1 in secs */
   int INC_RATE_TIME = 20;
@@ -1127,10 +1127,10 @@ public interface Const {
   
   String CONF_ALARM_ENABLED = "jajuk.alarm.enabled";
   
-  // Alarm mode
-  String ALARM_START_MODE = "Start Playing";
+  // Alarm actions
+  String ALARM_START_ACTION = "Start Playing";
 
-  String ALARM_STOP_MODE = "Stop Playing";
+  String ALARM_STOP_ACTION = "Stop Playing";
 
   // Preferences
   long PREFERENCE_ADORE = 3;

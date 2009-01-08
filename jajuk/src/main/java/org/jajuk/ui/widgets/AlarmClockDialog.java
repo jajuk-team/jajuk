@@ -127,8 +127,8 @@ public class AlarmClockDialog extends JDialog implements ActionListener, ItemLis
     jpAction = new JPanel();
     jlAlarmAction = new JLabel(Messages.getString("AlarmDialog.4"));
     jcbAlarmAction = new JComboBox();
-    jcbAlarmAction.addItem(Const.ALARM_START_MODE);
-    jcbAlarmAction.addItem(Const.ALARM_STOP_MODE);
+    jcbAlarmAction.addItem(Const.ALARM_START_ACTION);
+    jcbAlarmAction.addItem(Const.ALARM_STOP_ACTION);
     jcbAlarmAction.setToolTipText(Messages.getString("AlarmDialog.5"));
     jcbAlarmAction.addActionListener(this);
     jpAction.add(jlAlarmAction);
@@ -319,9 +319,9 @@ public class AlarmClockDialog extends JDialog implements ActionListener, ItemLis
     jtfMinutes.setText(Conf.getString(CONF_ALARM_TIME_MINUTES));
     jtfSeconds.setText(Conf.getString(CONF_ALARM_TIME_SECONDS));
     // Alarm mode (play/stop)
-    if (ALARM_START_MODE.equals(Conf.getString(CONF_ALARM_ACTION))) {
+    if (ALARM_START_ACTION.equals(Conf.getString(CONF_ALARM_ACTION))) {
       jcbAlarmAction.setSelectedIndex(0);
-    } else if (ALARM_STOP_MODE.equals(Conf.getString(CONF_ALARM_ACTION))) {
+    } else if (ALARM_STOP_ACTION.equals(Conf.getString(CONF_ALARM_ACTION))) {
       jcbAlarmAction.setSelectedIndex(1);
     }
     // Alarm action

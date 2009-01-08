@@ -27,6 +27,7 @@ import org.jajuk.services.players.FIFO;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.UtilFeatures;
+import org.jajuk.util.log.Log;
 
 /**
  * An Alarm
@@ -46,7 +47,8 @@ public class Alarm {
    * Effective action to perform by the alarm
    */
   public void wakeUpSleeper() {
-    if (alarmAction.equals(Const.ALARM_START_MODE)) {
+    Log.debug("Wake up at " + new Date());
+    if (alarmAction.equals(Const.ALARM_START_ACTION)) {
       FIFO.push(UtilFeatures.createStackItems(alToPlay, Conf.getBoolean(Const.CONF_STATE_REPEAT),
           false), false);
     } else {
@@ -57,11 +59,11 @@ public class Alarm {
   public Date getAlarmTime() {
     return this.aTime;
   }
-  
+
   /**
    * Add 24 hours to current alarm
    */
-  public void nextDay(){
+  public void nextDay() {
     aTime = new Date(aTime.getTime() + Const.DAY_MS);
   }
 
