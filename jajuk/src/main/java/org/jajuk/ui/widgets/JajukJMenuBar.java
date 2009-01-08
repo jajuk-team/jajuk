@@ -383,7 +383,6 @@ public final class JajukJMenuBar extends JMenuBar implements Observer {
   public Set<JajukEvents> getRegistrationKeys() {
     Set<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
     eventSubjectSet.add(JajukEvents.PARAMETERS_CHANGE);
-    eventSubjectSet.add(JajukEvents.ALARMS_CHANGE);
     return eventSubjectSet;
   }
 
