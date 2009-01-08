@@ -290,7 +290,7 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
     // Try to open the file during 30 secs
     while (bOpening && !bEOF && (System.currentTimeMillis() - time) < MPLAYER_START_TIMEOUT) {
       try {
-        Thread.sleep(10);
+        Thread.sleep(100);
       } catch (InterruptedException e) {
         Log.error(e);
       }
@@ -306,14 +306,9 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
     } else {
       // try to kill the mplayer process if still alive
       if (proc != null) {
-        new Thread("MPlayer process kill thread") {
-          @Override
-          public void start() {
-            Log.warn("OOT Mplayer process, try to kill it");
-            proc.destroy();
-            Log.warn("OK, the process should have been killed now");
-          }
-        }.start();
+        Log.warn("OOT Mplayer process, try to kill it");
+        proc.destroy();
+        Log.warn("OK, the process should have been killed now");
       }
       // Notify the problem opening the file
       throw new JajukException(7, Integer.valueOf(MPLAYER_START_TIMEOUT).toString() + " ms");
@@ -361,7 +356,6 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
         Log.error(e);
       }
     }
-
     // save current position
     String command = "seek " + (int) (100 * posValue) + " 1";
     sendCommand(command);
