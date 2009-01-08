@@ -479,7 +479,7 @@ public final class FIFO {
         }
         // save the last played track (even files in error are stored here as
         // we need this for computes next track to launch after an error)
-        if (null != getCurrentItem()) {
+        if ( getCurrentItem() != null) {
           itemLast = (StackItem) getCurrentItem().clone();
         } else {
           itemLast = null;

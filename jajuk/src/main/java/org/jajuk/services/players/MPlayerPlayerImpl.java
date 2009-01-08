@@ -83,7 +83,7 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
     public void run() {
       int comp = 1;
       Track current = fCurrent.getTrack();
-      while (!bStop) { // stop this thread when exiting
+      while (!bStop) { // stop this thread
         try {
           if (!bPaused) {
             // a get_percent_pos resumes (mplayer issue)
@@ -122,7 +122,7 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
       try {
         BufferedReader in = new BufferedReader(new InputStreamReader(proc.getInputStream()));
         String line = null;
-        for (; true;) {
+        for (; !bStop;) {
           try {
             line = in.readLine();
             if (line == null) {
