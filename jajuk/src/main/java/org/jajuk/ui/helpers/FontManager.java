@@ -31,7 +31,7 @@ import javax.swing.JLabel;
 import javax.swing.UIDefaults;
 import javax.swing.plaf.FontUIResource;
 
-import org.jajuk.events.Event;
+import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.events.Observer;
@@ -164,7 +164,7 @@ public final class FontManager implements Observer {
    * 
    * @see org.jajuk.base.Observer#update(org.jajuk.base.Event)
    */
-  public void update(Event event) {
+  public void update(JajukEvent event) {
     JajukEvents subject = event.getSubject();
     if (JajukEvents.PARAMETERS_CHANGE.equals(subject)) {
       // force to register again all fonts to get new sizes

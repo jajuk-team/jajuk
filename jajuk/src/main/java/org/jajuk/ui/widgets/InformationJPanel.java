@@ -43,7 +43,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import org.jajuk.base.File;
-import org.jajuk.events.Event;
+import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.events.Observer;
@@ -88,7 +88,7 @@ public final class InformationJPanel extends JXPanel implements ChangeListener, 
   private Timer timer = new Timer(JajukTimer.DEFAULT_HEARTBEAT, new ActionListener() {
 
     public void actionPerformed(ActionEvent e) {
-      update(new Event(JajukEvents.HEART_BEAT));
+      update(new JajukEvent(JajukEvents.HEART_BEAT));
     }
   });
 
@@ -195,7 +195,7 @@ public final class InformationJPanel extends JXPanel implements ChangeListener, 
 
     // check if some errors occurred before the view has been displayed
     if (ObservationManager.containsEvent(JajukEvents.PLAY_ERROR)) {
-      update(new Event(JajukEvents.PLAY_ERROR, ObservationManager
+      update(new JajukEvent(JajukEvents.PLAY_ERROR, ObservationManager
           .getDetailsLastOccurence(JajukEvents.PLAY_ERROR)));
     }
 
@@ -347,7 +347,7 @@ public final class InformationJPanel extends JXPanel implements ChangeListener, 
    * 
    * @see org.jajuk.ui.Observer#update(java.lang.String)
    */
-  public void update(final Event event) {
+  public void update(final JajukEvent event) {
     final JajukEvents subject = event.getSubject();
     // do not insert this subject inside the invokeLater because we have to
     // leave the awt dispatcher called inside the setMessage and THEN, sleep

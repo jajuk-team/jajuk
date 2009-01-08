@@ -35,7 +35,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
-import org.jajuk.events.Event;
+import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.services.bookmark.Bookmarks;
@@ -799,14 +799,14 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
               // Notify that a file has been copied
               Properties properties = new Properties();
               properties.put(Const.DETAIL_CONTENT, entry.getName());
-              ObservationManager.notify(new Event(JajukEvents.FILE_COPIED, properties));
+              ObservationManager.notify(new JajukEvent(JajukEvents.FILE_COPIED, properties));
             }
 
             bw.flush();
             bw.close();
             // Send a last event with null properties to inform the client that
             // the party is done
-            ObservationManager.notify(new Event(JajukEvents.FILE_COPIED));
+            ObservationManager.notify(new JajukEvent(JajukEvents.FILE_COPIED));
 
           } catch (final Exception e) {
             Log.error(e);

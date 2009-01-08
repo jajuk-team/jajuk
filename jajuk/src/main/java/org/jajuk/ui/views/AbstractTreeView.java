@@ -41,7 +41,7 @@ import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
 import org.jajuk.base.Item;
-import org.jajuk.events.Event;
+import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.ui.actions.ActionManager;
 import org.jajuk.ui.actions.JajukActions;
@@ -197,7 +197,7 @@ public abstract class AbstractTreeView extends ViewAdapter {
     actionMap.put("rename", action);
   }
 
-  public void update(Event event) {
+  public void update(JajukEvent event) {
     final JajukEvents subject = event.getSubject();
     if (subject.equals(JajukEvents.DEVICE_MOUNT) || subject.equals(JajukEvents.DEVICE_UNMOUNT)
         || subject.equals(JajukEvents.DEVICE_REFRESH) || subject.equals(JajukEvents.PARAMETERS_CHANGE)) {

@@ -32,7 +32,7 @@ import javax.swing.JComboBox;
 
 import org.jajuk.base.ItemManager;
 import org.jajuk.base.PropertyMetaInformation;
-import org.jajuk.events.Event;
+import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.util.Const;
@@ -84,7 +84,7 @@ public class RemovePropertyWizard extends CustomPropertyWizard {
       im.removeProperty(sProperty);
       Properties properties = new Properties();
       properties.put(Const.DETAIL_CONTENT, sProperty);
-      Event event = new Event(JajukEvents.CUSTOM_PROPERTIES_REMOVE, properties);
+      JajukEvent event = new JajukEvent(JajukEvents.CUSTOM_PROPERTIES_REMOVE, properties);
       ObservationManager.notify(event);
       dispose();
     } else if (ae.getSource().equals(this.okp.getCancelButton())) {

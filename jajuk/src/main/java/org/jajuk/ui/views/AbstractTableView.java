@@ -59,7 +59,7 @@ import org.jajuk.base.File;
 import org.jajuk.base.Item;
 import org.jajuk.base.ItemManager;
 import org.jajuk.base.StyleManager;
-import org.jajuk.events.Event;
+import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.services.players.FIFO;
@@ -332,7 +332,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
     // or added before view instantiation
     Properties properties = ObservationManager
         .getDetailsLastOccurence(JajukEvents.CUSTOM_PROPERTIES_ADD);
-    Event event = new Event(JajukEvents.CUSTOM_PROPERTIES_ADD, properties);
+    JajukEvent event = new JajukEvent(JajukEvents.CUSTOM_PROPERTIES_ADD, properties);
     update(event);
     initTable(); // perform type-specific init
     // Start filtering thread
@@ -389,7 +389,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
    * 
    * @see org.jajuk.ui.Observer#update(java.lang.String)
    */
-  public void update(final Event event) {
+  public void update(final JajukEvent event) {
     SwingUtilities.invokeLater(new Runnable() {
       @SuppressWarnings("unchecked")
       public void run() {
@@ -592,7 +592,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
       // Require refresh of all tables
       Properties properties = new Properties();
       properties.put(Const.DETAIL_ORIGIN, AbstractTableView.this);
-      ObservationManager.notify(new Event(JajukEvents.DEVICE_REFRESH, properties));
+      ObservationManager.notify(new JajukEvent(JajukEvents.DEVICE_REFRESH, properties));
 
     } catch (NoneAccessibleFileException none) {
       Messages.showErrorMessage(none.getCode());

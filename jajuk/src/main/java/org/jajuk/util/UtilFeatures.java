@@ -33,7 +33,7 @@ import org.jajuk.base.LogicalItem;
 import org.jajuk.base.Playlist;
 import org.jajuk.base.Track;
 import org.jajuk.base.TrackManager;
-import org.jajuk.events.Event;
+import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.events.Observer;
@@ -345,15 +345,15 @@ public final class UtilFeatures {
   public static void updateStatus(Observer oberver) {
     // check if a track or a webradio has already been launched
     if (FIFO.isPlayingRadio()) {
-      oberver.update(new Event(JajukEvents.WEBRADIO_LAUNCHED, ObservationManager
+      oberver.update(new JajukEvent(JajukEvents.WEBRADIO_LAUNCHED, ObservationManager
           .getDetailsLastOccurence(JajukEvents.WEBRADIO_LAUNCHED)));
     } else if (!FIFO.isStopped()) {
-      oberver.update(new Event(JajukEvents.FILE_LAUNCHED, ObservationManager
+      oberver.update(new JajukEvent(JajukEvents.FILE_LAUNCHED, ObservationManager
           .getDetailsLastOccurence(JajukEvents.FILE_LAUNCHED)));
-      oberver.update(new Event(JajukEvents.PLAYER_PLAY, ObservationManager
+      oberver.update(new JajukEvent(JajukEvents.PLAYER_PLAY, ObservationManager
           .getDetailsLastOccurence(JajukEvents.PLAYER_PLAY)));
     } else {
-      oberver.update(new Event(JajukEvents.ZERO));
+      oberver.update(new JajukEvent(JajukEvents.ZERO));
     }
   }
 

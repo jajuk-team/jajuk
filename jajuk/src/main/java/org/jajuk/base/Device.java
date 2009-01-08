@@ -30,7 +30,7 @@ import java.util.Set;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
-import org.jajuk.events.Event;
+import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.services.bookmark.History;
@@ -464,7 +464,7 @@ public class Device extends PhysicalItem implements Comparable<Device> {
       // Actual refresh
       refreshCommand((i == Device.OPTION_REFRESH_DEEP));
       // notify views to refresh
-      ObservationManager.notify(new Event(JajukEvents.DEVICE_REFRESH));
+      ObservationManager.notify(new JajukEvent(JajukEvents.DEVICE_REFRESH));
       // cleanup logical items
       org.jajuk.base.Collection.cleanupLogical();
       // commit collection at each refresh (can be useful if application
@@ -570,7 +570,7 @@ public class Device extends PhysicalItem implements Comparable<Device> {
     // Here the device is considered as mounted
     bMounted = true;
     // notify views to refresh if needed
-    ObservationManager.notify(new Event(JajukEvents.DEVICE_MOUNT));
+    ObservationManager.notify(new JajukEvent(JajukEvents.DEVICE_MOUNT));
     return 0;
   }
 
@@ -875,7 +875,7 @@ public class Device extends PhysicalItem implements Comparable<Device> {
       // make sure to unlock synchronizing even if an error occurred
       bAlreadySynchronizing = false;
       // Refresh GUI
-      ObservationManager.notify(new Event(JajukEvents.DEVICE_REFRESH));
+      ObservationManager.notify(new JajukEvent(JajukEvents.DEVICE_REFRESH));
     }
   }
 
@@ -1083,7 +1083,7 @@ public class Device extends PhysicalItem implements Comparable<Device> {
     }
     bMounted = false;
     if (bUIRefresh) {
-      ObservationManager.notify(new Event(JajukEvents.DEVICE_UNMOUNT));
+      ObservationManager.notify(new JajukEvent(JajukEvents.DEVICE_UNMOUNT));
     }
   }
 

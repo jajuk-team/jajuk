@@ -34,7 +34,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 import org.jajuk.Main;
-import org.jajuk.events.Event;
+import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.ui.views.IView;
@@ -196,7 +196,7 @@ public final class PerspectiveManager {
         Conf.setProperty(Const.CONF_PERSPECTIVE_DEFAULT, perspective.getID());
         UtilGUI.stopWaiting();
         // Emit a event
-        ObservationManager.notify(new Event(JajukEvents.PERPECTIVE_CHANGED, ObservationManager
+        ObservationManager.notify(new JajukEvent(JajukEvents.PERPECTIVE_CHANGED, ObservationManager
             .getDetailsLastOccurence(JajukEvents.FILE_LAUNCHED)));
       }
     });

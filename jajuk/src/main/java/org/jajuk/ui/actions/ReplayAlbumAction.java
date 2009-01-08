@@ -25,7 +25,7 @@ import java.util.List;
 
 import org.jajuk.base.File;
 import org.jajuk.base.Track;
-import org.jajuk.events.Event;
+import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.services.players.FIFO;
@@ -70,7 +70,7 @@ public class ReplayAlbumAction extends JajukAction {
             // pause button
             // when changing of track
             Player.setPaused(false);
-            ObservationManager.notify(new Event(JajukEvents.PLAYER_RESUME));
+            ObservationManager.notify(new JajukEvent(JajukEvents.PLAYER_RESUME));
           }
         }
       }

@@ -22,7 +22,7 @@ package org.jajuk.services.players;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.jajuk.events.Event;
+import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.events.Observer;
@@ -61,7 +61,7 @@ public class FIFOManager implements Observer {
    * 
    * @see org.jajuk.events.Observer#update(org.jajuk.events.Event)
    */
-  public void update(Event event) {
+  public void update(JajukEvent event) {
     JajukEvents subject = event.getSubject();
     // In case of device refresh, we force fifo cleanup, for ie to remove
     // deleted files

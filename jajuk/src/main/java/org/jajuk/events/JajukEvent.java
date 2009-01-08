@@ -25,7 +25,7 @@ import java.util.Properties;
 /**
  * Jajuk event (Observer pattern)
  */
-public class Event {
+public class JajukEvent {
 
   /**
    * Event subject
@@ -43,7 +43,7 @@ public class Event {
    * @param sSubject
    * @param pDetails
    */
-  public Event(JajukEvents subject, Properties pDetails) {
+  public JajukEvent(JajukEvents subject, Properties pDetails) {
     this.subject = subject;
     this.pDetails = pDetails;
   }
@@ -53,7 +53,7 @@ public class Event {
    * 
    * @param sSubject
    */
-  public Event(JajukEvents subject) {
+  public JajukEvent(JajukEvents subject) {
     this(subject, null);
   }
 
@@ -84,11 +84,11 @@ public class Event {
    */
   @Override
   public boolean equals(Object obj) {
-    if (!(obj instanceof Event)) {
+    if (!(obj instanceof JajukEvent)) {
       return false;
     }
 
-    Event event = (Event) obj;
+    JajukEvent event = (JajukEvent) obj;
     boolean bOut = false;
     if (this.subject.equals(event.getSubject())) {
       if (this.pDetails == null && event.pDetails == null) {

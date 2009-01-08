@@ -66,7 +66,7 @@ import javax.swing.event.ListSelectionListener;
 import org.jajuk.base.File;
 import org.jajuk.base.SearchResult;
 import org.jajuk.base.SearchResult.SearchResultType;
-import org.jajuk.events.Event;
+import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.events.Observer;
@@ -503,7 +503,7 @@ public final class JajukSlimbar extends JFrame implements Observer, MouseWheelLi
     return eventSubjectSet;
   }
 
-  public void update(final Event event) {
+  public void update(final JajukEvent event) {
     JajukEvents subject = event.getSubject();
     if (JajukEvents.FILE_LAUNCHED.equals(subject)) {
       updateCurrentTitle();

@@ -35,7 +35,7 @@ import java.util.StringTokenizer;
 
 import org.jajuk.base.Style;
 import org.jajuk.base.StyleManager;
-import org.jajuk.events.Event;
+import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.events.Observer;
@@ -178,7 +178,7 @@ public final class AmbienceManager implements Observer {
    * 
    * @see org.jajuk.ui.Observer#update(java.lang.String)
    */
-  public void update(Event event) {
+  public void update(JajukEvent event) {
     JajukEvents subject = event.getSubject();
     if (JajukEvents.STYLE_NAME_CHANGED.equals(subject)) {
       Properties properties = event.getDetails();
@@ -233,7 +233,7 @@ public final class AmbienceManager implements Observer {
     // Propagate the event
     Properties properties = new Properties();
     properties.put(Const.DETAIL_CONTENT, sAmbienceID);
-    ObservationManager.notify(new Event(JajukEvents.AMBIENCE_REMOVED, properties));
+    ObservationManager.notify(new JajukEvent(JajukEvents.AMBIENCE_REMOVED, properties));
   }
 
   /**

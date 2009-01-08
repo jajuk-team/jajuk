@@ -26,7 +26,7 @@ import java.util.List;
 import java.util.Properties;
 import java.util.Set;
 
-import org.jajuk.events.Event;
+import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.Observer;
 import org.jajuk.util.Const;
@@ -224,7 +224,7 @@ public final class PlaylistManager extends ItemManager implements Observer {
    * @see org.jajuk.base.Observer#update(org.jajuk.base.Event)
    */
   @SuppressWarnings("unchecked")
-  public void update(Event event) {
+  public void update(JajukEvent event) {
     JajukEvents subject = event.getSubject();
     if (JajukEvents.FILE_NAME_CHANGED.equals(subject)) {
       Properties properties = event.getDetails();

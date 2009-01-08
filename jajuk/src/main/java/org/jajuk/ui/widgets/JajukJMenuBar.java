@@ -54,7 +54,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.SwingUtilities;
 
-import org.jajuk.events.Event;
+import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.events.Observer;
@@ -277,7 +277,7 @@ public final class JajukJMenuBar extends JMenuBar implements Observer {
       public void actionPerformed(ActionEvent e) {
         Conf.setProperty(Const.CONF_SHOW_POPUPS, Boolean.toString(jcbShowPopups.isSelected()));
         // force parameter view to take this into account
-        ObservationManager.notify(new Event(JajukEvents.PARAMETERS_CHANGE));
+        ObservationManager.notify(new JajukEvent(JajukEvents.PARAMETERS_CHANGE));
       }
     });
 
@@ -289,7 +289,7 @@ public final class JajukJMenuBar extends JMenuBar implements Observer {
         Conf.setProperty(Const.CONF_OPTIONS_SYNC_TABLE_TREE, Boolean.toString(jcbSyncTableTree
             .isSelected()));
         // force parameter view to take this into account
-        ObservationManager.notify(new Event(JajukEvents.PARAMETERS_CHANGE));
+        ObservationManager.notify(new JajukEvent(JajukEvents.PARAMETERS_CHANGE));
       }
     });
 
@@ -391,7 +391,7 @@ public final class JajukJMenuBar extends JMenuBar implements Observer {
    * 
    * @see org.jajuk.ui.Observer#update(java.lang.String)
    */
-  public void update(final Event event) {
+  public void update(final JajukEvent event) {
     SwingUtilities.invokeLater(new Runnable() {
 
       public void run() {

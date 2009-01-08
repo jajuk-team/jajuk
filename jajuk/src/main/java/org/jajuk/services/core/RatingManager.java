@@ -26,7 +26,7 @@ import java.util.Set;
 import org.jajuk.base.FileManager;
 import org.jajuk.base.Track;
 import org.jajuk.base.TrackManager;
-import org.jajuk.events.Event;
+import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.events.Observer;
@@ -87,7 +87,7 @@ public final class RatingManager extends Thread implements Observer {
       }
       if (bRateHasChanged) {
         // refresh to update rates
-        ObservationManager.notify(new Event(JajukEvents.RATE_CHANGED));
+        ObservationManager.notify(new JajukEvent(JajukEvents.RATE_CHANGED));
         bRateHasChanged = false;
       }
 
@@ -148,7 +148,7 @@ public final class RatingManager extends Thread implements Observer {
    * 
    * @see org.jajuk.events.Observer#update(org.jajuk.events.Event)
    */
-  public void update(Event event) {
+  public void update(JajukEvent event) {
     JajukEvents subject = event.getSubject();
     // Reset rate and total play time (automatic part of rating system)
     if (subject.equals(JajukEvents.RATE_RESET)) {
@@ -161,11 +161,11 @@ public final class RatingManager extends Thread implements Observer {
         track.setProperty(Const.XML_TRACK_RATE, 0l);
         track.setProperty(Const.XML_TRACK_TOTAL_PLAYTIME, 0l);
       }
-      ObservationManager.notify(new Event(JajukEvents.DEVICE_REFRESH));
+      ObservationManager.notify(new JajukEvent(JajukEvents.DEVICE_REFRESH));
       // Force suggestion view refresh. Not that the suggestion view doesn't
       // subscribe to EVENT_RATE_RESET event directly because we don't ensure
       // that the view will trap the event only after this class
-      ObservationManager.notify(new Event(JajukEvents.SUGGESTIONS_REFRESH));
+      ObservationManager.notify(new JajukEvent(JajukEvents.SUGGESTIONS_REFRESH));
       // Computes bestof
       FileManager.getInstance().refreshBestOfFiles();
       InformationJPanel.getInstance().setMessage(Messages.getString("ParameterView.252"),
@@ -180,11 +180,11 @@ public final class RatingManager extends Thread implements Observer {
         track.setProperty(Const.XML_TRACK_PREFERENCE, 0l);
         track.updateRate();
       }
-      ObservationManager.notify(new Event(JajukEvents.DEVICE_REFRESH));
+      ObservationManager.notify(new JajukEvent(JajukEvents.DEVICE_REFRESH));
       // Force suggestion view refresh. Not that the suggestion view doesn't
       // subscribe to EVENt_RATE_RESET event directly because we don't ensure
       // that the view will trap the event only after this class
-      ObservationManager.notify(new Event(JajukEvents.SUGGESTIONS_REFRESH));
+      ObservationManager.notify(new JajukEvent(JajukEvents.SUGGESTIONS_REFRESH));
       // Computes bestof
       FileManager.getInstance().refreshBestOfFiles();
       InformationJPanel.getInstance().setMessage(Messages.getString("ParameterView.253"),

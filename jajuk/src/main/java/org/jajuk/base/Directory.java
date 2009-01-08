@@ -29,7 +29,7 @@ import java.util.Set;
 
 import javax.swing.ImageIcon;
 
-import org.jajuk.events.Event;
+import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.services.bookmark.History;
@@ -592,7 +592,7 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
           cleanRemovedFiles();
           // Actual refresh
           refresh(deep, reporter);
-          ObservationManager.notify(new Event(JajukEvents.DEVICE_REFRESH));
+          ObservationManager.notify(new JajukEvent(JajukEvents.DEVICE_REFRESH));
           reporter.done();
           // commit collection at each refresh (can be useful if application
           // is closed brutally with control-C or shutdown and that exit hook

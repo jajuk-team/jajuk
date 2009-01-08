@@ -43,7 +43,7 @@ import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
 
 import org.jajuk.base.Style;
-import org.jajuk.events.Event;
+import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.services.dj.Ambience;
@@ -130,7 +130,7 @@ public class AmbienceWizard extends Wizard {
         refreshScreen();
       }
       // in all cases, notify command panel
-      ObservationManager.notify(new Event(JajukEvents.AMBIENCES_CHANGE));
+      ObservationManager.notify(new JajukEvent(JajukEvents.AMBIENCES_CHANGE));
     }
 
     /**
@@ -384,7 +384,7 @@ public class AmbienceWizard extends Wizard {
       Messages.showErrorMessage(113);
     }
     // Refresh UI
-    ObservationManager.notify(new Event(JajukEvents.AMBIENCES_CHANGE));
+    ObservationManager.notify(new JajukEvent(JajukEvents.AMBIENCES_CHANGE));
 
   }
 

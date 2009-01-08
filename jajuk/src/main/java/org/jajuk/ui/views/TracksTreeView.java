@@ -66,7 +66,7 @@ import org.jajuk.base.Track;
 import org.jajuk.base.TrackManager;
 import org.jajuk.base.Year;
 import org.jajuk.base.TrackComparator.TrackComparatorType;
-import org.jajuk.events.Event;
+import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.services.players.FIFO;
@@ -718,7 +718,7 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
         Properties properties = new Properties();
         properties.put(Const.DETAIL_SELECTION, selectedRecursively);
         properties.put(Const.DETAIL_ORIGIN, PerspectiveManager.getCurrentPerspective().getID());
-        ObservationManager.notify(new Event(JajukEvents.SYNC_TREE_TABLE, properties));
+        ObservationManager.notify(new JajukEvent(JajukEvents.SYNC_TREE_TABLE, properties));
       }
       // Update preference menu
       pjmTracks.resetUI(alSelected);

@@ -23,7 +23,7 @@ import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.jajuk.events.Event;
+import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.services.players.FIFO;
@@ -93,7 +93,7 @@ public class PreviousTrackAction extends JajukAction {
               // changing of track
               if (Player.isPaused()) {
                 Player.setPaused(false);
-                ObservationManager.notify(new Event(JajukEvents.PLAYER_RESUME));
+                ObservationManager.notify(new JajukEvent(JajukEvents.PLAYER_RESUME));
               }
             }
           }

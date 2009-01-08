@@ -26,7 +26,7 @@ import java.util.List;
 import org.jajuk.base.Item;
 import org.jajuk.base.Track;
 import org.jajuk.base.TrackManager;
-import org.jajuk.events.Event;
+import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.util.Const;
@@ -66,6 +66,6 @@ public class UnBanSelectionAction extends SelectionAction {
       track.setProperty(Const.XML_TRACK_BANNED, false);
     }
      // Request a GUI refresh
-    ObservationManager.notify(new Event(JajukEvents.RATE_CHANGED));
+    ObservationManager.notify(new JajukEvent(JajukEvents.RATE_CHANGED));
   }
 }

@@ -29,7 +29,7 @@ import java.util.Map;
 import javax.swing.AbstractAction;
 import javax.swing.KeyStroke;
 
-import org.jajuk.events.Event;
+import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.util.Conf;
@@ -127,7 +127,7 @@ public abstract class WindowsHotKeyManager extends AbstractAction {
           } catch (Throwable e2) {
             Log.error(e2);
           } finally {
-            ObservationManager.notify(new Event(JajukEvents.QUEUE_NEED_REFRESH));
+            ObservationManager.notify(new JajukEvent(JajukEvents.QUEUE_NEED_REFRESH));
           }
         }
       }

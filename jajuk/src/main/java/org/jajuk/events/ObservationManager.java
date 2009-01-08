@@ -50,7 +50,7 @@ public final class ObservationManager {
    * The queue itself. Must be synchronized, so we use a ConcurrentLinkedQueue
    * whish is tread-safe
    */
-  static volatile Queue<Event> queue = new ConcurrentLinkedQueue<Event>();
+  static volatile Queue<JajukEvent> queue = new ConcurrentLinkedQueue<JajukEvent>();
 
   /**
    * Observation manager thread that consumes events asynchronously
@@ -67,7 +67,7 @@ public final class ObservationManager {
       while (!ExitService.isExiting()) {
         try {
           Thread.sleep(50);
-          final Event event = queue.poll();
+          final JajukEvent event = queue.poll();
           if (event != null) {
             // launch action asynchronously
             new Thread("Event Executor Thread") {
@@ -132,7 +132,7 @@ public final class ObservationManager {
    * 
    * @param subject
    */
-  public static void notify(Event event) {
+  public static void notify(JajukEvent event) {
     // asynchronous notification by default to avoid
     // exception throw in the register current thread
     notify(event, false);
@@ -143,7 +143,7 @@ public final class ObservationManager {
    * 
    * @param subject
    */
-  public static void notifySync(Event event) {
+  public static void notifySync(JajukEvent event) {
     JajukEvents subject = event.getSubject();
     Log.debug("Notify: " + subject);
     // save last event
@@ -169,7 +169,7 @@ public final class ObservationManager {
    * @param whether
    *          the notification is synchronous or not
    */
-  public static void notify(final Event event, boolean bSync) {
+  public static void notify(final JajukEvent event, boolean bSync) {
     try {
       if (bSync) {
         ObservationManager.notifySync(event);
@@ -224,7 +224,7 @@ public final class ObservationManager {
    * @return the detail as an object or null if the event or the detail doesn't
    *         exist
    */
-  public static Object getDetail(Event event, String sDetailName) {
+  public static Object getDetail(JajukEvent event, String sDetailName) {
     Properties pDetails = event.getDetails();
     if (pDetails != null) {
       return pDetails.get(sDetailName);

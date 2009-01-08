@@ -33,7 +33,7 @@ import javax.swing.SwingUtilities;
 
 import org.jajuk.Main;
 import org.jajuk.base.File;
-import org.jajuk.events.Event;
+import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.events.Observer;
@@ -126,7 +126,7 @@ public class JajukWindow extends JFrame implements Observer {
     });
 
     // display correct title if a track is launched at startup
-    update(new Event(JajukEvents.FILE_LAUNCHED, ObservationManager
+    update(new JajukEvent(JajukEvents.FILE_LAUNCHED, ObservationManager
         .getDetailsLastOccurence(JajukEvents.FILE_LAUNCHED)));
   }
 
@@ -246,7 +246,7 @@ public class JajukWindow extends JFrame implements Observer {
    * 
    * @see org.jajuk.ui.Observer#update(java.lang.String)
    */
-  public final void update(Event event) {
+  public final void update(JajukEvent event) {
     final JajukEvents subject = event.getSubject();
     SwingUtilities.invokeLater(new Runnable() {
       public void run() {

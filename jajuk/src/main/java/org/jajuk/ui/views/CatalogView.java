@@ -64,7 +64,7 @@ import org.jajuk.base.Item;
 import org.jajuk.base.PropertyMetaInformation;
 import org.jajuk.base.Track;
 import org.jajuk.base.TrackManager;
-import org.jajuk.events.Event;
+import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.events.Observer;
@@ -410,7 +410,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
    * 
    * @see org.jajuk.ui.Observer#update(java.lang.String)
    */
-  public void update(Event event) {
+  public void update(JajukEvent event) {
     JajukEvents subject = event.getSubject();
     if (JajukEvents.DEVICE_REFRESH.equals(subject)
         || JajukEvents.COVER_DEFAULT_CHANGED.equals(subject)

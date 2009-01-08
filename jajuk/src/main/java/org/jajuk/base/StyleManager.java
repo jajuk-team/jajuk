@@ -29,7 +29,7 @@ import java.util.List;
 import java.util.Properties;
 import java.util.Vector;
 
-import org.jajuk.events.Event;
+import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.util.Const;
@@ -181,7 +181,7 @@ public final class StyleManager extends ItemManager {
       properties.put(Const.DETAIL_OLD, old);
       properties.put(Const.DETAIL_NEW, newItem);
       // Notify interested items (like ambience manager)
-      ObservationManager.notifySync(new Event(JajukEvents.STYLE_NAME_CHANGED, properties));
+      ObservationManager.notifySync(new JajukEvent(JajukEvents.STYLE_NAME_CHANGED, properties));
       return newItem;
     }
   }

@@ -49,7 +49,7 @@ import javax.swing.event.ChangeListener;
 import org.jajuk.base.Album;
 import org.jajuk.base.AlbumManager;
 import org.jajuk.base.File;
-import org.jajuk.events.Event;
+import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.events.Observer;
@@ -388,7 +388,7 @@ public class SuggestionView extends ViewAdapter implements Observer {
    * 
    * @see org.jajuk.ui.Observer#update(java.lang.String)
    */
-  public void update(Event event) {
+  public void update(JajukEvent event) {
     JajukEvents subject = event.getSubject();
     if (subject.equals(JajukEvents.FILE_LAUNCHED)) {
       comp++;

@@ -67,7 +67,7 @@ import org.jajuk.base.DeviceManager;
 import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
 import org.jajuk.base.SearchResult;
-import org.jajuk.events.Event;
+import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.services.core.RatingManager;
@@ -370,7 +370,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
               return;
             }
           }
-          ObservationManager.notify(new Event(JajukEvents.CLEAR_HISTORY));
+          ObservationManager.notify(new JajukEvent(JajukEvents.CLEAR_HISTORY));
         } else if (e.getSource() == jbResetRatings) {
           // show confirmation message if required
           if (Conf.getBoolean(Const.CONF_CONFIRMATIONS_RESET_RATINGS)) {
@@ -381,7 +381,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
             }
           }
           if (!DeviceManager.getInstance().isAnyDeviceRefreshing()) {
-            ObservationManager.notify(new Event(JajukEvents.RATE_RESET));
+            ObservationManager.notify(new JajukEvent(JajukEvents.RATE_RESET));
           } else {
             Messages.showErrorMessage(120);
           }
@@ -396,7 +396,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
             }
           }
           if (!DeviceManager.getInstance().isAnyDeviceRefreshing()) {
-            ObservationManager.notify(new Event(JajukEvents.PREFERENCES_RESET));
+            ObservationManager.notify(new JajukEvent(JajukEvents.PREFERENCES_RESET));
           } else {
             Messages.showErrorMessage(120);
           }
@@ -484,7 +484,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
           ThumbnailManager.cleanThumbs(THUMBNAIL_SIZE_250X250);
           ThumbnailManager.cleanThumbs(THUMBNAIL_SIZE_300X300);
           // Display the catalog view voided
-          ObservationManager.notify(new Event(JajukEvents.DEVICE_REFRESH));
+          ObservationManager.notify(new JajukEvent(JajukEvents.DEVICE_REFRESH));
           // Launch thumbs creation in another process
           ThumbnailsMaker.launchAllSizes(true);
         }
@@ -732,7 +732,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
       Messages.showErrorMessage(113);
     }
     // Force a full refresh (useful for catalog view for instance)
-    ObservationManager.notify(new Event(JajukEvents.DEVICE_REFRESH));
+    ObservationManager.notify(new JajukEvent(JajukEvents.DEVICE_REFRESH));
     // display a message
     InformationJPanel.getInstance().setMessage(Messages.getString("ParameterView.109"),
         InformationJPanel.INFORMATIVE);
@@ -777,7 +777,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
         // synchronize the state
         Properties details = new Properties();
         details.put(Const.DETAIL_ORIGIN, ParameterView.this);
-        ObservationManager.notify(new Event(JajukEvents.PARAMETERS_CHANGE, details));
+        ObservationManager.notify(new JajukEvent(JajukEvents.PARAMETERS_CHANGE, details));
       }
 
     };
@@ -1553,7 +1553,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
    * 
    * @see org.jajuk.base.Observer#update(org.jajuk.base.Event)
    */
-  public void update(final Event event) {
+  public void update(final JajukEvent event) {
     final JajukEvents subject = event.getSubject();
     if (JajukEvents.PARAMETERS_CHANGE.equals(subject)) {
       // Ignore this event is thrown by this view itself (to avoid loosing

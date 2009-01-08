@@ -42,7 +42,7 @@ import javax.swing.JScrollPane;
 
 import org.jajuk.base.Track;
 import org.jajuk.base.TrackManager;
-import org.jajuk.events.Event;
+import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.services.cddb.CDDBTrack;
@@ -300,7 +300,7 @@ public class CDDBWizard extends JajukJDialog implements ActionListener {
       }
       InformationJPanel.getInstance().setMessage(Messages.getString("Success"),
           InformationJPanel.INFORMATIVE);
-      ObservationManager.notify(new Event(JajukEvents.DEVICE_REFRESH));
+      ObservationManager.notify(new JajukEvent(JajukEvents.DEVICE_REFRESH));
     }
   }
 

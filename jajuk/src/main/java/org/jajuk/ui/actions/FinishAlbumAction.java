@@ -23,7 +23,7 @@ import java.awt.event.ActionEvent;
 import java.util.Properties;
 
 import org.jajuk.base.Directory;
-import org.jajuk.events.Event;
+import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.services.players.FIFO;
@@ -57,6 +57,6 @@ public class FinishAlbumAction extends JajukAction {
     FIFO.computesPlanned(true); // update planned list
     Properties properties = new Properties();
     properties.put(Const.DETAIL_ORIGIN, Const.DETAIL_SPECIAL_MODE_NORMAL);
-    ObservationManager.notify(new Event(JajukEvents.SPECIAL_MODE, properties));
+    ObservationManager.notify(new JajukEvent(JajukEvents.SPECIAL_MODE, properties));
   }
 }

@@ -27,7 +27,7 @@ import javazoom.jlgui.basicplayer.BasicPlayer;
 
 import org.jajuk.base.File;
 import org.jajuk.base.TypeManager;
-import org.jajuk.events.Event;
+import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.services.webradio.WebRadio;
@@ -141,7 +141,7 @@ public final class Player {
     } catch (final Throwable t) {
       Properties pDetails = new Properties();
       pDetails.put(Const.DETAIL_CONTENT, file);
-      ObservationManager.notifySync(new Event(JajukEvents.PLAY_ERROR, pDetails));
+      ObservationManager.notifySync(new JajukEvent(JajukEvents.PLAY_ERROR, pDetails));
       Log.error(7, Messages.getString("Player.0") + "{{" + fCurrent.getName() + "}}", t);
       return false;
     }
@@ -198,7 +198,7 @@ public final class Player {
     } catch (final Throwable t) {
       Properties pDetails = new Properties();
       pDetails.put(Const.DETAIL_CONTENT, radio);
-      ObservationManager.notifySync(new Event(JajukEvents.PLAY_ERROR, pDetails));
+      ObservationManager.notifySync(new JajukEvent(JajukEvents.PLAY_ERROR, pDetails));
       Log.error(7, Messages.getString("Player.0") + radio.getUrl() + "}}", t);
       return false;
     }
@@ -290,7 +290,7 @@ public final class Player {
           fVolume = 1.0f;
         }
         playerImpl.setVolume(fVolume);
-        ObservationManager.notify(new Event(JajukEvents.VOLUME_CHANGED));
+        ObservationManager.notify(new JajukEvent(JajukEvents.VOLUME_CHANGED));
       }
     } catch (Exception e) {
       Log.error(e);

@@ -43,7 +43,7 @@ import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
 
 import org.jajuk.base.Item;
-import org.jajuk.events.Event;
+import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.ui.helpers.ILaunchCommand;
@@ -245,7 +245,7 @@ public class JajukTable extends JXTable implements ListSelectionListener,
       // Force table rebuilding
       Properties details = new Properties();
       details.put(Const.DETAIL_CONTENT, this);
-      ObservationManager.notify(new Event(JajukEvents.VIEW_REFRESH_REQUEST, details));
+      ObservationManager.notify(new JajukEvent(JajukEvents.VIEW_REFRESH_REQUEST, details));
     }
   }
 
@@ -364,7 +364,7 @@ public class JajukTable extends JXTable implements ListSelectionListener,
       Item o = model.getItemAt(convertRowIndexToModel(element));
       selection.add(o);
     }
-    ObservationManager.notify(new Event(JajukEvents.TABLE_SELECTION_CHANGED));
+    ObservationManager.notify(new JajukEvent(JajukEvents.TABLE_SELECTION_CHANGED));
   }
 
   public List<Item> getSelection() {

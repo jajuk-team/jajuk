@@ -31,7 +31,7 @@ import java.util.Map;
 import java.util.Properties;
 
 import org.apache.commons.collections.CollectionUtils;
-import org.jajuk.events.Event;
+import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.util.Conf;
@@ -218,7 +218,7 @@ public final class FileManager extends ItemManager {
     properties.put(Const.DETAIL_OLD, fileOld);
     properties.put(Const.DETAIL_NEW, fNew);
     // Notify interested items (like history manager)
-    ObservationManager.notifySync(new Event(JajukEvents.FILE_NAME_CHANGED, properties));
+    ObservationManager.notifySync(new JajukEvent(JajukEvents.FILE_NAME_CHANGED, properties));
     return fNew;
   }
 

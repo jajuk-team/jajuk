@@ -34,7 +34,7 @@ import javax.swing.plaf.basic.BasicComboBoxRenderer;
 
 import org.jajuk.base.File;
 import org.jajuk.base.Track;
-import org.jajuk.events.Event;
+import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.events.Observer;
@@ -137,7 +137,7 @@ public class PreferenceToolbar extends JajukJToolbar implements Observer {
           track.setPreference(3 - jcbPreference.getSelectedIndex());
         }
         // Force immediate rating refresh (without using the rating manager)
-        ObservationManager.notify(new Event(JajukEvents.RATE_CHANGED));
+        ObservationManager.notify(new JajukEvent(JajukEvents.RATE_CHANGED));
       }
     };
 
@@ -147,7 +147,7 @@ public class PreferenceToolbar extends JajukJToolbar implements Observer {
     ObservationManager.register(this);
     // Force initial update
     if (FIFO.isPlayingTrack()) {
-      update(new Event(JajukEvents.FILE_LAUNCHED));
+      update(new JajukEvent(JajukEvents.FILE_LAUNCHED));
     }
   }
 
@@ -177,7 +177,7 @@ public class PreferenceToolbar extends JajukJToolbar implements Observer {
    * 
    * @see org.jajuk.ui.Observer#update(java.lang.String)
    */
-  public void update(final Event event) {
+  public void update(final JajukEvent event) {
     SwingUtilities.invokeLater(new Runnable() {
       public void run() {
         File current = FIFO.getCurrentFile();

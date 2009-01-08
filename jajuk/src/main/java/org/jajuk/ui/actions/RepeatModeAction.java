@@ -21,7 +21,7 @@ package org.jajuk.ui.actions;
 
 import java.awt.event.ActionEvent;
 
-import org.jajuk.events.Event;
+import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.services.players.FIFO;
@@ -75,6 +75,6 @@ public class RepeatModeAction extends JajukAction {
     // computes planned tracks
     FIFO.computesPlanned(false);
     // Refresh Queue View
-    ObservationManager.notify(new Event(JajukEvents.QUEUE_NEED_REFRESH));
+    ObservationManager.notify(new JajukEvent(JajukEvents.QUEUE_NEED_REFRESH));
   }
 }

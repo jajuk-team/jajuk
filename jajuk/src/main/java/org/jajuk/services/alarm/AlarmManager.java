@@ -30,7 +30,7 @@ import java.util.Set;
 
 import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
-import org.jajuk.events.Event;
+import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.events.Observer;
@@ -80,12 +80,12 @@ public class AlarmManager implements Observer {
       singleton.clock.start();
       ObservationManager.register(singleton);
       // force last event update
-      singleton.update(new Event(JajukEvents.ALARMS_CHANGE));
+      singleton.update(new JajukEvent(JajukEvents.ALARMS_CHANGE));
     }
     return singleton;
   }
 
-  public void update(Event event) {
+  public void update(JajukEvent event) {
     JajukEvents subject = event.getSubject();
     // Reset rate and total play time (automatic part of rating system)
     if (subject.equals(JajukEvents.ALARMS_CHANGE)) {

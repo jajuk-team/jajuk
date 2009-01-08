@@ -42,7 +42,7 @@ import javax.swing.JTextField;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
 
-import org.jajuk.events.Event;
+import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.services.webradio.WebRadio;
@@ -372,7 +372,7 @@ public class WebRadioWizard extends Wizard {
       Log.error(e);
     }
     // Refresh UI
-    ObservationManager.notify(new Event(JajukEvents.WEBRADIOS_CHANGE));
+    ObservationManager.notify(new JajukEvent(JajukEvents.WEBRADIOS_CHANGE));
   }
 
 }

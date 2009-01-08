@@ -39,7 +39,7 @@ import javax.xml.parsers.SAXParserFactory;
 
 import org.jajuk.base.Collection;
 import org.jajuk.base.FileManager;
-import org.jajuk.events.Event;
+import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.events.Observer;
@@ -89,7 +89,7 @@ public final class History extends DefaultHandler implements ErrorHandler, Obser
         Const.DETAIL_CURRENT_FILE_ID) != null
         && ObservationManager.getDetailLastOccurence(JajukEvents.FILE_LAUNCHED,
             Const.DETAIL_CURRENT_DATE) != null) {
-      update(new Event(JajukEvents.FILE_LAUNCHED, ObservationManager
+      update(new JajukEvent(JajukEvents.FILE_LAUNCHED, ObservationManager
           .getDetailsLastOccurence(JajukEvents.FILE_LAUNCHED)));
     }
     // Fill date formatter
@@ -386,7 +386,7 @@ public final class History extends DefaultHandler implements ErrorHandler, Obser
    * 
    * @see org.jajuk.ui.Observer#update(java.lang.String)
    */
-  public void update(Event event) {
+  public void update(JajukEvent event) {
     JajukEvents subject = event.getSubject();
     try {
       if (JajukEvents.FILE_LAUNCHED.equals(subject)) {

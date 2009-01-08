@@ -34,7 +34,7 @@ class ObserverRegistry {
       10);
 
   @SuppressWarnings("unchecked")
-  void notifySync(Event event) {
+  void notifySync(JajukEvent event) {
     JajukEvents subject = event.getSubject();
     List<Observer> alComponents = hEventComponents.get(subject);
     if (alComponents == null) {

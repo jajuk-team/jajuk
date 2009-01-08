@@ -23,7 +23,7 @@ import java.awt.event.ActionEvent;
 
 import org.jajuk.base.File;
 import org.jajuk.base.Track;
-import org.jajuk.events.Event;
+import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.services.players.FIFO;
@@ -53,9 +53,9 @@ public class BanCurrentAction extends SelectionAction {
       boolean alreadyBanned = track.getBooleanValue(Const.XML_TRACK_BANNED);
       track.setProperty(Const.XML_TRACK_BANNED, !alreadyBanned);
       // Request a GUI refresh
-      ObservationManager.notify(new Event(JajukEvents.RATE_CHANGED));
+      ObservationManager.notify(new JajukEvent(JajukEvents.RATE_CHANGED));
       // Alert GUI so we can switch buttons from ban icon to unban one
-      ObservationManager.notify(new Event(JajukEvents.BANNED));
+      ObservationManager.notify(new JajukEvent(JajukEvents.BANNED));
     }
   }
 

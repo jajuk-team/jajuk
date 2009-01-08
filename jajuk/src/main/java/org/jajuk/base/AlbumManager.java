@@ -33,7 +33,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.jajuk.base.TrackComparator.TrackComparatorType;
-import org.jajuk.events.Event;
+import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.events.Observer;
@@ -150,7 +150,7 @@ public final class AlbumManager extends ItemManager implements Observer {
     }
     // if current track album name is changed, notify it
     if (FIFO.getCurrentFile() != null && FIFO.getCurrentFile().getTrack().getAlbum().equals(old)) {
-      ObservationManager.notify(new Event(JajukEvents.ALBUM_CHANGED));
+      ObservationManager.notify(new JajukEvent(JajukEvents.ALBUM_CHANGED));
     }
     return newItem;
   }
@@ -421,7 +421,7 @@ public final class AlbumManager extends ItemManager implements Observer {
    * 
    * @see org.jajuk.base.Observer#update(org.jajuk.base.Event)
    */
-  public void update(Event event) {
+  public void update(JajukEvent event) {
     if ((event.getSubject() == JajukEvents.FILE_LAUNCHED) &&
     // Compute album max rating every 10 tracks launches
         (comp % 10 == 0)) {

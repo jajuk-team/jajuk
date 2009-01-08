@@ -46,7 +46,7 @@ import javax.swing.event.ListSelectionListener;
 
 import org.jajuk.base.FileManager;
 import org.jajuk.base.SearchResult;
-import org.jajuk.events.Event;
+import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.services.alarm.AlarmManager;
@@ -303,7 +303,7 @@ public class AlarmClockDialog extends JDialog implements ActionListener, ItemLis
     // Close the window
     dispose();
     // Notify the Alarm manager
-    ObservationManager.notify(new Event(JajukEvents.ALARMS_CHANGE));
+    ObservationManager.notify(new JajukEvent(JajukEvents.ALARMS_CHANGE));
     // Display a message
     Messages.showInfoMessage(Messages.getString("Success"));
     // Start manager up

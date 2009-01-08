@@ -63,7 +63,7 @@ import org.jajuk.base.Playlist;
 import org.jajuk.base.PlaylistManager;
 import org.jajuk.base.Type;
 import org.jajuk.base.TypeManager;
-import org.jajuk.events.Event;
+import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.services.players.FIFO;
@@ -470,7 +470,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
       Device device = ((DeviceNode) paths[0].getLastPathComponent()).getDevice();
       DeviceManager.getInstance().removeDevice(device);
       // refresh views
-      ObservationManager.notify(new Event(JajukEvents.DEVICE_REFRESH));
+      ObservationManager.notify(new JajukEvent(JajukEvents.DEVICE_REFRESH));
     }
   }
 
@@ -821,7 +821,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
         Properties properties = new Properties();
         properties.put(Const.DETAIL_SELECTION, selectedRecursively);
         properties.put(Const.DETAIL_ORIGIN, PerspectiveManager.getCurrentPerspective().getID());
-        ObservationManager.notify(new Event(JajukEvents.SYNC_TREE_TABLE, properties));
+        ObservationManager.notify(new JajukEvent(JajukEvents.SYNC_TREE_TABLE, properties));
       }
       // Enable CDDB retagging only for a single directory selection
       jmiCDDBWizard.setEnabled(alSelected.size() == 1 && alSelected.get(0) instanceof Directory);

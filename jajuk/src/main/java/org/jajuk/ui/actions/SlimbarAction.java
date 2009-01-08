@@ -22,7 +22,7 @@ package org.jajuk.ui.actions;
 
 import java.awt.event.ActionEvent;
 
-import org.jajuk.events.Event;
+import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.ui.widgets.JajukSlimbar;
@@ -65,6 +65,6 @@ public class SlimbarAction extends JajukAction {
       slimbar.requestFocus();
     }
     // Notify that slimbar visibility change (menu bar is interested in it)
-    ObservationManager.notify(new Event(JajukEvents.PARAMETERS_CHANGE));
+    ObservationManager.notify(new JajukEvent(JajukEvents.PARAMETERS_CHANGE));
   }
 }

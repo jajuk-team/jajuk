@@ -60,7 +60,7 @@ import org.jajuk.base.Album;
 import org.jajuk.base.Author;
 import org.jajuk.base.Directory;
 import org.jajuk.base.Track;
-import org.jajuk.events.Event;
+import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.events.Observer;
@@ -316,7 +316,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
 
     if (fileReference == null) {
       if (FIFO.isStopped()) {
-        update(new Event(JajukEvents.ZERO));
+        update(new JajukEvent(JajukEvents.ZERO));
       } else {
         // request cover refresh after a while to make sure the window owns its
         // definitive dimension so we avoid the cover to resize at startup
@@ -330,17 +330,17 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
             }
             // check if a track has already been launched
             if (FIFO.isPlayingRadio()) {
-              update(new Event(JajukEvents.WEBRADIO_LAUNCHED, ObservationManager
+              update(new JajukEvent(JajukEvents.WEBRADIO_LAUNCHED, ObservationManager
                   .getDetailsLastOccurence(JajukEvents.WEBRADIO_LAUNCHED)));
             } else {
-              update(new Event(JajukEvents.FILE_LAUNCHED));
+              update(new JajukEvent(JajukEvents.FILE_LAUNCHED));
             }
 
           }
         }.start();
       }
     } else {
-      update(new Event(JajukEvents.COVER_NEED_REFRESH));
+      update(new JajukEvent(JajukEvents.COVER_NEED_REFRESH));
     }
   }
 
@@ -386,7 +386,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
         if (getPerspective() == null) {
           dirReference = null;
         }
-        update(new Event(JajukEvents.COVER_NEED_REFRESH));
+        update(new JajukEvent(JajukEvents.COVER_NEED_REFRESH));
       }
     }.start();
   }
@@ -464,9 +464,9 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
       if (index < 0) {
         index = alCovers.size() - 1;
       }
-      ObservationManager.notify(new Event(JajukEvents.COVER_NEED_REFRESH));
+      ObservationManager.notify(new JajukEvent(JajukEvents.COVER_NEED_REFRESH));
       if (fileReference != null) {
-        update(new Event(JajukEvents.COVER_NEED_REFRESH));
+        update(new JajukEvent(JajukEvents.COVER_NEED_REFRESH));
       }
     }
   }
@@ -505,7 +505,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
             alCovers.add(cover2);
             setFoundText();
           }
-          ObservationManager.notify(new Event(JajukEvents.COVER_NEED_REFRESH));
+          ObservationManager.notify(new JajukEvent(JajukEvents.COVER_NEED_REFRESH));
           // add new cover in others cover views
         } catch (final Exception ex) {
           Log.error(24, ex);
@@ -543,7 +543,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
             UtilSystem.copy(cover.getFile(), fNew);
             InformationJPanel.getInstance().setMessage(Messages.getString("CoverView.11"),
                 InformationJPanel.INFORMATIVE);
-            ObservationManager.notify(new Event(JajukEvents.COVER_NEED_REFRESH));
+            ObservationManager.notify(new JajukEvent(JajukEvents.COVER_NEED_REFRESH));
           } catch (final Exception ex) {
             Log.error(24, ex);
             Messages.showErrorMessage(24);
@@ -596,7 +596,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
         InformationJPanel.getInstance().setMessage(Messages.getString("CoverView.8"),
             InformationJPanel.INFORMATIVE);
       }
-      ObservationManager.notify(new Event(JajukEvents.COVER_DEFAULT_CHANGED));
+      ObservationManager.notify(new JajukEvent(JajukEvents.COVER_DEFAULT_CHANGED));
       // then make it the default cover in this directory
       dirReference.setProperty("default_cover", UtilSystem.getOnlyFile(sFilename));
     }
@@ -1018,7 +1018,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
    * 
    * @see org.jajuk.ui.Observer#update(java.lang.String)
    */
-  public void update(final Event event) {
+  public void update(final JajukEvent event) {
     SwingUtilities.invokeLater(new Runnable() {
       public void run() {
 

@@ -47,7 +47,7 @@ import javax.swing.event.ListSelectionEvent;
 import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
 import org.jajuk.base.Playlist;
-import org.jajuk.events.Event;
+import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.services.players.FIFO;
@@ -252,7 +252,7 @@ public class QueueView extends PlaylistView {
    * @see org.jajuk.ui.Observer#update(java.lang.String)
    */
   @Override
-  public void update(final Event event) {
+  public void update(final JajukEvent event) {
     SwingUtilities.invokeLater(new Runnable() {
       public void run() {
         try {
@@ -372,7 +372,7 @@ public class QueueView extends PlaylistView {
         // special playlist, same behavior than a save as
         plf.saveAs();
         // notify playlist repository to refresh
-        ObservationManager.notify(new Event(JajukEvents.DEVICE_REFRESH));
+        ObservationManager.notify(new JajukEvent(JajukEvents.DEVICE_REFRESH));
       } else if (ae.getSource() == jbDown || ae.getSource() == jbUp
           || ae.getSource() == jmiFileDown || ae.getSource() == jmiFileUp) {
         int iRow = editorTable.getSelectedRow();

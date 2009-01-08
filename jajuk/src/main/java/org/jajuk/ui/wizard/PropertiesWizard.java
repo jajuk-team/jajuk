@@ -67,7 +67,7 @@ import org.jajuk.base.PropertyMetaInformation;
 import org.jajuk.base.StyleManager;
 import org.jajuk.base.Track;
 import org.jajuk.base.TrackManager;
-import org.jajuk.events.Event;
+import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.ui.widgets.InformationJPanel;
@@ -267,8 +267,8 @@ public class PropertiesWizard extends JajukJDialog implements ActionListener {
           } finally {
             // -UI refresh-
             // clear tables selection
-            ObservationManager.notify(new Event(JajukEvents.TABLE_CLEAR_SELECTION));
-            ObservationManager.notify(new Event(JajukEvents.DEVICE_REFRESH));
+            ObservationManager.notify(new JajukEvent(JajukEvents.TABLE_CLEAR_SELECTION));
+            ObservationManager.notify(new JajukEvent(JajukEvents.DEVICE_REFRESH));
           }
         }
       };

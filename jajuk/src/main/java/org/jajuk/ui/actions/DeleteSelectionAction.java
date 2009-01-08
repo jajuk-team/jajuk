@@ -38,7 +38,7 @@ import org.jajuk.base.PlaylistManager;
 import org.jajuk.base.Style;
 import org.jajuk.base.Track;
 import org.jajuk.base.TrackManager;
-import org.jajuk.events.Event;
+import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.services.players.FIFO;
@@ -96,7 +96,7 @@ public class DeleteSelectionAction extends SelectionAction {
         if (i == JOptionPane.YES_OPTION) {
           PlaylistManager.getInstance().removePlaylistFile(plf);
           // requires device refresh
-          ObservationManager.notify(new Event(JajukEvents.DEVICE_REFRESH));
+          ObservationManager.notify(new JajukEvent(JajukEvents.DEVICE_REFRESH));
         }
       }
     }
@@ -147,7 +147,7 @@ public class DeleteSelectionAction extends SelectionAction {
             Messages.showWarningMessage(Messages.getErrorMessage(172) + "\n\n" + rejString);
           }
           // requires device refresh
-          ObservationManager.notify(new Event(JajukEvents.DEVICE_REFRESH));
+          ObservationManager.notify(new JajukEvent(JajukEvents.DEVICE_REFRESH));
         }
       }.start();
 
@@ -180,7 +180,7 @@ public class DeleteSelectionAction extends SelectionAction {
             Messages.showWarningMessage(Messages.getErrorMessage(173) + "\n\n" + rejString);
           }
           // requires device refresh
-          ObservationManager.notify(new Event(JajukEvents.DEVICE_REFRESH));
+          ObservationManager.notify(new JajukEvent(JajukEvents.DEVICE_REFRESH));
         }
       }
     }
@@ -229,7 +229,7 @@ public class DeleteSelectionAction extends SelectionAction {
             Messages.showWarningMessage(Messages.getErrorMessage(173) + "\n\n" + rejString);
           }
           // requires device refresh
-          ObservationManager.notify(new Event(JajukEvents.DEVICE_REFRESH));
+          ObservationManager.notify(new JajukEvent(JajukEvents.DEVICE_REFRESH));
         }
       }.start();
     }

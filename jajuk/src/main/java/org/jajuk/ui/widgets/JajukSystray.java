@@ -49,7 +49,7 @@ import javax.swing.event.ChangeEvent;
 
 import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
-import org.jajuk.events.Event;
+import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.services.dj.Ambience;
@@ -129,7 +129,7 @@ public class JajukSystray extends CommandJPanel {
   /** Swing Timer to refresh the component */
   private Timer timer = new Timer(JajukTimer.DEFAULT_HEARTBEAT, new ActionListener() {
     public void actionPerformed(ActionEvent e) {
-      update(new Event(JajukEvents.HEART_BEAT));
+      update(new JajukEvent(JajukEvents.HEART_BEAT));
     }
   });
 
@@ -346,13 +346,13 @@ public class JajukSystray extends CommandJPanel {
         // synchronize the state
         Properties details = new Properties();
         details.put(Const.DETAIL_ORIGIN, this);
-        ObservationManager.notify(new Event(JajukEvents.PARAMETERS_CHANGE, details));
+        ObservationManager.notify(new JajukEvent(JajukEvents.PARAMETERS_CHANGE, details));
       }
 
     } catch (Exception e2) {
       Log.error(e2);
     } finally {
-      ObservationManager.notify(new Event(JajukEvents.QUEUE_NEED_REFRESH));
+      ObservationManager.notify(new JajukEvent(JajukEvents.QUEUE_NEED_REFRESH));
     }
   }
 
@@ -362,7 +362,7 @@ public class JajukSystray extends CommandJPanel {
    * @see org.jajuk.ui.Observer#update(java.lang.String)
    */
   @Override
-  public final void update(final Event event) {
+  public final void update(final JajukEvent event) {
     SwingUtilities.invokeLater(new Runnable() {
       public void run() {
         JajukEvents subject = event.getSubject();
@@ -522,7 +522,7 @@ public class JajukSystray extends CommandJPanel {
           Conf.setProperty(Const.CONF_DEFAULT_AMBIENCE, ambience.getID());
         }
         jmi.setFont(FontManager.getInstance().getFont(JajukFont.BOLD));
-        ObservationManager.notify(new Event(JajukEvents.AMBIENCES_SELECTION_CHANGE));
+        ObservationManager.notify(new JajukEvent(JajukEvents.AMBIENCES_SELECTION_CHANGE));
       }
     };
     // Remove all item

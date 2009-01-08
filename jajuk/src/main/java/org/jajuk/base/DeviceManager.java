@@ -29,7 +29,7 @@ import java.util.Set;
 
 import javax.swing.JOptionPane;
 
-import org.jajuk.events.Event;
+import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.services.core.ExitService;
@@ -295,7 +295,7 @@ public final class DeviceManager extends ItemManager {
       }
     }
     // Force suggestion view refresh to avoid showing removed albums
-    ObservationManager.notify(new Event(JajukEvents.SUGGESTIONS_REFRESH));
+    ObservationManager.notify(new JajukEvent(JajukEvents.SUGGESTIONS_REFRESH));
   }
 
   /**
@@ -396,7 +396,7 @@ public final class DeviceManager extends ItemManager {
              * notify views to refresh once the device is refreshed, do not wait
              * all devices refreshing as it may be tool long
              */
-            ObservationManager.notify(new Event(JajukEvents.DEVICE_REFRESH));
+            ObservationManager.notify(new JajukEvent(JajukEvents.DEVICE_REFRESH));
           }
         }
       }

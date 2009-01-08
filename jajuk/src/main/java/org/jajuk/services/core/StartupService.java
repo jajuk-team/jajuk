@@ -35,7 +35,7 @@ import org.jajuk.base.Collection;
 import org.jajuk.base.DeviceManager;
 import org.jajuk.base.FileManager;
 import org.jajuk.base.ItemManager;
-import org.jajuk.events.Event;
+import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.services.alarm.AlarmManager;
@@ -116,7 +116,7 @@ public class StartupService {
               final Properties pDetail = new Properties();
               pDetail.put(Const.DETAIL_CONTENT, fileToPlay);
               pDetail.put(Const.DETAIL_REASON, "10");
-              ObservationManager.notify(new Event(JajukEvents.PLAY_ERROR, pDetail));
+              ObservationManager.notify(new JajukEvent(JajukEvents.PLAY_ERROR, pDetail));
               FIFO.setFirstFile(false); // no more first file
             }
           }

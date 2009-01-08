@@ -83,7 +83,7 @@ import javax.swing.plaf.basic.BasicComboBoxRenderer;
 import org.jajuk.base.FileManager;
 import org.jajuk.base.SearchResult;
 import org.jajuk.base.SearchResult.SearchResultType;
-import org.jajuk.events.Event;
+import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.events.Observer;
@@ -241,12 +241,12 @@ public class CommandJPanel extends JXPanel implements ActionListener, ListSelect
       else if (ambiencesCombo.getSelectedIndex() == 1) {
         // reset default ambience
         Conf.setProperty(Const.CONF_DEFAULT_AMBIENCE, "");
-        ObservationManager.notify(new Event(JajukEvents.AMBIENCES_SELECTION_CHANGE));
+        ObservationManager.notify(new JajukEvent(JajukEvents.AMBIENCES_SELECTION_CHANGE));
       } else {// Selected an ambience
         Ambience ambience = AmbienceManager.getInstance().getAmbienceByName(
             ((JLabel) ambiencesCombo.getSelectedItem()).getText());
         Conf.setProperty(Const.CONF_DEFAULT_AMBIENCE, ambience.getID());
-        ObservationManager.notify(new Event(JajukEvents.AMBIENCES_SELECTION_CHANGE));
+        ObservationManager.notify(new JajukEvent(JajukEvents.AMBIENCES_SELECTION_CHANGE));
       }
     }
   }
@@ -628,7 +628,7 @@ public class CommandJPanel extends JXPanel implements ActionListener, ListSelect
     } catch (Exception e) {
       Log.error(e);
     } finally {
-      ObservationManager.notify(new Event(JajukEvents.QUEUE_NEED_REFRESH));
+      ObservationManager.notify(new JajukEvent(JajukEvents.QUEUE_NEED_REFRESH));
     }
   }
 
@@ -707,7 +707,7 @@ public class CommandJPanel extends JXPanel implements ActionListener, ListSelect
    * 
    * @see org.jajuk.ui.Observer#update(java.lang.String)
    */
-  public void update(final Event event) {
+  public void update(final JajukEvent event) {
     SwingUtilities.invokeLater(new Runnable() {
       public void run() {
         JajukEvents subject = event.getSubject();

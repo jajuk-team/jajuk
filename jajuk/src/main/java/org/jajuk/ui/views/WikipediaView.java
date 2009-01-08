@@ -38,7 +38,7 @@ import javax.swing.JPanel;
 import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
 
-import org.jajuk.events.Event;
+import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.events.Observer;
@@ -194,7 +194,7 @@ public class WikipediaView extends ViewAdapter implements Observer, ActionListen
    * 
    * @see org.jajuk.ui.Observer#update(java.lang.String)
    */
-  public void update(Event event) {
+  public void update(JajukEvent event) {
     JajukEvents subject = event.getSubject();
     // Make a search after a stop period
     if (subject.equals(JajukEvents.FILE_LAUNCHED) || subject.equals(JajukEvents.PERPECTIVE_CHANGED)) {
@@ -214,7 +214,7 @@ public class WikipediaView extends ViewAdapter implements Observer, ActionListen
     // new author wikipedia page
     else if (subject.equals(JajukEvents.AUTHOR_CHANGED)
         || subject.equals(JajukEvents.ALBUM_CHANGED) || subject.equals(JajukEvents.TRACK_CHANGED)) {
-      update(new Event(JajukEvents.FILE_LAUNCHED));
+      update(new JajukEvent(JajukEvents.FILE_LAUNCHED));
     }
   }
 

@@ -27,7 +27,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.jajuk.base.File;
-import org.jajuk.events.Event;
+import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.events.Observer;
@@ -97,7 +97,7 @@ public final class LastFmManager implements Observer, Const {
    * 
    * @see org.jajuk.base.Observer#update(org.jajuk.base.Event)
    */
-  public void update(final Event event) {
+  public void update(final JajukEvent event) {
     if (JajukEvents.FILE_FINISHED == event.getSubject()) {
       new Thread() {
         @Override

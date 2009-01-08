@@ -37,7 +37,7 @@ import org.jajuk.base.Item;
 import org.jajuk.base.Style;
 import org.jajuk.base.Track;
 import org.jajuk.base.TrackManager;
-import org.jajuk.events.Event;
+import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.ui.helpers.ItemMoveManager;
@@ -197,7 +197,7 @@ public class PasteAction extends JajukAction {
             Messages.showErrorMessage(e.getCode());
           }
         }
-        ObservationManager.notify(new Event(JajukEvents.DEVICE_REFRESH));
+        ObservationManager.notify(new JajukEvent(JajukEvents.DEVICE_REFRESH));
         UtilGUI.stopWaiting();
       }
     }.start();

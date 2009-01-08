@@ -21,7 +21,7 @@ package org.jajuk.ui.actions;
 
 import java.awt.event.ActionEvent;
 
-import org.jajuk.events.Event;
+import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.services.players.FIFO;
@@ -55,7 +55,7 @@ public class PreviousAlbumAction extends JajukAction {
             // pause button
             // when changing of track
             Player.setPaused(false);
-            ObservationManager.notify(new Event(JajukEvents.PLAYER_RESUME));
+            ObservationManager.notify(new JajukEvent(JajukEvents.PLAYER_RESUME));
           }
         }
       }

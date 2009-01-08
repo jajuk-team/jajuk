@@ -49,7 +49,7 @@ import javax.swing.SwingUtilities;
 
 import org.jajuk.base.Device;
 import org.jajuk.base.DeviceManager;
-import org.jajuk.events.Event;
+import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.ui.wizard.DeviceWizard;
@@ -349,7 +349,7 @@ public class DeviceView extends ViewAdapter implements IView, ActionListener, Mo
     DeviceManager.getInstance().removeDevice(diSelected.getDevice());
     jpDevices.remove(diSelected);
     // refresh views
-    ObservationManager.notify(new Event(JajukEvents.DEVICE_REFRESH));
+    ObservationManager.notify(new JajukEvent(JajukEvents.DEVICE_REFRESH));
   }
 
   /*
@@ -366,7 +366,7 @@ public class DeviceView extends ViewAdapter implements IView, ActionListener, Mo
    * 
    * @see org.jajuk.ui.Observer#update(java.lang.String)
    */
-  public void update(Event event) {
+  public void update(JajukEvent event) {
     JajukEvents subject = event.getSubject();
     if (JajukEvents.DEVICE_MOUNT.equals(subject) || JajukEvents.DEVICE_UNMOUNT.equals(subject)
         || JajukEvents.DEVICE_REFRESH.equals(subject)) {

@@ -39,7 +39,7 @@ import org.jajuk.base.Style;
 import org.jajuk.base.StyleManager;
 import org.jajuk.base.Track;
 import org.jajuk.base.TrackManager;
-import org.jajuk.events.Event;
+import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.events.Observer;
@@ -90,7 +90,7 @@ public class StatView extends ViewAdapter implements Observer {
     double[][] size = new double[][] { { 0.5f, 10, 0.5f }, { 0.5f, 10, 0.5f } };
     setLayout(new TableLayout(size));
     ObservationManager.register(this);
-    update(new Event(JajukEvents.DEVICE_REFRESH, ObservationManager
+    update(new JajukEvent(JajukEvents.DEVICE_REFRESH, ObservationManager
         .getDetailsLastOccurence(JajukEvents.DEVICE_REFRESH)));
   }
 
@@ -359,7 +359,7 @@ public class StatView extends ViewAdapter implements Observer {
    * 
    * @see org.jajuk.ui.Observer#update(java.lang.String)
    */
-  public void update(Event event) {
+  public void update(JajukEvent event) {
     JajukEvents subject = event.getSubject();
     if (JajukEvents.DEVICE_REFRESH.equals(subject) || JajukEvents.DEVICE_DELETE.equals(subject)) {
       UtilGUI.waiting();

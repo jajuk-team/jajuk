@@ -28,7 +28,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.jajuk.base.TrackComparator.TrackComparatorType;
-import org.jajuk.events.Event;
+import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.services.players.FIFO;
@@ -241,7 +241,7 @@ public final class TrackManager extends ItemManager {
     // if current track album name is changed, notify it
     if (FIFO.getCurrentFile() != null
         && FIFO.getCurrentFile().getTrack().getAlbum().equals(track.getAlbum())) {
-      ObservationManager.notify(new Event(JajukEvents.ALBUM_CHANGED));
+      ObservationManager.notify(new JajukEvent(JajukEvents.ALBUM_CHANGED));
     }
     // register the new album
     Album newAlbum = AlbumManager.getInstance().registerAlbum(sNewAlbum);
@@ -293,7 +293,7 @@ public final class TrackManager extends ItemManager {
     // if current track author name is changed, notify it
     if (FIFO.getCurrentFile() != null
         && FIFO.getCurrentFile().getTrack().getAuthor().equals(track.getAuthor())) {
-      ObservationManager.notify(new Event(JajukEvents.AUTHOR_CHANGED));
+      ObservationManager.notify(new JajukEvent(JajukEvents.AUTHOR_CHANGED));
     }
     // register the new item
     Author newAuthor = AuthorManager.getInstance().registerAuthor(sNewAuthor);
@@ -555,7 +555,7 @@ public final class TrackManager extends ItemManager {
     postChange(track, newTrack, filter);
     // if current track name is changed, notify it
     if (FIFO.getCurrentFile() != null && FIFO.getCurrentFile().getTrack().equals(track)) {
-      ObservationManager.notify(new Event(JajukEvents.TRACK_CHANGED));
+      ObservationManager.notify(new JajukEvent(JajukEvents.TRACK_CHANGED));
     }
     return newTrack;
   }

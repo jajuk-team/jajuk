@@ -40,7 +40,7 @@ import javax.xml.parsers.SAXParserFactory;
 
 import org.jajuk.base.Style;
 import org.jajuk.base.StyleManager;
-import org.jajuk.events.Event;
+import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.events.Observer;
@@ -167,7 +167,7 @@ public final class DigitalDJManager implements Observer {
       Conf.setProperty(Const.CONF_DEFAULT_DJ, "");
     }
     // alert command panel
-    ObservationManager.notify(new Event(JajukEvents.DJS_CHANGE));
+    ObservationManager.notify(new JajukEvent(JajukEvents.DJS_CHANGE));
   }
 
   /**
@@ -178,7 +178,7 @@ public final class DigitalDJManager implements Observer {
   public void register(DigitalDJ dj) {
     djs.put(dj.getID(), dj);
     // alert command panel
-    ObservationManager.notify(new Event(JajukEvents.DJS_CHANGE));
+    ObservationManager.notify(new JajukEvent(JajukEvents.DJS_CHANGE));
   }
 
   /*
@@ -186,7 +186,7 @@ public final class DigitalDJManager implements Observer {
    * 
    * @see org.jajuk.base.Observer#update(org.jajuk.base.Event)
    */
-  public void update(Event event) {
+  public void update(JajukEvent event) {
     if (JajukEvents.AMBIENCE_REMOVED.equals(event.getSubject())) {
       Properties properties = event.getDetails();
       String sID = (String) properties.get(Const.DETAIL_CONTENT);

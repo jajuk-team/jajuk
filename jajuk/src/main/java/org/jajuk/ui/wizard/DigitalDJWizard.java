@@ -49,7 +49,7 @@ import javax.swing.event.ChangeListener;
 
 import org.jajuk.base.Style;
 import org.jajuk.base.StyleManager;
-import org.jajuk.events.Event;
+import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.services.dj.Ambience;
@@ -1410,6 +1410,6 @@ public class DigitalDJWizard extends Wizard {
       DigitalDJManager.commit(dj);
     }
     // Refresh command panel (useful for ie if DJ names changed)
-    ObservationManager.notify(new Event(JajukEvents.DJS_CHANGE));
+    ObservationManager.notify(new JajukEvent(JajukEvents.DJS_CHANGE));
   }
 }

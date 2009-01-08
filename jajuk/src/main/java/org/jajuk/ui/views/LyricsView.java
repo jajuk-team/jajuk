@@ -41,7 +41,7 @@ import javax.swing.SwingUtilities;
 
 import org.jajuk.base.File;
 import org.jajuk.base.Track;
-import org.jajuk.events.Event;
+import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.events.Observer;
@@ -171,7 +171,7 @@ public class LyricsView extends ViewAdapter implements Observer {
    * 
    * @see org.jajuk.base.Observer#update(org.jajuk.base.Event)
    */
-  public void update(final Event event) {
+  public void update(final JajukEvent event) {
     final JajukEvents subject = event.getSubject();
     if (subject.equals(JajukEvents.FILE_LAUNCHED)) {
       final File file = FIFO.getCurrentFile();
@@ -205,7 +205,7 @@ public class LyricsView extends ViewAdapter implements Observer {
             sURL = "<none>";
           }
           // Notify to make UI changes
-          ObservationManager.notify(new Event(JajukEvents.LYRICS_DOWNLOADED));
+          ObservationManager.notify(new JajukEvent(JajukEvents.LYRICS_DOWNLOADED));
         }
 
       }.start();

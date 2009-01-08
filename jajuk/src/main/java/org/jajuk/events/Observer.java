@@ -33,7 +33,7 @@ public interface Observer {
    * @param lEventID
    *          Event ID, maps a subject and details
    */
-  void update(Event event);
+  void update(JajukEvent event);
 
   Set<JajukEvents> getRegistrationKeys();
 }
