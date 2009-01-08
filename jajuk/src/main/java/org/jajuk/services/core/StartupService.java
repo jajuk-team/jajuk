@@ -41,6 +41,7 @@ import org.jajuk.events.ObservationManager;
 import org.jajuk.services.alarm.AlarmManager;
 import org.jajuk.services.bookmark.History;
 import org.jajuk.services.players.FIFO;
+import org.jajuk.services.players.FIFOManager;
 import org.jajuk.services.webradio.WebRadio;
 import org.jajuk.services.webradio.WebRadioManager;
 import org.jajuk.ui.thumbnails.ThumbnailsMaker;
@@ -199,6 +200,9 @@ public class StartupService {
             UtilSystem.backupFile(UtilSystem.getConfFileByPath(Const.FILE_COLLECTION), Conf
                 .getInt(Const.CONF_BACKUP_SIZE));
           }
+          
+          // Register FIFO manager
+          FIFOManager.getInstance();
 
           // Refresh max album rating
           AlbumManager.getInstance().refreshMaxRating();
