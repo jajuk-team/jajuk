@@ -38,6 +38,12 @@ public abstract class SelectionAction extends JajukAction {
 
   List<Item> selection = null;
 
+  /**
+   * Whether the selection should contain the playlist itself (false) or mapped
+   * files (true)
+   */
+  boolean expandPlaylists = true;
+
   protected SelectionAction(String msg, ImageIcon icon, boolean enabled) {
     super(msg, icon, enabled);
   }
@@ -62,7 +68,11 @@ public abstract class SelectionAction extends JajukAction {
         selection = new ArrayList<Item>(10);
         for (Item item : list) {
           Playlist pl = (Playlist) item;
-          selection.addAll(pl.getFiles());
+          if (expandPlaylists) {
+            selection.addAll(pl.getFiles());
+          } else {
+            selection.add(pl);
+          }
         }
       } else {
         // List of albums, authors ... files or tracks : just perform a cast
@@ -73,7 +83,11 @@ public abstract class SelectionAction extends JajukAction {
     } else if (o instanceof Playlist) {
       selection = new ArrayList<Item>(1);
       Playlist pl = (Playlist) o;
-      selection.addAll(pl.getFiles());
+      if (expandPlaylists) {
+        selection.addAll(pl.getFiles());
+      } else {
+        selection.add(pl);
+      }
     }
   }
 }

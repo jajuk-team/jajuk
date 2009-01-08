@@ -41,6 +41,7 @@ import org.jajuk.base.TrackManager;
 import org.jajuk.events.Event;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
+import org.jajuk.services.players.FIFO;
 import org.jajuk.ui.widgets.InformationJPanel;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
@@ -63,6 +64,8 @@ public class DeleteSelectionAction extends SelectionAction {
   @Override
   @SuppressWarnings("unchecked")
   public void perform(ActionEvent e) throws Exception {
+    // Make sure to consider selection as a raw playlist, not its content
+    expandPlaylists = false;
     super.perform(e);
     // Get required data from the tree (selected node and node type)
     final List<File> alFiles = new ArrayList<File>(selection.size());
@@ -120,6 +123,9 @@ public class DeleteSelectionAction extends SelectionAction {
           UtilGUI.waiting();
           for (File f : alFiles) {
             try {
+              if (f.equals(FIFO.getCurrentFile())){
+                throw new Exception("File currently in use");
+              }
               Directory d = f.getDirectory();
               UtilSystem.deleteFile(f.getFIO());
               FileManager.getInstance().removeFile(f);
