@@ -140,6 +140,10 @@ public final class Conf implements Const {
    * 
    */
   public static void setDefaultProperties() {
+    // We fill with current values to keep some parameters 
+    // like passwords and that we don't want to reset
+    defaults = (Properties) properties.clone();
+
     defaults.put(CONF_OPTIONS_LANGUAGE, Messages.getNativeLocale());
     // User preferences
     defaults.put(CONF_PERSPECTIVE_DEFAULT, SimplePerspective.class.getName());
@@ -212,7 +216,8 @@ public final class Conf implements Const {
         + ',' + Const.XML_TRACK_RATE);
     defaults.put(CONF_PLAYLIST_EDITOR_COLUMNS, XML_PLAY + ',' + Const.XML_TRACK_NAME + ',' + ','
         + Const.XML_TRACK_AUTHOR + ',' + Const.XML_TRACK_RATE);
-    defaults.put(CONF_PLAYLIST_REPOSITORY_COLUMNS, XML_PLAY + ',' + Const.XML_NAME);
+    defaults.put(CONF_PLAYLIST_REPOSITORY_COLUMNS, XML_PLAY + ',' + Const.XML_NAME + ','
+        + Const.XML_PATH);
     defaults.put(CONF_QUEUE_COLUMNS, XML_PLAY + ',' + Const.XML_TRACK_NAME + ',' + ','
         + Const.XML_TRACK_AUTHOR + ',' + Const.XML_TRACK_RATE);
     defaults.put(CONF_ALBUMS_TABLE_COLUMNS, XML_PLAY + ',' + Const.XML_ALBUM + ','
@@ -275,7 +280,7 @@ public final class Conf implements Const {
     defaults.put(CONF_FORMAT_TIME_ELAPSED, "0");
     defaults.put(CONF_SLIMBAR_POSITION, "0,0");
     defaults.put(CONF_SLIMBAR_SMART_MODE, JajukActions.SHUFFLE_GLOBAL.toString());
-    defaults.put(CONF_ALARM_ACTION, ALARM_START_MODE);
+    defaults.put(CONF_ALARM_ACTION, ALARM_START_ACTION);
     defaults.put(CONF_ALARM_ENABLED, FALSE);
     defaults.put(CONF_ALARM_FILE, "");
     defaults.put(CONF_ALARM_MODE, STARTUP_MODE_SHUFFLE);
