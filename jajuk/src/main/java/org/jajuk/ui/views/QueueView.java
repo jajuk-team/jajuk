@@ -209,14 +209,26 @@ public class QueueView extends PlaylistView {
     super.setKeystrokes();
   }
 
+  /**
+   * Go to selected row, do it asynchronously because FIFO.goTO() can frezze the
+   * GUI
+   */
   private void goToSelection() {
-    FIFO.goTo(editorTable.getSelectedRow());
-    // remove selection for planned tracks
-    ListSelectionModel lsm = editorTable.getSelectionModel();
-    bSettingSelection = true;
-    editorTable.getSelectionModel().removeSelectionInterval(lsm.getMinSelectionIndex(),
-        lsm.getMaxSelectionIndex());
-    bSettingSelection = false;
+    new Thread() {
+      public void run() {
+        try {
+          FIFO.goTo(editorTable.getSelectedRow());
+          // remove selection for planned tracks
+          ListSelectionModel lsm = editorTable.getSelectionModel();
+          bSettingSelection = true;
+          editorTable.getSelectionModel().removeSelectionInterval(lsm.getMinSelectionIndex(),
+              lsm.getMaxSelectionIndex());
+          bSettingSelection = false;
+        } catch (Exception e) {
+          Log.error(e);
+        }
+      }
+    }.start();
   }
 
   @Override
