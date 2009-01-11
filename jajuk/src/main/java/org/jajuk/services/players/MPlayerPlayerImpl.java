@@ -156,9 +156,8 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
                 && (lDuration > 3 * iFadeDuration)) {
               bFading = true;
               fadingVolume = fVolume;
-              // Force finishing (doesn't stop but only
-              // make a FIFO request to switch track)
-              FIFO.finished();
+              // Call finish (do not leave thread to allow cross fading)
+              callFinish();
             }
             // If fading, decrease sound progressively
             if (bFading) {
@@ -190,7 +189,9 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
                 && (lTime - (fPosition * lDuration)) > length) {
               // No fading in intro mode
               bFading = false;
-              FIFO.finished();
+              // Call finish and terminate current thread
+              callFinish();
+              return;
             }
           } else if (line.matches("ANS_LENGTH.*")) {
             StringTokenizer st = new StringTokenizer(line, "=");
@@ -219,7 +220,9 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
 
               // If fading, ignore end of file
               if (!bFading) {
-                FIFO.finished();
+                // Call finish and terminate current thread
+                callFinish();
+                return;
               } else {
                 // If fading, next track has already been launched
                 bFading = false;
@@ -262,6 +265,7 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
     this.length = length;
     this.fPosition = fPosition;
     this.bFading = false;
+    this.bStop = false;
     this.fCurrent = file;
     this.bOpening = true;
     this.bEOF = false;
@@ -288,7 +292,8 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
     // if opening, wait
     long time = System.currentTimeMillis();
     // Try to open the file during 30 secs
-    while (bOpening && !bEOF && (System.currentTimeMillis() - time) < MPLAYER_START_TIMEOUT) {
+    while (!bStop && bOpening && !bEOF
+        && (System.currentTimeMillis() - time) < MPLAYER_START_TIMEOUT) {
       try {
         Thread.sleep(100);
       } catch (InterruptedException e) {
@@ -413,4 +418,21 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
     }
   }
 
+  /**
+   * Force finishing (doesn't stop but only make a FIFO request to switch track)
+   * <br>
+   * We have to launch the next file from another thread to free the reader
+   * thread. Otherwise, finish() calls launches() that call another finishes...
+   */
+  private void callFinish() {
+    // avoid stopping current track (perceptible during
+    // player.open() for remote files)
+    new Thread("Call to finish") {
+      @Override
+      public void run() {
+        FIFO.finished();
+      }
+    }.start();
+
+  }
 }

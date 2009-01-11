@@ -176,6 +176,13 @@ public final class FIFO {
   public static void launchRadio(WebRadio radio) {
     try {
       UtilGUI.waiting();
+      /**
+       * Force buttons to opening mode by default, then if they start correctly, a
+       * PLAYER_PLAY event will be notified to update to final state. We notify
+       * synchronously to make sure the order between these two events will be
+       * correct*
+       */
+      ObservationManager.notifySync(new JajukEvent(JajukEvents.PLAY_OPENING));
       currentRadio = radio;
       // Play the stream
       boolean bPlayOK = Player.play(radio);
@@ -187,8 +194,6 @@ public final class FIFO {
         // Send an event that a track has been launched
         Properties pDetails = new Properties();
         pDetails.put(Const.DETAIL_CONTENT, radio);
-        // reset all UI
-        ObservationManager.notifySync(new JajukEvent(JajukEvents.ZERO));
         ObservationManager.notify(new JajukEvent(JajukEvents.WEBRADIO_LAUNCHED, pDetails));
         bStop = false;
       }
@@ -423,14 +428,15 @@ public final class FIFO {
   private static void launch() {
     try {
       UtilGUI.waiting();
-      // intro workaround : intro mode is only read at track launch
-      // and can't be set during the play
-      Conf.getBoolean(Const.CONF_STATE_INTRO);
-      // notify to devices like commandJPanel to update UI when the play
-      // button has been pressed
-      ObservationManager.notify(new JajukEvent(JajukEvents.PLAYER_PLAY));
-
       File fCurrent = getCurrentFile();
+      /**
+       * Force buttons to opening mode by default, then if they start correctly, a
+       * PLAYER_PLAY event will be notified to update to final state. We notify
+       * synchronously to make sure the order between these two events will be
+       * correct*
+       */
+      ObservationManager.notifySync(new JajukEvent(JajukEvents.PLAY_OPENING));
+
       boolean bPlayOK = false;
       if (bFirstFile && !Conf.getBoolean(Const.CONF_STATE_INTRO)
           && Conf.getString(Const.CONF_STARTUP_MODE).equals(Const.STARTUP_MODE_LAST_KEEP_POS)) {
@@ -452,6 +458,9 @@ public final class FIFO {
       }
 
       if (bPlayOK) {
+        // notify to devices like commandJPanel to update UI when the play
+        // button has been pressed
+        ObservationManager.notify(new JajukEvent(JajukEvents.PLAYER_PLAY));
         Log.debug("Now playing :" + fCurrent);
         // Send an event that a track has been launched
         Properties pDetails = new Properties();
@@ -472,6 +481,8 @@ public final class FIFO {
         fCurrent.getTrack().incHits(); // inc hits number
       } else {
         // Problem launching the track, try next one
+        UtilGUI.stopWaiting();
+        ObservationManager.notify(new JajukEvent(JajukEvents.QUEUE_NEED_REFRESH));
         try {
           Thread.sleep(Const.WAIT_AFTER_ERROR);
         } catch (InterruptedException e) {
@@ -479,7 +490,7 @@ public final class FIFO {
         }
         // save the last played track (even files in error are stored here as
         // we need this for computes next track to launch after an error)
-        if ( getCurrentItem() != null) {
+        if (getCurrentItem() != null) {
           itemLast = (StackItem) getCurrentItem().clone();
         } else {
           itemLast = null;
@@ -1042,7 +1053,8 @@ public final class FIFO {
           setRepeatModeToAll(false);
           Properties properties = new Properties();
           properties.put(Const.DETAIL_SELECTION, Const.FALSE);
-          ObservationManager.notify(new JajukEvent(JajukEvents.REPEAT_MODE_STATUS_CHANGED, properties));
+          ObservationManager.notify(new JajukEvent(JajukEvents.REPEAT_MODE_STATUS_CHANGED,
+              properties));
           remove(0, localindex - 1);
           localindex = 0;
         }
