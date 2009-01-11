@@ -68,7 +68,7 @@ public class LyricWikiProvider extends GenericProvider {
       }
       return lyrics;
     } catch (Exception e) {
-      Log.error(e);
+      Log.debug("Cannot fetch lyrics for: "+artist+"/"+title);
       return null;
     }
   }
