@@ -45,7 +45,9 @@ public class JajukEvent {
    */
   public JajukEvent(JajukEvents subject, Properties pDetails) {
     this.subject = subject;
-    this.pDetails = pDetails;
+    if (pDetails != null) {
+      this.pDetails = pDetails;
+    }
   }
 
   /**
@@ -87,7 +89,6 @@ public class JajukEvent {
     if (!(obj instanceof JajukEvent)) {
       return false;
     }
-
     JajukEvent event = (JajukEvent) obj;
     boolean bOut = false;
     if (this.subject.equals(event.getSubject())) {
@@ -110,7 +111,9 @@ public class JajukEvent {
     // http://www.geocities.com/technofundo/tech/java/equalhash.html
     int hash = 7;
     hash = 31 * hash + subject.hashCode();
-    hash = 31 * hash + pDetails.hashCode();
+    if (pDetails != null) {
+      hash = 31 * hash + pDetails.hashCode();
+    }
     return hash;
   }
 

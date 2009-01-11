@@ -21,20 +21,44 @@
 package org.jajuk.events;
 
 import java.util.ArrayList;
-import java.util.ConcurrentModificationException;
+import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.jajuk.util.Const;
 import org.jajuk.util.log.Log;
 
 class ObserverRegistry {
   private Map<JajukEvents, List<Observer>> hEventComponents = new Hashtable<JajukEvents, List<Observer>>(
       10);
 
+  /** Number of current executions for a given event */
+  private static Map<JajukEvent, Integer> canals = new HashMap<JajukEvent, Integer>(10);
+
+  /**
+   * Calls the update method for each observer <br>
+   * We manage execution canals to limit the number of concurrent executions for
+   * a given event type. This allow to avoid thread number explosion in some
+   * error cases
+   * 
+   * @param event
+   *          The event to execute
+   */
   @SuppressWarnings("unchecked")
   void notifySync(JajukEvent event) {
+    synchronized (canals) {
+      int numberOfExecutions = 0;
+      if (canals.containsKey(event)) {
+        numberOfExecutions = canals.get(event);
+      }
+      canals.put(event, numberOfExecutions + 1);
+    }
+    if (canals.get(event) > Const.MAX_EVENT_EXECUTIONS) {
+      Log.warn("Event overflow for : " + event);
+      return;
+    }
     JajukEvents subject = event.getSubject();
     List<Observer> alComponents = hEventComponents.get(subject);
     if (alComponents == null) {
@@ -45,20 +69,18 @@ class ObserverRegistry {
     Iterator<Observer> it = alComponents.iterator();
     while (it.hasNext()) {
       Observer obs = null;
-      try {
-        obs = it.next();
-        if (obs != null) {
-          try {
-            obs.update(event);
-          } catch (Throwable t) {
-            Log.error(t);
+      obs = it.next();
+      if (obs != null) {
+        try {
+          obs.update(event);
+        } catch (Throwable t) {
+          Log.error(t);
+        } finally {
+          synchronized (canals) {
+            int numberOfExecutions = canals.get(event);
+            canals.put(event, numberOfExecutions - 1);
           }
         }
-      }
-      // Concurrent exceptions can occur for unknown reasons
-      catch (ConcurrentModificationException ce) {
-        ce.printStackTrace();
-        Log.debug("Concurrent exception for subject: " + subject + " on observer: " + obs);
       }
     }
   }

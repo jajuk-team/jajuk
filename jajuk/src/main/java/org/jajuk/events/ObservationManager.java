@@ -40,7 +40,7 @@ public final class ObservationManager {
   /** one event -> list of components */
   static ObserverRegistry observerRegistry = new ObserverRegistry();
 
-  /**
+   /**
    * Last event for a given subject (used for new objects that just registrated
    * to this subject)
    */
@@ -70,7 +70,7 @@ public final class ObservationManager {
           final JajukEvent event = queue.poll();
           if (event != null) {
             // launch action asynchronously
-            new Thread("Event Executor Thread") {
+            new Thread("Event Executor for: " + event.toString()) {
               @Override
               public void run() {
                 notifySync(event);
@@ -173,9 +173,12 @@ public final class ObservationManager {
     try {
       if (bSync) {
         ObservationManager.notifySync(event);
-      } else { // do not launch it in a regular thread because AWT
-        // event dispatcher waits thread end to display
-        queue.add(event); // add event in FIFO for future use
+      } else {
+        /*
+         * do not launch it in a regular thread because EDT waits thread end to
+         * display
+         */
+        queue.add(event);
         // synchronize here to avoid creating more than one observation manager
         // thread
         synchronized (ObservationManager.class) {

@@ -66,6 +66,8 @@ public enum JajukEvents {
   SPECIAL_MODE,
   // an error occurred during a play
   PLAY_ERROR,
+  // A track is opening
+  PLAY_OPENING,
   // mute state changed
   MUTE_STATE,
   // sync table and tree views
