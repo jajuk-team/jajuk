@@ -25,6 +25,7 @@ import org.jajuk.services.players.Player;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
+import org.jajuk.util.log.Log;
 
 /**
  * Action class for rewinding the current track. Installed keystroke:
@@ -43,17 +44,27 @@ public class RewindTrackAction extends JajukAction {
   }
 
   @Override
-  public void perform(ActionEvent evt) {
-    // check modifiers to see if it is a movement inside track, between
-    // tracks or between albums
-    if (evt != null
-    // evt == null when using hotkeys
-        && (evt.getModifiers() & ActionEvent.SHIFT_MASK) == ActionEvent.SHIFT_MASK) {
-      // replay the entire file
-      Player.seek(0);
-    } else {
-      float fCurrentPosition = Player.getCurrentPosition();
-      Player.seek(fCurrentPosition - JUMP_SIZE);
-    }
+  public void perform(final ActionEvent evt) {
+    new Thread("RewindTrackAction") {
+      public void run() {
+        try {
+          /*
+           * check modifiers to see if it is a movement inside track, between
+           * tracks or between albums
+           */
+          if (evt != null
+          // evt == null when using hotkeys
+              && (evt.getModifiers() & ActionEvent.SHIFT_MASK) == ActionEvent.SHIFT_MASK) {
+            // replay the entire file
+            Player.seek(0);
+          } else {
+            float fCurrentPosition = Player.getCurrentPosition();
+            Player.seek(fCurrentPosition - JUMP_SIZE);
+          }
+        } catch (Exception e) {
+          Log.error(e);
+        }
+      }
+    }.start();
   }
 }

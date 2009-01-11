@@ -22,6 +22,7 @@ package org.jajuk.ui.actions;
 import java.awt.event.ActionEvent;
 
 import org.jajuk.services.players.Player;
+import org.jajuk.util.log.Log;
 
 /**
  * Action class for increasing the volume. Installed keystroke:
@@ -37,14 +38,20 @@ public class IncreaseVolumeAction extends JajukAction {
 
   @Override
   public void perform(ActionEvent evt) {
-    float old = Player.getCurrentVolume();
-    float newVolume = old + 0.05f;
-    // if user move the volume slider, unmute
-    if (Player.isMuted()) {
-      Player.mute(false);
-    }
-    Player.setVolume(newVolume);
-    // Refresh volume icons
-    MuteAction.setVolumeIcon(100 * newVolume);
+    new Thread("IncreaseVolumeAction") {
+      public void run() {
+        try {
+          float old = Player.getCurrentVolume();
+          float newVolume = old + 0.05f;
+          // if user move the volume slider, unmute
+          if (Player.isMuted()) {
+            Player.mute(false);
+          }
+          Player.setVolume(newVolume);
+        } catch (Exception e) {
+          Log.error(e);
+        }
+      }
+    }.start();
   }
 }

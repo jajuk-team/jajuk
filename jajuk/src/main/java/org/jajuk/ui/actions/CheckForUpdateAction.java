@@ -26,6 +26,7 @@ import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UpgradeManager;
 import org.jajuk.util.error.JajukException;
+import org.jajuk.util.log.Log;
 
 public class CheckForUpdateAction extends JajukAction {
 
@@ -39,12 +40,20 @@ public class CheckForUpdateAction extends JajukAction {
 
   @Override
   public void perform(ActionEvent evt) throws JajukException {
-    String newRelease = UpgradeManager.getNewVersionName();
-    if (newRelease != null) {
-      Messages.showInfoMessage(Messages.getString("UpdateManager.0") + newRelease
-          + Messages.getString("UpdateManager.1"));
-    } else {
-      Messages.showInfoMessage(Messages.getString("UpdateManager.2"));
-    }
+    new Thread("CheckForUpdateAction") {
+      public void run() {
+        try {
+          String newRelease = UpgradeManager.getNewVersionName();
+          if (newRelease != null) {
+            Messages.showInfoMessage(Messages.getString("UpdateManager.0") + newRelease
+                + Messages.getString("UpdateManager.1"));
+          } else {
+            Messages.showInfoMessage(Messages.getString("UpdateManager.2"));
+          }
+        } catch (Exception e) {
+          Log.error(e);
+        }
+      }
+    }.start();
   }
 }

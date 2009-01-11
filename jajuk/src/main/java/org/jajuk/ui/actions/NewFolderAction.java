@@ -50,52 +50,56 @@ public class NewFolderAction extends JajukAction {
 
   @Override
   @SuppressWarnings("unchecked")
-  public void perform(ActionEvent e) {
-    JComponent source = (JComponent) e.getSource();
-    // Get required data from the tree (selected node and node type)
-    final List<Item> alSelected = (ArrayList<Item>) source
-        .getClientProperty(Const.DETAIL_SELECTION);
-    final Item currentItem = alSelected.get(0);
+  public void perform(final ActionEvent e) {
+    new Thread("NewFolderAction") {
+      public void run() {
+        try {
+          JComponent source = (JComponent) e.getSource();
+          // Get required data from the tree (selected node and node type)
+          final List<Item> alSelected = (ArrayList<Item>) source
+              .getClientProperty(Const.DETAIL_SELECTION);
+          final Item currentItem = alSelected.get(0);
 
-    final String folderName = JOptionPane.showInputDialog(null, Messages
-        .getString("NewFolderAction.1")
-        + "\n\n");
-    if ((folderName != null) && (folderName.length() > 0)) {
-      // If selected item is a directory, extract the associated root directory
-      // from the device and use it
-      final Directory dir;
-      if (currentItem instanceof Device) {
-        dir = ((Device) currentItem).getRootDirectory();
-      } else if (currentItem instanceof Directory) {
-        dir = (Directory) currentItem;
-      } else {
-        Log.debug("Wrong item type");
-        return;
-      }
-      try {
-        java.io.File newFolder = new java.io.File(dir.getAbsolutePath() + "/" + folderName);
-        if (!newFolder.exists()) {
-          if (newFolder.mkdir()) {
-            // Always refresh dirs or devices asynchronously !
-            new Thread() {
-              @Override
-              public void run() {
-                DirectoryManager.getInstance().registerDirectory(folderName, dir, dir.getDevice());
-                ObservationManager.notify(new JajukEvent(JajukEvents.DEVICE_REFRESH));
+          final String folderName = JOptionPane.showInputDialog(null, Messages
+              .getString("NewFolderAction.1")
+              + "\n\n");
+          if ((folderName != null) && (folderName.length() > 0)) {
+            // If selected item is a directory, extract the associated root
+            // directory
+            // from the device and use it
+            final Directory dir;
+            if (currentItem instanceof Device) {
+              dir = ((Device) currentItem).getRootDirectory();
+            } else if (currentItem instanceof Directory) {
+              dir = (Directory) currentItem;
+            } else {
+              Log.debug("Wrong item type");
+              return;
+            }
+            try {
+              java.io.File newFolder = new java.io.File(dir.getAbsolutePath() + "/" + folderName);
+              if (!newFolder.exists()) {
+                if (newFolder.mkdir()) {
+                  DirectoryManager.getInstance()
+                      .registerDirectory(folderName, dir, dir.getDevice());
+                  ObservationManager.notify(new JajukEvent(JajukEvents.DEVICE_REFRESH));
+                } else {
+                  Messages.showErrorMessage(136);
+                  return;
+                }
+              } else {
+                Messages.showWarningMessage(Messages.getString("NewFolderAction.2"));
+                return;
               }
-            }.start();
-          } else {
-            Messages.showErrorMessage(136);
-            return;
+            } catch (Exception er) {
+              Log.error(er);
+              Messages.showErrorMessage(136);
+            }
           }
-        } else {
-          Messages.showWarningMessage(Messages.getString("NewFolderAction.2"));
-          return;
+        } catch (Exception e) {
+          Log.error(e);
         }
-      } catch (Exception er) {
-        Log.error(er);
-        Messages.showErrorMessage(136);
       }
-    }
+    }.start();
   }
 }

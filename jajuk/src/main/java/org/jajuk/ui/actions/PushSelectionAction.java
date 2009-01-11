@@ -30,6 +30,7 @@ import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilFeatures;
+import org.jajuk.util.log.Log;
 
 /**
  * Push a selection
@@ -57,11 +58,18 @@ public class PushSelectionAction extends SelectionAction {
    */
   @SuppressWarnings("unchecked")
   @Override
-  public void perform(ActionEvent e) throws Exception {
-    super.perform(e);
-    List<File> files = UtilFeatures.getPlayableFiles(selection);
-    FIFO.push(UtilFeatures.createStackItems(UtilFeatures.applyPlayOption(files), Conf
-        .getBoolean(Const.CONF_STATE_REPEAT), true), true);
+  public void perform(final ActionEvent e) throws Exception {
+    new Thread("PushSelectionAction") {
+      public void run() {
+        try {
+          PushSelectionAction.super.perform(e);
+          List<File> files = UtilFeatures.getPlayableFiles(selection);
+          FIFO.push(UtilFeatures.createStackItems(UtilFeatures.applyPlayOption(files), Conf
+              .getBoolean(Const.CONF_STATE_REPEAT), true), true);
+        } catch (Exception e) {
+          Log.error(e);
+        }
+      }
+    }.start();
   }
-
 }

@@ -32,6 +32,7 @@ import org.jajuk.events.ObservationManager;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
+import org.jajuk.util.log.Log;
 
 public class UnsetPreferenceSelectionAction extends SelectionAction {
 
@@ -49,22 +50,30 @@ public class UnsetPreferenceSelectionAction extends SelectionAction {
   }
 
   @Override
-  public void perform(ActionEvent e) throws Exception {
-    super.perform(e);
-    // Check selection is not void
-    if (selection.size() == 0) {
-      return;
-    }
-    // Extract tracks of each item
-    List<Track> tracks = new ArrayList<Track>(selection.size());
-    for (Item item : selection) {
-      tracks.addAll(TrackManager.getInstance().getAssociatedTracks(item));
-    }
-    // Set the preference
-    for (Track track : tracks) {
-      track.setPreference(0l);
-    }
-    // Request a GUI refresh
-    ObservationManager.notify(new JajukEvent(JajukEvents.RATE_CHANGED));
+  public void perform(final ActionEvent e) throws Exception {
+    new Thread("UnsetPreferenceSelectionAction") {
+      public void run() {
+        try {
+          UnsetPreferenceSelectionAction.super.perform(e);
+          // Check selection is not void
+          if (selection.size() == 0) {
+            return;
+          }
+          // Extract tracks of each item
+          List<Track> tracks = new ArrayList<Track>(selection.size());
+          for (Item item : selection) {
+            tracks.addAll(TrackManager.getInstance().getAssociatedTracks(item));
+          }
+          // Set the preference
+          for (Track track : tracks) {
+            track.setPreference(0l);
+          }
+          // Request a GUI refresh
+          ObservationManager.notify(new JajukEvent(JajukEvents.RATE_CHANGED));
+        } catch (Exception e) {
+          Log.error(e);
+        }
+      }
+    }.start();
   }
 }

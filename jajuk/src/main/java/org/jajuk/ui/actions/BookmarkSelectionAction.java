@@ -28,6 +28,7 @@ import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilFeatures;
+import org.jajuk.util.log.Log;
 
 /**
  * Bookmark a selection
@@ -56,10 +57,17 @@ public class BookmarkSelectionAction extends SelectionAction {
    */
   @SuppressWarnings("unchecked")
   @Override
-  public void perform(ActionEvent e) throws Exception {
-    super.perform(e);
-    List<File> files = UtilFeatures.getPlayableFiles(selection);
-    Bookmarks.getInstance().addFiles(files);
+  public void perform(final ActionEvent e) throws Exception {
+    new Thread("BookmarkSelectionAction") {
+      public void run() {
+        try {
+          BookmarkSelectionAction.super.perform(e);
+          List<File> files = UtilFeatures.getPlayableFiles(selection);
+          Bookmarks.getInstance().addFiles(files);
+        } catch (Exception e) {
+          Log.error(e);
+        }
+      }
+    }.start();
   }
-
 }

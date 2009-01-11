@@ -25,6 +25,7 @@ import org.jajuk.services.players.FIFO;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
+import org.jajuk.util.log.Log;
 
 public class StopTrackAction extends JajukAction {
   private static final long serialVersionUID = 1L;
@@ -37,6 +38,14 @@ public class StopTrackAction extends JajukAction {
 
   @Override
   public void perform(ActionEvent evt) {
-    FIFO.stopRequest();
+    new Thread("StopTrackAction") {
+      public void run() {
+        try {
+          FIFO.stopRequest();
+        } catch (Exception e) {
+          Log.error(e);
+        }
+      }
+    }.start();
   }
 }

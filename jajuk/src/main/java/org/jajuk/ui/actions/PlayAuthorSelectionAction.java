@@ -32,6 +32,7 @@ import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilFeatures;
+import org.jajuk.util.log.Log;
 
 /**
  * Play authors a selection. We expect the selection to be tracks and we play
@@ -60,16 +61,23 @@ public class PlayAuthorSelectionAction extends SelectionAction {
    */
   @SuppressWarnings("unchecked")
   @Override
-  public void perform(ActionEvent e) throws Exception {
-    super.perform(e);
-    if (selection.size() == 0 || !(selection.get(0) instanceof Track)) {
-      return;
-    }
-    // Select all files from the first found album
-    Author author = ((Track) selection.get(0)).getAuthor();
-    List<File> files = UtilFeatures.getPlayableFiles(author);
-    FIFO.push(UtilFeatures.createStackItems(UtilFeatures.applyPlayOption(files), Conf
-        .getBoolean(Const.CONF_STATE_REPEAT), true), false);
+  public void perform(final ActionEvent e) throws Exception {
+    new Thread("PlayAuthorSelectionAction") {
+      public void run() {
+        try {
+          PlayAuthorSelectionAction.super.perform(e);
+          if (selection.size() == 0 || !(selection.get(0) instanceof Track)) {
+            return;
+          }
+          // Select all files from the first found album
+          Author author = ((Track) selection.get(0)).getAuthor();
+          List<File> files = UtilFeatures.getPlayableFiles(author);
+          FIFO.push(UtilFeatures.createStackItems(UtilFeatures.applyPlayOption(files), Conf
+              .getBoolean(Const.CONF_STATE_REPEAT), true), false);
+        } catch (Exception e) {
+          Log.error(e);
+        }
+      }
+    }.start();
   }
-
 }

@@ -32,6 +32,7 @@ import org.jajuk.events.ObservationManager;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
+import org.jajuk.util.log.Log;
 
 public class AverageSelectionAction extends SelectionAction {
 
@@ -44,27 +45,36 @@ public class AverageSelectionAction extends SelectionAction {
    * </p>
    */
   AverageSelectionAction() {
-    super(Messages.getString("Preference.3"), IconLoader.getIcon(JajukIcons.PREFERENCE_AVERAGE), true);
+    super(Messages.getString("Preference.3"), IconLoader.getIcon(JajukIcons.PREFERENCE_AVERAGE),
+        true);
     setShortDescription(Messages.getString("Preference.3"));
   }
 
   @Override
-  public void perform(ActionEvent e) throws Exception {
-    super.perform(e);
-    // Check selection is not void
-    if (selection.size() == 0) {
-      return;
-    }
-    // Extract tracks of each item
-    List<Track> tracks = new ArrayList<Track>(selection.size());
-    for (Item item : selection) {
-      tracks.addAll(TrackManager.getInstance().getAssociatedTracks(item));
-    }
-    // Set the preference
-    for (Track track : tracks) {
-      track.setPreference(-1l);
-    }
-    // Request a GUI refresh
-    ObservationManager.notify(new JajukEvent(JajukEvents.RATE_CHANGED));
+  public void perform(final ActionEvent e) throws Exception {
+    new Thread("AverageSelectionAction") {
+      public void run() {
+        try {
+          AverageSelectionAction.super.perform(e);
+          // Check selection is not void
+          if (selection.size() == 0) {
+            return;
+          }
+          // Extract tracks of each item
+          List<Track> tracks = new ArrayList<Track>(selection.size());
+          for (Item item : selection) {
+            tracks.addAll(TrackManager.getInstance().getAssociatedTracks(item));
+          }
+          // Set the preference
+          for (Track track : tracks) {
+            track.setPreference(-1l);
+          }
+          // Request a GUI refresh
+          ObservationManager.notify(new JajukEvent(JajukEvents.RATE_CHANGED));
+        } catch (Exception e) {
+          Log.error(e);
+        }
+      }
+    }.start();
   }
 }

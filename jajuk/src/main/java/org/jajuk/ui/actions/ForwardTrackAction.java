@@ -25,6 +25,7 @@ import org.jajuk.services.players.Player;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
+import org.jajuk.util.log.Log;
 
 /**
  * Action class for fast forwarding the current track. Installed keystroke:
@@ -43,7 +44,15 @@ public class ForwardTrackAction extends JajukAction {
 
   @Override
   public void perform(ActionEvent evt) {
-    float fCurrentPosition = Player.getCurrentPosition();
-    Player.seek(fCurrentPosition + JUMP_SIZE);
+    new Thread("ForwardTrackAction") {
+      public void run() {
+        try {
+          float fCurrentPosition = Player.getCurrentPosition();
+          Player.seek(fCurrentPosition + JUMP_SIZE);
+        } catch (Exception e) {
+          Log.error(e);
+        }
+      }
+    }.start();
   }
 }

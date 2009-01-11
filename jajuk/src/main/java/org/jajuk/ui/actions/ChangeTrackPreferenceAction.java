@@ -33,6 +33,7 @@ import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 import org.jajuk.util.error.JajukException;
+import org.jajuk.util.log.Log;
 
 /**
  * 
@@ -49,12 +50,20 @@ public class ChangeTrackPreferenceAction extends JajukAction {
 
   @Override
   public void perform(ActionEvent evt) throws JajukException {
-    File file = FIFO.getCurrentFile();
-    if (file != null) {
-      Track track = file.getTrack();
-      track.setPreference(Conf.getInt(Const.CONF_INC_RATING));
-    }
-    // Force immediate rating refresh (without using the rating manager)
-    ObservationManager.notify(new JajukEvent(JajukEvents.RATE_CHANGED));
+    new Thread("ChangeTrackPreferenceAction") {
+      public void run() {
+        try {
+          File file = FIFO.getCurrentFile();
+          if (file != null) {
+            Track track = file.getTrack();
+            track.setPreference(Conf.getInt(Const.CONF_INC_RATING));
+          }
+          // Force immediate rating refresh (without using the rating manager)
+          ObservationManager.notify(new JajukEvent(JajukEvents.RATE_CHANGED));
+        } catch (Exception e) {
+          Log.error(e);
+        }
+      }
+    }.start();
   }
 }

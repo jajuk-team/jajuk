@@ -30,6 +30,7 @@ import org.jajuk.ui.wizard.CDDBWizard;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
+import org.jajuk.util.log.Log;
 
 /**
  * Find tags from CDDB on selection
@@ -57,19 +58,26 @@ public class CDDBSelectionAction extends SelectionAction {
    */
   @SuppressWarnings("unchecked")
   @Override
-  public void perform(ActionEvent e) throws Exception {
-    super.perform(e);
-    // Check selection is not void
-    if (selection.size() == 0) {
-      return;
-    }
-    // Build a list of tracks from various items
-    Item item = selection.get(0);
-    List<Track> tracksSet = TrackManager.getInstance().getAssociatedTracks(item);
-    List<Track> tracks = new ArrayList<Track>(tracksSet);
+  public void perform(final ActionEvent e) throws Exception {
+    new Thread("CDDBSelectionAction") {
+      public void run() {
+        try {
+          CDDBSelectionAction.super.perform(e);
+          // Check selection is not void
+          if (selection.size() == 0) {
+            return;
+          }
+          // Build a list of tracks from various items
+          Item item = selection.get(0);
+          List<Track> tracksSet = TrackManager.getInstance().getAssociatedTracks(item);
+          List<Track> tracks = new ArrayList<Track>(tracksSet);
 
-    // Note that the CDDBWizard uses a swing worker
-    new CDDBWizard(tracks);
+          // Note that the CDDBWizard uses a swing worker
+          new CDDBWizard(tracks);
+        } catch (Exception e) {
+          Log.error(e);
+        }
+      }
+    }.start();
   }
-
 }

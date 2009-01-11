@@ -32,6 +32,7 @@ import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilFeatures;
+import org.jajuk.util.log.Log;
 
 /**
  * Play albums for a selection. We expect the selection to be tracks and we play
@@ -60,16 +61,23 @@ public class PlayAlbumSelectionAction extends SelectionAction {
    */
   @SuppressWarnings("unchecked")
   @Override
-  public void perform(ActionEvent e) throws Exception {
-    super.perform(e);
-    if (selection.size() == 0 || !(selection.get(0) instanceof Track)) {
-      return;
-    }
-    // Select all files from the first found album
-    Album album = ((Track) selection.get(0)).getAlbum();
-    List<File> files = UtilFeatures.getPlayableFiles(album);
-    FIFO.push(UtilFeatures.createStackItems(UtilFeatures.applyPlayOption(files), Conf
-        .getBoolean(Const.CONF_STATE_REPEAT), true), false);
+  public void perform(final ActionEvent e) throws Exception {
+    new Thread("PlayAlbumSelectionAction") {
+      public void run() {
+        try {
+          PlayAlbumSelectionAction.super.perform(e);
+          if (selection.size() == 0 || !(selection.get(0) instanceof Track)) {
+            return;
+          }
+          // Select all files from the first found album
+          Album album = ((Track) selection.get(0)).getAlbum();
+          List<File> files = UtilFeatures.getPlayableFiles(album);
+          FIFO.push(UtilFeatures.createStackItems(UtilFeatures.applyPlayOption(files), Conf
+              .getBoolean(Const.CONF_STATE_REPEAT), true), false);
+        } catch (Exception e) {
+          Log.error(e);
+        }
+      }
+    }.start();
   }
-
 }

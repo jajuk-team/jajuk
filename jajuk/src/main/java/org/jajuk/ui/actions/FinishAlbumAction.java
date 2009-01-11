@@ -34,6 +34,7 @@ import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilFeatures;
 import org.jajuk.util.error.JajukException;
+import org.jajuk.util.log.Log;
 
 public class FinishAlbumAction extends JajukAction {
 
@@ -47,16 +48,24 @@ public class FinishAlbumAction extends JajukAction {
 
   @Override
   public void perform(ActionEvent evt) throws JajukException {
-    StackItem item = FIFO.getCurrentItem();// stores
-    // current item
-    FIFO.clear(); // clear fifo
-    Directory dir = item.getFile().getDirectory();
-    // then re-add current item
-    FIFO.push(UtilFeatures.createStackItems(dir.getFilesFromFile(item.getFile()), item.isRepeat(),
-        item.isUserLaunch()), true);
-    FIFO.computesPlanned(true); // update planned list
-    Properties properties = new Properties();
-    properties.put(Const.DETAIL_ORIGIN, Const.DETAIL_SPECIAL_MODE_NORMAL);
-    ObservationManager.notify(new JajukEvent(JajukEvents.SPECIAL_MODE, properties));
+    new Thread("FinishAlbumAction") {
+      public void run() {
+        try {
+          StackItem item = FIFO.getCurrentItem();// stores
+          // current item
+          FIFO.clear(); // clear fifo
+          Directory dir = item.getFile().getDirectory();
+          // then re-add current item
+          FIFO.push(UtilFeatures.createStackItems(dir.getFilesFromFile(item.getFile()), item
+              .isRepeat(), item.isUserLaunch()), true);
+          FIFO.computesPlanned(true); // update planned list
+          Properties properties = new Properties();
+          properties.put(Const.DETAIL_ORIGIN, Const.DETAIL_SPECIAL_MODE_NORMAL);
+          ObservationManager.notify(new JajukEvent(JajukEvents.SPECIAL_MODE, properties));
+        } catch (Exception e) {
+          Log.error(e);
+        }
+      }
+    }.start();
   }
 }

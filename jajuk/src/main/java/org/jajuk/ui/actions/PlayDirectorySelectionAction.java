@@ -31,6 +31,7 @@ import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilFeatures;
+import org.jajuk.util.log.Log;
 
 /**
  * Play directories for a selection of files. For now, jajuk only play the first
@@ -60,16 +61,23 @@ public class PlayDirectorySelectionAction extends SelectionAction {
    */
   @SuppressWarnings("unchecked")
   @Override
-  public void perform(ActionEvent e) throws Exception {
-    super.perform(e);
-    if (selection.size() == 0 || !(selection.get(0) instanceof File)) {
-      return;
-    }
-    // Select all files from the first found directory
-    Directory dir = ((File) selection.get(0)).getDirectory();
-    List<File> files = UtilFeatures.getPlayableFiles(dir);
-    FIFO.push(UtilFeatures.createStackItems(UtilFeatures.applyPlayOption(files), Conf
-        .getBoolean(Const.CONF_STATE_REPEAT), true), false);
+  public void perform(final ActionEvent e) throws Exception {
+    new Thread("PlayDirectorySelectionAction") {
+      public void run() {
+        try {
+          PlayDirectorySelectionAction.super.perform(e);
+          if (selection.size() == 0 || !(selection.get(0) instanceof File)) {
+            return;
+          }
+          // Select all files from the first found directory
+          Directory dir = ((File) selection.get(0)).getDirectory();
+          List<File> files = UtilFeatures.getPlayableFiles(dir);
+          FIFO.push(UtilFeatures.createStackItems(UtilFeatures.applyPlayOption(files), Conf
+              .getBoolean(Const.CONF_STATE_REPEAT), true), false);
+        } catch (Exception e) {
+          Log.error(e);
+        }
+      }
+    }.start();
   }
-
 }

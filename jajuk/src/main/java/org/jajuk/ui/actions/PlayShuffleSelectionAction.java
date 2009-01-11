@@ -32,6 +32,7 @@ import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilFeatures;
 import org.jajuk.util.UtilSystem;
+import org.jajuk.util.log.Log;
 
 /**
  * Play shuffle a selection
@@ -59,12 +60,19 @@ public class PlayShuffleSelectionAction extends SelectionAction {
    */
   @SuppressWarnings("unchecked")
   @Override
-  public void perform(ActionEvent e) throws Exception {
-    super.perform(e);
-    List<File> files = UtilFeatures.getPlayableFiles(selection);
-    Collections.shuffle(files, UtilSystem.getRandom());
-    FIFO.push(UtilFeatures.createStackItems(UtilFeatures.applyPlayOption(files), Conf
-        .getBoolean(Const.CONF_STATE_REPEAT), true), false);
+  public void perform(final ActionEvent e) throws Exception {
+    new Thread("PlayShuffleSelectionAction") {
+      public void run() {
+        try {
+          PlayShuffleSelectionAction.super.perform(e);
+          List<File> files = UtilFeatures.getPlayableFiles(selection);
+          Collections.shuffle(files, UtilSystem.getRandom());
+          FIFO.push(UtilFeatures.createStackItems(UtilFeatures.applyPlayOption(files), Conf
+              .getBoolean(Const.CONF_STATE_REPEAT), true), false);
+        } catch (Exception e) {
+          Log.error(e);
+        }
+      }
+    }.start();
   }
-
 }

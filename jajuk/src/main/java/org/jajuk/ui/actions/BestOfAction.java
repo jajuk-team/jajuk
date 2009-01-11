@@ -34,6 +34,7 @@ import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilFeatures;
 import org.jajuk.util.error.JajukException;
+import org.jajuk.util.log.Log;
 
 public class BestOfAction extends JajukAction {
 
@@ -46,15 +47,24 @@ public class BestOfAction extends JajukAction {
 
   @Override
   public void perform(ActionEvent evt) throws JajukException {
-    Ambience ambience = AmbienceManager.getInstance().getSelectedAmbience();
-    List<File> alToPlay = UtilFeatures.filterByAmbience(FileManager.getInstance()
-        .getGlobalBestofPlaylist(), ambience);
-    // For perfs (mainly playlist editor view refresh), we set a ceil for tracks
-    // number
-    if (alToPlay.size() > Const.NB_TRACKS_ON_ACTION) {
-      alToPlay = alToPlay.subList(0, Const.NB_TRACKS_ON_ACTION);
-    }
-    FIFO.push(UtilFeatures.createStackItems(alToPlay, Conf.getBoolean(Const.CONF_STATE_REPEAT),
-        false), false);
+    new Thread("BestOfAction") {
+      public void run() {
+        try {
+          Ambience ambience = AmbienceManager.getInstance().getSelectedAmbience();
+          List<File> alToPlay = UtilFeatures.filterByAmbience(FileManager.getInstance()
+              .getGlobalBestofPlaylist(), ambience);
+          // For perfs (mainly playlist editor view refresh), we set a ceil for
+          // tracks
+          // number
+          if (alToPlay.size() > Const.NB_TRACKS_ON_ACTION) {
+            alToPlay = alToPlay.subList(0, Const.NB_TRACKS_ON_ACTION);
+          }
+          FIFO.push(UtilFeatures.createStackItems(alToPlay, Conf
+              .getBoolean(Const.CONF_STATE_REPEAT), false), false);
+        } catch (Exception e) {
+          Log.error(e);
+        }
+      }
+    }.start();
   }
 }

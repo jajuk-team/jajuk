@@ -48,13 +48,17 @@ public class LaunchInBrowserAction extends JajukAction {
   }
 
   @Override
-  public void perform(ActionEvent evt) throws JajukException {
-    try {
-      JComponent source = (JComponent) evt.getSource();
-      String url = (String) source.getClientProperty(Const.DETAIL_CONTENT);
-      Desktop.getDesktop().browse(new URI(url));
-    } catch (Exception e) {
-      Log.error(e);
-    }
+  public void perform(final ActionEvent evt) throws JajukException {
+    new Thread("LaunchInBrowserAction") {
+      public void run() {
+        try {
+          JComponent source = (JComponent) evt.getSource();
+          String url = (String) source.getClientProperty(Const.DETAIL_CONTENT);
+          Desktop.getDesktop().browse(new URI(url));
+        } catch (Exception e) {
+          Log.error(e);
+        }
+      }
+    }.start();
   }
 }

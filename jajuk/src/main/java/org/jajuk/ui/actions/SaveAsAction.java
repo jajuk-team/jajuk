@@ -55,25 +55,29 @@ public class SaveAsAction extends JajukAction {
    */
   @Override
   @SuppressWarnings("unchecked")
-  public void perform(ActionEvent e) {
-    JComponent source = (JComponent) e.getSource();
-    // @TODO Do better here, accept a single playlist for ie
-    Object o = source.getClientProperty(Const.DETAIL_SELECTION);
-    if (o instanceof List) {
-      try {
-        List<Playlist> playlists = (List<Playlist>) o;
-        Playlist playlist = playlists.get(0);
-        playlist.saveAs();
-        InformationJPanel.getInstance().setMessage(
-            Messages.getString("AbstractPlaylistEditorView.22"), InformationJPanel.INFORMATIVE);
-        ObservationManager.notify(new JajukEvent(JajukEvents.DEVICE_REFRESH));
-      } catch (JajukException je) {
-        Log.error(je);
-        Messages.showErrorMessage(je.getCode());
-      } catch (Exception ex) {
-        Log.error(ex);
-      }
+  public void perform(final ActionEvent e) {
+    new Thread("SaveAsAction") {
+      public void run() {
+        JComponent source = (JComponent) e.getSource();
+        // @TODO Do better here, accept a single playlist for ie
+        Object o = source.getClientProperty(Const.DETAIL_SELECTION);
+        if (o instanceof List) {
+          try {
+            List<Playlist> playlists = (List<Playlist>) o;
+            Playlist playlist = playlists.get(0);
+            playlist.saveAs();
+            InformationJPanel.getInstance().setMessage(
+                Messages.getString("AbstractPlaylistEditorView.22"), InformationJPanel.INFORMATIVE);
+            ObservationManager.notify(new JajukEvent(JajukEvents.DEVICE_REFRESH));
+          } catch (JajukException je) {
+            Log.error(je);
+            Messages.showErrorMessage(je.getCode());
+          } catch (Exception ex) {
+            Log.error(ex);
+          }
 
-    }
+        }
+      }
+    }.start();
   }
 }
