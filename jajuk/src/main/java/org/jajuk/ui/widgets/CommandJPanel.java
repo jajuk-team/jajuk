@@ -104,6 +104,7 @@ import org.jajuk.ui.actions.JajukAction;
 import org.jajuk.ui.actions.JajukActions;
 import org.jajuk.ui.actions.MuteAction;
 import org.jajuk.ui.helpers.FontManager;
+import org.jajuk.ui.helpers.PlayerStateMediator;
 import org.jajuk.ui.helpers.FontManager.JajukFont;
 import org.jajuk.ui.wizard.AmbienceWizard;
 import org.jajuk.util.Conf;
@@ -274,6 +275,9 @@ public class CommandJPanel extends JXPanel implements ActionListener, ListSelect
   }
 
   public void initUI() {
+    // Instanciate the PlayerStateMediator to listen for player basic controls
+    PlayerStateMediator.getInstance();
+
     // Search
     double[][] sizeSearch = new double[][] { { 3, TableLayout.PREFERRED, 3, 100 }, { 23 } };
     JPanel jpSearch = new JPanel(new TableLayout(sizeSearch));
@@ -566,14 +570,11 @@ public class CommandJPanel extends JXPanel implements ActionListener, ListSelect
 
   public Set<JajukEvents> getRegistrationKeys() {
     Set<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
-    eventSubjectSet.add(JajukEvents.PLAYER_PLAY);
     eventSubjectSet.add(JajukEvents.PLAYER_STOP);
     eventSubjectSet.add(JajukEvents.PLAYER_PAUSE);
     eventSubjectSet.add(JajukEvents.PLAYER_RESUME);
-    eventSubjectSet.add(JajukEvents.PLAY_ERROR);
     eventSubjectSet.add(JajukEvents.SPECIAL_MODE);
     eventSubjectSet.add(JajukEvents.ZERO);
-    eventSubjectSet.add(JajukEvents.MUTE_STATE);
     eventSubjectSet.add(JajukEvents.REPEAT_MODE_STATUS_CHANGED);
     eventSubjectSet.add(JajukEvents.FILE_LAUNCHED);
     eventSubjectSet.add(JajukEvents.CLEAR_HISTORY);
@@ -627,8 +628,6 @@ public class CommandJPanel extends JXPanel implements ActionListener, ListSelect
       }
     } catch (Exception e) {
       Log.error(e);
-    } finally {
-      ObservationManager.notify(new JajukEvent(JajukEvents.QUEUE_NEED_REFRESH));
     }
   }
 
@@ -690,8 +689,8 @@ public class CommandJPanel extends JXPanel implements ActionListener, ListSelect
   }
 
   public void setVolume(final float fVolume) {
-    jsVolume.removeChangeListener(CommandJPanel.this);
-    jsVolume.removeMouseWheelListener(CommandJPanel.this);
+    jsVolume.removeChangeListener(this);
+    jsVolume.removeMouseWheelListener(this);
     // if user move the volume slider, unmute
     if (Player.isMuted()) {
       Player.mute(false);
@@ -712,79 +711,24 @@ public class CommandJPanel extends JXPanel implements ActionListener, ListSelect
       public void run() {
         JajukEvents subject = event.getSubject();
         if (JajukEvents.PLAYER_STOP.equals(subject)) {
-          ActionManager.getAction(REWIND_TRACK).setEnabled(false);
-          // Enable the play button to allow restarting the queue but disable if
-          // the queue is void
-          boolean bQueueNotVoid = (FIFO.getFIFO().size() > 0);
-          ActionManager.getAction(PLAY_PAUSE_TRACK).setEnabled(bQueueNotVoid);
-          ActionManager.getAction(NEXT_ALBUM).setEnabled(bQueueNotVoid);
-          ActionManager.getAction(PREVIOUS_ALBUM).setEnabled(bQueueNotVoid);
-          ActionManager.getAction(PREVIOUS_TRACK).setEnabled(bQueueNotVoid);
-          ActionManager.getAction(NEXT_TRACK).setEnabled(bQueueNotVoid);
-
-          ActionManager.getAction(PLAY_PAUSE_TRACK).setIcon(IconLoader.getIcon(JajukIcons.PLAY));
-          ActionManager.getAction(PLAY_PAUSE_TRACK).setName(Messages.getString("JajukWindow.12"));
-          ActionManager.getAction(STOP_TRACK).setEnabled(false);
-          ActionManager.getAction(FAST_FORWARD_TRACK).setEnabled(false);
-          ActionManager.getAction(FINISH_ALBUM).setEnabled(false);
           // Reset history so user can launch again stopped
           // track (selection must change to throw an ActionEvent)
           jcbHistory.setSelectedIndex(-1);
-          // reset startup position
-          Conf.setProperty(Const.CONF_STARTUP_LAST_POSITION, "0");
         } else if (JajukEvents.ZERO.equals(subject)) {
-          ActionManager.getAction(PREVIOUS_TRACK).setEnabled(false);
-          ActionManager.getAction(NEXT_TRACK).setEnabled(false);
-          ActionManager.getAction(REWIND_TRACK).setEnabled(false);
-          ActionManager.getAction(PLAY_PAUSE_TRACK).setEnabled(false);
-          ActionManager.getAction(STOP_TRACK).setEnabled(false);
-          ActionManager.getAction(FAST_FORWARD_TRACK).setEnabled(false);
-          ActionManager.getAction(NEXT_ALBUM).setEnabled(false);
-          ActionManager.getAction(PREVIOUS_ALBUM).setEnabled(false);
-          ActionManager.getAction(FINISH_ALBUM).setEnabled(false);
-          ActionManager.getAction(PLAY_PAUSE_TRACK).setIcon(IconLoader.getIcon(JajukIcons.PAUSE));
           // Reset history so user can launch again stopped
           // track (selection must change to throw an ActionEvent)
           jcbHistory.setSelectedIndex(-1);
-          // reset startup position
-          Conf.setProperty(Const.CONF_STARTUP_LAST_POSITION, "0");
-        } else if (JajukEvents.PLAYER_PLAY.equals(subject)) {
-          ActionManager.getAction(PREVIOUS_TRACK).setEnabled(true);
-          ActionManager.getAction(NEXT_TRACK).setEnabled(true);
-          ActionManager.getAction(REWIND_TRACK).setEnabled(true);
-          ActionManager.getAction(PLAY_PAUSE_TRACK).setEnabled(true);
-          ActionManager.getAction(STOP_TRACK).setEnabled(true);
-          ActionManager.getAction(FAST_FORWARD_TRACK).setEnabled(true);
-          ActionManager.getAction(NEXT_ALBUM).setEnabled(true);
-          ActionManager.getAction(PREVIOUS_ALBUM).setEnabled(true);
-          ActionManager.getAction(FINISH_ALBUM).setEnabled(true);
-          // We need to set the icon here because the event can be
-          // thrown by the information panel, not directly the
-          // PlayPauseAction
-          ActionManager.getAction(PLAY_PAUSE_TRACK).setIcon(IconLoader.getIcon(JajukIcons.PAUSE));
         } else if (JajukEvents.PLAYER_PAUSE.equals(subject)) {
           // Disable volume control when pausing to fix an mplayer
           // issue:
           // setting the volume resume the file
           jsVolume.setEnabled(false);
           jsVolume.removeMouseWheelListener(CommandJPanel.this);
-          ActionManager.getAction(REWIND_TRACK).setEnabled(false);
-          ActionManager.getAction(FAST_FORWARD_TRACK).setEnabled(false);
-          // We need to set the icon here because the event can be
-          // thrown by the information panel, not directly the
-          // PlayPauseAction
-          ActionManager.getAction(PLAY_PAUSE_TRACK).setIcon(IconLoader.getIcon(JajukIcons.PLAY));
         } else if (JajukEvents.PLAYER_RESUME.equals(subject)) {
           // Enable the volume when resuming (fix a mplayer issue, see
           // above)
           jsVolume.setEnabled(true);
           jsVolume.addMouseWheelListener(CommandJPanel.this);
-          ActionManager.getAction(REWIND_TRACK).setEnabled(true);
-          ActionManager.getAction(FAST_FORWARD_TRACK).setEnabled(true);
-          // We need to set the icon here because the event can be
-          // thrown by the information panel, not directly the
-          // PlayPauseAction
-          ActionManager.getAction(PLAY_PAUSE_TRACK).setIcon(IconLoader.getIcon(JajukIcons.PAUSE));
         } else if (JajukEvents.SPECIAL_MODE.equals(subject)) {
           if (ObservationManager.getDetail(event, Const.DETAIL_ORIGIN).equals(
               Const.DETAIL_SPECIAL_MODE_NORMAL)) {
@@ -819,7 +763,6 @@ public class CommandJPanel extends JXPanel implements ActionListener, ListSelect
           jsVolume.setValue((int) (100 * Player.getCurrentVolume()));
           jsVolume.addChangeListener(CommandJPanel.this);
           jbMute.setSelected(Player.isMuted());
-          MuteAction.setVolumeIcon(100 * Player.getCurrentVolume());
         } else if (JajukEvents.DJS_CHANGE.equals(event.getSubject())) {
           populateDJs();
           // If no more DJ, change the tooltip
@@ -834,20 +777,8 @@ public class CommandJPanel extends JXPanel implements ActionListener, ListSelect
         } else if (JajukEvents.WEBRADIOS_CHANGE.equals(event.getSubject())) {
           populateWebRadios();
         } else if (JajukEvents.WEBRADIO_LAUNCHED.equals(event.getSubject())) {
-          ActionManager.getAction(PREVIOUS_TRACK).setEnabled(true);
-          ActionManager.getAction(NEXT_TRACK).setEnabled(true);
-          ActionManager.getAction(PLAY_PAUSE_TRACK).setEnabled(true);
-          ActionManager.getAction(STOP_TRACK).setEnabled(true);
-          // Do not update webradios GUI if this event comes from the tray or
-          // slimbar
-          if (ddbWebRadio != null) {
             populateWebRadios();
-          }
-        } else if (JajukEvents.MUTE_STATE.equals(event.getSubject()) &&
-        // Update mute icon look when changing the volume
-            !Player.isMuted()) {
-          MuteAction.setVolumeIcon(getCurrentVolume());
-        }
+        } 
       }
     });
   }

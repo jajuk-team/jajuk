@@ -19,15 +19,12 @@
  */
 package org.jajuk.ui.widgets;
 
-import static org.jajuk.ui.actions.JajukActions.FAST_FORWARD_TRACK;
-import static org.jajuk.ui.actions.JajukActions.FINISH_ALBUM;
 import static org.jajuk.ui.actions.JajukActions.MUTE_STATE;
 import static org.jajuk.ui.actions.JajukActions.NEXT_ALBUM;
 import static org.jajuk.ui.actions.JajukActions.NEXT_TRACK;
 import static org.jajuk.ui.actions.JajukActions.PLAY_PAUSE_TRACK;
 import static org.jajuk.ui.actions.JajukActions.PREVIOUS_ALBUM;
 import static org.jajuk.ui.actions.JajukActions.PREVIOUS_TRACK;
-import static org.jajuk.ui.actions.JajukActions.REWIND_TRACK;
 import static org.jajuk.ui.actions.JajukActions.STOP_TRACK;
 import ext.DropDownButton;
 import ext.SwingWorker;
@@ -77,6 +74,7 @@ import org.jajuk.ui.actions.ActionManager;
 import org.jajuk.ui.actions.ActionUtil;
 import org.jajuk.ui.actions.JajukActions;
 import org.jajuk.ui.actions.MuteAction;
+import org.jajuk.ui.helpers.PlayerStateMediator;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
@@ -193,6 +191,9 @@ public final class JajukSlimbar extends JFrame implements Observer, MouseWheelLi
   }
 
   public void initUI() {
+    // Instanciate the PlayerStateMediator to listen for player basic controls
+    PlayerStateMediator.getInstance();
+
     setIconImage(IconLoader.getIcon(JajukIcons.LOGO).getImage());
 
     addWindowListener(new WindowAdapter() {
@@ -393,10 +394,10 @@ public final class JajukSlimbar extends JFrame implements Observer, MouseWheelLi
     } else {
       title = Messages.getString("JajukWindow.18");
     }
+    // Update window title
     SwingUtilities.invokeLater(new Runnable() {
       public void run() {
         setTitle(title);
-        jbPlayPause.setToolTipText(title);
       }
     });
   }
@@ -494,56 +495,15 @@ public final class JajukSlimbar extends JFrame implements Observer, MouseWheelLi
     Set<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
     eventSubjectSet.add(JajukEvents.FILE_LAUNCHED);
     eventSubjectSet.add(JajukEvents.WEBRADIO_LAUNCHED);
-    eventSubjectSet.add(JajukEvents.PLAYER_PAUSE);
-    eventSubjectSet.add(JajukEvents.PLAYER_RESUME);
     eventSubjectSet.add(JajukEvents.QUEUE_NEED_REFRESH);
     eventSubjectSet.add(JajukEvents.PLAYER_STOP);
-    eventSubjectSet.add(JajukEvents.MUTE_STATE);
-    eventSubjectSet.add(JajukEvents.RATE_CHANGED);
     return eventSubjectSet;
   }
 
   public void update(final JajukEvent event) {
     JajukEvents subject = event.getSubject();
-    if (JajukEvents.FILE_LAUNCHED.equals(subject)) {
-      updateCurrentTitle();
-      ActionManager.getAction(PREVIOUS_TRACK).setEnabled(true);
-      ActionManager.getAction(NEXT_TRACK).setEnabled(true);
-      ActionManager.getAction(REWIND_TRACK).setEnabled(true);
-      ActionManager.getAction(PLAY_PAUSE_TRACK).setEnabled(true);
-      ActionManager.getAction(STOP_TRACK).setEnabled(true);
-      ActionManager.getAction(FAST_FORWARD_TRACK).setEnabled(true);
-      ActionManager.getAction(NEXT_ALBUM).setEnabled(true);
-      ActionManager.getAction(PREVIOUS_ALBUM).setEnabled(true);
-      ActionManager.getAction(FINISH_ALBUM).setEnabled(true);
-    } else if (JajukEvents.PLAYER_PAUSE.equals(subject)) {
-      jbPlayPause.setIcon(IconLoader.getIcon(JajukIcons.PLAY_16X16));
-    } else if (JajukEvents.PLAYER_RESUME.equals(subject)) {
-      jbPlayPause.setIcon(IconLoader.getIcon(JajukIcons.PAUSE_16X16));
-    } else if (JajukEvents.MUTE_STATE.equals(subject)) {
-      MuteAction.setVolumeIcon(100 * Player.getCurrentVolume());
-    } else if (JajukEvents.PLAYER_STOP.equals(subject)) {
-      // reset title
-      updateCurrentTitle();
-      // Enable the play button to allow restarting the queue but disable if
-      // the queue is void
-      boolean bQueueNotVoid = (FIFO.getFIFO().size() > 0);
-      ActionManager.getAction(PREVIOUS_TRACK).setEnabled(bQueueNotVoid);
-      ActionManager.getAction(NEXT_TRACK).setEnabled(bQueueNotVoid);
-      ActionManager.getAction(PLAY_PAUSE_TRACK).setEnabled(bQueueNotVoid);
-      ActionManager.getAction(NEXT_ALBUM).setEnabled(bQueueNotVoid);
-      ActionManager.getAction(PREVIOUS_ALBUM).setEnabled(bQueueNotVoid);
-      ActionManager.getAction(REWIND_TRACK).setEnabled(false);
-      ActionManager.getAction(PLAY_PAUSE_TRACK).setIcon(IconLoader.getIcon(JajukIcons.PLAY));
-      ActionManager.getAction(PLAY_PAUSE_TRACK).setName(Messages.getString("JajukWindow.12"));
-      ActionManager.getAction(STOP_TRACK).setEnabled(false);
-      ActionManager.getAction(FAST_FORWARD_TRACK).setEnabled(false);
-      ActionManager.getAction(FINISH_ALBUM).setEnabled(false);
-    } else if (JajukEvents.WEBRADIO_LAUNCHED.equals(event.getSubject())) {
-      updateCurrentTitle();
-      CommandJPanel.getInstance().update(event);
-    } else if (JajukEvents.RATE_CHANGED.equals(event.getSubject())) {
-      // Update rate button tooltip
+    if (JajukEvents.FILE_LAUNCHED.equals(subject) || JajukEvents.WEBRADIO_LAUNCHED.equals(subject)
+        || JajukEvents.PLAYER_STOP.equals(subject)) {
       updateCurrentTitle();
     }
   }

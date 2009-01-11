@@ -60,6 +60,7 @@ import org.jajuk.ui.actions.ActionManager;
 import org.jajuk.ui.actions.JajukActions;
 import org.jajuk.ui.helpers.FontManager;
 import org.jajuk.ui.helpers.JajukTimer;
+import org.jajuk.ui.helpers.PlayerStateMediator;
 import org.jajuk.ui.helpers.FontManager.JajukFont;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
@@ -72,6 +73,7 @@ import org.jajuk.util.log.Log;
 
 /**
  * Jajuk systray
+ * <br> Extends CommandJPanel for volume slider heritage only
  */
 public class JajukSystray extends CommandJPanel {
   private static final long serialVersionUID = 1L;
@@ -168,12 +170,15 @@ public class JajukSystray extends CommandJPanel {
    * 
    */
   public JajukSystray() {
-
     stray = SystemTray.getSystemTray();
+    initUI();
+  }
+
+  public void initUI() {
+    // Instanciate the PlayerStateMediator to listen for player basic controls
+    PlayerStateMediator.getInstance();
     jmenu = new JPopupMenu(Messages.getString("JajukWindow.3"));
-
     jmiExit = new JMenuItem(ActionManager.getAction(JajukActions.EXIT));
-
     jmiSlimbar = new JMenuItem(ActionManager.getAction(JajukActions.SLIM_JAJUK));
 
     // force icon to be display in 16x16
@@ -313,7 +318,6 @@ public class JajukSystray extends CommandJPanel {
     UtilFeatures.updateStatus(this);
   }
 
-  @Override
   public Set<JajukEvents> getRegistrationKeys() {
     Set<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
     eventSubjectSet.add(JajukEvents.ZERO);
@@ -322,20 +326,17 @@ public class JajukSystray extends CommandJPanel {
     eventSubjectSet.add(JajukEvents.PLAYER_PLAY);
     eventSubjectSet.add(JajukEvents.PLAYER_RESUME);
     eventSubjectSet.add(JajukEvents.PLAYER_STOP);
-    eventSubjectSet.add(JajukEvents.MUTE_STATE);
     eventSubjectSet.add(JajukEvents.HEART_BEAT);
     eventSubjectSet.add(JajukEvents.VOLUME_CHANGED);
     eventSubjectSet.add(JajukEvents.AMBIENCES_CHANGE);
     eventSubjectSet.add(JajukEvents.AMBIENCES_SELECTION_CHANGE);
     eventSubjectSet.add(JajukEvents.PARAMETERS_CHANGE);
-    eventSubjectSet.add(JajukEvents.WEBRADIO_LAUNCHED);
     return eventSubjectSet;
   }
 
   /**
    * ActionListener
    */
-  @Override
   public void actionPerformed(final ActionEvent e) {
     // do not run this in a separate thread because Player actions would die
     // with the thread
@@ -361,7 +362,6 @@ public class JajukSystray extends CommandJPanel {
    * 
    * @see org.jajuk.ui.Observer#update(java.lang.String)
    */
-  @Override
   public final void update(final JajukEvent event) {
     SwingUtilities.invokeLater(new Runnable() {
       public void run() {
@@ -397,9 +397,6 @@ public class JajukSystray extends CommandJPanel {
             trayIcon.displayMessage(Messages.getString("JajukWindow.35"), sOut,
                 TrayIcon.MessageType.INFO);
           }
-
-        } else if (JajukEvents.WEBRADIO_LAUNCHED.equals(subject)) {
-          JajukSystray.super.update(event);
         } else if (JajukEvents.PLAYER_STOP.equals(subject)) {
           // Enable the play button to allow restarting the queue but disable if
           // the queue is void
@@ -434,15 +431,11 @@ public class JajukSystray extends CommandJPanel {
           jmiNext.setEnabled(true);
           jmiFinishAlbum.setEnabled(true);
         } else if (JajukEvents.PLAYER_PAUSE.equals(subject)) {
-          // Apply basic CommandJPanel actions
-          JajukSystray.super.update(event);
           // disable position
           jsPosition.setEnabled(false);
           jsPosition.removeMouseWheelListener(JajukSystray.this);
           jsPosition.removeChangeListener(JajukSystray.this);
         } else if (JajukEvents.PLAYER_RESUME.equals(subject)) {
-          // Apply basic CommandJPanel actions
-          JajukSystray.super.update(event);
           // disable position
           // Avoid adding listeners twice
           if (jsPosition.getMouseWheelListeners().length == 0) {
@@ -488,7 +481,6 @@ public class JajukSystray extends CommandJPanel {
           jcbmiShowBalloon.setState(Conf.getBoolean(Const.CONF_UI_SHOW_BALLOON));
         }
       }
-
     });
   }
 
@@ -505,7 +497,6 @@ public class JajukSystray extends CommandJPanel {
    * Populate ambiences
    * 
    */
-  @Override
   final void populateAmbiences() {
     // Ambience selection listener
     ActionListener al = new ActionListener() {
@@ -551,7 +542,6 @@ public class JajukSystray extends CommandJPanel {
    * 
    * @see java.awt.event.MouseWheelListener#mouseWheelMoved(java.awt.event.MouseWheelEvent)
    */
-  @Override
   public void mouseWheelMoved(MouseWheelEvent e) {
     if (e.getSource() == jsPosition) {
       int iOld = jsPosition.getValue();
@@ -567,7 +557,6 @@ public class JajukSystray extends CommandJPanel {
    * 
    * @see javax.swing.event.ChangeListener#stateChanged(javax.swing.event.ChangeEvent)
    */
-  @Override
   public void stateChanged(ChangeEvent e) {
     if (e.getSource() == jsPosition && !jsPosition.getValueIsAdjusting()) {
       lDateLastAdjust = System.currentTimeMillis();

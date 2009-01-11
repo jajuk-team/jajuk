@@ -395,7 +395,6 @@ public final class InformationJPanel extends JXPanel implements ChangeListener, 
         Log.error(e);
       }
     } else {
-      // [PERF] compute this outside the AWT thread for perfs
       final long timeToPlay = JajukTimer.getInstance().getTotalTimeToPlay();
       SwingUtilities.invokeLater(new Runnable() {
         public void run() {
