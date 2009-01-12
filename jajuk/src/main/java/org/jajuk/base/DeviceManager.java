@@ -371,14 +371,16 @@ public final class DeviceManager extends ItemManager {
             || device.getDateLastRefresh() > (System.currentTimeMillis() - frequency)) {
           continue;
         }
-        // Check of mounted device contains files, otherwise it is not
-        // mounted
-        // we have to check this because of the automatic cleaner thread
-        // musn't remove all references
+        /*
+         * Check if devices contains files, otherwise it is not mounted we have
+         * to check this because of the automatic cleaner thread musn't remove
+         * all references
+         */
         File[] files = new File(device.getUrl()).listFiles();
         if (!device.isRefreshing() && files != null && files.length > 0) {
-          // Check if this device should be deep-refresh after an
-          // upgrade
+          /*
+           * Check if this device should be deep-refresh after an upgrade
+           */
           boolean bNeedDeepAfterUpgrade = UpgradeManager.isUpgradeDetected()
               && !devicesDeepRefreshed.contains(device);
           if (bNeedDeepAfterUpgrade) {
@@ -389,11 +391,13 @@ public final class DeviceManager extends ItemManager {
           bNeedUIRefresh = bNeedUIRefresh | device.cleanRemovedFiles();
           // refresh the device (deep refresh forced after an upgrade)
           bNeedUIRefresh = bNeedUIRefresh | device.refreshCommand(bNeedDeepAfterUpgrade);
+
+          // UI refresh if required
           if (bNeedUIRefresh) {
             // Cleanup logical items
             Collection.cleanupLogical();
             /*
-             * notify views to refresh once the device is refreshed, do not wait
+             * Notify views to refresh once the device is refreshed, do not wait
              * all devices refreshing as it may be tool long
              */
             ObservationManager.notify(new JajukEvent(JajukEvents.DEVICE_REFRESH));

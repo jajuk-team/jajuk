@@ -173,7 +173,7 @@ public class Device extends PhysicalItem implements Comparable<Device> {
 
     // delete old history items
     l = System.currentTimeMillis() - l;
-    Log.debug("Old file references cleaned in: "
+    Log.debug("[" + getName() + "] Old file references cleaned in: "
         + ((l < 1000) ? l + " ms" : l / 1000 + " s, changes: " + bChanges));
 
     return bChanges;
@@ -442,21 +442,20 @@ public class Device extends PhysicalItem implements Comparable<Device> {
    *          default=deep
    */
   private void manualRefresh(final boolean bAsk) {
+    int i = 0;
     try {
-      reporter = new ManualDeviceRefreshReporter(this);
-      new ManualDeviceRefreshReporter(this);
-      int i = 0;
-      try {
-        i = prepareRefresh(bAsk);
-        if (i == OPTION_REFRESH_CANCEL) {
-          return;
-        }
-        bAlreadyRefreshing = true;
-      } catch (JajukException je) {
-        Messages.showErrorMessage(je.getCode());
-        Log.debug(je);
+      i = prepareRefresh(bAsk);
+      if (i == OPTION_REFRESH_CANCEL) {
         return;
       }
+      bAlreadyRefreshing = true;
+    } catch (JajukException je) {
+      Messages.showErrorMessage(je.getCode());
+      Log.debug(je);
+      return;
+    }
+    try {
+      reporter = new ManualDeviceRefreshReporter(this);
       reporter.startup();
       // clean old files up (takes a while)
       cleanRemovedFiles();
