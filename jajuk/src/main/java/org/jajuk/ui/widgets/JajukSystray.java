@@ -349,11 +349,8 @@ public class JajukSystray extends CommandJPanel {
         details.put(Const.DETAIL_ORIGIN, this);
         ObservationManager.notify(new JajukEvent(JajukEvents.PARAMETERS_CHANGE, details));
       }
-
     } catch (Exception e2) {
       Log.error(e2);
-    } finally {
-      ObservationManager.notify(new JajukEvent(JajukEvents.QUEUE_NEED_REFRESH));
     }
   }
 
