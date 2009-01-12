@@ -163,7 +163,7 @@ public final class DownloadManager {
    */
   public static File downloadToCache(URL url) throws IOException {
     File file = UtilSystem.getCachePath(url);
-    // We synchronize the (internalized) name of the cached file to avoid
+    // We synchronize the (interned) name of the cached file to avoid
     // probable collisions between views
     synchronized (file.getName().intern()) {
       // check if file is not already downloaded or being downloaded
