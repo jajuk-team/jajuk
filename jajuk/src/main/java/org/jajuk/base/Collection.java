@@ -583,7 +583,7 @@ public final class Collection extends DefaultHandler implements ErrorHandler, Se
             if (Log.isDebugEnabled()) {
               // wrong format
               Log.debug(Messages.getString("Error.137") + ":" + sItemName + " Value: "
-                  + attributes.getValue(Const.XML_QUALITY) + " Error:" + e.getMessage()); // wrong
+                  + attributes.getValue(Const.XML_QUALITY) + " Error:" + e.getMessage());
             }
           }
           sID = attributes.getValue(idIndex).intern();
@@ -596,7 +596,7 @@ public final class Collection extends DefaultHandler implements ErrorHandler, Se
           if (needCheckID) {
             sRightID = FileManager.createID(sItemName, dParent).intern();
             if (sRightID == sID) {
-              needCheckID = false && !UpgradeManager.isUpgradeDetected();
+              needCheckID = false || UpgradeManager.isUpgradeDetected();
             } else {
               Log.debug("** Wrong file Id, upgraded: " + sItemName);
               hmWrongRightFileID.put(sID, sRightID);
@@ -642,7 +642,7 @@ public final class Collection extends DefaultHandler implements ErrorHandler, Se
           if (needCheckID) {
             sRightID = DirectoryManager.createID(sItemName, device, dParent).intern();
             if (sRightID == sID) {
-              needCheckID = false && !UpgradeManager.isUpgradeDetected();
+              needCheckID = false || UpgradeManager.isUpgradeDetected();
             } else {
               Log.debug("** Wrong directory Id, upgraded: " + sItemName);
               hmWrongRightDirectoryID.put(sID, sRightID);
@@ -717,7 +717,7 @@ public final class Collection extends DefaultHandler implements ErrorHandler, Se
             sRightID = TrackManager.createID(sTrackName, album, style, author, length, year,
                 lOrder, type).intern();
             if (sRightID == sID) {
-              needCheckID = false && !UpgradeManager.isUpgradeDetected();
+              needCheckID = false || UpgradeManager.isUpgradeDetected();
             } else {
               Log.debug("** Wrong Track Id, upgraded: " + sTrackName);
               hmWrongRightTrackID.put(sID, sRightID);
@@ -747,7 +747,7 @@ public final class Collection extends DefaultHandler implements ErrorHandler, Se
           if (needCheckID) {
             sRightID = AlbumManager.createID(sItemName).intern();
             if (sRightID == sID) {
-              needCheckID = false && !UpgradeManager.isUpgradeDetected();
+              needCheckID = false || UpgradeManager.isUpgradeDetected();
             } else {
               Log.debug("** Wrong album Id, upgraded: " + sItemName);
               hmWrongRightAlbumID.put(sID, sRightID);
@@ -766,7 +766,7 @@ public final class Collection extends DefaultHandler implements ErrorHandler, Se
           if (needCheckID) {
             sRightID = AuthorManager.createID(sItemName).intern();
             if (sRightID == sID) {
-              needCheckID = false && !UpgradeManager.isUpgradeDetected();
+              needCheckID = false || UpgradeManager.isUpgradeDetected();
             } else {
               Log.debug("** Wrong author Id, upgraded: " + sItemName);
               hmWrongRightAuthorID.put(sID, sRightID);
@@ -785,7 +785,7 @@ public final class Collection extends DefaultHandler implements ErrorHandler, Se
           if (needCheckID) {
             sRightID = StyleManager.createID(sItemName).intern();
             if (sRightID == sID) {
-              needCheckID = false && !UpgradeManager.isUpgradeDetected();
+              needCheckID = false || UpgradeManager.isUpgradeDetected();
             } else {
               Log.debug("** Wrong style Id, upgraded: " + sItemName);
               hmWrongRightStyleID.put(sID, sRightID);
@@ -815,7 +815,7 @@ public final class Collection extends DefaultHandler implements ErrorHandler, Se
           if (needCheckID) {
             sRightID = PlaylistManager.createID(sItemName, dParent).intern();
             if (sRightID == sID) {
-              needCheckID = false && !UpgradeManager.isUpgradeDetected();
+              needCheckID = false || UpgradeManager.isUpgradeDetected();
             } else {
               Log.debug("** Wrong playlist Id, upgraded: " + sItemName);
               hmWrongRightPlaylistFileID.put(sID, sRightID);
@@ -837,7 +837,7 @@ public final class Collection extends DefaultHandler implements ErrorHandler, Se
           if (needCheckID) {
             sRightID = DeviceManager.createID(sItemName).intern();
             if (sRightID == sID) {
-              needCheckID = false && !UpgradeManager.isUpgradeDetected();
+              needCheckID = false || UpgradeManager.isUpgradeDetected();
             } else {
               Log.debug("** Wrong device Id, upgraded: " + sItemName);
               hmWrongRightDeviceID.put(sID, sRightID);
