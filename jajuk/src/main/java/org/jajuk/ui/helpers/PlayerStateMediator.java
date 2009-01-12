@@ -183,6 +183,8 @@ public class PlayerStateMediator implements Observer {
             !Player.isMuted()) {
           MuteAction.setVolumeIcon(Player.getCurrentVolume() * 100);
         }
+        // For all events, refresh the queue
+        ObservationManager.notify(new JajukEvent(JajukEvents.QUEUE_NEED_REFRESH));
       }
     });
   }
