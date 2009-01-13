@@ -88,7 +88,11 @@ public final class InformationJPanel extends JXPanel implements ChangeListener, 
   private Timer timer = new Timer(JajukTimer.DEFAULT_HEARTBEAT, new ActionListener() {
 
     public void actionPerformed(ActionEvent e) {
-      update(new JajukEvent(JajukEvents.HEART_BEAT));
+      try {
+        update(new JajukEvent(JajukEvents.HEART_BEAT));
+      } catch (Exception ex) {
+        Log.error(ex);
+      }
     }
   });
 
