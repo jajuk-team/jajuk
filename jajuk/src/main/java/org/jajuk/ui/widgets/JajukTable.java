@@ -88,6 +88,9 @@ public class JajukTable extends JXTable implements ListSelectionListener,
 
   private static final DateFormat FORMATTER = UtilString.getLocaleDateFormatter();
 
+  /** Stores the last index of column move to* */
+  private int lastToIndex = 0;
+
   /**
    * Constructor
    * 
@@ -250,22 +253,29 @@ public class JajukTable extends JXTable implements ListSelectionListener,
   }
 
   @Override
-  public void columnAdded(TableColumnModelEvent arg0) {
-    super.columnAdded(arg0);
+  public void columnAdded(TableColumnModelEvent evt) {
+    super.columnAdded(evt);
     columnChange();
   }
 
   @Override
-  public void columnRemoved(TableColumnModelEvent arg0) {
-    super.columnRemoved(arg0);
+  public void columnRemoved(TableColumnModelEvent evt) {
+    super.columnRemoved(evt);
     columnChange();
   }
 
   @Override
-  public void columnMoved(TableColumnModelEvent arg0) {
-    super.columnMoved(arg0);
-    if (acceptColumnsEvents) {
-      columnChange();
+  public void columnMoved(TableColumnModelEvent evt) {
+    super.columnMoved(evt);
+    /*
+     * We ignore events if last to index is still the same for performances
+     * reasons (this event doesn't come with a isAdjusting() method)
+     */
+    if (acceptColumnsEvents && evt.getToIndex() != lastToIndex) {
+      lastToIndex = evt.getToIndex();
+      if (this.sConf != null) {
+        createColumnsConf();
+      }
     }
   }
 
