@@ -19,7 +19,9 @@
  */
 package org.jajuk.base;
 
+import java.awt.Container;
 import java.awt.Image;
+import java.awt.MediaTracker;
 import java.awt.Toolkit;
 import java.io.File;
 import java.util.ArrayList;
@@ -276,7 +278,18 @@ public class Album extends LogicalItem implements Comparable<Album> {
           if (sExt.equalsIgnoreCase("jpg") || sExt.equalsIgnoreCase("png")
               || sExt.equalsIgnoreCase("gif")) {
             if (UtilFeatures.isStandardCover(files[i])) {
-              return files[i];
+              // Test the image is not corrupted
+              try {
+                MediaTracker mediaTracker = new MediaTracker(new Container());
+                ImageIcon ii = new ImageIcon(files[i].getAbsolutePath());
+                mediaTracker.addImage(ii.getImage(), 0);
+                mediaTracker.waitForID(0); // wait for image
+                if (!mediaTracker.isErrorAny()) {
+                  return files[i];
+                }
+              } catch (Exception e) {
+                Log.error(e);
+              }
             }
           }
         }
@@ -295,7 +308,18 @@ public class Album extends LogicalItem implements Comparable<Album> {
           String sExt = UtilSystem.getExtension(files[i]);
           if (sExt.equalsIgnoreCase("jpg") || sExt.equalsIgnoreCase("png")
               || sExt.equalsIgnoreCase("gif")) {
-            return files[i];
+            // Test the image is not corrupted
+            try {
+              MediaTracker mediaTracker = new MediaTracker(new Container());
+              ImageIcon ii = new ImageIcon(files[i].getAbsolutePath());
+              mediaTracker.addImage(ii.getImage(), 0);
+              mediaTracker.waitForID(0); // wait for image
+              if (!mediaTracker.isErrorAny()) {
+                return files[i];
+              }
+            } catch (Exception e) {
+              Log.error(e);
+            }
           }
         }
       }
