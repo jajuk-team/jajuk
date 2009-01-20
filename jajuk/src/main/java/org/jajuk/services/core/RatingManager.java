@@ -160,6 +160,7 @@ public final class RatingManager extends Thread implements Observer {
         Track track = it.next();
         track.setProperty(Const.XML_TRACK_RATE, 0l);
         track.setProperty(Const.XML_TRACK_TOTAL_PLAYTIME, 0l);
+        track.setHits(0l);
       }
       ObservationManager.notify(new JajukEvent(JajukEvents.DEVICE_REFRESH));
       // Force suggestion view refresh. Not that the suggestion view doesn't

@@ -407,7 +407,7 @@ public class Track extends LogicalItem implements Comparable<Track> {
       // If duration = 0, always set playtimeRate to 0.5
       Log.warn("Duration = 0 for: " + getName() + ". Playtime forced to 0.5");
     }
-    // If playtimeRate > 1, a problem occurred, keep 0.5
+    // If playtimeRate > 1, a problem occurred, set 0.5
     if (playtimeRate > 1) {
       Log.warn("Playtime rate > 1 for: " + getName());
       // This case is strange, can be caused by a bug, we reset tpt and hits to
@@ -415,6 +415,7 @@ public class Track extends LogicalItem implements Comparable<Track> {
       setProperty(Const.XML_TRACK_TOTAL_PLAYTIME, duration);
       setHits(1);
       playcount = 1;
+      playtimeRate = 0.5f;
     }
     // compute the playcount rate (logarithmic scale to take number of plays
     // into account)
