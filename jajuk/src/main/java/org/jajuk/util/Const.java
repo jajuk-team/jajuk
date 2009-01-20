@@ -100,8 +100,7 @@ public interface Const {
   int MIN_TRACKS_NUMBER = 4;
   
   /** Max number of concurrent executions by observation manager for a given event */
-  int MAX_EVENT_EXECUTIONS = 10;
-  
+  int MAX_EVENT_EXECUTIONS = 15;  
 
   /** Min number of tracks in a DJ selection without track unicity */
   int MIN_TRACKS_NUMBER_WITHOUT_UNICITY = 100;
