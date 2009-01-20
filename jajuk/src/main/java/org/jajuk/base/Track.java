@@ -145,7 +145,7 @@ public class Track extends LogicalItem implements Comparable<Track> {
    * 
    * @param other
    *          track to be compared
-   * @return comparison result 
+   * @return comparison result
    */
   public int compareTo(Track otherTrack) {
     return getID().compareTo(otherTrack.getID());
@@ -394,25 +394,36 @@ public class Track extends LogicalItem implements Comparable<Track> {
     long rate = 0;
     // Normalize values to avoid division by zero
     long duration = getDuration();
-    if (duration <= 0) {
-      duration = 1;
-    }
     long playcount = getHits();
+    // Playcount must be > 0 to avoid divisions by zero and log(0) operations
     if (playcount <= 0) {
       playcount = 1;
     }
-    // Compute playtime rate = total play time / (play count * track length)
-    float playtimeRate = (float) getLongValue(Const.XML_TRACK_TOTAL_PLAYTIME)
-        / (playcount * duration);
-    // If playtimeRate > 1, a problem occurred, set 0.5
+    float playtimeRate = 0.5f;
+    try {
+      // Compute playtime rate = total play time / (play count * track length)
+      playtimeRate = (float) getLongValue(Const.XML_TRACK_TOTAL_PLAYTIME) / (playcount * duration);
+    } catch (Exception e) {
+      // If duration = 0, always set playtimeRate to 0.5
+      Log.warn("Duration = 0 for: " + getName() + ". Playtime forced to 0.5");
+    }
+    // If playtimeRate > 1, a problem occurred, keep 0.5
     if (playtimeRate > 1) {
       Log.warn("Playtime rate > 1 for: " + getName());
-      playtimeRate = 0.5f;
+      // This case is strange, can be caused by a bug, we reset tpt and hits to
+      // make things clear and to avoid increasing the error with time
+      setProperty(Const.XML_TRACK_TOTAL_PLAYTIME, duration);
+      setHits(1);
+      playcount = 1;
     }
     // compute the playcount rate (logarithmic scale to take number of plays
     // into account)
     // playcountRate = ln(track playcount)/ln(max playcount)
-    float playcountRate = (float) (Math.log(getHits()) / Math.log(RatingManager.getMaxPlaycount()));
+    long maxPlayCount = RatingManager.getMaxPlaycount();
+    if (maxPlayCount <= 0){
+      maxPlayCount = 1;
+    }
+    float playcountRate = (float) (Math.log(playcount) / Math.log(maxPlayCount));
     // Intermediate rate is a mix between playtime and playcount rates with
     // factor 0.75 for the first one and 0.25 for the second
     float intermediateRate = (0.75f * playtimeRate) + (0.25f * playcountRate);

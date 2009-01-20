@@ -97,7 +97,7 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
               long trackPlaytime = current.getLongValue(Const.XML_TRACK_TOTAL_PLAYTIME);
               long newValue = ((PROGRESS_STEP * TOTAL_PLAYTIME_UPDATE_INTERVAL) / 1000)
                   + trackPlaytime;
-              current.setProperty(Const.XML_TRACK_TOTAL_PLAYTIME, +newValue);
+              current.setProperty(Const.XML_TRACK_TOTAL_PLAYTIME, newValue);
             }
             comp++;
           }

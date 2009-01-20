@@ -296,7 +296,7 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, Const, BasicPlayerListe
         // Perf note : this full action takes less much than 1 ms
         long trackPlaytime = fCurrent.getTrack().getLongValue(Const.XML_TRACK_TOTAL_PLAYTIME);
         long newValue = ((PROGRESS_STEP * TOTAL_PLAYTIME_UPDATE_INTERVAL) / 1000) + trackPlaytime;
-        fCurrent.getTrack().setProperty(Const.XML_TRACK_TOTAL_PLAYTIME, +newValue);
+        fCurrent.getTrack().setProperty(Const.XML_TRACK_TOTAL_PLAYTIME, newValue);
       }
       comp++;
       // computes read time
