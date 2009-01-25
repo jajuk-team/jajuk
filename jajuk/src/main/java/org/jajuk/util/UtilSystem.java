@@ -307,7 +307,7 @@ public final class UtilSystem {
    *          file to copy
    * @param directory :
    *          destination directory
-   * @return destination file 
+   * @return destination file
    */
   public static File copyToDir(final File file, final File directory) throws Exception {
     Log.debug("Copying: " + file.getAbsolutePath() + "  to : " + directory.getAbsolutePath());
@@ -466,8 +466,7 @@ public final class UtilSystem {
    */
   public static File getCachePath(final URL url) {
     File out = null;
-    out = UtilSystem.getConfFileByPath(Const.FILE_CACHE + '/'
-        + MD5Processor.hash(url.toString()));
+    out = UtilSystem.getConfFileByPath(Const.FILE_CACHE + '/' + MD5Processor.hash(url.toString()));
     return out;
   }
 
@@ -870,12 +869,7 @@ public final class UtilSystem {
    */
   public static StringBuilder readFile(final String path) throws JajukException {
     // Read
-    final File file = null;
-    try {
-      new File(path);
-    } catch (final Exception e) {
-      throw new JajukException(9, e);
-    }
+    File file = new File(path);
     FileReader fileReader;
     try {
       fileReader = new FileReader(file);
