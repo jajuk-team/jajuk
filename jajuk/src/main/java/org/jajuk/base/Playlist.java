@@ -65,7 +65,7 @@ import org.jajuk.util.log.Log;
  */
 public class Playlist extends PhysicalItem implements Comparable<Playlist> {
 
-  private static final long serialVersionUID = 1L;
+  
 
   /** playlist type */
   public enum Type {

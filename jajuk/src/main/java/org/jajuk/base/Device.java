@@ -65,8 +65,6 @@ import org.xml.sax.Attributes;
  */
 public class Device extends PhysicalItem implements Comparable<Device> {
 
-  private static final long serialVersionUID = 1L;
-
   protected static final int OPTION_REFRESH_DEEP = 1;
 
   protected static final int OPTION_REFRESH_CANCEL = 2;

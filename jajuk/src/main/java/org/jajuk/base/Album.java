@@ -49,8 +49,6 @@ import org.jajuk.util.log.Log;
  */
 public class Album extends LogicalItem implements Comparable<Album> {
 
-  private static final long serialVersionUID = 1L;
-
   /**
    * For perfs, we cache the associated tracks. This cache is filled by the
    * TrackManager using the getTracksCache() method

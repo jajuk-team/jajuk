@@ -40,7 +40,7 @@ public final class ObservationManager {
   /** one event -> list of components */
   static ObserverRegistry observerRegistry = new ObserverRegistry();
 
-   /**
+  /**
    * Last event for a given subject (used for new objects that just registrated
    * to this subject)
    */
@@ -51,42 +51,6 @@ public final class ObservationManager {
    * whish is tread-safe
    */
   static volatile Queue<JajukEvent> queue = new ConcurrentLinkedQueue<JajukEvent>();
-
-  /**
-   * Observation manager thread that consumes events asynchronously
-   */
-  static class ObservationManagerThread extends Thread {
-
-    ObservationManagerThread() {
-      super("Observation Manager Thread");
-    }
-
-    @Override
-    public void run() {
-      // Stop to execute events is thread flag is set or if Jajuk is exiting
-      while (!ExitService.isExiting()) {
-        try {
-          Thread.sleep(50);
-          final JajukEvent event = queue.poll();
-          if (event != null) {
-            // launch action asynchronously
-            new Thread("Event Executor for: " + event.toString()) {
-              @Override
-              public void run() {
-                notifySync(event);
-              }
-            }.start();
-          }
-          // Make sure to handle any exception or error to avoid the observation
-          // system to die
-        } catch (Exception e) {
-          Log.error(e);
-        } catch (Error error) {
-          Log.error(error);
-        }
-      }
-    }
-  }
 
   /**
    * The observation fifo
@@ -244,5 +208,41 @@ public final class ObservationManager {
    */
   public static Properties getDetailsLastOccurence(JajukEvents subject) {
     return hLastEventBySubject.get(subject);
+  }
+}
+
+/**
+ * Observation manager thread that consumes events asynchronously
+ */
+class ObservationManagerThread extends Thread {
+
+  ObservationManagerThread() {
+    super("Observation Manager Thread");
+  }
+
+  @Override
+  public void run() {
+    // Stop to execute events is thread flag is set or if Jajuk is exiting
+    while (!ExitService.isExiting()) {
+      try {
+        Thread.sleep(50);
+        final JajukEvent event = ObservationManager.queue.poll();
+        if (event != null) {
+          // launch action asynchronously
+          new Thread("Event Executor for: " + event.toString()) {
+            @Override
+            public void run() {
+              ObservationManager.notifySync(event);
+            }
+          }.start();
+        }
+        // Make sure to handle any exception or error to avoid the observation
+        // system to die
+      } catch (Exception e) {
+        Log.error(e);
+      } catch (Error error) {
+        Log.error(error);
+      }
+    }
   }
 }

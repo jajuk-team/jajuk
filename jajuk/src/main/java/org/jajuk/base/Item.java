@@ -20,7 +20,6 @@
 
 package org.jajuk.base;
 
-import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -44,7 +43,7 @@ import org.xml.sax.Attributes;
  * file size
  * </p>
  */
-public abstract class Item implements Serializable, Const {
+public abstract class Item implements Const {
 
   /**
    * We cache the ID to avoid getting it from properties for CPU performance

@@ -34,7 +34,6 @@ import org.jajuk.util.log.Log;
 /**
  * Manages types ( mp3, ogg...) supported by jajuk
  * <p>
- * static class
  */
 public final class TypeManager extends ItemManager {
   /** extensions->types */

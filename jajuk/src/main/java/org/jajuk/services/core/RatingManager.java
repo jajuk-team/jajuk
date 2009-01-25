@@ -154,10 +154,11 @@ public final class RatingManager extends Thread implements Observer {
     if (subject.equals(JajukEvents.RATE_RESET)) {
       // Reset playcount
       setMaxPlaycount(0);
-      // Reset rates
-      ReadOnlyIterator<Track> it = TrackManager.getInstance().getTracksIterator();
-      while (it.hasNext()) {
-        Track track = it.next();
+      /*
+       * Reset rates, use a track list, not an iterator as this can be called
+       * during a refresh and cause a ConcurrentModificationException
+       */
+      for (Track track : TrackManager.getInstance().getTracks()) {
         track.setProperty(Const.XML_TRACK_RATE, 0l);
         track.setProperty(Const.XML_TRACK_TOTAL_PLAYTIME, 0l);
         track.setHits(0l);

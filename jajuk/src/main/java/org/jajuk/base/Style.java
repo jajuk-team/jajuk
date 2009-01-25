@@ -37,7 +37,7 @@ import org.jajuk.util.ReadOnlyIterator;
  */
 public class Style extends LogicalItem implements Comparable<Style> {
 
-  private static final long serialVersionUID = 1L;
+  
 
   /**
    * Style constructor

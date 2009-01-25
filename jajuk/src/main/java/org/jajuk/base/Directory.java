@@ -55,8 +55,6 @@ import org.jajuk.util.log.Log;
  */
 public class Directory extends PhysicalItem implements Comparable<Directory> {
 
-  private static final long serialVersionUID = 1L;
-
   /** Parent directory ID* */
   private Directory dParent;
 

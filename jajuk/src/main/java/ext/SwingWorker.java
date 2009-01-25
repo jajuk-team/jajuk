@@ -23,7 +23,7 @@ public abstract class SwingWorker {
    * Class to maintain reference to current worker thread under separate
    * synchronization control.
    */
-  private static class ThreadVar {
+  private class ThreadVar {
     private Thread thread;
 
     ThreadVar(Thread t) {

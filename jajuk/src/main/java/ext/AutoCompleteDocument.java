@@ -257,7 +257,7 @@ public class AutoCompleteDocument extends PlainDocument {
     return null;
   }
 
-  private static class LookupResult {
+  private class LookupResult {
     Object matchingItem;
     String matchingString;
 

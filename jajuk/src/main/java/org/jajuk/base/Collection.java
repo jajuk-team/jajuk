@@ -24,7 +24,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
-import java.io.Serializable;
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -52,13 +51,11 @@ import org.xml.sax.helpers.DefaultHandler;
 /**
  * Items root container
  */
-public final class Collection extends DefaultHandler implements ErrorHandler, Serializable {
+public final class Collection extends DefaultHandler implements ErrorHandler {
 
   private static final String TAG_CLOSE_NEWLINE = ">\n";
 
   private static final String TAB_CLOSE_TAG_START = "</";
-
-  private static final long serialVersionUID = 1L;
 
   /** Self instance */
   private static Collection collection;

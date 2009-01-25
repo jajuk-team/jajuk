@@ -32,7 +32,7 @@ import org.jajuk.util.UtilString;
  */
 public class Year extends LogicalItem implements Comparable<Year> {
 
-  private static final long serialVersionUID = 1L;
+  
 
   private final long value;
 

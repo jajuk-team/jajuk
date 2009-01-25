@@ -19,17 +19,13 @@
 package ext.services.network;
 
 import java.io.IOException;
-import java.io.Serializable;
 import java.net.Socket;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.UnknownHostException;
 
-public class Proxy extends java.net.Proxy implements Serializable {
+public class Proxy extends java.net.Proxy {
 
-  /**
-   * 
-   */
   private static final long serialVersionUID = 7495084217081194366L;
   private String url;
   private int port;

@@ -33,9 +33,7 @@ import org.jajuk.util.Messages;
  */
 public class Author extends LogicalItem implements Comparable<Author> {
 
-  private static final long serialVersionUID = 1L;
-
-  /**
+   /**
    * Author constructor
    * 
    * @param id
