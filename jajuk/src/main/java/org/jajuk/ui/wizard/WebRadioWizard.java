@@ -66,7 +66,7 @@ public class WebRadioWizard extends Wizard {
   /** web radios* */
   static List<WebRadio> radios;
 
-  public static class RadioPanel extends Screen implements ActionListener {
+  public class RadioPanel extends Screen implements ActionListener {
 
     private static final long serialVersionUID = 1L;
 

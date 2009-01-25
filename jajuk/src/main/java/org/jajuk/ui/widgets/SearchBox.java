@@ -108,7 +108,7 @@ public class SearchBox extends JTextField implements KeyListener {
   /**
    * Display results as a jlabel with an icon
    */
-  static class SearchListRenderer extends JPanel implements ListCellRenderer {
+  class SearchListRenderer extends JPanel implements ListCellRenderer {
     private static final long serialVersionUID = 8975989658927794678L;
 
     public Component getListCellRendererComponent(JList list, Object value, int index,

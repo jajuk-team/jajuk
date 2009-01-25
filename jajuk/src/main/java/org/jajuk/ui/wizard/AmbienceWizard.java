@@ -65,7 +65,7 @@ import org.qdwizard.Wizard;
  */
 public class AmbienceWizard extends Wizard {
 
-  public static class AmbiencePanel extends Screen implements ActionListener {
+  public class AmbiencePanel extends Screen implements ActionListener {
 
     private static final long serialVersionUID = 1L;
 
