@@ -172,7 +172,7 @@ public final class FontManager implements Observer {
     }
   }
 
-  private static class CustomFontSet implements FontSet {
+  private class CustomFontSet implements FontSet {
     protected FontUIResource font;
 
     public CustomFontSet(Font font) {
