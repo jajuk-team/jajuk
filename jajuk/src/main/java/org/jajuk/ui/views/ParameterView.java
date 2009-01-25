@@ -380,11 +380,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
               return;
             }
           }
-          if (!DeviceManager.getInstance().isAnyDeviceRefreshing()) {
-            ObservationManager.notify(new JajukEvent(JajukEvents.RATE_RESET));
-          } else {
-            Messages.showErrorMessage(120);
-          }
+          ObservationManager.notify(new JajukEvent(JajukEvents.RATE_RESET));
         } else if (e.getSource() == jbResetPreferences) {
           // show confirmation message if required
           if (Conf.getBoolean(Const.CONF_CONFIRMATIONS_RESET_RATINGS)) {
@@ -664,14 +660,14 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
           // to new workspace
           java.io.File session = Main.getSessionIdFile();
           session.delete();
-         
+
           UtilSystem.copyRecursively(from, dest);
           bPreviousPathExist = false;
           // Change the workspace so the very last conf (like current track)
           // will be saved directly to target workspace. We don't do this if the
           // workspace already exist to avoid overwriting other configuration.
           Main.setWorkspace(psJajukWorkspace.getUrl());
-          
+
         }
         // OK, now write down the bootstrap file if
         // everything's OK
