@@ -31,9 +31,6 @@ import org.jajuk.util.Messages;
  */
 public class DJConfigurationAction extends JajukAction {
 
-  /**
-   * 
-   */
   private static final long serialVersionUID = 1L;
 
   DJConfigurationAction() {
