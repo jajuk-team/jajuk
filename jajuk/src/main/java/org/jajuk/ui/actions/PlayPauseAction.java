@@ -31,6 +31,8 @@ public class PlayPauseAction extends JajukAction {
 
   private static final long serialVersionUID = 1L;
 
+  private static boolean bAlreadyLaunching = false;
+
   PlayPauseAction() {
     super(Messages.getString("JajukWindow.10"), IconLoader.getIcon(JajukIcons.PAUSE), "ctrl P",
         false, true);
@@ -40,7 +42,22 @@ public class PlayPauseAction extends JajukAction {
   @Override
   public void perform(ActionEvent evt) {
     if (FIFO.isStopped()) {
-      FIFO.goTo(0);
+      // We use here a flag to avoid launching the goTo() thread twice. In case
+      // of playing error, this would create several looping threads trying to
+      // play in concurrently and would broke the wait after an error contract
+      if (bAlreadyLaunching) {
+        return;
+      }
+      new Thread() {
+        public void run() {
+          try {
+            bAlreadyLaunching = true;
+            FIFO.goTo(0);
+          } finally {
+            bAlreadyLaunching = false;
+          }
+        }
+      }.start();
       setIcon(IconLoader.getIcon(JajukIcons.PAUSE));
       setName(Messages.getString("JajukWindow.12"));
     } else if (Player.isPaused()) { // player was paused, resume it
