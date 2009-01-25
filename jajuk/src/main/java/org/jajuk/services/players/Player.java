@@ -84,7 +84,6 @@ public final class Player {
     if (file == null) {
       throw new IllegalArgumentException("Cannot play empty file.");
     }
-
     fCurrent = file;
     try {
       // Choose the player
@@ -214,9 +213,11 @@ public final class Player {
     try {
       if (playerImpl1 != null && (playerImpl1.getState() != Const.FADING_STATUS || bAll)) {
         playerImpl1.stop();
+        playerImpl1 = null;
       }
       if (playerImpl2 != null && (playerImpl2.getState() != Const.FADING_STATUS || bAll)) {
         playerImpl2.stop();
+        playerImpl2 = null;
       }
       bPaused = false; // cancel any current pause
       bPlaying = false;

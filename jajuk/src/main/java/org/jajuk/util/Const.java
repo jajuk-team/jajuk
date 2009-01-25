@@ -89,8 +89,8 @@ public interface Const {
 
   /** Need full gc memory % */
   float NEED_FULL_GC_LEVEL = 0.90f;
-  
-  /** Number of ms in 24 hours **/
+
+  /** Number of ms in 24 hours * */
   long DAY_MS = 24 * 3600 * 1000;
 
   /** Play time to get rate +1 in secs */
@@ -98,9 +98,12 @@ public interface Const {
 
   /** Min Number of tracks in an AuthorNode */
   int MIN_TRACKS_NUMBER = 4;
-  
-  /** Max number of concurrent executions by observation manager for a given event */
-  int MAX_EVENT_EXECUTIONS = 15;  
+
+  /**
+   * Max number of concurrent executions by observation manager for a given
+   * event
+   */
+  int MAX_EVENT_EXECUTIONS = 15;
 
   /** Min number of tracks in a DJ selection without track unicity */
   int MIN_TRACKS_NUMBER_WITHOUT_UNICITY = 100;
@@ -152,12 +155,6 @@ public interface Const {
    * slow or heavily loaded machines...
    */
   int MPLAYER_START_TIMEOUT = 15000;
-
-  /**
-   * Percent of the played track (ex: 0.2f = 20%) when the rating is not
-   * computed so we don't consider this playtime as significant  
-   */
-  float RATING_NO_UPDATE_PERIOD = 0.15f;
 
   /** Number of milliseconds in a day */
   int MILLISECONDS_IN_A_DAY = MILLISECONDS_IN_A_SECOND * SECONDS_IN_A_MINUTE * MINUTES_IN_AN_HOUR
@@ -1125,11 +1122,11 @@ public interface Const {
   String CONF_ALARM_MODE = "jajuk.alarm.mode";
 
   String CONF_FORMAT_TIME_ELAPSED = "jajuk.format_elapsed_time";
-  
+
   String CONF_ALARM_ACTION = "jajuk.alarm.action";
-  
+
   String CONF_ALARM_ENABLED = "jajuk.alarm.enabled";
-  
+
   // Alarm actions
   String ALARM_START_ACTION = "Start Playing";
 

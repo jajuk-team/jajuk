@@ -95,7 +95,7 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, Const, BasicPlayerListe
   private boolean bHasBeenRated = false;
 
   /** Used to compute total played time */
-  private int comp = 1;
+  private int comp = 0;
 
   /*
    * (non-Javadoc)
@@ -290,13 +290,13 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, Const, BasicPlayerListe
         return;
       }
       // Update total played time
-      if (comp % TOTAL_PLAYTIME_UPDATE_INTERVAL == 0) {
+      if (comp > 0 && comp % TOTAL_PLAYTIME_UPDATE_INTERVAL == 0) {
         // Increase actual play time
         // End of file: increase actual play time to the track
         // Perf note : this full action takes less much than 1 ms
         long trackPlaytime = fCurrent.getTrack().getLongValue(Const.XML_TRACK_TOTAL_PLAYTIME);
-        long newValue = ((PROGRESS_STEP * TOTAL_PLAYTIME_UPDATE_INTERVAL) / 1000) + trackPlaytime;
-        fCurrent.getTrack().setProperty(Const.XML_TRACK_TOTAL_PLAYTIME, newValue);
+        trackPlaytime += ((PROGRESS_STEP * TOTAL_PLAYTIME_UPDATE_INTERVAL) / 1000);
+        fCurrent.getTrack().setProperty(Const.XML_TRACK_TOTAL_PLAYTIME, trackPlaytime);
       }
       comp++;
       // computes read time
@@ -331,9 +331,7 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, Const, BasicPlayerListe
             public void run() {
               FIFO.finished();
               // Update track rate
-              if (getCurrentPosition() > Const.RATING_NO_UPDATE_PERIOD) {
-                fCurrent.getTrack().updateRate();
-              }
+              fCurrent.getTrack().updateRate();
             }
           }.start();
         }
@@ -346,9 +344,7 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, Const, BasicPlayerListe
           @Override
           public void run() {
             FIFO.finished();
-            if (getCurrentPosition() > Const.RATING_NO_UPDATE_PERIOD) {
-              fCurrent.getTrack().updateRate();
-            }
+            fCurrent.getTrack().updateRate();
           }
         }.start();
       }

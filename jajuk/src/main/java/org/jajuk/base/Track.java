@@ -44,7 +44,7 @@ import org.jajuk.util.log.Log;
  */
 public class Track extends LogicalItem implements Comparable<Track> {
 
-  private static final long serialVersionUID = 1L;
+  
 
   /** Track album* */
   private final Album album;
@@ -390,52 +390,61 @@ public class Track extends LogicalItem implements Comparable<Track> {
    * @see http://trac.jajuk.info/ticket/1179
    */
   public void updateRate() {
-    // rate contains final rate [0,100]
-    long rate = 0;
-    // Normalize values to avoid division by zero
-    long duration = getDuration();
-    long playcount = getHits();
-    // Playcount must be > 0 to avoid divisions by zero and log(0) operations
-    if (playcount <= 0) {
-      playcount = 1;
-    }
-    float playtimeRate = 0.5f;
     try {
-      // Compute playtime rate = total play time / (play count * track length)
-      playtimeRate = (float) getLongValue(Const.XML_TRACK_TOTAL_PLAYTIME) / (playcount * duration);
+      // rate contains final rate [0,100]
+      long rate = 0;
+      // Normalize values to avoid division by zero
+      long duration = getDuration();
+      long playcount = getHits();
+      // Playcount must be > 0 to avoid divisions by zero and log(0) operations
+      if (playcount <= 0) {
+        playcount = 1;
+      }
+      float playtimeRate = 0.5f;
+      if (duration == 0) {
+        // If duration = 0, always set playtimeRate to 0.5
+        Log.warn("Duration = 0 for: " + getName() + ". Playtime forced to 0.5");
+      } else {
+        // Compute playtime rate = total play time / (play count * track length)
+        playtimeRate = (float) getLongValue(Const.XML_TRACK_TOTAL_PLAYTIME)
+            / (playcount * duration);
+      }
+      // playtimeRate can be > 1 because of player impl duration computation
+      // precision issue or if user seeks back into the track
+      // set =1.
+      if (playtimeRate > 1) {
+        Log.warn("Playtime rate > 1 for: " + getName() + " value=" + playtimeRate);
+        // We reset tpt and hits to
+        // make things clear and to avoid increasing the error with time
+        setProperty(Const.XML_TRACK_TOTAL_PLAYTIME, duration * playcount);
+        playtimeRate = 1f;
+      }
+
+      // compute the playcount rate (logarithmic scale to take number of plays
+      // into account)
+      // playcountRate = ln(track playcount)/ln(max playcount)
+      long maxPlayCount = RatingManager.getMaxPlaycount();
+      if (maxPlayCount <= 0) {
+        maxPlayCount = 1;
+      }
+      float playcountRate = (float) (Math.log(playcount) / Math.log(maxPlayCount));
+      // Intermediate rate is a mix between playtime and playcount rates with
+      // factor 0.75 for the first one and 0.25 for the second
+      float intermediateRate = (0.75f * playtimeRate) + (0.25f * playcountRate);
+      // Final rate is intermediateRate in whish we apply the user preference
+      // from
+      // -3 (hate) to 3 (adore)
+      long preference = getLongValue(Const.XML_TRACK_PREFERENCE);
+      long absPreference = Math.abs(preference);
+      rate = Math.round(100 * (intermediateRate + (preference + absPreference) / 2)
+          / (absPreference + 1));
+      // Apply new rate
+      setRate(rate);
     } catch (Exception e) {
-      // If duration = 0, always set playtimeRate to 0.5
-      Log.warn("Duration = 0 for: " + getName() + ". Playtime forced to 0.5");
+      // We catch any arithmetic issue here to avoid preventing next track
+      // startup
+      Log.error(e);
     }
-    // If playtimeRate > 1, a problem occurred, set 0.5
-    if (playtimeRate > 1) {
-      Log.warn("Playtime rate > 1 for: " + getName());
-      // This case is strange, can be caused by a bug, we reset tpt and hits to
-      // make things clear and to avoid increasing the error with time
-      setProperty(Const.XML_TRACK_TOTAL_PLAYTIME, duration);
-      setHits(1);
-      playcount = 1;
-      playtimeRate = 0.5f;
-    }
-    // compute the playcount rate (logarithmic scale to take number of plays
-    // into account)
-    // playcountRate = ln(track playcount)/ln(max playcount)
-    long maxPlayCount = RatingManager.getMaxPlaycount();
-    if (maxPlayCount <= 0){
-      maxPlayCount = 1;
-    }
-    float playcountRate = (float) (Math.log(playcount) / Math.log(maxPlayCount));
-    // Intermediate rate is a mix between playtime and playcount rates with
-    // factor 0.75 for the first one and 0.25 for the second
-    float intermediateRate = (0.75f * playtimeRate) + (0.25f * playcountRate);
-    // Final rate is intermediateRate in whish we apply the user preference from
-    // -3 (hate) to 3 (adore)
-    long preference = getLongValue(Const.XML_TRACK_PREFERENCE);
-    long absPreference = Math.abs(preference);
-    rate = Math.round(100 * (intermediateRate + (preference + absPreference) / 2)
-        / (absPreference + 1));
-    // Apply new rate
-    setRate(rate);
   }
 
   /**

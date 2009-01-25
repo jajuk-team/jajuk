@@ -81,21 +81,21 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
 
     @Override
     public void run() {
-      int comp = 1;
+      int comp = 0;
       Track current = fCurrent.getTrack();
-      while (!bStop) { // stop this thread
+      while (!bStop && !bEOF) { // stop this thread
         try {
           if (!bPaused) {
             // a get_percent_pos resumes (mplayer issue)
             sendCommand("get_time_pos");
             // every 2 time units, increase actual play time. We wait this
             // delay for perfs and for precision
-            if (comp % TOTAL_PLAYTIME_UPDATE_INTERVAL == 0) {
+            if (comp > 0 && comp % TOTAL_PLAYTIME_UPDATE_INTERVAL == 0) {
               // Increase actual play time
               // End of file: increase actual play time to the track
               // Perf note : this full action takes less much than 1 ms
               long trackPlaytime = current.getLongValue(Const.XML_TRACK_TOTAL_PLAYTIME);
-              long newValue = ((PROGRESS_STEP * TOTAL_PLAYTIME_UPDATE_INTERVAL) / 1000)
+              long newValue = (PROGRESS_STEP * TOTAL_PLAYTIME_UPDATE_INTERVAL / 1000)
                   + trackPlaytime;
               current.setProperty(Const.XML_TRACK_TOTAL_PLAYTIME, newValue);
             }
@@ -135,7 +135,6 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
             break;
           }
           // Very verbose : Log.debug("Output from MPlayer: " + line);
-
           if (line.matches(".*ANS_TIME_POSITION.*")) {
             // Stream is actually opened now
             bOpening = false;
@@ -201,6 +200,9 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
           // End of file
           else if (line.matches(".*\\x2e\\x2e\\x2e.*\\(.*\\).*")) {
             bEOF = true;
+            // Update track rate
+            fCurrent.getTrack().updateRate();
+            
             // Launch next track
             try {
               // Do not launch next track if not opening: it means
@@ -210,12 +212,6 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
               if (bOpening) {
                 bOpening = false;
                 break;
-              }
-
-              // Update track rate after a starting period
-              // TODO : maybe should we disable rating update in intro mode
-              if (getCurrentPosition() > Const.RATING_NO_UPDATE_PERIOD) {
-                fCurrent.getTrack().updateRate();
               }
 
               // If fading, ignore end of file
@@ -243,12 +239,11 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
 
   @Override
   public void stop() throws Exception {
-    // Update track rate
-    if (getCurrentPosition() > Const.RATING_NO_UPDATE_PERIOD) {
-      fCurrent.getTrack().updateRate();
-    }
     // Call generic stop
     super.stop();
+
+    // Update track rate
+    fCurrent.getTrack().updateRate();
   }
 
   /*
