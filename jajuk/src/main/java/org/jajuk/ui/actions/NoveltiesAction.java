@@ -53,12 +53,6 @@ public class NoveltiesAction extends JajukAction {
           Ambience ambience = AmbienceManager.getInstance().getSelectedAmbience();
           List<File> alToPlay = UtilFeatures.filterByAmbience(FileManager.getInstance()
               .getShuffleNoveltiesPlaylist(), ambience);
-          // For perfs (mainly playlist editor view refresh), we set a ceil for
-          // tracks
-          // number
-          if (alToPlay.size() > Const.NB_TRACKS_ON_ACTION) {
-            alToPlay = alToPlay.subList(0, Const.NB_TRACKS_ON_ACTION);
-          }
           if (alToPlay != null && alToPlay.size() > 0) {
             FIFO.push(UtilFeatures.createStackItems(UtilFeatures.applyPlayOption(alToPlay), Conf
                 .getBoolean(Const.CONF_STATE_REPEAT), false), false);

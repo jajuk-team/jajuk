@@ -180,7 +180,7 @@ public final class FileManager extends ItemManager {
         + java.io.File.separator + sNewName);
     // recalculate file ID
     Directory dir = fileOld.getDirectory();
-    String sNewId = createID(sNewName,dir);
+    String sNewId = createID(sNewName, dir);
     // create a new file (with own fio and sAbs)
     Track track = fileOld.getTrack();
     org.jajuk.base.File fNew = new File(sNewId, sNewName, fileOld.getDirectory(), track, fileOld
@@ -397,7 +397,9 @@ public final class FileManager extends ItemManager {
   }
 
   /**
-   * Return an ordered playlist with the entire accessible novelties collection
+   * Return an ordered playlist with the accessible novelties collection The
+   * number of returned items is limited to NB_TRACKS_ON_ACTION for performance
+   * reasons
    * 
    * @param bHideUnmounted
    * @return The entire accessible novelties collection
@@ -412,6 +414,9 @@ public final class FileManager extends ItemManager {
     // filter banned tracks
     CollectionUtils.filter(tracks, new JajukPredicates.BannedTrackPredicate());
     for (Track track : tracks) {
+      if (alEligibleFiles.size() > Const.NB_TRACKS_ON_ACTION) {
+        break;
+      }
       File file = track.getPlayeableFile(bHideUnmounted);
       // try to get a mounted file
       // (can return null)
@@ -522,8 +527,6 @@ public final class FileManager extends ItemManager {
    * 
    * @param bHideUnmounted
    *          if true, unmounted files are not chosen
-   * @param iNbBestofFiles
-   *          nb of items to return
    * @return top files
    */
   public List<File> getBestOfFiles() {
