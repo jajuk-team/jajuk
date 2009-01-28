@@ -659,9 +659,7 @@ public final class FIFO {
       launch();
     } catch (Exception e) {
       Log.error(e);
-    } finally {
-      ObservationManager.notify(new JajukEvent(JajukEvents.QUEUE_NEED_REFRESH));
-    }
+    } 
   }
 
   /**
@@ -713,10 +711,7 @@ public final class FIFO {
       launch();
     } catch (Exception e) {
       Log.error(e);
-    } finally {
-      // Refresh playlist editor
-      ObservationManager.notify(new JajukEvent(JajukEvents.QUEUE_NEED_REFRESH));
-    }
+    } 
   }
 
   /**
@@ -741,9 +736,7 @@ public final class FIFO {
       }
     } catch (Exception e) {
       Log.error(e);
-    } finally {
-      ObservationManager.notify(new JajukEvent(JajukEvents.QUEUE_NEED_REFRESH));
-    }
+    } 
   }
 
   /**
@@ -810,9 +803,7 @@ public final class FIFO {
       }
     } catch (Exception e) {
       Log.error(e);
-    } finally {
-      ObservationManager.notify(new JajukEvent(JajukEvents.QUEUE_NEED_REFRESH));
-    }
+    } 
   }
 
   /**
@@ -1068,10 +1059,7 @@ public final class FIFO {
       launch();
     } catch (Exception e) {
       Log.error(e);
-    } finally {
-      // refresh playlist editor
-      ObservationManager.notify(new JajukEvent(JajukEvents.QUEUE_NEED_REFRESH));
-    }
+    } 
   }
 
   /**
