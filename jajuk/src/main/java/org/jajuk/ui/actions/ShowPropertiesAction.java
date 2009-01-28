@@ -66,6 +66,7 @@ public class ShowPropertiesAction extends SelectionAction {
     super.perform(e);
     // If selection contains files, we have to show the tracks along with files
     if (selection.size() == 0) {
+      Messages.showErrorMessage(142);
       return;
     }
     Item first = selection.get(0);
