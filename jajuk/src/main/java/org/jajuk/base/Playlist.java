@@ -65,8 +65,6 @@ import org.jajuk.util.log.Log;
  */
 public class Playlist extends PhysicalItem implements Comparable<Playlist> {
 
-  
-
   /** playlist type */
   public enum Type {
     NORMAL, QUEUE, NEW, BOOKMARK, BESTOF, NOVELTIES

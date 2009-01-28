@@ -485,10 +485,6 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
         } catch (Exception e) {
           Log.error(e);
         } finally {
-          // for unknown reason, we need to repaint the view to refresh table
-          // after first time wizard
-          revalidate();
-          repaint();
           jtable.setAcceptColumnsEvents(true); // make sure to remove this flag
         }
       }

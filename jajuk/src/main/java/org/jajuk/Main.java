@@ -651,14 +651,14 @@ public final class Main {
               details.append(element.getName());
               details.append('\n');
             }
-            final JOptionPane optionPane = UtilGUI.getNarrowOptionPane(72);
+            JOptionPane optionPane = UtilGUI.getNarrowOptionPane(72);
             optionPane.setMessage(UtilGUI.getLimitedMessage(Messages.getString("Warning.2")
                 + details.toString(), 20));
-            final Object[] options = { Messages.getString("Ok"), Messages.getString("Hide"),
+            Object[] options = { Messages.getString("Ok"), Messages.getString("Hide"),
                 Messages.getString("Purge") };
             optionPane.setOptions(options);
             optionPane.setMessageType(JOptionPane.WARNING_MESSAGE);
-            final JDialog dialog = optionPane.createDialog(null, Messages.getString("Warning"));
+            JDialog dialog = optionPane.createDialog(null, Messages.getString("Warning"));
             dialog.setAlwaysOnTop(true);
             // keep it modal (useful at startup)
             dialog.setModal(true);
