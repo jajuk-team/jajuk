@@ -32,6 +32,7 @@ import java.awt.event.MouseEvent;
 import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.swing.JEditorPane;
@@ -43,15 +44,16 @@ import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 import javax.swing.event.HyperlinkEvent.EventType;
 
+import org.jajuk.base.Author;
 import org.jajuk.base.AuthorManager;
 import org.jajuk.base.File;
-import org.jajuk.base.Item;
+import org.jajuk.base.Style;
 import org.jajuk.base.StyleManager;
 import org.jajuk.base.Track;
 import org.jajuk.base.TrackManager;
+import org.jajuk.base.Year;
 import org.jajuk.base.YearManager;
 import org.jajuk.services.players.FIFO;
-import org.jajuk.ui.wizard.PropertiesWizard;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.UtilFeatures;
@@ -74,6 +76,34 @@ public class ThumbnailPopup extends JWindow {
 
   JPanel jp;
 
+  final JEditorPane text;
+
+  /**
+   * Launch selection and set right cursor
+   */
+  private void launchLink(List<Track> tracks) {
+    List<org.jajuk.base.File> toPlay = new ArrayList<org.jajuk.base.File>(1);
+    for (Track track : tracks) {
+      File file = track.getPlayeableFile(true);
+      if (file != null) {
+        toPlay.add(file);
+      }
+    }
+    text.setCursor(UtilGUI.WAIT_CURSOR);
+    FIFO.push(UtilFeatures.createStackItems(UtilFeatures.applyPlayOption(toPlay), Conf
+        .getBoolean(Const.CONF_STATE_REPEAT), true), Conf
+        .getBoolean(Const.CONF_OPTIONS_PUSH_ON_CLICK));
+    // Change icon cursor and wait a while so user can see it in case
+    // the PUSH_ON_CLICK option is set, otherwise, user may think
+    // nothing appened.
+    try {
+      Thread.sleep(250);
+    } catch (InterruptedException e1) {
+      Log.error(e1);
+    }
+    text.setCursor(UtilGUI.LINK_CURSOR);
+  }
+
   /**
    * 
    * @param description
@@ -90,24 +120,27 @@ public class ThumbnailPopup extends JWindow {
     jp = new JPanel();
     double[][] size = { { TableLayout.FILL }, { TableLayout.FILL } };
     jp.setLayout(new TableLayout(size));
-    final JEditorPane text = new JEditorPane("text/html", description);
+    text = new JEditorPane("text/html", description);
     text.setEditable(false);
     text.addHyperlinkListener(new HyperlinkListener() {
       public void hyperlinkUpdate(HyperlinkEvent e) {
         if (e.getEventType() == EventType.ACTIVATED) {
           URL url = e.getURL();
           if (Const.XML_AUTHOR.equals(url.getHost())) {
-            List<Item> items = new ArrayList<Item>(1);
-            items.add(AuthorManager.getInstance().getItemByID(url.getQuery()));
-            new PropertiesWizard(items);
+            Author author = (Author) AuthorManager.getInstance().getItemByID(url.getQuery());
+            List<Track> tracks = TrackManager.getInstance().getAssociatedTracks(author);
+            Collections.shuffle(tracks);
+            launchLink(tracks);
           } else if (Const.XML_STYLE.equals(url.getHost())) {
-            List<Item> items = new ArrayList<Item>(1);
-            items.add(StyleManager.getInstance().getItemByID(url.getQuery()));
-            new PropertiesWizard(items);
+            Style style = (Style) StyleManager.getInstance().getItemByID(url.getQuery());
+            List<Track> tracks = TrackManager.getInstance().getAssociatedTracks(style);
+            Collections.shuffle(tracks);
+            launchLink(tracks);
           } else if (Const.XML_YEAR.equals(url.getHost())) {
-            List<Item> items = new ArrayList<Item>(1);
-            items.add(YearManager.getInstance().getItemByID(url.getQuery()));
-            new PropertiesWizard(items);
+            Year year = (Year) YearManager.getInstance().getItemByID(url.getQuery());
+            List<Track> tracks = TrackManager.getInstance().getAssociatedTracks(year);
+            Collections.shuffle(tracks);
+            launchLink(tracks);
           } else if (Const.XML_URL.equals(url.getHost())) {
             try {
               java.awt.Desktop.getDesktop().browse(new URI(url.getQuery()));
@@ -115,14 +148,10 @@ public class ThumbnailPopup extends JWindow {
               Log.error(e1);
             }
           } else if (Const.XML_TRACK.equals(url.getHost())) {
-            List<Item> items = new ArrayList<Item>(1);
+            List<Track> tracks = new ArrayList<Track>(1);
             Track track = (Track) TrackManager.getInstance().getItemByID(url.getQuery());
-            items.add(track);
-            List<org.jajuk.base.File> toPlay = new ArrayList<org.jajuk.base.File>(1);
-            File file = track.getPlayeableFile(true);
-            toPlay.add(file);
-            FIFO.push(UtilFeatures.createStackItems(UtilFeatures.applyPlayOption(toPlay), Conf
-                .getBoolean(Const.CONF_STATE_REPEAT), true), false);
+            tracks.add(track);
+            launchLink(tracks);
           }
         }
         // change cursor on entering or leaving
