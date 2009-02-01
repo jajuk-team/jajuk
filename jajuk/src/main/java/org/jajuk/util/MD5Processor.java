@@ -26,7 +26,7 @@ import java.security.NoSuchAlgorithmException;
 import org.jajuk.util.log.Log;
 
 /**
- * Convenient class to compute MD5 hascodes and return them using predefined
+ * Convenient class to compute MD5 hashcodes and return them using predefined
  * base
  */
 
