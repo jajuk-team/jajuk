@@ -50,6 +50,8 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableColumn;
@@ -326,6 +328,13 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
     jtable.setSortOrder(0, SortOrder.ASCENDING);
     jtable.setHighlighters(UtilGUI.getAlternateHighlighter());
     jtable.packTable(5);
+    // Hide the copy url if several items selection. Do not simply disable them
+    // as the getMenu() method enable all menu items
+    jtable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+      public void valueChanged(ListSelectionEvent e) {
+        jmiFileCopyURL.setVisible(jtable.getSelectedRowCount() < 2);
+      }
+    });
     // Register on the list for subject we are interested in
     ObservationManager.register(this);
     // refresh columns conf in case of some attributes been removed

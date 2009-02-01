@@ -401,6 +401,8 @@ public class JajukTable extends JXTable implements ListSelectionListener,
    * Return generic popup menu for items in a table. <br>
    * All items are forced to enable state
    * 
+   * @TODO : this is probably not a good idea to force menu items to enable
+   * 
    * @return generic popup menu for items in a table
    */
   public JPopupMenu getMenu() {
