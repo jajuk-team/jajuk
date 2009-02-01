@@ -460,10 +460,10 @@ public class Device extends PhysicalItem implements Comparable<Device> {
       reporter.cleanupDone();
       // Actual refresh
       refreshCommand((i == Device.OPTION_REFRESH_DEEP));
-      // notify views to refresh
-      ObservationManager.notify(new JajukEvent(JajukEvents.DEVICE_REFRESH));
       // cleanup logical items
       org.jajuk.base.Collection.cleanupLogical();
+      // notify views to refresh
+      ObservationManager.notify(new JajukEvent(JajukEvents.DEVICE_REFRESH));
       // commit collection at each refresh (can be useful if application
       // is closed brutally with control-C or shutdown and that exit hook
       // have no time to perform commit)

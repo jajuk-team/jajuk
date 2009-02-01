@@ -323,9 +323,6 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
   private void registerFile(java.io.File music, String sId, String sTrackName, String sAlbumName,
       String sAuthorName, String sStyle, long length, String sYear, long lQuality, String sComment,
       long lOrder) {
-    if (sID.equals("959q0mr0egcunz7tt8qbzfo1")) {
-      System.currentTimeMillis();
-    }
     Album album = AlbumManager.getInstance().registerAlbum(sAlbumName);
     Style style = StyleManager.getInstance().registerStyle(sStyle);
     Year year = YearManager.getInstance().registerYear(sYear);
@@ -590,6 +587,8 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
           cleanRemovedFiles();
           // Actual refresh
           refresh(deep, reporter);
+          // cleanup logical items
+          org.jajuk.base.Collection.cleanupLogical();
           ObservationManager.notify(new JajukEvent(JajukEvents.DEVICE_REFRESH));
           reporter.done();
           // commit collection at each refresh (can be useful if application

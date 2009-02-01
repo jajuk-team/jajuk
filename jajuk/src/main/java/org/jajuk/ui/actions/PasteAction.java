@@ -66,17 +66,20 @@ public class PasteAction extends JajukAction {
   public void perform(ActionEvent e) {
     JComponent source = (JComponent) e.getSource();
     final List<Item> alSelected = (List<Item>) source.getClientProperty(Const.DETAIL_SELECTION);
-    final List<Item> moveItems = ItemMoveManager.getInstance().getAll();
+    final List<Item> itemsToMove = ItemMoveManager.getInstance().getAll();
     final ItemMoveManager.MoveActions moveAction = ItemMoveManager.getInstance().getAction();
 
     final List<File> alFiles = new ArrayList<File>(alSelected.size());
     final List<Directory> alDirs = new ArrayList<Directory>(alSelected.size());
 
     new Thread() {
+      @SuppressWarnings("cast")
       @Override
       public void run() {
         UtilGUI.waiting();
-        for (Item item : moveItems) {
+
+        // Compute all files to move from various items list
+        for (Item item : itemsToMove) {
           if (item instanceof File) {
             alFiles.add((File) item);
           } else if (item instanceof Track) {
@@ -90,9 +93,11 @@ public class PasteAction extends JajukAction {
           }
         }
 
+        // Compute destination directory
+        // alSelected can contain either a single Directory or a single Device
         Item item = alSelected.get(0);
-        Directory destDir;
         java.io.File dir;
+        Directory destDir;
         if (item instanceof Directory) {
           dir = new java.io.File(((Directory) item).getAbsolutePath());
           destDir = (Directory) item;
@@ -104,7 +109,29 @@ public class PasteAction extends JajukAction {
           destDir = ((File) item).getDirectory();
         }
 
+        // Compute source directories
+        // We need to find the highest directory in order to refresh it along
+        // with the destination file to avoid phantom references
+        List<Directory> srcDirs = new ArrayList<Directory>(1);
+
+        for (File file : alFiles) {
+          boolean parentAlreadyPresent = false;
+          // We have to iterate using items index because the collection can
+          // grow
+          for (int i = 0; i < srcDirs.size(); i++) {
+            Directory directory = (Directory) srcDirs.get(i);
+            if (file.getDirectory().isChildOf(directory)) {
+              parentAlreadyPresent = true;
+              break;
+            }
+          }
+          if (!parentAlreadyPresent && !srcDirs.contains(file.getDirectory())) {
+            srcDirs.add(file.getDirectory());
+          }
+        }
+
         boolean overwriteAll = false;
+        boolean bErrorOccured = false;
 
         if (moveAction == ItemMoveManager.MoveActions.CUT) {
           for (File f : alFiles) {
@@ -131,6 +158,7 @@ public class PasteAction extends JajukAction {
             } catch (Exception ioe) {
               Log.error(131, ioe);
               Messages.showErrorMessage(131);
+              bErrorOccured = true;
             }
           }
           for (Directory d : alDirs) {
@@ -145,16 +173,21 @@ public class PasteAction extends JajukAction {
             } catch (Exception ioe) {
               Log.error(131, ioe);
               Messages.showErrorMessage(131);
+              bErrorOccured = true;
             }
           }
           try {
             destDir.refresh(false, null);
+            // Refresh source directories as well
+            for (Directory srcDir : srcDirs) {
+              srcDir.refresh(false, null);
+            }
           } catch (JajukException e) {
             Log.error(e);
             Messages.showErrorMessage(e.getCode());
+            bErrorOccured = true;
           }
         } else if (moveAction == ItemMoveManager.MoveActions.COPY) {
-          Log.debug("Inside Copy");
           for (File f : alFiles) {
             if (!overwriteAll) {
               java.io.File newFile = new java.io.File(dir.getAbsolutePath() + "/" + f.getName());
@@ -177,6 +210,7 @@ public class PasteAction extends JajukAction {
             } catch (Exception ioe) {
               Log.error(131, ioe);
               Messages.showErrorMessage(131);
+              bErrorOccured = true;
             }
           }
           for (Directory d : alDirs) {
@@ -188,6 +222,7 @@ public class PasteAction extends JajukAction {
             } catch (Exception ioe) {
               Log.error(131, ioe);
               Messages.showErrorMessage(131);
+              bErrorOccured = true;
             }
           }
           try {
@@ -195,22 +230,29 @@ public class PasteAction extends JajukAction {
           } catch (JajukException e) {
             Log.error(e);
             Messages.showErrorMessage(e.getCode());
+            bErrorOccured = true;
           }
         }
         ObservationManager.notify(new JajukEvent(JajukEvents.DEVICE_REFRESH));
         UtilGUI.stopWaiting();
+        if (!bErrorOccured) {
+          InformationJPanel.getInstance().setMessage(Messages.getString("Success"),
+              InformationJPanel.INFORMATIVE);
+        }
+
       }
     }.start();
   }
 
   /**
    * Display currently copied file to information panel
+   * 
    * @param file
    */
   private void showMessage(java.io.File file) {
     // TODO create a dedicated label
     String message = Messages.getString("Device.42").substring(3);
-    message += file.getAbsolutePath()+"]";
+    message += file.getAbsolutePath() + "]";
     InformationJPanel.getInstance().setMessage(message, InformationJPanel.INFORMATIVE);
 
   }

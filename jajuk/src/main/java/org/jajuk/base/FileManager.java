@@ -233,18 +233,20 @@ public final class FileManager extends ItemManager {
    */
   public synchronized File changeFileDirectory(File old, Directory newDir) {
     // recalculate file ID
-    String sNewId = MD5Processor.hash(new StringBuilder(newDir.getDevice().getName()).append(
-        newDir.getDevice().getUrl()).append(newDir.getRelativePath()).append(old.getName())
-        .toString());
+    String sNewId = FileManager.createID(old.getName(), newDir);
+    Track track = old.getTrack();
     // create a new file (with own fio and sAbs)
-    File fNew = new File(sNewId, old.getName(), newDir, old.getTrack(), old.getSize(), old
+    File fNew = new File(sNewId, old.getName(), newDir, track, old.getSize(), old
         .getQuality());
-    fNew.setProperties(old.getProperties()); // transfert all
-    // properties (inc id)
-    fNew.setProperty(Const.XML_ID, sNewId); // reset new id and name
+    // transfert all properties (inc id), then set right id and directory
+    fNew.setProperties(old.getProperties());
+    fNew.setProperty(Const.XML_ID, sNewId);
+    fNew.setProperty(Const.XML_DIRECTORY, newDir.getID());
+
     // OK, remove old file and register this new file
     removeFile(old);
     registerItem(fNew);
+    track.addFile(fNew);
     return fNew;
   }
 

@@ -33,6 +33,7 @@ import org.jajuk.base.Item;
 import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
+import org.jajuk.services.players.FIFO;
 import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
@@ -56,6 +57,11 @@ public class RenameAction extends JajukAction {
     // Get required data from the tree (selected node and node type)
     final List<Item> alSelected = (List<Item>) source.getClientProperty(Const.DETAIL_SELECTION);
     final Item currentItem = alSelected.get(0);
+    // Check if file is currently played
+    if (FIFO.getCurrentFile() != null && FIFO.getCurrentFile().equals(currentItem)) {
+      Messages.showErrorMessage(134);
+      return;
+    }
     new Thread() {
       @Override
       public void run() {

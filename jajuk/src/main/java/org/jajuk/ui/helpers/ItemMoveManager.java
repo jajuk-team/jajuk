@@ -33,7 +33,7 @@ public class ItemMoveManager {
 
   private static ItemMoveManager singleton;
 
-  private List<Item> moveItems = new ArrayList<Item>(20);
+  private List<Item> itemsToMove = new ArrayList<Item>(20);
 
   public enum MoveActions {
     CUT, COPY
@@ -49,15 +49,15 @@ public class ItemMoveManager {
   }
 
   public void addItems(List<Item> items) {
-    moveItems.addAll(items);
+    itemsToMove.addAll(items);
   }
 
   public List<Item> getAll() {
-    return moveItems;
+    return itemsToMove;
   }
 
   public void removeAll() {
-    moveItems.clear();
+    itemsToMove.clear();
   }
 
   public void setAction(MoveActions action) {
