@@ -59,6 +59,13 @@ public class LogChecker extends TestCase {
     assertFalse(logs.matches(".*TABLE_SELECTION_CHANGED.*"));
   }
   
+   /**
+   * Check for play time outs
+   */
+  public void testPlayOOT() {
+    assertFalse(logs.matches("OOT Mplayer process.*"));
+  }
+  
   
 
 }
