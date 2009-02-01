@@ -183,6 +183,10 @@ public abstract class AbstractTreeView extends ViewAdapter {
     action = ActionManager.getAction(JajukActions.COPY);
     inputMap.put(KeyStroke.getKeyStroke("ctrl C"), "copy");
     actionMap.put("copy", action);
+    // Ctrl X
+    action = ActionManager.getAction(JajukActions.CUT);
+    inputMap.put(KeyStroke.getKeyStroke("ctrl X"), "cut");
+    actionMap.put("cut", action);
     // Ctrl V
     action = ActionManager.getAction(JajukActions.PASTE);
     inputMap.put(KeyStroke.getKeyStroke("ctrl V"), "paste");
