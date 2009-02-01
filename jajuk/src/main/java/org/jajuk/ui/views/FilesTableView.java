@@ -75,7 +75,7 @@ public class FilesTableView extends AbstractTableView {
 
   /** populate the table */
   @Override
-  public JajukTableModel populateTable() {
+  public synchronized JajukTableModel populateTable() {
     // model creation
     return new FilesTableModel();
   }

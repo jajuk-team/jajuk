@@ -258,7 +258,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
                 .getBoolean(Const.CONF_STATE_REPEAT), true), Conf
                 .getBoolean(Const.CONF_OPTIONS_PUSH_ON_CLICK));
           } else {
-            Messages.showErrorMessage(10, item.getName());
+            Messages.showErrorMessage(10);
           }
         }
       }

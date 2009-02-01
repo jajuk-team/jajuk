@@ -78,7 +78,7 @@ public class TracksTableView extends AbstractTableView {
 
   /** Fill the table */
   @Override
-  public JajukTableModel populateTable() {
+  public synchronized JajukTableModel populateTable() {
     // model creation
     return new TracksTableModel();
   }

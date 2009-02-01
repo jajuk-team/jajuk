@@ -202,7 +202,7 @@ public abstract class JajukTableModel extends DefaultTableModel {
   /**
    * Fill model with data
    */
-  public void populateModel(List<String> columnsToShow) {
+  public synchronized void populateModel(List<String> columnsToShow) {
     populateModel(null, null, columnsToShow);
   }
 

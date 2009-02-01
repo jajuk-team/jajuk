@@ -236,7 +236,7 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
   /** Fill the tree */
 
   @Override
-  public void populateTree() {
+  public synchronized void populateTree() {
     TrackComparatorType comparatorType = TrackComparatorType.values()[Conf
         .getInt(Const.CONF_LOGICAL_TREE_SORT_ORDER)];
     if (comparatorType == TrackComparatorType.STYLE_AUTHOR_ALBUM) {

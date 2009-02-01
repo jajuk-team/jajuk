@@ -173,7 +173,7 @@ public class AlbumsTableView extends AbstractTableView {
    * @see org.jajuk.ui.views.AbstractTableView#populateTable()
    */
   @Override
-  JajukTableModel populateTable() {
+  synchronized JajukTableModel populateTable() {
     // model creation
     return new AlbumsTableModel();
   }
