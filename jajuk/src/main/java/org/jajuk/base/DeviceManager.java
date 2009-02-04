@@ -175,7 +175,6 @@ public final class DeviceManager extends ItemManager {
    *          is it a new device ?
    * @return 0:ok or error code
    */
-  @SuppressWarnings("unchecked")
   public int checkDeviceAvailablity(String sName, int iDeviceType, String sUrl, boolean bNew) {
     // don't check if it is a CD as all CDs may use the same mount point
     if (iDeviceType == Device.TYPE_CD) {
@@ -249,7 +248,6 @@ public final class DeviceManager extends ItemManager {
    * 
    * @param device
    */
-  @SuppressWarnings("unchecked")
   public synchronized void removeDevice(Device device) {
     // show confirmation message if required
     if (Conf.getBoolean(Const.CONF_CONFIRMATIONS_REMOVE_DEVICE)) {
@@ -317,7 +315,6 @@ public final class DeviceManager extends ItemManager {
   /**
    * Clean all devices
    */
-  @SuppressWarnings("unchecked")
   public synchronized void cleanAllDevices() {
     for (Device device : getDevices()) {
       // Do not auto-refresh CD as several CD may share the same mount

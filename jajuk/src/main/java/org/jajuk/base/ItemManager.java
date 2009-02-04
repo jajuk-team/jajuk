@@ -152,7 +152,6 @@ public abstract class ItemManager {
   }
 
   /** Remove a custom property to all items for the given manager */
-  @SuppressWarnings("unchecked")
   public synchronized void applyRemoveProperty(PropertyMetaInformation meta) {
     for (Item item : items) {
       item.removeProperty(meta.getName());
@@ -168,7 +167,6 @@ public abstract class ItemManager {
    */
 
   /** Add a custom property to all items for the given manager */
-  @SuppressWarnings("unchecked")
   public synchronized void applyNewProperty(PropertyMetaInformation meta) {
     for (Item item : items) {
       item.setProperty(meta.getName(), meta.getDefaultValue());

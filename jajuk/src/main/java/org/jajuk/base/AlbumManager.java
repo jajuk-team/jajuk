@@ -223,7 +223,6 @@ public final class AlbumManager extends ItemManager implements Observer {
    * @param item
    * @return a list of item, void list if no result
    */
-  @SuppressWarnings("unchecked")
   public synchronized List<Album> getAssociatedAlbums(Item item) {
     List<Album> out = new ArrayList<Album>(1);
     // [Perf] If item is a track, just return its album

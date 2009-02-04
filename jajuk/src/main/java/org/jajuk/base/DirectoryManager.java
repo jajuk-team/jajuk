@@ -115,7 +115,6 @@ public final class DirectoryManager extends ItemManager {
    * @param sId :
    *          Device id
    */
-  @SuppressWarnings("unchecked")
   public synchronized void cleanDevice(final String sId) {
     for (Directory directory : getDirectories()) {
       if (directory.getDevice().getID().equals(sId)) {

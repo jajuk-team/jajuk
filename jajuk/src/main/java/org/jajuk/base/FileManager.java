@@ -256,7 +256,6 @@ public final class FileManager extends ItemManager {
    * @param sId :
    *          Device id
    */
-  @SuppressWarnings("unchecked")
   public synchronized void clearDevice(String sId) {
     for (File file : getFiles()) {
       if (file.getDirectory() == null || file.getDirectory().getDevice().getID().equals(sId)) {
@@ -284,7 +283,6 @@ public final class FileManager extends ItemManager {
    * @return file or null if given path is not known
    */
 
-  @SuppressWarnings("unchecked")
   public synchronized File getFileByPath(String sPath) {
     File fOut = null;
     java.io.File fToCompare = new java.io.File(sPath);
@@ -304,7 +302,6 @@ public final class FileManager extends ItemManager {
   /**
    * @return All accessible files of the collection
    */
-  @SuppressWarnings("unchecked")
   public List<File> getReadyFiles() {
     List<File> files = null;
     files = FileManager.getInstance().getFiles();
@@ -406,7 +403,6 @@ public final class FileManager extends ItemManager {
    * @param bHideUnmounted
    * @return The entire accessible novelties collection
    */
-  @SuppressWarnings("unchecked")
   public List<File> getGlobalNoveltiesPlaylist(boolean bHideUnmounted) {
     List<File> alEligibleFiles = new ArrayList<File>(1000);
     List<Track> tracks = TrackManager.getInstance().getTracks();
