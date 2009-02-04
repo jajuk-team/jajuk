@@ -55,7 +55,6 @@ public class BookmarkSelectionAction extends SelectionAction {
    * 
    * @see org.jajuk.ui.actions.JajukAction#perform(java.awt.event.ActionEvent)
    */
-  @SuppressWarnings("unchecked")
   @Override
   public void perform(final ActionEvent e) throws Exception {
     new Thread("BookmarkSelectionAction") {

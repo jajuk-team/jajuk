@@ -62,7 +62,6 @@ public class DeleteSelectionAction extends SelectionAction {
   }
 
   @Override
-  @SuppressWarnings("unchecked")
   public void perform(ActionEvent e) throws Exception {
     // Make sure to consider selection as a raw playlist, not its content
     expandPlaylists = false;
