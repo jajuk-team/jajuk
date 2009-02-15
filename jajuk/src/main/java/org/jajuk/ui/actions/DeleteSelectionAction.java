@@ -122,7 +122,7 @@ public class DeleteSelectionAction extends SelectionAction {
           UtilGUI.waiting();
           for (File f : alFiles) {
             try {
-              if (f.equals(FIFO.getCurrentFile())){
+              if (FIFO.getPlayingFile() != null && f.equals(FIFO.getPlayingFile())) {
                 throw new Exception("File currently in use");
               }
               Directory d = f.getDirectory();
@@ -210,6 +210,11 @@ public class DeleteSelectionAction extends SelectionAction {
           UtilGUI.waiting();
           for (Directory d : alDirs) {
             try {
+              for (File f : d.getFiles()) {
+                if (FIFO.getPlayingFile() != null && f.equals(FIFO.getPlayingFile())) {
+                  throw new Exception("File currently in use");
+                }
+              }
               UtilSystem.deleteDir(new java.io.File(d.getAbsolutePath()));
               DirectoryManager.getInstance().removeDirectory(d.getID());
             } catch (Exception ioe) {

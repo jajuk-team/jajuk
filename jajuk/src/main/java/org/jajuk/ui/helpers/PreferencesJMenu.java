@@ -155,8 +155,6 @@ public class PreferencesJMenu extends JMenu {
   public synchronized void resetUI(List<? extends Item> selection) {
     removeAll();
     initUI(selection);
-    revalidate();
-    repaint();
   }
 
 }

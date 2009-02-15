@@ -581,7 +581,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
           // Remove previous thumbs to avoid using outdated images
           org.jajuk.base.File fCurrent = fileReference;
           if (fCurrent == null) {
-            fCurrent = FIFO.getCurrentFile();
+            fCurrent = FIFO.getPlayingFile();
           }
           ThumbnailManager.cleanThumbs(fCurrent.getTrack().getAlbum());
           refreshThumbs(cover);
@@ -1044,7 +1044,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
             if (last == null // first track, display cover
                 // if we are always in the same directory, just leave to
                 // save cpu
-                || (!last.getDirectory().equals(FIFO.getCurrentFile().getDirectory()))
+                || (!last.getDirectory().equals(FIFO.getPlayingFile().getDirectory()))
                 || bForceCoverReload) {
               // Ignore this event if a reference file has been set and if
               // this event has already been handled
@@ -1123,7 +1123,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
     // check if a file has been given for this cover view
     // if not, take current cover
     if (fCurrent == null) {
-      fCurrent = FIFO.getCurrentFile();
+      fCurrent = FIFO.getPlayingFile();
     }
     // no current cover
     if (fCurrent == null) {

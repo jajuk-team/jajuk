@@ -239,8 +239,8 @@ public final class TrackManager extends ItemManager {
     // Remove the track from the old album
     track.getAlbum().getTracksCache().remove(track);
     // if current track album name is changed, notify it
-    if (FIFO.getCurrentFile() != null
-        && FIFO.getCurrentFile().getTrack().getAlbum().equals(track.getAlbum())) {
+    if (FIFO.getPlayingFile() != null
+        && FIFO.getPlayingFile().getTrack().getAlbum().equals(track.getAlbum())) {
       ObservationManager.notify(new JajukEvent(JajukEvents.ALBUM_CHANGED));
     }
     // register the new album
@@ -291,8 +291,8 @@ public final class TrackManager extends ItemManager {
     track.getAlbum().getTracksCache().remove(track);
 
     // if current track author name is changed, notify it
-    if (FIFO.getCurrentFile() != null
-        && FIFO.getCurrentFile().getTrack().getAuthor().equals(track.getAuthor())) {
+    if (FIFO.getPlayingFile() != null
+        && FIFO.getPlayingFile().getTrack().getAuthor().equals(track.getAuthor())) {
       ObservationManager.notify(new JajukEvent(JajukEvents.AUTHOR_CHANGED));
     }
     // register the new item
@@ -554,7 +554,7 @@ public final class TrackManager extends ItemManager {
         track.getDuration(), track.getYear(), track.getOrder(), track.getType());
     postChange(track, newTrack, filter);
     // if current track name is changed, notify it
-    if (FIFO.getCurrentFile() != null && FIFO.getCurrentFile().getTrack().equals(track)) {
+    if (FIFO.getPlayingFile() != null && FIFO.getPlayingFile().getTrack().equals(track)) {
       ObservationManager.notify(new JajukEvent(JajukEvents.TRACK_CHANGED));
     }
     return newTrack;

@@ -174,7 +174,7 @@ public class LyricsView extends ViewAdapter implements Observer {
   public void update(final JajukEvent event) {
     final JajukEvents subject = event.getSubject();
     if (subject.equals(JajukEvents.FILE_LAUNCHED)) {
-      final File file = FIFO.getCurrentFile();
+      final File file = FIFO.getPlayingFile();
       // file is null is view started with no playing track (the event is
       // simulated in initUI())
       if (file == null) {
@@ -194,7 +194,7 @@ public class LyricsView extends ViewAdapter implements Observer {
         @Override
         public void run() {
 
-          track = FIFO.getCurrentFile().getTrack();
+          track = FIFO.getPlayingFile().getTrack();
           // Launch lyrics service asynchronously and out of the
           // AWT dispatcher thread
           lyrics = LyricsService.getLyrics(track.getAuthor().getName2(), track.getName());

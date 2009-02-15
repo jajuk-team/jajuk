@@ -46,14 +46,14 @@ public class PlayHighlighterPredicate implements HighlightPredicate {
       return false;
     }
     Item item = model.getItemAt(adapter.row);
-    if (item instanceof File && FIFO.getCurrentFile() != null) {
+    if (item instanceof File && FIFO.getPlayingFile() != null) {
       File file = (File) item;
-      if (file.equals(FIFO.getCurrentFile())) {
+      if (file.equals(FIFO.getPlayingFile())) {
         return true;
       }
     } else if (item instanceof Track) {
       List<File> files = ((Track) item).getFiles();
-      if (files.contains(FIFO.getCurrentFile())) {
+      if (files.contains(FIFO.getPlayingFile())) {
         return true;
       }
     }

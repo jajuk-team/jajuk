@@ -198,7 +198,7 @@ public final class Main {
       // perform initial checkups and create needed files
       initialCheckups();
 
-      // log startup depends on : setExecLocation, initialCheckups
+      // log startup depends on : initialCheckups
       Log.getInstance();
       Log.setVerbosity(Log.DEBUG);
 

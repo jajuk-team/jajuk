@@ -456,12 +456,6 @@ public class QueueView extends PlaylistView {
     if (iRows[0] == editorTable.getRowCount()) {
       editorTable.getSelectionModel().setSelectionInterval(iLastRow, iLastRow);
     }
-    // If no more track, we simulate a stop
-    try {
-      ActionManager.getAction(JajukActions.STOP_TRACK).perform(null);
-    } catch (Exception e) {
-      Log.error(e);
-    }
   }
 
   /**

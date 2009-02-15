@@ -441,7 +441,7 @@ public final class InformationJPanel extends JXPanel implements ChangeListener, 
             jsPosition.addMouseWheelListener(InformationJPanel.this);
             jsPosition.addChangeListener(InformationJPanel.this);
           } else if (JajukEvents.FILE_LAUNCHED.equals(subject)) {
-            File file = FIFO.getCurrentFile();
+            File file = FIFO.getPlayingFile();
             if (file != null) {
               MessageFormat sMessageFormat = new MessageFormat(Messages.getString("FIFO.10") + " "
                   + Messages.getString("InformationJPanel.8"));

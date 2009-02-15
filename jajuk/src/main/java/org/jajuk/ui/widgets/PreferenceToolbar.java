@@ -122,8 +122,8 @@ public class PreferenceToolbar extends JajukJToolbar implements Observer {
 
     // Set default to unset preference if not playing and to current track value
     // if playing
-    if (!FIFO.isStopped() && FIFO.getCurrentFile() != null) {
-      setPreference(FIFO.getCurrentFile().getTrack().getLongValue(Const.XML_TRACK_PREFERENCE));
+    if (!FIFO.isStopped() && FIFO.getPlayingFile() != null) {
+      setPreference(FIFO.getPlayingFile().getTrack().getLongValue(Const.XML_TRACK_PREFERENCE));
     } else {
       jcbPreference.setSelectedIndex(3);
     }
@@ -131,7 +131,7 @@ public class PreferenceToolbar extends JajukJToolbar implements Observer {
     listener = new ActionListener() {
 
       public void actionPerformed(ActionEvent e) {
-        File file = FIFO.getCurrentFile();
+        File file = FIFO.getPlayingFile();
         if (file != null) {
           Track track = file.getTrack();
           track.setPreference(3 - jcbPreference.getSelectedIndex());
@@ -180,7 +180,7 @@ public class PreferenceToolbar extends JajukJToolbar implements Observer {
   public void update(final JajukEvent event) {
     SwingUtilities.invokeLater(new Runnable() {
       public void run() {
-        File current = FIFO.getCurrentFile();
+        File current = FIFO.getPlayingFile();
         // More checks, current track can be null when playing with web radios
         if (current == null) {
           return;
@@ -192,7 +192,7 @@ public class PreferenceToolbar extends JajukJToolbar implements Observer {
           jcbPreference.setEnabled(true);
           jbBan.setEnabled(true);
           updateBanIcon();
-          setPreference(FIFO.getCurrentFile().getTrack().getLongValue(Const.XML_TRACK_PREFERENCE));
+          setPreference(FIFO.getPlayingFile().getTrack().getLongValue(Const.XML_TRACK_PREFERENCE));
         } else if (JajukEvents.ZERO.equals(event.getSubject())
             || JajukEvents.PLAYER_STOP.equals(event.getSubject())) {
           jcbPreference.setEnabled(false);
@@ -209,11 +209,11 @@ public class PreferenceToolbar extends JajukJToolbar implements Observer {
    * Update ban icon state according to current track
    */
   private void updateBanIcon() {
-    if (FIFO.getCurrentFile() == null || FIFO.isStopped()) {
+    if (FIFO.getPlayingFile() == null || FIFO.isStopped()) {
       jbBan.setIcon(IconLoader.getIcon(JajukIcons.BAN));
       jbBan.setToolTipText(Messages.getString("BanSelectionAction.1"));
     } else {
-      Track current = FIFO.getCurrentFile().getTrack();
+      Track current = FIFO.getPlayingFile().getTrack();
       if (current.getBooleanValue(Const.XML_TRACK_BANNED)) {
         jbBan.setIcon(IconLoader.getIcon(JajukIcons.UNBAN));
         jbBan.setToolTipText(Messages.getString("UnBanSelectionAction.1"));

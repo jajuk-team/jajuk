@@ -53,7 +53,7 @@ public class ChangeTrackPreferenceAction extends JajukAction {
     new Thread("ChangeTrackPreferenceAction") {
       public void run() {
         try {
-          File file = FIFO.getCurrentFile();
+          File file = FIFO.getPlayingFile();
           if (file != null) {
             Track track = file.getTrack();
             track.setPreference(Conf.getInt(Const.CONF_INC_RATING));

@@ -47,7 +47,7 @@ public class BanCurrentAction extends SelectionAction {
 
   @Override
   public void perform(ActionEvent e) throws Exception {
-    File current = FIFO.getCurrentFile();
+    File current = FIFO.getPlayingFile();
     if (current != null) {
       Track track = current.getTrack();
       boolean alreadyBanned = track.getBooleanValue(Const.XML_TRACK_BANNED);

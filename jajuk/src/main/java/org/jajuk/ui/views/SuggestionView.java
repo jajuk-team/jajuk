@@ -236,7 +236,7 @@ public class SuggestionView extends ViewAdapter implements Observer {
 
   private void refreshLastFMCollectionTabs() {
     String newAuthor = null;
-    File current = FIFO.getCurrentFile();
+    File current = FIFO.getPlayingFile();
     if (current != null) {
       newAuthor = current.getTrack().getAuthor().getName2();
     }

@@ -168,7 +168,7 @@ public class AnimationView extends ViewAdapter implements Observer, ComponentLis
   public void update(JajukEvent event) {
     JajukEvents subject = event.getSubject();
     if (subject.equals(JajukEvents.FILE_LAUNCHED)) {
-      File file = FIFO.getCurrentFile();
+      File file = FIFO.getPlayingFile();
       if (file != null) {
         String s = "";
         try {

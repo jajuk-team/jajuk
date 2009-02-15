@@ -149,7 +149,7 @@ public final class AlbumManager extends ItemManager implements Observer {
       }
     }
     // if current track album name is changed, notify it
-    if (FIFO.getCurrentFile() != null && FIFO.getCurrentFile().getTrack().getAlbum().equals(old)) {
+    if (FIFO.getPlayingFile() != null && FIFO.getPlayingFile().getTrack().getAlbum().equals(old)) {
       ObservationManager.notify(new JajukEvent(JajukEvents.ALBUM_CHANGED));
     }
     return newItem;

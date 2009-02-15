@@ -19,9 +19,10 @@
  */
 package org.jajuk.ui.actions;
 
-import static org.jajuk.ui.actions.JajukActions.*;
+import static org.jajuk.ui.actions.JajukActions.ALARM_CLOCK;
 import static org.jajuk.ui.actions.JajukActions.ALL_VIEW_RESTORE_DEFAULTS;
 import static org.jajuk.ui.actions.JajukActions.BAN;
+import static org.jajuk.ui.actions.JajukActions.BAN_SELECTION;
 import static org.jajuk.ui.actions.JajukActions.BEST_OF;
 import static org.jajuk.ui.actions.JajukActions.BOOKMARK_SELECTION;
 import static org.jajuk.ui.actions.JajukActions.CDDB_SELECTION;
@@ -62,6 +63,14 @@ import static org.jajuk.ui.actions.JajukActions.PLAY_PAUSE_TRACK;
 import static org.jajuk.ui.actions.JajukActions.PLAY_REPEAT_SELECTION;
 import static org.jajuk.ui.actions.JajukActions.PLAY_SELECTION;
 import static org.jajuk.ui.actions.JajukActions.PLAY_SHUFFLE_SELECTION;
+import static org.jajuk.ui.actions.JajukActions.PREFERENCE_ADORE;
+import static org.jajuk.ui.actions.JajukActions.PREFERENCE_AVERAGE;
+import static org.jajuk.ui.actions.JajukActions.PREFERENCE_HATE;
+import static org.jajuk.ui.actions.JajukActions.PREFERENCE_LIKE;
+import static org.jajuk.ui.actions.JajukActions.PREFERENCE_LOVE;
+import static org.jajuk.ui.actions.JajukActions.PREFERENCE_POOR;
+import static org.jajuk.ui.actions.JajukActions.PREFERENCE_UNSET;
+import static org.jajuk.ui.actions.JajukActions.PREPARE_PARTY;
 import static org.jajuk.ui.actions.JajukActions.PREVIOUS_ALBUM;
 import static org.jajuk.ui.actions.JajukActions.PREVIOUS_TRACK;
 import static org.jajuk.ui.actions.JajukActions.PUSH_SELECTION;
@@ -69,6 +78,7 @@ import static org.jajuk.ui.actions.JajukActions.QUALITY;
 import static org.jajuk.ui.actions.JajukActions.REFRESH;
 import static org.jajuk.ui.actions.JajukActions.RENAME;
 import static org.jajuk.ui.actions.JajukActions.REPEAT_MODE_STATUS_CHANGE;
+import static org.jajuk.ui.actions.JajukActions.REPLAY_ALBUM;
 import static org.jajuk.ui.actions.JajukActions.REWIND_TRACK;
 import static org.jajuk.ui.actions.JajukActions.SAVE_AS;
 import static org.jajuk.ui.actions.JajukActions.SHOW_ABOUT;
@@ -82,6 +92,7 @@ import static org.jajuk.ui.actions.JajukActions.SLIM_JAJUK;
 import static org.jajuk.ui.actions.JajukActions.STOP_TRACK;
 import static org.jajuk.ui.actions.JajukActions.TIP_OF_THE_DAY;
 import static org.jajuk.ui.actions.JajukActions.UNMOUNTED;
+import static org.jajuk.ui.actions.JajukActions.UN_BAN_SELECTION;
 import static org.jajuk.ui.actions.JajukActions.VIEW_RESTORE_DEFAULTS;
 import static org.jajuk.ui.actions.JajukActions.WEB_RADIO;
 

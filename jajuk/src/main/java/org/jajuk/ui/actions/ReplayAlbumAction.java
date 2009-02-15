@@ -53,7 +53,7 @@ public class ReplayAlbumAction extends JajukAction {
       public void run() {
         synchronized (FIFO.class) {
           try {
-            File current = FIFO.getCurrentFile();
+            File current = FIFO.getPlayingFile();
             if (current != null) {
               List<Track> tracks = current.getTrack().getAlbum().getTracksCache();
               List<File> files = new ArrayList<File>(tracks.size());

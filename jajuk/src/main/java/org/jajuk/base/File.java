@@ -398,7 +398,7 @@ public class File extends PhysicalItem implements Comparable<File>, Const {
 
   /**
    * 
-   * @return text to be displayed in the tray ballon and tooltip with HTML
+   * @return text to be displayed in the tray balloon and tooltip with HTML
    *         formating that is used correctly under Linux
    */
   public String getHTMLFormatText() {
@@ -406,9 +406,9 @@ public class File extends PhysicalItem implements Comparable<File>, Const {
     sOut += "<HTML><br>";
     String size = "100x100";
     int maxSize = 30;
-    ThumbnailManager.refreshThumbnail(FIFO.getCurrentFile().getTrack().getAlbum(), size);
+    ThumbnailManager.refreshThumbnail(FIFO.getPlayingFile().getTrack().getAlbum(), size);
     java.io.File cover = UtilSystem.getConfFileByPath(Const.FILE_THUMBS + '/' + size + '/'
-        + FIFO.getCurrentFile().getTrack().getAlbum().getID() + '.' + EXT_THUMB);
+        + FIFO.getPlayingFile().getTrack().getAlbum().getID() + '.' + EXT_THUMB);
     if (cover.canRead()) {
       sOut += "<p ALIGN=center><img src='file:" + cover.getAbsolutePath() + "'/></p><br>";
     }

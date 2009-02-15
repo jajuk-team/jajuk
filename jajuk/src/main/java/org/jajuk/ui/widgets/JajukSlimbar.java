@@ -386,11 +386,11 @@ public final class JajukSlimbar extends JFrame implements Observer, MouseWheelLi
   }
 
   private void updateCurrentTitle() {
-    File file = FIFO.getCurrentFile();
+    File file = FIFO.getPlayingFile();
     if (FIFO.isPlayingRadio()) {
       title = FIFO.getCurrentRadio().getName();
     } else if (file != null && !FIFO.isStopped()) {
-      title = UtilString.buildTitle(FIFO.getCurrentFile());
+      title = UtilString.buildTitle(FIFO.getPlayingFile());
     } else {
       title = Messages.getString("JajukWindow.18");
     }
@@ -407,7 +407,7 @@ public final class JajukSlimbar extends JFrame implements Observer, MouseWheelLi
    */
   public String getPlayerInfo() {
     try {
-      String currentTrack = UtilString.buildTitle(FIFO.getCurrentFile());
+      String currentTrack = UtilString.buildTitle(FIFO.getPlayingFile());
       String nextTrack = "";
       try {
         nextTrack = UtilString.buildTitle(FIFO.getItem(FIFO.getIndex() + 1).getFile());

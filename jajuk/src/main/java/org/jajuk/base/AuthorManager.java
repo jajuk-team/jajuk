@@ -144,7 +144,7 @@ public final class AuthorManager extends ItemManager {
         }
       }
       // if current track author name is changed, notify it
-      if (FIFO.getCurrentFile() != null && FIFO.getCurrentFile().getTrack().getAuthor().equals(old)) {
+      if (FIFO.getPlayingFile() != null && FIFO.getPlayingFile().getTrack().getAuthor().equals(old)) {
         ObservationManager.notify(new JajukEvent(JajukEvents.AUTHOR_CHANGED));
       }
       return newItem;

@@ -177,10 +177,10 @@ public final class FIFO {
     try {
       UtilGUI.waiting();
       /**
-       * Force buttons to opening mode by default, then if they start correctly, a
-       * PLAYER_PLAY event will be notified to update to final state. We notify
-       * synchronously to make sure the order between these two events will be
-       * correct*
+       * Force buttons to opening mode by default, then if they start correctly,
+       * a PLAYER_PLAY event will be notified to update to final state. We
+       * notify synchronously to make sure the order between these two events
+       * will be correct*
        */
       ObservationManager.notifySync(new JajukEvent(JajukEvents.PLAY_OPENING));
       currentRadio = radio;
@@ -351,7 +351,7 @@ public final class FIFO {
         return;
       }
       Properties details = new Properties();
-      details.put(Const.DETAIL_CURRENT_FILE, getCurrentFile());
+      details.put(Const.DETAIL_CURRENT_FILE, getPlayingFile());
       ObservationManager.notify(new JajukEvent(JajukEvents.FILE_FINISHED, details));
       if (current.isRepeat()) {
         // if the track was in repeat mode, don't remove it from the
@@ -428,12 +428,12 @@ public final class FIFO {
   private static void launch() {
     try {
       UtilGUI.waiting();
-      File fCurrent = getCurrentFile();
+      File fCurrent = getPlayingFile();
       /**
-       * Force buttons to opening mode by default, then if they start correctly, a
-       * PLAYER_PLAY event will be notified to update to final state. We notify
-       * synchronously to make sure the order between these two events will be
-       * correct*
+       * Force buttons to opening mode by default, then if they start correctly,
+       * a PLAYER_PLAY event will be notified to update to final state. We
+       * notify synchronously to make sure the order between these two events
+       * will be correct*
        */
       ObservationManager.notifySync(new JajukEvent(JajukEvents.PLAY_OPENING));
 
@@ -659,7 +659,7 @@ public final class FIFO {
       launch();
     } catch (Exception e) {
       Log.error(e);
-    } 
+    }
   }
 
   /**
@@ -679,8 +679,8 @@ public final class FIFO {
       }
       boolean bOK = false;
       Directory dir = null;
-      if (getCurrentFile() != null) {
-        dir = getCurrentFile().getDirectory();
+      if (getPlayingFile() != null) {
+        dir = getPlayingFile().getDirectory();
       } else {// nothing in FIFO? just leave
         return;
       }
@@ -711,7 +711,7 @@ public final class FIFO {
       launch();
     } catch (Exception e) {
       Log.error(e);
-    } 
+    }
   }
 
   /**
@@ -725,7 +725,7 @@ public final class FIFO {
         Player.stop(false);
       }
       // force a finish to current track if any
-      if (getCurrentFile() != null) { // if stopped, nothing to stop
+      if (getPlayingFile() != null) { // if stopped, nothing to stop
         finished(); // stop current track
       } else if (itemLast != null) { // try to launch any previous
         // file
@@ -736,7 +736,7 @@ public final class FIFO {
       }
     } catch (Exception e) {
       Log.error(e);
-    } 
+    }
   }
 
   /**
@@ -755,9 +755,9 @@ public final class FIFO {
         return;
       }
       // force a finish to current track if any
-      if (getCurrentFile() != null) { // if stopped, nothing to stop
+      if (getPlayingFile() != null) { // if stopped, nothing to stop
         // ref directory
-        Directory dir = getCurrentFile().getDirectory();
+        Directory dir = getPlayingFile().getDirectory();
         // scan current fifo and try to launch the first track not from
         // this album
         boolean bOK = false;
@@ -803,7 +803,7 @@ public final class FIFO {
       }
     } catch (Exception e) {
       Log.error(e);
-    } 
+    }
   }
 
   /**
@@ -811,7 +811,10 @@ public final class FIFO {
    * 
    * @return File
    */
-  public static File getCurrentFile() {
+  public static File getPlayingFile() {
+    if (isStopped()){
+      return null;
+    }
     StackItem item = getCurrentItem();
     return (item == null) ? null : item.getFile();
   }
@@ -870,7 +873,7 @@ public final class FIFO {
     if (isStopped()) { // currently stopped
       return true;
     }
-    if (getCurrentFile().getDirectory().getDevice().equals(device)) {
+    if (getPlayingFile().getDirectory().getDevice().equals(device)) {
       // is current track on this device?
       return false;
     }
@@ -1059,7 +1062,7 @@ public final class FIFO {
       launch();
     } catch (Exception e) {
       Log.error(e);
-    } 
+    }
   }
 
   /**
@@ -1214,7 +1217,7 @@ public final class FIFO {
    */
   public static String getCurrentFileTitle() {
     String title = null;
-    File file = FIFO.getCurrentFile();
+    File file = FIFO.getPlayingFile();
     if (FIFO.isPlayingRadio()) {
       title = FIFO.getCurrentRadio().getName();
     } else if (file != null && !FIFO.isStopped()) {

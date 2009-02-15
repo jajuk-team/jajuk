@@ -251,7 +251,7 @@ public class JajukWindow extends JFrame implements Observer {
     SwingUtilities.invokeLater(new Runnable() {
       public void run() {
         if (subject.equals(JajukEvents.FILE_LAUNCHED)) {
-          File file = FIFO.getCurrentFile();
+          File file = FIFO.getPlayingFile();
           if (file != null) {
             setTitle(UtilString.buildTitle(file));
           }

@@ -58,7 +58,7 @@ public class RenameAction extends JajukAction {
     final List<Item> alSelected = (List<Item>) source.getClientProperty(Const.DETAIL_SELECTION);
     final Item currentItem = alSelected.get(0);
     // Check if file is currently played
-    if (FIFO.getCurrentFile() != null && FIFO.getCurrentFile().equals(currentItem)) {
+    if (FIFO.getPlayingFile() != null && FIFO.getPlayingFile().equals(currentItem)) {
       Messages.showErrorMessage(134);
       return;
     }
