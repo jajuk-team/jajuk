@@ -403,7 +403,7 @@ public class Track extends LogicalItem implements Comparable<Track> {
       float playtimeRate = 0.5f;
       if (duration == 0) {
         // If duration = 0, always set playtimeRate to 0.5
-        Log.warn("Duration = 0 for: " + getName() + ". Playtime forced to 0.5");
+        Log.info("Duration = 0 for: " + getName() + ". Playtime forced to 0.5");
       } else {
         // Compute playtime rate = total play time / (play count * track length)
         playtimeRate = (float) getLongValue(Const.XML_TRACK_TOTAL_PLAYTIME)

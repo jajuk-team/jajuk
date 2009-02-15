@@ -83,24 +83,21 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
     public void run() {
       int comp = 0;
       Track current = fCurrent.getTrack();
-      while (!bStop && !bEOF) { // stop this thread
+      while (!bStop && !bEOF && !bPaused) { // stop this thread
         try {
-          if (!bPaused) {
-            // a get_percent_pos resumes (mplayer issue)
-            sendCommand("get_time_pos");
-            // every 2 time units, increase actual play time. We wait this
-            // delay for perfs and for precision
-            if (comp > 0 && comp % TOTAL_PLAYTIME_UPDATE_INTERVAL == 0) {
-              // Increase actual play time
-              // End of file: increase actual play time to the track
-              // Perf note : this full action takes less much than 1 ms
-              long trackPlaytime = current.getLongValue(Const.XML_TRACK_TOTAL_PLAYTIME);
-              long newValue = (PROGRESS_STEP * TOTAL_PLAYTIME_UPDATE_INTERVAL / 1000)
-                  + trackPlaytime;
-              current.setProperty(Const.XML_TRACK_TOTAL_PLAYTIME, newValue);
-            }
-            comp++;
+          // Do not call a get_percent_pos if paused, it resumes the player (mplayer issue)
+          sendCommand("get_time_pos");
+          // Every 2 time units, increase actual play time. We wait this
+          // delay for perfs and for precision
+          if (comp > 0 && comp % TOTAL_PLAYTIME_UPDATE_INTERVAL == 0) {
+            // Increase actual play time
+            // End of file: increase actual play time to the track
+            // Perf note : this full action takes less much than 1 ms
+            long trackPlaytime = current.getLongValue(Const.XML_TRACK_TOTAL_PLAYTIME);
+            long newValue = (PROGRESS_STEP * TOTAL_PLAYTIME_UPDATE_INTERVAL / 1000) + trackPlaytime;
+            current.setProperty(Const.XML_TRACK_TOTAL_PLAYTIME, newValue);
           }
+          comp++;
           Thread.sleep(PROGRESS_STEP);
         } catch (Exception e) {
           Log.error(e);
@@ -202,7 +199,7 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
             bEOF = true;
             // Update track rate
             fCurrent.getTrack().updateRate();
-            
+
             // Launch next track
             try {
               // Do not launch next track if not opening: it means
