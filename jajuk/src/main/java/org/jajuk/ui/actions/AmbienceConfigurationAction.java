@@ -21,6 +21,8 @@ package org.jajuk.ui.actions;
 
 import java.awt.event.ActionEvent;
 
+import javax.swing.SwingUtilities;
+
 import org.jajuk.ui.wizard.AmbienceWizard;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
@@ -39,8 +41,19 @@ public class AmbienceConfigurationAction extends JajukAction {
 
   @Override
   public void perform(ActionEvent evt) {
-    AmbienceWizard ambience = new AmbienceWizard(); // display the ambience
-    // wizard
-    ambience.show();
+
+    /*
+     * Display the ambience wizard in an invokeLater to allow a combo that show
+     * it to close its popup
+     */
+    SwingUtilities.invokeLater(new Runnable() {
+
+      public void run() {
+        AmbienceWizard ambience = new AmbienceWizard();
+        ambience.show();
+      }
+
+    });
+
   }
 }

@@ -116,7 +116,7 @@ public class DigitalDJWizard extends Wizard {
    * 
    * DJ type choice
    */
-  public class TypeSelectionPanel extends Screen implements ActionListener {
+  public static class TypeSelectionPanel extends Screen implements ActionListener {
     private static final long serialVersionUID = 1L;
 
     /** Transition DJ code */
@@ -194,7 +194,7 @@ public class DigitalDJWizard extends Wizard {
    * 
    * DJ removal
    */
-  public class RemovePanel extends Screen implements ActionListener {
+  public static class RemovePanel extends Screen implements ActionListener {
     private static final long serialVersionUID = 1L;
 
     JComponent[][] widgets;
@@ -272,7 +272,7 @@ public class DigitalDJWizard extends Wizard {
    * 
    * DJ Selection for change
    */
-  public class ChangePanel extends Screen implements ActionListener {
+  public static class ChangePanel extends Screen implements ActionListener {
     private static final long serialVersionUID = 1L;
 
     JComponent[][] widgets;
@@ -363,7 +363,7 @@ public class DigitalDJWizard extends Wizard {
    * 
    * Action type (new or alter)
    */
-  public class ActionSelectionPanel extends Screen implements ClearPoint, ActionListener {
+  public static class ActionSelectionPanel extends Screen implements ClearPoint, ActionListener {
     private static final long serialVersionUID = 1L;
 
     /** NEW code */
@@ -444,7 +444,7 @@ public class DigitalDJWizard extends Wizard {
    * 
    * General options panel
    */
-  public class GeneralOptionsPanel extends Screen implements ActionListener, CaretListener,
+  public static class GeneralOptionsPanel extends Screen implements ActionListener, CaretListener,
       ChangeListener {
 
     private static final long serialVersionUID = 1L;
@@ -616,7 +616,7 @@ public class DigitalDJWizard extends Wizard {
    * 
    * Transitions panel
    */
-  public class TransitionsPanel extends Screen {
+  public static class TransitionsPanel extends Screen {
 
     private static final long serialVersionUID = 1L;
 
@@ -888,7 +888,7 @@ public class DigitalDJWizard extends Wizard {
    * 
    * Proportion panel
    */
-  public class ProportionsPanel extends Screen {
+  public static class ProportionsPanel extends Screen {
 
     private static final long serialVersionUID = 1L;
 
@@ -1148,7 +1148,7 @@ public class DigitalDJWizard extends Wizard {
    * 
    * Ambience based
    */
-  public class AmbiencePanel extends Screen implements ActionListener {
+  public static class AmbiencePanel extends Screen implements ActionListener {
 
     private static final long serialVersionUID = 1L;
 

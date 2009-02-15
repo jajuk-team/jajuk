@@ -106,7 +106,6 @@ import org.jajuk.ui.actions.MuteAction;
 import org.jajuk.ui.helpers.FontManager;
 import org.jajuk.ui.helpers.PlayerStateMediator;
 import org.jajuk.ui.helpers.FontManager.JajukFont;
-import org.jajuk.ui.wizard.AmbienceWizard;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
@@ -220,9 +219,13 @@ public class CommandJPanel extends JXPanel implements ActionListener, ListSelect
       // Ambience Configuration
       if (ambiencesCombo.getSelectedIndex() == 0) {
         // display the wizard
-        AmbienceWizard ambience = new AmbienceWizard();
-        ambience.show();
-        // Reset combo to last selected item
+        try {
+          ActionManager.getAction(JajukActions.CONFIGURE_AMBIENCES).perform(null);
+        } catch (Exception e) {
+          Log.error(e);
+        }
+        // Reset combo to last selected item. We do this to avoid to select the
+        // "0" item that is not an ambience
         ambiencesCombo.removeActionListener(ambienceListener);
         Ambience defaultAmbience = AmbienceManager.getInstance().getAmbience(
             Conf.getString(Const.CONF_DEFAULT_AMBIENCE));
@@ -777,8 +780,8 @@ public class CommandJPanel extends JXPanel implements ActionListener, ListSelect
         } else if (JajukEvents.WEBRADIOS_CHANGE.equals(event.getSubject())) {
           populateWebRadios();
         } else if (JajukEvents.WEBRADIO_LAUNCHED.equals(event.getSubject())) {
-            populateWebRadios();
-        } 
+          populateWebRadios();
+        }
       }
     });
   }
