@@ -292,6 +292,11 @@ public abstract class Item implements Const {
       Object oValue = properties.get(sKey);
       if (oValue != null) {
         PropertyMetaInformation meta = getMeta(sKey);
+        // The meta can be null for unknown reason, see #1226
+        if (meta == null) {
+          Log.warn("Null meta for: " + sKey);
+          continue;
+        }
         try {
           sValue = UtilString.format(oValue, meta, false);
           // make sure to remove
