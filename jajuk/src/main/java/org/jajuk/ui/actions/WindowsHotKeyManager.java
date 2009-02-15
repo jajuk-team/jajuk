@@ -72,7 +72,7 @@ public abstract class WindowsHotKeyManager extends AbstractAction {
             ActionManager.getAction(JajukActions.NEXT_TRACK).perform(null);
             break;
           case JIntellitype.APPCOMMAND_MEDIA_PLAY_PAUSE:
-            ActionManager.getAction(JajukActions.PLAY_PAUSE_TRACK).perform(null);
+            ActionManager.getAction(JajukActions.PAUSE_RESUME_TRACK).perform(null);
             break;
           case JIntellitype.APPCOMMAND_MEDIA_PREVIOUSTRACK:
             ActionManager.getAction(JajukActions.PREVIOUS_TRACK).perform(null);

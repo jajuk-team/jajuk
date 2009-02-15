@@ -195,7 +195,7 @@ public class JajukSystray extends CommandJPanel {
     jcbmiShowBalloon.addActionListener(this);
     jcbmiShowBalloon.setToolTipText(Messages.getString("ParameterView.185"));
 
-    jmiPlayPause = new SizedJMenuItem(ActionManager.getAction(JajukActions.PLAY_PAUSE_TRACK));
+    jmiPlayPause = new SizedJMenuItem(ActionManager.getAction(JajukActions.PAUSE_RESUME_TRACK));
     jmiStop = new SizedJMenuItem(ActionManager.getAction(JajukActions.STOP_TRACK));
     jmiPrevious = new SizedJMenuItem(ActionManager.getAction(JajukActions.PREVIOUS_TRACK));
     jmiNext = new SizedJMenuItem(ActionManager.getAction(JajukActions.NEXT_TRACK));

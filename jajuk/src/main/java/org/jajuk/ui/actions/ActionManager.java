@@ -30,7 +30,7 @@ import static org.jajuk.ui.actions.JajukActions.CHECK_FOR_UPDATES;
 import static org.jajuk.ui.actions.JajukActions.CONFIGURE_AMBIENCES;
 import static org.jajuk.ui.actions.JajukActions.CONFIGURE_DJS;
 import static org.jajuk.ui.actions.JajukActions.CONFIGURE_WEBRADIOS;
-import static org.jajuk.ui.actions.JajukActions.CONTINUE_MODE_STATUS_CHANGED;
+import static org.jajuk.ui.actions.JajukActions.CONTINUE_MODE;
 import static org.jajuk.ui.actions.JajukActions.COPY;
 import static org.jajuk.ui.actions.JajukActions.COPY_TO_CLIPBOARD;
 import static org.jajuk.ui.actions.JajukActions.CREATE_REPORT;
@@ -41,13 +41,13 @@ import static org.jajuk.ui.actions.JajukActions.DECREASE_VOLUME;
 import static org.jajuk.ui.actions.JajukActions.DELETE;
 import static org.jajuk.ui.actions.JajukActions.DJ;
 import static org.jajuk.ui.actions.JajukActions.EXIT;
-import static org.jajuk.ui.actions.JajukActions.FAST_FORWARD_TRACK;
+import static org.jajuk.ui.actions.JajukActions.FORWARD_TRACK;
 import static org.jajuk.ui.actions.JajukActions.FIND_DUPLICATE_FILES;
 import static org.jajuk.ui.actions.JajukActions.FINISH_ALBUM;
 import static org.jajuk.ui.actions.JajukActions.HELP_REQUIRED;
 import static org.jajuk.ui.actions.JajukActions.INCREASE_VOLUME;
 import static org.jajuk.ui.actions.JajukActions.INC_RATE;
-import static org.jajuk.ui.actions.JajukActions.INTRO_MODE_STATUS_CHANGED;
+import static org.jajuk.ui.actions.JajukActions.INTRO_MODE;
 import static org.jajuk.ui.actions.JajukActions.LAUNCH_IN_BROWSER;
 import static org.jajuk.ui.actions.JajukActions.MUTE_STATE;
 import static org.jajuk.ui.actions.JajukActions.NEW_FOLDER;
@@ -59,7 +59,7 @@ import static org.jajuk.ui.actions.JajukActions.PASTE;
 import static org.jajuk.ui.actions.JajukActions.PLAY_ALBUM_SELECTION;
 import static org.jajuk.ui.actions.JajukActions.PLAY_AUTHOR_SELECTION;
 import static org.jajuk.ui.actions.JajukActions.PLAY_DIRECTORY_SELECTION;
-import static org.jajuk.ui.actions.JajukActions.PLAY_PAUSE_TRACK;
+import static org.jajuk.ui.actions.JajukActions.PAUSE_RESUME_TRACK;
 import static org.jajuk.ui.actions.JajukActions.PLAY_REPEAT_SELECTION;
 import static org.jajuk.ui.actions.JajukActions.PLAY_SELECTION;
 import static org.jajuk.ui.actions.JajukActions.PLAY_SHUFFLE_SELECTION;
@@ -77,7 +77,7 @@ import static org.jajuk.ui.actions.JajukActions.PUSH_SELECTION;
 import static org.jajuk.ui.actions.JajukActions.QUALITY;
 import static org.jajuk.ui.actions.JajukActions.REFRESH;
 import static org.jajuk.ui.actions.JajukActions.RENAME;
-import static org.jajuk.ui.actions.JajukActions.REPEAT_MODE_STATUS_CHANGE;
+import static org.jajuk.ui.actions.JajukActions.REPEAT_MODE;
 import static org.jajuk.ui.actions.JajukActions.REPLAY_ALBUM;
 import static org.jajuk.ui.actions.JajukActions.REWIND_TRACK;
 import static org.jajuk.ui.actions.JajukActions.SAVE_AS;
@@ -86,7 +86,7 @@ import static org.jajuk.ui.actions.JajukActions.SHOW_ALBUM_DETAILS;
 import static org.jajuk.ui.actions.JajukActions.SHOW_PROPERTIES;
 import static org.jajuk.ui.actions.JajukActions.SHOW_TRACES;
 import static org.jajuk.ui.actions.JajukActions.SHUFFLE_GLOBAL;
-import static org.jajuk.ui.actions.JajukActions.SHUFFLE_MODE_STATUS_CHANGED;
+import static org.jajuk.ui.actions.JajukActions.SHUFFLE_MODE;
 import static org.jajuk.ui.actions.JajukActions.SIMPLE_DEVICE_WIZARD;
 import static org.jajuk.ui.actions.JajukActions.SLIM_JAJUK;
 import static org.jajuk.ui.actions.JajukActions.STOP_TRACK;
@@ -136,10 +136,10 @@ public final class ActionManager {
   private ActionManager() {
     // Private constructor to disallow instantiation.
     // CommandJPanel: Mode Panel
-    installAction(REPEAT_MODE_STATUS_CHANGE, new RepeatModeAction(), true);
-    installAction(SHUFFLE_MODE_STATUS_CHANGED, new ShuffleModeAction(), true);
-    installAction(CONTINUE_MODE_STATUS_CHANGED, new ContinueModeAction(), false);
-    installAction(INTRO_MODE_STATUS_CHANGED, new IntroModeAction(), false);
+    installAction(REPEAT_MODE, new RepeatModeAction(), true);
+    installAction(SHUFFLE_MODE, new ShuffleModeAction(), true);
+    installAction(CONTINUE_MODE, new ContinueModeAction(), false);
+    installAction(INTRO_MODE, new IntroModeAction(), false);
 
     // CommandJPanel: Special Functions Panel
     installAction(SHUFFLE_GLOBAL, new GlobalRandomAction(), false);
@@ -156,9 +156,9 @@ public final class ActionManager {
     installAction(PREVIOUS_ALBUM, new PreviousAlbumAction(), true);
     installAction(NEXT_ALBUM, new NextAlbumAction(), true);
     installAction(REWIND_TRACK, new RewindTrackAction(), true);
-    installAction(PLAY_PAUSE_TRACK, new PlayPauseAction(), true);
+    installAction(PAUSE_RESUME_TRACK, new PlayPauseAction(), true);
     installAction(STOP_TRACK, new StopTrackAction(), true);
-    installAction(FAST_FORWARD_TRACK, new ForwardTrackAction(), true);
+    installAction(FORWARD_TRACK, new ForwardTrackAction(), true);
     installAction(INC_RATE, new ChangeTrackPreferenceAction(), true);
 
     // CommandJPanel: Volume control

@@ -348,7 +348,7 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
     // the jajuk state is coherent with the mplayer one
     if (Player.isPaused()) {
       try {
-        ActionManager.getAction(JajukActions.PLAY_PAUSE_TRACK).perform(null);
+        ActionManager.getAction(JajukActions.PAUSE_RESUME_TRACK).perform(null);
       } catch (Exception e) {
         Log.error(e);
       }
@@ -403,7 +403,7 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
     // the jajuk state is coherent with the mplayer one
     if (Player.isPaused()) {
       try {
-        ActionManager.getAction(JajukActions.PLAY_PAUSE_TRACK).perform(null);
+        ActionManager.getAction(JajukActions.PAUSE_RESUME_TRACK).perform(null);
       } catch (Exception e) {
         Log.error(e);
       }

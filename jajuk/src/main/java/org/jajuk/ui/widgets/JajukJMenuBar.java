@@ -21,17 +21,17 @@ package org.jajuk.ui.widgets;
 
 import static org.jajuk.ui.actions.JajukActions.CONFIGURE_AMBIENCES;
 import static org.jajuk.ui.actions.JajukActions.CONFIGURE_DJS;
-import static org.jajuk.ui.actions.JajukActions.CONTINUE_MODE_STATUS_CHANGED;
+import static org.jajuk.ui.actions.JajukActions.CONTINUE_MODE;
 import static org.jajuk.ui.actions.JajukActions.CUSTOM_PROPERTIES_ADD;
 import static org.jajuk.ui.actions.JajukActions.CUSTOM_PROPERTIES_REMOVE;
 import static org.jajuk.ui.actions.JajukActions.HELP_REQUIRED;
-import static org.jajuk.ui.actions.JajukActions.INTRO_MODE_STATUS_CHANGED;
+import static org.jajuk.ui.actions.JajukActions.INTRO_MODE;
 import static org.jajuk.ui.actions.JajukActions.OPTIONS;
 import static org.jajuk.ui.actions.JajukActions.QUALITY;
-import static org.jajuk.ui.actions.JajukActions.REPEAT_MODE_STATUS_CHANGE;
+import static org.jajuk.ui.actions.JajukActions.REPEAT_MODE;
 import static org.jajuk.ui.actions.JajukActions.SHOW_ABOUT;
 import static org.jajuk.ui.actions.JajukActions.SHOW_TRACES;
-import static org.jajuk.ui.actions.JajukActions.SHUFFLE_MODE_STATUS_CHANGED;
+import static org.jajuk.ui.actions.JajukActions.SHUFFLE_MODE;
 import static org.jajuk.ui.actions.JajukActions.SIMPLE_DEVICE_WIZARD;
 import static org.jajuk.ui.actions.JajukActions.TIP_OF_THE_DAY;
 import static org.jajuk.ui.actions.JajukActions.VIEW_RESTORE_DEFAULTS;
@@ -222,13 +222,13 @@ public final class JajukJMenuBar extends JMenuBar implements Observer {
     mode = new JMenu(ActionUtil.strip(modeText));
     mode.setMnemonic(ActionUtil.getMnemonic(modeText));
 
-    jcbmiRepeat = new JCheckBoxMenuItem(ActionManager.getAction(REPEAT_MODE_STATUS_CHANGE));
+    jcbmiRepeat = new JCheckBoxMenuItem(ActionManager.getAction(REPEAT_MODE));
     jcbmiRepeat.setSelected(Conf.getBoolean(Const.CONF_STATE_REPEAT));
-    jcbmiShuffle = new JCheckBoxMenuItem(ActionManager.getAction(SHUFFLE_MODE_STATUS_CHANGED));
+    jcbmiShuffle = new JCheckBoxMenuItem(ActionManager.getAction(SHUFFLE_MODE));
     jcbmiShuffle.setSelected(Conf.getBoolean(Const.CONF_STATE_SHUFFLE));
-    jcbmiContinue = new JCheckBoxMenuItem(ActionManager.getAction(CONTINUE_MODE_STATUS_CHANGED));
+    jcbmiContinue = new JCheckBoxMenuItem(ActionManager.getAction(CONTINUE_MODE));
     jcbmiContinue.setSelected(Conf.getBoolean(Const.CONF_STATE_CONTINUE));
-    jcbmiIntro = new JCheckBoxMenuItem(ActionManager.getAction(INTRO_MODE_STATUS_CHANGED));
+    jcbmiIntro = new JCheckBoxMenuItem(ActionManager.getAction(INTRO_MODE));
     jcbmiIntro.setSelected(Conf.getBoolean(Const.CONF_STATE_INTRO));
 
     mode.add(jcbmiRepeat);

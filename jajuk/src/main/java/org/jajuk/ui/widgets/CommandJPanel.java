@@ -20,12 +20,12 @@
 package org.jajuk.ui.widgets;
 
 import static org.jajuk.ui.actions.JajukActions.CONFIGURE_DJS;
-import static org.jajuk.ui.actions.JajukActions.FAST_FORWARD_TRACK;
+import static org.jajuk.ui.actions.JajukActions.FORWARD_TRACK;
 import static org.jajuk.ui.actions.JajukActions.FINISH_ALBUM;
 import static org.jajuk.ui.actions.JajukActions.MUTE_STATE;
 import static org.jajuk.ui.actions.JajukActions.NEXT_ALBUM;
 import static org.jajuk.ui.actions.JajukActions.NEXT_TRACK;
-import static org.jajuk.ui.actions.JajukActions.PLAY_PAUSE_TRACK;
+import static org.jajuk.ui.actions.JajukActions.PAUSE_RESUME_TRACK;
 import static org.jajuk.ui.actions.JajukActions.PREVIOUS_ALBUM;
 import static org.jajuk.ui.actions.JajukActions.PREVIOUS_TRACK;
 import static org.jajuk.ui.actions.JajukActions.REWIND_TRACK;
@@ -348,15 +348,15 @@ public class CommandJPanel extends JXPanel implements ActionListener, ListSelect
     JToolBar jtbModes = new JajukJToolbar();
     // make it not floatable as this behavior is managed by vldocking
     jbRepeat = new JajukToggleButton(ActionManager
-        .getAction(JajukActions.REPEAT_MODE_STATUS_CHANGE));
+        .getAction(JajukActions.REPEAT_MODE));
     jbRepeat.setSelected(Conf.getBoolean(Const.CONF_STATE_REPEAT));
     jbRandom = new JajukToggleButton(ActionManager
-        .getAction(JajukActions.SHUFFLE_MODE_STATUS_CHANGED));
+        .getAction(JajukActions.SHUFFLE_MODE));
     jbRandom.setSelected(Conf.getBoolean(Const.CONF_STATE_SHUFFLE));
     jbContinue = new JajukToggleButton(ActionManager
-        .getAction(JajukActions.CONTINUE_MODE_STATUS_CHANGED));
+        .getAction(JajukActions.CONTINUE_MODE));
     jbContinue.setSelected(Conf.getBoolean(Const.CONF_STATE_CONTINUE));
-    jbIntro = new JajukToggleButton(ActionManager.getAction(JajukActions.INTRO_MODE_STATUS_CHANGED));
+    jbIntro = new JajukToggleButton(ActionManager.getAction(JajukActions.INTRO_MODE));
     jbIntro.setSelected(Conf.getBoolean(Const.CONF_STATE_INTRO));
     jtbModes.add(jbRepeat);
     jtbModes.addSeparator();
@@ -523,9 +523,9 @@ public class CommandJPanel extends JXPanel implements ActionListener, ListSelect
     jbPrevious = new JajukButton(ActionManager.getAction(PREVIOUS_TRACK));
     jbNext = new JajukButton(ActionManager.getAction(NEXT_TRACK));
     jbRew = new JPressButton(ActionManager.getAction(REWIND_TRACK));
-    jbPlayPause = new JajukButton(ActionManager.getAction(PLAY_PAUSE_TRACK));
+    jbPlayPause = new JajukButton(ActionManager.getAction(PAUSE_RESUME_TRACK));
     jbStop = new JajukButton(ActionManager.getAction(STOP_TRACK));
-    jbFwd = new JPressButton(ActionManager.getAction(FAST_FORWARD_TRACK));
+    jbFwd = new JPressButton(ActionManager.getAction(FORWARD_TRACK));
 
     jtbPlay.add(jbPrevious);
     jtbPlay.add(jbRew);

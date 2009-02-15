@@ -22,7 +22,7 @@ package org.jajuk.ui.widgets;
 import static org.jajuk.ui.actions.JajukActions.MUTE_STATE;
 import static org.jajuk.ui.actions.JajukActions.NEXT_ALBUM;
 import static org.jajuk.ui.actions.JajukActions.NEXT_TRACK;
-import static org.jajuk.ui.actions.JajukActions.PLAY_PAUSE_TRACK;
+import static org.jajuk.ui.actions.JajukActions.PAUSE_RESUME_TRACK;
 import static org.jajuk.ui.actions.JajukActions.PREVIOUS_ALBUM;
 import static org.jajuk.ui.actions.JajukActions.PREVIOUS_TRACK;
 import static org.jajuk.ui.actions.JajukActions.STOP_TRACK;
@@ -128,6 +128,8 @@ public final class JajukSlimbar extends JFrame implements Observer, MouseWheelLi
 
   private JToolBar slimJajuk;
 
+  private JToolBar jtbPlay;
+
   private String title = "";
 
   private boolean bInitialized = false;
@@ -219,16 +221,15 @@ public final class JajukSlimbar extends JFrame implements Observer, MouseWheelLi
       }
     });
 
-    JToolBar jtbPlay = new JajukJToolbar();
-    ActionUtil.installKeystrokes(jtbPlay, ActionManager.getAction(NEXT_ALBUM), ActionManager
-        .getAction(PREVIOUS_ALBUM));
+    jtbPlay = new JajukJToolbar();
+
     jbPrevious = new SizedButton(ActionManager.getAction(PREVIOUS_TRACK), 16, 16, false);
     jbPrevious.addMouseMotionListener(motionAdapter);
 
     jbNext = new SizedButton(ActionManager.getAction(NEXT_TRACK), 16, 16, false);
     jbNext.addMouseMotionListener(motionAdapter);
 
-    jbPlayPause = new SizedButton(ActionManager.getAction(PLAY_PAUSE_TRACK), 16, 16, false);
+    jbPlayPause = new SizedButton(ActionManager.getAction(PAUSE_RESUME_TRACK), 16, 16, false);
     jbPlayPause.addMouseMotionListener(motionAdapter);
 
     jbStop = new SizedButton(ActionManager.getAction(STOP_TRACK), 16, 16, false);
@@ -382,7 +383,24 @@ public final class JajukSlimbar extends JFrame implements Observer, MouseWheelLi
     // Force initial message refresh
     UtilFeatures.updateStatus(this);
 
+    // Init keystrokes
+    setKeystrokes();
+
     bInitialized = true;
+  }
+
+  private void setKeystrokes() {
+    ActionUtil.installKeystrokes(jtbPlay, ActionManager.getAction(NEXT_ALBUM), ActionManager
+        .getAction(PREVIOUS_ALBUM), ActionManager.getAction(PREVIOUS_TRACK), ActionManager
+        .getAction(NEXT_TRACK), ActionManager.getAction(MUTE_STATE), ActionManager
+        .getAction(PAUSE_RESUME_TRACK), ActionManager.getAction(STOP_TRACK), ActionManager
+        .getAction(JajukActions.DECREASE_VOLUME), ActionManager
+        .getAction(JajukActions.INCREASE_VOLUME), ActionManager
+        .getAction(JajukActions.SHUFFLE_MODE),ActionManager
+        .getAction(JajukActions.REPEAT_MODE),ActionManager
+        .getAction(JajukActions.REWIND_TRACK),ActionManager
+        .getAction(JajukActions.FORWARD_TRACK),ActionManager
+        .getAction(JajukActions.HELP_REQUIRED));
   }
 
   private void updateCurrentTitle() {

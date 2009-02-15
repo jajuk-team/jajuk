@@ -32,22 +32,22 @@ public enum JajukActions {
   /**
    * Used when the repeat status was changed.
    */
-  REPEAT_MODE_STATUS_CHANGE,
+  REPEAT_MODE,
 
   /**
    * Used when the shuffle mode was changed
    */
-  SHUFFLE_MODE_STATUS_CHANGED,
+  SHUFFLE_MODE,
 
   /**
    * Used when the continue mode was changed
    */
-  CONTINUE_MODE_STATUS_CHANGED,
+  CONTINUE_MODE,
 
   /**
    * Used when the intro mode was changed
    */
-  INTRO_MODE_STATUS_CHANGED,
+  INTRO_MODE,
 
   /**
    * Used when a new device is requested.
@@ -306,7 +306,7 @@ public enum JajukActions {
   /**
    * Used to fast-forward the current track.
    */
-  FAST_FORWARD_TRACK,
+  FORWARD_TRACK,
 
   /**
    * Used to increase current track rate
@@ -321,7 +321,7 @@ public enum JajukActions {
   /**
    * Used to pause/resume playing.
    */
-  PLAY_PAUSE_TRACK,
+  PAUSE_RESUME_TRACK,
 
   /**
    * Used to jump to the previous album.

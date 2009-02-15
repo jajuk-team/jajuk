@@ -19,11 +19,11 @@
  */
 package org.jajuk.ui.helpers;
 
-import static org.jajuk.ui.actions.JajukActions.FAST_FORWARD_TRACK;
+import static org.jajuk.ui.actions.JajukActions.FORWARD_TRACK;
 import static org.jajuk.ui.actions.JajukActions.FINISH_ALBUM;
 import static org.jajuk.ui.actions.JajukActions.NEXT_ALBUM;
 import static org.jajuk.ui.actions.JajukActions.NEXT_TRACK;
-import static org.jajuk.ui.actions.JajukActions.PLAY_PAUSE_TRACK;
+import static org.jajuk.ui.actions.JajukActions.PAUSE_RESUME_TRACK;
 import static org.jajuk.ui.actions.JajukActions.PREVIOUS_ALBUM;
 import static org.jajuk.ui.actions.JajukActions.PREVIOUS_TRACK;
 import static org.jajuk.ui.actions.JajukActions.REWIND_TRACK;
@@ -102,16 +102,16 @@ public class PlayerStateMediator implements Observer {
           // Enable the play button to allow restarting the queue but disable if
           // the queue is void
           boolean bQueueNotVoid = (FIFO.getFIFO().size() > 0);
-          ActionManager.getAction(PLAY_PAUSE_TRACK).setEnabled(bQueueNotVoid);
+          ActionManager.getAction(PAUSE_RESUME_TRACK).setEnabled(bQueueNotVoid);
           ActionManager.getAction(NEXT_ALBUM).setEnabled(bQueueNotVoid);
           ActionManager.getAction(PREVIOUS_ALBUM).setEnabled(bQueueNotVoid);
           ActionManager.getAction(PREVIOUS_TRACK).setEnabled(bQueueNotVoid);
           ActionManager.getAction(NEXT_TRACK).setEnabled(bQueueNotVoid);
 
-          ActionManager.getAction(PLAY_PAUSE_TRACK).setIcon(IconLoader.getIcon(JajukIcons.PLAY));
-          ActionManager.getAction(PLAY_PAUSE_TRACK).setName(Messages.getString("JajukWindow.12"));
+          ActionManager.getAction(PAUSE_RESUME_TRACK).setIcon(IconLoader.getIcon(JajukIcons.PLAY));
+          ActionManager.getAction(PAUSE_RESUME_TRACK).setName(Messages.getString("JajukWindow.12"));
           ActionManager.getAction(STOP_TRACK).setEnabled(false);
-          ActionManager.getAction(FAST_FORWARD_TRACK).setEnabled(false);
+          ActionManager.getAction(FORWARD_TRACK).setEnabled(false);
           ActionManager.getAction(FINISH_ALBUM).setEnabled(false);
           // reset startup position
           Conf.setProperty(Const.CONF_STARTUP_LAST_POSITION, "0");
@@ -119,13 +119,13 @@ public class PlayerStateMediator implements Observer {
           ActionManager.getAction(PREVIOUS_TRACK).setEnabled(false);
           ActionManager.getAction(NEXT_TRACK).setEnabled(false);
           ActionManager.getAction(REWIND_TRACK).setEnabled(false);
-          ActionManager.getAction(PLAY_PAUSE_TRACK).setEnabled(false);
+          ActionManager.getAction(PAUSE_RESUME_TRACK).setEnabled(false);
           ActionManager.getAction(STOP_TRACK).setEnabled(false);
-          ActionManager.getAction(FAST_FORWARD_TRACK).setEnabled(false);
+          ActionManager.getAction(FORWARD_TRACK).setEnabled(false);
           ActionManager.getAction(NEXT_ALBUM).setEnabled(false);
           ActionManager.getAction(PREVIOUS_ALBUM).setEnabled(false);
           ActionManager.getAction(FINISH_ALBUM).setEnabled(false);
-          ActionManager.getAction(PLAY_PAUSE_TRACK).setIcon(IconLoader.getIcon(JajukIcons.PLAY));
+          ActionManager.getAction(PAUSE_RESUME_TRACK).setIcon(IconLoader.getIcon(JajukIcons.PLAY));
           // reset startup position
           Conf.setProperty(Const.CONF_STARTUP_LAST_POSITION, "0");
           ActionManager.getAction(FINISH_ALBUM).setEnabled(true);
@@ -133,48 +133,48 @@ public class PlayerStateMediator implements Observer {
           ActionManager.getAction(PREVIOUS_TRACK).setEnabled(true);
           ActionManager.getAction(NEXT_TRACK).setEnabled(true);
           ActionManager.getAction(REWIND_TRACK).setEnabled(true);
-          ActionManager.getAction(PLAY_PAUSE_TRACK).setEnabled(true);
+          ActionManager.getAction(PAUSE_RESUME_TRACK).setEnabled(true);
           ActionManager.getAction(STOP_TRACK).setEnabled(true);
-          ActionManager.getAction(FAST_FORWARD_TRACK).setEnabled(true);
+          ActionManager.getAction(FORWARD_TRACK).setEnabled(true);
           ActionManager.getAction(NEXT_ALBUM).setEnabled(true);
           ActionManager.getAction(PREVIOUS_ALBUM).setEnabled(true);
           ActionManager.getAction(FINISH_ALBUM).setEnabled(true);
           // We need to set the icon here because the event can be
           // thrown by the information panel, not directly the
           // PlayPauseAction
-          ActionManager.getAction(PLAY_PAUSE_TRACK).setIcon(IconLoader.getIcon(JajukIcons.PAUSE));
+          ActionManager.getAction(PAUSE_RESUME_TRACK).setIcon(IconLoader.getIcon(JajukIcons.PAUSE));
         } else if (JajukEvents.PLAY_OPENING.equals(subject) || JajukEvents.PLAY_ERROR.equals(subject)) {
           ActionManager.getAction(PREVIOUS_TRACK).setEnabled(true);
           ActionManager.getAction(NEXT_TRACK).setEnabled(true);
           ActionManager.getAction(REWIND_TRACK).setEnabled(false);
-          ActionManager.getAction(PLAY_PAUSE_TRACK).setEnabled(false);
+          ActionManager.getAction(PAUSE_RESUME_TRACK).setEnabled(false);
           ActionManager.getAction(STOP_TRACK).setEnabled(true);
-          ActionManager.getAction(FAST_FORWARD_TRACK).setEnabled(false);
+          ActionManager.getAction(FORWARD_TRACK).setEnabled(false);
           ActionManager.getAction(NEXT_ALBUM).setEnabled(true);
           ActionManager.getAction(PREVIOUS_ALBUM).setEnabled(true);
           ActionManager.getAction(FINISH_ALBUM).setEnabled(true);
-          ActionManager.getAction(PLAY_PAUSE_TRACK).setIcon(IconLoader.getIcon(JajukIcons.PLAY));
+          ActionManager.getAction(PAUSE_RESUME_TRACK).setIcon(IconLoader.getIcon(JajukIcons.PLAY));
         } else if (JajukEvents.PLAYER_PAUSE.equals(subject)) {
           ActionManager.getAction(REWIND_TRACK).setEnabled(false);
-          ActionManager.getAction(FAST_FORWARD_TRACK).setEnabled(false);
+          ActionManager.getAction(FORWARD_TRACK).setEnabled(false);
           // We need to set the icon here because the event can be
           // thrown by the information panel, not directly the
           // PlayPauseAction
-          ActionManager.getAction(PLAY_PAUSE_TRACK).setIcon(IconLoader.getIcon(JajukIcons.PLAY));
+          ActionManager.getAction(PAUSE_RESUME_TRACK).setIcon(IconLoader.getIcon(JajukIcons.PLAY));
         } else if (JajukEvents.PLAYER_RESUME.equals(subject)) {
           // Enable the volume when resuming (fix a mplayer issue, see
           // above)
           ActionManager.getAction(REWIND_TRACK).setEnabled(true);
-          ActionManager.getAction(FAST_FORWARD_TRACK).setEnabled(true);
+          ActionManager.getAction(FORWARD_TRACK).setEnabled(true);
           // We need to set the icon here because the event can be
           // thrown by the information panel, not directly the
           // PlayPauseAction
-          ActionManager.getAction(PLAY_PAUSE_TRACK).setIcon(IconLoader.getIcon(JajukIcons.PAUSE));
+          ActionManager.getAction(PAUSE_RESUME_TRACK).setIcon(IconLoader.getIcon(JajukIcons.PAUSE));
         } else if (JajukEvents.WEBRADIO_LAUNCHED.equals(event.getSubject())) {
           ActionManager.getAction(PREVIOUS_TRACK).setEnabled(true);
           ActionManager.getAction(NEXT_TRACK).setEnabled(true);
-          ActionManager.getAction(PLAY_PAUSE_TRACK).setEnabled(true);
-          ActionManager.getAction(PLAY_PAUSE_TRACK).setIcon(IconLoader.getIcon(JajukIcons.PAUSE));
+          ActionManager.getAction(PAUSE_RESUME_TRACK).setEnabled(true);
+          ActionManager.getAction(PAUSE_RESUME_TRACK).setIcon(IconLoader.getIcon(JajukIcons.PAUSE));
           ActionManager.getAction(STOP_TRACK).setEnabled(true);
         } else if (JajukEvents.VOLUME_CHANGED.equals(event.getSubject())) {
           MuteAction.setVolumeIcon(100 * Player.getCurrentVolume());
