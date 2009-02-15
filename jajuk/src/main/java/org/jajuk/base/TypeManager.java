@@ -352,14 +352,14 @@ public final class TypeManager extends ItemManager {
     type.setProperty(Const.XML_TYPE_SEEK_SUPPORTED, true);
     // APE
     type = TypeManager.getInstance().registerType(Messages.getString("Type.ape"), Const.EXT_APE,
-        Class.forName(Const.PLAYER_IMPL_MPLAYER), Class.forName(Const.TAG_IMPL_JAUDIOTAGGER));
+        Class.forName(Const.PLAYER_IMPL_MPLAYER), null);
     type.setProperty(Const.XML_TYPE_IS_MUSIC, true);
     type.setProperty(Const.XML_TYPE_SEEK_SUPPORTED, Const.TRUE);
     type.setProperty(Const.XML_TYPE_ICON, UtilSystem.getResource("icons/16x16/type_ape_16x16.png")
         .toExternalForm());
     // MAC = APE
     type = TypeManager.getInstance().registerType(Messages.getString("Type.mac"), Const.EXT_MAC,
-        Class.forName(Const.PLAYER_IMPL_MPLAYER), Class.forName(Const.TAG_IMPL_JAUDIOTAGGER));
+        Class.forName(Const.PLAYER_IMPL_MPLAYER), null);
     type.setProperty(Const.XML_TYPE_IS_MUSIC, true);
     type.setProperty(Const.XML_TYPE_SEEK_SUPPORTED, Const.TRUE);
     type.setProperty(Const.XML_TYPE_ICON, UtilSystem.getResource("icons/16x16/type_ape_16x16.png")
