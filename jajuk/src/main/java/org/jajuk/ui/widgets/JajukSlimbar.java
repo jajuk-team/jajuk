@@ -213,6 +213,9 @@ public final class JajukSlimbar extends JFrame implements Observer, MouseWheelLi
 
     jbInfo = new JButton(IconLoader.getIcon(JajukIcons.INFO));
     jbInfo.addActionListener(this);
+    // Listen for dragging
+    jbInfo.addMouseMotionListener(motionAdapter);
+    // Listen for balloon displaying
     jbInfo.addMouseMotionListener(new MouseMotionAdapter() {
       @Override
       public void mouseMoved(MouseEvent e) {
