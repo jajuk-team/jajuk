@@ -180,9 +180,9 @@
     <dependency>
       <groupId>org.jaudiotagger</groupId>
       <artifactId>jaudiotagger</artifactId>
-      <version>185_jajuk</version>
+      <version>186</version>
       <scope>system</scope>
-      <systemPath>${basedir}/lib/jaudiotagger-185_jajuk.jar</systemPath>
+      <systemPath>${basedir}/lib/jaudiotagger-186.jar</systemPath>
     </dependency>
   </dependencies>
   
