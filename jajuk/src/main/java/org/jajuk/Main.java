@@ -977,7 +977,7 @@ public final class Main {
       }
       sessionIdFile = UtilSystem.getConfFileByPath(Const.FILE_SESSIONS + '/' + sHostname + '_'
           + System.getProperty("user.name") + '_'
-          + new SimpleDateFormat("yyyyMMdd-kk:mm:ss").format(UtilSystem.TODAY));
+          + new SimpleDateFormat("yyyyMMdd-kkmmss").format(UtilSystem.TODAY));
     }
     return sessionIdFile;
   }
