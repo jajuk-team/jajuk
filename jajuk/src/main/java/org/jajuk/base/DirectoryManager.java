@@ -153,13 +153,16 @@ public final class DirectoryManager extends ItemManager {
   /**
    * @param sID
    *          Item ID
+   * @param device
+   *          Associated device
    * @return Directory matching the io file
    */
-  public synchronized Directory getDirectoryForIO(final java.io.File fio) {
+  public synchronized Directory getDirectoryForIO(final java.io.File fio, Device device) {
     ReadOnlyIterator<Directory> dirs = getDirectoriesIterator();
     while (dirs.hasNext()) {
       Directory dir = dirs.next();
-      if (dir.getFio().equals(fio)) {
+      // we have to test the device because of cdroms : all CD have the same IO
+      if (dir.getFio().equals(fio) && dir.getDevice().equals(device)) {
         return dir;
       }
     }
@@ -204,7 +207,7 @@ public final class DirectoryManager extends ItemManager {
   public synchronized Directory registerDirectory(final String sId, final String sName,
       final Directory dParent, final Device device) {
     Directory directory = getDirectoryByID(sId);
-    if (directory != null){
+    if (directory != null) {
       return directory;
     }
     directory = new Directory(sId, sName, dParent, device);

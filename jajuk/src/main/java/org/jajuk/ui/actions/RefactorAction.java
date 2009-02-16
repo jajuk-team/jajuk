@@ -171,9 +171,10 @@ public class RefactorAction {
           "\\\\"));
       sFirstDir = sTest[1].split("\\" + RefactorAction.sFS)[1];
 
-      final Directory dir = DirectoryManager.getInstance().registerDirectory(sFirstDir,
-          DirectoryManager.getInstance().getDirectoryForIO(fCurrent.getDevice().getFio()),
-          fCurrent.getDevice());
+      final Directory dir = DirectoryManager.getInstance().registerDirectory(
+          sFirstDir,
+          DirectoryManager.getInstance().getDirectoryForIO(fCurrent.getDevice().getFio(),
+              fCurrent.getDevice()), fCurrent.getDevice());
 
       // Ask to refresh this directory afterward
       if (!toBeRefreshed.contains(dir)) {

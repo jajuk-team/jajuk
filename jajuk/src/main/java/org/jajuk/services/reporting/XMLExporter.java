@@ -273,7 +273,7 @@ public class XMLExporter extends Exporter {
         + Tag.tagData(Const.XML_TYPE, UtilString.formatXML(device.getDeviceTypeS())) + NEWLINE);
     writer.write(addTabs(1) + Tag.tagData(Const.XML_URL, UtilString.formatXML(device.getUrl()))
         + NEWLINE);
-    Directory dir = DirectoryManager.getInstance().getDirectoryForIO(device.getFio());
+    Directory dir = DirectoryManager.getInstance().getDirectoryForIO(device.getFio(),device);
     // check void devices
     if (dir != null) {
       // Tag children directories of device.
@@ -282,7 +282,7 @@ public class XMLExporter extends Exporter {
       }
       // Tag children files of device.
       for (org.jajuk.base.File file : DirectoryManager.getInstance().getDirectoryForIO(
-          device.getFio()).getFiles()) {
+          device.getFio(),device).getFiles()) {
         tagFile(file, 1);
       }
     }
