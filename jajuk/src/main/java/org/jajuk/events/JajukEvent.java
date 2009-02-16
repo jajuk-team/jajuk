@@ -78,7 +78,12 @@ public class JajukEvent {
    */
   @Override
   public String toString() {
-    return subject + " " + ((pDetails == null) ? "no details" : pDetails.toString());
+    // Do not display details, that can cause severe performance issue
+    if (pDetails == null) {
+      return subject + " no details";
+    } else {
+      return subject.toString();
+    }
   }
 
   /**
