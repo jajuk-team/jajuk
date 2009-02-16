@@ -7,7 +7,7 @@
 
 	<!--Distribution release  
 	!!! DO NOT USE '-' CHARACTER IN VERSION !!!-->
-	<property name='version' value='1.7_RC24'/> 
+	<property name='version' value='1.7_RC25'/> 
 
 	<!--Previous release used for JNLP incremental upgrade-->
 	<property name='previous_version' value='null' />
@@ -386,7 +386,7 @@
 		<!-- Set test or no test in jnlp file-->
 		<replace dir='${jnlpdir}/app' value='-${test}'>
 			<include name='*.jnlp' />
-			<replacetoken>TEST_FLAG_ REPLACED_BY_ANT</replacetoken>
+			<replacetoken>TEST_FLAG_REPLACED_BY_ANT</replacetoken>
 		</replace>
 
 		<!--Copy previous release jars, comment this if you have no previous release
