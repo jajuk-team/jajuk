@@ -21,12 +21,14 @@
 package org.jajuk.services.covers;
 
 import java.awt.Image;
+import java.awt.MediaTracker;
 import java.awt.Toolkit;
 import java.io.File;
 import java.net.URL;
 
 import javax.swing.ImageIcon;
 
+import org.jajuk.ui.widgets.JajukWindow;
 import org.jajuk.util.Const;
 import org.jajuk.util.DownloadManager;
 import org.jajuk.util.UtilGUI;
@@ -153,9 +155,10 @@ public class Cover implements Comparable<Cover>, Const {
     }
     Image image = null;
     synchronized (Cover.class) {
-      // Read cover using ImageIO API (note that we don't need using
-      // Mediatracker as read method is synchronous)
       image = Toolkit.getDefaultToolkit().getImage(getFile().getAbsolutePath());
+      MediaTracker tracker = new MediaTracker(JajukWindow.getInstance());
+      tracker.addImage(image, 1);
+      tracker.waitForAll();
     }
     Log.debug("Loaded {{" + url + "}} in  " + (System.currentTimeMillis() - l) + " ms");
     return image;
@@ -204,5 +207,4 @@ public class Cover implements Comparable<Cover>, Const {
     return this.file;
   }
 
- 
 }
