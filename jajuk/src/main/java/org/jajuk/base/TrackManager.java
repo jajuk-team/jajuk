@@ -21,6 +21,7 @@
 package org.jajuk.base;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -118,8 +119,6 @@ public final class TrackManager extends ItemManager {
     registerProperty(new PropertyMetaInformation(Const.XML_TRACK_BANNED, false, false, true, true,
         false, Boolean.class, false));
   }
-
- 
 
   /**
    * @return singleton
@@ -620,18 +619,13 @@ public final class TrackManager extends ItemManager {
    * (non-Javadoc)
    * 
    * @see org.jajuk.base.Observer#update(org.jajuk.base.Event)
-   
-  public void update(Event event) {
-    JajukEvents subject = event.getSubject();
-    if (JajukEvents.FILE_NAME_CHANGED.equals(subject)) {
-      Properties properties = event.getDetails();
-      File fNew = (File) properties.get(Const.DETAIL_NEW);
-      File fileOld = (File) properties.get(Const.DETAIL_OLD);
-      Track track = fileOld.getTrack();
-      track.removeFile(fileOld);
-      track.addFile(fNew);
-    }
-  }*/
+   * 
+   * public void update(Event event) { JajukEvents subject = event.getSubject();
+   * if (JajukEvents.FILE_NAME_CHANGED.equals(subject)) { Properties properties =
+   * event.getDetails(); File fNew = (File) properties.get(Const.DETAIL_NEW);
+   * File fileOld = (File) properties.get(Const.DETAIL_OLD); Track track =
+   * fileOld.getTrack(); track.removeFile(fileOld); track.addFile(fNew); } }
+   */
 
   /**
    * Get ordered tracks list associated with this item
@@ -689,19 +683,46 @@ public final class TrackManager extends ItemManager {
         }
       }
       return out;
-    }
-    List<Track> out = new ArrayList<Track>(10);
-    Iterator<Item> items = (Iterator<Item>) getItemsIterator();
-    while (items.hasNext()) {
-      Track track = (Track) items.next();
-      if ((item instanceof Author && track.getAuthor().equals(item))
-          || (item instanceof Year && track.getYear().equals(item))
-          || (item instanceof Style && track.getStyle().equals(item))) {
-        // Note: no need to check dups here
-        out.add(track);
+    } else if (item instanceof Author) {
+      List<Track> out = new ArrayList<Track>(10);
+      Iterator<Item> items = (Iterator<Item>) getItemsIterator();
+      while (items.hasNext()) {
+        Track track = (Track) items.next();
+        if (track.getAuthor().equals(item)) {
+          out.add(track);
+        }
+        // Sort by album
+        Collections.sort(out, new TrackComparator(TrackComparatorType.AUTHOR_ALBUM));
       }
+      return out;
+    } else if (item instanceof Style) {
+      List<Track> out = new ArrayList<Track>(10);
+      Iterator<Item> items = (Iterator<Item>) getItemsIterator();
+      while (items.hasNext()) {
+        Track track = (Track) items.next();
+        if (track.getStyle().equals(item)) {
+          out.add(track);
+        }
+        // Sort by style
+        Collections.sort(out, new TrackComparator(TrackComparatorType.STYLE_AUTHOR_ALBUM));
+      }
+      return out;
+    } else if (item instanceof Year) {
+      List<Track> out = new ArrayList<Track>(10);
+      Iterator<Item> items = (Iterator<Item>) getItemsIterator();
+      while (items.hasNext()) {
+        Track track = (Track) items.next();
+        if (track.getYear().equals(item)) {
+          out.add(track);
+        }
+        // Sort by year
+        Collections.sort(out, new TrackComparator(TrackComparatorType.YEAR_ALBUM));
+      }
+      return out;
     }
-    return out;
+    else{
+      return null;
+    }
   }
 
   public TrackComparator getComparator() {
