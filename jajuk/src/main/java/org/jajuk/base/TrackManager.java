@@ -634,10 +634,16 @@ public final class TrackManager extends ItemManager {
    * </p>
    * 
    * @param item
+   *          The associated item
+   * @param sorted
+   *          Whether the output should be sorted on it (actually applied on
+   *          artists,years and styles because others items are already sorted)
+   * 
+   * @param item
    * @return
    */
   @SuppressWarnings("unchecked")
-  public synchronized List<Track> getAssociatedTracks(Item item) {
+  public synchronized List<Track> getAssociatedTracks(Item item, boolean sorted) {
     if (item instanceof Album) {
       // check the album cache
       List<Track> tracks = ((Album) item).getTracksCache();
@@ -692,7 +698,9 @@ public final class TrackManager extends ItemManager {
           out.add(track);
         }
         // Sort by album
-        Collections.sort(out, new TrackComparator(TrackComparatorType.AUTHOR_ALBUM));
+        if (sorted) {
+          Collections.sort(out, new TrackComparator(TrackComparatorType.AUTHOR_ALBUM));
+        }
       }
       return out;
     } else if (item instanceof Style) {
@@ -704,7 +712,9 @@ public final class TrackManager extends ItemManager {
           out.add(track);
         }
         // Sort by style
-        Collections.sort(out, new TrackComparator(TrackComparatorType.STYLE_AUTHOR_ALBUM));
+        if (sorted) {
+          Collections.sort(out, new TrackComparator(TrackComparatorType.STYLE_AUTHOR_ALBUM));
+        }
       }
       return out;
     } else if (item instanceof Year) {
@@ -716,11 +726,12 @@ public final class TrackManager extends ItemManager {
           out.add(track);
         }
         // Sort by year
-        Collections.sort(out, new TrackComparator(TrackComparatorType.YEAR_ALBUM));
+        if (sorted) {
+          Collections.sort(out, new TrackComparator(TrackComparatorType.YEAR_ALBUM));
+        }
       }
       return out;
-    }
-    else{
+    } else {
       return null;
     }
   }

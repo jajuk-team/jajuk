@@ -371,7 +371,7 @@ public abstract class AbstractThumbnail extends JPanel implements ActionListener
         public void run() {
           JDialog jd = new JDialog(JajukWindow.getInstance(), Messages.getString("CatalogView.18"));
           org.jajuk.base.File file = null;
-          List<Track> tracks = TrackManager.getInstance().getAssociatedTracks(getItem());
+          List<Track> tracks = TrackManager.getInstance().getAssociatedTracks(getItem(),false);
           if (tracks.size() > 0) {
             // Take first track found
             Track track = tracks.iterator().next();

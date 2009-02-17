@@ -79,7 +79,7 @@ public class DeleteSelectionAction extends SelectionAction {
       } else if (item instanceof Track) {
         alFiles.addAll(((Track) item).getFiles());
       } else if (item instanceof Album || item instanceof Author || item instanceof Style) {
-        for (Track atrack : TrackManager.getInstance().getAssociatedTracks(item)) {
+        for (Track atrack : TrackManager.getInstance().getAssociatedTracks(item,true)) {
           alFiles.addAll(atrack.getFiles());
         }
       } else if (item instanceof Directory) {

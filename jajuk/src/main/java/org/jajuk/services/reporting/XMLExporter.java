@@ -321,7 +321,7 @@ public class XMLExporter extends Exporter {
     String sStyleName = "";
     String sAuthorName = "";
     String sYear = "";
-    List<Track> tracks = TrackManager.getInstance().getAssociatedTracks(album);
+    List<Track> tracks = TrackManager.getInstance().getAssociatedTracks(album,true);
     if (tracks.size() > 0) {
       sStyleName = UtilString.formatXML(tracks.iterator().next().getStyle().getName2());
       sAuthorName = UtilString.formatXML(tracks.iterator().next().getAuthor().getName2());

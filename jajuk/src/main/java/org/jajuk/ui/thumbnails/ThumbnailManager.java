@@ -178,7 +178,7 @@ public final class ThumbnailManager {
       // search for local covers in all directories mapping the
       // current track to reach other
       // devices covers and display them together
-      final List<Track> tracks = TrackManager.getInstance().getAssociatedTracks(album);
+      final List<Track> tracks = TrackManager.getInstance().getAssociatedTracks(album,true);
       if (tracks.size() == 0) {
         return false;
       }

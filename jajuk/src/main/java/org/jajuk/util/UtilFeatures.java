@@ -179,7 +179,7 @@ public final class UtilFeatures {
         files.add(((Track) item).getPlayeableFile(Conf
             .getBoolean(Const.CONF_OPTIONS_HIDE_UNMOUNTED)));
       } else if (item instanceof LogicalItem) {
-        List<Track> tracks = TrackManager.getInstance().getAssociatedTracks(item);
+        List<Track> tracks = TrackManager.getInstance().getAssociatedTracks(item,true);
         for (Track track : tracks) {
           files.add(track.getPlayeableFile(Conf.getBoolean(Const.CONF_OPTIONS_HIDE_UNMOUNTED)));
         }
@@ -319,8 +319,9 @@ public final class UtilFeatures {
     // For each entry of the selection (can be album, year, track,
     // directory...),
     // we add all associated tracks and we get equals preference if any
+    //for (Track track:TrackManager.getInstance()){
     for (Item i : selection) {
-      trackList.addAll(TrackManager.getInstance().getAssociatedTracks(i));
+      trackList.addAll(TrackManager.getInstance().getAssociatedTracks(i,false));
     }
     // List shouldn't be void (except on collection node selection in tree view
     // for ie)

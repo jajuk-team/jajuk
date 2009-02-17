@@ -266,7 +266,7 @@ public final class StyleManager extends ItemManager {
     if (item instanceof Track) {
       out.add(((Track) item).getStyle());
     } else {
-      List<Track> tracks = TrackManager.getInstance().getAssociatedTracks(item);
+      List<Track> tracks = TrackManager.getInstance().getAssociatedTracks(item,true);
       for (Track track : tracks) {
         out.add(track.getStyle());
       }

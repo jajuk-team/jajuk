@@ -135,7 +135,7 @@ public final class YearManager extends ItemManager {
     if (item instanceof Track) {
       out.add(((Track) item).getYear());
     } else {
-      List<Track> tracks = TrackManager.getInstance().getAssociatedTracks(item);
+      List<Track> tracks = TrackManager.getInstance().getAssociatedTracks(item,true);
       for (Track track : tracks) {
         out.add(track.getYear());
       }

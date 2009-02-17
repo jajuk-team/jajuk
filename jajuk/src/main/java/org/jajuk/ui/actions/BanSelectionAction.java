@@ -64,7 +64,7 @@ public class BanSelectionAction extends SelectionAction {
           // Extract tracks of each item
           List<Track> tracks = new ArrayList<Track>(selection.size());
           for (Item item : selection) {
-            tracks.addAll(TrackManager.getInstance().getAssociatedTracks(item));
+            tracks.addAll(TrackManager.getInstance().getAssociatedTracks(item,false));
           }
           // Then ban them all !
           for (Track track : tracks) {

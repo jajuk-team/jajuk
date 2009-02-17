@@ -68,7 +68,7 @@ public class CDDBSelectionAction extends SelectionAction {
           }
           // Build a list of tracks from various items
           Item item = selection.get(0);
-          List<Track> tracksSet = TrackManager.getInstance().getAssociatedTracks(item);
+          List<Track> tracksSet = TrackManager.getInstance().getAssociatedTracks(item,true);
           List<Track> tracks = new ArrayList<Track>(tracksSet);
 
           // Note that the CDDBWizard uses a swing worker

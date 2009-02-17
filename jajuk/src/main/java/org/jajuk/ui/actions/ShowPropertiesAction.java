@@ -86,7 +86,7 @@ public class ShowPropertiesAction extends SelectionAction {
       // the item itself, the other with all tracks
       List<Item> tracks = new ArrayList<Item>(selection.size());
       for (Item i : selection) {
-        tracks.addAll(TrackManager.getInstance().getAssociatedTracks(i));
+        tracks.addAll(TrackManager.getInstance().getAssociatedTracks(i,false));
       }
       new PropertiesWizard(selection, tracks);
     } else {

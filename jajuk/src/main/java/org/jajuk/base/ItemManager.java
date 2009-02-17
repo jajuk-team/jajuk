@@ -320,7 +320,7 @@ public abstract class ItemManager {
    * Perform a cleanup for a given item
    */
   protected synchronized void cleanup(Item item) {
-    if (TrackManager.getInstance().getAssociatedTracks(item).size() == 0) {
+    if (TrackManager.getInstance().getAssociatedTracks(item,false).size() == 0) {
       removeItem(item);
     }
   }

@@ -741,8 +741,7 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
           break;
         } else if (o instanceof TransferableTreeNode) {
           // this is a standard node except "by date"
-          // discovery
-          // nodes
+          // discovery nodes
           alSelected.add((Item) ((TransferableTreeNode) o).getData());
         }
 

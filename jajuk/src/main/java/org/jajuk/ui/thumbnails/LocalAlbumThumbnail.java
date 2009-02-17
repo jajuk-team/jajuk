@@ -189,7 +189,7 @@ public class LocalAlbumThumbnail extends AbstractThumbnail {
     ThumbnailManager.refreshThumbnail(album, size);
     java.io.File cover = UtilSystem.getConfFileByPath(Const.FILE_THUMBS + '/' + size + '/'
         + album.getID() + '.' + Const.EXT_THUMB);
-    List<Track> tracks = new ArrayList<Track>(TrackManager.getInstance().getAssociatedTracks(album));
+    List<Track> tracks = new ArrayList<Track>(TrackManager.getInstance().getAssociatedTracks(album,true));
     Collections.sort(tracks, new TrackComparator(TrackComparatorType.ORDER));
     Track firstTrack = tracks.iterator().next();
     Color bgcolor = UtilGUI.getUltraLightColor();
