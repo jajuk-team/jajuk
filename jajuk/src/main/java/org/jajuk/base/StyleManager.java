@@ -20,7 +20,6 @@
 
 package org.jajuk.base;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
@@ -253,24 +252,5 @@ public final class StyleManager extends ItemManager {
   public synchronized ReadOnlyIterator<Style> getStylesIterator() {
     return new ReadOnlyIterator<Style>((Iterator<Style>) getItemsIterator());
   }
-
-  /**
-   * Get ordered list of styles associated with this item
-   * 
-   * @param item
-   * @return
-   */
-  public synchronized List<Style> getAssociatedStyles(Item item) {
-    List<Style> out = new ArrayList<Style>(1);
-    // [Perf] If item is a track, just return its style
-    if (item instanceof Track) {
-      out.add(((Track) item).getStyle());
-    } else {
-      List<Track> tracks = TrackManager.getInstance().getAssociatedTracks(item,true);
-      for (Track track : tracks) {
-        out.add(track.getStyle());
-      }
-    }
-    return out;
-  }
+  
 }

@@ -685,7 +685,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
           // if hide unmounted tracks is set, continue
           if (Conf.getBoolean(Const.CONF_OPTIONS_HIDE_UNMOUNTED)) {
             // test if album contains at least one mounted file
-            List<Track> trackset = TrackManager.getInstance().getAssociatedTracks(album,true);
+            List<Track> trackset = TrackManager.getInstance().getAssociatedTracks(album,false);
             if (trackset.size() > 0) {
               boolean bOK = false;
               for (Track track : trackset) {

@@ -20,7 +20,6 @@
 
 package org.jajuk.base;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -121,26 +120,6 @@ public final class YearManager extends ItemManager {
   @SuppressWarnings("unchecked")
   public synchronized ReadOnlyIterator<Year> getYearsIterator() {
     return new ReadOnlyIterator<Year>((Iterator<Year>) getItemsIterator());
-  }
-
-  /**
-   * Get ordered years associated with this item
-   * 
-   * @param item
-   * @return
-   */
-  public synchronized List<Year> getAssociatedYears(Item item) {
-    List<Year> out = new ArrayList<Year>(1);
-    // [Perf] If item is a track, just return its Year
-    if (item instanceof Track) {
-      out.add(((Track) item).getYear());
-    } else {
-      List<Track> tracks = TrackManager.getInstance().getAssociatedTracks(item,true);
-      for (Track track : tracks) {
-        out.add(track.getYear());
-      }
-    }
-    return out;
   }
 
 }

@@ -20,10 +20,8 @@
 package org.jajuk.ui.actions;
 
 import java.awt.event.ActionEvent;
-import java.util.ArrayList;
 import java.util.List;
 
-import org.jajuk.base.Item;
 import org.jajuk.base.Track;
 import org.jajuk.base.TrackManager;
 import org.jajuk.events.JajukEvent;
@@ -60,10 +58,7 @@ public class LoveSelectionAction extends SelectionAction {
             return;
           }
           // Extract tracks of each item
-          List<Track> tracks = new ArrayList<Track>(selection.size());
-          for (Item item : selection) {
-            tracks.addAll(TrackManager.getInstance().getAssociatedTracks(item,false));
-          }
+          List<Track> tracks = TrackManager.getInstance().getAssociatedTracks(selection, false);
           // Set the preference
           for (Track track : tracks) {
             track.setPreference(2l);

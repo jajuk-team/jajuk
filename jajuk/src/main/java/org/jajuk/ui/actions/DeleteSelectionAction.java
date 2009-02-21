@@ -73,29 +73,38 @@ public class DeleteSelectionAction extends SelectionAction {
     final List<Directory> rejDirs = new ArrayList<Directory>(selection.size());
     final List<Directory> emptyDirs = new ArrayList<Directory>(selection.size());
 
-    for (Item item : selection) {
-      if (item instanceof File) {
-        alFiles.add((File) item);
-      } else if (item instanceof Track) {
-        alFiles.addAll(((Track) item).getFiles());
-      } else if (item instanceof Album || item instanceof Author || item instanceof Style) {
-        for (Track atrack : TrackManager.getInstance().getAssociatedTracks(item,true)) {
-          alFiles.addAll(atrack.getFiles());
-        }
-      } else if (item instanceof Directory) {
-        alDirs.add((Directory) item);
-      } else if ((item instanceof Playlist)
-          && (Conf.getBoolean(Const.CONF_CONFIRMATIONS_DELETE_FILE))) {
-        // file delete confirmation
-        Playlist plf = (Playlist) item;
-        String sFileToDelete = plf.getAbsolutePath();
-        String sMessage = Messages.getString("Confirmation_delete") + "\n" + sFileToDelete;
-        int i = Messages.getChoice(sMessage, JOptionPane.YES_NO_CANCEL_OPTION,
-            JOptionPane.WARNING_MESSAGE);
-        if (i == JOptionPane.YES_OPTION) {
-          PlaylistManager.getInstance().removePlaylistFile(plf);
-          // requires device refresh
-          ObservationManager.notify(new JajukEvent(JajukEvents.DEVICE_REFRESH));
+    // Compute all files to move from various items list
+    if (selection.size() == 0) {
+      Log.debug("None item to move");
+      return;
+    }
+    Item first = selection.get(0);
+    if (first instanceof Album || first instanceof Author || first instanceof Style) {
+      List<Track> tracks = TrackManager.getInstance().getAssociatedTracks(selection, true);
+      for (Track track : tracks) {
+        alFiles.addAll(track.getFiles());
+      }
+    } else {
+      for (Item item : selection) {
+        if (item instanceof File) {
+          alFiles.add((File) item);
+        } else if (item instanceof Track) {
+          alFiles.addAll(((Track) item).getFiles());
+        } else if (item instanceof Directory) {
+          alDirs.add((Directory) item);
+        } else if ((item instanceof Playlist)
+            && (Conf.getBoolean(Const.CONF_CONFIRMATIONS_DELETE_FILE))) {
+          // file delete confirmation
+          Playlist plf = (Playlist) item;
+          String sFileToDelete = plf.getAbsolutePath();
+          String sMessage = Messages.getString("Confirmation_delete") + "\n" + sFileToDelete;
+          int i = Messages.getChoice(sMessage, JOptionPane.YES_NO_CANCEL_OPTION,
+              JOptionPane.WARNING_MESSAGE);
+          if (i == JOptionPane.YES_OPTION) {
+            PlaylistManager.getInstance().removePlaylistFile(plf);
+            // requires device refresh
+            ObservationManager.notify(new JajukEvent(JajukEvents.DEVICE_REFRESH));
+          }
         }
       }
     }

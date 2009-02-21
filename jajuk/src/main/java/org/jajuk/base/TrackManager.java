@@ -248,7 +248,7 @@ public final class TrackManager extends ItemManager {
         track.getDuration(), track.getYear(), track.getOrder(), track.getType());
     postChange(track, newTrack, filter);
     // remove this album if no more references
-    AlbumManager.getInstance().cleanup(track.getAlbum());
+    AlbumManager.getInstance().cleanOrphanTracks(track.getAlbum());
     return newTrack;
   }
 
@@ -300,7 +300,7 @@ public final class TrackManager extends ItemManager {
         track.getDuration(), track.getYear(), track.getOrder(), track.getType());
     postChange(track, newTrack, filter);
     // remove this item if no more references
-    AuthorManager.getInstance().cleanup(track.getAuthor());
+    AuthorManager.getInstance().cleanOrphanTracks(track.getAuthor());
     return newTrack;
   }
 
@@ -348,7 +348,7 @@ public final class TrackManager extends ItemManager {
         track.getDuration(), track.getYear(), track.getOrder(), track.getType());
     postChange(track, newTrack, filter);
     // remove this item if no more references
-    StyleManager.getInstance().cleanup(track.getStyle());
+    StyleManager.getInstance().cleanOrphanTracks(track.getStyle());
     return newTrack;
   }
 
@@ -644,57 +644,97 @@ public final class TrackManager extends ItemManager {
    */
   @SuppressWarnings("unchecked")
   public synchronized List<Track> getAssociatedTracks(Item item, boolean sorted) {
-    if (item instanceof Album) {
+    List<Item> items = new ArrayList<Item>(1);
+    items.add(item);
+    return getAssociatedTracks(items, sorted);
+  }
+
+  /**
+   * Get ordered tracks list associated with a list of items (of the same type)
+   * <p>
+   * This is a shallow copy only
+   * </p>
+   * 
+   * @param item
+   *          The associated items
+   * @param sorted
+   *          Whether the output should be sorted on it (actually applied on
+   *          artists,years and styles because others items are already sorted)
+   * 
+   * @param item
+   * @return
+   */
+  @SuppressWarnings("unchecked")
+  public synchronized List<Track> getAssociatedTracks(List<Item> items, boolean sorted) {
+    List<Track> out = new ArrayList<Track>(items.size());
+    if (items == null || items.size() == 0) {
+      return out;
+    }
+    if (items.get(0) instanceof Album) {
       // check the album cache
-      List<Track> tracks = ((Album) item).getTracksCache();
-      if (tracks.size() > 0) {
-        return tracks;
+      for (Item item : items) {
+        List<Track> tracks = ((Album) item).getTracksCache();
+        if (tracks.size() > 0) {
+          out.addAll(tracks);
+        }
       }
+      // No sorting, cache is already sorted
     }
     // If the item is itself a track, simply return it
-    if (item instanceof Track) {
-      List<Track> out = new ArrayList<Track>(1);
-      out.add((Track) item);
-      return out;
-    } else if (item instanceof File) {
-      List<Track> out = new ArrayList<Track>(1);
-      out.add(((File) item).getTrack());
-      return out;
-    } else if (item instanceof Directory) {
-      Directory dir = (Directory) item;
-      List<Track> out = new ArrayList<Track>(dir.getFiles().size());
-      for (File file : dir.getFilesRecursively()) {
-        Track track = file.getTrack();
-        // Caution, do not add dups
-        if (!out.contains(track)) {
-          out.add(file.getTrack());
+    else if (items.get(0) instanceof Track) {
+      for (Item item : items) {
+        out.add((Track) item);
+      }
+      if (sorted) {
+        Collections.sort(out, new TrackComparator(TrackComparatorType.ALBUM));
+      }
+    } else if (items.get(0) instanceof File) {
+      for (Item item : items) {
+        out.add(((File) item).getTrack());
+      }
+      if (sorted) {
+        Collections.sort(out, new TrackComparator(TrackComparatorType.ALBUM));
+      }
+    } else if (items.get(0) instanceof Directory) {
+      for (Item item : items) {
+        Directory dir = (Directory) item;
+        for (File file : dir.getFilesRecursively()) {
+          Track track = file.getTrack();
+          // Caution, do not add dups
+          if (!out.contains(track)) {
+            out.add(file.getTrack());
+          }
         }
       }
-      return out;
-    } else if (item instanceof Playlist) {
-      Playlist pl = (Playlist) item;
-      List<File> files;
-      try {
-        files = pl.getFiles();
-      } catch (JajukException e) {
-        Log.error(e);
-        return null;
+      if (sorted) {
+        Collections.sort(out, new TrackComparator(TrackComparatorType.ALBUM));
       }
-      List<Track> out = new ArrayList<Track>(files.size());
-      for (File file : files) {
-        Track track = file.getTrack();
-        // Caution, do not add dups
-        if (!out.contains(track)) {
-          out.add(file.getTrack());
+    } else if (items.get(0) instanceof Playlist) {
+      for (Item item : items) {
+        Playlist pl = (Playlist) item;
+        List<File> files;
+        try {
+          files = pl.getFiles();
+        } catch (JajukException e) {
+          Log.error(e);
+          return out;
+        }
+        for (File file : files) {
+          Track track = file.getTrack();
+          // Caution, do not add dups
+          if (!out.contains(track)) {
+            out.add(file.getTrack());
+          }
         }
       }
-      return out;
-    } else if (item instanceof Author) {
-      List<Track> out = new ArrayList<Track>(10);
-      Iterator<Item> items = (Iterator<Item>) getItemsIterator();
-      while (items.hasNext()) {
-        Track track = (Track) items.next();
-        if (track.getAuthor().equals(item)) {
+      if (sorted) {
+        Collections.sort(out, new TrackComparator(TrackComparatorType.ALBUM));
+      }
+    } else if (items.get(0) instanceof Author) {
+      Iterator<Item> tracks = (Iterator<Item>) getItemsIterator();
+      while (tracks.hasNext()) {
+        Track track = (Track) tracks.next();
+        if (items.contains(track.getAuthor())) {
           out.add(track);
         }
         // Sort by album
@@ -703,12 +743,11 @@ public final class TrackManager extends ItemManager {
         }
       }
       return out;
-    } else if (item instanceof Style) {
-      List<Track> out = new ArrayList<Track>(10);
-      Iterator<Item> items = (Iterator<Item>) getItemsIterator();
-      while (items.hasNext()) {
-        Track track = (Track) items.next();
-        if (track.getStyle().equals(item)) {
+    } else if (items.get(0) instanceof Style) {
+      Iterator<Item> tracks = (Iterator<Item>) getItemsIterator();
+      while (tracks.hasNext()) {
+        Track track = (Track) tracks.next();
+        if (items.contains(track.getStyle())) {
           out.add(track);
         }
         // Sort by style
@@ -716,13 +755,11 @@ public final class TrackManager extends ItemManager {
           Collections.sort(out, new TrackComparator(TrackComparatorType.STYLE_AUTHOR_ALBUM));
         }
       }
-      return out;
-    } else if (item instanceof Year) {
-      List<Track> out = new ArrayList<Track>(10);
-      Iterator<Item> items = (Iterator<Item>) getItemsIterator();
-      while (items.hasNext()) {
-        Track track = (Track) items.next();
-        if (track.getYear().equals(item)) {
+    } else if (items.get(0) instanceof Year) {
+      Iterator<Item> tracks = (Iterator<Item>) getItemsIterator();
+      while (tracks.hasNext()) {
+        Track track = (Track) tracks.next();
+        if (items.contains(track.getYear())) {
           out.add(track);
         }
         // Sort by year
@@ -730,10 +767,8 @@ public final class TrackManager extends ItemManager {
           Collections.sort(out, new TrackComparator(TrackComparatorType.YEAR_ALBUM));
         }
       }
-      return out;
-    } else {
-      return null;
     }
+    return out;
   }
 
   public TrackComparator getComparator() {

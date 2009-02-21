@@ -79,17 +79,25 @@ public class PasteAction extends JajukAction {
         UtilGUI.waiting();
 
         // Compute all files to move from various items list
-        for (Item item : itemsToMove) {
-          if (item instanceof File) {
-            alFiles.add((File) item);
-          } else if (item instanceof Track) {
-            alFiles.addAll(((Track) item).getFiles());
-          } else if (item instanceof Album || item instanceof Author || item instanceof Style) {
-            for (Track atrack : TrackManager.getInstance().getAssociatedTracks(item,true)) {
-              alFiles.addAll(atrack.getFiles());
+        if (itemsToMove.size() == 0){
+          Log.debug("None item to move");
+          return;
+        }
+        Item first = itemsToMove.get(0);
+        if (first instanceof Album || first instanceof Author || first instanceof Style) {
+          List<Track> tracks = TrackManager.getInstance().getAssociatedTracks(itemsToMove, true);
+          for (Track track : tracks) {
+            alFiles.addAll(track.getFiles());
+          }
+        } else {
+          for (Item item : itemsToMove) {
+            if (item instanceof File) {
+              alFiles.add((File) item);
+            } else if (item instanceof Track) {
+              alFiles.addAll(((Track) item).getFiles());
+            } else if (item instanceof Directory) {
+              alDirs.add((Directory) item);
             }
-          } else if (item instanceof Directory) {
-            alDirs.add((Directory) item);
           }
         }
 

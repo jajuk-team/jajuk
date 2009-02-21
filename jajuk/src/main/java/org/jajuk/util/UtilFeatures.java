@@ -179,7 +179,7 @@ public final class UtilFeatures {
         files.add(((Track) item).getPlayeableFile(Conf
             .getBoolean(Const.CONF_OPTIONS_HIDE_UNMOUNTED)));
       } else if (item instanceof LogicalItem) {
-        List<Track> tracks = TrackManager.getInstance().getAssociatedTracks(item,true);
+        List<Track> tracks = TrackManager.getInstance().getAssociatedTracks(item, true);
         for (Track track : tracks) {
           files.add(track.getPlayeableFile(Conf.getBoolean(Const.CONF_OPTIONS_HIDE_UNMOUNTED)));
         }
@@ -312,17 +312,15 @@ public final class UtilFeatures {
    * @return first item in selection preference
    */
   public static long getPreferenceForSelection(List<? extends Item> selection) {
+    // We compute preference of first item selection) {
     if (selection.size() == 0) {
       return Const.PREFERENCE_UNSET;
     }
-    List<Track> trackList = new ArrayList<Track>(10);
+    List<Item> items = new ArrayList<Item>(selection);
     // For each entry of the selection (can be album, year, track,
     // directory...),
     // we add all associated tracks and we get equals preference if any
-    //for (Track track:TrackManager.getInstance()){
-    for (Item i : selection) {
-      trackList.addAll(TrackManager.getInstance().getAssociatedTracks(i,false));
-    }
+    List<Track> trackList = TrackManager.getInstance().getAssociatedTracks(items, false);
     // List shouldn't be void (except on collection node selection in tree view
     // for ie)
     if (trackList.size() == 0) {
@@ -338,10 +336,12 @@ public final class UtilFeatures {
     }
     return preferenceFirstItem;
   }
-  
+
   /**
    * Perform updates on this view to reflect current playing item status
-   * @param observer the observer to apply update to
+   * 
+   * @param observer
+   *          the observer to apply update to
    */
   public static void updateStatus(Observer oberver) {
     // check if a track or a webradio has already been launched

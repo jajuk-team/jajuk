@@ -112,7 +112,7 @@ public class LyrcProvider extends GenericProvider {
           Log.debug("Found suggestion " + suggestion);
           try {
             final URL url = new URL(suggestionURL);
-            String text = DownloadManager.getTextFromCachedFile(url,getResponseEncoding());
+            String text = DownloadManager.getTextFromCachedFile(url, getResponseEncoding());
             return cleanLyrics(text);
           } catch (final MalformedURLException e) {
             Log.warn("Invalid lyrics source URL [" + suggestionURL + "]");
@@ -149,19 +149,20 @@ public class LyrcProvider extends GenericProvider {
     String ret = html;
     int pPos = Integer.MAX_VALUE;
     int brPos = Integer.MAX_VALUE;
-
-    ret = ret.substring(ret.indexOf("</table>") + 8);
-    pPos = getTagPosition(ret, "<p>");
-    brPos = getTagPosition(ret, "<br>");
-    ret = ret.substring(0, (pPos < brPos) ? pPos : brPos);
-    ret = ret.replaceAll("<br />", "");
-    if (ret.contains("<head>")) {
-      return (null);
+    if (ret.indexOf("</table>") > 0) {
+      ret = ret.substring(ret.indexOf("</table>") + 8);
+      pPos = getTagPosition(ret, "<p>");
+      brPos = getTagPosition(ret, "<br>");
+      ret = ret.substring(0, (pPos < brPos) ? pPos : brPos);
+      ret = ret.replaceAll("<br />", "");
+      if (ret.contains("<head>")) {
+        return (null);
+      }
+      ret = ret.replaceAll("&#8217;", "'");
+      ret = ret.replaceAll("&#8211;", "-");
+      ret = ret.replaceAll("\u0092", "'");
+      ret = ret.replaceAll("\u009c", "oe");
     }
-    ret = ret.replaceAll("&#8217;", "'");
-    ret = ret.replaceAll("&#8211;", "-");
-    ret = ret.replaceAll("\u0092", "'");
-    ret = ret.replaceAll("\u009c", "oe");
     return (ret);
   }
 

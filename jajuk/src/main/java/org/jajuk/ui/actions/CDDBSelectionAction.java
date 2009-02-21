@@ -20,10 +20,8 @@
 package org.jajuk.ui.actions;
 
 import java.awt.event.ActionEvent;
-import java.util.ArrayList;
 import java.util.List;
 
-import org.jajuk.base.Item;
 import org.jajuk.base.Track;
 import org.jajuk.base.TrackManager;
 import org.jajuk.ui.wizard.CDDBWizard;
@@ -67,10 +65,8 @@ public class CDDBSelectionAction extends SelectionAction {
             return;
           }
           // Build a list of tracks from various items
-          Item item = selection.get(0);
-          List<Track> tracksSet = TrackManager.getInstance().getAssociatedTracks(item,true);
-          List<Track> tracks = new ArrayList<Track>(tracksSet);
-
+          List<Track> tracks = TrackManager.getInstance().getAssociatedTracks(selection,true);
+          
           // Note that the CDDBWizard uses a swing worker
           new CDDBWizard(tracks);
         } catch (Exception e) {
