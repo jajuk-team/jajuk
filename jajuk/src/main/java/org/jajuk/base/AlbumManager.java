@@ -224,18 +224,30 @@ public final class AlbumManager extends ItemManager implements Observer {
    * @return a list of item, void list if no result
    */
   public synchronized List<Album> getAssociatedAlbums(Item item) {
-    List<Album> out = new ArrayList<Album>(1);
+    List<Album> out;
     // [Perf] If item is a track, just return its album
     if (item instanceof Track) {
+      out = new ArrayList<Album>(1);
       out.add(((Track) item).getAlbum());
     } else {
       ReadOnlyIterator<Album> albums = getAlbumsIterator();
+      // Use a set to avoid dups
+      Set<Album> albumSet = new HashSet<Album>();
       while (albums.hasNext()) {
         Album album = albums.next();
-        if (album.getTracksCache().contains(item)) {
-          out.add(album);
+        for (Track track : album.getTracksCache()) {
+          if (item instanceof Author && track.getAuthor().equals(item)) {
+            albumSet.add(album);
+          } else if (item instanceof Style && track.getStyle().equals(item)) {
+            albumSet.add(album);
+          }
+          if (item instanceof Year && track.getYear().equals(item)) {
+            albumSet.add(album);
+          }
         }
       }
+      out = new ArrayList<Album>(albumSet);
+      Collections.sort(out);
     }
     return out;
   }
@@ -259,7 +271,7 @@ public final class AlbumManager extends ItemManager implements Observer {
     ReadOnlyIterator<Album> it = AlbumManager.getInstance().getAlbumsIterator();
     while (it.hasNext()) {
       Album album = it.next();
-      cacheRate.put(album, (float)album.getRate());
+      cacheRate.put(album, (float) album.getRate());
     }
     // Now sort albums by rating
     List<Album> sortedAlbums = new ArrayList<Album>(cacheRate.keySet());
@@ -404,7 +416,7 @@ public final class AlbumManager extends ItemManager implements Observer {
     ReadOnlyIterator<Album> it = AlbumManager.getInstance().getAlbumsIterator();
     while (it.hasNext()) {
       Album album = it.next();
-      cacheRate.put(album, (float)album.getRate());
+      cacheRate.put(album, (float) album.getRate());
     }
     // OK, now keep only the highest score
     for (Album album : cacheRate.keySet()) {

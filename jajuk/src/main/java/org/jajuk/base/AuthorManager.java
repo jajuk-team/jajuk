@@ -23,8 +23,10 @@ package org.jajuk.base;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 import java.util.Vector;
 
 import org.jajuk.events.JajukEvent;
@@ -228,15 +230,20 @@ public final class AuthorManager extends ItemManager {
    * @return
    */
   public synchronized List<Author> getAssociatedAuthors(Item item) {
-    List<Author> out = new ArrayList<Author>(1);
+    List<Author> out;
     // [Perf] If item is a track, just return its author
+    // Use a set to avoid dups
+    Set<Author> authorSet = new HashSet<Author>();
     if (item instanceof Track) {
+      out = new ArrayList<Author>(1);
       out.add(((Track) item).getAuthor());
     } else {
-      List<Track> tracks = TrackManager.getInstance().getAssociatedTracks(item,true);
+      List<Track> tracks = TrackManager.getInstance().getAssociatedTracks(item, true);
       for (Track track : tracks) {
-        out.add(track.getAuthor());
+        authorSet.add(track.getAuthor());
       }
+      out = new ArrayList<Author>(authorSet);
+      Collections.sort(out);
     }
     return out;
   }
