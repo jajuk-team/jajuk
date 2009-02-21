@@ -20,6 +20,7 @@
 package org.jajuk.services.players;
 
 import java.io.PrintStream;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -69,7 +70,28 @@ public abstract class AbstractMPlayerImpl implements IPlayerImpl, Const {
     this.bStop = true;
     Log.debug("Stop");
     if (proc != null) {
-      proc.destroy();
+      if (UtilSystem.isUnderLinux()) {
+        /*
+         * Under linux (not sure if it may happen on others Unix and never
+         * reproduced under Windows), mplayer process can "zombified" after
+         * destroy() method call for unknown reason (linked with the mplayer
+         * slave mode ?). Even worse, these processes block the dsp audio line
+         * and then all new mplayer processes fail. To avoid this, we force a
+         * kill -9 on every process after a destoy() call under Linux.
+         */
+        Field field = proc.getClass().getDeclaredField("pid");
+        field.setAccessible(true);
+        int pid = field.getInt(proc);
+        proc.destroy();
+        try {
+          ProcessBuilder pb = new ProcessBuilder("kill", "-9", Integer.toString(pid));
+          pb.start();
+        } catch (Error error) {
+          Log.error(error);
+        }
+      } else {
+        proc.destroy();
+      }
     }
   }
 
@@ -204,7 +226,6 @@ public abstract class AbstractMPlayerImpl implements IPlayerImpl, Const {
     return 0;
   }
 
-  
   /*
    * (non-Javadoc)
    * 
@@ -220,7 +241,6 @@ public abstract class AbstractMPlayerImpl implements IPlayerImpl, Const {
    * @see org.jajuk.players.IPlayerImpl#play(org.jajuk.base.WebRadio, float)
    */
   public abstract void play(WebRadio radio, float fVolume) throws Exception;
-
 
   /*
    * (non-Javadoc)
