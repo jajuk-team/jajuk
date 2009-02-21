@@ -186,8 +186,8 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
   public CoverView(final org.jajuk.base.File file) {
     fileReference = file;
   }
-  
-   /*
+
+  /*
    * (non-Javadoc)
    * 
    * @see org.jajuk.ui.IView#display()
@@ -419,7 +419,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
   }
 
   /**
-   * Called on the delete cover button event 
+   * Called on the delete cover button event
    */
   private void handleDelete() {
     final Cover cover = alCovers.get(index);
@@ -702,7 +702,8 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
     final Cover cover = alCovers.get(index); // take image at the given index
     final URL url = cover.getURL();
     // enable delete button only for local covers
-    if ((cover.getType() == CoverType.LOCAL_COVER) || (cover.getType() == CoverType.SELECTED_COVER)) {
+    if (cover.getType() == CoverType.LOCAL_COVER || cover.getType() == CoverType.SELECTED_COVER
+        || cover.getType() == CoverType.STANDARD_COVER) {
       jbDelete.setEnabled(true);
     } else {
       jbDelete.setEnabled(false);
@@ -866,7 +867,6 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
     return eventSubjectSet;
   }
 
- 
   /**
    * Long action to compute image to display (download, resizing...)
    * 
