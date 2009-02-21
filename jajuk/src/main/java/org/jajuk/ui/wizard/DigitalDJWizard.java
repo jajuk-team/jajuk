@@ -500,7 +500,7 @@ public class DigitalDJWizard extends Wizard {
       jtfName.requestFocusInWindow();
       jlRatingLevel = new JLabel(Messages.getString("DigitalDJWizard.8"));
       jlRatingLevel.setToolTipText(Messages.getString("DigitalDJWizard.53"));
-      jsRatingLevel = new JSlider(1, 4, (Integer) data.get(KEY_RATINGS_LEVEL));
+      jsRatingLevel = new JSlider(0, 4, (Integer) data.get(KEY_RATINGS_LEVEL));
       jsRatingLevel.setToolTipText(Messages.getString("DigitalDJWizard.53"));
       jsRatingLevel.setMajorTickSpacing(1);
       jsRatingLevel.setMinorTickSpacing(1);
