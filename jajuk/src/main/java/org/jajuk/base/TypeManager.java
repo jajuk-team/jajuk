@@ -365,6 +365,14 @@ public final class TypeManager extends ItemManager {
     type.setProperty(Const.XML_TYPE_ICON, UtilSystem.getResource("icons/16x16/type_ape_16x16.png")
         .toExternalForm());
     // MPC
+    type = TypeManager.getInstance().registerType(Messages.getString("Type.mpc"), Const.EXT_MPC,
+        Class.forName(Const.PLAYER_IMPL_MPLAYER), null);
+    type.setProperty(Const.XML_TYPE_IS_MUSIC, true);
+    type.setProperty(Const.XML_TYPE_SEEK_SUPPORTED, Const.TRUE);
+    // Change the MPC icon here if you find one
+    type.setProperty(Const.XML_TYPE_ICON, UtilSystem.getResource("icons/16x16/type_mp3_16x16.png")
+        .toExternalForm());
+    // MP+
     type = TypeManager.getInstance().registerType(Messages.getString("Type.mpc"), Const.EXT_MPPLUS,
         Class.forName(Const.PLAYER_IMPL_MPLAYER), null);
     type.setProperty(Const.XML_TYPE_IS_MUSIC, true);
@@ -372,6 +380,7 @@ public final class TypeManager extends ItemManager {
     // Change the MPC icon here if you find one
     type.setProperty(Const.XML_TYPE_ICON, UtilSystem.getResource("icons/16x16/type_mp3_16x16.png")
         .toExternalForm());
+    // MPP
     type = TypeManager.getInstance().registerType(Messages.getString("Type.mpc"), Const.EXT_MPP,
         Class.forName(Const.PLAYER_IMPL_MPLAYER), null);
     type.setProperty(Const.XML_TYPE_IS_MUSIC, true);
@@ -379,6 +388,7 @@ public final class TypeManager extends ItemManager {
     // Change the MPC icon here if you find one
     type.setProperty(Const.XML_TYPE_ICON, UtilSystem.getResource("icons/16x16/type_mp3_16x16.png")
         .toExternalForm());
+    
     // -- VIDEO --
     // AVI
     type = TypeManager.getInstance().registerType(Messages.getString("Type.video"), Const.EXT_AVI,
