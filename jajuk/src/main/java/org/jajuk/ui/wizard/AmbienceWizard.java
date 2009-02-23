@@ -363,6 +363,7 @@ public class AmbienceWizard extends Wizard {
   public AmbienceWizard() {
     super(Messages.getString("DigitalDJWizard.56"), AmbiencePanel.class, null, JajukWindow
         .getInstance(), new Locale(Messages.getLocale()), 500, 600);
+    setHeaderIcon(IconLoader.getIcon(JajukIcons.AMBIENCE));
   }
 
   /*

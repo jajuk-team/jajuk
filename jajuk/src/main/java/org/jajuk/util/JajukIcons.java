@@ -392,5 +392,7 @@ public enum JajukIcons {
   
   PREPARE_PARTY,
   
-  COPY_TO_CLIPBOARD
+  COPY_TO_CLIPBOARD,
+  
+  AMBIENCE
 }

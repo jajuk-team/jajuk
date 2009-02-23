@@ -117,6 +117,7 @@ public class DigitalDJWizard extends Wizard {
    * DJ type choice
    */
   public static class TypeSelectionPanel extends Screen implements ActionListener {
+   
     private static final long serialVersionUID = 1L;
 
     /** Transition DJ code */
@@ -195,6 +196,7 @@ public class DigitalDJWizard extends Wizard {
    * DJ removal
    */
   public static class RemovePanel extends Screen implements ActionListener {
+   
     private static final long serialVersionUID = 1L;
 
     JComponent[][] widgets;
@@ -273,6 +275,7 @@ public class DigitalDJWizard extends Wizard {
    * DJ Selection for change
    */
   public static class ChangePanel extends Screen implements ActionListener {
+    
     private static final long serialVersionUID = 1L;
 
     JComponent[][] widgets;
@@ -364,6 +367,7 @@ public class DigitalDJWizard extends Wizard {
    * Action type (new or alter)
    */
   public static class ActionSelectionPanel extends Screen implements ClearPoint, ActionListener {
+   
     private static final long serialVersionUID = 1L;
 
     /** NEW code */
@@ -482,12 +486,10 @@ public class DigitalDJWizard extends Wizard {
       if (ActionSelectionPanel.ACTION_CREATION.equals(data.get(KEY_ACTION))) {
         // default values
         data.put(KEY_FADE_DURATION, 10);
-        data.put(KEY_RATINGS_LEVEL, 1); // all tracks by default
+        data.put(KEY_RATINGS_LEVEL, 0); // all tracks by default
         data.put(KEY_UNICITY, false);
-      } else if (ActionSelectionPanel.ACTION_CHANGE.equals(data.get(KEY_ACTION))) { // keep
-        // existing
-        // DJ
-        // values
+      } else if (ActionSelectionPanel.ACTION_CHANGE.equals(data.get(KEY_ACTION))) { 
+        // keep existing DJ values
         DigitalDJ dj = (DigitalDJ) data.get(KEY_CHANGE);
         data.put(KEY_FADE_DURATION, dj.getFadingDuration());
         data.put(KEY_RATINGS_LEVEL, dj.getRatingLevel());
@@ -665,17 +667,16 @@ public class DigitalDJWizard extends Wizard {
         alTransitions = (List<Transition>) ((ArrayList<Transition>) dj.getTransitions()).clone();
         data.put(KEY_TRANSITIONS, getCleanedTransitions());
         // add a void transition
-        alTransitions.add(new Transition(Const.DEFAULT_TRANSITION_TRACK_NUMBER)); 
+        alTransitions.add(new Transition(Const.DEFAULT_TRANSITION_TRACK_NUMBER));
       } else { // DJ creation
         alTransitions = new ArrayList<Transition>(10);
         // add a void transition
-        alTransitions.add(new Transition(Const.DEFAULT_TRANSITION_TRACK_NUMBER)); 
+        alTransitions.add(new Transition(Const.DEFAULT_TRANSITION_TRACK_NUMBER));
         setProblem(Messages.getString("DigitalDJWizard.26"));
       }
       setCanFinish(true);
       // set layout
-      double[][] dSizeGeneral = { { 10, 0.99, 5 },
-          { 10, TableLayout.FILL, 10 } };
+      double[][] dSizeGeneral = { { 10, 0.99, 5 }, { 10, TableLayout.FILL, 10 } };
       setLayout(new TableLayout(dSizeGeneral));
       add(getTransitionsPanel(), "1,1");
     }
@@ -1336,6 +1337,7 @@ public class DigitalDJWizard extends Wizard {
   public DigitalDJWizard() {
     super(Messages.getString("DigitalDJWizard.4"), ActionSelectionPanel.class, null, JajukWindow
         .getInstance(), new Locale(Messages.getLocale()));
+    super.setHeaderIcon(IconLoader.getIcon(JajukIcons.DIGITAL_DJ));
   }
 
   /*

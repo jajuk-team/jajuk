@@ -137,7 +137,7 @@ public class WebRadioWizard extends Wizard {
     private JScrollPane getPanel() {
       widgets = new JComponent[radios.size()][3];
       JPanel out = new JPanel();
-      double[] dHoriz = { 25, 250, 150 };
+      double[] dHoriz = { 25, 250, 250 };
       double[] dVert = new double[widgets.length + 2];
       dVert[0] = 20;
       // make sure to sort radios
@@ -353,6 +353,7 @@ public class WebRadioWizard extends Wizard {
   public WebRadioWizard() {
     super(Messages.getString("RadioWizard.7"), RadioPanel.class, null, JajukWindow.getInstance(),
         new Locale(Messages.getLocale()), 600, 500);
+    setHeaderIcon(IconLoader.getIcon(JajukIcons.WEBRADIO));
   }
 
   /*
