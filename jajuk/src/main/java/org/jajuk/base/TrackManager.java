@@ -178,19 +178,23 @@ public final class TrackManager extends ItemManager {
   /**
    * Commit tags
    * 
-   * @throw an exception is tag cannot be commited
+   * @throw an exception if a tag cannot be commited
    */
   public void commit() throws Exception {
-    Iterator<Tag> it = tagsToCommit.iterator();
-    while (it.hasNext()) {
-      Tag tag = null;
+    // Iterate over a shallow copy to avoid concurrent issues (note also that
+    // several threads can commit at the same time). We synchronize the copy and
+    // we drop tags to commit. 
+    List<Tag> toCommit = null;
+    synchronized (tagsToCommit) {
+      toCommit = new ArrayList<Tag>(tagsToCommit);
+      tagsToCommit.clear();
+    }
+    for (Tag tag : toCommit) {
       try {
-        tag = it.next();
         tag.commit();
       } catch (Exception e) {
         Log.error(e);
-      } finally {
-        it.remove();
+        throw new JajukException(104, e);
       }
     }
     // Clear the tag cache before and after a transaction to

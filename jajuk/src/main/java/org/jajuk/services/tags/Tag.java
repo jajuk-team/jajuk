@@ -376,7 +376,7 @@ public class Tag {
   /**
    * Commit tags
    */
-  public void commit() throws JajukException {
+  public synchronized void commit() throws JajukException {
     try {
       if (Log.isDebugEnabled()) {
         Log.debug(Messages.getString("PropertiesWizard.11") + " " + fio.getAbsolutePath());
@@ -390,6 +390,8 @@ public class Tag {
               + File.separatorChar + fio.getName(), InformationJPanel.INFORMATIVE);
 
     } catch (Exception e) {
+      // reset information panel to avoid leaving with a "writting xxx message"
+      InformationJPanel.getInstance().setMessage("", InformationJPanel.INFORMATIVE);
       throw new JajukException(104, fio.getName() + "\n" + e.getMessage(), e);
     }
   }
