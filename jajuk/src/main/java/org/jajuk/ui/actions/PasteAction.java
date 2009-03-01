@@ -34,6 +34,7 @@ import org.jajuk.base.DirectoryManager;
 import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
 import org.jajuk.base.Item;
+import org.jajuk.base.Playlist;
 import org.jajuk.base.Style;
 import org.jajuk.base.Track;
 import org.jajuk.base.TrackManager;
@@ -70,6 +71,7 @@ public class PasteAction extends JajukAction {
     final ItemMoveManager.MoveActions moveAction = ItemMoveManager.getInstance().getAction();
 
     final List<File> alFiles = new ArrayList<File>(alSelected.size());
+    final List<Playlist> alPlaylists = new ArrayList<Playlist>(alSelected.size());
     final List<Directory> alDirs = new ArrayList<Directory>(alSelected.size());
 
     new Thread() {
@@ -79,11 +81,12 @@ public class PasteAction extends JajukAction {
         UtilGUI.waiting();
 
         // Compute all files to move from various items list
-        if (itemsToMove.size() == 0){
+        if (itemsToMove.size() == 0) {
           Log.debug("None item to move");
           return;
         }
         Item first = itemsToMove.get(0);
+
         if (first instanceof Album || first instanceof Author || first instanceof Style) {
           List<Track> tracks = TrackManager.getInstance().getAssociatedTracks(itemsToMove, true);
           for (Track track : tracks) {
@@ -97,6 +100,8 @@ public class PasteAction extends JajukAction {
               alFiles.addAll(((Track) item).getFiles());
             } else if (item instanceof Directory) {
               alDirs.add((Directory) item);
+            } else if (item instanceof Playlist) {
+              alPlaylists.add((Playlist) item);
             }
           }
         }
@@ -137,6 +142,21 @@ public class PasteAction extends JajukAction {
             srcDirs.add(file.getDirectory());
           }
         }
+        for (Playlist pl : alPlaylists) {
+          boolean parentAlreadyPresent = false;
+          // We have to iterate using items index because the collection can
+          // grow
+          for (int i = 0; i < srcDirs.size(); i++) {
+            Directory directory = (Directory) srcDirs.get(i);
+            if (pl.getDirectory().isChildOf(directory)) {
+              parentAlreadyPresent = true;
+              break;
+            }
+          }
+          if (!parentAlreadyPresent && !srcDirs.contains(pl.getDirectory())) {
+            srcDirs.add(pl.getDirectory());
+          }
+        }
 
         boolean overwriteAll = false;
         boolean bErrorOccured = false;
@@ -160,8 +180,13 @@ public class PasteAction extends JajukAction {
             }
             try {
               showMessage(f.getFIO());
-              UtilSystem.copyToDir(f.getFIO(), dir);
-              UtilSystem.deleteFile(f.getFIO());
+              final java.io.File fileNew = new java.io.File(
+                  new StringBuilder(dir.getAbsolutePath()).append("/").append(f.getName())
+                      .toString());
+              if (!f.getFIO().renameTo(fileNew)) {
+                throw new Exception("Cannot move item: " + f.getAbsolutePath() + " to "
+                    + fileNew.getAbsolutePath());
+              }
               FileManager.getInstance().changeFileDirectory(f, destDir);
             } catch (Exception ioe) {
               Log.error(131, ioe);
@@ -169,13 +194,57 @@ public class PasteAction extends JajukAction {
               bErrorOccured = true;
             }
           }
+          for (Playlist pl : alPlaylists) {
+            if (!overwriteAll) {
+              java.io.File newFile = new java.io.File(dir.getAbsolutePath() + "/" + pl.getName());
+              if (newFile.exists()) {
+                int iResu = Messages.getChoice(Messages.getString("Confirmation_file_overwrite")
+                    + " : \n\n" + pl.getName(), Messages.YES_NO_ALL_CANCEL_OPTION,
+                    JOptionPane.INFORMATION_MESSAGE);
+                if (iResu != JOptionPane.YES_OPTION) {
+                  UtilGUI.stopWaiting();
+                  return;
+                }
+                if (iResu == Messages.ALL_OPTION) {
+                  overwriteAll = true;
+                }
+              }
+            }
+            try {
+              showMessage(pl.getFIO());
+              final java.io.File fileNew = new java.io.File(
+                  new StringBuilder(dir.getAbsolutePath()).append("/").append(pl.getName())
+                      .toString());
+              if (!pl.getFIO().renameTo(fileNew)) {
+                throw new Exception("Cannot move item: " + pl.getFIO().getAbsolutePath() + " to "
+                    + fileNew.getAbsolutePath());
+              }
+
+              // Refresh source and destination
+              destDir.refresh(false, null);
+              // Refresh source directories as well
+              for (Directory srcDir : srcDirs) {
+                srcDir.cleanRemovedFiles();
+                srcDir.refresh(false, null);
+              }
+            } catch (Exception ioe) {
+              Log.error(131, ioe);
+              Messages.showErrorMessage(131);
+              bErrorOccured = true;
+            }
+
+          }
           for (Directory d : alDirs) {
             try {
               java.io.File src = new java.io.File(d.getAbsolutePath());
               java.io.File dst = new java.io.File(dir.getAbsolutePath() + "/" + d.getName());
               showMessage(src);
-              UtilSystem.copyRecursively(src, dst);
-              UtilSystem.deleteDir(src);
+              java.io.File newDir = new java.io.File(new StringBuilder(dst.getAbsolutePath())
+                  .toString());
+              if (!src.renameTo(newDir)) {
+                throw new Exception("Cannot move item: " + src.getAbsolutePath() + " to "
+                    + dst.getAbsolutePath());
+              }
               DirectoryManager.getInstance().removeDirectory(d.getID());
               destDir.refresh(false, null);
             } catch (Exception ioe) {
@@ -215,6 +284,37 @@ public class PasteAction extends JajukAction {
             try {
               showMessage(f.getFIO());
               UtilSystem.copyToDir(f.getFIO(), dir);
+            } catch (Exception ioe) {
+              Log.error(131, ioe);
+              Messages.showErrorMessage(131);
+              bErrorOccured = true;
+            }
+          }
+          for (Playlist pl : alPlaylists) {
+            if (!overwriteAll) {
+              java.io.File newFile = new java.io.File(dir.getAbsolutePath() + "/" + pl.getName());
+              if (newFile.exists()) {
+                int iResu = Messages.getChoice(Messages.getString("Confirmation_file_overwrite")
+                    + " : \n\n" + pl.getName(), Messages.YES_NO_ALL_CANCEL_OPTION,
+                    JOptionPane.INFORMATION_MESSAGE);
+                if (iResu != JOptionPane.YES_OPTION) {
+                  UtilGUI.stopWaiting();
+                  return;
+                }
+                if (iResu == Messages.ALL_OPTION) {
+                  overwriteAll = true;
+                }
+              }
+            }
+            try {
+              showMessage(pl.getFIO());
+              UtilSystem.copyToDir(pl.getFIO(), dir);
+              // Refresh source and destination
+              destDir.refresh(false, null);
+              // Refresh source directories as well
+              for (Directory srcDir : srcDirs) {
+                srcDir.refresh(false, null);
+              }
             } catch (Exception ioe) {
               Log.error(131, ioe);
               Messages.showErrorMessage(131);

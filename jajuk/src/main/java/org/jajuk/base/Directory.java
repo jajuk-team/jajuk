@@ -164,7 +164,7 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
     ReadOnlyIterator<Playlist> it = PlaylistManager.getInstance().getPlaylistsIterator();
     while (it.hasNext()) {
       Playlist plf = it.next();
-      if (plf.getFio().getParent().equals(this.getFio())) {
+      if (plf.getFIO().getParent().equals(this.getFio())) {
         out.add(plf);
       }
     }
@@ -664,7 +664,7 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
           // sub-directories
           && (plf.getDirectory().equals(this) || plf.getDirectory().isChildOf(this))
           && plf.isReady()) {
-        if (!plf.getFio().exists()) {
+        if (!plf.getFIO().exists()) {
           PlaylistManager.getInstance().removePlaylistFile(plf);
           Log.debug("Removed: " + plf);
           bChanges = true;

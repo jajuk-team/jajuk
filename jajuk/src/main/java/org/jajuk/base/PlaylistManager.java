@@ -175,10 +175,10 @@ public final class PlaylistManager extends ItemManager implements Observer {
       return plfOld;
     }
     // check if this file still exists
-    if (!plfOld.getFio().exists()) {
+    if (!plfOld.getFIO().exists()) {
       throw new JajukException(135);
     }
-    java.io.File ioNew = new java.io.File(plfOld.getFio().getParentFile().getAbsolutePath()
+    java.io.File ioNew = new java.io.File(plfOld.getFIO().getParentFile().getAbsolutePath()
         + java.io.File.separator + sNewName);
     // recalculate file ID
     plfOld.getDirectory();
@@ -208,7 +208,7 @@ public final class PlaylistManager extends ItemManager implements Observer {
     }
     // try to rename file on disk
     try {
-      plfOld.getFio().renameTo(ioNew);
+      plfOld.getFIO().renameTo(ioNew);
     } catch (Exception e) {
       throw new JajukException(134, e);
     }

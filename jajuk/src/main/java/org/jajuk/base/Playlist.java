@@ -263,7 +263,7 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
   private void moveTempPlaylistFile(java.io.File temp) throws JajukException {
     if (temp.exists() && temp.length() > 0) {
       try {
-        UtilSystem.copy(temp, getFio());
+        UtilSystem.copy(temp, getFIO());
         temp.delete();
       } catch (final Exception e1) {
         throw new JajukException(28, getName(), e1);
@@ -384,7 +384,7 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
     } else {
       // smart playlist path depends on the user selected from the save as file
       // chooser and has been set using the setFio() method just before that
-      sAbs = getFio().getAbsolutePath();
+      sAbs = getFIO().getAbsolutePath();
     }
     return sAbs;
   }
@@ -419,20 +419,20 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
           // mount the device is required
           getDirectory().getDevice().mount(true);
         } catch (final Exception e) {
-          throw new JajukException(141, getFio().getAbsolutePath(), e);
+          throw new JajukException(141, getFIO().getAbsolutePath(), e);
         }
       } else {
-        throw new JajukException(141, getFio().getAbsolutePath());
+        throw new JajukException(141, getFIO().getAbsolutePath());
       }
     }
     if ((type == Type.NORMAL) && (alFiles == null)) {
       // normal playlist, test if list is null for performances (avoid reading
       // the m3u file twice)
-      if (getFio().exists() && getFio().canRead()) {
+      if (getFIO().exists() && getFIO().canRead()) {
         // check device is mounted
         alFiles = load(); // populate playlist
       } else { // error accessing playlist
-        throw new JajukException(9, getFio().getAbsolutePath());
+        throw new JajukException(9, getFIO().getAbsolutePath());
       }
     } else if (type.equals(Type.BESTOF)) {
       alFiles = FileManager.getInstance().getBestOfFiles();
@@ -450,7 +450,7 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
   /**
    * @return Returns the fio.
    */
-  public java.io.File getFio() {
+  public java.io.File getFIO() {
     if (fio == null) {
       fio = new java.io.File(getAbsolutePath());
     }
@@ -512,7 +512,7 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
     final List<File> files = new ArrayList<File>(10);
     BufferedReader br = null;
     try {
-      br = new BufferedReader(new FileReader(getFio()));
+      br = new BufferedReader(new FileReader(getFIO()));
       String sLine = null;
       boolean bUnknownDevicesMessage = false;
       while ((sLine = br.readLine()) != null) {
@@ -561,14 +561,14 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
       }
     } catch (final Exception e) {
       Log.error(17, "{{" + getName() + "}}", e);
-      throw new JajukException(17, getFio().getAbsolutePath(), e);
+      throw new JajukException(17, getFIO().getAbsolutePath(), e);
     } finally {
       if (br != null) {
         try {
           br.close();
         } catch (final IOException e1) {
           Log.error(e1);
-          throw new JajukException(17, getFio().getAbsolutePath(), e1);
+          throw new JajukException(17, getFIO().getAbsolutePath(), e1);
         }
       }
     }
