@@ -388,6 +388,15 @@ public final class TypeManager extends ItemManager {
     // Change the MPC icon here if you find one
     type.setProperty(Const.XML_TYPE_ICON, UtilSystem.getResource("icons/16x16/type_mp3_16x16.png")
         .toExternalForm());
+    // WavPack
+    type = TypeManager.getInstance().registerType(Messages.getString("Type.wavpack"), Const.EXT_WV,
+        Class.forName(Const.PLAYER_IMPL_MPLAYER), null);
+    type.setProperty(Const.XML_TYPE_IS_MUSIC, true);
+    type.setProperty(Const.XML_TYPE_SEEK_SUPPORTED, Const.TRUE);
+    // Official logo contains text and doesn't display well in 16x16, take wav
+    // logo
+    type.setProperty(Const.XML_TYPE_ICON, UtilSystem.getResource("icons/16x16/type_wav_16x16.png")
+        .toExternalForm());
     
     // -- VIDEO --
     // AVI
@@ -453,15 +462,6 @@ public final class TypeManager extends ItemManager {
     type.setProperty(Const.XML_TYPE_SEEK_SUPPORTED, Const.TRUE);
     type.setProperty(Const.XML_TYPE_ICON, UtilSystem
         .getResource("icons/16x16/type_video_16x16.png").toExternalForm());
-    // WavPack
-    type = TypeManager.getInstance().registerType(Messages.getString("Type.wavpack"), Const.EXT_WV,
-        Class.forName(Const.PLAYER_IMPL_MPLAYER), null);
-    type.setProperty(Const.XML_TYPE_IS_MUSIC, true);
-    type.setProperty(Const.XML_TYPE_SEEK_SUPPORTED, Const.TRUE);
-    // Official logo contains text and doesn't display well in 16x16, take wav
-    // logo
-    type.setProperty(Const.XML_TYPE_ICON, UtilSystem.getResource("icons/16x16/type_wav_16x16.png")
-        .toExternalForm());
   }
 
 }
