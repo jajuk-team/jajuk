@@ -20,9 +20,8 @@
 
 package org.jajuk.ui.views;
 
-import com.sun.java.help.impl.SwingWorker;
-
 import ext.FlowScrollPanel;
+import ext.SwingWorker;
 import ext.services.lastfm.AudioScrobblerAlbum;
 import ext.services.lastfm.AudioScrobblerArtist;
 import ext.services.lastfm.AudioScrobblerService;

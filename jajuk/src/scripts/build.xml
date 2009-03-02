@@ -7,7 +7,7 @@
 
 	<!--Distribution release  
 	!!! DO NOT USE '-' CHARACTER IN VERSION !!!-->
-	<property name='version' value='1.7_RC28'/> 
+	<property name='version' value='1.7_RC29b1'/> 
 
 	<!--Previous release used for JNLP incremental upgrade-->
 	<property name='previous_version' value='null' />
@@ -22,7 +22,6 @@
 	<!-- Conf for local build 
 	<property name='conf_izpackdir' value='/prog/IzPack' />
 	<property name='conf_jsmoothgendir' value='/prog/jsmooth-0.9.7' />
-	<property name='conf_javahelpdir' value='/prog/api/jh/javahelp' />
 	<property name='conf_jnlp-dist' value='/data/java/jnlp-dist' />
 	<property name='conf_homeuser' value='/home/bflorat' />
 	<property name='conf_uploaddir' value='${rootdir}/upload' />
@@ -32,7 +31,6 @@
 	<!-- Conf for Jajuk Continuous Integration  server --> 
 	<property name='conf_izpackdir' value='/svn-jajuk/tools/IzPack' />
 	<property name='conf_jsmoothgendir' value='/svn-jajuk/tools/jsmooth-0.9.9-7' />
-	<property name='conf_javahelpdir' value='/svn-jajuk/tools/javahelp/jh2.0/javahelp' />
 	<property name='conf_jnlp-dist' value='/tmp/jajuk-dist/jnlp-dist' />
 	<property name='conf_homeuser' value='/home/jbuild' />
 	<property name='conf_uploaddir' value='/tmp/jajuk-dist/packages/' />
@@ -59,10 +57,8 @@
 	<property name='classdir' value='classes' />
 	<property name='javadocdir' value='dist-files/doc/javadoc' />
 	<property name='jarname' value='jajuk.jar' />
-	<property name='helpsetjarname' value='jajuk-help' />
 	<property name='distjarname' value='jajuk-java-installer-' />
 	<property name='sourcesdist' value='${sourcesdir}/jajuk-sources-${version}.zip' />
-	<property name='helpdir' value='${rootdir}/help' />
 	<!-- This used to be the intermediate directory used to build war file, we used a persisitent 
  	directory to use jar files in next war (each war contains current and previous jars for 
  	incremental upgrade). We don't use incremental udated anymore as it does require too much 
@@ -115,8 +111,8 @@
 		</copy>
 
 		<!--copy native dll to bin directory-->
-		<copy todir='${distdir}/bin'>
-			<fileset file='${basedir}/*.dll' />
+		<copy todir='${distdir}/lib'>
+			<fileset file='${basedir}/lib/*.dll' />
 		</copy>
 		<copy todir='${distdir}/src'>
 			<fileset file='${srcdir}/packaging/MANIFEST.MF' />
@@ -222,13 +218,6 @@
 		</copy>
 	</target>
 
-	<target name='mkdist_helpjar' depends='startup,clean'>
-		<echo message='Prepare files to build helpjar files' />
-		<mkdir dir='${helpdir}' />
-		<mkdir dir='${distdir}/bin/' />
-	</target>
-
-
 	<target name='package_jar' description='o Create Jajuk jar file' depends='startup,clean,mkdist_jar,compile'>
 		<echo message='Create Jajuk jar file' />
 		<jar jarfile='${distdir}/bin/${jarname}' excludes='**/package.html' manifest='${srcdir}/packaging/MANIFEST.MF' compress='true'>
@@ -239,38 +228,9 @@
 	</target>
 
 
-	<target name='package_helpjar' description='o Create Jajuk help jar files' depends='startup,clean,mkdist_helpjar'>
-		<echo message='Create Jajuk help jar files' />
-		<!--Copy-->
-		<copy todir='${helpdir}'>
-			<fileset dir='${srcdir}/doc/jajuk-hs' />
-		</copy>
-		<copy todir='${helpdir}/default'>
-			<fileset dir='${srcdir}/doc'>
-				<include name='images/**' />
-				<include name='icons/**' />
-			</fileset>
-		</copy>
-		<!-- indexer -->
-		<!--English-->
-		<exec executable='${conf_javahelpdir}/bin/jhindexer' dir='${helpdir}/default'>
-			<arg line='-locale en_US html' />
-		</exec>
-		<!-- jar creation -->
-		<jar jarfile='${distdir}/bin/${helpsetjarname}.jar' basedir='${helpdir}/default' />
-		<!-- Copy jajuk jar in the workspace -->
-		<copy todir='${basedir}'>
-			<fileset file='${distdir}/bin/${helpsetjarname}*.jar' />
-		</copy>
-
-		<echo message='${helpsetjarname}.jar had been successfully built in: ${distdir}/bin/${helpsetjarname}.jar' />
-	</target>
-
-
 	<target name='package_all' description='o Create all packages' depends='package_izpack,package_rpm,package_source,package_sfx,package_jnlp,package_macos'>
 		<echo message='Successfully built packages:' />
 		<echo message=' Jajuk Jar file in:     ${distdir}/bin/${jarname}' />
-		<echo message=' Help Jar file in:      ${distdir}/bin/${helpsetjarname}.jar' />
 		<echo message=' RPM package in:        ${rpmbuilddir}/RPMS/noarch/jajuk-${version}.noarch.rpm' />
 		<echo message=' Windows executable in: ${windowsdir}/jajuk-${version}-win32.exe' />
 		<echo message=' Java installer in:     ${izpackdir}/jajuk-java-installer-${version}.jar' />
@@ -282,7 +242,7 @@
 
 	<!--IzPack package creation -->
 
-	<target name='package_izpack' description='o Create Jajuk IzPack package' depends='startup,clean,mkdist_izpack,package_jar,package_helpjar'>
+	<target name='package_izpack' description='o Create Jajuk IzPack package' depends='startup,clean,mkdist_izpack,package_jar>
 		<taskdef name='izpack' classpath='${conf_izpackdir}/lib/compiler.jar' classname='com.izforge.izpack.ant.IzPackTask' />
 		<echo message='Create Jajuk IzPack package' />
 		<echo message='Makes the installer using IzPack' />
@@ -290,12 +250,8 @@
 	</target>
 
 
-	<target name='package_rpm' description='o Create Jajuk RPM package' depends='startup,clean,mkdist_rpm,package_jar,package_helpjar'>
+	<target name='package_rpm' description='o Create Jajuk RPM package' depends='startup,clean,mkdist_rpm,package_jar'>
 		<echo message='Create Jajuk RPM package' />
-		<!-- Copy jajuk helpset jars in the RPM distdir -->
-		<copy todir='${rpmdistdir}${installdir}/bin'>
-			<fileset file='${distdir}/bin/${helpsetjarname}*.jar' />
-		</copy>
 		<!-- Copy jajuk.jar in the RPM distdir -->
 		<copy todir='${rpmdistdir}${installdir}/bin'>
 			<fileset file='${distdir}/bin/${jarname}' />
@@ -314,7 +270,7 @@
 
 
 	<!--jarbundler Mac OS zip package creation -->
-	<target name='package_macos' description='o Create Jajuk MAC OS package' depends='startup,clean,mkdist_macos,package_jar,package_helpjar,jarbundler'>
+	<target name='package_macos' description='o Create Jajuk MAC OS package' depends='startup,clean,mkdist_macos,package_jar,jarbundler'>
 		<echo message='Create Jajuk MAC OS package' />
 		<!-- Create the distribution directory -->
 		<mkdir dir="${distdir}/macos" />
@@ -337,14 +293,14 @@
 
 
 	<!-- Windows EXE creation-->
-	<target name='package_sfx' description='o Create Jajuk Windows executable file' depends='startup,clean,mkdist_sfx,package_jar,package_helpjar'>
+	<target name='package_sfx' description='o Create Jajuk Windows executable file' depends='startup,clean,mkdist_sfx,package_jar'>
 		<taskdef name="jsmoothgen" classname="net.charabia.jsmoothgen.ant.JSmoothGen" classpath="${conf_jsmoothgendir}/lib/jsmoothgen-ant.jar" />
 		<echo message='Create Jajuk Windows executable file' />
 		<jsmoothgen project="/tmp/jajuk-dist/windows/jajuk.jsmooth" skeletonroot="${conf_jsmoothgendir}/skeletons" />
 	</target>
 
 
-	<target name='package_jnlp' description='o Create Java Web Start war distribution' depends='startup,clean,package_jar,package_helpjar'>
+	<target name='package_jnlp' description='o Create Java Web Start war distribution' depends='startup,clean,package_jar'>
 		<echo message='Create Java Web Start war distribution' />
 		<!--Note that all jars (including jajuk-native.jar must be signed with the same certificate), we do this manually -->
 		<mkdir dir='${jnlpdir}' />
@@ -544,7 +500,7 @@
 
 
 	<!--jarbundler Mac OS X package creation -->
-	<target name='jarbundler' depends='package_jar,package_helpjar'>
+	<target name='jarbundler' depends='package_jar'>
 		<taskdef name='jarbundler' classpath='${conf_jarbundler}/jarbundler-1.9.jar' classname="net.sourceforge.jarbundler.JarBundler" />
 		<echo message='jarbundler' />
 		<mkdir dir='${distdir}/jarbundler/' />

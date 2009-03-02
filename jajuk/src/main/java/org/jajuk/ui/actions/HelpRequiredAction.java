@@ -19,12 +19,14 @@
  */
 package org.jajuk.ui.actions;
 
+import java.awt.Desktop;
 import java.awt.event.ActionEvent;
+import java.net.URI;
 
-import org.jajuk.ui.wizard.HelpWindow;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
+import org.jajuk.util.log.Log;
 
 /**
  * Action for displaying the online help
@@ -40,6 +42,11 @@ public class HelpRequiredAction extends JajukAction {
 
   @Override
   public void perform(ActionEvent evt) {
-    new HelpWindow();
+    try {
+      Desktop.getDesktop().browse(new URI("http://jajuk.info/index.php/Table_of_contents"));
+    } catch (Exception e) {
+      Messages.showErrorMessage(136);
+      Log.error(e);
+    }
   }
 }

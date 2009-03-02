@@ -44,6 +44,8 @@ import javax.swing.border.EmptyBorder;
 import org.jajuk.Main;
 import org.jajuk.base.Device;
 import org.jajuk.base.DeviceManager;
+import org.jajuk.ui.actions.ActionManager;
+import org.jajuk.ui.actions.JajukActions;
 import org.jajuk.ui.widgets.JajukFileChooser;
 import org.jajuk.ui.widgets.PathSelector;
 import org.jajuk.ui.widgets.ToggleLink;
@@ -191,7 +193,11 @@ public class FirstTimeWizard extends JFrame implements ActionListener {
           // Show Help window if required
           if (bShowHelp) {
             // Display help window
-            new HelpWindow();
+            try {
+              ActionManager.getAction(JajukActions.HELP_REQUIRED).perform(null);
+            } catch (Exception e) {
+              Log.error(e);
+            }
           }
         }
       }.start();

@@ -20,9 +20,9 @@
 
 package org.jajuk.ui.thumbnails;
 
-import com.sun.java.help.impl.SwingWorker;
 import com.vlsolutions.swing.docking.ShadowBorder;
 
+import ext.SwingWorker;
 import ext.services.lastfm.AudioScrobblerAlbum;
 import ext.services.lastfm.AudioScrobblerArtist;
 import ext.services.lastfm.AudioScrobblerService;

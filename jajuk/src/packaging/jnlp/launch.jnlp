@@ -22,8 +22,7 @@
            <j2se version='1.6+' java-vm-args='-client -Xms20M -Xmx256M -XX:MinHeapFreeRatio=5 -XX:MaxHeapFreeRatio=10'/>
            <property name='test' value='TEST_FLAG_REPLACED_BY_ANT'/>
            <jar href='jajuk.jar' version='VERSION_REPLACED_BY_ANT'/> 
-           <jar href='jajuk-help.jar' version='VERSION_REPLACED_BY_ANT'/> 
-	<extension name='Animation' href='animation.jnlp' />
+   		<extension name='Animation' href='animation.jnlp' />
         	<extension name='BasicPlayer' href='basic_player.jnlp'/>
         	<extension name='CommonsCodec' href='commons_codec.jnlp'/>
         	<extension name='CommonsLogging' href='commons_logging.jnlp'/>
@@ -31,7 +30,6 @@
         	<extension name='Jfreechart' href='jfreechart.jnlp'/>
         	<extension name='JCommon' href='jcommon.jnlp'/>
         	<extension name='Substance Look And Feel' href='substance.jnlp'/>
-        	<extension name='JavaHelp' href='java_help.jnlp'/>
         	<extension name='JLayer' href='jlayer.jnlp'/>
         	<extension name='Log4j' href='log4j.jnlp'/>
         	<extension name='Swingx' href='swingx.jnlp'/>

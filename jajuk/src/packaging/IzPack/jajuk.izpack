@@ -52,7 +52,6 @@
         <pack name='main pack' required='yes'>
             <description>Main pack</description>
             <file override='true' targetdir='$INSTALL_PATH/bin' src='/tmp/jajuk-dist/jajuk/bin/jajuk.jar'/>
-            <file override='true' targetdir='$INSTALL_PATH/bin' src='/tmp/jajuk-dist/jajuk/bin/jajuk-help.jar'/>
             <dir override='true' targetdir='$INSTALL_PATH/lib' src='/tmp/jajuk-dist/jajuk/lib/windows'>
             	<os family='windows'/>
             </dir>
@@ -75,7 +74,7 @@
             <file override='true' targetdir='$INSTALL_PATH' src='/tmp/jajuk-dist/jajuk/dist-files/images/jajuk-uninstall.ico'>
             	<os family='windows'/>
            	</file>
-            <file override='true' targetdir='$INSTALL_PATH/bin' src='/tmp/jajuk-dist/jajuk/bin/JIntellitype.dll'>
+            <file override='true' targetdir='$INSTALL_PATH/bin' src='/tmp/jajuk-dist/jajuk/lib/JIntellitype.dll'>
             	<os family='windows'/>
            	</file>
             <!--Unix specific -->

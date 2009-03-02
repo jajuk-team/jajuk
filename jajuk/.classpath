@@ -14,13 +14,11 @@
 	<classpathentry kind="lib" path="lib/mp3spi-1.9.4.jar"/>
 	<classpathentry kind="lib" path="lib/jfreechart-1.0.1.jar"/>
 	<classpathentry kind="lib" path="lib/jcommon-1.0.0.jar"/>
-	<classpathentry kind="lib" path="lib/jh_reduced-2.0.2.jar"/>
 	<classpathentry kind="lib" path="lib/log4j_reduced-1.2.6.jar"/>
 	<classpathentry kind="lib" path="lib/entagged-freedb-0.04.jar"/>
 	<classpathentry kind="lib" path="lib/animation-1.2.0.jar"/>
 	<classpathentry kind="lib" path="lib/commons-collections-3.2.jar"/>
 	<classpathentry kind="lib" path="lib/tablelayout-20070421.jar"/>
-	<classpathentry kind="lib" path="jajuk-help.jar"/>
 	<classpathentry kind="lib" path="lib/basicplayer-3.0.jar">
 		<attributes>
 			<attribute name="javadoc_location" value="http://www.javazoom.net/jlgui/docs/docs2.3/"/>

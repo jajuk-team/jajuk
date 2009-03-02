@@ -20,8 +20,8 @@
 package org.jajuk.ui.widgets;
 
 import static org.jajuk.ui.actions.JajukActions.CONFIGURE_DJS;
-import static org.jajuk.ui.actions.JajukActions.FORWARD_TRACK;
 import static org.jajuk.ui.actions.JajukActions.FINISH_ALBUM;
+import static org.jajuk.ui.actions.JajukActions.FORWARD_TRACK;
 import static org.jajuk.ui.actions.JajukActions.MUTE_STATE;
 import static org.jajuk.ui.actions.JajukActions.NEXT_ALBUM;
 import static org.jajuk.ui.actions.JajukActions.NEXT_TRACK;

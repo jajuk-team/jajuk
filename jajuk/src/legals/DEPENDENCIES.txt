@@ -72,10 +72,6 @@ Creative Commons 	=> LICENSE-CREATIVE-COMMONS.txt
 |JFreechart |Refinery    |Charts API   |jfreechart/              |LGPL        |
 |           |Limited     |             |                         |            |
 -------------------------------------------------------------------------------
-|           |Sun         |High level   |https://                 |GPL-v2      |
-|Java Help  |Microsystems|online help  |javahelp.dev.java.net/   |            |
-|           |            |framework    |                         |            |
--------------------------------------------------------------------------------
 |           |Daniel      |At least one |https://                 |            |
 |Tablelayout|Barbalace   |useful Swing |tablelayout.dev.java.net/|Public      |
 |           |            |layout!      |                         |            |

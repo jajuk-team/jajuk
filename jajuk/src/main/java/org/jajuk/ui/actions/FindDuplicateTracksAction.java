@@ -20,7 +20,7 @@
 
 package org.jajuk.ui.actions;
 
-import com.sun.java.help.impl.SwingWorker;
+import ext.SwingWorker;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

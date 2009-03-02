@@ -19,8 +19,8 @@
  */
 package org.jajuk.ui.helpers;
 
-import static org.jajuk.ui.actions.JajukActions.FORWARD_TRACK;
 import static org.jajuk.ui.actions.JajukActions.FINISH_ALBUM;
+import static org.jajuk.ui.actions.JajukActions.FORWARD_TRACK;
 import static org.jajuk.ui.actions.JajukActions.NEXT_ALBUM;
 import static org.jajuk.ui.actions.JajukActions.NEXT_TRACK;
 import static org.jajuk.ui.actions.JajukActions.PAUSE_RESUME_TRACK;

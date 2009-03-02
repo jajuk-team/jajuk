@@ -19,13 +19,12 @@
  */
 package org.jajuk.ui.wizard;
 
-import com.sun.java.help.impl.SwingWorker;
-
 import entagged.freedb.Freedb;
 import entagged.freedb.FreedbAlbum;
 import entagged.freedb.FreedbException;
 import entagged.freedb.FreedbQueryResult;
 import entagged.freedb.FreedbReadResult;
+import ext.SwingWorker;
 import info.clearthought.layout.TableLayout;
 
 import java.awt.event.ActionEvent;

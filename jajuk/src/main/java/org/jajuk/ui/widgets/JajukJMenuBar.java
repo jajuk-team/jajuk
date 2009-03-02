@@ -35,8 +35,7 @@ import static org.jajuk.ui.actions.JajukActions.SHUFFLE_MODE;
 import static org.jajuk.ui.actions.JajukActions.SIMPLE_DEVICE_WIZARD;
 import static org.jajuk.ui.actions.JajukActions.TIP_OF_THE_DAY;
 import static org.jajuk.ui.actions.JajukActions.VIEW_RESTORE_DEFAULTS;
-
-import com.sun.java.help.impl.SwingWorker;
+import ext.SwingWorker;
 
 import java.awt.BorderLayout;
 import java.awt.Desktop;
