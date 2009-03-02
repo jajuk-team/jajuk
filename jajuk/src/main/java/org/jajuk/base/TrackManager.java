@@ -711,7 +711,7 @@ public final class TrackManager extends ItemManager {
         }
       }
       if (sorted) {
-        Collections.sort(out, new TrackComparator(TrackComparatorType.ALBUM));
+        Collections.sort(out, new TrackComparator(TrackComparatorType.ORDER));
       }
     } else if (items.get(0) instanceof Playlist) {
       for (Item item : items) {
