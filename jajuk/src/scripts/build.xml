@@ -242,7 +242,7 @@
 
 	<!--IzPack package creation -->
 
-	<target name='package_izpack' description='o Create Jajuk IzPack package' depends='startup,clean,mkdist_izpack,package_jar>
+	<target name='package_izpack' description='o Create Jajuk IzPack package' depends='startup,clean,mkdist_izpack,package_jar'>
 		<taskdef name='izpack' classpath='${conf_izpackdir}/lib/compiler.jar' classname='com.izforge.izpack.ant.IzPackTask' />
 		<echo message='Create Jajuk IzPack package' />
 		<echo message='Makes the installer using IzPack' />
