@@ -231,6 +231,7 @@ public class JAudioTaggerTagImpl implements ITagImpl, Const {
       // methods
       tag = this.audioFile.getTag();
     } catch (Throwable t) { // can throw OutOfMemory errors
+      Log.error(t);
       throw new JajukException(103, fio.toString(), t);
     }
   }
