@@ -7,13 +7,15 @@
       <url>http://jajuk.sourceforge.net</url>
     </info>
     <guiprefs height='600' resizable='yes' width='800'>
-   	 	<laf name='looks'>
+   	 	<laf name='substance'>
+   	 		<param name="variant" value="business-black" />
    	 		<os family='unix' />
    	 		<os family='windows' />
    	 		<os family='mac' />
    	 	</laf>	 
    	 </guiprefs>
-   	 <!-- See ISO3 country codes in /prog/IzPack/bin/langpacks/installer -->
+   	 
+   	<!-- See ISO3 country codes in /prog/IzPack/bin/langpacks/installer -->
     <locale>
         <langpack iso3='eng'/>
         <langpack iso3='cat'/>
