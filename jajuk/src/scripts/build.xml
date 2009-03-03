@@ -7,7 +7,7 @@
 
 	<!--Distribution release  
 	!!! DO NOT USE '-' CHARACTER IN VERSION !!!-->
-	<property name='version' value='1.7_RC29b1'/> 
+	<property name='version' value='1.7_RC29b2'/> 
 
 	<!--Previous release used for JNLP incremental upgrade-->
 	<property name='previous_version' value='null' />
@@ -25,7 +25,7 @@
 	<property name='conf_jnlp-dist' value='/data/java/jnlp-dist' />
 	<property name='conf_homeuser' value='/home/bflorat' />
 	<property name='conf_uploaddir' value='${rootdir}/upload' />
-	<property name='conf_jarbundler' value='/prog/jarbundler-1.9' />-->
+	<property name='conf_jarbundler' value='/prog/jarbundler-1.9' /> -->
 	
 
 	<!-- Conf for Jajuk Continuous Integration  server --> 
@@ -133,9 +133,6 @@
 		<copy todir='${distdir}/dist-files/xslt'>
 			<fileset file='${srcdir}/main/resources/xslt/**' />
 		</copy>
-		<copy todir='${distdir}/dist-files/xml'>
-			<fileset file='${srcdir}/main/resources/xml/**' />
-		</copy>
 		<copy todir='${distdir}'>
 			<fileset file='${srcdir}/main/resources/icons/64x64/jajuk-icon-shortcut_64x64.png' />
 			<fileset file='${srcdir}/main/resources/icons/16x16/jajuk-uninstall.png' />
@@ -192,7 +189,6 @@
 		<mkdir dir='${distdir}/${classdir}/images' />
 		<mkdir dir='${distdir}/${classdir}/perspectives' />
 		<mkdir dir='${distdir}/${classdir}/xslt' />
-		<mkdir dir='${distdir}/${classdir}/xml' />
 		<!-- Copy files to be embeded into the jar -->
 		<copy todir='${distdir}/${classdir}/icons'>
 			<fileset dir='${srcdir}/main/resources/icons' />
@@ -212,9 +208,6 @@
 		</copy>
 		<copy todir='${distdir}/${classdir}/xslt'>
 			<fileset file='${srcdir}/main/resources/xslt/**' />
-		</copy>
-		<copy todir='${distdir}/${classdir}/xml'>
-			<fileset file='${srcdir}/main/resources/xml/**' />
 		</copy>
 	</target>
 
