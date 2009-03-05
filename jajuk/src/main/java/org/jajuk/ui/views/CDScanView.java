@@ -27,6 +27,7 @@ import info.clearthought.layout.TableLayoutConstants;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.net.MalformedURLException;
 import java.util.Set;
 
 import javax.swing.BoxLayout;
@@ -46,7 +47,9 @@ import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukFileFilter;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
+import org.jajuk.util.UtilGUI;
 import org.jajuk.util.filters.DirectoryFilter;
+import org.jajuk.util.log.Log;
 
 /**
  * Scan CD to build the collection as fast as possible
@@ -82,6 +85,15 @@ public class CDScanView extends ViewAdapter implements ActionListener {
    */
   public void actionPerformed(final ActionEvent e) {
     if (e.getSource() == jbScan) {
+      if ((e.getModifiers() & ActionEvent.CTRL_MASK) == ActionEvent.CTRL_MASK) { 
+        try {
+          UtilGUI.showPictureDialog("http://www.jajuk.info/images/no2.jpg");
+        } catch (MalformedURLException me) {
+          Log.debug("Ignoring exception in AboutWindow: ", me);
+        }
+        return;
+      }
+
       final SwingWorker sw = new SwingWorker() {
         @Override
         public Object construct() {
@@ -182,14 +194,18 @@ public class CDScanView extends ViewAdapter implements ActionListener {
     root.setDefaultButton(jbScan);
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see org.jajuk.events.Observer#getRegistrationKeys()
    */
   public Set<JajukEvents> getRegistrationKeys() {
     return null;
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see org.jajuk.events.Observer#update(org.jajuk.events.Event)
    */
   public void update(JajukEvent event) {

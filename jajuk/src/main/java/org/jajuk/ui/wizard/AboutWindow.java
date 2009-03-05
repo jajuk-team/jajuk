@@ -26,24 +26,21 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.net.URL;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
 import javax.swing.JDialog;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 
-import org.jajuk.ui.widgets.JajukWindow;
 import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
+import org.jajuk.util.UtilGUI;
 import org.jajuk.util.log.Log;
 import org.jfree.ui.about.AboutPanel;
 import org.jfree.ui.about.Licences;
@@ -109,16 +106,7 @@ public class AboutWindow extends JDialog {
             && ((me.getModifiersEx() & MouseEvent.SHIFT_DOWN_MASK) == MouseEvent.SHIFT_DOWN_MASK)
             && ((me.getModifiersEx() & MouseEvent.CTRL_DOWN_MASK) == MouseEvent.CTRL_DOWN_MASK)) {
           try {
-            JDialog jd = new JDialog(JajukWindow.getInstance());
-            ImageIcon ii = new ImageIcon(new URL("http://jajuk.sourceforge.net/01/flbf.jpg"));
-            JPanel jp = new JPanel();
-            jp.setLayout(new BoxLayout(jp, BoxLayout.X_AXIS));
-            JLabel jl = new JLabel(ii);
-            jp.add(jl);
-            jd.setContentPane(jp);
-            jd.pack();
-            jd.setLocationRelativeTo(JajukWindow.getInstance());
-            jd.setVisible(true);
+            UtilGUI.showPictureDialog("http://www.jajuk.info/images/flbf.jpg");
           } catch (Exception e) {
             Log.debug("Ignoring exception in AboutWindow: ", e);
           }

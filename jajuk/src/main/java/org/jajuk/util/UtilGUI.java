@@ -34,6 +34,7 @@ import java.awt.Window;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Map;
 import java.util.StringTokenizer;
@@ -43,6 +44,7 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -61,6 +63,7 @@ import org.jajuk.ui.perspectives.PerspectiveManager;
 import org.jajuk.ui.widgets.CommandJPanel;
 import org.jajuk.ui.widgets.InformationJPanel;
 import org.jajuk.ui.widgets.JajukSystray;
+import org.jajuk.ui.widgets.JajukWindow;
 import org.jajuk.ui.widgets.PerspectiveBarJPanel;
 import org.jajuk.util.log.Log;
 import org.jdesktop.swingx.decorator.Highlighter;
@@ -561,6 +564,25 @@ public final class UtilGUI {
    */
   static public Color getForegroundColor() {
     return colorScheme.getForegroundColor();
+  }
+
+  /**
+   * Display a dialog with given url picture
+   * @param url
+   * @throws MalformedURLException
+   */
+  static public void showPictureDialog(String url) throws MalformedURLException {
+    JDialog jd = new JDialog(JajukWindow.getInstance());
+    ImageIcon ii = new ImageIcon(new URL(url));
+    JPanel jp = new JPanel();
+    jp.setLayout(new BoxLayout(jp, BoxLayout.X_AXIS));
+    JLabel jl = new JLabel(ii);
+    jp.add(jl);
+    jd.setContentPane(jp);
+    jd.pack();
+    jd.setLocationRelativeTo(JajukWindow.getInstance());
+    jd.setVisible(true);
+
   }
 
 }

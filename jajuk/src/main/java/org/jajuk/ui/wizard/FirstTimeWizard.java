@@ -47,6 +47,7 @@ import org.jajuk.base.DeviceManager;
 import org.jajuk.ui.actions.ActionManager;
 import org.jajuk.ui.actions.JajukActions;
 import org.jajuk.ui.widgets.JajukFileChooser;
+import org.jajuk.ui.widgets.JajukJDialog;
 import org.jajuk.ui.widgets.PathSelector;
 import org.jajuk.ui.widgets.ToggleLink;
 import org.jajuk.util.Const;
@@ -64,7 +65,7 @@ import org.jdesktop.swingx.VerticalLayout;
 /**
  * First time Wizard
  */
-public class FirstTimeWizard extends JFrame implements ActionListener {
+public class FirstTimeWizard extends JajukJDialog implements ActionListener {
   private static final long serialVersionUID = 1L;
 
   JLabel jlLeftIcon;
