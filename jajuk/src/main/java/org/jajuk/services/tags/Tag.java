@@ -47,11 +47,10 @@ public class Tag {
 
   /** Is this tag corrupted ? */
   private boolean bCorrupted = false;
-  
-  /** 
-   * File -> tag cache
-   * This is required by the autocommit=false operations 
-   **/
+
+  /**
+   * File -> tag cache This is required by the autocommit=false operations
+   */
   static private Map<File, Tag> tagsCache = new HashMap<File, Tag>(10);
 
   /**
@@ -76,8 +75,6 @@ public class Tag {
       tagImpl = type.getTagImpl();
       tagImpl.setFile(fio);
       bCorrupted = false;
-      // Cache the tag
-      tagsCache.put(fio, this);
     } catch (Exception e) {
       bCorrupted = true;
       if (!bIgnoreErrors) {
@@ -383,7 +380,8 @@ public class Tag {
       }
       tagImpl.commit();
       // Display written file full path. Note that we use a limited string for
-      // parent to make sure the file name itself is visible in information panel
+      // parent to make sure the file name itself is visible in information
+      // panel
       InformationJPanel.getInstance().setMessage(
           Messages.getString("PropertiesWizard.11") + " "
               + UtilString.getLimitedString(fio.getParentFile().getAbsolutePath(), 60)
@@ -422,26 +420,29 @@ public class Tag {
   public String toString() {
     return "Tag of : " + fio.getAbsolutePath();
   }
-  
+
   /**
    * Return cached tag or new tag if non already in cache
-   * @param fio the audio file containing the tag
+   * 
+   * @param fio
+   *          the audio file containing the tag
    * @return cached tag or new tag if non already in cache
    * @throws JajukException
    */
-  public static Tag getTagForFio(File fio) throws JajukException{
+  public static Tag getTagForFio(File fio) throws JajukException {
     Tag tag = tagsCache.get(fio);
-    if (tag == null){
-      // Note that the tag is cached in the constructor
+    if (tag == null) {
       tag = new Tag(fio);
+      // Cache the tag
+      tagsCache.put(fio, tag);
     }
     return tag;
   }
-  
+
   /**
    * Clear the tags cache
    */
-  public static void clearCache(){
+  public static void clearCache() {
     tagsCache.clear();
   }
 
