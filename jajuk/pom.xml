@@ -95,7 +95,6 @@
       <groupId>net.sf.qdwizard</groupId>
       <artifactId>qdwizard</artifactId>
       <version>2.1</version>
-      <systemPath>${basedir}/lib/qdwizard-2.1.jar</systemPath>
     </dependency>
     <dependency>
       <groupId>Swingx</groupId>
@@ -180,6 +179,11 @@
       <scope>system</scope>
       <systemPath>${basedir}/lib/jaudiotagger-186.jar</systemPath>
     </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.5</version>
+	</dependency> 
   </dependencies>
   
   <reporting>
