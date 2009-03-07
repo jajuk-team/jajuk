@@ -7,7 +7,7 @@
 
 	<!--Distribution release  
 	!!! DO NOT USE '-' CHARACTER IN VERSION !!!-->
-	<property name='version' value='1.7_pre-final'/> 
+	<property name='version' value='1.7_prefinal'/> 
 
 	<!--Previous release used for JNLP incremental upgrade-->
 	<property name='previous_version' value='null' />
@@ -258,7 +258,7 @@
 		<copy todir='${conf_homeuser}' overwrite='yes'>
 			<fileset file='${srcdir}/packaging/RPMS/.rpmmacros' />
 		</copy>
-		<rpm specFile='jajuk.spec' topDir='${rpmbuilddir}' cleanBuildDir='yes' removeSpec='no' command='-bb' />
+		<rpm failOnError='true' specFile='jajuk.spec' topDir='${rpmbuilddir}' cleanBuildDir='yes' removeSpec='no' command='-bb' />
 	</target>
 
 
