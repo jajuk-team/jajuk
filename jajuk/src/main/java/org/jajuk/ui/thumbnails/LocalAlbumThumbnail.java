@@ -116,18 +116,18 @@ public class LocalAlbumThumbnail extends AbstractThumbnail {
     if (!bNoCover) {
       jlIcon.setBorder(new DropShadowBorder(Color.BLACK, 5, 0.5f, 5, false, true, false, true));
     }
-    
+
     if (bShowFullText) {
       dMain = new double[][] { { TableLayout.FILL, TableLayout.PREFERRED, TableLayout.FILL },
           { size + 10, 10, TableLayout.PREFERRED, 5, TableLayout.PREFERRED } };
       setLayout(new TableLayout(dMain));
       int iRows = 7 + 7 * ((size / 50) - 1);
-     
+
       Author author = AuthorManager.getInstance().getAssociatedAuthors(album).iterator().next();
       jlAuthor = new JLabel(UtilString.getLimitedString(author.getName2(), iRows));
       jlAuthor.setToolTipText(author.getName2());
       jlAuthor.setFont(FontManager.getInstance().getFont(JajukFont.BOLD));
-     
+
       // we have to use a empty border to avoid getting default border
       jlAuthor.setBorder(new EmptyBorder(0, 0, 0, 0));
 
@@ -188,7 +188,8 @@ public class LocalAlbumThumbnail extends AbstractThumbnail {
     ThumbnailManager.refreshThumbnail(album, size);
     java.io.File cover = UtilSystem.getConfFileByPath(Const.FILE_THUMBS + '/' + size + '/'
         + album.getID() + '.' + Const.EXT_THUMB);
-    List<Track> tracks = new ArrayList<Track>(TrackManager.getInstance().getAssociatedTracks(album,true));
+    List<Track> tracks = new ArrayList<Track>(TrackManager.getInstance().getAssociatedTracks(album,
+        true));
     Collections.sort(tracks, new TrackComparator(TrackComparatorType.ORDER));
     Track firstTrack = tracks.iterator().next();
     Color bgcolor = UtilGUI.getUltraLightColor();
@@ -211,7 +212,7 @@ public class LocalAlbumThumbnail extends AbstractThumbnail {
     if (album.getStyle() != null) {
       sOut += "<br>" + Messages.getString("Property_style") + ": <a href='file://"
           + Const.XML_STYLE + '?' + firstTrack.getStyle().getID() + "'>"
-          + UtilString.getLimitedString(firstTrack.getStyle().getName2(),20) + "</a>";
+          + UtilString.getLimitedString(firstTrack.getStyle().getName2(), 20) + "</a>";
     }
     // Display year
     if (album.getYear() != null) {
@@ -241,7 +242,7 @@ public class LocalAlbumThumbnail extends AbstractThumbnail {
         sOut += UtilString.padNumber(track.getOrder(), 2) + ": ";
       }
       sOut += "<b>" + "<a href='file://" + Const.XML_TRACK + '?' + track.getID() + "'>"
-          + UtilString.getLimitedString(track.getName(),30) + "</a>" + " (";
+          + UtilString.getLimitedString(track.getName(), 30) + "</a>" + " (";
       sOut += UtilString.formatTimeBySec(track.getDuration()) + ") </b>";
       if (album.getYear() == null && track.getYear().getValue() != 0) {
         sOut += " - " + track.getYear().getValue() + "   ";
@@ -250,7 +251,7 @@ public class LocalAlbumThumbnail extends AbstractThumbnail {
       // level
       if (album.getAuthor() == null
           && !track.getAuthor().getName2().equals(Messages.getString(Const.UNKNOWN_AUTHOR))) {
-        sOut += " - " + UtilString.getLimitedString(track.getAuthor().getName2(),20) + "   ";
+        sOut += " - " + UtilString.getLimitedString(track.getAuthor().getName2(), 20) + "   ";
       }
     }
     sOut += "</TD></TR></TABLE></html>";
