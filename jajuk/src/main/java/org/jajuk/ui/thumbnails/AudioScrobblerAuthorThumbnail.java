@@ -20,8 +20,6 @@
 
 package org.jajuk.ui.thumbnails;
 
-import com.vlsolutions.swing.docking.ShadowBorder;
-
 import ext.SwingWorker;
 import ext.services.lastfm.AudioScrobblerAlbum;
 import ext.services.lastfm.AudioScrobblerArtist;
@@ -49,6 +47,7 @@ import org.jajuk.util.UtilString;
 import org.jajuk.util.UtilSystem;
 import org.jajuk.util.log.Log;
 import org.jdesktop.swingx.VerticalLayout;
+import org.jdesktop.swingx.border.DropShadowBorder;
 
 /**
  * Last.FM Album thumb represented as artists label + (optionally) others text
@@ -137,7 +136,7 @@ public class AudioScrobblerAuthorThumbnail extends AbstractThumbnail {
           jlTitle.setFont(FontManager.getInstance().getFont(JajukFont.PLAIN));
         }
         add(jlTitle);
-        jlIcon.setBorder(new ShadowBorder());
+        jlIcon.setBorder(new DropShadowBorder(Color.BLACK, 5, 0.5f, 5, false, true, false, true));
         // disable inadequate menu items
         jmiCDDBWizard.setEnabled(false);
         jmiGetCovers.setEnabled(false);

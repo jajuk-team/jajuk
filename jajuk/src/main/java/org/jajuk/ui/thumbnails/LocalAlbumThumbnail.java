@@ -20,8 +20,6 @@
 
 package org.jajuk.ui.thumbnails;
 
-import com.vlsolutions.swing.docking.ShadowBorder;
-
 import info.clearthought.layout.TableLayout;
 
 import java.awt.Color;
@@ -61,6 +59,7 @@ import org.jajuk.util.UtilString;
 import org.jajuk.util.UtilSystem;
 import org.jajuk.util.log.Log;
 import org.jdesktop.swingx.VerticalLayout;
+import org.jdesktop.swingx.border.DropShadowBorder;
 
 /**
  * Album thumb represented as album cover + (optionally) others text information
@@ -112,12 +111,12 @@ public class LocalAlbumThumbnail extends AbstractThumbnail {
       this.fCover = null;
     }
     double[][] dMain = null;
-    jlIcon = new JLabel();
     ImageIcon ii = album.getThumbnail(size + "x" + size);
+    jlIcon = new JLabel(ii);
     if (!bNoCover) {
-      jlIcon.setBorder(new ShadowBorder());
+      jlIcon.setBorder(new DropShadowBorder(Color.BLACK, 5, 0.5f, 5, false, true, false, true));
     }
-    jlIcon.setIcon(ii);
+    
     if (bShowFullText) {
       dMain = new double[][] { { TableLayout.FILL, TableLayout.PREFERRED, TableLayout.FILL },
           { size + 10, 10, TableLayout.PREFERRED, 5, TableLayout.PREFERRED } };
