@@ -275,7 +275,8 @@ public class CDDBWizard extends JajukJDialog implements ActionListener {
           // Same for year
           try {
             long lValue = Long.parseLong(fdbReader.getYear());
-            if (lValue > 0 && lValue < 3000) { // Review this after year 3000 Fry ;-)
+            if (lValue > 0 && lValue < 3000) { // Review this after year 3000
+                                                // Fry ;-)
               track = TrackManager.getInstance().changeTrackYear(track, fdbReader.getYear(), null);
             }
           } catch (NumberFormatException e) {

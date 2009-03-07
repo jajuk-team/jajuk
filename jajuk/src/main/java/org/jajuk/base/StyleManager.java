@@ -252,5 +252,5 @@ public final class StyleManager extends ItemManager {
   public synchronized ReadOnlyIterator<Style> getStylesIterator() {
     return new ReadOnlyIterator<Style>((Iterator<Style>) getItemsIterator());
   }
-  
+
 }

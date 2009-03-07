@@ -33,7 +33,7 @@ import org.jajuk.util.Messages;
  */
 public class Author extends LogicalItem implements Comparable<Author> {
 
-   /**
+  /**
    * Author constructor
    * 
    * @param id

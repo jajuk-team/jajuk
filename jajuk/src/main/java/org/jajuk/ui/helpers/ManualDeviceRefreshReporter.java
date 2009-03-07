@@ -107,7 +107,7 @@ public class ManualDeviceRefreshReporter extends RefreshReporter {
     // Display end of refresh message with stats
     Messages.showInfoMessage(message);
   }
-  
+
   /**
    * This timer limit dialog title changes (this can have side effect on
    * performances or other in some window managers. Too many window title change

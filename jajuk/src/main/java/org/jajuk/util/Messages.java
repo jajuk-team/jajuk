@@ -549,8 +549,8 @@ public class Messages extends DefaultHandler {
 
   /**
    * Return true if the messaging system is started, can be useful mainly at
-   * startup by services ( like logs) using them to avoid dead locks
-   * Messages service is initialized after current has been set
+   * startup by services ( like logs) using them to avoid dead locks Messages
+   * service is initialized after current has been set
    * 
    * @return
    */

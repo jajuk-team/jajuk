@@ -58,7 +58,7 @@ public class AdoreSelectionAction extends SelectionAction {
             return;
           }
           // Extract tracks of each item
-          List<Track> tracks = TrackManager.getInstance().getAssociatedTracks(selection,false);
+          List<Track> tracks = TrackManager.getInstance().getAssociatedTracks(selection, false);
           // Set the preference
           for (Track track : tracks) {
             track.setPreference(3l);

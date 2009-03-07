@@ -195,7 +195,7 @@ public final class Main {
       // Set substance theme (for raw error windows displayed by initial
       // checkups only)
       // (must be done out of EDT)
-       UIManager.setLookAndFeel(new SubstanceBusinessLookAndFeel());
+      UIManager.setLookAndFeel(new SubstanceBusinessLookAndFeel());
 
       // perform initial checkups and create needed files
       initialCheckups();
@@ -208,7 +208,7 @@ public final class Main {
       Conf.load();
 
       // Full substance configuration now (must be done out of EDT)
-       UtilGUI.setLookAndFeel(Conf.getString(Const.CONF_OPTIONS_LNF));
+      UtilGUI.setLookAndFeel(Conf.getString(Const.CONF_OPTIONS_LNF));
 
       // Detect current release
       UpgradeManager.detectRelease();

@@ -37,8 +37,6 @@ import org.jajuk.util.ReadOnlyIterator;
  */
 public class Style extends LogicalItem implements Comparable<Style> {
 
-  
-
   /**
    * Style constructor
    * 
@@ -100,7 +98,7 @@ public class Style extends LogicalItem implements Comparable<Style> {
    * @return Number of tracks for this style from the collection
    */
   public int getCount() {
-    return TrackManager.getInstance().getAssociatedTracks(this,false).size();
+    return TrackManager.getInstance().getAssociatedTracks(this, false).size();
   }
 
   /**

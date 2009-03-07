@@ -92,8 +92,7 @@ public class TransitionDigitalDJ extends DigitalDJ {
   }
 
   /*
-   * Generate the playlist 
-   * @return the playlist
+   * Generate the playlist @return the playlist
    */
   @SuppressWarnings("unchecked")
   @Override

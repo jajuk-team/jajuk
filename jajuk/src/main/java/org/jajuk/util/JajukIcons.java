@@ -385,14 +385,14 @@ public enum JajukIcons {
   PREFERENCE_LOVE,
 
   PREFERENCE_ADORE,
-  
+
   PREFERENCE_UNSET,
-  
+
   UNBAN,
-  
+
   PREPARE_PARTY,
-  
+
   COPY_TO_CLIPBOARD,
-  
+
   AMBIENCE
 }

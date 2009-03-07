@@ -128,17 +128,17 @@ public class ThumbnailPopup extends JWindow {
           URL url = e.getURL();
           if (Const.XML_AUTHOR.equals(url.getHost())) {
             Author author = (Author) AuthorManager.getInstance().getItemByID(url.getQuery());
-            List<Track> tracks = TrackManager.getInstance().getAssociatedTracks(author,false);
+            List<Track> tracks = TrackManager.getInstance().getAssociatedTracks(author, false);
             Collections.shuffle(tracks);
             launchLink(tracks);
           } else if (Const.XML_STYLE.equals(url.getHost())) {
             Style style = (Style) StyleManager.getInstance().getItemByID(url.getQuery());
-            List<Track> tracks = TrackManager.getInstance().getAssociatedTracks(style,false);
+            List<Track> tracks = TrackManager.getInstance().getAssociatedTracks(style, false);
             Collections.shuffle(tracks);
             launchLink(tracks);
           } else if (Const.XML_YEAR.equals(url.getHost())) {
             Year year = (Year) YearManager.getInstance().getItemByID(url.getQuery());
-            List<Track> tracks = TrackManager.getInstance().getAssociatedTracks(year,false);
+            List<Track> tracks = TrackManager.getInstance().getAssociatedTracks(year, false);
             Collections.shuffle(tracks);
             launchLink(tracks);
           } else if (Const.XML_URL.equals(url.getHost())) {

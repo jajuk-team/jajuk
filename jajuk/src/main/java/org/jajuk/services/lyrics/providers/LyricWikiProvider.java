@@ -68,7 +68,7 @@ public class LyricWikiProvider extends GenericProvider {
       }
       return lyrics;
     } catch (Exception e) {
-      Log.debug("Cannot fetch lyrics for: "+artist+"/"+title);
+      Log.debug("Cannot fetch lyrics for: " + artist + "/" + title);
       return null;
     }
   }
@@ -93,7 +93,7 @@ public class LyricWikiProvider extends GenericProvider {
     // Replace spaces by _
     String artist = pArtist.replaceAll(" ", "_");
     String title = pTitle.replaceAll(" ", "_");
-    
+
     queryString = queryString.replace(Const.PATTERN_AUTHOR, (artist != null) ? NetworkUtils
         .encodeString(artist) : "");
     queryString = queryString.replace(Const.PATTERN_TRACKNAME, (title != null) ? NetworkUtils

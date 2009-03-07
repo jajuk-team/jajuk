@@ -140,7 +140,7 @@ public final class Conf implements Const {
    * 
    */
   public static void setDefaultProperties() {
-    // We fill with current values to keep some parameters 
+    // We fill with current values to keep some parameters
     // like passwords and that we don't want to reset
     defaults = (Properties) properties.clone();
 

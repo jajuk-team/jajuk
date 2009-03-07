@@ -568,6 +568,7 @@ public final class UtilGUI {
 
   /**
    * Display a dialog with given url picture
+   * 
    * @param url
    * @throws MalformedURLException
    */

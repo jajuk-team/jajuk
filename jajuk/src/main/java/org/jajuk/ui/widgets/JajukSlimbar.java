@@ -399,11 +399,10 @@ public final class JajukSlimbar extends JFrame implements Observer, MouseWheelLi
         .getAction(PAUSE_RESUME_TRACK), ActionManager.getAction(STOP_TRACK), ActionManager
         .getAction(JajukActions.DECREASE_VOLUME), ActionManager
         .getAction(JajukActions.INCREASE_VOLUME), ActionManager
-        .getAction(JajukActions.SHUFFLE_MODE),ActionManager
-        .getAction(JajukActions.REPEAT_MODE),ActionManager
-        .getAction(JajukActions.REWIND_TRACK),ActionManager
-        .getAction(JajukActions.FORWARD_TRACK),ActionManager
-        .getAction(JajukActions.HELP_REQUIRED));
+        .getAction(JajukActions.SHUFFLE_MODE), ActionManager.getAction(JajukActions.REPEAT_MODE),
+        ActionManager.getAction(JajukActions.REWIND_TRACK), ActionManager
+            .getAction(JajukActions.FORWARD_TRACK), ActionManager
+            .getAction(JajukActions.HELP_REQUIRED));
   }
 
   private void updateCurrentTitle() {

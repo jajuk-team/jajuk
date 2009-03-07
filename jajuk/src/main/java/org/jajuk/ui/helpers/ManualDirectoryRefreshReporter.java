@@ -58,7 +58,7 @@ public class ManualDirectoryRefreshReporter extends RefreshReporter {
 
   @SuppressWarnings("unused")
   public void updateState(Directory dir) {
-     // Intentionnal NOP
+    // Intentionnal NOP
   }
 
   public void done() {

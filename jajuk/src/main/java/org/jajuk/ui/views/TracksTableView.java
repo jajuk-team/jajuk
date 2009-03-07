@@ -40,7 +40,7 @@ public class TracksTableView extends AbstractTableView {
   private JMenuItem jmiTrackPlayAlbum;
 
   private JMenuItem jmiTrackPlayAuthor;
-  
+
   public TracksTableView() {
     super();
     columnsConf = CONF_TRACKS_TABLE_COLUMNS;
@@ -64,8 +64,8 @@ public class TracksTableView extends AbstractTableView {
     jmiTrackPlayAlbum.putClientProperty(Const.DETAIL_SELECTION, jtable.getSelection());
     jmiTrackPlayAuthor = new JMenuItem(ActionManager.getAction(JajukActions.PLAY_AUTHOR_SELECTION));
     jmiTrackPlayAuthor.putClientProperty(Const.DETAIL_SELECTION, jtable.getSelection());
-    jtable.getMenu().add(jmiTrackPlayAlbum,4);
-    jtable.getMenu().add(jmiTrackPlayAuthor,5);
+    jtable.getMenu().add(jmiTrackPlayAlbum, 4);
+    jtable.getMenu().add(jmiTrackPlayAuthor, 5);
     // Add this generic menu item manually to ensure it's the last one in
     // the list for GUI reasons
     jtable.getMenu().addSeparator();

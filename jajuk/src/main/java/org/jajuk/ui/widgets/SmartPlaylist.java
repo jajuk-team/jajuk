@@ -57,13 +57,16 @@ public class SmartPlaylist extends JPanel {
       plf = new Playlist(Type.NEW, Integer.toString(Playlist.Type.NEW.ordinal()), getName(), null);
     } else if (type == Type.BESTOF) {
       jlIcon = new JLabel(IconLoader.getIcon(JajukIcons.PLAYLIST_BESTOF));
-      plf = new Playlist(Type.BESTOF, Integer.toString(Playlist.Type.BESTOF.ordinal()), getName(), null);
+      plf = new Playlist(Type.BESTOF, Integer.toString(Playlist.Type.BESTOF.ordinal()), getName(),
+          null);
     } else if (type == Type.BOOKMARK) {
       jlIcon = new JLabel(IconLoader.getIcon(JajukIcons.PLAYLIST_BOOKMARK));
-      plf = new Playlist(Type.BOOKMARK, Integer.toString(Playlist.Type.BOOKMARK.ordinal()), getName(), null);
+      plf = new Playlist(Type.BOOKMARK, Integer.toString(Playlist.Type.BOOKMARK.ordinal()),
+          getName(), null);
     } else if (type == Type.NOVELTIES) {
       jlIcon = new JLabel(IconLoader.getIcon(JajukIcons.PLAYLIST_NOVELTIES));
-      plf = new Playlist(Type.NOVELTIES, Integer.toString(Playlist.Type.NOVELTIES.ordinal()), getName(), null);
+      plf = new Playlist(Type.NOVELTIES, Integer.toString(Playlist.Type.NOVELTIES.ordinal()),
+          getName(), null);
     }
     setToolTipText(getName());
     add(jlIcon);

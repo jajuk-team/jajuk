@@ -61,7 +61,7 @@ public class PreviousTrackAction extends JajukAction {
     // evt == null when using hotkeys
         (evt.getModifiers() & ActionEvent.SHIFT_MASK) == ActionEvent.SHIFT_MASK) {
       ActionManager.getAction(JajukActions.PREVIOUS_ALBUM).actionPerformed(evt);
-   } else {
+    } else {
       // if playing a radio, launch next radio station
       if (FIFO.isPlayingRadio()) {
         final List<WebRadio> radios = new ArrayList<WebRadio>(WebRadioManager.getInstance()

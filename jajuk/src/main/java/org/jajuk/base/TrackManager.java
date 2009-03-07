@@ -183,7 +183,7 @@ public final class TrackManager extends ItemManager {
   public void commit() throws Exception {
     // Iterate over a shallow copy to avoid concurrent issues (note also that
     // several threads can commit at the same time). We synchronize the copy and
-    // we drop tags to commit. 
+    // we drop tags to commit.
     List<Tag> toCommit = null;
     synchronized (tagsToCommit) {
       toCommit = new ArrayList<Tag>(tagsToCommit);

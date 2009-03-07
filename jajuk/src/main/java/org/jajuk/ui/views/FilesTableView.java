@@ -69,7 +69,7 @@ public class FilesTableView extends AbstractTableView {
     jtable.getMenu().add(jmiBookmark);
     jtable.getMenu().addSeparator();
     jtable.getMenu().add(jmiProperties);
-   
+
     FilesTableView.super.finished();
   }
 

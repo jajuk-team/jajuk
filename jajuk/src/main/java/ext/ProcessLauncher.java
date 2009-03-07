@@ -126,7 +126,7 @@ public class ProcessLauncher {
    *          ligne de commande a executer
    * @return valeur de retour du processus
    */
-  final public int  exec(String command) throws IOException {
+  final public int exec(String command) throws IOException {
     process = Runtime.getRuntime().exec(command);
     return execute();
   }

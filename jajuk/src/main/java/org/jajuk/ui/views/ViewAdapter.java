@@ -33,8 +33,8 @@ import org.jdesktop.swingx.JXPanel;
 /**
  * Default implementation for views
  */
-public abstract class ViewAdapter extends JXPanel implements IView, Const,
-    Comparable<IView>, Observer {
+public abstract class ViewAdapter extends JXPanel implements IView, Const, Comparable<IView>,
+    Observer {
 
   /** Populated state */
   private boolean bIsPopulated = false;

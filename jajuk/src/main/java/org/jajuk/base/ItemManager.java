@@ -318,12 +318,13 @@ public abstract class ItemManager {
 
   /**
    * Perform a cleanup of all orphan tracks associated with given item
+   * 
    * @param item
-   *  item whose associated tracks should be checked for cleanup
+   *          item whose associated tracks should be checked for cleanup
    * 
    */
   protected synchronized void cleanOrphanTracks(Item item) {
-    if (TrackManager.getInstance().getAssociatedTracks(item,false).size() == 0) {
+    if (TrackManager.getInstance().getAssociatedTracks(item, false).size() == 0) {
       removeItem(item);
     }
   }

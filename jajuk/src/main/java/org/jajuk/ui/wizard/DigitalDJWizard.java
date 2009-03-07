@@ -117,7 +117,7 @@ public class DigitalDJWizard extends Wizard {
    * DJ type choice
    */
   public static class TypeSelectionPanel extends Screen implements ActionListener {
-   
+
     private static final long serialVersionUID = 1L;
 
     /** Transition DJ code */
@@ -196,7 +196,7 @@ public class DigitalDJWizard extends Wizard {
    * DJ removal
    */
   public static class RemovePanel extends Screen implements ActionListener {
-   
+
     private static final long serialVersionUID = 1L;
 
     JComponent[][] widgets;
@@ -275,7 +275,7 @@ public class DigitalDJWizard extends Wizard {
    * DJ Selection for change
    */
   public static class ChangePanel extends Screen implements ActionListener {
-    
+
     private static final long serialVersionUID = 1L;
 
     JComponent[][] widgets;
@@ -367,7 +367,7 @@ public class DigitalDJWizard extends Wizard {
    * Action type (new or alter)
    */
   public static class ActionSelectionPanel extends Screen implements ClearPoint, ActionListener {
-   
+
     private static final long serialVersionUID = 1L;
 
     /** NEW code */
@@ -488,7 +488,7 @@ public class DigitalDJWizard extends Wizard {
         data.put(KEY_FADE_DURATION, 10);
         data.put(KEY_RATINGS_LEVEL, 0); // all tracks by default
         data.put(KEY_UNICITY, false);
-      } else if (ActionSelectionPanel.ACTION_CHANGE.equals(data.get(KEY_ACTION))) { 
+      } else if (ActionSelectionPanel.ACTION_CHANGE.equals(data.get(KEY_ACTION))) {
         // keep existing DJ values
         DigitalDJ dj = (DigitalDJ) data.get(KEY_CHANGE);
         data.put(KEY_FADE_DURATION, dj.getFadingDuration());

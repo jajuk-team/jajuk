@@ -143,7 +143,8 @@ public class PlayerStateMediator implements Observer {
           // thrown by the information panel, not directly the
           // PlayPauseAction
           ActionManager.getAction(PAUSE_RESUME_TRACK).setIcon(IconLoader.getIcon(JajukIcons.PAUSE));
-        } else if (JajukEvents.PLAY_OPENING.equals(subject) || JajukEvents.PLAY_ERROR.equals(subject)) {
+        } else if (JajukEvents.PLAY_OPENING.equals(subject)
+            || JajukEvents.PLAY_ERROR.equals(subject)) {
           ActionManager.getAction(PREVIOUS_TRACK).setEnabled(true);
           ActionManager.getAction(NEXT_TRACK).setEnabled(true);
           ActionManager.getAction(REWIND_TRACK).setEnabled(false);

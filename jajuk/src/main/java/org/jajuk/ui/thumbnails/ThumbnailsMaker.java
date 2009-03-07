@@ -161,11 +161,9 @@ public final class ThumbnailsMaker {
 
   /**
    * @param args :
-   *         size: thumb size like 100, or 300
-   *         boolean; test mode ?
-   *         workspace
-   *         session id full path
-   *         
+   *          size: thumb size like 100, or 300 boolean; test mode ? workspace
+   *          session id full path
+   * 
    */
   public static void main(final String[] args) {
     new ThumbnailsMaker(Integer.parseInt(args[0]), Boolean.parseBoolean(args[1]), args[2], args[3]);
@@ -178,13 +176,14 @@ public final class ThumbnailsMaker {
   private boolean bTest = false;
 
   private final String workspace;
-  
+
   private final File sessionId;
 
   /**
    * No instances
    */
-  private ThumbnailsMaker(final int pSize, final boolean pTest, final String pWorkspace, final String pSessionIdFile) {
+  private ThumbnailsMaker(final int pSize, final boolean pTest, final String pWorkspace,
+      final String pSessionIdFile) {
     size = pSize;
     bTest = pTest;
     workspace = pWorkspace;
@@ -201,8 +200,9 @@ public final class ThumbnailsMaker {
   }
 
   /**
-   * Build thumbs for given parameters
-   * We make a minimal jajuk startup here to make the process possible
+   * Build thumbs for given parameters We make a minimal jajuk startup here to
+   * make the process possible
+   * 
    * @throws Exception
    */
   private void buildThumbs() throws Exception {

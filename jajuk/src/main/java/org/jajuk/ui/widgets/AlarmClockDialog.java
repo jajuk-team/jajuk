@@ -226,7 +226,7 @@ public class AlarmClockDialog extends JDialog implements ActionListener, ItemLis
       jrbFile.setEnabled(playAction);
       sbSearch.setEnabled(playAction);
     } else if (e.getSource() == jbOK) {
-        saveValues();
+      saveValues();
     } else if (e.getSource() == jbCancel) {
       dispose();
     } else if (e.getSource() == jcbTime) {

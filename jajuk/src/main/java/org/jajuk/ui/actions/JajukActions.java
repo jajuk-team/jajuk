@@ -287,7 +287,7 @@ public enum JajukActions {
    * Used to jump to the previous track.
    */
   PREVIOUS_TRACK,
-  
+
   /**
    * Replay current album
    */

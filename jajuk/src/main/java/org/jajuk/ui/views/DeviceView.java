@@ -481,10 +481,10 @@ class DeviceItem extends JPanel {
     setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
     JLabel jlIcon = new JLabel(icon);
     // Add some insets around the icon
-    jlIcon.setBorder(BorderFactory.createEmptyBorder(1,1,1,1));
+    jlIcon.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
     add(jlIcon);
     JLabel jlName = new JLabel(sName);
-    jlName.setBorder(BorderFactory.createEmptyBorder(1,1,1,1));
+    jlName.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
     add(jlName);
   }
 
@@ -502,5 +502,5 @@ class DeviceItem extends JPanel {
   public void setDevice(Device device) {
     this.device = device;
   }
-  
+
 }

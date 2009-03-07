@@ -44,8 +44,6 @@ import org.jajuk.util.log.Log;
  */
 public class Track extends LogicalItem implements Comparable<Track> {
 
-  
-
   /** Track album* */
   private final Album album;
 

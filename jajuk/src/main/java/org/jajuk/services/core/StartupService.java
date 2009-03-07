@@ -57,7 +57,7 @@ import org.jajuk.util.log.Log;
  * Startup facilities
  */
 public class StartupService {
-  
+
   /**
    * Launch initial track at startup
    */
@@ -179,8 +179,7 @@ public class StartupService {
       }
     }
   }
-  
-  
+
   /**
    * Asynchronous tasks executed at startup at the same time (for perf)
    */
@@ -200,7 +199,7 @@ public class StartupService {
             UtilSystem.backupFile(UtilSystem.getConfFileByPath(Const.FILE_COLLECTION), Conf
                 .getInt(Const.CONF_BACKUP_SIZE));
           }
-          
+
           // Register FIFO manager
           FIFOManager.getInstance();
 
@@ -217,7 +216,7 @@ public class StartupService {
           // Switch to sorted mode, must be done before starting auto-refresh
           // thread !
           ItemManager.switchAllManagersToOrderState();
-          
+
           // Clear covers images cache
           UtilSystem.clearCache();
 
@@ -226,9 +225,9 @@ public class StartupService {
 
           // Start rating manager thread
           RatingManager.getInstance().start();
-          
+
           // Start alarm clock
-          if (Conf.getBoolean(Const.CONF_ALARM_ENABLED)){
+          if (Conf.getBoolean(Const.CONF_ALARM_ENABLED)) {
             AlarmManager.getInstance();
           }
 
@@ -246,7 +245,5 @@ public class StartupService {
     startup.setPriority(Thread.MIN_PRIORITY);
     startup.start();
   }
-  
-  
 
 }

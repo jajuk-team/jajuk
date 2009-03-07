@@ -236,8 +236,7 @@ public final class FileManager extends ItemManager {
     String sNewId = FileManager.createID(old.getName(), newDir);
     Track track = old.getTrack();
     // create a new file (with own fio and sAbs)
-    File fNew = new File(sNewId, old.getName(), newDir, track, old.getSize(), old
-        .getQuality());
+    File fNew = new File(sNewId, old.getName(), newDir, track, old.getSize(), old.getQuality());
     // transfert all properties (inc id), then set right id and directory
     fNew.setProperties(old.getProperties());
     fNew.setProperty(Const.XML_ID, sNewId);

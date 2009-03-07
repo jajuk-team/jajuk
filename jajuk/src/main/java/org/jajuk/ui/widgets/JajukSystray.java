@@ -72,8 +72,8 @@ import org.jajuk.util.UtilSystem;
 import org.jajuk.util.log.Log;
 
 /**
- * Jajuk systray
- * <br> Extends CommandJPanel for volume slider heritage only
+ * Jajuk systray <br>
+ * Extends CommandJPanel for volume slider heritage only
  */
 public class JajukSystray extends CommandJPanel {
   private static final long serialVersionUID = 1L;

@@ -137,7 +137,7 @@ public enum JajukEvents {
   SUGGESTIONS_REFRESH,
   // A table selection changed
   TABLE_SELECTION_CHANGED,
-   // Playing track has been banned
+  // Playing track has been banned
   BANNED,
   // ALARMS CHANGED (REMOVED, ADDED)
   ALARMS_CHANGE

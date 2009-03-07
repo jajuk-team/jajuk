@@ -293,7 +293,7 @@ public class Device extends PhysicalItem implements Comparable<Device> {
    */
   public List<org.jajuk.base.File> getFilesRecursively() {
     // looks for the root directory for this device
-    Directory dirRoot = DirectoryManager.getInstance().getDirectoryForIO(this.getFio(),this);
+    Directory dirRoot = DirectoryManager.getInstance().getDirectoryForIO(this.getFio(), this);
     List<org.jajuk.base.File> alFiles = new ArrayList<org.jajuk.base.File>(100);
     if (dirRoot != null) {
       alFiles = dirRoot.getFilesRecursively();
@@ -382,7 +382,7 @@ public class Device extends PhysicalItem implements Comparable<Device> {
    * @return Associated root directory
    */
   public Directory getRootDirectory() {
-    return DirectoryManager.getInstance().getDirectoryForIO(getFio(),this);
+    return DirectoryManager.getInstance().getDirectoryForIO(getFio(), this);
   }
 
   /**

@@ -812,7 +812,7 @@ public final class FIFO {
    * @return File
    */
   public static File getPlayingFile() {
-    if (isStopped()){
+    if (isStopped()) {
       return null;
     }
     StackItem item = getCurrentItem();

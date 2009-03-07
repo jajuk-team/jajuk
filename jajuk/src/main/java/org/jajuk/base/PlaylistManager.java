@@ -125,7 +125,7 @@ public final class PlaylistManager extends ItemManager implements Observer {
   public synchronized Playlist registerPlaylistFile(String sId, String sName,
       Directory dParentDirectory) throws Exception {
     Playlist playlistFile = getPlaylistByID(sId);
-    if (playlistFile != null){
+    if (playlistFile != null) {
       return playlistFile;
     }
     playlistFile = new Playlist(sId, sName, dParentDirectory);

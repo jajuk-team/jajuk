@@ -129,7 +129,7 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
       Directory directory = it.next();
       if (directory.getFio().getParentFile().equals(this.getFio())
       // check the device of the tested directory to handle directories from
-      // cdrom
+          // cdrom
           && directory.getDevice().equals(getDevice())) {
         out.add(directory);
       }

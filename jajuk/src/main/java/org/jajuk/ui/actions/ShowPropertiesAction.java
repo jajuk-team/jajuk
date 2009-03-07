@@ -84,9 +84,9 @@ public class ShowPropertiesAction extends SelectionAction {
     } else if (first instanceof LogicalItem || first instanceof Directory) {
       // Author, Album, Style... : display the dual properties panel: one for
       // the item itself, the other with all tracks
-      List<Track> tracks = TrackManager.getInstance().getAssociatedTracks(selection,false);
+      List<Track> tracks = TrackManager.getInstance().getAssociatedTracks(selection, false);
       List<Item> items = new ArrayList<Item>(tracks);
-      new PropertiesWizard(selection,  items);
+      new PropertiesWizard(selection, items);
     } else {
       // All others types: just display the properties window
       new PropertiesWizard(selection);

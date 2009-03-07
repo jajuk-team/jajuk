@@ -34,8 +34,6 @@ import org.jajuk.util.log.Log;
  */
 public class Type extends PhysicalItem implements Comparable<Type> {
 
-  
-
   /** Type extension ex:mp3,ogg */
   private String sExtension;
 

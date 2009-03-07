@@ -93,7 +93,7 @@ public class AlbumsTableView extends AbstractTableView {
         jtable.getMenu().add(jmiBookmark);
         jtable.getMenu().addSeparator();
         jtable.getMenu().add(jmiProperties);
-       
+
         // Add popup feature when mouse rolls over cells
         jtable.addMouseMotionListener(new MouseMotionListener() {
           Album current = null;

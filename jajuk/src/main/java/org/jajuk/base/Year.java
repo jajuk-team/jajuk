@@ -32,8 +32,6 @@ import org.jajuk.util.UtilString;
  */
 public class Year extends LogicalItem implements Comparable<Year> {
 
-  
-
   private final long value;
 
   /**

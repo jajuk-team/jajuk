@@ -145,10 +145,10 @@ public class PreferencesJMenu extends JMenu {
 
   /**
    * Repaint the preference popup menu. This is a workaround for the listener
-   * concurrency issue between mouse and selection listener in tables. When 
-   * a table selection change, the view that contains the table calls this method
-   * in valueChanged() method as we can't build a popup menu in mouse adapter methods
-   * because the selection is not always yet set 
+   * concurrency issue between mouse and selection listener in tables. When a
+   * table selection change, the view that contains the table calls this method
+   * in valueChanged() method as we can't build a popup menu in mouse adapter
+   * methods because the selection is not always yet set
    * 
    * @param selection
    */

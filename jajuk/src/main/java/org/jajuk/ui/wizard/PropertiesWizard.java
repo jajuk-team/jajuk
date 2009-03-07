@@ -831,7 +831,7 @@ public class PropertiesWizard extends JajukJDialog implements ActionListener {
             }
           }
         }
-       
+
         // display a message for file write issues
         if (alInError.size() > 0) {
           String sInfo = "";

@@ -347,14 +347,11 @@ public class CommandJPanel extends JXPanel implements ActionListener, ListSelect
     // we need an inner toolbar to apply size properly
     JToolBar jtbModes = new JajukJToolbar();
     // make it not floatable as this behavior is managed by vldocking
-    jbRepeat = new JajukToggleButton(ActionManager
-        .getAction(JajukActions.REPEAT_MODE));
+    jbRepeat = new JajukToggleButton(ActionManager.getAction(JajukActions.REPEAT_MODE));
     jbRepeat.setSelected(Conf.getBoolean(Const.CONF_STATE_REPEAT));
-    jbRandom = new JajukToggleButton(ActionManager
-        .getAction(JajukActions.SHUFFLE_MODE));
+    jbRandom = new JajukToggleButton(ActionManager.getAction(JajukActions.SHUFFLE_MODE));
     jbRandom.setSelected(Conf.getBoolean(Const.CONF_STATE_SHUFFLE));
-    jbContinue = new JajukToggleButton(ActionManager
-        .getAction(JajukActions.CONTINUE_MODE));
+    jbContinue = new JajukToggleButton(ActionManager.getAction(JajukActions.CONTINUE_MODE));
     jbContinue.setSelected(Conf.getBoolean(Const.CONF_STATE_CONTINUE));
     jbIntro = new JajukToggleButton(ActionManager.getAction(JajukActions.INTRO_MODE));
     jbIntro.setSelected(Conf.getBoolean(Const.CONF_STATE_INTRO));

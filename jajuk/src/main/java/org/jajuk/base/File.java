@@ -42,8 +42,6 @@ import org.jajuk.util.log.Log;
  */
 public class File extends PhysicalItem implements Comparable<File>, Const {
 
-  
-
   /** Parent directory */
   protected final Directory directory;
 

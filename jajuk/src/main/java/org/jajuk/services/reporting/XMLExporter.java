@@ -273,7 +273,7 @@ public class XMLExporter extends Exporter {
         + Tag.tagData(Const.XML_TYPE, UtilString.formatXML(device.getDeviceTypeS())) + NEWLINE);
     writer.write(addTabs(1) + Tag.tagData(Const.XML_URL, UtilString.formatXML(device.getUrl()))
         + NEWLINE);
-    Directory dir = DirectoryManager.getInstance().getDirectoryForIO(device.getFio(),device);
+    Directory dir = DirectoryManager.getInstance().getDirectoryForIO(device.getFio(), device);
     // check void devices
     if (dir != null) {
       // Tag children directories of device.
@@ -282,7 +282,7 @@ public class XMLExporter extends Exporter {
       }
       // Tag children files of device.
       for (org.jajuk.base.File file : DirectoryManager.getInstance().getDirectoryForIO(
-          device.getFio(),device).getFiles()) {
+          device.getFio(), device).getFiles()) {
         tagFile(file, 1);
       }
     }
@@ -321,7 +321,7 @@ public class XMLExporter extends Exporter {
     String sStyleName = "";
     String sAuthorName = "";
     String sYear = "";
-    List<Track> tracks = TrackManager.getInstance().getAssociatedTracks(album,true);
+    List<Track> tracks = TrackManager.getInstance().getAssociatedTracks(album, true);
     if (tracks.size() > 0) {
       sStyleName = UtilString.formatXML(tracks.iterator().next().getStyle().getName2());
       sAuthorName = UtilString.formatXML(tracks.iterator().next().getAuthor().getName2());

@@ -356,7 +356,7 @@ public class DeviceWizard extends JFrame implements ActionListener, Const {
               if (!device.isMounted()) {
                 int resu = device.mount(true);
                 // Leave if user canceled device mounting
-                if (resu < 0){
+                if (resu < 0) {
                   dispose();
                   return;
                 }

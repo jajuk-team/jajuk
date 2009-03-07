@@ -156,7 +156,7 @@ public class JajukPredicates {
     }
 
   }
-  
+
   /**
    * 
    * Ambience predicate on files, filter by provided ambience
@@ -164,18 +164,18 @@ public class JajukPredicates {
   public static class AmbiencePredicate implements Predicate {
 
     private Ambience ambience;
-    
-    public AmbiencePredicate(Ambience ambience){
+
+    public AmbiencePredicate(Ambience ambience) {
       this.ambience = ambience;
     }
-    
+
     /*
      * (non-Javadoc)
      * 
      * @see org.apache.commons.collections.Predicate#evaluate(java.lang.Object)
      */
     public boolean evaluate(Object o) {
-      File tested = (File)o;
+      File tested = (File) o;
       return ambience.getStyles().contains(tested.getTrack().getStyle());
     }
 

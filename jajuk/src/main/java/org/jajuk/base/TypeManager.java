@@ -102,7 +102,7 @@ public final class TypeManager extends ItemManager {
   private Type registerType(String sId, String sName, String sExtension, Class cPlayerImpl,
       Class cTagImpl) {
     Type type = getTypeByID(sId);
-    if (type != null){
+    if (type != null) {
       return type;
     }
     if (hmSupportedTypes.containsKey(sExtension)) {
@@ -397,7 +397,7 @@ public final class TypeManager extends ItemManager {
     // logo
     type.setProperty(Const.XML_TYPE_ICON, UtilSystem.getResource("icons/16x16/type_wav_16x16.png")
         .toExternalForm());
-    
+
     // -- VIDEO --
     // AVI
     type = TypeManager.getInstance().registerType(Messages.getString("Type.video"), Const.EXT_AVI,

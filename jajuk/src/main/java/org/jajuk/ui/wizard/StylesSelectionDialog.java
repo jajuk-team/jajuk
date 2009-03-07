@@ -142,7 +142,8 @@ public class StylesSelectionDialog extends JajukJDialog implements ActionListene
     // none ambience selected by default
     jcbAmbiences.setSelectedIndex(-1);
     jcbAmbiences.addActionListener(this);
-    double[][] sizeLayout = new double[][] { { 5, TableLayout.PREFERRED, TableLayout.PREFERRED, 5 },
+    double[][] sizeLayout = new double[][] {
+        { 5, TableLayout.PREFERRED, TableLayout.PREFERRED, 5 },
         { 5, TableLayout.PREFERRED, TableLayout.PREFERRED, TableLayout.PREFERRED, 5 } };
     TableLayout layout = new TableLayout(sizeLayout);
     layout.setVGap(5);

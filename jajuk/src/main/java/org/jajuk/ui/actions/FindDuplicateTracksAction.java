@@ -101,8 +101,7 @@ public class FindDuplicateTracksAction extends JajukAction {
             duplicateFiles.setLocationRelativeTo(JajukWindow.getInstance());
             duplicateFiles.setVisible(true);
           }
-        }
-        finally {
+        } finally {
           UtilGUI.stopWaiting();
         }
       }

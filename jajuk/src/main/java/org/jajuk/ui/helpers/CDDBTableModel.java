@@ -60,16 +60,16 @@ public class CDDBTableModel extends JajukTableModel {
     // Proposed Track Name
     vColNames.add(Messages.getString("CDDBWizard.4"));
     idList.add("CDDBWizard.4");
-    
-     // Proposed Track style
+
+    // Proposed Track style
     vColNames.add(Messages.getString("Property_style"));
     idList.add("Property_style");
-    
+
     // Proposed Track year
     vColNames.add(Messages.getString("Property_year"));
     idList.add("Property_year");
-    
-     // Proposed Track number
+
+    // Proposed Track number
     vColNames.add(Messages.getString("Property_order"));
     idList.add("Property_order");
   }

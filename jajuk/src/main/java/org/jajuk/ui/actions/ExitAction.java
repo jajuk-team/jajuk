@@ -37,7 +37,7 @@ import org.jajuk.util.Messages;
 import org.jajuk.util.log.Log;
 
 public class ExitAction extends JajukAction {
- private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
   ExitAction() {
     super(Messages.getString("JajukWindow.4"), IconLoader.getIcon(JajukIcons.EXIT), "alt X", true,

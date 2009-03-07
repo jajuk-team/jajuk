@@ -848,11 +848,11 @@ final public class IconLoader {
     else if (icon == JajukIcons.COPY_TO_CLIPBOARD) {
       out = new ImageIcon(UtilSystem.getResource("icons/16x16/copy_url_clipboard_16x16.png"));
     }
-    
+
     else if (icon == JajukIcons.AMBIENCE) {
       out = new ImageIcon(UtilSystem.getResource("icons/32x32/ambience_32x32.png"));
     }
- 
+
     // Cache the result
     if (!cache.containsKey(icon)) {
       cache.put(icon, out);

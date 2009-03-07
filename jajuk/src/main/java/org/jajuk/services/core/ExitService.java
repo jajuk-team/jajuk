@@ -112,7 +112,8 @@ public class ExitService extends Thread {
         // Remove session flag.
         File file = Main.getSessionIdFile();
         if (!file.exists()) {
-          Log.info("Cannot delete file, file: " + file.toString() + " does not exist or workspace move.");
+          Log.info("Cannot delete file, file: " + file.toString()
+              + " does not exist or workspace move.");
         } else if (!file.delete()) {
           Log.warn("Could not delete file: " + file.toString());
         }

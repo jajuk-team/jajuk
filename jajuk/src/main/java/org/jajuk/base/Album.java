@@ -237,7 +237,7 @@ public class Album extends LogicalItem implements Comparable<Album> {
     File fDir = null; // analyzed directory
     // search for local covers in all directories mapping the current track
     // to reach other devices covers and display them together
-    List<Track> lTracks = TrackManager.getInstance().getAssociatedTracks(this,false);
+    List<Track> lTracks = TrackManager.getInstance().getAssociatedTracks(this, false);
     if (lTracks.size() == 0) {
       return null;
     }

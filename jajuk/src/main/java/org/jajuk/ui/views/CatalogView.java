@@ -161,8 +161,8 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 
   /** Utility list used by size selector */
   private List<String> sizes = new ArrayList<String>(10);
-  
-   /** Swing Timer to refresh the component */
+
+  /** Swing Timer to refresh the component */
   private Timer timerSearch = new Timer(WAIT_TIME, new ActionListener() {
     public void actionPerformed(ActionEvent e) {
       if (bNeedSearch && !bPopulating && (System.currentTimeMillis() - lDateTyped >= WAIT_TIME)) {
@@ -303,7 +303,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
     jpControlBottom.add(jcbShowNoCover, "0,0");
     jpControlBottom.add(jlSize, "1,0");
     jpControlBottom.add(jsSize, "2,0,c,c");
-    
+
     // Covers
     initCovers();
 
@@ -414,8 +414,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
     JajukEvents subject = event.getSubject();
     if (JajukEvents.DEVICE_REFRESH.equals(subject)
         || JajukEvents.COVER_DEFAULT_CHANGED.equals(subject)
-        || JajukEvents.DEVICE_MOUNT.equals(subject)
-        || JajukEvents.DEVICE_UNMOUNT.equals(subject)
+        || JajukEvents.DEVICE_MOUNT.equals(subject) || JajukEvents.DEVICE_UNMOUNT.equals(subject)
         || JajukEvents.PARAMETERS_CHANGE.equals(subject)) {
       // save selected item
       LocalAlbumThumbnail oldItem = CatalogView.this.item;
@@ -685,7 +684,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
           // if hide unmounted tracks is set, continue
           if (Conf.getBoolean(Const.CONF_OPTIONS_HIDE_UNMOUNTED)) {
             // test if album contains at least one mounted file
-            List<Track> trackset = TrackManager.getInstance().getAssociatedTracks(album,false);
+            List<Track> trackset = TrackManager.getInstance().getAssociatedTracks(album, false);
             if (trackset.size() > 0) {
               boolean bOK = false;
               for (Track track : trackset) {

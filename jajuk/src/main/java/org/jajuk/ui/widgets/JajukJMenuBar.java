@@ -254,7 +254,7 @@ public final class JajukJMenuBar extends JMenuBar implements Observer {
     tools.add(jmiduplicateFinder);
     tools.add(jmialarmClock);
     tools.addSeparator();
-  
+
     // Configuration menu
     configuration = new JMenu(Messages.getString("JajukJMenuBar.21"));
     jmiDJ = new JMenuItem(ActionManager.getAction(CONFIGURE_DJS));

@@ -85,7 +85,8 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
       Track current = fCurrent.getTrack();
       while (!bStop && !bEOF && !bPaused) { // stop this thread
         try {
-          // Do not call a get_percent_pos if paused, it resumes the player (mplayer issue)
+          // Do not call a get_percent_pos if paused, it resumes the player
+          // (mplayer issue)
           sendCommand("get_time_pos");
           // Every 2 time units, increase actual play time. We wait this
           // delay for perfs and for precision
