@@ -75,8 +75,7 @@ public final class LyricsService {
   public static void loadProviders() {
     providers = new ArrayList<ILyricsProvider>(2);
     try {
-      for (int i = 0; i < providersClasses.length; i++) {
-        String providerClass = providersClasses[i];
+      for (String providerClass : providersClasses) {
         if (!UtilString.isVoid(providerClass)) {
           Class<ILyricsProvider> clazz = (Class<ILyricsProvider>) Class.forName(providerClass);
           ILyricsProvider provider = clazz.newInstance();
