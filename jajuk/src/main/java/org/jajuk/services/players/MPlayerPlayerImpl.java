@@ -397,6 +397,7 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
    * 
    * @see org.jajuk.base.IPlayerImpl#setVolume(float)
    */
+  @Override
   public void setVolume(float fVolume) {
     super.setVolume(fVolume);
     // Make sure to reset pause. Indeed, mplayer has a bug that resume

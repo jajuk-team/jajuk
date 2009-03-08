@@ -43,11 +43,6 @@ public class LyricWikiProvider extends GenericProvider {
   /** URL pattern to web page (see ILyricsProvider interface for details) */
   private static final String WEB_URL = "http://lyricwiki.org/%artist:%title";
 
-  /**
-   * Charset to use
-   */
-  private static final String CHARSET = "UTF-8";
-
   public LyricWikiProvider() {
     super(URL);
   }

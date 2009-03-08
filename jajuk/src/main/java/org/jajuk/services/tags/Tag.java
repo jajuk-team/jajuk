@@ -406,6 +406,7 @@ public class Tag {
     return this.fio;
   }
 
+  @Override
   public boolean equals(Object other) {
     if (!(other instanceof Tag)) {
       return false;
@@ -413,10 +414,12 @@ public class Tag {
     return this.fio.equals(((Tag) other).getFio());
   }
 
+  @Override
   public int hashCode() {
     return fio.getAbsolutePath().hashCode();
   }
 
+  @Override
   public String toString() {
     return "Tag of : " + fio.getAbsolutePath();
   }
