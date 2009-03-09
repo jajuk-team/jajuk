@@ -20,7 +20,8 @@
 
 package org.jajuk.ui.thumbnails;
 
-import java.awt.Color;
+import com.vlsolutions.swing.docking.ShadowBorder;
+
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -61,7 +62,6 @@ import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilGUI;
 import org.jajuk.util.log.Log;
-import org.jdesktop.swingx.border.DropShadowBorder;
 
 /**
  * Album thumb represented as album cover + (optionally) others text information
@@ -339,11 +339,11 @@ public abstract class AbstractThumbnail extends JPanel implements ActionListener
     }
     // Add a shadow for selected items
     if (b) {
-      setBorder(new DropShadowBorder(Color.BLACK, 5, 0.5f, 5, false, true, false, true));
+      setBorder(new ShadowBorder(false));
     } else {
       // add an empty border of the same size than the border to avoid
       // image moves when setting borders
-      setBorder(BorderFactory.createEmptyBorder(3, 2, 5, 5));
+      setBorder(BorderFactory.createEmptyBorder(1, 1, 5, 5));
     }
   }
 
