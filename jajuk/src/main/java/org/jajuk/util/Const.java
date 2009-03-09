@@ -179,10 +179,10 @@ public interface Const {
   // Jajuk version
   String JAJUK_VERSION = "VERSION_REPLACED_BY_ANT";
 
-  String JAJUK_CODENAME = "Firestarter";
+  String JAJUK_CODENAME = "Breathless";
 
   /** Extention to the .jajuk_test directory in test mode only */
-  String TEST_VERSION = "1.7";
+  String TEST_VERSION = "1.8";
 
   String JAJUK_VERSION_DATE = "Build: DATE_REPLACED_BY_ANT";
 
