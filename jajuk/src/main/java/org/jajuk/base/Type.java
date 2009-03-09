@@ -155,6 +155,11 @@ public class Type extends PhysicalItem implements Comparable<Type> {
     return "Type[ID=" + getID() + " Name=" + getName() + " ; Extension=" + sExtension + "]";
   }
 
+  /**
+   * Return an array of supported file extensions for given types
+   * @param types the types
+   * @return Return an array of supported file extensions
+   */
   public static String[] getExtensionsFromTypes(final List<Type> types) {
     String[] extensions = {};
 
@@ -164,7 +169,7 @@ public class Type extends PhysicalItem implements Comparable<Type> {
 
       extensions = new String[typesSize];
       for (int i = 0; i < typesSize; i++) {
-        extensions[i++] = typesArray[i].getExtension();
+        extensions[i] = typesArray[i].getExtension();
       }
     }
     return (extensions);

@@ -97,11 +97,11 @@ public final class UtilSystem {
   /**
    * Directory filter used in refresh
    */
-  private static JajukFileFilter dirFilter = new JajukFileFilter(DirectoryFilter.getInstance());
+  private static JajukFileFilter dirFilter;
   /**
    * File filter used in refresh
    */
-  private static JajukFileFilter fileFilter = new JajukFileFilter(KnownTypeFilter.getInstance());
+  private static JajukFileFilter fileFilter;
 
   // Computes OS detection operations for perf reasons (can be called in loop
   // in refresh method for ie)
@@ -966,10 +966,16 @@ public final class UtilSystem {
   }
 
   public static JajukFileFilter getDirFilter() {
+    if (dirFilter == null) {
+      dirFilter = new JajukFileFilter(DirectoryFilter.getInstance());
+    }
     return dirFilter;
   }
 
   public static JajukFileFilter getFileFilter() {
+    if (fileFilter == null) {
+      fileFilter = new JajukFileFilter(KnownTypeFilter.getInstance());
+    }
     return fileFilter;
   }
 

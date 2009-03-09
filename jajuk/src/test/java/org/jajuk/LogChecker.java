@@ -52,13 +52,6 @@ public class LogChecker extends TestCase {
     assertFalse(logs.matches(".*Playtime rate > 1 for.*"));
   }
   
-  /**
-   * Check for table change issue
-   */
-  public void testTableChanged() {
-    assertFalse(logs.matches(".*TABLE_SELECTION_CHANGED.*"));
-  }
-  
    /**
    * Check for play time outs
    */
