@@ -258,7 +258,7 @@
 		<copy todir='${conf_homeuser}' overwrite='yes'>
 			<fileset file='${srcdir}/packaging/RPMS/.rpmmacros' />
 		</copy>
-		<rpm failOnError='true' specFile='jajuk.spec' topDir='${rpmbuilddir}' cleanBuildDir='yes' removeSpec='no' command='-bb' />
+		<rpm failOnError='true' specFile='jajuk.spec' topDir='${rpmbuilddir}' cleanBuildDir='yes' removeSpec='no' command='-bb --target noarch' />
 	</target>
 
 
