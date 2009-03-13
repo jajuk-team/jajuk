@@ -72,35 +72,35 @@ public final class FontManager implements Observer {
 
   private void registerFonts() {
     // static fonts
-    fontCache.put(JajukFont.BOLD_TITLE, new Font("verdana", Font.PLAIN, 20));
-    fontCache.put(JajukFont.PERSPECTIVES, new Font("verdana", Font.BOLD, 10));
-    fontCache.put(JajukFont.SEARCHBOX, new Font("verdana", Font.BOLD, 12));
-    fontCache.put(JajukFont.SPLASH, new Font("verdana", Font.PLAIN, 12));
-    fontCache.put(JajukFont.SPLASH_PROGRESS, new Font("verdana", Font.BOLD, 12));
+    fontCache.put(JajukFont.BOLD_TITLE, new Font("sans-serif", Font.PLAIN, 20));
+    fontCache.put(JajukFont.PERSPECTIVES, new Font("sans-serif", Font.BOLD, 10));
+    fontCache.put(JajukFont.SEARCHBOX, new Font("sans-serif", Font.BOLD, 12));
+    fontCache.put(JajukFont.SPLASH, new Font("sans-serif", Font.PLAIN, 12));
+    fontCache.put(JajukFont.SPLASH_PROGRESS, new Font("sans-serif", Font.BOLD, 12));
     // Bold
     fontCache.put(JajukFont.BOLD,
-        new Font("verdana", Font.BOLD, Conf.getInt(Const.CONF_FONTS_SIZE)));
-    fontCache.put(JajukFont.BOLD_L, new Font("verdana", Font.BOLD, Conf
+        new Font("sans-serif", Font.BOLD, Conf.getInt(Const.CONF_FONTS_SIZE)));
+    fontCache.put(JajukFont.BOLD_L, new Font("sans-serif", Font.BOLD, Conf
         .getInt(Const.CONF_FONTS_SIZE) + 2));
-    fontCache.put(JajukFont.BOLD_XL, new Font("verdana", Font.BOLD, Conf
+    fontCache.put(JajukFont.BOLD_XL, new Font("sans-serif", Font.BOLD, Conf
         .getInt(Const.CONF_FONTS_SIZE) + 4));
-    fontCache.put(JajukFont.BOLD_XXL, new Font("verdana", Font.BOLD, Conf
+    fontCache.put(JajukFont.BOLD_XXL, new Font("sans-serif", Font.BOLD, Conf
         .getInt(Const.CONF_FONTS_SIZE) + 6));
     // Plain
-    fontCache.put(JajukFont.DEFAULT, new Font("verdana", Font.PLAIN, Conf
+    fontCache.put(JajukFont.DEFAULT, new Font("sans-serif", Font.PLAIN, Conf
         .getInt(Const.CONF_FONTS_SIZE)));
-    fontCache.put(JajukFont.PLAIN, new Font("verdana", Font.PLAIN, Conf
+    fontCache.put(JajukFont.PLAIN, new Font("sans-serif", Font.PLAIN, Conf
         .getInt(Const.CONF_FONTS_SIZE)));
-    fontCache.put(JajukFont.PLAIN_S, new Font("verdana", Font.PLAIN, Conf
+    fontCache.put(JajukFont.PLAIN_S, new Font("sans-serif", Font.PLAIN, Conf
         .getInt(Const.CONF_FONTS_SIZE) - 2));
-    fontCache.put(JajukFont.PLAIN_L, new Font("verdana", Font.PLAIN, Conf
+    fontCache.put(JajukFont.PLAIN_L, new Font("sans-serif", Font.PLAIN, Conf
         .getInt(Const.CONF_FONTS_SIZE) + 2));
-    fontCache.put(JajukFont.PLAIN_XL, new Font("verdana", Font.PLAIN, Conf
+    fontCache.put(JajukFont.PLAIN_XL, new Font("sans-serif", Font.PLAIN, Conf
         .getInt(Const.CONF_FONTS_SIZE) + 4));
     // Italic
     fontCache.put(JajukFont.PLANNED, new Font("serif", Font.ITALIC, Conf
         .getInt(Const.CONF_FONTS_SIZE)));
-    Font font = new Font("verdana", Font.PLAIN, Conf.getInt(Const.CONF_FONTS_SIZE));
+    Font font = new Font("sans-serif", Font.PLAIN, Conf.getInt(Const.CONF_FONTS_SIZE));
     fontCache.put(JajukFont.VIEW_FONT, font);
   }
 
