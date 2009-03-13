@@ -336,7 +336,7 @@ public class Album extends LogicalItem implements Comparable<Album> {
   }
 
   /**
-   * @return album average rating
+   * @return album rating
    */
   @Override
   public long getRate() {

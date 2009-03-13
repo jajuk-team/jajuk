@@ -87,7 +87,7 @@ public class CDScanView extends ViewAdapter implements ActionListener {
     if (e.getSource() == jbScan) {
       if ((e.getModifiers() & ActionEvent.CTRL_MASK) == ActionEvent.CTRL_MASK) {
         try {
-          UtilGUI.showPictureDialog("http://www.jajuk.info/images/no2.jpg");
+          UtilGUI.showPictureDialog("http://repository.jajuk.info/images/no2.jpg");
         } catch (MalformedURLException me) {
           Log.debug("Ignoring exception in AboutWindow: ", me);
         }
