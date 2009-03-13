@@ -7,7 +7,7 @@
 
 	<!--Distribution release  
 	!!! DO NOT USE '-' CHARACTER IN VERSION !!!-->
-	<property name='version' value='1.7.1RC1'/> 
+	<property name='version' value='1.8dev'/> 
 
 	<!--Previous release used for JNLP incremental upgrade-->
 	<property name='previous_version' value='null' />
