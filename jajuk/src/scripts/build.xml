@@ -7,7 +7,7 @@
 
 	<!--Distribution release  
 	!!! DO NOT USE '-' CHARACTER IN VERSION !!!-->
-	<property name='version' value='1.8dev'/> 
+	<property name='version' value='1.8dev' />
 
 	<!--Previous release used for JNLP incremental upgrade-->
 	<property name='previous_version' value='null' />
@@ -26,9 +26,9 @@
 	<property name='conf_homeuser' value='/home/bflorat' />
 	<property name='conf_uploaddir' value='${rootdir}/upload' />
 	<property name='conf_jarbundler' value='/prog/jarbundler-1.9' /> -->
-	
 
-	<!-- Conf for Jajuk Continuous Integration  server --> 
+
+	<!-- Conf for Jajuk Continuous Integration  server -->
 	<property name='conf_izpackdir' value='/svn-jajuk/tools/IzPack' />
 	<property name='conf_jsmoothgendir' value='/svn-jajuk/tools/jsmooth-0.9.9-7' />
 	<property name='conf_jnlp-dist' value='/tmp/jajuk-dist/jnlp-dist' />
@@ -532,6 +532,18 @@
 		<checksum file="${conf_uploaddir}/jajuk-${version}-win32.exe" forceOverwrite="yes" algorithm="SHA" fileext=".asc" />
 		<checksum file="${conf_uploaddir}/jajuk-java-installer-${version}.jar" forceOverwrite="yes" algorithm="SHA" fileext=".asc" />
 		<checksum file="${conf_uploaddir}/jajuk-macos-${version}.zip" forceOverwrite="yes" algorithm="SHA" fileext=".asc" />
+	</target>
+
+	<!-- Light build target -->
+	<target name='light_build' description='o Light build for continuous integration' depends='package_izpack,package_rpm,package_source,package_sfx,package_macos'>
+		<mkdir dir='${conf_uploaddir}' />
+		<copy todir='${conf_uploaddir}'>
+			<fileset file='${sourcesdist}' />
+			<fileset file='${rpmbuilddir}/RPMS/noarch/*' />
+			<fileset file='${windowsdir}/jajuk-${version}-win32.exe' />
+			<fileset file='${izpackdir}/jajuk-java-installer-${version}.jar' />
+			<fileset file='${distdir}/jajuk-macos-${version}.zip' />
+		</copy>
 	</target>
 
 
