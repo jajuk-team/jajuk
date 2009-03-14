@@ -19,6 +19,7 @@
  */
 package org.jajuk.util;
 
+import java.awt.HeadlessException;
 import java.awt.Toolkit;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -224,20 +225,29 @@ public final class Conf implements Const {
         + Const.XML_AUTHOR + ',' + Const.XML_STYLE + ',' + Const.XML_YEAR + ','
         + Const.XML_TRACK_RATE + ',' + Const.XML_TRACK_LENGTH + ',' + Const.XML_TRACKS + ','
         + Const.XML_TRACK_DISCOVERY_DATE);
-    // Default Window position: X,Y,X_size,Y_size
-    int width = (int) (Toolkit.getDefaultToolkit().getScreenSize().getWidth());
-    // Limit initial screen size (reported as problematic by some users on dual
-    // heads)
-    if (width > 1400) {
-      width = 1200;
-    } else {
-      width = width - 2 * FRAME_INITIAL_BORDER;
-    }
-    int height = (int) (Toolkit.getDefaultToolkit().getScreenSize().getHeight());
-    if (height > 1200) {
-      height = 1000;
-    } else {
-      height = height - 2 * FRAME_INITIAL_BORDER;
+    int width = 800;
+    int height = 600;
+    // When ran as unit tests, no X11 server is available, catch HeadLess
+    // Exception
+    try {
+      // Default Window position: X,Y,X_size,Y_size
+      width = (int) (Toolkit.getDefaultToolkit().getScreenSize().getWidth());
+      // Limit initial screen size (reported as problematic by some users on
+      // dual
+      // heads)
+      if (width > 1400) {
+        width = 1200;
+      } else {
+        width = width - 2 * FRAME_INITIAL_BORDER;
+      }
+      height = (int) (Toolkit.getDefaultToolkit().getScreenSize().getHeight());
+      if (height > 1200) {
+        height = 1000;
+      } else {
+        height = height - 2 * FRAME_INITIAL_BORDER;
+      }
+    } catch (HeadlessException he) {
+      Log.debug("No graphical server available, use default screen values");
     }
     defaults.put(CONF_WINDOW_POSITION, FRAME_INITIAL_BORDER + "," + FRAME_INITIAL_BORDER + ","
         + width + "," + height);
