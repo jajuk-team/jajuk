@@ -43,8 +43,7 @@ public class Proxy extends java.net.Proxy {
 
   public URLConnection getConnection(URL u) throws IOException {
     URLConnection con = u.openConnection(this);
-    sun.misc.BASE64Encoder encoder = new sun.misc.BASE64Encoder();
-    String encodedUserPwd = encoder.encode((user + ':' + password).getBytes());
+    String encodedUserPwd = Base64Coder.encodeString((user + ':' + password));
     con.setRequestProperty("Proxy-Authorization", "Basic " + encodedUserPwd);
     return con;
   }
