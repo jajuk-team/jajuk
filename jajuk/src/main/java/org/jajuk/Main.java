@@ -197,6 +197,9 @@ public final class Main {
       // (must be done out of EDT)
       UIManager.setLookAndFeel(new SubstanceBusinessLookAndFeel());
 
+      // Set default fonts
+      FontManager.getInstance().setDefaultFont();
+
       // perform initial checkups and create needed files
       initialCheckups();
 
