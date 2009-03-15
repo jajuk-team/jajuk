@@ -79,8 +79,8 @@
 
 
 	<target name='clean' description='o Clean up previous build files'>
-		<delete dir='${rootdir}' />
-		<delete dir='${jnlpdir}' />
+		<delete failonerror='true' dir='${rootdir}' />
+		<delete failonerror='true' dir='${jnlpdir}' />
 	</target>
 
 
