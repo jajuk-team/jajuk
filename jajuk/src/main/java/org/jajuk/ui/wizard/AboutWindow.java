@@ -118,7 +118,7 @@ public class AboutWindow extends JDialog {
     jtp = new JTabbedPane();
     JPanel jpAbout = new JPanel();
     jpAbout.setLayout(new BoxLayout(jpAbout, BoxLayout.Y_AXIS));
-    ap = new AboutPanel("Jajuk", Const.JAJUK_VERSION + " \"" + Const.JAJUK_CODENAME + "\"" + " "
+    ap = new AboutPanel("Jajuk", Const.JAJUK_VERSION + " <" + Const.JAJUK_CODENAME + ">" + " "
         + Const.JAJUK_VERSION_DATE, "<html>Copyright 2003,2007<br>Jajuk team</html>", INFOS,
         IconLoader.getIcon(JajukIcons.LOGO).getImage());
     jpAbout.add(ap);
