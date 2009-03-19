@@ -275,8 +275,12 @@ public abstract class AbstractMPlayerImpl implements IPlayerImpl, Const {
    * @see org.jajuk.players.IPlayerImpl#resume()
    */
   public void resume() throws Exception {
-    bPaused = false;
-    sendCommand("pause");
+    // This test is required because we in case of volume change, mplayer is
+    // already resumed and we don't want to send another pause command
+    if (bPaused) {
+      bPaused = false;
+      sendCommand("pause");
+    }
   }
 
 }

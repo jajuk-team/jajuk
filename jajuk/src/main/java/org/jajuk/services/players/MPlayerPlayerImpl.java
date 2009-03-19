@@ -83,26 +83,30 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
     public void run() {
       int comp = 0;
       Track current = fCurrent.getTrack();
-      while (!bStop && !bEOF && !bPaused) { // stop this thread
+      while (!bStop && !bEOF) { // stop this thread
         try {
-          // Do not call a get_percent_pos if paused, it resumes the player
-          // (mplayer issue)
-          sendCommand("get_time_pos");
-          // Every 2 time units, increase actual play time. We wait this
-          // delay for perfs and for precision
-          if (comp > 0 && comp % TOTAL_PLAYTIME_UPDATE_INTERVAL == 0) {
-            // Increase actual play time
-            // End of file: increase actual play time to the track
-            // Perf note : this full action takes less much than 1 ms
-            long trackPlaytime = current.getLongValue(Const.XML_TRACK_TOTAL_PLAYTIME);
-            long newValue = (PROGRESS_STEP * TOTAL_PLAYTIME_UPDATE_INTERVAL / 1000) + trackPlaytime;
-            current.setProperty(Const.XML_TRACK_TOTAL_PLAYTIME, newValue);
+          if (!bPaused) {
+            // Do not call a get_percent_pos if paused, it resumes the player
+            // (mplayer issue)
+            sendCommand("get_time_pos");
+            // Every 2 time units, increase actual play time. We wait this
+            // delay for perfs and for precision
+            if (comp > 0 && comp % TOTAL_PLAYTIME_UPDATE_INTERVAL == 0) {
+              // Increase actual play time
+              // End of file: increase actual play time to the track
+              // Perf note : this full action takes less much than 1 ms
+              long trackPlaytime = current.getLongValue(Const.XML_TRACK_TOTAL_PLAYTIME);
+              long newValue = (PROGRESS_STEP * TOTAL_PLAYTIME_UPDATE_INTERVAL / 1000)
+                  + trackPlaytime;
+              current.setProperty(Const.XML_TRACK_TOTAL_PLAYTIME, newValue);
+            }
+            comp++;
+            Thread.sleep(PROGRESS_STEP);
           }
-          comp++;
-          Thread.sleep(PROGRESS_STEP);
         } catch (Exception e) {
           Log.error(e);
         }
+
       }
     }
   }
@@ -400,11 +404,12 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
   @Override
   public void setVolume(float fVolume) {
     super.setVolume(fVolume);
-    // Make sure to reset pause. Indeed, mplayer has a bug that resume
+    // Make sure to resume. Indeed, mplayer has a bug that resume
     // playing after a volume change or a seek. We must make sure that
     // the jajuk state is coherent with the mplayer one
     if (Player.isPaused()) {
       try {
+        bPaused = false;
         ActionManager.getAction(JajukActions.PAUSE_RESUME_TRACK).perform(null);
       } catch (Exception e) {
         Log.error(e);
