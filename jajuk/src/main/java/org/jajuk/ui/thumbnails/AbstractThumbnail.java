@@ -383,7 +383,7 @@ public abstract class AbstractThumbnail extends JPanel implements ActionListener
             cv.setID("catalog/0");
             cv.initUI();
             jd.add(cv);
-            jd.setSize(400, 450);
+            jd.setSize(600, 450);
             jd.setLocationByPlatform(true);
             jd.setVisible(true);
           } else {
