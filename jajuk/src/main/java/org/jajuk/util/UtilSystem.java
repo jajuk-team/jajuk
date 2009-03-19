@@ -727,8 +727,8 @@ public final class UtilSystem {
   }
 
   /**
-   * @param file1
-   * @param file2
+   * @param file1 potential ancestor
+   * @param file2 potential child
    * @return whether file1 is a file2 ancestor
    */
   public static boolean isAncestor(final File file1, final File file2) {

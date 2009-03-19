@@ -60,6 +60,10 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableColumn;
 
+import org.jajuk.base.Device;
+import org.jajuk.base.DeviceManager;
+import org.jajuk.base.Directory;
+import org.jajuk.base.DirectoryManager;
 import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
 import org.jajuk.base.Playlist;
@@ -93,6 +97,7 @@ import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilFeatures;
 import org.jajuk.util.UtilGUI;
+import org.jajuk.util.UtilSystem;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 import org.jdesktop.swingx.decorator.ColorHighlighter;
@@ -681,16 +686,45 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
             Messages.showErrorMessage(je.getCode());
           }
         } else {
-          try {
-            // special playlist, same behavior than a save as
-            plf.saveAs();
-            // Force a table refresh to show the new playlist if it has been
-            // saved in a known device
-            ObservationManager.notify(new JajukEvent(JajukEvents.DEVICE_REFRESH));
-          } catch (JajukException je) {
-            Log.error(je);
-            Messages.showErrorMessage(je.getCode());
-          }
+          // Save as for normal playlists
+          new Thread() {
+            public void run() {
+              UtilGUI.waiting();
+              try {
+                // special playlist, same behavior than a save as
+                plf.saveAs();
+                // If the new playlist is saved in a known device location,
+                // force a
+                // refresh to make it visible immediately (issue #1263)
+                boolean known = false;
+                Device knownDevice = null;
+                for (Device device : DeviceManager.getInstance().getDevices()) {
+                  if (UtilSystem.isAncestor(device.getFio(), plf.getFIO())) {
+                    known = true;
+                    knownDevice = device;
+                    break;
+                  }
+                }
+                if (known) {
+                  Directory directory = DirectoryManager.getInstance().getDirectoryForIO(
+                      plf.getFIO().getParentFile(), knownDevice);
+                  directory.refresh(false, null);
+                  // Force a table refresh to show the new playlist if it has
+                  // been
+                  // saved in a known device
+                  ObservationManager.notify(new JajukEvent(JajukEvents.DEVICE_REFRESH));
+                }
+              } catch (JajukException je) {
+                Log.error(je);
+                Messages.showErrorMessage(je.getCode());
+              } catch (Exception e) {
+                Log.error(e);
+                Messages.showErrorMessage(0, e.getMessage());
+              } finally {
+                UtilGUI.stopWaiting();
+              }
+            }
+          }.start();
         }
       } else if (ae.getSource() == jbClear) {
         // if it is the queue playlist, stop the selection
