@@ -20,10 +20,10 @@
 package org.jajuk.base;
 
 import java.awt.Container;
-import java.awt.Image;
 import java.awt.MediaTracker;
-import java.awt.Toolkit;
+import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
@@ -31,6 +31,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.regex.PatternSyntaxException;
 
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
 import org.jajuk.util.Const;
@@ -360,17 +361,20 @@ public class Album extends LogicalItem implements Comparable<Album> {
     if (!fCover.exists() || fCover.length() == 0) {
       return IconLoader.getNoCoverIcon(size);
     }
-    // Create the image using Toolkit and not ImageIO API to be able to
-    // flush all the image data
-    Image img = Toolkit.getDefaultToolkit().getImage(fCover.getAbsolutePath());
+    BufferedImage img = null;
+    try {
+      img = ImageIO.read(new File(fCover.getAbsolutePath()));
+    } catch (IOException e) {
+      Log.error(e);
+    }
     ImageIcon icon = new ImageIcon(img);
-    // Free thumb memory (DO IT AFTER FULL ImageIcon loading, see previous line)
+    // Free thumb memory (DO IT AFTER FULL ImageIcon loading)
     img.flush();
     // accelerate GC cleanup
     img = null;
     return icon;
   }
-
+ 
   /**
    * 
    * @return style for the album. Return null if the album contains tracks with
