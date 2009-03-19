@@ -100,9 +100,9 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
                   + trackPlaytime;
               current.setProperty(Const.XML_TRACK_TOTAL_PLAYTIME, newValue);
             }
-            comp++;
-            Thread.sleep(PROGRESS_STEP);
           }
+          comp++;
+          Thread.sleep(PROGRESS_STEP);
         } catch (Exception e) {
           Log.error(e);
         }
