@@ -140,6 +140,8 @@ public enum JajukEvents {
   // Playing track has been banned
   BANNED,
   // ALARMS CHANGED (REMOVED, ADDED)
-  ALARMS_CHANGE
+  ALARMS_CHANGE,
+  // Thumb created
+  THUMB_CREATED,  
 
 }

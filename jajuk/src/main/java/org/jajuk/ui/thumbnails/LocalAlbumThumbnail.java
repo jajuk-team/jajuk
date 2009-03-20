@@ -73,9 +73,6 @@ public class LocalAlbumThumbnail extends AbstractThumbnail {
   /** Associated album */
   Album album;
 
-  /** No cover flag */
-  boolean bNoCover = false;
-
   JLabel jlAuthor;
 
   JLabel jlAlbum;
@@ -98,25 +95,22 @@ public class LocalAlbumThumbnail extends AbstractThumbnail {
     super(size);
     this.album = album;
     this.bShowFullText = bShowText;
-    this.fCover = UtilSystem.getConfFileByPath(Const.FILE_THUMBS + '/' + size + 'x' + size + '/'
-        + album.getID() + '.' + Const.EXT_THUMB);
+    this.fCover = ThumbnailManager.getThumbBySize(album, size);
   }
 
   @Override
-  public void populate() {
+  public synchronized void populate() {
     // create the thumbnail if it doesn't exist
-    ThumbnailManager.refreshThumbnail(album, size + "x" + size);
-    if (!fCover.exists() || fCover.length() == 0) {
-      bNoCover = true;
+    ThumbnailManager.refreshThumbnail(album, size);
+    if (!album.isThumbAvailable(size)) {
       this.fCover = null;
     }
     double[][] dMain = null;
-    ImageIcon ii = album.getThumbnail(size + "x" + size);
+    ImageIcon ii = album.getThumbnail(size);
     jlIcon = new JLabel(ii);
-    if (!bNoCover) {
+    if (fCover != null) {
       jlIcon.setBorder(new DropShadowBorder(Color.BLACK, 5, 0.5f, 5, false, true, false, true));
     }
-
     if (bShowFullText) {
       dMain = new double[][] { { TableLayout.FILL, TableLayout.PREFERRED, TableLayout.FILL },
           { size + 10, 10, TableLayout.PREFERRED, 5, TableLayout.PREFERRED } };
@@ -159,10 +153,6 @@ public class LocalAlbumThumbnail extends AbstractThumbnail {
     setKeystrokes();
   }
 
-  public boolean isNoCover() {
-    return bNoCover;
-  }
-
   public File getCoverFile() {
     return fCover;
   }
@@ -184,10 +174,9 @@ public class LocalAlbumThumbnail extends AbstractThumbnail {
    */
   @Override
   public String getDescription() {
-    String size = "200x200";
+    int size = 200;
     ThumbnailManager.refreshThumbnail(album, size);
-    java.io.File cover = UtilSystem.getConfFileByPath(Const.FILE_THUMBS + '/' + size + '/'
-        + album.getID() + '.' + Const.EXT_THUMB);
+    java.io.File cover = ThumbnailManager.getThumbBySize(album, size);
     List<Track> tracks = new ArrayList<Track>(TrackManager.getInstance().getAssociatedTracks(album,
         true));
     Collections.sort(tracks, new TrackComparator(TrackComparatorType.ORDER));

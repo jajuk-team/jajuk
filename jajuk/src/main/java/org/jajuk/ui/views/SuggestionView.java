@@ -329,7 +329,7 @@ public class SuggestionView extends ViewAdapter implements Observer {
     if (albums != null && albums.size() > 0) {
       for (Album album : albums) {
         // Try creating the thumbnail
-        ThumbnailManager.refreshThumbnail(album, "100x100");
+        ThumbnailManager.refreshThumbnail(album, 100);
         LocalAlbumThumbnail thumb = new LocalAlbumThumbnail(album, 100, false);
         thumb.populate();
         thumb.getIcon().addMouseListener(new ThumbMouseListener());
@@ -388,23 +388,25 @@ public class SuggestionView extends ViewAdapter implements Observer {
    * @see org.jajuk.ui.Observer#update(java.lang.String)
    */
   public void update(JajukEvent event) {
-    JajukEvents subject = event.getSubject();
-    if (subject.equals(JajukEvents.FILE_LAUNCHED)) {
-      comp++;
-      // Change local collection suggestions every 10 track plays
-      if (comp % 10 == 0) {
+    synchronized (SuggestionView.class) {
+      JajukEvents subject = event.getSubject();
+      if (subject.equals(JajukEvents.FILE_LAUNCHED)) {
+        comp++;
+        // Change local collection suggestions every 10 track plays
+        if (comp % 10 == 0) {
+          refreshLocalCollectionTabs();
+        }
+        // update last.fm panels
+        refreshLastFMCollectionTabs();
+      } else if (subject.equals(JajukEvents.PARAMETERS_CHANGE) && isLastFMTabsVisible()) {
+        // The show/hide unmounted may have changed, refresh local
+        // collection panels
+        refreshLastFMCollectionTabs();
+      } else if (subject.equals(JajukEvents.COVER_DEFAULT_CHANGED)
+          || subject.equals(JajukEvents.SUGGESTIONS_REFRESH)) {
+        // New default cover, refresh the view
         refreshLocalCollectionTabs();
       }
-      // update last.fm panels
-      refreshLastFMCollectionTabs();
-    } else if (subject.equals(JajukEvents.PARAMETERS_CHANGE) && isLastFMTabsVisible()) {
-      // The show/hide unmounted may have changed, refresh local
-      // collection panels
-      refreshLastFMCollectionTabs();
-    } else if (subject.equals(JajukEvents.COVER_DEFAULT_CHANGED)
-        || subject.equals(JajukEvents.SUGGESTIONS_REFRESH)) {
-      // New default cover, refresh the view
-      refreshLocalCollectionTabs();
     }
   }
 

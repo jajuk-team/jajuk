@@ -583,7 +583,6 @@ public final class UtilGUI {
     jd.pack();
     jd.setLocationRelativeTo(JajukWindow.getInstance());
     jd.setVisible(true);
-
   }
 
 }

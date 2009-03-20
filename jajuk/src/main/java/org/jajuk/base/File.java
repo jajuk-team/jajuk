@@ -402,11 +402,11 @@ public class File extends PhysicalItem implements Comparable<File>, Const {
   public String getHTMLFormatText() {
     String sOut = "";
     sOut += "<HTML><br>";
-    String size = "100x100";
+    int size = 100;
     int maxSize = 30;
     ThumbnailManager.refreshThumbnail(FIFO.getPlayingFile().getTrack().getAlbum(), size);
-    java.io.File cover = UtilSystem.getConfFileByPath(Const.FILE_THUMBS + '/' + size + '/'
-        + FIFO.getPlayingFile().getTrack().getAlbum().getID() + '.' + EXT_THUMB);
+    java.io.File cover = ThumbnailManager.getThumbBySize(FIFO.getPlayingFile().getTrack()
+        .getAlbum(), size);
     if (cover.canRead()) {
       sOut += "<p ALIGN=center><img src='file:" + cover.getAbsolutePath() + "'/></p><br>";
     }

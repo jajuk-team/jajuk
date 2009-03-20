@@ -42,6 +42,7 @@ import javax.swing.Timer;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import org.jajuk.base.Album;
 import org.jajuk.base.File;
 import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
@@ -110,7 +111,7 @@ public final class InformationJPanel extends JXPanel implements ChangeListener, 
 
   // widgets declaration
 
-  JLabel jlMessage;
+  public JLabel jlMessage;
 
   JLabel jlSelection;
 
@@ -222,6 +223,7 @@ public final class InformationJPanel extends JXPanel implements ChangeListener, 
     eventSubjectSet.add(JajukEvents.PLAYER_PAUSE);
     eventSubjectSet.add(JajukEvents.PLAYER_RESUME);
     eventSubjectSet.add(JajukEvents.PLAYER_STOP);
+    eventSubjectSet.add(JajukEvents.THUMB_CREATED);
     return eventSubjectSet;
   }
 
@@ -260,7 +262,6 @@ public final class InformationJPanel extends JXPanel implements ChangeListener, 
     this.sMessage = sMessage;
     this.iType = iMessageType;
     SwingUtilities.invokeLater(new Runnable() {
-
       public void run() {
         InformationJPanel.this.sMessage = sMessage;
         jlMessage.setText(sMessage);
@@ -398,6 +399,10 @@ public final class InformationJPanel extends JXPanel implements ChangeListener, 
       } catch (Exception e) {
         Log.error(e);
       }
+    } else if (JajukEvents.THUMB_CREATED.equals(subject)) {
+      Album album = (Album) event.getDetails().get(Const.DETAIL_CONTENT);
+      setMessage(Messages.getString("CatalogView.5") + " " + album.getName2(),
+          InformationJPanel.INFORMATIVE);
     } else {
       final long timeToPlay = JajukTimer.getInstance().getTotalTimeToPlay();
       SwingUtilities.invokeLater(new Runnable() {

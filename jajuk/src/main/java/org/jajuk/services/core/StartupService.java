@@ -44,6 +44,7 @@ import org.jajuk.services.players.FIFO;
 import org.jajuk.services.players.FIFOManager;
 import org.jajuk.services.webradio.WebRadio;
 import org.jajuk.services.webradio.WebRadioManager;
+import org.jajuk.ui.thumbnails.ThumbnailManager;
 import org.jajuk.ui.thumbnails.ThumbnailsMaker;
 import org.jajuk.ui.widgets.InformationJPanel;
 import org.jajuk.util.Conf;
@@ -209,6 +210,12 @@ public class StartupService {
           // Sort albums cache. We do it before the sleep because there's a
           // chance that user launch an album as soon as the GUI is painted
           AlbumManager.getInstance().orderCache();
+
+          // Force Thumbnail manager to check for thumbs presence. Must be done
+          // before catalog view refresh to avoid useless thumbs creation
+          for (int size = 50; size <= 300; size += 50) {
+            ThumbnailManager.populateCache(size);
+          }
 
           // Wait few secs to avoid GUI startup perturbations
           Thread.sleep(10000);

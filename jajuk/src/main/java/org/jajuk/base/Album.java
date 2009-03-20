@@ -34,6 +34,7 @@ import java.util.regex.PatternSyntaxException;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
+import org.jajuk.ui.thumbnails.ThumbnailManager;
 import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
@@ -55,6 +56,12 @@ public class Album extends LogicalItem implements Comparable<Album> {
    * TrackManager using the getTracksCache() method
    */
   private List<Track> cache = new ArrayList<Track>(15);
+
+  /**
+   * This array stores thumbnail presence for all the available size
+   * (performance) By default all booleans are false
+   */
+  private boolean[] availableTumbs = new boolean[6];
 
   /**
    * Album constructor
@@ -234,12 +241,23 @@ public class Album extends LogicalItem implements Comparable<Album> {
    *         file can not be readable, so use a try/catch around a future access
    */
   public File getCoverFile() {
-    File fCover = null;
+    String cachedCoverPath = getStringValue(XML_ALBUM_COVER);
+    // If none cover is found, we save this information to save discovery time
+    // afterwards (performance factor x2 or x3 in catalog view)
+    if ("none".equals(cachedCoverPath)) {
+      return null;
+    } else if (!UtilString.isVoid(cachedCoverPath)) {
+      File coverCache = new File(cachedCoverPath);
+      if (coverCache.exists()) {
+        return coverCache;
+      }
+    }
     File fDir = null; // analyzed directory
     // search for local covers in all directories mapping the current track
     // to reach other devices covers and display them together
     List<Track> lTracks = TrackManager.getInstance().getAssociatedTracks(this, false);
     if (lTracks.size() == 0) {
+      setProperty(XML_ALBUM_COVER, "none");
       return null;
     }
     // List if directories we have to look in
@@ -258,6 +276,7 @@ public class Album extends LogicalItem implements Comparable<Album> {
       if (!UtilString.isVoid(sAbsolut.trim())) {
         File fAbsoluteDefault = new File(dir.getAbsolutePath() + '/' + sAbsolut);
         if (fAbsoluteDefault.exists()) {
+          setProperty(XML_ALBUM_COVER, fAbsoluteDefault.getAbsolutePath());
           return fAbsoluteDefault;
         }
       }
@@ -284,6 +303,7 @@ public class Album extends LogicalItem implements Comparable<Album> {
                 mediaTracker.addImage(ii.getImage(), 0);
                 mediaTracker.waitForID(0); // wait for image
                 if (!mediaTracker.isErrorAny()) {
+                  setProperty(XML_ALBUM_COVER, files[i].getAbsolutePath());
                   return files[i];
                 }
               } catch (Exception e) {
@@ -314,6 +334,7 @@ public class Album extends LogicalItem implements Comparable<Album> {
               mediaTracker.addImage(ii.getImage(), 0);
               mediaTracker.waitForID(0); // wait for image
               if (!mediaTracker.isErrorAny()) {
+                setProperty(XML_ALBUM_COVER, files[i].getAbsolutePath());
                 return files[i];
               }
             } catch (Exception e) {
@@ -323,7 +344,8 @@ public class Album extends LogicalItem implements Comparable<Album> {
         }
       }
     }
-    return fCover;
+    setProperty(XML_ALBUM_COVER, "none");
+    return null;
   }
 
   /*
@@ -354,9 +376,8 @@ public class Album extends LogicalItem implements Comparable<Album> {
    *          size using format width x height
    * @return album thumb for given size
    */
-  public ImageIcon getThumbnail(String size) {
-    File fCover = UtilSystem.getConfFileByPath(Const.FILE_THUMBS + '/' + size + '/' + getID() + '.'
-        + EXT_THUMB);
+  public ImageIcon getThumbnail(int size) {
+    File fCover = ThumbnailManager.getThumbBySize(this, size);
     // Check if thumb already exists
     if (!fCover.exists() || fCover.length() == 0) {
       return IconLoader.getNoCoverIcon(size);
@@ -374,7 +395,7 @@ public class Album extends LogicalItem implements Comparable<Album> {
     img = null;
     return icon;
   }
- 
+
   /**
    * 
    * @return style for the album. Return null if the album contains tracks with
@@ -537,6 +558,28 @@ public class Album extends LogicalItem implements Comparable<Album> {
     } else {
       return cache.get(0);
     }
+  }
+
+  /**
+   * Set that the thumb for given size is available
+   * 
+   * @param size
+   *          (thumb size like 50)
+   * @param available
+   */
+  public void setAvailableThumb(int size, boolean available) {
+    availableTumbs[size / 50 - 1] = available;
+  }
+
+  /**
+   * Return whether a thumb is available for given size
+   * 
+   * @param size
+   *          (thumb size like 50)
+   * @return whether a thumb is available for given size
+   */
+  public boolean isThumbAvailable(int size) {
+    return availableTumbs[size / 50 - 1];
   }
 
 }

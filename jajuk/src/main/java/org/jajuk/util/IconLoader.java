@@ -47,30 +47,13 @@ final public class IconLoader {
 
   /**
    * @param nocover
-   *          size with format "<width>x<height>"
+   *          size
    * @return the nocover icon for specified size
    */
-  public static ImageIcon getNoCoverIcon(String size) {
-    if (Const.THUMBNAIL_SIZE_50X50.equals(size)) {
-      return getIcon(JajukIcons.NO_COVER_50X50);
-    }
-    if (Const.THUMBNAIL_SIZE_100X100.equals(size)) {
-      return getIcon(JajukIcons.NO_COVER_100X100);
-    }
-    if (Const.THUMBNAIL_SIZE_150X150.equals(size)) {
-      return getIcon(JajukIcons.NO_COVER_150X150);
-    }
-    if (Const.THUMBNAIL_SIZE_200X200.equals(size)) {
-      return getIcon(JajukIcons.NO_COVER_200X200);
-    }
-    if (Const.THUMBNAIL_SIZE_250X250.equals(size)) {
-      return getIcon(JajukIcons.NO_COVER_250X250);
-    }
-    if (Const.THUMBNAIL_SIZE_300X300.equals(size)) {
-      return getIcon(JajukIcons.NO_COVER_300X300);
-    } else {
-      return null;
-    }
+  public static ImageIcon getNoCoverIcon(int size) {
+    String constant = new StringBuilder("NO_COVER_").append(size).append('X').append(size)
+        .toString();
+    return getIcon(JajukIcons.valueOf(JajukIcons.class, constant));
   }
 
   /**

@@ -231,7 +231,7 @@ public final class ThumbnailsMaker {
         Log.debug("Parent Jajuk closed, leaving now...");
         return;
       }
-      if (ThumbnailManager.refreshThumbnail(album, size + "x" + size)) {
+      if (ThumbnailManager.refreshThumbnail(album, size)) {
         stat++;
       }
       // Call GC to avoid increasing too much memory

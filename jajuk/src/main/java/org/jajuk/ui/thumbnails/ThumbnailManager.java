@@ -25,15 +25,17 @@ import java.awt.Image;
 import java.awt.MediaTracker;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.util.List;
+import java.util.Properties;
 import java.util.StringTokenizer;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
 import org.jajuk.base.Album;
-import org.jajuk.base.Track;
-import org.jajuk.base.TrackManager;
+import org.jajuk.base.AlbumManager;
+import org.jajuk.events.JajukEvent;
+import org.jajuk.events.JajukEvents;
+import org.jajuk.events.ObservationManager;
 import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
@@ -78,6 +80,10 @@ public final class ThumbnailManager {
         Log.error(e);
       }
     }
+    // Reset all thumbs cache
+    for (Album album : AlbumManager.getInstance().getAlbums()) {
+      cleanThumbs(album);
+    }
   }
 
   /**
@@ -86,15 +92,16 @@ public final class ThumbnailManager {
    * @param album
    */
   public static void cleanThumbs(Album album) {
-    for (int size = 0; size < 6; size++) {
-      File fThumb = UtilSystem.getConfFileByPath(Const.FILE_THUMBS + '/' + 50 * size + '/'
-          + album.getID() + ".jpg");
+    // Now delete thumb files
+    for (int size = 50; size <= 300; size += 50) {
+      File fThumb = ThumbnailManager.getThumbBySize(album, size);
       if (fThumb.exists()) {
         boolean out = fThumb.delete();
         if (!out) {
           Log.warn("Cannot delete thumb for album: " + album);
         }
       }
+      album.setAvailableThumb(size, false);
     }
   }
 
@@ -164,39 +171,63 @@ public final class ThumbnailManager {
   }
 
   /**
+   * Check all thumbs existence for performance reasons
+   * 
+   * @param size
+   *          size of thumbs to be checked
+   */
+  public static void populateCache(final int size) {
+    for (Album album : AlbumManager.getInstance().getAlbums()) {
+      File fThumb = ThumbnailManager.getThumbBySize(album, size);
+      album.setAvailableThumb(size, fThumb.exists() && fThumb.length() > 0);
+    }
+  }
+
+  /**
    * Make thumbnail file exists (album id.jpg or.gif or .png) in thumbs
    * directory if it doesn't exist yet
    * 
    * @param album
    * @return whether a new cover has been created
    */
-  public static boolean refreshThumbnail(final Album album, final String size) {
-    final File fThumb = UtilSystem.getConfFileByPath(Const.FILE_THUMBS + '/' + size + '/'
-        + album.getID() + '.' + Const.EXT_THUMB);
-    File fCover = null;
-    if (!fThumb.exists()) {
-      // search for local covers in all directories mapping the
-      // current track to reach other
-      // devices covers and display them together
-      final List<Track> tracks = TrackManager.getInstance().getAssociatedTracks(album, true);
-      if (tracks.size() == 0) {
-        return false;
-      }
-      // take first track found to get associated directories as we
-      // assume all tracks for an album are in the same directory
-      final Track trackCurrent = tracks.iterator().next();
-      fCover = trackCurrent.getAlbum().getCoverFile();
-      if (fCover != null) {
-        try {
-          final int iSize = Integer.parseInt(new StringTokenizer(size, "x").nextToken());
-          createThumbnail(fCover, fThumb, iSize);
-          return true;
-        } catch (final Exception e) {
-          Log.error(e);
-        }
+  public static boolean refreshThumbnail(final Album album, final int size) {
+    // Check if the thumb is known in cache
+    if (album.isThumbAvailable(size)) {
+      return false;
+    }
+    final File fThumb = getThumbBySize(album, size);
+    final File fCover = album.getCoverFile();
+    if (fCover != null) {
+      try {
+        createThumbnail(fCover, fThumb, size);
+        // Update thumb availability
+        album.setAvailableThumb(size, true);
+        // Notify the thumb creation
+        Properties details = new Properties();
+        details.put(Const.DETAIL_CONTENT, album);
+        ObservationManager.notify(new JajukEvent(JajukEvents.THUMB_CREATED, details));
+        return true;
+      } catch (final Exception e) {
+        Log.error(e);
       }
     }
-    return false; // thumb already exist
+    return false; // thumb already exists
+  }
+
+  /**
+   * Return thumb file by album and size
+   * 
+   * @param album
+   *          the album
+   * @param size
+   *          the size (like 50)
+   * @return thumb file by album and size
+   */
+  public static File getThumbBySize(Album album, int size) {
+    StringBuilder thumb = new StringBuilder(Const.FILE_THUMBS).append('/').append(size).append('x')
+        .append(size).append('/').append(album.getID()).append('.').append(Const.EXT_THUMB);
+    File fThumb = UtilSystem.getConfFileByPath(thumb.toString());
+    return fThumb;
   }
 
 }

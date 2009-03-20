@@ -197,9 +197,6 @@ public final class Main {
       // (must be done out of EDT)
       UIManager.setLookAndFeel(new SubstanceBusinessLookAndFeel());
 
-      // Set default fonts
-      FontManager.getInstance().setDefaultFont();
-
       // perform initial checkups and create needed files
       initialCheckups();
 
@@ -212,6 +209,9 @@ public final class Main {
 
       // Full substance configuration now (must be done out of EDT)
       UtilGUI.setLookAndFeel(Conf.getString(Const.CONF_OPTIONS_LNF));
+
+      // Set default fonts
+      FontManager.getInstance().setDefaultFont();
 
       // Detect current release
       UpgradeManager.detectRelease();
@@ -229,8 +229,6 @@ public final class Main {
       // configurationManager.load (for local)
       SwingUtilities.invokeAndWait(new Runnable() {
         public void run() {
-          // Set default fonts
-          FontManager.getInstance().setDefaultFont();
           sc = new JSplash(Const.IMAGES_SPLASHSCREEN, true, true, false, Const.JAJUK_COPYRIGHT,
               Const.JAJUK_VERSION + " \"" + Const.JAJUK_CODENAME + "\"" + " "
                   + Const.JAJUK_VERSION_DATE, FontManager.getInstance().getFont(JajukFont.SPLASH));

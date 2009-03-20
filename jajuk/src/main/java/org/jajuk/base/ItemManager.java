@@ -43,7 +43,7 @@ import org.jajuk.util.log.Log;
  */
 public abstract class ItemManager {
 
-  /**
+   /**
    * Maps item classes -> instance, must be a linked map for ordering (mandatory
    * in commited collection)
    */
@@ -528,7 +528,6 @@ public abstract class ItemManager {
   public void clear() {
     items.clear();
     internalMap.clear();
-    hmPropertiesMetaInformation.clear();
   }
 
   /**

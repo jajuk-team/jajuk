@@ -103,6 +103,11 @@ public final class UtilSystem {
    */
   private static JajukFileFilter fileFilter;
 
+  /**
+   * For performances, store conf root path
+   */
+  private static String confRoot;
+
   // Computes OS detection operations for perf reasons (can be called in loop
   // in refresh method for ie)
   static {
@@ -477,12 +482,15 @@ public final class UtilSystem {
    * @return the file relative to jajuk directory
    */
   public static final File getConfFileByPath(final String sPATH) {
-    String sRoot = System.getProperty("user.home");
-    if ((Main.getWorkspace() != null) && !Main.getWorkspace().trim().equals("")) {
-      sRoot = Main.getWorkspace();
+    if (confRoot == null) {
+      String home = System.getProperty("user.home");
+      if ((Main.getWorkspace() != null) && !Main.getWorkspace().trim().equals("")) {
+        home = Main.getWorkspace();
+      }
+      confRoot = home + '/' + (Main.isTestMode() ? ".jajuk_test_" + Const.TEST_VERSION : ".jajuk")
+          + '/';
     }
-    return new File(sRoot + '/'
-        + (Main.isTestMode() ? ".jajuk_test_" + Const.TEST_VERSION : ".jajuk") + '/' + sPATH);
+    return new File(confRoot + sPATH);
   }
 
   /**
@@ -727,8 +735,10 @@ public final class UtilSystem {
   }
 
   /**
-   * @param file1 potential ancestor
-   * @param file2 potential child
+   * @param file1
+   *          potential ancestor
+   * @param file2
+   *          potential child
    * @return whether file1 is a file2 ancestor
    */
   public static boolean isAncestor(final File file1, final File file2) {

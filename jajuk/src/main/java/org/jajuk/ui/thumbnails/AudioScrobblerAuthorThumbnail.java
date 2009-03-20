@@ -26,11 +26,12 @@ import ext.services.lastfm.AudioScrobblerArtist;
 import ext.services.lastfm.AudioScrobblerService;
 
 import java.awt.Color;
-import java.awt.Toolkit;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.net.URL;
 import java.util.List;
 
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
@@ -99,14 +100,12 @@ public class AudioScrobblerAuthorThumbnail extends AbstractThumbnail {
           fCover = DownloadManager.downloadToCache(remote);
           fThumb = UtilSystem.getConfFileByPath(Const.FILE_CACHE + "/" + System.currentTimeMillis()
               + "_100x100." + UtilSystem.getExtension(fCover));
-          // Create the image using Toolkit and not ImageIO API to be able to
-          // flush all the image data
-          ImageIcon downloadedImage = new ImageIcon(Toolkit.getDefaultToolkit().getImage(
-              fCover.getAbsolutePath()));
+          BufferedImage image = ImageIO.read(fCover);
+          ImageIcon downloadedImage = new ImageIcon(image);
           ii = UtilGUI.getScaledImage(downloadedImage, 100);
           // Free images memory
           downloadedImage.getImage().flush();
-          ii.getImage().flush();
+          image.flush();
         } catch (Exception e) {
           Log.error(e);
         }

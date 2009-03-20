@@ -505,6 +505,13 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
             alCovers.add(cover2);
             setFoundText();
           }
+          // Reset cached cover
+          org.jajuk.base.File fCurrent = fileReference;
+          if (fCurrent == null) {
+            fCurrent = FIFO.getPlayingFile();
+          }
+          fCurrent.getTrack().getAlbum().setProperty(XML_ALBUM_COVER, null);
+          // Notify cover change
           ObservationManager.notify(new JajukEvent(JajukEvents.COVER_NEED_REFRESH));
           // add new cover in others cover views
         } catch (final Exception ex) {
@@ -543,6 +550,13 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
             UtilSystem.copy(cover.getFile(), fNew);
             InformationJPanel.getInstance().setMessage(Messages.getString("CoverView.11"),
                 InformationJPanel.INFORMATIVE);
+            // Reset cached cover
+            org.jajuk.base.File fCurrent = fileReference;
+            if (fCurrent == null) {
+              fCurrent = FIFO.getPlayingFile();
+            }
+            fCurrent.getTrack().getAlbum().setProperty(XML_ALBUM_COVER, null);
+            // Notify cover change
             ObservationManager.notify(new JajukEvent(JajukEvents.COVER_NEED_REFRESH));
           } catch (final Exception ex) {
             Log.error(24, ex);
@@ -583,7 +597,9 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
           if (fCurrent == null) {
             fCurrent = FIFO.getPlayingFile();
           }
+          // Reset cached cover
           ThumbnailManager.cleanThumbs(fCurrent.getTrack().getAlbum());
+          fCurrent.getTrack().getAlbum().setProperty(XML_ALBUM_COVER, null);
           refreshThumbs(cover);
           InformationJPanel.getInstance().setMessage(Messages.getString("CoverView.11"),
               InformationJPanel.INFORMATIVE);
@@ -953,11 +969,10 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
   private void refreshThumbs(final Cover cover) {
     // refresh thumbs
     try {
-      for (int i = 0; i < 4; i++) {
+      for (int size = 50; size <= 300; size += 50) {
         final Album album = dirReference.getFiles().iterator().next().getTrack().getAlbum();
-        final File fThumb = UtilSystem.getConfFileByPath(Const.FILE_THUMBS + '/' + (50 + 50 * i)
-            + "x" + (50 + 50 * i) + '/' + album.getID() + '.' + Const.EXT_THUMB);
-        ThumbnailManager.createThumbnail(cover.getFile(), fThumb, (50 + 50 * i));
+        final File fThumb = ThumbnailManager.getThumbBySize(album, size);
+        ThumbnailManager.createThumbnail(cover.getFile(), fThumb, size);
       }
     } catch (final Exception ex) {
       Log.error(24, ex);

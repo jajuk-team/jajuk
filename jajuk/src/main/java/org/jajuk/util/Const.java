@@ -944,6 +944,8 @@ public interface Const {
 
   String XML_EXPANDED = "exp"; // can be 'y' or 'n'
 
+  String XML_ALBUM_COVER = "cover";
+
   String XML_DIRECTORY_PARENT = "parent";
 
   String XML_DIRECTORY_SYNCHRONIZED = "sync";
