@@ -133,7 +133,6 @@ public class WebRadioWizard extends Wizard {
      * 
      * @return a panel containing all items
      */
-    @SuppressWarnings("unchecked")
     private JScrollPane getPanel() {
       widgets = new JComponent[radios.size()][3];
       JPanel out = new JPanel();
@@ -150,11 +149,11 @@ public class WebRadioWizard extends Wizard {
         jtfName.setText(radios.get(index).getName());
         jtfName.addCaretListener(new CaretListener() {
           public void caretUpdate(CaretEvent arg0) {
-            int index = getWidgetIndex(widgets, (JComponent) arg0.getSource());
+            int index1 = getWidgetIndex(widgets, (JComponent) arg0.getSource());
             String s = jtfName.getText();
             // Check this name is not already token
             for (int i = 0; i < widgets.length; i++) {
-              if (i == index) {
+              if (i == index1) {
                 continue;
               }
               JTextField jtf = (JTextField) widgets[i][1];
@@ -164,13 +163,13 @@ public class WebRadioWizard extends Wizard {
               }
             }
             // reset previous problems
-            if (s.length() == 0 || ((JTextField) widgets[index][2]).getText().length() == 0) {
+            if (s.length() == 0 || ((JTextField) widgets[index1][2]).getText().length() == 0) {
               setProblem(Messages.getString("RadioWizard.11"));
             } else {
               setProblem(null);
               jtfName.setToolTipText(s);
             }
-            radios.get(index).setName(s);
+            radios.get(index1).setName(s);
           }
         });
         jtfName.setToolTipText(jtfName.getText());
@@ -192,21 +191,21 @@ public class WebRadioWizard extends Wizard {
         // URL
         final JTextField jtfURL = new JTextField();
         if (radio.getUrl() != null) {
-          jtfURL.setText(radio.getUrl().toString());
+          jtfURL.setText(radio.getUrl());
           jtfURL.setToolTipText(jtfURL.getText());
         }
         jtfURL.addCaretListener(new CaretListener() {
           public void caretUpdate(CaretEvent arg0) {
-            int index = getWidgetIndex(widgets, (JComponent) arg0.getSource());
+            int index1 = getWidgetIndex(widgets, (JComponent) arg0.getSource());
             String s = jtfURL.getText();
             // reset previous problems
-            if (s.length() == 0 || ((JTextField) widgets[index][1]).getText().length() == 0) {
+            if (s.length() == 0 || ((JTextField) widgets[index1][1]).getText().length() == 0) {
               setProblem(Messages.getString("RadioWizard.11"));
             } else {
               setProblem(null);
               jtfURL.setToolTipText(s);
             }
-            radios.get(index).setUrl(s);
+            radios.get(index1).setUrl(s);
           }
         });
         widgets[index][2] = jtfURL;

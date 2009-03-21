@@ -196,8 +196,8 @@ public class FirstTimeWizard extends JajukJDialog implements ActionListener {
             // Display help window
             try {
               ActionManager.getAction(JajukActions.HELP_REQUIRED).perform(null);
-            } catch (Exception e) {
-              Log.error(e);
+            } catch (Exception e1) {
+              Log.error(e1);
             }
           }
         }

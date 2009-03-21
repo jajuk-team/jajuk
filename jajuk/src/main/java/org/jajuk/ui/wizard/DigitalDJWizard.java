@@ -211,7 +211,6 @@ public class DigitalDJWizard extends Wizard {
      */
 
     @Override
-    @SuppressWarnings("unchecked")
     public void initUI() {
       djs = new ArrayList<DigitalDJ>(DigitalDJManager.getInstance().getDJs());
       Collections.sort(djs);
@@ -290,7 +289,6 @@ public class DigitalDJWizard extends Wizard {
      */
 
     @Override
-    @SuppressWarnings("unchecked")
     public void initUI() {
       djs = new ArrayList<DigitalDJ>(DigitalDJManager.getInstance().getDJs());
       Collections.sort(djs);
