@@ -46,6 +46,7 @@ public class TestLyrics extends TestCase {
   /**
    * Test setup
    */
+  @Override
   public void setUp() {
     if (tmp.exists()) {
       tmp.delete();
