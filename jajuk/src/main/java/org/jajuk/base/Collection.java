@@ -24,11 +24,13 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.net.MalformedURLException;
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
@@ -59,7 +61,7 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
   private static final String TAB_CLOSE_TAG_START = "</";
 
   /** Self instance */
-  private static Collection collection;
+  private static Collection collection = new Collection();
 
   private static long lTime;
 
@@ -67,31 +69,31 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
   private ItemManager manager;
 
   /** upgrade for track IDs */
-  private Map<String, String> hmWrongRightTrackID = new HashMap<String, String>();
+  private final Map<String, String> hmWrongRightTrackID = new HashMap<String, String>();
 
   /** upgrade for album IDs */
-  private Map<String, String> hmWrongRightAlbumID = new HashMap<String, String>();
+  private final Map<String, String> hmWrongRightAlbumID = new HashMap<String, String>();
 
   /** upgrade for author IDs */
-  private Map<String, String> hmWrongRightAuthorID = new HashMap<String, String>();
+  private final Map<String, String> hmWrongRightAuthorID = new HashMap<String, String>();
 
   /** upgrade for style IDs */
-  private Map<String, String> hmWrongRightStyleID = new HashMap<String, String>();
+  private final Map<String, String> hmWrongRightStyleID = new HashMap<String, String>();
 
   /** upgrade for device IDs */
-  private Map<String, String> hmWrongRightDeviceID = new HashMap<String, String>();
+  private final Map<String, String> hmWrongRightDeviceID = new HashMap<String, String>();
 
   /** upgrade for directory IDs */
-  private Map<String, String> hmWrongRightDirectoryID = new HashMap<String, String>();
+  private final Map<String, String> hmWrongRightDirectoryID = new HashMap<String, String>();
 
   /** upgrade for file IDs */
-  private Map<String, String> hmWrongRightFileID = new HashMap<String, String>();
+  private final Map<String, String> hmWrongRightFileID = new HashMap<String, String>();
 
   /** upgrade for playlist IDs */
-  private Map<String, String> hmWrongRightPlaylistFileID = new HashMap<String, String>();
+  private final Map<String, String> hmWrongRightPlaylistFileID = new HashMap<String, String>();
 
   /** Conversion of types from < 1.4 */
-  private static Map<String, String> conversion;
+  private final static Map<String, String> conversion;
   static {
     conversion = new HashMap<String, String>(12);
     conversion.put("0", "mp3");
@@ -169,14 +171,12 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
 
   /** Instance getter */
   public static Collection getInstance() {
-    if (collection == null) {
-      collection = new Collection();
-    }
     return collection;
   }
 
   /** Hidden constructor */
   private Collection() {
+    super();
   }
 
   /**
@@ -188,137 +188,86 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
     String sCharset = Conf.getString(Const.CONF_COLLECTION_CHARSET);
     BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(
         collectionFile), sCharset), 1000000);
-    bw.write("<?xml version='1.0' encoding='" + sCharset + "'?>\n");
-    bw.write("<" + Const.XML_COLLECTION + " " + Const.XML_VERSION + "='" + Const.JAJUK_VERSION
-        + "'>\n");
-    StringBuilder sb = new StringBuilder(40);
+    try {
+      bw.write("<?xml version='1.0' encoding='" + sCharset + "'?>\n");
+      bw.write("<" + Const.XML_COLLECTION + " " + Const.XML_VERSION + "='" + Const.JAJUK_VERSION
+          + "'>\n");
 
-    // Devices
-    ReadOnlyIterator<Device> devices = DeviceManager.getInstance().getDevicesIterator();
-    bw.write(DeviceManager.getInstance().toXML());
-    while (devices.hasNext()) {
-      bw.write(devices.next().toXml());
-    }
-    sb = new StringBuilder(40);
-    sb.append(TAB_CLOSE_TAG_START);
-    sb.append(DeviceManager.getInstance().getLabel());
-    sb.append(TAG_CLOSE_NEWLINE);
-    bw.write(sb.toString());
+      // Devices
+      writeItemList(bw, DeviceManager.getInstance().toXML(), DeviceManager.getInstance().getDevicesIterator(), DeviceManager.getInstance().getLabel(), 40);
 
-    // Styles
-    ReadOnlyIterator<Style> styles = StyleManager.getInstance().getStylesIterator();
-    bw.write(StyleManager.getInstance().toXML());
-    while (styles.hasNext()) {
-      bw.write(styles.next().toXml());
-    }
-    sb = new StringBuilder(40);
-    sb.append(TAB_CLOSE_TAG_START);
-    sb.append(StyleManager.getInstance().getLabel());
-    sb.append(TAG_CLOSE_NEWLINE);
-    bw.write(sb.toString());
+      // Styles
+      writeItemList(bw, StyleManager.getInstance().toXML(), StyleManager.getInstance().getStylesIterator(), StyleManager.getInstance().getLabel(), 40);
 
-    // Authors
-    ReadOnlyIterator<Author> authors = AuthorManager.getInstance().getAuthorsIterator();
-    bw.write(AuthorManager.getInstance().toXML());
-    while (authors.hasNext()) {
-      bw.write(authors.next().toXml());
-    }
-    sb = new StringBuilder(40);
-    sb.append(TAB_CLOSE_TAG_START);
-    sb.append(AuthorManager.getInstance().getLabel());
-    sb.append(TAG_CLOSE_NEWLINE);
-    bw.write(sb.toString());
+      // Authors
+      writeItemList(bw, AuthorManager.getInstance().toXML(), AuthorManager.getInstance().getAuthorsIterator(), AuthorManager.getInstance().getLabel(), 40);
 
-    // Albums
-    ReadOnlyIterator<Album> albums = AlbumManager.getInstance().getAlbumsIterator();
-    bw.write(AlbumManager.getInstance().toXML());
-    while (albums.hasNext()) {
-      Album album = albums.next();
-      bw.write(album.toXml());
-    }
-    sb = new StringBuilder(40);
-    sb.append(TAB_CLOSE_TAG_START);
-    sb.append(AlbumManager.getInstance().getLabel());
-    sb.append(TAG_CLOSE_NEWLINE);
-    bw.write(sb.toString());
+      // Albums
+      writeItemList(bw, AlbumManager.getInstance().toXML(), AlbumManager.getInstance().getAlbumsIterator(), AlbumManager.getInstance().getLabel(), 40);
 
-    // Years
-    ReadOnlyIterator<Year> years = YearManager.getInstance().getYearsIterator();
-    bw.write(YearManager.getInstance().toXML());
-    while (years.hasNext()) {
-      bw.write(years.next().toXml());
-    }
-    sb = new StringBuilder(40);
-    sb.append(TAB_CLOSE_TAG_START);
-    sb.append(YearManager.getInstance().getLabel());
-    sb.append(TAG_CLOSE_NEWLINE);
-    bw.write(sb.toString());
+      // Years
+      writeItemList(bw, YearManager.getInstance().toXML(), YearManager.getInstance().getYearsIterator(), YearManager.getInstance().getLabel(), 40);
 
-    // Tracks
-    ReadOnlyIterator<Track> tracks = TrackManager.getInstance().getTracksIterator();
-    bw.write(TrackManager.getInstance().toXML());
-    while (tracks.hasNext()) {
-      Track track = tracks.next();
-      // We clean up all orphan tracks
-      if (track.getFiles().size() > 0) {
-        bw.write(track.toXml());
+      // Tracks
+      // Cannot use method as we have a bit of special handling inside the loop here
+      // writeItemList(bw, TrackManager.getInstance().toXML(), TrackManager.getInstance().getTracksIterator(), TrackManager.getInstance().getLabel(), 200);
+      ReadOnlyIterator<Track> tracks = TrackManager.getInstance().getTracksIterator();
+      bw.write(TrackManager.getInstance().toXML());
+      while (tracks.hasNext()) {
+        Track track = tracks.next();
+        // We clean up all orphan tracks
+        if (track.getFiles().size() > 0) {
+          bw.write(track.toXml());
+        }
       }
-    }
-    sb = new StringBuilder(200);
-    sb.append(TAB_CLOSE_TAG_START);
-    sb.append(TrackManager.getInstance().getLabel());
-    sb.append(TAG_CLOSE_NEWLINE);
-    bw.write(sb.toString());
+      writeString(bw, TrackManager.getInstance().getLabel(), 200);
+      
+      // Directories
+      writeItemList(bw, DirectoryManager.getInstance().toXML(), DirectoryManager.getInstance().getDirectoriesIterator(), DirectoryManager.getInstance().getLabel(), 100);
 
-    // Directories
-    ReadOnlyIterator<Directory> dirs = DirectoryManager.getInstance().getDirectoriesIterator();
-    bw.write(DirectoryManager.getInstance().toXML());
-    while (dirs.hasNext()) {
-      Directory directory = dirs.next();
-      bw.write(directory.toXml());
-    }
-    sb = new StringBuilder(100);
-    sb.append(TAB_CLOSE_TAG_START);
-    sb.append(DirectoryManager.getInstance().getLabel());
-    sb.append(TAG_CLOSE_NEWLINE);
-    bw.write(sb.toString());
+      // Files
+      writeItemList(bw, FileManager.getInstance().toXML(), FileManager.getInstance().getFilesIterator(), FileManager.getInstance().getLabel(), 200);
 
-    // Files
-    ReadOnlyIterator<org.jajuk.base.File> files = FileManager.getInstance().getFilesIterator();
-    bw.write(FileManager.getInstance().toXML());
-    while (files.hasNext()) {
-      bw.write(files.next().toXml());
-    }
-    sb = new StringBuilder(200);
-    sb.append(TAB_CLOSE_TAG_START);
-    sb.append(FileManager.getInstance().getLabel());
-    sb.append(TAG_CLOSE_NEWLINE);
-    bw.write(sb.toString());
+      // Playlists
+      writeItemList(bw, PlaylistManager.getInstance().toXML(), PlaylistManager.getInstance().getPlaylistsIterator(), PlaylistManager.getInstance().getLabel(), 200);
 
-    // playlists
-    ReadOnlyIterator<Playlist> playlists = PlaylistManager.getInstance().getPlaylistsIterator();
-    bw.write(PlaylistManager.getInstance().toXML());
-    while (playlists.hasNext()) {
-      bw.write(playlists.next().toXml());
+      // end of collection
+      bw.write("</" + Const.XML_COLLECTION + TAG_CLOSE_NEWLINE);
+      bw.flush();
+    } finally {
+      bw.close();
     }
-    sb = new StringBuilder(200);
-    sb.append(TAB_CLOSE_TAG_START);
-    sb.append(PlaylistManager.getInstance().getLabel());
-    sb.append(TAG_CLOSE_NEWLINE);
-    bw.write(sb.toString());
-
-    // end of collection
-    bw.write("</" + Const.XML_COLLECTION + TAG_CLOSE_NEWLINE);
-    bw.flush();
-    bw.close();
     Log.debug("Collection commited in " + (System.currentTimeMillis() - time) + " ms");
+  }
+
+  private static void writeItemList(BufferedWriter bw, String header, ReadOnlyIterator<? extends Item> items, String footer, int buffer) throws IOException {
+    bw.write(header);
+    
+    while (items.hasNext()) {
+      bw.write(items.next().toXml());
+    }
+    
+    writeString(bw, footer, buffer);
+  }
+
+  private static void writeString(BufferedWriter bw, String toWrite, int buffer) throws IOException {
+    StringBuilder sb = new StringBuilder(buffer);
+    sb.append(TAB_CLOSE_TAG_START);
+    sb.append(toWrite);
+    sb.append(TAG_CLOSE_NEWLINE);
+    bw.write(sb.toString());
   }
 
   /**
    * Parse collection.xml file and put all collection information into memory
+   * @throws SAXException 
+   * @throws ParserConfigurationException 
+   * @throws JajukException 
+   * @throws IOException 
+   * @throws MalformedURLException 
    * 
    */
-  public static void load(File file) throws Exception {
+  public static void load(File file) throws SAXException, ParserConfigurationException, JajukException, MalformedURLException, IOException {
     Log.debug("Loading: " + file.getName());
     lTime = System.currentTimeMillis();
     SAXParserFactory spf = SAXParserFactory.newInstance();
@@ -430,9 +379,9 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
    * want startup to be as fast as possible. Note that the use of intern() save
    * around 1/4 of overall heap memory
    * 
-   * We use sax-interning for the main items sections (<styles> for ie). For
-   * all raw items, we don't perform equals on item name but we compare the
-   * string hashcode
+   * We use sax-interning for the main items sections (<styles> for ie). For all
+   * raw items, we don't perform equals on item name but we compare the string
+   * hashcode
    * 
    */
   @Override
@@ -594,7 +543,7 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
           if (needCheckID) {
             sRightID = FileManager.createID(sItemName, dParent).intern();
             if (sRightID == sID) {
-              needCheckID = false || UpgradeManager.isUpgradeDetected() || Main.isTestMode();
+              needCheckID = UpgradeManager.isUpgradeDetected() || Main.isTestMode();
             } else {
               Log.debug("** Wrong file Id, upgraded: " + sItemName);
               hmWrongRightFileID.put(sID, sRightID);
@@ -640,7 +589,7 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
           if (needCheckID) {
             sRightID = DirectoryManager.createID(sItemName, device, dParent).intern();
             if (sRightID == sID) {
-              needCheckID = false || UpgradeManager.isUpgradeDetected() || Main.isTestMode();
+              needCheckID = UpgradeManager.isUpgradeDetected() || Main.isTestMode();
             } else {
               Log.debug("** Wrong directory Id, upgraded: " + sItemName);
               hmWrongRightDirectoryID.put(sID, sRightID);
@@ -715,7 +664,7 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
             sRightID = TrackManager.createID(sTrackName, album, style, author, length, year,
                 lOrder, type).intern();
             if (sRightID == sID) {
-              needCheckID = false || UpgradeManager.isUpgradeDetected() || Main.isTestMode();
+              needCheckID = UpgradeManager.isUpgradeDetected() || Main.isTestMode();
             } else {
               Log.debug("** Wrong Track Id, upgraded: " + sTrackName);
               hmWrongRightTrackID.put(sID, sRightID);
@@ -745,7 +694,7 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
           if (needCheckID) {
             sRightID = AlbumManager.createID(sItemName).intern();
             if (sRightID == sID) {
-              needCheckID = false || UpgradeManager.isUpgradeDetected() || Main.isTestMode();
+              needCheckID = UpgradeManager.isUpgradeDetected() || Main.isTestMode();
             } else {
               Log.debug("** Wrong album Id, upgraded: " + sItemName);
               hmWrongRightAlbumID.put(sID, sRightID);
@@ -764,7 +713,7 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
           if (needCheckID) {
             sRightID = AuthorManager.createID(sItemName).intern();
             if (sRightID == sID) {
-              needCheckID = false || UpgradeManager.isUpgradeDetected() || Main.isTestMode();
+              needCheckID = UpgradeManager.isUpgradeDetected() || Main.isTestMode();
             } else {
               Log.debug("** Wrong author Id, upgraded: " + sItemName);
               hmWrongRightAuthorID.put(sID, sRightID);
@@ -783,7 +732,7 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
           if (needCheckID) {
             sRightID = StyleManager.createID(sItemName).intern();
             if (sRightID == sID) {
-              needCheckID = false || UpgradeManager.isUpgradeDetected() || Main.isTestMode();
+              needCheckID = UpgradeManager.isUpgradeDetected() || Main.isTestMode();
             } else {
               Log.debug("** Wrong style Id, upgraded: " + sItemName);
               hmWrongRightStyleID.put(sID, sRightID);
@@ -813,7 +762,7 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
           if (needCheckID) {
             sRightID = PlaylistManager.createID(sItemName, dParent).intern();
             if (sRightID == sID) {
-              needCheckID = false || UpgradeManager.isUpgradeDetected() || Main.isTestMode();
+              needCheckID = UpgradeManager.isUpgradeDetected() || Main.isTestMode();
             } else {
               Log.debug("** Wrong playlist Id, upgraded: " + sItemName);
               hmWrongRightPlaylistFileID.put(sID, sRightID);
@@ -835,7 +784,7 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
           if (needCheckID) {
             sRightID = DeviceManager.createID(sItemName).intern();
             if (sRightID == sID) {
-              needCheckID = false || UpgradeManager.isUpgradeDetected() || Main.isTestMode();
+              needCheckID = UpgradeManager.isUpgradeDetected() || Main.isTestMode();
             } else {
               Log.debug("** Wrong device Id, upgraded: " + sItemName);
               hmWrongRightDeviceID.put(sID, sRightID);
@@ -858,11 +807,11 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
         }
       }
     } catch (Exception re) {
-      String sAttributes = "";
+      StringBuilder sAttributes = new StringBuilder();
       for (int i = 0; i < attributes.getLength(); i++) {
-        sAttributes += "\n" + attributes.getQName(i) + "=" + attributes.getValue(i);
+        sAttributes.append('\n').append(attributes.getQName(i)).append('=').append(attributes.getValue(i));
       }
-      Log.error(5, sAttributes, re);
+      Log.error(5, sAttributes.toString(), re);
     }
   }
 
