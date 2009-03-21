@@ -31,11 +31,11 @@ public class AudioScrobblerRunnable implements Runnable {
 
   private AudioScrobblerSimilarArtistsRunnable artistsRunnable;
 
-  private AudioScrobblerListener listener;
+  private final AudioScrobblerListener listener;
 
-  private AudioScrobblerService service;
+  private final AudioScrobblerService service;
 
-  private Track track;
+  private final Track track;
 
   private boolean retrieveArtistInfo = true;
 

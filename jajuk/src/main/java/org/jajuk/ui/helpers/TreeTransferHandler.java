@@ -54,17 +54,17 @@ import javax.swing.tree.TreePath;
 public class TreeTransferHandler implements DragGestureListener, DragSourceListener,
     DropTargetListener, TreeWillExpandListener {
 
-  private JTree tree;
+  private final JTree tree;
 
-  private DragSource dragSource; // dragsource
+  private final DragSource dragSource; // dragsource
 
   private static DefaultMutableTreeNode draggedNode;
 
   private static BufferedImage image = null; // buff image
 
-  private Rectangle rect2D = new Rectangle();
+  private final Rectangle rect2D = new Rectangle();
 
-  private boolean drawImage;
+  private final boolean drawImage;
 
   public TreeTransferHandler(JTree tree, int action, boolean drawIcon) {
     this.tree = tree;

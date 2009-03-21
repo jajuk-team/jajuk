@@ -163,7 +163,7 @@ public class JajukPredicates {
    */
   public static class AmbiencePredicate implements Predicate {
 
-    private Ambience ambience;
+    private final Ambience ambience;
 
     public AmbiencePredicate(Ambience ambience) {
       this.ambience = ambience;

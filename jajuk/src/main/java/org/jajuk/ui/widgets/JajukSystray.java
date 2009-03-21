@@ -129,7 +129,7 @@ public class JajukSystray extends CommandJPanel {
   JajukBalloon balloon;
 
   /** Swing Timer to refresh the component */
-  private Timer timer = new Timer(JajukTimer.DEFAULT_HEARTBEAT, new ActionListener() {
+  private final Timer timer = new Timer(JajukTimer.DEFAULT_HEARTBEAT, new ActionListener() {
     public void actionPerformed(ActionEvent e) {
       update(new JajukEvent(JajukEvents.HEART_BEAT));
     }
@@ -170,12 +170,14 @@ public class JajukSystray extends CommandJPanel {
    * 
    */
   public JajukSystray() {
+    super();
+    
     stray = SystemTray.getSystemTray();
     initUI();
   }
 
   @Override
-  public void initUI() {
+  public final void initUI() {
     // Instanciate the PlayerStateMediator to listen for player basic controls
     PlayerStateMediator.getInstance();
     jmenu = new JPopupMenu(Messages.getString("JajukWindow.3"));

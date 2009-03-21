@@ -83,7 +83,7 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
   private java.io.File fio;
 
   /** Playlist type */
-  private Type type;
+  private final Type type;
 
   /** pre-calculated absolute path for perf */
   private String sAbs = null;

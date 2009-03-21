@@ -49,8 +49,10 @@ import org.jajuk.util.log.Log;
  * Perspective adapter, provide default implementation for perspectives
  */
 public abstract class PerspectiveAdapter extends DockingDesktop implements IPerspective, Const {
+  private static final long serialVersionUID = 698162872976536725L;
+
   /** Perspective id (class) */
-  private String sID;
+  private final String sID;
 
   /** Perspective icon */
   private ImageIcon icon;

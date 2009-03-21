@@ -118,6 +118,7 @@ public class SuggestionView extends ViewAdapter implements Observer {
   }
 
   public SuggestionView() {
+    super();
   }
 
   /*
@@ -146,6 +147,7 @@ public class SuggestionView extends ViewAdapter implements Observer {
 
       @Override
       protected void paintContentBorder(Graphics g, int tabPlacement, int selectedIndex) {
+        // nothing to do here...
       }
     }
     // Now use the new TabbedPaneUI
@@ -341,7 +343,7 @@ public class SuggestionView extends ViewAdapter implements Observer {
     return jsp;
   }
 
-  private JScrollPane getLastFMSuggestionsPanel(SuggestionType type) throws Exception {
+  private JScrollPane getLastFMSuggestionsPanel(SuggestionType type) {
     FlowScrollPanel out = new FlowScrollPanel();
     JScrollPane jsp = new JScrollPane(out, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
         JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
@@ -352,7 +354,7 @@ public class SuggestionView extends ViewAdapter implements Observer {
       List<AudioScrobblerAlbum> albums = AudioScrobblerService.getInstance().getAlbumList(author);
       if (albums != null && albums.size() > 0) {
         for (AudioScrobblerAlbum album : albums) {
-          AudioScrobblerAlbumThumbnail thumb = new AudioScrobblerAlbumThumbnail(album);
+          AbstractThumbnail thumb = new AudioScrobblerAlbumThumbnail(album);
           thumb.populate();
           thumb.getIcon().addMouseListener(new ThumbMouseListener());
           out.add(thumb);
@@ -368,7 +370,7 @@ public class SuggestionView extends ViewAdapter implements Observer {
       if (similar != null) {
         List<AudioScrobblerArtist> authors = similar.getArtists();
         for (AudioScrobblerArtist similarAuthor : authors) {
-          AudioScrobblerAuthorThumbnail thumb = new AudioScrobblerAuthorThumbnail(similarAuthor);
+          AbstractThumbnail thumb = new AudioScrobblerAuthorThumbnail(similarAuthor);
           thumb.populate();
           thumb.getIcon().addMouseListener(new ThumbMouseListener());
           out.add(thumb);

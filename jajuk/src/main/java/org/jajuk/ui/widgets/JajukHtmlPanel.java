@@ -53,11 +53,11 @@ public class JajukHtmlPanel extends HtmlPanel {
 
   private static final long serialVersionUID = -4033441908072591661L;
 
-  private SimpleHtmlRendererContext rcontext;
+  private final SimpleHtmlRendererContext rcontext;
 
-  private HtmlParserContext context;
+  private final HtmlParserContext context;
 
-  private DocumentBuilderImpl dbi;
+  private final DocumentBuilderImpl dbi;
 
   /**
    * A HTML renderer based on Cobra

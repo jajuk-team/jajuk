@@ -46,7 +46,7 @@ public class JajukCellRenderer extends SubstanceDefaultTableCellRenderer impleme
 
   private static final long serialVersionUID = 154545454L;
 
-  private Color color;
+  private final Color color;
 
   /**
    * @param color
@@ -61,7 +61,7 @@ public class JajukCellRenderer extends SubstanceDefaultTableCellRenderer impleme
     this(null);
   }
 
-  private SubstanceDefaultTableCellRenderer.BooleanRenderer booleanRenderer = new SubstanceDefaultTableCellRenderer.BooleanRenderer();
+  private final SubstanceDefaultTableCellRenderer.BooleanRenderer booleanRenderer = new SubstanceDefaultTableCellRenderer.BooleanRenderer();
 
   @Override
   public Component getTableCellRendererComponent(JTable table, Object oValue, boolean selected,

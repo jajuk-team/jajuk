@@ -27,10 +27,10 @@ import java.net.UnknownHostException;
 public class Proxy extends java.net.Proxy {
 
   private static final long serialVersionUID = 7495084217081194366L;
-  private String url;
-  private int port;
-  private String user;
-  private String password;
+  private final String url;
+  private final int port;
+  private final String user;
+  private final String password;
 
   public Proxy(Type type, String url, int port, String user, String password)
       throws UnknownHostException, IOException {

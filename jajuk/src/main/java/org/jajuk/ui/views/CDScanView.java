@@ -76,6 +76,7 @@ public class CDScanView extends ViewAdapter implements ActionListener {
    * Constructor
    */
   public CDScanView() {
+    super();
   }
 
   /*
@@ -131,7 +132,7 @@ public class CDScanView extends ViewAdapter implements ActionListener {
       jfc.setMultiSelectionEnabled(false);
       jfc.setAcceptDirectories(true);
       final String sMountPoint = jtfMountPoint.getText();
-      if (!sMountPoint.equals("")) { // if url is already set, use it
+      if (!"".equals(sMountPoint)) { // if url is already set, use it
         // as root directory
         //
         jfc.setCurrentDirectory(new File(sMountPoint));
@@ -209,6 +210,6 @@ public class CDScanView extends ViewAdapter implements ActionListener {
    * @see org.jajuk.events.Observer#update(org.jajuk.events.Event)
    */
   public void update(JajukEvent event) {
+    // nothing to do here...
   }
-
 }

@@ -36,6 +36,8 @@ import org.jajuk.util.JajukIcons;
 public abstract class DropDownButton extends JajukButton implements ChangeListener,
     PopupMenuListener, ActionListener, PropertyChangeListener, Const {
 
+  private static final long serialVersionUID = 9126200472940409277L;
+
   private final JButton arrowButton;
 
   private boolean popupVisible = false;

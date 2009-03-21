@@ -48,7 +48,7 @@ import org.jajuk.util.log.Log;
  */
 public final class DeviceManager extends ItemManager {
   /** Supported device types names */
-  private List<String> alDevicesTypes = new ArrayList<String>(10);
+  private final List<String> alDevicesTypes = new ArrayList<String>(10);
 
   /** Self instance */
   private static DeviceManager singleton;
@@ -57,10 +57,10 @@ public final class DeviceManager extends ItemManager {
   private long lDateLastGlobalRefresh = 0;
 
   /** List of deep-refresh devices after an upgrade */
-  private Set<Device> devicesDeepRefreshed = new HashSet<Device>();
+  private final Set<Device> devicesDeepRefreshed = new HashSet<Device>();
 
   /** Auto-refresh thread */
-  private Thread tAutoRefresh = new Thread("Device Auto Refresh Thread") {
+  private final Thread tAutoRefresh = new Thread("Device Auto Refresh Thread") {
     @Override
     public void run() {
       while (!ExitService.isExiting()) {

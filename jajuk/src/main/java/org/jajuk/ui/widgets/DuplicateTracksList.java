@@ -50,15 +50,15 @@ public class DuplicateTracksList extends JPanel implements ListSelectionListener
 
   private static final long serialVersionUID = 1L;
 
-  private JList list;
-  private JScrollPane listScrollPane;
-  private DefaultListModel listModel = new DefaultListModel();
-  private List<List<File>> allFiles;
+  private final JList list;
+  private final JScrollPane listScrollPane;
+  private final DefaultListModel listModel = new DefaultListModel();
+  private final List<List<File>> allFiles;
   private List<File> flatFilesList;
 
-  private JButton deleteButton;
-  private JButton selectAllButton;
-  private JButton closeButton;
+  private final JButton deleteButton;
+  private final JButton selectAllButton;
+  private final JButton closeButton;
 
   public DuplicateTracksList(List<List<File>> files, JButton jbClose) {
     super(new BorderLayout());

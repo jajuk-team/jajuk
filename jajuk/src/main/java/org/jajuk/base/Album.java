@@ -55,7 +55,7 @@ public class Album extends LogicalItem implements Comparable<Album> {
    * For perfs, we cache the associated tracks. This cache is filled by the
    * TrackManager using the getTracksCache() method
    */
-  private List<Track> cache = new ArrayList<Track>(15);
+  private final List<Track> cache = new ArrayList<Track>(15);
 
   /**
    * This array stores thumbnail presence for all the available size
@@ -64,7 +64,6 @@ public class Album extends LogicalItem implements Comparable<Album> {
   private boolean[] availableTumbs;
 
   /**
->>>>>>> .merge-right.r4581
    * Album constructor
    * 
    * @param id
@@ -379,19 +378,26 @@ public class Album extends LogicalItem implements Comparable<Album> {
    */
   public ImageIcon getThumbnail(int size) {
     File fCover = ThumbnailManager.getThumbBySize(this, size);
+    
     // Check if thumb already exists
     if (!fCover.exists() || fCover.length() == 0) {
       return IconLoader.getNoCoverIcon(size);
     }
+    
     BufferedImage img = null;
     try {
       img = ImageIO.read(new File(fCover.getAbsolutePath()));
     } catch (IOException e) {
       Log.error(e);
     }
+    
     ImageIcon icon = new ImageIcon(img);
+    
     // Free thumb memory (DO IT AFTER FULL ImageIcon loading)
-    img.flush();
+    if (img != null) {
+      img.flush();
+    }
+    
     // accelerate GC cleanup
     img = null;
     return icon;
@@ -581,13 +587,12 @@ public class Album extends LogicalItem implements Comparable<Album> {
    */
   public boolean isThumbAvailable(int size) {
     // Lazy loading of thumb availability
-    if (availableTumbs == null){
+    if (availableTumbs == null) {
       availableTumbs = new boolean[6];
       File fThumb = ThumbnailManager.getThumbBySize(this, size);
       setAvailableThumb(size, fThumb.exists() && fThumb.length() > 0);
     }
     return availableTumbs[size / 50 - 1];
   }
-
 
 }

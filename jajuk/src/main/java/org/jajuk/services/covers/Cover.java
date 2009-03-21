@@ -65,10 +65,10 @@ public class Cover implements Comparable<Cover>, Const {
   }
 
   /** Cover URL* */
-  private URL url;
+  private final URL url;
 
   /** Cover Type */
-  private CoverType type;
+  private final CoverType type;
 
   /** Associated file */
   private File file;

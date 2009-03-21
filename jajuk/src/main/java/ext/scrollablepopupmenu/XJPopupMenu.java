@@ -32,7 +32,7 @@ import javax.swing.plaf.basic.BasicSeparatorUI;
 public class XJPopupMenu extends JPopupMenu implements ActionListener {
   private static final long serialVersionUID = 1;
 
-  private JPanel panelMenus = new JPanel();
+  private final JPanel panelMenus = new JPanel();
 
   private JScrollPane scroll = null;
 

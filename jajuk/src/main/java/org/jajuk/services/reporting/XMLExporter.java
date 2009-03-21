@@ -57,7 +57,7 @@ public class XMLExporter extends Exporter {
 
   private static final String XML_HEADER = "<?xml version='1.0' encoding='UTF-8'?>";
 
-  private BufferedWriter writer;
+  private final BufferedWriter writer;
 
   /** Do we want to export tracks ?* */
   private boolean showTracks = true;

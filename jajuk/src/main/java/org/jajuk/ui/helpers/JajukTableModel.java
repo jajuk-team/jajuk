@@ -36,6 +36,8 @@ import org.jajuk.util.JajukIcons;
  */
 public abstract class JajukTableModel extends DefaultTableModel {
 
+  private static final long serialVersionUID = -7296786603161189590L;
+
   /** Column identifiers */
   volatile protected List<String> idList = new ArrayList<String>(10);
 

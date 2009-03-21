@@ -33,7 +33,7 @@ public class IconLabel extends ImageIcon implements Comparable<IconLabel> {
   private static final long serialVersionUID = 3794262035337113611L;
 
   /** Text */
-  private String sText;
+  private final String sText;
 
   /** Background color */
   private Color cBackground;

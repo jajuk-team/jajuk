@@ -30,7 +30,7 @@ import org.jajuk.util.log.Log;
 public class StackItem implements Cloneable {
 
   /** Associated file */
-  private File file;
+  private final File file;
 
   /** Repeat flag */
   private boolean bRepeat = false;

@@ -220,7 +220,7 @@ public class JPressButton extends JajukButton {
 
     private ActionThread thread;
 
-    private JPressButton button;
+    private final JPressButton button;
 
     public PressButtonModel(JPressButton button) {
       this.button = button;
@@ -267,11 +267,11 @@ public class JPressButton extends JajukButton {
    */
   private class ActionThread extends Thread {
 
-    private ActionEvent evt;
+    private final ActionEvent evt;
 
     private boolean active = true;
 
-    private long interval;
+    private final long interval;
 
     public ActionThread(ActionEvent evt) {
       this(evt, DEFAULT_INTERVAL);

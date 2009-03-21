@@ -57,10 +57,10 @@ public class AudioScrobblerAuthorThumbnail extends AbstractThumbnail {
   private static final long serialVersionUID = -804471264407148566L;
 
   /** Associated author */
-  private AudioScrobblerArtist author;
+  private final AudioScrobblerArtist author;
 
   /** Is this author known in collection ? */
-  private boolean bKnown;
+  private final boolean bKnown;
 
   /**
    * @param album :
@@ -73,7 +73,7 @@ public class AudioScrobblerAuthorThumbnail extends AbstractThumbnail {
   }
 
   @Override
-  public void populate() throws Exception {
+  public void populate() {
     jlIcon = new JLabel();
 
     SwingWorker sw = new SwingWorker() {

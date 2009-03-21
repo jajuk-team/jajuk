@@ -49,11 +49,11 @@ public class TipOfTheDayWizard extends JFrame {
 
   private static final String[] TIPS = Messages.getAll("TipOfTheDay");
 
-  private JCheckBox cbShow;
+  private final JCheckBox cbShow;
 
-  private JTextArea tipArea;
+  private final JTextArea tipArea;
 
-  private JLabel lCounter;
+  private final JLabel lCounter;
 
   private int currentIndex = 0;
 

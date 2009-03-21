@@ -50,7 +50,7 @@ import org.jajuk.util.UpgradeManager;
 public final class AmbienceManager implements Observer {
 
   /** Ambience id-> ambience */
-  private Map<String, Ambience> ambiences = new HashMap<String, Ambience>(10);
+  private final Map<String, Ambience> ambiences = new HashMap<String, Ambience>(10);
 
   /** Self instance */
   private static AmbienceManager self;
@@ -211,13 +211,12 @@ public final class AmbienceManager implements Observer {
     // now create and set each ambience
     for (Ambience ambience : ambiences.values()) {
       if (ambience.getStyles().size() > 0) {
-        String styles = "";
+        StringBuilder styles = new StringBuilder();
         for (Style style : ambience.getStyles()) {
-          styles += style.getID() + ',';
+          styles.append(style.getID()).append(',');
         }
-        styles = styles.substring(0, styles.length() - 1);
         Conf.setProperty(Const.AMBIENCE_PREFIX + ambience.getID() + '/' + ambience.getName(),
-            styles);
+            styles.toString().substring(0, styles.length() - 1));
       }
     }
   }

@@ -26,7 +26,7 @@ import org.jajuk.util.UtilString;
  * tables to ease the cell renderers recognition
  */
 public class Duration implements Comparable<Duration> {
-  private long duration;
+  private final long duration;
 
   /**
    * 

@@ -63,7 +63,7 @@ public class Track extends LogicalItem implements Comparable<Track> {
   private final Type type;
 
   /** Track associated files */
-  private List<File> alFiles = new ArrayList<File>(1);
+  private final List<File> alFiles = new ArrayList<File>(1);
 
   /**
    * Track constructor

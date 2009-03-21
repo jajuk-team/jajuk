@@ -30,7 +30,7 @@ public class JajukEvent {
   /**
    * Event subject
    */
-  private JajukEvents subject;
+  private final JajukEvents subject;
 
   /**
    * Event properties

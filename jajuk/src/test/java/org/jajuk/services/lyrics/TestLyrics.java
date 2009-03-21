@@ -39,7 +39,7 @@ import org.jajuk.util.log.Log;
  */
 public class TestLyrics extends TestCase {
 
-  private File tmp = new File("test.tmp");
+  private final File tmp = new File("test.tmp");
   private static final String artist = "Massive Attack";
   private static final String title = "Dissolved Girl";
 

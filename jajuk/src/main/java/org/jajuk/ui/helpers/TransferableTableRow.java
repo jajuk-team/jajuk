@@ -37,7 +37,7 @@ public class TransferableTableRow extends DefaultMutableTreeNode implements Tran
   public static final DataFlavor ROW_FLAVOR = new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType,
       "Row");
 
-  private Object oData;
+  private final Object oData;
 
   public TransferableTableRow(Object oData) {
     this.oData = oData;
@@ -47,7 +47,7 @@ public class TransferableTableRow extends DefaultMutableTreeNode implements Tran
     return oData;
   }
 
-  private DataFlavor[] flavors = { ROW_FLAVOR };
+  private final DataFlavor[] flavors = { ROW_FLAVOR };
 
   /*
    * (non-Javadoc)

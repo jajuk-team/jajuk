@@ -62,45 +62,45 @@ public class AlarmClockDialog extends JDialog implements ActionListener, ItemLis
     ListSelectionListener {
   private static final long serialVersionUID = 1L;
 
-  private JPanel jpAlarmClock;
+  private final JPanel jpAlarmClock;
 
-  private JPanel jpFields;
+  private final JPanel jpFields;
 
-  private JPanel jpChoices;
+  private final JPanel jpChoices;
 
-  private JPanel jpOKCancel;
+  private final JPanel jpOKCancel;
 
-  private JPanel jpAction;
+  private final JPanel jpAction;
 
-  private ButtonGroup bgChoices;
+  private final ButtonGroup bgChoices;
 
-  private JButton jbOK;
+  private final JButton jbOK;
 
-  private JButton jbCancel;
+  private final JButton jbCancel;
 
-  private JCheckBox jcbTime;
+  private final JCheckBox jcbTime;
 
-  private JLabel jlChoice;
+  private final JLabel jlChoice;
 
-  private JLabel jlAlarmAction;
+  private final JLabel jlAlarmAction;
 
-  private JRadioButton jrbShuffle;
+  private final JRadioButton jrbShuffle;
 
-  private JRadioButton jrbBestof;
+  private final JRadioButton jrbBestof;
 
-  private JRadioButton jrbNovelties;
+  private final JRadioButton jrbNovelties;
 
-  private JRadioButton jrbFile;
+  private final JRadioButton jrbFile;
 
-  private JTextField jtfHour;
+  private final JTextField jtfHour;
 
-  private JTextField jtfMinutes;
+  private final JTextField jtfMinutes;
 
-  private JTextField jtfSeconds;
+  private final JTextField jtfSeconds;
 
-  private JComboBox jcbAlarmAction;
+  private final JComboBox jcbAlarmAction;
 
-  private SearchBox sbSearch;
+  private final SearchBox sbSearch;
 
   private SearchResult sr;
 

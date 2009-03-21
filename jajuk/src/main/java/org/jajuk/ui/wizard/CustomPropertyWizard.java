@@ -47,6 +47,8 @@ import org.jajuk.util.UtilGUI;
 
 public abstract class CustomPropertyWizard extends JajukJDialog implements ActionListener,
     ItemListener {
+  private static final long serialVersionUID = -5148687837661745898L;
+
   JPanel jpMain;
 
   JLabel jlItemChoice;

@@ -37,7 +37,7 @@ public class JajukFileChooser extends JFileChooser {
 
   private static final long serialVersionUID = 1L;
 
-  private JajukFileFilter filter;
+  private final JajukFileFilter filter;
 
   /**
    * Constructor with specified file filter

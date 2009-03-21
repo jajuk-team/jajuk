@@ -27,9 +27,9 @@ import org.jajuk.util.log.Log;
 
 public class AudioScrobblerAlbumsRunnable implements Runnable {
 
-  private AudioScrobblerListener listener;
-  private AudioScrobblerService service;
-  private Track track;
+  private final AudioScrobblerListener listener;
+  private final AudioScrobblerService service;
+  private final Track track;
 
   private boolean interrupted;
 

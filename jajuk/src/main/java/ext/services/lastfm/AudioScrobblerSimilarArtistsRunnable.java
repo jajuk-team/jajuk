@@ -24,11 +24,11 @@ import org.jajuk.util.Const;
 
 public class AudioScrobblerSimilarArtistsRunnable implements Runnable, Const {
 
-  private AudioScrobblerListener listener;
+  private final AudioScrobblerListener listener;
 
-  private AudioScrobblerService service;
+  private final AudioScrobblerService service;
 
-  private String artist;
+  private final String artist;
 
   private boolean interrupted;
 

@@ -56,10 +56,10 @@ import org.jajuk.util.log.Log;
 public class Directory extends PhysicalItem implements Comparable<Directory> {
 
   /** Parent directory ID* */
-  private Directory dParent;
+  private final Directory dParent;
 
   /** Directory device */
-  private Device device;
+  private final Device device;
 
   /** IO file for optimizations* */
   private java.io.File fio;
@@ -208,8 +208,8 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
   /**
    * Scan all files in a directory
    * 
-   * @param bDeepScan:
-   *          force files tag read
+   * @param bDeepScan
+   *          : force files tag read
    * @param reporter
    *          Refresh handler
    */
@@ -263,14 +263,14 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
    */
   private void scanMusic(java.io.File music, boolean bDeepScan, RefreshReporter reporter)
       throws JajukException {
-    String name = music.getName();
-    String sId = FileManager.createID(name, this);
+    String lName = music.getName();
+    String sId = FileManager.createID(lName, this);
     // check the file is not already known in database
     org.jajuk.base.File fileRef = FileManager.getInstance().getFileByID(sId);
     // Set name again to make sure Windows users will see actual
     // name with right case
     if (UtilSystem.isUnderWindows() && fileRef != null) {
-      fileRef.setName(name);
+      fileRef.setName(lName);
     }
 
     // if known file and no deep scan, just leave
@@ -371,7 +371,7 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
   }
 
   private void scanPlaylist(final java.io.File file, final boolean bDeepScan,
-      final RefreshReporter reporter) throws Exception {
+      final RefreshReporter reporter) throws JajukException {
     String sId = PlaylistManager.createID(file.getName(), this);
     Playlist plfRef = PlaylistManager.getInstance().getPlaylistByID(sId);
     // if known playlist and no deep scan, just leave
@@ -500,7 +500,7 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
         return parentdir.getFio().getAbsolutePath();
       }
     } else if (Const.XML_DEVICE.equals(sKey)) {
-      return (DeviceManager.getInstance().getDeviceByID((String) getValue(sKey))).getName();
+      return DeviceManager.getInstance().getDeviceByID((String) getValue(sKey)).getName();
     }
     if (Const.XML_NAME.equals(sKey)) {
       if (dParent == null) { // if no parent, take device name
@@ -565,10 +565,10 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
   /**
    * Refresh : scan asynchronously the directory to find tracks
    * 
-   * @param bAsynchronous :
-   *          set asynchronous or synchronous mode
-   * @param bAsk:
-   *          should we ask user if he wants to perform a deep or fast scan?
+   * @param bAsynchronous
+   *          : set asynchronous or synchronous mode
+   * @param bAsk
+   *          : should we ask user if he wants to perform a deep or fast scan?
    *          default=deep
    */
   public void manualRefresh(final boolean bAsynchronous, final boolean bAsk) {
@@ -630,13 +630,12 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
     // directories cleanup
     for (final Item item : dirs) {
       final Directory dir = (Directory) item;
-      if (!ExitService.isExiting() && dir.getDevice().isMounted() && dir.isChildOf(this)) {
-        if (!dir.getFio().exists()) {
-          // note that associated files are removed too
-          DirectoryManager.getInstance().removeDirectory(dir.getID());
-          Log.debug("Removed: " + dir);
-          bChanges = true;
-        }
+      if (!ExitService.isExiting() && dir.getDevice().isMounted() && dir.isChildOf(this)
+          && !dir.getFio().exists()) {
+        // note that associated files are removed too
+        DirectoryManager.getInstance().removeDirectory(dir.getID());
+        Log.debug("Removed: " + dir);
+        bChanges = true;
       }
     }
     // files cleanup
@@ -646,14 +645,13 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
           // Only take into consideration files from this directory or from
           // sub-directories
           && (file.getDirectory().equals(this) || file.getDirectory().isChildOf(this))
-          && file.isReady()) {
-        // Remove file if it doesn't exist any more or if it is a iTunes
-        // file (useful for jajuk < 1.4)
-        if (!file.getFIO().exists() || file.getName().startsWith("._")) {
-          FileManager.getInstance().removeFile(file);
-          Log.debug("Removed: " + file);
-          bChanges = true;
-        }
+          && file.isReady() &&
+          // Remove file if it doesn't exist any more or if it is a iTunes
+          // file (useful for jajuk < 1.4)
+          !file.getFIO().exists() || file.getName().startsWith("._")) {
+        FileManager.getInstance().removeFile(file);
+        Log.debug("Removed: " + file);
+        bChanges = true;
       }
     }
     // Playlist cleanup
@@ -663,12 +661,10 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
           // Only take into consideration files from this directory or from
           // sub-directories
           && (plf.getDirectory().equals(this) || plf.getDirectory().isChildOf(this))
-          && plf.isReady()) {
-        if (!plf.getFIO().exists()) {
-          PlaylistManager.getInstance().removePlaylistFile(plf);
-          Log.debug("Removed: " + plf);
-          bChanges = true;
-        }
+          && plf.isReady() && !plf.getFIO().exists()) {
+        PlaylistManager.getInstance().removePlaylistFile(plf);
+        Log.debug("Removed: " + plf);
+        bChanges = true;
       }
     }
     // clear history to remove old files referenced in it
@@ -701,5 +697,4 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
       }
     }
   }
-
 }

@@ -36,7 +36,7 @@ public class CatalogViewTransferHandler extends TransferHandler {
 
   private static final long serialVersionUID = 1L;
 
-  private LocalAlbumThumbnail item;
+  private final LocalAlbumThumbnail item;
 
   /** Constructor */
   public CatalogViewTransferHandler(LocalAlbumThumbnail item) {

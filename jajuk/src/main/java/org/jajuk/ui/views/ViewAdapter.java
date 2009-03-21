@@ -36,6 +36,8 @@ import org.jdesktop.swingx.JXPanel;
 public abstract class ViewAdapter extends JXPanel implements IView, Const, Comparable<IView>,
     Observer {
 
+  private static final long serialVersionUID = 1526958318911770642L;
+
   /** Populated state */
   private boolean bIsPopulated = false;
 
@@ -49,7 +51,7 @@ public abstract class ViewAdapter extends JXPanel implements IView, Const, Compa
   private IPerspective perspective;
 
   /** Associated DockKey */
-  private DockKey key;
+  private final DockKey key;
 
   /**
    * Constructor

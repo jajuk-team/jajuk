@@ -36,7 +36,7 @@ import org.jajuk.util.log.Log;
 public class PropertyMetaInformation {
 
   /** Property name */
-  private String sName;
+  private final String sName;
 
   /** Is property a custom property? */
   private boolean bCustom = false;
@@ -48,7 +48,7 @@ public class PropertyMetaInformation {
   private boolean bConstructor = false;
 
   /** Property Type (java.lang.String for ie) */
-  private Class<?> cType;
+  private final Class<?> cType;
 
   /** Default value (null: no default) */
   Object oDefaultValue;

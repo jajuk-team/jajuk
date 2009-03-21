@@ -34,6 +34,7 @@ public class LogChecker extends TestCase {
 
   private String logs;
 
+  @Override
   public void setUp() throws Exception {
     logs = UtilSystem.readFile(FILE_PATH).toString();
   }

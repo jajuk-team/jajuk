@@ -55,7 +55,7 @@ public final class TrackManager extends ItemManager {
   private boolean bAutocommit = true;
 
   /** Set of tags to commit */
-  private Set<Tag> tagsToCommit = new HashSet<Tag>(10);
+  private final Set<Tag> tagsToCommit = new HashSet<Tag>(10);
 
   /**
    * No constructor available, only static access

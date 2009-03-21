@@ -33,8 +33,8 @@ import org.jajuk.util.log.Log;
  * An Alarm
  */
 public class Alarm {
-  private List<File> alToPlay;
-  private String alarmAction;
+  private final List<File> alToPlay;
+  private final String alarmAction;
   private Date aTime;
 
   public Alarm(java.util.Date aTime, List<File> alFiles, String mode) {

@@ -692,6 +692,7 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
         } else {
           // Save as for normal playlists
           new Thread() {
+            @Override
             public void run() {
               UtilGUI.waiting();
               try {
@@ -915,7 +916,7 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
      * List of playlists for which we already displayed a warning message if it
      * contains old or external entries
      */
-    private List<Playlist> alreadyWarned = new ArrayList<Playlist>(10);
+    private final List<Playlist> alreadyWarned = new ArrayList<Playlist>(10);
 
     public PlaylistRepository() {
       super();

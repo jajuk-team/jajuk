@@ -81,7 +81,6 @@ import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilGUI;
-import org.jajuk.util.UtilString;
 
 /**
  * Catalog view. Displays all default covers by album
@@ -158,10 +157,10 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
   private int iNbCreatedThumbs = 0;
 
   /** Utility list used by size selector */
-  private List<String> sizes = new ArrayList<String>(10);
+  private final List<String> sizes = new ArrayList<String>(10);
 
   /** Swing Timer to refresh the component */
-  private Timer timerSearch = new Timer(WAIT_TIME, new ActionListener() {
+  private final Timer timerSearch = new Timer(WAIT_TIME, new ActionListener() {
     public void actionPerformed(ActionEvent e) {
       if (bNeedSearch && !bPopulating && (System.currentTimeMillis() - lDateTyped >= WAIT_TIME)) {
         // reset paging
@@ -392,6 +391,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
   private synchronized void populateCatalog() {
     UtilGUI.waiting();
     new Thread() {
+      @Override
       public void run() {
         final int value = jsp.getVerticalScrollBar().getValue();
         final List<LocalAlbumThumbnail> thumbs = new ArrayList<LocalAlbumThumbnail>(100);
@@ -429,8 +429,8 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
         Filter.filterItems(alAllTracks, filter);
         // keep matching albums
         HashSet<Album> hsAlbums = new HashSet<Album>(alAllTracks.size() / 10);
-        for (Item item : alAllTracks) {
-          Track track = (Track) item;
+        for (Item lItem : alAllTracks) {
+          Track track = (Track) lItem;
           Album album = track.getAlbum();
           if (!jcbShowNoCover.isSelected()) {
             if (album.isThumbAvailable(jsSize.getValue() * 50 + 50)) {

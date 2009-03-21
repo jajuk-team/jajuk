@@ -36,11 +36,11 @@ public class JScrollingText extends JLabel {
 
   private static final long serialVersionUID = 3068213731703270035L;
 
-  private int speed;
+  private final int speed;
 
-  private int period;
+  private final int period;
 
-  private int offset;
+  private final int offset;
 
   private int x = 300;
 

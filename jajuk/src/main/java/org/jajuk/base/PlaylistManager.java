@@ -77,8 +77,7 @@ public final class PlaylistManager extends ItemManager implements Observer {
    * @param fio
    * @param dParentDirectory
    */
-  public synchronized Playlist registerPlaylistFile(java.io.File fio, Directory dParentDirectory)
-      throws Exception {
+  public synchronized Playlist registerPlaylistFile(java.io.File fio, Directory dParentDirectory) {
     String sId = createID(fio.getName(), dParentDirectory);
     return registerPlaylistFile(sId, fio.getName(), dParentDirectory);
   }
@@ -123,7 +122,7 @@ public final class PlaylistManager extends ItemManager implements Observer {
    * @param sName
    */
   public synchronized Playlist registerPlaylistFile(String sId, String sName,
-      Directory dParentDirectory) throws Exception {
+      Directory dParentDirectory) {
     Playlist playlistFile = getPlaylistByID(sId);
     if (playlistFile != null) {
       return playlistFile;
@@ -139,8 +138,8 @@ public final class PlaylistManager extends ItemManager implements Observer {
   /**
    * Clean all references for the given device
    * 
-   * @param sId :
-   *          Device id
+   * @param sId
+   *          : Device id
    */
   public synchronized void cleanDevice(String sId) {
     for (Playlist plf : getPlaylists()) {

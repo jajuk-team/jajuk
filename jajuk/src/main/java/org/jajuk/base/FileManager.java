@@ -50,13 +50,13 @@ import org.jajuk.util.log.Log;
  */
 public final class FileManager extends ItemManager {
   /** Best of files */
-  private List<File> alBestofFiles = new ArrayList<File>(20);
+  private final List<File> alBestofFiles = new ArrayList<File>(20);
 
   /** Self instance */
   private static FileManager singleton;
 
   /** File comparator based on rate */
-  private Comparator<File> rateComparator = new Comparator<File>() {
+  private final Comparator<File> rateComparator = new Comparator<File>() {
     public int compare(File file1, File file2) {
       long lRate1 = file1.getTrack().getRate();
       long lRate2 = file2.getTrack().getRate();

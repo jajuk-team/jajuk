@@ -48,7 +48,7 @@ public class PlaylistEditorTransferHandler extends TransferHandler {
 
   private static final long serialVersionUID = 1L;
 
-  private JTable jtable;
+  private final JTable jtable;
 
   private static int iSelectedRow = 0;
 

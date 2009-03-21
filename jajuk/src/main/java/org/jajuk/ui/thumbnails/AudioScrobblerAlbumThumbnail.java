@@ -61,7 +61,7 @@ public class AudioScrobblerAlbumThumbnail extends AbstractThumbnail {
   private AudioScrobblerAlbum album;
 
   /** Is this author known in collection ? */
-  private boolean bKnown;
+  private final boolean bKnown;
 
   /**
    * @param album :
@@ -74,7 +74,7 @@ public class AudioScrobblerAlbumThumbnail extends AbstractThumbnail {
   }
 
   @Override
-  public void populate() throws Exception {
+  public void populate() {
     jlIcon = new JLabel();
 
     SwingWorker sw = new ext.SwingWorker() {

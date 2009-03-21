@@ -31,7 +31,7 @@ import org.jajuk.util.Const;
 import org.jajuk.util.log.Log;
 
 class ObserverRegistry {
-  private Map<JajukEvents, List<Observer>> hEventComponents = new Hashtable<JajukEvents, List<Observer>>(
+  private final Map<JajukEvents, List<Observer>> hEventComponents = new Hashtable<JajukEvents, List<Observer>>(
       10);
 
   /** Number of current executions for a given event */

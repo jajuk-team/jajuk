@@ -23,9 +23,9 @@ import java.util.List;
 
 public class AudioScrobblerCoversRunnable implements Runnable {
 
-  private AudioScrobblerListener listener;
-  private AudioScrobblerService service;
-  private List<AudioScrobblerAlbum> albums;
+  private final AudioScrobblerListener listener;
+  private final AudioScrobblerService service;
+  private final List<AudioScrobblerAlbum> albums;
 
   private boolean interrupted;
 

@@ -33,7 +33,7 @@ public class ItemMoveManager {
 
   private static ItemMoveManager singleton;
 
-  private List<Item> itemsToMove = new ArrayList<Item>(20);
+  private final List<Item> itemsToMove = new ArrayList<Item>(20);
 
   public enum MoveActions {
     CUT, COPY

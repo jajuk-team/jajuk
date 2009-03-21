@@ -63,7 +63,7 @@ import org.xml.sax.helpers.DefaultHandler;
 public final class DigitalDJManager implements Observer {
 
   /** List of registrated DJs ID->DJ */
-  private Map<String, DigitalDJ> djs;
+  private final Map<String, DigitalDJ> djs;
 
   /** self instance */
   private static DigitalDJManager dj;
@@ -372,7 +372,7 @@ class DigitalDJFactoryProportionImpl extends DigitalDJFactory {
   /** Intermediate proportion variable used during parsing */
   private float proportion;
 
-  private List<Proportion> proportions = new ArrayList<Proportion>(5);
+  private final List<Proportion> proportions = new ArrayList<Proportion>(5);
 
   @Override
   DigitalDJ getDJ(File file) throws Exception {
@@ -457,7 +457,7 @@ class DigitalDJFactoryAmbienceImpl extends DigitalDJFactory {
 class DigitalDJFactoryTransitionImpl extends DigitalDJFactory {
 
   /** Intermediate transition list */
-  private List<Transition> transitions = new ArrayList<Transition>(10);
+  private final List<Transition> transitions = new ArrayList<Transition>(10);
 
   @Override
   DigitalDJ getDJ(File file) throws Exception {

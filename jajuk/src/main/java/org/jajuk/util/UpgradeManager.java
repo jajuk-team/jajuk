@@ -72,7 +72,7 @@ public final class UpgradeManager {
         // this
         // way : x.0 -> x.9 -> y.0-> y.9 ... (no x.10 or later)
         if (!Main.isTestMode()) {
-          int currentRelease = Integer.parseInt(sRelease.charAt(0) + "" + sRelease.charAt(2));
+          int currentRelease = Integer.parseInt( (sRelease == null ? "0.0" : sRelease).charAt(0) + "" + (sRelease == null ? "0.0" : sRelease).charAt(2));
           int newRelease = Integer.parseInt(Const.JAJUK_VERSION.charAt(0) + ""
               + Const.JAJUK_VERSION.charAt(2));
           if (Math.abs(newRelease - currentRelease) > 1) {

@@ -110,13 +110,13 @@ public final class JajukJMenuBar extends JMenuBar implements Observer {
 
   JCheckBoxMenuItem jcbSyncTableTree;
 
-  private JCheckBoxMenuItem jcbmiRepeat;
+  private final JCheckBoxMenuItem jcbmiRepeat;
 
-  private JCheckBoxMenuItem jcbmiShuffle;
+  private final JCheckBoxMenuItem jcbmiShuffle;
 
-  private JCheckBoxMenuItem jcbmiContinue;
+  private final JCheckBoxMenuItem jcbmiContinue;
 
-  private JCheckBoxMenuItem jcbmiIntro;
+  private final JCheckBoxMenuItem jcbmiIntro;
 
   JMenu smart;
 

@@ -37,6 +37,8 @@ import org.jajuk.util.log.Log;
  */
 public abstract class JajukAction extends AbstractAction {
 
+  private static final long serialVersionUID = -2535230785022978297L;
+
   /** Is this action an hotkey ? */
   private boolean bHotkey = false;
 

@@ -167,7 +167,7 @@ public final class DownloadManager {
     // probable collisions between views
     synchronized (file.getName().intern()) {
       // check if file is not already downloaded or being downloaded
-      if (file != null && file.exists()) {
+      if (file.exists()) {
         return file;
       }
       HttpURLConnection connection = NetworkUtils.getConnection(url, proxy);

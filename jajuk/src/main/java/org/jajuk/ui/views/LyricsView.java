@@ -77,7 +77,7 @@ public class LyricsView extends ViewAdapter implements Observer {
   private String lyrics = null;
   private JMenuItem jmiCopyToClipboard = null;
   private JMenuItem jmiLaunchInBrowser = null;
-  private JXBusyLabel busy = new JXBusyLabel();
+  private final JXBusyLabel busy = new JXBusyLabel();
   private JPanel p;
 
   public LyricsView() {

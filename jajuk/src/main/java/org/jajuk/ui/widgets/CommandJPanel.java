@@ -196,7 +196,7 @@ public class CommandJPanel extends JXPanel implements ActionListener, ListSelect
 
   private PreferenceToolbar evaltoobar;
 
-  private JajukToggleButton jbMute;
+  private final JajukToggleButton jbMute;
 
   // variables declaration
   /** Repeat mode flag */

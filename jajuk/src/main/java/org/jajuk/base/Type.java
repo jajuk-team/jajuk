@@ -35,13 +35,13 @@ import org.jajuk.util.log.Log;
 public class Type extends PhysicalItem implements Comparable<Type> {
 
   /** Type extension ex:mp3,ogg */
-  private String sExtension;
+  private final String sExtension;
 
   /** Player impl */
-  private Class<ITagImpl> cTagImpl;
+  private final Class<ITagImpl> cTagImpl;
 
   /** Player class */
-  private Class<IPlayerImpl> cPlayerImpl;
+  private final Class<IPlayerImpl> cPlayerImpl;
 
   /**
    * Constructor

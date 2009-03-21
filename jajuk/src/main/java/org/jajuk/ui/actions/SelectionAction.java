@@ -36,6 +36,8 @@ import org.jajuk.util.Const;
  */
 public abstract class SelectionAction extends JajukAction {
 
+  private static final long serialVersionUID = -6072746800882488360L;
+
   List<Item> selection = null;
 
   /**

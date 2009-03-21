@@ -35,7 +35,7 @@ import org.jajuk.util.Const;
 public abstract class DigitalDJ implements Comparable<DigitalDJ> {
 
   /** DJ unique ID */
-  private String sID;
+  private final String sID;
 
   /** DJ name */
   protected String sName;

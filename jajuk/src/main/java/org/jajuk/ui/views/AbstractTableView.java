@@ -100,6 +100,8 @@ import org.jdesktop.swingx.table.TableColumnExt;
 public abstract class AbstractTableView extends ViewAdapter implements ActionListener,
     ItemListener, TableModelListener {
 
+  private static final long serialVersionUID = -4418626517605128694L;
+
   JajukTable jtable;
 
   private JPanel jpControl;

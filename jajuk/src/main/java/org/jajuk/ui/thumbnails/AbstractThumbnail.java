@@ -70,6 +70,8 @@ import org.jajuk.util.log.Log;
  */
 public abstract class AbstractThumbnail extends JPanel implements ActionListener, Transferable {
 
+  private static final long serialVersionUID = -6396225563540281695L;
+
   /** Size */
   int size;
 
@@ -188,7 +190,7 @@ public abstract class AbstractThumbnail extends JPanel implements ActionListener
     }
   }
 
-  public abstract void populate() throws Exception;
+  public abstract void populate();
 
   /** Return HTML text to display in the popup */
   public abstract String getDescription();

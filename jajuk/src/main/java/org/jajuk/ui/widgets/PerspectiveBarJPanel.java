@@ -59,7 +59,7 @@ public final class PerspectiveBarJPanel extends JXPanel {
   /**
    * Perspective button
    */
-  private List<JButton> alButtons = new ArrayList<JButton>(10);
+  private final List<JButton> alButtons = new ArrayList<JButton>(10);
 
   /**
    * Singleton access

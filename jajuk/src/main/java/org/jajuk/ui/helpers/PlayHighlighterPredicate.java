@@ -35,7 +35,7 @@ import org.jdesktop.swingx.decorator.HighlightPredicate;
  */
 public class PlayHighlighterPredicate implements HighlightPredicate {
 
-  private JajukTableModel model;
+  private final JajukTableModel model;
 
   public PlayHighlighterPredicate(JajukTableModel model) {
     this.model = model;

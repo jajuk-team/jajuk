@@ -89,7 +89,7 @@ public class SearchBox extends JTextField implements KeyListener {
   private long lDateTyped;
 
   /** Listener to handle selections */
-  private ListSelectionListener lsl;
+  private final ListSelectionListener lsl;
 
   /** Search when typing timer */
   Timer timer = new Timer(100, new ActionListener() {

@@ -35,9 +35,9 @@ public class OKCancelPanel extends JPanel {
 
   private static final long serialVersionUID = 1L;
 
-  private JajukButton jbOk;
+  private final JajukButton jbOk;
 
-  private JajukButton jbCancel;
+  private final JajukButton jbCancel;
 
   /** Associated action listener */
   ActionListener al;

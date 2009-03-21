@@ -37,7 +37,7 @@ public class TransferableAlbum extends DefaultMutableTreeNode implements Transfe
   public static final DataFlavor ALBUM_FLAVOR = new DataFlavor(
       DataFlavor.javaJVMLocalObjectMimeType, "Album");
 
-  private Object oData;
+  private final Object oData;
 
   public TransferableAlbum(Object oData) {
     this.oData = oData;
@@ -47,7 +47,7 @@ public class TransferableAlbum extends DefaultMutableTreeNode implements Transfe
     return oData;
   }
 
-  private DataFlavor[] flavors = { ALBUM_FLAVOR };
+  private final DataFlavor[] flavors = { ALBUM_FLAVOR };
 
   /*
    * (non-Javadoc)

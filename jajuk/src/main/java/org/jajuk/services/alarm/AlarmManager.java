@@ -50,7 +50,7 @@ public class AlarmManager implements Observer {
   /**
    * This thread looks alarms up and call weak up when it's time
    */
-  private Thread clock = new Thread("Alarm manager Thread") {
+  private final Thread clock = new Thread("Alarm manager Thread") {
 
     @Override
     public void run() {

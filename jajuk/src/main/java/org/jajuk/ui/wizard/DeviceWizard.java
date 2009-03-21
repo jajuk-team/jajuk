@@ -74,51 +74,51 @@ import org.jajuk.util.log.Log;
 public class DeviceWizard extends JFrame implements ActionListener, Const {
   private static final long serialVersionUID = 1L;
 
-  private JPanel jpMain;
+  private final JPanel jpMain;
 
-  private JPanel jp1;
+  private final JPanel jp1;
 
-  private JLabel jlType;
+  private final JLabel jlType;
 
-  private JComboBox jcbType;
+  private final JComboBox jcbType;
 
-  private JLabel jlName;
+  private final JLabel jlName;
 
-  private JTextField jtfName;
+  private final JTextField jtfName;
 
-  private JLabel jlUrl;
+  private final JLabel jlUrl;
 
-  private JTextField jtfUrl;
+  private final JTextField jtfUrl;
 
-  private JButton jbUrl;
+  private final JButton jbUrl;
 
-  private JCheckBox jcbRefresh;
+  private final JCheckBox jcbRefresh;
 
-  private JCheckBox jcbAutoMount;
+  private final JCheckBox jcbAutoMount;
 
-  private JLabel jlAutoRefresh;
+  private final JLabel jlAutoRefresh;
 
-  private JFormattedTextField jftfAutoRefresh;
+  private final JFormattedTextField jftfAutoRefresh;
 
-  private JLabel jlMinutes;
+  private final JLabel jlMinutes;
 
-  private JCheckBox jcboxSynchronized;
+  private final JCheckBox jcboxSynchronized;
 
-  private JComboBox jcbSynchronized;
+  private final JComboBox jcbSynchronized;
 
-  private JPanel jp2;
+  private final JPanel jp2;
 
-  private ButtonGroup bgSynchro;
+  private final ButtonGroup bgSynchro;
 
-  private JRadioButton jrbBidirSynchro;
+  private final JRadioButton jrbBidirSynchro;
 
-  private JRadioButton jrbUnidirSynchro;
+  private final JRadioButton jrbUnidirSynchro;
 
-  private JPanel jpButtons;
+  private final JPanel jpButtons;
 
-  private JButton jbOk;
+  private final JButton jbOk;
 
-  private JButton jbCancel;
+  private final JButton jbCancel;
 
   /** New device flag */
   private boolean bNew = true;
@@ -127,7 +127,7 @@ public class DeviceWizard extends JFrame implements ActionListener, Const {
   private Device device;
 
   /** All devices expect itself */
-  private List<Device> devices;
+  private final List<Device> devices;
 
   /** Initial URL* */
   private String sInitialURL;

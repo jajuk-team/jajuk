@@ -152,7 +152,7 @@ public final class JajukSlimbar extends JFrame implements Observer, MouseWheelLi
    * This mouse motion listener allows the whole slim bar dragging
    */
 
-  private MouseMotionAdapter motionAdapter = new MouseMotionAdapter() {
+  private final MouseMotionAdapter motionAdapter = new MouseMotionAdapter() {
     @Override
     public void mouseDragged(MouseEvent e) {
       Point point = e.getLocationOnScreen();

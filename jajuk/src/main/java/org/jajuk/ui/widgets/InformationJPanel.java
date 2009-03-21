@@ -86,7 +86,7 @@ public final class InformationJPanel extends JXPanel implements ChangeListener, 
   private static long lDateLastAdjust;
 
   /** Swing Timer to refresh the component */
-  private Timer timer = new Timer(JajukTimer.DEFAULT_HEARTBEAT, new ActionListener() {
+  private final Timer timer = new Timer(JajukTimer.DEFAULT_HEARTBEAT, new ActionListener() {
 
     public void actionPerformed(ActionEvent e) {
       try {

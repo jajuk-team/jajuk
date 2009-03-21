@@ -54,6 +54,8 @@ import org.jdesktop.swingx.JXTree;
  */
 public abstract class AbstractTreeView extends ViewAdapter {
 
+  private static final long serialVersionUID = 8330315957562739918L;
+
   /** The tree scrollpane */
   JScrollPane jspTree;
 

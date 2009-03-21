@@ -51,7 +51,7 @@ public abstract class ItemManager {
       10);
 
   /** Maps properties meta information name and object */
-  private HashMap<String, PropertyMetaInformation> hmPropertiesMetaInformation = new LinkedHashMap<String, PropertyMetaInformation>(
+  private final HashMap<String, PropertyMetaInformation> hmPropertiesMetaInformation = new LinkedHashMap<String, PropertyMetaInformation>(
       10);
 
   /*****************************************************************************
@@ -63,11 +63,11 @@ public abstract class ItemManager {
    * </p>
    ****************************************************************************/
 
-  private Set<Item> finalItems = new TreeSet<Item>();
+  private final Set<Item> finalItems = new TreeSet<Item>();
 
   private List<Item> startupItems = new ArrayList<Item>(100);
 
-  private Map<String, Item> internalMap = new HashMap<String, Item>(100);
+  private final Map<String, Item> internalMap = new HashMap<String, Item>(100);
 
   private Collection<Item> items = startupItems;
 

@@ -39,7 +39,7 @@ public class SmartPlaylist extends JPanel {
   /** Icon */
   private JLabel jlIcon;
 
-  private Type type;
+  private final Type type;
 
   /** Associated playlist */
   private Playlist plf;

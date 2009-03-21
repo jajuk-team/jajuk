@@ -73,12 +73,12 @@ public class JajukTable extends JXTable implements ListSelectionListener,
 
   private static final long serialVersionUID = 1L;
 
-  private String sConf;
+  private final String sConf;
 
   /** User Selection* */
-  private List<Item> selection;
+  private final List<Item> selection;
 
-  private JPopupMenu jmenu;
+  private final JPopupMenu jmenu;
 
   /** Specific action on double click */
   private ILaunchCommand command;

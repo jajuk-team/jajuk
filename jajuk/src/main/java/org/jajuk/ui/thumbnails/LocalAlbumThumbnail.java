@@ -77,7 +77,7 @@ public class LocalAlbumThumbnail extends AbstractThumbnail {
 
   JLabel jlAlbum;
 
-  private boolean bShowFullText;
+  private final boolean bShowFullText;
 
   private PreferencesJMenu pjmFiles;
 
@@ -176,9 +176,9 @@ public class LocalAlbumThumbnail extends AbstractThumbnail {
    */
   @Override
   public String getDescription() {
-    int size = 200;
-    ThumbnailManager.refreshThumbnail(album, size);
-    java.io.File cover = ThumbnailManager.getThumbBySize(album, size);
+    int lSize = 200;
+    ThumbnailManager.refreshThumbnail(album, lSize);
+    java.io.File cover = ThumbnailManager.getThumbBySize(album, lSize);
     List<Track> tracks = new ArrayList<Track>(TrackManager.getInstance().getAssociatedTracks(album,
         true));
     Collections.sort(tracks, new TrackComparator(TrackComparatorType.ORDER));

@@ -28,7 +28,7 @@ public class JajukException extends Exception {
   private static final long serialVersionUID = 1L;
 
   /** Error code */
-  private int code;
+  private final int code;
 
   /**
    * JajukException constructor.
