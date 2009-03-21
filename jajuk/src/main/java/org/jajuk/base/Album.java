@@ -61,9 +61,10 @@ public class Album extends LogicalItem implements Comparable<Album> {
    * This array stores thumbnail presence for all the available size
    * (performance) By default all booleans are false
    */
-  private boolean[] availableTumbs = new boolean[6];
+  private boolean[] availableTumbs;
 
   /**
+>>>>>>> .merge-right.r4581
    * Album constructor
    * 
    * @param id
@@ -579,7 +580,14 @@ public class Album extends LogicalItem implements Comparable<Album> {
    * @return whether a thumb is available for given size
    */
   public boolean isThumbAvailable(int size) {
+    // Lazy loading of thumb availability
+    if (availableTumbs == null){
+      availableTumbs = new boolean[6];
+      File fThumb = ThumbnailManager.getThumbBySize(this, size);
+      setAvailableThumb(size, fThumb.exists() && fThumb.length() > 0);
+    }
     return availableTumbs[size / 50 - 1];
   }
+
 
 }

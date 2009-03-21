@@ -100,10 +100,12 @@ public class LocalAlbumThumbnail extends AbstractThumbnail {
 
   @Override
   public synchronized void populate() {
-    // create the thumbnail if it doesn't exist
-    ThumbnailManager.refreshThumbnail(album, size);
     if (!album.isThumbAvailable(size)) {
-      this.fCover = null;
+      // create the thumbnail if it doesn't exist
+      boolean thumbCreated = ThumbnailManager.refreshThumbnail(album, size);
+      if (!thumbCreated){
+        this.fCover = null;
+      }
     }
     double[][] dMain = null;
     ImageIcon ii = album.getThumbnail(size);

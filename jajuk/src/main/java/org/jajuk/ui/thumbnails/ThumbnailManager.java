@@ -170,6 +170,7 @@ public final class ThumbnailManager {
     thumbImage.flush();
   }
 
+  
   /**
    * Check all thumbs existence for performance reasons
    * 
