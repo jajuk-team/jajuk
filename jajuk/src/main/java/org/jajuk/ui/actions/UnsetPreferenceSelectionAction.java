@@ -50,6 +50,7 @@ public class UnsetPreferenceSelectionAction extends SelectionAction {
   @Override
   public void perform(final ActionEvent e) throws Exception {
     new Thread("UnsetPreferenceSelectionAction") {
+      @Override
       public void run() {
         try {
           UnsetPreferenceSelectionAction.super.perform(e);

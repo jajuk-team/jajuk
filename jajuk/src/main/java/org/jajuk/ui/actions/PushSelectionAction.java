@@ -56,18 +56,18 @@ public class PushSelectionAction extends SelectionAction {
    * 
    * @see org.jajuk.ui.actions.JajukAction#perform(java.awt.event.ActionEvent)
    */
-  @SuppressWarnings("unchecked")
   @Override
   public void perform(final ActionEvent e) throws Exception {
     new Thread("PushSelectionAction") {
+      @Override
       public void run() {
         try {
           PushSelectionAction.super.perform(e);
           List<File> files = UtilFeatures.getPlayableFiles(selection);
           FIFO.push(UtilFeatures.createStackItems(UtilFeatures.applyPlayOption(files), Conf
               .getBoolean(Const.CONF_STATE_REPEAT), true), true);
-        } catch (Exception e) {
-          Log.error(e);
+        } catch (Exception e1) {
+          Log.error(e1);
         }
       }
     }.start();

@@ -44,6 +44,7 @@ import org.jajuk.util.log.Log;
  * </p>
  */
 public abstract class WindowsHotKeyManager extends AbstractAction {
+  private static final long serialVersionUID = -6948447651091264530L;
 
   /** Maps hotkeylisteners with the event ID */
   private static Map<Integer, JajukAction> hmIndexAction = new HashMap<Integer, JajukAction>(20);

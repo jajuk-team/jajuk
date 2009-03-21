@@ -39,6 +39,7 @@ public class StopTrackAction extends JajukAction {
   @Override
   public void perform(ActionEvent evt) {
     new Thread("StopTrackAction") {
+      @Override
       public void run() {
         try {
           FIFO.stopRequest();

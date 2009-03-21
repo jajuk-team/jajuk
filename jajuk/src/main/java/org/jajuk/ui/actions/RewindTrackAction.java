@@ -46,6 +46,7 @@ public class RewindTrackAction extends JajukAction {
   @Override
   public void perform(final ActionEvent evt) {
     new Thread("RewindTrackAction") {
+      @Override
       public void run() {
         try {
           /*

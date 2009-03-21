@@ -57,6 +57,7 @@ public class SaveAsAction extends JajukAction {
   @SuppressWarnings("unchecked")
   public void perform(final ActionEvent e) {
     new Thread("SaveAsAction") {
+      @Override
       public void run() {
         JComponent source = (JComponent) e.getSource();
         // @TODO Do better here, accept a single playlist for ie
