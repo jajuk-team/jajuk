@@ -588,7 +588,6 @@ public final class TrackManager extends ItemManager {
    * Perform a track cleanup : delete useless items
    */
   @Override
-  @SuppressWarnings("unchecked")
   public synchronized void cleanup() {
     for (Track track : getTracks()) {
       if (track.getFiles().size() == 0) { // no associated file
@@ -646,7 +645,6 @@ public final class TrackManager extends ItemManager {
    * @param item
    * @return
    */
-  @SuppressWarnings("unchecked")
   public synchronized List<Track> getAssociatedTracks(Item item, boolean sorted) {
     List<Item> items = new ArrayList<Item>(1);
     items.add(item);
@@ -670,10 +668,10 @@ public final class TrackManager extends ItemManager {
    */
   @SuppressWarnings("unchecked")
   public synchronized List<Track> getAssociatedTracks(List<Item> items, boolean sorted) {
-    List<Track> out = new ArrayList<Track>(items.size());
     if (items == null || items.size() == 0) {
-      return out;
+      return new ArrayList<Track>();
     }
+    List<Track> out = new ArrayList<Track>(items.size());
     if (items.get(0) instanceof Album) {
       // check the album cache
       for (Item item : items) {
