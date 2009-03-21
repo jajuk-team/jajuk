@@ -94,7 +94,6 @@ public class TransitionDigitalDJ extends DigitalDJ {
   /*
    * Generate the playlist @return the playlist
    */
-  @SuppressWarnings("unchecked")
   @Override
   public List<File> generatePlaylist() {
     List<File> out = new ArrayList<File>(500);
