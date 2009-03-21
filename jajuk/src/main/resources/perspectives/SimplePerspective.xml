@@ -4,10 +4,10 @@
 <DockingPanel>
 <Split orientation="0" location="0.30">
 <Dockable>
-<Key dockName="org.jajuk.ui.views.TracksTableView/0"/>
+<Key dockName="org.jajuk.ui.views.SuggestionView/0"/>
 </Dockable>
 <Dockable>
-<Key dockName="org.jajuk.ui.views.PlaylistView/0"/>
+<Key dockName="org.jajuk.ui.views.TracksTableView/0"/>
 </Dockable>
 </Split>
 </DockingPanel>
