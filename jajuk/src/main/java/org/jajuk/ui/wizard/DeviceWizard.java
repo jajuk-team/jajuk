@@ -388,7 +388,7 @@ public class DeviceWizard extends JFrame implements ActionListener, Const {
       jfc.setDialogTitle(Messages.getString("DeviceWizard.43"));
       jfc.setMultiSelectionEnabled(false);
       final String sUrl = jtfUrl.getText();
-      if (!sUrl.equals("")) {
+      if (!"".equals(sUrl)) {
         // if url is already set, use it as root directory
         jfc.setCurrentDirectory(new File(sUrl));
       }

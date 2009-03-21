@@ -28,7 +28,7 @@ import org.jajuk.util.JajukFileFilter;
 public class ReportFilter extends JajukFileFilter {
 
   /** Self instance */
-  protected static ReportFilter self = null;
+  private static ReportFilter self = null;
 
   /**
    * 

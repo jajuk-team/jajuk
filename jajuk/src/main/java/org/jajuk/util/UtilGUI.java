@@ -93,7 +93,7 @@ public final class UtilGUI {
   private static SubstanceColorScheme colorScheme;
 
   /** Set cursor thread, stored to avoid construction */
-  private static Thread setCursorThread = new Thread("Cursor setter thread") {
+  private static Runnable setCursorThread = new Runnable() {
     @Override
     public void run() {
       Container container = null;
@@ -247,6 +247,8 @@ public final class UtilGUI {
       int maxCharactersPerLineCount;
 
       NarrowOptionPane(final int maxCharactersPerLineCount) {
+        super();
+        
         this.maxCharactersPerLineCount = maxCharactersPerLineCount;
       }
 
@@ -424,7 +426,7 @@ public final class UtilGUI {
       graphics2D.drawImage(image, 0, 0, width, height, null);
       image.flush();
       graphics2D.dispose();
-      return (bufferedImage);
+      return bufferedImage;
     }
   }
 

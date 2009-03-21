@@ -33,7 +33,7 @@ import org.jajuk.util.UtilSystem;
 public final class NotAudioFilter extends JajukFileFilter {
 
   /** Self instance */
-  protected static NotAudioFilter self = null;
+  private static NotAudioFilter self = null;
 
   /**
    * 

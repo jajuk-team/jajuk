@@ -28,7 +28,7 @@ import org.jajuk.util.JajukFileFilter;
 public class JarFilter extends JajukFileFilter {
 
   /** Self instance */
-  protected static JarFilter self = null;
+  private static JarFilter self = null;
 
   /**
    * 

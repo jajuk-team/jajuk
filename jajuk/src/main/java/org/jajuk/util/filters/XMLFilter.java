@@ -28,7 +28,7 @@ import org.jajuk.util.JajukFileFilter;
 public class XMLFilter extends JajukFileFilter {
 
   /** Self instance */
-  protected static XMLFilter self = null;
+  private static XMLFilter self = null;
 
   /**
    * 

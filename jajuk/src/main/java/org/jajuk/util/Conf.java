@@ -328,8 +328,9 @@ public final class Conf implements Const {
     properties.setProperty(sName, sValue);
   }
 
-  /** Commit properties in a file */
-  public static void commit() throws Exception {
+  /** Commit properties in a file 
+   * @throws IOException */
+  public static void commit() throws IOException {
     OutputStream str = new FileOutputStream(UtilSystem.getConfFileByPath(Const.FILE_CONFIGURATION));
     try {
       properties.store(str, "User configuration");

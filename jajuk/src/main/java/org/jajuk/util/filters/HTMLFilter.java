@@ -28,7 +28,7 @@ import org.jajuk.util.JajukFileFilter;
 public class HTMLFilter extends JajukFileFilter {
 
   /** Self instance */
-  protected static HTMLFilter self = null;
+  private static HTMLFilter self = null;
 
   /**
    * 

@@ -417,9 +417,11 @@ public final class Main {
   /**
    * Performs some basic startup tests
    * 
+   * @throws InterruptedException
+   * @throws Exception
    * @throws Exception
    */
-  public static void initialCheckups() throws Exception {
+  public static void initialCheckups() throws IOException, InterruptedException {
     // Check for bootstrap file presence
     final File bootstrap = new File(Const.FILE_BOOTSTRAP);
     // Default workspace: ~/.jajuk
@@ -427,14 +429,17 @@ public final class Main {
     if (bootstrap.canRead()) {
       try {
         final BufferedReader br = new BufferedReader(new FileReader(bootstrap));
-        // Bootstrap file should contain a single line containing the
-        // path to jajuk workspace
-        final String sPath = br.readLine();
-        br.close();
-        // Check if the repository can be found
-        if (new File(sPath + '/'
-            + (Main.bTestMode ? ".jajuk_test_" + Const.TEST_VERSION : ".jajuk")).canRead()) {
-          Main.workspace = sPath;
+        try {
+          // Bootstrap file should contain a single line containing the
+          // path to jajuk workspace
+          final String sPath = br.readLine();
+          // Check if the repository can be found
+          if (new File(sPath + '/'
+              + (Main.bTestMode ? ".jajuk_test_" + Const.TEST_VERSION : ".jajuk")).canRead()) {
+            Main.workspace = sPath;
+          }
+        } finally {
+          br.close();
         }
       } catch (final IOException e) {
         System.out.println("Cannot read bootstrap file, using ~ directory");
@@ -775,7 +780,7 @@ public final class Main {
   /**
    * Launch jajuk window
    */
-  public static void launchWindow() throws Exception {
+  public static void launchWindow() {
     if (bUILauched) {
       return;
     }
@@ -879,7 +884,7 @@ public final class Main {
   }
 
   /** Launch tray */
-  private static void launchTray() throws Exception {
+  private static void launchTray() {
     // Skip the tray launching if user forced it to hide
     if (Conf.getBoolean(Const.CONF_FORCE_TRAY_SHUTDOWN)) {
       Log.debug("Tray shutdown forced");
@@ -898,7 +903,7 @@ public final class Main {
   }
 
   /** Launch slimbar */
-  private static void launchSlimbar() throws Exception {
+  private static void launchSlimbar() {
     SwingUtilities.invokeLater(new Runnable() {
       public void run() {
         try {

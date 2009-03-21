@@ -259,9 +259,9 @@ public class PasteAction extends JajukAction {
             for (Directory srcDir : srcDirs) {
               srcDir.refresh(false, null);
             }
-          } catch (JajukException e) {
-            Log.error(e);
-            Messages.showErrorMessage(e.getCode());
+          } catch (JajukException e1) {
+            Log.error(e1);
+            Messages.showErrorMessage(e1.getCode());
             bErrorOccured = true;
           }
         } else if (moveAction == ItemMoveManager.MoveActions.COPY) {
@@ -335,9 +335,9 @@ public class PasteAction extends JajukAction {
           }
           try {
             destDir.refresh(false, null);
-          } catch (JajukException e) {
-            Log.error(e);
-            Messages.showErrorMessage(e.getCode());
+          } catch (JajukException e1) {
+            Log.error(e1);
+            Messages.showErrorMessage(e1.getCode());
             bErrorOccured = true;
           }
         }

@@ -29,6 +29,7 @@ import java.net.URL;
 import java.util.Set;
 import java.util.TreeSet;
 
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
@@ -72,6 +73,8 @@ public final class WebRadioManager extends DefaultHandler {
   File fwebradios;
 
   private WebRadioManager() {
+    super();
+
     // check for webradio repository file
     fwebradios = UtilSystem.getConfFileByPath(Const.FILE_WEB_RADIOS_REPOS);
     if (!fwebradios.exists()) {
@@ -98,7 +101,21 @@ public final class WebRadioManager extends DefaultHandler {
       spf.setNamespaceAware(false);
       SAXParser saxParser = spf.newSAXParser();
       saxParser.parse(fwebradios.toURI().toURL().toString(), this);
-    } catch (Exception e) {
+    } catch (IOException e) {
+      Log.error(e);
+      // Remove file if it is corrupted so it will be downloaded again
+      // next time
+      if (!fwebradios.delete()) {
+        Log.warn("Could not delete file " + fwebradios.toString());
+      }
+    } catch (SAXException e) {
+      Log.error(e);
+      // Remove file if it is corrupted so it will be downloaded again
+      // next time
+      if (!fwebradios.delete()) {
+        Log.warn("Could not delete file " + fwebradios.toString());
+      }
+    } catch (ParserConfigurationException e) {
       Log.error(e);
       // Remove file if it is corrupted so it will be downloaded again
       // next time
@@ -157,19 +174,22 @@ public final class WebRadioManager extends DefaultHandler {
     String sCharset = Conf.getString(Const.CONF_COLLECTION_CHARSET);
     BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(out),
         sCharset), 1000000);
-    bw.write("<?xml version='1.0' encoding='" + sCharset + "'?>\n");
-    bw.write("<" + Const.XML_STREAMS + " " + Const.XML_VERSION + "='" + Const.JAJUK_VERSION
-        + "'>\n");
-    // Manage each stream
-    for (WebRadio radio : webradios) {
-      bw.write("\t<" + Const.XML_STREAM + " " + Const.XML_NAME + "='"
-          + UtilString.formatXML(radio.getName()) + "' " + Const.XML_URL + "='"
-          + UtilString.formatXML(radio.getUrl()) + "'/>\n");
+    try {
+      bw.write("<?xml version='1.0' encoding='" + sCharset + "'?>\n");
+      bw.write("<" + Const.XML_STREAMS + " " + Const.XML_VERSION + "='" + Const.JAJUK_VERSION
+          + "'>\n");
+      // Manage each stream
+      for (WebRadio radio : webradios) {
+        bw.write("\t<" + Const.XML_STREAM + " " + Const.XML_NAME + "='"
+            + UtilString.formatXML(radio.getName()) + "' " + Const.XML_URL + "='"
+            + UtilString.formatXML(radio.getUrl()) + "'/>\n");
+      }
+      // close
+      bw.write("</" + Const.XML_STREAMS + ">\n");
+      bw.flush();
+    } finally {
+      bw.close();
     }
-    // close
-    bw.write("</" + Const.XML_STREAMS + ">\n");
-    bw.flush();
-    bw.close();
   }
 
   /**

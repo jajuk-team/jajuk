@@ -295,9 +295,8 @@ public final class FIFO {
           // when playing we should add it as second item to play it as next item 
           if(Player.isPlaying()) {
             pos = 1;
-          } else {
-            pos = 0;
-          }            
+          } 
+          // otherwise we can keep pos at zero
         }
         // If push, not play, add items at the end
         else if (bAppend && alFIFO.size() > 0) {
@@ -867,12 +866,12 @@ public final class FIFO {
   /**
    * Get an item at given index in FIFO
    * 
-   * @param index :
+   * @param lIndex :
    *          index
    * @return stack item
    */
-  public static StackItem getItem(int index) {
-    return alFIFO.get(index);
+  public static StackItem getItem(int lIndex) {
+    return alFIFO.get(lIndex);
   }
 
   /**
@@ -1019,42 +1018,42 @@ public final class FIFO {
   /**
    * Put up an item from given index to index-1
    * 
-   * @param index
+   * @param lIndex
    */
-  public static void up(int index) {
-    if (index == 0 || index == alFIFO.size()) {
+  public static void up(int lIndex) {
+    if (lIndex == 0 || lIndex == alFIFO.size()) {
       // Can't put up first track in queue or
       // first planned track.
       // This should be already made by ui behavior
       return;
     }
-    if (index < alFIFO.size()) {
-      StackItem item = alFIFO.get(index);
-      alFIFO.remove(index); // remove the item
-      alFIFO.add(index - 1, item); // add it again above
+    if (lIndex < alFIFO.size()) {
+      StackItem item = alFIFO.get(lIndex);
+      alFIFO.remove(lIndex); // remove the item
+      alFIFO.add(lIndex - 1, item); // add it again above
     } else { // planned track
-      StackItem item = alPlanned.get(index - alFIFO.size());
-      alFIFO.remove(index - alFIFO.size()); // remove the item
+      StackItem item = alPlanned.get(lIndex - alFIFO.size());
+      alFIFO.remove(lIndex - alFIFO.size()); // remove the item
       // add it again above
-      alFIFO.add(index - alFIFO.size() - 1, item);
+      alFIFO.add(lIndex - alFIFO.size() - 1, item);
     }
   }
 
   /**
    * Put down an item from given index to index+1
    * 
-   * @param index
+   * @param lIndex
    */
-  public static void down(int index) {
-    if (index == 0 || index == alFIFO.size() - 1 || index == alFIFO.size() + alPlanned.size() - 1) {
+  public static void down(int lIndex) {
+    if (lIndex == 0 || lIndex == alFIFO.size() - 1 || lIndex == alFIFO.size() + alPlanned.size() - 1) {
       // Can't put down current track, nor last track in FIFO, nor last
       // planned track. This should be already made by ui behavior
       return;
     }
-    if (index < alFIFO.size()) {
-      StackItem item = alFIFO.get(index);
-      alFIFO.remove(index); // remove the item
-      alFIFO.add(index + 1, item); // add it again above
+    if (lIndex < alFIFO.size()) {
+      StackItem item = alFIFO.get(lIndex);
+      alFIFO.remove(lIndex); // remove the item
+      alFIFO.add(lIndex + 1, item); // add it again above
     }
   }
 

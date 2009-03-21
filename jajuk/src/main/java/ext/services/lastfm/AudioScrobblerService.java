@@ -24,6 +24,7 @@ import ext.services.network.Proxy;
 import ext.services.xml.XMLBuilder;
 
 import java.awt.Image;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -55,7 +56,7 @@ public final class AudioScrobblerService {
 
   private static final boolean SHOW_ALBUMS_WITHOUT_COVER = false;
 
-  private Proxy proxy;
+  private final Proxy proxy;
 
   private static AudioScrobblerService self;
 
@@ -91,7 +92,7 @@ public final class AudioScrobblerService {
       Document xml = XMLBuilder.getXMLDocument(NetworkUtils.readURL(NetworkUtils.getConnection(
           urlString, proxy)));
       return AudioScrobblerAlbum.getAlbum(xml);
-    } catch (Exception e) {
+    } catch (IOException e) {
       Log.debug("No info found for artist " + artist + " album " + album);
     }
     return null;
@@ -116,7 +117,7 @@ public final class AudioScrobblerService {
         }
       }
       return result;
-    } catch (Exception e) {
+    } catch (IOException e) {
       Log.debug("No info found for artist " + artist);
     }
     return null;
@@ -131,7 +132,7 @@ public final class AudioScrobblerService {
       Document xml = XMLBuilder.getXMLDocument(NetworkUtils.readURL(NetworkUtils.getConnection(
           urlString, proxy)));
       return AudioScrobblerSimilarArtists.getSimilarArtists(xml);
-    } catch (Exception e) {
+    } catch (IOException e) {
       Log.debug("No info found for similar artists to artist " + artist);
     }
     return null;
@@ -145,7 +146,7 @@ public final class AudioScrobblerService {
       Document xml = XMLBuilder.getXMLDocument(NetworkUtils.readURL(NetworkUtils.getConnection(
           urlString, proxy)));
       return getTopTag(xml);
-    } catch (Exception e) {
+    } catch (IOException e) {
       Log.debug("No tag found for artist " + artist);
     }
     return null;
@@ -154,7 +155,7 @@ public final class AudioScrobblerService {
   public Image getImage(AudioScrobblerAlbum album) {
     try {
       return NetworkUtils.getImage(NetworkUtils.getConnection(album.getCoverURL(), proxy));
-    } catch (Exception e) {
+    } catch (IOException e) {
       Log.debug("No image found for album " + album);
     }
     return null;
@@ -163,7 +164,7 @@ public final class AudioScrobblerService {
   public Image getImage(AudioScrobblerArtist artist) {
     try {
       return NetworkUtils.getImage(NetworkUtils.getConnection(artist.getImageUrl(), proxy));
-    } catch (Exception e) {
+    } catch (IOException e) {
       Log.debug("No image found for artist " + artist);
     }
     return null;
@@ -172,7 +173,7 @@ public final class AudioScrobblerService {
   public Image getImage(AudioScrobblerSimilarArtists similar) {
     try {
       return NetworkUtils.getImage(NetworkUtils.getConnection(similar.getPicture(), proxy));
-    } catch (Exception e) {
+    } catch (IOException e) {
       Log.debug("No image found for similar artist " + similar);
     }
     return null;
@@ -181,7 +182,7 @@ public final class AudioScrobblerService {
   public Image getSmallImage(AudioScrobblerAlbum album) {
     try {
       return NetworkUtils.getImage(NetworkUtils.getConnection(album.getSmallCoverURL(), proxy));
-    } catch (Exception e) {
+    } catch (IOException e) {
       Log.debug("No small image found for album " + album);
     }
     return null;
