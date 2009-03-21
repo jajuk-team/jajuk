@@ -119,13 +119,25 @@ public final class FIFO {
    * @param bAppend
    */
   public static void push(final List<StackItem> alItems, final boolean bAppend) {
+    push(alItems, bAppend, false);
+  }
+  
+  /**
+   * Asynchronous version of push (needed to perform long-task out of awt
+   * dispatcher thread)
+   * 
+   * @param alItems
+   * @param bAppend
+   * @param bFront
+   */
+  public static void push(final List<StackItem> alItems, final boolean bAppend, final boolean bFront) {
     Thread t = new Thread() { // do it in a thread to make UI more
       // reactive
       @Override
       public void run() {
         try {
           UtilGUI.waiting();
-          FIFO.pushCommand(alItems, bAppend);
+          FIFO.pushCommand(alItems, bAppend, bFront);
         } catch (Exception e) {
           Log.error(e);
         } finally {
@@ -147,13 +159,25 @@ public final class FIFO {
    * @param bAppend
    */
   public static void push(final StackItem item, final boolean bAppend) {
+    push(item, bAppend, false);
+  }
+  
+  /**
+   * Asynchronous version of push (needed to perform long-task out of awt
+   * dispatcher thread)
+   * 
+   * @param item
+   * @param bAppend
+   * @param bFront
+   */
+  public static void push(final StackItem item, final boolean bAppend, final boolean bFront) {
     Thread t = new Thread() {
       // do it in a thread to make UI more reactive
       @Override
       public void run() {
         try {
           UtilGUI.waiting();
-          pushCommand(item, bAppend);
+          pushCommand(item, bAppend, bFront);
         } catch (Exception e) {
           Log.error(e);
         } finally {
@@ -213,7 +237,7 @@ public final class FIFO {
    * @param bAppend
    *          keep previous files or stop them to start a new one ?
    */
-  private static void pushCommand(List<StackItem> alItems, boolean bAppend) {
+  private static void pushCommand(List<StackItem> alItems, boolean bAppend, final boolean bFront) {
     try {
       // wake up FIFO if stopped
       bStop = false;
@@ -266,8 +290,17 @@ public final class FIFO {
           alFIFO.clear();
         }
         int pos = 0;
+        // if push to front, set pos to first item
+        if(bFront) {
+          // when playing we should add it as second item to play it as next item 
+          if(Player.isPlaying()) {
+            pos = 1;
+          } else {
+            pos = 0;
+          }            
+        }
         // If push, not play, add items at the end
-        if (bAppend && alFIFO.size() > 0) {
+        else if (bAppend && alFIFO.size() > 0) {
           pos = alFIFO.size();
         }
         // add required tracks in the FIFO
@@ -333,10 +366,10 @@ public final class FIFO {
    * @param bAppend
    *          keep previous files or stop them to start a new one ?
    */
-  private static void pushCommand(StackItem item, boolean bAppend) {
+  private static void pushCommand(StackItem item, boolean bAppend, final boolean bFront) {
     List<StackItem> alFiles = new ArrayList<StackItem>(1);
     alFiles.add(item);
-    pushCommand(alFiles, bAppend);
+    pushCommand(alFiles, bAppend, bFront);
   }
 
   /**
@@ -391,7 +424,7 @@ public final class FIFO {
           }
           if (file != null) {
             // push it, it will be played
-            pushCommand(new StackItem(file), false);
+            pushCommand(new StackItem(file), false, false);
           } else {
             // probably end of collection option "restart" off
             JajukTimer.getInstance().reset();
@@ -560,7 +593,6 @@ public final class FIFO {
       }
     } else {
       for (int i = 0; i < missingPlannedSize; i++) {
-        @SuppressWarnings("unused")
         StackItem item = null;
         StackItem siLast = null; // last item in fifo or planned
         // if planned stack contains yet some tracks
@@ -729,10 +761,10 @@ public final class FIFO {
         finished(); // stop current track
       } else if (itemLast != null) { // try to launch any previous
         // file
-        pushCommand(itemLast, false);
+        pushCommand(itemLast, false, false);
       } else { // really nothing? play a shuffle track from collection
         pushCommand(new StackItem(FileManager.getInstance().getShuffleFile(), Conf
-            .getBoolean(Const.CONF_STATE_REPEAT), false), false);
+            .getBoolean(Const.CONF_STATE_REPEAT), false), false, false);
       }
     } catch (Exception e) {
       Log.error(e);
@@ -788,7 +820,7 @@ public final class FIFO {
             // look for the next different album
             if (fileNext != null && !fileNext.getDirectory().equals(dir)) {
               pushCommand(new StackItem(fileNext, Conf.getBoolean(Const.CONF_STATE_REPEAT), false),
-                  false); // play
+                  false, false); // play
               // it
               return;
             }
@@ -796,10 +828,10 @@ public final class FIFO {
         }
       } else if (itemLast != null) { // try to launch any previous
         // file
-        pushCommand(itemLast, false);
+        pushCommand(itemLast, false, false);
       } else { // really nothing? play a shuffle track from collection
         pushCommand(new StackItem(FileManager.getInstance().getShuffleFile(), Conf
-            .getBoolean(Const.CONF_STATE_REPEAT), false), false);
+            .getBoolean(Const.CONF_STATE_REPEAT), false), false, false);
       }
     } catch (Exception e) {
       Log.error(e);
@@ -1161,7 +1193,7 @@ public final class FIFO {
       }
       // Clean FIFO and add again new selection
       clear();
-      pushCommand(alFIFOCopy, true);
+      pushCommand(alFIFOCopy, true, false);
     }
   }
 
