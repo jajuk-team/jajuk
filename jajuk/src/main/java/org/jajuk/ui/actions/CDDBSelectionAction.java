@@ -57,6 +57,7 @@ public class CDDBSelectionAction extends SelectionAction {
   @Override
   public void perform(final ActionEvent e) throws Exception {
     new Thread("CDDBSelectionAction") {
+      @Override
       public void run() {
         try {
           CDDBSelectionAction.super.perform(e);

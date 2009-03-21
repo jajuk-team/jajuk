@@ -49,6 +49,7 @@ public class FinishAlbumAction extends JajukAction {
   @Override
   public void perform(ActionEvent evt) throws JajukException {
     new Thread("FinishAlbumAction") {
+      @Override
       public void run() {
         try {
           StackItem item = FIFO.getCurrentItem();// stores

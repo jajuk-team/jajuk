@@ -45,6 +45,7 @@ public class ForwardTrackAction extends JajukAction {
   @Override
   public void perform(ActionEvent evt) {
     new Thread("ForwardTrackAction") {
+      @Override
       public void run() {
         try {
           float fCurrentPosition = Player.getCurrentPosition();

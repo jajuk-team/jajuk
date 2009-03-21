@@ -52,6 +52,7 @@ public class BanSelectionAction extends SelectionAction {
   @Override
   public void perform(final ActionEvent e) throws Exception {
     new Thread("BanSelectionAction") {
+      @Override
       public void run() {
         try {
           BanSelectionAction.super.perform(e);

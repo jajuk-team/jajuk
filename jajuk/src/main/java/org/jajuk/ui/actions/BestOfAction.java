@@ -48,6 +48,7 @@ public class BestOfAction extends JajukAction {
   @Override
   public void perform(ActionEvent evt) throws JajukException {
     new Thread("BestOfAction") {
+      @Override
       public void run() {
         try {
           Ambience ambience = AmbienceManager.getInstance().getSelectedAmbience();

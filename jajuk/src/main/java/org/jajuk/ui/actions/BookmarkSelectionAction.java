@@ -58,6 +58,7 @@ public class BookmarkSelectionAction extends SelectionAction {
   @Override
   public void perform(final ActionEvent e) throws Exception {
     new Thread("BookmarkSelectionAction") {
+      @Override
       public void run() {
         try {
           BookmarkSelectionAction.super.perform(e);

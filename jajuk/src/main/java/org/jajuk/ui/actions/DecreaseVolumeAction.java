@@ -38,6 +38,7 @@ public class DecreaseVolumeAction extends JajukAction {
   @Override
   public void perform(ActionEvent evt) {
     new Thread("DecreaseVolumeAction") {
+      @Override
       public void run() {
         try {
           float old = Player.getCurrentVolume();

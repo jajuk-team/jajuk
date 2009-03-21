@@ -51,6 +51,7 @@ public class ChangeTrackPreferenceAction extends JajukAction {
   @Override
   public void perform(ActionEvent evt) throws JajukException {
     new Thread("ChangeTrackPreferenceAction") {
+      @Override
       public void run() {
         try {
           File file = FIFO.getPlayingFile();

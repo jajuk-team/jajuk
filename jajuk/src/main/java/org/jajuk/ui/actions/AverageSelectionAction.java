@@ -51,6 +51,7 @@ public class AverageSelectionAction extends SelectionAction {
   @Override
   public void perform(final ActionEvent e) throws Exception {
     new Thread("AverageSelectionAction") {
+      @Override
       public void run() {
         try {
           AverageSelectionAction.super.perform(e);

@@ -50,6 +50,7 @@ public class HateSelectionAction extends SelectionAction {
   @Override
   public void perform(final ActionEvent e) throws Exception {
     new Thread("HateSelectionAction") {
+      @Override
       public void run() {
         try {
           HateSelectionAction.super.perform(e);

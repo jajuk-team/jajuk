@@ -41,6 +41,7 @@ public class CheckForUpdateAction extends JajukAction {
   @Override
   public void perform(ActionEvent evt) throws JajukException {
     new Thread("CheckForUpdateAction") {
+      @Override
       public void run() {
         try {
           String newRelease = UpgradeManager.getNewVersionName();
