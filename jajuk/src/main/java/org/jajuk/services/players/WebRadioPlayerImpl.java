@@ -74,7 +74,6 @@ public class WebRadioPlayerImpl extends AbstractMPlayerImpl {
    *      float)
    */
   @Override
-  @SuppressWarnings("unchecked")
   public void play(WebRadio radio, float fVolume) throws Exception {
     this.fVolume = fVolume;
     this.bOpening = true;
