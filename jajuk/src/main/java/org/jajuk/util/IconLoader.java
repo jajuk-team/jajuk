@@ -33,9 +33,6 @@ import javax.swing.ImageIcon;
  */
 final public class IconLoader {
 
-  /** No covers image cache : size:default icon */
-  private static Map<String, ImageIcon> nocoverCache = new HashMap<String, ImageIcon>(10);
-
   /** Icons cache * */
   private static Map<JajukIcons, ImageIcon> cache = new HashMap<JajukIcons, ImageIcon>(200);
 
