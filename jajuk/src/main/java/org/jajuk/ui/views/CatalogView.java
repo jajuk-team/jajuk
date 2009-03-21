@@ -392,6 +392,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
   private synchronized void populateCatalog() {
     UtilGUI.waiting();
     new Thread() {
+      @Override
       public void run() {
         final int value = jsp.getVerticalScrollBar().getValue();
         final List<LocalAlbumThumbnail> thumbs = new ArrayList<LocalAlbumThumbnail>(100);
@@ -429,8 +430,8 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
         Filter.filterItems(alAllTracks, filter);
         // keep matching albums
         HashSet<Album> hsAlbums = new HashSet<Album>(alAllTracks.size() / 10);
-        for (Item item : alAllTracks) {
-          Track track = (Track) item;
+        for (Item litem : alAllTracks) {
+          Track track = (Track) litem;
           Album album = track.getAlbum();
           if (!jcbShowNoCover.isSelected()) {
             String coverPath = album.getStringValue(XML_ALBUM_COVER);

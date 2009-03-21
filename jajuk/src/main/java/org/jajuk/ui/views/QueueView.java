@@ -215,6 +215,7 @@ public class QueueView extends PlaylistView {
    */
   private void goToSelection() {
     new Thread() {
+      @Override
       public void run() {
         try {
           FIFO.goTo(editorTable.getSelectedRow());

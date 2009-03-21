@@ -164,9 +164,6 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
   /** Force next track cover reload flag* */
   private boolean bForceCoverReload = true;
 
-  /** Whether the cover is being displayed */
-  private boolean bDisplaying = false;
-
   /**
    * Constructor
    * 
@@ -788,7 +785,6 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
       public Object construct() {
         synchronized (this) {
           // Avoid looping
-          bDisplaying = true;
           if (alCovers.size() == 0) {
             // should not append
             alCovers.add(CoverView.nocover);
@@ -851,7 +847,6 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
       @Override
       public void finished() {
         displayCover(index);
-        bDisplaying = false;
       }
     };
     sw.start();
