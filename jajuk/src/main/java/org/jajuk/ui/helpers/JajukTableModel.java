@@ -23,7 +23,6 @@ package org.jajuk.ui.helpers;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-import java.util.Vector;
 
 import javax.swing.ImageIcon;
 import javax.swing.table.DefaultTableModel;
@@ -62,7 +61,7 @@ public abstract class JajukTableModel extends DefaultTableModel {
   protected boolean[][] bCellEditable;
 
   /** Column names */
-  protected Vector<String> vColNames = new Vector<String>(10);
+  protected List<String> vColNames = new ArrayList<String>(10);
 
   /** Last value used for undo */
   private Object oLast = null;
@@ -79,6 +78,8 @@ public abstract class JajukTableModel extends DefaultTableModel {
    *          Number of columns of this model (without custom properties)
    */
   public JajukTableModel(int iNumberStandardCols) {
+    super();
+    
     this.iNumberStandardCols = iNumberStandardCols;
   }
 
@@ -87,6 +88,8 @@ public abstract class JajukTableModel extends DefaultTableModel {
    * Default constructor
    */
   public JajukTableModel() {
+    super();
+    
     this.iNumberStandardCols = 0;
   }
 

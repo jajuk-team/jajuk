@@ -46,6 +46,7 @@ public class ManualDeviceRefreshReporter extends RefreshReporter {
     super(device);
   }
 
+  @Override
   public void startup() {
     super.startup();
 
@@ -65,12 +66,14 @@ public class ManualDeviceRefreshReporter extends RefreshReporter {
     this.rdialog.setProgress(10);
   }
 
+  @Override
   public void reset() {
     super.reset();
     this.progress = 0;
 
   }
 
+  @Override
   public void cleanupDone() {
     // Cleanup represents about 20% of the total workload
     rdialog.setProgress(20);
@@ -82,6 +85,7 @@ public class ManualDeviceRefreshReporter extends RefreshReporter {
     }
   }
 
+  @Override
   public void updateState(Directory dir) {
     if (rdialog != null) {
       rdialog.setRefreshing(new StringBuilder(Messages.getString("Device.44")).append(' ').append(
@@ -95,6 +99,7 @@ public class ManualDeviceRefreshReporter extends RefreshReporter {
     dirCount++;
   }
 
+  @Override
   public void done() {
     long refreshTime = System.currentTimeMillis() - lRefreshDateStart;
     String message = buildFinalMessage(refreshTime);

@@ -44,23 +44,27 @@ public class ManualDirectoryRefreshReporter extends RefreshReporter {
     super(device);
   }
 
+  @Override
   public void startup() {
     super.startup();
   }
 
+  @Override
   public void reset() {
     super.reset();
   }
 
+  @Override
   public void cleanupDone() {
     Log.debug("Cleanup done");
   }
 
-  @SuppressWarnings("unused")
+  @Override
   public void updateState(Directory dir) {
     // Intentionnal NOP
   }
 
+  @Override
   public void done() {
     long refreshTime = System.currentTimeMillis() - lRefreshDateStart;
     String message = buildFinalMessage(refreshTime);

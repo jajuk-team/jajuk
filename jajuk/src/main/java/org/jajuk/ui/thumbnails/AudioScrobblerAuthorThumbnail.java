@@ -27,7 +27,6 @@ import ext.services.lastfm.AudioScrobblerService;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.net.URL;
 import java.util.List;
 
@@ -45,7 +44,6 @@ import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.UtilGUI;
 import org.jajuk.util.UtilString;
-import org.jajuk.util.UtilSystem;
 import org.jajuk.util.log.Log;
 import org.jdesktop.swingx.VerticalLayout;
 import org.jdesktop.swingx.border.DropShadowBorder;
@@ -60,9 +58,6 @@ public class AudioScrobblerAuthorThumbnail extends AbstractThumbnail {
 
   /** Associated author */
   private AudioScrobblerArtist author;
-
-  /** Popup thumbnail cache */
-  private File fThumb;
 
   /** Is this author known in collection ? */
   private boolean bKnown;
@@ -98,8 +93,6 @@ public class AudioScrobblerAuthorThumbnail extends AbstractThumbnail {
           // Download the picture and store file reference (to
           // generate the popup thumb for ie)
           fCover = DownloadManager.downloadToCache(remote);
-          fThumb = UtilSystem.getConfFileByPath(Const.FILE_CACHE + "/" + System.currentTimeMillis()
-              + "_100x100." + UtilSystem.getExtension(fCover));
           BufferedImage image = ImageIO.read(fCover);
           ImageIcon downloadedImage = new ImageIcon(image);
           ii = UtilGUI.getScaledImage(downloadedImage, 100);
