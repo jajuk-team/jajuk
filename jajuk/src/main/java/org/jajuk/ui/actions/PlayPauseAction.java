@@ -49,6 +49,7 @@ public class PlayPauseAction extends JajukAction {
         return;
       }
       new Thread() {
+        @Override
         public void run() {
           try {
             bAlreadyLaunching = true;

@@ -59,10 +59,10 @@ public class PlayAlbumSelectionAction extends SelectionAction {
    * 
    * @see org.jajuk.ui.actions.JajukAction#perform(java.awt.event.ActionEvent)
    */
-  @SuppressWarnings("unchecked")
   @Override
   public void perform(final ActionEvent e) throws Exception {
     new Thread("PlayAlbumSelectionAction") {
+      @Override
       public void run() {
         try {
           PlayAlbumSelectionAction.super.perform(e);

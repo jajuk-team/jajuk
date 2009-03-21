@@ -56,10 +56,10 @@ public class PlaySelectionAction extends SelectionAction {
    * 
    * @see org.jajuk.ui.actions.JajukAction#perform(java.awt.event.ActionEvent)
    */
-  @SuppressWarnings("unchecked")
   @Override
   public void perform(final ActionEvent e) throws Exception {
     new Thread("PlaySelectionAction") {
+      @Override
       public void run() {
         try {
           PlaySelectionAction.super.perform(e);

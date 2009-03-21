@@ -50,6 +50,7 @@ public class PoorSelectionAction extends SelectionAction {
   @Override
   public void perform(final ActionEvent e) throws Exception {
     new Thread("PoorSelectionAction") {
+      @Override
       public void run() {
         try {
           PoorSelectionAction.super.perform(e);

@@ -50,6 +50,7 @@ public class LaunchInBrowserAction extends JajukAction {
   @Override
   public void perform(final ActionEvent evt) throws JajukException {
     new Thread("LaunchInBrowserAction") {
+      @Override
       public void run() {
         try {
           JComponent source = (JComponent) evt.getSource();

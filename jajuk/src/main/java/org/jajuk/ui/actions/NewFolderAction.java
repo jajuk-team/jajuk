@@ -52,6 +52,7 @@ public class NewFolderAction extends JajukAction {
   @SuppressWarnings("unchecked")
   public void perform(final ActionEvent e) {
     new Thread("NewFolderAction") {
+      @Override
       public void run() {
         try {
           JComponent source = (JComponent) e.getSource();
