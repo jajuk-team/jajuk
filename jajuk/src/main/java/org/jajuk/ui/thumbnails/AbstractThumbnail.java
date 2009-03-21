@@ -87,6 +87,8 @@ public abstract class AbstractThumbnail extends JPanel implements ActionListener
 
   JMenuItem jmiPush;
 
+  JMenuItem jmiFrontPush;
+
   JMenuItem jmiDelete;
 
   JMenuItem jmiPlayShuffle;
@@ -201,6 +203,8 @@ public abstract class AbstractThumbnail extends JPanel implements ActionListener
     jmiPlay.putClientProperty(Const.DETAIL_SELECTION, getItem());
     jmiPush = new JMenuItem(ActionManager.getAction(JajukActions.PUSH_SELECTION));
     jmiPush.putClientProperty(Const.DETAIL_SELECTION, getItem());
+    jmiFrontPush = new JMenuItem(ActionManager.getAction(JajukActions.PUSH_FRONT_SELECTION));
+    jmiFrontPush.putClientProperty(Const.DETAIL_SELECTION, getItem());
     jmiDelete = new JMenuItem(ActionManager.getAction(JajukActions.DELETE));
     jmiDelete.putClientProperty(Const.DETAIL_SELECTION, getItem());
     jmiPlayShuffle = new JMenuItem(ActionManager.getAction(JajukActions.PLAY_SHUFFLE_SELECTION));
@@ -227,6 +231,7 @@ public abstract class AbstractThumbnail extends JPanel implements ActionListener
     // context
     jmenu.add(jmiPlay);
     jmenu.add(jmiPush);
+    jmenu.add(jmiFrontPush);
     jmenu.add(jmiPlayShuffle);
     jmenu.add(jmiPlayRepeat);
     jmenu.addSeparator();

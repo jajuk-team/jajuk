@@ -74,6 +74,7 @@ import static org.jajuk.ui.actions.JajukActions.PREPARE_PARTY;
 import static org.jajuk.ui.actions.JajukActions.PREVIOUS_ALBUM;
 import static org.jajuk.ui.actions.JajukActions.PREVIOUS_TRACK;
 import static org.jajuk.ui.actions.JajukActions.PUSH_SELECTION;
+import static org.jajuk.ui.actions.JajukActions.PUSH_FRONT_SELECTION;
 import static org.jajuk.ui.actions.JajukActions.QUALITY;
 import static org.jajuk.ui.actions.JajukActions.REFRESH;
 import static org.jajuk.ui.actions.JajukActions.RENAME;
@@ -222,6 +223,7 @@ public final class ActionManager {
     installAction(PLAY_SELECTION, new PlaySelectionAction(), false);
     installAction(PLAY_SHUFFLE_SELECTION, new PlayShuffleSelectionAction(), false);
     installAction(PLAY_REPEAT_SELECTION, new PlayRepeatSelectionAction(), false);
+    installAction(PUSH_FRONT_SELECTION, new PushFrontSelectionAction(), false);
     installAction(PUSH_SELECTION, new PushSelectionAction(), false);
     installAction(BOOKMARK_SELECTION, new BookmarkSelectionAction(), false);
     installAction(PLAY_ALBUM_SELECTION, new PlayAlbumSelectionAction(), false);

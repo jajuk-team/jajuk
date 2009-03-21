@@ -174,6 +174,7 @@ public class JajukSystray extends CommandJPanel {
     initUI();
   }
 
+  @Override
   public void initUI() {
     // Instanciate the PlayerStateMediator to listen for player basic controls
     PlayerStateMediator.getInstance();
@@ -318,6 +319,7 @@ public class JajukSystray extends CommandJPanel {
     UtilFeatures.updateStatus(this);
   }
 
+  @Override
   public Set<JajukEvents> getRegistrationKeys() {
     Set<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
     eventSubjectSet.add(JajukEvents.ZERO);
@@ -337,6 +339,7 @@ public class JajukSystray extends CommandJPanel {
   /**
    * ActionListener
    */
+  @Override
   public void actionPerformed(final ActionEvent e) {
     // do not run this in a separate thread because Player actions would die
     // with the thread
@@ -359,6 +362,7 @@ public class JajukSystray extends CommandJPanel {
    * 
    * @see org.jajuk.ui.Observer#update(java.lang.String)
    */
+  @Override
   public final void update(final JajukEvent event) {
     SwingUtilities.invokeLater(new Runnable() {
       public void run() {
@@ -494,6 +498,7 @@ public class JajukSystray extends CommandJPanel {
    * Populate ambiences
    * 
    */
+  @Override
   final void populateAmbiences() {
     // Ambience selection listener
     ActionListener al = new ActionListener() {
@@ -539,6 +544,7 @@ public class JajukSystray extends CommandJPanel {
    * 
    * @see java.awt.event.MouseWheelListener#mouseWheelMoved(java.awt.event.MouseWheelEvent)
    */
+  @Override
   public void mouseWheelMoved(MouseWheelEvent e) {
     if (e.getSource() == jsPosition) {
       int iOld = jsPosition.getValue();
@@ -554,6 +560,7 @@ public class JajukSystray extends CommandJPanel {
    * 
    * @see javax.swing.event.ChangeListener#stateChanged(javax.swing.event.ChangeEvent)
    */
+  @Override
   public void stateChanged(ChangeEvent e) {
     if (e.getSource() == jsPosition && !jsPosition.getValueIsAdjusting()) {
       lDateLastAdjust = System.currentTimeMillis();

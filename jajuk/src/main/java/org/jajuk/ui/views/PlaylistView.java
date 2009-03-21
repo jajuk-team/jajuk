@@ -133,6 +133,7 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
   JajukTable editorTable;
   JMenuItem jmiFilePlay;
   JMenuItem jmiFilePush;
+  JMenuItem jmiFileFrontPush;
   JMenuItem jmiFileAddFavorites;
   JMenuItem jmiFileUp;
   JMenuItem jmiFileDown;
@@ -370,6 +371,8 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
    */
   void initMenuItems() {
     // menu items
+    jmiFileFrontPush = new JMenuItem(ActionManager.getAction(JajukActions.PUSH_FRONT_SELECTION));
+    jmiFileFrontPush.putClientProperty(Const.DETAIL_SELECTION, editorTable.getSelection());
     jmiFilePush = new JMenuItem(ActionManager.getAction(JajukActions.PUSH_SELECTION));
     jmiFilePush.putClientProperty(Const.DETAIL_SELECTION, editorTable.getSelection());
     jmiFileAddFavorites = new JMenuItem(ActionManager.getAction(JajukActions.BOOKMARK_SELECTION));
@@ -387,6 +390,7 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
     jmiFileCopyURL.putClientProperty(Const.DETAIL_CONTENT, editorTable.getSelection());
 
     editorTable.getMenu().add(jmiFilePlay);
+    editorTable.getMenu().add(jmiFileFrontPush);
     editorTable.getMenu().add(jmiFilePush);
     editorTable.getMenu().addSeparator();
     editorTable.getMenu().add(jmiFileUp);

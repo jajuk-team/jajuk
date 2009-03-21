@@ -63,13 +63,13 @@ public class StylesSelectionDialog extends JajukJDialog implements ActionListene
 
   Set<Style> disabledStyles;
 
-  Vector<String> list;
+  List<String> list;
 
   /**
    * @throws HeadlessException
    */
   @SuppressWarnings("unchecked")
-  public StylesSelectionDialog(Set disabledStyles) throws HeadlessException {
+  public StylesSelectionDialog(Set disabledStyles) {
     super();
     this.selectedStyles = new HashSet<Style>();
     this.disabledStyles = disabledStyles;
@@ -120,7 +120,7 @@ public class StylesSelectionDialog extends JajukJDialog implements ActionListene
 
   @SuppressWarnings("unchecked")
   private void initUI() {
-    list = (Vector) StyleManager.getInstance().getStylesList().clone();
+    list = (List) ((ArrayList)StyleManager.getInstance().getStylesList()).clone();
     // remove disabled items
     if (disabledStyles != null) {
       Iterator it = list.iterator();
@@ -150,7 +150,7 @@ public class StylesSelectionDialog extends JajukJDialog implements ActionListene
     layout.setHGap(10);
     setLayout(layout);
     JLabel jlAmbience = new JLabel(Messages.getString("DigitalDJWizard.58"));
-    jlist = new JList(list);
+    jlist = new JList(new Vector<String>(list));
     jlist.setLayoutOrientation(JList.VERTICAL_WRAP);
     JScrollPane jsp = new JScrollPane(jlist);
     jsp.setPreferredSize(new Dimension(600, 600));

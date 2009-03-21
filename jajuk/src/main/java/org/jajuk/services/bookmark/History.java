@@ -26,12 +26,13 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
-import java.util.Vector;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
@@ -65,7 +66,7 @@ public final class History extends DefaultHandler implements ErrorHandler, Obser
   private static History history;
 
   /** History repository, last play first */
-  private static Vector<HistoryItem> vHistory = new Vector<HistoryItem>(100);
+  private static List<HistoryItem> vHistory = new ArrayList<HistoryItem>(100);
 
   /** History begin date */
   private static long lDateStart;
@@ -83,6 +84,8 @@ public final class History extends DefaultHandler implements ErrorHandler, Obser
 
   /** Hidden constructor */
   private History() {
+    super();
+
     ObservationManager.register(this);
     // check if something has already started
     if (ObservationManager.getDetailLastOccurence(JajukEvents.FILE_LAUNCHED,
@@ -111,7 +114,7 @@ public final class History extends DefaultHandler implements ErrorHandler, Obser
    * 
    * @return the history
    */
-  public Vector<HistoryItem> getHistory() {
+  public List<HistoryItem> getHistory() {
     return vHistory;
   }
 
@@ -215,17 +218,20 @@ public final class History extends DefaultHandler implements ErrorHandler, Obser
     }
     BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(UtilSystem
         .getConfFileByPath(Const.FILE_HISTORY)), "UTF-8"));
-    bw.write("<?xml version='1.0' encoding='UTF-8'?>\n");
-    bw.write("<history JAJUK_VERSION='" + Const.JAJUK_VERSION + "' begin_date='"
-        + Long.toString(lDateStart) + "'>\n");
-    Iterator<HistoryItem> it = vHistory.iterator();
-    while (it.hasNext()) {
-      HistoryItem hi = it.next();
-      bw.write("\t<play file='" + hi.getFileId() + "' date='" + hi.getDate() + "'/>\n");
+    try {
+      bw.write("<?xml version='1.0' encoding='UTF-8'?>\n");
+      bw.write("<history JAJUK_VERSION='" + Const.JAJUK_VERSION + "' begin_date='"
+          + Long.toString(lDateStart) + "'>\n");
+      Iterator<HistoryItem> it = vHistory.iterator();
+      while (it.hasNext()) {
+        HistoryItem hi = it.next();
+        bw.write("\t<play file='" + hi.getFileId() + "' date='" + hi.getDate() + "'/>\n");
+      }
+      bw.write("</history>");
+      bw.flush();
+    } finally {
+      bw.close();
     }
-    bw.write("</history>");
-    bw.flush();
-    bw.close();
   }
 
   /**
@@ -353,10 +359,10 @@ public final class History extends DefaultHandler implements ErrorHandler, Obser
   @Override
   public void startElement(String sUri, String sName, String sQName, Attributes attributes)
       throws SAXException {
-    if (sQName.equals("history")) {
+    if ("history".equals(sQName)) {
       History.lDateStart = UtilString.fastLongParser(attributes.getValue(attributes
           .getIndex("begin_date")));
-    } else if (sQName.equals("play")) {
+    } else if ("play".equals(sQName)) {
       String sID = attributes.getValue(attributes.getIndex("file"));
       // check id has not been changed
       Map<String, String> hm = Collection.getInstance().getHmWrongRightFileID();
@@ -378,7 +384,7 @@ public final class History extends DefaultHandler implements ErrorHandler, Obser
    */
   @Override
   public void endElement(String sUri, String sName, String sQName) throws SAXException {
-
+    // nothing to do here...
   }
 
   /*

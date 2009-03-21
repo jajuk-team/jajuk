@@ -27,7 +27,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-import java.util.Vector;
 
 import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
@@ -46,7 +45,7 @@ public final class AuthorManager extends ItemManager {
   private static AuthorManager singleton;
 
   /* List of all known authors */
-  private static Vector<String> authorsList = new Vector<String>(100);
+  private static List<String> authorsList = new ArrayList<String>(100);
 
   /**
    * No constructor available, only static access
@@ -192,7 +191,7 @@ public final class AuthorManager extends ItemManager {
    * 
    * @return authors as a string list (used for authors combos)
    */
-  public static Vector<String> getAuthorsList() {
+  public static List<String> getAuthorsList() {
     return authorsList;
   }
 

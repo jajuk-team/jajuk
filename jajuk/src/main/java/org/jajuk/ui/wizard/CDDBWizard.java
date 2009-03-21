@@ -91,7 +91,7 @@ public class CDDBWizard extends JajukJDialog implements ActionListener {
 
   FreedbReadResult fdbReader;
 
-  Vector<String> comboAlbums;
+  List<String> comboAlbums;
 
   /**
    * CDDB wizard
@@ -100,6 +100,8 @@ public class CDDBWizard extends JajukJDialog implements ActionListener {
    *          directory to retag
    */
   public CDDBWizard(final List<Track> tracks) {
+    super();
+    
     UtilGUI.waiting();
 
     // windows title: absolute path name of the given directory
@@ -208,14 +210,14 @@ public class CDDBWizard extends JajukJDialog implements ActionListener {
     fdbAlbum = new FreedbAlbum(cddbtracks);
     try {
       foundAlbums = fdb.query(fdbAlbum);
-      comboAlbums = new Vector<String>(foundAlbums.length);
-      for (int i = 0; i < foundAlbums.length; i++) {
+      comboAlbums = new ArrayList<String>(foundAlbums.length);
+      for (FreedbQueryResult foundAlbum : foundAlbums) {
         comboAlbums.add("["
-            + foundAlbums[i].getDiscId()
+            + foundAlbum.getDiscId()
             + "] "
-            + UtilString.getLimitedString((foundAlbums[i].getArtist() + " / " + foundAlbums[i]
+            + UtilString.getLimitedString((foundAlbum.getArtist() + " / " + foundAlbum
                 .getAlbum()), 40));
-        if (foundAlbums[i].isExactMatch()) {
+        if (foundAlbum.isExactMatch()) {
           InformationJPanel.getInstance().setMessage(Messages.getString("CDDBWizard.17"), 0);
         }
       }
@@ -337,12 +339,14 @@ public class CDDBWizard extends JajukJDialog implements ActionListener {
      * 
      */
     NavigationPanel() {
+      super();
+      
       // Albums List
       label = new JLabel(Messages.getString("CDDBWizard.5"));
       jcbAlbum = new SteppedComboBox();
 
       // add all matches
-      jcbAlbum.setModel(new DefaultComboBoxModel(comboAlbums));
+      jcbAlbum.setModel(new DefaultComboBoxModel(new Vector<String>(comboAlbums)));
       jcbAlbum.setSelectedIndex(jcbAlbum.getSelectedIndex());
       jcbAlbum.addActionListener(new ActionListener() {
         public void actionPerformed(ActionEvent arg0) {

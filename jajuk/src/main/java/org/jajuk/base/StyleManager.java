@@ -20,13 +20,13 @@
 
 package org.jajuk.base;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
-import java.util.Vector;
 
 import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
@@ -45,7 +45,7 @@ public final class StyleManager extends ItemManager {
   private static StyleManager singleton;
 
   /* List of all known styles */
-  private static Vector<String> stylesList;
+  private static List<String> stylesList;
 
   /**
    * No constructor available, only static access
@@ -124,7 +124,7 @@ public final class StyleManager extends ItemManager {
 
   public synchronized void registerPresetStyles() {
     // create default style list
-    stylesList = new Vector<String>(Arrays.asList(UtilFeatures.GENRES));
+    StyleManager.stylesList = new ArrayList<String>(Arrays.asList(UtilFeatures.GENRES));
     Collections.sort(stylesList);
     for (String style : stylesList) {
       registerStyle(style.intern());
@@ -222,7 +222,7 @@ public final class StyleManager extends ItemManager {
    * @return Human readable list of registrated styles <br>
    *         ordered (alphabeticaly)
    */
-  public Vector<String> getStylesList() {
+  public List<String> getStylesList() {
     return stylesList;
   }
 

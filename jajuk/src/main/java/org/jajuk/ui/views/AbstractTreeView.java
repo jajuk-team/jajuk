@@ -81,6 +81,8 @@ public abstract class AbstractTreeView extends ViewAdapter {
 
   JMenuItem jmiPush;
 
+  JMenuItem jmiFrontPush;
+
   JMenuItem jmiPlayShuffle;
 
   JMenuItem jmiPlayRepeat;
@@ -129,6 +131,8 @@ public abstract class AbstractTreeView extends ViewAdapter {
   public void initUI() {
     jmiPlay = new JMenuItem(ActionManager.getAction(JajukActions.PLAY_SELECTION));
     jmiPlay.putClientProperty(Const.DETAIL_SELECTION, alSelected);
+    jmiFrontPush = new JMenuItem(ActionManager.getAction(JajukActions.PUSH_FRONT_SELECTION));
+    jmiFrontPush.putClientProperty(Const.DETAIL_SELECTION, alSelected);
     jmiPush = new JMenuItem(ActionManager.getAction(JajukActions.PUSH_SELECTION));
     jmiPush.putClientProperty(Const.DETAIL_SELECTION, alSelected);
     jmiPlayShuffle = new JMenuItem(ActionManager.getAction(JajukActions.PLAY_SHUFFLE_SELECTION));

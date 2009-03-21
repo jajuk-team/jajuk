@@ -170,6 +170,11 @@ public final class JajukJMenuBar extends JMenuBar implements Observer {
     setAlignmentX(0.0f);
     // File menu
     file = new JMenu(Messages.getString("JajukJMenuBar.0"));
+    /*if(Messages.getString("JajukJMenuBarKey.0") != null) {
+      char c = Messages.getString("JajukJMenuBarKey.0").charAt(0);
+      // TODO: this only handles A-Z, a-z
+      file.setMnemonic(c);
+    }*/
 
     jmiFileExit = new JMenuItem(ActionManager.getAction(JajukActions.EXIT));
     file.add(jmiFileExit);

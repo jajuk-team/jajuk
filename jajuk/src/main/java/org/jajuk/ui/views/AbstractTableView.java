@@ -35,6 +35,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Properties;
 import java.util.Set;
+import java.util.Vector;
 
 import javax.swing.Action;
 import javax.swing.ActionMap;
@@ -142,6 +143,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
 
   JMenuItem jmiPlay;
   JMenuItem jmiPush;
+  JMenuItem jmiFrontPush;
   JMenuItem jmiDelete;
   JMenuItem jmiPlayRepeat;
   JMenuItem jmiPlayShuffle;
@@ -201,6 +203,10 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
     jmiPlay = new JMenuItem(ActionManager.getAction(JajukActions.PLAY_SELECTION));
     jmiPlay.putClientProperty(Const.DETAIL_SELECTION, jtable.getSelection());
     jtable.getMenu().add(jmiPlay);
+
+    jmiFrontPush = new JMenuItem(ActionManager.getAction(JajukActions.PUSH_FRONT_SELECTION));
+    jmiFrontPush.putClientProperty(Const.DETAIL_SELECTION, jtable.getSelection());
+    jtable.getMenu().add(jmiFrontPush);
 
     jmiPush = new JMenuItem(ActionManager.getAction(JajukActions.PUSH_SELECTION));
     jmiPush.putClientProperty(Const.DETAIL_SELECTION, jtable.getSelection());
@@ -529,7 +535,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
       // create a combo box for styles, note that we can't add new
       // styles dynamically
       if (Const.XML_STYLE.equals(sIdentifier)) {
-        JComboBox jcb = new JComboBox(StyleManager.getInstance().getStylesList());
+        JComboBox jcb = new JComboBox(new Vector<String>(StyleManager.getInstance().getStylesList()));
         jcb.setEditable(true);
         AutoCompleteDecorator.decorate(jcb);
         col.setCellEditor(new ComboBoxCellEditor(jcb));
@@ -538,7 +544,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
       // create a combo box for authors, note that we can't add new
       // authors dynamically
       if (Const.XML_AUTHOR.equals(sIdentifier)) {
-        JComboBox jcb = new JComboBox(AuthorManager.getAuthorsList());
+        JComboBox jcb = new JComboBox(new Vector<String>(AuthorManager.getAuthorsList()));
         jcb.setEditable(true);
         AutoCompleteDecorator.decorate(jcb);
         col.setCellEditor(new ComboBoxCellEditor(jcb));

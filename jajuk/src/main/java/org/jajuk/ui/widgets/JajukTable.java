@@ -407,8 +407,8 @@ public class JajukTable extends JXTable implements ListSelectionListener,
    */
   public JPopupMenu getMenu() {
     Component[] components = this.jmenu.getComponents();
-    for (int i = 0; i < components.length; i++) {
-      components[i].setEnabled(true);
+    for (Component component2 : components) {
+      component2.setEnabled(true);
     }
     return this.jmenu;
   }
@@ -424,10 +424,10 @@ public class JajukTable extends JXTable implements ListSelectionListener,
   public JPopupMenu getMenu(List<Integer> indexToDisable) {
     Component[] components = this.jmenu.getComponents();
     int index = 0;
-    for (int i = 0; i < components.length; i++) {
-      if (components[i] instanceof JMenuItem || components[i] instanceof JMenu) {
+    for (Component component2 : components) {
+      if (component2 instanceof JMenuItem || component2 instanceof JMenu) {
         // disable the item if its index is in the index list to disable
-        components[i].setEnabled(!indexToDisable.contains(index));
+        component2.setEnabled(!indexToDisable.contains(index));
         index++;
       }
     }

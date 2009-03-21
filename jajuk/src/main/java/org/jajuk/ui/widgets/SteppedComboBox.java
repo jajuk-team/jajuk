@@ -20,6 +20,7 @@
 package org.jajuk.ui.widgets;
 
 import java.awt.Dimension;
+import java.util.List;
 import java.util.Vector;
 
 import javax.swing.ComboBoxModel;
@@ -54,8 +55,9 @@ public class SteppedComboBox extends JComboBox {
     init();
   }
 
-  public SteppedComboBox(Vector<?> items) {
-    super(items);
+  @SuppressWarnings("unchecked")
+  public SteppedComboBox(List<?> items) {
+    super(new Vector(items));
     init();
   }
 
@@ -76,12 +78,12 @@ public class SteppedComboBox extends JComboBox {
       ComboBoxUI cbui = new org.jvnet.substance.SubstanceComboBoxUI() {
         @Override
         protected ComboPopup createPopup() {
-          BasicComboPopup popup = new org.jajuk.ui.widgets.JajukBasicComboPopup(comboBox);
-          popup.getAccessibleContext().setAccessibleParent(comboBox);
+          BasicComboPopup popup1 = new org.jajuk.ui.widgets.JajukBasicComboPopup(comboBox);
+          popup1.getAccessibleContext().setAccessibleParent(comboBox);
           // Non opaque to avoid being transparent so we can't read
           // popup content over others text
-          popup.setOpaque(true);
-          return popup;
+          popup1.setOpaque(true);
+          return popup1;
         }
       };
 

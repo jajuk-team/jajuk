@@ -421,6 +421,10 @@ public enum JajukActions {
    */
   PUSH_SELECTION,
   /**
+   * Push a selection to the front
+   */
+  PUSH_FRONT_SELECTION,
+  /**
    * Bookmark selection
    */
   BOOKMARK_SELECTION,
