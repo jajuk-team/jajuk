@@ -30,7 +30,7 @@ import org.jajuk.events.Observer;
 /**
  * FIFO convenient facilities <singleton>
  */
-public class FIFOManager implements Observer {
+public final class FIFOManager implements Observer {
 
   private static FIFOManager self;
 

@@ -51,6 +51,8 @@ public final class EventDispatchThreadHangMonitor extends EventQueue {
   private Thread eventDispatchThread = null;
 
   private EventDispatchThreadHangMonitor() {
+    super();
+    
     initTimer();
   }
 
