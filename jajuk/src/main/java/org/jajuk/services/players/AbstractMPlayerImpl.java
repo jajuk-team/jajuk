@@ -202,7 +202,7 @@ public abstract class AbstractMPlayerImpl implements IPlayerImpl, Const {
    * @see org.jajuk.players.IPlayerImpl#getCurrentLength()
    */
   public long getCurrentLength() {
-    // TODO Auto-generated method stub
+    
     return 0;
   }
 
@@ -212,7 +212,7 @@ public abstract class AbstractMPlayerImpl implements IPlayerImpl, Const {
    * @see org.jajuk.players.IPlayerImpl#getCurrentPosition()
    */
   public float getCurrentPosition() {
-    // TODO Auto-generated method stub
+    
     return 0;
   }
 
@@ -222,7 +222,7 @@ public abstract class AbstractMPlayerImpl implements IPlayerImpl, Const {
    * @see org.jajuk.players.IPlayerImpl#getElapsedTime()
    */
   public long getElapsedTime() {
-    // TODO Auto-generated method stub
+    
     return 0;
   }
 
@@ -248,8 +248,6 @@ public abstract class AbstractMPlayerImpl implements IPlayerImpl, Const {
    * @see org.jajuk.players.IPlayerImpl#seek(float)
    */
   public void seek(float fPosition) {
-    // TODO Auto-generated method stub
-
   }
 
   /**

@@ -191,7 +191,7 @@ public class DuplicateTracksList extends JPanel implements ListSelectionListener
   }
 
   public void valueChanged(ListSelectionEvent e) {
-    if (e.getValueIsAdjusting() == false) {
+    if (!e.getValueIsAdjusting()) {
 
       if (list.getSelectedIndex() == -1) {
         // No selection, disable delete button.

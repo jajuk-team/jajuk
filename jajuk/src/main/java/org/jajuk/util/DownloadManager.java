@@ -32,14 +32,15 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.Authenticator;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.PasswordAuthentication;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.net.Proxy.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -65,8 +66,10 @@ public final class DownloadManager {
   /**
    * @param search
    * @return a list of urls
+   * @throws IOException
+   * @throws MalformedURLException
    */
-  public static List<URL> getRemoteCoversList(String search) throws Exception {
+  public static List<URL> getRemoteCoversList(String search) throws IOException {
     List<URL> alOut = new ArrayList<URL>(20); // URL list
     // check void searches
     if (search == null || search.trim().equals("")) {
@@ -114,7 +117,7 @@ public final class DownloadManager {
         continue;
       }
       // Ignore URLs related to Google
-      if (url.toString().toLowerCase().matches(".*google.*")) {
+      if (url.toString().toLowerCase(Locale.getDefault()).matches(".*google.*")) {
         continue;
       }
       // Add the new url
@@ -136,14 +139,21 @@ public final class DownloadManager {
   public static void download(URL url, File fDestination) throws IOException {
     HttpURLConnection connection = NetworkUtils.getConnection(url, proxy);
     BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(fDestination));
-    BufferedInputStream bis = new BufferedInputStream(connection.getInputStream());
-    int i;
-    while ((i = bis.read()) != -1) {
-      bos.write(i);
+    try {
+      BufferedInputStream bis = new BufferedInputStream(connection.getInputStream());
+      try {
+        int i;
+        while ((i = bis.read()) != -1) {
+          bos.write(i);
+        }
+      } finally {
+        bis.close();
+      }
+
+      bos.flush();
+    } finally {
+      bos.close();
     }
-    bos.flush();
-    bos.close();
-    bis.close();
     connection.disconnect();
   }
 
@@ -155,8 +165,6 @@ public final class DownloadManager {
    * @param url
    *          url to download
    * @return cached file or null if a problem occurred
-   * @throws URISyntaxException
-   *           If the URL cannot be converted to an URI.
    * @throws IOException
    *           If a network problem occurs or a temporary file cannot be
    *           written.
@@ -172,14 +180,20 @@ public final class DownloadManager {
       }
       HttpURLConnection connection = NetworkUtils.getConnection(url, proxy);
       BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(file));
-      BufferedInputStream bis = new BufferedInputStream(connection.getInputStream());
-      int i;
-      while ((i = bis.read()) != -1) {
-        bos.write(i);
+      try {
+        BufferedInputStream bis = new BufferedInputStream(connection.getInputStream());
+        try {
+          int i;
+          while ((i = bis.read()) != -1) {
+            bos.write(i);
+          }
+        } finally {
+          bis.close();
+        }
+        bos.flush();
+      } finally {
+        bos.close();
       }
-      bos.flush();
-      bos.close();
-      bis.close();
       connection.disconnect();
       urlCache.put(url, file);
       return file;
@@ -191,14 +205,21 @@ public final class DownloadManager {
    * 
    * @param url
    *          to download
-   * @throws Exception
    * @return result as an array of bytes, null if a problem occurred
+   * @throws IOException
    */
-  public static String downloadText(URL url, String charset) throws Exception {
+  public static String downloadText(URL url, String charset) throws IOException {
     return NetworkUtils.readURL(NetworkUtils.getConnection(url, proxy), charset);
   }
 
-  public static String downloadText(URL url) throws Exception {
+  /**
+   * Download text with the default charset UTF-8
+   * 
+   * @param url
+   * @return
+   * @throws IOException
+   */
+  public static String downloadText(URL url) throws IOException {
     return downloadText(url, "UTF-8");
   }
 
@@ -211,18 +232,21 @@ public final class DownloadManager {
    * @param encoding
    *          encoding of the content of the file
    * @return a string for a given URL and encoding
-   * @throws Exception
+   * @throws IOException
    */
-  public static String getTextFromCachedFile(URL url, String encoding) throws Exception {
+  public static String getTextFromCachedFile(URL url, String encoding) throws IOException {
     File file = downloadToCache(url);
     StringBuilder builder = new StringBuilder();
     InputStream input = new BufferedInputStream(new FileInputStream(file));
-    byte[] array = new byte[1024];
-    int read;
-    while ((read = input.read(array)) > 0) {
-      builder.append(new String(array, 0, read, encoding));
+    try {
+      byte[] array = new byte[1024];
+      int read;
+      while ((read = input.read(array)) > 0) {
+        builder.append(new String(array, 0, read, encoding));
+      }
+    } finally {
+      input.close();
     }
-    input.close();
     return builder.toString();
   }
 

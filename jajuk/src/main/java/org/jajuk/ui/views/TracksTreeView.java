@@ -121,6 +121,7 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
 
   /** Constructor */
   public TracksTreeView() {
+    super();
   }
 
   public Set<JajukEvents> getRegistrationKeys() {

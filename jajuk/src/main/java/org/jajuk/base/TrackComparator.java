@@ -20,6 +20,7 @@
 
 package org.jajuk.base;
 
+import java.io.Serializable;
 import java.text.DateFormat;
 import java.util.Comparator;
 
@@ -29,11 +30,13 @@ import org.jajuk.util.UtilString;
  * 
  * Multi-method track comparator
  */
-public class TrackComparator implements Comparator<Track> {
+public class TrackComparator implements Comparator<Track>, Serializable {
+  private static final long serialVersionUID = -4735723947400147134L;
+
   /**
    * Sorting method
    */
-  private TrackComparatorType comparatorType = TrackComparatorType.STYLE_AUTHOR_ALBUM;
+  private final TrackComparatorType comparatorType;
 
   /** Sorting methods constants */
   public enum TrackComparatorType {

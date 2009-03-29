@@ -21,6 +21,7 @@
 package org.jajuk.util;
 
 import java.io.File;
+import java.util.Locale;
 
 import javax.swing.filechooser.FileFilter;
 
@@ -70,8 +71,12 @@ public class JajukFileFilter extends FileFilter implements java.io.FileFilter, C
    *          </p>
    */
   public JajukFileFilter(final boolean bAND, final JajukFileFilter... filters) {
+    super();
+    
     this.bAND = bAND;
-    this.filters = filters;
+    
+    this.filters = new JajukFileFilter[filters.length];
+    System.arraycopy(filters, 0, this.filters, 0, filters.length);
   }
 
   /**
@@ -98,10 +103,12 @@ public class JajukFileFilter extends FileFilter implements java.io.FileFilter, C
    *          an array of extension strings
    */
   public JajukFileFilter(final String[] extensions) {
+    super();
+    
     this.extensions = (extensions != null) ? extensions : new String[] {};
     final int size = this.extensions.length;
     for (int i = 0; i < size; i++) {
-      this.extensions[i] = this.extensions[i].toLowerCase();
+      this.extensions[i] = this.extensions[i].toLowerCase(Locale.getDefault());
       extensionsString += this.extensions[i] + ',';
     }
     // Drop last coma
@@ -137,7 +144,7 @@ public class JajukFileFilter extends FileFilter implements java.io.FileFilter, C
     } else {
       acceptance = show(f);
     }
-    return (acceptance);
+    return acceptance;
   }
 
   /*
@@ -147,7 +154,7 @@ public class JajukFileFilter extends FileFilter implements java.io.FileFilter, C
    */
   @Override
   public String getDescription() {
-    return (extensionsString);
+    return extensionsString;
   }
 
   /**
@@ -157,11 +164,17 @@ public class JajukFileFilter extends FileFilter implements java.io.FileFilter, C
    * @return array of extension strings
    */
   public String[] getExtensions() {
-    return (extensions);
+    // copy to not expose internal array
+    String[] lExt = new String[extensions.length];
+    System.arraycopy(extensions, 0, lExt, 0, extensions.length);
+    return lExt;
   }
 
   public JajukFileFilter[] getFilters() {
-    return (filters);
+    // copy to not expose internal array
+    JajukFileFilter[] lFilter = new JajukFileFilter[filters.length];
+    System.arraycopy(filters, 0, lFilter, 0, filters.length);
+    return lFilter;
   }
 
   /**
@@ -174,15 +187,15 @@ public class JajukFileFilter extends FileFilter implements java.io.FileFilter, C
    */
   protected boolean isKnownExtension(final File file) {
     if (file != null) {
-      final String extension = UtilSystem.getExtension(file).toLowerCase();
+      final String extension = UtilSystem.getExtension(file).toLowerCase(Locale.getDefault());
 
       for (final String ext : extensions) {
         if (extension.equals(ext)) {
-          return (true);
+          return true;
         }
       }
     }
-    return (false);
+    return false;
   }
 
   /**
@@ -205,7 +218,7 @@ public class JajukFileFilter extends FileFilter implements java.io.FileFilter, C
    * @return display status flag (fallback is false)
    */
   protected boolean show(final File file) {
-    return ((file.isDirectory()) ? bShowDirectories : (isKnownExtension(file)));
+    return (file.isDirectory()) ? bShowDirectories : (isKnownExtension(file));
   }
 
 }

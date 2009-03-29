@@ -114,7 +114,8 @@ public final class Submitter {
     }
 
     Log.info("Submitting song to Last.fm: " + track.getName() + " " + secondsPlayed + " secs");
-    submitTrackToLastFm(track, startedToPlay, 1);
+    
+      submitTrackToLastFm(track, startedToPlay, 1);
   }
 
   private static void submitTrackToLastFm(Track track, long startedToPlay, int retries)
@@ -124,7 +125,13 @@ public final class Submitter {
     }
 
     HttpURLConnection connection;
-    String queryString = getQueryString(track, startedToPlay);
+    String queryString;
+    try {
+      queryString = getQueryString(track, startedToPlay);
+    } catch (NoSuchAlgorithmException e1) {
+      throw new SubmitterException("Exception caught while submitting to LastFM", e1);
+    }
+
     try {
       connection = NetworkUtils.getConnection(submissionURL, proxy);
       connection.setRequestMethod("POST");
@@ -159,7 +166,7 @@ public final class Submitter {
     }
   }
 
-  private static String getQueryString(Track track, long startedToPlay) {
+  private static String getQueryString(Track track, long startedToPlay) throws NoSuchAlgorithmException {
     StringBuilder builder = new StringBuilder();
     builder.append("u=" + NetworkUtils.encodeString(user));
     builder.append("&s=" + NetworkUtils.encodeString(getMd5Response()));
@@ -178,7 +185,7 @@ public final class Submitter {
     return builder.toString();
   }
 
-  private static String getMd5Response() {
+  private static String getMd5Response() throws NoSuchAlgorithmException {
     return md5DigestPassword(md5DigestPassword(password) + md5Challenge);
   }
 
@@ -202,17 +209,18 @@ public final class Submitter {
   /**
    * Creates a MD5 digest String from a given password.
    * 
-   * @param password
+   * @param pwd
    *          The password to digest.
    * @return The MD5 digested password.
+   * @throws NoSuchAlgorithmException 
    */
-  private static String md5DigestPassword(String password) {
+  private static String md5DigestPassword(String pwd) throws NoSuchAlgorithmException {
     try {
       MessageDigest md = MessageDigest.getInstance("MD5");
 
-      return hexEncode(md.digest(password.getBytes()));
+      return hexEncode(md.digest(pwd.getBytes()));
     } catch (NoSuchAlgorithmException e) {
-      throw new RuntimeException("No MD5 algorithm present on the system", e);
+      throw new NoSuchAlgorithmException("No MD5 algorithm present on the system", e);
     }
   }
 

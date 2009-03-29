@@ -20,6 +20,7 @@
 package org.jajuk.util;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -378,10 +379,9 @@ public final class UtilString {
    * @param bHuman
    *          is this string intended to be human-readable ?
    * @return
-   * @throws Exception
    */
   public static String format(final Object oValue, final PropertyMetaInformation meta,
-      final boolean bHuman) throws Exception {
+      final boolean bHuman) {
     final Class<?> cType = meta.getType();
     // default (works for strings, long and double)
     String sValue = oValue.toString();
@@ -425,11 +425,11 @@ public final class UtilString {
       return "";
     }
     if (style.length() == 1) {
-      return style.substring(0, 1).toUpperCase();
+      return style.substring(0, 1).toUpperCase(Locale.getDefault());
     }
-    String sOut = style.toLowerCase().substring(1);
-    sOut = style.substring(0, 1).toUpperCase() + sOut;
-    return sOut;
+
+    // construct string with first letter uppercase and rest lowercase
+    return style.substring(0, 1).toUpperCase(Locale.getDefault()) + style.toLowerCase(Locale.getDefault()).substring(1);
   }
 
   /**
@@ -533,7 +533,7 @@ public final class UtilString {
    * @return Addition date simple format instance
    */
   public static DateFormat getAdditionDateFormatter() {
-    return new SimpleDateFormat(Const.ADDITION_DATE_FORMAT);
+    return new SimpleDateFormat(Const.ADDITION_DATE_FORMAT, Locale.getDefault());
   }
 
   /**
@@ -615,18 +615,20 @@ public final class UtilString {
    * @return whether given string is XML-valid
    */
   public static boolean isXMLValid(final String s) {
-    // check reserved chars
-    if (s.contains("&") || s.contains("\'") || s.contains("\"") || s.contains("<")
-        || s.contains(">")) {
-      return false;
-    }
     // check invalid chars
     for (int i = 0; i < s.length(); i++) {
       final char c = s.charAt(i);
+
+      // check reserved chars
+      if(-1 != "&\'\"<>".indexOf(c)) {
+        return false;
+      }
+        
       if (!UtilString.isChar(c)) {
         return false;
       }
     }
+
     return true;
   }
 
@@ -653,16 +655,17 @@ public final class UtilString {
    * @param sValue
    * @param cType
    * @return parsed item
-   * @throws Exception
+   * @throws ParseException 
+   * @throws ClassNotFoundException 
    */
-  public static Object parse(final String sValue, final Class<?> cType) throws Exception {
+  public static Object parse(final String sValue, final Class<?> cType) throws ParseException, ClassNotFoundException {
     Object oDefaultValue = sValue; // String by default
     if (cType.equals(Boolean.class)) {
       // "y" and "n" is an old boolean
       // attribute notation prior to 1.0
-      if (sValue.equals("y")) {
+      if ("y".equals(sValue)) {
         oDefaultValue = true;
-      } else if (sValue.equals("n")) {
+      } else if ("n".equals(sValue)) {
         oDefaultValue = false;
       } else {
         oDefaultValue = fastBooleanParser(sValue);
@@ -766,8 +769,8 @@ public final class UtilString {
    * @return whether the given tested string matches the key
    */
   public static boolean matchesIgnoreCaseAndOrder(final String tested, final String key) {
-    String testedLower = tested.toLowerCase();
-    String keyLower = key.toLowerCase();
+    String testedLower = tested.toLowerCase(Locale.getDefault());
+    String keyLower = key.toLowerCase(Locale.getDefault());
     StringTokenizer st = new StringTokenizer(testedLower, " ");
     while (st.hasMoreTokens()) {
       String token = st.nextToken();

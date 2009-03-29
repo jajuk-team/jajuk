@@ -116,6 +116,11 @@ public abstract class Item implements Const {
    */
   @Override
   public boolean equals(Object otherItem) {
+    // this also catches null
+    if(!(otherItem instanceof Item)) {
+        return false;
+    }
+
     // [Perf] We can compare with an == operator here because
     // all ID are stored into String intern() buffer
     return getID() == ((Item) otherItem).getID();
@@ -355,14 +360,6 @@ public abstract class Item implements Const {
    */
   public void removeProperty(String sKey) {
     properties.remove(sKey);
-  }
-
-  /*
-   * (non-Javadoc)
-   * 
-   * @see org.jajuk.base.Item#displayProperty()
-   */
-  public void displayProperties() {
   }
 
   /**

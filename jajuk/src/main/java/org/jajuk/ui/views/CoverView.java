@@ -33,6 +33,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -1260,7 +1261,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
             return;
           }
         }
-      } catch (final TimeOutException e) {
+      } catch (final IOException e) {
         Log.warn(e.getMessage());
         // can occur in case of timeout or error during
         // covers list download

@@ -21,6 +21,7 @@ package org.jajuk.util;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -39,6 +40,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
@@ -78,7 +80,7 @@ public class Messages extends DefaultHandler {
   private static Properties propertiesEn;
 
   /** Conf Locales */
-  public static final String[] LOCALES = { "en", "fr", "de", "nl", "es", "ca", "ko", "el", "ru",
+  private static final String[] LOCALES = { "en", "fr", "de", "nl", "es", "ca", "ko", "el", "ru",
       "gl" };
 
   /**
@@ -201,9 +203,9 @@ public class Messages extends DefaultHandler {
   public static String getShuffleTipOfTheDay() {
     try {
       String totd = null;
-      String[] TIPS = Messages.getAll("TipOfTheDay");
+      String[] tips = Messages.getAll("TipOfTheDay");
       // index contains the index of the last provided totd
-      int index = (int) (UtilSystem.getRandom().nextFloat() * (TIPS.length - 1));
+      int index = (int) (UtilSystem.getRandom().nextFloat() * (tips.length - 1));
       // display the next one
       totd = Messages.getString("TipOfTheDay." + index);
       // Remove <img> tags
@@ -294,7 +296,7 @@ public class Messages extends DefaultHandler {
    * 
    * @param sLocal
    */
-  public static void setLocal(final String sLocal) throws Exception {
+  public static void setLocal(final String sLocal) {
     Conf.setProperty(Const.CONF_OPTIONS_LANGUAGE, sLocal);
     properties = null; // make sure to reinitialize cached strings
     Messages.sLocal = sLocal;
@@ -304,15 +306,18 @@ public class Messages extends DefaultHandler {
   /*****************************************************************************
    * Parse a fake properties file inside an XML file as CDATA
    * 
-   * @param sLocal
+   * @param local
    * @return a properties with all entries
+   * @throws IOException 
+   * @throws SAXException 
+   * @throws ParserConfigurationException 
    * @throws Exception
    */
-  private static Properties parseLangpack(final String sLocal) throws Exception {
+  private static Properties parseLangpack(final String sLocal) throws SAXException, IOException, ParserConfigurationException {
     final Properties lProperties = new Properties();
     // Choose right jajuk_<lang>.properties file to load
     final StringBuilder sbFilename = new StringBuilder(Const.FILE_LANGPACK_PART1);
-    if (!sLocal.equals("en")) { // for english, properties file is
+    if (!"en".equals(sLocal)) { // for english, properties file is
       // simply jajuk.properties
       sbFilename.append('_').append(sLocal);
     }
@@ -560,11 +565,14 @@ public class Messages extends DefaultHandler {
 
   /**
    * @return Returns the properties.
+   * @throws ParserConfigurationException 
+   * @throws IOException 
+   * @throws SAXException 
    */
-  public static Properties getProperties() throws Exception {
+  public static Properties getProperties() throws SAXException, IOException, ParserConfigurationException {
     if (properties == null) {
       // reuse English if possible
-      if (sLocal.equals("en")) {
+      if ("en".equals(sLocal)) {
         properties = getPropertiesEn();
       } else {
         properties = parseLangpack(sLocal);
@@ -607,6 +615,8 @@ class ConfirmDialog extends JajukDialog {
    *          message type like JOptionPane.WARNING
    */
   ConfirmDialog(final String sText, final String sTitle, final int optionsType, final int iType) {
+    super();
+    
     final JOptionPane optionPane = UtilGUI.getNarrowOptionPane(72);
     if (optionsType == Messages.YES_NO_ALL_CANCEL_OPTION) {
       optionPane.setOptions(new Object[] { Messages.getString("Yes"), Messages.getString("No"),
@@ -669,6 +679,8 @@ class DetailsMessageDialog extends JajukDialog {
    */
   DetailsMessageDialog(final String sText, final String sTitle, final int iType,
       final String sDetails, final Icon icon) {
+    super();
+    
     final JOptionPane optionPane = UtilGUI.getNarrowOptionPane(72);
     optionPane.setMessage(sText);
     if (sDetails != null) {
@@ -725,6 +737,8 @@ class HideableMessageDialog extends JajukDialog {
    */
   HideableMessageDialog(final String sText, final String sTitle, final String sProperty,
       final int iType, final Icon icon) {
+    super();
+    
     final JOptionPane optionPane = UtilGUI.getNarrowOptionPane(72);
     optionPane.setMessage(UtilGUI.getLimitedMessage(sText, 20));
     final Object[] options = { Messages.getString("Ok"), Messages.getString("Hide") };
@@ -763,6 +777,8 @@ class ErrorMessageDialog extends JajukDialog {
    * @param icon
    */
   ErrorMessageDialog(final int code, final String sInfoSup) {
+    super();
+    
     final JOptionPane optionPane = UtilGUI.getNarrowOptionPane(72);
     optionPane.setMessage(UtilGUI.getLimitedMessage(Messages.getErrorMessage(code)
         + (sInfoSup != null ? (" : " + sInfoSup) : ""), 20));
