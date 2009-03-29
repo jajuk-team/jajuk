@@ -79,12 +79,15 @@ public final class NetworkUtils {
   public static String readURL(URLConnection connection, String charset) throws IOException {
     StringBuilder builder = new StringBuilder();
     InputStream input = connection.getInputStream();
-    byte[] array = new byte[1024];
-    int read;
-    while ((read = input.read(array)) > 0) {
-      builder.append(new String(array, 0, read, charset));
+    try {
+      byte[] array = new byte[1024];
+      int read;
+      while ((read = input.read(array)) > 0) {
+        builder.append(new String(array, 0, read, charset));
+      }
+    } finally {
+      input.close();
     }
-    input.close();
     return builder.toString();
   }
 
@@ -93,13 +96,14 @@ public final class NetworkUtils {
   }
 
   public static String readPostURL(HttpURLConnection connection, String post) throws IOException {
-    OutputStream out = null;
-    DataOutputStream writer = null;
-    out = connection.getOutputStream();
-    writer = new DataOutputStream(out);
-    writer.writeBytes(post);
-    writer.flush();
-    writer.close();
+    OutputStream out = connection.getOutputStream();
+    DataOutputStream writer = new DataOutputStream(out);
+    try {
+      writer.writeBytes(post);
+      writer.flush();
+    } finally {
+      writer.close();
+    }
 
     if (connection.getResponseCode() != 200) {
       throw new IllegalArgumentException("Invalid HTTP return code");
@@ -107,12 +111,16 @@ public final class NetworkUtils {
 
     StringBuilder builder = new StringBuilder();
     InputStream input = connection.getInputStream();
-    byte[] array = new byte[1024];
-    int read;
-    while ((read = input.read(array)) > 0) {
-      builder.append(new String(array, 0, read, "UTF-8"));
+    try {
+      byte[] array = new byte[1024];
+      int read;
+      while ((read = input.read(array)) > 0) {
+        builder.append(new String(array, 0, read, "UTF-8"));
+      }
+    } finally {
+      input.close();
     }
-    input.close();
+
     return builder.toString();
   }
 

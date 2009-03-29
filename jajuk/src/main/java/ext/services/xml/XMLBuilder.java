@@ -18,13 +18,16 @@
 
 package ext.services.xml;
 
+import java.io.IOException;
 import java.io.StringReader;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
 public final class XMLBuilder {
   /**
@@ -38,7 +41,11 @@ public final class XMLBuilder {
       try {
         DocumentBuilder parser = DocumentBuilderFactory.newInstance().newDocumentBuilder();
         return parser.parse(new InputSource(new StringReader(xml)));
-      } catch (Exception e) {
+      } catch (SAXException e) {
+        return null;
+      } catch (IOException e) {
+        return null;
+      } catch (ParserConfigurationException e) {
         return null;
       }
     }

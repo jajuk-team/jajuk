@@ -32,6 +32,7 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
+import java.io.Writer;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Properties;
@@ -350,12 +351,14 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
    * 
    */
   public ParameterView() {
+    super();
   }
 
   /*
    * (non-Javadoc)
    * 
-   * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+   * @see
+   * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
    */
   public void actionPerformed(final ActionEvent e) {
     new Thread() {
@@ -514,7 +517,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     Conf
         .setProperty(Const.CONF_TAGS_USE_PARENT_DIR, Boolean.toString(jcbUseParentDir.isSelected()));
     final String sBestofSize = jtfBestofSize.getText();
-    if (!sBestofSize.equals("")) {
+    if (!sBestofSize.isEmpty()) {
       Conf.setProperty(Const.CONF_BESTOF_TRACKS_SIZE, sBestofSize);
     }
     final String sLocal = Messages.getLocalForDesc(((JLabel) scbLanguage.getSelectedItem())
@@ -523,11 +526,11 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     // force refresh of bestof files
     RatingManager.setRateHasChanged(true);
     final String sNoveltiesAge = jtfNoveltiesAge.getText();
-    if (!sNoveltiesAge.equals("")) {
+    if (!sNoveltiesAge.isEmpty()) {
       Conf.setProperty(Const.CONF_OPTIONS_NOVELTIES_AGE, sNoveltiesAge);
     }
     final String sVisiblePlanned = jtfVisiblePlanned.getText();
-    if (!sVisiblePlanned.equals("")) {
+    if (!sVisiblePlanned.isEmpty()) {
       Conf.setProperty(Const.CONF_OPTIONS_VISIBLE_PLANNED, sVisiblePlanned);
     }
     final int oldDuration = Conf.getInt(Const.CONF_FADE_DURATION);
@@ -569,7 +572,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
         .toString(jcbBeforeResetingRatings.isSelected()));
     // History
     final String sHistoryDuration = jtfHistory.getText();
-    if (!sHistoryDuration.equals("")) {
+    if (!sHistoryDuration.isEmpty()) {
       Conf.setProperty(Const.CONF_HISTORY, sHistoryDuration);
     }
     // Patterns
@@ -624,19 +627,13 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     // If jajuk home changes, write new path in bootstrap file
     if ((Main.getWorkspace() != null) && !Main.getWorkspace().equals(psJajukWorkspace.getUrl())) {
       // Check workspace directory
-      if (!psJajukWorkspace.getUrl().trim().equals("")) {
+      if (!psJajukWorkspace.getUrl().trim().isEmpty()) {
         // Check workspace presence and create it if required
-        try {
-          final java.io.File fWorkspace = new java.io.File(psJajukWorkspace.getUrl());
-          if (!fWorkspace.exists()) {
-            if (!fWorkspace.mkdirs()) {
-              Log.warn("Could not create directory " + fWorkspace.toString());
-            }
-          }
-          if (!fWorkspace.canRead()) {
-            throw new Exception("Cannot write to proposed Workspace");
-          }
-        } catch (final Exception e) {
+        final java.io.File fWorkspace = new java.io.File(psJajukWorkspace.getUrl());
+        if (!fWorkspace.exists() && !fWorkspace.mkdirs()) {
+          Log.warn("Could not create directory " + fWorkspace.toString());
+        }
+        if (!fWorkspace.canRead()) {
           Messages.showErrorMessage(165);
           return;
         }
@@ -672,10 +669,13 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
         // OK, now write down the bootstrap file if
         // everything's OK
         final java.io.File bootstrap = new java.io.File(Const.FILE_BOOTSTRAP);
-        final BufferedWriter bw = new BufferedWriter(new FileWriter(bootstrap));
-        bw.write(newWorkspace);
-        bw.flush();
-        bw.close();
+        final Writer bw = new BufferedWriter(new FileWriter(bootstrap));
+        try {
+          bw.write(newWorkspace);
+          bw.flush();
+        } finally {
+          bw.close();
+        }
         UtilGUI.stopWaiting();
         // Display a warning message and restart Jajuk
         if (bPreviousPathExist) {
@@ -1537,7 +1537,9 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
   /*
    * (non-Javadoc)
    * 
-   * @see javax.swing.event.ChangeListener#stateChanged(javax.swing.event.ChangeEvent)
+   * @see
+   * javax.swing.event.ChangeListener#stateChanged(javax.swing.event.ChangeEvent
+   * )
    */
   public void stateChanged(final ChangeEvent e) {
     // when changing tab, store it for future jajuk sessions
@@ -1686,7 +1688,9 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
   /*
    * (non-Javadoc)
    * 
-   * @see javax.swing.event.ListSelectionListener#valueChanged(javax.swing.event.ListSelectionEvent)
+   * @see
+   * javax.swing.event.ListSelectionListener#valueChanged(javax.swing.event.
+   * ListSelectionEvent)
    */
   public void valueChanged(final ListSelectionEvent e) {
     if (!e.getValueIsAdjusting()) {

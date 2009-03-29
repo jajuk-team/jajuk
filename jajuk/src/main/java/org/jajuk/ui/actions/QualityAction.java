@@ -51,15 +51,15 @@ public class QualityAction extends JajukAction {
    */
   @Override
   public void perform(ActionEvent evt) {
-    String sBody = "";
-    sBody += "Version: " + Const.JAJUK_VERSION + '\n';
-    sBody += UtilString.getAnonymizedSystemProperties().toString() + '\n';
-    sBody += UtilString.getAnonymizedJajukProperties().toString() + '\n';
+    StringBuilder sBody = new StringBuilder();
+    sBody.append("Version: ").append(Const.JAJUK_VERSION).append('\n');
+    sBody.append(UtilString.getAnonymizedSystemProperties().toString()).append('\n');
+    sBody.append(UtilString.getAnonymizedJajukProperties().toString()).append('\n');
     for (String line : Log.getSpool()) {
-      sBody += line + '\n';
+      sBody.append(line).append('\n');
     }
     // if it is a bug, copy logs into the clipboard
-    StringSelection data = new StringSelection(sBody);
+    StringSelection data = new StringSelection(sBody.toString());
     Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
     clipboard.setContents(data, data);
     try {

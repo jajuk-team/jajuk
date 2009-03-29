@@ -100,6 +100,16 @@ import org.jdesktop.swingx.border.DropShadowBorder;
 public class CoverView extends ViewAdapter implements Observer, ComponentListener, ActionListener,
     Const {
 
+  /**
+   * 
+   */
+  private static final String PLUS_QUOTE = "+\"";
+
+  /**
+   * 
+   */
+  private static final String QUOTE_BLANK = "\" ";
+
   private static final long serialVersionUID = 1L;
 
   /** No cover cover */
@@ -172,6 +182,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
    *          ID used to store independently parameters of views
    */
   public CoverView() {
+    super();
   }
 
   /**
@@ -182,6 +193,8 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
    * 
    */
   public CoverView(final org.jajuk.base.File file) {
+    super();
+
     fileReference = file;
   }
 
@@ -260,13 +273,9 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
     jcbAccuracy.addItem(IconLoader.getIcon(JajukIcons.AUTHOR));
     jcbAccuracy.addItem(IconLoader.getIcon(JajukIcons.ALBUM));
     jcbAccuracy.addItem(IconLoader.getIcon(JajukIcons.TRACK));
-    int i = 1; // medium accuracy
-    try {
-      i = Conf.getInt(Const.CONF_COVERS_ACCURACY + "_"
-          + ((getPerspective() == null) ? "popup" : getPerspective().getID()));
-    } catch (final Exception e) {
-      // Will reach this point at first launch
-    }
+
+    int i = Conf.getInt(Const.CONF_COVERS_ACCURACY + "_"
+        + ((getPerspective() == null) ? "popup" : getPerspective().getID()));
     jcbAccuracy.setSelectedIndex(i);
     jcbAccuracy.addActionListener(this);
 
@@ -345,7 +354,8 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
   /*
    * (non-Javadoc)
    * 
-   * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+   * @see
+   * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
    */
   public void actionPerformed(final ActionEvent e) {
     if (e.getSource() == jcbAccuracy) {
@@ -619,7 +629,9 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
   /*
    * (non-Javadoc)
    * 
-   * @see java.awt.event.ComponentListener#componentResized(java.awt.event.ComponentEvent)
+   * @see
+   * java.awt.event.ComponentListener#componentResized(java.awt.event.ComponentEvent
+   * )
    */
   @Override
   public void componentResized(final ComponentEvent e) {
@@ -642,14 +654,9 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
    */
   public String createQuery(final org.jajuk.base.File file) {
     String sQuery = "";
-    int iAccuracy = 0;
-    try {
-      iAccuracy = Conf.getInt(Const.CONF_COVERS_ACCURACY + "_"
-          + ((getPerspective() == null) ? "popup" : getPerspective().getID()));
-    } catch (final Exception e) {
-      // can append if accuracy never set
-      Log.debug("Unknown accuracy");
-    }
+    int iAccuracy = Conf.getInt(Const.CONF_COVERS_ACCURACY + "_"
+        + ((getPerspective() == null) ? "popup" : getPerspective().getID()));
+
     final Track track = file.getTrack();
     final Author author = track.getAuthor();
     final Album album = track.getAlbum();
@@ -664,20 +671,20 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
       break;
     case 1: // medium
       if (!author.isUnknown()) {
-        sQuery += "\"" + author.getName() + "\" ";
+        sQuery += '\"' + author.getName() + QUOTE_BLANK;
         // put quotes around it
       }
       if (!album.isUnknown()) {
-        sQuery += "\"" + album.getName() + "\" ";
+        sQuery += '\"' + album.getName() + QUOTE_BLANK;
       }
       break;
     case 2: // high
       if (!author.isUnknown()) {
-        sQuery += "+\"" + author.getName() + "\" ";
+        sQuery += PLUS_QUOTE + author.getName() + QUOTE_BLANK;
         // put "" around it
       }
       if (!album.isUnknown()) {
-        sQuery += "+\"" + album.getName() + "\" ";
+        sQuery += PLUS_QUOTE + album.getName() + QUOTE_BLANK;
       }
       break;
     case 3: // by author
@@ -747,7 +754,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
       if (indexPrevious > alCovers.size() - 1) {
         indexPrevious = 0;
       }
-      final URL urlPrevious = (alCovers.get(indexPrevious)).getURL();
+      final URL urlPrevious = alCovers.get(indexPrevious).getURL();
       if (urlPrevious != null) {
         jbPrevious.setToolTipText("<html>" + Messages.getString("CoverView.4") + "<br>"
             + urlPrevious.toString() + "</html>");
@@ -756,7 +763,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
       if (indexNext < 0) {
         indexNext = alCovers.size() - 1;
       }
-      final URL urlNext = (alCovers.get(indexNext)).getURL();
+      final URL urlNext = alCovers.get(indexNext).getURL();
       if (urlNext != null) {
         jbNext.setToolTipText("<html>" + Messages.getString("CoverView.5") + "<br>"
             + urlNext.toString() + "</html>");
@@ -1065,7 +1072,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
               refreshCovers(iLocalEventID);
             }
             // case just for a cover change without reload
-            else if ((Conf.getBoolean(Const.CONF_COVERS_SHUFFLE))) {
+            else if (Conf.getBoolean(Const.CONF_COVERS_SHUFFLE)) {
               // Ignore this event if a reference file has been set
               if (fileReference != null) {
                 return;
@@ -1096,7 +1103,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
           } else if (JajukEvents.COVER_NEED_REFRESH.equals(subject)) {
             refreshCovers(iLocalEventID);
           }
-        } catch (final Exception e) {
+        } catch (final IOException e) {
           Log.error(e);
         } finally {
           searching(false); // hide searching icon
@@ -1125,8 +1132,9 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
    * Covers refreshing effective code
    * 
    * @param iLocalEventID
+   * @throws IOException 
    */
-  private void refreshCovers(int iLocalEventID) throws Exception {
+  private void refreshCovers(int iLocalEventID) throws IOException {
     // Reset this flag
     bForceCoverReload = false;
 
@@ -1154,7 +1162,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
 
     if (fCurrent == null) {
       throw new IllegalArgumentException("Internal Error: Unexpected value, "
-          + "variable should not be empty. fCurrent: " + fCurrent + " dirReference: "
+          + "variable fCurrent should not be empty. dirReference: "
           + dirReference);
     }
 
@@ -1211,7 +1219,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
       try {
         final String sQuery = createQuery(fCurrent);
         Log.debug("Query={{" + sQuery + "}}");
-        if (!sQuery.equals("")) {
+        if (!sQuery.isEmpty()) {
           // there is not enough information in tags
           // for a web search
           List<URL> alUrls;

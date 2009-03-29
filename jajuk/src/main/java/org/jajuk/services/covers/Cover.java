@@ -24,6 +24,7 @@ import java.awt.Image;
 import java.awt.MediaTracker;
 import java.awt.Toolkit;
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 
 import javax.swing.ImageIcon;
@@ -99,8 +100,9 @@ public class Cover implements Comparable<Cover>, Const {
    * @param file
    *          cover file
    * @param type
+   * @throws IOException 
    */
-  public Cover(final File localFile, final CoverType type) throws Exception {
+  public Cover(final File localFile, final CoverType type) throws IOException {
     this.type = type;
     this.file = localFile;
     this.url = new URL("file://" + file.getAbsolutePath());
