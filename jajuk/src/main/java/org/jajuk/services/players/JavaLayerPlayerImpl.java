@@ -20,6 +20,7 @@
 package org.jajuk.services.players;
 
 import java.io.File;
+import java.util.Locale;
 import java.util.Map;
 
 import javazoom.jlgui.basicplayer.BasicController;
@@ -43,6 +44,11 @@ import org.jajuk.util.log.Log;
  * Jajuk player implementation based on javazoom BasicPlayer
  */
 public class JavaLayerPlayerImpl implements IPlayerImpl, Const, BasicPlayerListener {
+
+  /**
+   * 
+   */
+  private static final String AUDIO_LENGTH_BYTES = "audio.length.bytes";
 
   /** Current player */
   private BasicPlayer player;
@@ -221,12 +227,12 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, Const, BasicPlayerListe
     }
     if (mPlayingData.containsKey("audio.type") && player != null) {
       String audioType = (String) mPlayingData.get("audio.type");
-      audioType = audioType.toLowerCase();
+      audioType = audioType.toLowerCase(Locale.getDefault());
       Type type = TypeManager.getInstance().getTypeByExtension(audioType);
       // Seek support for MP3. and WAVE
       if (type != null && type.getBooleanValue(Const.XML_TYPE_SEEK_SUPPORTED)
-          && mPlayingData.containsKey("audio.length.bytes")) {
-        int iAudioLength = ((Integer) mPlayingData.get("audio.length.bytes")).intValue();
+          && mPlayingData.containsKey(AUDIO_LENGTH_BYTES)) {
+        int iAudioLength = ((Integer) mPlayingData.get(AUDIO_LENGTH_BYTES)).intValue();
         long skipBytes = Math.round(iAudioLength * posValue);
         try {
           player.seek(skipBytes);
@@ -300,8 +306,8 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, Const, BasicPlayerListe
       }
       comp++;
       // computes read time
-      if (mPlayingData.containsKey("audio.length.bytes")) {
-        int byteslength = ((Integer) mPlayingData.get("audio.length.bytes")).intValue();
+      if (mPlayingData.containsKey(AUDIO_LENGTH_BYTES)) {
+        int byteslength = ((Integer) mPlayingData.get(AUDIO_LENGTH_BYTES)).intValue();
         fPos = (byteslength != 0) ? (float) iBytesread / (float) byteslength : 0;
         Conf.setProperty(Const.CONF_STARTUP_LAST_POSITION, Float.toString(fPos));
         lTime = (long) (lDuration * fPos);
@@ -380,6 +386,7 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, Const, BasicPlayerListe
    * Set controler implementation
    */
   public void setController(BasicController arg0) {
+    // nothing to do here
   }
 
   /*

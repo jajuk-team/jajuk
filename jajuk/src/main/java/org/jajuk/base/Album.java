@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 import java.util.regex.PatternSyntaxException;
 
@@ -293,22 +294,21 @@ public class Album extends LogicalItem implements Comparable<Album> {
         if (files[i].exists() && files[i].length() < MAX_COVER_SIZE * 1024) {
           // check size to avoid out of memory errors
           String sExt = UtilSystem.getExtension(files[i]);
-          if (sExt.equalsIgnoreCase("jpg") || sExt.equalsIgnoreCase("png")
-              || sExt.equalsIgnoreCase("gif")) {
-            if (UtilFeatures.isStandardCover(files[i])) {
-              // Test the image is not corrupted
-              try {
-                MediaTracker mediaTracker = new MediaTracker(new Container());
-                ImageIcon ii = new ImageIcon(files[i].getAbsolutePath());
-                mediaTracker.addImage(ii.getImage(), 0);
-                mediaTracker.waitForID(0); // wait for image
-                if (!mediaTracker.isErrorAny()) {
-                  setProperty(XML_ALBUM_COVER, files[i].getAbsolutePath());
-                  return files[i];
-                }
-              } catch (Exception e) {
-                Log.error(e);
+          if ((sExt.equalsIgnoreCase("jpg") || sExt.equalsIgnoreCase("png") || sExt
+              .equalsIgnoreCase("gif"))
+              && UtilFeatures.isStandardCover(files[i])) {
+            // Test the image is not corrupted
+            try {
+              MediaTracker mediaTracker = new MediaTracker(new Container());
+              ImageIcon ii = new ImageIcon(files[i].getAbsolutePath());
+              mediaTracker.addImage(ii.getImage(), 0);
+              mediaTracker.waitForID(0); // wait for image
+              if (!mediaTracker.isErrorAny()) {
+                setProperty(XML_ALBUM_COVER, files[i].getAbsolutePath());
+                return files[i];
               }
+            } catch (Exception e) {
+              Log.error(e);
             }
           }
         }
@@ -378,26 +378,26 @@ public class Album extends LogicalItem implements Comparable<Album> {
    */
   public ImageIcon getThumbnail(int size) {
     File fCover = ThumbnailManager.getThumbBySize(this, size);
-    
+
     // Check if thumb already exists
     if (!fCover.exists() || fCover.length() == 0) {
       return IconLoader.getNoCoverIcon(size);
     }
-    
+
     BufferedImage img = null;
     try {
       img = ImageIO.read(new File(fCover.getAbsolutePath()));
     } catch (IOException e) {
       Log.error(e);
     }
-    
+
     ImageIcon icon = new ImageIcon(img);
-    
+
     // Free thumb memory (DO IT AFTER FULL ImageIcon loading)
     if (img != null) {
       img.flush();
     }
-    
+
     // accelerate GC cleanup
     img = null;
     return icon;
@@ -530,7 +530,7 @@ public class Album extends LogicalItem implements Comparable<Album> {
     try {
       // do not use regexp matches(<string>) because the string may contain
       // characters to be escaped
-      match = (sValue.toLowerCase().indexOf(pattern.toLowerCase()) != -1);
+      match = (sValue.toLowerCase(Locale.getDefault()).indexOf(pattern.toLowerCase(Locale.getDefault())) != -1);
       // test if the item property contains this
       // property value (ignore case)
     } catch (PatternSyntaxException pse) {

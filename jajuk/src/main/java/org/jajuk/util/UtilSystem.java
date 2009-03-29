@@ -30,8 +30,11 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.net.InetAddress;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
@@ -41,6 +44,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
 import java.util.jar.JarEntry;
@@ -113,7 +117,8 @@ public final class UtilSystem {
   static {
     final String sOS = (String) System.getProperties().get("os.name");
     // os.name can be null with JWS under MacOS
-    UNDER_WINDOWS = ((sOS != null) && (sOS.trim().toLowerCase().lastIndexOf("windows") != -1));
+    UNDER_WINDOWS = ((sOS != null) && (sOS.trim().toLowerCase(Locale.getDefault()).lastIndexOf(
+        "windows") != -1));
   }
 
   static {
@@ -129,7 +134,8 @@ public final class UtilSystem {
   static {
     final String sOS = (String) System.getProperties().get("os.name");
     // os.name can be null with JWS under MacOS
-    UNDER_LINUX = ((sOS != null) && (sOS.trim().toLowerCase().lastIndexOf("linux") != -1));
+    UNDER_LINUX = ((sOS != null) && (sOS.trim().toLowerCase(Locale.getDefault()).lastIndexOf(
+        "linux") != -1));
   }
 
   static {
@@ -165,8 +171,8 @@ public final class UtilSystem {
    */
   public static void backupFile(final File file, final int iMB) {
     try {
-      if (Integer.parseInt(Conf.getString(Const.CONF_BACKUP_SIZE)) <= 0) { // 0 or
-        // less means no backup
+      if (Integer.parseInt(Conf.getString(Const.CONF_BACKUP_SIZE)) <= 0) {
+        // 0 or less means no backup
         return;
       }
       // calculates total size in MB for the file to backup and its
@@ -194,14 +200,20 @@ public final class UtilSystem {
       }
       // backup itself using nio, file name is
       // collection-backup-yyyMMdd.xml
-      final String sExt = new SimpleDateFormat("yyyyMMdd").format(new Date());
+      final String sExt = new SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(new Date());
       final File fileNew = new File(UtilSystem.removeExtension(file.getAbsolutePath()) + "-backup-"
           + sExt + "." + UtilSystem.getExtension(file));
       final FileChannel fcSrc = new FileInputStream(file).getChannel();
-      final FileChannel fcDest = new FileOutputStream(fileNew).getChannel();
-      fcDest.transferFrom(fcSrc, 0, fcSrc.size());
-      fcSrc.close();
-      fcDest.close();
+      try {
+        final FileChannel fcDest = new FileOutputStream(fileNew).getChannel();
+        try {
+          fcDest.transferFrom(fcSrc, 0, fcSrc.size());
+        } finally {
+          fcDest.close();
+        }
+      } finally {
+        fcSrc.close();
+      }
     } catch (final IOException ie) {
       Log.error(ie);
     }
@@ -210,21 +222,29 @@ public final class UtilSystem {
   /**
    * Copy a file to another file
    * 
-   * @param file :
-   *          file to copy
-   * @param fNew :
-   *          destination file
+   * @param file
+   *          : file to copy
+   * @param fNew
+   *          : destination file
+   * @throws JajukException
+   * @throws IOException
    */
-  public static void copy(final File file, final File fNew) throws Exception {
+  public static void copy(final File file, final File fNew) throws JajukException, IOException {
     Log.debug("Copying: " + file.getAbsolutePath() + "  to : " + fNew.getAbsolutePath());
     if (!file.exists() || !file.canRead()) {
       throw new JajukException(9, file.getAbsolutePath(), null);
     }
     final FileChannel fcSrc = new FileInputStream(file).getChannel();
-    final FileChannel fcDest = new FileOutputStream(fNew).getChannel();
-    fcDest.transferFrom(fcSrc, 0, fcSrc.size());
-    fcSrc.close();
-    fcDest.close();
+    try {
+      final FileChannel fcDest = new FileOutputStream(fNew).getChannel();
+      try {
+        fcDest.transferFrom(fcSrc, 0, fcSrc.size());
+      } finally {
+        fcDest.close();
+      }
+    } finally {
+      fcSrc.close();
+    }
     // Display a warning if copied file is void as it can happen with full
     // disks
     if (fNew.length() == 0) {
@@ -235,12 +255,15 @@ public final class UtilSystem {
   /**
    * Copy a file
    * 
-   * @param file :
-   *          source file
-   * @param sNewName :
-   *          dest file
+   * @param file
+   *          : source file
+   * @param sNewName
+   *          : dest file
+   * @throws JajukException
+   * @throws IOException
    */
-  public static void copy(final File file, final String sNewName) throws Exception {
+  public static void copy(final File file, final String sNewName) throws JajukException,
+      IOException {
     Log.debug("Renaming: " + file.getAbsolutePath() + "  to : " + sNewName);
     final File fileNew = new File(new StringBuilder(file.getParentFile().getAbsolutePath()).append(
         '/').append(sNewName).toString());
@@ -248,10 +271,16 @@ public final class UtilSystem {
       throw new JajukException(9, file.getAbsolutePath(), null);
     }
     final FileChannel fcSrc = new FileInputStream(file).getChannel();
-    final FileChannel fcDest = new FileOutputStream(fileNew).getChannel();
-    fcDest.transferFrom(fcSrc, 0, fcSrc.size());
-    fcSrc.close();
-    fcDest.close();
+    try {
+      final FileChannel fcDest = new FileOutputStream(fileNew).getChannel();
+      try {
+        fcDest.transferFrom(fcSrc, 0, fcSrc.size());
+      } finally {
+        fcDest.close();
+      }
+    } finally {
+      fcSrc.close();
+    }
   }
 
   /**
@@ -268,18 +297,24 @@ public final class UtilSystem {
    */
   public static void copy(final URL src, final String dest) throws IOException {
     final BufferedReader br = new BufferedReader(new InputStreamReader(src.openStream()));
-    final BufferedWriter bw = new BufferedWriter(new FileWriter(dest));
-    String sLine = null;
-    do {
-      sLine = br.readLine();
-      if (sLine != null) {
-        bw.write(sLine);
-        bw.newLine();
+    try {
+      final BufferedWriter bw = new BufferedWriter(new FileWriter(dest));
+      try {
+        String sLine = null;
+        do {
+          sLine = br.readLine();
+          if (sLine != null) {
+            bw.write(sLine);
+            bw.newLine();
+          }
+        } while (sLine != null);
+        bw.flush();
+      } finally {
+        bw.close();
       }
-    } while (sLine != null);
-    br.close();
-    bw.flush();
-    bw.close();
+    } finally {
+      br.close();
+    }
   }
 
   /**
@@ -288,8 +323,11 @@ public final class UtilSystem {
    * @param str
    * @param dst
    * @throws IOException
+   * @throws JajukException
+   * @throws IOException
    */
-  public static void copyRecursively(final File src, final File dst) throws Exception {
+  public static void copyRecursively(final File src, final File dst) throws JajukException,
+      IOException {
     if (src.isDirectory()) {
       if (!dst.mkdirs()) {
         Log.warn("Could not create directory structure " + dst.toString());
@@ -308,13 +346,16 @@ public final class UtilSystem {
   /**
    * Copy a file to given directory
    * 
-   * @param file :
-   *          file to copy
-   * @param directory :
-   *          destination directory
+   * @param file
+   *          : file to copy
+   * @param directory
+   *          : destination directory
    * @return destination file
+   * @throws JajukException
+   * @throws IOException
    */
-  public static File copyToDir(final File file, final File directory) throws Exception {
+  public static File copyToDir(final File file, final File directory) throws JajukException,
+      IOException {
     Log.debug("Copying: " + file.getAbsolutePath() + "  to : " + directory.getAbsolutePath());
     final File fileNew = new File(new StringBuilder(directory.getAbsolutePath()).append("/")
         .append(file.getName()).toString());
@@ -322,10 +363,16 @@ public final class UtilSystem {
       throw new JajukException(9, file.getAbsolutePath(), null);
     }
     final FileChannel fcSrc = new FileInputStream(file).getChannel();
-    final FileChannel fcDest = new FileOutputStream(fileNew).getChannel();
-    fcDest.transferFrom(fcSrc, 0, fcSrc.size());
-    fcSrc.close();
-    fcDest.close();
+    try {
+      final FileChannel fcDest = new FileOutputStream(fileNew).getChannel();
+      try {
+        fcDest.transferFrom(fcSrc, 0, fcSrc.size());
+      } finally {
+        fcDest.close();
+      }
+    } finally {
+      fcSrc.close();
+    }
     return fileNew;
   }
 
@@ -333,21 +380,25 @@ public final class UtilSystem {
    * Create empty file
    * 
    * @param sFullPath
-   * @throws Exception
+   * @throws IOException
    */
   public static void createEmptyFile(final File file) throws IOException {
-    final FileOutputStream fos = new FileOutputStream(file);
-    fos.write(new byte[0]);
-    fos.close();
+    final OutputStream fos = new FileOutputStream(file);
+    try {
+      fos.write(new byte[0]);
+    } finally {
+      fos.close();
+    }
   }
 
   /**
    * Delete a directory
    * 
-   * @param dir :
-   *          source directory
+   * @param dir
+   *          : source directory
+   * @throws IOException
    */
-  public static void deleteDir(final File dir) throws Exception {
+  public static void deleteDir(final File dir) throws IOException {
     Log.debug("Deleting: " + dir.getAbsolutePath());
     if (dir.isDirectory()) {
       for (final File file : dir.listFiles()) {
@@ -369,10 +420,11 @@ public final class UtilSystem {
   /**
    * Delete a file
    * 
-   * @param file :
-   *          source file
+   * @param file
+   *          : source file
+   * @throws IOException
    */
-  public static void deleteFile(final File file) throws Exception {
+  public static void deleteFile(final File file) throws IOException {
     Log.debug("Deleting: " + file.getAbsolutePath());
     if (file.isFile() && file.exists()) {
       if (!file.delete()) {
@@ -381,10 +433,10 @@ public final class UtilSystem {
       // check that file has been really deleted (sometimes,
       // we get no exception)
       if (file.exists()) {
-        throw new Exception("File" + file.getAbsolutePath() + " still exists");
+        throw new IOException("File" + file.getAbsolutePath() + " still exists");
       }
     } else {// not a file, must have a problem
-      throw new Exception("File " + file.getAbsolutePath() + " didn't exist");
+      throw new IOException("File " + file.getAbsolutePath() + " didn't exist");
     }
     return;
   }
@@ -399,9 +451,9 @@ public final class UtilSystem {
    *          name of the file to extract. Example: img.png
    * @param file
    *          destination PATH
-   * @throws Exception
+   * @throws IOException
    */
-  public static void extractFile(final String entryName, final String destName) throws Exception {
+  public static void extractFile(final String entryName, final String destName) throws IOException {
     JarFile jar = null;
     // Open the jar.
     try {
@@ -412,7 +464,7 @@ public final class UtilSystem {
       final File jarFile = new File(dir.getAbsolutePath() + "/jajuk.jar");
       Log.debug("Open jar: " + jarFile.getAbsolutePath());
       jar = new JarFile(jarFile);
-    } catch (final Exception e) {
+    } catch (final URISyntaxException e) {
       Log.error(e);
       return;
     }
@@ -427,7 +479,7 @@ public final class UtilSystem {
         try {
           // Create the output file (clobbering the file if it
           // exists).
-          final FileOutputStream file = new FileOutputStream(UtilSystem
+          final OutputStream file = new FileOutputStream(UtilSystem
               .getConfFileByPath(Const.FILE_CACHE + '/' + Const.FILE_INTERNAL_CACHE + '/'
                   + destName));
           try {
@@ -438,10 +490,10 @@ public final class UtilSystem {
             while ((bytesRead = entryStream.read(buffer)) != -1) {
               file.write(buffer, 0, bytesRead);
             }
+            file.flush();
           } catch (final Exception e) {
             Log.error(e);
           } finally {
-            file.flush();
             file.close();
           }
         } catch (final Exception e) {
@@ -535,12 +587,15 @@ public final class UtilSystem {
     try {
       String sOut = "";
       final FileChannel fc = new FileInputStream(fio).getChannel();
-      final ByteBuffer bb = ByteBuffer.allocate(500);
-      fc.read(bb, fio.length() / 2);
-      fc.close();
-      sOut = new String(bb.array());
+      try {
+        final ByteBuffer bb = ByteBuffer.allocate(500);
+        fc.read(bb, fio.length() / 2);
+        sOut = new String(bb.array());
+      } finally {
+        fc.close();
+      }
       return MD5Processor.hash(sOut);
-    } catch (final Exception e) {
+    } catch (final IOException e) {
       throw new JajukException(103, e);
     }
   }
@@ -690,7 +745,7 @@ public final class UtilSystem {
           }
         }
 
-      } catch (Exception e) {
+      } catch (URISyntaxException e) {
         return UtilSystem.mplayerPath;
       }
     }
@@ -728,7 +783,8 @@ public final class UtilSystem {
 
   /**
    * Resource loading is done this way to meet the requirements for Web Start.
-   * http://java.sun.com/j2se/1.5.0/docs/guide/javaws/developersguide/faq.html#211
+   * http
+   * ://java.sun.com/j2se/1.5.0/docs/guide/javaws/developersguide/faq.html#211
    */
   public static URL getResource(final String name) {
     return UtilSystem.getClassLoader().getResource(name);
@@ -873,8 +929,8 @@ public final class UtilSystem {
    * @param path
    *          -File path
    * @return StringBuilder - File content.
-   * @throws JajukException -
-   *           Throws a JajukException if a problem occurs during the file
+   * @throws JajukException
+   *           - Throws a JajukException if a problem occurs during the file
    *           access.
    */
   public static StringBuilder readFile(final String path) throws JajukException {
@@ -887,37 +943,39 @@ public final class UtilSystem {
       final JajukException te = new JajukException(9, path, e);
       throw te;
     }
+
     final BufferedReader input = new BufferedReader(fileReader);
-
-    // Read
-    final StringBuilder strColl = new StringBuilder();
-    String line = null;
     try {
-      while ((line = input.readLine()) != null) {
-        strColl.append(line);
+      // Read
+      final StringBuilder strColl = new StringBuilder();
+      String line = null;
+      try {
+        while ((line = input.readLine()) != null) {
+          strColl.append(line);
+        }
+      } catch (final IOException e) {
+        final JajukException te = new JajukException(9, path, e);
+        throw te;
       }
-    } catch (final IOException e) {
-      final JajukException te = new JajukException(9, path, e);
-      throw te;
-    }
 
-    // Close the bufferedReader
-    try {
-      input.close();
-    } catch (final IOException e) {
-      final JajukException te = new JajukException(9, path, e);
-      throw te;
+      return strColl;
+    } finally {
+      // Close the bufferedReader
+      try {
+        input.close();
+      } catch (final IOException e) {
+        final JajukException te = new JajukException(9, path, e);
+        throw te;
+      }
     }
-
-    return strColl;
   }
 
   /**
    * Open a file from current jar and return a string buffer with the file
    * content.
    * 
-   * @param sUrl :
-   *          relative file url
+   * @param sUrl
+   *          : relative file url
    * @return StringBuilder - File content.
    * @throws JajukException
    *           -Throws a JajukException if a problem occurs during the file
@@ -961,7 +1019,7 @@ public final class UtilSystem {
     if (UtilSystem.classLoader == null) {
       UtilSystem.classLoader = Thread.currentThread().getContextClassLoader();
     }
-    return (UtilSystem.classLoader);
+    return UtilSystem.classLoader;
   }
 
   /**
@@ -1005,24 +1063,29 @@ public final class UtilSystem {
   public static boolean replaceInFile(File file, String oldS, String newS, String encoding) {
     try {
       StringBuilder sb = new StringBuilder((int) file.length());
-      BufferedReader br = null;
-      br = new BufferedReader(new InputStreamReader(new FileInputStream(file), encoding));
-      String sLine = null;
-      while ((sLine = br.readLine()) != null) {
-        sb.append(sLine + '\n');
+      BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file),
+          encoding));
+      try {
+        String sLine = null;
+        while ((sLine = br.readLine()) != null) {
+          sb.append(sLine + '\n');
+        }
+      } finally {
+        br.close();
       }
-      br.close();
       String s = sb.toString();
       if (s.indexOf(oldS) != -1) {
         s = s.replaceAll(oldS, newS);
-        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file),
-            encoding));
-        bw.write(s);
-        bw.flush();
-        bw.close();
+        Writer bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), encoding));
+        try {
+          bw.write(s);
+          bw.flush();
+        } finally {
+          bw.close();
+        }
         return true;
       }
-    } catch (Exception e) {
+    } catch (IOException e) {
       Log.error(e);
     }
     return false;

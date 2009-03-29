@@ -26,6 +26,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 
 import org.jajuk.base.TrackComparator.TrackComparatorType;
@@ -180,7 +181,7 @@ public final class TrackManager extends ItemManager {
    * 
    * @throw an exception if a tag cannot be commited
    */
-  public void commit() throws Exception {
+  public void commit() throws JajukException {
     // Iterate over a shallow copy to avoid concurrent issues (note also that
     // several threads can commit at the same time). We synchronize the copy and
     // we drop tags to commit.
@@ -820,7 +821,7 @@ public final class TrackManager extends ItemManager {
       File playable = track.getPlayeableFile(hide);
       if (playable != null) {
         String sResu = track.getAny();
-        if (sResu.toLowerCase().indexOf(criteria.toLowerCase()) != -1) {
+        if (sResu.toLowerCase(Locale.getDefault()).indexOf(criteria.toLowerCase(Locale.getDefault())) != -1) {
           resu.add(new SearchResult(playable, playable.toStringSearch()));
         }
       }
@@ -832,7 +833,7 @@ public final class TrackManager extends ItemManager {
    * 
    * @return autocommit behavior for tags
    */
-  public boolean isAutocommit() {
+  public synchronized boolean isAutocommit() {
     return this.bAutocommit;
   }
 
@@ -841,7 +842,7 @@ public final class TrackManager extends ItemManager {
    * 
    * @param autocommit
    */
-  public void setAutocommit(boolean autocommit) {
+  public synchronized void setAutocommit(boolean autocommit) {
     this.bAutocommit = autocommit;
   }
 }

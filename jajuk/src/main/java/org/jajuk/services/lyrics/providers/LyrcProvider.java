@@ -25,6 +25,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.StringTokenizer;
 
@@ -43,7 +44,7 @@ public class LyrcProvider extends GenericProvider {
   }
 
   private StringTokenizer getTokenizer(final String source) {
-    return (new StringTokenizer((source != null) ? source : "", " '?!-,"));
+    return new StringTokenizer((source != null) ? source : "", " '?!-,");
   }
 
   /*
@@ -67,7 +68,7 @@ public class LyrcProvider extends GenericProvider {
       html = html.substring(0, html.indexOf("<br><br"));
 
       // Find suggestions and add to a map
-      while (html.indexOf("href=\"") != -1) {
+      while (html.contains("href=\"")) {
         // from html tag <a href="....
         String text = html.substring(html.indexOf("'white'>") + 8);
         // from font color='white'>...
@@ -98,18 +99,18 @@ public class LyrcProvider extends GenericProvider {
 
       // Now find at map, a string that contains all artist and song
       // tokens. This will be the selected lyric
-      for (final String suggestion : suggestions.keySet()) {
+      for (final Map.Entry<String, String> suggestion : suggestions.entrySet()) {
         boolean matches = true;
 
         for (final String token : tokensToFind) {
-          if (!suggestion.toLowerCase().contains(token.toLowerCase())) {
+          if (!suggestion.getKey().toLowerCase(Locale.getDefault()).contains(token.toLowerCase(Locale.getDefault()))) {
             matches = false;
             break;
           }
         }
         if (matches) {
-          final String suggestionURL = URL.concat(suggestions.get(suggestion));
-          Log.debug("Found suggestion " + suggestion);
+          final String suggestionURL = URL.concat(suggestion.getValue());
+          Log.debug("Found suggestion " + suggestion.getKey());
           try {
             final URL url = new URL(suggestionURL);
             String text = DownloadManager.getTextFromCachedFile(url, getResponseEncoding());
@@ -122,7 +123,7 @@ public class LyrcProvider extends GenericProvider {
         }
       }
       Log.debug("No suitable suggestion found");
-      return (null);
+      return null;
     }
     return cleanLyrics(html);
   }
@@ -136,7 +137,7 @@ public class LyrcProvider extends GenericProvider {
         pos = Integer.MAX_VALUE;
       }
     }
-    return (pos);
+    return pos;
   }
 
   /**
@@ -149,28 +150,28 @@ public class LyrcProvider extends GenericProvider {
     String ret = html;
     int pPos = Integer.MAX_VALUE;
     int brPos = Integer.MAX_VALUE;
-    if (ret.indexOf("</table>") > 0) {
+    if (ret.contains("</table>")) {
       ret = ret.substring(ret.indexOf("</table>") + 8);
       pPos = getTagPosition(ret, "<p>");
       brPos = getTagPosition(ret, "<br>");
       ret = ret.substring(0, (pPos < brPos) ? pPos : brPos);
       ret = ret.replaceAll("<br />", "");
       if (ret.contains("<head>")) {
-        return (null);
+        return null;
       }
       ret = ret.replaceAll("&#8217;", "'");
       ret = ret.replaceAll("&#8211;", "-");
       ret = ret.replaceAll("\u0092", "'");
       ret = ret.replaceAll("\u009c", "oe");
     }
-    return (ret);
+    return ret;
   }
 
   /**
    * Returns true if a string is composed only by letters
    */
   private static boolean validToken(final String token) {
-    return (token.matches("[A-Za-z0-9]+"));
+    return token.matches("[A-Za-z0-9]+");
   }
 
   /*

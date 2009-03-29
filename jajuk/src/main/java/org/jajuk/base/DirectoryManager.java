@@ -23,6 +23,7 @@ package org.jajuk.base;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 
 import org.jajuk.util.Const;
 import org.jajuk.util.MD5Processor;
@@ -53,9 +54,9 @@ public final class DirectoryManager extends ItemManager {
     // the same ID
     if (UtilSystem.isUnderWindows()) {
       if (dParent != null) {
-        sbAbs.append(dParent.getRelativePath().toLowerCase());
+        sbAbs.append(dParent.getRelativePath().toLowerCase(Locale.getDefault()));
       }
-      sbAbs.append(sName.toLowerCase());
+      sbAbs.append(sName.toLowerCase(Locale.getDefault()));
     } else {
       if (dParent != null) {
         sbAbs.append(dParent.getRelativePath());

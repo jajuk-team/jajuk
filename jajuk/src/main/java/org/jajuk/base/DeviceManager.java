@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 
 import javax.swing.JOptionPane;
@@ -186,7 +187,7 @@ public final class DeviceManager extends ItemManager {
       if (!bNew && sUrl.equals(deviceToCheck.getUrl())) {
         continue;
       }
-      if (bNew && (sName.toLowerCase().equals(deviceToCheck.getName().toLowerCase()))) {
+      if (bNew && (sName.toLowerCase(Locale.getDefault()).equals(deviceToCheck.getName().toLowerCase(Locale.getDefault())))) {
         return 19;
       }
       String sUrlChecked = deviceToCheck.getUrl();

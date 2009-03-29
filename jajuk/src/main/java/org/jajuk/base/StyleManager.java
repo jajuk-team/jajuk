@@ -26,6 +26,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Properties;
 
 import org.jajuk.events.JajukEvent;
@@ -45,7 +46,7 @@ public final class StyleManager extends ItemManager {
   private static StyleManager singleton;
 
   /* List of all known styles */
-  private static List<String> stylesList;
+  private List<String> stylesList;
 
   /**
    * No constructor available, only static access
@@ -124,7 +125,7 @@ public final class StyleManager extends ItemManager {
 
   public synchronized void registerPresetStyles() {
     // create default style list
-    StyleManager.stylesList = new ArrayList<String>(Arrays.asList(UtilFeatures.GENRES));
+    stylesList = new ArrayList<String>(Arrays.asList(UtilFeatures.GENRES));
     Collections.sort(stylesList);
     for (String style : stylesList) {
       registerStyle(style.intern());
@@ -204,7 +205,7 @@ public final class StyleManager extends ItemManager {
     sOut = sName.trim(); // supress spaces at the begin and the end
     sOut = sOut.replace('-', ' '); // move - to space
     sOut = sOut.replace('_', ' '); // move _ to space
-    sOut = sOut.toUpperCase();
+    sOut = sOut.toUpperCase(Locale.getDefault());
     return sOut;
   }
 

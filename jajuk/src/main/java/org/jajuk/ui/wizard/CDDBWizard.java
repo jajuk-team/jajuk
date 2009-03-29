@@ -31,7 +31,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
+import java.util.Locale;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JDialog;
@@ -225,7 +225,7 @@ public class CDDBWizard extends JajukJDialog implements ActionListener {
     } catch (FreedbException e) {
       // freedb throws a Freedb exception for network problem or no match found
       // we want to display an error message only in the first case
-      if (e.getMessage().toLowerCase().indexOf("no match") == -1) {
+      if (e.getMessage().toLowerCase(Locale.getDefault()).indexOf("no match") == -1) {
         Messages.showErrorMessage(174);
         return -1;
       }
@@ -346,7 +346,7 @@ public class CDDBWizard extends JajukJDialog implements ActionListener {
       jcbAlbum = new SteppedComboBox();
 
       // add all matches
-      jcbAlbum.setModel(new DefaultComboBoxModel(new Vector<String>(comboAlbums)));
+      jcbAlbum.setModel(new DefaultComboBoxModel(comboAlbums.toArray()));
       jcbAlbum.setSelectedIndex(jcbAlbum.getSelectedIndex());
       jcbAlbum.addActionListener(new ActionListener() {
         public void actionPerformed(ActionEvent arg0) {

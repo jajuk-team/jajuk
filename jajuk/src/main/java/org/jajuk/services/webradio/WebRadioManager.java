@@ -26,6 +26,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.net.URL;
+import java.util.Locale;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -272,7 +273,7 @@ public final class WebRadioManager extends DefaultHandler {
     synchronized (FileManager.getInstance()) {
       Set<SearchResult> tsResu = new TreeSet<SearchResult>();
       for (WebRadio radio : webradios) {
-        if (radio.getName().toLowerCase().indexOf(sCriteria.toLowerCase()) != -1) {
+        if (radio.getName().toLowerCase(Locale.getDefault()).indexOf(sCriteria.toLowerCase(Locale.getDefault())) != -1) {
           tsResu.add(new SearchResult(radio, radio.toString()));
         }
       }

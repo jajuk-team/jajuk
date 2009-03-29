@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import org.jajuk.base.Device;
@@ -251,11 +252,11 @@ public final class UtilFeatures {
    */
   public static boolean isStandardCover(final File file) {
     String sFileName = file.getName();
-    return sFileName.toLowerCase().matches(".*" + Const.FILE_DEFAULT_COVER + ".*")
-        || sFileName.toLowerCase().matches(".*" + Const.FILE_DEFAULT_COVER_2 + ".*")
+    return sFileName.toLowerCase(Locale.getDefault()).matches(".*" + Const.FILE_DEFAULT_COVER + ".*")
+        || sFileName.toLowerCase(Locale.getDefault()).matches(".*" + Const.FILE_DEFAULT_COVER_2 + ".*")
         // just for previous compatibility, now it is a directory
         // property
-        || sFileName.toLowerCase().matches(".*" + Const.FILE_ABSOLUTE_DEFAULT_COVER + ".*");
+        || sFileName.toLowerCase(Locale.getDefault()).matches(".*" + Const.FILE_ABSOLUTE_DEFAULT_COVER + ".*");
 
   }
 
@@ -297,7 +298,7 @@ public final class UtilFeatures {
           framesize = ((Integer) properties.get("audio.framesize.bytes")).intValue();
         }
         if (bitspersample > 0) {
-          milliseconds = (int) (1000.0f * byteslength / (samplerate * channels * (bitspersample / 8)));
+          milliseconds = (int) (1000.0f * byteslength / (samplerate * channels * (((float)bitspersample) / 8)));
         } else {
           milliseconds = (int) (1000.0f * byteslength / (samplerate * framesize));
         }

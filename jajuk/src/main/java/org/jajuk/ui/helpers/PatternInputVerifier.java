@@ -20,6 +20,8 @@
 
 package org.jajuk.ui.helpers;
 
+import java.util.Locale;
+
 import javax.swing.InputVerifier;
 import javax.swing.JComponent;
 import javax.swing.JFormattedTextField;
@@ -43,7 +45,7 @@ public class PatternInputVerifier extends InputVerifier {
   @Override
   public boolean verify(JComponent input) {
     JFormattedTextField tf = (JFormattedTextField) input;
-    String sText = tf.getText().toLowerCase();
+    String sText = tf.getText().toLowerCase(Locale.getDefault());
     // Check pattern contains at least one /
     if (sText.indexOf('/') == -1) {
       JOptionPane.showMessageDialog(JajukWindow.getInstance(), Messages.getString("Error.146"),

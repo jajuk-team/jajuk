@@ -27,6 +27,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Properties;
 
@@ -150,7 +151,7 @@ public final class FileManager extends ItemManager {
     // the same ID
     if (UtilSystem.isUnderWindows()) {
       id = MD5Processor.hash(new StringBuilder(dir.getDevice().getName()).append(
-          dir.getRelativePath().toLowerCase()).append(sName.toLowerCase()).toString());
+          dir.getRelativePath().toLowerCase(Locale.getDefault())).append(sName.toLowerCase(Locale.getDefault())).toString());
     } else {
       id = MD5Processor.hash(new StringBuilder(dir.getDevice().getName()).append(
           dir.getRelativePath()).append(sName).toString());
@@ -641,7 +642,7 @@ public final class FileManager extends ItemManager {
     if (file == null || files.size() == 0) {
       return false;
     }
-    return (file.equals(files.get(0)));
+    return file.equals(files.get(0));
   }
 
   /*

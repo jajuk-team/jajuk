@@ -20,6 +20,7 @@ package ext.services.lastfm;
 
 import java.awt.Image;
 import java.util.List;
+import java.util.Locale;
 import java.util.StringTokenizer;
 
 import org.jajuk.base.Track;
@@ -107,7 +108,7 @@ public class AudioScrobblerAlbumsRunnable implements Runnable {
               continue;
             }
           }
-          if (!track.getAlbum().getName2().toLowerCase().contains(t.toLowerCase())) {
+          if (!track.getAlbum().getName2().toLowerCase(Locale.getDefault()).contains(t.toLowerCase(Locale.getDefault()))) {
             matches = false;
           }
           tokensAnalyzed++;
