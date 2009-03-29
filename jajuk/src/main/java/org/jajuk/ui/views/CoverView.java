@@ -273,9 +273,14 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
     jcbAccuracy.addItem(IconLoader.getIcon(JajukIcons.AUTHOR));
     jcbAccuracy.addItem(IconLoader.getIcon(JajukIcons.ALBUM));
     jcbAccuracy.addItem(IconLoader.getIcon(JajukIcons.TRACK));
-
-    int i = Conf.getInt(Const.CONF_COVERS_ACCURACY + "_"
-        + ((getPerspective() == null) ? "popup" : getPerspective().getID()));
+    
+    int i = 1; // medium accuracy
+    try {
+      i = Conf.getInt(Const.CONF_COVERS_ACCURACY + "_"
+          + ((getPerspective() == null) ? "popup" : getPerspective().getID()));
+    } catch (final NumberFormatException e) {
+      // Will reach this point at first launch
+    }
     jcbAccuracy.setSelectedIndex(i);
     jcbAccuracy.addActionListener(this);
 
@@ -654,9 +659,14 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
    */
   public String createQuery(final org.jajuk.base.File file) {
     String sQuery = "";
-    int iAccuracy = Conf.getInt(Const.CONF_COVERS_ACCURACY + "_"
-        + ((getPerspective() == null) ? "popup" : getPerspective().getID()));
-
+    int iAccuracy = 0;
+    try {
+      iAccuracy = Conf.getInt(Const.CONF_COVERS_ACCURACY + "_"
+          + ((getPerspective() == null) ? "popup" : getPerspective().getID()));
+    } catch (final NumberFormatException e) {
+      // can append if accuracy never set
+      Log.debug("Unknown accuracy");
+    }
     final Track track = file.getTrack();
     final Author author = track.getAuthor();
     final Album album = track.getAlbum();

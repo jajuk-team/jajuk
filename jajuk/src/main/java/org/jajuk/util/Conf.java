@@ -118,7 +118,7 @@ public final class Conf implements Const {
     int out = 0;
     try {
       out = Integer.parseInt(properties.getProperty(pName));
-    } catch (Exception e) {
+    } catch (NumberFormatException e) {
       out = Integer.parseInt(defaults.getProperty(pName));
       Log.debug("Cannot parse property: " + pName);
       Log.debug(e);
