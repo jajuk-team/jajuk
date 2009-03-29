@@ -59,6 +59,10 @@ import org.jajuk.util.log.Log;
  */
 public class StartupService {
 
+  private StartupService() {
+    // private constructor to hide it from the outside
+  }
+
   /**
    * Launch initial track at startup
    */
@@ -140,19 +144,22 @@ public class StartupService {
             try {
               final BufferedReader br = new BufferedReader(new FileReader(UtilSystem
                   .getConfFileByPath(Const.FILE_FIFO)));
-              String s = null;
-              for (;;) {
-                s = br.readLine();
-                if (s == null) {
-                  break;
-                }
+              try {
+                String s = null;
+                for (;;) {
+                  s = br.readLine();
+                  if (s == null) {
+                    break;
+                  }
 
-                final org.jajuk.base.File file = FileManager.getInstance().getFileByID(s);
-                if ((file != null) && file.isReady()) {
-                  alToPlay.add(file);
+                  final org.jajuk.base.File file = FileManager.getInstance().getFileByID(s);
+                  if ((file != null) && file.isReady()) {
+                    alToPlay.add(file);
+                  }
                 }
+              } finally {
+                br.close();
               }
-              br.close();
             } catch (final IOException ioe) {
               Log.error(ioe);
             }

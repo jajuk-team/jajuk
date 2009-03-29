@@ -49,7 +49,7 @@ public class RefactorAction {
 
   private static String sFS = java.io.File.separator;
 
-  private List<File> alFiles = null;
+  private final List<File> alFiles;
 
   /** [PERF] Stores directory to be refreshed to avoid rescanning them twice */
   private final List<Directory> toBeRefreshed = new ArrayList<Directory>(1);
@@ -60,12 +60,12 @@ public class RefactorAction {
    *          files to be reorganized (can be from different directories)
    */
   public RefactorAction(final List<File> pFiles) {
+    this.alFiles = pFiles;
     // check the directory user selected contains some files
     if (pFiles.size() == 0) {
       Messages.showErrorMessage(18);
       return;
     }
-    alFiles = pFiles;
     String sFiles = "";
     for (final File f : alFiles) {
       sFiles += f.getName() + "\n";
@@ -190,11 +190,8 @@ public class RefactorAction {
         for (final java.io.File f : list) {
           f.renameTo(new java.io.File(fNew.getParent() + RefactorAction.sFS + f.getName()));
         }
-      } else if (list.length == 0) {
-        if (dOld.delete()) {
-          DirectoryManager.getInstance().removeDirectory(fOld.getParent());
-
-        }
+      } else if (list.length == 0 && dOld.delete()) {
+        DirectoryManager.getInstance().removeDirectory(fOld.getParent());
       }
 
       InformationJPanel.getInstance().setMessage(
@@ -210,7 +207,7 @@ public class RefactorAction {
       }
       dir.getDevice().cleanRemovedFiles();
     }
-    if (!sErrors.equals("")) {
+    if (!sErrors.isEmpty()) {
       Messages.showDetailedErrorMessage(147, "", sErrors);
     } else {
       InformationJPanel.getInstance().setMessage(Messages.getString("Success"),

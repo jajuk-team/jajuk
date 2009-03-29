@@ -51,6 +51,10 @@ public final class Conf implements Const {
     properties = (Properties) properties.clone();
   }
 
+  private Conf()  {
+    // empty hidden constructor
+  }
+  
   /**
    * Return the value of a property, or null if the property is not found.
    * 

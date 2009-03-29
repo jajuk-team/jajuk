@@ -25,6 +25,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
@@ -55,8 +56,7 @@ public class ProportionDigitalDJ extends DigitalDJ {
    */
   @Override
   public List<File> generatePlaylist() {
-    List<File> out = new ArrayList<File>(100);
-    out = getSequence();
+    List<File> out = getSequence();
     if (!bUnicity && out.size() > 0) {
       while (out.size() < Const.MIN_TRACKS_NUMBER_WITHOUT_UNICITY) {
         out.addAll(getSequence());
@@ -90,26 +90,26 @@ public class ProportionDigitalDJ extends DigitalDJ {
       }
     }
     // check if all properties are represented
-    if (list.keySet().size() < proportions.size()) {
+    if (list.size() < proportions.size()) {
       return out; // return void list
     }
     // now, keep the smallest list before applying proportion
     Proportion minProp = null;
     int iMinSize = 0;
     float fTotal = 0;
-    for (Proportion prop : list.keySet()) {
-      fTotal += prop.getProportion();
-      List<File> files = list.get(prop);
+    for (Entry<Proportion, List<File>> prop : list.entrySet()) {
+      fTotal += prop.getKey().getProportion();
+      List<File> files = prop.getValue();
       // keep proportion with smallest number of files
       if (minProp == null || files.size() < iMinSize) {
-        minProp = prop;
+        minProp = prop.getKey();
         iMinSize = files.size();
       }
     }
     // apply proportions
-    for (Proportion prop : list.keySet()) {
-      List<File> files = list.get(prop);
-      out.addAll(files.subList(0, (int) (iMinSize * prop.getProportion())));
+    for (Entry<Proportion, List<File>> prop : list.entrySet()) {
+      List<File> files = prop.getValue();
+      out.addAll(files.subList(0, (int) (iMinSize * prop.getKey().getProportion())));
     }
     // complete this shuffle files if total sum < 100%
     if (fTotal < 1.0) {

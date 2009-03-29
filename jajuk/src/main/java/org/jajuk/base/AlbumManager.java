@@ -422,8 +422,8 @@ public final class AlbumManager extends ItemManager implements Observer {
       cacheRate.put(album, (float) album.getRate());
     }
     // OK, now keep only the highest score
-    for (Album album : cacheRate.keySet()) {
-      long value = Math.round(cacheRate.get(album));
+    for (Map.Entry<Album,Float> album : cacheRate.entrySet()) {
+      long value = Math.round(album.getValue());
       if (value > maxRate) {
         maxRate = value;
       }
