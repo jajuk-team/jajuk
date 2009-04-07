@@ -34,9 +34,9 @@
 	</Company_Info>
 	<Program_Info>
 		<Program_Name>Jajuk</Program_Name>
-		<Program_Version>1.7.1</Program_Version>
-		<Program_Release_Month>03</Program_Release_Month>
-		<Program_Release_Day>23</Program_Release_Day>
+		<Program_Version>1.7.2</Program_Version>
+		<Program_Release_Month>04</Program_Release_Month>
+		<Program_Release_Day>07</Program_Release_Day>
 		<Program_Release_Year>2009</Program_Release_Year>
 		<Program_Cost_Dollars />
 		<Program_Cost_Other_Code />
@@ -59,9 +59,9 @@
 			<Filename_Previous />
 			<Filename_Generic />
 			<Filename_Long />
-			<File_Size_Bytes>17823</File_Size_Bytes>
-			<File_Size_K>18251</File_Size_K>
-			<File_Size_MB>17</File_Size_MB>
+			<File_Size_Bytes>20389888</File_Size_Bytes>
+			<File_Size_K>19912</File_Size_K>
+			<File_Size_MB>19</File_Size_MB>
 		</File_Info>
 		<Expire_Info>
 			<Has_Expire_Info>N</Has_Expire_Info>
@@ -92,7 +92,7 @@
 			<Application_XML_File_URL>http://jajuk.svn.sourceforge.net/svnroot/jajuk/trunk/jajuk/src/site/resources/jajuk_pad.xml</Application_XML_File_URL>
 		</Application_URLs>
 		<Download_URLs>
-			<Primary_Download_URL>http://prdownloads.sourceforge.net/jajuk/jajuk-1.7.1-win32.exe?download&amp;amp;target=jajuk.exe</Primary_Download_URL>
+			<Primary_Download_URL>http://prdownloads.sourceforge.net/jajuk/jajuk-1.7.2-win32.exe?download&amp;amp;target=jajuk.exe</Primary_Download_URL>
 			<Secondary_Download_URL />
 			<Additional_Download_URL_1 />
 			<Additional_Download_URL_2 />
