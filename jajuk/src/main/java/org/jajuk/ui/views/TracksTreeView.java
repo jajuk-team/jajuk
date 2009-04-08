@@ -867,6 +867,7 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
       if (paths[0].getLastPathComponent() instanceof TrackNode) {
         jmenu = new JPopupMenu();
         jmenu.add(jmiPlay);
+        jmenu.add(jmiFrontPush);
         jmenu.add(jmiPush);
         jmenu.addSeparator();
         jmenu.add(jmiDelete);
@@ -879,6 +880,7 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
       } else if (paths[0].getLastPathComponent() instanceof AlbumNode) {
         jmenu = new JPopupMenu();
         jmenu.add(jmiPlay);
+        jmenu.add(jmiFrontPush);
         jmenu.add(jmiPush);
         jmenu.add(jmiPlayShuffle);
         jmenu.add(jmiPlayRepeat);
@@ -897,6 +899,7 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
       } else if (paths[0].getLastPathComponent() instanceof AuthorNode) {
         jmenu = new JPopupMenu();
         jmenu.add(jmiPlay);
+        jmenu.add(jmiFrontPush);
         jmenu.add(jmiPush);
         jmenu.add(jmiPlayShuffle);
         jmenu.add(jmiPlayRepeat);
@@ -912,6 +915,7 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
       } else if (paths[0].getLastPathComponent() instanceof StyleNode) {
         jmenu = new JPopupMenu();
         jmenu.add(jmiPlay);
+        jmenu.add(jmiFrontPush);
         jmenu.add(jmiPush);
         jmenu.add(jmiPlayShuffle);
         jmenu.add(jmiPlayRepeat);
@@ -927,6 +931,7 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
       } else if (paths[0].getLastPathComponent() instanceof YearNode) {
         jmenu = new JPopupMenu();
         jmenu.add(jmiPlay);
+        jmenu.add(jmiFrontPush);
         jmenu.add(jmiPush);
         jmenu.add(jmiPlayShuffle);
         jmenu.add(jmiPlayRepeat);

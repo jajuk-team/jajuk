@@ -232,8 +232,8 @@ public abstract class AbstractThumbnail extends JPanel implements ActionListener
     // (setVisible(false)) menu items that are not available in their
     // context
     jmenu.add(jmiPlay);
-    jmenu.add(jmiPush);
     jmenu.add(jmiFrontPush);
+    jmenu.add(jmiPush);
     jmenu.add(jmiPlayShuffle);
     jmenu.add(jmiPlayRepeat);
     jmenu.addSeparator();

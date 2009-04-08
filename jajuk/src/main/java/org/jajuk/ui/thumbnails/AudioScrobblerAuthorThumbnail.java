@@ -137,6 +137,7 @@ public class AudioScrobblerAuthorThumbnail extends AbstractThumbnail {
           jmiPlay.setEnabled(false);
           jmiPlayRepeat.setEnabled(false);
           jmiPlayShuffle.setEnabled(false);
+          jmiFrontPush.setEnabled(false);
           jmiPush.setEnabled(false);
           jmiProperties.setEnabled(false);
         }

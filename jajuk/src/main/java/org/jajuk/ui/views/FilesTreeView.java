@@ -655,6 +655,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
       if (paths[0].getLastPathComponent() instanceof FileNode) {
         jmenu = new JPopupMenu();
         jmenu.add(jmiPlay);
+        jmenu.add(jmiFrontPush);
         jmenu.add(jmiPush);
         jmenu.addSeparator();
         jmenu.add(jmiCut);
@@ -671,6 +672,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
       } else if (paths[0].getLastPathComponent() instanceof DirectoryNode) {
         jmenu = new JPopupMenu();
         jmenu.add(jmiPlay);
+        jmenu.add(jmiFrontPush);
         jmenu.add(jmiPush);
         jmenu.add(jmiPlayShuffle);
         jmenu.add(jmiPlayRepeat);
@@ -698,6 +700,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
       } else if (paths[0].getLastPathComponent() instanceof PlaylistFileNode) {
         jmenu = new JPopupMenu();
         jmenu.add(jmiPlay);
+        jmenu.add(jmiFrontPush);
         jmenu.add(jmiPush);
         jmenu.add(jmiPlayShuffle);
         jmenu.add(jmiPlayRepeat);
@@ -710,6 +713,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
       } else if (paths[0].getLastPathComponent() instanceof DeviceNode) {
         jmenu = new JPopupMenu();
         jmenu.add(jmiPlay);
+        jmenu.add(jmiFrontPush);
         jmenu.add(jmiPush);
         jmenu.add(jmiPaste);
         jmenu.add(jmiPlayShuffle);

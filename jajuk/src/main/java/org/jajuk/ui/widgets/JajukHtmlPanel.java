@@ -28,6 +28,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.Reader;
+import java.io.Writer;
 import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -45,6 +46,7 @@ import org.xamjwg.html.parser.DocumentBuilderImpl;
 import org.xamjwg.html.parser.InputSourceImpl;
 import org.xamjwg.html.test.SimpleHtmlParserContext;
 import org.xamjwg.html.test.SimpleHtmlRendererContext;
+import org.xml.sax.SAXException;
 
 /**
  * Type description
@@ -73,8 +75,9 @@ public class JajukHtmlPanel extends HtmlPanel {
 
   /**
    * Display a wikipedia url
+   * @throws SAXException 
    */
-  public void setURL(URL url) throws Exception {
+  public void setURL(URL url) throws IOException, SAXException {
     setCursor(UtilGUI.WAIT_CURSOR);
     File page = new File(UtilSystem.getConfFileByPath(Const.FILE_CACHE).getAbsolutePath() + '/'
         + UtilSystem.getOnlyFile(url.toString() + ".html"));
@@ -108,10 +111,11 @@ public class JajukHtmlPanel extends HtmlPanel {
 
   /**
    * Display a "nothing found" page
+   * @throws SAXException 
    * 
    * @throws Exception
    */
-  public void setUnknow() throws Exception {
+  public void setUnknow() throws IOException, SAXException {
     File page = new File(UtilSystem.getConfFileByPath(Const.FILE_CACHE).getAbsolutePath() + '/'
         + "noresult.html");
     String sPage = "<html><body><h1>" + Messages.getString("WikipediaView.3")
@@ -125,14 +129,17 @@ public class JajukHtmlPanel extends HtmlPanel {
    * @param sPage
    * @param page
    * @throws IOException
+   * @throws SAXException
    */
-  private void showPage(String sPage, File page) throws Exception {
+  private void showPage(String sPage, File page) throws IOException, SAXException {
     // Write the page itself
-    BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(page),
-        "UTF-8"));
-    bw.write(sPage);
-    bw.flush();
-    bw.close();
+    Writer bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(page), "UTF-8"));
+    try {
+      bw.write(sPage);
+      bw.flush();
+    } finally {
+      bw.close();
+    }
     // A Reader should be created with the correct charset,
     // which may be obtained from the Content-Type header
     // of an HTTP response.

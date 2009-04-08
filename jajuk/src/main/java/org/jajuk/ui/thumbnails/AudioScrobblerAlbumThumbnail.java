@@ -95,6 +95,10 @@ public class AudioScrobblerAlbumThumbnail extends AbstractThumbnail {
           // popup thumb for ie)
           fCover = DownloadManager.downloadToCache(remote);
           BufferedImage image = ImageIO.read(fCover);
+          if(image == null) {
+            Log.warn("Could not read cover from: " + fCover.getAbsolutePath());
+            return null;
+          }
           ImageIcon downloadedImage = new ImageIcon(image);
           ii = UtilGUI.getScaledImage(downloadedImage, 100);
           // Free images memory
@@ -139,6 +143,7 @@ public class AudioScrobblerAlbumThumbnail extends AbstractThumbnail {
           jmiPlay.setEnabled(false);
           jmiPlayRepeat.setEnabled(false);
           jmiPlayShuffle.setEnabled(false);
+          jmiFrontPush.setEnabled(false);
           jmiPush.setEnabled(false);
           jmiProperties.setEnabled(false);
         }
