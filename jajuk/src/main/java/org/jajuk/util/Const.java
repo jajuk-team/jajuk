@@ -164,7 +164,7 @@ public interface Const {
   int FORMAT_TIME_ELAPSED_MAX = 4;
 
   /** Mplayer windows exe size in bytes */
-  long MPLAYER_EXE_SIZE = 12818944l;
+  long MPLAYER_EXE_SIZE = 15265280l;
 
   String FILE_DEFAULT_MPLAYER_X86_OSX_PATH = "/Applications/MPlayer OSX.app/Contents/Resources/External_Binaries/mplayer_intel.app/Contents/MacOS/mplayer";
 
@@ -264,7 +264,7 @@ public interface Const {
 
   String FILE_BACKGROUND_IMAGE = "background.jpg";
 
-  String URL_MPLAYER = "http://repository.jajuk.info/mplayer/1.0rc2/mplayer.exe";
+  String URL_MPLAYER = "http://repository.jajuk.info/mplayer/20090114/mplayer.exe";
 
   String URL_DEFAULT_WEBRADIOS = "http://svn2.assembla.com/svn/common-jukebox/common-jukebox/src/main/resources/preset_radios.xml";
 
@@ -600,6 +600,9 @@ public interface Const {
 
   /** Use regular expressions ? */
   String CONF_REGEXP = "jajuk.regexp";
+
+  /** Force mplayer to use short names * */
+  String CONF_SHORT_NAMES = "jajuk.short_names";
 
   /** Collection backup size in MB */
   String CONF_BACKUP_SIZE = "jajuk.backup_size";

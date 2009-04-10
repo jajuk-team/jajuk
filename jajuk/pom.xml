@@ -198,6 +198,13 @@
       <artifactId>junit</artifactId>
       <version>4.5</version>
 	</dependency> 
+	<dependency>
+      <groupId>com.sun.jna</groupId>
+      <artifactId>jna</artifactId>
+      <version>3.0.5</version>
+      <scope>system</scope>
+      <systemPath>${basedir}/lib/jna-3.0.5.jar</systemPath>
+	</dependency> 
   </dependencies>
   
   <reporting>

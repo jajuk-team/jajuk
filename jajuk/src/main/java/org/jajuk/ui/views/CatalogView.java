@@ -38,6 +38,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -53,6 +54,7 @@ import javax.swing.JTextField;
 import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
+import javax.swing.border.EmptyBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
@@ -73,6 +75,7 @@ import org.jajuk.ui.helpers.FontManager.JajukFont;
 import org.jajuk.ui.thumbnails.LocalAlbumThumbnail;
 import org.jajuk.ui.widgets.InformationJPanel;
 import org.jajuk.ui.widgets.JajukJToolbar;
+import org.jajuk.ui.widgets.JajukWindow;
 import org.jajuk.ui.widgets.SteppedComboBox;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
@@ -81,6 +84,8 @@ import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilGUI;
+import org.jajuk.util.log.Log;
+import org.jdesktop.swingx.JXBusyLabel;
 
 /**
  * Catalog view. Displays all default covers by album
@@ -158,6 +163,9 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 
   /** Utility list used by size selector */
   private final List<String> sizes = new ArrayList<String>(10);
+
+  /** Populating flag */
+  private boolean populating = false;
 
   /** Swing Timer to refresh the component */
   private final Timer timerSearch = new Timer(WAIT_TIME, new ActionListener() {
@@ -388,83 +396,110 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
   /**
    * Populate the catalog
    */
-  private synchronized void populateCatalog() {
-    UtilGUI.waiting();
+  private void populateCatalog() {
+    // Prevent unwanted view population requests, do not try to synchronize
+    // 'this' :
+    // too many threads
+    if (populating) {
+      Log.debug("Already populating the catalog view");
+      return;
+    }
+    populating = true;
     new Thread() {
-      @Override
       public void run() {
-        final int value = jsp.getVerticalScrollBar().getValue();
-        final List<LocalAlbumThumbnail> thumbs = new ArrayList<LocalAlbumThumbnail>(100);
-
-        // Make sure to execute this in the EDT (can be called from update()
-        // method)
-        SwingUtilities.invokeLater(new Runnable() {
-
-          public void run() {
-
-            bPopulating = true;
-            jsSize.setEnabled(false);
-            jcbFilter.setEnabled(false);
-            jcbShowNoCover.setEnabled(false);
-            jcbSorter.setEnabled(false);
-            jbPrev.setEnabled(false);
-            jbNext.setEnabled(false);
-            jcbPage.setEnabled(false);
-            hsItems.clear();
-            // remove all devices
-            if (jpItems.getComponentCount() > 0) {
-              jpItems.removeAll();
+        try {
+          final int value = jsp.getVerticalScrollBar().getValue();
+          final List<LocalAlbumThumbnail> thumbs = new ArrayList<LocalAlbumThumbnail>(100);
+          // Make sure to execute this in the EDT (can be called from update()
+          // method)
+          SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+              bPopulating = true;
+              jsSize.setEnabled(false);
+              jcbFilter.setEnabled(false);
+              jcbShowNoCover.setEnabled(false);
+              jcbSorter.setEnabled(false);
+              jbPrev.setEnabled(false);
+              jbNext.setEnabled(false);
+              jcbPage.setEnabled(false);
+              jtfValue.setEditable(false);
+              hsItems.clear();
+              // remove all devices
+              if (jpItems.getComponentCount() > 0) {
+                jpItems.removeAll();
+              }
+              JXBusyLabel busy = new JXBusyLabel(new Dimension(200, 200));
+              int xInset = ((JajukWindow.getInstance().getWidth() - 30) / 2) - 200;
+              int yInset = ((JajukWindow.getInstance().getHeight() - 120) / 2) - 200;
+              busy.setBorder(new EmptyBorder(yInset, xInset, yInset, xInset));
+              busy.setBusy(true);
+              jpItems.add(busy);
             }
+          });
+          Filter filter = null;
+          if (jtfValue.getText().length() > 0) {
+            PropertyMetaInformation meta = alFilters.get(jcbFilter.getSelectedIndex());
+            filter = new Filter((meta == null) ? null : meta.getName(), jtfValue.getText(), true,
+                false);
           }
-        });
-        Filter filter = null;
-        if (jtfValue.getText().length() > 0) {
-          PropertyMetaInformation meta = alFilters.get(jcbFilter.getSelectedIndex());
-          filter = new Filter((meta == null) ? null : meta.getName(), jtfValue.getText(), true,
-              false);
-        }
-        List<Album> albums = null;
-        // filter albums matching tracks
-        List<Track> alAllTracks = TrackManager.getInstance().getTracks();
-        Filter.filterItems(alAllTracks, filter);
-        // keep matching albums
-        HashSet<Album> hsAlbums = new HashSet<Album>(alAllTracks.size() / 10);
-        for (Item lItem : alAllTracks) {
-          Track track = (Track) lItem;
-          Album album = track.getAlbum();
-          if (!jcbShowNoCover.isSelected()) {
-            if (album.isThumbAvailable(jsSize.getValue() * 50 + 50)) {
-              hsAlbums.add(album);
-            }
-          } else {
+          List<Album> albums = null;
+          // filter albums matching tracks
+          List<Track> alAllTracks = TrackManager.getInstance().getTracks();
+          Filter.filterItems(alAllTracks, filter);
+          // keep matching albums
+          HashSet<Album> hsAlbums = new HashSet<Album>(alAllTracks.size() / 10);
+          for (Item item : alAllTracks) {
+            Track track = (Track) item;
+            Album album = track.getAlbum();
             hsAlbums.add(album);
           }
-        }
-        albums = new ArrayList<Album>(hsAlbums);
-
-        // sort albums
-        final int index = jcbSorter.getSelectedIndex();
-        Collections.sort(albums, new Comparator<Album>() {
-          public int compare(Album album1, Album album2) {
-            // for albums, perform a fast compare
-            if (index == 2) {
-              return album1.compareTo(album2);
+          // Remove albums with no cover if required
+          Iterator<Album> itAlbums = hsAlbums.iterator();
+          while (itAlbums.hasNext()) {
+            Album album = itAlbums.next();
+            if (!jcbShowNoCover.isSelected() && album.getCoverFile() == null) {
+              itAlbums.remove();
             }
-            // get a track for each album
-            // TODO: get two tracks of album and compare Author,
-            // if
-            // !=, set Author to "Various Artist"
-            Track track1 = album1.getAnyTrack();
-            Track track2 = album2.getAnyTrack();
+          }
+          albums = new ArrayList<Album>(hsAlbums);
 
-            // check tracks (normally useless)
-            if (track1 == null || track2 == null) {
-              return 0;
-            }
-            switch (index) {
-            case 0: // style
-              // Sort on Genre/Author/Year/Title
-              if (track1.getStyle() == track2.getStyle()) {
+          // sort albums
+          final int index = jcbSorter.getSelectedIndex();
+          Collections.sort(albums, new Comparator<Album>() {
+            public int compare(Album album1, Album album2) {
+              // for albums, perform a fast compare
+              if (index == 2) {
+                return album1.compareTo(album2);
+              }
+              // get a track for each album
+              // TODO: get two tracks of album and compare Author,
+              // if
+              // !=, set Author to "Various Artist"
+              Track track1 = album1.getAnyTrack();
+              Track track2 = album2.getAnyTrack();
+
+              // check tracks (normally useless)
+              if (track1 == null || track2 == null) {
+                return 0;
+              }
+              switch (index) {
+              case 0: // style
+                // Sort on Genre/Author/Year/Title
+                if (track1.getStyle() == track2.getStyle()) {
+                  if (track1.getAuthor() == track2.getAuthor()) {
+                    if (track1.getYear() == track2.getYear()) {
+                      return album1.compareTo(album2);
+                    } else {
+                      return track1.getYear().compareTo(track2.getYear());
+                    }
+                  } else {
+                    return track1.getAuthor().compareTo(track2.getAuthor());
+                  }
+                } else {
+                  return track1.getStyle().compareTo(track2.getStyle());
+                }
+              case 1: // author
+                // Sort on Author/Year/Title
                 if (track1.getAuthor() == track2.getAuthor()) {
                   if (track1.getYear() == track2.getYear()) {
                     return album1.compareTo(album2);
@@ -474,184 +509,177 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
                 } else {
                   return track1.getAuthor().compareTo(track2.getAuthor());
                 }
-              } else {
-                return track1.getStyle().compareTo(track2.getStyle());
-              }
-            case 1: // author
-              // Sort on Author/Year/Title
-              if (track1.getAuthor() == track2.getAuthor()) {
+              case 3: // year
+                // Sort on: Year/Author/Title
                 if (track1.getYear() == track2.getYear()) {
-                  return album1.compareTo(album2);
+                  if (track1.getAuthor() == track2.getAuthor()) {
+                    return album1.compareTo(album2);
+                  } else {
+                    return track2.getAuthor().compareTo(track1.getAuthor());
+                  }
                 } else {
                   return track1.getYear().compareTo(track2.getYear());
                 }
-              } else {
-                return track1.getAuthor().compareTo(track2.getAuthor());
-              }
-            case 3: // year
-              // Sort on: Year/Author/Title
-              if (track1.getYear() == track2.getYear()) {
-                if (track1.getAuthor() == track2.getAuthor()) {
-                  return album1.compareTo(album2);
+              case 4: // Discovery date
+                return track2.getDiscoveryDate().compareTo(track1.getDiscoveryDate());
+              case 5: // Rate
+                if (album1.getRate() < album2.getRate()) {
+                  return 1;
                 } else {
-                  return track2.getAuthor().compareTo(track1.getAuthor());
+                  return 0;
                 }
-              } else {
-                return track1.getYear().compareTo(track2.getYear());
+              case 6: // Hits
+                if (album1.getHits() < album2.getHits()) {
+                  return 1;
+                } else {
+                  return 0;
+                }
               }
-            case 4: // Discovery date
-              return track2.getDiscoveryDate().compareTo(track1.getDiscoveryDate());
-            case 5: // Rate
-              if (album1.getRate() < album2.getRate()) {
-                return 1;
-              } else {
-                return 0;
-              }
-            case 6: // Hits
-              if (album1.getHits() < album2.getHits()) {
-                return 1;
-              } else {
-                return 0;
-              }
+              return 0;
             }
-            return 0;
-          }
-        });
+          });
 
-        // Now process each album
-        Set<Directory> directories = new HashSet<Directory>(albums.size());
-        List<LocalAlbumThumbnail> alItemsToDisplay = new ArrayList<LocalAlbumThumbnail>(albums
-            .size());
-        for (Object it : albums) {
-          Album album = (Album) it;
-          // if hide unmounted tracks is set, continue
-          if (Conf.getBoolean(Const.CONF_OPTIONS_HIDE_UNMOUNTED)) {
-            // test if album contains at least one mounted file
-            List<Track> trackset = TrackManager.getInstance().getAssociatedTracks(album, false);
-            if (trackset.size() > 0) {
-              boolean bOK = false;
-              for (Track track : trackset) {
-                if (track.getReadyFiles().size() > 0) {
-                  bOK = true;
-                  break;
+          // Now process each album
+          Set<Directory> directories = new HashSet<Directory>(albums.size());
+          List<LocalAlbumThumbnail> alItemsToDisplay = new ArrayList<LocalAlbumThumbnail>(albums
+              .size());
+          for (Object it : albums) {
+            Album album = (Album) it;
+            // if hide unmounted tracks is set, continue
+            if (Conf.getBoolean(Const.CONF_OPTIONS_HIDE_UNMOUNTED)) {
+              // test if album contains at least one mounted file
+              List<Track> trackset = TrackManager.getInstance().getAssociatedTracks(album, false);
+              if (trackset.size() > 0) {
+                boolean bOK = false;
+                for (Track track : trackset) {
+                  if (track.getReadyFiles().size() > 0) {
+                    bOK = true;
+                    break;
+                  }
                 }
-              }
-              if (!bOK) {
+                if (!bOK) {
+                  continue;
+                }
+              } else {
                 continue;
               }
-            } else {
-              continue;
             }
-          }
-          // Take first track of album (to get detailed
-          // information)
-          Track anyTrack = album.getAnyTrack();
-          if (anyTrack != null) {
-            // Take the directory of any file of the track
-            List<org.jajuk.base.File> fileList = anyTrack.getFiles();
-            if (fileList.size() > 0) {
-              Directory dir = fileList.get(0).getDirectory();
-              // We want to limit duplicate covers, so we
-              // display only one album whose
-              // files are in a given directory
-              if (directories.contains(dir)) {
-                continue;
-              }
-              directories.add(dir);
-            }
-            LocalAlbumThumbnail cover = new LocalAlbumThumbnail(album, getSelectedSize(), true);
-            alItemsToDisplay.add(cover);
-            // stores information on non-null covers
-            hsItems.add(cover);
-          }
-        }
-
-        // computes the number of pages
-        int iSize = Conf.getInt(Const.CONF_CATALOG_PAGE_SIZE);
-        if (iSize == 0) {
-          iNbPages = 1;
-        } else {
-          iNbPages = alItemsToDisplay.size() / iSize
-              + ((alItemsToDisplay.size() % iSize == 0) ? 0 : 1);
-        }
-        // add one page for trailing items
-        // populate page selector
-        jcbPage.removeActionListener(CatalogView.this); // remove
-        // action
-        // listener
-        jcbPage.removeAllItems(); // void it
-
-        for (int i = 0; i < iNbPages; i++) { // add the pages
-          jcbPage.addItem(Messages.getString("CatalogView.11") + " " + (i + 1) + "/" + iNbPages);
-          // start at page 1, not 0
-        }
-        if (iNbPages > 0) {
-          // After user changed the number of thumbs on a page, we can be out
-          // of bounds exception so make sure to reinit the page index in this
-          // case
-          if (page >= jcbPage.getItemCount()) {
-            page = 0;
-          }
-          jcbPage.setSelectedIndex(page);
-          jcbPage.addActionListener(CatalogView.this);
-          // Add all items
-          int max = alItemsToDisplay.size(); // upper limit
-          if (page < (iNbPages - 1)) {
-            // if last page, take simply to total number of
-            // items to display
-            max = (page + 1) * Conf.getInt(Const.CONF_CATALOG_PAGE_SIZE);
-          }
-
-          for (int i = page * Conf.getInt(Const.CONF_CATALOG_PAGE_SIZE); i < max; i++) {
-            final LocalAlbumThumbnail it = alItemsToDisplay.get(i);
-            // UI lazy loading
-            it.populate();
-            thumbs.add(it);
-            iNbCreatedThumbs++;
-            it.getIcon().addMouseListener(new MouseAdapter() {
-              @Override
-              public void mousePressed(MouseEvent e) {
-                LocalAlbumThumbnail thumb = (LocalAlbumThumbnail) ((JLabel) e.getSource())
-                    .getParent();
-                // Unselect previous thumb
-                if (CatalogView.this.item != null && CatalogView.this.item != thumb) {
-                  CatalogView.this.item.setSelected(false);
+            // Take first track of album (to get detailed
+            // information)
+            Track anyTrack = album.getAnyTrack();
+            if (anyTrack != null) {
+              // Take the directory of any file of the track
+              List<org.jajuk.base.File> fileList = anyTrack.getFiles();
+              if (fileList.size() > 0) {
+                Directory dir = fileList.get(0).getDirectory();
+                // We want to limit duplicate covers, so we
+                // display only one album whose
+                // files are in a given directory
+                if (directories.contains(dir)) {
+                  continue;
                 }
-                // Select new thumb
-                thumb.setSelected(true);
-                CatalogView.this.item = thumb;
+                directories.add(dir);
               }
-            });
+              LocalAlbumThumbnail cover = new LocalAlbumThumbnail(album, getSelectedSize(), true);
+              alItemsToDisplay.add(cover);
+              // stores information on non-null covers
+              hsItems.add(cover);
+            }
           }
-        }
-        // The scrollbar must be set after current EDT work to be effective, so
-        // queue it
-        SwingUtilities.invokeLater(new Runnable() {
-          public void run() {
-            // Display the catalog
-            for (LocalAlbumThumbnail thumb : thumbs) {
-              jpItems.add(thumb);
+
+          // computes the number of pages
+          int iSize = Conf.getInt(Const.CONF_CATALOG_PAGE_SIZE);
+          if (iSize == 0) {
+            iNbPages = 1;
+          } else {
+            // add one page for trailing items
+            iNbPages = alItemsToDisplay.size() / iSize
+                + ((alItemsToDisplay.size() % iSize == 0) ? 0 : 1);
+          }
+          // populate page selector
+          // remove action listener
+          jcbPage.removeActionListener(CatalogView.this);
+          jcbPage.removeAllItems(); // void it
+
+          for (int i = 0; i < iNbPages; i++) { // add the pages
+            jcbPage.addItem(Messages.getString("CatalogView.11") + " " + (i + 1) + "/" + iNbPages);
+            // start at page 1, not 0
+          }
+          if (iNbPages > 0) {
+            // After user changed the number of thumbs on a page, we can be out
+            // of bounds exception so make sure to reinit the page index in this
+            // case
+            if (page >= jcbPage.getItemCount()) {
+              page = 0;
+            }
+            jcbPage.setSelectedIndex(page);
+            jcbPage.addActionListener(CatalogView.this);
+            // Add all items
+            int max = alItemsToDisplay.size(); // upper limit
+            if (page < (iNbPages - 1)) {
+              // if last page, take simply to total number of
+              // items to display
+              max = (page + 1) * Conf.getInt(Const.CONF_CATALOG_PAGE_SIZE);
             }
 
-            jsp.revalidate();
-            jsp.repaint();
-            SwingUtilities.invokeLater(new Runnable() {
-              public void run() {
-                jsp.getVerticalScrollBar().setValue(value);
-              }
-            });
-            jtfValue.requestFocusInWindow();
-            jsSize.setEnabled(true);
-            jcbFilter.setEnabled(true);
-            jcbShowNoCover.setEnabled(true);
-            jcbSorter.setEnabled(true);
-            jbPrev.setEnabled(true);
-            jbNext.setEnabled(true);
-            jcbPage.setEnabled(true);
-            bPopulating = false;
-            UtilGUI.stopWaiting();
+            for (int i = page * Conf.getInt(Const.CONF_CATALOG_PAGE_SIZE); i < max; i++) {
+              final LocalAlbumThumbnail it = alItemsToDisplay.get(i);
+              // UI lazy loading
+              it.populate();
+              thumbs.add(it);
+              iNbCreatedThumbs++;
+              it.getIcon().addMouseListener(new MouseAdapter() {
+                @Override
+                public void mousePressed(MouseEvent e) {
+                  LocalAlbumThumbnail thumb = (LocalAlbumThumbnail) ((JLabel) e.getSource())
+                      .getParent();
+                  // Unselect previous thumb
+                  if (CatalogView.this.item != null && CatalogView.this.item != thumb) {
+                    CatalogView.this.item.setSelected(false);
+                  }
+                  // Select new thumb
+                  thumb.setSelected(true);
+                  CatalogView.this.item = thumb;
+                }
+              });
+            }
           }
-        });
+          // The scrollbar must be set after current EDT work to be effective,
+          // so queue it
+          SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+              // Display the catalog
+              if (jpItems.getComponentCount() > 0) {
+                // remove the busy label
+                jpItems.removeAll();
+              }
+              for (LocalAlbumThumbnail thumb : thumbs) {
+                jpItems.add(thumb);
+              }
+
+              jsp.revalidate();
+              jsp.repaint();
+              SwingUtilities.invokeLater(new Runnable() {
+                public void run() {
+                  jsp.getVerticalScrollBar().setValue(value);
+                }
+              });
+              jtfValue.setEditable(true);
+              jtfValue.requestFocusInWindow();
+              jsSize.setEnabled(true);
+              jcbFilter.setEnabled(true);
+              jcbShowNoCover.setEnabled(true);
+              jcbSorter.setEnabled(true);
+              jbPrev.setEnabled(true);
+              jbNext.setEnabled(true);
+              jcbPage.setEnabled(true);
+              bPopulating = false;
+              UtilGUI.stopWaiting();
+            }
+          });
+        } finally {
+          populating = false;
+        }
       }
     }.start();
 

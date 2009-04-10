@@ -41,6 +41,7 @@
         	<extension name='JIntellitype' href='jintellitype.jnlp'/>
         	<extension name='Cobra' href='cobra.jnlp'/>
         	<extension name='Forms' href='forms.jnlp'/>
+        	<extension name='Jna' href='jna.jnlp'/>
        </resources>
        <resources os='Windows'>
       	<nativelib href='windows/jintellitype-native.jar' version='VERSION_REPLACED_BY_ANT'/>

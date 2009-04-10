@@ -221,10 +221,7 @@ public class File extends PhysicalItem implements Comparable<File>, Const {
    * @return true the file can be accessed right now
    */
   public boolean isReady() {
-    if (getDirectory().getDevice().isMounted()) {
-      return true;
-    }
-    return false;
+    return getDirectory().getDevice().isMounted();
   }
 
   /**

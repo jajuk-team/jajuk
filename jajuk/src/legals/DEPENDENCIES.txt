@@ -21,129 +21,218 @@ Apache				=> LICENSE-Apache.txt
 Creative Commons 	=> LICENSE-CREATIVE-COMMONS.txt
 -------------------------------------------------------------------------------
 
-== Sound ==
--------------------------------------------------------------------------------
-|API                           |Credentials|Comments |URL             |License|
--------------------------------------------------------------------------------
-|Javalayer,BasicPlayer,        |JavaZoom   |MP3 sound|http://         |LGPL   |
-|Tritonus, mp3spi              |team       |engine   |www.javazoom.net|       |
--------------------------------------------------------------------------------
-|                              |           |Ogg      |                |       |
-|Jogg, JOrbis,Vorbis,Vorbis SPI|JavaZoom   |Vorbis   |http://         |LGPL   |
-|                              |team       |sound    |www.javazoom.net|       |
-|                              |           |engine   |                |       |
--------------------------------------------------------------------------------
-|                              |           |Excellent|                |       |
-|MPlayer                       |MPlayer    |Multi-   |http://         |GPL    |
-|                              |team       |format   |www.mplayerhq.hu|       |
-|                              |           |player   |                |       |
--------------------------------------------------------------------------------
+==Jajuk license dependencies==
+===Sound===
+{| 
+|- 
+! API
+! Credentials
+! Comments
+! URL
+! License
+|- 
+| Javalayer, BasicPlayer, Tritonus, mp3spi
+| JavaZoom team
+| MP3 sound engine
+| [http://www.javazoom.net/javalayer/javalayer.html http://www.javazoom.net]
+| LGPL
+|-
+| Jogg, JOrbis, Vorbis, Vorbis SPI
+| JavaZoom team
+| Ogg Vorbis sound engine
+| http://www.javazoom.net
+| LGPL
+|- 
+| MPlayer
+| MPlayer team
+| Excellent Multi-format player. Mplayer is the default Jajuk player for all formats (except APE)
+| http://www.mplayerhq.hu
+| GPL
+|}
 
-== Tags ==
-----------------------------------------------------------------------------------
-|API         |Credentials  |Comments        |URL                         |License|
-----------------------------------------------------------------------------------
-|Entagged-   |             |Multi-format    |http://                     |       |
-|audioformats|Entagged team|read            |entagged.sourceforge.net/   |LGPL   |
-|            |             |/ write tags API|                            |       |
-----------------------------------------------------------------------------------
+===Tags===
+{| 
+|- 
+! API
+! Credentials
+! Comments
+! URL
+! License
+|- 
+| JAudiotagger
+| JAudiotagger
+| Multi-format read / write tags API
+| http://www.jthink.net/jaudiotagger/index.jsp
+| LGPL
+|}
 
-== Look and feel ==
-----------------------------------------------------------------------------------
-|API       |Credentials        |Comments    |URL                        |License |
-----------------------------------------------------------------------------------
-|          |                   |A cross-    |                           |        |
-|          |                   |platform    |https://                   |        |
-|Substance |Kirill Grouchnikov |look & feel |substance.dev.java.net/    |BSD     |
-|          |                   |for Swing   |                           |        |
-|          |                   |applications|                           |        |
-----------------------------------------------------------------------------------
+===Look and feel===
 
+{| 
+|- 
+! API
+! Credentials
+! Comments
+! URL
+! License
+|- 
+| Substance
+| Kirill Grouchnikov
+| A cross-platform look & feel for Swing applications
+| https://substance.dev.java.net/
+| BSD
+|}
 
-== Swing helpers ==
--------------------------------------------------------------------------------
-|API        |Credentials |Comments     |URL                      |License     |
--------------------------------------------------------------------------------
-|           |Object      |Common UI    |http://www.jfree.org/    |            |
-|Jcommon    |Refinery    |objects      |jcommon/                 |LGPL        |
-|           |Limited     |library      |                         |            |
--------------------------------------------------------------------------------
-|           |Object      |Excellent    |http://www.jfree.org/    |            |
-|JFreechart |Refinery    |Charts API   |jfreechart/              |LGPL        |
-|           |Limited     |             |                         |            |
--------------------------------------------------------------------------------
-|           |Daniel      |At least one |https://                 |            |
-|Tablelayout|Barbalace   |useful Swing |tablelayout.dev.java.net/|Public      |
-|           |            |layout!      |                         |            |
--------------------------------------------------------------------------------
-|           |            |Swing API    |                         |            |
-|           |            |provinding   |                         |            |
-|Zeus JSCL  |Zeus JSCL   |splashscreen |http://sourceforge.net/  |LGPL        |
-|           |team        |and forms    |projects/zeus-jscl/      |            |
-|           |            |validation   |                         |            |
-|           |            |features     |                         |            |
--------------------------------------------------------------------------------
-|           |Sun         |Advanced     |https://                 |            |
-|SwingX     |Microsystems|Swing widgets|swingx.dev.java.net/     |LGPL        |
-|           |            |like JXTable |                         |            |
--------------------------------------------------------------------------------
-|QDWizard   |QDWizard    |Swing Wizard |http://                  |LGPL        |
-|           |Team        |API          |qdwizard.sourceforge.net |            |
--------------------------------------------------------------------------------
-|VLDocking  |VLSolutions |framework and|http://                  |CeCILL (*)  |
-|           |            |advanced     |www.vlsolutions.com      |            |
-|           |            |toolbars     |                         |            |
--------------------------------------------------------------------------------
-|JHlabs     |JHLabs      |Images       |http://www.jhlabs.com    |Apache 2    |
-|Filters    |            |filters      |/ip/filters              |            |
--------------------------------------------------------------------------------
+===Swing helpers===
+{| 
+|- 
+! API
+! Credentials
+! Comments
+! URL
+! License
+|- 
+| Jcommon
+| Object Refinery Limited
+| Common UI objects library
+| http://www.jfree.org/jcommon/
+| LGPL
+|- 
+| JFreechart
+| Object Refinery Limited
+| Excellent Charts API
+| [http://www.jfree.org/jfreechart/index.html http://www.jfree.org/jfreechart/]
+| LGPL
+|- 
+| Java Help
+| Sun Microsystems
+| High level online help framework
+| http://java.sun.com/products/javahelp/
+| GPL-v2
+|- 
+| Tablelayout
+| Daniel Barbalace
+| At least one useful Swing layout!
+| [https://tablelayout.dev.java.net/ <u>https://tablelayout.dev.java.net/</u>]
+| Public
+|- 
+| Zeus JSCL
+| Zeus JSCL team
+| Swing API provinding splashscreen and forms validation features
+| http://sourceforge.net/projects/zeus-jscl/
+| LGPL
+|- 
+| SwingX
+| Sun Microsystems
+| Advanced Swing widgets like JXTable
+| https://swingx.dev.java.net/
+| LGPL
+|- 
+| QDWizard
+| QDWizard Team
+| Swing Wizard API
+| http://qdwizard.sourceforge.net
+| LGPL
+|- 
+| L2FProd commons components
+| L2FProd
+| Some advanced widgets like JButtonBar
+| http://common.l2fprod.com/index.php
+| Apache 2.0
+|- 
+| VLDocking
+| VLSolutions
+| Docking framework and advanced toolbars
+| [http://www.vlsolutions.com/en/products/docking/index.php http://www.vlsolutions.com]
+| CeCILL (*)
+|- 
+| JHlabs Filters
+| JHLabs
+| Images filters
+| http://www.jhlabs.com/ip/filters
+| Apache 2.0
+|}
 
 (*) The CeCILL License is a french GPL compatible license. For those developing 
 open source applications, it allows you to use, modify and distribute VLDocking 
-freely (under CeCILL or GPL license). Full text of the license can be seen here:
-http://www.vlsolutions.com/download/Licence_CeCILL-V1.1_VA.pdf
+freely (under CeCILL or GPL license). Full text of the license can be seen [http://www.vlsolutions.com/download/Licence_CeCILL-V1.1_VA.pdf here].
 
-== Native/system integration ==
-----------------------------------------------------------------------------
-|API         |Credentials|Comments            |URL              |License   |
-----------------------------------------------------------------------------
-|            |           |New Tray API for    |https://         |          |
-|Tray        |Jdic team  |both Windows and    |jdic.dev.java.net|LGPL      |
-|            |           |Linux               |                 |          |
-----------------------------------------------------------------------------
-|            |           |                    |http://          |          |
-|Jintellitype|Meloware   |Intellitype keyboard|melloware.com/   |Apache 2.0|
-|            |           |support             |products/        |          |
-|            |           |                    |jintellitype/    |          |
-----------------------------------------------------------------------------
 
-== Logging ==
----------------------------------------------------------------------------
-|API    |Credentials   |Comments       |URL                |License       |
----------------------------------------------------------------------------
-|       |Apache Jakarta|The most famous|http://            |              |
-|Log4j  |Log4j team    |Java logging   |logging.apache.org/|Apache        |
-|       |              |API            |log4j/             |              |
----------------------------------------------------------------------------
-|       |              |Common Logging |http://            |              |
-|Commons|Apache Jakarta|facilities used|jakarta.apache.org/|Apache        |
-|Logging|Logging team  |by many Jakarta|commons/logging/   |              |
-|       |              |API            |                   |              |
----------------------------------------------------------------------------
+===Native/system integration===
 
-== Web ==
---------------------------------------------------------------------------------
-|API    |Credentials|Comments       |URL                               |License|
---------------------------------------------------------------------------------
-|Cobra  |Cobra team |Web Browser API|http://html.xamjwg.org/cobra.jsp  |GPL    |
---------------------------------------------------------------------------------
+{| 
+|- 
+! API
+! Credentials
+! Comments
+! URL
+! License
+|- 
+| Jintellitype
+| Meloware
+| Intellitype keyboard support
+|
+[http://melloware.com/products/jintellitype/index.html http://melloware.com/products/jintellitype/]
+| Apache 2.0
+|}
 
-== Others ==
--------------------------------------------------------------------------------
-|API          |Credentials  |Comments      |URL                |License       |
--------------------------------------------------------------------------------
-|             |             |Text animation|http://            |              |
-|Animation    |JGoodies team|API           |www.jgoodies.com/  |BSD           |
-|             |             |              |freeware/animation/|              |
--------------------------------------------------------------------------------
+===Logging===
+{| 
+|- 
+! API
+! Credentials
+! Comments
+! URL
+! License
+|- 
+| Log4j
+| Apache Jakarta Log4j team
+| The most famous Java logging API 
+| [http://logging.apache.org/log4j/docs/index.html http://logging.apache.org/log4j/]
+| Apache License
+|- 
+| Commons Logging
+| Apache Jakarta Logging team
+| Common Logging facilities used by many Jakarta API 
+| http://jakarta.apache.org/commons/logging/
+| Apache License
+|}
+
+===Web===
+{| 
+|- 
+! API
+! Credentials
+! Comments
+! URL
+! License
+|- 
+| Cobra
+| Cobra team
+| Web Browser API
+| http://html.xamjwg.org/cobra.jsp
+| GPL
+|}
+
+===Others===
+{| 
+|- 
+! API
+! Credentials
+! Comments
+! URL
+! License
+|- 
+| Animation
+| JGoodies team
+| Text animation API
+| [http://www.jgoodies.com/freeware/animation/index.html http://www.jgoodies.com/freeware/animation/]
+| BSD
+|- 
+| Common-jukebox
+| Common-jukebox team
+| Various jukebox shared code between projects
+| http://www.assembla.com/wiki/show/common-jukebox
+| LGPL
+|}
 

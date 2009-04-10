@@ -19,6 +19,8 @@
  */
 package org.jajuk.services.players;
 
+import ext.service.io.NativeFunctionsUtils;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -31,6 +33,7 @@ import org.jajuk.ui.actions.ActionManager;
 import org.jajuk.ui.actions.JajukActions;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
+import org.jajuk.util.UtilSystem;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 
@@ -267,7 +270,14 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
     this.bOpening = true;
     this.bEOF = false;
     this.iFadeDuration = 1000 * Conf.getInt(Const.CONF_FADE_DURATION);
-    ProcessBuilder pb = new ProcessBuilder(buildCommand(file.getAbsolutePath()));
+    // Build the file url. Under windows 32 bits, we convert path to short
+    // version to fix a mplayer bug when reading some pathnames including
+    // special characters (see #1267)
+    String pathname = file.getAbsolutePath();
+    if (UtilSystem.isUnderWindows32bits()) {
+      pathname = NativeFunctionsUtils.getShortPathNameW(pathname);
+    }
+    ProcessBuilder pb = new ProcessBuilder(buildCommand(pathname));
     Log.debug("Using this Mplayer command: {{" + pb.command() + "}}");
     // Set all environment variables format: var1=xxx var2=yyy
     try {

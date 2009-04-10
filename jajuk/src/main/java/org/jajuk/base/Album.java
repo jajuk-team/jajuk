@@ -249,9 +249,7 @@ public class Album extends LogicalItem implements Comparable<Album> {
       return null;
     } else if (!UtilString.isVoid(cachedCoverPath)) {
       File coverCache = new File(cachedCoverPath);
-      if (coverCache.exists()) {
-        return coverCache;
-      }
+      return coverCache;
     }
     File fDir = null; // analyzed directory
     // search for local covers in all directories mapping the current track
@@ -271,6 +269,12 @@ public class Album extends LogicalItem implements Comparable<Album> {
         }
       }
     }
+    // If none available dir, we can't search for cover for now (may be better
+    // next time when at least one device will be mounted)
+    if (dirs.size() == 0) {
+      return null;
+    }
+
     // look for absolute cover in collection
     for (Directory dir : dirs) {
       String sAbsolut = dir.getStringValue(Const.XML_DIRECTORY_DEFAULT_COVER);
@@ -294,21 +298,22 @@ public class Album extends LogicalItem implements Comparable<Album> {
         if (files[i].exists() && files[i].length() < MAX_COVER_SIZE * 1024) {
           // check size to avoid out of memory errors
           String sExt = UtilSystem.getExtension(files[i]);
-          if ((sExt.equalsIgnoreCase("jpg") || sExt.equalsIgnoreCase("png") || sExt
-              .equalsIgnoreCase("gif"))
-              && UtilFeatures.isStandardCover(files[i])) {
-            // Test the image is not corrupted
-            try {
-              MediaTracker mediaTracker = new MediaTracker(new Container());
-              ImageIcon ii = new ImageIcon(files[i].getAbsolutePath());
-              mediaTracker.addImage(ii.getImage(), 0);
-              mediaTracker.waitForID(0); // wait for image
-              if (!mediaTracker.isErrorAny()) {
-                setProperty(XML_ALBUM_COVER, files[i].getAbsolutePath());
-                return files[i];
+          if (sExt.equalsIgnoreCase("jpg") || sExt.equalsIgnoreCase("png")
+              || sExt.equalsIgnoreCase("gif")) {
+            if (UtilFeatures.isStandardCover(files[i])) {
+              // Test the image is not corrupted
+              try {
+                MediaTracker mediaTracker = new MediaTracker(new Container());
+                ImageIcon ii = new ImageIcon(files[i].getAbsolutePath());
+                mediaTracker.addImage(ii.getImage(), 0);
+                mediaTracker.waitForID(0); // wait for image
+                if (!mediaTracker.isErrorAny()) {
+                  setProperty(XML_ALBUM_COVER, files[i].getAbsolutePath());
+                  return files[i];
+                }
+              } catch (Exception e) {
+                Log.error(e);
               }
-            } catch (Exception e) {
-              Log.error(e);
             }
           }
         }
@@ -378,26 +383,19 @@ public class Album extends LogicalItem implements Comparable<Album> {
    */
   public ImageIcon getThumbnail(int size) {
     File fCover = ThumbnailManager.getThumbBySize(this, size);
-
     // Check if thumb already exists
     if (!fCover.exists() || fCover.length() == 0) {
       return IconLoader.getNoCoverIcon(size);
     }
-
     BufferedImage img = null;
     try {
       img = ImageIO.read(new File(fCover.getAbsolutePath()));
     } catch (IOException e) {
       Log.error(e);
     }
-
     ImageIcon icon = new ImageIcon(img);
-
     // Free thumb memory (DO IT AFTER FULL ImageIcon loading)
-    if (img != null) {
-      img.flush();
-    }
-
+    img.flush();
     // accelerate GC cleanup
     img = null;
     return icon;
@@ -575,6 +573,9 @@ public class Album extends LogicalItem implements Comparable<Album> {
    * @param available
    */
   public void setAvailableThumb(int size, boolean available) {
+    if (availableTumbs == null) {
+      availableTumbs = new boolean[6];
+    }
     availableTumbs[size / 50 - 1] = available;
   }
 
@@ -586,11 +587,13 @@ public class Album extends LogicalItem implements Comparable<Album> {
    * @return whether a thumb is available for given size
    */
   public boolean isThumbAvailable(int size) {
-    // Lazy loading of thumb availability
+    // Lazy loading of thumb availability (for all sizes)
     if (availableTumbs == null) {
       availableTumbs = new boolean[6];
-      File fThumb = ThumbnailManager.getThumbBySize(this, size);
-      setAvailableThumb(size, fThumb.exists() && fThumb.length() > 0);
+      for (int i = 50; i <= 300; i += 50) {
+        File fThumb = ThumbnailManager.getThumbBySize(this, i);
+        setAvailableThumb(i, fThumb.exists() && fThumb.length() > 0);
+      }
     }
     return availableTumbs[size / 50 - 1];
   }

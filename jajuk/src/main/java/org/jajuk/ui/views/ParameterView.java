@@ -64,6 +64,8 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.plaf.basic.BasicComboBoxRenderer;
 
 import org.jajuk.Main;
+import org.jajuk.base.Album;
+import org.jajuk.base.AlbumManager;
 import org.jajuk.base.DeviceManager;
 import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
@@ -339,6 +341,8 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 
   JSlider jsPerspectiveSize;
 
+  private JCheckBox jcbShortNames;
+
   private boolean someOptionsAppliedAtNextStartup = false;
 
   /**
@@ -476,12 +480,17 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
           if (resu != JOptionPane.YES_OPTION) {
             return;
           }
+          // Clean thumbs
           ThumbnailManager.cleanThumbs(THUMBNAIL_SIZE_50X50);
           ThumbnailManager.cleanThumbs(THUMBNAIL_SIZE_100X100);
           ThumbnailManager.cleanThumbs(THUMBNAIL_SIZE_150X150);
           ThumbnailManager.cleanThumbs(THUMBNAIL_SIZE_200X200);
           ThumbnailManager.cleanThumbs(THUMBNAIL_SIZE_250X250);
           ThumbnailManager.cleanThumbs(THUMBNAIL_SIZE_300X300);
+          // Unset default cover
+          for (Album album : AlbumManager.getInstance().getAlbums()) {
+            album.setProperty(XML_ALBUM_COVER, null);
+          }
           // Display the catalog view voided
           ObservationManager.notify(new JajukEvent(JajukEvents.DEVICE_REFRESH));
           // Launch thumbs creation in another process
@@ -587,6 +596,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     Conf.setProperty(Const.CONF_COLLECTION_CHARSET, jcbCollectionEncoding.getSelectedItem()
         .toString());
     Conf.setProperty(Const.CONF_REGEXP, Boolean.toString(jcbRegexp.isSelected()));
+    Conf.setProperty(Const.CONF_SHORT_NAMES, Boolean.toString(jcbShortNames.isSelected()));
     Conf.setProperty(Const.CONF_CHECK_FOR_UPDATE, Boolean.toString(jcbCheckUpdates.isSelected()));
     Conf.setProperty(Const.CONF_FORCE_FILE_DATE, Boolean.toString(jcbForceFileDate.isSelected()));
     // Apply new mplayer path and display a warning message if changed
@@ -597,6 +607,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     Conf.setProperty(Const.CONF_MPLAYER_PATH_FORCED, jtfMPlayerPath.getText());
     Conf.setProperty(Const.CONF_MPLAYER_ARGS, jtfMPlayerArgs.getText());
     Conf.setProperty(Const.CONF_ENV_VARIABLES, jtfEnvVariables.getText());
+
     // UI
     Conf.setProperty(Const.CONF_CATALOG_PAGE_SIZE, Integer.toString(jsCatalogPages.getValue()));
     Conf.setProperty(Const.CONF_SHOW_POPUPS, Boolean.toString(jcbShowPopups.isSelected()));
@@ -1187,6 +1198,11 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     jcbRegexp = new JCheckBox(Messages.getString("ParameterView.113"));
     jcbRegexp.setSelected(Conf.getBoolean(Const.CONF_REGEXP));
     jcbRegexp.setToolTipText(Messages.getString("ParameterView.114"));
+    jcbShortNames = new JCheckBox(Messages.getString("ParameterView.254"));
+    jcbShortNames.setSelected(Conf.getBoolean(Const.CONF_SHORT_NAMES));
+    jcbShortNames.setToolTipText(Messages.getString("ParameterView.255"));
+    // Short names option is only under windows 32
+    jcbShortNames.setEnabled(UtilSystem.isUnderWindows32bits());
     jcbCollectionEncoding.addItem("UTF-8");
     jcbCollectionEncoding.addItem("UTF-16");
     jlLogLevel = new JLabel(Messages.getString("ParameterView.46"));
@@ -1220,7 +1236,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     jcbForceFileDate = new JCheckBox(Messages.getString("ParameterView.244"));
     jcbForceFileDate.setToolTipText(Messages.getString("ParameterView.245"));
     jcbForceFileDate.setSelected(Conf.getBoolean(Const.CONF_FORCE_FILE_DATE));
-    final double sizeAdvanced[][] = { { p, p }, { p, p, p, p, p, p, p, p, p, p } };
+    final double sizeAdvanced[][] = { { p, p }, { p, p, p, p, p, p, p, p, p, p, p } };
     final TableLayout layoutAdvanced = new TableLayout(sizeAdvanced);
     layoutAdvanced.setHGap(iXSeparator);
     layoutAdvanced.setVGap(iYSeparator);
@@ -1242,6 +1258,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     jpAdvanced.add(psJajukWorkspace, "1,7");
     jpAdvanced.add(jcbCheckUpdates, "0,8");
     jpAdvanced.add(jcbForceFileDate, "0,9");
+    jpAdvanced.add(jcbShortNames, "0,10");
 
     // - Network
     jpNetwork = new JPanel();

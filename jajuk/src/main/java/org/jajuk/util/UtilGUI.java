@@ -94,7 +94,6 @@ public final class UtilGUI {
 
   /** Set cursor thread, stored to avoid construction */
   private static Runnable setCursorThread = new Runnable() {
-    @Override
     public void run() {
       Container container = null;
       IPerspective perspective = PerspectiveManager.getCurrentPerspective();
