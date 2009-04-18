@@ -406,6 +406,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
     }
     populating = true;
     new Thread() {
+      @Override
       public void run() {
         try {
           final int value = jsp.getVerticalScrollBar().getValue();

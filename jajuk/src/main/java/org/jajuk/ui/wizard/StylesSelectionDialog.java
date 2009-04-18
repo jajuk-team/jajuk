@@ -23,7 +23,6 @@ package org.jajuk.ui.wizard;
 import info.clearthought.layout.TableLayout;
 
 import java.awt.Dimension;
-import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -66,7 +65,8 @@ public class StylesSelectionDialog extends JajukJDialog implements ActionListene
   List<String> list;
 
   /**
-   * @throws HeadlessException
+   * 
+   * @param disabledStyles
    */
   @SuppressWarnings("unchecked")
   public StylesSelectionDialog(Set disabledStyles) {

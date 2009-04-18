@@ -92,6 +92,11 @@ import org.jdesktop.swingx.VerticalLayout;
  */
 public class PropertiesWizard extends JajukJDialog implements ActionListener {
 
+  /**
+   * 
+   */
+  private static final String PROPERTIES_WIZARD_6 = "PropertiesWizard.6";
+
   private static final long serialVersionUID = 1L;
 
   /* Main panel */
@@ -127,22 +132,22 @@ public class PropertiesWizard extends JajukJDialog implements ActionListener {
    */
   public PropertiesWizard(List<Item> alItems) {
     super();
-    
+
     // windows title: name of the element if there is
     // only one item, or "selection" word otherwise
     if (alItems.size() == 1) {
       setTitle(alItems.get(0).getDesc());
     } else {
-      setTitle(Messages.getString("PropertiesWizard.6"));
+      setTitle(Messages.getString(PROPERTIES_WIZARD_6));
     }
     this.alItems = alItems;
     boolean bMerged = false;
     if (alItems.size() > 1) {
       bMerged = true;
     }
-    panel1 = new PropertiesPanel(alItems, alItems.size() == 1 ? UtilString.getLimitedString(
-        (alItems.get(0)).getDesc(), 50) : Messages.getString("PropertiesWizard.6") + " ["
-        + alItems.size() + "]", bMerged);
+    panel1 = new PropertiesPanel(alItems, alItems.size() == 1 ? UtilString.getLimitedString(alItems
+        .get(0).getDesc(), 50) : Messages.getString(PROPERTIES_WIZARD_6) + " [" + alItems.size()
+        + "]", bMerged);
     CellConstraints cc = new CellConstraints();
     PanelBuilder builder = new PanelBuilder(new FormLayout("5dlu,p:grow,5dlu",
         "1dlu,fill:p,5dlu,p,3dlu"));
@@ -165,10 +170,12 @@ public class PropertiesWizard extends JajukJDialog implements ActionListener {
    *          items to display in the second panel (associated track for ie )
    */
   public PropertiesWizard(List<Item> alItems1, List<Item> alItems2) {
+    super();
+    
     // windows title: name of the element of only one item, or "selection"
     // word otherwise
-    setTitle(alItems1.size() == 1 ? (alItems1.get(0)).getDesc() : Messages
-        .getString("PropertiesWizard.6"));
+    setTitle(alItems1.size() == 1 ? alItems1.get(0).getDesc() : Messages
+        .getString(PROPERTIES_WIZARD_6));
     this.alItems = alItems1;
     this.alItems2 = alItems2;
     // computes filter
@@ -192,7 +199,7 @@ public class PropertiesWizard extends JajukJDialog implements ActionListener {
             .getDesc(), 50), false);
       } else {
         panel1 = new PropertiesPanel(alItems1, UtilString.formatPropertyDesc(Messages
-            .getString("PropertiesWizard.6")
+            .getString(PROPERTIES_WIZARD_6)
             + " [" + alItems.size() + "]"), true);
       }
       panel1.setBorder(BorderFactory.createEtchedBorder());
@@ -336,10 +343,12 @@ public class PropertiesWizard extends JajukJDialog implements ActionListener {
      *          items to display
      * @param sDesc
      *          Description (title)
-     * @param bMerged :
-     *          whether this panel contains merged values
+     * @param bMerged
+     *          : whether this panel contains merged values
      */
     PropertiesPanel(List<Item> alItems, String sDesc, boolean bMerged) {
+      super();
+      
       this.alItems = alItems;
       this.bMerged = bMerged;
       Item pa = alItems.get(0);
@@ -665,7 +674,8 @@ public class PropertiesWizard extends JajukJDialog implements ActionListener {
     /*
      * (non-Javadoc)
      * 
-     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+     * @see
+     * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent ae) {
       // Link
@@ -709,7 +719,7 @@ public class PropertiesWizard extends JajukJDialog implements ActionListener {
     /**
      * Save changes in tags
      */
-    protected void save() throws Exception {
+    protected void save() {
       try {
         UtilGUI.waiting();
         // We remove autocommit state to group commit to tags for several tags

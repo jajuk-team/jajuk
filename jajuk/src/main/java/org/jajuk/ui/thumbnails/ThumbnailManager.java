@@ -25,6 +25,7 @@ import java.awt.Image;
 import java.awt.MediaTracker;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 import java.util.Properties;
 import java.util.StringTokenizer;
 
@@ -63,16 +64,16 @@ public final class ThumbnailManager {
     if (fThumb.exists()) {
       File[] files = fThumb.listFiles();
       for (File file : files) {
-        if (!file.getAbsolutePath().matches(".*" + Const.FILE_THUMB_NO_COVER)) {
-          if (!file.delete()) {
-            Log.warn("Could not delete " + file.toString());
-          }
+        if (!file.getAbsolutePath().matches(".*" + Const.FILE_THUMB_NO_COVER) && !file.delete()) {
+          Log.warn("Could not delete " + file.toString());
         }
       }
       // Refresh default cover
       File fDefault = UtilSystem.getConfFileByPath(Const.FILE_THUMBS + "/" + size + "/"
           + Const.FILE_THUMB_NO_COVER);
-      fDefault.delete();
+      if (fDefault.exists() && !fDefault.delete()) {
+        Log.warn("Could not delete " + fDefault.toString());
+      }
       try {
         int iSize = Integer.parseInt(new StringTokenizer(size, "x").nextToken());
         createThumbnail(IconLoader.getIcon(JajukIcons.NO_COVER), fDefault, iSize);
@@ -117,10 +118,11 @@ public final class ThumbnailManager {
    *          destination file (jpg)
    * @param maxDim
    *          required size
-   * @throws Exception
+   * @throws IOException 
+   * @throws InterruptedException
    */
-  public static void createThumbnail(final File orig, final File thumb, final int maxDim)
-      throws Exception {
+  public static void createThumbnail(final File orig, final File thumb, final int maxDim) throws InterruptedException, IOException 
+      {
     // do not use URL object has it can corrupt special paths
     createThumbnail(new ImageIcon(orig.getAbsolutePath()), thumb, maxDim);
   }
@@ -138,10 +140,12 @@ public final class ThumbnailManager {
    *          destination file (jpg)
    * @param maxDim
    *          required size
+   * @throws InterruptedException 
+   * @throws IOException 
    * @throws Exception
    */
-  public static void createThumbnail(final ImageIcon ii, final File thumb, final int maxDim)
-      throws Exception {
+  public static void createThumbnail(final ImageIcon ii, final File thumb, final int maxDim) throws InterruptedException, IOException
+       {
     final Image image = ii.getImage();
     // Wait for full image loading
     final MediaTracker mediaTracker = new MediaTracker(new Container());
@@ -170,7 +174,6 @@ public final class ThumbnailManager {
     thumbImage.flush();
   }
 
-  
   /**
    * Check all thumbs existence for performance reasons
    * 
@@ -227,8 +230,7 @@ public final class ThumbnailManager {
   public static File getThumbBySize(Album album, int size) {
     StringBuilder thumb = new StringBuilder(Const.FILE_THUMBS).append('/').append(size).append('x')
         .append(size).append('/').append(album.getID()).append('.').append(Const.EXT_THUMB);
-    File fThumb = UtilSystem.getConfFileByPath(thumb.toString());
-    return fThumb;
+    return UtilSystem.getConfFileByPath(thumb.toString());
   }
 
 }

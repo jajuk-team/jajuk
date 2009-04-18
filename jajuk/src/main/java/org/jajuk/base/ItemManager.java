@@ -47,11 +47,11 @@ public abstract class ItemManager {
    * Maps item classes -> instance, must be a linked map for ordering (mandatory
    * in commited collection)
    */
-  private static LinkedHashMap<Class<?>, ItemManager> hmItemManagers = new LinkedHashMap<Class<?>, ItemManager>(
+  private static Map<Class<?>, ItemManager> hmItemManagers = new LinkedHashMap<Class<?>, ItemManager>(
       10);
 
   /** Maps properties meta information name and object */
-  private final HashMap<String, PropertyMetaInformation> hmPropertiesMetaInformation = new LinkedHashMap<String, PropertyMetaInformation>(
+  private final Map<String, PropertyMetaInformation> hmPropertiesMetaInformation = new LinkedHashMap<String, PropertyMetaInformation>(
       10);
 
   /*****************************************************************************
@@ -288,19 +288,19 @@ public abstract class ItemManager {
       managerType = 2;
     }
     // build used items set
-    List<Item> items = new ArrayList<Item>(100);
+    List<Item> lItems = new ArrayList<Item>(100);
     ReadOnlyIterator<Track> tracks = TrackManager.getInstance().getTracksIterator();
     while (tracks.hasNext()) {
       Track track = tracks.next();
       switch (managerType) {
       case 0:
-        items.add(track.getAlbum());
+        lItems.add(track.getAlbum());
         break;
       case 1:
-        items.add(track.getAuthor());
+        lItems.add(track.getAuthor());
         break;
       case 2:
-        items.add(track.getYear());
+        lItems.add(track.getYear());
         break;
       }
     }
@@ -310,7 +310,7 @@ public abstract class ItemManager {
     while (it.hasNext()) {
       Item item = it.next();
       // check if this item still maps some tracks
-      if (!items.contains(item)) {
+      if (!lItems.contains(item)) {
         it.remove();
       }
     }
@@ -488,8 +488,7 @@ public abstract class ItemManager {
    * @return Item
    */
   public Item getItemByID(String sID) {
-    Item item = internalMap.get(sID);
-    return item;
+    return internalMap.get(sID);
   }
 
   /**
@@ -525,7 +524,7 @@ public abstract class ItemManager {
   /**
    * Clear any entries from this manager
    */
-  public void clear() {
+  public synchronized void clear() {
     items.clear();
     internalMap.clear();
   }

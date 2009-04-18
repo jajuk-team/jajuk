@@ -25,6 +25,7 @@ import java.awt.MediaTracker;
 import java.awt.Toolkit;
 import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.net.URL;
 
 import javax.swing.ImageIcon;
@@ -84,7 +85,7 @@ public class Cover implements Comparable<Cover>, Const {
    *          cover url : http url
    * @param type
    */
-  public Cover(final URL url, final CoverType type) throws Exception {
+  public Cover(final URL url, final CoverType type) {
     this.url = url;
     this.type = type;
     // only remote and no_cover are created by URL (file:// for no_cover, the
@@ -100,7 +101,7 @@ public class Cover implements Comparable<Cover>, Const {
    * @param file
    *          cover file
    * @param type
-   * @throws IOException 
+   * @throws IOException
    */
   public Cover(final File localFile, final CoverType type) throws IOException {
     this.type = type;
@@ -109,8 +110,8 @@ public class Cover implements Comparable<Cover>, Const {
   }
 
   /*
-   * (non-Javadoc) The priority order is : SELECTED > STANDARD > LOCAL > REMOTE >
-   * NO_COVER
+   * (non-Javadoc) The priority order is : SELECTED > STANDARD > LOCAL > REMOTE
+   * > NO_COVER
    * 
    * @see java.lang.Comparable#compareTo(java.lang.Object)
    */
@@ -145,8 +146,10 @@ public class Cover implements Comparable<Cover>, Const {
 
   /**
    * @return Returns the image.
+   * @throws InterruptedException
+   * @throws IOException
    */
-  public Image getImage() throws Exception {
+  public Image getImage() throws IOException, InterruptedException {
     // default cover image is cached in memory for perfs
     if (getType() == CoverType.NO_COVER) {
       return DEFAULT_COVER_ICON.getImage();
@@ -193,7 +196,13 @@ public class Cover implements Comparable<Cover>, Const {
     }
 
     // From here, types are equals
-    return url.equals(cOther.getURL());
+    try {
+      return url.toURI().equals(cOther.getURL().toURI());
+    } catch (URISyntaxException e) {
+      Log.warn("Found invalid URL: " + url.toString() + "/" + cOther.getURL().toString());
+      return false;
+    }
+
   }
 
   /**
@@ -202,7 +211,12 @@ public class Cover implements Comparable<Cover>, Const {
    */
   @Override
   public int hashCode() {
-    return this.url.hashCode() + type.ordinal();
+    try {
+      return this.url.toURI().hashCode() + type.ordinal();
+    } catch (URISyntaxException e) {
+      Log.warn("Found invalid URL: " + url.toString());
+      return 0;
+    }
   }
 
   public File getFile() {

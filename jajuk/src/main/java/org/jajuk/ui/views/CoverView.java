@@ -86,7 +86,6 @@ import org.jajuk.util.UtilFeatures;
 import org.jajuk.util.UtilGUI;
 import org.jajuk.util.UtilSystem;
 import org.jajuk.util.error.JajukException;
-import org.jajuk.util.error.TimeOutException;
 import org.jajuk.util.filters.GIFFilter;
 import org.jajuk.util.filters.ImageFilter;
 import org.jajuk.util.filters.JPGFilter;
@@ -273,7 +272,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
     jcbAccuracy.addItem(IconLoader.getIcon(JajukIcons.AUTHOR));
     jcbAccuracy.addItem(IconLoader.getIcon(JajukIcons.ALBUM));
     jcbAccuracy.addItem(IconLoader.getIcon(JajukIcons.TRACK));
-    
+
     int i = 1; // medium accuracy
     try {
       i = Conf.getInt(Const.CONF_COVERS_ACCURACY + "_"
@@ -1142,7 +1141,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
    * Covers refreshing effective code
    * 
    * @param iLocalEventID
-   * @throws IOException 
+   * @throws IOException
    */
   private void refreshCovers(int iLocalEventID) throws IOException {
     // Reset this flag
@@ -1172,8 +1171,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
 
     if (fCurrent == null) {
       throw new IllegalArgumentException("Internal Error: Unexpected value, "
-          + "variable fCurrent should not be empty. dirReference: "
-          + dirReference);
+          + "variable fCurrent should not be empty. dirReference: " + dirReference);
     }
 
     // search for local covers in all directories mapping
@@ -1248,29 +1246,16 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
             // load each cover (pre-load or post-load)
             // and stop if a signal has been emitted
             final URL url = it2.next();
-            try {
-              final Cover cover = new Cover(url, CoverType.REMOTE_COVER);
-              // Create a cover with given url ( image
-              // will be really downloaded when
-              // required if no preload)
-              if (!alCovers.contains(cover)) {
-                Log.debug("Found Cover: {{" + url.toString() + "}}");
-                alCovers.add(cover);
-              }
-            } catch (TimeOutException e) {
-              Log.error(e);
-              // can occur in case of
-              // timeout during cover download
-              CoverView.iErrorCounter++;
-              if (CoverView.iErrorCounter == Const.STOP_TO_SEARCH) {
-                Log.warn("Too many connection fails, stop to search for covers online");
-                InformationJPanel.getInstance().setMessage(Messages.getString("Error.030"),
-                    InformationJPanel.WARNING);
-              }
-            } catch (final Exception e) {
-              Log.error(e); // can occur in case of
-              // error during cover download
+
+            final Cover cover = new Cover(url, CoverType.REMOTE_COVER);
+            // Create a cover with given url ( image
+            // will be really downloaded when
+            // required if no preload)
+            if (!alCovers.contains(cover)) {
+              Log.debug("Found Cover: {{" + url.toString() + "}}");
+              alCovers.add(cover);
             }
+
           }
           if (iEventID != iLocalEventID) {
             // a stop signal has been emitted

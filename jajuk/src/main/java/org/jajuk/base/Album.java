@@ -248,8 +248,7 @@ public class Album extends LogicalItem implements Comparable<Album> {
     if ("none".equals(cachedCoverPath)) {
       return null;
     } else if (!UtilString.isVoid(cachedCoverPath)) {
-      File coverCache = new File(cachedCoverPath);
-      return coverCache;
+      return new File(cachedCoverPath);
     }
     File fDir = null; // analyzed directory
     // search for local covers in all directories mapping the current track
@@ -298,22 +297,21 @@ public class Album extends LogicalItem implements Comparable<Album> {
         if (files[i].exists() && files[i].length() < MAX_COVER_SIZE * 1024) {
           // check size to avoid out of memory errors
           String sExt = UtilSystem.getExtension(files[i]);
-          if (sExt.equalsIgnoreCase("jpg") || sExt.equalsIgnoreCase("png")
-              || sExt.equalsIgnoreCase("gif")) {
-            if (UtilFeatures.isStandardCover(files[i])) {
-              // Test the image is not corrupted
-              try {
-                MediaTracker mediaTracker = new MediaTracker(new Container());
-                ImageIcon ii = new ImageIcon(files[i].getAbsolutePath());
-                mediaTracker.addImage(ii.getImage(), 0);
-                mediaTracker.waitForID(0); // wait for image
-                if (!mediaTracker.isErrorAny()) {
-                  setProperty(XML_ALBUM_COVER, files[i].getAbsolutePath());
-                  return files[i];
-                }
-              } catch (Exception e) {
-                Log.error(e);
+          if ((sExt.equalsIgnoreCase("jpg") || sExt.equalsIgnoreCase("png") || sExt
+              .equalsIgnoreCase("gif"))
+              && (UtilFeatures.isStandardCover(files[i]))) {
+            // Test the image is not corrupted
+            try {
+              MediaTracker mediaTracker = new MediaTracker(new Container());
+              ImageIcon ii = new ImageIcon(files[i].getAbsolutePath());
+              mediaTracker.addImage(ii.getImage(), 0);
+              mediaTracker.waitForID(0); // wait for image
+              if (!mediaTracker.isErrorAny()) {
+                setProperty(XML_ALBUM_COVER, files[i].getAbsolutePath());
+                return files[i];
               }
+            } catch (Exception e) {
+              Log.error(e);
             }
           }
         }
@@ -528,7 +526,8 @@ public class Album extends LogicalItem implements Comparable<Album> {
     try {
       // do not use regexp matches(<string>) because the string may contain
       // characters to be escaped
-      match = (sValue.toLowerCase(Locale.getDefault()).indexOf(pattern.toLowerCase(Locale.getDefault())) != -1);
+      match = (sValue.toLowerCase(Locale.getDefault()).indexOf(
+          pattern.toLowerCase(Locale.getDefault())) != -1);
       // test if the item property contains this
       // property value (ignore case)
     } catch (PatternSyntaxException pse) {

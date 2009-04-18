@@ -126,6 +126,21 @@ import org.jdesktop.swingx.JXPanel;
 public class CommandJPanel extends JXPanel implements ActionListener, ListSelectionListener,
     ChangeListener, Observer, MouseWheelListener {
 
+  /**
+   * 
+   */
+  private static final String B_P_HTML = "</b></p></html>";
+
+  /**
+   * 
+   */
+  private static final String P_B = "<p><b>";
+
+  /**
+   * 
+   */
+  private static final String HTML = "<html>";
+
   private static final long serialVersionUID = 1L;
 
   // singleton
@@ -274,6 +289,8 @@ public class CommandJPanel extends JXPanel implements ActionListener, ListSelect
    * object)
    */
   CommandJPanel() {
+    super();
+    
     // mute
     jbMute = new JajukToggleButton(ActionManager.getAction(MUTE_STATE));
   }
@@ -802,14 +819,14 @@ public class CommandJPanel extends JXPanel implements ActionListener, ListSelect
       Ambience ambience = AmbienceManager.getInstance().getAmbienceByName(
           ((JLabel) ambiencesCombo.getSelectedItem()).getText());
       JajukAction action = ActionManager.getAction(JajukActions.NOVELTIES);
-      action.setShortDescription("<html>" + Messages.getString("JajukWindow.31") + "<p><b>"
-          + ambience.getName() + "</b></p></html>");
+      action.setShortDescription(HTML + Messages.getString("JajukWindow.31") + P_B
+          + ambience.getName() + B_P_HTML);
       action = ActionManager.getAction(JajukActions.SHUFFLE_GLOBAL);
-      action.setShortDescription("<html>" + Messages.getString("JajukWindow.23") + "<p><b>"
-          + ambience.getName() + "</b></p></html>");
+      action.setShortDescription(HTML + Messages.getString("JajukWindow.23") + P_B
+          + ambience.getName() + B_P_HTML);
       action = ActionManager.getAction(JajukActions.BEST_OF);
-      action.setShortDescription("<html>" + Messages.getString("JajukWindow.24") + "<p><b>"
-          + ambience.getName() + "</b></p></html>");
+      action.setShortDescription(HTML + Messages.getString("JajukWindow.24") + P_B
+          + ambience.getName() + B_P_HTML);
     }
   }
 
@@ -819,7 +836,7 @@ public class CommandJPanel extends JXPanel implements ActionListener, ListSelect
    */
   private void populateDJs() {
     try {
-      ddbDDJ.setToolTipText("<html>" + Messages.getString("CommandJPanel.18") + "<p><b>"
+      ddbDDJ.setToolTipText(HTML + Messages.getString("CommandJPanel.18") + P_B
           + DigitalDJManager.getCurrentDJ() + "</b></html>");
       popupDDJ.removeAll();
       JMenuItem jmiNew = new JMenuItem(ActionManager.getAction(CONFIGURE_DJS));
@@ -837,8 +854,8 @@ public class CommandJPanel extends JXPanel implements ActionListener, ListSelect
             populateDJs();
             // update action tooltip on main button with right item
             JajukAction action = ActionManager.getAction(JajukActions.DJ);
-            action.setShortDescription("<html>" + Messages.getString("CommandJPanel.18") + "<p><b>"
-                + dj.getName() + "</b></p></html>");
+            action.setShortDescription(HTML + Messages.getString("CommandJPanel.18") + P_B
+                + dj.getName() + B_P_HTML);
           }
         });
         popupDDJ.add(jmi);
@@ -913,8 +930,8 @@ public class CommandJPanel extends JXPanel implements ActionListener, ListSelect
             populateWebRadios();
             // update action tooltip on main button with right item
             JajukAction action = ActionManager.getAction(JajukActions.WEB_RADIO);
-            action.setShortDescription("<html>" + Messages.getString("CommandJPanel.25") + "<p><b>"
-                + radio.getName() + "</b></p></html>");
+            action.setShortDescription(HTML + Messages.getString("CommandJPanel.25") + P_B
+                + radio.getName() + B_P_HTML);
           }
         });
         jmi.setSelected(Conf.getString(Const.CONF_DEFAULT_WEB_RADIO).equals(radio.getName()));

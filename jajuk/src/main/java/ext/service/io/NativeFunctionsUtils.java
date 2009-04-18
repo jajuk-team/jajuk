@@ -33,11 +33,17 @@ public class NativeFunctionsUtils {
 
   // private static final Logger logger = new Logger();
 
-  private static Kernel32 NATIVE;
+  // hiden utility class constructor
+  private NativeFunctionsUtils() {
+    super();
+  }
+  
+  
+  private static Kernel32 nativelib;
   static {
     try {
       Native.setProtected(true);
-      NATIVE = (Kernel32) Native.loadLibrary("Kernel32", Kernel32.class);
+      nativelib = (Kernel32) Native.loadLibrary("Kernel32", Kernel32.class);
     } catch (UnsatisfiedLinkError e) {
       Log.error(e);
     }
@@ -58,7 +64,7 @@ public class NativeFunctionsUtils {
     int bufferSize = (pathname.length() * CHAR_BYTE_WIDTH) + CHAR_BYTE_WIDTH;
     Memory buffer = new Memory(bufferSize);
 
-    if (NATIVE.GetShortPathNameW(pathname, buffer, bufferSize) == 0) {
+    if (nativelib.GetShortPathNameW(pathname, buffer, bufferSize) == 0) {
       return "";
     }
     return buffer.getString(0, true);

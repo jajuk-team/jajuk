@@ -26,8 +26,9 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
@@ -75,12 +76,6 @@ public class StatView extends ViewAdapter implements Observer {
 
   private static final long serialVersionUID = 1L;
 
-  /**
-   * Constructor
-   */
-  public StatView() {
-  }
-
   /*
    * (non-Javadoc)
    * 
@@ -123,17 +118,15 @@ public class StatView extends ViewAdapter implements Observer {
         iTotal += iCount;
         tm.put(style.getName2(), Integer.valueOf(iCount));
       }
-      Iterator<String> keys = tm.keySet().iterator();
-      while (keys.hasNext()) {
-        String sName = keys.next();
-        Integer i = tm.get(sName);
+      for (Map.Entry<String, Integer> entry : tm.entrySet()) {
+        Integer i = entry.getValue();
         double d = i.doubleValue();
         if (iTotal > 0 && d / iTotal < 0.05) {
           // less than 5% -> go to others
           dOthers += d;
         } else {
           double dValue = Math.round(100 * (d / iTotal));
-          pdata.setValue(sName, dValue);
+          pdata.setValue(entry.getKey(), dValue);
         }
       }
       if (iTotal > 0 && dOthers > 0) {
@@ -396,7 +389,7 @@ public class StatView extends ViewAdapter implements Observer {
    * @return the mounts labels
    */
   private String[] getMonthsLabels(int iMonthsNumber) {
-    int iNow = Integer.parseInt(new SimpleDateFormat(DATE_FILE).format(new Date())) / 100; // reference
+    int iNow = Integer.parseInt(new SimpleDateFormat(DATE_FILE, Locale.getDefault()).format(new Date())) / 100; // reference
     // month
     String sMonths[] = new String[iMonthsNumber + 1];
     // contains number of tracks for each month, first cell is 'before'

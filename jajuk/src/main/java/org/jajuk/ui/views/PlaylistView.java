@@ -903,14 +903,9 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
 
     private static final long serialVersionUID = 3842568503545896845L;
 
-    /** Selected smart playlist */
-    SmartPlaylist selectedSP;
-
     JMenuItem jmiRepositorySaveAs;
 
     JMenuItem jmiPrepareParty;
-
-    MouseAdapter ma;
 
     /**
      * List of playlists for which we already displayed a warning message if it
@@ -990,15 +985,15 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
       }
 
       SwingWorker sw = new SwingWorker() {
-        Playlist plf;
+        Playlist playlist;
         boolean bErrorLoading = false;
 
         @Override
         public void finished() {
-          if (!bErrorLoading && plf != null) {
-            selectPlaylist(plf);
-            jmiPrepareParty.putClientProperty(Const.DETAIL_SELECTION, plf);
-            jmiRepositorySaveAs.putClientProperty(Const.DETAIL_SELECTION, plf);
+          if (!bErrorLoading && playlist != null) {
+            selectPlaylist(playlist);
+            jmiPrepareParty.putClientProperty(Const.DETAIL_SELECTION, playlist);
+            jmiRepositorySaveAs.putClientProperty(Const.DETAIL_SELECTION, playlist);
           }
         }
 
@@ -1010,13 +1005,13 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
           }
           int row = jtable.convertRowIndexToModel(selectedRow);
           JajukTableModel model = (JajukTableModel) jtable.getModel();
-          plf = (Playlist) model.getItemAt(row);
+          playlist = (Playlist) model.getItemAt(row);
           // load the playlist
           try {
-            plf.getFiles();
-            if (!alreadyWarned.contains(plf) && plf.containsExtFiles()) {
+            playlist.getFiles();
+            if (!alreadyWarned.contains(playlist) && playlist.containsExtFiles()) {
               Messages.showWarningMessage(Messages.getErrorMessage(142));
-              alreadyWarned.add(plf);
+              alreadyWarned.add(playlist);
             }
           } catch (JajukException e1) {
             Log.error(e1);

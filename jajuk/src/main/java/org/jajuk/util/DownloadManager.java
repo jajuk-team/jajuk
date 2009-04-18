@@ -38,10 +38,8 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.net.Proxy.Type;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -53,9 +51,6 @@ import org.jajuk.util.log.Log;
 public final class DownloadManager {
 
   private static Proxy proxy;
-
-  /** Maps cached urls -> file */
-  private static Map<URL, File> urlCache = new HashMap<URL, File>(100);
 
   /**
    * private constructor to avoid instantiating utility class
@@ -195,7 +190,6 @@ public final class DownloadManager {
         bos.close();
       }
       connection.disconnect();
-      urlCache.put(url, file);
       return file;
     }
   }

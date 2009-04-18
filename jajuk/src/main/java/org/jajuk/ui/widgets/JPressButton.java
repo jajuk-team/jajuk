@@ -214,7 +214,7 @@ public class JPressButton extends JajukButton {
    * 
    * @see ActionThread
    */
-  public class PressButtonModel extends DefaultButtonModel {
+  public static class PressButtonModel extends DefaultButtonModel {
 
     private static final long serialVersionUID = 1L;
 
