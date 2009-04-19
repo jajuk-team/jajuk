@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
@@ -96,7 +97,7 @@ public final class History extends DefaultHandler implements ErrorHandler, Obser
           .getDetailsLastOccurence(JajukEvents.FILE_LAUNCHED)));
     }
     // Fill date formatter
-    formatter = new SimpleDateFormat(Messages.getString("HistoryItem.0"));
+    formatter = new SimpleDateFormat(Messages.getString("HistoryItem.0"), Locale.getDefault());
   }
 
   public Set<JajukEvents> getRegistrationKeys() {
@@ -190,6 +191,7 @@ public final class History extends DefaultHandler implements ErrorHandler, Obser
     Iterator<HistoryItem> it = vHistory.iterator();
     while (it.hasNext()) {
       HistoryItem hi = it.next();
+      // TODO: toString() never returns null, so what is the intent here??
       if (hi.toString() == null) {
         it.remove();
       }
@@ -408,7 +410,7 @@ public final class History extends DefaultHandler implements ErrorHandler, Obser
             InformationJPanel.INFORMATIVE);
       } else if (JajukEvents.LANGUAGE_CHANGED.equals(subject)) {
         // reset formatter
-        formatter = new SimpleDateFormat(Messages.getString("HistoryItem.0"));
+        formatter = new SimpleDateFormat(Messages.getString("HistoryItem.0"), Locale.getDefault());
       } else if (JajukEvents.FILE_NAME_CHANGED.equals(subject)) {
         Properties properties = event.getDetails();
         org.jajuk.base.File fileOld = (org.jajuk.base.File) properties.get(Const.DETAIL_OLD);

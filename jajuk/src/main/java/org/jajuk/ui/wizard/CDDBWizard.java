@@ -332,8 +332,6 @@ public class CDDBWizard extends JajukJDialog implements ActionListener {
 
     JLabel jlCurrent;
 
-    JPanel jpButtons;
-
     /**
      * Navigation panel
      * 

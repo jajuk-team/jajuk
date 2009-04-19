@@ -92,9 +92,9 @@ public class Tag {
     if (tagImpl == null) { // if the type doesn't support tags ( like wav )
       return sTrackName;
     }
-    String sTemp = "";
+
     try {
-      sTemp = tagImpl.getTrackName().trim();
+      String sTemp = tagImpl.getTrackName().trim();
       if (!"".equals(sTemp)) {
         // remove the extension
         sTrackName = UtilString.formatTag(sTemp);
@@ -113,9 +113,9 @@ public class Tag {
       return Const.UNKNOWN_ALBUM;
     }
     String sAlbumlName = null;
-    String sTemp = "";
+
     try {
-      sTemp = tagImpl.getAlbumName().trim();
+      String sTemp = tagImpl.getAlbumName().trim();
       if (Messages.getString(Const.UNKNOWN_ALBUM).equals(sTemp)) {
         // it is done to avoid duplicates unknown styles if
         // the tag is the real string "unknown" in the
@@ -127,6 +127,7 @@ public class Tag {
     } catch (Exception e) {
       Log.info("Wrong album name:{{" + fio.getName() + "}}");
     }
+
     if (sAlbumlName == null) { // album tag cannot be found
       if (Boolean.valueOf(Conf.getString(Const.CONF_TAGS_USE_PARENT_DIR)).booleanValue()) {
         sAlbumlName = fio.getParentFile().getName();
@@ -149,9 +150,9 @@ public class Tag {
     if (tagImpl == null) {
       return sAuthorName;
     }
-    String sTemp = "";
+
     try {
-      sTemp = tagImpl.getAuthorName().trim();
+      String sTemp = tagImpl.getAuthorName().trim();
       if (Messages.getString(Const.UNKNOWN_AUTHOR).equals(sTemp)) {
         // it is done to avoid duplicates unknown styles if
         // the tag is the real string "unknown" in the
@@ -177,16 +178,16 @@ public class Tag {
     if (tagImpl == null) {
       return style;
     }
-    String sTemp = "";
+
     try {
-      sTemp = tagImpl.getStyleName().trim();
+      String sTemp = tagImpl.getStyleName().trim();
       if (Messages.getString(Const.UNKNOWN_STYLE).equals(sTemp)) {
         // it is done to avoid duplicates unknown styles if
         // the tag is the real string "unknown" in the
         // current language
         style = Const.UNKNOWN_STYLE;
       } else if (!"".equals(sTemp)) {
-        if (sTemp.equals("unknown")) {
+        if ("unknown".equals(sTemp)) {
           sTemp = style;
         }
         style = UtilString.formatTag(sTemp);
@@ -261,9 +262,9 @@ public class Tag {
     if (tagImpl == null) {
       return sComment;
     }
-    String sTemp = "";
+
     try {
-      sTemp = tagImpl.getComment();
+      String sTemp = tagImpl.getComment();
       if (sTemp != null && !sTemp.equals("")) {
         sComment = UtilString.formatTag(sTemp);
       }

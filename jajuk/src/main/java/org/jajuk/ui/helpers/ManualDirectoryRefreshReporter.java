@@ -19,14 +19,8 @@
  */
 package org.jajuk.ui.helpers;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
-import javax.swing.Timer;
-
 import org.jajuk.base.Device;
 import org.jajuk.base.Directory;
-import org.jajuk.ui.wizard.RefreshDialog;
 import org.jajuk.util.Messages;
 import org.jajuk.util.log.Log;
 
@@ -34,24 +28,8 @@ import org.jajuk.util.log.Log;
  * Refresh reporter on directories with GUI special operations
  */
 public class ManualDirectoryRefreshReporter extends RefreshReporter {
-
-  // Refresh dialog
-  private RefreshDialog rdialog;
-
-  private int progress;
-
   public ManualDirectoryRefreshReporter(Device device) {
     super(device);
-  }
-
-  @Override
-  public void startup() {
-    super.startup();
-  }
-
-  @Override
-  public void reset() {
-    super.reset();
   }
 
   @Override
@@ -73,22 +51,4 @@ public class ManualDirectoryRefreshReporter extends RefreshReporter {
     // Display end of refresh message with stats
     Messages.showInfoMessage(message);
   }
-
-  /**
-   * This timer limit dialog title changes (this can have side effect on
-   * performances or other in some window managers. Too many window title change
-   * causes others menu bar items freezes under KDE for ie)
-   */
-  Timer updateDialogTitle = new Timer(500, new ActionListener() {
-
-    public void actionPerformed(ActionEvent e) {
-      String sTitle = Messages.getString("RefreshDialog.2") + " " + device.getName() + " ("
-          + progress + " %)";
-      if (!sTitle.equals(rdialog.getTitle())) {
-        rdialog.setTitle(sTitle);
-      }
-    }
-
-  });
-
 }

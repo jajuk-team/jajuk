@@ -158,9 +158,6 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
   /** Number of page in current selection */
   int iNbPages = 0;
 
-  /** Number of created thumbs, used for garbage collection */
-  private int iNbCreatedThumbs = 0;
-
   /** Utility list used by size selector */
   private final List<String> sizes = new ArrayList<String>(10);
 
@@ -181,12 +178,6 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 
   public LocalAlbumThumbnail getSelectedItem() {
     return item;
-  }
-
-  /**
-   * Constructor
-   */
-  public CatalogView() {
   }
 
   /*
@@ -628,7 +619,6 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
               // UI lazy loading
               it.populate();
               thumbs.add(it);
-              iNbCreatedThumbs++;
               it.getIcon().addMouseListener(new MouseAdapter() {
                 @Override
                 public void mousePressed(MouseEvent e) {

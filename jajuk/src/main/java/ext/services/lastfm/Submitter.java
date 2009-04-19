@@ -27,6 +27,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 import java.util.TimeZone;
 
 import org.jajuk.base.Track;
@@ -76,7 +77,7 @@ public final class Submitter {
       } else {
         throw new SubmitterException(lines[0]);
       }
-    } catch (Exception e) {
+    } catch (IOException e) {
       throw new SubmitterException(e.getMessage(), e);
     }
   }
@@ -179,7 +180,7 @@ public final class Submitter {
     builder.append("&l[0]=" + NetworkUtils.encodeString(Long.toString(track.getDuration())));
 
     Date date = new Date(startedToPlay * 1000);
-    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
     formatter.setTimeZone(TimeZone.getTimeZone("Etc/UTC"));
     builder.append("&i[0]=" + NetworkUtils.encodeString(formatter.format(date)));
     return builder.toString();

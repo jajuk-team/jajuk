@@ -27,6 +27,7 @@ import ext.services.lastfm.AudioScrobblerTrack;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;
+import java.io.FileNotFoundException;
 import java.net.URL;
 
 import javax.imageio.ImageIO;
@@ -104,6 +105,9 @@ public class AudioScrobblerAlbumThumbnail extends AbstractThumbnail {
           // Free images memory
           downloadedImage.getImage().flush();
           image.flush();
+        } catch (FileNotFoundException e) {
+          // only report warning for images that are not found on the net as it happens frequently...
+          Log.warn(e.getMessage());
         } catch (Exception e) {
           Log.error(e);
         }

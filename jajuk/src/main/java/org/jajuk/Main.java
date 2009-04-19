@@ -43,6 +43,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -52,6 +53,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
+import javax.xml.parsers.ParserConfigurationException;
 
 import org.jajuk.base.AlbumManager;
 import org.jajuk.base.AuthorManager;
@@ -99,6 +101,7 @@ import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 import org.jdesktop.swingx.JXPanel;
 import org.jvnet.substance.skin.SubstanceBusinessLookAndFeel;
+import org.xml.sax.SAXException;
 
 /**
  * Jajuk launching class
@@ -626,7 +629,7 @@ public final class Main {
       } else { // mplayer enabled
         TypeManager.registerTypesMplayerAvailable();
       }
-    } catch (final Exception e1) {
+    } catch (final ClassNotFoundException e1) {
       Log.error(26, e1);
     }
   }
@@ -743,7 +746,13 @@ public final class Main {
             System.exit(-1);
           }
           break;
-        } catch (final Exception e2) {
+        } catch (final SAXException e2) {
+          Log.error(5, file.getAbsolutePath(), e2);
+        } catch (final ParserConfigurationException e2) {
+          Log.error(5, file.getAbsolutePath(), e2);
+        } catch (final JajukException e2) {
+          Log.error(5, file.getAbsolutePath(), e2);
+        } catch (final IOException e2) {
           Log.error(5, file.getAbsolutePath(), e2);
         }
       }
@@ -981,7 +990,7 @@ public final class Main {
       }
       sessionIdFile = UtilSystem.getConfFileByPath(Const.FILE_SESSIONS + '/' + sHostname + '_'
           + System.getProperty("user.name") + '_'
-          + new SimpleDateFormat("yyyyMMdd-kkmmss").format(UtilSystem.TODAY));
+          + new SimpleDateFormat("yyyyMMdd-kkmmss", Locale.getDefault()).format(UtilSystem.TODAY));
     }
     return sessionIdFile;
   }

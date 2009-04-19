@@ -54,6 +54,8 @@ public class PlaylistEditorTransferHandler extends TransferHandler {
 
   /** Constructor */
   public PlaylistEditorTransferHandler(JTable jtable) {
+    super();
+    
     this.jtable = jtable;
   }
 
@@ -145,7 +147,7 @@ public class PlaylistEditorTransferHandler extends TransferHandler {
   @Override
   public boolean canImport(JComponent c, DataFlavor[] flavors) {
     String sFlavor = flavors[0].getHumanPresentableName();
-    if (sFlavor.equals("Node") || sFlavor.equals("Row") || sFlavor.equals("Album")) {
+    if ("Node".equals(sFlavor) || "Row".equals(sFlavor) || "Album".equals(sFlavor)) {
       JComponent comp = (JComponent) c.getParent();
       while (!(comp instanceof PlaylistView)) {
         comp = (JComponent) comp.getParent();

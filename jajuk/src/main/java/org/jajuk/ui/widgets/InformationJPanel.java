@@ -130,15 +130,13 @@ public final class InformationJPanel extends JXPanel implements ChangeListener, 
 
   String sSelection;
 
-  int iTotalStatus;
-
   String sTotalStatus;
-
-  int iCurrentStatus;
 
   String sCurrentStatus;
 
   private InformationJPanel() {
+    super();
+    
     // dimensions
     // set current jpanel properties
     double size[][] = { { 0.44, 0.13, 0.10, 0.33 }, { TableLayout.PREFERRED } };
@@ -230,20 +228,6 @@ public final class InformationJPanel extends JXPanel implements ChangeListener, 
   /**
    * @return
    */
-  public int getCurrentStatus() {
-    return iCurrentStatus;
-  }
-
-  /**
-   * @return
-   */
-  public int getTotalTime() {
-    return iTotalStatus;
-  }
-
-  /**
-   * @return
-   */
   public String getMessage() {
     return sMessage;
   }
@@ -314,10 +298,11 @@ public final class InformationJPanel extends JXPanel implements ChangeListener, 
       lTimePercent = (float) ((float) lTime / (float) length * 100.0);
     }
     switch (timeFormat) {
+    /* same as default... 
     case 0: {
       string = UtilString.formatTimeBySec(lTime) + " / " + UtilString.formatTimeBySec(length);
       break;
-    }
+    }*/
     case 1: {
       string = "-" + UtilString.formatTimeBySec(length - lTime) + " / "
           + UtilString.formatTimeBySec(length);

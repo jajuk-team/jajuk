@@ -29,6 +29,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Properties;
 
 import javax.swing.ImageIcon;
@@ -175,8 +176,8 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
   /**
    * Add some files to this playlist.
    * 
-   * @param alFilesToAdd :
-   *          List of File
+   * @param alFilesToAdd
+   *          : List of File
    */
   public void addFiles(final List<File> alFilesToAdd) {
     try {
@@ -215,7 +216,6 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
    * Update playlist on disk if needed
    */
   public void commit() throws JajukException {
-    BufferedWriter bw = null;
     java.io.File temp = null;
     try {
       /*
@@ -226,34 +226,30 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
        * closed (checked with lsof).
        */
       temp = new java.io.File(getAbsolutePath() + '~');
-      bw = new BufferedWriter(new FileWriter(temp));
-      bw.write(Const.PLAYLIST_NOTE);
-      bw.newLine();
-      final Iterator<File> it = getFiles().iterator();
-      while (it.hasNext()) {
-        final File file = it.next();
-        if (file.getFIO().getParent().equals(fio.getParent())) {
-          bw.write(file.getName());
-        } else {
-          bw.write(file.getAbsolutePath());
-        }
+      BufferedWriter bw = new BufferedWriter(new FileWriter(temp));
+      try {
+        bw.write(Const.PLAYLIST_NOTE);
         bw.newLine();
-      }
-    } catch (final Exception e) {
-      throw new JajukException(28, getName(), e);
-    } finally {
-      if (bw != null) {
-        try {
-          bw.flush();
-          bw.close();
-        } catch (final IOException e1) {
-          throw new JajukException(28, getName(), e1);
+        final Iterator<File> it = getFiles().iterator();
+        while (it.hasNext()) {
+          final File file = it.next();
+          if (file.getFIO().getParent().equals(fio.getParent())) {
+            bw.write(file.getName());
+          } else {
+            bw.write(file.getAbsolutePath());
+          }
+          bw.newLine();
         }
+        bw.flush();
+      } finally {
+        bw.close();
       }
-
-      // Now move the temp file to final one if everything seems ok
-      moveTempPlaylistFile(temp);
+    } catch (final IOException e) {
+      throw new JajukException(28, getName(), e);
     }
+    
+    // Now move the temp file to final one if everything seems ok
+    moveTempPlaylistFile(temp);
   }
 
   /**
@@ -510,68 +506,64 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
    */
   public List<File> load() throws JajukException {
     final List<File> files = new ArrayList<File>(10);
-    BufferedReader br = null;
+    
     try {
-      br = new BufferedReader(new FileReader(getFIO()));
-      String sLine = null;
-      boolean bUnknownDevicesMessage = false;
-      while ((sLine = br.readLine()) != null) {
-        if (sLine.length() == 0) { // void line
-          continue;
-        }
-        // replace '\' by '/'
-        sLine = sLine.replace('\\', '/');
-        // deal with url begining by "./something"
-        if (sLine.charAt(0) == '.') {
-          sLine = sLine.substring(1, sLine.length());
-        }
-        // comment
-        if (sLine.charAt(0) == '#') {
-          continue;
-        } else {
-          java.io.File fileTrack = null;
-          final StringBuilder sbFileDir = new StringBuilder(getDirectory().getDevice().getUrl());
-          sbFileDir.append(getDirectory().getRelativePath());
-          // Add a trailing / at the end of the url if required
-          if (sLine.charAt(0) != '/') {
-            sbFileDir.append("/");
+      BufferedReader br = new BufferedReader(new FileReader(getFIO()));
+      try {
+        String sLine = null;
+        boolean bUnknownDevicesMessage = false;
+        while ((sLine = br.readLine()) != null) {
+          if (sLine.length() == 0) { // void line
+            continue;
           }
-          // take a look relatively to playlist directory to check
-          // files exists
-          fileTrack = new java.io.File(sbFileDir.append(sLine).toString());
-          File file = FileManager.getInstance().getFileByPath(fileTrack.getAbsolutePath());
-          if (file == null) { // check if this file is known in
-            // collection
-            fileTrack = new java.io.File(sLine); // check if
-            // given url is
-            // not absolute
-            file = FileManager.getInstance().getFileByPath(fileTrack.getAbsolutePath());
-            if (file == null) { // no more ? leave
-              bUnknownDevicesMessage = true;
-              continue;
+          // replace '\' by '/'
+          sLine = sLine.replace('\\', '/');
+          // deal with url begining by "./something"
+          if (sLine.charAt(0) == '.') {
+            sLine = sLine.substring(1, sLine.length());
+          }
+          // comment
+          if (sLine.charAt(0) == '#') {
+            continue;
+          } else {
+            java.io.File fileTrack = null;
+            final StringBuilder sbFileDir = new StringBuilder(getDirectory().getDevice().getUrl());
+            sbFileDir.append(getDirectory().getRelativePath());
+            // Add a trailing / at the end of the url if required
+            if (sLine.charAt(0) != '/') {
+              sbFileDir.append("/");
             }
+            // take a look relatively to playlist directory to check
+            // files exists
+            fileTrack = new java.io.File(sbFileDir.append(sLine).toString());
+            File file = FileManager.getInstance().getFileByPath(fileTrack.getAbsolutePath());
+            if (file == null) { // check if this file is known in
+              // collection
+              fileTrack = new java.io.File(sLine); // check if
+              // given url is
+              // not absolute
+              file = FileManager.getInstance().getFileByPath(fileTrack.getAbsolutePath());
+              if (file == null) { // no more ? leave
+                bUnknownDevicesMessage = true;
+                continue;
+              }
+            }
+            files.add(file);
           }
-          files.add(file);
         }
-      }
-      // display a warning message if the playlist contains unknown
-      // items
-      if (bUnknownDevicesMessage) {
-        bContainsExtFiles = true;
+        // display a warning message if the playlist contains unknown
+        // items
+        if (bUnknownDevicesMessage) {
+          bContainsExtFiles = true;
+        }
+      } finally {
+        br.close();
       }
     } catch (final Exception e) {
       Log.error(17, "{{" + getName() + "}}", e);
       throw new JajukException(17, getFIO().getAbsolutePath(), e);
-    } finally {
-      if (br != null) {
-        try {
-          br.close();
-        } catch (final IOException e1) {
-          Log.error(e1);
-          throw new JajukException(17, getFIO().getAbsolutePath(), e1);
-        }
-      }
     }
+
     return files;
   }
 
@@ -659,8 +651,9 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
 
   /**
    * Save as... the playlist
+   * @throws JajukException 
    */
-  public void saveAs() throws Exception {
+  public void saveAs() throws JajukException {
     final JajukFileChooser jfchooser = new JajukFileChooser(new JajukFileFilter(PlaylistFilter
         .getInstance()));
     jfchooser.setDialogType(JFileChooser.SAVE_DIALOG);
@@ -759,7 +752,7 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
   /**
    * Stores all playlist and mapped files into an external device
    */
-  public void prepareParty() throws Exception {
+  public void prepareParty() {
     final JajukFileChooser jfc = new JajukFileChooser(new JajukFileFilter(DirectoryFilter
         .getInstance()));
     jfc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
@@ -775,7 +768,7 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
           final Date curDate = new Date();
           // Do not use ':' character in destination directory, it's forbidden
           // under Windows
-          final SimpleDateFormat stamp = new SimpleDateFormat("yyyyMMdd-HHmm");
+          final SimpleDateFormat stamp = new SimpleDateFormat("yyyyMMdd-HHmm", Locale.getDefault());
           final String dirName = "Party-" + stamp.format(curDate);
           final java.io.File destDir = new java.io.File(fDir.getAbsolutePath() + "/" + dirName);
           if (!destDir.mkdir()) {

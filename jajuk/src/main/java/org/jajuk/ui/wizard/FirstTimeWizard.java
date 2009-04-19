@@ -31,6 +31,8 @@ import java.awt.event.ActionListener;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Writer;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -105,6 +107,8 @@ public class FirstTimeWizard extends JajukJDialog implements ActionListener {
    * First time wizard
    */
   public FirstTimeWizard() {
+    super();
+
     initUI();
     pack();
     final Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
@@ -142,20 +146,23 @@ public class FirstTimeWizard extends JajukJDialog implements ActionListener {
       final boolean bShowHelp = jcbHelp.isSelected();
       final String sPATH = workspacePath.getUrl().trim();
       // Check workspace directory
-      if ((!sPATH.equals("")) && (!new File(sPATH).canRead())) {
+      if ((!sPATH.isEmpty()) && (!new File(sPATH).canRead())) {
         Messages.showErrorMessage(165);
         return;
       }
       // Set Workspace directory
       try {
         final java.io.File bootstrap = new java.io.File(Const.FILE_BOOTSTRAP);
-        final BufferedWriter bw = new BufferedWriter(new FileWriter(bootstrap));
-        bw.write(sPATH);
-        bw.flush();
-        bw.close();
+        final Writer bw = new BufferedWriter(new FileWriter(bootstrap));
+        try {
+          bw.write(sPATH);
+          bw.flush();
+        } finally {
+          bw.close();
+        }
         // Store the workspace PATH
         Main.setWorkspace(sPATH);
-      } catch (final Exception ex) {
+      } catch (final IOException ex) {
         Messages.showErrorMessage(24);
         Log.debug("Cannot write bootstrap file");
       }

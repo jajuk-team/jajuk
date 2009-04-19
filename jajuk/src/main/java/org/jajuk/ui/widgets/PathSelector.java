@@ -61,6 +61,8 @@ public class PathSelector extends JPanel {
    *          Initialized path, null of none
    */
   public PathSelector(final JajukFileFilter filter, final String sDefault) {
+    super();
+    
     initUI(sDefault);
     button.addActionListener(new ActionListener() {
       public void actionPerformed(final ActionEvent e) {
@@ -69,7 +71,7 @@ public class PathSelector extends JPanel {
         jfc.setDialogTitle(Messages.getString("DeviceWizard.43"));
         jfc.setMultiSelectionEnabled(false);
         final String sUrl = jtfUrl.getText();
-        if (!sUrl.equals("")) {
+        if (!sUrl.isEmpty()) {
           // if URL is already set, use it as current directory
           jfc.setCurrentDirectory(new File(sUrl));
         }
@@ -95,6 +97,8 @@ public class PathSelector extends JPanel {
    *          Initialized path, null of none
    */
   public PathSelector(final String sDefault) {
+    super();
+    
     initUI(sDefault);
     button.addActionListener(new ActionListener() {
       public void actionPerformed(final ActionEvent e) {
@@ -104,7 +108,7 @@ public class PathSelector extends JPanel {
         jfc.setDialogTitle(Messages.getString("DeviceWizard.43"));
         jfc.setMultiSelectionEnabled(false);
         final String sUrl = jtfUrl.getText();
-        if (!sUrl.equals("")) {
+        if (!sUrl.isEmpty()) {
           // if URL is already set, use it as current directory
           jfc.setCurrentDirectory(new File(sUrl));
         }
@@ -157,7 +161,7 @@ public class PathSelector extends JPanel {
    * 
    */
   public void performOnURLChange() {
-
+    // empty on purpose...
   }
 
   @Override

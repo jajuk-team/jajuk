@@ -19,11 +19,10 @@ import java.awt.event.ComponentEvent;
 
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
-import javax.swing.Scrollable;
 
 import org.jdesktop.swingx.JXPanel;
 
-public class FlowScrollPanel extends JXPanel implements Scrollable {
+public class FlowScrollPanel extends JXPanel {
   private static final long serialVersionUID = 1L;
 
   private FlowLayout layout = new FlowLayout();
@@ -46,16 +45,16 @@ public class FlowScrollPanel extends JXPanel implements Scrollable {
       scroller = scrollPane;
       if (scroller != null) {
         scroller.getViewport().setView(this);
+        scroller.addComponentListener(new ComponentAdapter() {
+          @Override
+          public void componentResized(ComponentEvent e) {
+            scroller.getViewport().setViewSize(getSize());
+            scroller.invalidate();
+            scroller.validate();
+            doLayout();
+          }
+        });
       }
-      scroller.addComponentListener(new ComponentAdapter() {
-        @Override
-        public void componentResized(ComponentEvent e) {
-          scroller.getViewport().setViewSize(getSize());
-          scroller.invalidate();
-          scroller.validate();
-          doLayout();
-        }
-      });
     }
   }
 

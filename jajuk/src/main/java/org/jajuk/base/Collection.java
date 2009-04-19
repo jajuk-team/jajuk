@@ -93,20 +93,20 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
   private final Map<String, String> hmWrongRightPlaylistFileID = new HashMap<String, String>();
 
   /** Conversion of types from < 1.4 */
-  private final static Map<String, String> conversion;
+  private final static Map<String, String> CONVERSION;
   static {
-    conversion = new HashMap<String, String>(12);
-    conversion.put("0", "mp3");
-    conversion.put("1", "m3u");
-    conversion.put("2", "ogg");
-    conversion.put("3", "wav");
-    conversion.put("4", "au");
-    conversion.put("5", "flac");
-    conversion.put("6", "wma");
-    conversion.put("7", "aac");
-    conversion.put("8", "m4a");
-    conversion.put("9", "ram");
-    conversion.put("10", "mp2");
+    CONVERSION = new HashMap<String, String>(12);
+    CONVERSION.put("0", "mp3");
+    CONVERSION.put("1", "m3u");
+    CONVERSION.put("2", "ogg");
+    CONVERSION.put("3", "wav");
+    CONVERSION.put("4", "au");
+    CONVERSION.put("5", "flac");
+    CONVERSION.put("6", "wma");
+    CONVERSION.put("7", "aac");
+    CONVERSION.put("8", "m4a");
+    CONVERSION.put("9", "ram");
+    CONVERSION.put("10", "mp2");
   }
   /** [Perf] flag used to accelerate conversion */
   private boolean needCheckConversions = true;
@@ -267,7 +267,7 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
    * @throws MalformedURLException 
    * 
    */
-  public static void load(File file) throws SAXException, ParserConfigurationException, JajukException, MalformedURLException, IOException {
+  public static void load(File file) throws SAXException, ParserConfigurationException, JajukException, IOException {
     Log.debug("Loading: " + file.getName());
     lTime = System.currentTimeMillis();
     SAXParserFactory spf = SAXParserFactory.newInstance();
@@ -634,8 +634,8 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
           // Type
           String typeID = attributes.getValue(Const.XML_TYPE).intern();
           if (needCheckConversions) {
-            if (conversion.containsKey(typeID)) {
-              typeID = conversion.get(typeID);
+            if (CONVERSION.containsKey(typeID)) {
+              typeID = CONVERSION.get(typeID);
             } else {
               needCheckConversions = false;
             }
