@@ -51,10 +51,10 @@ public final class Conf implements Const {
     properties = (Properties) properties.clone();
   }
 
-  private Conf()  {
+  private Conf() {
     // empty hidden constructor
   }
-  
+
   /**
    * Return the value of a property, or null if the property is not found.
    * 
@@ -210,6 +210,9 @@ public final class Conf implements Const {
     defaults.put(CONF_NETWORK_PROXY_TYPE, PROXY_TYPE_HTTP);
     defaults.put(CONF_COVERS_AUTO_COVER, TRUE);
     defaults.put(CONF_COVERS_SHUFFLE, FALSE);
+    defaults.put(CONF_COVERS_SAVE_EXPLORER_FRIENDLY, FALSE);
+    defaults.put(FILE_DEFAULT_COVER, "folder");
+    defaults.put(FILE_DEFAULT_COVER_2, "front");
     defaults.put(CONF_COVERS_SIZE, "3"); // medium and large
     defaults.put(CONF_TRACKS_TABLE_EDITION, FALSE);
     defaults.put(CONF_FILES_TABLE_EDITION, FALSE);
@@ -293,7 +296,7 @@ public final class Conf implements Const {
     defaults.put(CONF_SHOW_DUPLICATE_PLAYLISTS, FALSE);
     defaults.put(CONF_FORCE_TRAY_SHUTDOWN, FALSE);
     defaults.put(CONF_FORMAT_TIME_ELAPSED, "0");
-     // Display slimbar at the lower part of the screen to fix #768 : under MAC,
+    // Display slimbar at the lower part of the screen to fix #768 : under MAC,
     // it overlays the menu bar
     int slimbarYPos = 0;
     if (UtilSystem.isUnderOSXintel() || UtilSystem.isUnderOSXpower()) {
@@ -333,8 +336,11 @@ public final class Conf implements Const {
     properties.setProperty(sName, sValue);
   }
 
-  /** Commit properties in a file 
-   * @throws IOException */
+  /**
+   * Commit properties in a file
+   * 
+   * @throws IOException
+   */
   public static void commit() throws IOException {
     OutputStream str = new FileOutputStream(UtilSystem.getConfFileByPath(Const.FILE_CONFIGURATION));
     try {

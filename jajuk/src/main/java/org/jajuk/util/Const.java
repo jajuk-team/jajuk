@@ -204,9 +204,9 @@ public interface Const {
   /** Directory containing all sessions using this workspace */
   String FILE_SESSIONS = "sessions";
 
-  String FILE_DEFAULT_COVER = "cover";
+  String FILE_DEFAULT_COVER = "jajuk.file.default.cover";
 
-  String FILE_DEFAULT_COVER_2 = "front";
+  String FILE_DEFAULT_COVER_2 = "jajuk.file.default.cover_2";
 
   String FILE_ABSOLUTE_DEFAULT_COVER = "jajuk-default-cover.";
 
@@ -633,6 +633,8 @@ public interface Const {
   String CONF_COVERS_AUTO_COVER = "jajuk.covers.auto_cover";
 
   String CONF_COVERS_SHUFFLE = "jajuk.covers.shuffle";
+  
+  String CONF_COVERS_SAVE_EXPLORER_FRIENDLY = "jajuk.covers.save.explorer.friendly";
 
   String CONF_COVERS_SIZE = "jajuk.covers.size";
 

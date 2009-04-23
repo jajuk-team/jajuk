@@ -252,8 +252,8 @@ public final class UtilFeatures {
    */
   public static boolean isStandardCover(final File file) {
     String sFileName = file.getName();
-    return sFileName.toLowerCase(Locale.getDefault()).matches(".*" + Const.FILE_DEFAULT_COVER + ".*")
-        || sFileName.toLowerCase(Locale.getDefault()).matches(".*" + Const.FILE_DEFAULT_COVER_2 + ".*")
+    return sFileName.toLowerCase(Locale.getDefault()).matches(".*" + Conf.getString(Const.FILE_DEFAULT_COVER) + ".*")
+        || sFileName.toLowerCase(Locale.getDefault()).matches(".*" + Conf.getString(Const.FILE_DEFAULT_COVER_2) + ".*")
         // just for previous compatibility, now it is a directory
         // property
         || sFileName.toLowerCase(Locale.getDefault()).matches(".*" + Const.FILE_ABSOLUTE_DEFAULT_COVER + ".*");

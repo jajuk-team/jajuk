@@ -500,11 +500,9 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
         String sFilePath = null;
         sFilePath = dirReference.getFio().getPath() + "/"
             + UtilSystem.getOnlyFile(cover.getURL().toString());
-        // Add a jajuk suffix to know this cover has been downloaded
-        // by jajuk
-        final int pos = sFilePath.lastIndexOf('.');
-        sFilePath = new StringBuilder(sFilePath).insert(pos,
-            Const.FILE_JAJUK_DOWNLOADED_FILES_SUFFIX).toString();
+
+        sFilePath = getCoverFilePath(sFilePath);
+
         try {
           // copy file from cache
           final File fSource = DownloadManager.downloadToCache(cover.getURL());
@@ -532,6 +530,29 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
         }
       }
     }.start();
+  }
+
+  /**
+   * @param sFilePath
+   * @return
+   */
+  private String getCoverFilePath(String sFilePath) {
+
+    int pos = sFilePath.lastIndexOf('.');
+
+    if (Conf.getBoolean(Const.CONF_COVERS_SAVE_EXPLORER_FRIENDLY)) {
+      // covers should be stored as folder.xxx for windows
+      // explorer
+      String ext = sFilePath.substring(pos, sFilePath.length());
+      String parent = new File(sFilePath).getParent();
+      sFilePath = parent + System.getProperty("file.separator") + "folder" + ext;
+    } else {
+      // Add a jajuk suffix to know this cover has been downloaded
+      // by jajuk
+      sFilePath = new StringBuilder(sFilePath)
+          .insert(pos, Const.FILE_JAJUK_DOWNLOADED_FILES_SUFFIX).toString();
+    }
+    return sFilePath;
   }
 
   /**
@@ -589,11 +610,8 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
       final String sFilename = UtilSystem.getOnlyFile(cover.getURL().toString());
       if (cover.getType() == CoverType.REMOTE_COVER) {
         String sFilePath = dirReference.getFio().getPath() + "/" + sFilename;
-        // Add a jajuk suffix to know this cover has been downloaded by
-        // jajuk
-        final int pos = sFilePath.lastIndexOf('.');
-        sFilePath = new StringBuilder(sFilePath).insert(pos,
-            Const.FILE_JAJUK_DOWNLOADED_FILES_SUFFIX).toString();
+
+        sFilePath = getCoverFilePath(sFilePath);
         try {
           // copy file from cache
           final File fSource = DownloadManager.downloadToCache(cover.getURL());
