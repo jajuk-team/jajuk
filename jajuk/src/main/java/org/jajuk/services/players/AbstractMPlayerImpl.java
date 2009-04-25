@@ -167,6 +167,10 @@ public abstract class AbstractMPlayerImpl implements IPlayerImpl, Const {
     // If mute, use -200db otherwise, use a linear scale
     cmd.add("-af");
     cmd.add("volume=" + ((fVolume == 0) ? -200 : ((int) (25 * fVolume) - 20)));
+    // Add -volnorm (audio normalization) if option is set
+    if (Conf.getBoolean(CONF_USE_VOLNORM)){
+      cmd.add("volnorm");
+    }
     // -softvol : use soft mixer, allows to set volume only to this mplayer
     // instance, not others programs
     cmd.add("-softvol");

@@ -798,6 +798,9 @@ public interface Const {
   /** Smart mode selected in slimbar */
   String CONF_SLIMBAR_SMART_MODE = "jajuk.ui.slimbar.smart_mode";
 
+  /** volnorm option */
+  String CONF_USE_VOLNORM = "jajuk.mplayer.volnorm";
+  
   /** Shuffle/novelties mode */
   String MODE_ALBUM = "album";
 

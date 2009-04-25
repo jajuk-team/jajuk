@@ -342,6 +342,8 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
   JSlider jsPerspectiveSize;
 
   private JCheckBox jcbShortNames;
+  
+  private JCheckBox jcbUseVolnorm;
 
   private boolean someOptionsAppliedAtNextStartup = false;
 
@@ -607,6 +609,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
         .toString());
     Conf.setProperty(Const.CONF_REGEXP, Boolean.toString(jcbRegexp.isSelected()));
     Conf.setProperty(Const.CONF_SHORT_NAMES, Boolean.toString(jcbShortNames.isSelected()));
+    Conf.setProperty(Const.CONF_USE_VOLNORM, Boolean.toString(jcbUseVolnorm.isSelected()));
     Conf.setProperty(Const.CONF_CHECK_FOR_UPDATE, Boolean.toString(jcbCheckUpdates.isSelected()));
     Conf.setProperty(Const.CONF_FORCE_FILE_DATE, Boolean.toString(jcbForceFileDate.isSelected()));
     // Apply new mplayer path and display a warning message if changed
@@ -1217,6 +1220,11 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     jcbShortNames.setToolTipText(Messages.getString("ParameterView.255"));
     // Short names option is only under windows 32
     jcbShortNames.setEnabled(UtilSystem.isUnderWindows32bits());
+    
+    jcbUseVolnorm = new JCheckBox(Messages.getString("ParameterView.262"));
+    jcbUseVolnorm.setSelected(Conf.getBoolean(Const.CONF_USE_VOLNORM));
+    jcbUseVolnorm.setToolTipText(Messages.getString("ParameterView.263"));
+    
     jcbCollectionEncoding.addItem("UTF-8");
     jcbCollectionEncoding.addItem("UTF-16");
     jlLogLevel = new JLabel(Messages.getString("ParameterView.46"));
@@ -1250,7 +1258,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     jcbForceFileDate = new JCheckBox(Messages.getString("ParameterView.244"));
     jcbForceFileDate.setToolTipText(Messages.getString("ParameterView.245"));
     jcbForceFileDate.setSelected(Conf.getBoolean(Const.CONF_FORCE_FILE_DATE));
-    final double sizeAdvanced[][] = { { p, p }, { p, p, p, p, p, p, p, p, p, p, p } };
+    final double sizeAdvanced[][] = { { p, p }, { p, p, p, p, p, p, p, p, p, p, p, p } };
     final TableLayout layoutAdvanced = new TableLayout(sizeAdvanced);
     layoutAdvanced.setHGap(iXSeparator);
     layoutAdvanced.setVGap(iYSeparator);
@@ -1273,6 +1281,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     jpAdvanced.add(jcbCheckUpdates, "0,8");
     jpAdvanced.add(jcbForceFileDate, "0,9");
     jpAdvanced.add(jcbShortNames, "0,10");
+    jpAdvanced.add(jcbUseVolnorm, "0,11");
 
     // - Network
     jpNetwork = new JPanel();

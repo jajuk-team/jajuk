@@ -278,6 +278,8 @@ public final class Conf implements Const {
     defaults.put(CONF_OPTIONS_HOTKEYS, FALSE);
     defaults.put(CONF_MPLAYER_ARGS, "");
     defaults.put(CONF_ENV_VARIABLES, "");
+    defaults.put(CONF_USE_VOLNORM, "false");
+    
     defaults.put(CONF_SHOW_TIP_ON_STARTUP, TRUE);
     defaults.put(CONF_CATALOG_PAGE_SIZE, "100");
     defaults.put(CONF_SHOW_POPUPS, FALSE);
@@ -314,6 +316,7 @@ public final class Conf implements Const {
     defaults.put(CONF_ALARM_TIME_HOUR, "08");
     defaults.put(CONF_ALARM_TIME_MINUTES, "00");
     defaults.put(CONF_ALARM_TIME_SECONDS, "00");
+    
 
     // NOT SHOW AGAIN
     defaults.put(CONF_NOT_SHOW_AGAIN_LASTFM_DISABLED, FALSE);
