@@ -289,7 +289,7 @@ public class CommandJPanel extends JXPanel implements ActionListener, ListSelect
    */
   CommandJPanel() {
     super();
-    
+
     // mute
     jbMute = new JajukToggleButton(ActionManager.getAction(MUTE_STATE));
   }
@@ -607,7 +607,8 @@ public class CommandJPanel extends JXPanel implements ActionListener, ListSelect
   /*
    * (non-Javadoc)
    * 
-   * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+   * @see
+   * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
    */
   public void actionPerformed(final ActionEvent ae) {
     // do not run this in a separate thread because Player actions would die
@@ -651,7 +652,9 @@ public class CommandJPanel extends JXPanel implements ActionListener, ListSelect
   /*
    * (non-Javadoc)
    * 
-   * @see javax.swing.event.ListSelectionListener#valueChanged(javax.swing.event.ListSelectionEvent)
+   * @see
+   * javax.swing.event.ListSelectionListener#valueChanged(javax.swing.event.
+   * ListSelectionEvent)
    */
   public void valueChanged(final ListSelectionEvent e) {
     SwingWorker sw = new SwingWorker() {
@@ -689,7 +692,9 @@ public class CommandJPanel extends JXPanel implements ActionListener, ListSelect
   }
 
   /*
-   * @see javax.swing.event.ChangeListener#stateChanged(javax.swing.event.ChangeEvent)
+   * @see
+   * javax.swing.event.ChangeListener#stateChanged(javax.swing.event.ChangeEvent
+   * )
    */
   public void stateChanged(ChangeEvent e) {
     if (e.getSource() == jsVolume) {
@@ -778,6 +783,7 @@ public class CommandJPanel extends JXPanel implements ActionListener, ListSelect
         } else if (JajukEvents.VOLUME_CHANGED.equals(event.getSubject())) {
           jsVolume.removeChangeListener(CommandJPanel.this);
           jsVolume.setValue((int) (100 * Player.getCurrentVolume()));
+          jsVolume.setToolTipText((int) (100 * Player.getCurrentVolume()) + " %");
           jsVolume.addChangeListener(CommandJPanel.this);
           jbMute.setSelected(Player.isMuted());
         } else if (JajukEvents.DJS_CHANGE.equals(event.getSubject())) {
@@ -954,7 +960,8 @@ public class CommandJPanel extends JXPanel implements ActionListener, ListSelect
   /*
    * (non-Javadoc)
    * 
-   * @see java.awt.event.MouseWheelListener#mouseWheelMoved(java.awt.event.MouseWheelEvent)
+   * @seejava.awt.event.MouseWheelListener#mouseWheelMoved(java.awt.event.
+   * MouseWheelEvent)
    */
   public void mouseWheelMoved(MouseWheelEvent e) {
     if (e.getSource() == jsVolume) {
