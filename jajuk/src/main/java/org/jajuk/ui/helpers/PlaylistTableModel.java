@@ -19,7 +19,6 @@
  */
 package org.jajuk.ui.helpers;
 
-import java.awt.Font;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -31,10 +30,8 @@ import org.jajuk.base.Item;
 import org.jajuk.base.PropertyMetaInformation;
 import org.jajuk.base.TrackManager;
 import org.jajuk.services.players.StackItem;
-import org.jajuk.ui.helpers.FontManager.JajukFont;
 import org.jajuk.ui.widgets.IconLabel;
 import org.jajuk.util.Const;
-import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 
@@ -218,35 +215,24 @@ public class PlaylistTableModel extends JajukTableModel {
     boolean bFileName = (columnsToShow != null && columnsToShow.contains(Const.XML_FILE));
 
     for (int iRow = 0; iRow < iRowNum; iRow++) {
-      boolean bPlanned = false;
-      Font font = null;
       StackItem item = getStackItem(iRow);
-      if (item.isPlanned()) { // it is a planned file
-        bPlanned = true;
-        font = FontManager.getInstance().getFont(JajukFont.PLANNED);
-      }
-      File bf = item.getFile();
 
       // Play
       if (bQueue) {
-        if (bPlanned) {
-          oValues[iRow][0] = new IconLabel(IconLoader.getIcon(JajukIcons.TRACK_FIFO_PLANNED), "",
-              null, null, font, Messages.getString("AbstractPlaylistEditorView.20"));
+        if (item.isPlanned()) {
+          oValues[iRow][0] = IconLabel.getIcon(JajukIcons.TRACK_FIFO_PLANNED);
+        } else if (item.isRepeat()) {
+          // normal file, repeated
+          oValues[iRow][0] = IconLabel.getIcon(JajukIcons.TRACK_FIFO_REPEAT);
         } else {
-          if (item.isRepeat()) {
-            // normal file, repeated
-            oValues[iRow][0] = new IconLabel(IconLoader.getIcon(JajukIcons.TRACK_FIFO_REPEAT), "",
-                null, null, font, Messages.getString("AbstractPlaylistEditorView.19"));
-          } else {
-            // normal file, not repeated
-            oValues[iRow][0] = new IconLabel(IconLoader.getIcon(JajukIcons.TRACK_FIFO_NORM), "",
-                null, null, font, Messages.getString("AbstractPlaylistEditorView.18"));
-          }
+          // normal file, not repeated
+          oValues[iRow][0] = IconLabel.getIcon(JajukIcons.TRACK_FIFO_NORM);
         }
       } else {
-        oValues[iRow][0] = new IconLabel(IconLoader.getIcon(JajukIcons.TRACK_FIFO_NORM), "", null,
-            null, font, Messages.getString("AbstractPlaylistEditorView.18"));
+        oValues[iRow][0] = IconLabel.getIcon(JajukIcons.TRACK_FIFO_NORM);
       }
+
+      File bf = item.getFile();
 
       // Track name
       if (bName) {

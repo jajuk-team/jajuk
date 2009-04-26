@@ -22,8 +22,17 @@ package org.jajuk.ui.widgets;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.swing.ImageIcon;
+
+import org.jajuk.ui.helpers.FontManager;
+import org.jajuk.ui.helpers.FontManager.JajukFont;
+import org.jajuk.util.IconLoader;
+import org.jajuk.util.JajukIcons;
+import org.jajuk.util.Messages;
+import org.jajuk.util.log.Log;
 
 /**
  * Encapsulates a label with a text and an icon, used for tables
@@ -49,6 +58,8 @@ public class IconLabel extends ImageIcon implements Comparable<IconLabel> {
 
   /** Whether this is a integer */
   private boolean bInteger = false;
+
+  private static Map<JajukIcons, IconLabel> cachedIcons = new HashMap<JajukIcons, IconLabel>();
 
   /**
    * Constructor
@@ -141,5 +152,33 @@ public class IconLabel extends ImageIcon implements Comparable<IconLabel> {
    */
   public void setInteger(boolean integer) {
     bInteger = integer;
+  }
+
+  public static IconLabel getIcon(JajukIcons icon) {
+    if (icon == JajukIcons.TRACK_FIFO_PLANNED) {
+      if (!cachedIcons.containsKey(icon)) {
+        cachedIcons.put(icon, new IconLabel(IconLoader.getIcon(JajukIcons.TRACK_FIFO_PLANNED), "",
+            null, null,  FontManager.getInstance().getFont(JajukFont.PLANNED), Messages.getString("AbstractPlaylistEditorView.20")));
+      }
+    } else if (icon == JajukIcons.TRACK_FIFO_REPEAT) {
+      if (!cachedIcons.containsKey(icon)) {
+        cachedIcons.put(icon, new IconLabel(IconLoader.getIcon(icon), "",
+            null, null, null, Messages.getString("AbstractPlaylistEditorView.19")));
+      }
+    } else if (icon == JajukIcons.TRACK_FIFO_NORM) {
+      if (!cachedIcons.containsKey(icon)) {
+        cachedIcons.put(icon, new IconLabel(IconLoader.getIcon(icon), "",
+            null, null, null, Messages.getString("AbstractPlaylistEditorView.18")));
+      }
+    } else if (icon == JajukIcons.BAN) {
+      if (!cachedIcons.containsKey(icon)) {
+        cachedIcons.put(icon, new IconLabel(IconLoader.getIcon(icon), "", null, null, null, "-1"));
+      }      
+    } else {
+      Log.warn("Unsupported icon requested in IconLabel.getIcon(): " + icon.toString());
+      return null;
+    }
+
+    return cachedIcons.get(icon);
   }
 }

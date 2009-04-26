@@ -63,6 +63,15 @@ public abstract class Item implements Const {
    */
   private Map<String, Object> properties = new HashMap<String, Object>(2, 1f);
 
+  @SuppressWarnings("unchecked")
+  private static Map map[] = {
+      new HashMap<Long, IconLabel>(),
+      new HashMap<Long, IconLabel>(), 
+      new HashMap<Long, IconLabel>(), 
+      new HashMap<Long, IconLabel>(), 
+      new HashMap<Long, IconLabel>() 
+  };
+  
   /**
    * Constructor
    * 
@@ -407,39 +416,43 @@ public abstract class Item implements Const {
   /**
    * @return the stars icon or ban icon if banned
    */
+  @SuppressWarnings("unchecked")
   public IconLabel getStars() {
     long rate = getRate();
     if (this instanceof Track && getBooleanValue(XML_TRACK_BANNED)) {
-      return new IconLabel(IconLoader.getIcon(JajukIcons.BAN), "", null, null, null, "-1");
+      return IconLabel.getIcon(JajukIcons.BAN);
     } else {
       int starsNumber = getStarsNumber();
-      IconLabel ilRate = null;
-      switch (starsNumber) {
-      case 0:
-        ilRate = new IconLabel(IconLoader.getIcon(JajukIcons.STAR_0), "", null, null, null, Long
-            .toString(rate));
-        break;
-      case 1:
-        ilRate = new IconLabel(IconLoader.getIcon(JajukIcons.STAR_1), "", null, null, null, Long
-            .toString(rate));
-        break;
-      case 2:
-        ilRate = new IconLabel(IconLoader.getIcon(JajukIcons.STAR_2), "", null, null, null, Long
-            .toString(rate));
-        break;
-      case 3:
-        ilRate = new IconLabel(IconLoader.getIcon(JajukIcons.STAR_3), "", null, null, null, Long
-            .toString(rate));
-        break;
-      case 4:
-        ilRate = new IconLabel(IconLoader.getIcon(JajukIcons.STAR_4), "", null, null, null, Long
-            .toString(rate));
-        break;
-      default:
-        return null;
+      
+      if(!map[starsNumber].containsKey(rate)) {
+        map[starsNumber].put(rate, new IconLabel(getIcon(starsNumber), "", null, null, null, Long
+            .toString(rate)));
+        
+        ((IconLabel)(map[starsNumber].get(rate))).setInteger(true);
       }
-      ilRate.setInteger(true);
-      return ilRate;
+      
+      return (IconLabel)(map[starsNumber].get(rate));
+    }
+  }
+
+  /**
+   * @param starsNumber
+   * @return
+   */
+  private ImageIcon getIcon(int starsNumber) {
+    switch (starsNumber) {
+    case 0:
+      return IconLoader.getIcon(JajukIcons.STAR_0);
+    case 1:
+      return IconLoader.getIcon(JajukIcons.STAR_1);
+    case 2:
+      return IconLoader.getIcon(JajukIcons.STAR_2);
+    case 3:
+      return IconLoader.getIcon(JajukIcons.STAR_3);
+    case 4:
+      return IconLoader.getIcon(JajukIcons.STAR_4);
+    default:
+      return null;
     }
   }
 
