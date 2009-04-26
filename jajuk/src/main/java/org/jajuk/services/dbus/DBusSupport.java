@@ -17,7 +17,7 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *  $Revision: 3132 $
  */
-package org.jajuk.dbus;
+package org.jajuk.services.dbus;
 
 import org.freedesktop.dbus.DBusInterface;
 

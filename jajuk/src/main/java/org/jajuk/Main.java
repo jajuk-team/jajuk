@@ -68,7 +68,6 @@ import org.jajuk.base.StyleManager;
 import org.jajuk.base.TrackManager;
 import org.jajuk.base.TypeManager;
 import org.jajuk.base.YearManager;
-import org.jajuk.dbus.DBusSupportImpl;
 import org.jajuk.services.bookmark.History;
 import org.jajuk.services.core.ExitService;
 import org.jajuk.services.core.StartupService;
@@ -172,9 +171,6 @@ public final class Main {
 
   /** Directory used to flag the current jajuk session */
   private static File sessionIdFile;
-
-  /** Support for D-Bus remote control of Jajuk */
-  private static DBusSupportImpl dbus;
 
   /**
    * private constructor to avoid instantiating utility class
@@ -347,15 +343,6 @@ public final class Main {
       if (Conf.getInt(Const.CONF_STARTUP_DISPLAY) == Const.DISPLAY_MODE_SLIMBAR_TRAY) {
         launchSlimbar();
       }
-      
-      // try to start up D-Bus support if available. Currently this is only implemented on Linux
-      if(UtilSystem.isUnderLinux()) {
-        dbus = new DBusSupportImpl();
-        
-        // the connect method will internally catch errors and report them to the logfile
-        dbus.connect();
-      }
-
     } catch (final JajukException je) { // last chance to catch any error for
       // logging purpose
       Log.error(je);

@@ -40,6 +40,7 @@ import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.services.alarm.AlarmManager;
 import org.jajuk.services.bookmark.History;
+import org.jajuk.services.dbus.DBusManager;
 import org.jajuk.services.players.FIFO;
 import org.jajuk.services.players.FIFOManager;
 import org.jajuk.services.webradio.WebRadio;
@@ -222,6 +223,12 @@ public class StartupService {
           // before catalog view refresh to avoid useless thumbs creation
           for (int size = 50; size <= 300; size += 50) {
             ThumbnailManager.populateCache(size);
+          }
+
+          // try to start up D-Bus support if available. Currently this is only implemented on Linux
+          if(UtilSystem.isUnderLinux()) {
+            // make sure the singleton is initialized here
+            DBusManager.getInstance();
           }
 
           // Wait few secs to avoid GUI startup perturbations

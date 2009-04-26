@@ -17,7 +17,7 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *  $Revision: 3132 $
  */
-package org.jajuk.dbus;
+package org.jajuk.services.dbus;
 
 /**
  * Provides implementation of the D-Bus interface and implementation of the D-Bus support code for connecting to D-Bus
@@ -62,8 +62,9 @@ public class DBusSupportImpl implements DBusSupport {
    * 
    * This will catch errors and report them to the logfile.
    * 
+   * Scope is package protected to only let DBusManager have access to it.
    */
-  public void connect() {
+  void connect() {
     Log.info("Trying to start support for D-Bus on Linux with Bus: ");
     
     try {
@@ -79,8 +80,10 @@ public class DBusSupportImpl implements DBusSupport {
 
   /**
    * Disconnects from D-Bus.
+   * 
+   * Scope is package protected to only let DBusManager have access to it.
    */
-  public void disconnect() {
+  void disconnect() {
     Log.info("Disconnecting from D-Bus");
     if (conn != null) {
       conn.disconnect();
