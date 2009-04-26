@@ -25,6 +25,7 @@ import info.clearthought.layout.TableLayout;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileNotFoundException;
 import java.net.URL;
 import java.util.HashSet;
 import java.util.Set;
@@ -266,6 +267,9 @@ public class WikipediaView extends ViewAdapter implements Observer, ActionListen
           jbCopy.putClientProperty(Const.DETAIL_CONTENT, url.toExternalForm());
           jbLaunchInExternalBrowser.putClientProperty(Const.DETAIL_CONTENT, url.toExternalForm());
           browser.setURL(url);
+        } catch (FileNotFoundException e) {
+          // only report a warning for FileNotFoundException and do not show a stacktrace in the logfile as it is expected in many cases where the name is not found on Wikipedia
+          Log.warn("Could not load URL, no content found at specified address: " + e.getMessage());
         } catch (Exception e) {
           Log.error(e);
         }
