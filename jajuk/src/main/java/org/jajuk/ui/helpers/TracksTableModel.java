@@ -171,11 +171,9 @@ public class TracksTableModel extends JajukTableModel {
       // Play
       IconLabel il = null;
       if (track.getPlayeableFile(true) != null) {
-        il = new IconLabel(PLAY_ICON, "", null, null, null, Messages.getString("TracksTableView.7"));
+        il = getIcon(false);
       } else {
-        il = new IconLabel(UNMOUNT_PLAY_ICON, "", null, null, null, Messages
-            .getString("TracksTableView.7")
-            + Messages.getString("AbstractTableView.10"));
+        il = getIcon(true);
       }
       // Note: if you want to add an image, use an ImageIcon class and
       // change
@@ -224,8 +222,7 @@ public class TracksTableModel extends JajukTableModel {
 
       // Rate
       if (bRate) {
-        IconLabel ilRate = track.getStars();
-        oValues[iRow][5] = ilRate;
+        oValues[iRow][5] = track.getStars();
       } else {
         oValues[iRow][5] = "";
       }

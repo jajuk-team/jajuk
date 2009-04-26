@@ -28,8 +28,10 @@ import javax.swing.ImageIcon;
 import javax.swing.table.DefaultTableModel;
 
 import org.jajuk.base.Item;
+import org.jajuk.ui.widgets.IconLabel;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
+import org.jajuk.util.Messages;
 
 /**
  * Jajuk table model, adds identifier to model
@@ -74,6 +76,9 @@ public abstract class JajukTableModel extends DefaultTableModel {
   /** Tree selection */
   protected Set<Item> treeSelection;
 
+  protected IconLabel play_icon = null;
+  protected IconLabel unmount_play_icon = null;
+
   /**
    * 
    * @param iNumberStandardCols
@@ -81,7 +86,7 @@ public abstract class JajukTableModel extends DefaultTableModel {
    */
   public JajukTableModel(int iNumberStandardCols) {
     super();
-    
+
     this.iNumberStandardCols = iNumberStandardCols;
   }
 
@@ -91,7 +96,7 @@ public abstract class JajukTableModel extends DefaultTableModel {
    */
   public JajukTableModel() {
     super();
-    
+
     this.iNumberStandardCols = 0;
   }
 
@@ -229,4 +234,24 @@ public abstract class JajukTableModel extends DefaultTableModel {
     this.treeSelection = treeSelection;
   }
 
+  /**
+   * @param unmountPlayIcon
+   * @return
+   */
+  protected IconLabel getIcon(boolean unmount) {
+    if (!unmount) {
+      if (play_icon == null) {
+        play_icon = new IconLabel(PLAY_ICON, "", null, null, null, Messages
+            .getString("TracksTableView.7"));
+      }
+      return play_icon;
+    } else {
+      if(unmount_play_icon == null) {
+        unmount_play_icon = new IconLabel(UNMOUNT_PLAY_ICON, "", null, null, null, Messages
+            .getString("TracksTableView.7")
+            + Messages.getString("AbstractTableView.10"));
+      }
+      return unmount_play_icon;
+    }
+  }
 }

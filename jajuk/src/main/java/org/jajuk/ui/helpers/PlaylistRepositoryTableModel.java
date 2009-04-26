@@ -128,11 +128,9 @@ public class PlaylistRepositoryTableModel extends JajukTableModel {
       // Play
       IconLabel il = null;
       if (plf.getDirectory().getDevice().isMounted()) {
-        il = new IconLabel(PLAY_ICON, "", null, null, null, Messages.getString("TracksTableView.7"));
+        il = getIcon(false);
       } else {
-        il = new IconLabel(UNMOUNT_PLAY_ICON, "", null, null, null, Messages
-            .getString("TracksTableView.7")
-            + Messages.getString("AbstractTableView.10"));
+        il = getIcon(true);
       }
       // Note: if you want to add an image, use an ImageIcon class and
       // change

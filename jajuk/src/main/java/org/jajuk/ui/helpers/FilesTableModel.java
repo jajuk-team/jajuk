@@ -199,11 +199,9 @@ public class FilesTableModel extends JajukTableModel {
       // Play
       IconLabel il = null;
       if (file.isReady()) {
-        il = new IconLabel(PLAY_ICON, "", null, null, null, Messages.getString("TracksTableView.7"));
+        il = getIcon(false);
       } else {
-        il = new IconLabel(UNMOUNT_PLAY_ICON, "", null, null, null, Messages
-            .getString("TracksTableView.7")
-            + Messages.getString("AbstractTableView.10"));
+        il = getIcon(true);
       }
       oValues[iRow][0] = il;
       bCellEditable[iRow][0] = false;
@@ -248,8 +246,7 @@ public class FilesTableModel extends JajukTableModel {
 
       // Rate
       if (bRate) {
-        IconLabel ilRate = file.getTrack().getStars();
-        oValues[iRow][5] = ilRate;
+        oValues[iRow][5] = file.getTrack().getStars();
       } else {
         oValues[iRow][5] = "";
       }
