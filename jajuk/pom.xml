@@ -204,7 +204,21 @@
       <version>3.0.5</version>
       <scope>system</scope>
       <systemPath>${basedir}/lib/jna-3.0.5.jar</systemPath>
-	</dependency> 
+	</dependency>
+    <dependency>
+      <groupId>DBus-Java</groupId>
+      <artifactId>dbusjava</artifactId>
+      <version>2.6</version>
+      <scope>system</scope>
+      <systemPath>${basedir}/lib/libdbus-java-2.6.jar</systemPath>
+    </dependency>	 
+	<dependency>
+      <groupId>libmatthew-java</groupId>
+      <artifactId>libmatthewjava</artifactId>
+      <version>0.7.2</version>
+      <scope>system</scope>
+      <systemPath>${basedir}/lib/libunix-java.so</systemPath>
+    </dependency>    
   </dependencies>
   
   <reporting>
