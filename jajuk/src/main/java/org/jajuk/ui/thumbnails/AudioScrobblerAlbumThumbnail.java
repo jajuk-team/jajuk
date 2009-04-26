@@ -106,8 +106,8 @@ public class AudioScrobblerAlbumThumbnail extends AbstractThumbnail {
           downloadedImage.getImage().flush();
           image.flush();
         } catch (FileNotFoundException e) {
-          // only report warning for images that are not found on the net as it happens frequently...
-          Log.warn(e.getMessage());
+          // only report a warning for FileNotFoundException and do not show a stacktrace in the logfile as it is happening frequently
+          Log.warn("Could not load image, no content found at address: " + e.getMessage());
         } catch (Exception e) {
           Log.error(e);
         }
