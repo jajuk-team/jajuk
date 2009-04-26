@@ -539,20 +539,21 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
   private String getCoverFilePath(String sFilePath) {
 
     int pos = sFilePath.lastIndexOf('.');
+    String out = sFilePath;
 
     if (Conf.getBoolean(Const.CONF_COVERS_SAVE_EXPLORER_FRIENDLY)) {
       // covers should be stored as folder.xxx for windows
       // explorer
       String ext = sFilePath.substring(pos, sFilePath.length());
       String parent = new File(sFilePath).getParent();
-      sFilePath = parent + System.getProperty("file.separator") + "folder" + ext;
+      out = parent + System.getProperty("file.separator") + "folder" + ext;
     } else {
       // Add a jajuk suffix to know this cover has been downloaded
       // by jajuk
-      sFilePath = new StringBuilder(sFilePath)
+      out = new StringBuilder(sFilePath)
           .insert(pos, Const.FILE_JAJUK_DOWNLOADED_FILES_SUFFIX).toString();
     }
-    return sFilePath;
+    return out;
   }
 
   /**
