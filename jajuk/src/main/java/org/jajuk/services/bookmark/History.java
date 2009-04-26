@@ -26,14 +26,13 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
+import java.util.Vector;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
@@ -67,7 +66,7 @@ public final class History extends DefaultHandler implements ErrorHandler, Obser
   private static History history;
 
   /** History repository, last play first */
-  private static List<HistoryItem> vHistory = new ArrayList<HistoryItem>(100);
+  private static Vector<HistoryItem> vHistory = new Vector<HistoryItem>(100);
 
   /** History begin date */
   private static long lDateStart;
@@ -115,7 +114,7 @@ public final class History extends DefaultHandler implements ErrorHandler, Obser
    * 
    * @return the history
    */
-  public List<HistoryItem> getHistory() {
+  public Vector<HistoryItem> getHistory() {
     return vHistory;
   }
 

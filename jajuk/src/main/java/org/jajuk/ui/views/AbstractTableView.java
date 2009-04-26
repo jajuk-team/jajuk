@@ -35,7 +35,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Properties;
 import java.util.Set;
-import java.util.Vector;
 
 import javax.swing.Action;
 import javax.swing.ActionMap;
@@ -537,7 +536,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
       // create a combo box for styles, note that we can't add new
       // styles dynamically
       if (Const.XML_STYLE.equals(sIdentifier)) {
-        JComboBox jcb = new JComboBox(new Vector<String>(StyleManager.getInstance().getStylesList()));
+        JComboBox jcb = new JComboBox(StyleManager.getInstance().getStylesList());
         jcb.setEditable(true);
         AutoCompleteDecorator.decorate(jcb);
         col.setCellEditor(new ComboBoxCellEditor(jcb));
@@ -546,7 +545,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
       // create a combo box for authors, note that we can't add new
       // authors dynamically
       if (Const.XML_AUTHOR.equals(sIdentifier)) {
-        JComboBox jcb = new JComboBox(new Vector<String>(AuthorManager.getAuthorsList()));
+        JComboBox jcb = new JComboBox(AuthorManager.getAuthorsList());
         jcb.setEditable(true);
         AutoCompleteDecorator.decorate(jcb);
         col.setCellEditor(new ComboBoxCellEditor(jcb));

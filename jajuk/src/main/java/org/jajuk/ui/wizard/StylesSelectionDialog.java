@@ -62,7 +62,7 @@ public class StylesSelectionDialog extends JajukJDialog implements ActionListene
 
   Set<Style> disabledStyles;
 
-  List<String> list;
+  Vector<String> list;
 
   /**
    * 
@@ -120,7 +120,7 @@ public class StylesSelectionDialog extends JajukJDialog implements ActionListene
 
   @SuppressWarnings("unchecked")
   private void initUI() {
-    list = (List) ((ArrayList)StyleManager.getInstance().getStylesList()).clone();
+    list = (Vector) (StyleManager.getInstance().getStylesList()).clone();
     // remove disabled items
     if (disabledStyles != null) {
       Iterator it = list.iterator();
@@ -150,7 +150,7 @@ public class StylesSelectionDialog extends JajukJDialog implements ActionListene
     layout.setHGap(10);
     setLayout(layout);
     JLabel jlAmbience = new JLabel(Messages.getString("DigitalDJWizard.58"));
-    jlist = new JList(new Vector<String>(list));
+    jlist = new JList(list);
     jlist.setLayoutOrientation(JList.VERTICAL_WRAP);
     JScrollPane jsp = new JScrollPane(jlist);
     jsp.setPreferredSize(new Dimension(600, 600));

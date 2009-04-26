@@ -500,8 +500,8 @@ public class PropertiesWizard extends JajukJDialog implements ActionListener {
           } else if (meta.getType().equals(String.class)
           // for styles
               && meta.getName().equals(Const.XML_STYLE)) {
-            List<String> styles = StyleManager.getInstance().getStylesList();
-            final JComboBox jcb = new JComboBox(new Vector<String>(styles));
+            Vector<String> styles = StyleManager.getInstance().getStylesList();
+            final JComboBox jcb = new JComboBox(styles);
             jcb.setEditable(true);
             AutoCompleteDecorator.decorate(jcb);
             jcb.setPreferredSize(dim);
@@ -541,8 +541,8 @@ public class PropertiesWizard extends JajukJDialog implements ActionListener {
             widgets[index][1] = jcb;
           } else if (meta.getType().equals(String.class) && meta.getName().equals(Const.XML_AUTHOR)) {
             // for authors
-            List<String> authors = AuthorManager.getAuthorsList();
-            final JComboBox jcb = new JComboBox(new Vector<String>(authors));
+            Vector<String> authors = AuthorManager.getAuthorsList();
+            final JComboBox jcb = new JComboBox(authors);
             jcb.setEditable(true);
             AutoCompleteDecorator.decorate(jcb);
             jcb.setPreferredSize(dim);
