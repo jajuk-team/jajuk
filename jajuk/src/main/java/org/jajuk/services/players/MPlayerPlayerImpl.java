@@ -127,7 +127,7 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
       try {
         BufferedReader in = new BufferedReader(new InputStreamReader(proc.getInputStream()));
         String line = null;
-        for (; !bStop;) {
+        while(!bStop) {
           try {
             line = in.readLine();
             if (line == null) {
@@ -258,8 +258,8 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
    *      float)
    */
   @Override
-  public void play(org.jajuk.base.File file, float fPosition, long length, float fVolume)
-      throws Exception {
+  public void play(org.jajuk.base.File file, float fPosition, long length, float fVolume) throws IOException, JajukException
+      {
     this.lTime = 0;
     this.fVolume = fVolume;
     this.length = length;
@@ -403,7 +403,8 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
    *      float)
    */
   @Override
-  public void play(WebRadio radio, float volume) throws Exception {
+  public void play(WebRadio radio, float volume) {
+    // nothing to do here...
   }
 
   /*

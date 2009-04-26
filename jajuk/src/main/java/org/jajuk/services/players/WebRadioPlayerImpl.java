@@ -20,6 +20,7 @@
 package org.jajuk.services.players;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Map;
 import java.util.StringTokenizer;
@@ -67,14 +68,16 @@ public class WebRadioPlayerImpl extends AbstractMPlayerImpl {
     }
   }
 
-  /*
+  /**
    * (non-Javadoc)
+   * @throws IOException 
+   * @throws JajukException 
    * 
    * @see org.jajuk.players.IPlayerImpl#play(org.jajuk.base.File, float, long,
    *      float)
    */
   @Override
-  public void play(WebRadio radio, float fVolume) throws Exception {
+  public void play(WebRadio radio, float fVolume) throws IOException, JajukException {
     this.fVolume = fVolume;
     this.bOpening = true;
     this.bEOF = false;
@@ -141,7 +144,8 @@ public class WebRadioPlayerImpl extends AbstractMPlayerImpl {
    *      long, float)
    */
   @Override
-  public void play(File file, float position, long length, float volume) throws Exception {
+  public void play(File file, float position, long length, float volume) {
+    // nothing to do here...
   }
 
 }
