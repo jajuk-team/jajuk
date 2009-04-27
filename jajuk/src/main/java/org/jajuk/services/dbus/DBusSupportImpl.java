@@ -20,7 +20,8 @@
 package org.jajuk.services.dbus;
 
 /**
- * Provides implementation of the D-Bus interface and implementation of the D-Bus support code for connecting to D-Bus
+ * Provides implementation of the D-Bus interface and implementation of the
+ * D-Bus support code for connecting to D-Bus
  */
 import static org.jajuk.ui.actions.JajukActions.DECREASE_VOLUME;
 import static org.jajuk.ui.actions.JajukActions.EXIT;
@@ -58,7 +59,8 @@ public class DBusSupportImpl implements DBusSupport {
   DBusConnection conn;
 
   /**
-   * Set up the D-Bus connection and export an object to allow other applications to control Jajuk via D-Bus. 
+   * Set up the D-Bus connection and export an object to allow other
+   * applications to control Jajuk via D-Bus.
    * 
    * This will catch errors and report them to the logfile.
    * 
@@ -66,7 +68,7 @@ public class DBusSupportImpl implements DBusSupport {
    */
   void connect() {
     Log.info("Trying to start support for D-Bus on Linux with Bus: ");
-    
+
     try {
       conn = DBusConnection.getConnection(DBusConnection.SESSION);
       conn.requestBusName(BUS);
@@ -90,97 +92,82 @@ public class DBusSupportImpl implements DBusSupport {
     }
   }
 
-  
   /**
    * Interface methods to react on D-Bus signals
    * 
-   * These methods are invoked via D-Bus and trigger the corresponding action in Jajuk 
+   * These methods are invoked via D-Bus and trigger the corresponding action in
+   * Jajuk
    * 
    */
- 
 
-  @Override
   public void forward() throws Exception {
     Log.info("Invoking D-Bus action for 'forward'");
     ActionManager.getAction(FORWARD_TRACK).perform(null);
   }
 
-  @Override
   public void next() throws Exception {
     Log.info("Invoking D-Bus action for 'next'");
     ActionManager.getAction(NEXT_TRACK).perform(null);
   }
 
-  @Override
   public void playPause() throws Exception {
     Log.info("Invoking D-Bus action for 'play/pause'");
     ActionManager.getAction(PAUSE_RESUME_TRACK).perform(null);
   }
 
-  @Override
   public void previous() throws Exception {
     Log.info("Invoking D-Bus action for 'previous'");
     ActionManager.getAction(PREVIOUS_TRACK).perform(null);
   }
 
-  @Override
   public void rewind() throws Exception {
     Log.info("Invoking D-Bus action for 'rewind'");
     ActionManager.getAction(REWIND_TRACK).perform(null);
   }
 
-  @Override
   public void stop() throws Exception {
     Log.info("Invoking D-Bus action for 'stop'");
     ActionManager.getAction(STOP_TRACK).perform(null);
   }
 
-  @Override
   public void decreaseVolume() throws Exception {
     Log.info("Invoking D-Bus action for 'decreaseVolume'");
     ActionManager.getAction(DECREASE_VOLUME).perform(null);
   }
 
-  @Override
   public void exit() throws Exception {
     Log.info("Invoking D-Bus action for 'exit'");
     ActionManager.getAction(EXIT).perform(null);
   }
 
-  @Override
   public void increaseVolume() throws Exception {
     Log.info("Invoking D-Bus action for 'increaseVolume'");
     ActionManager.getAction(INCREASE_VOLUME).perform(null);
   }
 
-  @Override
   public void nextAlbum() throws Exception {
     Log.info("Invoking D-Bus action for 'nextAlbum'");
     ActionManager.getAction(NEXT_ALBUM).perform(null);
   }
 
-  @Override
   public void previousAlbum() throws Exception {
     Log.info("Invoking D-Bus action for 'previousAlbum'");
     ActionManager.getAction(PREVIOUS_ALBUM).perform(null);
   }
 
-  @Override
   public void shuffleGlobal() throws Exception {
     Log.info("Invoking D-Bus action for 'shuffleGlobal'");
     ActionManager.getAction(SHUFFLE_GLOBAL).perform(null);
   }
 
-  @Override
   public void mute() throws Exception {
     Log.info("Invoking D-Bus action for 'mute'");
     ActionManager.getAction(JajukActions.MUTE_STATE).perform(null);
   }
 
   /**
-   * Required method for DBusInterface 
+   * Required method for DBusInterface
    */
-  @Override
   public boolean isRemote() {
     return false;
   }
