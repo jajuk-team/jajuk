@@ -42,6 +42,12 @@ public final class NetworkUtils {
   }
 
   public static HttpURLConnection getConnection(String urlString, Proxy proxy) throws IOException {
+    // Drop the query if user required "none Internet access from jajuk".
+    // This method shouldn't be called anyway because we views have to deal with
+    // this option at their level, this is a additional control.
+    if (Conf.getBoolean(Const.CONF_NETWORK_NONE_INTERNET_ACCESS)) {
+      return null;
+    }
     URL url = new URL(urlString);
     HttpURLConnection connection = getConnection(url, proxy);
     setConfiguration(connection);
@@ -49,6 +55,12 @@ public final class NetworkUtils {
   }
 
   public static HttpURLConnection getConnection(URL url, Proxy proxy) throws IOException {
+    // Drop the query if user required "none Internet access from jajuk".
+    // This method shouldn't be called anyway because we views have to deal with
+    // this option at their level, this is a additional control.
+    if (Conf.getBoolean(Const.CONF_NETWORK_NONE_INTERNET_ACCESS)) {
+      return null;
+    }
     Log.debug("Opening Connection With: {{" + url + "}}");
     HttpURLConnection connection;
     if (proxy == null) {
@@ -77,6 +89,12 @@ public final class NetworkUtils {
   }
 
   public static String readURL(URLConnection connection, String charset) throws IOException {
+    // Drop the query if user required "none Internet access from jajuk".
+    // This method shouldn't be called anyway because we views have to deal with
+    // this option at their level, this is a additional control.
+    if (Conf.getBoolean(Const.CONF_NETWORK_NONE_INTERNET_ACCESS)) {
+      return null;
+    }
     StringBuilder builder = new StringBuilder();
     InputStream input = connection.getInputStream();
     try {
@@ -96,6 +114,12 @@ public final class NetworkUtils {
   }
 
   public static String readPostURL(HttpURLConnection connection, String post) throws IOException {
+    // Drop the query if user required "none Internet access from jajuk".
+    // This method shouldn't be called anyway because we views have to deal with
+    // this option at their level, this is a additional control.
+    if (Conf.getBoolean(Const.CONF_NETWORK_NONE_INTERNET_ACCESS)) {
+      return null;
+    }
     OutputStream out = connection.getOutputStream();
     DataOutputStream writer = new DataOutputStream(out);
     try {
@@ -125,6 +149,12 @@ public final class NetworkUtils {
   }
 
   public static Image getImage(URLConnection connection) throws IOException {
+    // Drop the query if user required "none Internet access from jajuk".
+    // This method shouldn't be called anyway because we views have to deal with
+    // this option at their level, this is a additional control.
+    if (Conf.getBoolean(Const.CONF_NETWORK_NONE_INTERNET_ACCESS)) {
+      return null;
+    }
     InputStream input = connection.getInputStream();
     return ImageIO.read(input);
   }

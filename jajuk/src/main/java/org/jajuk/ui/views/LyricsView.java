@@ -52,6 +52,7 @@ import org.jajuk.ui.actions.ActionManager;
 import org.jajuk.ui.actions.JajukActions;
 import org.jajuk.ui.helpers.FontManager;
 import org.jajuk.ui.helpers.FontManager.JajukFont;
+import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilFeatures;
@@ -174,6 +175,11 @@ public class LyricsView extends ViewAdapter implements Observer {
   public void update(final JajukEvent event) {
     final JajukEvents subject = event.getSubject();
     if (subject.equals(JajukEvents.FILE_LAUNCHED)) {
+      // If Internet access is allowed, download lyrics
+      if (Conf.getBoolean(CONF_NETWORK_NONE_INTERNET_ACCESS)) {
+        reset();
+        return;
+      }
       final File file = FIFO.getPlayingFile();
       // file is null is view started with no playing track (the event is
       // simulated in initUI())
@@ -189,11 +195,9 @@ public class LyricsView extends ViewAdapter implements Observer {
           repaint();
         }
       });
-
       new Thread() {
         @Override
         public void run() {
-
           track = FIFO.getPlayingFile().getTrack();
           // Launch lyrics service asynchronously and out of the
           // AWT dispatcher thread
@@ -207,8 +211,8 @@ public class LyricsView extends ViewAdapter implements Observer {
           // Notify to make UI changes
           ObservationManager.notify(new JajukEvent(JajukEvents.LYRICS_DOWNLOADED));
         }
-
       }.start();
+
     } else if (JajukEvents.ZERO.equals(subject) || JajukEvents.PLAYER_STOP.equals(subject)) {
       reset();
     } else if (subject.equals(JajukEvents.WEBRADIO_LAUNCHED)) {

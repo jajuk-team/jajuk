@@ -110,6 +110,8 @@ public final class JajukJMenuBar extends JMenuBar implements Observer {
 
   JCheckBoxMenuItem jcbSyncTableTree;
 
+  JCheckBoxMenuItem jcbNoneInternetAccess;
+
   private final JCheckBoxMenuItem jcbmiRepeat;
 
   private final JCheckBoxMenuItem jcbmiShuffle;
@@ -170,11 +172,11 @@ public final class JajukJMenuBar extends JMenuBar implements Observer {
     setAlignmentX(0.0f);
     // File menu
     file = new JMenu(Messages.getString("JajukJMenuBar.0"));
-    /*if(Messages.getString("JajukJMenuBarKey.0") != null) {
-      char c = Messages.getString("JajukJMenuBarKey.0").charAt(0);
-      // TODO: this only handles A-Z, a-z
-      file.setMnemonic(c);
-    }*/
+    /*
+     * if(Messages.getString("JajukJMenuBarKey.0") != null) { char c =
+     * Messages.getString("JajukJMenuBarKey.0").charAt(0); // TODO: this only
+     * handles A-Z, a-z file.setMnemonic(c); }
+     */
 
     jmiFileExit = new JMenuItem(ActionManager.getAction(JajukActions.EXIT));
     file.add(jmiFileExit);
@@ -297,9 +299,22 @@ public final class JajukJMenuBar extends JMenuBar implements Observer {
       }
     });
 
+    jcbNoneInternetAccess = new JCheckBoxMenuItem(Messages.getString("ParameterView.264"));
+    jcbNoneInternetAccess.setToolTipText(Messages.getString("ParameterView.265"));
+    jcbNoneInternetAccess.setSelected(Conf.getBoolean(Const.CONF_NETWORK_NONE_INTERNET_ACCESS));
+    jcbNoneInternetAccess.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        Conf.setProperty(Const.CONF_NETWORK_NONE_INTERNET_ACCESS, Boolean
+            .toString(jcbNoneInternetAccess.isSelected()));
+        // force parameter view to take this into account
+        ObservationManager.notify(new JajukEvent(JajukEvents.PARAMETERS_CHANGE));
+      }
+    });
+
     configuration.add(jmiUnmounted);
     configuration.add(jcbShowPopups);
     configuration.add(jcbSyncTableTree);
+    configuration.add(jcbNoneInternetAccess);
     configuration.addSeparator();
     configuration.add(jmiDJ);
     configuration.add(jmiAmbience);
@@ -371,7 +386,10 @@ public final class JajukJMenuBar extends JMenuBar implements Observer {
       }
 
     };
-    if (Conf.getBoolean(Const.CONF_CHECK_FOR_UPDATE)) {
+    // Search online for upgrade if the option is set and if the none Internet
+    // access option is not set
+    if (Conf.getBoolean(Const.CONF_CHECK_FOR_UPDATE)
+        && !Conf.getBoolean(Const.CONF_NETWORK_NONE_INTERNET_ACCESS)) {
       sw.start();
     }
     ObservationManager.register(this);
@@ -403,6 +421,8 @@ public final class JajukJMenuBar extends JMenuBar implements Observer {
           jcbShowPopups.setSelected(Conf.getBoolean(Const.CONF_SHOW_POPUPS));
           jmiUnmounted.setSelected(Conf.getBoolean(Const.CONF_OPTIONS_HIDE_UNMOUNTED));
           jcbSyncTableTree.setSelected(Conf.getBoolean(Const.CONF_OPTIONS_SYNC_TABLE_TREE));
+          jcbNoneInternetAccess.setSelected(Conf
+              .getBoolean(Const.CONF_NETWORK_NONE_INTERNET_ACCESS));
         }
       }
 

@@ -257,6 +257,8 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 
   ButtonGroup bgProxy;
 
+  JCheckBox jcbNoneInternetAccess;
+
   JCheckBox jcbProxyNone;
 
   JCheckBox jcbProxyHttp;
@@ -342,7 +344,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
   JSlider jsPerspectiveSize;
 
   private JCheckBox jcbShortNames;
-  
+
   private JCheckBox jcbUseVolnorm;
 
   private boolean someOptionsAppliedAtNextStartup = false;
@@ -373,8 +375,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
   /*
    * (non-Javadoc)
    * 
-   * @see
-   * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+   * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
    */
   public void actionPerformed(final ActionEvent e) {
     new Thread() {
@@ -723,6 +724,8 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     }
 
     // Network
+    Conf.setProperty(Const.CONF_NETWORK_NONE_INTERNET_ACCESS, Boolean
+        .toString(jcbNoneInternetAccess.isSelected()));
     Conf.setProperty(Const.CONF_NETWORK_USE_PROXY, Boolean.toString(!jcbProxyNone.isSelected()));
     if (jcbProxyHttp.isSelected()) {
       Conf.setProperty(Const.CONF_NETWORK_PROXY_TYPE, Const.PROXY_TYPE_HTTP);
@@ -740,7 +743,8 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     // Covers
     Conf.setProperty(Const.CONF_COVERS_AUTO_COVER, Boolean.toString(jcbAutoCover.isSelected()));
     Conf.setProperty(Const.CONF_COVERS_SHUFFLE, Boolean.toString(jcbShuffleCover.isSelected()));
-    Conf.setProperty(Const.CONF_COVERS_SAVE_EXPLORER_FRIENDLY, Boolean.toString(jcbSaveExplorerFriendly.isSelected()));
+    Conf.setProperty(Const.CONF_COVERS_SAVE_EXPLORER_FRIENDLY, Boolean
+        .toString(jcbSaveExplorerFriendly.isSelected()));
     Conf.setProperty(Const.CONF_COVERS_SIZE, Integer.toString(jcbCoverSize.getSelectedIndex()));
     Conf.setProperty(Const.FILE_DEFAULT_COVER, jtfDefaultCoverSearchName1.getText());
     Conf.setProperty(Const.FILE_DEFAULT_COVER_2, jtfDefaultCoverSearchName2.getText());
@@ -797,6 +801,8 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
         Conf.setProperty(Const.CONF_SHOW_POPUPS, Boolean.toString(jcbShowPopups.isSelected()));
         Conf.setProperty(Const.CONF_OPTIONS_SYNC_TABLE_TREE, Boolean.toString(jcbSyncTableTree
             .isSelected()));
+        Conf.setProperty(Const.CONF_NETWORK_NONE_INTERNET_ACCESS, Boolean
+            .toString(jcbNoneInternetAccess.isSelected()));
         // Launch an event that can be trapped by the tray to
         // synchronize the state
         Properties details = new Properties();
@@ -1220,11 +1226,11 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     jcbShortNames.setToolTipText(Messages.getString("ParameterView.255"));
     // Short names option is only under windows 32
     jcbShortNames.setEnabled(UtilSystem.isUnderWindows32bits());
-    
+
     jcbUseVolnorm = new JCheckBox(Messages.getString("ParameterView.262"));
     jcbUseVolnorm.setSelected(Conf.getBoolean(Const.CONF_USE_VOLNORM));
     jcbUseVolnorm.setToolTipText(Messages.getString("ParameterView.263"));
-    
+
     jcbCollectionEncoding.addItem("UTF-8");
     jcbCollectionEncoding.addItem("UTF-16");
     jlLogLevel = new JLabel(Messages.getString("ParameterView.46"));
@@ -1285,7 +1291,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 
     // - Network
     jpNetwork = new JPanel();
-    final double sizeNetwork[][] = { { p, p }, { p, p, p, p, p, p, p, p } };
+    final double sizeNetwork[][] = { { p, p }, { p, p, p, p, p, p, p, p, p } };
     final TableLayout layoutNetwork = new TableLayout(sizeNetwork);
     layoutNetwork.setHGap(iXSeparator);
     layoutNetwork.setVGap(iYSeparator);
@@ -1294,6 +1300,11 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     jcbProxyNone = new JCheckBox(Messages.getString("ParameterView.236"));
     jcbProxyNone.setToolTipText(Messages.getString("ParameterView.236"));
     jcbProxyNone.addActionListener(this);
+
+    jcbNoneInternetAccess = new JCheckBox(Messages.getString("ParameterView.264"));
+    jcbNoneInternetAccess.setToolTipText(Messages.getString("ParameterView.265"));
+    jcbNoneInternetAccess.addActionListener(alUI);
+
     jcbProxyHttp = new JCheckBox(Messages.getString("ParameterView.237"));
     jcbProxyHttp.setToolTipText(Messages.getString("ParameterView.237"));
     jcbProxyHttp.addActionListener(this);
@@ -1354,19 +1365,20 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     connectionTO.setToolTipText(Messages.getString("ParameterView.161"));
     connectionTO.addMouseWheelListener(new DefaultMouseWheelListener(connectionTO));
     // Add items
-    jpNetwork.add(jcbProxyNone, "0,0");
-    jpNetwork.add(jcbProxyHttp, "0,1");
-    jpNetwork.add(jcbProxySocks, "0,2");
-    jpNetwork.add(jlProxyHostname, "0,3");
-    jpNetwork.add(jtfProxyHostname, "1,3");
-    jpNetwork.add(jlProxyPort, "0,4");
-    jpNetwork.add(jtfProxyPort, "1,4");
-    jpNetwork.add(jlProxyLogin, "0,5");
-    jpNetwork.add(jtfProxyLogin, "1,5");
-    jpNetwork.add(jlProxyPwd, "0,6");
-    jpNetwork.add(jtfProxyPwd, "1,6");
-    jpNetwork.add(jlConnectionTO, "0,7");
-    jpNetwork.add(connectionTO, "1,7");
+    jpNetwork.add(jcbNoneInternetAccess, "0,0");
+    jpNetwork.add(jcbProxyNone, "0,1");
+    jpNetwork.add(jcbProxyHttp, "0,2");
+    jpNetwork.add(jcbProxySocks, "0,3");
+    jpNetwork.add(jlProxyHostname, "0,4");
+    jpNetwork.add(jtfProxyHostname, "1,5");
+    jpNetwork.add(jlProxyPort, "0,5");
+    jpNetwork.add(jtfProxyPort, "1,5");
+    jpNetwork.add(jlProxyLogin, "0,6");
+    jpNetwork.add(jtfProxyLogin, "1,6");
+    jpNetwork.add(jlProxyPwd, "0,7");
+    jpNetwork.add(jtfProxyPwd, "1,7");
+    jpNetwork.add(jlConnectionTO, "0,8");
+    jpNetwork.add(connectionTO, "1,8");
 
     // - Last.FM
     jpLastFM = new JPanel();
@@ -1596,9 +1608,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
   /*
    * (non-Javadoc)
    * 
-   * @see
-   * javax.swing.event.ChangeListener#stateChanged(javax.swing.event.ChangeEvent
-   * )
+   * @see javax.swing.event.ChangeListener#stateChanged(javax.swing.event.ChangeEvent )
    */
   public void stateChanged(final ChangeEvent e) {
     // when changing tab, store it for future jajuk sessions
@@ -1696,7 +1706,9 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     jtfMPlayerPath.setText(Conf.getString(Const.CONF_MPLAYER_PATH_FORCED));
     jtfMPlayerArgs.setText(Conf.getString(Const.CONF_MPLAYER_ARGS));
     jtfEnvVariables.setText(Conf.getString(Const.CONF_ENV_VARIABLES));
-    // network
+
+    // Network
+    jcbNoneInternetAccess.setSelected(Conf.getBoolean(Const.CONF_NETWORK_NONE_INTERNET_ACCESS));
     final boolean bUseProxy = Conf.getBoolean(Const.CONF_NETWORK_USE_PROXY);
     jcbProxyNone.setSelected(bUseProxy);
     jtfProxyHostname.setText(Conf.getString(Const.CONF_NETWORK_PROXY_HOSTNAME));
@@ -1750,9 +1762,8 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
   /*
    * (non-Javadoc)
    * 
-   * @see
-   * javax.swing.event.ListSelectionListener#valueChanged(javax.swing.event.
-   * ListSelectionEvent)
+   * @see javax.swing.event.ListSelectionListener#valueChanged(javax.swing.event.
+   *      ListSelectionEvent)
    */
   public void valueChanged(final ListSelectionEvent e) {
     if (!e.getValueIsAdjusting()) {

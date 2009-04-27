@@ -202,6 +202,7 @@ public final class Conf implements Const {
     defaults.put(CONF_REFACTOR_PATTERN, PATTERN_DEFAULT_REORG);
     defaults.put(CONF_COLLECTION_CHARSET, "UTF-8");
     defaults.put(CONF_NETWORK_USE_PROXY, FALSE);
+    defaults.put(CONF_NETWORK_NONE_INTERNET_ACCESS, FALSE);
     // default proxy name, just a guess
     defaults.put(CONF_NETWORK_PROXY_HOSTNAME, "proxy");
     defaults.put(CONF_NETWORK_PROXY_PORT, "3128");

@@ -245,6 +245,8 @@ public class SuggestionView extends ViewAdapter implements Observer {
     if (current == null
     // Last.FM infos is disable
         || !Conf.getBoolean(Const.CONF_LASTFM_INFO)
+        // None internet access option is set
+        || Conf.getBoolean(Const.CONF_NETWORK_NONE_INTERNET_ACCESS)
         // If unknown author
         || (newAuthor == null || newAuthor.equals(Messages.getString(UNKNOWN_AUTHOR)))) {
       // Set empty panels

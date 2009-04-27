@@ -801,6 +801,9 @@ public interface Const {
   /** volnorm option */
   String CONF_USE_VOLNORM = "jajuk.mplayer.volnorm";
   
+  /** None internet access switch */
+  String CONF_NETWORK_NONE_INTERNET_ACCESS = "jajuk.network.none_internet_access";
+  
   /** Shuffle/novelties mode */
   String MODE_ALBUM = "album";
 

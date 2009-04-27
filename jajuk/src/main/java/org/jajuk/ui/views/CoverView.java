@@ -358,8 +358,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
   /*
    * (non-Javadoc)
    * 
-   * @see
-   * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+   * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
    */
   public void actionPerformed(final ActionEvent e) {
     if (e.getSource() == jcbAccuracy) {
@@ -550,8 +549,8 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
     } else {
       // Add a jajuk suffix to know this cover has been downloaded
       // by jajuk
-      out = new StringBuilder(sFilePath)
-          .insert(pos, Const.FILE_JAJUK_DOWNLOADED_FILES_SUFFIX).toString();
+      out = new StringBuilder(sFilePath).insert(pos, Const.FILE_JAJUK_DOWNLOADED_FILES_SUFFIX)
+          .toString();
     }
     return out;
   }
@@ -652,9 +651,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
   /*
    * (non-Javadoc)
    * 
-   * @see
-   * java.awt.event.ComponentListener#componentResized(java.awt.event.ComponentEvent
-   * )
+   * @see java.awt.event.ComponentListener#componentResized(java.awt.event.ComponentEvent )
    */
   @Override
   public void componentResized(final ComponentEvent e) {
@@ -1238,10 +1235,12 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
         }
       }
     }
-    // then we search for web covers online if max
+    // Then we search for web covers online if max
     // connection errors number is not reached or if user
-    // already managed to connect
+    // already managed to connect.
+    // We also drop the query if user required none internet access
     if (Conf.getBoolean(Const.CONF_COVERS_AUTO_COVER)
+        && !Conf.getBoolean(Const.CONF_NETWORK_NONE_INTERNET_ACCESS)
         && (CoverView.bOnceConnected || (CoverView.iErrorCounter < Const.STOP_TO_SEARCH))) {
       try {
         final String sQuery = createQuery(fCurrent);

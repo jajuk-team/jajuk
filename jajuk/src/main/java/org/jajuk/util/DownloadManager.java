@@ -132,6 +132,12 @@ public final class DownloadManager {
    *           If a network problem occurs.
    */
   public static void download(URL url, File fDestination) throws IOException {
+    // Drop the query if user required "none Internet access from jajuk".
+    // This method shouldn't be called anyway because we views have to deal with
+    // this option at their level, this is a additional control.
+    if (Conf.getBoolean(Const.CONF_NETWORK_NONE_INTERNET_ACCESS)) {
+      return;
+    }
     HttpURLConnection connection = NetworkUtils.getConnection(url, proxy);
     BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(fDestination));
     try {
@@ -165,6 +171,12 @@ public final class DownloadManager {
    *           written.
    */
   public static File downloadToCache(URL url) throws IOException {
+    // Drop the query if user required "none Internet access from jajuk".
+    // This method shouldn't be called anyway because we views have to deal with
+    // this option at their level, this is a additional control.
+    if (Conf.getBoolean(Const.CONF_NETWORK_NONE_INTERNET_ACCESS)) {
+      return null;
+    }
     File file = UtilSystem.getCachePath(url);
     // We synchronize the (interned) name of the cached file to avoid
     // probable collisions between views
@@ -203,6 +215,12 @@ public final class DownloadManager {
    * @throws IOException
    */
   public static String downloadText(URL url, String charset) throws IOException {
+    // Drop the query if user required "none Internet access from jajuk".
+    // This method shouldn't be called anyway because we views have to deal with
+    // this option at their level, this is a additional control.
+    if (Conf.getBoolean(Const.CONF_NETWORK_NONE_INTERNET_ACCESS)) {
+      return null;
+    }
     return NetworkUtils.readURL(NetworkUtils.getConnection(url, proxy), charset);
   }
 
@@ -229,6 +247,12 @@ public final class DownloadManager {
    * @throws IOException
    */
   public static String getTextFromCachedFile(URL url, String encoding) throws IOException {
+    // Drop the query if user required "none Internet access from jajuk".
+    // This method shouldn't be called anyway because we views have to deal with
+    // this option at their level, this is a additional control.
+    if (Conf.getBoolean(Const.CONF_NETWORK_NONE_INTERNET_ACCESS)) {
+      return null;
+    }
     File file = downloadToCache(url);
     StringBuilder builder = new StringBuilder();
     InputStream input = new BufferedInputStream(new FileInputStream(file));
