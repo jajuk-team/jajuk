@@ -212,13 +212,21 @@
       <scope>system</scope>
       <systemPath>${basedir}/lib/libdbus-java-2.6.jar</systemPath>
     </dependency>	 
-	<dependency>
+    <dependency>
       <groupId>libmatthew-java</groupId>
       <artifactId>libmatthewjava</artifactId>
       <version>0.7.2</version>
       <scope>system</scope>
       <systemPath>${basedir}/lib/libunix-java.so</systemPath>
     </dependency>    
+    <dependency>
+      <groupId>com.miglayout</groupId>
+      <artifactId>miglayout-swing</artifactId>
+      <version>3.7</version>
+      <scope>system</scope>
+      <systemPath>${basedir}/lib/miglayout-swing-3.7.jar</systemPath>
+    </dependency>    
+        
   </dependencies>
   
   <reporting>

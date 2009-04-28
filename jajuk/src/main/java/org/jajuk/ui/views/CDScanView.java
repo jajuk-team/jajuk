@@ -21,8 +21,6 @@
 package org.jajuk.ui.views;
 
 import ext.SwingWorker;
-import info.clearthought.layout.TableLayout;
-import info.clearthought.layout.TableLayoutConstants;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -30,12 +28,12 @@ import java.io.File;
 import java.net.MalformedURLException;
 import java.util.Set;
 
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
-import javax.swing.JRootPane;
 import javax.swing.JTextField;
+
+import net.miginfocom.swing.MigLayout;
 
 import org.jajuk.base.Device;
 import org.jajuk.base.DeviceManager;
@@ -160,19 +158,15 @@ public class CDScanView extends ViewAdapter implements ActionListener {
    * @see org.jajuk.ui.IView#display()
    */
   public void initUI() {
-    final float fXSeparator = 0.05f;
-    final float fYSeparator = 0.15f;
-    final double p = TableLayoutConstants.PREFERRED;
-    final double[][] dSize = { { fXSeparator, p, fXSeparator, p, fXSeparator, p, fXSeparator },
-        { fYSeparator, 20, fYSeparator, 20, fYSeparator, p, fYSeparator } };
-    setLayout(new TableLayout(dSize));
+    MigLayout layout = new MigLayout("insets 10, gapy 15", "[][grow][]", "");
+    setLayout(layout);
     jlName = new JLabel(Messages.getString("CDScanView.0"));
     jlName.setToolTipText(Messages.getString("CDScanView.1"));
-    jtfName = new JTextField(10);
+    jtfName = new JTextField();
     jtfName.setToolTipText(Messages.getString("CDScanView.2"));
     jlMountPoint = new JLabel(Messages.getString("CDScanView.3"));
     jlMountPoint.setToolTipText(Messages.getString("CDScanView.4"));
-    jtfMountPoint = new JTextField(10);
+    jtfMountPoint = new JTextField();
     jtfMountPoint.setToolTipText(Messages.getString("CDScanView.5"));
     jbScan = new JButton(Messages.getString("CDScanView.6"), IconLoader.getIcon(JajukIcons.REFRESH));
     jbScan.setToolTipText(Messages.getString("CDScanView.18"));
@@ -180,19 +174,12 @@ public class CDScanView extends ViewAdapter implements ActionListener {
     jbUrl = new JButton(IconLoader.getIcon(JajukIcons.OPEN_FILE));
     jbUrl.setToolTipText(Messages.getString("CDScanView.19"));
     jbUrl.addActionListener(this);
-    add(jlName, "1,1");
-    add(jtfName, "3,1");
-    add(jlMountPoint, "1,3");
-    add(jtfMountPoint, "3,3");
-    add(jbUrl, "5,3");
-    // Use a root pane to set default button as this view as no root
-    // pane by default
-    final JRootPane root = new JRootPane();
-    root.setLayout(new BoxLayout(root, BoxLayout.Y_AXIS));
-    root.add(jbScan);
-    add(root, "1,5");
-    // Set default button
-    root.setDefaultButton(jbScan);
+    add(jlName);
+    add(jtfName, "wrap,grow");
+    add(jlMountPoint);
+    add(jtfMountPoint,"grow");
+    add(jbUrl, "wrap");
+    add(jbScan, "span");
   }
 
   /*

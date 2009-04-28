@@ -38,5 +38,6 @@
 	<classpathentry kind="lib" path="lib/jaudiotagger-186.jar"/>
 	<classpathentry kind="lib" path="lib/jna-3.0.5.jar"/>
 	<classpathentry kind="lib" path="lib/libdbus-java-2.6.jar"/>
+	<classpathentry kind="lib" path="lib/miglayout-swing-3.7.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

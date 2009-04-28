@@ -63,6 +63,8 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.plaf.basic.BasicComboBoxRenderer;
 
+import net.miginfocom.swing.MigLayout;
+
 import org.jajuk.Main;
 import org.jajuk.base.Album;
 import org.jajuk.base.AlbumManager;
@@ -116,8 +118,6 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
   JTabbedPane jtpMain;
 
   JPanel jpHistory;
-
-  JLabel jlHistory;
 
   JTextField jtfHistory;
 
@@ -813,14 +813,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     };
 
     // --History
-    jpHistory = new JPanel();
-
-    final double sizeHistory[][] = { { p, p }, { p, p, p } };
-    final TableLayout layoutHistory = new TableLayout(sizeHistory);
-    layoutHistory.setHGap(iXSeparator);
-    layoutHistory.setVGap(iYSeparator);
-    jpHistory.setLayout(layoutHistory);
-    jlHistory = new JLabel(Messages.getString("ParameterView.0"));
+    jpHistory = new JPanel(new MigLayout("insets 10, gapy 15"));
     jtfHistory = new JTextField();
     jtfHistory.setInputVerifier(new InputVerifier() {
       @Override
@@ -862,11 +855,11 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     jbResetPreferences.setToolTipText(Messages.getString("ParameterView.250"));
     jbResetPreferences.addActionListener(this);
 
-    jpHistory.add(jlHistory, "0,0");
-    jpHistory.add(jtfHistory, "1,0");
-    jpHistory.add(jbClearHistory, "0,1");
-    jpHistory.add(jbResetRatings, "0,2");
-    jpHistory.add(jbResetPreferences, "1,2");
+    jpHistory.add(new JLabel(Messages.getString("ParameterView.0")));
+    jpHistory.add(jtfHistory, "wrap,grow");
+    jpHistory.add(jbClearHistory, "wrap");
+    jpHistory.add(jbResetRatings);
+    jpHistory.add(jbResetPreferences);
 
     // --Startup
     jpStart = new JPanel();
