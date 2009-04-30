@@ -55,6 +55,7 @@ import org.jajuk.ui.widgets.SteppedComboBox;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilGUI;
 import org.jajuk.util.UtilString;
+import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 
 public class CDDBWizard extends JajukJDialog implements ActionListener {
@@ -85,8 +86,6 @@ public class CDDBWizard extends JajukJDialog implements ActionListener {
   /** Freedb Items */
   Freedb fdb;
 
-  FreedbAlbum fdbAlbum;
-
   FreedbQueryResult[] foundAlbums;
 
   FreedbReadResult fdbReader;
@@ -101,7 +100,7 @@ public class CDDBWizard extends JajukJDialog implements ActionListener {
    */
   public CDDBWizard(final List<Track> tracks) {
     super();
-    
+
     UtilGUI.waiting();
 
     // windows title: absolute path name of the given directory
@@ -207,7 +206,7 @@ public class CDDBWizard extends JajukJDialog implements ActionListener {
    */
   public int performQuery(CDDBTrack[] cddbtracks) {
     fdb = new Freedb();
-    fdbAlbum = new FreedbAlbum(cddbtracks);
+    FreedbAlbum fdbAlbum = new FreedbAlbum(cddbtracks);
     try {
       foundAlbums = fdb.query(fdbAlbum);
       comboAlbums = new ArrayList<String>(foundAlbums.length);
@@ -215,8 +214,8 @@ public class CDDBWizard extends JajukJDialog implements ActionListener {
         comboAlbums.add("["
             + foundAlbum.getDiscId()
             + "] "
-            + UtilString.getLimitedString((foundAlbum.getArtist() + " / " + foundAlbum
-                .getAlbum()), 40));
+            + UtilString.getLimitedString((foundAlbum.getArtist() + " / " + foundAlbum.getAlbum()),
+                40));
         if (foundAlbum.isExactMatch()) {
           InformationJPanel.getInstance().setMessage(Messages.getString("CDDBWizard.17"), 0);
         }
@@ -249,45 +248,11 @@ public class CDDBWizard extends JajukJDialog implements ActionListener {
         TrackManager.getInstance().setAutocommit(false);
         Track track = alCddbTracks.get(iRow).getTrack();
         try {
-          String sValue = fdbReader.getAlbum();
-          if (sValue != null && sValue.trim().length() > 0) {
-            track = TrackManager.getInstance().changeTrackAlbum(track, sValue, null);
-          }
-          sValue = fdbReader.getArtist();
-          if (sValue != null && sValue.trim().length() > 0) {
-            track = TrackManager.getInstance().changeTrackAuthor(track, sValue, null);
-          }
-          sValue = fdbReader.getTrackTitle(iRow);
-          if (sValue != null && sValue.trim().length() > 0) {
-            track = TrackManager.getInstance().changeTrackName(track, sValue, null);
-          }
-          sValue = fdbReader.getGenre();
-          if (sValue != null && sValue.trim().length() > 0) {
-            track = TrackManager.getInstance().changeTrackStyle(track, sValue, null);
-          }
-          // Track# can be absent from CDDB database, ignore if not provided
-          try {
-            long lValue = fdbReader.getTrackNumber(iRow);
-            if (lValue > 0) {
-              track = TrackManager.getInstance().changeTrackOrder(track, lValue, null);
-            }
-          } catch (NumberFormatException e) {
-            Log.debug(e);
-          }
-          // Same for year
-          try {
-            long lValue = Long.parseLong(fdbReader.getYear());
-            if (lValue > 0 && lValue < 3000) { // Review this after year 3000
-                                                // Fry ;-)
-              track = TrackManager.getInstance().changeTrackYear(track, fdbReader.getYear(), null);
-            }
-          } catch (NumberFormatException e) {
-            Log.debug(e);
-          }
+          track = retagInternal(iRow, track);
           // Commit all tags for a single file (we prefer this to make sure some
           // tracks will be changed, so we don't commit all tags for all files)
           TrackManager.getInstance().commit();
-        } catch (Exception e) {
+        } catch (JajukException e) {
           Log.error(e);
           Messages.showErrorMessage(155, track.getName());
           dispose();
@@ -304,6 +269,52 @@ public class CDDBWizard extends JajukJDialog implements ActionListener {
           InformationJPanel.INFORMATIVE);
       ObservationManager.notify(new JajukEvent(JajukEvents.DEVICE_REFRESH));
     }
+  }
+
+  /**
+   * @param iRow
+   * @param track
+   * @return
+   * @throws JajukException
+   */
+  private Track retagInternal(final int iRow, final Track trackin) throws JajukException {
+    Track track = trackin;
+    String sValue = fdbReader.getAlbum();
+    if (sValue != null && sValue.trim().length() > 0) {
+      track = TrackManager.getInstance().changeTrackAlbum(track, sValue, null);
+    }
+    sValue = fdbReader.getArtist();
+    if (sValue != null && sValue.trim().length() > 0) {
+      track = TrackManager.getInstance().changeTrackAuthor(track, sValue, null);
+    }
+    sValue = fdbReader.getTrackTitle(iRow);
+    if (sValue != null && sValue.trim().length() > 0) {
+      track = TrackManager.getInstance().changeTrackName(track, sValue, null);
+    }
+    sValue = fdbReader.getGenre();
+    if (sValue != null && sValue.trim().length() > 0) {
+      track = TrackManager.getInstance().changeTrackStyle(track, sValue, null);
+    }
+    // Track# can be absent from CDDB database, ignore if not provided
+    try {
+      long lValue = fdbReader.getTrackNumber(iRow);
+      if (lValue > 0) {
+        track = TrackManager.getInstance().changeTrackOrder(track, lValue, null);
+      }
+    } catch (NumberFormatException e) {
+      Log.debug(e);
+    }
+    // Same for year
+    try {
+      long lValue = Long.parseLong(fdbReader.getYear());
+      if (lValue > 0 && lValue < 3000) { // Review this after year 3000
+        // Fry ;-)
+        track = TrackManager.getInstance().changeTrackYear(track, fdbReader.getYear(), null);
+      }
+    } catch (NumberFormatException e) {
+      Log.debug(e);
+    }
+    return track;
   }
 
   public void actionPerformed(ActionEvent e) {
@@ -338,7 +349,7 @@ public class CDDBWizard extends JajukJDialog implements ActionListener {
      */
     NavigationPanel() {
       super();
-      
+
       // Albums List
       label = new JLabel(Messages.getString("CDDBWizard.5"));
       jcbAlbum = new SteppedComboBox();
