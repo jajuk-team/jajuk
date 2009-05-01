@@ -90,6 +90,7 @@ import static org.jajuk.ui.actions.JajukActions.SHUFFLE_GLOBAL;
 import static org.jajuk.ui.actions.JajukActions.SHUFFLE_MODE;
 import static org.jajuk.ui.actions.JajukActions.SIMPLE_DEVICE_WIZARD;
 import static org.jajuk.ui.actions.JajukActions.SLIM_JAJUK;
+import static org.jajuk.ui.actions.JajukActions.FULLSCREEN_JAJUK;
 import static org.jajuk.ui.actions.JajukActions.STOP_TRACK;
 import static org.jajuk.ui.actions.JajukActions.TIP_OF_THE_DAY;
 import static org.jajuk.ui.actions.JajukActions.UNMOUNTED;
@@ -216,6 +217,7 @@ public final class ActionManager {
     installAction(ALARM_CLOCK, new AlarmClockAction(), false);
     installAction(SHOW_ALBUM_DETAILS, new ShowAlbumDetailsAction(), false);
     installAction(SLIM_JAJUK, new SlimbarAction(), false);
+    installAction(FULLSCREEN_JAJUK, new FullscreenAction(), false);
     installAction(PREPARE_PARTY, new PreparePartyAction(), false);
 
     // Selection actions

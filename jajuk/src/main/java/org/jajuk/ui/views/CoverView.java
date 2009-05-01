@@ -24,6 +24,7 @@ import ext.SwingWorker;
 import info.clearthought.layout.TableLayout;
 import info.clearthought.layout.TableLayoutConstants;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -197,19 +198,25 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
     fileReference = file;
   }
 
+  public void initUI() {
+    initUI(true);
+  }
+
   /*
    * (non-Javadoc)
    * 
    * @see org.jajuk.ui.IView#display()
    */
-  public void initUI() {
+  public void initUI(boolean includeControls) {
     // global layout
     final double size[][] = { { TableLayoutConstants.FILL },
         { TableLayoutConstants.PREFERRED, 5, TableLayoutConstants.FILL, 5 } };
     setLayout(new TableLayout(size));
     // Control panel
+    jlSearching = new JLabel("", IconLoader.getIcon(JajukIcons.NET_SEARCH), SwingConstants.CENTER);
     jpControl = new JPanel();
     jpControl.setBorder(BorderFactory.createEtchedBorder());
+
     final JToolBar jtb = new JajukJToolbar();
     jbPrevious = new JajukButton(IconLoader.getIcon(JajukIcons.PREVIOUS));
     jbPrevious.addActionListener(this);
@@ -228,7 +235,6 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
     jbDefault.setToolTipText(Messages.getString("CoverView.8"));
     jlSize = new JLabel("");
     jlFound = new JLabel("");
-    jlSearching = new JLabel("", IconLoader.getIcon(JajukIcons.NET_SEARCH), SwingConstants.CENTER);
     jcbAccuracy = new JComboBox();
     // Add tooltips on combo items
     jcbAccuracy.setRenderer(new BasicComboBoxRenderer() {
@@ -290,25 +296,32 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
     jtb.add(jbSave);
     jtb.add(jbDefault);
 
-    final double sizeControl[][] = {
-    // Toolbar
-        { 5, TableLayoutConstants.PREFERRED, 10,
-        // size label
-            TableLayoutConstants.FILL, 10,
-            // nb of found covers label
-            TableLayoutConstants.FILL, 5,
-            // Accuracy combo
-            TableLayoutConstants.PREFERRED, 5,
-            // searching icon
-            25, 5 }, { 3, 30, 3 } };
-    final TableLayout layout = new TableLayout(sizeControl);
-    jpControl.setLayout(layout);
+    if (includeControls) {
+      final double sizeControl[][] = {
+      // Toolbar
+          { 5, TableLayoutConstants.PREFERRED, 10,
+          // size label
+              TableLayoutConstants.FILL, 10,
+              // nb of found covers label
+              TableLayoutConstants.FILL, 5,
+              // Accuracy combo
+              TableLayoutConstants.PREFERRED, 5,
+              // searching icon
+              25, 5 }, { 3, 30, 3 } };
+      final TableLayout layout = new TableLayout(sizeControl);
+      jpControl.setLayout(layout);
 
-    jpControl.add(jtb, "1,1");
-    jpControl.add(jlSize, "3,1,c,c");
-    jpControl.add(jlFound, "5,1");
-    jpControl.add(jcbAccuracy, "7,1");
-    jpControl.add(jlSearching, "9,1,c,c");
+      jpControl.add(jtb, "1,1");
+      jpControl.add(jlSize, "3,1,c,c");
+      jpControl.add(jlFound, "5,1");
+      jpControl.add(jcbAccuracy, "7,1");
+      jpControl.add(jlSearching, "9,1,c,c");
+    } else {
+      jpControl.setLayout(new BorderLayout());
+      jpControl.setBorder(BorderFactory.createEmptyBorder());
+      jpControl.add(jlSearching, BorderLayout.CENTER);
+    }
+
     // Cover view used in catalog view should not listen events
     if (fileReference == null) {
       ObservationManager.register(this);
@@ -358,7 +371,8 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
   /*
    * (non-Javadoc)
    * 
-   * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+   * @see
+   * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
    */
   public void actionPerformed(final ActionEvent e) {
     if (e.getSource() == jcbAccuracy) {
@@ -651,7 +665,9 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
   /*
    * (non-Javadoc)
    * 
-   * @see java.awt.event.ComponentListener#componentResized(java.awt.event.ComponentEvent )
+   * @see
+   * java.awt.event.ComponentListener#componentResized(java.awt.event.ComponentEvent
+   * )
    */
   @Override
   public void componentResized(final ComponentEvent e) {

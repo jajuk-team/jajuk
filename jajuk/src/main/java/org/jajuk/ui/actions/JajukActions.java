@@ -516,5 +516,9 @@ public enum JajukActions {
    * Prepare party
    */
   PREPARE_PARTY,
-
+  /**
+   * fullscreen
+   */
+  FULLSCREEN_JAJUK
+ 
 }

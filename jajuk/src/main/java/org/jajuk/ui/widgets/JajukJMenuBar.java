@@ -168,6 +168,8 @@ public final class JajukJMenuBar extends JMenuBar implements Observer {
 
   JButton jbSlim;
 
+  private JajukButton jbFull;
+
   private JajukJMenuBar() {
     setAlignmentX(0.0f);
     // File menu
@@ -356,10 +358,15 @@ public final class JajukJMenuBar extends JMenuBar implements Observer {
     mainmenu.add(help);
 
     jbSlim = new JajukButton(ActionManager.getAction(JajukActions.SLIM_JAJUK));
+    jbFull = new JajukButton(ActionManager.getAction(JajukActions.FULLSCREEN_JAJUK));
+
+    JMenuBar eastmenu = new JMenuBar();
+    eastmenu.add(jbSlim);
+    eastmenu.add(jbFull);
 
     setLayout(new BorderLayout());
     add(mainmenu, BorderLayout.WEST);
-    add(jbSlim, BorderLayout.EAST);
+    add(eastmenu, BorderLayout.EAST);
 
     // Check for new release and display the icon if a new release is available
     SwingWorker sw = new SwingWorker() {

@@ -245,10 +245,14 @@ final public class IconLoader {
       out = new ImageIcon(UtilSystem.getResource("icons/16x16/close_16x16.png"));
     }
 
-    else if (icon == JajukIcons.FULL_WINDOW) {
-      out = new ImageIcon(UtilSystem.getResource("icons/16x16/full_window_16x16.png"));
+    else if (icon == JajukIcons.SLIM_WINDOW) {
+      out = new ImageIcon(UtilSystem.getResource("icons/16x16/slim_window_16x16.png"));
     }
 
+    else if (icon == JajukIcons.FULL_SCREEN) {
+      out = new ImageIcon(UtilSystem.getResource("icons/16x16/full_window_16x16.png"));
+    }
+    
     else if (icon == JajukIcons.POSITION) {
       out = new ImageIcon(UtilSystem.getResource("icons/16x16/position_16x16.png"));
     }

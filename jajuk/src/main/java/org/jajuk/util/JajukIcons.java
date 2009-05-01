@@ -102,7 +102,9 @@ public enum JajukIcons {
 
   CLOSE,
 
-  FULL_WINDOW,
+  SLIM_WINDOW,
+  
+  FULL_SCREEN,
 
   POSITION,
 

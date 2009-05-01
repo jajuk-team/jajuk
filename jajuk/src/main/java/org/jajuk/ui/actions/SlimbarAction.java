@@ -39,7 +39,7 @@ public class SlimbarAction extends JajukAction {
   private static final long serialVersionUID = 1L;
 
   SlimbarAction() {
-    super(Messages.getString("JajukSlimWindow.0"), IconLoader.getIcon(JajukIcons.FULL_WINDOW), true);
+    super(Messages.getString("JajukSlimWindow.0"), IconLoader.getIcon(JajukIcons.SLIM_WINDOW), true);
     setShortDescription(Messages.getString("JajukSlimWindow.0"));
   }
 
