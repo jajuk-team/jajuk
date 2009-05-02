@@ -36,9 +36,11 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.JTable;
+import javax.swing.event.ChangeEvent;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.event.TableColumnModelEvent;
+import javax.swing.event.TableColumnModelListener;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
 
@@ -68,7 +70,7 @@ import org.jdesktop.swingx.table.TableColumnExt;
  * <p>
  * Bring a menu displayed on right click
  */
-public class JajukTable extends JXTable implements ListSelectionListener,
+public class JajukTable extends JXTable implements TableColumnModelListener, ListSelectionListener,
     java.awt.event.MouseListener {
 
   private static final long serialVersionUID = 1L;
@@ -86,6 +88,8 @@ public class JajukTable extends JXTable implements ListSelectionListener,
   /** Model refreshing flag */
   private volatile boolean acceptColumnsEvents = false;
 
+  private boolean storeColumnMagin = false;
+
   private static final DateFormat FORMATTER = UtilString.getLocaleDateFormatter();
 
   /** Stores the last index of column move to* */
@@ -94,10 +98,10 @@ public class JajukTable extends JXTable implements ListSelectionListener,
   /**
    * Constructor
    * 
-   * @param model :
-   *          model to use
-   * @param bSortable :
-   *          is this table sortable
+   * @param model
+   *          : model to use
+   * @param bSortable
+   *          : is this table sortable
    * @sConf: configuration variable used to store columns conf
    */
   public JajukTable(TableModel model, boolean bSortable, String sConf) {
@@ -122,8 +126,8 @@ public class JajukTable extends JXTable implements ListSelectionListener,
   /**
    * Constructor
    * 
-   * @param model :
-   *          model to use
+   * @param model
+   *          : model to use
    * @sConf: configuration variable used to store columns conf
    */
   public JajukTable(TableModel model, String sConf) {
@@ -188,6 +192,19 @@ public class JajukTable extends JXTable implements ListSelectionListener,
         getColumnModel().addColumn(column);
       }
     }
+
+    // set stored column width
+    int arm = getAutoResizeMode();
+    setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+    for (int currentColumnIndex = 0; currentColumnIndex < getColumnModel().getColumnCount(); currentColumnIndex++) {
+      TableColumn tableColumn = getColumnModel().getColumn(currentColumnIndex);
+
+      if (Conf.containsProperty(getConfKeyForColumnWidth(tableColumn)))
+        tableColumn.setPreferredWidth(Conf.getInt(getConfKeyForColumnWidth(tableColumn)));
+    }
+    setAutoResizeMode(arm);
+    // now allow storing every margin
+    storeColumnMagin = true;
   }
 
   /**
@@ -495,4 +512,34 @@ public class JajukTable extends JXTable implements ListSelectionListener,
     this.acceptColumnsEvents = acceptColumnsEvents;
   }
 
+  public void columnMarginChanged(ChangeEvent e) {
+
+    if (storeColumnMagin) {
+      // store column margin
+      DefaultTableColumnModelExt tableColumnModel = (DefaultTableColumnModelExt) e.getSource();
+
+      for (int currentColumnIndex = 0; currentColumnIndex < tableColumnModel.getColumnCount(); currentColumnIndex++) {
+        TableColumn tableColumn = tableColumnModel.getColumn(currentColumnIndex);
+
+        Conf.setProperty(getConfKeyForColumnWidth(tableColumn), new Integer(tableColumn.getWidth())
+            .toString());
+      }
+    }
+    // don't forget to inform our super class
+    super.columnMarginChanged(e);
+  }
+
+  private String getConfKeyForColumnWidth(TableColumn tableColumn) {
+
+    String tableID = sConf;
+    if (tableID == null) {
+      tableID = "jajuk.table";
+    }
+    String identifier = tableColumn.getIdentifier().toString();
+    if (identifier.equals("")) {
+      identifier = "noColumnName";
+    }
+    return tableID + "." + identifier + ".width";
+
+  }
 }
