@@ -121,5 +121,5 @@ find_java
 
 ##let's finally start Jajuk:
 echo " "
-echo $JAVA_BIN $JAVA_OPTIONS -Djava.library.path=$JAJUK_HOME/../lib -jar jajuk.jar $JAJUK_OPTIONS
-$JAVA_BIN $JAVA_OPTIONS -Djava.library.path=$JAJUK_HOME/../lib -jar jajuk.jar $JAJUK_OPTIONS
+echo $JAVA_BIN $JAVA_OPTIONS -Djava.library.path=/usr/lib/jni:/usr/lib:$JAJUK_HOME/../lib -jar jajuk.jar $JAJUK_OPTIONS
+$JAVA_BIN $JAVA_OPTIONS -Djava.library.path=/usr/lib/jni:/usr/lib:$JAJUK_HOME/../lib -jar jajuk.jar $JAJUK_OPTIONS
