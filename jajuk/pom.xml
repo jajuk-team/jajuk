@@ -220,6 +220,21 @@
       <systemPath>${basedir}/lib/libunix-java.so</systemPath>
     </dependency>    
     <dependency>
+      <groupId>libmatthew-java</groupId>
+      <artifactId>unixjar</artifactId>
+      <version>0.5</version>
+      <scope>system</scope>
+      <systemPath>${basedir}/lib/unix-0.5.jar</systemPath>
+    </dependency>    
+    <dependency>
+      <groupId>libmatthew-hexdump</groupId>
+      <artifactId>hexdump</artifactId>
+      <version>0.5</version>
+      <scope>system</scope>
+      <systemPath>${basedir}/lib/hexdump-0.2</systemPath>
+    </dependency>    
+    
+    <dependency>
       <groupId>com.miglayout</groupId>
       <artifactId>miglayout-swing</artifactId>
       <version>3.7</version>

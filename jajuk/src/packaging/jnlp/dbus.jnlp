@@ -9,6 +9,8 @@
     </security> 
     <resources>
         <jar href="libdbus-java-2.6.jar" version='VERSION_REPLACED_BY_ANT'/>
+        <jar href="unix-0.5.jar" version='VERSION_REPLACED_BY_ANT'/>
+        <jar href="hexdump-0.2.jar" version='VERSION_REPLACED_BY_ANT'/>
     </resources>
     <component-desc/>
 </jnlp>
