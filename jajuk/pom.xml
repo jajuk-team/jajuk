@@ -224,7 +224,7 @@
     <dependency>
       <groupId>libmatthew-hexdump</groupId>
       <artifactId>hexdump</artifactId>
-      <version>0.5</version>
+      <version>0.2</version>
       <scope>system</scope>
       <systemPath>${basedir}/lib/hexdump-0.2</systemPath>
     </dependency>    
