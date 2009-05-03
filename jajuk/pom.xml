@@ -226,7 +226,7 @@
       <artifactId>hexdump</artifactId>
       <version>0.2</version>
       <scope>system</scope>
-      <systemPath>${basedir}/lib/hexdump-0.2</systemPath>
+      <systemPath>${basedir}/lib/hexdump-0.2.jar</systemPath>
     </dependency>    
     
     <dependency>
