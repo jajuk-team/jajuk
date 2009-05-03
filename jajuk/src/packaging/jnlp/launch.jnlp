@@ -36,7 +36,6 @@
         	<extension name='LayoutManager' href='layout.jnlp'/>
         	<extension name='EntaggedFreedb' href='entagged_freedb.jnlp'/>
         	<extension name='CommonsCollections' href='commons_collections.jnlp'/>
-        	<extension name='QDWizard' href='qdwizard.jnlp'/>
         	<extension name='VLDocking' href='vldocking.jnlp'/>
         	<extension name='JIntellitype' href='jintellitype.jnlp'/>
         	<extension name='Cobra' href='cobra.jnlp'/>
