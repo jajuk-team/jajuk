@@ -83,6 +83,8 @@ public class FullscreenPlayerFrame extends JWindow {
 
   private JPanel bottomPanel;
 
+  private JPanel jSliderPanel;
+
   public static FullscreenPlayerFrame getInstance() {
     if (instance == null) {
       instance = new FullscreenPlayerFrame();
@@ -136,7 +138,7 @@ public class FullscreenPlayerFrame extends JWindow {
     bottomPanel = new JPanel();
     bottomPanel.setLayout(new BorderLayout());
 
-    // Play toolbar
+    // Player toolbar
     JToolBar jtbPlay = new JajukJToolbar();
     jtbPlay.setLayout(new FlowLayout(FlowLayout.CENTER, 50, 5));
 
@@ -165,7 +167,13 @@ public class FullscreenPlayerFrame extends JWindow {
     jtbPlay.add(jbFwd);
     jtbPlay.add(jbNext);
 
+    jSliderPanel = new JPanel();
+    jSliderPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+    TrackPositionSliderToolbar tpst = new TrackPositionSliderToolbar();
+    jSliderPanel.add(tpst);
+
     bottomPanel.add(jtbPlay, BorderLayout.NORTH);
+    bottomPanel.add(jSliderPanel, BorderLayout.SOUTH);
 
     // put everything together
     getContentPane().add(topPanel, BorderLayout.NORTH);
@@ -191,9 +199,6 @@ public class FullscreenPlayerFrame extends JWindow {
             // topPanel should have 10% of the dispaly resolution height
             topPanel.setPreferredSize(new Dimension(graphicsDevice.getDisplayMode().getWidth(),
                 (graphicsDevice.getDisplayMode().getHeight() / 100) * 10));
-            // Borrow InformationJPanel
-            bottomPanel.add(InformationJPanel.getInstance(), BorderLayout.SOUTH);
-
             validate();
           } else {
             fullscreen = false;
@@ -204,9 +209,6 @@ public class FullscreenPlayerFrame extends JWindow {
           graphicsDevice.setDisplayMode(origDisplayMode);
           graphicsDevice.setFullScreenWindow(null);
           setVisible(false);
-          // give back InformationJPanel to MainWindow
-          JajukWindow.getInstance().getContentPane().add(InformationJPanel.getInstance(),
-              BorderLayout.SOUTH);
         }
       }
     });

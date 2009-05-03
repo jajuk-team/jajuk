@@ -24,23 +24,15 @@ import info.clearthought.layout.TableLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseWheelEvent;
-import java.awt.event.MouseWheelListener;
-import java.text.DecimalFormat;
 import java.text.MessageFormat;
 import java.util.HashSet;
 import java.util.Set;
 
 import javax.swing.Box;
 import javax.swing.JLabel;
-import javax.swing.JSlider;
 import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 
 import org.jajuk.base.Album;
 import org.jajuk.base.File;
@@ -63,8 +55,7 @@ import org.jdesktop.swingx.JXPanel;
 /**
  * Status / information panel ( static view )
  */
-public final class InformationJPanel extends JXPanel implements ChangeListener, MouseWheelListener,
-    Observer {
+public final class InformationJPanel extends JXPanel implements Observer {
 
   private static final long serialVersionUID = 1L;
 
@@ -81,9 +72,6 @@ public final class InformationJPanel extends JXPanel implements ChangeListener, 
 
   /** Self instance */
   private static InformationJPanel ijp = null;
-
-  /** Last slider manual move date */
-  private static long lDateLastAdjust;
 
   /** Swing Timer to refresh the component */
   private final Timer timer = new Timer(JajukTimer.DEFAULT_HEARTBEAT, new ActionListener() {
@@ -117,10 +105,6 @@ public final class InformationJPanel extends JXPanel implements ChangeListener, 
 
   JLabel jlTotal;
 
-  JSlider jsPosition;
-
-  JLabel jlCurrent;
-
   // attributes
 
   String sMessage;
@@ -132,11 +116,11 @@ public final class InformationJPanel extends JXPanel implements ChangeListener, 
 
   String sTotalStatus;
 
-  String sCurrentStatus;
+  private TrackPositionSliderToolbar trackPositionSliderToolbar;
 
   private InformationJPanel() {
     super();
-    
+
     // dimensions
     // set current jpanel properties
     double size[][] = { { 0.44, 0.13, 0.10, 0.33 }, { TableLayout.PREFERRED } };
@@ -168,33 +152,13 @@ public final class InformationJPanel extends JXPanel implements ChangeListener, 
     jtbTotal.add(Box.createHorizontalGlue());
     jtbTotal.addSeparator();
 
-    // current progress bar
-    JToolBar jtbProgress = new JajukJToolbar();
-    jtbProgress.setToolTipText(Messages.getString("InformationJPanel.7"));
-    jsPosition = new JSlider(0, 100, 0);
-    jsPosition.addChangeListener(this);
-    jsPosition.setOpaque(false);
-    jsPosition.addMouseWheelListener(InformationJPanel.this);
-    jsPosition.setEnabled(false);
-    jtbProgress.add(jsPosition);
-    jlCurrent = new JLabel();
-    jlCurrent.setToolTipText(Messages.getString("CommandJPanel.15"));
-    jlCurrent.addMouseListener(new MouseAdapter() {
-      @Override
-      public void mouseClicked(MouseEvent e) {
-        int currentFormat = Conf.getInt(Const.CONF_FORMAT_TIME_ELAPSED);
-        Conf.setProperty(Const.CONF_FORMAT_TIME_ELAPSED, Integer
-            .toString(((currentFormat + 1) % Const.FORMAT_TIME_ELAPSED_MAX)));
-      }
-    });
-    jtbProgress.add(jlCurrent);
-    jtbProgress.add(Box.createHorizontalStrut(6));
+    trackPositionSliderToolbar = new TrackPositionSliderToolbar();
 
     // add widgets
     add(jtbMessage, "0,0");
     add(jtbSelection, "1,0");
     add(jtbTotal, "2,0");
-    add(jtbProgress, "3,0");
+    add(trackPositionSliderToolbar, "3,0");
 
     // check if some errors occurred before the view has been displayed
     if (ObservationManager.containsEvent(JajukEvents.PLAY_ERROR)) {
@@ -218,8 +182,6 @@ public final class InformationJPanel extends JXPanel implements ChangeListener, 
     eventSubjectSet.add(JajukEvents.FILE_LAUNCHED);
     eventSubjectSet.add(JajukEvents.PLAY_ERROR);
     eventSubjectSet.add(JajukEvents.WEBRADIO_LAUNCHED);
-    eventSubjectSet.add(JajukEvents.PLAYER_PAUSE);
-    eventSubjectSet.add(JajukEvents.PLAYER_RESUME);
     eventSubjectSet.add(JajukEvents.PLAYER_STOP);
     eventSubjectSet.add(JajukEvents.THUMB_CREATED);
     return eventSubjectSet;
@@ -266,62 +228,8 @@ public final class InformationJPanel extends JXPanel implements ChangeListener, 
   /**
    * @return
    */
-  public String getCurrentStatusMessage() {
-    return sCurrentStatus;
-  }
-
-  /**
-   * @return
-   */
   public String getTotalTimeMessage() {
     return sTotalStatus;
-  }
-
-  /**
-   * 
-   * Set the current status for current track ex : 01:01:01/02:02:02
-   * 
-   * @param string
-   */
-  public void setCurrentTimeMessage(long lTime, long length) {
-    String string;
-    int timeFormat = 0;
-    // Set the required decimal precision for percentage here
-    DecimalFormat df = new DecimalFormat("0"); // (0.##) for 2 decimal places
-    try {
-      timeFormat = Conf.getInt(Const.CONF_FORMAT_TIME_ELAPSED);
-    } catch (Exception e) {
-      Log.debug(e);
-    }
-    float lTimePercent = 0f;
-    if (lTime > 0) {
-      lTimePercent = (float) ((float) lTime / (float) length * 100.0);
-    }
-    switch (timeFormat) {
-    /* same as default... 
-    case 0: {
-      string = UtilString.formatTimeBySec(lTime) + " / " + UtilString.formatTimeBySec(length);
-      break;
-    }*/
-    case 1: {
-      string = "-" + UtilString.formatTimeBySec(length - lTime) + " / "
-          + UtilString.formatTimeBySec(length);
-      break;
-    }
-    case 2: {
-      string = df.format(lTimePercent) + " % / " + UtilString.formatTimeBySec(length);
-      break;
-    }
-    case 3: {
-      string = df.format(lTimePercent - 100f) + " % / " + UtilString.formatTimeBySec(length);
-      break;
-    }
-    default: {
-      string = UtilString.formatTimeBySec(lTime) + " / " + UtilString.formatTimeBySec(length);
-    }
-    }
-    sCurrentStatus = string;
-    jlCurrent.setText(string);
   }
 
   /**
@@ -347,8 +255,6 @@ public final class InformationJPanel extends JXPanel implements ChangeListener, 
         // we synchronize this code to make sure error message is
         // visible all 2 secs
         synchronized (this) {
-          // reset data
-          setCurrentTimeMessage(0, 0);
           // set error message
           Object o = ObservationManager.getDetail(event, Const.DETAIL_CONTENT);
           // current item is a file
@@ -393,43 +299,13 @@ public final class InformationJPanel extends JXPanel implements ChangeListener, 
       SwingUtilities.invokeLater(new Runnable() {
         public void run() {
           if (JajukEvents.HEART_BEAT.equals(subject) && !FIFO.isStopped() && !Player.isPaused()) {
-            long length = JajukTimer.getInstance().getCurrentTrackTotalTime();
-            long lTime = JajukTimer.getInstance().getCurrentTrackEllapsedTime();
-            int iPos = (int) (100 * JajukTimer.getInstance().getCurrentTrackPosition());
             String sCurrentTotalMessage = UtilString.formatTimeBySec(timeToPlay);
             setTotalTimeMessage(sCurrentTotalMessage + " [" + FIFO.getFIFO().size() + "]");
-            setCurrentTimeMessage(lTime, length);
-            // Make sure to enable the slider
-            if (!jsPosition.isEnabled()) {
-              jsPosition.setEnabled(true);
-            }
-            // if position is adjusting, don't disturb user
-            if (jsPosition.getValueIsAdjusting() || Player.isSeeking()) {
-              return;
-            }
-            // make sure not to set to old position
-            if ((System.currentTimeMillis() - lDateLastAdjust) < 2000) {
-              return;
-            }
-            // remove and re-add listener to make sure not to add it
-            // twice
-            jsPosition.removeChangeListener(InformationJPanel.this);
-            jsPosition.setValue(iPos);
-            jsPosition.addChangeListener(InformationJPanel.this);
           } else if (JajukEvents.ZERO.equals(subject) || JajukEvents.PLAYER_STOP.equals(subject)) {
-            setCurrentTimeMessage(0, 0);
-            jsPosition.setEnabled(false);
-            jsPosition.removeMouseWheelListener(InformationJPanel.this);
-            jsPosition.removeChangeListener(InformationJPanel.this);
-            // use set value, not setPosition that would cause
-            // a seek that could fail with some formats
-            jsPosition.setValue(0);
             // reset startup position
             Conf.setProperty(Const.CONF_STARTUP_LAST_POSITION, "0");
             setTotalTimeMessage("00:00:00");
             setMessage(Messages.getString("JajukWindow.18"), InformationJPanel.INFORMATIVE);
-            jsPosition.addMouseWheelListener(InformationJPanel.this);
-            jsPosition.addChangeListener(InformationJPanel.this);
           } else if (JajukEvents.FILE_LAUNCHED.equals(subject)) {
             File file = FIFO.getPlayingFile();
             if (file != null) {
@@ -449,19 +325,6 @@ public final class InformationJPanel extends JXPanel implements ChangeListener, 
               String message = Messages.getString("FIFO.14") + " " + radio.getName();
               setMessage(message, InformationJPanel.INFORMATIVE);
             }
-          } else if (JajukEvents.PLAYER_PAUSE.equals(subject)) {
-            jsPosition.setEnabled(false);
-            jsPosition.removeMouseWheelListener(InformationJPanel.this);
-            jsPosition.removeChangeListener(InformationJPanel.this);
-          } else if (JajukEvents.PLAYER_RESUME.equals(subject)) {
-            // Avoid adding listeners twice
-            if (jsPosition.getMouseWheelListeners().length == 0) {
-              jsPosition.addMouseWheelListener(InformationJPanel.this);
-            }
-            if (jsPosition.getChangeListeners().length == 0) {
-              jsPosition.addChangeListener(InformationJPanel.this);
-            }
-            jsPosition.setEnabled(true);
           }
         }
       });
@@ -478,53 +341,6 @@ public final class InformationJPanel extends JXPanel implements ChangeListener, 
 
   public int getMessageType() {
     return iType;
-  }
-
-  /**
-   * Call a seek
-   * 
-   * @param fPosition
-   */
-  private void setPosition(final float fPosition) {
-    new Thread() {
-
-      @Override
-      public void run() {
-        Player.seek(fPosition);
-      }
-    }.start();
-  }
-
-  /**
-   * @return Position value
-   */
-  public int getCurrentPosition() {
-    return this.jsPosition.getValue();
-  }
-
-  /*
-   * (non-Javadoc)
-   * 
-   * @see javax.swing.event.ChangeListener#stateChanged(javax.swing.event.ChangeEvent)
-   */
-  public void stateChanged(ChangeEvent e) {
-    if (e.getSource() == jsPosition && !jsPosition.getValueIsAdjusting()) {
-      lDateLastAdjust = System.currentTimeMillis();
-      setPosition((float) jsPosition.getValue() / 100);
-    }
-  }
-
-  /*
-   * (non-Javadoc)
-   * 
-   * @see java.awt.event.MouseWheelListener#mouseWheelMoved(java.awt.event.MouseWheelEvent)
-   */
-  public void mouseWheelMoved(MouseWheelEvent e) {
-    if (e.getSource() == jsPosition) {
-      int iOld = jsPosition.getValue();
-      int iNew = iOld - (e.getUnitsToScroll() * 3);
-      jsPosition.setValue(iNew);
-    }
   }
 
 }
