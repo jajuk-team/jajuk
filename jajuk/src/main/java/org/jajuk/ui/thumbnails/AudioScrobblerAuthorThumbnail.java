@@ -30,6 +30,7 @@ import java.awt.image.BufferedImage;
 import java.net.URL;
 import java.util.List;
 
+import javax.imageio.IIOException;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -93,12 +94,20 @@ public class AudioScrobblerAuthorThumbnail extends AbstractThumbnail {
           // Download the picture and store file reference (to
           // generate the popup thumb for ie)
           fCover = DownloadManager.downloadToCache(remote);
+          if(fCover == null) {
+            Log.warn("Could not read remote file: " + remote.toString());
+            return null;
+          }
+            
           BufferedImage image = ImageIO.read(fCover);
           ImageIcon downloadedImage = new ImageIcon(image);
           ii = UtilGUI.getScaledImage(downloadedImage, 100);
           // Free images memory
           downloadedImage.getImage().flush();
           image.flush();
+        } catch (IIOException e) {
+          // report IIOException only as warning here as we can expect this to happen frequently with images on the net 
+          Log.warn("Could not read image: " + author.getImageUrl().toString() + " Cache: " + fCover, e.getMessage());
         } catch (Exception e) {
           Log.error(e);
         }
