@@ -222,10 +222,10 @@ public final class UtilSystem {
   /**
    * Copy a file to another file
    * 
-   * @param file
-   *          : file to copy
-   * @param fNew
-   *          : destination file
+   * @param file :
+   *          file to copy
+   * @param fNew :
+   *          destination file
    * @throws JajukException
    * @throws IOException
    */
@@ -255,10 +255,10 @@ public final class UtilSystem {
   /**
    * Copy a file
    * 
-   * @param file
-   *          : source file
-   * @param sNewName
-   *          : dest file
+   * @param file :
+   *          source file
+   * @param sNewName :
+   *          dest file
    * @throws JajukException
    * @throws IOException
    */
@@ -346,10 +346,10 @@ public final class UtilSystem {
   /**
    * Copy a file to given directory
    * 
-   * @param file
-   *          : file to copy
-   * @param directory
-   *          : destination directory
+   * @param file :
+   *          file to copy
+   * @param directory :
+   *          destination directory
    * @return destination file
    * @throws JajukException
    * @throws IOException
@@ -394,8 +394,8 @@ public final class UtilSystem {
   /**
    * Delete a directory
    * 
-   * @param dir
-   *          : source directory
+   * @param dir :
+   *          source directory
    * @throws IOException
    */
   public static void deleteDir(final File dir) throws IOException {
@@ -420,8 +420,8 @@ public final class UtilSystem {
   /**
    * Delete a file
    * 
-   * @param file
-   *          : source file
+   * @param file :
+   *          source file
    * @throws IOException
    */
   public static void deleteFile(final File file) throws IOException {
@@ -929,8 +929,8 @@ public final class UtilSystem {
    * @param path
    *          -File path
    * @return StringBuilder - File content.
-   * @throws JajukException
-   *           - Throws a JajukException if a problem occurs during the file
+   * @throws JajukException -
+   *           Throws a JajukException if a problem occurs during the file
    *           access.
    */
   public static StringBuilder readFile(final String path) throws JajukException {
@@ -940,33 +940,26 @@ public final class UtilSystem {
     try {
       fileReader = new FileReader(file);
     } catch (final FileNotFoundException e) {
-      final JajukException te = new JajukException(9, path, e);
-      throw te;
+      throw new JajukException(9, path, e);
     }
 
-    final BufferedReader input = new BufferedReader(fileReader);
     try {
-      // Read
-      final StringBuilder strColl = new StringBuilder();
-      String line = null;
+      final BufferedReader input = new BufferedReader(fileReader);
       try {
+        // Read
+        final StringBuilder strColl = new StringBuilder();
+        String line = null;
         while ((line = input.readLine()) != null) {
           strColl.append(line);
         }
-      } catch (final IOException e) {
-        final JajukException te = new JajukException(9, path, e);
-        throw te;
-      }
 
-      return strColl;
-    } finally {
-      // Close the bufferedReader
-      try {
+        return strColl;
+      } finally {
+        // Close the bufferedReader
         input.close();
-      } catch (final IOException e) {
-        final JajukException te = new JajukException(9, path, e);
-        throw te;
       }
+    } catch (final IOException e) {
+      throw new JajukException(9, path, e);
     }
   }
 
@@ -974,8 +967,8 @@ public final class UtilSystem {
    * Open a file from current jar and return a string buffer with the file
    * content.
    * 
-   * @param sUrl
-   *          : relative file url
+   * @param sUrl :
+   *          relative file url
    * @return StringBuilder - File content.
    * @throws JajukException
    *           -Throws a JajukException if a problem occurs during the file
@@ -998,8 +991,7 @@ public final class UtilSystem {
       // Close the bufferedReader
       is.close();
     } catch (final IOException e) {
-      final JajukException te = new JajukException(9, e);
-      throw te;
+      throw new JajukException(9, e);
     }
     return sb;
 
