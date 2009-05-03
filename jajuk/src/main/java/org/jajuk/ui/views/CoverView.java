@@ -34,6 +34,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -947,13 +948,25 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
         Image img = cover.getImage();
         icon = new ImageIcon(img);
         if (icon.getIconHeight() == 0 || icon.getIconWidth() == 0) {
-          throw new Exception("Wrong picture, size is null");
+          throw new JajukException(0, "Wrong picture, size is null");
         }
       } else {
         Log.debug("Download stopped - 2");
         return null;
       }
-    } catch (final Exception e) { // this cover cannot be loaded
+    } catch (final FileNotFoundException e) { 
+      setCursor(UtilGUI.DEFAULT_CURSOR);
+      searching(false);
+
+      // do not display a stacktrace for FileNotfound as we expect this in cases where the picture is gone on the net
+      Log.warn("Cover image not found at URL: " + (cover == null ? "<null>" : cover.getURL().toString()));
+      return null;
+    } catch (final IOException e) { // this cover cannot be loaded
+      setCursor(UtilGUI.DEFAULT_CURSOR);
+      searching(false);
+      Log.error(e);
+      throw new JajukException(0, e);
+    } catch (final InterruptedException e) { // this cover cannot be loaded
       setCursor(UtilGUI.DEFAULT_CURSOR);
       searching(false);
       Log.error(e);
