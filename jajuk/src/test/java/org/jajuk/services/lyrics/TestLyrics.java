@@ -89,19 +89,19 @@ public class TestLyrics extends TestCase {
 
   /**
    * Test Lyrc provider response to get lyrics
-   */
+   *
   public void testLyrcService() {
     ILyricsProvider provider = new LyrcProvider();
     testService(provider);
-  }
+  }*/
 
   /**
    * Test Lyrc web url availability
-   */
+   *
   public void testLyrcWeb() {
     ILyricsProvider provider = new LyrcProvider();
     testWeb(provider);
-  }
+  }*/
 
   /**
    * Test Fly provider response to get lyrics
