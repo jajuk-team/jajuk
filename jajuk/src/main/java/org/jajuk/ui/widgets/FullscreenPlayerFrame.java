@@ -20,10 +20,8 @@
 package org.jajuk.ui.widgets;
 
 import static org.jajuk.ui.actions.JajukActions.FORWARD_TRACK;
-import static org.jajuk.ui.actions.JajukActions.NEXT_ALBUM;
 import static org.jajuk.ui.actions.JajukActions.NEXT_TRACK;
 import static org.jajuk.ui.actions.JajukActions.PAUSE_RESUME_TRACK;
-import static org.jajuk.ui.actions.JajukActions.PREVIOUS_ALBUM;
 import static org.jajuk.ui.actions.JajukActions.PREVIOUS_TRACK;
 import static org.jajuk.ui.actions.JajukActions.REWIND_TRACK;
 import static org.jajuk.ui.actions.JajukActions.STOP_TRACK;
@@ -41,10 +39,11 @@ import javax.swing.JWindow;
 import javax.swing.SwingUtilities;
 
 import org.jajuk.ui.actions.ActionManager;
-import org.jajuk.ui.actions.ActionUtil;
 import org.jajuk.ui.actions.JajukActions;
 import org.jajuk.ui.views.AnimationView;
 import org.jajuk.ui.views.CoverView;
+import org.jajuk.util.IconLoader;
+import org.jajuk.util.JajukIcons;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 
@@ -140,14 +139,25 @@ public class FullscreenPlayerFrame extends JWindow {
     // Play toolbar
     JToolBar jtbPlay = new JajukJToolbar();
     jtbPlay.setLayout(new FlowLayout(FlowLayout.CENTER, 50, 5));
-    ActionUtil.installKeystrokes(jtbPlay, ActionManager.getAction(NEXT_ALBUM), ActionManager
-        .getAction(PREVIOUS_ALBUM));
+
     jbPrevious = new JajukButton(ActionManager.getAction(PREVIOUS_TRACK));
+    jbPrevious.setIcon(IconLoader.getIcon(JajukIcons.PLAYER_PREVIOUS_BIG));
+
     jbNext = new JajukButton(ActionManager.getAction(NEXT_TRACK));
+    jbNext.setIcon(IconLoader.getIcon(JajukIcons.PLAYER_NEXT_BIG));
+
     jbRew = new JPressButton(ActionManager.getAction(REWIND_TRACK));
-    jbPlayPause = new JajukButton(ActionManager.getAction(PAUSE_RESUME_TRACK));
+    jbRew.setIcon(IconLoader.getIcon(JajukIcons.PLAYER_REWIND_BIG));
+
+    jbPlayPause = new JajukButtonSetIconAdapter(ActionManager.getAction(PAUSE_RESUME_TRACK));
+    jbPlayPause.setIcon(IconLoader.getIcon(JajukIcons.PLAYER_PAUSE_BIG));
+
     jbStop = new JajukButton(ActionManager.getAction(STOP_TRACK));
+    jbStop.setIcon(IconLoader.getIcon(JajukIcons.PLAYER_STOP_BIG));
+
     jbFwd = new JPressButton(ActionManager.getAction(FORWARD_TRACK));
+    jbFwd.setIcon(IconLoader.getIcon(JajukIcons.PLAYER_FORWARD_BIG));
+
     jtbPlay.add(jbPrevious);
     jtbPlay.add(jbRew);
     jtbPlay.add(jbPlayPause);

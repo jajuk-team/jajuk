@@ -189,8 +189,16 @@ final public class IconLoader {
       out = new ImageIcon(UtilSystem.getResource("icons/32x32/previous_32x32.png"));
     }
 
+    else if (icon == JajukIcons.PLAYER_PREVIOUS_BIG) {
+      out = new ImageIcon(UtilSystem.getResource("icons/64x64/previous_64x64.png"));
+    }
+
     else if (icon == JajukIcons.PLAYER_NEXT) {
       out = new ImageIcon(UtilSystem.getResource("icons/32x32/next_32x32.png"));
+    }
+
+    else if (icon == JajukIcons.PLAYER_NEXT_BIG) {
+      out = new ImageIcon(UtilSystem.getResource("icons/64x64/next_64x64.png"));
     }
 
     else if (icon == JajukIcons.INC_RATING) {
@@ -201,12 +209,20 @@ final public class IconLoader {
       out = new ImageIcon(UtilSystem.getResource("icons/32x32/player_rew_32x32.png"));
     }
 
+    else if (icon == JajukIcons.PLAYER_REWIND_BIG) {
+      out = new ImageIcon(UtilSystem.getResource("icons/64x64/player_rew_64x64.png"));
+    }
+
     else if (icon == JajukIcons.REW_16X16) {
       out = new ImageIcon(UtilSystem.getResource("icons/16x16/player_rew_16x16.png"));
     }
 
     else if (icon == JajukIcons.PLAY) {
       out = new ImageIcon(UtilSystem.getResource("icons/32x32/player_play_32x32.png"));
+    }
+
+    else if (icon == JajukIcons.PLAYER_PLAY_BIG) {
+      out = new ImageIcon(UtilSystem.getResource("icons/64x64/player_play_64x64.png"));
     }
 
     else if (icon == JajukIcons.PLAY_16X16) {
@@ -217,6 +233,10 @@ final public class IconLoader {
       out = new ImageIcon(UtilSystem.getResource("icons/32x32/player_pause_32x32.png"));
     }
 
+    else if (icon == JajukIcons.PLAYER_PAUSE_BIG) {
+      out = new ImageIcon(UtilSystem.getResource("icons/64x64/player_pause_64x64.png"));
+    }
+
     else if (icon == JajukIcons.PAUSE_16X16) {
       out = new ImageIcon(UtilSystem.getResource("icons/16x16/player_pause_16x16.png"));
     }
@@ -225,12 +245,20 @@ final public class IconLoader {
       out = new ImageIcon(UtilSystem.getResource("icons/32x32/player_stop_32x32.png"));
     }
 
+    else if (icon == JajukIcons.PLAYER_STOP_BIG) {
+      out = new ImageIcon(UtilSystem.getResource("icons/64x64/player_stop_64x64.png"));
+    }
+
     else if (icon == JajukIcons.STOP_16X16) {
       out = new ImageIcon(UtilSystem.getResource("icons/16x16/player_stop_16x16.png"));
     }
 
     else if (icon == JajukIcons.FWD) {
       out = new ImageIcon(UtilSystem.getResource("icons/32x32/player_fwd_32x32.png"));
+    }
+
+    else if (icon == JajukIcons.PLAYER_FORWARD_BIG) {
+      out = new ImageIcon(UtilSystem.getResource("icons/64x64/player_fwd_64x64.png"));
     }
 
     else if (icon == JajukIcons.FWD_16X16) {
@@ -252,7 +280,7 @@ final public class IconLoader {
     else if (icon == JajukIcons.FULL_SCREEN) {
       out = new ImageIcon(UtilSystem.getResource("icons/16x16/full_window_16x16.png"));
     }
-    
+
     else if (icon == JajukIcons.POSITION) {
       out = new ImageIcon(UtilSystem.getResource("icons/16x16/position_16x16.png"));
     }

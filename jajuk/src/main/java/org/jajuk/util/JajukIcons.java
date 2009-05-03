@@ -74,7 +74,11 @@ public enum JajukIcons {
 
   PLAYER_PREVIOUS,
 
+  PLAYER_PREVIOUS_BIG,
+
   PLAYER_NEXT,
+
+  PLAYER_NEXT_BIG,
 
   INC_RATING,
 
@@ -103,7 +107,7 @@ public enum JajukIcons {
   CLOSE,
 
   SLIM_WINDOW,
-  
+
   FULL_SCREEN,
 
   POSITION,
@@ -396,5 +400,15 @@ public enum JajukIcons {
 
   COPY_TO_CLIPBOARD,
 
-  AMBIENCE
+  AMBIENCE, 
+  
+  PLAYER_FORWARD_BIG, 
+  
+  PLAYER_STOP_BIG, 
+  
+  PLAYER_PLAY_BIG, 
+  
+  PLAYER_PAUSE_BIG, 
+  
+  PLAYER_REWIND_BIG
 }
