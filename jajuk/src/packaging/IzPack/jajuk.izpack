@@ -33,6 +33,7 @@
         <langpack iso3='spa'/>
         <langpack iso3='swe'/>        
         <langpack iso3='glg'/>
+        <langpack iso3='cze'/>
     </locale>
     <native name='ShellLink.dll' type='izpack'/>
     <resources>

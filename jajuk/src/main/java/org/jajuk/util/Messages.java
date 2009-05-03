@@ -81,7 +81,7 @@ public class Messages extends DefaultHandler {
 
   /** Conf Locales */
   private static final String[] LOCALES = { "en", "fr", "de", "nl", "es", "ca", "ko", "el", "ru",
-      "gl" };
+      "gl" ,"cs"};
 
   /**
    * We set here environment language as default language (used by first time

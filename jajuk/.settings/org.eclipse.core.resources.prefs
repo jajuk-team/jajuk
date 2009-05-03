@@ -1,7 +1,8 @@
-#Tue Mar 18 11:27:40 CET 2008
+#Sat May 02 16:53:16 CEST 2009
 eclipse.preferences.version=1
 encoding//src/main/java/org/jajuk/i18n/jajuk.properties=UTF-8
 encoding//src/main/java/org/jajuk/i18n/jajuk_ca.properties=UTF-8
+encoding//src/main/java/org/jajuk/i18n/jajuk_cs.properties=UTF-8
 encoding//src/main/java/org/jajuk/i18n/jajuk_de.properties=UTF-8
 encoding//src/main/java/org/jajuk/i18n/jajuk_el.properties=UTF-8
 encoding//src/main/java/org/jajuk/i18n/jajuk_es.properties=UTF-8
