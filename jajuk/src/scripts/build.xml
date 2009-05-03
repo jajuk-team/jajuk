@@ -174,7 +174,7 @@
 
 	<target name='compile'>
 		<echo message='Compile the code' />
-		<javac destdir='${distdir}/${classdir}' source='1.6' target='1.6' deprecation='true' debug='true' optimize='true' excludes='**/package.html'>
+		<javac destdir='${distdir}/${classdir}' source='1.6' target='1.6' deprecation='true' debug='true' optimize='true' excludes='**/package.html' encoding='UTF-8'>
 			<src>
 				<pathelement path='${distdir}/src'>
 				</pathelement>
