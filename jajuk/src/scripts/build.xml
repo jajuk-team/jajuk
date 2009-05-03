@@ -398,6 +398,7 @@
 		<mkdir dir='${rpmdistdir}/usr/bin' />
 		<mkdir dir='${rpmdistdir}${installdir}/bin' />
 		<mkdir dir='${rpmdistdir}${installdir}/lib' />
+		<mkdir dir='${rpmdistdir}${installdir}/lib64' />
 		<mkdir dir='${rpmdistdir}${jnidir}' />
 		<mkdir dir='${rpmdistdir}${installdir}/native' />
 		<mkdir dir='${rpmdistdir}/usr/share/applications' />
@@ -417,7 +418,10 @@
 			<fileset file="${basedir}/lib/*.jar" />
 		</copy>
 		<copy todir='${rpmdistdir}${installdir}/lib'>
-			<fileset file="${basedir}/lib/*.so" />
+			<fileset file="${basedir}/lib/lib32/*.so" />
+		</copy>
+		<copy todir='${rpmdistdir}${installdir}/lib64'>
+			<fileset file="${basedir}/lib/lib64/*.so" />
 		</copy>
 		<copy todir='${rpmdistdir}${installdir}/lib'>
 			<fileset file='${basedir}/src/legals/*.*' />

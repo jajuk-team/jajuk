@@ -110,7 +110,15 @@ EOF
     esac
 fi
 
-
+## Check 32- or 64-bit system
+if [ "`uname -m`" = "x86_64" ]; then
+	echo Detected a 64-bit operating system, using the lib64 native library directory.
+	ARCHLIB=lib64
+	RPMLIB=lib64
+else
+	ARCHLIB=lib32
+	RPMLIB=lib
+fi
 
 echo "$PROGNAME ($JAJUK_HOME): $JAJUK_VERSION"
 
@@ -121,5 +129,5 @@ find_java
 
 ##let's finally start Jajuk:
 echo " "
-echo $JAVA_BIN $JAVA_OPTIONS -Djava.library.path=/usr/lib/jni:/usr/lib:$JAJUK_HOME/../lib -jar jajuk.jar $JAJUK_OPTIONS
-$JAVA_BIN $JAVA_OPTIONS -Djava.library.path=/usr/lib/jni:/usr/lib:$JAJUK_HOME/../lib -jar jajuk.jar $JAJUK_OPTIONS
+echo $JAVA_BIN $JAVA_OPTIONS -Djava.library.path=/usr/lib/jni:/usr/lib:/usr/share/jajuk/$RPMLIB:$JAJUK_HOME/../lib/$ARCHLIB -jar jajuk.jar $JAJUK_OPTIONS
+$JAVA_BIN $JAVA_OPTIONS -Djava.library.path=/usr/lib/jni:/usr/lib:/usr/share/jajuk/$RPMLIB:$JAJUK_HOME/../lib/$ARCHLIB -jar jajuk.jar $JAJUK_OPTIONS

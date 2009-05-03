@@ -208,11 +208,18 @@
       <systemPath>${basedir}/lib/libdbus-java-2.6.jar</systemPath>
     </dependency>	 
     <dependency>
-      <groupId>libmatthew-java</groupId>
-      <artifactId>libmatthewjava</artifactId>
-      <version>0.7.2</version>
+      <groupId>libmatthew-java-32</groupId>
+      <artifactId>libmatthewjava32</artifactId>
+      <version>0.7.1</version>
       <scope>system</scope>
-      <systemPath>${basedir}/lib/libunix-java.so</systemPath>
+      <systemPath>${basedir}/lib/lib32/libunix-java.so</systemPath>
+    </dependency>    
+    <dependency>
+      <groupId>libmatthew-java-64</groupId>
+      <artifactId>libmatthewjava64</artifactId>
+      <version>0.7.1</version>
+      <scope>system</scope>
+      <systemPath>${basedir}/lib/lib64/libunix-java.so</systemPath>
     </dependency>    
     <dependency>
       <groupId>libmatthew-java</groupId>
