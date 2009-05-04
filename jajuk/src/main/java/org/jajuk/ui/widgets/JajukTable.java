@@ -163,6 +163,7 @@ public class JajukTable extends JXTable implements TableColumnModelListener, Lis
    * Reorder columns order according to given conf
    */
   private void reorderColumns() {
+    storeColumnMagin = false;
     // Build the index array
     List<String> index = new ArrayList<String>(10);
     StringTokenizer st = new StringTokenizer(Conf.getString(this.sConf), ",");
@@ -514,13 +515,12 @@ public class JajukTable extends JXTable implements TableColumnModelListener, Lis
 
   public void columnMarginChanged(ChangeEvent e) {
 
-    if (storeColumnMagin) {
+    if (storeColumnMagin&&isVisible()) {
       // store column margin
       DefaultTableColumnModelExt tableColumnModel = (DefaultTableColumnModelExt) e.getSource();
 
       for (int currentColumnIndex = 0; currentColumnIndex < tableColumnModel.getColumnCount(); currentColumnIndex++) {
         TableColumn tableColumn = tableColumnModel.getColumn(currentColumnIndex);
-
         Conf.setProperty(getConfKeyForColumnWidth(tableColumn), new Integer(tableColumn.getWidth())
             .toString());
       }
