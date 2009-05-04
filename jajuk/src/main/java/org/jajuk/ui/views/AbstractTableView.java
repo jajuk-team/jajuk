@@ -334,7 +334,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
     applyFilter(null, null);
     jtable.setSortOrder(0, SortOrder.ASCENDING);
     jtable.setHighlighters(UtilGUI.getAlternateHighlighter());
-    jtable.packTable(5);
+    
     // Hide the copy url if several items selection. Do not simply disable them
     // as the getMenu() method enable all menu items
     jtable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
