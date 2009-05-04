@@ -104,11 +104,7 @@ public class StartupService {
           }
         }
         if (fileToPlay != null) {
-          if (fileToPlay.isReady()) {
-            // we try to launch at startup only existing and mounted
-            // files
-            alToPlay.add(fileToPlay);
-          } else {
+          if (!fileToPlay.isReady()) {
             // file exists but is not mounted, just notify the error
             // without anoying dialog at each startup try to mount
             // device
@@ -116,7 +112,6 @@ public class StartupService {
             try {
               fileToPlay.getDevice().mount(false);
               Log.debug("Mount OK");
-              alToPlay.add(fileToPlay);
             } catch (final Exception e) {
               Log.debug("Mount failed");
               final Properties pDetail = new Properties();
@@ -182,9 +177,31 @@ public class StartupService {
         }
       }
       // launch selected file
-      if ((alToPlay != null) && (alToPlay.size() > 0)) {
-        FIFO.push(UtilFeatures.createStackItems(alToPlay, Conf.getBoolean(Const.CONF_STATE_REPEAT),
-            false), false);
+
+      // find the index, this could be replaced if we store the current played
+      // index in the feature
+      if ((alToPlay != null) && (alToPlay.size() > 0) && fileToPlay != null) {
+        int index = -1;
+        for (int i = 0; i < alToPlay.size(); i++) {
+          if (fileToPlay.getID().equals(alToPlay.get(i).getID())) {
+            index = i;
+            break;
+          }
+        }
+
+        if (index == -1) {
+          if (fileToPlay != null) {
+            // Track not stored, push it first
+            alToPlay.add(0, fileToPlay);
+          }
+          FIFO.push(UtilFeatures.createStackItems(alToPlay, Conf
+              .getBoolean(Const.CONF_STATE_REPEAT), false), false);
+        } else {
+          FIFO.insert(UtilFeatures.createStackItems(alToPlay, Conf
+              .getBoolean(Const.CONF_STATE_REPEAT), false), 0);
+          FIFO.goTo(index);
+        }
+
       }
     }
   }
@@ -225,8 +242,9 @@ public class StartupService {
             ThumbnailManager.populateCache(size);
           }
 
-          // try to start up D-Bus support if available. Currently this is only implemented on Linux
-          if(UtilSystem.isUnderLinux()) {
+          // try to start up D-Bus support if available. Currently this is only
+          // implemented on Linux
+          if (UtilSystem.isUnderLinux()) {
             // make sure the singleton is initialized here
             DBusManager.getInstance();
           }

@@ -575,6 +575,8 @@ public interface Const {
   String CONF_HISTORY = "jajuk.options.history";
 
   String CONF_TAGS_USE_PARENT_DIR = "jajuk.tags.use_parent_dir";
+  
+  String CONF_DROP_PLAYED_TRACKS_FROM_QUEUE = "jajuk.drop.played.tracks.from.queue";
 
   /** Contains files id separated by a colon */
   String CONF_BOOKMARKS = "jajuk.bookmarks";

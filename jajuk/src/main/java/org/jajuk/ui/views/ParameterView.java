@@ -365,6 +365,8 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 
   private JCheckBox jcbSaveExplorerFriendly;
 
+  private JCheckBox jcbDropPlayedTracksFromQueue;
+
   /**
    * 
    */
@@ -375,7 +377,8 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
   /*
    * (non-Javadoc)
    * 
-   * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+   * @see
+   * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
    */
   public void actionPerformed(final ActionEvent e) {
     new Thread() {
@@ -538,6 +541,8 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     Conf.setProperty(Const.CONF_OPTIONS_INTRO_LENGTH, Integer.toString(introLength.getValue()));
     Conf
         .setProperty(Const.CONF_TAGS_USE_PARENT_DIR, Boolean.toString(jcbUseParentDir.isSelected()));
+    Conf.setProperty(Const.CONF_DROP_PLAYED_TRACKS_FROM_QUEUE, Boolean
+        .toString(jcbDropPlayedTracksFromQueue.isSelected()));
     final String sBestofSize = jtfBestofSize.getText();
     if (!sBestofSize.isEmpty()) {
       Conf.setProperty(Const.CONF_BESTOF_TRACKS_SIZE, sBestofSize);
@@ -1149,7 +1154,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     language.add(scbLanguage);
     scbLanguage.addActionListener(this);
 
-    final double sizeOptions[][] = { { p }, { 20, p, p, p, p, p, p } };
+    final double sizeOptions[][] = { { p }, { 20, p, p, p, p, p, p, p } };
     final TableLayout layoutOption = new TableLayout(sizeOptions);
     layoutOption.setHGap(iXSeparator);
     layoutOption.setVGap(iYSeparator);
@@ -1158,6 +1163,9 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     jcbUseParentDir = new JCheckBox(Messages.getString("ParameterView.101"));
     jcbUseParentDir.setToolTipText(Messages.getString("ParameterView.102"));
 
+    jcbDropPlayedTracksFromQueue = new JCheckBox(Messages.getString("ParameterView.266"));
+    jcbDropPlayedTracksFromQueue.setToolTipText(Messages.getString("ParameterView.267"));
+
     jpOptions.add(language, "0,0");
     jpOptions.add(jcbDisplayUnmounted, "0,1");
     jpOptions.add(jcbDefaultActionClick, "0,2");
@@ -1165,6 +1173,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     jpOptions.add(jcbSyncTableTree, "0,4");
     jpOptions.add(jcbHotkeys, "0,5");
     jpOptions.add(jcbUseParentDir, "0,6");
+    jpOptions.add(jcbDropPlayedTracksFromQueue, "0,7");
 
     // --Patterns
     jpTags = new JPanel();
@@ -1601,7 +1610,9 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
   /*
    * (non-Javadoc)
    * 
-   * @see javax.swing.event.ChangeListener#stateChanged(javax.swing.event.ChangeEvent )
+   * @see
+   * javax.swing.event.ChangeListener#stateChanged(javax.swing.event.ChangeEvent
+   * )
    */
   public void stateChanged(final ChangeEvent e) {
     // when changing tab, store it for future jajuk sessions
@@ -1682,6 +1693,8 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     jtfVisiblePlanned.setText(Conf.getString(Const.CONF_OPTIONS_VISIBLE_PLANNED));
     crossFadeDuration.setValue(Conf.getInt(Const.CONF_FADE_DURATION));
     jcbUseParentDir.setSelected(Conf.getBoolean(Const.CONF_TAGS_USE_PARENT_DIR));
+    jcbDropPlayedTracksFromQueue.setSelected(Conf
+        .getBoolean(Const.CONF_DROP_PLAYED_TRACKS_FROM_QUEUE));
     // advanced
     final int iBackupSize = Conf.getInt(Const.CONF_BACKUP_SIZE);
     if (iBackupSize <= 0) { // backup size =0 means no backup
@@ -1755,8 +1768,9 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
   /*
    * (non-Javadoc)
    * 
-   * @see javax.swing.event.ListSelectionListener#valueChanged(javax.swing.event.
-   *      ListSelectionEvent)
+   * @see
+   * javax.swing.event.ListSelectionListener#valueChanged(javax.swing.event.
+   * ListSelectionEvent)
    */
   public void valueChanged(final ListSelectionEvent e) {
     if (!e.getValueIsAdjusting()) {

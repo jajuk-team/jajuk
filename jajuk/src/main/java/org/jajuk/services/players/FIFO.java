@@ -121,7 +121,7 @@ public final class FIFO {
   public static void push(final List<StackItem> alItems, final boolean bAppend) {
     push(alItems, bAppend, false);
   }
-  
+
   /**
    * Asynchronous version of push (needed to perform long-task out of awt
    * dispatcher thread)
@@ -161,7 +161,7 @@ public final class FIFO {
   public static void push(final StackItem item, final boolean bAppend) {
     push(item, bAppend, false);
   }
-  
+
   /**
    * Asynchronous version of push (needed to perform long-task out of awt
    * dispatcher thread)
@@ -232,8 +232,8 @@ public final class FIFO {
   /**
    * Push some stack items in the fifo
    * 
-   * @param alItems,
-   *          list of items to be played
+   * @param alItems
+   *          , list of items to be played
    * @param bAppend
    *          keep previous files or stop them to start a new one ?
    */
@@ -291,11 +291,12 @@ public final class FIFO {
         }
         int pos = 0;
         // if push to front, set pos to first item
-        if(bFront) {
-          // when playing we should add it as second item to play it as next item 
-          if(Player.isPlaying()) {
+        if (bFront) {
+          // when playing we should add it as second item to play it as next
+          // item
+          if (Player.isPlaying()) {
             pos = 1;
-          } 
+          }
           // otherwise we can keep pos at zero
         }
         // If push, not play, add items at the end
@@ -360,8 +361,8 @@ public final class FIFO {
   /**
    * Push some files in the fifo
    * 
-   * @param item,
-   *          item to be played
+   * @param item
+   *          , item to be played
    * @param bAppend
    *          keep previous files or stop them to start a new one ?
    */
@@ -403,10 +404,16 @@ public final class FIFO {
           index = 0; // come back to first element
         }
       } else if (index < alFIFO.size()) {
-        // current track was not in repeat mode, remove it from fifo
-        StackItem item = alFIFO.get(index);
-        JajukTimer.getInstance().removeTrackTime(item.getFile());
-        alFIFO.remove(index); // remove this file from fifo
+        if (Conf.getBoolean(Conf.CONF_DROP_PLAYED_TRACKS_FROM_QUEUE)) {
+          StackItem item = alFIFO.get(index);
+          JajukTimer.getInstance().removeTrackTime(item.getFile());
+          alFIFO.remove(index); // remove this file from fifo
+        } else {
+          index++;
+        }
+        if (index == alFIFO.size()) {
+          index = 0;
+        }
       }
       if (alFIFO.size() == 0) { // nothing more to play
         // check if we in continue mode
@@ -454,8 +461,7 @@ public final class FIFO {
   /**
    * Launch track at given index in the fifo
    * 
-   * @param int
-   *          index
+   * @param int index
    */
   private static void launch() {
     try {
@@ -552,8 +558,8 @@ public final class FIFO {
   /**
    * Computes planned tracks
    * 
-   * @param bClear :
-   *          clear planned tracks stack
+   * @param bClear
+   *          : clear planned tracks stack
    */
   public static void computesPlanned(boolean bClear) {
     // Check if we are in continue mode and we have some tracks in FIFO, if
@@ -866,8 +872,8 @@ public final class FIFO {
   /**
    * Get an item at given index in FIFO
    * 
-   * @param lIndex :
-   *          index
+   * @param lIndex
+   *          : index
    * @return stack item
    */
   public static StackItem getItem(int lIndex) {
@@ -1045,7 +1051,8 @@ public final class FIFO {
    * @param lIndex
    */
   public static void down(int lIndex) {
-    if (lIndex == 0 || lIndex == alFIFO.size() - 1 || lIndex == alFIFO.size() + alPlanned.size() - 1) {
+    if (lIndex == 0 || lIndex == alFIFO.size() - 1
+        || lIndex == alFIFO.size() + alPlanned.size() - 1) {
       // Can't put down current track, nor last track in FIFO, nor last
       // planned track. This should be already made by ui behavior
       return;
@@ -1080,12 +1087,20 @@ public final class FIFO {
           properties.put(Const.DETAIL_SELECTION, Const.FALSE);
           ObservationManager.notify(new JajukEvent(JajukEvents.REPEAT_MODE_STATUS_CHANGED,
               properties));
-          remove(0, localindex - 1);
-          localindex = 0;
+          if (Conf.getBoolean(Conf.CONF_DROP_PLAYED_TRACKS_FROM_QUEUE)) {
+            remove(0, localindex - 1);
+            localindex = 0;
+          } else {
+            FIFO.index = localindex;
+          }
         }
       } else {
-        remove(0, localindex - 1);
-        localindex = 0;
+        if (Conf.getBoolean(Conf.CONF_DROP_PLAYED_TRACKS_FROM_QUEUE)) {
+          remove(0, localindex - 1);
+          localindex = 0;
+        } else {
+          FIFO.index = localindex;
+        }
       }
       // need to stop before launching! this fix a
       // wrong EOM event in BasicPlayer
@@ -1174,8 +1189,8 @@ public final class FIFO {
   /**
    * Clean all references for the given device
    * 
-   * @param device:
-   *          Device to clean
+   * @param device
+   *          : Device to clean
    */
   @SuppressWarnings("unchecked")
   public static void cleanDevice(Device device) {
@@ -1205,11 +1220,11 @@ public final class FIFO {
         new BufferedOutputStream(new FileOutputStream(file, false)));
     int localindex = 0;
     for (StackItem st : alFIFO) {
-      if (localindex > 0) {
-        // do not store current track (otherwise, it
-        // will be duplicate at startup)
-        writer.println(st.getFile().getID());
-      }
+      // if (localindex > 0) {
+      // do not store current track (otherwise, it
+      // will be duplicate at startup)
+      writer.println(st.getFile().getID());
+      // }
       localindex++;
     }
     writer.flush();
