@@ -394,6 +394,8 @@ public interface Const {
   String VIEW_NAME_STAT = "org.jajuk.ui.views.StatView";
 
   String VIEW_NAME_COVER = "org.jajuk.ui.views.CoverView";
+  
+  String VIEW_NAME_SUGGESTION = "org.jajuk.ui.views.SuggestionView";
 
   String VIEW_NAME_PHYSICAL_PLAYLIST_EDITOR = "org.jajuk.ui.views.PhysicalPlaylistEditorView";
 

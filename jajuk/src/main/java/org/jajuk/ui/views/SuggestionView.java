@@ -169,6 +169,22 @@ public class SuggestionView extends ViewAdapter implements Observer {
         .getString("SuggestionView.7"))));
     tabs.addTab(Messages.getString("SuggestionView.4"), UtilGUI.getCentredPanel(new JLabel(Messages
         .getString("SuggestionView.7"))));
+
+    if (Conf.containsProperty(VIEW_NAME_SUGGESTION)) {
+      int index = Conf.getInt(VIEW_NAME_SUGGESTION);
+      if (index > 0 && index < tabs.getTabCount()) {
+        tabs.setSelectedIndex(index);
+      }
+    }
+
+    tabs.addChangeListener(new ChangeListener() {
+
+      public void stateChanged(ChangeEvent e) {
+        Conf.setProperty(VIEW_NAME_SUGGESTION, new Integer(tabs.getSelectedIndex()).toString());
+      }
+
+    });
+
     // Add panels
     refreshLocalCollectionTabs();
     // Add tabs
