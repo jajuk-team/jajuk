@@ -70,138 +70,138 @@ public class StartupService {
   public static void launchInitialTrack() {
     List<org.jajuk.base.File> alToPlay = new ArrayList<org.jajuk.base.File>();
     org.jajuk.base.File fileToPlay = null;
-    if (!Conf.getString(Const.CONF_STARTUP_MODE).equals(Const.STARTUP_MODE_NOTHING)) {
-      if (Conf.getString(Const.CONF_STARTUP_MODE).equals(Const.STARTUP_MODE_LAST)
-          || Conf.getString(Const.CONF_STARTUP_MODE).equals(Const.STARTUP_MODE_LAST_KEEP_POS)
-          || Conf.getString(Const.CONF_STARTUP_MODE).equals(Const.STARTUP_MODE_FILE)) {
+    if (Conf.getString(Const.CONF_STARTUP_MODE).equals(Const.STARTUP_MODE_LAST)
+        || Conf.getString(Const.CONF_STARTUP_MODE).equals(Const.STARTUP_MODE_LAST_KEEP_POS)
+        || Conf.getString(Const.CONF_STARTUP_MODE).equals(Const.STARTUP_MODE_FILE)
+        || Conf.getString(Const.CONF_STARTUP_MODE).equals(Const.STARTUP_MODE_NOTHING)) {
 
-        if (Conf.getString(Const.CONF_STARTUP_MODE).equals(Const.STARTUP_MODE_FILE)) {
-          fileToPlay = FileManager.getInstance().getFileByID(
-              Conf.getString(Const.CONF_STARTUP_FILE));
-        } else {
-          // If we were playing a webradio when leaving, launch it
-          if (Conf.getBoolean(Const.CONF_WEBRADIO_WAS_PLAYING)) {
-            final WebRadio radio = WebRadioManager.getInstance().getWebRadioByName(
-                Conf.getString(Const.CONF_DEFAULT_WEB_RADIO));
-            if (radio != null) {
-              new Thread("WebRadio launch thread") {
-                @Override
-                public void run() {
-                  FIFO.launchRadio(radio);
-                }
-              }.start();
-            }
-            return;
+      if (Conf.getString(Const.CONF_STARTUP_MODE).equals(Const.STARTUP_MODE_FILE)) {
+        fileToPlay = FileManager.getInstance().getFileByID(Conf.getString(Const.CONF_STARTUP_FILE));
+      } else {
+        // If we were playing a webradio when leaving, launch it
+        if (Conf.getBoolean(Const.CONF_WEBRADIO_WAS_PLAYING)) {
+          final WebRadio radio = WebRadioManager.getInstance().getWebRadioByName(
+              Conf.getString(Const.CONF_DEFAULT_WEB_RADIO));
+          if (radio != null) {
+            new Thread("WebRadio launch thread") {
+              @Override
+              public void run() {
+                FIFO.launchRadio(radio);
+              }
+            }.start();
           }
-          // last file from beginning or last file keep position
-          else if (History.getInstance().getHistory().size() > 0) {
-            // make sure user didn't exit jajuk in the stopped state
-            // and that history is not void
-            fileToPlay = FileManager.getInstance().getFileByID(History.getInstance().getLastFile());
-          } else {
-            // do not try to launch anything, stay in stop state
-            return;
-          }
-        }
-        if (fileToPlay != null) {
-          if (!fileToPlay.isReady()) {
-            // file exists but is not mounted, just notify the error
-            // without anoying dialog at each startup try to mount
-            // device
-            Log.debug("Startup file located on an unmounted device" + ", try to mount it");
-            try {
-              fileToPlay.getDevice().mount(false);
-              Log.debug("Mount OK");
-            } catch (final Exception e) {
-              Log.debug("Mount failed");
-              final Properties pDetail = new Properties();
-              pDetail.put(Const.DETAIL_CONTENT, fileToPlay);
-              pDetail.put(Const.DETAIL_REASON, "10");
-              ObservationManager.notify(new JajukEvent(JajukEvents.PLAY_ERROR, pDetail));
-              FIFO.setFirstFile(false); // no more first file
-            }
-          }
-        } else {
-          // file no more exists
-          Messages.getChoice(Messages.getErrorMessage(23), JOptionPane.DEFAULT_OPTION,
-              JOptionPane.WARNING_MESSAGE);
-          FIFO.setFirstFile(false);
-          // no more first file
           return;
         }
-        // For last tracks playing, add all ready files from last
-        // session stored FIFO
-        if (Conf.getString(Const.CONF_STARTUP_MODE).equals(Const.STARTUP_MODE_LAST)
-            || Conf.getString(Const.CONF_STARTUP_MODE).equals(Const.STARTUP_MODE_LAST_KEEP_POS)) {
-          final File fifo = UtilSystem.getConfFileByPath(Const.FILE_FIFO);
-          if (!fifo.exists()) {
-            Log.debug("No fifo file");
-          } else {
-            try {
-              final BufferedReader br = new BufferedReader(new FileReader(UtilSystem
-                  .getConfFileByPath(Const.FILE_FIFO)));
-              try {
-                String s = null;
-                for (;;) {
-                  s = br.readLine();
-                  if (s == null) {
-                    break;
-                  }
-
-                  final org.jajuk.base.File file = FileManager.getInstance().getFileByID(s);
-                  if ((file != null) && file.isReady()) {
-                    alToPlay.add(file);
-                  }
-                }
-              } finally {
-                br.close();
-              }
-            } catch (final IOException ioe) {
-              Log.error(ioe);
-            }
-          }
-        }
-      } else if (Conf.getString(Const.CONF_STARTUP_MODE).equals(Const.STARTUP_MODE_SHUFFLE)) {
-        alToPlay = FileManager.getInstance().getGlobalShufflePlaylist();
-      } else if (Conf.getString(Const.CONF_STARTUP_MODE).equals(Const.STARTUP_MODE_BESTOF)) {
-        alToPlay = FileManager.getInstance().getGlobalBestofPlaylist();
-      } else if (Conf.getString(Const.CONF_STARTUP_MODE).equals(Const.STARTUP_MODE_NOVELTIES)) {
-        alToPlay = FileManager.getInstance().getGlobalNoveltiesPlaylist();
-        if ((alToPlay != null) && (alToPlay.size() > 0)) {
-          // shuffle the selection
-          Collections.shuffle(alToPlay, UtilSystem.getRandom());
+        // last file from beginning or last file keep position
+        else if (History.getInstance().getHistory().size() > 0) {
+          // make sure user didn't exit jajuk in the stopped state
+          // and that history is not void
+          fileToPlay = FileManager.getInstance().getFileByID(History.getInstance().getLastFile());
         } else {
-          // Alert user that no novelties have been found
-          InformationJPanel.getInstance().setMessage(Messages.getString("Error.127"),
-              InformationJPanel.ERROR);
+          // do not try to launch anything, stay in stop state
+          return;
         }
       }
-      // launch selected file
-
-      // find the index, this could be replaced if we store the current played
-      // index in the feature
-      if ((alToPlay != null) && (alToPlay.size() > 0) && fileToPlay != null) {
-        int index = -1;
-        for (int i = 0; i < alToPlay.size(); i++) {
-          if (fileToPlay.getID().equals(alToPlay.get(i).getID())) {
-            index = i;
-            break;
+      if (fileToPlay != null) {
+        if (!fileToPlay.isReady()) {
+          // file exists but is not mounted, just notify the error
+          // without anoying dialog at each startup try to mount
+          // device
+          Log.debug("Startup file located on an unmounted device" + ", try to mount it");
+          try {
+            fileToPlay.getDevice().mount(false);
+            Log.debug("Mount OK");
+          } catch (final Exception e) {
+            Log.debug("Mount failed");
+            final Properties pDetail = new Properties();
+            pDetail.put(Const.DETAIL_CONTENT, fileToPlay);
+            pDetail.put(Const.DETAIL_REASON, "10");
+            ObservationManager.notify(new JajukEvent(JajukEvents.PLAY_ERROR, pDetail));
+            FIFO.setFirstFile(false); // no more first file
           }
         }
-
-        if (index == -1) {
-          if (fileToPlay != null) {
-            // Track not stored, push it first
-            alToPlay.add(0, fileToPlay);
-          }
-          FIFO.push(UtilFeatures.createStackItems(alToPlay, Conf
-              .getBoolean(Const.CONF_STATE_REPEAT), false), false);
+      } else {
+        // file no more exists
+        Messages.getChoice(Messages.getErrorMessage(23), JOptionPane.DEFAULT_OPTION,
+            JOptionPane.WARNING_MESSAGE);
+        FIFO.setFirstFile(false);
+        // no more first file
+        return;
+      }
+      // For last tracks playing, add all ready files from last
+      // session stored FIFO
+      if (Conf.getString(Const.CONF_STARTUP_MODE).equals(Const.STARTUP_MODE_LAST)
+          || Conf.getString(Const.CONF_STARTUP_MODE).equals(Const.STARTUP_MODE_LAST_KEEP_POS)
+          || Conf.getString(Const.CONF_STARTUP_MODE).equals(Const.STARTUP_MODE_NOTHING)) {
+        final File fifo = UtilSystem.getConfFileByPath(Const.FILE_FIFO);
+        if (!fifo.exists()) {
+          Log.debug("No fifo file");
         } else {
-          FIFO.insert(UtilFeatures.createStackItems(alToPlay, Conf
-              .getBoolean(Const.CONF_STATE_REPEAT), false), 0);
-          FIFO.goTo(index);
-        }
+          try {
+            final BufferedReader br = new BufferedReader(new FileReader(UtilSystem
+                .getConfFileByPath(Const.FILE_FIFO)));
+            try {
+              String s = null;
+              for (;;) {
+                s = br.readLine();
+                if (s == null) {
+                  break;
+                }
 
+                final org.jajuk.base.File file = FileManager.getInstance().getFileByID(s);
+                if ((file != null) && file.isReady()) {
+                  alToPlay.add(file);
+                }
+              }
+            } finally {
+              br.close();
+            }
+          } catch (final IOException ioe) {
+            Log.error(ioe);
+          }
+        }
+      }
+    } else if (Conf.getString(Const.CONF_STARTUP_MODE).equals(Const.STARTUP_MODE_SHUFFLE)) {
+      alToPlay = FileManager.getInstance().getGlobalShufflePlaylist();
+    } else if (Conf.getString(Const.CONF_STARTUP_MODE).equals(Const.STARTUP_MODE_BESTOF)) {
+      alToPlay = FileManager.getInstance().getGlobalBestofPlaylist();
+    } else if (Conf.getString(Const.CONF_STARTUP_MODE).equals(Const.STARTUP_MODE_NOVELTIES)) {
+      alToPlay = FileManager.getInstance().getGlobalNoveltiesPlaylist();
+      if ((alToPlay != null) && (alToPlay.size() > 0)) {
+        // shuffle the selection
+        Collections.shuffle(alToPlay, UtilSystem.getRandom());
+      } else {
+        // Alert user that no novelties have been found
+        InformationJPanel.getInstance().setMessage(Messages.getString("Error.127"),
+            InformationJPanel.ERROR);
+      }
+    }
+    // launch selected file
+
+    // find the index of last played track
+    if ((alToPlay != null) && (alToPlay.size() > 0) && fileToPlay != null) {
+      int index = -1;
+      for (int i = 0; i < alToPlay.size(); i++) {
+        if (fileToPlay.getID().equals(alToPlay.get(i).getID())) {
+          index = i;
+          break;
+        }
+      }
+
+      if (index == -1) {
+        if (fileToPlay != null) {
+          // Track not stored, push it first
+          alToPlay.add(0, fileToPlay);
+        }
+        index = 0;
+      }
+
+      FIFO.insert(UtilFeatures.createStackItems(alToPlay, Conf.getBoolean(Const.CONF_STATE_REPEAT),
+          false), 0);
+
+      // do not start playing if do nothing at startup is selected
+      if (!Conf.getString(Const.CONF_STARTUP_MODE).equals(Const.STARTUP_MODE_NOTHING)) {
+        FIFO.goTo(index);
       }
     }
   }
