@@ -58,7 +58,8 @@ public class TrackPositionSliderToolbar extends JajukJToolbar implements ChangeL
     MouseWheelListener, Observer {
 
   /**
-   * 
+   * Generic playing position toolbar, 
+   * used in information panel a full screen  
    */
   private static final long serialVersionUID = 1L;
 
