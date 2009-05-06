@@ -28,24 +28,22 @@ import org.jajuk.util.JajukIcons;
 /**
  * 
  */
-public class JajukButtonSetIconAdapter extends JajukButton{
-  
-  /**
-   * 
-   */
+public class JajukButtonSetIconAdapter extends JajukButton {
+
   private static final long serialVersionUID = 8827520017323338775L;
-  
+
   public JajukButtonSetIconAdapter(Action a) {
     super(a);
   }
 
-  public void setIcon(Icon icon){
-    if(icon.equals(IconLoader.getIcon(JajukIcons.PAUSE))){
-      icon=IconLoader.getIcon(JajukIcons.PLAYER_PAUSE_BIG);
-    }else if(icon.equals(IconLoader.getIcon(JajukIcons.PLAY))){
-      icon=IconLoader.getIcon(JajukIcons.PLAYER_PLAY_BIG);
+  public void setIcon(Icon icon) {
+    Icon destIcon = null;
+    if (icon.equals(IconLoader.getIcon(JajukIcons.PAUSE))) {
+      destIcon = IconLoader.getIcon(JajukIcons.PLAYER_PAUSE_BIG);
+    } else if (icon.equals(IconLoader.getIcon(JajukIcons.PLAY))) {
+      destIcon = IconLoader.getIcon(JajukIcons.PLAYER_PLAY_BIG);
     }
-    super.setIcon(icon);
+    super.setIcon(destIcon);
   }
 
 }
