@@ -117,8 +117,6 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 
   JTabbedPane jtpMain;
 
-  JPanel jpHistory;
-
   JTextField jtfHistory;
 
   JButton jbClearHistory;
@@ -126,10 +124,6 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
   JButton jbResetRatings;
 
   JButton jbResetPreferences;
-
-  JPanel jpStart;
-
-  JLabel jlStart;
 
   ButtonGroup bgStart;
 
@@ -181,8 +175,6 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 
   JPasswordField jpfASPassword;
 
-  JLabel jlLanguage;
-
   SteppedComboBox scbLanguage;
 
   JLabel jlFrameTitle;
@@ -197,27 +189,15 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 
   SteppedComboBox scbLogLevel;
 
-  JLabel jlIntroPosition;
-
   JSlider introPosition;
-
-  JLabel jlIntroLength;
 
   JSlider introLength;
 
-  JLabel jlBestofSize;
-
   JTextField jtfBestofSize;
-
-  JLabel jlNoveltiesAge;
 
   JTextField jtfNoveltiesAge;
 
-  JLabel jlVisiblePlanned;
-
   JTextField jtfVisiblePlanned;
-
-  JLabel jlCrossFadeDuration;
 
   JSlider crossFadeDuration;
 
@@ -233,11 +213,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 
   JCheckBox jcbUseParentDir;
 
-  JLabel jlRefactorPattern;
-
   JFormattedTextField jtfRefactorPattern;
-
-  JLabel jlAnimationPattern;
 
   JTextField jtfAnimationPattern;
 
@@ -335,8 +311,6 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 
   JButton jbDefault;
 
-  JPanel jpModes;
-
   JCheckBox jcbCheckUpdates;
 
   JCheckBox jcbForceFileDate;
@@ -377,8 +351,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
   /*
    * (non-Javadoc)
    * 
-   * @see
-   * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+   * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
    */
   public void actionPerformed(final ActionEvent e) {
     new Thread() {
@@ -818,7 +791,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     };
 
     // --History
-    jpHistory = new JPanel(new MigLayout("insets 10, gapy 15"));
+    JPanel jpHistory = new JPanel(new MigLayout("insets 10, gapy 15"));
     jtfHistory = new JTextField();
     jtfHistory.setInputVerifier(new InputVerifier() {
       @Override
@@ -867,14 +840,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     jpHistory.add(jbResetPreferences);
 
     // --Startup
-    jpStart = new JPanel();
-    final double sizeStart[][] = { { p, p }, { p, p, p, p, p, p, p, p } };
-    final TableLayout layoutStartup = new TableLayout(sizeStart);
-    layoutStartup.setVGap(iYSeparator);
-    layoutStartup.setHGap(iXSeparator);
-
-    jpStart.setLayout(new TableLayout(sizeStart));
-    jlStart = new JLabel(Messages.getString("ParameterView.9"));
+    JPanel jpStart = new JPanel(new MigLayout("insets 10,gapy 15", "[][grow][grow]"));
     bgStart = new ButtonGroup();
     jrbNothing = new JRadioButton(Messages.getString("ParameterView.10"));
     jrbNothing.setToolTipText(Messages.getString("ParameterView.11"));
@@ -919,27 +885,20 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     bgStart.add(jrbBestof);
     bgStart.add(jrbNovelties);
     bgStart.add(jrbFile);
-    jpStart.add(jlStart, "0,0,1,0");
-    jpStart.add(jrbNothing, "0,1,1,1");
-    jpStart.add(jrbLast, "0,2,1,2");
-    jpStart.add(jrbLastKeepPos, "0,3,1,3");
-    jpStart.add(jrbShuffle, "0,4,1,4");
-    jpStart.add(jrbBestof, "0,5,1,5");
-    jpStart.add(jrbNovelties, "0,6,1,6");
-    jpStart.add(jrbFile, "0,7");
-    jpStart.add(sbSearch, "1,7");
+    jpStart.add(new JLabel(Messages.getString("ParameterView.9")), "wrap");
+    jpStart.add(jrbNothing, "wrap");
+    jpStart.add(jrbLast, "wrap");
+    jpStart.add(jrbLastKeepPos, "wrap");
+    jpStart.add(jrbShuffle, "wrap");
+    jpStart.add(jrbBestof, "wrap");
+    jpStart.add(jrbNovelties, "wrap");
+    jpStart.add(jrbFile);
+    jpStart.add(sbSearch, "grow,wrap");
 
     // --Confirmations
-    jpConfirmations = new JPanel();
-    final double sizeConfirmations[][] = { { p }, { p, p, p, p, p, p, p } };
-
-    final TableLayout layoutConfirmation = new TableLayout(sizeConfirmations);
-    layoutConfirmation.setVGap(iYSeparator);
-    layoutConfirmation.setHGap(iXSeparator);
-    jpConfirmations.setLayout(layoutConfirmation);
+    jpConfirmations = new JPanel(new MigLayout("insets 10,gapy 15"));
 
     jcbBeforeDelete = new JCheckBox(Messages.getString("ParameterView.27"));
-
     jcbBeforeDelete.setToolTipText(Messages.getString("ParameterView.28"));
 
     jcbBeforeExit = new JCheckBox(Messages.getString("ParameterView.29"));
@@ -960,19 +919,17 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     jcbBeforeRefactorFiles = new JCheckBox(Messages.getString("ParameterView.194"));
     jcbBeforeRefactorFiles.setToolTipText(Messages.getString("ParameterView.194"));
 
-    jpConfirmations.add(jcbBeforeDelete, "0,0");
-    jpConfirmations.add(jcbBeforeExit, "0,1");
-    jpConfirmations.add(jcbBeforeRemoveDevice, "0,2");
-    jpConfirmations.add(jcbBeforeDeleteCover, "0,3");
-    jpConfirmations.add(jcbBeforeClearingHistory, "0,4");
-    jpConfirmations.add(jcbBeforeResetingRatings, "0,5");
-    jpConfirmations.add(jcbBeforeRefactorFiles, "0,6");
+    jpConfirmations.add(jcbBeforeDelete, "wrap");
+    jpConfirmations.add(jcbBeforeExit, "wrap");
+    jpConfirmations.add(jcbBeforeRemoveDevice, "wrap");
+    jpConfirmations.add(jcbBeforeDeleteCover, "wrap");
+    jpConfirmations.add(jcbBeforeClearingHistory, "wrap");
+    jpConfirmations.add(jcbBeforeResetingRatings, "wrap");
+    jpConfirmations.add(jcbBeforeRefactorFiles, "wrap");
 
-    // -Modes
-    jpModes = new JPanel();
+    // --- Modes ---
     // Intro
     // intro position
-    jlIntroPosition = new JLabel(Messages.getString("ParameterView.59"));
     introPosition = new JSlider(0, 100, 0);
     introPosition.setMajorTickSpacing(20);
     introPosition.setMinorTickSpacing(10);
@@ -982,7 +939,8 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     introPosition.addMouseWheelListener(new DefaultMouseWheelListener(introPosition));
 
     // intro length
-    jlIntroLength = new JLabel(Messages.getString("ParameterView.61"));
+    JLabel jlIntroLength = new JLabel(Messages.getString("ParameterView.61"));
+    jlIntroLength.setToolTipText(Messages.getString("ParameterView.62"));
     introLength = new JSlider(0, 30, 20);
     introLength.setMajorTickSpacing(10);
     introLength.setMinorTickSpacing(1);
@@ -991,8 +949,8 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     introLength.setToolTipText(Messages.getString("ParameterView.62"));
     introLength.addMouseWheelListener(new DefaultMouseWheelListener(introLength));
 
-    // best of size
-    jlBestofSize = new JLabel(Messages.getString("ParameterView.111"));
+    // Best of size
+    JLabel jlBestofSize = new JLabel(Messages.getString("ParameterView.111"));
     jlBestofSize.setToolTipText(Messages.getString("ParameterView.112"));
     jtfBestofSize = new JTextField(3);
     jtfBestofSize.setToolTipText(Messages.getString("ParameterView.112"));
@@ -1020,7 +978,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
       }
     });
     // novelties age
-    jlNoveltiesAge = new JLabel(Messages.getString("ParameterView.129"));
+    JLabel jlNoveltiesAge = new JLabel(Messages.getString("ParameterView.129"));
     jlNoveltiesAge.setToolTipText(Messages.getString("ParameterView.130"));
     jtfNoveltiesAge = new JTextField(3);
     jtfNoveltiesAge.setToolTipText(Messages.getString("ParameterView.130"));
@@ -1049,7 +1007,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
       }
     });
     // number of visible tracks
-    jlVisiblePlanned = new JLabel(Messages.getString("ParameterView.177"));
+    JLabel jlVisiblePlanned = new JLabel(Messages.getString("ParameterView.177"));
     jlVisiblePlanned.setToolTipText(Messages.getString("ParameterView.178"));
     jtfVisiblePlanned = new JTextField(3);
     jtfVisiblePlanned.setToolTipText(Messages.getString("ParameterView.178"));
@@ -1076,7 +1034,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
         return true;
       }
     });
-    jlCrossFadeDuration = new JLabel(Messages.getString("ParameterView.190"));
+    JLabel jlCrossFadeDuration = new JLabel(Messages.getString("ParameterView.190"));
     jlCrossFadeDuration.setToolTipText(Messages.getString("ParameterView.191"));
     crossFadeDuration = new JSlider(0, 30, 0);
     crossFadeDuration.setMajorTickSpacing(10);
@@ -1087,26 +1045,21 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     crossFadeDuration.addMouseWheelListener(new DefaultMouseWheelListener(crossFadeDuration));
 
     // add panels
-    final double sizeIntro[][] = { { p, p }, { p, p, p, p, p, p } };
-    final TableLayout layoutModes = new TableLayout(sizeIntro);
-    layoutModes.setVGap(iYSeparator);
-    layoutModes.setHGap(iXSeparator);
-    jpModes.setLayout(layoutModes);
-    jpModes.add(jlIntroPosition, "0,0");
-    jpModes.add(introPosition, "1,0");
-    jpModes.add(jlIntroLength, "0,1");
-    jpModes.add(introLength, "1,1");
-    jpModes.add(jlCrossFadeDuration, "0,2");
-    jpModes.add(crossFadeDuration, "1,2");
-    jpModes.add(jlBestofSize, "0,3");
-    jpModes.add(jtfBestofSize, "1,3");
-    jpModes.add(jlNoveltiesAge, "0,4");
-    jpModes.add(jtfNoveltiesAge, "1,4");
-    jpModes.add(jlVisiblePlanned, "0,5");
-    jpModes.add(jtfVisiblePlanned, "1,5");
+    JPanel jpModes = new JPanel(new MigLayout("insets 10,gapy 15", "[][grow]"));
+    jpModes.add(new JLabel(Messages.getString("ParameterView.59")));
+    jpModes.add(introPosition, "grow,wrap");
+    jpModes.add(jlIntroLength);
+    jpModes.add(introLength, "grow,wrap");
+    jpModes.add(jlCrossFadeDuration);
+    jpModes.add(crossFadeDuration, "grow,wrap");
+    jpModes.add(jlBestofSize);
+    jpModes.add(jtfBestofSize, "grow,width 50%!,wrap");
+    jpModes.add(jlNoveltiesAge);
+    jpModes.add(jtfNoveltiesAge, "grow,width 50%!,wrap");
+    jpModes.add(jlVisiblePlanned);
+    jpModes.add(jtfVisiblePlanned, "grow, width 50%!,wrap");
 
     // --Options
-    jpOptions = new JPanel();
     jcbDisplayUnmounted = new JCheckBox(Messages.getString("JajukJMenuBar.24"));
     jcbDisplayUnmounted.setToolTipText(Messages.getString("ParameterView.35"));
     jcbDisplayUnmounted.addActionListener(alUI);
@@ -1127,7 +1080,6 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     // Disable this option if not under windows
     jcbHotkeys.setEnabled(UtilSystem.isUnderWindows());
 
-    jlLanguage = new JLabel(Messages.getString("ParameterView.38"));
     scbLanguage = new SteppedComboBox();
 
     scbLanguage.setRenderer(new BasicComboBoxRenderer() {
@@ -1149,45 +1101,31 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
       scbLanguage.addItem(new JLabel(sDesc, Messages.getIcon(sDesc), SwingConstants.LEFT));
     }
     scbLanguage.setToolTipText(Messages.getString("ParameterView.42"));
-    final JPanel language = new JPanel(new HorizontalLayout(iXSeparator));
-    language.add(jlLanguage);
-    language.add(scbLanguage);
     scbLanguage.addActionListener(this);
-
-    final double sizeOptions[][] = { { p }, { 20, p, p, p, p, p, p, p } };
-    final TableLayout layoutOption = new TableLayout(sizeOptions);
-    layoutOption.setHGap(iXSeparator);
-    layoutOption.setVGap(iYSeparator);
-    jpOptions.setLayout(layoutOption);
-
     jcbUseParentDir = new JCheckBox(Messages.getString("ParameterView.101"));
     jcbUseParentDir.setToolTipText(Messages.getString("ParameterView.102"));
-
     jcbDropPlayedTracksFromQueue = new JCheckBox(Messages.getString("ParameterView.266"));
     jcbDropPlayedTracksFromQueue.setToolTipText(Messages.getString("ParameterView.267"));
 
-    jpOptions.add(language, "0,0");
-    jpOptions.add(jcbDisplayUnmounted, "0,1");
-    jpOptions.add(jcbDefaultActionClick, "0,2");
-    jpOptions.add(jcbDefaultActionDrop, "0,3");
-    jpOptions.add(jcbSyncTableTree, "0,4");
-    jpOptions.add(jcbHotkeys, "0,5");
-    jpOptions.add(jcbUseParentDir, "0,6");
-    jpOptions.add(jcbDropPlayedTracksFromQueue, "0,7");
+    jpOptions = new JPanel(new MigLayout("insets 10, gapy 15, wrap 1"));
+    jpOptions.add(new JLabel(Messages.getString("ParameterView.38")),"split 2,gapleft 5");
+    jpOptions.add(scbLanguage);
+    jpOptions.add(jcbDisplayUnmounted );
+    jpOptions.add(jcbDefaultActionClick);
+    jpOptions.add(jcbDefaultActionDrop);
+    jpOptions.add(jcbSyncTableTree);
+    jpOptions.add(jcbHotkeys);
+    jpOptions.add(jcbUseParentDir);
+    jpOptions.add(jcbDropPlayedTracksFromQueue);
 
     // --Patterns
-    jpTags = new JPanel();
-    final double sizeTags[][] = { { p, p }, { p, p, p } };
-    final TableLayout layoutTags = new TableLayout(sizeTags);
-    layoutTags.setHGap(iXSeparator);
-    layoutTags.setVGap(iYSeparator);
-    jpTags.setLayout(layoutTags);
-    jlRefactorPattern = new JLabel(Messages.getString("ParameterView.192"));
+    jpTags = new JPanel(new MigLayout("insets 10, gapy 15, wrap 2","[][grow]"));
+    JLabel jlRefactorPattern = new JLabel(Messages.getString("ParameterView.192"));
     jlRefactorPattern.setToolTipText(Messages.getString("ParameterView.193"));
     jtfRefactorPattern = new JFormattedTextField();
     jtfRefactorPattern.setToolTipText(Messages.getString("ParameterView.193"));
     jtfRefactorPattern.setInputVerifier(new PatternInputVerifier());
-    jlAnimationPattern = new JLabel(Messages.getString("ParameterView.195"));
+    JLabel jlAnimationPattern = new JLabel(Messages.getString("ParameterView.195"));
     jlAnimationPattern.setToolTipText(Messages.getString("ParameterView.193"));
     jtfAnimationPattern = new JTextField();
     jtfAnimationPattern.setToolTipText(Messages.getString("ParameterView.193"));
@@ -1197,12 +1135,12 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     jtfFrameTitle = new JTextField();
     jtfFrameTitle.setToolTipText(Messages.getString("ParameterView.193"));
 
-    jpTags.add(jlRefactorPattern, "0,0");
-    jpTags.add(jtfRefactorPattern, "1,0");
-    jpTags.add(jlAnimationPattern, "0,1");
-    jpTags.add(jtfAnimationPattern, "1,1");
-    jpTags.add(jlFrameTitle, "0,2");
-    jpTags.add(jtfFrameTitle, "1,2");
+    jpTags.add(jlRefactorPattern);
+    jpTags.add(jtfRefactorPattern,"grow");
+    jpTags.add(jlAnimationPattern);
+    jpTags.add(jtfAnimationPattern,"grow");
+    jpTags.add(jlFrameTitle);
+    jpTags.add(jtfFrameTitle,"grow");
 
     // --Advanced
     jpAdvanced = new JPanel();
@@ -1610,9 +1548,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
   /*
    * (non-Javadoc)
    * 
-   * @see
-   * javax.swing.event.ChangeListener#stateChanged(javax.swing.event.ChangeEvent
-   * )
+   * @see javax.swing.event.ChangeListener#stateChanged(javax.swing.event.ChangeEvent )
    */
   public void stateChanged(final ChangeEvent e) {
     // when changing tab, store it for future jajuk sessions
@@ -1768,9 +1704,8 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
   /*
    * (non-Javadoc)
    * 
-   * @see
-   * javax.swing.event.ListSelectionListener#valueChanged(javax.swing.event.
-   * ListSelectionEvent)
+   * @see javax.swing.event.ListSelectionListener#valueChanged(javax.swing.event.
+   *      ListSelectionEvent)
    */
   public void valueChanged(final ListSelectionEvent e) {
     if (!e.getValueIsAdjusting()) {
