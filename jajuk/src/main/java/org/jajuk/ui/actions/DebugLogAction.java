@@ -19,8 +19,6 @@
  */
 package org.jajuk.ui.actions;
 
-import info.clearthought.layout.TableLayout;
-
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Insets;
@@ -30,8 +28,9 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JEditorPane;
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+
+import net.miginfocom.swing.MigLayout;
 
 import org.jajuk.ui.helpers.FontManager;
 import org.jajuk.ui.helpers.FontManager.JajukFont;
@@ -61,26 +60,25 @@ public class DebugLogAction extends JajukAction {
     text.setFont(FontManager.getInstance().getFont(JajukFont.BOLD));
     final JDialog dialog = new JDialog(JajukWindow.getInstance(), Messages
         .getString("DebugLogAction.0"), false);
-    JPanel jp = new JPanel();
-    double[][] size = new double[][] { { 0.5f, 20, 0.5f }, { TableLayout.FILL, 10, 20, 5 } };
-    jp.setLayout(new TableLayout(size));
-    JButton jbRefresh = new JButton(Messages.getString("DebugLogAction.1"));
+    JButton jbRefresh = new JButton(Messages.getString("DebugLogAction.1"), IconLoader
+        .getIcon(JajukIcons.REFRESH));
     jbRefresh.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
         // Refresh traces
         text.setText(getTraces());
       }
     });
-    JButton jbClose = new JButton(Messages.getString("Close"));
+    JButton jbClose = new JButton(Messages.getString("Close"), IconLoader
+        .getIcon(JajukIcons.CLOSE));
     jbClose.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
         dialog.dispose();
       }
     });
-    jp.add(new JScrollPane(text), "0,0,2,0");
-    jp.add(jbRefresh, "0,2");
-    jp.add(jbClose, "2,2");
-    dialog.add(jp);
+    dialog.setLayout(new MigLayout("insets 10", "[grow]"));
+    dialog.add(new JScrollPane(text), "grow,wrap");
+    dialog.add(jbRefresh, "split 2,grow");
+    dialog.add(jbClose,"grow");
     dialog.setPreferredSize(new Dimension(800, 600));
     dialog.pack();
     dialog.setLocationRelativeTo(JajukWindow.getInstance());

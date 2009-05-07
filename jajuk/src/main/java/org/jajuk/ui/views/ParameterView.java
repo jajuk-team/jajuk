@@ -20,12 +20,7 @@
 
 package org.jajuk.ui.views;
 
-import info.clearthought.layout.TableLayout;
-import info.clearthought.layout.TableLayoutConstants;
-
 import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -39,6 +34,7 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.TreeSet;
 
+import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.InputVerifier;
 import javax.swing.JButton;
@@ -185,8 +181,6 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 
   SteppedComboBox scbLAF;
 
-  JLabel jlLogLevel;
-
   SteppedComboBox scbLogLevel;
 
   JSlider introPosition;
@@ -223,8 +217,6 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 
   JSlider backupSize;
 
-  JLabel jlCollectionEncoding;
-
   JComboBox jcbCollectionEncoding;
 
   JCheckBox jcbRegexp;
@@ -235,11 +227,11 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 
   JCheckBox jcbNoneInternetAccess;
 
-  JCheckBox jcbProxyNone;
+  JRadioButton jcbProxyNone;
 
-  JCheckBox jcbProxyHttp;
+  JRadioButton jcbProxyHttp;
 
-  JCheckBox jcbProxySocks;
+  JRadioButton jcbProxySocks;
 
   JLabel jlProxyHostname;
 
@@ -271,19 +263,11 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 
   JComboBox jcbCoverSize;
 
-  JLabel jlMPlayerArgs;
-
   JTextField jtfMPlayerArgs;
-
-  JLabel jlEnvVariables;
 
   JTextField jtfEnvVariables;
 
-  JLabel jlMPlayerPath;
-
   JTextField jtfMPlayerPath;
-
-  JLabel jlJajukWorkspace;
 
   PathSelector psJajukWorkspace;
 
@@ -765,10 +749,6 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
    * @see org.jajuk.ui.IView#display()
    */
   public void initUI() {
-    final double p = TableLayoutConstants.PREFERRED;
-    final int iXSeparator = 15;
-    final int iYSeparator = 15;
-
     // Use this common action listener for UI options that need to launch
     // event
     final ActionListener alUI = new ActionListener() {
@@ -833,7 +813,9 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     jbResetPreferences.setToolTipText(Messages.getString("ParameterView.250"));
     jbResetPreferences.addActionListener(this);
 
-    jpHistory.add(new JLabel(Messages.getString("ParameterView.0")));
+    JLabel jlHistory = new JLabel(Messages.getString("ParameterView.0"));
+    jlHistory.setToolTipText(Messages.getString("ParameterView.2"));
+    jpHistory.add(jlHistory);
     jpHistory.add(jtfHistory, "wrap,grow");
     jpHistory.add(jbClearHistory, "wrap");
     jpHistory.add(jbResetRatings);
@@ -1043,9 +1025,13 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     crossFadeDuration.setPaintLabels(true);
     crossFadeDuration.setToolTipText(Messages.getString("ParameterView.191"));
     crossFadeDuration.addMouseWheelListener(new DefaultMouseWheelListener(crossFadeDuration));
+    jcbUseVolnorm = new JCheckBox(Messages.getString("ParameterView.262"));
+    jcbUseVolnorm.setSelected(Conf.getBoolean(Const.CONF_USE_VOLNORM));
+    jcbUseVolnorm.setToolTipText(Messages.getString("ParameterView.263"));
 
     // add panels
-    JPanel jpModes = new JPanel(new MigLayout("insets 10,gapy 15", "[][grow]"));
+    JPanel jpModes = new JPanel(new MigLayout("insets 10,gapy 15,gapx 10",
+        "[][grow,200:300:300][fill]"));
     jpModes.add(new JLabel(Messages.getString("ParameterView.59")));
     jpModes.add(introPosition, "grow,wrap");
     jpModes.add(jlIntroLength);
@@ -1053,11 +1039,12 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     jpModes.add(jlCrossFadeDuration);
     jpModes.add(crossFadeDuration, "grow,wrap");
     jpModes.add(jlBestofSize);
-    jpModes.add(jtfBestofSize, "grow,width 50%!,wrap");
+    jpModes.add(jtfBestofSize, "grow,wrap");
     jpModes.add(jlNoveltiesAge);
-    jpModes.add(jtfNoveltiesAge, "grow,width 50%!,wrap");
+    jpModes.add(jtfNoveltiesAge, "grow,wrap");
     jpModes.add(jlVisiblePlanned);
-    jpModes.add(jtfVisiblePlanned, "grow, width 50%!,wrap");
+    jpModes.add(jtfVisiblePlanned, "grow,wrap");
+    jpModes.add(jcbUseVolnorm);
 
     // --Options
     jcbDisplayUnmounted = new JCheckBox(Messages.getString("JajukJMenuBar.24"));
@@ -1108,9 +1095,9 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     jcbDropPlayedTracksFromQueue.setToolTipText(Messages.getString("ParameterView.267"));
 
     jpOptions = new JPanel(new MigLayout("insets 10, gapy 15, wrap 1"));
-    jpOptions.add(new JLabel(Messages.getString("ParameterView.38")),"split 2,gapleft 5");
+    jpOptions.add(new JLabel(Messages.getString("ParameterView.38")), "split 2,gapleft 5");
     jpOptions.add(scbLanguage);
-    jpOptions.add(jcbDisplayUnmounted );
+    jpOptions.add(jcbDisplayUnmounted);
     jpOptions.add(jcbDefaultActionClick);
     jpOptions.add(jcbDefaultActionDrop);
     jpOptions.add(jcbSyncTableTree);
@@ -1119,7 +1106,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     jpOptions.add(jcbDropPlayedTracksFromQueue);
 
     // --Patterns
-    jpTags = new JPanel(new MigLayout("insets 10, gapy 15, wrap 2","[][grow]"));
+    jpTags = new JPanel(new MigLayout("insets 10, gapy 15, wrap 2", "[][grow]"));
     JLabel jlRefactorPattern = new JLabel(Messages.getString("ParameterView.192"));
     jlRefactorPattern.setToolTipText(Messages.getString("ParameterView.193"));
     jtfRefactorPattern = new JFormattedTextField();
@@ -1136,25 +1123,24 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     jtfFrameTitle.setToolTipText(Messages.getString("ParameterView.193"));
 
     jpTags.add(jlRefactorPattern);
-    jpTags.add(jtfRefactorPattern,"grow");
+    jpTags.add(jtfRefactorPattern, "grow");
     jpTags.add(jlAnimationPattern);
-    jpTags.add(jtfAnimationPattern,"grow");
+    jpTags.add(jtfAnimationPattern, "grow");
     jpTags.add(jlFrameTitle);
-    jpTags.add(jtfFrameTitle,"grow");
+    jpTags.add(jtfFrameTitle, "grow");
 
     // --Advanced
-    jpAdvanced = new JPanel();
     jcbBackup = new JCheckBox(Messages.getString("ParameterView.116"));
     jcbBackup.addActionListener(this);
     jcbBackup.setToolTipText(Messages.getString("ParameterView.117"));
     backupSize = new JSlider(0, 100);
-    backupSize.setMajorTickSpacing(10);
+    backupSize.setMajorTickSpacing(20);
     backupSize.setMinorTickSpacing(10);
     backupSize.setPaintTicks(true);
     backupSize.setPaintLabels(true);
     backupSize.setToolTipText(Messages.getString("ParameterView.119"));
     backupSize.addMouseWheelListener(new DefaultMouseWheelListener(backupSize));
-    jlCollectionEncoding = new JLabel(Messages.getString("ParameterView.120"));
+    JLabel jlCollectionEncoding = new JLabel(Messages.getString("ParameterView.120"));
     jlCollectionEncoding.setToolTipText(Messages.getString("ParameterView.121"));
     jcbCollectionEncoding = new JComboBox();
     jcbCollectionEncoding.setToolTipText(Messages.getString("ParameterView.121"));
@@ -1167,13 +1153,9 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     // Short names option is only under windows 32
     jcbShortNames.setEnabled(UtilSystem.isUnderWindows32bits());
 
-    jcbUseVolnorm = new JCheckBox(Messages.getString("ParameterView.262"));
-    jcbUseVolnorm.setSelected(Conf.getBoolean(Const.CONF_USE_VOLNORM));
-    jcbUseVolnorm.setToolTipText(Messages.getString("ParameterView.263"));
-
     jcbCollectionEncoding.addItem("UTF-8");
     jcbCollectionEncoding.addItem("UTF-16");
-    jlLogLevel = new JLabel(Messages.getString("ParameterView.46"));
+    JLabel jlLogLevel = new JLabel(Messages.getString("ParameterView.46"));
     scbLogLevel = new SteppedComboBox();
     scbLogLevel.addItem(Messages.getString("ParameterView.47"));
     scbLogLevel.addItem(Messages.getString("ParameterView.48"));
@@ -1181,19 +1163,19 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     scbLogLevel.addItem(Messages.getString("ParameterView.50"));
     scbLogLevel.addItem(Messages.getString("ParameterView.51"));
     scbLogLevel.setToolTipText(Messages.getString("ParameterView.52"));
-    jlMPlayerPath = new JLabel(Messages.getString("ParameterView.242"));
+    JLabel jlMPlayerPath = new JLabel(Messages.getString("ParameterView.242"));
     jlMPlayerPath.setToolTipText(Messages.getString("ParameterView.243"));
     jtfMPlayerPath = new JTextField();
     jtfMPlayerPath.setToolTipText(Messages.getString("ParameterView.243"));
-    jlMPlayerArgs = new JLabel(Messages.getString("ParameterView.205"));
+    JLabel jlMPlayerArgs = new JLabel(Messages.getString("ParameterView.205"));
     jlMPlayerArgs.setToolTipText(Messages.getString("ParameterView.206"));
     jtfMPlayerArgs = new JTextField();
     jtfMPlayerArgs.setToolTipText(Messages.getString("ParameterView.206"));
-    jlEnvVariables = new JLabel(Messages.getString("ParameterView.219"));
+    JLabel jlEnvVariables = new JLabel(Messages.getString("ParameterView.219"));
     jlEnvVariables.setToolTipText(Messages.getString("ParameterView.220"));
     jtfEnvVariables = new JTextField();
     jtfEnvVariables.setToolTipText(Messages.getString("ParameterView.220"));
-    jlJajukWorkspace = new JLabel(Messages.getString("ParameterView.207"));
+    JLabel jlJajukWorkspace = new JLabel(Messages.getString("ParameterView.207"));
     jlJajukWorkspace.setToolTipText(Messages.getString("ParameterView.208"));
     // Directory selection
     psJajukWorkspace = new PathSelector(Main.getWorkspace());
@@ -1204,40 +1186,30 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     jcbForceFileDate = new JCheckBox(Messages.getString("ParameterView.244"));
     jcbForceFileDate.setToolTipText(Messages.getString("ParameterView.245"));
     jcbForceFileDate.setSelected(Conf.getBoolean(Const.CONF_FORCE_FILE_DATE));
-    final double sizeAdvanced[][] = { { p, p }, { p, p, p, p, p, p, p, p, p, p, p, p } };
-    final TableLayout layoutAdvanced = new TableLayout(sizeAdvanced);
-    layoutAdvanced.setHGap(iXSeparator);
-    layoutAdvanced.setVGap(iYSeparator);
-    jpAdvanced.setLayout(layoutAdvanced);
-    jpAdvanced.add(jcbRegexp, "0,0");
-    jpAdvanced.add(jcbBackup, "0,1");
-    jpAdvanced.add(backupSize, "1,1");
-    jpAdvanced.add(jlCollectionEncoding, "0,2");
-    jpAdvanced.add(jcbCollectionEncoding, "1,2");
-    jpAdvanced.add(jlLogLevel, "0,3");
-    jpAdvanced.add(scbLogLevel, "1,3");
-    jpAdvanced.add(jlMPlayerPath, "0,4");
-    jpAdvanced.add(jtfMPlayerPath, "1,4");
-    jpAdvanced.add(jlMPlayerArgs, "0,5");
-    jpAdvanced.add(jtfMPlayerArgs, "1,5");
-    jpAdvanced.add(jlEnvVariables, "0,6");
-    jpAdvanced.add(jtfEnvVariables, "1,6");
-    jpAdvanced.add(jlJajukWorkspace, "0,7");
-    jpAdvanced.add(psJajukWorkspace, "1,7");
-    jpAdvanced.add(jcbCheckUpdates, "0,8");
-    jpAdvanced.add(jcbForceFileDate, "0,9");
-    jpAdvanced.add(jcbShortNames, "0,10");
-    jpAdvanced.add(jcbUseVolnorm, "0,11");
+
+    jpAdvanced = new JPanel(new MigLayout("insets 10,gapy 15, gapx 10", "[][grow][fill]"));
+    jpAdvanced.add(jcbBackup);
+    jpAdvanced.add(backupSize, "wrap,grow");
+    jpAdvanced.add(jlCollectionEncoding);
+    jpAdvanced.add(jcbCollectionEncoding, "wrap,grow");
+    jpAdvanced.add(jlLogLevel);
+    jpAdvanced.add(scbLogLevel, "wrap,grow");
+    jpAdvanced.add(jlMPlayerPath);
+    jpAdvanced.add(jtfMPlayerPath, "wrap,grow");
+    jpAdvanced.add(jlMPlayerArgs);
+    jpAdvanced.add(jtfMPlayerArgs, "wrap,grow");
+    jpAdvanced.add(jlEnvVariables);
+    jpAdvanced.add(jtfEnvVariables, "wrap,grow");
+    jpAdvanced.add(jlJajukWorkspace);
+    jpAdvanced.add(psJajukWorkspace, "wrap,grow");
+    jpAdvanced.add(jcbRegexp, "wrap");
+    jpAdvanced.add(jcbCheckUpdates, "wrap");
+    jpAdvanced.add(jcbForceFileDate, "wrap");
+    jpAdvanced.add(jcbShortNames, "wrap");
 
     // - Network
-    jpNetwork = new JPanel();
-    final double sizeNetwork[][] = { { p, p }, { p, p, p, p, p, p, p, p, p } };
-    final TableLayout layoutNetwork = new TableLayout(sizeNetwork);
-    layoutNetwork.setHGap(iXSeparator);
-    layoutNetwork.setVGap(iYSeparator);
-    jpNetwork.setLayout(layoutNetwork);
     bgProxy = new ButtonGroup();
-    jcbProxyNone = new JCheckBox(Messages.getString("ParameterView.236"));
+    jcbProxyNone = new JRadioButton(Messages.getString("ParameterView.236"));
     jcbProxyNone.setToolTipText(Messages.getString("ParameterView.236"));
     jcbProxyNone.addActionListener(this);
 
@@ -1245,10 +1217,10 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     jcbNoneInternetAccess.setToolTipText(Messages.getString("ParameterView.265"));
     jcbNoneInternetAccess.addActionListener(alUI);
 
-    jcbProxyHttp = new JCheckBox(Messages.getString("ParameterView.237"));
+    jcbProxyHttp = new JRadioButton(Messages.getString("ParameterView.237"));
     jcbProxyHttp.setToolTipText(Messages.getString("ParameterView.237"));
     jcbProxyHttp.addActionListener(this);
-    jcbProxySocks = new JCheckBox(Messages.getString("ParameterView.238"));
+    jcbProxySocks = new JRadioButton(Messages.getString("ParameterView.238"));
     jcbProxySocks.setToolTipText(Messages.getString("ParameterView.238"));
     jcbProxySocks.addActionListener(this);
     bgProxy.add(jcbProxyNone);
@@ -1305,28 +1277,27 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     connectionTO.setToolTipText(Messages.getString("ParameterView.161"));
     connectionTO.addMouseWheelListener(new DefaultMouseWheelListener(connectionTO));
     // Add items
-    jpNetwork.add(jcbNoneInternetAccess, "0,0");
-    jpNetwork.add(jcbProxyNone, "0,1");
-    jpNetwork.add(jcbProxyHttp, "0,2");
-    jpNetwork.add(jcbProxySocks, "0,3");
-    jpNetwork.add(jlProxyHostname, "0,4");
-    jpNetwork.add(jtfProxyHostname, "1,5");
-    jpNetwork.add(jlProxyPort, "0,5");
-    jpNetwork.add(jtfProxyPort, "1,5");
-    jpNetwork.add(jlProxyLogin, "0,6");
-    jpNetwork.add(jtfProxyLogin, "1,6");
-    jpNetwork.add(jlProxyPwd, "0,7");
-    jpNetwork.add(jtfProxyPwd, "1,7");
-    jpNetwork.add(jlConnectionTO, "0,8");
-    jpNetwork.add(connectionTO, "1,8");
+    JPanel jpProxy = new JPanel(new MigLayout("insets 10,gapy 15, gapx 10", "[][grow,100:300:300]"));
+    jpProxy.setBorder(BorderFactory.createTitledBorder(Messages.getString("ParameterView.268")));
+    jpProxy.add(jcbProxyNone, "wrap");
+    jpProxy.add(jcbProxyHttp, "wrap");
+    jpProxy.add(jcbProxySocks, "wrap");
+    jpProxy.add(jlProxyHostname);
+    jpProxy.add(jtfProxyHostname, "wrap,grow");
+    jpProxy.add(jlProxyPort);
+    jpProxy.add(jtfProxyPort, "wrap,grow");
+    jpProxy.add(jlProxyLogin);
+    jpProxy.add(jtfProxyLogin, "wrap,grow");
+    jpProxy.add(jlProxyPwd);
+    jpProxy.add(jtfProxyPwd, "wrap,grow");
+
+    jpNetwork = new JPanel(new MigLayout("insets 10,gapy 15, gapx 10", "[grow]"));
+    jpNetwork.add(jcbNoneInternetAccess, "wrap");
+    jpNetwork.add(jlConnectionTO, "split 2");
+    jpNetwork.add(connectionTO, "wrap,grow,width 200!");
+    jpNetwork.add(jpProxy, "span");
 
     // - Last.FM
-    jpLastFM = new JPanel();
-    final double sizeLastFM[][] = { { p, 200 }, { p, p, p, p } };
-    final TableLayout layoutLastFM = new TableLayout(sizeLastFM);
-    layoutLastFM.setHGap(iXSeparator);
-    layoutLastFM.setVGap(iYSeparator);
-    jpLastFM.setLayout(layoutLastFM);
     jcbAudioScrobbler = new JCheckBox(Messages.getString("ParameterView.199"));
     jcbAudioScrobbler.setToolTipText(Messages.getString("ParameterView.200"));
     jcbAudioScrobbler.addActionListener(this);
@@ -1339,20 +1310,15 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     jcbEnableLastFMInformation = new JCheckBox(Messages.getString("ParameterView.240"));
     jcbEnableLastFMInformation.setToolTipText(Messages.getString("ParameterView.241"));
     // Add items
-    jpLastFM.add(jcbEnableLastFMInformation, "0,0");
-    jpLastFM.add(jcbAudioScrobbler, "0,1");
-    jpLastFM.add(jlASUser, "0,2");
-    jpLastFM.add(jtfASUser, "1,2");
-    jpLastFM.add(jlASPassword, "0,3");
-    jpLastFM.add(jpfASPassword, "1,3");
+    jpLastFM = new JPanel(new MigLayout("insets 10,gapy 15,gapx 10", "[grow]"));
+    jpLastFM.add(jcbEnableLastFMInformation, "wrap");
+    jpLastFM.add(jcbAudioScrobbler, "wrap");
+    jpLastFM.add(jlASUser);
+    jpLastFM.add(jtfASUser, "wrap,grow,width 100:300:300");
+    jpLastFM.add(jlASPassword);
+    jpLastFM.add(jpfASPassword, "wrap,grow,width 100:300:300");
 
     // - Cover
-    jpCovers = new JPanel();
-    final double sizeCover[][] = { { p, p }, { p, p, p, p, p, p } };
-    final TableLayout layoutCover = new TableLayout(sizeCover);
-    layoutCover.setVGap(iYSeparator);
-    layoutCover.setHGap(iXSeparator);
-    jpCovers.setLayout(layoutCover);
     jcbAutoCover = new JCheckBox(Messages.getString("ParameterView.148"));
     jcbAutoCover.setToolTipText(Messages.getString("ParameterView.149"));
     jcbAutoCover.addActionListener(this);
@@ -1383,23 +1349,18 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     jcbSaveExplorerFriendly.addActionListener(this);
 
     // Add items
-    jpCovers.add(jcbShuffleCover, "0,0");
-    jpCovers.add(jcbAutoCover, "0,1");
-    jpCovers.add(jlCoverSize, "0,2");
-    jpCovers.add(jcbCoverSize, "1,2");
-    jpCovers.add(jlDefaultCoverSearchName1, "0,3");
-    jpCovers.add(jtfDefaultCoverSearchName1, "1,3");
-    jpCovers.add(jlDefaultCoverSearchName2, "0,4");
-    jpCovers.add(jtfDefaultCoverSearchName2, "1,4");
-    jpCovers.add(jcbSaveExplorerFriendly, "0,5");
+    jpCovers = new JPanel(new MigLayout("insets 10,gapy 15,gapx 10"));
+    jpCovers.add(jcbShuffleCover, "wrap");
+    jpCovers.add(jcbAutoCover, "wrap");
+    jpCovers.add(jcbSaveExplorerFriendly, "wrap");
+    jpCovers.add(jlCoverSize);
+    jpCovers.add(jcbCoverSize, "wrap,grow");
+    jpCovers.add(jlDefaultCoverSearchName1);
+    jpCovers.add(jtfDefaultCoverSearchName1, "wrap,grow");
+    jpCovers.add(jlDefaultCoverSearchName2);
+    jpCovers.add(jtfDefaultCoverSearchName2, "wrap,grow");
 
     // -- User interface --
-    jpUI = new JPanel();
-    final double sizeUI[][] = { { p, p }, { p, p, p, p, p, p, p, p, p } };
-    final TableLayout layoutUI = new TableLayout(sizeUI);
-    layoutUI.setHGap(iXSeparator);
-    layoutUI.setVGap(iYSeparator);
-    jpUI.setLayout(layoutUI);
     // Catalog view
     jlCatalogPages = new JLabel(Messages.getString("ParameterView.221"));
     jlCatalogPages.setToolTipText(Messages.getString("ParameterView.222"));
@@ -1466,35 +1427,28 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
       scbLAF.addItem(theme);
     }
     scbLAF.setToolTipText(Messages.getString("ParameterView.44"));
+
     // Add items
-    jpUI.add(jlFonts, "0,0");
-    jpUI.add(jsFonts, "1,0");
-    jpUI.add(jlLAF, "0,1");
-    jpUI.add(scbLAF, "1,1");
-    jpUI.add(jcbShowPopups, "0,4");
-    jpUI.add(jcbShowBaloon, "0,5");
-    jpUI.add(toggle, "0,6");
-    jpUI.add(catalogView, "0,7,1,7");
-    jpUI.add(jlPerspectiveSize, "0,8");
-    jpUI.add(jsPerspectiveSize, "1,8");
+    jpUI = new JPanel(new MigLayout("insets 10,gapx 10,gapy 15"));
+    jpUI.add(jcbShowPopups, "wrap");
+    jpUI.add(jcbShowBaloon, "wrap");
+    jpUI.add(jlFonts);
+    jpUI.add(jsFonts, "wrap,grow");
+    jpUI.add(jlLAF);
+    jpUI.add(scbLAF, "wrap,grow");
+    jpUI.add(jlPerspectiveSize);
+    jpUI.add(jsPerspectiveSize, "wrap,grow");
+    jpUI.add(toggle, "wrap,grow");
+    jpUI.add(catalogView, "wrap,grow,span");
 
     // --OK/cancel panel
-    final Dimension dim = new Dimension(200, 20);
-    jpOKCancel = new JPanel();
-    jpOKCancel.setLayout(new FlowLayout());
     jbOK = new JButton(Messages.getString("ParameterView.85"), IconLoader.getIcon(JajukIcons.OK));
-    jbOK.setPreferredSize(dim);
     jbOK.addActionListener(this);
-    jpOKCancel.add(jbOK);
     jbDefault = new JButton(Messages.getString("ParameterView.86"), IconLoader
         .getIcon(JajukIcons.DEFAULTS_BIG));
-    jbDefault.setPreferredSize(dim);
     jbDefault.addActionListener(this);
-    jpOKCancel.add(jbDefault);
 
     // --Global layout
-    final double size[][] = { { 0.99 }, { 0.9, 0.10 } };
-    setLayout(new TableLayout(size));
     // add main panels
     jtpMain = new JTabbedPane(SwingConstants.TOP);
     // ScrollPane without border
@@ -1526,8 +1480,10 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
       jtpMain.setSelectedIndex(0);
     }
     jtpMain.addChangeListener(this);
-    add(jtpMain, "0,0");
-    add(jpOKCancel, "0,1");
+    setLayout(new MigLayout("insets 10,gapx 10","[grow]"));
+    add(jtpMain, "wrap,span,grow");
+    add(jbOK, "split 2");
+    add(jbDefault);
     // update widgets state
     updateSelection();
     ObservationManager.register(this);
