@@ -20,8 +20,6 @@
 
 package org.jajuk.ui.thumbnails;
 
-import info.clearthought.layout.TableLayout;
-
 import java.awt.KeyEventDispatcher;
 import java.awt.KeyboardFocusManager;
 import java.awt.Rectangle;
@@ -117,9 +115,6 @@ public class ThumbnailPopup extends JWindow {
    */
   public ThumbnailPopup(String description, Rectangle origin, boolean autoclose) {
     getRootPane().setOpaque(true);
-    jp = new JPanel();
-    double[][] size = { { TableLayout.FILL }, { TableLayout.FILL } };
-    jp.setLayout(new TableLayout(size));
     text = new JEditorPane("text/html", description);
     text.setEditable(false);
     text.addHyperlinkListener(new HyperlinkListener() {
@@ -173,9 +168,7 @@ public class ThumbnailPopup extends JWindow {
       }
     });
     final JScrollPane jspText = new JScrollPane(text);
-    jspText.getVerticalScrollBar().setValue(0);
-    jp.add(jspText, "0,0");
-    setContentPane(jp);
+    add(jspText);
     if (autoclose) {
       // Make sure to close this popup when it lost focus
       text.addMouseListener(new MouseAdapter() {

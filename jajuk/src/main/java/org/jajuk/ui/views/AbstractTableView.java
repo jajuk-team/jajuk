@@ -22,7 +22,6 @@ package org.jajuk.ui.views;
 
 import ext.AutoCompleteDecorator;
 import ext.SwingWorker;
-import info.clearthought.layout.TableLayout;
 
 import java.awt.Color;
 import java.awt.event.ActionEvent;
@@ -55,6 +54,8 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableColumn;
+
+import net.miginfocom.swing.MigLayout;
 
 import org.jajuk.base.AuthorManager;
 import org.jajuk.base.File;
@@ -310,31 +311,24 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
       }
     });
     jtfValue.setToolTipText(Messages.getString("AbstractTableView.3"));
-    int iXspace = 5;
-    double sizeControl[][] = {
-        { iXspace, 20, 3 * iXspace, TableLayout.FILL, iXspace, 0.3, TableLayout.FILL,
-            TableLayout.FILL, iXspace, 0.3, 2 }, { 5, 23, 5 } };
-    TableLayout layout = new TableLayout(sizeControl);
-    jpControl.setLayout(layout);
-    jpControl.add(jtbEditable, "1,1");
-    jpControl.add(jlFilter, "3,1");
-    jpControl.add(jcbProperty, "5,1");
-    jpControl.add(jlEquals, "7,1");
-    jpControl.add(jtfValue, "9,1");
-    double size[][] = { { 0.99 }, { TableLayout.PREFERRED, 0.99 } };
-    setLayout(new TableLayout(size));
-    add(jpControl, "0,0");
+    jpControl.setLayout(new MigLayout("insets 2,gapy 6", "[20][grow,gp 70][grow]"));
+    jpControl.add(jtbEditable, "gapleft 5,gapright 15");
+    jpControl.add(jlFilter, "split 2");
+    jpControl.add(jcbProperty, "grow,gapright 15");
+    jpControl.add(jlEquals, "split 2");
+    jpControl.add(jtfValue, "grow,gapright 2");
     setCellEditors();
     JScrollPane jsp = new JScrollPane(jtable);
-    jsp.setBorder(BorderFactory.createEmptyBorder(0, 1, 0, 0));
-    add(jsp, "0,1");
+    setLayout(new MigLayout("", "[grow]"));
+    add(jpControl, "wrap,grow");
+    add(jsp, "grow");
     jtable.setDragEnabled(true);
     jtable.setTransferHandler(new TableTransferHandler(jtable));
     jtable.showColumns(jtable.getColumnsConf());
     applyFilter(null, null);
     jtable.setSortOrder(0, SortOrder.ASCENDING);
     jtable.setHighlighters(UtilGUI.getAlternateHighlighter());
-    
+
     // Hide the copy url if several items selection. Do not simply disable them
     // as the getMenu() method enable all menu items
     jtable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {

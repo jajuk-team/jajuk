@@ -21,7 +21,6 @@
 package org.jajuk.ui.views;
 
 import ext.FlowScrollPanel;
-import info.clearthought.layout.TableLayout;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -43,7 +42,6 @@ import java.util.List;
 import java.util.Set;
 
 import javax.swing.BorderFactory;
-import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
@@ -57,6 +55,8 @@ import javax.swing.Timer;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+
+import net.miginfocom.swing.MigLayout;
 
 import org.jajuk.base.Album;
 import org.jajuk.base.AlbumManager;
@@ -210,11 +210,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
     }
     jcbSorter.setSelectedIndex(Conf.getInt(Const.CONF_THUMBS_SORTER));
     jcbSorter.addActionListener(this);
-    JToolBar jtbSort = new JajukJToolbar();
-    jtbSort.add(jlSorter);
-    jtbSort.add(Box.createHorizontalStrut(5));
-    jtbSort.add(jcbSorter);
-
+    
     jlFilter = new JLabel(Messages.getString("AbstractTableView.0") + " ");
     jlContains = new JLabel("   " + Messages.getString("AbstractTableView.7") + " ");
     jcbFilter = new SteppedComboBox();
@@ -230,18 +226,12 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
     }
     jcbFilter.setSelectedIndex(Conf.getInt(Const.CONF_THUMBS_FILTER));
     jcbFilter.addActionListener(this);
-    jtfValue = new JTextField(5);
+    jtfValue = new JTextField();
     jtfValue.setForeground(new Color(172, 172, 172));
     jtfValue.setBorder(BorderFactory.createLineBorder(Color.BLUE));
     jtfValue.setFont(FontManager.getInstance().getFont(JajukFont.SEARCHBOX));
     jtfValue.addKeyListener(new CatalogViewKeyAdaptor());
-    JToolBar jtbFilter = new JajukJToolbar();
-    jtbFilter.add(jlFilter);
-    jtbFilter.add(Box.createHorizontalStrut(5));
-    jtbFilter.add(jcbFilter);
-    jtbFilter.add(jlContains);
-    jtbFilter.add(jtfValue);
-
+    
     JToolBar jtbPage = new JajukJToolbar();
     jtbPage.setFloatable(false);
     jtbPage.setRollover(true);
@@ -257,16 +247,16 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
     jtbPage.add(jbPrev);
     jtbPage.add(jcbPage);
     jtbPage.add(jbNext);
-    double p = TableLayout.PREFERRED;
-    double sizeControlTop[][] = { { 10, p, p, p, 20, p, 10 }, { p } };
-
-    TableLayout layoutTop = new TableLayout(sizeControlTop);
-    layoutTop.setHGap(5);
-    jpControlTop.setLayout(layoutTop);
-    jpControlTop.add(jtbFilter, "1,0,l,c");
-    jpControlTop.add(jtbSort, "3,0,l,c");
-    jpControlTop.add(jtbPage, "5,0,l,c");
-
+  
+    jpControlTop.setLayout(new MigLayout("ins 8","[grow][grow][grow][grow]"));
+    jpControlTop.add(jlFilter,"split 2");
+    jpControlTop.add(jcbFilter,"grow");
+    jpControlTop.add(jlContains,"split 2");
+    jpControlTop.add(jtfValue,"gapright 40,grow,width 100::");
+    jpControlTop.add(jlSorter,"split 2");
+    jpControlTop.add(jcbSorter,"gapright 40,grow");
+    jpControlTop.add(jtbPage,"gapright 5,grow");
+    
     // --Bottom (less used) items
     jcbShowNoCover = new JCheckBox(Messages.getString("CatalogView.2"));
     jcbShowNoCover.setSelected(Conf.getBoolean(Const.CONF_THUMBS_SHOW_WITHOUT_COVER));
@@ -291,14 +281,10 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
     jsSize.setToolTipText(Messages.getString("CatalogView.4") + " " + sizeToDisplay);
     jsSize.addChangeListener(new CatalogViewChangeListener());
 
-    double sizeControlBottom[][] = { { p, p, p, TableLayout.FILL, 5 }, { p } };
-    TableLayout layoutBottom = new TableLayout(sizeControlBottom);
-    layoutBottom.setHGap(20);
-    jpControlBottom = new JPanel();
-    jpControlBottom.setLayout(layoutBottom);
-    jpControlBottom.add(jcbShowNoCover, "0,0");
-    jpControlBottom.add(jlSize, "1,0");
-    jpControlBottom.add(jsSize, "2,0,c,c");
+    jpControlBottom = new JPanel(new MigLayout("gapx 20"));
+    jpControlBottom.add(jcbShowNoCover);
+    jpControlBottom.add(jlSize,"split 2");
+    jpControlBottom.add(jsSize);
 
     // Covers
     initCovers();
@@ -349,12 +335,10 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
     jpItems.setScroller(jsp);
     jpItems.setLayout(new FlowLayout(FlowLayout.LEFT));
     // global layout
-    double size[][] = { { TableLayout.FILL },
-        { TableLayout.PREFERRED, 5, TableLayout.FILL, 5, TableLayout.PREFERRED, 5 } };
-    setLayout(new TableLayout(size));
-    add(jpControlTop, "0,0,l,c");
-    add(jsp, "0,2");
-    add(jpControlBottom, "0,4,l,c");
+    setLayout(new MigLayout("","[grow]"));
+    add(jpControlTop, "wrap,grow");
+    add(jsp, "wrap,grow");
+    add(jpControlBottom, "wrap,grow");
   }
 
   /**

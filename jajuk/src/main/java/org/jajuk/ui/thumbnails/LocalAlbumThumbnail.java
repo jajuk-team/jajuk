@@ -20,8 +20,6 @@
 
 package org.jajuk.ui.thumbnails;
 
-import info.clearthought.layout.TableLayout;
-
 import java.awt.Color;
 import java.io.File;
 import java.net.MalformedURLException;
@@ -37,6 +35,8 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.KeyStroke;
 import javax.swing.border.EmptyBorder;
+
+import net.miginfocom.swing.MigLayout;
 
 import org.jajuk.base.Album;
 import org.jajuk.base.Author;
@@ -103,20 +103,16 @@ public class LocalAlbumThumbnail extends AbstractThumbnail {
     if (!album.isThumbAvailable(size)) {
       // create the thumbnail if it doesn't exist
       boolean thumbCreated = ThumbnailManager.refreshThumbnail(album, size);
-      if (!thumbCreated){
+      if (!thumbCreated) {
         this.fCover = null;
       }
     }
-    double[][] dMain = null;
     ImageIcon ii = album.getThumbnail(size);
     jlIcon = new JLabel(ii);
     if (fCover != null) {
       jlIcon.setBorder(new DropShadowBorder(Color.BLACK, 5, 0.5f, 5, false, true, false, true));
     }
     if (bShowFullText) {
-      dMain = new double[][] { { TableLayout.FILL, TableLayout.PREFERRED, TableLayout.FILL },
-          { size + 10, 10, TableLayout.PREFERRED, 5, TableLayout.PREFERRED } };
-      setLayout(new TableLayout(dMain));
       int iRows = 7 + 7 * ((size / 50) - 1);
 
       Author author = AuthorManager.getInstance().getAssociatedAuthors(album).iterator().next();
@@ -126,14 +122,15 @@ public class LocalAlbumThumbnail extends AbstractThumbnail {
 
       // we have to use a empty border to avoid getting default border
       jlAuthor.setBorder(new EmptyBorder(0, 0, 0, 0));
-
       jlAlbum = new JLabel(UtilString.getLimitedString(album.getName2(), iRows));
       jlAlbum.setToolTipText(album.getName2());
-
       jlAlbum.setBorder(new EmptyBorder(0, 0, 0, 0));
-      add(jlIcon, "1,0,c,c");
-      add(jlAuthor, "1,2");
-      add(jlAlbum, "1,4");
+      
+      // Add items
+      setLayout(new MigLayout("", "[grow]", "[" + (size + 10) + "!][grow][grow]"));
+      add(jlIcon, "wrap,center");
+      add(jlAuthor, "wrap,center");
+      add(jlAlbum, "wrap,center");
     } else {
       setLayout(new VerticalLayout(2));
       add(UtilGUI.getCentredPanel(jlIcon));
