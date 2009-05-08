@@ -18,7 +18,7 @@
  *  $Revision: 3156 $
  */
 
-package org.jajuk.ui.widgets;
+package org.jajuk.ui.wizard;
 
 import info.clearthought.layout.TableLayout;
 import info.clearthought.layout.TableLayoutConstants;
@@ -50,6 +50,8 @@ import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.services.alarm.AlarmManager;
+import org.jajuk.ui.widgets.JajukWindow;
+import org.jajuk.ui.widgets.SearchBox;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.Messages;
