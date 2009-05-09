@@ -26,10 +26,12 @@ import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Set;
 import java.util.StringTokenizer;
 
 import javax.swing.JMenu;
@@ -48,6 +50,7 @@ import org.jajuk.base.Item;
 import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
+import org.jajuk.events.Observer;
 import org.jajuk.ui.helpers.ILaunchCommand;
 import org.jajuk.ui.helpers.JajukCellRenderer;
 import org.jajuk.ui.helpers.JajukTableModel;
@@ -70,8 +73,8 @@ import org.jdesktop.swingx.table.TableColumnExt;
  * <p>
  * Bring a menu displayed on right click
  */
-public class JajukTable extends JXTable implements TableColumnModelListener, ListSelectionListener,
-    java.awt.event.MouseListener {
+public class JajukTable extends JXTable implements Observer, TableColumnModelListener,
+    ListSelectionListener, java.awt.event.MouseListener {
 
   private static final long serialVersionUID = 1L;
 
@@ -121,6 +124,8 @@ public class JajukTable extends JXTable implements TableColumnModelListener, Lis
     getSelectionModel().addListSelectionListener(this);
     // Listen for clicks
     addMouseListener(this);
+
+    ObservationManager.register(this);
   }
 
   /**
@@ -137,7 +142,6 @@ public class JajukTable extends JXTable implements TableColumnModelListener, Lis
   private void init(boolean bSortable) {
     super.setSortable(bSortable);
     super.setColumnControlVisible(true);
-    setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
   }
 
   /**
@@ -206,6 +210,14 @@ public class JajukTable extends JXTable implements TableColumnModelListener, Lis
     setAutoResizeMode(arm);
     // now allow storing every margin
     storeColumnMagin = true;
+
+    // must be done here and not before we add columns
+    if (Conf.containsProperty(getConfKeyForIsHorizontalScrollable())) {
+      System.out.println(Conf.getBoolean(getConfKeyForIsHorizontalScrollable()));
+      setHorizontalScrollEnabled(Conf.getBoolean(getConfKeyForIsHorizontalScrollable()));
+    } else {
+      setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+    }
   }
 
   /**
@@ -515,7 +527,7 @@ public class JajukTable extends JXTable implements TableColumnModelListener, Lis
 
   public void columnMarginChanged(ChangeEvent e) {
 
-    if (storeColumnMagin&&isVisible()) {
+    if (storeColumnMagin && isVisible()) {
       // store column margin
       DefaultTableColumnModelExt tableColumnModel = (DefaultTableColumnModelExt) e.getSource();
 
@@ -531,15 +543,52 @@ public class JajukTable extends JXTable implements TableColumnModelListener, Lis
 
   private String getConfKeyForColumnWidth(TableColumn tableColumn) {
 
-    String tableID = sConf;
-    if (tableID == null) {
-      tableID = "jajuk.table";
-    }
+    String tableID = getTableId();
+
     String identifier = tableColumn.getIdentifier().toString();
     if (identifier.equals("")) {
       identifier = "noColumnName";
     }
     return tableID + "." + identifier + ".width";
 
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.jajuk.events.Observer#getRegistrationKeys()
+   */
+  public Set<JajukEvents> getRegistrationKeys() {
+    Set<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
+    eventSubjectSet.add(JajukEvents.EXITING);
+    return eventSubjectSet;
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.jajuk.events.Observer#update(org.jajuk.events.JajukEvent)
+   */
+  public void update(JajukEvent event) {
+    JajukEvents subject = event.getSubject();
+    if (JajukEvents.EXITING.equals(subject)) {
+      Conf.setProperty(getConfKeyForIsHorizontalScrollable(), Boolean
+          .toString(isHorizontalScrollEnabled()));
+    }
+  }
+
+  private String getConfKeyForIsHorizontalScrollable() {
+    return getTableId() + ".is_horizontal_scrollable";
+  }
+
+  /**
+   * 
+   */
+  private String getTableId() {
+    String tableID = sConf;
+    if (tableID == null) {
+      tableID = "jajuk.table";
+    }
+    return tableID;
   }
 }
