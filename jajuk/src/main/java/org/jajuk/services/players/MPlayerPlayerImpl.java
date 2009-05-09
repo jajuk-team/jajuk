@@ -127,7 +127,7 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
       try {
         BufferedReader in = new BufferedReader(new InputStreamReader(proc.getInputStream()));
         String line = null;
-        while(!bStop) {
+        while (!bStop) {
           try {
             line = in.readLine();
             if (line == null) {
@@ -198,9 +198,23 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
               return;
             }
           } else if (line.matches("ANS_LENGTH.*")) {
+            /*
+             * To compute the current track length (used by the information
+             * panel to display remaining time and position), we use the tag
+             * duration first and the mplayer duration then if the tag duration
+             * looks wrong (example : wrongly tagged file or format that doesn't
+             * support tags like wav). Indeed, mplayer duration is sometimes
+             * wrong (mplayer bug).
+             */
             StringTokenizer st = new StringTokenizer(line, "=");
             st.nextToken();
-            lDuration = (long) (Float.parseFloat(st.nextToken()) * 1000);
+            long mplayerDuration = (long) (Float.parseFloat(st.nextToken()) * 1000);
+            long tagDuration = fCurrent.getTrack().getDuration() * 1000;
+            if (tagDuration <= 0) {
+              lDuration = mplayerDuration;
+            } else {
+              lDuration = tagDuration;
+            }
           }
           // End of file
           else if (line.matches(".*\\x2e\\x2e\\x2e.*\\(.*\\).*")) {
@@ -258,8 +272,8 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
    *      float)
    */
   @Override
-  public void play(org.jajuk.base.File file, float fPosition, long length, float fVolume) throws IOException, JajukException
-      {
+  public void play(org.jajuk.base.File file, float fPosition, long length, float fVolume)
+      throws IOException, JajukException {
     this.lTime = 0;
     this.fVolume = fVolume;
     this.length = length;
