@@ -104,9 +104,11 @@ public class AlarmClockDialog extends JDialog implements ActionListener, ItemLis
 
   private final SearchBox sbSearch;
 
-  private SearchResult sr;
+  transient private SearchResult sr;
 
   public AlarmClockDialog() {
+    super();
+    
     jcbTime = new JCheckBox(Messages.getString("AlarmDialog.0"));
     jcbTime.addActionListener(this);
 
@@ -221,31 +223,45 @@ public class AlarmClockDialog extends JDialog implements ActionListener, ItemLis
   public void actionPerformed(final ActionEvent e) {
     boolean playAction = (jcbAlarmAction.getSelectedIndex() == 0);
     if (e.getSource() == jcbAlarmAction) {
-      jlChoice.setEnabled(playAction);
-      jrbShuffle.setEnabled(playAction);
-      jrbBestof.setEnabled(playAction);
-      jrbNovelties.setEnabled(playAction);
-      jrbFile.setEnabled(playAction);
-      sbSearch.setEnabled(playAction);
+      handleAction(playAction);
     } else if (e.getSource() == jbOK) {
       saveValues();
     } else if (e.getSource() == jbCancel) {
       dispose();
     } else if (e.getSource() == jcbTime) {
-      // Enable/ disable all widgets is user enables or disables the entire
-      // alarm
-      boolean enabled = jcbTime.isSelected();
-      jtfHour.setEnabled(enabled);
-      jtfMinutes.setEnabled(enabled);
-      jtfSeconds.setEnabled(enabled);
-      jcbAlarmAction.setEnabled(enabled);
-      jlChoice.setEnabled(enabled && playAction);
-      jrbShuffle.setEnabled(enabled && playAction);
-      jrbBestof.setEnabled(enabled && playAction);
-      jrbNovelties.setEnabled(enabled && playAction);
-      jrbFile.setEnabled(enabled && playAction);
-      sbSearch.setEnabled(enabled && playAction);
+      handleTimeCheckbox(playAction);
     }
+  }
+
+  /**
+   * @param playAction
+   */
+  private void handleAction(boolean playAction) {
+    jlChoice.setEnabled(playAction);
+    jrbShuffle.setEnabled(playAction);
+    jrbBestof.setEnabled(playAction);
+    jrbNovelties.setEnabled(playAction);
+    jrbFile.setEnabled(playAction);
+    sbSearch.setEnabled(playAction);
+  }
+
+  /**
+   * @param playAction
+   */
+  private void handleTimeCheckbox(boolean playAction) {
+    // Enable/ disable all widgets if user enables or disables the entire
+    // alarm
+    boolean enabled = jcbTime.isSelected();
+    jtfHour.setEnabled(enabled);
+    jtfMinutes.setEnabled(enabled);
+    jtfSeconds.setEnabled(enabled);
+    jcbAlarmAction.setEnabled(enabled);
+    jlChoice.setEnabled(enabled && playAction);
+    jrbShuffle.setEnabled(enabled && playAction);
+    jrbBestof.setEnabled(enabled && playAction);
+    jrbNovelties.setEnabled(enabled && playAction);
+    jrbFile.setEnabled(enabled && playAction);
+    sbSearch.setEnabled(enabled && playAction);
   }
 
   public void itemStateChanged(final ItemEvent e) {
@@ -315,7 +331,7 @@ public class AlarmClockDialog extends JDialog implements ActionListener, ItemLis
   /**
    * Load persisted values to GUI
    */
-  private void loadValues() {
+  private final void loadValues() {
     jcbTime.setSelected(Conf.getBoolean(CONF_ALARM_ENABLED));
     jtfHour.setText(Conf.getString(CONF_ALARM_TIME_HOUR));
     jtfMinutes.setText(Conf.getString(CONF_ALARM_TIME_MINUTES));
