@@ -24,6 +24,9 @@ import java.io.File;
 import org.jajuk.Main;
 import org.jajuk.base.Collection;
 import org.jajuk.base.DeviceManager;
+import org.jajuk.events.JajukEvent;
+import org.jajuk.events.JajukEvents;
+import org.jajuk.events.ObservationManager;
 import org.jajuk.services.bookmark.History;
 import org.jajuk.services.dj.AmbienceManager;
 import org.jajuk.services.players.FIFO;
@@ -53,8 +56,11 @@ public class ExitService extends Thread {
   @Override
   public void run() {
     Log.debug("Exit Hook begin");
+
     // stop sound ASAP
     Player.stop(true);
+
+    ObservationManager.notifySync(new JajukEvent(JajukEvents.EXITING));
 
     try {
       if (iExitCode == 0) {

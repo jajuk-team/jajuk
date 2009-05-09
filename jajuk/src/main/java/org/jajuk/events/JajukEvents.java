@@ -142,6 +142,7 @@ public enum JajukEvents {
   // ALARMS CHANGED (REMOVED, ADDED)
   ALARMS_CHANGE,
   // Thumb created
-  THUMB_CREATED,  
-
+  THUMB_CREATED,
+  // Exiting Jajuk
+  EXITING
 }
