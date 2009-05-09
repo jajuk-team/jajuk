@@ -152,12 +152,7 @@ public class SuggestionView extends ViewAdapter implements Observer {
     }
     // Now use the new TabbedPaneUI
     tabs.setUI(new MyTabbedPaneUI());
-    // Refresh tabs on demand only
-    tabs.addChangeListener(new ChangeListener() {
-      public void stateChanged(ChangeEvent arg0) {
-        refreshLastFMCollectionTabs();
-      }
-    });
+
     // Fill tabs with empty tabs
     tabs.addTab(Messages.getString("SuggestionView.1"), UtilGUI.getCentredPanel(new JLabel(Messages
         .getString("WikipediaView.3"))));
@@ -170,20 +165,26 @@ public class SuggestionView extends ViewAdapter implements Observer {
     tabs.addTab(Messages.getString("SuggestionView.4"), UtilGUI.getCentredPanel(new JLabel(Messages
         .getString("SuggestionView.7"))));
 
-    if (Conf.containsProperty(VIEW_NAME_SUGGESTION)) {
-      int index = Conf.getInt(VIEW_NAME_SUGGESTION);
+    // Refresh tabs on demand only, add changelisterner after tab creation to
+    // avoid that the stored tab is overwrited at startup
+    tabs.addChangeListener(new ChangeListener() {
+      public void stateChanged(ChangeEvent arg0) {
+        refreshLastFMCollectionTabs();
+        // store the selected tab
+        Conf.setProperty(Const.VIEW_NAME_SUGGESTION + "_"
+            + ((getPerspective() == null) ? "solo" : getPerspective().getID()), Integer.toString(
+            tabs.getSelectedIndex()).toString());
+      }
+    });
+
+    if (Conf.containsProperty(Const.VIEW_NAME_SUGGESTION + "_"
+        + ((getPerspective() == null) ? "solo" : getPerspective().getID()))) {
+      int index = Conf.getInt(Const.VIEW_NAME_SUGGESTION + "_"
+          + ((getPerspective() == null) ? "solo" : getPerspective().getID()));
       if (index > 0 && index < tabs.getTabCount()) {
         tabs.setSelectedIndex(index);
       }
     }
-
-    tabs.addChangeListener(new ChangeListener() {
-
-      public void stateChanged(ChangeEvent e) {
-        Conf.setProperty(VIEW_NAME_SUGGESTION, new Integer(tabs.getSelectedIndex()).toString());
-      }
-
-    });
 
     // Add panels
     refreshLocalCollectionTabs();
