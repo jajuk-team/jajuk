@@ -43,7 +43,12 @@ public class JajukButtonSetIconAdapter extends JajukButton {
     } else if (icon.equals(IconLoader.getIcon(JajukIcons.PLAY))) {
       destIcon = IconLoader.getIcon(JajukIcons.PLAYER_PLAY_BIG);
     }
-    super.setIcon(destIcon);
+
+    if (destIcon == null) {
+      super.setIcon(icon);
+    } else {
+      super.setIcon(destIcon);
+    }
   }
 
 }
