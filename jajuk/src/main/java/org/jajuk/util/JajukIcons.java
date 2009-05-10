@@ -410,5 +410,7 @@ public enum JajukIcons {
   
   PLAYER_PAUSE_BIG, 
   
-  PLAYER_REWIND_BIG
+  PLAYER_REWIND_BIG, 
+  
+  AUTOSCROLL
 }

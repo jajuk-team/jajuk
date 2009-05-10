@@ -212,6 +212,10 @@ final public class IconLoader {
     else if (icon == JajukIcons.PLAYER_REWIND_BIG) {
       out = new ImageIcon(UtilSystem.getResource("icons/64x64/player_rew_64x64.png"));
     }
+    
+    else if (icon == JajukIcons.AUTOSCROLL) {
+      out = new ImageIcon(UtilSystem.getResource("icons/16x16/autoscroll.png"));
+    }
 
     else if (icon == JajukIcons.REW_16X16) {
       out = new ImageIcon(UtilSystem.getResource("icons/16x16/player_rew_16x16.png"));

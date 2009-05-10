@@ -213,7 +213,6 @@ public class JajukTable extends JXTable implements Observer, TableColumnModelLis
 
     // must be done here and not before we add columns
     if (Conf.containsProperty(getConfKeyForIsHorizontalScrollable())) {
-      System.out.println(Conf.getBoolean(getConfKeyForIsHorizontalScrollable()));
       setHorizontalScrollEnabled(Conf.getBoolean(getConfKeyForIsHorizontalScrollable()));
     } else {
       setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);

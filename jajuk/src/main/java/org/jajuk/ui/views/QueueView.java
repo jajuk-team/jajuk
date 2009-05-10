@@ -62,6 +62,7 @@ import org.jajuk.ui.helpers.PlaylistTableModel;
 import org.jajuk.ui.widgets.JajukButton;
 import org.jajuk.ui.widgets.JajukJToolbar;
 import org.jajuk.ui.widgets.JajukTable;
+import org.jajuk.ui.widgets.JajukToggleButton;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
@@ -79,6 +80,8 @@ import org.jdesktop.swingx.decorator.Highlighter;
 public class QueueView extends PlaylistView {
 
   private static final long serialVersionUID = -2851288035506442507L;
+  private JScrollPane jsp;
+  private JajukToggleButton jtbAutoScroll;
 
   /*
    * (non-Javadoc)
@@ -119,6 +122,9 @@ public class QueueView extends PlaylistView {
     jbClear.setToolTipText(Messages.getString("QueueView.1"));
     jbClear.addActionListener(this);
 
+    jtbAutoScroll = new JajukToggleButton(IconLoader.getIcon(JajukIcons.AUTOSCROLL));
+    jtbAutoScroll.setToolTipText(Messages.getString("QueueView.2"));
+
     JToolBar jtb = new JajukJToolbar();
 
     jtb.add(jbSave);
@@ -128,6 +134,7 @@ public class QueueView extends PlaylistView {
     jtb.add(jbDown);
     jtb.addSeparator();
     jtb.add(jbClear);
+    jtb.add(jtbAutoScroll);
 
     jpEditorControl.add(jtb, "1,1");
     jpEditorControl.add(jlTitle, "3,1,r,c");
@@ -150,7 +157,7 @@ public class QueueView extends PlaylistView {
     double size[][] = { { 0.99 }, { TableLayout.PREFERRED, 0.99 } };
     setLayout(new TableLayout(size));
     add(jpEditorControl, "0,0");
-    JScrollPane jsp = new JScrollPane(editorTable);
+    jsp = new JScrollPane(editorTable);
     jsp.setBorder(BorderFactory.createEmptyBorder(0, 1, 0, 0));
     add(jsp, "0,1");
     // menu items
@@ -281,6 +288,24 @@ public class QueueView extends PlaylistView {
             editorModel.getItems().clear();
             editorModel.getPlanned().clear();
             refreshQueue();
+
+            if (jtbAutoScroll.isSelected()) {
+              SwingUtilities.invokeLater(new Runnable() {
+                public void run() {
+                  if (FIFO.getFIFOSize() > 0) {
+                    double index = FIFO.getIndex();
+                    double size = FIFO.getFIFOSize();
+                    double factor = (index / size);
+                    int value = (int) (factor * jsp.getVerticalScrollBar().getMaximum());
+                    if (value >= jsp.getVerticalScrollBar().getMinimum()
+                        && value <= jsp.getVerticalScrollBar().getMaximum()) {
+                      jsp.getVerticalScrollBar().setValue(value);
+                    }
+                  }
+                }
+              });
+            }
+
           } else if (JajukEvents.CUSTOM_PROPERTIES_ADD.equals(subject)) {
             Properties properties = event.getDetails();
             if (properties == null) {
