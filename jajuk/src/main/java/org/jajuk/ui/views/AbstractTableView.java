@@ -311,7 +311,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
       }
     });
     jtfValue.setToolTipText(Messages.getString("AbstractTableView.3"));
-    jpControl.setLayout(new MigLayout("insets 2,gapy 6", "[20][grow,gp 70][grow]"));
+    jpControl.setLayout(new MigLayout("insets 5", "[20][grow,gp 70][grow]"));
     jpControl.add(jtbEditable, "gapleft 5,gapright 15");
     jpControl.add(jlFilter, "split 2");
     jpControl.add(jcbProperty, "grow,gapright 15");

@@ -21,8 +21,6 @@
 package org.jajuk.ui.views;
 
 import ext.SwingWorker;
-import info.clearthought.layout.TableLayout;
-import info.clearthought.layout.TableLayoutConstants;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -58,6 +56,8 @@ import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 import javax.swing.plaf.basic.BasicComboBoxRenderer;
+
+import net.miginfocom.swing.MigLayout;
 
 import org.jajuk.base.Album;
 import org.jajuk.base.Author;
@@ -209,10 +209,6 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
    * @see org.jajuk.ui.IView#display()
    */
   public void initUI(boolean includeControls) {
-    // global layout
-    final double size[][] = { { TableLayoutConstants.FILL },
-        { TableLayoutConstants.PREFERRED, 5, TableLayoutConstants.FILL, 5 } };
-    setLayout(new TableLayout(size));
     // Control panel
     jlSearching = new JLabel("", IconLoader.getIcon(JajukIcons.NET_SEARCH), SwingConstants.CENTER);
     jpControl = new JPanel();
@@ -298,25 +294,12 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
     jtb.add(jbDefault);
 
     if (includeControls) {
-      final double sizeControl[][] = {
-      // Toolbar
-          { 5, TableLayoutConstants.PREFERRED, 10,
-          // size label
-              TableLayoutConstants.FILL, 10,
-              // nb of found covers label
-              TableLayoutConstants.FILL, 5,
-              // Accuracy combo
-              TableLayoutConstants.PREFERRED, 5,
-              // searching icon
-              25, 5 }, { 3, 30, 3 } };
-      final TableLayout layout = new TableLayout(sizeControl);
-      jpControl.setLayout(layout);
-
-      jpControl.add(jtb, "1,1");
-      jpControl.add(jlSize, "3,1,c,c");
-      jpControl.add(jlFound, "5,1");
-      jpControl.add(jcbAccuracy, "7,1");
-      jpControl.add(jlSearching, "9,1,c,c");
+      jpControl.setLayout(new MigLayout("insets 5","[][grow][grow][][25]"));
+      jpControl.add(jtb);
+      jpControl.add(jlSize, "center,gapright 5::");
+      jpControl.add(jlFound, "center,gapright 5::");
+      jpControl.add(jcbAccuracy,"grow");
+      jpControl.add(jlSearching);
     } else {
       jpControl.setLayout(new BorderLayout());
       jpControl.setBorder(BorderFactory.createEmptyBorder());
@@ -335,7 +318,9 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
     } catch (final Exception e) {
       Log.error(e);
     }
-    add(jpControl, "0,0");
+    // global layout
+    setLayout(new MigLayout("", "[grow]"));
+    add(jpControl, "grow,wrap");
     // listen for resize
     addComponentListener(CoverView.this);
 
@@ -372,8 +357,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
   /*
    * (non-Javadoc)
    * 
-   * @see
-   * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+   * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
    */
   public void actionPerformed(final ActionEvent e) {
     if (e.getSource() == jcbAccuracy) {
@@ -666,9 +650,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
   /*
    * (non-Javadoc)
    * 
-   * @see
-   * java.awt.event.ComponentListener#componentResized(java.awt.event.ComponentEvent
-   * )
+   * @see java.awt.event.ComponentListener#componentResized(java.awt.event.ComponentEvent )
    */
   @Override
   public void componentResized(final ComponentEvent e) {
@@ -818,8 +800,8 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
     if (getComponentCount() > 0) {
       removeAll();
     }
-    add(jpControl, "0,0");
-    add(jl, "0,2,c,c");
+    add(jpControl, "grow,wrap");
+    add(jl, "center,wrap");
     searching(false);
     // make sure the image is repainted to avoid overlapping covers
     CoverView.this.revalidate();
@@ -954,12 +936,14 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
         Log.debug("Download stopped - 2");
         return null;
       }
-    } catch (final FileNotFoundException e) { 
+    } catch (final FileNotFoundException e) {
       setCursor(UtilGUI.DEFAULT_CURSOR);
       searching(false);
 
-      // do not display a stacktrace for FileNotfound as we expect this in cases where the picture is gone on the net
-      Log.warn("Cover image not found at URL: " + (cover == null ? "<null>" : cover.getURL().toString()));
+      // do not display a stacktrace for FileNotfound as we expect this in cases
+      // where the picture is gone on the net
+      Log.warn("Cover image not found at URL: "
+          + (cover == null ? "<null>" : cover.getURL().toString()));
       return null;
     } catch (final IOException e) { // this cover cannot be loaded
       setCursor(UtilGUI.DEFAULT_CURSOR);

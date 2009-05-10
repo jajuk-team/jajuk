@@ -20,8 +20,6 @@
 
 package org.jajuk.ui.views;
 
-import info.clearthought.layout.TableLayout;
-
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
@@ -43,6 +41,8 @@ import javax.swing.JToolBar;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
 import javax.swing.event.ListSelectionEvent;
+
+import net.miginfocom.swing.MigLayout;
 
 import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
@@ -95,12 +95,6 @@ public class QueueView extends PlaylistView {
     // Control panel
     jpEditorControl = new JPanel();
     jpEditorControl.setBorder(BorderFactory.createEtchedBorder());
-    // Note : we don't use toolbar because it's buggy in Metal look and feel
-    // : icon get bigger
-    double sizeControl[][] = { { 5, TableLayout.PREFERRED, 15, TableLayout.FILL, 5 }, { 5, 25, 5 } };
-    TableLayout layout = new TableLayout(sizeControl);
-    layout.setHGap(2);
-    jpEditorControl.setLayout(layout);
     jbSave = new JajukButton(IconLoader.getIcon(JajukIcons.SAVE));
     jbSave.setToolTipText(Messages.getString("AbstractPlaylistEditorView.3"));
     jbSave.addActionListener(this);
@@ -134,7 +128,6 @@ public class QueueView extends PlaylistView {
     });
 
     JToolBar jtb = new JajukJToolbar();
-
     jtb.add(jbSave);
     jtb.add(jbRemove);
     jtb.add(jbAddShuffle);
@@ -142,10 +135,12 @@ public class QueueView extends PlaylistView {
     jtb.add(jbDown);
     jtb.addSeparator();
     jtb.add(jbClear);
-    jtb.add(jtbAutoScroll);
-
-    jpEditorControl.add(jtb, "1,1");
-    jpEditorControl.add(jlTitle, "3,1,r,c");
+    
+    // Add items
+    jpEditorControl.setLayout(new MigLayout("insets 5","[grow][fill][]"));
+    jpEditorControl.add(jtb, "left,gapright 15::");
+    jpEditorControl.add(jlTitle, "right,gapright 5");
+    jpEditorControl.add(jtbAutoScroll, "right");
     editorModel = new PlaylistTableModel(true);
     editorTable = new JajukTable(editorModel, CONF_QUEUE_COLUMNS);
     editorModel.populateModel(editorTable.getColumnsConf());
@@ -162,12 +157,11 @@ public class QueueView extends PlaylistView {
     editorTable.showColumns(editorTable.getColumnsConf());
     ListSelectionModel lsm = editorTable.getSelectionModel();
     lsm.addListSelectionListener(this);
-    double size[][] = { { 0.99 }, { TableLayout.PREFERRED, 0.99 } };
-    setLayout(new TableLayout(size));
-    add(jpEditorControl, "0,0");
+    setLayout(new MigLayout("", "[grow]"));
+    add(jpEditorControl, "wrap,grow");
     jsp = new JScrollPane(editorTable);
     jsp.setBorder(BorderFactory.createEmptyBorder(0, 1, 0, 0));
-    add(jsp, "0,1");
+    add(jsp, "grow");
     // menu items
     jmiFilePlay = new JMenuItem(Messages.getString("TracksTableView.7"), IconLoader
         .getIcon(JajukIcons.PLAY_16X16));
