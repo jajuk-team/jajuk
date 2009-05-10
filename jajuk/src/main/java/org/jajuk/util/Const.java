@@ -394,7 +394,7 @@ public interface Const {
   String VIEW_NAME_STAT = "org.jajuk.ui.views.StatView";
 
   String VIEW_NAME_COVER = "org.jajuk.ui.views.CoverView";
-  
+
   String VIEW_NAME_SUGGESTION = "org.jajuk.ui.views.SuggestionView";
 
   String VIEW_NAME_PHYSICAL_PLAYLIST_EDITOR = "org.jajuk.ui.views.PhysicalPlaylistEditorView";
@@ -575,7 +575,7 @@ public interface Const {
   String CONF_HISTORY = "jajuk.options.history";
 
   String CONF_TAGS_USE_PARENT_DIR = "jajuk.tags.use_parent_dir";
-  
+
   String CONF_DROP_PLAYED_TRACKS_FROM_QUEUE = "jajuk.drop.played.tracks.from.queue";
 
   /** Contains files id separated by a colon */
@@ -637,7 +637,7 @@ public interface Const {
   String CONF_COVERS_AUTO_COVER = "jajuk.covers.auto_cover";
 
   String CONF_COVERS_SHUFFLE = "jajuk.covers.shuffle";
-  
+
   String CONF_COVERS_SAVE_EXPLORER_FRIENDLY = "jajuk.covers.save.explorer.friendly";
 
   String CONF_COVERS_SIZE = "jajuk.covers.size";
@@ -804,10 +804,10 @@ public interface Const {
 
   /** volnorm option */
   String CONF_USE_VOLNORM = "jajuk.mplayer.volnorm";
-  
+
   /** None internet access switch */
   String CONF_NETWORK_NONE_INTERNET_ACCESS = "jajuk.network.none_internet_access";
-  
+
   /** Shuffle/novelties mode */
   String MODE_ALBUM = "album";
 
@@ -1143,6 +1143,8 @@ public interface Const {
   String CONF_ALARM_ACTION = "jajuk.alarm.action";
 
   String CONF_ALARM_ENABLED = "jajuk.alarm.enabled";
+
+  String AUTO_SCROLL = "jajuk.auto_scroll";
 
   // Alarm actions
   String ALARM_START_ACTION = "Start Playing";

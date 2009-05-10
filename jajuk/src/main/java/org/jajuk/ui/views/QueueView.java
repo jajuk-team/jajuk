@@ -124,6 +124,14 @@ public class QueueView extends PlaylistView {
 
     jtbAutoScroll = new JajukToggleButton(IconLoader.getIcon(JajukIcons.AUTOSCROLL));
     jtbAutoScroll.setToolTipText(Messages.getString("QueueView.2"));
+    jtbAutoScroll.setSelected(Conf.getBoolean(Const.AUTO_SCROLL));
+    jtbAutoScroll.addActionListener(new ActionListener() {
+
+      public void actionPerformed(ActionEvent e) {
+        Conf.setProperty(Const.AUTO_SCROLL, Boolean.toString(jtbAutoScroll.isSelected()));
+      }
+
+    });
 
     JToolBar jtb = new JajukJToolbar();
 
@@ -297,6 +305,11 @@ public class QueueView extends PlaylistView {
                     double size = FIFO.getFIFOSize();
                     double factor = (index / size);
                     int value = (int) (factor * jsp.getVerticalScrollBar().getMaximum());
+
+                    // 'center' played track, one row is 16
+                    value -= (jsp.getVerticalScrollBar().getHeight() / 2)
+                        - (editorTable.getRowHeight() / 2);
+
                     if (value >= jsp.getVerticalScrollBar().getMinimum()
                         && value <= jsp.getVerticalScrollBar().getMaximum()) {
                       jsp.getVerticalScrollBar().setValue(value);
