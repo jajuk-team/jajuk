@@ -20,9 +20,6 @@
 
 package org.jajuk.ui.wizard;
 
-import info.clearthought.layout.TableLayout;
-import info.clearthought.layout.TableLayoutConstants;
-
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
@@ -44,6 +41,8 @@ import javax.swing.JTextField;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import net.miginfocom.swing.MigLayout;
+
 import org.jajuk.base.FileManager;
 import org.jajuk.base.SearchResult;
 import org.jajuk.events.JajukEvent;
@@ -64,15 +63,9 @@ public class AlarmClockDialog extends JDialog implements ActionListener, ItemLis
     ListSelectionListener {
   private static final long serialVersionUID = 1L;
 
-  private final JPanel jpAlarmClock;
-
-  private final JPanel jpFields;
-
-  private final JPanel jpChoices;
-
   private final JPanel jpOKCancel;
 
-  private final JPanel jpAction;
+  private final JLabel jlChoice;
 
   private final ButtonGroup bgChoices;
 
@@ -81,8 +74,6 @@ public class AlarmClockDialog extends JDialog implements ActionListener, ItemLis
   private final JButton jbCancel;
 
   private final JCheckBox jcbTime;
-
-  private final JLabel jlChoice;
 
   private final JLabel jlAlarmAction;
 
@@ -108,7 +99,7 @@ public class AlarmClockDialog extends JDialog implements ActionListener, ItemLis
 
   public AlarmClockDialog() {
     super();
-    
+
     jcbTime = new JCheckBox(Messages.getString("AlarmDialog.0"));
     jcbTime.addActionListener(this);
 
@@ -119,38 +110,13 @@ public class AlarmClockDialog extends JDialog implements ActionListener, ItemLis
     jtfSeconds = new JTextField(2);
     jtfSeconds.setToolTipText(Messages.getString("AlarmDialog.3"));
 
-    jpFields = new JPanel();
-    jpFields.add(jcbTime);
-    jpFields.add(jtfHour);
-    jpFields.add(new JLabel(":"));
-    jpFields.add(jtfMinutes);
-    jpFields.add(new JLabel(":"));
-    jpFields.add(jtfSeconds);
-    jpFields.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-
-    jpAction = new JPanel();
     jlAlarmAction = new JLabel(Messages.getString("AlarmDialog.4"));
     jcbAlarmAction = new JComboBox();
     jcbAlarmAction.addItem(Const.ALARM_START_ACTION);
     jcbAlarmAction.addItem(Const.ALARM_STOP_ACTION);
     jcbAlarmAction.setToolTipText(Messages.getString("AlarmDialog.5"));
     jcbAlarmAction.addActionListener(this);
-    jpAction.add(jlAlarmAction);
-    jpAction.add(jcbAlarmAction);
-    jpAction.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
-    final double p = TableLayoutConstants.PREFERRED;
-    final double sizeMessage[][] = { { 100, 300 }, { p } };
-    final TableLayout layoutMessage = new TableLayout(sizeMessage);
-    layoutMessage.setVGap(20);
-    layoutMessage.setHGap(20);
-
-    jpChoices = new JPanel();
-    final double sizeStart[][] = { { 150, 200 }, { p, p, p, p, p, p } };
-    final TableLayout layoutStartup = new TableLayout(sizeStart);
-    layoutStartup.setVGap(20);
-    layoutStartup.setHGap(20);
-    jpChoices.setLayout(layoutStartup);
     jlChoice = new JLabel(Messages.getString("ParameterView.9"));
     jrbShuffle = new JRadioButton(Messages.getString("ParameterView.14"));
     jrbShuffle.setToolTipText(Messages.getString("ParameterView.15"));
@@ -175,13 +141,6 @@ public class AlarmClockDialog extends JDialog implements ActionListener, ItemLis
     bgChoices.add(jrbNovelties);
     bgChoices.add(jrbFile);
 
-    jpChoices.add(jlChoice, "0,0,1,0");
-    jpChoices.add(jrbShuffle, "0,1,1,1");
-    jpChoices.add(jrbBestof, "0,2,1,2");
-    jpChoices.add(jrbNovelties, "0,3,1,3");
-    jpChoices.add(jrbFile, "0,4");
-    jpChoices.add(sbSearch, "1,4");
-    jpChoices.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
     jrbShuffle.setSelected(true);
 
     jpOKCancel = new JPanel();
@@ -194,26 +153,28 @@ public class AlarmClockDialog extends JDialog implements ActionListener, ItemLis
     jpOKCancel.add(jbCancel);
     jpOKCancel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
-    jpAlarmClock = new JPanel(new FlowLayout());
-    double sizeAlarmPanel[][] = { { 500 }, { p, p, p, p } };
-    TableLayout layoutAlarmPanel = new TableLayout(sizeAlarmPanel);
-    layoutStartup.setVGap(20);
-    layoutStartup.setHGap(20);
-    jpAlarmClock.setLayout(layoutAlarmPanel);
-    jpAlarmClock.add(jpFields, "0,0");
-    jpAlarmClock.add(jpAction, "0,1");
-    jpAlarmClock.add(jpChoices, "0,2");
-    jpAlarmClock.add(jpOKCancel, "0,3");
-
-    jpAlarmClock.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+    setLayout(new MigLayout("insets 10,gapy 15", "[grow][grow]"));
+    add(jcbTime, "right");
+    add(jtfHour, "left,split 5,width 30!");
+    add(new JLabel(":"));
+    add(jtfMinutes, "width 30!");
+    add(new JLabel(":"));
+    add(jtfSeconds, "width 30!,wrap");
+    add(jlAlarmAction, "center");
+    add(jcbAlarmAction, "left,wrap");
+    add(jlChoice, "left,wrap");
+    add(jrbShuffle, "left,wrap");
+    add(jrbBestof, "left,wrap");
+    add(jrbNovelties, "left,wrap");
+    add(jrbFile, "left");
+    add(sbSearch, "left,wrap,grow");
+    add(jpOKCancel, "center,grow,span");
 
     // Reload on GUI saved values
     loadValues();
 
     setTitle(Messages.getString("AlarmClock.0"));
     setMinimumSize(new Dimension(250, 100));
-    setContentPane(jpAlarmClock);
-
     setModal(true);
     pack();
     setLocationRelativeTo(JajukWindow.getInstance());
