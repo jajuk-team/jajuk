@@ -34,6 +34,7 @@ import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.services.bookmark.History;
 import org.jajuk.services.core.ExitService;
+import org.jajuk.services.tags.NoTagsTagImpl;
 import org.jajuk.services.tags.Tag;
 import org.jajuk.ui.helpers.ManualDirectoryRefreshReporter;
 import org.jajuk.ui.helpers.RefreshReporter;
@@ -128,7 +129,8 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
     while (it.hasNext()) {
       Directory directory = it.next();
       if (directory.getFio().getParentFile().equals(this.getFio())
-      // check the device of the tested directory to handle directories from
+      // check the device of the tested directory to handle directories
+          // from
           // cdrom
           && directory.getDevice().equals(getDevice())) {
         out.add(directory);
@@ -275,6 +277,12 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
 
     // if known file and no deep scan, just leave
     if (fileRef != null && !bDeepScan) {
+      return;
+    }
+
+    // If the audio file format doesn't support tagging (like wav), continue
+    Type type = TypeManager.getInstance().getTypeByExtension(UtilSystem.getExtension(music));
+    if (type.getTaggerClass() == null || type.getTaggerClass().equals(NoTagsTagImpl.class)) {
       return;
     }
 
@@ -594,8 +602,10 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
           org.jajuk.base.Collection.cleanupLogical();
           ObservationManager.notify(new JajukEvent(JajukEvents.DEVICE_REFRESH));
           reporter.done();
-          // commit collection at each refresh (can be useful if application
-          // is closed brutally with control-C or shutdown and that exit hook
+          // commit collection at each refresh (can be useful if
+          // application
+          // is closed brutally with control-C or shutdown and that
+          // exit hook
           // have no time to perform commit)
           try {
             org.jajuk.base.Collection.commit(UtilSystem.getConfFileByPath(Const.FILE_COLLECTION));
@@ -642,7 +652,8 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
     final List<org.jajuk.base.File> lFiles = FileManager.getInstance().getFiles();
     for (final org.jajuk.base.File file : lFiles) {
       if (!ExitService.isExiting()
-          // Only take into consideration files from this directory or from
+          // Only take into consideration files from this directory or
+          // from
           // sub-directories
           && (file.getDirectory().equals(this) || file.getDirectory().isChildOf(this))
           && file.isReady() &&
@@ -658,7 +669,8 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
     final List<Playlist> plfiles = PlaylistManager.getInstance().getPlaylists();
     for (final Playlist plf : plfiles) {
       if (!ExitService.isExiting()
-          // Only take into consideration files from this directory or from
+          // Only take into consideration files from this directory or
+          // from
           // sub-directories
           && (plf.getDirectory().equals(this) || plf.getDirectory().isChildOf(this))
           && plf.isReady() && !plf.getFIO().exists()) {

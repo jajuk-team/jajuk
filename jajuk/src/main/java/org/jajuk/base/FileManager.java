@@ -169,7 +169,6 @@ public final class FileManager extends ItemManager {
   public synchronized File changeFileName(org.jajuk.base.File fileOld, String sNewName)
       throws JajukException {
     // check given name is different
-
     if (fileOld.getName().equals(sNewName)) {
       return fileOld;
     }
@@ -179,25 +178,14 @@ public final class FileManager extends ItemManager {
     }
     java.io.File fileNew = new java.io.File(fileOld.getFIO().getParentFile().getAbsolutePath()
         + java.io.File.separator + sNewName);
-    // recalculate file ID
-    Directory dir = fileOld.getDirectory();
-    String sNewId = createID(sNewName, dir);
-    // create a new file (with own fio and sAbs)
-    Track track = fileOld.getTrack();
-    org.jajuk.base.File fNew = new File(sNewId, sNewName, fileOld.getDirectory(), track, fileOld
-        .getSize(), fileOld.getQuality());
-    // transfer all properties and reset id and name
-    fNew.setProperties(fileOld.getProperties());
-    fNew.setProperty(Const.XML_ID, sNewId); // reset new id and name
-    fNew.setProperty(Const.XML_NAME, sNewName); // reset new id and name
+
     // check file name and extension
     if (!(UtilSystem.getExtension(fileNew).equals(UtilSystem.getExtension(fileOld.getFIO())))) {
       // no extension change
       throw new CannotRenameException(134);
     }
-    // check if future file exists (under windows, file.exists
-    // return true even with
-    // different case so we test file name is different)
+    // check if destination file already exists (under windows, file.exists
+    // return true even with different case so we test file name is different)
     if (!fileNew.getName().equalsIgnoreCase(fileOld.getName()) && fileNew.exists()) {
       throw new CannotRenameException(134);
     }
@@ -211,6 +199,20 @@ public final class FileManager extends ItemManager {
     }
 
     // OK, remove old file and register this new file
+    // Compute file ID
+    Directory dir = fileOld.getDirectory();
+    String sNewId = createID(sNewName, dir);
+    // create a new file (with own fio and sAbs)
+    Track track = fileOld.getTrack();
+    org.jajuk.base.File fNew = new File(sNewId, sNewName, fileOld.getDirectory(), track, fileOld
+        .getSize(), fileOld.getQuality());
+    // transfer all properties and reset id and name
+    // We use a shallow copy of properties to avoid any properties share between
+    // two items
+    fNew.setProperties(fileOld.getShallowProperties());
+    fNew.setProperty(Const.XML_ID, sNewId); // reset new id and name
+    fNew.setProperty(Const.XML_NAME, sNewName); // reset new id and name
+
     removeFile(fileOld);
     registerItem(fNew);
     track.addFile(fNew);
@@ -238,8 +240,10 @@ public final class FileManager extends ItemManager {
     Track track = old.getTrack();
     // create a new file (with own fio and sAbs)
     File fNew = new File(sNewId, old.getName(), newDir, track, old.getSize(), old.getQuality());
-    // transfert all properties (inc id), then set right id and directory
-    fNew.setProperties(old.getProperties());
+    // Transfer all properties (including id), then set right id and directory
+    // We use a shallow copy of properties to avoid any properties share between
+    // two items
+    fNew.setProperties(old.getShallowProperties());
     fNew.setProperty(Const.XML_ID, sNewId);
     fNew.setProperty(Const.XML_DIRECTORY, newDir.getID());
 

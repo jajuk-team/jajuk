@@ -378,8 +378,10 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
           dCurrent.getRelativePath()).append(java.io.File.separatorChar).append(getName());
       sAbs = sbOut.toString();
     } else {
-      // smart playlist path depends on the user selected from the save as file
-      // chooser and has been set using the setFio() method just before that
+      // smart playlist path depends on the user selected from the save as
+      // file
+      // chooser and has been set using the setFio() method just before
+      // that
       sAbs = getFIO().getAbsolutePath();
     }
     return sAbs;
@@ -422,7 +424,8 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
       }
     }
     if ((type == Type.NORMAL) && (alFiles == null)) {
-      // normal playlist, test if list is null for performances (avoid reading
+      // normal playlist, test if list is null for performances (avoid
+      // reading
       // the m3u file twice)
       if (getFIO().exists() && getFIO().canRead()) {
         // check device is mounted
@@ -437,6 +440,13 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
           Conf.getBoolean(Const.CONF_OPTIONS_HIDE_UNMOUNTED));
     } else if (type.equals(Type.BOOKMARK)) {
       alFiles = Bookmarks.getInstance().getFiles();
+    } else if (type.equals(Type.QUEUE)) {
+      List<StackItem> items = FIFO.getFIFO();
+      List<File> files = new ArrayList<File>(items.size());
+      for (StackItem si : items) {
+        files.add(si.getFile());
+      }
+      alFiles = files;
     } else if (type.equals(Type.NEW) && (alFiles == null)) {
       alFiles = new ArrayList<File>(10);
     }
@@ -766,7 +776,8 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
           UtilGUI.waiting();
           final java.io.File fDir = jfc.getSelectedFile();
           final Date curDate = new Date();
-          // Do not use ':' character in destination directory, it's forbidden
+          // Do not use ':' character in destination directory, it's
+          // forbidden
           // under Windows
           final SimpleDateFormat stamp = new SimpleDateFormat("yyyyMMdd-HHmm", Locale.getDefault());
           final String dirName = "Party-" + stamp.format(curDate);
@@ -781,7 +792,8 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
             bw.write(Const.PLAYLIST_NOTE);
             for (final File entry : alFiles) {
               java.io.File destFile = UtilSystem.copyToDir(entry.getFIO(), destDir);
-              // Rename the file using its Jajuk ID to avoid naming collisions
+              // Rename the file using its Jajuk ID to avoid
+              // naming collisions
               String newName = destDir.getAbsolutePath() + '/' + entry.getID() + '.'
                   + entry.getType().getExtension();
               destFile.renameTo(new java.io.File(newName));
@@ -795,7 +807,8 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
 
             bw.flush();
             bw.close();
-            // Send a last event with null properties to inform the client that
+            // Send a last event with null properties to inform the
+            // client that
             // the party is done
             ObservationManager.notify(new JajukEvent(JajukEvents.FILE_COPIED));
 

@@ -45,21 +45,19 @@ public class LogChecker extends TestCase {
   public void testOverflow() {
     assertFalse(logs.matches(".*Event overflow for.*"));
   }
-  
+
   /**
    * Check for playtime rate issue
    */
   public void testPreferences() {
     assertFalse(logs.matches(".*Playtime rate > 1 for.*"));
   }
-  
-   /**
+
+  /**
    * Check for play time outs
    */
   public void testPlayOOT() {
     assertFalse(logs.matches("OOT Mplayer process.*"));
   }
-  
-  
 
 }

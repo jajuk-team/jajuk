@@ -186,7 +186,7 @@ public interface Const {
 
   String JAJUK_VERSION_DATE = "Build: DATE_REPLACED_BY_ANT";
 
-  String JAJUK_COPYRIGHT = "Copyright 2004-2008 The Jajuk Team";
+  String JAJUK_COPYRIGHT = "Copyright 2003-2009 The Jajuk Team";
 
   // -- Files and paths --
 

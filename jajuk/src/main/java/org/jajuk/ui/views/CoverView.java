@@ -956,8 +956,9 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
       Log.error(e);
       throw new JajukException(0, e);
     }
-    final int iDisplayAreaHeight = CoverView.this.getHeight() - 30;
-    final int iDisplayAreaWidth = CoverView.this.getWidth() - 8;
+    // We apply a 90% of space availability to avoid image cut-offs (see #1283)
+    final int iDisplayAreaHeight = (int) (0.9f * CoverView.this.getHeight() - 30);
+    final int iDisplayAreaWidth = (int) (0.9f * CoverView.this.getWidth() - 10);
     // check minimum sizes
     if ((iDisplayAreaHeight < 1) || (iDisplayAreaWidth < 1)) {
       return null;
@@ -983,7 +984,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
       // we check now if height will be visible entirely with
       // optimized width
       final float fWidthRatio = (float) iNewWidth / icon.getIconWidth();
-      if (icon.getIconHeight() * (fWidthRatio) <= iDisplayAreaHeight) {
+      if (icon.getIconHeight() * fWidthRatio <= iDisplayAreaHeight) {
         iNewHeight = (int) (icon.getIconHeight() * fWidthRatio);
       } else {
         // no? so we optimize width

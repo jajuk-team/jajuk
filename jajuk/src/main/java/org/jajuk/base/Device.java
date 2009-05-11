@@ -572,7 +572,7 @@ public class Device extends PhysicalItem implements Comparable<Device> {
   }
 
   /**
-   * Set all personnal properties of an XML file for an item (doesn't overwrite
+   * Set all personal properties of an XML file for an item (doesn't overwrite
    * existing properties for perfs)
    * 
    * @param attributes :

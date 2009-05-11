@@ -119,8 +119,8 @@ public class AboutWindow extends JDialog {
     JPanel jpAbout = new JPanel();
     jpAbout.setLayout(new BoxLayout(jpAbout, BoxLayout.Y_AXIS));
     ap = new AboutPanel("Jajuk", Const.JAJUK_VERSION + " <" + Const.JAJUK_CODENAME + ">" + " "
-        + Const.JAJUK_VERSION_DATE, "<html>Copyright 2003,2007<br>Jajuk team</html>", INFOS,
-        IconLoader.getIcon(JajukIcons.LOGO).getImage());
+        + Const.JAJUK_VERSION_DATE, Messages.getString("AboutView.11"), INFOS, IconLoader.getIcon(
+        JajukIcons.LOGO).getImage());
     jpAbout.add(ap);
     jpAbout.add(Box.createVerticalGlue());
     spp = new SystemPropertiesPanel();

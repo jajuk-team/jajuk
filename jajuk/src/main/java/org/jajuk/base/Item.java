@@ -144,6 +144,19 @@ public abstract class Item implements Const {
     return properties;
   }
 
+  /**
+   * Return a shallow copy of the item properties
+   * 
+   * @return a shallow copy of the item properties
+   */
+  public Map<String, Object> getShallowProperties() {
+    HashMap<String, Object> out = new HashMap<String, Object>(properties.size());
+    for (String key : properties.keySet()) {
+      out.put(key, properties.get(key));
+    }
+    return out;
+  }
+
   /*
    * (non-Javadoc)
    * 
