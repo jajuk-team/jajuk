@@ -21,7 +21,6 @@
 package org.jajuk.ui.views;
 
 import ext.SwingWorker;
-import info.clearthought.layout.TableLayout;
 
 import java.awt.Component;
 import java.awt.dnd.DnDConstants;
@@ -43,7 +42,6 @@ import javax.swing.BorderFactory;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
-import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
@@ -54,6 +52,8 @@ import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
+
+import net.miginfocom.swing.MigLayout;
 
 import org.jajuk.base.Album;
 import org.jajuk.base.AlbumManager;
@@ -106,8 +106,6 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
 
   private JMenuItem jmiCollectionDuplicateFiles;
 
-  private JLabel jlSort;
-
   private JComboBox jcbSort;
 
   /*
@@ -143,8 +141,21 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
   public void initUI() {
     super.initUI();
     // ComboBox sort
-    JPanel jpsort = initSort();
-
+    JLabel jlSort = new JLabel(Messages.getString("Sort"));
+    jcbSort = new JComboBox();
+    jcbSort.addItem(Messages.getString("Property_style")); // sort by
+    // Genre/Artist/Album
+    jcbSort.addItem(Messages.getString("Property_author")); // sort by
+    // Artist/Album
+    jcbSort.addItem(Messages.getString("Property_album")); // sort by Album
+    jcbSort.addItem(Messages.getString("Property_year")); // sort by Year
+    jcbSort.addItem(Messages.getString("TracksTreeView.35")); // sort by
+    // Discovery Date
+    jcbSort.addItem(Messages.getString("Property_rate")); // sort by rate
+    jcbSort.addItem(Messages.getString("Property_hits")); // sort by hits
+    jcbSort.setSelectedIndex(Conf.getInt(Const.CONF_LOGICAL_TREE_SORT_ORDER));
+    jcbSort.setActionCommand(JajukEvents.LOGICAL_TREE_SORT.toString());
+    jcbSort.addActionListener(this);
     // Collection menu
     jmenuCollection = new JPopupMenu();
 
@@ -198,42 +209,14 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
     new TreeTransferHandler(jtree, DnDConstants.ACTION_COPY_OR_MOVE, true);
     jspTree = new JScrollPane(jtree);
     jspTree.setBorder(BorderFactory.createEmptyBorder(0, 1, 0, 0));
-    double[][] dSize = { { TableLayout.FILL }, { 5, TableLayout.PREFERRED, 5, TableLayout.FILL } };
-    setLayout(new TableLayout(dSize));
-    add(jpsort, "0,1");
-    add(jspTree, "0,3");
+    setLayout(new MigLayout("ins 5","[][grow]","[][grow]"));
+    add(jlSort,"left,gapx 5::");
+    add(jcbSort,"grow,wrap");
+    add(jspTree, "grow,span");
     expand();
   }
 
-  /**
-   * @return
-   */
-  private JPanel initSort() {
-    double[][] dSizeSort = { { 5, TableLayout.PREFERRED, 5, TableLayout.FILL },
-        { TableLayout.PREFERRED } };
-
-    JPanel jpsort = new JPanel();
-    jpsort.setLayout(new TableLayout(dSizeSort));
-    jlSort = new JLabel(Messages.getString("Sort"));
-    jcbSort = new JComboBox();
-    jcbSort.addItem(Messages.getString("Property_style")); // sort by
-    // Genre/Artist/Album
-    jcbSort.addItem(Messages.getString("Property_author")); // sort by
-    // Artist/Album
-    jcbSort.addItem(Messages.getString("Property_album")); // sort by Album
-    jcbSort.addItem(Messages.getString("Property_year")); // sort by Year
-    jcbSort.addItem(Messages.getString("TracksTreeView.35")); // sort by
-    // Discovery Date
-    jcbSort.addItem(Messages.getString("Property_rate")); // sort by rate
-    jcbSort.addItem(Messages.getString("Property_hits")); // sort by hits
-    jcbSort.setSelectedIndex(Conf.getInt(Const.CONF_LOGICAL_TREE_SORT_ORDER));
-    jcbSort.setActionCommand(JajukEvents.LOGICAL_TREE_SORT.toString());
-    jcbSort.addActionListener(this);
-    jpsort.add(jlSort, "1,0");
-    jpsort.add(jcbSort, "3,0");
-    return jpsort;
-  }
-
+  
   /** Fill the tree */
 
   @Override

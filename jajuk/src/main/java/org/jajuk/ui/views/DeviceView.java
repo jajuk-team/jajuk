@@ -21,7 +21,6 @@
 package org.jajuk.ui.views;
 
 import ext.FlowScrollPanel;
-import info.clearthought.layout.TableLayout;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -46,6 +45,8 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
+
+import net.miginfocom.swing.MigLayout;
 
 import org.jajuk.base.Device;
 import org.jajuk.base.DeviceManager;
@@ -159,9 +160,8 @@ public class DeviceView extends ViewAdapter implements IView, ActionListener, Mo
     refreshDevices();
 
     // add components
-    double size[][] = { { TableLayout.FILL }, { TableLayout.FILL } };
-    setLayout(new TableLayout(size));
-    add(jsp, "0,0");
+    setLayout(new MigLayout("ins 0","[grow]","[grow]"));
+    add(jsp,"grow");
     // Register on the list for subject we are interested in
     ObservationManager.register(this);
   }

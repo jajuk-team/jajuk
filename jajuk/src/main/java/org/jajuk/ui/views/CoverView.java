@@ -319,7 +319,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
       Log.error(e);
     }
     // global layout
-    setLayout(new MigLayout("", "[grow]"));
+    setLayout(new MigLayout("ins 0", "[grow]"));
     add(jpControl, "grow,wrap");
     // listen for resize
     addComponentListener(CoverView.this);

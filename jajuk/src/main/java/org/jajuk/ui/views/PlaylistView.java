@@ -21,7 +21,6 @@
 package org.jajuk.ui.views;
 
 import ext.SwingWorker;
-import info.clearthought.layout.TableLayout;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -59,6 +58,8 @@ import javax.swing.SwingUtilities;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableColumn;
+
+import net.miginfocom.swing.MigLayout;
 
 import org.jajuk.base.Device;
 import org.jajuk.base.DeviceManager;
@@ -256,10 +257,6 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
     // Control panel
     jpEditorControl = new JPanel();
     jpEditorControl.setBorder(BorderFactory.createEtchedBorder());
-    double sizeControl[][] = { { 5, TableLayout.PREFERRED, 15, TableLayout.FILL, 5 }, { 5, 25, 5 } };
-    TableLayout layout = new TableLayout(sizeControl);
-    layout.setHGap(2);
-    jpEditorControl.setLayout(layout);
     jbRun = new JajukButton(IconLoader.getIcon(JajukIcons.RUN));
     jbRun.setToolTipText(Messages.getString("AbstractPlaylistEditorView.2"));
     jbRun.addActionListener(this);
@@ -286,6 +283,8 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
     jlTitle = new JLabel("");
     JToolBar jtb = new JajukJToolbar();
 
+    // Add items
+    jpEditorControl.setLayout(new MigLayout("ins 0","[][grow][]"));
     jtb.add(jbRun);
     jtb.add(jbSave);
     jtb.add(jbRemove);
@@ -296,8 +295,8 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
     jtb.addSeparator();
     jtb.add(jbClear);
 
-    jpEditorControl.add(jtb, "1,1");
-    jpEditorControl.add(jlTitle, "3,1,c,c");
+    jpEditorControl.add(jtb, "left,gapright 5::");
+    jpEditorControl.add(jlTitle, "center");
     editorModel = new PlaylistTableModel(false);
     editorTable = new JajukTable(editorModel, CONF_PLAYLIST_EDITOR_COLUMNS);
     editorModel.populateModel(editorTable.getColumnsConf());
@@ -314,12 +313,10 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
     editorTable.showColumns(editorTable.getColumnsConf());
     ListSelectionModel lsm = editorTable.getSelectionModel();
     lsm.addListSelectionListener(this);
-    double size[][] = { { 0.99 }, { TableLayout.PREFERRED, 0.99 } };
-    jpEditor.setLayout(new TableLayout(size));
-    jpEditor.add(jpEditorControl, "0,0");
+    jpEditor.setLayout(new MigLayout("ins 0","[grow]"));
+    jpEditor.add(jpEditorControl, "growx,wrap");
     JScrollPane jsp = new JScrollPane(editorTable);
-    jsp.setBorder(BorderFactory.createEmptyBorder(0, 1, 0, 0));
-    jpEditor.add(jsp, "0,1");
+    jpEditor.add(jsp, "growx");
 
     jmiFilePlay = new JMenuItem(ActionManager.getAction(JajukActions.PLAY_SELECTION));
     jmiFilePlay.putClientProperty(Const.DETAIL_SELECTION, editorTable.getSelection());
@@ -426,12 +423,11 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
     jpSmartPlaylists.add(spBestof);
     jpSmartPlaylists.add(spNovelties);
     jpSmartPlaylists.add(spBookmark);
-    double size[][] = { { TableLayout.FILL }, { TableLayout.PREFERRED, TableLayout.FILL } };
-    JPanel jpRepository = new JPanel(new TableLayout(size));
+    JPanel jpRepository = new JPanel(new MigLayout("ins 0","[grow]"));
     repositoryPanel = new PlaylistRepository();
     repositoryPanel.initUI();
-    jpRepository.add(jpSmartPlaylists, "0,0");
-    jpRepository.add(repositoryPanel, "0,1");
+    jpRepository.add(jpSmartPlaylists, "growx,wrap");
+    jpRepository.add(repositoryPanel, "growx");
 
     split = new JajukJSplitPane(JSplitPane.VERTICAL_SPLIT);
     split.setDividerLocation(0.5d);

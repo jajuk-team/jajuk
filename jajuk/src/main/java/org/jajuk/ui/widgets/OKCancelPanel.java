@@ -20,11 +20,11 @@
 
 package org.jajuk.ui.widgets;
 
-import info.clearthought.layout.TableLayout;
-
 import java.awt.event.ActionListener;
 
 import javax.swing.JPanel;
+
+import net.miginfocom.swing.MigLayout;
 
 import org.jajuk.util.Messages;
 
@@ -45,16 +45,13 @@ public class OKCancelPanel extends JPanel {
   public OKCancelPanel(ActionListener al) {
     this.al = al;
     // buttons
-    double[][] dSize = {
-        { TableLayout.TRAILING, TableLayout.FILL, TableLayout.TRAILING, TableLayout.FILL,
-            TableLayout.TRAILING }, { TableLayout.PREFERRED } };
-    setLayout(new TableLayout(dSize));
+    setLayout(new MigLayout("ins 5"));
     jbOk = new JajukButton(Messages.getString("Ok"));
     jbOk.addActionListener(al);
     jbCancel = new JajukButton(Messages.getString("Cancel"));
     jbCancel.addActionListener(al);
-    add(jbOk, "1,0");
-    add(jbCancel, "3,0");
+    add(jbOk, "tag ok,gapx 5");
+    add(jbCancel, "tag cancel");
   }
 
   /**

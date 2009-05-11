@@ -20,8 +20,6 @@
 
 package org.jajuk.ui.views;
 
-import info.clearthought.layout.TableLayout;
-
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -31,6 +29,8 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
+
+import net.miginfocom.swing.MigLayout;
 
 import org.jajuk.base.Device;
 import org.jajuk.base.DeviceManager;
@@ -82,8 +82,7 @@ public class StatView extends ViewAdapter implements Observer {
    * @see org.jajuk.ui.IView#display()
    */
   public void initUI() {
-    double[][] size = new double[][] { { 0.5f, 10, 0.5f }, { 0.5f, 10, 0.5f } };
-    setLayout(new TableLayout(size));
+    setLayout(new MigLayout("ins 0,gapx 4,gapy 5","[grow][grow]","[grow][grow]"));
     ObservationManager.register(this);
     update(new JajukEvent(JajukEvents.DEVICE_REFRESH, ObservationManager
         .getDetailsLastOccurence(JajukEvents.DEVICE_REFRESH)));
@@ -361,19 +360,19 @@ public class StatView extends ViewAdapter implements Observer {
       }
       ChartPanel cp1 = createStyleRepartition();
       if (cp1 != null) {
-        add(cp1, "0,0");
+        add(cp1, "grow");
       }
       ChartPanel cp2 = createCollectionSize();
       if (cp2 != null) {
-        add(cp2, "0,2");
+        add(cp2, "grow,wrap");
       }
       ChartPanel cp3 = createTrackNumber();
       if (cp3 != null) {
-        add(cp3, "2,2");
+        add(cp3, "grow");
       }
       ChartPanel cp4 = createDeviceRepartition();
       if (cp4 != null) {
-        add(cp4, "2,0");
+        add(cp4, "grow,wrap");
       }
       revalidate();
       repaint();

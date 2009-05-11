@@ -137,7 +137,7 @@ public class QueueView extends PlaylistView {
     jtb.add(jbClear);
     
     // Add items
-    jpEditorControl.setLayout(new MigLayout("insets 5","[grow][fill][]"));
+    jpEditorControl.setLayout(new MigLayout("insets 5","[][grow][]"));
     jpEditorControl.add(jtb, "left,gapright 15::");
     jpEditorControl.add(jlTitle, "right,gapright 5");
     jpEditorControl.add(jtbAutoScroll, "right");
@@ -157,7 +157,7 @@ public class QueueView extends PlaylistView {
     editorTable.showColumns(editorTable.getColumnsConf());
     ListSelectionModel lsm = editorTable.getSelectionModel();
     lsm.addListSelectionListener(this);
-    setLayout(new MigLayout("", "[grow]"));
+    setLayout(new MigLayout("ins 0", "[grow]"));
     add(jpEditorControl, "wrap,grow");
     jsp = new JScrollPane(editorTable);
     jsp.setBorder(BorderFactory.createEmptyBorder(0, 1, 0, 0));

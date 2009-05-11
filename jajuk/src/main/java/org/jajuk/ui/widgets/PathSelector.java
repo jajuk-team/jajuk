@@ -20,9 +20,6 @@
 
 package org.jajuk.ui.widgets;
 
-import info.clearthought.layout.TableLayout;
-import info.clearthought.layout.TableLayoutConstants;
-
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -34,6 +31,8 @@ import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import net.miginfocom.swing.MigLayout;
+
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukFileFilter;
 import org.jajuk.util.JajukIcons;
@@ -41,7 +40,7 @@ import org.jajuk.util.Messages;
 import org.jajuk.util.filters.DirectoryFilter;
 
 /**
- * This is a widgets that contains an editable textfield given a PATH and a PATH
+ * This is a widgets that contains an editable text field given a PATH and a PATH
  * selection button opening up a file selector
  */
 public class PathSelector extends JPanel {
@@ -137,9 +136,7 @@ public class PathSelector extends JPanel {
 
   private void initUI(final String sDefault) {
     // Set layout
-    final double[][] size = new double[][] { { 200, 10, TableLayoutConstants.PREFERRED },
-        { TableLayoutConstants.PREFERRED } };
-    setLayout(new TableLayout(size));
+    setLayout(new MigLayout("ins 0","[grow][]"));
     // Build items
     jtfUrl = new JTextField();
     if (sDefault != null) {
@@ -150,9 +147,8 @@ public class PathSelector extends JPanel {
     button = new JButton(IconLoader.getIcon(JajukIcons.OPEN_FILE));
     button.setToolTipText(Messages.getString("Path"));
     // Add items
-    add(jtfUrl, "0,0");
-    add(button, "2,0");
-
+    add(jtfUrl, "grow,gapx 5");
+    add(button);
   }
 
   /**

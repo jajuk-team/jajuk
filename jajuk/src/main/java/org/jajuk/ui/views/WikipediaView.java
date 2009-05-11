@@ -20,8 +20,6 @@
 
 package org.jajuk.ui.views;
 
-import info.clearthought.layout.TableLayout;
-
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -38,6 +36,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
+
+import net.miginfocom.swing.MigLayout;
 
 import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
@@ -159,11 +159,10 @@ public class WikipediaView extends ViewAdapter implements Observer, ActionListen
     jpCommand.add(jtb);
 
     // global layout
-    double size[][] = { { 2, TableLayout.FILL, 5 }, { TableLayout.PREFERRED, 5, TableLayout.FILL } };
-    setLayout(new TableLayout(size));
+    setLayout(new MigLayout("ins 0", "[grow]"));
     browser = new JajukHtmlPanel();
-    add(jpCommand, "1,0");
-    add(browser, "1,2");
+    add(jpCommand, "growx,wrap");
+    add(browser, "grow");
 
     // Display default page at startup is none track launch
     // avoid to launch this if a track is playing
@@ -268,7 +267,9 @@ public class WikipediaView extends ViewAdapter implements Observer, ActionListen
           jbLaunchInExternalBrowser.putClientProperty(Const.DETAIL_CONTENT, url.toExternalForm());
           browser.setURL(url);
         } catch (FileNotFoundException e) {
-          // only report a warning for FileNotFoundException and do not show a stacktrace in the logfile as it is expected in many cases where the name is not found on Wikipedia
+          // only report a warning for FileNotFoundException and do not show a
+          // stacktrace in the logfile as it is expected in many cases where the
+          // name is not found on Wikipedia
           Log.warn("Could not load URL, no content found at specified address: " + e.getMessage());
         } catch (Exception e) {
           Log.error(e);
