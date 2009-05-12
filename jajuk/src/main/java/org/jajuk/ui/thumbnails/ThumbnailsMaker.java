@@ -23,6 +23,8 @@ package org.jajuk.ui.thumbnails;
 import ext.ProcessLauncher;
 
 import java.io.File;
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -109,8 +111,10 @@ public final class ThumbnailsMaker {
    * 
    * @param size
    * @return status : 0 if OK, 1 ok error
+   * @throws URISyntaxException 
+   * @throws IOException 
    */
-  public static int launchProcessus(final int size) throws Exception {
+  public static int launchProcessus(final int size) throws URISyntaxException, IOException {
     final String jvmPath = System.getProperty("java.home") + File.separatorChar + "bin"
         + File.separatorChar + "java";
     // @TODO Under JNLP mode, following line throw an URI malformed exception

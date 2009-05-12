@@ -65,6 +65,8 @@ public class PreferenceToolbar extends JajukJToolbar implements Observer {
   ActionListener listener;
 
   public PreferenceToolbar() {
+    super();
+    
     jbBan = new JajukButton(ActionManager.getAction(JajukActions.BAN));
     // Preference combo:
     /*
@@ -74,40 +76,7 @@ public class PreferenceToolbar extends JajukJToolbar implements Observer {
      */
     jcbPreference = new JComboBox();
     // Add tooltips on combo items
-    jcbPreference.setRenderer(new BasicComboBoxRenderer() {
-      private static final long serialVersionUID = -6943363556191659895L;
-
-      @Override
-      public Component getListCellRendererComponent(final JList list, final Object value,
-          final int index, final boolean isSelected, final boolean cellHasFocus) {
-        super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-        switch (index) {
-        case 0:
-          setToolTipText(Messages.getString("Preference.6"));
-          break;
-        case 1:
-          setToolTipText(Messages.getString("Preference.5"));
-          break;
-        case 2:
-          setToolTipText(Messages.getString("Preference.4"));
-          break;
-        case 3:
-          setToolTipText(Messages.getString("Preference.8"));
-          break;
-        case 4:
-          setToolTipText(Messages.getString("Preference.3"));
-          break;
-        case 5:
-          setToolTipText(Messages.getString("Preference.2"));
-          break;
-        case 6:
-          setToolTipText(Messages.getString("Preference.1"));
-          break;
-        }
-        setBorder(new EmptyBorder(0, 3, 0, 3));
-        return this;
-      }
-    });
+    jcbPreference.setRenderer(new ComboBoxRenderer());
     jcbPreference.setMinimumSize(new Dimension(40, 0));
     jcbPreference.setPreferredSize(new Dimension(40, 0));
     jcbPreference.setToolTipText(Messages.getString("Preference.0"));
@@ -166,7 +135,7 @@ public class PreferenceToolbar extends JajukJToolbar implements Observer {
    * 
    * @param preference
    */
-  public void setPreference(long preference) {
+  public final void setPreference(long preference) {
     jcbPreference.removeActionListener(listener);
     jcbPreference.setSelectedIndex(-1 * (int) preference + 3);
     jcbPreference.addActionListener(listener);
@@ -177,7 +146,7 @@ public class PreferenceToolbar extends JajukJToolbar implements Observer {
    * 
    * @see org.jajuk.ui.Observer#update(java.lang.String)
    */
-  public void update(final JajukEvent event) {
+  public final void update(final JajukEvent event) {
     SwingUtilities.invokeLater(new Runnable() {
       public void run() {
         File current = FIFO.getPlayingFile();
@@ -221,6 +190,41 @@ public class PreferenceToolbar extends JajukJToolbar implements Observer {
         jbBan.setIcon(IconLoader.getIcon(JajukIcons.BAN));
         jbBan.setToolTipText(Messages.getString("BanSelectionAction.1"));
       }
+    }
+  }
+  
+  private class ComboBoxRenderer extends BasicComboBoxRenderer {
+    private static final long serialVersionUID = -6943363556191659895L;
+
+    @Override
+    public Component getListCellRendererComponent(final JList list, final Object value,
+        final int index, final boolean isSelected, final boolean cellHasFocus) {
+      super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+      switch (index) {
+      case 0:
+        setToolTipText(Messages.getString("Preference.6"));
+        break;
+      case 1:
+        setToolTipText(Messages.getString("Preference.5"));
+        break;
+      case 2:
+        setToolTipText(Messages.getString("Preference.4"));
+        break;
+      case 3:
+        setToolTipText(Messages.getString("Preference.8"));
+        break;
+      case 4:
+        setToolTipText(Messages.getString("Preference.3"));
+        break;
+      case 5:
+        setToolTipText(Messages.getString("Preference.2"));
+        break;
+      case 6:
+        setToolTipText(Messages.getString("Preference.1"));
+        break;
+      }
+      setBorder(new EmptyBorder(0, 3, 0, 3));
+      return this;
     }
   }
 }

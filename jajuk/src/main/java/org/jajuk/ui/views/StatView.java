@@ -144,7 +144,7 @@ public class StatView extends ViewAdapter implements Observer {
       StandardPieSectionLabelGenerator labels = new StandardPieSectionLabelGenerator("{0} = {2}");
       plot.setLabelGenerator(labels);
       cpanel = new ChartPanel(jfchart);
-    } catch (Exception e) {
+    } catch (RuntimeException e) {
       Log.error(e);
     }
     return cpanel;
@@ -198,7 +198,7 @@ public class StatView extends ViewAdapter implements Observer {
       plot.setBackgroundAlpha(0.5f);
       plot.setLabelGenerator(new StandardPieSectionLabelGenerator());
       cpanel = new ChartPanel(jfchart);
-    } catch (Exception e) {
+    } catch (RuntimeException e) {
       Log.error(e);
     }
     return cpanel;
