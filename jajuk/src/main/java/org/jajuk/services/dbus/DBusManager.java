@@ -22,7 +22,7 @@ package org.jajuk.services.dbus;
 /**
  * 
  */
-public class DBusManager {
+public final class DBusManager {
   /** Self instance */
   private static DBusManager self = null;
 
