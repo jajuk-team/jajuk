@@ -98,26 +98,6 @@ public class Device extends PhysicalItem implements Comparable<Device> {
   /** Already synchronizing flag */
   private volatile boolean bAlreadySynchronizing = false;
 
-  /** Number of files in this device before refresh ( for refresh stats ) */
-  private int iNbFilesBeforeRefresh;
-
-  /** Number of dirs in this device before refresh */
-  private int iNbDirsBeforeRefresh;
-
-  /** Number of playlists in this device before refresh */
-  private int iNbPlaylistsBeforeRefresh;
-
-  /** Number of created files on source device during synchro ( for stats ) */
-  private int iNbCreatedFilesSrc;
-
-  /**
-   * Number of created files on destination device during synchro ( for stats )
-   */
-  private int iNbCreatedFilesDest;
-
-  /** Number of deleted files during a synchro ( for stats ) */
-  int iNbDeletedFiles = 0;
-
   /** Volume of created files during synchro */
   long lVolume = 0;
 
@@ -680,9 +660,9 @@ public class Device extends PhysicalItem implements Comparable<Device> {
       if (!isMounted()) {
         return false;
       }
-      iNbFilesBeforeRefresh = FileManager.getInstance().getElementCount();
-      iNbDirsBeforeRefresh = DirectoryManager.getInstance().getElementCount();
-      iNbPlaylistsBeforeRefresh = PlaylistManager.getInstance().getElementCount();
+      int iNbFilesBeforeRefresh = FileManager.getInstance().getElementCount();
+      int iNbDirsBeforeRefresh = DirectoryManager.getInstance().getElementCount();
+      int iNbPlaylistsBeforeRefresh = PlaylistManager.getInstance().getElementCount();
 
       if (bDeepScan && Log.isDebugEnabled()) {
         Log.debug("Starting refresh of device : " + this);
@@ -818,9 +798,8 @@ public class Device extends PhysicalItem implements Comparable<Device> {
     try {
       bAlreadySynchronizing = true;
       long lTime = System.currentTimeMillis();
-      iNbCreatedFilesDest = 0;
-      iNbCreatedFilesSrc = 0;
-      iNbDeletedFiles = 0;
+      int iNbCreatedFilesDest = 0;
+      int iNbCreatedFilesSrc = 0;
       lVolume = 0;
       final boolean bidi = (getValue(Const.XML_DEVICE_SYNCHRO_MODE)
           .equals(Const.DEVICE_SYNCHRO_MODE_BI));
