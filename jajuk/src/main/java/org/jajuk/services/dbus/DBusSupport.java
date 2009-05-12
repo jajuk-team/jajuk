@@ -75,6 +75,12 @@ public interface DBusSupport extends DBusInterface {
   @org.freedesktop.DBus.Description("Toggles Mute on/off.")
   void mute() throws Exception;
 
+  @org.freedesktop.DBus.Description("Returns a string describing the currently played track as HTML snippet.")
+  String currentHTML() throws Exception;
+  
+  @org.freedesktop.DBus.Description("Returns a string describing the currently played track.")
+  String current() throws Exception;
+  
   /*
    * Actions that are not supported (yet): 
    * REPEAT_MODE, SHUFFLE_MODE, CONTINUE_MODE, INTRO_MODE,

@@ -38,6 +38,8 @@ import static org.jajuk.ui.actions.JajukActions.STOP_TRACK;
 
 import org.freedesktop.dbus.DBusConnection;
 import org.freedesktop.dbus.exceptions.DBusException;
+import org.jajuk.base.File;
+import org.jajuk.services.players.FIFO;
 import org.jajuk.ui.actions.ActionManager;
 import org.jajuk.ui.actions.JajukActions;
 import org.jajuk.util.log.Log;
@@ -77,7 +79,6 @@ public class DBusSupportImpl implements DBusSupport {
     } catch (DBusException e) {
       Log.error(e);
     }
-
   }
 
   /**
@@ -92,7 +93,7 @@ public class DBusSupportImpl implements DBusSupport {
     }
   }
 
-  /**
+  /*
    * Interface methods to react on D-Bus signals
    * 
    * These methods are invoked via D-Bus and trigger the corresponding action in
@@ -163,6 +164,26 @@ public class DBusSupportImpl implements DBusSupport {
   public void mute() throws Exception {
     Log.info("Invoking D-Bus action for 'mute'");
     ActionManager.getAction(JajukActions.MUTE_STATE).perform(null);
+  }
+
+  public String currentHTML() throws Exception {
+    Log.info("Invoking D-Bus action for 'currentHTML'");
+    return FIFO.getCurrentFileTitle();
+  }
+
+  public String current() throws Exception {
+    Log.info("Invoking D-Bus action for 'current'");
+
+    String title = null;
+    File file = FIFO.getPlayingFile();
+    if (FIFO.isPlayingRadio()) {
+      title = FIFO.getCurrentRadio().getName();
+    } else if (file != null && !FIFO.isStopped()) {
+      title = file.getTrack().getAuthor().getName() + " - " + file.getTrack().getAlbum().getName() + " - " + file.getTrack().getName();      
+    } else {
+      title = "not playing right now...";
+    }
+    return title;
   }
 
   /**
