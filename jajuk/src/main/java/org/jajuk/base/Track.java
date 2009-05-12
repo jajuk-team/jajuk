@@ -112,14 +112,16 @@ public class Track extends LogicalItem implements Comparable<Track> {
    */
   @Override
   public String toString() {
-    String sOut = "Track[ID=" + getID() + " Name={{" + getName() + "}} " + album + " " + style
-        + " " + author + " Length=" + length + " Year=" + year.getValue() + " Rate=" + getRate()
-        + " " + type + " Hits=" + getHits() + " Addition date=" + getDiscoveryDate() + " Comment="
-        + getComment() + " order=" + getOrder() + " Nb of files=" + alFiles.size() + "]";
+    StringBuilder sOut = new StringBuilder(); 
+      
+      sOut.append("Track[ID=").append(getID()).append(" Name={{").append(getName()).append("}} ").append(album).append(" ").append(style
+       ).append(" ").append(author).append(" Length=").append(length).append(" Year=").append(year.getValue()).append(" Rate=").append(getRate()
+       ).append(" ").append(type).append(" Hits=").append(getHits()).append(" Addition date=").append(getDiscoveryDate()).append(" Comment="
+       ).append(getComment()).append(" order=").append(getOrder()).append(" Nb of files=").append(alFiles.size()).append("]");
     for (int i = 0; i < alFiles.size(); i++) {
-      sOut += '\n' + alFiles.get(i).toString();
+      sOut.append('\n').append(alFiles.get(i).toString());
     }
-    return sOut;
+    return sOut.toString();
   }
 
   /**
@@ -528,7 +530,7 @@ public class Track extends LogicalItem implements Comparable<Track> {
     } else if (Const.XML_TRACK_LENGTH.equals(sKey)) {
       return UtilString.formatTimeBySec(length);
     } else if (Const.XML_TYPE.equals(sKey)) {
-      return (TypeManager.getInstance().getTypeByID(getStringValue(sKey))).getName();
+      return TypeManager.getInstance().getTypeByID(getStringValue(sKey)).getName();
     } else if (Const.XML_YEAR.equals(sKey)) {
       return getStringValue(sKey);
     } else if (Const.XML_FILES.equals(sKey)) {
