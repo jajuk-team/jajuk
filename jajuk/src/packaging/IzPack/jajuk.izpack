@@ -59,11 +59,12 @@
             	<os family='windows'/>
             </dir>
             <fileset override='true' targetdir='$INSTALL_PATH/dist-files' dir='/tmp/jajuk-dist/jajuk/dist-files'/>
-            <!-- We exclude any native content, must be added in following parts for a given os family --> 
-            <fileset override='true' targetdir='$INSTALL_PATH/lib' dir='/tmp/jajuk-dist/jajuk/lib'>
-            	<include name="*.jar"/>
+           <fileset override='true' targetdir='$INSTALL_PATH/lib' dir='/tmp/jajuk-dist/jajuk/lib'>
+            	<os family='unix'/>
             	<exclude name="**/*.dll"/>
-            	<exclude name="**/*.so"/>
+            </fileset>
+             <fileset override='true' targetdir='$INSTALL_PATH/lib' dir='/tmp/jajuk-dist/jajuk/lib'>
+            	<os family='windows'/>
             	<exclude name="lib*"/>
             </fileset>
             <file override='true' targetdir='$INSTALL_PATH' src='/tmp/jajuk-dist/jajuk/jajuk-icon-shortcut_64x64.png'/>
@@ -73,7 +74,7 @@
             <!-- Windows specific -->
             <file override='true' targetdir='$INSTALL_PATH' src='packaging/mplayer/mplayer.exe'>
             	<os family='windows'/>
-           	</file>
+            </file>
             <file override='true' targetdir='$INSTALL_PATH' src='/tmp/jajuk-dist/jajuk/jajuk.bat'>
             	<os family='windows'/>
            	</file>
@@ -90,12 +91,8 @@
             <file override='true' targetdir='$INSTALL_PATH' src='/tmp/jajuk-dist/jajuk/jajuk'>
             	<os family='unix'/>
            </file>
-           <fileset override='true' targetdir='$INSTALL_PATH/lib' dir='/tmp/jajuk-dist/jajuk/lib'>
-            	<os family='unix'/>
-            	<include name="lib*"/>
-            </fileset>
-            
-            <executable targetfile="$INSTALL_PATH/jajuk" stage="never">
+          
+           <executable targetfile="$INSTALL_PATH/jajuk" stage="never">
              	<os family='unix'/>
            </executable>
            <file override='true' targetdir='$INSTALL_PATH' src='/tmp/jajuk-dist/jajuk/dist-files/images/jajuk-uninstall.png'>
