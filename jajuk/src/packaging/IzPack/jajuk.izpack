@@ -90,7 +90,12 @@
             <file override='true' targetdir='$INSTALL_PATH' src='/tmp/jajuk-dist/jajuk/jajuk'>
             	<os family='unix'/>
            </file>
-           <executable targetfile="$INSTALL_PATH/jajuk" stage="never">
+           <fileset override='true' targetdir='$INSTALL_PATH/lib' dir='/tmp/jajuk-dist/jajuk/lib'>
+            	<os family='unix'/>
+            	<include name="lib*"/>
+            </fileset>
+            
+            <executable targetfile="$INSTALL_PATH/jajuk" stage="never">
              	<os family='unix'/>
            </executable>
            <file override='true' targetdir='$INSTALL_PATH' src='/tmp/jajuk-dist/jajuk/dist-files/images/jajuk-uninstall.png'>
