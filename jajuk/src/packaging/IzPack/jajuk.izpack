@@ -59,7 +59,13 @@
             	<os family='windows'/>
             </dir>
             <fileset override='true' targetdir='$INSTALL_PATH/dist-files' dir='/tmp/jajuk-dist/jajuk/dist-files'/>
-            <fileset override='true' targetdir='$INSTALL_PATH/lib' dir='/tmp/jajuk-dist/jajuk/lib'/>
+            <!-- We exclude any native content, must be added in following parts for a given os family --> 
+            <fileset override='true' targetdir='$INSTALL_PATH/lib' dir='/tmp/jajuk-dist/jajuk/lib'>
+            	<include name="*.jar"/>
+            	<exclude name="**/*.dll"/>
+            	<exclude name="**/*.so"/>
+            	<exclude name="lib*"/>
+            </fileset>
             <file override='true' targetdir='$INSTALL_PATH' src='/tmp/jajuk-dist/jajuk/jajuk-icon-shortcut_64x64.png'/>
             <file override='true' targetdir='$INSTALL_PATH' src='/tmp/jajuk-dist/jajuk/LICENSE-GPL.txt'/>
             <file override='true' targetdir='$INSTALL_PATH' src='/tmp/jajuk-dist/jajuk/DERIVATED.txt'/>
