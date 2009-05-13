@@ -19,8 +19,6 @@
  */
 package org.jajuk.ui.widgets;
 
-import info.clearthought.layout.TableLayout;
-
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -33,6 +31,8 @@ import javax.swing.JLabel;
 import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
+
+import net.miginfocom.swing.MigLayout;
 
 import org.jajuk.base.Album;
 import org.jajuk.base.File;
@@ -120,12 +120,6 @@ public final class InformationJPanel extends JXPanel implements Observer {
 
   private InformationJPanel() {
     super();
-
-    // dimensions
-    // set current jpanel properties
-    double size[][] = { { 0.44, 0.13, 0.10, 0.33 }, { TableLayout.PREFERRED } };
-    setLayout(new TableLayout(size));
-
     // message bar
     JToolBar jtbMessage = new JajukJToolbar();
     // Set a zero minimum size to allow user to reduce window width
@@ -155,10 +149,11 @@ public final class InformationJPanel extends JXPanel implements Observer {
     trackPositionSliderToolbar = new TrackPositionSliderToolbar();
 
     // add widgets
-    add(jtbMessage, "0,0");
-    add(jtbSelection, "1,0");
-    add(jtbTotal, "2,0");
-    add(trackPositionSliderToolbar, "3,0");
+    setLayout(new MigLayout("insets 2","[44%,grow][13%,grow][10%,grow][33%,grow]"));
+    add(jtbMessage,"grow");
+    add(jtbSelection,"grow");
+    add(jtbTotal,"grow");
+    add(trackPositionSliderToolbar,"grow");
 
     // check if some errors occurred before the view has been displayed
     if (ObservationManager.containsEvent(JajukEvents.PLAY_ERROR)) {

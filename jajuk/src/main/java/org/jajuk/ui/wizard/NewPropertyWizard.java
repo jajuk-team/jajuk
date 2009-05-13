@@ -20,8 +20,6 @@
 
 package org.jajuk.ui.wizard;
 
-import info.clearthought.layout.TableLayout;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ItemEvent;
 import java.awt.event.KeyEvent;
@@ -31,12 +29,12 @@ import java.awt.event.WindowEvent;
 import java.util.Date;
 import java.util.Properties;
 
-import javax.swing.Box;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.JTextField;
+
+import net.miginfocom.swing.MigLayout;
 
 import org.jajuk.base.ItemManager;
 import org.jajuk.base.PropertyMetaInformation;
@@ -55,19 +53,15 @@ import org.jdesktop.swingx.JXDatePicker;
 public class NewPropertyWizard extends CustomPropertyWizard implements KeyListener {
   private static final long serialVersionUID = 1L;
 
-  JTextField jtfName;
+  private final JTextField jtfName;
 
-  JLabel jlClass;
+  private final JComboBox jcbClass;
 
-  JComboBox jcbClass;
+  private final JTextField jtfDefault;
 
-  JLabel jlDefault;
+  private final JCheckBox jcbDefault;
 
-  JTextField jtfDefault;
-
-  JCheckBox jcbDefault;
-
-  JXDatePicker jdpDefault;
+  private final JXDatePicker jdpDefault;
 
   // Types
   private static final int STRING = 0;
@@ -86,11 +80,11 @@ public class NewPropertyWizard extends CustomPropertyWizard implements KeyListen
   public NewPropertyWizard() {
     super(Messages.getString("NewPropertyWizard.0"));
     populate();// create default UI
-    // name
+    // Name
     jtfName = new JTextField();
     jtfName.addKeyListener(this);
     // Type, class
-    jlClass = new JLabel(Messages.getString("NewPropertyWizard.3"));
+    JLabel jlClass = new JLabel(Messages.getString("NewPropertyWizard.3"));
     jcbClass = new JComboBox();
     jcbClass.addItem(Messages.getString(Const.FORMAT_STRING));
     jcbClass.addItem(Messages.getString(Const.FORMAT_NUMBER));
@@ -99,37 +93,26 @@ public class NewPropertyWizard extends CustomPropertyWizard implements KeyListen
     jcbClass.addItem(Messages.getString(Const.FORMAT_DATE));
     jcbClass.addItemListener(this);
     // Default
-    jlDefault = new JLabel(Messages.getString("NewPropertyWizard.5"));
-    jtfDefault = new JTextField(40);
+    JLabel jlDefault = new JLabel(Messages.getString("NewPropertyWizard.5"));
+    jtfDefault = new JTextField(20);
     jcbDefault = new JCheckBox();
     jcbDefault.setEnabled(false);
     jdpDefault = new JXDatePicker();
     jdpDefault.setEnabled(false);
-    JPanel jpDefault = new JPanel();
-    double[][] d = {
-        { TableLayout.PREFERRED, 10, TableLayout.PREFERRED, 10, TableLayout.PREFERRED }, { 20 } };
-    jpDefault.setLayout(new TableLayout(d));
-    jpDefault.add(jtfDefault, "0,0");
-    jpDefault.add(jcbDefault, "2,0");
-    jpDefault.add(jdpDefault, "4,0");
-    // main
-    int iXSeparator = 10;
-    int iYSeparator = 20;
-    double[][] dSize = {
-        { iXSeparator, TableLayout.PREFERRED, iXSeparator, TableLayout.PREFERRED, iXSeparator },
-        { iYSeparator, 20, iYSeparator, 20, iYSeparator, 20, iYSeparator, 20, iYSeparator } };
-    jpMain.setLayout(new TableLayout(dSize));
-    jpMain.add(jlItemChoice, "1,1");
-    jpMain.add(jcbItemChoice, "3,1");
-    jpMain.add(jlName, "1,3");
-    jpMain.add(jtfName, "3,3");
-    jpMain.add(jlClass, "1,5");
-    jpMain.add(jcbClass, "3,5");
-    jpMain.add(jlDefault, "1,7");
-    jpMain.add(jpDefault, "3,7");
-    getContentPane().add(jpMain);
-    getContentPane().add(okp);
-    getContentPane().add(Box.createVerticalStrut(10));
+    
+    //Add items
+    setLayout(new MigLayout("debug,insets 15,gapx 10,gapy 15","[][grow]"));
+    add(jlItemChoice);
+    add(jcbItemChoice, "grow,wrap");
+    add(jlName);
+    add(jtfName, "grow,wrap");
+    add(jlClass);
+    add(jcbClass, "grow,wrap");
+    add(jlDefault);
+    add(jtfDefault,"split 3,grow");
+    add(jcbDefault, "grow");
+    add(jdpDefault, "grow,wrap");
+    add(okp,"span,grow");
     addWindowListener(new WindowAdapter() {
       @Override
       public void windowActivated(WindowEvent e) {
