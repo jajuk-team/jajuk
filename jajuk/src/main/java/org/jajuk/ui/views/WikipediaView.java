@@ -185,7 +185,7 @@ public class WikipediaView extends ViewAdapter implements Observer, ActionListen
     eventSubjectSet.add(JajukEvents.AUTHOR_CHANGED);
     eventSubjectSet.add(JajukEvents.ALBUM_CHANGED);
     eventSubjectSet.add(JajukEvents.TRACK_CHANGED);
-    eventSubjectSet.add(JajukEvents.PERPECTIVE_CHANGED);
+    eventSubjectSet.add(JajukEvents.PERSPECTIVE_CHANGED);
     return eventSubjectSet;
   }
 
@@ -197,7 +197,7 @@ public class WikipediaView extends ViewAdapter implements Observer, ActionListen
   public void update(JajukEvent event) {
     JajukEvents subject = event.getSubject();
     // Make a search after a stop period
-    if (subject.equals(JajukEvents.FILE_LAUNCHED) || subject.equals(JajukEvents.PERPECTIVE_CHANGED)) {
+    if (subject.equals(JajukEvents.FILE_LAUNCHED) || subject.equals(JajukEvents.PERSPECTIVE_CHANGED)) {
       // If current state is stopped, reset page
       if (FIFO.getPlayingFile() == null) {
         reset();

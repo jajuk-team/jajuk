@@ -196,7 +196,7 @@ public final class PerspectiveManager {
         Conf.setProperty(Const.CONF_PERSPECTIVE_DEFAULT, perspective.getID());
         UtilGUI.stopWaiting();
         // Emit a event
-        ObservationManager.notify(new JajukEvent(JajukEvents.PERPECTIVE_CHANGED, ObservationManager
+        ObservationManager.notify(new JajukEvent(JajukEvents.PERSPECTIVE_CHANGED, ObservationManager
             .getDetailsLastOccurence(JajukEvents.FILE_LAUNCHED)));
       }
     });

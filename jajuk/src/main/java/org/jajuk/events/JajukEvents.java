@@ -120,7 +120,7 @@ public enum JajukEvents {
   // Language changed
   LANGUAGE_CHANGED,
   // Perspective changed
-  PERPECTIVE_CHANGED,
+  PERSPECTIVE_CHANGED,
   // Current track is finished
   FILE_FINISHED,
   // Lyrics data has been downloaded
