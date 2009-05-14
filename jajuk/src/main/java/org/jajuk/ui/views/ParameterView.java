@@ -111,201 +111,203 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 
   private static final long serialVersionUID = 1L;
 
-  JTabbedPane jtpMain;
+  private JTabbedPane jtpMain;
 
-  JTextField jtfHistory;
+  private JTextField jtfHistory;
 
-  JButton jbClearHistory;
+  private JButton jbClearHistory;
 
-  JButton jbResetRatings;
+  private JButton jbResetRatings;
 
-  JButton jbResetPreferences;
+  private JButton jbResetPreferences;
 
-  ButtonGroup bgStart;
+  private ButtonGroup bgStart;
 
-  JRadioButton jrbNothing;
+  private JRadioButton jrbNothing;
 
-  JRadioButton jrbLast;
+  private JRadioButton jrbLast;
 
-  JRadioButton jrbLastKeepPos;
+  private JRadioButton jrbLastKeepPos;
 
-  JRadioButton jrbShuffle;
+  private JRadioButton jrbShuffle;
 
-  JRadioButton jrbBestof;
+  private JRadioButton jrbBestof;
 
-  JRadioButton jrbNovelties;
+  private JRadioButton jrbNovelties;
 
-  JRadioButton jrbFile;
+  private JRadioButton jrbFile;
 
-  SearchBox sbSearch;
+  private SearchBox sbSearch;
 
-  JPanel jpConfirmations;
+  private JPanel jpConfirmations;
 
-  JCheckBox jcbBeforeDelete;
+  private JCheckBox jcbBeforeDelete;
 
-  JCheckBox jcbBeforeExit;
+  private JCheckBox jcbBeforeExit;
 
-  JCheckBox jcbBeforeRemoveDevice;
+  private JCheckBox jcbBeforeRemoveDevice;
 
-  JCheckBox jcbBeforeDeleteCover;
+  private JCheckBox jcbBeforeDeleteCover;
 
-  JCheckBox jcbBeforeClearingHistory;
+  private JCheckBox jcbBeforeClearingHistory;
 
-  JCheckBox jcbBeforeResetingRatings;
+  private JCheckBox jcbBeforeResetingRatings;
 
-  JCheckBox jcbBeforeRefactorFiles;
+  private JCheckBox jcbBeforeRefactorFiles;
 
-  JPanel jpOptions;
+  private JPanel jpOptions;
 
-  JCheckBox jcbDisplayUnmounted;
+  private JCheckBox jcbDisplayUnmounted;
 
-  JCheckBox jcbSyncTableTree;
+  private JCheckBox jcbSyncTableTree;
 
-  JCheckBox jcbAudioScrobbler;
+  private JCheckBox jcbAudioScrobbler;
 
-  JLabel jlASUser;
+  private JLabel jlASUser;
 
-  JTextField jtfASUser;
+  private JTextField jtfASUser;
 
-  JLabel jlASPassword;
+  private JLabel jlASPassword;
 
-  JPasswordField jpfASPassword;
+  private JPasswordField jpfASPassword;
 
-  SteppedComboBox scbLanguage;
+  private SteppedComboBox scbLanguage;
 
-  JLabel jlFrameTitle;
+  private JLabel jlFrameTitle;
 
-  JTextField jtfFrameTitle;
+  private JTextField jtfFrameTitle;
 
-  JLabel jlLAF;
+  private JLabel jlLAF;
 
-  SteppedComboBox scbLAF;
+  private SteppedComboBox scbLAF;
 
-  SteppedComboBox scbLogLevel;
+  private SteppedComboBox scbLogLevel;
 
-  JSlider introPosition;
+  private JSlider introPosition;
 
-  JSlider introLength;
+  private JSlider introLength;
 
-  JTextField jtfBestofSize;
+  private JTextField jtfBestofSize;
 
-  JTextField jtfNoveltiesAge;
+  private JTextField jtfNoveltiesAge;
 
-  JTextField jtfVisiblePlanned;
+  private JTextField jtfVisiblePlanned;
 
-  JSlider crossFadeDuration;
+  private JSlider crossFadeDuration;
 
-  JCheckBox jcbDefaultActionClick;
+  private JCheckBox jcbDefaultActionClick;
 
-  JCheckBox jcbDefaultActionDrop;
+  private JCheckBox jcbDefaultActionDrop;
 
-  JCheckBox jcbShowBaloon;
+  private JCheckBox jcbShowBaloon;
 
-  JCheckBox jcbHotkeys;
+  private JCheckBox jcbHotkeys;
 
-  JPanel jpTags;
+  private JPanel jpTags;
 
-  JCheckBox jcbUseParentDir;
+  private JCheckBox jcbUseParentDir;
 
-  JFormattedTextField jtfRefactorPattern;
+  private JFormattedTextField jtfRefactorPattern;
 
-  JTextField jtfAnimationPattern;
+  private JTextField jtfAnimationPattern;
 
-  JPanel jpAdvanced;
+  private JPanel jpAdvanced;
 
-  JCheckBox jcbBackup;
+  private JCheckBox jcbBackup;
 
-  JSlider backupSize;
+  private JSlider backupSize;
 
-  JComboBox jcbCollectionEncoding;
+  private JComboBox jcbCollectionEncoding;
 
-  JCheckBox jcbRegexp;
+  private JCheckBox jcbRegexp;
 
-  JPanel jpNetwork;
+  private JPanel jpNetwork;
 
-  ButtonGroup bgProxy;
+  private ButtonGroup bgProxy;
 
-  JCheckBox jcbNoneInternetAccess;
+  private JCheckBox jcbNoneInternetAccess;
 
-  JRadioButton jcbProxyNone;
+  private JRadioButton jcbProxyNone;
 
-  JRadioButton jcbProxyHttp;
+  private JRadioButton jcbProxyHttp;
 
-  JRadioButton jcbProxySocks;
+  private JRadioButton jcbProxySocks;
 
-  JLabel jlProxyHostname;
+  private JLabel jlProxyHostname;
 
-  JTextField jtfProxyHostname;
+  private JTextField jtfProxyHostname;
 
-  JLabel jlProxyPort;
+  private JLabel jlProxyPort;
 
-  JTextField jtfProxyPort;
+  private JTextField jtfProxyPort;
 
-  JLabel jlProxyLogin;
+  private JLabel jlProxyLogin;
 
-  JTextField jtfProxyLogin;
+  private JTextField jtfProxyLogin;
 
-  JLabel jlProxyPwd;
+  private JLabel jlProxyPwd;
 
-  JPasswordField jtfProxyPwd;
+  private JPasswordField jtfProxyPwd;
 
-  JLabel jlConnectionTO;
+  private JLabel jlConnectionTO;
 
-  JSlider connectionTO;
+  private JSlider connectionTO;
 
-  JPanel jpCovers;
+  private JPanel jpCovers;
 
-  JCheckBox jcbAutoCover;
+  private JCheckBox jcbAutoCover;
 
-  JCheckBox jcbShuffleCover;
+  private JCheckBox jcbShuffleCover;
 
-  JLabel jlCoverSize;
+  private JLabel jlCoverSize;
 
-  JComboBox jcbCoverSize;
+  private JComboBox jcbCoverSize;
 
-  JTextField jtfMPlayerArgs;
+  private JTextField jtfMPlayerArgs;
 
-  JTextField jtfEnvVariables;
+  private JTextField jtfEnvVariables;
 
-  JTextField jtfMPlayerPath;
+  private JTextField jtfMPlayerPath;
 
-  PathSelector psJajukWorkspace;
+  private PathSelector psJajukWorkspace;
 
-  JLabel jlCatalogPages;
+  private JLabel jlCatalogPages;
 
-  JSlider jsCatalogPages;
+  private JSlider jsCatalogPages;
 
-  JButton jbCatalogRefresh;
+  private JButton jbCatalogRefresh;
 
-  JCheckBox jcbShowPopups;
+  private JCheckBox jcbShowPopups;
 
-  JPanel jpUI;
+  private JPanel jpUI;
 
-  JLabel jlFonts;
+  private JLabel jlFonts;
 
-  JSlider jsFonts;
+  private JSlider jsFonts;
 
-  JPanel jpLastFM;
+  private JPanel jpLastFM;
 
-  JCheckBox jcbEnableLastFMInformation;
+  private JCheckBox jcbEnableLastFMInformation;
 
-  JPanel jpOKCancel;
+  private JPanel jpOKCancel;
 
-  JButton jbOK;
+  private JButton jbOK;
 
-  JButton jbDefault;
+  private JButton jbDefault;
 
-  JCheckBox jcbCheckUpdates;
+  private JCheckBox jcbCheckUpdates;
 
-  JCheckBox jcbForceFileDate;
+  private JCheckBox jcbForceFileDate;
 
-  JSlider jsPerspectiveSize;
+  private JSlider jsPerspectiveSize;
 
   private JCheckBox jcbShortNames;
 
   private JCheckBox jcbUseVolnorm;
 
   private boolean someOptionsAppliedAtNextStartup = false;
+
+  private JTextField jtfExplorerPath;
 
   /**
    * whether the "theme will be token into account" message has been already
@@ -583,6 +585,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     Conf.setProperty(Const.CONF_MPLAYER_PATH_FORCED, jtfMPlayerPath.getText());
     Conf.setProperty(Const.CONF_MPLAYER_ARGS, jtfMPlayerArgs.getText());
     Conf.setProperty(Const.CONF_ENV_VARIABLES, jtfEnvVariables.getText());
+    Conf.setProperty(Const.CONF_EXPLORER_PATH, jtfExplorerPath.getText());
 
     // UI
     Conf.setProperty(Const.CONF_CATALOG_PAGE_SIZE, Integer.toString(jsCatalogPages.getValue()));
@@ -1187,6 +1190,11 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     jcbForceFileDate.setToolTipText(Messages.getString("ParameterView.245"));
     jcbForceFileDate.setSelected(Conf.getBoolean(Const.CONF_FORCE_FILE_DATE));
 
+    JLabel jlExplorer = new JLabel(Messages.getString("ParameterView.269"));
+    jlExplorer.setToolTipText(Messages.getString("ParameterView.270"));
+    jtfExplorerPath = new JTextField();
+    jtfExplorerPath.setToolTipText(Messages.getString("ParameterView.270"));
+
     jpAdvanced = new JPanel(new MigLayout("insets 10,gapy 15, gapx 10", "[][grow][fill]"));
     jpAdvanced.add(jcbBackup);
     jpAdvanced.add(backupSize, "wrap,grow");
@@ -1202,11 +1210,13 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     jpAdvanced.add(jtfEnvVariables, "wrap,grow");
     jpAdvanced.add(jlJajukWorkspace);
     jpAdvanced.add(psJajukWorkspace, "wrap,grow");
+    jpAdvanced.add(jlExplorer);
+    jpAdvanced.add(jtfExplorerPath, "grow,wrap");
     jpAdvanced.add(jcbRegexp, "wrap");
     jpAdvanced.add(jcbCheckUpdates, "wrap");
     jpAdvanced.add(jcbForceFileDate, "wrap");
     jpAdvanced.add(jcbShortNames, "wrap");
-
+  
     // - Network
     bgProxy = new ButtonGroup();
     jcbProxyNone = new JRadioButton(Messages.getString("ParameterView.236"));
@@ -1480,7 +1490,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
       jtpMain.setSelectedIndex(0);
     }
     jtpMain.addChangeListener(this);
-    setLayout(new MigLayout("insets 10,gapx 10","[grow]"));
+    setLayout(new MigLayout("insets 10,gapx 10", "[grow]"));
     add(jtpMain, "wrap,span,grow");
     add(jbOK, "split 2");
     add(jbDefault);
@@ -1604,6 +1614,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
     jtfMPlayerPath.setText(Conf.getString(Const.CONF_MPLAYER_PATH_FORCED));
     jtfMPlayerArgs.setText(Conf.getString(Const.CONF_MPLAYER_ARGS));
     jtfEnvVariables.setText(Conf.getString(Const.CONF_ENV_VARIABLES));
+    jtfExplorerPath.setText(Conf.getString(Const.CONF_EXPLORER_PATH));
 
     // Network
     jcbNoneInternetAccess.setSelected(Conf.getBoolean(Const.CONF_NETWORK_NONE_INTERNET_ACCESS));

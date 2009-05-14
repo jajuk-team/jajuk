@@ -118,11 +118,11 @@ public class QueueView extends PlaylistView {
 
     jtbAutoScroll = new JajukToggleButton(IconLoader.getIcon(JajukIcons.AUTOSCROLL));
     jtbAutoScroll.setToolTipText(Messages.getString("QueueView.2"));
-    jtbAutoScroll.setSelected(Conf.getBoolean(Const.AUTO_SCROLL));
+    jtbAutoScroll.setSelected(Conf.getBoolean(Const.CONF_AUTO_SCROLL));
     jtbAutoScroll.addActionListener(new ActionListener() {
 
       public void actionPerformed(ActionEvent e) {
-        Conf.setProperty(Const.AUTO_SCROLL, Boolean.toString(jtbAutoScroll.isSelected()));
+        Conf.setProperty(Const.CONF_AUTO_SCROLL, Boolean.toString(jtbAutoScroll.isSelected()));
       }
 
     });

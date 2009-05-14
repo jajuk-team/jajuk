@@ -213,6 +213,7 @@ public final class ActionManager {
     // MISC
     installAction(FIND_DUPLICATE_FILES, new FindDuplicateTracksAction(), false);
     installAction(COPY_TO_CLIPBOARD, new CopyClipboardAction(), false);
+    installAction(JajukActions.OPEN_EXPLORER, new OpenExplorerAction(), false);
     installAction(REFRESH, new RefreshAction(), false);
     installAction(ALARM_CLOCK, new AlarmClockAction(), false);
     installAction(SHOW_ALBUM_DETAILS, new ShowAlbumDetailsAction(), false);

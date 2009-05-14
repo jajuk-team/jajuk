@@ -868,6 +868,10 @@ final public class IconLoader {
     else if (icon == JajukIcons.AMBIENCE) {
       out = new ImageIcon(UtilSystem.getResource("icons/32x32/ambience_32x32.png"));
     }
+    
+    else if (icon == JajukIcons.OPEN_EXPLORER) {
+      out = new ImageIcon(UtilSystem.getResource("icons/16x16/explorer_16x16.png"));
+    }
 
     // Cache the result
     if (!cache.containsKey(icon)) {

@@ -23,6 +23,8 @@ import java.net.URL;
 
 /**
  * Contains all technical/ non-translatable strings
+ * Do not set static final to these constants, it is implied 
+ * by the fact you are in an interface.
  */
 public interface Const {
 
@@ -1144,7 +1146,9 @@ public interface Const {
 
   String CONF_ALARM_ENABLED = "jajuk.alarm.enabled";
 
-  String AUTO_SCROLL = "jajuk.auto_scroll";
+  String CONF_AUTO_SCROLL = "jajuk.auto_scroll";
+  
+  String CONF_EXPLORER_PATH = "jajuk.explorer_path";
 
   // Alarm actions
   String ALARM_START_ACTION = "Start Playing";

@@ -19,6 +19,9 @@
  */
 package org.jajuk.util;
 
+import ext.service.io.NativeFunctionsUtils;
+
+import java.awt.Desktop;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -1097,4 +1100,63 @@ public final class UtilSystem {
     return UtilSystem.RANDOM;
   }
 
+  /**
+   * Opens a directory with the associated explorer program.
+   * <li> Start by trying to open the directory with any provided explorer path
+   * </li>
+   * <li> Then, try to use the JDIC Desktop class if supported by the platform
+   * </li>
+   * 
+   * Inspired from an aTunes method
+   * 
+   * @param file
+   *          The file that should be opened
+   */
+  public static void openInExplorer(File directory) {
+    final File directoryToOpen;
+    /*
+     * Needed for UNC filenames with spaces ->
+     * http://bugs.sun.com/view_bug.do?bug_id=6550588
+     */
+    if (isUnderWindows()) {
+      directoryToOpen = new File(NativeFunctionsUtils
+          .getShortPathNameW(directory.getAbsolutePath()));
+    } else {
+      directoryToOpen = directory;
+    }
+
+    // Try to open the location using the forced explorer path of provided
+    if (UtilString.isNotVoid(Conf.getString(Const.CONF_EXPLORER_PATH))) {
+      new Thread() {
+        public void run() {
+          try {
+            ProcessBuilder pb = new ProcessBuilder(Conf.getString(Const.CONF_EXPLORER_PATH),
+                directoryToOpen.getAbsolutePath());
+            pb.start();
+          } catch (Exception e) {
+            Log.error(e);
+            Messages.showErrorMessage(179, directoryToOpen.getAbsolutePath());
+          }
+        }
+      }.start();
+    }
+    // Try to open the location using the JDIC/JDK Desktop.open method
+    // This is not supported on some platforms (Linux/XFCE for ie)
+    else if (Desktop.getDesktop().isSupported(Desktop.Action.OPEN)) {
+      new Thread() {
+        public void run() {
+          try {
+            Desktop.getDesktop().open(directoryToOpen);
+          } catch (Exception e) {
+            Log.error(e);
+            Messages.showErrorMessage(179, directoryToOpen.getAbsolutePath());
+          }
+        }
+      }.start();
+    }
+    // Else, display a warning message: we don't support this platform
+    else {
+      Messages.showErrorMessage(179);
+    }
+  }
 }

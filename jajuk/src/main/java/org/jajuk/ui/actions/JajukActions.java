@@ -373,6 +373,10 @@ public enum JajukActions {
    */
   COPY_TO_CLIPBOARD,
   /**
+   * Open directory in default explorer program
+   */
+  OPEN_EXPLORER,
+  /**
    * Launch in an external browser the url given in UtilFeatures.url
    */
   LAUNCH_IN_BROWSER,

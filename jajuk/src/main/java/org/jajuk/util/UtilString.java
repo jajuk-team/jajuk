@@ -429,7 +429,8 @@ public final class UtilString {
     }
 
     // construct string with first letter uppercase and rest lowercase
-    return style.substring(0, 1).toUpperCase(Locale.getDefault()) + style.toLowerCase(Locale.getDefault()).substring(1);
+    return style.substring(0, 1).toUpperCase(Locale.getDefault())
+        + style.toLowerCase(Locale.getDefault()).substring(1);
   }
 
   /**
@@ -604,10 +605,20 @@ public final class UtilString {
    * 
    * @param s
    *          String to test
-   * @return whether the string is void or not
+   * @return whether the string is void
    */
   public static boolean isVoid(final String s) {
     return (s == null) || s.trim().equals("");
+  }
+
+  /**
+   * 
+   * @param s
+   *          String to test
+   * @return whether the string is not void
+   */
+  public static boolean isNotVoid(final String s) {
+    return !isVoid(s);
   }
 
   /**
@@ -620,10 +631,10 @@ public final class UtilString {
       final char c = s.charAt(i);
 
       // check reserved chars
-      if(-1 != "&\'\"<>".indexOf(c)) {
+      if (-1 != "&\'\"<>".indexOf(c)) {
         return false;
       }
-        
+
       if (!UtilString.isChar(c)) {
         return false;
       }
@@ -655,10 +666,11 @@ public final class UtilString {
    * @param sValue
    * @param cType
    * @return parsed item
-   * @throws ParseException 
-   * @throws ClassNotFoundException 
+   * @throws ParseException
+   * @throws ClassNotFoundException
    */
-  public static Object parse(final String sValue, final Class<?> cType) throws ParseException, ClassNotFoundException {
+  public static Object parse(final String sValue, final Class<?> cType) throws ParseException,
+      ClassNotFoundException {
     Object oDefaultValue = sValue; // String by default
     if (cType.equals(Boolean.class)) {
       // "y" and "n" is an old boolean
