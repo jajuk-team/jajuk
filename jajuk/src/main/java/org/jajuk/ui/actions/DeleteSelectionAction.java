@@ -41,7 +41,7 @@ import org.jajuk.base.TrackManager;
 import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
-import org.jajuk.services.players.FIFO;
+import org.jajuk.services.players.QueueModel;
 import org.jajuk.ui.widgets.InformationJPanel;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
@@ -131,7 +131,7 @@ public class DeleteSelectionAction extends SelectionAction {
           UtilGUI.waiting();
           for (File f : alFiles) {
             try {
-              if (FIFO.getPlayingFile() != null && f.equals(FIFO.getPlayingFile())) {
+              if (QueueModel.getPlayingFile() != null && f.equals(QueueModel.getPlayingFile())) {
                 throw new Exception("File currently in use");
               }
               Directory d = f.getDirectory();
@@ -220,7 +220,7 @@ public class DeleteSelectionAction extends SelectionAction {
           for (Directory d : alDirs) {
             try {
               for (File f : d.getFiles()) {
-                if (FIFO.getPlayingFile() != null && f.equals(FIFO.getPlayingFile())) {
+                if (QueueModel.getPlayingFile() != null && f.equals(QueueModel.getPlayingFile())) {
                   throw new Exception("File currently in use");
                 }
               }

@@ -23,7 +23,7 @@ import java.awt.event.ActionEvent;
 import java.util.List;
 
 import org.jajuk.base.File;
-import org.jajuk.services.players.FIFO;
+import org.jajuk.services.players.QueueModel;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
@@ -62,7 +62,7 @@ public class PlayRepeatSelectionAction extends SelectionAction {
         try {
           PlayRepeatSelectionAction.super.perform(e);
           List<File> files = UtilFeatures.getPlayableFiles(selection);
-          FIFO.push(UtilFeatures.createStackItems(UtilFeatures.applyPlayOption(files), true, true),
+          QueueModel.push(UtilFeatures.createStackItems(UtilFeatures.applyPlayOption(files), true, true),
               false);
         } catch (Exception e) {
           Log.error(e);

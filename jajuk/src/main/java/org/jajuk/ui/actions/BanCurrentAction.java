@@ -26,7 +26,7 @@ import org.jajuk.base.Track;
 import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
-import org.jajuk.services.players.FIFO;
+import org.jajuk.services.players.QueueModel;
 import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
@@ -47,7 +47,7 @@ public class BanCurrentAction extends SelectionAction {
 
   @Override
   public void perform(ActionEvent e) throws Exception {
-    File current = FIFO.getPlayingFile();
+    File current = QueueModel.getPlayingFile();
     if (current != null) {
       Track track = current.getTrack();
       boolean alreadyBanned = track.getBooleanValue(Const.XML_TRACK_BANNED);

@@ -41,7 +41,7 @@ import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.events.Observer;
-import org.jajuk.services.players.FIFO;
+import org.jajuk.services.players.QueueModel;
 import org.jajuk.services.players.Player;
 import org.jajuk.ui.helpers.JajukTimer;
 import org.jajuk.util.Conf;
@@ -263,7 +263,7 @@ public class TrackPositionSliderToolbar extends JajukJToolbar implements ChangeL
     } else {
       SwingUtilities.invokeLater(new Runnable() {
         public void run() {
-          if (JajukEvents.HEART_BEAT.equals(subject) && !FIFO.isStopped() && !Player.isPaused()) {
+          if (JajukEvents.HEART_BEAT.equals(subject) && !QueueModel.isStopped() && !Player.isPaused()) {
             long length = JajukTimer.getInstance().getCurrentTrackTotalTime();
             long lTime = JajukTimer.getInstance().getCurrentTrackEllapsedTime();
             int iPos = (int) (100 * JajukTimer.getInstance().getCurrentTrackPosition());

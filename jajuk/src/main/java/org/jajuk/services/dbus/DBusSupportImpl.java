@@ -39,7 +39,7 @@ import static org.jajuk.ui.actions.JajukActions.STOP_TRACK;
 import org.freedesktop.dbus.DBusConnection;
 import org.freedesktop.dbus.exceptions.DBusException;
 import org.jajuk.base.File;
-import org.jajuk.services.players.FIFO;
+import org.jajuk.services.players.QueueModel;
 import org.jajuk.ui.actions.ActionManager;
 import org.jajuk.ui.actions.JajukActions;
 import org.jajuk.util.log.Log;
@@ -168,17 +168,17 @@ public class DBusSupportImpl implements DBusSupport {
 
   public String currentHTML() throws Exception {
     Log.info("Invoking D-Bus action for 'currentHTML'");
-    return FIFO.getCurrentFileTitle();
+    return QueueModel.getCurrentFileTitle();
   }
 
   public String current() throws Exception {
     Log.info("Invoking D-Bus action for 'current'");
 
     String title = null;
-    File file = FIFO.getPlayingFile();
-    if (FIFO.isPlayingRadio()) {
-      title = FIFO.getCurrentRadio().getName();
-    } else if (file != null && !FIFO.isStopped()) {
+    File file = QueueModel.getPlayingFile();
+    if (QueueModel.isPlayingRadio()) {
+      title = QueueModel.getCurrentRadio().getName();
+    } else if (file != null && !QueueModel.isStopped()) {
       title = file.getTrack().getAuthor().getName() + " - " + file.getTrack().getAlbum().getName() + " - " + file.getTrack().getName();      
     } else {
       title = "not playing right now...";

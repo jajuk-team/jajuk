@@ -27,7 +27,7 @@ import org.jajuk.base.File;
 import org.jajuk.base.StyleManager;
 import org.jajuk.services.dj.DigitalDJ;
 import org.jajuk.services.dj.DigitalDJManager;
-import org.jajuk.services.players.FIFO;
+import org.jajuk.services.players.QueueModel;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
@@ -67,7 +67,7 @@ public class DJAction extends JajukAction {
                 Messages.showErrorMessage(158);
                 return;
               }
-              FIFO.push(UtilFeatures.createStackItems(UtilFeatures.applyPlayOption(al), Conf
+              QueueModel.push(UtilFeatures.createStackItems(UtilFeatures.applyPlayOption(al), Conf
                   .getBoolean(Const.CONF_STATE_REPEAT), false), false);
             } else {
               Messages.showErrorMessage(157);

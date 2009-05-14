@@ -33,7 +33,7 @@ import org.jajuk.base.TrackComparator.TrackComparatorType;
 import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
-import org.jajuk.services.players.FIFO;
+import org.jajuk.services.players.QueueModel;
 import org.jajuk.services.tags.Tag;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
@@ -243,8 +243,8 @@ public final class TrackManager extends ItemManager {
     // Remove the track from the old album
     track.getAlbum().getTracksCache().remove(track);
     // if current track album name is changed, notify it
-    if (FIFO.getPlayingFile() != null
-        && FIFO.getPlayingFile().getTrack().getAlbum().equals(track.getAlbum())) {
+    if (QueueModel.getPlayingFile() != null
+        && QueueModel.getPlayingFile().getTrack().getAlbum().equals(track.getAlbum())) {
       ObservationManager.notify(new JajukEvent(JajukEvents.ALBUM_CHANGED));
     }
     // register the new album
@@ -295,8 +295,8 @@ public final class TrackManager extends ItemManager {
     track.getAlbum().getTracksCache().remove(track);
 
     // if current track author name is changed, notify it
-    if (FIFO.getPlayingFile() != null
-        && FIFO.getPlayingFile().getTrack().getAuthor().equals(track.getAuthor())) {
+    if (QueueModel.getPlayingFile() != null
+        && QueueModel.getPlayingFile().getTrack().getAuthor().equals(track.getAuthor())) {
       ObservationManager.notify(new JajukEvent(JajukEvents.AUTHOR_CHANGED));
     }
     // register the new item
@@ -558,7 +558,7 @@ public final class TrackManager extends ItemManager {
         track.getDuration(), track.getYear(), track.getOrder(), track.getType());
     postChange(track, newTrack, filter);
     // if current track name is changed, notify it
-    if (FIFO.getPlayingFile() != null && FIFO.getPlayingFile().getTrack().equals(track)) {
+    if (QueueModel.getPlayingFile() != null && QueueModel.getPlayingFile().getTrack().equals(track)) {
       ObservationManager.notify(new JajukEvent(JajukEvents.TRACK_CHANGED));
     }
     return newTrack;

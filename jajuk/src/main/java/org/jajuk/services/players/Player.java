@@ -133,7 +133,7 @@ public final class Player {
           InformationJPanel.getInstance().setMessage(Messages.getString("Player.0"),
               InformationJPanel.WARNING);
           // wait for the line
-          FIFO.class.wait(Const.WAIT_AFTER_ERROR);
+          QueueModel.class.wait(Const.WAIT_AFTER_ERROR);
         }
       }
       return true;
@@ -187,7 +187,7 @@ public final class Player {
               InformationJPanel.WARNING);
           try {
             // wait for the line
-            FIFO.class.wait(Const.WAIT_AFTER_ERROR);
+            QueueModel.class.wait(Const.WAIT_AFTER_ERROR);
           } catch (InterruptedException e1) {
             e1.printStackTrace();
           }

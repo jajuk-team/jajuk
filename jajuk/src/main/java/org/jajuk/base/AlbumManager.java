@@ -37,7 +37,7 @@ import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.events.Observer;
-import org.jajuk.services.players.FIFO;
+import org.jajuk.services.players.QueueModel;
 import org.jajuk.util.Const;
 import org.jajuk.util.MD5Processor;
 import org.jajuk.util.ReadOnlyIterator;
@@ -152,7 +152,7 @@ public final class AlbumManager extends ItemManager implements Observer {
       }
     }
     // if current track album name is changed, notify it
-    if (FIFO.getPlayingFile() != null && FIFO.getPlayingFile().getTrack().getAlbum().equals(old)) {
+    if (QueueModel.getPlayingFile() != null && QueueModel.getPlayingFile().getTrack().getAlbum().equals(old)) {
       ObservationManager.notify(new JajukEvent(JajukEvents.ALBUM_CHANGED));
     }
     return newItem;

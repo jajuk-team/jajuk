@@ -50,7 +50,7 @@ import org.jajuk.base.Playlist;
 import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
-import org.jajuk.services.players.FIFO;
+import org.jajuk.services.players.QueueModel;
 import org.jajuk.services.players.StackItem;
 import org.jajuk.ui.actions.ActionManager;
 import org.jajuk.ui.actions.JajukActions;
@@ -110,7 +110,7 @@ public class QueueView extends PlaylistView {
     jbAddShuffle = new JajukButton(IconLoader.getIcon(JajukIcons.ADD_SHUFFLE));
     jbAddShuffle.setToolTipText(Messages.getString("AbstractPlaylistEditorView.10"));
     jbAddShuffle.addActionListener(this);
-    jlTitle = new JLabel(" [" + FIFO.getFIFO().size() + "]");
+    jlTitle = new JLabel(" [" + QueueModel.getFIFO().size() + "]");
 
     jbClear = new JajukButton(IconLoader.getIcon(JajukIcons.CLEAR));
     jbClear.setToolTipText(Messages.getString("QueueView.1"));
@@ -206,7 +206,7 @@ public class QueueView extends PlaylistView {
             item.setPlanned(false);
             item.setRepeat(Conf.getBoolean(Const.CONF_STATE_REPEAT));
             item.setUserLaunch(true);
-            FIFO.push(item, Conf.getBoolean(Const.CONF_OPTIONS_PUSH_ON_CLICK));
+            QueueModel.push(item, Conf.getBoolean(Const.CONF_OPTIONS_PUSH_ON_CLICK));
           } else { // non planned items
             goToSelection();
           }
@@ -227,7 +227,7 @@ public class QueueView extends PlaylistView {
       @Override
       public void run() {
         try {
-          FIFO.goTo(editorTable.getSelectedRow());
+          QueueModel.goTo(editorTable.getSelectedRow());
           // remove selection for planned tracks
           ListSelectionModel lsm = editorTable.getSelectionModel();
           bSettingSelection = true;
@@ -294,9 +294,9 @@ public class QueueView extends PlaylistView {
             if (jtbAutoScroll.isSelected()) {
               SwingUtilities.invokeLater(new Runnable() {
                 public void run() {
-                  if (FIFO.getFIFOSize() > 0) {
-                    double index = FIFO.getIndex();
-                    double size = FIFO.getFIFOSize();
+                  if (QueueModel.getFIFOSize() > 0) {
+                    double index = QueueModel.getIndex();
+                    double size = QueueModel.getFIFOSize();
                     double factor = (index / size);
                     int value = (int) (factor * jsp.getVerticalScrollBar().getMaximum());
 
@@ -365,7 +365,7 @@ public class QueueView extends PlaylistView {
         } finally {
           editorTable.setAcceptColumnsEvents(true);
           // Update number of tracks remaining
-          jlTitle.setText(" [" + FIFO.getFIFO().size() + "]");
+          jlTitle.setText(" [" + QueueModel.getFIFO().size() + "]");
         }
       }
     });
@@ -377,8 +377,8 @@ public class QueueView extends PlaylistView {
     if (editorTable.getSelectionModel().getMinSelectionIndex() == -1) {
       setDefaultButtonState();
     }
-    editorModel.setItems(FIFO.getFIFO());
-    editorModel.setPlanned(FIFO.getPlanned());
+    editorModel.setItems(QueueModel.getFIFO());
+    editorModel.setPlanned(QueueModel.getPlanned());
     ((JajukTableModel) editorTable.getModel()).populateModel(editorTable.getColumnsConf());
     int[] rows = editorTable.getSelectedRows();
     // save selection
@@ -445,10 +445,10 @@ public class QueueView extends PlaylistView {
         int iRow = editorTable.getSelectedRow();
         if (iRow < 0
         // no row is selected, add to the end
-            || iRow > FIFO.getFIFO().size()) {
+            || iRow > QueueModel.getFIFO().size()) {
           // row can be on planned track if user select a planned track and if
           // fifo is reduced after tracks have been played
-          iRow = FIFO.getFIFO().size();
+          iRow = QueueModel.getFIFO().size();
         }
         File file = FileManager.getInstance().getShuffleFile();
         try {
@@ -461,7 +461,7 @@ public class QueueView extends PlaylistView {
         refreshQueue();
       } else if (ae.getSource() == jbClear) {
         // Reset the FIFO
-        FIFO.reset(); // reinit all variables
+        QueueModel.reset(); // reinit all variables
         try {
           ActionManager.getAction(JajukActions.STOP_TRACK).perform(null);
         } catch (Exception e) {
@@ -527,7 +527,7 @@ public class QueueView extends PlaylistView {
       if (// multiple selection not supported
       selection.getMinSelectionIndex() == 0
       // can't add track at current track position
-          || selectedRow > FIFO.getFIFO().size()
+          || selectedRow > QueueModel.getFIFO().size()
       // no add for planned track but user can add over first planned
       // track to expand FIFO
       ) {

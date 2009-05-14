@@ -23,7 +23,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.jajuk.base.File;
-import org.jajuk.services.players.FIFO;
+import org.jajuk.services.players.QueueModel;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.UtilFeatures;
@@ -49,10 +49,10 @@ public class Alarm {
   public void wakeUpSleeper() {
     Log.debug("Wake up at " + new Date());
     if (alarmAction.equals(Const.ALARM_START_ACTION)) {
-      FIFO.push(UtilFeatures.createStackItems(alToPlay, Conf.getBoolean(Const.CONF_STATE_REPEAT),
+      QueueModel.push(UtilFeatures.createStackItems(alToPlay, Conf.getBoolean(Const.CONF_STATE_REPEAT),
           false), false);
     } else {
-      FIFO.stopRequest();
+      QueueModel.stopRequest();
     }
   }
 

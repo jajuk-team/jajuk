@@ -54,7 +54,7 @@ import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.services.dj.Ambience;
 import org.jajuk.services.dj.AmbienceManager;
-import org.jajuk.services.players.FIFO;
+import org.jajuk.services.players.QueueModel;
 import org.jajuk.services.players.Player;
 import org.jajuk.ui.actions.ActionManager;
 import org.jajuk.ui.actions.JajukActions;
@@ -282,7 +282,7 @@ public class JajukSystray extends CommandJPanel {
           return;
         }
         dateLastMove = System.currentTimeMillis();
-        String title = FIFO.getCurrentFileTitle();
+        String title = QueueModel.getCurrentFileTitle();
         if (balloon != null && balloon.isVisible()) {
           return;
         }
@@ -403,7 +403,7 @@ public class JajukSystray extends CommandJPanel {
         } else if (JajukEvents.PLAYER_STOP.equals(subject)) {
           // Enable the play button to allow restarting the queue but disable if
           // the queue is void
-          boolean bQueueNotVoid = (FIFO.getFIFO().size() > 0);
+          boolean bQueueNotVoid = (QueueModel.getFIFO().size() > 0);
           jmiPlayPause.setEnabled(bQueueNotVoid);
           jmiNext.setEnabled(bQueueNotVoid);
           jmiPrevious.setEnabled(bQueueNotVoid);
@@ -450,7 +450,7 @@ public class JajukSystray extends CommandJPanel {
           jsPosition.setEnabled(true);
         } else if (JajukEvents.VOLUME_CHANGED.equals(event.getSubject())) {
           JajukSystray.super.update(event);
-        } else if (JajukEvents.HEART_BEAT.equals(subject) && !FIFO.isStopped()
+        } else if (JajukEvents.HEART_BEAT.equals(subject) && !QueueModel.isStopped()
             && !Player.isPaused()) {
           int iPos = (int) (100 * JajukTimer.getInstance().getCurrentTrackPosition());
           // Make sure to enable the slider

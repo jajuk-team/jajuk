@@ -40,7 +40,7 @@ import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.events.Observer;
-import org.jajuk.services.players.FIFO;
+import org.jajuk.services.players.QueueModel;
 import org.jajuk.services.players.Player;
 import org.jajuk.services.webradio.WebRadio;
 import org.jajuk.ui.helpers.JajukTimer;
@@ -293,16 +293,16 @@ public final class InformationJPanel extends JXPanel implements Observer {
       final long timeToPlay = JajukTimer.getInstance().getTotalTimeToPlay();
       SwingUtilities.invokeLater(new Runnable() {
         public void run() {
-          if (JajukEvents.HEART_BEAT.equals(subject) && !FIFO.isStopped() && !Player.isPaused()) {
+          if (JajukEvents.HEART_BEAT.equals(subject) && !QueueModel.isStopped() && !Player.isPaused()) {
             String sCurrentTotalMessage = UtilString.formatTimeBySec(timeToPlay);
-            setTotalTimeMessage(sCurrentTotalMessage + " [" + FIFO.getFIFO().size() + "]");
+            setTotalTimeMessage(sCurrentTotalMessage + " [" + QueueModel.getFIFO().size() + "]");
           } else if (JajukEvents.ZERO.equals(subject) || JajukEvents.PLAYER_STOP.equals(subject)) {
             // reset startup position
             Conf.setProperty(Const.CONF_STARTUP_LAST_POSITION, "0");
             setTotalTimeMessage("00:00:00");
             setMessage(Messages.getString("JajukWindow.18"), InformationJPanel.INFORMATIVE);
           } else if (JajukEvents.FILE_LAUNCHED.equals(subject)) {
-            File file = FIFO.getPlayingFile();
+            File file = QueueModel.getPlayingFile();
             if (file != null) {
               MessageFormat sMessageFormat = new MessageFormat(Messages.getString("FIFO.10") + " "
                   + Messages.getString("InformationJPanel.8"));

@@ -32,7 +32,7 @@ import java.util.Vector;
 import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
-import org.jajuk.services.players.FIFO;
+import org.jajuk.services.players.QueueModel;
 import org.jajuk.util.Const;
 import org.jajuk.util.MD5Processor;
 import org.jajuk.util.ReadOnlyIterator;
@@ -146,7 +146,7 @@ public final class AuthorManager extends ItemManager {
         }
       }
       // if current track author name is changed, notify it
-      if (FIFO.getPlayingFile() != null && FIFO.getPlayingFile().getTrack().getAuthor().equals(old)) {
+      if (QueueModel.getPlayingFile() != null && QueueModel.getPlayingFile().getTrack().getAuthor().equals(old)) {
         ObservationManager.notify(new JajukEvent(JajukEvents.AUTHOR_CHANGED));
       }
       return newItem;

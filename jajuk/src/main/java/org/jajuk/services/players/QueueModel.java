@@ -57,7 +57,7 @@ import org.jajuk.util.log.Log;
  * even outside AWT dispatcher thread
  * </p>
  */
-public final class FIFO {
+public final class QueueModel {
 
   /** Currently played track index */
   private static int index;
@@ -86,7 +86,7 @@ public final class FIFO {
   /**
    * No constructor, this class is used statically only
    */
-  private FIFO() {
+  private QueueModel() {
   }
 
   /**
@@ -137,7 +137,7 @@ public final class FIFO {
       public void run() {
         try {
           UtilGUI.waiting();
-          FIFO.pushCommand(alItems, bAppend, bFront);
+          QueueModel.pushCommand(alItems, bAppend, bFront);
         } catch (Exception e) {
           Log.error(e);
         } finally {
@@ -279,7 +279,7 @@ public final class FIFO {
           }
         }
       }
-      synchronized (FIFO.class) {
+      synchronized (QueueModel.class) {
         // test if we have yet some files to consider
         if (alItems.size() == 0) {
           return;
@@ -536,7 +536,7 @@ public final class FIFO {
         // We test if user required stop. Must be done here to make a chance to
         // stop before starting a new track
         if (!bStop) {
-          FIFO.finished();
+          QueueModel.finished();
         }
       }
     } catch (Throwable t) {// catch even Errors (OutOfMemory for example)
@@ -552,7 +552,7 @@ public final class FIFO {
    * @param index
    */
   public static void setIndex(int index) {
-    FIFO.index = index;
+    QueueModel.index = index;
   }
 
   /**
@@ -1078,7 +1078,7 @@ public final class FIFO {
         if (getItem(localindex).isRepeat()) {
           // the selected line is in repeat mode, ok,
           // keep repeat mode and just change index
-          FIFO.index = localindex;
+          QueueModel.index = localindex;
         } else {
           // the selected line was not a repeated item,
           // take it as a which to reset repeat mode
@@ -1091,7 +1091,7 @@ public final class FIFO {
             remove(0, localindex - 1);
             localindex = 0;
           } else {
-            FIFO.index = localindex;
+            QueueModel.index = localindex;
           }
         }
       } else {
@@ -1099,7 +1099,7 @@ public final class FIFO {
           remove(0, localindex - 1);
           localindex = 0;
         } else {
-          FIFO.index = localindex;
+          QueueModel.index = localindex;
         }
       }
       // need to stop before launching! this fix a
@@ -1183,7 +1183,7 @@ public final class FIFO {
    * @param bFirstFile
    */
   public static void setFirstFile(boolean bFirstFile) {
-    FIFO.bFirstFile = bFirstFile;
+    QueueModel.bFirstFile = bFirstFile;
   }
 
   /**
@@ -1237,7 +1237,7 @@ public final class FIFO {
    * @return whether a web radio is being played
    */
   public static boolean isPlayingRadio() {
-    return FIFO.playingRadio;
+    return QueueModel.playingRadio;
   }
 
   /**
@@ -1246,7 +1246,7 @@ public final class FIFO {
    * @return current web radio if any or null otherwise
    */
   public static WebRadio getCurrentRadio() {
-    return FIFO.currentRadio;
+    return QueueModel.currentRadio;
   }
 
   /**
@@ -1263,10 +1263,10 @@ public final class FIFO {
    */
   public static String getCurrentFileTitle() {
     String title = null;
-    File file = FIFO.getPlayingFile();
-    if (FIFO.isPlayingRadio()) {
-      title = FIFO.getCurrentRadio().getName();
-    } else if (file != null && !FIFO.isStopped()) {
+    File file = QueueModel.getPlayingFile();
+    if (QueueModel.isPlayingRadio()) {
+      title = QueueModel.getCurrentRadio().getName();
+    } else if (file != null && !QueueModel.isStopped()) {
       title = file.getHTMLFormatText();
     } else {
       title = Messages.getString("JajukWindow.18");

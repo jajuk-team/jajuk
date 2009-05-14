@@ -24,7 +24,7 @@ import java.net.URL;
 
 import javax.swing.ImageIcon;
 
-import org.jajuk.services.players.FIFO;
+import org.jajuk.services.players.QueueModel;
 import org.jajuk.ui.thumbnails.ThumbnailManager;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
@@ -401,8 +401,8 @@ public class File extends PhysicalItem implements Comparable<File>, Const {
     sOut += "<HTML><br>";
     int size = 100;
     int maxSize = 30;
-    ThumbnailManager.refreshThumbnail(FIFO.getPlayingFile().getTrack().getAlbum(), size);
-    java.io.File cover = ThumbnailManager.getThumbBySize(FIFO.getPlayingFile().getTrack()
+    ThumbnailManager.refreshThumbnail(QueueModel.getPlayingFile().getTrack().getAlbum(), size);
+    java.io.File cover = ThumbnailManager.getThumbBySize(QueueModel.getPlayingFile().getTrack()
         .getAlbum(), size);
     if (cover.canRead()) {
       sOut += "<p ALIGN=center><img src='file:" + cover.getAbsolutePath() + "'/></p><br>";

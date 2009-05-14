@@ -335,7 +335,7 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, Const, BasicPlayerListe
           new Thread() {
             @Override
             public void run() {
-              FIFO.finished();
+              QueueModel.finished();
               // Update track rate
               fCurrent.getTrack().updateRate();
             }
@@ -349,7 +349,7 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, Const, BasicPlayerListe
         new Thread() {
           @Override
           public void run() {
-            FIFO.finished();
+            QueueModel.finished();
             fCurrent.getTrack().updateRate();
           }
         }.start();
@@ -371,7 +371,7 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, Const, BasicPlayerListe
       TrackManager.getInstance().changeTrackRate(track, track.getRate() + 1);
       if (!bFading) { // if using crossfade, ignore end of file
         System.gc();// Benefit from end of file to perform a full gc
-        FIFO.finished();
+        QueueModel.finished();
       }
       bFading = false;
       break;

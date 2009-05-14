@@ -30,16 +30,16 @@ import org.jajuk.events.Observer;
 /**
  * FIFO convenient facilities <singleton>
  */
-public final class FIFOManager implements Observer {
+public final class QueueController implements Observer {
 
-  private static FIFOManager self;
+  private static QueueController self;
 
-  private FIFOManager() {
+  private QueueController() {
   }
 
-  public static FIFOManager getInstance() {
+  public static QueueController getInstance() {
     if (self == null) {
-      self = new FIFOManager();
+      self = new QueueController();
       ObservationManager.register(self);
     }
     return self;
@@ -66,7 +66,7 @@ public final class FIFOManager implements Observer {
     // In case of device refresh, we force fifo cleanup, for ie to remove
     // deleted files
     if (JajukEvents.DEVICE_REFRESH.equals(subject)) {
-      FIFO.clean();
+      QueueModel.clean();
     }
   }
 

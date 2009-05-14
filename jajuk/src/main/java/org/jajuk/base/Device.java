@@ -35,7 +35,7 @@ import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.services.bookmark.History;
 import org.jajuk.services.core.ExitService;
-import org.jajuk.services.players.FIFO;
+import org.jajuk.services.players.QueueModel;
 import org.jajuk.ui.helpers.ManualDeviceRefreshReporter;
 import org.jajuk.ui.helpers.RefreshReporter;
 import org.jajuk.ui.thumbnails.ThumbnailsMaker;
@@ -1053,7 +1053,7 @@ public class Device extends PhysicalItem implements Comparable<Device> {
       return;
     }
     // ask fifo if it doens't use any track from this device
-    if (!FIFO.canUnmount(this)) {
+    if (!QueueModel.canUnmount(this)) {
       Messages.showErrorMessage(121);
       return;
     }

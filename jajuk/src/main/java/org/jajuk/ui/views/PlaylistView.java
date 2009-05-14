@@ -73,7 +73,7 @@ import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.events.Observer;
-import org.jajuk.services.players.FIFO;
+import org.jajuk.services.players.QueueModel;
 import org.jajuk.services.players.StackItem;
 import org.jajuk.ui.actions.ActionManager;
 import org.jajuk.ui.actions.JajukAction;
@@ -193,7 +193,7 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
           if ((files == null) || (files.size() == 0)) {
             Messages.showErrorMessage(18);
           } else {
-            FIFO.push(UtilFeatures.createStackItems(UtilFeatures.applyPlayOption(files), Conf
+            QueueModel.push(UtilFeatures.createStackItems(UtilFeatures.applyPlayOption(files), Conf
                 .getBoolean(Const.CONF_STATE_REPEAT), true), false);
           }
         } else { // user changed of smart playlist selection
@@ -354,7 +354,7 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
             // We launch all tracks from this
             // position
             // to the end of playlist
-            FIFO.push(editorModel.getItemsFrom(editorTable.getSelectedRow()), Conf
+            QueueModel.push(editorModel.getItemsFrom(editorTable.getSelectedRow()), Conf
                 .getBoolean(Const.CONF_OPTIONS_PUSH_ON_CLICK));
           }
         }

@@ -46,7 +46,7 @@ import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.events.Observer;
 import org.jajuk.services.lyrics.LyricsService;
-import org.jajuk.services.players.FIFO;
+import org.jajuk.services.players.QueueModel;
 import org.jajuk.services.webradio.WebRadio;
 import org.jajuk.ui.actions.ActionManager;
 import org.jajuk.ui.actions.JajukActions;
@@ -180,7 +180,7 @@ public class LyricsView extends ViewAdapter implements Observer {
         reset();
         return;
       }
-      final File file = FIFO.getPlayingFile();
+      final File file = QueueModel.getPlayingFile();
       // file is null is view started with no playing track (the event is
       // simulated in initUI())
       if (file == null) {
@@ -198,7 +198,7 @@ public class LyricsView extends ViewAdapter implements Observer {
       new Thread() {
         @Override
         public void run() {
-          track = FIFO.getPlayingFile().getTrack();
+          track = QueueModel.getPlayingFile().getTrack();
           // Launch lyrics service asynchronously and out of the
           // AWT dispatcher thread
           lyrics = LyricsService.getLyrics(track.getAuthor().getName2(), track.getName());

@@ -37,7 +37,7 @@ import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.events.Observer;
-import org.jajuk.services.players.FIFO;
+import org.jajuk.services.players.QueueModel;
 import org.jajuk.services.webradio.WebRadio;
 import org.jajuk.ui.actions.ActionManager;
 import org.jajuk.ui.actions.JajukActions;
@@ -251,14 +251,14 @@ public class JajukWindow extends JFrame implements Observer {
     SwingUtilities.invokeLater(new Runnable() {
       public void run() {
         if (subject.equals(JajukEvents.FILE_LAUNCHED)) {
-          File file = FIFO.getPlayingFile();
+          File file = QueueModel.getPlayingFile();
           if (file != null) {
             setTitle(UtilString.buildTitle(file));
           }
         } else if (subject.equals(JajukEvents.ZERO) || subject.equals(JajukEvents.PLAYER_STOP)) {
           setTitle(Messages.getString("JajukWindow.17"));
         } else if (subject.equals(JajukEvents.WEBRADIO_LAUNCHED)) {
-          WebRadio radio = FIFO.getCurrentRadio();
+          WebRadio radio = QueueModel.getCurrentRadio();
           if (radio != null) {
             // We use vertical bar to allow scripting like MSN plugins to
             // detect jajuk frames and extract current track

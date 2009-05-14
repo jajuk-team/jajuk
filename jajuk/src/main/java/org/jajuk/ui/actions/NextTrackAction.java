@@ -26,7 +26,7 @@ import java.util.List;
 import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
-import org.jajuk.services.players.FIFO;
+import org.jajuk.services.players.QueueModel;
 import org.jajuk.services.players.Player;
 import org.jajuk.services.webradio.WebRadio;
 import org.jajuk.services.webradio.WebRadioManager;
@@ -58,10 +58,10 @@ public class NextTrackAction extends JajukAction {
       ActionManager.getAction(JajukActions.NEXT_ALBUM).actionPerformed(evt);
     } else {
       // if playing a radio, launch next radio station
-      if (FIFO.isPlayingRadio()) {
+      if (QueueModel.isPlayingRadio()) {
         final List<WebRadio> radios = new ArrayList<WebRadio>(WebRadioManager.getInstance()
             .getWebRadios());
-        int index = radios.indexOf(FIFO.getCurrentRadio());
+        int index = radios.indexOf(QueueModel.getCurrentRadio());
         if (index == radios.size() - 1) {
           index = 0;
         } else {
@@ -71,7 +71,7 @@ public class NextTrackAction extends JajukAction {
         new Thread() {
           @Override
           public void run() {
-            FIFO.launchRadio(radios.get(i));
+            QueueModel.launchRadio(radios.get(i));
           }
         }.start();
 
@@ -80,9 +80,9 @@ public class NextTrackAction extends JajukAction {
         new Thread() {
           @Override
           public void run() {
-            synchronized (FIFO.class) {
+            synchronized (QueueModel.class) {
               try {
-                FIFO.playNext();
+                QueueModel.playNext();
               } catch (Exception e) {
                 Log.error(e);
               }

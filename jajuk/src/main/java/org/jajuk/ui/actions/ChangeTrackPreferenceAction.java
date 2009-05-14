@@ -26,7 +26,7 @@ import org.jajuk.base.Track;
 import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
-import org.jajuk.services.players.FIFO;
+import org.jajuk.services.players.QueueModel;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
@@ -54,7 +54,7 @@ public class ChangeTrackPreferenceAction extends JajukAction {
       @Override
       public void run() {
         try {
-          File file = FIFO.getPlayingFile();
+          File file = QueueModel.getPlayingFile();
           if (file != null) {
             Track track = file.getTrack();
             track.setPreference(Conf.getInt(Const.CONF_INC_RATING));

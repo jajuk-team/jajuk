@@ -69,7 +69,7 @@ import org.jajuk.events.ObservationManager;
 import org.jajuk.events.Observer;
 import org.jajuk.services.covers.Cover;
 import org.jajuk.services.covers.Cover.CoverType;
-import org.jajuk.services.players.FIFO;
+import org.jajuk.services.players.QueueModel;
 import org.jajuk.services.players.StackItem;
 import org.jajuk.ui.thumbnails.ThumbnailManager;
 import org.jajuk.ui.widgets.InformationJPanel;
@@ -325,7 +325,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
     addComponentListener(CoverView.this);
 
     if (fileReference == null) {
-      if (FIFO.isStopped()) {
+      if (QueueModel.isStopped()) {
         update(new JajukEvent(JajukEvents.ZERO));
       } else {
         // request cover refresh after a while to make sure the window owns its
@@ -339,7 +339,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
               Log.error(e);
             }
             // check if a track has already been launched
-            if (FIFO.isPlayingRadio()) {
+            if (QueueModel.isPlayingRadio()) {
               update(new JajukEvent(JajukEvents.WEBRADIO_LAUNCHED, ObservationManager
                   .getDetailsLastOccurence(JajukEvents.WEBRADIO_LAUNCHED)));
             } else {
@@ -516,7 +516,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
           // Reset cached cover
           org.jajuk.base.File fCurrent = fileReference;
           if (fCurrent == null) {
-            fCurrent = FIFO.getPlayingFile();
+            fCurrent = QueueModel.getPlayingFile();
           }
           fCurrent.getTrack().getAlbum().setProperty(XML_ALBUM_COVER, null);
           // Notify cover change
@@ -585,7 +585,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
             // Reset cached cover
             org.jajuk.base.File fCurrent = fileReference;
             if (fCurrent == null) {
-              fCurrent = FIFO.getPlayingFile();
+              fCurrent = QueueModel.getPlayingFile();
             }
             fCurrent.getTrack().getAlbum().setProperty(XML_ALBUM_COVER, null);
             // Notify cover change
@@ -624,7 +624,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
           // Remove previous thumbs to avoid using outdated images
           org.jajuk.base.File fCurrent = fileReference;
           if (fCurrent == null) {
-            fCurrent = FIFO.getPlayingFile();
+            fCurrent = QueueModel.getPlayingFile();
           }
           // Reset cached cover
           ThumbnailManager.cleanThumbs(fCurrent.getTrack().getAlbum());
@@ -1101,7 +1101,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
             if (last == null // first track, display cover
                 // if we are always in the same directory, just leave to
                 // save cpu
-                || (!last.getDirectory().equals(FIFO.getPlayingFile().getDirectory()))
+                || (!last.getDirectory().equals(QueueModel.getPlayingFile().getDirectory()))
                 || bForceCoverReload) {
               // Ignore this event if a reference file has been set and if
               // this event has already been handled
@@ -1181,7 +1181,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
     // check if a file has been given for this cover view
     // if not, take current cover
     if (fCurrent == null) {
-      fCurrent = FIFO.getPlayingFile();
+      fCurrent = QueueModel.getPlayingFile();
     }
     // no current cover
     if (fCurrent == null) {

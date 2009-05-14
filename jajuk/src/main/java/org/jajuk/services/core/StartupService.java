@@ -41,8 +41,8 @@ import org.jajuk.events.ObservationManager;
 import org.jajuk.services.alarm.AlarmManager;
 import org.jajuk.services.bookmark.History;
 import org.jajuk.services.dbus.DBusManager;
-import org.jajuk.services.players.FIFO;
-import org.jajuk.services.players.FIFOManager;
+import org.jajuk.services.players.QueueModel;
+import org.jajuk.services.players.QueueController;
 import org.jajuk.services.webradio.WebRadio;
 import org.jajuk.services.webradio.WebRadioManager;
 import org.jajuk.ui.thumbnails.ThumbnailManager;
@@ -86,7 +86,7 @@ public class StartupService {
             new Thread("WebRadio launch thread") {
               @Override
               public void run() {
-                FIFO.launchRadio(radio);
+                QueueModel.launchRadio(radio);
               }
             }.start();
           }
@@ -117,14 +117,14 @@ public class StartupService {
             pDetail.put(Const.DETAIL_CONTENT, fileToPlay);
             pDetail.put(Const.DETAIL_REASON, "10");
             ObservationManager.notify(new JajukEvent(JajukEvents.PLAY_ERROR, pDetail));
-            FIFO.setFirstFile(false); // no more first file
+            QueueModel.setFirstFile(false); // no more first file
           }
         }
       } else {
         // file no more exists
         Messages.getChoice(Messages.getErrorMessage(23), JOptionPane.DEFAULT_OPTION,
             JOptionPane.WARNING_MESSAGE);
-        FIFO.setFirstFile(false);
+        QueueModel.setFirstFile(false);
         // no more first file
         return;
       }
@@ -196,12 +196,12 @@ public class StartupService {
         index = 0;
       }
 
-      FIFO.insert(UtilFeatures.createStackItems(alToPlay, Conf.getBoolean(Const.CONF_STATE_REPEAT),
+      QueueModel.insert(UtilFeatures.createStackItems(alToPlay, Conf.getBoolean(Const.CONF_STATE_REPEAT),
           false), 0);
 
       // do not start playing if do nothing at startup is selected
       if (!Conf.getString(Const.CONF_STARTUP_MODE).equals(Const.STARTUP_MODE_NOTHING)) {
-        FIFO.goTo(index);
+        QueueModel.goTo(index);
       }
     }
   }
@@ -227,7 +227,7 @@ public class StartupService {
           }
 
           // Register FIFO manager
-          FIFOManager.getInstance();
+          QueueController.getInstance();
 
           // Refresh max album rating
           AlbumManager.getInstance().refreshMaxRating();

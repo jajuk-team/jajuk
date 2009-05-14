@@ -40,7 +40,7 @@ import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.services.bookmark.Bookmarks;
-import org.jajuk.services.players.FIFO;
+import org.jajuk.services.players.QueueModel;
 import org.jajuk.services.players.StackItem;
 import org.jajuk.ui.widgets.JajukFileChooser;
 import org.jajuk.ui.widgets.JajukWindow;
@@ -155,17 +155,17 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
       // set repeat mode : if previous item is repeated, repeat as
       // well
       if (index > 0) {
-        final StackItem itemPrevious = FIFO.getItem(index - 1);
+        final StackItem itemPrevious = QueueModel.getItem(index - 1);
         if ((itemPrevious != null) && itemPrevious.isRepeat()) {
           item.setRepeat(true);
         } else {
           item.setRepeat(false);
         }
         // insert this track in the fifo
-        FIFO.insert(item, index);
+        QueueModel.insert(item, index);
       } else {
         // start immediately playing
-        FIFO.push(item, false);
+        QueueModel.push(item, false);
       }
     } else {
       getFiles().add(index, file);
@@ -205,7 +205,7 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
       // playlist
       Bookmarks.getInstance().clear();
     } else if (getType() == Type.QUEUE) {
-      FIFO.clear();
+      QueueModel.clear();
     } else {
       alFiles.clear();
     }
@@ -320,7 +320,7 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
     if (type == Type.BOOKMARK) {
       Bookmarks.getInstance().down(index);
     } else if (type == Type.QUEUE) {
-      FIFO.down(index);
+      QueueModel.down(index);
     } else if ((alFiles != null) && (index < alFiles.size() - 1)) {
       // the last track cannot go deeper
       final File file = alFiles.get(index + 1); // save n+1 file
@@ -441,7 +441,7 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
     } else if (type.equals(Type.BOOKMARK)) {
       alFiles = Bookmarks.getInstance().getFiles();
     } else if (type.equals(Type.QUEUE)) {
-      List<StackItem> items = FIFO.getFIFO();
+      List<StackItem> items = QueueModel.getFIFO();
       List<File> files = new ArrayList<File>(items.size());
       for (StackItem si : items) {
         files.add(si.getFile());
@@ -586,7 +586,7 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
     if ((alFiles == null) || (alFiles.size() == 0)) {
       Messages.showErrorMessage(18);
     } else {
-      FIFO.push(UtilFeatures.createStackItems(UtilFeatures.applyPlayOption(alFiles), Conf
+      QueueModel.push(UtilFeatures.createStackItems(UtilFeatures.applyPlayOption(alFiles), Conf
           .getBoolean(Const.CONF_STATE_REPEAT), true), false);
     }
   }
@@ -600,7 +600,7 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
     if (type == Type.BOOKMARK) {
       Bookmarks.getInstance().remove(index);
     } else if (type == Type.QUEUE) {
-      FIFO.remove(index, index);
+      QueueModel.remove(index, index);
     } else {
       alFiles.remove(index);
     }
@@ -625,14 +625,14 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
         }
       }
     } else if (type == Type.QUEUE) {
-      final Iterator<StackItem> it = FIFO.getFIFO().iterator();
+      final Iterator<StackItem> it = QueueModel.getFIFO().iterator();
       for (int i = 0; it.hasNext(); i++) {
         final File fileToTest = it.next().getFile();
         if (fileToTest.equals(fOld)) {
-          FIFO.remove(i, i); // just remove
+          QueueModel.remove(i, i); // just remove
           final List<StackItem> al = new ArrayList<StackItem>(1);
           al.add(new StackItem(fNew));
-          FIFO.insert(al, i);
+          QueueModel.insert(al, i);
         }
       }
     } else {
@@ -841,7 +841,7 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
     if (type == Type.BOOKMARK) {
       Bookmarks.getInstance().up(index);
     } else if (type == Playlist.Type.QUEUE) {
-      FIFO.up(index);
+      QueueModel.up(index);
     } else if ((alFiles != null) && (index > 0)) { // the first track
       // cannot go further
       final File file = alFiles.get(index - 1); // save n-1 file

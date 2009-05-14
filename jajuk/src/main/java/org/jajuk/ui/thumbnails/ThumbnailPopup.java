@@ -51,7 +51,7 @@ import org.jajuk.base.Track;
 import org.jajuk.base.TrackManager;
 import org.jajuk.base.Year;
 import org.jajuk.base.YearManager;
-import org.jajuk.services.players.FIFO;
+import org.jajuk.services.players.QueueModel;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.UtilFeatures;
@@ -88,7 +88,7 @@ public class ThumbnailPopup extends JWindow {
       }
     }
     text.setCursor(UtilGUI.WAIT_CURSOR);
-    FIFO.push(UtilFeatures.createStackItems(UtilFeatures.applyPlayOption(toPlay), Conf
+    QueueModel.push(UtilFeatures.createStackItems(UtilFeatures.applyPlayOption(toPlay), Conf
         .getBoolean(Const.CONF_STATE_REPEAT), true), Conf
         .getBoolean(Const.CONF_OPTIONS_PUSH_ON_CLICK));
     // Change icon cursor and wait a while so user can see it in case

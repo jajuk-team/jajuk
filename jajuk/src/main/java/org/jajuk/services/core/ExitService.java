@@ -29,7 +29,7 @@ import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.services.bookmark.History;
 import org.jajuk.services.dj.AmbienceManager;
-import org.jajuk.services.players.FIFO;
+import org.jajuk.services.players.QueueModel;
 import org.jajuk.services.players.Player;
 import org.jajuk.services.webradio.WebRadioManager;
 import org.jajuk.ui.actions.JajukAction;
@@ -65,7 +65,7 @@ public class ExitService extends Thread {
     try {
       if (iExitCode == 0) {
         // Store current FIFO for next session
-        FIFO.commit();
+        QueueModel.commit();
         // commit only if exit is safe (to avoid
         // commiting
         // empty collection) commit ambiences
@@ -73,7 +73,7 @@ public class ExitService extends Thread {
         // Commit webradios
         WebRadioManager.getInstance().commit();
         // Store webradio state
-        Conf.setProperty(Const.CONF_WEBRADIO_WAS_PLAYING, Boolean.toString(FIFO.isPlayingRadio()));
+        Conf.setProperty(Const.CONF_WEBRADIO_WAS_PLAYING, Boolean.toString(QueueModel.isPlayingRadio()));
 
         // commit configuration
         org.jajuk.util.Conf.commit();

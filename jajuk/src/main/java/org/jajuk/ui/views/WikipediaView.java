@@ -43,7 +43,7 @@ import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.events.Observer;
-import org.jajuk.services.players.FIFO;
+import org.jajuk.services.players.QueueModel;
 import org.jajuk.ui.actions.ActionManager;
 import org.jajuk.ui.actions.JajukAction;
 import org.jajuk.ui.actions.JajukActions;
@@ -167,7 +167,7 @@ public class WikipediaView extends ViewAdapter implements Observer, ActionListen
     // Display default page at startup is none track launch
     // avoid to launch this if a track is playing
     // to avoid thread concurrency
-    if (FIFO.getPlayingFile() == null) {
+    if (QueueModel.getPlayingFile() == null) {
       reset();
     }
 
@@ -199,7 +199,7 @@ public class WikipediaView extends ViewAdapter implements Observer, ActionListen
     // Make a search after a stop period
     if (subject.equals(JajukEvents.FILE_LAUNCHED) || subject.equals(JajukEvents.PERSPECTIVE_CHANGED)) {
       // If current state is stopped, reset page
-      if (FIFO.getPlayingFile() == null) {
+      if (QueueModel.getPlayingFile() == null) {
         reset();
         return;
       }
@@ -230,21 +230,21 @@ public class WikipediaView extends ViewAdapter implements Observer, ActionListen
       public void run() {
         try {
           String lSearch = null;
-          if (FIFO.getPlayingFile() != null) {
+          if (QueueModel.getPlayingFile() != null) {
             if (type == Type.AUTHOR) {
-              lSearch = FIFO.getPlayingFile().getTrack().getAuthor().getName2();
+              lSearch = QueueModel.getPlayingFile().getTrack().getAuthor().getName2();
               // don't display page if item is unknown
               if (Messages.getString(UNKNOWN_AUTHOR).equals(lSearch)) {
                 lSearch = null;
               }
             } else if (type == Type.ALBUM) {
-              lSearch = FIFO.getPlayingFile().getTrack().getAlbum().getName2();
+              lSearch = QueueModel.getPlayingFile().getTrack().getAlbum().getName2();
               // don't display page if item is unknown
               if (Messages.getString(UNKNOWN_ALBUM).equals(lSearch)) {
                 lSearch = null;
               }
             } else if (type == Type.TRACK) {
-              lSearch = FIFO.getPlayingFile().getTrack().getName();
+              lSearch = QueueModel.getPlayingFile().getTrack().getName();
             }
           }
           // If search is still null, display an nothing found page

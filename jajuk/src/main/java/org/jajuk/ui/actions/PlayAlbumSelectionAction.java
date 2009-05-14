@@ -25,7 +25,7 @@ import java.util.List;
 import org.jajuk.base.Album;
 import org.jajuk.base.File;
 import org.jajuk.base.Track;
-import org.jajuk.services.players.FIFO;
+import org.jajuk.services.players.QueueModel;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
@@ -72,7 +72,7 @@ public class PlayAlbumSelectionAction extends SelectionAction {
           // Select all files from the first found album
           Album album = ((Track) selection.get(0)).getAlbum();
           List<File> files = UtilFeatures.getPlayableFiles(album);
-          FIFO.push(UtilFeatures.createStackItems(UtilFeatures.applyPlayOption(files), Conf
+          QueueModel.push(UtilFeatures.createStackItems(UtilFeatures.applyPlayOption(files), Conf
               .getBoolean(Const.CONF_STATE_REPEAT), true), false);
         } catch (Exception e) {
           Log.error(e);

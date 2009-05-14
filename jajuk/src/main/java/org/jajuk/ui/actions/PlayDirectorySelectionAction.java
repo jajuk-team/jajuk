@@ -24,7 +24,7 @@ import java.util.List;
 
 import org.jajuk.base.Directory;
 import org.jajuk.base.File;
-import org.jajuk.services.players.FIFO;
+import org.jajuk.services.players.QueueModel;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
@@ -72,7 +72,7 @@ public class PlayDirectorySelectionAction extends SelectionAction {
           // Select all files from the first found directory
           Directory dir = ((File) selection.get(0)).getDirectory();
           List<File> files = UtilFeatures.getPlayableFiles(dir);
-          FIFO.push(UtilFeatures.createStackItems(UtilFeatures.applyPlayOption(files), Conf
+          QueueModel.push(UtilFeatures.createStackItems(UtilFeatures.applyPlayOption(files), Conf
               .getBoolean(Const.CONF_STATE_REPEAT), true), false);
         } catch (Exception e) {
           Log.error(e);

@@ -25,7 +25,7 @@ import java.util.List;
 import org.jajuk.base.File;
 import org.jajuk.base.Item;
 import org.jajuk.base.Track;
-import org.jajuk.services.players.FIFO;
+import org.jajuk.services.players.QueueModel;
 import org.jdesktop.swingx.decorator.ComponentAdapter;
 import org.jdesktop.swingx.decorator.HighlightPredicate;
 
@@ -42,18 +42,18 @@ public class PlayHighlighterPredicate implements HighlightPredicate {
   }
 
   public boolean isHighlighted(Component renderer, ComponentAdapter adapter) {
-    if (FIFO.isStopped()) {
+    if (QueueModel.isStopped()) {
       return false;
     }
     Item item = model.getItemAt(adapter.row);
-    if (item instanceof File && FIFO.getPlayingFile() != null) {
+    if (item instanceof File && QueueModel.getPlayingFile() != null) {
       File file = (File) item;
-      if (file.equals(FIFO.getPlayingFile())) {
+      if (file.equals(QueueModel.getPlayingFile())) {
         return true;
       }
     } else if (item instanceof Track) {
       List<File> files = ((Track) item).getFiles();
-      if (files.contains(FIFO.getPlayingFile())) {
+      if (files.contains(QueueModel.getPlayingFile())) {
         return true;
       }
     }

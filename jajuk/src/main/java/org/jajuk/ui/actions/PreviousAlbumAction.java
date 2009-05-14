@@ -24,7 +24,7 @@ import java.awt.event.ActionEvent;
 import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
-import org.jajuk.services.players.FIFO;
+import org.jajuk.services.players.QueueModel;
 import org.jajuk.services.players.Player;
 import org.jajuk.util.log.Log;
 
@@ -45,9 +45,9 @@ public class PreviousAlbumAction extends JajukAction {
     new Thread() {
       @Override
       public void run() {
-        synchronized (FIFO.class) {
+        synchronized (QueueModel.class) {
           try {
-            FIFO.playPreviousAlbum();
+            QueueModel.playPreviousAlbum();
           } catch (Exception e) {
             Log.error(e);
           }

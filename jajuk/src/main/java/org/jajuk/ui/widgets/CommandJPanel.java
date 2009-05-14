@@ -93,7 +93,7 @@ import org.jajuk.services.dj.Ambience;
 import org.jajuk.services.dj.AmbienceManager;
 import org.jajuk.services.dj.DigitalDJ;
 import org.jajuk.services.dj.DigitalDJManager;
-import org.jajuk.services.players.FIFO;
+import org.jajuk.services.players.QueueModel;
 import org.jajuk.services.players.Player;
 import org.jajuk.services.players.StackItem;
 import org.jajuk.services.webradio.WebRadio;
@@ -621,7 +621,7 @@ public class CommandJPanel extends JXPanel implements ActionListener, ListSelect
           org.jajuk.base.File file = FileManager.getInstance().getFileByID(hi.getFileId());
           if (file != null) {
             try {
-              FIFO.push(new StackItem(file, Conf.getBoolean(Const.CONF_STATE_REPEAT), true), Conf
+              QueueModel.push(new StackItem(file, Conf.getBoolean(Const.CONF_STATE_REPEAT), true), Conf
                   .getBoolean(Const.CONF_OPTIONS_PUSH_ON_CLICK));
             } catch (JajukException je) {
               // can be thrown if file is null
@@ -665,13 +665,13 @@ public class CommandJPanel extends JXPanel implements ActionListener, ListSelect
           try {
             // If user selected a file
             if (sr.getType() == SearchResultType.FILE) {
-              FIFO.push(
+              QueueModel.push(
                   new StackItem(sr.getFile(), Conf.getBoolean(Const.CONF_STATE_REPEAT), true), Conf
                       .getBoolean(Const.CONF_OPTIONS_PUSH_ON_CLICK));
             }
             // User selected a web radio
             else if (sr.getType() == SearchResultType.WEBRADIO) {
-              FIFO.launchRadio(sr.getWebradio());
+              QueueModel.launchRadio(sr.getWebradio());
             }
           } catch (JajukException je) {
             Log.error(je);
@@ -759,7 +759,7 @@ public class CommandJPanel extends JXPanel implements ActionListener, ListSelect
             JajukJMenuBar.getInstance().setShuffleSelected(false);
             CommandJPanel.getInstance().jbRandom.setSelected(false);
             // computes planned tracks
-            FIFO.computesPlanned(true);
+            QueueModel.computesPlanned(true);
           }
         } else if (JajukEvents.REPEAT_MODE_STATUS_CHANGED.equals(subject)) {
           if (ObservationManager.getDetail(event, Const.DETAIL_SELECTION).equals(Const.FALSE)) {

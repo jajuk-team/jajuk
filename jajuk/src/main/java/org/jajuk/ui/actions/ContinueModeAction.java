@@ -27,7 +27,7 @@ import org.jajuk.base.FileManager;
 import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
-import org.jajuk.services.players.FIFO;
+import org.jajuk.services.players.QueueModel;
 import org.jajuk.services.players.StackItem;
 import org.jajuk.ui.widgets.CommandJPanel;
 import org.jajuk.ui.widgets.JajukJMenuBar;
@@ -57,16 +57,16 @@ public class ContinueModeAction extends JajukAction {
 
     if (!b) { // enabled button
       CommandJPanel.getInstance().setContinueBorder(BorderFactory.createLoweredBevelBorder());
-      if (FIFO.isStopped()) {
+      if (QueueModel.isStopped()) {
         // if nothing playing, play next track if possible
-        StackItem item = FIFO.getLastPlayed();
+        StackItem item = QueueModel.getLastPlayed();
         if (item != null) {
-          FIFO.push(new StackItem(FileManager.getInstance().getNextFile(item.getFile())), false);
+          QueueModel.push(new StackItem(FileManager.getInstance().getNextFile(item.getFile())), false);
         }
       }
     }
     // computes planned tracks
-    FIFO.computesPlanned(false);
+    QueueModel.computesPlanned(false);
     // Refresh Queue View
     ObservationManager.notify(new JajukEvent(JajukEvents.QUEUE_NEED_REFRESH));
   }

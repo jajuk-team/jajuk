@@ -42,7 +42,7 @@ import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.events.Observer;
-import org.jajuk.services.players.FIFO;
+import org.jajuk.services.players.QueueModel;
 import org.jajuk.services.webradio.WebRadio;
 import org.jajuk.ui.widgets.JajukWindow;
 import org.jajuk.util.Conf;
@@ -168,7 +168,7 @@ public class AnimationView extends ViewAdapter implements Observer, ComponentLis
   public void update(JajukEvent event) {
     JajukEvents subject = event.getSubject();
     if (subject.equals(JajukEvents.FILE_LAUNCHED)) {
-      File file = FIFO.getPlayingFile();
+      File file = QueueModel.getPlayingFile();
       if (file != null) {
         String s = "";
         try {

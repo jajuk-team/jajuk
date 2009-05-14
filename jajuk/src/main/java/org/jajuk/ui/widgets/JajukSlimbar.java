@@ -67,7 +67,7 @@ import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.events.Observer;
-import org.jajuk.services.players.FIFO;
+import org.jajuk.services.players.QueueModel;
 import org.jajuk.services.players.Player;
 import org.jajuk.services.players.StackItem;
 import org.jajuk.ui.actions.ActionManager;
@@ -406,11 +406,11 @@ public final class JajukSlimbar extends JFrame implements Observer, MouseWheelLi
   }
 
   private void updateCurrentTitle() {
-    File file = FIFO.getPlayingFile();
-    if (FIFO.isPlayingRadio()) {
-      title = FIFO.getCurrentRadio().getName();
-    } else if (file != null && !FIFO.isStopped()) {
-      title = UtilString.buildTitle(FIFO.getPlayingFile());
+    File file = QueueModel.getPlayingFile();
+    if (QueueModel.isPlayingRadio()) {
+      title = QueueModel.getCurrentRadio().getName();
+    } else if (file != null && !QueueModel.isStopped()) {
+      title = UtilString.buildTitle(QueueModel.getPlayingFile());
     } else {
       title = Messages.getString("JajukWindow.18");
     }
@@ -427,12 +427,12 @@ public final class JajukSlimbar extends JFrame implements Observer, MouseWheelLi
    */
   public String getPlayerInfo() {
     try {
-      String currentTrack = UtilString.buildTitle(FIFO.getPlayingFile());
+      String currentTrack = UtilString.buildTitle(QueueModel.getPlayingFile());
       String nextTrack = "";
       try {
-        nextTrack = UtilString.buildTitle(FIFO.getItem(FIFO.getIndex() + 1).getFile());
+        nextTrack = UtilString.buildTitle(QueueModel.getItem(QueueModel.getIndex() + 1).getFile());
       } catch (Exception e) {
-        nextTrack = UtilString.buildTitle(FIFO.getPlanned().get(0).getFile());
+        nextTrack = UtilString.buildTitle(QueueModel.getPlanned().get(0).getFile());
       }
       return "  |  Playing: " + currentTrack + "  |  Next: " + nextTrack;
     } catch (Exception e) {
@@ -537,13 +537,13 @@ public final class JajukSlimbar extends JFrame implements Observer, MouseWheelLi
           try {
             // If user selected a file
             if (sr.getType() == SearchResultType.FILE) {
-              FIFO.push(
+              QueueModel.push(
                   new StackItem(sr.getFile(), Conf.getBoolean(Const.CONF_STATE_REPEAT), true), Conf
                       .getBoolean(Const.CONF_OPTIONS_PUSH_ON_CLICK));
             }
             // User selected a web radio
             else if (sr.getType() == SearchResultType.WEBRADIO) {
-              FIFO.launchRadio(sr.getWebradio());
+              QueueModel.launchRadio(sr.getWebradio());
             }
           } catch (JajukException je) {
             Log.error(je);
@@ -590,7 +590,7 @@ public final class JajukSlimbar extends JFrame implements Observer, MouseWheelLi
     if (balloon != null && balloon.isVisible()) {
       return;
     }
-    balloon = new JajukBalloon(FIFO.getCurrentFileTitle());
+    balloon = new JajukBalloon(QueueModel.getCurrentFileTitle());
     Point buttonLocation = jbInfo.getLocationOnScreen();
     Point location = null;
     // If slimbar is too height in the screen, display the popup bellow it

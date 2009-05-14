@@ -28,7 +28,7 @@ import org.jajuk.base.Track;
 import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
-import org.jajuk.services.players.FIFO;
+import org.jajuk.services.players.QueueModel;
 import org.jajuk.services.players.Player;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
@@ -51,16 +51,16 @@ public class ReplayAlbumAction extends JajukAction {
     new Thread() {
       @Override
       public void run() {
-        synchronized (FIFO.class) {
+        synchronized (QueueModel.class) {
           try {
-            File current = FIFO.getPlayingFile();
+            File current = QueueModel.getPlayingFile();
             if (current != null) {
               List<Track> tracks = current.getTrack().getAlbum().getTracksCache();
               List<File> files = new ArrayList<File>(tracks.size());
               for (Track track : tracks) {
                 files.add(track.getPlayeableFile(true));
               }
-              FIFO.push(UtilFeatures.createStackItems(files, Conf
+              QueueModel.push(UtilFeatures.createStackItems(files, Conf
                   .getBoolean(Const.CONF_STATE_REPEAT), true), false);
             }
           } catch (Exception e) {

@@ -26,7 +26,7 @@ import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
 import org.jajuk.services.dj.Ambience;
 import org.jajuk.services.dj.AmbienceManager;
-import org.jajuk.services.players.FIFO;
+import org.jajuk.services.players.QueueModel;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
@@ -55,7 +55,7 @@ public class NoveltiesAction extends JajukAction {
           List<File> alToPlay = UtilFeatures.filterByAmbience(FileManager.getInstance()
               .getShuffleNoveltiesPlaylist(), ambience);
           if (alToPlay != null && alToPlay.size() > 0) {
-            FIFO.push(UtilFeatures.createStackItems(UtilFeatures.applyPlayOption(alToPlay), Conf
+            QueueModel.push(UtilFeatures.createStackItems(UtilFeatures.applyPlayOption(alToPlay), Conf
                 .getBoolean(Const.CONF_STATE_REPEAT), false), false);
           } else { // none novelty found
             Messages.showWarningMessage(Messages.getString("Error.127"));

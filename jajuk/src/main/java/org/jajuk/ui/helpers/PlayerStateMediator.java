@@ -38,7 +38,7 @@ import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.events.Observer;
-import org.jajuk.services.players.FIFO;
+import org.jajuk.services.players.QueueModel;
 import org.jajuk.services.players.Player;
 import org.jajuk.ui.actions.ActionManager;
 import org.jajuk.ui.actions.MuteAction;
@@ -101,7 +101,7 @@ public class PlayerStateMediator implements Observer {
           ActionManager.getAction(REWIND_TRACK).setEnabled(false);
           // Enable the play button to allow restarting the queue but disable if
           // the queue is void
-          boolean bQueueNotVoid = (FIFO.getFIFO().size() > 0);
+          boolean bQueueNotVoid = (QueueModel.getFIFO().size() > 0);
           ActionManager.getAction(PAUSE_RESUME_TRACK).setEnabled(bQueueNotVoid);
           ActionManager.getAction(NEXT_ALBUM).setEnabled(bQueueNotVoid);
           ActionManager.getAction(PREVIOUS_ALBUM).setEnabled(bQueueNotVoid);

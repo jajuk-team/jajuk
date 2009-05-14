@@ -34,7 +34,7 @@ import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.services.core.ExitService;
-import org.jajuk.services.players.FIFO;
+import org.jajuk.services.players.QueueModel;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.MD5Processor;
@@ -264,7 +264,7 @@ public final class DeviceManager extends ItemManager {
       return;
     }
     // check if device can be unmounted
-    if (!FIFO.canUnmount(device)) {
+    if (!QueueModel.canUnmount(device)) {
       Messages.showErrorMessage(121);
       return;
     }

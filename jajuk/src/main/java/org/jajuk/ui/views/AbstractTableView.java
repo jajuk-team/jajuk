@@ -65,7 +65,7 @@ import org.jajuk.base.StyleManager;
 import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
-import org.jajuk.services.players.FIFO;
+import org.jajuk.services.players.QueueModel;
 import org.jajuk.ui.actions.ActionManager;
 import org.jajuk.ui.actions.JajukActions;
 import org.jajuk.ui.helpers.FontManager;
@@ -262,7 +262,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
           List<File> files = UtilFeatures.getPlayableFiles(item);
           if (files.size() > 0) {
             // launch it
-            FIFO.push(UtilFeatures.createStackItems(UtilFeatures.applyPlayOption(files), Conf
+            QueueModel.push(UtilFeatures.createStackItems(UtilFeatures.applyPlayOption(files), Conf
                 .getBoolean(Const.CONF_STATE_REPEAT), true), Conf
                 .getBoolean(Const.CONF_OPTIONS_PUSH_ON_CLICK));
           } else {

@@ -21,7 +21,7 @@ package org.jajuk.ui.actions;
 
 import java.awt.event.ActionEvent;
 
-import org.jajuk.services.players.FIFO;
+import org.jajuk.services.players.QueueModel;
 import org.jajuk.services.players.Player;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
@@ -41,7 +41,7 @@ public class PlayPauseAction extends JajukAction {
 
   @Override
   public void perform(ActionEvent evt) {
-    if (FIFO.isStopped()) {
+    if (QueueModel.isStopped()) {
       // We use here a flag to avoid launching the goTo() thread twice. In case
       // of playing error, this would create several looping threads trying to
       // play in concurrently and would broke the wait after an error contract
@@ -53,7 +53,7 @@ public class PlayPauseAction extends JajukAction {
         public void run() {
           try {
             bAlreadyLaunching = true;
-            FIFO.goTo(0);
+            QueueModel.goTo(0);
           } finally {
             bAlreadyLaunching = false;
           }

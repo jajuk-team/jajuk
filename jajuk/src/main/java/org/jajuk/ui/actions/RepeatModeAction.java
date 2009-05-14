@@ -24,7 +24,7 @@ import java.awt.event.ActionEvent;
 import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
-import org.jajuk.services.players.FIFO;
+import org.jajuk.services.players.QueueModel;
 import org.jajuk.services.players.StackItem;
 import org.jajuk.ui.widgets.CommandJPanel;
 import org.jajuk.ui.widgets.JajukJMenuBar;
@@ -59,21 +59,21 @@ public class RepeatModeAction extends JajukAction {
 
     if (!b) { // enabled button
       // if FIFO is not void, repeat over current item
-      StackItem item = FIFO.getCurrentItem();
-      if (item != null && FIFO.getIndex() == 0) {
+      StackItem item = QueueModel.getCurrentItem();
+      if (item != null && QueueModel.getIndex() == 0) {
         // only non-repeated items need to be set and
         // in this case, index = 0 or bug
         item.setRepeat(true);
       }
     } else {// disable repeat mode
       // remove repeat mode to all items
-      FIFO.setRepeatModeToAll(false);
+      QueueModel.setRepeatModeToAll(false);
       // remove tracks before current position
-      FIFO.remove(0, FIFO.getIndex() - 1);
-      FIFO.setIndex(0); // select first track
+      QueueModel.remove(0, QueueModel.getIndex() - 1);
+      QueueModel.setIndex(0); // select first track
     }
     // computes planned tracks
-    FIFO.computesPlanned(false);
+    QueueModel.computesPlanned(false);
     // Refresh Queue View
     ObservationManager.notify(new JajukEvent(JajukEvents.QUEUE_NEED_REFRESH));
   }

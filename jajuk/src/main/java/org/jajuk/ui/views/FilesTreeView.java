@@ -66,7 +66,7 @@ import org.jajuk.base.TypeManager;
 import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
-import org.jajuk.services.players.FIFO;
+import org.jajuk.services.players.QueueModel;
 import org.jajuk.services.players.StackItem;
 import org.jajuk.ui.actions.ActionManager;
 import org.jajuk.ui.actions.JajukActions;
@@ -528,7 +528,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
           if (o instanceof FileNode) {
             File file = ((FileNode) o).getFile();
             try {
-              FIFO.push(new StackItem(file, Conf.getBoolean(Const.CONF_STATE_REPEAT), true), Conf
+              QueueModel.push(new StackItem(file, Conf.getBoolean(Const.CONF_STATE_REPEAT), true), Conf
                   .getBoolean(Const.CONF_OPTIONS_PUSH_ON_CLICK));
             } catch (JajukException je) {
               Log.error(je);
@@ -551,7 +551,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
               Messages.showErrorMessage(18);
               return;
             } else {
-              FIFO.push(UtilFeatures.createStackItems(UtilFeatures.applyPlayOption(alToPlay), Conf
+              QueueModel.push(UtilFeatures.createStackItems(UtilFeatures.applyPlayOption(alToPlay), Conf
                   .getBoolean(Const.CONF_STATE_REPEAT), true), false);
             }
           }

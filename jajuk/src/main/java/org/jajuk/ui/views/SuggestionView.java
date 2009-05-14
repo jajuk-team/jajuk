@@ -52,7 +52,7 @@ import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.events.Observer;
-import org.jajuk.services.players.FIFO;
+import org.jajuk.services.players.QueueModel;
 import org.jajuk.ui.perspectives.PerspectiveManager;
 import org.jajuk.ui.thumbnails.AbstractThumbnail;
 import org.jajuk.ui.thumbnails.AudioScrobblerAlbumThumbnail;
@@ -254,7 +254,7 @@ public class SuggestionView extends ViewAdapter implements Observer {
 
   private void refreshLastFMCollectionTabs() {
     String newAuthor = null;
-    File current = FIFO.getPlayingFile();
+    File current = QueueModel.getPlayingFile();
     if (current != null) {
       newAuthor = current.getTrack().getAuthor().getName2();
     }

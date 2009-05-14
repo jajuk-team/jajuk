@@ -454,7 +454,7 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
     new Thread("Call to finish") {
       @Override
       public void run() {
-        FIFO.finished();
+        QueueModel.finished();
       }
     }.start();
 

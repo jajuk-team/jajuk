@@ -39,7 +39,7 @@ import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.events.Observer;
 import org.jajuk.services.dj.Ambience;
-import org.jajuk.services.players.FIFO;
+import org.jajuk.services.players.QueueModel;
 import org.jajuk.services.players.StackItem;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
@@ -346,10 +346,10 @@ public final class UtilFeatures {
    */
   public static void updateStatus(Observer oberver) {
     // check if a track or a webradio has already been launched
-    if (FIFO.isPlayingRadio()) {
+    if (QueueModel.isPlayingRadio()) {
       oberver.update(new JajukEvent(JajukEvents.WEBRADIO_LAUNCHED, ObservationManager
           .getDetailsLastOccurence(JajukEvents.WEBRADIO_LAUNCHED)));
-    } else if (!FIFO.isStopped()) {
+    } else if (!QueueModel.isStopped()) {
       oberver.update(new JajukEvent(JajukEvents.FILE_LAUNCHED, ObservationManager
           .getDetailsLastOccurence(JajukEvents.FILE_LAUNCHED)));
       oberver.update(new JajukEvent(JajukEvents.PLAYER_PLAY, ObservationManager

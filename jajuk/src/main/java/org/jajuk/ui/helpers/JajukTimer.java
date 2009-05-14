@@ -24,7 +24,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.jajuk.base.File;
-import org.jajuk.services.players.FIFO;
+import org.jajuk.services.players.QueueModel;
 import org.jajuk.services.players.Player;
 import org.jajuk.services.players.StackItem;
 
@@ -145,7 +145,7 @@ public final class JajukTimer {
    *         to play). Returns -1 if repeat mode
    */
   public long getTotalTimeToPlay() {
-    if (FIFO.containsRepeat()) {
+    if (QueueModel.containsRepeat()) {
       // if repeat mode, total
       // time has no sense
       return -1;

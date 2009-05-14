@@ -21,7 +21,7 @@ package org.jajuk.ui.actions;
 
 import java.awt.event.ActionEvent;
 
-import org.jajuk.services.players.FIFO;
+import org.jajuk.services.players.QueueModel;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
@@ -42,7 +42,7 @@ public class StopTrackAction extends JajukAction {
       @Override
       public void run() {
         try {
-          FIFO.stopRequest();
+          QueueModel.stopRequest();
         } catch (Exception e) {
           Log.error(e);
         }

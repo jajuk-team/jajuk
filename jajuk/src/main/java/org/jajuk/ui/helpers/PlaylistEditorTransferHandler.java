@@ -32,7 +32,7 @@ import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
 import org.jajuk.base.Item;
 import org.jajuk.base.Playlist;
-import org.jajuk.services.players.FIFO;
+import org.jajuk.services.players.QueueModel;
 import org.jajuk.ui.views.PlaylistView;
 import org.jajuk.ui.widgets.JajukTable;
 import org.jajuk.util.Conf;
@@ -126,7 +126,7 @@ public class PlaylistEditorTransferHandler extends TransferHandler {
         List<File> alSelectedFiles = UtilFeatures.getPlayableFiles((Item) oData);
         // queue case
         if (plf.getType() == Playlist.Type.QUEUE) {
-          FIFO.push(UtilFeatures.createStackItems(UtilFeatures.applyPlayOption(alSelectedFiles),
+          QueueModel.push(UtilFeatures.createStackItems(UtilFeatures.applyPlayOption(alSelectedFiles),
               Conf.getBoolean(Const.CONF_STATE_REPEAT), true), Conf
               .getBoolean(Const.CONF_OPTIONS_DEFAULT_ACTION_DROP));
         }
