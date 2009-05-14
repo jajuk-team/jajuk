@@ -26,7 +26,6 @@ import java.awt.event.ItemListener;
 import javax.swing.BoxLayout;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 
 import org.jajuk.base.AlbumManager;
 import org.jajuk.base.AuthorManager;
@@ -41,6 +40,7 @@ import org.jajuk.base.YearManager;
 import org.jajuk.ui.perspectives.FilesPerspective;
 import org.jajuk.ui.perspectives.PerspectiveManager;
 import org.jajuk.ui.widgets.JajukJDialog;
+import org.jajuk.ui.widgets.JajukWindow;
 import org.jajuk.ui.widgets.OKCancelPanel;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilGUI;
@@ -48,8 +48,6 @@ import org.jajuk.util.UtilGUI;
 public abstract class CustomPropertyWizard extends JajukJDialog implements ActionListener,
     ItemListener {
   private static final long serialVersionUID = -5148687837661745898L;
-
-  JPanel jpMain;
 
   JLabel jlItemChoice;
 
@@ -66,6 +64,8 @@ public abstract class CustomPropertyWizard extends JajukJDialog implements Actio
    */
   CustomPropertyWizard(String sTitle) {
     setTitle(sTitle);
+    setModal(true);
+    setLocationRelativeTo(JajukWindow.getInstance());
   }
 
   /**
@@ -96,7 +96,6 @@ public abstract class CustomPropertyWizard extends JajukJDialog implements Actio
       jcbItemChoice.setSelectedIndex(0);
     }
     jcbItemChoice.addItemListener(this);
-    jpMain = new JPanel();
   }
 
   /**

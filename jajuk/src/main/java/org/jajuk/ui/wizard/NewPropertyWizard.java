@@ -101,7 +101,7 @@ public class NewPropertyWizard extends CustomPropertyWizard implements KeyListen
     jdpDefault.setEnabled(false);
     
     //Add items
-    setLayout(new MigLayout("debug,insets 15,gapx 10,gapy 15","[][grow]"));
+    setLayout(new MigLayout("insets 15,gapx 10,gapy 15","[][grow]"));
     add(jlItemChoice);
     add(jcbItemChoice, "grow,wrap");
     add(jlName);
@@ -112,7 +112,7 @@ public class NewPropertyWizard extends CustomPropertyWizard implements KeyListen
     add(jtfDefault,"split 3,grow");
     add(jcbDefault, "grow");
     add(jdpDefault, "grow,wrap");
-    add(okp,"span,grow");
+    add(okp,"cell 1 4, grow,center");
     addWindowListener(new WindowAdapter() {
       @Override
       public void windowActivated(WindowEvent e) {

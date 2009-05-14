@@ -19,9 +19,6 @@
  */
 package org.jajuk.ui.wizard;
 
-import info.clearthought.layout.TableLayout;
-import info.clearthought.layout.TableLayoutConstants;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -41,6 +38,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
+
+import net.miginfocom.swing.MigLayout;
 
 import org.jajuk.base.Style;
 import org.jajuk.events.JajukEvent;
@@ -77,8 +76,6 @@ public class AmbienceWizard extends Wizard {
     JButton jbDelete;
 
     JButton jbDefaults;
-
-    JPanel jpButtons;
 
     /** DJ* */
     AmbienceDigitalDJ dj = null;
@@ -187,9 +184,6 @@ public class AmbienceWizard extends Wizard {
       widgets = new JComponent[AmbienceWizard.ambiences.size()][3];
       final JPanel out = new JPanel();
       // Delete|Style name|styles list
-      final double[] dHoriz = { 25, 120, 200 };
-      final double[] dVert = new double[widgets.length + 2];
-      dVert[0] = 20;
       final ButtonGroup group = new ButtonGroup();
       // now add all ambiences
       for (int index = 0; index < AmbienceWizard.ambiences.size(); index++) {
@@ -260,28 +254,21 @@ public class AmbienceWizard extends Wizard {
         });
         jbStyle.setToolTipText(Messages.getString("DigitalDJWizard.27"));
         widgets[index][2] = jbStyle;
-        // Set layout
-        dVert[index + 1] = 20;
       }
-      dVert[widgets.length + 1] = 20;
       // Create layout
-      final double[][] dSizeProperties = new double[][] { dHoriz, dVert };
-      final TableLayout layout = new TableLayout(dSizeProperties);
-      layout.setHGap(10);
-      layout.setVGap(10);
-      out.setLayout(layout);
+      out.setLayout(new MigLayout("insets 5,gapx 5", "[][][grow]"));
       // Create header
       final JLabel jlHeader1 = new JLabel(Messages.getString("DigitalDJWizard.37"));
       jlHeader1.setFont(FontManager.getInstance().getFont(JajukFont.BOLD));
       final JLabel jlHeader2 = new JLabel(Messages.getString("DigitalDJWizard.27"));
       jlHeader2.setFont(FontManager.getInstance().getFont(JajukFont.BOLD));
-      out.add(jlHeader1, "1,0,c,c");
-      out.add(jlHeader2, "2,0,c,c");
+      out.add(jlHeader1, "center,span 2");
+      out.add(jlHeader2, "center,wrap");
       // Add widgets
-      for (int i = 0; i < dVert.length - 2; i++) {
-        out.add(widgets[i][0], "0," + (i + 1) + ",c,c");
-        out.add(widgets[i][1], "1," + (i + 1));
-        out.add(widgets[i][2], "2," + (i + 1));
+      for (int i = 0; i < widgets.length - 2; i++) {
+        out.add(widgets[i][0], "grow,center,width 25!");
+        out.add(widgets[i][1], "grow,center,width 120!");
+        out.add(widgets[i][2], "center,grow,wrap,width 270!");
       }
       final JScrollPane jsp = new JScrollPane(out);
       // select first ambiance found
@@ -302,13 +289,6 @@ public class AmbienceWizard extends Wizard {
           .getAmbiences());
       Collections.sort(AmbienceWizard.ambiences);
       setCanFinish(true);
-      // set layout
-      final double[][] dSizeGeneral = { { 10, 0.99, 5 },
-          { 10, TableLayoutConstants.FILL, 10, TableLayoutConstants.PREFERRED, 10 } };
-      setLayout(new TableLayout(dSizeGeneral));
-      // button layout
-      final double[][] dButtons = { { 10, 0.33, 5, 0.33, 5, 0.33, 10 }, { 20 } };
-      jpButtons = new JPanel(new TableLayout(dButtons));
       jbNew = new JButton(Messages.getString("DigitalDJWizard.32"), IconLoader
           .getIcon(JajukIcons.NEW));
       jbNew.addActionListener(this);
@@ -321,21 +301,22 @@ public class AmbienceWizard extends Wizard {
           .getIcon(JajukIcons.DEFAULTS));
       jbDefaults.addActionListener(this);
       jbDefaults.setToolTipText(Messages.getString("DigitalDJWizard.63"));
-      jpButtons.add(jbNew, "1,0");
-      jpButtons.add(jbDelete, "3,0");
-      jpButtons.add(jbDefaults, "5,0");
-      add(getPanel(), "1,1");
-      add(jpButtons, "1,3,c,c");
+
+      // Add items
+      refreshScreen();
     }
 
     /**
      * Refresh panel
      */
     private void refreshScreen() {
+      setLayout(new MigLayout("insets 5,gapy 15", "[center,grow]"));
       removeAll();
       // refresh panel
-      add(getPanel(), "1,1");
-      add(jpButtons, "1,3,c,c");
+      add(getPanel(), "grow,wrap");
+      add(jbNew, "split 3");
+      add(jbDelete);
+      add(jbDefaults);
       revalidate();
       repaint();
     }

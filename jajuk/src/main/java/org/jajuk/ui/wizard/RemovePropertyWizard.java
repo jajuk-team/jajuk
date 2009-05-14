@@ -20,15 +20,14 @@
 
 package org.jajuk.ui.wizard;
 
-import info.clearthought.layout.TableLayout;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ItemEvent;
 import java.util.Iterator;
 import java.util.Properties;
 
-import javax.swing.Box;
 import javax.swing.JComboBox;
+
+import net.miginfocom.swing.MigLayout;
 
 import org.jajuk.base.ItemManager;
 import org.jajuk.base.PropertyMetaInformation;
@@ -56,19 +55,12 @@ public class RemovePropertyWizard extends CustomPropertyWizard {
     populate();// create default UI
     jcbName.addItemListener(this);
     populateProperties();// fill properties combo with properties for
-    // default item
-    int iXSeparator = 10;
-    int iYSeparator = 20;
-    double[][] dSize = { { iXSeparator, 0.5, iXSeparator, 0.5, iXSeparator },
-        { iYSeparator, 20, iYSeparator, 20, iYSeparator } };
-    jpMain.setLayout(new TableLayout(dSize));
-    jpMain.add(jlItemChoice, "1,1");
-    jpMain.add(jcbItemChoice, "3,1");
-    jpMain.add(jlName, "1,3");
-    jpMain.add(jcbName, "3,3");
-    getContentPane().add(jpMain);
-    getContentPane().add(okp);
-    getContentPane().add(Box.createVerticalStrut(10));
+    setLayout(new MigLayout("insets 10,gapx 10,gapy 15"));
+    add(jlItemChoice, "");
+    add(jcbItemChoice, "width 200::,wrap");
+    add(jlName, "");
+    add(jcbName, "width 200::,wrap,grow");
+    add(okp,"span,center");
     getRootPane().setDefaultButton(okp.getOKButton());
   }
 

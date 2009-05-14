@@ -21,7 +21,6 @@ package org.jajuk.ui.actions;
 
 import java.awt.event.ActionEvent;
 
-import org.jajuk.ui.widgets.JajukWindow;
 import org.jajuk.ui.wizard.NewPropertyWizard;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
@@ -41,7 +40,6 @@ public class NewPropertyAction extends JajukAction {
   public void perform(ActionEvent evt) throws JajukException {
     NewPropertyWizard npw = new NewPropertyWizard();
     npw.pack();
-    npw.setLocationRelativeTo(JajukWindow.getInstance());
     npw.setVisible(true);
   }
 }
