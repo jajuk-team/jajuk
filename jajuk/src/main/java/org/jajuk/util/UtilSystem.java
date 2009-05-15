@@ -56,6 +56,7 @@ import java.util.jar.JarFile;
 import javax.swing.ImageIcon;
 
 import org.jajuk.Main;
+import org.jajuk.services.core.SessionService;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.filters.DirectoryFilter;
 import org.jajuk.util.filters.KnownTypeFilter;
@@ -110,12 +111,7 @@ public final class UtilSystem {
    */
   private static JajukFileFilter fileFilter;
 
-  /**
-   * For performances, store conf root path
-   */
-  private static String confRoot;
-
-  // Computes OS detection operations for perf reasons (can be called in loop
+   // Computes OS detection operations for perf reasons (can be called in loop
   // in refresh method for ie)
   static {
     final String sOS = (String) System.getProperties().get("os.name");
@@ -482,7 +478,7 @@ public final class UtilSystem {
         try {
           // Create the output file (clobbering the file if it
           // exists).
-          final OutputStream file = new FileOutputStream(UtilSystem
+          final OutputStream file = new FileOutputStream(SessionService
               .getConfFileByPath(Const.FILE_CACHE + '/' + Const.FILE_INTERNAL_CACHE + '/'
                   + destName));
           try {
@@ -512,40 +508,6 @@ public final class UtilSystem {
     } finally {
       jar.close();
     }
-  }
-
-  /**
-   * Return destination file in cache for a given URL <br>
-   * We store the file using the URL's MD3 5 hash to ensure unicity and avoid
-   * unexpected characters in file names
-   * 
-   * @param url
-   *          resource URL
-   * @return File in cache if any or null otherwise
-   * 
-   */
-  public static File getCachePath(final URL url) {
-    File out = null;
-    out = UtilSystem.getConfFileByPath(Const.FILE_CACHE + '/' + MD5Processor.hash(url.toString()));
-    return out;
-  }
-
-  /**
-   * 
-   * @param sPATH
-   *          Configuration file or directory path
-   * @return the file relative to jajuk directory
-   */
-  public static final File getConfFileByPath(final String sPATH) {
-    if (confRoot == null) {
-      String home = System.getProperty("user.home");
-      if ((Main.getWorkspace() != null) && !Main.getWorkspace().trim().equals("")) {
-        home = Main.getWorkspace();
-      }
-      confRoot = home + '/' + (Main.isTestMode() ? ".jajuk_test_" + Const.TEST_VERSION : ".jajuk")
-          + '/';
-    }
-    return new File(confRoot + sPATH);
   }
 
   /**
@@ -708,7 +670,7 @@ public final class UtilSystem {
     // Check in ~/.jajuk directory (used by webstart distribution
     // installers). Test exe size as well to detect unfinished downloads of
     // mplayer.exe in JNLP mode
-    file = UtilSystem.getConfFileByPath(Const.FILE_MPLAYER_EXE);
+    file = SessionService.getConfFileByPath(Const.FILE_MPLAYER_EXE);
     if (file.exists() && file.length() == Const.MPLAYER_EXE_SIZE) {
       UtilSystem.mplayerPath = file;
       return UtilSystem.mplayerPath;
@@ -723,9 +685,8 @@ public final class UtilSystem {
         // Note: When starting from jnlp, next line throws an exception
         // as URI is invalid (contains %20), the method returns null and
         // the file is downloaded again. This url is used only when
-        // using
-        // stand-alone version
-        if (Main.isIdeMode()) {
+        // using stand-alone version
+        if (SessionService.isIdeMode()) {
           // If under dev, take mplayer exe file from the packaging
           // directory
           sPATH = "./src/packaging";
@@ -1015,17 +976,6 @@ public final class UtilSystem {
       UtilSystem.classLoader = Thread.currentThread().getContextClassLoader();
     }
     return UtilSystem.classLoader;
-  }
-
-  /**
-   * Clear locale images cache
-   */
-  public static void clearCache() {
-    final File fCache = getConfFileByPath(Const.FILE_CACHE);
-    final File[] files = fCache.listFiles();
-    for (final File element : files) {
-      element.delete();
-    }
   }
 
   public static JajukFileFilter getDirFilter() {

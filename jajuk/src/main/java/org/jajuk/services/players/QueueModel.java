@@ -38,6 +38,7 @@ import org.jajuk.base.FileManager;
 import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
+import org.jajuk.services.core.SessionService;
 import org.jajuk.services.webradio.WebRadio;
 import org.jajuk.ui.helpers.JajukTimer;
 import org.jajuk.util.Conf;
@@ -1215,7 +1216,7 @@ public final class QueueModel {
    * Store current FIFO as a list
    */
   public static void commit() throws IOException {
-    java.io.File file = UtilSystem.getConfFileByPath(Const.FILE_FIFO);
+    java.io.File file = SessionService.getConfFileByPath(Const.FILE_FIFO);
     PrintWriter writer = new PrintWriter(
         new BufferedOutputStream(new FileOutputStream(file, false)));
     int localindex = 0;

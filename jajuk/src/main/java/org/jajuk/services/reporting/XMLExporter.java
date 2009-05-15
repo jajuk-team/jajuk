@@ -42,10 +42,10 @@ import org.jajuk.base.StyleManager;
 import org.jajuk.base.Track;
 import org.jajuk.base.TrackManager;
 import org.jajuk.base.Year;
+import org.jajuk.services.core.SessionService;
 import org.jajuk.util.Const;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilString;
-import org.jajuk.util.UtilSystem;
 
 /**
  * This class exports music contents to XML.
@@ -65,7 +65,7 @@ public class XMLExporter extends Exporter {
   /** PUBLIC METHODS */
 
   public XMLExporter() throws IOException {
-    cache = UtilSystem.getConfFileByPath(Const.FILE_REPORTING_CACHE_FILE + "_XML_"
+    cache = SessionService.getConfFileByPath(Const.FILE_REPORTING_CACHE_FILE + "_XML_"
         + System.currentTimeMillis());
     writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(cache, false), "UTF-8"));
   }

@@ -24,8 +24,8 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.jajuk.base.File;
-import org.jajuk.services.players.QueueModel;
 import org.jajuk.services.players.Player;
+import org.jajuk.services.players.QueueModel;
 import org.jajuk.services.players.StackItem;
 
 /**

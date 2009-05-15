@@ -34,6 +34,7 @@ import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.services.bookmark.History;
 import org.jajuk.services.core.ExitService;
+import org.jajuk.services.core.SessionService;
 import org.jajuk.services.tags.NoTagsTagImpl;
 import org.jajuk.services.tags.Tag;
 import org.jajuk.ui.helpers.ManualDirectoryRefreshReporter;
@@ -608,7 +609,7 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
           // exit hook
           // have no time to perform commit)
           try {
-            org.jajuk.base.Collection.commit(UtilSystem.getConfFileByPath(Const.FILE_COLLECTION));
+            org.jajuk.base.Collection.commit(SessionService.getConfFileByPath(Const.FILE_COLLECTION));
           } catch (final IOException e) {
             Log.error(e);
           }

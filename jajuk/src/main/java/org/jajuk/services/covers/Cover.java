@@ -30,11 +30,11 @@ import java.net.URL;
 
 import javax.swing.ImageIcon;
 
+import org.jajuk.services.core.SessionService;
 import org.jajuk.ui.widgets.JajukWindow;
 import org.jajuk.util.Const;
 import org.jajuk.util.DownloadManager;
 import org.jajuk.util.UtilGUI;
-import org.jajuk.util.UtilSystem;
 import org.jajuk.util.log.Log;
 
 /**
@@ -91,7 +91,7 @@ public class Cover implements Comparable<Cover>, Const {
     // only remote and no_cover are created by URL (file:// for no_cover, the
     // image is inside the jajuk jar)
     if (type == CoverType.REMOTE_COVER || type == CoverType.NO_COVER) {
-      this.file = UtilSystem.getCachePath(url);
+      this.file = SessionService.getCachePath(url);
     }
   }
 

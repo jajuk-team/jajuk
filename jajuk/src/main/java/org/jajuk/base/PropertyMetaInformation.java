@@ -24,6 +24,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Date;
 
+import org.jajuk.services.core.SessionService;
 import org.jajuk.util.Const;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilString;
@@ -133,7 +134,7 @@ public class PropertyMetaInformation {
       // URL default
       if (oDefaultValue == null) {
         try {
-          this.oDefaultValue = UtilSystem.getConfFileByPath("").toURI().toURL();
+          this.oDefaultValue = SessionService.getConfFileByPath("").toURI().toURL();
         } catch (MalformedURLException e) {
           Log.error(e);
         }

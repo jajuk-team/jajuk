@@ -41,8 +41,8 @@ import org.jajuk.events.ObservationManager;
 import org.jajuk.services.alarm.AlarmManager;
 import org.jajuk.services.bookmark.History;
 import org.jajuk.services.dbus.DBusManager;
-import org.jajuk.services.players.QueueModel;
 import org.jajuk.services.players.QueueController;
+import org.jajuk.services.players.QueueModel;
 import org.jajuk.services.webradio.WebRadio;
 import org.jajuk.services.webradio.WebRadioManager;
 import org.jajuk.ui.thumbnails.ThumbnailManager;
@@ -133,12 +133,12 @@ public class StartupService {
       if (Conf.getString(Const.CONF_STARTUP_MODE).equals(Const.STARTUP_MODE_LAST)
           || Conf.getString(Const.CONF_STARTUP_MODE).equals(Const.STARTUP_MODE_LAST_KEEP_POS)
           || Conf.getString(Const.CONF_STARTUP_MODE).equals(Const.STARTUP_MODE_NOTHING)) {
-        final File fifo = UtilSystem.getConfFileByPath(Const.FILE_FIFO);
+        final File fifo = SessionService.getConfFileByPath(Const.FILE_FIFO);
         if (!fifo.exists()) {
           Log.debug("No fifo file");
         } else {
           try {
-            final BufferedReader br = new BufferedReader(new FileReader(UtilSystem
+            final BufferedReader br = new BufferedReader(new FileReader(SessionService
                 .getConfFileByPath(Const.FILE_FIFO)));
             try {
               String s = null;
@@ -222,7 +222,7 @@ public class StartupService {
 
           // backup the collection if no parsing error occurred
           if (!bCollectionLoadRecover) {
-            UtilSystem.backupFile(UtilSystem.getConfFileByPath(Const.FILE_COLLECTION), Conf
+            UtilSystem.backupFile(SessionService.getConfFileByPath(Const.FILE_COLLECTION), Conf
                 .getInt(Const.CONF_BACKUP_SIZE));
           }
 
@@ -257,7 +257,7 @@ public class StartupService {
           ItemManager.switchAllManagersToOrderState();
 
           // Clear covers images cache
-          UtilSystem.clearCache();
+          SessionService.clearCache();
 
           // Launch auto-refresh thread
           DeviceManager.getInstance().startAutoRefreshThread();

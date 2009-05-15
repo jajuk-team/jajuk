@@ -25,10 +25,10 @@ import java.io.FileFilter;
 import java.io.IOException;
 import java.net.URL;
 
-import org.jajuk.Main;
 import org.jajuk.base.Collection;
 import org.jajuk.base.Track;
 import org.jajuk.base.TrackManager;
+import org.jajuk.services.core.SessionService;
 import org.jajuk.services.dj.AmbienceManager;
 import org.jajuk.util.log.Log;
 
@@ -71,7 +71,7 @@ public final class UpgradeManager {
         // Now check if this is an old migration. We assume than version goes
         // this
         // way : x.0 -> x.9 -> y.0-> y.9 ... (no x.10 or later)
-        if (!Main.isTestMode()) {
+        if (!SessionService.isTestMode()) {
           int currentRelease = Integer.parseInt( (sRelease == null ? "0.0" : sRelease).charAt(0) + "" + (sRelease == null ? "0.0" : sRelease).charAt(2));
           int newRelease = Integer.parseInt(Const.JAJUK_VERSION.charAt(0) + ""
               + Const.JAJUK_VERSION.charAt(2));
@@ -103,7 +103,7 @@ public final class UpgradeManager {
     try {
       if (isUpgradeDetected()) {
         // Migrate djs from jajuk < 1.6 (DJ classes changed)
-        File[] files = UtilSystem.getConfFileByPath(Const.FILE_DJ_DIR).listFiles(new FileFilter() {
+        File[] files = SessionService.getConfFileByPath(Const.FILE_DJ_DIR).listFiles(new FileFilter() {
           public boolean accept(File file) {
             if (file.isFile() && file.getPath().endsWith('.' + Const.XML_DJ_EXTENSION)) {
               return true;
@@ -126,7 +126,7 @@ public final class UpgradeManager {
           }
         }
         // --For jajuk < 0.2 : remove backup file : collection~.xml
-        File file = UtilSystem.getConfFileByPath(Const.FILE_COLLECTION + "~");
+        File file = SessionService.getConfFileByPath(Const.FILE_COLLECTION + "~");
         if (!file.delete()) {
           Log.warn("Could not delete file " + file);
         }
@@ -142,7 +142,7 @@ public final class UpgradeManager {
           Conf.setProperty(Const.CONF_REFACTOR_PATTERN, sPattern.replaceAll("track", "title"));
         }
         // - for Jajuk < 1.3: no more use of .ser files
-        file = UtilSystem.getConfFileByPath("");
+        file = SessionService.getConfFileByPath("");
         files = file.listFiles();
         for (File element : files) {
           // delete all .ser files
@@ -162,23 +162,23 @@ public final class UpgradeManager {
           }
         }
         // for jajuk <1.4 (or early 1.4), some perspectives have been renamed
-        File fPerspective = UtilSystem.getConfFileByPath("LogicalPerspective.xml");
+        File fPerspective = SessionService.getConfFileByPath("LogicalPerspective.xml");
         if (fPerspective.exists()) {
           fPerspective.delete();
         }
-        fPerspective = UtilSystem.getConfFileByPath("PhysicalPerspective.xml");
+        fPerspective = SessionService.getConfFileByPath("PhysicalPerspective.xml");
         if (fPerspective.exists()) {
           fPerspective.delete();
         }
-        fPerspective = UtilSystem.getConfFileByPath("CatalogPerspective.xml");
+        fPerspective = SessionService.getConfFileByPath("CatalogPerspective.xml");
         if (fPerspective.exists()) {
           fPerspective.delete();
         }
-        fPerspective = UtilSystem.getConfFileByPath("PlayerPerspective.xml");
+        fPerspective = SessionService.getConfFileByPath("PlayerPerspective.xml");
         if (fPerspective.exists()) {
           fPerspective.delete();
         }
-        fPerspective = UtilSystem.getConfFileByPath("HelpPerspective.xml");
+        fPerspective = SessionService.getConfFileByPath("HelpPerspective.xml");
         if (fPerspective.exists()) {
           fPerspective.delete();
         }
@@ -204,22 +204,22 @@ public final class UpgradeManager {
         }
 
         // - for Jajuk < 1.3: force nocover icon replacement
-        File fThumbs = UtilSystem.getConfFileByPath(Const.FILE_THUMBS + "/50x50/"
+        File fThumbs = SessionService.getConfFileByPath(Const.FILE_THUMBS + "/50x50/"
             + Const.FILE_THUMB_NO_COVER);
         if (fThumbs.exists()) {
           fThumbs.delete();
         }
-        fThumbs = UtilSystem.getConfFileByPath(Const.FILE_THUMBS + "/100x100/"
+        fThumbs = SessionService.getConfFileByPath(Const.FILE_THUMBS + "/100x100/"
             + Const.FILE_THUMB_NO_COVER);
         if (fThumbs.exists()) {
           fThumbs.delete();
         }
-        fThumbs = UtilSystem.getConfFileByPath(Const.FILE_THUMBS + "/150x150/"
+        fThumbs = SessionService.getConfFileByPath(Const.FILE_THUMBS + "/150x150/"
             + Const.FILE_THUMB_NO_COVER);
         if (fThumbs.exists()) {
           fThumbs.delete();
         }
-        fThumbs = UtilSystem.getConfFileByPath(Const.FILE_THUMBS + "/200x200/"
+        fThumbs = SessionService.getConfFileByPath(Const.FILE_THUMBS + "/200x200/"
             + Const.FILE_THUMB_NO_COVER);
         if (fThumbs.exists()) {
           fThumbs.delete();
@@ -260,7 +260,7 @@ public final class UpgradeManager {
           }
           // Save collection
           try {
-            Collection.commit(UtilSystem.getConfFileByPath(Const.FILE_COLLECTION));
+            Collection.commit(SessionService.getConfFileByPath(Const.FILE_COLLECTION));
           } catch (final IOException e) {
             Log.error(e);
           }
@@ -289,7 +289,7 @@ public final class UpgradeManager {
    */
   public static void checkForUpdate() {
     // If test mode, don't try to update
-    if (Main.isTestMode()) {
+    if (SessionService.isTestMode()) {
       return;
     }
     // Try to download current jajuk PAD file

@@ -34,8 +34,8 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
-import org.jajuk.Main;
 import org.jajuk.services.core.ExitService;
+import org.jajuk.services.core.SessionService;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.Messages;
@@ -161,7 +161,7 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
           // if application is closed brutally with control-C or
           // shutdown and that exit hook have no time to perform
           // commit)
-          org.jajuk.base.Collection.commit(UtilSystem.getConfFileByPath(Const.FILE_COLLECTION));
+          org.jajuk.base.Collection.commit(SessionService.getConfFileByPath(Const.FILE_COLLECTION));
         } catch (Exception e) {
           Log.error(e);
         }
@@ -543,7 +543,7 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
           if (needCheckID) {
             sRightID = FileManager.createID(sItemName, dParent).intern();
             if (sRightID == sID) {
-              needCheckID = UpgradeManager.isUpgradeDetected() || Main.isTestMode();
+              needCheckID = UpgradeManager.isUpgradeDetected() || SessionService.isTestMode();
             } else {
               Log.debug("** Wrong file Id, upgraded: " + sItemName);
               hmWrongRightFileID.put(sID, sRightID);
@@ -589,7 +589,7 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
           if (needCheckID) {
             sRightID = DirectoryManager.createID(sItemName, device, dParent).intern();
             if (sRightID == sID) {
-              needCheckID = UpgradeManager.isUpgradeDetected() || Main.isTestMode();
+              needCheckID = UpgradeManager.isUpgradeDetected() || SessionService.isTestMode();
             } else {
               Log.debug("** Wrong directory Id, upgraded: " + sItemName);
               hmWrongRightDirectoryID.put(sID, sRightID);
@@ -664,7 +664,7 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
             sRightID = TrackManager.createID(sTrackName, album, style, author, length, year,
                 lOrder, type).intern();
             if (sRightID == sID) {
-              needCheckID = UpgradeManager.isUpgradeDetected() || Main.isTestMode();
+              needCheckID = UpgradeManager.isUpgradeDetected() || SessionService.isTestMode();
             } else {
               Log.debug("** Wrong Track Id, upgraded: " + sTrackName);
               hmWrongRightTrackID.put(sID, sRightID);
@@ -694,7 +694,7 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
           if (needCheckID) {
             sRightID = AlbumManager.createID(sItemName).intern();
             if (sRightID == sID) {
-              needCheckID = UpgradeManager.isUpgradeDetected() || Main.isTestMode();
+              needCheckID = UpgradeManager.isUpgradeDetected() || SessionService.isTestMode();
             } else {
               Log.debug("** Wrong album Id, upgraded: " + sItemName);
               hmWrongRightAlbumID.put(sID, sRightID);
@@ -713,7 +713,7 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
           if (needCheckID) {
             sRightID = AuthorManager.createID(sItemName).intern();
             if (sRightID == sID) {
-              needCheckID = UpgradeManager.isUpgradeDetected() || Main.isTestMode();
+              needCheckID = UpgradeManager.isUpgradeDetected() || SessionService.isTestMode();
             } else {
               Log.debug("** Wrong author Id, upgraded: " + sItemName);
               hmWrongRightAuthorID.put(sID, sRightID);
@@ -732,7 +732,7 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
           if (needCheckID) {
             sRightID = StyleManager.createID(sItemName).intern();
             if (sRightID == sID) {
-              needCheckID = UpgradeManager.isUpgradeDetected() || Main.isTestMode();
+              needCheckID = UpgradeManager.isUpgradeDetected() || SessionService.isTestMode();
             } else {
               Log.debug("** Wrong style Id, upgraded: " + sItemName);
               hmWrongRightStyleID.put(sID, sRightID);
@@ -762,7 +762,7 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
           if (needCheckID) {
             sRightID = PlaylistManager.createID(sItemName, dParent).intern();
             if (sRightID == sID) {
-              needCheckID = UpgradeManager.isUpgradeDetected() || Main.isTestMode();
+              needCheckID = UpgradeManager.isUpgradeDetected() || SessionService.isTestMode();
             } else {
               Log.debug("** Wrong playlist Id, upgraded: " + sItemName);
               hmWrongRightPlaylistFileID.put(sID, sRightID);
@@ -784,7 +784,7 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
           if (needCheckID) {
             sRightID = DeviceManager.createID(sItemName).intern();
             if (sRightID == sID) {
-              needCheckID = UpgradeManager.isUpgradeDetected() || Main.isTestMode();
+              needCheckID = UpgradeManager.isUpgradeDetected() || SessionService.isTestMode();
             } else {
               Log.debug("** Wrong device Id, upgraded: " + sItemName);
               hmWrongRightDeviceID.put(sID, sRightID);

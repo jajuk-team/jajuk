@@ -36,12 +36,12 @@ import javax.xml.parsers.SAXParserFactory;
 
 import org.jajuk.base.FileManager;
 import org.jajuk.base.SearchResult;
+import org.jajuk.services.core.SessionService;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.DownloadManager;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilString;
-import org.jajuk.util.UtilSystem;
 import org.jajuk.util.log.Log;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -77,7 +77,7 @@ public final class WebRadioManager extends DefaultHandler {
     super();
 
     // check for webradio repository file
-    fwebradios = UtilSystem.getConfFileByPath(Const.FILE_WEB_RADIOS_REPOS);
+    fwebradios = SessionService.getConfFileByPath(Const.FILE_WEB_RADIOS_REPOS);
     if (!fwebradios.exists()) {
       // download the stream list and load it asynchronously to avoid
       // freezing unconnected people
@@ -135,7 +135,7 @@ public final class WebRadioManager extends DefaultHandler {
     // try to download the default directory (from jajuk SVN trunk
     // directly)
     try {
-      DownloadManager.download(new URL(Const.URL_DEFAULT_WEBRADIOS), UtilSystem
+      DownloadManager.download(new URL(Const.URL_DEFAULT_WEBRADIOS), SessionService
           .getConfFileByPath(Const.FILE_WEB_RADIOS_REPOS));
     } catch (Exception e) {
       Log.error(e);
@@ -171,7 +171,7 @@ public final class WebRadioManager extends DefaultHandler {
     if (webradios.size() == 0) {
       return;
     }
-    File out = UtilSystem.getConfFileByPath(Const.FILE_WEB_RADIOS_REPOS);
+    File out = SessionService.getConfFileByPath(Const.FILE_WEB_RADIOS_REPOS);
     String sCharset = Conf.getString(Const.CONF_COLLECTION_CHARSET);
     BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(out),
         sCharset), 1000000);
@@ -202,7 +202,7 @@ public final class WebRadioManager extends DefaultHandler {
     // Download repository
     downloadRepository();
     // Check file now exists and not void
-    File out = UtilSystem.getConfFileByPath(Const.FILE_WEB_RADIOS_REPOS);
+    File out = SessionService.getConfFileByPath(Const.FILE_WEB_RADIOS_REPOS);
     if (!out.exists() || out.length() == 0) {
       // show an "operation failed' message to users
       throw new IOException("Cannot download or parse webradio repository");

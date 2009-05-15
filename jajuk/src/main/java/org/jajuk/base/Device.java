@@ -35,6 +35,7 @@ import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.services.bookmark.History;
 import org.jajuk.services.core.ExitService;
+import org.jajuk.services.core.SessionService;
 import org.jajuk.services.players.QueueModel;
 import org.jajuk.ui.helpers.ManualDeviceRefreshReporter;
 import org.jajuk.ui.helpers.RefreshReporter;
@@ -448,7 +449,7 @@ public class Device extends PhysicalItem implements Comparable<Device> {
       // is closed brutally with control-C or shutdown and that exit hook
       // have no time to perform commit)
       try {
-        org.jajuk.base.Collection.commit(UtilSystem.getConfFileByPath(Const.FILE_COLLECTION));
+        org.jajuk.base.Collection.commit(SessionService.getConfFileByPath(Const.FILE_COLLECTION));
       } catch (final IOException e) {
         Log.error(e);
       }

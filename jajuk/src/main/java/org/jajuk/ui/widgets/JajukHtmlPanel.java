@@ -33,6 +33,7 @@ import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.jajuk.services.core.SessionService;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.DownloadManager;
@@ -79,7 +80,7 @@ public class JajukHtmlPanel extends HtmlPanel {
    */
   public void setURL(URL url) throws IOException, SAXException {
     setCursor(UtilGUI.WAIT_CURSOR);
-    File page = new File(UtilSystem.getConfFileByPath(Const.FILE_CACHE).getAbsolutePath() + '/'
+    File page = new File(SessionService.getConfFileByPath(Const.FILE_CACHE).getAbsolutePath() + '/'
         + UtilSystem.getOnlyFile(url.toString() + ".html"));
     String sPage = DownloadManager.downloadText(url);
     // Leave if no result
@@ -120,7 +121,7 @@ public class JajukHtmlPanel extends HtmlPanel {
    * @throws Exception
    */
   public void setUnknow() throws IOException, SAXException {
-    File page = new File(UtilSystem.getConfFileByPath(Const.FILE_CACHE).getAbsolutePath() + '/'
+    File page = new File(SessionService.getConfFileByPath(Const.FILE_CACHE).getAbsolutePath() + '/'
         + "noresult.html");
     String sPage = "<html><body><h1>" + Messages.getString("WikipediaView.3")
         + "</h1></body></html>";

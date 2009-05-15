@@ -21,7 +21,6 @@ package org.jajuk.services.core;
 
 import java.io.File;
 
-import org.jajuk.Main;
 import org.jajuk.base.Collection;
 import org.jajuk.base.DeviceManager;
 import org.jajuk.events.JajukEvent;
@@ -29,13 +28,12 @@ import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.services.bookmark.History;
 import org.jajuk.services.dj.AmbienceManager;
-import org.jajuk.services.players.QueueModel;
 import org.jajuk.services.players.Player;
+import org.jajuk.services.players.QueueModel;
 import org.jajuk.services.webradio.WebRadioManager;
 import org.jajuk.ui.actions.JajukAction;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
-import org.jajuk.util.UtilSystem;
 import org.jajuk.util.log.Log;
 
 /**
@@ -93,14 +91,14 @@ public class ExitService extends Thread {
         }
         // Commit collection if not still refreshing
         if (!DeviceManager.getInstance().isAnyDeviceRefreshing()) {
-          Collection.commit(UtilSystem.getConfFileByPath(Const.FILE_COLLECTION));
+          Collection.commit(SessionService.getConfFileByPath(Const.FILE_COLLECTION));
         }
         /* release keystrokes resources */
         JajukAction.cleanup();
 
         // Remove localhost_<user> session files
         // (can occur when network is not available)
-        File[] files = UtilSystem.getConfFileByPath(Const.FILE_SESSIONS).listFiles();
+        File[] files = SessionService.getConfFileByPath(Const.FILE_SESSIONS).listFiles();
         if (files != null) {
           for (File element : files) {
             if (element.getName().indexOf("localhost") != -1) {
@@ -116,7 +114,7 @@ public class ExitService extends Thread {
         }
 
         // Remove session flag.
-        File file = Main.getSessionIdFile();
+        File file = SessionService.getSessionIdFile();
         if (!file.exists()) {
           Log.info("Cannot delete file, file: " + file.toString()
               + " does not exist or workspace move.");

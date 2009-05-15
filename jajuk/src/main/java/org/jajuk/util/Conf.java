@@ -28,7 +28,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Properties;
 
-import org.jajuk.Main;
+import org.jajuk.services.core.SessionService;
 import org.jajuk.ui.actions.JajukActions;
 import org.jajuk.ui.perspectives.SimplePerspective;
 import org.jajuk.util.log.Log;
@@ -176,7 +176,7 @@ public final class Conf implements Const {
     // -1 : max available buffer set default trace level, debug in debug
     // mode and warning in normal mode
     defaults.put(CONF_AUDIO_BUFFER_SIZE, "-1");
-    if (Main.isIdeMode()) {
+    if (SessionService.isIdeMode()) {
       defaults.put(CONF_OPTIONS_LOG_LEVEL, Integer.toString(Log.DEBUG));
     } else {
       defaults.put(CONF_OPTIONS_LOG_LEVEL, Integer.toString(Log.WARNING));
@@ -347,7 +347,7 @@ public final class Conf implements Const {
    * @throws IOException
    */
   public static void commit() throws IOException {
-    OutputStream str = new FileOutputStream(UtilSystem.getConfFileByPath(Const.FILE_CONFIGURATION));
+    OutputStream str = new FileOutputStream(SessionService.getConfFileByPath(Const.FILE_CONFIGURATION));
     try {
       properties.store(str, "User configuration");
     } finally {
@@ -367,7 +367,7 @@ public final class Conf implements Const {
   /** Load properties from in file */
   public static void load() {
     try {
-      InputStream str = new FileInputStream(UtilSystem.getConfFileByPath(Const.FILE_CONFIGURATION));
+      InputStream str = new FileInputStream(SessionService.getConfFileByPath(Const.FILE_CONFIGURATION));
       try {
         properties.load(str);
       } finally {

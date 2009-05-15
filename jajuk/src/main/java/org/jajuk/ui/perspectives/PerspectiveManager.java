@@ -37,6 +37,7 @@ import org.jajuk.Main;
 import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
+import org.jajuk.services.core.SessionService;
 import org.jajuk.ui.views.IView;
 import org.jajuk.ui.widgets.PerspectiveBarJPanel;
 import org.jajuk.util.Conf;
@@ -46,7 +47,6 @@ import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UpgradeManager;
 import org.jajuk.util.UtilGUI;
-import org.jajuk.util.UtilSystem;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 
@@ -110,7 +110,7 @@ public final class PerspectiveManager {
         String className = perspective.getClass().getSimpleName();
         // Remove current conf file to force using default file from the
         // jar
-        File loadFile = UtilSystem.getConfFileByPath(className + ".xml");
+        File loadFile = SessionService.getConfFileByPath(className + ".xml");
         if (loadFile.exists()
             && (perspectivesToReset.contains(className) || UpgradeManager.isOldMigration())) {
           if (!loadFile.delete()) {

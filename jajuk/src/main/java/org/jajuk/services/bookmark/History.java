@@ -44,12 +44,12 @@ import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.events.Observer;
+import org.jajuk.services.core.SessionService;
 import org.jajuk.ui.widgets.InformationJPanel;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilString;
-import org.jajuk.util.UtilSystem;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 import org.xml.sax.Attributes;
@@ -217,7 +217,7 @@ public final class History extends DefaultHandler implements ErrorHandler, Obser
     if (lDateStart == 0) {
       lDateStart = System.currentTimeMillis();
     }
-    BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(UtilSystem
+    BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(SessionService
         .getConfFileByPath(Const.FILE_HISTORY)), "UTF-8"));
     try {
       bw.write("<?xml version='1.0' encoding='UTF-8'?>\n");
@@ -245,7 +245,7 @@ public final class History extends DefaultHandler implements ErrorHandler, Obser
       SAXParserFactory spf = SAXParserFactory.newInstance();
       spf.setValidating(false);
       SAXParser saxParser = spf.newSAXParser();
-      File frt = UtilSystem.getConfFileByPath(Const.FILE_HISTORY);
+      File frt = SessionService.getConfFileByPath(Const.FILE_HISTORY);
       saxParser.parse(frt.toURI().toURL().toString(), getInstance());
       getInstance().clear(Integer.parseInt(Conf.getString(Const.CONF_HISTORY))); // delete
       // old

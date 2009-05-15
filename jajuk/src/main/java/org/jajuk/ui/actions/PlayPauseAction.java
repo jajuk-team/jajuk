@@ -21,8 +21,8 @@ package org.jajuk.ui.actions;
 
 import java.awt.event.ActionEvent;
 
-import org.jajuk.services.players.QueueModel;
 import org.jajuk.services.players.Player;
+import org.jajuk.services.players.QueueModel;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;

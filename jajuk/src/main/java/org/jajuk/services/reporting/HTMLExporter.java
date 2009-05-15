@@ -30,6 +30,7 @@ import org.jajuk.base.Directory;
 import org.jajuk.base.Item;
 import org.jajuk.base.Style;
 import org.jajuk.base.Year;
+import org.jajuk.services.core.SessionService;
 import org.jajuk.util.Const;
 import org.jajuk.util.UtilSystem;
 
@@ -41,7 +42,7 @@ public class HTMLExporter extends Exporter {
   /** PUBLIC METHODS */
 
   public HTMLExporter() {
-    cache = UtilSystem.getConfFileByPath(Const.FILE_REPORTING_CACHE_FILE + "_html_"
+    cache = SessionService.getConfFileByPath(Const.FILE_REPORTING_CACHE_FILE + "_html_"
         + System.currentTimeMillis());
   }
 

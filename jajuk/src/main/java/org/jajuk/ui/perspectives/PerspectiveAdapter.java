@@ -38,6 +38,7 @@ import java.util.StringTokenizer;
 
 import javax.swing.ImageIcon;
 
+import org.jajuk.services.core.SessionService;
 import org.jajuk.ui.views.IView;
 import org.jajuk.ui.views.ViewFactory;
 import org.jajuk.util.Const;
@@ -117,7 +118,7 @@ public abstract class PerspectiveAdapter extends DockingDesktop implements IPers
     }
     // The writeXML method must be called in the EDT to avoid freezing, it
     // requires a lock some UI components
-    File saveFile = UtilSystem.getConfFileByPath(getClass().getSimpleName() + ".xml");
+    File saveFile = SessionService.getConfFileByPath(getClass().getSimpleName() + ".xml");
     BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(saveFile));
     writeXML(out);
     out.flush();
@@ -132,7 +133,7 @@ public abstract class PerspectiveAdapter extends DockingDesktop implements IPers
   public void load() throws Exception {
 
     // Try to read XML conf file from home directory
-    File loadFile = UtilSystem.getConfFileByPath(getClass().getSimpleName() + ".xml");
+    File loadFile = SessionService.getConfFileByPath(getClass().getSimpleName() + ".xml");
     // If file doesn't exist (normally only at first install), read
     // perspective conf from the jar
     URL url = loadFile.toURI().toURL();
@@ -196,7 +197,7 @@ public abstract class PerspectiveAdapter extends DockingDesktop implements IPers
     try {
       // Remove current conf file to force using default file from the
       // jar
-      File loadFile = UtilSystem.getConfFileByPath(getClass().getSimpleName() + ".xml");
+      File loadFile = SessionService.getConfFileByPath(getClass().getSimpleName() + ".xml");
       if (!loadFile.delete()) {
         Log.warn("Could not delete file " + loadFile.toString());
       }

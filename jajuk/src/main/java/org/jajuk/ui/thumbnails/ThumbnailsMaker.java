@@ -34,6 +34,7 @@ import org.jajuk.base.Album;
 import org.jajuk.base.AlbumManager;
 import org.jajuk.base.Collection;
 import org.jajuk.base.DeviceManager;
+import org.jajuk.services.core.SessionService;
 import org.jajuk.util.Const;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilSystem;
@@ -139,7 +140,7 @@ public final class ThumbnailsMaker {
       cp += element.getAbsolutePath() + ThumbnailsMaker.getJarSeparator();
     }
     // If we are not in dev, add jajuk jar itself to the classpath
-    if (!Main.isIdeMode()) {
+    if (!SessionService.isIdeMode()) {
       cp += ThumbnailsMaker.getJarSeparator() + jarPath;
     }
     // remove last separator
@@ -151,11 +152,11 @@ public final class ThumbnailsMaker {
     // Add size as a program argument
     commands.add(Integer.toString(size));
     // Add the test status
-    commands.add(Boolean.toString(Main.isTestMode()));
+    commands.add(Boolean.toString(SessionService.isTestMode()));
     // Add the workspace value
-    commands.add(Main.getWorkspace());
+    commands.add(SessionService.getWorkspace());
     // Add the session Id path
-    commands.add(Main.getSessionIdFile().getAbsolutePath());
+    commands.add(SessionService.getSessionIdFile().getAbsolutePath());
     Log.debug("Use command:" + commands);
     // We use this class and not ProcessBuilder as it hangs under windows
     // probably because of stream reading
@@ -224,7 +225,7 @@ public final class ThumbnailsMaker {
     // registers supported audio supports and default properties
     Main.registerTypes();
     // load collection
-    Collection.load(UtilSystem.getConfFileByPath(Const.FILE_COLLECTION));
+    Collection.load(SessionService.getConfFileByPath(Const.FILE_COLLECTION));
     // Mount devices
     Main.autoMount();
     final List<Album> albums = AlbumManager.getInstance().getAlbums();

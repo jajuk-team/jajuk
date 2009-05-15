@@ -44,10 +44,10 @@ import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.events.Observer;
+import org.jajuk.services.core.SessionService;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.Messages;
-import org.jajuk.util.UtilSystem;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 import org.xml.sax.Attributes;
@@ -143,7 +143,7 @@ public final class DigitalDJManager implements Observer {
    */
   public static void commit(DigitalDJ dj) {
     try {
-      BufferedWriter bw = new BufferedWriter(new FileWriter(UtilSystem
+      BufferedWriter bw = new BufferedWriter(new FileWriter(SessionService
           .getConfFileByPath(Const.FILE_DJ_DIR + "/" + dj.getID() + "." + Const.XML_DJ_EXTENSION)));
       bw.write(dj.toXML());
       bw.flush();
@@ -160,7 +160,7 @@ public final class DigitalDJManager implements Observer {
    */
   public void remove(DigitalDJ dj) {
     djs.remove(dj.getID());
-    UtilSystem.getConfFileByPath(
+    SessionService.getConfFileByPath(
         Const.FILE_DJ_DIR + "/" + dj.getID() + "." + Const.XML_DJ_EXTENSION).delete();
     // reset default DJ if this DJ was default
     if (Conf.getString(Const.CONF_DEFAULT_DJ).equals(dj.getID())) {
@@ -211,7 +211,7 @@ public final class DigitalDJManager implements Observer {
    */
   public void loadAllDJs() {
     try {
-      File[] files = UtilSystem.getConfFileByPath(Const.FILE_DJ_DIR).listFiles(new FileFilter() {
+      File[] files = SessionService.getConfFileByPath(Const.FILE_DJ_DIR).listFiles(new FileFilter() {
         public boolean accept(File file) {
           if (file.isFile() && file.getPath().endsWith('.' + Const.XML_DJ_EXTENSION)) {
             return true;

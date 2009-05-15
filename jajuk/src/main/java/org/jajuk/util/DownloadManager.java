@@ -43,6 +43,7 @@ import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.jajuk.services.core.SessionService;
 import org.jajuk.util.log.Log;
 
 /**
@@ -177,7 +178,7 @@ public final class DownloadManager {
     if (Conf.getBoolean(Const.CONF_NETWORK_NONE_INTERNET_ACCESS)) {
       return null;
     }
-    File file = UtilSystem.getCachePath(url);
+    File file = SessionService.getCachePath(url);
     // We synchronize the (interned) name of the cached file to avoid
     // probable collisions between views
     synchronized (file.getName().intern()) {

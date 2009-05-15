@@ -10,7 +10,7 @@ import java.awt.Toolkit;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import org.jajuk.Main;
+import org.jajuk.services.core.SessionService;
 import org.jajuk.util.log.Log;
 
 /**
@@ -84,7 +84,7 @@ public final class EventDispatchThreadHangMonitor extends EventQueue {
         return;
       }
       // check if elapsed time is not exceed (used only in test mode)
-      if (Main.isTestMode() && timeSoFar() > UNREASONABLE_DISPATCH_DURATION_MS_TEST) {
+      if (SessionService.isTestMode() && timeSoFar() > UNREASONABLE_DISPATCH_DURATION_MS_TEST) {
         reportHang();
       }
     }

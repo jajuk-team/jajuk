@@ -46,6 +46,7 @@ import org.jajuk.base.Track;
 import org.jajuk.base.TrackComparator;
 import org.jajuk.base.TrackManager;
 import org.jajuk.base.TrackComparator.TrackComparatorType;
+import org.jajuk.services.core.SessionService;
 import org.jajuk.ui.actions.ActionManager;
 import org.jajuk.ui.actions.JajukActions;
 import org.jajuk.ui.helpers.CatalogViewTransferHandler;
@@ -56,7 +57,6 @@ import org.jajuk.util.Const;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilGUI;
 import org.jajuk.util.UtilString;
-import org.jajuk.util.UtilSystem;
 import org.jajuk.util.log.Log;
 import org.jdesktop.swingx.VerticalLayout;
 import org.jdesktop.swingx.border.DropShadowBorder;
@@ -212,7 +212,7 @@ public class LocalAlbumThumbnail extends AbstractThumbnail {
       sOut += "<br>"
           + Messages.getString("Property_rate")
           + ": <img src='"
-          + UtilSystem.getConfFileByPath(
+          + SessionService.getConfFileByPath(
               "cache/internal/star" + album.getStarsNumber() + "_16x16.png").toURI().toURL()
               .toExternalForm() + "'> (" + album.getRate() + ")";
     } catch (MalformedURLException e) {

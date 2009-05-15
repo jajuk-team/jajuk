@@ -37,6 +37,7 @@ import org.jajuk.base.AlbumManager;
 import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
+import org.jajuk.services.core.SessionService;
 import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
@@ -60,7 +61,7 @@ public final class ThumbnailManager {
    *          size, eg: Const.THUMBNAIL_SIZE_150x150
    */
   public static void cleanThumbs(String size) {
-    File fThumb = UtilSystem.getConfFileByPath(Const.FILE_THUMBS + '/' + size);
+    File fThumb = SessionService.getConfFileByPath(Const.FILE_THUMBS + '/' + size);
     if (fThumb.exists()) {
       File[] files = fThumb.listFiles();
       for (File file : files) {
@@ -69,7 +70,7 @@ public final class ThumbnailManager {
         }
       }
       // Refresh default cover
-      File fDefault = UtilSystem.getConfFileByPath(Const.FILE_THUMBS + "/" + size + "/"
+      File fDefault = SessionService.getConfFileByPath(Const.FILE_THUMBS + "/" + size + "/"
           + Const.FILE_THUMB_NO_COVER);
       if (fDefault.exists() && !fDefault.delete()) {
         Log.warn("Could not delete " + fDefault.toString());
@@ -230,7 +231,7 @@ public final class ThumbnailManager {
   public static File getThumbBySize(Album album, int size) {
     StringBuilder thumb = new StringBuilder(Const.FILE_THUMBS).append('/').append(size).append('x')
         .append(size).append('/').append(album.getID()).append('.').append(Const.EXT_THUMB);
-    return UtilSystem.getConfFileByPath(thumb.toString());
+    return SessionService.getConfFileByPath(thumb.toString());
   }
 
 }

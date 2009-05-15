@@ -25,9 +25,9 @@ import java.util.List;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.apache.log4j.xml.DOMConfigurator;
+import org.jajuk.services.core.SessionService;
 import org.jajuk.util.Const;
 import org.jajuk.util.Messages;
-import org.jajuk.util.UtilSystem;
 import org.jajuk.util.error.JajukException;
 
 /**
@@ -75,7 +75,7 @@ public final class Log {
   private Log() {
     try {
       // set env variable used in the log4j conf file
-      System.setProperty("jajuk.log", UtilSystem.getConfFileByPath(Const.FILE_LOGS)
+      System.setProperty("jajuk.log", SessionService.getConfFileByPath(Const.FILE_LOGS)
           .getAbsolutePath());
       DOMConfigurator.configure(Const.FILE_LOG4J_CONF);
       loggerRoot = Logger.getRootLogger();
