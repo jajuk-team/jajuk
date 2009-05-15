@@ -20,11 +20,7 @@
 
 package org.jajuk.ui.wizard;
 
-import info.clearthought.layout.TableLayout;
-import info.clearthought.layout.TableLayoutConstants;
-
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -43,6 +39,8 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
+import net.miginfocom.swing.MigLayout;
+
 import org.jajuk.Main;
 import org.jajuk.base.Device;
 import org.jajuk.base.DeviceManager;
@@ -51,6 +49,7 @@ import org.jajuk.ui.actions.ActionManager;
 import org.jajuk.ui.actions.JajukActions;
 import org.jajuk.ui.widgets.JajukFileChooser;
 import org.jajuk.ui.widgets.JajukJDialog;
+import org.jajuk.ui.widgets.OKCancelPanel;
 import org.jajuk.ui.widgets.PathSelector;
 import org.jajuk.ui.widgets.ToggleLink;
 import org.jajuk.util.Const;
@@ -61,7 +60,6 @@ import org.jajuk.util.Messages;
 import org.jajuk.util.UtilGUI;
 import org.jajuk.util.filters.DirectoryFilter;
 import org.jajuk.util.log.Log;
-import org.jdesktop.swingx.HorizontalLayout;
 import org.jdesktop.swingx.JXCollapsiblePane;
 import org.jdesktop.swingx.VerticalLayout;
 
@@ -75,10 +73,6 @@ public class FirstTimeWizard extends JajukJDialog implements ActionListener {
 
 	JPanel jpRightPanel;
 
-	JLabel jlWelcome;
-
-	JLabel jlFileSelection;
-
 	JButton jbFileSelection;
 
 	PathSelector workspacePath;
@@ -87,13 +81,9 @@ public class FirstTimeWizard extends JajukJDialog implements ActionListener {
 
 	JTextField jtfRefreshTime;
 
-	JLabel jlMins;
-
 	JCheckBox jcbHelp;
 
 	JXCollapsiblePane advanced;
-
-	JPanel jpButtons;
 
 	JButton jbOk;
 
@@ -215,14 +205,11 @@ public class FirstTimeWizard extends JajukJDialog implements ActionListener {
 
 	private void initUI() {
 		setTitle(Messages.getString("FirstTimeWizard.0"));
-		final int iXSEPARATOR = 10;
-		final int iYSEPARATOR = 10;
-		final double p = TableLayoutConstants.PREFERRED;
 		jlLeftIcon = new JLabel(UtilGUI.getImage(Const.IMAGE_SEARCH));
 		jlLeftIcon.setBorder(new EmptyBorder(0, 20, 0, 0));
 		jpRightPanel = new JPanel();
-		jlWelcome = new JLabel(Messages.getString("FirstTimeWizard.1"));
-		jlFileSelection = new JLabel(Messages.getString("FirstTimeWizard.2"));
+		JLabel jlWelcome = new JLabel(Messages.getString("FirstTimeWizard.1"));
+		JLabel jlFileSelection = new JLabel(Messages.getString("FirstTimeWizard.2"));
 		jbFileSelection = new JButton(IconLoader.getIcon(JajukIcons.OPEN_DIR));
 		jbFileSelection.addActionListener(this);
 		final JLabel jlWorkspace = new JLabel(Messages.getString("FirstTimeWizard.7"));
@@ -234,55 +221,39 @@ public class FirstTimeWizard extends JajukJDialog implements ActionListener {
 		// Refresh time
 		jlRefreshTime = new JLabel(Messages.getString("DeviceWizard.53"));
 		jtfRefreshTime = new JTextField("5");// 5 mins by default
-		jlMins = new JLabel(Messages.getString("DeviceWizard.54"));
-		final JPanel jpRefresh = new JPanel();
+		JLabel jlMins = new JLabel(Messages.getString("DeviceWizard.54"));
 
-		final double sizeRefresh[][] = { { p, 10, TableLayoutConstants.FILL, 10, p, 20 }, { p } };
-		jpRefresh.setLayout(new TableLayout(sizeRefresh));
-		jpRefresh.add(jlRefreshTime, "0,0");
-		jpRefresh.add(jtfRefreshTime, "2,0");
-		jpRefresh.add(jlMins, "4,0");
 		// buttons
-		jpButtons = new JPanel();
-		jpButtons.setLayout(new FlowLayout(FlowLayout.CENTER));
-		jbOk = new JButton(Messages.getString("Ok"));
+		OKCancelPanel okp = new OKCancelPanel(this);
+		jbOk = okp.getOKButton();
+		jbCancel = okp.getCancelButton();
+		jbCancel.setText(Messages.getString("Later"));
 		jbOk.setEnabled(false);
-		jbOk.addActionListener(this);
-		jbCancel = new JButton(Messages.getString("Later"));
-		jbCancel.addActionListener(this);
-		jpButtons.add(jbOk);
-		jpButtons.add(jbCancel);
-		final JPanel jpFileSelection = new JPanel();
-		jpFileSelection.setLayout(new HorizontalLayout(iXSEPARATOR));
-		jpFileSelection.add(jbFileSelection);
-		jpFileSelection.add(jlFileSelection);
 		advanced = new JXCollapsiblePane();
 		// Build the toggle link used to expand / collapse the panel
 		final ToggleLink toggle = new ToggleLink(Messages.getString("FirstTimeWizard.6"), advanced);
-		advanced.setLayout(new VerticalLayout(iYSEPARATOR));
+
+		// Advanced collapsable panel
+		advanced.setLayout(new VerticalLayout(10));
 		advanced.setCollapsed(true);
 		advanced.add(jlWorkspace);
 		advanced.add(workspacePath);
 		advanced.add(jcbHelp);
 
-		final double[][] size = new double[][] { { p, iXSEPARATOR, p, iXSEPARATOR },
-				{ iYSEPARATOR, p, 60, p, p, p, p, iYSEPARATOR } };
-		final TableLayout layout = new TableLayout(size);
-		layout.setHGap(iXSEPARATOR);
-		layout.setVGap(iYSEPARATOR);
-
-		jpMain = (JPanel) getContentPane();
-		jpMain.setLayout(layout);
-		jpMain.add(jlWelcome, "2,1");
-		jpMain.add(jpFileSelection, "2,2");
-		jpMain.add(jpRefresh, "2,3");
-		jpMain.add(toggle, "2,4");
-		jpMain.add(advanced, "2,5");
-		jpMain.add(jpButtons, "2,6");
-		jpMain.add(jlLeftIcon, "0,0,0,4");
+		// Add items
+		setLayout(new MigLayout("insets 10,gapx 10,gapy 15", "[][grow]", "[][][][][][]"));
+		add(jlLeftIcon, "cell 0 0 1 6,top");
+		add(jlWelcome, "cell 1 0");
+		add(jbFileSelection, "split 2,cell 1 1");
+		add(jlFileSelection, "cell 1 1,grow");
+		add(jlRefreshTime, "split 3,cell 1 2");
+		add(jtfRefreshTime, "cell 1 2, grow,width ::100");
+		add(jlMins, "cell 1 2");
+		add(toggle, "cell 1 3,grow");
+		add(advanced, "cell 1 4,grow");
+		add(okp, "center,cell 1 5");
 
 		getRootPane().setDefaultButton(jbOk);
-
 	}
 
 }
