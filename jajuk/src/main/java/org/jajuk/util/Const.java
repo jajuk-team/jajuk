@@ -337,13 +337,6 @@ public interface Const {
   // Tells jajuk to use a .jajuk_test repository
   String CLI_TEST = "test";
 
-  // Tells jajuk to use Power Pack behavior
-  String CLI_POWER_PACK = "powerpack";
-
-  String FREE_MUSIC_DIR = "Music";
-
-  String FREE_MUSIC_DEVICE_NAME = "Music-jukeboxPowerPack";
-
   // players impls
   String PLAYER_IMPL_JAVALAYER = "org.jajuk.services.players.JavaLayerPlayerImpl";
 

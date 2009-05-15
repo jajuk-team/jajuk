@@ -126,9 +126,6 @@ public final class Main {
   /** Test mode */
   private static boolean bTestMode = false;
 
-  /** Jukebox power pack flag* */
-  private static boolean bPowerPack = false;
-
   /** Does a collection parsing error occurred ? * */
   private static boolean bCollectionLoadRecover = true;
 
@@ -315,10 +312,6 @@ public final class Main {
         autoMount();
       }
 
-      // Create automatically a Music device if we are packaging a
-      // JukeboxPowerPack distribution
-      powerPack();
-
       // Launch startup track if any (but don't start it if firsdt session
       // because the first refresh is probably still running)
       if (!UpgradeManager.isFirstSesion()) {
@@ -409,9 +402,6 @@ public final class Main {
       // -test=[test|notest] option
       if (element.equals("-" + Const.CLI_TEST)) {
         bTestMode = true;
-      }
-      if (element.equals("-" + Const.CLI_POWER_PACK)) {
-        bPowerPack = true;
       }
     }
   }
@@ -943,40 +933,6 @@ public final class Main {
    */
   public static void setDefaultPerspective(final String perspective) {
     sPerspective = perspective;
-  }
-
-  /**
-   * Create automatically a free music directory (currently ../Music directory
-   * relatively to jajuk.jar file) that contains free music packaged with
-   * Jukebox Power Pack releases
-   */
-  private static void powerPack() {
-    if (bPowerPack) {
-      try {
-        // Check if this device don't already exit
-        for (Device device : DeviceManager.getInstance().getDevices()) {
-          if (Const.FREE_MUSIC_DEVICE_NAME.equals(device.getName())) {
-            return;
-          }
-        }
-        // Check for ../Music file presence
-        String music = new File(UtilSystem.getJarLocation(Main.class).toURI()).getParentFile()
-            .getParentFile().getAbsolutePath();
-        music += '/' + Const.FREE_MUSIC_DIR;
-        File fMusic = new File(music);
-        Log.debug("Powerpack detected, tested path: " + fMusic.getAbsolutePath());
-        if (fMusic.exists()) {
-          Device device = DeviceManager.getInstance().registerDevice(Const.FREE_MUSIC_DEVICE_NAME,
-              Device.TYPE_DIRECTORY, fMusic.getAbsolutePath());
-          device.setProperty(Const.XML_DEVICE_AUTO_MOUNT, true);
-          device.setProperty(Const.XML_DEVICE_AUTO_REFRESH, 0.5d);
-          device.mount(false);
-          device.refreshCommand(true);
-        }
-      } catch (Exception e) {
-        Log.error(e);
-      }
-    }
   }
 
   public static File getSessionIdFile() {
