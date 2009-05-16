@@ -21,6 +21,8 @@ package org.jajuk.ui.actions;
 
 import java.awt.event.ActionEvent;
 
+import org.jajuk.ui.widgets.CommandJPanel;
+import org.jajuk.ui.widgets.JajukJMenuBar;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
@@ -46,8 +48,8 @@ public class RepeatAllModeAction extends JajukAction {
     boolean b = Conf.getBoolean(Const.CONF_STATE_REPEAT_ALL);
     Conf.setProperty(Const.CONF_STATE_REPEAT_ALL, Boolean.toString(!b));
 
-//    JajukJMenuBar.getInstance().setRepeatSelected(!b);
-//    CommandJPanel.getInstance().setRepeatSelected(!b);
+    JajukJMenuBar.getInstance().setRepeatAllSelected(!b);
+    CommandJPanel.getInstance().setRepeatAllSelected(!b);
 
   }
 }

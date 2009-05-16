@@ -996,6 +996,10 @@ public class CommandJPanel extends JXPanel implements ActionListener, ListSelect
     this.jbRepeat.setSelected(b);
   }
 
+  public void setRepeatAllSelected(final boolean b) {
+    this.jbRepeatAll.setSelected(b);
+  }
+  
   public void setRandomSelected(final boolean b) {
     this.jbRandom.setSelected(b);
   }

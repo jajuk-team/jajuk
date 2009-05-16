@@ -29,6 +29,7 @@ import static org.jajuk.ui.actions.JajukActions.INTRO_MODE;
 import static org.jajuk.ui.actions.JajukActions.OPTIONS;
 import static org.jajuk.ui.actions.JajukActions.QUALITY;
 import static org.jajuk.ui.actions.JajukActions.REPEAT_MODE;
+import static org.jajuk.ui.actions.JajukActions.REPEAT_ALL_MODE;
 import static org.jajuk.ui.actions.JajukActions.SHOW_ABOUT;
 import static org.jajuk.ui.actions.JajukActions.SHOW_TRACES;
 import static org.jajuk.ui.actions.JajukActions.SHUFFLE_MODE;
@@ -170,6 +171,8 @@ public final class JajukJMenuBar extends JMenuBar implements Observer {
 
   private JajukButton jbFull;
 
+  private JCheckBoxMenuItem jcbmiRepeatAll;
+
   private JajukJMenuBar() {
     setAlignmentX(0.0f);
     // File menu
@@ -232,6 +235,8 @@ public final class JajukJMenuBar extends JMenuBar implements Observer {
 
     jcbmiRepeat = new JCheckBoxMenuItem(ActionManager.getAction(REPEAT_MODE));
     jcbmiRepeat.setSelected(Conf.getBoolean(Const.CONF_STATE_REPEAT));
+    jcbmiRepeatAll = new JCheckBoxMenuItem(ActionManager.getAction(REPEAT_ALL_MODE));
+    jcbmiRepeatAll.setSelected(Conf.getBoolean(Const.CONF_STATE_REPEAT_ALL));
     jcbmiShuffle = new JCheckBoxMenuItem(ActionManager.getAction(SHUFFLE_MODE));
     jcbmiShuffle.setSelected(Conf.getBoolean(Const.CONF_STATE_SHUFFLE));
     jcbmiContinue = new JCheckBoxMenuItem(ActionManager.getAction(CONTINUE_MODE));
@@ -240,6 +245,7 @@ public final class JajukJMenuBar extends JMenuBar implements Observer {
     jcbmiIntro.setSelected(Conf.getBoolean(Const.CONF_STATE_INTRO));
 
     mode.add(jcbmiRepeat);
+    mode.add(jcbmiRepeatAll);
     mode.add(jcbmiShuffle);
     mode.add(jcbmiContinue);
     mode.add(jcbmiIntro);
@@ -438,6 +444,10 @@ public final class JajukJMenuBar extends JMenuBar implements Observer {
 
   public void setRepeatSelected(final boolean b) {
     jcbmiRepeat.setSelected(b);
+  }
+  
+  public void setRepeatAllSelected(final boolean b) {
+    jcbmiRepeatAll.setSelected(b);
   }
 
   public void setShuffleSelected(final boolean b) {
