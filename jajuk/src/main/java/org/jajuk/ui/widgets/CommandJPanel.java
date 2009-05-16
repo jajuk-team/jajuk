@@ -273,6 +273,8 @@ public class CommandJPanel extends JXPanel implements ActionListener, ListSelect
   /** An instance of the ambience combo listener */
   AmbienceListener ambienceListener;
 
+  private JajukToggleButton jbRepeatAll;
+
   /**
    * @return singleton
    */
@@ -366,6 +368,8 @@ public class CommandJPanel extends JXPanel implements ActionListener, ListSelect
     // make it not floatable as this behavior is managed by vldocking
     jbRepeat = new JajukToggleButton(ActionManager.getAction(JajukActions.REPEAT_MODE));
     jbRepeat.setSelected(Conf.getBoolean(Const.CONF_STATE_REPEAT));
+    jbRepeatAll = new JajukToggleButton(ActionManager.getAction(JajukActions.REPEAT_ALL_MODE));
+    jbRepeatAll.setSelected(Conf.getBoolean(Const.CONF_STATE_REPEAT_ALL));
     jbRandom = new JajukToggleButton(ActionManager.getAction(JajukActions.SHUFFLE_MODE));
     jbRandom.setSelected(Conf.getBoolean(Const.CONF_STATE_SHUFFLE));
     jbContinue = new JajukToggleButton(ActionManager.getAction(JajukActions.CONTINUE_MODE));
@@ -373,6 +377,7 @@ public class CommandJPanel extends JXPanel implements ActionListener, ListSelect
     jbIntro = new JajukToggleButton(ActionManager.getAction(JajukActions.INTRO_MODE));
     jbIntro.setSelected(Conf.getBoolean(Const.CONF_STATE_INTRO));
     jtbModes.add(jbRepeat);
+    jtbModes.add(jbRepeatAll);
     jtbModes.addSeparator();
     jtbModes.add(jbRandom);
     jtbModes.addSeparator();

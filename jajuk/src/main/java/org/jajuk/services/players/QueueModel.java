@@ -412,11 +412,12 @@ public final class QueueModel {
         } else {
           index++;
         }
-        if (index == alFIFO.size()) {
+        if (index == alFIFO.size() && Conf.getBoolean(Const.CONF_STATE_REPEAT_ALL)) {
           index = 0;
         }
       }
-      if (alFIFO.size() == 0) { // nothing more to play
+      if (alFIFO.size() == 0 || index >= alFIFO.size()) { // nothing more to
+                                                          // play
         // check if we in continue mode
         if (Conf.getBoolean(Const.CONF_STATE_CONTINUE) && itemLast != null) {
           File file = null;
@@ -442,6 +443,7 @@ public final class QueueModel {
           // no ? just reset UI and leave
           JajukTimer.getInstance().reset();
           bStop = true;
+          index = 0;
           ObservationManager.notify(new JajukEvent(JajukEvents.ZERO));
           return;
         }

@@ -33,6 +33,11 @@ public enum JajukActions {
    * Used when the repeat status was changed.
    */
   REPEAT_MODE,
+  
+  /**
+   * Used when the repeat all status was changed.
+   */
+  REPEAT_ALL_MODE, 
 
   /**
    * Used when the shuffle mode was changed

@@ -501,6 +501,8 @@ public interface Const {
   String CONF_PERSPECTIVE_DEFAULT = "jajuk.preference.perspective.default";
 
   String CONF_STATE_REPEAT = "jajuk.state.mode.repeat";
+  
+  String CONF_STATE_REPEAT_ALL = "jajuk.state.mode.repeat.all";
 
   String CONF_STATE_SHUFFLE = "jajuk.state.mode.shuffle";
 

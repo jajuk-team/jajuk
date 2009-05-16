@@ -116,6 +116,10 @@ final public class IconLoader {
     else if (icon == JajukIcons.REPEAT) {
       out = new ImageIcon(UtilSystem.getResource("icons/16x16/repeat_16x16.png"));
     }
+    
+    else if (icon == JajukIcons.REPEAT_ALL) {
+      out = new ImageIcon(UtilSystem.getResource("icons/16x16/repeat_all_16x16.png"));
+    }
 
     else if (icon == JajukIcons.SHUFFLE) {
       out = new ImageIcon(UtilSystem.getResource("icons/16x16/shuffle_16x16.png"));

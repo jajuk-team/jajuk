@@ -37,6 +37,8 @@ public enum JajukIcons {
   LOGO_FRAME,
 
   REPEAT,
+  
+  REPEAT_ALL,
 
   SHUFFLE,
 

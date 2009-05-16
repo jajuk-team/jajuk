@@ -139,6 +139,7 @@ public final class ActionManager {
     // Private constructor to disallow instantiation.
     // CommandJPanel: Mode Panel
     installAction(REPEAT_MODE, new RepeatModeAction(), true);
+    installAction(JajukActions.REPEAT_ALL_MODE, new RepeatAllModeAction(), true);
     installAction(SHUFFLE_MODE, new ShuffleModeAction(), true);
     installAction(CONTINUE_MODE, new ContinueModeAction(), false);
     installAction(INTRO_MODE, new IntroModeAction(), false);

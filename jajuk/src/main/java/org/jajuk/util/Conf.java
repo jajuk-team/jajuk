@@ -153,6 +153,7 @@ public final class Conf implements Const {
     // User preferences
     defaults.put(CONF_PERSPECTIVE_DEFAULT, SimplePerspective.class.getName());
     defaults.put(CONF_STATE_REPEAT, FALSE);
+    defaults.put(CONF_STATE_REPEAT_ALL, FALSE);
     defaults.put(CONF_STATE_SHUFFLE, FALSE);
     defaults.put(CONF_STATE_CONTINUE, FALSE);
     defaults.put(CONF_STATE_INTRO, FALSE);
