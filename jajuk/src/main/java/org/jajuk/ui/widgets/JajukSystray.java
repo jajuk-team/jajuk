@@ -403,7 +403,7 @@ public class JajukSystray extends CommandJPanel {
         } else if (JajukEvents.PLAYER_STOP.equals(subject)) {
           // Enable the play button to allow restarting the queue but disable if
           // the queue is void
-          boolean bQueueNotVoid = (QueueModel.getFIFO().size() > 0);
+          boolean bQueueNotVoid = (QueueModel.getQueue().size() > 0);
           jmiPlayPause.setEnabled(bQueueNotVoid);
           jmiNext.setEnabled(bQueueNotVoid);
           jmiPrevious.setEnabled(bQueueNotVoid);

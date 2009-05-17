@@ -101,7 +101,7 @@ public class PlayerStateMediator implements Observer {
           ActionManager.getAction(REWIND_TRACK).setEnabled(false);
           // Enable the play button to allow restarting the queue but disable if
           // the queue is void
-          boolean bQueueNotVoid = (QueueModel.getFIFO().size() > 0);
+          boolean bQueueNotVoid = (QueueModel.getQueue().size() > 0);
           ActionManager.getAction(PAUSE_RESUME_TRACK).setEnabled(bQueueNotVoid);
           ActionManager.getAction(NEXT_ALBUM).setEnabled(bQueueNotVoid);
           ActionManager.getAction(PREVIOUS_ALBUM).setEnabled(bQueueNotVoid);

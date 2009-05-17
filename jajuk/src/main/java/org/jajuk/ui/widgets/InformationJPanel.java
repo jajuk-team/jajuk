@@ -295,7 +295,7 @@ public final class InformationJPanel extends JXPanel implements Observer {
         public void run() {
           if (JajukEvents.HEART_BEAT.equals(subject) && !QueueModel.isStopped() && !Player.isPaused()) {
             String sCurrentTotalMessage = UtilString.formatTimeBySec(timeToPlay);
-            setTotalTimeMessage(sCurrentTotalMessage + " [" + QueueModel.getFIFO().size() + "]");
+            setTotalTimeMessage(sCurrentTotalMessage + " [" + QueueModel.getQueue().size() + "]");
           } else if (JajukEvents.ZERO.equals(subject) || JajukEvents.PLAYER_STOP.equals(subject)) {
             // reset startup position
             Conf.setProperty(Const.CONF_STARTUP_LAST_POSITION, "0");

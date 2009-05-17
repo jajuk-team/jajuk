@@ -67,7 +67,7 @@ public final class QueueModel {
   private static StackItem itemLast;
 
   /** Fifo itself, contains jajuk File objects */
-  private static volatile List<StackItem> alFIFO = new ArrayList<StackItem>(50);
+  private static volatile List<StackItem> alQueue = new ArrayList<StackItem>(50);
 
   /** Planned tracks */
   private static volatile List<StackItem> alPlanned = new ArrayList<StackItem>(10);
@@ -94,7 +94,7 @@ public final class QueueModel {
    * FIFO total reinitialization
    */
   public static void reset() {
-    alFIFO.clear();
+    alQueue.clear();
     alPlanned.clear();
     JajukTimer.getInstance().reset();
     index = 0;
@@ -107,7 +107,7 @@ public final class QueueModel {
    * @param bRepeat
    */
   public static void setRepeatModeToAll(boolean bRepeat) {
-    for (StackItem item : alFIFO) {
+    for (StackItem item : alQueue) {
       item.setRepeat(bRepeat);
     }
   }
@@ -288,7 +288,7 @@ public final class QueueModel {
         // OK, stop current track if no append
         if (!bAppend) {
           Player.stop(false);
-          alFIFO.clear();
+          alQueue.clear();
         }
         int pos = 0;
         // if push to front, set pos to first item
@@ -301,12 +301,12 @@ public final class QueueModel {
           // otherwise we can keep pos at zero
         }
         // If push, not play, add items at the end
-        else if (bAppend && alFIFO.size() > 0) {
-          pos = alFIFO.size();
+        else if (bAppend && alQueue.size() > 0) {
+          pos = alQueue.size();
         }
         // add required tracks in the FIFO
         for (StackItem item : alItems) {
-          alFIFO.add(pos, item);
+          alQueue.add(pos, item);
           pos++;
           JajukTimer.getInstance().addTrackTime(item.getFile());
         }
@@ -351,7 +351,7 @@ public final class QueueModel {
    * @return whether FIFO contains a least one repeated item
    */
   public static boolean containsRepeat() {
-    for (StackItem item : alFIFO) {
+    for (StackItem item : alQueue) {
       if (item.isRepeat()) {
         return true;
       }
@@ -391,8 +391,8 @@ public final class QueueModel {
         // if the track was in repeat mode, don't remove it from the
         // fifo but inc index
         // find the next item is in repeat mode if any
-        if (index < alFIFO.size() - 1) {
-          StackItem itemNext = alFIFO.get(index + 1);
+        if (index < alQueue.size() - 1) {
+          StackItem itemNext = alQueue.get(index + 1);
           // if next track is repeat, inc index
           if (itemNext.isRepeat()) {
             index++;
@@ -404,20 +404,17 @@ public final class QueueModel {
         } else { // no next element
           index = 0; // come back to first element
         }
-      } else if (index < alFIFO.size()) {
+      } else if (index < alQueue.size()) {
+        StackItem item = alQueue.get(index);
+        JajukTimer.getInstance().removeTrackTime(item.getFile());
         if (Conf.getBoolean(Conf.CONF_DROP_PLAYED_TRACKS_FROM_QUEUE)) {
-          StackItem item = alFIFO.get(index);
-          JajukTimer.getInstance().removeTrackTime(item.getFile());
-          alFIFO.remove(index); // remove this file from fifo
+          alQueue.remove(index); // remove this file from fifo
         } else {
           index++;
         }
-        if (index == alFIFO.size() && Conf.getBoolean(Const.CONF_STATE_REPEAT_ALL)) {
-          index = 0;
-        }
       }
-      if (alFIFO.size() == 0 || index >= alFIFO.size()) { // nothing more to
-                                                          // play
+      if (alQueue.size() == 0 || index >= alQueue.size()) { // nothing more to
+        // play
         // check if we in continue mode
         if (Conf.getBoolean(Const.CONF_STATE_CONTINUE) && itemLast != null) {
           File file = null;
@@ -567,7 +564,7 @@ public final class QueueModel {
   public static void computesPlanned(boolean bClear) {
     // Check if we are in continue mode and we have some tracks in FIFO, if
     // not : no planned tracks
-    if (!Conf.getBoolean(Const.CONF_STATE_CONTINUE) || containsRepeat() || alFIFO.size() == 0) {
+    if (!Conf.getBoolean(Const.CONF_STATE_CONTINUE) || containsRepeat() || alQueue.size() == 0) {
       alPlanned.clear();
       return;
     }
@@ -606,9 +603,9 @@ public final class QueueModel {
         // if planned stack contains yet some tracks
         if (alPlanned.size() > 0) {
           siLast = alPlanned.get(alPlanned.size() - 1); // last one
-        } else if (alFIFO.size() > 0) { // if fifo contains yet some
+        } else if (alQueue.size() > 0) { // if fifo contains yet some
           // tracks to play
-          siLast = alFIFO.get(alFIFO.size() - 1); // last one
+          siLast = alQueue.get(alQueue.size() - 1); // last one
         }
         try {
           // if fifo contains yet some tracks to play
@@ -638,7 +635,7 @@ public final class QueueModel {
    * 
    */
   public static void clear() {
-    alFIFO.clear();
+    alQueue.clear();
     alPlanned.clear();
   }
 
@@ -647,7 +644,7 @@ public final class QueueModel {
    * @return whether the FIFO contains only repeated files
    */
   public static boolean containsOnlyRepeat() {
-    for (StackItem item : alFIFO) {
+    for (StackItem item : alQueue) {
       if (!item.isRepeat()) {
         return false;
       }
@@ -674,8 +671,8 @@ public final class QueueModel {
           // first is not repeated, just insert previous
           // file from collection
           StackItem item = new StackItem(FileManager.getInstance().getPreviousFile(
-              (alFIFO.get(0)).getFile()), Conf.getBoolean(Const.CONF_STATE_REPEAT), true);
-          alFIFO.add(0, item);
+              (alQueue.get(0)).getFile()), Conf.getBoolean(Const.CONF_STATE_REPEAT), true);
+          alQueue.add(0, item);
           index = 0;
         }
       }
@@ -694,7 +691,7 @@ public final class QueueModel {
         Player.stop(true);
       }
       JajukTimer.getInstance().reset();
-      JajukTimer.getInstance().addTrackTime(alFIFO);
+      JajukTimer.getInstance().addTrackTime(alQueue);
       addPrevious();
       launch();
     } catch (Exception e) {
@@ -727,10 +724,10 @@ public final class QueueModel {
       while (!bOK) {
         int localindex = addPrevious();
         Directory dirTested = null;
-        if (alFIFO.get(localindex) == null) {
+        if (alQueue.get(localindex) == null) {
           return;
         } else {
-          File file = alFIFO.get(localindex).getFile();
+          File file = alQueue.get(localindex).getFile();
           dirTested = file.getDirectory();
           if (dir.equals(dirTested)) { // yet in the same album
             continue;
@@ -801,7 +798,7 @@ public final class QueueModel {
         // scan current fifo and try to launch the first track not from
         // this album
         boolean bOK = false;
-        while (!bOK && alFIFO.size() > 0) {
+        while (!bOK && alQueue.size() > 0) {
           File file = getItem(0).getFile();
           if (file.getDirectory().equals(dir)) {
             remove(0, 0); // remove this file from FIFO, it is
@@ -865,8 +862,8 @@ public final class QueueModel {
    * @return stack item
    */
   public static StackItem getCurrentItem() {
-    if (index < alFIFO.size()) {
-      return alFIFO.get(index);
+    if (index < alQueue.size()) {
+      return alQueue.get(index);
     } else {
       return null;
     }
@@ -880,7 +877,7 @@ public final class QueueModel {
    * @return stack item
    */
   public static StackItem getItem(int lIndex) {
-    return alFIFO.get(lIndex);
+    return alQueue.get(lIndex);
   }
 
   /**
@@ -890,7 +887,7 @@ public final class QueueModel {
    */
   private static int getLastRepeatedItem() {
     int i = -1;
-    Iterator<StackItem> iterator = alFIFO.iterator();
+    Iterator<StackItem> iterator = alQueue.iterator();
     while (iterator.hasNext()) {
       StackItem item = iterator.next();
       if (item.isRepeat()) {
@@ -917,7 +914,7 @@ public final class QueueModel {
       // is current track on this device?
       return false;
     }
-    Iterator<StackItem> it = alFIFO.iterator();
+    Iterator<StackItem> it = alQueue.iterator();
     // are next tracks in fifo on this device?
     while (it.hasNext()) {
       StackItem item = it.next();
@@ -958,8 +955,8 @@ public final class QueueModel {
    * @return Returns a shallow copy of the fifo
    */
   @SuppressWarnings("unchecked")
-  public static List<StackItem> getFIFO() {
-    return (List<StackItem>) ((ArrayList<StackItem>) alFIFO).clone();
+  public static List<StackItem> getQueue() {
+    return (List<StackItem>) ((ArrayList<StackItem>) alQueue).clone();
   }
 
   /**
@@ -967,23 +964,26 @@ public final class QueueModel {
    * 
    * @return FIFO size (do not use getFIFO().size() for performance reasons)
    */
-  public static int getFIFOSize() {
-    return alFIFO.size();
+  public static int getQueueSize() {
+    return alQueue.size();
   }
 
   /**
    * Shuffle the FIFO, used when user select the Random mode
    */
   public static void shuffle() {
-    if (alFIFO.size() > 1) {
+    if (alQueue.size() > 1) {
       if (isStopped()) {
-        Collections.shuffle(alFIFO, UtilSystem.getRandom());
+        Collections.shuffle(alQueue, UtilSystem.getRandom());
       } else {
         // Make sure current track is kept to its position
         // so remove it and add it again after shuffling
-        alFIFO.remove(0);
-        Collections.shuffle(alFIFO, UtilSystem.getRandom());
-        alFIFO.add(0, itemLast);
+        alQueue.remove(index);
+        Collections.shuffle(alQueue, UtilSystem.getRandom());
+        alQueue.add(0, itemLast);
+        index = 0;
+        // Refresh Queue View
+        ObservationManager.notify(new JajukEvent(JajukEvents.QUEUE_NEED_REFRESH));
       }
     }
     alPlanned.clear(); // force recomputes planned tracks
@@ -1012,11 +1012,11 @@ public final class QueueModel {
    * @param iPos
    */
   public static void insert(List<StackItem> alFiles, int iPos) {
-    if (iPos <= alFIFO.size()) {
+    if (iPos <= alQueue.size()) {
       // add in the FIFO, accept a file at
       // size() position to allow increasing
       // FIFO at the end
-      alFIFO.addAll(iPos, alFiles);
+      alQueue.addAll(iPos, alFiles);
       JajukTimer.getInstance().addTrackTime(alFiles);
     }
     computesPlanned(false);
@@ -1030,21 +1030,21 @@ public final class QueueModel {
    * @param lIndex
    */
   public static void up(int lIndex) {
-    if (lIndex == 0 || lIndex == alFIFO.size()) {
+    if (lIndex == 0 || lIndex == alQueue.size()) {
       // Can't put up first track in queue or
       // first planned track.
       // This should be already made by ui behavior
       return;
     }
-    if (lIndex < alFIFO.size()) {
-      StackItem item = alFIFO.get(lIndex);
-      alFIFO.remove(lIndex); // remove the item
-      alFIFO.add(lIndex - 1, item); // add it again above
+    if (lIndex < alQueue.size()) {
+      StackItem item = alQueue.get(lIndex);
+      alQueue.remove(lIndex); // remove the item
+      alQueue.add(lIndex - 1, item); // add it again above
     } else { // planned track
-      StackItem item = alPlanned.get(lIndex - alFIFO.size());
-      alFIFO.remove(lIndex - alFIFO.size()); // remove the item
+      StackItem item = alPlanned.get(lIndex - alQueue.size());
+      alQueue.remove(lIndex - alQueue.size()); // remove the item
       // add it again above
-      alFIFO.add(lIndex - alFIFO.size() - 1, item);
+      alQueue.add(lIndex - alQueue.size() - 1, item);
     }
   }
 
@@ -1054,16 +1054,16 @@ public final class QueueModel {
    * @param lIndex
    */
   public static void down(int lIndex) {
-    if (lIndex == 0 || lIndex == alFIFO.size() - 1
-        || lIndex == alFIFO.size() + alPlanned.size() - 1) {
+    if (lIndex == 0 || lIndex == alQueue.size() - 1
+        || lIndex == alQueue.size() + alPlanned.size() - 1) {
       // Can't put down current track, nor last track in FIFO, nor last
       // planned track. This should be already made by ui behavior
       return;
     }
-    if (lIndex < alFIFO.size()) {
-      StackItem item = alFIFO.get(lIndex);
-      alFIFO.remove(lIndex); // remove the item
-      alFIFO.add(lIndex + 1, item); // add it again above
+    if (lIndex < alQueue.size()) {
+      StackItem item = alQueue.get(lIndex);
+      alQueue.remove(lIndex); // remove the item
+      alQueue.add(lIndex + 1, item); // add it again above
     }
   }
 
@@ -1076,7 +1076,7 @@ public final class QueueModel {
     bStop = false;
     int localindex = pIndex;
     try {
-      if (containsRepeatedItem(alFIFO)) {
+      if (containsRepeatedItem(alQueue)) {
         // if there are some tracks in repeat, mode
         if (getItem(localindex).isRepeat()) {
           // the selected line is in repeat mode, ok,
@@ -1123,21 +1123,21 @@ public final class QueueModel {
    *          index
    */
   public static void remove(int iStart, int iStop) {
-    if (iStart <= iStop && iStart >= 0 && iStop < alFIFO.size() + alPlanned.size()) {
+    if (iStart <= iStop && iStart >= 0 && iStop < alQueue.size() + alPlanned.size()) {
       // check size drop items from the end to the beginning
       for (int i = iStop; i >= iStart; i--) {
         // FIFO items
-        if (i >= alFIFO.size()) {
+        if (i >= alQueue.size()) {
           // remove this file from plan
-          alPlanned.remove(i - alFIFO.size());
+          alPlanned.remove(i - alQueue.size());
           // complete missing planned tracks
           computesPlanned(false);
 
         } else { // planned items
-          StackItem item = alFIFO.get(i);
+          StackItem item = alQueue.get(i);
           JajukTimer.getInstance().removeTrackTime(item.getFile());
           // remove this file from fifo
-          alFIFO.remove(i);
+          alQueue.remove(i);
           // Recomputes all planned tracks from last file in fifo
           computesPlanned(true);
         }
@@ -1151,10 +1151,10 @@ public final class QueueModel {
    * @return Last Stack item in FIFO
    */
   public static StackItem getLast() {
-    if (alFIFO.size() == 0) {
+    if (alQueue.size() == 0) {
       return null;
     }
-    return alFIFO.get(alFIFO.size() - 1);
+    return alQueue.get(alQueue.size() - 1);
   }
 
   /**
@@ -1197,11 +1197,11 @@ public final class QueueModel {
    */
   @SuppressWarnings("unchecked")
   public static void cleanDevice(Device device) {
-    if (alFIFO.size() > 0) {
-      List<StackItem> alFIFOCopy = (List<StackItem>) ((ArrayList<StackItem>) alFIFO).clone();
-      if (alFIFO.size() > 1) { // keep first item (being played)
-        for (int i = 1; i < alFIFO.size(); i++) {
-          StackItem item = alFIFO.get(i);
+    if (alQueue.size() > 0) {
+      List<StackItem> alFIFOCopy = (List<StackItem>) ((ArrayList<StackItem>) alQueue).clone();
+      if (alQueue.size() > 1) { // keep first item (being played)
+        for (int i = 1; i < alQueue.size(); i++) {
+          StackItem item = alQueue.get(i);
           File file = item.getFile();
           if (file.getDirectory().getDevice().equals(device)) {
             alFIFOCopy.remove(item);
@@ -1222,7 +1222,7 @@ public final class QueueModel {
     PrintWriter writer = new PrintWriter(
         new BufferedOutputStream(new FileOutputStream(file, false)));
     int localindex = 0;
-    for (StackItem st : alFIFO) {
+    for (StackItem st : alQueue) {
       // if (localindex > 0) {
       // do not store current track (otherwise, it
       // will be duplicate at startup)
@@ -1281,7 +1281,7 @@ public final class QueueModel {
    * Force FIFO cleanup, for example after files deletion
    */
   public static synchronized void clean() {
-    Iterator<StackItem> it = alFIFO.iterator();
+    Iterator<StackItem> it = alQueue.iterator();
     while (it.hasNext()) {
       StackItem si = it.next();
       if (FileManager.getInstance().getFileByID(si.getFile().getID()) == null) {

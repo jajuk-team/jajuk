@@ -110,7 +110,7 @@ public class QueueView extends PlaylistView {
     jbAddShuffle = new JajukButton(IconLoader.getIcon(JajukIcons.ADD_SHUFFLE));
     jbAddShuffle.setToolTipText(Messages.getString("AbstractPlaylistEditorView.10"));
     jbAddShuffle.addActionListener(this);
-    jlTitle = new JLabel(" [" + QueueModel.getFIFO().size() + "]");
+    jlTitle = new JLabel(" [" + QueueModel.getQueue().size() + "]");
 
     jbClear = new JajukButton(IconLoader.getIcon(JajukIcons.CLEAR));
     jbClear.setToolTipText(Messages.getString("QueueView.1"));
@@ -294,9 +294,9 @@ public class QueueView extends PlaylistView {
             if (jtbAutoScroll.isSelected()) {
               SwingUtilities.invokeLater(new Runnable() {
                 public void run() {
-                  if (QueueModel.getFIFOSize() > 0) {
+                  if (QueueModel.getQueueSize() > 0) {
                     double index = QueueModel.getIndex();
-                    double size = QueueModel.getFIFOSize();
+                    double size = QueueModel.getQueueSize();
                     double factor = (index / size);
                     int value = (int) (factor * jsp.getVerticalScrollBar().getMaximum());
 
@@ -365,7 +365,7 @@ public class QueueView extends PlaylistView {
         } finally {
           editorTable.setAcceptColumnsEvents(true);
           // Update number of tracks remaining
-          jlTitle.setText(" [" + QueueModel.getFIFO().size() + "]");
+          jlTitle.setText(" [" + QueueModel.getQueue().size() + "]");
         }
       }
     });
@@ -377,7 +377,7 @@ public class QueueView extends PlaylistView {
     if (editorTable.getSelectionModel().getMinSelectionIndex() == -1) {
       setDefaultButtonState();
     }
-    editorModel.setItems(QueueModel.getFIFO());
+    editorModel.setItems(QueueModel.getQueue());
     editorModel.setPlanned(QueueModel.getPlanned());
     ((JajukTableModel) editorTable.getModel()).populateModel(editorTable.getColumnsConf());
     int[] rows = editorTable.getSelectedRows();
@@ -445,10 +445,10 @@ public class QueueView extends PlaylistView {
         int iRow = editorTable.getSelectedRow();
         if (iRow < 0
         // no row is selected, add to the end
-            || iRow > QueueModel.getFIFO().size()) {
+            || iRow > QueueModel.getQueue().size()) {
           // row can be on planned track if user select a planned track and if
           // fifo is reduced after tracks have been played
-          iRow = QueueModel.getFIFO().size();
+          iRow = QueueModel.getQueue().size();
         }
         File file = FileManager.getInstance().getShuffleFile();
         try {
@@ -527,7 +527,7 @@ public class QueueView extends PlaylistView {
       if (// multiple selection not supported
       selection.getMinSelectionIndex() == 0
       // can't add track at current track position
-          || selectedRow > QueueModel.getFIFO().size()
+          || selectedRow > QueueModel.getQueue().size()
       // no add for planned track but user can add over first planned
       // track to expand FIFO
       ) {

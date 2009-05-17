@@ -60,17 +60,19 @@ public class RepeatModeAction extends JajukAction {
     if (!b) { // enabled button
       // if FIFO is not void, repeat over current item
       StackItem item = QueueModel.getCurrentItem();
-      if (item != null && QueueModel.getIndex() == 0) {
-        // only non-repeated items need to be set and
-        // in this case, index = 0 or bug
+      if (item != null) {
         item.setRepeat(true);
       }
     } else {// disable repeat mode
-      // remove repeat mode to all items
-      QueueModel.setRepeatModeToAll(false);
-      // remove tracks before current position
-      QueueModel.remove(0, QueueModel.getIndex() - 1);
-      QueueModel.setIndex(0); // select first track
+      if (!Conf.getBoolean(Const.CONF_STATE_REPEAT_ALL)) {
+        // remove repeat mode to all items
+        QueueModel.setRepeatModeToAll(false);
+        if (Conf.getBoolean(Const.CONF_DROP_PLAYED_TRACKS_FROM_QUEUE)) {
+          // remove tracks before current position
+          QueueModel.remove(0, QueueModel.getIndex() - 1);
+          QueueModel.setIndex(0); // select first track
+        }
+      }
     }
     // computes planned tracks
     QueueModel.computesPlanned(false);

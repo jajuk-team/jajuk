@@ -441,7 +441,7 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
     } else if (type.equals(Type.BOOKMARK)) {
       alFiles = Bookmarks.getInstance().getFiles();
     } else if (type.equals(Type.QUEUE)) {
-      List<StackItem> items = QueueModel.getFIFO();
+      List<StackItem> items = QueueModel.getQueue();
       List<File> files = new ArrayList<File>(items.size());
       for (StackItem si : items) {
         files.add(si.getFile());
@@ -625,7 +625,7 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
         }
       }
     } else if (type == Type.QUEUE) {
-      final Iterator<StackItem> it = QueueModel.getFIFO().iterator();
+      final Iterator<StackItem> it = QueueModel.getQueue().iterator();
       for (int i = 0; it.hasNext(); i++) {
         final File fileToTest = it.next().getFile();
         if (fileToTest.equals(fOld)) {
