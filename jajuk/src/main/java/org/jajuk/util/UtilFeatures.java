@@ -252,11 +252,14 @@ public final class UtilFeatures {
    */
   public static boolean isStandardCover(final File file) {
     String sFileName = file.getName();
-    return sFileName.toLowerCase(Locale.getDefault()).matches(".*" + Conf.getString(Const.FILE_DEFAULT_COVER) + ".*")
-        || sFileName.toLowerCase(Locale.getDefault()).matches(".*" + Conf.getString(Const.FILE_DEFAULT_COVER_2) + ".*")
+    return sFileName.toLowerCase(Locale.getDefault()).matches(
+        ".*" + Conf.getString(Const.FILE_DEFAULT_COVER) + ".*")
+        || sFileName.toLowerCase(Locale.getDefault()).matches(
+            ".*" + Conf.getString(Const.FILE_DEFAULT_COVER_2) + ".*")
         // just for previous compatibility, now it is a directory
         // property
-        || sFileName.toLowerCase(Locale.getDefault()).matches(".*" + Const.FILE_ABSOLUTE_DEFAULT_COVER + ".*");
+        || sFileName.toLowerCase(Locale.getDefault()).matches(
+            ".*" + Const.FILE_ABSOLUTE_DEFAULT_COVER + ".*");
 
   }
 
@@ -298,7 +301,7 @@ public final class UtilFeatures {
           framesize = ((Integer) properties.get("audio.framesize.bytes")).intValue();
         }
         if (bitspersample > 0) {
-          milliseconds = (int) (1000.0f * byteslength / (samplerate * channels * (((float)bitspersample) / 8)));
+          milliseconds = (int) (1000.0f * byteslength / (samplerate * channels * (((float) bitspersample) / 8)));
         } else {
           milliseconds = (int) (1000.0f * byteslength / (samplerate * framesize));
         }
@@ -355,7 +358,12 @@ public final class UtilFeatures {
       oberver.update(new JajukEvent(JajukEvents.PLAYER_PLAY, ObservationManager
           .getDetailsLastOccurence(JajukEvents.PLAYER_PLAY)));
     } else {
-      oberver.update(new JajukEvent(JajukEvents.ZERO));
+      // if queue is not empty we can activate the control buttons
+      if (QueueModel.getQueueSize() > 0) {
+        oberver.update(new JajukEvent(JajukEvents.PLAYER_STOP));
+      } else {
+        oberver.update(new JajukEvent(JajukEvents.ZERO));
+      }
     }
   }
 
