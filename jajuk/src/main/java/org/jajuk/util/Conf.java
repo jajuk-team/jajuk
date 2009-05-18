@@ -87,6 +87,15 @@ public final class Conf implements Const {
   }
 
   /**
+   * Invert a boolean value
+   * @param pName
+   */
+  public static void invert(String pName) {
+    boolean b = Boolean.parseBoolean(properties.getProperty(pName));
+    setProperty(pName, Boolean.toString(!b));
+  }
+
+  /**
    * Return the value of a property as a float or default value or default value
    * if value cannot be parsed
    * 

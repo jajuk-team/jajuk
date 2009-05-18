@@ -1109,4 +1109,35 @@ public final class UtilSystem {
       Messages.showErrorMessage(179);
     }
   }
+  
+  /**
+   * Return whether a process is still running
+   * 
+   * @param process
+   *          the process
+   * @return whether the process is still running
+   */
+  public static boolean isRunning(Process process) {
+    try {
+      process.exitValue();
+      return false;
+    } catch (IllegalThreadStateException itse) {
+      return true;
+    }
+  }
+
+  /**
+   * Return a process exit value, -100 if the process is stopped
+   * 
+   * @param process
+   *          the process
+   * @return the process exit value, -100 if the process is running
+   */
+  public static int getExitValue(Process process) {
+    try {
+      return process.exitValue();
+    } catch (IllegalThreadStateException itse) {
+      return -100;
+    }
+  }
 }

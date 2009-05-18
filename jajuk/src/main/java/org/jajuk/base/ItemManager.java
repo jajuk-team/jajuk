@@ -534,7 +534,7 @@ public abstract class ItemManager {
    * sorting contract <br>
    * We remove all items and add them all again to force sorting
    */
-  protected synchronized void forceSorting() {
+  public synchronized void forceSorting() {
     ArrayList<Item> itemsCopy = new ArrayList<Item>(items);
     for (Item item : itemsCopy) {
       removeItem(item);

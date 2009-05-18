@@ -61,6 +61,13 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
   int iFadeDuration = 0;
 
   /**
+   * VBR correction. VBR MP3 files are confusing for mplayer that shows wrong
+   * length and seek position. This value is the correction computed with id3
+   * tag when available
+   */
+  float vbrCorrection = 1.0f;
+
+  /**
    * Progress step in ms, do not set less than 300 or 400 to avoid using too
    * much CPU
    */
@@ -139,7 +146,8 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
             // ie)
             break;
           }
-          // Very verbose : Log.debug("Output from MPlayer: " + line);
+          // Very verbose :
+          // Log.debug("Output from MPlayer: " + line);
           if (line.matches(".*ANS_TIME_POSITION.*")) {
             // Stream is actually opened now
             bOpening = false;
@@ -147,6 +155,8 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
             StringTokenizer st = new StringTokenizer(line, "=");
             st.nextToken();
             lTime = (int) (Float.parseFloat(st.nextToken()) * 1000);
+            // VBR correction
+            lTime = (long) (lTime * vbrCorrection);
             // Store current position for use at next startup
             Conf
                 .setProperty(Const.CONF_STARTUP_LAST_POSITION, Float.toString(getCurrentPosition()));
@@ -204,7 +214,7 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
              * duration first and the mplayer duration then if the tag duration
              * looks wrong (example : wrongly tagged file or format that doesn't
              * support tags like wav). Indeed, mplayer duration is sometimes
-             * wrong (mplayer bug).
+             * wrong for VBR MP3.
              */
             StringTokenizer st = new StringTokenizer(line, "=");
             st.nextToken();
@@ -214,7 +224,10 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
               lDuration = mplayerDuration;
             } else {
               lDuration = tagDuration;
+              // Save VBR correction, used after seeking
+              vbrCorrection = ((float) tagDuration) / mplayerDuration;
             }
+
           }
           // End of file
           else if (line.matches(".*\\x2e\\x2e\\x2e.*\\(.*\\).*")) {
@@ -283,12 +296,44 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
     this.fCurrent = file;
     this.bOpening = true;
     this.bEOF = false;
+    this.vbrCorrection = 1.0f;
     this.iFadeDuration = 1000 * Conf.getInt(Const.CONF_FADE_DURATION);
+
+    // Try to launch mplayer
+    launchMplayer();
+
+    // If under windows and the launch failed (no more running), try once again with other short
+    // names configuration (see #1267)
+    if (UtilSystem.getExitValue(proc) != -100 && UtilSystem.isUnderWindows()) {
+      Conf.invert(CONF_SHORT_NAMES);
+      launchMplayer();
+    }
+
+    // Check the file has been property opened
+    if (!bOpening && !bEOF) {
+      if (fPosition > 0.0f) {
+        seek(fPosition);
+      }
+      // Get track length
+      sendCommand("get_time_length");
+    } else {
+      // try to kill the mplayer process if still alive
+      if (proc != null) {
+        Log.warn("OOT Mplayer process, try to kill it");
+        proc.destroy();
+        Log.warn("OK, the process should have been killed now");
+      }
+      // Notify the problem opening the file
+      throw new JajukException(7, Integer.valueOf(MPLAYER_START_TIMEOUT).toString() + " ms");
+    }
+  }
+
+  private void launchMplayer() throws IOException {
     // Build the file url. Under windows 32 bits, we convert path to short
     // version to fix a mplayer bug when reading some pathnames including
     // special characters (see #1267)
-    String pathname = file.getAbsolutePath();
-    if (UtilSystem.isUnderWindows32bits()) {
+    String pathname = fCurrent.getAbsolutePath();
+    if (UtilSystem.isUnderWindows32bits() && Conf.getBoolean(CONF_SHORT_NAMES)) {
       pathname = NativeFunctionsUtils.getShortPathNameW(pathname);
     }
     ProcessBuilder pb = new ProcessBuilder(buildCommand(pathname));
@@ -312,32 +357,14 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
     new PositionThread("MPlayer writer thread").start();
     // if opening, wait
     long time = System.currentTimeMillis();
-    // Try to open the file during 30 secs
-    while (!bStop && bOpening && !bEOF
+    // Try to open the file during several secs
+    while (UtilSystem.isRunning(proc) && !bStop && bOpening && !bEOF
         && (System.currentTimeMillis() - time) < MPLAYER_START_TIMEOUT) {
       try {
         Thread.sleep(100);
       } catch (InterruptedException e) {
         Log.error(e);
       }
-    }
-
-    // Check the file has been property opened
-    if (!bOpening && !bEOF) {
-      if (fPosition > 0.0f) {
-        seek(fPosition);
-      }
-      // Get track length
-      sendCommand("get_time_length");
-    } else {
-      // try to kill the mplayer process if still alive
-      if (proc != null) {
-        Log.warn("OOT Mplayer process, try to kill it");
-        proc.destroy();
-        Log.warn("OK, the process should have been killed now");
-      }
-      // Notify the problem opening the file
-      throw new JajukException(7, Integer.valueOf(MPLAYER_START_TIMEOUT).toString() + " ms");
     }
   }
 

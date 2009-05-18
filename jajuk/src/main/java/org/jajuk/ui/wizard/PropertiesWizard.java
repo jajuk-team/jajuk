@@ -59,6 +59,7 @@ import org.jajuk.base.AuthorManager;
 import org.jajuk.base.Device;
 import org.jajuk.base.Directory;
 import org.jajuk.base.File;
+import org.jajuk.base.FileManager;
 import org.jajuk.base.Item;
 import org.jajuk.base.ItemManager;
 import org.jajuk.base.Playlist;
@@ -876,6 +877,12 @@ public class PropertiesWizard extends JajukJDialog implements ActionListener {
         UtilGUI.stopWaiting();
         // Reset auto-commit state
         TrackManager.getInstance().setAutocommit(true);
+        // Force files resorting to ensure the sorting consistency, indeed,
+        // files are sorted by name *and* track order and we need to force a
+        // files resort after an order change (this is already done in case of
+        // file
+        // name change)
+        FileManager.getInstance().forceSorting();
       }
     }
 

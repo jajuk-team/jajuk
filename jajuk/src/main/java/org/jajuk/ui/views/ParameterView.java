@@ -302,8 +302,6 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 
 	private JSlider jsPerspectiveSize;
 
-	private JCheckBox jcbShortNames;
-
 	private JCheckBox jcbUseVolnorm;
 
 	private boolean someOptionsAppliedAtNextStartup = false;
@@ -584,7 +582,6 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 		Conf.setProperty(Const.CONF_COLLECTION_CHARSET, jcbCollectionEncoding.getSelectedItem()
 				.toString());
 		Conf.setProperty(Const.CONF_REGEXP, Boolean.toString(jcbRegexp.isSelected()));
-		Conf.setProperty(Const.CONF_SHORT_NAMES, Boolean.toString(jcbShortNames.isSelected()));
 		Conf.setProperty(Const.CONF_USE_VOLNORM, Boolean.toString(jcbUseVolnorm.isSelected()));
 		Conf.setProperty(Const.CONF_CHECK_FOR_UPDATE, Boolean
 				.toString(jcbCheckUpdates.isSelected()));
@@ -1182,12 +1179,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 		jcbRegexp = new JCheckBox(Messages.getString("ParameterView.113"));
 		jcbRegexp.setSelected(Conf.getBoolean(Const.CONF_REGEXP));
 		jcbRegexp.setToolTipText(Messages.getString("ParameterView.114"));
-		jcbShortNames = new JCheckBox(Messages.getString("ParameterView.254"));
-		jcbShortNames.setSelected(Conf.getBoolean(Const.CONF_SHORT_NAMES));
-		jcbShortNames.setToolTipText(Messages.getString("ParameterView.255"));
-		// Short names option is only under windows 32
-		jcbShortNames.setEnabled(UtilSystem.isUnderWindows32bits());
-
+		
 		jcbCollectionEncoding.addItem("UTF-8");
 		jcbCollectionEncoding.addItem("UTF-16");
 		JLabel jlLogLevel = new JLabel(Messages.getString("ParameterView.46"));
@@ -1247,8 +1239,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 		jpAdvanced.add(jcbRegexp, "wrap");
 		jpAdvanced.add(jcbCheckUpdates, "wrap");
 		jpAdvanced.add(jcbForceFileDate, "wrap");
-		jpAdvanced.add(jcbShortNames, "wrap");
-
+		
 		// - Network
 		bgProxy = new ButtonGroup();
 		jcbProxyNone = new JRadioButton(Messages.getString("ParameterView.236"));

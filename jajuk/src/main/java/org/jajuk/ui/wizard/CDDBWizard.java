@@ -39,6 +39,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
+import org.jajuk.base.FileManager;
 import org.jajuk.base.Track;
 import org.jajuk.base.TrackManager;
 import org.jajuk.events.JajukEvent;
@@ -105,6 +106,7 @@ public class CDDBWizard extends JajukJDialog implements ActionListener {
 
     // windows title: absolute path name of the given directory
     setTitle(Messages.getString("CDDBWizard.19"));
+    setModal(true);
     SwingWorker sw = new SwingWorker() {
 
       @Override
@@ -267,6 +269,11 @@ public class CDDBWizard extends JajukJDialog implements ActionListener {
       }
       InformationJPanel.getInstance().setMessage(Messages.getString("Success"),
           InformationJPanel.INFORMATIVE);
+      // Force files resorting to ensure the sorting consistency, indeed,
+      // files are sorted by name *and* track order and we need to force a files
+      // resort after an order change (this is already done in case of file name
+      // change)
+      FileManager.getInstance().forceSorting();
       ObservationManager.notify(new JajukEvent(JajukEvents.DEVICE_REFRESH));
     }
   }

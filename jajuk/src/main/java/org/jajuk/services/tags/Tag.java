@@ -376,7 +376,8 @@ public class Tag {
    */
   public synchronized void commit() throws JajukException {
     try {
-      if (Log.isDebugEnabled()) {
+      // Show a commit message except if the tag impl is "no tag" (does nothing)
+      if (Log.isDebugEnabled() && !(tagImpl.getClass().equals(NoTagsTagImpl.class))) {
         Log.debug(Messages.getString("PropertiesWizard.11") + " " + fio.getAbsolutePath());
       }
       tagImpl.commit();

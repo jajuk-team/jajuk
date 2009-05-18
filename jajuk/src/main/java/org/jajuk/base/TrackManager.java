@@ -198,13 +198,9 @@ public final class TrackManager extends ItemManager {
         throw new JajukException(104, e);
       }
     }
-    // Clear the tag cache before and after a transaction to
+    // Clear the tag cache after a transaction to
     // avoid memory leaks
     Tag.clearCache();
-    // Force files resorting to ensure the sorting consistency, indeed, files
-    // are sorted by name *and* track order and we need to force a files resort
-    // after a order change (this is already done in case of file name change)
-    FileManager.getInstance().forceSorting();
   }
 
   /**
@@ -435,6 +431,12 @@ public final class TrackManager extends ItemManager {
       tag.setComment(sNewItem);
       if (bAutocommit) {
         tag.commit();
+        // Force files resorting to ensure the sorting consistency
+        // Do it here only because the sorting is a long operation already done
+        // by the TrackManager.commit() method caller (PropertiesWizard for ie).
+        // When called for a table change for ie, the sorting must be done for
+        // each change.
+        FileManager.getInstance().forceSorting();
       } else {
         tagsToCommit.add(tag);
       }

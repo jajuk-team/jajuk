@@ -131,8 +131,7 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
       Directory directory = it.next();
       if (directory.getFio().getParentFile().equals(this.getFio())
       // check the device of the tested directory to handle directories
-          // from
-          // cdrom
+          // from cdrom
           && directory.getDevice().equals(getDevice())) {
         out.add(directory);
       }
@@ -281,9 +280,11 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
       return;
     }
 
-    // If the audio file format doesn't support tagging (like wav), continue
+    // If the audio file format doesn't support tagging (like wav) and the file
+    // is already known, continue
     Type type = TypeManager.getInstance().getTypeByExtension(UtilSystem.getExtension(music));
-    if (type.getTaggerClass() == null || type.getTaggerClass().equals(NoTagsTagImpl.class)) {
+    if ((type.getTaggerClass() == null || type.getTaggerClass().equals(NoTagsTagImpl.class))
+        && fileRef != null) {
       return;
     }
 

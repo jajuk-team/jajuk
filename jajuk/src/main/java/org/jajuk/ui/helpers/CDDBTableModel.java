@@ -43,7 +43,7 @@ public class CDDBTableModel extends JajukTableModel {
    *          columns names
    */
   public CDDBTableModel() {
-    super(7);
+    super(8);
 
     // Current Album title
     vColNames.add(Messages.getString("CDDBWizard.3"));
@@ -60,6 +60,10 @@ public class CDDBTableModel extends JajukTableModel {
     // Proposed Track Name
     vColNames.add(Messages.getString("CDDBWizard.4"));
     idList.add("CDDBWizard.4");
+
+    // Proposed Track Author
+    vColNames.add(Messages.getString("Property_author"));
+    idList.add("Property_author");
 
     // Proposed Track style
     vColNames.add(Messages.getString("Property_style"));
@@ -101,15 +105,18 @@ public class CDDBTableModel extends JajukTableModel {
       // Proposed track name
       oValues[iRow][3] = fdbReader.getTrackTitle(iRow);
       bCellEditable[iRow][3] = false;
-      // Proposed track genre
-      oValues[iRow][4] = fdbReader.getGenre();
+      // Proposed track author
+      oValues[iRow][4] = fdbReader.getArtist();
       bCellEditable[iRow][4] = false;
-      // Proposed track year
-      oValues[iRow][5] = fdbReader.getYear();
+      // Proposed track style
+      oValues[iRow][5] = fdbReader.getGenre();
       bCellEditable[iRow][5] = false;
-      // Proposed track order
-      oValues[iRow][6] = fdbReader.getTrackNumber(iRow);
+      // Proposed track year
+      oValues[iRow][6] = fdbReader.getYear();
       bCellEditable[iRow][6] = false;
+      // Proposed track order
+      oValues[iRow][7] = fdbReader.getTrackNumber(iRow);
+      bCellEditable[iRow][7] = false;
     }
   }
 
