@@ -20,6 +20,7 @@
 
 package org.jajuk.ui.views;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
@@ -135,9 +136,9 @@ public class QueueView extends PlaylistView {
     jtb.add(jbDown);
     jtb.addSeparator();
     jtb.add(jbClear);
-    
+
     // Add items
-    jpEditorControl.setLayout(new MigLayout("insets 5","[][grow][]"));
+    jpEditorControl.setLayout(new MigLayout("insets 5", "[][grow][]"));
     jpEditorControl.add(jtb, "left,gapright 15::");
     jpEditorControl.add(jlTitle, "right,gapright 5");
     jpEditorControl.add(jtbAutoScroll, "right");
@@ -157,11 +158,11 @@ public class QueueView extends PlaylistView {
     editorTable.showColumns(editorTable.getColumnsConf());
     ListSelectionModel lsm = editorTable.getSelectionModel();
     lsm.addListSelectionListener(this);
-    setLayout(new MigLayout("ins 0", "[grow]"));
-    add(jpEditorControl, "wrap,grow");
+    setLayout(new BorderLayout());
+    add(jpEditorControl, BorderLayout.NORTH);
     jsp = new JScrollPane(editorTable);
     jsp.setBorder(BorderFactory.createEmptyBorder(0, 1, 0, 0));
-    add(jsp, "grow");
+    add(jsp, BorderLayout.CENTER);
     // menu items
     jmiFilePlay = new JMenuItem(Messages.getString("TracksTableView.7"), IconLoader
         .getIcon(JajukIcons.PLAY_16X16));
