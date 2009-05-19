@@ -62,6 +62,7 @@ import org.jajuk.ui.perspectives.IPerspective;
 import org.jajuk.ui.perspectives.PerspectiveManager;
 import org.jajuk.ui.widgets.CommandJPanel;
 import org.jajuk.ui.widgets.InformationJPanel;
+import org.jajuk.ui.widgets.JajukJMenuBar;
 import org.jajuk.ui.widgets.JajukSystray;
 import org.jajuk.ui.widgets.JajukWindow;
 import org.jajuk.ui.widgets.PerspectiveBarJPanel;
@@ -584,6 +585,42 @@ public final class UtilGUI {
     jd.pack();
     jd.setLocationRelativeTo(JajukWindow.getInstance());
     jd.setVisible(true);
+  }
+  
+  /**
+   * configures gui for repeat single enable/disable
+   * 
+   * @param enable
+   */
+  public static void setRepeatSingleGui(boolean enable){
+    //always disable repeat all
+    Conf.setProperty(Const.CONF_STATE_REPEAT_ALL, Boolean.toString(false));
+    JajukJMenuBar.getInstance().setRepeatAllSelected(false);
+    CommandJPanel.getInstance().setRepeatAllSelected(false);
+    
+    Conf.setProperty(Const.CONF_STATE_REPEAT, Boolean.toString(enable));
+
+    JajukJMenuBar.getInstance().setRepeatSelected(enable);
+    CommandJPanel.getInstance().setRepeatSelected(enable);   
+    
+  }
+  
+  /**
+   * configures gui for repeat all enable/disable
+   * 
+   * @param enable
+   */  
+  public static void setRepeatAllGui(boolean enable){
+    //always disable repeat single
+    Conf.setProperty(Const.CONF_STATE_REPEAT, Boolean.toString(false));
+    JajukJMenuBar.getInstance().setRepeatSelected(false);
+    CommandJPanel.getInstance().setRepeatSelected(false);
+    
+    Conf.setProperty(Const.CONF_STATE_REPEAT_ALL, Boolean.toString(enable));
+
+    JajukJMenuBar.getInstance().setRepeatAllSelected(enable);
+    CommandJPanel.getInstance().setRepeatAllSelected(enable);   
+    
   }
 
 }

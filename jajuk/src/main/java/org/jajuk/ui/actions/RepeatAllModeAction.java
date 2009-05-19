@@ -25,13 +25,12 @@ import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.services.players.QueueModel;
-import org.jajuk.ui.widgets.CommandJPanel;
-import org.jajuk.ui.widgets.JajukJMenuBar;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
+import org.jajuk.util.UtilGUI;
 
 public class RepeatAllModeAction extends JajukAction {
   private static final long serialVersionUID = 1L;
@@ -50,18 +49,10 @@ public class RepeatAllModeAction extends JajukAction {
   public void perform(ActionEvent evt) {
 
     boolean b = Conf.getBoolean(Const.CONF_STATE_REPEAT_ALL);
-    Conf.setProperty(Const.CONF_STATE_REPEAT_ALL, Boolean.toString(!b));
+
+    UtilGUI.setRepeatAllGui(!b);
 
     QueueModel.setRepeatModeToAll(!b);
-
-    JajukJMenuBar.getInstance().setRepeatAllSelected(!b);
-    CommandJPanel.getInstance().setRepeatAllSelected(!b);
-    // if repeat all is enabled, disable single repeat
-    if (!b) {
-      Conf.setProperty(Const.CONF_STATE_REPEAT, Boolean.toString(b));
-      JajukJMenuBar.getInstance().setRepeatSelected(b);
-      CommandJPanel.getInstance().setRepeatSelected(b);
-    }
 
     // computes planned tracks
     QueueModel.computesPlanned(false);

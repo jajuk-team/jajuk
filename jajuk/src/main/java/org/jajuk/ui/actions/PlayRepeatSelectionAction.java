@@ -28,6 +28,7 @@ import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilFeatures;
+import org.jajuk.util.UtilGUI;
 import org.jajuk.util.log.Log;
 
 /**
@@ -62,8 +63,13 @@ public class PlayRepeatSelectionAction extends SelectionAction {
         try {
           PlayRepeatSelectionAction.super.perform(e);
           List<File> files = UtilFeatures.getPlayableFiles(selection);
-          QueueModel.push(UtilFeatures.createStackItems(UtilFeatures.applyPlayOption(files), true, true),
-              false);
+          QueueModel.push(UtilFeatures.createStackItems(UtilFeatures.applyPlayOption(files), true,
+              true), false);
+          if (files.size() == 1) {
+            UtilGUI.setRepeatSingleGui(true);
+          } else {
+            UtilGUI.setRepeatAllGui(true);
+          }
         } catch (Exception e) {
           Log.error(e);
         }

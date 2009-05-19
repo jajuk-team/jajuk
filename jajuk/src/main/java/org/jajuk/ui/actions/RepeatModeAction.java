@@ -26,13 +26,12 @@ import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.services.players.QueueModel;
 import org.jajuk.services.players.StackItem;
-import org.jajuk.ui.widgets.CommandJPanel;
-import org.jajuk.ui.widgets.JajukJMenuBar;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
+import org.jajuk.util.UtilGUI;
 
 public class RepeatModeAction extends JajukAction {
   private static final long serialVersionUID = 1L;
@@ -52,32 +51,21 @@ public class RepeatModeAction extends JajukAction {
   public void perform(ActionEvent evt) {
 
     boolean b = Conf.getBoolean(Const.CONF_STATE_REPEAT);
-    Conf.setProperty(Const.CONF_STATE_REPEAT, Boolean.toString(!b));
 
-    JajukJMenuBar.getInstance().setRepeatSelected(!b);
-    CommandJPanel.getInstance().setRepeatSelected(!b);
+    UtilGUI.setRepeatSingleGui(!b);
+    QueueModel.setRepeatModeToAll(false);
 
     if (!b) { // enabled button
-      //disable repeat all
-      Conf.setProperty(Const.CONF_STATE_REPEAT_ALL, Boolean.toString(b));
-      JajukJMenuBar.getInstance().setRepeatAllSelected(b);
-      CommandJPanel.getInstance().setRepeatAllSelected(b);
-      QueueModel.setRepeatModeToAll(b);
-      
       // if FIFO is not void, repeat over current item
       StackItem item = QueueModel.getCurrentItem();
       if (item != null) {
         item.setRepeat(true);
       }
     } else {// disable repeat mode
-      if (!Conf.getBoolean(Const.CONF_STATE_REPEAT_ALL)) {
-        // remove repeat mode to all items
-        QueueModel.setRepeatModeToAll(false);
-        if (Conf.getBoolean(Const.CONF_DROP_PLAYED_TRACKS_FROM_QUEUE)) {
-          // remove tracks before current position
-          QueueModel.remove(0, QueueModel.getIndex() - 1);
-          QueueModel.setIndex(0); // select first track
-        }
+      if (Conf.getBoolean(Const.CONF_DROP_PLAYED_TRACKS_FROM_QUEUE)) {
+        // remove tracks before current position
+        QueueModel.remove(0, QueueModel.getIndex() - 1);
+        QueueModel.setIndex(0); // select first track
       }
     }
     // computes planned tracks
