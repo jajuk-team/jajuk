@@ -517,6 +517,13 @@ public final class QueueModel {
         bFirstFile = false;
         // add hits number
         fCurrent.getTrack().incHits(); // inc hits number
+        
+        // recalculate the total time left
+        JajukTimer.getInstance().reset();
+        for (int i = index; i < alQueue.size(); i++) {
+          JajukTimer.getInstance().addTrackTime(alQueue.get(i).getFile());
+        }
+        
       } else {
         // Problem launching the track, try next one
         UtilGUI.stopWaiting();
@@ -533,6 +540,8 @@ public final class QueueModel {
         } else {
           itemLast = null;
         }
+
+
         // We test if user required stop. Must be done here to make a chance to
         // stop before starting a new track
         if (!bStop) {
@@ -1170,6 +1179,10 @@ public final class QueueModel {
    */
   public static int getIndex() {
     return index;
+  }
+  
+  public static int getCountTracksLeft(){
+    return alQueue.size()-index;
   }
 
   /**
