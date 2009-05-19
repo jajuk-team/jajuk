@@ -56,11 +56,11 @@ public class RepeatAllModeAction extends JajukAction {
 
     JajukJMenuBar.getInstance().setRepeatAllSelected(!b);
     CommandJPanel.getInstance().setRepeatAllSelected(!b);
-    // if repeat all disabled, disable also single repeat
-    if (b) {
-      Conf.setProperty(Const.CONF_STATE_REPEAT, Boolean.toString(!b));
-      JajukJMenuBar.getInstance().setRepeatSelected(!b);
-      CommandJPanel.getInstance().setRepeatSelected(!b);
+    // if repeat all is enabled, disable single repeat
+    if (!b) {
+      Conf.setProperty(Const.CONF_STATE_REPEAT, Boolean.toString(b));
+      JajukJMenuBar.getInstance().setRepeatSelected(b);
+      CommandJPanel.getInstance().setRepeatSelected(b);
     }
 
     // computes planned tracks

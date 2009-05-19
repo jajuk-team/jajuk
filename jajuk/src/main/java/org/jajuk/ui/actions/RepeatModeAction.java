@@ -58,6 +58,12 @@ public class RepeatModeAction extends JajukAction {
     CommandJPanel.getInstance().setRepeatSelected(!b);
 
     if (!b) { // enabled button
+      //disable repeat all
+      Conf.setProperty(Const.CONF_STATE_REPEAT_ALL, Boolean.toString(b));
+      JajukJMenuBar.getInstance().setRepeatAllSelected(b);
+      CommandJPanel.getInstance().setRepeatAllSelected(b);
+      QueueModel.setRepeatModeToAll(b);
+      
       // if FIFO is not void, repeat over current item
       StackItem item = QueueModel.getCurrentItem();
       if (item != null) {
