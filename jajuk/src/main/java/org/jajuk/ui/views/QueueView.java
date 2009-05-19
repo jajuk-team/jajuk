@@ -56,8 +56,8 @@ import org.jajuk.services.players.StackItem;
 import org.jajuk.ui.actions.ActionManager;
 import org.jajuk.ui.actions.JajukActions;
 import org.jajuk.ui.helpers.ILaunchCommand;
+import org.jajuk.ui.helpers.IndexHighlighterPredicate;
 import org.jajuk.ui.helpers.JajukTableModel;
-import org.jajuk.ui.helpers.PlayHighlighterPredicate;
 import org.jajuk.ui.helpers.PlaylistEditorTransferHandler;
 import org.jajuk.ui.helpers.PlaylistTableModel;
 import org.jajuk.ui.widgets.JajukButton;
@@ -176,8 +176,8 @@ public class QueueView extends PlaylistView {
     });
     initMenuItems();
 
-    ColorHighlighter colorHighlighter = new ColorHighlighter(Color.ORANGE, null,
-        new PlayHighlighterPredicate(editorModel));
+    ColorHighlighter colorHighlighter = new ColorHighlighter(new Color(156, 236, 79), null,
+        new IndexHighlighterPredicate());
     Highlighter alternate = UtilGUI.getAlternateHighlighter();
     editorTable.setHighlighters(alternate, colorHighlighter);
     // register events

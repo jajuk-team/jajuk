@@ -432,16 +432,10 @@ public final class QueueModel {
             pushCommand(new StackItem(file), false, false);
           } else {
             // probably end of collection option "restart" off
-            JajukTimer.getInstance().reset();
-            bStop = true;
-            ObservationManager.notify(new JajukEvent(JajukEvents.ZERO));
+            setEndOfQueue();
           }
         } else {
-          // no ? just reset UI and leave
-          JajukTimer.getInstance().reset();
-          bStop = true;
-          index = 0;
-          ObservationManager.notify(new JajukEvent(JajukEvents.ZERO));
+          setEndOfQueue();
           return;
         }
       } else {
@@ -458,6 +452,17 @@ public final class QueueModel {
     }
   }
 
+  private static void setEndOfQueue(){
+    // no ? just reset UI and leave
+    JajukTimer.getInstance().reset();
+    bStop = true;
+    index = 0;
+    if(alQueue.size()>0){
+      ObservationManager.notify(new JajukEvent(JajukEvents.PLAYER_STOP));
+    }else{
+      ObservationManager.notify(new JajukEvent(JajukEvents.ZERO));
+    }
+  }
   /**
    * Launch track at given index in the fifo
    * 
