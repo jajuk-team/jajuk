@@ -20,9 +20,6 @@
 
 package org.jajuk.ui.wizard;
 
-import info.clearthought.layout.TableLayout;
-
-import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -36,20 +33,19 @@ import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.BorderFactory;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
+import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JFormattedTextField;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
+
+import net.miginfocom.swing.MigLayout;
 
 import org.jajuk.base.Device;
 import org.jajuk.base.DeviceManager;
@@ -60,6 +56,7 @@ import org.jajuk.events.ObservationManager;
 import org.jajuk.ui.widgets.InformationJPanel;
 import org.jajuk.ui.widgets.JajukFileChooser;
 import org.jajuk.ui.widgets.JajukWindow;
+import org.jajuk.ui.widgets.OKCancelPanel;
 import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukFileFilter;
@@ -71,22 +68,12 @@ import org.jajuk.util.log.Log;
 /**
  * Device creation wizard
  */
-public class DeviceWizard extends JFrame implements ActionListener, Const {
+public class DeviceWizard extends JDialog implements ActionListener, Const {
   private static final long serialVersionUID = 1L;
-
-  private final JPanel jpMain;
-
-  private final JPanel jp1;
-
-  private final JLabel jlType;
 
   private final JComboBox jcbType;
 
-  private final JLabel jlName;
-
   private final JTextField jtfName;
-
-  private final JLabel jlUrl;
 
   private final JTextField jtfUrl;
 
@@ -96,17 +83,11 @@ public class DeviceWizard extends JFrame implements ActionListener, Const {
 
   private final JCheckBox jcbAutoMount;
 
-  private final JLabel jlAutoRefresh;
-
   private final JFormattedTextField jftfAutoRefresh;
-
-  private final JLabel jlMinutes;
 
   private final JCheckBox jcboxSynchronized;
 
   private final JComboBox jcbSynchronized;
-
-  private final JPanel jp2;
 
   private final ButtonGroup bgSynchro;
 
@@ -114,11 +95,7 @@ public class DeviceWizard extends JFrame implements ActionListener, Const {
 
   private final JRadioButton jrbUnidirSynchro;
 
-  private final JPanel jpButtons;
-
-  private final JButton jbOk;
-
-  private final JButton jbCancel;
+  private final OKCancelPanel okp;
 
   /** New device flag */
   private boolean bNew = true;
@@ -144,26 +121,19 @@ public class DeviceWizard extends JFrame implements ActionListener, Const {
       }
     });
     setTitle(Messages.getString("DeviceWizard.0"));
+    setModal(true);
     setLocation(JajukWindow.getInstance().getX() + 100, JajukWindow.getInstance().getY() + 100);
-    jpMain = new JPanel();
-    jpMain.setLayout(new BoxLayout(jpMain, BoxLayout.Y_AXIS));
-    jp1 = new JPanel();
-    jp1.setBorder(BorderFactory.createEmptyBorder(25, 15, 0, 15));
-    final int iXSEPARATOR = 5;
-    final double size1[][] = { { 0.5, iXSEPARATOR, 0.45, iXSEPARATOR, 40 },
-        { 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20 } };
-    jp1.setLayout(new TableLayout(size1));
-    jlType = new JLabel(Messages.getString("DeviceWizard.1"));
+    JLabel jlType = new JLabel(Messages.getString("DeviceWizard.1"));
     jcbType = new JComboBox();
 
     final Iterator<String> itDevicesTypes = DeviceManager.getInstance().getDeviceTypes();
     while (itDevicesTypes.hasNext()) {
       jcbType.addItem(itDevicesTypes.next());
     }
-    jlName = new JLabel(Messages.getString("DeviceWizard.2"));
+    JLabel jlName = new JLabel(Messages.getString("DeviceWizard.2"));
     jtfName = new JTextField();
     jtfName.setToolTipText(Messages.getString("DeviceWizard.45"));
-    jlUrl = new JLabel(Messages.getString("DeviceWizard.3"));
+    JLabel jlUrl = new JLabel(Messages.getString("DeviceWizard.3"));
     jtfUrl = new JTextField();
     jtfUrl.setToolTipText(Messages.getString("DeviceWizard.46"));
     jbUrl = new JButton(IconLoader.getIcon(JajukIcons.OPEN_FILE));
@@ -179,9 +149,9 @@ public class DeviceWizard extends JFrame implements ActionListener, Const {
     jcbAutoMount = new JCheckBox(Messages.getString("DeviceWizard.8"));
     jcbAutoMount.setToolTipText(Messages.getString("DeviceWizard.49"));
     jcbAutoMount.addActionListener(this);
-    jlAutoRefresh = new JLabel(Messages.getString("DeviceWizard.53"));
+    JLabel jlAutoRefresh = new JLabel(Messages.getString("DeviceWizard.53"));
     jlAutoRefresh.setToolTipText(Messages.getString("DeviceWizard.50"));
-    jlMinutes = new JLabel(Messages.getString("DeviceWizard.54"));
+    JLabel jlMinutes = new JLabel(Messages.getString("DeviceWizard.54"));
     jftfAutoRefresh = new JFormattedTextField(NumberFormat.getNumberInstance());
     // Minimum delay is half a minute
     jftfAutoRefresh.addPropertyChangeListener(new PropertyChangeListener() {
@@ -225,49 +195,40 @@ public class DeviceWizard extends JFrame implements ActionListener, Const {
     jrbBidirSynchro.addActionListener(this);
     bgSynchro.add(jrbBidirSynchro);
     bgSynchro.add(jrbUnidirSynchro);
-    jp1.add(jlType, "0,0");
-    jp1.add(jcbType, "2,0");
-    jp1.add(jlName, "0,2");
-    jp1.add(jtfName, "2,2");
-    jp1.add(jlUrl, "0,4");
-    jp1.add(jtfUrl, "2,4");
-    jp1.add(jbUrl, "4,4");
-    jp1.add(jlAutoRefresh, "0,6");
-    jp1.add(jftfAutoRefresh, "2,6");
-    jp1.add(jlMinutes, "4,6");
-    jp1.add(jcbRefresh, "0,8");
-    jp1.add(jcbAutoMount, "0,10");
-    jp1.add(jcboxSynchronized, "0,12");
-    jp1.add(jcbSynchronized, "2,12");
-    final double size2[][] = { { 0.99 }, { 20, 20, 20, 20, 20, 20, 20 } };
-    jp2 = new JPanel();
-    jp2.setLayout(new TableLayout(size2));
-    jp2.setBorder(BorderFactory.createEmptyBorder(0, 15, 0, 15));
-    jp2.add(jrbUnidirSynchro, "0,1");
-    jp2.add(jrbBidirSynchro, "0,3");
+
+    // buttons
+    okp = new OKCancelPanel(this);
+
+    // Add items
+    setLayout(new MigLayout("insets 10,gapx 10, gapy 15","[][grow]"));
+    add(jlType);
+    add(jcbType, "grow,wrap");
+    add(jlName );
+    add(jtfName, "grow,wrap");
+    add(jlUrl);
+    add(jtfUrl, "split 2,grow");
+    add(jbUrl, "wrap");
+    add(jlAutoRefresh);
+    add(jftfAutoRefresh, "grow,split 2");
+    add(jlMinutes, "wrap");
+    add(jcbRefresh, "wrap");
+    add(jcbAutoMount, "wrap");
+    add(jcboxSynchronized);
+    add(jcbSynchronized, "grow,wrap");
+    add(jrbUnidirSynchro, "left,gap left 20,span,wrap");
+    add(jrbBidirSynchro, "left,gap left 20,span,wrap");
+    add(okp,"span,center");
+    
+    // Set default behaviors
     if (jcbSynchronized.getItemCount() == 0) {
       jcboxSynchronized.setEnabled(false);
       jcbSynchronized.setEnabled(false);
       jrbBidirSynchro.setEnabled(false);
     }
-    // buttons
-    jpButtons = new JPanel();
-    jpButtons.setLayout(new FlowLayout(FlowLayout.CENTER));
-    jbOk = new JButton(Messages.getString("Ok"));
-    jbOk.requestFocusInWindow();
-    jbOk.addActionListener(this);
-    jbCancel = new JButton(Messages.getString("Cancel"));
-    jbCancel.addActionListener(this);
-    jpButtons.add(jbOk);
-    jpButtons.add(jbCancel);
-
-    jpMain.add(jp1);
-    jpMain.add(jp2);
-    jpMain.add(Box.createVerticalGlue());
-    jpMain.add(jpButtons);
-    getRootPane().setDefaultButton(jbOk);
-    setContentPane(jpMain);
+    getRootPane().setDefaultButton(okp.getOKButton());
     pack();
+    okp.getOKButton().requestFocusInWindow();
+
   }
 
   /*
@@ -286,7 +247,7 @@ public class DeviceWizard extends JFrame implements ActionListener, Const {
         jrbBidirSynchro.setEnabled(false);
         jrbUnidirSynchro.setEnabled(false);
       }
-    } else if (e.getSource() == jbOk) {
+    } else if (e.getSource() == okp.getOKButton()) {
       // surface checks
       try {
         jftfAutoRefresh.commitEdit();
@@ -379,7 +340,7 @@ public class DeviceWizard extends JFrame implements ActionListener, Const {
           }
         }
       }.start();
-    } else if (e.getSource() == jbCancel) {
+    } else if (e.getSource() == okp.getCancelButton()) {
       dispose(); // close window
     } else if (e.getSource() == jbUrl) {
       final JajukFileChooser jfc = new JajukFileChooser(new JajukFileFilter(DirectoryFilter

@@ -25,7 +25,6 @@ import entagged.freedb.FreedbException;
 import entagged.freedb.FreedbQueryResult;
 import entagged.freedb.FreedbReadResult;
 import ext.SwingWorker;
-import info.clearthought.layout.TableLayout;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -34,10 +33,10 @@ import java.util.List;
 import java.util.Locale;
 
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.JDialog;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+
+import net.miginfocom.swing.MigLayout;
 
 import org.jajuk.base.FileManager;
 import org.jajuk.base.Track;
@@ -63,23 +62,14 @@ public class CDDBWizard extends JajukJDialog implements ActionListener {
 
   private static final long serialVersionUID = 1L;
 
-  /** Main panel */
-  JPanel jpMain;
-
   SteppedComboBox jcbAlbum;
-
-  NavigationPanel jpNav;
 
   JajukTable jtable;
 
   CDDBTableModel model;
 
-  JDialog dial;
-
   /** OK/Cancel panel */
   OKCancelPanel okc;
-
-  double p = TableLayout.PREFERRED;
 
   /** Items to be retagged */
   List<CDDBTrack> alCddbTracks;
@@ -91,7 +81,7 @@ public class CDDBWizard extends JajukJDialog implements ActionListener {
 
   FreedbReadResult fdbReader;
 
-  List<String> comboAlbums;
+  List<String> jcbFoundAlbums;
 
   /**
    * CDDB wizard
@@ -144,15 +134,8 @@ public class CDDBWizard extends JajukJDialog implements ActionListener {
       @Override
       public void finished() {
         if (foundAlbums != null && foundAlbums.length > 0) {
-          // create Main panel
-          jpMain = new JPanel();
-          jpNav = new NavigationPanel();
           jtable = populateTable();
-          okc = new OKCancelPanel(CDDBWizard.this, Messages.getString("Apply"), Messages
-              .getString("Close"));
-
-          // Display main panel
-          display();
+          initUI();
         }
       }
     };
@@ -170,7 +153,13 @@ public class CDDBWizard extends JajukJDialog implements ActionListener {
 
   public CDDBTableModel populateModel() {
     try {
-      fdbReader = fdb.read(foundAlbums[jcbAlbum.getSelectedIndex()]);
+      // Display first result found when the frame opens, then select the combo
+      // index
+      int index = 0;
+      if (jcbAlbum != null) {
+        index = jcbAlbum.getSelectedIndex();
+      }
+      fdbReader = fdb.read(foundAlbums[index]);
     } catch (FreedbException e) {
       Log.debug("CDDB error ! " + e.getLocalizedMessage());
       dispose();
@@ -182,18 +171,36 @@ public class CDDBWizard extends JajukJDialog implements ActionListener {
     return model;
   }
 
-  public void display() {
-    // Create UI
-    double[][] dSize = { { 10, TableLayout.FILL, 10 }, { 10, p, p, p, 10 } };
-    TableLayout layout = new TableLayout(dSize);
-    layout.setVGap(10);
-    jpMain.setLayout(layout);
-    jpMain.add(jpNav, "1,1");
-    jpMain.add(new JScrollPane(jtable), "1,2");
-    jpMain.add(okc, "1,3");
+  public void initUI() {
+    okc = new OKCancelPanel(CDDBWizard.this, Messages.getString("Apply"), Messages
+        .getString("Close"));
+    // Albums List
+    jcbAlbum = new SteppedComboBox();
+
+    // add all matches
+    jcbAlbum.setModel(new DefaultComboBoxModel(jcbFoundAlbums.toArray()));
+    jcbAlbum.setSelectedIndex(jcbAlbum.getSelectedIndex());
+    jcbAlbum.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent arg0) {
+        // Update table
+        model = populateModel();
+        jtable.setModel(model);
+        jtable.selectAll();
+      }
+    });
+
+    // Show the number of matches found
+    JLabel jlCurrent = new JLabel(foundAlbums.length + " " + Messages.getString("CDDBWizard.18"));
+
+    // Add items
+    setLayout(new MigLayout("insets 10,gapx 15,gapy 15", "[800!]"));
+    add(new JLabel(Messages.getString("CDDBWizard.5")), "split 3");
+    add(jcbAlbum, "grow");
+    add(jlCurrent, "wrap");
+    add(new JScrollPane(jtable), "grow,wrap");
+    add(okc, "center");
 
     getRootPane().setDefaultButton(okc.getOKButton());
-    getContentPane().add(jpMain);
     pack();
     setLocationRelativeTo(JajukWindow.getInstance());
     setVisible(true);
@@ -211,9 +218,9 @@ public class CDDBWizard extends JajukJDialog implements ActionListener {
     FreedbAlbum fdbAlbum = new FreedbAlbum(cddbtracks);
     try {
       foundAlbums = fdb.query(fdbAlbum);
-      comboAlbums = new ArrayList<String>(foundAlbums.length);
+      jcbFoundAlbums = new ArrayList<String>(foundAlbums.length);
       for (FreedbQueryResult foundAlbum : foundAlbums) {
-        comboAlbums.add("["
+        jcbFoundAlbums.add("["
             + foundAlbum.getDiscId()
             + "] "
             + UtilString.getLimitedString((foundAlbum.getArtist() + " / " + foundAlbum.getAlbum()),
@@ -336,58 +343,6 @@ public class CDDBWizard extends JajukJDialog implements ActionListener {
           retagFiles();
         }
       }.start();
-    }
-  }
-
-  /**
-   * Navigation panel class
-   */
-  private class NavigationPanel extends JPanel {
-
-    private static final long serialVersionUID = 1L;
-
-    JLabel label;
-
-    JLabel jlCurrent;
-
-    /**
-     * Navigation panel
-     * 
-     */
-    NavigationPanel() {
-      super();
-
-      // Albums List
-      label = new JLabel(Messages.getString("CDDBWizard.5"));
-      jcbAlbum = new SteppedComboBox();
-
-      // add all matches
-      jcbAlbum.setModel(new DefaultComboBoxModel(comboAlbums.toArray()));
-      jcbAlbum.setSelectedIndex(jcbAlbum.getSelectedIndex());
-      jcbAlbum.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent arg0) {
-          // Update table
-          model = populateModel();
-          jtable.setModel(model);
-          jtable.selectAll();
-        }
-      });
-
-      // Show the number of matches found
-      jlCurrent = new JLabel(foundAlbums.length + " " + Messages.getString("CDDBWizard.18"));
-
-      double sizeControl[][] = {
-          { TableLayout.FILL, p, TableLayout.FILL, TableLayout.FILL, TableLayout.FILL },
-          { 10, p, 10 } };
-
-      TableLayout layout = new TableLayout(sizeControl);
-      layout.setHGap(10);
-
-      setLayout(layout);
-
-      add(label, "1,1");
-      add(jcbAlbum, "3,1");
-      add(jlCurrent, "5,1");
     }
   }
 

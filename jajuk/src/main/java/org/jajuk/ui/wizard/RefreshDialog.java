@@ -19,13 +19,13 @@
  */
 package org.jajuk.ui.wizard;
 
-import info.clearthought.layout.TableLayout;
-
 import javax.swing.Icon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JProgressBar;
 import javax.swing.SwingUtilities;
+
+import net.miginfocom.swing.MigLayout;
 
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
@@ -63,11 +63,10 @@ public class RefreshDialog extends JFrame {
         progress = new JProgressBar(0, 100);
         progress.setIndeterminate(indeterminate);
         jlRefreshing = new JLabel();
-        double[][] dSize = new double[][] { { 5, 500, 5 }, { 5, 30, 5, 20, 5, 20, 5 } };
-        setLayout(new TableLayout(dSize));
-        add(jlAction, "1,1,c,c");
-        add(progress, "1,3,f,c");
-        add(jlRefreshing, "1,5,c,c");
+        setLayout(new MigLayout("insets 10,gapx 5, gapy 5","[500!]"));
+        add(jlAction, "center,wrap");
+        add(progress, "center,grow,wrap");
+        add(jlRefreshing, "center,wrap");
         pack();
         setLocationRelativeTo(RefreshDialog.this);
         setVisible(true);
