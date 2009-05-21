@@ -325,8 +325,8 @@ public final class JajukSlimbar extends JFrame implements Observer, MouseWheelLi
 
     // Search
     sbSearch = new SearchBox(this);
-    sbSearch.setPreferredSize(new Dimension(22, 18));
-    sbSearch.setMaximumSize(new Dimension(22, 18));
+    sbSearch.setPreferredSize(new Dimension(75, 21));
+    sbSearch.setMaximumSize(new Dimension(75, 21));
     sbSearch.addMouseMotionListener(motionAdapter);
 
     slimJajuk = new JajukJToolbar();

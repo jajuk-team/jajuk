@@ -47,8 +47,6 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.util.HashSet;
@@ -304,16 +302,6 @@ public class CommandJPanel extends JXPanel implements ActionListener, ListSelect
     double[][] sizeSearch = new double[][] { { 3, TableLayout.PREFERRED, 3, 100 }, { 23 } };
     JPanel jpSearch = new JPanel(new TableLayout(sizeSearch));
     sbSearch = new SearchBox(CommandJPanel.this);
-    JLabel jlSearch = new JLabel(IconLoader.getIcon(JajukIcons.SEARCH));
-    jlSearch.setToolTipText(Messages.getString("CommandJPanel.23"));
-    // Clear search text when clicking on the search icon
-    jlSearch.addMouseListener(new MouseAdapter() {
-      @Override
-      public void mouseClicked(MouseEvent e) {
-        sbSearch.setText("");
-      }
-    });
-    jpSearch.add(jlSearch, "1,0");
     jpSearch.add(sbSearch, "3,0");
 
     // History

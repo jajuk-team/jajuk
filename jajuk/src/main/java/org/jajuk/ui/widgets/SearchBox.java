@@ -24,12 +24,16 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Insets;
 import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.Collections;
 import java.util.List;
 
@@ -134,17 +138,28 @@ public class SearchBox extends JTextField implements KeyListener {
    * @param lsl
    */
   public SearchBox(ListSelectionListener lsl) {
+    setMargin(new Insets(0, 20, 0, 0));
     this.lsl = lsl;
     timer.start();
     addKeyListener(this);
     setToolTipText(Messages.getString("SearchBox.0"));
-    setBorder(BorderFactory.createEtchedBorder());
     // We use a font whose size cannot change with font size selected by user
     // because the search box cannot be enlarged vertically
     setFont(FontManager.getInstance().getFont(JajukFont.SEARCHBOX));
     Color mediumGray = new Color(172, 172, 172);
     setForeground(mediumGray);
-    setBorder(BorderFactory.createLineBorder(Color.BLUE));
+    // Double click empties the field
+    addMouseListener(new MouseAdapter() {
+
+      @Override
+      public void mouseClicked(MouseEvent e) {
+        super.mouseClicked(e);
+        if (e.getClickCount() == 2) {
+          setText("");
+        }
+      }
+
+    });
   }
 
   /*
@@ -270,5 +285,13 @@ public class SearchBox extends JTextField implements KeyListener {
 
   public void hidePopup() {
     popup.hide();
+  }
+
+  /**
+   * Display the serch icon inside the texfield
+   */
+  public void paint(Graphics g) {
+    super.paint(g);
+    g.drawImage(IconLoader.getIcon(JajukIcons.SEARCH).getImage(), 4, 3, 16, 16, null);
   }
 }
