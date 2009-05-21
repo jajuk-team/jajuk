@@ -79,6 +79,9 @@ public interface Const {
 
   /** Autorefresh thread delay in ms */
   int AUTO_REFRESH_DELAY = 30000;
+  
+  /** Default refresh interval in mins for unknown types devices **/
+  String DEFAULT_REFRESH_INTERVAL = "5";
 
   /** Minimum refresh fequency (ms) */
   int MIN_AUTO_REFRESH_DELAY = 30000;

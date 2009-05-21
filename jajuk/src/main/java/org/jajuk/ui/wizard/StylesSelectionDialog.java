@@ -20,8 +20,6 @@
 
 package org.jajuk.ui.wizard;
 
-import info.clearthought.layout.TableLayout;
-
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -36,6 +34,8 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
+
+import net.miginfocom.swing.MigLayout;
 
 import org.jajuk.base.Style;
 import org.jajuk.base.StyleManager;
@@ -142,13 +142,7 @@ public class StylesSelectionDialog extends JajukJDialog implements ActionListene
     // none ambience selected by default
     jcbAmbiences.setSelectedIndex(-1);
     jcbAmbiences.addActionListener(this);
-    double[][] sizeLayout = new double[][] {
-        { 5, TableLayout.PREFERRED, TableLayout.PREFERRED, 5 },
-        { 5, TableLayout.PREFERRED, TableLayout.PREFERRED, TableLayout.PREFERRED, 5 } };
-    TableLayout layout = new TableLayout(sizeLayout);
-    layout.setVGap(5);
-    layout.setHGap(10);
-    setLayout(layout);
+    setLayout(new MigLayout("insets 15,gapx 10, gapy 15","[grow]"));
     JLabel jlAmbience = new JLabel(Messages.getString("DigitalDJWizard.58"));
     jlist = new JList(list);
     jlist.setLayoutOrientation(JList.VERTICAL_WRAP);
@@ -167,12 +161,11 @@ public class StylesSelectionDialog extends JajukJDialog implements ActionListene
         dispose();
       }
     });
-    add(jlAmbience, "1,1");
-    add(jcbAmbiences, "2,1");
-    add(jsp, "1,2,2,2");
-    add(okc, "1,3,2,3");
+    add(jlAmbience, "split 2");
+    add(jcbAmbiences, "grow,width ::200,wrap");
+    add(jsp, "grow,wrap");
+    add(okc, "center");
     getRootPane().setDefaultButton(okc.getOKButton());
-    // setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
   }
 
   /*

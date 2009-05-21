@@ -58,8 +58,6 @@ public class CDScanView extends ViewAdapter implements ActionListener {
 
   private static final long serialVersionUID = 1L;
 
-  JLabel jlName;
-
   JTextField jtfName;
 
   JLabel jlMountPoint;
@@ -158,9 +156,7 @@ public class CDScanView extends ViewAdapter implements ActionListener {
    * @see org.jajuk.ui.IView#display()
    */
   public void initUI() {
-    MigLayout layout = new MigLayout("insets 10, gapy 15", "[][grow][]", "");
-    setLayout(layout);
-    jlName = new JLabel(Messages.getString("CDScanView.0"));
+    JLabel jlName = new JLabel(Messages.getString("CDScanView.0"));
     jlName.setToolTipText(Messages.getString("CDScanView.1"));
     jtfName = new JTextField();
     jtfName.setToolTipText(Messages.getString("CDScanView.2"));
@@ -174,12 +170,13 @@ public class CDScanView extends ViewAdapter implements ActionListener {
     jbUrl = new JButton(IconLoader.getIcon(JajukIcons.OPEN_FILE));
     jbUrl.setToolTipText(Messages.getString("CDScanView.19"));
     jbUrl.addActionListener(this);
+    setLayout(new MigLayout("insets 10, gapy 15", "[][grow]"));
     add(jlName);
     add(jtfName, "wrap,grow");
     add(jlMountPoint);
-    add(jtfMountPoint,"grow");
+    add(jtfMountPoint,"split 2,grow");
     add(jbUrl, "wrap");
-    add(jbScan, "span");
+    add(jbScan, "center,span");
   }
 
   /*
