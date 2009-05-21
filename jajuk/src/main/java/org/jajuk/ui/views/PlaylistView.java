@@ -194,7 +194,7 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
             Messages.showErrorMessage(18);
           } else {
             QueueModel.push(UtilFeatures.createStackItems(UtilFeatures.applyPlayOption(files), Conf
-                .getBoolean(Const.CONF_STATE_REPEAT), true), false);
+                .getBoolean(Const.CONF_STATE_REPEAT_ALL), true), false);
           }
         } else { // user changed of smart playlist selection
           selectSmartPlaylist(sp);
@@ -581,7 +581,7 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
     }
     try {
       editorModel.setItems(UtilFeatures.createStackItems(plf.getFiles(), Conf
-          .getBoolean(Const.CONF_STATE_REPEAT), true)); // PERF
+          .getBoolean(Const.CONF_STATE_REPEAT_ALL), true)); // PERF
       ((JajukTableModel) editorTable.getModel()).populateModel(editorTable.getColumnsConf());
     } catch (JajukException je) { // don't trace because
       // it is called in a loop

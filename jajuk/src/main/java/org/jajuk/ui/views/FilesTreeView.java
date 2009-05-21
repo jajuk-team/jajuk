@@ -532,7 +532,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
           if (o instanceof FileNode) {
             File file = ((FileNode) o).getFile();
             try {
-              QueueModel.push(new StackItem(file, Conf.getBoolean(Const.CONF_STATE_REPEAT), true),
+              QueueModel.push(new StackItem(file, Conf.getBoolean(Const.CONF_STATE_REPEAT_ALL), true),
                   Conf.getBoolean(Const.CONF_OPTIONS_PUSH_ON_CLICK));
             } catch (JajukException je) {
               Log.error(je);

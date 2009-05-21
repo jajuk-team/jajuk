@@ -197,6 +197,7 @@ public class StartupService {
       }
 
       QueueModel.insert(UtilFeatures.createStackItems(alToPlay, false, false), 0);
+      QueueModel.setIndex(index);
 
       if (Conf.getBoolean(Const.CONF_STATE_REPEAT)) {
         if (index < QueueModel.getQueueSize())

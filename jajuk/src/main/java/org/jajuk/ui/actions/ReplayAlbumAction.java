@@ -61,7 +61,7 @@ public class ReplayAlbumAction extends JajukAction {
                 files.add(track.getPlayeableFile(true));
               }
               QueueModel.push(UtilFeatures.createStackItems(files, Conf
-                  .getBoolean(Const.CONF_STATE_REPEAT), true), false);
+                  .getBoolean(Const.CONF_STATE_REPEAT_ALL), true), false);
             }
           } catch (Exception e) {
             Log.error(e);

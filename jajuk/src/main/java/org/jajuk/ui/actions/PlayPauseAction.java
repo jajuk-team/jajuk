@@ -53,7 +53,7 @@ public class PlayPauseAction extends JajukAction {
         public void run() {
           try {
             bAlreadyLaunching = true;
-            QueueModel.goTo(0);
+            QueueModel.goTo(QueueModel.getIndex());
           } finally {
             bAlreadyLaunching = false;
           }

@@ -68,7 +68,7 @@ public class DJAction extends JajukAction {
                 return;
               }
               QueueModel.push(UtilFeatures.createStackItems(UtilFeatures.applyPlayOption(al), Conf
-                  .getBoolean(Const.CONF_STATE_REPEAT), false), false);
+                  .getBoolean(Const.CONF_STATE_REPEAT_ALL), false), false);
             } else {
               Messages.showErrorMessage(157);
             }

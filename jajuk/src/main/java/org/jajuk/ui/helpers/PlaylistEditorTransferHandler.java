@@ -127,7 +127,7 @@ public class PlaylistEditorTransferHandler extends TransferHandler {
         // queue case
         if (plf.getType() == Playlist.Type.QUEUE) {
           QueueModel.push(UtilFeatures.createStackItems(UtilFeatures.applyPlayOption(alSelectedFiles),
-              Conf.getBoolean(Const.CONF_STATE_REPEAT), true), Conf
+              Conf.getBoolean(Const.CONF_STATE_REPEAT_ALL), true), Conf
               .getBoolean(Const.CONF_OPTIONS_DEFAULT_ACTION_DROP));
         }
         // normal or new playlist case

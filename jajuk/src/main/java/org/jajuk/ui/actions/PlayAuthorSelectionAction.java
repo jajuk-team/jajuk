@@ -73,7 +73,7 @@ public class PlayAuthorSelectionAction extends SelectionAction {
           Author author = ((Track) selection.get(0)).getAuthor();
           List<File> files = UtilFeatures.getPlayableFiles(author);
           QueueModel.push(UtilFeatures.createStackItems(UtilFeatures.applyPlayOption(files), Conf
-              .getBoolean(Const.CONF_STATE_REPEAT), true), false);
+              .getBoolean(Const.CONF_STATE_REPEAT_ALL), true), false);
         } catch (Exception e) {
           Log.error(e);
         }

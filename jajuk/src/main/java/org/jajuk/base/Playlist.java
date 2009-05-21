@@ -587,7 +587,7 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
       Messages.showErrorMessage(18);
     } else {
       QueueModel.push(UtilFeatures.createStackItems(UtilFeatures.applyPlayOption(alFiles), Conf
-          .getBoolean(Const.CONF_STATE_REPEAT), true), false);
+          .getBoolean(Const.CONF_STATE_REPEAT_ALL), true), false);
     }
   }
 

@@ -538,7 +538,7 @@ public final class JajukSlimbar extends JFrame implements Observer, MouseWheelLi
             // If user selected a file
             if (sr.getType() == SearchResultType.FILE) {
               QueueModel.push(
-                  new StackItem(sr.getFile(), Conf.getBoolean(Const.CONF_STATE_REPEAT), true), Conf
+                  new StackItem(sr.getFile(), Conf.getBoolean(Const.CONF_STATE_REPEAT_ALL), true), Conf
                       .getBoolean(Const.CONF_OPTIONS_PUSH_ON_CLICK));
             }
             // User selected a web radio

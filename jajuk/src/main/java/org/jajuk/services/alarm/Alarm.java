@@ -49,7 +49,7 @@ public class Alarm {
   public void wakeUpSleeper() {
     Log.debug("Wake up at " + new Date());
     if (alarmAction.equals(Const.ALARM_START_ACTION)) {
-      QueueModel.push(UtilFeatures.createStackItems(alToPlay, Conf.getBoolean(Const.CONF_STATE_REPEAT),
+      QueueModel.push(UtilFeatures.createStackItems(alToPlay, Conf.getBoolean(Const.CONF_STATE_REPEAT_ALL),
           false), false);
     } else {
       QueueModel.stopRequest();

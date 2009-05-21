@@ -73,7 +73,7 @@ public class PlayAlbumSelectionAction extends SelectionAction {
           Album album = ((Track) selection.get(0)).getAlbum();
           List<File> files = UtilFeatures.getPlayableFiles(album);
           QueueModel.push(UtilFeatures.createStackItems(UtilFeatures.applyPlayOption(files), Conf
-              .getBoolean(Const.CONF_STATE_REPEAT), true), false);
+              .getBoolean(Const.CONF_STATE_REPEAT_ALL), true), false);
         } catch (Exception e) {
           Log.error(e);
         }

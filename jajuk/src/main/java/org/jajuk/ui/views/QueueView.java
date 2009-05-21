@@ -205,7 +205,7 @@ public class QueueView extends PlaylistView {
           StackItem item = editorModel.getStackItem(editorTable.getSelectedRow());
           if (item.isPlanned()) {
             item.setPlanned(false);
-            item.setRepeat(Conf.getBoolean(Const.CONF_STATE_REPEAT));
+            item.setRepeat(Conf.getBoolean(Const.CONF_STATE_REPEAT_ALL));
             item.setUserLaunch(true);
             QueueModel.push(item, Conf.getBoolean(Const.CONF_OPTIONS_PUSH_ON_CLICK));
           } else { // non planned items

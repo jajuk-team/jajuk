@@ -65,7 +65,7 @@ public class PushSelectionAction extends SelectionAction {
           PushSelectionAction.super.perform(e);
           List<File> files = UtilFeatures.getPlayableFiles(selection);
           QueueModel.push(UtilFeatures.createStackItems(UtilFeatures.applyPlayOption(files), Conf
-              .getBoolean(Const.CONF_STATE_REPEAT), true), true);
+              .getBoolean(Const.CONF_STATE_REPEAT_ALL), true), true);
         } catch (Exception e1) {
           Log.error(e1);
         }
