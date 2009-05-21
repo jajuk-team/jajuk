@@ -237,8 +237,7 @@ public class JAudioTaggerTagImpl implements ITagImpl, Const {
   }
 
   /**
-   * Create a void tag is needed and convert an ID3 V1.0 tag into V2.4 if any
-   * <br>
+   * Create a void tag is needed and convert an ID3 V1.0 tag into V2.4 if any <br>
    * Tags are committed when leaving this method
    * 
    * @throws Exception
@@ -265,6 +264,10 @@ public class JAudioTaggerTagImpl implements ITagImpl, Const {
       newTag.setComment(tag.getFirstComment());
       newTag.setGenre(tag.getFirstGenre());
       newTag.setYear(tag.getFirstYear());
+      newTag.set(newTag.createTagField(TagFieldKey.ALBUM_ARTIST, tag
+          .getFirst(TagFieldKey.ALBUM_ARTIST)));
+      newTag.set(newTag.createTagField(TagFieldKey.DISC_NO, tag
+          .getFirst(TagFieldKey.DISC_NO)));
       // Delete the id3 V1 tag
       AudioFileIO.delete(audioFile);
       // Add the new one
@@ -314,6 +317,50 @@ public class JAudioTaggerTagImpl implements ITagImpl, Const {
   public void setYear(String year) throws Exception {
     createTagIfNeeded();
     this.tag.setYear(year);
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.jajuk.services.tags.ITagImpl#getAlbumArtist()
+   */
+  public String getAlbumArtist() throws Exception {
+    return this.tag.getFirst(TagFieldKey.ALBUM_ARTIST);
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.jajuk.services.tags.ITagImpl#getDiscNumber()
+   */
+  public int getDiscNumber() throws Exception {
+    int discnumber = 0;
+    try {
+      discnumber = new Integer(this.tag.getFirst(TagFieldKey.DISC_NO)).intValue();
+    } catch (Exception e) {
+      System.err.println("can not read tag disc number");
+    }
+    return discnumber;
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.jajuk.services.tags.ITagImpl#setAlbumArtist(java.lang.String)
+   */
+  public void setAlbumArtist(String albumArtist) throws Exception {
+    createTagIfNeeded();
+    tag.set(tag.createTagField(TagFieldKey.ALBUM_ARTIST, albumArtist));
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.jajuk.services.tags.ITagImpl#setDiscNumber(int)
+   */
+  public void setDiscNumber(int discnumber) throws Exception {
+    createTagIfNeeded();
+    tag.set(tag.createTagField(TagFieldKey.DISC_NO, new Integer(discnumber).toString()));
   }
 
 }

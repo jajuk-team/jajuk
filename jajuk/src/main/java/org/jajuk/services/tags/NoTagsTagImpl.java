@@ -161,8 +161,7 @@ public class NoTagsTagImpl implements ITagImpl {
    * 
    * @see org.jajuk.base.ITagImpl#setLength(long)
    */
-  public void setLength(@SuppressWarnings("unused")
-  long length) throws Exception {
+  public void setLength(long length) throws Exception {
   }
 
   /*
@@ -170,8 +169,7 @@ public class NoTagsTagImpl implements ITagImpl {
    * 
    * @see org.jajuk.base.ITagImpl#setQuality(java.lang.String)
    */
-  public void setQuality(@SuppressWarnings("unused")
-  String sQuality) throws Exception {
+  public void setQuality(String sQuality) throws Exception {
   }
 
   /*
@@ -232,6 +230,36 @@ public class NoTagsTagImpl implements ITagImpl {
    */
   public long getQuality() throws Exception {
     return 0l;
+  }
+
+  /* (non-Javadoc)
+   * @see org.jajuk.services.tags.ITagImpl#getAlbumArtist()
+   */
+  public String getAlbumArtist() throws Exception {
+    return "";
+  }
+
+  /* (non-Javadoc)
+   * @see org.jajuk.services.tags.ITagImpl#getDiscNumber()
+   */
+  public int getDiscNumber() throws Exception {
+    return 0;
+  }
+
+  /* (non-Javadoc)
+   * @see org.jajuk.services.tags.ITagImpl#setAlbumArtist(java.lang.String)
+   */
+  public void setAlbumArtist(String albumArtist) throws Exception {
+    // TODO Auto-generated method stub
+    
+  }
+
+  /* (non-Javadoc)
+   * @see org.jajuk.services.tags.ITagImpl#setDiscNumber(int)
+   */
+  public void setDiscNumber(int discnumber) throws Exception {
+    // TODO Auto-generated method stub
+    
   }
 
 }
