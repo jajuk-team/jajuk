@@ -290,8 +290,6 @@ public class ParameterView extends ViewAdapter implements ActionListener, ListSe
 
 	private JCheckBox jcbEnableLastFMInformation;
 
-	private JPanel jpOKCancel;
-
 	private JButton jbOK;
 
 	private JButton jbDefault;
