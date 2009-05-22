@@ -170,6 +170,34 @@ public class Tag {
   }
 
   /**
+   * @return album artist
+   */
+  public String getAlbumArtist() {
+    String sAlbumArtist = Const.UNKNOWN_AUTHOR;
+    // if the type doesn't support tags ( like wav )
+    if (tagImpl == null) {
+      return sAlbumArtist;
+    }
+
+    try {
+      String sTemp = tagImpl.getAlbumArtist().trim();
+      if (Messages.getString(Const.UNKNOWN_AUTHOR).equals(sTemp)) {
+        // it is done to avoid duplicates unknown styles if
+        // the tag is the real string "unknown" in the
+        // current language
+        sAlbumArtist = Const.UNKNOWN_AUTHOR;
+      } else if (!"".equals(sTemp)) {
+        sAlbumArtist = UtilString.formatTag(sTemp);
+      }
+    } catch (Exception e) {
+      Log.info("Wrong album artist:{{" + fio.getName() + "}}");
+    }
+    // We internalize the author name for memory saving reasons
+    return sAlbumArtist.intern();
+
+  }
+
+  /**
    * @return style name
    */
   public String getStyleName() {
@@ -215,6 +243,23 @@ public class Tag {
       Log.info("Wrong length:" + fio.getName());
     }
     return length;
+  }
+
+  /**
+   * @return disc number
+   */
+  public int getDiscNumber() {
+    int discnumber = 0;
+    // if the type doesn't support tags ( like wav )
+    if (tagImpl == null) {
+      return 0;
+    }
+    try {
+      discnumber = tagImpl.getDiscNumber();
+    } catch (Exception e) {
+      Log.info("Wrong length:" + fio.getName());
+    }
+    return discnumber;
   }
 
   /**
@@ -328,6 +373,17 @@ public class Tag {
   }
 
   /**
+   * @param sAlbumArtist
+   */
+  public void setAlbumArtist(String sAlbumArtist) throws JajukException {
+    try {
+      tagImpl.setAlbumArtist(sAlbumArtist);
+    } catch (Exception e) {
+      throw new JajukException(104, fio.getName(), e);
+    }
+  }
+
+  /**
    * @param style
    */
   public void setStyleName(String style) throws JajukException {
@@ -355,6 +411,17 @@ public class Tag {
   public void setYear(String sYear) throws JajukException {
     try {
       tagImpl.setYear(sYear);
+    } catch (Exception e) {
+      throw new JajukException(104, fio.getName(), e);
+    }
+  }
+
+  /**
+   * @param discnumber
+   */
+  public void setDiscNumber(int discnumber) throws JajukException {
+    try {
+      tagImpl.setDiscNumber(discnumber);
     } catch (Exception e) {
       throw new JajukException(104, fio.getName(), e);
     }
