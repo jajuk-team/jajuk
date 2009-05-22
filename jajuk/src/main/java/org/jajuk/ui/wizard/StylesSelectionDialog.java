@@ -162,7 +162,7 @@ public class StylesSelectionDialog extends JajukJDialog implements ActionListene
       }
     });
     add(jlAmbience, "split 2");
-    add(jcbAmbiences, "grow,width ::200,wrap");
+    add(jcbAmbiences, "grow,wrap");
     add(jsp, "grow,wrap");
     add(okc, "center");
     getRootPane().setDefaultButton(okc.getOKButton());

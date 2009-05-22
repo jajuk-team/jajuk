@@ -265,7 +265,7 @@ public class AmbienceWizard extends Wizard {
       out.add(jlHeader1, "center,span 2");
       out.add(jlHeader2, "center,wrap");
       // Add widgets
-      for (int i = 0; i < widgets.length - 2; i++) {
+      for (int i = 0; i < widgets.length ; i++) {
         out.add(widgets[i][0], "grow,center,width 25!");
         out.add(widgets[i][1], "grow,center,width 120!");
         out.add(widgets[i][2], "center,grow,wrap,width 270!");

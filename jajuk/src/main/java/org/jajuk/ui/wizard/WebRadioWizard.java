@@ -19,9 +19,6 @@
  */
 package org.jajuk.ui.wizard;
 
-import info.clearthought.layout.TableLayout;
-import info.clearthought.layout.TableLayoutConstants;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -41,6 +38,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
+
+import net.miginfocom.swing.MigLayout;
 
 import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
@@ -104,13 +103,8 @@ public class WebRadioWizard extends Wizard {
     public void initUI() {
       radios = new ArrayList<WebRadio>(WebRadioManager.getInstance().getWebRadios());
       setCanFinish(true);
-      // set layout
-      double[][] dSizeGeneral = { { 10, 0.99, 5 },
-          { 10, TableLayoutConstants.FILL, 10, TableLayoutConstants.PREFERRED, 10 } };
-      setLayout(new TableLayout(dSizeGeneral));
       // button layout
-      double[][] dButtons = { { 10, 0.33, 5, 0.33, 5, 0.33, 10 }, { 20 } };
-      jpButtons = new JPanel(new TableLayout(dButtons));
+      jpButtons = new JPanel(new MigLayout("insets 5,gapx 15,gapy 0"));
       jbNew = new JButton(Messages.getString("RadioWizard.2"), IconLoader.getIcon(JajukIcons.NEW));
       jbNew.addActionListener(this);
       jbNew.setToolTipText(Messages.getString("RadioWizard.2"));
@@ -122,11 +116,14 @@ public class WebRadioWizard extends Wizard {
           .getIcon(JajukIcons.DEFAULTS));
       jbDefaults.addActionListener(this);
       jbDefaults.setToolTipText(Messages.getString("RadioWizard.4"));
-      jpButtons.add(jbNew, "1,0");
-      jpButtons.add(jbDelete, "3,0");
-      jpButtons.add(jbDefaults, "5,0");
-      add(getPanel(), "1,1");
-      add(jpButtons, "1,3,c,c");
+      jpButtons.add(jbNew);
+      jpButtons.add(jbDelete);
+      jpButtons.add(jbDefaults);
+
+      // Add items
+      setLayout(new MigLayout("insets 5,gapy 5", "[grow]"));
+      add(getPanel(), "grow,wrap");
+      add(jpButtons, "span,center");
     }
 
     /**
@@ -136,9 +133,6 @@ public class WebRadioWizard extends Wizard {
     private JScrollPane getPanel() {
       widgets = new JComponent[radios.size()][3];
       JPanel out = new JPanel();
-      double[] dHoriz = { 25, 250, 250 };
-      double[] dVert = new double[widgets.length + 2];
-      dVert[0] = 20;
       // make sure to sort radios
       Collections.sort(radios);
       ButtonGroup group = new ButtonGroup();
@@ -209,28 +203,21 @@ public class WebRadioWizard extends Wizard {
           }
         });
         widgets[index][2] = jtfURL;
-        // Set layout
-        dVert[index + 1] = 20;
       }
-      dVert[widgets.length + 1] = 20;
       // Create layout
-      double[][] dSizeProperties = new double[][] { dHoriz, dVert };
-      TableLayout layout = new TableLayout(dSizeProperties);
-      layout.setHGap(10);
-      layout.setVGap(10);
-      out.setLayout(layout);
+      out.setLayout(new MigLayout("insets 0,gapx 10,gapy 2", "[25][240][250]"));
       // Create header
       JLabel jlHeader1 = new JLabel(Messages.getString("RadioWizard.9"));
       jlHeader1.setFont(FontManager.getInstance().getFont(JajukFont.BOLD));
       JLabel jlHeader2 = new JLabel(Messages.getString("RadioWizard.8"));
       jlHeader2.setFont(FontManager.getInstance().getFont(JajukFont.BOLD));
-      out.add(jlHeader1, "1,0,c,c");
-      out.add(jlHeader2, "2,0,c,c");
+      out.add(jlHeader1, "cell 1 0, center");
+      out.add(jlHeader2, "cell 2 0,center,wrap");
       // Add widgets
-      for (int i = 0; i < dVert.length - 2; i++) {
-        out.add(widgets[i][0], "0," + (i + 1) + ",c,c");
-        out.add(widgets[i][1], "1," + (i + 1));
-        out.add(widgets[i][2], "2," + (i + 1));
+      for (int i = 0; i < widgets.length; i++) {
+        out.add(widgets[i][0], "grow,left");
+        out.add(widgets[i][1], "grow,left");
+        out.add(widgets[i][2], "grow,left,wrap");
       }
       jsp = new JScrollPane(out);
       // select first ambiance found
@@ -247,8 +234,8 @@ public class WebRadioWizard extends Wizard {
     private void refreshScreen() {
       removeAll();
       // refresh panel
-      add(getPanel(), "1,1");
-      add(jpButtons, "1,3,c,c");
+      add(getPanel(), "grow,wrap");
+      add(jpButtons, "center,span");
       revalidate();
       repaint();
     }

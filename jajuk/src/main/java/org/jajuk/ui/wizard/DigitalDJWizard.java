@@ -19,8 +19,6 @@
  */
 package org.jajuk.ui.wizard;
 
-import info.clearthought.layout.TableLayout;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -46,6 +44,8 @@ import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+
+import net.miginfocom.swing.MigLayout;
 
 import org.jajuk.base.Style;
 import org.jajuk.base.StyleManager;
@@ -143,9 +143,7 @@ public class DigitalDJWizard extends Wizard {
      */
     @Override
     public void initUI() {
-      double[][] size = new double[][] { { 20, TableLayout.PREFERRED, 20 },
-          { 20, TableLayout.PREFERRED, 20, TableLayout.PREFERRED, 20, TableLayout.PREFERRED, 20 } };
-      setLayout(new TableLayout(size));
+      setLayout(new MigLayout("insets 10,gapx 10,gapy 15"));
       bgTypes = new ButtonGroup();
       jrbTransitions = new JRadioButton(Messages.getString("DigitalDJWizard.1"));
       jrbTransitions.addActionListener(this);
@@ -159,9 +157,9 @@ public class DigitalDJWizard extends Wizard {
       bgTypes.add(jrbProp);
       bgTypes.add(jrbTransitions);
       bgTypes.add(jrbAmbiance);
-      add(jrbTransitions, "1,1");
-      add(jrbProp, "1,3");
-      add(jrbAmbiance, "1,5");
+      add(jrbTransitions, "left,wrap");
+      add(jrbProp, "left,wrap");
+      add(jrbAmbiance, "left,wrap");
     }
 
     /*
@@ -215,16 +213,9 @@ public class DigitalDJWizard extends Wizard {
       djs = new ArrayList<DigitalDJ>(DigitalDJManager.getInstance().getDJs());
       Collections.sort(djs);
       widgets = new JComponent[djs.size()][1];
-      double[] dVert = new double[djs.size()];
-      // prepare vertical layout
-      for (int i = 0; i < djs.size(); i++) {
-        dVert[i] = 20;
-      }
-      double[][] size = new double[][] { { 0.99 }, dVert };
-      TableLayout layout = new TableLayout(size);
-      layout.setVGap(10);
-      layout.setHGap(10);
-      JPanel jpDjs = new JPanel(new TableLayout(size));
+      // We use an inner panel for scrolling purpose
+      JPanel jp = new JPanel();
+      jp.setLayout(new MigLayout("insets 0,gapx 0,gapy 10"));
       bgDJS = new ButtonGroup();
       setCanFinish(true);
       int index = 0;
@@ -233,17 +224,17 @@ public class DigitalDJWizard extends Wizard {
         jrb.addActionListener(this);
         bgDJS.add(jrb);
         widgets[index][0] = jrb;
-        jpDjs.add(jrb, "0," + index);
+        jp.add(jrb, "left gap 5,wrap");
         index++;
       }
-      // main panel
-      double[][] main = new double[][] { { 0.99 }, { 20, 0.99 } };
-      setLayout(new TableLayout(main));
-      add(new JScrollPane(jpDjs), "0,1");
       setProblem(Messages.getString("DigitalDJWizard.40"));
       // select first ambience found
       JRadioButton jrb = (JRadioButton) widgets[0][0];
       jrb.doClick();
+      setLayout(new MigLayout("insets 10,gapx 5", "[grow]"));
+      JScrollPane jsp = new JScrollPane(jp);
+      jsp.setBorder(null);
+      add(jsp, "grow");
     }
 
     /*
@@ -292,17 +283,11 @@ public class DigitalDJWizard extends Wizard {
     public void initUI() {
       djs = new ArrayList<DigitalDJ>(DigitalDJManager.getInstance().getDJs());
       Collections.sort(djs);
+      // We use an inner panel for scrolling purpose
+      JPanel jp = new JPanel();
+      jp.setLayout(new MigLayout("insets 0,gapx 0,gapy 10"));
       widgets = new JComponent[djs.size()][1];
-      double[] dVert = new double[djs.size()];
-      // prepare vertical layout
-      for (int i = 0; i < djs.size(); i++) {
-        dVert[i] = 30;
-      }
-      double[][] size = new double[][] { { 0.99 }, dVert };
-      TableLayout layout = new TableLayout(size);
-      layout.setVGap(10);
-      layout.setHGap(10);
-      JPanel jpDjs = new JPanel(new TableLayout(size));
+      setLayout(new MigLayout("insets 10,gapx 10,gapy 15"));
       bgDJS = new ButtonGroup();
       int index = 0;
       for (DigitalDJ dj : djs) {
@@ -310,13 +295,9 @@ public class DigitalDJWizard extends Wizard {
         jrb.addActionListener(this);
         bgDJS.add(jrb);
         widgets[index][0] = jrb;
-        jpDjs.add(jrb, "0," + index);
+        jp.add(jrb, "left gap 5,wrap");
         index++;
       }
-      // main panel
-      double[][] main = new double[][] { { 0.99 }, { 20, 0.99 } };
-      setLayout(new TableLayout(main));
-      add(new JScrollPane(jpDjs), "0,1");
       // If more than one DJ, select first
       if (djs.size() > 0) {
         JRadioButton jrb = (JRadioButton) widgets[0][0];
@@ -324,6 +305,10 @@ public class DigitalDJWizard extends Wizard {
       } else {
         setProblem(Messages.getString("DigitalDJWizard.40"));
       }
+      setLayout(new MigLayout("insets 10,gapx 5", "[grow]"));
+      JScrollPane jsp = new JScrollPane(jp);
+      jsp.setBorder(null);
+      add(jsp, "grow");
     }
 
     /*
@@ -391,9 +376,7 @@ public class DigitalDJWizard extends Wizard {
      */
     @Override
     public void initUI() {
-      double[][] size = new double[][] { { 20, TableLayout.FILL, 10 },
-          { 20, TableLayout.PREFERRED, 20, TableLayout.PREFERRED, 20, TableLayout.PREFERRED, 20 } };
-      setLayout(new TableLayout(size));
+      setLayout(new MigLayout("insets 10,gapx 10,gapy 15"));
       bgActions = new ButtonGroup();
       jrbNew = new JRadioButton(Messages.getString("DigitalDJWizard.17"));
       jrbNew.addActionListener(this);
@@ -410,9 +393,9 @@ public class DigitalDJWizard extends Wizard {
       bgActions.add(jrbNew);
       bgActions.add(jrbChange);
       bgActions.add(jrbDelete);
-      add(jrbNew, "1,1");
-      add(jrbChange, "1,3");
-      add(jrbDelete, "1,5");
+      add(jrbNew, "left,wrap");
+      add(jrbChange, "left,wrap");
+      add(jrbDelete, "left,wrap");
     }
 
     /*
@@ -539,18 +522,14 @@ public class DigitalDJWizard extends Wizard {
       } else { // new dj, dj name is required
         setProblem(Messages.getString("DigitalDJWizard.41"));
       }
-      double[][] size = new double[][] {
-          { 10, 0.5, 20, TableLayout.FILL, 10 },
-          { 20, TableLayout.PREFERRED, 20, TableLayout.PREFERRED, 20, TableLayout.PREFERRED, 20,
-              TableLayout.PREFERRED, 20, TableLayout.PREFERRED, 20 } };
-      setLayout(new TableLayout(size));
-      add(jlName, "1,1");
-      add(jtfName, "3,1");
-      add(jlRatingLevel, "1,3");
-      add(jsRatingLevel, "3,3");
-      add(jlFadeDuration, "1,5");
-      add(jsFadeDuration, "3,5");
-      add(jcbUnicity, "1,7");
+      setLayout(new MigLayout("insets 10,gapx 10,gapy 15", "[][grow]"));
+      add(jlName);
+      add(jtfName, "grow,wrap");
+      add(jlRatingLevel);
+      add(jsRatingLevel, "grow,wrap");
+      add(jlFadeDuration);
+      add(jsFadeDuration, "grow,wrap");
+      add(jcbUnicity, "wrap");
     }
 
     /*
@@ -674,9 +653,8 @@ public class DigitalDJWizard extends Wizard {
       }
       setCanFinish(true);
       // set layout
-      double[][] dSizeGeneral = { { 10, 0.99, 5 }, { 10, TableLayout.FILL, 10 } };
-      setLayout(new TableLayout(dSizeGeneral));
-      add(getTransitionsPanel(), "1,1");
+      setLayout(new MigLayout("insets 10,gapx 5", "[grow]"));
+      add(getTransitionsPanel(), "grow");
     }
 
     /**
@@ -687,9 +665,6 @@ public class DigitalDJWizard extends Wizard {
       widgets = new JComponent[alTransitions.size()][4];
       JPanel out = new JPanel();
       // Delete|FROM list| To list|nb tracks
-      double[] dHoriz = { 10, 25, 250, 250, TableLayout.PREFERRED };
-      double[] dVert = new double[widgets.length + 2];
-      dVert[0] = 20;
       // now add all known transitions
       for (int index = 0; index < alTransitions.size(); index++) {
         // Delete button
@@ -749,16 +724,9 @@ public class DigitalDJWizard extends Wizard {
         });
         jsNb.setToolTipText(Messages.getString("DigitalDJWizard.24"));
         widgets[index][3] = jsNb;
-        // Set layout
-        dVert[index + 1] = 20;
       }
-      dVert[widgets.length + 1] = 20; // final space
       // Create layout
-      double[][] dSizeProperties = new double[][] { dHoriz, dVert };
-      TableLayout layout = new TableLayout(dSizeProperties);
-      layout.setHGap(10);
-      layout.setVGap(10);
-      out.setLayout(layout);
+      out.setLayout(new MigLayout("insets 5,gapx 10,gapy 10", "[][270!][270!][]"));
       // Create header
       JLabel jlHeader2 = new JLabel(Messages.getString("DigitalDJWizard.22"));
       jlHeader2.setFont(FontManager.getInstance().getFont(JajukFont.BOLD));
@@ -766,17 +734,19 @@ public class DigitalDJWizard extends Wizard {
       jlHeader3.setFont(FontManager.getInstance().getFont(JajukFont.BOLD));
       JLabel jlHeader4 = new JLabel(Messages.getString("DigitalDJWizard.24"));
       jlHeader4.setFont(FontManager.getInstance().getFont(JajukFont.BOLD));
-      out.add(jlHeader2, "2,0");
-      out.add(jlHeader3, "3,0");
-      out.add(jlHeader4, "4,0");
+      out.add(jlHeader2, "cell 1 0, center");
+      out.add(jlHeader3, "cell 2 0,center");
+      out.add(jlHeader4, "cell 3 0,center,wrap");
       // Add widgets
-      for (int i = 0; i < dVert.length - 2; i++) {
-        out.add(widgets[i][0], "1," + (i + 1) + ",c,c");
-        out.add(widgets[i][1], "2," + (i + 1));
-        out.add(widgets[i][2], "3," + (i + 1));
-        out.add(widgets[i][3], "4," + (i + 1) + ",c,c");
+      for (int i = 0; i < widgets.length; i++) {
+        out.add(widgets[i][0]);
+        out.add(widgets[i][1], "grow,width ::270");
+        out.add(widgets[i][2], "grow,width ::270");
+        out.add(widgets[i][3], "grow,center,wrap");
       }
-      return new JScrollPane(out);
+      JScrollPane jsp = new JScrollPane(out);
+      jsp.setBorder(null);
+      return jsp;
     }
 
     /**
@@ -876,7 +846,7 @@ public class DigitalDJWizard extends Wizard {
     private void refreshScreen() {
       removeAll();
       // refresh panel
-      add(getTransitionsPanel(), "1,1");
+      add(getTransitionsPanel(), "grow");
       revalidate();
       repaint();
     }
@@ -928,9 +898,8 @@ public class DigitalDJWizard extends Wizard {
       setCanFinish(true);
 
       // set layout
-      double[][] dSizeGeneral = { { 10, 0.99, 5 }, { 10, TableLayout.PREFERRED, 10 } };
-      setLayout(new TableLayout(dSizeGeneral));
-      add(getProportionsPanel(), "1,1");
+      setLayout(new MigLayout("insets 10,gapx 5", "[grow]"));
+      add(getProportionsPanel(), "grow");
     }
 
     /**
@@ -955,9 +924,6 @@ public class DigitalDJWizard extends Wizard {
       widgets = new JComponent[proportions.size()][3];
       JPanel out = new JPanel();
       // Delete|Style list|proportion in %
-      double[] dHoriz = { 25, TableLayout.FILL, 250, TableLayout.FILL, TableLayout.PREFERRED };
-      double[] dVert = new double[widgets.length + 2];
-      dVert[0] = 20;
       // now add all known proportions
       for (int index = 0; index < proportions.size(); index++) {
         // Delete button
@@ -1010,34 +976,29 @@ public class DigitalDJWizard extends Wizard {
         });
         jsNb.setToolTipText(Messages.getString("DigitalDJWizard.28"));
         widgets[index][2] = jsNb;
-        // Set layout
-        dVert[index + 1] = 20;
       }
-      dVert[widgets.length + 1] = 20; // final space
       // Create layout
-      double[][] dSizeProperties = new double[][] { dHoriz, dVert };
-      TableLayout layout = new TableLayout(dSizeProperties);
-      layout.setHGap(10);
-      layout.setVGap(10);
-      out.setLayout(layout);
+      out.setLayout(new MigLayout("insets 5,gapx 10,gapy 10", "[][530!][]"));
       // Create header
       JLabel jlHeader1 = new JLabel(Messages.getString("DigitalDJWizard.27"));
       jlHeader1.setFont(FontManager.getInstance().getFont(JajukFont.BOLD));
       JLabel jlHeader2 = new JLabel(Messages.getString("DigitalDJWizard.28"));
       jlHeader2.setFont(FontManager.getInstance().getFont(JajukFont.BOLD));
-      out.add(jlHeader1, "2,0");
-      out.add(jlHeader2, "4,0");
+      out.add(jlHeader1, "cell 1 0, center");
+      out.add(jlHeader2, "cell 2 0, center,wrap");
       // Add widgets
-      for (int i = 0; i < dVert.length - 2; i++) {
-        out.add(widgets[i][0], "0," + (i + 1) + ",c,c");
-        out.add(widgets[i][1], "2," + (i + 1));
-        out.add(widgets[i][2], "4," + (i + 1));
+      for (int i = 0; i < widgets.length; i++) {
+        out.add(widgets[i][0], "left");
+        out.add(widgets[i][1], "grow,width ::530");
+        out.add(widgets[i][2], "wrap");
       }
       // Display an error message if sum of proportion is > 100%
       if (getTotalValue() > 100) {
         setProblem(Messages.getString("DigitalDJWizard.59"));
       }
-      return new JScrollPane(out);
+      JScrollPane jsp = new JScrollPane(out);
+      jsp.setBorder(null);
+      return jsp;
     }
 
     /**
@@ -1137,7 +1098,7 @@ public class DigitalDJWizard extends Wizard {
     private void refreshScreen() {
       removeAll();
       // refresh panel
-      add(getProportionsPanel(), "1,1");
+      add(getProportionsPanel(), "grow");
       revalidate();
       repaint();
     }
@@ -1181,7 +1142,6 @@ public class DigitalDJWizard extends Wizard {
     public void initUI() {
       ambiences = new ArrayList<Ambience>(AmbienceManager.getInstance().getAmbiences());
       Collections.sort(ambiences);
-      widgets = new JComponent[ambiences.size()][1];
       // We need at least one ambience
       if (AmbienceManager.getInstance().getAmbiences().size() == 0) {
         setProblem(Messages.getString("DigitalDJWizard.38"));
@@ -1190,32 +1150,29 @@ public class DigitalDJWizard extends Wizard {
       // Get DJ
       dj = (AmbienceDigitalDJ) DigitalDJManager.getInstance().getDJByName(
           (String) data.get(KEY_DJ_NAME));
-      // set layout
-      double[] dVert = new double[ambiences.size()];
-      // prepare vertical layout
-      for (int i = 0; i < ambiences.size(); i++) {
-        dVert[i] = 20;
-      }
-      double[][] size = new double[][] { { TableLayout.PREFERRED }, dVert };
+
+      setLayout(new MigLayout("insets 10,gapx 5", "[grow]"));
+      add(getAmbiencesPanel(), "grow");
+    }
+
+    /**
+     * 
+     * @return a panel containing all ambiences
+     */
+    private JScrollPane getAmbiencesPanel() {
       ButtonGroup bg = new ButtonGroup();
-      JPanel jpAmbiences = new JPanel();
-      TableLayout layout = new TableLayout(size);
-      layout.setVGap(10);
-      layout.setHGap(10);
-      jpAmbiences.setLayout(layout);
+      widgets = new JComponent[ambiences.size()][3];
+      JPanel out = new JPanel();
+      out.setLayout(new MigLayout("insets 0,gapx 10,gapy 10", "[grow]"));
       int index = 0;
       for (Ambience ambience : ambiences) {
         JRadioButton jrb = new JRadioButton(ambience.getName());
         jrb.addActionListener(this);
         bg.add(jrb);
         widgets[index][0] = jrb;
-        jpAmbiences.add(jrb, "0," + index);
+        out.add(jrb, "left gap 5,wrap");
         index++;
       }
-      // main panel
-      double[][] main = new double[][] { { 0.99 }, { 20, 0.99 } };
-      setLayout(new TableLayout(main));
-      add(new JScrollPane(jpAmbiences), "0,1");
       // DJ change, set right ambience
       if (ActionSelectionPanel.ACTION_CHANGE.equals(data.get(KEY_ACTION))) {
         DigitalDJ lDJ = (DigitalDJ) data.get(KEY_CHANGE);
@@ -1235,6 +1192,9 @@ public class DigitalDJWizard extends Wizard {
         JRadioButton jrb = (JRadioButton) widgets[0][0];
         jrb.doClick();
       }
+      JScrollPane jsp = new JScrollPane(out);
+      jsp.setBorder(null);
+      return jsp;
     }
 
     /*
