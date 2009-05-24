@@ -107,6 +107,9 @@ public final class TrackManager extends ItemManager {
     // Track order
     registerProperty(new PropertyMetaInformation(Const.XML_TRACK_ORDER, false, true, true, true,
         false, Long.class, null));
+    // album artist
+    registerProperty(new PropertyMetaInformation(Const.XML_TRACK_ALBUM_ARTIST, false, true, true, true,
+        false, String.class, null));
     // Track preference factor. This is not editable because when changing
     // preference, others
     // actions must be done (updateRate() and we want user to use contextual
@@ -135,9 +138,9 @@ public final class TrackManager extends ItemManager {
    * Register an Track
    */
   public synchronized Track registerTrack(String sName, Album album, Style style, Author author,
-      long length, Year year, long lOrder, Type type) {
+      long length, Year year, long lOrder, Type type, String sAlbumArtist) {
     String sId = createID(sName, album, style, author, length, year, lOrder, type);
-    return registerTrack(sId, sName, album, style, author, length, year, lOrder, type);
+    return registerTrack(sId, sName, album, style, author, length, year, lOrder, type, sAlbumArtist);
   }
 
   /**
@@ -162,14 +165,14 @@ public final class TrackManager extends ItemManager {
    * @param sName
    */
   public synchronized Track registerTrack(String sId, String sName, Album album, Style style,
-      Author author, long length, Year year, long lOrder, Type type) {
+      Author author, long length, Year year, long lOrder, Type type, String sAlbumArtist) {
     // We absolutely need to return the same track if already registrated to
     // avoid duplicates and properties lost
     Track track = getTrackByID(sId);
     if (track != null) {
       return track;
     }
-    track = new Track(sId, sName, album, style, author, length, year, lOrder, type);
+    track = new Track(sId, sName, album, style, author, length, year, lOrder, type, sAlbumArtist);
     registerItem(track);
     // For performances, add the track to the album cache
     album.getTracksCache().add(track);
@@ -208,8 +211,7 @@ public final class TrackManager extends ItemManager {
    * 
    * @param old
    *          track
-   * @param new
-   *          album name
+   * @param new album name
    * @param filter
    *          files we want to deal with
    * @return new track
@@ -246,7 +248,8 @@ public final class TrackManager extends ItemManager {
     // register the new album
     Album newAlbum = AlbumManager.getInstance().registerAlbum(sNewAlbum);
     Track newTrack = registerTrack(track.getName(), newAlbum, track.getStyle(), track.getAuthor(),
-        track.getDuration(), track.getYear(), track.getOrder(), track.getType());
+        track.getDuration(), track.getYear(), track.getOrder(), track.getType(), track
+            .getAlbumArtist());
     postChange(track, newTrack, filter);
     // remove this album if no more references
     AlbumManager.getInstance().cleanOrphanTracks(track.getAlbum());
@@ -258,8 +261,7 @@ public final class TrackManager extends ItemManager {
    * 
    * @param old
    *          track
-   * @param new
-   *          author name
+   * @param new author name
    * @param filter
    *          files we want to deal with
    * @return new track
@@ -298,7 +300,8 @@ public final class TrackManager extends ItemManager {
     // register the new item
     Author newAuthor = AuthorManager.getInstance().registerAuthor(sNewAuthor);
     Track newTrack = registerTrack(track.getName(), track.getAlbum(), track.getStyle(), newAuthor,
-        track.getDuration(), track.getYear(), track.getOrder(), track.getType());
+        track.getDuration(), track.getYear(), track.getOrder(), track.getType(), track
+            .getAlbumArtist());
     postChange(track, newTrack, filter);
     // remove this item if no more references
     AuthorManager.getInstance().cleanOrphanTracks(track.getAuthor());
@@ -310,8 +313,7 @@ public final class TrackManager extends ItemManager {
    * 
    * @param old
    *          item
-   * @param new
-   *          item name
+   * @param new item name
    * @param filter
    *          files we want to deal with
    * @return new track
@@ -346,7 +348,8 @@ public final class TrackManager extends ItemManager {
     // register the new item
     Style newStyle = StyleManager.getInstance().registerStyle(sNewStyle);
     Track newTrack = registerTrack(track.getName(), track.getAlbum(), newStyle, track.getAuthor(),
-        track.getDuration(), track.getYear(), track.getOrder(), track.getType());
+        track.getDuration(), track.getYear(), track.getOrder(), track.getType(), track
+            .getAlbumArtist());
     postChange(track, newTrack, filter);
     // remove this item if no more references
     StyleManager.getInstance().cleanOrphanTracks(track.getStyle());
@@ -358,8 +361,7 @@ public final class TrackManager extends ItemManager {
    * 
    * @param old
    *          item
-   * @param new
-   *          item name
+   * @param new item name
    * @param filter
    *          files we want to deal with
    * @return new track or null if wrong format
@@ -397,7 +399,8 @@ public final class TrackManager extends ItemManager {
     // Register new item
     Year newYear = YearManager.getInstance().registerYear(newItem);
     Track newTrack = registerTrack(track.getName(), track.getAlbum(), track.getStyle(), track
-        .getAuthor(), track.getDuration(), newYear, track.getOrder(), track.getType());
+        .getAuthor(), track.getDuration(), newYear, track.getOrder(), track.getType(), track
+        .getAlbumArtist());
     postChange(track, newTrack, filter);
     return newTrack;
   }
@@ -407,8 +410,7 @@ public final class TrackManager extends ItemManager {
    * 
    * @param old
    *          item
-   * @param new
-   *          item name
+   * @param new item name
    * @param filter
    *          files we want to deal with
    * @return new track or null if wronf format
@@ -453,8 +455,7 @@ public final class TrackManager extends ItemManager {
    * 
    * @param old
    *          item
-   * @param new
-   *          item name
+   * @param new item name
    * @return new track or null if wrong format
    */
   public synchronized Track changeTrackRate(Track track, long lNew) {
@@ -477,8 +478,7 @@ public final class TrackManager extends ItemManager {
    * 
    * @param old
    *          item
-   * @param new
-   *          item order
+   * @param new item order
    * @param filter
    *          files we want to deal with
    * @return new track or null if wrong format
@@ -514,7 +514,8 @@ public final class TrackManager extends ItemManager {
     track.getAlbum().getTracksCache().remove(track);
 
     Track newTrack = registerTrack(track.getName(), track.getAlbum(), track.getStyle(), track
-        .getAuthor(), track.getDuration(), track.getYear(), lNewOrder, track.getType());
+        .getAuthor(), track.getDuration(), track.getYear(), lNewOrder, track.getType(), track
+        .getAlbumArtist());
     postChange(track, newTrack, filter);
     return newTrack;
   }
@@ -524,8 +525,7 @@ public final class TrackManager extends ItemManager {
    * 
    * @param old
    *          item
-   * @param new
-   *          item name
+   * @param new item name
    * @param filter
    *          files we want to deal with
    * @return new track
@@ -557,7 +557,8 @@ public final class TrackManager extends ItemManager {
     track.getAlbum().getTracksCache().remove(track);
 
     Track newTrack = registerTrack(sNewItem, track.getAlbum(), track.getStyle(), track.getAuthor(),
-        track.getDuration(), track.getYear(), track.getOrder(), track.getType());
+        track.getDuration(), track.getYear(), track.getOrder(), track.getType(), track
+            .getAlbumArtist());
     postChange(track, newTrack, filter);
     // if current track name is changed, notify it
     if (QueueModel.getPlayingFile() != null && QueueModel.getPlayingFile().getTrack().equals(track)) {
@@ -627,8 +628,8 @@ public final class TrackManager extends ItemManager {
    * @see org.jajuk.base.Observer#update(org.jajuk.base.Event)
    * 
    * public void update(Event event) { JajukEvents subject = event.getSubject();
-   * if (JajukEvents.FILE_NAME_CHANGED.equals(subject)) { Properties properties =
-   * event.getDetails(); File fNew = (File) properties.get(Const.DETAIL_NEW);
+   * if (JajukEvents.FILE_NAME_CHANGED.equals(subject)) { Properties properties
+   * = event.getDetails(); File fNew = (File) properties.get(Const.DETAIL_NEW);
    * File fileOld = (File) properties.get(Const.DETAIL_OLD); Track track =
    * fileOld.getTrack(); track.removeFile(fileOld); track.addFile(fNew); } }
    */
@@ -823,7 +824,8 @@ public final class TrackManager extends ItemManager {
       File playable = track.getPlayeableFile(hide);
       if (playable != null) {
         String sResu = track.getAny();
-        if (sResu.toLowerCase(Locale.getDefault()).indexOf(criteria.toLowerCase(Locale.getDefault())) != -1) {
+        if (sResu.toLowerCase(Locale.getDefault()).indexOf(
+            criteria.toLowerCase(Locale.getDefault())) != -1) {
           resu.add(new SearchResult(playable, playable.toStringSearch()));
         }
       }
@@ -846,5 +848,45 @@ public final class TrackManager extends ItemManager {
    */
   public synchronized void setAutocommit(boolean autocommit) {
     this.bAutocommit = autocommit;
+  }
+
+  /**
+   * @param track
+   * @param value
+   * @param filter
+   * @return
+   */
+  public Item changeTrackAlbumArtist(Track track, String sNewItem, Set<File> filter) throws JajukException{
+ // check there is actually a change
+    if (track.getAlbumArtist().equals(sNewItem)) {
+      return track;
+    }
+    List<File> alReady = null;
+    // check if files are accessible
+    alReady = track.getReadyFiles(filter);
+    if (alReady.size() == 0) {
+      throw new NoneAccessibleFileException(10);
+    }
+    // change tag in files
+    for (File file : alReady) {
+      Tag tag = Tag.getTagForFio(file.getFIO());
+      tag.setAlbumArtist(sNewItem);
+      if (bAutocommit) {
+        tag.commit();
+        // Force files resorting to ensure the sorting consistency
+        // Do it here only because the sorting is a long operation already done
+        // by the TrackManager.commit() method caller (PropertiesWizard for ie).
+        // When called for a table change for ie, the sorting must be done for
+        // each change.
+        FileManager.getInstance().forceSorting();
+      } else {
+        tagsToCommit.add(tag);
+      }
+    }
+    // Remove the track from the old album
+    track.getAlbum().getTracksCache().remove(track);
+
+    track.setAlbumArtist(sNewItem);
+    return track;
   }
 }

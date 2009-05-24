@@ -58,7 +58,7 @@ public class TracksTableModel extends JajukTableModel {
    *          columns names
    */
   public TracksTableModel() {
-    super(13);
+    super(14);
     setEditable(Conf.getBoolean(Const.CONF_TRACKS_TABLE_EDITION));
     // Columns names
     // First column is play icon, need to set a space character
@@ -74,6 +74,9 @@ public class TracksTableModel extends JajukTableModel {
 
     vColNames.add(Messages.getString(Const.PROPERTY_SEPARATOR + Const.XML_AUTHOR));
     idList.add(Const.XML_AUTHOR);
+    
+    vColNames.add(Messages.getString(Const.PROPERTY_SEPARATOR + Const.XML_TRACK_ALBUM_ARTIST));
+    idList.add(Const.XML_TRACK_ALBUM_ARTIST);
 
     vColNames.add(Messages.getString(Const.PROPERTY_SEPARATOR + Const.XML_STYLE));
     idList.add(Const.XML_STYLE);
@@ -151,6 +154,7 @@ public class TracksTableModel extends JajukTableModel {
     boolean bName = (columnsToShow != null && columnsToShow.contains(Const.XML_NAME));
     boolean bAlbum = (columnsToShow != null && columnsToShow.contains(Const.XML_ALBUM));
     boolean bAuthor = (columnsToShow != null && columnsToShow.contains(Const.XML_AUTHOR));
+    boolean bAlbumArtist = (columnsToShow != null && columnsToShow.contains(Const.XML_TRACK_ALBUM_ARTIST));
     boolean bStyle = (columnsToShow != null && columnsToShow.contains(Const.XML_STYLE));
     boolean bRate = (columnsToShow != null && columnsToShow.contains(Const.XML_TRACK_RATE));
     boolean bLength = (columnsToShow != null && columnsToShow.contains(Const.XML_TRACK_LENGTH));
@@ -211,73 +215,81 @@ public class TracksTableModel extends JajukTableModel {
         oValues[iRow][3] = "";
       }
       bCellEditable[iRow][3] = bHasATagEditor;
-
-      // Style
-      if (bStyle) {
-        oValues[iRow][4] = track.getStyle().getName2();
+      
+      // Album Artist
+      if (bAlbumArtist) {
+        oValues[iRow][4] = track.getAlbumArtist2();
       } else {
         oValues[iRow][4] = "";
       }
       bCellEditable[iRow][4] = bHasATagEditor;
 
-      // Rate
-      if (bRate) {
-        oValues[iRow][5] = track.getStars();
+      // Style
+      if (bStyle) {
+        oValues[iRow][5] = track.getStyle().getName2();
       } else {
         oValues[iRow][5] = "";
       }
-      bCellEditable[iRow][5] = false;
+      bCellEditable[iRow][5] = bHasATagEditor;
 
-      // Length
-      if (bLength) {
-        oValues[iRow][6] = new Duration(track.getDuration());
+      // Rate
+      if (bRate) {
+        oValues[iRow][6] = track.getStars();
       } else {
         oValues[iRow][6] = "";
       }
       bCellEditable[iRow][6] = false;
 
-      // Comment
-      if (bComment) {
-        oValues[iRow][7] = track.getValue(Const.XML_TRACK_COMMENT);
+      // Length
+      if (bLength) {
+        oValues[iRow][7] = new Duration(track.getDuration());
       } else {
         oValues[iRow][7] = "";
       }
-      bCellEditable[iRow][7] = bHasATagEditor;
+      bCellEditable[iRow][7] = false;
+
+      // Comment
+      if (bComment) {
+        oValues[iRow][8] = track.getValue(Const.XML_TRACK_COMMENT);
+      } else {
+        oValues[iRow][8] = "";
+      }
+      bCellEditable[iRow][8] = bHasATagEditor;
 
       // Date discovery
       if (bDiscovery) {
-        oValues[iRow][8] = track.getDiscoveryDate(); // show date using
+        oValues[iRow][9] = track.getDiscoveryDate(); // show date using
         // default local format
         // and not technical
         // representation
-        bCellEditable[iRow][8] = false;
+        bCellEditable[iRow][9] = false;
       } else {
-        oValues[iRow][8] = "";
+        oValues[iRow][9] = "";
       }
 
       // Order
       if (bOrder) {
-        oValues[iRow][9] = track.getOrder();
-      } else {
-        oValues[iRow][9] = "";
-      }
-      bCellEditable[iRow][9] = bHasATagEditor;
-
-      // Year
-      if (bYear) {
-        oValues[iRow][10] = track.getYear().getValue();
+        oValues[iRow][10] = track.getOrder();
       } else {
         oValues[iRow][10] = "";
       }
       bCellEditable[iRow][10] = bHasATagEditor;
 
-      // Hits
-      if (bHits) {
-        oValues[iRow][11] = track.getHits();
+      // Year
+      if (bYear) {
+        oValues[iRow][11] = track.getYear().getValue();
       } else {
         oValues[iRow][11] = "";
       }
-      bCellEditable[iRow][11] = false;
+      bCellEditable[iRow][11] = bHasATagEditor;
+
+      // Hits
+      if (bHits) {
+        oValues[iRow][12] = track.getHits();
+      } else {
+        oValues[iRow][12] = "";
+      }
+      bCellEditable[iRow][12] = false;
 
       // Files
       if (bFiles) {

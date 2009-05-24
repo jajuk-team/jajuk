@@ -50,7 +50,7 @@ public class Track extends LogicalItem implements Comparable<Track> {
   /** Track style */
   private final Style style;
 
-  /** Track author in sec */
+  /** Track author */
   private final Author author;
 
   /** Track length */
@@ -76,10 +76,10 @@ public class Track extends LogicalItem implements Comparable<Track> {
    * @param length
    * @param sYear
    * @param type
-   * @param sAdditionDate
+   * @param sAlbumArtist
    */
   public Track(String sId, String sName, Album album, Style style, Author author, long length,
-      Year year, long lOrder, Type type) {
+      Year year, long lOrder, Type type, String sAlbumArtist) {
     super(sId, sName);
     // album
     this.album = album;
@@ -90,6 +90,8 @@ public class Track extends LogicalItem implements Comparable<Track> {
     // author
     this.author = author;
     setProperty(Const.XML_AUTHOR, author.getID());
+    // albumArtist
+    setProperty(Const.XML_TRACK_ALBUM_ARTIST, sAlbumArtist);
     // Length
     this.length = length;
     setProperty(Const.XML_TRACK_LENGTH, length);
@@ -112,12 +114,14 @@ public class Track extends LogicalItem implements Comparable<Track> {
    */
   @Override
   public String toString() {
-    StringBuilder sOut = new StringBuilder(); 
-      
-      sOut.append("Track[ID=").append(getID()).append(" Name={{").append(getName()).append("}} ").append(album).append(" ").append(style
-       ).append(" ").append(author).append(" Length=").append(length).append(" Year=").append(year.getValue()).append(" Rate=").append(getRate()
-       ).append(" ").append(type).append(" Hits=").append(getHits()).append(" Addition date=").append(getDiscoveryDate()).append(" Comment="
-       ).append(getComment()).append(" order=").append(getOrder()).append(" Nb of files=").append(alFiles.size()).append("]");
+    StringBuilder sOut = new StringBuilder();
+
+    sOut.append("Track[ID=").append(getID()).append(" Name={{").append(getName()).append("}} ")
+        .append(album).append(" ").append(style).append(" ").append(author).append(" Length=")
+        .append(length).append(" Year=").append(year.getValue()).append(" Rate=").append(getRate())
+        .append(" ").append(type).append(" Hits=").append(getHits()).append(" Addition date=")
+        .append(getDiscoveryDate()).append(" Comment=").append(getComment()).append(" order=")
+        .append(getOrder()).append(" Nb of files=").append(alFiles.size()).append("]");
     for (int i = 0; i < alFiles.size(); i++) {
       sOut.append('\n').append(alFiles.get(i).toString());
     }
@@ -271,6 +275,27 @@ public class Track extends LogicalItem implements Comparable<Track> {
    */
   public long getOrder() {
     return getLongValue(Const.XML_TRACK_ORDER);
+  }
+
+  /**
+   * Get album artist
+   * 
+   * @return
+   */
+  public String getAlbumArtist() {
+    return getStringValue(Const.XML_TRACK_ALBUM_ARTIST);
+  }
+  
+  /**
+   * Get translated album artist
+   * 
+   * @return
+   */
+  public String getAlbumArtist2() {
+    if(getStringValue(Const.XML_TRACK_ALBUM_ARTIST).equals(Const.UNKNOWN_AUTHOR)){
+      return Messages.getString(getStringValue(Const.XML_TRACK_ALBUM_ARTIST));
+    }
+    return getStringValue(Const.XML_TRACK_ALBUM_ARTIST);
   }
 
   /**
@@ -574,6 +599,13 @@ public class Track extends LogicalItem implements Comparable<Track> {
     // Remove trailing ','
     sb.deleteCharAt(sb.length() - 1);
     return sb.toString();
+  }
+
+  /**
+   * @param sAlbumArtist
+   */
+  public void setAlbumArtist(String sAlbumArtist) {
+    setProperty(Const.XML_TRACK_ALBUM_ARTIST, sAlbumArtist);
   }
 
 }

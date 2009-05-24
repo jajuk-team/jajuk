@@ -84,12 +84,12 @@ public class LocalAlbumThumbnail extends AbstractThumbnail {
   /**
    * Constructor
    * 
-   * @param album :
-   *          associated album
-   * @param size :
-   *          size of the thumbnail
-   * @param bShowText:
-   *          Display full album / author information under the icon or not ?
+   * @param album
+   *          : associated album
+   * @param size
+   *          : size of the thumbnail
+   * @param bShowText
+   *          : Display full album / author information under the icon or not ?
    */
   public LocalAlbumThumbnail(Album album, int size, boolean bShowText) {
     super(size);
@@ -115,9 +115,13 @@ public class LocalAlbumThumbnail extends AbstractThumbnail {
     if (bShowFullText) {
       int iRows = 7 + 7 * ((size / 50) - 1);
 
-      Author author = AuthorManager.getInstance().getAssociatedAuthors(album).iterator().next();
-      jlAuthor = new JLabel(UtilString.getLimitedString(author.getName2(), iRows));
-      jlAuthor.setToolTipText(author.getName2());
+      String albumArtist = album.getAnyTrack().getAlbumArtist();
+      if (albumArtist.equals(Const.UNKNOWN_AUTHOR)) {
+        Author author = AuthorManager.getInstance().getAssociatedAuthors(album).iterator().next();
+        albumArtist = author.getName2();
+      }
+      jlAuthor = new JLabel(UtilString.getLimitedString(albumArtist, iRows));
+      jlAuthor.setToolTipText(albumArtist);
       jlAuthor.setFont(FontManager.getInstance().getFont(JajukFont.BOLD));
 
       // we have to use a empty border to avoid getting default border
@@ -125,7 +129,7 @@ public class LocalAlbumThumbnail extends AbstractThumbnail {
       jlAlbum = new JLabel(UtilString.getLimitedString(album.getName2(), iRows));
       jlAlbum.setToolTipText(album.getName2());
       jlAlbum.setBorder(new EmptyBorder(0, 0, 0, 0));
-      
+
       // Add items
       setLayout(new MigLayout("", "[grow]", "[" + (size + 10) + "!][grow][grow]"));
       add(jlIcon, "wrap,center");

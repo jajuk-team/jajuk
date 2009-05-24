@@ -55,7 +55,7 @@ public class FilesTableModel extends JajukTableModel {
    *          columns names
    */
   public FilesTableModel() {
-    super(18);
+    super(19);
     setEditable(Conf.getBoolean(Const.CONF_FILES_TABLE_EDITION));
     // Columns names
     // First column is play icon, need to set a space character
@@ -71,6 +71,9 @@ public class FilesTableModel extends JajukTableModel {
 
     vColNames.add(Messages.getString(Const.PROPERTY_SEPARATOR + Const.XML_AUTHOR));
     idList.add(Const.XML_AUTHOR);
+
+    vColNames.add(Messages.getString(Const.PROPERTY_SEPARATOR + Const.XML_TRACK_ALBUM_ARTIST));
+    idList.add(Const.XML_TRACK_ALBUM_ARTIST);
 
     vColNames.add(Messages.getString(Const.PROPERTY_SEPARATOR + Const.XML_STYLE));
     idList.add(Const.XML_STYLE);
@@ -174,6 +177,8 @@ public class FilesTableModel extends JajukTableModel {
     boolean bTrackName = (columnsToShow != null && columnsToShow.contains(Const.XML_TRACK));
     boolean bAlbum = (columnsToShow != null && columnsToShow.contains(Const.XML_ALBUM));
     boolean bAuthor = (columnsToShow != null && columnsToShow.contains(Const.XML_AUTHOR));
+    boolean bAlbumArtist = (columnsToShow != null && columnsToShow
+        .contains(Const.XML_TRACK_ALBUM_ARTIST));
     boolean bStyle = (columnsToShow != null && columnsToShow.contains(Const.XML_STYLE));
     boolean bRate = (columnsToShow != null && columnsToShow.contains(Const.XML_TRACK_RATE));
     boolean bLength = (columnsToShow != null && columnsToShow.contains(Const.XML_TRACK_LENGTH));
@@ -236,118 +241,126 @@ public class FilesTableModel extends JajukTableModel {
       }
       bCellEditable[iRow][3] = bHasATagEditor;
 
-      // Style
-      if (bStyle) {
-        oValues[iRow][4] = file.getTrack().getStyle().getName2();
+      // AlbumArtist
+      if (bAlbumArtist) {
+        oValues[iRow][4] = file.getTrack().getAlbumArtist2();
       } else {
         oValues[iRow][4] = "";
       }
       bCellEditable[iRow][4] = bHasATagEditor;
 
-      // Rate
-      if (bRate) {
-        oValues[iRow][5] = file.getTrack().getStars();
+      // Style
+      if (bStyle) {
+        oValues[iRow][5] = file.getTrack().getStyle().getName2();
       } else {
         oValues[iRow][5] = "";
       }
-      bCellEditable[iRow][5] = false;
+      bCellEditable[iRow][5] = bHasATagEditor;
 
-      // Length
-      if (bLength) {
-        oValues[iRow][6] = new Duration(file.getTrack().getDuration());
+      // Rate
+      if (bRate) {
+        oValues[iRow][6] = file.getTrack().getStars();
       } else {
         oValues[iRow][6] = "";
       }
       bCellEditable[iRow][6] = false;
 
-      // Device
-      if (bDevice) {
-        oValues[iRow][7] = file.getDirectory().getDevice().getName();
+      // Length
+      if (bLength) {
+        oValues[iRow][7] = new Duration(file.getTrack().getDuration());
       } else {
         oValues[iRow][7] = "";
       }
       bCellEditable[iRow][7] = false;
 
-      // File name
-      if (bFileName) {
-        oValues[iRow][8] = file.getName();
+      // Device
+      if (bDevice) {
+        oValues[iRow][8] = file.getDirectory().getDevice().getName();
       } else {
         oValues[iRow][8] = "";
       }
-      bCellEditable[iRow][8] = true;
+      bCellEditable[iRow][8] = false;
 
-      // Comment
-      if (bComment) {
-        oValues[iRow][9] = file.getTrack().getValue(Const.XML_TRACK_COMMENT);
+      // File name
+      if (bFileName) {
+        oValues[iRow][9] = file.getName();
       } else {
         oValues[iRow][9] = "";
       }
-      bCellEditable[iRow][9] = bHasATagEditor;
+      bCellEditable[iRow][9] = true;
+
+      // Comment
+      if (bComment) {
+        oValues[iRow][10] = file.getTrack().getValue(Const.XML_TRACK_COMMENT);
+      } else {
+        oValues[iRow][10] = "";
+      }
+      bCellEditable[iRow][10] = bHasATagEditor;
 
       // Quality
       if (bQuality) {
         long lQuality = file.getQuality();
-        oValues[iRow][10] = lQuality;
-      } else {
-        oValues[iRow][10] = "";
-      }
-      bCellEditable[iRow][10] = false;
-
-      // Size, we want to keep 2 decimals to the value in MB
-      if (bSize) {
-        oValues[iRow][11] = Math.round(file.getSize() / 10485.76) / 100f;
+        oValues[iRow][11] = lQuality;
       } else {
         oValues[iRow][11] = "";
       }
       bCellEditable[iRow][11] = false;
 
-      // Order
-      if (bOrder) {
-        oValues[iRow][12] = file.getTrack().getOrder();
+      // Size, we want to keep 2 decimals to the value in MB
+      if (bSize) {
+        oValues[iRow][12] = Math.round(file.getSize() / 10485.76) / 100f;
       } else {
         oValues[iRow][12] = "";
       }
-      bCellEditable[iRow][12] = bHasATagEditor;
+      bCellEditable[iRow][12] = false;
 
-      // year
-      if (bYear) {
-        oValues[iRow][13] = file.getTrack().getYear();
+      // Order
+      if (bOrder) {
+        oValues[iRow][13] = file.getTrack().getOrder();
       } else {
         oValues[iRow][13] = "";
       }
       bCellEditable[iRow][13] = bHasATagEditor;
 
-      // directory full path
-      if (bDirectory) {
-        oValues[iRow][14] = file.getDirectory().getAbsolutePath();
+      // year
+      if (bYear) {
+        oValues[iRow][14] = file.getTrack().getYear();
       } else {
         oValues[iRow][14] = "";
       }
-      bCellEditable[iRow][14] = false;
+      bCellEditable[iRow][14] = bHasATagEditor;
 
-      // file date
-      if (bFileDate) {
-        oValues[iRow][15] = file.getDateValue(Const.XML_FILE_DATE);
+      // directory full path
+      if (bDirectory) {
+        oValues[iRow][15] = file.getDirectory().getAbsolutePath();
       } else {
         oValues[iRow][15] = "";
       }
       bCellEditable[iRow][15] = false;
 
-      // Hits
-      if (bHits) {
-        oValues[iRow][16] = file.getTrack().getHits();
+      // file date
+      if (bFileDate) {
+        oValues[iRow][16] = file.getDateValue(Const.XML_FILE_DATE);
       } else {
         oValues[iRow][16] = "";
       }
       bCellEditable[iRow][16] = false;
 
-      // Discovery date
-      if (bDiscovery) {
-        oValues[iRow][17] = file.getTrack().getDiscoveryDate();
+      // Hits
+      if (bHits) {
+        oValues[iRow][17] = file.getTrack().getHits();
       } else {
         oValues[iRow][17] = "";
       }
       bCellEditable[iRow][17] = false;
+
+      // Discovery date
+      if (bDiscovery) {
+        oValues[iRow][18] = file.getTrack().getDiscoveryDate();
+      } else {
+        oValues[iRow][18] = "";
+      }
+      bCellEditable[iRow][18] = false;
 
       // -- Custom properties now --
       // files custom tags

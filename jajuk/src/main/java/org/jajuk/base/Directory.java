@@ -308,6 +308,7 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
     long lQuality = tag.getQuality();
     String sComment = tag.getComment();
     long lOrder = tag.getOrder();
+    String sAblumArtist=tag.getAlbumArtist();
 
     if (fileRef == null && reporter != null) {
       // stats, do it here and not
@@ -317,7 +318,7 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
     }
 
     registerFile(music, sId, sTrackName, sAlbumName, sAuthorName, sStyle, length, sYear, lQuality,
-        sComment, lOrder);
+        sComment, lOrder, sAblumArtist);
   }
 
   /**
@@ -335,7 +336,7 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
    */
   private void registerFile(java.io.File music, String sId, String sTrackName, String sAlbumName,
       String sAuthorName, String sStyle, long length, String sYear, long lQuality, String sComment,
-      long lOrder) {
+      long lOrder, String sAlbumArtist) {
     Album album = AlbumManager.getInstance().registerAlbum(sAlbumName);
     Style style = StyleManager.getInstance().registerStyle(sStyle);
     Year year = YearManager.getInstance().registerYear(sYear);
@@ -344,7 +345,7 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
     // Store number of tracks in collection
     long trackNumber = TrackManager.getInstance().getElementCount();
     Track track = TrackManager.getInstance().registerTrack(sTrackName, album, style, author,
-        length, year, lOrder, type);
+        length, year, lOrder, type, sAlbumArtist);
 
     // Note date for file date property. CAUTION: do not try to
     // check current date to accelerate refreshing if file has not

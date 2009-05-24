@@ -173,7 +173,7 @@ public class Tag {
    * @return album artist
    */
   public String getAlbumArtist() {
-    String sAlbumArtist = Const.UNKNOWN_AUTHOR;
+    String sAlbumArtist =Const.UNKNOWN_AUTHOR;
     // if the type doesn't support tags ( like wav )
     if (tagImpl == null) {
       return sAlbumArtist;

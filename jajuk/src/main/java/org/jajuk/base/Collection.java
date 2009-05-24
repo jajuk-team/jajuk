@@ -194,23 +194,31 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
           + "'>\n");
 
       // Devices
-      writeItemList(bw, DeviceManager.getInstance().toXML(), DeviceManager.getInstance().getDevicesIterator(), DeviceManager.getInstance().getLabel(), 40);
+      writeItemList(bw, DeviceManager.getInstance().toXML(), DeviceManager.getInstance()
+          .getDevicesIterator(), DeviceManager.getInstance().getLabel(), 40);
 
       // Styles
-      writeItemList(bw, StyleManager.getInstance().toXML(), StyleManager.getInstance().getStylesIterator(), StyleManager.getInstance().getLabel(), 40);
+      writeItemList(bw, StyleManager.getInstance().toXML(), StyleManager.getInstance()
+          .getStylesIterator(), StyleManager.getInstance().getLabel(), 40);
 
       // Authors
-      writeItemList(bw, AuthorManager.getInstance().toXML(), AuthorManager.getInstance().getAuthorsIterator(), AuthorManager.getInstance().getLabel(), 40);
+      writeItemList(bw, AuthorManager.getInstance().toXML(), AuthorManager.getInstance()
+          .getAuthorsIterator(), AuthorManager.getInstance().getLabel(), 40);
 
       // Albums
-      writeItemList(bw, AlbumManager.getInstance().toXML(), AlbumManager.getInstance().getAlbumsIterator(), AlbumManager.getInstance().getLabel(), 40);
+      writeItemList(bw, AlbumManager.getInstance().toXML(), AlbumManager.getInstance()
+          .getAlbumsIterator(), AlbumManager.getInstance().getLabel(), 40);
 
       // Years
-      writeItemList(bw, YearManager.getInstance().toXML(), YearManager.getInstance().getYearsIterator(), YearManager.getInstance().getLabel(), 40);
+      writeItemList(bw, YearManager.getInstance().toXML(), YearManager.getInstance()
+          .getYearsIterator(), YearManager.getInstance().getLabel(), 40);
 
       // Tracks
-      // Cannot use method as we have a bit of special handling inside the loop here
-      // writeItemList(bw, TrackManager.getInstance().toXML(), TrackManager.getInstance().getTracksIterator(), TrackManager.getInstance().getLabel(), 200);
+      // Cannot use method as we have a bit of special handling inside the loop
+      // here
+      // writeItemList(bw, TrackManager.getInstance().toXML(),
+      // TrackManager.getInstance().getTracksIterator(),
+      // TrackManager.getInstance().getLabel(), 200);
       ReadOnlyIterator<Track> tracks = TrackManager.getInstance().getTracksIterator();
       bw.write(TrackManager.getInstance().toXML());
       while (tracks.hasNext()) {
@@ -221,15 +229,18 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
         }
       }
       writeString(bw, TrackManager.getInstance().getLabel(), 200);
-      
+
       // Directories
-      writeItemList(bw, DirectoryManager.getInstance().toXML(), DirectoryManager.getInstance().getDirectoriesIterator(), DirectoryManager.getInstance().getLabel(), 100);
+      writeItemList(bw, DirectoryManager.getInstance().toXML(), DirectoryManager.getInstance()
+          .getDirectoriesIterator(), DirectoryManager.getInstance().getLabel(), 100);
 
       // Files
-      writeItemList(bw, FileManager.getInstance().toXML(), FileManager.getInstance().getFilesIterator(), FileManager.getInstance().getLabel(), 200);
+      writeItemList(bw, FileManager.getInstance().toXML(), FileManager.getInstance()
+          .getFilesIterator(), FileManager.getInstance().getLabel(), 200);
 
       // Playlists
-      writeItemList(bw, PlaylistManager.getInstance().toXML(), PlaylistManager.getInstance().getPlaylistsIterator(), PlaylistManager.getInstance().getLabel(), 200);
+      writeItemList(bw, PlaylistManager.getInstance().toXML(), PlaylistManager.getInstance()
+          .getPlaylistsIterator(), PlaylistManager.getInstance().getLabel(), 200);
 
       // end of collection
       bw.write("</" + Const.XML_COLLECTION + TAG_CLOSE_NEWLINE);
@@ -240,13 +251,14 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
     Log.debug("Collection commited in " + (System.currentTimeMillis() - time) + " ms");
   }
 
-  private static void writeItemList(BufferedWriter bw, String header, ReadOnlyIterator<? extends Item> items, String footer, int buffer) throws IOException {
+  private static void writeItemList(BufferedWriter bw, String header,
+      ReadOnlyIterator<? extends Item> items, String footer, int buffer) throws IOException {
     bw.write(header);
-    
+
     while (items.hasNext()) {
       bw.write(items.next().toXml());
     }
-    
+
     writeString(bw, footer, buffer);
   }
 
@@ -260,14 +272,16 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
 
   /**
    * Parse collection.xml file and put all collection information into memory
-   * @throws SAXException 
-   * @throws ParserConfigurationException 
-   * @throws JajukException 
-   * @throws IOException 
-   * @throws MalformedURLException 
+   * 
+   * @throws SAXException
+   * @throws ParserConfigurationException
+   * @throws JajukException
+   * @throws IOException
+   * @throws MalformedURLException
    * 
    */
-  public static void load(File file) throws SAXException, ParserConfigurationException, JajukException, IOException {
+  public static void load(File file) throws SAXException, ParserConfigurationException,
+      JajukException, IOException {
     Log.debug("Loading: " + file.getName());
     lTime = System.currentTimeMillis();
     SAXParserFactory spf = SAXParserFactory.newInstance();
@@ -658,6 +672,21 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
               Log.debug(Messages.getString("Error.137") + ":" + sTrackName); // wrong
             }
           }
+
+          // Idem for AlbumArtist
+          String sAlbumArtist = null;
+          try {
+            sAlbumArtist = attributes.getValue(Const.XML_TRACK_ALBUM_ARTIST);
+          } catch (Exception e) {
+            if (Log.isDebugEnabled()) {
+              // wrong format
+              Log.debug(Messages.getString("Error.137") + ":" + sTrackName); // wrong
+            }
+          }
+          if (sAlbumArtist == null) {
+            sAlbumArtist = Const.UNKNOWN_AUTHOR;
+          }
+
           // UPGRADE test
           sRightID = sID;
           if (needCheckID) {
@@ -674,7 +703,7 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
           Date dAdditionDate = ADDITION_FORMATTER.parse(attributes.getValue(attributes
               .getIndex(Const.XML_TRACK_DISCOVERY_DATE)));
           track = TrackManager.getInstance().registerTrack(sRightID, sTrackName, album, style,
-              author, length, year, lOrder, type);
+              author, length, year, lOrder, type, sAlbumArtist);
           TrackManager.getInstance().changeTrackRate(track,
               UtilString.fastLongParser(attributes.getValue(Const.XML_TRACK_RATE)));
           track.setHits(UtilString.fastLongParser(attributes.getValue(Const.XML_TRACK_HITS)));
@@ -809,7 +838,8 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
     } catch (Exception re) {
       StringBuilder sAttributes = new StringBuilder();
       for (int i = 0; i < attributes.getLength(); i++) {
-        sAttributes.append('\n').append(attributes.getQName(i)).append('=').append(attributes.getValue(i));
+        sAttributes.append('\n').append(attributes.getQName(i)).append('=').append(
+            attributes.getValue(i));
       }
       Log.error(5, sAttributes.toString(), re);
     }
