@@ -184,8 +184,7 @@ public class QueueView extends PlaylistView {
     Color queueHighlighterColor = null;
     if (scheme.isDark()) {
       queueHighlighterColor = scheme.getUltraLightColor();
-    }
-    else{
+    } else {
       queueHighlighterColor = scheme.getLineColor();
     }
     ColorHighlighter colorHighlighter = new ColorHighlighter(queueHighlighterColor, null,
@@ -393,9 +392,10 @@ public class QueueView extends PlaylistView {
     editorModel.setItems(QueueModel.getQueue());
     editorModel.setPlanned(QueueModel.getPlanned());
     ((JajukTableModel) editorTable.getModel()).populateModel(editorTable.getColumnsConf());
+    // save selection to avoid reseting selection the user is doing
     int[] rows = editorTable.getSelectedRows();
-    // save selection
-    editorModel.fireTableDataChanged();// refresh
+    // force table refresh
+    editorModel.fireTableDataChanged();
     bSettingSelection = true;
     for (int element : rows) {
       // set saved selection after a refresh

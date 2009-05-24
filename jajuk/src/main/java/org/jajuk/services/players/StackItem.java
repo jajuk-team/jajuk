@@ -135,7 +135,7 @@ public class StackItem implements Cloneable {
   /**
    * Clone method
    * 
-   * @return a clonned stack item
+   * @return a cloned stack item
    */
   @Override
   public Object clone() throws CloneNotSupportedException {
