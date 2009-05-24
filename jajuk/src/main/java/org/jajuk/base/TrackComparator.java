@@ -124,11 +124,13 @@ public class TrackComparator implements Comparator<Track>, Serializable {
       sHashCompare = new StringBuilder().append(
           UtilString.padNumber(999999999 - track.getHits(), 10)).append(track.getName()).toString();
     }
-    // Order / track name
+    // Disc number / Order / track name
     else if (comparatorType == TrackComparatorType.ORDER) {
       sHashCompare = new StringBuilder().append(
-          UtilString.padNumber(track.getOrder(), 5) + track.getName()).toString();
+          UtilString.padNumber(track.getDiscNumber(), 5)
+              + UtilString.padNumber(track.getOrder(), 5) + track.getName()).toString();
     }
+
     return sHashCompare;
   }
 
