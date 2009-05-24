@@ -39,7 +39,6 @@
         	<extension name='VLDocking' href='vldocking.jnlp'/>
         	<extension name='JIntellitype' href='jintellitype.jnlp'/>
         	<extension name='Cobra' href='cobra.jnlp'/>
-        	<extension name='Forms' href='forms.jnlp'/>
         	<extension name='Jna' href='jna.jnlp'/>
         	<extension name='dbus' href='dbus.jnlp'/>
        </resources>

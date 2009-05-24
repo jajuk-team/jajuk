@@ -21,32 +21,19 @@ package org.jajuk.ui.widgets;
 
 import static org.jajuk.ui.actions.JajukActions.CONFIGURE_DJS;
 import static org.jajuk.ui.actions.JajukActions.FINISH_ALBUM;
-import static org.jajuk.ui.actions.JajukActions.FORWARD_TRACK;
 import static org.jajuk.ui.actions.JajukActions.MUTE_STATE;
 import static org.jajuk.ui.actions.JajukActions.NEXT_ALBUM;
 import static org.jajuk.ui.actions.JajukActions.NEXT_TRACK;
 import static org.jajuk.ui.actions.JajukActions.PAUSE_RESUME_TRACK;
 import static org.jajuk.ui.actions.JajukActions.PREVIOUS_ALBUM;
 import static org.jajuk.ui.actions.JajukActions.PREVIOUS_TRACK;
-import static org.jajuk.ui.actions.JajukActions.REWIND_TRACK;
 import static org.jajuk.ui.actions.JajukActions.STOP_TRACK;
-
-import com.jgoodies.forms.builder.PanelBuilder;
-import com.jgoodies.forms.layout.CellConstraints;
-import com.jgoodies.forms.layout.FormLayout;
-
 import ext.DropDownButton;
-import ext.SwingWorker;
 import ext.scrollablepopupmenu.XCheckedButton;
 import ext.scrollablepopupmenu.XJPopupMenu;
-import info.clearthought.layout.TableLayout;
 
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ItemListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.util.HashSet;
@@ -54,46 +41,31 @@ import java.util.Iterator;
 import java.util.Set;
 
 import javax.swing.Action;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBoxMenuItem;
-import javax.swing.JLabel;
-import javax.swing.JList;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JSlider;
 import javax.swing.JToolBar;
-import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
-import javax.swing.plaf.basic.BasicComboBoxRenderer;
 
-import org.jajuk.base.FileManager;
-import org.jajuk.base.SearchResult;
-import org.jajuk.base.SearchResult.SearchResultType;
+import net.miginfocom.swing.MigLayout;
+
 import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.events.Observer;
-import org.jajuk.services.bookmark.History;
-import org.jajuk.services.bookmark.HistoryItem;
-import org.jajuk.services.dj.Ambience;
-import org.jajuk.services.dj.AmbienceManager;
 import org.jajuk.services.dj.DigitalDJ;
 import org.jajuk.services.dj.DigitalDJManager;
 import org.jajuk.services.players.Player;
 import org.jajuk.services.players.QueueModel;
-import org.jajuk.services.players.StackItem;
 import org.jajuk.services.webradio.WebRadio;
 import org.jajuk.services.webradio.WebRadioManager;
 import org.jajuk.ui.actions.ActionManager;
@@ -101,16 +73,13 @@ import org.jajuk.ui.actions.ActionUtil;
 import org.jajuk.ui.actions.JajukAction;
 import org.jajuk.ui.actions.JajukActions;
 import org.jajuk.ui.actions.MuteAction;
-import org.jajuk.ui.helpers.FontManager;
 import org.jajuk.ui.helpers.PlayerStateMediator;
-import org.jajuk.ui.helpers.FontManager.JajukFont;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilFeatures;
-import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 import org.jdesktop.swingx.JXPanel;
 
@@ -120,23 +89,8 @@ import org.jdesktop.swingx.JXPanel;
  * Singleton
  * </p>
  */
-public class CommandJPanel extends JXPanel implements ActionListener, ListSelectionListener,
-    ChangeListener, Observer, MouseWheelListener {
-
-  /**
-   * 
-   */
-  private static final String B_P_HTML = "</b></p></html>";
-
-  /**
-   * 
-   */
-  private static final String P_B = "<p><b>";
-
-  /**
-   * 
-   */
-  private static final String HTML = "<html>";
+public class CommandJPanel extends JXPanel implements ActionListener, ChangeListener, Observer,
+    MouseWheelListener {
 
   private static final long serialVersionUID = 1L;
 
@@ -144,9 +98,6 @@ public class CommandJPanel extends JXPanel implements ActionListener, ListSelect
   private static CommandJPanel command;
 
   // widgets declaration
-  private SearchBox sbSearch;
-
-  private SteppedComboBox jcbHistory;
 
   private JajukToggleButton jbRepeat;
 
@@ -188,8 +139,6 @@ public class CommandJPanel extends JXPanel implements ActionListener, ListSelect
 
   private JPopupMenu popupDDJ;
 
-  private SteppedComboBox ambiencesCombo;
-
   private JButton jbPrevious;
 
   private JButton jbNext;
@@ -208,7 +157,7 @@ public class CommandJPanel extends JXPanel implements ActionListener, ListSelect
 
   private PreferenceToolbar evaltoobar;
 
-  private final JajukToggleButton jbMute;
+  private SizedButton jbMute;
 
   // variables declaration
   /** Repeat mode flag */
@@ -225,51 +174,6 @@ public class CommandJPanel extends JXPanel implements ActionListener, ListSelect
 
   /** Forward or rewind jump size in track percentage */
   static final float JUMP_SIZE = 0.1f;
-
-  /** Ambience combo listener */
-  class AmbienceListener implements ActionListener {
-    public void actionPerformed(ActionEvent ae) {
-      // Ambience Configuration
-      if (ambiencesCombo.getSelectedIndex() == 0) {
-        // display the wizard
-        try {
-          ActionManager.getAction(JajukActions.CONFIGURE_AMBIENCES).perform(null);
-        } catch (Exception e) {
-          Log.error(e);
-        }
-        // Reset combo to last selected item. We do this to avoid to select the
-        // "0" item that is not an ambience
-        ambiencesCombo.removeActionListener(ambienceListener);
-        Ambience defaultAmbience = AmbienceManager.getInstance().getAmbience(
-            Conf.getString(Const.CONF_DEFAULT_AMBIENCE));
-        if (defaultAmbience != null) {
-          for (int i = 0; i < ambiencesCombo.getItemCount(); i++) {
-            if (((JLabel) ambiencesCombo.getItemAt(i)).getText().equals(defaultAmbience.getName())) {
-              ambiencesCombo.setSelectedIndex(i);
-              break;
-            }
-          }
-        } else {
-          ambiencesCombo.setSelectedIndex(1);
-        }
-        ambiencesCombo.addActionListener(ambienceListener);
-      }
-      // Selected 'Any" ambience
-      else if (ambiencesCombo.getSelectedIndex() == 1) {
-        // reset default ambience
-        Conf.setProperty(Const.CONF_DEFAULT_AMBIENCE, "");
-        ObservationManager.notify(new JajukEvent(JajukEvents.AMBIENCES_SELECTION_CHANGE));
-      } else {// Selected an ambience
-        Ambience ambience = AmbienceManager.getInstance().getAmbienceByName(
-            ((JLabel) ambiencesCombo.getSelectedItem()).getText());
-        Conf.setProperty(Const.CONF_DEFAULT_AMBIENCE, ambience.getID());
-        ObservationManager.notify(new JajukEvent(JajukEvents.AMBIENCES_SELECTION_CHANGE));
-      }
-    }
-  }
-
-  /** An instance of the ambience combo listener */
-  AmbienceListener ambienceListener;
 
   private JajukToggleButton jbRepeatAll;
 
@@ -289,66 +193,25 @@ public class CommandJPanel extends JXPanel implements ActionListener, ListSelect
    */
   CommandJPanel() {
     super();
-
-    // mute
-    jbMute = new JajukToggleButton(ActionManager.getAction(MUTE_STATE));
   }
 
   public void initUI() {
     // Instanciate the PlayerStateMediator to listen for player basic controls
     PlayerStateMediator.getInstance();
 
-    // Search
-    double[][] sizeSearch = new double[][] { { 3, TableLayout.PREFERRED, 3, 100 }, { 23 } };
-    JPanel jpSearch = new JPanel(new TableLayout(sizeSearch));
-    sbSearch = new SearchBox(CommandJPanel.this);
-    jpSearch.add(sbSearch, "3,0");
+    // mute
+    jbMute = new SizedButton(ActionManager.getAction(MUTE_STATE), false) {
+      private static final long serialVersionUID = -1;
 
-    // History
-    JPanel jpHistory = new JPanel();
-    jcbHistory = new SteppedComboBox();
-    JLabel jlHistory = new JLabel(IconLoader.getIcon(JajukIcons.HISTORY));
-    jlHistory.setToolTipText(Messages.getString("CommandJPanel.0"));
-    // - Increase rating button
-    JajukAction actionIncRate = ActionManager.getAction(JajukActions.INC_RATE);
-    actionIncRate.setName(null);
-    final JPopupMenu jpmIncRating = new JPopupMenu();
-    for (int i = 3; i >= -3; i--) {
-      final int j = i;
-      JMenuItem jmi = new JMenuItem(Integer.toString(i));
-      if (Conf.getInt(Const.CONF_INC_RATING) == i) {
-        jmi.setFont(FontManager.getInstance().getFont(JajukFont.BOLD));
+      @Override
+      public int getW() {
+        return 28;
       }
-      // Store selected value
-      jmi.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          Conf.setProperty(Const.CONF_INC_RATING, "" + j);
-        }
-      });
-      jpmIncRating.add(jmi);
-    }
-    // we use a combo box model to make sure we get good performances after
-    // rebuilding the entire model like after a refresh
-    jcbHistory.setModel(new DefaultComboBoxModel(History.getInstance().getHistory()));
-    // None selection because if we start in stop mode, a selection of the
-    // first item will not launch the track because the selected item is
-    // still the same and no action event is thrown (Java >= 1.6)
-    jcbHistory.setSelectedItem(null);
-    int iWidth = (int) (Toolkit.getDefaultToolkit().getScreenSize().getWidth() / 2);
-    // size of popup
-    jcbHistory.setPopupWidth(iWidth);
-    // size of the combo itself, keep it! as text can be very long
-    jcbHistory.setPreferredSize(new Dimension(250, 25));
-    jcbHistory.setMinimumSize(new Dimension(0, 25));
-    jcbHistory.setToolTipText(Messages.getString("CommandJPanel.0"));
-    jcbHistory.addActionListener(CommandJPanel.this);
-    evaltoobar = new PreferenceToolbar();
-    double[][] sizeHistory = new double[][] {
-        { 3, TableLayout.PREFERRED, 3, TableLayout.FILL, 10, TableLayout.PREFERRED, 5 }, { 25 } };
-    jpHistory.setLayout(new TableLayout(sizeHistory));
-    jpHistory.add(jlHistory, "1,0");
-    jpHistory.add(jcbHistory, "3,0");
-    jpHistory.add(evaltoobar, "5,0");
+
+      public int getH() {
+        return 24;
+      }
+    };
 
     // Mode toolbar
     // we need an inner toolbar to apply size properly
@@ -373,13 +236,15 @@ public class CommandJPanel extends JXPanel implements ActionListener, ListSelect
     jtbModes.addSeparator();
     jtbModes.add(jbIntro);
 
+    // Eval toolbar
+    evaltoobar = new PreferenceToolbar();
+
     // Volume
-    jpVolume = new JPanel();
+    jpVolume = new JPanel(new MigLayout("insets 0,gapx 5", "[grow][]", "[grow]"));
     jpVolume.addMouseWheelListener(CommandJPanel.this);
     ActionUtil.installKeystrokes(jpVolume, ActionManager.getAction(JajukActions.DECREASE_VOLUME),
         ActionManager.getAction(JajukActions.INCREASE_VOLUME));
 
-    jpVolume.setLayout(new BoxLayout(jpVolume, BoxLayout.X_AXIS));
     int iVolume = (int) (100 * Conf.getFloat(Const.CONF_VOLUME));
     // Perform bounds test, -1 or >100 can occur in some undefined cases (see
     // #1169)
@@ -391,35 +256,11 @@ public class CommandJPanel extends JXPanel implements ActionListener, ListSelect
     jsVolume = new JSlider(0, 100, iVolume);
     jsVolume.setToolTipText(iVolume + " %");
     jsVolume.addChangeListener(CommandJPanel.this);
-    jsVolume.addMouseWheelListener(CommandJPanel.this);
     MuteAction.setVolumeIcon(iVolume);
-    jpVolume.add(jsVolume);
-    jpVolume.add(Box.createHorizontalStrut(5));
+    jpVolume.add(jsVolume, "growx");
     jpVolume.add(jbMute);
 
     // Special functions toolbar
-    // Ambience combo
-    ambiencesCombo = new SteppedComboBox();
-    iWidth = (int) (Toolkit.getDefaultToolkit().getScreenSize().getWidth() / 4);
-    ambiencesCombo.setPopupWidth(iWidth);
-    // size of the combo itself
-    ambiencesCombo.setRenderer(new BasicComboBoxRenderer() {
-      private static final long serialVersionUID = -6943363556191659895L;
-
-      @Override
-      public Component getListCellRendererComponent(JList list, Object value, int index,
-          boolean isSelected, boolean cellHasFocus) {
-        super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-        JLabel jl = (JLabel) value;
-        setIcon(jl.getIcon());
-        setText(jl.getText());
-        return this;
-      }
-    });
-    ambiencesCombo.setToolTipText(Messages.getString("DigitalDJWizard.66"));
-    populateAmbiences();
-    ambienceListener = new AmbienceListener();
-    ambiencesCombo.addActionListener(ambienceListener);
     jtbSpecial = new JajukJToolbar();
     ddbGlobalRandom = new DropDownButton(IconLoader.getIcon(JajukIcons.SHUFFLE_GLOBAL)) {
       private static final long serialVersionUID = 1L;
@@ -483,8 +324,9 @@ public class CommandJPanel extends JXPanel implements ActionListener, ListSelect
     popupNovelties.add(jmiNoveltiesModeSong);
     popupNovelties.add(jmiNoveltiesModeAlbum);
     ddbNovelties.setText("");// no text visible
-
     jbNorm = new JajukButton(ActionManager.getAction(FINISH_ALBUM));
+
+    // Radio tool bar
     popupDDJ = new JPopupMenu();
     ddbDDJ = new DropDownButton(IconLoader.getIcon(JajukIcons.DIGITAL_DJ)) {
       private static final long serialVersionUID = 1L;
@@ -512,6 +354,8 @@ public class CommandJPanel extends JXPanel implements ActionListener, ListSelect
     populateWebRadios();
     // no text
     ddbWebRadio.setText("");
+    JToolBar jtbWebRadio = new JajukJToolbar();
+    ddbWebRadio.addToToolBar(jtbWebRadio);
 
     ddbDDJ.addToToolBar(jtbSpecial);
     ddbNovelties.addToToolBar(jtbSpecial);
@@ -519,57 +363,29 @@ public class CommandJPanel extends JXPanel implements ActionListener, ListSelect
     jtbSpecial.add(jbBestof);
     jtbSpecial.add(jbNorm);
 
-    // Radio tool bar
-    JToolBar jtbWebRadio = new JajukJToolbar();
-    ddbWebRadio.addToToolBar(jtbWebRadio);
-
     // Play toolbar
     JToolBar jtbPlay = new JajukJToolbar();
     ActionUtil.installKeystrokes(jtbPlay, ActionManager.getAction(NEXT_ALBUM), ActionManager
         .getAction(PREVIOUS_ALBUM));
     jbPrevious = new JajukButton(ActionManager.getAction(PREVIOUS_TRACK));
     jbNext = new JajukButton(ActionManager.getAction(NEXT_TRACK));
-    jbRew = new JPressButton(ActionManager.getAction(REWIND_TRACK));
     jbPlayPause = new JajukButton(ActionManager.getAction(PAUSE_RESUME_TRACK));
     jbStop = new JajukButton(ActionManager.getAction(STOP_TRACK));
-    jbFwd = new JPressButton(ActionManager.getAction(FORWARD_TRACK));
 
-    jtbPlay.add(jbPrevious);
-    jtbPlay.add(jbRew);
-    jtbPlay.add(jbPlayPause);
     jtbPlay.add(jbStop);
-    jtbPlay.add(jbFwd);
+    jtbPlay.add(jbPrevious);
+    jtbPlay.add(jbPlayPause);
     jtbPlay.add(jbNext);
 
     // Add items
-    FormLayout layout = new FormLayout(
-    // --columns
-        "3dlu,min(60dlu;pref):grow(0.02), " + // ambience
-            "fill:min(0dlu;p):grow(0.04), " + // Space between ambience and
-            // smart toolbar
-            "left:p, 15dlu," + // smart toolbar (row 0) / search (row 1)
-            "left:p, 2dlu" + // smart toolbar / modes
-            ", min(0dlu;p):grow(0.04), 3dlu," + // glue
-            "fill:p, 5dlu, " + // history/player
-            "fill:min(60dlu;p):grow(0.2),3dlu", // volume/part of
-        // history
-        // --rows
-        "2dlu, p, 2dlu, p, 2dlu"); // rows
-    PanelBuilder builder = new PanelBuilder(layout);// , new
-    // FormDebugPanel() );
-    CellConstraints cc = new CellConstraints();
-    // Add items
-    builder.add(jtbWebRadio, cc.xyw(2, 2, 1));// grid width = 3
-    builder.add(ambiencesCombo, cc.xy(2, 4));
-    builder.add(jtbSpecial, cc.xyw(4, 4, 5));
-    builder.add(jpSearch, cc.xy(4, 2));
-    builder.add(jtbModes, cc.xy(6, 2));
-    builder.add(jpHistory, cc.xyw(10, 2, 3));
-    builder.add(jtbPlay, cc.xy(10, 4));
-    builder.add(jpVolume, cc.xy(12, 4));
-    JPanel p = builder.getPanel();
-    setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
-    add(p);
+    setLayout(new MigLayout("insets 5,gapx 15", "[grow][grow][grow]"));
+    add(jtbWebRadio, "left,split 2");
+    add(jtbSpecial, "left");
+    add(jtbPlay, "center,split 2");
+    add(jpVolume, "center,grow,width 25::100");
+    add(jtbModes, "right,split 2,gap right 10");
+    add(evaltoobar, "right");
+
     // register to player events
     ObservationManager.register(CommandJPanel.this);
 
@@ -600,31 +416,13 @@ public class CommandJPanel extends JXPanel implements ActionListener, ListSelect
   /*
    * (non-Javadoc)
    * 
-   * @see
-   * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+   * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
    */
   public void actionPerformed(final ActionEvent ae) {
     // do not run this in a separate thread because Player actions would die
     // with the thread
     try {
-      if (ae.getSource() == jcbHistory) {
-        HistoryItem hi;
-        hi = History.getInstance().getHistoryItem(jcbHistory.getSelectedIndex());
-        if (hi != null) {
-          org.jajuk.base.File file = FileManager.getInstance().getFileByID(hi.getFileId());
-          if (file != null) {
-            try {
-              QueueModel.push(new StackItem(file, Conf.getBoolean(Const.CONF_STATE_REPEAT_ALL), true), Conf
-                  .getBoolean(Const.CONF_OPTIONS_PUSH_ON_CLICK));
-            } catch (JajukException je) {
-              // can be thrown if file is null
-            }
-          } else {
-            Messages.showErrorMessage(120);
-            jcbHistory.setSelectedItem(null);
-          }
-        }
-      } else if (ae.getSource().equals(jmiNoveltiesModeSong)) {
+      if (ae.getSource().equals(jmiNoveltiesModeSong)) {
         Conf.setProperty(Const.CONF_NOVELTIES_MODE, Const.MODE_TRACK);
       } else if (ae.getSource().equals(jmiNoveltiesModeAlbum)) {
         Conf.setProperty(Const.CONF_NOVELTIES_MODE, Const.MODE_ALBUM);
@@ -643,51 +441,7 @@ public class CommandJPanel extends JXPanel implements ActionListener, ListSelect
   }
 
   /*
-   * (non-Javadoc)
-   * 
-   * @see
-   * javax.swing.event.ListSelectionListener#valueChanged(javax.swing.event.
-   * ListSelectionEvent)
-   */
-  public void valueChanged(final ListSelectionEvent e) {
-    SwingWorker sw = new SwingWorker() {
-      @Override
-      public Object construct() {
-        if (!e.getValueIsAdjusting()) {
-          SearchResult sr = sbSearch.getResult(sbSearch.getSelectedIndex());
-          try {
-            // If user selected a file
-            if (sr.getType() == SearchResultType.FILE) {
-              QueueModel.push(
-                  new StackItem(sr.getFile(), Conf.getBoolean(Const.CONF_STATE_REPEAT_ALL), true), Conf
-                      .getBoolean(Const.CONF_OPTIONS_PUSH_ON_CLICK));
-            }
-            // User selected a web radio
-            else if (sr.getType() == SearchResultType.WEBRADIO) {
-              QueueModel.launchRadio(sr.getWebradio());
-            }
-          } catch (JajukException je) {
-            Log.error(je);
-          }
-        }
-        return null;
-      }
-
-      @Override
-      public void finished() {
-        if (!e.getValueIsAdjusting()) {
-          sbSearch.hidePopup();
-          requestFocusInWindow();
-        }
-      }
-    };
-    sw.start();
-  }
-
-  /*
-   * @see
-   * javax.swing.event.ChangeListener#stateChanged(javax.swing.event.ChangeEvent
-   * )
+   * @see javax.swing.event.ChangeListener#stateChanged(javax.swing.event.ChangeEvent )
    */
   public void stateChanged(ChangeEvent e) {
     if (e.getSource() == jsVolume) {
@@ -705,14 +459,14 @@ public class CommandJPanel extends JXPanel implements ActionListener, ListSelect
 
   public void setVolume(final float fVolume) {
     jsVolume.removeChangeListener(this);
-    jsVolume.removeMouseWheelListener(this);
+    jpVolume.removeMouseWheelListener(this);
     // if user move the volume slider, unmute
     if (Player.isMuted()) {
       Player.mute(false);
     }
     Player.setVolume(fVolume);
     jsVolume.addChangeListener(CommandJPanel.this);
-    jsVolume.addMouseWheelListener(CommandJPanel.this);
+    jpVolume.addMouseWheelListener(CommandJPanel.this);
     jsVolume.setToolTipText((int) (fVolume * 100) + " %");
   }
 
@@ -725,25 +479,17 @@ public class CommandJPanel extends JXPanel implements ActionListener, ListSelect
     SwingUtilities.invokeLater(new Runnable() {
       public void run() {
         JajukEvents subject = event.getSubject();
-        if (JajukEvents.PLAYER_STOP.equals(subject)) {
-          // Reset history so user can launch again stopped
-          // track (selection must change to throw an ActionEvent)
-          jcbHistory.setSelectedIndex(-1);
-        } else if (JajukEvents.ZERO.equals(subject)) {
-          // Reset history so user can launch again stopped
-          // track (selection must change to throw an ActionEvent)
-          jcbHistory.setSelectedIndex(-1);
-        } else if (JajukEvents.PLAYER_PAUSE.equals(subject)) {
+        if (JajukEvents.PLAYER_PAUSE.equals(subject)) {
           // Disable volume control when pausing to fix an mplayer
           // issue:
           // setting the volume resume the file
           jsVolume.setEnabled(false);
-          jsVolume.removeMouseWheelListener(CommandJPanel.this);
+          jpVolume.removeMouseWheelListener(CommandJPanel.this);
         } else if (JajukEvents.PLAYER_RESUME.equals(subject)) {
           // Enable the volume when resuming (fix a mplayer issue, see
           // above)
           jsVolume.setEnabled(true);
-          jsVolume.addMouseWheelListener(CommandJPanel.this);
+          jpVolume.addMouseWheelListener(CommandJPanel.this);
         } else if (JajukEvents.SPECIAL_MODE.equals(subject)) {
           if (ObservationManager.getDetail(event, Const.DETAIL_ORIGIN).equals(
               Const.DETAIL_SPECIAL_MODE_NORMAL)) {
@@ -761,18 +507,6 @@ public class CommandJPanel extends JXPanel implements ActionListener, ListSelect
             JajukJMenuBar.getInstance().setRepeatSelected(false);
             CommandJPanel.getInstance().jbRepeat.setSelected(false);
           }
-        } else if (JajukEvents.FILE_LAUNCHED.equals(subject)) {
-          // Remove history listener, otherwise you'll get a looping
-          // event generation
-          jcbHistory.removeActionListener(CommandJPanel.this);
-          if (jcbHistory.getItemCount() > 0) {
-            jcbHistory.setSelectedIndex(0);
-          }
-          jcbHistory.addActionListener(CommandJPanel.this);
-        } else if (JajukEvents.CLEAR_HISTORY.equals(event.getSubject())) {
-          // clear selection bar (data itself is clear
-          // from the model by History class)
-          jcbHistory.setSelectedItem(null);
         } else if (JajukEvents.VOLUME_CHANGED.equals(event.getSubject())) {
           jsVolume.removeChangeListener(CommandJPanel.this);
           jsVolume.setValue((int) (100 * Player.getCurrentVolume()));
@@ -786,10 +520,6 @@ public class CommandJPanel extends JXPanel implements ActionListener, ListSelect
             JajukAction action = ActionManager.getAction(JajukActions.DJ);
             action.setShortDescription(Messages.getString("CommandJPanel.18"));
           }
-        } else if (JajukEvents.AMBIENCES_CHANGE.equals(event.getSubject())
-            || JajukEvents.AMBIENCES_SELECTION_CHANGE.equals(event.getSubject())) {
-          populateAmbiences();
-          updateTooltips();
         } else if (JajukEvents.WEBRADIOS_CHANGE.equals(event.getSubject())) {
           populateWebRadios();
         } else if (JajukEvents.WEBRADIO_LAUNCHED.equals(event.getSubject())) {
@@ -800,41 +530,12 @@ public class CommandJPanel extends JXPanel implements ActionListener, ListSelect
   }
 
   /**
-   * Update global functions tooltip after a change in ambiences or an ambience
-   * selection using the ambience selector
-   * 
-   */
-  private void updateTooltips() {
-    // Selected 'Any" ambience
-    if (ambiencesCombo.getSelectedIndex() == 1) {
-      JajukAction action = ActionManager.getAction(JajukActions.NOVELTIES);
-      action.setShortDescription(Messages.getString("JajukWindow.31"));
-      action = ActionManager.getAction(JajukActions.BEST_OF);
-      action.setShortDescription(Messages.getString("JajukWindow.24"));
-      action = ActionManager.getAction(JajukActions.SHUFFLE_GLOBAL);
-      action.setShortDescription(Messages.getString("JajukWindow.23"));
-    } else {// Selected an ambience
-      Ambience ambience = AmbienceManager.getInstance().getAmbienceByName(
-          ((JLabel) ambiencesCombo.getSelectedItem()).getText());
-      JajukAction action = ActionManager.getAction(JajukActions.NOVELTIES);
-      action.setShortDescription(HTML + Messages.getString("JajukWindow.31") + P_B
-          + ambience.getName() + B_P_HTML);
-      action = ActionManager.getAction(JajukActions.SHUFFLE_GLOBAL);
-      action.setShortDescription(HTML + Messages.getString("JajukWindow.23") + P_B
-          + ambience.getName() + B_P_HTML);
-      action = ActionManager.getAction(JajukActions.BEST_OF);
-      action.setShortDescription(HTML + Messages.getString("JajukWindow.24") + P_B
-          + ambience.getName() + B_P_HTML);
-    }
-  }
-
-  /**
    * Populate DJs
    * 
    */
   private void populateDJs() {
     try {
-      ddbDDJ.setToolTipText(HTML + Messages.getString("CommandJPanel.18") + P_B
+      ddbDDJ.setToolTipText(Const.HTML + Messages.getString("CommandJPanel.18") + Const.P_B
           + DigitalDJManager.getCurrentDJ() + "</b></html>");
       popupDDJ.removeAll();
       JMenuItem jmiNew = new JMenuItem(ActionManager.getAction(CONFIGURE_DJS));
@@ -852,8 +553,8 @@ public class CommandJPanel extends JXPanel implements ActionListener, ListSelect
             populateDJs();
             // update action tooltip on main button with right item
             JajukAction action = ActionManager.getAction(JajukActions.DJ);
-            action.setShortDescription(HTML + Messages.getString("CommandJPanel.18") + P_B
-                + dj.getName() + B_P_HTML);
+            action.setShortDescription(Const.HTML + Messages.getString("CommandJPanel.18")
+                + Const.P_B + dj.getName() + Const.B_P_HTML);
           }
         });
         popupDDJ.add(jmi);
@@ -862,43 +563,6 @@ public class CommandJPanel extends JXPanel implements ActionListener, ListSelect
     } catch (Exception e) {
       Log.error(e);
     }
-  }
-
-  /**
-   * Populate ambiences combo
-   * 
-   */
-  void populateAmbiences() {
-    ambiencesCombo.removeActionListener(ambienceListener);
-    ItemListener[] il = ambiencesCombo.getItemListeners();
-    for (ItemListener element : il) {
-      ambiencesCombo.removeItemListener(element);
-    }
-    ambiencesCombo.removeAllItems();
-    ambiencesCombo.addItem(new JLabel(Messages.getString("CommandJPanel.19"), IconLoader
-        .getIcon(JajukIcons.CONFIGURATION), SwingConstants.LEFT));
-    ambiencesCombo.addItem(new JLabel("<html><i>" + Messages.getString("DigitalDJWizard.64")
-        + "</i></html>", IconLoader.getIcon(JajukIcons.STYLE), SwingConstants.LEFT));
-    // Add available ambiences
-    for (final Ambience ambience : AmbienceManager.getInstance().getAmbiences()) {
-      ambiencesCombo.addItem(new JLabel(ambience.getName(), IconLoader.getIcon(JajukIcons.STYLE),
-          SwingConstants.LEFT));
-    }
-    // Select right item
-    Ambience defaultAmbience = AmbienceManager.getInstance().getAmbience(
-        Conf.getString(Const.CONF_DEFAULT_AMBIENCE));
-    if (defaultAmbience != null) {
-      for (int i = 0; i < ambiencesCombo.getItemCount(); i++) {
-        if (((JLabel) ambiencesCombo.getItemAt(i)).getText().equals(defaultAmbience.getName())) {
-          ambiencesCombo.setSelectedIndex(i);
-          break;
-        }
-      }
-    } else {
-      // or "any" ambience
-      ambiencesCombo.setSelectedIndex(1);
-    }
-    ambiencesCombo.addActionListener(ambienceListener);
   }
 
   /**
@@ -928,8 +592,8 @@ public class CommandJPanel extends JXPanel implements ActionListener, ListSelect
             populateWebRadios();
             // update action tooltip on main button with right item
             JajukAction action = ActionManager.getAction(JajukActions.WEB_RADIO);
-            action.setShortDescription(HTML + Messages.getString("CommandJPanel.25") + P_B
-                + radio.getName() + B_P_HTML);
+            action.setShortDescription(Const.HTML + Messages.getString("CommandJPanel.25")
+                + Const.P_B + radio.getName() + Const.B_P_HTML);
           }
         });
         jmi.setSelected(Conf.getString(Const.CONF_DEFAULT_WEB_RADIO).equals(radio.getName()));
@@ -957,26 +621,10 @@ public class CommandJPanel extends JXPanel implements ActionListener, ListSelect
    * MouseWheelEvent)
    */
   public void mouseWheelMoved(MouseWheelEvent e) {
-    if (e.getSource() == jsVolume) {
+    if (e.getSource() == jsVolume || e.getSource() == jpVolume) {
       int iOld = jsVolume.getValue();
       int iNew = iOld - (e.getUnitsToScroll() * 3);
       jsVolume.setValue(iNew);
-    } else if (e.getSource() == jpVolume) {
-      int oldVolume = (int) (100 * Player.getCurrentVolume());
-      int newVolume = oldVolume - (e.getUnitsToScroll() * 3);
-      if (Player.isMuted()) {
-        Player.mute(false);
-      }
-
-      if (newVolume > 100) {
-        newVolume = 100;
-      } else if (newVolume < 0) {
-        newVolume = 0;
-      }
-
-      Player.setVolume((float) newVolume / 100);
-      jpVolume.setToolTipText(newVolume + " %");
-      MuteAction.setVolumeIcon(newVolume);
     }
   }
 
@@ -987,7 +635,7 @@ public class CommandJPanel extends JXPanel implements ActionListener, ListSelect
   public void setRepeatAllSelected(final boolean b) {
     this.jbRepeatAll.setSelected(b);
   }
-  
+
   public void setRandomSelected(final boolean b) {
     this.jbRandom.setSelected(b);
   }

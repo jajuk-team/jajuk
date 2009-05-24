@@ -251,7 +251,7 @@ public class FirstTimeWizard extends JajukJDialog implements ActionListener {
 		add(jlMins, "cell 1 2");
 		add(toggle, "cell 1 3,grow");
 		add(advanced, "cell 1 4,grow");
-		add(okp, "center,cell 1 5");
+		add(okp, "right,span,cell 1 5");
 
 		getRootPane().setDefaultButton(jbOk);
 	}

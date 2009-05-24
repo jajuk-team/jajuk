@@ -217,7 +217,7 @@ public class DeviceWizard extends JDialog implements ActionListener, Const {
     add(jcbSynchronized, "grow,wrap");
     add(jrbUnidirSynchro, "left,gap left 20,span,wrap");
     add(jrbBidirSynchro, "left,gap left 20,span,wrap");
-    add(okp,"span,center");
+    add(okp,"span,right");
     
     // Set default behaviors
     if (jcbSynchronized.getItemCount() == 0) {

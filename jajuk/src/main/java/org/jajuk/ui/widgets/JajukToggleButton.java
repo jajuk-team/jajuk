@@ -86,4 +86,5 @@ public class JajukToggleButton extends JajukButton {
     setSelected(!isSelected());
     super.fireActionPerformed(event);
   }
+  
 }

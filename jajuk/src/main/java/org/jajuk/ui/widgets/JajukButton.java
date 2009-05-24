@@ -29,6 +29,9 @@ import javax.swing.InputMap;
 import javax.swing.JButton;
 import javax.swing.KeyStroke;
 
+/**
+ * jajuk default button, comes with few GUI default properties
+ */
 public class JajukButton extends JButton {
 
   private static final long serialVersionUID = 1L;

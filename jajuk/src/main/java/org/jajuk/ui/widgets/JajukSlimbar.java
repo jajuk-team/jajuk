@@ -58,7 +58,6 @@ import javax.swing.JRootPane;
 import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
 import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 
 import org.jajuk.base.File;
 import org.jajuk.base.SearchResult;
@@ -92,7 +91,7 @@ import org.jajuk.util.log.Log;
  * </p>
  */
 public final class JajukSlimbar extends JFrame implements Observer, MouseWheelListener,
-    ListSelectionListener, ActionListener {
+    ActionListener {
 
   private static final long serialVersionUID = 1L;
 
@@ -226,16 +225,16 @@ public final class JajukSlimbar extends JFrame implements Observer, MouseWheelLi
 
     jtbPlay = new JajukJToolbar();
 
-    jbPrevious = new SizedButton(ActionManager.getAction(PREVIOUS_TRACK), 16, 16, false);
+    jbPrevious = new SizedButton(ActionManager.getAction(PREVIOUS_TRACK), false);
     jbPrevious.addMouseMotionListener(motionAdapter);
 
-    jbNext = new SizedButton(ActionManager.getAction(NEXT_TRACK), 16, 16, false);
+    jbNext = new SizedButton(ActionManager.getAction(NEXT_TRACK), false);
     jbNext.addMouseMotionListener(motionAdapter);
 
-    jbPlayPause = new SizedButton(ActionManager.getAction(PAUSE_RESUME_TRACK), 16, 16, false);
+    jbPlayPause = new SizedButton(ActionManager.getAction(PAUSE_RESUME_TRACK), false);
     jbPlayPause.addMouseMotionListener(motionAdapter);
 
-    jbStop = new SizedButton(ActionManager.getAction(STOP_TRACK), 16, 16, false);
+    jbStop = new SizedButton(ActionManager.getAction(STOP_TRACK), false);
     jbStop.addMouseMotionListener(motionAdapter);
 
     jtbPlay.add(jbPrevious);
@@ -296,7 +295,7 @@ public final class JajukSlimbar extends JFrame implements Observer, MouseWheelLi
     if (iVolume > 100) { // can occur in some undefined cases
       iVolume = 100;
     }
-    jbVolume = new SizedButton(ActionManager.getAction(MUTE_STATE), 16, 16, false);
+    jbVolume = new SizedButton(ActionManager.getAction(MUTE_STATE), false);
 
     jbVolume.addMouseMotionListener(motionAdapter);
     jbVolume.addMouseWheelListener(this);
@@ -318,15 +317,15 @@ public final class JajukSlimbar extends JFrame implements Observer, MouseWheelLi
     jtbTools.add(jbVolume);
     jtbTools.addSeparator();
     jtbTools.add(jbMaximize);
-    jtbTools.add(new SizedButton(ActionManager.getAction(JajukActions.EXIT), 16, 16, false));
+    jtbTools.add(new SizedButton(ActionManager.getAction(JajukActions.EXIT), false));
 
     // Continue
     jbFinishAlbum = new SizedButton(ActionManager.getAction(JajukActions.FINISH_ALBUM));
 
     // Search
-    sbSearch = new SearchBox(this);
-    sbSearch.setPreferredSize(new Dimension(75, 21));
-    sbSearch.setMaximumSize(new Dimension(75, 21));
+    sbSearch = new SearchBox();
+    sbSearch.setPreferredSize(new Dimension(75, 20));
+    sbSearch.setMaximumSize(new Dimension(75, 20));
     sbSearch.addMouseMotionListener(motionAdapter);
 
     slimJajuk = new JajukJToolbar();
@@ -537,9 +536,9 @@ public final class JajukSlimbar extends JFrame implements Observer, MouseWheelLi
           try {
             // If user selected a file
             if (sr.getType() == SearchResultType.FILE) {
-              QueueModel.push(
-                  new StackItem(sr.getFile(), Conf.getBoolean(Const.CONF_STATE_REPEAT_ALL), true), Conf
-                      .getBoolean(Const.CONF_OPTIONS_PUSH_ON_CLICK));
+              QueueModel.push(new StackItem(sr.getFile(), Conf
+                  .getBoolean(Const.CONF_STATE_REPEAT_ALL), true), Conf
+                  .getBoolean(Const.CONF_OPTIONS_PUSH_ON_CLICK));
             }
             // User selected a web radio
             else if (sr.getType() == SearchResultType.WEBRADIO) {

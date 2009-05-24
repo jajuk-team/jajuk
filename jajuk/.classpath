@@ -18,13 +18,11 @@
 	<classpathentry kind="lib" path="lib/entagged-freedb-0.04.jar"/>
 	<classpathentry kind="lib" path="lib/animation-1.2.0.jar"/>
 	<classpathentry kind="lib" path="lib/commons-collections-3.2.jar"/>
-	<classpathentry kind="lib" path="lib/tablelayout-20070421.jar"/>
 	<classpathentry kind="lib" path="lib/basicplayer-3.0.jar">
 		<attributes>
 			<attribute name="javadoc_location" value="http://www.javazoom.net/jlgui/docs/docs2.3/"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="lib/forms-1.1.0.jar"/>
 	<classpathentry kind="lib" path="lib/cobra-0.96.5R2.jar"/>
 	<classpathentry kind="lib" path="lib/js-0.96.5R2.jar"/>
 	<classpathentry kind="lib" path="lib/commons-logging-1.0.jar"/>

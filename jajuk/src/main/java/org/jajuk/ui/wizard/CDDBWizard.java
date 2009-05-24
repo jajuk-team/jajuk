@@ -198,7 +198,7 @@ public class CDDBWizard extends JajukJDialog implements ActionListener {
     add(jcbAlbum, "grow");
     add(jlCurrent, "wrap");
     add(new JScrollPane(jtable), "grow,wrap");
-    add(okc, "center");
+    add(okc, "span,right");
 
     getRootPane().setDefaultButton(okc.getOKButton());
     pack();

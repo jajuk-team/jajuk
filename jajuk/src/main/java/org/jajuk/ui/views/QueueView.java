@@ -74,6 +74,9 @@ import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 import org.jdesktop.swingx.decorator.ColorHighlighter;
 import org.jdesktop.swingx.decorator.Highlighter;
+import org.jvnet.substance.SubstanceLookAndFeel;
+import org.jvnet.substance.api.SubstanceColorScheme;
+import org.jvnet.substance.api.SubstanceSkin;
 
 /**
  * Adapter for playlists editors *
@@ -176,7 +179,16 @@ public class QueueView extends PlaylistView {
     });
     initMenuItems();
 
-    ColorHighlighter colorHighlighter = new ColorHighlighter(new Color(156, 236, 79), null,
+    SubstanceSkin theme = SubstanceLookAndFeel.getCurrentSkin();
+    SubstanceColorScheme scheme = theme.getMainActiveColorScheme();
+    Color queueHighlighterColor = null;
+    if (scheme.isDark()) {
+      queueHighlighterColor = scheme.getUltraLightColor();
+    }
+    else{
+      queueHighlighterColor = scheme.getLineColor();
+    }
+    ColorHighlighter colorHighlighter = new ColorHighlighter(queueHighlighterColor, null,
         new IndexHighlighterPredicate());
     Highlighter alternate = UtilGUI.getAlternateHighlighter();
     editorTable.setHighlighters(alternate, colorHighlighter);

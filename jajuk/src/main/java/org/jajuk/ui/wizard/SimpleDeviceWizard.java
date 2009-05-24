@@ -80,7 +80,7 @@ public class SimpleDeviceWizard extends JajukJDialog implements ActionListener {
     add(new JLabel(Messages.getString("DeviceWizard.53")), "cell 1 1,split 3"); //Refresh device every
     add(jtfRefreshTime, "grow");
     add(new JLabel(Messages.getString("DeviceWizard.54")), "wrap"); //mins
-    add(okp,"center,cell 1 2");
+    add(okp,"right,cell 1 2");
     
     getRootPane().setDefaultButton(okp.getOKButton());
   }

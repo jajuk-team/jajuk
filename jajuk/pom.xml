@@ -68,13 +68,6 @@
   </build>
   <dependencies>
     <dependency>
-      <groupId>tablelayout</groupId>
-      <artifactId>TableLayout</artifactId>
-      <version>20070421</version>
-      <scope>system</scope>
-      <systemPath>${basedir}/lib/tablelayout-20070421.jar</systemPath>
-    </dependency>
-    <dependency>
       <groupId>jfree</groupId>
       <artifactId>jcommon</artifactId>
       <version>1.0.2</version>
@@ -158,13 +151,6 @@
       <version>0.96.5R2</version>
       <scope>system</scope>
       <systemPath>${basedir}/lib/js-0.96.5R2.jar</systemPath>
-    </dependency>
-    <dependency>
-      <groupId>JGoodies</groupId>
-      <artifactId>forms</artifactId>
-      <version>1.1.0</version>
-      <scope>system</scope>
-      <systemPath>${basedir}/lib/forms-1.1.0.jar</systemPath>
     </dependency>
     <dependency>
       <groupId>log4j</groupId>

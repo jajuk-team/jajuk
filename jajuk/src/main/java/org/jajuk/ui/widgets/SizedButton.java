@@ -22,20 +22,19 @@ package org.jajuk.ui.widgets;
 import javax.swing.Action;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 
 import org.jajuk.util.UtilGUI;
 
 /**
- * Button whose icon has a fixed size
+ * Button whose icon has a fixed size All icons are resized to 16x16 pixels by
+ * default Override getWidth() and getHeight() methods to set your own
+ * dimensions (we can't set width and height directly because the setIcon method
+ * is called in constructor before we can do anything)
+ * 
  */
-public class SizedButton extends JButton {
+public class SizedButton extends JajukButton {
 
   private static final long serialVersionUID = -3859493434696496345L;
-
-  // private int width = 16;
-
-  // private int height = 16;
 
   private boolean showText = false;
 
@@ -49,6 +48,10 @@ public class SizedButton extends JButton {
     super(action);
   }
 
+  public SizedButton(String text, Icon icon) {
+    super(text, icon);
+  }
+
   /**
    * 
    * @param action
@@ -60,16 +63,16 @@ public class SizedButton extends JButton {
    * @param Do
    *          we want to display text ?
    */
-  public SizedButton(Action action, int width, int height, boolean bText) {
+  public SizedButton(Action action, boolean bText) {
     super(action);
-    // this.width = width;
-    // this.height = height;
     this.showText = bText;
   }
 
   @Override
   public void setIcon(Icon icon) {
-    super.setIcon(UtilGUI.getResizedImage((ImageIcon) icon, 16, 16));
+    int width = getW();
+    int height = getH();
+    super.setIcon(UtilGUI.getResizedImage((ImageIcon) icon, width, height));
   }
 
   @Override
@@ -79,6 +82,22 @@ public class SizedButton extends JButton {
     } else {
       super.setText(null);
     }
+  }
+
+  /**
+   * Return the width in pixels Must be overwritten to get a button with a
+   * resizeable size != 16
+   */
+  public int getW() {
+    return 16;
+  }
+
+  /**
+   * Return the width in pixels Must be overwritten to get a button with a
+   * resizeable size != 16
+   */
+  public int getH() {
+    return 16;
   }
 
 }

@@ -110,12 +110,6 @@ Creative Commons 	=> LICENSE-CREATIVE-COMMONS.txt
 | http://java.sun.com/products/javahelp/
 | GPL-v2
 |- 
-| Tablelayout
-| Daniel Barbalace
-| At least one useful Swing layout!
-| [https://tablelayout.dev.java.net/ <u>https://tablelayout.dev.java.net/</u>]
-| Public
-|- 
 | Zeus JSCL
 | Zeus JSCL team
 | Swing API provinding splashscreen and forms validation features

@@ -123,7 +123,7 @@ public class WebRadioWizard extends Wizard {
       // Add items
       setLayout(new MigLayout("insets 5,gapy 5", "[grow]"));
       add(getPanel(), "grow,wrap");
-      add(jpButtons, "span,center");
+      add(jpButtons, "span,right");
     }
 
     /**

@@ -39,7 +39,6 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 
 import net.miginfocom.swing.MigLayout;
 
@@ -59,8 +58,7 @@ import org.jajuk.util.log.Log;
 /**
  * Alarm Clock Dialog window
  */
-public class AlarmClockDialog extends JDialog implements ActionListener, ItemListener, Const,
-    ListSelectionListener {
+public class AlarmClockDialog extends JDialog implements ActionListener, ItemListener, Const {
   private static final long serialVersionUID = 1L;
 
   private final JPanel jpOKCancel;
@@ -130,7 +128,7 @@ public class AlarmClockDialog extends JDialog implements ActionListener, ItemLis
     jrbFile = new JRadioButton(Messages.getString("ParameterView.16"));
     jrbFile.setToolTipText(Messages.getString("ParameterView.17"));
     jrbFile.addItemListener(this);
-    sbSearch = new SearchBox(this);
+    sbSearch = new SearchBox();
     // disabled by default, is enabled only if jrbFile is enabled
     sbSearch.setEnabled(false);
     sbSearch.setToolTipText(Messages.getString("ParameterView.18"));

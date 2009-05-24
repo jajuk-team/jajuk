@@ -20,14 +20,9 @@
 
 package org.jajuk.ui.wizard;
 
-import com.jgoodies.forms.builder.PanelBuilder;
-import com.jgoodies.forms.layout.CellConstraints;
-import com.jgoodies.forms.layout.FormLayout;
-
 import ext.AutoCompleteDecorator;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.KeyEventDispatcher;
 import java.awt.KeyboardFocusManager;
 import java.awt.event.ActionEvent;
@@ -54,6 +49,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
+
+import net.miginfocom.swing.MigLayout;
 
 import org.jajuk.base.AuthorManager;
 import org.jajuk.base.Device;
@@ -149,15 +146,13 @@ public class PropertiesWizard extends JajukJDialog implements ActionListener {
     panel1 = new PropertiesPanel(alItems, alItems.size() == 1 ? UtilString.getLimitedString(alItems
         .get(0).getDesc(), 50) : Messages.getString(PROPERTIES_WIZARD_6) + " [" + alItems.size()
         + "]", bMerged);
-    CellConstraints cc = new CellConstraints();
-    PanelBuilder builder = new PanelBuilder(new FormLayout("5dlu,p:grow,5dlu",
-        "1dlu,fill:p,5dlu,p,3dlu"));
-    builder.add(panel1, cc.xy(2, 2));
     // OK/Cancel buttons
     okc = new OKCancelPanel(PropertiesWizard.this, Messages.getString("Apply"), Messages
         .getString("Close"));
-    builder.add(okc, cc.xy(2, 4));
-    jpMain = builder.getPanel();
+    // Add items
+    jpMain = new JPanel(new MigLayout("insets 5,gapx 5,gapy 5", "[grow]"));
+    jpMain.add(panel1, "grow,wrap");
+    jpMain.add(okc, "span,right");
     display();
   }
 
@@ -172,7 +167,7 @@ public class PropertiesWizard extends JajukJDialog implements ActionListener {
    */
   public PropertiesWizard(List<Item> alItems1, List<Item> alItems2) {
     super();
-    
+
     // windows title: name of the element of only one item, or "selection"
     // word otherwise
     setTitle(alItems1.size() == 1 ? alItems1.get(0).getDesc() : Messages
@@ -215,20 +210,20 @@ public class PropertiesWizard extends JajukJDialog implements ActionListener {
       }
       panel2.setBorder(BorderFactory.createEtchedBorder());
     }
-    PanelBuilder builder = new PanelBuilder(new FormLayout(
-        "2dlu,p:grow(0.5),5dlu,p:grow(0.5),2dlu", "1dlu,fill:p,5dlu,p,3dlu"));
-    CellConstraints cc = new CellConstraints();
-    builder.add(panel1, cc.xy(2, 2));
-    // panel2 can be null for a void directory for instance
-    if (panel2 != null) {
-      builder.add(panel2, cc.xy(4, 2));
-    }
     // OK/Cancel buttons
     okc = new OKCancelPanel(this, Messages.getString("Apply"), Messages.getString("Close"));
-    builder.add(okc, cc.xy(2, 4));
-    jpMain = builder.getPanel();
 
-    // Add keystoke to close window when pressing escape
+    // Add items
+    jpMain = new JPanel(new MigLayout("insets 5,gapx 5,gapy 5", "[grow][grow]"));
+    jpMain.add(panel1, "grow");
+    // panel2 can be null for a void directory for instance
+    if (panel2 != null) {
+      jpMain.add(panel2, "grow,wrap");
+    }
+    // Use cell tag because the wrap is not done if panel2 is void
+    jpMain.add(okc, "cell 0 1 1 1,span,right");
+
+    // Add keystroke to close window when pressing escape
     KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(
         new KeyEventDispatcher() {
           public boolean dispatchKeyEvent(KeyEvent e) {
@@ -344,12 +339,12 @@ public class PropertiesWizard extends JajukJDialog implements ActionListener {
      *          items to display
      * @param sDesc
      *          Description (title)
-     * @param bMerged
-     *          : whether this panel contains merged values
+     * @param bMerged :
+     *          whether this panel contains merged values
      */
     PropertiesPanel(List<Item> alItems, String sDesc, boolean bMerged) {
       super();
-      
+
       this.alItems = alItems;
       this.bMerged = bMerged;
       Item pa = alItems.get(0);
@@ -366,9 +361,6 @@ public class PropertiesWizard extends JajukJDialog implements ActionListener {
       // contains widgets for properties
       // Varname | value | link
       widgets = new JComponent[alToDisplay.size()][4];
-      String horiz = "3dlu, p:grow(0.2), 5dlu, p:grow(0.8), 5dlu, p, 3dlu";
-      // *2n+1 rows for spaces + 2 rows for title
-      String vert = "5dlu,20"; // Y space + title
       int index = 0;
       for (final PropertyMetaInformation meta : alToDisplay) {
         // begin by checking if all items have the same value, otherwise
@@ -381,9 +373,6 @@ public class PropertiesWizard extends JajukJDialog implements ActionListener {
             break;
           }
         }
-        // Set layout
-        vert += ",5dlu,20";
-        Dimension dim = new Dimension(200, 20);
         // -Set widgets-
         // Property name
         String sName = meta.getHumanName();
@@ -435,8 +424,7 @@ public class PropertiesWizard extends JajukJDialog implements ActionListener {
             } else {
               // Make sure to set default date to 1970, not today to allow user
               // to set date to today for multiple selection and to allow jajuk
-              // to
-              // detect a change
+              // to detect a change
               jdp.setDateInMillis(0l);
             }
             widgets[index][1] = jdp;
@@ -496,7 +484,6 @@ public class PropertiesWizard extends JajukJDialog implements ActionListener {
               jtfValue.setText(pa.getHumanValue(meta.getName()));
               // If several items, take first value found
             }
-            jtfValue.setPreferredSize(dim);
             widgets[index][1] = jtfValue;
           } else if (meta.getType().equals(String.class)
           // for styles
@@ -505,7 +492,6 @@ public class PropertiesWizard extends JajukJDialog implements ActionListener {
             final JComboBox jcb = new JComboBox(styles);
             jcb.setEditable(true);
             AutoCompleteDecorator.decorate(jcb);
-            jcb.setPreferredSize(dim);
             // set current style to combo
             int i = -1;
             int comp = 0;
@@ -546,7 +532,6 @@ public class PropertiesWizard extends JajukJDialog implements ActionListener {
             final JComboBox jcb = new JComboBox(authors);
             jcb.setEditable(true);
             AutoCompleteDecorator.decorate(jcb);
-            jcb.setPreferredSize(dim);
             // set current style to combo
             int i = -1;
             int comp = 0;
@@ -594,7 +579,6 @@ public class PropertiesWizard extends JajukJDialog implements ActionListener {
               // If several items, take first value found
               jtfValue.setText(pa.getHumanValue(meta.getName()));
             }
-            jtfValue.setPreferredSize(dim);
             widgets[index][1] = jtfValue;
           }
         } else {
@@ -615,7 +599,6 @@ public class PropertiesWizard extends JajukJDialog implements ActionListener {
               jl.setToolTipText(s);
             }
           }
-          jl.setPreferredSize(dim);
           widgets[index][1] = jl;
 
         }
@@ -629,13 +612,7 @@ public class PropertiesWizard extends JajukJDialog implements ActionListener {
         }
         index++;
       }
-      // last row is a separator
-      vert += ",5dlu";
-
-      // Create layout
-      PanelBuilder builder = new PanelBuilder(new FormLayout(horiz, vert));
-      CellConstraints cc = new CellConstraints();
-      // construct properties panel
+     
       // Add title
       JLabel jlName = new JLabel("<html><b>" + Messages.getString("PropertiesWizard.1")
           + "</b></html>");
@@ -647,24 +624,25 @@ public class PropertiesWizard extends JajukJDialog implements ActionListener {
           + "</b></html>");
       jlLink.setToolTipText(Messages.getString("PropertiesWizard.4"));
 
-      builder.add(jlName, cc.xy(2, 2));
-      builder.add(jlValue, cc.xy(4, 2));
-      builder.add(jlLink, cc.xy(6, 2));
+      jpProperties = new JPanel(new MigLayout("insets 10,gapx 5,gapy 10", "[][grow][]"));
+      jpProperties.add(jlName);
+      jpProperties.add(jlValue, "grow");
+      jpProperties.add(jlLink, "wrap");
       // Add widgets
       int i = 0;
       int j = 4;
       // for (PropertyMetaInformation meta : alToDisplay) {
       for (int k = 0; k < alToDisplay.size(); k++) {
-        builder.add(widgets[i][0], cc.xy(2, j));
-        builder.add(widgets[i][1], cc.xy(4, j));
-        if (widgets[i][2] != null) { // link widget can be null
-          builder.add(widgets[i][2], cc.xy(6, j));
+        jpProperties.add(widgets[i][0]);
+        if (widgets[i][2] == null) { // link widget can be null
+          jpProperties.add(widgets[i][1], "grow,width ::200, wrap");
+        } else {
+          jpProperties.add(widgets[i][1], "grow,width ::200");
+          jpProperties.add(widgets[i][2], "wrap");
         }
         i++;
         j += 2;
       }
-      jpProperties = builder.getPanel();
-
       setLayout(new VerticalLayout(10));
       // desc
       jlDesc = new JLabel(UtilString.formatPropertyDesc(sDesc));
@@ -675,8 +653,7 @@ public class PropertiesWizard extends JajukJDialog implements ActionListener {
     /*
      * (non-Javadoc)
      * 
-     * @see
-     * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent ae) {
       // Link
@@ -880,8 +857,7 @@ public class PropertiesWizard extends JajukJDialog implements ActionListener {
         // Force files resorting to ensure the sorting consistency, indeed,
         // files are sorted by name *and* track order and we need to force a
         // files resort after an order change (this is already done in case of
-        // file
-        // name change)
+        // file name change)
         FileManager.getInstance().forceSorting();
       }
     }

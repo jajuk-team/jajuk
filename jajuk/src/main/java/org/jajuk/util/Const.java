@@ -1161,5 +1161,11 @@ public interface Const {
   long PREFERENCE_AVERAGE = -1;
   long PREFERENCE_POOR = -2;
   long PREFERENCE_HATE = -3;
+  
+  String B_P_HTML = "</b></p></html>";
+
+  String P_B = "<p><b>";
+
+  String HTML = "<html>";
 
 }

@@ -50,7 +50,6 @@ import javax.swing.PopupFactory;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
-import javax.swing.event.ListSelectionListener;
 
 import org.jajuk.base.SearchResult;
 import org.jajuk.base.TrackManager;
@@ -91,9 +90,6 @@ public class SearchBox extends JTextField implements KeyListener {
   private JList jlist;
 
   private long lDateTyped;
-
-  /** Listener to handle selections */
-  private final ListSelectionListener lsl;
 
   /** Search when typing timer */
   Timer timer = new Timer(100, new ActionListener() {
@@ -137,9 +133,8 @@ public class SearchBox extends JTextField implements KeyListener {
    * 
    * @param lsl
    */
-  public SearchBox(ListSelectionListener lsl) {
+  public SearchBox() {
     setMargin(new Insets(0, 20, 0, 0));
-    this.lsl = lsl;
     timer.start();
     addKeyListener(this);
     setToolTipText(Messages.getString("SearchBox.0"));
@@ -236,7 +231,6 @@ public class SearchBox extends JTextField implements KeyListener {
           jsp.setPreferredSize(new Dimension(width, 250));
           jsp.setMaximumSize(new Dimension(width, 250));
           jlist.setSelectionMode(0);
-          jlist.addListSelectionListener(lsl);
           // For some reasons, we get the waiting cursor on the popup
           // sometimes, force it to default
           jlist.setCursor(UtilGUI.DEFAULT_CURSOR);
@@ -288,10 +282,10 @@ public class SearchBox extends JTextField implements KeyListener {
   }
 
   /**
-   * Display the serch icon inside the texfield
+   * Display the search icon inside the texfield
    */
   public void paint(Graphics g) {
     super.paint(g);
-    g.drawImage(IconLoader.getIcon(JajukIcons.SEARCH).getImage(), 4, 3, 16, 16, null);
+    g.drawImage(IconLoader.getIcon(JajukIcons.SEARCH).getImage(), 4, 3, 14, 14, null);
   }
 }

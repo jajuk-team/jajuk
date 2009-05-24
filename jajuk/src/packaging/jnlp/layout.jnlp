@@ -5,9 +5,6 @@
         <vendor>Various</vendor>
     </information>
     <resources>
-        <jar href="tablelayout-20070421.jar" version='VERSION_REPLACED_BY_ANT'/>
-    </resources>
-    <resources>
         <jar href="miglayout-swing-3.7" version='VERSION_REPLACED_BY_ANT'/>
     </resources>
         

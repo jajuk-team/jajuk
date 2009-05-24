@@ -26,6 +26,8 @@ import javax.swing.JPanel;
 
 import net.miginfocom.swing.MigLayout;
 
+import org.jajuk.util.IconLoader;
+import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 
 /**
@@ -46,9 +48,9 @@ public class OKCancelPanel extends JPanel {
     this.al = al;
     // buttons
     setLayout(new MigLayout("ins 5"));
-    jbOk = new JajukButton(Messages.getString("Ok"));
+    jbOk = new JajukButton(Messages.getString("Ok"), IconLoader.getIcon(JajukIcons.OK));
     jbOk.addActionListener(al);
-    jbCancel = new JajukButton(Messages.getString("Cancel"));
+    jbCancel = new JajukButton(Messages.getString("Cancel"), IconLoader.getIcon(JajukIcons.KO));
     jbCancel.addActionListener(al);
     add(jbOk, "tag ok,gapx 5");
     add(jbCancel, "tag cancel");

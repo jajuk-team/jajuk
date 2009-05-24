@@ -112,7 +112,7 @@ public class NewPropertyWizard extends CustomPropertyWizard implements KeyListen
     add(jtfDefault,"split 3,grow");
     add(jcbDefault, "grow");
     add(jdpDefault, "grow,wrap");
-    add(okp,"cell 1 4, grow,center");
+    add(okp,"cell 1 4, span,right");
     addWindowListener(new WindowAdapter() {
       @Override
       public void windowActivated(WindowEvent e) {
