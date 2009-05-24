@@ -21,7 +21,6 @@
 package org.jajuk.ui.widgets;
 
 import ext.JXTrayIcon;
-import ext.SliderMenuItem;
 
 import java.awt.AWTException;
 import java.awt.Point;
@@ -32,20 +31,15 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
-import java.awt.event.MouseWheelEvent;
 import java.util.HashSet;
 import java.util.Properties;
 import java.util.Set;
 
 import javax.swing.JCheckBoxMenuItem;
-import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
-import javax.swing.JSlider;
 import javax.swing.SwingUtilities;
-import javax.swing.Timer;
-import javax.swing.event.ChangeEvent;
 
 import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
@@ -54,12 +48,10 @@ import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.services.dj.Ambience;
 import org.jajuk.services.dj.AmbienceManager;
-import org.jajuk.services.players.Player;
 import org.jajuk.services.players.QueueModel;
 import org.jajuk.ui.actions.ActionManager;
 import org.jajuk.ui.actions.JajukActions;
 import org.jajuk.ui.helpers.FontManager;
-import org.jajuk.ui.helpers.JajukTimer;
 import org.jajuk.ui.helpers.PlayerStateMediator;
 import org.jajuk.ui.helpers.FontManager.JajukFont;
 import org.jajuk.util.Conf;
@@ -109,15 +101,9 @@ public class JajukSystray extends CommandJPanel {
 
   JMenuItem jmiNext;
 
-  JLabel jlVolume;
-
-  JLabel jlPosition;
-
   JMenu jmAmbience;
 
   long lDateLastAdjust;
-
-  JSlider jsPosition;
 
   /** Show balloon? */
   JCheckBoxMenuItem jcbmiShowBalloon;
@@ -128,14 +114,7 @@ public class JajukSystray extends CommandJPanel {
   /** HTML Tooltip */
   JajukBalloon balloon;
 
-  /** Swing Timer to refresh the component */
-  private final Timer timer = new Timer(JajukTimer.DEFAULT_HEARTBEAT, new ActionListener() {
-    public void actionPerformed(ActionEvent e) {
-      update(new JajukEvent(JajukEvents.HEART_BEAT));
-    }
-  });
-
-  /**
+   /**
    * 
    * @return whether the tray is loaded
    */
@@ -203,19 +182,6 @@ public class JajukSystray extends CommandJPanel {
     jmiPrevious = new SizedJMenuItem(ActionManager.getAction(JajukActions.PREVIOUS_TRACK));
     jmiNext = new SizedJMenuItem(ActionManager.getAction(JajukActions.NEXT_TRACK));
 
-    jsPosition = new SliderMenuItem(0, 100, 0);
-    jsPosition.setToolTipText(Messages.getString("CommandJPanel.15"));
-    jsPosition.addMouseWheelListener(this);
-    jsPosition.addChangeListener(this);
-
-    int iVolume = (int) (100 * Conf.getFloat(Const.CONF_VOLUME));
-    if (iVolume > 100) { // can occur in some undefined cases
-      iVolume = 100;
-    }
-    jsVolume = new SliderMenuItem(0, 100, iVolume);
-    jsVolume.addMouseWheelListener(this);
-    jsVolume.addChangeListener(this);
-
     // Ambiences menu
     Ambience defaultAmbience = AmbienceManager.getInstance().getSelectedAmbience();
     jmAmbience = new JMenu(Messages.getString("JajukWindow.36")
@@ -223,16 +189,7 @@ public class JajukSystray extends CommandJPanel {
         + ((defaultAmbience == null) ? Messages.getString("DigitalDJWizard.64") : defaultAmbience
             .getName()));
     populateAmbiences();
-    // Volume menu
-    JMenu jmVolume = new JMenu(Messages.getString("JajukWindow.33"));
-    jmVolume.setIcon(IconLoader.getIcon(JajukIcons.VOLUME));
-    jmVolume.add(jsVolume);
-
-    // Position menu
-    JMenu jmPosition = new JMenu(Messages.getString("JajukWindow.34"));
-    jmPosition.setIcon(IconLoader.getIcon(JajukIcons.POSITION));
-    jmPosition.add(jsPosition);
-
+   
     // Add a title. Important: do not add a JLabel, it present action event
     // to occur under windows
     JMenuItem jmiTitle = new JMenuItem("Jajuk");
@@ -256,8 +213,6 @@ public class JajukSystray extends CommandJPanel {
     jmenu.addSeparator();
     jmenu.add(jmiSlimbar);
     jmenu.add(jmiMute);
-    jmenu.add(jmVolume);
-    jmenu.add(jmPosition);
     jmenu.addSeparator();
     jmenu.add(jmiExit);
     // Add a row under Linux to fix an issue : sometimes, when left-clicking on
@@ -312,8 +267,6 @@ public class JajukSystray extends CommandJPanel {
       Log.error(e);
       return;
     }
-    // start timer
-    timer.start();
     // Register needed events
     ObservationManager.register(this);
 
@@ -326,12 +279,8 @@ public class JajukSystray extends CommandJPanel {
     Set<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
     eventSubjectSet.add(JajukEvents.ZERO);
     eventSubjectSet.add(JajukEvents.FILE_LAUNCHED);
-    eventSubjectSet.add(JajukEvents.PLAYER_PAUSE);
     eventSubjectSet.add(JajukEvents.PLAYER_PLAY);
-    eventSubjectSet.add(JajukEvents.PLAYER_RESUME);
     eventSubjectSet.add(JajukEvents.PLAYER_STOP);
-    eventSubjectSet.add(JajukEvents.HEART_BEAT);
-    eventSubjectSet.add(JajukEvents.VOLUME_CHANGED);
     eventSubjectSet.add(JajukEvents.AMBIENCES_CHANGE);
     eventSubjectSet.add(JajukEvents.AMBIENCES_SELECTION_CHANGE);
     eventSubjectSet.add(JajukEvents.PARAMETERS_CHANGE);
@@ -370,13 +319,6 @@ public class JajukSystray extends CommandJPanel {
       public void run() {
         JajukEvents subject = event.getSubject();
         if (JajukEvents.FILE_LAUNCHED.equals(subject)) {
-          // remove and re-add listener to make sure not to add it
-          // twice
-          jsPosition.removeMouseWheelListener(JajukSystray.this);
-          jsPosition.addMouseWheelListener(JajukSystray.this);
-          jsPosition.removeChangeListener(JajukSystray.this);
-          jsPosition.addChangeListener(JajukSystray.this);
-          jsPosition.setEnabled(true);
           jmiPlayPause.setEnabled(true);
           jmiStop.setEnabled(true);
           jmiNext.setEnabled(true);
@@ -408,68 +350,20 @@ public class JajukSystray extends CommandJPanel {
           jmiNext.setEnabled(bQueueNotVoid);
           jmiPrevious.setEnabled(bQueueNotVoid);
           jmiStop.setEnabled(false);
-          jsPosition.removeMouseWheelListener(JajukSystray.this);
-          jsPosition.removeChangeListener(JajukSystray.this);
-          jsPosition.setEnabled(false);
-          jsPosition.setValue(0);
           jmiFinishAlbum.setEnabled(false);
         } else if (JajukEvents.ZERO.equals(subject)) {
           jmiPlayPause.setEnabled(false);
           jmiStop.setEnabled(false);
           jmiNext.setEnabled(false);
           jmiPrevious.setEnabled(false);
-          jsPosition.removeMouseWheelListener(JajukSystray.this);
-          jsPosition.removeChangeListener(JajukSystray.this);
-          jsPosition.setEnabled(false);
-          jsPosition.setValue(0);
           jmiFinishAlbum.setEnabled(false);
         } else if (JajukEvents.PLAYER_PLAY.equals(subject)) {
-          jsPosition.removeMouseWheelListener(JajukSystray.this);
-          jsPosition.addMouseWheelListener(JajukSystray.this);
-          jsPosition.removeChangeListener(JajukSystray.this);
-          jsPosition.addChangeListener(JajukSystray.this);
-          jsPosition.setEnabled(true);
           jmiPlayPause.setEnabled(true);
           jmiStop.setEnabled(true);
           jmiNext.setEnabled(true);
           jmiFinishAlbum.setEnabled(true);
-        } else if (JajukEvents.PLAYER_PAUSE.equals(subject)) {
-          // disable position
-          jsPosition.setEnabled(false);
-          jsPosition.removeMouseWheelListener(JajukSystray.this);
-          jsPosition.removeChangeListener(JajukSystray.this);
-        } else if (JajukEvents.PLAYER_RESUME.equals(subject)) {
-          // disable position
-          // Avoid adding listeners twice
-          if (jsPosition.getMouseWheelListeners().length == 0) {
-            jsPosition.addMouseWheelListener(JajukSystray.this);
-          }
-          if (jsPosition.getChangeListeners().length == 0) {
-            jsPosition.addChangeListener(JajukSystray.this);
-          }
-          jsPosition.setEnabled(true);
         } else if (JajukEvents.VOLUME_CHANGED.equals(event.getSubject())) {
           JajukSystray.super.update(event);
-        } else if (JajukEvents.HEART_BEAT.equals(subject) && !QueueModel.isStopped()
-            && !Player.isPaused()) {
-          int iPos = (int) (100 * JajukTimer.getInstance().getCurrentTrackPosition());
-          // Make sure to enable the slider
-          if (!jsPosition.isEnabled()) {
-            jsPosition.setEnabled(true);
-          }
-          // if position is adjusting, no don't disturb user
-          if (jsPosition.getValueIsAdjusting() || Player.isSeeking()) {
-            return;
-          }
-          // make sure not to set to old position
-          if ((System.currentTimeMillis() - lDateLastAdjust) < 2000) {
-            return;
-          }
-          // remove and re-add listener to make sure not to add it
-          // twice
-          jsPosition.removeChangeListener(JajukSystray.this);
-          jsPosition.setValue(iPos);
-          jsPosition.addChangeListener(JajukSystray.this);
         } else if (JajukEvents.AMBIENCES_CHANGE.equals(subject)
             || JajukEvents.AMBIENCES_SELECTION_CHANGE.equals(subject)) {
           Ambience ambience = AmbienceManager.getInstance().getSelectedAmbience();
@@ -498,9 +392,7 @@ public class JajukSystray extends CommandJPanel {
 
   /**
    * Populate ambiences
-   * 
    */
-  @Override
   final void populateAmbiences() {
     // Ambience selection listener
     ActionListener al = new ActionListener() {
@@ -539,51 +431,6 @@ public class JajukSystray extends CommandJPanel {
       jmi.addActionListener(al);
       jmAmbience.add(jmi);
     }
-  }
-
-  /*
-   * (non-Javadoc)
-   * 
-   * @see java.awt.event.MouseWheelListener#mouseWheelMoved(java.awt.event.MouseWheelEvent)
-   */
-  @Override
-  public void mouseWheelMoved(MouseWheelEvent e) {
-    if (e.getSource() == jsPosition) {
-      int iOld = jsPosition.getValue();
-      int iNew = iOld - (e.getUnitsToScroll() * 3);
-      jsPosition.setValue(iNew);
-    } else {
-      super.mouseWheelMoved(e);
-    }
-  }
-
-  /*
-   * (non-Javadoc)
-   * 
-   * @see javax.swing.event.ChangeListener#stateChanged(javax.swing.event.ChangeEvent)
-   */
-  @Override
-  public void stateChanged(ChangeEvent e) {
-    if (e.getSource() == jsPosition && !jsPosition.getValueIsAdjusting()) {
-      lDateLastAdjust = System.currentTimeMillis();
-      setPosition((float) jsPosition.getValue() / 100);
-    } else {
-      super.stateChanged(e);
-    }
-  }
-
-  /**
-   * Call a seek
-   * 
-   * @param fPosition
-   */
-  private void setPosition(final float fPosition) {
-    new Thread() {
-      @Override
-      public void run() {
-        Player.seek(fPosition);
-      }
-    }.start();
   }
 
   public JPopupMenu getMenu() {
