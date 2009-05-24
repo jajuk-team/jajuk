@@ -286,6 +286,6 @@ public class SearchBox extends JTextField implements KeyListener {
    */
   public void paint(Graphics g) {
     super.paint(g);
-    g.drawImage(IconLoader.getIcon(JajukIcons.SEARCH).getImage(), 4, 3, 14, 14, null);
+    g.drawImage(IconLoader.getIcon(JajukIcons.SEARCH).getImage(), 4, 3, 16, 16, null);
   }
 }
