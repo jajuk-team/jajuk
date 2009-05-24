@@ -28,8 +28,8 @@ import static org.jajuk.ui.actions.JajukActions.HELP_REQUIRED;
 import static org.jajuk.ui.actions.JajukActions.INTRO_MODE;
 import static org.jajuk.ui.actions.JajukActions.OPTIONS;
 import static org.jajuk.ui.actions.JajukActions.QUALITY;
-import static org.jajuk.ui.actions.JajukActions.REPEAT_MODE;
 import static org.jajuk.ui.actions.JajukActions.REPEAT_ALL_MODE;
+import static org.jajuk.ui.actions.JajukActions.REPEAT_MODE;
 import static org.jajuk.ui.actions.JajukActions.SHOW_ABOUT;
 import static org.jajuk.ui.actions.JajukActions.SHOW_TRACES;
 import static org.jajuk.ui.actions.JajukActions.SHUFFLE_MODE;
@@ -120,6 +120,8 @@ public final class JajukJMenuBar extends JMenuBar implements Observer {
   private final JCheckBoxMenuItem jcbmiContinue;
 
   private final JCheckBoxMenuItem jcbmiIntro;
+  
+  private final JCheckBoxMenuItem jcbmiKaraoke;
 
   JMenu smart;
 
@@ -243,12 +245,15 @@ public final class JajukJMenuBar extends JMenuBar implements Observer {
     jcbmiContinue.setSelected(Conf.getBoolean(Const.CONF_STATE_CONTINUE));
     jcbmiIntro = new JCheckBoxMenuItem(ActionManager.getAction(INTRO_MODE));
     jcbmiIntro.setSelected(Conf.getBoolean(Const.CONF_STATE_INTRO));
+    jcbmiKaraoke = new JCheckBoxMenuItem(ActionManager.getAction(JajukActions.KARAOKE_MODE));
+    jcbmiKaraoke.setSelected(Conf.getBoolean(Const.CONF_STATE_KARAOKE));
 
     mode.add(jcbmiRepeat);
     mode.add(jcbmiRepeatAll);
     mode.add(jcbmiShuffle);
     mode.add(jcbmiContinue);
     mode.add(jcbmiIntro);
+    mode.add(jcbmiKaraoke);
 
     // Smart Menu
     smart = new JMenu(Messages.getString("JajukJMenuBar.29"));
@@ -460,6 +465,10 @@ public final class JajukJMenuBar extends JMenuBar implements Observer {
 
   public void setIntroSelected(final boolean b) {
     jcbmiIntro.setSelected(b);
+  }
+  
+  public void setKaraokeSelected(final boolean b) {
+    jcbmiKaraoke.setSelected(b);
   }
 
 }

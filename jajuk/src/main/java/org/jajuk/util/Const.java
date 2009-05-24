@@ -508,6 +508,8 @@ public interface Const {
   String CONF_STATE_REPEAT_ALL = "jajuk.state.mode.repeat.all";
 
   String CONF_STATE_SHUFFLE = "jajuk.state.mode.shuffle";
+  
+  String CONF_STATE_KARAOKE = "jajuk.state.karaoke";
 
   String CONF_STATE_CONTINUE = "jajuk.state.mode.continue";
 
@@ -1151,7 +1153,7 @@ public interface Const {
   String CONF_AUTO_SCROLL = "jajuk.auto_scroll";
   
   String CONF_EXPLORER_PATH = "jajuk.explorer_path";
-
+  
   // Alarm actions
   String ALARM_START_ACTION = "Start Playing";
 

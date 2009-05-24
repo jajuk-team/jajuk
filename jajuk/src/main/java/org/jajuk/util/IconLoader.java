@@ -132,6 +132,10 @@ final public class IconLoader {
     else if (icon == JajukIcons.INTRO) {
       out = new ImageIcon(UtilSystem.getResource("icons/16x16/intro_16x16.png"));
     }
+    
+     else if (icon == JajukIcons.KARAOKE) {
+      out = new ImageIcon(UtilSystem.getResource("icons/16x16/karaoke_16x16.png"));
+    }
 
     else if (icon == JajukIcons.SHUFFLE_GLOBAL) {
       out = new ImageIcon(UtilSystem.getResource("icons/32x32/shuffle_global_32x32.png"));

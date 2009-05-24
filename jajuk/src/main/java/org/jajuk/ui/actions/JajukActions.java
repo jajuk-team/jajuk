@@ -53,6 +53,11 @@ public enum JajukActions {
    * Used when the intro mode was changed
    */
   INTRO_MODE,
+  
+   /**
+   * Used when the karaoke mode was changed
+   */
+  KARAOKE_MODE,
 
   /**
    * Used when a new device is requested.

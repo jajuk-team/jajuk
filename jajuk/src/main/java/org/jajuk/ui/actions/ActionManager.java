@@ -143,6 +143,7 @@ public final class ActionManager {
     installAction(SHUFFLE_MODE, new ShuffleModeAction(), true);
     installAction(CONTINUE_MODE, new ContinueModeAction(), false);
     installAction(INTRO_MODE, new IntroModeAction(), false);
+    installAction(JajukActions.KARAOKE_MODE, new KaraokeModeAction(), false);
 
     // CommandJPanel: Special Functions Panel
     installAction(SHUFFLE_GLOBAL, new GlobalRandomAction(), false);

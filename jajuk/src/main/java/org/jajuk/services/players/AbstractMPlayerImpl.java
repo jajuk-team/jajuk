@@ -166,11 +166,7 @@ public abstract class AbstractMPlayerImpl implements IPlayerImpl, Const {
     // -af volume: Use volnorm to limit gain to max
     // If mute, use -200db otherwise, use a linear scale
     cmd.add("-af");
-    cmd.add("volume=" + ((fVolume == 0) ? -200 : ((int) (25 * fVolume) - 20)));
-    // Add -volnorm (audio normalization) if option is set
-    if (Conf.getBoolean(CONF_USE_VOLNORM)){
-      cmd.add("volnorm");
-    }
+    cmd.add(buildAudioFilters());
     // -softvol : use soft mixer, allows to set volume only to this mplayer
     // instance, not others programs
     cmd.add("-softvol");
@@ -200,13 +196,38 @@ public abstract class AbstractMPlayerImpl implements IPlayerImpl, Const {
     return cmd;
   }
 
+  /**
+   * Build the -af audio filters command part
+   * 
+   * @return
+   */
+  private String buildAudioFilters() {
+    // Audio filters syntax : -af
+    // <filter1[=parameter1:parameter2:...],filter2,...>
+    // gain = -200 = mute
+    int volume = -200;
+    if (fVolume != 0) {
+      volume = ((int) (25 * fVolume) - 20);
+    }
+    StringBuilder audiofilters = new StringBuilder("volume=" + volume);
+    // Add -volnorm (audio normalization) if option is set
+    if (Conf.getBoolean(CONF_USE_VOLNORM)) {
+      audiofilters.append(",volnorm");
+    }
+    // Add karaoke state if required
+    if (Conf.getBoolean(CONF_STATE_KARAOKE)) {
+      audiofilters.append(",karaoke");
+    }
+    return audiofilters.toString();
+  }
+
   /*
    * (non-Javadoc)
    * 
    * @see org.jajuk.players.IPlayerImpl#getCurrentLength()
    */
   public long getCurrentLength() {
-    
+
     return 0;
   }
 
@@ -216,7 +237,7 @@ public abstract class AbstractMPlayerImpl implements IPlayerImpl, Const {
    * @see org.jajuk.players.IPlayerImpl#getCurrentPosition()
    */
   public float getCurrentPosition() {
-    
+
     return 0;
   }
 
@@ -226,7 +247,7 @@ public abstract class AbstractMPlayerImpl implements IPlayerImpl, Const {
    * @see org.jajuk.players.IPlayerImpl#getElapsedTime()
    */
   public long getElapsedTime() {
-    
+
     return 0;
   }
 

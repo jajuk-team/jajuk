@@ -106,6 +106,8 @@ public class CommandJPanel extends JXPanel implements ActionListener, ChangeList
   private JajukToggleButton jbContinue;
 
   private JajukToggleButton jbIntro;
+  
+  private JajukToggleButton jbKaraoke;
 
   private JToolBar jtbSpecial;
 
@@ -227,6 +229,8 @@ public class CommandJPanel extends JXPanel implements ActionListener, ChangeList
     jbContinue.setSelected(Conf.getBoolean(Const.CONF_STATE_CONTINUE));
     jbIntro = new JajukToggleButton(ActionManager.getAction(JajukActions.INTRO_MODE));
     jbIntro.setSelected(Conf.getBoolean(Const.CONF_STATE_INTRO));
+    jbKaraoke = new JajukToggleButton(ActionManager.getAction(JajukActions.KARAOKE_MODE));
+    jbKaraoke.setSelected(Conf.getBoolean(Const.CONF_STATE_KARAOKE));
     jtbModes.add(jbRepeat);
     jtbModes.add(jbRepeatAll);
     jtbModes.addSeparator();
@@ -235,6 +239,8 @@ public class CommandJPanel extends JXPanel implements ActionListener, ChangeList
     jtbModes.add(jbContinue);
     jtbModes.addSeparator();
     jtbModes.add(jbIntro);
+    jtbModes.addSeparator();
+    jtbModes.add(jbKaraoke);
 
     // Eval toolbar
     evaltoobar = new PreferenceToolbar();
@@ -650,6 +656,10 @@ public class CommandJPanel extends JXPanel implements ActionListener, ChangeList
 
   public void setIntroSelected(final boolean b) {
     this.jbIntro.setSelected(b);
+  }
+  
+  public void setKaraokeSelected(final boolean b) {
+    this.jbKaraoke.setSelected(b);
   }
 
 }

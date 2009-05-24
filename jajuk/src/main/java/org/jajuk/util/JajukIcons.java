@@ -45,6 +45,8 @@ public enum JajukIcons {
   CONTINUE,
 
   INTRO,
+  
+  KARAOKE,
 
   SHUFFLE_GLOBAL,
 
