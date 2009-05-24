@@ -55,7 +55,7 @@ public class FilesTableModel extends JajukTableModel {
    *          columns names
    */
   public FilesTableModel() {
-    super(19);
+    super(20);
     setEditable(Conf.getBoolean(Const.CONF_FILES_TABLE_EDITION));
     // Columns names
     // First column is play icon, need to set a space character
@@ -101,6 +101,9 @@ public class FilesTableModel extends JajukTableModel {
 
     vColNames.add(Messages.getString(Const.PROPERTY_SEPARATOR + Const.XML_TRACK_ORDER));
     idList.add(Const.XML_TRACK_ORDER);
+    
+    vColNames.add(Messages.getString(Const.PROPERTY_SEPARATOR + Const.XML_TRACK_DISC_NUMBER));
+    idList.add(Const.XML_TRACK_DISC_NUMBER);
 
     vColNames.add(Messages.getString(Const.PROPERTY_SEPARATOR + Const.XML_YEAR));
     idList.add(Const.XML_YEAR);
@@ -190,6 +193,7 @@ public class FilesTableModel extends JajukTableModel {
     boolean bDiscovery = (columnsToShow != null && columnsToShow
         .contains(Const.XML_TRACK_DISCOVERY_DATE));
     boolean bOrder = (columnsToShow != null && columnsToShow.contains(Const.XML_TRACK_ORDER));
+    boolean bDiscNumber = (columnsToShow != null && columnsToShow.contains(Const.XML_TRACK_DISC_NUMBER));
     boolean bYear = (columnsToShow != null && columnsToShow.contains(Const.XML_YEAR));
     boolean bDirectory = (columnsToShow != null && columnsToShow.contains(Const.XML_DIRECTORY));
     boolean bFileDate = (columnsToShow != null && columnsToShow.contains(Const.XML_FILE_DATE));
@@ -321,46 +325,54 @@ public class FilesTableModel extends JajukTableModel {
         oValues[iRow][13] = "";
       }
       bCellEditable[iRow][13] = bHasATagEditor;
-
-      // year
-      if (bYear) {
-        oValues[iRow][14] = file.getTrack().getYear();
+      
+      // Disc number
+      if (bDiscNumber) {
+        oValues[iRow][14] = file.getTrack().getDiscNumber();
       } else {
         oValues[iRow][14] = "";
       }
       bCellEditable[iRow][14] = bHasATagEditor;
 
-      // directory full path
-      if (bDirectory) {
-        oValues[iRow][15] = file.getDirectory().getAbsolutePath();
+      // year
+      if (bYear) {
+        oValues[iRow][15] = file.getTrack().getYear();
       } else {
         oValues[iRow][15] = "";
       }
-      bCellEditable[iRow][15] = false;
+      bCellEditable[iRow][15] = bHasATagEditor;
 
-      // file date
-      if (bFileDate) {
-        oValues[iRow][16] = file.getDateValue(Const.XML_FILE_DATE);
+      // directory full path
+      if (bDirectory) {
+        oValues[iRow][16] = file.getDirectory().getAbsolutePath();
       } else {
         oValues[iRow][16] = "";
       }
       bCellEditable[iRow][16] = false;
 
-      // Hits
-      if (bHits) {
-        oValues[iRow][17] = file.getTrack().getHits();
+      // file date
+      if (bFileDate) {
+        oValues[iRow][17] = file.getDateValue(Const.XML_FILE_DATE);
       } else {
         oValues[iRow][17] = "";
       }
       bCellEditable[iRow][17] = false;
 
-      // Discovery date
-      if (bDiscovery) {
-        oValues[iRow][18] = file.getTrack().getDiscoveryDate();
+      // Hits
+      if (bHits) {
+        oValues[iRow][18] = file.getTrack().getHits();
       } else {
         oValues[iRow][18] = "";
       }
       bCellEditable[iRow][18] = false;
+
+      // Discovery date
+      if (bDiscovery) {
+        oValues[iRow][19] = file.getTrack().getDiscoveryDate();
+      } else {
+        oValues[iRow][19] = "";
+      }
+      bCellEditable[iRow][19] = false;
 
       // -- Custom properties now --
       // files custom tags

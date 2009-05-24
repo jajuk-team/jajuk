@@ -309,6 +309,7 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
     String sComment = tag.getComment();
     long lOrder = tag.getOrder();
     String sAblumArtist=tag.getAlbumArtist();
+    long lDiscNumber = tag.getDiscNumber();
 
     if (fileRef == null && reporter != null) {
       // stats, do it here and not
@@ -318,7 +319,7 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
     }
 
     registerFile(music, sId, sTrackName, sAlbumName, sAuthorName, sStyle, length, sYear, lQuality,
-        sComment, lOrder, sAblumArtist);
+        sComment, lOrder, sAblumArtist, lDiscNumber);
   }
 
   /**
@@ -333,10 +334,12 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
    * @param lQuality
    * @param sComment
    * @param lOrder
+   * @param sAlbumArtist
+   * @param lDiscNumber
    */
   private void registerFile(java.io.File music, String sId, String sTrackName, String sAlbumName,
       String sAuthorName, String sStyle, long length, String sYear, long lQuality, String sComment,
-      long lOrder, String sAlbumArtist) {
+      long lOrder, String sAlbumArtist, long lDiscNumber) {
     Album album = AlbumManager.getInstance().registerAlbum(sAlbumName);
     Style style = StyleManager.getInstance().registerStyle(sStyle);
     Year year = YearManager.getInstance().registerYear(sYear);
@@ -345,7 +348,7 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
     // Store number of tracks in collection
     long trackNumber = TrackManager.getInstance().getElementCount();
     Track track = TrackManager.getInstance().registerTrack(sTrackName, album, style, author,
-        length, year, lOrder, type, sAlbumArtist);
+        length, year, lOrder, type, sAlbumArtist, lDiscNumber);
 
     // Note date for file date property. CAUTION: do not try to
     // check current date to accelerate refreshing if file has not

@@ -79,7 +79,7 @@ public class Track extends LogicalItem implements Comparable<Track> {
    * @param sAlbumArtist
    */
   public Track(String sId, String sName, Album album, Style style, Author author, long length,
-      Year year, long lOrder, Type type, String sAlbumArtist) {
+      Year year, long lOrder, Type type, String sAlbumArtist, long lDiscNumber) {
     super(sId, sName);
     // album
     this.album = album;
@@ -103,6 +103,8 @@ public class Track extends LogicalItem implements Comparable<Track> {
     setProperty(Const.XML_YEAR, year.getID());
     // Order
     setProperty(Const.XML_TRACK_ORDER, lOrder);
+    // Order
+    setProperty(Const.XML_TRACK_DISC_NUMBER, lDiscNumber);
     // Rate
     setProperty(Const.XML_TRACK_RATE, 0l);
     // Hits
@@ -121,7 +123,8 @@ public class Track extends LogicalItem implements Comparable<Track> {
         .append(length).append(" Year=").append(year.getValue()).append(" Rate=").append(getRate())
         .append(" ").append(type).append(" Hits=").append(getHits()).append(" Addition date=")
         .append(getDiscoveryDate()).append(" Comment=").append(getComment()).append(" order=")
-        .append(getOrder()).append(" Nb of files=").append(alFiles.size()).append("]");
+        .append(getOrder()).append(" Nb of files=").append(alFiles.size()).append(" Album artist=")
+        .append(getAlbumArtist()).append(" Disc=").append(getDiscNumber()).append("]");
     for (int i = 0; i < alFiles.size(); i++) {
       sOut.append('\n').append(alFiles.get(i).toString());
     }
@@ -278,6 +281,15 @@ public class Track extends LogicalItem implements Comparable<Track> {
   }
 
   /**
+   * Get disc number
+   * 
+   * @return
+   */
+  public long getDiscNumber() {
+    return getLongValue(Const.XML_TRACK_DISC_NUMBER);
+  }
+
+  /**
    * Get album artist
    * 
    * @return
@@ -285,14 +297,14 @@ public class Track extends LogicalItem implements Comparable<Track> {
   public String getAlbumArtist() {
     return getStringValue(Const.XML_TRACK_ALBUM_ARTIST);
   }
-  
+
   /**
    * Get translated album artist
    * 
    * @return
    */
   public String getAlbumArtist2() {
-    if(getStringValue(Const.XML_TRACK_ALBUM_ARTIST).equals(Const.UNKNOWN_AUTHOR)){
+    if (getStringValue(Const.XML_TRACK_ALBUM_ARTIST).equals(Const.UNKNOWN_AUTHOR)) {
       return Messages.getString(getStringValue(Const.XML_TRACK_ALBUM_ARTIST));
     }
     return getStringValue(Const.XML_TRACK_ALBUM_ARTIST);

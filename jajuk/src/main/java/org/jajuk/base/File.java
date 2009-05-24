@@ -340,6 +340,7 @@ public class File extends PhysicalItem implements Comparable<File>, Const {
     sb.append(lTrack.getValue(Const.XML_TRACK_COMMENT));// custom properties now
     sb.append(lTrack.getValue(Const.XML_TRACK_ORDER));// custom properties now
     sb.append(lTrack.getValue(Const.XML_TRACK_ALBUM_ARTIST));// custom properties now
+    sb.append(lTrack.getValue(Const.XML_TRACK_DISC_NUMBER));// custom properties now
     return sb.toString();
   }
 

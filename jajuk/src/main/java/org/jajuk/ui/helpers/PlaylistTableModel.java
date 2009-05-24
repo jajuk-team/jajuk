@@ -52,7 +52,7 @@ public class PlaylistTableModel extends JajukTableModel {
   private boolean bQueue = false;
 
   public PlaylistTableModel(boolean bQueue) {
-    super(16);
+    super(17);
     this.bQueue = bQueue;
     setEditable(false); // table not editable
     prepareColumns();
@@ -160,6 +160,10 @@ public class PlaylistTableModel extends JajukTableModel {
     // Order
     vColNames.add(Messages.getString(Const.PROPERTY_SEPARATOR + Const.XML_TRACK_ORDER));
     idList.add(Const.XML_TRACK_ORDER);
+    
+    // Disc number
+    vColNames.add(Messages.getString(Const.PROPERTY_SEPARATOR + Const.XML_TRACK_DISC_NUMBER));
+    idList.add(Const.XML_TRACK_DISC_NUMBER);
 
     // Device
     vColNames.add(Messages.getString(Const.PROPERTY_SEPARATOR + Const.XML_DEVICE));
@@ -215,6 +219,7 @@ public class PlaylistTableModel extends JajukTableModel {
     boolean bDiscovery = (columnsToShow != null && columnsToShow
         .contains(Const.XML_TRACK_DISCOVERY_DATE));
     boolean bOrder = (columnsToShow != null && columnsToShow.contains(Const.XML_TRACK_ORDER));
+    boolean bDiscNumber = (columnsToShow != null && columnsToShow.contains(Const.XML_TRACK_DISC_NUMBER));
     boolean bHits = (columnsToShow != null && columnsToShow.contains(Const.XML_TRACK_HITS));
     boolean bDirectory = (columnsToShow != null && columnsToShow.contains(Const.XML_DIRECTORY));
     boolean bDevice = (columnsToShow != null && columnsToShow.contains(Const.XML_DEVICE));
@@ -316,33 +321,40 @@ public class PlaylistTableModel extends JajukTableModel {
       } else {
         oValues[iRow][11] = "";
       }
-
-      // Device name
-      if (bDevice) {
-        oValues[iRow][12] = bf.getDevice().getName();
+      
+      // Disc number
+      if (bDiscNumber) {
+        oValues[iRow][12] = bf.getTrack().getDiscNumber();
       } else {
         oValues[iRow][12] = "";
       }
 
-      // directory name
-      if (bDirectory) {
-        oValues[iRow][13] = bf.getDirectory().getName();
+      // Device name
+      if (bDevice) {
+        oValues[iRow][13] = bf.getDevice().getName();
       } else {
         oValues[iRow][13] = "";
       }
 
-      // file name
-      if (bFileName) {
-        oValues[iRow][14] = bf.getName();
+      // directory name
+      if (bDirectory) {
+        oValues[iRow][14] = bf.getDirectory().getName();
       } else {
         oValues[iRow][14] = "";
       }
 
-      // Hits
-      if (bHits) {
-        oValues[iRow][15] = bf.getTrack().getHits();
+      // file name
+      if (bFileName) {
+        oValues[iRow][15] = bf.getName();
       } else {
         oValues[iRow][15] = "";
+      }
+
+      // Hits
+      if (bHits) {
+        oValues[iRow][16] = bf.getTrack().getHits();
+      } else {
+        oValues[iRow][16] = "";
       }
 
       // Custom properties now

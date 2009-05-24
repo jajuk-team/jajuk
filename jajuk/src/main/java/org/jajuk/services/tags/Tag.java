@@ -419,7 +419,7 @@ public class Tag {
   /**
    * @param discnumber
    */
-  public void setDiscNumber(int discnumber) throws JajukException {
+  public void setDiscNumber(long discnumber) throws JajukException {
     try {
       tagImpl.setDiscNumber(discnumber);
     } catch (Exception e) {

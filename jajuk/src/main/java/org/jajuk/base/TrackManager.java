@@ -108,8 +108,11 @@ public final class TrackManager extends ItemManager {
     registerProperty(new PropertyMetaInformation(Const.XML_TRACK_ORDER, false, true, true, true,
         false, Long.class, null));
     // album artist
-    registerProperty(new PropertyMetaInformation(Const.XML_TRACK_ALBUM_ARTIST, false, true, true, true,
-        false, String.class, null));
+    registerProperty(new PropertyMetaInformation(Const.XML_TRACK_ALBUM_ARTIST, false, true, true,
+        true, false, String.class, null));
+    // Track disc number
+    registerProperty(new PropertyMetaInformation(Const.XML_TRACK_DISC_NUMBER, false, true, true,
+        true, false, Long.class, null));
     // Track preference factor. This is not editable because when changing
     // preference, others
     // actions must be done (updateRate() and we want user to use contextual
@@ -138,9 +141,11 @@ public final class TrackManager extends ItemManager {
    * Register an Track
    */
   public synchronized Track registerTrack(String sName, Album album, Style style, Author author,
-      long length, Year year, long lOrder, Type type, String sAlbumArtist) {
-    String sId = createID(sName, album, style, author, length, year, lOrder, type);
-    return registerTrack(sId, sName, album, style, author, length, year, lOrder, type, sAlbumArtist);
+      long length, Year year, long lOrder, Type type, String sAlbumArtist, long lDiscNumber) {
+    String sId = createID(sName, album, style, author, length, year, lOrder, type, sAlbumArtist,
+        lDiscNumber);
+    return registerTrack(sId, sName, album, style, author, length, year, lOrder, type,
+        sAlbumArtist, lDiscNumber);
   }
 
   /**
@@ -150,10 +155,11 @@ public final class TrackManager extends ItemManager {
    * @return
    */
   protected static String createID(String sName, Album album, Style style, Author author,
-      long length, Year year, long lOrder, Type type) {
+      long length, Year year, long lOrder, Type type, String sAblumArtist, long lDiscNumber) {
     StringBuilder sb = new StringBuilder(100);
     sb.append(style.getID()).append(author.getID()).append(album.getID()).append(sName).append(
-        year.getValue()).append(length).append(lOrder).append(type.getID());
+        year.getValue()).append(length).append(lOrder).append(type.getID()).append(sAblumArtist)
+        .append(lDiscNumber);
     // distinguish tracks by type because we can't find best file
     // on different quality levels by format
     return MD5Processor.hash(sb.toString());
@@ -165,14 +171,16 @@ public final class TrackManager extends ItemManager {
    * @param sName
    */
   public synchronized Track registerTrack(String sId, String sName, Album album, Style style,
-      Author author, long length, Year year, long lOrder, Type type, String sAlbumArtist) {
+      Author author, long length, Year year, long lOrder, Type type, String sAlbumArtist,
+      long lDiscNumber) {
     // We absolutely need to return the same track if already registrated to
     // avoid duplicates and properties lost
     Track track = getTrackByID(sId);
     if (track != null) {
       return track;
     }
-    track = new Track(sId, sName, album, style, author, length, year, lOrder, type, sAlbumArtist);
+    track = new Track(sId, sName, album, style, author, length, year, lOrder, type, sAlbumArtist,
+        lDiscNumber);
     registerItem(track);
     // For performances, add the track to the album cache
     album.getTracksCache().add(track);
@@ -249,7 +257,7 @@ public final class TrackManager extends ItemManager {
     Album newAlbum = AlbumManager.getInstance().registerAlbum(sNewAlbum);
     Track newTrack = registerTrack(track.getName(), newAlbum, track.getStyle(), track.getAuthor(),
         track.getDuration(), track.getYear(), track.getOrder(), track.getType(), track
-            .getAlbumArtist());
+            .getAlbumArtist(), track.getDiscNumber());
     postChange(track, newTrack, filter);
     // remove this album if no more references
     AlbumManager.getInstance().cleanOrphanTracks(track.getAlbum());
@@ -301,7 +309,7 @@ public final class TrackManager extends ItemManager {
     Author newAuthor = AuthorManager.getInstance().registerAuthor(sNewAuthor);
     Track newTrack = registerTrack(track.getName(), track.getAlbum(), track.getStyle(), newAuthor,
         track.getDuration(), track.getYear(), track.getOrder(), track.getType(), track
-            .getAlbumArtist());
+            .getAlbumArtist(), track.getDiscNumber());
     postChange(track, newTrack, filter);
     // remove this item if no more references
     AuthorManager.getInstance().cleanOrphanTracks(track.getAuthor());
@@ -349,7 +357,7 @@ public final class TrackManager extends ItemManager {
     Style newStyle = StyleManager.getInstance().registerStyle(sNewStyle);
     Track newTrack = registerTrack(track.getName(), track.getAlbum(), newStyle, track.getAuthor(),
         track.getDuration(), track.getYear(), track.getOrder(), track.getType(), track
-            .getAlbumArtist());
+            .getAlbumArtist(), track.getDiscNumber());
     postChange(track, newTrack, filter);
     // remove this item if no more references
     StyleManager.getInstance().cleanOrphanTracks(track.getStyle());
@@ -400,7 +408,7 @@ public final class TrackManager extends ItemManager {
     Year newYear = YearManager.getInstance().registerYear(newItem);
     Track newTrack = registerTrack(track.getName(), track.getAlbum(), track.getStyle(), track
         .getAuthor(), track.getDuration(), newYear, track.getOrder(), track.getType(), track
-        .getAlbumArtist());
+        .getAlbumArtist(), track.getDiscNumber());
     postChange(track, newTrack, filter);
     return newTrack;
   }
@@ -515,7 +523,7 @@ public final class TrackManager extends ItemManager {
 
     Track newTrack = registerTrack(track.getName(), track.getAlbum(), track.getStyle(), track
         .getAuthor(), track.getDuration(), track.getYear(), lNewOrder, track.getType(), track
-        .getAlbumArtist());
+        .getAlbumArtist(), track.getDiscNumber());
     postChange(track, newTrack, filter);
     return newTrack;
   }
@@ -558,7 +566,7 @@ public final class TrackManager extends ItemManager {
 
     Track newTrack = registerTrack(sNewItem, track.getAlbum(), track.getStyle(), track.getAuthor(),
         track.getDuration(), track.getYear(), track.getOrder(), track.getType(), track
-            .getAlbumArtist());
+            .getAlbumArtist(), track.getDiscNumber());
     postChange(track, newTrack, filter);
     // if current track name is changed, notify it
     if (QueueModel.getPlayingFile() != null && QueueModel.getPlayingFile().getTrack().equals(track)) {
@@ -856,8 +864,9 @@ public final class TrackManager extends ItemManager {
    * @param filter
    * @return
    */
-  public Item changeTrackAlbumArtist(Track track, String sNewItem, Set<File> filter) throws JajukException{
- // check there is actually a change
+  public Item changeTrackAlbumArtist(Track track, String sNewItem, Set<File> filter)
+      throws JajukException {
+    // check there is actually a change
     if (track.getAlbumArtist().equals(sNewItem)) {
       return track;
     }
@@ -888,5 +897,48 @@ public final class TrackManager extends ItemManager {
 
     track.setAlbumArtist(sNewItem);
     return track;
+  }
+
+  /**
+   * @param track
+   * @param value
+   * @param filter
+   * @return
+   */
+  public Item changeTrackDiscNumber(Track track, long lNewDiscNumber, Set<File> filter)
+      throws JajukException {
+    // check there is actually a change
+    if (track.getDiscNumber() == lNewDiscNumber) {
+      return track;
+    }
+    // check format
+    if (lNewDiscNumber < 0) {
+      throw new JajukException(137);
+    }
+    List<File> alReady = null;
+    // check if files are accessible
+    alReady = track.getReadyFiles(filter);
+    if (alReady.size() == 0) {
+      throw new NoneAccessibleFileException(10);
+    }
+    // change tag in files
+    for (File file : alReady) {
+      Tag tag = Tag.getTagForFio(file.getFIO());
+      tag.setDiscNumber(lNewDiscNumber);
+      if (bAutocommit) {
+        tag.commit();
+      } else {
+        tagsToCommit.add(tag);
+      }
+    }
+
+    // Remove the track from the old album
+    track.getAlbum().getTracksCache().remove(track);
+
+    Track newTrack = registerTrack(track.getName(), track.getAlbum(), track.getStyle(), track
+        .getAuthor(), track.getDuration(), track.getYear(), track.getDiscNumber(), track.getType(),
+        track.getAlbumArtist(), lNewDiscNumber);
+    postChange(track, newTrack, filter);
+    return newTrack;
   }
 }

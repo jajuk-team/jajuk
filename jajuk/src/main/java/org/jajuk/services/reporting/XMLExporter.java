@@ -300,6 +300,7 @@ public class XMLExporter extends Exporter {
     String sTrackComment = UtilString.formatXML(track.getComment());
     long lTrackOrder = track.getOrder();
     String sAlbumArtist = UtilString.formatXML(track.getAlbumArtist());
+    long lTrackDiscNumber = track.getDiscNumber();
     writer.write(addTabs(level) + Tag.openTag(Const.XML_TRACK) + NEWLINE);
     writer.write(addTabs(level + 1) + Tag.tagData(Const.XML_ID, sTrackID) + NEWLINE);
     writer.write(addTabs(level + 1) + Tag.tagData(Const.XML_TRACK_NAME, sTrackName) + NEWLINE);
@@ -314,6 +315,9 @@ public class XMLExporter extends Exporter {
         + Tag.tagData(Const.XML_TRACK_ORDER, UtilString.padNumber(lTrackOrder, 2)) + NEWLINE);
     writer.write(addTabs(level + 1) + Tag.tagData(Const.XML_TRACK_ALBUM, sTrackAlbum) + NEWLINE);
     writer.write(addTabs(level + 1) + Tag.tagData(Const.XML_TRACK_ALBUM_ARTIST, sAlbumArtist)
+        + NEWLINE);
+    writer.write(addTabs(level + 1)
+        + Tag.tagData(Const.XML_TRACK_DISC_NUMBER, UtilString.padNumber(lTrackDiscNumber, 2))
         + NEWLINE);
     writer.write(addTabs(level) + Tag.closeTag(Const.XML_TRACK) + NEWLINE);
   }

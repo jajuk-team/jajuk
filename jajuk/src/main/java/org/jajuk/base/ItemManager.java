@@ -398,7 +398,10 @@ public abstract class ItemManager {
       }  else if (Const.XML_TRACK_ALBUM_ARTIST.equals(sKey)) {
         newItem = TrackManager.getInstance().changeTrackAlbumArtist(file.getTrack(), (String) oValue,
             filter);
-      } else if (Const.XML_YEAR.equals(sKey)) {
+      }  else if (Const.XML_TRACK_DISC_NUMBER.equals(sKey)) {
+        newItem = TrackManager.getInstance().changeTrackDiscNumber(file.getTrack(), (Long) oValue,
+            filter);
+      }  else if (Const.XML_YEAR.equals(sKey)) {
         newItem = TrackManager.getInstance().changeTrackYear(file.getTrack(),
             String.valueOf(oValue), filter);
       } else if (Const.XML_TRACK_RATE.equals(sKey)) {

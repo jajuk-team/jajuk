@@ -687,11 +687,25 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
             sAlbumArtist = Const.UNKNOWN_AUTHOR;
           }
 
+          // Idem for disc number
+          long lDiscNumber = 0l;
+          if (attributes.getValue(Const.XML_TRACK_DISC_NUMBER) != null) {
+            try {
+              lDiscNumber = UtilString.fastLongParser(attributes
+                  .getValue(Const.XML_TRACK_DISC_NUMBER));
+            } catch (Exception e) {
+              if (Log.isDebugEnabled()) {
+                // wrong format
+                Log.debug(Messages.getString("Error.137") + ":" + sTrackName); // wrong
+              }
+            }
+          }
+
           // UPGRADE test
           sRightID = sID;
           if (needCheckID) {
             sRightID = TrackManager.createID(sTrackName, album, style, author, length, year,
-                lOrder, type).intern();
+                lOrder, type, sAlbumArtist, lDiscNumber).intern();
             if (sRightID == sID) {
               needCheckID = UpgradeManager.isUpgradeDetected() || SessionService.isTestMode();
             } else {
@@ -703,7 +717,7 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
           Date dAdditionDate = ADDITION_FORMATTER.parse(attributes.getValue(attributes
               .getIndex(Const.XML_TRACK_DISCOVERY_DATE)));
           track = TrackManager.getInstance().registerTrack(sRightID, sTrackName, album, style,
-              author, length, year, lOrder, type, sAlbumArtist);
+              author, length, year, lOrder, type, sAlbumArtist, lDiscNumber);
           TrackManager.getInstance().changeTrackRate(track,
               UtilString.fastLongParser(attributes.getValue(Const.XML_TRACK_RATE)));
           track.setHits(UtilString.fastLongParser(attributes.getValue(Const.XML_TRACK_HITS)));
