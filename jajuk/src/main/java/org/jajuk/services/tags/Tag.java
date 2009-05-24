@@ -248,18 +248,18 @@ public class Tag {
   /**
    * @return disc number
    */
-  public int getDiscNumber() {
-    int discnumber = 0;
-    // if the type doesn't support tags ( like wav )
-    if (tagImpl == null) {
-      return 0;
-    }
+  public long getDiscNumber() {
+    long l = 0l;
     try {
-      discnumber = tagImpl.getDiscNumber();
+      l = tagImpl.getDiscNumber();
+
     } catch (Exception e) {
-      Log.info("Wrong length:" + fio.getName());
+      // just debug, no warn because wrong order are too often and
+      // generate too much traces
+      Log.info("Wrong disc number:" + fio.getName());
+      l = 01;
     }
-    return discnumber;
+    return l;
   }
 
   /**

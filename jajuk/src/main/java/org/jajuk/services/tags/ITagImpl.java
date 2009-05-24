@@ -47,7 +47,7 @@ public interface ITagImpl {
   /**
    * @return disc number
    */
-  int getDiscNumber() throws Exception;
+  long getDiscNumber() throws Exception;
 
   /**
    * @return style name
@@ -103,7 +103,7 @@ public interface ITagImpl {
   /**
    * @param discnumber
    */
-  void setDiscNumber(int discnumber) throws Exception;
+  void setDiscNumber(long discnumber) throws Exception;
 
   /**
    * @param style

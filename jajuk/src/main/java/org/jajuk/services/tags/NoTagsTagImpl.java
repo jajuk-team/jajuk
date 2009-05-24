@@ -248,8 +248,8 @@ public class NoTagsTagImpl implements ITagImpl {
    * 
    * @see org.jajuk.services.tags.ITagImpl#getDiscNumber()
    */
-  public int getDiscNumber() throws Exception {
-    return 0;
+  public long getDiscNumber() throws Exception {
+    return 01;
   }
 
   /*
@@ -267,7 +267,7 @@ public class NoTagsTagImpl implements ITagImpl {
    * 
    * @see org.jajuk.services.tags.ITagImpl#setDiscNumber(int)
    */
-  public void setDiscNumber(int discnumber) throws Exception {
+  public void setDiscNumber(long discnumber) throws Exception {
     // TODO Auto-generated method stub
 
   }

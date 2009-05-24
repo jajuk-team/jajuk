@@ -333,14 +333,16 @@ public class JAudioTaggerTagImpl implements ITagImpl, Const {
    * 
    * @see org.jajuk.services.tags.ITagImpl#getDiscNumber()
    */
-  public int getDiscNumber() throws Exception {
-    int discnumber = 0;
-    try {
-      discnumber = new Integer(this.tag.getFirst(TagFieldKey.DISC_NO)).intValue();
-    } catch (Exception e) {
-      System.err.println("can not read tag disc number");
+  public long getDiscNumber() throws Exception {
+    
+    String sDiscNumber = this.tag.getFirst(TagFieldKey.DISC_NO);
+    if (UtilString.isVoid(sDiscNumber)) {
+      return 01;
     }
-    return discnumber;
+    if (sDiscNumber.matches(".*/.*")) {
+      sDiscNumber = sDiscNumber.substring(0, sDiscNumber.indexOf('/'));
+    }
+    return Long.parseLong(sDiscNumber);
   }
 
   /*
@@ -358,9 +360,9 @@ public class JAudioTaggerTagImpl implements ITagImpl, Const {
    * 
    * @see org.jajuk.services.tags.ITagImpl#setDiscNumber(int)
    */
-  public void setDiscNumber(int discnumber) throws Exception {
+  public void setDiscNumber(long discnumber) throws Exception {
     createTagIfNeeded();
-    tag.set(tag.createTagField(TagFieldKey.DISC_NO, new Integer(discnumber).toString()));
+    tag.set(tag.createTagField(TagFieldKey.DISC_NO, Long.toString(discnumber)));
   }
 
 }
