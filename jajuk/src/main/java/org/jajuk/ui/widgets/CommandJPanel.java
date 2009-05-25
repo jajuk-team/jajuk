@@ -214,6 +214,7 @@ public class CommandJPanel extends JXPanel implements ActionListener, ChangeList
         return 24;
       }
     };
+    jbMute.setBorder(null);
 
     // Mode toolbar
     // we need an inner toolbar to apply size properly
@@ -246,7 +247,7 @@ public class CommandJPanel extends JXPanel implements ActionListener, ChangeList
     evaltoobar = new PreferenceToolbar();
 
     // Volume
-    jpVolume = new JPanel(new MigLayout("insets 0,gapx 5", "[grow][]", "[grow]"));
+    jpVolume = new JPanel(new MigLayout("insets 0,gapx 5", "[][grow]", "[grow]"));
     jpVolume.addMouseWheelListener(CommandJPanel.this);
     ActionUtil.installKeystrokes(jpVolume, ActionManager.getAction(JajukActions.DECREASE_VOLUME),
         ActionManager.getAction(JajukActions.INCREASE_VOLUME));
@@ -263,9 +264,9 @@ public class CommandJPanel extends JXPanel implements ActionListener, ChangeList
     jsVolume.setToolTipText(iVolume + " %");
     jsVolume.addChangeListener(CommandJPanel.this);
     MuteAction.setVolumeIcon(iVolume);
-    jpVolume.add(jsVolume, "growx");
     jpVolume.add(jbMute);
-
+    jpVolume.add(jsVolume, "growx");
+    
     // Special functions toolbar
     jtbSpecial = new JajukJToolbar();
     ddbGlobalRandom = new DropDownButton(IconLoader.getIcon(JajukIcons.SHUFFLE_GLOBAL)) {
