@@ -19,24 +19,21 @@
  */
 package org.jajuk.ui.widgets;
 
-import static org.jajuk.ui.actions.JajukActions.FORWARD_TRACK;
 import static org.jajuk.ui.actions.JajukActions.NEXT_TRACK;
 import static org.jajuk.ui.actions.JajukActions.PAUSE_RESUME_TRACK;
 import static org.jajuk.ui.actions.JajukActions.PREVIOUS_TRACK;
-import static org.jajuk.ui.actions.JajukActions.REWIND_TRACK;
 import static org.jajuk.ui.actions.JajukActions.STOP_TRACK;
 
-import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.DisplayMode;
-import java.awt.FlowLayout;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 
-import javax.swing.JPanel;
 import javax.swing.JToolBar;
 import javax.swing.JWindow;
 import javax.swing.SwingUtilities;
+
+import net.miginfocom.swing.MigLayout;
 
 import org.jajuk.ui.actions.ActionManager;
 import org.jajuk.ui.actions.JajukActions;
@@ -65,25 +62,15 @@ public class FullscreenPlayerFrame extends JWindow {
 
   private boolean fullscreen = false;
 
-  private JPanel topPanel;
-
   private JajukButton jbPrevious;
 
   private JajukButton jbNext;
-
-  private JPressButton jbRew;
 
   private JajukButton jbPlayPause;
 
   private JajukButton jbStop;
 
-  private JPressButton jbFwd;
-
   private JajukButton jbFull;
-
-  private JPanel bottomPanel;
-
-  private JPanel jSliderPanel;
 
   public static FullscreenPlayerFrame getInstance() {
     if (instance == null) {
@@ -106,79 +93,48 @@ public class FullscreenPlayerFrame extends JWindow {
     this.origDisplayMode = graphicsDevice.getDisplayMode();
 
     initGui();
-
   }
 
   /**
    * 
    */
   private void initGui() {
-
-    // North
+    // Full screen switch button
     jbFull = new JajukButton(ActionManager.getAction(JajukActions.FULLSCREEN_JAJUK));
 
-    JPanel menuPanel = new JPanel();
-    menuPanel.setLayout(new BorderLayout());
-    menuPanel.add(jbFull, BorderLayout.EAST);
-
+    // Animation view
     AnimationView animationView = new AnimationView();
     animationView.initUI();
 
-    topPanel = new JPanel();
-    topPanel.setLayout(new BorderLayout());
-
-    topPanel.add(menuPanel, BorderLayout.NORTH);
-    topPanel.add(animationView, BorderLayout.CENTER);
-
-    // Center
+    // Cover view
     CoverView coverView = new CoverView();
     coverView.initUI(false);
 
-    // South
-    bottomPanel = new JPanel();
-    bottomPanel.setLayout(new BorderLayout());
-
     // Player toolbar
     JToolBar jtbPlay = new JajukJToolbar();
-    jtbPlay.setLayout(new FlowLayout(FlowLayout.CENTER, 50, 5));
-
     jbPrevious = new JajukButton(ActionManager.getAction(PREVIOUS_TRACK));
     jbPrevious.setIcon(IconLoader.getIcon(JajukIcons.PLAYER_PREVIOUS_BIG));
-
     jbNext = new JajukButton(ActionManager.getAction(NEXT_TRACK));
     jbNext.setIcon(IconLoader.getIcon(JajukIcons.PLAYER_NEXT_BIG));
-
-    jbRew = new JPressButton(ActionManager.getAction(REWIND_TRACK));
-    jbRew.setIcon(IconLoader.getIcon(JajukIcons.PLAYER_REWIND_BIG));
-
     jbPlayPause = new JajukButtonSetIconAdapter(ActionManager.getAction(PAUSE_RESUME_TRACK));
     jbPlayPause.setIcon(IconLoader.getIcon(JajukIcons.PAUSE));
-
     jbStop = new JajukButton(ActionManager.getAction(STOP_TRACK));
     jbStop.setIcon(IconLoader.getIcon(JajukIcons.PLAYER_STOP_BIG));
-
-    jbFwd = new JPressButton(ActionManager.getAction(FORWARD_TRACK));
-    jbFwd.setIcon(IconLoader.getIcon(JajukIcons.PLAYER_FORWARD_BIG));
-
     jtbPlay.add(jbPrevious);
-    jtbPlay.add(jbRew);
     jtbPlay.add(jbPlayPause);
     jtbPlay.add(jbStop);
-    jtbPlay.add(jbFwd);
     jtbPlay.add(jbNext);
 
-    jSliderPanel = new JPanel();
-    jSliderPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+    // Information panel
     TrackPositionSliderToolbar tpst = new TrackPositionSliderToolbar();
-    jSliderPanel.add(tpst);
 
-    bottomPanel.add(jtbPlay, BorderLayout.NORTH);
-    bottomPanel.add(jSliderPanel, BorderLayout.SOUTH);
-
-    // put everything together
-    getContentPane().add(topPanel, BorderLayout.NORTH);
-    getContentPane().add(coverView, BorderLayout.CENTER);
-    getContentPane().add(bottomPanel, BorderLayout.SOUTH);
+    // Add items
+    setLayout(new MigLayout("ins 0", "[grow]","[][grow][60%][][]"));
+    add(jbFull, "right,wrap");
+    add(animationView, "alignx center,aligny top,grow,gap bottom 20,wrap");
+    add(coverView, "alignx center,grow,gap bottom 20,wrap");
+    add(jtbPlay, "alignx center,gap bottom 20,wrap");
+    add(tpst, "alignx center,aligny bottom,gap bottom 10");
 
   }
 
@@ -197,7 +153,7 @@ public class FullscreenPlayerFrame extends JWindow {
             graphicsDevice.setFullScreenWindow(instance);
 
             // topPanel should have 10% of the dispaly resolution height
-            topPanel.setPreferredSize(new Dimension(graphicsDevice.getDisplayMode().getWidth(),
+            setPreferredSize(new Dimension(graphicsDevice.getDisplayMode().getWidth(),
                 (graphicsDevice.getDisplayMode().getHeight() / 100) * 10));
             validate();
           } else {
