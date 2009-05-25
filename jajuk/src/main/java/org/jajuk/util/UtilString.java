@@ -29,6 +29,7 @@ import java.util.StringTokenizer;
 
 import org.jajuk.base.AlbumManager;
 import org.jajuk.base.AuthorManager;
+import org.jajuk.base.File;
 import org.jajuk.base.PropertyMetaInformation;
 import org.jajuk.base.StyleManager;
 import org.jajuk.base.Track;
@@ -245,7 +246,11 @@ public final class UtilString {
     String ret = out;
     String sValue;
     if (sPattern.contains(Const.PATTERN_AUTHOR)) {
-      sValue = track.getAuthor().getName();
+      if (track.getAlbumArtist().equals(Const.UNKNOWN_AUTHOR) || track.getAlbumArtist().equals("")) {
+        sValue = track.getAuthor().getName();
+      } else {
+        sValue = track.getAlbumArtist();
+      }
       if (normalize) {
         sValue = UtilSystem.getNormalizedFilename(sValue);
       }
@@ -300,6 +305,53 @@ public final class UtilString {
     // Check Year Value
     out = UtilString.applyYearPattern(file, sPattern, bMandatory, out, track);
 
+    // Check Disc Value
+    out = UtilString.applyDiscPattern(file, sPattern, bMandatory, out, track);
+
+    return out;
+  }
+
+  /**
+   * @param file
+   * @param pattern
+   * @param mandatory
+   * @param out
+   * @param track
+   * @return
+   * @throws JajukException
+   */
+  private static String applyDiscPattern(File file, String sPattern, boolean bMandatory,
+      String out, Track track) throws JajukException {
+    if (sPattern.contains(Const.PATTERN_DISC)) {
+      // override Order from filename if not set explicitly
+      long lDiscNumber = track.getDiscNumber();
+      if (lDiscNumber == 0) {
+        final String sFilename = file.getName();
+        if (Character.isDigit(sFilename.charAt(0))) {
+          final String sTo = sFilename.substring(0, 3).trim().replaceAll("[^0-9]", "");
+          for (final char c : sTo.toCharArray()) {
+            if (!Character.isDigit(c)) {
+              throw new JajukException(152, file.getAbsolutePath());
+            }
+          }
+          lDiscNumber = Long.parseLong(sTo);
+        } else {
+          if (bMandatory) {
+            throw new JajukException(152, file.getAbsolutePath());
+          } else {
+            lDiscNumber = 0;
+          }
+        }
+      }
+
+      // prepend one digit numbers with "0"
+      if (lDiscNumber < 10) {
+        return out.replace(Const.PATTERN_DISC, "0" + lDiscNumber);
+      } else {
+        return out.replace(Const.PATTERN_DISC, lDiscNumber + "");
+      }
+    }
+
     return out;
   }
 
@@ -346,12 +398,13 @@ public final class UtilString {
     title = title.replaceAll(Const.PATTERN_STYLE, file.getTrack().getStyle().getName2());
     title = title.replaceAll(Const.PATTERN_TRACKORDER, Long.toString(file.getTrack().getOrder()));
     title = title.replaceAll(Const.PATTERN_YEAR, file.getTrack().getYear().getName2());
+    title = title.replaceAll(Const.PATTERN_DISC, Long.toString(file.getTrack().getDiscNumber()));
     return title;
   }
 
   /*
-   * Escape (in the regexp sense) a string Source Search reserved: $ ( ) * + - . ? [ \ ] ^ { | }
-   * http://mindprod.com/jgloss/regex.html
+   * Escape (in the regexp sense) a string Source Search reserved: $ ( ) * + - .
+   * ? [ \ ] ^ { | } http://mindprod.com/jgloss/regex.html
    */
   public static String escapeString(String s) {
     int length = s.length();
@@ -479,11 +532,14 @@ public final class UtilString {
    * see http://www.w3.org/TR/2000/REC-xml-20001006
    * <p>
    * substrings
-   * <p>' to &apos;
-   * <p>" to &quot;
-   * <p>< to &lt;
-   * <p>> to &gt;
-   * <p>& to &amp;
+   * <p>
+   * ' to &apos;
+   * <p>
+   * " to &quot;
+   * <p>
+   * < to &lt; <p>> to &gt;
+   * <p>
+   * & to &amp;
    * 
    * @param s
    * @return
@@ -732,8 +788,8 @@ public final class UtilString {
   /**
    * Rot13 encode/decode,
    * <p>
-   * Thx
-   * http://www.idevelopment.info/data/Programming/java/security/java_cryptography_extension/rot13.java
+   * Thx http://www.idevelopment.info/data/Programming/java/security/
+   * java_cryptography_extension/rot13.java
    * </p>
    * 
    * @param in

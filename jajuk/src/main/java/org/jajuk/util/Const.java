@@ -1104,6 +1104,8 @@ public interface Const {
 
   // Patterns
   String PATTERN_AUTHOR = "%artist";
+  
+  String PATTERN_DISC = "%disc";
 
   String PATTERN_ALBUM = "%album";
 
