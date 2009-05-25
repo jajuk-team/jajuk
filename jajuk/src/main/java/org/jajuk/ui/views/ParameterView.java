@@ -855,7 +855,17 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
     jrbFile = new JRadioButton(Messages.getString("ParameterView.16"));
     jrbFile.setToolTipText(Messages.getString("ParameterView.17"));
     jrbFile.addItemListener(this);
-    sbSearch = new SearchBox();
+    sbSearch = new SearchBox() {
+      private static final long serialVersionUID = 1L;
+      public void valueChanged(final ListSelectionEvent e) {
+        if (!e.getValueIsAdjusting()) {
+          final SearchResult sr = sbSearch.getResult(sbSearch.getSelectedIndex());
+          sbSearch.setText(sr.getFile().getTrack().getName());
+          Conf.setProperty(Const.CONF_STARTUP_FILE, sr.getFile().getID());
+          sbSearch.hidePopup();
+        }
+      }
+    };
     // disabled by default, is enabled only if jrbFile is enabled
     sbSearch.setEnabled(false);
     // set chosen track in file selection
@@ -1667,21 +1677,6 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
     scbLAF.setSelectedItem(Conf.getString(Const.CONF_OPTIONS_LNF));
     scbLAF.addActionListener(this);
     jsPerspectiveSize.setValue(Conf.getInt(Const.CONF_PERSPECTIVE_ICONS_SIZE));
-  }
-
-  /*
-   * (non-Javadoc)
-   * 
-   * @see javax.swing.event.ListSelectionListener#valueChanged(javax.swing.event.
-   *      ListSelectionEvent)
-   */
-  public void valueChanged(final ListSelectionEvent e) {
-    if (!e.getValueIsAdjusting()) {
-      final SearchResult sr = sbSearch.getResult(sbSearch.getSelectedIndex());
-      sbSearch.setText(sr.getFile().getTrack().getName());
-      Conf.setProperty(Const.CONF_STARTUP_FILE, sr.getFile().getID());
-      sbSearch.hidePopup();
-    }
   }
 
 }

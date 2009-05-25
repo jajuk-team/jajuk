@@ -41,6 +41,7 @@ import java.util.Iterator;
 import java.util.Set;
 
 import javax.swing.Action;
+import javax.swing.Box;
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -233,14 +234,15 @@ public class CommandJPanel extends JXPanel implements ActionListener, ChangeList
     jbKaraoke = new JajukToggleButton(ActionManager.getAction(JajukActions.KARAOKE_MODE));
     jbKaraoke.setSelected(Conf.getBoolean(Const.CONF_STATE_KARAOKE));
     jtbModes.add(jbRepeat);
+    jtbModes.add(Box.createHorizontalStrut(4));
     jtbModes.add(jbRepeatAll);
-    jtbModes.addSeparator();
+    jtbModes.add(Box.createHorizontalStrut(4));
     jtbModes.add(jbRandom);
-    jtbModes.addSeparator();
+    jtbModes.add(Box.createHorizontalStrut(4));
     jtbModes.add(jbContinue);
-    jtbModes.addSeparator();
+    jtbModes.add(Box.createHorizontalStrut(4));
     jtbModes.add(jbIntro);
-    jtbModes.addSeparator();
+    jtbModes.add(Box.createHorizontalStrut(4));
     jtbModes.add(jbKaraoke);
 
     // Eval toolbar

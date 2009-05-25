@@ -128,7 +128,16 @@ public class AlarmClockDialog extends JDialog implements ActionListener, ItemLis
     jrbFile = new JRadioButton(Messages.getString("ParameterView.16"));
     jrbFile.setToolTipText(Messages.getString("ParameterView.17"));
     jrbFile.addItemListener(this);
-    sbSearch = new SearchBox();
+    sbSearch = new SearchBox() {
+      private static final long serialVersionUID = 1L;
+      public void valueChanged(final ListSelectionEvent e) {
+        if (!e.getValueIsAdjusting()) {
+          sr = sbSearch.getResult(sbSearch.getSelectedIndex());
+          sbSearch.setText(sr.getFile().getTrack().getName());
+          sbSearch.hidePopup();
+        }
+      }
+    };
     // disabled by default, is enabled only if jrbFile is enabled
     sbSearch.setEnabled(false);
     sbSearch.setToolTipText(Messages.getString("ParameterView.18"));
@@ -226,14 +235,6 @@ public class AlarmClockDialog extends JDialog implements ActionListener, ItemLis
   public void itemStateChanged(final ItemEvent e) {
     if (e.getSource() == jrbFile) {
       sbSearch.setEnabled(jrbFile.isSelected());
-    }
-  }
-
-  public void valueChanged(final ListSelectionEvent e) {
-    if (!e.getValueIsAdjusting()) {
-      sr = sbSearch.getResult(sbSearch.getSelectedIndex());
-      sbSearch.setText(sr.getFile().getTrack().getName());
-      sbSearch.hidePopup();
     }
   }
 

@@ -323,7 +323,45 @@ public final class JajukSlimbar extends JFrame implements Observer, MouseWheelLi
     jbFinishAlbum = new SizedButton(ActionManager.getAction(JajukActions.FINISH_ALBUM));
 
     // Search
-    sbSearch = new SearchBox();
+    sbSearch = new SearchBox() {
+      private static final long serialVersionUID = 1L;
+
+      public void valueChanged(final ListSelectionEvent e) {
+        SwingWorker sw = new SwingWorker() {
+          @Override
+          public Object construct() {
+            if (!e.getValueIsAdjusting()) {
+              SearchResult sr = sbSearch.getResult(sbSearch.getSelectedIndex());
+              try {
+                // If user selected a file
+                if (sr.getType() == SearchResultType.FILE) {
+                  QueueModel.push(new StackItem(sr.getFile(), Conf
+                      .getBoolean(Const.CONF_STATE_REPEAT_ALL), true), Conf
+                      .getBoolean(Const.CONF_OPTIONS_PUSH_ON_CLICK));
+                }
+                // User selected a web radio
+                else if (sr.getType() == SearchResultType.WEBRADIO) {
+                  QueueModel.launchRadio(sr.getWebradio());
+                }
+              } catch (JajukException je) {
+                Log.error(je);
+              }
+            }
+            return null;
+          }
+
+          @Override
+          public void finished() {
+            if (!e.getValueIsAdjusting()) {
+              sbSearch.hidePopup();
+              requestFocusInWindow();
+            }
+          }
+        };
+        sw.start();
+      }
+    };
+
     sbSearch.setPreferredSize(new Dimension(75, 20));
     sbSearch.setMaximumSize(new Dimension(75, 20));
     sbSearch.addMouseMotionListener(motionAdapter);
@@ -525,41 +563,6 @@ public final class JajukSlimbar extends JFrame implements Observer, MouseWheelLi
         || JajukEvents.PLAYER_STOP.equals(subject)) {
       updateCurrentTitle();
     }
-  }
-
-  public void valueChanged(final ListSelectionEvent e) {
-    SwingWorker sw = new SwingWorker() {
-      @Override
-      public Object construct() {
-        if (!e.getValueIsAdjusting()) {
-          SearchResult sr = sbSearch.getResult(sbSearch.getSelectedIndex());
-          try {
-            // If user selected a file
-            if (sr.getType() == SearchResultType.FILE) {
-              QueueModel.push(new StackItem(sr.getFile(), Conf
-                  .getBoolean(Const.CONF_STATE_REPEAT_ALL), true), Conf
-                  .getBoolean(Const.CONF_OPTIONS_PUSH_ON_CLICK));
-            }
-            // User selected a web radio
-            else if (sr.getType() == SearchResultType.WEBRADIO) {
-              QueueModel.launchRadio(sr.getWebradio());
-            }
-          } catch (JajukException je) {
-            Log.error(je);
-          }
-        }
-        return null;
-      }
-
-      @Override
-      public void finished() {
-        if (!e.getValueIsAdjusting()) {
-          sbSearch.hidePopup();
-          requestFocusInWindow();
-        }
-      }
-    };
-    sw.start();
   }
 
   public void actionPerformed(final ActionEvent ae) {

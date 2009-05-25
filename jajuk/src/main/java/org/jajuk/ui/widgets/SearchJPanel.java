@@ -152,7 +152,44 @@ public final class SearchJPanel extends JXPanel implements Observer, ActionListe
     PlayerStateMediator.getInstance();
 
     // Search
-    sbSearch = new SearchBox();
+    sbSearch = new SearchBox() {
+      private static final long serialVersionUID = 1L;
+
+      public void valueChanged(final ListSelectionEvent e) {
+        SwingWorker sw = new SwingWorker() {
+          @Override
+          public Object construct() {
+            if (!e.getValueIsAdjusting()) {
+              SearchResult sr = sbSearch.getResult(sbSearch.getSelectedIndex());
+              try {
+                // If user selected a file
+                if (sr.getType() == SearchResultType.FILE) {
+                  QueueModel.push(new StackItem(sr.getFile(), Conf
+                      .getBoolean(Const.CONF_STATE_REPEAT_ALL), true), Conf
+                      .getBoolean(Const.CONF_OPTIONS_PUSH_ON_CLICK));
+                }
+                // User selected a web radio
+                else if (sr.getType() == SearchResultType.WEBRADIO) {
+                  QueueModel.launchRadio(sr.getWebradio());
+                }
+              } catch (JajukException je) {
+                Log.error(je);
+              }
+            }
+            return null;
+          }
+
+          @Override
+          public void finished() {
+            if (!e.getValueIsAdjusting()) {
+              sbSearch.hidePopup();
+              requestFocusInWindow();
+            }
+          }
+        };
+        sw.start();
+      }
+    };
 
     // History
     jcbHistory = new SteppedComboBox();
@@ -225,7 +262,7 @@ public final class SearchJPanel extends JXPanel implements Observer, ActionListe
     ambiencesCombo.addActionListener(ambienceListener);
 
     // Add items
-    setLayout(new MigLayout("insets 5 0 5 1,gapx 30", "[][grow][grow]"));
+    setLayout(new MigLayout("insets 5 0 4 1,gapx 30", "[][grow][grow]"));
     add(ambiencesCombo, "left,gap left 16,growx 20,width 100::");
     add(jcbHistory, "grow,center,growx 50");
     add(sbSearch, "right,grow,growx 30,width 100::");
@@ -303,47 +340,6 @@ public final class SearchJPanel extends JXPanel implements Observer, ActionListe
     } catch (Exception e) {
       Log.error(e);
     }
-  }
-
-  /*
-   * (non-Javadoc)
-   * 
-   * @see javax.swing.event.ListSelectionListener#valueChanged(javax.swing.event.
-   *      ListSelectionEvent)
-   */
-  public void valueChanged(final ListSelectionEvent e) {
-    SwingWorker sw = new SwingWorker() {
-      @Override
-      public Object construct() {
-        if (!e.getValueIsAdjusting()) {
-          SearchResult sr = sbSearch.getResult(sbSearch.getSelectedIndex());
-          try {
-            // If user selected a file
-            if (sr.getType() == SearchResultType.FILE) {
-              QueueModel.push(new StackItem(sr.getFile(), Conf
-                  .getBoolean(Const.CONF_STATE_REPEAT_ALL), true), Conf
-                  .getBoolean(Const.CONF_OPTIONS_PUSH_ON_CLICK));
-            }
-            // User selected a web radio
-            else if (sr.getType() == SearchResultType.WEBRADIO) {
-              QueueModel.launchRadio(sr.getWebradio());
-            }
-          } catch (JajukException je) {
-            Log.error(je);
-          }
-        }
-        return null;
-      }
-
-      @Override
-      public void finished() {
-        if (!e.getValueIsAdjusting()) {
-          sbSearch.hidePopup();
-          requestFocusInWindow();
-        }
-      }
-    };
-    sw.start();
   }
 
   /*

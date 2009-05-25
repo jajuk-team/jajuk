@@ -50,6 +50,7 @@ import javax.swing.PopupFactory;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
+import javax.swing.event.ListSelectionListener;
 
 import org.jajuk.base.SearchResult;
 import org.jajuk.base.TrackManager;
@@ -66,7 +67,7 @@ import org.jajuk.util.log.Log;
 /**
  * Search combo box. Editable combo with search features
  */
-public class SearchBox extends JTextField implements KeyListener {
+public abstract class SearchBox extends JTextField implements KeyListener,ListSelectionListener {
 
   private static final long serialVersionUID = 1L;
 
@@ -223,6 +224,7 @@ public class SearchBox extends JTextField implements KeyListener {
           }
           jlist = new JList(model);
           jlist.setLayoutOrientation(JList.VERTICAL);
+          jlist.addListSelectionListener(this);
           jlist.setCellRenderer(new SearchListRenderer());
           PopupFactory factory = PopupFactory.getSharedInstance();
           JScrollPane jsp = new JScrollPane(jlist);
