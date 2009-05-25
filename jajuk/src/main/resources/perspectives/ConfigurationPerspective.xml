@@ -3,7 +3,7 @@
 <DockingDesktop name="">
 <DockingPanel>
 <Split orientation="1" location="0.37">
-<Split orientation="0" location="0.75">
+<Split orientation="0" location="0.70">
 <Dockable>
 <Key dockName="org.jajuk.ui.views.DeviceView/0"/>
 </Dockable>
