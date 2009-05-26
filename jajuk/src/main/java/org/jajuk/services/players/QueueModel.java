@@ -486,6 +486,14 @@ public final class QueueModel {
        * will be correct*
        */
       ObservationManager.notifySync(new JajukEvent(JajukEvents.PLAY_OPENING));
+      
+      // check if we are in single repeat mode, transfer it to new launched
+      // track
+      if (Conf.getBoolean(Const.CONF_STATE_REPEAT)) {
+        setRepeatModeToAll(false);
+        getCurrentItem().setRepeat(true);
+        ObservationManager.notify(new JajukEvent(JajukEvents.QUEUE_NEED_REFRESH));
+      }
 
       boolean bPlayOK = false;
       if (bFirstFile && !Conf.getBoolean(Const.CONF_STATE_INTRO)
@@ -559,15 +567,6 @@ public final class QueueModel {
           QueueModel.finished();
         }
       }
-
-      // check if we are in single repeat mode, transfer it to new launched
-      // track
-      if (Conf.getBoolean(Const.CONF_STATE_REPEAT)) {
-        setRepeatModeToAll(false);
-        getCurrentItem().setRepeat(true);
-
-      }
-
     } catch (Throwable t) {// catch even Errors (OutOfMemory for example)
       Log.error(122, t);
     } finally {
