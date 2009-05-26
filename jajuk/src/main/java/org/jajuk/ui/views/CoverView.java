@@ -544,7 +544,7 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
       // explorer
       String ext = sFilePath.substring(pos, sFilePath.length());
       String parent = new File(sFilePath).getParent();
-      out = parent + System.getProperty("file.separator") + "folder" + ext;
+      out = parent + System.getProperty("file.separator") + "Folder" + ext;
     } else {
       // Add a jajuk suffix to know this cover has been downloaded
       // by jajuk
