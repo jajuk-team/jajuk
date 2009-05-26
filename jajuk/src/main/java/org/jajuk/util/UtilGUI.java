@@ -244,17 +244,17 @@ public final class UtilGUI {
     class NarrowOptionPane extends JOptionPane {
       private static final long serialVersionUID = 1L;
 
-      int maxCharactersPerLineCount;
+      int lmaxCharactersPerLineCount;
 
       NarrowOptionPane(final int maxCharactersPerLineCount) {
         super();
         
-        this.maxCharactersPerLineCount = maxCharactersPerLineCount;
+        this.lmaxCharactersPerLineCount = maxCharactersPerLineCount;
       }
 
       @Override
       public int getMaxCharactersPerLineCount() {
-        return maxCharactersPerLineCount;
+        return lmaxCharactersPerLineCount;
       }
     }
     return new NarrowOptionPane(maxCharactersPerLineCount);

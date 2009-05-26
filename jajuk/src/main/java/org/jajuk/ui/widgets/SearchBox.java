@@ -286,6 +286,7 @@ public abstract class SearchBox extends JTextField implements KeyListener,ListSe
   /**
    * Display the search icon inside the texfield
    */
+  @Override
   public void paint(Graphics g) {
     super.paint(g);
     g.drawImage(IconLoader.getIcon(JajukIcons.SEARCH).getImage(), 4, 3, 16, 16, null);

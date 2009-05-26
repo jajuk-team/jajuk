@@ -152,7 +152,8 @@ class ActionsPanel extends JPanel {
 		jlProblem.setForeground(color);
 	}
 
-	public void paint(java.awt.Graphics g) {
+	@Override
+    public void paint(java.awt.Graphics g) {
 		Graphics2D g2D = (Graphics2D) g;
 		g2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		java.awt.Rectangle rect = getBounds();

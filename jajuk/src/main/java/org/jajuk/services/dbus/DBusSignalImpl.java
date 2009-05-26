@@ -17,39 +17,43 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *  $Revision: 3132 $
  */
-package org.jajuk.ui.widgets;
+package org.jajuk.services.dbus;
 
-import javax.swing.Action;
-import javax.swing.Icon;
-
-import org.jajuk.util.IconLoader;
-import org.jajuk.util.JajukIcons;
+import org.freedesktop.dbus.DBusInterface;
+import org.freedesktop.dbus.DBusSignal;
+import org.freedesktop.dbus.exceptions.DBusException;
 
 /**
  * 
  */
-public class JajukButtonSetIconAdapter extends JajukButton {
+public class DBusSignalImpl implements DBusInterface {
 
-  private static final long serialVersionUID = 8827520017323338775L;
 
-  public JajukButtonSetIconAdapter(Action a) {
-    super(a);
+/**
+   * 
+   */
+  public static class FileChangedSignal extends DBusSignal {
+    String filename;
+
+    /**
+     * @param path
+     * @param args
+     * @param filename
+     * @throws DBusException
+     */
+    public FileChangedSignal(String filename, String path, Object... args) throws DBusException {
+      super(path, args);
+      this.filename = filename;
+    }
+    
   }
 
-  @Override
-  public void setIcon(Icon icon) {
-    Icon destIcon = null;
-    if (icon.equals(IconLoader.getIcon(JajukIcons.PAUSE))) {
-      destIcon = IconLoader.getIcon(JajukIcons.PLAYER_PAUSE_BIG);
-    } else if (icon.equals(IconLoader.getIcon(JajukIcons.PLAY))) {
-      destIcon = IconLoader.getIcon(JajukIcons.PLAYER_PLAY_BIG);
-    }
-
-    if (destIcon == null) {
-      super.setIcon(icon);
-    } else {
-      super.setIcon(destIcon);
-    }
+/* (non-Javadoc)
+   * @see org.freedesktop.dbus.DBusInterface#isRemote()
+   */
+  public boolean isRemote() {
+    return false;
   }
 
+  
 }

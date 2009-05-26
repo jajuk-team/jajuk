@@ -84,7 +84,8 @@ class Header extends JPanel {
 		this.icon = icon;
 	}
 
-	public void paint(java.awt.Graphics g) {
+	@Override
+    public void paint(java.awt.Graphics g) {
 		super.paint(g);
 		Graphics2D g2D = (Graphics2D) g;
 		java.awt.Rectangle rect = getBounds();

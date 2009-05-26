@@ -204,8 +204,9 @@ public class JajukTable extends JXTable implements Observer, TableColumnModelLis
     for (int currentColumnIndex = 0; currentColumnIndex < getColumnModel().getColumnCount(); currentColumnIndex++) {
       TableColumn tableColumn = getColumnModel().getColumn(currentColumnIndex);
 
-      if (Conf.containsProperty(getConfKeyForColumnWidth(tableColumn)))
+      if (Conf.containsProperty(getConfKeyForColumnWidth(tableColumn))) {
         tableColumn.setPreferredWidth(Conf.getInt(getConfKeyForColumnWidth(tableColumn)));
+      }
     }
     setAutoResizeMode(arm);
     // now allow storing every margin
@@ -524,6 +525,7 @@ public class JajukTable extends JXTable implements Observer, TableColumnModelLis
     this.acceptColumnsEvents = acceptColumnsEvents;
   }
 
+  @Override
   public void columnMarginChanged(ChangeEvent e) {
 
     if (storeColumnMagin && isVisible()) {
@@ -532,8 +534,7 @@ public class JajukTable extends JXTable implements Observer, TableColumnModelLis
 
       for (int currentColumnIndex = 0; currentColumnIndex < tableColumnModel.getColumnCount(); currentColumnIndex++) {
         TableColumn tableColumn = tableColumnModel.getColumn(currentColumnIndex);
-        Conf.setProperty(getConfKeyForColumnWidth(tableColumn), new Integer(tableColumn.getWidth())
-            .toString());
+        Conf.setProperty(getConfKeyForColumnWidth(tableColumn), Integer.toString(tableColumn.getWidth()));
       }
     }
     // don't forget to inform our super class
@@ -545,7 +546,7 @@ public class JajukTable extends JXTable implements Observer, TableColumnModelLis
     String tableID = getTableId();
 
     String identifier = tableColumn.getIdentifier().toString();
-    if (identifier.equals("")) {
+    if (identifier.isEmpty()) {
       identifier = "noColumnName";
     }
     return tableID + "." + identifier + ".width";

@@ -146,13 +146,9 @@ public class CommandJPanel extends JXPanel implements ActionListener, ChangeList
 
   private JButton jbNext;
 
-  private JPressButton jbRew;
-
   private JButton jbPlayPause;
 
   private JButton jbStop;
-
-  private JPressButton jbFwd;
 
   private JPanel jpVolume;
 
@@ -211,6 +207,7 @@ public class CommandJPanel extends JXPanel implements ActionListener, ChangeList
         return 28;
       }
 
+      @Override
       public int getH() {
         return 24;
       }

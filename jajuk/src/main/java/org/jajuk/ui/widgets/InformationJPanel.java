@@ -116,7 +116,7 @@ public final class InformationJPanel extends JXPanel implements Observer {
 
   String sTotalStatus;
 
-  private TrackPositionSliderToolbar trackPositionSliderToolbar;
+  private final TrackPositionSliderToolbar trackPositionSliderToolbar;
 
   private InformationJPanel() {
     super();

@@ -171,9 +171,9 @@ public final class JajukJMenuBar extends JMenuBar implements Observer {
 
   JButton jbSlim;
 
-  private JajukButton jbFull;
+  private final JajukButton jbFull;
 
-  private JCheckBoxMenuItem jcbmiRepeatAll;
+  private final JCheckBoxMenuItem jcbmiRepeatAll;
 
   private JajukJMenuBar() {
     setAlignmentX(0.0f);

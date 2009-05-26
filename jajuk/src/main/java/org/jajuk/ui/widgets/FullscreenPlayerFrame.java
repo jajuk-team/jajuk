@@ -56,9 +56,9 @@ public class FullscreenPlayerFrame extends JWindow {
 
   private static FullscreenPlayerFrame instance = null;
 
-  private DisplayMode origDisplayMode;
+  private final DisplayMode origDisplayMode;
 
-  private GraphicsDevice graphicsDevice;
+  private final GraphicsDevice graphicsDevice;
 
   private boolean fullscreen = false;
 

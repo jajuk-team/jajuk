@@ -1078,6 +1078,7 @@ public final class UtilSystem {
     // Try to open the location using the forced explorer path of provided
     if (UtilString.isNotVoid(Conf.getString(Const.CONF_EXPLORER_PATH))) {
       new Thread() {
+        @Override
         public void run() {
           try {
             ProcessBuilder pb = new ProcessBuilder(Conf.getString(Const.CONF_EXPLORER_PATH),
@@ -1094,6 +1095,7 @@ public final class UtilSystem {
     // This is not supported on some platforms (Linux/XFCE for ie)
     else if (Desktop.getDesktop().isSupported(Desktop.Action.OPEN)) {
       new Thread() {
+        @Override
         public void run() {
           try {
             Desktop.getDesktop().open(directoryToOpen);

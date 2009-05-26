@@ -14,6 +14,7 @@ import java.awt.event.WindowListener;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -73,7 +74,7 @@ public abstract class Wizard implements ActionListener, WindowListener {
 	ImageIcon icon;
 
 	/** Wizard data */
-	public static HashMap<String, Object> data;
+	public static Map<String, Object> data;
 
 	/** Wizard header */
 	Header header;
@@ -91,7 +92,7 @@ public abstract class Wizard implements ActionListener, WindowListener {
 	Locale locale;
 
 	/** Screens instance repository */
-	HashMap<Class<? extends Screen>, Screen> hmClassScreens = new HashMap<Class<? extends Screen>, Screen>(
+	Map<Class<? extends Screen>, Screen> hmClassScreens = new HashMap<Class<? extends Screen>, Screen>(
 			10);
 
 	/** Default Wizard size */
@@ -304,20 +305,6 @@ public abstract class Wizard implements ActionListener, WindowListener {
 		dialog.addWindowListener(this);
 		display();
 		dialog.setLocationRelativeTo(parentWindow);
-	}
-
-	/**
-	 * Display the wizard
-	 * 
-	 * @return wizard data
-	 */
-	private HashMap<String, Object> showWizard() {
-		// check initial screen is not null
-		if (initial == null) {
-			return null;
-		}
-		createUI();
-		return data;
 	}
 
 	/*
@@ -546,8 +533,9 @@ public abstract class Wizard implements ActionListener, WindowListener {
 	 * @return resized icon
 	 */
 	private static ImageIcon getResizedImage(ImageIcon img, int iNewWidth, int iNewHeight) {
-		if (img == null)
-			return null;
+		if (img == null) {
+          return null;
+        }
 		ImageIcon iiNew = new ImageIcon();
 		Image image = img.getImage();
 		Image scaleImg = image.getScaledInstance(iNewWidth, iNewHeight, Image.SCALE_AREA_AVERAGING);

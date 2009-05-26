@@ -24,7 +24,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
-import java.net.MalformedURLException;
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -277,7 +276,6 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
    * @throws ParserConfigurationException
    * @throws JajukException
    * @throws IOException
-   * @throws MalformedURLException
    * 
    */
   public static void load(File file) throws SAXException, ParserConfigurationException,

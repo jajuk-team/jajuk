@@ -36,18 +36,28 @@ import static org.jajuk.ui.actions.JajukActions.REWIND_TRACK;
 import static org.jajuk.ui.actions.JajukActions.SHUFFLE_GLOBAL;
 import static org.jajuk.ui.actions.JajukActions.STOP_TRACK;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.freedesktop.dbus.DBusConnection;
 import org.freedesktop.dbus.exceptions.DBusException;
 import org.jajuk.base.File;
+import org.jajuk.base.FileManager;
+import org.jajuk.base.Item;
+import org.jajuk.events.JajukEvent;
+import org.jajuk.events.JajukEvents;
+import org.jajuk.events.ObservationManager;
+import org.jajuk.events.Observer;
 import org.jajuk.services.players.QueueModel;
 import org.jajuk.ui.actions.ActionManager;
 import org.jajuk.ui.actions.JajukActions;
+import org.jajuk.util.Const;
 import org.jajuk.util.log.Log;
 
 /**
  * 
  */
-public class DBusSupportImpl implements DBusSupport {
+public class DBusSupportImpl implements DBusSupport, Observer {
 
   /**
    * The D-Bus Path that is used
@@ -79,6 +89,9 @@ public class DBusSupportImpl implements DBusSupport {
     } catch (DBusException e) {
       Log.error(e);
     }
+
+    // register to player events
+    ObservationManager.register(this);
   }
 
   /**
@@ -191,5 +204,43 @@ public class DBusSupportImpl implements DBusSupport {
    */
   public boolean isRemote() {
     return false;
+  }
+
+  /* (non-Javadoc)
+   * @see org.jajuk.events.Observer#getRegistrationKeys()
+   */
+  public Set<JajukEvents> getRegistrationKeys() {
+    Set<JajukEvents> keys = new HashSet<JajukEvents>();
+//    keys.add(JajukEvents.PLAYER_STOP);
+//    keys.add(JajukEvents.PLAYER_PAUSE);
+//    keys.add(JajukEvents.PLAYER_RESUME);
+    keys.add(JajukEvents.FILE_LAUNCHED);
+    return keys;
+  }
+
+  /* (non-Javadoc)
+   * @see org.jajuk.events.Observer#update(org.jajuk.events.JajukEvent)
+   */
+  public void update(JajukEvent event) {
+    JajukEvents subject = event.getSubject();
+    // Reset rate and total play time (automatic part of rating system)
+    if (subject.equals(JajukEvents.FILE_LAUNCHED)) {
+      String id = (String)ObservationManager.getDetail(event, Const.DETAIL_CURRENT_FILE_ID);
+      Item item = FileManager.getInstance().getItemByID(id);
+      
+      Log.debug("Got update for new file launched, item: " + item);
+
+      try {
+        conn.sendSignal(new DBusSignalImpl.FileChangedSignal("testfile: " + item, PATH));
+      } catch (DBusException e) {
+        Log.error(e);
+      }
+      
+    }
+    else
+    {
+      Log.warn("Unexpected subject received in Observer: " + event);
+    }
+    
   }
 }

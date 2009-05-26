@@ -1,6 +1,6 @@
 package org.qdwizard;
 
-import java.util.HashMap;
+import java.util.Map;
 
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
@@ -20,9 +20,11 @@ import javax.swing.SwingUtilities;
  * @created 1 may 2006
  */
 public abstract class Screen extends JPanel {
-	private ScreenState state;
+	private static final long serialVersionUID = 1L;
 
-	public HashMap<String, Object> data;
+    private final ScreenState state;
+
+	public Map<String, Object> data;
 
 	private Wizard wizard;
 
@@ -41,7 +43,8 @@ public abstract class Screen extends JPanel {
 	 * 
 	 * @return screen name
 	 */
-	abstract public String getName();
+	@Override
+    abstract public String getName();
 
 	/**
 	 * Screen description (optional)

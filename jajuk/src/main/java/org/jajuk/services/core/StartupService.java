@@ -200,8 +200,9 @@ public class StartupService {
       QueueModel.setIndex(index);
 
       if (Conf.getBoolean(Const.CONF_STATE_REPEAT)) {
-        if (index < QueueModel.getQueueSize())
+        if (index < QueueModel.getQueueSize()) {
           QueueModel.getItem(index).setRepeat(true);
+        }
       }
 
       if (Conf.getBoolean(Const.CONF_STATE_REPEAT_ALL)) {

@@ -28,8 +28,8 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-import java.util.Vector;
 
+import javax.swing.AbstractListModel;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -62,7 +62,7 @@ public class StylesSelectionDialog extends JajukJDialog implements ActionListene
 
   Set<Style> disabledStyles;
 
-  Vector<String> list;
+  List<String> list;
 
   /**
    * 
@@ -120,7 +120,7 @@ public class StylesSelectionDialog extends JajukJDialog implements ActionListene
 
   @SuppressWarnings("unchecked")
   private void initUI() {
-    list = (Vector) (StyleManager.getInstance().getStylesList()).clone();
+    list = (List) (StyleManager.getInstance().getStylesList()).clone();
     // remove disabled items
     if (disabledStyles != null) {
       Iterator it = list.iterator();
@@ -142,9 +142,19 @@ public class StylesSelectionDialog extends JajukJDialog implements ActionListene
     // none ambience selected by default
     jcbAmbiences.setSelectedIndex(-1);
     jcbAmbiences.addActionListener(this);
-    setLayout(new MigLayout("insets 15,gapx 10, gapy 15","[grow]"));
+    setLayout(new MigLayout("insets 15,gapx 10, gapy 15", "[grow]"));
     JLabel jlAmbience = new JLabel(Messages.getString("DigitalDJWizard.58"));
-    jlist = new JList(list);
+    jlist = new JList(new AbstractListModel() {
+      private static final long serialVersionUID = 1L;
+
+      public int getSize() {
+        return list.size();
+      }
+
+      public Object getElementAt(int i) {
+        return list.get(i);
+      }
+    });
     jlist.setLayoutOrientation(JList.VERTICAL_WRAP);
     JScrollPane jsp = new JScrollPane(jlist);
     jsp.setPreferredSize(new Dimension(600, 600));
@@ -171,7 +181,8 @@ public class StylesSelectionDialog extends JajukJDialog implements ActionListene
   /*
    * (non-Javadoc)
    * 
-   * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+   * @see
+   * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
    */
   public void actionPerformed(ActionEvent ae) {
     if (ae.getSource().equals(jcbAmbiences)) {
