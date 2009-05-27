@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-    <jnlp spec="1.0+" codebase="$$codebase" href="table_layout.jnlp">
+    <jnlp spec="1.0+" codebase="$$codebase" href="layout.jnlp">
     <information>
         <title>Layouts</title>
         <vendor>Various</vendor>
     </information>
     <resources>
-        <jar href="miglayout-swing-3.7" version='VERSION_REPLACED_BY_ANT'/>
+        <jar href="miglayout-swing-3.7.jar" version='VERSION_REPLACED_BY_ANT'/>
     </resources>
         
     <security> 
