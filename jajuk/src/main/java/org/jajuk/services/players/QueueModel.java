@@ -296,7 +296,9 @@ public final class QueueModel {
           // when playing we should add it as second item to play it as next
           // item
           if (Player.isPlaying()) {
-            pos = 1;
+            pos = 1+index;
+          }else{
+            index=0;
           }
           // otherwise we can keep pos at zero
         }
