@@ -41,6 +41,7 @@ import org.jajuk.ui.views.AnimationView;
 import org.jajuk.ui.views.CoverView;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
+import org.jajuk.util.Messages;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 
@@ -129,7 +130,7 @@ public class FullscreenPlayerFrame extends JWindow {
     TrackPositionSliderToolbar tpst = new TrackPositionSliderToolbar();
 
     // Add items
-    setLayout(new MigLayout("ins 0", "[grow]","[][grow][60%][][]"));
+    setLayout(new MigLayout("ins 0", "[grow]", "[][grow][60%][][]"));
     add(jbFull, "right,wrap");
     add(animationView, "alignx center,aligny top,grow,gap bottom 20,wrap");
     add(coverView, "alignx center,grow,gap bottom 20,wrap");
@@ -158,6 +159,7 @@ public class FullscreenPlayerFrame extends JWindow {
             validate();
           } else {
             fullscreen = false;
+            Messages.showErrorMessage(178);
             Log.error(new JajukException(178, "", null));
           }
         } else {
