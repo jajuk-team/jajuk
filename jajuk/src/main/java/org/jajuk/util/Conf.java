@@ -224,8 +224,7 @@ public final class Conf implements Const {
     defaults.put(CONF_COVERS_AUTO_COVER, TRUE);
     defaults.put(CONF_COVERS_SHUFFLE, FALSE);
     defaults.put(CONF_COVERS_SAVE_EXPLORER_FRIENDLY, FALSE);
-    defaults.put(FILE_DEFAULT_COVER, "folder");
-    defaults.put(FILE_DEFAULT_COVER_2, "front");
+    defaults.put(FILE_DEFAULT_COVER, "jajuk;folder;cover;front");
     defaults.put(CONF_COVERS_SIZE, "3"); // medium and large
     defaults.put(CONF_TRACKS_TABLE_EDITION, FALSE);
     defaults.put(CONF_FILES_TABLE_EDITION, FALSE);

@@ -311,13 +311,9 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
    */
   boolean bLAFMessage = false;
 
-  private JLabel jlDefaultCoverSearchName1;
+  private JLabel jlDefaultCoverSearchPattern;
 
-  private JLabel jlDefaultCoverSearchName2;
-
-  private JTextField jtfDefaultCoverSearchName1;
-
-  private JTextField jtfDefaultCoverSearchName2;
+  private JTextField jtfDefaultCoverSearchPattern;
 
   private JCheckBox jcbSaveExplorerFriendly;
 
@@ -718,8 +714,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
     Conf.setProperty(Const.CONF_COVERS_SAVE_EXPLORER_FRIENDLY, Boolean
         .toString(jcbSaveExplorerFriendly.isSelected()));
     Conf.setProperty(Const.CONF_COVERS_SIZE, Integer.toString(jcbCoverSize.getSelectedIndex()));
-    Conf.setProperty(Const.FILE_DEFAULT_COVER, jtfDefaultCoverSearchName1.getText());
-    Conf.setProperty(Const.FILE_DEFAULT_COVER_2, jtfDefaultCoverSearchName2.getText());
+    Conf.setProperty(Const.FILE_DEFAULT_COVER, jtfDefaultCoverSearchPattern.getText());
 
     // Force LastFM manager configuration reload
     LastFmManager.getInstance().configure();
@@ -1356,14 +1351,11 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
     jcbCoverSize.addItem(Messages.getString("ParameterView.214"));
     jcbCoverSize.addItem(Messages.getString("ParameterView.215"));
 
-    jlDefaultCoverSearchName1 = new JLabel();
-    jlDefaultCoverSearchName1.setText(Messages.getString("ParameterView.256"));
-    jlDefaultCoverSearchName1.setToolTipText(Messages.getString("ParameterView.257"));
-    jtfDefaultCoverSearchName1 = new JTextField();
-    jlDefaultCoverSearchName2 = new JLabel();
-    jlDefaultCoverSearchName2.setText(Messages.getString("ParameterView.258"));
-    jlDefaultCoverSearchName2.setToolTipText(Messages.getString("ParameterView.259"));
-    jtfDefaultCoverSearchName2 = new JTextField();
+    jlDefaultCoverSearchPattern = new JLabel();
+    jlDefaultCoverSearchPattern.setText(Messages.getString("ParameterView.256"));
+    jlDefaultCoverSearchPattern.setToolTipText(Messages.getString("ParameterView.257"));
+    jtfDefaultCoverSearchPattern = new JTextField();
+    jtfDefaultCoverSearchPattern.setToolTipText(Messages.getString("ParameterView.257"));
 
     jcbSaveExplorerFriendly = new JCheckBox(Messages.getString("ParameterView.260"));
     jcbSaveExplorerFriendly.setToolTipText(Messages.getString("ParameterView.261"));
@@ -1376,10 +1368,8 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
     jpCovers.add(jcbSaveExplorerFriendly, "wrap");
     jpCovers.add(jlCoverSize);
     jpCovers.add(jcbCoverSize, "wrap,grow");
-    jpCovers.add(jlDefaultCoverSearchName1);
-    jpCovers.add(jtfDefaultCoverSearchName1, "wrap,grow");
-    jpCovers.add(jlDefaultCoverSearchName2);
-    jpCovers.add(jtfDefaultCoverSearchName2, "wrap,grow");
+    jpCovers.add(jlDefaultCoverSearchPattern);
+    jpCovers.add(jtfDefaultCoverSearchPattern, "wrap,grow");
 
     // -- User interface --
     // Catalog view
@@ -1658,8 +1648,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
     jcbCoverSize.setSelectedIndex(Conf.getInt(Const.CONF_COVERS_SIZE));
     jcbShuffleCover.setSelected(Conf.getBoolean(Const.CONF_COVERS_SHUFFLE));
     jcbSaveExplorerFriendly.setSelected(Conf.getBoolean(Const.CONF_COVERS_SAVE_EXPLORER_FRIENDLY));
-    jtfDefaultCoverSearchName1.setText(Conf.getString(Const.FILE_DEFAULT_COVER));
-    jtfDefaultCoverSearchName2.setText(Conf.getString(Const.FILE_DEFAULT_COVER_2));
+    jtfDefaultCoverSearchPattern.setText(Conf.getString(Const.FILE_DEFAULT_COVER));
     jcbAudioScrobbler.setSelected(Conf.getBoolean(Const.CONF_LASTFM_ENABLE));
     jcbEnableLastFMInformation.setSelected(Conf.getBoolean(Const.CONF_LASTFM_INFO));
     jtfASUser.setText(Conf.getString(Const.CONF_LASTFM_USER));

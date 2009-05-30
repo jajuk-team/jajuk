@@ -211,8 +211,6 @@ public interface Const {
 
   String FILE_DEFAULT_COVER = "jajuk.file.default.cover";
 
-  String FILE_DEFAULT_COVER_2 = "jajuk.file.default.cover_2";
-
   String FILE_ABSOLUTE_DEFAULT_COVER = "jajuk-default-cover.";
 
   // langpack name : jajuk_<locale>.properties

@@ -26,6 +26,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Scanner;
 
 import org.jajuk.base.Device;
 import org.jajuk.base.Directory;
@@ -251,16 +252,26 @@ public final class UtilFeatures {
    * @return whether the given filename is a standard cover or not
    */
   public static boolean isStandardCover(final File file) {
+    boolean defaultCover = false;
     String sFileName = file.getName();
-    return sFileName.toLowerCase(Locale.getDefault()).matches(
-        ".*" + Conf.getString(Const.FILE_DEFAULT_COVER) + ".*")
-        || sFileName.toLowerCase(Locale.getDefault()).matches(
-            ".*" + Conf.getString(Const.FILE_DEFAULT_COVER_2) + ".*")
-        // just for previous compatibility, now it is a directory
-        // property
-        || sFileName.toLowerCase(Locale.getDefault()).matches(
-            ".*" + Const.FILE_ABSOLUTE_DEFAULT_COVER + ".*");
 
+    Scanner s = new Scanner(Conf.getString(Const.FILE_DEFAULT_COVER)).useDelimiter(";");
+    while (s.hasNext()) {
+      String next=s.next();
+      defaultCover = sFileName.toLowerCase(Locale.getDefault()).matches(".*" + next + ".*");
+      if (defaultCover)
+        break;
+    }
+    s.close();
+
+    if (!defaultCover) {
+      // just for previous compatibility, now it is a directory
+      // property
+      defaultCover = sFileName.toLowerCase(Locale.getDefault()).matches(
+          ".*" + Const.FILE_ABSOLUTE_DEFAULT_COVER + ".*");
+    }
+
+    return defaultCover;
   }
 
   /**
