@@ -121,7 +121,7 @@ public class LyricsView extends ViewAdapter implements Observer {
     ta.setFont(fmgr.getFont(JajukFont.PLAIN));
 
     // Add items
-    p = new JPanel(new MigLayout("debug,insets 5,gapx 3, gapy 5,filly", "[grow]", "[][][grow]"));
+    p = new JPanel(new MigLayout("insets 5,gapx 3, gapy 5,filly", "[grow]", "[][][grow]"));
     p.add(jlTitle, "wrap,center");
     p.add(jlAuthor, "wrap,center");
     p.add(jspLyrics, "grow");
