@@ -403,8 +403,8 @@ public final class UtilString {
   }
 
   /*
-   * Escape (in the regexp sense) a string Source Search reserved: $ ( ) * + - .
-   * ? [ \ ] ^ { | } http://mindprod.com/jgloss/regex.html
+   * Escape (in the regexp sense) a string Source Search reserved: $ ( ) * + - . ? [ \ ] ^ { | }
+   * http://mindprod.com/jgloss/regex.html
    */
   public static String escapeString(String s) {
     int length = s.length();
@@ -532,14 +532,11 @@ public final class UtilString {
    * see http://www.w3.org/TR/2000/REC-xml-20001006
    * <p>
    * substrings
-   * <p>
-   * ' to &apos;
-   * <p>
-   * " to &quot;
-   * <p>
-   * < to &lt; <p>> to &gt;
-   * <p>
-   * & to &amp;
+   * <p> ' to &apos;
+   * <p> " to &quot;
+   * <p> < to &lt;
+   * <p>> to &gt;
+   * <p> & to &amp;
    * 
    * @param s
    * @return
@@ -879,6 +876,22 @@ public final class UtilString {
         'f' };
     char[] array = { hexDigit[(b >> 4) & 0x0f], hexDigit[b & 0x0f] };
     return new String(array);
+  }
+
+  /**
+   * Returns a concatenation of argument array.
+   * 
+   * @param strings
+   *          strings to be concatened
+   * 
+   * @return concatenation of given strings
+   */
+  public static String concat(Object... strings) {
+    StringBuilder sb = new StringBuilder();
+    for (Object element : strings) {
+      sb.append(element);
+    }
+    return sb.toString();
   }
 
 }

@@ -25,7 +25,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Locale;
 import java.util.Set;
 
 import javax.swing.ButtonGroup;
@@ -69,6 +68,7 @@ import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
+import org.jajuk.util.LocaleManager;
 import org.jajuk.util.Messages;
 import org.qdwizard.ClearPoint;
 import org.qdwizard.Screen;
@@ -1294,7 +1294,7 @@ public class DigitalDJWizard extends Wizard {
 
   public DigitalDJWizard() {
     super(Messages.getString("DigitalDJWizard.4"), ActionSelectionPanel.class, null, JajukWindow
-        .getInstance(), new Locale(Messages.getLocale()));
+        .getInstance(), LocaleManager.getLocale());
     super.setHeaderIcon(IconLoader.getIcon(JajukIcons.DIGITAL_DJ));
   }
 

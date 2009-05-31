@@ -25,7 +25,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Locale;
 import java.util.Set;
 
 import javax.swing.ButtonGroup;
@@ -54,6 +53,7 @@ import org.jajuk.ui.widgets.JajukWindow;
 import org.jajuk.util.Conf;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
+import org.jajuk.util.LocaleManager;
 import org.jajuk.util.Messages;
 import org.jajuk.util.log.Log;
 import org.qdwizard.Screen;
@@ -343,7 +343,7 @@ public class AmbienceWizard extends Wizard {
 
   public AmbienceWizard() {
     super(Messages.getString("DigitalDJWizard.56"), AmbiencePanel.class, null, JajukWindow
-        .getInstance(), new Locale(Messages.getLocale()), 500, 600);
+        .getInstance(), LocaleManager.getLocale(), 500, 600);
     setHeaderIcon(IconLoader.getIcon(JajukIcons.AMBIENCE));
   }
 

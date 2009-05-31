@@ -34,6 +34,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -85,6 +86,7 @@ import org.jajuk.util.Const;
 import org.jajuk.util.DownloadManager;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
+import org.jajuk.util.LocaleManager;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UpgradeManager;
 import org.jajuk.util.UtilGUI;
@@ -201,7 +203,7 @@ public final class Main {
         Log.setVerbosity(Integer.parseInt(Conf.getString(Const.CONF_OPTIONS_LOG_LEVEL)));
       }
       // Set locale. setSystemLocal
-      Messages.setLocal(Conf.getString(Const.CONF_OPTIONS_LANGUAGE));
+      LocaleManager.setLocale(new Locale(Conf.getString(Const.CONF_OPTIONS_LANGUAGE)));
 
       // Launch splashscreen. Depends on: log.setVerbosity,
       // configurationManager.load (for local)

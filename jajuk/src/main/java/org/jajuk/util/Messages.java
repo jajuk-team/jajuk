@@ -25,8 +25,8 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 import java.util.Properties;
 import java.util.StringTokenizer;
 
@@ -56,14 +56,9 @@ import org.xml.sax.helpers.DefaultHandler;
  * </p>
  */
 public class Messages extends DefaultHandler {
-  /** Local ( language) to be used, default is English */
-  private static String sLocal = "en";
-
-  /** Supported Locals */
-  private static List<String> alLocals = new ArrayList<String>(10);
 
   /** Messages initialized flag */
-  private static boolean bInitialized = false;
+  protected static boolean bInitialized = false;
 
   /** All choice option, completes JDialog options */
   public static final int ALL_OPTION = 10;
@@ -74,43 +69,10 @@ public class Messages extends DefaultHandler {
   /**
    * Messages themselves extracted from an XML file to this properties class*
    */
-  private static Properties properties;
+  protected static Properties properties;
 
   /** English messages used as default* */
   private static Properties propertiesEn;
-
-  /** Conf Locales */
-  private static final String[] LOCALES = { "en", "fr", "de", "nl", "es", "ca", "ko", "el", "ru",
-      "gl" ,"cs"};
-
-  /**
-   * We set here environment language as default language (used by first time
-   * wizard for ie) but this value can be overwritten later in startup process
-   */
-  static {
-    // Register locals, needed by Conf to choose
-    // default language
-    for (final String locale : LOCALES) {
-      Messages.registerLocal(locale);
-    }
-    // Set default local if available
-    sLocal = getNativeLocale();
-  }
-
-  /**
-   * 
-   * @return current default native locale or English if the native is not
-   *         supported by Jajuk
-   */
-  public static String getNativeLocale() {
-    String sLanguage = System.getProperty("user.language");
-    if (sLanguage != null && getLocales().contains(sLanguage)) {
-      return sLanguage;
-    } else { // user language is unknown, take English as a default,
-      // user will be able to change it later anyway
-      return "en";
-    }
-  }
 
   /**
    * 
@@ -221,18 +183,6 @@ public class Messages extends DefaultHandler {
   }
 
   /**
-   * Register a local
-   * 
-   * @param sLocale :
-   *          standard local name like "en"
-   * @param sDesc :
-   *          a language-independent descriptions like "Language_desc_en"
-   */
-  public static void registerLocal(final String sLocal) {
-    alLocals.add(sLocal);
-  }
-
-  /**
    * Return Flag icon for given description
    * 
    * @param dDesc
@@ -240,67 +190,9 @@ public class Messages extends DefaultHandler {
    * @return
    */
   public static Icon getIcon(final String sDesc) {
-    Icon icon = new ImageIcon(UtilSystem.getResource("icons/16x16/flag_" + getLocalForDesc(sDesc)
-        + ".png"));
+    Icon icon = new ImageIcon(UtilSystem.getResource("icons/16x16/flag_"
+        + LocaleManager.getLocaleForDesc(sDesc) + ".png"));
     return icon;
-  }
-
-  /**
-   * Return list of available locals
-   * 
-   * @return
-   */
-  public static List<String> getLocales() {
-    return alLocals;
-  }
-
-  /**
-   * Return list of available local descriptions
-   * 
-   * @return
-   */
-  public static List<String> getDescs() {
-    final List<String> alDescs = new ArrayList<String>(10);
-    for (final String local : alLocals) {
-      alDescs.add(getString("Language_desc_" + local));
-    }
-    Collections.sort(alDescs);
-    return alDescs;
-  }
-
-  /**
-   * Return Description for a given local id
-   * 
-   * @return localized description
-   */
-  public static String getDescForLocal(final String sLocal) {
-    return getString("Language_desc_" + sLocal);
-  }
-
-  /**
-   * Return local for a given description
-   * 
-   * @return local
-   */
-  public static String getLocalForDesc(final String sDesc) {
-    for (final String locale : getLocales()) {
-      if (getDescForLocal(locale).equals(sDesc)) {
-        return locale;
-      }
-    }
-    return null;
-  }
-
-  /**
-   * Change current local
-   * 
-   * @param sLocal
-   */
-  public static void setLocal(final String sLocal) {
-    Conf.setProperty(Const.CONF_OPTIONS_LANGUAGE, sLocal);
-    properties = null; // make sure to reinitialize cached strings
-    Messages.sLocal = sLocal;
-    bInitialized = true;
   }
 
   /*****************************************************************************
@@ -308,18 +200,19 @@ public class Messages extends DefaultHandler {
    * 
    * @param local
    * @return a properties with all entries
-   * @throws IOException 
-   * @throws SAXException 
-   * @throws ParserConfigurationException 
+   * @throws IOException
+   * @throws SAXException
+   * @throws ParserConfigurationException
    * @throws Exception
    */
-  private static Properties parseLangpack(final String sLocal) throws SAXException, IOException, ParserConfigurationException {
+  private static Properties parseLangpack(final Locale locale) throws SAXException, IOException,
+      ParserConfigurationException {
     final Properties lProperties = new Properties();
     // Choose right jajuk_<lang>.properties file to load
     final StringBuilder sbFilename = new StringBuilder(Const.FILE_LANGPACK_PART1);
-    if (!"en".equals(sLocal)) { // for english, properties file is
+    if (!Locale.ENGLISH.equals(locale)) { // for English, properties file is
       // simply jajuk.properties
-      sbFilename.append('_').append(sLocal);
+      sbFilename.append('_').append(locale);
     }
     sbFilename.append(Const.FILE_LANGPACK_PART2);
     URL url;
@@ -546,13 +439,6 @@ public class Messages extends DefaultHandler {
   }
 
   /**
-   * @return Returns the sLocal.
-   */
-  public static String getLocale() {
-    return sLocal;
-  }
-
-  /**
    * Return true if the messaging system is started, can be useful mainly at
    * startup by services ( like logs) using them to avoid dead locks Messages
    * service is initialized after current has been set
@@ -565,17 +451,18 @@ public class Messages extends DefaultHandler {
 
   /**
    * @return Returns the properties.
-   * @throws ParserConfigurationException 
-   * @throws IOException 
-   * @throws SAXException 
+   * @throws ParserConfigurationException
+   * @throws IOException
+   * @throws SAXException
    */
-  public static Properties getProperties() throws SAXException, IOException, ParserConfigurationException {
+  public static Properties getProperties() throws SAXException, IOException,
+      ParserConfigurationException {
     if (properties == null) {
       // reuse English if possible
-      if ("en".equals(sLocal)) {
+      if (Locale.ENGLISH.equals(LocaleManager.getLocale())) {
         properties = getPropertiesEn();
       } else {
-        properties = parseLangpack(sLocal);
+        properties = parseLangpack(LocaleManager.getLocale());
       }
     }
     return properties;
@@ -587,7 +474,7 @@ public class Messages extends DefaultHandler {
   public static Properties getPropertiesEn() {
     if (propertiesEn == null) {
       try {
-        propertiesEn = parseLangpack("en");
+        propertiesEn = parseLangpack(Locale.ENGLISH);
       } catch (final Exception e) {
         Log.error(e);
       }
@@ -616,7 +503,7 @@ class ConfirmDialog extends JajukDialog {
    */
   ConfirmDialog(final String sText, final String sTitle, final int optionsType, final int iType) {
     super();
-    
+
     final JOptionPane optionPane = UtilGUI.getNarrowOptionPane(72);
     if (optionsType == Messages.YES_NO_ALL_CANCEL_OPTION) {
       optionPane.setOptions(new Object[] { Messages.getString("Yes"), Messages.getString("No"),
@@ -680,7 +567,7 @@ class DetailsMessageDialog extends JajukDialog {
   DetailsMessageDialog(final String sText, final String sTitle, final int iType,
       final String sDetails, final Icon icon) {
     super();
-    
+
     final JOptionPane optionPane = UtilGUI.getNarrowOptionPane(72);
     optionPane.setMessage(sText);
     if (sDetails != null) {
@@ -738,7 +625,7 @@ class HideableMessageDialog extends JajukDialog {
   HideableMessageDialog(final String sText, final String sTitle, final String sProperty,
       final int iType, final Icon icon) {
     super();
-    
+
     final JOptionPane optionPane = UtilGUI.getNarrowOptionPane(72);
     optionPane.setMessage(UtilGUI.getLimitedMessage(sText, 20));
     final Object[] options = { Messages.getString("Ok"), Messages.getString("Hide") };
@@ -778,7 +665,7 @@ class ErrorMessageDialog extends JajukDialog {
    */
   ErrorMessageDialog(final int code, final String sInfoSup) {
     super();
-    
+
     final JOptionPane optionPane = UtilGUI.getNarrowOptionPane(72);
     optionPane.setMessage(UtilGUI.getLimitedMessage(Messages.getErrorMessage(code)
         + (sInfoSup != null ? (" : " + sInfoSup) : ""), 20));

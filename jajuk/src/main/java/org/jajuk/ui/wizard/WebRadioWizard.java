@@ -25,7 +25,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Locale;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
@@ -51,6 +50,7 @@ import org.jajuk.ui.helpers.FontManager.JajukFont;
 import org.jajuk.ui.widgets.JajukWindow;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
+import org.jajuk.util.LocaleManager;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilGUI;
 import org.jajuk.util.log.Log;
@@ -338,7 +338,7 @@ public class WebRadioWizard extends Wizard {
 
   public WebRadioWizard() {
     super(Messages.getString("RadioWizard.7"), RadioPanel.class, null, JajukWindow.getInstance(),
-        new Locale(Messages.getLocale()), 600, 500);
+        LocaleManager.getLocale(), 600, 500);
     setHeaderIcon(IconLoader.getIcon(JajukIcons.WEBRADIO));
   }
 

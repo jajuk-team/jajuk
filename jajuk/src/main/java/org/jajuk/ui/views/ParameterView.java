@@ -30,6 +30,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
@@ -90,6 +91,7 @@ import org.jajuk.util.Const;
 import org.jajuk.util.DownloadManager;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
+import org.jajuk.util.LocaleManager;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilGUI;
 import org.jajuk.util.UtilString;
@@ -433,9 +435,10 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
             jpfASPassword.setEnabled(false);
           }
         } else if (e.getSource() == scbLanguage) {
-          final String sLocal = Messages.getLocalForDesc(((JLabel) scbLanguage.getSelectedItem())
+          Locale locale = LocaleManager.getLocaleForDesc(((JLabel) scbLanguage.getSelectedItem())
               .getText());
-          final String sPreviousLocal = Messages.getLocale();
+          final String sLocal = locale.getLanguage(); 
+          final String sPreviousLocal = LocaleManager.getLocale().getLanguage();
           if (!sPreviousLocal.equals(sLocal)) {
             // local has changed
             someOptionsAppliedAtNextStartup = true;
@@ -499,8 +502,9 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
     if (!sBestofSize.isEmpty()) {
       Conf.setProperty(Const.CONF_BESTOF_TRACKS_SIZE, sBestofSize);
     }
-    final String sLocal = Messages.getLocalForDesc(((JLabel) scbLanguage.getSelectedItem())
+    Locale locale = LocaleManager.getLocaleForDesc(((JLabel) scbLanguage.getSelectedItem())
         .getText());
+    final String sLocal = locale.getLanguage(); 
     Conf.setProperty(Const.CONF_OPTIONS_LANGUAGE, sLocal);
     // force refresh of bestof files
     RatingManager.setRateHasChanged(true);
@@ -1099,7 +1103,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
     });
 
     scbLanguage.removeAllItems();
-    for (String sDesc : Messages.getDescs()) {
+    for (String sDesc : LocaleManager.getLocalesDescs()) {
       scbLanguage.addItem(new JLabel(sDesc, Messages.getIcon(sDesc), SwingConstants.LEFT));
     }
     scbLanguage.setToolTipText(Messages.getString("ParameterView.42"));
@@ -1576,11 +1580,11 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
     jcbHotkeys.setSelected(Conf.getBoolean(Const.CONF_OPTIONS_HOTKEYS));
 
     jcbSyncTableTree.setSelected(Conf.getBoolean(Const.CONF_OPTIONS_SYNC_TABLE_TREE));
-    String rightLanguageDesc = Messages
-        .getDescForLocal(Conf.getString(Const.CONF_OPTIONS_LANGUAGE));
+    String rightLanguageDesc = LocaleManager
+        .getDescForLocale(Conf.getString(Const.CONF_OPTIONS_LANGUAGE));
     // Select the right language
     int index = 0;
-    for (String desc : Messages.getDescs()) {
+    for (String desc : LocaleManager.getLocalesDescs()) {
       if (desc.equals(rightLanguageDesc)) {
         scbLanguage.setSelectedIndex(index);
         break;

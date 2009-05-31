@@ -37,6 +37,7 @@ import org.jajuk.services.core.SessionService;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.DownloadManager;
+import org.jajuk.util.LocaleManager;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilGUI;
 import org.jajuk.util.UtilSystem;
@@ -104,7 +105,7 @@ public class JajukHtmlPanel extends HtmlPanel {
     // TODO: language should be retrieved from the combo box and not from the
     // user settings, but dunno how to get that...
     sPage = sPage.replaceAll("href=\"/", "href=\"http://"
-        + Messages.getLocalForDesc(Messages.getDescForLocal(Conf
+        + LocaleManager.getLocaleForDesc(LocaleManager.getDescForLocale(Conf
             .getString(Const.CONF_WIKIPEDIA_LANGUAGE))) + ".wikipedia.org/");
     // Display the page
     showPage(sPage, page);

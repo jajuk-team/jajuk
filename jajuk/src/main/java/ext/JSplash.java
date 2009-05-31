@@ -220,7 +220,7 @@ public final class JSplash extends JFrame {
    */
   public void setProgress(int value) {
     if (mProgressBar && value >= 0 && value <= 100) {
-      mProgress.setValue(value);
+    //  mProgress.setValue(value);
     }
   }
 

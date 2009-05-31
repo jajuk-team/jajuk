@@ -158,7 +158,7 @@ public final class Conf implements Const {
     // like passwords and that we don't want to reset
     defaults = (Properties) properties.clone();
 
-    defaults.put(CONF_OPTIONS_LANGUAGE, Messages.getNativeLocale());
+    defaults.put(CONF_OPTIONS_LANGUAGE, LocaleManager.getNativeLocale().getLanguage());
     // User preferences
     defaults.put(CONF_PERSPECTIVE_DEFAULT, SimplePerspective.class.getName());
     defaults.put(CONF_STATE_REPEAT, FALSE);
