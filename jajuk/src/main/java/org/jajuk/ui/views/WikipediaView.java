@@ -26,6 +26,7 @@ import java.awt.event.ActionListener;
 import java.io.FileNotFoundException;
 import java.net.URL;
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.Set;
 
 import javax.swing.BorderFactory;
@@ -53,6 +54,7 @@ import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
+import org.jajuk.util.LocaleManager;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilFeatures;
 import org.jajuk.util.log.Log;
@@ -110,11 +112,11 @@ public class WikipediaView extends ViewAdapter implements Observer, ActionListen
   public void initUI() {
     jlLanguage = new JLabel(Messages.getString("WikipediaView.1"));
     jcbLanguage = new JComboBox();
-    for (String sDesc : Messages.getDescs()) {
+    for (String sDesc : LocaleManager.getLocalesDescs()) {
       jcbLanguage.addItem(sDesc);
     }
     // get stored language
-    jcbLanguage.setSelectedItem(Messages.getDescForLocal(Conf
+    jcbLanguage.setSelectedItem(LocaleManager.getDescForLocale(Conf
         .getString(Const.CONF_WIKIPEDIA_LANGUAGE)));
     jcbLanguage.addActionListener(this);
     // Buttons
@@ -159,7 +161,7 @@ public class WikipediaView extends ViewAdapter implements Observer, ActionListen
     jpCommand.add(jtb);
 
     // global layout
-    setLayout(new MigLayout("ins 0", "[grow]"));
+    setLayout(new MigLayout("ins 0", "[grow]","[][grow]"));
     browser = new JajukHtmlPanel();
     add(jpCommand, "growx,wrap");
     add(browser, "grow");
@@ -260,7 +262,7 @@ public class WikipediaView extends ViewAdapter implements Observer, ActionListen
           WikipediaView.this.search = lSearch;
 
           URL url = new URL(("http://"
-              + Messages.getLocalForDesc((String) jcbLanguage.getSelectedItem())
+              + LocaleManager.getLocaleForDesc((String) jcbLanguage.getSelectedItem())
               + ".wikipedia.org/wiki/" + lSearch).replaceAll(" ", "_"));
           Log.debug("Wikipedia search: " + url);
           jbCopy.putClientProperty(Const.DETAIL_CONTENT, url.toExternalForm());
@@ -310,8 +312,9 @@ public class WikipediaView extends ViewAdapter implements Observer, ActionListen
   public void actionPerformed(ActionEvent arg0) {
     if (arg0.getSource() == jcbLanguage) {
       // update index
-      Conf.setProperty(Const.CONF_WIKIPEDIA_LANGUAGE, Messages.getLocalForDesc((String) jcbLanguage
-          .getSelectedItem()));
+      Locale locale = LocaleManager.getLocaleForDesc((String) jcbLanguage
+          .getSelectedItem());
+      Conf.setProperty(Const.CONF_WIKIPEDIA_LANGUAGE, locale.getLanguage());
       // force launch wikipedia search for this language
       launchSearch(true);
     } else if (arg0.getSource() == jbAlbumSearch) {
