@@ -52,6 +52,8 @@ import org.jajuk.base.TrackManager;
 import org.jajuk.base.Year;
 import org.jajuk.base.YearManager;
 import org.jajuk.services.players.QueueModel;
+import org.jajuk.ui.helpers.FontManager;
+import org.jajuk.ui.helpers.FontManager.JajukFont;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.UtilFeatures;
@@ -117,6 +119,8 @@ public class ThumbnailPopup extends JWindow {
     getRootPane().setOpaque(true);
     text = new JEditorPane("text/html", description);
     text.setEditable(false);
+    text.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, Boolean.TRUE);
+    text.setFont(FontManager.getInstance().getFont(JajukFont.DEFAULT));
     text.addHyperlinkListener(new HyperlinkListener() {
       public void hyperlinkUpdate(HyperlinkEvent e) {
         if (e.getEventType() == EventType.ACTIVATED) {
