@@ -280,8 +280,19 @@ public class Album extends LogicalItem implements Comparable<Album> {
       if (!UtilString.isVoid(sAbsolut.trim())) {
         File fAbsoluteDefault = new File(dir.getAbsolutePath() + '/' + sAbsolut);
         if (fAbsoluteDefault.exists()) {
-          setProperty(XML_ALBUM_COVER, fAbsoluteDefault.getAbsolutePath());
-          return fAbsoluteDefault;
+          // Test the image is not corrupted
+          try {
+            MediaTracker mediaTracker = new MediaTracker(new Container());
+            ImageIcon ii = new ImageIcon(fAbsoluteDefault.getAbsolutePath());
+            mediaTracker.addImage(ii.getImage(), 0);
+            mediaTracker.waitForID(0); // wait for image
+            if (!mediaTracker.isErrorAny()) {
+              setProperty(XML_ALBUM_COVER, fAbsoluteDefault.getAbsolutePath());
+              return fAbsoluteDefault;
+            }
+          } catch (Exception e) {
+            Log.error(e);
+          }
         }
       }
     }
