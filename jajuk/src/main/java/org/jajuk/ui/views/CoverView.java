@@ -66,12 +66,12 @@ import org.jajuk.base.Track;
 import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
-import org.jajuk.events.Observer;
 import org.jajuk.services.covers.Cover;
 import org.jajuk.services.covers.Cover.CoverType;
 import org.jajuk.services.players.QueueModel;
 import org.jajuk.services.players.StackItem;
 import org.jajuk.ui.thumbnails.ThumbnailManager;
+import org.jajuk.ui.widgets.Cover3D;
 import org.jajuk.ui.widgets.InformationJPanel;
 import org.jajuk.ui.widgets.JajukButton;
 import org.jajuk.ui.widgets.JajukFileChooser;
@@ -98,8 +98,7 @@ import org.jdesktop.swingx.border.DropShadowBorder;
 /**
  * Cover view. Displays an image for the current album
  */
-public class CoverView extends ViewAdapter implements Observer, ComponentListener, ActionListener,
-    Const {
+public class CoverView extends ViewAdapter implements ComponentListener, ActionListener, Const {
 
   /**
    * 
@@ -175,6 +174,8 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
 
   /** Force next track cover reload flag* */
   private boolean bForceCoverReload = true;
+
+  private Cover3D observer = null;
 
   /**
    * Constructor
@@ -294,11 +295,11 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
     jtb.add(jbDefault);
 
     if (includeControls) {
-      jpControl.setLayout(new MigLayout("insets 5","[][grow][grow][][25]"));
+      jpControl.setLayout(new MigLayout("insets 5", "[][grow][grow][][25]"));
       jpControl.add(jtb);
       jpControl.add(jlSize, "center,gapright 5::");
       jpControl.add(jlFound, "center,gapright 5::");
-      jpControl.add(jcbAccuracy,"grow");
+      jpControl.add(jcbAccuracy, "grow");
       jpControl.add(jlSearching);
     } else {
       jpControl.setLayout(new BorderLayout());
@@ -354,10 +355,26 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
     }
   }
 
+  /**
+   * @return the observer
+   */
+  public Cover3D getObserver() {
+    return this.observer;
+  }
+
+  /**
+   * @param observer
+   *          the observer to set
+   */
+  public void setObserver(Cover3D observer) {
+    this.observer = observer;
+  }
+
   /*
    * (non-Javadoc)
    * 
-   * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+   * @see
+   * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
    */
   public void actionPerformed(final ActionEvent e) {
     if (e.getSource() == jcbAccuracy) {
@@ -650,7 +667,9 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
   /*
    * (non-Javadoc)
    * 
-   * @see java.awt.event.ComponentListener#componentResized(java.awt.event.ComponentEvent )
+   * @see
+   * java.awt.event.ComponentListener#componentResized(java.awt.event.ComponentEvent
+   * )
    */
   @Override
   public void componentResized(final ComponentEvent e) {
@@ -1070,6 +1089,13 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
     }
   }
 
+  public Image getCurrentImage() throws IOException, InterruptedException {
+    if (alCovers.size() > 0) {
+      return alCovers.get(0).getImage();
+    }
+    return CoverView.nocover.getImage();
+  }
+
   /*
    * (non-Javadoc)
    * 
@@ -1325,6 +1351,15 @@ public class CoverView extends ViewAdapter implements Observer, ComponentListene
     }
     setFoundText(); // update found text
     displayCurrentCover();
+
+    // update 3d View
+    if (observer != null) {
+      try {
+        observer.setImage(getCurrentImage());
+      } catch (InterruptedException e) {
+        Log.error(e);
+      }
+    }
   }
 
 }

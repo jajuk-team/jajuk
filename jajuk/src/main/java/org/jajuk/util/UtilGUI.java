@@ -69,6 +69,7 @@ import org.jajuk.ui.widgets.PerspectiveBarJPanel;
 import org.jajuk.util.log.Log;
 import org.jdesktop.swingx.decorator.Highlighter;
 import org.jdesktop.swingx.decorator.HighlighterFactory;
+import org.jdesktop.swingx.graphics.GraphicsUtilities;
 import org.jvnet.substance.SubstanceLookAndFeel;
 import org.jvnet.substance.api.SubstanceColorScheme;
 import org.jvnet.substance.api.SubstanceSkin;
@@ -154,8 +155,8 @@ public final class UtilGUI {
 
   /**
    * @param jc
-   * @param iOrientation :
-   *          vertical or horizontal orientation, use BoxLayout.X_AXIS or
+   * @param iOrientation
+   *          : vertical or horizontal orientation, use BoxLayout.X_AXIS or
    *          BoxLayout.Y_AXIS
    * @return a centred panel
    */
@@ -212,8 +213,8 @@ public final class UtilGUI {
    * 
    * @param sText
    *          text to display, lines separated by \n characters
-   * @param limit :
-   *          max number of lines to be displayed without scroller
+   * @param limit
+   *          : max number of lines to be displayed without scroller
    * @return formated message: either a string, or a textarea
    */
   public static Object getLimitedMessage(final String sText, final int limit) {
@@ -233,8 +234,8 @@ public final class UtilGUI {
 
   /**
    * code from
-   * http://java.sun.com/developer/onlineTraining/new2java/supplements/2005/July05.html#1
-   * Used to correctly display long messages
+   * http://java.sun.com/developer/onlineTraining/new2java/supplements/
+   * 2005/July05.html#1 Used to correctly display long messages
    * 
    * @param maxCharactersPerLineCount
    * @return
@@ -248,7 +249,7 @@ public final class UtilGUI {
 
       NarrowOptionPane(final int maxCharactersPerLineCount) {
         super();
-        
+
         this.lmaxCharactersPerLineCount = maxCharactersPerLineCount;
       }
 
@@ -297,6 +298,77 @@ public final class UtilGUI {
       iNewWidth = (int) (img.getIconWidth() * ((float) iNewHeight / img.getIconHeight()));
     }
     return UtilGUI.getResizedImage(img, iNewWidth, iNewHeight);
+  }
+
+  /**
+   * Code initially written by aTunes 1.14.0
+   * 
+   * @param image
+   * @param width
+   * @param height
+   * @return
+   */
+  public static ImageIcon scaleImageBicubic(Image image, int width, int height) {
+    if (image == null) {
+      return null;
+    }
+
+    double thumbRatio = (double) width / (double) height;
+    int imageWidth = image.getWidth(null);
+    int imageHeight = image.getHeight(null);
+    double imageRatio = (double) imageWidth / (double) imageHeight;
+    int calculatedWidth = width;
+    int calculatedHeight = height;
+    if (thumbRatio < imageRatio) {
+      calculatedHeight = (int) (width / imageRatio);
+    } else {
+      calculatedWidth = (int) (height * imageRatio);
+    }
+
+    if (imageWidth <= calculatedWidth && imageHeight <= calculatedHeight) {
+      BufferedImage thumbImage = new BufferedImage(calculatedWidth, calculatedHeight,
+          BufferedImage.TYPE_INT_RGB);
+      Graphics2D graphics2D = thumbImage.createGraphics();
+      graphics2D.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
+          RenderingHints.VALUE_INTERPOLATION_BICUBIC);
+      graphics2D.drawImage(image, 0, 0, calculatedWidth, calculatedHeight, null);
+      graphics2D.dispose();
+      return new ImageIcon(thumbImage);
+    } else {
+      // If scaled image is smaller then use SwingX utilities (looks much
+      // better)
+      BufferedImage bi = GraphicsUtilities.createThumbnail(toBufferedImage(image), calculatedWidth,
+          calculatedHeight);
+      return new ImageIcon(bi);
+    }
+  }
+
+  /**
+   * Code initially written by aTunes 1.14.0 Gets a BufferedImage from an Image
+   * object.
+   * 
+   * @param image
+   *          the image
+   * 
+   * @return the buffered image
+   */
+  public static BufferedImage toBufferedImage(Image img) {
+    BufferedImage bufferedImage;
+    try {
+      Image image = new ImageIcon(img).getImage();
+      bufferedImage = new BufferedImage(image.getWidth(null), image.getHeight(null),
+          BufferedImage.TYPE_INT_ARGB);
+      Graphics2D g = bufferedImage.createGraphics();
+      g.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
+          RenderingHints.VALUE_INTERPOLATION_BICUBIC);
+      g.drawImage(image, 0, 0, null);
+      g.dispose();
+    } catch (IllegalArgumentException e) {
+      Log.debug(e.getMessage());
+      return null;
+    }
+
+    return bufferedImage;
   }
 
   /**
@@ -401,8 +473,7 @@ public final class UtilGUI {
    * @param image
    * @param Do
    *          we need alpha (transparency) ?
-   * @param new
-   *          image width
+   * @param new image width
    * @param height
    *          new image height
    * @return buffured image from an image
@@ -449,8 +520,8 @@ public final class UtilGUI {
 
   /**
    * A simple minded look and feel change: ask each node in the tree to
-   * <code>updateUI()</code> -- that is, to initialize its UI property with
-   * the current look and feel. Based on the Sun
+   * <code>updateUI()</code> -- that is, to initialize its UI property with the
+   * current look and feel. Based on the Sun
    * SwingUtilities.updateComponentTreeUI, but ensures that the update happens
    * on the components of a JToolbar before the JToolbar itself.
    */
@@ -499,8 +570,8 @@ public final class UtilGUI {
    * <code>Window</code>.
    * 
    * @param window
-   *          The <code>Window</code> for which the look and feel update has
-   *          to be performed against.
+   *          The <code>Window</code> for which the look and feel update has to
+   *          be performed against.
    */
   public static void updateWindowUI(final Window window) {
     try {
@@ -586,41 +657,41 @@ public final class UtilGUI {
     jd.setLocationRelativeTo(JajukWindow.getInstance());
     jd.setVisible(true);
   }
-  
+
   /**
    * configures gui for repeat single enable/disable
    * 
    * @param enable
    */
-  public static void setRepeatSingleGui(boolean enable){
-    //always disable repeat all
+  public static void setRepeatSingleGui(boolean enable) {
+    // always disable repeat all
     Conf.setProperty(Const.CONF_STATE_REPEAT_ALL, Boolean.toString(false));
     JajukJMenuBar.getInstance().setRepeatAllSelected(false);
     CommandJPanel.getInstance().setRepeatAllSelected(false);
-    
+
     Conf.setProperty(Const.CONF_STATE_REPEAT, Boolean.toString(enable));
 
     JajukJMenuBar.getInstance().setRepeatSelected(enable);
-    CommandJPanel.getInstance().setRepeatSelected(enable);   
-    
+    CommandJPanel.getInstance().setRepeatSelected(enable);
+
   }
-  
+
   /**
    * configures gui for repeat all enable/disable
    * 
    * @param enable
-   */  
-  public static void setRepeatAllGui(boolean enable){
-    //always disable repeat single
+   */
+  public static void setRepeatAllGui(boolean enable) {
+    // always disable repeat single
     Conf.setProperty(Const.CONF_STATE_REPEAT, Boolean.toString(false));
     JajukJMenuBar.getInstance().setRepeatSelected(false);
     CommandJPanel.getInstance().setRepeatSelected(false);
-    
+
     Conf.setProperty(Const.CONF_STATE_REPEAT_ALL, Boolean.toString(enable));
 
     JajukJMenuBar.getInstance().setRepeatAllSelected(enable);
-    CommandJPanel.getInstance().setRepeatAllSelected(enable);   
-    
+    CommandJPanel.getInstance().setRepeatAllSelected(enable);
+
   }
 
 }
