@@ -28,7 +28,6 @@ import java.awt.Dimension;
 import java.awt.DisplayMode;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
-import java.io.IOException;
 
 import javax.swing.JToolBar;
 import javax.swing.JWindow;
@@ -74,8 +73,6 @@ public class FullscreenPlayerFrame extends JWindow {
 
   private JajukButton jbFull;
 
-  private Cover3D cover3d;
-
   private CoverView coverView;
 
   public static FullscreenPlayerFrame getInstance() {
@@ -115,9 +112,7 @@ public class FullscreenPlayerFrame extends JWindow {
     // Cover view
     coverView = new CoverView();
     coverView.initUI(false);
-    cover3d = new Cover3D();
-    coverView.setObserver(cover3d);
-    
+
     // Player toolbar
     JToolBar jtbPlay = new JajukJToolbar();
     jbPrevious = new JajukButton(ActionManager.getAction(PREVIOUS_TRACK));
@@ -140,7 +135,7 @@ public class FullscreenPlayerFrame extends JWindow {
     setLayout(new MigLayout("ins 0", "[grow]", "[][grow][60%][][]"));
     add(jbFull, "right,wrap");
     add(animationView, "alignx center,aligny top,grow,gap bottom 20,wrap");
-    add(cover3d, "alignx center,grow,gap bottom 20,wrap");
+    add(coverView, "alignx center,grow,gap bottom 20,wrap");
     add(jtbPlay, "alignx center,gap bottom 20,wrap");
     add(tpst, "alignx center,aligny bottom,gap bottom 10");
 
@@ -163,17 +158,7 @@ public class FullscreenPlayerFrame extends JWindow {
             // topPanel should have 10% of the dispaly resolution height
             setPreferredSize(new Dimension(graphicsDevice.getDisplayMode().getWidth(),
                 (graphicsDevice.getDisplayMode().getHeight() / 100) * 10));
-            
-            // now we can set the cover because we know now the size of the screen
-            try {
-              cover3d.setImage(coverView.getCurrentImage());
-            } catch (IOException e) {
-              Log.error(e);
-            } catch (InterruptedException e) {
-              Log.error(e);
-            }
 
-            
             validate();
           } else {
             fullscreen = false;

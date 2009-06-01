@@ -20,17 +20,24 @@
 
 package org.jajuk.ui.views;
 
+import com.jhlabs.image.PerspectiveFilter;
+
 import ext.SwingWorker;
 
+import java.awt.AlphaComposite;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.GradientPaint;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -71,7 +78,6 @@ import org.jajuk.services.covers.Cover.CoverType;
 import org.jajuk.services.players.QueueModel;
 import org.jajuk.services.players.StackItem;
 import org.jajuk.ui.thumbnails.ThumbnailManager;
-import org.jajuk.ui.widgets.Cover3D;
 import org.jajuk.ui.widgets.InformationJPanel;
 import org.jajuk.ui.widgets.JajukButton;
 import org.jajuk.ui.widgets.JajukFileChooser;
@@ -93,7 +99,6 @@ import org.jajuk.util.filters.ImageFilter;
 import org.jajuk.util.filters.JPGFilter;
 import org.jajuk.util.filters.PNGFilter;
 import org.jajuk.util.log.Log;
-import org.jdesktop.swingx.border.DropShadowBorder;
 
 /**
  * Cover view. Displays an image for the current album
@@ -174,8 +179,6 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
 
   /** Force next track cover reload flag* */
   private boolean bForceCoverReload = true;
-
-  private Cover3D observer = null;
 
   /**
    * Constructor
@@ -353,21 +356,6 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
     } else {
       update(new JajukEvent(JajukEvents.COVER_NEED_REFRESH));
     }
-  }
-
-  /**
-   * @return the observer
-   */
-  public Cover3D getObserver() {
-    return this.observer;
-  }
-
-  /**
-   * @param observer
-   *          the observer to set
-   */
-  public void setObserver(Cover3D observer) {
-    this.observer = observer;
   }
 
   /*
@@ -781,7 +769,8 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
       }
       final String size = cover.getSize();
       jl = new JLabel(ii);
-      jl.setBorder(new DropShadowBorder(Color.BLACK, 5, 0.5f, 5, false, true, false, true));
+      // jl.setBorder(new DropShadowBorder(Color.BLACK, 5, 0.5f, 5, false, true,
+      // false, true));
       jl.setMinimumSize(new Dimension(0, 0)); // required for info
       // node resizing
       jl.setToolTipText("<html>" + url.toString() + "<br>" + size + "K");
@@ -947,7 +936,9 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
       if (iEventID == iLocalEventID) {
         cover = alCovers.get(index); // take image at the given index
         Image img = cover.getImage();
-        icon = new ImageIcon(img);
+
+        icon = new ImageIcon(get3dImage(img));
+
         if (icon.getIconHeight() == 0 || icon.getIconWidth() == 0) {
           throw new JajukException(0, "Wrong picture, size is null");
         }
@@ -1021,6 +1012,60 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
       return null;
     }
     return null;
+  }
+
+  /**
+   * @param img
+   * @return
+   */
+  private BufferedImage get3dImage(Image img) {
+    // 3d
+
+    int angle = 30;
+    int gap = 10;
+    float opacity = 0.3f;
+    float fadeHeight = 0.6f;
+
+    // cover
+    BufferedImage coverImage = UtilGUI.toBufferedImage(img, true);
+
+    PerspectiveFilter filter1 = new PerspectiveFilter(0, angle, coverImage.getHeight() - angle / 2,
+        (int) (angle * (5.0 / 3.0)), coverImage.getHeight() - angle / 2, coverImage.getHeight(), 0,
+        coverImage.getHeight() + angle);
+    coverImage = filter1.filter(coverImage, null);
+
+    // reflection
+    int imageWidth = coverImage.getWidth();
+    int imageHeight = coverImage.getHeight();
+    BufferedImage reflection = new BufferedImage(imageWidth, imageHeight,
+        BufferedImage.TYPE_INT_ARGB);
+    Graphics2D rg = reflection.createGraphics();
+    rg.drawRenderedImage(coverImage, null);
+    rg.setComposite(AlphaComposite.getInstance(AlphaComposite.DST_IN));
+    rg.setPaint(new GradientPaint(0, imageHeight * fadeHeight, new Color(0.0f, 0.0f, 0.0f, 0.0f),
+        0, imageHeight, new Color(0.0f, 0.0f, 0.0f, opacity)));
+    rg.fillRect(0, 0, imageWidth, imageHeight);
+    rg.dispose();
+
+    PerspectiveFilter filter2 = new PerspectiveFilter(0, 0, coverImage.getHeight() - angle / 2,
+        angle * 2, coverImage.getHeight() - angle / 2, coverImage.getHeight() + angle * 2, 0,
+        coverImage.getHeight());
+    BufferedImage reflectedImage = filter2.filter(reflection, null);
+
+    // now draw everything on one bufferedImage
+    BufferedImage finalImage = new BufferedImage(imageWidth, (int) (1.4 * imageHeight),
+        BufferedImage.TYPE_INT_ARGB);
+
+    Graphics g = finalImage.getGraphics();
+    Graphics2D g2d = (Graphics2D) g;
+
+    g2d.drawRenderedImage(coverImage, null);
+
+    g2d.translate(0, 2 * imageHeight + gap);
+    g2d.scale(1, -1);
+    g2d.drawRenderedImage(reflectedImage, null);
+
+    return finalImage;
   }
 
   /**
@@ -1351,15 +1396,5 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
     }
     setFoundText(); // update found text
     displayCurrentCover();
-
-    // update 3d View
-    if (observer != null) {
-      try {
-        observer.setImage(getCurrentImage());
-      } catch (InterruptedException e) {
-        Log.error(e);
-      }
-    }
   }
-
 }

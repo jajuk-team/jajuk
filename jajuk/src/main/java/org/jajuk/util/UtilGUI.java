@@ -69,7 +69,6 @@ import org.jajuk.ui.widgets.PerspectiveBarJPanel;
 import org.jajuk.util.log.Log;
 import org.jdesktop.swingx.decorator.Highlighter;
 import org.jdesktop.swingx.decorator.HighlighterFactory;
-import org.jdesktop.swingx.graphics.GraphicsUtilities;
 import org.jvnet.substance.SubstanceLookAndFeel;
 import org.jvnet.substance.api.SubstanceColorScheme;
 import org.jvnet.substance.api.SubstanceSkin;
@@ -298,77 +297,6 @@ public final class UtilGUI {
       iNewWidth = (int) (img.getIconWidth() * ((float) iNewHeight / img.getIconHeight()));
     }
     return UtilGUI.getResizedImage(img, iNewWidth, iNewHeight);
-  }
-
-  /**
-   * Code initially written by aTunes 1.14.0
-   * 
-   * @param image
-   * @param width
-   * @param height
-   * @return
-   */
-  public static ImageIcon scaleImageBicubic(Image image, int width, int height) {
-    if (image == null) {
-      return null;
-    }
-
-    double thumbRatio = (double) width / (double) height;
-    int imageWidth = image.getWidth(null);
-    int imageHeight = image.getHeight(null);
-    double imageRatio = (double) imageWidth / (double) imageHeight;
-    int calculatedWidth = width;
-    int calculatedHeight = height;
-    if (thumbRatio < imageRatio) {
-      calculatedHeight = (int) (width / imageRatio);
-    } else {
-      calculatedWidth = (int) (height * imageRatio);
-    }
-
-    if (imageWidth <= calculatedWidth && imageHeight <= calculatedHeight) {
-      BufferedImage thumbImage = new BufferedImage(calculatedWidth, calculatedHeight,
-          BufferedImage.TYPE_INT_RGB);
-      Graphics2D graphics2D = thumbImage.createGraphics();
-      graphics2D.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
-          RenderingHints.VALUE_INTERPOLATION_BICUBIC);
-      graphics2D.drawImage(image, 0, 0, calculatedWidth, calculatedHeight, null);
-      graphics2D.dispose();
-      return new ImageIcon(thumbImage);
-    } else {
-      // If scaled image is smaller then use SwingX utilities (looks much
-      // better)
-      BufferedImage bi = GraphicsUtilities.createThumbnail(toBufferedImage(image), calculatedWidth,
-          calculatedHeight);
-      return new ImageIcon(bi);
-    }
-  }
-
-  /**
-   * Code initially written by aTunes 1.14.0 Gets a BufferedImage from an Image
-   * object.
-   * 
-   * @param image
-   *          the image
-   * 
-   * @return the buffered image
-   */
-  public static BufferedImage toBufferedImage(Image img) {
-    BufferedImage bufferedImage;
-    try {
-      Image image = new ImageIcon(img).getImage();
-      bufferedImage = new BufferedImage(image.getWidth(null), image.getHeight(null),
-          BufferedImage.TYPE_INT_ARGB);
-      Graphics2D g = bufferedImage.createGraphics();
-      g.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
-          RenderingHints.VALUE_INTERPOLATION_BICUBIC);
-      g.drawImage(image, 0, 0, null);
-      g.dispose();
-    } catch (IllegalArgumentException e) {
-      Log.debug(e.getMessage());
-      return null;
-    }
-
-    return bufferedImage;
   }
 
   /**
