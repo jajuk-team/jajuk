@@ -115,18 +115,26 @@ public class Cover3D extends JPanel {
       // IMAGE
       ImageIcon imageScaled = UtilGUI.scaleImageBicubic(image, size, size);
 
-      this.image = UtilGUI.toBufferedImage(imageScaled.getImage(), true);
+      int imageWidth = imageScaled.getIconWidth();
+      int imageHeight = imageScaled.getIconHeight();
+      BufferedImage mainImage = new BufferedImage(imageWidth, imageHeight,
+          BufferedImage.TYPE_INT_ARGB);
+      Graphics2D rg = mainImage.createGraphics();
+      rg.drawImage(imageScaled.getImage(), 0, 0, this);
+      rg.setComposite(AlphaComposite.getInstance(AlphaComposite.DST_IN));
+      rg.fillRect(0, 0, imageWidth, imageHeight);
+      rg.dispose();
 
       PerspectiveFilter filter1 = new PerspectiveFilter(0, angle, size - angle / 2,
           (int) (angle * (5.0 / 3.0)), size - angle / 2, size, 0, size + angle);
-      this.image = filter1.filter(this.image, null);
+      this.image = filter1.filter(mainImage, null);
 
       // REFLECTED IMAGE
-      int imageWidth = this.image.getWidth();
-      int imageHeight = this.image.getHeight();
+      imageWidth = this.image.getWidth();
+      imageHeight = this.image.getHeight();
       BufferedImage reflection = new BufferedImage(imageWidth, imageHeight,
           BufferedImage.TYPE_INT_ARGB);
-      Graphics2D rg = reflection.createGraphics();
+      rg = reflection.createGraphics();
       rg.drawRenderedImage(this.image, null);
       rg.setComposite(AlphaComposite.getInstance(AlphaComposite.DST_IN));
       rg.setPaint(new GradientPaint(0, imageHeight * fadeHeight, new Color(0.0f, 0.0f, 0.0f, 0.0f),
