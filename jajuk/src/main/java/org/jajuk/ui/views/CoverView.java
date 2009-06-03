@@ -937,7 +937,11 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
         cover = alCovers.get(index); // take image at the given index
         Image img = cover.getImage();
 
-        icon = new ImageIcon(get3dImage(img));
+        if (cover.getType().equals(CoverType.NO_COVER)) {
+          icon = new ImageIcon(img);
+        } else {
+          icon = new ImageIcon(get3dImage(img));
+        }
 
         if (icon.getIconHeight() == 0 || icon.getIconWidth() == 0) {
           throw new JajukException(0, "Wrong picture, size is null");
@@ -1064,6 +1068,7 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
     g2d.translate(0, 2 * imageHeight + gap);
     g2d.scale(1, -1);
     g2d.drawRenderedImage(reflectedImage, null);
+    g2d.dispose();
 
     return finalImage;
   }
