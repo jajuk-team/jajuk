@@ -35,12 +35,12 @@ import org.w3c.dom.Document;
 public class FlyProvider extends GenericProvider {
 
   /** The Constant USER_ID. */
-  private static final String USER_ID = "d34b3dc1dc7faf2a4-atunes.org";
+  private static final String USER_ID = "79o116n89n93sr93p-wnwhx.vasb";
 
   /** URL pattern used by jajuk to retrieve lyrics */
-  private static final String URL = "http://lyricsfly.com/api/api.php?i=" + USER_ID
-      + "&a=%artist&t=%title";
-
+  private static final String URL = "http://lyricsfly.com/api/api.php?i="
+      + UtilString.rot13(USER_ID) + "&a=%artist&t=%title";
+  
   /** URL pattern to web page (see ILyricsProvider interface for details) */
   private static final String WEB_URL = "http://www.lyricsfly.com/";
 
