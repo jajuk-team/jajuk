@@ -34,7 +34,9 @@ import org.w3c.dom.Document;
  */
 public class FlyProvider extends GenericProvider {
 
-  /** The Constant USER_ID. */
+  /** The Constant USER_ID. 
+   * DO NOT USE THESE KEYS FOR OTHER APPLICATIONS THAN Jajuk !
+   */
   private static final String USER_ID = "79o116n89n93sr93p-wnwhx.vasb";
 
   /** URL pattern used by jajuk to retrieve lyrics */
