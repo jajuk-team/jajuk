@@ -151,6 +151,7 @@ public class FullscreenPlayerFrame extends JWindow {
         if (enable) {
           // check, if we can paint fullscreen
           if (graphicsDevice.isFullScreenSupported()) {
+            JajukWindow.getInstance().setVisible(false);
 
             setVisible(true);
             graphicsDevice.setFullScreenWindow(instance);
@@ -170,6 +171,7 @@ public class FullscreenPlayerFrame extends JWindow {
           graphicsDevice.setDisplayMode(origDisplayMode);
           graphicsDevice.setFullScreenWindow(null);
           setVisible(false);
+          JajukWindow.getInstance().setVisible(true);
         }
       }
     });
