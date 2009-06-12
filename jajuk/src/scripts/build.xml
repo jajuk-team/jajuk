@@ -12,7 +12,7 @@
 
 	<!--Distribution release  
 	!!! DO NOT USE '-' CHARACTER IN VERSION !!!-->
-	<property name='version' value='1.8dev-${TODAY}' />
+	<property name='version' value='1.8dev_${TODAY}' />
 
 	<!--Previous release used for JNLP incremental upgrade-->
 	<property name='previous_version' value='null' />
