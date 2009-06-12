@@ -5,11 +5,14 @@
 <project default='package_jar' name='jajuk' basedir='../..'>
 	<!--VARIABLES-->
 
-	 <tstamp prefix="start"/>
+	<tstamp>
+	    <format property="TODAY" pattern="yyyyMMdd" locale="en,UK"/>
+	  </tstamp>
+
 
 	<!--Distribution release  
 	!!! DO NOT USE '-' CHARACTER IN VERSION !!!-->
-	<property name='version' value='1.8dev-${start.TODAY}' />
+	<property name='version' value='1.8dev-${TODAY}' />
 
 	<!--Previous release used for JNLP incremental upgrade-->
 	<property name='previous_version' value='null' />
