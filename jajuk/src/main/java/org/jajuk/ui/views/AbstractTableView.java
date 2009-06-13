@@ -319,7 +319,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
     jpControl.add(jtfValue, "grow,gapright 2");
     setCellEditors();
     JScrollPane jsp = new JScrollPane(jtable);
-    setLayout(new MigLayout("ins 0", "[grow]"));
+    setLayout(new MigLayout("ins 0", "[grow]","[][grow]"));
     add(jpControl, "wrap,grow");
     add(jsp, "grow");
     jtable.setDragEnabled(true);
