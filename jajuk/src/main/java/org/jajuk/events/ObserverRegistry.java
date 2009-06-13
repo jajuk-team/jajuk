@@ -53,11 +53,11 @@ class ObserverRegistry {
       if (canals.containsKey(event)) {
         numberOfExecutions = canals.get(event);
       }
+      if (numberOfExecutions > Const.MAX_EVENT_EXECUTIONS) {
+        Log.warn("Event overflow for : " + event);
+        return;
+      }
       canals.put(event, numberOfExecutions + 1);
-    }
-    if (canals.get(event) > Const.MAX_EVENT_EXECUTIONS) {
-      Log.warn("Event overflow for : " + event);
-      return;
     }
     JajukEvents subject = event.getSubject();
     List<Observer> alComponents = hEventComponents.get(subject);
