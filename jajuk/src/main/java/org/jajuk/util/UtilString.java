@@ -22,7 +22,9 @@ package org.jajuk.util;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.Properties;
 import java.util.StringTokenizer;
@@ -44,6 +46,17 @@ public final class UtilString {
    * The list of characters that we need to escape in strings
    */
   private final static String ESCAPE_CHARACTERS = "\\[](){}.*+?$^|-";
+
+  /**
+   * Constant date formatter, one by thread for perfs, we need an instance by
+   * thread because this class is not thread safe
+   */
+  private static final ThreadLocal<SimpleDateFormat> formatter = new ThreadLocal<SimpleDateFormat>() {
+    @Override
+    protected SimpleDateFormat initialValue() {
+      return new SimpleDateFormat(Const.ADDITION_DATE_FORMAT, Locale.getDefault());
+    }
+  };
 
   /**
    * private constructor to avoid instantiating utility class
@@ -584,10 +597,10 @@ public final class UtilString {
   }
 
   /**
-   * @return Addition date simple format instance
+   * @return Thread-safe addition date simple format instance
    */
   public static DateFormat getAdditionDateFormatter() {
-    return new SimpleDateFormat(Const.ADDITION_DATE_FORMAT, Locale.getDefault());
+    return formatter.get();
   }
 
   /**
@@ -892,6 +905,43 @@ public final class UtilString {
       sb.append(element);
     }
     return sb.toString();
+  }
+
+  /**
+   * 
+   * Code token from aTunes 1.14.0 *Copyright (C) 2006-2009 Alex Aranda, Sylvain
+   * Gaudard, Thomas Beckers and contributors 
+   * Returns list of text between
+   * specified chars. Both chars are included in result elements. Returns empty
+   * list if chars are not found in string in given order For example given
+   * string "ab cd (ef) gh (ij)" and chars '(' and ')' will return a list with
+   * two strings: "(ef)" and "(ij)"
+   * 
+   * @param string
+   * @param beginChar
+   * @param endChar
+   * @return
+   */
+  public static final List<String> getTextBetweenChars(String string, char beginChar, char endChar) {
+    List<String> result = new ArrayList<String>();
+
+    if (string == null || string.indexOf(beginChar) == -1 || string.indexOf(endChar) == -1) {
+      return result;
+    }
+
+    String auxStr = string;
+    int beginIndex = auxStr.indexOf(beginChar);
+    int endIndex = auxStr.indexOf(endChar);
+    while (beginIndex != -1 && endIndex != -1) {
+      if (beginIndex < endIndex) {
+        result.add(auxStr.substring(beginIndex, endIndex + 1));
+      }
+      auxStr = auxStr.substring(endIndex + 1);
+      beginIndex = auxStr.indexOf(beginChar);
+      endIndex = auxStr.indexOf(endChar);
+    }
+
+    return result;
   }
 
 }

@@ -22,9 +22,8 @@ package org.jajuk.util;
 import java.net.URL;
 
 /**
- * Contains all technical/ non-translatable strings
- * Do not set static final to these constants, it is implied 
- * by the fact you are in an interface.
+ * Contains all technical/ non-translatable strings Do not set static final to
+ * these constants, it is implied by the fact you are in an interface.
  */
 public interface Const {
 
@@ -79,8 +78,8 @@ public interface Const {
 
   /** Autorefresh thread delay in ms */
   int AUTO_REFRESH_DELAY = 30000;
-  
-  /** Default refresh interval in mins for unknown types devices **/
+
+  /** Default refresh interval in mins for unknown types devices * */
   String DEFAULT_REFRESH_INTERVAL = "5";
 
   /** Minimum refresh fequency (ms) */
@@ -155,6 +154,9 @@ public interface Const {
   /* Number of tracks for global actions (global shuffle, bestof...) */
   int NB_TRACKS_ON_ACTION = 200;
 
+  /** Cache max age (in ms) */
+  long CACHE_MAX_AGE = 10 * 24 * 3600 * 1000;  // 10 days
+
   /**
    * The time we wait for mplayer to start up in ms. It can take some time on
    * slow or heavily loaded machines...
@@ -226,6 +228,32 @@ public interface Const {
   URL FILE_JRE_LOG_CONF = UtilSystem.getResource("org/jajuk/util/log/logging.properties");
 
   String FILE_CACHE = "cache";
+
+  String LASTFM_CACHE = "lastfm";
+
+  /** Last.fm album cover cache dir. */
+  String LAST_FM_ALBUM_COVER_CACHE_DIR = "album_covers";
+
+  /** Last.fm album info cache dir. */
+  String LAST_FM_ALBUM_INFO_CACHE_DIR = "album_info";
+
+  /** Last.fm artist image cache dir. */
+  String LAST_FM_ARTIST_IMAGE_CACHE_DIR = "artist_images";
+
+  /** Last.fm artist info cache dir. */
+  String LAST_FM_ARTIST_SIMILAR_CACHE_DIR = "artist_similar";
+
+  /** Last.fm artist thumb cache dir. */
+  String LAST_FM_ARTIST_THUMB_CACHE_DIR = "artist_thumbs";
+
+  /** Last.fm artist info cache dir. */
+  String LAST_FM_ALBUM_LIST_CACHE_DIR = "artist_info";
+
+  /** Last.fm artist wiki cache dir. */
+  String LAST_FM_ARTIST_WIKI_CACHE_DIR = "artist_wiki";
+
+  /** Last.fm artist submission cache dir. */
+  String LAST_FM_SUBMISSION_CACHE_DIR = "submission";
 
   String FILE_INTERNAL_CACHE = "internal";
 
@@ -502,11 +530,11 @@ public interface Const {
   String CONF_PERSPECTIVE_DEFAULT = "jajuk.preference.perspective.default";
 
   String CONF_STATE_REPEAT = "jajuk.state.mode.repeat";
-  
+
   String CONF_STATE_REPEAT_ALL = "jajuk.state.mode.repeat.all";
 
   String CONF_STATE_SHUFFLE = "jajuk.state.mode.shuffle";
-  
+
   String CONF_STATE_KARAOKE = "jajuk.state.karaoke";
 
   String CONF_STATE_CONTINUE = "jajuk.state.mode.continue";
@@ -914,7 +942,7 @@ public interface Const {
   String XML_TRACK_AUTHOR = "author";
 
   String XML_TRACK_YEAR = "year";
-  
+
   String XML_TRACK_ALBUM_ARTIST = "album_artist";
 
   String XML_TRACK_LENGTH = "length";
@@ -928,7 +956,7 @@ public interface Const {
   String XML_TRACK_DISCOVERY_DATE = "added";
 
   String XML_TRACK_ORDER = "order";
-  
+
   String XML_TRACK_DISC_NUMBER = "disc_number";
 
   String XML_TRACK_PREFERENCE = "pf";
@@ -1102,7 +1130,7 @@ public interface Const {
 
   // Patterns
   String PATTERN_AUTHOR = "%artist";
-  
+
   String PATTERN_DISC = "%disc";
 
   String PATTERN_ALBUM = "%album";
@@ -1151,9 +1179,9 @@ public interface Const {
   String CONF_ALARM_ENABLED = "jajuk.alarm.enabled";
 
   String CONF_AUTO_SCROLL = "jajuk.auto_scroll";
-  
+
   String CONF_EXPLORER_PATH = "jajuk.explorer_path";
-  
+
   // Alarm actions
   String ALARM_START_ACTION = "Start Playing";
 
@@ -1167,7 +1195,7 @@ public interface Const {
   long PREFERENCE_AVERAGE = -1;
   long PREFERENCE_POOR = -2;
   long PREFERENCE_HATE = -3;
-  
+
   String B_P_HTML = "</b></p></html>";
 
   String P_B = "<p><b>";

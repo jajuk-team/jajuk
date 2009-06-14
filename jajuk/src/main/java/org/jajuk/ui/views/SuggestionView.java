@@ -22,10 +22,10 @@ package org.jajuk.ui.views;
 
 import ext.FlowScrollPanel;
 import ext.SwingWorker;
-import ext.services.lastfm.AudioScrobblerAlbum;
-import ext.services.lastfm.AudioScrobblerArtist;
-import ext.services.lastfm.AudioScrobblerService;
-import ext.services.lastfm.AudioScrobblerSimilarArtists;
+import ext.services.lastfm.AlbumInfo;
+import ext.services.lastfm.ArtistInfo;
+import ext.services.lastfm.LastFmService;
+import ext.services.lastfm.SimilarArtistsInfo;
 
 import java.awt.FlowLayout;
 import java.awt.Graphics;
@@ -55,8 +55,8 @@ import org.jajuk.events.Observer;
 import org.jajuk.services.players.QueueModel;
 import org.jajuk.ui.perspectives.PerspectiveManager;
 import org.jajuk.ui.thumbnails.AbstractThumbnail;
-import org.jajuk.ui.thumbnails.AudioScrobblerAlbumThumbnail;
-import org.jajuk.ui.thumbnails.AudioScrobblerAuthorThumbnail;
+import org.jajuk.ui.thumbnails.LastFmAlbumThumbnail;
+import org.jajuk.ui.thumbnails.LastFmAuthorThumbnail;
 import org.jajuk.ui.thumbnails.LocalAlbumThumbnail;
 import org.jajuk.ui.thumbnails.ThumbnailManager;
 import org.jajuk.util.Conf;
@@ -370,10 +370,11 @@ public class SuggestionView extends ViewAdapter implements Observer {
     out.setScroller(jsp);
     out.setLayout(new FlowLayout(FlowLayout.LEFT));
     if (type == SuggestionType.OTHERS_ALBUMS) {
-      List<AudioScrobblerAlbum> albums = AudioScrobblerService.getInstance().getAlbumList(author);
+      List<AlbumInfo> albums = LastFmService.getInstance().getAlbumList(author, true, 0)
+          .getAlbums();
       if (albums != null && albums.size() > 0) {
-        for (AudioScrobblerAlbum album : albums) {
-          AbstractThumbnail thumb = new AudioScrobblerAlbumThumbnail(album);
+        for (AlbumInfo album : albums) {
+          AbstractThumbnail thumb = new LastFmAlbumThumbnail(album);
           thumb.populate();
           thumb.getIcon().addMouseListener(new ThumbMouseListener());
           out.add(thumb);
@@ -384,12 +385,12 @@ public class SuggestionView extends ViewAdapter implements Observer {
         out.add(UtilGUI.getCentredPanel(new JLabel(Messages.getString("SuggestionView.7"))));
       }
     } else if (type == SuggestionType.SIMILAR_AUTHORS) {
-      AudioScrobblerSimilarArtists similar = AudioScrobblerService.getInstance().getSimilarArtists(
+      SimilarArtistsInfo similar = LastFmService.getInstance().getSimilarArtists(
           author);
       if (similar != null) {
-        List<AudioScrobblerArtist> authors = similar.getArtists();
-        for (AudioScrobblerArtist similarAuthor : authors) {
-          AbstractThumbnail thumb = new AudioScrobblerAuthorThumbnail(similarAuthor);
+        List<ArtistInfo> authors = similar.getArtists();
+        for (ArtistInfo similarAuthor : authors) {
+          AbstractThumbnail thumb = new LastFmAuthorThumbnail(similarAuthor);
           thumb.populate();
           thumb.getIcon().addMouseListener(new ThumbMouseListener());
           out.add(thumb);

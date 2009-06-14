@@ -21,9 +21,9 @@
 package org.jajuk.ui.thumbnails;
 
 import ext.SwingWorker;
-import ext.services.lastfm.AudioScrobblerAlbum;
-import ext.services.lastfm.AudioScrobblerArtist;
-import ext.services.lastfm.AudioScrobblerService;
+import ext.services.lastfm.AlbumInfo;
+import ext.services.lastfm.ArtistInfo;
+import ext.services.lastfm.LastFmService;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;
@@ -53,12 +53,12 @@ import org.jdesktop.swingx.border.DropShadowBorder;
  * Last.FM Album thumb represented as artists label + (optionally) others text
  * information display...
  */
-public class AudioScrobblerAuthorThumbnail extends AbstractThumbnail {
+public class LastFmAuthorThumbnail extends AbstractThumbnail {
 
   private static final long serialVersionUID = -804471264407148566L;
 
   /** Associated author */
-  private final AudioScrobblerArtist author;
+  private final ArtistInfo author;
 
   /** Is this author known in collection ? */
   private final boolean bKnown;
@@ -67,7 +67,7 @@ public class AudioScrobblerAuthorThumbnail extends AbstractThumbnail {
    * @param album :
    *          associated album
    */
-  public AudioScrobblerAuthorThumbnail(AudioScrobblerArtist author) {
+  public LastFmAuthorThumbnail(ArtistInfo author) {
     super(100);
     this.author = author;
     bKnown = (AuthorManager.getInstance().getAuthorByName(author.getName()) != null);
@@ -94,11 +94,11 @@ public class AudioScrobblerAuthorThumbnail extends AbstractThumbnail {
           // Download the picture and store file reference (to
           // generate the popup thumb for ie)
           fCover = DownloadManager.downloadToCache(remote);
-          if(fCover == null) {
+          if (fCover == null) {
             Log.warn("Could not read remote file: " + remote.toString());
             return null;
           }
-            
+
           BufferedImage image = ImageIO.read(fCover);
           ImageIcon downloadedImage = new ImageIcon(image);
           ii = UtilGUI.getScaledImage(downloadedImage, 100);
@@ -106,8 +106,11 @@ public class AudioScrobblerAuthorThumbnail extends AbstractThumbnail {
           downloadedImage.getImage().flush();
           image.flush();
         } catch (IIOException e) {
-          // report IIOException only as warning here as we can expect this to happen frequently with images on the net 
-          Log.warn("Could not read image: " + author.getImageUrl().toString() + " Cache: " + fCover, e.getMessage());
+          // report IIOException only as warning here as we can expect this to
+          // happen frequently with images on the net
+          Log.warn(
+              "Could not read image: " + author.getImageUrl().toString() + " Cache: " + fCover, e
+                  .getMessage());
         } catch (Exception e) {
           Log.error(e);
         }
@@ -187,11 +190,11 @@ public class AudioScrobblerAuthorThumbnail extends AbstractThumbnail {
     // display picture
     sOut += "<img src='" + author.getImageUrl() + "'></TD>";
     // Show each album for this Author
-    List<AudioScrobblerAlbum> albums = AudioScrobblerService.getInstance().getAlbumList(
-        author.getName());
+    List<AlbumInfo> albums = LastFmService.getInstance().getAlbumList(author.getName(), true, 0)
+        .getAlbums();
     if (albums != null && albums.size() > 0) {
       sOut += "<TD>";
-      for (AudioScrobblerAlbum album : albums) {
+      for (AlbumInfo album : albums) {
         sOut += "<b>";
         if (!UtilString.isVoid(album.getYear())) {
           sOut += album.getYear() + " ";

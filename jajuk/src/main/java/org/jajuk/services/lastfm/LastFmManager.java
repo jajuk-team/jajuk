@@ -20,8 +20,8 @@
 
 package org.jajuk.services.lastfm;
 
-import ext.services.lastfm.Submitter;
-import ext.services.lastfm.SubmitterException;
+import ext.services.lastfm.LastFmService;
+import ext.services.lastfm.ScrobblerException;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -41,7 +41,7 @@ import org.jajuk.util.log.Log;
 
 /**
  * LastFM Manager, handle file launch events to submit informations among others
- * things
+ * things.
  * <p>
  * singleton
  * </p>
@@ -49,6 +49,9 @@ import org.jajuk.util.log.Log;
 public final class LastFmManager implements Observer, Const {
   /** Self instance */
   private static LastFmManager self;
+
+  /** Lastfm service */
+  private LastFmService service;
 
   private LastFmManager() {
     // Register on the list for subject we are interested in
@@ -64,13 +67,14 @@ public final class LastFmManager implements Observer, Const {
       Messages.showHideableWarningMessage(Messages.getString("LastFmManager.0"),
           CONF_NOT_SHOW_AGAIN_LASTFM_DISABLED);
     }
+    // Create the service
+    service = LastFmService.getInstance();
+
   }
 
   public static LastFmManager getInstance() {
     if (self == null) {
       self = new LastFmManager();
-      // populate configuration
-      self.configure();
     }
     return self;
   }
@@ -87,9 +91,9 @@ public final class LastFmManager implements Observer, Const {
   }
 
   public void configure() {
-    Submitter.setPassword(UtilString.rot13(Conf.getString(Const.CONF_LASTFM_PASSWORD)));
-    Submitter.setUser(Conf.getString(Const.CONF_LASTFM_USER));
-    Submitter.setProxy(DownloadManager.getProxy());
+    service.setPassword(UtilString.rot13(Conf.getString(Const.CONF_LASTFM_PASSWORD)));
+    service.setUser(Conf.getString(Const.CONF_LASTFM_USER));
+    service.setProxy(DownloadManager.getProxy());
   }
 
   /*
@@ -112,8 +116,8 @@ public final class LastFmManager implements Observer, Const {
                   - Conf.getInt(Const.CONF_OPTIONS_INTRO_BEGIN);
             }
             try {
-              Submitter.submitTrack(file.getTrack(), playedTime);
-            } catch (SubmitterException e) {
+              service.submit(file.getTrack(), playedTime);
+            } catch (ScrobblerException e) {
               Log.error(e);
             }
           }
@@ -122,4 +126,5 @@ public final class LastFmManager implements Observer, Const {
       }.start();
     }
   }
+
 }

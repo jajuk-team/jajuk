@@ -21,9 +21,9 @@
 package org.jajuk.ui.thumbnails;
 
 import ext.SwingWorker;
-import ext.services.lastfm.AudioScrobblerAlbum;
-import ext.services.lastfm.AudioScrobblerService;
-import ext.services.lastfm.AudioScrobblerTrack;
+import ext.services.lastfm.AlbumInfo;
+import ext.services.lastfm.LastFmService;
+import ext.services.lastfm.TrackInfo;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;
@@ -54,12 +54,12 @@ import org.jdesktop.swingx.border.DropShadowBorder;
  * Last.FM Album thumb represented as album cover + (optionally) others text
  * information display...
  */
-public class AudioScrobblerAlbumThumbnail extends AbstractThumbnail {
+public class LastFmAlbumThumbnail extends AbstractThumbnail {
 
   private static final long serialVersionUID = -804471264407148566L;
 
   /** Associated album */
-  private AudioScrobblerAlbum album;
+  private AlbumInfo album;
 
   /** Is this author known in collection ? */
   private final boolean bKnown;
@@ -68,7 +68,7 @@ public class AudioScrobblerAlbumThumbnail extends AbstractThumbnail {
    * @param album :
    *          associated album
    */
-  public AudioScrobblerAlbumThumbnail(AudioScrobblerAlbum album) {
+  public LastFmAlbumThumbnail(AlbumInfo album) {
     super(100);
     this.album = album;
     bKnown = (AlbumManager.getInstance().getAlbumByName(album.getTitle()) != null);
@@ -86,7 +86,7 @@ public class AudioScrobblerAlbumThumbnail extends AbstractThumbnail {
       public Object construct() {
         try {
           // Check if album image is null
-          String albumUrl = album.getCoverURL();
+          String albumUrl = album.getBigCoverURL();
           if (UtilString.isVoid(albumUrl)) {
             return null;
           }
@@ -183,7 +183,7 @@ public class AudioScrobblerAlbumThumbnail extends AbstractThumbnail {
   public String getDescription() {
     // populate album detail
     if (album.getTracks() == null) {
-      AudioScrobblerAlbum lAlbum = AudioScrobblerService.getInstance().getAlbum(
+      AlbumInfo lAlbum = LastFmService.getInstance().getAlbum(
           this.album.getArtist(), this.album.getTitle());
       if (lAlbum != null) {
         this.album = lAlbum;
@@ -208,7 +208,7 @@ public class AudioScrobblerAlbumThumbnail extends AbstractThumbnail {
     sOut += "</TD><TD>";
     // Show each track detail if available
     if (album.getTracks() != null) {
-      for (AudioScrobblerTrack track : album.getTracks()) {
+      for (TrackInfo track : album.getTracks()) {
         sOut += "<b>" + "<a href='file://" + Const.XML_URL + '?' + track.getUrl() + "'>"
             + track.getTitle() + "</a></b><br>";
       }

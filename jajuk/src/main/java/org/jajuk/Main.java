@@ -388,10 +388,11 @@ public final class Main {
         Log.warn("Could not cretae directory structure " + fCache.toString());
       }
     } else {
-      // Empty cache
+      // Empty cache if age > CACHE_MAX_AGE
       final File[] cacheFiles = fCache.listFiles();
       for (final File element : cacheFiles) {
-        if (element.isFile() && !element.delete()) {
+        long fileAge = System.currentTimeMillis() - element.lastModified();
+        if (element.isFile() && fileAge > Const.CACHE_MAX_AGE && !element.delete()) {
           Log.warn("Could not delete file " + element.toString());
         }
       }

@@ -24,8 +24,7 @@
            <jar href='jajuk.jar' version='VERSION_REPLACED_BY_ANT'/> 
    		<extension name='Animation' href='animation.jnlp' />
         	<extension name='BasicPlayer' href='basic_player.jnlp'/>
-        	<extension name='CommonsCodec' href='commons_codec.jnlp'/>
-        	<extension name='CommonsLogging' href='commons_logging.jnlp'/>
+        	<extension name='ApacheCommons' href='apache_commons.jnlp'/>
         	<extension name='tags' href='tags.jnlp'/>
         	<extension name='Jfreechart' href='jfreechart.jnlp'/>
         	<extension name='JCommon' href='jcommon.jnlp'/>
@@ -35,12 +34,12 @@
         	<extension name='Swingx' href='swingx.jnlp'/>
         	<extension name='LayoutManager' href='layout.jnlp'/>
         	<extension name='EntaggedFreedb' href='entagged_freedb.jnlp'/>
-        	<extension name='CommonsCollections' href='commons_collections.jnlp'/>
         	<extension name='VLDocking' href='vldocking.jnlp'/>
         	<extension name='JIntellitype' href='jintellitype.jnlp'/>
         	<extension name='Cobra' href='cobra.jnlp'/>
         	<extension name='Jna' href='jna.jnlp'/>
         	<extension name='dbus' href='dbus.jnlp'/>
+        	<extension name='xml' href='xml.jnlp'/>
        </resources>
        <resources os='Windows'>
       	<nativelib href='windows/jintellitype-native.jar' version='VERSION_REPLACED_BY_ANT'/>
