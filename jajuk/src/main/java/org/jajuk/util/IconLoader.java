@@ -182,7 +182,7 @@ final public class IconLoader {
     }
 
     else if (icon == JajukIcons.NEXT) {
-      out = new ImageIcon(UtilSystem.getResource("icons/16x16/next_16x16.png"));
+      out = new ImageIcon(UtilSystem.getResource("icons/16x16/player_next_16x16.png"));
     }
 
     else if (icon == JajukIcons.SAVE_AS) {
@@ -190,23 +190,23 @@ final public class IconLoader {
     }
 
     else if (icon == JajukIcons.PREVIOUS) {
-      out = new ImageIcon(UtilSystem.getResource("icons/16x16/previous_16x16.png"));
+      out = new ImageIcon(UtilSystem.getResource("icons/16x16/player_previous_16x16.png"));
     }
 
     else if (icon == JajukIcons.PLAYER_PREVIOUS) {
-      out = new ImageIcon(UtilSystem.getResource("icons/32x32/previous_32x32.png"));
+      out = new ImageIcon(UtilSystem.getResource("icons/32x32/player_previous_32x32.png"));
     }
 
     else if (icon == JajukIcons.PLAYER_PREVIOUS_BIG) {
-      out = new ImageIcon(UtilSystem.getResource("icons/64x64/previous_64x64.png"));
+      out = new ImageIcon(UtilSystem.getResource("icons/64x64/player_previous_64x64.png"));
     }
 
     else if (icon == JajukIcons.PLAYER_NEXT) {
-      out = new ImageIcon(UtilSystem.getResource("icons/32x32/next_32x32.png"));
+      out = new ImageIcon(UtilSystem.getResource("icons/32x32/player_next_32x32.png"));
     }
 
     else if (icon == JajukIcons.PLAYER_NEXT_BIG) {
-      out = new ImageIcon(UtilSystem.getResource("icons/64x64/next_64x64.png"));
+      out = new ImageIcon(UtilSystem.getResource("icons/64x64/player_next_64x64.png"));
     }
 
     else if (icon == JajukIcons.INC_RATING) {
