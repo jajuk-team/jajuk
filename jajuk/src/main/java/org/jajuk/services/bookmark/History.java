@@ -34,6 +34,7 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.Vector;
 
+import javax.swing.SwingUtilities;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
@@ -43,7 +44,7 @@ import org.jajuk.base.FileManager;
 import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
-import org.jajuk.events.Observer;
+import org.jajuk.events.HighPriorityObserver;
 import org.jajuk.services.core.SessionService;
 import org.jajuk.ui.widgets.InformationJPanel;
 import org.jajuk.util.Conf;
@@ -59,9 +60,12 @@ import org.xml.sax.SAXParseException;
 import org.xml.sax.helpers.DefaultHandler;
 
 /**
- * Stores all files user read
+ * Stores all files user read History is used as a model for some Swing
+ * components, so any changes on the model should be done in the EDT see
+ * http://java.sun.com/javase/6/docs/api/javax/swing/package-summary.html#threading
+ * 
  */
-public final class History extends DefaultHandler implements ErrorHandler, Observer {
+public final class History extends DefaultHandler implements ErrorHandler, HighPriorityObserver {
   /** Self instance */
   private static History history;
 
@@ -151,7 +155,11 @@ public final class History extends DefaultHandler implements ErrorHandler, Obser
 
   /** Clear history */
   public void clear() {
-    vHistory.clear();
+    SwingUtilities.invokeLater(new Runnable() {
+      public void run() {
+        vHistory.clear();
+      }
+    });
   }
 
   /**
@@ -159,13 +167,17 @@ public final class History extends DefaultHandler implements ErrorHandler, Obser
    * 
    */
   public void cleanup() {
-    Iterator<HistoryItem> it = vHistory.iterator();
-    while (it.hasNext()) {
-      HistoryItem hi = it.next();
-      if (UtilString.isVoid(hi.toString())) {
-        it.remove();
+    SwingUtilities.invokeLater(new Runnable() {
+      public void run() {
+        Iterator<HistoryItem> it = vHistory.iterator();
+        while (it.hasNext()) {
+          HistoryItem hi = it.next();
+          if (FileManager.getInstance().getFileByID(hi.getFileId()) == null) {
+            it.remove();
+          }
+        }
       }
-    }
+    });
   }
 
   /**
@@ -174,38 +186,46 @@ public final class History extends DefaultHandler implements ErrorHandler, Obser
    * @param sIDOld
    * @param sIDNew
    */
-  public void changeID(String sIDOld, String sIDNew) {
-    for (int i = 0; i < vHistory.size(); i++) {
-      HistoryItem hi = vHistory.get(i);
-      if (hi.getFileId().equals(sIDOld)) {
-        vHistory.remove(i);
-        vHistory.add(i, new HistoryItem(sIDNew, hi.getDate()));
+  public void changeID(final String sIDOld, final String sIDNew) {
+    SwingUtilities.invokeLater(new Runnable() {
+      public void run() {
+        for (int i = 0; i < vHistory.size(); i++) {
+          HistoryItem hi = vHistory.get(i);
+          if (hi.getFileId().equals(sIDOld)) {
+            vHistory.remove(i);
+            vHistory.add(i, new HistoryItem(sIDNew, hi.getDate()));
+          }
+        }
       }
-    }
+    });
   }
 
   /** Clear history for all history items before iDays days */
-  public void clear(int iDays) {
-    // Begins by clearing deleted files
-    Iterator<HistoryItem> it = vHistory.iterator();
-    while (it.hasNext()) {
-      HistoryItem hi = it.next();
-      // TODO: toString() never returns null, so what is the intent here??
-      if (hi.toString() == null) {
-        it.remove();
+  public void clear(final int iDays) {
+    SwingUtilities.invokeLater(new Runnable() {
+      public void run() {
+
+        // Begins by clearing deleted files
+        Iterator<HistoryItem> it = vHistory.iterator();
+        while (it.hasNext()) {
+          HistoryItem hi = it.next();
+          if (FileManager.getInstance().getFileByID(hi.getFileId()) == null) {
+            it.remove();
+          }
+        }
+        // Follow day limits
+        if (iDays == -1) { // infinite history
+          return;
+        }
+        it = vHistory.iterator();
+        while (it.hasNext()) {
+          HistoryItem hi = it.next();
+          if (hi.getDate() < (System.currentTimeMillis() - (((long) iDays) * Const.MILLISECONDS_IN_A_DAY))) {
+            it.remove();
+          }
+        }
       }
-    }
-    // Follow day limits
-    if (iDays == -1) { // infinite history
-      return;
-    }
-    it = vHistory.iterator();
-    while (it.hasNext()) {
-      HistoryItem hi = it.next();
-      if (hi.getDate() < (System.currentTimeMillis() - (((long) iDays) * Const.MILLISECONDS_IN_A_DAY))) {
-        it.remove();
-      }
-    }
+    });
   }
 
   /**
@@ -217,8 +237,8 @@ public final class History extends DefaultHandler implements ErrorHandler, Obser
     if (lDateStart == 0) {
       lDateStart = System.currentTimeMillis();
     }
-    BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(SessionService
-        .getConfFileByPath(Const.FILE_HISTORY)), "UTF-8"));
+    BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(
+        SessionService.getConfFileByPath(Const.FILE_HISTORY)), "UTF-8"));
     try {
       bw.write("<?xml version='1.0' encoding='UTF-8'?>\n");
       bw.write("<history JAJUK_VERSION='" + Const.JAJUK_VERSION + "' begin_date='"
@@ -393,34 +413,41 @@ public final class History extends DefaultHandler implements ErrorHandler, Obser
    * 
    * @see org.jajuk.ui.Observer#update(java.lang.String)
    */
-  public void update(JajukEvent event) {
-    JajukEvents subject = event.getSubject();
-    try {
-      if (JajukEvents.FILE_LAUNCHED.equals(subject)) {
-        String sFileID = (String) ObservationManager.getDetail(event, Const.DETAIL_CURRENT_FILE_ID);
-        long lDate = ((Long) ObservationManager.getDetail(event, Const.DETAIL_CURRENT_DATE))
-            .longValue();
-        addItem(sFileID, lDate);
-      } else if (JajukEvents.DEVICE_REFRESH.equals(subject)) {
-        cleanup();
-      } else if (JajukEvents.CLEAR_HISTORY.equals(subject)) {
-        clear();
-        InformationJPanel.getInstance().setMessage(Messages.getString("ParameterView.251"),
-            InformationJPanel.INFORMATIVE);
-      } else if (JajukEvents.LANGUAGE_CHANGED.equals(subject)) {
-        // reset formatter
-        formatter = new SimpleDateFormat(Messages.getString("HistoryItem.0"), Locale.getDefault());
-      } else if (JajukEvents.FILE_NAME_CHANGED.equals(subject)) {
-        Properties properties = event.getDetails();
-        org.jajuk.base.File fileOld = (org.jajuk.base.File) properties.get(Const.DETAIL_OLD);
-        org.jajuk.base.File fNew = (org.jajuk.base.File) properties.get(Const.DETAIL_NEW);
-        // change id in history
-        changeID(fileOld.getID(), fNew.getID());
+  public void update(final JajukEvent event) {
+    SwingUtilities.invokeLater(new Runnable() {
+      public void run() {
+        JajukEvents subject = event.getSubject();
+        try {
+          if (JajukEvents.FILE_LAUNCHED.equals(subject)) {
+            String sFileID = (String) ObservationManager.getDetail(event,
+                Const.DETAIL_CURRENT_FILE_ID);
+            long lDate = ((Long) ObservationManager.getDetail(event, Const.DETAIL_CURRENT_DATE))
+                .longValue();
+            addItem(sFileID, lDate);
+          } else if (JajukEvents.DEVICE_REFRESH.equals(subject)) {
+            cleanup();
+          } else if (JajukEvents.CLEAR_HISTORY.equals(subject)) {
+            clear();
+            InformationJPanel.getInstance().setMessage(Messages.getString("ParameterView.251"),
+                InformationJPanel.INFORMATIVE);
+          } else if (JajukEvents.LANGUAGE_CHANGED.equals(subject)) {
+            // reset formatter
+            formatter = new SimpleDateFormat(Messages.getString("HistoryItem.0"), Locale
+                .getDefault());
+          } else if (JajukEvents.FILE_NAME_CHANGED.equals(subject)) {
+            Properties properties = event.getDetails();
+            org.jajuk.base.File fileOld = (org.jajuk.base.File) properties.get(Const.DETAIL_OLD);
+            org.jajuk.base.File fNew = (org.jajuk.base.File) properties.get(Const.DETAIL_NEW);
+            // change id in history
+            changeID(fileOld.getID(), fNew.getID());
+          }
+        } catch (Exception e) {
+          Log.error(e);
+          return;
+        }
       }
-    } catch (Exception e) {
-      Log.error(e);
-      return;
-    }
+    });
+
   }
 
   /**
