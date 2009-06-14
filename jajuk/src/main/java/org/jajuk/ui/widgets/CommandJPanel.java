@@ -412,9 +412,7 @@ public class CommandJPanel extends JXPanel implements ActionListener, ChangeList
     eventSubjectSet.add(JajukEvents.CLEAR_HISTORY);
     eventSubjectSet.add(JajukEvents.VOLUME_CHANGED);
     eventSubjectSet.add(JajukEvents.DJS_CHANGE);
-    eventSubjectSet.add(JajukEvents.AMBIENCES_CHANGE);
     eventSubjectSet.add(JajukEvents.WEBRADIOS_CHANGE);
-    eventSubjectSet.add(JajukEvents.AMBIENCES_SELECTION_CHANGE);
     eventSubjectSet.add(JajukEvents.WEBRADIO_LAUNCHED);
     return eventSubjectSet;
   }
