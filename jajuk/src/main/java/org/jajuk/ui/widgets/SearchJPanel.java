@@ -65,6 +65,7 @@ import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
+import org.jajuk.util.UtilFeatures;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 import org.jdesktop.swingx.JXPanel;
@@ -266,10 +267,22 @@ public final class SearchJPanel extends JXPanel implements Observer, ActionListe
     add(ambiencesCombo, "left,gap left 16,growx 20,width 100::");
     add(jcbHistory, "grow,center,growx 50");
     add(sbSearch, "right,grow,growx 30,width 100::");
+
+    // register to player events
+    ObservationManager.register(this);
+    
+    // Update initial status
+    UtilFeatures.updateStatus(this);
   }
 
   public Set<JajukEvents> getRegistrationKeys() {
     Set<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
+    eventSubjectSet.add(JajukEvents.PLAYER_STOP);
+    eventSubjectSet.add(JajukEvents.ZERO);
+    eventSubjectSet.add(JajukEvents.FILE_LAUNCHED);
+    eventSubjectSet.add(JajukEvents.AMBIENCES_CHANGE);
+    eventSubjectSet.add(JajukEvents.AMBIENCES_SELECTION_CHANGE);
+    eventSubjectSet.add(JajukEvents.CLEAR_HISTORY);
     return eventSubjectSet;
   }
 
@@ -365,6 +378,7 @@ public final class SearchJPanel extends JXPanel implements Observer, ActionListe
           jcbHistory.removeActionListener(SearchJPanel.this);
           if (jcbHistory.getItemCount() > 0) {
             jcbHistory.setSelectedIndex(0);
+            jcbHistory.repaint();
           }
           jcbHistory.addActionListener(SearchJPanel.this);
         } else if (JajukEvents.CLEAR_HISTORY.equals(event.getSubject())) {
