@@ -105,7 +105,7 @@ public class StartupService {
       if (fileToPlay != null) {
         if (!fileToPlay.isReady()) {
           // file exists but is not mounted, just notify the error
-          // without anoying dialog at each startup try to mount
+          // without annoying dialog at each startup try to mount
           // device
           Log.debug("Startup file located on an unmounted device" + ", try to mount it");
           try {
