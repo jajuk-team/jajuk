@@ -803,6 +803,9 @@ public interface Const {
   /** Show Catalog popups */
   String CONF_SHOW_POPUPS = "jajuk.show_popups";
 
+  /** Show systray */
+  String CONF_SHOW_SYSTRAY = "jajuk.show_systray";
+
   /** Enable Last.FM information queries */
   String CONF_LASTFM_INFO = "jajuk.lastfm_information";
 
@@ -823,9 +826,6 @@ public interface Const {
 
   /** Show duplicate playlists in playlist view */
   String CONF_SHOW_DUPLICATE_PLAYLISTS = "jajuk.ui.show_duplicate_playlists";
-
-  /** Force hiding the tray */
-  String CONF_FORCE_TRAY_SHUTDOWN = "jajuk.force_tray_shutdown";
 
   /** Smart mode selected in slimbar */
   String CONF_SLIMBAR_SMART_MODE = "jajuk.ui.slimbar.smart_mode";

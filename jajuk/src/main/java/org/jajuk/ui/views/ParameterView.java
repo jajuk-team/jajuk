@@ -21,6 +21,7 @@
 package org.jajuk.ui.views;
 
 import java.awt.Component;
+import java.awt.SystemTray;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -280,6 +281,8 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
   private JButton jbCatalogRefresh;
 
   private JCheckBox jcbShowPopups;
+  
+  private JCheckBox jcbShowSystray;
 
   private JPanel jpUI;
 
@@ -583,7 +586,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
     Conf.setProperty(Const.CONF_ENV_VARIABLES, jtfEnvVariables.getText());
     Conf.setProperty(Const.CONF_EXPLORER_PATH, jtfExplorerPath.getText());
 
-    // UI
+    // GUI
     Conf.setProperty(Const.CONF_CATALOG_PAGE_SIZE, Integer.toString(jsCatalogPages.getValue()));
     Conf.setProperty(Const.CONF_SHOW_POPUPS, Boolean.toString(jcbShowPopups.isSelected()));
     final int oldFont = Conf.getInt(Const.CONF_FONTS_SIZE);
@@ -593,6 +596,13 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
     }
     Conf.setProperty(Const.CONF_FONTS_SIZE, Integer.toString(jsFonts.getValue()));
 
+    //Message if show systray is changed
+    final boolean bOldShowSystray = Conf.getBoolean(Const.CONF_SHOW_SYSTRAY);
+    if (bOldShowSystray != jcbShowSystray.isSelected()){
+      someOptionsAppliedAtNextStartup = true;
+    }
+    Conf.setProperty(Const.CONF_SHOW_SYSTRAY, Boolean.toString(jcbShowSystray.isSelected()));
+    
     final int oldPerspectiveSize = Conf.getInt(Const.CONF_PERSPECTIVE_ICONS_SIZE);
     // If we perspective size changed and no font message have been already
     // displayed, display a message
@@ -1392,6 +1402,12 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
     });
     jcbShowPopups = new JCheckBox(Messages.getString("ParameterView.228"));
     jcbShowPopups.addActionListener(alUI);
+    
+    jcbShowSystray = new JCheckBox(Messages.getString("ParameterView.271"));
+    //Disable this option if the tray is not supported by the platform
+    jcbShowSystray.setEnabled(SystemTray.isSupported());
+    jcbShowSystray.setToolTipText(Messages.getString("ParameterView.272"));
+    
     JLabel jlPerspectiveSize = new JLabel(Messages.getString("ParameterView.246"));
     jsPerspectiveSize = new JSlider(16, 45, Conf.getInt(Const.CONF_PERSPECTIVE_ICONS_SIZE));
     jsPerspectiveSize.setSnapToTicks(true);
@@ -1446,6 +1462,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
     // Add items
     jpUI = new JPanel(new MigLayout("insets 10,gapx 10,gapy 15"));
     jpUI.add(jcbShowPopups, "wrap");
+    jpUI.add(jcbShowSystray, "wrap");
     jpUI.add(jcbShowBaloon, "wrap");
     jpUI.add(jlFonts);
     jpUI.add(jsFonts, "wrap,grow");
@@ -1666,6 +1683,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
     // UI
     jcbShowBaloon.setSelected(Conf.getBoolean(Const.CONF_UI_SHOW_BALLOON));
     jcbShowPopups.setSelected(Conf.getBoolean(Const.CONF_SHOW_POPUPS));
+    jcbShowSystray.setSelected(Conf.getBoolean(Const.CONF_SHOW_SYSTRAY));
     scbLAF.removeActionListener(this);
     scbLAF.setSelectedItem(Conf.getString(Const.CONF_OPTIONS_LNF));
     scbLAF.addActionListener(this);

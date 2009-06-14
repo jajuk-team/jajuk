@@ -295,6 +295,7 @@ public final class Conf implements Const {
     defaults.put(CONF_SHOW_TIP_ON_STARTUP, TRUE);
     defaults.put(CONF_CATALOG_PAGE_SIZE, "100");
     defaults.put(CONF_SHOW_POPUPS, FALSE);
+    defaults.put(CONF_SHOW_SYSTRAY, TRUE);
     defaults.put(CONF_FONTS_SIZE, "12");
     defaults.put(CONF_MPLAYER_PATH_FORCED, "");
     defaults.put(CONF_INC_RATING, "5");
@@ -308,7 +309,6 @@ public final class Conf implements Const {
     defaults.put(CONF_PERSPECTIVE_ICONS_SIZE, "32");
     defaults.put(CONF_FRAME_TITLE_PATTERN, '~' + PATTERN_TRACKNAME + " (" + PATTERN_AUTHOR + ")~");
     defaults.put(CONF_SHOW_DUPLICATE_PLAYLISTS, FALSE);
-    defaults.put(CONF_FORCE_TRAY_SHUTDOWN, FALSE);
     defaults.put(CONF_FORMAT_TIME_ELAPSED, "0");
     // Display slimbar at the lower part of the screen to fix #768 : under MAC,
     // it overlays the menu bar

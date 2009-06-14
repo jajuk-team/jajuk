@@ -736,8 +736,7 @@ public final class Main {
   /** Launch tray */
   private static void launchTray() {
     // Skip the tray launching if user forced it to hide
-    if (Conf.getBoolean(Const.CONF_FORCE_TRAY_SHUTDOWN)) {
-      Log.debug("Tray shutdown forced");
+    if (!Conf.getBoolean(Const.CONF_SHOW_SYSTRAY)) {
       return;
     }
     // Now check if try is supported on this platform
