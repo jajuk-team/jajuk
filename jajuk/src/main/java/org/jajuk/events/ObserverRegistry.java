@@ -60,13 +60,13 @@ class ObserverRegistry {
       canals.put(event, numberOfExecutions + 1);
     }
     JajukEvents subject = event.getSubject();
-    List<Observer> alComponents = hEventComponents.get(subject);
-    if (alComponents == null) {
+    List<Observer> observers = hEventComponents.get(subject);
+    if (observers == null) {
       return;
     }
     // Iterate on a cloned list to avoid concurrent exceptions
-    alComponents = (List<Observer>) ((ArrayList<Observer>) alComponents).clone();
-    Iterator<Observer> it = alComponents.iterator();
+    observers = (List<Observer>) ((ArrayList<Observer>) observers).clone();
+    Iterator<Observer> it = observers.iterator();
     while (it.hasNext()) {
       Observer obs = null;
       obs = it.next();
@@ -85,23 +85,27 @@ class ObserverRegistry {
     }
   }
 
-  synchronized boolean register(JajukEvents subject, Observer observer) {
-    List<Observer> alComponents = hEventComponents.get(subject);
-    if (alComponents == null) {
-      alComponents = new ArrayList<Observer>(1);
-      hEventComponents.put(subject, alComponents);
+  synchronized void register(JajukEvents subject, Observer observer) {
+    List<Observer> observers = hEventComponents.get(subject);
+    if (observers == null) {
+      observers = new ArrayList<Observer>(1);
+      hEventComponents.put(subject, observers);
     }
-    if (!alComponents.contains(observer)) {
-      return alComponents.add(observer);
+    // Add the observer, if it is a high priority observer, put it first in
+    // queue
+    if (!observers.contains(observer)) {
+      if (observer instanceof HighPriorityObserver) {
+        observers.add(0, observer);
+      } else {
+        observers.add(observer);
+      }
     }
-    return false;
   }
 
-  synchronized boolean unregister(JajukEvents subject, Observer observer) {
+  synchronized void unregister(JajukEvents subject, Observer observer) {
     List<Observer> alComponents = hEventComponents.get(subject);
     if (alComponents != null) {
-      return alComponents.remove(observer);
+      alComponents.remove(observer);
     }
-    return false;
   }
 }

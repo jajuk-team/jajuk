@@ -87,8 +87,8 @@ public final class ObservationManager {
    * @param jc
    *          component to deregister
    */
-  public static boolean unregister(JajukEvents subject, Observer observer) {
-    return observerRegistry.unregister(subject, observer);
+  public static void unregister(JajukEvents subject, Observer observer) {
+    observerRegistry.unregister(subject, observer);
   }
 
   /**
