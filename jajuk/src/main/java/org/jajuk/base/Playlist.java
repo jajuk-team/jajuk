@@ -777,8 +777,7 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
           final java.io.File fDir = jfc.getSelectedFile();
           final Date curDate = new Date();
           // Do not use ':' character in destination directory, it's
-          // forbidden
-          // under Windows
+          // forbidden under Windows
           final SimpleDateFormat stamp = new SimpleDateFormat("yyyyMMdd-HHmm", Locale.getDefault());
           final String dirName = "Party-" + stamp.format(curDate);
           final java.io.File destDir = new java.io.File(fDir.getAbsolutePath() + "/" + dirName);
