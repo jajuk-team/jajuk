@@ -67,8 +67,8 @@ public class LastFmService {
    * DO NOT USE THESE KEYS FOR OTHER APPLICATIONS THAN Jajuk!
    */
   private static final String API_KEY = "711591ss6q695ps349o6681pr1oq1467";
-  private static final String CLIENT_ID = "tst";//"jajuk";
-  private static final String CLIENT_VERSION = Const.JAJUK_VERSION;
+  private static final String CLIENT_ID = "jaj";
+  private static final String CLIENT_VERSION = "0.2"; //Assigned by Last.FM team
 
   private static final String ARTIST_WILDCARD = "(%ARTIST%)";
   private static final String LANGUAGE_PARAM = "?setlang=";
