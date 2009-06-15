@@ -112,6 +112,21 @@ import org.jvnet.substance.skin.SkinInfo;
 public class ParameterView extends ViewAdapter implements ActionListener, ItemListener,
     ChangeListener {
 
+  /**
+   * 
+   */
+  private static final String WRAP_GROW = "wrap,grow";
+
+  /**
+   * 
+   */
+  private static final String GROW_WRAP = "grow,wrap";
+
+  /**
+   * 
+   */
+  private static final String WRAP = "wrap";
+
   private static final long serialVersionUID = 1L;
 
   private JTabbedPane jtpMain;
@@ -676,11 +691,11 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
         final Writer bw = new BufferedWriter(new FileWriter(bootstrap));
         try {
           SessionService.getVersionWorkspace().store(bw, null);
+          bw.flush();
         } catch (IOException ioe) {
           Log.error(ioe);
           Messages.showErrorMessage(24, bootstrap.getAbsolutePath());
         } finally {
-          bw.flush();
           bw.close();
         }
         UtilGUI.stopWaiting();
@@ -835,8 +850,8 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
     JLabel jlHistory = new JLabel(Messages.getString("ParameterView.0"));
     jlHistory.setToolTipText(Messages.getString("ParameterView.2"));
     jpHistory.add(jlHistory);
-    jpHistory.add(jtfHistory, "wrap,grow");
-    jpHistory.add(jbClearHistory, "wrap");
+    jpHistory.add(jtfHistory, WRAP_GROW);
+    jpHistory.add(jbClearHistory, WRAP);
     jpHistory.add(jbResetRatings);
     jpHistory.add(jbResetPreferences);
 
@@ -896,15 +911,15 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
     bgStart.add(jrbBestof);
     bgStart.add(jrbNovelties);
     bgStart.add(jrbFile);
-    jpStart.add(new JLabel(Messages.getString("ParameterView.9")), "wrap");
-    jpStart.add(jrbNothing, "wrap");
-    jpStart.add(jrbLast, "wrap");
-    jpStart.add(jrbLastKeepPos, "wrap");
-    jpStart.add(jrbShuffle, "wrap");
-    jpStart.add(jrbBestof, "wrap");
-    jpStart.add(jrbNovelties, "wrap");
+    jpStart.add(new JLabel(Messages.getString("ParameterView.9")), WRAP);
+    jpStart.add(jrbNothing, WRAP);
+    jpStart.add(jrbLast, WRAP);
+    jpStart.add(jrbLastKeepPos, WRAP);
+    jpStart.add(jrbShuffle, WRAP);
+    jpStart.add(jrbBestof, WRAP);
+    jpStart.add(jrbNovelties, WRAP);
     jpStart.add(jrbFile);
-    jpStart.add(sbSearch, "grow,wrap");
+    jpStart.add(sbSearch, GROW_WRAP);
 
     // --Confirmations
     jpConfirmations = new JPanel(new MigLayout("insets 10,gapy 15"));
@@ -930,13 +945,13 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
     jcbBeforeRefactorFiles = new JCheckBox(Messages.getString("ParameterView.194"));
     jcbBeforeRefactorFiles.setToolTipText(Messages.getString("ParameterView.194"));
 
-    jpConfirmations.add(jcbBeforeDelete, "wrap");
-    jpConfirmations.add(jcbBeforeExit, "wrap");
-    jpConfirmations.add(jcbBeforeRemoveDevice, "wrap");
-    jpConfirmations.add(jcbBeforeDeleteCover, "wrap");
-    jpConfirmations.add(jcbBeforeClearingHistory, "wrap");
-    jpConfirmations.add(jcbBeforeResetingRatings, "wrap");
-    jpConfirmations.add(jcbBeforeRefactorFiles, "wrap");
+    jpConfirmations.add(jcbBeforeDelete, WRAP);
+    jpConfirmations.add(jcbBeforeExit, WRAP);
+    jpConfirmations.add(jcbBeforeRemoveDevice, WRAP);
+    jpConfirmations.add(jcbBeforeDeleteCover, WRAP);
+    jpConfirmations.add(jcbBeforeClearingHistory, WRAP);
+    jpConfirmations.add(jcbBeforeResetingRatings, WRAP);
+    jpConfirmations.add(jcbBeforeRefactorFiles, WRAP);
 
     // --- Modes ---
     // Intro
@@ -1062,17 +1077,17 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
     JPanel jpModes = new JPanel(new MigLayout("insets 10,gapy 15,gapx 10",
         "[][grow,200:300:300][fill]"));
     jpModes.add(new JLabel(Messages.getString("ParameterView.59")));
-    jpModes.add(introPosition, "grow,wrap");
+    jpModes.add(introPosition, GROW_WRAP);
     jpModes.add(jlIntroLength);
-    jpModes.add(introLength, "grow,wrap");
+    jpModes.add(introLength, GROW_WRAP);
     jpModes.add(jlCrossFadeDuration);
-    jpModes.add(crossFadeDuration, "grow,wrap");
+    jpModes.add(crossFadeDuration, GROW_WRAP);
     jpModes.add(jlBestofSize);
-    jpModes.add(jtfBestofSize, "grow,wrap");
+    jpModes.add(jtfBestofSize, GROW_WRAP);
     jpModes.add(jlNoveltiesAge);
-    jpModes.add(jtfNoveltiesAge, "grow,wrap");
+    jpModes.add(jtfNoveltiesAge, GROW_WRAP);
     jpModes.add(jlVisiblePlanned);
-    jpModes.add(jtfVisiblePlanned, "grow,wrap");
+    jpModes.add(jtfVisiblePlanned, GROW_WRAP);
     jpModes.add(jcbUseVolnorm);
 
     // --Options
@@ -1218,24 +1233,24 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
 
     jpAdvanced = new JPanel(new MigLayout("insets 10,gapy 15, gapx 10", "[][grow][fill]"));
     jpAdvanced.add(jcbBackup);
-    jpAdvanced.add(backupSize, "wrap,grow");
+    jpAdvanced.add(backupSize, WRAP_GROW);
     jpAdvanced.add(jlCollectionEncoding);
-    jpAdvanced.add(jcbCollectionEncoding, "wrap,grow");
+    jpAdvanced.add(jcbCollectionEncoding, WRAP_GROW);
     jpAdvanced.add(jlLogLevel);
-    jpAdvanced.add(scbLogLevel, "wrap,grow");
+    jpAdvanced.add(scbLogLevel, WRAP_GROW);
     jpAdvanced.add(jlMPlayerPath);
-    jpAdvanced.add(jtfMPlayerPath, "wrap,grow");
+    jpAdvanced.add(jtfMPlayerPath, WRAP_GROW);
     jpAdvanced.add(jlMPlayerArgs);
-    jpAdvanced.add(jtfMPlayerArgs, "wrap,grow");
+    jpAdvanced.add(jtfMPlayerArgs, WRAP_GROW);
     jpAdvanced.add(jlEnvVariables);
-    jpAdvanced.add(jtfEnvVariables, "wrap,grow");
+    jpAdvanced.add(jtfEnvVariables, WRAP_GROW);
     jpAdvanced.add(jlJajukWorkspace);
-    jpAdvanced.add(psJajukWorkspace, "wrap,grow");
+    jpAdvanced.add(psJajukWorkspace, WRAP_GROW);
     jpAdvanced.add(jlExplorer);
-    jpAdvanced.add(jtfExplorerPath, "grow,wrap");
-    jpAdvanced.add(jcbRegexp, "wrap");
-    jpAdvanced.add(jcbCheckUpdates, "wrap");
-    jpAdvanced.add(jcbForceFileDate, "wrap");
+    jpAdvanced.add(jtfExplorerPath, GROW_WRAP);
+    jpAdvanced.add(jcbRegexp, WRAP);
+    jpAdvanced.add(jcbCheckUpdates, WRAP);
+    jpAdvanced.add(jcbForceFileDate, WRAP);
 
     // - Network
     bgProxy = new ButtonGroup();
@@ -1309,20 +1324,20 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
     // Add items
     JPanel jpProxy = new JPanel(new MigLayout("insets 10,gapy 15, gapx 10", "[][grow,100:300:300]"));
     jpProxy.setBorder(BorderFactory.createTitledBorder(Messages.getString("ParameterView.268")));
-    jpProxy.add(jcbProxyNone, "wrap");
-    jpProxy.add(jcbProxyHttp, "wrap");
-    jpProxy.add(jcbProxySocks, "wrap");
+    jpProxy.add(jcbProxyNone, WRAP);
+    jpProxy.add(jcbProxyHttp, WRAP);
+    jpProxy.add(jcbProxySocks, WRAP);
     jpProxy.add(jlProxyHostname);
-    jpProxy.add(jtfProxyHostname, "wrap,grow");
+    jpProxy.add(jtfProxyHostname, WRAP_GROW);
     jpProxy.add(jlProxyPort);
-    jpProxy.add(jtfProxyPort, "wrap,grow");
+    jpProxy.add(jtfProxyPort, WRAP_GROW);
     jpProxy.add(jlProxyLogin);
-    jpProxy.add(jtfProxyLogin, "wrap,grow");
+    jpProxy.add(jtfProxyLogin, WRAP_GROW);
     jpProxy.add(jlProxyPwd);
-    jpProxy.add(jtfProxyPwd, "wrap,grow");
+    jpProxy.add(jtfProxyPwd, WRAP_GROW);
 
     jpNetwork = new JPanel(new MigLayout("insets 10,gapy 15, gapx 10", "[grow]"));
-    jpNetwork.add(jcbNoneInternetAccess, "wrap");
+    jpNetwork.add(jcbNoneInternetAccess, WRAP);
     jpNetwork.add(jlConnectionTO, "split 2");
     jpNetwork.add(connectionTO, "wrap,grow,width 200!");
     jpNetwork.add(jpProxy, "span");
@@ -1341,8 +1356,8 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
     jcbEnableLastFMInformation.setToolTipText(Messages.getString("ParameterView.241"));
     // Add items
     jpLastFM = new JPanel(new MigLayout("insets 10,gapy 15,gapx 10", "[grow]"));
-    jpLastFM.add(jcbEnableLastFMInformation, "wrap");
-    jpLastFM.add(jcbAudioScrobbler, "wrap");
+    jpLastFM.add(jcbEnableLastFMInformation, WRAP);
+    jpLastFM.add(jcbAudioScrobbler, WRAP);
     jpLastFM.add(jlASUser);
     jpLastFM.add(jtfASUser, "wrap,grow,width 100:300:300");
     jpLastFM.add(jlASPassword);
@@ -1377,13 +1392,13 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
 
     // Add items
     jpCovers = new JPanel(new MigLayout("insets 10,gapy 15,gapx 10"));
-    jpCovers.add(jcbShuffleCover, "wrap");
-    jpCovers.add(jcbAutoCover, "wrap");
-    jpCovers.add(jcbSaveExplorerFriendly, "wrap");
+    jpCovers.add(jcbShuffleCover, WRAP);
+    jpCovers.add(jcbAutoCover, WRAP);
+    jpCovers.add(jcbSaveExplorerFriendly, WRAP);
     jpCovers.add(jlCoverSize);
-    jpCovers.add(jcbCoverSize, "wrap,grow");
+    jpCovers.add(jcbCoverSize, WRAP_GROW);
     jpCovers.add(jlDefaultCoverSearchPattern);
-    jpCovers.add(jtfDefaultCoverSearchPattern, "wrap,grow");
+    jpCovers.add(jtfDefaultCoverSearchPattern, WRAP_GROW);
 
     // -- User interface --
     // Catalog view
@@ -1461,16 +1476,16 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
 
     // Add items
     jpUI = new JPanel(new MigLayout("insets 10,gapx 10,gapy 15"));
-    jpUI.add(jcbShowPopups, "wrap");
-    jpUI.add(jcbShowSystray, "wrap");
-    jpUI.add(jcbShowBaloon, "wrap");
+    jpUI.add(jcbShowPopups, WRAP);
+    jpUI.add(jcbShowSystray, WRAP);
+    jpUI.add(jcbShowBaloon, WRAP);
     jpUI.add(jlFonts);
-    jpUI.add(jsFonts, "wrap,grow");
+    jpUI.add(jsFonts, WRAP_GROW);
     jpUI.add(jlLAF);
-    jpUI.add(scbLAF, "wrap,grow");
+    jpUI.add(scbLAF, WRAP_GROW);
     jpUI.add(jlPerspectiveSize);
-    jpUI.add(jsPerspectiveSize, "wrap,grow");
-    jpUI.add(toggle, "wrap,grow");
+    jpUI.add(jsPerspectiveSize, WRAP_GROW);
+    jpUI.add(toggle, WRAP_GROW);
     jpUI.add(catalogView, "wrap,grow,span");
 
     // --OK/cancel panel
