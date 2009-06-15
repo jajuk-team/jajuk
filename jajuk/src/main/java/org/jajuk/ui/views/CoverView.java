@@ -219,10 +219,10 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
     jpControl.setBorder(BorderFactory.createEtchedBorder());
 
     final JToolBar jtb = new JajukJToolbar();
-    jbPrevious = new JajukButton(IconLoader.getIcon(JajukIcons.PREVIOUS));
+    jbPrevious = new JajukButton(IconLoader.getIcon(JajukIcons.PLAYER_PREVIOUS_SMALL));
     jbPrevious.addActionListener(this);
     jbPrevious.setToolTipText(Messages.getString("CoverView.4"));
-    jbNext = new JajukButton(IconLoader.getIcon(JajukIcons.NEXT));
+    jbNext = new JajukButton(IconLoader.getIcon(JajukIcons.PLAYER_NEXT_SMALL));
     jbNext.addActionListener(this);
     jbNext.setToolTipText(Messages.getString("CoverView.5"));
     jbDelete = new JajukButton(IconLoader.getIcon(JajukIcons.DELETE));

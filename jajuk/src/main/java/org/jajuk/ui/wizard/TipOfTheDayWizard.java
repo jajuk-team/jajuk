@@ -71,7 +71,7 @@ public class TipOfTheDayWizard extends JFrame {
     tipArea.setEditable(false);
 
     lCounter = new JLabel("999/999");
-    JButton bNext = new JButton(IconLoader.getIcon(JajukIcons.NEXT));
+    JButton bNext = new JButton(IconLoader.getIcon(JajukIcons.PLAYER_NEXT_SMALL));
     bNext.setMargin(new Insets(1, 1, 1, 1));
     bNext.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent actionevent) {
@@ -80,7 +80,7 @@ public class TipOfTheDayWizard extends JFrame {
       }
     });
 
-    JButton bPrevious = new JButton(IconLoader.getIcon(JajukIcons.PREVIOUS));
+    JButton bPrevious = new JButton(IconLoader.getIcon(JajukIcons.PLAYER_PREVIOUS_SMALL));
     bPrevious.setMargin(new Insets(1, 1, 1, 1));
     bPrevious.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent actionevent) {

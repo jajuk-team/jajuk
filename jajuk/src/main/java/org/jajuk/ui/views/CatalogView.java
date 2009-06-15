@@ -235,10 +235,10 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
     JToolBar jtbPage = new JajukJToolbar();
     jtbPage.setFloatable(false);
     jtbPage.setRollover(true);
-    jbPrev = new JButton(IconLoader.getIcon(JajukIcons.PREVIOUS));
+    jbPrev = new JButton(IconLoader.getIcon(JajukIcons.PLAYER_PREVIOUS_SMALL));
     jbPrev.setToolTipText(Messages.getString("CatalogView.12"));
     jbPrev.addActionListener(this);
-    jbNext = new JButton(IconLoader.getIcon(JajukIcons.NEXT));
+    jbNext = new JButton(IconLoader.getIcon(JajukIcons.PLAYER_NEXT_SMALL));
     jbNext.setToolTipText(Messages.getString("CatalogView.13"));
     jbNext.addActionListener(this);
     jcbPage = new SteppedComboBox();

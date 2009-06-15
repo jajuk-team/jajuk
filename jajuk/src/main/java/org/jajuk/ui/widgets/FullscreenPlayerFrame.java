@@ -120,7 +120,7 @@ public class FullscreenPlayerFrame extends JWindow {
     jbNext = new JajukButton(ActionManager.getAction(NEXT_TRACK));
     jbNext.setIcon(IconLoader.getIcon(JajukIcons.PLAYER_NEXT_BIG));
     jbPlayPause = new JajukButtonSetIconAdapter(ActionManager.getAction(PAUSE_RESUME_TRACK));
-    jbPlayPause.setIcon(IconLoader.getIcon(JajukIcons.PAUSE));
+    jbPlayPause.setIcon(IconLoader.getIcon(JajukIcons.PLAYER_PAUSE));
     jbStop = new JajukButton(ActionManager.getAction(STOP_TRACK));
     jbStop.setIcon(IconLoader.getIcon(JajukIcons.PLAYER_STOP_BIG));
     jtbPlay.add(jbPrevious);

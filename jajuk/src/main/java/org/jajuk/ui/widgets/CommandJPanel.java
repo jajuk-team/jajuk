@@ -75,6 +75,10 @@ import org.jajuk.ui.actions.JajukAction;
 import org.jajuk.ui.actions.JajukActions;
 import org.jajuk.ui.actions.MuteAction;
 import org.jajuk.ui.helpers.PlayerStateMediator;
+import org.jajuk.ui.substance.CircleButtonShaper;
+import org.jajuk.ui.substance.LeftConcaveButtonShaper;
+import org.jajuk.ui.substance.RightConcaveButtonShaper;
+import org.jajuk.ui.substance.RoundRectButtonShaper;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
@@ -83,6 +87,7 @@ import org.jajuk.util.Messages;
 import org.jajuk.util.UtilFeatures;
 import org.jajuk.util.log.Log;
 import org.jdesktop.swingx.JXPanel;
+import org.jvnet.substance.SubstanceLookAndFeel;
 
 /**
  * Command panel ( static view )
@@ -107,7 +112,7 @@ public class CommandJPanel extends JXPanel implements ActionListener, ChangeList
   private JajukToggleButton jbContinue;
 
   private JajukToggleButton jbIntro;
-  
+
   private JajukToggleButton jbKaraoke;
 
   private JToolBar jtbSpecial;
@@ -156,7 +161,7 @@ public class CommandJPanel extends JXPanel implements ActionListener, ChangeList
 
   private PreferenceToolbar evaltoobar;
 
-  private SizedButton jbMute;
+  private JajukButton jbMute;
 
   // variables declaration
   /** Repeat mode flag */
@@ -198,21 +203,15 @@ public class CommandJPanel extends JXPanel implements ActionListener, ChangeList
     // Instanciate the PlayerStateMediator to listen for player basic controls
     PlayerStateMediator.getInstance();
 
+    // Install keystrokes on invisible components
+    ActionUtil.installKeystrokes(CommandJPanel.this, ActionManager.getAction(NEXT_ALBUM),
+        ActionManager.getAction(PREVIOUS_ALBUM));
+
     // mute
-    jbMute = new SizedButton(ActionManager.getAction(MUTE_STATE), false) {
-      private static final long serialVersionUID = -1;
-
-      @Override
-      public int getW() {
-        return 28;
-      }
-
-      @Override
-      public int getH() {
-        return 24;
-      }
-    };
-    jbMute.setBorder(null);
+    jbMute = new JajukButton(ActionManager.getAction(MUTE_STATE));
+    jbMute.setText(null);
+    jbMute.putClientProperty(SubstanceLookAndFeel.BUTTON_SHAPER_PROPERTY,
+        new RoundRectButtonShaper());
 
     // Mode toolbar
     // we need an inner toolbar to apply size properly
@@ -265,7 +264,7 @@ public class CommandJPanel extends JXPanel implements ActionListener, ChangeList
     MuteAction.setVolumeIcon(iVolume);
     jpVolume.add(jbMute);
     jpVolume.add(jsVolume, "growx");
-    
+
     // Special functions toolbar
     jtbSpecial = new JajukJToolbar();
     ddbGlobalRandom = new DropDownButton(IconLoader.getIcon(JajukIcons.SHUFFLE_GLOBAL)) {
@@ -369,27 +368,36 @@ public class CommandJPanel extends JXPanel implements ActionListener, ChangeList
     jtbSpecial.add(jbBestof);
     jtbSpecial.add(jbNorm);
 
-    // Play toolbar
-    JToolBar jtbPlay = new JajukJToolbar();
-    ActionUtil.installKeystrokes(jtbPlay, ActionManager.getAction(NEXT_ALBUM), ActionManager
-        .getAction(PREVIOUS_ALBUM));
+    // Play buttons
     jbPrevious = new JajukButton(ActionManager.getAction(PREVIOUS_TRACK));
+    // Compute concavity of player icon
+    int concavity = IconLoader.getIcon(JajukIcons.PLAYER_PLAY).getIconHeight();
+    jbPrevious.putClientProperty(SubstanceLookAndFeel.BUTTON_SHAPER_PROPERTY,
+        new RightConcaveButtonShaper(concavity));
     jbNext = new JajukButton(ActionManager.getAction(NEXT_TRACK));
+    jbNext.putClientProperty(SubstanceLookAndFeel.BUTTON_SHAPER_PROPERTY,
+        new LeftConcaveButtonShaper(concavity));
     jbPlayPause = new JajukButton(ActionManager.getAction(PAUSE_RESUME_TRACK));
+    jbPlayPause.putClientProperty(SubstanceLookAndFeel.BUTTON_SHAPER_PROPERTY,
+        new CircleButtonShaper());
     jbStop = new JajukButton(ActionManager.getAction(STOP_TRACK));
-
-    jtbPlay.add(jbStop);
-    jtbPlay.add(jbPrevious);
-    jtbPlay.add(jbPlayPause);
-    jtbPlay.add(jbNext);
+    jbStop.putClientProperty(SubstanceLookAndFeel.BUTTON_SHAPER_PROPERTY,
+        new RoundRectButtonShaper());
 
     // Add items
-    setLayout(new MigLayout("insets 5,gapx 15", "[grow][grow][grow]"));
-    add(jtbWebRadio, "left,split 2");
-    add(jtbSpecial, "left");
-    add(jtbPlay, "center,split 2");
-    add(jpVolume, "center,grow,width 25::100");
-    add(jtbModes, "right,split 2,gap right 10");
+    setLayout(new MigLayout("insets 5", "[grow][grow][grow]"));
+
+    add(jtbWebRadio, "left,split 2,gapright 15");
+    add(jtbSpecial, "left,gapright 15");
+
+    add(jbStop, "center,split 6,width 35!,height 30,gapright 5!");
+    add(jbPrevious, "center,width 62!,height 30!,gapright 0");
+    add(jbPlayPause, "center,width 45!,height 45!,gapright 0");
+    add(jbNext, "center,width 62!,height 30!,gapright 3");
+    add(jbMute, "center,width 42!,height 30!,gapright 5");
+    add(jsVolume, "center,growx,width 25::100,gapright 15");
+
+    add(jtbModes, "right,split 2,gap right 10,gapright 5");
     add(evaltoobar, "right");
 
     // register to player events
@@ -655,7 +663,7 @@ public class CommandJPanel extends JXPanel implements ActionListener, ChangeList
   public void setIntroSelected(final boolean b) {
     this.jbIntro.setSelected(b);
   }
-  
+
   public void setKaraokeSelected(final boolean b) {
     this.jbKaraoke.setSelected(b);
   }

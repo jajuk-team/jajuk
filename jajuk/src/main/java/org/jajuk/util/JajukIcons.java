@@ -70,11 +70,11 @@ public enum JajukIcons {
 
   NOVELTIES_16X16,
 
-  NEXT,
+  PLAYER_NEXT_SMALL,
 
   SAVE_AS,
 
-  PREVIOUS,
+  PLAYER_PREVIOUS_SMALL,
 
   PLAYER_PREVIOUS,
 
@@ -90,15 +90,15 @@ public enum JajukIcons {
 
   REW_16X16,
 
-  PLAY,
+  PLAYER_PLAY,
 
   PLAY_16X16,
 
-  PAUSE,
+  PLAYER_PAUSE,
 
   PAUSE_16X16,
 
-  STOP,
+  PLAYER_STOP,
 
   STOP_16X16,
 

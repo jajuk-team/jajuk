@@ -39,9 +39,9 @@ public class JajukButtonSetIconAdapter extends JajukButton {
   @Override
   public void setIcon(Icon icon) {
     Icon destIcon = null;
-    if (icon.equals(IconLoader.getIcon(JajukIcons.PAUSE))) {
+    if (icon.equals(IconLoader.getIcon(JajukIcons.PLAYER_PAUSE))) {
       destIcon = IconLoader.getIcon(JajukIcons.PLAYER_PAUSE_BIG);
-    } else if (icon.equals(IconLoader.getIcon(JajukIcons.PLAY))) {
+    } else if (icon.equals(IconLoader.getIcon(JajukIcons.PLAYER_PLAY))) {
       destIcon = IconLoader.getIcon(JajukIcons.PLAYER_PLAY_BIG);
     }
 
