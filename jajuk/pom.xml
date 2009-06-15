@@ -247,6 +247,14 @@
       <artifactId>xstream</artifactId>
       <version>1.3.1</version>
     </dependency>    
+    
+    <dependency>
+      <groupId>last.fm-bindings</groupId>
+      <artifactId>last.fm-bindings</artifactId>
+      <version>5.21</version>
+      <scope>system</scope>
+      <systemPath>${basedir}/lib/last.fm-bindings-5.21.jar</systemPath>
+    </dependency>    
             
   </dependencies>
   

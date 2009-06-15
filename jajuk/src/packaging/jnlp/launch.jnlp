@@ -40,6 +40,7 @@
         	<extension name='Jna' href='jna.jnlp'/>
         	<extension name='dbus' href='dbus.jnlp'/>
         	<extension name='xml' href='xml.jnlp'/>
+        	<extension name='bindings' href='bindings.jnlp'/>
        </resources>
        <resources os='Windows'>
       	<nativelib href='windows/jintellitype-native.jar' version='VERSION_REPLACED_BY_ANT'/>

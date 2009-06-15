@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <jnlp spec="1.0+" codebase="$$codebase" href="bindings.jnlp">
+    <information>
+        <title>Bindings</title>
+        <vendor>Bindings</vendor>
+    </information>
+    <security> 
+           <all-permissions/>
+    </security> 
+    <resources>
+        <jar href="last.fm-bindings-5.21.jar" version='VERSION_REPLACED_BY_ANT'/>
+    </resources>
+    <component-desc/>
+</jnlp>
