@@ -47,7 +47,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JMenuItem;
-import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JSlider;
@@ -155,8 +154,6 @@ public class CommandJPanel extends JXPanel implements ActionListener, ChangeList
 
   private JButton jbStop;
 
-  private JPanel jpVolume;
-
   JSlider jsVolume;
 
   private PreferenceToolbar evaltoobar;
@@ -207,12 +204,6 @@ public class CommandJPanel extends JXPanel implements ActionListener, ChangeList
     ActionUtil.installKeystrokes(CommandJPanel.this, ActionManager.getAction(NEXT_ALBUM),
         ActionManager.getAction(PREVIOUS_ALBUM));
 
-    // mute
-    jbMute = new JajukButton(ActionManager.getAction(MUTE_STATE));
-    jbMute.setText(null);
-    jbMute.putClientProperty(SubstanceLookAndFeel.BUTTON_SHAPER_PROPERTY,
-        new RoundRectButtonShaper());
-
     // Mode toolbar
     // we need an inner toolbar to apply size properly
     JToolBar jtbModes = new JajukJToolbar();
@@ -245,11 +236,6 @@ public class CommandJPanel extends JXPanel implements ActionListener, ChangeList
     evaltoobar = new PreferenceToolbar();
 
     // Volume
-    jpVolume = new JPanel(new MigLayout("insets 0,gapx 5", "[][grow]", "[grow]"));
-    jpVolume.addMouseWheelListener(CommandJPanel.this);
-    ActionUtil.installKeystrokes(jpVolume, ActionManager.getAction(JajukActions.DECREASE_VOLUME),
-        ActionManager.getAction(JajukActions.INCREASE_VOLUME));
-
     int iVolume = (int) (100 * Conf.getFloat(Const.CONF_VOLUME));
     // Perform bounds test, -1 or >100 can occur in some undefined cases (see
     // #1169)
@@ -261,9 +247,17 @@ public class CommandJPanel extends JXPanel implements ActionListener, ChangeList
     jsVolume = new JSlider(0, 100, iVolume);
     jsVolume.setToolTipText(iVolume + " %");
     jsVolume.addChangeListener(CommandJPanel.this);
+    jbMute = new JajukButton(ActionManager.getAction(MUTE_STATE));
+    jbMute.setText(null);
+    jbMute.putClientProperty(SubstanceLookAndFeel.BUTTON_SHAPER_PROPERTY,
+        new RoundRectButtonShaper());
     MuteAction.setVolumeIcon(iVolume);
-    jpVolume.add(jbMute);
-    jpVolume.add(jsVolume, "growx");
+    jbMute.addMouseWheelListener(CommandJPanel.this);
+    jsVolume.addMouseWheelListener(CommandJPanel.this);
+    ActionUtil.installKeystrokes(jbMute, ActionManager.getAction(JajukActions.DECREASE_VOLUME),
+        ActionManager.getAction(JajukActions.INCREASE_VOLUME));
+    ActionUtil.installKeystrokes(jsVolume, ActionManager.getAction(JajukActions.DECREASE_VOLUME),
+        ActionManager.getAction(JajukActions.INCREASE_VOLUME));
 
     // Special functions toolbar
     jtbSpecial = new JajukJToolbar();
@@ -471,14 +465,16 @@ public class CommandJPanel extends JXPanel implements ActionListener, ChangeList
 
   public void setVolume(final float fVolume) {
     jsVolume.removeChangeListener(this);
-    jpVolume.removeMouseWheelListener(this);
+    jbMute.removeMouseWheelListener(this);
+    jsVolume.removeMouseWheelListener(this);
     // if user move the volume slider, unmute
     if (Player.isMuted()) {
       Player.mute(false);
     }
     Player.setVolume(fVolume);
-    jsVolume.addChangeListener(CommandJPanel.this);
-    jpVolume.addMouseWheelListener(CommandJPanel.this);
+    jsVolume.addChangeListener(this);
+    jbMute.addMouseWheelListener(this);
+    jsVolume.addMouseWheelListener(this);
     jsVolume.setToolTipText((int) (fVolume * 100) + " %");
   }
 
@@ -496,12 +492,14 @@ public class CommandJPanel extends JXPanel implements ActionListener, ChangeList
           // issue:
           // setting the volume resume the file
           jsVolume.setEnabled(false);
-          jpVolume.removeMouseWheelListener(CommandJPanel.this);
+          jbMute.removeMouseWheelListener(CommandJPanel.this);
+          jsVolume.removeMouseWheelListener(CommandJPanel.this);
         } else if (JajukEvents.PLAYER_RESUME.equals(subject)) {
           // Enable the volume when resuming (fix a mplayer issue, see
           // above)
           jsVolume.setEnabled(true);
-          jpVolume.addMouseWheelListener(CommandJPanel.this);
+          jbMute.addMouseWheelListener(CommandJPanel.this);
+          jsVolume.addMouseWheelListener(CommandJPanel.this);
         } else if (JajukEvents.SPECIAL_MODE.equals(subject)) {
           if (ObservationManager.getDetail(event, Const.DETAIL_ORIGIN).equals(
               Const.DETAIL_SPECIAL_MODE_NORMAL)) {
@@ -633,7 +631,7 @@ public class CommandJPanel extends JXPanel implements ActionListener, ChangeList
    * MouseWheelEvent)
    */
   public void mouseWheelMoved(MouseWheelEvent e) {
-    if (e.getSource() == jsVolume || e.getSource() == jpVolume) {
+    if (e.getSource() == jsVolume || e.getSource() == jbMute) {
       int iOld = jsVolume.getValue();
       int iNew = iOld - (e.getUnitsToScroll() * 3);
       jsVolume.setValue(iNew);
