@@ -66,6 +66,10 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
   /** IO file for optimizations* */
   private java.io.File fio;
 
+  private String author = null;
+
+  private long discID = -1;
+
   /**
    * Directory constructor
    * 
@@ -323,48 +327,55 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
   }
 
   private long getDiscID() {
-    // toDo implement code of freeDB for discID
-    return 0;
+    if (discID == -1) {
+      // toDo implement code of freeDB for discID
+      discID = 0;
+    }
+    return discID;
   }
 
   private String getAuthorForAlbum() {
-    String author = null;
-    java.io.File[] filelist = getFio().listFiles(UtilSystem.getFileFilter());
-    if (filelist == null || filelist.length == 0) { // none file, leave
-      return null;
-    }
+    if (author == null) {
+      java.io.File[] filelist = getFio().listFiles(UtilSystem.getFileFilter());
+      if (filelist == null || filelist.length == 0) { // none file, leave
+        return null;
+      }
 
-    for (int i = 0; i < filelist.length; i++) {
+      for (int i = 0; i < filelist.length; i++) {
 
-      try {
-        if (!new File(filelist[i].getAbsolutePath()).exists()) {
-          continue;
-        }
-
-        // Ignore iTunes files
-        if (filelist[i].getName().startsWith("._")) {
-          continue;
-        }
-
-        // check if we recognize the file as music file
-        String extension = UtilSystem.getExtension(filelist[i]);
-        Type type = TypeManager.getInstance().getTypeByExtension(extension);
-        boolean bIsMusic = (Boolean) type.getValue(Const.XML_TYPE_IS_MUSIC);
-
-        if (bIsMusic) {
-          Tag tag = new Tag(filelist[i], true);
-          String tmpAuthor = tag.getAuthorName();
-          if (author == null) {
-            author = tmpAuthor;
-          } else if (!author.equals(tmpAuthor)) {
-            return null;
+        try {
+          if (!new File(filelist[i].getAbsolutePath()).exists()) {
+            continue;
           }
+
+          // Ignore iTunes files
+          if (filelist[i].getName().startsWith("._")) {
+            continue;
+          }
+
+          // check if we recognize the file as music file
+          String extension = UtilSystem.getExtension(filelist[i]);
+          Type type = TypeManager.getInstance().getTypeByExtension(extension);
+          boolean bIsMusic = (Boolean) type.getValue(Const.XML_TYPE_IS_MUSIC);
+
+          if (bIsMusic) {
+            Tag tag = new Tag(filelist[i], true);
+            String tmpAuthor = tag.getAuthorName();
+            if (author == null) {
+              author = tmpAuthor;
+            } else if (!author.equals(tmpAuthor)) {
+              author = Const.UNKNOWN_AUTHOR;
+              break;
+            }
+          }
+        } catch (Exception e) {
+          Log.error(103, filelist.length > 0 ? "{{" + filelist[i].toString() + "}}" : "", e);
         }
-      } catch (Exception e) {
-        Log.error(103, filelist.length > 0 ? "{{" + filelist[i].toString() + "}}" : "", e);
       }
     }
-
+    if (author.equals(Const.UNKNOWN_AUTHOR)) {
+      return null;
+    }
     return author;
   }
 
