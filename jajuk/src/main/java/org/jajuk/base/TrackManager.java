@@ -254,7 +254,8 @@ public final class TrackManager extends ItemManager {
       ObservationManager.notify(new JajukEvent(JajukEvents.ALBUM_CHANGED));
     }
     // register the new album
-    Album newAlbum = AlbumManager.getInstance().registerAlbum(sNewAlbum);
+    Album newAlbum = AlbumManager.getInstance().registerAlbum(sNewAlbum,
+        track.getAlbum().getAlbumArtist(), track.getAlbum().getDiscID());
     Track newTrack = registerTrack(track.getName(), newAlbum, track.getStyle(), track.getAuthor(),
         track.getDuration(), track.getYear(), track.getOrder(), track.getType(), track
             .getAlbumArtist(), track.getDiscNumber());

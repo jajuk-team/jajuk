@@ -64,14 +64,50 @@ public class Album extends LogicalItem implements Comparable<Album> {
    */
   private boolean[] availableTumbs;
 
+  private String albumArtist;
+
+  private long discID;
+
   /**
    * Album constructor
    * 
    * @param id
    * @param sName
    */
-  public Album(String sId, String sName) {
+  public Album(String sId, String sName, String sAlbumArtist, long discID) {
     super(sId, sName);
+    this.albumArtist = sAlbumArtist;
+    this.discID = discID;
+    setProperty(Const.XML_ALBUM_ARTIST, sAlbumArtist);
+    setProperty(Const.XML_DISC_ID, discID);
+  }
+
+  /**
+   * @return the discID
+   */
+  public long getDiscID() {
+    return this.discID;
+  }
+
+  /**
+   * @return the albumArtiest
+   */
+  public String getAlbumArtist() {
+    return this.albumArtist;
+  }
+
+  /**
+   * @return the albumArtiest, if this is varior the album artist is tried to be
+   *         defined by the track artists of this album
+   */
+  public String getAlbumArtist2() {
+    if (this.albumArtist.equals(Const.VARIOUS_ARTIST)) {
+      Author author = getAuthor();
+      if (author != null && !author.getName().equals(Const.UNKNOWN_AUTHOR)) {
+        return author.getName();
+      }
+    }
+    return this.albumArtist;
   }
 
   /**

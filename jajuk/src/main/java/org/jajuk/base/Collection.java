@@ -730,10 +730,13 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
         case STAGE_ALBUMS:
           sID = attributes.getValue(idIndex).intern();
           sItemName = attributes.getValue(Const.XML_NAME).intern();
+          String sItemAlbumArtist = attributes.getValue(Const.XML_ALBUM_ARTIST).intern();
+          long lItemDiscID = UtilString.fastLongParser(attributes
+              .getValue(Const.XML_DISC_ID));
           // UPGRADE test
           sRightID = sID;
           if (needCheckID) {
-            sRightID = AlbumManager.createID(sItemName).intern();
+            sRightID = AlbumManager.createID(sItemName, sItemAlbumArtist, lItemDiscID).intern();
             if (sRightID == sID) {
               needCheckID = UpgradeManager.isUpgradeDetected() || SessionService.isTestMode();
             } else {
@@ -741,7 +744,7 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
               hmWrongRightAlbumID.put(sID, sRightID);
             }
           }
-          album = AlbumManager.getInstance().registerAlbum(sRightID, sItemName);
+          album = AlbumManager.getInstance().registerAlbum(sRightID, sItemName, sItemAlbumArtist, lItemDiscID);
           if (album != null) {
             album.populateProperties(attributes);
           }

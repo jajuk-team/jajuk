@@ -39,8 +39,6 @@ import javax.swing.border.EmptyBorder;
 import net.miginfocom.swing.MigLayout;
 
 import org.jajuk.base.Album;
-import org.jajuk.base.Author;
-import org.jajuk.base.AuthorManager;
 import org.jajuk.base.Item;
 import org.jajuk.base.Track;
 import org.jajuk.base.TrackComparator;
@@ -115,11 +113,8 @@ public class LocalAlbumThumbnail extends AbstractThumbnail {
     if (bShowFullText) {
       int iRows = 7 + 7 * ((size / 50) - 1);
 
-      String albumArtist = album.getAnyTrack().getAlbumArtist();
-      if (albumArtist.equals(Const.UNKNOWN_AUTHOR)) {
-        Author author = AuthorManager.getInstance().getAssociatedAuthors(album).iterator().next();
-        albumArtist = author.getName2();
-      }
+      String albumArtist = album.getAlbumArtist2();
+
       jlAuthor = new JLabel(UtilString.getLimitedString(albumArtist, iRows));
       jlAuthor.setToolTipText(albumArtist);
       jlAuthor.setFont(FontManager.getInstance().getFont(JajukFont.BOLD));

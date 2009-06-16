@@ -74,6 +74,12 @@ public final class AlbumManager extends ItemManager implements Observer {
     // Cover path
     registerProperty(new PropertyMetaInformation(Const.XML_ALBUM_COVER, false, false, false, false,
         false, String.class, null));
+    // Name
+    registerProperty(new PropertyMetaInformation(Const.XML_ALBUM_ARTIST, false, true, false, false,
+        false, String.class, null));
+    // Name
+    registerProperty(new PropertyMetaInformation(Const.XML_DISC_ID, false, true, false, false,
+        false, Long.class, null));
     // Register events
     ObservationManager.register(this);
   }
@@ -99,9 +105,9 @@ public final class AlbumManager extends ItemManager implements Observer {
    * 
    * @param sName
    */
-  public Album registerAlbum(String sName) {
-    String sId = createID(sName);
-    return registerAlbum(sId, sName);
+  public Album registerAlbum(String sName, String sAlbumArtist, long discID) {
+    String sId = createID(sName, sAlbumArtist, discID);
+    return registerAlbum(sId, sName, sAlbumArtist, discID);
   }
 
   /**
@@ -111,8 +117,12 @@ public final class AlbumManager extends ItemManager implements Observer {
    *          item name
    * @return ItemManager ID
    */
-  protected static String createID(String sName) {
-    return MD5Processor.hash(sName);
+  protected static String createID(String sName, String sAlbumArtist, long disc_id) {
+    if (sAlbumArtist.equals(Const.VARIOUS_ARTIST)) {
+      return MD5Processor.hash(sName + disc_id);
+    } else {
+      return MD5Processor.hash(sName + sAlbumArtist);
+    }
   }
 
   /**
@@ -120,12 +130,12 @@ public final class AlbumManager extends ItemManager implements Observer {
    * 
    * @param sName
    */
-  public synchronized Album registerAlbum(String sId, String sName) {
+  public synchronized Album registerAlbum(String sId, String sName, String sAlbumArtist, long discID) {
     Album album = getAlbumByID(sId);
     if (album != null) {
       return album;
     }
-    album = new Album(sId, sName);
+    album = new Album(sId, sName, sAlbumArtist, discID);
     registerItem(album);
     return album;
   }
@@ -142,7 +152,7 @@ public final class AlbumManager extends ItemManager implements Observer {
     if (old.getName2().equals(sNewName)) {
       return old;
     }
-    Album newItem = registerAlbum(sNewName);
+    Album newItem = registerAlbum(sNewName, old.getAlbumArtist(), old.getDiscID());
     // re apply old properties from old item
     newItem.cloneProperties(old);
     // update tracks
@@ -152,7 +162,8 @@ public final class AlbumManager extends ItemManager implements Observer {
       }
     }
     // if current track album name is changed, notify it
-    if (QueueModel.getPlayingFile() != null && QueueModel.getPlayingFile().getTrack().getAlbum().equals(old)) {
+    if (QueueModel.getPlayingFile() != null
+        && QueueModel.getPlayingFile().getTrack().getAlbum().equals(old)) {
       ObservationManager.notify(new JajukEvent(JajukEvents.ALBUM_CHANGED));
     }
     return newItem;
@@ -422,7 +433,7 @@ public final class AlbumManager extends ItemManager implements Observer {
       cacheRate.put(album, (float) album.getRate());
     }
     // OK, now keep only the highest score
-    for (Map.Entry<Album,Float> album : cacheRate.entrySet()) {
+    for (Map.Entry<Album, Float> album : cacheRate.entrySet()) {
       long value = Math.round(album.getValue());
       if (value > maxRate) {
         maxRate = value;

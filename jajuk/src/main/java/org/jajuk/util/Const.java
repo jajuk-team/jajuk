@@ -327,6 +327,8 @@ public interface Const {
   String UNKNOWN_YEAR = "unknown_year";
 
   String UNKNOWN = "unknown";
+  
+  String VARIOUS_ARTIST = "various_artist";
 
   // images
   URL IMAGES_SPLASHSCREEN = UtilSystem.getResource("images/included/jajuk-splashscreen.jpg");
@@ -902,6 +904,10 @@ public interface Const {
   String XML_ALBUMS = "albums";
 
   String XML_ALBUM = "album";
+  
+  String XML_ALBUM_ARTIST = "album_artist";
+  
+  String XML_DISC_ID = "disc_id";
 
   String XML_TRACKS = "tracks";
 

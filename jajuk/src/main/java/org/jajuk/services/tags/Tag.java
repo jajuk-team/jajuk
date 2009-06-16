@@ -173,7 +173,7 @@ public class Tag {
    * @return album artist
    */
   public String getAlbumArtist() {
-    String sAlbumArtist =Const.UNKNOWN_AUTHOR;
+    String sAlbumArtist =Const.VARIOUS_ARTIST;
     // if the type doesn't support tags ( like wav )
     if (tagImpl == null) {
       return sAlbumArtist;
@@ -181,11 +181,11 @@ public class Tag {
 
     try {
       String sTemp = tagImpl.getAlbumArtist().trim();
-      if (Messages.getString(Const.UNKNOWN_AUTHOR).equals(sTemp)) {
+      if (Messages.getString(Const.VARIOUS_ARTIST).equals(sTemp)) {
         // it is done to avoid duplicates unknown styles if
         // the tag is the real string "unknown" in the
         // current language
-        sAlbumArtist = Const.UNKNOWN_AUTHOR;
+        sAlbumArtist = Const.VARIOUS_ARTIST;
       } else if (!"".equals(sTemp)) {
         sAlbumArtist = UtilString.formatTag(sTemp);
       }

@@ -593,7 +593,7 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
 
     while (eAuthor.hasMoreElements()) {
       authorNode = (AuthorNode) eAuthor.nextElement();
-      misc = new AlbumNode(AlbumManager.getInstance().registerAlbum("Misc"));
+      misc = new AlbumNode(AlbumManager.getInstance().registerAlbum("Misc", "Misc", 0));
 
       for (Enumeration<AlbumNode> eAlbum = authorNode.children(); eAlbum.hasMoreElements();) {
         albumNode = eAlbum.nextElement();

@@ -308,7 +308,7 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
     long lQuality = tag.getQuality();
     String sComment = tag.getComment();
     long lOrder = tag.getOrder();
-    String sAblumArtist=tag.getAlbumArtist();
+    String sAblumArtist = tag.getAlbumArtist();
     long lDiscNumber = tag.getDiscNumber();
 
     if (fileRef == null && reporter != null) {
@@ -320,6 +320,52 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
 
     registerFile(music, sId, sTrackName, sAlbumName, sAuthorName, sStyle, length, sYear, lQuality,
         sComment, lOrder, sAblumArtist, lDiscNumber);
+  }
+
+  private long getDiscID() {
+    // toDo implement code of freeDB for discID
+    return 0;
+  }
+
+  private String getAuthorForAlbum() {
+    String author = null;
+    java.io.File[] filelist = getFio().listFiles(UtilSystem.getFileFilter());
+    if (filelist == null || filelist.length == 0) { // none file, leave
+      return null;
+    }
+
+    for (int i = 0; i < filelist.length; i++) {
+
+      try {
+        if (!new File(filelist[i].getAbsolutePath()).exists()) {
+          continue;
+        }
+
+        // Ignore iTunes files
+        if (filelist[i].getName().startsWith("._")) {
+          continue;
+        }
+
+        // check if we recognize the file as music file
+        String extension = UtilSystem.getExtension(filelist[i]);
+        Type type = TypeManager.getInstance().getTypeByExtension(extension);
+        boolean bIsMusic = (Boolean) type.getValue(Const.XML_TYPE_IS_MUSIC);
+
+        if (bIsMusic) {
+          Tag tag = new Tag(filelist[i], true);
+          String tmpAuthor = tag.getAuthorName();
+          if (author == null) {
+            author = tmpAuthor;
+          } else if (!author.equals(tmpAuthor)) {
+            return null;
+          }
+        }
+      } catch (Exception e) {
+        Log.error(103, filelist.length > 0 ? "{{" + filelist[i].toString() + "}}" : "", e);
+      }
+    }
+
+    return author;
   }
 
   /**
@@ -340,7 +386,20 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
   private void registerFile(java.io.File music, String sId, String sTrackName, String sAlbumName,
       String sAuthorName, String sStyle, long length, String sYear, long lQuality, String sComment,
       long lOrder, String sAlbumArtist, long lDiscNumber) {
-    Album album = AlbumManager.getInstance().registerAlbum(sAlbumName);
+    Album album = null;
+    long discID = getDiscID();
+
+    // get Informations for album id
+    if (sAlbumArtist.equals(Const.VARIOUS_ARTIST)) {
+      album = AlbumManager.getInstance().registerAlbum(sAlbumName, sAuthorName, discID);
+    } else {
+      String author = getAuthorForAlbum();
+      if (author == null) {
+        author = Const.VARIOUS_ARTIST;
+      }
+      album = AlbumManager.getInstance().registerAlbum(sAlbumName, author, discID);
+    }
+
     Style style = StyleManager.getInstance().registerStyle(sStyle);
     Year year = YearManager.getInstance().registerYear(sYear);
     Author author = AuthorManager.getInstance().registerAuthor(sAuthorName);
@@ -614,7 +673,8 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
           // exit hook
           // have no time to perform commit)
           try {
-            org.jajuk.base.Collection.commit(SessionService.getConfFileByPath(Const.FILE_COLLECTION));
+            org.jajuk.base.Collection.commit(SessionService
+                .getConfFileByPath(Const.FILE_COLLECTION));
           } catch (final IOException e) {
             Log.error(e);
           }
