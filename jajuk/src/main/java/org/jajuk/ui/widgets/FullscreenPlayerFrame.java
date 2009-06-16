@@ -29,7 +29,8 @@ import java.awt.DisplayMode;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 
-import javax.swing.JToolBar;
+import javax.swing.JButton;
+import javax.swing.JPanel;
 import javax.swing.JWindow;
 import javax.swing.SwingUtilities;
 
@@ -37,6 +38,10 @@ import net.miginfocom.swing.MigLayout;
 
 import org.jajuk.ui.actions.ActionManager;
 import org.jajuk.ui.actions.JajukActions;
+import org.jajuk.ui.substance.CircleButtonShaper;
+import org.jajuk.ui.substance.LeftConcaveButtonShaper;
+import org.jajuk.ui.substance.RightConcaveButtonShaper;
+import org.jajuk.ui.substance.RoundRectButtonShaper;
 import org.jajuk.ui.views.AnimationView;
 import org.jajuk.ui.views.CoverView;
 import org.jajuk.util.IconLoader;
@@ -44,6 +49,7 @@ import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
+import org.jvnet.substance.SubstanceLookAndFeel;
 
 /**
  * 
@@ -63,13 +69,13 @@ public class FullscreenPlayerFrame extends JWindow {
 
   private boolean fullscreen = false;
 
-  private JajukButton jbPrevious;
+  private JButton jbPrevious;
 
-  private JajukButton jbNext;
+  private JButton jbNext;
 
-  private JajukButton jbPlayPause;
+  private JButton jbPlayPause;
 
-  private JajukButton jbStop;
+  private JButton jbStop;
 
   private JajukButton jbFull;
 
@@ -114,19 +120,7 @@ public class FullscreenPlayerFrame extends JWindow {
     coverView.initUI(false);
 
     // Player toolbar
-    JToolBar jtbPlay = new JajukJToolbar();
-    jbPrevious = new JajukButton(ActionManager.getAction(PREVIOUS_TRACK));
-    jbPrevious.setIcon(IconLoader.getIcon(JajukIcons.PLAYER_PREVIOUS_BIG));
-    jbNext = new JajukButton(ActionManager.getAction(NEXT_TRACK));
-    jbNext.setIcon(IconLoader.getIcon(JajukIcons.PLAYER_NEXT_BIG));
-    jbPlayPause = new JajukButtonSetIconAdapter(ActionManager.getAction(PAUSE_RESUME_TRACK));
-    jbPlayPause.setIcon(IconLoader.getIcon(JajukIcons.PLAYER_PAUSE));
-    jbStop = new JajukButton(ActionManager.getAction(STOP_TRACK));
-    jbStop.setIcon(IconLoader.getIcon(JajukIcons.PLAYER_STOP_BIG));
-    jtbPlay.add(jbPrevious);
-    jtbPlay.add(jbPlayPause);
-    jtbPlay.add(jbStop);
-    jtbPlay.add(jbNext);
+    JPanel jtbPlay = getPlayerPanel();
 
     // Information panel
     TrackPositionSliderToolbar tpst = new TrackPositionSliderToolbar();
@@ -139,6 +133,45 @@ public class FullscreenPlayerFrame extends JWindow {
     add(jtbPlay, "alignx center,gap bottom 20,wrap");
     add(tpst, "alignx center,aligny bottom,gap bottom 10");
 
+  }
+
+  /**
+   * @return
+   */
+  private JPanel getPlayerPanel() {
+    JPanel jPanelPlay = new JPanel();
+    jPanelPlay.setLayout(new MigLayout("insets 5", "[grow][grow][grow]"));
+
+    // previous
+    jbPrevious = new JajukButton(ActionManager.getAction(PREVIOUS_TRACK));
+    int concavity = IconLoader.getIcon(JajukIcons.PLAYER_PLAY).getIconHeight();
+    jbPrevious.putClientProperty(SubstanceLookAndFeel.BUTTON_SHAPER_PROPERTY,
+        new RightConcaveButtonShaper(concavity));
+    jbPrevious.setBorderPainted(true);
+    jbPrevious.setContentAreaFilled(true);
+    jbPrevious.setFocusPainted(true);
+
+    // next
+    jbNext = new JajukButton(ActionManager.getAction(NEXT_TRACK));
+    jbNext.putClientProperty(SubstanceLookAndFeel.BUTTON_SHAPER_PROPERTY,
+        new LeftConcaveButtonShaper(concavity));
+
+    // play pause
+    jbPlayPause = new JajukButton(ActionManager.getAction(PAUSE_RESUME_TRACK));
+    jbPlayPause.putClientProperty(SubstanceLookAndFeel.BUTTON_SHAPER_PROPERTY,
+        new CircleButtonShaper());
+
+    // stop
+    jbStop = new JajukButton(ActionManager.getAction(STOP_TRACK));
+    jbStop.putClientProperty(SubstanceLookAndFeel.BUTTON_SHAPER_PROPERTY,
+        new RoundRectButtonShaper());
+
+    jPanelPlay.add(jbStop, "center,split 6,width 35!,height 30,gapright 5!");
+    jPanelPlay.add(jbPrevious, "center,width 62!,height 30!,gapright 0");
+    jPanelPlay.add(jbPlayPause, "center,width 45!,height 45!,gapright 0");
+    jPanelPlay.add(jbNext, "center,width 62!,height 30!,gapright 3");
+
+    return jPanelPlay;
   }
 
   public void setFullScreen(final boolean enable) {
