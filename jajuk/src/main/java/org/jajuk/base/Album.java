@@ -104,7 +104,9 @@ public class Album extends LogicalItem implements Comparable<Album> {
     if (this.albumArtist.equals(Const.VARIOUS_ARTIST)) {
       Author author = getAuthor();
       if (author != null && !author.getName().equals(Const.UNKNOWN_AUTHOR)) {
-        return author.getName();
+        return author.getName2();
+      }else{
+        return Messages.getString(Const.VARIOUS_ARTIST);
       }
     }
     return this.albumArtist;
