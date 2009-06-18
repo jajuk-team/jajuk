@@ -401,8 +401,8 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
     long discID = getDiscID();
 
     // get Informations for album id
-    if (sAlbumArtist.equals(Const.VARIOUS_ARTIST)) {
-      album = AlbumManager.getInstance().registerAlbum(sAlbumName, sAuthorName, discID);
+    if (!sAlbumArtist.equals(Const.VARIOUS_ARTIST)) {
+      album = AlbumManager.getInstance().registerAlbum(sAlbumName, sAlbumArtist, discID);
     } else {
       String author = getAuthorForAlbum();
       if (author == null) {
