@@ -462,36 +462,37 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
               case 0: // style
                 // Sort on Genre/Author/Year/Title
                 if (track1.getStyle() == track2.getStyle()) {
-                  if (track1.getAuthor() == track2.getAuthor()) {
+                  if (album1.getAlbumArtist2() == album2.getAlbumArtist2()) {
                     if (track1.getYear() == track2.getYear()) {
                       return album1.compareTo(album2);
                     } else {
                       return track1.getYear().compareTo(track2.getYear());
                     }
                   } else {
-                    return track1.getAuthor().compareTo(track2.getAuthor());
+                    return album1.getAlbumArtist2().compareTo(album2.getAlbumArtist2());
                   }
                 } else {
                   return track1.getStyle().compareTo(track2.getStyle());
                 }
               case 1: // author
                 // Sort on Author/Year/Title
-                if (track1.getAuthor() == track2.getAuthor()) {
+                // we use now the album artist
+                if (album1.getAlbumArtist2() == album2.getAlbumArtist2()) {
                   if (track1.getYear() == track2.getYear()) {
                     return album1.compareTo(album2);
                   } else {
                     return track1.getYear().compareTo(track2.getYear());
                   }
                 } else {
-                  return track1.getAuthor().compareTo(track2.getAuthor());
+                  return album1.getAlbumArtist2().compareTo(album2.getAlbumArtist2());
                 }
               case 3: // year
                 // Sort on: Year/Author/Title
                 if (track1.getYear() == track2.getYear()) {
-                  if (track1.getAuthor() == track2.getAuthor()) {
+                  if (album1.getAlbumArtist2() == album2.getAlbumArtist2()) {
                     return album1.compareTo(album2);
                   } else {
-                    return track2.getAuthor().compareTo(track1.getAuthor());
+                    return album1.getAlbumArtist2().compareTo(album2.getAlbumArtist2());
                   }
                 } else {
                   return track1.getYear().compareTo(track2.getYear());
