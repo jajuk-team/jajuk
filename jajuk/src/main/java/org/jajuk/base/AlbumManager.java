@@ -115,11 +115,25 @@ public final class AlbumManager extends ItemManager implements Observer {
    * 
    * @param sName
    *          item name
+   * @param String
+   *          sAlbumArtist : the album artist tag or null is none
+   * @param long
+   *          discId the CD disk ID (in the CDDB meaning), 0 if doesn't computed
+   *          yet
+   * 
    * @return ItemManager ID
    */
-  protected static String createID(String sName, String sAlbumArtist, long disc_id) {
-    if (sAlbumArtist.equals(Const.VARIOUS_ARTIST)) {
-      return MD5Processor.hash(sName + disc_id);
+  protected static String createID(String sName, String sAlbumArtist, long discId) {
+    // The hash is done this way:
+    // If album artist tag is provided, use it + name
+    // If not, use name + diskId (or only the name if the disc id is not yet
+    // computed)
+    if (sAlbumArtist == null || Const.VARIOUS_ARTIST.equals(sAlbumArtist)) {
+      if (discId > 0) {
+        return MD5Processor.hash(sName + discId);
+      } else {
+        return MD5Processor.hash(sName);
+      }
     } else {
       return MD5Processor.hash(sName + sAlbumArtist);
     }

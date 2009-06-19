@@ -391,9 +391,9 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
    * want startup to be as fast as possible. Note that the use of intern() save
    * around 1/4 of overall heap memory
    * 
-   * We use sax-interning for the main items sections (<styles> for ie). For all
-   * raw items, we don't perform equals on item name but we compare the string
-   * hashcode
+   * We use sax-interning for the main items sections (<styles> for ie). For
+   * all raw items, we don't perform equals on item name but we compare the
+   * string hashcode
    * 
    */
   @Override
@@ -730,9 +730,16 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
         case STAGE_ALBUMS:
           sID = attributes.getValue(idIndex).intern();
           sItemName = attributes.getValue(Const.XML_NAME).intern();
-          String sItemAlbumArtist = attributes.getValue(Const.XML_ALBUM_ARTIST).intern();
-          long lItemDiscID = UtilString.fastLongParser(attributes
-              .getValue(Const.XML_DISC_ID));
+          String sItemAlbumArtist = null;
+          String sAttributeAlbumArtist = attributes.getValue(Const.XML_ALBUM_ARTIST);
+          if (sAttributeAlbumArtist != null) {
+            sItemAlbumArtist = sAttributeAlbumArtist.intern();
+          }
+          long lItemDiscID = 0;
+          String sAttributeDiskId = attributes.getValue(Const.XML_DISC_ID);
+          if (sAttributeDiskId != null) {
+            lItemDiscID = UtilString.fastLongParser(sAttributeDiskId);
+          }
           // UPGRADE test
           sRightID = sID;
           if (needCheckID) {
@@ -744,7 +751,8 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
               hmWrongRightAlbumID.put(sID, sRightID);
             }
           }
-          album = AlbumManager.getInstance().registerAlbum(sRightID, sItemName, sItemAlbumArtist, lItemDiscID);
+          album = AlbumManager.getInstance().registerAlbum(sRightID, sItemName, sItemAlbumArtist,
+              lItemDiscID);
           if (album != null) {
             album.populateProperties(attributes);
           }
