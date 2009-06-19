@@ -105,14 +105,8 @@ import org.jajuk.util.log.Log;
  */
 public class CoverView extends ViewAdapter implements ComponentListener, ActionListener, Const {
 
-  /**
-   * 
-   */
   private static final String PLUS_QUOTE = "+\"";
 
-  /**
-   * 
-   */
   private static final String QUOTE_BLANK = "\" ";
 
   private static final long serialVersionUID = 1L;
@@ -302,7 +296,7 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
       jpControl.add(jtb);
       jpControl.add(jlSize, "center,gapright 5::");
       jpControl.add(jlFound, "center,gapright 5::");
-      jpControl.add(jcbAccuracy, "grow");
+      jpControl.add(jcbAccuracy, "grow,gapright 5");
       jpControl.add(jlSearching);
     } else {
       jpControl.setLayout(new BorderLayout());
@@ -323,7 +317,8 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
       Log.error(e);
     }
     // global layout
-    setLayout(new MigLayout("ins 0", "[grow]"));
+    MigLayout globalLayout = new MigLayout("ins 0,gapy 10", "[grow]","[30!][grow]");
+    setLayout(globalLayout);
     add(jpControl, "grow,wrap");
     // listen for resize
     addComponentListener(CoverView.this);

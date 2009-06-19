@@ -26,6 +26,7 @@ import javax.swing.SwingUtilities;
 
 import org.jajuk.services.core.ExitService;
 import org.jajuk.ui.perspectives.PerspectiveManager;
+import org.jajuk.ui.widgets.JajukFullScreenWindow;
 import org.jajuk.ui.widgets.JajukSlimbar;
 import org.jajuk.ui.widgets.JajukSystray;
 import org.jajuk.ui.widgets.JajukWindow;
@@ -58,8 +59,7 @@ public class ExitAction extends JajukAction {
     // IMPORTANT: all the following code must be done in EDT to avoid dead
     // locks.
     // Not not use SwingUtilities.invokeLater method in the ExitHook Thread,
-    // this
-    // code may never be run
+    // this code may never be run
 
     if (SwingUtilities.isEventDispatchThread()) {
       // commit perspectives if no full restore
@@ -87,7 +87,12 @@ public class ExitAction extends JajukAction {
           && !(JajukWindow.isLoaded() && JajukWindow.getInstance().isVisible())) {
         Conf.setProperty(Const.CONF_STARTUP_DISPLAY, Integer.toString(Const.DISPLAY_MODE_TRAY));
       }
-
+      
+      if (JajukFullScreenWindow.isLoaded() && JajukFullScreenWindow.getInstance().isVisible()) {
+        Conf.setProperty(Const.CONF_STARTUP_DISPLAY, Integer
+            .toString(Const.DISPLAY_MODE_FULLSCREEN));
+      }
+      
       // hide window ASAP
       if (JajukWindow.isLoaded()) {
         JajukWindow.getInstance().dispose();
@@ -99,6 +104,10 @@ public class ExitAction extends JajukAction {
       // Hide slimbar
       if (JajukSlimbar.isLoaded()) {
         JajukSlimbar.getInstance().dispose();
+      }
+      // Hide full screen
+      if (JajukFullScreenWindow.isLoaded()) {
+        JajukFullScreenWindow.getInstance().dispose();
       }
     }
     // Exit Jajuk

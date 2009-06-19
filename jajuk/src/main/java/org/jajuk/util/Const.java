@@ -613,7 +613,7 @@ public interface Const {
 
   /**
    * Startup display mode: 0= main window + tray, 1: tray only, 2: slimbar +
-   * tray
+   * tray 3 : full screen
    */
   String CONF_STARTUP_DISPLAY = "jajuk.startup_display_mode";
 
@@ -622,6 +622,8 @@ public interface Const {
   int DISPLAY_MODE_TRAY = 1;
 
   int DISPLAY_MODE_SLIMBAR_TRAY = 2;
+  
+  int DISPLAY_MODE_FULLSCREEN = 3;
 
   /** Best of size */
   String CONF_BESTOF_TRACKS_SIZE = "jajuk.bestof_size";

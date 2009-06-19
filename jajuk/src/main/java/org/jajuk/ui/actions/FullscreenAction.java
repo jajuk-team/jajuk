@@ -21,7 +21,8 @@ package org.jajuk.ui.actions;
 
 import java.awt.event.ActionEvent;
 
-import org.jajuk.ui.widgets.FullscreenPlayerFrame;
+import org.jajuk.ui.widgets.JajukFullScreenWindow;
+import org.jajuk.ui.widgets.JajukWindow;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
@@ -31,9 +32,6 @@ import org.jajuk.util.Messages;
  */
 public class FullscreenAction extends JajukAction {
 
-  /**
-   * 
-   */
   private static final long serialVersionUID = 1223773056757729079L;
 
   FullscreenAction() {
@@ -43,9 +41,18 @@ public class FullscreenAction extends JajukAction {
 
   @Override
   public void perform(ActionEvent evt) throws Exception {
-   
-    FullscreenPlayerFrame fspf = FullscreenPlayerFrame.getInstance();
-    fspf.setFullScreen(!fspf.isFullscreen());
+    JajukFullScreenWindow fsw = JajukFullScreenWindow.getInstance();
+    /*
+     * If full screen window is visible, hide it and show the main window. Note
+     * that both main window and fsw can"t be displayed at the same time:
+     */
+    if (fsw.isVisible()) {
+      fsw.setFullScreen(false);
+      JajukWindow.getInstance().display(true);
+    } else {
+      fsw.setFullScreen(true);
+      JajukWindow.getInstance().display(false);
+    }
   }
 
 }

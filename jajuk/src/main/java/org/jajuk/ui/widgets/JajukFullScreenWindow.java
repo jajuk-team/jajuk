@@ -52,16 +52,13 @@ import org.jajuk.util.log.Log;
 import org.jvnet.substance.SubstanceLookAndFeel;
 
 /**
- * 
+ * The full screen window
  */
-public class FullscreenPlayerFrame extends JWindow {
+public class JajukFullScreenWindow extends JWindow {
 
-  /**
-   * 
-   */
   private static final long serialVersionUID = -2859302706462954993L;
 
-  private static FullscreenPlayerFrame instance = null;
+  private static JajukFullScreenWindow instance = null;
 
   private final DisplayMode origDisplayMode;
 
@@ -79,11 +76,13 @@ public class FullscreenPlayerFrame extends JWindow {
 
   private JajukButton jbFull;
 
+  private JajukButton jbExit;
+
   private CoverView coverView;
 
-  public static FullscreenPlayerFrame getInstance() {
+  public static JajukFullScreenWindow getInstance() {
     if (instance == null) {
-      instance = new FullscreenPlayerFrame();
+      instance = new JajukFullScreenWindow();
     }
     return instance;
   }
@@ -95,21 +94,32 @@ public class FullscreenPlayerFrame extends JWindow {
     return this.fullscreen;
   }
 
-  public FullscreenPlayerFrame() {
+  public JajukFullScreenWindow() {
     // get the active graphic device and store the current mode
     this.graphicsDevice = GraphicsEnvironment.getLocalGraphicsEnvironment()
         .getDefaultScreenDevice();
     this.origDisplayMode = graphicsDevice.getDisplayMode();
 
-    initGui();
+    initUI();
+  }
+
+  /**
+   * 
+   * @return whether the window is loaded
+   */
+  public static boolean isLoaded() {
+    return (instance != null);
   }
 
   /**
    * 
    */
-  private void initGui() {
+  private void initUI() {
     // Full screen switch button
     jbFull = new JajukButton(ActionManager.getAction(JajukActions.FULLSCREEN_JAJUK));
+
+    // Exit button
+    jbExit = new JajukButton(ActionManager.getAction(JajukActions.EXIT));
 
     // Animation view
     AnimationView animationView = new AnimationView();
@@ -126,12 +136,13 @@ public class FullscreenPlayerFrame extends JWindow {
     TrackPositionSliderToolbar tpst = new TrackPositionSliderToolbar();
 
     // Add items
-    setLayout(new MigLayout("ins 0", "[grow]", "[][grow][60%][][]"));
-    add(jbFull, "right,wrap");
+    setLayout(new MigLayout("ins 0", "[grow]", "[][grow][70%!][][]"));
+    add(jbFull, "right,split 2,gapright 5");
+    add(jbExit, "right,wrap");
     add(animationView, "alignx center,aligny top,grow,gap bottom 20,wrap");
-    add(coverView, "alignx center,grow,gap bottom 20,wrap");
+    add(coverView, "alignx center, grow,gap bottom 20,wrap");
     add(jtbPlay, "alignx center,gap bottom 20,wrap");
-    add(tpst, "alignx center,aligny bottom,gap bottom 10");
+    add(tpst, "alignx center,width 50%!,aligny bottom,gap bottom 10");
 
   }
 
@@ -189,7 +200,7 @@ public class FullscreenPlayerFrame extends JWindow {
             setVisible(true);
             graphicsDevice.setFullScreenWindow(instance);
 
-            // topPanel should have 10% of the dispaly resolution height
+            // topPanel should have 10% of the display resolution height
             setPreferredSize(new Dimension(graphicsDevice.getDisplayMode().getWidth(),
                 (graphicsDevice.getDisplayMode().getHeight() / 100) * 10));
 

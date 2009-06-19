@@ -75,6 +75,7 @@ import org.jajuk.ui.helpers.FontManager.JajukFont;
 import org.jajuk.ui.perspectives.PerspectiveManager;
 import org.jajuk.ui.widgets.CommandJPanel;
 import org.jajuk.ui.widgets.InformationJPanel;
+import org.jajuk.ui.widgets.JajukFullScreenWindow;
 import org.jajuk.ui.widgets.JajukJMenuBar;
 import org.jajuk.ui.widgets.JajukSystray;
 import org.jajuk.ui.widgets.JajukWindow;
@@ -215,7 +216,8 @@ public final class Main {
           sc.setTitle(Messages.getString("JajukWindow.3"));
           sc.setProgress(0, Messages.getString("SplashScreen.0"));
           // Actually show the splashscreen only if required
-          if (Conf.getInt(Const.CONF_STARTUP_DISPLAY) == Const.DISPLAY_MODE_WINDOW_TRAY) {
+          if (Conf.getInt(Const.CONF_STARTUP_DISPLAY) == Const.DISPLAY_MODE_WINDOW_TRAY
+              || Conf.getInt(Const.CONF_STARTUP_DISPLAY) == Const.DISPLAY_MODE_FULLSCREEN) {
             sc.splashOn();
           }
         }
@@ -289,7 +291,7 @@ public final class Main {
         autoMount();
       }
 
-      // Launch startup track if any (but don't start it if firsdt session
+      // Launch startup track if any (but don't start it if first session
       // because the first refresh is probably still running)
       if (!UpgradeManager.isFirstSesion()) {
         StartupService.launchInitialTrack();
@@ -299,11 +301,18 @@ public final class Main {
       // tray
       ActionManager.getInstance();
 
-      // show window if set in the systray conf.
+      // show window according to startup mode
       if (Conf.getInt(Const.CONF_STARTUP_DISPLAY) == Const.DISPLAY_MODE_WINDOW_TRAY) {
         // Display progress
         sc.setProgress(80, Messages.getString("SplashScreen.3"));
         launchWindow();
+      }
+
+      // Show full screen according to startup mode
+      else if (Conf.getInt(Const.CONF_STARTUP_DISPLAY) == Const.DISPLAY_MODE_FULLSCREEN) {
+        // Display progress
+        sc.setProgress(80, Messages.getString("SplashScreen.3"));
+        launchFullScreenWindow();
       }
 
       // start the tray
@@ -707,6 +716,54 @@ public final class Main {
             tipsView.setLocationRelativeTo(JajukWindow.getInstance());
             tipsView.setVisible(true);
           }
+
+        } catch (final Exception e) { // last chance to catch any
+          // error for
+          // logging purpose
+          e.printStackTrace();
+          Log.error(106, e);
+        } finally {
+          if (sc != null) {
+            // Display progress
+            sc.setProgress(100);
+            sc.splashOff();
+
+            // free resources
+            sc = null;
+          }
+          bUILauched = true;
+          // Notify any first time wizard to startup refresh
+          synchronized (canLaunchRefresh) {
+            canLaunchRefresh.notify();
+          }
+        }
+      }
+    });
+
+  }
+
+  /**
+   * Launch jajuk full screen window
+   */
+  public static void launchFullScreenWindow() {
+    if (bUILauched) {
+      return;
+    }
+    // ui init
+    SwingUtilities.invokeLater(new Runnable() {
+      public void run() {
+        try {
+          // Light drag and drop for VLDocking
+          UIManager.put("DragControler.paintBackgroundUnderDragRect", Boolean.FALSE);
+          DockingUISettings.getInstance().installUI();
+
+          // Set windows decoration to look and feel
+          JFrame.setDefaultLookAndFeelDecorated(true);
+          JDialog.setDefaultLookAndFeelDecorated(true);
+
+          // starts ui
+          JajukFullScreenWindow fspf = JajukFullScreenWindow.getInstance();
+          fspf.setFullScreen(!fspf.isFullscreen());
 
         } catch (final Exception e) { // last chance to catch any
           // error for
