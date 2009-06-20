@@ -63,9 +63,9 @@ import org.jajuk.ui.perspectives.PerspectiveManager;
 import org.jajuk.ui.widgets.CommandJPanel;
 import org.jajuk.ui.widgets.InformationJPanel;
 import org.jajuk.ui.widgets.JajukJMenuBar;
-import org.jajuk.ui.widgets.JajukSystray;
-import org.jajuk.ui.widgets.JajukWindow;
 import org.jajuk.ui.widgets.PerspectiveBarJPanel;
+import org.jajuk.ui.windows.JajukMainWindow;
+import org.jajuk.ui.windows.JajukSystray;
 import org.jajuk.util.log.Log;
 import org.jdesktop.swingx.decorator.Highlighter;
 import org.jdesktop.swingx.decorator.HighlighterFactory;
@@ -574,7 +574,7 @@ public final class UtilGUI {
    * @throws MalformedURLException
    */
   static public void showPictureDialog(String url) throws MalformedURLException {
-    JDialog jd = new JDialog(JajukWindow.getInstance());
+    JDialog jd = new JDialog(JajukMainWindow.getInstance());
     ImageIcon ii = new ImageIcon(new URL(url));
     JPanel jp = new JPanel();
     jp.setLayout(new BoxLayout(jp, BoxLayout.X_AXIS));
@@ -582,7 +582,7 @@ public final class UtilGUI {
     jp.add(jl);
     jd.setContentPane(jp);
     jd.pack();
-    jd.setLocationRelativeTo(JajukWindow.getInstance());
+    jd.setLocationRelativeTo(JajukMainWindow.getInstance());
     jd.setVisible(true);
   }
 

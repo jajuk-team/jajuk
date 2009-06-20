@@ -617,7 +617,7 @@ public interface Const {
    */
   String CONF_STARTUP_DISPLAY = "jajuk.startup_display_mode";
 
-  int DISPLAY_MODE_WINDOW_TRAY = 0;
+  int DISPLAY_MODE_MAIN_WINDOW = 0;
 
   int DISPLAY_MODE_TRAY = 1;
 

@@ -30,6 +30,7 @@ import java.beans.PropertyChangeListener;
 import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 
+import org.jajuk.ui.windows.JajukMainWindow;
 import org.jajuk.util.Messages;
 
 /**
@@ -79,8 +80,8 @@ public class PasswordDialog extends JajukJDialog implements ActionListener {
         pf.requestFocusInWindow();
       }
     });
-    setLocation(JajukWindow.getInstance().getX() + JajukWindow.getInstance().getWidth() / 3,
-        JajukWindow.getInstance().getY() + JajukWindow.getInstance().getHeight() / 3);
+    setLocation(JajukMainWindow.getInstance().getX() + JajukMainWindow.getInstance().getWidth() / 3,
+        JajukMainWindow.getInstance().getY() + JajukMainWindow.getInstance().getHeight() / 3);
     pack();
     setVisible(true);
   }

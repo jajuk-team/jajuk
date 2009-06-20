@@ -75,8 +75,8 @@ import org.jajuk.ui.helpers.FontManager.JajukFont;
 import org.jajuk.ui.thumbnails.LocalAlbumThumbnail;
 import org.jajuk.ui.widgets.InformationJPanel;
 import org.jajuk.ui.widgets.JajukJToolbar;
-import org.jajuk.ui.widgets.JajukWindow;
 import org.jajuk.ui.widgets.SteppedComboBox;
+import org.jajuk.ui.windows.JajukMainWindow;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.Filter;
@@ -405,8 +405,8 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
                 jpItems.removeAll();
               }
               JXBusyLabel busy = new JXBusyLabel(new Dimension(200, 200));
-              int xInset = ((JajukWindow.getInstance().getWidth() - 30) / 2) - 200;
-              int yInset = ((JajukWindow.getInstance().getHeight() - 120) / 2) - 200;
+              int xInset = ((JajukMainWindow.getInstance().getWidth() - 30) / 2) - 200;
+              int yInset = ((JajukMainWindow.getInstance().getHeight() - 120) / 2) - 200;
               busy.setBorder(new EmptyBorder(yInset, xInset, yInset, xInset));
               busy.setBusy(true);
               jpItems.add(busy);

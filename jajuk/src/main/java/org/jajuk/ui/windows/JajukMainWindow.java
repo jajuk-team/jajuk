@@ -15,11 +15,14 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- * $Revision$
+ * $Revision: 4714 $
  */
 
-package org.jajuk.ui.widgets;
+package org.jajuk.ui.windows;
 
+import com.vlsolutions.swing.docking.ui.DockingUISettings;
+
+import java.awt.BorderLayout;
 import java.awt.Frame;
 import java.awt.Toolkit;
 import java.awt.event.WindowAdapter;
@@ -28,10 +31,15 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.StringTokenizer;
 
+import javax.swing.BoxLayout;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 
-import org.jajuk.Main;
+import net.miginfocom.swing.MigLayout;
+
 import org.jajuk.base.File;
 import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
@@ -41,60 +49,120 @@ import org.jajuk.services.players.QueueModel;
 import org.jajuk.services.webradio.WebRadio;
 import org.jajuk.ui.actions.ActionManager;
 import org.jajuk.ui.actions.JajukActions;
+import org.jajuk.ui.perspectives.PerspectiveManager;
+import org.jajuk.ui.widgets.CommandJPanel;
+import org.jajuk.ui.widgets.InformationJPanel;
+import org.jajuk.ui.widgets.JajukJMenuBar;
+import org.jajuk.ui.widgets.PerspectiveBarJPanel;
+import org.jajuk.ui.widgets.SearchJPanel;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilString;
+import org.jajuk.util.UtilSystem;
+import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
+import org.jdesktop.swingx.JXPanel;
 
 /**
  * Jajuk main window
  * <p>
  * Singleton
  */
-public class JajukWindow extends JFrame implements Observer {
+public class JajukMainWindow extends JFrame implements JajukWindow, Observer {
 
   private static final long serialVersionUID = 1L;
 
   /** Self instance */
-  private static JajukWindow jw;
+  private static JajukMainWindow jw;
 
-  /** Show window at startup? */
-  private boolean bVisible = true;
+  /** Left side perspective selection panel */
+  private PerspectiveBarJPanel perspectiveBar;
+
+  /** Main frame panel */
+  private JPanel jpFrame;
+
+  /** specific perspective panel */
+  private JPanel perspectivePanel;
 
   /**
-   * Get instance
+   * State decorator
+   */
+  private WindowStateDecorator decorator;
+
+  /**
+   * Get the window instance and create the specific WindowStateHandler
    * 
    * @return
    */
-  public static JajukWindow getInstance() {
+  public static JajukMainWindow getInstance() {
     if (jw == null) {
-      jw = new JajukWindow();
+      jw = new JajukMainWindow();
+      jw.decorator = new WindowStateDecorator(jw) {
+        @Override
+        public void specificBeforeShown() {
+          jw.applyStoredSize();
+          if (UtilSystem.isUnderLinux()) {
+            // hide and show again is a workaround for a toFront() issue
+            // under Metacity, see
+            // http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6472274
+            jw.setVisible(false);
+          }
+        }
+
+        @Override
+        public void specificAfterShown() {
+          // Apply size and location again
+          // (required by Gnome for ie to fix the 0-sized maximized
+          // frame)
+          jw.applyStoredSize();
+          jw.toFront();
+          jw.setState(Frame.NORMAL);
+          // Need focus for keystrokes
+          jw.requestFocus();
+          // display right title if a track is launched at startup
+          jw.update(new JajukEvent(JajukEvents.FILE_LAUNCHED, ObservationManager
+              .getDetailsLastOccurence(JajukEvents.FILE_LAUNCHED)));
+        }
+
+        @Override
+        public void specificBeforeHidden() {
+          // hide the window only if it is explicitely required
+          jw.saveSize();
+        }
+
+        @Override
+        public void specificAfterHidden() {
+          // Nothing particular
+        }
+      };
     }
     return jw;
   }
 
   /**
-   * 
-   * @return whether the window is loaded
-   */
-  public static boolean isLoaded() {
-    return (jw != null);
-  }
-
-  /**
    * Constructor
    */
-  public JajukWindow() {
+  private JajukMainWindow() {
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.jajuk.ui.widgets.JajukWindow#getWindowStateDecorator()
+   */
+  public WindowStateDecorator getWindowStateDecorator() {
+    return decorator;
+  }
+
+  public void initUI() {
     // mac integration
     System.setProperty("apple.laf.useScreenMenuBar", "true");
     System.setProperty("apple.laf.useScreenMenuBar", "true");
     System.setProperty("apple.awt.showGrowBox", "false");
 
-    jw = this;
-    bVisible = (Conf.getInt(Const.CONF_STARTUP_DISPLAY) == Const.DISPLAY_MODE_WINDOW_TRAY);
     setTitle(Messages.getString("JajukWindow.17"));
     setIconImage(IconLoader.getIcon(JajukIcons.LOGO).getImage());
     setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -104,13 +172,13 @@ public class JajukWindow extends JFrame implements Observer {
 
       @Override
       public void windowDeiconified(WindowEvent arg0) {
-        bVisible = true;
+        getWindowStateDecorator().setWindowState(WindowState.BUILD_DISPLAYED);
         toFront();
       }
 
       @Override
       public void windowIconified(WindowEvent arg0) {
-        bVisible = false;
+        getWindowStateDecorator().setWindowState(WindowState.BUILD_NOT_DISPLAYED);
       }
 
       @Override
@@ -125,9 +193,66 @@ public class JajukWindow extends JFrame implements Observer {
       }
     });
 
-    // display correct title if a track is launched at startup
-    update(new JajukEvent(JajukEvents.FILE_LAUNCHED, ObservationManager
-        .getDetailsLastOccurence(JajukEvents.FILE_LAUNCHED)));
+    // Light drag and drop for VLDocking
+    UIManager.put("DragControler.paintBackgroundUnderDragRect", Boolean.FALSE);
+    DockingUISettings.getInstance().installUI();
+
+    // Set windows decoration to look and feel
+    JFrame.setDefaultLookAndFeelDecorated(true);
+    JDialog.setDefaultLookAndFeelDecorated(true);
+
+    // Creates the panel
+    jpFrame = (JPanel) getContentPane();
+    jpFrame.setOpaque(true);
+    jpFrame.setLayout(new BorderLayout());
+
+    // create the command bar
+    CommandJPanel command = CommandJPanel.getInstance();
+    command.initUI();
+
+    // Create the search bar
+    SearchJPanel searchPanel = SearchJPanel.getInstance();
+    searchPanel.initUI();
+
+    // Add the search bar
+    jpFrame.add(searchPanel, BorderLayout.NORTH);
+
+    // Create and add the information bar panel
+    InformationJPanel information = InformationJPanel.getInstance();
+
+    // Add the information panel
+    jpFrame.add(information, BorderLayout.SOUTH);
+
+    // Create the perspective manager
+    try {
+      PerspectiveManager.load();
+    } catch (JajukException e) {
+      // problem loading the perspective, let Main to handle this
+      Log.debug("Cannot create main window");
+      throw new RuntimeException(e);
+    }
+    perspectivePanel = new JXPanel();
+    // Make this panel extensible
+    perspectivePanel.setLayout(new BoxLayout(perspectivePanel, BoxLayout.X_AXIS));
+
+    // Set menu bar to the frame
+    JajukMainWindow.getInstance().setJMenuBar(JajukJMenuBar.getInstance());
+
+    // Create the perspective tool bar panel
+    perspectiveBar = PerspectiveBarJPanel.getInstance();
+    jpFrame.add(perspectiveBar, BorderLayout.WEST);
+
+    // Initialize and add the desktop
+    PerspectiveManager.init();
+
+    // Add main container (contains toolbars + desktop)
+    JPanel commandDesktop = new JPanel(new MigLayout("insets 0", "[grow]", "[grow][]"));
+    commandDesktop.add(perspectivePanel, "grow,wrap");
+    commandDesktop.add(command, "grow");
+    jpFrame.add(commandDesktop, BorderLayout.CENTER);
+
+    // Set new state
+    decorator.setWindowState(WindowState.BUILD_NOT_DISPLAYED);
   }
 
   public Set<JajukEvents> getRegistrationKeys() {
@@ -205,7 +330,7 @@ public class JajukWindow extends JFrame implements Observer {
     String sPosition = Conf.getString(Const.CONF_WINDOW_POSITION);
     // If user left jajuk maximized, reset this simple configuration
     if (sPosition.equals(Const.FRAME_MAXIMIZED)) {
-      // Always set a size that is used when un-maximalizing the frame
+      // Always set a size that is used when un-maximazing the frame
       setBounds(Const.FRAME_INITIAL_BORDER, Const.FRAME_INITIAL_BORDER, iScreenWidth - 2
           * Const.FRAME_INITIAL_BORDER, iScreenHeight - 2 * Const.FRAME_INITIAL_BORDER);
       if (Toolkit.getDefaultToolkit().isFrameStateSupported(Frame.MAXIMIZED_BOTH)) {
@@ -269,55 +394,7 @@ public class JajukWindow extends JFrame implements Observer {
     });
   }
 
-  /**
-   * @return Returns the bVisible.
-   */
-  public boolean isWindowVisible() {
-    return bVisible;
-  }
-
-  /**
-   * @param visible
-   *          The bVisible to set.
-   */
-  public void display(final boolean visible) {
-    if (!visible && !bVisible) {
-      return;
-    }
-
-    // start ui if needed
-    if (visible && !Main.isUILaunched()) {
-      try {
-        Main.launchWindow();
-      } catch (Exception e) {
-        Log.error(e);
-      }
-    }
-    // Show or hide the frame
-    SwingUtilities.invokeLater(new Runnable() {
-      public void run() {
-        // store state
-        bVisible = visible;
-        // show
-        if (visible) {
-          applyStoredSize();
-          // hide and show again is a workaround for a toFront() issue
-          // under Metacity, see
-          // http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6472274
-          setVisible(false);
-          setVisible(true);
-          toFront();
-          setState(Frame.NORMAL);
-          // Need focus for keystrokes
-          requestFocus();
-        }
-        // hide
-        else {
-          // hide the window only if it is explicitely required
-          saveSize();
-          setVisible(false);
-        }
-      }
-    });
+  public JPanel getPerspectivePanel() {
+    return perspectivePanel;
   }
 }

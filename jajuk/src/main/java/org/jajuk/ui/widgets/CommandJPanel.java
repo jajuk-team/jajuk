@@ -78,6 +78,7 @@ import org.jajuk.ui.substance.CircleButtonShaper;
 import org.jajuk.ui.substance.LeftConcaveButtonShaper;
 import org.jajuk.ui.substance.RightConcaveButtonShaper;
 import org.jajuk.ui.substance.RoundRectButtonShaper;
+import org.jajuk.ui.windows.JajukMainWindow;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
@@ -192,7 +193,7 @@ public class CommandJPanel extends JXPanel implements ActionListener, ChangeList
    * Constructor, this objects needs to be implemented for the tray (child
    * object)
    */
-  CommandJPanel() {
+  public CommandJPanel() {
     super();
   }
 
@@ -340,7 +341,7 @@ public class CommandJPanel extends JXPanel implements ActionListener, ChangeList
     // no text visible
     ddbDDJ.setText("");
 
-    popupWebRadio = new XJPopupMenu(JajukWindow.getInstance());
+    popupWebRadio = new XJPopupMenu(JajukMainWindow.getInstance());
     ddbWebRadio = new DropDownButton(IconLoader.getIcon(JajukIcons.WEBRADIO)) {
       private static final long serialVersionUID = 1L;
 

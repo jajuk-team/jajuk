@@ -44,7 +44,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
-import org.jajuk.ui.widgets.JajukWindow;
+import org.jajuk.ui.windows.JajukMainWindow;
 import org.jajuk.util.log.Log;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
@@ -517,7 +517,7 @@ class ConfirmDialog extends JajukDialog {
     dialog.setModal(true);
     dialog.setAlwaysOnTop(true);
     dialog.pack();
-    dialog.setLocationRelativeTo(JajukWindow.getInstance());
+    dialog.setLocationRelativeTo(JajukMainWindow.getInstance());
     dialog.setVisible(true);
     final Object resu = optionPane.getValue();
     // Set Cancel as default
@@ -601,7 +601,7 @@ class DetailsMessageDialog extends JajukDialog {
       dialogDetail.setAlwaysOnTop(true);
       dialogDetail.setContentPane(jp);
       dialogDetail.pack();
-      dialogDetail.setLocationRelativeTo(JajukWindow.getInstance());
+      dialogDetail.setLocationRelativeTo(JajukMainWindow.getInstance());
       dialogDetail.setVisible(true);
     }
   }
@@ -639,7 +639,7 @@ class HideableMessageDialog extends JajukDialog {
     // keep it modal (useful at startup)
     dialog.setModal(true);
     dialog.pack();
-    dialog.setLocationRelativeTo(JajukWindow.getInstance());
+    dialog.setLocationRelativeTo(JajukMainWindow.getInstance());
     dialog.setVisible(true);
     if (Messages.getString("Hide").equals(optionPane.getValue())) {
       // Not show again
@@ -677,7 +677,7 @@ class ErrorMessageDialog extends JajukDialog {
     // keep it modal (useful at startup)
     dialog.setModal(true);
     dialog.pack();
-    dialog.setLocationRelativeTo(JajukWindow.getInstance());
+    dialog.setLocationRelativeTo(JajukMainWindow.getInstance());
     dialog.setVisible(true);
   }
 }

@@ -48,8 +48,8 @@ import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.services.alarm.AlarmManager;
-import org.jajuk.ui.widgets.JajukWindow;
 import org.jajuk.ui.widgets.SearchBox;
+import org.jajuk.ui.windows.JajukMainWindow;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.Messages;
@@ -184,7 +184,7 @@ public class AlarmClockDialog extends JDialog implements ActionListener, ItemLis
     setMinimumSize(new Dimension(250, 100));
     setModal(true);
     pack();
-    setLocationRelativeTo(JajukWindow.getInstance());
+    setLocationRelativeTo(JajukMainWindow.getInstance());
     setVisible(true);
   }
 

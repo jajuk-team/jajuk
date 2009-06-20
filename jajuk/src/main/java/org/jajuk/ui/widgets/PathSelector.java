@@ -33,6 +33,7 @@ import javax.swing.JTextField;
 
 import net.miginfocom.swing.MigLayout;
 
+import org.jajuk.ui.windows.JajukMainWindow;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukFileFilter;
 import org.jajuk.util.JajukIcons;
@@ -74,7 +75,7 @@ public class PathSelector extends JPanel {
           // if URL is already set, use it as current directory
           jfc.setCurrentDirectory(new File(sUrl));
         }
-        final int returnVal = jfc.showOpenDialog(JajukWindow.getInstance());
+        final int returnVal = jfc.showOpenDialog(JajukMainWindow.getInstance());
         if (returnVal == JFileChooser.APPROVE_OPTION) {
           final String previousURL = jtfUrl.getText();
           final java.io.File file = jfc.getSelectedFile();
@@ -111,7 +112,7 @@ public class PathSelector extends JPanel {
           // if URL is already set, use it as current directory
           jfc.setCurrentDirectory(new File(sUrl));
         }
-        final int returnVal = jfc.showOpenDialog(JajukWindow.getInstance());
+        final int returnVal = jfc.showOpenDialog(JajukMainWindow.getInstance());
         if (returnVal == JFileChooser.APPROVE_OPTION) {
           final String previousURL = jtfUrl.getText();
           final java.io.File file = jfc.getSelectedFile();

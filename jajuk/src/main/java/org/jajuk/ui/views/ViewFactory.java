@@ -103,6 +103,7 @@ public final class ViewFactory {
     out.add(WikipediaView.class);
     out.add(AlbumsTableView.class);
     out.add(QueueView.class);
+    out.add(ArtistView.class);
     Collections.sort(out, new Comparator() {
       public int compare(Object view1, Object view2) {
         String s1;

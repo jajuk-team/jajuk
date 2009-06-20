@@ -99,6 +99,8 @@ import static org.jajuk.ui.actions.JajukActions.VIEW_RESTORE_DEFAULTS;
 import static org.jajuk.ui.actions.JajukActions.WEB_RADIO;
 
 import java.awt.Desktop;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.List;
@@ -220,7 +222,11 @@ public final class ActionManager {
     installAction(ALARM_CLOCK, new AlarmClockAction(), false);
     installAction(SHOW_ALBUM_DETAILS, new ShowAlbumDetailsAction(), false);
     installAction(SLIM_JAJUK, new SlimbarAction(), false);
-    installAction(FULLSCREEN_JAJUK, new FullscreenAction(), false);
+    // Install full screen actions only if supported
+    GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+    if (gd.isFullScreenSupported()) {
+      installAction(FULLSCREEN_JAJUK, new FullscreenAction(), false);
+    }
     installAction(PREPARE_PARTY, new PreparePartyAction(), false);
 
     // Selection actions

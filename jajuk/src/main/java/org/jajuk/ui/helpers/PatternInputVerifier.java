@@ -27,7 +27,7 @@ import javax.swing.JComponent;
 import javax.swing.JFormattedTextField;
 import javax.swing.JOptionPane;
 
-import org.jajuk.ui.widgets.JajukWindow;
+import org.jajuk.ui.windows.JajukMainWindow;
 import org.jajuk.util.Messages;
 
 /**
@@ -48,7 +48,7 @@ public class PatternInputVerifier extends InputVerifier {
     String sText = tf.getText().toLowerCase(Locale.getDefault());
     // Check pattern contains at least one /
     if (sText.indexOf('/') == -1) {
-      JOptionPane.showMessageDialog(JajukWindow.getInstance(), Messages.getString("Error.146"),
+      JOptionPane.showMessageDialog(JajukMainWindow.getInstance(), Messages.getString("Error.146"),
           Messages.getString("Error"), JOptionPane.ERROR_MESSAGE);
       return false;
     }

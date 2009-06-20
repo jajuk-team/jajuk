@@ -82,7 +82,7 @@ import org.jajuk.ui.widgets.InformationJPanel;
 import org.jajuk.ui.widgets.JajukButton;
 import org.jajuk.ui.widgets.JajukFileChooser;
 import org.jajuk.ui.widgets.JajukJToolbar;
-import org.jajuk.ui.widgets.JajukWindow;
+import org.jajuk.ui.windows.JajukMainWindow;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.DownloadManager;
@@ -570,7 +570,7 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
         final File finalFile = new File(dirReference.getFio().getPath() + "/"
             + UtilSystem.getOnlyFile(cover.getURL().toString()));
         jfchooser.setSelectedFile(finalFile);
-        final int returnVal = jfchooser.showSaveDialog(JajukWindow.getInstance());
+        final int returnVal = jfchooser.showSaveDialog(JajukMainWindow.getInstance());
         File fNew = null;
         if (returnVal == JFileChooser.APPROVE_OPTION) {
           fNew = jfchooser.getSelectedFile();

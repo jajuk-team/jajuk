@@ -43,7 +43,7 @@ import org.jajuk.services.bookmark.Bookmarks;
 import org.jajuk.services.players.QueueModel;
 import org.jajuk.services.players.StackItem;
 import org.jajuk.ui.widgets.JajukFileChooser;
-import org.jajuk.ui.widgets.JajukWindow;
+import org.jajuk.ui.windows.JajukMainWindow;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
@@ -694,7 +694,7 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
       return;
     }
     jfchooser.setSelectedFile(new java.io.File(sPlaylist + "." + Const.EXT_PLAYLIST));
-    final int returnVal = jfchooser.showSaveDialog(JajukWindow.getInstance());
+    final int returnVal = jfchooser.showSaveDialog(JajukMainWindow.getInstance());
     if (returnVal == JFileChooser.APPROVE_OPTION) {
       java.io.File file = jfchooser.getSelectedFile();
       // add automatically the extension if required
@@ -768,7 +768,7 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
     jfc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
     jfc.setDialogTitle(Messages.getString("FirstTimeWizard.5"));
     jfc.setMultiSelectionEnabled(false);
-    final int returnVal = jfc.showDialog(JajukWindow.getInstance(), "Ok");
+    final int returnVal = jfc.showDialog(JajukMainWindow.getInstance(), "Ok");
     if (returnVal == JFileChooser.APPROVE_OPTION) {
       new Thread() {
         @Override

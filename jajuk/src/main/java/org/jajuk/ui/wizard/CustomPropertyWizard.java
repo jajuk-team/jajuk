@@ -40,8 +40,8 @@ import org.jajuk.base.YearManager;
 import org.jajuk.ui.perspectives.FilesPerspective;
 import org.jajuk.ui.perspectives.PerspectiveManager;
 import org.jajuk.ui.widgets.JajukJDialog;
-import org.jajuk.ui.widgets.JajukWindow;
 import org.jajuk.ui.widgets.OKCancelPanel;
+import org.jajuk.ui.windows.JajukMainWindow;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilGUI;
 
@@ -65,7 +65,7 @@ public abstract class CustomPropertyWizard extends JajukJDialog implements Actio
   CustomPropertyWizard(String sTitle) {
     setTitle(sTitle);
     setModal(true);
-    setLocationRelativeTo(JajukWindow.getInstance());
+    setLocationRelativeTo(JajukMainWindow.getInstance());
   }
 
   /**

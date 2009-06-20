@@ -25,8 +25,9 @@ import java.awt.event.ActionEvent;
 import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
-import org.jajuk.ui.widgets.JajukSlimbar;
-import org.jajuk.ui.widgets.JajukWindow;
+import org.jajuk.ui.windows.JajukMainWindow;
+import org.jajuk.ui.windows.JajukSlimbar;
+import org.jajuk.ui.windows.WindowStateDecorator;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
@@ -45,24 +46,22 @@ public class SlimbarAction extends JajukAction {
 
   @Override
   public void perform(ActionEvent evt) throws Exception {
-    JajukSlimbar slimbar = JajukSlimbar.getInstance();
     /*
      * If slimbar is visible, hide it and show the main window. Note that both
      * main window and slimbar can be displayed at the same time: If the slimbar
      * is visible and user display main window by right clicking on the tray,
      * the main window is displayed, this is a normal behavior
      */
-    if (slimbar.isVisible()) {
-      JajukSlimbar.getInstance().setVisible(false);
-      JajukWindow.getInstance().display(true);
+    WindowStateDecorator sdSlimbar = JajukSlimbar.getInstance().getWindowStateDecorator();
+    WindowStateDecorator sdMainWindow = JajukMainWindow.getInstance().getWindowStateDecorator();
+
+    if (sdSlimbar.isDisplayed()) {
+      // close the previous window before displaying the other
+      sdSlimbar.display(false);
+      sdMainWindow.display(true);
     } else {
-      if (!slimbar.isInitialized()) {
-        slimbar.initUI();
-      }
-      slimbar.setVisible(true);
-      JajukWindow.getInstance().display(false);
-      // Need focus for keystrokes
-      slimbar.requestFocus();
+      sdMainWindow.display(false);
+      sdSlimbar.display(true);
     }
     // Notify that slimbar visibility change (menu bar is interested in it)
     ObservationManager.notify(new JajukEvent(JajukEvents.PARAMETERS_CHANGE));

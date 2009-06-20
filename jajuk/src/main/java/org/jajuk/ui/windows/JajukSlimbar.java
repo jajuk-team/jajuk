@@ -17,7 +17,7 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Revision: 3612 $
  */
-package org.jajuk.ui.widgets;
+package org.jajuk.ui.windows;
 
 import static org.jajuk.ui.actions.JajukActions.MUTE_STATE;
 import static org.jajuk.ui.actions.JajukActions.NEXT_ALBUM;
@@ -74,6 +74,12 @@ import org.jajuk.ui.actions.ActionUtil;
 import org.jajuk.ui.actions.JajukActions;
 import org.jajuk.ui.actions.MuteAction;
 import org.jajuk.ui.helpers.PlayerStateMediator;
+import org.jajuk.ui.widgets.JajukBalloon;
+import org.jajuk.ui.widgets.JajukButton;
+import org.jajuk.ui.widgets.JajukJToolbar;
+import org.jajuk.ui.widgets.PreferenceToolbar;
+import org.jajuk.ui.widgets.SearchBox;
+import org.jajuk.ui.widgets.SizedButton;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
@@ -90,8 +96,8 @@ import org.jajuk.util.log.Log;
  * Singleton
  * </p>
  */
-public final class JajukSlimbar extends JFrame implements Observer, MouseWheelListener,
-    ActionListener {
+public final class JajukSlimbar extends JFrame implements JajukWindow, Observer,
+    MouseWheelListener, ActionListener {
 
   private static final long serialVersionUID = 1L;
 
@@ -131,20 +137,51 @@ public final class JajukSlimbar extends JFrame implements Observer, MouseWheelLi
 
   private String title = "";
 
-  private boolean bInitialized = false;
+  /**
+   * State decorator
+   */
+  private WindowStateDecorator decorator;
 
   JajukBalloon balloon;
-
-  /** True if user close the slim bar from the taskbar */
-  private boolean closing = false;
 
   private static JajukSlimbar self;
 
   public static JajukSlimbar getInstance() {
     if (self == null) {
       self = new JajukSlimbar();
+      self.decorator = new WindowStateDecorator(self) {
+        @Override
+        public void specificAfterHidden() {
+          // Nothing particular to do here
+        }
+
+        @Override
+        public void specificBeforeHidden() {
+          // Nothing particular to do here
+        }
+
+        @Override
+        public void specificAfterShown() {
+          // Need focus for keystrokes
+          self.requestFocus();
+        }
+
+        @Override
+        public void specificBeforeShown() {
+          self.pack();
+        }
+      };
     }
     return self;
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.jajuk.ui.widgets.JajukWindow#getWindowStateDecorator()
+   */
+  public WindowStateDecorator getWindowStateDecorator() {
+    return decorator;
   }
 
   /**
@@ -175,22 +212,6 @@ public final class JajukSlimbar extends JFrame implements Observer, MouseWheelLi
     JDialog.setDefaultLookAndFeelDecorated(true);
   }
 
-  /**
-   * 
-   * @return whether the slimbar is loaded
-   */
-  public static boolean isLoaded() {
-    return (self != null);
-  }
-
-  /**
-   * 
-   * @return whether the method initUI() has already been executed
-   */
-  public boolean isInitialized() {
-    return bInitialized;
-  }
-
   public void initUI() {
     // Instanciate the PlayerStateMediator to listen for player basic controls
     PlayerStateMediator.getInstance();
@@ -202,7 +223,6 @@ public final class JajukSlimbar extends JFrame implements Observer, MouseWheelLi
       @Override
       public void windowClosing(WindowEvent e) {
         try {
-          closing = true;
           ActionManager.getAction(JajukActions.EXIT).perform(null);
         } catch (Exception e1) {
           Log.error(e1);
@@ -426,7 +446,8 @@ public final class JajukSlimbar extends JFrame implements Observer, MouseWheelLi
     // Init keystrokes
     setKeystrokes();
 
-    bInitialized = true;
+    // Set new state
+    decorator.setWindowState(WindowState.BUILD_NOT_DISPLAYED);
   }
 
   private void setKeystrokes() {
@@ -475,18 +496,6 @@ public final class JajukSlimbar extends JFrame implements Observer, MouseWheelLi
     } catch (Exception e) {
       return Messages.getString("JajukWindow.17");
     }
-  }
-
-  /**
-   * We want to alert the main hook thread to consider the slim bar window has
-   * visible when user closed the slimbar from the taskbar to save this state
-   * and display the slimbar at next startup
-   * 
-   * @return whether the slim bar is visible
-   */
-  @Override
-  public boolean isVisible() {
-    return super.isVisible() || closing;
   }
 
   /*

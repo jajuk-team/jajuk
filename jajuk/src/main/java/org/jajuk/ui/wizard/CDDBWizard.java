@@ -49,9 +49,9 @@ import org.jajuk.ui.helpers.CDDBTableModel;
 import org.jajuk.ui.widgets.InformationJPanel;
 import org.jajuk.ui.widgets.JajukJDialog;
 import org.jajuk.ui.widgets.JajukTable;
-import org.jajuk.ui.widgets.JajukWindow;
 import org.jajuk.ui.widgets.OKCancelPanel;
 import org.jajuk.ui.widgets.SteppedComboBox;
+import org.jajuk.ui.windows.JajukMainWindow;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilGUI;
 import org.jajuk.util.UtilString;
@@ -202,7 +202,7 @@ public class CDDBWizard extends JajukJDialog implements ActionListener {
 
     getRootPane().setDefaultButton(okc.getOKButton());
     pack();
-    setLocationRelativeTo(JajukWindow.getInstance());
+    setLocationRelativeTo(JajukMainWindow.getInstance());
     setVisible(true);
   }
 

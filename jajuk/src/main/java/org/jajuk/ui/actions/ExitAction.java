@@ -26,10 +26,12 @@ import javax.swing.SwingUtilities;
 
 import org.jajuk.services.core.ExitService;
 import org.jajuk.ui.perspectives.PerspectiveManager;
-import org.jajuk.ui.widgets.JajukFullScreenWindow;
-import org.jajuk.ui.widgets.JajukSlimbar;
-import org.jajuk.ui.widgets.JajukSystray;
-import org.jajuk.ui.widgets.JajukWindow;
+import org.jajuk.ui.windows.JajukFullScreenWindow;
+import org.jajuk.ui.windows.JajukMainWindow;
+import org.jajuk.ui.windows.JajukSlimbar;
+import org.jajuk.ui.windows.JajukSystray;
+import org.jajuk.ui.windows.WindowState;
+import org.jajuk.ui.windows.WindowStateDecorator;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
@@ -65,7 +67,8 @@ public class ExitAction extends JajukAction {
       // commit perspectives if no full restore
       // engaged. Perspective should be commited before the window
       // being closed to avoid a dead lock in VLDocking
-      if (!RestoreAllViewsAction.isFullRestore() && JajukWindow.isLoaded()) {
+      if (!RestoreAllViewsAction.isFullRestore()
+          && JajukMainWindow.getInstance().getWindowStateDecorator().isDisplayed()) {
         try {
           PerspectiveManager.commit();
         } catch (Exception e) {
@@ -74,41 +77,50 @@ public class ExitAction extends JajukAction {
       }
 
       // Store window/tray/slimbar configuration
-      if (JajukSlimbar.isLoaded() && JajukSlimbar.getInstance().isVisible()) {
+
+      WindowStateDecorator sdSlimbar = JajukSlimbar.getInstance().getWindowStateDecorator();
+      WindowStateDecorator sdMainWindow = JajukMainWindow.getInstance().getWindowStateDecorator();
+      WindowStateDecorator sdTray = JajukSystray.getInstance().getWindowStateDecorator();
+      WindowStateDecorator sdfullscreen = JajukFullScreenWindow.getInstance()
+          .getWindowStateDecorator();
+
+      // Set main window display at next startup as a default
+      Conf
+          .setProperty(Const.CONF_STARTUP_DISPLAY, Integer.toString(Const.DISPLAY_MODE_MAIN_WINDOW));
+
+      if (sdSlimbar.getWindowState() == WindowState.BUILD_DISPLAYED) {
         Conf.setProperty(Const.CONF_STARTUP_DISPLAY, Integer
             .toString(Const.DISPLAY_MODE_SLIMBAR_TRAY));
       }
-      if (JajukWindow.isLoaded() && JajukWindow.getInstance().isVisible()) {
+      
+      if (sdMainWindow.isDisplayed()) {
         Conf.setProperty(Const.CONF_STARTUP_DISPLAY, Integer
-            .toString(Const.DISPLAY_MODE_WINDOW_TRAY));
-      }
-
-      if (!(JajukSlimbar.isLoaded() && JajukSlimbar.getInstance().isVisible())
-          && !(JajukWindow.isLoaded() && JajukWindow.getInstance().isVisible())) {
-        Conf.setProperty(Const.CONF_STARTUP_DISPLAY, Integer.toString(Const.DISPLAY_MODE_TRAY));
+            .toString(Const.DISPLAY_MODE_MAIN_WINDOW));
       }
       
-      if (JajukFullScreenWindow.isLoaded() && JajukFullScreenWindow.getInstance().isVisible()) {
+      // None window displayed ? set the tray only (if the show tray option is set)
+      if (!sdSlimbar.isDisplayed() && !sdMainWindow.isDisplayed() && !sdfullscreen.isDisplayed()
+          && Conf.getBoolean(Const.CONF_SHOW_SYSTRAY)) {
+        Conf.setProperty(Const.CONF_STARTUP_DISPLAY, Integer.toString(Const.DISPLAY_MODE_TRAY));
+      }
+
+      if (sdfullscreen.getWindowState() == WindowState.BUILD_DISPLAYED) {
         Conf.setProperty(Const.CONF_STARTUP_DISPLAY, Integer
             .toString(Const.DISPLAY_MODE_FULLSCREEN));
       }
-      
-      // hide window ASAP
-      if (JajukWindow.isLoaded()) {
-        JajukWindow.getInstance().dispose();
-      }
+
+      // hide windows ASAP
+      sdMainWindow.display(false);
+
       // hide systray
-      if (JajukSystray.isLoaded()) {
-        JajukSystray.getInstance().dispose();
-      }
+      sdTray.display(false);
+
       // Hide slimbar
-      if (JajukSlimbar.isLoaded()) {
-        JajukSlimbar.getInstance().dispose();
-      }
+      sdSlimbar.display(false);
+
       // Hide full screen
-      if (JajukFullScreenWindow.isLoaded()) {
-        JajukFullScreenWindow.getInstance().dispose();
-      }
+      sdfullscreen.display(false);
+
     }
     // Exit Jajuk
     ExitService.exit(0);

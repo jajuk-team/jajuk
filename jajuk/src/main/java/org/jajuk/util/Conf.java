@@ -205,7 +205,7 @@ public final class Conf implements Const {
     defaults.put(CONF_TAGS_USE_PARENT_DIR, TRUE);
     defaults.put(CONF_DROP_PLAYED_TRACKS_FROM_QUEUE, FALSE);
     defaults.put(CONF_BOOKMARKS, "");
-    defaults.put(CONF_STARTUP_DISPLAY, Integer.toString(DISPLAY_MODE_WINDOW_TRAY));
+    defaults.put(CONF_STARTUP_DISPLAY, Integer.toString(DISPLAY_MODE_MAIN_WINDOW));
     defaults.put(CONF_BESTOF_TRACKS_SIZE, "20");
     defaults.put(CONF_VOLUME, "0.5");
     defaults.put(CONF_REGEXP, FALSE);

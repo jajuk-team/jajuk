@@ -17,12 +17,14 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *  $Revision: 3132 $
  */
-package org.jajuk.ui.widgets;
+package org.jajuk.ui.windows;
 
 import static org.jajuk.ui.actions.JajukActions.NEXT_TRACK;
 import static org.jajuk.ui.actions.JajukActions.PAUSE_RESUME_TRACK;
 import static org.jajuk.ui.actions.JajukActions.PREVIOUS_TRACK;
 import static org.jajuk.ui.actions.JajukActions.STOP_TRACK;
+
+import com.vlsolutions.swing.docking.ui.DockingUISettings;
 
 import java.awt.Dimension;
 import java.awt.DisplayMode;
@@ -30,9 +32,11 @@ import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 
 import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JWindow;
-import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 
 import net.miginfocom.swing.MigLayout;
 
@@ -44,17 +48,19 @@ import org.jajuk.ui.substance.RightConcaveButtonShaper;
 import org.jajuk.ui.substance.RoundRectButtonShaper;
 import org.jajuk.ui.views.AnimationView;
 import org.jajuk.ui.views.CoverView;
+import org.jajuk.ui.widgets.JajukButton;
+import org.jajuk.ui.widgets.TrackPositionSliderToolbar;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
-import org.jajuk.util.Messages;
-import org.jajuk.util.error.JajukException;
-import org.jajuk.util.log.Log;
 import org.jvnet.substance.SubstanceLookAndFeel;
 
 /**
- * The full screen window
+ * The full screen window Note that not all operating support full screen mode.
+ * If the OS doesn't support it, the user cannot access to it so we have not to
+ * handle any errors.
+ * 
  */
-public class JajukFullScreenWindow extends JWindow {
+public class JajukFullScreenWindow extends JWindow implements JajukWindow {
 
   private static final long serialVersionUID = -2859302706462954993L;
 
@@ -63,8 +69,6 @@ public class JajukFullScreenWindow extends JWindow {
   private final DisplayMode origDisplayMode;
 
   private final GraphicsDevice graphicsDevice;
-
-  private boolean fullscreen = false;
 
   private JButton jbPrevious;
 
@@ -80,18 +84,47 @@ public class JajukFullScreenWindow extends JWindow {
 
   private CoverView coverView;
 
+  /**
+   * State decorator
+   */
+  private WindowStateDecorator decorator;
+
   public static JajukFullScreenWindow getInstance() {
     if (instance == null) {
       instance = new JajukFullScreenWindow();
+      instance.decorator = new WindowStateDecorator(instance) {
+        @Override
+        public void specificBeforeShown() {
+          JajukMainWindow.getInstance().setVisible(false);
+          instance.graphicsDevice.setFullScreenWindow(instance);
+
+          // topPanel should have 10% of the display resolution height
+          instance.setPreferredSize(new Dimension(instance.graphicsDevice.getDisplayMode()
+              .getWidth(), (instance.graphicsDevice.getDisplayMode().getHeight() / 100) * 10));
+
+          instance.validate();
+        }
+
+        @Override
+        public void specificAfterShown() {
+          // TODO Auto-generated method stub
+
+        }
+
+        @Override
+        public void specificAfterHidden() {
+          // TODO Auto-generated method stub
+
+        }
+
+        @Override
+        public void specificBeforeHidden() {
+          // TODO Auto-generated method stub
+
+        }
+      };
     }
     return instance;
-  }
-
-  /**
-   * @return the fullscreen
-   */
-  public boolean isFullscreen() {
-    return this.fullscreen;
   }
 
   public JajukFullScreenWindow() {
@@ -99,22 +132,18 @@ public class JajukFullScreenWindow extends JWindow {
     this.graphicsDevice = GraphicsEnvironment.getLocalGraphicsEnvironment()
         .getDefaultScreenDevice();
     this.origDisplayMode = graphicsDevice.getDisplayMode();
-
-    initUI();
   }
 
-  /**
-   * 
-   * @return whether the window is loaded
-   */
-  public static boolean isLoaded() {
-    return (instance != null);
-  }
+  public void initUI() {
 
-  /**
-   * 
-   */
-  private void initUI() {
+    // Light drag and drop for VLDocking
+    UIManager.put("DragControler.paintBackgroundUnderDragRect", Boolean.FALSE);
+    DockingUISettings.getInstance().installUI();
+
+    // Set windows decoration to look and feel
+    JFrame.setDefaultLookAndFeelDecorated(true);
+    JDialog.setDefaultLookAndFeelDecorated(true);
+
     // Full screen switch button
     jbFull = new JajukButton(ActionManager.getAction(JajukActions.FULLSCREEN_JAJUK));
 
@@ -144,6 +173,8 @@ public class JajukFullScreenWindow extends JWindow {
     add(jtbPlay, "alignx center,gap bottom 20,wrap");
     add(tpst, "alignx center,width 50%!,aligny bottom,gap bottom 10");
 
+    // Set new state
+    decorator.setWindowState(WindowState.BUILD_NOT_DISPLAYED);
   }
 
   /**
@@ -185,39 +216,12 @@ public class JajukFullScreenWindow extends JWindow {
     return jPanelPlay;
   }
 
-  public void setFullScreen(final boolean enable) {
-
-    // Show or hide the frame
-    SwingUtilities.invokeLater(new Runnable() {
-      public void run() {
-        fullscreen = enable;
-
-        if (enable) {
-          // check, if we can paint fullscreen
-          if (graphicsDevice.isFullScreenSupported()) {
-            JajukWindow.getInstance().setVisible(false);
-
-            setVisible(true);
-            graphicsDevice.setFullScreenWindow(instance);
-
-            // topPanel should have 10% of the display resolution height
-            setPreferredSize(new Dimension(graphicsDevice.getDisplayMode().getWidth(),
-                (graphicsDevice.getDisplayMode().getHeight() / 100) * 10));
-
-            validate();
-          } else {
-            fullscreen = false;
-            Messages.showErrorMessage(178);
-            Log.error(new JajukException(178, "", null));
-          }
-        } else {
-          // set everything like it was before entering fullscreen mode
-          graphicsDevice.setDisplayMode(origDisplayMode);
-          graphicsDevice.setFullScreenWindow(null);
-          setVisible(false);
-          JajukWindow.getInstance().setVisible(true);
-        }
-      }
-    });
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.jajuk.ui.widgets.JajukWindow#getWindowStateDecorator()
+   */
+  public WindowStateDecorator getWindowStateDecorator() {
+    return decorator;
   }
 }

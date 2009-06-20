@@ -36,7 +36,7 @@ import org.jajuk.base.File;
 import org.jajuk.base.Track;
 import org.jajuk.base.TrackManager;
 import org.jajuk.ui.widgets.DuplicateTracksList;
-import org.jajuk.ui.widgets.JajukWindow;
+import org.jajuk.ui.windows.JajukMainWindow;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
@@ -98,7 +98,7 @@ public class FindDuplicateTracksAction extends JajukAction {
 
             // Display the window.
             duplicateFiles.pack();
-            duplicateFiles.setLocationRelativeTo(JajukWindow.getInstance());
+            duplicateFiles.setLocationRelativeTo(JajukMainWindow.getInstance());
             duplicateFiles.setVisible(true);
           }
         } finally {

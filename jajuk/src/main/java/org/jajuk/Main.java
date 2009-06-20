@@ -18,12 +18,11 @@
  */
 package org.jajuk;
 
-import com.vlsolutions.swing.docking.ui.DockingUISettings;
-
 import ext.JSplash;
 import ext.JVM;
 
-import java.awt.BorderLayout;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
 import java.awt.SystemTray;
 import java.io.File;
 import java.io.FilenameFilter;
@@ -36,17 +35,11 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
-import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
-import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.xml.parsers.ParserConfigurationException;
-
-import net.miginfocom.swing.MigLayout;
 
 import org.jajuk.base.AlbumManager;
 import org.jajuk.base.AuthorManager;
@@ -72,15 +65,8 @@ import org.jajuk.ui.actions.ActionManager;
 import org.jajuk.ui.actions.JajukActions;
 import org.jajuk.ui.helpers.FontManager;
 import org.jajuk.ui.helpers.FontManager.JajukFont;
-import org.jajuk.ui.perspectives.PerspectiveManager;
-import org.jajuk.ui.widgets.CommandJPanel;
-import org.jajuk.ui.widgets.InformationJPanel;
-import org.jajuk.ui.widgets.JajukFullScreenWindow;
-import org.jajuk.ui.widgets.JajukJMenuBar;
-import org.jajuk.ui.widgets.JajukSystray;
-import org.jajuk.ui.widgets.JajukWindow;
-import org.jajuk.ui.widgets.PerspectiveBarJPanel;
-import org.jajuk.ui.widgets.SearchJPanel;
+import org.jajuk.ui.windows.JajukMainWindow;
+import org.jajuk.ui.windows.JajukSystray;
 import org.jajuk.ui.wizard.TipOfTheDayWizard;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
@@ -95,7 +81,6 @@ import org.jajuk.util.UtilString;
 import org.jajuk.util.UtilSystem;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
-import org.jdesktop.swingx.JXPanel;
 import org.jvnet.substance.skin.SubstanceBusinessLookAndFeel;
 import org.xml.sax.SAXException;
 
@@ -104,23 +89,11 @@ import org.xml.sax.SAXException;
  */
 public final class Main {
 
-  /** Left side perspective selection panel */
-  private static PerspectiveBarJPanel perspectiveBar;
-
-  /** Main frame panel */
-  private static JPanel jpFrame;
-
-  /** specific perspective panel */
-  private static JPanel perspectivePanel;
-
   /** splash screen */
   private static JSplash sc;
 
   /** Does a collection parsing error occurred ? * */
   private static boolean bCollectionLoadRecover = true;
-
-  /** UI launched flag */
-  private static boolean bUILauched = false;
 
   /** default perspective to choose, if null, we take the configuration one */
   private static String sPerspective;
@@ -216,7 +189,7 @@ public final class Main {
           sc.setTitle(Messages.getString("JajukWindow.3"));
           sc.setProgress(0, Messages.getString("SplashScreen.0"));
           // Actually show the splashscreen only if required
-          if (Conf.getInt(Const.CONF_STARTUP_DISPLAY) == Const.DISPLAY_MODE_WINDOW_TRAY
+          if (Conf.getInt(Const.CONF_STARTUP_DISPLAY) == Const.DISPLAY_MODE_MAIN_WINDOW
               || Conf.getInt(Const.CONF_STARTUP_DISPLAY) == Const.DISPLAY_MODE_FULLSCREEN) {
             sc.splashOn();
           }
@@ -301,27 +274,9 @@ public final class Main {
       // tray
       ActionManager.getInstance();
 
-      // show window according to startup mode
-      if (Conf.getInt(Const.CONF_STARTUP_DISPLAY) == Const.DISPLAY_MODE_WINDOW_TRAY) {
-        // Display progress
-        sc.setProgress(80, Messages.getString("SplashScreen.3"));
-        launchWindow();
-      }
+      // Launch the right jajuk window
+      launchUI();
 
-      // Show full screen according to startup mode
-      else if (Conf.getInt(Const.CONF_STARTUP_DISPLAY) == Const.DISPLAY_MODE_FULLSCREEN) {
-        // Display progress
-        sc.setProgress(80, Messages.getString("SplashScreen.3"));
-        launchFullScreenWindow();
-      }
-
-      // start the tray
-      launchTray();
-
-      // Start the slimbar if required
-      if (Conf.getInt(Const.CONF_STARTUP_DISPLAY) == Const.DISPLAY_MODE_SLIMBAR_TRAY) {
-        launchSlimbar();
-      }
     } catch (final JajukException je) { // last chance to catch any error
       // for
       // logging purpose
@@ -633,90 +588,57 @@ public final class Main {
   }
 
   /**
-   * Launch jajuk window
+   * Display the right window according to configuration and handles problems
    */
-  public static void launchWindow() {
-    if (bUILauched) {
-      return;
-    }
+  private static void launchUI() {
     // ui init
     SwingUtilities.invokeLater(new Runnable() {
       public void run() {
         try {
-          // Light drag and drop for VLDocking
-          UIManager.put("DragControler.paintBackgroundUnderDragRect", Boolean.FALSE);
-          DockingUISettings.getInstance().installUI();
-
-          // Set windows decoration to look and feel
-          JFrame.setDefaultLookAndFeelDecorated(true);
-          JDialog.setDefaultLookAndFeelDecorated(true);
-
-          // starts ui
-          JajukWindow.getInstance();
-
-          // Creates the panel
-          jpFrame = (JPanel) JajukWindow.getInstance().getContentPane();
-          jpFrame.setOpaque(true);
-          jpFrame.setLayout(new BorderLayout());
-
-          // create the command bar
-          CommandJPanel command = CommandJPanel.getInstance();
-          command.initUI();
-
-          // Create the search bar
-          SearchJPanel searchPanel = SearchJPanel.getInstance();
-          searchPanel.initUI();
-
-          // Add the search bar
-          jpFrame.add(searchPanel, BorderLayout.NORTH);
-
-          // Create and add the information bar panel
-          InformationJPanel information = InformationJPanel.getInstance();
-
-          // Add the information panel
-          jpFrame.add(information, BorderLayout.SOUTH);
-
-          // Create the perspective manager
-          PerspectiveManager.load();
-          perspectivePanel = new JXPanel();
-          // Make this panel extensible
-          perspectivePanel.setLayout(new BoxLayout(perspectivePanel, BoxLayout.X_AXIS));
-
-          // Set menu bar to the frame
-          JajukWindow.getInstance().setJMenuBar(JajukJMenuBar.getInstance());
-
-          // Create the perspective tool bar panel
-          perspectiveBar = PerspectiveBarJPanel.getInstance();
-          jpFrame.add(perspectiveBar, BorderLayout.WEST);
-
-          // Apply size and location BEFORE setVisible
-          JajukWindow.getInstance().applyStoredSize();
-
-          // Display the frame
-          JajukWindow.getInstance().setVisible(true);
-
-          // Apply size and location again
-          // (required by Gnome for ie to fix the 0-sized maximized
-          // frame)
-          JajukWindow.getInstance().applyStoredSize();
-
-          // Initialize and add the desktop
-          PerspectiveManager.init();
-
-          // Add main container (contains toolbars + desktop)
-          JPanel commandDesktop = new JPanel(new MigLayout("insets 0", "[grow]", "[grow][]"));
-          commandDesktop.add(perspectivePanel, "grow,wrap");
-          commandDesktop.add(command, "grow");
-          jpFrame.add(commandDesktop, BorderLayout.CENTER);
-
+          // Display progress
+          sc.setProgress(80, Messages.getString("SplashScreen.3"));
+          
+          // show window according to startup mode
+          if (Conf.getInt(Const.CONF_STARTUP_DISPLAY) == Const.DISPLAY_MODE_MAIN_WINDOW) {
+            JajukMainWindow mainWindow = JajukMainWindow.getInstance();
+            // Build the GUI
+            mainWindow.initUI();
+            mainWindow.getWindowStateDecorator().display(true);
+          }
+          // Show full screen according to startup mode. If the fullscreen mode
+          // is no more available (because the user changed the platform for
+          // ie), force the main window mode
+          else if (Conf.getInt(Const.CONF_STARTUP_DISPLAY) == Const.DISPLAY_MODE_FULLSCREEN) {
+            GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment()
+                .getDefaultScreenDevice();
+            if (gd.isFullScreenSupported()) {
+              // Display progress
+              sc.setProgress(80, Messages.getString("SplashScreen.3"));
+              ActionManager.getAction(JajukActions.FULLSCREEN_JAJUK).perform(null);
+            } else {
+              Conf.setProperty(Const.CONF_STARTUP_DISPLAY, Integer
+                  .toString(Const.DISPLAY_MODE_MAIN_WINDOW));
+              launchUI();
+            }
+          }
+          // Start the slimbar if required
+          else if (Conf.getInt(Const.CONF_STARTUP_DISPLAY) == Const.DISPLAY_MODE_SLIMBAR_TRAY) {
+            ActionManager.getAction(JajukActions.SLIM_JAJUK).perform(null);
+          }
+          // In all cases, display the tray is user didn't force to hide it and
+          // if the platform supports it
+          if (Conf.getBoolean(Const.CONF_SHOW_SYSTRAY) && SystemTray.isSupported()) {
+            JajukSystray tray = JajukSystray.getInstance();
+            tray.initUI();
+            tray.getWindowStateDecorator().display(true);
+          }
           // Display tip of the day if required (not at the first
           // session to avoid displaying too many windows once)
           if (Conf.getBoolean(Const.CONF_SHOW_TIP_ON_STARTUP) && !UpgradeManager.isFirstSesion()) {
             final TipOfTheDayWizard tipsView = new TipOfTheDayWizard();
-            tipsView.setLocationRelativeTo(JajukWindow.getInstance());
+            tipsView.setLocationRelativeTo(JajukMainWindow.getInstance());
             tipsView.setVisible(true);
           }
-
         } catch (final Exception e) { // last chance to catch any
           // error for
           // logging purpose
@@ -731,7 +653,6 @@ public final class Main {
             // free resources
             sc = null;
           }
-          bUILauched = true;
           // Notify any first time wizard to startup refresh
           synchronized (canLaunchRefresh) {
             canLaunchRefresh.notify();
@@ -740,92 +661,6 @@ public final class Main {
       }
     });
 
-  }
-
-  /**
-   * Launch jajuk full screen window
-   */
-  public static void launchFullScreenWindow() {
-    if (bUILauched) {
-      return;
-    }
-    // ui init
-    SwingUtilities.invokeLater(new Runnable() {
-      public void run() {
-        try {
-          // Light drag and drop for VLDocking
-          UIManager.put("DragControler.paintBackgroundUnderDragRect", Boolean.FALSE);
-          DockingUISettings.getInstance().installUI();
-
-          // Set windows decoration to look and feel
-          JFrame.setDefaultLookAndFeelDecorated(true);
-          JDialog.setDefaultLookAndFeelDecorated(true);
-
-          // starts ui
-          JajukFullScreenWindow fspf = JajukFullScreenWindow.getInstance();
-          fspf.setFullScreen(!fspf.isFullscreen());
-
-        } catch (final Exception e) { // last chance to catch any
-          // error for
-          // logging purpose
-          e.printStackTrace();
-          Log.error(106, e);
-        } finally {
-          if (sc != null) {
-            // Display progress
-            sc.setProgress(100);
-            sc.splashOff();
-
-            // free resources
-            sc = null;
-          }
-          bUILauched = true;
-          // Notify any first time wizard to startup refresh
-          synchronized (canLaunchRefresh) {
-            canLaunchRefresh.notify();
-          }
-        }
-      }
-    });
-
-  }
-
-  /** Launch tray */
-  private static void launchTray() {
-    // Skip the tray launching if user forced it to hide
-    if (!Conf.getBoolean(Const.CONF_SHOW_SYSTRAY)) {
-      return;
-    }
-    // Now check if try is supported on this platform
-    if (!SystemTray.isSupported()) {
-      Log.debug("Tray unsupported");
-      return;
-    }
-    SwingUtilities.invokeLater(new Runnable() {
-      public void run() {
-        JajukSystray.getInstance();
-      }
-    });
-  }
-
-  /** Launch slimbar */
-  private static void launchSlimbar() {
-    SwingUtilities.invokeLater(new Runnable() {
-      public void run() {
-        try {
-          ActionManager.getAction(JajukActions.SLIM_JAJUK).perform(null);
-        } catch (Exception e) {
-          Log.error(e);
-        }
-      }
-    });
-  }
-
-  /**
-   * @return Returns the bUILauched.
-   */
-  public static boolean isUILaunched() {
-    return bUILauched;
   }
 
   /**
@@ -841,10 +676,6 @@ public final class Main {
    */
   public static void setDefaultPerspective(final String perspective) {
     sPerspective = perspective;
-  }
-
-  public static JPanel getPerspectivePanel() {
-    return perspectivePanel;
   }
 
   public static void initializeFromThumbnailsMaker(final boolean bTest, final String workspace) {

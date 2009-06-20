@@ -44,7 +44,7 @@ import org.jajuk.events.ObservationManager;
 import org.jajuk.events.Observer;
 import org.jajuk.services.players.QueueModel;
 import org.jajuk.services.webradio.WebRadio;
-import org.jajuk.ui.widgets.JajukWindow;
+import org.jajuk.ui.windows.JajukMainWindow;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.Messages;
@@ -125,7 +125,7 @@ public class AnimationView extends ViewAdapter implements Observer, ComponentLis
         int i = 40;
         while (!bOk) {
           font = new Font("verdana", Font.BOLD, i);
-          FontMetrics fontMetrics = JajukWindow.getInstance().getFontMetrics(font);
+          FontMetrics fontMetrics = JajukMainWindow.getInstance().getFontMetrics(font);
           int iFontSize = SwingUtilities.computeStringWidth(fontMetrics, sText);
           if (iFontSize <= iSize - 150) {
             bOk = true;

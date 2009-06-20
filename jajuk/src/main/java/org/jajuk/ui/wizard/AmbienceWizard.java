@@ -49,7 +49,7 @@ import org.jajuk.services.dj.AmbienceDigitalDJ;
 import org.jajuk.services.dj.AmbienceManager;
 import org.jajuk.ui.helpers.FontManager;
 import org.jajuk.ui.helpers.FontManager.JajukFont;
-import org.jajuk.ui.widgets.JajukWindow;
+import org.jajuk.ui.windows.JajukMainWindow;
 import org.jajuk.util.Conf;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
@@ -342,7 +342,7 @@ public class AmbienceWizard extends Wizard {
   }
 
   public AmbienceWizard() {
-    super(Messages.getString("DigitalDJWizard.56"), AmbiencePanel.class, null, JajukWindow
+    super(Messages.getString("DigitalDJWizard.56"), AmbiencePanel.class, null, JajukMainWindow
         .getInstance(), LocaleManager.getLocale(), 500, 600);
     setHeaderIcon(IconLoader.getIcon(JajukIcons.AMBIENCE));
   }

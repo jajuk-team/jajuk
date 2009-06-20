@@ -18,7 +18,7 @@
  *  $Revision$
  */
 
-package org.jajuk.ui.widgets;
+package org.jajuk.ui.windows;
 
 import ext.JXTrayIcon;
 
@@ -54,6 +54,9 @@ import org.jajuk.ui.actions.JajukActions;
 import org.jajuk.ui.helpers.FontManager;
 import org.jajuk.ui.helpers.PlayerStateMediator;
 import org.jajuk.ui.helpers.FontManager.JajukFont;
+import org.jajuk.ui.widgets.CommandJPanel;
+import org.jajuk.ui.widgets.JajukBalloon;
+import org.jajuk.ui.widgets.SizedJMenuItem;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
@@ -67,8 +70,13 @@ import org.jajuk.util.log.Log;
  * Jajuk systray <br>
  * Extends CommandJPanel for volume slider heritage only
  */
-public class JajukSystray extends CommandJPanel {
+public class JajukSystray extends CommandJPanel implements JajukWindow {
   private static final long serialVersionUID = 1L;
+
+  /**
+   * State decorator
+   */
+  private WindowStateDecorator decorator;
 
   // Systray variables
   SystemTray stray;
@@ -114,7 +122,7 @@ public class JajukSystray extends CommandJPanel {
   /** HTML Tooltip */
   JajukBalloon balloon;
 
-   /**
+  /**
    * 
    * @return whether the tray is loaded
    */
@@ -129,19 +137,42 @@ public class JajukSystray extends CommandJPanel {
   public static JajukSystray getInstance() {
     if (jsystray == null) {
       jsystray = new JajukSystray();
+      jsystray.decorator = new WindowStateDecorator(jsystray) {
+        @Override
+        public void specificAfterHidden() {
+          if (jsystray != null) {
+            jsystray.closeSystray();
+            jsystray = null;
+          }
+        }
+
+        @Override
+        public void specificBeforeHidden() {
+          // Nothing particular to do here
+        }
+
+        @Override
+        public void specificAfterShown() {
+          // Force initial message refresh
+          UtilFeatures.updateStatus(jsystray);
+        }
+
+        @Override
+        public void specificBeforeShown() {
+          // Nothing particular to do here
+        }
+      };
     }
     return jsystray;
   }
 
-  /**
-   * Reset the systray (useful for language reload)
+  /*
+   * (non-Javadoc)
    * 
+   * @see org.jajuk.ui.widgets.JajukWindow#getWindowStateDecorator()
    */
-  public void dispose() {
-    if (jsystray != null) {
-      jsystray.closeSystray();
-      jsystray = null;
-    }
+  public WindowStateDecorator getWindowStateDecorator() {
+    return decorator;
   }
 
   /**
@@ -150,9 +181,7 @@ public class JajukSystray extends CommandJPanel {
    */
   public JajukSystray() {
     super();
-    
     stray = SystemTray.getSystemTray();
-    initUI();
   }
 
   @Override
@@ -189,7 +218,7 @@ public class JajukSystray extends CommandJPanel {
         + ((defaultAmbience == null) ? Messages.getString("DigitalDJWizard.64") : defaultAmbience
             .getName()));
     populateAmbiences();
-   
+
     // Add a title. Important: do not add a JLabel, it present action event
     // to occur under windows
     JMenuItem jmiTitle = new JMenuItem("Jajuk");
@@ -255,8 +284,10 @@ public class JajukSystray extends CommandJPanel {
       public void mouseClicked(MouseEvent e) {
         if (e.getButton() == MouseEvent.BUTTON1) {
           // show main window if it is not visible and hide it if it is visible
-          boolean bShouldDisplayMainWindow = !JajukWindow.getInstance().isWindowVisible();
-          JajukWindow.getInstance().display(bShouldDisplayMainWindow);
+          WindowState mainWindowState = JajukMainWindow.getInstance().getWindowStateDecorator()
+              .getWindowState();
+          boolean bShouldDisplayMainWindow = !(mainWindowState == WindowState.BUILD_DISPLAYED);
+          JajukMainWindow.getInstance().getWindowStateDecorator().display(bShouldDisplayMainWindow);
         }
       }
 
@@ -270,8 +301,8 @@ public class JajukSystray extends CommandJPanel {
     // Register needed events
     ObservationManager.register(this);
 
-    // Force initial message refresh
-    UtilFeatures.updateStatus(this);
+    // Set new state
+    decorator.setWindowState(WindowState.BUILD_NOT_DISPLAYED);
   }
 
   @Override
@@ -436,4 +467,5 @@ public class JajukSystray extends CommandJPanel {
   public JPopupMenu getMenu() {
     return this.jmenu;
   }
+
 }

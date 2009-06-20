@@ -31,7 +31,7 @@ import java.net.URL;
 import javax.swing.ImageIcon;
 
 import org.jajuk.services.core.SessionService;
-import org.jajuk.ui.widgets.JajukWindow;
+import org.jajuk.ui.windows.JajukMainWindow;
 import org.jajuk.util.Const;
 import org.jajuk.util.DownloadManager;
 import org.jajuk.util.UtilGUI;
@@ -161,7 +161,7 @@ public class Cover implements Comparable<Cover>, Const {
     Image image = null;
     synchronized (Cover.class) {
       image = Toolkit.getDefaultToolkit().getImage(getFile().getAbsolutePath());
-      MediaTracker tracker = new MediaTracker(JajukWindow.getInstance());
+      MediaTracker tracker = new MediaTracker(JajukMainWindow.getInstance());
       tracker.addImage(image, 1);
       tracker.waitForAll();
     }

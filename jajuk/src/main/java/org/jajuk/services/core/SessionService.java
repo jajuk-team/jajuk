@@ -38,7 +38,7 @@ import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
-import org.jajuk.ui.widgets.JajukWindow;
+import org.jajuk.ui.windows.JajukMainWindow;
 import org.jajuk.ui.wizard.FirstTimeWizard;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
@@ -126,7 +126,7 @@ public class SessionService {
             dialog.setModal(true);
             dialog.pack();
             dialog.setIconImage(IconLoader.getIcon(JajukIcons.LOGO_FRAME).getImage());
-            dialog.setLocationRelativeTo(JajukWindow.getInstance());
+            dialog.setLocationRelativeTo(JajukMainWindow.getInstance());
             dialog.setVisible(true);
             if (Messages.getString("Hide").equals(optionPane.getValue())) {
               // Not show again

@@ -63,7 +63,7 @@ import org.jajuk.services.dj.TransitionDigitalDJ;
 import org.jajuk.ui.helpers.DefaultMouseWheelListener;
 import org.jajuk.ui.helpers.FontManager;
 import org.jajuk.ui.helpers.FontManager.JajukFont;
-import org.jajuk.ui.widgets.JajukWindow;
+import org.jajuk.ui.windows.JajukMainWindow;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
@@ -1293,7 +1293,7 @@ public class DigitalDJWizard extends Wizard {
   }
 
   public DigitalDJWizard() {
-    super(Messages.getString("DigitalDJWizard.4"), ActionSelectionPanel.class, null, JajukWindow
+    super(Messages.getString("DigitalDJWizard.4"), ActionSelectionPanel.class, null, JajukMainWindow
         .getInstance(), LocaleManager.getLocale());
     super.setHeaderIcon(IconLoader.getIcon(JajukIcons.DIGITAL_DJ));
   }

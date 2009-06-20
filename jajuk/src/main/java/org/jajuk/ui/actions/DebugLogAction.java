@@ -34,7 +34,7 @@ import net.miginfocom.swing.MigLayout;
 
 import org.jajuk.ui.helpers.FontManager;
 import org.jajuk.ui.helpers.FontManager.JajukFont;
-import org.jajuk.ui.widgets.JajukWindow;
+import org.jajuk.ui.windows.JajukMainWindow;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
@@ -58,7 +58,7 @@ public class DebugLogAction extends JajukAction {
     text.setBackground(Color.WHITE);
     text.setForeground(Color.DARK_GRAY);
     text.setFont(FontManager.getInstance().getFont(JajukFont.BOLD));
-    final JDialog dialog = new JDialog(JajukWindow.getInstance(), Messages
+    final JDialog dialog = new JDialog(JajukMainWindow.getInstance(), Messages
         .getString("DebugLogAction.0"), false);
     JButton jbRefresh = new JButton(Messages.getString("DebugLogAction.1"), IconLoader
         .getIcon(JajukIcons.REFRESH));
@@ -81,7 +81,7 @@ public class DebugLogAction extends JajukAction {
     dialog.add(jbClose,"grow");
     dialog.setPreferredSize(new Dimension(800, 600));
     dialog.pack();
-    dialog.setLocationRelativeTo(JajukWindow.getInstance());
+    dialog.setLocationRelativeTo(JajukMainWindow.getInstance());
     dialog.setVisible(true);
   }
 

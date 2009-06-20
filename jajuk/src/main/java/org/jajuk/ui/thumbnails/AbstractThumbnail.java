@@ -54,7 +54,7 @@ import org.jajuk.ui.actions.ActionManager;
 import org.jajuk.ui.actions.JajukAction;
 import org.jajuk.ui.actions.JajukActions;
 import org.jajuk.ui.views.CoverView;
-import org.jajuk.ui.widgets.JajukWindow;
+import org.jajuk.ui.windows.JajukMainWindow;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
@@ -376,7 +376,7 @@ public abstract class AbstractThumbnail extends JPanel implements ActionListener
       new Thread() {
         @Override
         public void run() {
-          JDialog jd = new JDialog(JajukWindow.getInstance(), Messages.getString("CatalogView.18"));
+          JDialog jd = new JDialog(JajukMainWindow.getInstance(), Messages.getString("CatalogView.18"));
           org.jajuk.base.File file = null;
           List<Track> tracks = TrackManager.getInstance().getAssociatedTracks(getItem(), false);
           if (tracks.size() > 0) {

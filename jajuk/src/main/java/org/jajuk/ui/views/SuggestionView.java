@@ -23,6 +23,7 @@ package org.jajuk.ui.views;
 import ext.FlowScrollPanel;
 import ext.SwingWorker;
 import ext.services.lastfm.AlbumInfo;
+import ext.services.lastfm.AlbumListInfo;
 import ext.services.lastfm.ArtistInfo;
 import ext.services.lastfm.LastFmService;
 import ext.services.lastfm.SimilarArtistsInfo;
@@ -76,9 +77,9 @@ public class SuggestionView extends ViewAdapter implements Observer {
 
   private JTabbedPane tabs;
 
-  private String author;
+  protected String author;
 
-  private enum SuggestionType {
+  enum SuggestionType {
     BEST_OF, NEWEST, RARE, OTHERS_ALBUMS, SIMILAR_AUTHORS
   }
 
@@ -322,7 +323,7 @@ public class SuggestionView extends ViewAdapter implements Observer {
     sw.start();
   }
 
-  private JScrollPane getLocalSuggestionsPanel(SuggestionType type) {
+  JScrollPane getLocalSuggestionsPanel(SuggestionType type) {
     FlowScrollPanel out = new FlowScrollPanel();
     out.setLayout(new FlowLayout(FlowLayout.LEFT));
     JScrollPane jsp = new JScrollPane(out, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
@@ -362,7 +363,7 @@ public class SuggestionView extends ViewAdapter implements Observer {
     return jsp;
   }
 
-  private JScrollPane getLastFMSuggestionsPanel(SuggestionType type) {
+  JScrollPane getLastFMSuggestionsPanel(SuggestionType type) {
     FlowScrollPanel out = new FlowScrollPanel();
     JScrollPane jsp = new JScrollPane(out, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
         JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
@@ -370,10 +371,9 @@ public class SuggestionView extends ViewAdapter implements Observer {
     out.setScroller(jsp);
     out.setLayout(new FlowLayout(FlowLayout.LEFT));
     if (type == SuggestionType.OTHERS_ALBUMS) {
-      List<AlbumInfo> albums = LastFmService.getInstance().getAlbumList(author, true, 0)
-          .getAlbums();
-      if (albums != null && albums.size() > 0) {
-        for (AlbumInfo album : albums) {
+      AlbumListInfo albums = LastFmService.getInstance().getAlbumList(author, true, 0);
+      if (albums != null && albums.getAlbums().size() > 0) {
+        for (AlbumInfo album : albums.getAlbums()) {
           AbstractThumbnail thumb = new LastFmAlbumThumbnail(album);
           thumb.populate();
           thumb.getIcon().addMouseListener(new ThumbMouseListener());

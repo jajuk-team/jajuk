@@ -55,8 +55,8 @@ import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.ui.widgets.InformationJPanel;
 import org.jajuk.ui.widgets.JajukFileChooser;
-import org.jajuk.ui.widgets.JajukWindow;
 import org.jajuk.ui.widgets.OKCancelPanel;
+import org.jajuk.ui.windows.JajukMainWindow;
 import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukFileFilter;
@@ -122,7 +122,7 @@ public class DeviceWizard extends JDialog implements ActionListener, Const {
     });
     setTitle(Messages.getString("DeviceWizard.0"));
     setModal(true);
-    setLocation(JajukWindow.getInstance().getX() + 100, JajukWindow.getInstance().getY() + 100);
+    setLocation(JajukMainWindow.getInstance().getX() + 100, JajukMainWindow.getInstance().getY() + 100);
     JLabel jlType = new JLabel(Messages.getString("DeviceWizard.1"));
     jcbType = new JComboBox();
 

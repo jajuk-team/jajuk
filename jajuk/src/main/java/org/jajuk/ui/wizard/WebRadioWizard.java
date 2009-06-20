@@ -47,7 +47,7 @@ import org.jajuk.services.webradio.WebRadio;
 import org.jajuk.services.webradio.WebRadioManager;
 import org.jajuk.ui.helpers.FontManager;
 import org.jajuk.ui.helpers.FontManager.JajukFont;
-import org.jajuk.ui.widgets.JajukWindow;
+import org.jajuk.ui.windows.JajukMainWindow;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.LocaleManager;
@@ -337,7 +337,7 @@ public class WebRadioWizard extends Wizard {
   }
 
   public WebRadioWizard() {
-    super(Messages.getString("RadioWizard.7"), RadioPanel.class, null, JajukWindow.getInstance(),
+    super(Messages.getString("RadioWizard.7"), RadioPanel.class, null, JajukMainWindow.getInstance(),
         LocaleManager.getLocale(), 600, 500);
     setHeaderIcon(IconLoader.getIcon(JajukIcons.WEBRADIO));
   }

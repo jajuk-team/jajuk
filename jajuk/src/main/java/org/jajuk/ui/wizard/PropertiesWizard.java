@@ -70,8 +70,8 @@ import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.ui.widgets.InformationJPanel;
 import org.jajuk.ui.widgets.JajukJDialog;
-import org.jajuk.ui.widgets.JajukWindow;
 import org.jajuk.ui.widgets.OKCancelPanel;
+import org.jajuk.ui.windows.JajukMainWindow;
 import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
@@ -246,7 +246,7 @@ public class PropertiesWizard extends JajukJDialog implements ActionListener {
         getRootPane().setDefaultButton(okc.getOKButton());
         getContentPane().add(new JScrollPane(jpMain));
         pack();
-        setLocationRelativeTo(JajukWindow.getInstance());
+        setLocationRelativeTo(JajukMainWindow.getInstance());
         setVisible(true);
       }
     });
