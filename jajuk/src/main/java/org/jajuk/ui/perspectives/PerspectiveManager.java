@@ -40,6 +40,7 @@ import org.jajuk.events.ObservationManager;
 import org.jajuk.services.core.SessionService;
 import org.jajuk.ui.views.IView;
 import org.jajuk.ui.widgets.PerspectiveBarJPanel;
+import org.jajuk.ui.windows.JajukMainWindow;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
@@ -179,7 +180,7 @@ public final class PerspectiveManager {
           view.onPerspectiveSelection();
         }
         // Clear the perspective panel
-        JPanel perspectivePanel = Main.getPerspectivePanel();
+        JPanel perspectivePanel = JajukMainWindow.getInstance().getPerspectivePanel();
         if (perspectivePanel.getComponentCount() > 0) {
           Component[] components = perspectivePanel.getComponents();
           for (Component element : components) {
@@ -196,8 +197,8 @@ public final class PerspectiveManager {
         Conf.setProperty(Const.CONF_PERSPECTIVE_DEFAULT, perspective.getID());
         UtilGUI.stopWaiting();
         // Emit a event
-        ObservationManager.notify(new JajukEvent(JajukEvents.PERSPECTIVE_CHANGED, ObservationManager
-            .getDetailsLastOccurence(JajukEvents.FILE_LAUNCHED)));
+        ObservationManager.notify(new JajukEvent(JajukEvents.PERSPECTIVE_CHANGED,
+            ObservationManager.getDetailsLastOccurence(JajukEvents.FILE_LAUNCHED)));
       }
     });
   }
