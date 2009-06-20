@@ -59,6 +59,9 @@ public class LastFmCache {
   private static File albumInfoCacheDir = SessionService.getConfFileByPath(Const.FILE_CACHE + '/'
       + Const.LASTFM_CACHE + '/' + Const.LAST_FM_ALBUM_INFO_CACHE_DIR);
 
+  private static File artistInfoCacheDir = SessionService.getConfFileByPath(Const.FILE_CACHE + '/'
+      + Const.LASTFM_CACHE + '/' + Const.LAST_FM_ARTIST_INFO_CACHE_DIR);
+
   /** Artist thumbs cache dir. */
   private static File artistThumbCacheDir = SessionService.getConfFileByPath(Const.FILE_CACHE + '/'
       + Const.LASTFM_CACHE + '/' + Const.LAST_FM_ARTIST_THUMB_CACHE_DIR);
@@ -163,6 +166,21 @@ public class LastFmCache {
       FileUtils.forceMkdir(albumInfoCacheDir);
     }
     return albumInfoCacheDir;
+  }
+
+  /**
+   * Private getter for artistInfoCacheDir. If dir does not exist, it's created
+   * 
+   * @return the artist info cache dir
+   * 
+   * @throws IOException
+   *           Signals that an I/O exception has occurred.
+   */
+  private synchronized File getArtistInfoCacheDir() throws IOException {
+    if (!artistInfoCacheDir.exists()) {
+      FileUtils.forceMkdir(artistInfoCacheDir);
+    }
+    return artistInfoCacheDir;
   }
 
   /**
@@ -320,6 +338,28 @@ public class LastFmCache {
 
     return UtilString.concat(albumInfoCacheDirFile.getAbsolutePath(), File.separator,
         getFileNameForAlbumInfo(artist, album));
+  }
+
+  /**
+   * Absolute Path to Artist Info Filename.
+   * 
+   * @param artist
+   *          the artist
+   * 
+   * @return the file name for artist info at cache
+   * 
+   * @throws IOException
+   *           Signals that an I/O exception has occurred.
+   */
+  private String getFileNameForArtistInfoAtCache(String artist) throws IOException {
+    File artistInfoCacheDirFile = getArtistInfoCacheDir();
+
+    if (artistInfoCacheDirFile == null) {
+      return null;
+    }
+
+    return UtilString.concat(artistInfoCacheDirFile.getAbsolutePath(), File.separator,
+        getFileNameForArtistInfo(artist));
   }
 
   /**
@@ -551,6 +591,28 @@ public class LastFmCache {
   }
 
   /**
+   * Retrieves an artist infos from cache.
+   * 
+   * @param artist
+   *          the artist
+   * @param artist
+   *          the artist
+   * 
+   * @return the audio scrobbler artist
+   */
+  public synchronized ArtistInfo retrieveArtistInfo(String artist) {
+    try {
+      String path = getFileNameForArtistInfoAtCache(artist);
+      if (path != null && new File(path).exists()) {
+        return (ArtistInfo) XMLUtils.readBeanFromFile(path);
+      }
+    } catch (IOException e) {
+      Log.error(e);
+    }
+    return null;
+  }
+
+  /**
    * Retrieves an Artist Image from cache.
    * 
    * @param artist
@@ -694,6 +756,28 @@ public class LastFmCache {
       if (fileAbsPath != null) {
         XMLUtils.writeBeanToFile(albumObject, fileAbsPath);
         Log.debug(UtilString.concat("Stored album info for album ", artist, " ", album));
+      }
+    } catch (IOException e) {
+      Log.error(e);
+    }
+  }
+
+  /**
+   * Stores an artist info at cache.
+   * 
+   * @param artist
+   *          the artist
+   */
+  public synchronized void storeArtistInfo(String artist) {
+    if (artist == null) {
+      return;
+    }
+
+    try {
+      String fileAbsPath = getFileNameForArtistInfo(artist);
+      if (fileAbsPath != null) {
+        XMLUtils.writeBeanToFile(artist, fileAbsPath);
+        Log.debug(UtilString.concat("Stored artist info for artist ", artist));
       }
     } catch (IOException e) {
       Log.error(e);

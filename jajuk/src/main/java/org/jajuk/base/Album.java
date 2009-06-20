@@ -64,10 +64,6 @@ public class Album extends LogicalItem implements Comparable<Album> {
    */
   private boolean[] availableTumbs;
 
-  private String albumArtist;
-
-  private long discID;
-
   /**
    * Album constructor
    * 
@@ -76,8 +72,6 @@ public class Album extends LogicalItem implements Comparable<Album> {
    */
   public Album(String sId, String sName, String sAlbumArtist, long discID) {
     super(sId, sName);
-    this.albumArtist = sAlbumArtist;
-    this.discID = discID;
     setProperty(Const.XML_ALBUM_ARTIST, sAlbumArtist);
     setProperty(Const.XML_DISC_ID, discID);
   }
@@ -86,30 +80,38 @@ public class Album extends LogicalItem implements Comparable<Album> {
    * @return the discID
    */
   public long getDiscID() {
-    return this.discID;
+    return getLongValue(Const.XML_DISC_ID);
   }
 
   /**
    * @return the albumArtiest
    */
   public String getAlbumArtist() {
-    return this.albumArtist;
+    return getStringValue(Const.XML_ALBUM_ARTIST);
   }
 
   /**
-   * @return the albumArtiest, if this is varior the album artist is tried to be
-   *         defined by the track artists of this album
+   * @return the albumArtiest
+   *         <p>
+   *         If this is various, the album artist is tried to be defined by the
+   *         track artists of this album
+   *         </p>
    */
   public String getAlbumArtist2() {
-    if (this.albumArtist.equals(Const.VARIOUS_ARTIST)) {
-      Author author = getAuthor();
-      if (author != null && !author.getName().equals(Const.UNKNOWN_AUTHOR)) {
-        return author.getName2();
-      }else{
-        return Messages.getString(Const.VARIOUS_ARTIST);
-      }
+    // If the album artist tag is provided, perfect, let's use it !
+    String albumArtist = getAlbumArtist();
+    if (UtilString.isNotVoid(albumArtist)) {
+      return albumArtist;
     }
-    return this.albumArtist;
+    String various = Messages.getString(Const.VARIOUS_ARTIST);
+    Author author = getAuthor();
+    if (author == null) {
+      // Several different author, return translated "various"
+      return various;
+    } else {
+      // single artist, return it
+      return author.getName2();
+    }
   }
 
   /**
@@ -468,20 +470,20 @@ public class Album extends LogicalItem implements Comparable<Album> {
 
   /**
    * 
-   * @return author for the album. Return null if the album contains tracks with
-   *         different authors
+   * @return author for the album. <br>
+   *         Return null if the album contains tracks with different authors
    */
   public Author getAuthor() {
-    Set<Author> authors = new HashSet<Author>(1);
-    for (Track track : cache) {
-      authors.add(track.getAuthor());
-    }
-    // If different Authors, the album Author is null
-    if (authors.size() == 1) {
-      return authors.iterator().next();
-    } else {
+    if (cache.size() == 0) {
       return null;
     }
+    Author first = cache.get(0).getAuthor();
+    for (Track track : cache) {
+      if (!track.getAuthor().equals(first)) {
+        return null;
+      }
+    }
+    return first;
   }
 
   /**

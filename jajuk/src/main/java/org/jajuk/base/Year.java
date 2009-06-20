@@ -111,4 +111,12 @@ public class Year extends LogicalItem implements Comparable<Year> {
   public ImageIcon getIconRepresentation() {
     return IconLoader.getIcon(JajukIcons.YEAR);
   }
+
+  /**
+   * Return whether this year looks valid or not
+   * @return
+   */
+  public boolean looksValid() {
+    return value > 1000 && value < 3000;
+  }
 }

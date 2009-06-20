@@ -105,8 +105,7 @@ public class SuggestionView extends ViewAdapter implements Observer {
   class ThumbMouseListener extends MouseAdapter {
     @Override
     public void mousePressed(MouseEvent e) {
-      AbstractThumbnail thumb = (AbstractThumbnail) ((JLabel) e.getSource()).getParent()
-          .getParent();
+      AbstractThumbnail thumb = (AbstractThumbnail) ((JLabel) e.getSource()).getParent();
       // remove red border on previous item if
       // different from this one
       if (selectedThumb != null && selectedThumb != thumb) {
@@ -304,8 +303,8 @@ public class SuggestionView extends ViewAdapter implements Observer {
       @Override
       public Object construct() {
         try {
-          jsp1 = getLastFMSuggestionsPanel(SuggestionType.OTHERS_ALBUMS);
-          jsp2 = getLastFMSuggestionsPanel(SuggestionType.SIMILAR_AUTHORS);
+          jsp1 = getLastFMSuggestionsPanel(SuggestionType.OTHERS_ALBUMS, false);
+          jsp2 = getLastFMSuggestionsPanel(SuggestionType.SIMILAR_AUTHORS, false);
         } catch (Exception e) {
           Log.error(e);
         }
@@ -363,18 +362,19 @@ public class SuggestionView extends ViewAdapter implements Observer {
     return jsp;
   }
 
-  JScrollPane getLastFMSuggestionsPanel(SuggestionType type) {
+  JScrollPane getLastFMSuggestionsPanel(SuggestionType type, boolean artistView) {
     FlowScrollPanel out = new FlowScrollPanel();
     JScrollPane jsp = new JScrollPane(out, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
         JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
     jsp.setBorder(null);
     out.setScroller(jsp);
-    out.setLayout(new FlowLayout(FlowLayout.LEFT));
+    out.setLayout(new FlowLayout(FlowLayout.CENTER));
     if (type == SuggestionType.OTHERS_ALBUMS) {
       AlbumListInfo albums = LastFmService.getInstance().getAlbumList(author, true, 0);
       if (albums != null && albums.getAlbums().size() > 0) {
         for (AlbumInfo album : albums.getAlbums()) {
           AbstractThumbnail thumb = new LastFmAlbumThumbnail(album);
+          thumb.setArtistView(artistView);
           thumb.populate();
           thumb.getIcon().addMouseListener(new ThumbMouseListener());
           out.add(thumb);
@@ -385,12 +385,12 @@ public class SuggestionView extends ViewAdapter implements Observer {
         out.add(UtilGUI.getCentredPanel(new JLabel(Messages.getString("SuggestionView.7"))));
       }
     } else if (type == SuggestionType.SIMILAR_AUTHORS) {
-      SimilarArtistsInfo similar = LastFmService.getInstance().getSimilarArtists(
-          author);
+      SimilarArtistsInfo similar = LastFmService.getInstance().getSimilarArtists(author);
       if (similar != null) {
         List<ArtistInfo> authors = similar.getArtists();
         for (ArtistInfo similarAuthor : authors) {
           AbstractThumbnail thumb = new LastFmAuthorThumbnail(similarAuthor);
+          thumb.setArtistView(artistView);
           thumb.populate();
           thumb.getIcon().addMouseListener(new ThumbMouseListener());
           out.add(thumb);

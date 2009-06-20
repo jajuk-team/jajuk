@@ -119,10 +119,14 @@ public abstract class AbstractThumbnail extends JPanel implements ActionListener
 
   // Number of clicks on the thumb
   private int clickNumber;
+  
+  /** Whether this thumb is used in artist view **/
+  private boolean artistView;
+
 
   /** Associated file */
   File fCover;
-
+  
   /** Timer used to launch popup */
   static {
     Timer timerPopup = new Timer(200, new ActionListener() {
@@ -166,6 +170,14 @@ public abstract class AbstractThumbnail extends JPanel implements ActionListener
     this.size = size;
     setSelected(false);
   }
+  
+  protected boolean isArtistView() {
+    return this.artistView;
+  }
+
+  public void setArtistView(boolean artistBioThumb) {
+    this.artistView = artistBioThumb;
+  }
 
   /**
    * display a popup over the catalog item
@@ -191,7 +203,7 @@ public abstract class AbstractThumbnail extends JPanel implements ActionListener
   }
 
   public abstract void populate();
-
+  
   /** Return HTML text to display in the popup */
   public abstract String getDescription();
 
@@ -434,4 +446,5 @@ public abstract class AbstractThumbnail extends JPanel implements ActionListener
     return this.jlIcon;
   }
 
+ 
 }

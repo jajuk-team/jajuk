@@ -35,6 +35,8 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
+import net.miginfocom.swing.MigLayout;
+
 import org.jajuk.base.AuthorManager;
 import org.jajuk.base.Item;
 import org.jajuk.ui.helpers.FontManager;
@@ -46,7 +48,6 @@ import org.jajuk.util.JajukIcons;
 import org.jajuk.util.UtilGUI;
 import org.jajuk.util.UtilString;
 import org.jajuk.util.log.Log;
-import org.jdesktop.swingx.VerticalLayout;
 import org.jdesktop.swingx.border.DropShadowBorder;
 
 /**
@@ -101,7 +102,14 @@ public class LastFmAuthorThumbnail extends AbstractThumbnail {
 
           BufferedImage image = ImageIO.read(fCover);
           ImageIcon downloadedImage = new ImageIcon(image);
-          ii = UtilGUI.getScaledImage(downloadedImage, 100);
+          // In artist view, do not reduce artist picture
+          if (isArtistView()) {
+            ii = downloadedImage;
+          }
+          else{
+            ii = UtilGUI.getScaledImage(downloadedImage, 100);
+          }
+          
           // Free images memory
           downloadedImage.getImage().flush();
           image.flush();
@@ -123,23 +131,31 @@ public class LastFmAuthorThumbnail extends AbstractThumbnail {
         if (ii == null) {
           return;
         }
-
         super.finished();
         postPopulate();
         jlIcon.setIcon(ii);
-        setLayout(new VerticalLayout(2));
+        setLayout(new MigLayout("ins 0,gapy 2"));
         // Use a panel to allow text to be bigger than image under it
-        add(UtilGUI.getCentredPanel(jlIcon));
-        JLabel jlTitle = new JLabel(UtilString.getLimitedString(author.getName(), 15));
+        add(jlIcon, "center,wrap");
+        int textLength = 15;
+        // In artist view, we have plenty of free space
+        if (isArtistView()) {
+          textLength = 50;
+        }
+        JLabel jlTitle = new JLabel(UtilString.getLimitedString(author.getName(), textLength));
         jlTitle.setToolTipText(author.getName());
-        if (bKnown) {
+        if (bKnown && !isArtistView()) {
           // Artist known in collection, display its name in bold
           jlTitle.setIcon(IconLoader.getIcon(JajukIcons.AUTHOR));
           jlTitle.setFont(FontManager.getInstance().getFont(JajukFont.BOLD));
         } else {
           jlTitle.setFont(FontManager.getInstance().getFont(JajukFont.PLAIN));
         }
-        add(jlTitle);
+        if (isArtistView()) {
+          add(jlTitle, "center");
+        } else {
+          add(jlTitle, "left");
+        }
         jlIcon.setBorder(new DropShadowBorder(Color.BLACK, 5, 0.5f, 5, false, true, false, true));
         // disable inadequate menu items
         jmiCDDBWizard.setEnabled(false);

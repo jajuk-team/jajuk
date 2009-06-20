@@ -56,7 +56,6 @@ import org.jajuk.util.Messages;
 import org.jajuk.util.UtilGUI;
 import org.jajuk.util.UtilString;
 import org.jajuk.util.log.Log;
-import org.jdesktop.swingx.VerticalLayout;
 import org.jdesktop.swingx.border.DropShadowBorder;
 
 /**
@@ -82,12 +81,12 @@ public class LocalAlbumThumbnail extends AbstractThumbnail {
   /**
    * Constructor
    * 
-   * @param album
-   *          : associated album
-   * @param size
-   *          : size of the thumbnail
-   * @param bShowText
-   *          : Display full album / author information under the icon or not ?
+   * @param album :
+   *          associated album
+   * @param size :
+   *          size of the thumbnail
+   * @param bShowText :
+   *          Display full album / author information under the icon or not ?
    */
   public LocalAlbumThumbnail(Album album, int size, boolean bShowText) {
     super(size);
@@ -131,13 +130,14 @@ public class LocalAlbumThumbnail extends AbstractThumbnail {
       add(jlAuthor, "wrap,center");
       add(jlAlbum, "wrap,center");
     } else {
-      setLayout(new VerticalLayout(2));
-      add(UtilGUI.getCentredPanel(jlIcon));
+      setLayout(new MigLayout("ins 0,gapy 2"));
+      add(jlIcon,"center,wrap");
       int iRows = 7 + 6 * (size / 50 - 1);
-      JLabel jlTitle = new JLabel(UtilString.getLimitedString(album.getName2(), iRows));
-      jlTitle.setToolTipText(album.getName2());
-      jlTitle.setToolTipText(album.getName2());
-      add(jlTitle);
+      String fullTitle = album.getName2();
+      JLabel jlTitle = new JLabel(UtilString.getLimitedString(fullTitle, iRows));
+      jlTitle.setToolTipText(fullTitle);
+      jlTitle.setToolTipText(fullTitle);
+      add(jlTitle,"left");
     }
     // Add dnd support
     jlIcon.setTransferHandler(new CatalogViewTransferHandler(this));

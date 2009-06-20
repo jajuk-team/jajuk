@@ -385,7 +385,7 @@ public class CommandJPanel extends JXPanel implements ActionListener, ChangeList
     add(jtbWebRadio, "left,split 2,gapright 15");
     add(jtbSpecial, "left,gapright 15");
 
-    add(jbStop, "center,split 6,width 35!,height 30,gapright 5!");
+    add(jbStop, "center,split 6,width 40!,height 30,gapright 5!");
     add(jbPrevious, "center,width 62!,height 30!,gapright 0");
     add(jbPlayPause, "center,width 45!,height 45!,gapright 0");
     add(jbNext, "center,width 62!,height 30!,gapright 3");

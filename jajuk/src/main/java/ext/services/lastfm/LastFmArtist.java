@@ -60,7 +60,7 @@ public class LastFmArtist implements ArtistInfo {
      * 
      * @return the artist
      */
-    protected static LastFmArtist getArtist(Artist a) {
+    public static LastFmArtist getArtist(Artist a) {
         LastFmArtist artist = new LastFmArtist();
         artist.name = a.getName();
         artist.match = String.valueOf(a.getSimilarityMatch());

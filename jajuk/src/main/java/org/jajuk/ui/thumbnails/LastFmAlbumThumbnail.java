@@ -34,6 +34,8 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
+import net.miginfocom.swing.MigLayout;
+
 import org.jajuk.base.Album;
 import org.jajuk.base.AlbumManager;
 import org.jajuk.base.Item;
@@ -47,7 +49,6 @@ import org.jajuk.util.Messages;
 import org.jajuk.util.UtilGUI;
 import org.jajuk.util.UtilString;
 import org.jajuk.util.log.Log;
-import org.jdesktop.swingx.VerticalLayout;
 import org.jdesktop.swingx.border.DropShadowBorder;
 
 /**
@@ -96,7 +97,7 @@ public class LastFmAlbumThumbnail extends AbstractThumbnail {
           // popup thumb for ie)
           fCover = DownloadManager.downloadToCache(remote);
           BufferedImage image = ImageIO.read(fCover);
-          if(image == null) {
+          if (image == null) {
             Log.warn("Could not read cover from: " + fCover.getAbsolutePath());
             return null;
           }
@@ -106,7 +107,8 @@ public class LastFmAlbumThumbnail extends AbstractThumbnail {
           downloadedImage.getImage().flush();
           image.flush();
         } catch (FileNotFoundException e) {
-          // only report a warning for FileNotFoundException and do not show a stacktrace in the logfile as it is happening frequently
+          // only report a warning for FileNotFoundException and do not show a
+          // stacktrace in the logfile as it is happening frequently
           Log.warn("Could not load image, no content found at address: " + e.getMessage());
         } catch (Exception e) {
           Log.error(e);
@@ -123,21 +125,30 @@ public class LastFmAlbumThumbnail extends AbstractThumbnail {
         super.finished();
         postPopulate();
         jlIcon.setIcon(ii);
-        setLayout(new VerticalLayout(2));
-        // Use a panel to allow text to be bigger than image under it
-        add(UtilGUI.getCentredPanel(jlIcon));
+        setLayout(new MigLayout("ins 0,gapy 2"));
+        add(jlIcon, "center,wrap");
         JLabel jlTitle;
+        String fullTitle = album.getTitle();
+        // Add year if available
+        String releaseDate = album.getReleaseDateString();
+        if (UtilString.isNotVoid(releaseDate)) {
+          fullTitle += " (" + releaseDate + ")";
+        }
+        int textLength = 15;
+        if (isArtistView()){
+          textLength = 50;
+        }
         if (bKnown) {
           // Album known in collection, display its name in bold
-          jlTitle = new JLabel(UtilString.getLimitedString(album.getTitle(), 15), IconLoader
+          jlTitle = new JLabel(UtilString.getLimitedString(fullTitle, textLength), IconLoader
               .getIcon(JajukIcons.ALBUM), JLabel.CENTER);
           jlTitle.setFont(FontManager.getInstance().getFont(JajukFont.BOLD));
         } else {
-          jlTitle = new JLabel(UtilString.getLimitedString(album.getTitle(), 15));
+          jlTitle = new JLabel(UtilString.getLimitedString(fullTitle, textLength));
           jlTitle.setFont(FontManager.getInstance().getFont(JajukFont.PLAIN));
         }
         jlTitle.setToolTipText(album.getTitle());
-        add(jlTitle);
+        add(jlTitle, "center");
         jlIcon.setBorder(new DropShadowBorder(Color.BLACK, 5, 0.5f, 5, false, true, false, true));
         // disable inadequate menu items
         jmiCDDBWizard.setEnabled(false);
@@ -183,8 +194,8 @@ public class LastFmAlbumThumbnail extends AbstractThumbnail {
   public String getDescription() {
     // populate album detail
     if (album.getTracks() == null) {
-      AlbumInfo lAlbum = LastFmService.getInstance().getAlbum(
-          this.album.getArtist(), this.album.getTitle());
+      AlbumInfo lAlbum = LastFmService.getInstance().getAlbum(this.album.getArtist(),
+          this.album.getTitle());
       if (lAlbum != null) {
         this.album = lAlbum;
       }
@@ -195,7 +206,7 @@ public class LastFmAlbumThumbnail extends AbstractThumbnail {
         + UtilGUI.getHTMLColor(fgcolor) + "'><TR><TD VALIGN='TOP'> <b>" + "<a href='file://"
         + Const.XML_URL + '?' + album.getUrl() + "'>" + album.getTitle() + "</a>" + "</b><br><br>";
     // display cover
-    sOut += "<img src='" + album.getCoverURL() + "'><br>";
+    sOut += "<img src='" + album.getBigCoverURL() + "'><br>";
     // Display author as global value only if it is a single author album
     // We use file://<item type>?<item id> as HTML hyperlink format
     sOut += "<br>" + Messages.getString("Property_author") + " : " + "<a href='file://"

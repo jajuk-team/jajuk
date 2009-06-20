@@ -208,7 +208,7 @@ public class JajukFullScreenWindow extends JWindow implements JajukWindow {
     jbStop.putClientProperty(SubstanceLookAndFeel.BUTTON_SHAPER_PROPERTY,
         new RoundRectButtonShaper());
 
-    jPanelPlay.add(jbStop, "center,split 6,width 35!,height 30,gapright 5!");
+    jPanelPlay.add(jbStop, "center,split 6,width 40!,height 30,gapright 5!");
     jPanelPlay.add(jbPrevious, "center,width 62!,height 30!,gapright 0");
     jPanelPlay.add(jbPlayPause, "center,width 45!,height 45!,gapright 0");
     jPanelPlay.add(jbNext, "center,width 62!,height 30!,gapright 3");

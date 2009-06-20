@@ -68,7 +68,8 @@ public class LastFmService {
    */
   private static final String API_KEY = "711591ss6q695ps349o6681pr1oq1467";
   private static final String CLIENT_ID = "jaj";
-  private static final String CLIENT_VERSION = "0.2"; //Assigned by Last.FM team
+  private static final String CLIENT_VERSION = "0.2"; // Assigned by Last.FM
+  // team
 
   private static final String ARTIST_WILDCARD = "(%ARTIST%)";
   private static final String LANGUAGE_PARAM = "?setlang=";
@@ -136,6 +137,24 @@ public class LastFmService {
       self = new LastFmService(proxy, user, UtilString.rot13(pwd), locale, cache);
     }
     return self;
+  }
+
+  public ArtistInfo getArtist(String artist) {
+    try {
+      // Try to get from cache
+      ArtistInfo artistInfo = lastFmCache.retrieveArtistInfo(artist);
+      if (artistInfo == null) {
+        Artist a = Artist.getInfo(artist, UtilString.rot13(API_KEY));
+        if (a != null) {
+          artistInfo = LastFmArtist.getArtist(a);
+          lastFmCache.storeArtistInfo(artist);
+        }
+      }
+      return artistInfo;
+    } catch (Exception e) {
+      Log.error(e);
+    }
+    return null;
   }
 
   /**

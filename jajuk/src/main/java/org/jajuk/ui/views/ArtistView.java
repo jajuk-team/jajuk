@@ -20,8 +20,11 @@
  */
 package org.jajuk.ui.views;
 
+import ext.SwingWorker;
+import ext.services.lastfm.ArtistInfo;
 import ext.services.lastfm.LastFmService;
 
+import java.awt.Dimension;
 import java.awt.Insets;
 import java.util.HashSet;
 import java.util.Set;
@@ -43,6 +46,7 @@ import org.jajuk.services.players.StackItem;
 import org.jajuk.ui.thumbnails.LastFmAuthorThumbnail;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilFeatures;
+import org.jdesktop.swingx.JXBusyLabel;
 
 /**
  * Display Artist bio and albums
@@ -105,30 +109,62 @@ public class ArtistView extends SuggestionView {
    * </p>
    */
   private void displayAuthor() {
-    removeAll();
+    SwingWorker sw = new SwingWorker() {
+      JScrollPane jspAlbums;
+      String bio;
 
-    // Call last.fm wiki
-    String bio = LastFmService.getInstance().getWikiText(author);
+      @Override
+      public Object construct() {
+        // Call last.fm wiki
+        bio = LastFmService.getInstance().getWikiText(author);
+        jspAlbums = getLastFMSuggestionsPanel(SuggestionType.OTHERS_ALBUMS, true);
+        return null;
+      }
 
-    jtaArtistDesc = new JTextArea(bio);
-    jtaArtistDesc.setBorder(null);
-    jtaArtistDesc.setEditable(false);
-    jtaArtistDesc.setLineWrap(true);
-    jtaArtistDesc.setMargin(new Insets(5, 5, 5, 5));
-    JScrollPane jsp = new JScrollPane(jtaArtistDesc);
-    jsp.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-    jsp.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+      @Override
+      public void finished() {
+        super.finished();
+        removeAll();
+        ArtistInfo artistInfo = LastFmService.getInstance().getArtist(author);
+        // Artist unknown from last.fm, leave
+        if (artistInfo == null) {
+          reset();
+          return;
+        }
+        authorThumb = new LastFmAuthorThumbnail(artistInfo);
+        // No known icon next to artist thumb
+        authorThumb.setArtistView(true);
+        authorThumb.populate();
 
-    JScrollPane jspAlbums = getLastFMSuggestionsPanel(SuggestionType.OTHERS_ALBUMS);
+        jtaArtistDesc = new JTextArea(bio) {
+          private static final long serialVersionUID = 9217998016482118852L;
 
-    // Add items
-    setLayout(new MigLayout("ins 5,gapy 8", "[grow]", "[grow][20%!][grow]"));
-    add(authorThumb, "growx,center,wrap");
-    add(jsp, "growx,wrap");
-    add(jspAlbums, "grow,wrap");
+          // We set the margin this way, setMargin() doesn't work due to
+          // existing border
+          public Insets getInsets() {
+            return new Insets(2, 4, 0, 4);
+          }
+        };
+        jtaArtistDesc.setBorder(null);
+        jtaArtistDesc.setEditable(false);
+        jtaArtistDesc.setLineWrap(true);
+        jtaArtistDesc.setWrapStyleWord(true);
 
-    revalidate();
-    repaint();
+        JScrollPane jspWiki = new JScrollPane(jtaArtistDesc);
+        jspWiki.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        jspWiki.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        // Add items
+        setLayout(new MigLayout("ins 5,gapy 5", "[grow]", "[grow][20%!][grow]"));
+        add(authorThumb, "center,wrap");
+        add(jspWiki, "growx,wrap");
+        add(jspAlbums, "grow,wrap");
+
+        revalidate();
+        repaint();
+      }
+
+    };
+    sw.start();
   }
 
   /*
@@ -155,9 +191,19 @@ public class ArtistView extends SuggestionView {
           if (author.getName().equals(ArtistView.this.author)) {
             return;
           } else {
+            // Display a busy panel in the mean-time
+            setLayout(new MigLayout("ins 5", "[grow]", "[grow]"));
+            JXBusyLabel busy1 = new JXBusyLabel(new Dimension(50, 50));
+            busy1.setBusy(true);
+            removeAll();
+            add(busy1, "center");
+            revalidate();
+            repaint();
+
             ArtistView.this.author = author.getName();
             // Display the panel only if the artist is not unknown
             if (author != null && !author.isUnknown()) {
+              // This is done in a swing worker
               displayAuthor();
             } else {
               reset();
@@ -181,6 +227,10 @@ public class ArtistView extends SuggestionView {
     add(new JLabel(Messages.getString("ArtistView.1")), "center");
     revalidate();
     repaint();
+  }
+
+  public void onPerspectiveSelection() {
+    // override the suggestion view behavior
   }
 
 }

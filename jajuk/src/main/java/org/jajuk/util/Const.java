@@ -237,6 +237,9 @@ public interface Const {
   /** Last.fm album info cache dir. */
   String LAST_FM_ALBUM_INFO_CACHE_DIR = "album_info";
 
+  /** Last.fm artist info cache dir. */
+  String LAST_FM_ARTIST_INFO_CACHE_DIR = "artist_info";
+
   /** Last.fm artist image cache dir. */
   String LAST_FM_ARTIST_IMAGE_CACHE_DIR = "artist_images";
 
@@ -247,7 +250,7 @@ public interface Const {
   String LAST_FM_ARTIST_THUMB_CACHE_DIR = "artist_thumbs";
 
   /** Last.fm artist info cache dir. */
-  String LAST_FM_ALBUM_LIST_CACHE_DIR = "artist_info";
+  String LAST_FM_ALBUM_LIST_CACHE_DIR = "album_list_info";
 
   /** Last.fm artist wiki cache dir. */
   String LAST_FM_ARTIST_WIKI_CACHE_DIR = "artist_wiki";
