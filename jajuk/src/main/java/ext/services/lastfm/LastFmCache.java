@@ -774,7 +774,7 @@ public class LastFmCache {
     }
 
     try {
-      String fileAbsPath = getFileNameForArtistInfo(artist);
+      String fileAbsPath = getFileNameForArtistInfoAtCache(artist);
       if (fileAbsPath != null) {
         XMLUtils.writeBeanToFile(artist, fileAbsPath);
         Log.debug(UtilString.concat("Stored artist info for artist ", artist));
