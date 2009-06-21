@@ -233,10 +233,12 @@ public final class QueueModel {
   /**
    * Push some stack items in the fifo
    * 
-   * @param alItems
-   *          , list of items to be played
+   * @param alItems ,
+   *          list of items to be played
    * @param bAppend
    *          keep previous files or stop them to start a new one ?
+   * @param bFront
+   *          whether the selection is added after playing track
    */
   private static void pushCommand(List<StackItem> alItems, boolean bAppend, final boolean bFront) {
     try {
@@ -288,17 +290,16 @@ public final class QueueModel {
         // OK, stop current track if no append
         if (!bAppend) {
           Player.stop(false);
-          alQueue.clear();
         }
-        int pos = 0;
+        int pos = index;
         // if push to front, set pos to first item
         if (bFront) {
           // when playing we should add it as second item to play it as next
           // item
           if (Player.isPlaying()) {
-            pos = 1+index;
-          }else{
-            index=0;
+            pos = 1 + index;
+          } else {
+            index = 0;
           }
           // otherwise we can keep pos at zero
         }
@@ -318,9 +319,7 @@ public final class QueueModel {
         }
 
         // launch track if required
-        if (!bAppend || !Player.isPlaying()) {
-          // if we have a play or nothing is playing
-          index = 0;
+        if (!Player.isPlaying()) {
           launch();
         }
         // computes planned tracks
@@ -360,10 +359,12 @@ public final class QueueModel {
   /**
    * Push some files in the fifo
    * 
-   * @param item
-   *          , item to be played
+   * @param item ,
+   *          item to be played
    * @param bAppend
    *          keep previous files or stop them to start a new one ?
+   * @param bFront
+   *          whether the selection is added after playing track
    */
   private static void pushCommand(StackItem item, boolean bAppend, final boolean bFront) {
     List<StackItem> alFiles = new ArrayList<StackItem>(1);
@@ -475,7 +476,8 @@ public final class QueueModel {
   /**
    * Launch track at given index in the fifo
    * 
-   * @param int index
+   * @param int
+   *          index
    */
   private static void launch() {
     try {
@@ -488,7 +490,7 @@ public final class QueueModel {
        * will be correct*
        */
       ObservationManager.notifySync(new JajukEvent(JajukEvents.PLAY_OPENING));
-      
+
       // check if we are in single repeat mode, transfer it to new launched
       // track
       if (Conf.getBoolean(Const.CONF_STATE_REPEAT)) {
@@ -588,8 +590,8 @@ public final class QueueModel {
   /**
    * Computes planned tracks
    * 
-   * @param bClear
-   *          : clear planned tracks stack
+   * @param bClear :
+   *          clear planned tracks stack
    */
   public static void computesPlanned(boolean bClear) {
     // Check if we are in continue mode and we have some tracks in FIFO, if
@@ -902,8 +904,8 @@ public final class QueueModel {
   /**
    * Get an item at given index in FIFO
    * 
-   * @param lIndex
-   *          : index
+   * @param lIndex :
+   *          index
    * @return stack item
    */
   public static StackItem getItem(int lIndex) {
@@ -1226,8 +1228,8 @@ public final class QueueModel {
   /**
    * Clean all references for the given device
    * 
-   * @param device
-   *          : Device to clean
+   * @param device :
+   *          Device to clean
    */
   @SuppressWarnings("unchecked")
   public static void cleanDevice(Device device) {
