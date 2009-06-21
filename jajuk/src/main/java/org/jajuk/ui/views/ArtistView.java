@@ -44,6 +44,8 @@ import org.jajuk.events.ObservationManager;
 import org.jajuk.services.players.QueueModel;
 import org.jajuk.services.players.StackItem;
 import org.jajuk.ui.thumbnails.LastFmAuthorThumbnail;
+import org.jajuk.util.Conf;
+import org.jajuk.util.Const;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilFeatures;
 import org.jdesktop.swingx.JXBusyLabel;
@@ -175,6 +177,12 @@ public class ArtistView extends SuggestionView {
   public void update(final JajukEvent event) {
     SwingUtilities.invokeLater(new Runnable() {
       public void run() {
+        // If internet access or lastfm is disable, just reset
+        if (Conf.getBoolean(Const.CONF_NETWORK_NONE_INTERNET_ACCESS)
+            || !Conf.getBoolean(Const.CONF_LASTFM_INFO)) {
+          reset();
+          return;
+        }
         JajukEvents subject = event.getSubject();
         if (JajukEvents.WEBRADIO_LAUNCHED.equals(subject)
             || JajukEvents.ZERO.equals(event.getSubject())) {
