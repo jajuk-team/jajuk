@@ -246,7 +246,7 @@ public class JajukMainWindow extends JFrame implements JajukWindow, Observer {
     PerspectiveManager.init();
 
     // Add main container (contains toolbars + desktop)
-    JPanel commandDesktop = new JPanel(new MigLayout("insets 0", "[grow]", "[grow][]"));
+    JPanel commandDesktop = new JPanel(new MigLayout("insets 0,gapy 0", "[grow]", "[grow][]"));
     commandDesktop.add(perspectivePanel, "grow,wrap");
     commandDesktop.add(command, "grow");
     jpFrame.add(commandDesktop, BorderLayout.CENTER);
