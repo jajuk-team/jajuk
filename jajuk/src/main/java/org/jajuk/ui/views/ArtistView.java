@@ -155,6 +155,8 @@ public class ArtistView extends SuggestionView {
 
         JScrollPane jspWiki = new JScrollPane(jtaArtistDesc);
         jspWiki.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        jspWiki.setBorder(null);
+        
         jspWiki.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
         
         // Add items, layout is different according wiki text availability
