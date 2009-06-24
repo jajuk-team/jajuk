@@ -52,8 +52,6 @@ import org.jajuk.ui.widgets.JajukButton;
 import org.jajuk.ui.widgets.TrackPositionSliderToolbar;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
-import org.jajuk.util.error.JajukException;
-import org.jajuk.util.log.Log;
 import org.jvnet.substance.SubstanceLookAndFeel;
 
 /**
@@ -102,23 +100,18 @@ public class JajukFullScreenWindow extends JWindow implements JajukWindow {
 
         @Override
         public void specificAfterShown() {
-          // check, if we can paint fullscreen
-          if (instance.graphicsDevice.isFullScreenSupported()) {
-            instance.graphicsDevice.setFullScreenWindow(instance);
+          instance.graphicsDevice.setFullScreenWindow(instance);
 
-            // topPanel should have 10% of the dispaly resolution height
-            instance.setPreferredSize(new Dimension(instance.graphicsDevice.getDisplayMode()
-                .getWidth(), (instance.graphicsDevice.getDisplayMode().getHeight() / 100) * 10));
-            instance.validate();
-          } else {
-            instance.setVisible(false);
-            Log.error(new JajukException(178, "", null));
-          }
+          // topPanel should have 10% of the dispaly resolution height
+          instance.setPreferredSize(new Dimension(instance.graphicsDevice.getDisplayMode()
+              .getWidth(), (instance.graphicsDevice.getDisplayMode().getHeight() / 100) * 10));
+          instance.validate();
         }
 
         @Override
         public void specificAfterHidden() {
-
+          instance.dispose();
+          instance = null;
         }
 
         @Override
@@ -126,6 +119,7 @@ public class JajukFullScreenWindow extends JWindow implements JajukWindow {
           // set everything like it was before entering fullscreen mode
           instance.graphicsDevice.setDisplayMode(instance.origDisplayMode);
           instance.graphicsDevice.setFullScreenWindow(null);
+
         }
       };
     }
