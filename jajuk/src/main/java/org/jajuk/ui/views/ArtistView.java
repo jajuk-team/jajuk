@@ -48,6 +48,7 @@ import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilFeatures;
+import org.jajuk.util.UtilString;
 import org.jdesktop.swingx.JXBusyLabel;
 
 /**
@@ -155,12 +156,20 @@ public class ArtistView extends SuggestionView {
         JScrollPane jspWiki = new JScrollPane(jtaArtistDesc);
         jspWiki.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         jspWiki.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-        // Add items
-        setLayout(new MigLayout("ins 5,gapy 5", "[grow]", "[grow][20%!][grow]"));
-        add(authorThumb, "center,wrap");
-        add(jspWiki, "growx,wrap");
-        add(jspAlbums, "grow,wrap");
-
+        
+        // Add items, layout is different according wiki text availability
+        if (UtilString.isNotVoid(jtaArtistDesc.getText())) {
+          setLayout(new MigLayout("ins 5,gapy 5", "[grow]", "[grow][20%!][grow]"));
+          add(authorThumb, "center,wrap");
+          // don't add the textarea if no wiki text available
+          add(jspWiki, "growx,wrap");
+          add(jspAlbums, "grow,wrap");
+        } else {
+          setLayout(new MigLayout("ins 5,gapy 5", "[grow]"));
+          add(authorThumb, "center,wrap");
+          // don't add the textarea if no wiki text available
+          add(jspAlbums, "grow,wrap");
+        }
         revalidate();
         repaint();
       }

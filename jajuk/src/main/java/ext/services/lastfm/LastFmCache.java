@@ -768,7 +768,7 @@ public class LastFmCache {
    * @param artist
    *          the artist
    */
-  public synchronized void storeArtistInfo(String artist) {
+  public synchronized void storeArtistInfo(String artist, ArtistInfo artistObject) {
     if (artist == null) {
       return;
     }
@@ -776,7 +776,7 @@ public class LastFmCache {
     try {
       String fileAbsPath = getFileNameForArtistInfoAtCache(artist);
       if (fileAbsPath != null) {
-        XMLUtils.writeBeanToFile(artist, fileAbsPath);
+        XMLUtils.writeBeanToFile(artistObject, fileAbsPath);
         Log.debug(UtilString.concat("Stored artist info for artist ", artist));
       }
     } catch (IOException e) {
