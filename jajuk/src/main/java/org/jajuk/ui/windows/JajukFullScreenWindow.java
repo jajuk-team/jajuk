@@ -133,6 +133,14 @@ public class JajukFullScreenWindow extends JWindow implements JajukWindow {
     this.origDisplayMode = graphicsDevice.getDisplayMode();
   }
 
+  /**
+   * Return whether the full screen mode is supported
+   * @return
+   */
+  public boolean isFullScreenSupported(){
+    return graphicsDevice.isFullScreenSupported();
+  }
+  
   public void initUI() {
 
     // Light drag and drop for VLDocking

@@ -21,8 +21,6 @@ package org.jajuk;
 import ext.JSplash;
 import ext.JVM;
 
-import java.awt.GraphicsDevice;
-import java.awt.GraphicsEnvironment;
 import java.awt.SystemTray;
 import java.io.File;
 import java.io.FilenameFilter;
@@ -65,6 +63,7 @@ import org.jajuk.ui.actions.ActionManager;
 import org.jajuk.ui.actions.JajukActions;
 import org.jajuk.ui.helpers.FontManager;
 import org.jajuk.ui.helpers.FontManager.JajukFont;
+import org.jajuk.ui.windows.JajukFullScreenWindow;
 import org.jajuk.ui.windows.JajukMainWindow;
 import org.jajuk.ui.windows.JajukSystray;
 import org.jajuk.ui.wizard.TipOfTheDayWizard;
@@ -609,9 +608,7 @@ public final class Main {
           // is no more available (because the user changed the platform for
           // ie), force the main window mode
           else if (Conf.getInt(Const.CONF_STARTUP_DISPLAY) == Const.DISPLAY_MODE_FULLSCREEN) {
-            GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment()
-                .getDefaultScreenDevice();
-            if (gd.isFullScreenSupported()) {
+            if (JajukFullScreenWindow.getInstance().isFullScreenSupported()) {
               // Display progress
               sc.setProgress(80, Messages.getString("SplashScreen.3"));
               ActionManager.getAction(JajukActions.FULLSCREEN_JAJUK).perform(null);

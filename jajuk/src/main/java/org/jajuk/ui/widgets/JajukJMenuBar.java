@@ -65,6 +65,7 @@ import org.jajuk.ui.perspectives.PerspectiveAdapter;
 import org.jajuk.ui.perspectives.PerspectiveManager;
 import org.jajuk.ui.views.IView;
 import org.jajuk.ui.views.ViewFactory;
+import org.jajuk.ui.windows.JajukFullScreenWindow;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
@@ -120,7 +121,7 @@ public final class JajukJMenuBar extends JMenuBar implements Observer {
   private final JCheckBoxMenuItem jcbmiContinue;
 
   private final JCheckBoxMenuItem jcbmiIntro;
-  
+
   private final JCheckBoxMenuItem jcbmiKaraoke;
 
   JMenu smart;
@@ -171,7 +172,7 @@ public final class JajukJMenuBar extends JMenuBar implements Observer {
 
   JButton jbSlim;
 
-  private final JajukButton jbFull;
+  private JajukButton jbFull = null;
 
   private final JCheckBoxMenuItem jcbmiRepeatAll;
 
@@ -369,12 +370,15 @@ public final class JajukJMenuBar extends JMenuBar implements Observer {
     mainmenu.add(help);
 
     jbSlim = new JajukButton(ActionManager.getAction(JajukActions.SLIM_JAJUK));
-    jbFull = new JajukButton(ActionManager.getAction(JajukActions.FULLSCREEN_JAJUK));
+    if (JajukFullScreenWindow.getInstance().isFullScreenSupported()) {
+      jbFull = new JajukButton(ActionManager.getAction(JajukActions.FULLSCREEN_JAJUK));
+    }
 
     JMenuBar eastmenu = new JMenuBar();
     eastmenu.add(jbSlim);
-    eastmenu.add(jbFull);
-
+    if (JajukFullScreenWindow.getInstance().isFullScreenSupported()) {
+      eastmenu.add(jbFull);
+    }
     setLayout(new BorderLayout());
     add(mainmenu, BorderLayout.WEST);
     add(eastmenu, BorderLayout.EAST);
@@ -450,7 +454,7 @@ public final class JajukJMenuBar extends JMenuBar implements Observer {
   public void setRepeatSelected(final boolean b) {
     jcbmiRepeat.setSelected(b);
   }
-  
+
   public void setRepeatAllSelected(final boolean b) {
     jcbmiRepeatAll.setSelected(b);
   }
@@ -466,7 +470,7 @@ public final class JajukJMenuBar extends JMenuBar implements Observer {
   public void setIntroSelected(final boolean b) {
     jcbmiIntro.setSelected(b);
   }
-  
+
   public void setKaraokeSelected(final boolean b) {
     jcbmiKaraoke.setSelected(b);
   }
