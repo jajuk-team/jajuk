@@ -31,6 +31,7 @@ import java.util.Properties;
 
 import javax.swing.JOptionPane;
 
+import org.jajuk.base.Album;
 import org.jajuk.base.Device;
 import org.jajuk.base.Directory;
 import org.jajuk.base.File;
@@ -290,7 +291,16 @@ public final class QueueModel {
         // OK, stop current track if no append
         if (!bAppend) {
           Player.stop(false);
-          index++;
+          // If the selection items contains contains tracks from the same
+          // album, move the playing track after the selection to alow user to
+          // launch albums one by one and still getting full albums in queue
+          // If the selection contains different albums, increase index so the
+          // playing track is kept *before* the new selection
+          Album firstItemAlbum = alItems.get(0).getFile().getTrack().getAlbum();
+          Album secondItemAlbum = alItems.get(1).getFile().getTrack().getAlbum();
+          if (alQueue.size() > 0 && alItems.size() >= 2 && !firstItemAlbum.equals(secondItemAlbum)) {
+            index++;
+          }
         }
         int pos = index;
         // if push to front, set pos to first item
