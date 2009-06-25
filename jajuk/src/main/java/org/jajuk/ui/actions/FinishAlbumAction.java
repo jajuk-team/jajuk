@@ -54,7 +54,6 @@ public class FinishAlbumAction extends JajukAction {
         try {
           StackItem item = QueueModel.getCurrentItem();// stores
           // current item
-          QueueModel.clear(); // clear fifo
           Directory dir = item.getFile().getDirectory();
           // then re-add current item
           QueueModel.push(UtilFeatures.createStackItems(dir.getFilesFromFile(item.getFile()), item

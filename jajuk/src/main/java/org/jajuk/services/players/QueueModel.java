@@ -668,6 +668,7 @@ public final class QueueModel {
    */
   public static void clear() {
     alQueue.clear();
+    index = 0;
     alPlanned.clear();
   }
 
