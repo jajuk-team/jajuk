@@ -290,6 +290,7 @@ public final class QueueModel {
         // OK, stop current track if no append
         if (!bAppend) {
           Player.stop(false);
+          index++;
         }
         int pos = index;
         // if push to front, set pos to first item
