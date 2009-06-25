@@ -181,7 +181,9 @@ public class JajukSystray extends CommandJPanel implements JajukWindow {
    */
   public JajukSystray() {
     super();
-    stray = SystemTray.getSystemTray();
+    if (SystemTray.isSupported()){
+      stray = SystemTray.getSystemTray();
+    }
   }
 
   @Override
