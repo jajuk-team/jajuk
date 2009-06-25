@@ -296,10 +296,12 @@ public final class QueueModel {
           // launch albums one by one and still getting full albums in queue
           // If the selection contains different albums, increase index so the
           // playing track is kept *before* the new selection
-          Album firstItemAlbum = alItems.get(0).getFile().getTrack().getAlbum();
-          Album secondItemAlbum = alItems.get(1).getFile().getTrack().getAlbum();
-          if (alQueue.size() > 0 && alItems.size() >= 2 && !firstItemAlbum.equals(secondItemAlbum)) {
-            index++;
+          if (alQueue.size() > 0 && alItems.size() >= 2) {
+            Album firstItemAlbum = alItems.get(0).getFile().getTrack().getAlbum();
+            Album secondItemAlbum = alItems.get(1).getFile().getTrack().getAlbum();
+            if (!firstItemAlbum.equals(secondItemAlbum)) {
+              index++;
+            }
           }
         }
         int pos = index;
