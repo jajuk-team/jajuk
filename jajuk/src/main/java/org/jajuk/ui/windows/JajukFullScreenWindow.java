@@ -27,9 +27,10 @@ import static org.jajuk.ui.actions.JajukActions.STOP_TRACK;
 import com.vlsolutions.swing.docking.ui.DockingUISettings;
 
 import java.awt.Dimension;
-import java.awt.DisplayMode;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -52,6 +53,7 @@ import org.jajuk.ui.widgets.JajukButton;
 import org.jajuk.ui.widgets.TrackPositionSliderToolbar;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
+import org.jajuk.util.log.Log;
 import org.jvnet.substance.SubstanceLookAndFeel;
 
 /**
@@ -65,8 +67,6 @@ public class JajukFullScreenWindow extends JWindow implements JajukWindow {
   private static final long serialVersionUID = -2859302706462954993L;
 
   private static JajukFullScreenWindow instance = null;
-
-  private final DisplayMode origDisplayMode;
 
   private final GraphicsDevice graphicsDevice;
 
@@ -117,7 +117,6 @@ public class JajukFullScreenWindow extends JWindow implements JajukWindow {
         @Override
         public void specificBeforeHidden() {
           // set everything like it was before entering fullscreen mode
-          instance.graphicsDevice.setDisplayMode(instance.origDisplayMode);
           instance.graphicsDevice.setFullScreenWindow(null);
 
         }
@@ -130,17 +129,29 @@ public class JajukFullScreenWindow extends JWindow implements JajukWindow {
     // get the active graphic device and store the current mode
     this.graphicsDevice = GraphicsEnvironment.getLocalGraphicsEnvironment()
         .getDefaultScreenDevice();
-    this.origDisplayMode = graphicsDevice.getDisplayMode();
+    addKeyListener(new KeyAdapter() {
+
+      public void keyPressed(KeyEvent e) {
+        if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+          try {
+            ActionManager.getAction(JajukActions.FULLSCREEN_JAJUK).perform(null);
+          } catch (Exception e1) {
+            Log.error(e1);
+          }
+        }
+      }
+    });
   }
 
   /**
    * Return whether the full screen mode is supported
+   * 
    * @return
    */
-  public boolean isFullScreenSupported(){
+  public boolean isFullScreenSupported() {
     return graphicsDevice.isFullScreenSupported();
   }
-  
+
   public void initUI() {
 
     // Light drag and drop for VLDocking
