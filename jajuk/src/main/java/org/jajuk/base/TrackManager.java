@@ -112,7 +112,7 @@ public final class TrackManager extends ItemManager {
         true, false, String.class, null));
     // Track disc number
     registerProperty(new PropertyMetaInformation(Const.XML_TRACK_DISC_NUMBER, false, true, true,
-        true, false, Long.class, null));
+        true, true, Long.class, null));
     // Track preference factor. This is not editable because when changing
     // preference, others
     // actions must be done (updateRate() and we want user to use contextual
@@ -238,7 +238,7 @@ public final class TrackManager extends ItemManager {
     }
     // change tag in files
     for (File file : alReady) {
-      Tag tag = Tag.getTagForFio(file.getFIO());
+      Tag tag = Tag.getTagForFio(file.getFIO(),false);
       tag.setAlbumName(sNewAlbum);
       if (bAutocommit) {
         tag.commit();
@@ -289,7 +289,7 @@ public final class TrackManager extends ItemManager {
     }
     // change tag in files
     for (final File file : alReady) {
-      final Tag tag = Tag.getTagForFio(file.getFIO());
+      final Tag tag = Tag.getTagForFio(file.getFIO(),false);
 
       tag.setAuthorName(sNewAuthor);
       if (bAutocommit) {
@@ -342,7 +342,7 @@ public final class TrackManager extends ItemManager {
     }
     // change tag in files
     for (final File file : alReady) {
-      Tag tag = Tag.getTagForFio(file.getFIO());
+      Tag tag = Tag.getTagForFio(file.getFIO(),false);
 
       tag.setStyleName(sNewStyle);
       if (bAutocommit) {
@@ -393,7 +393,7 @@ public final class TrackManager extends ItemManager {
     }
     // change tag in files
     for (final File file : alReady) {
-      Tag tag = Tag.getTagForFio(file.getFIO());
+      Tag tag = Tag.getTagForFio(file.getFIO(),false);
 
       tag.setYear(newItem);
       if (bAutocommit) {
@@ -438,7 +438,7 @@ public final class TrackManager extends ItemManager {
     }
     // change tag in files
     for (File file : alReady) {
-      Tag tag = Tag.getTagForFio(file.getFIO());
+      Tag tag = Tag.getTagForFio(file.getFIO(),false);
       tag.setComment(sNewItem);
       if (bAutocommit) {
         tag.commit();
@@ -510,7 +510,7 @@ public final class TrackManager extends ItemManager {
     }
     // change tag in files
     for (File file : alReady) {
-      Tag tag = Tag.getTagForFio(file.getFIO());
+      Tag tag = Tag.getTagForFio(file.getFIO(),false);
       tag.setOrder(lNewOrder);
       if (bAutocommit) {
         tag.commit();
@@ -553,7 +553,7 @@ public final class TrackManager extends ItemManager {
     }
     // change tag in files
     for (File file : alReady) {
-      Tag tag = Tag.getTagForFio(file.getFIO());
+      Tag tag = Tag.getTagForFio(file.getFIO(),false);
       tag.setTrackName(sNewItem);
       if (bAutocommit) {
         tag.commit();
@@ -883,7 +883,7 @@ public final class TrackManager extends ItemManager {
     }
     // change tag in files
     for (File file : alReady) {
-      Tag tag = Tag.getTagForFio(file.getFIO());
+      Tag tag = Tag.getTagForFio(file.getFIO(),false);
       tag.setAlbumArtist(sNewItem);
       if (bAutocommit) {
         tag.commit();
@@ -928,7 +928,7 @@ public final class TrackManager extends ItemManager {
     }
     // change tag in files
     for (File file : alReady) {
-      Tag tag = Tag.getTagForFio(file.getFIO());
+      Tag tag = Tag.getTagForFio(file.getFIO(),false);
       tag.setDiscNumber(lNewDiscNumber);
       if (bAutocommit) {
         tag.commit();

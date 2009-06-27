@@ -56,15 +56,6 @@ public class Tag {
   /**
    * Tag constructor
    * 
-   * @param fio
-   */
-  private Tag(java.io.File fio) throws JajukException {
-    this(fio, false);
-  }
-
-  /**
-   * Tag constructor
-   * 
    * @bIgnoreError : ignore error and keep instance
    * @param fio
    */
@@ -173,7 +164,7 @@ public class Tag {
    * @return album artist
    */
   public String getAlbumArtist() {
-    String sAlbumArtist =Const.VARIOUS_ARTIST;
+    String sAlbumArtist = Const.UNKNOWN_AUTHOR;
     // if the type doesn't support tags ( like wav )
     if (tagImpl == null) {
       return sAlbumArtist;
@@ -181,11 +172,8 @@ public class Tag {
 
     try {
       String sTemp = tagImpl.getAlbumArtist().trim();
-      if (Messages.getString(Const.VARIOUS_ARTIST).equals(sTemp)) {
-        // it is done to avoid duplicates unknown styles if
-        // the tag is the real string "unknown" in the
-        // current language
-        sAlbumArtist = Const.VARIOUS_ARTIST;
+      if (Messages.getString(Const.UNKNOWN_AUTHOR).equals(sTemp)) {
+        sAlbumArtist = Const.UNKNOWN_AUTHOR;
       } else if (!"".equals(sTemp)) {
         sAlbumArtist = UtilString.formatTag(sTemp);
       }
@@ -246,7 +234,7 @@ public class Tag {
   }
 
   /**
-   * @return disc number
+   * @return disc number, by default, return 0
    */
   public long getDiscNumber() {
     long l = 0l;
@@ -498,13 +486,14 @@ public class Tag {
    * 
    * @param fio
    *          the audio file containing the tag
+   * @bIgnoreError : ignore any error and keep instance in cache
    * @return cached tag or new tag if non already in cache
    * @throws JajukException
    */
-  public static Tag getTagForFio(File fio) throws JajukException {
+  public static Tag getTagForFio(File fio, boolean bIgnoreErrors) throws JajukException {
     Tag tag = tagsCache.get(fio);
     if (tag == null) {
-      tag = new Tag(fio);
+      tag = new Tag(fio, bIgnoreErrors);
       // Cache the tag
       tagsCache.put(fio, tag);
     }

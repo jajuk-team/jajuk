@@ -672,19 +672,8 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
           }
 
           // Idem for AlbumArtist
-          String sAlbumArtist = null;
-          try {
-            sAlbumArtist = attributes.getValue(Const.XML_TRACK_ALBUM_ARTIST);
-          } catch (Exception e) {
-            if (Log.isDebugEnabled()) {
-              // wrong format
-              Log.debug(Messages.getString("Error.137") + ":" + sTrackName); // wrong
-            }
-          }
-          if (sAlbumArtist == null) {
-            sAlbumArtist = Const.UNKNOWN_AUTHOR;
-          }
-
+          String sAlbumArtist = attributes.getValue(Const.XML_TRACK_ALBUM_ARTIST);
+          
           // Idem for disc number
           long lDiscNumber = 0l;
           if (attributes.getValue(Const.XML_TRACK_DISC_NUMBER) != null) {
@@ -736,7 +725,7 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
             sItemAlbumArtist = sAttributeAlbumArtist.intern();
           }
           long lItemDiscID = 0;
-          String sAttributeDiskId = attributes.getValue(Const.XML_DISC_ID);
+          String sAttributeDiskId = attributes.getValue(Const.XML_ALBUM_DISC_ID);
           if (sAttributeDiskId != null) {
             lItemDiscID = UtilString.fastLongParser(sAttributeDiskId);
           }

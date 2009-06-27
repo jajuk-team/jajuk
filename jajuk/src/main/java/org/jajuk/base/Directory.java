@@ -46,6 +46,7 @@ import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 import org.jajuk.util.ReadOnlyIterator;
+import org.jajuk.util.UtilFeatures;
 import org.jajuk.util.UtilSystem;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
@@ -68,7 +69,7 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
 
   private String author = null;
 
-  private long discID = -1;
+  private long discID = -1l;
 
   /**
    * Directory constructor
@@ -126,7 +127,7 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
   }
 
   /**
-   * @return
+   * @return all sub directories
    */
   public Set<Directory> getDirectories() {
     Set<Directory> out = new LinkedHashSet<Directory>(2);
@@ -214,48 +215,83 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
   /**
    * Scan all files in a directory
    * 
-   * @param bDeepScan
-   *          : force files tag read
+   * @param bDeepScan :
+   *          force files tag read
    * @param reporter
    *          Refresh handler
    */
   public void scan(boolean bDeepScan, RefreshReporter reporter) {
+
+    // Make sure to reset the disc ID
+    this.discID = -1;
     java.io.File[] filelist = getFio().listFiles(UtilSystem.getFileFilter());
     if (filelist == null || filelist.length == 0) { // none file, leave
       return;
     }
+
+    // Create a list of music files and playlist files to consider
+    List<File> musicFiles = new ArrayList<File>(filelist.length);
+    List<File> playlistFiles = new ArrayList<File>(filelist.length);
 
     for (int i = 0; i < filelist.length; i++) {
       // Leave ASAP if exit request
       if (ExitService.isExiting()) {
         return;
       }
-      try { // check errors for each file
-        // Check file name is correct (useful to fix name encoding
-        // issues)
-        if (!new File(filelist[i].getAbsolutePath()).exists()) {
-          Log.warn("Cannot read file name (please rename it): {{" + filelist[i].getAbsolutePath()
-              + "}}");
-          continue;
-        }
+      // Check file name is correct (useful to fix name encoding
+      // issues)
+      if (!new File(filelist[i].getAbsolutePath()).exists()) {
+        Log.warn("Cannot read file name (please rename it): {{" + filelist[i].getAbsolutePath()
+            + "}}");
+        continue;
+      }
 
-        // Ignore iTunes files
-        if (filelist[i].getName().startsWith("._")) {
-          continue;
-        }
+      // Ignore iTunes files
+      if (filelist[i].getName().startsWith("._")) {
+        continue;
+      }
 
-        // check if we recognize the file as music file
-        String extension = UtilSystem.getExtension(filelist[i]);
-        Type type = TypeManager.getInstance().getTypeByExtension(extension);
-        boolean bIsMusic = (Boolean) type.getValue(Const.XML_TYPE_IS_MUSIC);
+      // check if we recognize the file as music file
+      String extension = UtilSystem.getExtension(filelist[i]);
+      Type type = TypeManager.getInstance().getTypeByExtension(extension);
+      boolean bIsMusic = (Boolean) type.getValue(Const.XML_TYPE_IS_MUSIC);
 
-        if (bIsMusic) {
-          scanMusic(filelist[i], bDeepScan, reporter);
-        } else { // playlist
-          scanPlaylist(filelist[i], bDeepScan, reporter);
+      if (bIsMusic) {
+        musicFiles.add(filelist[i]);
+      } else { // playlist
+        playlistFiles.add(filelist[i]);
+      }
+    }
+
+    // Now, compute disc ID and cache tags (only in deep mode because we don't
+    // want to
+    // read tags in fast modes)
+    if (bDeepScan) {
+      try {
+        List<Long> durations = new ArrayList<Long>(musicFiles.size());
+        for (File musicfile : musicFiles) {
+          Tag tag = Tag.getTagForFio(musicfile, false);
+          durations.add(tag.getLength());
         }
+        this.discID = UtilFeatures.computeDiscID(durations);
       } catch (Exception e) {
-        Log.error(103, filelist.length > 0 ? "{{" + filelist[i].toString() + "}}" : "", e);
+        Log.error(e);
+      }
+    }
+
+    // Perform actual scan and check errors for each file
+    for (File musicfile : musicFiles) {
+      try {
+        scanMusic(musicfile, bDeepScan, reporter);
+      } catch (Exception e) {
+        Log.error(103, filelist.length > 0 ? "{{" + musicfile.toString() + "}}" : "", e);
+      }
+    }
+    for (File playlistFile : playlistFiles) {
+      try {
+        scanPlaylist(playlistFile, bDeepScan, reporter);
+      } catch (Exception e) {
+        Log.error(103, filelist.length > 0 ? "{{" + playlistFile.toString() + "}}" : "", e);
       }
     }
   }
@@ -284,6 +320,8 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
       return;
     }
 
+    // Compute disc id and pre-load tags
+
     // If the audio file format doesn't support tagging (like wav) and the file
     // is already known, continue
     Type type = TypeManager.getInstance().getTypeByExtension(UtilSystem.getExtension(music));
@@ -292,17 +330,17 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
       return;
     }
 
-    // ignore tag error to make sure to get a
+    // Ignore tag error to make sure to get a
     // tag object in all cases
-    Tag tag = new Tag(music, true);
+    Tag tag = Tag.getTagForFio(fileRef.getFIO(), true);
     if (tag.isCorrupted()) {
       if (reporter != null) {
         reporter.notifyCorruptedFile();
       }
+      // if an error occurs, just display a message but keep the track
       Log.error(103, "{{" + music.getAbsolutePath() + "}}", null);
     }
 
-    // if an error occurs, just notice it but keep the track
     String sTrackName = tag.getTrackName();
     String sAlbumName = tag.getAlbumName();
     String sAuthorName = tag.getAuthorName();
@@ -312,8 +350,8 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
     long lQuality = tag.getQuality();
     String sComment = tag.getComment();
     long lOrder = tag.getOrder();
-    String sAblumArtist = tag.getAlbumArtist();
-    long lDiscNumber = tag.getDiscNumber();
+    String sAlbumArtist = tag.getAlbumArtist();
+    long discNumber = tag.getDiscNumber();
 
     if (fileRef == null && reporter != null) {
       // stats, do it here and not
@@ -321,62 +359,8 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
       // file if we cannot read it
       reporter.notifyNewFile();
     }
-
     registerFile(music, sId, sTrackName, sAlbumName, sAuthorName, sStyle, length, sYear, lQuality,
-        sComment, lOrder, sAblumArtist, lDiscNumber);
-  }
-
-  private long getDiscID() {
-    if (discID == -1) {
-      // toDo implement code of freeDB for discID
-      discID = 0;
-    }
-    return discID;
-  }
-
-  private String getAuthorForAlbum() {
-    if (author == null) {
-      java.io.File[] filelist = getFio().listFiles(UtilSystem.getFileFilter());
-      if (filelist == null || filelist.length == 0) { // none file, leave
-        return null;
-      }
-
-      for (int i = 0; i < filelist.length; i++) {
-
-        try {
-          if (!new File(filelist[i].getAbsolutePath()).exists()) {
-            continue;
-          }
-
-          // Ignore iTunes files
-          if (filelist[i].getName().startsWith("._")) {
-            continue;
-          }
-
-          // check if we recognize the file as music file
-          String extension = UtilSystem.getExtension(filelist[i]);
-          Type type = TypeManager.getInstance().getTypeByExtension(extension);
-          boolean bIsMusic = (Boolean) type.getValue(Const.XML_TYPE_IS_MUSIC);
-
-          if (bIsMusic) {
-            Tag tag = new Tag(filelist[i], true);
-            String tmpAuthor = tag.getAuthorName();
-            if (author == null) {
-              author = tmpAuthor;
-            } else if (!author.equals(tmpAuthor)) {
-              author = Const.UNKNOWN_AUTHOR;
-              break;
-            }
-          }
-        } catch (Exception e) {
-          Log.error(103, filelist.length > 0 ? "{{" + filelist[i].toString() + "}}" : "", e);
-        }
-      }
-    }
-    if (author.equals(Const.UNKNOWN_AUTHOR)) {
-      return null;
-    }
-    return author;
+        sComment, lOrder, sAlbumArtist, discID, discNumber);
   }
 
   /**
@@ -392,25 +376,14 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
    * @param sComment
    * @param lOrder
    * @param sAlbumArtist
-   * @param lDiscNumber
+   * @param discID
+   * @param discNumber
    */
   private void registerFile(java.io.File music, String sId, String sTrackName, String sAlbumName,
       String sAuthorName, String sStyle, long length, String sYear, long lQuality, String sComment,
-      long lOrder, String sAlbumArtist, long lDiscNumber) {
+      long lOrder, String sAlbumArtist, long discID, long discNumber) {
     Album album = null;
-    long discID = getDiscID();
-
-    // get Informations for album id
-    if (!sAlbumArtist.equals(Const.VARIOUS_ARTIST)) {
-      album = AlbumManager.getInstance().registerAlbum(sAlbumName, sAlbumArtist, discID);
-    } else {
-      String author = getAuthorForAlbum();
-      if (author == null) {
-        author = Const.VARIOUS_ARTIST;
-      }
-      album = AlbumManager.getInstance().registerAlbum(sAlbumName, author, discID);
-    }
-
+    album = AlbumManager.getInstance().registerAlbum(sAlbumName, sAlbumArtist, discID);
     Style style = StyleManager.getInstance().registerStyle(sStyle);
     Year year = YearManager.getInstance().registerYear(sYear);
     Author author = AuthorManager.getInstance().registerAuthor(sAuthorName);
@@ -418,7 +391,7 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
     // Store number of tracks in collection
     long trackNumber = TrackManager.getInstance().getElementCount();
     Track track = TrackManager.getInstance().registerTrack(sTrackName, album, style, author,
-        length, year, lOrder, type, sAlbumArtist, lDiscNumber);
+        length, year, lOrder, type, sAlbumArtist, discNumber);
 
     // Note date for file date property. CAUTION: do not try to
     // check current date to accelerate refreshing if file has not
@@ -649,10 +622,10 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
   /**
    * Refresh : scan asynchronously the directory to find tracks
    * 
-   * @param bAsynchronous
-   *          : set asynchronous or synchronous mode
-   * @param bAsk
-   *          : should we ask user if he wants to perform a deep or fast scan?
+   * @param bAsynchronous :
+   *          set asynchronous or synchronous mode
+   * @param bAsk :
+   *          should we ask user if he wants to perform a deep or fast scan?
    *          default=deep
    */
   public void manualRefresh(final boolean bAsynchronous, final boolean bAsk) {

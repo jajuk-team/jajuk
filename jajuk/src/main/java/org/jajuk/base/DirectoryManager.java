@@ -89,10 +89,8 @@ public final class DirectoryManager extends ItemManager {
     // for standard
     // directories, not root
     registerProperty(new PropertyMetaInformation(Const.XML_NAME, false, true, true, false, false,
-        String.class, null)); // edition to
-    // yet
-    // implemented
-    // TBI
+        String.class, null)); 
+    // @TODO edition
     // Parent
     registerProperty(new PropertyMetaInformation(Const.XML_DIRECTORY_PARENT, false, true, true,
         false, false, String.class, null));
@@ -102,7 +100,7 @@ public final class DirectoryManager extends ItemManager {
     // Expand
     registerProperty(new PropertyMetaInformation(Const.XML_EXPANDED, false, false, false, false,
         true, Boolean.class, false));
-    // Synchonized directory
+    // Synchronized directory
     registerProperty(new PropertyMetaInformation(Const.XML_DIRECTORY_SYNCHRONIZED, false, false,
         true, false, false, Boolean.class, true));
     // Default cover

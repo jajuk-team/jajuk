@@ -257,7 +257,7 @@ public final class UtilFeatures {
 
     Scanner s = new Scanner(Conf.getString(Const.FILE_DEFAULT_COVER)).useDelimiter(";");
     while (s.hasNext()) {
-      String next=s.next();
+      String next = s.next();
       defaultCover = sFileName.toLowerCase(Locale.getDefault()).matches(".*" + next + ".*");
       if (defaultCover)
         break;
@@ -376,6 +376,46 @@ public final class UtilFeatures {
         oberver.update(new JajukEvent(JajukEvents.ZERO));
       }
     }
+  }
+
+  /**
+   * Return sum of decimal digits in n. Code from
+   * http://www.cs.princeton.edu/introcs/51data/CDDB.java.html
+   */
+  private static long sumOfDigits(long n) {
+    long i = n;
+    long sum = 0;
+    while (i > 0) {
+      sum = sum + (i % 10);
+      i = i / 10;
+    }
+    return sum;
+  }
+
+  /**
+   * Computes a disk id. Code based on
+   * http://www.cs.princeton.edu/introcs/51data/CDDB.java.html
+   * 
+   * @param durations
+   *          List of durations
+   * @return the disk ID as a long
+   */
+  public static long computeDiscID(List<Long> durations) {
+    int totalLength = 0;
+    int nbTracks = durations.size();
+    for (Long l : durations) {
+      totalLength += l;
+    }
+    int checkSum = 0;
+    for (Long duration : durations) {
+      checkSum += sumOfDigits(duration);
+    }
+    int xx = checkSum % 255;
+    int yyyy = totalLength;
+    int zz = nbTracks;
+    // XXYYYYZZ
+    long discID = ((xx << 24) | (yyyy << 8) | zz);
+    return discID;
   }
 
 }

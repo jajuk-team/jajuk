@@ -912,7 +912,7 @@ public interface Const {
   
   String XML_ALBUM_ARTIST = "album_artist";
   
-  String XML_DISC_ID = "disc_id";
+  String XML_ALBUM_DISC_ID = "disc_id";
 
   String XML_TRACKS = "tracks";
 

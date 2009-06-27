@@ -259,7 +259,8 @@ public final class UtilString {
     String ret = out;
     String sValue;
     if (sPattern.contains(Const.PATTERN_AUTHOR)) {
-      if (track.getAlbumArtist().equals(Const.VARIOUS_ARTIST) || track.getAlbumArtist().equals("")) {
+      if (Const.VARIOUS_ARTIST.equals(track.getAlbumArtist())
+          || UtilString.isVoid(track.getAlbumArtist())) {
         sValue = track.getAuthor().getName();
       } else {
         sValue = track.getAlbumArtist();
@@ -910,8 +911,7 @@ public final class UtilString {
   /**
    * 
    * Code token from aTunes 1.14.0 *Copyright (C) 2006-2009 Alex Aranda, Sylvain
-   * Gaudard, Thomas Beckers and contributors 
-   * Returns list of text between
+   * Gaudard, Thomas Beckers and contributors Returns list of text between
    * specified chars. Both chars are included in result elements. Returns empty
    * list if chars are not found in string in given order For example given
    * string "ab cd (ef) gh (ij)" and chars '(' and ')' will return a list with

@@ -73,14 +73,14 @@ public class Album extends LogicalItem implements Comparable<Album> {
   public Album(String sId, String sName, String sAlbumArtist, long discID) {
     super(sId, sName);
     setProperty(Const.XML_ALBUM_ARTIST, sAlbumArtist);
-    setProperty(Const.XML_DISC_ID, discID);
+    setProperty(Const.XML_ALBUM_DISC_ID, discID);
   }
 
   /**
    * @return the discID
    */
   public long getDiscID() {
-    return getLongValue(Const.XML_DISC_ID);
+    return getLongValue(Const.XML_ALBUM_DISC_ID);
   }
 
   /**

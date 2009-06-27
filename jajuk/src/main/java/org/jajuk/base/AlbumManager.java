@@ -75,11 +75,11 @@ public final class AlbumManager extends ItemManager implements Observer {
     registerProperty(new PropertyMetaInformation(Const.XML_ALBUM_COVER, false, false, false, false,
         false, String.class, null));
     // Name
-    registerProperty(new PropertyMetaInformation(Const.XML_ALBUM_ARTIST, false, true, false, false,
-        false, String.class, null));
+    registerProperty(new PropertyMetaInformation(Const.XML_ALBUM_ARTIST, false, true, true, true,
+        true, String.class, null));
     // Name
-    registerProperty(new PropertyMetaInformation(Const.XML_DISC_ID, false, true, false, false,
-        false, Long.class, null));
+    registerProperty(new PropertyMetaInformation(Const.XML_ALBUM_DISC_ID, false, true, false,
+        false, false, Long.class, -1l));
     // Register events
     ObservationManager.register(this);
   }
@@ -101,16 +101,6 @@ public final class AlbumManager extends ItemManager implements Observer {
   }
 
   /**
-   * Register an Album
-   * 
-   * @param sName
-   */
-  public Album registerAlbum(String sName, String sAlbumArtist, long discID) {
-    String sId = createID(sName, sAlbumArtist, discID);
-    return registerAlbum(sId, sName, sAlbumArtist, discID);
-  }
-
-  /**
    * Return hashcode for this item
    * 
    * @param sName
@@ -128,7 +118,7 @@ public final class AlbumManager extends ItemManager implements Observer {
     // If album artist tag is provided, use it + name
     // If not, use name + diskId (or only the name if the disc id is not yet
     // computed)
-    if (sAlbumArtist == null || Const.VARIOUS_ARTIST.equals(sAlbumArtist)) {
+    if (sAlbumArtist == null || Const.UNKNOWN_AUTHOR.equals(sAlbumArtist)) {
       if (discId > 0) {
         return MD5Processor.hash(sName + discId);
       } else {
@@ -152,6 +142,16 @@ public final class AlbumManager extends ItemManager implements Observer {
     album = new Album(sId, sName, sAlbumArtist, discID);
     registerItem(album);
     return album;
+  }
+
+  /**
+   * Register an Album
+   * 
+   * @param sName
+   */
+  public Album registerAlbum(String sName, String sAlbumArtist, long discID) {
+    String sId = createID(sName, sAlbumArtist, discID);
+    return registerAlbum(sId, sName, sAlbumArtist, discID);
   }
 
   /**
