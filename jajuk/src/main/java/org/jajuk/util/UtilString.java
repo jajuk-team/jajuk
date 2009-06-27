@@ -259,7 +259,7 @@ public final class UtilString {
     String ret = out;
     String sValue;
     if (sPattern.contains(Const.PATTERN_AUTHOR)) {
-      if (track.getAlbumArtist().equals(Const.UNKNOWN_AUTHOR) || track.getAlbumArtist().equals("")) {
+      if (track.getAlbumArtist().equals(Const.VARIOUS_ARTIST) || track.getAlbumArtist().equals("")) {
         sValue = track.getAuthor().getName();
       } else {
         sValue = track.getAlbumArtist();
@@ -301,7 +301,7 @@ public final class UtilString {
     final Track track = file.getTrack();
 
     // Check Author name
-    out = applyAuthorPattern(file, sPattern, bMandatory, normalize, out, track);
+    out = UtilString.applyAuthorPattern(file, sPattern, bMandatory, normalize, out, track);
 
     // Check Style name
     out = UtilString.applyStylePattern(file, sPattern, bMandatory, normalize, out, track);
