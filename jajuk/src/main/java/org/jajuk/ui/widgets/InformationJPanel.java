@@ -137,6 +137,7 @@ public final class InformationJPanel extends JXPanel implements Observer {
 
     // total progress bar
     JToolBar jtbTotal = new JajukJToolbar();
+    jtbTotal.addSeparator();
     jlTotal = new JLabel();
     jlTotal.setToolTipText(Messages.getString("InformationJPanel.5"));
     jtbTotal.add(jlTotal);
