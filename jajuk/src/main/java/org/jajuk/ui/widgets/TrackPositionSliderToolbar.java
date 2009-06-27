@@ -126,6 +126,7 @@ public class TrackPositionSliderToolbar extends JajukJToolbar implements ChangeL
     });
     add(jlCurrent);
     add(Box.createHorizontalStrut(6));
+    addSeparator();
   }
 
   /*

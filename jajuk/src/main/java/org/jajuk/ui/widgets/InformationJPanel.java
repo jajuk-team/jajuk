@@ -22,7 +22,6 @@ package org.jajuk.ui.widgets;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.text.MessageFormat;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -43,7 +42,9 @@ import org.jajuk.events.Observer;
 import org.jajuk.services.players.Player;
 import org.jajuk.services.players.QueueModel;
 import org.jajuk.services.webradio.WebRadio;
+import org.jajuk.ui.helpers.FontManager;
 import org.jajuk.ui.helpers.JajukTimer;
+import org.jajuk.ui.helpers.FontManager.JajukFont;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.Messages;
@@ -126,17 +127,13 @@ public final class InformationJPanel extends JXPanel implements Observer {
     jtbMessage.setMinimumSize(new Dimension(0, 0));
     // We use toolbar to display vertical separator lines
     jlMessage = new JLabel();
+    jlMessage.setFont(FontManager.getInstance().getFont(JajukFont.BOLD));
     setMessage(Messages.getString("JajukWindow.18"), InformationJPanel.INFORMATIVE);
     jtbMessage.add(jlMessage);
     jtbMessage.add(Box.createHorizontalGlue());
     jtbMessage.addSeparator();
 
-    // selection bar
-    JToolBar jtbSelection = new JajukJToolbar();
-    jlSelection = new JLabel();
-    jtbSelection.add(jlSelection);
-    jtbSelection.add(Box.createHorizontalGlue());
-    jtbSelection.addSeparator();
+    trackPositionSliderToolbar = new TrackPositionSliderToolbar();
 
     // total progress bar
     JToolBar jtbTotal = new JajukJToolbar();
@@ -146,14 +143,18 @@ public final class InformationJPanel extends JXPanel implements Observer {
     jtbTotal.add(Box.createHorizontalGlue());
     jtbTotal.addSeparator();
 
-    trackPositionSliderToolbar = new TrackPositionSliderToolbar();
+    // selection bar
+    JToolBar jtbSelection = new JajukJToolbar();
+    jlSelection = new JLabel();
+    jtbSelection.add(jlSelection);
+    jtbSelection.add(Box.createHorizontalGlue());
 
     // add widgets
-    setLayout(new MigLayout("insets 2","[44%,grow][13%,grow][10%,grow][33%,grow]"));
-    add(jtbMessage,"grow");
-    add(jtbSelection,"grow");
-    add(jtbTotal,"grow");
-    add(trackPositionSliderToolbar,"grow");
+    setLayout(new MigLayout("insets 2", "[40%,grow][40%,grow][10%,grow][10%,grow]"));
+    add(jtbMessage, "grow");
+    add(trackPositionSliderToolbar, "grow");
+    add(jtbTotal, "grow");
+    add(jtbSelection, "grow");
 
     // check if some errors occurred before the view has been displayed
     if (ObservationManager.containsEvent(JajukEvents.PLAY_ERROR)) {
@@ -293,7 +294,8 @@ public final class InformationJPanel extends JXPanel implements Observer {
       final long timeToPlay = JajukTimer.getInstance().getTotalTimeToPlay();
       SwingUtilities.invokeLater(new Runnable() {
         public void run() {
-          if (JajukEvents.HEART_BEAT.equals(subject) && !QueueModel.isStopped() && !Player.isPaused()) {
+          if (JajukEvents.HEART_BEAT.equals(subject) && !QueueModel.isStopped()
+              && !Player.isPaused()) {
             String sCurrentTotalMessage = UtilString.formatTimeBySec(timeToPlay);
             setTotalTimeMessage(sCurrentTotalMessage + " [" + QueueModel.getCountTracksLeft() + "]");
           } else if (JajukEvents.ZERO.equals(subject) || JajukEvents.PLAYER_STOP.equals(subject)) {
@@ -304,12 +306,14 @@ public final class InformationJPanel extends JXPanel implements Observer {
           } else if (JajukEvents.FILE_LAUNCHED.equals(subject)) {
             File file = QueueModel.getPlayingFile();
             if (file != null) {
-              MessageFormat sMessageFormat = new MessageFormat(Messages.getString("FIFO.10") + " "
-                  + Messages.getString("InformationJPanel.8"));
-              Object[] stArgs = { file.getTrack().getName(),
-                  file.getTrack().getAuthor().getName2(), file.getTrack().getAlbum().getName2() };
-              String message = sMessageFormat.format(stArgs);
-              setMessage(message, InformationJPanel.INFORMATIVE);
+              StringBuffer sb = new StringBuffer();
+              sb.append(Messages.getString("FIFO.10")).append("    ").append(
+                  QueueModel.getIndex() + 1).append(" - ").append(
+                  file.getTrack().getAuthor().getName2()).append(" - ").append(
+                  file.getTrack().getName()).append("  /  ").append(file.getTrack().getYear())
+                  .append(" - ").append(file.getTrack().getAlbum().getName2());
+
+              setMessage(sb.toString(), InformationJPanel.INFORMATIVE);
             }
           } else if (JajukEvents.WEBRADIO_LAUNCHED.equals(subject)) {
             if (event.getDetails() == null) {
