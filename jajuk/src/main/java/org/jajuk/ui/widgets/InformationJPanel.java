@@ -42,9 +42,7 @@ import org.jajuk.events.Observer;
 import org.jajuk.services.players.Player;
 import org.jajuk.services.players.QueueModel;
 import org.jajuk.services.webradio.WebRadio;
-import org.jajuk.ui.helpers.FontManager;
 import org.jajuk.ui.helpers.JajukTimer;
-import org.jajuk.ui.helpers.FontManager.JajukFont;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.Messages;
@@ -127,7 +125,6 @@ public final class InformationJPanel extends JXPanel implements Observer {
     jtbMessage.setMinimumSize(new Dimension(0, 0));
     // We use toolbar to display vertical separator lines
     jlMessage = new JLabel();
-    jlMessage.setFont(FontManager.getInstance().getFont(JajukFont.BOLD));
     setMessage(Messages.getString("JajukWindow.18"), InformationJPanel.INFORMATIVE);
     jtbMessage.add(jlMessage);
     jtbMessage.add(Box.createHorizontalGlue());
@@ -146,16 +143,16 @@ public final class InformationJPanel extends JXPanel implements Observer {
 
     // selection bar
     JToolBar jtbSelection = new JajukJToolbar();
-    jlSelection = new JLabel();
+    jlSelection = new JLabel(Messages.getString("InformationJPanel.9"));
     jtbSelection.add(jlSelection);
     jtbSelection.add(Box.createHorizontalGlue());
 
     // add widgets
     setLayout(new MigLayout("insets 2", "[40%,grow][40%,grow][10%,grow][10%,grow]"));
-    add(jtbMessage, "grow");
+    add(jtbMessage, "grow,left");
     add(trackPositionSliderToolbar, "grow");
     add(jtbTotal, "grow");
-    add(jtbSelection, "grow");
+    add(jtbSelection, "grow,right");
 
     // check if some errors occurred before the view has been displayed
     if (ObservationManager.containsEvent(JajukEvents.PLAY_ERROR)) {

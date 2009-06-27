@@ -46,6 +46,7 @@ import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBoxMenuItem;
+import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.JRadioButtonMenuItem;
@@ -157,6 +158,8 @@ public class CommandJPanel extends JXPanel implements ActionListener, ChangeList
 
   JSlider jsVolume;
 
+  JLabel jlVolume;
+
   private PreferenceToolbar evaltoobar;
 
   private JajukButton jbMute;
@@ -246,6 +249,7 @@ public class CommandJPanel extends JXPanel implements ActionListener, ChangeList
       iVolume = 0;
     }
     jsVolume = new JSlider(0, 100, iVolume);
+    jlVolume = new JLabel(iVolume + " %");
     jsVolume.setToolTipText(iVolume + " %");
     jsVolume.addChangeListener(CommandJPanel.this);
     jbMute = new JajukButton(ActionManager.getAction(MUTE_STATE));
@@ -385,12 +389,13 @@ public class CommandJPanel extends JXPanel implements ActionListener, ChangeList
     add(jtbWebRadio, "left,split 2,gapright 15");
     add(jtbSpecial, "left,gapright 15");
 
-    add(jbStop, "center,split 6,width 40!,height 30,gapright 5!");
+    add(jbStop, "center,split 7,width 40!,height 30,gapright 5!");
     add(jbPrevious, "center,width 62!,height 30!,gapright 0");
     add(jbPlayPause, "center,width 45!,height 45!,gapright 0");
     add(jbNext, "center,width 62!,height 30!,gapright 3");
     add(jbMute, "center,width 42!,height 30!,gapright 5");
-    add(jsVolume, "center,growx,width 25::100,gapright 15");
+    add(jsVolume, "center,growx,width 25::100,gapright 3");
+    add(jlVolume, "gapright 15");
 
     add(jtbModes, "right,split 2,gap right 10,gapright 5");
     add(evaltoobar, "right");
@@ -476,7 +481,6 @@ public class CommandJPanel extends JXPanel implements ActionListener, ChangeList
     jsVolume.addChangeListener(this);
     jbMute.addMouseWheelListener(this);
     jsVolume.addMouseWheelListener(this);
-    jsVolume.setToolTipText((int) (fVolume * 100) + " %");
   }
 
   /*
@@ -521,7 +525,9 @@ public class CommandJPanel extends JXPanel implements ActionListener, ChangeList
         } else if (JajukEvents.VOLUME_CHANGED.equals(event.getSubject())) {
           jsVolume.removeChangeListener(CommandJPanel.this);
           jsVolume.setValue((int) (100 * Player.getCurrentVolume()));
-          jsVolume.setToolTipText((int) (100 * Player.getCurrentVolume()) + " %");
+          String sVolume = (int) (100 * Player.getCurrentVolume()) + " %";
+          jsVolume.setToolTipText(sVolume);
+          jlVolume.setText(sVolume);
           jsVolume.addChangeListener(CommandJPanel.this);
           jbMute.setSelected(Player.isMuted());
         } else if (JajukEvents.DJS_CHANGE.equals(event.getSubject())) {
