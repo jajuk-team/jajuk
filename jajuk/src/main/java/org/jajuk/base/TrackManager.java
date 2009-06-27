@@ -693,7 +693,11 @@ public final class TrackManager extends ItemManager {
           out.addAll(tracks);
         }
       }
-      // No sorting, cache is already sorted
+      // cache is not sorted correct for albums with more than 1 disc
+      if(sorted){
+        // sort Tracks
+        Collections.sort(out, new TrackComparator(TrackComparatorType.ORDER));
+      }
     }
     // If the item is itself a track, simply return it
     else if (items.get(0) instanceof Track) {
