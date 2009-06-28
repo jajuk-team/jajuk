@@ -22,6 +22,7 @@ package org.jajuk.ui.widgets;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.MessageFormat;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -134,7 +135,7 @@ public final class InformationJPanel extends JXPanel implements Observer {
 
     // total progress bar
     JToolBar jtbTotal = new JajukJToolbar();
-        
+
     jtbTotal.addSeparator();
     jlTotal = new JLabel();
     jlTotal.setToolTipText(Messages.getString("InformationJPanel.5"));
@@ -306,14 +307,12 @@ public final class InformationJPanel extends JXPanel implements Observer {
           } else if (JajukEvents.FILE_LAUNCHED.equals(subject)) {
             File file = QueueModel.getPlayingFile();
             if (file != null) {
-              StringBuffer sb = new StringBuffer();
-              sb.append(Messages.getString("FIFO.10")).append("    ").append(
-                  QueueModel.getIndex() + 1).append(" - ").append(
-                  file.getTrack().getAuthor().getName2()).append(" - ").append(
-                  file.getTrack().getName()).append("  /  ").append(file.getTrack().getYear())
-                  .append(" - ").append(file.getTrack().getAlbum().getName2());
-
-              setMessage(sb.toString(), InformationJPanel.INFORMATIVE);
+              MessageFormat sMessageFormat = new MessageFormat(Messages.getString("FIFO.10") + " "
+                  + Messages.getString("InformationJPanel.8"));
+              Object[] stArgs = { file.getTrack().getName(),
+                  file.getTrack().getAuthor().getName2(), file.getTrack().getAlbum().getName2() };
+              String message = sMessageFormat.format(stArgs);
+              setMessage(message, InformationJPanel.INFORMATIVE);
             }
           } else if (JajukEvents.WEBRADIO_LAUNCHED.equals(subject)) {
             if (event.getDetails() == null) {
