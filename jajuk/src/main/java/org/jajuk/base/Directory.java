@@ -320,8 +320,6 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
       return;
     }
 
-    // Compute disc id and pre-load tags
-
     // If the audio file format doesn't support tagging (like wav) and the file
     // is already known, continue
     Type type = TypeManager.getInstance().getTypeByExtension(UtilSystem.getExtension(music));
@@ -332,7 +330,7 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
 
     // Ignore tag error to make sure to get a
     // tag object in all cases
-    Tag tag = Tag.getTagForFio(fileRef.getFIO(), true);
+    Tag tag = Tag.getTagForFio(music, true);
     if (tag.isCorrupted()) {
       if (reporter != null) {
         reporter.notifyCorruptedFile();
