@@ -67,8 +67,6 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
   /** IO file for optimizations* */
   private java.io.File fio;
 
-  private String author = null;
-
   private long discID = -1l;
 
   /**
@@ -215,8 +213,8 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
   /**
    * Scan all files in a directory
    * 
-   * @param bDeepScan :
-   *          force files tag read
+   * @param bDeepScan
+   *          : force files tag read
    * @param reporter
    *          Refresh handler
    */
@@ -389,7 +387,7 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
     // Store number of tracks in collection
     long trackNumber = TrackManager.getInstance().getElementCount();
     Track track = TrackManager.getInstance().registerTrack(sTrackName, album, style, author,
-        length, year, lOrder, type, sAlbumArtist, discNumber);
+        length, year, lOrder, type, discNumber);
 
     // Note date for file date property. CAUTION: do not try to
     // check current date to accelerate refreshing if file has not
@@ -620,10 +618,10 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
   /**
    * Refresh : scan asynchronously the directory to find tracks
    * 
-   * @param bAsynchronous :
-   *          set asynchronous or synchronous mode
-   * @param bAsk :
-   *          should we ask user if he wants to perform a deep or fast scan?
+   * @param bAsynchronous
+   *          : set asynchronous or synchronous mode
+   * @param bAsk
+   *          : should we ask user if he wants to perform a deep or fast scan?
    *          default=deep
    */
   public void manualRefresh(final boolean bAsynchronous, final boolean bAsk) {

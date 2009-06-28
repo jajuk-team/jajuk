@@ -391,9 +391,9 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
    * want startup to be as fast as possible. Note that the use of intern() save
    * around 1/4 of overall heap memory
    * 
-   * We use sax-interning for the main items sections (<styles> for ie). For
-   * all raw items, we don't perform equals on item name but we compare the
-   * string hashcode
+   * We use sax-interning for the main items sections (<styles> for ie). For all
+   * raw items, we don't perform equals on item name but we compare the string
+   * hashcode
    * 
    */
   @Override
@@ -671,9 +671,6 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
             }
           }
 
-          // Idem for AlbumArtist
-          String sAlbumArtist = attributes.getValue(Const.XML_TRACK_ALBUM_ARTIST);
-          
           // Idem for disc number
           long lDiscNumber = 0l;
           if (attributes.getValue(Const.XML_TRACK_DISC_NUMBER) != null) {
@@ -692,7 +689,7 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
           sRightID = sID;
           if (needCheckID) {
             sRightID = TrackManager.createID(sTrackName, album, style, author, length, year,
-                lOrder, type, sAlbumArtist, lDiscNumber).intern();
+                lOrder, type, lDiscNumber).intern();
             if (sRightID == sID) {
               needCheckID = UpgradeManager.isUpgradeDetected() || SessionService.isTestMode();
             } else {
@@ -704,7 +701,7 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
           Date dAdditionDate = ADDITION_FORMATTER.parse(attributes.getValue(attributes
               .getIndex(Const.XML_TRACK_DISCOVERY_DATE)));
           track = TrackManager.getInstance().registerTrack(sRightID, sTrackName, album, style,
-              author, length, year, lOrder, type, sAlbumArtist, lDiscNumber);
+              author, length, year, lOrder, type, lDiscNumber);
           TrackManager.getInstance().changeTrackRate(track,
               UtilString.fastLongParser(attributes.getValue(Const.XML_TRACK_RATE)));
           track.setHits(UtilString.fastLongParser(attributes.getValue(Const.XML_TRACK_HITS)));

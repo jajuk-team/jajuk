@@ -103,7 +103,8 @@ public class Album extends LogicalItem implements Comparable<Album> {
     if (UtilString.isNotVoid(albumArtist)) {
       return albumArtist;
     }
-    String various = Messages.getString(Const.UNKNOWN_AUTHOR);
+    //return an empty String, because this tag is sometime not defined+needed
+    String various = "";
     Author author = getAuthor();
     if (author == null) {
       // Several different author, return translated "various"

@@ -79,7 +79,7 @@ public class Track extends LogicalItem implements Comparable<Track> {
    * @param sAlbumArtist
    */
   public Track(String sId, String sName, Album album, Style style, Author author, long length,
-      Year year, long lOrder, Type type, String sAlbumArtist, long lDiscNumber) {
+      Year year, long lOrder, Type type, long lDiscNumber) {
     super(sId, sName);
     // album
     this.album = album;
@@ -90,8 +90,6 @@ public class Track extends LogicalItem implements Comparable<Track> {
     // author
     this.author = author;
     setProperty(Const.XML_AUTHOR, author.getID());
-    // albumArtist
-    setProperty(Const.XML_TRACK_ALBUM_ARTIST, sAlbumArtist);
     // Length
     this.length = length;
     setProperty(Const.XML_TRACK_LENGTH, length);
@@ -295,7 +293,7 @@ public class Track extends LogicalItem implements Comparable<Track> {
    * @return
    */
   public String getAlbumArtist() {
-    return getStringValue(Const.XML_TRACK_ALBUM_ARTIST);
+    return album.getAlbumArtist();
   }
 
   /**
@@ -304,10 +302,7 @@ public class Track extends LogicalItem implements Comparable<Track> {
    * @return
    */
   public String getAlbumArtist2() {
-    if (getStringValue(Const.XML_TRACK_ALBUM_ARTIST).equals(Const.UNKNOWN_AUTHOR)) {
-      return Messages.getString(getStringValue(Const.XML_TRACK_ALBUM_ARTIST));
-    }
-    return getStringValue(Const.XML_TRACK_ALBUM_ARTIST);
+    return album.getAlbumArtist2();
   }
 
   /**
@@ -612,12 +607,4 @@ public class Track extends LogicalItem implements Comparable<Track> {
     sb.deleteCharAt(sb.length() - 1);
     return sb.toString();
   }
-
-  /**
-   * @param sAlbumArtist
-   */
-  public void setAlbumArtist(String sAlbumArtist) {
-    setProperty(Const.XML_TRACK_ALBUM_ARTIST, sAlbumArtist);
-  }
-
 }

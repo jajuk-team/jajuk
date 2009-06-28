@@ -299,7 +299,6 @@ public class XMLExporter extends Exporter {
     long lTrackRate = track.getRate();
     String sTrackComment = UtilString.formatXML(track.getComment());
     long lTrackOrder = track.getOrder();
-    String sAlbumArtist = UtilString.formatXML(track.getAlbumArtist());
     long lTrackDiscNumber = track.getDiscNumber();
     writer.write(addTabs(level) + Tag.openTag(Const.XML_TRACK) + NEWLINE);
     writer.write(addTabs(level + 1) + Tag.tagData(Const.XML_ID, sTrackID) + NEWLINE);
@@ -314,8 +313,6 @@ public class XMLExporter extends Exporter {
     writer.write(addTabs(level + 1)
         + Tag.tagData(Const.XML_TRACK_ORDER, UtilString.padNumber(lTrackOrder, 2)) + NEWLINE);
     writer.write(addTabs(level + 1) + Tag.tagData(Const.XML_TRACK_ALBUM, sTrackAlbum) + NEWLINE);
-    writer.write(addTabs(level + 1) + Tag.tagData(Const.XML_TRACK_ALBUM_ARTIST, sAlbumArtist)
-        + NEWLINE);
     writer.write(addTabs(level + 1)
         + Tag.tagData(Const.XML_TRACK_DISC_NUMBER, UtilString.padNumber(lTrackDiscNumber, 2))
         + NEWLINE);
@@ -328,6 +325,7 @@ public class XMLExporter extends Exporter {
     String sStyleName = "";
     String sAuthorName = "";
     String sYear = "";
+    String sAlbumArtist = UtilString.formatXML(album.getAlbumArtist());
     List<Track> tracks = TrackManager.getInstance().getAssociatedTracks(album, true);
     if (tracks.size() > 0) {
       sStyleName = UtilString.formatXML(tracks.iterator().next().getStyle().getName2());
@@ -340,6 +338,7 @@ public class XMLExporter extends Exporter {
     writer.write(addTabs(level + 1) + Tag.tagData(Const.XML_AUTHOR, sAuthorName) + NEWLINE);
     writer.write(addTabs(level + 1) + Tag.tagData(Const.XML_STYLE, sStyleName) + NEWLINE);
     writer.write(addTabs(level + 1) + Tag.tagData(Const.XML_YEAR, sYear) + NEWLINE);
+    writer.write(addTabs(level + 1) + Tag.tagData(Const.XML_ALBUM_ARTIST, sAlbumArtist) + NEWLINE);
     // For full collection, we don't show detailed tracks for performance
     // reasons
     if (showTracks) {

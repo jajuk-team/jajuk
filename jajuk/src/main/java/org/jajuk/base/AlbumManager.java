@@ -41,6 +41,7 @@ import org.jajuk.services.players.QueueModel;
 import org.jajuk.util.Const;
 import org.jajuk.util.MD5Processor;
 import org.jajuk.util.ReadOnlyIterator;
+import org.jajuk.util.UtilString;
 import org.jajuk.util.error.JajukException;
 
 /**
@@ -107,9 +108,8 @@ public final class AlbumManager extends ItemManager implements Observer {
    *          item name
    * @param String
    *          sAlbumArtist : the album artist tag or null is none
-   * @param long
-   *          discId the CD disk ID (in the CDDB meaning), 0 if doesn't computed
-   *          yet
+   * @param long discId the CD disk ID (in the CDDB meaning), 0 if doesn't
+   *        computed yet
    * 
    * @return ItemManager ID
    */
@@ -118,7 +118,8 @@ public final class AlbumManager extends ItemManager implements Observer {
     // If album artist tag is provided, use it + name
     // If not, use name + diskId (or only the name if the disc id is not yet
     // computed)
-    if (sAlbumArtist == null || Const.UNKNOWN_AUTHOR.equals(sAlbumArtist)) {
+    if (sAlbumArtist == null || Const.UNKNOWN_AUTHOR.equals(sAlbumArtist)
+        || UtilString.isVoid(sAlbumArtist)) {
       if (discId > 0) {
         return MD5Processor.hash(sName + discId);
       } else {

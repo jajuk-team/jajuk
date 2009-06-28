@@ -75,8 +75,8 @@ public class TracksTableModel extends JajukTableModel {
     vColNames.add(Messages.getString(Const.PROPERTY_SEPARATOR + Const.XML_AUTHOR));
     idList.add(Const.XML_AUTHOR);
     
-    vColNames.add(Messages.getString(Const.PROPERTY_SEPARATOR + Const.XML_TRACK_ALBUM_ARTIST));
-    idList.add(Const.XML_TRACK_ALBUM_ARTIST);
+    vColNames.add(Messages.getString(Const.PROPERTY_SEPARATOR + Const.XML_ALBUM_ARTIST));
+    idList.add(Const.XML_ALBUM_ARTIST);
 
     vColNames.add(Messages.getString(Const.PROPERTY_SEPARATOR + Const.XML_STYLE));
     idList.add(Const.XML_STYLE);
@@ -157,7 +157,7 @@ public class TracksTableModel extends JajukTableModel {
     boolean bName = (columnsToShow != null && columnsToShow.contains(Const.XML_NAME));
     boolean bAlbum = (columnsToShow != null && columnsToShow.contains(Const.XML_ALBUM));
     boolean bAuthor = (columnsToShow != null && columnsToShow.contains(Const.XML_AUTHOR));
-    boolean bAlbumArtist = (columnsToShow != null && columnsToShow.contains(Const.XML_TRACK_ALBUM_ARTIST));
+    boolean bAlbumArtist = (columnsToShow != null && columnsToShow.contains(Const.XML_ALBUM_ARTIST));
     boolean bStyle = (columnsToShow != null && columnsToShow.contains(Const.XML_STYLE));
     boolean bRate = (columnsToShow != null && columnsToShow.contains(Const.XML_TRACK_RATE));
     boolean bLength = (columnsToShow != null && columnsToShow.contains(Const.XML_TRACK_LENGTH));
@@ -222,7 +222,7 @@ public class TracksTableModel extends JajukTableModel {
       
       // Album Artist
       if (bAlbumArtist) {
-        oValues[iRow][4] = track.getAlbumArtist2();
+        oValues[iRow][4] = track.getAlbumArtist();
       } else {
         oValues[iRow][4] = "";
       }
