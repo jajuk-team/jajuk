@@ -103,7 +103,7 @@ public class Album extends LogicalItem implements Comparable<Album> {
     if (UtilString.isNotVoid(albumArtist)) {
       return albumArtist;
     }
-    String various = Messages.getString(Const.VARIOUS_ARTIST);
+    String various = Messages.getString(Const.UNKNOWN_AUTHOR);
     Author author = getAuthor();
     if (author == null) {
       // Several different author, return translated "various"

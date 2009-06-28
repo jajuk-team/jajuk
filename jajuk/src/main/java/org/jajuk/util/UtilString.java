@@ -259,7 +259,7 @@ public final class UtilString {
     String ret = out;
     String sValue;
     if (sPattern.contains(Const.PATTERN_AUTHOR)) {
-      if (Const.VARIOUS_ARTIST.equals(track.getAlbumArtist())
+      if (Const.UNKNOWN_AUTHOR.equals(track.getAlbumArtist())
           || UtilString.isVoid(track.getAlbumArtist())) {
         sValue = track.getAuthor().getName();
       } else {

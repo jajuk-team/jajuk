@@ -330,8 +330,6 @@ public interface Const {
   String UNKNOWN_YEAR = "unknown_year";
 
   String UNKNOWN = "unknown";
-  
-  String VARIOUS_ARTIST = "various_artist";
 
   // images
   URL IMAGES_SPLASHSCREEN = UtilSystem.getResource("images/included/jajuk-splashscreen.jpg");
