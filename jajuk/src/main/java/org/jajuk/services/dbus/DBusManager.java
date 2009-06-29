@@ -19,6 +19,8 @@
  */
 package org.jajuk.services.dbus;
 
+import org.jajuk.util.log.Log;
+
 /**
  * 
  */
@@ -35,7 +37,11 @@ public final class DBusManager {
    */
   public static DBusManager getInstance() {
     if (self == null) {
-      self = new DBusManager();
+      try {
+        self = new DBusManager();
+      } catch (Throwable t) {
+        Log.error(t);
+      }
     }
     return self;
   }
@@ -46,15 +52,16 @@ public final class DBusManager {
     // the connect method will internally catch errors and report them to the
     // logfile
     dbus.connect();
+  }
 
-    // add a shutdown hook so we disconnect during shutdown
-    Runtime.getRuntime().addShutdownHook(new Thread() {
-      @Override
-      public void run() {
-        dbus.disconnect();
+  public static void disconnect() {
+    try {
+      if (self != null) {
+        self.dbus.disconnect();
       }
-    });
-
+    } catch (Throwable t) {
+      Log.error(t);
+    }
   }
 
 }

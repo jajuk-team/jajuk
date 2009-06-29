@@ -27,6 +27,7 @@ import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.services.bookmark.History;
+import org.jajuk.services.dbus.DBusManager;
 import org.jajuk.services.dj.AmbienceManager;
 import org.jajuk.services.players.Player;
 import org.jajuk.services.players.QueueModel;
@@ -73,6 +74,9 @@ public class ExitService extends Thread {
         // Store webradio state
         Conf.setProperty(Const.CONF_WEBRADIO_WAS_PLAYING, Boolean.toString(QueueModel.isPlayingRadio()));
 
+        // Disconnect Dbus if required
+        DBusManager.disconnect();
+        
         // commit configuration
         org.jajuk.util.Conf.commit();
         // commit history
