@@ -155,7 +155,7 @@ public interface Const {
   int NB_TRACKS_ON_ACTION = 200;
 
   /** Cache max age (in ms) */
-  long CACHE_MAX_AGE = 10 * 24 * 3600 * 1000;  // 10 days
+  long CACHE_MAX_AGE = 10 * 24 * 3600 * 1000; // 10 days
 
   /**
    * The time we wait for mplayer to start up in ms. It can take some time on
@@ -330,6 +330,8 @@ public interface Const {
   String UNKNOWN_YEAR = "unknown_year";
 
   String UNKNOWN = "unknown";
+
+  String VARIOUS_ARTIST = "various_artist";
 
   // images
   URL IMAGES_SPLASHSCREEN = UtilSystem.getResource("images/included/jajuk-splashscreen.jpg");
@@ -623,7 +625,7 @@ public interface Const {
   int DISPLAY_MODE_TRAY = 1;
 
   int DISPLAY_MODE_SLIMBAR_TRAY = 2;
-  
+
   int DISPLAY_MODE_FULLSCREEN = 3;
 
   /** Best of size */
@@ -907,9 +909,9 @@ public interface Const {
   String XML_ALBUMS = "albums";
 
   String XML_ALBUM = "album";
-  
+
   String XML_ALBUM_ARTIST = "album_artist";
-  
+
   String XML_ALBUM_DISC_ID = "disc_id";
 
   String XML_TRACKS = "tracks";
@@ -1138,6 +1140,8 @@ public interface Const {
   // Patterns
   String PATTERN_AUTHOR = "%artist";
 
+  String PATTERN_ALBUM_ARTIST = "%album_artist";
+
   String PATTERN_DISC = "%disc";
 
   String PATTERN_ALBUM = "%album";
@@ -1150,8 +1154,8 @@ public interface Const {
 
   String PATTERN_TRACKORDER = "%n";
 
-  String PATTERN_DEFAULT_REORG = PATTERN_AUTHOR + "/" + PATTERN_YEAR + " - " + PATTERN_ALBUM + "/"
-      + PATTERN_TRACKORDER + " - " + PATTERN_TRACKNAME;
+  String PATTERN_DEFAULT_REORG = PATTERN_ALBUM_ARTIST + "/" + PATTERN_YEAR + " - " + PATTERN_ALBUM
+      + "/" + PATTERN_TRACKORDER + " - " + PATTERN_AUTHOR + " - " + PATTERN_TRACKNAME;
 
   String PATTERN_DEFAULT_ANIMATION = PATTERN_AUTHOR + " / " + PATTERN_ALBUM + " / "
       + PATTERN_TRACKNAME;

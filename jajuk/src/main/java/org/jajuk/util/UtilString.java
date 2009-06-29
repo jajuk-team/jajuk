@@ -259,12 +259,9 @@ public final class UtilString {
     String ret = out;
     String sValue;
     if (sPattern.contains(Const.PATTERN_AUTHOR)) {
-      if (Const.UNKNOWN_AUTHOR.equals(track.getAlbumArtist())
-          || UtilString.isVoid(track.getAlbumArtist())) {
-        sValue = Const.UNKNOWN_AUTHOR;
-      } else {
-        sValue = track.getAlbumArtist2();
-      }
+
+      sValue = track.getAuthor().getName();
+
       if (normalize) {
         sValue = UtilSystem.getNormalizedFilename(sValue);
       }
@@ -304,6 +301,10 @@ public final class UtilString {
     // Check Author name
     out = UtilString.applyAuthorPattern(file, sPattern, bMandatory, normalize, out, track);
 
+    // Check Album artist
+    // Check Author name
+    out = UtilString.applyAlbumArtistPattern(file, sPattern, normalize, out, track);
+
     // Check Style name
     out = UtilString.applyStylePattern(file, sPattern, bMandatory, normalize, out, track);
 
@@ -323,6 +324,32 @@ public final class UtilString {
     out = UtilString.applyDiscPattern(file, sPattern, bMandatory, out, track);
 
     return out;
+  }
+
+  /**
+   * @param file
+   * @param pattern
+   * @param normalize
+   * @param out
+   * @param track
+   * @return
+   */
+  private static String applyAlbumArtistPattern(File file, String sPattern, boolean normalize,
+      String out, Track track) {
+    String ret = out;
+    String sValue;
+    if (sPattern.contains(Const.PATTERN_ALBUM_ARTIST)) {
+
+      sValue = track.getAlbumArtist2();
+
+      if (normalize) {
+        sValue = UtilSystem.getNormalizedFilename(sValue);
+      }
+
+      ret = ret.replaceAll(Const.PATTERN_ALBUM_ARTIST, AuthorManager.format(sValue));
+
+    }
+    return ret;
   }
 
   /**
