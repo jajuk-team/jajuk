@@ -226,6 +226,8 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
               lDuration = tagDuration;
               // Save VBR correction, used after seeking
               vbrCorrection = ((float) tagDuration) / mplayerDuration;
+              // Add a second empirical error correction (see #1342). 
+              vbrCorrection = vbrCorrection * 1.06f;
             }
 
           }

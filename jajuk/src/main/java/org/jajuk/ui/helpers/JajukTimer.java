@@ -42,7 +42,7 @@ public final class JajukTimer {
   /** Total time to play in secs */
   private long lTimeToPlay = 0;
 
-  /** A default heartbet time in ms */
+  /** A default heartbeat time in ms */
   public static final int DEFAULT_HEARTBEAT = 800;
   
   public static final int D_MS_HEARTBEAT = 500;
