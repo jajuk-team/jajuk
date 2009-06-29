@@ -170,7 +170,7 @@
     <dependency>
       <groupId>org.jaudiotagger</groupId>
       <artifactId>jaudiotagger</artifactId>
-      <version>186</version>
+      <version>20090629</version>
       <scope>system</scope>
       <systemPath>${basedir}/lib/jaudiotagger-186.jar</systemPath>
     </dependency>
