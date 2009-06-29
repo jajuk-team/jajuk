@@ -635,9 +635,9 @@ public class PropertiesWizard extends JajukJDialog implements ActionListener {
       for (int k = 0; k < alToDisplay.size(); k++) {
         jpProperties.add(widgets[i][0]);
         if (widgets[i][2] == null) { // link widget can be null
-          jpProperties.add(widgets[i][1], "grow,width ::200, wrap");
+          jpProperties.add(widgets[i][1], "grow,width 200!, wrap");
         } else {
-          jpProperties.add(widgets[i][1], "grow,width ::200");
+          jpProperties.add(widgets[i][1], "grow,width 200!");
           jpProperties.add(widgets[i][2], "wrap");
         }
         i++;
