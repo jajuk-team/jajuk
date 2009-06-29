@@ -118,7 +118,7 @@ public class DuplicateTracksList extends JPanel implements ListSelectionListener
 
       int iResu = Messages.getChoice(Messages.getString("Confirmation_delete_files") + " : \n\n"
           + sFiles + "\n" + indices.length + " " + Messages.getString("Confirmation_file_number"),
-          JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);
+          JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
       if (iResu != JOptionPane.YES_OPTION) {
         return;
       }
