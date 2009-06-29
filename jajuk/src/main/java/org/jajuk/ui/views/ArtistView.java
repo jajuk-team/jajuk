@@ -29,7 +29,6 @@ import java.awt.Insets;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -152,13 +151,14 @@ public class ArtistView extends SuggestionView {
         jtaArtistDesc.setEditable(false);
         jtaArtistDesc.setLineWrap(true);
         jtaArtistDesc.setWrapStyleWord(true);
+        jtaArtistDesc.setOpaque(false);
 
         JScrollPane jspWiki = new JScrollPane(jtaArtistDesc);
         jspWiki.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         jspWiki.setBorder(null);
-        
+
         jspWiki.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-        
+
         // Add items, layout is different according wiki text availability
         if (UtilString.isNotVoid(jtaArtistDesc.getText())) {
           setLayout(new MigLayout("ins 5,gapy 5", "[grow]", "[grow][20%!][grow]"));
@@ -234,6 +234,10 @@ public class ArtistView extends SuggestionView {
 
   }
 
+  public void onPerspectiveSelection() {
+    // override the suggestion view behavior
+  }
+
   /**
    * Show reseted view (show a message)
    * <p>
@@ -242,14 +246,9 @@ public class ArtistView extends SuggestionView {
    */
   private void reset() {
     removeAll();
-    setLayout(new MigLayout("ins 5", "grow"));
-    add(new JLabel(Messages.getString("ArtistView.1")), "center");
+    add(getNothingFoundPanel());
     revalidate();
     repaint();
-  }
-
-  public void onPerspectiveSelection() {
-    // override the suggestion view behavior
   }
 
 }

@@ -38,6 +38,7 @@ import java.util.List;
 import java.util.Set;
 
 import javax.swing.BoxLayout;
+import javax.swing.JEditorPane;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -45,6 +46,8 @@ import javax.swing.JTabbedPane;
 import javax.swing.SwingUtilities;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+
+import net.miginfocom.swing.MigLayout;
 
 import org.jajuk.base.Album;
 import org.jajuk.base.AlbumManager;
@@ -160,10 +163,10 @@ public class SuggestionView extends ViewAdapter implements Observer {
         .getString("WikipediaView.3"))));
     tabs.addTab(Messages.getString("SuggestionView.5"), UtilGUI.getCentredPanel(new JLabel(Messages
         .getString("WikipediaView.3"))));
-    tabs.addTab(Messages.getString("SuggestionView.3"), UtilGUI.getCentredPanel(new JLabel(Messages
-        .getString("SuggestionView.7"))));
-    tabs.addTab(Messages.getString("SuggestionView.4"), UtilGUI.getCentredPanel(new JLabel(Messages
-        .getString("SuggestionView.7"))));
+    tabs.addTab(Messages.getString("SuggestionView.3"), new JLabel(Messages
+        .getString("SuggestionView.7")));
+    tabs.addTab(Messages.getString("SuggestionView.4"), new JLabel(Messages
+        .getString("SuggestionView.7")));
 
     // Refresh tabs on demand only, add changelisterner after tab creation to
     // avoid that the stored tab is overwrited at startup
@@ -269,10 +272,8 @@ public class SuggestionView extends ViewAdapter implements Observer {
       // Set empty panels
       SwingUtilities.invokeLater(new Runnable() {
         public void run() {
-          tabs.setComponentAt(3, UtilGUI.getCentredPanel(new JLabel(Messages
-              .getString("SuggestionView.7"))));
-          tabs.setComponentAt(4, UtilGUI.getCentredPanel(new JLabel(Messages
-              .getString("SuggestionView.7"))));
+          tabs.setComponentAt(3, new JLabel(Messages.getString("SuggestionView.7")));
+          tabs.setComponentAt(4, new JLabel(Messages.getString("SuggestionView.7")));
         }
       });
       return;
@@ -322,6 +323,12 @@ public class SuggestionView extends ViewAdapter implements Observer {
     sw.start();
   }
 
+  /**
+   * Return the result panel for local albums
+   * 
+   * @param type
+   * @return
+   */
   JScrollPane getLocalSuggestionsPanel(SuggestionType type) {
     FlowScrollPanel out = new FlowScrollPanel();
     out.setLayout(new FlowLayout(FlowLayout.LEFT));
@@ -362,6 +369,12 @@ public class SuggestionView extends ViewAdapter implements Observer {
     return jsp;
   }
 
+  /**
+   * Return the result panel for lastFM information
+   * 
+   * @param type
+   * @return
+   */
   JScrollPane getLastFMSuggestionsPanel(SuggestionType type, boolean artistView) {
     FlowScrollPanel out = new FlowScrollPanel();
     JScrollPane jsp = new JScrollPane(out, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
@@ -382,7 +395,7 @@ public class SuggestionView extends ViewAdapter implements Observer {
       }
       // No result found
       else {
-        out.add(UtilGUI.getCentredPanel(new JLabel(Messages.getString("SuggestionView.7"))));
+        return new JScrollPane(getNothingFoundPanel());
       }
     } else if (type == SuggestionType.SIMILAR_AUTHORS) {
       SimilarArtistsInfo similar = LastFmService.getInstance().getSimilarArtists(author);
@@ -398,7 +411,7 @@ public class SuggestionView extends ViewAdapter implements Observer {
       }
       // No result found
       else {
-        out.add(UtilGUI.getCentredPanel(new JLabel(Messages.getString("SuggestionView.7"))));
+        return new JScrollPane(getNothingFoundPanel());
       }
     }
     return jsp;
@@ -450,5 +463,19 @@ public class SuggestionView extends ViewAdapter implements Observer {
   @Override
   public void onPerspectiveSelection() {
     refreshLastFMCollectionTabs();
+  }
+
+  /**
+   * @return a panel with text explaining why no item has been found
+   */
+  JPanel getNothingFoundPanel() {
+    JPanel out = new JPanel(new MigLayout("ins 5", "grow"));
+    JEditorPane jteNothing = new JEditorPane("text/html", Messages.getString("SuggestionView.7"));
+    jteNothing.setBorder(null);
+    jteNothing.setEditable(false);
+    jteNothing.setOpaque(false);
+    jteNothing.setToolTipText(Messages.getString("SuggestionView.7"));
+    add(jteNothing, "center");
+    return out;
   }
 }
