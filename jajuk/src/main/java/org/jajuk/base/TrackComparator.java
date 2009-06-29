@@ -42,25 +42,7 @@ public class TrackComparator implements Comparator<Track>, Serializable {
   public enum TrackComparatorType {
     STYLE_AUTHOR_ALBUM, AUTHOR_ALBUM, ALBUM, YEAR_ALBUM, DISCOVERY_ALBUM, RATE_ALBUM, HITS_ALBUM, ORDER
   }
-
-  /*
-   * public static final int STYLE_AUTHOR_ALBUM = 0;
-   * 
-   * public static final int AUTHOR_ALBUM = 1;
-   * 
-   * public static final int ALBUM = 2;
-   * 
-   * public static final int YEAR_ALBUM = 3;
-   * 
-   * public static final int DISCOVERY_ALBUM = 4;
-   * 
-   * public static final int RATE_ALBUM = 5;
-   * 
-   * public static final int HITS_ALBUM = 6;
-   * 
-   * public static final int ORDER = 7;
-   */
-
+  
   private static final DateFormat FORMATTER = UtilString.getAdditionDateFormatter();
 
   /**

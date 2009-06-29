@@ -146,8 +146,12 @@ public class Album extends LogicalItem implements Comparable<Album> {
   public int compareTo(Album otherAlbum) {
     // compare using name and id to differentiate unknown items
     StringBuilder current = new StringBuilder(getName2());
+    current.append(getAlbumArtist2());
+    current.append(getDiscID());
     current.append(getID());
     StringBuilder other = new StringBuilder(otherAlbum.getName2());
+    other.append(otherAlbum.getAlbumArtist2());
+    other.append(otherAlbum.getDiscID());
     other.append(otherAlbum.getID());
     return current.toString().compareToIgnoreCase(other.toString());
   }
@@ -206,6 +210,8 @@ public class Album extends LogicalItem implements Comparable<Album> {
       return Long.toString(getHits());
     } else if (Const.XML_ANY.equals(sKey)) {
       return getAny();
+    } else if (Const.XML_ALBUM_ARTIST.equals(sKey)) {
+      return getAlbumArtist2();
     }
     // default
     return super.getHumanValue(sKey);
@@ -275,6 +281,7 @@ public class Album extends LogicalItem implements Comparable<Album> {
     sb.append(getHumanValue(Const.XML_TRACKS));
     sb.append(getHumanValue(Const.XML_TRACK_DISCOVERY_DATE));
     sb.append(getHumanValue(Const.XML_TRACK_HITS));
+    sb.append(getHumanValue(Const.XML_ALBUM_ARTIST));
     return sb.toString();
   }
 

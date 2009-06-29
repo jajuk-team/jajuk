@@ -211,7 +211,8 @@ public final class TrackManager extends ItemManager {
    * 
    * @param old
    *          track
-   * @param new album name
+   * @param new
+   *          album name
    * @param filter
    *          files we want to deal with
    * @return new track
@@ -262,7 +263,8 @@ public final class TrackManager extends ItemManager {
    * 
    * @param old
    *          track
-   * @param new author name
+   * @param new
+   *          author name
    * @param filter
    *          files we want to deal with
    * @return new track
@@ -314,7 +316,8 @@ public final class TrackManager extends ItemManager {
    * 
    * @param old
    *          item
-   * @param new item name
+   * @param new
+   *          item name
    * @param filter
    *          files we want to deal with
    * @return new track
@@ -362,7 +365,8 @@ public final class TrackManager extends ItemManager {
    * 
    * @param old
    *          item
-   * @param new item name
+   * @param new
+   *          item name
    * @param filter
    *          files we want to deal with
    * @return new track or null if wrong format
@@ -411,7 +415,8 @@ public final class TrackManager extends ItemManager {
    * 
    * @param old
    *          item
-   * @param new item name
+   * @param new
+   *          item name
    * @param filter
    *          files we want to deal with
    * @return new track or null if wronf format
@@ -456,7 +461,8 @@ public final class TrackManager extends ItemManager {
    * 
    * @param old
    *          item
-   * @param new item name
+   * @param new
+   *          item name
    * @return new track or null if wrong format
    */
   public synchronized Track changeTrackRate(Track track, long lNew) {
@@ -479,7 +485,8 @@ public final class TrackManager extends ItemManager {
    * 
    * @param old
    *          item
-   * @param new item order
+   * @param new
+   *          item order
    * @param filter
    *          files we want to deal with
    * @return new track or null if wrong format
@@ -526,7 +533,8 @@ public final class TrackManager extends ItemManager {
    * 
    * @param old
    *          item
-   * @param new item name
+   * @param new
+   *          item name
    * @param filter
    *          files we want to deal with
    * @return new track
@@ -565,6 +573,111 @@ public final class TrackManager extends ItemManager {
     if (QueueModel.getPlayingFile() != null && QueueModel.getPlayingFile().getTrack().equals(track)) {
       ObservationManager.notify(new JajukEvent(JajukEvents.TRACK_CHANGED));
     }
+    return newTrack;
+  }
+
+  /**
+   * @param track
+   * @param value
+   * @param filter
+   * @return
+   */
+  public Item changeTrackAlbumArtist(Track track, String sNewItem, Set<File> filter)
+      throws JajukException {
+    // check there is actually a change
+    if (track.getAlbumArtist().equals(sNewItem)) {
+      return track;
+    }
+    List<File> alReady = null;
+    // check if files are accessible
+    alReady = track.getReadyFiles(filter);
+    if (alReady.size() == 0) {
+      throw new NoneAccessibleFileException(10);
+    }
+    // change tag in files
+    for (File file : alReady) {
+      Tag tag = Tag.getTagForFio(file.getFIO(), false);
+      tag.setAlbumArtist(sNewItem);
+      if (bAutocommit) {
+        tag.commit();
+        // Force files resorting to ensure the sorting consistency
+        // Do it here only because the sorting is a long operation already done
+        // by the TrackManager.commit() method caller (PropertiesWizard for ie).
+        // When called for a table change for ie, the sorting must be done for
+        // each change.
+        FileManager.getInstance().forceSorting();
+      } else {
+        tagsToCommit.add(tag);
+      }
+    }
+    // Remove the track from the old album
+    Album oldAlbum = track.getAlbum();
+    oldAlbum.getTracksCache().remove(track);
+
+    // if current track album name is changed, notify it
+    if (QueueModel.getPlayingFile() != null
+        && QueueModel.getPlayingFile().getTrack().getAlbum().equals(track.getAlbum())) {
+      ObservationManager.notify(new JajukEvent(JajukEvents.ALBUM_CHANGED));
+    }
+    // register the new album
+    Album newAlbum = AlbumManager.getInstance().registerAlbum(oldAlbum.getName(), sNewItem,
+        track.getAlbum().getDiscID());
+    Track newTrack = registerTrack(track.getName(), newAlbum, track.getStyle(), track.getAuthor(),
+        track.getDuration(), track.getYear(), track.getOrder(), track.getType(), track
+            .getDiscNumber());
+    postChange(track, newTrack, filter);
+    // remove this album if no more references
+    AlbumManager.getInstance().cleanOrphanTracks(track.getAlbum());
+    return newTrack;
+
+  }
+
+  /**
+   * @param track
+   * @param value
+   * @param filter
+   * @return
+   */
+  public Item changeTrackDiscNumber(Track track, long lNewDiscNumber, Set<File> filter)
+      throws JajukException {
+    // check there is actually a change
+    if (track.getDiscNumber() == lNewDiscNumber) {
+      return track;
+    }
+    // check format
+    if (lNewDiscNumber < 0) {
+      throw new JajukException(137);
+    }
+    List<File> alReady = null;
+    // check if files are accessible
+    alReady = track.getReadyFiles(filter);
+    if (alReady.size() == 0) {
+      throw new NoneAccessibleFileException(10);
+    }
+    // change tag in files
+    for (File file : alReady) {
+      Tag tag = Tag.getTagForFio(file.getFIO(), false);
+      tag.setDiscNumber(lNewDiscNumber);
+      if (bAutocommit) {
+        tag.commit();
+      } else {
+        tagsToCommit.add(tag);
+      }
+    }
+
+    // Remove the track from the old album
+    track.getAlbum().getTracksCache().remove(track);
+
+    // if current track album name is changed, notify it
+    if (QueueModel.getPlayingFile() != null
+        && QueueModel.getPlayingFile().getTrack().getAlbum().equals(track.getAlbum())) {
+      ObservationManager.notify(new JajukEvent(JajukEvents.ALBUM_CHANGED));
+    }
+
+    Track newTrack = registerTrack(track.getName(), track.getAlbum(), track.getStyle(), track
+        .getAuthor(), track.getDuration(), track.getYear(), track.getDiscNumber(), track.getType(),
+        lNewDiscNumber);
+    postChange(track, newTrack, filter);
     return newTrack;
   }
 
@@ -622,18 +735,6 @@ public final class TrackManager extends ItemManager {
   public String getLabel() {
     return Const.XML_TRACKS;
   }
-
-  /*
-   * (non-Javadoc)
-   * 
-   * @see org.jajuk.base.Observer#update(org.jajuk.base.Event)
-   * 
-   * public void update(Event event) { JajukEvents subject = event.getSubject();
-   * if (JajukEvents.FILE_NAME_CHANGED.equals(subject)) { Properties properties
-   * = event.getDetails(); File fNew = (File) properties.get(Const.DETAIL_NEW);
-   * File fileOld = (File) properties.get(Const.DETAIL_OLD); Track track =
-   * fileOld.getTrack(); track.removeFile(fileOld); track.addFile(fNew); } }
-   */
 
   /**
    * Get ordered tracks list associated with this item
@@ -855,90 +956,4 @@ public final class TrackManager extends ItemManager {
     this.bAutocommit = autocommit;
   }
 
-  /**
-   * @param track
-   * @param value
-   * @param filter
-   * @return
-   */
-  public Item changeTrackAlbumArtist(Track track, String sNewItem, Set<File> filter)
-      throws JajukException {
-    // check there is actually a change
-    if (track.getAlbumArtist().equals(sNewItem)) {
-      return track;
-    }
-    List<File> alReady = null;
-    // check if files are accessible
-    alReady = track.getReadyFiles(filter);
-    if (alReady.size() == 0) {
-      throw new NoneAccessibleFileException(10);
-    }
-    // change tag in files
-    for (File file : alReady) {
-      Tag tag = Tag.getTagForFio(file.getFIO(), false);
-      tag.setAlbumArtist(sNewItem);
-      if (bAutocommit) {
-        tag.commit();
-        // Force files resorting to ensure the sorting consistency
-        // Do it here only because the sorting is a long operation already done
-        // by the TrackManager.commit() method caller (PropertiesWizard for ie).
-        // When called for a table change for ie, the sorting must be done for
-        // each change.
-        FileManager.getInstance().forceSorting();
-      } else {
-        tagsToCommit.add(tag);
-      }
-    }
-    // Remove the track from the old album
-    Album oldAlbum = track.getAlbum();
-    oldAlbum.getTracksCache().remove(track);
-
-    Album newAlbum = AlbumManager.getInstance().registerAlbum(oldAlbum.getName(), sNewItem,
-        oldAlbum.getDiscID());
-    newAlbum.getTracksCache().add(track);
-    return track;
-  }
-
-  /**
-   * @param track
-   * @param value
-   * @param filter
-   * @return
-   */
-  public Item changeTrackDiscNumber(Track track, long lNewDiscNumber, Set<File> filter)
-      throws JajukException {
-    // check there is actually a change
-    if (track.getDiscNumber() == lNewDiscNumber) {
-      return track;
-    }
-    // check format
-    if (lNewDiscNumber < 0) {
-      throw new JajukException(137);
-    }
-    List<File> alReady = null;
-    // check if files are accessible
-    alReady = track.getReadyFiles(filter);
-    if (alReady.size() == 0) {
-      throw new NoneAccessibleFileException(10);
-    }
-    // change tag in files
-    for (File file : alReady) {
-      Tag tag = Tag.getTagForFio(file.getFIO(), false);
-      tag.setDiscNumber(lNewDiscNumber);
-      if (bAutocommit) {
-        tag.commit();
-      } else {
-        tagsToCommit.add(tag);
-      }
-    }
-
-    // Remove the track from the old album
-    track.getAlbum().getTracksCache().remove(track);
-
-    Track newTrack = registerTrack(track.getName(), track.getAlbum(), track.getStyle(), track
-        .getAuthor(), track.getDuration(), track.getYear(), track.getDiscNumber(), track.getType(),
-        lNewDiscNumber);
-    postChange(track, newTrack, filter);
-    return newTrack;
-  }
 }

@@ -199,7 +199,7 @@ public class Track extends LogicalItem implements Comparable<Track> {
   }
 
   /**
-   * Get additionned size of all files this track map to
+   * Get sum size of all files this track map to
    * 
    * @return the total size
    */
