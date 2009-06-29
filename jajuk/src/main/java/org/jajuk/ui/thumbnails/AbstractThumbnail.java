@@ -287,14 +287,10 @@ public abstract class AbstractThumbnail extends JPanel implements ActionListener
           if (bDragging) {
             return;
           }
-
           // Left click
           if (e.getButton() == MouseEvent.BUTTON1 && e.getSource() == jlIcon) {
             // if second click (item already selected), play
-            // We have to check time between last two click as a
-            // single clicks is
-            // managed by both mouse listeners
-            if (selected && clickNumber > 0) {
+            if (selected && clickNumber > 1) {
               launch();
             }
             clickNumber++;
