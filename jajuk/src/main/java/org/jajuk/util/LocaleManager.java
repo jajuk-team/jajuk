@@ -63,6 +63,8 @@ public class LocaleManager {
     Conf.setProperty(Const.CONF_OPTIONS_LANGUAGE, locale.getLanguage());
     Messages.properties = null; // make sure to reinitialize cached strings
     LocaleManager.locale = locale;
+    // Set JVM locale
+    Locale.setDefault(locale);
     Messages.bInitialized = true;
   }
 
