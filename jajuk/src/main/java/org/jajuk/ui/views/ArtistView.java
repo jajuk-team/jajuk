@@ -129,7 +129,10 @@ public class ArtistView extends SuggestionView {
         removeAll();
         ArtistInfo artistInfo = LastFmService.getInstance().getArtist(author);
         // Artist unknown from last.fm, leave
-        if (artistInfo == null) {
+        if (artistInfo == null
+        // If image url is void, last.fm doesn't provide enough data about this
+        // artist, we reset the view
+            || UtilString.isVoid(artistInfo.getImageUrl())) {
           reset();
           return;
         }
@@ -245,6 +248,7 @@ public class ArtistView extends SuggestionView {
    * </p>
    */
   private void reset() {
+    ArtistView.this.author = null;
     removeAll();
     add(getNothingFoundPanel());
     revalidate();

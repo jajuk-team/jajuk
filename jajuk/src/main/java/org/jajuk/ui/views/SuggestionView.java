@@ -475,7 +475,7 @@ public class SuggestionView extends ViewAdapter implements Observer {
     jteNothing.setEditable(false);
     jteNothing.setOpaque(false);
     jteNothing.setToolTipText(Messages.getString("SuggestionView.7"));
-    add(jteNothing, "center");
+    add(jteNothing, "center,grow");
     return out;
   }
 }

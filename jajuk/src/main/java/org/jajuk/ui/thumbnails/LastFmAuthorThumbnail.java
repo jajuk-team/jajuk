@@ -238,5 +238,5 @@ public class LastFmAuthorThumbnail extends AbstractThumbnail {
       jmiOpenLastFMSite.doClick();
     }
   }
-
+  
 }

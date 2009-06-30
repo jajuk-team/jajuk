@@ -477,6 +477,7 @@ public class QueueView extends PlaylistView {
         QueueModel.reset(); // reinit all variables
         try {
           ActionManager.getAction(JajukActions.STOP_TRACK).perform(null);
+          ObservationManager.notify(new JajukEvent(JajukEvents.ZERO));
         } catch (Exception e) {
           Log.error(e);
         }
