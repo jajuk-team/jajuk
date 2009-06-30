@@ -172,7 +172,7 @@
       <artifactId>jaudiotagger</artifactId>
       <version>20090629</version>
       <scope>system</scope>
-      <systemPath>${basedir}/lib/jaudiotagger-186.jar</systemPath>
+      <systemPath>${basedir}/lib/jaudiotagger-20090629.jar</systemPath>
     </dependency>
     <dependency>
       <groupId>junit</groupId>
