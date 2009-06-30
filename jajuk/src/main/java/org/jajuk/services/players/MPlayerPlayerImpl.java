@@ -60,6 +60,12 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
   /** Cross fade duration in ms */
   int iFadeDuration = 0;
 
+  /** Time track started * */
+  private long dateStart;
+
+  /** Does the user made a seek in current track ?* */
+  private boolean seeked;
+
   /**
    * VBR correction. VBR MP3 files are confusing for mplayer that shows wrong
    * length and seek position. This value is the correction computed with id3
@@ -154,9 +160,24 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
 
             StringTokenizer st = new StringTokenizer(line, "=");
             st.nextToken();
-            lTime = (int) (Float.parseFloat(st.nextToken()) * 1000);
-            // VBR correction
-            lTime = (long) (lTime * vbrCorrection);
+            // We need to compute the elasped time. The issue here is the fact
+            // that mplayer sometimes returns false getPos() values (for vbr).
+            // The other problem is that the user can seek forward or rewind in
+            // the track so we can't just count the system time.
+            // The solution we got is :
+            // - If user never seeked into the current track, compute the
+            // elasped time upon real system date.
+            // - If user seeked, take the mplayer time but use a vbr correction.
+            // Note however that the resulting time, while being better than the
+            // raw mplayer time can be pretty wrong (10 secs or more in some
+            // cases)
+            if (seeked) {
+              lTime = (int) (Float.parseFloat(st.nextToken()) * 1000);
+              // VBR correction
+              lTime = (long) (lTime * vbrCorrection);
+            } else {
+              lTime = System.currentTimeMillis() - dateStart;
+            }
             // Store current position for use at next startup
             Conf
                 .setProperty(Const.CONF_STARTUP_LAST_POSITION, Float.toString(getCurrentPosition()));
@@ -298,11 +319,14 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
     this.bEOF = false;
     this.vbrCorrection = 1.0f;
     this.iFadeDuration = 1000 * Conf.getInt(Const.CONF_FADE_DURATION);
+    this.dateStart = System.currentTimeMillis();
+    this.seeked = false;
 
     // Try to launch mplayer
     launchMplayer();
 
-    // If under windows and the launch failed (no more running), try once again with other short
+    // If under windows and the launch failed (no more running), try once again
+    // with other short
     // names configuration (see #1267)
     if (UtilSystem.getExitValue(proc) != -100 && UtilSystem.isUnderWindows()) {
       Conf.invert(CONF_SHORT_NAMES);
@@ -413,6 +437,7 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
     String command = "seek " + (int) (100 * posValue) + " 1";
     sendCommand(command);
     setVolume(fVolume); // need this because a seek reset volume
+    this.seeked = true;
   }
 
   /**
