@@ -250,7 +250,6 @@ public class CommandJPanel extends JXPanel implements ActionListener, ChangeList
     }
     jsVolume = new JSlider(0, 100, iVolume);
     jlVolume = new JLabel(iVolume + " %");
-    jsVolume.setToolTipText(iVolume + " %");
     jsVolume.addChangeListener(CommandJPanel.this);
     jbMute = new JajukButton(ActionManager.getAction(MUTE_STATE));
     jbMute.setText(null);
