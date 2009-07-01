@@ -35,7 +35,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -59,6 +58,7 @@ import javax.swing.event.ChangeListener;
 import net.miginfocom.swing.MigLayout;
 
 import org.jajuk.base.Album;
+import org.jajuk.base.AlbumComparator;
 import org.jajuk.base.AlbumManager;
 import org.jajuk.base.Directory;
 import org.jajuk.base.Item;
@@ -76,7 +76,6 @@ import org.jajuk.ui.thumbnails.LocalAlbumThumbnail;
 import org.jajuk.ui.widgets.InformationJPanel;
 import org.jajuk.ui.widgets.JajukJToolbar;
 import org.jajuk.ui.widgets.SteppedComboBox;
-import org.jajuk.ui.windows.JajukMainWindow;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.Filter;
@@ -144,7 +143,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
   private boolean bPopulating = false;
 
   /** Default time in ms before launching a search automatically */
-  private static final int WAIT_TIME = 400;
+  private static final int WAIT_TIME = 600;
 
   /** Date last key pressed */
   private long lDateTyped;
@@ -199,7 +198,6 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 
     // --Top (most used) control items
     jpControlTop = new JPanel();
-    jpControlTop.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
     jlSorter = new JLabel(Messages.getString("Sort") + " ");
     jcbSorter = new SteppedComboBox();
     jcbSorter.setEditable(false);
@@ -210,7 +208,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
     }
     jcbSorter.setSelectedIndex(Conf.getInt(Const.CONF_THUMBS_SORTER));
     jcbSorter.addActionListener(this);
-    
+
     jlFilter = new JLabel(Messages.getString("AbstractTableView.0") + " ");
     jlContains = new JLabel("   " + Messages.getString("AbstractTableView.7") + " ");
     jcbFilter = new SteppedComboBox();
@@ -231,7 +229,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
     jtfValue.setBorder(BorderFactory.createLineBorder(Color.BLUE));
     jtfValue.setFont(FontManager.getInstance().getFont(JajukFont.SEARCHBOX));
     jtfValue.addKeyListener(new CatalogViewKeyAdaptor());
-    
+
     JToolBar jtbPage = new JajukJToolbar();
     jtbPage.setFloatable(false);
     jtbPage.setRollover(true);
@@ -247,16 +245,16 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
     jtbPage.add(jbPrev);
     jtbPage.add(jcbPage);
     jtbPage.add(jbNext);
-  
-    jpControlTop.setLayout(new MigLayout("ins 8","[grow][grow][grow][grow]"));
-    jpControlTop.add(jlFilter,"split 2");
-    jpControlTop.add(jcbFilter,"grow");
-    jpControlTop.add(jlContains,"split 2");
-    jpControlTop.add(jtfValue,"gapright 40,grow,width 100::");
-    jpControlTop.add(jlSorter,"split 2");
-    jpControlTop.add(jcbSorter,"gapright 40,grow");
-    jpControlTop.add(jtbPage,"gapright 5,grow");
-    
+
+    jpControlTop.setLayout(new MigLayout("ins 3", "[grow][grow][grow][grow]"));
+    jpControlTop.add(jlFilter, "split 2");
+    jpControlTop.add(jcbFilter, "grow");
+    jpControlTop.add(jlContains, "split 2");
+    jpControlTop.add(jtfValue, "gapright 40,grow,width 100::");
+    jpControlTop.add(jlSorter, "split 2");
+    jpControlTop.add(jcbSorter, "gapright 40,grow");
+    jpControlTop.add(jtbPage, "gapright 5,grow");
+
     // --Bottom (less used) items
     jcbShowNoCover = new JCheckBox(Messages.getString("CatalogView.2"));
     jcbShowNoCover.setSelected(Conf.getBoolean(Const.CONF_THUMBS_SHOW_WITHOUT_COVER));
@@ -268,7 +266,6 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
     jsSize.setMinorTickSpacing(1);
     jsSize.setSnapToTicks(true);
     jsSize.setPaintTicks(true);
-    jsSize.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
     jsSize.addMouseWheelListener(new CatalogViewMouseWheelListener(jsSize));
 
     int index = sizes.indexOf(Conf.getString(Const.CONF_THUMBS_SIZE));
@@ -283,7 +280,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 
     jpControlBottom = new JPanel(new MigLayout("gapx 20"));
     jpControlBottom.add(jcbShowNoCover);
-    jpControlBottom.add(jlSize,"split 2");
+    jpControlBottom.add(jlSize, "split 2");
     jpControlBottom.add(jsSize);
 
     // Covers
@@ -327,18 +324,16 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
    */
   private void initCovers() {
     jpItems = new FlowScrollPanel();
-    Dimension dim = new Dimension(getWidth(), getHeight());
-    jpItems.setPreferredSize(dim);
     jsp = new JScrollPane(jpItems, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
         JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
     jsp.setBorder(BorderFactory.createEmptyBorder(0, 1, 0, 0));
     jpItems.setScroller(jsp);
     jpItems.setLayout(new FlowLayout(FlowLayout.LEFT));
     // global layout
-    setLayout(new MigLayout("","[grow]"));
-    add(jpControlTop, "wrap,grow");
+    setLayout(new MigLayout("", "[grow]", "[][grow][]"));
+    add(jpControlTop, "grow,wrap");
     add(jsp, "wrap,grow");
-    add(jpControlBottom, "wrap,grow");
+    add(jpControlBottom, "grow");
   }
 
   /**
@@ -400,13 +395,16 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
               jcbPage.setEnabled(false);
               jtfValue.setEditable(false);
               hsItems.clear();
+              // Save jsp size before we remove it
+              int x = jsp.getViewport().getWidth();
+              int y = jsp.getViewport().getHeight();
               // remove all devices
               if (jpItems.getComponentCount() > 0) {
                 jpItems.removeAll();
               }
-              JXBusyLabel busy = new JXBusyLabel(new Dimension(200, 200));
-              int xInset = ((JajukMainWindow.getInstance().getWidth() - 30) / 2) - 200;
-              int yInset = ((JajukMainWindow.getInstance().getHeight() - 120) / 2) - 200;
+              JXBusyLabel busy = new JXBusyLabel(new Dimension(100, 100));
+              int xInset = (x / 2) - 50;
+              int yInset = (y / 2) - 50;
               busy.setBorder(new EmptyBorder(yInset, xInset, yInset, xInset));
               busy.setBusy(true);
               jpItems.add(busy);
@@ -441,80 +439,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
 
           // sort albums
           final int index = jcbSorter.getSelectedIndex();
-          Collections.sort(albums, new Comparator<Album>() {
-            public int compare(Album album1, Album album2) {
-              // for albums, perform a fast compare
-              if (index == 2) {
-                return album1.compareTo(album2);
-              }
-              // get a track for each album
-              // TODO: get two tracks of album and compare Author,
-              // if
-              // !=, set Author to "Various Artist"
-              Track track1 = album1.getAnyTrack();
-              Track track2 = album2.getAnyTrack();
-
-              // check tracks (normally useless)
-              if (track1 == null || track2 == null) {
-                return 0;
-              }
-              switch (index) {
-              case 0: // style
-                // Sort on Genre/Author/Year/Title
-                if (track1.getStyle() == track2.getStyle()) {
-                  if (album1.getAlbumArtist2() == album2.getAlbumArtist2()) {
-                    if (track1.getYear() == track2.getYear()) {
-                      return album1.compareTo(album2);
-                    } else {
-                      return track1.getYear().compareTo(track2.getYear());
-                    }
-                  } else {
-                    return album1.getAlbumArtist2().compareTo(album2.getAlbumArtist2());
-                  }
-                } else {
-                  return track1.getStyle().compareTo(track2.getStyle());
-                }
-              case 1: // author
-                // Sort on Author/Year/Title
-                // we use now the album artist
-                if (album1.getAlbumArtist2() == album2.getAlbumArtist2()) {
-                  if (track1.getYear() == track2.getYear()) {
-                    return album1.compareTo(album2);
-                  } else {
-                    return track1.getYear().compareTo(track2.getYear());
-                  }
-                } else {
-                  return album1.getAlbumArtist2().compareTo(album2.getAlbumArtist2());
-                }
-              case 3: // year
-                // Sort on: Year/Author/Title
-                if (track1.getYear() == track2.getYear()) {
-                  if (album1.getAlbumArtist2() == album2.getAlbumArtist2()) {
-                    return album1.compareTo(album2);
-                  } else {
-                    return album1.getAlbumArtist2().compareTo(album2.getAlbumArtist2());
-                  }
-                } else {
-                  return track1.getYear().compareTo(track2.getYear());
-                }
-              case 4: // Discovery date
-                return track2.getDiscoveryDate().compareTo(track1.getDiscoveryDate());
-              case 5: // Rate
-                if (album1.getRate() < album2.getRate()) {
-                  return 1;
-                } else {
-                  return 0;
-                }
-              case 6: // Hits
-                if (album1.getHits() < album2.getHits()) {
-                  return 1;
-                } else {
-                  return 0;
-                }
-              }
-              return 0;
-            }
-          });
+          Collections.sort(albums, new AlbumComparator(index));
 
           // Now process each album
           Set<Directory> directories = new HashSet<Directory>(albums.size());
