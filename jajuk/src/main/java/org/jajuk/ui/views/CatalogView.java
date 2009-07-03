@@ -51,7 +51,6 @@ import javax.swing.JTextField;
 import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
-import javax.swing.border.EmptyBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
@@ -283,8 +282,8 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
     jpControlBottom.add(jlSize, "split 2");
     jpControlBottom.add(jsSize);
 
-    // Covers
-    initCovers();
+    // Set layout
+    initLayout();
 
     populateCatalog();
 
@@ -320,9 +319,13 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
   }
 
   /**
-   * 
+   * Initialize final layout and add main panels
    */
-  private void initCovers() {
+  private void initLayout() {
+    // Remove any busy label
+    if (getComponentCount() > 0) {
+      removeAll();
+    }
     jpItems = new FlowScrollPanel();
     jsp = new JScrollPane(jpItems, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
         JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
@@ -334,6 +337,21 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
     add(jpControlTop, "grow,wrap");
     add(jsp, "wrap,grow");
     add(jpControlBottom, "grow");
+    revalidate();
+    repaint();
+  }
+  
+  
+  private void showBusyLabel(){
+    if (getComponentCount() > 0) {
+      removeAll();
+    }
+    JXBusyLabel busy = new JXBusyLabel(new Dimension(100, 100));
+    busy.setBusy(true);
+    setLayout(new MigLayout("", "[grow]", "[grow]"));
+    add(busy, "center");
+    revalidate();
+    repaint();
   }
 
   /**
@@ -375,6 +393,8 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
       return;
     }
     populating = true;
+    
+    showBusyLabel();
     new Thread() {
       @Override
       public void run() {
@@ -395,19 +415,10 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
               jcbPage.setEnabled(false);
               jtfValue.setEditable(false);
               hsItems.clear();
-              // Save jsp size before we remove it
-              int x = jsp.getViewport().getWidth();
-              int y = jsp.getViewport().getHeight();
               // remove all devices
               if (jpItems.getComponentCount() > 0) {
                 jpItems.removeAll();
               }
-              JXBusyLabel busy = new JXBusyLabel(new Dimension(100, 100));
-              int xInset = (x / 2) - 50;
-              int yInset = (y / 2) - 50;
-              busy.setBorder(new EmptyBorder(yInset, xInset, yInset, xInset));
-              busy.setBusy(true);
-              jpItems.add(busy);
             }
           });
           Filter filter = null;
@@ -549,17 +560,10 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
           // so queue it
           SwingUtilities.invokeLater(new Runnable() {
             public void run() {
-              // Display the catalog
-              if (jpItems.getComponentCount() > 0) {
-                // remove the busy label
-                jpItems.removeAll();
-              }
+              initLayout();
               for (LocalAlbumThumbnail thumb : thumbs) {
                 jpItems.add(thumb);
               }
-
-              jsp.revalidate();
-              jsp.repaint();
               SwingUtilities.invokeLater(new Runnable() {
                 public void run() {
                   jsp.getVerticalScrollBar().setValue(value);
