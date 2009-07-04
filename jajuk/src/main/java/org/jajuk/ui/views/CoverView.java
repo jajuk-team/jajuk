@@ -907,6 +907,7 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
   public Set<JajukEvents> getRegistrationKeys() {
     final Set<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
     eventSubjectSet.add(JajukEvents.FILE_LAUNCHED);
+    eventSubjectSet.add(JajukEvents.WEBRADIO_LAUNCHED);
     eventSubjectSet.add(JajukEvents.ZERO);
     eventSubjectSet.add(JajukEvents.PLAYER_STOP);
     eventSubjectSet.add(JajukEvents.COVER_NEED_REFRESH);
