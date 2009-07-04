@@ -406,14 +406,6 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
           SwingUtilities.invokeLater(new Runnable() {
             public void run() {
               bPopulating = true;
-              jsSize.setEnabled(false);
-              jcbFilter.setEnabled(false);
-              jcbShowNoCover.setEnabled(false);
-              jcbSorter.setEnabled(false);
-              jbPrev.setEnabled(false);
-              jbNext.setEnabled(false);
-              jcbPage.setEnabled(false);
-              jtfValue.setEditable(false);
               hsItems.clear();
               // remove all devices
               if (jpItems.getComponentCount() > 0) {
@@ -569,15 +561,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
                   jsp.getVerticalScrollBar().setValue(value);
                 }
               });
-              jtfValue.setEditable(true);
               jtfValue.requestFocusInWindow();
-              jsSize.setEnabled(true);
-              jcbFilter.setEnabled(true);
-              jcbShowNoCover.setEnabled(true);
-              jcbSorter.setEnabled(true);
-              jbPrev.setEnabled(true);
-              jbNext.setEnabled(true);
-              jcbPage.setEnabled(true);
               bPopulating = false;
               UtilGUI.stopWaiting();
             }
