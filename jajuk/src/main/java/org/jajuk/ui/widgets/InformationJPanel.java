@@ -296,7 +296,7 @@ public final class InformationJPanel extends JXPanel implements Observer {
       SwingUtilities.invokeLater(new Runnable() {
         public void run() {
           if (JajukEvents.HEART_BEAT.equals(subject) && !QueueModel.isStopped()
-              && !Player.isPaused()) {
+              && !Player.isPaused() && !QueueModel.isPlayingRadio()) {
             String sCurrentTotalMessage = UtilString.formatTimeBySec(timeToPlay);
             setTotalTimeMessage(sCurrentTotalMessage + " [" + QueueModel.getCountTracksLeft() + "]");
           } else if (JajukEvents.ZERO.equals(subject) || JajukEvents.PLAYER_STOP.equals(subject)) {
@@ -315,6 +315,7 @@ public final class InformationJPanel extends JXPanel implements Observer {
               setMessage(message, InformationJPanel.INFORMATIVE);
             }
           } else if (JajukEvents.WEBRADIO_LAUNCHED.equals(subject)) {
+            setTotalTimeMessage("00:00:00");
             if (event.getDetails() == null) {
               return;
             }
