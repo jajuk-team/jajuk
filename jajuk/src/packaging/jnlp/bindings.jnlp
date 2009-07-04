@@ -8,7 +8,7 @@
            <all-permissions/>
     </security> 
     <resources>
-        <jar href="last.fm-bindings-5.21.jar" version='VERSION_REPLACED_BY_ANT'/>
+        <jar href="last.fm-bindings-7.3.jar" version='VERSION_REPLACED_BY_ANT'/>
     </resources>
     <component-desc/>
 </jnlp>
