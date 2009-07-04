@@ -6,11 +6,11 @@
 <Dockable>
 <Key dockName="org.jajuk.ui.views.FilesTreeView/0"/>
 </Dockable>
-<Split orientation="0" location="0.5049261083743842">
+<Split orientation="0" location="0.5">
 <Dockable>
 <Key dockName="org.jajuk.ui.views.FilesTableView/0"/>
 </Dockable>
-<Split orientation="1" location="0.4994192799070848">
+<Split orientation="1" location="0.6">
 <Dockable>
 <Key dockName="org.jajuk.ui.views.QueueView/0"/>
 </Dockable>
