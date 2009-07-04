@@ -124,11 +124,9 @@ public class QueueView extends PlaylistView {
     jtbAutoScroll.setToolTipText(Messages.getString("QueueView.2"));
     jtbAutoScroll.setSelected(Conf.getBoolean(Const.CONF_AUTO_SCROLL));
     jtbAutoScroll.addActionListener(new ActionListener() {
-
       public void actionPerformed(ActionEvent e) {
         Conf.setProperty(Const.CONF_AUTO_SCROLL, Boolean.toString(jtbAutoScroll.isSelected()));
       }
-
     });
 
     JToolBar jtb = new JajukJToolbar();
@@ -193,8 +191,6 @@ public class QueueView extends PlaylistView {
     editorTable.setHighlighters(alternate, colorHighlighter);
     // register events
     ObservationManager.register(this);
-    // -- force a refresh --
-    refreshQueue();
     // Add key listener to enable row suppression using SUPR key
     editorTable.addKeyListener(new KeyAdapter() {
       @Override
@@ -228,6 +224,9 @@ public class QueueView extends PlaylistView {
     // Register keystrokes over table
     editorTable.putClientProperty(Const.DETAIL_SELECTION, editorTable.getSelection());
     super.setKeystrokes();
+     // Force a first need refresh event
+    update(new JajukEvent(JajukEvents.QUEUE_NEED_REFRESH));
+    
   }
 
   /**
@@ -303,7 +302,7 @@ public class QueueView extends PlaylistView {
             editorModel.getPlanned().clear();
             refreshQueue();
 
-            if (jtbAutoScroll.isSelected()) {
+            if (Conf.getBoolean(CONF_AUTO_SCROLL)) {
               SwingUtilities.invokeLater(new Runnable() {
                 public void run() {
                   if (QueueModel.getQueueSize() > 0) {
