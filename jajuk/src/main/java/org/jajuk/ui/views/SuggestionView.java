@@ -316,7 +316,6 @@ public class SuggestionView extends ViewAdapter implements Observer {
       public void finished() {
         tabs.setComponentAt(3, (jsp1 == null) ? new JPanel() : jsp1);
         tabs.setComponentAt(4, (jsp2 == null) ? new JPanel() : jsp2);
-        super.finished();
       }
 
     };
@@ -376,12 +375,12 @@ public class SuggestionView extends ViewAdapter implements Observer {
    * @return
    */
   JScrollPane getLastFMSuggestionsPanel(SuggestionType type, boolean artistView) {
-    FlowScrollPanel out = new FlowScrollPanel();
-    JScrollPane jsp = new JScrollPane(out, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+    FlowScrollPanel flowPanel = new FlowScrollPanel();
+    JScrollPane jsp = new JScrollPane(flowPanel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
         JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
     jsp.setBorder(null);
-    out.setScroller(jsp);
-    out.setLayout(new FlowLayout(FlowLayout.CENTER));
+    flowPanel.setScroller(jsp);
+    flowPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
     if (type == SuggestionType.OTHERS_ALBUMS) {
       AlbumListInfo albums = LastFmService.getInstance().getAlbumList(author, true, 0);
       if (albums != null && albums.getAlbums().size() > 0) {
@@ -390,7 +389,7 @@ public class SuggestionView extends ViewAdapter implements Observer {
           thumb.setArtistView(artistView);
           thumb.populate();
           thumb.getIcon().addMouseListener(new ThumbMouseListener());
-          out.add(thumb);
+          flowPanel.add(thumb);
         }
       }
       // No result found
@@ -406,7 +405,7 @@ public class SuggestionView extends ViewAdapter implements Observer {
           thumb.setArtistView(artistView);
           thumb.populate();
           thumb.getIcon().addMouseListener(new ThumbMouseListener());
-          out.add(thumb);
+          flowPanel.add(thumb);
         }
       }
       // No result found
@@ -475,7 +474,7 @@ public class SuggestionView extends ViewAdapter implements Observer {
     jteNothing.setEditable(false);
     jteNothing.setOpaque(false);
     jteNothing.setToolTipText(Messages.getString("SuggestionView.7"));
-    add(jteNothing, "center,grow");
+    out.add(jteNothing, "center,grow");
     return out;
   }
 }
