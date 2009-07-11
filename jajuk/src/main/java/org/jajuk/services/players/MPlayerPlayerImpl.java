@@ -60,8 +60,12 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
   /** Cross fade duration in ms */
   int iFadeDuration = 0;
 
-  /** Time track started * */
+  /** Time track started **/
   private long dateStart;
+
+  /** Pause time correction **/
+  private long pauseCount = 0;
+  private long pauseCountStamp = -1;
 
   /** Does the user made a seek in current track ?* */
   private boolean seeked;
@@ -101,6 +105,15 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
       Track current = fCurrent.getTrack();
       while (!bStop && !bEOF) { // stop this thread
         try {
+		  // store elapsed time while the track is paused
+          if (pauseCountStamp > 0) {
+            pauseCount += (System.currentTimeMillis() - pauseCountStamp);
+            pauseCountStamp = -1;
+          }
+          if (bPaused) {
+            pauseCountStamp = System.currentTimeMillis();
+          }
+
           if (!bPaused) {
             // Do not call a get_percent_pos if paused, it resumes the player
             // (mplayer issue)
@@ -175,8 +188,10 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
               lTime = (int) (Float.parseFloat(st.nextToken()) * 1000);
               // VBR correction
               lTime = (long) (lTime * vbrCorrection);
+              pauseCount = 0;
+              pauseCountStamp = -1;
             } else {
-              lTime = System.currentTimeMillis() - dateStart;
+              lTime = System.currentTimeMillis() - dateStart - pauseCount;
             }
             // Store current position for use at next startup
             Conf
@@ -303,7 +318,7 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
    * (non-Javadoc)
    * 
    * @see org.jajuk.players.IPlayerImpl#play(org.jajuk.base.File, float, long,
-   *      float)
+   * float)
    */
   @Override
   public void play(org.jajuk.base.File file, float fPosition, long length, float fVolume)
@@ -320,6 +335,8 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
     this.vbrCorrection = 1.0f;
     this.iFadeDuration = 1000 * Conf.getInt(Const.CONF_FADE_DURATION);
     this.dateStart = System.currentTimeMillis();
+    this.pauseCount = 0;
+    this.pauseCountStamp = -1;
     this.seeked = false;
 
     // Try to launch mplayer
@@ -415,7 +432,7 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
    * (non-Javadoc)
    * 
    * @see org.jajuk.players.IPlayerImpl#seek(float) Ogg vorbis seek not yet
-   *      supported
+   * supported
    */
   @Override
   public void seek(float posValue) {
@@ -466,7 +483,7 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
    * (non-Javadoc)
    * 
    * @see org.jajuk.players.AbstractMPlayerImpl#play(org.jajuk.base.WebRadio,
-   *      float)
+   * float)
    */
   @Override
   public void play(WebRadio radio, float volume) {
@@ -495,8 +512,7 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
   }
 
   /**
-   * Force finishing (doesn't stop but only make a FIFO request to switch track)
-   * <br>
+   * Force finishing (doesn't stop but only make a FIFO request to switch track) <br>
    * We have to launch the next file from another thread to free the reader
    * thread. Otherwise, finish() calls launches() that call another finishes...
    */
