@@ -193,7 +193,7 @@ public class CDDBWizard extends JajukJDialog implements ActionListener {
     JLabel jlCurrent = new JLabel(foundAlbums.length + " " + Messages.getString("CDDBWizard.18"));
 
     // Add items
-    setLayout(new MigLayout("insets 10,gapx 15,gapy 15", "[800!]"));
+    setLayout(new MigLayout("insets 10,gapx 15,gapy 15", "[grow,800:800:]"));
     add(new JLabel(Messages.getString("CDDBWizard.5")), "split 3");
     add(jcbAlbum, "grow");
     add(jlCurrent, "wrap");
