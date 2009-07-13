@@ -206,7 +206,7 @@ public class DeviceWizard extends JDialog implements ActionListener, Const {
     add(jlName );
     add(jtfName, "grow,wrap");
     add(jlUrl);
-    add(jtfUrl, "split 2,grow");
+    add(jtfUrl, "split 2,growx");
     add(jbUrl, "wrap");
     add(jlAutoRefresh);
     add(jftfAutoRefresh, "grow,split 2");
