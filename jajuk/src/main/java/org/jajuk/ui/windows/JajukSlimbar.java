@@ -447,7 +447,7 @@ public final class JajukSlimbar extends JFrame implements JajukWindow, Observer,
     setKeystrokes();
 
     // Set new state
-    decorator.setWindowState(WindowState.BUILD_NOT_DISPLAYED);
+    decorator.setWindowState(WindowState.BUILT_NOT_DISPLAYED);
   }
 
   private void setKeystrokes() {

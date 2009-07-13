@@ -158,10 +158,12 @@ public class JajukMainWindow extends JFrame implements JajukWindow, Observer {
   }
 
   public void initUI() {
-    // mac integration
-    System.setProperty("apple.laf.useScreenMenuBar", "true");
-    System.setProperty("apple.laf.useScreenMenuBar", "true");
-    System.setProperty("apple.awt.showGrowBox", "false");
+    if (UtilSystem.isUnderOSXintel() || UtilSystem.isUnderOSXpower()) {
+      // mac integration
+      System.setProperty("apple.laf.useScreenMenuBar", "true");
+      System.setProperty("apple.laf.useScreenMenuBar", "true");
+      System.setProperty("apple.awt.showGrowBox", "false");
+    }
 
     setTitle(Messages.getString("JajukWindow.17"));
     setIconImage(IconLoader.getIcon(JajukIcons.LOGO).getImage());
@@ -169,17 +171,6 @@ public class JajukMainWindow extends JFrame implements JajukWindow, Observer {
     // register for given events
     ObservationManager.register(this);
     addWindowListener(new WindowAdapter() {
-
-      @Override
-      public void windowDeiconified(WindowEvent arg0) {
-        getWindowStateDecorator().setWindowState(WindowState.BUILD_DISPLAYED);
-        toFront();
-      }
-
-      @Override
-      public void windowIconified(WindowEvent arg0) {
-        getWindowStateDecorator().setWindowState(WindowState.BUILD_NOT_DISPLAYED);
-      }
 
       @Override
       public void windowClosing(WindowEvent we) {
@@ -252,7 +243,7 @@ public class JajukMainWindow extends JFrame implements JajukWindow, Observer {
     jpFrame.add(commandDesktop, BorderLayout.CENTER);
 
     // Set new state
-    decorator.setWindowState(WindowState.BUILD_NOT_DISPLAYED);
+    decorator.setWindowState(WindowState.BUILT_NOT_DISPLAYED);
   }
 
   public Set<JajukEvents> getRegistrationKeys() {

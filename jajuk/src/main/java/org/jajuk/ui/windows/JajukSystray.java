@@ -288,7 +288,7 @@ public class JajukSystray extends CommandJPanel implements JajukWindow {
           // show main window if it is not visible and hide it if it is visible
           WindowState mainWindowState = JajukMainWindow.getInstance().getWindowStateDecorator()
               .getWindowState();
-          boolean bShouldDisplayMainWindow = !(mainWindowState == WindowState.BUILD_DISPLAYED);
+          boolean bShouldDisplayMainWindow = !(mainWindowState == WindowState.BUILT_DISPLAYED);
           JajukMainWindow.getInstance().getWindowStateDecorator().display(bShouldDisplayMainWindow);
         }
       }
@@ -304,7 +304,7 @@ public class JajukSystray extends CommandJPanel implements JajukWindow {
     ObservationManager.register(this);
 
     // Set new state
-    decorator.setWindowState(WindowState.BUILD_NOT_DISPLAYED);
+    decorator.setWindowState(WindowState.BUILT_NOT_DISPLAYED);
   }
 
   @Override

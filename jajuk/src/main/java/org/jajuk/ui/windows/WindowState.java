@@ -26,12 +26,12 @@ package org.jajuk.ui.windows;
 public enum WindowState {
   
   //Not yet build
-  NOT_BUILD,
+  NOT_BUILT,
   
   //Build but not yet displayed
-  BUILD_NOT_DISPLAYED,
+  BUILT_NOT_DISPLAYED,
   
   //Build and displayed
-  BUILD_DISPLAYED,
+  BUILT_DISPLAYED,
   
 }

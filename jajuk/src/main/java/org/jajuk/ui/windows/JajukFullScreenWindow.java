@@ -192,7 +192,7 @@ public class JajukFullScreenWindow extends JWindow implements JajukWindow {
     add(tpst, "alignx center,width 50%!,aligny bottom,gap bottom 10");
 
     // Set new state
-    decorator.setWindowState(WindowState.BUILD_NOT_DISPLAYED);
+    decorator.setWindowState(WindowState.BUILT_NOT_DISPLAYED);
   }
 
   /**

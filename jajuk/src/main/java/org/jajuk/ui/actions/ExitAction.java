@@ -88,7 +88,7 @@ public class ExitAction extends JajukAction {
       Conf
           .setProperty(Const.CONF_STARTUP_DISPLAY, Integer.toString(Const.DISPLAY_MODE_MAIN_WINDOW));
 
-      if (sdSlimbar.getWindowState() == WindowState.BUILD_DISPLAYED) {
+      if (sdSlimbar.getWindowState() == WindowState.BUILT_DISPLAYED) {
         Conf.setProperty(Const.CONF_STARTUP_DISPLAY, Integer
             .toString(Const.DISPLAY_MODE_SLIMBAR_TRAY));
       }
@@ -104,7 +104,7 @@ public class ExitAction extends JajukAction {
         Conf.setProperty(Const.CONF_STARTUP_DISPLAY, Integer.toString(Const.DISPLAY_MODE_TRAY));
       }
 
-      if (sdfullscreen.getWindowState() == WindowState.BUILD_DISPLAYED) {
+      if (sdfullscreen.getWindowState() == WindowState.BUILT_DISPLAYED) {
         Conf.setProperty(Const.CONF_STARTUP_DISPLAY, Integer
             .toString(Const.DISPLAY_MODE_FULLSCREEN));
       }

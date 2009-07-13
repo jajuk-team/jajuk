@@ -31,7 +31,7 @@ import org.jajuk.util.log.Log;
 public abstract class WindowStateDecorator {
 
   /** Current state */
-  private WindowState state = WindowState.NOT_BUILD;
+  private WindowState state = WindowState.NOT_BUILT;
 
   /** Decorated window * */
   private JajukWindow window;
@@ -75,12 +75,12 @@ public abstract class WindowStateDecorator {
   public void display(boolean show) {
     try {
       // mode is already ok, leave
-      if (!show && state != WindowState.BUILD_DISPLAYED || show
-          && state == WindowState.BUILD_DISPLAYED) {
+      if ((!show && state != WindowState.BUILT_DISPLAYED)
+          || (show && state == WindowState.BUILT_DISPLAYED)) {
         return;
       }
       // Build the GUI is not already done, executes window-specific behavior
-      if (show && state == WindowState.NOT_BUILD) {
+      if (show && state == WindowState.NOT_BUILT) {
         window.initUI();
       }
 
@@ -105,9 +105,9 @@ public abstract class WindowStateDecorator {
 
       // store the new state
       if (show) {
-        state = WindowState.BUILD_DISPLAYED;
+        state = WindowState.BUILT_DISPLAYED;
       } else {
-        state = WindowState.BUILD_NOT_DISPLAYED;
+        state = WindowState.BUILT_NOT_DISPLAYED;
       }
     } catch (Exception e) {
       Log.error(e);
@@ -121,8 +121,8 @@ public abstract class WindowStateDecorator {
    * @return whether the initUI() has run successfully or not
    */
   public boolean isInitialized() {
-    return getWindowState() == WindowState.BUILD_DISPLAYED
-        || getWindowState() == WindowState.BUILD_NOT_DISPLAYED;
+    return getWindowState() == WindowState.BUILT_DISPLAYED
+        || getWindowState() == WindowState.BUILT_NOT_DISPLAYED;
   }
 
   /**
@@ -131,7 +131,7 @@ public abstract class WindowStateDecorator {
    * @return wether the window is displayed
    */
   public boolean isDisplayed() {
-    return getWindowState() == WindowState.BUILD_DISPLAYED;
+    return getWindowState() == WindowState.BUILT_DISPLAYED;
   }
 
   /**
