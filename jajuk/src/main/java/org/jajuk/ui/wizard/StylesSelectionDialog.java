@@ -43,7 +43,9 @@ import org.jajuk.services.dj.Ambience;
 import org.jajuk.services.dj.AmbienceManager;
 import org.jajuk.ui.widgets.JajukJDialog;
 import org.jajuk.ui.widgets.OKCancelPanel;
+import org.jajuk.util.Const;
 import org.jajuk.util.Messages;
+import org.jajuk.util.log.Log;
 
 /**
  * Allow a user to select a list of styles
@@ -164,8 +166,18 @@ public class StylesSelectionDialog extends JajukJDialog implements ActionListene
         if (ae.getSource() == okc.getOKButton()) {
           int[] selection = jlist.getSelectedIndices();
           for (int element : selection) {
-            selectedStyles.add(StyleManager.getInstance().getStyleByName(
-                (String) jlist.getModel().getElementAt(element)));
+            String name = (String) jlist.getModel().getElementAt(element);
+            Style style = StyleManager.getInstance().getStyleByName(name);
+            if (style == null) {
+              if (name.equals(Messages.getString(Const.UNKNOWN_STYLE))) {
+                Log.warn("Use '" + Const.UNKNOWN_STYLE + "' instead of '" + name);
+                selectedStyles.add(StyleManager.getInstance().getStyleByName(Const.UNKNOWN_STYLE));
+              } else {
+                Log.warn("Could not read style for name: " + name);
+              }
+            } else {
+              selectedStyles.add(style);
+            }
           }
         }
         dispose();
