@@ -20,6 +20,8 @@
 
 package org.jajuk.ui.widgets;
 
+import ext.SwingWorker;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -67,7 +69,7 @@ import org.jajuk.util.log.Log;
 /**
  * Search combo box. Editable combo with search features
  */
-public abstract class SearchBox extends JTextField implements KeyListener,ListSelectionListener {
+public abstract class SearchBox extends JTextField implements KeyListener, ListSelectionListener {
 
   private static final long serialVersionUID = 1L;
 
@@ -96,12 +98,7 @@ public abstract class SearchBox extends JTextField implements KeyListener,ListSe
   Timer timer = new Timer(100, new ActionListener() {
     public void actionPerformed(ActionEvent arg0) {
       if (bNeedSearch && (System.currentTimeMillis() - lDateTyped >= WAIT_TIME)) {
-        new Thread() {
-          @Override
-          public void run() {
-            search();
-          }
-        }.start();
+        search();
       }
     }
   });
@@ -146,7 +143,6 @@ public abstract class SearchBox extends JTextField implements KeyListener,ListSe
     setForeground(mediumGray);
     // Double click empties the field
     addMouseListener(new MouseAdapter() {
-
       @Override
       public void mouseClicked(MouseEvent e) {
         super.mouseClicked(e);
@@ -154,7 +150,6 @@ public abstract class SearchBox extends JTextField implements KeyListener,ListSe
           setText("");
         }
       }
-
     });
   }
 
@@ -205,69 +200,84 @@ public abstract class SearchBox extends JTextField implements KeyListener,ListSe
    * pressed enter
    */
   private void search() {
-    try {
-      bNeedSearch = false;
-      setEnabled(false); // no typing during search
-      if (sTyped.length() >= MIN_CRITERIA_LENGTH) {
-        // second test to get sure user didn't
-        // typed before entering this method
-        List<SearchResult> resu = TrackManager.getInstance().search(sTyped);
-        // Add web radio names
-        resu.addAll(WebRadioManager.getInstance().search(sTyped));
-        // Sort the whole list
-        Collections.sort(resu);
-        if (resu.size() > 0) {
-          DefaultListModel model = new DefaultListModel();
-          this.alResults = resu;
-          for (SearchResult sr : resu) {
-            model.addElement(sr);
+    bNeedSearch = false;
+    setEnabled(false); // no typing during search
+    // second test to get sure user didn't
+    // typed before entering this method
+    if (sTyped.length() >= MIN_CRITERIA_LENGTH) {
+      SwingWorker sw = new SwingWorker() {
+
+        List<SearchResult> resu = null;
+
+        @Override
+        public Object construct() {
+          try {
+            UtilGUI.waiting();
+            resu = TrackManager.getInstance().search(sTyped);
+            // Add web radio names
+            resu.addAll(WebRadioManager.getInstance().search(sTyped));
+            // Sort the whole list
+            Collections.sort(resu);
+          } catch (Exception e) {
+            Log.error(e);
           }
-          jlist = new JList(model);
-          jlist.setLayoutOrientation(JList.VERTICAL);
-          jlist.addListSelectionListener(this);
-          jlist.setCellRenderer(new SearchListRenderer());
-          PopupFactory factory = PopupFactory.getSharedInstance();
-          JScrollPane jsp = new JScrollPane(jlist);
-          int width = (int) ((float) Toolkit.getDefaultToolkit().getScreenSize().getWidth() * 0.7f);
-          jsp.setMinimumSize(new Dimension(width, 250));
-          jsp.setPreferredSize(new Dimension(width, 250));
-          jsp.setMaximumSize(new Dimension(width, 250));
-          jlist.setSelectionMode(0);
-          // For some reasons, we get the waiting cursor on the popup
-          // sometimes, force it to default
-          jlist.setCursor(UtilGUI.DEFAULT_CURSOR);
-          jsp.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-          if (popup != null) {
-            popup.hide();
-          }
-          // take upper-left point relative to the
-          // textfield
-          Point point = new Point(0, 0);
-          // take absolute coordinates in the screen (popups works
-          // only on absolute coordinates in opposition to swing
-          // widgets)
-          SwingUtilities.convertPointToScreen(point, this);
-          if (((int) point.getY() > 300) && (((int) point.getX() + 500 - (width)) > 0)) {
-            popup = factory.getPopup(this, jsp, (int) point.getX() + 500 - (width), (int) point
-                .getY() - 250);
-          } else if (((int) point.getX() + 500 - (width)) > 0) {
-            popup = factory.getPopup(this, jsp, (int) point.getX() + 500 - (width), (int) point
-                .getY() + 30);
-          } else {
-            popup = factory.getPopup(this, jsp, 10, (int) point.getY() + 30);
-          }
-          popup.show();
-        } else {
-          if (popup != null) {
-            popup.hide();
-          }
+          return null;
         }
-      }
-      requestFocusInWindow();
-    } catch (Exception e) {
-      Log.error(e);
-    } finally { // make sure to enable search box in all cases
-      setEnabled(true);
+
+        @Override
+        public void finished() {
+          if (resu != null && resu.size() > 0) {
+            DefaultListModel model = new DefaultListModel();
+            SearchBox.this.alResults = resu;
+            for (SearchResult sr : resu) {
+              model.addElement(sr);
+            }
+            jlist = new JList(model);
+            jlist.setLayoutOrientation(JList.VERTICAL);
+            jlist.addListSelectionListener(SearchBox.this);
+            jlist.setCellRenderer(new SearchListRenderer());
+            PopupFactory factory = PopupFactory.getSharedInstance();
+            JScrollPane jsp = new JScrollPane(jlist);
+            int width = (int) ((float) Toolkit.getDefaultToolkit().getScreenSize().getWidth() * 0.7f);
+            jsp.setMinimumSize(new Dimension(width, 250));
+            jsp.setPreferredSize(new Dimension(width, 250));
+            jsp.setMaximumSize(new Dimension(width, 250));
+            jlist.setSelectionMode(0);
+            // For some reasons, we get the waiting cursor on the popup
+            // sometimes, force it to default
+            jlist.setCursor(UtilGUI.DEFAULT_CURSOR);
+            jsp.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+            if (popup != null) {
+              popup.hide();
+            }
+            // take upper-left point relative to the
+            // textfield
+            Point point = new Point(0, 0);
+            // take absolute coordinates in the screen (popups works
+            // only on absolute coordinates in opposition to swing
+            // widgets)
+            SwingUtilities.convertPointToScreen(point, SearchBox.this);
+            if (((int) point.getY() > 300) && (((int) point.getX() + 500 - (width)) > 0)) {
+              popup = factory.getPopup(SearchBox.this, jsp, (int) point.getX() + 500 - (width),
+                  (int) point.getY() - 250);
+            } else if (((int) point.getX() + 500 - (width)) > 0) {
+              popup = factory.getPopup(SearchBox.this, jsp, (int) point.getX() + 500 - (width),
+                  (int) point.getY() + 30);
+            } else {
+              popup = factory.getPopup(SearchBox.this, jsp, 10, (int) point.getY() + 30);
+            }
+            popup.show();
+          } else {
+            if (popup != null) {
+              popup.hide();
+            }
+          }
+          requestFocusInWindow();
+          setEnabled(true);
+          UtilGUI.stopWaiting();
+        }
+      };
+      sw.start();
     }
   }
 
