@@ -68,13 +68,14 @@ public class StartupService {
    * Launch initial track at startup
    */
   public static void launchInitialTrack() {
+    // List of items to play at startup
     List<org.jajuk.base.File> alToPlay = new ArrayList<org.jajuk.base.File>();
+    // File to play
     org.jajuk.base.File fileToPlay = null;
     if (Conf.getString(Const.CONF_STARTUP_MODE).equals(Const.STARTUP_MODE_LAST)
         || Conf.getString(Const.CONF_STARTUP_MODE).equals(Const.STARTUP_MODE_LAST_KEEP_POS)
         || Conf.getString(Const.CONF_STARTUP_MODE).equals(Const.STARTUP_MODE_FILE)
         || Conf.getString(Const.CONF_STARTUP_MODE).equals(Const.STARTUP_MODE_NOTHING)) {
-
       if (Conf.getString(Const.CONF_STARTUP_MODE).equals(Const.STARTUP_MODE_FILE)) {
         fileToPlay = FileManager.getInstance().getFileByID(Conf.getString(Const.CONF_STARTUP_FILE));
       } else {
@@ -102,6 +103,7 @@ public class StartupService {
           return;
         }
       }
+      // Try to mount the file to play
       if (fileToPlay != null) {
         if (!fileToPlay.isReady()) {
           // file exists but is not mounted, just notify the error
@@ -125,61 +127,70 @@ public class StartupService {
         Messages.getChoice(Messages.getErrorMessage(23), JOptionPane.DEFAULT_OPTION,
             JOptionPane.WARNING_MESSAGE);
         QueueModel.setFirstFile(false);
-        // no more first file
+        // no more first file, we ignore any stored fifo as it may contains
+        // others disappeared files
         return;
       }
       // For last tracks playing, add all ready files from last
       // session stored FIFO
-      if (Conf.getString(Const.CONF_STARTUP_MODE).equals(Const.STARTUP_MODE_LAST)
-          || Conf.getString(Const.CONF_STARTUP_MODE).equals(Const.STARTUP_MODE_LAST_KEEP_POS)
-          || Conf.getString(Const.CONF_STARTUP_MODE).equals(Const.STARTUP_MODE_NOTHING)) {
-        final File fifo = SessionService.getConfFileByPath(Const.FILE_FIFO);
-        if (!fifo.exists()) {
-          Log.debug("No fifo file");
-        } else {
+      final File fifo = SessionService.getConfFileByPath(Const.FILE_FIFO);
+      if (!fifo.exists()) {
+        Log.debug("No fifo file");
+      } else {
+        try {
+          final BufferedReader br = new BufferedReader(new FileReader(SessionService
+              .getConfFileByPath(Const.FILE_FIFO)));
           try {
-            final BufferedReader br = new BufferedReader(new FileReader(SessionService
-                .getConfFileByPath(Const.FILE_FIFO)));
-            try {
-              String s = null;
-              for (;;) {
-                s = br.readLine();
-                if (s == null) {
-                  break;
-                }
-
-                final org.jajuk.base.File file = FileManager.getInstance().getFileByID(s);
-                if ((file != null) && file.isReady()) {
-                  alToPlay.add(file);
-                }
+            String s = null;
+            for (;;) {
+              s = br.readLine();
+              if (s == null) {
+                break;
               }
-            } finally {
-              br.close();
+              final org.jajuk.base.File file = FileManager.getInstance().getFileByID(s);
+              if ((file != null) && file.isReady()) {
+                alToPlay.add(file);
+              }
             }
-          } catch (final IOException ioe) {
-            Log.error(ioe);
+          } finally {
+            br.close();
           }
+        } catch (final IOException ioe) {
+          Log.error(ioe);
         }
       }
     } else if (Conf.getString(Const.CONF_STARTUP_MODE).equals(Const.STARTUP_MODE_SHUFFLE)) {
       alToPlay = FileManager.getInstance().getGlobalShufflePlaylist();
+      if (alToPlay.size() > 0) {
+        fileToPlay = alToPlay.get(0);
+      }
     } else if (Conf.getString(Const.CONF_STARTUP_MODE).equals(Const.STARTUP_MODE_BESTOF)) {
       alToPlay = FileManager.getInstance().getGlobalBestofPlaylist();
+      if (alToPlay.size() > 0) {
+        fileToPlay = alToPlay.get(0);
+      }
     } else if (Conf.getString(Const.CONF_STARTUP_MODE).equals(Const.STARTUP_MODE_NOVELTIES)) {
       alToPlay = FileManager.getInstance().getGlobalNoveltiesPlaylist();
       if ((alToPlay != null) && (alToPlay.size() > 0)) {
         // shuffle the selection
         Collections.shuffle(alToPlay, UtilSystem.getRandom());
+        fileToPlay = alToPlay.get(0);
       } else {
         // Alert user that no novelties have been found
         InformationJPanel.getInstance().setMessage(Messages.getString("Error.127"),
             InformationJPanel.ERROR);
       }
     }
-    // launch selected file
+    // Launch selected file
 
+    // If the queue was empty and a file to play is provided, build a new queue
+    // with this track alone
+    if (alToPlay.size() == 0  && fileToPlay != null){
+      alToPlay.add(fileToPlay);
+    }
+    
     // find the index of last played track
-    if ((alToPlay != null) && (alToPlay.size() > 0) && fileToPlay != null) {
+    if (alToPlay != null && alToPlay.size() > 0 && fileToPlay != null) {
       int index = -1;
       for (int i = 0; i < alToPlay.size(); i++) {
         if (fileToPlay.getID().equals(alToPlay.get(i).getID())) {
