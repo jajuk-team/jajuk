@@ -41,8 +41,8 @@ public class FinishAlbumAction extends JajukAction {
   private static final long serialVersionUID = 1L;
 
   FinishAlbumAction() {
-    super(Messages.getString("JajukWindow.16"), IconLoader.getIcon(JajukIcons.FINISH_ALBUM), !QueueModel
-        .isStopped());
+    super(Messages.getString("JajukWindow.16"), IconLoader.getIcon(JajukIcons.FINISH_ALBUM),
+        !QueueModel.isStopped());
     setShortDescription(Messages.getString("JajukWindow.32"));
   }
 
@@ -57,7 +57,7 @@ public class FinishAlbumAction extends JajukAction {
           Directory dir = item.getFile().getDirectory();
           // then re-add current item
           QueueModel.push(UtilFeatures.createStackItems(dir.getFilesFromFile(item.getFile()), item
-              .isRepeat(), item.isUserLaunch()), true);
+              .isRepeat(), item.isUserLaunch()), true, true);
           QueueModel.computesPlanned(true); // update planned list
           Properties properties = new Properties();
           properties.put(Const.DETAIL_ORIGIN, Const.DETAIL_SPECIAL_MODE_NORMAL);

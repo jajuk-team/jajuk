@@ -177,21 +177,18 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
   }
 
   /**
-   * return child files from a given file in album included
+   * return ordered sibling files from the given file index
    * 
-   * @return child files
+   * @return files or null if the given file is unknown
    */
   public List<org.jajuk.base.File> getFilesFromFile(org.jajuk.base.File fileStart) {
     Set<org.jajuk.base.File> files = getFiles();
-    List<org.jajuk.base.File> alOut = new ArrayList<org.jajuk.base.File>(files.size());
-    boolean bOK = false;
-    for (org.jajuk.base.File file : files) {
-      if (bOK || file.equals(fileStart)) {
-        alOut.add(file);
-        bOK = true;
-      }
+    List<org.jajuk.base.File> alOut = new ArrayList<org.jajuk.base.File>(files);
+    int indexOfStartingItem = alOut.indexOf(fileStart);
+    if (indexOfStartingItem < 0) {
+      return null;
     }
-    return alOut;
+    return alOut.subList(indexOfStartingItem + 1, alOut.size());
   }
 
   /**
@@ -213,8 +210,8 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
   /**
    * Scan all files in a directory
    * 
-   * @param bDeepScan
-   *          : force files tag read
+   * @param bDeepScan :
+   *          force files tag read
    * @param reporter
    *          Refresh handler
    */
@@ -618,10 +615,10 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
   /**
    * Refresh : scan asynchronously the directory to find tracks
    * 
-   * @param bAsynchronous
-   *          : set asynchronous or synchronous mode
-   * @param bAsk
-   *          : should we ask user if he wants to perform a deep or fast scan?
+   * @param bAsynchronous :
+   *          set asynchronous or synchronous mode
+   * @param bAsk :
+   *          should we ask user if he wants to perform a deep or fast scan?
    *          default=deep
    */
   public void manualRefresh(final boolean bAsynchronous, final boolean bAsk) {
