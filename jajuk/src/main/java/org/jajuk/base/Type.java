@@ -157,7 +157,9 @@ public class Type extends PhysicalItem implements Comparable<Type> {
 
   /**
    * Return an array of supported file extensions for given types
-   * @param types the types
+   * 
+   * @param types
+   *          the types
    * @return Return an array of supported file extensions
    */
   public static String[] getExtensionsFromTypes(final List<Type> types) {
@@ -173,6 +175,14 @@ public class Type extends PhysicalItem implements Comparable<Type> {
       }
     }
     return (extensions);
+  }
+
+  /**
+   * Return whether this type is video
+   * @return whether this type is video
+   */
+  public boolean isVideo() {
+    return Messages.getString(Type.TYPE_VIDEO).equals(getName());
   }
 
 }

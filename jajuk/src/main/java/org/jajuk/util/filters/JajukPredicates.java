@@ -21,6 +21,7 @@
 package org.jajuk.util.filters;
 
 import java.util.Date;
+import java.util.List;
 
 import org.apache.commons.collections.Predicate;
 import org.jajuk.base.File;
@@ -177,6 +178,26 @@ public class JajukPredicates {
     public boolean evaluate(Object o) {
       File tested = (File) o;
       return ambience.getStyles().contains(tested.getTrack().getStyle());
+    }
+
+  }
+
+  /**
+   * 
+   * Not Video predicate on tracks, filter video files.
+   */
+  public static class NotVideoPredicate implements Predicate {
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.apache.commons.collections.Predicate#evaluate(java.lang.Object)
+     */
+    public boolean evaluate(Object o) {
+      Track tested = (Track)o;
+      List<File> files  = tested.getFiles();
+      File fileTested = files.get(0);
+      return !fileTested.getType().isVideo();
     }
 
   }

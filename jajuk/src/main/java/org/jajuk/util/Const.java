@@ -195,6 +195,8 @@ public interface Const {
 
   String JAJUK_COPYRIGHT = "Copyright 2003-2009 The Jajuk Team";
 
+  String TYPE_VIDEO = "Type.video";
+
   // -- Files and paths --
 
   /** Bootstrap file that contains jajuk configuration user directory* */

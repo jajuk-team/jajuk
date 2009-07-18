@@ -40,11 +40,6 @@ public final class TypeManager extends ItemManager {
   /**
    * 
    */
-  private static final String TYPE_VIDEO = "Type.video";
-
-  /**
-   * 
-   */
   private static final String ICONS_16X16_TYPE_APE = "icons/16x16/type_ape_16x16.png";
 
   /**
@@ -141,7 +136,8 @@ public final class TypeManager extends ItemManager {
    * @param type
    */
   public Type registerType(String sName, String sExtension, Class<?> cPlayerImpl, Class<?> cTagImpl) {
-    return registerType(sExtension.toLowerCase(Locale.getDefault()), sName, sExtension, cPlayerImpl, cTagImpl);
+    return registerType(sExtension.toLowerCase(Locale.getDefault()), sName, sExtension,
+        cPlayerImpl, cTagImpl);
   }
 
   /**
@@ -266,7 +262,8 @@ public final class TypeManager extends ItemManager {
    * Note that we use explicite strings for icon location. It's to avoid loading
    * all icons at startup, we do it asynchronously to accelerate startup
    * </p>
-   * @throws ClassNotFoundException 
+   * 
+   * @throws ClassNotFoundException
    * 
    */
   public static void registerTypesNoMplayer() throws ClassNotFoundException {
@@ -314,7 +311,8 @@ public final class TypeManager extends ItemManager {
    * Note that we use explicite strings for icon location. It's to avoid loading
    * all icons at startup, we do it asynchronously to accelerate startup
    * </p>
-   * @throws ClassNotFoundException 
+   * 
+   * @throws ClassNotFoundException
    * 
    * @throws Exception
    */
@@ -452,63 +450,63 @@ public final class TypeManager extends ItemManager {
 
     // -- VIDEO --
     // AVI
-    type = TypeManager.getInstance().registerType(Messages.getString(TYPE_VIDEO), Const.EXT_AVI,
+    type = TypeManager.getInstance().registerType(Messages.getString(Const.TYPE_VIDEO), Const.EXT_AVI,
         Class.forName(Const.PLAYER_IMPL_MPLAYER), null);
     type.setProperty(Const.XML_TYPE_IS_MUSIC, true);
     type.setProperty(Const.XML_TYPE_SEEK_SUPPORTED, Const.TRUE);
     type.setProperty(Const.XML_TYPE_ICON, UtilSystem
         .getResource("icons/16x16/type_video_16x16.png").toExternalForm());
     // mpg
-    type = TypeManager.getInstance().registerType(Messages.getString(TYPE_VIDEO), Const.EXT_MPG,
+    type = TypeManager.getInstance().registerType(Messages.getString(Const.TYPE_VIDEO), Const.EXT_MPG,
         Class.forName(Const.PLAYER_IMPL_MPLAYER), null);
     type.setProperty(Const.XML_TYPE_IS_MUSIC, true);
     type.setProperty(Const.XML_TYPE_SEEK_SUPPORTED, Const.TRUE);
     type.setProperty(Const.XML_TYPE_ICON, UtilSystem
         .getResource("icons/16x16/type_video_16x16.png").toExternalForm());
     // MP4
-    type = TypeManager.getInstance().registerType(Messages.getString(TYPE_VIDEO), Const.EXT_MP4,
+    type = TypeManager.getInstance().registerType(Messages.getString(Const.TYPE_VIDEO), Const.EXT_MP4,
         Class.forName(Const.PLAYER_IMPL_MPLAYER), Class.forName(Const.TAG_IMPL_JAUDIOTAGGER));
     type.setProperty(Const.XML_TYPE_IS_MUSIC, true);
     type.setProperty(Const.XML_TYPE_SEEK_SUPPORTED, Const.TRUE);
     type.setProperty(Const.XML_TYPE_ICON, UtilSystem
         .getResource("icons/16x16/type_video_16x16.png").toExternalForm());
     // mpeg
-    type = TypeManager.getInstance().registerType(Messages.getString(TYPE_VIDEO), Const.EXT_MPEG,
+    type = TypeManager.getInstance().registerType(Messages.getString(Const.TYPE_VIDEO), Const.EXT_MPEG,
         Class.forName(Const.PLAYER_IMPL_MPLAYER), null);
     type.setProperty(Const.XML_TYPE_IS_MUSIC, true);
     type.setProperty(Const.XML_TYPE_SEEK_SUPPORTED, Const.TRUE);
     type.setProperty(Const.XML_TYPE_ICON, UtilSystem
         .getResource("icons/16x16/type_video_16x16.png").toExternalForm());
     // mkv
-    type = TypeManager.getInstance().registerType(Messages.getString(TYPE_VIDEO), Const.EXT_MKV,
+    type = TypeManager.getInstance().registerType(Messages.getString(Const.TYPE_VIDEO), Const.EXT_MKV,
         Class.forName(Const.PLAYER_IMPL_MPLAYER), null);
     type.setProperty(Const.XML_TYPE_IS_MUSIC, true);
     type.setProperty(Const.XML_TYPE_SEEK_SUPPORTED, Const.TRUE);
     type.setProperty(Const.XML_TYPE_ICON, UtilSystem
         .getResource("icons/16x16/type_video_16x16.png").toExternalForm());
     // asf
-    type = TypeManager.getInstance().registerType(Messages.getString(TYPE_VIDEO), Const.EXT_ASF,
+    type = TypeManager.getInstance().registerType(Messages.getString(Const.TYPE_VIDEO), Const.EXT_ASF,
         Class.forName(Const.PLAYER_IMPL_MPLAYER), null);
     type.setProperty(Const.XML_TYPE_IS_MUSIC, true);
     type.setProperty(Const.XML_TYPE_SEEK_SUPPORTED, Const.TRUE);
     type.setProperty(Const.XML_TYPE_ICON, UtilSystem
         .getResource("icons/16x16/type_video_16x16.png").toExternalForm());
     // wmv
-    type = TypeManager.getInstance().registerType(Messages.getString(TYPE_VIDEO), Const.EXT_WMV,
+    type = TypeManager.getInstance().registerType(Messages.getString(Const.TYPE_VIDEO), Const.EXT_WMV,
         Class.forName(Const.PLAYER_IMPL_MPLAYER), null);
     type.setProperty(Const.XML_TYPE_IS_MUSIC, true);
     type.setProperty(Const.XML_TYPE_SEEK_SUPPORTED, Const.TRUE);
     type.setProperty(Const.XML_TYPE_ICON, UtilSystem
         .getResource("icons/16x16/type_video_16x16.png").toExternalForm());
     // mov
-    type = TypeManager.getInstance().registerType(Messages.getString(TYPE_VIDEO), Const.EXT_MOV,
+    type = TypeManager.getInstance().registerType(Messages.getString(Const.TYPE_VIDEO), Const.EXT_MOV,
         Class.forName(Const.PLAYER_IMPL_MPLAYER), null);
     type.setProperty(Const.XML_TYPE_IS_MUSIC, true);
     type.setProperty(Const.XML_TYPE_SEEK_SUPPORTED, Const.TRUE);
     type.setProperty(Const.XML_TYPE_ICON, UtilSystem
         .getResource("icons/16x16/type_video_16x16.png").toExternalForm());
     // ogm
-    type = TypeManager.getInstance().registerType(Messages.getString(TYPE_VIDEO), Const.EXT_OGM,
+    type = TypeManager.getInstance().registerType(Messages.getString(Const.TYPE_VIDEO), Const.EXT_OGM,
         Class.forName(Const.PLAYER_IMPL_MPLAYER), null);
     type.setProperty(Const.XML_TYPE_IS_MUSIC, true);
     type.setProperty(Const.XML_TYPE_SEEK_SUPPORTED, Const.TRUE);
