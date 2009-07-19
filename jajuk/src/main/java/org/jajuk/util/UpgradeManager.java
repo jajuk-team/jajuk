@@ -25,11 +25,15 @@ import java.io.FileFilter;
 import java.io.IOException;
 import java.net.URL;
 
+import org.jajuk.base.Album;
+import org.jajuk.base.AlbumManager;
 import org.jajuk.base.Collection;
 import org.jajuk.base.Track;
 import org.jajuk.base.TrackManager;
 import org.jajuk.services.core.SessionService;
 import org.jajuk.services.dj.AmbienceManager;
+import org.jajuk.ui.thumbnails.ThumbnailManager;
+import org.jajuk.ui.thumbnails.ThumbnailsMaker;
 import org.jajuk.util.log.Log;
 
 /**
@@ -72,7 +76,8 @@ public final class UpgradeManager {
         // this
         // way : x.0 -> x.9 -> y.0-> y.9 ... (no x.10 or later)
         if (!SessionService.isTestMode()) {
-          int currentRelease = Integer.parseInt( (sRelease == null ? "0.0" : sRelease).charAt(0) + "" + (sRelease == null ? "0.0" : sRelease).charAt(2));
+          int currentRelease = Integer.parseInt((sRelease == null ? "0.0" : sRelease).charAt(0)
+              + "" + (sRelease == null ? "0.0" : sRelease).charAt(2));
           int newRelease = Integer.parseInt(Const.JAJUK_VERSION.charAt(0) + ""
               + Const.JAJUK_VERSION.charAt(2));
           if (Math.abs(newRelease - currentRelease) > 1) {
@@ -103,14 +108,15 @@ public final class UpgradeManager {
     try {
       if (isUpgradeDetected()) {
         // Migrate djs from jajuk < 1.6 (DJ classes changed)
-        File[] files = SessionService.getConfFileByPath(Const.FILE_DJ_DIR).listFiles(new FileFilter() {
-          public boolean accept(File file) {
-            if (file.isFile() && file.getPath().endsWith('.' + Const.XML_DJ_EXTENSION)) {
-              return true;
-            }
-            return false;
-          }
-        });
+        File[] files = SessionService.getConfFileByPath(Const.FILE_DJ_DIR).listFiles(
+            new FileFilter() {
+              public boolean accept(File file) {
+                if (file.isFile() && file.getPath().endsWith('.' + Const.XML_DJ_EXTENSION)) {
+                  return true;
+                }
+                return false;
+              }
+            });
         for (File dj : files) {
           if (UtilSystem.replaceInFile(dj, "org.jajuk.dj.ProportionDigitalDJ",
               Const.XML_DJ_PROPORTION_CLASS, "UTF-8")) {
@@ -267,6 +273,25 @@ public final class UpgradeManager {
           Log.info("Migrating rating done");
           Messages.showInfoMessage(Messages.getString("Note.1"));
         }
+        // --- In all cases, rebuild thumbs when upgrading ---
+        new Thread() {
+          public void run() {
+
+            // Clean thumbs
+            ThumbnailManager.cleanThumbs(Const.THUMBNAIL_SIZE_50X50);
+            ThumbnailManager.cleanThumbs(Const.THUMBNAIL_SIZE_100X100);
+            ThumbnailManager.cleanThumbs(Const.THUMBNAIL_SIZE_150X150);
+            ThumbnailManager.cleanThumbs(Const.THUMBNAIL_SIZE_200X200);
+            ThumbnailManager.cleanThumbs(Const.THUMBNAIL_SIZE_250X250);
+            ThumbnailManager.cleanThumbs(Const.THUMBNAIL_SIZE_300X300);
+            // Unset default cover
+            for (Album album : AlbumManager.getInstance().getAlbums()) {
+              album.setProperty(Const.XML_ALBUM_COVER, null);
+            }
+            // Launch thumbs creation in another process
+            ThumbnailsMaker.launchAllSizes(true);
+          }
+        }.start();
       }
     } catch (Exception e) {
       Log.error(e);

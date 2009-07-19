@@ -112,19 +112,10 @@ import org.jvnet.substance.skin.SkinInfo;
 public class ParameterView extends ViewAdapter implements ActionListener, ItemListener,
     ChangeListener {
 
-  /**
-   * 
-   */
   private static final String WRAP_GROW = "wrap,grow";
 
-  /**
-   * 
-   */
   private static final String GROW_WRAP = "grow,wrap";
 
-  /**
-   * 
-   */
   private static final String WRAP = "wrap";
 
   private static final long serialVersionUID = 1L;
