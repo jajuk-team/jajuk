@@ -638,7 +638,7 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
         }
       } else {
         refreshThumbs(cover);
-        InformationJPanel.getInstance().setMessage(Messages.getString("CoverView.8"),
+        InformationJPanel.getInstance().setMessage(Messages.getString("Success"),
             InformationJPanel.INFORMATIVE);
       }
       ObservationManager.notify(new JajukEvent(JajukEvents.COVER_DEFAULT_CHANGED));
