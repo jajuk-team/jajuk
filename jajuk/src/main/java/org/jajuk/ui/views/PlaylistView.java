@@ -426,6 +426,7 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
     JPanel jpRepository = new JPanel(new MigLayout("ins 0","[grow]"));
     repositoryPanel = new PlaylistRepository();
     repositoryPanel.initUI();
+    repositoryPanel.setPerspective(getPerspective());
     jpRepository.add(jpSmartPlaylists, "growx,wrap");
     jpRepository.add(repositoryPanel, "growx");
 
