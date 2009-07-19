@@ -153,6 +153,8 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
 
   JMenuItem jmiPlaylistCopyURL;
 
+  JMenuItem jmiPlaylistPrepareParty;
+
   /*
    * (non-Javadoc)
    * 
@@ -260,6 +262,8 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
     jmiPlaylistFilePaste.addActionListener(this);
     jmiPlaylistCopyURL = new JMenuItem(ActionManager.getAction(JajukActions.COPY_TO_CLIPBOARD));
     jmiPlaylistCopyURL.putClientProperty(Const.DETAIL_CONTENT, alSelected);
+    jmiPlaylistPrepareParty = new JMenuItem(ActionManager.getAction(JajukActions.PREPARE_PARTY));
+    jmiPlaylistPrepareParty.putClientProperty(Const.DETAIL_SELECTION, alSelected);
 
     // Add Action Listener
     jmiCopy.addActionListener(this);
@@ -711,6 +715,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
         jmenu.add(jmiPlayRepeat);
         jmenu.addSeparator();
         jmenu.add(jmiPlaylistCopyURL);
+        jmenu.add(jmiPlaylistPrepareParty);
         jmenu.add(jmiDelete);
         jmenu.addSeparator();
         jmenu.add(jmiProperties);
@@ -846,6 +851,8 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
       jmiDirCopyURL.setEnabled(alSelected.size() == 1 && alSelected.get(0) instanceof Directory);
       jmiDirOpenExplorer.setEnabled(alSelected.size() == 1 && alSelected.get(0) instanceof Directory);
       jmiPlaylistCopyURL
+          .setEnabled(alSelected.size() == 1 && alSelected.get(0) instanceof Playlist);
+      jmiPlaylistPrepareParty
           .setEnabled(alSelected.size() == 1 && alSelected.get(0) instanceof Playlist);
       // Update preference menu
       pjmTracks.resetUI(alSelected);

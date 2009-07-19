@@ -20,9 +20,11 @@
 package org.jajuk.ui.actions;
 
 import java.awt.event.ActionEvent;
+import java.util.List;
 
 import javax.swing.JComponent;
 
+import org.jajuk.base.Item;
 import org.jajuk.base.Playlist;
 import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
@@ -41,12 +43,20 @@ public class PreparePartyAction extends JajukAction {
     setShortDescription(Messages.getString("AbstractPlaylistEditorView.27"));
   }
 
+  @SuppressWarnings("unchecked")
   @Override
   public void perform(ActionEvent e) throws JajukException {
     JComponent source = (JComponent) e.getSource();
     Object o = source.getClientProperty(Const.DETAIL_SELECTION);
     try {
-      ((Playlist) o).prepareParty();
+      Playlist playlist = null;
+      // If action call comes from a tree, the selection is returned as a list
+      if (o instanceof List) {
+        playlist = (Playlist) ((List<Item>) o).get(0);
+      } else {
+        playlist = ((Playlist) o);
+      }
+      playlist.prepareParty();
     } catch (Exception e1) {
       Log.error(e1);
     }
