@@ -826,7 +826,9 @@ public class Device extends PhysicalItem implements Comparable<Device> {
       // sync from source device to this one
       iNbCreatedFilesDest = synchronizeUnidirectonal(dSrc, this);
       // now the other one if bidi
-      iNbCreatedFilesDest += synchronizeUnidirectonal(this, dSrc);
+      if (bidi) {
+        iNbCreatedFilesDest += synchronizeUnidirectonal(this, dSrc);
+      }
       // end message
       lTime = System.currentTimeMillis() - lTime;
       final String sOut = new StringBuilder(Messages.getString("Device.33")).append(

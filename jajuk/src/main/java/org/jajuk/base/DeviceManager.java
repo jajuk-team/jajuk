@@ -418,6 +418,21 @@ public final class DeviceManager extends ItemManager {
   public Device getDeviceByID(String sID) {
     return (Device) getItemByID(sID);
   }
+  
+  /**
+   * @param sName
+   *          device name
+   * @return device by given name or null if no match
+   */
+  public Device getDeviceByName(String sName) {
+    for (Device device:getDevices()){
+      if (device.getName().equals(sName)){
+        return device;
+      }
+    }
+    return null;
+  }
+  
 
   /**
    * 

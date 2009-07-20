@@ -122,7 +122,8 @@ public class DeviceWizard extends JDialog implements ActionListener, Const {
     });
     setTitle(Messages.getString("DeviceWizard.0"));
     setModal(true);
-    setLocation(JajukMainWindow.getInstance().getX() + 100, JajukMainWindow.getInstance().getY() + 100);
+    setLocation(JajukMainWindow.getInstance().getX() + 100,
+        JajukMainWindow.getInstance().getY() + 100);
     JLabel jlType = new JLabel(Messages.getString("DeviceWizard.1"));
     jcbType = new JComboBox();
 
@@ -200,10 +201,10 @@ public class DeviceWizard extends JDialog implements ActionListener, Const {
     okp = new OKCancelPanel(this);
 
     // Add items
-    setLayout(new MigLayout("insets 10,gapx 10, gapy 15","[][grow]"));
+    setLayout(new MigLayout("insets 10,gapx 10, gapy 15", "[][grow]"));
     add(jlType);
     add(jcbType, "grow,wrap");
-    add(jlName );
+    add(jlName);
     add(jtfName, "grow,wrap");
     add(jlUrl);
     add(jtfUrl, "split 2,growx");
@@ -217,8 +218,8 @@ public class DeviceWizard extends JDialog implements ActionListener, Const {
     add(jcbSynchronized, "grow,wrap");
     add(jrbUnidirSynchro, "left,gap left 20,span,wrap");
     add(jrbBidirSynchro, "left,gap left 20,span,wrap");
-    add(okp,"span,right");
-    
+    add(okp, "span,right");
+
     // Set default behaviors
     if (jcbSynchronized.getItemCount() == 0) {
       jcboxSynchronized.setEnabled(false);
@@ -288,8 +289,9 @@ public class DeviceWizard extends JDialog implements ActionListener, Const {
           device.setProperty(Const.XML_TYPE, Long.valueOf(jcbType.getSelectedIndex()));
           device.setUrl(jtfUrl.getText());
           if (jcbSynchronized.isEnabled() && (jcbSynchronized.getSelectedItem() != null)) {
-            device.setProperty(Const.XML_DEVICE_SYNCHRO_SOURCE, devices.get(
-                jcbSynchronized.getSelectedIndex()).getID());
+            Device selected = DeviceManager.getInstance().getDeviceByName(
+                (String) jcbSynchronized.getSelectedItem());
+            device.setProperty(Const.XML_DEVICE_SYNCHRO_SOURCE, selected.getID());
             if (jrbBidirSynchro.isSelected()) {
               device.setProperty(Const.XML_DEVICE_SYNCHRO_MODE, Const.DEVICE_SYNCHRO_MODE_BI);
             } else {
@@ -440,8 +442,8 @@ public class DeviceWizard extends JDialog implements ActionListener, Const {
       jcboxSynchronized.setSelected(true);
       jcboxSynchronized.setEnabled(true);
       jcbSynchronized.setEnabled(true);
-      jcbSynchronized.setSelectedIndex(devices.indexOf(DeviceManager.getInstance().getDeviceByID(
-          sSynchroSource)));
+      Device toBeSelected = DeviceManager.getInstance().getDeviceByID(sSynchroSource);
+      jcbSynchronized.setSelectedItem(toBeSelected.getName());
       if (Const.DEVICE_SYNCHRO_MODE_BI.equals(device1.getValue(Const.XML_DEVICE_SYNCHRO_MODE))) {
         jrbBidirSynchro.setSelected(true);
       } else {
