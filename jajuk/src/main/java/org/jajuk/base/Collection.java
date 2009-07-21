@@ -215,9 +215,6 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
       // Tracks
       // Cannot use method as we have a bit of special handling inside the loop
       // here
-      // writeItemList(bw, TrackManager.getInstance().toXML(),
-      // TrackManager.getInstance().getTracksIterator(),
-      // TrackManager.getInstance().getLabel(), 200);
       ReadOnlyIterator<Track> tracks = TrackManager.getInstance().getTracksIterator();
       bw.write(TrackManager.getInstance().toXML());
       while (tracks.hasNext()) {
@@ -680,7 +677,7 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
             } catch (Exception e) {
               if (Log.isDebugEnabled()) {
                 // wrong format
-                Log.debug(Messages.getString("Error.137") + ":" + sTrackName); // wrong
+                Log.debug(Messages.getString("Error.137") + ":" + sTrackName);
               }
             }
           }

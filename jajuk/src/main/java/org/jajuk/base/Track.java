@@ -572,8 +572,7 @@ public class Track extends LogicalItem implements Comparable<Track> {
         sbOut.append(file.getAbsolutePath());
         sbOut.append(',');
       }
-      return sbOut.substring(0, sbOut.length() - 1); // remove last
-      // ','
+      return sbOut.substring(0, sbOut.length() - 1); // remove trailing coma
     } else if (Const.XML_TRACK_DISCOVERY_DATE.equals(sKey)) {
       return UtilString.getLocaleDateFormatter().format(getDiscoveryDate());
     } else if (Const.XML_ANY.equals(sKey)) {
