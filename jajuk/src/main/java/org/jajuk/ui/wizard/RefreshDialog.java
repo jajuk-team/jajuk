@@ -47,6 +47,13 @@ public class RefreshDialog extends JFrame {
 
   private boolean indeterminate = false;
 
+  private long dateLastUpdateRefresh;
+
+  private long dateLastUpdateProgress;
+
+  /** Minimum dialog refresh interval in ms, avoid to saturate the EDT* */
+  private static int MIN_REFRESH_INTERVAL = 100;
+
   /**
    * Refresh dialog (labels and a progress bar)
    * 
@@ -63,7 +70,7 @@ public class RefreshDialog extends JFrame {
         progress = new JProgressBar(0, 100);
         progress.setIndeterminate(indeterminate);
         jlRefreshing = new JLabel();
-        setLayout(new MigLayout("insets 10,gapx 5, gapy 5","[500!]"));
+        setLayout(new MigLayout("insets 10,gapx 5, gapy 5", "[500!]"));
         add(jlAction, "center,wrap");
         add(progress, "center,grow,wrap");
         add(jlRefreshing, "center,wrap");
@@ -85,6 +92,11 @@ public class RefreshDialog extends JFrame {
   }
 
   public void setRefreshing(final String path) {
+    // No more than one GUI refresh every 100 ms
+    if ((System.currentTimeMillis() - dateLastUpdateRefresh) < MIN_REFRESH_INTERVAL) {
+      return;
+    }
+    dateLastUpdateRefresh = System.currentTimeMillis();
     SwingUtilities.invokeLater(new Runnable() {
       public void run() {
         jlRefreshing.setText(path);
@@ -100,6 +112,11 @@ public class RefreshDialog extends JFrame {
    */
   public void setProgress(final int pos) {
     if (!this.indeterminate) {
+      // No more than one GUI refresh every 100 ms
+      if ((System.currentTimeMillis() - dateLastUpdateProgress) < MIN_REFRESH_INTERVAL) {
+        return;
+      }
+      dateLastUpdateProgress = System.currentTimeMillis();
       SwingUtilities.invokeLater(new Runnable() {
         public void run() {
           progress.setValue(pos);
