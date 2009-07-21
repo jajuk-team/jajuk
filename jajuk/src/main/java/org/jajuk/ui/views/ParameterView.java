@@ -1520,8 +1520,8 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
     jtpMain.addChangeListener(this);
     setLayout(new MigLayout("insets 10,gapx 10", "[grow]","[grow][]"));
     add(jtpMain, "wrap,span,grow");
-    add(jbOK, "split 2,right");
-    add(jbDefault);
+    add(jbOK, "split 2,right,sg group1");
+    add(jbDefault,"sg group1");
     // update widgets state
     updateSelection();
     ObservationManager.register(this);
