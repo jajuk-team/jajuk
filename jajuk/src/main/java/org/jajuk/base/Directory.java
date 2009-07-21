@@ -289,6 +289,8 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
         Log.error(103, filelist.length > 0 ? "{{" + playlistFile.toString() + "}}" : "", e);
       }
     }
+    // Clear the tag cache so tags are actually read at next deep refresh
+    Tag.clearCache();
   }
 
   /**
