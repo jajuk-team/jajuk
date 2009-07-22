@@ -268,7 +268,7 @@ public class AmbienceWizard extends Wizard {
       for (int i = 0; i < widgets.length ; i++) {
         out.add(widgets[i][0], "grow,center,width 25!");
         out.add(widgets[i][1], "grow,center,width 120!");
-        out.add(widgets[i][2], "center,grow,wrap,width 270!");
+        out.add(widgets[i][2], "center,grow,wrap,width 270:270");
       }
       final JScrollPane jsp = new JScrollPane(out);
       // select first ambiance found
