@@ -190,12 +190,12 @@ public final class UtilFeatures {
       else if (item instanceof org.jajuk.base.File) {
         files.add((org.jajuk.base.File) item);
       } else if (item instanceof Directory) {
-        files = ((Directory) item).getFilesRecursively();
+        files.addAll(((Directory) item).getFilesRecursively());
       } else if (item instanceof Device) {
-        files = ((Device) item).getFilesRecursively();
+        files.addAll(((Device) item).getFilesRecursively());
       } else if (item instanceof Playlist) {
         try {
-          files = ((Playlist) item).getFiles();
+          files.addAll(((Playlist) item).getFiles());
         } catch (JajukException e) {
           Log.error(e);
         }
