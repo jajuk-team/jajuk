@@ -126,6 +126,8 @@ public class QueueView extends PlaylistView {
     jtbAutoScroll.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
         Conf.setProperty(Const.CONF_AUTO_SCROLL, Boolean.toString(jtbAutoScroll.isSelected()));
+        // Refresh Queue View
+        update(new JajukEvent(JajukEvents.QUEUE_NEED_REFRESH));
       }
     });
 
@@ -224,9 +226,9 @@ public class QueueView extends PlaylistView {
     // Register keystrokes over table
     editorTable.putClientProperty(Const.DETAIL_SELECTION, editorTable.getSelection());
     super.setKeystrokes();
-     // Force a first need refresh event
+    // Force a first need refresh event
     update(new JajukEvent(JajukEvents.QUEUE_NEED_REFRESH));
-    
+
   }
 
   /**
@@ -311,10 +313,13 @@ public class QueueView extends PlaylistView {
                     double factor = (index / size);
                     int value = (int) (factor * jsp.getVerticalScrollBar().getMaximum());
 
-                    // 'center' played track, one row is 16
+                    // 'center' played track
                     value -= (jsp.getVerticalScrollBar().getHeight() / 2)
                         - (editorTable.getRowHeight() / 2);
 
+                    if (value < 0) {
+                      value = 0;
+                    }
                     if (value >= jsp.getVerticalScrollBar().getMinimum()
                         && value <= jsp.getVerticalScrollBar().getMaximum()) {
                       jsp.getVerticalScrollBar().setValue(value);
