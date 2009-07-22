@@ -343,7 +343,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
    * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
    */
   public void actionPerformed(final ActionEvent e) {
-    new Thread() {
+    new Thread("Parameter Action Thread") {
       @Override
       public void run() {
         if (e.getSource() == jbClearHistory) {

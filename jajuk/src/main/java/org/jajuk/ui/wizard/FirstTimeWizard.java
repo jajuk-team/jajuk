@@ -161,7 +161,7 @@ public class FirstTimeWizard extends JajukJDialog implements ActionListener {
 			dispose();
 			// Notify Main to continue startup
 			SessionService.notifyFirstTimeWizardClosed();
-			new Thread() {
+			new Thread("First Time Wizard Action Thread") {
 				@Override
 				public void run() {
 					// Wait for context loading (default configuration...)

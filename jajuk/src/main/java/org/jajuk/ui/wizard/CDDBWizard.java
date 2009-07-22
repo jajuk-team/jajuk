@@ -337,7 +337,7 @@ public class CDDBWizard extends JajukJDialog implements ActionListener {
     }
     if (e.getSource() == okc.getOKButton()) {
       dispose();
-      new Thread() {
+      new Thread("CDDBWizard Action Thread") {
         @Override
         public void run() {
           retagFiles();

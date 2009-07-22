@@ -1077,7 +1077,7 @@ public final class UtilSystem {
 
     // Try to open the location using the forced explorer path of provided
     if (UtilString.isNotVoid(Conf.getString(Const.CONF_EXPLORER_PATH))) {
-      new Thread() {
+      new Thread("Explorer Open Thread 1") {
         @Override
         public void run() {
           try {
@@ -1094,7 +1094,7 @@ public final class UtilSystem {
     // Try to open the location using the JDIC/JDK Desktop.open method
     // This is not supported on some platforms (Linux/XFCE for ie)
     else if (Desktop.getDesktop().isSupported(Desktop.Action.OPEN)) {
-      new Thread() {
+      new Thread("Explorer Open Thread 2") {
         @Override
         public void run() {
           try {

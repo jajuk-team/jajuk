@@ -67,7 +67,7 @@ public class JajukBalloon extends JDialog {
     // visible
     toFront();
     // Dispose the dialog after 5 seconds
-    new Thread() {
+    new Thread("Balloon Display Thread") {
       @Override
       public void run() {
         try {

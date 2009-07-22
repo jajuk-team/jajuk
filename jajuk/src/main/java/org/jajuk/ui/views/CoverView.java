@@ -329,7 +329,7 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
       } else {
         // request cover refresh after a while to make sure the window owns its
         // definitive dimension so we avoid the cover to resize at startup
-        new Thread() {
+        new Thread("Cover InitUI Thread") {
           @Override
           public void run() {
             try {
@@ -389,7 +389,7 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
         + ((getPerspective() == null) ? "popup" : getPerspective().getID()), Integer
         .toString(jcbAccuracy.getSelectedIndex()));
 
-    new Thread() {
+    new Thread("Cover Accuracy Thread") {
       @Override
       public void run() {
         // force refresh
@@ -486,7 +486,7 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
    */
   private void handleSave() {
     // save a file with its original name
-    new Thread() {
+    new Thread("Cover Save Thread") {
       @Override
       public void run() {
         final Cover cover = alCovers.get(index);
@@ -558,7 +558,7 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
    * Called when saving as a cover
    */
   private void handleSaveAs() {
-    new Thread() {
+    new Thread("Cover SaveAs Thread") {
       @Override
       public void run() {
         final Cover cover = alCovers.get(index);

@@ -267,7 +267,7 @@ public class DeviceWizard extends JDialog implements ActionListener, Const {
         setVisible(true);
         return;
       }
-      new Thread() {
+      new Thread("Device Wizard Action Thread") {
         @Override
         public void run() {
           // check device availability (test name only if new device)

@@ -433,7 +433,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
       Device device = ((DeviceNode) (paths[0].getLastPathComponent())).getDevice();
       device.synchronize(true);
     } else if (e.getSource() == jmiDevTest) {
-      new Thread() {
+      new Thread("Files Tree Action Thread") {
         // test asynchronously in case of delay (samba
         // pbm for ie)
         @Override

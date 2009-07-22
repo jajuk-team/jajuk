@@ -148,7 +148,7 @@ public class TrackPositionSliderToolbar extends JajukJToolbar implements ChangeL
    * @param fPosition
    */
   private void setPosition(final float fPosition) {
-    new Thread() {
+    new Thread("TrackSlider Position Thread") {
 
       @Override
       public void run() {

@@ -258,7 +258,7 @@ public class PropertiesWizard extends JajukJDialog implements ActionListener {
     } else if (e.getSource().equals(okc.getOKButton())) {
       dispose(); // close window, otherwise you will have some issues if
       // fields are not updated with changes
-      Thread t = new Thread() {
+      Thread t = new Thread("Properties Wizard Action Thread") {
         @Override
         public void run() {
           try {

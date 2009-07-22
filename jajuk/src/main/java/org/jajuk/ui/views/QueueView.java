@@ -234,7 +234,7 @@ public class QueueView extends PlaylistView {
    * GUI
    */
   private void goToSelection() {
-    new Thread() {
+    new Thread("Queue Selection Thread") {
       @Override
       public void run() {
         try {
