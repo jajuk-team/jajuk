@@ -48,6 +48,7 @@ import org.xamjwg.html.parser.DocumentBuilderImpl;
 import org.xamjwg.html.parser.InputSourceImpl;
 import org.xamjwg.html.test.SimpleHtmlParserContext;
 import org.xamjwg.html.test.SimpleHtmlRendererContext;
+import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 /**
@@ -150,15 +151,21 @@ public class JajukHtmlPanel extends HtmlPanel {
     // which may be obtained from the Content-Type header
     // of an HTTP response.
     Reader reader = new InputStreamReader(new FileInputStream(page), "UTF-8");
-    // InputSourceImpl constructor with URI recommended
-    // so the renderer can resolve page component URLs.
-    InputSourceImpl is = new InputSourceImpl(reader, "file://" + page.getAbsolutePath());
-    // A documentURI should be provided to resolve relative
-    // URIs.
-    Document document = dbi.parse(is);
-    // Now set document in panel. This is what causes the
-    // document to render.
-    setDocument(document, rcontext);
+    try
+    {
+      // InputSourceImpl constructor with URI recommended
+      // so the renderer can resolve page component URLs.
+      InputSource is = new InputSourceImpl(reader, "file://" + page.getAbsolutePath());
+      // A documentURI should be provided to resolve relative
+      // URIs.
+      Document document = dbi.parse(is);
+      
+      // Now set document in panel. This is what causes the
+      // document to render.
+      setDocument(document, rcontext);
+    } finally {    
+      reader.close();
+    }
   }
 
   public void back() {
