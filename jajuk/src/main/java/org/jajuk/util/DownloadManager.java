@@ -222,7 +222,13 @@ public final class DownloadManager {
     if (Conf.getBoolean(Const.CONF_NETWORK_NONE_INTERNET_ACCESS)) {
       return null;
     }
-    return NetworkUtils.readURL(NetworkUtils.getConnection(url, proxy), charset);
+    HttpURLConnection connection = NetworkUtils.getConnection(url, proxy);
+    try {
+      return NetworkUtils.readURL(connection, charset);
+    }
+    finally {
+      connection.disconnect();
+    }
   }
 
   /**
