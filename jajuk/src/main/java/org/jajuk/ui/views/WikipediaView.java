@@ -62,7 +62,7 @@ import org.jajuk.util.log.Log;
 /**
  * Wikipedia view
  */
-public class WikipediaView extends ViewAdapter implements Observer, ActionListener {
+public class WikipediaView extends ViewAdapter implements ActionListener {
 
   private static final long serialVersionUID = 1L;
 
@@ -227,7 +227,7 @@ public class WikipediaView extends ViewAdapter implements Observer, ActionListen
    *          force the page display
    */
   private void launchSearch(final boolean bForceReload) {
-    Thread t = new Thread() {
+    Thread t = new Thread("Wikipedia Search Thread") {
       @Override
       public void run() {
         try {
@@ -290,7 +290,7 @@ public class WikipediaView extends ViewAdapter implements Observer, ActionListen
     // Reset current search
     this.search = null;
     // Display jajuk page (in a thread to avoid freezing UI)
-    new Thread() {
+    new Thread("Wikipedia Reset Thread") {
       @Override
       public void run() {
         if (browser != null) {

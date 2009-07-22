@@ -74,7 +74,7 @@ import org.jdesktop.swingx.JXBusyLabel;
  * Show suggested albums based on current collection (bestof, novelties) and
  * LAstFM
  */
-public class SuggestionView extends ViewAdapter implements Observer {
+public class SuggestionView extends ViewAdapter {
 
   private static final long serialVersionUID = 1L;
 

@@ -107,7 +107,7 @@ import org.jdesktop.swingx.decorator.Highlighter;
 /**
  * Adapter for playlists editors *
  */
-public class PlaylistView extends ViewAdapter implements Observer, ActionListener,
+public class PlaylistView extends ViewAdapter implements ActionListener,
     ListSelectionListener {
 
   private static final long serialVersionUID = -2851288035506442507L;
@@ -688,7 +688,7 @@ public class PlaylistView extends ViewAdapter implements Observer, ActionListene
           }
         } else {
           // Save as for normal playlists
-          new Thread() {
+          new Thread("Playlist Action Thread") {
             @Override
             public void run() {
               UtilGUI.waiting();

@@ -90,7 +90,7 @@ import org.jdesktop.swingx.JXBusyLabel;
  * <p>
  * Catalog perspectives
  */
-public class CatalogView extends ViewAdapter implements Observer, ComponentListener, ActionListener {
+public class CatalogView extends ViewAdapter implements ComponentListener, ActionListener {
 
   private static final long serialVersionUID = 1L;
 
@@ -395,7 +395,7 @@ public class CatalogView extends ViewAdapter implements Observer, ComponentListe
     populating = true;
     
     showBusyLabel();
-    new Thread() {
+    new Thread("Populate Catalog Thread") {
       @Override
       public void run() {
         try {

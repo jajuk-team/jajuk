@@ -56,7 +56,7 @@ import org.jajuk.util.log.Log;
 /**
  * Animation-based view
  */
-public class AnimationView extends ViewAdapter implements Observer, ComponentListener {
+public class AnimationView extends ViewAdapter implements ComponentListener {
 
   private static final long serialVersionUID = 1L;
 

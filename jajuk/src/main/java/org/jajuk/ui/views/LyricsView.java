@@ -63,7 +63,7 @@ import org.jdesktop.swingx.JXBusyLabel;
  * Data comes currently from http://www.lyrc.com.ar
  * </p>
  */
-public class LyricsView extends ViewAdapter implements Observer {
+public class LyricsView extends ViewAdapter {
 
   private static final long serialVersionUID = 2229941034734574056L;
 
@@ -202,7 +202,7 @@ public class LyricsView extends ViewAdapter implements Observer {
           repaint();
         }
       });
-      new Thread() {
+      new Thread("Lyrics Update Thread") {
         @Override
         public void run() {
           // Launch lyrics service asynchronously and out of the
