@@ -27,6 +27,7 @@ package ext.services.lastfm;
 import java.awt.Image;
 import java.io.File;
 import java.util.List;
+import java.util.Locale;
 import java.util.StringTokenizer;
 
 import javax.swing.ImageIcon;
@@ -184,7 +185,7 @@ public class LastFmAlbumsRunnable implements Runnable {
               continue;
             }
           }
-          if (!audioObject.getAlbum().toLowerCase().contains(t.toLowerCase())) {
+          if (!audioObject.getAlbum().toLowerCase(Locale.getDefault()).contains(t.toLowerCase(Locale.getDefault()))) {
             matches = false;
           }
           tokensAnalyzed++;
