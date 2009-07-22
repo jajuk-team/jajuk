@@ -60,6 +60,7 @@ public class ReplayAlbumAction extends JajukAction {
               for (Track track : tracks) {
                 files.add(track.getPlayeableFile(true));
               }
+              QueueModel.resetAround(QueueModel.getIndex(), current.getTrack().getAlbum());
               QueueModel.push(UtilFeatures.createStackItems(files, Conf
                   .getBoolean(Const.CONF_STATE_REPEAT_ALL), true), false);
             }

@@ -151,7 +151,8 @@ public final class FileManager extends ItemManager {
     // the same ID
     if (UtilSystem.isUnderWindows()) {
       id = MD5Processor.hash(new StringBuilder(dir.getDevice().getName()).append(
-          dir.getRelativePath().toLowerCase(Locale.getDefault())).append(sName.toLowerCase(Locale.getDefault())).toString());
+          dir.getRelativePath().toLowerCase(Locale.getDefault())).append(
+          sName.toLowerCase(Locale.getDefault())).toString());
     } else {
       id = MD5Processor.hash(new StringBuilder(dir.getDevice().getName()).append(
           dir.getRelativePath()).append(sName).toString());
@@ -597,6 +598,29 @@ public final class FileManager extends ItemManager {
     }
     // none ready file
     return null;
+  }
+
+  /**
+   * Return next mounted file from a different album than the provided file
+   * 
+   * @param file :
+   *          a file
+   * @return next file from entire collection
+   */
+  public synchronized File getNextAlbumFile(File file) {
+    File testedFile = file;
+    if (DirectoryManager.getInstance().getDirectories().size() > 1) {
+      while (testedFile.getDirectory().equals(file.getDirectory())) {
+        testedFile = getNextFile(testedFile);
+      }
+    }
+    if (!testedFile.getDirectory().equals(file.getDirectory())) {
+      return testedFile;
+    }
+    // Should not happen
+    else {
+      return null;
+    }
   }
 
   /**

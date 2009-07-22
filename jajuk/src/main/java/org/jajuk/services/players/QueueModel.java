@@ -102,6 +102,23 @@ public final class QueueModel {
     itemLast = null;
   }
 
+  public static void resetAround(int index, Album album) {
+    int begin = 0;
+    int end = 0;
+    for (int i = index; i >= 0; i--) {
+      if (alQueue.get(i).getFile().getTrack().getAlbum().equals(album)) {
+        begin = i;
+      }
+    }
+    for (int i = index; i < alQueue.size(); i++) {
+      if (alQueue.get(i).getFile().getTrack().getAlbum().equals(album)) {
+        end = i;
+      }
+    }
+    remove(begin, end);
+
+  }
+
   /**
    * Set given repeat mode to all in FIFO
    * 
@@ -133,7 +150,8 @@ public final class QueueModel {
    * @param bFront
    */
   public static void push(final List<StackItem> alItems, final boolean bAppend, final boolean bFront) {
-    Thread t = new Thread("Queue Push Thread") { // do it in a thread to make UI more
+    Thread t = new Thread("Queue Push Thread") { // do it in a thread to make
+      // UI more
       // reactive
       @Override
       public void run() {
@@ -837,52 +855,47 @@ public final class QueueModel {
         playNext();
         return;
       }
-      // force a finish to current track if any
-      if (getPlayingFile() != null) { // if stopped, nothing to stop
-        // ref directory
-        Directory dir = getPlayingFile().getDirectory();
-        // scan current fifo and try to launch the first track not from
-        // this album
-        boolean bOK = false;
-        while (!bOK && alQueue.size() > 0) {
-          File file = getItem(0).getFile();
-          if (file.getDirectory().equals(dir)) {
-            remove(0, 0); // remove this file from FIFO, it is
-            // from the same album
-            continue;
-          } else {
-            bOK = true;
-          }
+      // ref directory
+      Directory dir = getPlayingFile().getDirectory();
+      // scan current fifo and try to launch the first track not from
+      // this album
+      int indexFirstItem = -1;
+      for (int i = getIndex(); i < alQueue.size(); i++) {
+        File file = getItem(i).getFile();
+        if (!file.getDirectory().equals(dir)) {
+          indexFirstItem = i;
+          break;
         }
-        if (bOK) {
-          // some tracks of other album were already in
-          // fifo
-          // add a fake album at the top the fifo because the
-          // finish will drop first element and we won't
-          // drop first track of the next album
-          List<StackItem> alFake = new ArrayList<StackItem>(1);
-          alFake.add(getItem(0));
-          insert(alFake, 0);
-          finished(); // stop current track and start the new one
-        } else {// void fifo, add next album
-          File fileNext = itemLast.getFile();
-          do {
-            fileNext = FileManager.getInstance().getNextFile(fileNext);
-            // look for the next different album
-            if (fileNext != null && !fileNext.getDirectory().equals(dir)) {
-              pushCommand(new StackItem(fileNext, Conf.getBoolean(Const.CONF_STATE_REPEAT_ALL),
-                  false), false, false); // play
-              // it
-              return;
-            }
-          } while (fileNext != null);
+      }
+      if (indexFirstItem > 0) {
+        // some tracks of other album were already in
+        // fifo
+        // add a fake album at the top the fifo because the
+        // finish will drop first element and we won't
+        // drop first track of the next album
+        goTo(indexFirstItem);
+      } else {// void fifo, add next album
+        File fileNext = itemLast.getFile();
+        fileNext = FileManager.getInstance().getNextAlbumFile(fileNext);
+        // Now add the associated album to the
+        Album album = fileNext.getTrack().getAlbum();
+        List<File> files = UtilFeatures.getPlayableFiles(album);
+        List<StackItem> stack = UtilFeatures.createStackItems(UtilFeatures.applyPlayOption(files),
+            Conf.getBoolean(Const.CONF_STATE_REPEAT_ALL), true);
+        // Find index to go to (first index with a file whose dir is different
+        // from current one)
+        int index = getIndex();
+        Directory currentDir = null;
+        if (index < alQueue.size()) {
+          currentDir = alQueue.get(index).getFile().getDirectory();
         }
-      } else if (itemLast != null) { // try to launch any previous
-        // file
-        pushCommand(itemLast, false, false);
-      } else { // really nothing? play a shuffle track from collection
-        pushCommand(new StackItem(FileManager.getInstance().getShuffleFile(), Conf
-            .getBoolean(Const.CONF_STATE_REPEAT_ALL), false), false, false);
+        while (index < alQueue.size()
+            && alQueue.get(index).getFile().getDirectory().equals(currentDir)) {
+          index++;
+        }
+        alQueue.addAll(index, stack);
+        goTo(index);
+
       }
     } catch (Exception e) {
       Log.error(e);
