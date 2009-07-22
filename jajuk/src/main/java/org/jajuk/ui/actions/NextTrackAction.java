@@ -68,7 +68,7 @@ public class NextTrackAction extends JajukAction {
           index++;
         }
         final int i = index;
-        new Thread() {
+        new Thread("Next Track Thread") {
           @Override
           public void run() {
             QueueModel.launchRadio(radios.get(i));
@@ -77,7 +77,7 @@ public class NextTrackAction extends JajukAction {
 
       } else {
         // Playing a track
-        new Thread() {
+        new Thread("Next Track Thread") {
           @Override
           public void run() {
             synchronized (QueueModel.class) {

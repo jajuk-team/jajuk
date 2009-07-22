@@ -125,7 +125,7 @@ public class DeleteSelectionAction extends SelectionAction {
         }
       }
 
-      new Thread() {
+      new Thread("Delete Selection Thread") {
         @Override
         public void run() {
           UtilGUI.waiting();
@@ -213,7 +213,7 @@ public class DeleteSelectionAction extends SelectionAction {
           return;
         }
       }
-      new Thread() {
+      new Thread("Delete Selection Thread") {
         @Override
         public void run() {
           UtilGUI.waiting();

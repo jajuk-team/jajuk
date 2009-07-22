@@ -80,7 +80,7 @@ public final class ThumbnailsMaker {
     } else {
       bAlreadyRunning = true;
     }
-    final Thread t = new Thread() {
+    final Thread t = new Thread("Thumbnail Maker Thread") {
       @Override
       public void run() {
         try {
@@ -211,6 +211,8 @@ public final class ThumbnailsMaker {
    * @throws Exception
    */
   private void buildThumbs() throws Exception {
+    Log.info("[Thumb maker] Creating thumbs for size: " + size);
+
     final long lTime = System.currentTimeMillis();
     Main.initializeFromThumbnailsMaker(bTest, workspace);
     // log startup depends on : setExecLocation, initialCheckups

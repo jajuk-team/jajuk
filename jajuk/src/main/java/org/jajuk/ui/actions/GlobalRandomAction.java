@@ -54,7 +54,7 @@ public class GlobalRandomAction extends JajukAction {
 
   @Override
   public void perform(ActionEvent evt) throws JajukException {
-    new Thread() {
+    new Thread("Global Random Thread") {
       @Override
       public void run() {
         Ambience ambience = AmbienceManager.getInstance().getSelectedAmbience();

@@ -82,7 +82,7 @@ public class RefactorAction {
         return;
       }
     }
-    new Thread() {
+    new Thread("Refactor Thread") {
       @Override
       public void run() {
         UtilGUI.waiting();

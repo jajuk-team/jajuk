@@ -621,7 +621,7 @@ public class Device extends PhysicalItem implements Comparable<Device> {
    */
   public void refresh(final boolean bAsynchronous, final boolean bAsk) {
     if (bAsynchronous) {
-      final Thread t = new Thread() {
+      final Thread t = new Thread("Device Refresh Thread") {
         @Override
         public void run() {
           manualRefresh(bAsk);
@@ -776,7 +776,7 @@ public class Device extends PhysicalItem implements Comparable<Device> {
       }
     }
     if (bAsynchronous) {
-      final Thread t = new Thread() {
+      final Thread t = new Thread("Device Synchronize Thread") {
         @Override
         public void run() {
           synchronizeCommand();

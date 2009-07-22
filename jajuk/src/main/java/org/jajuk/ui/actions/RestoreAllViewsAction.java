@@ -48,7 +48,7 @@ public class RestoreAllViewsAction extends JajukAction {
 
   @Override
   public void perform(final ActionEvent e) throws JajukException {
-    new Thread() {
+    new Thread("Restore All Views Thread") {
       @Override
       public void run() {
         // display a confirmation message
@@ -68,7 +68,7 @@ public class RestoreAllViewsAction extends JajukAction {
         // Indicates to not commiting current configuration
         fullRestore = true;
         // Exit Jajuk
-        new Thread() {
+        new Thread("Restore All Views - Exit Thread") {
           @Override
           public void run() {
             ExitService.exit(0);

@@ -133,7 +133,7 @@ public final class QueueModel {
    * @param bFront
    */
   public static void push(final List<StackItem> alItems, final boolean bAppend, final boolean bFront) {
-    Thread t = new Thread() { // do it in a thread to make UI more
+    Thread t = new Thread("Queue Push Thread") { // do it in a thread to make UI more
       // reactive
       @Override
       public void run() {
@@ -173,7 +173,7 @@ public final class QueueModel {
    * @param bFront
    */
   public static void push(final StackItem item, final boolean bAppend, final boolean bFront) {
-    Thread t = new Thread() {
+    Thread t = new Thread("Queue Push Thread") {
       // do it in a thread to make UI more reactive
       @Override
       public void run() {

@@ -51,7 +51,7 @@ public class DJAction extends JajukAction {
     if (StyleManager.getInstance().getElementCount() == 0) {
       Messages.showErrorMessage(156); // void collection error
     } else {
-      new Thread() {
+      new Thread("DJ Thread") {
         @Override
         public void run() {
           DigitalDJ dj = DigitalDJManager.getInstance().getDJByID(

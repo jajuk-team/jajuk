@@ -74,7 +74,7 @@ public class PasteAction extends JajukAction {
     final List<Playlist> alPlaylists = new ArrayList<Playlist>(alSelected.size());
     final List<Directory> alDirs = new ArrayList<Directory>(alSelected.size());
 
-    new Thread() {
+    new Thread("Paste Thread") {
       @SuppressWarnings("cast")
       @Override
       public void run() {

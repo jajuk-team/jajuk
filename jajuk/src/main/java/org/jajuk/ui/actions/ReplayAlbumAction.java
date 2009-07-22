@@ -48,7 +48,7 @@ public class ReplayAlbumAction extends JajukAction {
 
   @Override
   public void perform(ActionEvent evt) {
-    new Thread() {
+    new Thread("Replay Album Thread") {
       @Override
       public void run() {
         synchronized (QueueModel.class) {

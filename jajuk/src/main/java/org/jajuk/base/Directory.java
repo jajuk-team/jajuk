@@ -625,7 +625,7 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
    */
   public void manualRefresh(final boolean bAsynchronous, final boolean bAsk) {
     final RefreshReporter reporter = new ManualDirectoryRefreshReporter(getDevice());
-    final Thread t = new Thread() {
+    final Thread t = new Thread("Manual Refresh Thread") {
       @Override
       public void run() {
         try {

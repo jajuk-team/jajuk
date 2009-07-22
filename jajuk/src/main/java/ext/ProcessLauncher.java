@@ -285,11 +285,11 @@ public class ProcessLauncher {
           Log.error(ioe);
         }
       }
-    }).start();
+    }, "Create Stream Thread").start();
   }
 
   private Thread createProcessThread(final Process process) {
-    return new Thread() {
+    return new Thread("Process Watcher Thread") {
       @Override
       public void run() {
         try {

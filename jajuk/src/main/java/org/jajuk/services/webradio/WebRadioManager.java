@@ -81,7 +81,7 @@ public final class WebRadioManager extends DefaultHandler {
     if (!fwebradios.exists()) {
       // download the stream list and load it asynchronously to avoid
       // freezing unconnected people
-      new Thread() {
+      new Thread("WebRadio Download Thread") {
         @Override
         public void run() {
           downloadRepository();

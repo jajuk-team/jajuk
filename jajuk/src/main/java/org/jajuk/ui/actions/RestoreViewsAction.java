@@ -39,7 +39,7 @@ public class RestoreViewsAction extends JajukAction {
 
   @Override
   public void perform(final ActionEvent e) throws JajukException {
-    new Thread() {
+    new Thread("Restore Views Thread") {
       @Override
       public void run() {
         IPerspective perspective = PerspectiveManager.getCurrentPerspective();

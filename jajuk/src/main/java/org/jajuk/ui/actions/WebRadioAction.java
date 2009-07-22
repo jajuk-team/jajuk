@@ -43,7 +43,7 @@ public class WebRadioAction extends JajukAction {
 
   @Override
   public void perform(ActionEvent evt) throws JajukException {
-    new Thread() {
+    new Thread("WebRadio Thread") {
       @Override
       public void run() {
         WebRadio radio = WebRadioManager.getInstance().getWebRadioByName(

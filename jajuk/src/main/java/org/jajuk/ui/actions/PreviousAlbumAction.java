@@ -42,7 +42,7 @@ public class PreviousAlbumAction extends JajukAction {
 
   @Override
   public void perform(ActionEvent evt) {
-    new Thread() {
+    new Thread("Previous Album Thread") {
       @Override
       public void run() {
         synchronized (QueueModel.class) {

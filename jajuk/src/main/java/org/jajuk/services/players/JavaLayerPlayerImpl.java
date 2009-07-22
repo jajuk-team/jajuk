@@ -332,7 +332,7 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, Const, BasicPlayerListe
           // we have to launch the next file from another thread to
           // avoid stopping current track (perceptible during
           // player.open() for remote files)
-          new Thread() {
+          new Thread("Fade Next File Thread") {
             @Override
             public void run() {
               QueueModel.finished();
@@ -346,7 +346,7 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, Const, BasicPlayerListe
       // test end of length for intro mode
       else if (length != TO_THE_END && lTime > length) {
         // length=-1 means there is no max length
-        new Thread() {
+        new Thread("Player Progress Thread") {
           @Override
           public void run() {
             QueueModel.finished();

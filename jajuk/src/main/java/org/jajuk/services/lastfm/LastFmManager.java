@@ -103,7 +103,7 @@ public final class LastFmManager implements Observer, Const {
    */
   public void update(final JajukEvent event) {
     if (JajukEvents.FILE_FINISHED == event.getSubject()) {
-      new Thread() {
+      new Thread("LastFM Update Thread") {
         @Override
         public void run() {
           if (Conf.getBoolean(Const.CONF_LASTFM_ENABLE)) {

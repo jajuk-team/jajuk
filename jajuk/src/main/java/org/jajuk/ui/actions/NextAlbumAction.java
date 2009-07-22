@@ -41,7 +41,7 @@ public class NextAlbumAction extends JajukAction {
 
   @Override
   public void perform(ActionEvent evt) {
-    new Thread() {
+    new Thread("Next Album Thread") {
       @Override
       public void run() {
         // Take FIFO lock

@@ -62,7 +62,7 @@ public class RenameAction extends JajukAction {
       Messages.showErrorMessage(134);
       return;
     }
-    new Thread() {
+    new Thread("Rename Thread") {
       @Override
       public void run() {
         if (currentItem instanceof File) {

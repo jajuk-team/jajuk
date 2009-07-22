@@ -770,7 +770,7 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
     jfc.setMultiSelectionEnabled(false);
     final int returnVal = jfc.showDialog(JajukMainWindow.getInstance(), "Ok");
     if (returnVal == JFileChooser.APPROVE_OPTION) {
-      new Thread() {
+      new Thread("Playlist Prepare Party Thread") {
         @Override
         public void run() {
           UtilGUI.waiting();

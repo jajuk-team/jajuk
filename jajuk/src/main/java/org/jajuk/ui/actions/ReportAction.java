@@ -89,7 +89,7 @@ public class ReportAction extends JajukAction {
       }
       // make it in a separated thread to avoid freezing
       // screen for big collections
-      new Thread() {
+      new Thread("Report Thread") {
         @Override
         public void run() {
           try {

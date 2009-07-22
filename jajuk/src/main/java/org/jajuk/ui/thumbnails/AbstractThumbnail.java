@@ -381,7 +381,7 @@ public abstract class AbstractThumbnail extends JPanel implements ActionListener
   public void actionPerformed(ActionEvent e) {
     if (e.getSource() == jmiGetCovers) {
       // This item is enabled only for albums
-      new Thread() {
+      new Thread("Thumbnail Action Thread") {
         @Override
         public void run() {
           JDialog jd = new JDialog(JajukMainWindow.getInstance(), Messages.getString("CatalogView.18"));
