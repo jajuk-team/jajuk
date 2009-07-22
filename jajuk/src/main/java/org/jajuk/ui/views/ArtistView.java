@@ -29,7 +29,6 @@ import java.awt.Insets;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
@@ -63,14 +62,12 @@ public class ArtistView extends SuggestionView {
   /** The artist bio (from last.fm wiki) */
   private JTextArea jtaArtistDesc;
 
-  /** The artist albums (LastFm thumbs) with labels in a flow layout */
-  private JPanel jpAlbums;
-
   /*
    * (non-Javadoc)
    * 
    * @see org.jajuk.ui.views.IView#getDesc()
    */
+  @Override
   public String getDesc() {
     return Messages.getString("ArtistView.0");
   }
@@ -80,6 +77,7 @@ public class ArtistView extends SuggestionView {
    * 
    * @see org.jajuk.ui.views.IView#initUI()
    */
+  @Override
   public void initUI() {
     // register to player events
     ObservationManager.register(this);
@@ -96,6 +94,7 @@ public class ArtistView extends SuggestionView {
    * 
    * @see org.jajuk.events.Observer#getRegistrationKeys()
    */
+  @Override
   public Set<JajukEvents> getRegistrationKeys() {
     Set<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
     eventSubjectSet.add(JajukEvents.WEBRADIO_LAUNCHED);
@@ -146,6 +145,7 @@ public class ArtistView extends SuggestionView {
 
           // We set the margin this way, setMargin() doesn't work due to
           // existing border
+          @Override
           public Insets getInsets() {
             return new Insets(2, 4, 0, 4);
           }
@@ -188,6 +188,7 @@ public class ArtistView extends SuggestionView {
    * 
    * @see org.jajuk.events.Observer#update(org.jajuk.events.JajukEvent)
    */
+  @Override
   public void update(final JajukEvent event) {
     SwingUtilities.invokeLater(new Runnable() {
       public void run() {
@@ -237,6 +238,7 @@ public class ArtistView extends SuggestionView {
 
   }
 
+  @Override
   public void onPerspectiveSelection() {
     // override the suggestion view behavior
   }
