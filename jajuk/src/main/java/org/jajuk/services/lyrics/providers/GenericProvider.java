@@ -52,11 +52,11 @@ abstract class GenericProvider implements ILyricsProvider {
    */
   public String callProvider(final String artist, final String title) {
     String text = null;
+    URL url = getActualURL(artist, title);
     try {
-      URL url = getActualURL(artist, title);
       text = DownloadManager.getTextFromCachedFile(url, getResponseEncoding());
     } catch (final Exception e) {
-      Log.warn("Could not retrieve URL [" + getProviderHostname() + "]");
+      Log.warn("Could not retrieve URL [" + url.toString() + "]: " + e.getMessage());
     }
     return text;
   }
