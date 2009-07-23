@@ -771,10 +771,7 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
       jl.setToolTipText("<html>" + url.toString() + "<br>" + size + "K");
       setSizeText(size + "K" + sType);
       setFoundText();
-      // make sure the image is repainted to avoid overlapping covers
-      CoverView.this.revalidate();
-      CoverView.this.repaint();
-    }
+     }
     // set tooltip for previous and next track
     try {
       int indexPrevious = index + 1;
@@ -1135,7 +1132,7 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
     }
   }
 
-  public Image getCurrentImage() throws IOException, InterruptedException {
+  public Image getCurrentImage() throws IOException, InterruptedException, JajukException {
     if (alCovers.size() > 0) {
       return alCovers.get(0).getImage();
     }

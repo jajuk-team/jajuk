@@ -35,6 +35,7 @@ import org.jajuk.ui.windows.JajukMainWindow;
 import org.jajuk.util.Const;
 import org.jajuk.util.DownloadManager;
 import org.jajuk.util.UtilGUI;
+import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 
 /**
@@ -110,8 +111,8 @@ public class Cover implements Comparable<Cover>, Const {
   }
 
   /*
-   * (non-Javadoc) The priority order is : SELECTED > STANDARD > LOCAL > REMOTE
-   * > NO_COVER
+   * (non-Javadoc) The priority order is : SELECTED > STANDARD > LOCAL > REMOTE >
+   * NO_COVER
    * 
    * @see java.lang.Comparable#compareTo(java.lang.Object)
    */
@@ -149,7 +150,7 @@ public class Cover implements Comparable<Cover>, Const {
    * @throws InterruptedException
    * @throws IOException
    */
-  public Image getImage() throws IOException, InterruptedException {
+  public Image getImage() throws IOException, InterruptedException, JajukException {
     // default cover image is cached in memory for perfs
     if (getType() == CoverType.NO_COVER) {
       return DEFAULT_COVER_ICON.getImage();
@@ -164,6 +165,10 @@ public class Cover implements Comparable<Cover>, Const {
       MediaTracker tracker = new MediaTracker(JajukMainWindow.getInstance());
       tracker.addImage(image, 1);
       tracker.waitForAll();
+      // If image cannot be correctly loaded, throw an exception
+      if (tracker.getErrorsAny() != null && tracker.getErrorsAny().length > 0) {
+        throw new JajukException(9, getFile().getAbsolutePath());
+      }
     }
     Log.debug("Loaded {{" + url + "}} in  " + (System.currentTimeMillis() - l) + " ms");
     return image;
