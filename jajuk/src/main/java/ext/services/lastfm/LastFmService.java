@@ -632,19 +632,6 @@ public class LastFmService {
   }
 
   /**
-   * Check if parameter is a valid AudioFile
-   * 
-   * @param ao
-   * @return
-   */
-  private boolean checkAudioFile(AudioObject ao) {
-    if (ao == null) {
-      return false;
-    }
-    return true;
-  }
-
-  /**
    * Check password
    * 
    * @return
