@@ -30,22 +30,10 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathFactory;
-
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
 public final class XMLUtils {
-
-  /** The x path. */
-  private static ThreadLocal<XPath> xPath = new ThreadLocal<XPath>() {
-    @Override
-    protected XPath initialValue() {
-      return XPathFactory.newInstance().newXPath();
-    }
-  };
-
   /** The x stream. */
   private static XStream xStream = new XStream();
 
