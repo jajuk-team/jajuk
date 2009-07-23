@@ -102,6 +102,11 @@ public final class QueueModel {
     itemLast = null;
   }
 
+  /**
+   * Remove all items from the given album just before and after the given index
+   * @param index
+   * @param album
+   */
   public static void resetAround(int index, Album album) {
     int begin = 0;
     int end = 0;
