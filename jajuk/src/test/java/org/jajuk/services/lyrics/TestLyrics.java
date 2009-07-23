@@ -26,6 +26,7 @@ import java.util.List;
 
 import junit.framework.TestCase;
 
+import org.jajuk.TestHelpers;
 import org.jajuk.services.lyrics.providers.FlyProvider;
 import org.jajuk.services.lyrics.providers.ILyricsProvider;
 import org.jajuk.services.lyrics.providers.LyrcProvider;
@@ -47,10 +48,12 @@ public class TestLyrics extends TestCase {
    * Test setup
    */
   @Override
-  public void setUp() {
+  public void setUp() throws IOException {
     if (tmp.exists()) {
       tmp.delete();
     }
+    
+    TestHelpers.createSessionDirectory();
   }
 
   /**
@@ -68,7 +71,7 @@ public class TestLyrics extends TestCase {
    */
   private void testService(ILyricsProvider provider) {
     String lyrics = provider.getLyrics(artist, title);
-    assertFalse(UtilString.isVoid(lyrics));
+    assertFalse("Lyrics: " + lyrics, UtilString.isVoid(lyrics));
   }
 
   /**
@@ -141,7 +144,8 @@ public class TestLyrics extends TestCase {
    */
   public void testProvidersOrder() {
     LyricsService.getLyrics(artist, title);
-    assertTrue(LyricsService.getCurrentProvider() instanceof LyricWikiProvider);
+    assertTrue("Instance: " + LyricsService.getCurrentProvider().getClass(), 
+        LyricsService.getCurrentProvider() instanceof LyricWikiProvider);
 
     LyricsService.getProviders().remove(0);
     LyricsService.getLyrics(artist, title);
