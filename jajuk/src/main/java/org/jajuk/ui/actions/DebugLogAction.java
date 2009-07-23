@@ -68,8 +68,7 @@ public class DebugLogAction extends JajukAction {
         text.setText(getTraces());
       }
     });
-    JButton jbClose = new JButton(Messages.getString("Close"), IconLoader
-        .getIcon(JajukIcons.CLOSE));
+    JButton jbClose = new JButton(Messages.getString("Close"), IconLoader.getIcon(JajukIcons.CLOSE));
     jbClose.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
         dialog.dispose();
@@ -77,8 +76,8 @@ public class DebugLogAction extends JajukAction {
     });
     dialog.setLayout(new MigLayout("insets 10", "[grow]"));
     dialog.add(new JScrollPane(text), "grow,wrap");
-    dialog.add(jbRefresh, "split 2,grow");
-    dialog.add(jbClose,"grow");
+    dialog.add(jbRefresh, "split 2,right,sg button");
+    dialog.add(jbClose, "right,sg button");
     dialog.setPreferredSize(new Dimension(800, 600));
     dialog.pack();
     dialog.setLocationRelativeTo(JajukMainWindow.getInstance());
