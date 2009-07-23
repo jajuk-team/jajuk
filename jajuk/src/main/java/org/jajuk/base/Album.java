@@ -450,6 +450,11 @@ public class Album extends LogicalItem implements Comparable<Album> {
     } catch (IOException e) {
       Log.error(e);
     }
+    // can be null now if an error occurred, we reported a error to the log already... 
+    if(img == null) {
+      return null;
+    }
+    
     ImageIcon icon = new ImageIcon(img);
     // Free thumb memory (DO IT AFTER FULL ImageIcon loading)
     img.flush();
