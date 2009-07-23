@@ -20,6 +20,8 @@
 
 package org.jajuk.ui.thumbnails;
 
+import com.vlsolutions.swing.docking.ShadowBorder;
+
 import java.awt.Color;
 import java.io.File;
 import java.net.MalformedURLException;
@@ -56,7 +58,6 @@ import org.jajuk.util.Messages;
 import org.jajuk.util.UtilGUI;
 import org.jajuk.util.UtilString;
 import org.jajuk.util.log.Log;
-import org.jdesktop.swingx.border.DropShadowBorder;
 
 /**
  * Album thumb represented as album cover + (optionally) others text information
@@ -107,7 +108,7 @@ public class LocalAlbumThumbnail extends AbstractThumbnail {
     ImageIcon ii = album.getThumbnail(size);
     jlIcon = new JLabel(ii);
     if (fCover != null) {
-      jlIcon.setBorder(new DropShadowBorder(Color.BLACK, 5, 0.5f, 5, false, true, false, true));
+      jlIcon.setBorder(new ShadowBorder());
     }
     if (bShowFullText) {
       int iRows = 7 + 7 * ((size / 50) - 1);
@@ -131,13 +132,13 @@ public class LocalAlbumThumbnail extends AbstractThumbnail {
       add(jlAlbum, "wrap,center");
     } else {
       setLayout(new MigLayout("ins 0,gapy 2"));
-      add(jlIcon,"center,wrap");
+      add(jlIcon, "center,wrap");
       int iRows = 7 + 6 * (size / 50 - 1);
       String fullTitle = album.getName2();
       JLabel jlTitle = new JLabel(UtilString.getLimitedString(fullTitle, iRows));
       jlTitle.setToolTipText(fullTitle);
       jlTitle.setToolTipText(fullTitle);
-      add(jlTitle,"left");
+      add(jlTitle, "left");
     }
     // Add dnd support
     jlIcon.setTransferHandler(new CatalogViewTransferHandler(this));
