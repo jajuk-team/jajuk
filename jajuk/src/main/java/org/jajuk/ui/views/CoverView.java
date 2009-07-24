@@ -317,7 +317,7 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
       Log.error(e);
     }
     // global layout
-    MigLayout globalLayout = new MigLayout("ins 0,gapy 10", "[grow]","[30!][grow]");
+    MigLayout globalLayout = new MigLayout("ins 0,gapy 10", "[grow]", "[30!][grow]");
     setLayout(globalLayout);
     add(jpControl, "grow,wrap");
     // listen for resize
@@ -327,26 +327,13 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
       if (QueueModel.isStopped()) {
         update(new JajukEvent(JajukEvents.ZERO));
       } else {
-        // request cover refresh after a while to make sure the window owns its
-        // definitive dimension so we avoid the cover to resize at startup
-        new Thread("Cover InitUI Thread") {
-          @Override
-          public void run() {
-            try {
-              Thread.sleep(3000);
-            } catch (final Exception e) {
-              Log.error(e);
-            }
-            // check if a track has already been launched
-            if (QueueModel.isPlayingRadio()) {
-              update(new JajukEvent(JajukEvents.WEBRADIO_LAUNCHED, ObservationManager
-                  .getDetailsLastOccurence(JajukEvents.WEBRADIO_LAUNCHED)));
-            } else {
-              update(new JajukEvent(JajukEvents.FILE_LAUNCHED));
-            }
-
-          }
-        }.start();
+        // check if a track has already been launched
+        if (QueueModel.isPlayingRadio()) {
+          update(new JajukEvent(JajukEvents.WEBRADIO_LAUNCHED, ObservationManager
+              .getDetailsLastOccurence(JajukEvents.WEBRADIO_LAUNCHED)));
+        } else {
+          update(new JajukEvent(JajukEvents.FILE_LAUNCHED));
+        }
       }
     } else {
       update(new JajukEvent(JajukEvents.COVER_NEED_REFRESH));
@@ -356,8 +343,7 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
   /*
    * (non-Javadoc)
    * 
-   * @see
-   * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+   * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
    */
   public void actionPerformed(final ActionEvent e) {
     if (e.getSource() == jcbAccuracy) {
@@ -650,9 +636,7 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
   /*
    * (non-Javadoc)
    * 
-   * @see
-   * java.awt.event.ComponentListener#componentResized(java.awt.event.ComponentEvent
-   * )
+   * @see java.awt.event.ComponentListener#componentResized(java.awt.event.ComponentEvent )
    */
   @Override
   public void componentResized(final ComponentEvent e) {
@@ -769,7 +753,7 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
       jl.setToolTipText("<html>" + url.toString() + "<br>" + size + "K");
       setSizeText(size + "K" + sType);
       setFoundText();
-     }
+    }
     // set tooltip for previous and next track
     try {
       int indexPrevious = index + 1;
