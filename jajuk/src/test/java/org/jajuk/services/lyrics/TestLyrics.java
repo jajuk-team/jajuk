@@ -26,7 +26,7 @@ import java.util.List;
 
 import junit.framework.TestCase;
 
-import org.jajuk.TestHelpers;
+import org.jajuk.JUnitHelpers;
 import org.jajuk.services.lyrics.providers.FlyProvider;
 import org.jajuk.services.lyrics.providers.ILyricsProvider;
 import org.jajuk.services.lyrics.providers.LyrcProvider;
@@ -53,7 +53,7 @@ public class TestLyrics extends TestCase {
       tmp.delete();
     }
     
-    TestHelpers.createSessionDirectory();
+    JUnitHelpers.createSessionDirectory();
   }
 
   /**

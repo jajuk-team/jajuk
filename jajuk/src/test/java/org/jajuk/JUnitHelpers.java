@@ -29,7 +29,7 @@ import org.jajuk.util.Const;
 /**
  * Small helper class with functionality that is used in multiple unit tests
  */
-public class TestHelpers {
+public class JUnitHelpers {
 
   /**
    * Set a temporary session directory and make sure it exists and is writeable.
