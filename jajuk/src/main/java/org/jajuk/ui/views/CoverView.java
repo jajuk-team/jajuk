@@ -664,8 +664,6 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
       return;
     }
     displayCurrentCover();
-    CoverView.this.revalidate(); // make sure the image is repainted
-    CoverView.this.repaint(); // make sure the image is repainted
   }
 
   /**
@@ -802,10 +800,10 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
     }
     add(jpControl, "grow,wrap");
     add(jl, "center,wrap");
-    searching(false);
     // make sure the image is repainted to avoid overlapping covers
     CoverView.this.revalidate();
     CoverView.this.repaint();
+    searching(false);
   }
 
   /**
