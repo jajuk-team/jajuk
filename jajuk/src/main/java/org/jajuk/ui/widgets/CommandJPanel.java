@@ -371,7 +371,7 @@ public class CommandJPanel extends JXPanel implements ActionListener, ChangeList
         new RoundRectButtonShaper());
 
     // Add items
-    setLayout(new MigLayout("insets 5 0 0 0", "[grow][grow][grow]"));
+    setLayout(new MigLayout("insets 5 0 0 3", "[grow][grow][grow]"));
 
     add(jtbWebRadio, "left,split 2,gapright 10");
     add(jtbSpecial, "left,gapright 10");
