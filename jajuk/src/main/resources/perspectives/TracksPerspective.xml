@@ -9,7 +9,7 @@
 <Dockable>
 <Key dockName="org.jajuk.ui.views.TracksTableView/1" dockLabel="key1"/>
 </Dockable>
-<Split orientation="1" location="0.6">
+<Split orientation="1" location="0.55">
 <Dockable>
 <Key dockName="org.jajuk.ui.views.QueueView/1" dockLabel="key2"/>
 </Dockable>

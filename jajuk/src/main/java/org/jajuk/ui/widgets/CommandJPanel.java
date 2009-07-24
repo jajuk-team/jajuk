@@ -32,6 +32,7 @@ import ext.DropDownButton;
 import ext.scrollablepopupmenu.XCheckedButton;
 import ext.scrollablepopupmenu.XJPopupMenu;
 
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseWheelEvent;
@@ -41,13 +42,13 @@ import java.util.Iterator;
 import java.util.Set;
 
 import javax.swing.Action;
-import javax.swing.Box;
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
+import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JSlider;
@@ -210,7 +211,8 @@ public class CommandJPanel extends JXPanel implements ActionListener, ChangeList
 
     // Mode toolbar
     // we need an inner toolbar to apply size properly
-    JToolBar jtbModes = new JajukJToolbar();
+    JPanel jpModes = new JPanel();
+    jpModes.setLayout(new FlowLayout(FlowLayout.LEFT,5,3));
     // make it not floatable as this behavior is managed by vldocking
     jbRepeat = new JajukToggleButton(ActionManager.getAction(JajukActions.REPEAT_MODE));
     jbRepeat.setSelected(Conf.getBoolean(Const.CONF_STATE_REPEAT));
@@ -218,23 +220,9 @@ public class CommandJPanel extends JXPanel implements ActionListener, ChangeList
     jbRepeatAll.setSelected(Conf.getBoolean(Const.CONF_STATE_REPEAT_ALL));
     jbRandom = new JajukToggleButton(ActionManager.getAction(JajukActions.SHUFFLE_MODE));
     jbRandom.setSelected(Conf.getBoolean(Const.CONF_STATE_SHUFFLE));
-    jbContinue = new JajukToggleButton(ActionManager.getAction(JajukActions.CONTINUE_MODE));
-    jbContinue.setSelected(Conf.getBoolean(Const.CONF_STATE_CONTINUE));
-    jbIntro = new JajukToggleButton(ActionManager.getAction(JajukActions.INTRO_MODE));
-    jbIntro.setSelected(Conf.getBoolean(Const.CONF_STATE_INTRO));
-    jbKaraoke = new JajukToggleButton(ActionManager.getAction(JajukActions.KARAOKE_MODE));
-    jbKaraoke.setSelected(Conf.getBoolean(Const.CONF_STATE_KARAOKE));
-    jtbModes.add(jbRepeat);
-    jtbModes.add(Box.createHorizontalStrut(4));
-    jtbModes.add(jbRepeatAll);
-    jtbModes.add(Box.createHorizontalStrut(4));
-    jtbModes.add(jbRandom);
-    jtbModes.add(Box.createHorizontalStrut(4));
-    jtbModes.add(jbContinue);
-    jtbModes.add(Box.createHorizontalStrut(4));
-    jtbModes.add(jbIntro);
-    jtbModes.add(Box.createHorizontalStrut(4));
-    jtbModes.add(jbKaraoke);
+    jpModes.add(jbRepeat);
+    jpModes.add(jbRepeatAll);
+    jpModes.add(jbRandom);
 
     // Eval toolbar
     evaltoobar = new PreferenceToolbar();
@@ -383,20 +371,20 @@ public class CommandJPanel extends JXPanel implements ActionListener, ChangeList
         new RoundRectButtonShaper());
 
     // Add items
-    setLayout(new MigLayout("insets 5", "[grow][grow][grow]"));
+    setLayout(new MigLayout("insets 5 0 0 0", "[grow][grow][grow]"));
 
-    add(jtbWebRadio, "left,split 2,gapright 15");
-    add(jtbSpecial, "left,gapright 15");
+    add(jtbWebRadio, "left,split 2,gapright 10");
+    add(jtbSpecial, "left,gapright 10");
 
     add(jbStop, "center,split 7,width 40!,height 30,gapright 5!");
-    add(jbPrevious, "center,width 62!,height 30!,gapright 0");
+    add(jbPrevious, "center,width 58!,height 30!,gapright 0");
     add(jbPlayPause, "center,width 45!,height 45!,gapright 0");
-    add(jbNext, "center,width 62!,height 30!,gapright 3");
+    add(jbNext, "center,width 58!,height 30!,gapright 3");
     add(jbMute, "center,width 42!,height 30!,gapright 5");
     add(jsVolume, "center,growx,width 25::100,gapright 3");
-    add(jlVolume, "gapright 15");
+    add(jlVolume, "gapright 10");
 
-    add(jtbModes, "right,split 2,gap right 10,gapright 5");
+    add(jpModes, "right,split 2,gapright 5");
     add(evaltoobar, "right");
 
     // register to player events

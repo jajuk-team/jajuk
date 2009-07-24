@@ -292,7 +292,7 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
     jtb.add(jbDefault);
 
     if (includeControls) {
-      jpControl.setLayout(new MigLayout("insets 5", "[][grow][grow][][25]"));
+      jpControl.setLayout(new MigLayout("insets 5 2 5 2", "[][grow][grow][][25]"));
       jpControl.add(jtb);
       jpControl.add(jlSize, "center,gapright 5::");
       jpControl.add(jlFound, "center,gapright 5::");
