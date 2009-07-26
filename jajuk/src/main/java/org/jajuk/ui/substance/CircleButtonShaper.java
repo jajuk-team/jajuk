@@ -50,8 +50,7 @@ public class CircleButtonShaper extends ButtonShaper {
     int height = button.getHeight() - 1;
 
     Shape shape = new Ellipse2D.Double(0, 0, width, height);
-    GeneralPath generalPath = new GeneralPath(shape);
-    return generalPath;
+    return new GeneralPath(shape);
   }
 
   

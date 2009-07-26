@@ -57,6 +57,8 @@ public abstract class ViewAdapter extends JXPanel implements IView, Const, Compa
    * Constructor
    */
   public ViewAdapter() {
+    super();
+    
     // create a new DockKey (note that ID is set in setID() method)
     key = new DockKey();
     // View title
@@ -178,7 +180,7 @@ public abstract class ViewAdapter extends JXPanel implements IView, Const, Compa
    * @return Natural order
    */
   public int compareTo(IView other) {
-    return getDesc().compareTo((other).getDesc());
+    return getDesc().compareTo(other.getDesc());
   }
 
   /**
