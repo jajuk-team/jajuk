@@ -55,7 +55,6 @@ import org.jajuk.base.File;
 import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
-import org.jajuk.events.Observer;
 import org.jajuk.services.players.QueueModel;
 import org.jajuk.ui.perspectives.PerspectiveManager;
 import org.jajuk.ui.thumbnails.AbstractThumbnail;

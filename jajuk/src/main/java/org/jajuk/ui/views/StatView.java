@@ -43,7 +43,6 @@ import org.jajuk.base.TrackManager;
 import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
-import org.jajuk.events.Observer;
 import org.jajuk.util.Messages;
 import org.jajuk.util.ReadOnlyIterator;
 import org.jajuk.util.UtilGUI;

@@ -67,7 +67,6 @@ import org.jajuk.base.TrackManager;
 import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
-import org.jajuk.events.Observer;
 import org.jajuk.ui.helpers.DefaultMouseWheelListener;
 import org.jajuk.ui.helpers.FontManager;
 import org.jajuk.ui.helpers.FontManager.JajukFont;

@@ -42,7 +42,6 @@ import org.jajuk.base.Track;
 import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
-import org.jajuk.events.Observer;
 import org.jajuk.services.lyrics.LyricsService;
 import org.jajuk.services.players.QueueModel;
 import org.jajuk.services.webradio.WebRadio;
@@ -80,6 +79,7 @@ public class LyricsView extends ViewAdapter {
   private JPanel p;
 
   public LyricsView() {
+    super();
   }
 
   /*
@@ -319,14 +319,14 @@ public class LyricsView extends ViewAdapter {
     if (jmiCopyToClipboard == null) {
       jmiCopyToClipboard = new JMenuItem(ActionManager.getAction(JajukActions.COPY_TO_CLIPBOARD));
     }
-    return (jmiCopyToClipboard);
+    return jmiCopyToClipboard;
   }
 
   private JMenuItem getJmiLaunchInBrowser() {
     if (jmiLaunchInBrowser == null) {
       jmiLaunchInBrowser = new JMenuItem(ActionManager.getAction(JajukActions.LAUNCH_IN_BROWSER));
     }
-    return (jmiLaunchInBrowser);
+    return jmiLaunchInBrowser;
   }
 
 }
