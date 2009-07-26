@@ -88,7 +88,7 @@ public class JUnitHelpers {
    *
    *
    // helper method to emma-coverage of the unused constructor
-   public void testSerializableUtilitiesPrivateConstructor() throws Exception
+   public void testPrivateConstructor() throws Exception
    {
       //For EMMA code-coverage tests
       JUnitHelpers.executePrivateConstructor(YourClassName.class);
