@@ -334,11 +334,10 @@ public class Device extends PhysicalItem implements Comparable<Device> {
   }
 
   /**
-   * @param mountedIcon
-   *          TODO
-   * @param unmountedIcon
-   *          TODO
-   * @return
+   * @param mountedIcon The icon to return for  a mounted device
+   * @param unmountedIcon The icon to return for an unmounted device
+   * 
+   * @return Returns either of the two provided icons depending on the state of the device
    */
   private ImageIcon setIcon(ImageIcon mountedIcon, ImageIcon unmountedIcon) {
     if (isMounted()) {
@@ -802,8 +801,8 @@ public class Device extends PhysicalItem implements Comparable<Device> {
       int iNbCreatedFilesDest = 0;
       int iNbCreatedFilesSrc = 0;
       lVolume = 0;
-      final boolean bidi = (getValue(Const.XML_DEVICE_SYNCHRO_MODE)
-          .equals(Const.DEVICE_SYNCHRO_MODE_BI));
+      final boolean bidi = getValue(Const.XML_DEVICE_SYNCHRO_MODE)
+          .equals(Const.DEVICE_SYNCHRO_MODE_BI);
       // check this device is synchronized
       final String sIdSrc = (String) getValue(Const.XML_DEVICE_SYNCHRO_SOURCE);
       if ((sIdSrc == null) || sIdSrc.equals(getID())) {

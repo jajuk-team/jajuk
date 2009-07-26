@@ -61,7 +61,7 @@ public class WebRadio implements Comparable<WebRadio> {
     if (getUrl() == null) {
       return -1;
     }
-    return name.compareToIgnoreCase((other).getName());
+    return name.compareToIgnoreCase(other.getName());
   }
 
   @Override

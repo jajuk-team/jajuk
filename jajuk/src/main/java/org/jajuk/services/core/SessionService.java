@@ -85,6 +85,13 @@ public class SessionService {
   private static String confRoot;
 
   /**
+   * private constructor for utility class with only static methods 
+   */
+  private SessionService() {
+    super();
+  }
+
+  /**
    * check if another session is already started
    * 
    */
@@ -287,7 +294,7 @@ public class SessionService {
         } finally {
           br.close();
         }
-      } catch (final Exception e) {
+      } catch (final IOException e) {
         // Can be an ioexception or an NPE if the file is void
         System.out.println("Cannot read bootstrap file, using ~ directory");
         SessionService.setWorkspace(System.getProperty(USER_HOME));

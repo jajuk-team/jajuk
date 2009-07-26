@@ -43,7 +43,7 @@ public class LaunchInBrowserAction extends JajukAction {
   LaunchInBrowserAction() {
     // this action is available only under linux and windows for now
     super(Messages.getString("LaunchInBrowserAction.0"), IconLoader.getIcon(JajukIcons.LAUNCH),
-        (Desktop.isDesktopSupported()));
+        Desktop.isDesktopSupported());
     setShortDescription(Messages.getString("LaunchInBrowserAction.0"));
   }
 

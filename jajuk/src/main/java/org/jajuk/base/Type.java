@@ -120,7 +120,7 @@ public class Type extends PhysicalItem implements Comparable<Type> {
   /**
    * @return Player class for this type
    */
-  public Class<IPlayerImpl> getPlayerClass() throws Exception {
+  public Class<IPlayerImpl> getPlayerClass() {
     return cPlayerImpl;
   }
 
@@ -174,7 +174,7 @@ public class Type extends PhysicalItem implements Comparable<Type> {
         extensions[i] = typesArray[i].getExtension();
       }
     }
-    return (extensions);
+    return extensions;
   }
 
   /**

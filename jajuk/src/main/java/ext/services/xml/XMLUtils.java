@@ -101,8 +101,7 @@ public final class XMLUtils {
     XMLDecoder decoder = null;
     try {
       decoder = new XMLDecoder(new BufferedInputStream(new FileInputStream(filename)));
-      Object bean = decoder.readObject();
-      return bean;
+      return decoder.readObject();
     } finally {
       if (decoder != null) {
         decoder.close();

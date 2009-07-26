@@ -58,7 +58,7 @@ public class CopyClipboardAction extends JajukAction {
     JComponent source = (JComponent) e.getSource();
     Object o = source.getClientProperty(Const.DETAIL_CONTENT);
     String sData = "";
-    if (o instanceof List) {
+    if (o instanceof List<?>) {
       @SuppressWarnings("unchecked")
       List<Item> list = (List<Item>) o;
       if (list.size() > 0) {
