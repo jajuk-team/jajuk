@@ -44,6 +44,13 @@ public class TestLyrics extends TestCase {
   private static final String artist = "Massive Attack";
   private static final String title = "Dissolved Girl";
 
+//helper method to emma-coverage of the unused constructor
+  public void testPrivateConstructor() throws Exception
+  {
+     //For EMMA code-coverage tests
+     JUnitHelpers.executePrivateConstructor(LyricsService.class);
+  }
+  
   /**
    * Test setup
    */
@@ -54,6 +61,9 @@ public class TestLyrics extends TestCase {
     }
     
     JUnitHelpers.createSessionDirectory();
+    
+    // to first cover this method while no providers are loaded yet
+    LyricsService.getProviders();
   }
 
   /**
