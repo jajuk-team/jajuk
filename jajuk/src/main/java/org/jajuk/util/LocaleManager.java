@@ -29,6 +29,12 @@ import java.util.Locale;
  * Manages locales used in jajuk
  */
 public class LocaleManager {
+  /**
+   * private constructor for utility class with only static methods 
+   */
+  private LocaleManager() {
+    super();
+  }
 
   /** Supported Locals */
   private static List<Locale> supportedLocales = Arrays.asList(new Locale[] { Locale.ENGLISH,
@@ -45,7 +51,7 @@ public class LocaleManager {
    */
   public static Locale getNativeLocale() {
     Locale nativeLocale = new Locale(System.getProperty("user.language"));
-    if (nativeLocale != null && supportedLocales.contains(nativeLocale)) {
+    if (supportedLocales.contains(nativeLocale)) {
       return nativeLocale;
     } else { // user language is unknown, take English as a default,
       // user will be able to change it later anyway
@@ -82,8 +88,8 @@ public class LocaleManager {
    */
   public static List<String> getLocalesDescs() {
     final List<String> alDescs = new ArrayList<String>(10);
-    for (final Locale locale : supportedLocales) {
-      alDescs.add(Messages.getString("Language_desc_" + locale.getLanguage()));
+    for (final Locale loc : supportedLocales) {
+      alDescs.add(Messages.getString("Language_desc_" + loc.getLanguage()));
     }
     Collections.sort(alDescs);
     return alDescs;
@@ -104,9 +110,9 @@ public class LocaleManager {
    * @return local
    */
   public static Locale getLocaleForDesc(final String sDesc) {
-    for (final Locale locale : supportedLocales) {
-      if (getDescForLocale(locale.getLanguage()).equals(sDesc)) {
-        return locale;
+    for (final Locale loc : supportedLocales) {
+      if (getDescForLocale(loc.getLanguage()).equals(sDesc)) {
+        return loc;
       }
     }
     return null;

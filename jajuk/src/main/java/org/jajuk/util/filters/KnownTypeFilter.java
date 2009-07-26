@@ -63,7 +63,7 @@ public final class KnownTypeFilter extends JajukFileFilter {
     // Force directories acceptation if user wants to navigate into
     // directories
     if (f.isDirectory()) {
-      return (bShowDirectories);
+      return bShowDirectories;
     }
     return TypeManager.getInstance().isExtensionSupported(UtilSystem.getExtension(f));
   }

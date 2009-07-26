@@ -23,6 +23,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 /**
  * This class includes all langpacks strings. Note that we don't use
@@ -34,7 +35,7 @@ public class Langpack {
   private static List<String> defaults = Arrays.asList("Finish", "Cancel", "Previous", "Next");
 
   // Strings content : "Finish", "Cancel", "Previous", "Next"
-  static private HashMap<Locale, List<String>> strings = new HashMap<Locale, List<String>>(4);
+  static private Map<Locale, List<String>> strings = new HashMap<Locale, List<String>>(4);
   static {
     strings.put(new Locale("ca"), Arrays.asList("Finalitzar", "Cancelar", "Anterior", "Següent"));
     strings.put(new Locale("cs"), Arrays.asList("Dokončit", "Storno", "Předchozí", "Další"));
@@ -51,6 +52,13 @@ public class Langpack {
 
   /** Used locale for the wizard buttons, use English as a default * */
   private static Locale locale = new Locale("en");
+
+  /**
+   * private constructor for utility class with only static methods 
+   */
+  private Langpack() {
+    super();
+  }
 
   /**
    * Set the QDwizard locale

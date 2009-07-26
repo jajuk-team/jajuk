@@ -490,12 +490,12 @@ public final class UtilSystem {
               file.write(buffer, 0, bytesRead);
             }
             file.flush();
-          } catch (final Exception e) {
+          } catch (final IOException e) {
             Log.error(e);
           } finally {
             file.close();
           }
-        } catch (final Exception e) {
+        } catch (final IOException e) {
           Log.error(e);
         } finally {
           entryStream.close();
@@ -503,7 +503,7 @@ public final class UtilSystem {
       } else {
         Log.debug(entryName + " not found.");
       } // end if
-    } catch (final Exception e) {
+    } catch (final IOException e) {
       Log.error(e);
     } finally {
       jar.close();

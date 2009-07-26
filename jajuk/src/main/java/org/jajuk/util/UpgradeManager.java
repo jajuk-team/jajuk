@@ -275,6 +275,7 @@ public final class UpgradeManager {
         }
         // --- In all cases, rebuild thumbs when upgrading ---
         new Thread() {
+          @Override
           public void run() {
 
             // Clean thumbs

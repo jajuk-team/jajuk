@@ -62,7 +62,7 @@ public final class NotAudioFilter extends JajukFileFilter {
     // Force directories acceptation if user wants to navigate into
     // directories
     if (f.isDirectory()) {
-      return (bShowDirectories);
+      return bShowDirectories;
     } else {
       final String extension = UtilSystem.getExtension(f);
       final TypeManager mgr = TypeManager.getInstance();

@@ -60,7 +60,7 @@ public final class AnyFileFilter extends JajukFileFilter {
    */
   @Override
   public String getDescription() {
-    return ("*.*");
+    return "*.*";
   }
 
   /*
@@ -70,6 +70,6 @@ public final class AnyFileFilter extends JajukFileFilter {
    */
   @Override
   protected boolean isKnownExtension(final File file) {
-    return (true); // all files are OK
+    return true; // all files are OK
   }
 }

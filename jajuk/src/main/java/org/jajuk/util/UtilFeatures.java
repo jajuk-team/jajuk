@@ -214,7 +214,7 @@ public final class UtilFeatures {
       return null;
     }
     List<? extends Object> list = null;
-    if (col instanceof List) {
+    if (col instanceof List<?>) {
       list = (List<? extends Object>) col;
     } else {
       list = new ArrayList<Object>(col);
@@ -414,8 +414,7 @@ public final class UtilFeatures {
     int yyyy = totalLength;
     int zz = nbTracks;
     // XXYYYYZZ
-    long discID = ((xx << 24) | (yyyy << 8) | zz);
-    return discID;
+    return ((xx << 24) | (yyyy << 8) | zz);
   }
 
 }

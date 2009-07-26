@@ -131,6 +131,7 @@ public class JajukFullScreenWindow extends JWindow implements JajukWindow {
         .getDefaultScreenDevice();
     addKeyListener(new KeyAdapter() {
 
+      @Override
       public void keyPressed(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
           try {
