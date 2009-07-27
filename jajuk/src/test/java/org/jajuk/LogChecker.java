@@ -19,6 +19,8 @@
  */
 package org.jajuk;
 
+import java.io.File;
+
 import junit.framework.TestCase;
 
 import org.jajuk.util.UtilSystem;
@@ -30,7 +32,7 @@ import org.jajuk.util.UtilSystem;
  */
 public class LogChecker extends TestCase {
 
-  private static final String FILE_PATH = "/tmp/jajuk_out.log";
+  private static final String FILE_PATH = System.getProperty("java.io.tmpdir")+ File.separator + "jajuk_out.log";
 
   private String logs;
 
