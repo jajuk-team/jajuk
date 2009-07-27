@@ -725,9 +725,9 @@ public final class QueueModel {
    * Get previous track, can add item in first index of FIFO
    * 
    * @return new index of current file
-   * @throws Exception
+   * @throws JajukException 
    */
-  private static int addPrevious() throws Exception {
+  private static int addPrevious() throws JajukException {
     StackItem itemFirst = getItem(0);
     if (itemFirst != null) {
       if (index > 0) { // if we have some repeat files
@@ -740,7 +740,7 @@ public final class QueueModel {
           // first is not repeated, just insert previous
           // file from collection
           StackItem item = new StackItem(FileManager.getInstance().getPreviousFile(
-              (alQueue.get(0)).getFile()), Conf.getBoolean(Const.CONF_STATE_REPEAT_ALL), true);
+              alQueue.get(0).getFile()), Conf.getBoolean(Const.CONF_STATE_REPEAT_ALL), true);
           alQueue.add(0, item);
           index = 0;
         }
@@ -779,7 +779,7 @@ public final class QueueModel {
         Player.stop(true);
       }
       // we don't support album navigation inside repeated tracks
-      if ((getItem(0)).isRepeat()) {
+      if (getItem(0).isRepeat()) {
         playPrevious();
         return;
       }
@@ -1289,14 +1289,14 @@ public final class QueueModel {
     java.io.File file = SessionService.getConfFileByPath(Const.FILE_FIFO);
     PrintWriter writer = new PrintWriter(
         new BufferedOutputStream(new FileOutputStream(file, false)));
-    int localindex = 0;
+//    int localindex = 0;
     for (StackItem st : alQueue) {
       // if (localindex > 0) {
       // do not store current track (otherwise, it
       // will be duplicate at startup)
       writer.println(st.getFile().getID());
       // }
-      localindex++;
+//      localindex++;
     }
     writer.flush();
     writer.close();
