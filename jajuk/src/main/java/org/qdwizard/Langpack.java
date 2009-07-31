@@ -37,6 +37,10 @@ public class Langpack {
   // Strings content : "Finish", "Cancel", "Previous", "Next"
   static private Map<Locale, List<String>> strings = new HashMap<Locale, List<String>>(4);
   static {
+    /* replaced the following strings with the unicode-characters replaced as a workaround to 
+     * make building on Hudson work again, currently it failes because the characterset on the 
+     * build machine seems to be ASCII
+     * 
     strings.put(new Locale("ca"), Arrays.asList("Finalitzar", "Cancelar", "Anterior", "Següent"));
     strings.put(new Locale("cs"), Arrays.asList("Dokončit", "Storno", "Předchozí", "Další"));
     strings.put(new Locale("de"), Arrays.asList("Fertig", "Abbrechen", "Zurück", "Weiter"));
@@ -48,6 +52,19 @@ public class Langpack {
     strings.put(new Locale("nl"), Arrays.asList("Afgerond", "Annuleren", "Vooropgaand",
         "Aanstaande"));
     strings.put(new Locale("ru"), Arrays.asList("Готово", "Отмена", "Назад", "Дальше"));
+    */
+
+    strings.put(new Locale("ca"), Arrays.asList("Finalitzar", "Cancelar", "Anterior", "Seg\u00fcent"));
+    strings.put(new Locale("cs"), Arrays.asList("Dokon\u010dit", "Storno", "P\u0159edchoz\u00ed", "Dal\u0161\u00ed"));
+    strings.put(new Locale("de"), Arrays.asList("Fertig", "Abbrechen", "Zur\u00fcck", "Weiter"));
+    strings.put(new Locale("en"), defaults);
+    strings.put(new Locale("es"), Arrays.asList("Finalizar", "Cancelar", "Anterior", "Siguiente"));
+    strings.put(new Locale("el"), Arrays.asList("\u03a4\u03ad\u03bb\u03bf\u03c2", "\u0391\u03ba\u03cd\u03c1\u03c9\u03c3\u03b7", "\u03a0\u03c1\u03bf\u03b7\u03b3\u03bf\u03cd\u03bc\u03b5\u03bd\u03bf", "\u0395\u03c0\u03cc\u03bc\u03b5\u03bd\u03bf"));
+    strings.put(new Locale("fr"), Arrays.asList("Termin\u00e9", "Annuler", "Pr\u00e9c\u00e9dent", "Suivant"));
+    strings.put(new Locale("gl"), Arrays.asList("Rematar", "Cancelar", "Anterior", "Seguinte"));
+    strings.put(new Locale("nl"), Arrays.asList("Afgerond", "Annuleren", "Vooropgaand",
+        "Aanstaande"));
+    strings.put(new Locale("ru"), Arrays.asList("\u0413\u043e\u0442\u043e\u0432\u043e", "\u041e\u0442\u043c\u0435\u043d\u0430", "\u041d\u0430\u0437\u0430\u0434", "\u0414\u0430\u043b\u044c\u0448\u0435"));
   }
 
   /** Used locale for the wizard buttons, use English as a default * */
