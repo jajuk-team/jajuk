@@ -37,21 +37,9 @@ public class Langpack {
   // Strings content : "Finish", "Cancel", "Previous", "Next"
   static private Map<Locale, List<String>> strings = new HashMap<Locale, List<String>>(4);
   static {
-    /* replaced the following strings with the unicode-characters replaced as a workaround to 
+    /* replaced strings with the unicode-characters replaced as a workaround to 
      * make building on Hudson work again, currently it failes because the characterset on the 
      * build machine seems to be ASCII
-     * 
-    strings.put(new Locale("ca"), Arrays.asList("Finalitzar", "Cancelar", "Anterior", "Següent"));
-    strings.put(new Locale("cs"), Arrays.asList("Dokončit", "Storno", "Předchozí", "Další"));
-    strings.put(new Locale("de"), Arrays.asList("Fertig", "Abbrechen", "Zurück", "Weiter"));
-    strings.put(new Locale("en"), defaults);
-    strings.put(new Locale("es"), Arrays.asList("Finalizar", "Cancelar", "Anterior", "Siguiente"));
-    strings.put(new Locale("el"), Arrays.asList("Τέλος", "Ακύρωση", "Προηγούμενο", "Επόμενο"));
-    strings.put(new Locale("fr"), Arrays.asList("Terminé", "Annuler", "Précédent", "Suivant"));
-    strings.put(new Locale("gl"), Arrays.asList("Rematar", "Cancelar", "Anterior", "Seguinte"));
-    strings.put(new Locale("nl"), Arrays.asList("Afgerond", "Annuleren", "Vooropgaand",
-        "Aanstaande"));
-    strings.put(new Locale("ru"), Arrays.asList("Готово", "Отмена", "Назад", "Дальше"));
     */
 
     strings.put(new Locale("ca"), Arrays.asList("Finalitzar", "Cancelar", "Anterior", "Seg\u00fcent"));
