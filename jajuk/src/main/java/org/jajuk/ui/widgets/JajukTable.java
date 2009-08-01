@@ -38,7 +38,6 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.JTable;
-import javax.swing.event.ChangeEvent;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.event.TableColumnModelEvent;
@@ -90,8 +89,6 @@ public class JajukTable extends JXTable implements Observer, TableColumnModelLis
 
   /** Model refreshing flag */
   private volatile boolean acceptColumnsEvents = false;
-
-  private boolean storeColumnMagin = false;
 
   private static final DateFormat FORMATTER = UtilString.getLocaleDateFormatter();
 
@@ -167,7 +164,6 @@ public class JajukTable extends JXTable implements Observer, TableColumnModelLis
    * Reorder columns order according to given conf
    */
   private void reorderColumns() {
-    storeColumnMagin = false;
     // Build the index array
     List<String> index = new ArrayList<String>(10);
     StringTokenizer st = new StringTokenizer(Conf.getString(this.sConf), ",");
@@ -201,16 +197,18 @@ public class JajukTable extends JXTable implements Observer, TableColumnModelLis
     // set stored column width
     int arm = getAutoResizeMode();
     setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-    for (int currentColumnIndex = 0; currentColumnIndex < getColumnModel().getColumnCount(); currentColumnIndex++) {
-      TableColumn tableColumn = getColumnModel().getColumn(currentColumnIndex);
+    String tableID = getTableId();
 
-      if (Conf.containsProperty(getConfKeyForColumnWidth(tableColumn))) {
-        tableColumn.setPreferredWidth(Conf.getInt(getConfKeyForColumnWidth(tableColumn)));
+    for (int currentColumnIndex = 0; currentColumnIndex < getColumnModel().getColumnCount(); currentColumnIndex++) {
+      String identifier = ((JajukTableModel) getModel())
+          .getIdentifier(convertColumnIndexToModel(currentColumnIndex));
+      String confId = tableID + "." + identifier + ".width";
+
+      if (Conf.containsProperty(confId)) {
+        getColumnModel().getColumn(currentColumnIndex).setPreferredWidth(Conf.getInt(confId));
       }
     }
     setAutoResizeMode(arm);
-    // now allow storing every margin
-    storeColumnMagin = true;
 
     // must be done here and not before we add columns
     if (Conf.containsProperty(getConfKeyForIsHorizontalScrollable())) {
@@ -525,34 +523,6 @@ public class JajukTable extends JXTable implements Observer, TableColumnModelLis
     this.acceptColumnsEvents = acceptColumnsEvents;
   }
 
-  @Override
-  public void columnMarginChanged(ChangeEvent e) {
-
-    if (storeColumnMagin && isVisible()) {
-      // store column margin
-      DefaultTableColumnModelExt tableColumnModel = (DefaultTableColumnModelExt) e.getSource();
-
-      for (int currentColumnIndex = 0; currentColumnIndex < tableColumnModel.getColumnCount(); currentColumnIndex++) {
-        TableColumn tableColumn = tableColumnModel.getColumn(currentColumnIndex);
-        Conf.setProperty(getConfKeyForColumnWidth(tableColumn), Integer.toString(tableColumn.getWidth()));
-      }
-    }
-    // don't forget to inform our super class
-    super.columnMarginChanged(e);
-  }
-
-  private String getConfKeyForColumnWidth(TableColumn tableColumn) {
-
-    String tableID = getTableId();
-
-    String identifier = tableColumn.getIdentifier().toString();
-    if (identifier.isEmpty()) {
-      identifier = "noColumnName";
-    }
-    return tableID + "." + identifier + ".width";
-
-  }
-
   /*
    * (non-Javadoc)
    * 
@@ -574,6 +544,18 @@ public class JajukTable extends JXTable implements Observer, TableColumnModelLis
     if (JajukEvents.EXITING.equals(subject)) {
       Conf.setProperty(getConfKeyForIsHorizontalScrollable(), Boolean
           .toString(isHorizontalScrollEnabled()));
+
+      // store column margin
+      String tableID = getTableId();
+
+      for (int currentColumnIndex = 0; currentColumnIndex < getColumnModel().getColumnCount(); currentColumnIndex++) {
+
+        String width = Integer.toString(getColumnModel().getColumn(currentColumnIndex).getWidth());
+        String identifier = ((JajukTableModel) getModel())
+            .getIdentifier(convertColumnIndexToModel(currentColumnIndex));
+
+        Conf.setProperty(tableID + "." + identifier + ".width", width);
+      }
     }
   }
 
