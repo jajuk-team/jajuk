@@ -117,7 +117,7 @@
 		</copy>
 
 		<!--copy native dll to bin directory-->
-		<copy todir='${distdir}/lib'>
+		<copy todir='${distdir}/bin'>
 			<fileset file='${basedir}/lib/*.dll' />
 		</copy>
 		<copy todir='${distdir}/src'>
