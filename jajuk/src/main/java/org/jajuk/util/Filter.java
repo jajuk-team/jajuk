@@ -92,11 +92,11 @@ public class Filter {
    * This filter is not thread safe.
    * </p>
    * 
-   * @param in
-   *          input list
+   * @param list
+   *          The input list to filter. Filtering is done in-place on this list.
    * @param filter
+   *          The filter to apply on the list.
    */
-  @SuppressWarnings("unchecked")
   public static void filterItems(List<? extends Item> list, Filter filter) {
     if (filter == null || filter.getValue() == null) {
       return;
@@ -119,7 +119,7 @@ public class Filter {
       return;
     }
 
-    Iterator it = list.iterator();
+    Iterator<? extends Item> it = list.iterator();
     while (it.hasNext()) {
       Item item = (Item) it.next();
       // If none property set, the search if global "any"

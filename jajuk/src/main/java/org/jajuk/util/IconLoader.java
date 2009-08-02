@@ -43,8 +43,9 @@ final public class IconLoader {
   }
 
   /**
-   * @param nocover
-   *          size
+   * @param size
+   *          The size of the icon to return.
+   *          
    * @return the nocover icon for specified size
    */
   public static ImageIcon getNoCoverIcon(int size) {

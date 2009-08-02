@@ -319,9 +319,8 @@ public class WebRadioWizard extends Wizard {
    * 
    * @see org.jajuk.ui.wizard.Wizard#getPreviousScreen(java.lang.Class)
    */
-  @SuppressWarnings("unchecked")
   @Override
-  public Class getPreviousScreen(Class screen) {
+  public Class<? extends org.qdwizard.Screen> getPreviousScreen(Class<? extends org.qdwizard.Screen> screen) {
     return null;
   }
 
@@ -330,9 +329,8 @@ public class WebRadioWizard extends Wizard {
    * 
    * @see org.jajuk.ui.wizard.Wizard#getNextScreen(java.lang.Class)
    */
-  @SuppressWarnings("unchecked")
   @Override
-  public Class getNextScreen(Class screen) {
+  public Class<? extends org.qdwizard.Screen> getNextScreen(Class<? extends org.qdwizard.Screen> screen) {
     return null;
   }
 

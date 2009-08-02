@@ -82,8 +82,8 @@ public final class ViewFactory {
    *       default perspectives XML file ?)
    */
   @SuppressWarnings("unchecked")
-  public static List<Class> getKnownViews() {
-    List<Class> out = new ArrayList<Class>();
+  public static List<Class<? extends IView>> getKnownViews() {
+    List<Class<? extends IView>> out = new ArrayList<Class<? extends IView>>();
     // Take one instance of each set of view instances mapped to each view
     // classname
     out.add(AnimationView.class);

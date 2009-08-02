@@ -101,15 +101,13 @@ public final class JSplash extends JFrame {
    *          the progress bar?
    * @param percent
    *          If we want a progress bar, do we want to display the percent?
-   * @param CopyrightString
+   * @param copyrightString
    *          Copyright notice
    * @param versionString
    *          If null no string is displayed on the bottom-right of the splash
    *          window.
    * @param versionStringFont
    *          Font for version string, if null default.
-   * @param versionStringColor
-   *          Color for version string, if null default.
    *          <p>
    *          <b>NOTE:</b> Use only one flag for: messages / percent (one or
    *          the other, NOT both).

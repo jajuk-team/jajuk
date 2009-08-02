@@ -28,7 +28,7 @@ import javax.swing.filechooser.FileFilter;
 /**
  * Advanced file filter
  * 
- * @see https://trac.jajuk.info/wiki/JajukDevGuide#Filesfilters for direction to
+ * @see <a href="https://trac.jajuk.info/wiki/JajukDevGuide#Filesfilters">The description</a> for direction to
  *      use
  *      <p>
  *      Example: new

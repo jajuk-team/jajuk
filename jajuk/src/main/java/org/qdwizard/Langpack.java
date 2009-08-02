@@ -38,7 +38,7 @@ public class Langpack {
   static private Map<Locale, List<String>> strings = new HashMap<Locale, List<String>>(4);
   static {
     /* replaced strings with the unicode-characters replaced as a workaround to 
-     * make building on Hudson work again, currently it failes because the characterset on the 
+     * make building on Hudson work again, currently it fails because the characterset on the 
      * build machine seems to be ASCII
     */
 

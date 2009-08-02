@@ -113,7 +113,7 @@ public interface ArtistInfo {
     /**
      * Returns if available
      * 
-     * @return
+     * @return true if the available property is set
      */
     public boolean isAvailable();
 

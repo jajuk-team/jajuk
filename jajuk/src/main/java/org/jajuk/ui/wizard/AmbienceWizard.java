@@ -375,9 +375,8 @@ public class AmbienceWizard extends Wizard {
    * 
    * @see org.jajuk.ui.wizard.Wizard#getNextScreen(java.lang.Class)
    */
-  @SuppressWarnings("unchecked")
   @Override
-  public Class getNextScreen(final Class screen) {
+  public Class<? extends org.qdwizard.Screen> getNextScreen(final Class<? extends org.qdwizard.Screen> screen) {
     return null;
   }
 
@@ -386,9 +385,8 @@ public class AmbienceWizard extends Wizard {
    * 
    * @see org.jajuk.ui.wizard.Wizard#getPreviousScreen(java.lang.Class)
    */
-  @SuppressWarnings("unchecked")
   @Override
-  public Class getPreviousScreen(final Class screen) {
+  public Class<? extends org.qdwizard.Screen> getPreviousScreen(final Class<? extends org.qdwizard.Screen> screen) {
     return null;
   }
 
