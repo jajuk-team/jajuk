@@ -108,7 +108,7 @@ public class LocalAlbumThumbnail extends AbstractThumbnail {
     ImageIcon ii = album.getThumbnail(size);
     jlIcon = new JLabel(ii);
     if (fCover != null) {
-      jlIcon.setBorder(new ShadowBorder());
+      jlIcon.setBorder(new ShadowBorder(false));
     }
     if (bShowFullText) {
       int iRows = 7 + 7 * ((size / 50) - 1);
