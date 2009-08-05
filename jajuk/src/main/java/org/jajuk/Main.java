@@ -269,10 +269,6 @@ public final class Main {
         StartupService.launchInitialTrack();
       }
 
-      // Start up action manager. To be done before launching ui and
-      // tray
-      ActionManager.getInstance();
-
       // Launch the right jajuk window
       launchUI();
 
@@ -594,9 +590,12 @@ public final class Main {
     SwingUtilities.invokeLater(new Runnable() {
       public void run() {
         try {
+          // Start up action manager
+          ActionManager.getInstance();
+
           // Display progress
           sc.setProgress(80, Messages.getString("SplashScreen.3"));
-          
+
           // show window according to startup mode
           if (Conf.getInt(Const.CONF_STARTUP_DISPLAY) == Const.DISPLAY_MODE_MAIN_WINDOW) {
             JajukMainWindow mainWindow = JajukMainWindow.getInstance();
