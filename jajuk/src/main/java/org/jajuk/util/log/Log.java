@@ -69,6 +69,8 @@ public final class Log {
   /** Debug traces spool */
   private static List<String> alSpool;
 
+  private static final String FULL_QUALIFIED_CLASS_NAME = Log.class.getName();
+
   /**
    * Constructor for the Log object
    */
@@ -112,7 +114,7 @@ public final class Log {
       return;
     }
     spool("[DEBUG] " + s);
-    logger.debug(s);
+    logger.log(FULL_QUALIFIED_CLASS_NAME, Level.DEBUG, s, null);
   }
 
   public static void debug(Throwable t) {
@@ -137,7 +139,7 @@ public final class Log {
     if (t != null) {
       spool(t);
     }
-    logger.debug(sOut, t);
+    logger.log(FULL_QUALIFIED_CLASS_NAME, Level.DEBUG, sOut, t);
   }
 
   /**
@@ -145,7 +147,7 @@ public final class Log {
    */
   public static void info(String s) {
     spool("<font color='blue'>[INFO] " + s + "</font>");
-    logger.info(s);
+    logger.log(FULL_QUALIFIED_CLASS_NAME, Level.INFO, s, null);
   }
 
   /**
@@ -158,7 +160,7 @@ public final class Log {
       return;
     }
     spool("<font color='orange'>[WARN] " + s + "</font>");
-    logger.warn(s);
+    logger.log(FULL_QUALIFIED_CLASS_NAME, Level.WARN, s, null);
   }
 
   /**
@@ -172,7 +174,7 @@ public final class Log {
       return;
     }
     spool("<font color='orange'>[INFO] " + sOut + "</font>");
-    logger.warn(sOut);
+    logger.log(FULL_QUALIFIED_CLASS_NAME, Level.WARN, sOut, null);
   }
 
   /**
@@ -201,7 +203,7 @@ public final class Log {
     }
     spool("<font color='orange'>[WARN] " + sOut + "</font>");
     spool(t);
-    logger.warn(sOut, t);
+    logger.log(FULL_QUALIFIED_CLASS_NAME, Level.WARN, sOut, t);
   }
 
   /**
@@ -233,7 +235,7 @@ public final class Log {
     if (t != null) {
       spool(t);
     }
-    logger.error(sOut, t);
+    logger.log(FULL_QUALIFIED_CLASS_NAME, Level.ERROR, sOut, t);
   }
 
   /**
@@ -256,7 +258,7 @@ public final class Log {
       return;
     }
     spool("<font color='red'>[ERROR] " + sOut + "</font>");
-    logger.error(sOut);
+    logger.log(FULL_QUALIFIED_CLASS_NAME, Level.ERROR, sOut, null);
   }
 
   /**
@@ -273,7 +275,7 @@ public final class Log {
       return;
     }
     spool(t);
-    logger.error(t.getMessage() + " / " + t.getCause(), t);
+    logger.log(FULL_QUALIFIED_CLASS_NAME, Level.ERROR, t.getMessage() + " / " + t.getCause(), t);
   }
 
   /**
@@ -316,7 +318,7 @@ public final class Log {
       return;
     }
     spool("<font color='red'><b>[FATAL] " + s + "</b></font>");
-    logger.fatal(s);
+    logger.log(FULL_QUALIFIED_CLASS_NAME, Level.FATAL, s, null);
   }
 
   /**
