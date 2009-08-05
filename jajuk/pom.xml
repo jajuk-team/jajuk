@@ -273,6 +273,15 @@
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>taglist-maven-plugin</artifactId>
       </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <configuration>
+          <additionalClasspathElements>
+                <additionalClasspathElement>src/main/resources</additionalClasspathElement>
+          </additionalClasspathElements>
+        </configuration>
+      </plugin>
     </plugins>
   </reporting>
 </project>
