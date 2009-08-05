@@ -202,7 +202,7 @@ public class LyricsView extends ViewAdapter {
           repaint();
         }
       });
-      new Thread("Lyrics Update Thread") {
+      new Thread("Lyrics Update Thread-" + track.getAuthor().getName2() + "-" + track.getName()) {
         @Override
         public void run() {
           // Launch lyrics service asynchronously and out of the
