@@ -85,7 +85,7 @@ public class SessionService {
   private static String confRoot;
 
   /**
-   * private constructor for utility class with only static methods 
+   * private constructor for utility class with only static methods
    */
   private SessionService() {
     super();
@@ -224,6 +224,30 @@ public class SessionService {
       // The information can be given from CLI using
       // -test=[test|notest] option
       if (element.equals("-" + Const.CLI_TEST)) {
+        bTestMode = true;
+      }
+    }
+  }
+
+  /**
+   * Load system properties provided when calling jvm (-Dxxx=yyy) <br>
+   * This is usefull for unit tests
+   * 
+   */
+  public static void handleSystemProperties() {
+    // walk through all system properties and check if there is one that we
+    // recognize
+    for (final Object element : System.getProperties().keySet()) {
+      String key = (String) element;
+      String value = System.getProperty(key);
+
+      // Tells jajuk it is inside the IDE (useful to find right
+      // location for images and jar resources)
+      if (Const.CLI_IDE.equals(key) && Const.TRUE.equalsIgnoreCase(value)) {
+        bIdeMode = true;
+      }
+      // Tells jajuk to use a .jajuk_test repository
+      if (Const.CLI_TEST.equals(key) && Const.TRUE.equalsIgnoreCase(value)) {
         bTestMode = true;
       }
     }

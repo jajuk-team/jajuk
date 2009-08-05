@@ -280,6 +280,12 @@
           <additionalClasspathElements>
                 <additionalClasspathElement>src/main/resources</additionalClasspathElement>
           </additionalClasspathElements>
+          <systemProperties>
+            <property>
+              <name>ide</name>
+              <value>true</value>
+            </property>
+          </systemProperties>
         </configuration>
       </plugin>
     </plugins>

@@ -144,6 +144,9 @@ public final class Main {
       }
       // set flags from command line options
       SessionService.handleCommandline(args);
+      
+      // set flags from system properties
+      SessionService.handleSystemProperties();
 
       // Set substance theme (for raw error windows displayed by initial
       // checkups only)
