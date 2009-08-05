@@ -274,7 +274,7 @@ public final class JajukJMenuBar extends JMenuBar implements Observer {
     jmialarmClock = new JMenuItem(ActionManager.getAction(JajukActions.ALARM_CLOCK));
     tools.add(jmiduplicateFinder);
     tools.add(jmialarmClock);
-    tools.addSeparator();
+    //tools.addSeparator();
 
     // Configuration menu
     configuration = new JMenu(Messages.getString("JajukJMenuBar.21"));
