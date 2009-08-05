@@ -121,7 +121,7 @@ public class Filter {
 
     Iterator<? extends Item> it = list.iterator();
     while (it.hasNext()) {
-      Item item = (Item) it.next();
+      Item item = it.next();
       // If none property set, the search if global "any"
       if (bAny) {
         comparator = item.getAny();
