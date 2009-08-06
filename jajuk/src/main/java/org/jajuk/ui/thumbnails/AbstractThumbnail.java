@@ -116,9 +116,6 @@ public abstract class AbstractThumbnail extends JPanel implements ActionListener
   private static AbstractThumbnail last;
 
   private static AbstractThumbnail mouseOverItem = null;
-
-  // Number of clicks on the thumb
-  private int clickNumber;
   
   /** Whether this thumb is used in artist view **/
   private boolean artistView;
@@ -288,12 +285,8 @@ public abstract class AbstractThumbnail extends JPanel implements ActionListener
             return;
           }
           // Left click
-          if (e.getButton() == MouseEvent.BUTTON1 && e.getSource() == jlIcon) {
-            // if second click (item already selected), play
-            if (selected && clickNumber > 1) {
+          if (e.getButton() == MouseEvent.BUTTON1 && e.getSource() == jlIcon && e.getClickCount() > 1) {
               launch();
-            }
-            clickNumber++;
           }
         }
       }
@@ -348,10 +341,6 @@ public abstract class AbstractThumbnail extends JPanel implements ActionListener
   public final void setSelected(boolean b) {
     requestFocusInWindow();
     selected = b;
-    // Reset number of clicks
-    if (!b) {
-      clickNumber = 0;
-    }
     // Add a shadow for selected items
     if (b) {
       setBorder(new ShadowBorder(false));
