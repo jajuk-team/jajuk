@@ -101,12 +101,16 @@ public class LastFmAuthorThumbnail extends AbstractThumbnail {
           }
 
           BufferedImage image = ImageIO.read(fCover);
+          if(image == null) {
+            Log.warn("Could not read image data in file: " + fCover);
+            return null;
+          }
           ImageIcon downloadedImage = new ImageIcon(image);
           // In artist view, do not reduce artist picture
           if (isArtistView()) {
             ii = downloadedImage;
           }
-          else{
+          else {
             ii = UtilGUI.getScaledImage(downloadedImage, 100);
           }
           
