@@ -72,6 +72,7 @@ import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UpgradeManager;
+import org.jajuk.util.UtilString;
 import org.jajuk.util.UtilSystem;
 import org.jajuk.util.log.Log;
 
@@ -123,6 +124,8 @@ public final class JajukJMenuBar extends JMenuBar implements Observer {
   private final JCheckBoxMenuItem jcbmiIntro;
 
   private final JCheckBoxMenuItem jcbmiKaraoke;
+
+  JMenuBar mainmenu;
 
   JMenu smart;
 
@@ -180,17 +183,13 @@ public final class JajukJMenuBar extends JMenuBar implements Observer {
     setAlignmentX(0.0f);
     // File menu
     file = new JMenu(Messages.getString("JajukJMenuBar.0"));
-    /*
-     * if(Messages.getString("JajukJMenuBarKey.0") != null) { char c =
-     * Messages.getString("JajukJMenuBarKey.0").charAt(0); // TODO: this only
-     * handles A-Z, a-z file.setMnemonic(c); }
-     */
 
     jmiFileExit = new JMenuItem(ActionManager.getAction(JajukActions.EXIT));
     file.add(jmiFileExit);
 
     // Properties menu
     properties = new JMenu(Messages.getString("JajukJMenuBar.5"));
+
     jmiNewProperty = new JMenuItem(ActionManager.getAction(CUSTOM_PROPERTIES_ADD));
     jmiRemoveProperty = new JMenuItem(ActionManager.getAction(CUSTOM_PROPERTIES_REMOVE));
     properties.add(jmiNewProperty);
@@ -234,7 +233,6 @@ public final class JajukJMenuBar extends JMenuBar implements Observer {
     // Mode menu
     String modeText = Messages.getString("JajukJMenuBar.9");
     mode = new JMenu(ActionUtil.strip(modeText));
-    mode.setMnemonic(ActionUtil.getMnemonic(modeText));
 
     jcbmiRepeat = new JCheckBoxMenuItem(ActionManager.getAction(REPEAT_MODE));
     jcbmiRepeat.setSelected(Conf.getBoolean(Const.CONF_STATE_REPEAT));
@@ -274,7 +272,7 @@ public final class JajukJMenuBar extends JMenuBar implements Observer {
     jmialarmClock = new JMenuItem(ActionManager.getAction(JajukActions.ALARM_CLOCK));
     tools.add(jmiduplicateFinder);
     tools.add(jmialarmClock);
-    //tools.addSeparator();
+    // tools.addSeparator();
 
     // Configuration menu
     configuration = new JMenu(Messages.getString("JajukJMenuBar.21"));
@@ -339,7 +337,6 @@ public final class JajukJMenuBar extends JMenuBar implements Observer {
     // Help menu
     String helpText = Messages.getString("JajukJMenuBar.14");
     help = new JMenu(ActionUtil.strip(helpText));
-    help.setMnemonic(ActionUtil.getMnemonic(helpText));
     jmiHelp = new JMenuItem(ActionManager.getAction(HELP_REQUIRED));
     jmiAbout = new JMenuItem(ActionManager.getAction(SHOW_ABOUT));
     jmiTraces = new JMenuItem(ActionManager.getAction(SHOW_TRACES));
@@ -359,7 +356,7 @@ public final class JajukJMenuBar extends JMenuBar implements Observer {
     help.add(jmiCheckforUpdates);
     help.add(jmiAbout);
 
-    JMenuBar mainmenu = new JMenuBar();
+    mainmenu = new JMenuBar();
     mainmenu.add(file);
     mainmenu.add(views);
     mainmenu.add(properties);
@@ -368,6 +365,9 @@ public final class JajukJMenuBar extends JMenuBar implements Observer {
     mainmenu.add(tools);
     mainmenu.add(configuration);
     mainmenu.add(help);
+
+    // Apply mnemonics (Alt + first char of the menu keystroke)
+    applyMnemonics();
 
     jbSlim = new JajukButton(ActionManager.getAction(JajukActions.SLIM_JAJUK));
     if (JajukFullScreenWindow.getInstance().isFullScreenSupported()) {
@@ -428,6 +428,20 @@ public final class JajukJMenuBar extends JMenuBar implements Observer {
     Set<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
     eventSubjectSet.add(JajukEvents.PARAMETERS_CHANGE);
     return eventSubjectSet;
+  }
+
+  /**
+   * Apply all mnemonics for all menus (follow i18n)
+   */
+  private void applyMnemonics() {
+    for (int i = 0; i < mainmenu.getMenuCount(); i++) {
+      JMenu menu = mainmenu.getMenu(i);
+      if (menu != null && UtilString.isNotVoid(menu.getText())) {
+        String label = menu.getText();
+        int mnemonic = label.getBytes()[0];
+        menu.setMnemonic(mnemonic);
+      }
+    }
   }
 
   /*
