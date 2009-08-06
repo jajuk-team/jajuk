@@ -22,14 +22,12 @@
 
 package org.jajuk.services.lyrics.providers;
 
-import ext.XMLUtils;
 import ext.services.network.NetworkUtils;
 
 import java.net.MalformedURLException;
 
 import org.jajuk.util.Const;
 import org.jajuk.util.log.Log;
-import org.w3c.dom.Document;
 
 /**
  * Lyrics Provider extracting lyrics from lyricwiki.org
@@ -38,7 +36,7 @@ import org.w3c.dom.Document;
 public class LyricWikiProvider extends GenericProvider {
 
   /** URL pattern used by jajuk to retrieve lyrics */
-  private static final String URL = "http://lyricwiki.org/api.php?func=getSong&artist=%artist&song=%title&fmt=xml";
+  private static final String URL = "http://lyricwiki.org/%artist:%title";
 
   /** URL pattern to web page (see ILyricsProvider interface for details) */
   private static final String WEB_URL = "http://lyricwiki.org/%artist:%title";
@@ -55,15 +53,47 @@ public class LyricWikiProvider extends GenericProvider {
    */
   public String getLyrics(final String artist, final String title) {
     try {
-      String xml = callProvider(artist, title);
-      Document document = XMLUtils.getDocument(xml);
-      String lyrics = XMLUtils.getChildElementContent(document.getDocumentElement(), "lyrics");
-      if (lyrics == null || lyrics.trim().equalsIgnoreCase("Not found")) {
+      // This provider waits for '_' instead of regular '+' for spaces in URL
+      String formattedArtist = artist.replaceAll(" ", "_");
+      String formattedTitle = title.replaceAll(" ", "_");
+      String html = callProvider(formattedArtist, formattedTitle);
+      if (html == null || html.indexOf("") == -1) {
         return null;
       }
-      return lyrics;
+      return cleanLyrics(html);
     } catch (Exception e) {
       Log.debug("Cannot fetch lyrics for: " + artist + "/" + title);
+      return null;
+    }
+  }
+
+  /**
+   * Extracts lyrics from the HTML page. The correct subsection is to be
+   * extracted first, before being cleaned and stripped from useless HTML tags.
+   * 
+   * @return the lyrics
+   */
+  private String cleanLyrics(final String html) {
+    String ret = html;
+    if (ret.contains("<div class='lyricbox' >")) {
+      int startIndex = html.indexOf("<div class='lyricbox' >");
+      ret = html.substring(startIndex + 23);
+      int stopIndex = ret.indexOf("<!--");
+      ret = ret.substring(0, stopIndex);
+      ret = ret.replaceAll("<br />", "\n");
+      ret = ret.replaceAll("&#8217;", "'");
+      ret = ret.replaceAll("&#8211;", "-");
+      ret = ret.replaceAll("\u0092", "'");
+      ret = ret.replaceAll("\u009c", "oe");
+      ret = ret.replaceAll("<p>","\n");
+      ret = ret.replaceAll("<i>","");
+      ret = ret.replaceAll("</i>","");
+      ret = ret.replaceAll("<b>","");
+      ret = ret.replaceAll("</b>","");
+      System.out.println(ret);
+      return ret;
+      
+    } else {
       return null;
     }
   }
