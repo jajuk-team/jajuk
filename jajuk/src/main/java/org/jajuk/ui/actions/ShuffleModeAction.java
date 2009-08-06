@@ -62,11 +62,12 @@ public class ShuffleModeAction extends JajukAction {
         QueueModel.setRepeatModeToAll(false); // yes?
         // un-repeat all
       }
-      // computes planned tracks
-      QueueModel.computesPlanned(true);
-      // Refresh Queue View
-      ObservationManager.notify(new JajukEvent(JajukEvents.QUEUE_NEED_REFRESH));
+
     }
+    // computes planned tracks
+    QueueModel.computesPlanned(true);
+    // Refresh Queue View
+    ObservationManager.notify(new JajukEvent(JajukEvents.QUEUE_NEED_REFRESH));
 
   }
 }
