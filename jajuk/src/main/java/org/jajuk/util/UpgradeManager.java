@@ -80,7 +80,7 @@ public final class UpgradeManager {
               + "" + (sRelease == null ? "0.0" : sRelease).charAt(2));
           int newRelease = Integer.parseInt(Const.JAJUK_VERSION.charAt(0) + ""
               + Const.JAJUK_VERSION.charAt(2));
-          if (Math.abs(newRelease - currentRelease) > 1) {
+          if (Math.abs(newRelease - currentRelease) >= 1) {
             oldMigration = true;
           }
         }
@@ -133,10 +133,9 @@ public final class UpgradeManager {
         }
         // --For jajuk < 0.2 : remove backup file : collection~.xml
         File file = SessionService.getConfFileByPath(Const.FILE_COLLECTION + "~");
-        if (!file.delete()) {
-          Log.warn("Could not delete file " + file);
-        }
-        // upgrade code; if upgrade from <1.2, set default ambiences
+        file.delete();
+
+        // Upgrade code; if upgrade from <1.2, set default ambiences
         String sRelease = Conf.getString(Const.CONF_RELEASE);
         if (sRelease == null || sRelease.matches("0..*") || sRelease.matches("1.0..*")
             || sRelease.matches("1.1.*")) {
