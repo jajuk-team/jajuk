@@ -90,7 +90,6 @@ public class LyricWikiProvider extends GenericProvider {
       ret = ret.replaceAll("</i>","");
       ret = ret.replaceAll("<b>","");
       ret = ret.replaceAll("</b>","");
-      System.out.println(ret);
       return ret;
       
     } else {
