@@ -28,6 +28,7 @@ import ext.services.lastfm.TrackInfo;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.FileNotFoundException;
+import java.net.SocketTimeoutException;
 import java.net.URL;
 
 import javax.imageio.ImageIO;
@@ -110,6 +111,10 @@ public class LastFmAlbumThumbnail extends AbstractThumbnail {
           // only report a warning for FileNotFoundException and do not show a
           // stacktrace in the logfile as it is happening frequently
           Log.warn("Could not load image, no content found at address: " + e.getMessage());
+        } catch (SocketTimeoutException e) {
+          // only report a warning for FileNotFoundException and do not show a
+          // stacktrace in the logfile as it is happening frequently
+          Log.warn("Could not load image, timed out while reading address: " + e.getMessage());
         } catch (Exception e) {
           Log.error(e);
         }
