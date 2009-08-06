@@ -164,7 +164,7 @@ public final class QueueModel {
       public void run() {
         try {
           UtilGUI.waiting();
-          QueueModel.pushCommand(alItems, bPush, bPushNext);
+          QueueModel.pushCommand(alItems, bPush, bPushNext, true);
         } catch (Exception e) {
           Log.error(e);
         } finally {
@@ -204,7 +204,7 @@ public final class QueueModel {
       public void run() {
         try {
           UtilGUI.waiting();
-          pushCommand(item, bPush, bPushNext);
+          pushCommand(item, bPush, bPushNext, true);
         } catch (Exception e) {
           Log.error(e);
         } finally {
@@ -255,6 +255,27 @@ public final class QueueModel {
       UtilGUI.stopWaiting(); // stop the waiting cursor
     }
   }
+  
+  /**
+   * Push some files in the fifo
+   * 
+   * @param item ,
+   *          item to be played
+   * @param bPush
+   *          keep previous files or stop them to start a new one ?
+   * @param bPushNext
+   *          whether the selection is added after playing track (mutual
+   *          exclusive with simple push)
+   * @param bManual
+   *          whether the selection is added by the queue engine(false) or
+   *          manually by the user (true)
+   */
+  private static void pushCommand(StackItem item, boolean bPush, final boolean bPushNext,
+      boolean bManual) {
+    List<StackItem> alFiles = new ArrayList<StackItem>(1);
+    alFiles.add(item);
+    pushCommand(alFiles, bPush, bPushNext, bManual);
+  }
 
   /**
    * Push some stack items in the fifo
@@ -265,8 +286,12 @@ public final class QueueModel {
    *          keep previous files or stop them to start a new one ?
    * @param bPushNext
    *          whether the selection is added in first in queue
+   * @param bManual
+   *          whether the selection is added by the queue engine(false) or
+   *          manually by the user (true)
    */
-  private static void pushCommand(List<StackItem> alItems, boolean bPush, final boolean bPushNext) {
+  private static void pushCommand(List<StackItem> alItems, boolean bPush, final boolean bPushNext,
+      boolean bManual) {
     try {
       // wake up FIFO if stopped
       bStop = false;
@@ -313,13 +338,18 @@ public final class QueueModel {
         if (alItems.size() == 0) {
           return;
         }
-        // Position of insert into the queue, add the selection after current
-        // index to keep previously played track before the selection
-        int pos = 0;
-        if (alQueue.size() > 0) {
-          pos = index + 1;
+
+        // Ask queue to run next track. We have to make a difference between
+        // tracks pushed manually and
+        // tracks selected automatically (like planned tracks)
+        if (bManual && alQueue.size() > 0) {
+          index++;
         }
 
+        // Position of insert into the queue, add the selection after current
+        // index to keep previously played track before the selection
+        int pos = index;
+      
         // OK, stop current track if no append
         if (!bPush && !bPushNext) {
           Player.stop(false);
@@ -347,12 +377,13 @@ public final class QueueModel {
           pos = alQueue.size();
         }
 
-        // Set index to new position
-        index = pos;
-
         // add required tracks in the FIFO
         for (StackItem item : alItems) {
-          alQueue.add(pos, item);
+          if (pos >= alQueue.size()) {
+            alQueue.add(item);
+          } else {
+            alQueue.add(pos, item);
+          }
           pos++;
           JajukTimer.getInstance().addTrackTime(item.getFile());
         }
@@ -399,23 +430,7 @@ public final class QueueModel {
     return false;
   }
 
-  /**
-   * Push some files in the fifo
-   * 
-   * @param item ,
-   *          item to be played
-   * @param bPush
-   *          keep previous files or stop them to start a new one ?
-   * @param bPushNext
-   *          whether the selection is added after playing track (mutual
-   *          exclusive with simple push)
-   */
-  private static void pushCommand(StackItem item, boolean bPush, final boolean bPushNext) {
-    List<StackItem> alFiles = new ArrayList<StackItem>(1);
-    alFiles.add(item);
-    pushCommand(alFiles, bPush, bPushNext);
-  }
-
+  
   /**
    * Finished method, called by the PlayerImpl when the track is finished or
    * should be finished (in case of intro mode or crass fade)
@@ -482,7 +497,7 @@ public final class QueueModel {
           }
           if (file != null) {
             // push it, it will be played
-            pushCommand(new StackItem(file), false, false);
+            pushCommand(new StackItem(file), false, false, false);
           } else {
             // probably end of collection option "restart" off
             setEndOfQueue();
@@ -843,10 +858,10 @@ public final class QueueModel {
         finished(true); // stop current track
       } else if (itemLast != null) { // try to launch any previous
         // file
-        pushCommand(itemLast, false, false);
+        pushCommand(itemLast, false, false, true);
       } else { // really nothing? play a shuffle track from collection
         pushCommand(new StackItem(FileManager.getInstance().getShuffleFile(), Conf
-            .getBoolean(Const.CONF_STATE_REPEAT_ALL), false), false, false);
+            .getBoolean(Const.CONF_STATE_REPEAT_ALL), false), false, false, true);
       }
     } catch (Exception e) {
       Log.error(e);
@@ -1263,31 +1278,6 @@ public final class QueueModel {
    */
   public static void setFirstFile(boolean bFirstFile) {
     QueueModel.bFirstFile = bFirstFile;
-  }
-
-  /**
-   * Clean all references for the given device
-   * 
-   * @param device :
-   *          Device to clean
-   */
-  @SuppressWarnings("unchecked")
-  public static void cleanDevice(Device device) {
-    if (alQueue.size() > 0) {
-      List<StackItem> alFIFOCopy = (List<StackItem>) ((ArrayList<StackItem>) alQueue).clone();
-      if (alQueue.size() > 1) { // keep first item (being played)
-        for (int i = 1; i < alQueue.size(); i++) {
-          StackItem item = alQueue.get(i);
-          File file = item.getFile();
-          if (file.getDirectory().getDevice().equals(device)) {
-            alFIFOCopy.remove(item);
-          }
-        }
-      }
-      // Clean FIFO and add again new selection
-      clear();
-      pushCommand(alFIFOCopy, true, false);
-    }
   }
 
   /**
