@@ -41,16 +41,16 @@ import org.jajuk.util.log.Log;
 public class TestLyrics extends TestCase {
 
   private final File tmp = new File("test.tmp");
-  private static final String artist = "Massive Attack";
-  private static final String title = "Dissolved Girl";
+  private static final String ARTIST = "Massive Attack";
+  private static final String TITLE = "Dissolved Girl";
+  private static final String TESTED_WORD = "Day, yesterday";
 
-//helper method to emma-coverage of the unused constructor
-  public void testPrivateConstructor() throws Exception
-  {
-     //For EMMA code-coverage tests
-     JUnitHelpers.executePrivateConstructor(LyricsService.class);
+  // helper method to emma-coverage of the unused constructor
+  public void testPrivateConstructor() throws Exception {
+    // For EMMA code-coverage tests
+    JUnitHelpers.executePrivateConstructor(LyricsService.class);
   }
-  
+
   /**
    * Test setup
    */
@@ -59,9 +59,9 @@ public class TestLyrics extends TestCase {
     if (tmp.exists()) {
       tmp.delete();
     }
-    
+
     JUnitHelpers.createSessionDirectory();
-    
+
     // to first cover this method while no providers are loaded yet
     LyricsService.getProviders();
   }
@@ -80,15 +80,15 @@ public class TestLyrics extends TestCase {
    * Test provider response to get lyrics (shared code)
    */
   private void testService(ILyricsProvider provider) {
-    String lyrics = provider.getLyrics(artist, title);
-    assertFalse("Lyrics: " + lyrics, UtilString.isVoid(lyrics));
+    String lyrics = provider.getLyrics(ARTIST, TITLE);
+    assertTrue("Lyrics: " + lyrics, UtilString.isNotVoid(lyrics) && lyrics.indexOf(TESTED_WORD) != -1);
   }
 
   /**
    * Test provider web site url (shared code)
    */
   private void testWeb(ILyricsProvider provider) {
-    URL url = provider.getWebURL(artist, title);
+    URL url = provider.getWebURL(ARTIST, TITLE);
     assertNotNull(url);
     try {
       DownloadManager.download(url, tmp);
@@ -102,19 +102,17 @@ public class TestLyrics extends TestCase {
 
   /**
    * Test Lyrc provider response to get lyrics
-   *
-  public void testLyrcService() {
-    ILyricsProvider provider = new LyrcProvider();
-    testService(provider);
-  }*/
+   * 
+   * public void testLyrcService() { ILyricsProvider provider = new
+   * LyrcProvider(); testService(provider); }
+   */
 
   /**
    * Test Lyrc web url availability
-   *
-  public void testLyrcWeb() {
-    ILyricsProvider provider = new LyrcProvider();
-    testWeb(provider);
-  }*/
+   * 
+   * public void testLyrcWeb() { ILyricsProvider provider = new LyrcProvider();
+   * testWeb(provider); }
+   */
 
   /**
    * Test Fly provider response to get lyrics
@@ -153,16 +151,16 @@ public class TestLyrics extends TestCase {
    * remove it from the providers list to allow the others to run
    */
   public void testProvidersOrder() {
-    LyricsService.getLyrics(artist, title);
-    assertTrue("Instance: " + LyricsService.getCurrentProvider().getClass(), 
-        LyricsService.getCurrentProvider() instanceof LyricWikiProvider);
+    LyricsService.getLyrics(ARTIST, TITLE);
+    assertTrue("Instance: " + LyricsService.getCurrentProvider().getClass(), LyricsService
+        .getCurrentProvider() instanceof LyricWikiProvider);
 
     LyricsService.getProviders().remove(0);
-    LyricsService.getLyrics(artist, title);
+    LyricsService.getLyrics(ARTIST, TITLE);
     assertTrue(LyricsService.getCurrentProvider() instanceof FlyProvider);
 
     LyricsService.getProviders().remove(0);
-    LyricsService.getLyrics(artist, title);
+    LyricsService.getLyrics(ARTIST, TITLE);
     assertTrue(LyricsService.getCurrentProvider() instanceof LyrcProvider);
   }
 
