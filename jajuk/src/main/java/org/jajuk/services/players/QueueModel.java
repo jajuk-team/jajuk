@@ -104,6 +104,7 @@ public final class QueueModel {
 
   /**
    * Remove all items from the given album just before and after the given index
+   * 
    * @param index
    * @param album
    */
@@ -140,10 +141,10 @@ public final class QueueModel {
    * dispatcher thread)
    * 
    * @param alItems
-   * @param bAppend
+   * @param bPush
    */
-  public static void push(final List<StackItem> alItems, final boolean bAppend) {
-    push(alItems, bAppend, false);
+  public static void push(final List<StackItem> alItems, final boolean bPush) {
+    push(alItems, bPush, false);
   }
 
   /**
@@ -151,10 +152,11 @@ public final class QueueModel {
    * dispatcher thread)
    * 
    * @param alItems
-   * @param bAppend
-   * @param bFront
+   * @param bPush
+   * @param bPushNext
    */
-  public static void push(final List<StackItem> alItems, final boolean bAppend, final boolean bFront) {
+  public static void push(final List<StackItem> alItems, final boolean bPush,
+      final boolean bPushNext) {
     Thread t = new Thread("Queue Push Thread") { // do it in a thread to make
       // UI more
       // reactive
@@ -162,7 +164,7 @@ public final class QueueModel {
       public void run() {
         try {
           UtilGUI.waiting();
-          QueueModel.pushCommand(alItems, bAppend, bFront);
+          QueueModel.pushCommand(alItems, bPush, bPushNext);
         } catch (Exception e) {
           Log.error(e);
         } finally {
@@ -181,10 +183,10 @@ public final class QueueModel {
    * dispatcher thread)
    * 
    * @param item
-   * @param bAppend
+   * @param bPush
    */
-  public static void push(final StackItem item, final boolean bAppend) {
-    push(item, bAppend, false);
+  public static void push(final StackItem item, final boolean bPush) {
+    push(item, bPush, false);
   }
 
   /**
@@ -192,17 +194,17 @@ public final class QueueModel {
    * dispatcher thread)
    * 
    * @param item
-   * @param bAppend
-   * @param bFront
+   * @param bPush
+   * @param bPushNext
    */
-  public static void push(final StackItem item, final boolean bAppend, final boolean bFront) {
+  public static void push(final StackItem item, final boolean bPush, final boolean bPushNext) {
     Thread t = new Thread("Queue Push Thread") {
       // do it in a thread to make UI more reactive
       @Override
       public void run() {
         try {
           UtilGUI.waiting();
-          pushCommand(item, bAppend, bFront);
+          pushCommand(item, bPush, bPushNext);
         } catch (Exception e) {
           Log.error(e);
         } finally {
@@ -259,12 +261,12 @@ public final class QueueModel {
    * 
    * @param alItems ,
    *          list of items to be played
-   * @param bAppend
+   * @param bPush
    *          keep previous files or stop them to start a new one ?
-   * @param bFront
-   *          whether the selection is added after playing track
+   * @param bPushNext
+   *          whether the selection is added in first in queue
    */
-  private static void pushCommand(List<StackItem> alItems, boolean bAppend, final boolean bFront) {
+  private static void pushCommand(List<StackItem> alItems, boolean bPush, final boolean bPushNext) {
     try {
       // wake up FIFO if stopped
       bStop = false;
@@ -311,38 +313,43 @@ public final class QueueModel {
         if (alItems.size() == 0) {
           return;
         }
+        // Position of insert into the queue, add the selection after current
+        // index to keep previously played track before the selection
+        int pos = 0;
+        if (alQueue.size() > 0) {
+          pos = index + 1;
+        }
+
         // OK, stop current track if no append
-        if (!bAppend) {
+        if (!bPush && !bPushNext) {
           Player.stop(false);
           // If the selection items contains contains tracks from the same
           // album, move the playing track after the selection to alow user to
           // launch albums one by one and still getting full albums in queue
-          // If the selection contains different albums, increase index so the
+          // If the selection contains different albums, decrease pos so the
           // playing track is kept *before* the new selection
           if (alQueue.size() > 0 && alItems.size() >= 2) {
             Album firstItemAlbum = alItems.get(0).getFile().getTrack().getAlbum();
             Album secondItemAlbum = alItems.get(1).getFile().getTrack().getAlbum();
-            if (!firstItemAlbum.equals(secondItemAlbum)) {
-              index++;
+            if (firstItemAlbum.equals(secondItemAlbum)) {
+              pos--;
             }
           }
         }
-        int pos = index;
         // if push to front, set pos to first item
-        if (bFront) {
-          // when playing we should add it as second item to play it as next
-          // item
-          if (Player.isPlaying()) {
-            pos = 1 + index;
-          } else {
-            index = 0;
+        if (bPushNext) {
+          if (!Player.isPlaying()) {
+            pos = 0;
           }
-          // otherwise we can keep pos at zero
         }
         // If push, not play, add items at the end
-        else if (bAppend && alQueue.size() > 0) {
+        else if (bPush && alQueue.size() > 0) {
           pos = alQueue.size();
         }
+
+        // Set index to new position
+        index = pos;
+
         // add required tracks in the FIFO
         for (StackItem item : alItems) {
           alQueue.add(pos, item);
@@ -397,15 +404,16 @@ public final class QueueModel {
    * 
    * @param item ,
    *          item to be played
-   * @param bAppend
+   * @param bPush
    *          keep previous files or stop them to start a new one ?
-   * @param bFront
-   *          whether the selection is added after playing track
+   * @param bPushNext
+   *          whether the selection is added after playing track (mutual
+   *          exclusive with simple push)
    */
-  private static void pushCommand(StackItem item, boolean bAppend, final boolean bFront) {
+  private static void pushCommand(StackItem item, boolean bPush, final boolean bPushNext) {
     List<StackItem> alFiles = new ArrayList<StackItem>(1);
     alFiles.add(item);
-    pushCommand(alFiles, bAppend, bFront);
+    pushCommand(alFiles, bPush, bPushNext);
   }
 
   /**
@@ -725,7 +733,7 @@ public final class QueueModel {
    * Get previous track, can add item in first index of FIFO
    * 
    * @return new index of current file
-   * @throws JajukException 
+   * @throws JajukException
    */
   private static int addPrevious() throws JajukException {
     StackItem itemFirst = getItem(0);
@@ -1289,14 +1297,8 @@ public final class QueueModel {
     java.io.File file = SessionService.getConfFileByPath(Const.FILE_FIFO);
     PrintWriter writer = new PrintWriter(
         new BufferedOutputStream(new FileOutputStream(file, false)));
-//    int localindex = 0;
     for (StackItem st : alQueue) {
-      // if (localindex > 0) {
-      // do not store current track (otherwise, it
-      // will be duplicate at startup)
       writer.println(st.getFile().getID());
-      // }
-//      localindex++;
     }
     writer.flush();
     writer.close();
