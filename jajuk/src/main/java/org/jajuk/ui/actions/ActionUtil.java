@@ -19,6 +19,8 @@
  */
 package org.jajuk.ui.actions;
 
+import java.awt.event.KeyEvent;
+
 import javax.swing.Action;
 import javax.swing.ActionMap;
 import javax.swing.InputMap;
@@ -92,5 +94,17 @@ public final class ActionUtil {
         actionMap.put(action, action);
       }
     }
+  }
+
+  /**
+   * Return whether a key event matches the mnemonic of a provided action
+   * 
+   * @param action
+   * @param ke
+   * @return whether a key event matches the mnemonic of a provided action
+   */
+  public static boolean matches(Action action, KeyEvent ke) {
+    KeyStroke key = (KeyStroke) action.getValue(Action.ACCELERATOR_KEY);
+    return ke.getKeyCode() == key.getKeyCode() && ke.getModifiers() == key.getModifiers();
   }
 }

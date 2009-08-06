@@ -20,10 +20,8 @@
 package org.jajuk.ui.windows;
 
 import static org.jajuk.ui.actions.JajukActions.MUTE_STATE;
-import static org.jajuk.ui.actions.JajukActions.NEXT_ALBUM;
 import static org.jajuk.ui.actions.JajukActions.NEXT_TRACK;
 import static org.jajuk.ui.actions.JajukActions.PAUSE_RESUME_TRACK;
-import static org.jajuk.ui.actions.JajukActions.PREVIOUS_ALBUM;
 import static org.jajuk.ui.actions.JajukActions.PREVIOUS_TRACK;
 import static org.jajuk.ui.actions.JajukActions.STOP_TRACK;
 import ext.DropDownButton;
@@ -70,7 +68,6 @@ import org.jajuk.services.players.Player;
 import org.jajuk.services.players.QueueModel;
 import org.jajuk.services.players.StackItem;
 import org.jajuk.ui.actions.ActionManager;
-import org.jajuk.ui.actions.ActionUtil;
 import org.jajuk.ui.actions.JajukActions;
 import org.jajuk.ui.actions.MuteAction;
 import org.jajuk.ui.helpers.PlayerStateMediator;
@@ -443,24 +440,11 @@ public final class JajukSlimbar extends JFrame implements JajukWindow, Observer,
     // Force initial message refresh
     UtilFeatures.updateStatus(this);
 
-    // Init keystrokes
-    setKeystrokes();
+    // Install global keystrokes
+    WindowGlobalKeystrokeManager.getInstance();
 
-    // Set new state
-    decorator.setWindowState(WindowState.BUILT_NOT_DISPLAYED);
-  }
-
-  private void setKeystrokes() {
-    ActionUtil.installKeystrokes(jtbPlay, ActionManager.getAction(NEXT_ALBUM), ActionManager
-        .getAction(PREVIOUS_ALBUM), ActionManager.getAction(PREVIOUS_TRACK), ActionManager
-        .getAction(NEXT_TRACK), ActionManager.getAction(MUTE_STATE), ActionManager
-        .getAction(PAUSE_RESUME_TRACK), ActionManager.getAction(STOP_TRACK), ActionManager
-        .getAction(JajukActions.DECREASE_VOLUME), ActionManager
-        .getAction(JajukActions.INCREASE_VOLUME), ActionManager
-        .getAction(JajukActions.SHUFFLE_MODE), ActionManager.getAction(JajukActions.REPEAT_MODE),
-        ActionManager.getAction(JajukActions.REWIND_TRACK), ActionManager
-            .getAction(JajukActions.FORWARD_TRACK), ActionManager
-            .getAction(JajukActions.HELP_REQUIRED));
+    // Install global keystrokes
+    WindowGlobalKeystrokeManager.getInstance();
   }
 
   private void updateCurrentTitle() {

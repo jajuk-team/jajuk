@@ -142,6 +142,9 @@ public class JajukFullScreenWindow extends JWindow implements JajukWindow {
         }
       }
     });
+
+    // Install global keystrokes
+    WindowGlobalKeystrokeManager.getInstance();
   }
 
   /**

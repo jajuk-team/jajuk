@@ -100,6 +100,10 @@ public class JajukMainWindow extends JFrame implements JajukWindow, Observer {
   public static JajukMainWindow getInstance() {
     if (jw == null) {
       jw = new JajukMainWindow();
+      
+      // Install global keystrokes
+      WindowGlobalKeystrokeManager.getInstance();
+      
       jw.decorator = new WindowStateDecorator(jw) {
         @Override
         public void specificBeforeShown() {

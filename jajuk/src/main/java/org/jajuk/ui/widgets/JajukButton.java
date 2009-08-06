@@ -19,15 +19,9 @@
  */
 package org.jajuk.ui.widgets;
 
-import java.awt.event.ActionEvent;
-
-import javax.swing.AbstractAction;
 import javax.swing.Action;
-import javax.swing.ActionMap;
 import javax.swing.Icon;
-import javax.swing.InputMap;
 import javax.swing.JButton;
-import javax.swing.KeyStroke;
 
 /**
  * jajuk default button, comes with few GUI default properties
@@ -73,24 +67,7 @@ public class JajukButton extends JButton {
     if (action.getValue(Action.SMALL_ICON) != null) {
       putClientProperty("hideActionText", Boolean.TRUE);
     }
-
     super.configurePropertiesFromAction(action);
-
-    KeyStroke stroke = (KeyStroke) action.getValue(Action.ACCELERATOR_KEY);
-    if (stroke != null) {
-      InputMap keyMap = getInputMap(WHEN_IN_FOCUSED_WINDOW);
-      keyMap.put(stroke, "action");
-
-      ActionMap actionMap = getActionMap();
-      actionMap.put("action", new ActionWrapper());
-    }
   }
 
-  private class ActionWrapper extends AbstractAction {
-    private static final long serialVersionUID = 1L;
-
-    public void actionPerformed(ActionEvent e) {
-      fireActionPerformed(e);
-    }
-  }
 }
