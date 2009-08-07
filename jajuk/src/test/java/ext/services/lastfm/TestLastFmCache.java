@@ -43,6 +43,10 @@ public class TestLastFmCache extends TestCase {
   protected void setUp() throws Exception {
     JUnitHelpers.createSessionDirectory();
 
+    // make sure the cache is cleaned up front to not find items from previous runs
+    LastFmCache cache = new LastFmCache();
+    cache.clearCache();
+
     super.setUp();
   }
 
@@ -50,9 +54,8 @@ public class TestLastFmCache extends TestCase {
    * Test method for {@link ext.services.lastfm.LastFmCache#clearCache()}.
    */
   public void testClearCache() throws Exception {
-    // TODO: enable this test as soon as the changes to LastFmCache are checked in after 1.8 is released...
-    /*LastFmCache cache = new LastFmCache();
-    cache.clearCache();*/
+    LastFmCache cache = new LastFmCache();
+    cache.clearCache();
   }
 
   /**
@@ -316,7 +319,7 @@ public class TestLastFmCache extends TestCase {
     cache.addSubmissionData(data);
     assertEquals("Red Hot Chili Peppers", cache.retrieveArtistInfo("Red Hot Chili Peppers")
         .getName());
-    assertNotNull(cache.retrieveAlbumInfo("Red Hot Chili Peppers", "By the way"));
+    assertNull(cache.retrieveAlbumInfo("Red Hot Chili Peppers", "By The Way"));
   }
 
   /**
