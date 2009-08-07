@@ -164,7 +164,7 @@ public class Tag {
    * @return album artist
    */
   public String getAlbumArtist() {
-    String sAlbumArtist = "";
+    String sAlbumArtist = Const.UNKNOWN_AUTHOR;
     // if the type doesn't support tags ( like wav )
     if (tagImpl == null) {
       return sAlbumArtist;
@@ -173,7 +173,7 @@ public class Tag {
     try {
       String sTemp = tagImpl.getAlbumArtist().trim();
       if (Messages.getString(Const.UNKNOWN_AUTHOR).equals(sTemp)) {
-        sAlbumArtist = "";
+        sAlbumArtist = Const.UNKNOWN_AUTHOR;
       } else if (!"".equals(sTemp)) {
         sAlbumArtist = UtilString.formatTag(sTemp);
       }

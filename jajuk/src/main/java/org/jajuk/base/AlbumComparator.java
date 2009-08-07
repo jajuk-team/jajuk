@@ -55,14 +55,16 @@ public class AlbumComparator implements Comparator<Album> {
     case 0: // style
       // Sort on Genre/Author/Year/Title
       if (track1.getStyle() == track2.getStyle()) {
-        if (album1.getAlbumArtist2() == album2.getAlbumArtist2()) {
+        // [Perf] We can make this '==' comparison because all these strings are
+        // internalized
+        if (album1.getHumanAlbumArtist() == album2.getHumanAlbumArtist()) {
           if (track1.getYear() == track2.getYear()) {
             return album1.compareTo(album2);
           } else {
             return track1.getYear().compareTo(track2.getYear());
           }
         } else {
-          return album1.getAlbumArtist2().compareTo(album2.getAlbumArtist2());
+          return album1.getHumanAlbumArtist().compareTo(album2.getHumanAlbumArtist());
         }
       } else {
         return track1.getStyle().compareTo(track2.getStyle());
@@ -70,22 +72,22 @@ public class AlbumComparator implements Comparator<Album> {
     case 1: // author
       // Sort on Author/Year/Title
       // we use now the album artist
-      if (album1.getAlbumArtist2() == album2.getAlbumArtist2()) {
+      if (album1.getHumanAlbumArtist() == album2.getHumanAlbumArtist()) {
         if (track1.getYear() == track2.getYear()) {
           return album1.compareTo(album2);
         } else {
           return track1.getYear().compareTo(track2.getYear());
         }
       } else {
-        return album1.getAlbumArtist2().compareTo(album2.getAlbumArtist2());
+        return album1.getHumanAlbumArtist().compareTo(album2.getHumanAlbumArtist());
       }
     case 3: // year
       // Sort on: Year/Author/Title
       if (track1.getYear() == track2.getYear()) {
-        if (album1.getAlbumArtist2() == album2.getAlbumArtist2()) {
+        if (album1.getHumanAlbumArtist() == album2.getHumanAlbumArtist()) {
           return album1.compareTo(album2);
         } else {
-          return album1.getAlbumArtist2().compareTo(album2.getAlbumArtist2());
+          return album1.getHumanAlbumArtist().compareTo(album2.getHumanAlbumArtist());
         }
       } else {
         return track1.getYear().compareTo(track2.getYear());

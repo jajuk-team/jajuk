@@ -340,7 +340,7 @@ public final class UtilString {
     String sValue;
     if (sPattern.contains(Const.PATTERN_ALBUM_ARTIST)) {
 
-      sValue = track.getAlbumArtist2();
+      sValue = track.getHumanAlbumArtist();
 
       if (normalize) {
         sValue = UtilSystem.getNormalizedFilename(sValue);

@@ -108,8 +108,9 @@ public final class AlbumManager extends ItemManager implements Observer {
    *          item name
    * @param String
    *          sAlbumArtist : the album artist tag or null is none
-   * @param long discId the CD disk ID (in the CDDB meaning), 0 if doesn't
-   *        computed yet
+   * @param long
+   *          discId the CD disk ID (in the CDDB meaning), 0 if doesn't computed
+   *          yet
    * 
    * @return ItemManager ID
    */
@@ -138,6 +139,12 @@ public final class AlbumManager extends ItemManager implements Observer {
   public synchronized Album registerAlbum(String sId, String sName, String sAlbumArtist, long discID) {
     Album album = getAlbumByID(sId);
     if (album != null) {
+      // Due to a change in album artist default value, we have to force the
+      // property
+      // TODO remove this test in 1.9, we assume all testers will have run this test once then
+      if ("".equals(album.getAlbumArtist())) {
+        album.setProperty(Const.XML_ALBUM_ARTIST, Const.UNKNOWN_AUTHOR);
+      }
       return album;
     }
     album = new Album(sId, sName, sAlbumArtist, discID);

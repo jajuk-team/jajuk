@@ -301,8 +301,8 @@ public class Track extends LogicalItem implements Comparable<Track> {
    * 
    * @return
    */
-  public String getAlbumArtist2() {
-    return album.getAlbumArtist2();
+  public String getHumanAlbumArtist() {
+    return album.getHumanAlbumArtist();
   }
 
   /**

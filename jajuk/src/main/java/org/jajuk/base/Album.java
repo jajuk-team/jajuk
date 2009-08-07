@@ -91,16 +91,16 @@ public class Album extends LogicalItem implements Comparable<Album> {
   }
 
   /**
-   * @return the albumArtiest
+   * @return the albumArtist
    *         <p>
    *         If this is various, the album artist is tried to be defined by the
    *         track artists of this album
    *         </p>
    */
-  public String getAlbumArtist2() {
+  public String getHumanAlbumArtist() {
     // If the album artist tag is provided, perfect, let's use it !
     String albumArtist = getAlbumArtist();
-    if (UtilString.isNotVoid(albumArtist)) {
+    if (UtilString.isNotVoid(albumArtist) && !(Const.UNKNOWN_AUTHOR.equals(albumArtist))) {
       return albumArtist;
     }
     // various artist? check if all authors are the same
@@ -133,7 +133,8 @@ public class Album extends LogicalItem implements Comparable<Album> {
    */
   @Override
   public String toString() {
-    return "Album[ID=" + getID() + " Name={{" + getName() + "}}]";
+    return "Album[ID=" + getID() + " Name={{" + getName() + "}}" + " Album Artist={{"
+        + getAlbumArtist() + "}}" + " disk ID={{" + getDiscID() + "}}]";
   }
 
   /**
@@ -146,11 +147,11 @@ public class Album extends LogicalItem implements Comparable<Album> {
   public int compareTo(Album otherAlbum) {
     // compare using name and id to differentiate unknown items
     StringBuilder current = new StringBuilder(getName2());
-    current.append(getAlbumArtist2());
+    current.append(getHumanAlbumArtist());
     current.append(getDiscID());
     current.append(getID());
     StringBuilder other = new StringBuilder(otherAlbum.getName2());
-    other.append(otherAlbum.getAlbumArtist2());
+    other.append(otherAlbum.getHumanAlbumArtist());
     other.append(otherAlbum.getDiscID());
     other.append(otherAlbum.getID());
     return current.toString().compareToIgnoreCase(other.toString());
@@ -211,7 +212,7 @@ public class Album extends LogicalItem implements Comparable<Album> {
     } else if (Const.XML_ANY.equals(sKey)) {
       return getAny();
     } else if (Const.XML_ALBUM_ARTIST.equals(sKey)) {
-      return getAlbumArtist2();
+      return getHumanAlbumArtist();
     }
     // default
     return super.getHumanValue(sKey);
@@ -450,11 +451,12 @@ public class Album extends LogicalItem implements Comparable<Album> {
     } catch (IOException e) {
       Log.error(e);
     }
-    // can be null now if an error occurred, we reported a error to the log already... 
-    if(img == null) {
+    // can be null now if an error occurred, we reported a error to the log
+    // already...
+    if (img == null) {
       return null;
     }
-    
+
     ImageIcon icon = new ImageIcon(img);
     // Free thumb memory (DO IT AFTER FULL ImageIcon loading)
     img.flush();
