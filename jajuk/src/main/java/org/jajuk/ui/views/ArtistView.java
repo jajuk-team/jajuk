@@ -113,12 +113,14 @@ public class ArtistView extends SuggestionView {
     SwingWorker sw = new SwingWorker() {
       JScrollPane jspAlbums;
       String bio;
+      ArtistInfo artistInfo;
 
       @Override
       public Object construct() {
         // Call last.fm wiki
         bio = LastFmService.getInstance().getWikiText(author);
         jspAlbums = getLastFMSuggestionsPanel(SuggestionType.OTHERS_ALBUMS, true);
+        artistInfo = LastFmService.getInstance().getArtist(author);
         return null;
       }
 
@@ -126,11 +128,10 @@ public class ArtistView extends SuggestionView {
       public void finished() {
         super.finished();
         removeAll();
-        ArtistInfo artistInfo = LastFmService.getInstance().getArtist(author);
         // Artist unknown from last.fm, leave
         if (artistInfo == null
         // If image url is void, last.fm doesn't provide enough data about this
-        // artist, we reset the view
+            // artist, we reset the view
             || UtilString.isVoid(artistInfo.getImageUrl())) {
           reset();
           return;
