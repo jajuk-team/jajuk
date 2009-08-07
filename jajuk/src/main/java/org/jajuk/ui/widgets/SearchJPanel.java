@@ -263,10 +263,10 @@ public final class SearchJPanel extends JXPanel implements Observer, ActionListe
     ambiencesCombo.addActionListener(ambienceListener);
 
     // Add items
-    setLayout(new MigLayout("insets 5 0 4 1,gapx 30", "[][grow][grow]"));
-    add(ambiencesCombo, "left,gap left 16,growx 20,width 100::");
-    add(jcbHistory, "grow,center,growx 50");
-    add(sbSearch, "right,grow,growx 30,width 100::");
+    setLayout(new MigLayout("insets 5 0 4 1,gapx 30", "[grow 20][grow 70][grow 10]"));
+    add(ambiencesCombo, "left,gap left 16,growx,width 100::");
+    add(jcbHistory, "grow,center");
+    add(sbSearch, "right,grow,width 100::");
 
     // register to player events
     ObservationManager.register(this);
