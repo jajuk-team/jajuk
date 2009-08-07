@@ -93,43 +93,43 @@ public class LastFmCache {
   public synchronized boolean clearCache() {
     boolean exception = false;
     try {
-      FileUtils.cleanDirectory(albumCoverCacheDir);
+      FileUtils.cleanDirectory(getAlbumCoverCacheDir());
     } catch (IOException e) {
       Log.info("Could not delete all files from album cover cache");
       exception = true;
     }
     try {
-      FileUtils.cleanDirectory(albumInfoCacheDir);
+      FileUtils.cleanDirectory(getAlbumInfoCacheDir());
     } catch (IOException e) {
       Log.info("Could not delete all files from album info cache");
       exception = true;
     }
     try {
-      FileUtils.cleanDirectory(artistImageCacheDir);
+      FileUtils.cleanDirectory(getArtistImageCacheDir());
     } catch (IOException e) {
       Log.info("Could not delete all files from artist image cache");
       exception = true;
     }
     try {
-      FileUtils.cleanDirectory(albumListCacheDir);
+      FileUtils.cleanDirectory(getAlbumListCacheDir());
     } catch (IOException e) {
       Log.info("Could not delete all files from album list cache");
       exception = true;
     }
     try {
-      FileUtils.cleanDirectory(artistSimilarCacheDir);
+      FileUtils.cleanDirectory(getArtistSimilarCacheDir());
     } catch (IOException e) {
       Log.info("Could not delete all files from similar artist cache");
       exception = true;
     }
     try {
-      FileUtils.cleanDirectory(artistThumbCacheDir);
+      FileUtils.cleanDirectory(getArtistThumbsCacheDir());
     } catch (IOException e) {
       Log.info("Could not delete all files from artist thumbs cache");
       exception = true;
     }
     try {
-      FileUtils.cleanDirectory(artistWikiCacheDir);
+      FileUtils.cleanDirectory(getArtistWikiCacheDir());
     } catch (IOException e) {
       Log.info("Could not delete all files from artist wiki cache");
       exception = true;
