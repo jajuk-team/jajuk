@@ -33,7 +33,6 @@ import org.jajuk.services.lyrics.providers.LyrcProvider;
 import org.jajuk.services.lyrics.providers.LyricWikiProvider;
 import org.jajuk.util.DownloadManager;
 import org.jajuk.util.UtilString;
-import org.jajuk.util.log.Log;
 
 /**
  * Lyrics unit tests
@@ -81,21 +80,18 @@ public class TestLyrics extends TestCase {
    */
   private void testService(ILyricsProvider provider) {
     String lyrics = provider.getLyrics(ARTIST, TITLE);
-    assertTrue("Lyrics: " + lyrics, UtilString.isNotVoid(lyrics) && lyrics.indexOf(TESTED_WORD) != -1);
+    assertTrue("Lyrics: " + lyrics, UtilString.isNotVoid(lyrics)
+        && lyrics.indexOf(TESTED_WORD) != -1);
   }
 
   /**
    * Test provider web site url (shared code)
    */
-  private void testWeb(ILyricsProvider provider) {
+  private void testWeb(ILyricsProvider provider) throws IOException {
     URL url = provider.getWebURL(ARTIST, TITLE);
     assertNotNull(url);
-    try {
-      DownloadManager.download(url, tmp);
-    } catch (IOException e) {
-      Log.error(e);
-      fail();
-    }
+    DownloadManager.download(url, tmp);
+
     assertTrue(tmp.exists());
     assertTrue(tmp.length() > 0);
   }
@@ -125,7 +121,7 @@ public class TestLyrics extends TestCase {
   /**
    * Test Fly web url availability
    */
-  public void testFlyWeb() {
+  public void testFlyWeb() throws Exception {
     ILyricsProvider provider = new FlyProvider();
     testWeb(provider);
   }
@@ -133,7 +129,7 @@ public class TestLyrics extends TestCase {
   /**
    * Test LyricWiki provider response to get lyrics
    */
-  public void testLyricWikiService() {
+  public void testLyricWikiService() throws Exception {
     ILyricsProvider provider = new LyricWikiProvider();
     testService(provider);
   }
@@ -141,7 +137,7 @@ public class TestLyrics extends TestCase {
   /**
    * Test LyricWiki web url availability
    */
-  public void testLyricWikiWeb() {
+  public void testLyricWikiWeb() throws Exception {
     ILyricsProvider provider = new LyricWikiProvider();
     testWeb(provider);
   }
