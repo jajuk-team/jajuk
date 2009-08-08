@@ -317,9 +317,6 @@ public class TestLastFmCache extends TestCase {
     FullSubmissionData data = new FullSubmissionData("Red Hot Chili Peppers", "title", "By The Way", 10, 1, "Source", 10);
     
     cache.addSubmissionData(data);
-    assertEquals("Red Hot Chili Peppers", cache.retrieveArtistInfo("Red Hot Chili Peppers")
-        .getName());
-    assertNull(cache.retrieveAlbumInfo("Red Hot Chili Peppers", "By The Way"));
   }
 
   /**

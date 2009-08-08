@@ -134,6 +134,12 @@ public class LastFmCache {
       Log.info("Could not delete all files from artist wiki cache");
       exception = true;
     }
+    try {
+      FileUtils.cleanDirectory(getArtistInfoCacheDir());
+    } catch (IOException e) {
+      Log.info("Could not delete all files from artist info cache");
+      exception = true;
+    }
 
     return exception;
   }
