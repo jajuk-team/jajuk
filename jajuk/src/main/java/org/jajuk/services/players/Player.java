@@ -283,6 +283,10 @@ public final class Player {
     float fVolume = pVolume;
     try {
       Conf.setProperty(Const.CONF_VOLUME, Float.toString(fVolume));
+      // if user move the volume slider, unmute
+      if (isMuted()) {
+        mute(false);
+      }
       if (playerImpl != null) {
         // check, it can be over 1 for unknown reason
         if (fVolume < 0.0f) {
@@ -291,8 +295,8 @@ public final class Player {
           fVolume = 1.0f;
         }
         playerImpl.setVolume(fVolume);
-        ObservationManager.notify(new JajukEvent(JajukEvents.VOLUME_CHANGED));
       }
+      ObservationManager.notify(new JajukEvent(JajukEvents.VOLUME_CHANGED));
     } catch (Exception e) {
       Log.error(e);
     }
@@ -399,13 +403,13 @@ public final class Player {
   }
 
   /**
-   * @return volume in track in %
+   * @return volume in track in %, ex : 0.2 for 20%
    */
   public static float getCurrentVolume() {
     if (playerImpl != null) {
       return playerImpl.getCurrentVolume();
     } else {
-      return 0.0f;
+      return Conf.getFloat(Const.CONF_VOLUME);
     }
   }
 

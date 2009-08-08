@@ -212,7 +212,7 @@ public class CommandJPanel extends JXPanel implements ActionListener, ChangeList
     // Mode toolbar
     // we need an inner toolbar to apply size properly
     JPanel jpModes = new JPanel();
-    jpModes.setLayout(new FlowLayout(FlowLayout.LEFT,5,3));
+    jpModes.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 3));
     // make it not floatable as this behavior is managed by vldocking
     jbRepeat = new JajukToggleButton(ActionManager.getAction(JajukActions.REPEAT_MODE));
     jbRepeat.setSelected(Conf.getBoolean(Const.CONF_STATE_REPEAT));
@@ -382,7 +382,7 @@ public class CommandJPanel extends JXPanel implements ActionListener, ChangeList
     add(jbNext, "center,width 58!,height 30!,gapright 3");
     add(jbMute, "center,width 42!,height 30!,gapright 5");
     add(jsVolume, "center,growx,width 25::100,gapright 3");
-    add(jlVolume, "width 25!,gapright 10");
+    add(jlVolume, "width 30!,gapright 10");
 
     add(jpModes, "right,split 2,gapright 5");
     add(evaltoobar, "right");
@@ -444,8 +444,22 @@ public class CommandJPanel extends JXPanel implements ActionListener, ChangeList
    */
   public void stateChanged(ChangeEvent e) {
     if (e.getSource() == jsVolume) {
-      setVolume((float) jsVolume.getValue() / 100);
-      MuteAction.setVolumeIcon(jsVolume.getValue());
+      float newVolume = (float) jsVolume.getValue() / 100;
+      Player.setVolume(newVolume);
+    }
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @seejava.awt.event.MouseWheelListener#mouseWheelMoved(java.awt.event.
+   * MouseWheelEvent)
+   */
+  public void mouseWheelMoved(MouseWheelEvent e) {
+    if (e.getSource() == jsVolume || e.getSource() == jbMute) {
+      int iOld = jsVolume.getValue();
+      float newVolume = ((float)(iOld - (e.getUnitsToScroll() * 3))) / 100;
+      Player.setVolume(newVolume);
     }
   }
 
@@ -454,20 +468,6 @@ public class CommandJPanel extends JXPanel implements ActionListener, ChangeList
    */
   public int getCurrentVolume() {
     return this.jsVolume.getValue();
-  }
-
-  public void setVolume(final float fVolume) {
-    jsVolume.removeChangeListener(this);
-    jbMute.removeMouseWheelListener(this);
-    jsVolume.removeMouseWheelListener(this);
-    // if user move the volume slider, unmute
-    if (Player.isMuted()) {
-      Player.mute(false);
-    }
-    Player.setVolume(fVolume);
-    jsVolume.addChangeListener(this);
-    jbMute.addMouseWheelListener(this);
-    jsVolume.addMouseWheelListener(this);
   }
 
   /*
@@ -510,13 +510,18 @@ public class CommandJPanel extends JXPanel implements ActionListener, ChangeList
             CommandJPanel.getInstance().jbRepeat.setSelected(false);
           }
         } else if (JajukEvents.VOLUME_CHANGED.equals(event.getSubject())) {
+          // Update volume GUI
           jsVolume.removeChangeListener(CommandJPanel.this);
+          jbMute.removeMouseWheelListener(CommandJPanel.this);
+          jsVolume.removeMouseWheelListener(CommandJPanel.this);
           jsVolume.setValue((int) (100 * Player.getCurrentVolume()));
           String sVolume = (int) (100 * Player.getCurrentVolume()) + " %";
           jsVolume.setToolTipText(sVolume);
           jlVolume.setText(sVolume);
-          jsVolume.addChangeListener(CommandJPanel.this);
           jbMute.setSelected(Player.isMuted());
+          jsVolume.addChangeListener(CommandJPanel.this);
+          jbMute.addMouseWheelListener(CommandJPanel.this);
+          jsVolume.addMouseWheelListener(CommandJPanel.this);
         } else if (JajukEvents.DJS_CHANGE.equals(event.getSubject())) {
           populateDJs();
           // If no more DJ, change the tooltip
@@ -616,20 +621,6 @@ public class CommandJPanel extends JXPanel implements ActionListener, ChangeList
   @Override
   public String toString() {
     return getClass().getName();
-  }
-
-  /*
-   * (non-Javadoc)
-   * 
-   * @seejava.awt.event.MouseWheelListener#mouseWheelMoved(java.awt.event.
-   * MouseWheelEvent)
-   */
-  public void mouseWheelMoved(MouseWheelEvent e) {
-    if (e.getSource() == jsVolume || e.getSource() == jbMute) {
-      int iOld = jsVolume.getValue();
-      int iNew = iOld - (e.getUnitsToScroll() * 3);
-      jsVolume.setValue(iNew);
-    }
   }
 
   public void setRepeatSelected(final boolean b) {
