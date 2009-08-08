@@ -255,7 +255,7 @@ public final class QueueModel {
       UtilGUI.stopWaiting(); // stop the waiting cursor
     }
   }
-  
+
   /**
    * Push some files in the fifo
    * 
@@ -339,19 +339,19 @@ public final class QueueModel {
           return;
         }
 
-        // Ask queue to run next track. We have to make a difference between
-        // tracks pushed manually and
-        // tracks selected automatically (like planned tracks)
-        if (bManual && alQueue.size() > 0) {
-          index++;
-        }
+        // Position of insert into the queue
+        int pos = 0;
 
-        // Position of insert into the queue, add the selection after current
-        // index to keep previously played track before the selection
-        int pos = index;
-      
         // OK, stop current track if no append
         if (!bPush && !bPushNext) {
+
+          // Ask queue to run next track. We have to make a difference between
+          // tracks pushed manually and
+          // tracks selected automatically (like planned tracks)
+          if (bManual && alQueue.size() > 0) {
+            index++;
+          }
+          pos = index;
           Player.stop(false);
           // If the selection items contains contains tracks from the same
           // album, move the playing track after the selection to alow user to
@@ -367,10 +367,8 @@ public final class QueueModel {
           }
         }
         // if push to front, set pos to first item
-        if (bPushNext) {
-          if (!Player.isPlaying()) {
-            pos = 0;
-          }
+        else if (bPushNext) {
+          pos = index + 1;
         }
         // If push, not play, add items at the end
         else if (bPush && alQueue.size() > 0) {
@@ -430,7 +428,6 @@ public final class QueueModel {
     return false;
   }
 
-  
   /**
    * Finished method, called by the PlayerImpl when the track is finished or
    * should be finished (in case of intro mode or crass fade)
