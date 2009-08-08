@@ -230,7 +230,7 @@ public class LocalAlbumThumbnail extends AbstractThumbnail {
         sOut += UtilString.padNumber(track.getOrder(), 2) + ": ";
       }
       sOut += "<b>" + "<a href='file://" + Const.XML_TRACK + '?' + track.getID() + "'>"
-          + UtilString.getLimitedString(track.getName(), 30) + "</a>" + " (";
+          + UtilString.getLimitedString(track.getName(), 50) + "</a>" + " (";
       sOut += UtilString.formatTimeBySec(track.getDuration()) + ") </b>";
       if (album.getYear() == null && track.getYear().getValue() != 0) {
         sOut += " - " + track.getYear().getValue() + "   ";
