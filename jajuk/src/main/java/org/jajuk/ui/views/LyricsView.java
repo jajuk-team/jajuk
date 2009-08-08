@@ -20,6 +20,7 @@
 
 package org.jajuk.ui.views;
 
+import java.awt.Desktop;
 import java.awt.Insets;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -137,9 +138,11 @@ public class LyricsView extends ViewAdapter {
     final JPopupMenu menu = new JPopupMenu();
 
     menu.add(getJmiCopyToClipboard());
-    getJmiLaunchInBrowser().putClientProperty(Const.DETAIL_CONTENT, sURL);
-    getJmiCopyToClipboard().putClientProperty(Const.DETAIL_CONTENT, sURL);
-    menu.add(getJmiLaunchInBrowser());
+    if (Desktop.isDesktopSupported()) {
+      getJmiLaunchInBrowser().putClientProperty(Const.DETAIL_CONTENT, sURL);
+      getJmiCopyToClipboard().putClientProperty(Const.DETAIL_CONTENT, sURL);
+      menu.add(getJmiLaunchInBrowser());
+    }
     menu.show(getTextArea(), e.getX(), e.getY());
   }
 

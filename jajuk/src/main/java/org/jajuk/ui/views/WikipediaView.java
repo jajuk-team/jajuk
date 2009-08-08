@@ -20,6 +20,7 @@
 
 package org.jajuk.ui.views;
 
+import java.awt.Desktop;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -121,9 +122,12 @@ public class WikipediaView extends ViewAdapter implements ActionListener {
     // Buttons
     JajukAction aCopy = ActionManager.getAction(JajukActions.COPY_TO_CLIPBOARD);
     jbCopy = new JButton(aCopy);
-    jbLaunchInExternalBrowser = new JButton(ActionManager.getAction(JajukActions.LAUNCH_IN_BROWSER));
-    // Remove text inside the buttons
-    jbLaunchInExternalBrowser.setText(null);
+    if (Desktop.isDesktopSupported()) {
+      jbLaunchInExternalBrowser = new JButton(ActionManager
+          .getAction(JajukActions.LAUNCH_IN_BROWSER));
+      // Remove text inside the buttons
+      jbLaunchInExternalBrowser.setText(null);
+    }
     jbCopy.setText(null);
     ButtonGroup bg = new ButtonGroup();
     jbAuthorSearch = new JToggleButton(IconLoader.getIcon(JajukIcons.AUTHOR), false);
@@ -150,8 +154,10 @@ public class WikipediaView extends ViewAdapter implements ActionListener {
     jtb.add(jbTrackSearch);
     jtb.addSeparator();
     jtb.add(jbCopy);
-    jtb.add(jbLaunchInExternalBrowser);
-    jtb.addSeparator();
+    if (Desktop.isDesktopSupported()) {
+      jtb.add(jbLaunchInExternalBrowser);
+      jtb.addSeparator();
+    }
     jtb.add(jcbLanguage);
 
     JPanel jpCommand = new JPanel();
@@ -160,7 +166,7 @@ public class WikipediaView extends ViewAdapter implements ActionListener {
     jpCommand.add(jtb);
 
     // global layout
-    setLayout(new MigLayout("ins 0", "[grow]","[][grow]"));
+    setLayout(new MigLayout("ins 0", "[grow]", "[][grow]"));
     browser = new JajukHtmlPanel();
     add(jpCommand, "growx,wrap");
     add(browser, "grow");
@@ -198,7 +204,8 @@ public class WikipediaView extends ViewAdapter implements ActionListener {
   public void update(JajukEvent event) {
     JajukEvents subject = event.getSubject();
     // Make a search after a stop period
-    if (subject.equals(JajukEvents.FILE_LAUNCHED) || subject.equals(JajukEvents.PERSPECTIVE_CHANGED)) {
+    if (subject.equals(JajukEvents.FILE_LAUNCHED)
+        || subject.equals(JajukEvents.PERSPECTIVE_CHANGED)) {
       // If current state is stopped, reset page
       if (QueueModel.getPlayingFile() == null) {
         reset();
@@ -265,7 +272,9 @@ public class WikipediaView extends ViewAdapter implements ActionListener {
               + ".wikipedia.org/wiki/" + lSearch).replaceAll(" ", "_"));
           Log.debug("Wikipedia search: " + url);
           jbCopy.putClientProperty(Const.DETAIL_CONTENT, url.toExternalForm());
-          jbLaunchInExternalBrowser.putClientProperty(Const.DETAIL_CONTENT, url.toExternalForm());
+          if (Desktop.isDesktopSupported()) {
+            jbLaunchInExternalBrowser.putClientProperty(Const.DETAIL_CONTENT, url.toExternalForm());
+          }
           browser.setURL(url);
         } catch (FileNotFoundException e) {
           // only report a warning for FileNotFoundException and do not show a
@@ -311,8 +320,7 @@ public class WikipediaView extends ViewAdapter implements ActionListener {
   public void actionPerformed(ActionEvent arg0) {
     if (arg0.getSource() == jcbLanguage) {
       // update index
-      Locale locale = LocaleManager.getLocaleForDesc((String) jcbLanguage
-          .getSelectedItem());
+      Locale locale = LocaleManager.getLocaleForDesc((String) jcbLanguage.getSelectedItem());
       Conf.setProperty(Const.CONF_WIKIPEDIA_LANGUAGE, locale.getLanguage());
       // force launch wikipedia search for this language
       launchSearch(true);

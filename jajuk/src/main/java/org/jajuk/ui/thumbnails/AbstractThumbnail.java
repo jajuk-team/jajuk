@@ -22,6 +22,7 @@ package org.jajuk.ui.thumbnails;
 
 import com.vlsolutions.swing.docking.ShadowBorder;
 
+import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -116,14 +117,13 @@ public abstract class AbstractThumbnail extends JPanel implements ActionListener
   private static AbstractThumbnail last;
 
   private static AbstractThumbnail mouseOverItem = null;
-  
-  /** Whether this thumb is used in artist view **/
-  private boolean artistView;
 
+  /** Whether this thumb is used in artist view * */
+  private boolean artistView;
 
   /** Associated file */
   File fCover;
-  
+
   /** Timer used to launch popup */
   static {
     Timer timerPopup = new Timer(200, new ActionListener() {
@@ -167,7 +167,7 @@ public abstract class AbstractThumbnail extends JPanel implements ActionListener
     this.size = size;
     setSelected(false);
   }
-  
+
   protected boolean isArtistView() {
     return this.artistView;
   }
@@ -200,7 +200,7 @@ public abstract class AbstractThumbnail extends JPanel implements ActionListener
   }
 
   public abstract void populate();
-  
+
   /** Return HTML text to display in the popup */
   public abstract String getDescription();
 
@@ -232,11 +232,13 @@ public abstract class AbstractThumbnail extends JPanel implements ActionListener
     jmiCDDBWizard.putClientProperty(Const.DETAIL_SELECTION, getItem());
     jmiProperties = new JMenuItem(ActionManager.getAction(JajukActions.SHOW_PROPERTIES));
     jmiProperties.putClientProperty(Const.DETAIL_SELECTION, getItem());
-    JajukAction actionOpenLastFM = ActionManager.getAction(JajukActions.LAUNCH_IN_BROWSER);
-    // Change action label
-    jmiOpenLastFMSite = new JMenuItem(actionOpenLastFM);
-    jmiOpenLastFMSite.setText(Messages.getString("AbstractThumbnail.0"));
-    jmiOpenLastFMSite.setToolTipText(Messages.getString("AbstractThumbnail.0"));
+    if (Desktop.isDesktopSupported()) {
+      JajukAction actionOpenLastFM = ActionManager.getAction(JajukActions.LAUNCH_IN_BROWSER);
+      // Change action label
+      jmiOpenLastFMSite = new JMenuItem(actionOpenLastFM);
+      jmiOpenLastFMSite.setText(Messages.getString("AbstractThumbnail.0"));
+      jmiOpenLastFMSite.setToolTipText(Messages.getString("AbstractThumbnail.0"));
+    }
     // We add all menu items, each implementation of this class should hide
     // (setVisible(false)) menu items that are not available in their
     // context
@@ -251,7 +253,9 @@ public abstract class AbstractThumbnail extends JPanel implements ActionListener
     jmenu.add(jmiCDDBWizard);
     jmenu.add(jmiGetCovers);
     jmenu.add(jmiShowPopup);
-    jmenu.add(jmiOpenLastFMSite);
+    if (Desktop.isDesktopSupported()) {
+      jmenu.add(jmiOpenLastFMSite);
+    }
     jmenu.addSeparator();
     jmenu.add(jmiProperties);
 
@@ -285,8 +289,9 @@ public abstract class AbstractThumbnail extends JPanel implements ActionListener
             return;
           }
           // Left click
-          if (e.getButton() == MouseEvent.BUTTON1 && e.getSource() == jlIcon && e.getClickCount() > 1) {
-              launch();
+          if (e.getButton() == MouseEvent.BUTTON1 && e.getSource() == jlIcon
+              && e.getClickCount() > 1) {
+            launch();
           }
         }
       }
@@ -373,7 +378,8 @@ public abstract class AbstractThumbnail extends JPanel implements ActionListener
       new Thread("Thumbnail Action Thread") {
         @Override
         public void run() {
-          JDialog jd = new JDialog(JajukMainWindow.getInstance(), Messages.getString("CatalogView.18"));
+          JDialog jd = new JDialog(JajukMainWindow.getInstance(), Messages
+              .getString("CatalogView.18"));
           org.jajuk.base.File file = null;
           List<Track> tracks = TrackManager.getInstance().getAssociatedTracks(getItem(), false);
           if (tracks.size() > 0) {
@@ -431,5 +437,4 @@ public abstract class AbstractThumbnail extends JPanel implements ActionListener
     return this.jlIcon;
   }
 
- 
 }
