@@ -253,6 +253,7 @@ public class ArtistView extends SuggestionView {
   private void reset() {
     ArtistView.this.author = null;
     removeAll();
+    setLayout(new MigLayout("ins 5,gapy 5", "[grow]"));
     add(getNothingFoundPanel());
     revalidate();
     repaint();
