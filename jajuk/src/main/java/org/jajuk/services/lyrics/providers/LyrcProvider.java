@@ -57,6 +57,8 @@ public class LyrcProvider extends GenericProvider {
     String html = callProvider(artist, title);
     if (html == null) {
       return null;
+    } else if (html.contains("Nothing found :")) {
+      return null;
     } else if (html.contains("Suggestions : <br>")) {
       final Map<String, String> suggestions = new HashMap<String, String>();
       final List<String> tokensToFind = new ArrayList<String>();
@@ -103,7 +105,8 @@ public class LyrcProvider extends GenericProvider {
         boolean matches = true;
 
         for (final String token : tokensToFind) {
-          if (!suggestion.getKey().toLowerCase(Locale.getDefault()).contains(token.toLowerCase(Locale.getDefault()))) {
+          if (!suggestion.getKey().toLowerCase(Locale.getDefault()).contains(
+              token.toLowerCase(Locale.getDefault()))) {
             matches = false;
             break;
           }
