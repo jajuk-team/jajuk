@@ -41,18 +41,22 @@ public class TestDigitalDJWizard extends TestCase {
    */
 
   public void testGetPreviousScreenClassOfQextendsScreen() throws Exception {
-    DigitalDJWizard wizard = new DigitalDJWizard();
-    assertNull(wizard.getPreviousScreen(null));
-    assertNotNull(wizard.getNextScreen(null));
+    try {
+      DigitalDJWizard wizard = new DigitalDJWizard();
+      assertNull(wizard.getPreviousScreen(null));
+      assertNotNull(wizard.getNextScreen(null));
 
-    // do some dummy things with this panel...
-    Screen screen = wizard.getNextScreen(null).newInstance();
-    screen.initUI();
-    assertNotNull(screen.getDescription());
-    assertNotNull(screen.getName());
+      // do some dummy things with this panel...
+      Screen screen = wizard.getNextScreen(null).newInstance();
+      screen.initUI();
+      assertNotNull(screen.getDescription());
+      assertNotNull(screen.getName());
 
-    assertNull(wizard.getPreviousScreen(null)); // always null until
-    // "actionPerformed"
+      assertNull(wizard.getPreviousScreen(null)); // always null until
+      // "actionPerformed"
+    } catch (HeadlessException e) {
+      // on some servers we cannot initalize any ui and thus cannot test this
+    }
   }
 
   /**
@@ -61,12 +65,16 @@ public class TestDigitalDJWizard extends TestCase {
    */
 
   public void testGetNextScreenClassOfQextendsScreen() throws Exception {
-    DigitalDJWizard wizard = new DigitalDJWizard();
-    assertNotNull(wizard.getNextScreen(null));
+    try {
+      DigitalDJWizard wizard = new DigitalDJWizard();
+      assertNotNull(wizard.getNextScreen(null));
 
-    // do some dummy things with this panel...
-    Screen screen = wizard.getNextScreen(null).newInstance();
-    screen.initUI();
+      // do some dummy things with this panel...
+      Screen screen = wizard.getNextScreen(null).newInstance();
+      screen.initUI();
+    } catch (HeadlessException e) {
+      // on some servers we cannot initalize any ui and thus cannot test this
+    }
 
   }
 
@@ -158,10 +166,19 @@ public class TestDigitalDJWizard extends TestCase {
   }
 
   public void testPanelsRemove() {
-    DigitalDJ dj = new TransitionDigitalDJ("1");
-    DigitalDJManager.getInstance().register(dj);
+    try {
+      // to initialize static data...,
+      // TODO: this looks a bit weird in the code of Wizard and Screen, why is
+      // it needed?
+      new DigitalDJWizard();
 
-    coverScreen(new DigitalDJWizard.RemovePanel());
+      DigitalDJ dj = new TransitionDigitalDJ("1");
+      DigitalDJManager.getInstance().register(dj);
+
+      coverScreen(new DigitalDJWizard.RemovePanel());
+    } catch (HeadlessException e) {
+      // on some servers we cannot initalize any ui and thus cannot test this
+    }
   }
 
   public void testPanelsTransition() {

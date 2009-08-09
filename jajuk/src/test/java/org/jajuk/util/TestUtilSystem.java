@@ -20,6 +20,7 @@
  */
 package org.jajuk.util;
 
+import java.awt.HeadlessException;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -76,11 +77,11 @@ public class TestUtilSystem extends TestCase {
     // first test with no backup size set
     Conf.setProperty(Const.CONF_BACKUP_SIZE, "0");
     UtilSystem.backupFile(file1, 1);
-    
-    //then set some backup size
+
+    // then set some backup size
     Conf.setProperty(Const.CONF_BACKUP_SIZE, "100");
     UtilSystem.backupFile(file1, 1);
-    
+
     // TODO: create a huge file and make sure it is truncated during backup
   }
 
@@ -99,11 +100,12 @@ public class TestUtilSystem extends TestCase {
   public void testCopyFileException() throws Exception {
     FileUtils.writeStringToFile(file1, "this is some test data");
     assertTrue(file2.delete());
-    assertTrue(file2.mkdirs()); // should not be able to write if a directory already exists
+    assertTrue(file2.mkdirs()); // should not be able to write if a directory
+                                // already exists
 
     try {
-    UtilSystem.copy(file1, file2);
-    fail("Should report exception");
+      UtilSystem.copy(file1, file2);
+      fail("Should report exception");
     } catch (IOException e) {
       //
     }
@@ -238,8 +240,9 @@ public class TestUtilSystem extends TestCase {
 
     }
 
-//    assertEquals("", FileUtils.readFileToString(new File(file2.getAbsolutePath() + File.separator
-//        + "testfile")));
+    // assertEquals("", FileUtils.readFileToString(new
+    // File(file2.getAbsolutePath() + File.separator
+    // + "testfile")));
   }
 
   /**
@@ -286,18 +289,19 @@ public class TestUtilSystem extends TestCase {
   public void testCreateEmptyFileException() throws Exception {
     assertTrue(file1.delete());
     assertFalse(file1.exists());
-    assertTrue(file1.mkdir()); // test should fail if we try to create a file when a directory already exists
+    assertTrue(file1.mkdir()); // test should fail if we try to create a file
+                               // when a directory already exists
 
     try {
       UtilSystem.createEmptyFile(file1);
       fail("Should report exception");
-      } catch (IOException e) {
-        //
-      }
+    } catch (IOException e) {
+      //
+    }
 
-      // still a directory now
-      assertTrue(file1.exists());
-      assertTrue(file1.isDirectory());      
+    // still a directory now
+    assertTrue(file1.exists());
+    assertTrue(file1.isDirectory());
   }
 
   /**
@@ -323,12 +327,12 @@ public class TestUtilSystem extends TestCase {
 
   public void testDeleteDirDir() throws Exception {
     assertTrue(file1.delete());
-    
+
     // create a directory inside a directory
     assertTrue(new File(file1.getAbsolutePath() + File.separator + "testdir").mkdirs());
 
-    FileUtils.writeStringToFile(new File(file1.getAbsolutePath() + File.separator + "testdir" + File.separator + "testfile"),
-        "this is some test data");
+    FileUtils.writeStringToFile(new File(file1.getAbsolutePath() + File.separator + "testdir"
+        + File.separator + "testfile"), "this is some test data");
 
     UtilSystem.deleteDir(file1);
 
@@ -373,7 +377,8 @@ public class TestUtilSystem extends TestCase {
   }
 
   public void testGetExtensionFileDot() {
-    // TODO: why do we return the full filename in this case? I.e. if there is a "." as first character?
+    // TODO: why do we return the full filename in this case? I.e. if there is a
+    // "." as first character?
     assertEquals(".testfile", UtilSystem.getExtension(".testfile"));
   }
 
@@ -406,7 +411,7 @@ public class TestUtilSystem extends TestCase {
     } catch (JajukException e) {
       assertEquals(103, e.getCode());
     }
-    
+
   }
 
   /**
@@ -591,7 +596,16 @@ public class TestUtilSystem extends TestCase {
       fail("Should throw exception");
     } catch (JajukException e) {
       assertEquals(9, e.getCode());
-      assertTrue(e.getMessage(), e.getMessage().contains("notexistingfile")); // do we also have the invalid filename in the error?
+      assertTrue(e.getMessage(), e.getMessage().contains("notexistingfile")); // do
+                                                                              // we
+                                                                              // also
+                                                                              // have
+                                                                              // the
+                                                                              // invalid
+                                                                              // filename
+                                                                              // in
+                                                                              // the
+                                                                              // error?
     }
   }
 
@@ -601,12 +615,13 @@ public class TestUtilSystem extends TestCase {
    */
   public void testReadJarFile() throws Exception {
     try {
-    StringBuilder builder = UtilSystem.readJarFile(UtilSystem.getJarLocation(JajukException.class)
-        .toString());
-    assertNotNull(builder);
-    assertFalse(builder.toString().isEmpty());
-    } catch(NullPointerException e) {
-      // TODO: we cannot run this test in eclipse as we do not have a Jajuk.jar file available...
+      StringBuilder builder = UtilSystem.readJarFile(UtilSystem
+          .getJarLocation(JajukException.class).toString());
+      assertNotNull(builder);
+      assertFalse(builder.toString().isEmpty());
+    } catch (NullPointerException e) {
+      // TODO: we cannot run this test in eclipse as we do not have a Jajuk.jar
+      // file available...
     }
 
   }
@@ -676,7 +691,11 @@ public class TestUtilSystem extends TestCase {
    * {@link org.jajuk.util.UtilSystem#openInExplorer(java.io.File)}.
    */
   public void testOpenInExplorer() {
-    UtilSystem.openInExplorer(file1.getParentFile());
+    try {
+      UtilSystem.openInExplorer(file1.getParentFile());
+    } catch (HeadlessException e) {
+      // on some servers we cannot initalize any ui and thus cannot test this
+    }
   }
 
   /**
@@ -752,9 +771,8 @@ public class TestUtilSystem extends TestCase {
   }
 
   // helper method to emma-coverage of the unused constructor
-  public void testPrivateConstructor() throws Exception
-  {
-     //For EMMA code-coverage tests
-     JUnitHelpers.executePrivateConstructor(UtilSystem.class);
+  public void testPrivateConstructor() throws Exception {
+    // For EMMA code-coverage tests
+    JUnitHelpers.executePrivateConstructor(UtilSystem.class);
   }
 }
