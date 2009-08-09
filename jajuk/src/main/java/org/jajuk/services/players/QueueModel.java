@@ -448,9 +448,11 @@ public final class QueueModel {
       if (current == null) {
         return;
       }
-      Properties details = new Properties();
-      details.put(Const.DETAIL_CURRENT_FILE, getPlayingFile());
-      ObservationManager.notify(new JajukEvent(JajukEvents.FILE_FINISHED, details));
+      if(getPlayingFile() != null) {
+        Properties details = new Properties();
+        details.put(Const.DETAIL_CURRENT_FILE, getPlayingFile());
+        ObservationManager.notify(new JajukEvent(JajukEvents.FILE_FINISHED, details));
+      }
 
       if (current.isRepeat()) {
         // if the track was in repeat mode, don't remove it from the
@@ -854,8 +856,10 @@ public final class QueueModel {
         // file
         pushCommand(itemLast, false, false, true);
       } else { // really nothing? play a shuffle track from collection
-        pushCommand(new StackItem(FileManager.getInstance().getShuffleFile(), Conf
-            .getBoolean(Const.CONF_STATE_REPEAT_ALL), false), false, false, true);
+        File file = FileManager.getInstance().getShuffleFile();
+        if(file != null) {
+          pushCommand(new StackItem(file, Conf.getBoolean(Const.CONF_STATE_REPEAT_ALL), false), false, false, true);
+        }
       }
     } catch (Exception e) {
       Log.error(e);
@@ -1139,7 +1143,7 @@ public final class QueueModel {
    * @param lIndex
    */
   public static void down(int lIndex) {
-    if (lIndex == 0 || lIndex == alQueue.size() - 1
+    if (/* lIndex == 0 || */ lIndex == alQueue.size() - 1
         || lIndex == alQueue.size() + alPlanned.size() - 1) {
       // Can't put down current track, nor last track in FIFO, nor last
       // planned track. This should be already made by ui behavior
@@ -1168,7 +1172,7 @@ public final class QueueModel {
           QueueModel.index = pIndex;
         } else {
           // the selected line was not a repeated item,
-          // take it as a which to reset repeat mode
+          // take it as a wish to reset repeat mode
           setRepeatModeToAll(false);
           Properties properties = new Properties();
           properties.put(Const.DETAIL_SELECTION, Const.FALSE);
