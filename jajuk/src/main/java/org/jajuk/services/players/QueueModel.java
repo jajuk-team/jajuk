@@ -257,8 +257,8 @@ public final class QueueModel {
   /**
    * Push some files in the fifo
    * 
-   * @param item ,
-   *          item to be played
+   * @param item
+   *          , item to be played
    * @param bPush
    *          keep previous files or stop them to start a new one ?
    * @param bPushNext
@@ -278,8 +278,8 @@ public final class QueueModel {
   /**
    * Push some stack items in the fifo
    * 
-   * @param alItems ,
-   *          list of items to be played
+   * @param alItems
+   *          , list of items to be played
    * @param bPush
    *          keep previous files or stop them to start a new one ?
    * @param bPushNext
@@ -530,8 +530,7 @@ public final class QueueModel {
   /**
    * Launch track at given index in the fifo
    * 
-   * @param int
-   *          index
+   * @param int index
    */
   private static void launch() {
     try {
@@ -644,8 +643,8 @@ public final class QueueModel {
   /**
    * Computes planned tracks
    * 
-   * @param bClear :
-   *          clear planned tracks stack
+   * @param bClear
+   *          : clear planned tracks stack
    */
   public static void computesPlanned(boolean bClear) {
     // Check if we are in continue mode and we have some tracks in FIFO, if
@@ -797,7 +796,7 @@ public final class QueueModel {
         Player.stop(true);
       }
       // we don't support album navigation inside repeated tracks
-      if (getItem(0).isRepeat()) {
+      if (getQueueSize() > 0 && getItem(0).isRepeat()) {
         playPrevious();
         return;
       }
@@ -869,25 +868,30 @@ public final class QueueModel {
   public static void playNextAlbum() {
     try {
       bStop = false;
+      
       // if playing, stop all playing players
       if (Player.isPlaying()) {
         Player.stop(true);
       }
+      
       // we don't support album navigation inside repeated tracks
-      if (getItem(0).isRepeat()) {
+      if (getQueueSize() > 0 && getItem(0).isRepeat()) {
         playNext();
         return;
       }
-      // ref directory
-      Directory dir = getPlayingFile().getDirectory();
-      // scan current fifo and try to launch the first track not from
-      // this album
+
       int indexFirstItem = -1;
-      for (int i = getIndex(); i < alQueue.size(); i++) {
-        File file = getItem(i).getFile();
-        if (!file.getDirectory().equals(dir)) {
-          indexFirstItem = i;
-          break;
+      if (getPlayingFile() != null) {
+        // ref directory
+        Directory dir = getPlayingFile().getDirectory();
+        // scan current fifo and try to launch the first track not from
+        // this album
+        for (int i = getIndex(); i < alQueue.size(); i++) {
+          File file = getItem(i).getFile();
+          if (!file.getDirectory().equals(dir)) {
+            indexFirstItem = i;
+            break;
+          }
         }
       }
       if (indexFirstItem > 0) {
@@ -897,7 +901,7 @@ public final class QueueModel {
         // finish will drop first element and we won't
         // drop first track of the next album
         goTo(indexFirstItem);
-      } else {// void fifo, add next album
+      } else if (itemLast != null) {// void fifo, add next album
         File fileNext = itemLast.getFile();
         fileNext = FileManager.getInstance().getNextAlbumFile(fileNext);
         // Now add the associated album to the
@@ -918,7 +922,6 @@ public final class QueueModel {
         }
         alQueue.addAll(index, stack);
         goTo(index);
-
       }
     } catch (Exception e) {
       Log.error(e);
@@ -954,8 +957,8 @@ public final class QueueModel {
   /**
    * Get an item at given index in FIFO
    * 
-   * @param lIndex :
-   *          index
+   * @param lIndex
+   *          : index
    * @return stack item
    */
   public static StackItem getItem(int lIndex) {
@@ -992,7 +995,7 @@ public final class QueueModel {
     if (isStopped()) { // currently stopped
       return true;
     }
-    if (getPlayingFile().getDirectory().getDevice().equals(device)) {
+    if (getPlayingFile() != null && getPlayingFile().getDirectory().getDevice().equals(device)) {
       // is current track on this device?
       return false;
     }
@@ -1156,14 +1159,13 @@ public final class QueueModel {
    */
   public static void goTo(final int pIndex) {
     bStop = false;
-    int localindex = pIndex;
     try {
       if (containsRepeatedItem(alQueue)) {
         // if there are some tracks in repeat, mode
-        if (getItem(localindex).isRepeat()) {
+        if (getItem(pIndex).isRepeat()) {
           // the selected line is in repeat mode, ok,
           // keep repeat mode and just change index
-          QueueModel.index = localindex;
+          QueueModel.index = pIndex;
         } else {
           // the selected line was not a repeated item,
           // take it as a which to reset repeat mode
@@ -1173,18 +1175,16 @@ public final class QueueModel {
           ObservationManager.notify(new JajukEvent(JajukEvents.REPEAT_MODE_STATUS_CHANGED,
               properties));
           if (Conf.getBoolean(Conf.CONF_DROP_PLAYED_TRACKS_FROM_QUEUE)) {
-            remove(0, localindex - 1);
-            localindex = 0;
+            remove(0, pIndex - 1);
           } else {
-            QueueModel.index = localindex;
+            QueueModel.index = pIndex;
           }
         }
       } else {
         if (Conf.getBoolean(Conf.CONF_DROP_PLAYED_TRACKS_FROM_QUEUE)) {
-          remove(0, localindex - 1);
-          localindex = 0;
+          remove(0, pIndex - 1);
         } else {
-          QueueModel.index = localindex;
+          QueueModel.index = pIndex;
         }
       }
       // need to stop before launching! this fix a
