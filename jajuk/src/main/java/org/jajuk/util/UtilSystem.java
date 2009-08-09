@@ -55,6 +55,7 @@ import java.util.jar.JarFile;
 
 import javax.swing.ImageIcon;
 
+import org.apache.commons.io.FileUtils;
 import org.jajuk.Main;
 import org.jajuk.services.core.SessionService;
 import org.jajuk.util.error.JajukException;
@@ -166,7 +167,7 @@ public final class UtilSystem {
    * Save a file in the same directory with name <filename>_YYYYmmddHHMM.xml and
    * with a given maximum Mb size for the file and its backup files
    * 
-   * @param file
+   * @param file The file to back up
    */
   public static void backupFile(final File file, final int iMB) {
     try {
@@ -319,7 +320,7 @@ public final class UtilSystem {
   /**
    * Copy recursively files and directories
    * 
-   * @param str
+   * @param str The source to copy from, can be a directory or a file
    * @param dst
    * @throws IOException
    * @throws JajukException
@@ -780,6 +781,7 @@ public final class UtilSystem {
    * @return whether file1 is a file2 descendant
    */
   public static boolean isDescendant(final File file1, final File file2) {
+    // TODO: why don't we use isAncestor(file2, file1) here??
     File fParent = file1.getParentFile();
     boolean bOut = false;
     while (fParent != null) {
@@ -1007,18 +1009,7 @@ public final class UtilSystem {
    */
   public static boolean replaceInFile(File file, String oldS, String newS, String encoding) {
     try {
-      StringBuilder sb = new StringBuilder((int) file.length());
-      BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file),
-          encoding));
-      try {
-        String sLine = null;
-        while ((sLine = br.readLine()) != null) {
-          sb.append(sLine + '\n');
-        }
-      } finally {
-        br.close();
-      }
-      String s = sb.toString();
+      String s = FileUtils.readFileToString(file);
       if (s.indexOf(oldS) != -1) {
         s = s.replaceAll(oldS, newS);
         Writer bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), encoding));
