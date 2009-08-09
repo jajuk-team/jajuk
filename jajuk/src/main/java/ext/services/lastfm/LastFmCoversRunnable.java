@@ -34,80 +34,81 @@ import javax.swing.SwingUtilities;
  */
 public class LastFmCoversRunnable implements Runnable {
 
-    /** The listener. */
-    ContextListener listener;
+  /** The listener. */
+  ContextListener listener;
 
-    /** The service. */
-    private LastFmService service;
+  /** The service. */
+  private LastFmService service;
 
-    /** The albums. */
-    private List<? extends AlbumInfo> albums;
+  /** The albums. */
+  private List<? extends AlbumInfo> albums;
 
-    /** The interrupted. */
-    private volatile boolean interrupted;
+  /** The interrupted. */
+  private volatile boolean interrupted;
 
-    /** The id. */
-    long id;
+  /** The id. */
+  long id;
 
-    /** The audio file */
-    AudioObject audioObject;
+  /** The audio file */
+  AudioObject audioObject;
 
-    /**
-     * Instantiates a new audio scrobbler covers runnable.
-     * 
-     * @param listener
-     *            the listener
-     * @param service
-     *            the service
-     * @param albums
-     *            the albums
-     * @param id
-     *            the id
-     */
-    public LastFmCoversRunnable(ContextListener listener, LastFmService service, List<? extends AlbumInfo> albums, long id, AudioObject audioObject) {
-        this.listener = listener;
-        this.service = service;
-        this.albums = albums;
-        this.id = id;
-        this.audioObject = audioObject;
-    }
+  /**
+   * Instantiates a new audio scrobbler covers runnable.
+   * 
+   * @param listener
+   *          the listener
+   * @param service
+   *          the service
+   * @param albums
+   *          the albums
+   * @param id
+   *          the id
+   */
+  public LastFmCoversRunnable(ContextListener listener, LastFmService service,
+      List<? extends AlbumInfo> albums, long id, AudioObject audioObject) {
+    this.listener = listener;
+    this.service = service;
+    this.albums = albums;
+    this.id = id;
+    this.audioObject = audioObject;
+  }
 
-    /**
-     * Interrupt.
-     */
-    public void interrupt() {
-        interrupted = true;
-    }
+  /**
+   * Interrupt.
+   */
+  public void interrupt() {
+    interrupted = true;
+  }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Runnable#run()
-     */
-    public void run() {
-        if (albums != null) {
-            SwingUtilities.invokeLater(new Runnable() {
-                public void run() {
-                    listener.notifyStartRetrievingCovers(id);
-                }
-            });
-            for (int i = 0; i < albums.size(); i++) {
-                final Image img;
-                final AlbumInfo album = albums.get(i);
-                if (!interrupted) {
-                    img = service.getImage(album);
-                } else {
-                    img = null;
-                }
-
-                if (!interrupted) {
-                    SwingUtilities.invokeLater(new Runnable() {
-                        public void run() {
-                            listener.notifyCoverRetrieved(album, img, id);
-                        }
-                    });
-                }
-            }
+  /*
+   * (non-Javadoc)
+   * 
+   * @see java.lang.Runnable#run()
+   */
+  public void run() {
+    if (albums != null) {
+      SwingUtilities.invokeLater(new Runnable() {
+        public void run() {
+          listener.notifyStartRetrievingCovers(id);
         }
+      });
+      for (int i = 0; i < albums.size(); i++) {
+        final Image img;
+        final AlbumInfo album = albums.get(i);
+        if (!interrupted) {
+          img = service.getImage(album);
+        } else {
+          img = null;
+        }
+
+        if (!interrupted) {
+          SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+              listener.notifyCoverRetrieved(album, img, id);
+            }
+          });
+        }
+      }
     }
+  }
 }

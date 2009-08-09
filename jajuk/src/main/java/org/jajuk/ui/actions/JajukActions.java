@@ -33,11 +33,11 @@ public enum JajukActions {
    * Used when the repeat status was changed.
    */
   REPEAT_MODE,
-  
+
   /**
    * Used when the repeat all status was changed.
    */
-  REPEAT_ALL_MODE, 
+  REPEAT_ALL_MODE,
 
   /**
    * Used when the shuffle mode was changed
@@ -53,8 +53,8 @@ public enum JajukActions {
    * Used when the intro mode was changed
    */
   INTRO_MODE,
-  
-   /**
+
+  /**
    * Used when the karaoke mode was changed
    */
   KARAOKE_MODE,
@@ -534,5 +534,5 @@ public enum JajukActions {
    * fullscreen
    */
   FULLSCREEN_JAJUK
- 
+
 }

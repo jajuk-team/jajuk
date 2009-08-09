@@ -270,7 +270,7 @@ public final class SearchJPanel extends JXPanel implements Observer, ActionListe
 
     // register to player events
     ObservationManager.register(this);
-    
+
     // Update initial status
     UtilFeatures.updateStatus(this);
   }

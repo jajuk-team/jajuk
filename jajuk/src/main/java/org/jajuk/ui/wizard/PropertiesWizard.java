@@ -612,7 +612,7 @@ public class PropertiesWizard extends JajukJDialog implements ActionListener {
         }
         index++;
       }
-     
+
       // Add title
       JLabel jlName = new JLabel("<html><b>" + Messages.getString("PropertiesWizard.1")
           + "</b></html>");

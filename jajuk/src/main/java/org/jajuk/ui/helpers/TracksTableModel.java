@@ -74,7 +74,7 @@ public class TracksTableModel extends JajukTableModel {
 
     vColNames.add(Messages.getString(Const.PROPERTY_SEPARATOR + Const.XML_AUTHOR));
     idList.add(Const.XML_AUTHOR);
-    
+
     vColNames.add(Messages.getString(Const.PROPERTY_SEPARATOR + Const.XML_ALBUM_ARTIST));
     idList.add(Const.XML_ALBUM_ARTIST);
 
@@ -95,7 +95,7 @@ public class TracksTableModel extends JajukTableModel {
 
     vColNames.add(Messages.getString(Const.PROPERTY_SEPARATOR + Const.XML_TRACK_ORDER));
     idList.add(Const.XML_TRACK_ORDER);
-    
+
     vColNames.add(Messages.getString(Const.PROPERTY_SEPARATOR + Const.XML_TRACK_DISC_NUMBER));
     idList.add(Const.XML_TRACK_DISC_NUMBER);
 
@@ -165,7 +165,8 @@ public class TracksTableModel extends JajukTableModel {
     boolean bDiscovery = (columnsToShow != null && columnsToShow
         .contains(Const.XML_TRACK_DISCOVERY_DATE));
     boolean bOrder = (columnsToShow != null && columnsToShow.contains(Const.XML_TRACK_ORDER));
-    boolean bDiscNumber = (columnsToShow != null && columnsToShow.contains(Const.XML_TRACK_DISC_NUMBER));
+    boolean bDiscNumber = (columnsToShow != null && columnsToShow
+        .contains(Const.XML_TRACK_DISC_NUMBER));
     boolean bYear = (columnsToShow != null && columnsToShow.contains(Const.XML_YEAR));
     boolean bHits = (columnsToShow != null && columnsToShow.contains(Const.XML_TRACK_HITS));
     boolean bFiles = (columnsToShow != null && columnsToShow.contains(Const.XML_FILES));
@@ -219,7 +220,7 @@ public class TracksTableModel extends JajukTableModel {
         oValues[iRow][3] = "";
       }
       bCellEditable[iRow][3] = bHasATagEditor;
-      
+
       // Album Artist
       if (bAlbumArtist) {
         oValues[iRow][4] = track.getAlbumArtist();
@@ -286,7 +287,7 @@ public class TracksTableModel extends JajukTableModel {
         oValues[iRow][11] = "";
       }
       bCellEditable[iRow][11] = bHasATagEditor;
-      
+
       // Year
       if (bYear) {
         oValues[iRow][12] = track.getYear().getValue();

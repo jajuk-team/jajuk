@@ -128,7 +128,7 @@ public class PlaylistTableModel extends JajukTableModel {
     // Author
     vColNames.add(Messages.getString(Const.PROPERTY_SEPARATOR + Const.XML_TRACK_AUTHOR));
     idList.add(Const.XML_TRACK_AUTHOR);
-    
+
     // Author
     vColNames.add(Messages.getString(Const.PROPERTY_SEPARATOR + Const.XML_ALBUM_ARTIST));
     idList.add(Const.XML_ALBUM_ARTIST);
@@ -160,7 +160,7 @@ public class PlaylistTableModel extends JajukTableModel {
     // Order
     vColNames.add(Messages.getString(Const.PROPERTY_SEPARATOR + Const.XML_TRACK_ORDER));
     idList.add(Const.XML_TRACK_ORDER);
-    
+
     // Disc number
     vColNames.add(Messages.getString(Const.PROPERTY_SEPARATOR + Const.XML_TRACK_DISC_NUMBER));
     idList.add(Const.XML_TRACK_DISC_NUMBER);
@@ -209,8 +209,7 @@ public class PlaylistTableModel extends JajukTableModel {
     boolean bName = (columnsToShow != null && columnsToShow.contains(Const.XML_NAME));
     boolean bAlbum = (columnsToShow != null && columnsToShow.contains(Const.XML_ALBUM));
     boolean bAuthor = (columnsToShow != null && columnsToShow.contains(Const.XML_AUTHOR));
-    boolean bAlbumArtist = (columnsToShow != null && columnsToShow
-        .contains(Const.XML_ALBUM_ARTIST));
+    boolean bAlbumArtist = (columnsToShow != null && columnsToShow.contains(Const.XML_ALBUM_ARTIST));
     boolean bStyle = (columnsToShow != null && columnsToShow.contains(Const.XML_STYLE));
     boolean bYear = (columnsToShow != null && columnsToShow.contains(Const.XML_YEAR));
     boolean bRate = (columnsToShow != null && columnsToShow.contains(Const.XML_TRACK_RATE));
@@ -219,7 +218,8 @@ public class PlaylistTableModel extends JajukTableModel {
     boolean bDiscovery = (columnsToShow != null && columnsToShow
         .contains(Const.XML_TRACK_DISCOVERY_DATE));
     boolean bOrder = (columnsToShow != null && columnsToShow.contains(Const.XML_TRACK_ORDER));
-    boolean bDiscNumber = (columnsToShow != null && columnsToShow.contains(Const.XML_TRACK_DISC_NUMBER));
+    boolean bDiscNumber = (columnsToShow != null && columnsToShow
+        .contains(Const.XML_TRACK_DISC_NUMBER));
     boolean bHits = (columnsToShow != null && columnsToShow.contains(Const.XML_TRACK_HITS));
     boolean bDirectory = (columnsToShow != null && columnsToShow.contains(Const.XML_DIRECTORY));
     boolean bDevice = (columnsToShow != null && columnsToShow.contains(Const.XML_DEVICE));
@@ -265,7 +265,7 @@ public class PlaylistTableModel extends JajukTableModel {
       } else {
         oValues[iRow][3] = "";
       }
-      
+
       // AlbumArtist
       if (bAlbumArtist) {
         oValues[iRow][4] = bf.getTrack().getAlbumArtist();
@@ -321,7 +321,7 @@ public class PlaylistTableModel extends JajukTableModel {
       } else {
         oValues[iRow][11] = "";
       }
-      
+
       // Disc number
       if (bDiscNumber) {
         oValues[iRow][12] = bf.getTrack().getDiscNumber();

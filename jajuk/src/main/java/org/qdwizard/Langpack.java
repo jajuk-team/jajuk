@@ -36,8 +36,8 @@ public class Langpack {
 
   // Strings content : "Finish", "Cancel", "Previous", "Next"
   static private Map<Locale, List<String>> strings = new HashMap<Locale, List<String>>(4);
-  
-  /** static set of strings, can contain non-ISO8859 chars **/
+
+  /** static set of strings, can contain non-ISO8859 chars * */
   static {
     strings.put(new Locale("ca"), Arrays.asList("Finalitzar", "Cancelar", "Anterior", "Següent"));
     strings.put(new Locale("cs"), Arrays.asList("Dokončit", "Storno", "Předchozí", "Další"));
@@ -56,7 +56,7 @@ public class Langpack {
   private static Locale locale = new Locale("en");
 
   /**
-   * private constructor for utility class with only static methods 
+   * private constructor for utility class with only static methods
    */
   private Langpack() {
     super();

@@ -32,7 +32,7 @@ public final class Base64Coder {
     for (char c = 'A'; c <= 'Z'; c++) {
       map1[i++] = c;
     }
-    
+
     for (char c = 'a'; c <= 'z'; c++) {
       map1[i++] = c;
     }

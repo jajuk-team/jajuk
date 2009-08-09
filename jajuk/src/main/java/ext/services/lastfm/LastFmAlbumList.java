@@ -35,67 +35,67 @@ import net.roarsoftware.lastfm.Album;
  */
 public class LastFmAlbumList implements AlbumListInfo {
 
-    /** The artist. */
-    private String artist;
+  /** The artist. */
+  private String artist;
 
-    /** The albums. */
-    private List<AlbumInfo> albums;
+  /** The albums. */
+  private List<AlbumInfo> albums;
 
-    /**
-     * Gets the album list.
-     * 
-     * @return the album list
-     */
-    public static AlbumListInfo getAlbumList(Collection<Album> as, @SuppressWarnings("unused")
-    String artist) {
-        List<AlbumInfo> albums = new ArrayList<AlbumInfo>();
-        AlbumListInfo albumList = new LastFmAlbumList();
+  /**
+   * Gets the album list.
+   * 
+   * @return the album list
+   */
+  public static AlbumListInfo getAlbumList(Collection<Album> as, @SuppressWarnings("unused")
+  String artist) {
+    List<AlbumInfo> albums = new ArrayList<AlbumInfo>();
+    AlbumListInfo albumList = new LastFmAlbumList();
 
-        for (Album a : as) {
-            AlbumInfo album = LastFmAlbum.getAlbum(a, null);
-            albums.add(album);
-        }
-
-        albumList.setAlbums(albums);
-        return albumList;
+    for (Album a : as) {
+      AlbumInfo album = LastFmAlbum.getAlbum(a, null);
+      albums.add(album);
     }
 
-    /**
-     * Gets the albums.
-     * 
-     * @return the albums
-     */
-    public List<AlbumInfo> getAlbums() {
-        return albums;
-    }
+    albumList.setAlbums(albums);
+    return albumList;
+  }
 
-    /**
-     * Gets the artist.
-     * 
-     * @return the artist
-     */
-    public String getArtist() {
-        return artist;
-    }
+  /**
+   * Gets the albums.
+   * 
+   * @return the albums
+   */
+  public List<AlbumInfo> getAlbums() {
+    return albums;
+  }
 
-    /**
-     * Sets the albums.
-     * 
-     * @param albums
-     *            the albums to set
-     */
-    public void setAlbums(List<? extends AlbumInfo> albums) {
-        this.albums = albums != null ? new ArrayList<AlbumInfo>(albums) : null;
-    }
+  /**
+   * Gets the artist.
+   * 
+   * @return the artist
+   */
+  public String getArtist() {
+    return artist;
+  }
 
-    /**
-     * Sets the artist.
-     * 
-     * @param artist
-     *            the artist to set
-     */
-    public void setArtist(String artist) {
-        this.artist = artist;
-    }
+  /**
+   * Sets the albums.
+   * 
+   * @param albums
+   *          the albums to set
+   */
+  public void setAlbums(List<? extends AlbumInfo> albums) {
+    this.albums = albums != null ? new ArrayList<AlbumInfo>(albums) : null;
+  }
+
+  /**
+   * Sets the artist.
+   * 
+   * @param artist
+   *          the artist to set
+   */
+  public void setArtist(String artist) {
+    this.artist = artist;
+  }
 
 }

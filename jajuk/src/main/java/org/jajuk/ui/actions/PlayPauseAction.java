@@ -34,8 +34,8 @@ public class PlayPauseAction extends JajukAction {
   private static boolean bAlreadyLaunching = false;
 
   PlayPauseAction() {
-    super(Messages.getString("JajukWindow.10"), IconLoader.getIcon(JajukIcons.PLAYER_PAUSE), "ctrl P",
-        false, true);
+    super(Messages.getString("JajukWindow.10"), IconLoader.getIcon(JajukIcons.PLAYER_PAUSE),
+        "ctrl P", false, true);
     setShortDescription(Messages.getString("JajukWindow.26"));
   }
 

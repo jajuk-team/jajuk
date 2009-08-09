@@ -114,6 +114,7 @@ public class Year extends LogicalItem implements Comparable<Year> {
 
   /**
    * Return whether this year looks valid or not
+   * 
    * @return
    */
   public boolean looksValid() {

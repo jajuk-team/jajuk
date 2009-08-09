@@ -85,13 +85,13 @@ public class LyricWikiProvider extends GenericProvider {
       ret = ret.replaceAll("&#8211;", "-");
       ret = ret.replaceAll("\u0092", "'");
       ret = ret.replaceAll("\u009c", "oe");
-      ret = ret.replaceAll("<p>","\n");
-      ret = ret.replaceAll("<i>","");
-      ret = ret.replaceAll("</i>","");
-      ret = ret.replaceAll("<b>","");
-      ret = ret.replaceAll("</b>","");
+      ret = ret.replaceAll("<p>", "\n");
+      ret = ret.replaceAll("<i>", "");
+      ret = ret.replaceAll("</i>", "");
+      ret = ret.replaceAll("<b>", "");
+      ret = ret.replaceAll("</b>", "");
       return ret;
-      
+
     } else {
       return null;
     }

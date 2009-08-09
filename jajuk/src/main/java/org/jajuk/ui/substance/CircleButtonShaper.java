@@ -42,7 +42,9 @@ public class CircleButtonShaper extends ButtonShaper {
     return "Circle";
   }
 
-   /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see org.jvnet.substance.shaper.SubstanceButtonShaper#getButtonOutline(javax.swing.AbstractButton)
    */
   public GeneralPath getButtonOutline(AbstractButton button) {
@@ -52,7 +54,5 @@ public class CircleButtonShaper extends ButtonShaper {
     Shape shape = new Ellipse2D.Double(0, 0, width, height);
     return new GeneralPath(shape);
   }
-
-  
 
 }

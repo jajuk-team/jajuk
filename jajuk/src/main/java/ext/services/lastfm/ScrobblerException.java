@@ -31,32 +31,32 @@ import org.jajuk.util.UtilString;
  */
 public class ScrobblerException extends Exception {
 
-    private static final long serialVersionUID = -7383228060002549115L;
+  private static final long serialVersionUID = -7383228060002549115L;
 
-    private int status = -1;
+  private int status = -1;
 
-    /**
-     * Instantiates a new scrobbler exception.
-     * 
-     * @param cause
-     *            the cause
-     */
-    public ScrobblerException(String cause) {
-        super(UtilString.concat("Error submitting to Last.fm. Cause: ", cause));
-    }
+  /**
+   * Instantiates a new scrobbler exception.
+   * 
+   * @param cause
+   *          the cause
+   */
+  public ScrobblerException(String cause) {
+    super(UtilString.concat("Error submitting to Last.fm. Cause: ", cause));
+  }
 
-    public ScrobblerException(int status) {
-        super(UtilString.concat("Error submitting to Last.fm. Status: ", Integer.valueOf(status)));
-        this.status = status;
-    }
+  public ScrobblerException(int status) {
+    super(UtilString.concat("Error submitting to Last.fm. Status: ", Integer.valueOf(status)));
+    this.status = status;
+  }
 
-    /**
-     * Returns the status (-1 if no status was set)
-     * 
-     * @return the status
-     */
-    public int getStatus() {
-        return status;
-    }
+  /**
+   * Returns the status (-1 if no status was set)
+   * 
+   * @return the status
+   */
+  public int getStatus() {
+    return status;
+  }
 
 }

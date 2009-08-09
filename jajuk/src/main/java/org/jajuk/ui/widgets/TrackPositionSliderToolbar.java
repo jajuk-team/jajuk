@@ -58,8 +58,7 @@ public class TrackPositionSliderToolbar extends JajukJToolbar implements ChangeL
     MouseWheelListener, Observer {
 
   /**
-   * Generic playing position toolbar, 
-   * used in information panel a full screen  
+   * Generic playing position toolbar, used in information panel a full screen
    */
   private static final long serialVersionUID = 1L;
 
@@ -131,9 +130,7 @@ public class TrackPositionSliderToolbar extends JajukJToolbar implements ChangeL
   /*
    * (non-Javadoc)
    * 
-   * @see
-   * javax.swing.event.ChangeListener#stateChanged(javax.swing.event.ChangeEvent
-   * )
+   * @see javax.swing.event.ChangeListener#stateChanged(javax.swing.event.ChangeEvent )
    */
   public void stateChanged(ChangeEvent e) {
     if (e.getSource() == jsPosition && !jsPosition.getValueIsAdjusting()) {
@@ -200,8 +197,8 @@ public class TrackPositionSliderToolbar extends JajukJToolbar implements ChangeL
     }
     switch (timeFormat) {
     /*
-     * same as default... case 0: { string = UtilString.formatTimeBySec(lTime) +
-     * " / " + UtilString.formatTimeBySec(length); break; }
+     * same as default... case 0: { string = UtilString.formatTimeBySec(lTime) + " / " +
+     * UtilString.formatTimeBySec(length); break; }
      */
     case 1: {
       string = "-" + UtilString.formatTimeBySec(length - lTime) + " / "
@@ -263,7 +260,8 @@ public class TrackPositionSliderToolbar extends JajukJToolbar implements ChangeL
     } else {
       SwingUtilities.invokeLater(new Runnable() {
         public void run() {
-          if (JajukEvents.HEART_BEAT.equals(subject) && !QueueModel.isStopped() && !Player.isPaused()) {
+          if (JajukEvents.HEART_BEAT.equals(subject) && !QueueModel.isStopped()
+              && !Player.isPaused()) {
             long length = JajukTimer.getInstance().getCurrentTrackTotalTime();
             long lTime = JajukTimer.getInstance().getCurrentTrackEllapsedTime();
             int iPos = (int) (100 * JajukTimer.getInstance().getCurrentTrackPosition());

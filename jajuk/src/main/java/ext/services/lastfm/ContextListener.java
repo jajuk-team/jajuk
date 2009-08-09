@@ -32,136 +32,134 @@ import java.util.List;
  */
 public interface ContextListener {
 
-    /**
-     * Gets the albums.
-     * 
-     * @return the albums
-     */
-    public List<AlbumInfo> getAlbums();
+  /**
+   * Gets the albums.
+   * 
+   * @return the albums
+   */
+  public List<AlbumInfo> getAlbums();
 
-    /**
-     * Notify album retrieved.
-     * 
-     * @param file
-     *            the file
-     * @param id
-     *            the id
-     */
-    public void notifyAlbumRetrieved(AudioObject file, long id);
+  /**
+   * Notify album retrieved.
+   * 
+   * @param file
+   *          the file
+   * @param id
+   *          the id
+   */
+  public void notifyAlbumRetrieved(AudioObject file, long id);
 
-    /**
-     * Notify artist image.
-     * 
-     * @param img
-     *            the img
-     * @param id
-     *            the id
-     */
-    public void notifyArtistImage(Image img, long id);
+  /**
+   * Notify artist image.
+   * 
+   * @param img
+   *          the img
+   * @param id
+   *          the id
+   */
+  public void notifyArtistImage(Image img, long id);
 
-    /**
-     * Notify cover retrieved.
-     * 
-     * @param album
-     *            the album
-     * @param cover
-     *            the cover
-     * @param id
-     *            the id
-     */
-    public void notifyCoverRetrieved(AlbumInfo album, Image cover, long id);
+  /**
+   * Notify cover retrieved.
+   * 
+   * @param album
+   *          the album
+   * @param cover
+   *          the cover
+   * @param id
+   *          the id
+   */
+  public void notifyCoverRetrieved(AlbumInfo album, Image cover, long id);
 
-    /**
-     * Notify finish get similar artist.
-     * 
-     * @param a
-     *            the a
-     * @param img
-     *            the img
-     * @param id
-     *            the id
-     */
-    public void notifyFinishGetSimilarArtist(ArtistInfo a, Image img, long id);
+  /**
+   * Notify finish get similar artist.
+   * 
+   * @param a
+   *          the a
+   * @param img
+   *          the img
+   * @param id
+   *          the id
+   */
+  public void notifyFinishGetSimilarArtist(ArtistInfo a, Image img, long id);
 
-    /**
-     * Notify start retrieving artist images.
-     * 
-     * @param id
-     *            the id
-     */
-    public void notifyStartRetrievingArtistImages(long id);
+  /**
+   * Notify start retrieving artist images.
+   * 
+   * @param id
+   *          the id
+   */
+  public void notifyStartRetrievingArtistImages(long id);
 
-    /**
-     * Notify start retrieving covers.
-     * 
-     * @param id
-     *            the id
-     */
-    public void notifyStartRetrievingCovers(long id);
+  /**
+   * Notify start retrieving covers.
+   * 
+   * @param id
+   *          the id
+   */
+  public void notifyStartRetrievingCovers(long id);
 
-    /**
-     * Notify wiki info retrieved.
-     * 
-     * @param wikiText
-     *            the wiki text
-     * @param wikiURL
-     *            the wiki url
-     * @param id
-     *            the id
-     */
-    public void notifyWikiInfoRetrieved(String wikiText, String wikiURL, long id);
+  /**
+   * Notify wiki info retrieved.
+   * 
+   * @param wikiText
+   *          the wiki text
+   * @param wikiURL
+   *          the wiki url
+   * @param id
+   *          the id
+   */
+  public void notifyWikiInfoRetrieved(String wikiText, String wikiURL, long id);
 
-    
-  
-    /**
-     * Sets the album.
-     * 
-     * @param album
-     *            the album
-     * @param id
-     *            the id
-     */
-    public void setAlbum(AlbumInfo album, long id);
+  /**
+   * Sets the album.
+   * 
+   * @param album
+   *          the album
+   * @param id
+   *          the id
+   */
+  public void setAlbum(AlbumInfo album, long id);
 
-    /**
-     * Sets the albums.
-     * 
-     * @param album
-     *            the album
-     * @param id
-     *            the id
-     */
-    public void setAlbums(List<? extends AlbumInfo> album, long id);
+  /**
+   * Sets the albums.
+   * 
+   * @param album
+   *          the album
+   * @param id
+   *          the id
+   */
+  public void setAlbums(List<? extends AlbumInfo> album, long id);
 
-    /**
-     * Sets the image.
-     * 
-     * @param img
-     *            the img
-     * @param ao
-     *            audio object
-     * @param id
-     *            the id
-     */
-    public void setImage(Image img, AudioObject ao, long id);
+  /**
+   * Sets the image.
+   * 
+   * @param img
+   *          the img
+   * @param ao
+   *          audio object
+   * @param id
+   *          the id
+   */
+  public void setImage(Image img, AudioObject ao, long id);
 
-    /**
-     * Sets the last album retrieved.
-     * 
-     * @param album
-     *            the album
-     * @param id
-     *            the id
-     */
-    public void setLastAlbumRetrieved(String album, long id);
+  /**
+   * Sets the last album retrieved.
+   * 
+   * @param album
+   *          the album
+   * @param id
+   *          the id
+   */
+  public void setLastAlbumRetrieved(String album, long id);
 
-    /**
-     * Sets the last artist retrieved.
-     * 
-     * @param artist
-     *            the artist
-     * @param id
-     *            the id
-     */
-    public void setLastArtistRetrieved(String artist, long id);
+  /**
+   * Sets the last artist retrieved.
+   * 
+   * @param artist
+   *          the artist
+   * @param id
+   *          the id
+   */
+  public void setLastArtistRetrieved(String artist, long id);
 }

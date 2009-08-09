@@ -98,10 +98,10 @@ public class JajukTable extends JXTable implements Observer, TableColumnModelLis
   /**
    * Constructor
    * 
-   * @param model
-   *          : model to use
-   * @param bSortable
-   *          : is this table sortable
+   * @param model :
+   *          model to use
+   * @param bSortable :
+   *          is this table sortable
    * @sConf: configuration variable used to store columns conf
    */
   public JajukTable(TableModel model, boolean bSortable, String sConf) {
@@ -128,8 +128,8 @@ public class JajukTable extends JXTable implements Observer, TableColumnModelLis
   /**
    * Constructor
    * 
-   * @param model
-   *          : model to use
+   * @param model :
+   *          model to use
    * @sConf: configuration variable used to store columns conf
    */
   public JajukTable(TableModel model, String sConf) {

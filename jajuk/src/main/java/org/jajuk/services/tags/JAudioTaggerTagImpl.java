@@ -237,7 +237,8 @@ public class JAudioTaggerTagImpl implements ITagImpl, Const {
   }
 
   /**
-   * Create a void tag is needed and convert an ID3 V1.0 tag into V2.4 if any <br>
+   * Create a void tag is needed and convert an ID3 V1.0 tag into V2.4 if any
+   * <br>
    * Tags are committed when leaving this method
    * 
    * @throws Exception
@@ -266,8 +267,7 @@ public class JAudioTaggerTagImpl implements ITagImpl, Const {
       newTag.setYear(tag.getFirstYear());
       newTag.set(newTag.createTagField(TagFieldKey.ALBUM_ARTIST, tag
           .getFirst(TagFieldKey.ALBUM_ARTIST)));
-      newTag.set(newTag.createTagField(TagFieldKey.DISC_NO, tag
-          .getFirst(TagFieldKey.DISC_NO)));
+      newTag.set(newTag.createTagField(TagFieldKey.DISC_NO, tag.getFirst(TagFieldKey.DISC_NO)));
       // Delete the id3 V1 tag
       AudioFileIO.delete(audioFile);
       // Add the new one
@@ -334,7 +334,7 @@ public class JAudioTaggerTagImpl implements ITagImpl, Const {
    * @see org.jajuk.services.tags.ITagImpl#getDiscNumber()
    */
   public long getDiscNumber() throws Exception {
-    
+
     String sDiscNumber = this.tag.getFirst(TagFieldKey.DISC_NO);
     if (UtilString.isVoid(sDiscNumber)) {
       return 01;

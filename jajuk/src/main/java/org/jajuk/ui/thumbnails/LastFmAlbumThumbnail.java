@@ -140,7 +140,7 @@ public class LastFmAlbumThumbnail extends AbstractThumbnail {
           fullTitle += " (" + releaseDate + ")";
         }
         int textLength = 15;
-        if (isArtistView()){
+        if (isArtistView()) {
           textLength = 50;
         }
         if (bKnown) {

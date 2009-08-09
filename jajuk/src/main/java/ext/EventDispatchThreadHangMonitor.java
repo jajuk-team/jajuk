@@ -52,7 +52,7 @@ public final class EventDispatchThreadHangMonitor extends EventQueue {
 
   private EventDispatchThreadHangMonitor() {
     super();
-    
+
     initTimer();
   }
 

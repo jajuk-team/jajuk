@@ -179,6 +179,7 @@ public class Type extends PhysicalItem implements Comparable<Type> {
 
   /**
    * Return whether this type is video
+   * 
    * @return whether this type is video
    */
   public boolean isVideo() {

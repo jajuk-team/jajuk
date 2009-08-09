@@ -36,96 +36,96 @@ import net.roarsoftware.lastfm.ImageSize;
  */
 public class LastFmSimilarArtists implements SimilarArtistsInfo {
 
-    /** The Constant MAX_SIMILAR_ARTISTS. */
-    public static final int MAX_SIMILAR_ARTISTS = 15;
+  /** The Constant MAX_SIMILAR_ARTISTS. */
+  public static final int MAX_SIMILAR_ARTISTS = 15;
 
-    /** The artist name. */
-    private String artistName;
+  /** The artist name. */
+  private String artistName;
 
-    /** The picture. */
-    private String picture;
+  /** The picture. */
+  private String picture;
 
-    /** The artists. */
-    private List<ArtistInfo> artists;
+  /** The artists. */
+  private List<ArtistInfo> artists;
 
-    /**
-     * Gets the similar artists.
-     * 
-     * @return the similar artists
-     */
-    public static SimilarArtistsInfo getSimilarArtists(Collection<Artist> as, Artist a) {
-        List<Artist> list = new ArrayList<Artist>(as);
-        LastFmSimilarArtists similar = new LastFmSimilarArtists();
+  /**
+   * Gets the similar artists.
+   * 
+   * @return the similar artists
+   */
+  public static SimilarArtistsInfo getSimilarArtists(Collection<Artist> as, Artist a) {
+    List<Artist> list = new ArrayList<Artist>(as);
+    LastFmSimilarArtists similar = new LastFmSimilarArtists();
 
-        similar.artistName = a.getName();
-        similar.picture = a.getImageURL(ImageSize.LARGE);
+    similar.artistName = a.getName();
+    similar.picture = a.getImageURL(ImageSize.LARGE);
 
-        similar.artists = new ArrayList<ArtistInfo>();
-        for (int i = 0; i < list.size(); i++) {
-            if (i == MAX_SIMILAR_ARTISTS) {
-                break;
-            }
-            similar.artists.add(LastFmArtist.getArtist(list.get(i)));
-        }
-
-        return similar;
+    similar.artists = new ArrayList<ArtistInfo>();
+    for (int i = 0; i < list.size(); i++) {
+      if (i == MAX_SIMILAR_ARTISTS) {
+        break;
+      }
+      similar.artists.add(LastFmArtist.getArtist(list.get(i)));
     }
 
-    /**
-     * Gets the artist name.
-     * 
-     * @return the artist name
-     */
-    public String getArtistName() {
-        return artistName;
-    }
+    return similar;
+  }
 
-    /**
-     * Gets the artists.
-     * 
-     * @return the artists
-     */
-    public List<ArtistInfo> getArtists() {
-        return artists;
-    }
+  /**
+   * Gets the artist name.
+   * 
+   * @return the artist name
+   */
+  public String getArtistName() {
+    return artistName;
+  }
 
-    /**
-     * Gets the picture.
-     * 
-     * @return the picture
-     */
-    public String getPicture() {
-        return picture;
-    }
+  /**
+   * Gets the artists.
+   * 
+   * @return the artists
+   */
+  public List<ArtistInfo> getArtists() {
+    return artists;
+  }
 
-    /**
-     * Sets the artist name.
-     * 
-     * @param artistName
-     *            the artistName to set
-     */
-    public void setArtistName(String artistName) {
-        this.artistName = artistName;
-    }
+  /**
+   * Gets the picture.
+   * 
+   * @return the picture
+   */
+  public String getPicture() {
+    return picture;
+  }
 
-    /**
-     * Sets the artists.
-     * 
-     * @param artists
-     *            the artists to set
-     */
-    public void setArtists(List<? extends ArtistInfo> artists) {
-        this.artists = artists != null ? new ArrayList<ArtistInfo>(artists) : null;
-    }
+  /**
+   * Sets the artist name.
+   * 
+   * @param artistName
+   *          the artistName to set
+   */
+  public void setArtistName(String artistName) {
+    this.artistName = artistName;
+  }
 
-    /**
-     * Sets the picture.
-     * 
-     * @param picture
-     *            the picture to set
-     */
-    public void setPicture(String picture) {
-        this.picture = picture;
-    }
+  /**
+   * Sets the artists.
+   * 
+   * @param artists
+   *          the artists to set
+   */
+  public void setArtists(List<? extends ArtistInfo> artists) {
+    this.artists = artists != null ? new ArrayList<ArtistInfo>(artists) : null;
+  }
+
+  /**
+   * Sets the picture.
+   * 
+   * @param picture
+   *          the picture to set
+   */
+  public void setPicture(String picture) {
+    this.picture = picture;
+  }
 
 }

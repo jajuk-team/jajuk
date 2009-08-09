@@ -193,8 +193,7 @@ public class StylesSelectionDialog extends JajukJDialog implements ActionListene
   /*
    * (non-Javadoc)
    * 
-   * @see
-   * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+   * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
    */
   public void actionPerformed(ActionEvent ae) {
     if (ae.getSource().equals(jcbAmbiences)) {

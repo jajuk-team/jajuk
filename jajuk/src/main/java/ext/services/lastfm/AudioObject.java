@@ -29,130 +29,130 @@ package ext.services.lastfm;
  */
 public interface AudioObject {
 
-    /**
-     * Gets the album.
-     * 
-     * @return the album
-     */
-    public String getAlbum();
+  /**
+   * Gets the album.
+   * 
+   * @return the album
+   */
+  public String getAlbum();
 
-    /**
-     * Gets the album artist.
-     * 
-     * @return the album artist
-     */
-    public String getAlbumArtist();
+  /**
+   * Gets the album artist.
+   * 
+   * @return the album artist
+   */
+  public String getAlbumArtist();
 
-    /**
-     * Gets the artist.
-     * 
-     * @return the artist
-     */
-    public String getArtist();
+  /**
+   * Gets the artist.
+   * 
+   * @return the artist
+   */
+  public String getArtist();
 
-    /**
-     * Gets the bitrate.
-     * 
-     * @return the bitrate
-     */
-    public long getBitrate();
+  /**
+   * Gets the bitrate.
+   * 
+   * @return the bitrate
+   */
+  public long getBitrate();
 
-    /**
-     * Gets the composer.
-     * 
-     * @return the composer
-     */
-    public String getComposer();
+  /**
+   * Gets the composer.
+   * 
+   * @return the composer
+   */
+  public String getComposer();
 
-    /**
-     * Gets the duration.
-     * 
-     * @return the duration
-     */
-    public long getDuration();
+  /**
+   * Gets the duration.
+   * 
+   * @return the duration
+   */
+  public long getDuration();
 
-    /**
-     * Gets the frequency.
-     * 
-     * @return the frequency
-     */
-    public int getFrequency();
+  /**
+   * Gets the frequency.
+   * 
+   * @return the frequency
+   */
+  public int getFrequency();
 
-    /**
-     * Gets the genre.
-     * 
-     * @return the genre
-     */
-    public String getGenre();
+  /**
+   * Gets the genre.
+   * 
+   * @return the genre
+   */
+  public String getGenre();
 
-    /**
-     * Gets the lyrics.
-     * 
-     * @return the lyrics
-     */
-    public String getLyrics();
+  /**
+   * Gets the lyrics.
+   * 
+   * @return the lyrics
+   */
+  public String getLyrics();
 
-    /**
-     * Gets the stars.
-     * 
-     * @return the stars
-     */
-    public int getStars();
+  /**
+   * Gets the stars.
+   * 
+   * @return the stars
+   */
+  public int getStars();
 
-    /**
-     * Gets the title.
-     * 
-     * @return the title
-     */
-    public String getTitle();
+  /**
+   * Gets the title.
+   * 
+   * @return the title
+   */
+  public String getTitle();
 
-    /**
-     * Gets the title or file name.
-     * 
-     * @return the title or file name
-     */
-    public String getTitleOrFileName();
+  /**
+   * Gets the title or file name.
+   * 
+   * @return the title or file name
+   */
+  public String getTitleOrFileName();
 
-    /**
-     * Gets the track number.
-     * 
-     * @return the track number
-     */
-    public Integer getTrackNumber();
+  /**
+   * Gets the track number.
+   * 
+   * @return the track number
+   */
+  public Integer getTrackNumber();
 
-    /**
-     * Gets the url.
-     * 
-     * @return the url
-     */
-    public String getUrl();
+  /**
+   * Gets the url.
+   * 
+   * @return the url
+   */
+  public String getUrl();
 
-    /**
-     * Gets the year.
-     * 
-     * @return the year
-     */
-    public String getYear();
+  /**
+   * Gets the year.
+   * 
+   * @return the year
+   */
+  public String getYear();
 
-    /**
-     * Sets the stars.
-     * 
-     * @param stars
-     *            the new stars
-     */
-    public void setStars(int stars);
+  /**
+   * Sets the stars.
+   * 
+   * @param stars
+   *          the new stars
+   */
+  public void setStars(int stars);
 
-    /**
-     * Checks if is seekable.
-     * 
-     * @return true, if is seekable
-     */
-    public boolean isSeekable();
+  /**
+   * Checks if is seekable.
+   * 
+   * @return true, if is seekable
+   */
+  public boolean isSeekable();
 
-    /**
-     * Gets the disc number
-     * 
-     * @return
-     */
-    public Integer getDiscNumber();
+  /**
+   * Gets the disc number
+   * 
+   * @return
+   */
+  public Integer getDiscNumber();
 }

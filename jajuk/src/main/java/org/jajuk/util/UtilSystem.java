@@ -112,7 +112,7 @@ public final class UtilSystem {
    */
   private static JajukFileFilter fileFilter;
 
-   // Computes OS detection operations for perf reasons (can be called in loop
+  // Computes OS detection operations for perf reasons (can be called in loop
   // in refresh method for ie)
   static {
     final String sOS = (String) System.getProperties().get("os.name");
@@ -167,7 +167,8 @@ public final class UtilSystem {
    * Save a file in the same directory with name <filename>_YYYYmmddHHMM.xml and
    * with a given maximum Mb size for the file and its backup files
    * 
-   * @param file The file to back up
+   * @param file
+   *          The file to back up
    */
   public static void backupFile(final File file, final int iMB) {
     try {
@@ -320,7 +321,8 @@ public final class UtilSystem {
   /**
    * Copy recursively files and directories
    * 
-   * @param str The source to copy from, can be a directory or a file
+   * @param str
+   *          The source to copy from, can be a directory or a file
    * @param dst
    * @throws IOException
    * @throws JajukException
@@ -1102,7 +1104,7 @@ public final class UtilSystem {
       Messages.showErrorMessage(179);
     }
   }
-  
+
   /**
    * Return whether a process is still running
    * 

@@ -80,7 +80,8 @@ public class PasswordDialog extends JajukJDialog implements ActionListener {
         pf.requestFocusInWindow();
       }
     });
-    setLocation(JajukMainWindow.getInstance().getX() + JajukMainWindow.getInstance().getWidth() / 3,
+    setLocation(
+        JajukMainWindow.getInstance().getX() + JajukMainWindow.getInstance().getWidth() / 3,
         JajukMainWindow.getInstance().getY() + JajukMainWindow.getInstance().getHeight() / 3);
     pack();
     setVisible(true);

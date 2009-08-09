@@ -320,7 +320,8 @@ public class WebRadioWizard extends Wizard {
    * @see org.jajuk.ui.wizard.Wizard#getPreviousScreen(java.lang.Class)
    */
   @Override
-  public Class<? extends org.qdwizard.Screen> getPreviousScreen(Class<? extends org.qdwizard.Screen> screen) {
+  public Class<? extends org.qdwizard.Screen> getPreviousScreen(
+      Class<? extends org.qdwizard.Screen> screen) {
     return null;
   }
 
@@ -330,13 +331,14 @@ public class WebRadioWizard extends Wizard {
    * @see org.jajuk.ui.wizard.Wizard#getNextScreen(java.lang.Class)
    */
   @Override
-  public Class<? extends org.qdwizard.Screen> getNextScreen(Class<? extends org.qdwizard.Screen> screen) {
+  public Class<? extends org.qdwizard.Screen> getNextScreen(
+      Class<? extends org.qdwizard.Screen> screen) {
     return null;
   }
 
   public WebRadioWizard() {
-    super(Messages.getString("RadioWizard.7"), RadioPanel.class, null, JajukMainWindow.getInstance(),
-        LocaleManager.getLocale(), 600, 500);
+    super(Messages.getString("RadioWizard.7"), RadioPanel.class, null, JajukMainWindow
+        .getInstance(), LocaleManager.getLocale(), 600, 500);
     setHeaderIcon(IconLoader.getIcon(JajukIcons.WEBRADIO));
   }
 

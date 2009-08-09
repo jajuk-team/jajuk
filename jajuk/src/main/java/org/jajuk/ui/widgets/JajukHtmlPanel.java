@@ -78,7 +78,8 @@ public class JajukHtmlPanel extends HtmlPanel {
 
   /**
    * Display a wikipedia url
-   * @throws SAXException 
+   * 
+   * @throws SAXException
    */
   public void setURL(URL url) throws IOException, SAXException {
     setCursor(UtilGUI.WAIT_CURSOR);
@@ -86,7 +87,7 @@ public class JajukHtmlPanel extends HtmlPanel {
         + UtilSystem.getOnlyFile(url.toString() + ".html"));
     String sPage = DownloadManager.downloadText(url);
     // Leave if no result
-    if (sPage == null){
+    if (sPage == null) {
       return;
     }
     // Remove scripting
@@ -118,7 +119,8 @@ public class JajukHtmlPanel extends HtmlPanel {
 
   /**
    * Display a "nothing found" page
-   * @throws SAXException 
+   * 
+   * @throws SAXException
    * 
    * @throws Exception
    */
@@ -151,19 +153,18 @@ public class JajukHtmlPanel extends HtmlPanel {
     // which may be obtained from the Content-Type header
     // of an HTTP response.
     Reader reader = new InputStreamReader(new FileInputStream(page), "UTF-8");
-    try
-    {
+    try {
       // InputSourceImpl constructor with URI recommended
       // so the renderer can resolve page component URLs.
       InputSource is = new InputSourceImpl(reader, "file://" + page.getAbsolutePath());
       // A documentURI should be provided to resolve relative
       // URIs.
       Document document = dbi.parse(is);
-      
+
       // Now set document in panel. This is what causes the
       // document to render.
       setDocument(document, rcontext);
-    } finally {    
+    } finally {
       reader.close();
     }
   }

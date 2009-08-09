@@ -287,7 +287,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
   private JButton jbCatalogRefresh;
 
   private JCheckBox jcbShowPopups;
-  
+
   private JCheckBox jcbShowSystray;
 
   private JPanel jpUI;
@@ -446,7 +446,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
         } else if (e.getSource() == scbLanguage) {
           Locale locale = LocaleManager.getLocaleForDesc(((JLabel) scbLanguage.getSelectedItem())
               .getText());
-          final String sLocal = locale.getLanguage(); 
+          final String sLocal = locale.getLanguage();
           final String sPreviousLocal = LocaleManager.getLocale().getLanguage();
           if (!sPreviousLocal.equals(sLocal)) {
             // local has changed
@@ -513,7 +513,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
     }
     Locale locale = LocaleManager.getLocaleForDesc(((JLabel) scbLanguage.getSelectedItem())
         .getText());
-    final String sLocal = locale.getLanguage(); 
+    final String sLocal = locale.getLanguage();
     Conf.setProperty(Const.CONF_OPTIONS_LANGUAGE, sLocal);
     // force refresh of bestof files
     RatingManager.setRateHasChanged(true);
@@ -602,13 +602,13 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
     }
     Conf.setProperty(Const.CONF_FONTS_SIZE, Integer.toString(jsFonts.getValue()));
 
-    //Message if show systray is changed
+    // Message if show systray is changed
     final boolean bOldShowSystray = Conf.getBoolean(Const.CONF_SHOW_SYSTRAY);
-    if (bOldShowSystray != jcbShowSystray.isSelected()){
+    if (bOldShowSystray != jcbShowSystray.isSelected()) {
       someOptionsAppliedAtNextStartup = true;
     }
     Conf.setProperty(Const.CONF_SHOW_SYSTRAY, Boolean.toString(jcbShowSystray.isSelected()));
-    
+
     final int oldPerspectiveSize = Conf.getInt(Const.CONF_PERSPECTIVE_ICONS_SIZE);
     // If we perspective size changed and no font message have been already
     // displayed, display a message
@@ -872,6 +872,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
     jrbFile.addItemListener(this);
     sbSearch = new SearchBox() {
       private static final long serialVersionUID = 1L;
+
       public void valueChanged(final ListSelectionEvent e) {
         if (!e.getValueIsAdjusting()) {
           final SearchResult sr = sbSearch.getResult(sbSearch.getSelectedIndex());
@@ -1408,12 +1409,12 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
     });
     jcbShowPopups = new JCheckBox(Messages.getString("ParameterView.228"));
     jcbShowPopups.addActionListener(alUI);
-    
+
     jcbShowSystray = new JCheckBox(Messages.getString("ParameterView.271"));
-    //Disable this option if the tray is not supported by the platform
+    // Disable this option if the tray is not supported by the platform
     jcbShowSystray.setEnabled(SystemTray.isSupported());
     jcbShowSystray.setToolTipText(Messages.getString("ParameterView.272"));
-    
+
     JLabel jlPerspectiveSize = new JLabel(Messages.getString("ParameterView.246"));
     jsPerspectiveSize = new JSlider(16, 45, Conf.getInt(Const.CONF_PERSPECTIVE_ICONS_SIZE));
     jsPerspectiveSize.setSnapToTicks(true);
@@ -1518,10 +1519,10 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
       jtpMain.setSelectedIndex(0);
     }
     jtpMain.addChangeListener(this);
-    setLayout(new MigLayout("insets 10,gapx 10", "[grow]","[grow][]"));
+    setLayout(new MigLayout("insets 10,gapx 10", "[grow]", "[grow][]"));
     add(jtpMain, "wrap,span,grow");
     add(jbOK, "split 2,right,sg group1");
-    add(jbDefault,"sg group1");
+    add(jbDefault, "sg group1");
     // update widgets state
     updateSelection();
     ObservationManager.register(this);
@@ -1603,8 +1604,8 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
     jcbHotkeys.setSelected(Conf.getBoolean(Const.CONF_OPTIONS_HOTKEYS));
 
     jcbSyncTableTree.setSelected(Conf.getBoolean(Const.CONF_OPTIONS_SYNC_TABLE_TREE));
-    String rightLanguageDesc = LocaleManager
-        .getDescForLocale(Conf.getString(Const.CONF_OPTIONS_LANGUAGE));
+    String rightLanguageDesc = LocaleManager.getDescForLocale(Conf
+        .getString(Const.CONF_OPTIONS_LANGUAGE));
     // Select the right language
     int index = 0;
     for (String desc : LocaleManager.getLocalesDescs()) {

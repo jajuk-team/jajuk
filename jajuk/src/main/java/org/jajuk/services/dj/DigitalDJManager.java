@@ -211,14 +211,15 @@ public final class DigitalDJManager implements Observer {
    */
   public void loadAllDJs() {
     try {
-      File[] files = SessionService.getConfFileByPath(Const.FILE_DJ_DIR).listFiles(new FileFilter() {
-        public boolean accept(File file) {
-          if (file.isFile() && file.getPath().endsWith('.' + Const.XML_DJ_EXTENSION)) {
-            return true;
-          }
-          return false;
-        }
-      });
+      File[] files = SessionService.getConfFileByPath(Const.FILE_DJ_DIR).listFiles(
+          new FileFilter() {
+            public boolean accept(File file) {
+              if (file.isFile() && file.getPath().endsWith('.' + Const.XML_DJ_EXTENSION)) {
+                return true;
+              }
+              return false;
+            }
+          });
       for (File element : files) {
         try { // try each DJ to continue others if one fails
           DigitalDJFactory factory = DigitalDJFactory.getFactory(element);

@@ -41,10 +41,10 @@ import javax.xml.parsers.SAXParserFactory;
 
 import org.jajuk.base.Collection;
 import org.jajuk.base.FileManager;
+import org.jajuk.events.HighPriorityObserver;
 import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
-import org.jajuk.events.HighPriorityObserver;
 import org.jajuk.services.core.SessionService;
 import org.jajuk.ui.widgets.InformationJPanel;
 import org.jajuk.util.Conf;

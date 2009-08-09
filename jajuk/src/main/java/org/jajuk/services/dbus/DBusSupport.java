@@ -25,13 +25,11 @@ import org.freedesktop.dbus.DBusInterface;
  * This class describes the interface that we publish to D-Bus, each method is
  * available via D-Bus and invokes the corresponding Action
  * 
- * TODO: Audio player usually also provide the following type of information
- * - current track that is playing including additional information that is available
- * - next planned track(s)
- * - position in the current track
- * - remaining time in the current track
- * - current Volume
- *  
+ * TODO: Audio player usually also provide the following type of information -
+ * current track that is playing including additional information that is
+ * available - next planned track(s) - position in the current track - remaining
+ * time in the current track - current Volume
+ * 
  */
 @org.freedesktop.DBus.Description("Methods to remotely control Jajuk including play/pause/next/prev track and some other useful actions.")
 public interface DBusSupport extends DBusInterface {
@@ -77,23 +75,22 @@ public interface DBusSupport extends DBusInterface {
 
   @org.freedesktop.DBus.Description("Returns a string describing the currently played track as HTML snippet.")
   String currentHTML() throws Exception;
-  
+
   @org.freedesktop.DBus.Description("Returns a string describing the currently played track.")
   String current() throws Exception;
-  
+
   /*
-   * Actions that are not supported (yet): 
-   * REPEAT_MODE, SHUFFLE_MODE, CONTINUE_MODE, INTRO_MODE,
-   * DEVICE_NEW, DEVICE_DELETE, DEVICE_PROPERTIES, DEVICE_MOUNT, DEVICE_UNMOUNT,
-   * DEVICE_TEST, DEVICE_REFRESH, DEVICE_SYNCHRO, VIEW_REFRESH_REQUEST,
-   * VIEW_CLOSE_REQUEST, VIEW_SHOW_REQUEST, VIEW_SHOW_STATUS_CHANGED_REQUEST,
-   * VIEW_RESTORE_DEFAULTS, ALL_VIEW_RESTORE_DEFAULTS,
-   * VIEW_COMMAND_SELECT_HISTORY_ITEM, HELP_REQUIRED, SHOW_TRACES,
-   * COVER_REFRESH, COVER_CHANGE, PLAYLIST_REFRESH, PLAYLIST_CHANGED,
-   * FILE_LAUNCHED, HEART_BEAT, ZERO, ADD_HISTORY_ITEM, SPECIAL_MODE, BEST_OF,
-   * DJ, NOVELTIES, FINISH_ALBUM, PLAY_ERROR, SYNC_TREE_TABLE,
-   * CLEAR_HISTORY, SIMPLE_DEVICE_WIZARD, QUALITY, VOLUME_CHANGED,
-   * CREATE_PROPERTY, DELETE_PROPERTY, CUSTOM_PROPERTIES_ADD,
+   * Actions that are not supported (yet): REPEAT_MODE, SHUFFLE_MODE,
+   * CONTINUE_MODE, INTRO_MODE, DEVICE_NEW, DEVICE_DELETE, DEVICE_PROPERTIES,
+   * DEVICE_MOUNT, DEVICE_UNMOUNT, DEVICE_TEST, DEVICE_REFRESH, DEVICE_SYNCHRO,
+   * VIEW_REFRESH_REQUEST, VIEW_CLOSE_REQUEST, VIEW_SHOW_REQUEST,
+   * VIEW_SHOW_STATUS_CHANGED_REQUEST, VIEW_RESTORE_DEFAULTS,
+   * ALL_VIEW_RESTORE_DEFAULTS, VIEW_COMMAND_SELECT_HISTORY_ITEM, HELP_REQUIRED,
+   * SHOW_TRACES, COVER_REFRESH, COVER_CHANGE, PLAYLIST_REFRESH,
+   * PLAYLIST_CHANGED, FILE_LAUNCHED, HEART_BEAT, ZERO, ADD_HISTORY_ITEM,
+   * SPECIAL_MODE, BEST_OF, DJ, NOVELTIES, FINISH_ALBUM, PLAY_ERROR,
+   * SYNC_TREE_TABLE, CLEAR_HISTORY, SIMPLE_DEVICE_WIZARD, QUALITY,
+   * VOLUME_CHANGED, CREATE_PROPERTY, DELETE_PROPERTY, CUSTOM_PROPERTIES_ADD,
    * CUSTOM_PROPERTIES_REMOVE, FILE_NAME_CHANGED, RATE_CHANGED, TIP_OF_THE_DAY,
    * CHECK_FOR_UPDATES, SHOW_ABOUT, REPLAY_ALBUM, INC_RATE, CONFIGURE_DJS,
    * CONFIGURE_AMBIENCES, CONFIGURE_WEBRADIOS, OPTIONS, UNMOUNTED,

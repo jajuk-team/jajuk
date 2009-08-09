@@ -141,7 +141,8 @@ public final class AlbumManager extends ItemManager implements Observer {
     if (album != null) {
       // Due to a change in album artist default value, we have to force the
       // property
-      // TODO remove this test in 1.9, we assume all testers will have run this test once then
+      // TODO remove this test in 1.9, we assume all testers will have run this
+      // test once then
       if ("".equals(album.getAlbumArtist())) {
         album.setProperty(Const.XML_ALBUM_ARTIST, Const.UNKNOWN_AUTHOR);
       }

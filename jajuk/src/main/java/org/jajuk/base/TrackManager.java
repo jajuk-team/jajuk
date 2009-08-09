@@ -813,7 +813,7 @@ public final class TrackManager extends ItemManager {
         for (File file : dir.getFilesRecursively()) {
           Track track = file.getTrack();
           // Caution, do not add dups
-          if (!out.contains(track) ) {
+          if (!out.contains(track)) {
             out.add(file.getTrack());
           }
         }

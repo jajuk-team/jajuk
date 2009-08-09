@@ -66,7 +66,7 @@ public class PreferenceToolbar extends JajukJToolbar implements Observer {
 
   public PreferenceToolbar() {
     super();
-    
+
     jbBan = new JajukButton(ActionManager.getAction(JajukActions.BAN));
     // Preference combo:
     /*
@@ -161,7 +161,8 @@ public class PreferenceToolbar extends JajukJToolbar implements Observer {
           jcbPreference.setEnabled(true);
           jbBan.setEnabled(true);
           updateBanIcon();
-          setPreference(QueueModel.getPlayingFile().getTrack().getLongValue(Const.XML_TRACK_PREFERENCE));
+          setPreference(QueueModel.getPlayingFile().getTrack().getLongValue(
+              Const.XML_TRACK_PREFERENCE));
         } else if (JajukEvents.ZERO.equals(event.getSubject())
             || JajukEvents.PLAYER_STOP.equals(event.getSubject())) {
           jcbPreference.setEnabled(false);
@@ -192,7 +193,7 @@ public class PreferenceToolbar extends JajukJToolbar implements Observer {
       }
     }
   }
-  
+
   private class ComboBoxRenderer extends BasicComboBoxRenderer {
     private static final long serialVersionUID = -6943363556191659895L;
 

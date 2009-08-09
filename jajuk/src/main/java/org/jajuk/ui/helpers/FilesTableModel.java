@@ -101,7 +101,7 @@ public class FilesTableModel extends JajukTableModel {
 
     vColNames.add(Messages.getString(Const.PROPERTY_SEPARATOR + Const.XML_TRACK_ORDER));
     idList.add(Const.XML_TRACK_ORDER);
-    
+
     vColNames.add(Messages.getString(Const.PROPERTY_SEPARATOR + Const.XML_TRACK_DISC_NUMBER));
     idList.add(Const.XML_TRACK_DISC_NUMBER);
 
@@ -180,8 +180,7 @@ public class FilesTableModel extends JajukTableModel {
     boolean bTrackName = (columnsToShow != null && columnsToShow.contains(Const.XML_TRACK));
     boolean bAlbum = (columnsToShow != null && columnsToShow.contains(Const.XML_ALBUM));
     boolean bAuthor = (columnsToShow != null && columnsToShow.contains(Const.XML_AUTHOR));
-    boolean bAlbumArtist = (columnsToShow != null && columnsToShow
-        .contains(Const.XML_ALBUM_ARTIST));
+    boolean bAlbumArtist = (columnsToShow != null && columnsToShow.contains(Const.XML_ALBUM_ARTIST));
     boolean bStyle = (columnsToShow != null && columnsToShow.contains(Const.XML_STYLE));
     boolean bRate = (columnsToShow != null && columnsToShow.contains(Const.XML_TRACK_RATE));
     boolean bLength = (columnsToShow != null && columnsToShow.contains(Const.XML_TRACK_LENGTH));
@@ -193,7 +192,8 @@ public class FilesTableModel extends JajukTableModel {
     boolean bDiscovery = (columnsToShow != null && columnsToShow
         .contains(Const.XML_TRACK_DISCOVERY_DATE));
     boolean bOrder = (columnsToShow != null && columnsToShow.contains(Const.XML_TRACK_ORDER));
-    boolean bDiscNumber = (columnsToShow != null && columnsToShow.contains(Const.XML_TRACK_DISC_NUMBER));
+    boolean bDiscNumber = (columnsToShow != null && columnsToShow
+        .contains(Const.XML_TRACK_DISC_NUMBER));
     boolean bYear = (columnsToShow != null && columnsToShow.contains(Const.XML_YEAR));
     boolean bDirectory = (columnsToShow != null && columnsToShow.contains(Const.XML_DIRECTORY));
     boolean bFileDate = (columnsToShow != null && columnsToShow.contains(Const.XML_FILE_DATE));
@@ -325,7 +325,7 @@ public class FilesTableModel extends JajukTableModel {
         oValues[iRow][13] = "";
       }
       bCellEditable[iRow][13] = bHasATagEditor;
-      
+
       // Disc number
       if (bDiscNumber) {
         oValues[iRow][14] = file.getTrack().getDiscNumber();

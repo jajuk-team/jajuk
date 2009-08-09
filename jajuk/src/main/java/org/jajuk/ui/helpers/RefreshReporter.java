@@ -122,7 +122,8 @@ public class RefreshReporter {
   /**
    * Callback method when an update state is required. Can be overwritten for
    * specific behaviors
-   * @param dir 
+   * 
+   * @param dir
    */
   public void updateState(Directory dir) {
     // Intentionnal NOP

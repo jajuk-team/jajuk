@@ -99,9 +99,9 @@ public class NewPropertyWizard extends CustomPropertyWizard implements KeyListen
     jcbDefault.setEnabled(false);
     jdpDefault = new JXDatePicker();
     jdpDefault.setEnabled(false);
-    
-    //Add items
-    setLayout(new MigLayout("insets 15,gapx 10,gapy 15","[][grow]"));
+
+    // Add items
+    setLayout(new MigLayout("insets 15,gapx 10,gapy 15", "[][grow]"));
     add(jlItemChoice);
     add(jcbItemChoice, "grow,wrap");
     add(jlName);
@@ -109,10 +109,10 @@ public class NewPropertyWizard extends CustomPropertyWizard implements KeyListen
     add(jlClass);
     add(jcbClass, "grow,wrap");
     add(jlDefault);
-    add(jtfDefault,"split 3,grow");
+    add(jtfDefault, "split 3,grow");
     add(jcbDefault, "grow");
     add(jdpDefault, "grow,wrap");
-    add(okp,"cell 1 4, span,right");
+    add(okp, "cell 1 4, span,right");
     addWindowListener(new WindowAdapter() {
       @Override
       public void windowActivated(WindowEvent e) {

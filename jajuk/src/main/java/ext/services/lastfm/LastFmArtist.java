@@ -34,150 +34,150 @@ import net.roarsoftware.lastfm.ImageSize;
  */
 public class LastFmArtist implements ArtistInfo {
 
-    /** The name. */
-    private String name;
+  /** The name. */
+  private String name;
 
-    /** The match. */
-    private String match;
+  /** The match. */
+  private String match;
 
-    /** The url. */
-    private String url;
+  /** The url. */
+  private String url;
 
-    /** The image url. */
-    private String imageUrl;
+  /** The image url. */
+  private String imageUrl;
 
-    // Used by renderers
-    /** The image. */
-    private ImageIcon image;
+  // Used by renderers
+  /** The image. */
+  private ImageIcon image;
 
-    /**
-     * <Code>true</code> if this artist is available at repository
-     */
-    private transient boolean available;
+  /**
+   * <Code>true</code> if this artist is available at repository
+   */
+  private transient boolean available;
 
-    /**
-     * Gets the artist.
-     * 
-     * @return the artist
-     */
-    public static LastFmArtist getArtist(Artist a) {
-        LastFmArtist artist = new LastFmArtist();
-        artist.name = a.getName();
-        artist.match = String.valueOf(a.getSimilarityMatch());
-        String url2 = a.getUrl();
-        artist.url = url2.startsWith("http") ? url2 : "http://" + url2;
-        // SMALL images have low quality when scaling. Better to get largest image
-        artist.imageUrl = a.getImageURL(ImageSize.LARGE);
-        return artist;
-    }
+  /**
+   * Gets the artist.
+   * 
+   * @return the artist
+   */
+  public static LastFmArtist getArtist(Artist a) {
+    LastFmArtist artist = new LastFmArtist();
+    artist.name = a.getName();
+    artist.match = String.valueOf(a.getSimilarityMatch());
+    String url2 = a.getUrl();
+    artist.url = url2.startsWith("http") ? url2 : "http://" + url2;
+    // SMALL images have low quality when scaling. Better to get largest image
+    artist.imageUrl = a.getImageURL(ImageSize.LARGE);
+    return artist;
+  }
 
-    /**
-     * Gets the image.
-     * 
-     * @return the image
-     */
-    public ImageIcon getImage() {
-        return image;
-    }
+  /**
+   * Gets the image.
+   * 
+   * @return the image
+   */
+  public ImageIcon getImage() {
+    return image;
+  }
 
-    /**
-     * Gets the image url.
-     * 
-     * @return the image url
-     */
-    public String getImageUrl() {
-        return imageUrl;
-    }
+  /**
+   * Gets the image url.
+   * 
+   * @return the image url
+   */
+  public String getImageUrl() {
+    return imageUrl;
+  }
 
-    /**
-     * Gets the match.
-     * 
-     * @return the match
-     */
-    public String getMatch() {
-        return match;
-    }
+  /**
+   * Gets the match.
+   * 
+   * @return the match
+   */
+  public String getMatch() {
+    return match;
+  }
 
-    /**
-     * Gets the name.
-     * 
-     * @return the name
-     */
-    public String getName() {
-        return name;
-    }
+  /**
+   * Gets the name.
+   * 
+   * @return the name
+   */
+  public String getName() {
+    return name;
+  }
 
-    /**
-     * Gets the url.
-     * 
-     * @return the url
-     */
-    public String getUrl() {
-        return url;
-    }
+  /**
+   * Gets the url.
+   * 
+   * @return the url
+   */
+  public String getUrl() {
+    return url;
+  }
 
-    /**
-     * Sets the image.
-     * 
-     * @param image
-     *            the new image
-     */
-    public void setImage(ImageIcon image) {
-        this.image = image;
-    }
+  /**
+   * Sets the image.
+   * 
+   * @param image
+   *          the new image
+   */
+  public void setImage(ImageIcon image) {
+    this.image = image;
+  }
 
-    /**
-     * Sets the image url.
-     * 
-     * @param imageUrl
-     *            the imageUrl to set
-     */
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
-    }
+  /**
+   * Sets the image url.
+   * 
+   * @param imageUrl
+   *          the imageUrl to set
+   */
+  public void setImageUrl(String imageUrl) {
+    this.imageUrl = imageUrl;
+  }
 
-    /**
-     * Sets the match.
-     * 
-     * @param match
-     *            the match to set
-     */
-    public void setMatch(String match) {
-        this.match = match;
-    }
+  /**
+   * Sets the match.
+   * 
+   * @param match
+   *          the match to set
+   */
+  public void setMatch(String match) {
+    this.match = match;
+  }
 
-    /**
-     * Sets the name.
-     * 
-     * @param name
-     *            the name to set
-     */
-    public void setName(String name) {
-        this.name = name;
-    }
+  /**
+   * Sets the name.
+   * 
+   * @param name
+   *          the name to set
+   */
+  public void setName(String name) {
+    this.name = name;
+  }
 
-    /**
-     * Sets the url.
-     * 
-     * @param url
-     *            the url to set
-     */
-    public void setUrl(String url) {
-        this.url = url;
-    }
+  /**
+   * Sets the url.
+   * 
+   * @param url
+   *          the url to set
+   */
+  public void setUrl(String url) {
+    this.url = url;
+  }
 
-    /**
-     * @return the available
-     */
-    public boolean isAvailable() {
-        return available;
-    }
+  /**
+   * @return the available
+   */
+  public boolean isAvailable() {
+    return available;
+  }
 
-    /**
-     * @param available
-     *            the available to set
-     */
-    public void setAvailable(boolean available) {
-        this.available = available;
-    }
+  /**
+   * @param available
+   *          the available to set
+   */
+  public void setAvailable(boolean available) {
+    this.available = available;
+  }
 }

@@ -42,7 +42,7 @@ public class WebRadioPlayerImpl extends AbstractMPlayerImpl {
    * Reader : read information from mplayer like position
    */
   private class ReaderThread extends Thread {
-    /** 
+    /**
      * Implemented to set a useful thread name.
      */
     public ReaderThread() {
@@ -77,8 +77,9 @@ public class WebRadioPlayerImpl extends AbstractMPlayerImpl {
 
   /**
    * (non-Javadoc)
-   * @throws IOException 
-   * @throws JajukException 
+   * 
+   * @throws IOException
+   * @throws JajukException
    * 
    * @see org.jajuk.players.IPlayerImpl#play(org.jajuk.base.File, float, long,
    *      float)

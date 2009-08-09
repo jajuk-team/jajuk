@@ -138,8 +138,8 @@ public final class PlaylistManager extends ItemManager implements Observer {
   /**
    * Clean all references for the given device
    * 
-   * @param sId
-   *          : Device id
+   * @param sId :
+   *          Device id
    */
   public synchronized void cleanDevice(String sId) {
     for (Playlist plf : getPlaylists()) {

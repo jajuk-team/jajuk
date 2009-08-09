@@ -458,7 +458,7 @@ public class CommandJPanel extends JXPanel implements ActionListener, ChangeList
   public void mouseWheelMoved(MouseWheelEvent e) {
     if (e.getSource() == jsVolume || e.getSource() == jbMute) {
       int iOld = jsVolume.getValue();
-      float newVolume = ((float)(iOld - (e.getUnitsToScroll() * 3))) / 100;
+      float newVolume = ((float) (iOld - (e.getUnitsToScroll() * 3))) / 100;
       Player.setVolume(newVolume);
     }
   }

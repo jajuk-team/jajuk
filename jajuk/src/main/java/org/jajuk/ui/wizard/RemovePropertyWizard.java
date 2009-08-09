@@ -60,7 +60,7 @@ public class RemovePropertyWizard extends CustomPropertyWizard {
     add(jcbItemChoice, "width 200::,wrap");
     add(jlName, "");
     add(jcbName, "width 200::,wrap,grow");
-    add(okp,"span,right");
+    add(okp, "span,right");
     getRootPane().setDefaultButton(okp.getOKButton());
   }
 

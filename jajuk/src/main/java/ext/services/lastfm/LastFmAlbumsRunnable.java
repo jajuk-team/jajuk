@@ -125,7 +125,7 @@ public class LastFmAlbumsRunnable implements Runnable {
       listener.setAlbum(albumHelp, id);
       if (album != null) {
         image = service.getImage(album);
-      } 
+      }
       listener.setImage(image, audioObject, id);
     }
     if (image != null && !interrupted) {
@@ -185,7 +185,8 @@ public class LastFmAlbumsRunnable implements Runnable {
               continue;
             }
           }
-          if (!audioObject.getAlbum().toLowerCase(Locale.getDefault()).contains(t.toLowerCase(Locale.getDefault()))) {
+          if (!audioObject.getAlbum().toLowerCase(Locale.getDefault()).contains(
+              t.toLowerCase(Locale.getDefault()))) {
             matches = false;
           }
           tokensAnalyzed++;

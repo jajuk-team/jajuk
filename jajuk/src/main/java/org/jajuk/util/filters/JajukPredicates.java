@@ -194,8 +194,8 @@ public class JajukPredicates {
      * @see org.apache.commons.collections.Predicate#evaluate(java.lang.Object)
      */
     public boolean evaluate(Object o) {
-      Track tested = (Track)o;
-      List<File> files  = tested.getFiles();
+      Track tested = (Track) o;
+      List<File> files = tested.getFiles();
       File fileTested = files.get(0);
       return !fileTested.getType().isVideo();
     }

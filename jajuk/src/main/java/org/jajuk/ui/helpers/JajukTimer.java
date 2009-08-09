@@ -44,7 +44,7 @@ public final class JajukTimer {
 
   /** A default heartbeat time in ms */
   public static final int DEFAULT_HEARTBEAT = 800;
-  
+
   public static final int D_MS_HEARTBEAT = 500;
 
   /**

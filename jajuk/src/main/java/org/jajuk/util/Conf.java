@@ -88,6 +88,7 @@ public final class Conf implements Const {
 
   /**
    * Invert a boolean value
+   * 
    * @param pName
    */
   public static void invert(String pName) {
@@ -163,7 +164,7 @@ public final class Conf implements Const {
     defaults.put(CONF_PERSPECTIVE_DEFAULT, SimplePerspective.class.getName());
     defaults.put(CONF_STATE_REPEAT, FALSE);
     defaults.put(CONF_STATE_REPEAT_ALL, FALSE);
-    defaults.put(CONF_STATE_KARAOKE,FALSE);
+    defaults.put(CONF_STATE_KARAOKE, FALSE);
     defaults.put(CONF_STATE_SHUFFLE, FALSE);
     defaults.put(CONF_STATE_CONTINUE, FALSE);
     defaults.put(CONF_STATE_INTRO, FALSE);
@@ -357,7 +358,8 @@ public final class Conf implements Const {
    * @throws IOException
    */
   public static void commit() throws IOException {
-    OutputStream str = new FileOutputStream(SessionService.getConfFileByPath(Const.FILE_CONFIGURATION));
+    OutputStream str = new FileOutputStream(SessionService
+        .getConfFileByPath(Const.FILE_CONFIGURATION));
     try {
       properties.store(str, "User configuration");
     } finally {
@@ -377,7 +379,8 @@ public final class Conf implements Const {
   /** Load properties from in file */
   public static void load() {
     try {
-      InputStream str = new FileInputStream(SessionService.getConfFileByPath(Const.FILE_CONFIGURATION));
+      InputStream str = new FileInputStream(SessionService
+          .getConfFileByPath(Const.FILE_CONFIGURATION));
       try {
         properties.load(str);
       } finally {

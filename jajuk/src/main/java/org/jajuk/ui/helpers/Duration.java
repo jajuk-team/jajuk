@@ -48,10 +48,10 @@ public class Duration implements Comparable<Duration> {
   @Override
   public boolean equals(Object obj) {
     // also exlcudes null obj
-    if(obj instanceof Duration) {
-      return duration == ((Duration)obj).duration;
+    if (obj instanceof Duration) {
+      return duration == ((Duration) obj).duration;
     }
-    
+
     return false;
   }
 

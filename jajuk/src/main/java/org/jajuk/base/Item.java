@@ -64,14 +64,10 @@ public abstract class Item implements Const {
   private Map<String, Object> properties = new HashMap<String, Object>(2, 1f);
 
   @SuppressWarnings("unchecked")
-  private static Map map[] = {
-      new HashMap<Long, IconLabel>(),
-      new HashMap<Long, IconLabel>(), 
-      new HashMap<Long, IconLabel>(), 
-      new HashMap<Long, IconLabel>(), 
-      new HashMap<Long, IconLabel>() 
-  };
-  
+  private static Map map[] = { new HashMap<Long, IconLabel>(), new HashMap<Long, IconLabel>(),
+      new HashMap<Long, IconLabel>(), new HashMap<Long, IconLabel>(),
+      new HashMap<Long, IconLabel>() };
+
   /**
    * Constructor
    * 
@@ -126,8 +122,8 @@ public abstract class Item implements Const {
   @Override
   public boolean equals(Object otherItem) {
     // this also catches null
-    if(!(otherItem instanceof Item)) {
-        return false;
+    if (!(otherItem instanceof Item)) {
+      return false;
     }
 
     // [Perf] We can compare with an == operator here because
@@ -436,15 +432,15 @@ public abstract class Item implements Const {
       return IconLabel.getIcon(JajukIcons.BAN);
     } else {
       int starsNumber = getStarsNumber();
-      
-      if(!map[starsNumber].containsKey(rate)) {
+
+      if (!map[starsNumber].containsKey(rate)) {
         map[starsNumber].put(rate, new IconLabel(getIcon(starsNumber), "", null, null, null, Long
             .toString(rate)));
-        
-        ((IconLabel)(map[starsNumber].get(rate))).setInteger(true);
+
+        ((IconLabel) (map[starsNumber].get(rate))).setInteger(true);
       }
-      
-      return (IconLabel)(map[starsNumber].get(rate));
+
+      return (IconLabel) (map[starsNumber].get(rate));
     }
   }
 

@@ -273,7 +273,8 @@ public final class WebRadioManager extends DefaultHandler {
     synchronized (FileManager.getInstance()) {
       Set<SearchResult> tsResu = new TreeSet<SearchResult>();
       for (WebRadio radio : webradios) {
-        if (radio.getName().toLowerCase(Locale.getDefault()).indexOf(sCriteria.toLowerCase(Locale.getDefault())) != -1) {
+        if (radio.getName().toLowerCase(Locale.getDefault()).indexOf(
+            sCriteria.toLowerCase(Locale.getDefault())) != -1) {
           tsResu.add(new SearchResult(radio, radio.toString()));
         }
       }

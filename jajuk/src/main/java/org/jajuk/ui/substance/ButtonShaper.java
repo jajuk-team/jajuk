@@ -72,16 +72,22 @@ public abstract class ButtonShaper implements SubstanceButtonShaper {
       }
     };
   }
-  
-  /* (non-Javadoc)
-   * @see org.jvnet.substance.shaper.SubstanceButtonShaper#getButtonOutline(javax.swing.AbstractButton, java.awt.Insets, int, int)
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.jvnet.substance.shaper.SubstanceButtonShaper#getButtonOutline(javax.swing.AbstractButton,
+   *      java.awt.Insets, int, int)
    */
   public GeneralPath getButtonOutline(AbstractButton button, Insets insets, int w, int h) {
     return getButtonOutline(button);
   }
 
-  /* (non-Javadoc)
-   * @see org.jvnet.substance.shaper.SubstanceButtonShaper#getButtonOutline(javax.swing.AbstractButton, java.awt.Insets)
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.jvnet.substance.shaper.SubstanceButtonShaper#getButtonOutline(javax.swing.AbstractButton,
+   *      java.awt.Insets)
    */
   public GeneralPath getButtonOutline(AbstractButton button, Insets insets) {
     return getButtonOutline(button);

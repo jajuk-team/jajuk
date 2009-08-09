@@ -35,108 +35,112 @@ import org.jajuk.util.log.Log;
  */
 public class LastFmRunnable implements Runnable {
 
-    /** The interrupted. */
-    private volatile boolean interrupted;
+  /** The interrupted. */
+  private volatile boolean interrupted;
 
-    /** The albums runnable. */
-    private LastFmAlbumsRunnable albumsRunnable;
+  /** The albums runnable. */
+  private LastFmAlbumsRunnable albumsRunnable;
 
-    /** The covers runnable. */
-    private LastFmCoversRunnable coversRunnable;
+  /** The covers runnable. */
+  private LastFmCoversRunnable coversRunnable;
 
-    /** The artists runnable. */
-    private LastFmSimilarArtistsRunnable artistsRunnable;
+  /** The artists runnable. */
+  private LastFmSimilarArtistsRunnable artistsRunnable;
 
-    /** The listener. */
-    private ContextListener listener;
+  /** The listener. */
+  private ContextListener listener;
 
-    /** The service. */
-    private LastFmService service;
+  /** The service. */
+  private LastFmService service;
 
-    /** The audio object. */
-    private AudioObject audioObject;
+  /** The audio object. */
+  private AudioObject audioObject;
 
-    /** The retrieve artist info. */
-    private boolean retrieveArtistInfo = true;
+  /** The retrieve artist info. */
+  private boolean retrieveArtistInfo = true;
 
-    /** The id. */
-    private long id;
+  /** The id. */
+  private long id;
 
-    /** The executor service. */
-    private ExecutorService executorService;
+  /** The executor service. */
+  private ExecutorService executorService;
 
-    /**
-     * Instantiates a new audio scrobbler runnable.
-     * 
-     * @param listener
-     *            the listener
-     * @param service
-     *            the service
-     * @param audioObject
-     *            the audio object
-     * @param id
-     *            the id
-     */
-    public LastFmRunnable(ContextListener listener, LastFmService service, AudioObject audioObject, long id, ExecutorService executorService) {
-        this.listener = listener;
-        this.service = service;
-        this.audioObject = audioObject;
-        this.id = id;
-        this.executorService = executorService;
+  /**
+   * Instantiates a new audio scrobbler runnable.
+   * 
+   * @param listener
+   *          the listener
+   * @param service
+   *          the service
+   * @param audioObject
+   *          the audio object
+   * @param id
+   *          the id
+   */
+  public LastFmRunnable(ContextListener listener, LastFmService service, AudioObject audioObject,
+      long id, ExecutorService executorService) {
+    this.listener = listener;
+    this.service = service;
+    this.audioObject = audioObject;
+    this.id = id;
+    this.executorService = executorService;
+  }
+
+  /**
+   * Interrupt.
+   */
+  public void interrupt() {
+    interrupted = true;
+    if (albumsRunnable != null) {
+      albumsRunnable.interrupt();
+    }
+    if (coversRunnable != null) {
+      coversRunnable.interrupt();
+    }
+    if (artistsRunnable != null) {
+      artistsRunnable.interrupt();
+    }
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see java.lang.Runnable#run()
+   */
+  public void run() {
+    albumsRunnable = new LastFmAlbumsRunnable(listener, service, audioObject, id);
+    albumsRunnable.setRetrieveArtistInfo(retrieveArtistInfo);
+    Future<?> albumsRunnableFuture = executorService.submit(albumsRunnable);
+    Log.debug("LastFmAlbumsRunnable started with id " + id + " for  " + audioObject.getArtist());
+    try {
+      albumsRunnableFuture.get();
+    } catch (ExecutionException e) {
+      Log.error(e);
+    } catch (InterruptedException e) {
+      Log.debug("albums runnable interrupted");
     }
 
-    /**
-     * Interrupt.
-     */
-    public void interrupt() {
-        interrupted = true;
-        if (albumsRunnable != null) {
-            albumsRunnable.interrupt();
-        }
-        if (coversRunnable != null) {
-            coversRunnable.interrupt();
-        }
-        if (artistsRunnable != null) {
-            artistsRunnable.interrupt();
-        }
+    if (retrieveArtistInfo && !interrupted) {
+      coversRunnable = new LastFmCoversRunnable(listener, service, listener.getAlbums(), id,
+          audioObject);
+      executorService.submit(coversRunnable);
+      Log.debug("LastFmCoversRunnable started with id " + id);
+
+      artistsRunnable = new LastFmSimilarArtistsRunnable(listener, service,
+          audioObject.getArtist(), id);
+      executorService.submit(artistsRunnable);
+      Log.debug("LastFmSimilarArtistsRunnable started with id " + id + " for "
+          + audioObject.getArtist());
     }
+  }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Runnable#run()
-     */
-    public void run() {
-        albumsRunnable = new LastFmAlbumsRunnable(listener, service, audioObject, id);
-        albumsRunnable.setRetrieveArtistInfo(retrieveArtistInfo);
-        Future<?> albumsRunnableFuture = executorService.submit(albumsRunnable);
-        Log.debug("LastFmAlbumsRunnable started with id " + id + " for  " + audioObject.getArtist());
-        try {
-            albumsRunnableFuture.get();
-        } catch (ExecutionException e) {
-            Log.error(e);
-        } catch (InterruptedException e) {
-            Log.debug("albums runnable interrupted");
-        }
-
-        if (retrieveArtistInfo && !interrupted) {
-            coversRunnable = new LastFmCoversRunnable(listener, service, listener.getAlbums(), id, audioObject);
-            executorService.submit(coversRunnable);
-            Log.debug("LastFmCoversRunnable started with id " + id);
-
-            artistsRunnable = new LastFmSimilarArtistsRunnable(listener, service, audioObject.getArtist(), id);
-            executorService.submit(artistsRunnable);
-            Log.debug("LastFmSimilarArtistsRunnable started with id " + id + " for " + audioObject.getArtist());
-        }
-    }
-
-    /**
-     * Sets the retrieve artist info.
-     * 
-     * @param retrieveArtistInfo
-     *            the new retrieve artist info
-     */
-    public void setRetrieveArtistInfo(boolean retrieveArtistInfo) {
-        this.retrieveArtistInfo = retrieveArtistInfo;
-    }
+  /**
+   * Sets the retrieve artist info.
+   * 
+   * @param retrieveArtistInfo
+   *          the new retrieve artist info
+   */
+  public void setRetrieveArtistInfo(boolean retrieveArtistInfo) {
+    this.retrieveArtistInfo = retrieveArtistInfo;
+  }
 }

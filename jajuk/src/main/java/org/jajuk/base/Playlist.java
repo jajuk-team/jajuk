@@ -176,8 +176,8 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
   /**
    * Add some files to this playlist.
    * 
-   * @param alFilesToAdd
-   *          : List of File
+   * @param alFilesToAdd :
+   *          List of File
    */
   public void addFiles(final List<File> alFilesToAdd) {
     try {
@@ -247,7 +247,7 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
     } catch (final IOException e) {
       throw new JajukException(28, getName(), e);
     }
-    
+
     // Now move the temp file to final one if everything seems ok
     moveTempPlaylistFile(temp);
   }
@@ -516,7 +516,7 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
    */
   public List<File> load() throws JajukException {
     final List<File> files = new ArrayList<File>(10);
-    
+
     try {
       BufferedReader br = new BufferedReader(new FileReader(getFIO()));
       try {
@@ -661,7 +661,8 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
 
   /**
    * Save as... the playlist
-   * @throws JajukException 
+   * 
+   * @throws JajukException
    */
   public void saveAs() throws JajukException {
     final JajukFileChooser jfchooser = new JajukFileChooser(new JajukFileFilter(PlaylistFilter

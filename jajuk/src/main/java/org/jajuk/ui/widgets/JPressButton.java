@@ -279,7 +279,7 @@ public class JPressButton extends JajukButton {
 
     public ActionThread(ActionEvent evt, long interval) {
       super("JPressButton Action Thread");
-      
+
       this.interval = interval;
       this.evt = evt;
     }

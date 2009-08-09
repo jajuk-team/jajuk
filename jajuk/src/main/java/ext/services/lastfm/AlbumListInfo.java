@@ -28,34 +28,34 @@ import java.util.List;
 
 public interface AlbumListInfo {
 
-    /**
-     * Gets the albums.
-     * 
-     * @return the albums
-     */
-    public List<AlbumInfo> getAlbums();
+  /**
+   * Gets the albums.
+   * 
+   * @return the albums
+   */
+  public List<AlbumInfo> getAlbums();
 
-    /**
-     * Gets the artist.
-     * 
-     * @return the artist
-     */
-    public String getArtist();
+  /**
+   * Gets the artist.
+   * 
+   * @return the artist
+   */
+  public String getArtist();
 
-    /**
-     * Sets the albums.
-     * 
-     * @param albums
-     *            the albums to set
-     */
-    public void setAlbums(List<? extends AlbumInfo> albums);
+  /**
+   * Sets the albums.
+   * 
+   * @param albums
+   *          the albums to set
+   */
+  public void setAlbums(List<? extends AlbumInfo> albums);
 
-    /**
-     * Sets the artist.
-     * 
-     * @param artist
-     *            the artist to set
-     */
-    public void setArtist(String artist);
+  /**
+   * Sets the artist.
+   * 
+   * @param artist
+   *          the artist to set
+   */
+  public void setArtist(String artist);
 
 }

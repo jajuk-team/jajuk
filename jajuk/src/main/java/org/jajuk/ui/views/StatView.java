@@ -81,7 +81,7 @@ public class StatView extends ViewAdapter {
    * @see org.jajuk.ui.IView#display()
    */
   public void initUI() {
-    setLayout(new MigLayout("ins 0,gapx 4,gapy 5","[grow][grow]","[grow][grow]"));
+    setLayout(new MigLayout("ins 0,gapx 4,gapy 5", "[grow][grow]", "[grow][grow]"));
     ObservationManager.register(this);
     update(new JajukEvent(JajukEvents.DEVICE_REFRESH, ObservationManager
         .getDetailsLastOccurence(JajukEvents.DEVICE_REFRESH)));
@@ -387,7 +387,8 @@ public class StatView extends ViewAdapter {
    * @return the mounts labels
    */
   private String[] getMonthsLabels(int iMonthsNumber) {
-    int iNow = Integer.parseInt(new SimpleDateFormat(DATE_FILE, Locale.getDefault()).format(new Date())) / 100; // reference
+    int iNow = Integer.parseInt(new SimpleDateFormat(DATE_FILE, Locale.getDefault())
+        .format(new Date())) / 100; // reference
     // month
     String sMonths[] = new String[iMonthsNumber + 1];
     // contains number of tracks for each month, first cell is 'before'

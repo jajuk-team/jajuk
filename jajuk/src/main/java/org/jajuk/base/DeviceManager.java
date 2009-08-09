@@ -187,7 +187,9 @@ public final class DeviceManager extends ItemManager {
       if (!bNew && sUrl.equals(deviceToCheck.getUrl())) {
         continue;
       }
-      if (bNew && (sName.toLowerCase(Locale.getDefault()).equals(deviceToCheck.getName().toLowerCase(Locale.getDefault())))) {
+      if (bNew
+          && (sName.toLowerCase(Locale.getDefault()).equals(deviceToCheck.getName().toLowerCase(
+              Locale.getDefault())))) {
         return 19;
       }
       String sUrlChecked = deviceToCheck.getUrl();
@@ -418,21 +420,20 @@ public final class DeviceManager extends ItemManager {
   public Device getDeviceByID(String sID) {
     return (Device) getItemByID(sID);
   }
-  
+
   /**
    * @param sName
    *          device name
    * @return device by given name or null if no match
    */
   public Device getDeviceByName(String sName) {
-    for (Device device:getDevices()){
-      if (device.getName().equals(sName)){
+    for (Device device : getDevices()) {
+      if (device.getName().equals(sName)) {
         return device;
       }
     }
     return null;
   }
-  
 
   /**
    * 

@@ -146,7 +146,8 @@ public final class AuthorManager extends ItemManager {
         }
       }
       // if current track author name is changed, notify it
-      if (QueueModel.getPlayingFile() != null && QueueModel.getPlayingFile().getTrack().getAuthor().equals(old)) {
+      if (QueueModel.getPlayingFile() != null
+          && QueueModel.getPlayingFile().getTrack().getAuthor().equals(old)) {
         ObservationManager.notify(new JajukEvent(JajukEvents.AUTHOR_CHANGED));
       }
       return newItem;

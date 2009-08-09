@@ -73,15 +73,20 @@ public class SimpleDeviceWizard extends JajukJDialog implements ActionListener {
     jtfRefreshTime = new JTextField(Const.DEFAULT_REFRESH_INTERVAL);
 
     // Add items
-    setLayout(new MigLayout("insets 10,gapx 10,gapy 15","[][grow]"));
+    setLayout(new MigLayout("insets 10,gapx 10,gapy 15", "[][grow]"));
     add(new JLabel(UtilGUI.getImage(Const.IMAGE_SEARCH)), "cell 0 0 0 3");
-    add(jbFileSelection,"cell 1 0,split 2");
-    add(new JLabel(Messages.getString("FirstTimeWizard.2")), "wrap"); //please select music location
-    add(new JLabel(Messages.getString("DeviceWizard.53")), "cell 1 1,split 3"); //Refresh device every
+    add(jbFileSelection, "cell 1 0,split 2");
+    add(new JLabel(Messages.getString("FirstTimeWizard.2")), "wrap"); // please
+    // select
+    // music
+    // location
+    add(new JLabel(Messages.getString("DeviceWizard.53")), "cell 1 1,split 3"); // Refresh
+    // device
+    // every
     add(jtfRefreshTime, "grow");
-    add(new JLabel(Messages.getString("DeviceWizard.54")), "wrap"); //mins
-    add(okp,"right,cell 1 2");
-    
+    add(new JLabel(Messages.getString("DeviceWizard.54")), "wrap"); // mins
+    add(okp, "right,cell 1 2");
+
     getRootPane().setDefaultButton(okp.getOKButton());
   }
 

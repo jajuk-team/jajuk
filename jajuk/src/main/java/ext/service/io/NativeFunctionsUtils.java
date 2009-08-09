@@ -37,8 +37,7 @@ public class NativeFunctionsUtils {
   private NativeFunctionsUtils() {
     super();
   }
-  
-  
+
   private static Kernel32 nativelib;
   static {
     try {

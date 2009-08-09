@@ -55,7 +55,7 @@ public class PlaylistEditorTransferHandler extends TransferHandler {
   /** Constructor */
   public PlaylistEditorTransferHandler(JTable jtable) {
     super();
-    
+
     this.jtable = jtable;
   }
 
@@ -126,8 +126,9 @@ public class PlaylistEditorTransferHandler extends TransferHandler {
         List<File> alSelectedFiles = UtilFeatures.getPlayableFiles((Item) oData);
         // queue case
         if (plf.getType() == Playlist.Type.QUEUE) {
-          QueueModel.push(UtilFeatures.createStackItems(UtilFeatures.applyPlayOption(alSelectedFiles),
-              Conf.getBoolean(Const.CONF_STATE_REPEAT_ALL), true), Conf
+          QueueModel.push(UtilFeatures
+              .createStackItems(UtilFeatures.applyPlayOption(alSelectedFiles), Conf
+                  .getBoolean(Const.CONF_STATE_REPEAT_ALL), true), Conf
               .getBoolean(Const.CONF_OPTIONS_DEFAULT_ACTION_DROP));
         }
         // normal or new playlist case

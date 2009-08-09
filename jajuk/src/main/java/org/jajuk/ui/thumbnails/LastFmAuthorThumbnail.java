@@ -101,7 +101,7 @@ public class LastFmAuthorThumbnail extends AbstractThumbnail {
           }
 
           BufferedImage image = ImageIO.read(fCover);
-          if(image == null) {
+          if (image == null) {
             Log.warn("Could not read image data in file: " + fCover);
             return null;
           }
@@ -109,11 +109,10 @@ public class LastFmAuthorThumbnail extends AbstractThumbnail {
           // In artist view, do not reduce artist picture
           if (isArtistView()) {
             ii = downloadedImage;
-          }
-          else {
+          } else {
             ii = UtilGUI.getScaledImage(downloadedImage, 100);
           }
-          
+
           // Free images memory
           downloadedImage.getImage().flush();
           image.flush();
@@ -242,5 +241,5 @@ public class LastFmAuthorThumbnail extends AbstractThumbnail {
       jmiOpenLastFMSite.doClick();
     }
   }
-  
+
 }

@@ -38,12 +38,12 @@ public interface ITagImpl {
    * @return author name
    */
   String getAuthorName() throws Exception;
-  
+
   /**
    * @return album artist
    */
   String getAlbumArtist() throws Exception;
-  
+
   /**
    * @return disc number
    */
@@ -94,12 +94,12 @@ public interface ITagImpl {
    * @param sAuthorName
    */
   void setAuthorName(String sAuthorName) throws Exception;
-  
+
   /**
    * @param sAlbumArtist
    */
   void setAlbumArtist(String sAlbumArtist) throws Exception;
-  
+
   /**
    * @param discnumber
    */

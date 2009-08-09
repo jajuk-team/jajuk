@@ -41,8 +41,8 @@ import org.jajuk.util.Messages;
 import org.jajuk.util.filters.DirectoryFilter;
 
 /**
- * This is a widgets that contains an editable text field given a PATH and a PATH
- * selection button opening up a file selector
+ * This is a widgets that contains an editable text field given a PATH and a
+ * PATH selection button opening up a file selector
  */
 public class PathSelector extends JPanel {
 
@@ -62,7 +62,7 @@ public class PathSelector extends JPanel {
    */
   public PathSelector(final JajukFileFilter filter, final String sDefault) {
     super();
-    
+
     initUI(sDefault);
     button.addActionListener(new ActionListener() {
       public void actionPerformed(final ActionEvent e) {
@@ -98,7 +98,7 @@ public class PathSelector extends JPanel {
    */
   public PathSelector(final String sDefault) {
     super();
-    
+
     initUI(sDefault);
     button.addActionListener(new ActionListener() {
       public void actionPerformed(final ActionEvent e) {
@@ -137,7 +137,7 @@ public class PathSelector extends JPanel {
 
   private void initUI(final String sDefault) {
     // Set layout
-    setLayout(new MigLayout("ins 0","[grow][]"));
+    setLayout(new MigLayout("ins 0", "[grow][]"));
     // Build items
     jtfUrl = new JTextField();
     if (sDefault != null) {

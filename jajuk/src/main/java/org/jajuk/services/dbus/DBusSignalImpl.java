@@ -28,8 +28,7 @@ import org.freedesktop.dbus.exceptions.DBusException;
  */
 public class DBusSignalImpl implements DBusInterface {
 
-
-/**
+  /**
    * 
    */
   public static class FileChangedSignal extends DBusSignal {
@@ -45,15 +44,16 @@ public class DBusSignalImpl implements DBusInterface {
       super(path, args);
       this.filename = filename;
     }
-    
+
   }
 
-/* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see org.freedesktop.dbus.DBusInterface#isRemote()
    */
   public boolean isRemote() {
     return false;
   }
 
-  
 }

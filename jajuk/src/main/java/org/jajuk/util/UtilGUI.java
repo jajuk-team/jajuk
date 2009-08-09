@@ -154,8 +154,8 @@ public final class UtilGUI {
 
   /**
    * @param jc
-   * @param iOrientation
-   *          : vertical or horizontal orientation, use BoxLayout.X_AXIS or
+   * @param iOrientation :
+   *          vertical or horizontal orientation, use BoxLayout.X_AXIS or
    *          BoxLayout.Y_AXIS
    * @return a centred panel
    */
@@ -212,8 +212,8 @@ public final class UtilGUI {
    * 
    * @param sText
    *          text to display, lines separated by \n characters
-   * @param limit
-   *          : max number of lines to be displayed without scroller
+   * @param limit :
+   *          max number of lines to be displayed without scroller
    * @return formated message: either a string, or a textarea
    */
   public static Object getLimitedMessage(final String sText, final int limit) {
@@ -401,7 +401,8 @@ public final class UtilGUI {
    * @param image
    * @param Do
    *          we need alpha (transparency) ?
-   * @param new image width
+   * @param new
+   *          image width
    * @param height
    *          new image height
    * @return buffured image from an image
@@ -448,8 +449,8 @@ public final class UtilGUI {
 
   /**
    * A simple minded look and feel change: ask each node in the tree to
-   * <code>updateUI()</code> -- that is, to initialize its UI property with the
-   * current look and feel. Based on the Sun
+   * <code>updateUI()</code> -- that is, to initialize its UI property with
+   * the current look and feel. Based on the Sun
    * SwingUtilities.updateComponentTreeUI, but ensures that the update happens
    * on the components of a JToolbar before the JToolbar itself.
    */
@@ -498,8 +499,8 @@ public final class UtilGUI {
    * <code>Window</code>.
    * 
    * @param window
-   *          The <code>Window</code> for which the look and feel update has to
-   *          be performed against.
+   *          The <code>Window</code> for which the look and feel update has
+   *          to be performed against.
    */
   public static void updateWindowUI(final Window window) {
     try {

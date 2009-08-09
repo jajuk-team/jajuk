@@ -144,7 +144,7 @@ public final class Main {
       }
       // set flags from command line options
       SessionService.handleCommandline(args);
-      
+
       // set flags from system properties
       SessionService.handleSystemProperties();
 

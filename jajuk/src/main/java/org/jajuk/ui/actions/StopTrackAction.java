@@ -31,8 +31,8 @@ public class StopTrackAction extends JajukAction {
   private static final long serialVersionUID = 1L;
 
   StopTrackAction() {
-    super(Messages.getString("JajukWindow.27"), IconLoader.getIcon(JajukIcons.STOP_16X16), "ctrl S",
-        false, false);
+    super(Messages.getString("JajukWindow.27"), IconLoader.getIcon(JajukIcons.STOP_16X16),
+        "ctrl S", false, false);
     setShortDescription(Messages.getString("JajukWindow.27"));
   }
 

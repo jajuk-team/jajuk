@@ -30,7 +30,7 @@ import java.util.Locale;
  */
 public class LocaleManager {
   /**
-   * private constructor for utility class with only static methods 
+   * private constructor for utility class with only static methods
    */
   private LocaleManager() {
     super();

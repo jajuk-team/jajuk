@@ -106,8 +106,7 @@ import org.jdesktop.swingx.decorator.Highlighter;
 /**
  * Adapter for playlists editors *
  */
-public class PlaylistView extends ViewAdapter implements ActionListener,
-    ListSelectionListener {
+public class PlaylistView extends ViewAdapter implements ActionListener, ListSelectionListener {
 
   private static final long serialVersionUID = -2851288035506442507L;
 
@@ -283,7 +282,7 @@ public class PlaylistView extends ViewAdapter implements ActionListener,
     JToolBar jtb = new JajukJToolbar();
 
     // Add items
-    jpEditorControl.setLayout(new MigLayout("ins 0","[][grow][]"));
+    jpEditorControl.setLayout(new MigLayout("ins 0", "[][grow][]"));
     jtb.add(jbRun);
     jtb.add(jbSave);
     jtb.add(jbRemove);
@@ -312,7 +311,7 @@ public class PlaylistView extends ViewAdapter implements ActionListener,
     editorTable.showColumns(editorTable.getColumnsConf());
     ListSelectionModel lsm = editorTable.getSelectionModel();
     lsm.addListSelectionListener(this);
-    jpEditor.setLayout(new MigLayout("ins 0","[grow]"));
+    jpEditor.setLayout(new MigLayout("ins 0", "[grow]"));
     jpEditor.add(jpEditorControl, "growx,wrap");
     JScrollPane jsp = new JScrollPane(editorTable);
     jpEditor.add(jsp, "growx");
@@ -422,7 +421,7 @@ public class PlaylistView extends ViewAdapter implements ActionListener,
     jpSmartPlaylists.add(spBestof);
     jpSmartPlaylists.add(spNovelties);
     jpSmartPlaylists.add(spBookmark);
-    JPanel jpRepository = new JPanel(new MigLayout("ins 0","[grow]"));
+    JPanel jpRepository = new JPanel(new MigLayout("ins 0", "[grow]"));
     repositoryPanel = new PlaylistRepository();
     repositoryPanel.initUI();
     repositoryPanel.setPerspective(getPerspective());

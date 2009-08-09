@@ -28,8 +28,8 @@ import javax.swing.filechooser.FileFilter;
 /**
  * Advanced file filter
  * 
- * @see <a href="https://trac.jajuk.info/wiki/JajukDevGuide#Filesfilters">The description</a> for direction to
- *      use
+ * @see <a href="https://trac.jajuk.info/wiki/JajukDevGuide#Filesfilters">The
+ *      description</a> for direction to use
  *      <p>
  *      Example: new
  *      JajukFilter(false,JajukFileFilter.DirectoryFilter.getInstance(),
@@ -72,9 +72,9 @@ public class JajukFileFilter extends FileFilter implements java.io.FileFilter, C
    */
   public JajukFileFilter(final boolean bAND, final JajukFileFilter... filters) {
     super();
-    
+
     this.bAND = bAND;
-    
+
     this.filters = new JajukFileFilter[filters.length];
     System.arraycopy(filters, 0, this.filters, 0, filters.length);
   }
@@ -104,7 +104,7 @@ public class JajukFileFilter extends FileFilter implements java.io.FileFilter, C
    */
   public JajukFileFilter(final String[] extensions) {
     super();
-    
+
     this.extensions = (extensions != null) ? extensions : new String[] {};
     final int size = this.extensions.length;
     for (int i = 0; i < size; i++) {

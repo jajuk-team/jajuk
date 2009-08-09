@@ -45,7 +45,7 @@ final public class IconLoader {
   /**
    * @param size
    *          The size of the icon to return.
-   *          
+   * 
    * @return the nocover icon for specified size
    */
   public static ImageIcon getNoCoverIcon(int size) {
@@ -117,7 +117,7 @@ final public class IconLoader {
     else if (icon == JajukIcons.REPEAT) {
       out = new ImageIcon(UtilSystem.getResource("icons/16x16/repeat_16x16.png"));
     }
-    
+
     else if (icon == JajukIcons.REPEAT_ALL) {
       out = new ImageIcon(UtilSystem.getResource("icons/16x16/repeat_all_16x16.png"));
     }
@@ -133,8 +133,8 @@ final public class IconLoader {
     else if (icon == JajukIcons.INTRO) {
       out = new ImageIcon(UtilSystem.getResource("icons/16x16/intro_16x16.png"));
     }
-    
-     else if (icon == JajukIcons.KARAOKE) {
+
+    else if (icon == JajukIcons.KARAOKE) {
       out = new ImageIcon(UtilSystem.getResource("icons/16x16/karaoke_16x16.png"));
     }
 
@@ -221,7 +221,7 @@ final public class IconLoader {
     else if (icon == JajukIcons.PLAYER_REWIND_BIG) {
       out = new ImageIcon(UtilSystem.getResource("icons/64x64/player_rew_64x64.png"));
     }
-    
+
     else if (icon == JajukIcons.AUTOSCROLL) {
       out = new ImageIcon(UtilSystem.getResource("icons/16x16/autoscroll.png"));
     }
@@ -877,7 +877,7 @@ final public class IconLoader {
     else if (icon == JajukIcons.AMBIENCE) {
       out = new ImageIcon(UtilSystem.getResource("icons/32x32/ambience_32x32.png"));
     }
-    
+
     else if (icon == JajukIcons.OPEN_EXPLORER) {
       out = new ImageIcon(UtilSystem.getResource("icons/16x16/explorer_16x16.png"));
     }

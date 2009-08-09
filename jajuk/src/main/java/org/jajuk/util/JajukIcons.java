@@ -37,7 +37,7 @@ public enum JajukIcons {
   LOGO_FRAME,
 
   REPEAT,
-  
+
   REPEAT_ALL,
 
   SHUFFLE,
@@ -45,7 +45,7 @@ public enum JajukIcons {
   CONTINUE,
 
   INTRO,
-  
+
   KARAOKE,
 
   SHUFFLE_GLOBAL,
@@ -403,20 +403,20 @@ public enum JajukIcons {
   PREPARE_PARTY,
 
   COPY_TO_CLIPBOARD,
-  
+
   OPEN_EXPLORER,
 
-  AMBIENCE, 
-  
-  PLAYER_FORWARD_BIG, 
-  
-  PLAYER_STOP_BIG, 
-  
-  PLAYER_PLAY_BIG, 
-  
-  PLAYER_PAUSE_BIG, 
-  
-  PLAYER_REWIND_BIG, 
-  
+  AMBIENCE,
+
+  PLAYER_FORWARD_BIG,
+
+  PLAYER_STOP_BIG,
+
+  PLAYER_PLAY_BIG,
+
+  PLAYER_PAUSE_BIG,
+
+  PLAYER_REWIND_BIG,
+
   AUTOSCROLL
 }

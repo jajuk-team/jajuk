@@ -78,8 +78,8 @@ public final class FontManager implements Observer {
     fontCache.put(JajukFont.SPLASH, new Font("sans-serif", Font.PLAIN, 12));
     fontCache.put(JajukFont.SPLASH_PROGRESS, new Font("sans-serif", Font.BOLD, 12));
     // Bold
-    fontCache.put(JajukFont.BOLD,
-        new Font("sans-serif", Font.BOLD, Conf.getInt(Const.CONF_FONTS_SIZE)));
+    fontCache.put(JajukFont.BOLD, new Font("sans-serif", Font.BOLD, Conf
+        .getInt(Const.CONF_FONTS_SIZE)));
     fontCache.put(JajukFont.BOLD_L, new Font("sans-serif", Font.BOLD, Conf
         .getInt(Const.CONF_FONTS_SIZE) + 2));
     fontCache.put(JajukFont.BOLD_XL, new Font("sans-serif", Font.BOLD, Conf

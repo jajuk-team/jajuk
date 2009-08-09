@@ -130,6 +130,7 @@ public class AlarmClockDialog extends JDialog implements ActionListener, ItemLis
     jrbFile.addItemListener(this);
     sbSearch = new SearchBox() {
       private static final long serialVersionUID = 1L;
+
       public void valueChanged(final ListSelectionEvent e) {
         if (!e.getValueIsAdjusting()) {
           sr = sbSearch.getResult(sbSearch.getSelectedIndex());

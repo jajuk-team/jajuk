@@ -339,9 +339,8 @@ public class CatalogView extends ViewAdapter implements ComponentListener, Actio
     revalidate();
     repaint();
   }
-  
-  
-  private void showBusyLabel(){
+
+  private void showBusyLabel() {
     if (getComponentCount() > 0) {
       removeAll();
     }
@@ -392,7 +391,7 @@ public class CatalogView extends ViewAdapter implements ComponentListener, Actio
       return;
     }
     populating = true;
-    
+
     showBusyLabel();
     new Thread("Populate Catalog Thread") {
       @Override

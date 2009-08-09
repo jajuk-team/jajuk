@@ -31,62 +31,62 @@ import net.roarsoftware.lastfm.Track;
  */
 public class LastFmTrack implements TrackInfo {
 
-    /** The title. */
-    private String title;
+  /** The title. */
+  private String title;
 
-    /** The url. */
-    private String url;
+  /** The url. */
+  private String url;
 
-    /**
-     * Gets the track.
-     * 
-     * @return the track
-     */
-    protected static LastFmTrack getTrack(Track t) {
-        LastFmTrack track = new LastFmTrack();
+  /**
+   * Gets the track.
+   * 
+   * @return the track
+   */
+  protected static LastFmTrack getTrack(Track t) {
+    LastFmTrack track = new LastFmTrack();
 
-        track.title = t.getName();
-        track.url = t.getUrl();
+    track.title = t.getName();
+    track.url = t.getUrl();
 
-        return track;
-    }
+    return track;
+  }
 
-    /**
-     * Gets the title.
-     * 
-     * @return the title
-     */
-    public String getTitle() {
-        return title;
-    }
+  /**
+   * Gets the title.
+   * 
+   * @return the title
+   */
+  public String getTitle() {
+    return title;
+  }
 
-    /**
-     * Gets the url.
-     * 
-     * @return the url
-     */
-    public String getUrl() {
-        return url;
-    }
+  /**
+   * Gets the url.
+   * 
+   * @return the url
+   */
+  public String getUrl() {
+    return url;
+  }
 
-    /**
-     * Sets the title.
-     * 
-     * @param title
-     *            the title to set
-     */
-    public void setTitle(String title) {
-        this.title = title;
-    }
+  /**
+   * Sets the title.
+   * 
+   * @param title
+   *          the title to set
+   */
+  public void setTitle(String title) {
+    this.title = title;
+  }
 
-    /**
-     * Sets the url.
-     * 
-     * @param url
-     *            the url to set
-     */
-    public void setUrl(String url) {
-        this.url = url;
-    }
+  /**
+   * Sets the url.
+   * 
+   * @param url
+   *          the url to set
+   */
+  public void setUrl(String url) {
+    this.url = url;
+  }
 
 }

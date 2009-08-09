@@ -160,8 +160,8 @@ public class DeviceView extends ViewAdapter implements IView, ActionListener, Mo
     refreshDevices();
 
     // add components
-    setLayout(new MigLayout("ins 0","[grow]","[grow]"));
-    add(jsp,"grow");
+    setLayout(new MigLayout("ins 0", "[grow]", "[grow]"));
+    add(jsp, "grow");
     // Register on the list for subject we are interested in
     ObservationManager.register(this);
   }

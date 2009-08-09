@@ -174,7 +174,7 @@ public class CDScanView extends ViewAdapter implements ActionListener {
     add(jlName);
     add(jtfName, "wrap,grow");
     add(jlMountPoint);
-    add(jtfMountPoint,"split 2,grow");
+    add(jtfMountPoint, "split 2,grow");
     add(jbUrl, "wrap");
     add(jbScan, "right,span");
   }

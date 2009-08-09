@@ -61,7 +61,8 @@ public class ContinueModeAction extends JajukAction {
         // if nothing playing, play next track if possible
         StackItem item = QueueModel.getLastPlayed();
         if (item != null) {
-          QueueModel.push(new StackItem(FileManager.getInstance().getNextFile(item.getFile())), false);
+          QueueModel.push(new StackItem(FileManager.getInstance().getNextFile(item.getFile())),
+              false);
         }
       }
     }

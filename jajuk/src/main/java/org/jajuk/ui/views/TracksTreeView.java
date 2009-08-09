@@ -209,14 +209,13 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
     new TreeTransferHandler(jtree, DnDConstants.ACTION_COPY_OR_MOVE, true);
     jspTree = new JScrollPane(jtree);
     jspTree.setBorder(BorderFactory.createEmptyBorder(0, 1, 0, 0));
-    setLayout(new MigLayout("ins 5","[][grow]","[][grow]"));
-    add(jlSort,"left,gapx 5::");
-    add(jcbSort,"grow,wrap");
+    setLayout(new MigLayout("ins 5", "[][grow]", "[][grow]"));
+    add(jlSort, "left,gapx 5::");
+    add(jcbSort, "grow,wrap");
     add(jspTree, "grow,span");
     expand();
   }
 
-  
   /** Fill the tree */
 
   @Override
@@ -778,8 +777,8 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
           File file = track.getPlayeableFile(false);
           if (file != null) {
             try {
-              QueueModel.push(new StackItem(file, Conf.getBoolean(Const.CONF_STATE_REPEAT_ALL), true), Conf
-                  .getBoolean(Const.CONF_OPTIONS_PUSH_ON_CLICK));
+              QueueModel.push(new StackItem(file, Conf.getBoolean(Const.CONF_STATE_REPEAT_ALL),
+                  true), Conf.getBoolean(Const.CONF_OPTIONS_PUSH_ON_CLICK));
             } catch (JajukException je) {
               Log.error(je);
             }

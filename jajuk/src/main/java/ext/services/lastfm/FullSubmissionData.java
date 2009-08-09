@@ -26,127 +26,128 @@ package ext.services.lastfm;
 
 public class FullSubmissionData {
 
-    private String artist;
-    private String title;
-    private String album;
-    private int duration;
-    private int trackNumber;
-    private String source;
-    private int startTime;
+  private String artist;
+  private String title;
+  private String album;
+  private int duration;
+  private int trackNumber;
+  private String source;
+  private int startTime;
 
-    public FullSubmissionData(String artist, String title, String album, int duration, int trackNumber, String source, int startTime) {
-        this.album = album;
-        this.artist = artist;
-        this.duration = duration;
-        this.source = source;
-        this.startTime = startTime;
-        this.title = title;
-        this.trackNumber = trackNumber;
-    }
+  public FullSubmissionData(String artist, String title, String album, int duration,
+      int trackNumber, String source, int startTime) {
+    this.album = album;
+    this.artist = artist;
+    this.duration = duration;
+    this.source = source;
+    this.startTime = startTime;
+    this.title = title;
+    this.trackNumber = trackNumber;
+  }
 
-    /**
-     * @return the artist
-     */
-    public String getArtist() {
-        return artist;
-    }
+  /**
+   * @return the artist
+   */
+  public String getArtist() {
+    return artist;
+  }
 
-    /**
-     * @param artist
-     *            the artist to set
-     */
-    public void setArtist(String artist) {
-        this.artist = artist;
-    }
+  /**
+   * @param artist
+   *          the artist to set
+   */
+  public void setArtist(String artist) {
+    this.artist = artist;
+  }
 
-    /**
-     * @return the title
-     */
-    public String getTitle() {
-        return title;
-    }
+  /**
+   * @return the title
+   */
+  public String getTitle() {
+    return title;
+  }
 
-    /**
-     * @param title
-     *            the title to set
-     */
-    public void setTitle(String title) {
-        this.title = title;
-    }
+  /**
+   * @param title
+   *          the title to set
+   */
+  public void setTitle(String title) {
+    this.title = title;
+  }
 
-    /**
-     * @return the album
-     */
-    public String getAlbum() {
-        return album;
-    }
+  /**
+   * @return the album
+   */
+  public String getAlbum() {
+    return album;
+  }
 
-    /**
-     * @param album
-     *            the album to set
-     */
-    public void setAlbum(String album) {
-        this.album = album;
-    }
+  /**
+   * @param album
+   *          the album to set
+   */
+  public void setAlbum(String album) {
+    this.album = album;
+  }
 
-    /**
-     * @return the duration
-     */
-    public int getDuration() {
-        return duration;
-    }
+  /**
+   * @return the duration
+   */
+  public int getDuration() {
+    return duration;
+  }
 
-    /**
-     * @param duration
-     *            the duration to set
-     */
-    public void setDuration(int duration) {
-        this.duration = duration;
-    }
+  /**
+   * @param duration
+   *          the duration to set
+   */
+  public void setDuration(int duration) {
+    this.duration = duration;
+  }
 
-    /**
-     * @return the trackNumber
-     */
-    public int getTrackNumber() {
-        return trackNumber;
-    }
+  /**
+   * @return the trackNumber
+   */
+  public int getTrackNumber() {
+    return trackNumber;
+  }
 
-    /**
-     * @param trackNumber
-     *            the trackNumber to set
-     */
-    public void setTrackNumber(int trackNumber) {
-        this.trackNumber = trackNumber;
-    }
+  /**
+   * @param trackNumber
+   *          the trackNumber to set
+   */
+  public void setTrackNumber(int trackNumber) {
+    this.trackNumber = trackNumber;
+  }
 
-    /**
-     * @return the source
-     */
-    public String getSource() {
-        return source;
-    }
+  /**
+   * @return the source
+   */
+  public String getSource() {
+    return source;
+  }
 
-    /**
-     * @param source
-     *            the source to set
-     */
-    public void setSource(String source) {
-        this.source = source;
-    }
+  /**
+   * @param source
+   *          the source to set
+   */
+  public void setSource(String source) {
+    this.source = source;
+  }
 
-    /**
-     * @return the startTime
-     */
-    public int getStartTime() {
-        return startTime;
-    }
+  /**
+   * @return the startTime
+   */
+  public int getStartTime() {
+    return startTime;
+  }
 
-    /**
-     * @param startTime
-     *            the startTime to set
-     */
-    public void setStartTime(int startTime) {
-        this.startTime = startTime;
-    }
+  /**
+   * @param startTime
+   *          the startTime to set
+   */
+  public void setStartTime(int startTime) {
+    this.startTime = startTime;
+  }
 
 }

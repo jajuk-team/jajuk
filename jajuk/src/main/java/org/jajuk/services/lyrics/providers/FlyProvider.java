@@ -34,15 +34,16 @@ import org.w3c.dom.Document;
  */
 public class FlyProvider extends GenericProvider {
 
-  /** The Constant USER_ID. 
-   * DO NOT USE THESE KEYS FOR OTHER APPLICATIONS THAN Jajuk !
+  /**
+   * The Constant USER_ID. DO NOT USE THESE KEYS FOR OTHER APPLICATIONS THAN
+   * Jajuk !
    */
   private static final String USER_ID = "79o116n89n93sr93p-wnwhx.vasb";
 
   /** URL pattern used by jajuk to retrieve lyrics */
   private static final String URL = "http://lyricsfly.com/api/api.php?i="
       + UtilString.rot13(USER_ID) + "&a=%artist&t=%title";
-  
+
   /** URL pattern to web page (see ILyricsProvider interface for details) */
   private static final String WEB_URL = "http://www.lyricsfly.com/";
 

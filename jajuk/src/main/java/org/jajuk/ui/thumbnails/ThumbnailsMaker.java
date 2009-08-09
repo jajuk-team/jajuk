@@ -112,8 +112,8 @@ public final class ThumbnailsMaker {
    * 
    * @param size
    * @return status : 0 if OK, 1 ok error
-   * @throws URISyntaxException 
-   * @throws IOException 
+   * @throws URISyntaxException
+   * @throws IOException
    */
   public static int launchProcessus(final int size) throws URISyntaxException, IOException {
     final String jvmPath = System.getProperty("java.home") + File.separatorChar + "bin"

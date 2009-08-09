@@ -388,9 +388,9 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
    * want startup to be as fast as possible. Note that the use of intern() save
    * around 1/4 of overall heap memory
    * 
-   * We use sax-interning for the main items sections (<styles> for ie). For all
-   * raw items, we don't perform equals on item name but we compare the string
-   * hashcode
+   * We use sax-interning for the main items sections (<styles> for ie). For
+   * all raw items, we don't perform equals on item name but we compare the
+   * string hashcode
    * 
    */
   @Override

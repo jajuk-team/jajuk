@@ -43,7 +43,7 @@ import org.jajuk.util.log.Log;
  */
 public abstract class ItemManager {
 
-   /**
+  /**
    * Maps item classes -> instance, must be a linked map for ordering (mandatory
    * in commited collection)
    */
@@ -395,13 +395,13 @@ public abstract class ItemManager {
       } else if (Const.XML_TRACK_ORDER.equals(sKey)) {
         newItem = TrackManager.getInstance().changeTrackOrder(file.getTrack(), (Long) oValue,
             filter);
-      }  else if (Const.XML_ALBUM_ARTIST.equals(sKey)) {
-        newItem = TrackManager.getInstance().changeTrackAlbumArtist(file.getTrack(), (String) oValue,
-            filter);
-      }  else if (Const.XML_TRACK_DISC_NUMBER.equals(sKey)) {
+      } else if (Const.XML_ALBUM_ARTIST.equals(sKey)) {
+        newItem = TrackManager.getInstance().changeTrackAlbumArtist(file.getTrack(),
+            (String) oValue, filter);
+      } else if (Const.XML_TRACK_DISC_NUMBER.equals(sKey)) {
         newItem = TrackManager.getInstance().changeTrackDiscNumber(file.getTrack(), (Long) oValue,
             filter);
-      }  else if (Const.XML_YEAR.equals(sKey)) {
+      } else if (Const.XML_YEAR.equals(sKey)) {
         newItem = TrackManager.getInstance().changeTrackYear(file.getTrack(),
             String.valueOf(oValue), filter);
       } else if (Const.XML_TRACK_RATE.equals(sKey)) {

@@ -89,7 +89,7 @@ public final class DirectoryManager extends ItemManager {
     // for standard
     // directories, not root
     registerProperty(new PropertyMetaInformation(Const.XML_NAME, false, true, true, false, false,
-        String.class, null)); 
+        String.class, null));
     // @TODO edition
     // Parent
     registerProperty(new PropertyMetaInformation(Const.XML_DIRECTORY_PARENT, false, true, true,

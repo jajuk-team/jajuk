@@ -223,7 +223,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
     jmiDirCopyURL.putClientProperty(Const.DETAIL_CONTENT, alSelected);
     jmiDirOpenExplorer = new JMenuItem(ActionManager.getAction(JajukActions.OPEN_EXPLORER));
     jmiDirOpenExplorer.putClientProperty(Const.DETAIL_CONTENT, alSelected);
-    
+
     // Device menu
     jmiDevMount = new JMenuItem(Messages.getString("FilesTreeView.28"), IconLoader
         .getIcon(JajukIcons.UNMOUNT));
@@ -536,8 +536,8 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
           if (o instanceof FileNode) {
             File file = ((FileNode) o).getFile();
             try {
-              QueueModel.push(new StackItem(file, Conf.getBoolean(Const.CONF_STATE_REPEAT_ALL), true),
-                  Conf.getBoolean(Const.CONF_OPTIONS_PUSH_ON_CLICK));
+              QueueModel.push(new StackItem(file, Conf.getBoolean(Const.CONF_STATE_REPEAT_ALL),
+                  true), Conf.getBoolean(Const.CONF_OPTIONS_PUSH_ON_CLICK));
             } catch (JajukException je) {
               Log.error(je);
             }
@@ -849,11 +849,12 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
       // Enable Copy url for a single item only
       jmiCopyURL.setEnabled(alSelected.size() == 1 && alSelected.get(0) instanceof File);
       jmiDirCopyURL.setEnabled(alSelected.size() == 1 && alSelected.get(0) instanceof Directory);
-      jmiDirOpenExplorer.setEnabled(alSelected.size() == 1 && alSelected.get(0) instanceof Directory);
+      jmiDirOpenExplorer.setEnabled(alSelected.size() == 1
+          && alSelected.get(0) instanceof Directory);
       jmiPlaylistCopyURL
           .setEnabled(alSelected.size() == 1 && alSelected.get(0) instanceof Playlist);
-      jmiPlaylistPrepareParty
-          .setEnabled(alSelected.size() == 1 && alSelected.get(0) instanceof Playlist);
+      jmiPlaylistPrepareParty.setEnabled(alSelected.size() == 1
+          && alSelected.get(0) instanceof Playlist);
       // Update preference menu
       pjmTracks.resetUI(alSelected);
     }

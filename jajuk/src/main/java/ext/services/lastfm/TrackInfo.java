@@ -26,34 +26,34 @@ package ext.services.lastfm;
 
 public interface TrackInfo {
 
-    /**
-     * Gets the title.
-     * 
-     * @return the title
-     */
-    public String getTitle();
+  /**
+   * Gets the title.
+   * 
+   * @return the title
+   */
+  public String getTitle();
 
-    /**
-     * Gets the url.
-     * 
-     * @return the url
-     */
-    public String getUrl();
+  /**
+   * Gets the url.
+   * 
+   * @return the url
+   */
+  public String getUrl();
 
-    /**
-     * Sets the title.
-     * 
-     * @param title
-     *            the title to set
-     */
-    public void setTitle(String title);
+  /**
+   * Sets the title.
+   * 
+   * @param title
+   *          the title to set
+   */
+  public void setTitle(String title);
 
-    /**
-     * Sets the url.
-     * 
-     * @param url
-     *            the url to set
-     */
-    public void setUrl(String url);
+  /**
+   * Sets the url.
+   * 
+   * @param url
+   *          the url to set
+   */
+  public void setUrl(String url);
 
 }

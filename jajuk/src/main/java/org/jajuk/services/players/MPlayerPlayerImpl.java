@@ -60,10 +60,10 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
   /** Cross fade duration in ms */
   int iFadeDuration = 0;
 
-  /** Time track started **/
+  /** Time track started * */
   private long dateStart;
 
-  /** Pause time correction **/
+  /** Pause time correction * */
   private long pauseCount = 0;
   private long pauseCountStamp = -1;
 
@@ -105,7 +105,7 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
       Track current = fCurrent.getTrack();
       while (!bStop && !bEOF) { // stop this thread
         try {
-		  // store elapsed time while the track is paused
+          // store elapsed time while the track is paused
           if (pauseCountStamp > 0) {
             pauseCount += (System.currentTimeMillis() - pauseCountStamp);
             pauseCountStamp = -1;
@@ -318,7 +318,7 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
    * (non-Javadoc)
    * 
    * @see org.jajuk.players.IPlayerImpl#play(org.jajuk.base.File, float, long,
-   * float)
+   *      float)
    */
   @Override
   public void play(org.jajuk.base.File file, float fPosition, long length, float fVolume)
@@ -432,7 +432,7 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
    * (non-Javadoc)
    * 
    * @see org.jajuk.players.IPlayerImpl#seek(float) Ogg vorbis seek not yet
-   * supported
+   *      supported
    */
   @Override
   public void seek(float posValue) {
@@ -483,7 +483,7 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
    * (non-Javadoc)
    * 
    * @see org.jajuk.players.AbstractMPlayerImpl#play(org.jajuk.base.WebRadio,
-   * float)
+   *      float)
    */
   @Override
   public void play(WebRadio radio, float volume) {
@@ -512,7 +512,8 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
   }
 
   /**
-   * Force finishing (doesn't stop but only make a FIFO request to switch track) <br>
+   * Force finishing (doesn't stop but only make a FIFO request to switch track)
+   * <br>
    * We have to launch the next file from another thread to free the reader
    * thread. Otherwise, finish() calls launches() that call another finishes...
    */

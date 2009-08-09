@@ -444,8 +444,8 @@ public final class UtilString {
   }
 
   /*
-   * Escape (in the regexp sense) a string Source Search reserved: $ ( ) * + - .
-   * ? [ \ ] ^ { | } http://mindprod.com/jgloss/regex.html
+   * Escape (in the regexp sense) a string Source Search reserved: $ ( ) * + - . ? [ \ ] ^ { | }
+   * http://mindprod.com/jgloss/regex.html
    */
   public static String escapeString(String s) {
     int length = s.length();
@@ -573,14 +573,11 @@ public final class UtilString {
    * see http://www.w3.org/TR/2000/REC-xml-20001006
    * <p>
    * substrings
-   * <p>
-   * ' to &apos;
-   * <p>
-   * " to &quot;
-   * <p>
-   * < to &lt; <p>> to &gt;
-   * <p>
-   * & to &amp;
+   * <p> ' to &apos;
+   * <p> " to &quot;
+   * <p> < to &lt;
+   * <p>> to &gt;
+   * <p> & to &amp;
    * 
    * @param s
    * @return

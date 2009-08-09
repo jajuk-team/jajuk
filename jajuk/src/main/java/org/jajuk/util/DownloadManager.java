@@ -225,8 +225,7 @@ public final class DownloadManager {
     HttpURLConnection connection = NetworkUtils.getConnection(url, proxy);
     try {
       return NetworkUtils.readURL(connection, charset);
-    }
-    finally {
+    } finally {
       connection.disconnect();
     }
   }

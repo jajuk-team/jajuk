@@ -147,7 +147,7 @@ public class LastFmService {
         Artist a = Artist.getInfo(artist, UtilString.rot13(API_KEY));
         if (a != null) {
           artistInfo = LastFmArtist.getArtist(a);
-          lastFmCache.storeArtistInfo(artist,artistInfo);
+          lastFmCache.storeArtistInfo(artist, artistInfo);
         }
       }
       return artistInfo;

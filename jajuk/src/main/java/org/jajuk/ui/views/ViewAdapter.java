@@ -58,7 +58,7 @@ public abstract class ViewAdapter extends JXPanel implements IView, Const, Compa
    */
   public ViewAdapter() {
     super();
-    
+
     // create a new DockKey (note that ID is set in setID() method)
     key = new DockKey();
     // View title

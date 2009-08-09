@@ -72,11 +72,12 @@ public class ExitService extends Thread {
         // Commit webradios
         WebRadioManager.getInstance().commit();
         // Store webradio state
-        Conf.setProperty(Const.CONF_WEBRADIO_WAS_PLAYING, Boolean.toString(QueueModel.isPlayingRadio()));
+        Conf.setProperty(Const.CONF_WEBRADIO_WAS_PLAYING, Boolean.toString(QueueModel
+            .isPlayingRadio()));
 
         // Disconnect Dbus if required
         DBusManager.disconnect();
-        
+
         // commit configuration
         org.jajuk.util.Conf.commit();
         // commit history

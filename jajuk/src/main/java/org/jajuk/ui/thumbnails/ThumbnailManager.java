@@ -119,11 +119,11 @@ public final class ThumbnailManager {
    *          destination file (jpg)
    * @param maxDim
    *          required size
-   * @throws IOException 
+   * @throws IOException
    * @throws InterruptedException
    */
-  public static void createThumbnail(final File orig, final File thumb, final int maxDim) throws InterruptedException, IOException 
-      {
+  public static void createThumbnail(final File orig, final File thumb, final int maxDim)
+      throws InterruptedException, IOException {
     // do not use URL object has it can corrupt special paths
     createThumbnail(new ImageIcon(orig.getAbsolutePath()), thumb, maxDim);
   }
@@ -141,12 +141,12 @@ public final class ThumbnailManager {
    *          destination file (jpg)
    * @param maxDim
    *          required size
-   * @throws InterruptedException 
-   * @throws IOException 
+   * @throws InterruptedException
+   * @throws IOException
    * @throws Exception
    */
-  public static void createThumbnail(final ImageIcon ii, final File thumb, final int maxDim) throws InterruptedException, IOException
-       {
+  public static void createThumbnail(final ImageIcon ii, final File thumb, final int maxDim)
+      throws InterruptedException, IOException {
     final Image image = ii.getImage();
     // Wait for full image loading
     final MediaTracker mediaTracker = new MediaTracker(new Container());
