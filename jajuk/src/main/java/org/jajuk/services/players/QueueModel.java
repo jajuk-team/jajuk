@@ -58,6 +58,11 @@ import org.jajuk.util.log.Log;
  * dispatcher thread is frozen when JVM execute a static synchronized method,
  * even outside AWT dispatcher thread
  * </p>
+ *
+ * General todo-items:
+ * TODO: we catch exceptions a lot in various places here. Why? We should probably rather avoid or handle them correctly
+ * TODO: insert() and push() are quite similar, but implemented differently, they should be combined
+ * TOOD: the queue/planned handling is cumbersome and planned tracks are not correctly handled sometimes, should be refactored into separate class
  */
 public final class QueueModel {
 
@@ -101,10 +106,12 @@ public final class QueueModel {
   }
 
   /**
-   * Remove all items from the given album just before and after the given index
+   * Remove all items from the given album just before and after the given index, 
+   * i.e. remove all tracks before and after the current one that have the same
+   * album.
    * 
-   * @param index
-   * @param album
+   * @param index The index from where to remove.
+   * @param album The album to remove.
    */
   public static void resetAround(int index, Album album) {
     int begin = 0;
@@ -156,8 +163,7 @@ public final class QueueModel {
   public static void push(final List<StackItem> alItems, final boolean bPush,
       final boolean bPushNext) {
     Thread t = new Thread("Queue Push Thread") { // do it in a thread to make
-      // UI more
-      // reactive
+      // UI more reactive
       @Override
       public void run() {
         try {
@@ -1154,6 +1160,7 @@ public final class QueueModel {
       alQueue.remove(lIndex); // remove the item
       alQueue.add(lIndex + 1, item); // add it again above
     }
+    // TODO: this seems to not take the planned queue into account, but up() does!
   }
 
   /**
