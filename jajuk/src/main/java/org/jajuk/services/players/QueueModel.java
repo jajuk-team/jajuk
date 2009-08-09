@@ -95,10 +95,8 @@ public final class QueueModel {
    * FIFO total reinitialization
    */
   public static void reset() {
-    alQueue.clear();
-    alPlanned.clear();
+    clear();
     JajukTimer.getInstance().reset();
-    index = 0;
     itemLast = null;
   }
 
