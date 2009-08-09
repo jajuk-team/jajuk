@@ -208,6 +208,7 @@ public class Messages extends DefaultHandler {
   private static Properties parseLangpack(final Locale locale) throws SAXException, IOException,
       ParserConfigurationException {
     final Properties lProperties = new Properties();
+
     // Choose right jajuk_<lang>.properties file to load
     final StringBuilder sbFilename = new StringBuilder(Const.FILE_LANGPACK_PART1);
     if (!Locale.ENGLISH.equals(locale)) { // for English, properties file is
@@ -215,11 +216,16 @@ public class Messages extends DefaultHandler {
       sbFilename.append('_').append(locale);
     }
     sbFilename.append(Const.FILE_LANGPACK_PART2);
-    URL url;
+
     // property file URL, either in the jajuk.jar jar
     // (normal execution) or found as regular file if in
     // development debug mode
-    url = UtilSystem.getResource("org/jajuk/i18n/" + sbFilename.toString());
+    String resource = "org/jajuk/i18n/" + sbFilename.toString();
+    URL url = UtilSystem.getResource(resource);
+    if(url == null) {
+      throw new IOException("Could not read resource: " + resource);
+    }
+    
     // parse it, actually it is a big properties file as CDATA in an XML
     // file
     final SAXParserFactory spf = SAXParserFactory.newInstance();
