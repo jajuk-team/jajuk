@@ -20,6 +20,8 @@
  */
 package org.jajuk.ui.wizard;
 
+import java.awt.HeadlessException;
+
 import junit.framework.TestCase;
 
 import org.jajuk.services.dj.AmbienceManager;
@@ -50,7 +52,7 @@ public class TestDigitalDJWizard extends TestCase {
     assertNotNull(screen.getName());
 
     assertNull(wizard.getPreviousScreen(null)); // always null until
-                                                // "actionPerformed"
+    // "actionPerformed"
   }
 
   /**
@@ -74,60 +76,126 @@ public class TestDigitalDJWizard extends TestCase {
    */
 
   public void testDigitalDJWizard() {
-    new DigitalDJWizard();
+    try {
+      new DigitalDJWizard();
+    } catch (HeadlessException e) {
+      // on some servers we cannot initalize any ui and thus cannot test this
+    }
   }
 
   public void testPanelsActionSelection() {
-    coverScreen(new DigitalDJWizard.ActionSelectionPanel());
-  }
-  
-  public void testPanelsAmbience() {
-    // we need to load ambiences before this will work
-    AmbienceManager.getInstance().load();
-    
-    coverScreen(new DigitalDJWizard.AmbiencePanel());
-  }
-  
-  public void testPanelsChange() {
-    coverScreen(new DigitalDJWizard.ChangePanel());
+    try {
+      // to initialize static data...,
+      // TODO: this looks a bit weird in the code of Wizard and Screen, why is
+      // it needed?
+      new DigitalDJWizard();
 
-    // also cover the case when a digital dj is registered
-    DigitalDJ dj = new TransitionDigitalDJ("1");
-    DigitalDJManager.getInstance().register(dj);
-    
-    coverScreen(new DigitalDJWizard.ChangePanel());
+      coverScreen(new DigitalDJWizard.ActionSelectionPanel());
+    } catch (HeadlessException e) {
+      // on some servers we cannot initalize any ui and thus cannot test this
+    }
   }
-  
+
+  public void testPanelsAmbience() {
+    try {
+      // to initialize static data...,
+      // TODO: this looks a bit weird in the code of Wizard and Screen, why is
+      // it needed?
+      new DigitalDJWizard();
+
+      // we need to load ambiences before this will work
+      AmbienceManager.getInstance().load();
+
+      coverScreen(new DigitalDJWizard.AmbiencePanel());
+    } catch (HeadlessException e) {
+      // on some servers we cannot initalize any ui and thus cannot test this
+    }
+  }
+
+  public void testPanelsChange() {
+    try {
+      // to initialize static data...,
+      // TODO: this looks a bit weird in the code of Wizard and Screen, why is
+      // it needed?
+      new DigitalDJWizard();
+
+      coverScreen(new DigitalDJWizard.ChangePanel());
+
+      // also cover the case when a digital dj is registered
+      DigitalDJ dj = new TransitionDigitalDJ("1");
+      DigitalDJManager.getInstance().register(dj);
+
+      coverScreen(new DigitalDJWizard.ChangePanel());
+    } catch (HeadlessException e) {
+      // on some servers we cannot initalize any ui and thus cannot test this
+    }
+  }
+
   public void testPanelsGeneralOption() {
-    coverScreen(new DigitalDJWizard.GeneralOptionsPanel());
+    try {
+      // to initialize static data...,
+      // TODO: this looks a bit weird in the code of Wizard and Screen, why is
+      // it needed?
+      new DigitalDJWizard();
+
+      coverScreen(new DigitalDJWizard.GeneralOptionsPanel());
+    } catch (HeadlessException e) {
+      // on some servers we cannot initalize any ui and thus cannot test this
+    }
   }
-  
-  public void testPanelsPropoertions() {
-    coverScreen(new DigitalDJWizard.ProportionsPanel());
+
+  public void testPanelsProportions() {
+    try {
+      // to initialize static data...,
+      // TODO: this looks a bit weird in the code of Wizard and Screen, why is
+      // it needed?
+      new DigitalDJWizard();
+
+      coverScreen(new DigitalDJWizard.ProportionsPanel());
+    } catch (HeadlessException e) {
+      // on some servers we cannot initalize any ui and thus cannot test this
+    }
   }
-  
+
   public void testPanelsRemove() {
     DigitalDJ dj = new TransitionDigitalDJ("1");
     DigitalDJManager.getInstance().register(dj);
-    
+
     coverScreen(new DigitalDJWizard.RemovePanel());
   }
-  
+
   public void testPanelsTransition() {
-    coverScreen(new DigitalDJWizard.TransitionsPanel());
+    try {
+      // to initialize static data...,
+      // TODO: this looks a bit weird in the code of Wizard and Screen, why is
+      // it needed?
+      new DigitalDJWizard();
+
+      coverScreen(new DigitalDJWizard.TransitionsPanel());
+    } catch (HeadlessException e) {
+      // on some servers we cannot initalize any ui and thus cannot test this
+    }
   }
-  
+
   public void testPanelsTypeSelection() {
-    coverScreen(new DigitalDJWizard.TypeSelectionPanel());
+    try {
+      // to initialize static data...,
+      // TODO: this looks a bit weird in the code of Wizard and Screen, why is
+      // it needed?
+      new DigitalDJWizard();
+
+      coverScreen(new DigitalDJWizard.TypeSelectionPanel());
+    } catch (HeadlessException e) {
+      // on some servers we cannot initalize any ui and thus cannot test this
+    }
   }
 
   private void coverScreen(Screen screen) {
     screen.initUI();
     assertNotNull(screen.getDescription());
     assertNotNull(screen.getName());
-    //JUnitHelpers.ToStringTest(screen);
+    // JUnitHelpers.ToStringTest(screen);
   }
-
 
   /**
    * Test method for {@link org.jajuk.ui.wizard.DigitalDJWizard#finish()}.
@@ -136,11 +204,10 @@ public class TestDigitalDJWizard extends TestCase {
   public void testFinish() {
     // TODO: find out how to test this...
     /*
-    coverScreen(new DigitalDJWizard.TypeSelectionPanel());
-
-      DigitalDJWizard wizard = new DigitalDJWizard(); 
-      wizard.finish();
-   */
+     * coverScreen(new DigitalDJWizard.TypeSelectionPanel());
+     * 
+     * DigitalDJWizard wizard = new DigitalDJWizard(); wizard.finish();
+     */
   }
 
 }
