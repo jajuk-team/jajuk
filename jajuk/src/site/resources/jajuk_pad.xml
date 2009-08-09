@@ -34,9 +34,9 @@
 	</Company_Info>
 	<Program_Info>
 		<Program_Name>Jajuk</Program_Name>
-		<Program_Version>1.7.4</Program_Version>
-		<Program_Release_Month>05</Program_Release_Month>
-		<Program_Release_Day>18</Program_Release_Day>
+		<Program_Version>1.8</Program_Version>
+		<Program_Release_Month>08</Program_Release_Month>
+		<Program_Release_Day>09</Program_Release_Day>
 		<Program_Release_Year>2009</Program_Release_Year>
 		<Program_Cost_Dollars />
 		<Program_Cost_Other_Code />
@@ -44,13 +44,13 @@
 		<Program_Type>Freeware</Program_Type>
 		<Program_Release_Status>New Release</Program_Release_Status>
 		<Program_Install_Support>No Install Support</Program_Install_Support>
-		<Program_OS_Support>Win 3.1x,Win95,Win98,WinME,WinNT 3.x,WinNT 4.x,WinXP,Windows2000,Windows2003,Unix,Linux,Linux Gnome,Linux GPL,Linux Open Source,Mac OS X,Java</Program_OS_Support>
+		<Program_OS_Support>Win 3.1x,Win95,Win98,WinME,WinNT 3.x,WinNT 4.x,WinXP,Windows2000,Windows2003,WindowsVista,WindowsSeven,Unix,Linux,Linux Gnome,Linux GPL,Linux Open Source,Mac OS X,Java</Program_OS_Support>
 		<Program_Language>English,French,German,Greek,Korean,Spanish</Program_Language>
 		<Program_Change_Info />
 		<Program_Specific_Category>Audio</Program_Specific_Category>
 		<Program_Category_Class>Audio &amp; Multimedia::Audio File Players</Program_Category_Class>
 		<Program_Categories />
-		<Program_System_Requirements>P3 500Mhz, 256 MB RAM</Program_System_Requirements>
+		<Program_System_Requirements>P3 600Mhz, 512 MB RAM</Program_System_Requirements>
 		<Includes_JAVA_VM>N</Includes_JAVA_VM>
 		<Includes_VB_Runtime>N</Includes_VB_Runtime>
 		<Includes_DirectX>N</Includes_DirectX>
@@ -92,7 +92,7 @@
 			<Application_XML_File_URL>http://jajuk.svn.sourceforge.net/svnroot/jajuk/trunk/jajuk/src/site/resources/jajuk_pad.xml</Application_XML_File_URL>
 		</Application_URLs>
 		<Download_URLs>
-			<Primary_Download_URL>http://prdownloads.sourceforge.net/jajuk/jajuk-1.7.4-win32.exe?download&amp;amp;target=jajuk.exe</Primary_Download_URL>
+			<Primary_Download_URL>http://prdownloads.sourceforge.net/jajuk/jajuk-1.8-win32.exe?download&amp;amp;target=jajuk.exe</Primary_Download_URL>
 			<Secondary_Download_URL />
 			<Additional_Download_URL_1 />
 			<Additional_Download_URL_2 />
