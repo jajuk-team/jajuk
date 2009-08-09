@@ -48,8 +48,9 @@ import org.jajuk.util.error.JajukException;
  */
 public class TestQueueModel extends TestCase {
 
-  
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see junit.framework.TestCase#setUp()
    */
   @Override
@@ -59,24 +60,36 @@ public class TestQueueModel extends TestCase {
     QueueModel.reset();
     QueueModel.stopRequest();
 
+    // reset conf changes to default
+    Conf.setProperty(Const.CONF_STATE_CONTINUE, "false");
+
+    // make sure we reset WebRadio
+    QueueModel.launchRadio(null);
+
+    // remove any registered files
+    for (File file : FileManager.getInstance().getFiles()) {
+      FileManager.getInstance().removeFile(file);
+    }
+
     super.setUp();
   }
 
   // helper method to emma-coverage of the unused constructor
-  public void testPrivateConstructor() throws Exception
-  {
-     //For EMMA code-coverage tests
-     JUnitHelpers.executePrivateConstructor(QueueModel.class);
+  public void testPrivateConstructor() throws Exception {
+    // For EMMA code-coverage tests
+    JUnitHelpers.executePrivateConstructor(QueueModel.class);
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see junit.framework.TestCase#tearDown()
    */
   @Override
   protected void tearDown() throws Exception {
     // wait a bit to let background-threads finish
     Thread.sleep(200);
-    
+
     super.tearDown();
   }
 
@@ -126,13 +139,39 @@ public class TestQueueModel extends TestCase {
   public void testPushListOfStackItemBoolean() throws Exception {
     List<StackItem> list = new ArrayList<StackItem>();
     list.add(new StackItem(getFile(1)));
-    
+
     QueueModel.push(list, true);
-    
+
     // there is a thread started, so delay a bit to let that happen...
     Thread.sleep(400);
 
     assertEquals(1, QueueModel.getQueue().size());
+  }
+
+  public void testPushListOfStackItemBooleanNoPush() throws Exception {
+    List<StackItem> list = new ArrayList<StackItem>();
+    list.add(new StackItem(getFile(1)));
+
+    QueueModel.push(list, false);
+
+    // there is a thread started, so delay a bit to let that happen...
+    Thread.sleep(400);
+
+    assertEquals(1, QueueModel.getQueue().size());
+  }
+
+  public void testPushListOfStackItemBooleanNullItems() throws Exception {
+    List<StackItem> list = new ArrayList<StackItem>();
+    list.add(new StackItem(getFile(1)));
+    list.add(null);
+    list.add(new StackItem(getFile(3)));
+
+    QueueModel.push(list, true);
+
+    // there is a thread started, so delay a bit to let that happen...
+    Thread.sleep(400);
+
+    assertEquals(2, QueueModel.getQueue().size());
   }
 
   /**
@@ -144,8 +183,20 @@ public class TestQueueModel extends TestCase {
   public void testPushListOfStackItemBooleanBoolean() throws Exception {
     List<StackItem> list = new ArrayList<StackItem>();
     list.add(new StackItem(getFile(1)));
-    
+
     QueueModel.push(list, true, true);
+
+    // there is a thread started, so delay a bit to let that happen...
+    Thread.sleep(200);
+
+    assertEquals(1, QueueModel.getQueue().size());
+  }
+
+  public void testPushListOfStackItemBooleanBooleanNoPushNext() throws Exception {
+    List<StackItem> list = new ArrayList<StackItem>();
+    list.add(new StackItem(getFile(1)));
+
+    QueueModel.push(list, false, false);
 
     // there is a thread started, so delay a bit to let that happen...
     Thread.sleep(200);
@@ -159,9 +210,9 @@ public class TestQueueModel extends TestCase {
    * .
    */
 
-  public void testPushStackItemBoolean() throws Exception {  
+  public void testPushStackItemBoolean() throws Exception {
     QueueModel.push(new StackItem(getFile(1)), true);
-    
+
     // there is a thread started, so delay a bit to let that happen...
     Thread.sleep(200);
 
@@ -176,20 +227,21 @@ public class TestQueueModel extends TestCase {
 
   public void testPushStackItemBooleanBoolean() throws Exception {
     QueueModel.push(new StackItem(getFile(1)), true, true);
-    
+
     // there is a thread started, so delay a bit to let that happen...
     Thread.sleep(200);
-    
+
     assertEquals(1, QueueModel.getQueue().size());
   }
 
   /**
-   * @param count number of items to create 
+   * @param count
+   *          number of items to create
    * @throws JajukException
    */
-  private void addItems(int count ) throws Exception {
+  private void addItems(int count) throws Exception {
     List<StackItem> list = new ArrayList<StackItem>();
-    for(int i = 0;i < count;i++) {
+    for (int i = 0; i < count; i++) {
       list.add(new StackItem(getFile(i)));
     }
     QueueModel.insert(list, 0);
@@ -199,23 +251,25 @@ public class TestQueueModel extends TestCase {
   private File getFile(int i) throws Exception {
     Style style = new Style(new Integer(i).toString(), "name");
     Album album = new Album(new Integer(i).toString(), "name", "artis", 23);
-    album.setProperty(Const.XML_ALBUM_COVER, "none");  // don't read covers for this test
-    
+    album.setProperty(Const.XML_ALBUM_COVER, "none"); // don't read covers for
+    // this test
+
     Author author = new Author(new Integer(i).toString(), "name");
     Year year = new Year(new Integer(i).toString(), "2000");
 
     IPlayerImpl imp = new MockPlayer();
-    Class<IPlayerImpl> cl = (Class<IPlayerImpl>)imp.getClass();
-    
+    Class<IPlayerImpl> cl = (Class<IPlayerImpl>) imp.getClass();
+
     Type type = new Type(new Integer(i).toString(), "name", "mp3", cl, null);
-    Track track = new Track(new Integer(i).toString(), "name", album, style, author, 120, year, 1, type, 1);
-    
+    Track track = new Track(new Integer(i).toString(), "name", album, style, author, 120, year, 1,
+        type, 1);
+
     Device device = new Device(new Integer(i).toString(), "name");
     device.setUrl(System.getProperty("java.io.tmpdir"));
     device.mount(true);
-    
+
     Directory dir = new Directory(new Integer(i).toString(), "name", null, device);
-    
+
     return new org.jajuk.base.File(new Integer(i).toString(), "test.tst", dir, track, 120, 70);
   }
 
@@ -226,7 +280,7 @@ public class TestQueueModel extends TestCase {
    */
 
   public void testLaunchRadio() {
-    // TODO: requires MPlayer and UI support: QueueModel.launchRadio(new WebRadio("name", "invalidurl"));
+    QueueModel.launchRadio(new WebRadio("name", "invalidurl"));
   }
 
   /**
@@ -236,12 +290,12 @@ public class TestQueueModel extends TestCase {
 
   public void testContainsRepeat() throws Exception {
     addItems(2);
-    
+
     assertFalse(QueueModel.containsRepeat());
-    
+
     QueueModel.setRepeatModeToAll(true);
     assertTrue("Items: " + QueueModel.getQueue(), QueueModel.containsRepeat());
-    
+
   }
 
   /**
@@ -251,7 +305,7 @@ public class TestQueueModel extends TestCase {
   public void testFinished() throws Exception {
     // without item it just returns
     QueueModel.finished();
-    
+
     // with items, it will go to the next ine
     addItems(10);
     QueueModel.setIndex(0);
@@ -268,7 +322,7 @@ public class TestQueueModel extends TestCase {
   public void testFinishedBoolean() throws Exception {
     // without item it just returns
     QueueModel.finished(true);
-    
+
     // with items, it will go to the next ine
     addItems(10);
     QueueModel.setIndex(0);
@@ -299,11 +353,11 @@ public class TestQueueModel extends TestCase {
   public void testComputesPlanned() throws Exception {
     // without tracks it will not do much
     QueueModel.computesPlanned(false);
-    
+
     // with tracks, it will look at planned items
     addItems(10);
     QueueModel.computesPlanned(true);
-    
+
   }
 
   /**
@@ -344,7 +398,7 @@ public class TestQueueModel extends TestCase {
   public void testPlayPrevious() throws Exception {
     // do nothing without items
     QueueModel.playPrevious();
-    
+
     // with items:
     addItems(10);
     QueueModel.setIndex(2);
@@ -368,12 +422,12 @@ public class TestQueueModel extends TestCase {
   public void testPlayNext() throws Exception {
     // do nothing without items
     QueueModel.playNext();
-    
+
     // with items:
     addItems(10);
     QueueModel.setIndex(2);
     QueueModel.playNext();
-    assertEquals(3, QueueModel.getIndex()); 
+    assertEquals(3, QueueModel.getIndex());
   }
 
   /**
@@ -392,9 +446,9 @@ public class TestQueueModel extends TestCase {
 
   public void testGetPlayingFile() throws Exception {
     assertNull(QueueModel.getPlayingFile());
-    
+
     addItems(10);
-    //QueueModel.playNext();
+    // QueueModel.playNext();
     QueueModel.goTo(0);
     assertFalse(QueueModel.isStopped());
     assertNotNull(QueueModel.getPlayingFile());
@@ -410,7 +464,7 @@ public class TestQueueModel extends TestCase {
   public void testGetCurrentItem() throws Exception {
     // no item without items
     assertNull(QueueModel.getCurrentItem());
-    
+
     addItems(10);
     QueueModel.playNext();
     assertEquals("1", QueueModel.getCurrentItem().getFile().getID());
@@ -433,13 +487,13 @@ public class TestQueueModel extends TestCase {
 
   public void testCanUnmount() throws Exception {
     assertTrue(QueueModel.canUnmount(new Device("0", "test")));
-    
+
     addItems(10);
-    
+
     // still true as we are not playing
     assertTrue(QueueModel.canUnmount(new Device("1", "test")));
     assertTrue(QueueModel.canUnmount(new Device("11", "test")));
-    
+
     // try to start playing/planning
     QueueModel.playNext();
     assertFalse(QueueModel.canUnmount(QueueModel.getItem(1).getFile().getDevice()));
@@ -461,14 +515,14 @@ public class TestQueueModel extends TestCase {
 
   public void testIsStopped() throws Exception {
     assertTrue(QueueModel.isStopped());
-    
+
     addItems(10);
-    
+
     // try to start playing/planning
     QueueModel.playNext();
-    
+
     assertFalse(QueueModel.isStopped());
-    
+
     QueueModel.stopRequest();
     assertTrue(QueueModel.isStopped());
   }
@@ -479,9 +533,9 @@ public class TestQueueModel extends TestCase {
 
   public void testGetQueue() throws Exception {
     assertEquals(0, QueueModel.getQueue().size());
-    
+
     addItems(10);
-    
+
     assertEquals(10, QueueModel.getQueue().size());
   }
 
@@ -492,9 +546,9 @@ public class TestQueueModel extends TestCase {
 
   public void testGetQueueSize() throws Exception {
     assertEquals(0, QueueModel.getQueueSize());
-    
+
     addItems(10);
-    
+
     assertEquals(10, QueueModel.getQueueSize());
   }
 
@@ -505,22 +559,21 @@ public class TestQueueModel extends TestCase {
   public void testShuffle() throws Exception {
     // shuffle should not fail if queue is empty
     QueueModel.shuffle();
-    
+
     addItems(10);
-    
+
     // verify that we have them in order before
     assertEquals("0", QueueModel.getItem(0).getFile().getID());
     assertEquals("5", QueueModel.getItem(5).getFile().getID());
     assertEquals("9", QueueModel.getItem(9).getFile().getID());
-    
+
     QueueModel.shuffle();
-    
+
     // it's very unlikely that we have the same order afterwards
-    assertFalse("Queue: " + QueueModel.getQueue(), 
-        QueueModel.getItem(0).getFile().getID().equals("0") &&
-        QueueModel.getItem(5).getFile().getID().equals("5") &&
-        QueueModel.getItem(9).getFile().getID().equals("9")
-        );
+    assertFalse("Queue: " + QueueModel.getQueue(), QueueModel.getItem(0).getFile().getID().equals(
+        "0")
+        && QueueModel.getItem(5).getFile().getID().equals("5")
+        && QueueModel.getItem(9).getFile().getID().equals("9"));
   }
 
   /**
@@ -532,16 +585,16 @@ public class TestQueueModel extends TestCase {
   public void testInsertStackItemInt() throws Exception {
     assertEquals(0, QueueModel.getQueueSize());
     QueueModel.insert(new StackItem(getFile(0)), 0);
-    
+
     assertEquals(1, QueueModel.getQueueSize());
-    
+
     // when we insert the next one at 0, the previous one should be moved
     QueueModel.insert(new StackItem(getFile(1)), 0);
 
     assertEquals(2, QueueModel.getQueueSize());
     assertEquals("1", QueueModel.getItem(0).getFile().getID());
     assertEquals("0", QueueModel.getItem(1).getFile().getID());
-    
+
     // adding in between now, should again adjust the queue accordingly
     QueueModel.insert(new StackItem(getFile(2)), 1);
 
@@ -549,7 +602,7 @@ public class TestQueueModel extends TestCase {
     assertEquals("1", QueueModel.getItem(0).getFile().getID());
     assertEquals("2", QueueModel.getItem(1).getFile().getID());
     assertEquals("0", QueueModel.getItem(2).getFile().getID());
-    
+
     // and adding at the end should work as well
     QueueModel.insert(new StackItem(getFile(3)), 3);
 
@@ -558,7 +611,7 @@ public class TestQueueModel extends TestCase {
     assertEquals("2", QueueModel.getItem(1).getFile().getID());
     assertEquals("0", QueueModel.getItem(2).getFile().getID());
     assertEquals("3", QueueModel.getItem(3).getFile().getID());
-    
+
   }
 
   /**
@@ -571,7 +624,7 @@ public class TestQueueModel extends TestCase {
 
     // tested with addItems
     addItems(256);
-    
+
     assertEquals(256, QueueModel.getQueueSize());
   }
 
@@ -582,24 +635,24 @@ public class TestQueueModel extends TestCase {
   public void testUp() throws Exception {
     // first one cannot be put up, returns immediately
     QueueModel.up(0);
-    
+
     addItems(3);
-    
+
     // check queue
     assertEquals(3, QueueModel.getQueueSize());
     assertEquals("0", QueueModel.getItem(0).getFile().getID());
     assertEquals("1", QueueModel.getItem(1).getFile().getID());
     assertEquals("2", QueueModel.getItem(2).getFile().getID());
-    
+
     // now up one
     QueueModel.up(2);
-    
+
     // check queue after move
     assertEquals(3, QueueModel.getQueueSize());
     assertEquals("0", QueueModel.getItem(0).getFile().getID());
     assertEquals("2", QueueModel.getItem(1).getFile().getID());
     assertEquals("1", QueueModel.getItem(2).getFile().getID());
-    
+
     // up once more
     QueueModel.up(1);
 
@@ -617,24 +670,24 @@ public class TestQueueModel extends TestCase {
   public void testDown() throws Exception {
     // first one cannot be put up, returns immediately
     QueueModel.down(0);
-    
+
     addItems(3);
-    
+
     // check queue
     assertEquals(3, QueueModel.getQueueSize());
     assertEquals("0", QueueModel.getItem(0).getFile().getID());
     assertEquals("1", QueueModel.getItem(1).getFile().getID());
     assertEquals("2", QueueModel.getItem(2).getFile().getID());
-    
+
     // now up one
     QueueModel.down(0);
-    
+
     // check queue after move
     assertEquals(3, QueueModel.getQueueSize());
     assertEquals(QueueModel.getQueue().toString(), "1", QueueModel.getItem(0).getFile().getID());
     assertEquals(QueueModel.getQueue().toString(), "0", QueueModel.getItem(1).getFile().getID());
     assertEquals(QueueModel.getQueue().toString(), "2", QueueModel.getItem(2).getFile().getID());
-    
+
     // up once more
     QueueModel.down(1);
 
@@ -651,14 +704,45 @@ public class TestQueueModel extends TestCase {
 
   public void testGoTo() throws Exception {
     QueueModel.goTo(0);
-    
+
     addItems(5);
     QueueModel.setIndex(2);
     QueueModel.playNext();
-    
+
     QueueModel.goTo(4);
-    
+
     assertEquals("4", QueueModel.getCurrentItem().getFile().getID());
+  }
+
+  public void testGoToRepeat() throws Exception {
+    addItems(5);
+    QueueModel.setIndex(2);
+    QueueModel.playNext();
+
+    { // first choose one that is not set to repeat
+      // now set some repeat
+      QueueModel.getItem(2).setRepeat(true);
+
+      QueueModel.goTo(4);
+
+      assertEquals("4", QueueModel.getCurrentItem().getFile().getID());
+
+      // item 2 is now not repeated any more
+      assertFalse(QueueModel.getItem(2).isRepeat());
+    }
+
+    { // and then try to go to a repeated one
+
+      // now set some repeat
+      QueueModel.getItem(2).setRepeat(true);
+
+      QueueModel.goTo(2);
+
+      assertEquals("2", QueueModel.getCurrentItem().getFile().getID());
+
+      // item 2 is now still repeated
+      assertTrue(QueueModel.getItem(2).isRepeat());
+    }
   }
 
   /**
@@ -668,12 +752,42 @@ public class TestQueueModel extends TestCase {
 
   public void testRemove() throws Exception {
     QueueModel.remove(0, 0);
-    
+
     addItems(10);
-    
+
     QueueModel.remove(1, 3);
-    
+
     assertEquals(QueueModel.getQueue().toString(), 7, QueueModel.getQueueSize());
+  }
+
+  public void testRemovePlanned() throws Exception {
+    // now add some items
+    addItems(5);
+
+    // we also need to enable continuous play for tracks to be planned
+    Conf.setProperty(Const.CONF_STATE_CONTINUE, "true");
+
+    // register some file
+    File file = getFile(11);
+    FileManager.getInstance().registerFile(file.getID(), file.getName(), file.getDirectory(),
+        file.getTrack(), file.getSize(), file.getQuality());
+    file = getFile(12);
+    FileManager.getInstance().registerFile(file.getID(), file.getName(), file.getDirectory(),
+        file.getTrack(), file.getSize(), file.getQuality());
+
+    QueueModel.computesPlanned(false);
+
+    // now we have planned items
+    assertEquals(10, QueueModel.getPlanned().size());
+
+    QueueModel.remove(5, 6);
+
+    // still 5 queue items
+    assertEquals(QueueModel.getQueue().toString(), 5, QueueModel.getQueueSize());
+
+    // again planned items are added now
+    assertEquals(QueueModel.getPlanned().toString(), 10, QueueModel.getPlanned().size());
+    // assertEquals("12", QueueModel.getPlanned().get(0).getFile().getID());
   }
 
   /**
@@ -682,9 +796,9 @@ public class TestQueueModel extends TestCase {
 
   public void testGetLast() throws Exception {
     assertNull(QueueModel.getLast());
-    
+
     addItems(10);
-    
+
     assertEquals("9", QueueModel.getLast().getFile().getID());
   }
 
@@ -695,12 +809,12 @@ public class TestQueueModel extends TestCase {
 
   public void testGetLastPlayed() throws Exception {
     assertNull(QueueModel.getLastPlayed());
-    
+
     addItems(10);
-    
+
     QueueModel.playNext();
-    
-    // maybe we have one now 
+
+    // maybe we have one now
     assertNotNull(QueueModel.getLastPlayed());
   }
 
@@ -719,16 +833,16 @@ public class TestQueueModel extends TestCase {
 
   public void testGetCountTracksLeft() throws Exception {
     assertEquals(0, QueueModel.getCountTracksLeft());
-    
+
     addItems(10);
-    
+
     assertEquals(10, QueueModel.getCountTracksLeft());
-    
+
     QueueModel.playNext();
     QueueModel.playNext();
 
     assertEquals(8, QueueModel.getCountTracksLeft());
-}
+  }
 
   /**
    * Test method for {@link org.jajuk.services.players.QueueModel#getPlanned()}.
@@ -736,31 +850,32 @@ public class TestQueueModel extends TestCase {
 
   public void testGetPlanned() throws Exception {
     assertEquals(0, QueueModel.getPlanned().size());
-    
+
     QueueModel.computesPlanned(false);
-    
+
     // no tracks are planned when queue is empty
     assertEquals(0, QueueModel.getPlanned().size());
-    
+
     // now add some items
     addItems(5);
 
-    // still no items because default configration states to not continue play 
+    // still no items because default configration states to not continue play
     QueueModel.computesPlanned(false);
     assertEquals(0, QueueModel.getPlanned().size());
-    
+
     // we also need to enable continuous play for tracks to be planned
     Conf.setProperty(Const.CONF_STATE_CONTINUE, "true");
-    
+
     QueueModel.computesPlanned(false);
-    
-    // still no items because we don't have any files to plan 
+
+    // still no items because we don't have any files to plan
     QueueModel.computesPlanned(false);
     assertEquals(0, QueueModel.getPlanned().size());
-    
+
     File file = getFile(11);
-    FileManager.getInstance().registerFile(file.getID(), file.getName(), file.getDirectory(), file.getTrack(), file.getSize(), file.getQuality());
-        
+    FileManager.getInstance().registerFile(file.getID(), file.getName(), file.getDirectory(),
+        file.getTrack(), file.getSize(), file.getQuality());
+
     QueueModel.computesPlanned(false);
 
     assertTrue(QueueModel.getPlanned().size() > 0);
@@ -773,7 +888,7 @@ public class TestQueueModel extends TestCase {
 
   public void testSetFirstFile() {
     QueueModel.setFirstFile(true);
-    
+
     // no way to test the effect right now...
   }
 
@@ -783,17 +898,17 @@ public class TestQueueModel extends TestCase {
 
   public void testCommit() throws Exception {
     JUnitHelpers.createSessionDirectory();
-    
+
     final java.io.File fifo = SessionService.getConfFileByPath(Const.FILE_FIFO);
     fifo.delete();
     assertFalse(fifo.exists()); // we should not have the file now...
-    
+
     addItems(10);
-    
+
     QueueModel.commit();
-    
+
     // now the file should exist and have some size
-    assertTrue(fifo.exists());    
+    assertTrue(fifo.exists());
     assertNotNull(FileUtils.readFileToString(fifo).length() > 0);
   }
 
@@ -813,6 +928,8 @@ public class TestQueueModel extends TestCase {
 
   public void testGetCurrentRadio() {
     assertNull(QueueModel.getCurrentRadio());
+    QueueModel.launchRadio(new WebRadio("name", "invalidurl"));
+    assertNotNull(QueueModel.getCurrentRadio());
   }
 
   /**
@@ -822,12 +939,12 @@ public class TestQueueModel extends TestCase {
 
   public void testIsPlayingTrack() throws Exception {
     assertTrue(QueueModel.isStopped());
-    
+
     assertFalse(QueueModel.isPlayingTrack());
-    
+
     addItems(3);
     QueueModel.playNext();
-    
+
     assertTrue(QueueModel.isPlayingTrack());
   }
 
@@ -837,12 +954,12 @@ public class TestQueueModel extends TestCase {
    */
 
   public void testGetCurrentFileTitle() throws Exception {
-    // always returns  some string, without file "Read to play"
+    // always returns some string, without file "Read to play"
     assertEquals("Ready to play", QueueModel.getCurrentFileTitle());
-    
+
     addItems(3);
     QueueModel.playNext();
-    
+
     assertNotNull(QueueModel.getCurrentFileTitle());
     // should not be the same as before
     assertFalse(QueueModel.getCurrentFileTitle().equals("Ready to play"));
@@ -855,88 +972,81 @@ public class TestQueueModel extends TestCase {
   public void testClean() throws Exception {
     // should work without any items
     QueueModel.clean();
-    
+
     addItems(10);
-    
-    // right now, cleaning will remove all of them as we don't have the tracks registered with the FileManager
+
+    // right now, cleaning will remove all of them as we don't have the tracks
+    // registered with the FileManager
     QueueModel.clean();
-    
+
     assertEquals(0, QueueModel.getQueueSize());
   }
 
   // needs to be public to be callable from the outside...
-  public static class MockPlayer implements IPlayerImpl 
-  {
+  public static class MockPlayer implements IPlayerImpl {
     @Override
     public void stop() throws Exception {
-      
-      
+
     }
-    
+
     @Override
     public void setVolume(float fVolume) throws Exception {
-      
-      
+
     }
-    
+
     @Override
     public void seek(float fPosition) {
-      
-      
+
     }
-    
+
     @Override
     public void resume() throws Exception {
-      
-      
+
     }
-    
+
     @Override
     public void play(WebRadio radio, float fVolume) throws Exception {
-      
-      
+
     }
-    
+
     @Override
     public void play(File file, float fPosition, long length, float fVolume) throws Exception {
-      
-      
+
     }
-    
+
     @Override
     public void pause() throws Exception {
-      
-      
+
     }
-    
+
     @Override
     public int getState() {
-      
+
       return 0;
     }
-    
+
     @Override
     public long getElapsedTime() {
-      
+
       return 0;
     }
-    
+
     @Override
     public float getCurrentVolume() {
-      
+
       return 0;
     }
-    
+
     @Override
     public float getCurrentPosition() {
-      
+
       return 0;
     }
-    
+
     @Override
     public long getCurrentLength() {
-      
+
       return 0;
     }
-  }  
+  }
 }
