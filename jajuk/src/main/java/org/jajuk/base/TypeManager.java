@@ -26,6 +26,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import org.jajuk.services.players.IPlayerImpl;
+import org.jajuk.services.tags.ITagImpl;
 import org.jajuk.util.Const;
 import org.jajuk.util.Messages;
 import org.jajuk.util.ReadOnlyIterator;
@@ -135,9 +137,10 @@ public final class TypeManager extends ItemManager {
    * 
    * @param type
    */
+  @SuppressWarnings("unchecked")
   public Type registerType(String sName, String sExtension, Class<?> cPlayerImpl, Class<?> cTagImpl) {
     return registerType(sExtension.toLowerCase(Locale.getDefault()), sName, sExtension,
-        cPlayerImpl, cTagImpl);
+        (Class<IPlayerImpl>)cPlayerImpl, (Class<ITagImpl>)cTagImpl);
   }
 
   /**
@@ -145,9 +148,8 @@ public final class TypeManager extends ItemManager {
    * 
    * @param type
    */
-  @SuppressWarnings("unchecked")
-  private Type registerType(String sId, String sName, String sExtension, Class cPlayerImpl,
-      Class cTagImpl) {
+  private Type registerType(String sId, String sName, String sExtension, Class<IPlayerImpl> cPlayerImpl,
+      Class<ITagImpl> cTagImpl) {
     Type type = getTypeByID(sId);
     if (type != null) {
       return type;
