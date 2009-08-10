@@ -20,6 +20,8 @@
 
 package org.jajuk.ui.widgets;
 
+import ext.SwingWorker;
+
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
@@ -41,6 +43,7 @@ import org.jajuk.util.LocaleManager;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilGUI;
 import org.jajuk.util.UtilSystem;
+import org.jajuk.util.log.Log;
 import org.w3c.dom.Document;
 import org.xamjwg.html.HtmlParserContext;
 import org.xamjwg.html.gui.HtmlPanel;
@@ -81,40 +84,86 @@ public class JajukHtmlPanel extends HtmlPanel {
    * 
    * @throws SAXException
    */
-  public void setURL(URL url) throws IOException, SAXException {
-    setCursor(UtilGUI.WAIT_CURSOR);
-    File page = new File(SessionService.getConfFileByPath(Const.FILE_CACHE).getAbsolutePath() + '/'
-        + UtilSystem.getOnlyFile(url.toString() + ".html"));
-    String sPage = DownloadManager.downloadText(url);
-    // Leave if no result
-    if (sPage == null) {
-      return;
-    }
-    // Remove scripting
-    int index = -1;
-    int lastindex = -1;
-    StringBuilder sb = new StringBuilder(sPage);
-    // only the part between <!-- start content --> and <!-- end content --> is
-    // important to us
-    index = sb.indexOf("<!-- start content -->");
-    lastindex = sb.indexOf("</body></html>");
-    if (index > 0) {
-      sb.delete(0, index);
-      sb.delete(sb.indexOf("<!-- end content -->") + 20, lastindex);
-    }
-    sPage = sb.toString();
-    // fix internal links
-    // TODO: language should be retrieved from the combo box and not from the
-    // user settings, but dunno how to get that...
-    sPage = sPage.replaceAll("href=\"/", "href=\"http://"
-        + LocaleManager.getLocaleForDesc(LocaleManager.getDescForLocale(Conf
-            .getString(Const.CONF_WIKIPEDIA_LANGUAGE))) + ".wikipedia.org/");
-    // Display the page
-    showPage(sPage, page);
-    // Set current url as a tooltip
-    setToolTipText(url.toString());
-    // Disable waiting cursor
-    setCursor(UtilGUI.DEFAULT_CURSOR);
+  public void setURL(final URL url) throws IOException, SAXException {
+
+    SwingWorker sw = new ext.SwingWorker() {
+      @Override
+      public Object construct() {
+        File page = new File(SessionService.getConfFileByPath(Const.FILE_CACHE).getAbsolutePath()
+            + '/' + UtilSystem.getOnlyFile(url.toString() + ".html"));
+        try {
+          setCursor(UtilGUI.WAIT_CURSOR);
+
+          // first indicate that we are loading a new page
+          setLoading(url);
+
+          String sPage = DownloadManager.downloadText(url);
+          // Leave if no result
+          if (sPage == null) {
+            return null;
+          }
+          // Remove scripting
+          int index = -1;
+          int lastindex = -1;
+          StringBuilder sb = new StringBuilder(sPage);
+          // only the part between <!-- start content --> and <!-- end content
+          // --> is
+          // important to us
+          index = sb.indexOf("<!-- start content -->");
+          lastindex = sb.indexOf("</body></html>");
+          if (index > 0) {
+            sb.delete(0, index);
+            sb.delete(sb.indexOf("<!-- end content -->") + 20, lastindex);
+          }
+          sPage = sb.toString();
+          // fix internal links
+          // TODO: language should be retrieved from the combo box and not from
+          // the
+          // user settings, but dunno how to get that...
+          sPage = sPage.replaceAll("href=\"/", "href=\"http://"
+              + LocaleManager.getLocaleForDesc(LocaleManager.getDescForLocale(Conf
+                  .getString(Const.CONF_WIKIPEDIA_LANGUAGE))) + ".wikipedia.org/");
+          // Display the page
+          showPage(sPage, page);
+          // Set current url as a tooltip
+          setToolTipText(url.toString());
+        } catch (IOException e) {
+          // report IOException only as warning here as we can expect this to
+          // happen frequently with images on the net
+          Log.warn("Could not read page: " + url.toString() + " Cache: " + page, e.getMessage());
+
+          try {
+            setFailedToLoad("URL: " + url + " : " + e.getClass().getSimpleName() + " : " + e.getMessage());
+          } catch (IOException e1) {
+            Log.error(e1);
+          } catch (SAXException e1) {
+            Log.error(e1);
+          }
+        } catch (Exception e) {
+          Log.error(e);
+
+          try {
+            setFailedToLoad("URL: " + url + " : " + e.getClass().getSimpleName() + " : " + e.getMessage());
+          } catch (IOException e1) {
+            Log.error(e1);
+          } catch (SAXException e1) {
+            Log.error(e1);
+          }
+        } finally {
+          // Disable waiting cursor
+          setCursor(UtilGUI.DEFAULT_CURSOR);
+        }
+
+        return null;
+      }
+
+      @Override
+      public void finished() {
+
+      }
+
+    };
+    sw.start();
   }
 
   /**
@@ -129,6 +178,22 @@ public class JajukHtmlPanel extends HtmlPanel {
         + "noresult.html");
     String sPage = "<html><body><h1>" + Messages.getString("WikipediaView.3")
         + "</h1></body></html>";
+    showPage(sPage, page);
+  }
+
+  private void setLoading(final URL url) throws IOException, SAXException {
+    File page = new File(SessionService.getConfFileByPath(Const.FILE_CACHE).getAbsolutePath() + '/'
+        + "loading.html");
+    String sPage = "<html><body><h1>" + Messages.getString("WikipediaView.8")
+        + " " + url.toString() + "</h1></body></html>";
+    showPage(sPage, page);
+  }
+
+  private void setFailedToLoad(String msg) throws IOException, SAXException {
+    File page = new File(SessionService.getConfFileByPath(Const.FILE_CACHE).getAbsolutePath() + '/'
+        + "failed.html");
+    String sPage = "<html><body><h1>" + Messages.getString("WikipediaView.9") + "</h1><br>" + msg
+        + "</body></html>";
     showPage(sPage, page);
   }
 
@@ -172,5 +237,4 @@ public class JajukHtmlPanel extends HtmlPanel {
   public void back() {
     rcontext.back();
   }
-
 }
