@@ -86,13 +86,12 @@ public class JUnitHelpers {
    * add this to the test case for any class that has only static methods
    * where EMMA reports the default constructor as not covered
    *
-   *
-   // helper method to emma-coverage of the unused constructor
-   public void testPrivateConstructor() throws Exception
-   {
-      //For EMMA code-coverage tests
-      JUnitHelpers.executePrivateConstructor(YourClassName.class);
-   }
+   * Template:
+  // helper method to emma-coverage of the unused constructor
+  public void testPrivateConstructor() throws Exception {
+    // For EMMA code-coverage tests
+    JUnitHelpers.executePrivateConstructor(UtilSystem.class);
+  }
 
    * @param targetClass
    */
