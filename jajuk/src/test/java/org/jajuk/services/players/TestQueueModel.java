@@ -41,7 +41,9 @@ import org.jajuk.services.core.SessionService;
 import org.jajuk.services.webradio.WebRadio;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
+import org.jajuk.util.UtilSystem;
 import org.jajuk.util.error.JajukException;
+import org.jajuk.util.log.Log;
 
 /**
  * 
@@ -954,6 +956,14 @@ public class TestQueueModel extends TestCase {
    */
 
   public void testGetCurrentFileTitle() throws Exception {
+    // TODO: this fails on Hudson because we can not read the properties file 
+    // for some reason, let's see if we can find out why
+    Log.info("Classloader: " + UtilSystem.getClassLoader());
+    Log.info("Resources: " + UtilSystem.getClassLoader().getResources("jajuk.properties").toString());
+    
+    String resource = "org/jajuk/i18n/jajuk.properties";
+    assertNotNull(UtilSystem.getClassLoader().getResource(resource));
+    
     // always returns some string, without file "Read to play"
     assertEquals("Ready to play", QueueModel.getCurrentFileTitle());
 
