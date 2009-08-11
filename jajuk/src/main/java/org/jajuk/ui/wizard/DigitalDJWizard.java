@@ -70,6 +70,7 @@ import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.LocaleManager;
 import org.jajuk.util.Messages;
+import org.jajuk.util.log.Log;
 import org.qdwizard.ClearPoint;
 import org.qdwizard.Screen;
 import org.qdwizard.Wizard;
@@ -1048,6 +1049,12 @@ public class DigitalDJWizard extends Wizard {
         proportion.setStyle(new Ambience());
         String sText = "";
         for (Style style : styles) {
+          // handle null
+          if (style == null) {
+            Log.warn("Could not add style, got an empty style from the Wizard Dialog!");
+            continue;
+          }
+
           proportion.addStyle(style);
           sText += style.getName2() + ',';
         }
