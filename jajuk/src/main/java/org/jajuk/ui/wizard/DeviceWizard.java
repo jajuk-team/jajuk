@@ -37,7 +37,6 @@ import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
-import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
@@ -55,6 +54,7 @@ import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.ui.widgets.InformationJPanel;
 import org.jajuk.ui.widgets.JajukFileChooser;
+import org.jajuk.ui.widgets.JajukJDialog;
 import org.jajuk.ui.widgets.OKCancelPanel;
 import org.jajuk.ui.windows.JajukMainWindow;
 import org.jajuk.util.Const;
@@ -68,7 +68,7 @@ import org.jajuk.util.log.Log;
 /**
  * Device creation wizard
  */
-public class DeviceWizard extends JDialog implements ActionListener, Const {
+public class DeviceWizard extends JajukJDialog implements ActionListener, Const {
   private static final long serialVersionUID = 1L;
 
   private final JComboBox jcbType;

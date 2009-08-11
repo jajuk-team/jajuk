@@ -29,13 +29,13 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
-import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 
+import org.jajuk.ui.widgets.JajukJDialog;
 import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
@@ -51,7 +51,7 @@ import org.jfree.ui.about.SystemPropertiesPanel;
  * <p>
  * Help perspective *
  */
-public class AboutWindow extends JDialog {
+public class AboutWindow extends JajukJDialog {
 
   private static final long serialVersionUID = 1L;
 

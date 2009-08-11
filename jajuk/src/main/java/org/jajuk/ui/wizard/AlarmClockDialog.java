@@ -33,7 +33,6 @@ import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
-import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
@@ -48,6 +47,7 @@ import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.services.alarm.AlarmManager;
+import org.jajuk.ui.widgets.JajukJDialog;
 import org.jajuk.ui.widgets.SearchBox;
 import org.jajuk.ui.windows.JajukMainWindow;
 import org.jajuk.util.Conf;
@@ -58,7 +58,7 @@ import org.jajuk.util.log.Log;
 /**
  * Alarm Clock Dialog window
  */
-public class AlarmClockDialog extends JDialog implements ActionListener, ItemListener, Const {
+public class AlarmClockDialog extends JajukJDialog implements ActionListener, ItemListener, Const {
   private static final long serialVersionUID = 1L;
 
   private final JPanel jpOKCancel;

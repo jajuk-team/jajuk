@@ -94,6 +94,7 @@ public class FindDuplicateTracksAction extends JajukAction {
             // Create and set up the content pane.
             JComponent newContentPane = new DuplicateTracksList(duplicateFilesList, jbClose);
             newContentPane.setOpaque(true);
+            UtilGUI.setEscapeKeyboardAction(duplicateFiles, newContentPane);
             duplicateFiles.setContentPane(newContentPane);
 
             // Display the window.

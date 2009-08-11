@@ -20,10 +20,14 @@
 
 package org.jajuk.ui.widgets;
 
+import java.awt.Frame;
+
 import javax.swing.JDialog;
+import javax.swing.JRootPane;
 
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
+import org.jajuk.util.UtilGUI;
 
 /**
  * Custom JDialog
@@ -33,7 +37,25 @@ public class JajukJDialog extends JDialog {
   private static final long serialVersionUID = 3280008357821054703L;
 
   public JajukJDialog() {
+    super();
+    
     setIconImage(IconLoader.getIcon(JajukIcons.LOGO).getImage());
   }
 
+  /**
+   * @param owner
+   * @param modal
+   */
+  public JajukJDialog(Frame owner, boolean modal) {
+    super(owner, modal);
+
+    setIconImage(IconLoader.getIcon(JajukIcons.LOGO).getImage());
+  }
+
+  @Override
+  protected JRootPane createRootPane() {
+    JRootPane rootPane = new JRootPane();
+    UtilGUI.setEscapeKeyboardAction(this, rootPane);
+    return rootPane;
+  }
 }

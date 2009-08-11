@@ -24,6 +24,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.WindowConstants;
 
+import org.jajuk.ui.widgets.JajukJDialog;
+
 /**
  * A Wizard dialog displaying one to many screens
  * <ul>
@@ -295,7 +297,7 @@ public abstract class Wizard implements ActionListener, WindowListener {
 	 * UI manager
 	 */
 	private void createUI() {
-		dialog = new JDialog(parentWindow, true);// modal
+		dialog = new JajukJDialog(parentWindow, true);// modal
 		// Set default size
 		dialog.setSize(DEFAULT_H_SIZE, DEFAULT_V_SIZE);
 		dialog.setTitle(sName);
