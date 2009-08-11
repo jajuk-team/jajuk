@@ -209,8 +209,7 @@ public class Device extends PhysicalItem implements Comparable<Device> {
     // need to use a shallow copy to avoid concurrent exceptions
     final List<Directory> dirs = DirectoryManager.getInstance().getDirectories();
 
-    for (final Item item : dirs) {
-      final Directory dir = (Directory) item;
+    for (final Directory dir : dirs) {
       if (!ExitService.isExiting() && dir.getDevice().equals(this) && dir.getDevice().isMounted()
           && !dir.getFio().exists()) {
         // note that associated files are removed too
