@@ -30,10 +30,16 @@ public interface Observer {
   /**
    * Action to be done when receiving an event with this ID
    * 
-   * @param lEventID
-   *          Event ID, maps a subject and details
+   * @param event
+   *          The JajukEvent maps a subject and details of the event
    */
   void update(JajukEvent event);
 
+  /** 
+   * Used by @see ObservationManager to retrieve all the events on which
+   * the Observer wants to listen to.
+   *  
+   * @return A set of JajukEvents on which the Observer would like to listen. 
+   */
   Set<JajukEvents> getRegistrationKeys();
 }
