@@ -48,7 +48,7 @@ public final class ObservationManager {
 
   /**
    * The queue itself. Must be synchronized, so we use a ConcurrentLinkedQueue
-   * whish is tread-safe
+   * which is tread-safe
    */
   static volatile Queue<JajukEvent> queue = new ConcurrentLinkedQueue<JajukEvent>();
 
@@ -64,7 +64,9 @@ public final class ObservationManager {
   }
 
   /**
-   * Register a component for a given subject
+   * Register a component for a given subject. This calls the 
+   * interface @see Observer.getRegistrationKeys() to retrieve 
+   * a list of events which the Observer is interested in.
    * 
    * @param subject
    *          Subject ( event ) to observe
@@ -86,9 +88,18 @@ public final class ObservationManager {
    *          Subject ( event ) to observe
    * @param jc
    *          component to deregister
+   *          
+   * TODO: this seems to be not used anywhere right now?! 
+   * It would probably make sense to call this when a View is closed
+   * and in other places as otherwise we keep references and through 
+   * this memory unnecessarily.
    */
-  public static void unregister(JajukEvents subject, Observer observer) {
-    observerRegistry.unregister(subject, observer);
+  public static void unregister(Observer observer) {
+    Set<JajukEvents> eventSubjectSet = observer.getRegistrationKeys();
+    for (JajukEvents subject : eventSubjectSet) {
+      Log.debug("Unregister: \"" + subject + "\" by: " + observer);
+      observerRegistry.unregister(subject, observer);
+    }
   }
 
   /**
@@ -99,7 +110,28 @@ public final class ObservationManager {
   public static void notify(JajukEvent event) {
     // asynchronous notification by default to avoid
     // exception throw in the register current thread
-    notify(event, false);
+    try {
+        /*
+         * do not launch it in a regular thread because EDT waits thread end to
+         * display
+         */
+        queue.add(event);
+        // synchronize here to avoid creating more than one observation manager
+        // thread
+        synchronized (ObservationManager.class) {
+          if (t == null || !t.isAlive()) {
+            // If the thread is terminated, a new thread must be instanciated
+            // Otherwise an IllegalThreadStateException is thrown
+            Log.debug("Observation Manager thread not running, start a new one");
+            t = new ObservationManagerThread();
+            t.start();
+          }
+        }
+    } catch (Error e) {
+      // Make sure to catch any error (Memory or IllegalThreadStateException for
+      // ie, this notification musn't stop the current work)
+      Log.error(e);
+    }
   }
 
   /**
@@ -123,43 +155,6 @@ public final class ObservationManager {
    */
   public static boolean containsEvent(JajukEvents subject) {
     return hLastEventBySubject.containsKey(subject);
-  }
-
-  /**
-   * Notify all components having registered for the given subject
-   * asynchronously
-   * 
-   * @param subject
-   * @param whether
-   *          the notification is synchronous or not
-   */
-  public static void notify(final JajukEvent event, boolean bSync) {
-    try {
-      if (bSync) {
-        ObservationManager.notifySync(event);
-      } else {
-        /*
-         * do not launch it in a regular thread because EDT waits thread end to
-         * display
-         */
-        queue.add(event);
-        // synchronize here to avoid creating more than one observation manager
-        // thread
-        synchronized (ObservationManager.class) {
-          if (t == null) {
-            // If the thread is terminated, a new thread must be instanciated
-            // Otherwise an IllegalThreadStateException is thrown
-            Log.debug("Observation Manager thread dead, start a new one");
-            t = new ObservationManagerThread();
-            t.start();
-          }
-        }
-      }
-    } catch (Error e) {
-      // Make sure to catch any error (Memory or IllegalThreadStateException for
-      // ie, this notification musn't stop the current work)
-      Log.error(e);
-    }
   }
 
   /**
@@ -237,11 +232,9 @@ class ObservationManagerThread extends Thread {
           }.start();
         }
         // Make sure to handle any exception or error to avoid the observation
-        // system to die
-      } catch (Exception e) {
+        // system to die. Throwable covers all types of Exceptions/Errors.
+      } catch (Throwable e) {
         Log.error(e);
-      } catch (Error error) {
-        Log.error(error);
       }
     }
   }
