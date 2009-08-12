@@ -48,6 +48,8 @@ class ObserverRegistry {
    */
   @SuppressWarnings("unchecked")
   void notifySync(JajukEvent event) {
+    // do the synchronization on canals in two parts to do the "update" without
+    // holding the lock
     synchronized (canals) {
       int numberOfExecutions = 0;
       if (canals.containsKey(event)) {
@@ -59,28 +61,32 @@ class ObserverRegistry {
       }
       canals.put(event, numberOfExecutions + 1);
     }
-    JajukEvents subject = event.getSubject();
-    List<Observer> observers = hEventComponents.get(subject);
-    if (observers == null) {
-      return;
-    }
-    // Iterate on a cloned list to avoid concurrent exceptions
-    observers = (List<Observer>) ((ArrayList<Observer>) observers).clone();
-    Iterator<Observer> it = observers.iterator();
-    while (it.hasNext()) {
-      Observer obs = null;
-      obs = it.next();
-      if (obs != null) {
-        try {
-          obs.update(event);
-        } catch (Throwable t) {
-          Log.error(t);
-        } finally {
-          synchronized (canals) {
-            int numberOfExecutions = canals.get(event);
-            canals.put(event, numberOfExecutions - 1);
+
+    try {
+      JajukEvents subject = event.getSubject();
+      List<Observer> observers = hEventComponents.get(subject);
+      if (observers == null) {
+        return;
+      }
+      // Iterate on a cloned list to avoid concurrent exceptions
+      observers = (List<Observer>) ((ArrayList<Observer>) observers).clone();
+      Iterator<Observer> it = observers.iterator();
+      while (it.hasNext()) {
+        Observer obs = null;
+        obs = it.next();
+        if (obs != null) {
+          try {
+            obs.update(event);
+          } catch (Throwable t) {
+            Log.error(t);
           }
         }
+      }
+    } finally {
+      synchronized (canals) {
+        int numberOfExecutions = canals.get(event);
+        assert (numberOfExecutions > 0);
+        canals.put(event, numberOfExecutions - 1);
       }
     }
   }
