@@ -956,6 +956,8 @@ public class TestQueueModel extends TestCase {
    */
 
   public void testGetCurrentFileTitle() throws Exception {
+    Log.getInstance();  // to initialize logging
+
     // TODO: this fails on Hudson because we can not read the properties file 
     // for some reason, let's see if we can find out why
     Log.info("Classloader: " + UtilSystem.getClassLoader());
