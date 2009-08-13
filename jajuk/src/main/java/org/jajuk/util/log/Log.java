@@ -80,16 +80,17 @@ public final class Log {
       System.setProperty("jajuk.log", SessionService.getConfFileByPath(Const.FILE_LOGS)
           .getAbsolutePath());
       DOMConfigurator.configure(Const.FILE_LOG4J_CONF);
-      loggerRoot = Logger.getRootLogger();
-      logger = Logger.getLogger(Log.class.getName());
-      loggerHttp = Logger.getLogger("org.apache.commons.httpclient");
-      alSpool = new ArrayList<String>(Const.FEEDBACK_LINES);
-      // message for logging system start
-      Log.info("******************JAJUK******************");
-      Log.info("Version: " + Const.JAJUK_VERSION);
     } catch (Exception e) {
       Log.stack(e);
     }
+
+    loggerRoot = Logger.getRootLogger();
+    logger = Logger.getLogger(Log.class.getName());
+    loggerHttp = Logger.getLogger("org.apache.commons.httpclient");
+    alSpool = new ArrayList<String>(Const.FEEDBACK_LINES);
+    // message for logging system start
+    Log.info("******************JAJUK******************");
+    Log.info("Version: " + Const.JAJUK_VERSION);
   }
 
   /**
