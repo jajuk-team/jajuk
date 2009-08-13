@@ -146,6 +146,11 @@ public final class Log {
    * Log a info-level message
    */
   public static void info(String s) {
+    // Just display the message if Log is not yet enabled
+    if (log == null) {
+      System.out.println("[INFO] " + s);
+      return;
+    }
     spool("<font color='blue'>[INFO] " + s + "</font>");
     logger.log(FULL_QUALIFIED_CLASS_NAME, Level.INFO, s, null);
   }
