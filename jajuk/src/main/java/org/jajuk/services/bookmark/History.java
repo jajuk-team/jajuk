@@ -318,7 +318,7 @@ public final class History extends DefaultHandler implements ErrorHandler, HighP
    * @return
    */
   public HistoryItem getHistoryItem(int index) {
-    return (index >= 0 ? (HistoryItem) vHistory.get(index) : null);
+    return (index >= 0 ? vHistory.get(index) : null);
   }
 
   /**
