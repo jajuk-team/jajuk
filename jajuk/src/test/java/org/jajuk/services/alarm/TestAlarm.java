@@ -20,11 +20,15 @@
  */
 package org.jajuk.services.alarm;
 
+import java.util.ArrayList;
 import java.util.Date;
-
-import org.jajuk.util.Const;
+import java.util.List;
 
 import junit.framework.TestCase;
+
+import org.apache.commons.lang.time.DateUtils;
+import org.jajuk.base.File;
+import org.jajuk.util.Const;
 
 /**
  * 
@@ -47,8 +51,9 @@ public class TestAlarm extends TestCase {
     Alarm alarm = new Alarm(new Date(), null, "mode");
     alarm.wakeUpSleeper();
     
-    alarm = new Alarm(new Date(), null, Const.ALARM_START_ACTION);
-    
+    List<File> list = new ArrayList<File>();
+    alarm = new Alarm(new Date(), list, Const.ALARM_START_ACTION);
+    alarm.wakeUpSleeper();
   }
 
   /**
@@ -56,7 +61,9 @@ public class TestAlarm extends TestCase {
    */
 
   public void testGetAlarmTime() {
-    // TODO: implement test
+    Date date = new Date();
+    Alarm alarm = new Alarm(date, null, "mode");
+    assertEquals(date, alarm.getAlarmTime());
   }
 
   /**
@@ -64,7 +71,12 @@ public class TestAlarm extends TestCase {
    */
 
   public void testNextDay() {
-    // TODO: implement test
+    Date date = new Date();
+    Alarm alarm = new Alarm(date, null, "mode");
+    assertEquals(date, alarm.getAlarmTime());
+    alarm.nextDay();
+    
+    Date datenew = alarm.getAlarmTime();
+    assertEquals(DateUtils.addDays(date, 1), datenew);
   }
-
 }
