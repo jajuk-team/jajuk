@@ -109,12 +109,12 @@ public class TestLastFmCache extends TestCase {
 
   /**
    * Test method for
-   * {@link ext.services.lastfm.LastFmCache#retrieveAbumList(java.lang.String)}.
+   * {@link ext.services.lastfm.LastFmCache#retrieveAlbumList(java.lang.String)}.
    */
-  public void testRetrieveAbumList() {
+  public void testRetrieveAlbumList() {
     LastFmCache cache = new LastFmCache();
 
-    assertNull(cache.retrieveAbumList("Red Hot Chili Peppers"));
+    assertNull(cache.retrieveAlbumList("Red Hot Chili Peppers"));
   }
 
   /**
@@ -245,15 +245,15 @@ public class TestLastFmCache extends TestCase {
 
     cache.storeAlbumList("Red Hot Chili Peppers", list);
 
-    assertNotNull(cache.retrieveAbumList("Red Hot Chili Peppers"));
-    assertNotNull(cache.retrieveAbumList("Red Hot Chili Peppers").getAlbums());
-    assertEquals(cache.retrieveAbumList("Red Hot Chili Peppers").getAlbums().toString(),
-        2, cache.retrieveAbumList("Red Hot Chili Peppers").getAlbums().size());
+    assertNotNull(cache.retrieveAlbumList("Red Hot Chili Peppers"));
+    assertNotNull(cache.retrieveAlbumList("Red Hot Chili Peppers").getAlbums());
+    assertEquals(cache.retrieveAlbumList("Red Hot Chili Peppers").getAlbums().toString(),
+        2, cache.retrieveAlbumList("Red Hot Chili Peppers").getAlbums().size());
 
-    /*assertTrue(cache.retrieveAbumList("Red Hot Chili Peppers").getAlbums().toString(),
-        cache.retrieveAbumList("Red Hot Chili Peppers").getAlbums().contains(album1));
-    assertTrue(cache.retrieveAbumList("Red Hot Chili Peppers").getAlbums().toString(),
-        cache.retrieveAbumList("Red Hot Chili Peppers").getAlbums().contains(album2));*/
+    /*assertTrue(cache.retrieveAlbumList("Red Hot Chili Peppers").getAlbums().toString(),
+        cache.retrieveAlbumList("Red Hot Chili Peppers").getAlbums().contains(album1));
+    assertTrue(cache.retrieveAlbumList("Red Hot Chili Peppers").getAlbums().toString(),
+        cache.retrieveAlbumList("Red Hot Chili Peppers").getAlbums().contains(album2));*/
   }
 
   /**
