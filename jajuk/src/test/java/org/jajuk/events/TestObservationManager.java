@@ -96,8 +96,7 @@ public class TestObservationManager extends TestCase {
     assertNull(ObservationManager.getDetailLastOccurence(JajukEvents.ALARMS_CHANGE, "notexists"));
     Properties prop = new Properties();
     prop.setProperty("test", "value");
-    ObservationManager.notify(new JajukEvent(JajukEvents.VOLUME_CHANGED, prop));
-    Thread.sleep(100);
+    ObservationManager.notifySync(new JajukEvent(JajukEvents.VOLUME_CHANGED, prop));
     assertEquals("value", ObservationManager.getDetailLastOccurence(JajukEvents.VOLUME_CHANGED, "test"));
   }
 
@@ -121,11 +120,12 @@ public class TestObservationManager extends TestCase {
   /**
    * Test method for {@link org.jajuk.events.ObservationManager#getDetailsLastOccurence(org.jajuk.events.JajukEvents)}.
    */
-  public void testGetDetailsLastOccurence() {
+  public void testGetDetailsLastOccurence() throws Exception {
     assertNull(ObservationManager.getDetailLastOccurence(JajukEvents.ALARMS_CHANGE, "notexists"));
     Properties prop = new Properties();
     prop.setProperty("test", "value");
-    ObservationManager.notify(new JajukEvent(JajukEvents.VOLUME_CHANGED, prop));
+    ObservationManager.notifySync(new JajukEvent(JajukEvents.VOLUME_CHANGED, prop));
+    assertNotNull(ObservationManager.getDetailsLastOccurence(JajukEvents.VOLUME_CHANGED));
     assertEquals("value", ObservationManager.getDetailsLastOccurence(JajukEvents.VOLUME_CHANGED).get("test"));
   }
 
