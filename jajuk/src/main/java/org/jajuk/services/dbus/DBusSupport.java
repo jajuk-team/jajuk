@@ -79,6 +79,9 @@ public interface DBusSupport extends DBusInterface {
   @org.freedesktop.DBus.Description("Returns a string describing the currently played track.")
   String current() throws Exception;
 
+  @org.freedesktop.DBus.Description("Sets the rating of the currently played track so that it is not automatically played anymore. This is a toggle, the ban will be lifted if invoked on a file that is currently 'banned'")
+  void banCurrent() throws Exception;
+
   /*
    * Actions that are not supported (yet): REPEAT_MODE, SHUFFLE_MODE,
    * CONTINUE_MODE, INTRO_MODE, DEVICE_NEW, DEVICE_DELETE, DEVICE_PROPERTIES,
@@ -100,7 +103,7 @@ public interface DBusSupport extends DBusInterface {
    * PUSH_SELECTION, PUSH_FRONT_SELECTION, BOOKMARK_SELECTION,
    * PLAY_ALBUM_SELECTION, PLAY_AUTHOR_SELECTION, PLAY_DIRECTORY_SELECTION,
    * CDDB_SELECTION, SHOW_ALBUM_DETAILS, CUT, COPY, RENAME, NEW_FOLDER,
-   * SLIM_JAJUK, SAVE_AS, BAN, BAN_SELECTION, UN_BAN_SELECTION,
+   * SLIM_JAJUK, SAVE_AS, BAN_SELECTION, UN_BAN_SELECTION,
    * PREFERENCE_ADORE, PREFERENCE_LOVE, PREFERENCE_LIKE, PREFERENCE_AVERAGE,
    * PREFERENCE_POOR, PREFERENCE_HATE, PREFERENCE_UNSET, PREPARE_PARTY
    */

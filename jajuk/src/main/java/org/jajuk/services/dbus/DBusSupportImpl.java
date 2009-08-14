@@ -200,6 +200,11 @@ public class DBusSupportImpl implements DBusSupport, Observer {
     return title;
   }
 
+  public void banCurrent() throws Exception {
+    Log.info("Invoking D-Bus action for 'banCurrent'");
+    ActionManager.getAction(JajukActions.BAN).perform(null);
+  }
+
   /**
    * Required method for DBusInterface
    */
