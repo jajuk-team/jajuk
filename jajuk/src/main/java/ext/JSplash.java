@@ -139,6 +139,9 @@ public final class JSplash extends JFrame {
     panel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
     setContentPane(panel);
 
+    if(url == null) {
+      throw new IllegalArgumentException("Resource for splashscreen not found in Classpath!");
+    }
     // build a label and set it's icon
     JSplashLabel label = new JSplashLabel(url, copyrightString, versionString, versionStringFont);
 
