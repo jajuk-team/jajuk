@@ -204,7 +204,7 @@ public class LastFmService {
   public AlbumListInfo getAlbumList(String artist, boolean hideVariousArtists, int minimumSongNumber) {
     try {
       // Try to get from cache
-      AlbumListInfo albumList = lastFmCache.retrieveAbumList(artist);
+      AlbumListInfo albumList = lastFmCache.retrieveAlbumList(artist);
       if (albumList == null) {
         Collection<Album> as = Artist.getTopAlbums(artist, UtilString.rot13(API_KEY));
         if (as != null) {

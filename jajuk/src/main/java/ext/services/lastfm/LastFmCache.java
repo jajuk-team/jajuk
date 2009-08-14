@@ -646,7 +646,7 @@ public class LastFmCache {
    * 
    * @return the audio scrobbler album list
    */
-  public synchronized AlbumListInfo retrieveAbumList(String artist) {
+  public synchronized AlbumListInfo retrieveAlbumList(String artist) {
     try {
       String path = getFileNameForAlbumListAtCache(artist);
       if (path != null && new File(path).exists()) {
