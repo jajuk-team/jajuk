@@ -205,20 +205,21 @@ public class WebRadioWizard extends Wizard {
         widgets[index][2] = jtfURL;
       }
       // Create layout
-      out.setLayout(new MigLayout("insets 0,gapx 10,gapy 2", "[25][240][250]"));
+      out.setLayout(new MigLayout("insets 5,gapx 10,gapy 2", "[][][grow]"));
       // Create header
       JLabel jlHeader1 = new JLabel(Messages.getString("RadioWizard.9"));
       jlHeader1.setFont(FontManager.getInstance().getFont(JajukFont.BOLD));
       JLabel jlHeader2 = new JLabel(Messages.getString("RadioWizard.8"));
       jlHeader2.setFont(FontManager.getInstance().getFont(JajukFont.BOLD));
-      out.add(jlHeader1, "cell 1 0, center");
-      out.add(jlHeader2, "cell 2 0,center,wrap");
+      out.add(jlHeader1, "center,span 2");
+      out.add(jlHeader2, "center,wrap");
       // Add widgets
       for (int i = 0; i < widgets.length; i++) {
-        out.add(widgets[i][0], "grow,left");
-        out.add(widgets[i][1], "grow,left");
-        out.add(widgets[i][2], "grow,left,wrap");
+        out.add(widgets[i][0], "grow,left,width 25!");
+        out.add(widgets[i][1], "grow,left,width 200!");
+        out.add(widgets[i][2], "grow,left,wrap,width 250:250");
       }
+      
       jsp = new JScrollPane(out);
       // select first ambiance found
       if (radios.size() > 0) {
