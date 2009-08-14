@@ -40,6 +40,9 @@ import org.jajuk.util.log.Log;
 
 /**
  * Manages alarms
+ * 
+ * TODO: bStop in the Alarm-Thread is not used at all, either remove it or provide a "stop" method in AlarmManager
+ * TOOO: We could use Timer instead of implementing the Timer loop ourselves here!
  */
 
 public class AlarmManager implements Observer {
@@ -75,13 +78,19 @@ public class AlarmManager implements Observer {
 
   public static AlarmManager getInstance() {
     if (singleton == null) {
+      // create the singleton
       singleton = new AlarmManager();
+      
       // Start the clock
       singleton.clock.start();
+      
+      // register the instance so that it receives updates of changes to the configured Alarm 
       ObservationManager.register(singleton);
+      
       // force last event update
       singleton.update(new JajukEvent(JajukEvents.ALARMS_CHANGE));
     }
+
     return singleton;
   }
 
@@ -89,47 +98,47 @@ public class AlarmManager implements Observer {
     JajukEvents subject = event.getSubject();
     // Reset rate and total play time (automatic part of rating system)
     if (subject.equals(JajukEvents.ALARMS_CHANGE)) {
-      Date alarmDate = null;
       if (Conf.getBoolean(Const.CONF_ALARM_ENABLED)) {
+
+        // construct a Date with the configured alarm-time
         int hours = Conf.getInt(Const.CONF_ALARM_TIME_HOUR);
         int minutes = Conf.getInt(Const.CONF_ALARM_TIME_MINUTES);
         int seconds = Conf.getInt(Const.CONF_ALARM_TIME_SECONDS);
         String alarmAction = Conf.getString(Const.CONF_ALARM_ACTION);
         Calendar cal = Calendar.getInstance();
-        try {
-          cal.set(Calendar.HOUR_OF_DAY, hours);
-          cal.set(Calendar.MINUTE, minutes);
-          cal.set(Calendar.SECOND, seconds);
-          // If chosen date is already past, consider that user meant
-          // tomorrow
-          alarmDate = cal.getTime();
-          if (alarmDate.before(new Date())) {
-            alarmDate = new Date(alarmDate.getTime() + Const.DAY_MS);
-          }
-        } catch (Exception e) {
-          Log.error(e);
-          return;
+        cal.set(Calendar.HOUR_OF_DAY, hours);
+        cal.set(Calendar.MINUTE, minutes);
+        cal.set(Calendar.SECOND, seconds);
+        
+        // If chosen date is already past, consider that user meant
+        // tomorrow
+        Date alarmDate = cal.getTime();
+        if (alarmDate.before(new Date())) {
+          alarmDate = new Date(alarmDate.getTime() + Const.DAY_MS);
         }
         // Compute playlist if required
         List<File> alToPlay = null;
         if (alarmAction.equals(Const.ALARM_START_ACTION)) {
+          String mode = Conf.getString(Const.CONF_ALARM_MODE);
+          
           alToPlay = new ArrayList<File>();
-          if (Conf.getString(Const.CONF_ALARM_MODE).equals(Const.STARTUP_MODE_FILE)) {
+          if (mode.equals(Const.STARTUP_MODE_FILE)) {
             File fileToPlay = FileManager.getInstance().getFileByID(
                 Conf.getString(Const.CONF_ALARM_FILE));
             alToPlay.add(fileToPlay);
-          } else if (Conf.getString(Const.CONF_ALARM_MODE).equals(Const.STARTUP_MODE_SHUFFLE)) {
+          } else if (mode.equals(Const.STARTUP_MODE_SHUFFLE)) {
             alToPlay = FileManager.getInstance().getGlobalShufflePlaylist();
-          } else if (Conf.getString(Const.CONF_ALARM_MODE).equals(Const.STARTUP_MODE_BESTOF)) {
+          } else if (mode.equals(Const.STARTUP_MODE_BESTOF)) {
             alToPlay = FileManager.getInstance().getGlobalBestofPlaylist();
-          } else if (Conf.getString(Const.CONF_ALARM_MODE).equals(Const.STARTUP_MODE_NOVELTIES)) {
+          } else if (mode.equals(Const.STARTUP_MODE_NOVELTIES)) {
             alToPlay = FileManager.getInstance().getGlobalNoveltiesPlaylist();
+          } else {
+            Log.warn("Undefined alarm mode found: " + mode);
           }
         }
         alarm = new Alarm(alarmDate, alToPlay, alarmAction);
       }
     }
-
   }
 
   /*
