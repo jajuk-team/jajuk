@@ -30,7 +30,7 @@ import junit.framework.TestCase;
 
 public class TestObserverRegistry extends TestCase {
 
-  private static final int NUMBER_OF_THREADS = 20;
+  private static final int NUMBER_OF_THREADS = 15;    // 15 is the limit on concurrent events
   private static final int NUMBER_OF_TESTS = 1000;
   
   private AtomicInteger called = new AtomicInteger(0);
@@ -139,7 +139,9 @@ public class TestObserverRegistry extends TestCase {
     
     assertEquals(0, called.get());
     
-    ThreadTestHelper helper = new ThreadTestHelper(NUMBER_OF_THREADS, NUMBER_OF_TESTS/20);  // a bit fewer tests as they will need some time
+    // more threads so that we reach the limit of 15 concurrent events  
+    // a bit fewer tests as they will need some time
+    ThreadTestHelper helper = new ThreadTestHelper(NUMBER_OF_THREADS*2, NUMBER_OF_TESTS/20);  
 
       helper.executeTest(new ThreadTestHelper.TestRunnable()
       {
