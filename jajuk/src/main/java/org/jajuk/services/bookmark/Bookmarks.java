@@ -99,7 +99,7 @@ public final class Bookmarks {
    */
   public synchronized void down(int index) {
     if (index < alFiles.size() - 1) { // the last track cannot go
-      // depper
+      // deeper
       File file = alFiles.get(index + 1); // save n+1 file
       alFiles.set(index + 1, alFiles.get(index));
       alFiles.set(index, file); // n+1 file becomes nth file
