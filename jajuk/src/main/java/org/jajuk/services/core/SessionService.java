@@ -114,7 +114,7 @@ public class SessionService {
           // We ignore presence of ourself session id that can be
           // caused by a
           // crash
-          if (files.length > 0) {
+          if (files.length > 0 && !Conf.getBoolean(Const.CONF_NOT_SHOW_AGAIN_CONCURRENT_SESSION)) {
             StringBuilder details = new StringBuilder();
             for (File element : files) {
               details.append(element.getName());
