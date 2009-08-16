@@ -72,8 +72,7 @@ class ObserverRegistry {
       observers = (List<Observer>) ((ArrayList<Observer>) observers).clone();
       Iterator<Observer> it = observers.iterator();
       while (it.hasNext()) {
-        Observer obs = null;
-        obs = it.next();
+        Observer obs = it.next();
         if (obs != null) {
           try {
             obs.update(event);
