@@ -28,7 +28,6 @@ import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
-import org.jajuk.util.log.Log;
 
 /**
  * Manages bookmarks
@@ -39,8 +38,8 @@ public final class Bookmarks {
   /** Singleton self-instance */
   private static Bookmarks bookmarks;
 
-  /** Bookmarks files */
-  List<File> alFiles = new ArrayList<File>(100);
+  /** Bookmarked files */
+  private List<File> alFiles = new ArrayList<File>(100);
 
   public static Bookmarks getInstance() {
     if (bookmarks == null) {
@@ -70,12 +69,17 @@ public final class Bookmarks {
    */
   @Override
   public String toString() {
+    // concatenate all files
     StringBuilder sbOut = new StringBuilder();
     for (File file : alFiles) {
       sbOut.append(file.getID()).append(',');
     }
-    int i = sbOut.length();
-    return sbOut.substring(0, i - 1);// remove last ','
+    
+    if(sbOut.length() > 0) {
+      return sbOut.substring(0, sbOut.length() - 1);// remove last ','
+    } else {
+      return "";
+    }
   }
 
   /** Return bookmarked files */
@@ -157,12 +161,8 @@ public final class Bookmarks {
    * @param alFilesToAdd
    */
   public void addFiles(List<File> alFilesToAdd) {
-    try {
-      for (File file : alFilesToAdd) {
-        addFile(file);
-      }
-    } catch (Exception e) {
-      Log.error(e);
+    for (File file : alFilesToAdd) {
+      addFile(file);
     }
   }
 }
