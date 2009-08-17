@@ -325,6 +325,7 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
 
     // Force initial cover refresh (outside the EDT please!)
     new Thread() {
+      @Override
       public void run() {
         if (fileReference == null) {
           if (QueueModel.isStopped()) {
