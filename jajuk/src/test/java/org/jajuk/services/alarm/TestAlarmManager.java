@@ -27,6 +27,7 @@ import java.util.Set;
 import junit.framework.TestCase;
 
 import org.jajuk.JUnitHelpers;
+import org.jajuk.base.FileManager;
 import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.util.Conf;
@@ -37,12 +38,21 @@ import org.jajuk.util.Const;
  */
 public class TestAlarmManager extends TestCase {
 
+  @Override
+  protected void setUp() throws Exception {
+    JUnitHelpers.createSessionDirectory();
+
+    // make sure the FileManager is registered correctly for each invocation
+    // this is done during the first access to the singleton
+    FileManager.getInstance();
+    
+    super.setUp();
+  }
+
   /**
    * Test method for {@link org.jajuk.services.alarm.AlarmManager#getInstance()}.
    */
   public void testGetInstance() throws Exception {
-    JUnitHelpers.createSessionDirectory();
-    
     Conf.setProperty(Conf.CONF_ALARM_ENABLED, "true");
 
     assertNotNull(AlarmManager.getInstance());
@@ -59,16 +69,12 @@ public class TestAlarmManager extends TestCase {
   }
 
   public void testUpdate2() throws Exception {
-    JUnitHelpers.createSessionDirectory();
-    
     Conf.setProperty(Conf.CONF_ALARM_ENABLED, "true");
 
     AlarmManager.getInstance().update(new JajukEvent(JajukEvents.ALARMS_CHANGE));
   }
 
   public void testUpdate3() throws Exception {
-    JUnitHelpers.createSessionDirectory();
-    
     Conf.setProperty(Conf.CONF_ALARM_ENABLED, "true");
     Conf.setProperty(Const.CONF_ALARM_MODE, Const.STARTUP_MODE_FILE);  
 
@@ -76,8 +82,6 @@ public class TestAlarmManager extends TestCase {
   }
 
   public void testUpdate4() throws Exception {
-    JUnitHelpers.createSessionDirectory();
-    
     Conf.setProperty(Conf.CONF_ALARM_ENABLED, "true");
     Conf.setProperty(Const.CONF_ALARM_MODE, Const.STARTUP_MODE_BESTOF);  
 
@@ -85,8 +89,6 @@ public class TestAlarmManager extends TestCase {
   }
 
   public void testUpdate5() throws Exception {
-    JUnitHelpers.createSessionDirectory();
-    
     Conf.setProperty(Conf.CONF_ALARM_ENABLED, "true");
     Conf.setProperty(Const.CONF_ALARM_MODE, Const.STARTUP_MODE_NOVELTIES);  
 
@@ -102,8 +104,6 @@ public class TestAlarmManager extends TestCase {
   }
   
   public void testTriggerAlarm() throws Exception {
-    JUnitHelpers.createSessionDirectory();
-    
     Calendar cal = GregorianCalendar.getInstance();
     // add one second to let it be triggered immedately
     cal.add(Calendar.SECOND, 1);
