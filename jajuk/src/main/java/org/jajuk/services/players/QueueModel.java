@@ -853,7 +853,7 @@ public final class QueueModel {
       bStop = false;
       // if playing, stop current
       if (Player.isPlaying()) {
-        Player.stop(false);
+        Player.stop(true);
       }
       // force a finish to current track if any
       if (getPlayingFile() != null) { // if stopped, nothing to stop
