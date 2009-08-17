@@ -21,6 +21,7 @@
 package org.jajuk.services.bookmark;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.StringTokenizer;
 
@@ -104,9 +105,7 @@ public final class Bookmarks {
   public synchronized void down(int index) {
     if (index < alFiles.size() - 1) { // the last track cannot go
       // deeper
-      File file = alFiles.get(index + 1); // save n+1 file
-      alFiles.set(index + 1, alFiles.get(index));
-      alFiles.set(index, file); // n+1 file becomes nth file
+      Collections.swap(alFiles, index, index+1);
       Conf.setProperty(Const.CONF_BOOKMARKS, toString());
     }
   }
@@ -118,9 +117,7 @@ public final class Bookmarks {
    */
   public synchronized void up(int index) {
     if (index > 0) { // the first track cannot go further
-      File file = alFiles.get(index - 1); // save n-1 file
-      alFiles.set(index - 1, alFiles.get(index));
-      alFiles.set(index, file); // n-1 file becomes nth file
+      Collections.swap(alFiles, index, index-1);
       Conf.setProperty(Const.CONF_BOOKMARKS, toString());
     }
   }
