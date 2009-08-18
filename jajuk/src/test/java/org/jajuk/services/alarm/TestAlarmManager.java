@@ -46,6 +46,9 @@ public class TestAlarmManager extends TestCase {
     // this is done during the first access to the singleton
     FileManager.getInstance();
     
+    // clear File Manager to avoid files being left in there and causing trouble
+    FileManager.getInstance().clear();
+    
     super.setUp();
   }
 
