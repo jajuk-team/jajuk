@@ -20,10 +20,13 @@
 package org.jajuk;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 
 import junit.framework.TestCase;
 
 import org.jajuk.util.UtilSystem;
+import org.jajuk.util.error.JajukException;
+import org.jajuk.util.log.Log;
 
 /**
  * This Test is used to check conveniently jajuk log content to find special
@@ -38,7 +41,19 @@ public class LogChecker extends TestCase {
 
   @Override
   public void setUp() throws Exception {
-    logs = UtilSystem.readFile(FILE_PATH).toString();
+    try {
+      logs = UtilSystem.readFile(FILE_PATH).toString();
+    } catch (JajukException e) {
+      // if an exception occurs, ensure it is a "FileNotFound"
+      assertNotNull("Should have an underlying cause when catching JajukException", e.getCause());
+      assertTrue("We only accept FileNotFoundException as valid exception in this test", e.getCause() instanceof FileNotFoundException);
+      
+      // set string to empty to not fail any of the tests in this case
+      logs = "";
+      
+      // also log a warning to indicate that this test did not do anything
+      Log.warn("File " + FILE_PATH + " not found, cannot run checks on log file.");
+    }
   }
 
   /**
