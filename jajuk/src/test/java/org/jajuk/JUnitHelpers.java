@@ -92,10 +92,10 @@ public class JUnitHelpers {
    * 
    * @param targetClass
    */
-  public static void executePrivateConstructor(final Class<?> targetClass) throws Exception {
-    final Constructor<?> c = targetClass.getDeclaredConstructor(new Class[] {});
+  public static <T> T executePrivateConstructor(final Class<T> targetClass) throws Exception {
+    final Constructor<T> c = targetClass.getDeclaredConstructor(new Class[] {});
     c.setAccessible(true);
-    c.newInstance((Object[]) null);
+    return c.newInstance((Object[]) null);
   }
 
   @SuppressWarnings("null")
