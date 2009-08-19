@@ -110,7 +110,7 @@ public final class History extends DefaultHandler implements ErrorHandler, HighP
     eventSubjectSet.add(JajukEvents.CLEAR_HISTORY);
     eventSubjectSet.add(JajukEvents.FILE_NAME_CHANGED);
     eventSubjectSet.add(JajukEvents.LANGUAGE_CHANGED);
-    eventSubjectSet.add(JajukEvents.WEBRADIO_LAUNCHED);
+    eventSubjectSet.add(JajukEvents.WEBRADIO_LAUNCHED); // TODO: this is not handled in update, may be not required?
     return eventSubjectSet;
   }
 
@@ -155,6 +155,8 @@ public final class History extends DefaultHandler implements ErrorHandler, HighP
 
   /** Clear history */
   public void clear() {
+    // TODO: I don't see much gain in doing this in a separate thread, clearing the 
+    // vector should be a fast task, or?
     SwingUtilities.invokeLater(new Runnable() {
       public void run() {
         vHistory.clear();
@@ -306,7 +308,7 @@ public final class History extends DefaultHandler implements ErrorHandler, HighP
     }
     hiLast = vHistory.get(0);
     if (hiLast == null) {
-      return null;
+      return null;  // TODO: I don't think this can happen at all right now?!?
     }
     return hiLast.getFileId();
   }
@@ -318,7 +320,7 @@ public final class History extends DefaultHandler implements ErrorHandler, HighP
    * @return
    */
   public HistoryItem getHistoryItem(int index) {
-    return (index >= 0 ? vHistory.get(index) : null);
+    return (index >= 0 && index < vHistory.size() ? vHistory.get(index) : null);
   }
 
   /**
@@ -391,7 +393,7 @@ public final class History extends DefaultHandler implements ErrorHandler, HighP
         sID = hm.get(sID);
         Log.debug("upload:" + sID);
       }
-      // test if this file is still known int the collection
+      // test if this file is still known in the collection
       if (FileManager.getInstance().getFileByID(sID) != null) {
         HistoryItem hi = new HistoryItem(sID, UtilString.fastLongParser(attributes
             .getValue(attributes.getIndex("date"))));
