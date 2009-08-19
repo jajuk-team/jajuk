@@ -56,6 +56,10 @@
         <artifactId>maven-surefire-plugin</artifactId>
         <version>2.4.2</version>
         <configuration>
+          <additionalClasspathElements>
+                <additionalClasspathElement>src/main/resources</additionalClasspathElement>
+                <additionalClasspathElement>src/main/java</additionalClasspathElement>
+          </additionalClasspathElements>
           <systemProperties>
             <property>
               <name>java.awt.headless</name>
