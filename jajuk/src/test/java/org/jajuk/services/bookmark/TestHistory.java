@@ -579,8 +579,9 @@ public class TestHistory extends TestCase {
 
     // trigger the clear-event
     History.getInstance().update(new JajukEvent(JajukEvents.CLEAR_HISTORY, null));
-    // here we actually have to sleep twice as there are two thread-calls done, once inside update() and then 
+    // here we actually have to sleep a few times as there are two thread-calls done, once inside update() and then 
     // another one in clear() itself, one "sleep()" only gives up thread-control once and then gains control again later
+    Thread.sleep(100);
     Thread.sleep(100);
     Thread.sleep(100);
     // now the item is cleared
@@ -617,7 +618,10 @@ public class TestHistory extends TestCase {
     
     // now trigger the update
     History.getInstance().update(new JajukEvent(JajukEvents.FILE_NAME_CHANGED, detail));
-    // we have to sleep a bit as it is executed in the background
+    // we have to sleep a bit as it is executed in the background, sometimes hudson did
+    // fail this test, so let's try to do sleep a few times
+    Thread.sleep(100);
+    Thread.sleep(100);
     Thread.sleep(100);
     // now we only should have the item "3"
     assertEquals(1, History.getInstance().getHistory().size());
