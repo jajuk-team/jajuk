@@ -101,9 +101,9 @@ public class JUnitHelpers {
   @SuppressWarnings("null")
   public static void EqualsTest(final Object obj, final Object equal, final Object notequal) {
     // none of the three should be null
-    Assert.assertFalse("Object in EqualsTest should not be null!", null == obj);
-    Assert.assertFalse("Equals-object in EqualsTest should not be null!", null == equal);
-    Assert.assertFalse("Non-equal-object in EqualsTest should not be null!", null == notequal);
+    Assert.assertNotNull("Object in EqualsTest should not be null!", obj);
+    Assert.assertNotNull("Equals-object in EqualsTest should not be null!", equal);
+    Assert.assertNotNull("Non-equal-object in EqualsTest should not be null!", notequal);
 
     // make sure different objects are passed in
     Assert.assertFalse("Object and equals-object in EqualsTest should not be identical",
@@ -168,6 +168,66 @@ public class JUnitHelpers {
         .hashCode() == equal.hashCode());
     Assert.assertTrue("Transitive: Equal objects should have equal hash-code in EqualsTest!",
         notequal.hashCode() == notequal.hashCode());
+  }
+
+  @SuppressWarnings("unchecked")
+  public static <T> void CompareToTest(final Comparable<T> obj, final Comparable<T> equal, 
+      final Comparable<T> notequal) {
+    // none of the three should be null
+    Assert.assertNotNull("Object in CompareToTest should not be null!", obj);
+    Assert.assertNotNull("Equals-object in CompareToTest should not be null!", equal);
+    Assert.assertNotNull("Non-equal-object in CompareToTest should not be null!", notequal);
+
+    // make sure different objects are passed in
+    Assert.assertFalse("Object and equals-object in CompareToTest should not be identical",
+        obj == equal);
+    Assert.assertFalse("Object and non-equals-object in CompareToTest should not be identical",
+        obj == notequal);
+
+    // make sure correct parameters are passed
+    // equal should be equal to obj, not-equal should not be equal to obj!
+    Assert.assertEquals("Object and equal-object should compare in CompareToTest!", 
+        0, obj.compareTo((T)equal));
+    Assert.assertFalse("Object and non-equal-object should not compare in CompareToTest!", 0 == obj
+        .compareTo((T)notequal));
+
+    // first test some general things that should be true with equals
+
+    // reflexive: equals to itself
+    Assert
+        .assertEquals("Reflexive: object should be equal to itself in CompareToTest!", 
+            0, obj.compareTo((T)obj));
+    Assert.assertEquals("Reflexive: equal-object should be equal to itself in CompareToTest!", 
+        0, equal.compareTo((T)equal));
+    Assert.assertEquals("Reflexive: non-equal-object should be equal to itself in CompareToTest!",
+        0, notequal.compareTo((T)notequal));
+
+    // not equals to null
+    Assert.assertFalse("Object should not be equal to null in CompareToTest!", 
+        0 == obj.compareTo(null));
+    Assert.assertFalse("Equal-object should not be equal to null in CompareToTest!", 
+        0 == equal.compareTo(null));
+    Assert.assertFalse("Non-equal-object should not be equal to null in CompareToTest!", 
+        0 == notequal.compareTo(null));
+
+    // not equals to a different type of object
+    /*Assert.assertFalse("Object should not be equal to an arbitrary string in CompareToTest!", 
+        0 == obj.compareTo("TestString"));*/
+
+    // then test some things with another object that should be equal
+
+    // symmetric, if one is (not) equal to another then the reverse must be true
+    Assert.assertEquals("Symmetric: Object should be equal to equal-object in CompareToTest", 
+        0, obj.compareTo((T)equal));
+    Assert.assertEquals("Symmetric: Equals-object should be equal to object in CompareToTest!", 
+        0, equal.compareTo((T)obj));
+    Assert.assertFalse("Symmetric: Object should NOT be equal to non-equal-object in CompareToTest",
+        0 == obj.compareTo((T)notequal));
+    Assert.assertFalse("Symmetric: Non-equals-object should NOT be equal to object in CompareToTest!",
+        0 == notequal.compareTo((T)obj));
+
+    // transitive: if a.equals(b) and b.equals(c) then a.equals(c)
+    // not tested right now
   }
 
   /**
