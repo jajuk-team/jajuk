@@ -30,7 +30,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
-import java.util.regex.PatternSyntaxException;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -104,11 +103,10 @@ public class Album extends LogicalItem implements Comparable<Album> {
       return albumArtist;
     }
     // various artist? check if all authors are the same
-    String various = Messages.getString(Const.VARIOUS_ARTIST);
     Author author = getAuthor();
     if (author == null) {
       // Several different author, return translated "various"
-      return various;
+      return Messages.getString(Const.VARIOUS_ARTIST);
     } else {
       // single artist, return it
       return author.getName2();
@@ -145,6 +143,10 @@ public class Album extends LogicalItem implements Comparable<Album> {
    * @return comparison result
    */
   public int compareTo(Album otherAlbum) {
+    if (otherAlbum == null) {
+      return -1;
+    }
+
     // compare using name and id to differentiate unknown items
     StringBuilder current = new StringBuilder(getName2());
     current.append(getHumanAlbumArtist());
@@ -460,8 +462,12 @@ public class Album extends LogicalItem implements Comparable<Album> {
     ImageIcon icon = new ImageIcon(img);
     // Free thumb memory (DO IT AFTER FULL ImageIcon loading)
     img.flush();
+
+    // TODO: is this really useful? It just frees a local variable that is
+    // going out of scope quickly anyway?
     // accelerate GC cleanup
     img = null;
+
     return icon;
   }
 
@@ -571,10 +577,24 @@ public class Album extends LogicalItem implements Comparable<Album> {
     }
   }
 
+  /**
+   * Returns true, if the pattern matches the specified property.
+   * 
+   * Currently only Const.XML_ALBUM and Const.XML_STYLE are supported
+   * properties. The pattern is used for a case-insensitive sub-string match, 
+   * no regular expression is used!
+   * 
+   * @param property The property to use for the match, currently either Cosnt.XML_ALBUM 
+   *                  or Const.XML_STYLE
+   * @param pattern The string to search for as case-insensitive sub-string
+   * 
+   * @return true if either parameter is null or if the pattern matches, false otherwise.
+   */
   public boolean matches(String property, String pattern) {
     if (UtilString.isVoid(property) || UtilString.isVoid(pattern)) {
       return true;
     }
+    
     String sValue = null;
     if (Const.XML_ALBUM.equals(property)) {
       sValue = getName2();
@@ -588,19 +608,14 @@ public class Album extends LogicalItem implements Comparable<Album> {
     if (sValue == null) {
       return false;
     }
-    boolean match = false;
-    try {
-      // do not use regexp matches(<string>) because the string may contain
-      // characters to be escaped
-      match = (sValue.toLowerCase(Locale.getDefault()).indexOf(
-          pattern.toLowerCase(Locale.getDefault())) != -1);
-      // test if the item property contains this
-      // property value (ignore case)
-    } catch (PatternSyntaxException pse) {
-      // wrong pattern syntax
-      Log.error(pse);
-    }
-    return match;
+
+    // do not use regexp matches(<string>) because the string may contain
+    // characters to be escaped
+    return (sValue.toLowerCase(Locale.getDefault()).indexOf(
+        pattern.toLowerCase(Locale.getDefault())) != -1);
+    
+    // test if the item property contains this
+    // property value (ignore case)
   }
 
   /**
