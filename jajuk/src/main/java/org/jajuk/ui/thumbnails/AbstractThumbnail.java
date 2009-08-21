@@ -82,8 +82,6 @@ public abstract class AbstractThumbnail extends JPanel implements ActionListener
 
   private static Point lastPosition;
 
-  private boolean selected = false;
-
   JPopupMenu jmenu;
 
   JMenuItem jmiPlay;
@@ -345,7 +343,6 @@ public abstract class AbstractThumbnail extends JPanel implements ActionListener
    */
   public final void setSelected(boolean b) {
     requestFocusInWindow();
-    selected = b;
     // Add a shadow for selected items
     if (b) {
       setBorder(new ShadowBorder(false));
