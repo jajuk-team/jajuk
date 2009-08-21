@@ -56,10 +56,23 @@ public class Duration implements Comparable<Duration> {
   }
 
   public int compareTo(Duration other) {
+    if(other == null) {
+      // not equal if the other element is null
+      return -1;
+    }
+
     return (int) (duration - other.getDuration());
   }
 
   public long getDuration() {
     return this.duration;
+  }
+
+  /* (non-Javadoc)
+   * @see java.lang.Object#hashCode()
+   */
+  @Override
+  public int hashCode() {
+    return new Long(duration).hashCode();
   }
 }
