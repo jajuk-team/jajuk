@@ -384,7 +384,6 @@ public class TestAlbum extends TestCase {
     assertEquals(8, album.getHits());
   }
 
-  @SuppressWarnings("unchecked")
   private File getFile(int i, Track track, Album album) throws Exception {
     Device device = new Device(new Integer(i).toString(), "name");
     device.setUrl(System.getProperty("java.io.tmpdir"));

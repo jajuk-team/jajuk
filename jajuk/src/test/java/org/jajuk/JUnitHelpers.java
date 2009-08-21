@@ -98,7 +98,6 @@ public class JUnitHelpers {
     return c.newInstance((Object[]) null);
   }
 
-  @SuppressWarnings("null")
   public static void EqualsTest(final Object obj, final Object equal, final Object notequal) {
     // none of the three should be null
     Assert.assertNotNull("Object in EqualsTest should not be null!", obj);
@@ -265,7 +264,6 @@ public class JUnitHelpers {
    * @param obj
    *          The object to test clone for.
    */
-  @SuppressWarnings("null")
   public static void CloneTest(final Cloneable obj) throws Exception {
     final Method m = obj.getClass().getMethod("clone", new Class[] {});
     Assert.assertTrue("Need to find a method called 'clone' in object of type '"
