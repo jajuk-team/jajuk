@@ -185,7 +185,7 @@ public class StartupService {
 
     // If the queue was empty and a file to play is provided, build a new queue
     // with this track alone
-    if (alToPlay.size() == 0 && fileToPlay != null) {
+    if (alToPlay != null && alToPlay.size() == 0 && fileToPlay != null) {
       alToPlay.add(fileToPlay);
     }
 
