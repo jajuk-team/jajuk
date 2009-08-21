@@ -33,10 +33,10 @@ import java.util.StringTokenizer;
 import javax.swing.ImageIcon;
 import javax.swing.SwingUtilities;
 
+import org.apache.commons.lang.StringUtils;
 import org.jajuk.base.Track;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilGUI;
-import org.jajuk.util.UtilString;
 import org.jajuk.util.log.Log;
 
 /**
@@ -147,7 +147,7 @@ public class LastFmAlbumsRunnable implements Runnable {
     if (retrieveArtistInfo) {
       if (!interrupted) {
         String sArtist = audioObject.getArtist();
-        if (UtilString.isNotVoid(sArtist)
+        if (StringUtils.isNotBlank(sArtist)
             && !sArtist.equalsIgnoreCase(Messages.getString("unknown_author"))) {
           AlbumListInfo albumList = service.getAlbumList(audioObject.getArtist(), true, 0);
           if (albumList != null) {

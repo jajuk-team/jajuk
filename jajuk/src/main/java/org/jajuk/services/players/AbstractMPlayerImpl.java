@@ -24,11 +24,11 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.jajuk.base.File;
 import org.jajuk.services.webradio.WebRadio;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
-import org.jajuk.util.UtilString;
 import org.jajuk.util.UtilSystem;
 import org.jajuk.util.log.Log;
 
@@ -164,7 +164,7 @@ public abstract class AbstractMPlayerImpl implements IPlayerImpl, Const {
     String sCommand = "mplayer";
     // Use any forced mplayer path
     String forced = Conf.getString(Const.CONF_MPLAYER_PATH_FORCED);
-    if (!UtilString.isVoid(forced)) {
+    if (!StringUtils.isBlank(forced)) {
       sCommand = forced;
     } else {
       if (UtilSystem.isUnderWindows()) {
@@ -198,7 +198,7 @@ public abstract class AbstractMPlayerImpl implements IPlayerImpl, Const {
       cmd.add("-cache");
       cmd.add(cacheSize);
     }
-    if (!UtilString.isVoid(sAdditionalArgs)) {
+    if (!StringUtils.isBlank(sAdditionalArgs)) {
       // Add any additional arguments provided by user
       String[] sArgs = sAdditionalArgs.split(" ");
       for (String element : sArgs) {

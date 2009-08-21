@@ -26,6 +26,7 @@ import ext.services.lastfm.ScrobblerException;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.apache.commons.lang.StringUtils;
 import org.jajuk.base.File;
 import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
@@ -63,7 +64,7 @@ public final class LastFmManager implements Observer, Const {
         // popups.
         && !UpgradeManager.isFirstSesion()
         // don't show neither if last.fm login is already provided but disabled
-        && UtilString.isVoid(Conf.getString(Const.CONF_LASTFM_USER))) {
+        && StringUtils.isBlank(Conf.getString(Const.CONF_LASTFM_USER))) {
       Messages.showHideableWarningMessage(Messages.getString("LastFmManager.0"),
           CONF_NOT_SHOW_AGAIN_LASTFM_DISABLED);
     }

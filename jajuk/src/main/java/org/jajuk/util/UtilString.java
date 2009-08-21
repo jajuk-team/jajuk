@@ -29,6 +29,7 @@ import java.util.Locale;
 import java.util.Properties;
 import java.util.StringTokenizer;
 
+import org.apache.commons.lang.StringUtils;
 import org.jajuk.base.AlbumManager;
 import org.jajuk.base.AuthorManager;
 import org.jajuk.base.File;
@@ -696,26 +697,6 @@ public final class UtilString {
   }
 
   /**
-   * 
-   * @param s
-   *          String to test
-   * @return whether the string is void
-   */
-  public static boolean isVoid(final String s) {
-    return (s == null) || s.trim().equals("");
-  }
-
-  /**
-   * 
-   * @param s
-   *          String to test
-   * @return whether the string is not void
-   */
-  public static boolean isNotVoid(final String s) {
-    return !isVoid(s);
-  }
-
-  /**
    * @param s
    * @return whether given string is XML-valid
    */
@@ -835,7 +816,7 @@ public final class UtilString {
    * @return encoded /decoded text
    */
   public static String rot13(final String in) {
-    if (UtilString.isVoid(in)) {
+    if (StringUtils.isBlank(in)) {
       return "";
     }
     int abyte = 0;

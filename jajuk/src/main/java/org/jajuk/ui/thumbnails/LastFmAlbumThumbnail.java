@@ -37,6 +37,7 @@ import javax.swing.JLabel;
 
 import net.miginfocom.swing.MigLayout;
 
+import org.apache.commons.lang.StringUtils;
 import org.jajuk.base.Album;
 import org.jajuk.base.AlbumManager;
 import org.jajuk.base.Item;
@@ -89,7 +90,7 @@ public class LastFmAlbumThumbnail extends AbstractThumbnail {
         try {
           // Check if album image is null
           String albumUrl = album.getBigCoverURL();
-          if (UtilString.isVoid(albumUrl)) {
+          if (StringUtils.isBlank(albumUrl)) {
             return null;
           }
           // Download thumb
@@ -136,7 +137,7 @@ public class LastFmAlbumThumbnail extends AbstractThumbnail {
         String fullTitle = album.getTitle();
         // Add year if available
         String releaseDate = album.getReleaseDateString();
-        if (UtilString.isNotVoid(releaseDate)) {
+        if (StringUtils.isNotBlank(releaseDate)) {
           fullTitle += " (" + releaseDate + ")";
         }
         int textLength = 15;
@@ -218,7 +219,7 @@ public class LastFmAlbumThumbnail extends AbstractThumbnail {
         + Const.XML_URL + '?' + album.getArtistUrl() + "'>" + album.getArtist() + "</a>";
     // Display year if available
     String year = album.getYear();
-    if (!UtilString.isVoid(year)) {
+    if (!StringUtils.isBlank(year)) {
       sOut += "<br>" + Messages.getString("Property_year") + " : " + year;
     }
     sOut += "</TD><TD>";

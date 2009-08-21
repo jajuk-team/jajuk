@@ -30,6 +30,7 @@ import java.util.Set;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
+import org.apache.commons.lang.StringUtils;
 import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
@@ -762,7 +763,7 @@ public class Device extends PhysicalItem implements Comparable<Device> {
    */
   public void synchronize(final boolean bAsynchronous) {
     // Check a source device is defined
-    if (UtilString.isVoid((String) getValue(Const.XML_DEVICE_SYNCHRO_SOURCE))) {
+    if (StringUtils.isBlank((String) getValue(Const.XML_DEVICE_SYNCHRO_SOURCE))) {
       Messages.showErrorMessage(171);
       return;
     }

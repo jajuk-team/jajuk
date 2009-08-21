@@ -25,6 +25,8 @@ import java.util.Locale;
 
 import javax.swing.filechooser.FileFilter;
 
+import org.apache.commons.lang.StringUtils;
+
 /**
  * Advanced file filter
  * 
@@ -112,7 +114,7 @@ public class JajukFileFilter extends FileFilter implements java.io.FileFilter, C
       extensionsString += this.extensions[i] + ',';
     }
     // Drop last coma
-    if (!UtilString.isVoid(extensionsString)) {
+    if (!StringUtils.isBlank(extensionsString)) {
       extensionsString = extensionsString.substring(0, extensionsString.length() - 1);
     }
   }

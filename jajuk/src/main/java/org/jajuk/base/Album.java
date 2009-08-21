@@ -34,6 +34,7 @@ import java.util.Set;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
+import org.apache.commons.lang.StringUtils;
 import org.jajuk.ui.thumbnails.ThumbnailManager;
 import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
@@ -99,7 +100,7 @@ public class Album extends LogicalItem implements Comparable<Album> {
   public String getHumanAlbumArtist() {
     // If the album artist tag is provided, perfect, let's use it !
     String albumArtist = getAlbumArtist();
-    if (UtilString.isNotVoid(albumArtist) && !(Const.UNKNOWN_AUTHOR.equals(albumArtist))) {
+    if (StringUtils.isNotBlank(albumArtist) && !(Const.UNKNOWN_AUTHOR.equals(albumArtist))) {
       return albumArtist;
     }
     // various artist? check if all authors are the same
@@ -298,7 +299,7 @@ public class Album extends LogicalItem implements Comparable<Album> {
     // afterwards (performance factor x2 or x3 in catalog view)
     if ("none".equals(cachedCoverPath)) {
       return null;
-    } else if (!UtilString.isVoid(cachedCoverPath)) {
+    } else if (!StringUtils.isBlank(cachedCoverPath)) {
       return new File(cachedCoverPath);
     }
     File fDir = null; // analyzed directory
@@ -328,7 +329,7 @@ public class Album extends LogicalItem implements Comparable<Album> {
     // look for absolute cover in collection
     for (Directory dir : dirs) {
       String sAbsolut = dir.getStringValue(Const.XML_DIRECTORY_DEFAULT_COVER);
-      if (!UtilString.isVoid(sAbsolut.trim())) {
+      if (!StringUtils.isBlank(sAbsolut.trim())) {
         File fAbsoluteDefault = new File(dir.getAbsolutePath() + '/' + sAbsolut);
         if (fAbsoluteDefault.exists()) {
           // Test the image is not corrupted
@@ -591,7 +592,7 @@ public class Album extends LogicalItem implements Comparable<Album> {
    * @return true if either parameter is null or if the pattern matches, false otherwise.
    */
   public boolean matches(String property, String pattern) {
-    if (UtilString.isVoid(property) || UtilString.isVoid(pattern)) {
+    if (StringUtils.isBlank(property) || StringUtils.isBlank(pattern)) {
       return true;
     }
     

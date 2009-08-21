@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
+import org.apache.commons.lang.StringUtils;
 import org.jajuk.base.Item;
 import org.jajuk.base.PropertyMetaInformation;
 import org.jajuk.util.log.Log;
@@ -107,7 +108,7 @@ public class Filter {
     String comparator = null;
     String checked = filter.getValue();
     // If checked is void, return the list as it
-    if (UtilString.isVoid(checked)) {
+    if (StringUtils.isBlank(checked)) {
       return;
     }
     // If pattern is wrong, return a void list

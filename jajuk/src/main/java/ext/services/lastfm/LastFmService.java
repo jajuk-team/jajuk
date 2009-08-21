@@ -46,6 +46,7 @@ import net.roarsoftware.lastfm.scrobble.Source;
 import net.roarsoftware.lastfm.scrobble.SubmissionData;
 
 import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.lang.StringUtils;
 import org.jajuk.base.Track;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
@@ -637,7 +638,7 @@ public class LastFmService {
    * @return
    */
   private boolean checkPassword() {
-    if (UtilString.isVoid(password)) {
+    if (StringUtils.isBlank(password)) {
       Log.debug("Don't submit to Last.fm: Empty password");
       return false;
     }
@@ -652,7 +653,7 @@ public class LastFmService {
    */
   private boolean checkArtist(Track track) {
     String sArtist = track.getAuthor().getName2();
-    if (UtilString.isVoid(sArtist)
+    if (StringUtils.isBlank(sArtist)
         || sArtist.equalsIgnoreCase(Messages.getString("unknown_author"))) {
       Log.debug("Don't submit to Last.fm: Unknown artist");
       return false;
@@ -667,7 +668,7 @@ public class LastFmService {
    * @return
    */
   private boolean checkTitle(Track track) {
-    if (UtilString.isVoid(track.getName())) {
+    if (StringUtils.isBlank(track.getName())) {
       Log.debug("Don't submit to Last.fm: Unknown Title");
       return false;
     }

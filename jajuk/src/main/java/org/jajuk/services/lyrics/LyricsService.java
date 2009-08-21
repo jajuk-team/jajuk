@@ -30,8 +30,8 @@ package org.jajuk.services.lyrics;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.jajuk.services.lyrics.providers.ILyricsProvider;
-import org.jajuk.util.UtilString;
 import org.jajuk.util.log.Log;
 
 /**
@@ -76,7 +76,7 @@ public final class LyricsService {
     providers = new ArrayList<ILyricsProvider>(2);
     try {
       for (String providerClass : providersClasses) {
-        if (!UtilString.isVoid(providerClass)) {
+        if (!StringUtils.isBlank(providerClass)) {
           Class<ILyricsProvider> clazz = (Class<ILyricsProvider>) Class.forName(providerClass);
           ILyricsProvider provider = clazz.newInstance();
           providers.add(provider);

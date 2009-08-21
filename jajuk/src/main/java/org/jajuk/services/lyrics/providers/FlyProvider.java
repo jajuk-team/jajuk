@@ -24,6 +24,7 @@ import ext.XMLUtils;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import org.apache.commons.lang.StringUtils;
 import org.jajuk.util.UtilString;
 import org.jajuk.util.log.Log;
 import org.w3c.dom.Document;
@@ -68,7 +69,7 @@ public class FlyProvider extends GenericProvider {
       lyrics = XMLUtils.getChildElementContent(document.getDocumentElement(), "tx");
       lyrics = lyrics.replace("[br]", "");
 
-      if (UtilString.isVoid(lyrics)) {
+      if (StringUtils.isBlank(lyrics)) {
         return null;
       }
       return lyrics;

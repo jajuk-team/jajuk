@@ -26,13 +26,13 @@ import java.util.List;
 
 import junit.framework.TestCase;
 
+import org.apache.commons.lang.StringUtils;
 import org.jajuk.JUnitHelpers;
 import org.jajuk.services.lyrics.providers.FlyProvider;
 import org.jajuk.services.lyrics.providers.ILyricsProvider;
 import org.jajuk.services.lyrics.providers.LyrcProvider;
 import org.jajuk.services.lyrics.providers.LyricWikiProvider;
 import org.jajuk.util.DownloadManager;
-import org.jajuk.util.UtilString;
 
 /**
  * Lyrics unit tests
@@ -80,7 +80,7 @@ public class TestLyrics extends TestCase {
    */
   private void testService(ILyricsProvider provider) {
     String lyrics = provider.getLyrics(ARTIST, TITLE);
-    assertTrue("Lyrics: " + lyrics, UtilString.isNotVoid(lyrics)
+    assertTrue("Lyrics: " + lyrics, StringUtils.isNotBlank(lyrics)
         && lyrics.indexOf(TESTED_WORD) != -1);
   }
 

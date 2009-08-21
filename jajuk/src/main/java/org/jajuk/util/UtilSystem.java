@@ -56,6 +56,7 @@ import java.util.jar.JarFile;
 import javax.swing.ImageIcon;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang.StringUtils;
 import org.jajuk.Main;
 import org.jajuk.services.core.SessionService;
 import org.jajuk.util.error.JajukException;
@@ -610,7 +611,7 @@ public final class UtilSystem {
    */
   public static String getMPlayerOSXPath() {
     final String forced = Conf.getString(Const.CONF_MPLAYER_PATH_FORCED);
-    if (!UtilString.isVoid(forced)) {
+    if (!StringUtils.isBlank(forced)) {
       return forced;
     } else if (UtilSystem.isUnderOSXintel()
         && new File(Const.FILE_DEFAULT_MPLAYER_X86_OSX_PATH).exists()) {
@@ -1069,7 +1070,7 @@ public final class UtilSystem {
     }
 
     // Try to open the location using the forced explorer path of provided
-    if (UtilString.isNotVoid(Conf.getString(Const.CONF_EXPLORER_PATH))) {
+    if (StringUtils.isNotBlank(Conf.getString(Const.CONF_EXPLORER_PATH))) {
       new Thread("Explorer Open Thread 1") {
         @Override
         public void run() {

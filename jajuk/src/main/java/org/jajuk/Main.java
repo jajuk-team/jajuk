@@ -39,6 +39,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.apache.commons.lang.StringUtils;
 import org.jajuk.base.AlbumManager;
 import org.jajuk.base.AuthorManager;
 import org.jajuk.base.Collection;
@@ -446,7 +447,7 @@ public final class Main {
       else {
         // If a forced mplayer path is defined, test it
         final String forced = Conf.getString(Const.CONF_MPLAYER_PATH_FORCED);
-        if (!UtilString.isVoid(forced)) {
+        if (!StringUtils.isBlank(forced)) {
           // Test forced path
           mplayerStatus = UtilSystem.getMplayerStatus(forced);
         } else {

@@ -32,6 +32,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.lang.StringUtils;
 import org.jajuk.base.TrackComparator.TrackComparatorType;
 import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
@@ -41,7 +42,6 @@ import org.jajuk.services.players.QueueModel;
 import org.jajuk.util.Const;
 import org.jajuk.util.MD5Processor;
 import org.jajuk.util.ReadOnlyIterator;
-import org.jajuk.util.UtilString;
 import org.jajuk.util.error.JajukException;
 
 /**
@@ -120,7 +120,7 @@ public final class AlbumManager extends ItemManager implements Observer {
     // If not, use name + diskId (or only the name if the disc id is not yet
     // computed)
     if (sAlbumArtist == null || Const.UNKNOWN_AUTHOR.equals(sAlbumArtist)
-        || UtilString.isVoid(sAlbumArtist)) {
+        || StringUtils.isBlank(sAlbumArtist)) {
       if (discId > 0) {
         return MD5Processor.hash(sName + discId);
       } else {

@@ -35,6 +35,7 @@ import javax.swing.SwingUtilities;
 
 import net.miginfocom.swing.MigLayout;
 
+import org.apache.commons.lang.StringUtils;
 import org.jajuk.base.Author;
 import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
@@ -46,7 +47,6 @@ import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilFeatures;
-import org.jajuk.util.UtilString;
 import org.jdesktop.swingx.JXBusyLabel;
 
 /**
@@ -132,7 +132,7 @@ public class ArtistView extends SuggestionView {
         if (artistInfo == null
         // If image url is void, last.fm doesn't provide enough data about this
             // artist, we reset the view
-            || UtilString.isVoid(artistInfo.getImageUrl())) {
+            || StringUtils.isBlank(artistInfo.getImageUrl())) {
           reset();
           return;
         }
@@ -164,7 +164,7 @@ public class ArtistView extends SuggestionView {
         jspWiki.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
 
         // Add items, layout is different according wiki text availability
-        if (UtilString.isNotVoid(jtaArtistDesc.getText())) {
+        if (StringUtils.isNotBlank(jtaArtistDesc.getText())) {
           setLayout(new MigLayout("ins 5,gapy 5", "[grow]", "[grow][20%!][grow]"));
           add(authorThumb, "center,wrap");
           // don't add the textarea if no wiki text available

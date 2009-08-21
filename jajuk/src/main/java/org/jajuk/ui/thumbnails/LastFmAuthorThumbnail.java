@@ -37,6 +37,7 @@ import javax.swing.JLabel;
 
 import net.miginfocom.swing.MigLayout;
 
+import org.apache.commons.lang.StringUtils;
 import org.jajuk.base.AuthorManager;
 import org.jajuk.base.Item;
 import org.jajuk.ui.helpers.FontManager;
@@ -87,7 +88,7 @@ public class LastFmAuthorThumbnail extends AbstractThumbnail {
         try {
           // Check if author is null
           String authorUrl = author.getImageUrl();
-          if (UtilString.isVoid(authorUrl)) {
+          if (StringUtils.isBlank(authorUrl)) {
             return null;
           }
           // Download thumb
@@ -215,7 +216,7 @@ public class LastFmAuthorThumbnail extends AbstractThumbnail {
       sOut += "<TD>";
       for (AlbumInfo album : albums) {
         sOut += "<b>";
-        if (!UtilString.isVoid(album.getYear())) {
+        if (!StringUtils.isBlank(album.getYear())) {
           sOut += album.getYear() + " ";
         }
         sOut += "<a href='file://" + Const.XML_URL + '?' + album.getUrl() + "'>" + album.getTitle()

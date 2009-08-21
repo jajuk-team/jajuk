@@ -54,6 +54,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.SwingUtilities;
 
+import org.apache.commons.lang.StringUtils;
 import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
@@ -72,7 +73,6 @@ import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UpgradeManager;
-import org.jajuk.util.UtilString;
 import org.jajuk.util.UtilSystem;
 import org.jajuk.util.log.Log;
 
@@ -436,7 +436,7 @@ public final class JajukJMenuBar extends JMenuBar implements Observer {
   private void applyMnemonics() {
     for (int i = 0; i < mainmenu.getMenuCount(); i++) {
       JMenu menu = mainmenu.getMenu(i);
-      if (menu != null && UtilString.isNotVoid(menu.getText())) {
+      if (menu != null && StringUtils.isNotBlank(menu.getText())) {
         String label = menu.getText();
         int mnemonic = label.getBytes()[0];
         menu.setMnemonic(mnemonic);

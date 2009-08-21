@@ -28,8 +28,8 @@ import java.awt.Image;
 
 import javax.swing.SwingUtilities;
 
+import org.apache.commons.lang.StringUtils;
 import org.jajuk.util.Messages;
-import org.jajuk.util.UtilString;
 
 /**
  * The Class LastFmSimilarArtistsRunnable.
@@ -84,7 +84,7 @@ public class LastFmSimilarArtistsRunnable implements Runnable {
    * @see java.lang.Runnable#run()
    */
   public void run() {
-    if (!interrupted && UtilString.isNotVoid(artist)
+    if (!interrupted && StringUtils.isNotBlank(artist)
         && !artist.equalsIgnoreCase(Messages.getString("unknown_author"))) {
       SimilarArtistsInfo artists = service.getSimilarArtists(artist);
 

@@ -23,9 +23,9 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.util.logging.LogManager;
 
+import org.apache.commons.lang.StringUtils;
 import org.jajuk.util.Const;
 import org.jajuk.util.UtilFeatures;
-import org.jajuk.util.UtilString;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 import org.jaudiotagger.audio.AudioFile;
@@ -114,7 +114,7 @@ public class JAudioTaggerTagImpl implements ITagImpl, Const {
    */
   public long getOrder() throws Exception {
     String sOrder = this.tag.getFirstTrack();
-    if (UtilString.isVoid(sOrder)) {
+    if (StringUtils.isBlank(sOrder)) {
       return 0;
     }
     if (sOrder.matches(".*/.*")) {
@@ -139,7 +139,7 @@ public class JAudioTaggerTagImpl implements ITagImpl, Const {
    */
   public String getStyleName() throws Exception {
     String result = this.tag.getFirstGenre();
-    if (UtilString.isVoid(result) || "genre".equals(result)) {
+    if (StringUtils.isBlank(result) || "genre".equals(result)) {
       // the item will be the default jajuk unknown string
       return "";
     }
@@ -180,7 +180,7 @@ public class JAudioTaggerTagImpl implements ITagImpl, Const {
    */
   public String getYear() throws Exception {
     String result = this.tag.getFirstYear();
-    if (UtilString.isVoid(result)) {
+    if (StringUtils.isBlank(result)) {
       result = "0";
     } else {
       Long.parseLong(result);
@@ -336,7 +336,7 @@ public class JAudioTaggerTagImpl implements ITagImpl, Const {
   public long getDiscNumber() throws Exception {
 
     String sDiscNumber = this.tag.getFirst(TagFieldKey.DISC_NO);
-    if (UtilString.isVoid(sDiscNumber)) {
+    if (StringUtils.isBlank(sDiscNumber)) {
       return 01;
     }
     if (sDiscNumber.matches(".*/.*")) {
