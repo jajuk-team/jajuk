@@ -226,7 +226,7 @@ public class ArtistView extends SuggestionView {
 
             ArtistView.this.author = author.getName();
             // Display the panel only if the artist is not unknown
-            if (author != null && !author.isUnknown()) {
+            if (!author.isUnknown()) {
               // This is done in a swing worker
               displayAuthor();
             } else {
