@@ -41,9 +41,6 @@ public class AlbumComparator implements Comparator<Album> {
       return album1.compareTo(album2);
     }
     // get a track for each album
-    // TODO: get two tracks of album and compare Author,
-    // if
-    // !=, set Author to "Various Artist"
     Track track1 = album1.getAnyTrack();
     Track track2 = album2.getAnyTrack();
 
@@ -51,60 +48,94 @@ public class AlbumComparator implements Comparator<Album> {
     if (track1 == null || track2 == null) {
       return 0;
     }
+
+    String albumArtist1 = null;
+    String albumArtist2 = null;
+
+    // @TODO
+    // beware, this code is not consistent with equals. This should be ok as
+    // result is used by a List but it could be a drama if we used a Set
+    // See : http: // java.sun.com/j2se/1.4.2/docs/api/java/lang/Comparable.html
     switch (criteria) {
     case 0: // style
-      // Sort on Genre/Author/Year/Title
+      // Cache this, time consuming
+      albumArtist1 = album1.getAlbumArtistOrArtist();
+      albumArtist2 = album2.getAlbumArtistOrArtist();
+
+      // Sort on Style/Author/Year/Title
       if (track1.getStyle() == track2.getStyle()) {
         // [Perf] We can make this '==' comparison because all these strings are
         // internalized
-        if (album1.getHumanAlbumArtist() == album2.getHumanAlbumArtist()) {
+        if (albumArtist1 == albumArtist2) {
           if (track1.getYear() == track2.getYear()) {
             return album1.compareTo(album2);
           } else {
             return track1.getYear().compareTo(track2.getYear());
           }
         } else {
-          return album1.getHumanAlbumArtist().compareTo(album2.getHumanAlbumArtist());
+          return albumArtist1.compareTo(albumArtist2);
         }
       } else {
         return track1.getStyle().compareTo(track2.getStyle());
       }
     case 1: // author
+      // Cache this, time consuming
+      albumArtist1 = album1.getAlbumArtistOrArtist();
+      albumArtist2 = album2.getAlbumArtistOrArtist();
+
       // Sort on Author/Year/Title
       // we use now the album artist
-      if (album1.getHumanAlbumArtist() == album2.getHumanAlbumArtist()) {
+      if (albumArtist1 == albumArtist2) {
         if (track1.getYear() == track2.getYear()) {
           return album1.compareTo(album2);
         } else {
           return track1.getYear().compareTo(track2.getYear());
         }
       } else {
-        return album1.getHumanAlbumArtist().compareTo(album2.getHumanAlbumArtist());
+        return albumArtist1.compareTo(albumArtist2);
       }
     case 3: // year
+      // Cache this, time consuming
+      albumArtist1 = album1.getAlbumArtistOrArtist();
+      albumArtist2 = album2.getAlbumArtistOrArtist();
+
       // Sort on: Year/Author/Title
       if (track1.getYear() == track2.getYear()) {
-        if (album1.getHumanAlbumArtist() == album2.getHumanAlbumArtist()) {
+        if (albumArtist1 == albumArtist2) {
           return album1.compareTo(album2);
         } else {
-          return album1.getHumanAlbumArtist().compareTo(album2.getHumanAlbumArtist());
+          return albumArtist1.compareTo(albumArtist2);
         }
       } else {
         return track1.getYear().compareTo(track2.getYear());
       }
     case 4: // Discovery date
-      return track2.getDiscoveryDate().compareTo(track1.getDiscoveryDate());
-    case 5: // Rate
-      if (album1.getRate() < album2.getRate()) {
-        return 1;
+      // Sort on: Discovery date/title
+      if (track1.getDiscoveryDate().equals(track2.getDiscoveryDate())) {
+        return album1.compareTo(album2);
       } else {
-        return 0;
+        return track2.getDiscoveryDate().compareTo(track1.getDiscoveryDate());
+      }
+    case 5: // Rate
+      // Sort on: Rate/title
+      if (album1.getRate() == album2.getRate()) {
+        return album1.compareTo(album2);
+      } else {
+        if (album1.getRate() < album2.getRate()) {
+          return 1;
+        } else {
+          return 0;
+        }
       }
     case 6: // Hits
-      if (album1.getHits() < album2.getHits()) {
-        return 1;
+      if (album1.getHits() == album2.getHits()) {
+        return album1.compareTo(album2);
       } else {
-        return 0;
+        if (album1.getHits() < album2.getHits()) {
+          return 1;
+        } else {
+          return 0;
+        }
       }
     }
     return 0;

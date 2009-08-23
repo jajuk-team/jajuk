@@ -309,7 +309,7 @@ public class QueueView extends PlaylistView {
                 public void run() {
                   if (QueueModel.getQueueSize() > 0) {
                     double index = QueueModel.getIndex();
-                    double size = QueueModel.getQueueSize();
+                    double size = QueueModel.getQueueSize() + QueueModel.getPlanned().size();
                     double factor = (index / size);
                     int value = (int) (factor * jsp.getVerticalScrollBar().getMaximum());
 
@@ -323,6 +323,7 @@ public class QueueView extends PlaylistView {
                     if (value >= jsp.getVerticalScrollBar().getMinimum()
                         && value <= jsp.getVerticalScrollBar().getMaximum()) {
                       jsp.getVerticalScrollBar().setValue(value);
+
                     }
                   }
                 }

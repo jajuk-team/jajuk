@@ -985,66 +985,54 @@ public class TestQueueModel extends TestCase {
 
   // needs to be public to be callable from the outside...
   public static class MockPlayer implements IPlayerImpl {
-    @Override
     public void stop() throws Exception {
 
     }
 
-    @Override
     public void setVolume(float fVolume) throws Exception {
 
     }
 
-    @Override
     public void seek(float fPosition) {
 
     }
 
-    @Override
     public void resume() throws Exception {
 
     }
 
-    @Override
     public void play(WebRadio radio, float fVolume) throws Exception {
 
     }
 
-    @Override
     public void play(File file, float fPosition, long length, float fVolume) throws Exception {
 
     }
 
-    @Override
     public void pause() throws Exception {
 
     }
 
-    @Override
     public int getState() {
 
       return 0;
     }
 
-    @Override
     public long getElapsedTime() {
 
       return 0;
     }
 
-    @Override
     public float getCurrentVolume() {
 
       return 0;
     }
 
-    @Override
     public float getCurrentPosition() {
 
       return 0;
     }
 
-    @Override
     public long getCurrentLength() {
 
       return 0;

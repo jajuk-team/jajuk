@@ -315,7 +315,16 @@ public class File extends PhysicalItem implements Comparable<File>, Const {
     } else if (Const.XML_ANY.equals(sKey)) {
       return getAny();
     } else {// default
-      return super.getHumanValue(sKey);
+      // check if this key is known
+      if (getMeta(sKey) != null) {
+        return super.getHumanValue(sKey);
+      }
+      // Unknown ? check if it is a track custom property
+      else if (getTrack().getMeta(sKey) != null) {
+        return getTrack().getHumanValue(sKey);
+      } else {
+        return null;
+      }
     }
   }
 
@@ -338,7 +347,7 @@ public class File extends PhysicalItem implements Comparable<File>, Const {
     sb.append(lTrack.getDuration());
     sb.append(lTrack.getRate());
     sb.append(lTrack.getValue(Const.XML_TRACK_COMMENT));
-    sb.append(lTrack.getHumanAlbumArtist());
+    sb.append(lTrack.getAlbumArtistOrArtist());
     return sb.toString();
   }
 

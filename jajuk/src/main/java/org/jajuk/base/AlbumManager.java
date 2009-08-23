@@ -193,6 +193,35 @@ public final class AlbumManager extends ItemManager implements Observer {
   }
 
   /**
+   * Change the item
+   * 
+   * @param old
+   * @param sNewName
+   * @return new album
+   */
+  public Album changeAlbumArtist(Album old, String sNewName) throws JajukException {
+    // check there is actually a change
+    if (old.getAlbumArtist().equals(sNewName)) {
+      return old;
+    }
+    Album newItem = registerAlbum(old.getName(), sNewName, old.getDiscID());
+    // re apply old properties from old item
+    newItem.cloneProperties(old);
+    // update tracks
+    for (Track track : TrackManager.getInstance().getTracks()) {
+      if (track.getAlbum().equals(old)) {
+        TrackManager.getInstance().changeTrackAlbumArtist(track, sNewName, null);
+      }
+    }
+    // if current track album name is changed, notify it
+    if (QueueModel.getPlayingFile() != null
+        && QueueModel.getPlayingFile().getTrack().getAlbum().equals(old)) {
+      ObservationManager.notify(new JajukEvent(JajukEvents.ALBUM_CHANGED));
+    }
+    return newItem;
+  }
+
+  /**
    * Format the album name to be normalized :
    * <p>
    * -no underscores or other non-ascii characters

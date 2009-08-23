@@ -171,6 +171,21 @@ public class Track extends LogicalItem implements Comparable<Track> {
   }
 
   /**
+   * @return all associated files
+   * @param filter
+   *          files we want to deal with, null means no filter
+   */
+  public List<org.jajuk.base.File> getFiles(Set<File> filter) {
+    List<File> out = new ArrayList<File>(alFiles.size());
+    for (File file : alFiles) {
+      if (filter == null || filter.contains(file)) {
+        out.add(file);
+      }
+    }
+    return out;
+  }
+
+  /**
    * @return ready files
    */
   public List<File> getReadyFiles() {
@@ -297,12 +312,12 @@ public class Track extends LogicalItem implements Comparable<Track> {
   }
 
   /**
-   * Get translated album artist
+   * Get translated album artist or author if album artist not available
    * 
    * @return
    */
-  public String getHumanAlbumArtist() {
-    return album.getHumanAlbumArtist();
+  public String getAlbumArtistOrArtist() {
+    return album.getAlbumArtistOrArtist();
   }
 
   /**

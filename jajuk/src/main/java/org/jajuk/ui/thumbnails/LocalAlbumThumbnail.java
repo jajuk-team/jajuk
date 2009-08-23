@@ -113,7 +113,7 @@ public class LocalAlbumThumbnail extends AbstractThumbnail {
     if (bShowFullText) {
       int iRows = 7 + 7 * ((size / 50) - 1);
 
-      String albumArtist = album.getHumanAlbumArtist();
+      String albumArtist = album.getAlbumArtistOrArtist();
 
       jlAuthor = new JLabel(UtilString.getLimitedString(albumArtist, iRows));
       jlAuthor.setToolTipText(albumArtist);

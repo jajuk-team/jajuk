@@ -1097,6 +1097,8 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
     g2d.scale(1, -1);
     g2d.drawRenderedImage(reflectedImage, null);
     g2d.dispose();
+    reflection.flush();
+    coverImage.flush();
 
     return finalImage;
   }

@@ -204,6 +204,12 @@ public interface Const {
 
   String FILE_COLLECTION = "collection.xml";
 
+  // File written by the exit hook
+  String FILE_COLLECTION_EXIT = "collection_exit.xml";
+
+  // Void file created after exit collection file
+  String FILE_COLLECTION_EXIT_PROOF = "exit_proof";
+
   String FILE_REPORTING_CACHE_FILE = "cache/report";
 
   String FILE_CONFIGURATION = "conf.properties";

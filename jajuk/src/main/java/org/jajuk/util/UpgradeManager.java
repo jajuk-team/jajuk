@@ -50,7 +50,7 @@ public final class UpgradeManager {
   private static boolean bFirstSession = false;
 
   /** Is it an old migration (more than 1 major release) ? */
-  private static boolean oldMigration = false;
+  private static boolean majorMigration = false;
 
   /**
    * private constructor to avoid instantiating utility class
@@ -81,7 +81,7 @@ public final class UpgradeManager {
           int newRelease = Integer.parseInt(Const.JAJUK_VERSION.charAt(0) + ""
               + Const.JAJUK_VERSION.charAt(2));
           if (Math.abs(newRelease - currentRelease) >= 1) {
-            oldMigration = true;
+            majorMigration = true;
           }
         }
       }
@@ -272,7 +272,10 @@ public final class UpgradeManager {
           Log.info("Migrating rating done");
           Messages.showInfoMessage(Messages.getString("Note.1"));
         }
-        // --- In all cases, rebuild thumbs when upgrading ---
+      }
+      // Major releases upgrade specific operations
+      if (isMajorMigration()) {
+        // Rebuild thumbs when upgrading
         new Thread() {
           @Override
           public void run() {
@@ -292,6 +295,7 @@ public final class UpgradeManager {
             ThumbnailsMaker.launchAllSizes(true);
           }
         }.start();
+
       }
     } catch (Exception e) {
       Log.error(e);
@@ -346,7 +350,8 @@ public final class UpgradeManager {
     return newVersionName;
   }
 
-  public static boolean isOldMigration() {
-    return oldMigration;
+  /** Is it an old migration (more than 1 major release) ? * */
+  public static boolean isMajorMigration() {
+    return majorMigration;
   }
 }

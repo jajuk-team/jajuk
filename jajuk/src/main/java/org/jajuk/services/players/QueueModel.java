@@ -58,11 +58,12 @@ import org.jajuk.util.log.Log;
  * dispatcher thread is frozen when JVM execute a static synchronized method,
  * even outside AWT dispatcher thread
  * </p>
- *
- * General todo-items:
- * TODO: we catch exceptions a lot in various places here. Why? We should probably rather avoid or handle them correctly
- * TODO: insert() and push() are quite similar, but implemented differently, they should be combined
- * TOOD: the queue/planned handling is cumbersome and planned tracks are not correctly handled sometimes, should be refactored into separate class
+ * 
+ * General todo-items: TODO: we catch exceptions a lot in various places here.
+ * Why? We should probably rather avoid or handle them correctly TODO: insert()
+ * and push() are quite similar, but implemented differently, they should be
+ * combined TOOD: the queue/planned handling is cumbersome and planned tracks
+ * are not correctly handled sometimes, should be refactored into separate class
  */
 public final class QueueModel {
 
@@ -106,12 +107,14 @@ public final class QueueModel {
   }
 
   /**
-   * Remove all items from the given album just before and after the given index, 
-   * i.e. remove all tracks before and after the current one that have the same
-   * album.
+   * Remove all items from the given album just before and after the given
+   * index, i.e. remove all tracks before and after the current one that have
+   * the same album.
    * 
-   * @param index The index from where to remove.
-   * @param album The album to remove.
+   * @param index
+   *          The index from where to remove.
+   * @param album
+   *          The album to remove.
    */
   public static void resetAround(int index, Album album) {
     int begin = 0;
@@ -168,7 +171,7 @@ public final class QueueModel {
       public void run() {
         try {
           UtilGUI.waiting();
-          QueueModel.pushCommand(alItems, bPush, bPushNext, true);
+          QueueModel.pushCommand(alItems, bPush, bPushNext);
         } catch (Exception e) {
           Log.error(e);
         } finally {
@@ -208,7 +211,7 @@ public final class QueueModel {
       public void run() {
         try {
           UtilGUI.waiting();
-          pushCommand(item, bPush, bPushNext, true);
+          pushCommand(item, bPush, bPushNext);
         } catch (Exception e) {
           Log.error(e);
         } finally {
@@ -263,39 +266,31 @@ public final class QueueModel {
   /**
    * Push some files in the fifo
    * 
-   * @param item
-   *          , item to be played
+   * @param item ,
+   *          item to be played
    * @param bPush
    *          keep previous files or stop them to start a new one ?
    * @param bPushNext
    *          whether the selection is added after playing track (mutual
    *          exclusive with simple push)
-   * @param bManual
-   *          whether the selection is added by the queue engine(false) or
-   *          manually by the user (true)
    */
-  private static void pushCommand(StackItem item, boolean bPush, final boolean bPushNext,
-      boolean bManual) {
+  private static void pushCommand(StackItem item, boolean bPush, final boolean bPushNext) {
     List<StackItem> alFiles = new ArrayList<StackItem>(1);
     alFiles.add(item);
-    pushCommand(alFiles, bPush, bPushNext, bManual);
+    pushCommand(alFiles, bPush, bPushNext);
   }
 
   /**
    * Push some stack items in the fifo
    * 
-   * @param alItems
-   *          , list of items to be played
+   * @param alItems ,
+   *          list of items to be played
    * @param bPush
    *          keep previous files or stop them to start a new one ?
    * @param bPushNext
    *          whether the selection is added in first in queue
-   * @param bManual
-   *          whether the selection is added by the queue engine(false) or
-   *          manually by the user (true)
    */
-  private static void pushCommand(List<StackItem> alItems, boolean bPush, final boolean bPushNext,
-      boolean bManual) {
+  private static void pushCommand(List<StackItem> alItems, boolean bPush, final boolean bPushNext) {
     try {
       // wake up FIFO if stopped
       bStop = false;
@@ -344,31 +339,12 @@ public final class QueueModel {
         }
 
         // Position of insert into the queue
-        int pos = 0;
+        int pos = (alQueue.size() == 0) ? 0 : alQueue.size();
 
         // OK, stop current track if no append
         if (!bPush && !bPushNext) {
-
-          // Ask queue to run next track. We have to make a difference between
-          // tracks pushed manually and
-          // tracks selected automatically (like planned tracks)
-          if (bManual && alQueue.size() > 0) {
-            index++;
-          }
-          pos = index;
+          index = pos;
           Player.stop(false);
-          // If the selection items contains contains tracks from the same
-          // album, move the playing track after the selection to alow user to
-          // launch albums one by one and still getting full albums in queue
-          // If the selection contains different albums, decrease pos so the
-          // playing track is kept *before* the new selection
-          if (alQueue.size() > 0 && alItems.size() >= 2) {
-            Album firstItemAlbum = alItems.get(0).getFile().getTrack().getAlbum();
-            Album secondItemAlbum = alItems.get(1).getFile().getTrack().getAlbum();
-            if (firstItemAlbum.equals(secondItemAlbum)) {
-              pos--;
-            }
-          }
         }
         // if push to front, set pos to first item
         else if (bPushNext) {
@@ -393,7 +369,6 @@ public final class QueueModel {
         if (Conf.getBoolean(Const.CONF_STATE_REPEAT_ALL)) {
           setRepeatModeToAll(true);
         }
-
         // launch track if required
         if (!Player.isPlaying()) {
           launch();
@@ -454,7 +429,7 @@ public final class QueueModel {
       if (current == null) {
         return;
       }
-      if(getPlayingFile() != null) {
+      if (getPlayingFile() != null) {
         Properties details = new Properties();
         details.put(Const.DETAIL_CURRENT_FILE, getPlayingFile());
         ObservationManager.notify(new JajukEvent(JajukEvents.FILE_FINISHED, details));
@@ -500,7 +475,7 @@ public final class QueueModel {
           }
           if (file != null) {
             // push it, it will be played
-            pushCommand(new StackItem(file), false, false, false);
+            pushCommand(new StackItem(file), false, false);
           } else {
             // probably end of collection option "restart" off
             setEndOfQueue();
@@ -538,7 +513,8 @@ public final class QueueModel {
   /**
    * Launch track at given index in the fifo
    * 
-   * @param int index
+   * @param int
+   *          index
    */
   private static void launch() {
     try {
@@ -651,8 +627,8 @@ public final class QueueModel {
   /**
    * Computes planned tracks
    * 
-   * @param bClear
-   *          : clear planned tracks stack
+   * @param bClear :
+   *          clear planned tracks stack
    */
   public static void computesPlanned(boolean bClear) {
     // Check if we are in continue mode and we have some tracks in FIFO, if
@@ -860,11 +836,12 @@ public final class QueueModel {
         finished(true); // stop current track
       } else if (itemLast != null) { // try to launch any previous
         // file
-        pushCommand(itemLast, false, false, true);
+        pushCommand(itemLast, false, false);
       } else { // really nothing? play a shuffle track from collection
         File file = FileManager.getInstance().getShuffleFile();
-        if(file != null) {
-          pushCommand(new StackItem(file, Conf.getBoolean(Const.CONF_STATE_REPEAT_ALL), false), false, false, true);
+        if (file != null) {
+          pushCommand(new StackItem(file, Conf.getBoolean(Const.CONF_STATE_REPEAT_ALL), false),
+              false, false);
         }
       }
     } catch (Exception e) {
@@ -878,12 +855,12 @@ public final class QueueModel {
   public static void playNextAlbum() {
     try {
       bStop = false;
-      
+
       // if playing, stop all playing players
       if (Player.isPlaying()) {
         Player.stop(true);
       }
-      
+
       // we don't support album navigation inside repeated tracks
       if (getQueueSize() > 0 && getItem(0).isRepeat()) {
         playNext();
@@ -967,8 +944,8 @@ public final class QueueModel {
   /**
    * Get an item at given index in FIFO
    * 
-   * @param lIndex
-   *          : index
+   * @param lIndex :
+   *          index
    * @return stack item
    */
   public static StackItem getItem(int lIndex) {
@@ -1149,7 +1126,7 @@ public final class QueueModel {
    * @param lIndex
    */
   public static void down(int lIndex) {
-    if (/* lIndex == 0 || */ lIndex == alQueue.size() - 1
+    if (/* lIndex == 0 || */lIndex == alQueue.size() - 1
         || lIndex == alQueue.size() + alPlanned.size() - 1) {
       // Can't put down current track, nor last track in FIFO, nor last
       // planned track. This should be already made by ui behavior
@@ -1160,7 +1137,8 @@ public final class QueueModel {
       alQueue.remove(lIndex); // remove the item
       alQueue.add(lIndex + 1, item); // add it again above
     }
-    // TODO: this seems to not take the planned queue into account, but up() does!
+    // TODO: this seems to not take the planned queue into account, but up()
+    // does!
   }
 
   /**

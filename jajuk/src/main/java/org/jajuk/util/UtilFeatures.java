@@ -410,9 +410,9 @@ public final class UtilFeatures {
     for (Long duration : durations) {
       checkSum += sumOfDigits(duration);
     }
-    int xx = checkSum % 255;
-    int yyyy = totalLength;
-    int zz = nbTracks;
+    long xx = checkSum % 255;
+    long yyyy = totalLength;
+    long zz = nbTracks;
     // XXYYYYZZ
     return ((xx << 24) | (yyyy << 8) | zz);
   }

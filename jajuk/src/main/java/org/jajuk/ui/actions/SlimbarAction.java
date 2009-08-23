@@ -59,9 +59,13 @@ public class SlimbarAction extends JajukAction {
       // close the previous window before displaying the other
       sdSlimbar.display(false);
       sdMainWindow.display(true);
+      // Update the icon according to status
+      setIcon(IconLoader.getIcon(JajukIcons.SLIM_WINDOW));
     } else {
       sdMainWindow.display(false);
       sdSlimbar.display(true);
+      // Update the icon according to status
+      setIcon(IconLoader.getIcon(JajukIcons.FULL_SCREEN));
     }
     // Notify that slimbar visibility change (menu bar is interested in it)
     ObservationManager.notify(new JajukEvent(JajukEvents.PARAMETERS_CHANGE));

@@ -407,7 +407,14 @@ public abstract class ItemManager {
       } else if (Const.XML_TRACK_RATE.equals(sKey)) {
         newItem = TrackManager.getInstance().changeTrackRate(file.getTrack(), (Long) oValue);
       } else { // others properties
-        itemToChange.setProperty(sKey, oValue);
+        // check if this key is known for files
+        if (file.getMeta(sKey) != null) {
+          itemToChange.setProperty(sKey, oValue);
+        }
+        // Unknown ? check if it is a track custom property
+        else if (file.getTrack().getMeta(sKey) != null) {
+          file.getTrack().setProperty(sKey, oValue);
+        }
       }
       // Get associated track file
       if (newItem instanceof Track) {
@@ -458,6 +465,9 @@ public abstract class ItemManager {
     } else if (itemToChange instanceof Album) {
       if (Const.XML_NAME.equals(sKey)) {
         newItem = AlbumManager.getInstance().changeAlbumName((Album) itemToChange, (String) oValue);
+      } else if (Const.XML_ALBUM_ARTIST.equals(sKey)) {
+        newItem = AlbumManager.getInstance().changeAlbumArtist((Album) itemToChange,
+            (String) oValue);
       } else { // others properties
         itemToChange.setProperty(sKey, oValue);
       }

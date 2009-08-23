@@ -303,8 +303,6 @@ public class JajukSystray extends CommandJPanel implements JajukWindow {
     // Register needed events
     ObservationManager.register(this);
 
-    // Set new state
-    decorator.setWindowState(WindowState.BUILT_NOT_DISPLAYED);
   }
 
   @Override

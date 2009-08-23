@@ -165,16 +165,16 @@ public class TestAlbum extends TestCase {
    */
   public final void testGetHumanAlbumArtist() {
     Album album = new Album("1", "name", "artist", 123);
-    assertEquals("artist", album.getHumanAlbumArtist());
+    assertEquals("artist", album.getAlbumArtistOrArtist());
     
     // if unknown author, "VARIOUS ARTISTS" is returned
     album = new Album("1", "name", Const.UNKNOWN_AUTHOR, 123);
-    assertEquals(Messages.getString(Const.VARIOUS_ARTIST), album.getHumanAlbumArtist());
+    assertEquals(Messages.getString(Const.VARIOUS_ARTIST), album.getAlbumArtistOrArtist());
     
     // if there are tracks and all have the same author for an album with "unknown artist",
     // then use that author
     album.getTracksCache().add(getTrack(album));
-    assertEquals("authorname", album.getHumanAlbumArtist());
+    assertEquals("authorname", album.getAlbumArtistOrArtist());
   }
 
   /**

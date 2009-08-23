@@ -77,31 +77,20 @@ public abstract class AbstractMPlayerImpl implements IPlayerImpl, Const {
          * destroy() method call for unknown reason (linked with the mplayer
          * slave mode ?). Even worse, these processes block the dsp audio line
          * and then all new mplayer processes fail. To avoid this, we force a
-         * kill -9 on every process after a destoy() call under Linux.
+         * kill on every process call under Linux.
+         * 
+         * Note also that mplayer slave mode opens two processes with different
+         * pids. When we try to kill them with -9 (abruptly) only the parent
+         * process dies and the second process is left hanging in the
+         * background. The solution is to just use kill (without -9) to let both
+         * mplayer processes die gracefully. I guess the destroy() method
+         * internally also tries to use -9 and so both pids are never killed.
          */
-
-	/* Varun: Problem is that mplayer slave mode opens two
-	 * processes with different pids. When we try to kill them
-	 * with -9 (abruptly) only the parent process dies and the
-	 * second process is left hanging in the background. The
-	 * solution is to just use kill (without -9) to let both
-	 * mplayer processes die gracefully. I guess the destroy()
-	 * method internally also tries to use -9 and so both pids are
-	 * never killed.
-
-	 * This can be easily tested by starting a standalone mplayer
-	 * session under slave mode and then by trying to kill them
-	 * with and without using -9. We will see that when we use -9,
-	 * only one process is killed.
-	 */
 
         Field field = proc.getClass().getDeclaredField("pid");
         field.setAccessible(true);
         int pid = field.getInt(proc);
-	/* Don't use destroy method */
-        /* proc.destroy(); */
         try {
-          /* Don't use -9 */
           ProcessBuilder pb = new ProcessBuilder("kill", Integer.toString(pid));
           pb.start();
         } catch (Error error) {

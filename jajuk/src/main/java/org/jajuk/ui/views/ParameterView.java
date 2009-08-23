@@ -343,123 +343,123 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
    * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
    */
   public void actionPerformed(final ActionEvent e) {
-    new Thread("Parameter Action Thread") {
-      @Override
-      public void run() {
-        if (e.getSource() == jbClearHistory) {
-          // show confirmation message if required
-          if (Conf.getBoolean(Const.CONF_CONFIRMATIONS_CLEAR_HISTORY)) {
-            final int iResu = Messages.getChoice(Messages.getString("Confirmation_clear_history"),
-                JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
-            if (iResu != JOptionPane.YES_OPTION) {
-              return;
-            }
-          }
-          ObservationManager.notify(new JajukEvent(JajukEvents.CLEAR_HISTORY));
-        } else if (e.getSource() == jbResetRatings) {
-          // show confirmation message if required
-          if (Conf.getBoolean(Const.CONF_CONFIRMATIONS_RESET_RATINGS)) {
-            final int iResu = Messages.getChoice(Messages.getString("Confirmation_reset_ratings"),
-                JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
-            if (iResu != JOptionPane.YES_OPTION) {
-              return;
-            }
-          }
-          ObservationManager.notify(new JajukEvent(JajukEvents.RATE_RESET));
-        } else if (e.getSource() == jbResetPreferences) {
-          // show confirmation message if required
-          if (Conf.getBoolean(Const.CONF_CONFIRMATIONS_RESET_RATINGS)) {
-            final int iResu = Messages.getChoice(Messages
-                .getString("Confirmation_reset_preferences"), JOptionPane.YES_NO_CANCEL_OPTION,
-                JOptionPane.WARNING_MESSAGE);
-            if (iResu != JOptionPane.YES_OPTION) {
-              return;
-            }
-          }
-          if (!DeviceManager.getInstance().isAnyDeviceRefreshing()) {
-            ObservationManager.notify(new JajukEvent(JajukEvents.PREFERENCES_RESET));
-          } else {
-            Messages.showErrorMessage(120);
-          }
-        } else if (e.getSource() == jbOK) {
-          applyParameters();
-          // Notify any client than wait for parameters updates
-          final Properties details = new Properties();
-          details.put(Const.DETAIL_ORIGIN, this);
-          if (someOptionsAppliedAtNextStartup) {
-            // Inform user that some parameters will apply only at
-            // next startup
-            Messages.showInfoMessage(Messages.getString("ParameterView.198"));
-            someOptionsAppliedAtNextStartup = false;
-          }
-        } else if (e.getSource() == jbDefault) {
-          int resu = Messages.getChoice(Messages.getString("Confirmation_defaults"),
-              JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);
-          if (resu == JOptionPane.OK_OPTION) {
-            Conf.setDefaultProperties();
-            updateSelection();// update UI
-            InformationJPanel.getInstance().setMessage(Messages.getString("ParameterView.110"),
-                InformationJPanel.INFORMATIVE);
-            applyParameters();
-            Messages.showInfoMessage(Messages.getString("ParameterView.198"));
-          }
-        } else if (e.getSource() == jcbBackup) {
-          // if backup option is unchecked, reset backup size
-          if (jcbBackup.isSelected()) {
-            backupSize.setEnabled(true);
-            backupSize.setValue(Conf.getInt(Const.CONF_BACKUP_SIZE));
-          } else {
-            backupSize.setEnabled(false);
-            backupSize.setValue(0);
-          }
-        } else if ((e.getSource() == jcbProxyNone) || (e.getSource() == jcbProxyHttp)
-            || (e.getSource() == jcbProxySocks)) {
-          final boolean bUseProxy = !jcbProxyNone.isSelected();
-          jtfProxyHostname.setEnabled(bUseProxy);
-          jtfProxyPort.setEnabled(bUseProxy);
-          jtfProxyLogin.setEnabled(bUseProxy);
-          jtfProxyPwd.setEnabled(bUseProxy);
-          jlProxyHostname.setEnabled(bUseProxy);
-          jlProxyPort.setEnabled(bUseProxy);
-          jlProxyLogin.setEnabled(bUseProxy);
-          jlProxyPwd.setEnabled(bUseProxy);
-        } else if (e.getSource() == jcbAutoCover) {
-          if (jcbAutoCover.isSelected()) {
-            jcbCoverSize.setEnabled(true);
-            jlCoverSize.setEnabled(true);
-          } else {
-            jlCoverSize.setEnabled(false);
-            jcbCoverSize.setEnabled(false);
-          }
-        } else if (e.getSource() == jcbAudioScrobbler) {
-          if (jcbAudioScrobbler.isSelected()) {
-            jlASUser.setEnabled(true);
-            jtfASUser.setEnabled(true);
-            jlASPassword.setEnabled(true);
-            jpfASPassword.setEnabled(true);
-          } else {
-            jlASUser.setEnabled(false);
-            jtfASUser.setEnabled(false);
-            jlASPassword.setEnabled(false);
-            jpfASPassword.setEnabled(false);
-          }
-        } else if (e.getSource() == scbLanguage) {
-          Locale locale = LocaleManager.getLocaleForDesc(((JLabel) scbLanguage.getSelectedItem())
-              .getText());
-          final String sLocal = locale.getLanguage();
-          final String sPreviousLocal = LocaleManager.getLocale().getLanguage();
-          if (!sPreviousLocal.equals(sLocal)) {
-            // local has changed
-            someOptionsAppliedAtNextStartup = true;
-          }
-        } else if (e.getSource() == jcbHotkeys) {
-          someOptionsAppliedAtNextStartup = true;
-        } else if (e.getSource() == jbCatalogRefresh) {
-          int resu = Messages.getChoice(Messages.getString("Confirmation_rebuild_thumbs"),
-              JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);
-          if (resu != JOptionPane.YES_OPTION) {
-            return;
-          }
+
+    if (e.getSource() == jbClearHistory) {
+      // show confirmation message if required
+      if (Conf.getBoolean(Const.CONF_CONFIRMATIONS_CLEAR_HISTORY)) {
+        final int iResu = Messages.getChoice(Messages.getString("Confirmation_clear_history"),
+            JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
+        if (iResu != JOptionPane.YES_OPTION) {
+          return;
+        }
+      }
+      ObservationManager.notify(new JajukEvent(JajukEvents.CLEAR_HISTORY));
+    } else if (e.getSource() == jbResetRatings) {
+      // show confirmation message if required
+      if (Conf.getBoolean(Const.CONF_CONFIRMATIONS_RESET_RATINGS)) {
+        final int iResu = Messages.getChoice(Messages.getString("Confirmation_reset_ratings"),
+            JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
+        if (iResu != JOptionPane.YES_OPTION) {
+          return;
+        }
+      }
+      ObservationManager.notify(new JajukEvent(JajukEvents.RATE_RESET));
+    } else if (e.getSource() == jbResetPreferences) {
+      // show confirmation message if required
+      if (Conf.getBoolean(Const.CONF_CONFIRMATIONS_RESET_RATINGS)) {
+        final int iResu = Messages.getChoice(Messages.getString("Confirmation_reset_preferences"),
+            JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
+        if (iResu != JOptionPane.YES_OPTION) {
+          return;
+        }
+      }
+      if (!DeviceManager.getInstance().isAnyDeviceRefreshing()) {
+        ObservationManager.notify(new JajukEvent(JajukEvents.PREFERENCES_RESET));
+      } else {
+        Messages.showErrorMessage(120);
+      }
+    } else if (e.getSource() == jbOK) {
+      applyParameters();
+      // Notify any client than wait for parameters updates
+      final Properties details = new Properties();
+      details.put(Const.DETAIL_ORIGIN, this);
+      if (someOptionsAppliedAtNextStartup) {
+        // Inform user that some parameters will apply only at
+        // next startup
+        Messages.showInfoMessage(Messages.getString("ParameterView.198"));
+        someOptionsAppliedAtNextStartup = false;
+      }
+    } else if (e.getSource() == jbDefault) {
+      int resu = Messages.getChoice(Messages.getString("Confirmation_defaults"),
+          JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);
+      if (resu == JOptionPane.OK_OPTION) {
+        Conf.setDefaultProperties();
+        updateSelection();// update UI
+        InformationJPanel.getInstance().setMessage(Messages.getString("ParameterView.110"),
+            InformationJPanel.INFORMATIVE);
+        applyParameters();
+        Messages.showInfoMessage(Messages.getString("ParameterView.198"));
+      }
+    } else if (e.getSource() == jcbBackup) {
+      // if backup option is unchecked, reset backup size
+      if (jcbBackup.isSelected()) {
+        backupSize.setEnabled(true);
+        backupSize.setValue(Conf.getInt(Const.CONF_BACKUP_SIZE));
+      } else {
+        backupSize.setEnabled(false);
+        backupSize.setValue(0);
+      }
+    } else if ((e.getSource() == jcbProxyNone) || (e.getSource() == jcbProxyHttp)
+        || (e.getSource() == jcbProxySocks)) {
+      final boolean bUseProxy = !jcbProxyNone.isSelected();
+      jtfProxyHostname.setEnabled(bUseProxy);
+      jtfProxyPort.setEnabled(bUseProxy);
+      jtfProxyLogin.setEnabled(bUseProxy);
+      jtfProxyPwd.setEnabled(bUseProxy);
+      jlProxyHostname.setEnabled(bUseProxy);
+      jlProxyPort.setEnabled(bUseProxy);
+      jlProxyLogin.setEnabled(bUseProxy);
+      jlProxyPwd.setEnabled(bUseProxy);
+    } else if (e.getSource() == jcbAutoCover) {
+      if (jcbAutoCover.isSelected()) {
+        jcbCoverSize.setEnabled(true);
+        jlCoverSize.setEnabled(true);
+      } else {
+        jlCoverSize.setEnabled(false);
+        jcbCoverSize.setEnabled(false);
+      }
+    } else if (e.getSource() == jcbAudioScrobbler) {
+      if (jcbAudioScrobbler.isSelected()) {
+        jlASUser.setEnabled(true);
+        jtfASUser.setEnabled(true);
+        jlASPassword.setEnabled(true);
+        jpfASPassword.setEnabled(true);
+      } else {
+        jlASUser.setEnabled(false);
+        jtfASUser.setEnabled(false);
+        jlASPassword.setEnabled(false);
+        jpfASPassword.setEnabled(false);
+      }
+    } else if (e.getSource() == scbLanguage) {
+      Locale locale = LocaleManager.getLocaleForDesc(((JLabel) scbLanguage.getSelectedItem())
+          .getText());
+      final String sLocal = locale.getLanguage();
+      final String sPreviousLocal = LocaleManager.getLocale().getLanguage();
+      if (!sPreviousLocal.equals(sLocal)) {
+        // local has changed
+        someOptionsAppliedAtNextStartup = true;
+      }
+    } else if (e.getSource() == jcbHotkeys) {
+      someOptionsAppliedAtNextStartup = true;
+    } else if (e.getSource() == jbCatalogRefresh) {
+      int resu = Messages.getChoice(Messages.getString("Confirmation_rebuild_thumbs"),
+          JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);
+      if (resu != JOptionPane.YES_OPTION) {
+        return;
+      }
+      new Thread("Parameter Catalog refresh Thread") {
+        @Override
+        public void run() {
           // Clean thumbs
           ThumbnailManager.cleanThumbs(THUMBNAIL_SIZE_50X50);
           ThumbnailManager.cleanThumbs(THUMBNAIL_SIZE_100X100);
@@ -476,8 +476,8 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
           // Launch thumbs creation in another process
           ThumbnailsMaker.launchAllSizes(true);
         }
-      }
-    }.start();
+      }.start();
+    }
   }
 
   private void applyParameters() {
@@ -569,8 +569,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
     }
     // Patterns
     // Get and check reorg pattern
-    final String sPattern = jtfRefactorPattern.getText();
-    Conf.setProperty(Const.CONF_REFACTOR_PATTERN, sPattern);
+    Conf.setProperty(Const.CONF_REFACTOR_PATTERN, jtfRefactorPattern.getText());
     Conf.setProperty(Const.CONF_ANIMATION_PATTERN, jtfAnimationPattern.getText());
     Conf.setProperty(Const.CONF_FRAME_TITLE_PATTERN, jtfFrameTitle.getText());
 

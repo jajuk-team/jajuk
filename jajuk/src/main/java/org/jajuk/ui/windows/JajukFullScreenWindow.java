@@ -24,8 +24,6 @@ import static org.jajuk.ui.actions.JajukActions.PAUSE_RESUME_TRACK;
 import static org.jajuk.ui.actions.JajukActions.PREVIOUS_TRACK;
 import static org.jajuk.ui.actions.JajukActions.STOP_TRACK;
 
-import com.vlsolutions.swing.docking.ui.DockingUISettings;
-
 import java.awt.Dimension;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
@@ -33,11 +31,9 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
 import javax.swing.JButton;
-import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JWindow;
-import javax.swing.UIManager;
 
 import net.miginfocom.swing.MigLayout;
 
@@ -89,48 +85,21 @@ public class JajukFullScreenWindow extends JWindow implements JajukWindow {
    */
   private WindowStateDecorator decorator;
 
-  public static JajukFullScreenWindow getInstance() {
-    if (instance == null) {
-      instance = new JajukFullScreenWindow();
-      instance.decorator = new WindowStateDecorator(instance) {
-        @Override
-        public void specificBeforeShown() {
+  /** Owning frame, see bellow for explanations * */
+  private static JFrame owner;
 
-        }
+  /**
+   * See http://java.sun.com/docs/books/tutorial/uiswing/misc/focus.html We have
+   * to use a frame owner of this jwindow to allow full screen mode to respond
+   * to key events
+   */
+  static {
+    owner = new JFrame();
+    owner.setSize(new Dimension(0, 0));
+    owner.setUndecorated(true);
 
-        @Override
-        public void specificAfterShown() {
-          instance.graphicsDevice.setFullScreenWindow(instance);
-
-          // topPanel should have 10% of the dispaly resolution height
-          instance.setPreferredSize(new Dimension(instance.graphicsDevice.getDisplayMode()
-              .getWidth(), (instance.graphicsDevice.getDisplayMode().getHeight() / 100) * 10));
-          instance.validate();
-        }
-
-        @Override
-        public void specificAfterHidden() {
-          instance.dispose();
-          instance = null;
-        }
-
-        @Override
-        public void specificBeforeHidden() {
-          // set everything like it was before entering fullscreen mode
-          instance.graphicsDevice.setFullScreenWindow(null);
-
-        }
-      };
-    }
-    return instance;
-  }
-
-  public JajukFullScreenWindow() {
-    // get the active graphic device and store the current mode
-    this.graphicsDevice = GraphicsEnvironment.getLocalGraphicsEnvironment()
-        .getDefaultScreenDevice();
-    addKeyListener(new KeyAdapter() {
-
+    // Add escape listening to exit full-screen mode
+    owner.addKeyListener(new KeyAdapter() {
       @Override
       public void keyPressed(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
@@ -147,24 +116,50 @@ public class JajukFullScreenWindow extends JWindow implements JajukWindow {
     WindowGlobalKeystrokeManager.getInstance();
   }
 
-  /**
-   * Return whether the full screen mode is supported
-   * 
-   * @return
-   */
-  public boolean isFullScreenSupported() {
-    return graphicsDevice.isFullScreenSupported();
+  public static JajukFullScreenWindow getInstance() {
+    if (instance == null) {
+      instance = new JajukFullScreenWindow();
+
+      instance.decorator = new WindowStateDecorator(instance) {
+        @Override
+        public void specificBeforeShown() {
+        }
+
+        @Override
+        public void specificAfterShown() {
+          if (instance.graphicsDevice.isFullScreenSupported()) {
+            instance.graphicsDevice.setFullScreenWindow(instance);
+            owner.setVisible(true);
+            instance.requestFocus();
+          }
+        }
+
+        @Override
+        public void specificAfterHidden() {
+          owner.setVisible(false);
+          instance.dispose();
+        }
+
+        @Override
+        public void specificBeforeHidden() {
+          if (instance.graphicsDevice.isFullScreenSupported()) {
+            // set everything like it was before entering fullscreen mode
+            instance.graphicsDevice.setFullScreenWindow(null);
+          }
+
+        }
+      };
+    }
+    return instance;
+  }
+
+  public JajukFullScreenWindow() {
+    super(owner);
+    this.graphicsDevice = GraphicsEnvironment.getLocalGraphicsEnvironment()
+        .getDefaultScreenDevice();
   }
 
   public void initUI() {
-
-    // Light drag and drop for VLDocking
-    UIManager.put("DragControler.paintBackgroundUnderDragRect", Boolean.FALSE);
-    DockingUISettings.getInstance().installUI();
-
-    // Set windows decoration to look and feel
-    JFrame.setDefaultLookAndFeelDecorated(true);
-    JDialog.setDefaultLookAndFeelDecorated(true);
 
     // Full screen switch button
     jbFull = new JajukButton(ActionManager.getAction(JajukActions.FULLSCREEN_JAJUK));
@@ -195,8 +190,6 @@ public class JajukFullScreenWindow extends JWindow implements JajukWindow {
     add(jtbPlay, "alignx center,gap bottom 20,wrap");
     add(tpst, "alignx center,width 50%!,aligny bottom,gap bottom 10");
 
-    // Set new state
-    decorator.setWindowState(WindowState.BUILT_NOT_DISPLAYED);
   }
 
   /**

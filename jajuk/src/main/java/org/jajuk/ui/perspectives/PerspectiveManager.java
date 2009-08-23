@@ -101,7 +101,7 @@ public final class PerspectiveManager {
        * perspectiveList)
        */
 
-      if (UpgradeManager.isOldMigration()) {
+      if (UpgradeManager.isMajorMigration()) {
         // upgrade message
         Messages.showInfoMessage(Messages.getString("Note.0"));
       }
@@ -113,7 +113,7 @@ public final class PerspectiveManager {
         // jar
         File loadFile = SessionService.getConfFileByPath(className + ".xml");
         if (loadFile.exists()
-            && (perspectivesToReset.contains(className) || UpgradeManager.isOldMigration())) {
+            && (perspectivesToReset.contains(className) || UpgradeManager.isMajorMigration())) {
           if (!loadFile.delete()) {
             Log.warn("Could not delete file " + loadFile);
           }

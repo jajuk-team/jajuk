@@ -443,8 +443,6 @@ public final class JajukSlimbar extends JFrame implements JajukWindow, Observer,
     // Install global keystrokes
     WindowGlobalKeystrokeManager.getInstance();
 
-    // Install global keystrokes
-    WindowGlobalKeystrokeManager.getInstance();
   }
 
   private void updateCurrentTitle() {

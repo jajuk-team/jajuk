@@ -621,13 +621,13 @@ public final class TrackManager extends ItemManager {
     }
     // register the new album
     Album newAlbum = AlbumManager.getInstance().registerAlbum(oldAlbum.getName(), sNewItem,
-        track.getAlbum().getDiscID());
+        oldAlbum.getDiscID());
     Track newTrack = registerTrack(track.getName(), newAlbum, track.getStyle(), track.getAuthor(),
         track.getDuration(), track.getYear(), track.getOrder(), track.getType(), track
             .getDiscNumber());
     postChange(track, newTrack, filter);
     // remove this album if no more references
-    AlbumManager.getInstance().cleanOrphanTracks(track.getAlbum());
+    AlbumManager.getInstance().cleanOrphanTracks(oldAlbum);
     return newTrack;
 
   }

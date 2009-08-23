@@ -112,8 +112,9 @@ public class LyrcProvider extends GenericProvider {
           }
         }
         if (matches) {
-          final String suggestionURL = URL.concat(suggestion.getValue());
-          Log.debug("Found suggestion " + suggestion.getKey());
+          String urlSkel = URL.substring(0, URL.indexOf("tema1"));
+          final String suggestionURL = urlSkel.concat(suggestion.getValue());
+          Log.debug("Detected lyrics match: " + suggestion.getKey());
           try {
             final URL url = new URL(suggestionURL);
             String text = DownloadManager.getTextFromCachedFile(url, getResponseEncoding());
@@ -174,7 +175,7 @@ public class LyrcProvider extends GenericProvider {
    * Returns true if a string is composed only by letters
    */
   private static boolean validToken(final String token) {
-    return token.matches("[A-Za-z0-9]+");
+    return token.matches("[A-Za-z0-9]+");// && token.length() > 3;
   }
 
   /*

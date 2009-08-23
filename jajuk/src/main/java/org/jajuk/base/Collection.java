@@ -721,7 +721,7 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
           long lItemDiscID = 0;
           String sAttributeDiskId = attributes.getValue(Const.XML_ALBUM_DISC_ID);
           if (sAttributeDiskId != null) {
-            lItemDiscID = UtilString.fastLongParser(sAttributeDiskId);
+            lItemDiscID = Long.parseLong(sAttributeDiskId);
           }
           // UPGRADE test
           sRightID = sID;

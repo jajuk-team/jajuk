@@ -22,7 +22,6 @@ package org.jajuk.util;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -222,10 +221,10 @@ public class Messages extends DefaultHandler {
     // development debug mode
     String resource = "org/jajuk/i18n/" + sbFilename.toString();
     URL url = UtilSystem.getResource(resource);
-    if(url == null) {
+    if (url == null) {
       throw new IOException("Could not read resource: " + resource);
     }
-    
+
     // parse it, actually it is a big properties file as CDATA in an XML
     // file
     final SAXParserFactory spf = SAXParserFactory.newInstance();
@@ -344,21 +343,15 @@ public class Messages extends DefaultHandler {
     if (Conf.getBoolean(sProperty)) {
       return;
     }
-    try {
-      SwingUtilities.invokeAndWait(new Runnable() {
-        public void run() {
-          final HideableMessageDialog message = new HideableMessageDialog(sMessage,
-              getTitleForType(JOptionPane.WARNING_MESSAGE), sProperty, JOptionPane.WARNING_MESSAGE,
-              null);
-          message.getResu();
-        }
+    SwingUtilities.invokeLater(new Runnable() {
+      public void run() {
+        final HideableMessageDialog message = new HideableMessageDialog(sMessage,
+            getTitleForType(JOptionPane.WARNING_MESSAGE), sProperty, JOptionPane.WARNING_MESSAGE,
+            null);
+        message.getResu();
+      }
 
-      });
-    } catch (InterruptedException e) {
-      Log.error(e);
-    } catch (InvocationTargetException e) {
-      Log.error(e);
-    }
+    });
   }
 
   /**

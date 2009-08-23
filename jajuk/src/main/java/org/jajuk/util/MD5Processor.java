@@ -19,6 +19,7 @@
  */
 package org.jajuk.util;
 
+import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -56,7 +57,13 @@ public final class MD5Processor {
    * @return hashed output
    */
   public static final String hash(String sIn) {
-    msgDigest.update(sIn.getBytes());
+    try {
+      msgDigest.update(sIn.getBytes("UTF-8"));
+    } catch (UnsupportedEncodingException e) {
+      // This cannot normaly happen
+      Log.error(e);
+      return null;
+    }
     byte[] digest = msgDigest.digest();
     // Important : we internalize the result of this computation
     // because all equals between items is done with '==' operator

@@ -32,7 +32,6 @@ import java.util.Set;
 import java.util.StringTokenizer;
 
 import javax.swing.BoxLayout;
-import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
@@ -192,10 +191,6 @@ public class JajukMainWindow extends JFrame implements JajukWindow, Observer {
     UIManager.put("DragControler.paintBackgroundUnderDragRect", Boolean.FALSE);
     DockingUISettings.getInstance().installUI();
 
-    // Set windows decoration to look and feel
-    JFrame.setDefaultLookAndFeelDecorated(true);
-    JDialog.setDefaultLookAndFeelDecorated(true);
-
     // Creates the panel
     jpFrame = (JPanel) getContentPane();
     jpFrame.setOpaque(true);
@@ -245,9 +240,6 @@ public class JajukMainWindow extends JFrame implements JajukWindow, Observer {
     commandDesktop.add(perspectivePanel, "grow,wrap");
     commandDesktop.add(command, "grow");
     jpFrame.add(commandDesktop, BorderLayout.CENTER);
-
-    // Set new state
-    decorator.setWindowState(WindowState.BUILT_NOT_DISPLAYED);
   }
 
   public Set<JajukEvents> getRegistrationKeys() {

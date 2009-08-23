@@ -35,6 +35,7 @@ import org.jajuk.services.webradio.WebRadioManager;
 import org.jajuk.ui.actions.JajukAction;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
+import org.jajuk.util.UtilSystem;
 import org.jajuk.util.log.Log;
 
 /**
@@ -96,7 +97,10 @@ public class ExitService extends Thread {
         }
         // Commit collection if not still refreshing
         if (!DeviceManager.getInstance().isAnyDeviceRefreshing()) {
-          Collection.commit(SessionService.getConfFileByPath(Const.FILE_COLLECTION));
+          Collection.commit(SessionService.getConfFileByPath(Const.FILE_COLLECTION_EXIT));
+          // create an exit proof file
+          UtilSystem.createEmptyFile(SessionService
+              .getConfFileByPath(Const.FILE_COLLECTION_EXIT_PROOF));
         }
         /* release keystrokes resources */
         JajukAction.cleanup();

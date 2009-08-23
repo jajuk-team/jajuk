@@ -38,6 +38,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
+import javax.swing.JRootPane;
 import javax.swing.border.EmptyBorder;
 
 import org.jajuk.ui.helpers.FontManager;
@@ -127,6 +128,7 @@ public final class JSplash extends JFrame {
     // Do not use IconLoader class here to avoid loading all icons now
     setIconImage(new ImageIcon(icon).getImage());
     setUndecorated(true);
+    getRootPane().setWindowDecorationStyle(JRootPane.NONE);
 
     mProgressBar = progress;
     mProgressBarMessages = messages;
@@ -221,7 +223,7 @@ public final class JSplash extends JFrame {
    */
   public void setProgress(int value) {
     if (mProgressBar && value >= 0 && value <= 100) {
-      // mProgress.setValue(value);
+      mProgress.setValue(value);
     }
   }
 

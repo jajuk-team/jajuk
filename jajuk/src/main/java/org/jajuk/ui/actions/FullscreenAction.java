@@ -53,9 +53,12 @@ public class FullscreenAction extends JajukAction {
       // close the previous window before displaying the other
       sdFullscreen.display(false);
       sdMainWindow.display(true);
+      // Update the icon according to status
+      setIcon(IconLoader.getIcon(JajukIcons.FULL_SCREEN));
     } else {
       sdMainWindow.display(false);
       sdFullscreen.display(true);
+      setIcon(IconLoader.getIcon(JajukIcons.SLIM_WINDOW));
     }
   }
 }

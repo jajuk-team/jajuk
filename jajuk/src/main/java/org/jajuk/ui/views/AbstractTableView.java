@@ -24,6 +24,7 @@ import ext.AutoCompleteDecorator;
 import ext.SwingWorker;
 
 import java.awt.Color;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -300,8 +301,8 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
     jcbProperty.addItemListener(this);
     jlEquals = new JLabel(Messages.getString("AbstractTableView.7"));
     jtfValue = new JTextField();
-    jtfValue.setBorder(BorderFactory.createLineBorder(Color.BLUE));
     jtfValue.setFont(FontManager.getInstance().getFont(JajukFont.SEARCHBOX));
+    jtfValue.setMargin(new Insets(0, 3, 0, 0));
     jtfValue.setForeground(new Color(172, 172, 172));
     jtfValue.addKeyListener(new KeyAdapter() {
       @Override

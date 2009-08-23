@@ -128,7 +128,7 @@ public abstract class WindowStateDecorator {
   /**
    * convenient method to get visible status of the window
    * 
-   * @return wether the window is displayed
+   * @return whether the window is displayed
    */
   public boolean isDisplayed() {
     return getWindowState() == WindowState.BUILT_DISPLAYED;

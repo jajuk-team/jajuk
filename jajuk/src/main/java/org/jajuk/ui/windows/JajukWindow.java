@@ -21,23 +21,27 @@
 package org.jajuk.ui.windows;
 
 /**
- * Global interface for jajuk frames (main window, fullscreen, tray, slimbar...)
- * A window has four states : - Instanciated (the constructor contains general
- * initialization or nothing) - Build (the initUI() method has been called ) -
- * Shown (the display(true) method has been called - Hidden (the display(true)
- * has not yet been called or the display(false) has been called) These states
- * are listed in the WindowState enum These states are managed by the
- * WindowStateDecorator
+ * Global contract for jajuk frames (main window, fullscreen, tray, slimbar...)
+ * A window has four states :
+ * <p>- Instanciated (the constructor contains general initialization or
+ * nothing)
+ * <p>- Build (the initUI() method has been called )
+ * <p>- Shown (the display(true) method has been called
+ * <p>- Hidden (the display(true) has not yet been called or the display(false)
+ * has been called)
+ * <p>
+ * These states are listed in the WindowState enum These states are managed by
+ * the WindowStateDecorator
  */
 public interface JajukWindow {
 
   /**
    * Build the GUI (widgets)
    * <p>
-   * Must be called from the EDT
+   * Must be called from the EDT, called by the WindowstateDecorator only
    * </p>
    */
-  public void initUI();
+  void initUI();
 
   /** Return the window state decorator* */
   public WindowStateDecorator getWindowStateDecorator();

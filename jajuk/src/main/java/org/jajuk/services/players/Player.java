@@ -282,20 +282,24 @@ public final class Player {
   public static void setVolume(float pVolume) {
     float fVolume = pVolume;
     try {
-      Conf.setProperty(Const.CONF_VOLUME, Float.toString(fVolume));
       // if user move the volume slider, unmute
       if (isMuted()) {
         mute(false);
       }
+      // check, it can be over 1 when moving sliders
+      if (pVolume < 0.0f) {
+        fVolume = 0.0f;
+      } else if (pVolume > 1.0f) {
+        fVolume = 1.0f;
+      }
       if (playerImpl != null) {
-        // check, it can be over 1 for unknown reason
-        if (fVolume < 0.0f) {
-          fVolume = 0.0f;
-        } else if (fVolume > 1.0f) {
-          fVolume = 1.0f;
-        }
         playerImpl.setVolume(fVolume);
       }
+
+      // Store the volume
+      Conf.setProperty(Const.CONF_VOLUME, Float.toString(fVolume));
+
+      // Require all GUI (like volume sliders) to update
       ObservationManager.notify(new JajukEvent(JajukEvents.VOLUME_CHANGED));
     } catch (Exception e) {
       Log.error(e);

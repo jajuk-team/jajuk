@@ -108,8 +108,6 @@ import javax.swing.KeyStroke;
 import javax.swing.UIDefaults;
 import javax.swing.UIManager;
 
-import org.jajuk.ui.windows.JajukFullScreenWindow;
-
 /**
  * Helper class used to create, store and lookup actions.
  * <p>
@@ -223,9 +221,7 @@ public final class ActionManager {
     installAction(SHOW_ALBUM_DETAILS, new ShowAlbumDetailsAction(), false);
     installAction(SLIM_JAJUK, new SlimbarAction(), false);
     // Install full screen actions only if supported
-    if (JajukFullScreenWindow.getInstance().isFullScreenSupported()) {
-      installAction(FULLSCREEN_JAJUK, new FullscreenAction(), false);
-    }
+    installAction(FULLSCREEN_JAJUK, new FullscreenAction(), false);
     installAction(PREPARE_PARTY, new PreparePartyAction(), false);
 
     // Selection actions

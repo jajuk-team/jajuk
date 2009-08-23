@@ -91,13 +91,13 @@ public class Album extends LogicalItem implements Comparable<Album> {
   }
 
   /**
-   * @return the albumArtist
+   * @return the albumArtist or author if album artist not available
    *         <p>
    *         If this is various, the album artist is tried to be defined by the
    *         track artists of this album
    *         </p>
    */
-  public String getHumanAlbumArtist() {
+  public String getAlbumArtistOrArtist() {
     // If the album artist tag is provided, perfect, let's use it !
     String albumArtist = getAlbumArtist();
     if (StringUtils.isNotBlank(albumArtist) && !(Const.UNKNOWN_AUTHOR.equals(albumArtist))) {
@@ -128,6 +128,19 @@ public class Album extends LogicalItem implements Comparable<Album> {
   }
 
   /**
+   * Return album-artist name, dealing with unknown for any language
+   * 
+   * @return album-artist name
+   */
+  public String getAlbumArtist2() {
+    String sOut = getAlbumArtist();
+    if (sOut.equals(UNKNOWN_AUTHOR)) {
+      sOut = Messages.getString(UNKNOWN_AUTHOR);
+    }
+    return sOut;
+  }
+
+  /**
    * toString method
    */
   @Override
@@ -137,7 +150,9 @@ public class Album extends LogicalItem implements Comparable<Album> {
   }
 
   /**
-   * Alphabetical comparator used to display ordered lists
+   * Alphabetical comparator on the name
+   * <p>
+   * Used to display ordered lists
    * 
    * @param other
    *          item to be compared
@@ -150,12 +165,8 @@ public class Album extends LogicalItem implements Comparable<Album> {
 
     // compare using name and id to differentiate unknown items
     StringBuilder current = new StringBuilder(getName2());
-    current.append(getHumanAlbumArtist());
-    current.append(getDiscID());
     current.append(getID());
     StringBuilder other = new StringBuilder(otherAlbum.getName2());
-    other.append(otherAlbum.getHumanAlbumArtist());
-    other.append(otherAlbum.getDiscID());
     other.append(otherAlbum.getID());
     return current.toString().compareToIgnoreCase(other.toString());
   }
@@ -215,7 +226,7 @@ public class Album extends LogicalItem implements Comparable<Album> {
     } else if (Const.XML_ANY.equals(sKey)) {
       return getAny();
     } else if (Const.XML_ALBUM_ARTIST.equals(sKey)) {
-      return getHumanAlbumArtist();
+      return getAlbumArtist2();
     }
     // default
     return super.getHumanValue(sKey);

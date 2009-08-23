@@ -64,7 +64,6 @@ import org.jajuk.ui.actions.ActionManager;
 import org.jajuk.ui.actions.JajukActions;
 import org.jajuk.ui.helpers.FontManager;
 import org.jajuk.ui.helpers.FontManager.JajukFont;
-import org.jajuk.ui.windows.JajukFullScreenWindow;
 import org.jajuk.ui.windows.JajukMainWindow;
 import org.jajuk.ui.windows.JajukSystray;
 import org.jajuk.ui.wizard.TipOfTheDayWizard;
@@ -189,7 +188,6 @@ public final class Main {
           sc = new JSplash(Const.IMAGES_SPLASHSCREEN, true, true, false, Const.JAJUK_COPYRIGHT,
               Const.JAJUK_VERSION + " \"" + Const.JAJUK_CODENAME + "\"" + " "
                   + Const.JAJUK_VERSION_DATE, FontManager.getInstance().getFont(JajukFont.SPLASH));
-          sc.setTitle(Messages.getString("JajukWindow.3"));
           sc.setProgress(0, Messages.getString("SplashScreen.0"));
           // Actually show the splashscreen only if required
           if (Conf.getInt(Const.CONF_STARTUP_DISPLAY) == Const.DISPLAY_MODE_MAIN_WINDOW
@@ -503,19 +501,76 @@ public final class Main {
   /**
    * Load persisted collection file
    */
-  private static void loadCollection() {
+  public static void loadCollection() {
     if (UpgradeManager.isFirstSesion()) {
       Log.info("First session, collection will be created");
       return;
     }
     final File fCollection = SessionService.getConfFileByPath(Const.FILE_COLLECTION);
+    final File fCollectionExit = SessionService.getConfFileByPath(Const.FILE_COLLECTION_EXIT);
+    final File fCollectionExitProof = SessionService
+        .getConfFileByPath(Const.FILE_COLLECTION_EXIT_PROOF);
+    boolean bParsingOK = false;
+
+    // Keep this complex proof / multiple collection file code, it is required
+    // (see #1362)
+    // The problem is that a bad shutdown can write down corrupted collection
+    // file that would overwrite at exit good collection.xml automatically
+    // commited during last jajuk session
     try {
-      Collection.load(SessionService.getConfFileByPath(Const.FILE_COLLECTION));
-      bCollectionLoadRecover = false;
+      if (fCollectionExit.exists() && fCollectionExitProof.exists()) {
+        fCollectionExitProof.delete(); // delete this file created just
+        // after collection exit commit
+        Collection.load(fCollectionExit);
+        // Remove the collection (required by renameTo next line under
+        // Windows)
+        fCollection.delete();
+        // parsing of collection exit ok, use this collection file as
+        // final collection
+        if (!fCollectionExit.renameTo(fCollection)) {
+          Log.warn("Cannot rename collection file");
+        }
+        bCollectionLoadRecover = false;
+        bParsingOK = true;
+      } else {
+        bCollectionLoadRecover = true;
+        throw new JajukException(5);
+      }
     } catch (final Exception e) {
-      Log.error(5, fCollection.getAbsolutePath(), e);
+      Log.error(5, fCollectionExit.getAbsolutePath(), e);
       Log.debug("Jajuk was not closed properly during previous session, "
           + "we try to load a backup file");
+      // Remove the corrupted collection file
+      if (fCollectionExit.exists()) {
+        fCollectionExit.delete();
+      }
+
+    }
+    // If regular collection_exit.xml file parsing failed, try to parse
+    // collection.xml. should be OK but not
+    // always up-to-date.
+    if (!bParsingOK) {
+      try {
+        Collection.load(fCollection);
+        bParsingOK = true;
+      } catch (final SAXException e1) {
+        Log.error(5, fCollection.getAbsolutePath(), e1);
+        bParsingOK = false;
+      } catch (final ParserConfigurationException e1) {
+        Log.error(5, fCollection.getAbsolutePath(), e1);
+        bParsingOK = false;
+      } catch (final JajukException e1) {
+        Log.error(5, fCollection.getAbsolutePath(), e1);
+        bParsingOK = false;
+      } catch (final IOException e1) {
+        Log.error(5, fCollection.getAbsolutePath(), e1);
+        bParsingOK = false;
+      }
+    }
+
+    // If even final collection file parsing failed
+    // (very unlikely), try to restore a backup file
+    if (!bParsingOK) {
       // try to restore a backup file
       final File[] fBackups = SessionService.getConfFileByPath("").listFiles(new FilenameFilter() {
         public boolean accept(File dir, String name) {
@@ -531,7 +586,6 @@ public final class Main {
       Collections.reverse(alBackupFiles); // newest first now
       final Iterator<File> it = alBackupFiles.iterator();
       // parse all backup files, newest first
-      boolean bParsingOK = false;
       while (!bParsingOK && it.hasNext()) {
         final File file = it.next();
         try {
@@ -540,6 +594,7 @@ public final class Main {
           // Load the backup file
           Collection.load(file);
           bParsingOK = true;
+          // Show a message telling user that we use a backup file
           final int i = Messages.getChoice(Messages.getString("Error.133") + ":\n"
               + file.getAbsolutePath(), JOptionPane.OK_CANCEL_OPTION, JOptionPane.ERROR_MESSAGE);
           if (i == JOptionPane.CANCEL_OPTION) {
@@ -556,15 +611,17 @@ public final class Main {
           Log.error(5, file.getAbsolutePath(), e2);
         }
       }
-      if (!bParsingOK) { // not better? ok, commit a void
-        // collection (and a void collection is loaded)
-        Collection.clearCollection();
-        System.gc();
-        try {
-          Collection.commit(SessionService.getConfFileByPath(Const.FILE_COLLECTION));
-        } catch (final Exception e2) {
-          Log.error(e2);
-        }
+    }
+
+    // Still not better? ok, commit a void
+    // collection (and a void collection is loaded)
+    if (!bParsingOK) {
+      Collection.clearCollection();
+      System.gc();
+      try {
+        Collection.commit(SessionService.getConfFileByPath(Const.FILE_COLLECTION));
+      } catch (final Exception e2) {
+        Log.error(e2);
       }
     }
   }
@@ -603,23 +660,15 @@ public final class Main {
           // show window according to startup mode
           if (Conf.getInt(Const.CONF_STARTUP_DISPLAY) == Const.DISPLAY_MODE_MAIN_WINDOW) {
             JajukMainWindow mainWindow = JajukMainWindow.getInstance();
-            // Build the GUI
-            mainWindow.initUI();
             mainWindow.getWindowStateDecorator().display(true);
           }
           // Show full screen according to startup mode. If the fullscreen mode
           // is no more available (because the user changed the platform for
           // ie), force the main window mode
           else if (Conf.getInt(Const.CONF_STARTUP_DISPLAY) == Const.DISPLAY_MODE_FULLSCREEN) {
-            if (JajukFullScreenWindow.getInstance().isFullScreenSupported()) {
-              // Display progress
-              sc.setProgress(80, Messages.getString("SplashScreen.3"));
-              ActionManager.getAction(JajukActions.FULLSCREEN_JAJUK).perform(null);
-            } else {
-              Conf.setProperty(Const.CONF_STARTUP_DISPLAY, Integer
-                  .toString(Const.DISPLAY_MODE_MAIN_WINDOW));
-              launchUI();
-            }
+            // Display progress
+            sc.setProgress(80, Messages.getString("SplashScreen.3"));
+            ActionManager.getAction(JajukActions.FULLSCREEN_JAJUK).perform(null);
           }
           // Start the slimbar if required
           else if (Conf.getInt(Const.CONF_STARTUP_DISPLAY) == Const.DISPLAY_MODE_SLIMBAR_TRAY) {
@@ -629,7 +678,6 @@ public final class Main {
           // if the platform supports it
           if (Conf.getBoolean(Const.CONF_SHOW_SYSTRAY) && SystemTray.isSupported()) {
             JajukSystray tray = JajukSystray.getInstance();
-            tray.initUI();
             tray.getWindowStateDecorator().display(true);
           }
           // Display tip of the day if required (not at the first

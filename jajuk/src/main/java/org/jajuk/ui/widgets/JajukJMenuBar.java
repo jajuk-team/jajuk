@@ -66,7 +66,6 @@ import org.jajuk.ui.perspectives.PerspectiveAdapter;
 import org.jajuk.ui.perspectives.PerspectiveManager;
 import org.jajuk.ui.views.IView;
 import org.jajuk.ui.views.ViewFactory;
-import org.jajuk.ui.windows.JajukFullScreenWindow;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
@@ -370,15 +369,12 @@ public final class JajukJMenuBar extends JMenuBar implements Observer {
     applyMnemonics();
 
     jbSlim = new JajukButton(ActionManager.getAction(JajukActions.SLIM_JAJUK));
-    if (JajukFullScreenWindow.getInstance().isFullScreenSupported()) {
-      jbFull = new JajukButton(ActionManager.getAction(JajukActions.FULLSCREEN_JAJUK));
-    }
+    jbFull = new JajukButton(ActionManager.getAction(JajukActions.FULLSCREEN_JAJUK));
 
     JMenuBar eastmenu = new JMenuBar();
     eastmenu.add(jbSlim);
-    if (JajukFullScreenWindow.getInstance().isFullScreenSupported()) {
-      eastmenu.add(jbFull);
-    }
+    eastmenu.add(jbFull);
+
     setLayout(new BorderLayout());
     add(mainmenu, BorderLayout.WEST);
     add(eastmenu, BorderLayout.EAST);

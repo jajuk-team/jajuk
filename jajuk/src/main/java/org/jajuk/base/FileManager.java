@@ -258,8 +258,8 @@ public final class FileManager extends ItemManager {
   /**
    * Clear all references for the given device
    * 
-   * @param sId
-   *          : Device id
+   * @param sId :
+   *          Device id
    */
   public synchronized void clearDevice(String sId) {
     for (File file : getFiles()) {
@@ -283,8 +283,8 @@ public final class FileManager extends ItemManager {
   /**
    * Return file by full path
    * 
-   * @param sPath
-   *          : full path
+   * @param sPath :
+   *          full path
    * @return file or null if given path is not known
    */
 
@@ -565,8 +565,8 @@ public final class FileManager extends ItemManager {
   /**
    * Return next mounted file ( used in continue mode )
    * 
-   * @param file
-   *          : a file
+   * @param file :
+   *          a file
    * @return next file from entire collection
    */
   public synchronized File getNextFile(File file) {
@@ -603,8 +603,8 @@ public final class FileManager extends ItemManager {
   /**
    * Return next mounted file from a different album than the provided file
    * 
-   * @param file
-   *          : a file
+   * @param file :
+   *          a file
    * @return next file from entire collection
    */
   public synchronized File getNextAlbumFile(File file) {
@@ -626,8 +626,8 @@ public final class FileManager extends ItemManager {
   /**
    * Return previous mounted file
    * 
-   * @param file
-   *          : a file
+   * @param file :
+   *          a file
    * @return previous file from entire collection
    */
   public synchronized File getPreviousFile(File file) {
