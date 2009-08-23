@@ -84,7 +84,7 @@ public class JajukHtmlPanel extends HtmlPanel {
    * 
    * @throws SAXException
    */
-  public void setURL(final URL url) throws IOException, SAXException {
+  public void setURL(final URL url) {
 
     SwingWorker sw = new ext.SwingWorker() {
       @Override

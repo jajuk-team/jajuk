@@ -384,7 +384,8 @@ public class TestAlbum extends TestCase {
     assertEquals(8, album.getHits());
   }
 
-  private File getFile(int i, Track track, Album album) throws Exception {
+  private File getFile(int i, Track track, @SuppressWarnings("unused")
+  Album album) throws Exception {
     Device device = new Device(new Integer(i).toString(), "name");
     device.setUrl(System.getProperty("java.io.tmpdir"));
     device.mount(true);
