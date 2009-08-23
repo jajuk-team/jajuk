@@ -33,11 +33,11 @@ import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
-import org.jajuk.Main;
 import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.services.core.SessionService;
+import org.jajuk.services.startup.StartupGUIService;
 import org.jajuk.ui.views.IView;
 import org.jajuk.ui.widgets.PerspectiveBarJPanel;
 import org.jajuk.ui.windows.JajukMainWindow;
@@ -136,7 +136,7 @@ public final class PerspectiveManager {
   public static void init() {
     // Use Simple perspective as a default
     IPerspective perspective = hmNameInstance.get(SimplePerspective.class.getName());
-    String sPerspective = Main.getDefaultPerspective();
+    String sPerspective = StartupGUIService.getDefaultPerspective();
     // Check if a default perspective is forced
     if (sPerspective == null) {
       sPerspective = Conf.getString(Const.CONF_PERSPECTIVE_DEFAULT);

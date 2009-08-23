@@ -17,7 +17,7 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *  $Revision: 3132 $
  */
-package org.jajuk.services.core;
+package org.jajuk.services.startup;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -30,23 +30,17 @@ import java.util.Properties;
 
 import javax.swing.JOptionPane;
 
-import org.jajuk.base.AlbumManager;
-import org.jajuk.base.Collection;
+import org.jajuk.base.Device;
 import org.jajuk.base.DeviceManager;
 import org.jajuk.base.FileManager;
-import org.jajuk.base.ItemManager;
 import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
-import org.jajuk.services.alarm.AlarmManager;
 import org.jajuk.services.bookmark.History;
-import org.jajuk.services.dbus.DBusManager;
-import org.jajuk.services.players.QueueController;
+import org.jajuk.services.core.SessionService;
 import org.jajuk.services.players.QueueModel;
 import org.jajuk.services.webradio.WebRadio;
 import org.jajuk.services.webradio.WebRadioManager;
-import org.jajuk.ui.thumbnails.ThumbnailManager;
-import org.jajuk.ui.thumbnails.ThumbnailsMaker;
 import org.jajuk.ui.widgets.InformationJPanel;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
@@ -56,11 +50,11 @@ import org.jajuk.util.UtilSystem;
 import org.jajuk.util.log.Log;
 
 /**
- * Startup facilities
+ * Startup facilities for sound engine
  */
-public class StartupService {
+public class StartupEngineService {
 
-  private StartupService() {
+  private StartupEngineService() {
     // private constructor to hide it from the outside
   }
 
@@ -228,82 +222,21 @@ public class StartupService {
   }
 
   /**
-   * Asynchronous tasks executed at startup at the same time (for perf)
+   * Auto-Mount required devices
+   * 
    */
-  public static void startupAsyncAfterCollectionLoad(final boolean bCollectionLoadRecover) {
-    Thread startup = new Thread("Startup Async After Collection Load Thread") {
-      @Override
-      public void run() {
+  public static void autoMount() {
+    for (final Device device : DeviceManager.getInstance().getDevices()) {
+      if (device.getBooleanValue(Const.XML_DEVICE_AUTO_MOUNT)) {
         try {
-
-          // start exit hook
-          final ExitService exit = new ExitService();
-          exit.setPriority(Thread.MAX_PRIORITY);
-          Runtime.getRuntime().addShutdownHook(exit);
-
-          // backup the collection if no parsing error occurred
-          if (!bCollectionLoadRecover) {
-            UtilSystem.backupFile(SessionService.getConfFileByPath(Const.FILE_COLLECTION), Conf
-                .getInt(Const.CONF_BACKUP_SIZE));
-          }
-
-          // Register FIFO manager
-          QueueController.getInstance();
-
-          // Refresh max album rating
-          AlbumManager.getInstance().refreshMaxRating();
-
-          // Sort albums cache. We do it before the sleep because there's a
-          // chance that user launch an album as soon as the GUI is painted
-          AlbumManager.getInstance().orderCache();
-
-          // Force Thumbnail manager to check for thumbs presence. Must be done
-          // before catalog view refresh to avoid useless thumbs creation
-          for (int size = 50; size <= 300; size += 50) {
-            ThumbnailManager.populateCache(size);
-          }
-
-          // try to start up D-Bus support if available. Currently this is only
-          // implemented on Linux
-          if (UtilSystem.isUnderLinux()) {
-            // make sure the singleton is initialized here
-            DBusManager.getInstance();
-          }
-
-          // Wait few secs to avoid GUI startup perturbations
-          Thread.sleep(10000);
-
-          // Switch to sorted mode, must be done before starting auto-refresh
-          // thread !
-          ItemManager.switchAllManagersToOrderState();
-
-          // Clear covers images cache
-          SessionService.clearCache();
-
-          // Launch auto-refresh thread
-          DeviceManager.getInstance().startAutoRefreshThread();
-
-          // Start rating manager thread
-          RatingManager.getInstance().start();
-
-          // Start alarm clock
-          if (Conf.getBoolean(Const.CONF_ALARM_ENABLED)) {
-            AlarmManager.getInstance();
-          }
-
-          // Force rebuilding thumbs (after an album id hashcode
-          // method change for eg)
-          if (Collection.getInstance().getWrongRightAlbumIDs().size() > 0) {
-            // Launch thumbs creation in another process
-            ThumbnailsMaker.launchAllSizes(true);
-          }
+          device.mount(false);
         } catch (final Exception e) {
-          Log.error(e);
+          Log.error(112, device.getName(), e);
+          continue;
         }
       }
-    };
-    startup.setPriority(Thread.MIN_PRIORITY);
-    startup.start();
+    }
   }
 
+  
 }

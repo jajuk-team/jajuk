@@ -25,7 +25,7 @@ import java.util.Date;
 import junit.framework.TestCase;
 
 import org.jajuk.JUnitHelpers;
-import org.jajuk.Main;
+import org.jajuk.services.startup.StartupCollectionService;
 import org.jajuk.util.Const;
 import org.jajuk.util.Messages;
 
@@ -48,7 +48,7 @@ public class TestAlbum extends TestCase {
    */
   public final void testGetAny() {
     // need item managers to do this step
-    Main.registerItemManagers();
+    StartupCollectionService.registerItemManagers();
     
     Album album = new Album("1", "name", "artist", 123);
     /*album.getTracksCache().add(getTrack(album));

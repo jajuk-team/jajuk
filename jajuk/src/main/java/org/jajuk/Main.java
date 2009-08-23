@@ -18,109 +18,42 @@
  */
 package org.jajuk;
 
-import ext.JSplash;
 import ext.JVM;
 
-import java.awt.SystemTray;
-import java.io.File;
-import java.io.FilenameFilter;
-import java.io.IOException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Locale;
 
-import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
-import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
-import javax.xml.parsers.ParserConfigurationException;
 
-import org.apache.commons.lang.StringUtils;
-import org.jajuk.base.AlbumManager;
-import org.jajuk.base.AuthorManager;
 import org.jajuk.base.Collection;
-import org.jajuk.base.Device;
-import org.jajuk.base.DeviceManager;
-import org.jajuk.base.DirectoryManager;
-import org.jajuk.base.FileManager;
-import org.jajuk.base.ItemManager;
-import org.jajuk.base.PlaylistManager;
-import org.jajuk.base.StyleManager;
-import org.jajuk.base.TrackManager;
-import org.jajuk.base.TypeManager;
-import org.jajuk.base.YearManager;
 import org.jajuk.services.bookmark.History;
 import org.jajuk.services.core.ExitService;
 import org.jajuk.services.core.SessionService;
-import org.jajuk.services.core.StartupService;
 import org.jajuk.services.dj.AmbienceManager;
 import org.jajuk.services.dj.DigitalDJManager;
 import org.jajuk.services.lastfm.LastFmManager;
-import org.jajuk.ui.actions.ActionManager;
-import org.jajuk.ui.actions.JajukActions;
+import org.jajuk.services.startup.StartupAsyncService;
+import org.jajuk.services.startup.StartupCollectionService;
+import org.jajuk.services.startup.StartupControlsService;
+import org.jajuk.services.startup.StartupEngineService;
+import org.jajuk.services.startup.StartupGUIService;
 import org.jajuk.ui.helpers.FontManager;
-import org.jajuk.ui.helpers.FontManager.JajukFont;
-import org.jajuk.ui.windows.JajukMainWindow;
-import org.jajuk.ui.windows.JajukSystray;
-import org.jajuk.ui.wizard.TipOfTheDayWizard;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.DownloadManager;
-import org.jajuk.util.IconLoader;
-import org.jajuk.util.JajukIcons;
 import org.jajuk.util.LocaleManager;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UpgradeManager;
 import org.jajuk.util.UtilGUI;
 import org.jajuk.util.UtilString;
-import org.jajuk.util.UtilSystem;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 import org.jvnet.substance.skin.SubstanceBusinessLookAndFeel;
-import org.xml.sax.SAXException;
 
 /**
  * Jajuk launching class
  */
 public final class Main {
-
-  /** splash screen */
-  private static JSplash sc;
-
-  /** Does a collection parsing error occurred ? * */
-  private static boolean bCollectionLoadRecover = true;
-
-  /** default perspective to choose, if null, we take the configuration one */
-  private static String sPerspective;
-
-  /** Mplayer state */
-  private static UtilSystem.MPlayerStatus mplayerStatus;
-
-  /** Lock used to trigger a first time wizard device creation and refresh * */
-  private static short[] canLaunchRefresh = new short[0];
-
-  /** DeviceTypes Identification strings */
-  public static final String[] DEVICE_TYPES = { "Device_type.directory", "Device_type.file_cd",
-      "Device_type.network_drive", "Device_type.extdd", "Device_type.player" };
-
-  private static final String[] CONFIG_CHECKS = { Const.FILE_CONFIGURATION, Const.FILE_HISTORY };
-
-  private static final String[] DIR_CHECKS = {
-      // internal pictures cache directory
-      Const.FILE_CACHE + '/' + Const.FILE_INTERNAL_CACHE,
-      // thumbnails directories and sub-directories
-      Const.FILE_THUMBS, Const.FILE_THUMBS + "/" + Const.THUMBNAIL_SIZE_50X50,
-      Const.FILE_THUMBS + "/" + Const.THUMBNAIL_SIZE_100X100,
-      Const.FILE_THUMBS + "/" + Const.THUMBNAIL_SIZE_150X150,
-      Const.FILE_THUMBS + "/" + Const.THUMBNAIL_SIZE_200X200,
-      Const.FILE_THUMBS + "/" + Const.THUMBNAIL_SIZE_250X250,
-      Const.FILE_THUMBS + "/" + Const.THUMBNAIL_SIZE_300X300,
-      // DJs directories
-      Const.FILE_DJ_DIR };
 
   /**
    * private constructor to avoid instantiating utility class
@@ -154,7 +87,7 @@ public final class Main {
       UIManager.setLookAndFeel(new SubstanceBusinessLookAndFeel());
 
       // perform initial checkups and create needed files
-      initialCheckups();
+      StartupControlsService.initialCheckups();
 
       // log startup depends on : initialCheckups
       Log.getInstance();
@@ -181,27 +114,14 @@ public final class Main {
       // Set locale. setSystemLocal
       LocaleManager.setLocale(new Locale(Conf.getString(Const.CONF_OPTIONS_LANGUAGE)));
 
-      // Launch splashscreen. Depends on: log.setVerbosity,
-      // configurationManager.load (for local)
-      SwingUtilities.invokeAndWait(new Runnable() {
-        public void run() {
-          sc = new JSplash(Const.IMAGES_SPLASHSCREEN, true, true, false, Const.JAJUK_COPYRIGHT,
-              Const.JAJUK_VERSION + " \"" + Const.JAJUK_CODENAME + "\"" + " "
-                  + Const.JAJUK_VERSION_DATE, FontManager.getInstance().getFont(JajukFont.SPLASH));
-          sc.setProgress(0, Messages.getString("SplashScreen.0"));
-          // Actually show the splashscreen only if required
-          if (Conf.getInt(Const.CONF_STARTUP_DISPLAY) == Const.DISPLAY_MODE_MAIN_WINDOW
-              || Conf.getInt(Const.CONF_STARTUP_DISPLAY) == Const.DISPLAY_MODE_FULLSCREEN) {
-            sc.splashOn();
-          }
-        }
-      });
+      // Display the splash screen through a invokeAndWait
+      StartupGUIService.launchSplashScreen();
 
       // Apply any proxy (requires load conf)
       DownloadManager.setDefaultProxySettings();
 
       // Registers ItemManager managers
-      registerItemManagers();
+      StartupCollectionService.registerItemManagers();
 
       // Upgrade configuration from previous releases
       UpgradeManager.upgradeStep1();
@@ -220,18 +140,20 @@ public final class Main {
       SessionService.createSessionFile();
 
       // Register device types
-      for (final String deviceTypeId : DEVICE_TYPES) {
-        DeviceManager.getInstance().registerDeviceType(Messages.getString(deviceTypeId));
-      }
-      // registers supported audio supports and default properties
-      registerTypes();
+      StartupCollectionService.registerDevicesTypes();
+
+      // registers supported audio supports and default properties. Display a
+      // "Downloading mplayer" message by default in the splash screen in case
+      // of
+      // it is downloaded
+      StartupGUIService.fireStepOneOver();
+      StartupCollectionService.registerTypes();
 
       // Display progress
-      // sc can be null if not already loaded. Done for perfs
-      sc.setProgress(10, Messages.getString("SplashScreen.1"));
+      StartupGUIService.fireStepTwoOver();
 
       // Load collection
-      loadCollection();
+      StartupCollectionService.loadCollection();
 
       // Upgrade step2
       UpgradeManager.upgradeStep2();
@@ -240,7 +162,7 @@ public final class Main {
       Collection.cleanupLogical();
 
       // Display progress
-      sc.setProgress(70, Messages.getString("SplashScreen.2"));
+      StartupGUIService.fireStepThreeOver();
 
       // Load history
       History.load();
@@ -255,24 +177,25 @@ public final class Main {
       DigitalDJManager.getInstance().loadAllDJs();
 
       // Various asynchronous startup actions that needs collection load
-      StartupService.startupAsyncAfterCollectionLoad(bCollectionLoadRecover);
+      boolean bCollectionLoadRecover = StartupCollectionService.isCollectionLoadRecover();
+      StartupAsyncService.startupAsyncAfterCollectionLoad(bCollectionLoadRecover);
 
       // Auto mount devices, freeze for SMB drives
       // if network is not reachable
       // Do not start this if first session, it is causes concurrency with
       // first refresh thread
       if (!UpgradeManager.isFirstSesion()) {
-        autoMount();
+        StartupEngineService.autoMount();
       }
 
       // Launch startup track if any (but don't start it if first session
       // because the first refresh is probably still running)
       if (!UpgradeManager.isFirstSesion()) {
-        StartupService.launchInitialTrack();
+        StartupEngineService.launchInitialTrack();
       }
 
       // Launch the right jajuk window
-      launchUI();
+      StartupGUIService.launchUI();
 
     } catch (final JajukException je) { // last chance to catch any error
       // for
@@ -295,453 +218,20 @@ public final class Main {
       error.printStackTrace();
       Log.error(106, error);
       ExitService.exit(1);
-    } finally { // make sure to close splashscreen in all cases
+    } finally { // make sure to close splash screen in all cases
       // (i.e. if UI is not started)
-      if (sc != null) {
-        sc.setProgress(100);
-        sc.splashOff();
-        sc = null;
-      }
+      StartupGUIService.startupOver();
     }
   }
 
   /**
-   * Register all the different managers for the types of items that we know
-   * about
-   * 
+   * Called when starting jajuk from the thumb maker process, set jajuk in light mode
+   * @param bTest
+   * @param workspace
    */
-  public static void registerItemManagers() {
-    ItemManager.registerItemManager(org.jajuk.base.Album.class, AlbumManager.getInstance());
-    ItemManager.registerItemManager(org.jajuk.base.Author.class, AuthorManager.getInstance());
-    ItemManager.registerItemManager(org.jajuk.base.Device.class, DeviceManager.getInstance());
-    ItemManager.registerItemManager(org.jajuk.base.File.class, FileManager.getInstance());
-    ItemManager.registerItemManager(org.jajuk.base.Directory.class, DirectoryManager.getInstance());
-    ItemManager.registerItemManager(org.jajuk.base.Playlist.class, PlaylistManager.getInstance());
-    ItemManager.registerItemManager(org.jajuk.base.Style.class, StyleManager.getInstance());
-    ItemManager.registerItemManager(org.jajuk.base.Track.class, TrackManager.getInstance());
-    ItemManager.registerItemManager(org.jajuk.base.Type.class, TypeManager.getInstance());
-    ItemManager.registerItemManager(org.jajuk.base.Year.class, YearManager.getInstance());
-  }
-
-  /**
-   * Performs some basic startup tests
-   * 
-   * @throws InterruptedException
-   * @throws Exception
-   * @throws Exception
-   */
-  public static void initialCheckups() throws IOException, InterruptedException {
-    // Populate workspace path
-    SessionService.discoverWorkspace();
-
-    // check for jajuk directory
-    final File fWorkspace = new File(SessionService.getWorkspace());
-    if (!fWorkspace.exists() && !fWorkspace.mkdirs()) { // create the
-      // directory
-      // if it doesn't exist
-      Log.warn("Could not create directory " + fWorkspace.toString());
-    }
-    // check for image cache presence and create the workspace/.jajuk
-    // directory
-    final File fCache = SessionService.getConfFileByPath(Const.FILE_CACHE);
-    if (!fCache.exists()) {
-      if (!fCache.mkdirs()) {
-        Log.warn("Could not cretae directory structure " + fCache.toString());
-      }
-    } else {
-      // Empty cache if age > CACHE_MAX_AGE
-      final File[] cacheFiles = fCache.listFiles();
-      for (final File element : cacheFiles) {
-        long fileAge = System.currentTimeMillis() - element.lastModified();
-        if (element.isFile() && fileAge > Const.CACHE_MAX_AGE && !element.delete()) {
-          Log.warn("Could not delete file " + element.toString());
-        }
-      }
-    }
-
-    // checking required internal configuration files
-    for (final String check : CONFIG_CHECKS) {
-      final File file = SessionService.getConfFileByPath(check);
-
-      if (!file.exists()) {
-        // if config file doesn't exit, create
-        // it with default values
-        org.jajuk.util.Conf.commit();
-      }
-    }
-
-    // checking required internal directories
-    for (final String check : DIR_CHECKS) {
-      final File file = SessionService.getConfFileByPath(check);
-
-      if (!file.exists() && !file.mkdir()) {
-        Log.warn("Could not create missing required directory [" + check + "]");
-      }
-    }
-
-    // Extract star icons (used by some HTML panels)
-    for (int i = 0; i <= 4; i++) {
-      final File star = SessionService.getConfFileByPath("cache/internal/star" + i + "_16x16.png");
-      if (!star.exists()) {
-        ImageIcon ii = null;
-        switch (i) {
-        case 0:
-          ii = IconLoader.getIcon(JajukIcons.STAR_0);
-          break;
-        case 1:
-          ii = IconLoader.getIcon(JajukIcons.STAR_1);
-          break;
-        case 2:
-          ii = IconLoader.getIcon(JajukIcons.STAR_2);
-          break;
-        case 3:
-          ii = IconLoader.getIcon(JajukIcons.STAR_3);
-          break;
-        case 4:
-          ii = IconLoader.getIcon(JajukIcons.STAR_4);
-          break;
-        default:
-          throw new IllegalArgumentException(
-              "Unexpected code position reached, the switch values should match the for-loop!");
-        }
-        UtilGUI.extractImage(ii.getImage(), star);
-      }
-    }
-  }
-
-  /**
-   * Registers supported audio supports and default properties
-   */
-  public static void registerTypes() {
-    try {
-      // test mplayer presence in PATH
-      mplayerStatus = UtilSystem.MPlayerStatus.MPLAYER_STATUS_OK;
-      if (UtilSystem.isUnderWindows()) {
-        final File mplayerPath = UtilSystem.getMPlayerWindowsPath();
-        // try to find mplayer executable in know locations first
-        if (mplayerPath == null) {
-          try {
-            if (sc != null) {
-              sc.setProgress(5, Messages.getString("Main.22"));
-            }
-            Log.debug("Download Mplayer from: " + Const.URL_MPLAYER);
-            File fMPlayer = SessionService.getConfFileByPath(Const.FILE_MPLAYER_EXE);
-            DownloadManager.download(new URL(Const.URL_MPLAYER), fMPlayer);
-            // make sure to delete corrupted mplayer in case of
-            // download problem
-            if (fMPlayer.length() != Const.MPLAYER_EXE_SIZE) {
-              if (!fMPlayer.delete()) {
-                Log.warn("Could not delete file " + fMPlayer);
-              }
-              mplayerStatus = UtilSystem.MPlayerStatus.MPLAYER_STATUS_JNLP_DOWNLOAD_PBM;
-            }
-          } catch (IOException e) {
-            mplayerStatus = UtilSystem.MPlayerStatus.MPLAYER_STATUS_JNLP_DOWNLOAD_PBM;
-          }
-        }
-      }
-      // Under non-windows OS, we assume mplayer has been installed
-      // using external standard distributions
-      else {
-        // If a forced mplayer path is defined, test it
-        final String forced = Conf.getString(Const.CONF_MPLAYER_PATH_FORCED);
-        if (!StringUtils.isBlank(forced)) {
-          // Test forced path
-          mplayerStatus = UtilSystem.getMplayerStatus(forced);
-        } else {
-          mplayerStatus = UtilSystem.MPlayerStatus.MPLAYER_STATUS_NOT_FOUND;
-        }
-        if (mplayerStatus != UtilSystem.MPlayerStatus.MPLAYER_STATUS_OK) {
-          // try to find a correct mplayer from the path
-          // Under OSX, it will work only if jajuk is launched from
-          // command line
-          mplayerStatus = UtilSystem.getMplayerStatus("");
-          if (mplayerStatus != UtilSystem.MPlayerStatus.MPLAYER_STATUS_OK) {
-            // OK, try to find MPlayer in standards OSX directories
-            if (UtilSystem.isUnderOSXpower()) {
-              mplayerStatus = UtilSystem
-                  .getMplayerStatus(Const.FILE_DEFAULT_MPLAYER_POWER_OSX_PATH);
-            } else {
-              mplayerStatus = UtilSystem.getMplayerStatus(Const.FILE_DEFAULT_MPLAYER_X86_OSX_PATH);
-            }
-          }
-        }
-      }
-      // Choose player according to mplayer presence or not
-      if (mplayerStatus != UtilSystem.MPlayerStatus.MPLAYER_STATUS_OK) {
-        // No mplayer, show mplayer warnings
-        Log.debug("Mplayer status=" + mplayerStatus);
-        if (mplayerStatus != UtilSystem.MPlayerStatus.MPLAYER_STATUS_OK) {
-          // Test if user didn't already select "don't show again"
-          if (!Conf.getBoolean(Const.CONF_NOT_SHOW_AGAIN_PLAYER)) {
-            if (mplayerStatus == UtilSystem.MPlayerStatus.MPLAYER_STATUS_NOT_FOUND) {
-              // No mplayer
-              Messages.showHideableWarningMessage(Messages.getString("Warning.0"),
-                  Const.CONF_NOT_SHOW_AGAIN_PLAYER);
-            } else if (mplayerStatus == UtilSystem.MPlayerStatus.MPLAYER_STATUS_WRONG_VERSION) {
-              // wrong mplayer release
-              Messages.showHideableWarningMessage(Messages.getString("Warning.1"),
-                  Const.CONF_NOT_SHOW_AGAIN_PLAYER);
-            }
-          } else if (mplayerStatus == UtilSystem.MPlayerStatus.MPLAYER_STATUS_JNLP_DOWNLOAD_PBM) {
-            // wrong mplayer release
-            Messages.showHideableWarningMessage(Messages.getString("Warning.3"),
-                Const.CONF_NOT_SHOW_AGAIN_PLAYER);
-          }
-        }
-        TypeManager.registerTypesNoMplayer();
-      } else { // mplayer enabled
-        TypeManager.registerTypesMplayerAvailable();
-      }
-    } catch (final ClassNotFoundException e1) {
-      Log.error(26, e1);
-    }
-  }
-
-  /**
-   * Load persisted collection file
-   */
-  public static void loadCollection() {
-    if (UpgradeManager.isFirstSesion()) {
-      Log.info("First session, collection will be created");
-      return;
-    }
-    final File fCollection = SessionService.getConfFileByPath(Const.FILE_COLLECTION);
-    final File fCollectionExit = SessionService.getConfFileByPath(Const.FILE_COLLECTION_EXIT);
-    final File fCollectionExitProof = SessionService
-        .getConfFileByPath(Const.FILE_COLLECTION_EXIT_PROOF);
-    boolean bParsingOK = false;
-
-    // Keep this complex proof / multiple collection file code, it is required
-    // (see #1362)
-    // The problem is that a bad shutdown can write down corrupted collection
-    // file that would overwrite at exit good collection.xml automatically
-    // commited during last jajuk session
-    try {
-      if (fCollectionExit.exists() && fCollectionExitProof.exists()) {
-        fCollectionExitProof.delete(); // delete this file created just
-        // after collection exit commit
-        Collection.load(fCollectionExit);
-        // Remove the collection (required by renameTo next line under
-        // Windows)
-        fCollection.delete();
-        // parsing of collection exit ok, use this collection file as
-        // final collection
-        if (!fCollectionExit.renameTo(fCollection)) {
-          Log.warn("Cannot rename collection file");
-        }
-        bCollectionLoadRecover = false;
-        bParsingOK = true;
-      } else {
-        bCollectionLoadRecover = true;
-        throw new JajukException(5);
-      }
-    } catch (final Exception e) {
-      Log.error(5, fCollectionExit.getAbsolutePath(), e);
-      Log.debug("Jajuk was not closed properly during previous session, "
-          + "we try to load a backup file");
-      // Remove the corrupted collection file
-      if (fCollectionExit.exists()) {
-        fCollectionExit.delete();
-      }
-
-    }
-    // If regular collection_exit.xml file parsing failed, try to parse
-    // collection.xml. should be OK but not
-    // always up-to-date.
-    if (!bParsingOK) {
-      try {
-        Collection.load(fCollection);
-        bParsingOK = true;
-      } catch (final SAXException e1) {
-        Log.error(5, fCollection.getAbsolutePath(), e1);
-        bParsingOK = false;
-      } catch (final ParserConfigurationException e1) {
-        Log.error(5, fCollection.getAbsolutePath(), e1);
-        bParsingOK = false;
-      } catch (final JajukException e1) {
-        Log.error(5, fCollection.getAbsolutePath(), e1);
-        bParsingOK = false;
-      } catch (final IOException e1) {
-        Log.error(5, fCollection.getAbsolutePath(), e1);
-        bParsingOK = false;
-      }
-    }
-
-    // If even final collection file parsing failed
-    // (very unlikely), try to restore a backup file
-    if (!bParsingOK) {
-      // try to restore a backup file
-      final File[] fBackups = SessionService.getConfFileByPath("").listFiles(new FilenameFilter() {
-        public boolean accept(File dir, String name) {
-          if (name.indexOf("backup") != -1) {
-            return true;
-          }
-          return false;
-        }
-      });
-      final List<File> alBackupFiles = new ArrayList<File>(Arrays.asList(fBackups));
-      Collections.sort(alBackupFiles); // sort alphabetically (newest
-      // last)
-      Collections.reverse(alBackupFiles); // newest first now
-      final Iterator<File> it = alBackupFiles.iterator();
-      // parse all backup files, newest first
-      while (!bParsingOK && it.hasNext()) {
-        final File file = it.next();
-        try {
-          // Clear all previous collection
-          Collection.clearCollection();
-          // Load the backup file
-          Collection.load(file);
-          bParsingOK = true;
-          // Show a message telling user that we use a backup file
-          final int i = Messages.getChoice(Messages.getString("Error.133") + ":\n"
-              + file.getAbsolutePath(), JOptionPane.OK_CANCEL_OPTION, JOptionPane.ERROR_MESSAGE);
-          if (i == JOptionPane.CANCEL_OPTION) {
-            System.exit(-1);
-          }
-          break;
-        } catch (final SAXException e2) {
-          Log.error(5, file.getAbsolutePath(), e2);
-        } catch (final ParserConfigurationException e2) {
-          Log.error(5, file.getAbsolutePath(), e2);
-        } catch (final JajukException e2) {
-          Log.error(5, file.getAbsolutePath(), e2);
-        } catch (final IOException e2) {
-          Log.error(5, file.getAbsolutePath(), e2);
-        }
-      }
-    }
-
-    // Still not better? ok, commit a void
-    // collection (and a void collection is loaded)
-    if (!bParsingOK) {
-      Collection.clearCollection();
-      System.gc();
-      try {
-        Collection.commit(SessionService.getConfFileByPath(Const.FILE_COLLECTION));
-      } catch (final Exception e2) {
-        Log.error(e2);
-      }
-    }
-  }
-
-  /**
-   * Auto-Mount required devices
-   * 
-   */
-  public static void autoMount() {
-    for (final Device device : DeviceManager.getInstance().getDevices()) {
-      if (device.getBooleanValue(Const.XML_DEVICE_AUTO_MOUNT)) {
-        try {
-          device.mount(false);
-        } catch (final Exception e) {
-          Log.error(112, device.getName(), e);
-          continue;
-        }
-      }
-    }
-  }
-
-  /**
-   * Display the right window according to configuration and handles problems
-   */
-  private static void launchUI() {
-    // ui init
-    SwingUtilities.invokeLater(new Runnable() {
-      public void run() {
-        try {
-          // Start up action manager
-          ActionManager.getInstance();
-
-          // Display progress
-          sc.setProgress(80, Messages.getString("SplashScreen.3"));
-
-          // show window according to startup mode
-          if (Conf.getInt(Const.CONF_STARTUP_DISPLAY) == Const.DISPLAY_MODE_MAIN_WINDOW) {
-            JajukMainWindow mainWindow = JajukMainWindow.getInstance();
-            mainWindow.getWindowStateDecorator().display(true);
-          }
-          // Show full screen according to startup mode. If the fullscreen mode
-          // is no more available (because the user changed the platform for
-          // ie), force the main window mode
-          else if (Conf.getInt(Const.CONF_STARTUP_DISPLAY) == Const.DISPLAY_MODE_FULLSCREEN) {
-            // Display progress
-            sc.setProgress(80, Messages.getString("SplashScreen.3"));
-            ActionManager.getAction(JajukActions.FULLSCREEN_JAJUK).perform(null);
-          }
-          // Start the slimbar if required
-          else if (Conf.getInt(Const.CONF_STARTUP_DISPLAY) == Const.DISPLAY_MODE_SLIMBAR_TRAY) {
-            ActionManager.getAction(JajukActions.SLIM_JAJUK).perform(null);
-          }
-          // In all cases, display the tray is user didn't force to hide it and
-          // if the platform supports it
-          if (Conf.getBoolean(Const.CONF_SHOW_SYSTRAY) && SystemTray.isSupported()) {
-            JajukSystray tray = JajukSystray.getInstance();
-            tray.getWindowStateDecorator().display(true);
-          }
-          // Display tip of the day if required (not at the first
-          // session to avoid displaying too many windows once)
-          if (Conf.getBoolean(Const.CONF_SHOW_TIP_ON_STARTUP) && !UpgradeManager.isFirstSesion()) {
-            final TipOfTheDayWizard tipsView = new TipOfTheDayWizard();
-            tipsView.setLocationRelativeTo(JajukMainWindow.getInstance());
-            tipsView.setVisible(true);
-          }
-        } catch (final Exception e) { // last chance to catch any
-          // error for
-          // logging purpose
-          e.printStackTrace();
-          Log.error(106, e);
-        } finally {
-          if (sc != null) {
-            // Display progress
-            sc.setProgress(100);
-            sc.splashOff();
-
-            // free resources
-            sc = null;
-          }
-          // Notify any first time wizard to startup refresh
-          synchronized (canLaunchRefresh) {
-            canLaunchRefresh.notify();
-          }
-        }
-      }
-    });
-
-  }
-
-  /**
-   * @return Returns the sPerspective.
-   */
-  public static String getDefaultPerspective() {
-    return sPerspective;
-  }
-
-  /**
-   * @param perspective
-   *          The sPerspective to set.
-   */
-  public static void setDefaultPerspective(final String perspective) {
-    sPerspective = perspective;
-  }
-
   public static void initializeFromThumbnailsMaker(final boolean bTest, final String workspace) {
     SessionService.setTestMode(bTest);
     SessionService.setWorkspace(workspace);
-  }
-
-  /**
-   * Wait until user selected a device path in first time wizard
-   */
-  public static void waitForLaunchRefresh() {
-    synchronized (Main.canLaunchRefresh) {
-      try {
-        Main.canLaunchRefresh.wait();
-      } catch (final InterruptedException e) {
-        Log.error(e);
-      }
-    }
   }
 
 }

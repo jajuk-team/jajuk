@@ -41,10 +41,10 @@ import javax.swing.border.EmptyBorder;
 
 import net.miginfocom.swing.MigLayout;
 
-import org.jajuk.Main;
 import org.jajuk.base.Device;
 import org.jajuk.base.DeviceManager;
 import org.jajuk.services.core.SessionService;
+import org.jajuk.services.startup.StartupCollectionService;
 import org.jajuk.ui.actions.ActionManager;
 import org.jajuk.ui.actions.JajukActions;
 import org.jajuk.ui.widgets.JajukFileChooser;
@@ -165,7 +165,7 @@ public class FirstTimeWizard extends JajukJDialog implements ActionListener {
         @Override
         public void run() {
           // Wait for context loading (default configuration...)
-          Main.waitForLaunchRefresh();
+          StartupCollectionService.waitForLaunchRefresh();
 
           // Create a directory device
           final Device device = DeviceManager.getInstance().registerDevice(fDir.getName(), 0,

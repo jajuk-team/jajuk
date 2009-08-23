@@ -59,6 +59,11 @@ public final class DeviceManager extends ItemManager {
 
   /** List of deep-refresh devices after an upgrade */
   private final Set<Device> devicesDeepRefreshed = new HashSet<Device>();
+  
+  /** DeviceTypes Identification strings */
+  public static final String[] DEVICE_TYPES = { "Device_type.directory", "Device_type.file_cd",
+      "Device_type.network_drive", "Device_type.extdd", "Device_type.player" };
+
 
   /** Auto-refresh thread */
   private final Thread tAutoRefresh = new Thread("Device Auto Refresh Thread") {

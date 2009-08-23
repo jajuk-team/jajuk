@@ -35,6 +35,9 @@ import org.jajuk.base.AlbumManager;
 import org.jajuk.base.Collection;
 import org.jajuk.base.DeviceManager;
 import org.jajuk.services.core.SessionService;
+import org.jajuk.services.startup.StartupCollectionService;
+import org.jajuk.services.startup.StartupControlsService;
+import org.jajuk.services.startup.StartupEngineService;
 import org.jajuk.util.Const;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilSystem;
@@ -218,18 +221,18 @@ public final class ThumbnailsMaker {
     // log startup depends on : setExecLocation, initialCheckups
     Log.getInstance();
     Log.setVerbosity(Log.FATAL);
-    Main.initialCheckups();
-    Main.registerItemManagers();
+    StartupControlsService.initialCheckups();
+    StartupCollectionService.registerItemManagers();
     // Register device types
-    for (final String deviceTypeId : Main.DEVICE_TYPES) {
+    for (final String deviceTypeId : DeviceManager.DEVICE_TYPES) {
       DeviceManager.getInstance().registerDeviceType(Messages.getString(deviceTypeId));
     }
     // registers supported audio supports and default properties
-    Main.registerTypes();
+    StartupCollectionService.registerTypes();
     // load collection
     Collection.load(SessionService.getConfFileByPath(Const.FILE_COLLECTION));
     // Mount devices
-    Main.autoMount();
+    StartupEngineService.autoMount();
     final List<Album> albums = AlbumManager.getInstance().getAlbums();
     // For each album, create the associated thumb
     for (final Album album : albums) {
