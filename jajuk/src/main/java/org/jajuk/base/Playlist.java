@@ -26,6 +26,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -63,6 +64,12 @@ import org.jajuk.util.log.Log;
  * A playlist
  * <p>
  * Physical item
+ * 
+ * 
+ * TODO: refactoring items for this class:
+ * - split up the code into separate implementations for the different types
+ * - create a base abstract playlist class that is used in the various places and 
+ *   have separate implementations for each of the types to separate the code better
  */
 public class Playlist extends PhysicalItem implements Comparable<Playlist> {
 
@@ -76,9 +83,6 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
 
   /** Files list, singleton */
   private List<File> alFiles;
-
-  /** Modification flag */
-  private boolean bModified = false;
 
   /** Associated physical file */
   private java.io.File fio;
@@ -167,9 +171,11 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
         // start immediately playing
         QueueModel.push(item, false);
       }
+      
+      // we don't need to adjust the alFiles here because for playlist type QUEUE
+      // the contents is taken directly from the QueueModel in case of 
     } else {
       getFiles().add(index, file);
-      setModified(true);
     }
   }
 
@@ -190,13 +196,6 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
   }
 
   /**
-   * @return Returns the bModified.
-   */
-  public boolean isModified() {
-    return bModified;
-  }
-
-  /**
    * Clear playlist
    * 
    */
@@ -207,9 +206,12 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
     } else if (getType() == Type.QUEUE) {
       QueueModel.clear();
     } else {
+      if(alFiles == null) {
+        return;
+      }
+
       alFiles.clear();
     }
-    setModified(true);
   }
 
   /**
@@ -260,14 +262,18 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
     if (temp.exists() && temp.length() > 0) {
       try {
         UtilSystem.copy(temp, getFIO());
-        temp.delete();
+        if(!temp.delete()) {
+          Log.warn("Could not delete temporary file: " + temp.getAbsolutePath());
+        }
       } catch (final Exception e1) {
         throw new JajukException(28, getName(), e1);
       }
     } else {
       try {
         // Try to remove the temp file
-        temp.delete();
+        if(!temp.delete()) {
+          Log.warn("Could not delete temporary file: " + temp.getAbsolutePath());
+        }
       } catch (final Exception e1) {
         Log.error(e1);
       }
@@ -286,13 +292,19 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
    * @return comparison result
    */
   public int compareTo(final Playlist o) {
+    // not equal if other is null
+    if(o == null) {
+      return -1;
+    }
+    
     // Perf: leave if items are equals
     if (o.equals(this)) {
       return 0;
     }
+
     final Playlist otherPlaylistFile = o;
-    final String abs = getName() + getAbsolutePath();
-    final String sOtherAbs = otherPlaylistFile.getName() + otherPlaylistFile.getAbsolutePath();
+    final String abs = getName() + (getDirectory() != null ? getAbsolutePath() : "");
+    final String sOtherAbs = otherPlaylistFile.getName() + (otherPlaylistFile.getDirectory() != null ? otherPlaylistFile.getAbsolutePath() : "");
     // We must be consistent with equals, see
     // http://java.sun.com/javase/6/docs/api/java/lang/Comparable.html
     int comp = abs.compareToIgnoreCase(sOtherAbs);
@@ -323,11 +335,9 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
       QueueModel.down(index);
     } else if ((alFiles != null) && (index < alFiles.size() - 1)) {
       // the last track cannot go deeper
-      final File file = alFiles.get(index + 1); // save n+1 file
-      alFiles.set(index + 1, alFiles.get(index));
+
       // n+1 file becomes nth file
-      alFiles.set(index, file);
-      setModified(true);
+      Collections.swap(alFiles, index, index+1);
     }
   }
 
@@ -382,7 +392,14 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
       // file
       // chooser and has been set using the setFio() method just before
       // that
-      sAbs = getFIO().getAbsolutePath();
+      
+      // don't use "getFIO()" here, as otherwise we can cause an endless loop as
+      // getFIO() calls this method as well
+      if(fio == null) {
+        return "";
+      }
+      
+      sAbs = fio.getAbsolutePath();
     }
     return sAbs;
   }
@@ -505,7 +522,8 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
    * @return true the file can be accessed right now
    */
   public boolean isReady() {
-    if (getDirectory().getDevice().isMounted()) {
+    if (getDirectory() != null && getDirectory().getDevice() != null && 
+        getDirectory().getDevice().isMounted()) {
       return true;
     }
     return false;
@@ -571,7 +589,8 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
       }
     } catch (final Exception e) {
       Log.error(17, "{{" + getName() + "}}", e);
-      throw new JajukException(17, getFIO().getAbsolutePath(), e);
+      throw new JajukException(17, 
+          (getDirectory() != null && getFIO() != null ? getFIO().getAbsolutePath() : "<unknown>"), e);
     }
 
     return files;
@@ -604,7 +623,6 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
     } else {
       alFiles.remove(index);
     }
-    setModified(true);
   }
 
   /**
@@ -616,12 +634,15 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
    */
   public void replaceFile(final File fOld, final File fNew) throws JajukException {
     if (type == Type.BOOKMARK) {
-      final Iterator<File> it = Bookmarks.getInstance().getFiles().iterator();
+      List<File> files = Bookmarks.getInstance().getFiles();
+      final Iterator<File> it = files.iterator();
       for (int i = 0; it.hasNext(); i++) {
         final File fileToTest = it.next();
         if (fileToTest.equals(fOld)) {
+          files.set(i, fNew);
+          /* this leads to ConcurrentModificationException:
           Bookmarks.getInstance().remove(i);
-          Bookmarks.getInstance().addFile(i, fNew);
+          Bookmarks.getInstance().addFile(i, fNew);*/
         }
       }
     } else if (type == Type.QUEUE) {
@@ -640,8 +661,7 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
       for (int i = 0; it.hasNext(); i++) {
         final File fileToTest = it.next();
         if (fileToTest.equals(fOld)) {
-          alFiles.remove(i);
-          alFiles.add(i, fNew);
+          alFiles.set(i, fNew);
           try {
             commit();// save changed playlist
           } catch (final JajukException e) {
@@ -650,7 +670,6 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
         }
       }
     }
-    setModified(true);
   }
 
   /** Reset pre-calculated paths* */
@@ -707,7 +726,7 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
 
       // set new file path ( this playlist is a special playlist, just in
       // memory )
-      setFio(file);
+      setFIO(file);
       commit(); // write it on the disk
     }
   }
@@ -724,17 +743,8 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
    * @param fio
    *          The fio to set.
    */
-  public void setFio(final java.io.File fio) {
-    setModified(true);
+  public void setFIO(final java.io.File fio) {
     this.fio = fio;
-  }
-
-  /**
-   * @param modified
-   *          The bModified to set.
-   */
-  public void setModified(final boolean modified) {
-    bModified = modified;
   }
 
   /**
@@ -828,8 +838,12 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
    */
   @Override
   public String toString() {
-    return "playlist[ID=" + getID() + " Name={{" + getName() + "}} " + " Dir="
-        + dParentDirectory.getID() + "]";
+    if(dParentDirectory == null) {
+      return "playlist[ID=" + getID() + " Name={{" + getName() + "}} " + " Dir=<null>]";
+    } else {
+      return "playlist[ID=" + getID() + " Name={{" + getName() + "}} " + " Dir="
+      + dParentDirectory.getID() + "]";
+    }
   }
 
   /**
@@ -844,10 +858,9 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
       QueueModel.up(index);
     } else if ((alFiles != null) && (index > 0)) { // the first track
       // cannot go further
-      final File file = alFiles.get(index - 1); // save n-1 file
-      alFiles.set(index - 1, alFiles.get(index));
-      alFiles.set(index, file); // n-1 file becomes nth file
-      setModified(true);
+
+      // n-1 file becomes nth file
+      Collections.swap(alFiles, index, index-1);
     }
   }
 
@@ -856,6 +869,10 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
    */
   @Override
   public long getRate() {
+    if(alFiles == null) {
+      return 0;
+    }
+
     float rate = 0f;
     int nb = 0;
     for (File file : alFiles) {
@@ -869,6 +886,10 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
    * @return total nb of hits
    */
   public long getHits() {
+    if(alFiles == null) {
+      return 0;
+    }
+
     int hits = 0;
     for (File file : alFiles) {
       hits += file.getTrack().getHits();
@@ -880,6 +901,10 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
    * Return full playlist length in secs
    */
   public long getDuration() {
+    if(alFiles == null) {
+      return 0;
+    }
+
     long length = 0;
     for (File file : alFiles) {
       length += file.getTrack().getDuration();
@@ -891,6 +916,10 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
    * @return playlist nb of tracks
    */
   public int getNbOfTracks() {
+    if(alFiles == null) {
+      return 0;
+    }
+
     return alFiles.size();
   }
 
