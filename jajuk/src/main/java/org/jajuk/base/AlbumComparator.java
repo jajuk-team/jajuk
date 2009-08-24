@@ -29,6 +29,13 @@ import java.util.Comparator;
  */
 public class AlbumComparator implements Comparator<Album> {
 
+  /*
+   * This needs to be kept in-sync with what we use in
+   * CatalogView.initMetaInformation()!
+   * 
+   * 0 .. style 1 .. author 2 .. album 3 .. year 4 .. discovery date 5 .. rate 6 ..
+   * hits
+   */
   private int criteria = 0;
 
   public AlbumComparator(int criteria) {
@@ -120,22 +127,18 @@ public class AlbumComparator implements Comparator<Album> {
       // Sort on: Rate/title
       if (album1.getRate() == album2.getRate()) {
         return album1.compareTo(album2);
+      } else if (album1.getRate() < album2.getRate()) {
+        return -1;
       } else {
-        if (album1.getRate() < album2.getRate()) {
-          return 1;
-        } else {
-          return 0;
-        }
+        return 1;
       }
     case 6: // Hits
       if (album1.getHits() == album2.getHits()) {
         return album1.compareTo(album2);
+      } else if (album1.getHits() < album2.getHits()) {
+        return -1;
       } else {
-        if (album1.getHits() < album2.getHits()) {
-          return 1;
-        } else {
-          return 0;
-        }
+        return 1;
       }
     }
     return 0;
