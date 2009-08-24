@@ -30,6 +30,7 @@ import org.apache.commons.lang.StringUtils;
 import org.jajuk.JUnitHelpers;
 import org.jajuk.services.bookmark.Bookmarks;
 import org.jajuk.services.players.QueueModel;
+import org.jajuk.services.players.StackItem;
 import org.jajuk.services.startup.StartupCollectionService;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
@@ -820,10 +821,7 @@ public class TestPlaylist extends TestCase {
     // for type Queue, we need to push to the Queue
     File file = getFile();
     file.getDirectory().getDevice().mount(true);
-    play.addFile(file);
-
-    // there is a thread started, so delay a bit to let that happen...
-    Thread.sleep(200);
+    QueueModel.insert(new StackItem(file), 0);
 
     assertEquals(1, play.getFiles().size());
     assertNotNull(play.getFiles().get(0));
