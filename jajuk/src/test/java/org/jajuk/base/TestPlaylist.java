@@ -193,6 +193,12 @@ public class TestPlaylist extends TestCase {
     assertEquals(4, play.getRate());
   }
 
+  public final void testGetRateNull() throws Exception {
+    Playlist play = getPlaylist();
+    play.setFiles(null);
+    
+    assertEquals(0, play.getRate());
+  }
   /**
    * Test method for
    * {@link org.jajuk.base.Playlist#Playlist(org.jajuk.base.Playlist.Type, java.lang.String, java.lang.String, org.jajuk.base.Directory)}.
@@ -224,11 +230,47 @@ public class TestPlaylist extends TestCase {
     assertEquals(1, play.getFiles().size());
   }
 
+  public final void testAddFileQueue() throws Exception {
+    Playlist play = getPlaylistQueue();
+
+    File file = getFile();
+    file.getDirectory().getDevice().mount(true);
+    play.addFile(file);
+    
+    // wait a bit to let the "push" be done in a separate thread
+    Thread.sleep(200);
+    
+    assertEquals(1, QueueModel.getQueueSize());
+    
+    file = getFile();
+    file.getDirectory().getDevice().mount(true);
+    play.addFile(1, file);
+
+    // wait a bit to let the "push" be done in a separate thread
+    Thread.sleep(200);
+
+    assertEquals(2, QueueModel.getQueueSize());
+    assertEquals(2, play.getFiles().size());
+
+    // test with repeat as well to see if we get repeat set for the new track as well
+    QueueModel.getItem(0).setRepeat(true);
+
+    file = getFile();
+    file.getDirectory().getDevice().mount(true);
+    play.addFile(1, file);
+
+    // wait a bit to let the "push" be done in a separate thread
+    Thread.sleep(200);
+
+    assertEquals(3, QueueModel.getQueueSize());
+    assertEquals(3, play.getFiles().size());
+  }
+
   /**
    * Test method for {@link org.jajuk.base.Playlist#getType()}.
    */
   public final void testGetType() {
-    Playlist play = new Playlist(Playlist.Type.BOOKMARK, "1", "name", null);
+    Playlist play = getPlaylistBookmark();
     assertEquals(Playlist.Type.BOOKMARK, play.getType());
   }
 
@@ -313,7 +355,29 @@ public class TestPlaylist extends TestCase {
     assertEquals(0, play.getFiles().size());
   }
 
-  /**
+  public final void testClearEmptyList() throws Exception {
+    Device device = new Device("9", "name");
+    device.setUrl(System.getProperty("java.io.tmpdir")); // directory to use
+    // for storage
+    Directory dir = new Directory("2", "testdir", null, device);
+    device.mount(true);
+
+    Playlist play = new Playlist(Playlist.Type.NORMAL, "1", "playlist.txt", dir);
+
+    play.clear();
+  }
+
+  public final void testClearQueue() throws Exception {
+    Playlist play = getPlaylistQueue();
+    play.clear();
+  }
+
+  public final void testClearBookmark() throws Exception {
+    Playlist play = getPlaylistBookmark();
+    play.clear();
+  }
+
+    /**
    * Test method for {@link org.jajuk.base.Playlist#commit()}.
    * 
    * @throws Exception
@@ -426,13 +490,29 @@ public class TestPlaylist extends TestCase {
   }
 
   public final void testDownBookmark() throws Exception {
-    Playlist play = new Playlist(Playlist.Type.BOOKMARK, "1", "name", null);
+    Playlist play = getPlaylistBookmark();
     play.down(0);
+    play.up(0);
+  }
+
+  /**
+   * @return
+   */
+  private Playlist getPlaylistBookmark() {
+    return new Playlist(Playlist.Type.BOOKMARK, "1", "name", null);
   }
 
   public final void testDownQueue() throws Exception {
-    Playlist play = new Playlist(Playlist.Type.QUEUE, "1", "name", null);
+    Playlist play = getPlaylistQueue();
     play.down(-1);
+    play.up(0);
+  }
+
+  /**
+   * @return
+   */
+  private Playlist getPlaylistQueue() {
+    return new Playlist(Playlist.Type.QUEUE, "1", "name", null);
   }
 
   /**
@@ -522,6 +602,50 @@ public class TestPlaylist extends TestCase {
     assertEquals(1, play.getFiles().size());
   }
 
+  public final void testGetFilesNull() throws Exception {
+    Playlist play = getPlaylist();
+    play.setFiles(null);  // null as list!
+
+    assertEquals(2, play.getFiles().size());
+  }
+  
+  public final void testGetFilesNovelities() throws Exception {
+    Device device = new Device("9", "name");
+    device.setUrl(System.getProperty("java.io.tmpdir")); // directory to use
+    // for storage
+    Directory dir = new Directory("2", "testdir", null, device);
+    device.mount(true);
+
+    Playlist play = new Playlist(Playlist.Type.NOVELTIES, "1", "playlist.txt", dir);
+
+    assertNotNull(play.getFiles());
+  }
+  
+  public final void testGetFilesBestOf() throws Exception {
+    Device device = new Device("9", "name");
+    device.setUrl(System.getProperty("java.io.tmpdir")); // directory to use
+    // for storage
+    Directory dir = new Directory("2", "testdir", null, device);
+    device.mount(true);
+
+    Playlist play = new Playlist(Playlist.Type.BESTOF, "1", "playlist.txt", dir);
+
+    assertNotNull(play.getFiles());
+  }
+  
+  public final void testGetFilesNew() throws Exception {
+    Device device = new Device("9", "name");
+    device.setUrl(System.getProperty("java.io.tmpdir")); // directory to use
+    // for storage
+    Directory dir = new Directory("2", "testdir", null, device);
+    device.mount(true);
+
+    Playlist play = new Playlist(Playlist.Type.NEW, "1", "playlist.txt", dir);
+
+    assertNotNull(play.getFiles());
+    assertEquals(0, play.getFiles().size());
+  }
+
   /**
    * Test method for {@link org.jajuk.base.Playlist#getFIO()}.
    */
@@ -605,6 +729,23 @@ public class TestPlaylist extends TestCase {
     play.play();
   }
 
+  public final void testPlayNull() throws Exception {
+    Playlist play = getPlaylist();
+
+    // some error without files
+    play.setFiles(null);
+    try {
+      play.play();
+    } catch (HeadlessException e) {
+      // this tries to open a FileChooser...
+    }
+    play.setFiles(new ArrayList<File>());
+    try {
+      play.play();
+    } catch (HeadlessException e) {
+      // this tries to open a FileChooser...
+    }
+  }
   /**
    * Test method for {@link org.jajuk.base.Playlist#remove(int)}.
    * 
@@ -619,12 +760,12 @@ public class TestPlaylist extends TestCase {
   public final void testRemoveBookmark() {
     Bookmarks.getInstance().addFile(getFile());
 
-    Playlist play = new Playlist(Playlist.Type.BOOKMARK, "1", "name", null);
+    Playlist play = getPlaylistBookmark();
     play.remove(0);
   }
 
   public final void testRemoveQueue() {
-    Playlist play = new Playlist(Playlist.Type.QUEUE, "1", "name", null);
+    Playlist play = getPlaylistQueue();
     play.remove(0);
   }
 
@@ -654,7 +795,7 @@ public class TestPlaylist extends TestCase {
   }
 
   public final void testReplaceFileBookmark() throws Exception {
-    Playlist play = new Playlist(Playlist.Type.BOOKMARK, "1", "name", null);
+    Playlist play = getPlaylistBookmark();
 
     play.addFile(getFile());
 
@@ -671,7 +812,7 @@ public class TestPlaylist extends TestCase {
     // make sure Queue is empty
     QueueModel.clear();
     
-    Playlist play = new Playlist(Playlist.Type.QUEUE, "1", "name", null);
+    Playlist play = getPlaylistQueue();
 
     // for type Queue, we need to push to the Queue
     File file = getFile();
@@ -723,6 +864,66 @@ public class TestPlaylist extends TestCase {
       // this tries to open a FileChooser...
     }
   }
+  public final void testSaveAsBestOf() throws Exception {
+    Device device = new Device("9", "name");
+    device.setUrl(System.getProperty("java.io.tmpdir")); // directory to use
+    // for storage
+    Directory dir = new Directory("2", "testdir", null, device);
+    device.mount(true);
+
+    Playlist play = new Playlist(Playlist.Type.BESTOF, "1", "playlist.txt", dir);
+
+    List<File> list = new ArrayList<File>();
+    list.add(getFile());
+    list.add(getFile());
+
+    play.setFiles(list);
+    
+    try {
+      play.saveAs();
+    } catch (HeadlessException e) {
+      // this tries to open a FileChooser...
+    }
+  }
+  public final void testSaveAsBookmark() throws Exception {
+    Playlist play = getPlaylistBookmark();
+
+    try {
+      play.saveAs();
+    } catch (HeadlessException e) {
+      // this tries to open a FileChooser...
+    }
+  }
+  public final void testSaveAsNovelities() throws Exception {
+    Device device = new Device("9", "name");
+    device.setUrl(System.getProperty("java.io.tmpdir")); // directory to use
+    // for storage
+    Directory dir = new Directory("2", "testdir", null, device);
+    device.mount(true);
+
+    Playlist play = new Playlist(Playlist.Type.NOVELTIES, "1", "playlist.txt", dir);
+
+    List<File> list = new ArrayList<File>();
+    list.add(getFile());
+    list.add(getFile());
+
+    play.setFiles(list);
+
+    try {
+      play.saveAs();
+    } catch (HeadlessException e) {
+      // this tries to open a FileChooser...
+    }
+  }
+  public final void testSaveAsQueue() throws Exception {
+    Playlist play = getPlaylistQueue();
+
+    try {
+      play.saveAs();
+    } catch (HeadlessException e) {
+      // this tries to open a FileChooser...
+    }
+  }
 
   /**
    * Test method for {@link org.jajuk.base.Playlist#setFiles(java.util.List)}.
@@ -763,6 +964,10 @@ public class TestPlaylist extends TestCase {
     play.setParentDirectory(dir);
 
     assertNotNull(play.getDirectory());
+
+    // also try setting it to null
+    play.setParentDirectory(null);
+    assertNull(play.getDirectory());
   }
 
   /**
@@ -870,6 +1075,14 @@ public class TestPlaylist extends TestCase {
     assertEquals(14, play.getHits());
   }
 
+  public final void testGetHitsNull() throws Exception {
+    Playlist play = getPlaylist();
+    play.setFiles(null);
+
+    // first without files
+    assertEquals(0, play.getHits());
+  }
+  
   /**
    * Test method for {@link org.jajuk.base.Playlist#getDuration()}.
    * 
@@ -896,6 +1109,14 @@ public class TestPlaylist extends TestCase {
     assertEquals(240, play.getDuration());
   }
 
+  public final void testGetDurationNull() throws Exception {
+    Playlist play = getPlaylist();
+    play.setFiles(null);
+
+    // at first no duration at all
+    assertEquals(0, play.getDuration());
+  }
+  
   /**
    * Test method for {@link org.jajuk.base.Playlist#getNbOfTracks()}.
    * 
@@ -915,5 +1136,12 @@ public class TestPlaylist extends TestCase {
     play.addFile(getFile());
 
     assertEquals(2, play.getNbOfTracks());
+  }
+
+  public final void testGetNbOfTracksNull() throws Exception {
+    Playlist play = getPlaylist();
+    play.setFiles(null);
+
+    assertEquals(0, play.getNbOfTracks());
   }
 }
