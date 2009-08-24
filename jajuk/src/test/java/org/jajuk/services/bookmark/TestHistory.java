@@ -626,6 +626,8 @@ public class TestHistory extends TestCase {
     Thread.sleep(100);
     Thread.sleep(100);
     Thread.sleep(100);
+    Thread.sleep(100);
+    Thread.sleep(100);
     // now we only should have the item "3"
     assertEquals(1, History.getInstance().getHistory().size());
     // TODO: this test fails in Hudson for some reason, I could not find out why, it works
