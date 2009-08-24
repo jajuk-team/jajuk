@@ -30,7 +30,6 @@ import org.apache.commons.lang.StringUtils;
 import org.jajuk.JUnitHelpers;
 import org.jajuk.services.bookmark.Bookmarks;
 import org.jajuk.services.players.QueueModel;
-import org.jajuk.services.players.StackItem;
 import org.jajuk.services.startup.StartupCollectionService;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
@@ -99,7 +98,11 @@ public class TestPlaylist extends TestCase {
     // this is what we read here...
     play.setProperty(Const.XML_DIRECTORY, play.getDirectory().getDevice().getID());
     
-    assertEquals(System.getProperty("java.io.tmpdir"), play.getHumanValue(Const.XML_DIRECTORY) + java.io.File.separator);
+    String str1 = System.getProperty("java.io.tmpdir");
+    String str2 = play.getHumanValue(Const.XML_DIRECTORY);
+    str1 = StringUtils.stripEnd(str1, java.io.File.separator);
+    str2 = StringUtils.stripEnd(str2, java.io.File.separator);
+    assertEquals(str1, str2);
     
     assertEquals("", play.getHumanValue("notexist"));
     
@@ -817,7 +820,7 @@ public class TestPlaylist extends TestCase {
     // for type Queue, we need to push to the Queue
     File file = getFile();
     file.getDirectory().getDevice().mount(true);
-    QueueModel.push(new StackItem(file), true);
+    play.addFile(file);
 
     // there is a thread started, so delay a bit to let that happen...
     Thread.sleep(200);
