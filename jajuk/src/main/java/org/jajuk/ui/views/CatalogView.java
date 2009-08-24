@@ -318,6 +318,7 @@ public class CatalogView extends ViewAdapter implements ComponentListener, Actio
     alFilters.add(TrackManager.getInstance().getMetaInformation(Const.XML_TRACK_ALBUM));
     alFilters.add(TrackManager.getInstance().getMetaInformation(Const.XML_YEAR));
 
+    // please note: this needs to be kept in-sync with what we do in AlbumComparator! 
     alSorters = new ArrayList<PropertyMetaInformation>(10);
     alSorters.add(TrackManager.getInstance().getMetaInformation(Const.XML_TRACK_STYLE));
     alSorters.add(TrackManager.getInstance().getMetaInformation(Const.XML_TRACK_AUTHOR));
