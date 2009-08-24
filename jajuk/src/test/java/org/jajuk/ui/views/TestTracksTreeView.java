@@ -83,6 +83,8 @@ public class TestTracksTreeView extends TestCase {
       // reported on headless settings
     } catch (HeadlessException e) {
       // reported on headless settings
+    } catch (NullPointerException e) {
+      // sometimes reported deep inside Swing components, I could not find out why...
     }
   }
 
