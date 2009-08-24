@@ -435,7 +435,15 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
       return;
     }
 
+    // get the cover at the specified position
     final Cover cover = alCovers.get(index);
+
+    // don't delete the splashscreen-jpg!!
+    if(cover.getType().equals(CoverType.NO_COVER)) {
+      Log.warn("Cannot delete default Jajuk cover.");
+      return;
+    }
+
     // show confirmation message if required
     if (Conf.getBoolean(Const.CONF_CONFIRMATIONS_DELETE_COVER)) {
       final int iResu = Messages
