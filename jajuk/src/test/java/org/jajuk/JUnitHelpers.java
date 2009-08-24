@@ -266,8 +266,8 @@ public class JUnitHelpers {
    */
   public static void CloneTest(final Cloneable obj) throws Exception {
     final Method m = obj.getClass().getMethod("clone", new Class[] {});
-    Assert.assertTrue("Need to find a method called 'clone' in object of type '"
-        + obj.getClass().getName() + "' in CloneTest!", null != m);
+    Assert.assertNotNull("Need to find a method called 'clone' in object of type '"
+        + obj.getClass().getName() + "' in CloneTest!", m);
     // Assert.assertTrue("Method 'clone' on object of type '" +
     // obj.getClass().getName() + "' needs to be accessible in
     // CloneTest!",
