@@ -90,6 +90,9 @@ public class TestAlbum extends TestCase {
    * Test method for {@link org.jajuk.base.Album#getHumanValue(java.lang.String)}.
    */
   public final void testGetHumanValue() {
+    // some of the lines below can require the ItemManagers to be registered correctly
+    StartupCollectionService.registerItemManagers();
+    
     Album album = new Album("1", "name", "artist", 123);
     assertFalse(album.getHumanValue(Const.XML_ALBUM).isEmpty());
 
@@ -99,7 +102,9 @@ public class TestAlbum extends TestCase {
     assertTrue(album.getHumanValue(Const.XML_YEAR).isEmpty());
 
     // add a style and year
-    album.getTracksCache().add(getTrack(album));
+    Track track = getTrack(album);
+    track.setProperty(Const.XML_TRACK_DISCOVERY_DATE, new Date());
+    album.getTracksCache().add(track);
     assertFalse(album.getHumanValue(Const.XML_STYLE).isEmpty());
     
     assertFalse(album.getHumanValue(Const.XML_AUTHOR).isEmpty());
