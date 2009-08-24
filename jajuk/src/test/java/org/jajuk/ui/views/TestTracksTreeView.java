@@ -81,6 +81,8 @@ public class TestTracksTreeView extends TestCase {
       view.initUI();
     } catch (ExceptionInInitializerError e) {
       // reported on headless settings
+    } catch (HeadlessException e) {
+      // reported on headless settings
     }
   }
 
