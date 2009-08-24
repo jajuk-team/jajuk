@@ -833,22 +833,6 @@ public final class UtilString {
 
   /**
    * 
-   * @param s
-   *          string to be checked
-   * @return whether provided string is a number or not
-   */
-  public static boolean isNumber(String s) {
-    for (int i = 0; i < s.length(); i++) {
-      char c = s.charAt(i);
-      if ((c < '0') || (c > '9')) {
-        return false;
-      }
-    }
-    return true;
-  }
-
-  /**
-   * 
    * @param tested
    *          the string to be tested
    * @param key
