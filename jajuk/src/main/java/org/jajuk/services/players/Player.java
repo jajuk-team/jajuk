@@ -42,6 +42,11 @@ import org.jajuk.util.log.Log;
  */
 public final class Player {
 
+  /**
+   * 
+   */
+  private static final String PLAYER_0 = "Player.0";
+
   /** Current file read */
   private static File fCurrent;
 
@@ -130,7 +135,7 @@ public final class Player {
           }
           bWaitingLine = true;
           Log.debug("Line occupied, waiting");
-          InformationJPanel.getInstance().setMessage(Messages.getString("Player.0"),
+          InformationJPanel.getInstance().setMessage(Messages.getString(PLAYER_0),
               InformationJPanel.WARNING);
           // wait for the line
           QueueModel.class.wait(Const.WAIT_AFTER_ERROR);
@@ -141,7 +146,7 @@ public final class Player {
       Properties pDetails = new Properties();
       pDetails.put(Const.DETAIL_CONTENT, file);
       ObservationManager.notifySync(new JajukEvent(JajukEvents.PLAY_ERROR, pDetails));
-      Log.error(7, Messages.getString("Player.0") + "{{" + fCurrent.getName() + "}}", t);
+      Log.error(7, Messages.getString(PLAYER_0) + "{{" + fCurrent.getName() + "}}", t);
       return false;
     }
   }
@@ -183,7 +188,7 @@ public final class Player {
           }
           bWaitingLine = true;
           Log.debug("Line occupied, waiting");
-          InformationJPanel.getInstance().setMessage(Messages.getString("Player.0"),
+          InformationJPanel.getInstance().setMessage(Messages.getString(PLAYER_0),
               InformationJPanel.WARNING);
           try {
             // wait for the line
@@ -198,7 +203,7 @@ public final class Player {
       Properties pDetails = new Properties();
       pDetails.put(Const.DETAIL_CONTENT, radio);
       ObservationManager.notifySync(new JajukEvent(JajukEvents.PLAY_ERROR, pDetails));
-      Log.error(7, Messages.getString("Player.0") + radio.getUrl() + "}}", t);
+      Log.error(7, Messages.getString(PLAYER_0) + radio.getUrl() + "}}", t);
       return false;
     }
   }

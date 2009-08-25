@@ -59,6 +59,16 @@ import org.xml.sax.SAXException;
  */
 public class JajukHtmlPanel extends HtmlPanel {
 
+  /**
+   * 
+   */
+  private static final String COLON = " : ";
+
+  /**
+   * 
+   */
+  private static final String URL_COLON = "URL: ";
+
   private static final long serialVersionUID = -4033441908072591661L;
 
   private final SimpleHtmlRendererContext rcontext;
@@ -133,7 +143,7 @@ public class JajukHtmlPanel extends HtmlPanel {
           Log.warn("Could not read page: " + url.toString() + " Cache: " + page, e.getMessage());
 
           try {
-            setFailedToLoad("URL: " + url + " : " + e.getClass().getSimpleName() + " : " + e.getMessage());
+            setFailedToLoad(URL_COLON + url + COLON + e.getClass().getSimpleName() + COLON + e.getMessage());
           } catch (IOException e1) {
             Log.error(e1);
           } catch (SAXException e1) {
@@ -143,7 +153,7 @@ public class JajukHtmlPanel extends HtmlPanel {
           Log.error(e);
 
           try {
-            setFailedToLoad("URL: " + url + " : " + e.getClass().getSimpleName() + " : " + e.getMessage());
+            setFailedToLoad(URL_COLON + url + COLON + e.getClass().getSimpleName() + COLON + e.getMessage());
           } catch (IOException e1) {
             Log.error(e1);
           } catch (SAXException e1) {
