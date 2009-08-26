@@ -659,11 +659,22 @@ public class TestHistory extends TestCase {
     // set the necessary things in the ObservationManager
     ObservationManager.notifySync(new JajukEvent(JajukEvents.FILE_LAUNCHED, detail));
     
+    // make sure we have the correct last-file now
+    assertEquals("3", 
+        ObservationManager.getDetailLastOccurence(JajukEvents.FILE_LAUNCHED,
+        Const.DETAIL_CURRENT_FILE_ID));
+    
     // call the constructor via reflection
     History hist = JUnitHelpers.executePrivateConstructor(History.class);
 
     // we have to sleep a bit as it is executed in the background
     Thread.sleep(100);
+
+    // it seems there is sometimes still work done by other tests, we saw failures here, 
+    // I added this check here again to see if that actually happens...
+    assertEquals("3", 
+        ObservationManager.getDetailLastOccurence(JajukEvents.FILE_LAUNCHED,
+        Const.DETAIL_CURRENT_FILE_ID));
     
     // now the file should be in the history already
     assertEquals(1, hist.getHistory().size());
