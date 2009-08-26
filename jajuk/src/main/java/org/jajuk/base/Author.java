@@ -59,11 +59,11 @@ public class Author extends LogicalItem implements Comparable<Author> {
    * @return author name
    */
   public String getName2() {
-    String sOut = getName();
-    if (sOut.equals(UNKNOWN_AUTHOR)) {
-      sOut = Messages.getString(UNKNOWN_AUTHOR);
+    if(isUnknown()) {
+      return Messages.getString(UNKNOWN_AUTHOR);
     }
-    return sOut;
+    
+    return getName();
   }
 
   /**
@@ -82,6 +82,11 @@ public class Author extends LogicalItem implements Comparable<Author> {
    * @return comparison result
    */
   public int compareTo(Author otherItem) {
+    // not equal if other is null
+    if(otherItem == null) {
+      return 1;
+    }
+    
     // compare using name and id to differentiate unknown items
     StringBuilder current = new StringBuilder(getName2());
     current.append(getID());
