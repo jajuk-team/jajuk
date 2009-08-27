@@ -233,7 +233,9 @@ public abstract class AbstractTreeView extends ViewAdapter {
           // so queue it
           SwingUtilities.invokeLater(new Runnable() {
             public void run() {
-              jspTree.getVerticalScrollBar().setValue(pos);
+              if (jspTree != null) {
+                jspTree.getVerticalScrollBar().setValue(pos);
+              }
             }
           });
 
