@@ -136,7 +136,7 @@ public class ThreadTestHelper
         return t1;
     }
     
-    public interface TestRunnable 
+    public interface TestRunnable
     {
         /**
          * When an object implementing interface <code>Runnable</code> is used 
@@ -152,7 +152,7 @@ public class ThreadTestHelper
          *
          * @see     java.lang.Thread#run()
          */
-        public abstract void run(int threadnum, int iter);
+        public abstract void run(int threadnum, int iter) throws Exception;
 
         /**
          * Perform any action that should be done at the end.
