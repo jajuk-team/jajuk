@@ -136,20 +136,30 @@ public final class AuthorManager extends ItemManager {
       if (old.getName2().equals(sNewName)) {
         return old;
       }
+
+      // find out if the QueueModel is playing this track before we change the track!
+      boolean queueNeedsUpdate = false;
+      if (QueueModel.getPlayingFile() != null
+          && QueueModel.getPlayingFile().getTrack().getAuthor().equals(old)) {
+        queueNeedsUpdate = true;
+      }
+      
       Author newItem = registerAuthor(sNewName);
       // re apply old properties from old item
       newItem.cloneProperties(old);
+
       // update tracks
       for (Track track : TrackManager.getInstance().getTracks()) {
         if (track.getAuthor().equals(old)) {
           TrackManager.getInstance().changeTrackAuthor(track, sNewName, null);
         }
       }
+
       // if current track author name is changed, notify it
-      if (QueueModel.getPlayingFile() != null
-          && QueueModel.getPlayingFile().getTrack().getAuthor().equals(old)) {
+      if (queueNeedsUpdate) {
         ObservationManager.notify(new JajukEvent(JajukEvents.AUTHOR_CHANGED));
       }
+
       return newItem;
     }
   }
@@ -161,12 +171,14 @@ public final class AuthorManager extends ItemManager {
    * <p>
    * -no spaces at the begin and the end
    * <p>
-   * -All in lower cas expect first letter of first word
+   * -All in lower case expect first letter of first word
    * <p>
    * exemple: "My author"
    * 
    * @param sName
    * @return
+   * 
+   * TODO: the "all lowercase" part is not done currently, should this be changed??
    */
   public static String format(String sName) {
     String sOut;
@@ -232,13 +244,14 @@ public final class AuthorManager extends ItemManager {
    */
   public synchronized List<Author> getAssociatedAuthors(Item item) {
     List<Author> out;
-    // [Perf] If item is a track, just return its author
-    // Use a set to avoid dups
-    Set<Author> authorSet = new HashSet<Author>();
     if (item instanceof Track) {
       out = new ArrayList<Author>(1);
       out.add(((Track) item).getAuthor());
     } else {
+      // [Perf] If item is a track, just return its author
+      // Use a set to avoid dups
+      Set<Author> authorSet = new HashSet<Author>();
+
       List<Track> tracks = TrackManager.getInstance().getAssociatedTracks(item, true);
       for (Track track : tracks) {
         authorSet.add(track.getAuthor());
