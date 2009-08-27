@@ -600,18 +600,18 @@ public class TestHistory extends TestCase {
     Conf.setProperty(Const.CONF_HISTORY, "1");
     
     // register the file
-    getAndRegisterFile(2);
+    getAndRegisterFile(11);
     getAndRegisterFile(3);
     
     // add the file
-    History.getInstance().addItem("2", 123);
+    History.getInstance().addItem("11", 123);
     
     // now it is there
     assertEquals(1, History.getInstance().getHistory().size());
     
     // change from id 2 to 3
     Properties detail = new Properties();
-    File file = FileManager.getInstance().getFileByID("2");
+    File file = FileManager.getInstance().getFileByID("11");
     detail.put(Const.DETAIL_OLD, file);
     
     // read the file "3" and then remove it from the filemanager to be clean there as well
@@ -668,6 +668,8 @@ public class TestHistory extends TestCase {
     History hist = JUnitHelpers.executePrivateConstructor(History.class);
 
     // we have to sleep a bit as it is executed in the background
+    Thread.sleep(100);
+    Thread.sleep(100);
     Thread.sleep(100);
 
     // it seems there is sometimes still work done by other tests, we saw failures here, 
