@@ -516,6 +516,9 @@ public class TestPlaylist extends TestCase {
    * @return
    */
   private Playlist getPlaylistQueue() {
+    // make sure the Queue is empty before creating a playlist on it
+    QueueModel.clear();
+    
     return new Playlist(Playlist.Type.QUEUE, "1", "name", null);
   }
 
