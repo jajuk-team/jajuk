@@ -28,6 +28,7 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.swing.JLabel;
+import javax.swing.SwingUtilities;
 import javax.swing.UIDefaults;
 import javax.swing.plaf.FontUIResource;
 
@@ -55,10 +56,9 @@ public final class FontManager implements Observer {
 
   private static FontManager self;
 
-  private static final JLabel JL = new JLabel();
-
   // No instantiation
   private FontManager() {
+
     registerFonts();
     ObservationManager.register(this);
   }
@@ -109,18 +109,25 @@ public final class FontManager implements Observer {
   }
 
   public void setDefaultFont() {
-    // Create the wrapper font set
-    FontPolicy newFontPolicy = new FontPolicy() {
-      public FontSet getFontSet(String lafName, UIDefaults table) {
-        return new CustomFontSet(fontCache.get(JajukFont.DEFAULT));
+    SwingUtilities.invokeLater(new Runnable() {
+
+      @Override
+      public void run() {
+        // Create the wrapper font set
+        FontPolicy newFontPolicy = new FontPolicy() {
+          public FontSet getFontSet(String lafName, UIDefaults table) {
+            return new CustomFontSet(fontCache.get(JajukFont.DEFAULT));
+          }
+        };
+        try {
+          // set the new font policy
+          SubstanceLookAndFeel.setFontPolicy(newFontPolicy);
+        } catch (Exception exc) {
+          Log.error(exc);
+        }
       }
-    };
-    try {
-      // set the new font policy
-      SubstanceLookAndFeel.setFontPolicy(newFontPolicy);
-    } catch (Exception exc) {
-      Log.error(exc);
-    }
+    });
+
   }
 
   /*
@@ -148,7 +155,7 @@ public final class FontManager implements Observer {
   public static int getRowsForText(String text, Font font, int maxSize) {
     int resu = 0;
     int usedSize = 0;
-    FontMetrics fm = JL.getFontMetrics(font);
+    FontMetrics fm = new JLabel().getFontMetrics(font);
     for (int i = 0; i < text.length() - 1; i++) {
       usedSize = fm.stringWidth(text.substring(0, i));
       resu++;

@@ -10,7 +10,6 @@ import java.awt.Toolkit;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import org.jajuk.services.core.SessionService;
 import org.jajuk.util.log.Log;
 
 /**
@@ -32,10 +31,10 @@ public final class EventDispatchThreadHangMonitor extends EventQueue {
   private static final EventQueue INSTANCE = new EventDispatchThreadHangMonitor();
 
   // Time to wait between checks that the event dispatch thread isn't hung.
-  private static final long CHECK_INTERVAL_MS = 100;
+  private static final long CHECK_INTERVAL_MS = 1000;
 
   // Maximum time we won't warn about in test mode
-  private static final long UNREASONABLE_DISPATCH_DURATION_MS_TEST = 10000;
+  private static final long UNREASONABLE_DISPATCH_DURATION_MS_TEST = 1000;
 
   // Used as the value of startedLastEventDispatchAt when we're not in
   // the middle of event dispatch.
@@ -84,7 +83,7 @@ public final class EventDispatchThreadHangMonitor extends EventQueue {
         return;
       }
       // check if elapsed time is not exceed (used only in test mode)
-      if (SessionService.isTestMode() && timeSoFar() > UNREASONABLE_DISPATCH_DURATION_MS_TEST) {
+      if (timeSoFar() > UNREASONABLE_DISPATCH_DURATION_MS_TEST) {
         reportHang();
       }
     }

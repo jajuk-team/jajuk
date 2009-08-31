@@ -26,6 +26,7 @@ import org.jajuk.ui.actions.ActionManager;
 import org.jajuk.ui.actions.JajukActions;
 import org.jajuk.ui.helpers.FilesTableModel;
 import org.jajuk.ui.helpers.JajukTableModel;
+import org.jajuk.ui.widgets.JajukTable;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.Messages;
@@ -57,6 +58,8 @@ public class FilesTableView extends AbstractTableView {
   public void initUI() {
     // Perform common table view initializations
     FilesTableView.super.construct();
+    jtable = new JajukTable(model, true, columnsConf);
+    
     // File menu
     jmiFilePlayDirectory = new JMenuItem(ActionManager
         .getAction(JajukActions.PLAY_DIRECTORY_SELECTION));

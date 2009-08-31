@@ -140,7 +140,7 @@ public class ArtistView extends SuggestionView {
         // No known icon next to artist thumb
         authorThumb.setArtistView(true);
         authorThumb.populate();
-
+       
         jtaArtistDesc = new JTextArea(bio) {
           private static final long serialVersionUID = 9217998016482118852L;
 

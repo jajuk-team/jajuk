@@ -26,6 +26,7 @@ import org.jajuk.ui.actions.ActionManager;
 import org.jajuk.ui.actions.JajukActions;
 import org.jajuk.ui.helpers.JajukTableModel;
 import org.jajuk.ui.helpers.TracksTableModel;
+import org.jajuk.ui.widgets.JajukTable;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.Messages;
@@ -59,6 +60,7 @@ public class TracksTableView extends AbstractTableView {
   public void initUI() {
     // Perform common table view initializations
     TracksTableView.super.construct();
+    jtable = new JajukTable(model, true, columnsConf);
     // Track menu
     jmiTrackPlayAlbum = new JMenuItem(ActionManager.getAction(JajukActions.PLAY_ALBUM_SELECTION));
     jmiTrackPlayAlbum.putClientProperty(Const.DETAIL_SELECTION, jtable.getSelection());

@@ -946,7 +946,13 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
         @Override
         public Object construct() {
           PlaylistRepository.super.construct();
+          return null;
+        }
 
+        @Override
+        public void finished() {
+          jtable = new JajukTable(model, true, columnsConf);
+    
           jmiRepositorySaveAs = new JMenuItem(ActionManager.getAction(JajukActions.SAVE_AS));
 
           jmiPrepareParty = new JMenuItem(ActionManager.getAction(JajukActions.PREPARE_PARTY));
@@ -958,16 +964,14 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
           jtable.getMenu().addSeparator();
           jtable.getMenu().add(pjmTracks);
           jtable.getMenu().addSeparator();
+          
+          PlaylistRepository.super.finished();
+          
           // Add this generic menu item manually to ensure it's the last one in
           // the list for GUI reasons
           jtable.getMenu().add(jmiProperties);
           jtable.getSelectionModel().addListSelectionListener(PlaylistRepository.this);
-          return null;
-        }
 
-        @Override
-        public void finished() {
-          PlaylistRepository.super.finished();
           jtbEditable.setVisible(false);
         }
       };

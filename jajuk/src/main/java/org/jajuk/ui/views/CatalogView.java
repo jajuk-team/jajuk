@@ -51,7 +51,6 @@ import javax.swing.JSlider;
 import javax.swing.JTextField;
 import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
-import javax.swing.SwingWorker;
 import javax.swing.Timer;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -71,8 +70,10 @@ import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.ui.helpers.DefaultMouseWheelListener;
 import org.jajuk.ui.helpers.FontManager;
+import org.jajuk.ui.helpers.TwoStepsDisplayable;
 import org.jajuk.ui.helpers.FontManager.JajukFont;
 import org.jajuk.ui.thumbnails.LocalAlbumThumbnail;
+import org.jajuk.ui.thumbnails.ThumbnailManager;
 import org.jajuk.ui.widgets.InformationJPanel;
 import org.jajuk.ui.widgets.JajukJToolbar;
 import org.jajuk.ui.widgets.SteppedComboBox;
@@ -91,7 +92,8 @@ import org.jdesktop.swingx.JXBusyLabel;
  * <p>
  * Catalog perspectives
  */
-public class CatalogView extends ViewAdapter implements ComponentListener, ActionListener {
+public class CatalogView extends ViewAdapter implements ComponentListener, ActionListener,
+    TwoStepsDisplayable {
 
   private static final long serialVersionUID = 1L;
 
@@ -168,9 +170,6 @@ public class CatalogView extends ViewAdapter implements ComponentListener, Actio
 
   /** Last scrollbar position * */
   private int scrollPosition;
-
-  /** Populating flag */
-  private boolean populating = false;
 
   /** Swing Timer to refresh the component */
   private final Timer timerSearch = new Timer(WAIT_TIME, new ActionListener() {
@@ -402,11 +401,11 @@ public class CatalogView extends ViewAdapter implements ComponentListener, Actio
   private void populateCatalog() {
     // Prevent unwanted view population requests, do not try to synchronize
     // 'this' : too many threads
-    if (populating) {
+    if (bPopulating) {
       Log.debug("Already populating the catalog view");
       return;
     }
-    populating = true;
+    bPopulating = true;
 
     // Store current state
     scrollPosition = jsp.getVerticalScrollBar().getValue();
@@ -415,27 +414,8 @@ public class CatalogView extends ViewAdapter implements ComponentListener, Actio
     // Clear all the view and show a busy label instead
     showBusyLabel();
 
-    SwingWorker<Void, Void> sw = new SwingWorker<Void, Void>() {
-
-      @Override
-      protected Void doInBackground() throws Exception {
-        computePage();
-        return null;
-      }
-
-      @Override
-      protected void done() {
-        try {
-          get();
-          displayPage();
-        } catch (Exception e) {
-          Log.error(e);
-        } finally {
-          populating = false;
-        }
-      }
-    };
-    sw.execute();
+    // Show the page
+    UtilGUI.populate(this);
   }
 
   /**
@@ -443,47 +423,55 @@ public class CatalogView extends ViewAdapter implements ComponentListener, Actio
    * <p>
    * Do *not* call this from the EDT, can take a while to run
    */
-  private void computePage() {
-    Filter filter = null;
-    if (jtfValue.getText().length() > 0) {
-      PropertyMetaInformation meta = alFilters.get(jcbFilter.getSelectedIndex());
-      filter = new Filter((meta == null) ? null : meta.getName(), jtfValue.getText(), true, false);
-    }
+  @Override
+  public Object longCall() {
+    // The final album list we will display
     List<Album> albums = null;
-    // filter albums matching tracks
-    List<Track> alAllTracks = TrackManager.getInstance().getTracks();
-    Filter.filterItems(alAllTracks, filter);
-    // keep matching albums
-    HashSet<Album> hsAlbums = new HashSet<Album>(alAllTracks.size() / 10);
-    for (Item item : alAllTracks) {
-      Track track = (Track) item;
-      Album album = track.getAlbum();
-      hsAlbums.add(album);
-    }
-    // Remove albums with no cover if required
-    Iterator<Album> itAlbums = hsAlbums.iterator();
-    while (itAlbums.hasNext()) {
-      Album album = itAlbums.next();
-      if (!jcbShowNoCover.isSelected() && album.getCoverFile() == null) {
-        itAlbums.remove();
+
+    try {
+      Filter filter = null;
+      if (jtfValue.getText().length() > 0) {
+        PropertyMetaInformation meta = alFilters.get(jcbFilter.getSelectedIndex());
+        filter = new Filter((meta == null) ? null : meta.getName(), jtfValue.getText(), true, false);
       }
-    }
-    albums = new ArrayList<Album>(hsAlbums);
+      // filter albums matching tracks
+      List<Track> alAllTracks = TrackManager.getInstance().getTracks();
+      Filter.filterItems(alAllTracks, filter);
+      // keep matching albums
+      HashSet<Album> hsAlbums = new HashSet<Album>(alAllTracks.size() / 10);
+      for (Item item : alAllTracks) {
+        Track track = (Track) item;
+        Album album = track.getAlbum();
+        hsAlbums.add(album);
+      }
+      // Remove albums with no cover if required
+      Iterator<Album> itAlbums = hsAlbums.iterator();
+      while (itAlbums.hasNext()) {
+        Album album = itAlbums.next();
+        if (!jcbShowNoCover.isSelected() && album.getCoverFile() == null) {
+          itAlbums.remove();
+        }
+      }
+      albums = new ArrayList<Album>(hsAlbums);
 
-    // sort albums
-    final int index = jcbSorter.getSelectedIndex();
-    Collections.sort(albums, new AlbumComparator(index));
+      // sort albums
+      final int index = jcbSorter.getSelectedIndex();
+      Collections.sort(albums, new AlbumComparator(index));
 
-    // Now process each album
-    Set<Directory> directories = new HashSet<Directory>(albums.size());
-    alItemsToDisplay = new ArrayList<LocalAlbumThumbnail>(albums.size());
-    for (Object it : albums) {
-      Album album = (Album) it;
-      // if hide unmounted tracks is set, continue
-      if (Conf.getBoolean(Const.CONF_OPTIONS_HIDE_UNMOUNTED)) {
-        // test if album contains at least one mounted file
-        List<Track> trackset = TrackManager.getInstance().getAssociatedTracks(album, false);
-        if (trackset.size() > 0) {
+      // Now process each album
+      Set<Directory> directories = new HashSet<Directory>(albums.size());
+      alItemsToDisplay = new ArrayList<LocalAlbumThumbnail>(albums.size());
+      Iterator<Album> it = albums.iterator();
+      while (it.hasNext()) {
+        Album album = it.next();
+        // if hide unmounted tracks is set, continue
+        if (Conf.getBoolean(Const.CONF_OPTIONS_HIDE_UNMOUNTED)) {
+          // test if album contains at least one mounted file
+          List<Track> trackset = TrackManager.getInstance().getAssociatedTracks(album, false);
+          if (trackset.size() == 0) {
+            it.remove();
+            continue;
+          }
           boolean bOK = false;
           for (Track track : trackset) {
             if (track.getReadyFiles().size() > 0) {
@@ -492,27 +480,52 @@ public class CatalogView extends ViewAdapter implements ComponentListener, Actio
             }
           }
           if (!bOK) {
+            it.remove();
             continue;
           }
-        } else {
-          continue;
+        }
+        // Take first track of album (to get detailed
+        // information)
+        Track anyTrack = album.getAnyTrack();
+        if (anyTrack != null) {
+          // Take the directory of any file of the track
+          List<org.jajuk.base.File> fileList = anyTrack.getFiles();
+          if (fileList.size() > 0) {
+            Directory dir = fileList.get(0).getDirectory();
+            directories.add(dir);
+          }
         }
       }
-      // Take first track of album (to get detailed
-      // information)
-      Track anyTrack = album.getAnyTrack();
-      if (anyTrack != null) {
-        // Take the directory of any file of the track
-        List<org.jajuk.base.File> fileList = anyTrack.getFiles();
-        if (fileList.size() > 0) {
-          Directory dir = fileList.get(0).getDirectory();
-          directories.add(dir);
-        }
-        LocalAlbumThumbnail cover = new LocalAlbumThumbnail(album, getSelectedSize(), true);
-        alItemsToDisplay.add(cover);
-        // stores information on non-null covers
-        hsItems.add(cover);
+      // Force thumbs build if required, this is the longest task of this worker
+      for (Album album : albums) {
+        ThumbnailManager.refreshThumbnail(album, getSelectedSize());
       }
+
+    } finally {
+      // Make sure to reset the populating flag in case of problem
+      // Note that this flag is reseted here and not in the shortCall() method
+      // because the shortCall method is not called in case of Exception thrown
+      // in the longCall() method.
+      bPopulating = false;
+    }
+    return albums;
+  }
+
+  /**
+   * Catalog page display (must be called from the EDT)
+   */
+  @Override
+  public void shortCall(Object in) {
+    @SuppressWarnings("unchecked")
+    List<Album> albums = (List<Album>) in;
+    if (in == null) {
+      return;
+    }
+    for (Album album : albums) {
+      LocalAlbumThumbnail cover = new LocalAlbumThumbnail(album, getSelectedSize(), true);
+      alItemsToDisplay.add(cover);
+      // stores information on non-null covers
+      hsItems.add(cover);
     }
     // computes the number of pages
     int iSize = Conf.getInt(Const.CONF_CATALOG_PAGE_SIZE);
@@ -538,11 +551,10 @@ public class CatalogView extends ViewAdapter implements ComponentListener, Actio
       }
       // Populate each thumb if required (THIS IS LOOOOOONG)
       for (int i = page * Conf.getInt(Const.CONF_CATALOG_PAGE_SIZE); i < max; i++) {
-        final LocalAlbumThumbnail it = alItemsToDisplay.get(i);
-        // UI lazy loading
-        it.populate();
-        thumbs.add(it);
-        it.getIcon().addMouseListener(new MouseAdapter() {
+        final LocalAlbumThumbnail thumb = alItemsToDisplay.get(i);
+        thumb.populate();
+        thumbs.add(thumb);
+        thumb.getIcon().addMouseListener(new MouseAdapter() {
           @Override
           public void mousePressed(MouseEvent e) {
             LocalAlbumThumbnail thumb = (LocalAlbumThumbnail) ((JLabel) e.getSource()).getParent();
@@ -557,12 +569,7 @@ public class CatalogView extends ViewAdapter implements ComponentListener, Actio
         });
       }
     }
-  }
 
-  /**
-   * Catalog page display (must be called from the EDT)
-   */
-  private void displayPage() {
     // populate page selector
     // remove action listener
     jcbPage.removeActionListener(CatalogView.this);
@@ -589,7 +596,6 @@ public class CatalogView extends ViewAdapter implements ComponentListener, Actio
       }
     });
     jtfValue.requestFocusInWindow();
-    bPopulating = false;
     UtilGUI.stopWaiting();
   }
 

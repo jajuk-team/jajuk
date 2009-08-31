@@ -38,6 +38,7 @@ import org.jajuk.ui.helpers.AlbumsTableModel;
 import org.jajuk.ui.helpers.JajukTableModel;
 import org.jajuk.ui.thumbnails.LocalAlbumThumbnail;
 import org.jajuk.ui.thumbnails.ThumbnailPopup;
+import org.jajuk.ui.widgets.JajukTable;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.Messages;
@@ -77,6 +78,12 @@ public class AlbumsTableView extends AbstractTableView {
       @Override
       public Object construct() {
         AlbumsTableView.super.construct();
+        return null;
+      }
+
+      @Override
+      public void finished() {
+        jtable = new JajukTable(model, true, columnsConf);
         JMenuItem jmiShowAlbumDetails = new JMenuItem(ActionManager
             .getAction(JajukActions.SHOW_ALBUM_DETAILS));
         jmiShowAlbumDetails.putClientProperty(Const.DETAIL_SELECTION, jtable.getSelection());
@@ -144,11 +151,7 @@ public class AlbumsTableView extends AbstractTableView {
             }
           }
         });
-        return null;
-      }
 
-      @Override
-      public void finished() {
         AlbumsTableView.super.finished();
       }
     };

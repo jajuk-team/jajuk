@@ -41,6 +41,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Map;
 import java.util.StringTokenizer;
+import java.util.concurrent.ExecutionException;
 
 import javax.imageio.ImageIO;
 import javax.swing.Box;
@@ -58,9 +59,12 @@ import javax.swing.JTextArea;
 import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
+import javax.swing.SwingWorker;
 import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 import org.jajuk.ui.helpers.FontManager;
+import org.jajuk.ui.helpers.TwoStepsDisplayable;
 import org.jajuk.ui.helpers.FontManager.JajukFont;
 import org.jajuk.ui.perspectives.IPerspective;
 import org.jajuk.ui.perspectives.PerspectiveManager;
@@ -91,6 +95,9 @@ public final class UtilGUI {
 
   // Current cursor that is displayed
   private static Cursor currentCursor = DEFAULT_CURSOR;
+
+  /** Substance theme * */
+  private static String theme;
 
   private static Highlighter defaultHighlighter;
 
@@ -310,57 +317,64 @@ public final class UtilGUI {
    * @param theme
    */
   public static void setLookAndFeel(final String pTheme) {
+    // Check the theme is known, if not take the default theme
+    final Map<String, SkinInfo> themes = SubstanceLookAndFeel.getAllSkins();
+    theme = pTheme;
+    if (themes.get(theme) == null) {
+      theme = Const.LNF_DEFAULT_THEME;
+      Conf.setProperty(Const.CONF_OPTIONS_LNF, Const.LNF_DEFAULT_THEME);
+    }
+
+    // Set substance LAF
     try {
-      // Check the theme is known, if not take the default theme
-      final Map<String, SkinInfo> themes = SubstanceLookAndFeel.getAllSkins();
-      String theme = pTheme;
-      if (themes.get(theme) == null) {
-        theme = Const.LNF_DEFAULT_THEME;
-        Conf.setProperty(Const.CONF_OPTIONS_LNF, Const.LNF_DEFAULT_THEME);
-      }
-
-      // Set substance theme
       UIManager.setLookAndFeel(new SubstanceBusinessLookAndFeel());
-
-      // Set substance LAF
-      SubstanceLookAndFeel.setSkin(themes.get(theme).getClassName());
-
-      // hide some useless elements such locker for not editable labels
-      UIManager.put(SubstanceLookAndFeel.SHOW_EXTRA_WIDGETS, Boolean.FALSE);
-
-      // Store current color scheme (cannot change for the wall session)
-      colorScheme = SubstanceLookAndFeel.getCurrentSkin().getMainActiveColorScheme();
-    } catch (final Exception e) {
+    } catch (UnsupportedLookAndFeelException e) {
       Log.error(e);
     }
-    // Set view foreground colors
-    SubstanceSkin theme = SubstanceLookAndFeel.getCurrentSkin();
-    SubstanceColorScheme scheme = theme.getMainActiveColorScheme();
-    Color foregroundActive = null;
-    Color foregroundInactive = null;
-    Color backgroundActive = null;
-    Color backgroundInactive = null;
-    if (scheme.isDark()) {
-      foregroundActive = Color.BLACK;
-      foregroundInactive = Color.WHITE;
-      backgroundActive = scheme.getUltraLightColor();
-      backgroundInactive = scheme.getUltraDarkColor();
-    } else {
-      foregroundActive = Color.WHITE;
-      foregroundInactive = Color.BLACK;
-      backgroundActive = scheme.getDarkColor();
-      backgroundInactive = scheme.getLightColor();
-    }
-    UIManager.put("InternalFrame.activeTitleForeground", foregroundActive);
-    UIManager.put("InternalFrame.inactiveTitleForeground", foregroundInactive);
-    UIManager.put("InternalFrame.activeTitleBackground", backgroundActive);
-    UIManager.put("InternalFrame.inactiveTitleBackground", backgroundInactive);
-    UIManager.put("DockViewTitleBar.titleFont", FontManager.getInstance().getFont(
-        JajukFont.VIEW_FONT));
 
-    // Set windows decoration to look and feel
-    JFrame.setDefaultLookAndFeelDecorated(true);
-    JDialog.setDefaultLookAndFeelDecorated(true);
+    SwingUtilities.invokeLater(new Runnable() {
+
+      @Override
+      public void run() {
+        // Set substance LAF
+        SubstanceLookAndFeel.setSkin(themes.get(theme).getClassName());
+
+        // hide some useless elements such locker for not editable labels
+        UIManager.put(SubstanceLookAndFeel.SHOW_EXTRA_WIDGETS, Boolean.FALSE);
+
+        // Store current color scheme (cannot change for the wall session)
+        colorScheme = SubstanceLookAndFeel.getCurrentSkin().getMainActiveColorScheme();
+
+        // Set view foreground colors
+        SubstanceSkin theme = SubstanceLookAndFeel.getCurrentSkin();
+        SubstanceColorScheme scheme = theme.getMainActiveColorScheme();
+        Color foregroundActive = null;
+        Color foregroundInactive = null;
+        Color backgroundActive = null;
+        Color backgroundInactive = null;
+        if (scheme.isDark()) {
+          foregroundActive = Color.BLACK;
+          foregroundInactive = Color.WHITE;
+          backgroundActive = scheme.getUltraLightColor();
+          backgroundInactive = scheme.getUltraDarkColor();
+        } else {
+          foregroundActive = Color.WHITE;
+          foregroundInactive = Color.BLACK;
+          backgroundActive = scheme.getDarkColor();
+          backgroundInactive = scheme.getLightColor();
+        }
+        UIManager.put("InternalFrame.activeTitleForeground", foregroundActive);
+        UIManager.put("InternalFrame.inactiveTitleForeground", foregroundInactive);
+        UIManager.put("InternalFrame.activeTitleBackground", backgroundActive);
+        UIManager.put("InternalFrame.inactiveTitleBackground", backgroundInactive);
+        UIManager.put("DockViewTitleBar.titleFont", FontManager.getInstance().getFont(
+            JajukFont.VIEW_FONT));
+
+        // Set windows decoration to look and feel
+        JFrame.setDefaultLookAndFeelDecorated(true);
+        JDialog.setDefaultLookAndFeelDecorated(true);
+      }
+    });
 
   }
 
@@ -635,16 +649,47 @@ public final class UtilGUI {
   /**
    * Registers the ESCAPE key on the Panel so that it closes the Dialog
    * 
-   * @param dialog 
+   * @param dialog
    * @param pane
    */
   public static void setEscapeKeyboardAction(final JDialog dialog, JComponent pane) {
     KeyStroke stroke = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0);
     pane.registerKeyboardAction(new ActionListener() {
       public void actionPerformed(ActionEvent actionEvent) {
-        //setVisible(false);
+        // setVisible(false);
         dialog.dispose();
       }
     }, stroke, JComponent.WHEN_IN_FOCUSED_WINDOW);
+  }
+
+  /**
+   * Build GUI for a TwoStateDisplayable component.
+   * <p>
+   * <exception catching is preferred in the longCall() method without throwing
+   * it to the fastCall() one. </p>
+   * 
+   * @param displayable
+   */
+  public static void populate(final TwoStepsDisplayable displayable) {
+    SwingWorker<Object, Void> sw = new SwingWorker<Object, Void>() {
+
+      @Override
+      protected Object doInBackground() throws Exception {
+        return displayable.longCall();
+      }
+
+      @Override
+      protected void done() {
+        try {
+          Object in = get();
+          displayable.shortCall(in);
+        } catch (InterruptedException e) {
+          Log.error(e);
+        } catch (ExecutionException e) {
+          Log.error(e);
+        }
+      }
+    };
+    sw.execute();
   }
 }

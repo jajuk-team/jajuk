@@ -625,9 +625,6 @@ public class Album extends LogicalItem implements Comparable<Album> {
     // characters to be escaped
     return (sValue.toLowerCase(Locale.getDefault()).indexOf(
         pattern.toLowerCase(Locale.getDefault())) != -1);
-    
-    // test if the item property contains this
-    // property value (ignore case)
   }
 
   /**

@@ -200,8 +200,16 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
    */
   public Object construct() {
     model = populateTable();
-    jtable = new JajukTable(model, true, columnsConf);
+    return null;
+  }
 
+  /**
+   * Code used in child class SwingWorker for display computations (used in
+   * initUI())
+   * 
+   * @return
+   */
+  public void finished() {
     // Add generic menus
     jmiPlay = new JMenuItem(ActionManager.getAction(JajukActions.PLAY_SELECTION));
     jmiPlay.putClientProperty(Const.DETAIL_SELECTION, jtable.getSelection());
@@ -272,16 +280,6 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
         }
       }
     });
-    return null;
-  }
-
-  /**
-   * Code used in child class SwingWorker for display computations (used in
-   * initUI())
-   * 
-   * @return
-   */
-  public void finished() {
     // Control panel
     jpControl = new JPanel();
     jpControl.setBorder(BorderFactory.createEtchedBorder());
