@@ -596,6 +596,12 @@ public class TestHistory extends TestCase {
   }
   
   public final void testUpdateFileNameChanged() throws Exception {
+    // it seems there are some rare cases where we still have some threads doing some updates, 
+    // therefore sleep some more up-front to let that clear out before we start the test here
+    Thread.sleep(100);
+    Thread.sleep(100);
+    Thread.sleep(100);
+
     // enable history  
     Conf.setProperty(Const.CONF_HISTORY, "1");
     
@@ -647,6 +653,12 @@ public class TestHistory extends TestCase {
   }
 
   public final void testConstructorAlreadyLaunched() throws Exception {
+    // it seems there are some rare cases where we still have some threads doing some updates, 
+    // therefore sleep some more up-front to let that clear out before we start the test here
+    Thread.sleep(100);
+    Thread.sleep(100);
+    Thread.sleep(100);
+    
     // enable history  
     Conf.setProperty(Const.CONF_HISTORY, "1");
 
