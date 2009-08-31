@@ -613,7 +613,8 @@ public class TestHistory extends TestCase {
     History.getInstance().addItem("11", 123);
     
     // now it is there
-    assertEquals(1, History.getInstance().getHistory().size());
+    assertEquals(History.getInstance().getHistory().toString(), 
+        1, History.getInstance().getHistory().size());
     
     // change from id 2 to 3
     Properties detail = new Properties();
@@ -691,7 +692,8 @@ public class TestHistory extends TestCase {
         Const.DETAIL_CURRENT_FILE_ID));
     
     // now the file should be in the history already
-    assertEquals(1, hist.getHistory().size());
+    assertEquals(hist.getHistory().toString(), 
+        1, hist.getHistory().size());
     assertEquals("3", hist.getHistoryItem(0).getFileId());
   }
 
