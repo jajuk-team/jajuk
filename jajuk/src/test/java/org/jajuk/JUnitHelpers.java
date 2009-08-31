@@ -338,7 +338,7 @@ public class JUnitHelpers {
 
     // check non-existing valueOf
     try {
-      obj = Enum.valueOf(enumclass, "nonexistingenumelement");
+      Enum.valueOf(enumclass, "nonexistingenumelement");
       Assert
           .fail("Should catch exception IllegalArgumentException when calling Enum.valueOf() with incorrect enum-value!");
     } catch (IllegalArgumentException e) {
