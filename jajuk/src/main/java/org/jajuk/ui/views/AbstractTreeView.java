@@ -65,9 +65,6 @@ public abstract class AbstractTreeView extends ViewAdapter {
   /** Current selection */
   TreePath[] paths;
 
-  /** Concurrency locker * */
-  volatile short[] lock = new short[0];
-
   /** Resursive items selection */
   Set<Item> selectedRecursively = new HashSet<Item>(100);
 
