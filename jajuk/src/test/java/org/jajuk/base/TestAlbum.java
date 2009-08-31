@@ -391,13 +391,13 @@ public class TestAlbum extends TestCase {
 
   private File getFile(int i, Track track, @SuppressWarnings("unused")
   Album album) throws Exception {
-    Device device = new Device(new Integer(i).toString(), "name");
+    Device device = new Device(Integer.valueOf(i).toString(), "name");
     device.setUrl(System.getProperty("java.io.tmpdir"));
     device.mount(true);
 
-    Directory dir = new Directory(new Integer(i).toString(), "name", null, device);
+    Directory dir = new Directory(Integer.valueOf(i).toString(), "name", null, device);
 
-    return new org.jajuk.base.File(new Integer(i).toString(), "test.tst", dir, track, 120, 70);
+    return new org.jajuk.base.File(Integer.valueOf(i).toString(), "test.tst", dir, track, 120, 70);
   }
 
   /**

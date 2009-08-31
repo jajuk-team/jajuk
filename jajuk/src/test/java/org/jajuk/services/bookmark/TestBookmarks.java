@@ -231,28 +231,28 @@ public class TestBookmarks extends TestCase {
 
   @SuppressWarnings("unchecked")
   private File getFile(int i) throws Exception {
-    Style style = new Style(new Integer(i).toString(), "name");
-    Album album = new Album(new Integer(i).toString(), "name", "artis", 23);
+    Style style = new Style(Integer.valueOf(i).toString(), "name");
+    Album album = new Album(Integer.valueOf(i).toString(), "name", "artis", 23);
     album.setProperty(Const.XML_ALBUM_COVER, "none"); // don't read covers for
     // this test
 
-    Author author = new Author(new Integer(i).toString(), "name");
-    Year year = new Year(new Integer(i).toString(), "2000");
+    Author author = new Author(Integer.valueOf(i).toString(), "name");
+    Year year = new Year(Integer.valueOf(i).toString(), "2000");
 
     IPlayerImpl imp = new MockPlayer();
     Class<IPlayerImpl> cl = (Class<IPlayerImpl>) imp.getClass();
 
-    Type type = new Type(new Integer(i).toString(), "name", "mp3", cl, null);
-    Track track = new Track(new Integer(i).toString(), "name", album, style, author, 120, year, 1,
+    Type type = new Type(Integer.valueOf(i).toString(), "name", "mp3", cl, null);
+    Track track = new Track(Integer.valueOf(i).toString(), "name", album, style, author, 120, year, 1,
         type, 1);
 
-    Device device = new Device(new Integer(i).toString(), "name");
+    Device device = new Device(Integer.valueOf(i).toString(), "name");
     device.setUrl(System.getProperty("java.io.tmpdir"));
     device.mount(true);
 
-    Directory dir = new Directory(new Integer(i).toString(), "name", null, device);
+    Directory dir = new Directory(Integer.valueOf(i).toString(), "name", null, device);
 
-    return new org.jajuk.base.File(new Integer(i).toString(), "test.tst", dir, track, 120, 70);
+    return new org.jajuk.base.File(Integer.valueOf(i).toString(), "test.tst", dir, track, 120, 70);
   }
 
   // helper method to emma-coverage of the unused constructor
@@ -260,26 +260,26 @@ public class TestBookmarks extends TestCase {
   public void testPrivateConstructor() throws Exception {
     int i = 1;
     {
-      Style style = new Style(new Integer(i).toString(), "name");
-      Album album = new Album(new Integer(i).toString(), "name", "artis", 23);
+      Style style = new Style(Integer.valueOf(i).toString(), "name");
+      Album album = new Album(Integer.valueOf(i).toString(), "name", "artis", 23);
       album.setProperty(Const.XML_ALBUM_COVER, "none"); // don't read covers for
       // this test
 
-      Author author = new Author(new Integer(i).toString(), "name");
-      Year year = new Year(new Integer(i).toString(), "2000");
+      Author author = new Author(Integer.valueOf(i).toString(), "name");
+      Year year = new Year(Integer.valueOf(i).toString(), "2000");
 
       IPlayerImpl imp = new MockPlayer();
       Class<IPlayerImpl> cl = (Class<IPlayerImpl>) imp.getClass();
 
-      Type type = new Type(new Integer(i).toString(), "name", "mp3", cl, null);
-      Track track = new Track(new Integer(i).toString(), "name", album, style, author, 120, year,
+      Type type = new Type(Integer.valueOf(i).toString(), "name", "mp3", cl, null);
+      Track track = new Track(Integer.valueOf(i).toString(), "name", album, style, author, 120, year,
           1, type, 1);
 
-      Device device = new Device(new Integer(i).toString(), "name");
+      Device device = new Device(Integer.valueOf(i).toString(), "name");
       device.setUrl(System.getProperty("java.io.tmpdir"));
       device.mount(true);
 
-      Directory dir = new Directory(new Integer(i).toString(), "name", null, device);
+      Directory dir = new Directory(Integer.valueOf(i).toString(), "name", null, device);
       FileManager.getInstance().registerFile("1", "name", dir, track, 120, 10);
     }
 

@@ -73,6 +73,6 @@ public class Duration implements Comparable<Duration> {
    */
   @Override
   public int hashCode() {
-    return new Long(duration).hashCode();
+    return Long.valueOf(duration).hashCode();
   }
 }

@@ -151,7 +151,7 @@ public class TestHistory extends TestCase {
 
     // add up to max items
     for(int i = 0;i < Const.MAX_HISTORY_SIZE;i++) {
-      History.getInstance().addItem(new Integer(i).toString(), 123);
+      History.getInstance().addItem(Integer.valueOf(i).toString(), 123);
       assertEquals(i+1, History.getInstance().getHistory().size());
     }
 
@@ -184,7 +184,7 @@ public class TestHistory extends TestCase {
 
   @SuppressWarnings("unchecked")
   private File getAndRegisterFile(int i) {
-    String sID = new Integer(i).toString();
+    String sID = Integer.valueOf(i).toString();
     
     Style style = new Style(sID, "name");
     Album album = new Album(sID, "name", "artis", 23);
