@@ -129,9 +129,9 @@ public class JajukFullScreenWindow extends JWindow implements JajukWindow {
         public void specificAfterShown() {
           if (instance.graphicsDevice.isFullScreenSupported()) {
             instance.graphicsDevice.setFullScreenWindow(instance);
-            owner.setVisible(true);
-            instance.requestFocus();
           }
+          owner.setVisible(true);
+          instance.requestFocus();
         }
 
         @Override
