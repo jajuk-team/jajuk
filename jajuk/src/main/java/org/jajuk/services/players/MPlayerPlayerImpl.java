@@ -152,153 +152,159 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
     public void run() {
       try {
         BufferedReader in = new BufferedReader(new InputStreamReader(proc.getInputStream()));
-        String line = null;
-        while (!bStop) {
-          try {
-            line = in.readLine();
-            if (line == null) {
-              break;
-            }
-          } catch (IOException ieo) {
-            Log.debug("Stream closed");
-            // Thrown in readLine() when killing the track (in intro mode for
-            // ie)
-            break;
-          }
-          // Very verbose :
-          // Log.debug("Output from MPlayer: " + line);
-          if (line.matches(".*ANS_TIME_POSITION.*")) {
-            // Stream is actually opened now
-            bOpening = false;
-
-            StringTokenizer st = new StringTokenizer(line, "=");
-            st.nextToken();
-            // We need to compute the elasped time. The issue here is the fact
-            // that mplayer sometimes returns false getPos() values (for vbr).
-            // The other problem is that the user can seek forward or rewind in
-            // the track so we can't just count the system time.
-            // The solution we got is :
-            // - If user never seeked into the current track, compute the
-            // elasped time upon real system date.
-            // - If user seeked, take the mplayer time but use a vbr correction.
-            // Note however that the resulting time, while being better than the
-            // raw mplayer time can be pretty wrong (10 secs or more in some
-            // cases)
-            if (seeked) {
-              lTime = (int) (Float.parseFloat(st.nextToken()) * 1000);
-              // VBR correction
-              lTime = (long) (lTime * vbrCorrection);
-              pauseCount = 0;
-              pauseCountStamp = -1;
-            } else {
-              lTime = System.currentTimeMillis() - dateStart - pauseCount;
-            }
-            // Store current position for use at next startup
-            Conf
-                .setProperty(Const.CONF_STARTUP_LAST_POSITION, Float.toString(getCurrentPosition()));
-            // Cross-Fade test
-            if (!bFading && iFadeDuration > 0
-            // Length = 0 for some buggy audio headers
-                && lDuration > 0
-                // Does fading time happened ?
-                && lTime > (lDuration - iFadeDuration)
-                // Do not fade if the track is very short
-                && (lDuration > 3 * iFadeDuration)) {
-              bFading = true;
-              fadingVolume = fVolume;
-              // Call finish (do not leave thread to allow cross fading)
-              callFinish();
-            }
-            // If fading, decrease sound progressively
-            if (bFading) {
-              // computes the volume we have to sub to reach zero
-              // at last progress()
-              float fVolumeStep = fadingVolume
-              // we double the refresh period to make sure to
-                  // reach 0 at the end of iterations because
-                  // we don't as many mplayer response as queries,
-                  // tested on 10 & 20 sec of fading
-                  * ((float) PROGRESS_STEP / iFadeDuration);
-              float fNewVolume = fVolume - fVolumeStep;
-              // decrease volume by n% of initial volume
-              if (fNewVolume < 0) {
-                fNewVolume = 0;
-              }
-              try {
-                setVolume(fNewVolume);
-              } catch (Exception e) {
-                Log.error(e);
-              }
-            }
-            // Test end of length for intro mode
-            // Length=-1 means there is no max length
-            if (length != TO_THE_END
-            // Duration = 0 in rare case due to header issue
-                && lDuration > 0
-                // Is intro length fully played ?
-                && (lTime - (fPosition * lDuration)) > length) {
-              // No fading in intro mode
-              bFading = false;
-              // Call finish and terminate current thread
-              callFinish();
-              return;
-            }
-          } else if (line.matches("ANS_LENGTH.*")) {
-            /*
-             * To compute the current track length (used by the information
-             * panel to display remaining time and position), we use the tag
-             * duration first and the mplayer duration then if the tag duration
-             * looks wrong (example : wrongly tagged file or format that doesn't
-             * support tags like wav). Indeed, mplayer duration is sometimes
-             * wrong for VBR MP3.
-             */
-            StringTokenizer st = new StringTokenizer(line, "=");
-            st.nextToken();
-            long mplayerDuration = (long) (Float.parseFloat(st.nextToken()) * 1000);
-            long tagDuration = fCurrent.getTrack().getDuration() * 1000;
-            if (tagDuration <= 0) {
-              lDuration = mplayerDuration;
-            } else {
-              lDuration = tagDuration;
-              // Save VBR correction, used after seeking
-              vbrCorrection = ((float) tagDuration) / mplayerDuration;
-            }
-
-          }
-          // End of file
-          else if (line.matches(".*\\x2e\\x2e\\x2e.*\\(.*\\).*")) {
-            bEOF = true;
-            // Update track rate
-            fCurrent.getTrack().updateRate();
-
-            // Launch next track
+        try {
+          String line = null;
+          while (!bStop) {
             try {
-              // Do not launch next track if not opening: it means
-              // that the file is in error (EOF comes
-              // before any play) and the FIFO.finished() is processed by
-              // Player on exception processing
-              if (bOpening) {
-                bOpening = false;
+              line = in.readLine();
+              if (line == null) {
                 break;
               }
+            } catch (IOException ieo) {
+              Log.debug("Stream closed");
+              // Thrown in readLine() when killing the track (in intro mode for
+              // ie)
+              break;
+            }
+            // Very verbose :
+            // Log.debug("Output from MPlayer: " + line);
+            if (line.matches(".*ANS_TIME_POSITION.*")) {
+              // Stream is actually opened now
+              bOpening = false;
 
-              // If fading, ignore end of file
-              if (!bFading) {
+              StringTokenizer st = new StringTokenizer(line, "=");
+              st.nextToken();
+              // We need to compute the elasped time. The issue here is the fact
+              // that mplayer sometimes returns false getPos() values (for vbr).
+              // The other problem is that the user can seek forward or rewind
+              // in
+              // the track so we can't just count the system time.
+              // The solution we got is :
+              // - If user never seeked into the current track, compute the
+              // elasped time upon real system date.
+              // - If user seeked, take the mplayer time but use a vbr
+              // correction.
+              // Note however that the resulting time, while being better than
+              // the
+              // raw mplayer time can be pretty wrong (10 secs or more in some
+              // cases)
+              if (seeked) {
+                lTime = (int) (Float.parseFloat(st.nextToken()) * 1000);
+                // VBR correction
+                lTime = (long) (lTime * vbrCorrection);
+                pauseCount = 0;
+                pauseCountStamp = -1;
+              } else {
+                lTime = System.currentTimeMillis() - dateStart - pauseCount;
+              }
+              // Store current position for use at next startup
+              Conf.setProperty(Const.CONF_STARTUP_LAST_POSITION, Float
+                  .toString(getCurrentPosition()));
+              // Cross-Fade test
+              if (!bFading && iFadeDuration > 0
+              // Length = 0 for some buggy audio headers
+                  && lDuration > 0
+                  // Does fading time happened ?
+                  && lTime > (lDuration - iFadeDuration)
+                  // Do not fade if the track is very short
+                  && (lDuration > 3 * iFadeDuration)) {
+                bFading = true;
+                fadingVolume = fVolume;
+                // Call finish (do not leave thread to allow cross fading)
+                callFinish();
+              }
+              // If fading, decrease sound progressively
+              if (bFading) {
+                // computes the volume we have to sub to reach zero
+                // at last progress()
+                float fVolumeStep = fadingVolume
+                // we double the refresh period to make sure to
+                    // reach 0 at the end of iterations because
+                    // we don't as many mplayer response as queries,
+                    // tested on 10 & 20 sec of fading
+                    * ((float) PROGRESS_STEP / iFadeDuration);
+                float fNewVolume = fVolume - fVolumeStep;
+                // decrease volume by n% of initial volume
+                if (fNewVolume < 0) {
+                  fNewVolume = 0;
+                }
+                try {
+                  setVolume(fNewVolume);
+                } catch (Exception e) {
+                  Log.error(e);
+                }
+              }
+              // Test end of length for intro mode
+              // Length=-1 means there is no max length
+              if (length != TO_THE_END
+              // Duration = 0 in rare case due to header issue
+                  && lDuration > 0
+                  // Is intro length fully played ?
+                  && (lTime - (fPosition * lDuration)) > length) {
+                // No fading in intro mode
+                bFading = false;
                 // Call finish and terminate current thread
                 callFinish();
                 return;
-              } else {
-                // If fading, next track has already been launched
-                bFading = false;
               }
-            } catch (Exception e) {
-              Log.error(e);
+            } else if (line.matches("ANS_LENGTH.*")) {
+              /*
+               * To compute the current track length (used by the information
+               * panel to display remaining time and position), we use the tag
+               * duration first and the mplayer duration then if the tag
+               * duration looks wrong (example : wrongly tagged file or format
+               * that doesn't support tags like wav). Indeed, mplayer duration
+               * is sometimes wrong for VBR MP3.
+               */
+              StringTokenizer st = new StringTokenizer(line, "=");
+              st.nextToken();
+              long mplayerDuration = (long) (Float.parseFloat(st.nextToken()) * 1000);
+              long tagDuration = fCurrent.getTrack().getDuration() * 1000;
+              if (tagDuration <= 0) {
+                lDuration = mplayerDuration;
+              } else {
+                lDuration = tagDuration;
+                // Save VBR correction, used after seeking
+                vbrCorrection = ((float) tagDuration) / mplayerDuration;
+              }
+
             }
-            break;
+            // End of file
+            else if (line.matches(".*\\x2e\\x2e\\x2e.*\\(.*\\).*")) {
+              bEOF = true;
+              // Update track rate
+              fCurrent.getTrack().updateRate();
+
+              // Launch next track
+              try {
+                // Do not launch next track if not opening: it means
+                // that the file is in error (EOF comes
+                // before any play) and the FIFO.finished() is processed by
+                // Player on exception processing
+                if (bOpening) {
+                  bOpening = false;
+                  break;
+                }
+
+                // If fading, ignore end of file
+                if (!bFading) {
+                  // Call finish and terminate current thread
+                  callFinish();
+                  return;
+                } else {
+                  // If fading, next track has already been launched
+                  bFading = false;
+                }
+              } catch (Exception e) {
+                Log.error(e);
+              }
+              break;
+            }
           }
+        } finally {
+          // can reach this point at the end of file
+          in.close();
         }
-        // can reach this point at the end of file
-        in.close();
       } catch (IOException e) {
         Log.error(e);
       }
