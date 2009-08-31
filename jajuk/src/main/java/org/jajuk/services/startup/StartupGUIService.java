@@ -90,27 +90,43 @@ public class StartupGUIService {
 
   public static void fireStepOneOver() {
     if (sc != null) {
-      sc.setProgress(5, Messages.getString("Main.22"));
+      SwingUtilities.invokeLater(new Runnable() {
+        public void run() {
+          sc.setProgress(5, Messages.getString("Main.22"));
+        }
+      });
     }
   }
 
   public static void fireStepTwoOver() {
     if (sc != null) {
-      sc.setProgress(10, Messages.getString("SplashScreen.1"));
+      SwingUtilities.invokeLater(new Runnable() {
+        public void run() {
+          sc.setProgress(10, Messages.getString("SplashScreen.1"));
+        }
+      });
     }
   }
 
   public static void fireStepThreeOver() {
     if (sc != null) {
-      sc.setProgress(70, Messages.getString("SplashScreen.2"));
+      SwingUtilities.invokeLater(new Runnable() {
+        public void run() {
+          sc.setProgress(70, Messages.getString("SplashScreen.2"));
+        }
+      });
     }
   }
 
   public static void startupOver() {
     if (sc != null) {
-      sc.setProgress(100);
-      sc.splashOff();
-      sc = null;
+      SwingUtilities.invokeLater(new Runnable() {
+        public void run() {
+          sc.setProgress(100);
+          sc.splashOff();
+          sc = null;
+        }
+      });
     }
   }
 
