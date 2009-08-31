@@ -66,9 +66,9 @@ public class RefactorAction {
       Messages.showErrorMessage(18);
       return;
     }
-    String sFiles = "";
+    StringBuilder sFiles = new StringBuilder();
     for (final File f : alFiles) {
-      sFiles += f.getName() + "\n";
+      sFiles.append(f.getName()).append('\n');
     }
     if (Conf.getBoolean(Const.CONF_CONFIRMATIONS_REFACTOR_FILES)) {
       final int iResu = Messages.getChoice(Messages.getString("Confirmation_refactor_files")
