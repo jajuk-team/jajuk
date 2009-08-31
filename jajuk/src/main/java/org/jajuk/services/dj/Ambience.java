@@ -138,14 +138,14 @@ public class Ambience implements Comparable<Ambience> {
    * From String, return style1,style2,...
    */
   public String getStylesDesc() {
-    String out = "";
+    StringBuilder out = new StringBuilder();
     for (Style s : styles) {
-      out += s.getName2() + ',';
+      out.append(s.getName2()).append(',');
     }
     if (out.length() > 0) {
-      out = out.substring(0, out.length() - 1); // remove trailling ,
+      return out.substring(0, out.length() - 1); // remove trailling ,
     }
-    return out;
+    return out.toString();
   }
 
   /**
@@ -198,9 +198,9 @@ public class Ambience implements Comparable<Ambience> {
    * @return String used in DJ XML representation
    */
   public String toXML() {
-    String s = "";
+    StringBuilder s = new StringBuilder();
     for (Style style : getStyles()) {
-      s += style.getID() + ",";
+      s.append(style.getID()).append(',');
     }
     return s.substring(0, s.length() - 1); // remove last coma
   }
