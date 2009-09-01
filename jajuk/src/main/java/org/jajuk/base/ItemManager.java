@@ -63,12 +63,14 @@ public abstract class ItemManager {
    * </p>
    ****************************************************************************/
 
-  private final Set<Item> finalItems = new TreeSet<Item>();
-
+  // use an array list during startup which is faster during loading the collection
   private List<Item> startupItems = new ArrayList<Item>(100);
 
+  // also store the items by ID to have quick access if necessary
   private final Map<String, Item> internalMap = new HashMap<String, Item>(100);
 
+  // at the beginning point to the ArrayList, later this is replaced by a TreeSet to have 
+  // correct ordering.
   private Collection<Item> items = startupItems;
 
   /**
@@ -91,22 +93,21 @@ public abstract class ItemManager {
   /**
    * Switch this item manager to order mode This feature allows faster
    * collection loading As collection.xml contains ordered elements, we simply a
-   * use an arraylist to store items first, then few seconds after startup and
-   * before user could make changes to the collection, we populate a treeset
-   * from the arraylist and begin ti use it.
+   * use an ArrayList to store items first, then few seconds after startup and
+   * before user could make changes to the collection, we populate a TreeSet
+   * from the ArrayList and begin to use it.
    * 
    */
   public synchronized void switchToOrderState() {
-    for (Item item : startupItems) {
-      finalItems.add(item);
-    }
-    items = finalItems;
+    // populate a new TreeSet with the startup-items 
+    items = new TreeSet<Item>(startupItems);
+
     // Free startup memory
     startupItems = null;
   }
 
   /**
-   * Registrates a new item manager
+   * Registers a new item manager
    * 
    * @param c
    *          Managed item class
@@ -148,10 +149,10 @@ public abstract class ItemManager {
   public void removeProperty(String sProperty) {
     PropertyMetaInformation meta = getMetaInformation(sProperty);
     hmPropertiesMetaInformation.remove(sProperty);
-    applyRemoveProperty(meta); // remove this property to all items
+    applyRemoveProperty(meta); // remove this property from all items
   }
 
-  /** Remove a custom property to all items for the given manager */
+  /** Remove a custom property from all items for the given manager */
   public synchronized void applyRemoveProperty(PropertyMetaInformation meta) {
     for (Item item : items) {
       item.removeProperty(meta.getName());
@@ -159,9 +160,9 @@ public abstract class ItemManager {
   }
 
   /**
-   * Generic method to access to a parametrized list of items
+   * Generic method to access to a parameterized list of items
    * 
-   * @return the item-parametrized list
+   * @return the item-parameterized list
    * 
    * protected abstract HashMap<String, Item> getItemsMap();
    */
@@ -174,8 +175,10 @@ public abstract class ItemManager {
   }
 
   /**
+   * Attention, this method does not return a full XML, but rather an 
+   * excerpt that is then completed in Collection.commit()!
    * 
-   * @return XML representation of this manager
+   * @return (partial) XML representation of this manager
    */
   public String toXML() {
     StringBuilder sb = new StringBuilder("<").append(getLabel() + ">");
@@ -226,10 +229,11 @@ public abstract class ItemManager {
   }
 
   /**
-   * Get ItemManager manager with a given attribute name
+   * Get the manager from a given attribute name
    * 
-   * @param sItem
-   * @return
+   * @param sProperty The property to compare. 
+   *  
+   * @return an ItemManager if one is found for the property or null if none found.
    */
   public static ItemManager getItemManager(String sProperty) {
     if (Const.XML_DEVICE.equals(sProperty)) {
@@ -273,7 +277,7 @@ public abstract class ItemManager {
   }
 
   /**
-   * Perform an cleanup : delete useless items
+   * Perform cleanup : delete useless items
    */
   @SuppressWarnings("unchecked")
   public synchronized void cleanup() {
@@ -324,7 +328,7 @@ public abstract class ItemManager {
    * 
    */
   protected synchronized void cleanOrphanTracks(Item item) {
-    if (TrackManager.getInstance().getAssociatedTracks(item, false).size() == 0) {
+    if (TrackManager.getInstance().getAssociatedTracks(item, false).isEmpty()) {
       removeItem(item);
     }
   }
@@ -508,20 +512,20 @@ public abstract class ItemManager {
   }
 
   /**
-   * Return a shallow copy of all registrated items
+   * Return a shallow copy of all registered items
    * 
-   * @return a shallow copy of all registrated items
+   * @return a shallow copy of all registered items
    */
   public synchronized List<? extends Item> getItems() {
     return new ArrayList<Item>(items);
   }
 
   /**
-   * Return a shallow copy of all registrated items filtered using the provided
+   * Return a shallow copy of all registered items filtered using the provided
    * predicate*
    * 
    * @arg predicate : the predicate
-   * @return a shallow copy of all registrated items filtered using the provided
+   * @return a shallow copy of all registered items filtered using the provided
    */
   public synchronized List<? extends Item> getFilteredItems(Predicate predicate) {
     ArrayList<Item> itemsCopy = new ArrayList<Item>(items);
@@ -530,7 +534,7 @@ public abstract class ItemManager {
   }
 
   /*****************************************************************************
-   * Return all registrated enumeration CAUTION : do not call remove() on this
+   * Return all registered enumeration CAUTION : do not call remove() on this
    * iterator, you should remove effective items
    ****************************************************************************/
   protected synchronized Iterator<? extends Item> getItemsIterator() {
@@ -546,7 +550,7 @@ public abstract class ItemManager {
   }
 
   /**
-   * Force files sorting after an order change for ie Called to ensure Set
+   * Force files sorting after an order change, i.e. Called to ensure Set
    * sorting contract <br>
    * We remove all items and add them all again to force sorting
    */
@@ -559,5 +563,4 @@ public abstract class ItemManager {
       registerItem(item);
     }
   }
-
 }
