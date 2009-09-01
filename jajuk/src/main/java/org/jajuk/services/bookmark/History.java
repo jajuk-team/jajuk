@@ -62,7 +62,8 @@ import org.xml.sax.helpers.DefaultHandler;
 /**
  * Stores all files user read History is used as a model for some Swing
  * components, so any changes on the model should be done in the EDT see
- * http://java.sun.com/javase/6/docs/api/javax/swing/package-summary.html#threading
+ * http://java
+ * .sun.com/javase/6/docs/api/javax/swing/package-summary.html#threading
  * 
  */
 public final class History extends DefaultHandler implements ErrorHandler, HighPriorityObserver {
@@ -110,7 +111,9 @@ public final class History extends DefaultHandler implements ErrorHandler, HighP
     eventSubjectSet.add(JajukEvents.CLEAR_HISTORY);
     eventSubjectSet.add(JajukEvents.FILE_NAME_CHANGED);
     eventSubjectSet.add(JajukEvents.LANGUAGE_CHANGED);
-    eventSubjectSet.add(JajukEvents.WEBRADIO_LAUNCHED); // TODO: this is not handled in update, may be not required?
+    eventSubjectSet.add(JajukEvents.WEBRADIO_LAUNCHED); // TODO: this is not
+                                                        // handled in update,
+                                                        // may be not required?
     return eventSubjectSet;
   }
 
@@ -155,13 +158,7 @@ public final class History extends DefaultHandler implements ErrorHandler, HighP
 
   /** Clear history */
   public void clear() {
-    // TODO: I don't see much gain in doing this in a separate thread, clearing the 
-    // vector should be a fast task, or?
-    SwingUtilities.invokeLater(new Runnable() {
-      public void run() {
-        vHistory.clear();
-      }
-    });
+    vHistory.clear();
   }
 
   /**
@@ -308,7 +305,7 @@ public final class History extends DefaultHandler implements ErrorHandler, HighP
     }
     hiLast = vHistory.get(0);
     if (hiLast == null) {
-      return null;  // TODO: I don't think this can happen at all right now?!?
+      return null; // TODO: I don't think this can happen at all right now?!?
     }
     return hiLast.getFileId();
   }
