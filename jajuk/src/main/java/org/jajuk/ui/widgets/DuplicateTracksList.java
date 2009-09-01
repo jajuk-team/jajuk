@@ -21,7 +21,6 @@
 package org.jajuk.ui.widgets;
 
 import java.awt.BorderLayout;
-import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -36,6 +35,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+
+import net.miginfocom.swing.MigLayout;
 
 import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
@@ -79,12 +80,11 @@ public class DuplicateTracksList extends JPanel implements ListSelectionListener
     selectAllButton.setActionCommand(Messages.getString("FindDuplicateTracksAction.4"));
     selectAllButton.addActionListener(new SelectAllListener());
 
-    JPanel buttonPane = new JPanel();
-    buttonPane.setLayout(new FlowLayout(FlowLayout.CENTER));
-
-    buttonPane.add(deleteButton);
-    buttonPane.add(selectAllButton);
-    buttonPane.add(closeButton);
+    JPanel buttonPane = new JPanel(new MigLayout("ins 5,right"));
+    
+    buttonPane.add(deleteButton,"sg buttons,center");
+    buttonPane.add(selectAllButton,"sg buttons,center");
+    buttonPane.add(closeButton,"sg buttons,center");
 
     buttonPane.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
