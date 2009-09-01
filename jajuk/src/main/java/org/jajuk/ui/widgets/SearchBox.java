@@ -20,8 +20,6 @@
 
 package org.jajuk.ui.widgets;
 
-import ext.SwingWorker;
-
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -51,6 +49,7 @@ import javax.swing.Popup;
 import javax.swing.PopupFactory;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
+import javax.swing.SwingWorker;
 import javax.swing.Timer;
 import javax.swing.event.ListSelectionListener;
 
@@ -205,12 +204,12 @@ public abstract class SearchBox extends JTextField implements KeyListener, ListS
     // second test to get sure user didn't
     // typed before entering this method
     if (sTyped.length() >= MIN_CRITERIA_LENGTH) {
-      SwingWorker sw = new SwingWorker() {
+      SwingWorker<Void, Void> sw = new SwingWorker<Void, Void>() {
 
         List<SearchResult> resu = null;
 
         @Override
-        public Object construct() {
+        public Void doInBackground() {
           try {
             UtilGUI.waiting();
             resu = TrackManager.getInstance().search(sTyped);
@@ -225,7 +224,7 @@ public abstract class SearchBox extends JTextField implements KeyListener, ListS
         }
 
         @Override
-        public void finished() {
+        public void done() {
           if (resu != null && resu.size() > 0) {
             DefaultListModel model = new DefaultListModel();
             SearchBox.this.alResults = resu;
@@ -277,7 +276,7 @@ public abstract class SearchBox extends JTextField implements KeyListener, ListS
           UtilGUI.stopWaiting();
         }
       };
-      sw.start();
+      sw.execute();
     }
   }
 

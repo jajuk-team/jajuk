@@ -24,11 +24,13 @@
 
 package org.jajuk.ui.substance;
 
+import java.awt.Insets;
 import java.awt.Shape;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.RoundRectangle2D;
 
 import javax.swing.AbstractButton;
+
 
 /*
  * based on code from Xtreme Media Player
@@ -38,18 +40,20 @@ import javax.swing.AbstractButton;
  */
 public class RoundRectButtonShaper extends ButtonShaper {
 
-  public String getDisplayName() {
-    return "RoundRect";
-  }
+    @Override
+    public String getDisplayName() {
+        return "RoundRect";
+    }
 
-  public GeneralPath getButtonOutline(AbstractButton button) {
-    int width = button.getWidth() - 1;
-    int height = button.getHeight() - 1;
+    @Override
+    public Shape getButtonOutline(AbstractButton button, Insets insets, int w, int h, boolean isInner) {
+        int width = w - 1;
+        int height = h - 1;
 
-    Shape shape = new RoundRectangle2D.Double(0, 0, width, height, width / 3d, height / 3d);
-    GeneralPath generalPath = new GeneralPath(shape);
+        Shape shape = new RoundRectangle2D.Double(0, 0, width, height, width / 3d, height / 3d);
+        GeneralPath generalPath = new GeneralPath(shape);
 
-    return generalPath;
-  }
+        return generalPath;
+    }
 
 }

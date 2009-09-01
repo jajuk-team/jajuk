@@ -20,8 +20,6 @@
 
 package org.jajuk.ui.widgets;
 
-import ext.SwingWorker;
-
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
@@ -34,6 +32,8 @@ import java.io.Writer;
 import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import javax.swing.SwingWorker;
 
 import org.jajuk.services.core.SessionService;
 import org.jajuk.util.Conf;
@@ -96,9 +96,9 @@ public class JajukHtmlPanel extends HtmlPanel {
    */
   public void setURL(final URL url) {
 
-    SwingWorker sw = new ext.SwingWorker() {
+    SwingWorker<Void, Void> sw = new SwingWorker<Void, Void>() {
       @Override
-      public Object construct() {
+      public Void doInBackground() {
         File page = new File(SessionService.getConfFileByPath(Const.FILE_CACHE).getAbsolutePath()
             + '/' + UtilSystem.getOnlyFile(url.toString() + ".html"));
         try {
@@ -168,12 +168,12 @@ public class JajukHtmlPanel extends HtmlPanel {
       }
 
       @Override
-      public void finished() {
+      public void done() {
 
       }
 
     };
-    sw.start();
+    sw.execute();
   }
 
   /**

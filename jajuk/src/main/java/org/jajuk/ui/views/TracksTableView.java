@@ -26,15 +26,17 @@ import org.jajuk.ui.actions.ActionManager;
 import org.jajuk.ui.actions.JajukActions;
 import org.jajuk.ui.helpers.JajukTableModel;
 import org.jajuk.ui.helpers.TracksTableModel;
+import org.jajuk.ui.helpers.TwoStepsDisplayable;
 import org.jajuk.ui.widgets.JajukTable;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.Messages;
+import org.jajuk.util.UtilGUI;
 
 /**
  * Logical table view
  */
-public class TracksTableView extends AbstractTableView {
+public class TracksTableView extends AbstractTableView implements TwoStepsDisplayable{
 
   private static final long serialVersionUID = 1L;
 
@@ -58,9 +60,19 @@ public class TracksTableView extends AbstractTableView {
   }
 
   public void initUI() {
-    // Perform common table view initializations
-    TracksTableView.super.construct();
+    UtilGUI.populate(this);
+  }
+
+  
+   /*
+   * (non-Javadoc)
+   * 
+   * @see org.jajuk.ui.helpers.TwoStepsDisplayable#shortCall(java.lang.Object)
+   */
+  @Override
+  public void shortCall(Object in) {
     jtable = new JajukTable(model, true, columnsConf);
+    super.shortCall(null);
     // Track menu
     jmiTrackPlayAlbum = new JMenuItem(ActionManager.getAction(JajukActions.PLAY_ALBUM_SELECTION));
     jmiTrackPlayAlbum.putClientProperty(Const.DETAIL_SELECTION, jtable.getSelection());
@@ -75,9 +87,19 @@ public class TracksTableView extends AbstractTableView {
     jtable.getMenu().add(jmiBookmark);
     jtable.getMenu().addSeparator();
     jtable.getMenu().add(jmiProperties);
-    TracksTableView.super.finished();
   }
-
+  
+   /*
+   * (non-Javadoc)
+   * 
+   * @see org.jajuk.ui.helpers.TwoStepsDisplayable#longCall()
+   */
+  @Override
+  public Object longCall() {
+    super.longCall();
+    return null;
+  }
+  
   /** Fill the table */
   @Override
   public synchronized JajukTableModel populateTable() {

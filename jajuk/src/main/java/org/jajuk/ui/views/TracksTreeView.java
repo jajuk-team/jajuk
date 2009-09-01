@@ -20,8 +20,6 @@
 
 package org.jajuk.ui.views;
 
-import ext.SwingWorker;
-
 import java.awt.Component;
 import java.awt.dnd.DnDConstants;
 import java.awt.event.ActionEvent;
@@ -46,6 +44,7 @@ import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
 import javax.swing.SwingUtilities;
+import javax.swing.SwingWorker;
 import javax.swing.event.TreeExpansionEvent;
 import javax.swing.event.TreeExpansionListener;
 import javax.swing.event.TreeSelectionEvent;
@@ -620,9 +619,9 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
   public void actionPerformed(final ActionEvent e) {
     if (e.getSource() == jcbSort) {
       UtilGUI.waiting();
-      SwingWorker sw = new SwingWorker() {
+      SwingWorker<Void, Void> sw = new SwingWorker<Void, Void>() {
         @Override
-        public Object construct() {
+        public Void doInBackground() {
           // Set comparator
           Conf.setProperty(Const.CONF_LOGICAL_TREE_SORT_ORDER, Integer.toString(jcbSort
               .getSelectedIndex()));
@@ -631,12 +630,12 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
         }
 
         @Override
-        public void finished() {
+        public void done() {
           SwingUtilities.updateComponentTreeUI(jtree);
           UtilGUI.stopWaiting();
         }
       };
-      sw.start();
+      sw.execute();
     }
   }
 

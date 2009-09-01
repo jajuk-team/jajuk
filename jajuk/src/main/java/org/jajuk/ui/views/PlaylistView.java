@@ -20,8 +20,6 @@
 
 package org.jajuk.ui.views;
 
-import ext.SwingWorker;
-
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -55,6 +53,7 @@ import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
+import javax.swing.SwingWorker;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableColumn;
@@ -84,6 +83,7 @@ import org.jajuk.ui.helpers.PlaylistEditorTransferHandler;
 import org.jajuk.ui.helpers.PlaylistRepositoryTableModel;
 import org.jajuk.ui.helpers.PlaylistTableModel;
 import org.jajuk.ui.helpers.PreferencesJMenu;
+import org.jajuk.ui.helpers.TwoStepsDisplayable;
 import org.jajuk.ui.widgets.InformationJPanel;
 import org.jajuk.ui.widgets.JajukButton;
 import org.jajuk.ui.widgets.JajukJSplitPane;
@@ -894,7 +894,8 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
    * This class is not a view but the playlist upper panel of the PlaylistView
    * It leverages the Abstract Playlist code (filters...)
    */
-  class PlaylistRepository extends AbstractTableView implements ListSelectionListener {
+  class PlaylistRepository extends AbstractTableView implements ListSelectionListener,
+      TwoStepsDisplayable {
 
     private static final long serialVersionUID = 3842568503545896845L;
 
@@ -942,40 +943,47 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
      * @see org.jajuk.ui.views.IView#initUI()
      */
     public void initUI() {
-      SwingWorker sw = new SwingWorker() {
-        @Override
-        public Object construct() {
-          PlaylistRepository.super.construct();
-          return null;
-        }
+      UtilGUI.populate(this);
+    }
 
-        @Override
-        public void finished() {
-          jtable = new JajukTable(model, true, columnsConf);
-    
-          jmiRepositorySaveAs = new JMenuItem(ActionManager.getAction(JajukActions.SAVE_AS));
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.jajuk.ui.helpers.TwoStepsDisplayable#shortCall(java.lang.Object)
+     */
+    @Override
+    public void shortCall(Object in) {
+      jtable = new JajukTable(model, true, columnsConf);
+      super.shortCall(null);
+      jmiRepositorySaveAs = new JMenuItem(ActionManager.getAction(JajukActions.SAVE_AS));
 
-          jmiPrepareParty = new JMenuItem(ActionManager.getAction(JajukActions.PREPARE_PARTY));
-          pjmTracks = new PreferencesJMenu(jtable.getSelection());
+      jmiPrepareParty = new JMenuItem(ActionManager.getAction(JajukActions.PREPARE_PARTY));
+      pjmTracks = new PreferencesJMenu(jtable.getSelection());
 
-          jtable.getMenu().add(jmiPrepareParty);
-          jtable.getMenu().add(jmiRepositorySaveAs);
+      jtable.getMenu().add(jmiPrepareParty);
+      jtable.getMenu().add(jmiRepositorySaveAs);
 
-          jtable.getMenu().addSeparator();
-          jtable.getMenu().add(pjmTracks);
-          jtable.getMenu().addSeparator();
-          
-          PlaylistRepository.super.finished();
-          
-          // Add this generic menu item manually to ensure it's the last one in
-          // the list for GUI reasons
-          jtable.getMenu().add(jmiProperties);
-          jtable.getSelectionModel().addListSelectionListener(PlaylistRepository.this);
+      jtable.getMenu().addSeparator();
+      jtable.getMenu().add(pjmTracks);
+      jtable.getMenu().addSeparator();
 
-          jtbEditable.setVisible(false);
-        }
-      };
-      sw.start();
+      // Add this generic menu item manually to ensure it's the last one in
+      // the list for GUI reasons
+      jtable.getMenu().add(jmiProperties);
+      jtable.getSelectionModel().addListSelectionListener(PlaylistRepository.this);
+
+      jtbEditable.setVisible(false);
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.jajuk.ui.helpers.TwoStepsDisplayable#longCall()
+     */
+    @Override
+    public Object longCall() {
+      super.longCall();
+      return null;
     }
 
     public void valueChanged(ListSelectionEvent e) {
@@ -983,12 +991,12 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
         return;
       }
 
-      SwingWorker sw = new SwingWorker() {
+      SwingWorker<Void, Void> sw = new SwingWorker<Void, Void>() {
         Playlist playlist;
         boolean bErrorLoading = false;
 
         @Override
-        public void finished() {
+        public void done() {
           if (!bErrorLoading && playlist != null) {
             selectPlaylist(playlist);
             jmiPrepareParty.putClientProperty(Const.DETAIL_SELECTION, playlist);
@@ -997,7 +1005,7 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
         }
 
         @Override
-        public Object construct() {
+        public Void doInBackground() {
           int selectedRow = jtable.getSelectedRow();
           if (selectedRow < 0) {
             return null;
@@ -1021,7 +1029,7 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
         }
 
       };
-      sw.start();
+      sw.execute();
     }
 
   }

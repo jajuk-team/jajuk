@@ -25,7 +25,6 @@ import static org.jajuk.ui.actions.JajukActions.PAUSE_RESUME_TRACK;
 import static org.jajuk.ui.actions.JajukActions.PREVIOUS_TRACK;
 import static org.jajuk.ui.actions.JajukActions.STOP_TRACK;
 import ext.DropDownButton;
-import ext.SwingWorker;
 
 import java.awt.Dimension;
 import java.awt.EventQueue;
@@ -55,6 +54,7 @@ import javax.swing.JPopupMenu;
 import javax.swing.JRootPane;
 import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
+import javax.swing.SwingWorker;
 import javax.swing.event.ListSelectionEvent;
 
 import org.jajuk.base.File;
@@ -344,9 +344,9 @@ public final class JajukSlimbar extends JFrame implements JajukWindow, Observer,
       private static final long serialVersionUID = 1L;
 
       public void valueChanged(final ListSelectionEvent e) {
-        SwingWorker sw = new SwingWorker() {
+        SwingWorker<Void, Void> sw = new SwingWorker<Void, Void>() {
           @Override
-          public Object construct() {
+          public Void doInBackground() {
             if (!e.getValueIsAdjusting()) {
               SearchResult sr = sbSearch.getResult(sbSearch.getSelectedIndex());
               try {
@@ -368,14 +368,14 @@ public final class JajukSlimbar extends JFrame implements JajukWindow, Observer,
           }
 
           @Override
-          public void finished() {
+          public void done() {
             if (!e.getValueIsAdjusting()) {
               sbSearch.hidePopup();
               requestFocusInWindow();
             }
           }
         };
-        sw.start();
+        sw.execute();
       }
     };
 

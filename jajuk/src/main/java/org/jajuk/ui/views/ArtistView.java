@@ -20,7 +20,6 @@
  */
 package org.jajuk.ui.views;
 
-import ext.SwingWorker;
 import ext.services.lastfm.ArtistInfo;
 import ext.services.lastfm.LastFmService;
 
@@ -42,17 +41,19 @@ import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.services.players.QueueModel;
 import org.jajuk.services.players.StackItem;
+import org.jajuk.ui.helpers.TwoStepsDisplayable;
 import org.jajuk.ui.thumbnails.LastFmAuthorThumbnail;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilFeatures;
+import org.jajuk.util.UtilGUI;
 import org.jdesktop.swingx.JXBusyLabel;
 
 /**
  * Display Artist bio and albums
  */
-public class ArtistView extends SuggestionView {
+public class ArtistView extends SuggestionView implements TwoStepsDisplayable {
 
   private static final long serialVersionUID = 1L;
 
@@ -61,6 +62,10 @@ public class ArtistView extends SuggestionView {
 
   /** The artist bio (from last.fm wiki) */
   private JTextArea jtaArtistDesc;
+
+  private JScrollPane jspAlbums;
+  private String bio;
+  private ArtistInfo artistInfo;
 
   /*
    * (non-Javadoc)
@@ -110,78 +115,7 @@ public class ArtistView extends SuggestionView {
    * </p>
    */
   private void displayAuthor() {
-    SwingWorker sw = new SwingWorker() {
-      JScrollPane jspAlbums;
-      String bio;
-      ArtistInfo artistInfo;
-
-      @Override
-      public Object construct() {
-        // Call last.fm wiki
-        bio = LastFmService.getInstance().getWikiText(author);
-        jspAlbums = getLastFMSuggestionsPanel(SuggestionType.OTHERS_ALBUMS, true);
-        artistInfo = LastFmService.getInstance().getArtist(author);
-        return null;
-      }
-
-      @Override
-      public void finished() {
-        super.finished();
-        removeAll();
-        // Artist unknown from last.fm, leave
-        if (artistInfo == null
-        // If image url is void, last.fm doesn't provide enough data about this
-            // artist, we reset the view
-            || StringUtils.isBlank(artistInfo.getImageUrl())) {
-          reset();
-          return;
-        }
-        authorThumb = new LastFmAuthorThumbnail(artistInfo);
-        // No known icon next to artist thumb
-        authorThumb.setArtistView(true);
-        authorThumb.populate();
-       
-        jtaArtistDesc = new JTextArea(bio) {
-          private static final long serialVersionUID = 9217998016482118852L;
-
-          // We set the margin this way, setMargin() doesn't work due to
-          // existing border
-          @Override
-          public Insets getInsets() {
-            return new Insets(2, 4, 0, 4);
-          }
-        };
-        jtaArtistDesc.setBorder(null);
-        jtaArtistDesc.setEditable(false);
-        jtaArtistDesc.setLineWrap(true);
-        jtaArtistDesc.setWrapStyleWord(true);
-        jtaArtistDesc.setOpaque(false);
-
-        JScrollPane jspWiki = new JScrollPane(jtaArtistDesc);
-        jspWiki.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-        jspWiki.setBorder(null);
-
-        jspWiki.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-
-        // Add items, layout is different according wiki text availability
-        if (StringUtils.isNotBlank(jtaArtistDesc.getText())) {
-          setLayout(new MigLayout("ins 5,gapy 5", "[grow]", "[grow][20%!][grow]"));
-          add(authorThumb, "center,wrap");
-          // don't add the textarea if no wiki text available
-          add(jspWiki, "growx,wrap");
-          add(jspAlbums, "grow,wrap");
-        } else {
-          setLayout(new MigLayout("ins 5,gapy 5", "[grow]"));
-          add(authorThumb, "center,wrap");
-          // don't add the textarea if no wiki text available
-          add(jspAlbums, "grow,wrap");
-        }
-        revalidate();
-        repaint();
-      }
-
-    };
-    sw.start();
+    UtilGUI.populate(this);
   }
 
   /*
@@ -255,6 +189,80 @@ public class ArtistView extends SuggestionView {
     removeAll();
     setLayout(new MigLayout("ins 5,gapy 5", "[grow]"));
     add(getNothingFoundPanel());
+    revalidate();
+    repaint();
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.jajuk.ui.helpers.TwoStepsDisplayable#longCall()
+   */
+  @Override
+  public Object longCall() {
+    // Call last.fm wiki
+    bio = LastFmService.getInstance().getWikiText(author);
+    jspAlbums = getLastFMSuggestionsPanel(SuggestionType.OTHERS_ALBUMS, true);
+    artistInfo = LastFmService.getInstance().getArtist(author);
+    return null;
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.jajuk.ui.helpers.TwoStepsDisplayable#shortCall(java.lang.Object)
+   */
+  @Override
+  public void shortCall(Object in) {
+    removeAll();
+    // Artist unknown from last.fm, leave
+    if (artistInfo == null
+    // If image url is void, last.fm doesn't provide enough data about this
+        // artist, we reset the view
+        || StringUtils.isBlank(artistInfo.getImageUrl())) {
+      reset();
+      return;
+    }
+    authorThumb = new LastFmAuthorThumbnail(artistInfo);
+    // No known icon next to artist thumb
+    authorThumb.setArtistView(true);
+    authorThumb.populate();
+
+    jtaArtistDesc = new JTextArea(bio) {
+      private static final long serialVersionUID = 9217998016482118852L;
+
+      // We set the margin this way, setMargin() doesn't work due to
+      // existing border
+      @Override
+      public Insets getInsets() {
+        return new Insets(2, 4, 0, 4);
+      }
+    };
+    jtaArtistDesc.setBorder(null);
+    jtaArtistDesc.setEditable(false);
+    jtaArtistDesc.setLineWrap(true);
+    jtaArtistDesc.setWrapStyleWord(true);
+    jtaArtistDesc.setOpaque(false);
+
+    JScrollPane jspWiki = new JScrollPane(jtaArtistDesc);
+    jspWiki.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+    jspWiki.setBorder(null);
+
+    jspWiki.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+
+    // Add items, layout is different according wiki text availability
+    if (StringUtils.isNotBlank(jtaArtistDesc.getText())) {
+      setLayout(new MigLayout("ins 5,gapy 5", "[grow]", "[grow][20%!][grow]"));
+      add(authorThumb, "center,wrap");
+      // don't add the textarea if no wiki text available
+      add(jspWiki, "growx,wrap");
+      add(jspAlbums, "grow,wrap");
+    } else {
+      setLayout(new MigLayout("ins 5,gapy 5", "[grow]"));
+      add(authorThumb, "center,wrap");
+      // don't add the textarea if no wiki text available
+      add(jspAlbums, "grow,wrap");
+    }
     revalidate();
     repaint();
   }

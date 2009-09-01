@@ -20,7 +20,6 @@
 
 package org.jajuk.ui.thumbnails;
 
-import ext.SwingWorker;
 import ext.services.lastfm.AlbumInfo;
 import ext.services.lastfm.LastFmService;
 import ext.services.lastfm.TrackInfo;
@@ -42,6 +41,7 @@ import org.jajuk.base.Album;
 import org.jajuk.base.AlbumManager;
 import org.jajuk.base.Item;
 import org.jajuk.ui.helpers.FontManager;
+import org.jajuk.ui.helpers.TwoStepsDisplayable;
 import org.jajuk.ui.helpers.FontManager.JajukFont;
 import org.jajuk.util.Const;
 import org.jajuk.util.DownloadManager;
@@ -57,7 +57,7 @@ import org.jdesktop.swingx.border.DropShadowBorder;
  * Last.FM Album thumb represented as album cover + (optionally) others text
  * information display...
  */
-public class LastFmAlbumThumbnail extends AbstractThumbnail {
+public class LastFmAlbumThumbnail extends AbstractThumbnail implements TwoStepsDisplayable {
 
   private static final long serialVersionUID = -804471264407148566L;
 
@@ -79,102 +79,7 @@ public class LastFmAlbumThumbnail extends AbstractThumbnail {
 
   @Override
   public void populate() {
-    jlIcon = new JLabel();
-
-    SwingWorker sw = new ext.SwingWorker() {
-
-      ImageIcon ii;
-
-      @Override
-      public Object construct() {
-        try {
-          // Check if album image is null
-          String albumUrl = album.getBigCoverURL();
-          if (StringUtils.isBlank(albumUrl)) {
-            return null;
-          }
-          // Download thumb
-          URL remote = new URL(albumUrl);
-          // Download image and store file reference (to generate the
-          // popup thumb for ie)
-          fCover = DownloadManager.downloadToCache(remote);
-          BufferedImage image = ImageIO.read(fCover);
-          if (image == null) {
-            Log.warn("Could not read cover from: " + fCover.getAbsolutePath());
-            return null;
-          }
-          ImageIcon downloadedImage = new ImageIcon(image);
-          ii = UtilGUI.getScaledImage(downloadedImage, 100);
-          // Free images memory
-          downloadedImage.getImage().flush();
-          image.flush();
-        } catch (FileNotFoundException e) {
-          // only report a warning for FileNotFoundException and do not show a
-          // stacktrace in the logfile as it is happening frequently
-          Log.warn("Could not load image, no content found at address: " + e.getMessage());
-        } catch (SocketTimeoutException e) {
-          // only report a warning for FileNotFoundException and do not show a
-          // stacktrace in the logfile as it is happening frequently
-          Log.warn("Could not load image, timed out while reading address: " + e.getMessage());
-        } catch (Exception e) {
-          Log.error(e);
-        }
-        return null;
-      }
-
-      @Override
-      public void finished() {
-        // Check if author is null
-        if (ii == null) {
-          return;
-        }
-        super.finished();
-        postPopulate();
-        jlIcon.setIcon(ii);
-        setLayout(new MigLayout("ins 0,gapy 2"));
-        add(jlIcon, "center,wrap");
-        JLabel jlTitle;
-        String fullTitle = album.getTitle();
-        // Add year if available
-        String releaseDate = album.getReleaseDateString();
-        if (StringUtils.isNotBlank(releaseDate)) {
-          fullTitle += " (" + releaseDate + ")";
-        }
-        int textLength = 15;
-        if (isArtistView()) {
-          textLength = 50;
-        }
-        if (bKnown) {
-          // Album known in collection, display its name in bold
-          jlTitle = new JLabel(UtilString.getLimitedString(fullTitle, textLength), IconLoader
-              .getIcon(JajukIcons.ALBUM), JLabel.CENTER);
-          jlTitle.setFont(FontManager.getInstance().getFont(JajukFont.BOLD));
-        } else {
-          jlTitle = new JLabel(UtilString.getLimitedString(fullTitle, textLength));
-          jlTitle.setFont(FontManager.getInstance().getFont(JajukFont.PLAIN));
-        }
-        jlTitle.setToolTipText(album.getTitle());
-        add(jlTitle, "center");
-        jlIcon.setBorder(new DropShadowBorder(Color.BLACK, 5, 0.5f, 5, false, true, false, true));
-        // disable inadequate menu items
-        jmiCDDBWizard.setEnabled(false);
-        jmiGetCovers.setEnabled(false);
-        if (getItem() == null) {
-          jmiDelete.setEnabled(false);
-          jmiPlay.setEnabled(false);
-          jmiPlayRepeat.setEnabled(false);
-          jmiPlayShuffle.setEnabled(false);
-          jmiFrontPush.setEnabled(false);
-          jmiPush.setEnabled(false);
-          jmiProperties.setEnabled(false);
-        }
-        // Set URL to open
-        jmiOpenLastFMSite.putClientProperty(Const.DETAIL_CONTENT, album.getUrl());
-
-      }
-
-    };
-    sw.start();
+    UtilGUI.populate(this);
   }
 
   /*
@@ -248,6 +153,106 @@ public class LastFmAlbumThumbnail extends AbstractThumbnail {
       // Open the last.FM page
       jmiOpenLastFMSite.doClick();
     }
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.jajuk.ui.helpers.TwoStepsDisplayable#longCall()
+   */
+  @Override
+  public Object longCall() {
+    ImageIcon ii = null;
+    try {
+      // Check if album image is null
+      String albumUrl = album.getBigCoverURL();
+      if (StringUtils.isBlank(albumUrl)) {
+        return null;
+      }
+      // Download thumb
+      URL remote = new URL(albumUrl);
+      // Download image and store file reference (to generate the
+      // popup thumb for ie)
+      fCover = DownloadManager.downloadToCache(remote);
+      BufferedImage image = ImageIO.read(fCover);
+      if (image == null) {
+        Log.warn("Could not read cover from: " + fCover.getAbsolutePath());
+        return null;
+      }
+      ImageIcon downloadedImage = new ImageIcon(image);
+      ii = UtilGUI.getScaledImage(downloadedImage, 100);
+      // Free images memory
+      downloadedImage.getImage().flush();
+      image.flush();
+    } catch (FileNotFoundException e) {
+      // only report a warning for FileNotFoundException and do not show a
+      // stacktrace in the logfile as it is happening frequently
+      Log.warn("Could not load image, no content found at address: " + e.getMessage());
+    } catch (SocketTimeoutException e) {
+      // only report a warning for FileNotFoundException and do not show a
+      // stacktrace in the logfile as it is happening frequently
+      Log.warn("Could not load image, timed out while reading address: " + e.getMessage());
+    } catch (Exception e) {
+      Log.error(e);
+    }
+    return ii;
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.jajuk.ui.helpers.TwoStepsDisplayable#shortCall(java.lang.Object)
+   */
+  @Override
+  public void shortCall(Object in) {
+    ImageIcon ii = (ImageIcon) in;
+    // Check if author is null
+    if (ii == null) {
+      return;
+    }
+    jlIcon = new JLabel();
+    postPopulate();
+    jlIcon.setIcon(ii);
+    setLayout(new MigLayout("ins 0,gapy 2"));
+    add(jlIcon, "center,wrap");
+    JLabel jlTitle;
+    String fullTitle = album.getTitle();
+    // Add year if available
+    String releaseDate = album.getReleaseDateString();
+    if (StringUtils.isNotBlank(releaseDate)) {
+      fullTitle += " (" + releaseDate + ")";
+    }
+    int textLength = 15;
+    if (isArtistView()) {
+      textLength = 50;
+    }
+    if (bKnown) {
+      // Album known in collection, display its name in bold
+      jlTitle = new JLabel(UtilString.getLimitedString(fullTitle, textLength), IconLoader
+          .getIcon(JajukIcons.ALBUM), JLabel.CENTER);
+      jlTitle.setFont(FontManager.getInstance().getFont(JajukFont.BOLD));
+    } else {
+      jlTitle = new JLabel(UtilString.getLimitedString(fullTitle, textLength));
+      jlTitle.setFont(FontManager.getInstance().getFont(JajukFont.PLAIN));
+    }
+    jlTitle.setToolTipText(album.getTitle());
+    add(jlTitle, "center");
+    jlIcon.setBorder(new DropShadowBorder(Color.BLACK, 5, 0.5f, 5, false, true, false, true));
+    // disable inadequate menu items
+    jmiCDDBWizard.setEnabled(false);
+    jmiGetCovers.setEnabled(false);
+    if (getItem() == null) {
+      jmiDelete.setEnabled(false);
+      jmiPlay.setEnabled(false);
+      jmiPlayRepeat.setEnabled(false);
+      jmiPlayShuffle.setEnabled(false);
+      jmiFrontPush.setEnabled(false);
+      jmiPush.setEnabled(false);
+      jmiProperties.setEnabled(false);
+    }
+    // Set URL to open
+    jmiOpenLastFMSite.putClientProperty(Const.DETAIL_CONTENT, album.getUrl());
+
   }
 
 }

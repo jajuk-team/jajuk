@@ -26,15 +26,17 @@ import org.jajuk.ui.actions.ActionManager;
 import org.jajuk.ui.actions.JajukActions;
 import org.jajuk.ui.helpers.FilesTableModel;
 import org.jajuk.ui.helpers.JajukTableModel;
+import org.jajuk.ui.helpers.TwoStepsDisplayable;
 import org.jajuk.ui.widgets.JajukTable;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.Messages;
+import org.jajuk.util.UtilGUI;
 
 /**
  * Logical table view
  */
-public class FilesTableView extends AbstractTableView {
+public class FilesTableView extends AbstractTableView implements TwoStepsDisplayable {
 
   private static final long serialVersionUID = 1L;
 
@@ -56,10 +58,18 @@ public class FilesTableView extends AbstractTableView {
   }
 
   public void initUI() {
-    // Perform common table view initializations
-    FilesTableView.super.construct();
+    UtilGUI.populate(this);
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.jajuk.ui.helpers.TwoStepsDisplayable#shortCall(java.lang.Object)
+   */
+  @Override
+  public void shortCall(Object in) {
     jtable = new JajukTable(model, true, columnsConf);
-    
+    super.shortCall(null);
     // File menu
     jmiFilePlayDirectory = new JMenuItem(ActionManager
         .getAction(JajukActions.PLAY_DIRECTORY_SELECTION));
@@ -72,8 +82,17 @@ public class FilesTableView extends AbstractTableView {
     jtable.getMenu().add(jmiBookmark);
     jtable.getMenu().addSeparator();
     jtable.getMenu().add(jmiProperties);
+  }
 
-    FilesTableView.super.finished();
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.jajuk.ui.helpers.TwoStepsDisplayable#longCall()
+   */
+  @Override
+  public Object longCall() {
+    super.longCall();
+    return null;
   }
 
   /** populate the table */

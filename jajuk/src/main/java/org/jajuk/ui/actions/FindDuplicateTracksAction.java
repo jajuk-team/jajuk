@@ -20,8 +20,6 @@
 
 package org.jajuk.ui.actions;
 
-import ext.SwingWorker;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -31,6 +29,7 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
+import javax.swing.SwingWorker;
 
 import org.jajuk.base.File;
 import org.jajuk.base.Track;
@@ -56,12 +55,12 @@ public class FindDuplicateTracksAction extends JajukAction {
   @Override
   public void perform(final ActionEvent evt) throws Exception {
     UtilGUI.waiting();
-    SwingWorker sw = new SwingWorker() {
+    SwingWorker<Void, Void> sw = new SwingWorker<Void, Void>() {
 
       private List<List<File>> duplicateFilesList = null;
 
       @Override
-      public Object construct() {
+      protected Void doInBackground() throws Exception {
         duplicateFilesList = new ArrayList<List<File>>();
         ReadOnlyIterator<Track> tracks = TrackManager.getInstance().getTracksIterator();
         while (tracks.hasNext()) {
@@ -74,8 +73,7 @@ public class FindDuplicateTracksAction extends JajukAction {
         return null;
       }
 
-      @Override
-      public void finished() {
+      public void done() {
         try {
           if (duplicateFilesList.size() < 1) {
             Messages.showInfoMessage(Messages.getString("FindDuplicateTracksAction.0"));
@@ -107,6 +105,6 @@ public class FindDuplicateTracksAction extends JajukAction {
         }
       }
     };
-    sw.start();
+    sw.execute();
   }
 }

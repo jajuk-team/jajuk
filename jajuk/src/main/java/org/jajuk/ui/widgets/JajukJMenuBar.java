@@ -36,7 +36,6 @@ import static org.jajuk.ui.actions.JajukActions.SHUFFLE_MODE;
 import static org.jajuk.ui.actions.JajukActions.SIMPLE_DEVICE_WIZARD;
 import static org.jajuk.ui.actions.JajukActions.TIP_OF_THE_DAY;
 import static org.jajuk.ui.actions.JajukActions.VIEW_RESTORE_DEFAULTS;
-import ext.SwingWorker;
 
 import java.awt.BorderLayout;
 import java.awt.Desktop;
@@ -53,6 +52,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.SwingUtilities;
+import javax.swing.SwingWorker;
 
 import org.apache.commons.lang.StringUtils;
 import org.jajuk.events.JajukEvent;
@@ -380,16 +380,16 @@ public final class JajukJMenuBar extends JMenuBar implements Observer {
     add(eastmenu, BorderLayout.EAST);
 
     // Check for new release and display the icon if a new release is available
-    SwingWorker sw = new SwingWorker() {
+    SwingWorker<Void, Void> sw = new SwingWorker<Void, Void>() {
 
       @Override
-      public Object construct() {
+      public Void doInBackground() {
         UpgradeManager.checkForUpdate();
         return null;
       }
 
       @Override
-      public void finished() {
+      public void done() {
         // add the new release label if required
         if (UpgradeManager.getNewVersionName() != null) {
           jlUpdate = new JLabel(" ", IconLoader.getIcon(JajukIcons.UPDATE_MANAGER), JLabel.RIGHT);
@@ -408,7 +408,7 @@ public final class JajukJMenuBar extends JMenuBar implements Observer {
     // access option is not set
     if (Conf.getBoolean(Const.CONF_CHECK_FOR_UPDATE)
         && !Conf.getBoolean(Const.CONF_NETWORK_NONE_INTERNET_ACCESS)) {
-      sw.start();
+      sw.execute();
     }
     ObservationManager.register(this);
   }

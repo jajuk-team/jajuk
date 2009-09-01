@@ -19,8 +19,6 @@
  */
 package org.jajuk.ui.widgets;
 
-import ext.SwingWorker;
-
 import java.awt.Component;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -36,6 +34,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
+import javax.swing.SwingWorker;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.plaf.basic.BasicComboBoxRenderer;
 
@@ -157,9 +156,9 @@ public final class SearchJPanel extends JXPanel implements Observer, ActionListe
       private static final long serialVersionUID = 1L;
 
       public void valueChanged(final ListSelectionEvent e) {
-        SwingWorker sw = new SwingWorker() {
+        SwingWorker<Void, Void> sw = new SwingWorker<Void, Void>() {
           @Override
-          public Object construct() {
+          public Void doInBackground() {
             if (!e.getValueIsAdjusting()) {
               SearchResult sr = sbSearch.getResult(sbSearch.getSelectedIndex());
               try {
@@ -181,14 +180,14 @@ public final class SearchJPanel extends JXPanel implements Observer, ActionListe
           }
 
           @Override
-          public void finished() {
+          public void done() {
             if (!e.getValueIsAdjusting()) {
               sbSearch.hidePopup();
               requestFocusInWindow();
             }
           }
         };
-        sw.start();
+        sw.execute();
       }
     };
 

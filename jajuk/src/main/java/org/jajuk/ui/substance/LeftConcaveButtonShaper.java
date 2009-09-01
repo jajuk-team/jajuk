@@ -24,6 +24,7 @@
 
 package org.jajuk.ui.substance;
 
+import java.awt.Insets;
 import java.awt.Shape;
 import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
@@ -31,6 +32,7 @@ import java.awt.geom.GeneralPath;
 import java.awt.geom.RoundRectangle2D;
 
 import javax.swing.AbstractButton;
+
 
 /*
  * based on code from Xtreme Media Player
@@ -40,27 +42,30 @@ import javax.swing.AbstractButton;
  */
 public class LeftConcaveButtonShaper extends ButtonShaper {
 
-  private int concaveDiameter;
+    private int concaveDiameter;
 
-  public LeftConcaveButtonShaper(int concaveDiameter) {
-    super();
-    this.concaveDiameter = concaveDiameter;
-  }
+    public LeftConcaveButtonShaper(int concaveDiameter) {
+        super();
+        this.concaveDiameter = concaveDiameter;
+    }
 
-  public String getDisplayName() {
-    return "LeftConcave";
-  }
+    @Override
+    public String getDisplayName() {
+        return "LeftConcave";
+    }
 
-  public GeneralPath getButtonOutline(AbstractButton button) {
-    int width = button.getWidth() - 1;
-    int height = button.getHeight() - 1;
-    int z = concaveDiameter / 3;
+    @Override
+    public Shape getButtonOutline(AbstractButton button, Insets insets, int w, int h, boolean isInner) {
+        int width = w - 1;
+        int height = h - 1;
 
-    Shape shape = new Ellipse2D.Double(0, 0, z, height);
-    Area area = new Area(new RoundRectangle2D.Double(z / 2d, 0, width - z, height, z, z));
-    area.subtract(new Area(shape));
+        int z = concaveDiameter / 3;
 
-    return new GeneralPath(area);
-  }
+        Shape shape = new Ellipse2D.Double(0, 0, z, height);
+        Area area = new Area(new RoundRectangle2D.Double(z / 2d, 0, width - z, height, z, z));
+        area.subtract(new Area(shape));
+
+        return new GeneralPath(area);
+    }
 
 }

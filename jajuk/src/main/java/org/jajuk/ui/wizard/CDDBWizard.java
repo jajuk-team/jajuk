@@ -24,7 +24,6 @@ import entagged.freedb.FreedbAlbum;
 import entagged.freedb.FreedbException;
 import entagged.freedb.FreedbQueryResult;
 import entagged.freedb.FreedbReadResult;
-import ext.SwingWorker;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -35,6 +34,7 @@ import java.util.Locale;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
+import javax.swing.SwingWorker;
 
 import net.miginfocom.swing.MigLayout;
 
@@ -97,10 +97,10 @@ public class CDDBWizard extends JajukJDialog implements ActionListener {
     // windows title: absolute path name of the given directory
     setTitle(Messages.getString("CDDBWizard.19"));
     setModal(true);
-    SwingWorker sw = new SwingWorker() {
+    SwingWorker<Void, Void> sw = new SwingWorker<Void, Void>() {
 
       @Override
-      public Object construct() {
+      public Void doInBackground() {
         try {
           // Put an error message if no tracks were found
           if (tracks.size() == 0) {
@@ -132,14 +132,14 @@ public class CDDBWizard extends JajukJDialog implements ActionListener {
       }
 
       @Override
-      public void finished() {
+      public void done() {
         if (foundAlbums != null && foundAlbums.length > 0) {
           jtable = populateTable();
           initUI();
         }
       }
     };
-    sw.start();
+    sw.execute();
   }
 
   /** Fill the table */

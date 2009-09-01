@@ -20,8 +20,6 @@
 
 package org.jajuk.ui.views;
 
-import ext.SwingWorker;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -32,6 +30,7 @@ import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
+import javax.swing.SwingWorker;
 
 import net.miginfocom.swing.MigLayout;
 
@@ -91,9 +90,9 @@ public class CDScanView extends ViewAdapter implements ActionListener {
         return;
       }
 
-      final SwingWorker sw = new SwingWorker() {
+      SwingWorker<Void, Void> sw = new SwingWorker<Void, Void>() {
         @Override
-        public Object construct() {
+        public Void doInBackground() {
           if (!"".equals(jtfName.getText().trim()) && !"".equals(jtfMountPoint.getText().trim())) {
             Device device = null;
             device = DeviceManager.getInstance().registerDevice(jtfName.getText().trim(), 1,
@@ -110,16 +109,15 @@ public class CDScanView extends ViewAdapter implements ActionListener {
             }
           }
           return null;
-
         }
 
         @Override
-        public void finished() {
+        public void done() {
           jtfName.setText("");
           jtfName.requestFocusInWindow();
         }
       };
-      sw.start();
+      sw.execute();
     } else if (e.getSource() == jbUrl) {
       final JajukFileChooser jfc = new JajukFileChooser(new JajukFileFilter(DirectoryFilter
           .getInstance()));

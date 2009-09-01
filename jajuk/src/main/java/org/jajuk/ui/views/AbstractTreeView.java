@@ -20,8 +20,6 @@
 
 package org.jajuk.ui.views;
 
-import ext.SwingWorker;
-
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -36,6 +34,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTree;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
+import javax.swing.SwingWorker;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
@@ -209,9 +208,9 @@ public abstract class AbstractTreeView extends ViewAdapter {
     if (subject.equals(JajukEvents.DEVICE_MOUNT) || subject.equals(JajukEvents.DEVICE_UNMOUNT)
         || subject.equals(JajukEvents.DEVICE_REFRESH)
         || subject.equals(JajukEvents.PARAMETERS_CHANGE)) {
-      SwingWorker sw = new SwingWorker() {
+      SwingWorker<Void, Void> sw = new SwingWorker<Void, Void>() {
         @Override
-        public Object construct() {
+        public Void doInBackground() {
           if (jspTree != null) {
             pos = jspTree.getVerticalScrollBar().getValue();
           }
@@ -220,7 +219,7 @@ public abstract class AbstractTreeView extends ViewAdapter {
         }
 
         @Override
-        public void finished() {
+        public void done() {
           SwingUtilities.updateComponentTreeUI(jtree);
           bAutoCollapse = true;
           expand();
@@ -238,7 +237,7 @@ public abstract class AbstractTreeView extends ViewAdapter {
 
         }
       };
-      sw.start();
+      sw.execute();
       // Make sure to refresh cells (useful to remove highlighters for ie)
       repaint();
     }

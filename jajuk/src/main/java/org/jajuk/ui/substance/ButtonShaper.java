@@ -27,6 +27,7 @@ package org.jajuk.ui.substance;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Insets;
+import java.awt.Shape;
 import java.awt.geom.GeneralPath;
 
 import javax.swing.AbstractButton;
@@ -45,56 +46,54 @@ import org.jvnet.substance.utils.border.SubstanceButtonBorder;
  */
 public abstract class ButtonShaper implements SubstanceButtonShaper {
 
-  public Dimension getPreferredSize(AbstractButton button, Dimension uiPreferredSize) {
-    if (button.getClientProperty(SubstanceButtonUI.BORDER_COMPUTED) == null) {
-      boolean isBorderComputing = (button.getClientProperty(SubstanceButtonUI.BORDER_COMPUTING) != null);
-      Border border = button.getBorder();
-      int uiw = uiPreferredSize.width;
-      int uih = uiPreferredSize.height;
-      Insets bi = border.getBorderInsets(button);
-      if (!isBorderComputing) {
-        button.setBorder(null);
-      }
-      uiPreferredSize.setSize(uiw - bi.left - bi.right, uih - bi.top - bi.bottom);
-
-      if (!isBorderComputing) {
-        button.setBorder(this.getButtonBorder(button));
-        button.putClientProperty(SubstanceButtonUI.BORDER_COMPUTED, "");
-      }
+    @Override
+    public Shape getButtonOutline(AbstractButton button) {
+        return getButtonOutline(button, null, button.getWidth(), button.getHeight(), true);
     }
-    return uiPreferredSize;
-  }
 
-  public Border getButtonBorder(AbstractButton button) {
-    return new SubstanceButtonBorder(StandardButtonShaper.class) {
-      public Insets getBorderInsets(Component c) {
-        return new Insets(0, 0, 0, 0);
-      }
-    };
-  }
+    @Override
+    public GeneralPath getButtonOutline(AbstractButton button, Insets insets) {
+        throw new UnsupportedOperationException();
+    }
 
-  /*
-   * (non-Javadoc)
-   * 
-   * @see org.jvnet.substance.shaper.SubstanceButtonShaper#getButtonOutline(javax.swing.AbstractButton,
-   *      java.awt.Insets, int, int)
-   */
-  public GeneralPath getButtonOutline(AbstractButton button, Insets insets, int w, int h) {
-    return getButtonOutline(button);
-  }
+    @Override
+    public GeneralPath getButtonOutline(AbstractButton button, Insets insets, int width, int height) {
+        throw new UnsupportedOperationException();
+    }
 
-  /*
-   * (non-Javadoc)
-   * 
-   * @see org.jvnet.substance.shaper.SubstanceButtonShaper#getButtonOutline(javax.swing.AbstractButton,
-   *      java.awt.Insets)
-   */
-  public GeneralPath getButtonOutline(AbstractButton button, Insets insets) {
-    return getButtonOutline(button);
-  }
+    @Override
+    public Dimension getPreferredSize(AbstractButton button, Dimension uiPreferredSize) {
+        if (button.getClientProperty(SubstanceButtonUI.BORDER_COMPUTED) == null) {
+            boolean isBorderComputing = (button.getClientProperty(SubstanceButtonUI.BORDER_COMPUTING) != null);
+            Border border = button.getBorder();
+            int uiw = uiPreferredSize.width;
+            int uih = uiPreferredSize.height;
+            Insets bi = border.getBorderInsets(button);
+            if (!isBorderComputing) {
+                button.setBorder(null);
+            }
+            uiPreferredSize.setSize(uiw - bi.left - bi.right, uih - bi.top - bi.bottom);
 
-  public boolean isProportionate() {
-    return true;
-  }
+            if (!isBorderComputing) {
+                button.setBorder(this.getButtonBorder(button));
+                button.putClientProperty(SubstanceButtonUI.BORDER_COMPUTED, "");
+            }
+        }
+        return uiPreferredSize;
+    }
 
+    @Override
+    public Border getButtonBorder(AbstractButton button) {
+        return new SubstanceButtonBorder(StandardButtonShaper.class) {
+            @Override
+            public Insets getBorderInsets(Component c) {
+                return new Insets(0, 0, 0, 0);
+            }
+        };
+    }
+
+    @Override
+    public boolean isProportionate() {
+        return true;
+    }
 }

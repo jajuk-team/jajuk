@@ -24,11 +24,13 @@
 
 package org.jajuk.ui.substance;
 
+import java.awt.Insets;
 import java.awt.Shape;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.GeneralPath;
 
 import javax.swing.AbstractButton;
+
 
 /*
  * based on code from Xtreme Media Player
@@ -38,21 +40,20 @@ import javax.swing.AbstractButton;
  */
 public class CircleButtonShaper extends ButtonShaper {
 
-  public String getDisplayName() {
-    return "Circle";
-  }
+    @Override
+    public String getDisplayName() {
+        return "Circle";
+    }
 
-  /*
-   * (non-Javadoc)
-   * 
-   * @see org.jvnet.substance.shaper.SubstanceButtonShaper#getButtonOutline(javax.swing.AbstractButton)
-   */
-  public GeneralPath getButtonOutline(AbstractButton button) {
-    int width = button.getWidth() - 1;
-    int height = button.getHeight() - 1;
+    @Override
+    public Shape getButtonOutline(AbstractButton button, Insets insets, int w, int h, boolean isInner) {
+        int width = w - 1;
+        int height = h - 1;
 
-    Shape shape = new Ellipse2D.Double(0, 0, width, height);
-    return new GeneralPath(shape);
-  }
+        Shape shape = new Ellipse2D.Double(0, 0, width, height);
+        GeneralPath generalPath = new GeneralPath(shape);
+
+        return generalPath;
+    }
 
 }

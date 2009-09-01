@@ -119,15 +119,16 @@ public class StartupGUIService {
   }
 
   public static void startupOver() {
-    if (sc != null) {
-      SwingUtilities.invokeLater(new Runnable() {
-        public void run() {
+    SwingUtilities.invokeLater(new Runnable() {
+      public void run() {
+        if (sc != null) {
           sc.setProgress(100);
           sc.splashOff();
           sc = null;
         }
-      });
-    }
+      }
+    });
+
   }
 
   /**

@@ -21,7 +21,6 @@
 package org.jajuk.ui.views;
 
 import ext.FlowScrollPanel;
-import ext.SwingWorker;
 import ext.services.lastfm.AlbumInfo;
 import ext.services.lastfm.AlbumListInfo;
 import ext.services.lastfm.ArtistInfo;
@@ -44,6 +43,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.SwingUtilities;
+import javax.swing.SwingWorker;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
@@ -228,13 +228,13 @@ public class SuggestionView extends ViewAdapter {
       }
     });
 
-    SwingWorker sw = new SwingWorker() {
+    SwingWorker<Void, Void> sw = new SwingWorker<Void, Void>() {
       JScrollPane jsp1;
       JScrollPane jsp2;
       JScrollPane jsp3;
 
       @Override
-      public Object construct() {
+      public Void doInBackground() {
         jsp1 = getLocalSuggestionsPanel(SuggestionType.BEST_OF);
         jsp2 = getLocalSuggestionsPanel(SuggestionType.NEWEST);
         jsp3 = getLocalSuggestionsPanel(SuggestionType.RARE);
@@ -242,16 +242,15 @@ public class SuggestionView extends ViewAdapter {
       }
 
       @Override
-      public void finished() {
+      public void done() {
         // If panel is void, add a void panel as a null object keeps
         // previous element
         tabs.setComponentAt(0, (jsp1 == null) ? new JPanel() : jsp1);
         tabs.setComponentAt(1, (jsp2 == null) ? new JPanel() : jsp2);
         tabs.setComponentAt(2, (jsp3 == null) ? new JPanel() : jsp3);
-        super.finished();
       }
     };
-    sw.start();
+    sw.execute();
   }
 
   private void refreshLastFMCollectionTabs() {
@@ -295,13 +294,13 @@ public class SuggestionView extends ViewAdapter {
       }
     });
     // Use a swing worker as construct takes a lot of time
-    SwingWorker sw = new SwingWorker() {
+    SwingWorker<Void, Void> sw = new SwingWorker<Void, Void>() {
       JScrollPane jsp1;
 
       JScrollPane jsp2;
 
       @Override
-      public Object construct() {
+      public Void doInBackground() {
         try {
           jsp1 = getLastFMSuggestionsPanel(SuggestionType.OTHERS_ALBUMS, false);
           jsp2 = getLastFMSuggestionsPanel(SuggestionType.SIMILAR_AUTHORS, false);
@@ -312,13 +311,13 @@ public class SuggestionView extends ViewAdapter {
       }
 
       @Override
-      public void finished() {
+      public void done() {
         tabs.setComponentAt(3, (jsp1 == null) ? new JPanel() : jsp1);
         tabs.setComponentAt(4, (jsp2 == null) ? new JPanel() : jsp2);
       }
 
     };
-    sw.start();
+    sw.execute();
   }
 
   /**

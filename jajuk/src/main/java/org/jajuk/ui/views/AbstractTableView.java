@@ -21,7 +21,6 @@
 package org.jajuk.ui.views;
 
 import ext.AutoCompleteDecorator;
-import ext.SwingWorker;
 
 import java.awt.Color;
 import java.awt.Insets;
@@ -50,6 +49,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
+import javax.swing.SwingWorker;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.event.TableModelEvent;
@@ -74,6 +74,7 @@ import org.jajuk.ui.helpers.ILaunchCommand;
 import org.jajuk.ui.helpers.JajukTableModel;
 import org.jajuk.ui.helpers.PreferencesJMenu;
 import org.jajuk.ui.helpers.TableTransferHandler;
+import org.jajuk.ui.helpers.TwoStepsDisplayable;
 import org.jajuk.ui.helpers.FontManager.JajukFont;
 import org.jajuk.ui.widgets.InformationJPanel;
 import org.jajuk.ui.widgets.JajukTable;
@@ -99,7 +100,7 @@ import org.jdesktop.swingx.table.TableColumnExt;
  * views
  */
 public abstract class AbstractTableView extends ViewAdapter implements ActionListener,
-    ItemListener, TableModelListener {
+    ItemListener, TableModelListener, TwoStepsDisplayable {
 
   private static final long serialVersionUID = -4418626517605128694L;
 
@@ -198,7 +199,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
    * 
    * @return
    */
-  public Object construct() {
+  public Object longCall() {
     model = populateTable();
     return null;
   }
@@ -209,7 +210,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
    * 
    * @return
    */
-  public void finished() {
+  public void shortCall(Object in) {
     // Add generic menus
     jmiPlay = new JMenuItem(ActionManager.getAction(JajukActions.PLAY_SELECTION));
     jmiPlay.putClientProperty(Const.DETAIL_SELECTION, jtable.getSelection());
@@ -371,9 +372,9 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
    * model
    */
   public void applyFilter(final String sPropertyName, final String sPropertyValue) {
-    SwingWorker sw = new SwingWorker() {
+    SwingWorker<Void, Void> sw = new SwingWorker<Void, Void>() {
       @Override
-      public Object construct() {
+      public Void doInBackground() {
         model.removeTableModelListener(AbstractTableView.this);
         model.populateModel(sPropertyName, sPropertyValue, jtable.getColumnsConf());
         model.addTableModelListener(AbstractTableView.this);
@@ -382,7 +383,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
       }
 
       @Override
-      public void finished() {
+      public void done() {
         // Force table repaint (for instance for rating stars update)
         jtable.revalidate();
         jtable.repaint();
@@ -390,7 +391,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
       }
     };
     UtilGUI.waiting();
-    sw.start();
+    sw.execute();
   }
 
   /*

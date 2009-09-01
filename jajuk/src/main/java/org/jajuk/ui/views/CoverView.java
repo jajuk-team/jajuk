@@ -22,8 +22,6 @@ package org.jajuk.ui.views;
 
 import com.jhlabs.image.PerspectiveFilter;
 
-import ext.SwingWorker;
-
 import java.awt.AlphaComposite;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -61,6 +59,7 @@ import javax.swing.JPanel;
 import javax.swing.JToolBar;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
+import javax.swing.SwingWorker;
 import javax.swing.border.EmptyBorder;
 import javax.swing.plaf.basic.BasicComboBoxRenderer;
 
@@ -856,9 +855,9 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
    * Display current cover (at this.index), try all covers in case of error
    */
   private void displayCurrentCover() {
-    final SwingWorker sw = new SwingWorker() {
+    SwingWorker<Void, Void> sw = new SwingWorker<Void, Void>() {
       @Override
-      public Object construct() {
+      public Void doInBackground() {
         synchronized (this) {
           // Avoid looping
           if (alCovers.size() == 0) {
@@ -920,11 +919,11 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
       }
 
       @Override
-      public void finished() {
+      public void done() {
         displayCover(index);
       }
     };
-    sw.start();
+    sw.execute();
   }
 
   /**

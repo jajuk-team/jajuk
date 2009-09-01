@@ -20,8 +20,6 @@
 
 package org.jajuk.ui.views;
 
-import ext.SwingWorker;
-
 import java.awt.Dimension;
 import java.awt.MouseInfo;
 import java.awt.Rectangle;
@@ -36,6 +34,7 @@ import org.jajuk.ui.actions.ActionManager;
 import org.jajuk.ui.actions.JajukActions;
 import org.jajuk.ui.helpers.AlbumsTableModel;
 import org.jajuk.ui.helpers.JajukTableModel;
+import org.jajuk.ui.helpers.TwoStepsDisplayable;
 import org.jajuk.ui.thumbnails.LocalAlbumThumbnail;
 import org.jajuk.ui.thumbnails.ThumbnailPopup;
 import org.jajuk.ui.widgets.JajukTable;
@@ -47,7 +46,7 @@ import org.jajuk.util.UtilGUI;
 /**
  * List collection albums as a table
  */
-public class AlbumsTableView extends AbstractTableView {
+public class AlbumsTableView extends AbstractTableView implements TwoStepsDisplayable {
 
   private static final long serialVersionUID = 7576455252866971945L;
 
@@ -74,88 +73,7 @@ public class AlbumsTableView extends AbstractTableView {
    * @see org.jajuk.ui.views.IView#initUI()
    */
   public void initUI() {
-    SwingWorker sw = new SwingWorker() {
-      @Override
-      public Object construct() {
-        AlbumsTableView.super.construct();
-        return null;
-      }
-
-      @Override
-      public void finished() {
-        jtable = new JajukTable(model, true, columnsConf);
-        JMenuItem jmiShowAlbumDetails = new JMenuItem(ActionManager
-            .getAction(JajukActions.SHOW_ALBUM_DETAILS));
-        jmiShowAlbumDetails.putClientProperty(Const.DETAIL_SELECTION, jtable.getSelection());
-        JMenuItem jmiReport = new JMenuItem(ActionManager.getAction(JajukActions.CREATE_REPORT));
-        jmiReport.putClientProperty(Const.DETAIL_SELECTION, jtable.getSelection());
-        // Add this generic menu item manually to ensure it's the last one in
-        // the list for GUI reasons
-        jtable.getMenu().add(jmiDelete);
-        jtable.getMenu().addSeparator();
-        jtable.getMenu().add(jmiReport);
-        jtable.getMenu().add(jmiShowAlbumDetails);
-        jtable.getMenu().addSeparator();
-        jtable.getMenu().add(pjmTracks);
-        jtable.getMenu().add(jmiBookmark);
-        jtable.getMenu().addSeparator();
-        jtable.getMenu().add(jmiProperties);
-
-        // Add popup feature when mouse rolls over cells
-        jtable.addMouseMotionListener(new MouseMotionListener() {
-          Album current = null;
-
-          public void mouseMoved(MouseEvent e) {
-            if (!Conf.getBoolean(Const.CONF_SHOW_POPUPS)) {
-              return;
-            }
-            // Do not use getLocationOnScreen() method to support JRE 1.5
-            java.awt.Point p = MouseInfo.getPointerInfo().getLocation();
-            int rowIndex = jtable.rowAtPoint(e.getPoint());
-            if (rowIndex < 0) {
-              return;
-            }
-            JajukTableModel model = (JajukTableModel) jtable.getModel();
-            rowIndex = jtable.convertRowIndexToModel(rowIndex);
-            Album album = (Album) model.getItemAt(rowIndex);
-            if (album != null && current != album) {
-              current = album;
-              String description = new LocalAlbumThumbnail(album, 200, true).getDescription();
-              // Close any previous popup
-              if (popup != null) {
-                popup.dispose();
-              }
-              popup = new ThumbnailPopup(description, new Rectangle(p, new Dimension(20, -50)),
-                  true);
-            }
-          }
-
-          public void mouseDragged(MouseEvent e) {
-          }
-
-        });
-
-        // Add another listener on view borders (outside the table itself) to
-        // close popups when leaving the table
-        jtable.addMouseListener(new MouseAdapter() {
-          @Override
-          public void mouseExited(MouseEvent e) {
-            // TODO Auto-generated method stub
-            super.mouseExited(e);
-            // Do not hide popup if still in the table to allow user to mouse
-            // mouse over the popup (in this case, a table exit event is thrown)
-            if (popup != null
-                && !UtilGUI.isOver(jtable.getLocationOnScreen(), jtable
-                    .getPreferredScrollableViewportSize())) {
-              popup.dispose();
-            }
-          }
-        });
-
-        AlbumsTableView.super.finished();
-      }
-    };
-    sw.start();
+    UtilGUI.populate(this);
   }
 
   /*
@@ -179,6 +97,95 @@ public class AlbumsTableView extends AbstractTableView {
   synchronized JajukTableModel populateTable() {
     // model creation
     return new AlbumsTableModel();
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.jajuk.ui.helpers.TwoStepsDisplayable#longCall()
+   */
+  @Override
+  public Object longCall() {
+    super.longCall();
+    return null;
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.jajuk.ui.helpers.TwoStepsDisplayable#shortCall(java.lang.Object)
+   */
+  @Override
+  public void shortCall(Object in) {
+    jtable = new JajukTable(model, true, columnsConf);
+    super.shortCall(null);
+    JMenuItem jmiShowAlbumDetails = new JMenuItem(ActionManager
+        .getAction(JajukActions.SHOW_ALBUM_DETAILS));
+    jmiShowAlbumDetails.putClientProperty(Const.DETAIL_SELECTION, jtable.getSelection());
+    JMenuItem jmiReport = new JMenuItem(ActionManager.getAction(JajukActions.CREATE_REPORT));
+    jmiReport.putClientProperty(Const.DETAIL_SELECTION, jtable.getSelection());
+    // Add this generic menu item manually to ensure it's the last one in
+    // the list for GUI reasons
+    jtable.getMenu().add(jmiDelete);
+    jtable.getMenu().addSeparator();
+    jtable.getMenu().add(jmiReport);
+    jtable.getMenu().add(jmiShowAlbumDetails);
+    jtable.getMenu().addSeparator();
+    jtable.getMenu().add(pjmTracks);
+    jtable.getMenu().add(jmiBookmark);
+    jtable.getMenu().addSeparator();
+    jtable.getMenu().add(jmiProperties);
+
+    // Add popup feature when mouse rolls over cells
+    jtable.addMouseMotionListener(new MouseMotionListener() {
+      Album current = null;
+
+      public void mouseMoved(MouseEvent e) {
+        if (!Conf.getBoolean(Const.CONF_SHOW_POPUPS)) {
+          return;
+        }
+        // Do not use getLocationOnScreen() method to support JRE 1.5
+        java.awt.Point p = MouseInfo.getPointerInfo().getLocation();
+        int rowIndex = jtable.rowAtPoint(e.getPoint());
+        if (rowIndex < 0) {
+          return;
+        }
+        JajukTableModel model = (JajukTableModel) jtable.getModel();
+        rowIndex = jtable.convertRowIndexToModel(rowIndex);
+        Album album = (Album) model.getItemAt(rowIndex);
+        if (album != null && current != album) {
+          current = album;
+          String description = new LocalAlbumThumbnail(album, 200, true).getDescription();
+          // Close any previous popup
+          if (popup != null) {
+            popup.dispose();
+          }
+          popup = new ThumbnailPopup(description, new Rectangle(p, new Dimension(20, -50)), true);
+        }
+      }
+
+      public void mouseDragged(MouseEvent e) {
+      }
+
+    });
+
+    // Add another listener on view borders (outside the table itself) to
+    // close popups when leaving the table
+    jtable.addMouseListener(new MouseAdapter() {
+      @Override
+      public void mouseExited(MouseEvent e) {
+        // TODO Auto-generated method stub
+        super.mouseExited(e);
+        // Do not hide popup if still in the table to allow user to mouse
+        // mouse over the popup (in this case, a table exit event is thrown)
+        if (popup != null
+            && !UtilGUI.isOver(jtable.getLocationOnScreen(), jtable
+                .getPreferredScrollableViewportSize())) {
+          popup.dispose();
+        }
+      }
+    });
+    
   }
 
 }

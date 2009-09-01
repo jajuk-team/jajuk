@@ -20,7 +20,6 @@
 
 package org.jajuk.ui.thumbnails;
 
-import ext.SwingWorker;
 import ext.services.lastfm.AlbumInfo;
 import ext.services.lastfm.ArtistInfo;
 import ext.services.lastfm.LastFmService;
@@ -41,6 +40,7 @@ import org.apache.commons.lang.StringUtils;
 import org.jajuk.base.AuthorManager;
 import org.jajuk.base.Item;
 import org.jajuk.ui.helpers.FontManager;
+import org.jajuk.ui.helpers.TwoStepsDisplayable;
 import org.jajuk.ui.helpers.FontManager.JajukFont;
 import org.jajuk.util.Const;
 import org.jajuk.util.DownloadManager;
@@ -55,7 +55,7 @@ import org.jdesktop.swingx.border.DropShadowBorder;
  * Last.FM Album thumb represented as artists label + (optionally) others text
  * information display...
  */
-public class LastFmAuthorThumbnail extends AbstractThumbnail {
+public class LastFmAuthorThumbnail extends AbstractThumbnail implements TwoStepsDisplayable {
 
   private static final long serialVersionUID = -804471264407148566L;
 
@@ -77,108 +77,7 @@ public class LastFmAuthorThumbnail extends AbstractThumbnail {
 
   @Override
   public void populate() {
-    jlIcon = new JLabel();
-
-    SwingWorker sw = new SwingWorker() {
-
-      ImageIcon ii;
-
-      @Override
-      public Object construct() {
-        try {
-          // Check if author is null
-          String authorUrl = author.getImageUrl();
-          if (StringUtils.isBlank(authorUrl)) {
-            return null;
-          }
-          // Download thumb
-          URL remote = new URL(authorUrl);
-          // Download the picture and store file reference (to
-          // generate the popup thumb for ie)
-          fCover = DownloadManager.downloadToCache(remote);
-          if (fCover == null) {
-            Log.warn("Could not read remote file: " + remote.toString());
-            return null;
-          }
-
-          BufferedImage image = ImageIO.read(fCover);
-          if (image == null) {
-            Log.warn("Could not read image data in file: " + fCover);
-            return null;
-          }
-          ImageIcon downloadedImage = new ImageIcon(image);
-          // In artist view, do not reduce artist picture
-          if (isArtistView()) {
-            ii = downloadedImage;
-          } else {
-            ii = UtilGUI.getScaledImage(downloadedImage, 100);
-          }
-
-          // Free images memory
-          downloadedImage.getImage().flush();
-          image.flush();
-        } catch (IIOException e) {
-          // report IIOException only as warning here as we can expect this to
-          // happen frequently with images on the net
-          Log.warn(
-              "Could not read image: " + author.getImageUrl().toString() + " Cache: " + fCover, e
-                  .getMessage());
-        } catch (Exception e) {
-          Log.error(e);
-        }
-        return null;
-      }
-
-      @Override
-      public void finished() {
-        // Check if author is null
-        if (ii == null) {
-          return;
-        }
-        super.finished();
-        postPopulate();
-        jlIcon.setIcon(ii);
-        setLayout(new MigLayout("ins 0,gapy 2"));
-        // Use a panel to allow text to be bigger than image under it
-        add(jlIcon, "center,wrap");
-        int textLength = 15;
-        // In artist view, we have plenty of free space
-        if (isArtistView()) {
-          textLength = 50;
-        }
-        JLabel jlTitle = new JLabel(UtilString.getLimitedString(author.getName(), textLength));
-        jlTitle.setToolTipText(author.getName());
-        if (bKnown && !isArtistView()) {
-          // Artist known in collection, display its name in bold
-          jlTitle.setIcon(IconLoader.getIcon(JajukIcons.AUTHOR));
-          jlTitle.setFont(FontManager.getInstance().getFont(JajukFont.BOLD));
-        } else {
-          jlTitle.setFont(FontManager.getInstance().getFont(JajukFont.PLAIN));
-        }
-        if (isArtistView()) {
-          add(jlTitle, "center");
-        } else {
-          add(jlTitle, "left");
-        }
-        jlIcon.setBorder(new DropShadowBorder(Color.BLACK, 5, 0.5f, 5, false, true, false, true));
-        // disable inadequate menu items
-        jmiCDDBWizard.setEnabled(false);
-        jmiGetCovers.setEnabled(false);
-        if (getItem() == null) {
-          jmiDelete.setEnabled(false);
-          jmiPlay.setEnabled(false);
-          jmiPlayRepeat.setEnabled(false);
-          jmiPlayShuffle.setEnabled(false);
-          jmiFrontPush.setEnabled(false);
-          jmiPush.setEnabled(false);
-          jmiProperties.setEnabled(false);
-        }
-        // Set URL to open
-        jmiOpenLastFMSite.putClientProperty(Const.DETAIL_CONTENT, author.getUrl());
-      }
-
-    };
-    sw.start();
+    UtilGUI.populate(this);
   }
 
   /*
@@ -243,4 +142,108 @@ public class LastFmAuthorThumbnail extends AbstractThumbnail {
     }
   }
 
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.jajuk.ui.helpers.TwoStepsDisplayable#longCall()
+   */
+  @Override
+  public Object longCall() {
+    ImageIcon ii = null;
+    try {
+      // Check if author is null
+      String authorUrl = author.getImageUrl();
+      if (StringUtils.isBlank(authorUrl)) {
+        return null;
+      }
+      // Download thumb
+      URL remote = new URL(authorUrl);
+      // Download the picture and store file reference (to
+      // generate the popup thumb for ie)
+      fCover = DownloadManager.downloadToCache(remote);
+      if (fCover == null) {
+        Log.warn("Could not read remote file: " + remote.toString());
+        return null;
+      }
+
+      BufferedImage image = ImageIO.read(fCover);
+      if (image == null) {
+        Log.warn("Could not read image data in file: " + fCover);
+        return null;
+      }
+      ImageIcon downloadedImage = new ImageIcon(image);
+      // In artist view, do not reduce artist picture
+      if (isArtistView()) {
+        ii = downloadedImage;
+      } else {
+        ii = UtilGUI.getScaledImage(downloadedImage, 100);
+      }
+
+      // Free images memory
+      downloadedImage.getImage().flush();
+      image.flush();
+    } catch (IIOException e) {
+      // report IIOException only as warning here as we can expect this to
+      // happen frequently with images on the net
+      Log.warn("Could not read image: " + author.getImageUrl().toString() + " Cache: " + fCover, e
+          .getMessage());
+    } catch (Exception e) {
+      Log.error(e);
+    }
+    return ii;
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.jajuk.ui.helpers.TwoStepsDisplayable#shortCall(java.lang.Object)
+   */
+  @Override
+  public void shortCall(Object in) {
+    ImageIcon ii = (ImageIcon) in;
+    // Check if author is null
+    if (ii == null) {
+      return;
+    }
+    jlIcon = new JLabel();
+    postPopulate();
+    jlIcon.setIcon(ii);
+    setLayout(new MigLayout("ins 0,gapy 2"));
+    // Use a panel to allow text to be bigger than image under it
+    add(jlIcon, "center,wrap");
+    int textLength = 15;
+    // In artist view, we have plenty of free space
+    if (isArtistView()) {
+      textLength = 50;
+    }
+    JLabel jlTitle = new JLabel(UtilString.getLimitedString(author.getName(), textLength));
+    jlTitle.setToolTipText(author.getName());
+    if (bKnown && !isArtistView()) {
+      // Artist known in collection, display its name in bold
+      jlTitle.setIcon(IconLoader.getIcon(JajukIcons.AUTHOR));
+      jlTitle.setFont(FontManager.getInstance().getFont(JajukFont.BOLD));
+    } else {
+      jlTitle.setFont(FontManager.getInstance().getFont(JajukFont.PLAIN));
+    }
+    if (isArtistView()) {
+      add(jlTitle, "center");
+    } else {
+      add(jlTitle, "left");
+    }
+    jlIcon.setBorder(new DropShadowBorder(Color.BLACK, 5, 0.5f, 5, false, true, false, true));
+    // disable inadequate menu items
+    jmiCDDBWizard.setEnabled(false);
+    jmiGetCovers.setEnabled(false);
+    if (getItem() == null) {
+      jmiDelete.setEnabled(false);
+      jmiPlay.setEnabled(false);
+      jmiPlayRepeat.setEnabled(false);
+      jmiPlayShuffle.setEnabled(false);
+      jmiFrontPush.setEnabled(false);
+      jmiPush.setEnabled(false);
+      jmiProperties.setEnabled(false);
+    }
+    // Set URL to open
+    jmiOpenLastFMSite.putClientProperty(Const.DETAIL_CONTENT, author.getUrl());
+  }
 }

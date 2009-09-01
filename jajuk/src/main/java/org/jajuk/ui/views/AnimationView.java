@@ -59,7 +59,7 @@ public class AnimationView extends ViewAdapter implements ComponentListener {
 
   private static final long serialVersionUID = 1L;
 
-  private static final int DEFAULT_FRAME_RATE = 15;
+  private static final int DEFAULT_FRAME_RATE = 25;
 
   private static final int DEFAULT_DURATION = 5000;
 
@@ -155,6 +155,7 @@ public class AnimationView extends ViewAdapter implements ComponentListener {
         anim = Animations.repeat(Float.POSITIVE_INFINITY, animAll);
         animator = new Animator(anim, DEFAULT_FRAME_RATE);
         animator.start();
+       
       }
     });
   }
