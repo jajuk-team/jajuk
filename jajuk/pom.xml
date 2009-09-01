@@ -101,7 +101,7 @@
       <artifactId>substance</artifactId>
       <version>4.2dev</version>
       <scope>system</scope>
-      <systemPath>${basedir}/lib/substance-5.0_jajuk.jar</systemPath>
+      <systemPath>${basedir}/lib/substance-5.2.jar</systemPath>
     </dependency>
     <dependency>
       <groupId>Swingx</groupId>
