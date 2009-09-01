@@ -41,6 +41,7 @@ import java.awt.event.WindowEvent;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.StringTokenizer;
+import java.util.concurrent.ExecutionException;
 
 import javax.swing.Action;
 import javax.swing.BorderFactory;
@@ -369,6 +370,13 @@ public final class JajukSlimbar extends JFrame implements JajukWindow, Observer,
 
           @Override
           public void done() {
+            try {
+              get();
+            } catch (InterruptedException e) {
+              Log.error(e);
+            } catch (ExecutionException e) {
+              Log.error(e);
+            }
             if (!e.getValueIsAdjusting()) {
               sbSearch.hidePopup();
               requestFocusInWindow();

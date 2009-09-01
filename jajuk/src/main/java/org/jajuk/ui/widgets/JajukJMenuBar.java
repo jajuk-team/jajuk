@@ -43,6 +43,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.ExecutionException;
 
 import javax.swing.Box;
 import javax.swing.JButton;
@@ -390,6 +391,13 @@ public final class JajukJMenuBar extends JMenuBar implements Observer {
 
       @Override
       public void done() {
+        try {
+          get();
+        } catch (InterruptedException e) {
+          Log.error(e);
+        } catch (ExecutionException e) {
+          Log.error(e);
+        }
         // add the new release label if required
         if (UpgradeManager.getNewVersionName() != null) {
           jlUpdate = new JLabel(" ", IconLoader.getIcon(JajukIcons.UPDATE_MANAGER), JLabel.RIGHT);

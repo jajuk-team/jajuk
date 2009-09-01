@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.ExecutionException;
 
 import javax.swing.Action;
 import javax.swing.ActionMap;
@@ -46,6 +47,7 @@ import org.jajuk.ui.actions.ActionManager;
 import org.jajuk.ui.actions.JajukActions;
 import org.jajuk.ui.helpers.PreferencesJMenu;
 import org.jajuk.util.Const;
+import org.jajuk.util.log.Log;
 import org.jdesktop.swingx.JXTree;
 
 /**
@@ -220,6 +222,13 @@ public abstract class AbstractTreeView extends ViewAdapter {
 
         @Override
         public void done() {
+          try {
+            get();
+          } catch (InterruptedException e) {
+            Log.error(e);
+          } catch (ExecutionException e) {
+            Log.error(e);
+          }
           SwingUtilities.updateComponentTreeUI(jtree);
           bAutoCollapse = true;
           expand();

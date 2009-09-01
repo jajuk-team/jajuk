@@ -25,6 +25,7 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.util.Set;
+import java.util.concurrent.ExecutionException;
 
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -113,6 +114,13 @@ public class CDScanView extends ViewAdapter implements ActionListener {
 
         @Override
         public void done() {
+          try {
+            get();
+          } catch (InterruptedException e) {
+            Log.error(e);
+          } catch (ExecutionException e) {
+            Log.error(e);
+          }
           jtfName.setText("");
           jtfName.requestFocusInWindow();
         }

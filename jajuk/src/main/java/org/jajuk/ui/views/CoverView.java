@@ -47,6 +47,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 import java.util.Set;
+import java.util.concurrent.ExecutionException;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -920,6 +921,13 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
 
       @Override
       public void done() {
+        try {
+          get();
+        } catch (InterruptedException e) {
+          Log.error(e);
+        } catch (ExecutionException e) {
+          Log.error(e);
+        }
         displayCover(index);
       }
     };

@@ -202,7 +202,6 @@ public class ArtistView extends SuggestionView implements TwoStepsDisplayable {
   public Object longCall() {
     // Call last.fm wiki
     bio = LastFmService.getInstance().getWikiText(author);
-    jspAlbums = getLastFMSuggestionsPanel(SuggestionType.OTHERS_ALBUMS, true);
     artistInfo = LastFmService.getInstance().getArtist(author);
     return null;
   }
@@ -215,6 +214,7 @@ public class ArtistView extends SuggestionView implements TwoStepsDisplayable {
   @Override
   public void shortCall(Object in) {
     removeAll();
+    jspAlbums = getLastFMSuggestionsPanel(SuggestionType.OTHERS_ALBUMS, true);
     // Artist unknown from last.fm, leave
     if (artistInfo == null
     // If image url is void, last.fm doesn't provide enough data about this

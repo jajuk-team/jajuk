@@ -24,6 +24,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import javax.swing.JButton;
 import javax.swing.JComponent;
@@ -41,6 +42,7 @@ import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 import org.jajuk.util.ReadOnlyIterator;
 import org.jajuk.util.UtilGUI;
+import org.jajuk.util.log.Log;
 
 public class FindDuplicateTracksAction extends JajukAction {
 
@@ -74,6 +76,13 @@ public class FindDuplicateTracksAction extends JajukAction {
       }
 
       public void done() {
+        try {
+          get();
+        } catch (InterruptedException e) {
+          Log.error(e);
+        } catch (ExecutionException e) {
+          Log.error(e);
+        }
         try {
           if (duplicateFilesList.size() < 1) {
             Messages.showInfoMessage(Messages.getString("FindDuplicateTracksAction.0"));

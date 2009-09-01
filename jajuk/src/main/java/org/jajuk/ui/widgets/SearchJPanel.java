@@ -26,6 +26,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemListener;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.ExecutionException;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JLabel;
@@ -181,6 +182,13 @@ public final class SearchJPanel extends JXPanel implements Observer, ActionListe
 
           @Override
           public void done() {
+            try {
+              get();
+            } catch (InterruptedException e1) {
+              Log.error(e1);
+            } catch (ExecutionException e1) {
+              Log.error(e1);
+            }
             if (!e.getValueIsAdjusting()) {
               sbSearch.hidePopup();
               requestFocusInWindow();

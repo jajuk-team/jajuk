@@ -30,6 +30,7 @@ import java.io.OutputStreamWriter;
 import java.io.Reader;
 import java.io.Writer;
 import java.net.URL;
+import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -143,7 +144,8 @@ public class JajukHtmlPanel extends HtmlPanel {
           Log.warn("Could not read page: " + url.toString() + " Cache: " + page, e.getMessage());
 
           try {
-            setFailedToLoad(URL_COLON + url + COLON + e.getClass().getSimpleName() + COLON + e.getMessage());
+            setFailedToLoad(URL_COLON + url + COLON + e.getClass().getSimpleName() + COLON
+                + e.getMessage());
           } catch (IOException e1) {
             Log.error(e1);
           } catch (SAXException e1) {
@@ -153,7 +155,8 @@ public class JajukHtmlPanel extends HtmlPanel {
           Log.error(e);
 
           try {
-            setFailedToLoad(URL_COLON + url + COLON + e.getClass().getSimpleName() + COLON + e.getMessage());
+            setFailedToLoad(URL_COLON + url + COLON + e.getClass().getSimpleName() + COLON
+                + e.getMessage());
           } catch (IOException e1) {
             Log.error(e1);
           } catch (SAXException e1) {
@@ -163,13 +166,18 @@ public class JajukHtmlPanel extends HtmlPanel {
           // Disable waiting cursor
           setCursor(UtilGUI.DEFAULT_CURSOR);
         }
-
         return null;
       }
 
       @Override
       public void done() {
-
+        try {
+          get();
+        } catch (InterruptedException e) {
+          Log.error(e);
+        } catch (ExecutionException e) {
+          Log.error(e);
+        }
       }
 
     };
@@ -194,8 +202,8 @@ public class JajukHtmlPanel extends HtmlPanel {
   private void setLoading(final URL url) throws IOException, SAXException {
     File page = new File(SessionService.getConfFileByPath(Const.FILE_CACHE).getAbsolutePath() + '/'
         + "loading.html");
-    String sPage = "<html><body><h1>" + Messages.getString("WikipediaView.8")
-        + " " + url.toString() + "</h1></body></html>";
+    String sPage = "<html><body><h1>" + Messages.getString("WikipediaView.8") + " "
+        + url.toString() + "</h1></body></html>";
     showPage(sPage, page);
   }
 

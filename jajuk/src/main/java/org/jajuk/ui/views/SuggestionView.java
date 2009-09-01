@@ -32,9 +32,11 @@ import java.awt.Graphics;
 import java.awt.Insets;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.ExecutionException;
 
 import javax.swing.BoxLayout;
 import javax.swing.JEditorPane;
@@ -103,6 +105,9 @@ public class SuggestionView extends ViewAdapter {
 
   /** Currently selected thumb */
   AbstractThumbnail selectedThumb;
+
+  private AlbumListInfo albums;
+  private SimilarArtistsInfo similar;
 
   class ThumbMouseListener extends MouseAdapter {
     @Override
@@ -235,14 +240,38 @@ public class SuggestionView extends ViewAdapter {
 
       @Override
       public Void doInBackground() {
-        jsp1 = getLocalSuggestionsPanel(SuggestionType.BEST_OF);
-        jsp2 = getLocalSuggestionsPanel(SuggestionType.NEWEST);
-        jsp3 = getLocalSuggestionsPanel(SuggestionType.RARE);
+        // Refresh thumbs for required albums
+        List<Album> albums = new ArrayList<Album>(10);
+        albumsPrefered = AlbumManager.getInstance().getBestOfAlbums(
+            Conf.getBoolean(Const.CONF_OPTIONS_HIDE_UNMOUNTED), NB_BESTOF_ALBUMS);
+        albumsNewest = AlbumManager.getInstance().getNewestAlbums(
+            Conf.getBoolean(Const.CONF_OPTIONS_HIDE_UNMOUNTED), NB_BESTOF_ALBUMS);
+        albumsRare = AlbumManager.getInstance().getRarelyListenAlbums(
+            Conf.getBoolean(Const.CONF_OPTIONS_HIDE_UNMOUNTED), NB_BESTOF_ALBUMS);
+        albums.addAll(albumsPrefered);
+        albums.addAll(albumsNewest);
+        albums.addAll(albumsRare);
+        if (albums != null && albums.size() > 0) {
+          for (Album album : albums) {
+            // Try creating the thumbnail
+            ThumbnailManager.refreshThumbnail(album, 100);
+          }
+        }
         return null;
       }
 
       @Override
       public void done() {
+        try {
+          get();
+        } catch (InterruptedException e) {
+          Log.error(e);
+        } catch (ExecutionException e) {
+          Log.error(e);
+        }
+        jsp1 = getLocalSuggestionsPanel(SuggestionType.BEST_OF);
+        jsp2 = getLocalSuggestionsPanel(SuggestionType.NEWEST);
+        jsp3 = getLocalSuggestionsPanel(SuggestionType.RARE);
         // If panel is void, add a void panel as a null object keeps
         // previous element
         tabs.setComponentAt(0, (jsp1 == null) ? new JPanel() : jsp1);
@@ -302,8 +331,8 @@ public class SuggestionView extends ViewAdapter {
       @Override
       public Void doInBackground() {
         try {
-          jsp1 = getLastFMSuggestionsPanel(SuggestionType.OTHERS_ALBUMS, false);
-          jsp2 = getLastFMSuggestionsPanel(SuggestionType.SIMILAR_AUTHORS, false);
+          albums = LastFmService.getInstance().getAlbumList(author, true, 0);
+          similar = LastFmService.getInstance().getSimilarArtists(author);
         } catch (Exception e) {
           Log.error(e);
         }
@@ -312,6 +341,8 @@ public class SuggestionView extends ViewAdapter {
 
       @Override
       public void done() {
+        jsp1 = getLastFMSuggestionsPanel(SuggestionType.OTHERS_ALBUMS, false);
+        jsp2 = getLastFMSuggestionsPanel(SuggestionType.SIMILAR_AUTHORS, false);
         tabs.setComponentAt(3, (jsp1 == null) ? new JPanel() : jsp1);
         tabs.setComponentAt(4, (jsp2 == null) ? new JPanel() : jsp2);
       }
@@ -335,16 +366,6 @@ public class SuggestionView extends ViewAdapter {
     out.setScroller(jsp);
     List<Album> albums = null;
     if (type == SuggestionType.BEST_OF) {
-      albumsPrefered = AlbumManager.getInstance().getBestOfAlbums(
-          Conf.getBoolean(Const.CONF_OPTIONS_HIDE_UNMOUNTED), NB_BESTOF_ALBUMS);
-    } else if (type == SuggestionType.NEWEST) {
-      albumsNewest = AlbumManager.getInstance().getNewestAlbums(
-          Conf.getBoolean(Const.CONF_OPTIONS_HIDE_UNMOUNTED), NB_BESTOF_ALBUMS);
-    } else if (type == SuggestionType.RARE) {
-      albumsRare = AlbumManager.getInstance().getRarelyListenAlbums(
-          Conf.getBoolean(Const.CONF_OPTIONS_HIDE_UNMOUNTED), NB_BESTOF_ALBUMS);
-    }
-    if (type == SuggestionType.BEST_OF) {
       albums = albumsPrefered;
     } else if (type == SuggestionType.NEWEST) {
       albums = albumsNewest;
@@ -353,8 +374,6 @@ public class SuggestionView extends ViewAdapter {
     }
     if (albums != null && albums.size() > 0) {
       for (Album album : albums) {
-        // Try creating the thumbnail
-        ThumbnailManager.refreshThumbnail(album, 100);
         LocalAlbumThumbnail thumb = new LocalAlbumThumbnail(album, 100, false);
         thumb.populate();
         thumb.getIcon().addMouseListener(new ThumbMouseListener());
@@ -380,7 +399,6 @@ public class SuggestionView extends ViewAdapter {
     flowPanel.setScroller(jsp);
     flowPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
     if (type == SuggestionType.OTHERS_ALBUMS) {
-      AlbumListInfo albums = LastFmService.getInstance().getAlbumList(author, true, 0);
       if (albums != null && albums.getAlbums().size() > 0) {
         for (AlbumInfo album : albums.getAlbums()) {
           AbstractThumbnail thumb = new LastFmAlbumThumbnail(album);
@@ -395,7 +413,6 @@ public class SuggestionView extends ViewAdapter {
         return new JScrollPane(getNothingFoundPanel());
       }
     } else if (type == SuggestionType.SIMILAR_AUTHORS) {
-      SimilarArtistsInfo similar = LastFmService.getInstance().getSimilarArtists(author);
       if (similar != null) {
         List<ArtistInfo> authors = similar.getArtists();
         for (ArtistInfo similarAuthor : authors) {

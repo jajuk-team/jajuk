@@ -34,6 +34,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Properties;
 import java.util.Set;
+import java.util.concurrent.ExecutionException;
 
 import javax.swing.Action;
 import javax.swing.BorderFactory;
@@ -631,6 +632,13 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
 
         @Override
         public void done() {
+          try {
+            get();
+          } catch (InterruptedException e1) {
+            Log.error(e1);
+          } catch (ExecutionException e1) {
+            Log.error(e1);
+          }
           SwingUtilities.updateComponentTreeUI(jtree);
           UtilGUI.stopWaiting();
         }

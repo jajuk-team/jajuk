@@ -35,6 +35,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Properties;
 import java.util.Set;
+import java.util.concurrent.ExecutionException;
 
 import javax.swing.ActionMap;
 import javax.swing.BorderFactory;
@@ -996,15 +997,6 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
         boolean bErrorLoading = false;
 
         @Override
-        public void done() {
-          if (!bErrorLoading && playlist != null) {
-            selectPlaylist(playlist);
-            jmiPrepareParty.putClientProperty(Const.DETAIL_SELECTION, playlist);
-            jmiRepositorySaveAs.putClientProperty(Const.DETAIL_SELECTION, playlist);
-          }
-        }
-
-        @Override
         public Void doInBackground() {
           int selectedRow = jtable.getSelectedRow();
           if (selectedRow < 0) {
@@ -1026,6 +1018,22 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
             bErrorLoading = true;
           }
           return null;
+        }
+
+        @Override
+        public void done() {
+          try {
+            get();
+          } catch (InterruptedException e) {
+            Log.error(e);
+          } catch (ExecutionException e) {
+            Log.error(e);
+          }
+          if (!bErrorLoading && playlist != null) {
+            selectPlaylist(playlist);
+            jmiPrepareParty.putClientProperty(Const.DETAIL_SELECTION, playlist);
+            jmiRepositorySaveAs.putClientProperty(Const.DETAIL_SELECTION, playlist);
+          }
         }
 
       };
