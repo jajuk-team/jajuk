@@ -57,7 +57,7 @@ public class ShowAlbumDetailsAction extends JajukAction {
    */
   @SuppressWarnings("unchecked")
   @Override
-  public void perform(ActionEvent e) throws Exception {
+  public void perform(ActionEvent e) {
     JComponent source = (JComponent) e.getSource();
     Object o = source.getClientProperty(Const.DETAIL_SELECTION);
     Album album = null;
