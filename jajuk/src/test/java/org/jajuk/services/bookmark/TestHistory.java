@@ -574,7 +574,7 @@ public class TestHistory extends TestCase {
     // enable history  
     Conf.setProperty(Const.CONF_HISTORY, "1");
 
-    addHistoryItem("2", 12345);
+    addHistoryItem("14", 12345);
     assertEquals(1, History.getInstance().getHistory().size());
 
     // trigger the clear-event
