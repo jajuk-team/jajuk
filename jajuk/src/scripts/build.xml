@@ -47,6 +47,7 @@
 	<!-- ============================== -->
 
 	<!--CONST-->
+	<property name='jajuk.java.build.version' value='1.6' />
 	<property name='rootdir' value='/tmp/jajuk-dist' />
 	<property name='installdir' value='/usr/share/jajuk/' />
 	<property name='jnidir' value='/usr/lib/jajuk/' />
@@ -73,8 +74,31 @@
 	<property name='previousjnlpdir' value='${conf_jnlp-dist}/${previous_version}' />
 	<property name='srcdir' value='${basedir}/src' />
 
+	<target name="get-jvm">
+		<echo message='Verifying Java Version used for building, found version ${java.specification.version}, expecting ${jajuk.java.build.version}' />
+		<condition property="jvm.not.ok">
+			<not>
+				<or>
+					<equals arg1="${java.specification.version}" arg2="${jajuk.java.build.version}" />
+				</or>
+			</not>
+		</condition>
+	</target>
 
-	<target name='startup'>
+	<target name="check-jvm" depends="get-jvm" if="jvm.not.ok">
+		<fail message="Wrong Java version used for building: ${java.specification.version}, the build requires version ${jajuk.java.build.version}" />
+	</target>
+
+	<target name='startup' depends='check-jvm'>
+		<condition property="jvm.ok">
+			<not>
+				<or>
+					<equals arg1="${java.specification.version}" arg2="6" />
+				</or>
+			</not>
+		</condition>
+
+		<echo message='Building Jajuk release: ${version} using Java ${java.specification.version}' />
 		<echo message='Building Jajuk release: ${version}' />
 		<echo message='Basedir: ${basedir}' />
 		<!--Prepare timestamp-->
@@ -82,8 +106,7 @@
 			<format property="JAJUK_TIMESTAMP" pattern="yyyy-MM-dd HH:mm:ss" />
 		</tstamp>
 	</target>
-
-
+	
 	<target name='clean' description='o Clean up previous build files'>
 		<delete failonerror='true' dir='${rootdir}' />
 		<delete failonerror='true' dir='${jnlpdir}' />
@@ -180,6 +203,7 @@
 	<target name='compile'>
 		<echo message='Compile the code' />
 		<javac destdir='${distdir}/${classdir}' source='1.6' target='1.6' deprecation='true' debug='true' optimize='true' excludes='**/package.html' encoding='UTF-8'>
+			<compilerarg value="-Xlint:all" />
 			<src>
 				<pathelement path='${distdir}/src'>
 				</pathelement>
@@ -295,7 +319,7 @@
 	<target name='package_sfx' description='o Create Jajuk Windows executable file' depends='startup,clean,mkdist_sfx,package_jar,package_izpack'>
 		<taskdef name="jsmoothgen" classname="net.charabia.jsmoothgen.ant.JSmoothGen" classpath="${conf_jsmoothgendir}/lib/jsmoothgen-ant.jar" />
 		<echo message='Create Jajuk Windows executable file' />
-		<jsmoothgen project="/tmp/jajuk-dist/windows/jajuk.jsmooth" skeletonroot="${conf_jsmoothgendir}/skeletons" />
+		<jsmoothgen project="${rootdir}/windows/jajuk.jsmooth" skeletonroot="${conf_jsmoothgendir}/skeletons" />
 	</target>
 
 
