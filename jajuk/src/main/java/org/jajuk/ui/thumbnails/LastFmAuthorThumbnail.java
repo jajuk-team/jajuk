@@ -40,7 +40,6 @@ import org.apache.commons.lang.StringUtils;
 import org.jajuk.base.AuthorManager;
 import org.jajuk.base.Item;
 import org.jajuk.ui.helpers.FontManager;
-import org.jajuk.ui.helpers.TwoStepsDisplayable;
 import org.jajuk.ui.helpers.FontManager.JajukFont;
 import org.jajuk.util.Const;
 import org.jajuk.util.DownloadManager;
@@ -55,7 +54,7 @@ import org.jdesktop.swingx.border.DropShadowBorder;
  * Last.FM Album thumb represented as artists label + (optionally) others text
  * information display...
  */
-public class LastFmAuthorThumbnail extends AbstractThumbnail implements TwoStepsDisplayable {
+public class LastFmAuthorThumbnail extends AbstractThumbnail {
 
   private static final long serialVersionUID = -804471264407148566L;
 
@@ -65,6 +64,9 @@ public class LastFmAuthorThumbnail extends AbstractThumbnail implements TwoSteps
   /** Is this author known in collection ? */
   private final boolean bKnown;
 
+  /** Thumb associated image * */
+  ImageIcon ii;
+
   /**
    * @param album :
    *          associated album
@@ -73,11 +75,6 @@ public class LastFmAuthorThumbnail extends AbstractThumbnail implements TwoSteps
     super(100);
     this.author = author;
     bKnown = (AuthorManager.getInstance().getAuthorByName(author.getName()) != null);
-  }
-
-  @Override
-  public void populate() {
-    UtilGUI.populate(this);
   }
 
   /*
@@ -142,19 +139,17 @@ public class LastFmAuthorThumbnail extends AbstractThumbnail implements TwoSteps
     }
   }
 
-  /*
-   * (non-Javadoc)
-   * 
-   * @see org.jajuk.ui.helpers.TwoStepsDisplayable#longCall()
+  /**
+   * Long part of the populating process. Longest parts (images download) should
+   * have already been done by the caller outside the EDT. we only pop the image
+   * from the cache here.
    */
-  @Override
-  public Object longCall() {
-    ImageIcon ii = null;
+  public void preLoad() {
     try {
       // Check if author is null
       String authorUrl = author.getImageUrl();
       if (StringUtils.isBlank(authorUrl)) {
-        return null;
+        return;
       }
       // Download thumb
       URL remote = new URL(authorUrl);
@@ -163,13 +158,13 @@ public class LastFmAuthorThumbnail extends AbstractThumbnail implements TwoSteps
       fCover = DownloadManager.downloadToCache(remote);
       if (fCover == null) {
         Log.warn("Could not read remote file: " + remote.toString());
-        return null;
+        return;
       }
 
       BufferedImage image = ImageIO.read(fCover);
       if (image == null) {
         Log.warn("Could not read image data in file: " + fCover);
-        return null;
+        return;
       }
       ImageIcon downloadedImage = new ImageIcon(image);
       // In artist view, do not reduce artist picture
@@ -190,18 +185,14 @@ public class LastFmAuthorThumbnail extends AbstractThumbnail implements TwoSteps
     } catch (Exception e) {
       Log.error(e);
     }
-    return ii;
   }
 
-  /*
-   * (non-Javadoc)
-   * 
-   * @see org.jajuk.ui.helpers.TwoStepsDisplayable#shortCall(java.lang.Object)
+  /**
+   * Thumb populating done in EDT
    */
   @Override
-  public void shortCall(Object in) {
-    ImageIcon ii = (ImageIcon) in;
-    // Check if author is null
+  public void populate() {
+    preLoad();
     if (ii == null) {
       return;
     }
@@ -246,4 +237,5 @@ public class LastFmAuthorThumbnail extends AbstractThumbnail implements TwoSteps
     // Set URL to open
     jmiOpenLastFMSite.putClientProperty(Const.DETAIL_CONTENT, author.getUrl());
   }
+
 }

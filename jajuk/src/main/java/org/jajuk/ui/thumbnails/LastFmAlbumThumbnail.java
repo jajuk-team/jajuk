@@ -41,7 +41,6 @@ import org.jajuk.base.Album;
 import org.jajuk.base.AlbumManager;
 import org.jajuk.base.Item;
 import org.jajuk.ui.helpers.FontManager;
-import org.jajuk.ui.helpers.TwoStepsDisplayable;
 import org.jajuk.ui.helpers.FontManager.JajukFont;
 import org.jajuk.util.Const;
 import org.jajuk.util.DownloadManager;
@@ -57,7 +56,7 @@ import org.jdesktop.swingx.border.DropShadowBorder;
  * Last.FM Album thumb represented as album cover + (optionally) others text
  * information display...
  */
-public class LastFmAlbumThumbnail extends AbstractThumbnail implements TwoStepsDisplayable {
+public class LastFmAlbumThumbnail extends AbstractThumbnail {
 
   private static final long serialVersionUID = -804471264407148566L;
 
@@ -67,6 +66,9 @@ public class LastFmAlbumThumbnail extends AbstractThumbnail implements TwoStepsD
   /** Is this author known in collection ? */
   private final boolean bKnown;
 
+  /** Thumb associated image * */
+  ImageIcon ii;
+
   /**
    * @param album :
    *          associated album
@@ -75,11 +77,6 @@ public class LastFmAlbumThumbnail extends AbstractThumbnail implements TwoStepsD
     super(100);
     this.album = album;
     bKnown = (AlbumManager.getInstance().getAlbumByName(album.getTitle()) != null);
-  }
-
-  @Override
-  public void populate() {
-    UtilGUI.populate(this);
   }
 
   /*
@@ -155,19 +152,17 @@ public class LastFmAlbumThumbnail extends AbstractThumbnail implements TwoStepsD
     }
   }
 
-  /*
-   * (non-Javadoc)
-   * 
-   * @see org.jajuk.ui.helpers.TwoStepsDisplayable#longCall()
+  /**
+   * Long part of the populating process. Longest parts (images download) should
+   * have already been done by the caller outside the EDT. we only pop the image
+   * from the cache here.
    */
-  @Override
-  public Object longCall() {
-    ImageIcon ii = null;
+  public void preLoad() {
     try {
       // Check if album image is null
       String albumUrl = album.getBigCoverURL();
       if (StringUtils.isBlank(albumUrl)) {
-        return null;
+        return;
       }
       // Download thumb
       URL remote = new URL(albumUrl);
@@ -177,7 +172,7 @@ public class LastFmAlbumThumbnail extends AbstractThumbnail implements TwoStepsD
       BufferedImage image = ImageIO.read(fCover);
       if (image == null) {
         Log.warn("Could not read cover from: " + fCover.getAbsolutePath());
-        return null;
+        return;
       }
       ImageIcon downloadedImage = new ImageIcon(image);
       ii = UtilGUI.getScaledImage(downloadedImage, 100);
@@ -186,7 +181,7 @@ public class LastFmAlbumThumbnail extends AbstractThumbnail implements TwoStepsD
       image.flush();
     } catch (FileNotFoundException e) {
       // only report a warning for FileNotFoundException and do not show a
-      // stacktrace in the logfile as it is happening frequently
+      // stack trace in the logfile as it is happening frequently
       Log.warn("Could not load image, no content found at address: " + e.getMessage());
     } catch (SocketTimeoutException e) {
       // only report a warning for FileNotFoundException and do not show a
@@ -195,18 +190,14 @@ public class LastFmAlbumThumbnail extends AbstractThumbnail implements TwoStepsD
     } catch (Exception e) {
       Log.error(e);
     }
-    return ii;
   }
 
-  /*
-   * (non-Javadoc)
-   * 
-   * @see org.jajuk.ui.helpers.TwoStepsDisplayable#shortCall(java.lang.Object)
+  /**
+   * Thumb populating done in EDT
    */
   @Override
-  public void shortCall(Object in) {
-    ImageIcon ii = (ImageIcon) in;
-    // Check if author is null
+  public void populate() {
+    preLoad();
     if (ii == null) {
       return;
     }

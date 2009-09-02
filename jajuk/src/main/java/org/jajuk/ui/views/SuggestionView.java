@@ -32,6 +32,7 @@ import java.awt.Graphics;
 import java.awt.Insets;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -51,6 +52,7 @@ import javax.swing.event.ChangeListener;
 
 import net.miginfocom.swing.MigLayout;
 
+import org.apache.commons.lang.StringUtils;
 import org.jajuk.base.Album;
 import org.jajuk.base.AlbumManager;
 import org.jajuk.base.File;
@@ -66,6 +68,7 @@ import org.jajuk.ui.thumbnails.LocalAlbumThumbnail;
 import org.jajuk.ui.thumbnails.ThumbnailManager;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
+import org.jajuk.util.DownloadManager;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilGUI;
 import org.jajuk.util.log.Log;
@@ -251,7 +254,7 @@ public class SuggestionView extends ViewAdapter {
         albums.addAll(albumsPrefered);
         albums.addAll(albumsNewest);
         albums.addAll(albumsRare);
-        if (albums != null && albums.size() > 0) {
+        if (albums.size() > 0) {
           for (Album album : albums) {
             // Try creating the thumbnail
             ThumbnailManager.refreshThumbnail(album, 100);
@@ -331,8 +334,37 @@ public class SuggestionView extends ViewAdapter {
       @Override
       public Void doInBackground() {
         try {
+          // Perform last.fm calls
           albums = LastFmService.getInstance().getAlbumList(author, true, 0);
           similar = LastFmService.getInstance().getSimilarArtists(author);
+          // Perform images downloads and caching
+          if (albums != null && albums.getAlbums().size() > 0) {
+            for (AlbumInfo album : albums.getAlbums()) {
+              String albumUrl = album.getBigCoverURL();
+              if (StringUtils.isBlank(albumUrl)) {
+                continue;
+              }
+              // Download thumb
+              URL remote = new URL(albumUrl);
+              // Download image and store file reference (to generate the
+              // popup thumb for ie)
+              DownloadManager.downloadToCache(remote);
+            }
+          }
+          if (similar != null) {
+            List<ArtistInfo> authors = similar.getArtists();
+            for (ArtistInfo similarAuthor : authors) {
+              String authorUrl = similarAuthor.getImageUrl();
+              if (StringUtils.isBlank(authorUrl)) {
+                continue;
+              }
+              // Download thumb
+              URL remote = new URL(authorUrl);
+              // Download the picture and store file reference (to
+              // generate the popup thumb for ie)
+              DownloadManager.downloadToCache(remote);
+            }
+          }
         } catch (Exception e) {
           Log.error(e);
         }
@@ -404,9 +436,12 @@ public class SuggestionView extends ViewAdapter {
           AbstractThumbnail thumb = new LastFmAlbumThumbnail(album);
           thumb.setArtistView(artistView);
           thumb.populate();
-          thumb.getIcon().addMouseListener(new ThumbMouseListener());
-          flowPanel.add(thumb);
+          if (thumb.getIcon() != null) {
+            thumb.getIcon().addMouseListener(new ThumbMouseListener());
+            flowPanel.add(thumb);
+          }
         }
+
       }
       // No result found
       else {
@@ -419,8 +454,10 @@ public class SuggestionView extends ViewAdapter {
           AbstractThumbnail thumb = new LastFmAuthorThumbnail(similarAuthor);
           thumb.setArtistView(artistView);
           thumb.populate();
-          thumb.getIcon().addMouseListener(new ThumbMouseListener());
-          flowPanel.add(thumb);
+          if (thumb.getIcon() != null) {
+            thumb.getIcon().addMouseListener(new ThumbMouseListener());
+            flowPanel.add(thumb);
+          }
         }
       }
       // No result found
