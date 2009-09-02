@@ -63,13 +63,15 @@ public abstract class ItemManager {
    * </p>
    ****************************************************************************/
 
-  // use an array list during startup which is faster during loading the collection
+  // use an array list during startup which is faster during loading the
+  // collection
   private List<Item> startupItems = new ArrayList<Item>(100);
 
   // also store the items by ID to have quick access if necessary
   private final Map<String, Item> internalMap = new HashMap<String, Item>(100);
 
-  // at the beginning point to the ArrayList, later this is replaced by a TreeSet to have 
+  // at the beginning point to the ArrayList, later this is replaced by a
+  // TreeSet to have
   // correct ordering.
   private Collection<Item> items = startupItems;
 
@@ -99,11 +101,13 @@ public abstract class ItemManager {
    * 
    */
   public synchronized void switchToOrderState() {
-    // populate a new TreeSet with the startup-items 
-    items = new TreeSet<Item>(startupItems);
+    // populate a new TreeSet with the startup-items
+    if (startupItems != null) {
+      items = new TreeSet<Item>(startupItems);
 
-    // Free startup memory
-    startupItems = null;
+      // Free startup memory
+      startupItems = null;
+    }
   }
 
   /**
@@ -164,7 +168,7 @@ public abstract class ItemManager {
    * 
    * @return the item-parameterized list
    * 
-   * protected abstract HashMap<String, Item> getItemsMap();
+   *         protected abstract HashMap<String, Item> getItemsMap();
    */
 
   /** Add a custom property to all items for the given manager */
@@ -175,8 +179,8 @@ public abstract class ItemManager {
   }
 
   /**
-   * Attention, this method does not return a full XML, but rather an 
-   * excerpt that is then completed in Collection.commit()!
+   * Attention, this method does not return a full XML, but rather an excerpt
+   * that is then completed in Collection.commit()!
    * 
    * @return (partial) XML representation of this manager
    */
@@ -231,9 +235,11 @@ public abstract class ItemManager {
   /**
    * Get the manager from a given attribute name
    * 
-   * @param sProperty The property to compare. 
-   *  
-   * @return an ItemManager if one is found for the property or null if none found.
+   * @param sProperty
+   *          The property to compare.
+   * 
+   * @return an ItemManager if one is found for the property or null if none
+   *         found.
    */
   public static ItemManager getItemManager(String sProperty) {
     if (Const.XML_DEVICE.equals(sProperty)) {
@@ -344,8 +350,8 @@ public abstract class ItemManager {
   /**
    * Register a given item
    * 
-   * @param item :
-   *          the item to add
+   * @param item
+   *          : the item to add
    */
   protected synchronized void registerItem(Item item) {
     items.add(item);
@@ -367,8 +373,8 @@ public abstract class ItemManager {
    * @param itemToChange
    * @param sKey
    * @param oValue
-   * @param filter:
-   *          files we want to deal with
+   * @param filter
+   *          : files we want to deal with
    * @return the changed item
    */
   public static Item changeItem(Item itemToChange, String sKey, Object oValue, Set<File> filter)
