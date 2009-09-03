@@ -55,7 +55,7 @@ public class AboutWindow extends JajukJDialog {
 
   private static final long serialVersionUID = 1L;
 
-  /** Licence panel */
+  /** License panel */
   private JPanel jpLicence;
 
   /** General informations panel */
@@ -78,8 +78,8 @@ public class AboutWindow extends JajukJDialog {
       public void run() {
         setTitle(Messages.getString("JajukJMenuBar.16"));
         initUI();
-        setLocationByPlatform(true);
         setSize(new Dimension(600, 300));
+        UtilGUI.centerWindow(AboutWindow.this);
         setVisible(true);
       }
 

@@ -30,6 +30,7 @@ import java.awt.Image;
 import java.awt.MouseInfo;
 import java.awt.Point;
 import java.awt.RenderingHints;
+import java.awt.Toolkit;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -666,7 +667,8 @@ public final class UtilGUI {
    * Build GUI for a TwoStateDisplayable component.
    * <p>
    * <exception catching is preferred in the longCall() method without throwing
-   * it to the fastCall() one. </p>
+   * it to the fastCall() one.
+   * </p>
    * 
    * @param displayable
    */
@@ -691,5 +693,18 @@ public final class UtilGUI {
       }
     };
     sw.execute();
+  }
+
+  /**
+   * Center a given window to the center of the screen
+   * @param window
+   */
+  public static void centerWindow(Window window) {
+    Toolkit tk = Toolkit.getDefaultToolkit();
+    Dimension screenSize = tk.getScreenSize();
+    int screenHeight = screenSize.height;
+    int screenWidth = screenSize.width;
+    window.setLocation((screenWidth / 2) - (window.getWidth() / 2), (screenHeight / 2)
+        - (window.getHeight() / 2));
   }
 }
