@@ -334,37 +334,9 @@ public class SuggestionView extends ViewAdapter {
       @Override
       public Void doInBackground() {
         try {
-          // Perform last.fm calls
-          albums = LastFmService.getInstance().getAlbumList(author, true, 0);
-          similar = LastFmService.getInstance().getSimilarArtists(author);
-          // Perform images downloads and caching
-          if (albums != null && albums.getAlbums().size() > 0) {
-            for (AlbumInfo album : albums.getAlbums()) {
-              String albumUrl = album.getBigCoverURL();
-              if (StringUtils.isBlank(albumUrl)) {
-                continue;
-              }
-              // Download thumb
-              URL remote = new URL(albumUrl);
-              // Download image and store file reference (to generate the
-              // popup thumb for ie)
-              DownloadManager.downloadToCache(remote);
-            }
-          }
-          if (similar != null) {
-            List<ArtistInfo> authors = similar.getArtists();
-            for (ArtistInfo similarAuthor : authors) {
-              String authorUrl = similarAuthor.getImageUrl();
-              if (StringUtils.isBlank(authorUrl)) {
-                continue;
-              }
-              // Download thumb
-              URL remote = new URL(authorUrl);
-              // Download the picture and store file reference (to
-              // generate the popup thumb for ie)
-              DownloadManager.downloadToCache(remote);
-            }
-          }
+          // Fetch last.fm calls and downloads covers
+          preFetchOthersAlbum();
+          preFetchSimilarArtists();
         } catch (Exception e) {
           Log.error(e);
         }
@@ -381,6 +353,53 @@ public class SuggestionView extends ViewAdapter {
 
     };
     sw.execute();
+  }
+
+  /**
+   * Pre-load other album (done outside the EDT)
+   * 
+   * @throws Exception
+   */
+  void preFetchOthersAlbum() throws Exception {
+    albums = LastFmService.getInstance().getAlbumList(author, true, 0);
+    // Perform images downloads and caching
+    if (albums != null && albums.getAlbums().size() > 0) {
+      for (AlbumInfo album : albums.getAlbums()) {
+        String albumUrl = album.getBigCoverURL();
+        if (StringUtils.isBlank(albumUrl)) {
+          continue;
+        }
+        // Download thumb
+        URL remote = new URL(albumUrl);
+        // Download image and store file reference (to generate the
+        // popup thumb for ie)
+        DownloadManager.downloadToCache(remote);
+      }
+    }
+  }
+
+  /**
+   * Pre-load other album (done outside the EDT)
+   * 
+   * @throws Exception
+   */
+  void preFetchSimilarArtists() throws Exception {
+    // Perform last.fm calls
+    similar = LastFmService.getInstance().getSimilarArtists(author);
+    if (similar != null) {
+      List<ArtistInfo> authors = similar.getArtists();
+      for (ArtistInfo similarAuthor : authors) {
+        String authorUrl = similarAuthor.getImageUrl();
+        if (StringUtils.isBlank(authorUrl)) {
+          continue;
+        }
+        // Download thumb
+        URL remote = new URL(authorUrl);
+        // Download the picture and store file reference (to
+        // generate the popup thumb for ie)
+        DownloadManager.downloadToCache(remote);
+      }
+    }
   }
 
   /**

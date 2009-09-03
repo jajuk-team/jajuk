@@ -48,6 +48,7 @@ import org.jajuk.util.Const;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilFeatures;
 import org.jajuk.util.UtilGUI;
+import org.jajuk.util.log.Log;
 import org.jdesktop.swingx.JXBusyLabel;
 
 /**
@@ -203,6 +204,12 @@ public class ArtistView extends SuggestionView implements TwoStepsDisplayable {
     // Call last.fm wiki
     bio = LastFmService.getInstance().getWikiText(author);
     artistInfo = LastFmService.getInstance().getArtist(author);
+    // Prefetch artist thumbs
+    try {
+      preFetchOthersAlbum();
+    } catch (Exception e) {
+      Log.error(e);
+    }
     return null;
   }
 
