@@ -636,6 +636,11 @@ public interface Const {
 
   int DISPLAY_MODE_FULLSCREEN = 3;
 
+  /** Catalog view cover mode */
+  int CATALOG_VIEW_COVER_MODE_ALL = 0;
+  int CATALOG_VIEW_COVER_MODE_WITH = 1;
+  int CATALOG_VIEW_COVER_MODE_WITHOUT = 2;
+
   /** Best of size */
   String CONF_BESTOF_TRACKS_SIZE = "jajuk.bestof_size";
 
@@ -734,8 +739,8 @@ public interface Const {
   /** Catalog items size */
   String CONF_THUMBS_SIZE = "jajuk.ui.cover_catalog.thumbs_size";
 
-  /** Catalog items size */
-  String CONF_THUMBS_SHOW_WITHOUT_COVER = "jajuk.ui.cover_catalog.show_without_cover";
+  /** Catalog items cover filter */
+  String CONF_THUMBS_SHOW_COVER = "jajuk.ui.cover_catalog.show_cover";
 
   /** Catalog sorter* */
   String CONF_THUMBS_SORTER = "jajuk.catalog.sorter";

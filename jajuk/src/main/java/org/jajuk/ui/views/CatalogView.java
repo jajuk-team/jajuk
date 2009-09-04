@@ -43,7 +43,7 @@ import java.util.Set;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -121,7 +121,7 @@ public class CatalogView extends ViewAdapter implements ComponentListener, Actio
   // Bottom control panel
   JPanel jpControlBottom;
 
-  JCheckBox jcbShowNoCover;
+  JComboBox jcbShowCover;
 
   JSlider jsSize;
 
@@ -264,9 +264,14 @@ public class CatalogView extends ViewAdapter implements ComponentListener, Actio
     jpControlTop.add(jtbPage, "gapright 5,grow");
 
     // --Bottom (less used) items
-    jcbShowNoCover = new JCheckBox(Messages.getString("CatalogView.2"));
-    jcbShowNoCover.setSelected(Conf.getBoolean(Const.CONF_THUMBS_SHOW_WITHOUT_COVER));
-    jcbShowNoCover.addActionListener(this);
+
+    jcbShowCover = new JComboBox();
+    jcbShowCover.addItem(Messages.getString("CatalogView.21"));
+    jcbShowCover.addItem(Messages.getString("CatalogView.22"));
+    jcbShowCover.addItem(Messages.getString("CatalogView.2"));
+
+    jcbShowCover.setSelectedIndex(Conf.getInt(Const.CONF_THUMBS_SHOW_COVER));
+    jcbShowCover.addActionListener(this);
 
     JLabel jlSize = new JLabel(Messages.getString("CatalogView.15"));
     jsSize = new JSlider(0, 5);
@@ -287,7 +292,7 @@ public class CatalogView extends ViewAdapter implements ComponentListener, Actio
     jsSize.addChangeListener(new CatalogViewChangeListener());
 
     jpControlBottom = new JPanel(new MigLayout("gapx 20"));
-    jpControlBottom.add(jcbShowNoCover);
+    jpControlBottom.add(jcbShowCover);
     jpControlBottom.add(jlSize, "split 2");
     jpControlBottom.add(jsSize);
 
@@ -317,7 +322,8 @@ public class CatalogView extends ViewAdapter implements ComponentListener, Actio
     alFilters.add(TrackManager.getInstance().getMetaInformation(Const.XML_TRACK_ALBUM));
     alFilters.add(TrackManager.getInstance().getMetaInformation(Const.XML_YEAR));
 
-    // please note: this needs to be kept in-sync with what we do in AlbumComparator! 
+    // please note: this needs to be kept in-sync with what we do in
+    // AlbumComparator!
     alSorters = new ArrayList<PropertyMetaInformation>(10);
     alSorters.add(TrackManager.getInstance().getMetaInformation(Const.XML_TRACK_STYLE));
     alSorters.add(TrackManager.getInstance().getMetaInformation(Const.XML_TRACK_AUTHOR));
@@ -448,7 +454,12 @@ public class CatalogView extends ViewAdapter implements ComponentListener, Actio
       Iterator<Album> itAlbums = hsAlbums.iterator();
       while (itAlbums.hasNext()) {
         Album album = itAlbums.next();
-        if (!jcbShowNoCover.isSelected() && album.getCoverFile() == null) {
+        if (jcbShowCover.getSelectedIndex() == Const.CATALOG_VIEW_COVER_MODE_WITH
+            && album.getCoverFile() == null) {
+          itAlbums.remove();
+        }
+        if (jcbShowCover.getSelectedIndex() == Const.CATALOG_VIEW_COVER_MODE_WITHOUT
+            && album.getCoverFile() != null) {
           itAlbums.remove();
         }
       }
@@ -649,7 +660,8 @@ public class CatalogView extends ViewAdapter implements ComponentListener, Actio
   /*
    * (non-Javadoc)
    * 
-   * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+   * @see
+   * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
    */
   public void actionPerformed(final ActionEvent e) {
     if (e.getSource() == jcbFilter) {
@@ -664,9 +676,9 @@ public class CatalogView extends ViewAdapter implements ComponentListener, Actio
       bNeedSearch = true;
       lDateTyped = System.currentTimeMillis();
       Conf.setProperty(Const.CONF_THUMBS_SORTER, Integer.toString(jcbSorter.getSelectedIndex()));
-    } else if (e.getSource() == jcbShowNoCover) {
-      Conf.setProperty(Const.CONF_THUMBS_SHOW_WITHOUT_COVER, Boolean.toString(jcbShowNoCover
-          .isSelected()));
+    } else if (e.getSource() == jcbShowCover) {
+      Conf.setProperty(Const.CONF_THUMBS_SHOW_COVER, Integer.toString(jcbShowCover
+          .getSelectedIndex()));
       // display thumbs
       populateCatalog();
     } else if (e.getSource() == jbPrev) {

@@ -272,7 +272,7 @@ public final class Conf implements Const {
     }
     defaults.put(CONF_WINDOW_POSITION, FRAME_INITIAL_BORDER + "," + FRAME_INITIAL_BORDER + ","
         + width + "," + height);
-    defaults.put(CONF_THUMBS_SHOW_WITHOUT_COVER, TRUE);
+    defaults.put(CONF_THUMBS_SHOW_COVER, Integer.toString(Const.CATALOG_VIEW_COVER_MODE_ALL));
     defaults.put(CONF_THUMBS_SIZE, THUMBNAIL_SIZE_100X100);
     defaults.put(CONF_THUMBS_SORTER, "2"); // sort by album
     // filter on albums
