@@ -525,17 +525,21 @@ public final class UtilSystem {
   }
 
   /**
-   * Get a file extension
+   * Get a file extension (without the dot!).
    * 
-   * @param filename
-   * @return
+   * @param filename The file to examine.
+   * 
+   * @return The actual file extension or an empty string if no extension 
+   * is found (i.e. no dot in the filename). 
    */
   public static String getExtension(final String filename) {
     int dotIndex = filename.lastIndexOf('.');
+
     // File without point
     if (dotIndex == -1) {
       return "";
     }
+    
     if (dotIndex > 0) {
       return filename.substring(dotIndex + 1, filename.length());
     } else {
