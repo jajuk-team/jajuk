@@ -59,7 +59,7 @@ public class AlarmManager implements Observer {
     @Override
     public void run() {
       Log.debug("Starting Alarm thread");
-      while (!!ExitService.isExiting()) {
+      while (!ExitService.isExiting()) {
         try {
           Thread.sleep(1000);
         } catch (InterruptedException e) {
