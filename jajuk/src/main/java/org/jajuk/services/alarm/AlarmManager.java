@@ -34,6 +34,7 @@ import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.events.Observer;
+import org.jajuk.services.core.ExitService;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.log.Log;
@@ -58,8 +59,7 @@ public class AlarmManager implements Observer {
     @Override
     public void run() {
       Log.debug("Starting Alarm thread");
-      boolean bstop = false;
-      while (!bstop) {
+      while (!!ExitService.isExiting()) {
         try {
           Thread.sleep(1000);
         } catch (InterruptedException e) {
