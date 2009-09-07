@@ -287,7 +287,7 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
     spf.setFeature("http://xml.org/sax/features/string-interning", true);
     SAXParser saxParser = spf.newSAXParser();
     if (!file.exists()) {
-      throw new JajukException(5);
+      throw new JajukException(5, file.toString());
     }
     saxParser.parse(file.toURI().toURL().toString(), getInstance());
     // start auto commit thread
