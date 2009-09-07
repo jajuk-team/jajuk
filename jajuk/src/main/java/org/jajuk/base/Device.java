@@ -72,6 +72,7 @@ public class Device extends PhysicalItem implements Comparable<Device> {
   protected static final int OPTION_REFRESH_CANCEL = 2;
 
   // Device type constants
+  // Note: these need to correspond with the static array in @see org.jajuk.base.DeviceManager !! 
   public static final int TYPE_DIRECTORY = 0;
 
   public static final int TYPE_CD = 1;

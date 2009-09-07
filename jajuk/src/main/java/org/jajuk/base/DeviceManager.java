@@ -25,7 +25,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Locale;
 import java.util.Set;
 
 import javax.swing.JOptionPane;
@@ -60,7 +59,10 @@ public final class DeviceManager extends ItemManager {
   /** List of deep-refresh devices after an upgrade */
   private final Set<Device> devicesDeepRefreshed = new HashSet<Device>();
   
-  /** DeviceTypes Identification strings */
+  /** DeviceTypes Identification strings 
+   * 
+   * Note: this needs to correspond with the constants in @see org.jajuk.base.Device !! 
+   */
   public static final String[] DEVICE_TYPES = { "Device_type.directory", "Device_type.file_cd",
       "Device_type.network_drive", "Device_type.extdd", "Device_type.player" };
 
@@ -118,8 +120,10 @@ public final class DeviceManager extends ItemManager {
   }
 
   public void startAutoRefreshThread() {
-    tAutoRefresh.setPriority(Thread.MIN_PRIORITY);
-    tAutoRefresh.start();
+    if(!tAutoRefresh.isAlive()) {
+      tAutoRefresh.setPriority(Thread.MIN_PRIORITY);
+      tAutoRefresh.start();
+    }
   }
 
   /**
@@ -192,9 +196,9 @@ public final class DeviceManager extends ItemManager {
       if (!bNew && sUrl.equals(deviceToCheck.getUrl())) {
         continue;
       }
+      // check for a new device with an existing name
       if (bNew
-          && (sName.toLowerCase(Locale.getDefault()).equals(deviceToCheck.getName().toLowerCase(
-              Locale.getDefault())))) {
+          && (sName.equalsIgnoreCase(deviceToCheck.getName()))) {
         return 19;
       }
       String sUrlChecked = deviceToCheck.getUrl();
@@ -207,7 +211,7 @@ public final class DeviceManager extends ItemManager {
       }
     }
     // check availability
-    if (iDeviceType != 2) { // not a remote device, TBI for remote
+    if (iDeviceType != Device.TYPE_EXT_DD) { // not a remote device, TBI for remote
       // test directory is available
       File file = new File(sUrl);
       // check if the url exists and is readable
