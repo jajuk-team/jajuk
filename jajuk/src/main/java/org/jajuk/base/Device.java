@@ -29,6 +29,7 @@ import java.util.Set;
 
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 
 import org.apache.commons.lang.StringUtils;
 import org.jajuk.events.JajukEvent;
@@ -61,7 +62,7 @@ import org.xml.sax.Attributes;
 /**
  * A device ( music files repository )
  * <p>
- * Some properties of a device are immuable : name, url and type *
+ * Some properties of a device are immuatable : name, url and type *
  * <p>
  * Physical item
  */
@@ -83,7 +84,7 @@ public class Device extends PhysicalItem implements Comparable<Device> {
 
   public static final int TYPE_PLAYER = 4;
 
-  /** Device URL (used for perfs) */
+  /** Device URL (performances) */
   private String sUrl;
 
   /** IO file for optimizations* */
@@ -101,14 +102,17 @@ public class Device extends PhysicalItem implements Comparable<Device> {
   /** Already synchronizing flag */
   private volatile boolean bAlreadySynchronizing = false;
 
-  /** Volume of created files during synchro */
+  /** Volume of created files during synchronization */
   long lVolume = 0;
 
   /** date last refresh */
   long lDateLastRefresh;
 
-  /** Progess reporter * */
+  /** Progress reporter * */
   private RefreshReporter reporter;
+  
+  /** Refresh deepness choice **/
+  private int choice = Device.OPTION_REFRESH_DEEP;
 
   /**
    * Device constructor
@@ -475,15 +479,24 @@ public class Device extends PhysicalItem implements Comparable<Device> {
    *           refreshing
    */
   public int prepareRefresh(final boolean bAsk) throws JajukException {
-    int i = Device.OPTION_REFRESH_DEEP;
     if (bAsk) {
       final Object[] possibleValues = { Messages.getString("FilesTreeView.60"),// fast
           Messages.getString("FilesTreeView.61"),// deep
           Messages.getString("Cancel") };// cancel
-      i = JOptionPane.showOptionDialog(null, Messages.getString("FilesTreeView.59"), Messages
-          .getString("Option"), JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null,
-          possibleValues, possibleValues[0]);
-      if (i == Device.OPTION_REFRESH_CANCEL) { // Cancel
+      try {
+        SwingUtilities.invokeAndWait(new Runnable() {
+          @Override
+          public void run() {
+            choice = JOptionPane.showOptionDialog(null, Messages.getString("FilesTreeView.59"), Messages
+                .getString("Option"), JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null,
+                possibleValues, possibleValues[0]);
+          }
+        });
+      } catch (Exception e) {
+        Log.error(e);
+        choice = Device.OPTION_REFRESH_DEEP;
+      } 
+      if (choice == Device.OPTION_REFRESH_CANCEL) { // Cancel
         return Device.OPTION_REFRESH_CANCEL;
       }
     }
@@ -504,7 +517,7 @@ public class Device extends PhysicalItem implements Comparable<Device> {
     if (bAlreadyRefreshing) {
       throw new JajukException(107);
     }
-    return i;
+    return choice;
   }
 
   /**
