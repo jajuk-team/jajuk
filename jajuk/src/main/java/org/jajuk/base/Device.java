@@ -500,10 +500,10 @@ public class Device extends PhysicalItem implements Comparable<Device> {
         });
       } catch (Exception e) {
         Log.error(e);
-        choice = Device.OPTION_REFRESH_DEEP;
+        choice = Device.OPTION_REFRESH_CANCEL;
       } 
       if (choice == Device.OPTION_REFRESH_CANCEL) { // Cancel
-        return Device.OPTION_REFRESH_CANCEL;
+        return choice;
       }
     }
     final Device device = this;
