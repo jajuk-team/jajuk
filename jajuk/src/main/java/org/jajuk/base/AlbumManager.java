@@ -55,7 +55,7 @@ public final class AlbumManager extends ItemManager implements Observer {
   /** Album max rating */
   private long maxRate = 0l;
 
-  int comp = 0;
+  private int comp = 0;
 
   /**
    * No constructor available, only static access
