@@ -235,6 +235,11 @@ public class Device extends PhysicalItem implements Comparable<Device> {
    * @return comparison result
    */
   public int compareTo(final Device otherDevice) {
+    // should handle null
+    if(otherDevice == null) {
+      return -1;
+    }
+    
     // We must be consistent with equals, see
     // http://java.sun.com/javase/6/docs/api/java/lang/Comparable.html
     int comp = getName().compareToIgnoreCase(otherDevice.getName());
@@ -261,7 +266,7 @@ public class Device extends PhysicalItem implements Comparable<Device> {
    * @return
    */
   public String getDeviceTypeS() {
-    return DeviceManager.getInstance().getDeviceType(getLongValue(Const.XML_TYPE));
+    return DeviceManager.getInstance().getDeviceType(getType());
   }
 
   /**
@@ -279,12 +284,13 @@ public class Device extends PhysicalItem implements Comparable<Device> {
    */
   public List<org.jajuk.base.File> getFilesRecursively() {
     // looks for the root directory for this device
-    Directory dirRoot = DirectoryManager.getInstance().getDirectoryForIO(this.getFio(), this);
-    List<org.jajuk.base.File> alFiles = new ArrayList<org.jajuk.base.File>(100);
+    Directory dirRoot = getRootDirectory();
     if (dirRoot != null) {
-      alFiles = dirRoot.getFilesRecursively();
+      return dirRoot.getFilesRecursively();
     }
-    return alFiles;
+    
+    // nothing found, return empty list
+    return new ArrayList<org.jajuk.base.File>();
   }
 
   /**
@@ -822,7 +828,7 @@ public class Device extends PhysicalItem implements Comparable<Device> {
           Const.DEVICE_SYNCHRO_MODE_BI);
       // check this device is synchronized
       final String sIdSrc = (String) getValue(Const.XML_DEVICE_SYNCHRO_SOURCE);
-      if ((sIdSrc == null) || sIdSrc.equals(getID())) {
+      if (StringUtils.isBlank(sIdSrc) || sIdSrc.equals(getID())) {
         // cannot synchro with itself
         return;
       }
