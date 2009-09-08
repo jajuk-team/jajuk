@@ -97,7 +97,7 @@ public final class Main {
       Conf.load();
 
       // Full substance configuration now (must be done out of EDT)
-      UtilGUI.setLookAndFeel(Conf.getString(Const.CONF_OPTIONS_LNF));
+      UtilGUI.setupSubstanceLookAndFeel(Conf.getString(Const.CONF_OPTIONS_LNF));
 
       // Set default fonts
       FontManager.getInstance().setDefaultFont();
@@ -144,8 +144,7 @@ public final class Main {
 
       // registers supported audio supports and default properties. Display a
       // "Downloading mplayer" message by default in the splash screen in case
-      // of
-      // it is downloaded
+      // of it is downloaded
       StartupGUIService.fireStepOneOver();
       StartupCollectionService.registerTypes();
 
@@ -155,7 +154,7 @@ public final class Main {
       // Load collection
       StartupCollectionService.loadCollection();
 
-      // Upgrade step2
+      // Upgrade step2 (after collection load)
       UpgradeManager.upgradeStep2();
 
       // Clean the collection up
@@ -212,9 +211,8 @@ public final class Main {
       e.printStackTrace();
       Log.error(106, e);
       ExitService.exit(1);
-    } catch (final Error error) { // last chance to catch any error for
-      // logging
-      // purpose
+    } catch (final Error error) { 
+      // last chance to catch any error for logging purpose
       error.printStackTrace();
       Log.error(106, error);
       ExitService.exit(1);
@@ -225,7 +223,7 @@ public final class Main {
   }
 
   /**
-   * Called when starting jajuk from the thumb maker process, set jajuk in light mode
+   * Called when starting Jajuk from the thumb maker process, set jajuk in light mode
    * @param bTest
    * @param workspace
    */

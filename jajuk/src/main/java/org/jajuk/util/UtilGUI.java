@@ -312,12 +312,11 @@ public final class UtilGUI {
   }
 
   /**
-   * Set a look and feel. We always use Substance Look And Feel with various
-   * themes
+   * Setup Substance look and feel
    * 
    * @param theme
    */
-  public static void setLookAndFeel(final String pTheme) {
+  public static void setupSubstanceLookAndFeel(final String pTheme) {
     // Check the theme is known, if not take the default theme
     final Map<String, SkinInfo> themes = SubstanceLookAndFeel.getAllSkins();
     theme = pTheme;
