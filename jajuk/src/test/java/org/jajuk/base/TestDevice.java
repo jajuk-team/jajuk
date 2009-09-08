@@ -1,0 +1,828 @@
+/*
+ *  Jajuk
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
+ *
+ *  This program is free software; you can redistribute it and/or
+ *  modify it under the terms of the GNU General Public License
+ *  as published by the Free Software Foundation; either version 2
+ *  of the License, or any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program; if not, write to the Free Software
+ *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ *  $Revision: 3132 $
+ */
+package org.jajuk.base;
+
+import java.awt.HeadlessException;
+import java.lang.reflect.InvocationTargetException;
+import java.util.List;
+
+import junit.framework.TestCase;
+
+import org.apache.commons.lang.StringUtils;
+import org.jajuk.JUnitHelpers;
+import org.jajuk.base.TestAlbumManager.MockPlayer;
+import org.jajuk.services.players.IPlayerImpl;
+import org.jajuk.services.players.QueueModel;
+import org.jajuk.services.players.StackItem;
+import org.jajuk.services.startup.StartupCollectionService;
+import org.jajuk.util.Conf;
+import org.jajuk.util.Const;
+import org.jajuk.util.error.JajukException;
+import org.xml.sax.Attributes;
+
+/**
+ * 
+ */
+public class TestDevice extends TestCase {
+
+  /**
+   * Test method for {@link org.jajuk.base.Device#getDesc()}.
+   */
+
+  public void testGetDesc() {
+    Device device = new Device("1", "testname");
+    assertNotNull(device.getDesc());
+    assertFalse(device.getDesc().length() == 0);
+  }
+
+  /**
+   * Test method for {@link org.jajuk.base.Device#getLabel()}.
+   */
+
+  public void testGetLabel() {
+    Device device = new Device("1", "name");
+    assertEquals(Const.XML_DEVICE, device.getLabel());
+  }
+
+  /**
+   * Test method for
+   * {@link org.jajuk.base.Device#populateProperties(org.xml.sax.Attributes)}.
+   */
+
+  public void testPopulateProperties() {
+    StartupCollectionService.registerItemManagers();
+
+    Device device = new Device("1", "name");
+
+    DeviceManager.getInstance().registerProperty(
+        new PropertyMetaInformation("att1", true, false, true, false, false, String.class, null));
+    DeviceManager.getInstance().registerProperty(
+        new PropertyMetaInformation("att2", true, false, true, false, false, String.class, null));
+    DeviceManager.getInstance().registerProperty(
+        new PropertyMetaInformation("att3", true, false, true, false, false, String.class, null));
+    DeviceManager.getInstance().registerProperty(
+        new PropertyMetaInformation(Const.XML_DEVICE_AUTO_REFRESH, true, false, true, false, false,
+            String.class, null));
+
+    device.populateProperties(new MockAttributes());
+
+    device = DeviceManager.getInstance().registerDevice("name", Device.TYPE_CD,
+        System.getProperty("java.io.tmpdir"));
+
+    device.populateProperties(new MockAttributes());
+
+    device = DeviceManager.getInstance().registerDevice("name", Device.TYPE_NETWORK_DRIVE,
+        System.getProperty("java.io.tmpdir"));
+
+    device.populateProperties(new MockAttributes());
+
+    device = DeviceManager.getInstance().registerDevice("name", Device.TYPE_EXT_DD,
+        System.getProperty("java.io.tmpdir"));
+
+    device.populateProperties(new MockAttributes());
+
+    device = DeviceManager.getInstance().registerDevice("name", Device.TYPE_PLAYER,
+        System.getProperty("java.io.tmpdir"));
+
+    device.populateProperties(new MockAttributes());
+  }
+
+  /**
+   * Test method for
+   * {@link org.jajuk.base.Device#getHumanValue(java.lang.String)}.
+   */
+
+  public void testGetHumanValue() {
+    // we need the managers registered here
+    StartupCollectionService.registerItemManagers();
+    StartupCollectionService.registerDevicesTypes();
+
+    Device device = new Device("1", "testname");
+    assertEquals("", device.getHumanValue("notexists"));
+
+    // TODO: capture correct use of this method as well
+
+    DeviceManager.getInstance().registerProperty(
+        new PropertyMetaInformation("att1", true, false, true, false, false, String.class, null));
+    DeviceManager.getInstance().registerProperty(
+        new PropertyMetaInformation("att2", true, false, true, false, false, String.class, null));
+    DeviceManager.getInstance().registerProperty(
+        new PropertyMetaInformation("att3", true, false, true, false, false, String.class, null));
+    DeviceManager.getInstance().registerProperty(
+        new PropertyMetaInformation(Const.XML_DEVICE_AUTO_REFRESH, true, false, true, false, false,
+            String.class, null));
+
+    device.populateProperties(new MockAttributes());
+    assertNotNull(device.getHumanValue("att1"));
+
+    device.setProperty(Const.XML_TYPE, 2l);
+    assertTrue(StringUtils.isNotBlank(device.getHumanValue(Const.XML_TYPE)));
+  }
+
+  /**
+   * Test method for {@link org.jajuk.base.Device#getIconRepresentation()}.
+   * 
+   * @throws Exception
+   */
+
+  public void testGetIconRepresentation() throws Exception {
+    // we need the managers registered here
+    StartupCollectionService.registerItemManagers();
+
+    Device device = new Device("1", "name");
+    assertNotNull(device.getIconRepresentation());
+
+    device.setProperty(Const.XML_TYPE, (long) Device.TYPE_DIRECTORY);
+    assertNotNull(device.getIconRepresentation());
+
+    device.setProperty(Const.XML_TYPE, (long) Device.TYPE_CD);
+    assertNotNull(device.getIconRepresentation());
+
+    device.setProperty(Const.XML_TYPE, (long) Device.TYPE_NETWORK_DRIVE);
+    assertNotNull(device.getIconRepresentation());
+
+    device.setProperty(Const.XML_TYPE, (long) Device.TYPE_EXT_DD);
+    assertNotNull(device.getIconRepresentation());
+
+    device.setProperty(Const.XML_TYPE, (long) Device.TYPE_PLAYER);
+    assertNotNull(device.getIconRepresentation());
+
+    // test with invalid type
+    device.setProperty(Const.XML_TYPE, (long) -1);
+    assertNull(device.getIconRepresentation());
+
+    // test with mounted device
+    device.setUrl(System.getProperty("java.io.tmpdir"));
+    device.mount(true);
+
+    device.setProperty(Const.XML_TYPE, (long) Device.TYPE_PLAYER);
+    assertNotNull(device.getIconRepresentation());
+  }
+
+  /**
+   * Test method for
+   * {@link org.jajuk.base.Device#Device(java.lang.String, java.lang.String)}.
+   */
+
+  public void testDevice() {
+    new Device("1", "name");
+  }
+
+  /**
+   * Test method for
+   * {@link org.jajuk.base.Device#addDirectory(org.jajuk.base.Directory)}.
+   */
+
+  public void testAddDirectory() {
+    Device device = new Device("1", "name");
+    assertEquals(0, device.getDirectories().size());
+    device.addDirectory(new Directory("2", "name", null, device));
+    assertEquals(1, device.getDirectories().size());
+    device.addDirectory(new Directory("2", "name", null, device));
+    assertEquals(2, device.getDirectories().size());
+  }
+
+  /**
+   * Test method for {@link org.jajuk.base.Device#cleanRemovedFiles()}.
+   */
+
+  public void testCleanRemovedFiles() throws Exception {
+    JUnitHelpers.createSessionDirectory();
+
+    Device device = new Device("1", "name");
+    device.setUrl(System.getProperty("java.io.tmpdir"));
+    device.mount(true);
+    device.setUrl("notexisting/testparent\\anotherclientparentthing"); // change
+    // the
+    // Url
+    // after
+    // mounting
+
+    // clean without any stuff
+    assertFalse(device.cleanRemovedFiles());
+
+    // add some directory, then the remove should kick in!
+    Directory dir = new Directory("2", "notexistingdir", null, device);
+    device.addDirectory(dir);
+    DirectoryManager.getInstance().registerDirectory(device);
+
+    File file = getFile(8, dir);
+    PlaylistManager.getInstance().registerPlaylistFile(file.getFIO(), dir);
+
+    // now we have removals
+    assertTrue(device.cleanRemovedFiles());
+
+    // enable history to also clean that
+    Conf.setProperty(Const.CONF_HISTORY, "10");
+
+    // no removals any more now
+    assertFalse(device.cleanRemovedFiles());
+  }
+
+  /**
+   * Test method for
+   * {@link org.jajuk.base.Device#compareTo(org.jajuk.base.Device)}.
+   */
+  public void testCompareTo() {
+    Device device = new Device("1", "name");
+    Device equal = new Device("1", "name");
+    Device notequal = new Device("1", "name1"); // compares only on name
+
+    JUnitHelpers.CompareToTest(device, equal, notequal);
+  }
+
+  /**
+   * Test method for {@link org.jajuk.base.Device#getDateLastRefresh()}.
+   */
+  public void testGetDateLastRefresh() {
+    Device device = new Device("1", "name");
+    assertEquals(0, device.getDateLastRefresh());
+
+    device.refreshCommand(false);
+
+    // now it should be set
+    assertNotNull(device.getDateLastRefresh());
+  }
+
+  /**
+   * Test method for {@link org.jajuk.base.Device#getDeviceTypeS()}.
+   */
+  public void testGetDeviceTypeS() {
+    StartupCollectionService.registerDevicesTypes();
+
+    Device device = new Device("1", "name");
+    assertNotNull(device.getDeviceTypeS());
+  }
+
+  /**
+   * Test method for {@link org.jajuk.base.Device#getDirectories()}.
+   */
+  public void testGetDirectories() {
+    Device device = new Device("1", "name");
+    assertEquals(0, device.getDirectories().size());
+
+    device.addDirectory(new Directory("1", "name", null, device));
+    assertEquals(1, device.getDirectories().size());
+  }
+
+  /**
+   * Test method for {@link org.jajuk.base.Device#getFilesRecursively()}.
+   */
+  public void testGetFilesRecursively() {
+    Device device = new Device("1", "name");
+    device.setUrl(System.getProperty("java.io.tmpdir"));
+
+    // no files without a directory
+    List<File> files = device.getFilesRecursively();
+    assertEquals(0, files.size()); // no file available
+
+    Directory dir = DirectoryManager.getInstance().registerDirectory(device);
+
+    // still no files without files being registered
+    files = device.getFilesRecursively();
+    assertEquals(0, files.size()); // no file available
+
+    getFile(1, dir);
+
+    // now it should find some
+    files = device.getFilesRecursively();
+    assertEquals(1, files.size());
+  }
+
+  @SuppressWarnings("unchecked")
+  private File getFile(int i, Directory dir) {
+    Style style = new Style(Integer.valueOf(i).toString(), "name");
+    Album album = new Album(Integer.valueOf(i).toString(), "name", "artis", 23);
+    album.setProperty(Const.XML_ALBUM_COVER, "none"); // don't read covers for
+    // this test
+
+    Author author = new Author(Integer.valueOf(i).toString(), "name");
+    Year year = new Year(Integer.valueOf(i).toString(), "2000");
+
+    IPlayerImpl imp = new MockPlayer();
+    Class<IPlayerImpl> cl = (Class<IPlayerImpl>) imp.getClass();
+
+    Type type = new Type(Integer.valueOf(i).toString(), "name", "mp3", cl, null);
+    Track track = new Track(Integer.valueOf(i).toString(), "name", album, style, author, 120, year,
+        1, type, 1);
+
+    return FileManager.getInstance().registerFile(Integer.valueOf(i).toString(), "test.tst", dir,
+        track, 120, 70);
+  }
+
+  /**
+   * Test method for {@link org.jajuk.base.Device#getFio()}.
+   */
+  public void testGetFio() {
+    Device device = new Device("1", "name");
+
+    assertNull(device.getFio());
+
+    device.setUrl(System.getProperty("java.io.tmpdir"));
+
+    assertNotNull(device.getFio());
+  }
+
+  /**
+   * Test method for {@link org.jajuk.base.Device#getRootDirectory()}.
+   */
+  public void testGetRootDirectory() {
+    Device device = new Device("1", "name");
+    assertNull(device.getRootDirectory());
+
+    device.setUrl(System.getProperty("java.io.tmpdir"));
+    DirectoryManager.getInstance().registerDirectory(device);
+
+    assertNotNull(device.getRootDirectory());
+
+  }
+
+  /**
+   * Test method for {@link org.jajuk.base.Device#getType()}.
+   */
+  public void testGetType() {
+    Device device = new Device("1", "name");
+    assertEquals(0, device.getType());
+
+    device.setProperty(Const.XML_TYPE, 2l);
+    assertEquals(2, device.getType());
+  }
+
+  /**
+   * Test method for {@link org.jajuk.base.Device#getUrl()}.
+   */
+  public void testGetUrl() {
+    Device device = new Device("1", "name");
+
+    assertNull(device.getUrl());
+
+    device.setUrl(System.getProperty("java.io.tmpdir"));
+
+    assertNotNull(device.getUrl());
+
+  }
+
+  /**
+   * Test method for {@link org.jajuk.base.Device#isMounted()}.
+   * 
+   * @throws Exception
+   */
+  public void testIsMounted() throws Exception {
+    Device device = new Device("1", "name");
+    device.setUrl(System.getProperty("java.io.tmpdir"));
+    assertFalse(device.isMounted());
+
+    device.mount(true);
+    assertTrue(device.isMounted());
+  }
+
+  /**
+   * Test method for {@link org.jajuk.base.Device#isReady()}.
+   * 
+   * @throws Exception
+   */
+  public void testIsReady() throws Exception {
+    Device device = new Device("1", "name");
+    device.setUrl(System.getProperty("java.io.tmpdir"));
+    assertFalse(device.isReady());
+
+    device.mount(true);
+    assertTrue(device.isReady());
+  }
+
+  /**
+   * Test method for {@link org.jajuk.base.Device#isRefreshing()}.
+   */
+  public void testIsRefreshing() {
+    Device device = new Device("1", "name");
+    assertFalse(device.isRefreshing());
+
+  }
+
+  /**
+   * Test method for {@link org.jajuk.base.Device#isSynchronizing()}.
+   */
+  public void testIsSynchronizing() {
+    Device device = new Device("1", "name");
+    assertFalse(device.isSynchronizing());
+  }
+
+  /**
+   * Test method for {@link org.jajuk.base.Device#prepareRefresh(boolean)}.
+   * 
+   * @throws Exception
+   */
+  public void testPrepareRefresh() throws Exception {
+    Device device = new Device("1", "name");
+    device.setUrl(System.getProperty("java.io.tmpdir"));
+    device.prepareRefresh(false);
+
+  }
+
+  public void testPrepareRefreshAsk() throws Exception {
+    Device device = new Device("1", "name");
+    device.setUrl(System.getProperty("java.io.tmpdir"));
+    try {
+      device.prepareRefresh(true);
+    } catch (HeadlessException e) {
+      // ignore this on non-ui machines
+    }
+  }
+
+  public void testPrepareRefreshAskCD() throws Exception {
+    Device device = DeviceManager.getInstance().registerDevice("name", Device.TYPE_CD,
+        System.getProperty("java.io.tmpdir"));
+    try {
+      device.prepareRefresh(true);
+    } catch (HeadlessException e) {
+      // ignore this on non-ui machines
+    }
+  }
+
+  public void testPrepareRefreshAskNetworkDrive() throws Exception {
+    Device device = DeviceManager.getInstance().registerDevice("name", Device.TYPE_NETWORK_DRIVE,
+        System.getProperty("java.io.tmpdir"));
+    try {
+      device.prepareRefresh(true);
+    } catch (HeadlessException e) {
+      // ignore this on non-ui machines
+    }
+  }
+
+  public void testPrepareRefreshAskExtDD() throws Exception {
+    Device device = DeviceManager.getInstance().registerDevice("name", Device.TYPE_EXT_DD,
+        System.getProperty("java.io.tmpdir"));
+    try {
+      device.prepareRefresh(true);
+    } catch (HeadlessException e) {
+      // ignore this on non-ui machines
+    }
+  }
+
+  public void testPrepareRefreshAskPlayer() throws Exception {
+    Device device = DeviceManager.getInstance().registerDevice("name", Device.TYPE_PLAYER,
+        System.getProperty("java.io.tmpdir"));
+    try {
+      device.prepareRefresh(true);
+    } catch (HeadlessException e) {
+      // ignore this on non-ui machines
+    }
+  }
+
+  /**
+   * Test method for {@link org.jajuk.base.Device#mount(boolean)}.
+   * 
+   * @throws Exception
+   */
+  public void testMount() throws Exception {
+    Device device = new Device("1", "name");
+    device.setUrl(System.getProperty("java.io.tmpdir"));
+    device.mount(true);
+
+    // try a second time
+    device.mount(true);
+
+    // try a device that has an invalid URL
+    device = new Device("1", "name");
+    device.setUrl("notexisting/not/adsf\\dtest");
+    try {
+      device.mount(true);
+    } catch (JajukException e) {
+      assertTrue(e.getCause().getMessage(), e.getCause().getMessage().contains(
+          "Path does not exist"));
+      assertTrue(e.getCause().getMessage(), e.getCause().getMessage().contains("notexisting"));
+      assertEquals(11, e.getCode());
+    }
+  }
+
+  /**
+   * Test method for {@link org.jajuk.base.Device#refresh(boolean)}.
+   */
+  public void testRefreshBoolean() {
+    Device device = new Device("1", "name");
+    device.setUrl(System.getProperty("java.io.tmpdir"));
+
+    try {
+      device.refresh(false);
+    } catch (RuntimeException e) {
+      // there can be a hidden HeadlessException here
+      assertTrue(e.getCause().getMessage(), e.getCause() instanceof InvocationTargetException);
+      // assertTrue(e.getCause().getCause().getMessage(),
+      // e.getCause().getCause()instanceof InvocationTargetException);
+      // assertTrue(e.getCause().getCause().getCause().getMessage(),
+      // e.getCause().getCause().getCause()instanceof HeadlessException);
+
+    }
+
+    device.refresh(true);
+  }
+
+  /**
+   * Test method for {@link org.jajuk.base.Device#refresh(boolean, boolean)}.
+   */
+  public void testRefreshBooleanBoolean() {
+    Device device = new Device("1", "name");
+    device.setUrl(System.getProperty("java.io.tmpdir"));
+
+    try {
+      device.refresh(false, false);
+    } catch (RuntimeException e) {
+      // there can be a hidden HeadlessException here
+      assertTrue(e.getCause().getMessage(), e.getCause() instanceof InvocationTargetException);
+    }
+
+    device.refresh(true, false);
+  }
+
+  /**
+   * Test method for {@link org.jajuk.base.Device#refreshCommand(boolean)}.
+   */
+  public void testRefreshCommand() {
+    Device device = new Device("1", "name");
+    device.refreshCommand(false);
+  }
+
+  /**
+   * Test method for {@link org.jajuk.base.Device#setUrl(java.lang.String)}.
+   * 
+   * @throws Exception
+   */
+  public void testSetUrl() throws Exception {
+    Device device = new Device("1", "name");
+    device.setUrl(System.getProperty("java.io.tmpdir"));
+
+    // add some directory, then the remove should kick in!
+    Directory dir = new Directory("2", "notexistingdir", null, device);
+    device.addDirectory(dir);
+    DirectoryManager.getInstance().registerDirectory(device);
+
+    File file = getFile(8, dir);
+    PlaylistManager.getInstance().registerPlaylistFile(file.getFIO(), dir);
+
+    // now also the playlist should be reset
+    device.setUrl(System.getProperty("java.io.tmpdir"));
+  }
+
+  /**
+   * Test method for {@link org.jajuk.base.Device#synchronize(boolean)}.
+   */
+  public void testSynchronize() {
+    Device device = new Device("1", "name");
+    device.synchronize(true);
+
+    // nothing much happens here as there is no synchro-device set
+    device.synchronize(false);
+
+  }
+
+  public void testSynchronizeConfSet() {
+    Device device = new Device("1", "name");
+
+    // set the synchro-device
+    device.setProperty(Const.XML_DEVICE_SYNCHRO_SOURCE, "blabla");
+    device.synchronize(false);
+    device.synchronize(true);
+  }
+
+  /**
+   * Test method for {@link org.jajuk.base.Device#synchronizeCommand()}.
+   */
+  public void testSynchronizeCommand() {
+    Device device = new Device("1", "name");
+    device.synchronizeCommand();
+
+    // TODO do some real testing here
+  }
+
+  public void testSynchronizeCommandSyncDevice() {
+    Device device = new Device("1", "name");
+
+    // set the synchro-device
+    Device sync = DeviceManager.getInstance().registerDevice("name2", 0,
+        System.getProperty("java.io.tmpdir"));
+    device.setProperty(Const.XML_DEVICE_SYNCHRO_SOURCE, sync.getID());
+
+    device.synchronizeCommand();
+  }
+
+  public void testSynchronizeCommandSyncDeviceBidi() {
+    Device device = new Device("1", "name");
+    device.setUrl(System.getProperty("java.io.tmpdir"));
+
+    // set the synchro-device
+    Device sync = DeviceManager.getInstance().registerDevice("name2", 0,
+        System.getProperty("java.io.tmpdir"));
+    sync.setUrl(System.getProperty("java.io.tmpdir"));
+    device.setProperty(Const.XML_DEVICE_SYNCHRO_SOURCE, sync.getID());
+    device.setProperty(Const.XML_DEVICE_SYNCHRO_MODE, Const.DEVICE_SYNCHRO_MODE_BI);
+
+    device.synchronizeCommand();
+  }
+
+  /**
+   * Test method for {@link org.jajuk.base.Device#test()}.
+   */
+  public void testTest() {
+    Device device = new Device("1", "name");
+    assertFalse(device.test());
+  }
+
+  public void testTestMounted() throws Exception {
+    Device device = new Device("1", "name");
+    device.setUrl(System.getProperty("java.io.tmpdir"));
+
+    assertTrue(device.test());
+  }
+
+  /**
+   * Test method for {@link org.jajuk.base.Device#toString()}.
+   */
+  public void testToString() {
+    Device device = new Device("1", "name");
+    JUnitHelpers.ToStringTest(device);
+
+    device = new Device("1", null);
+    JUnitHelpers.ToStringTest(device);
+
+    device = new Device(null, null);
+    JUnitHelpers.ToStringTest(device);
+  }
+
+  /**
+   * Test method for {@link org.jajuk.base.Device#unmount()}.
+   * 
+   * @throws Exception
+   */
+  public void testUnmount() throws Exception {
+    Device device = new Device("1", "name");
+    device.setUrl(System.getProperty("java.io.tmpdir"));
+    assertFalse(device.isMounted());
+    device.unmount();
+
+    device.mount(true);
+    assertTrue(device.isMounted());
+
+    device.unmount();
+    assertFalse(device.isMounted());
+  }
+
+  /**
+   * Test method for {@link org.jajuk.base.Device#unmount(boolean, boolean)}.
+   * 
+   * @throws Exception
+   */
+  public void testUnmountBooleanBoolean() throws Exception {
+    Device device = new Device("1", "name");
+    device.setUrl(System.getProperty("java.io.tmpdir"));
+    assertFalse(device.isMounted());
+    device.unmount(false, false);
+
+    device.mount(true);
+    assertTrue(device.isMounted());
+
+    device.unmount(false, false);
+    assertFalse(device.isMounted());
+  }
+
+  public void testUnmountBooleanBooleanQueue() throws Exception {
+    Device device = new Device("1", "name");
+    device.setUrl(System.getProperty("java.io.tmpdir"));
+
+    device.mount(true);
+    assertTrue(device.isMounted());
+
+    Directory dir = new Directory("2", "notexistingdir", null, device);
+    device.addDirectory(dir);
+    DirectoryManager.getInstance().registerDirectory(device);
+
+    File file = getFile(9, dir);
+
+    QueueModel.insert(new StackItem(file), 0);
+    QueueModel.goTo(0);
+
+    device.unmount(false, false);
+    assertTrue(device.isMounted()); // still mounted because there is a file
+    // used on this device....
+  }
+
+  private class MockAttributes implements Attributes {
+
+    @Override
+    public String getValue(String uri, String localName) {
+
+      return null;
+    }
+
+    @Override
+    public String getValue(String qName) {
+
+      return null;
+    }
+
+    @Override
+    public String getValue(int index) {
+      switch (index) {
+      case 0:
+        return "value1";
+      case 1:
+        return "value2";
+      case 2:
+        return "value3";
+      case 3:
+        return "true";
+      default:
+        fail("invalid index: " + index);
+        break;
+      }
+
+      return null;
+    }
+
+    @Override
+    public String getURI(int index) {
+
+      return null;
+    }
+
+    @Override
+    public String getType(String uri, String localName) {
+
+      return null;
+    }
+
+    @Override
+    public String getType(String qName) {
+
+      return null;
+    }
+
+    @Override
+    public String getType(int index) {
+
+      return null;
+    }
+
+    @Override
+    public String getQName(int index) {
+      switch (index) {
+      case 0:
+        return "att1";
+
+      case 1:
+        return "att2";
+
+      case 2:
+        return "att3";
+
+      case 3:
+        return Const.XML_DEVICE_AUTO_REFRESH;
+
+      default:
+        fail("invalid index: " + index);
+      }
+      return null;
+    }
+
+    @Override
+    public String getLocalName(int index) {
+
+      return null;
+    }
+
+    @Override
+    public int getLength() {
+
+      return 4;
+    }
+
+    @Override
+    public int getIndex(String uri, String localName) {
+
+      return 0;
+    }
+
+    @Override
+    public int getIndex(String qName) {
+
+      return 0;
+    }
+  }
+}
