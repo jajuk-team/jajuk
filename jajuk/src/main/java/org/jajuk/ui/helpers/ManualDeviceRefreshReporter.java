@@ -21,6 +21,7 @@ package org.jajuk.ui.helpers;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.lang.reflect.InvocationTargetException;
 
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
@@ -50,16 +51,22 @@ public class ManualDeviceRefreshReporter extends RefreshReporter {
   @Override
   public void startup() {
     super.startup();
-    SwingUtilities.invokeLater(new Runnable() {
-      @Override
-      public void run() {
-        // if <0 directories count -> the progress bar is in indeterminate state
-        rdialog = new RefreshDialog((dirTotal < 0));
-        rdialog.setTitle(Messages.getString("RefreshDialog.2") + " " + device.getName());
-        rdialog.setAction(Messages.getString("RefreshDialog.3"), IconLoader
-            .getIcon(JajukIcons.INFO));
-      }
-    });
+    try {
+      SwingUtilities.invokeAndWait(new Runnable() {
+        @Override
+        public void run() {
+          // if <0 directories count -> the progress bar is in indeterminate state
+          rdialog = new RefreshDialog((dirTotal < 0));
+          rdialog.setTitle(Messages.getString("RefreshDialog.2") + " " + device.getName());
+          rdialog.setAction(Messages.getString("RefreshDialog.3"), IconLoader
+              .getIcon(JajukIcons.INFO));
+        }
+      });
+    } catch (InterruptedException e) {
+      throw new RuntimeException(e);
+    } catch (InvocationTargetException e) {
+      throw new RuntimeException(e);
+    }
   }
 
   @Override
