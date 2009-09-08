@@ -466,17 +466,14 @@ public abstract class Item implements Const {
   }
 
   /**
-   * @param the
-   *          rate
-   * @return Number of stars for a given item rate
+   * @return Number of stars based on the rate of this item
    */
   public int getStarsNumber() {
     long lInterval = 1;
     if (this instanceof Track) {
       lInterval = 100;
-    } else if (this instanceof Album) {
-      lInterval = AlbumManager.getInstance().getMaxRate();
-    } else if (this instanceof Playlist) {
+    } else if ((this instanceof Album) ||
+                  (this instanceof Playlist)) {
       lInterval = AlbumManager.getInstance().getMaxRate();
     }
     lInterval = lInterval / 4;
