@@ -108,9 +108,8 @@ public final class AlbumManager extends ItemManager implements Observer {
    *          item name
    * @param String
    *          sAlbumArtist : the album artist tag or null is none
-   * @param long
-   *          discId the CD disk ID (in the CDDB meaning), 0 if doesn't computed
-   *          yet
+   * @param long discId the CD disk ID (in the CDDB meaning), 0 if doesn't
+   *        computed yet
    * 
    * @return ItemManager ID
    */
@@ -175,20 +174,33 @@ public final class AlbumManager extends ItemManager implements Observer {
     if (old.getName2().equals(sNewName)) {
       return old;
     }
+
+    // check up front as later the state of the track is already changed
+    boolean bQueueUpdateRequired = false;
+    if (QueueModel.getPlayingFile() != null
+        && QueueModel.getPlayingFile().getTrack().getAlbum().equals(old)) {
+      bQueueUpdateRequired=true;
+    }
+    
     Album newItem = registerAlbum(sNewName, old.getAlbumArtist(), old.getDiscID());
     // re apply old properties from old item
     newItem.cloneProperties(old);
+
     // update tracks
     for (Track track : TrackManager.getInstance().getTracks()) {
       if (track.getAlbum().equals(old)) {
         TrackManager.getInstance().changeTrackAlbum(track, sNewName, null);
       }
     }
+
     // if current track album name is changed, notify it
-    if (QueueModel.getPlayingFile() != null
-        && QueueModel.getPlayingFile().getTrack().getAlbum().equals(old)) {
+    if (bQueueUpdateRequired) {
       ObservationManager.notify(new JajukEvent(JajukEvents.ALBUM_CHANGED));
     }
+    
+    // remove old item
+    removeItem(old);
+    
     return newItem;
   }
 
@@ -207,6 +219,14 @@ public final class AlbumManager extends ItemManager implements Observer {
     Album newItem = registerAlbum(old.getName(), sNewName, old.getDiscID());
     // re apply old properties from old item
     newItem.cloneProperties(old);
+
+    // check up front as later the state of the track is already changed
+    boolean bQueueUpdateRequired = false;
+    if (QueueModel.getPlayingFile() != null
+        && QueueModel.getPlayingFile().getTrack().getAlbum().equals(old)) {
+      bQueueUpdateRequired=true;
+    }
+
     // update tracks
     for (Track track : TrackManager.getInstance().getTracks()) {
       if (track.getAlbum().equals(old)) {
@@ -214,30 +234,34 @@ public final class AlbumManager extends ItemManager implements Observer {
       }
     }
     // if current track album name is changed, notify it
-    if (QueueModel.getPlayingFile() != null
-        && QueueModel.getPlayingFile().getTrack().getAlbum().equals(old)) {
+    if (bQueueUpdateRequired) {
       ObservationManager.notify(new JajukEvent(JajukEvents.ALBUM_CHANGED));
     }
+
+    // remove old item
+    removeItem(old);
+
     return newItem;
   }
 
   /**
    * Format the album name to be normalized :
    * <p>
-   * -no underscores or other non-ascii characters
+   * -no underscores or other non-ASCII characters
    * <p>
    * -no spaces at the begin and the end
    * <p>
-   * -All in lower cas expect first letter of first word
+   * -All in lower case expect first letter of first word
    * <p>
-   * exemple: "My album title"
+   * example: "My album title"
    * 
    * @param sName
-   * @return
+   *          The name to format.
+   * 
+   * @return The formatted string.
    */
   public static String format(String sName) {
-    String sOut;
-    sOut = sName.trim(); // suppress spaces at the begin and the end
+    String sOut = sName.trim(); // suppress spaces at the begin and the end
     sOut = sOut.replace('-', ' '); // move - to space
     sOut = sOut.replace('_', ' '); // move _ to space
     char c = sOut.charAt(0);
@@ -329,6 +353,10 @@ public final class AlbumManager extends ItemManager implements Observer {
    *         available albums
    */
   public List<Album> getBestOfAlbums(boolean bHideUnmounted, int iNbBestofAlbums) {
+    // TODO: this code does not look at "bHideUnmounted" at all, so most of this
+    // method and
+    // the double copying is not necessary, or?
+
     // create a temporary table to remove unmounted albums
     // We consider an album as mounted if a least one track is mounted
     // This hashmap contains album-> album rates
@@ -499,10 +527,12 @@ public final class AlbumManager extends ItemManager implements Observer {
    * @see org.jajuk.base.Observer#update(org.jajuk.base.Event)
    */
   public void update(JajukEvent event) {
-    if ((event.getSubject() == JajukEvents.FILE_LAUNCHED) &&
-    // Compute album max rating every 10 tracks launches
-        (comp % 10 == 0)) {
-      refreshMaxRating();
+    if (event.getSubject() == JajukEvents.FILE_LAUNCHED) {
+      // Compute album max rating every 10 tracks launches
+      if (comp % 10 == 0) {
+        refreshMaxRating();
+      }
+      comp++;
     }
   }
 
