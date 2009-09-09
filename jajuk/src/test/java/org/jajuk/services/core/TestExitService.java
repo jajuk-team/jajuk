@@ -43,6 +43,7 @@ public class TestExitService extends TestCase {
     service.run();
     
     // once again with sessionidfile
+    SessionService.getSessionIdFile().getParentFile().mkdirs();
     SessionService.getSessionIdFile().createNewFile();
     service.run();
 
