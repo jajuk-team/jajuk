@@ -117,6 +117,11 @@ public class Cover implements Comparable<Cover>, Const {
    * @see java.lang.Comparable#compareTo(java.lang.Object)
    */
   public int compareTo(Cover cOther) {
+    // should be able to handle null
+    if(cOther == null) {
+      return -1;
+    }
+
     // We leverage the enum ordering for comparison
     return getType().ordinal() - cOther.getType().ordinal();
   }
@@ -136,7 +141,7 @@ public class Cover implements Comparable<Cover>, Const {
   }
 
   /**
-   * Return cover image size
+   * Return cover image size in kilobyte
    * 
    * @return
    */
