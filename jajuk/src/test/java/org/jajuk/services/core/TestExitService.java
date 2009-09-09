@@ -22,6 +22,7 @@ package org.jajuk.services.core;
 
 import junit.framework.TestCase;
 
+import org.jajuk.JUnitHelpers;
 import org.jajuk.services.startup.StartupCollectionService;
 
 /**
@@ -34,6 +35,8 @@ public class TestExitService extends TestCase {
    * @throws Exception 
    */
   public void testRun() throws Exception {
+    JUnitHelpers.createSessionDirectory();
+    
     StartupCollectionService.registerItemManagers();
     
     ExitService service = new ExitService();
