@@ -122,7 +122,7 @@ public class TestCover extends TestCase {
     // for no-cover, we get back a default image
     assertNotNull(cover.getImage());
     
-    cover = new Cover(new URL("http://upload.wikimedia.org/wikipedia/en/thumb/3/3c/Adam_Christodoulou_Oulton_Park_%28Pit_Exit%29.JPG/100px-Adam_Christodoulou_Oulton_Park_%28Pit_Exit%29.JPG"), CoverType.REMOTE_COVER);
+    cover = new Cover(new URL("http://jajuk.info/skins/jajuk2007/jajuk_logotype.png"), CoverType.REMOTE_COVER);
     try {
       assertNotNull(cover.getImage());
     } catch (HeadlessException e) {
