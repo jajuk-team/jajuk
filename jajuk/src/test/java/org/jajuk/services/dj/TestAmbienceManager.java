@@ -21,6 +21,7 @@
 package org.jajuk.services.dj;
 
 import java.lang.reflect.Field;
+import java.util.Enumeration;
 import java.util.Properties;
 
 import org.jajuk.base.Style;
@@ -42,15 +43,16 @@ public class TestAmbienceManager extends TestCase {
   @Override
   protected void setUp() throws Exception {
     // clean out all leftover ambiences from other testing
-    for(Ambience amb : AmbienceManager.getInstance().getAmbiences()) {
+    for (Ambience amb : AmbienceManager.getInstance().getAmbiences()) {
       AmbienceManager.getInstance().removeAmbience(amb.getID());
     }
-    
+
     super.setUp();
   }
 
   /**
-   * Test method for {@link org.jajuk.services.dj.AmbienceManager#getRegistrationKeys()}.
+   * Test method for
+   * {@link org.jajuk.services.dj.AmbienceManager#getRegistrationKeys()}.
    */
   public final void testGetRegistrationKeys() {
     java.util.Set<JajukEvents> set = AmbienceManager.getInstance().getRegistrationKeys();
@@ -66,7 +68,8 @@ public class TestAmbienceManager extends TestCase {
 
   /**
    * Test method for {@link org.jajuk.services.dj.AmbienceManager#load()}.
-   * @throws Exception 
+   * 
+   * @throws Exception
    */
   public final void testLoad() throws Exception {
     // make sure "UpgradeManager.bFirstSession" is not set
@@ -77,7 +80,7 @@ public class TestAmbienceManager extends TestCase {
       f.setBoolean(null, Boolean.FALSE);
     }
     assertFalse(UpgradeManager.isFirstSesion());
-    
+
     assertEquals(0, AmbienceManager.getInstance().getAmbiences().size());
 
     // first without any key
@@ -86,7 +89,7 @@ public class TestAmbienceManager extends TestCase {
     assertEquals(14, AmbienceManager.getInstance().getAmbiences().size());
 
     // clean out all leftover ambiences from other testing
-    for(Ambience amb : AmbienceManager.getInstance().getAmbiences()) {
+    for (Ambience amb : AmbienceManager.getInstance().getAmbiences()) {
       AmbienceManager.getInstance().removeAmbience(amb.getID());
     }
     assertEquals(0, AmbienceManager.getInstance().getAmbiences().size());
@@ -94,36 +97,59 @@ public class TestAmbienceManager extends TestCase {
     // then set some Ambience-items
     Style style1 = StyleManager.getInstance().registerStyle("style1");
     Style style2 = StyleManager.getInstance().registerStyle("style2");
-    Conf.setProperty(Const.AMBIENCE_PREFIX + "12/myambience", style1.getID() + "," + style2.getID()); 
+    Conf
+        .setProperty(Const.AMBIENCE_PREFIX + "12/myambience", style1.getID() + "," + style2.getID());
     assertEquals(0, AmbienceManager.getInstance().getAmbiences().size());
+
+    { // check all the conditions to find out why it fails in Hudson
+      assertFalse(UpgradeManager.isFirstSesion());
+      Properties properties = Conf.getProperties();
+      Enumeration<Object> e = properties.keys();
+      boolean bMatch = false;
+      while (e.hasMoreElements()) {
+        String sKey = (String) e.nextElement();
+        if (sKey.matches(Const.AMBIENCE_PREFIX + ".*")) {
+          if(sKey.substring(Const.AMBIENCE_PREFIX.length()).indexOf('/') == -1) {
+            continue;
+          }
+
+          bMatch = true;
+        }
+      }
+      assertTrue(properties.toString(), bMatch);
+    }
     AmbienceManager.getInstance().load();
     assertEquals(1, AmbienceManager.getInstance().getAmbiences().size());
     assertNotNull(AmbienceManager.getInstance().getAmbience("12"));
 
-    // now test with an ambience with invalid format, i.e. only "12", not "12/name"
-    for(Ambience amb : AmbienceManager.getInstance().getAmbiences()) {
+    // now test with an ambience with invalid format, i.e. only "12", not
+    // "12/name"
+    for (Ambience amb : AmbienceManager.getInstance().getAmbiences()) {
       AmbienceManager.getInstance().removeAmbience(amb.getID());
     }
     assertEquals(0, AmbienceManager.getInstance().getAmbiences().size());
     Conf.setProperty(Const.AMBIENCE_PREFIX + "12", style1.getID() + "," + style2.getID());
     Conf.removeProperty(Const.AMBIENCE_PREFIX + "12/myambience");
     AmbienceManager.getInstance().load();
-    // now 14 as this could not be loaded and thus the default ones were loaded...
+    // now 14 as this could not be loaded and thus the default ones were
+    // loaded...
     assertEquals(14, AmbienceManager.getInstance().getAmbiences().size());
-    
+
     UpgradeManager.setFirstSession();
     AmbienceManager.getInstance().load();
   }
 
   /**
-   * Test method for {@link org.jajuk.services.dj.AmbienceManager#getAmbiences()}.
+   * Test method for
+   * {@link org.jajuk.services.dj.AmbienceManager#getAmbiences()}.
    */
   public final void testGetAmbiences() {
     // tested above
   }
 
   /**
-   * Test method for {@link org.jajuk.services.dj.AmbienceManager#getAmbience(java.lang.String)}.
+   * Test method for
+   * {@link org.jajuk.services.dj.AmbienceManager#getAmbience(java.lang.String)}.
    */
   public final void testGetAmbience() {
     // this creates the 14 default ambiences
@@ -133,7 +159,8 @@ public class TestAmbienceManager extends TestCase {
   }
 
   /**
-   * Test method for {@link org.jajuk.services.dj.AmbienceManager#getAmbienceByName(java.lang.String)}.
+   * Test method for
+   * {@link org.jajuk.services.dj.AmbienceManager#getAmbienceByName(java.lang.String)}.
    */
   public final void testGetAmbienceByName() {
     // this creates the 14 default ambiences
@@ -148,9 +175,10 @@ public class TestAmbienceManager extends TestCase {
 
     assertNull(AmbienceManager.getInstance().getAmbienceByName("notexistingone"));
   }
-  
+
   /**
-   * Test method for {@link org.jajuk.services.dj.AmbienceManager#registerAmbience(org.jajuk.services.dj.Ambience)}.
+   * Test method for
+   * {@link org.jajuk.services.dj.AmbienceManager#registerAmbience(org.jajuk.services.dj.Ambience)}.
    */
   public final void testRegisterAmbience() {
     assertEquals(0, AmbienceManager.getInstance().getAmbiences().size());
@@ -159,42 +187,46 @@ public class TestAmbienceManager extends TestCase {
   }
 
   /**
-   * Test method for {@link org.jajuk.services.dj.AmbienceManager#getSelectedAmbience()}.
+   * Test method for
+   * {@link org.jajuk.services.dj.AmbienceManager#getSelectedAmbience()}.
    */
   public final void testGetSelectedAmbience() {
     // first with no ambience and no default set
     assertNull(AmbienceManager.getInstance().getSelectedAmbience());
-    
+
     // this creates the 14 default ambiences
     AmbienceManager.getInstance().createDefaultAmbiences();
-    
+
     Conf.setProperty(Const.CONF_DEFAULT_AMBIENCE, "2"); // by ID
-    
+
     // now we should find one
     assertNotNull(AmbienceManager.getInstance().getSelectedAmbience());
   }
 
   /**
-   * Test method for {@link org.jajuk.services.dj.AmbienceManager#update(org.jajuk.events.JajukEvent)}.
+   * Test method for
+   * {@link org.jajuk.services.dj.AmbienceManager#update(org.jajuk.events.JajukEvent)}.
    */
   public final void testUpdate() {
     Properties prop = new Properties();
-    
+
     Style style1 = StyleManager.getInstance().registerStyle("style1");
     Style style2 = StyleManager.getInstance().registerStyle("style2");
 
-    Ambience ambience = new Ambience("23", "testamb", new String[] {"style1" });
-    
+    Ambience ambience = new Ambience("23", "testamb", new String[] { "style1" });
+
     prop.put(Const.DETAIL_OLD, style1);
     prop.put(Const.DETAIL_NEW, style2);
-    
+
     AmbienceManager.getInstance().registerAmbience(ambience);
-    
+
     AmbienceManager.getInstance().update(new JajukEvent(JajukEvents.STYLE_NAME_CHANGED, prop));
-    
+
     assertEquals(1, AmbienceManager.getInstance().getAmbiences().size());
-    assertEquals(1, AmbienceManager.getInstance().getAmbiences().iterator().next().getStyles().size());
-    assertEquals("style2", AmbienceManager.getInstance().getAmbiences().iterator().next().getStyles().iterator().next().getName());
+    assertEquals(1, AmbienceManager.getInstance().getAmbiences().iterator().next().getStyles()
+        .size());
+    assertEquals("style2", AmbienceManager.getInstance().getAmbiences().iterator().next()
+        .getStyles().iterator().next().getName());
   }
 
   /**
@@ -203,15 +235,16 @@ public class TestAmbienceManager extends TestCase {
   public final void testCommit() {
     // this creates the 14 default ambiences
     AmbienceManager.getInstance().createDefaultAmbiences();
-    
+
     // set one ambience prefix to have it removed before
     Conf.setProperty(Const.AMBIENCE_PREFIX + "12/ambience", "testvalue");
-    
+
     AmbienceManager.getInstance().commit();
   }
 
   /**
-   * Test method for {@link org.jajuk.services.dj.AmbienceManager#removeAmbience(java.lang.String)}.
+   * Test method for
+   * {@link org.jajuk.services.dj.AmbienceManager#removeAmbience(java.lang.String)}.
    */
   public final void testRemoveAmbience() {
     assertEquals(0, AmbienceManager.getInstance().getAmbiences().size());
@@ -225,12 +258,13 @@ public class TestAmbienceManager extends TestCase {
   }
 
   /**
-   * Test method for {@link org.jajuk.services.dj.AmbienceManager#createDefaultAmbiences()}.
+   * Test method for
+   * {@link org.jajuk.services.dj.AmbienceManager#createDefaultAmbiences()}.
    */
   public final void testCreateDefaultAmbiences() {
     assertEquals(0, AmbienceManager.getInstance().getAmbiences().size());
     AmbienceManager.getInstance().createDefaultAmbiences();
-    
+
     // currently 14 ambiences are defined as default ones
     assertEquals(14, AmbienceManager.getInstance().getAmbiences().size());
   }
