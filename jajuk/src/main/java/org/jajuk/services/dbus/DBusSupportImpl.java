@@ -241,6 +241,10 @@ public class DBusSupportImpl implements DBusSupport, Observer {
       Log.debug("Got update for new file launched, item: " + item);
 
       try {
+        if(conn == null) {
+          Log.warn("Cannot send DBus-Signal when not connected to D-Bus!");
+          return;
+        }
         conn.sendSignal(new DBusSignalImpl.FileChangedSignal("testfile: " + item, PATH));
       } catch (DBusException e) {
         Log.error(e);
