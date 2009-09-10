@@ -20,6 +20,7 @@
  */
 package org.jajuk.services.dj;
 
+import java.lang.reflect.Field;
 import java.util.Properties;
 
 import org.jajuk.base.Style;
@@ -65,8 +66,18 @@ public class TestAmbienceManager extends TestCase {
 
   /**
    * Test method for {@link org.jajuk.services.dj.AmbienceManager#load()}.
+   * @throws Exception 
    */
-  public final void testLoad() {
+  public final void testLoad() throws Exception {
+    // make sure "UpgradeManager.bFirstSession" is not set
+    {
+      Class<?> c = UpgradeManager.class;
+      Field f = c.getDeclaredField("bFirstSession");
+      f.setAccessible(true);
+      f.setBoolean(null, Boolean.FALSE);
+    }
+    assertFalse(UpgradeManager.isFirstSesion());
+    
     assertEquals(0, AmbienceManager.getInstance().getAmbiences().size());
 
     // first without any key
