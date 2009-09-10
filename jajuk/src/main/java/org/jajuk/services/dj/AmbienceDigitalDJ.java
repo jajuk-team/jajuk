@@ -99,7 +99,7 @@ public class AmbienceDigitalDJ extends DigitalDJ {
     StringBuilder sb = new StringBuilder(2000);
     sb.append(toXMLGeneralParameters());
     sb.append("\t<" + Const.XML_DJ_AMBIENCE + " " + Const.XML_DJ_VALUE + "='");
-    sb.append(ambience.getID() + "'/>\n");
+    sb.append((ambience == null ? "" : ambience.getID()) + "'/>\n");
     sb.append("</" + Const.XML_DJ_DJ + ">\n");
     return sb.toString();
   }
