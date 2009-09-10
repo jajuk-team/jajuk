@@ -94,7 +94,18 @@ public class TestAmbienceManager extends TestCase {
     }
     assertEquals(0, AmbienceManager.getInstance().getAmbiences().size());
 
-    // then set some Ambience-items
+    { // remove all leftover properties
+      Properties properties = Conf.getProperties();
+      Enumeration<Object> e = properties.keys();
+      while (e.hasMoreElements()) {
+        String sKey = (String) e.nextElement();
+        if (sKey.matches(Const.AMBIENCE_PREFIX + ".*")) {
+          properties.remove(sKey);
+        }
+      }
+    }
+    
+    // then add set some Ambience-items
     Style style1 = StyleManager.getInstance().registerStyle("style1");
     Style style2 = StyleManager.getInstance().registerStyle("style2");
     Conf
@@ -105,7 +116,7 @@ public class TestAmbienceManager extends TestCase {
       assertFalse(UpgradeManager.isFirstSesion());
       Properties properties = Conf.getProperties();
       Enumeration<Object> e = properties.keys();
-      boolean bMatch = false;
+      int nMatch = 0;
       while (e.hasMoreElements()) {
         String sKey = (String) e.nextElement();
         if (sKey.matches(Const.AMBIENCE_PREFIX + ".*")) {
@@ -113,10 +124,10 @@ public class TestAmbienceManager extends TestCase {
             continue;
           }
 
-          bMatch = true;
+          nMatch++;
         }
       }
-      assertTrue(properties.toString(), bMatch);
+      assertEquals(properties.toString(), 1, nMatch);
     }
     AmbienceManager.getInstance().load();
     assertEquals(1, AmbienceManager.getInstance().getAmbiences().size());
