@@ -33,7 +33,6 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
-import org.jajuk.services.core.ExitService;
 import org.jajuk.services.core.SessionService;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
@@ -147,26 +146,6 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
   private static final short STAGE_YEARS = 10;
 
   private static final DateFormat ADDITION_FORMATTER = UtilString.getAdditionDateFormatter();
-
-  /** Auto commit thread */
-  private static Thread tAutoCommit = new Thread("Collection Auto Commit Thread") {
-    @Override
-    public void run() {
-      while (!ExitService.isExiting()) {
-        try {
-          Thread.sleep(Const.AUTO_COMMIT_DELAY);
-          Log.debug("Auto commit");
-          // commit collection at each refresh (can be useful
-          // if application is closed brutally with control-C or
-          // shutdown and that exit hook have no time to perform
-          // commit)
-          org.jajuk.base.Collection.commit(SessionService.getConfFileByPath(Const.FILE_COLLECTION));
-        } catch (Exception e) {
-          Log.error(e);
-        }
-      }
-    }
-  };
 
   /** Instance getter */
   public static Collection getInstance() {
@@ -290,8 +269,6 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
       throw new JajukException(5, file.toString());
     }
     saxParser.parse(file.toURI().toURL().toString(), getInstance());
-    // start auto commit thread
-    tAutoCommit.start();
   }
 
   /**

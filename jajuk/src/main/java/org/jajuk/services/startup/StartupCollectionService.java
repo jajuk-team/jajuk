@@ -45,6 +45,7 @@ import org.jajuk.base.StyleManager;
 import org.jajuk.base.TrackManager;
 import org.jajuk.base.TypeManager;
 import org.jajuk.base.YearManager;
+import org.jajuk.services.core.ExitService;
 import org.jajuk.services.core.SessionService;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
@@ -186,6 +187,25 @@ public class StartupCollectionService {
     }
   }
 
+  /** Auto commit thread */
+  private static Thread tAutoCommit = new Thread("Auto Commit Thread") {
+    @Override
+    public void run() {
+      while (!ExitService.isExiting()) {
+        try {
+          Thread.sleep(Const.AUTO_COMMIT_DELAY);
+          Log.debug("Auto commit");
+
+          // call the overall "commit" to store things like Queue and 
+          // configuration periodically as well
+          ExitService.commit(false);
+        } catch (Exception e) {
+          Log.error(e);
+        }
+      }
+    }
+  };
+
   /**
    * Load persisted collection file
    */
@@ -312,6 +332,9 @@ public class StartupCollectionService {
         Log.error(e2);
       }
     }
+
+    // start auto commit thread
+    tAutoCommit.start();
   }
 
   /**
