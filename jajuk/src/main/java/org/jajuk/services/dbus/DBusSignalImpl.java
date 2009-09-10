@@ -45,6 +45,10 @@ public class DBusSignalImpl implements DBusInterface {
       this.filename = filename;
     }
 
+    public String getFilename() {
+      return this.filename;
+    }
+
   }
 
   /*
