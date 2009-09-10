@@ -138,14 +138,17 @@ public class Ambience implements Comparable<Ambience> {
    * From String, return style1,style2,...
    */
   public String getStylesDesc() {
+    // check if we have styles at all
+    if(getStyles().size() == 0) {
+      return "";
+    }
+    
     StringBuilder out = new StringBuilder();
-    for (Style s : styles) {
+    for (Style s : getStyles()) {
       out.append(s.getName2()).append(',');
     }
-    if (out.length() > 0) {
-      return out.substring(0, out.length() - 1); // remove trailling ,
-    }
-    return out.toString();
+
+    return out.substring(0, out.length() - 1); // remove trailling ,
   }
 
   /**
@@ -189,6 +192,12 @@ public class Ambience implements Comparable<Ambience> {
    * Compare to method : alphabetical
    */
   public int compareTo(Ambience ambience) {
+    // check for null
+    if(ambience == null) {
+      return -1;
+    }
+
+    // otherwise just compare on the name
     return this.getName().compareToIgnoreCase(ambience.getName());
   }
 
@@ -198,10 +207,16 @@ public class Ambience implements Comparable<Ambience> {
    * @return String used in DJ XML representation
    */
   public String toXML() {
+    // check if we have styles at all 
+    if(getStyles().size() == 0) {
+      return "";
+    }
+    
     StringBuilder s = new StringBuilder();
     for (Style style : getStyles()) {
       s.append(style.getID()).append(',');
     }
+    
     return s.substring(0, s.length() - 1); // remove last coma
   }
 }
