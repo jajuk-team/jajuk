@@ -43,6 +43,7 @@ import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UpgradeManager;
+import org.jajuk.util.log.Log;
 
 /**
  * Ambience manager
@@ -85,6 +86,7 @@ public final class AmbienceManager implements Observer {
   public void load() {
     // if first startup, define default ambiences
     if (UpgradeManager.isFirstSesion()) {
+      Log.debug("First start, creating default Ambiences.");
       createDefaultAmbiences();
       return;
     }
@@ -115,6 +117,7 @@ public final class AmbienceManager implements Observer {
     // If none ambience, means ambience can have been reset after a style
     // hashcode computation change, reset to defaults
     if (ambiences.size() == 0) {
+      Log.debug("No ambiences loaded, creating default Ambiences.");
       createDefaultAmbiences();
     }
   }
