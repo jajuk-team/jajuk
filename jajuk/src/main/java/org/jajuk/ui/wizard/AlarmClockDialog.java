@@ -189,7 +189,7 @@ public class AlarmClockDialog extends JajukJDialog implements ActionListener, It
     setVisible(true);
   }
 
-  public void actionPerformed(final ActionEvent e) {
+  public final void actionPerformed(final ActionEvent e) {
     boolean playAction = (jcbAlarmAction.getSelectedIndex() == 0);
     if (e.getSource() == jcbAlarmAction) {
       handleAction(playAction);

@@ -32,7 +32,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.Authenticator;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.PasswordAuthentication;
 import java.net.URL;
 import java.net.URLEncoder;
@@ -63,7 +62,6 @@ public final class DownloadManager {
    * @param search
    * @return a list of urls
    * @throws IOException
-   * @throws MalformedURLException
    */
   public static List<URL> getRemoteCoversList(String search) throws IOException {
     List<URL> alOut = new ArrayList<URL>(20); // URL list

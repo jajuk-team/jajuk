@@ -241,7 +241,7 @@ public class TrackPositionSliderToolbar extends JajukJToolbar implements ChangeL
    * 
    * @see org.jajuk.events.Observer#update(org.jajuk.events.JajukEvent)
    */
-  public void update(final JajukEvent event) {
+  public final void update(final JajukEvent event) {
     final JajukEvents subject = event.getSubject();
     // do not insert this subject inside the invokeLater because we have to
     // leave the awt dispatcher called inside the setMessage and THEN, sleep

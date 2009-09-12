@@ -472,7 +472,7 @@ public abstract class Wizard implements ActionListener, WindowListener {
   /**
    * Clear screens history
    */
-  public void clearScreens() {
+  public final void clearScreens() {
     hmClassScreens.clear();
   }
 
