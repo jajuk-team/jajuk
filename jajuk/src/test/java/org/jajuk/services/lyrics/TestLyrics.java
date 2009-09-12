@@ -19,6 +19,9 @@
  */
 package org.jajuk.services.lyrics;
 
+import ext.XMLUtils;
+import ext.services.network.NetworkUtils;
+
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -32,7 +35,12 @@ import org.jajuk.services.lyrics.providers.FlyProvider;
 import org.jajuk.services.lyrics.providers.ILyricsProvider;
 import org.jajuk.services.lyrics.providers.LyrcProvider;
 import org.jajuk.services.lyrics.providers.LyricWikiProvider;
+import org.jajuk.util.Conf;
+import org.jajuk.util.Const;
 import org.jajuk.util.DownloadManager;
+import org.jajuk.util.UtilString;
+import org.jajuk.util.log.Log;
+import org.w3c.dom.Document;
 
 /**
  * Lyrics unit tests
@@ -118,6 +126,45 @@ public class TestLyrics extends TestCase {
     testService(provider);
   }
 
+  private static final String USER_ID = "79o116n89n93sr93p-wnwhx.vasb";
+
+  /** URL pattern used by jajuk to retrieve lyrics */
+  private static final String URL = "http://lyricsfly.com/api/api.php?i="
+      + UtilString.rot13(USER_ID) + "&a=%artist&t=%title";
+
+  public void testFlyServiceSonar() throws Exception {
+    // ensure that this is not configured somehow
+    assertFalse(Conf.getBoolean(Const.CONF_NETWORK_NONE_INTERNET_ACCESS));
+
+    // do some in-depth test here to find out why this fails in Sonar
+
+    String queryString = URL;
+
+    queryString = queryString.replace(Const.PATTERN_AUTHOR, (ARTIST != null) ? NetworkUtils
+        .encodeString(ARTIST) : "");
+
+    queryString = queryString.replace(Const.PATTERN_TRACKNAME, (TITLE != null) ? NetworkUtils
+        .encodeString(TITLE) : "");
+
+    URL url = new URL(queryString);
+
+    Log.info("Downloading: " + url);
+
+    String xml = null;
+    xml = DownloadManager.getTextFromCachedFile(url, "UTF-8");
+    assertTrue(StringUtils.isNotBlank(xml));
+
+    Document document = XMLUtils.getDocument(xml);
+    assertNotNull(document);
+
+    String lyrics = null;
+    lyrics = XMLUtils.getChildElementContent(document.getDocumentElement(), "tx");
+    lyrics = lyrics.replace("[br]", "");
+
+    assertTrue(StringUtils.isNotBlank(lyrics));
+
+  }
+
   /**
    * Test Fly web url availability
    */
@@ -153,11 +200,13 @@ public class TestLyrics extends TestCase {
 
     LyricsService.getProviders().remove(0);
     LyricsService.getLyrics(ARTIST, TITLE);
-    assertTrue(LyricsService.getCurrentProvider() instanceof FlyProvider);
+    assertTrue("Instance: " + LyricsService.getCurrentProvider().getClass(), LyricsService
+        .getCurrentProvider() instanceof FlyProvider);
 
     LyricsService.getProviders().remove(0);
     LyricsService.getLyrics(ARTIST, TITLE);
-    assertTrue(LyricsService.getCurrentProvider() instanceof LyrcProvider);
+    assertTrue("Instance: " + LyricsService.getCurrentProvider().getClass(), LyricsService
+        .getCurrentProvider() instanceof LyrcProvider);
   }
 
 }
