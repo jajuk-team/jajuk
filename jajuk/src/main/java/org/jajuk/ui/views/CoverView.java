@@ -350,7 +350,8 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
   /*
    * (non-Javadoc)
    * 
-   * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+   * @see
+   * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
    */
   public void actionPerformed(final ActionEvent e) {
     if (e.getSource() == jcbAccuracy) {
@@ -439,7 +440,7 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
     final Cover cover = alCovers.get(index);
 
     // don't delete the splashscreen-jpg!!
-    if(cover.getType().equals(CoverType.NO_COVER)) {
+    if (cover.getType().equals(CoverType.NO_COVER)) {
       Log.warn("Cannot delete default Jajuk cover.");
       return;
     }
@@ -697,7 +698,9 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
   /*
    * (non-Javadoc)
    * 
-   * @see java.awt.event.ComponentListener#componentResized(java.awt.event.ComponentEvent )
+   * @see
+   * java.awt.event.ComponentListener#componentResized(java.awt.event.ComponentEvent
+   * )
    */
   @Override
   public void componentResized(final ComponentEvent e) {
@@ -980,7 +983,8 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
         cover = alCovers.get(index); // take image at the given index
         Image img = cover.getImage();
 
-        if (cover.getType().equals(CoverType.NO_COVER)) {
+        if (!Conf.getBoolean(Const.CONF_COVERS_MIRROW_COVER)
+            || cover.getType().equals(CoverType.NO_COVER)) {
           icon = new ImageIcon(img);
         } else {
           icon = new ImageIcon(get3dImage(img));

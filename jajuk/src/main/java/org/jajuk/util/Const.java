@@ -684,6 +684,8 @@ public interface Const {
 
   String CONF_COVERS_AUTO_COVER = "jajuk.covers.auto_cover";
 
+  String CONF_COVERS_MIRROW_COVER = "jajuk.covers.mirrow_cover";
+  
   String CONF_COVERS_SHUFFLE = "jajuk.covers.shuffle";
 
   String CONF_COVERS_SAVE_EXPLORER_FRIENDLY = "jajuk.covers.save.explorer.friendly";

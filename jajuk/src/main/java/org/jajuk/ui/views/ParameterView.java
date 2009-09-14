@@ -330,6 +330,8 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
 
   private JCheckBox jcbDropPlayedTracksFromQueue;
 
+  private JCheckBox jcb3dCover;
+
   /**
    * 
    */
@@ -728,6 +730,8 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
     // Force global reload of proxy variables
     DownloadManager.setDefaultProxySettings();
     // Covers
+    Conf.setProperty(Const.CONF_COVERS_MIRROW_COVER, Boolean.toString(jcb3dCover.isSelected()));
+    ObservationManager.notify(new JajukEvent(JajukEvents.COVER_NEED_REFRESH));
     Conf.setProperty(Const.CONF_COVERS_AUTO_COVER, Boolean.toString(jcbAutoCover.isSelected()));
     Conf.setProperty(Const.CONF_COVERS_SHUFFLE, Boolean.toString(jcbShuffleCover.isSelected()));
     Conf.setProperty(Const.CONF_COVERS_SAVE_EXPLORER_FRIENDLY, Boolean
@@ -1370,6 +1374,9 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
     jcbCoverSize.addItem(Messages.getString("ParameterView.213"));
     jcbCoverSize.addItem(Messages.getString("ParameterView.214"));
     jcbCoverSize.addItem(Messages.getString("ParameterView.215"));
+    
+    jcb3dCover=new JCheckBox(Messages.getString("ParameterView.273"));
+    jcb3dCover.setToolTipText(Messages.getString("ParameterView.274"));
 
     jlDefaultCoverSearchPattern = new JLabel();
     jlDefaultCoverSearchPattern.setText(Messages.getString("ParameterView.256"));
@@ -1385,6 +1392,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
     jpCovers = new JPanel(new MigLayout("insets 10,gapy 15,gapx 10"));
     jpCovers.add(jcbShuffleCover, WRAP);
     jpCovers.add(jcbAutoCover, WRAP);
+    jpCovers.add(jcb3dCover, WRAP);
     jpCovers.add(jcbSaveExplorerFriendly, WRAP);
     jpCovers.add(jlCoverSize);
     jpCovers.add(jcbCoverSize, WRAP_GROW);
@@ -1671,6 +1679,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
     // Covers
     jcbAutoCover.setSelected(Conf.getBoolean(Const.CONF_COVERS_AUTO_COVER));
     jlCoverSize.setEnabled(Conf.getBoolean(Const.CONF_COVERS_AUTO_COVER));
+    jcb3dCover.setSelected(Conf.getBoolean(Const.CONF_COVERS_MIRROW_COVER));
     jcbCoverSize.setEnabled(Conf.getBoolean(Const.CONF_COVERS_AUTO_COVER));
     jcbCoverSize.setSelectedIndex(Conf.getInt(Const.CONF_COVERS_SIZE));
     jcbShuffleCover.setSelected(Conf.getBoolean(Const.CONF_COVERS_SHUFFLE));
