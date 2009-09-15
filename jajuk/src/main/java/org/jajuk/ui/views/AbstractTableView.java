@@ -34,7 +34,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Properties;
 import java.util.Set;
-import java.util.concurrent.ExecutionException;
 
 import javax.swing.Action;
 import javax.swing.ActionMap;
@@ -379,19 +378,12 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
         model.removeTableModelListener(AbstractTableView.this);
         model.populateModel(sPropertyName, sPropertyValue, jtable.getColumnsConf());
         model.addTableModelListener(AbstractTableView.this);
-        model.fireTableDataChanged();
         return null;
       }
 
       @Override
       public void done() {
-        try {
-          get();
-        } catch (InterruptedException e) {
-          Log.error(e);
-        } catch (ExecutionException e) {
-          Log.error(e);
-        }
+        model.fireTableDataChanged();
         // Force table repaint (for instance for rating stars update)
         jtable.revalidate();
         jtable.repaint();
