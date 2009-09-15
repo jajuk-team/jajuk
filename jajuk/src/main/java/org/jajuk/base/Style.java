@@ -94,14 +94,7 @@ public class Style extends LogicalItem implements Comparable<Style> {
     return current.toString().compareToIgnoreCase(other.toString());
   }
 
-  /**
-   * @return Number of tracks for this style from the collection
-   */
-  public int getCount() {
-    return TrackManager.getInstance().getAssociatedTracks(this, false).size();
-  }
-
-  /**
+   /**
    * @return whether the style is Unknown or not
    */
   public boolean isUnknown() {

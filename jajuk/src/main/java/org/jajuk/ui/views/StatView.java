@@ -23,12 +23,14 @@ package org.jajuk.ui.views;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
-import java.util.TreeMap;
+
+import javax.swing.SwingUtilities;
 
 import net.miginfocom.swing.MigLayout;
 
@@ -83,8 +85,7 @@ public class StatView extends ViewAdapter {
   public void initUI() {
     setLayout(new MigLayout("ins 0,gapx 4,gapy 5", "[grow][grow]", "[grow][grow]"));
     ObservationManager.register(this);
-    update(new JajukEvent(JajukEvents.DEVICE_REFRESH, ObservationManager
-        .getDetailsLastOccurence(JajukEvents.DEVICE_REFRESH)));
+    update(new JajukEvent(JajukEvents.DEVICE_REFRESH));
   }
 
   public Set<JajukEvents> getRegistrationKeys() {
@@ -106,31 +107,38 @@ public class StatView extends ViewAdapter {
       JFreeChart jfchart = null;
       // data
       pdata = new DefaultPieDataset();
-      ReadOnlyIterator<Style> it = StyleManager.getInstance().getStylesIterator();
-      int iTotal = 0;
+      int iTotal = TrackManager.getInstance().getElementCount();
       double dOthers = 0;
-      TreeMap<String, Integer> tm = new TreeMap<String, Integer>();
+      // Prepare a map style -> nb tracks
+      Map<Style, Integer> styleNbTracks = new HashMap<Style, Integer>(StyleManager.getInstance()
+          .getElementCount());
+      ReadOnlyIterator<Track> it = TrackManager.getInstance().getTracksIterator();
       while (it.hasNext()) {
-        Style style = it.next();
-        int iCount = style.getCount();
-        iTotal += iCount;
-        tm.put(style.getName2(), Integer.valueOf(iCount));
+        Track track = it.next();
+        Style style = track.getStyle();
+        Integer nbTracks = styleNbTracks.get(style);
+        if (nbTracks == null) {
+          styleNbTracks.put(style, 1);
+        } else {
+          styleNbTracks.put(style, nbTracks + 1);
+        }
       }
-      for (Map.Entry<String, Integer> entry : tm.entrySet()) {
-        Integer i = entry.getValue();
-        double d = i.doubleValue();
+      // Cleanup style with weight < 5 %
+      for (Map.Entry<Style, Integer> entry : styleNbTracks.entrySet()) {
+        double d = entry.getValue();
         if (iTotal > 0 && d / iTotal < 0.05) {
           // less than 5% -> go to others
           dOthers += d;
         } else {
           double dValue = Math.round(100 * (d / iTotal));
-          pdata.setValue(entry.getKey(), dValue);
+          pdata.setValue(entry.getKey().getName2(), dValue);
         }
       }
       if (iTotal > 0 && dOthers > 0) {
         double dValue = Math.round(100 * (dOthers / iTotal));
         pdata.setValue(Messages.getString("StatView.0"), dValue);
       }
+
       // chart
       jfchart = ChartFactory.createPieChart3D(Messages.getString("StatView.1"), pdata, true, true,
           true);
@@ -211,6 +219,7 @@ public class StatView extends ViewAdapter {
   private ChartPanel createCollectionSize() {
     ChartPanel cpanel = null;
     try {
+
       final DateFormat additionFormatter = UtilString.getAdditionDateFormatter();
 
       CategoryDataset cdata = null;
@@ -235,6 +244,7 @@ public class StatView extends ViewAdapter {
       for (int i = 0; i < iMonthsNumber + 1; i++) {
         data[0][i] = (double) lSizeByMonth[i] / 1073741824;
       }
+
       cdata = DatasetUtilities.createCategoryDataset(new String[] { "" },
           getMonthsLabels(iMonthsNumber), data);
       // chart
@@ -353,29 +363,40 @@ public class StatView extends ViewAdapter {
   public void update(JajukEvent event) {
     JajukEvents subject = event.getSubject();
     if (JajukEvents.DEVICE_REFRESH.equals(subject) || JajukEvents.DEVICE_DELETE.equals(subject)) {
-      UtilGUI.waiting();
-      if (getComponentCount() > 0) {
-        removeAll();
-      }
-      ChartPanel cp1 = createStyleRepartition();
-      if (cp1 != null) {
-        add(cp1, "grow");
-      }
-      ChartPanel cp2 = createCollectionSize();
-      if (cp2 != null) {
-        add(cp2, "grow,wrap");
-      }
-      ChartPanel cp3 = createTrackNumber();
-      if (cp3 != null) {
-        add(cp3, "grow");
-      }
-      ChartPanel cp4 = createDeviceRepartition();
-      if (cp4 != null) {
-        add(cp4, "grow,wrap");
-      }
-      revalidate();
-      repaint();
-      UtilGUI.stopWaiting();
+      SwingUtilities.invokeLater(new Runnable() {
+
+        @Override
+        public void run() {
+          UtilGUI.waiting();
+          if (getComponentCount() > 0) {
+            removeAll();
+          }
+
+          ChartPanel cp1 = createStyleRepartition();
+          if (cp1 != null) {
+            add(cp1);
+          }
+
+          ChartPanel cp2 = createCollectionSize();
+          if (cp2 != null) {
+            add(cp2, "wrap");
+          }
+
+          ChartPanel cp3 = createTrackNumber();
+          if (cp3 != null) {
+            add(cp3);
+          }
+
+          ChartPanel cp4 = createDeviceRepartition();
+          if (cp4 != null) {
+            add(cp4, "wrap");
+          }
+
+          revalidate();
+          repaint();
+          UtilGUI.stopWaiting();
+        }
+      });
     }
   }
 
