@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
     <jnlp spec="1.0+" codebase="$$codebase" href="jfreechart.jnlp">
     <information>
-        <title>JCommon</title>
+        <title>JFreechart and JCommon</title>
         <vendor>Object Refinery Limited</vendor>
     </information>
     <resources>
         <jar href="jcommon-1.0.0.jar" version='VERSION_REPLACED_BY_ANT'/>
+    </resources>
+    <resources>
+        <jar href="jfreechart-1.0.13.jar" version='VERSION_REPLACED_BY_ANT'/>
     </resources>
     <security> 
            <all-permissions/>

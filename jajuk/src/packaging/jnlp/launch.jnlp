@@ -27,7 +27,6 @@
         	<extension name='ApacheCommons' href='apache_commons.jnlp'/>
         	<extension name='tags' href='tags.jnlp'/>
         	<extension name='Jfreechart' href='jfreechart.jnlp'/>
-        	<extension name='JCommon' href='jcommon.jnlp'/>
         	<extension name='Substance Look And Feel' href='substance.jnlp'/>
         	<extension name='JLayer' href='jlayer.jnlp'/>
         	<extension name='Log4j' href='log4j.jnlp'/>
