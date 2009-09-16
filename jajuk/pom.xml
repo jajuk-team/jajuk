@@ -166,6 +166,8 @@
       <groupId>jfree</groupId>
       <artifactId>jfreechart</artifactId>
       <version>1.0.13</version>
+      <scope>system</scope>
+      <systemPath>${basedir}/lib/jfreechart-1.0.13.jar</systemPath>
     </dependency>
     <dependency>
       <groupId>com.jhlabs</groupId>
