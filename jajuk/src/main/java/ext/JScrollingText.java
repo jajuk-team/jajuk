@@ -91,7 +91,7 @@ public class JScrollingText extends JLabel {
   }
 
   public void start() {
-    Timer timer = new Timer();
+    Timer timer = new Timer("Scrolling Text Timer");
     TimerTask task = new TimerTask() {
       @Override
       public void run() {
