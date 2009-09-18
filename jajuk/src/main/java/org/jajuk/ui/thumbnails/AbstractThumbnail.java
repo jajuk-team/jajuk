@@ -372,32 +372,26 @@ public abstract class AbstractThumbnail extends JPanel implements ActionListener
   public void actionPerformed(ActionEvent e) {
     if (e.getSource() == jmiGetCovers) {
       // This item is enabled only for albums
-      new Thread("Thumbnail Action Thread") {
-        @Override
-        public void run() {
-          JDialog jd = new JDialog(JajukMainWindow.getInstance(), Messages
-              .getString("CatalogView.18"));
-          org.jajuk.base.File file = null;
-          List<Track> tracks = TrackManager.getInstance().getAssociatedTracks(getItem(), false);
-          if (tracks.size() > 0) {
-            // Take first track found
-            Track track = tracks.iterator().next();
-            file = track.getPlayeableFile(false);
-          }
-          CoverView cv = null;
-          if (file != null) {
-            cv = new CoverView(file);
-            cv.setID("catalog/0");
-            cv.initUI();
-            jd.add(cv);
-            jd.setSize(600, 450);
-            jd.setLocationByPlatform(true);
-            jd.setVisible(true);
-          } else {
-            Messages.showErrorMessage(166);
-          }
-        }
-      }.start();
+      JDialog jd = new JDialog(JajukMainWindow.getInstance(), Messages.getString("CatalogView.18"));
+      org.jajuk.base.File file = null;
+      List<Track> tracks = TrackManager.getInstance().getAssociatedTracks(getItem(), false);
+      if (tracks.size() > 0) {
+        // Take first track found
+        Track track = tracks.iterator().next();
+        file = track.getPlayeableFile(false);
+      }
+      CoverView cv = null;
+      if (file != null) {
+        cv = new CoverView(file);
+        cv.setID("catalog/0");
+        cv.initUI();
+        jd.add(cv);
+        jd.setSize(600, 450);
+        jd.setLocationByPlatform(true);
+        jd.setVisible(true);
+      } else {
+        Messages.showErrorMessage(166);
+      }
     } else if (e.getSource() == jmiShowPopup) {
       this.displayPopup();
     }
