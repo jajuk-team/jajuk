@@ -56,8 +56,8 @@ public class FullscreenAction extends JajukAction {
       // Update the icon according to status
       setIcon(IconLoader.getIcon(JajukIcons.FULL_SCREEN));
     } else {
-      sdMainWindow.display(false);
       sdFullscreen.display(true);
+      sdMainWindow.display(false);
       setIcon(IconLoader.getIcon(JajukIcons.SLIM_WINDOW));
     }
   }

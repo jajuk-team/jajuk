@@ -64,7 +64,7 @@ public class JajukFullScreenWindow extends JWindow implements JajukWindow {
 
   private static JajukFullScreenWindow instance = null;
 
-  private final GraphicsDevice graphicsDevice;
+  private GraphicsDevice graphicsDevice;
 
   private JButton jbPrevious;
 
@@ -84,6 +84,10 @@ public class JajukFullScreenWindow extends JWindow implements JajukWindow {
    * State decorator
    */
   private WindowStateDecorator decorator;
+
+  private AnimationView animationView;
+
+  private JPanel jtbPlay;
 
   /** Owning frame, see bellow for explanations * */
   private static JFrame owner;
@@ -123,6 +127,7 @@ public class JajukFullScreenWindow extends JWindow implements JajukWindow {
       instance.decorator = new WindowStateDecorator(instance) {
         @Override
         public void specificBeforeShown() {
+          instance.graphicsDevice = getGraphicsDeviceOfMainFrame();
         }
 
         @Override
@@ -131,12 +136,16 @@ public class JajukFullScreenWindow extends JWindow implements JajukWindow {
             instance.graphicsDevice.setFullScreenWindow(instance);
           }
           owner.setVisible(true);
+          owner.setAlwaysOnTop(true);
+          instance.setAlwaysOnTop(true);
           instance.requestFocus();
         }
 
         @Override
         public void specificAfterHidden() {
           owner.setVisible(false);
+          owner.setAlwaysOnTop(false);
+          instance.setAlwaysOnTop(false);
           instance.dispose();
         }
 
@@ -153,6 +162,19 @@ public class JajukFullScreenWindow extends JWindow implements JajukWindow {
     return instance;
   }
 
+  public static GraphicsDevice getGraphicsDeviceOfMainFrame() {
+    GraphicsEnvironment localGraphicsEnvironment = GraphicsEnvironment
+        .getLocalGraphicsEnvironment();
+    for (int i = 0; i < GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices().length; i++) {
+      GraphicsDevice graphicsDevice = localGraphicsEnvironment.getScreenDevices()[i];
+      if (graphicsDevice.getDefaultConfiguration().getBounds().contains(
+          JajukMainWindow.getInstance().getLocation())) {
+        return graphicsDevice;
+      }
+    }
+    return localGraphicsEnvironment.getDefaultScreenDevice();
+  }
+
   public JajukFullScreenWindow() {
     super(owner);
     this.graphicsDevice = GraphicsEnvironment.getLocalGraphicsEnvironment()
@@ -160,7 +182,6 @@ public class JajukFullScreenWindow extends JWindow implements JajukWindow {
   }
 
   public void initUI() {
-
     // Full screen switch button
     jbFull = new JajukButton(ActionManager.getAction(JajukActions.FULLSCREEN_JAJUK));
 
@@ -168,7 +189,7 @@ public class JajukFullScreenWindow extends JWindow implements JajukWindow {
     jbExit = new JajukButton(ActionManager.getAction(JajukActions.EXIT));
 
     // Animation view
-    AnimationView animationView = new AnimationView();
+    animationView = new AnimationView();
     animationView.initUI();
 
     // Cover view
@@ -176,7 +197,7 @@ public class JajukFullScreenWindow extends JWindow implements JajukWindow {
     coverView.initUI(false);
 
     // Player toolbar
-    JPanel jtbPlay = getPlayerPanel();
+    jtbPlay = getPlayerPanel();
 
     // Information panel
     TrackPositionSliderToolbar tpst = new TrackPositionSliderToolbar();
@@ -189,8 +210,8 @@ public class JajukFullScreenWindow extends JWindow implements JajukWindow {
     add(coverView, "alignx center, grow,gap bottom 20,wrap");
     add(jtbPlay, "alignx center,gap bottom 20,wrap");
     add(tpst, "alignx center,width 50%!,aligny bottom,gap bottom 10");
-
   }
+
 
   /**
    * @return
