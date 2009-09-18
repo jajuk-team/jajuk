@@ -69,7 +69,7 @@ public class Tag {
     } catch (Exception e) {
       bCorrupted = true;
       if (!bIgnoreErrors) {
-        throw new JajukException(103, fio.getName(), e);
+        throw new JajukException(103, (fio == null ? "<null>" : fio.getName()), e);
       }
     }
   }
