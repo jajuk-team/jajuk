@@ -78,6 +78,11 @@ public abstract class DigitalDJ implements Comparable<DigitalDJ> {
    * @return
    */
   public int compareTo(DigitalDJ other) {
+    // 
+    if(other == null) {
+      return -1;
+    }
+
     return this.sName.compareTo(other.getName());
   }
 
