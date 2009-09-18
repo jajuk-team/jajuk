@@ -132,20 +132,17 @@ public class JajukFullScreenWindow extends JWindow implements JajukWindow {
 
         @Override
         public void specificAfterShown() {
-          if (instance.graphicsDevice.isFullScreenSupported()) {
-            instance.graphicsDevice.setFullScreenWindow(instance);
-          }
+          instance.setSize(instance.graphicsDevice.getDisplayMode().getWidth(),
+              instance.graphicsDevice.getDisplayMode().getHeight());
+          instance.setLocation(instance.graphicsDevice.getDefaultConfiguration().getBounds()
+              .getLocation());
           owner.setVisible(true);
-          owner.setAlwaysOnTop(true);
-          instance.setAlwaysOnTop(true);
           instance.requestFocus();
         }
 
         @Override
         public void specificAfterHidden() {
           owner.setVisible(false);
-          owner.setAlwaysOnTop(false);
-          instance.setAlwaysOnTop(false);
           instance.dispose();
         }
 
@@ -177,6 +174,7 @@ public class JajukFullScreenWindow extends JWindow implements JajukWindow {
 
   public JajukFullScreenWindow() {
     super(owner);
+    setAlwaysOnTop(true);
     this.graphicsDevice = GraphicsEnvironment.getLocalGraphicsEnvironment()
         .getDefaultScreenDevice();
   }
@@ -211,7 +209,6 @@ public class JajukFullScreenWindow extends JWindow implements JajukWindow {
     add(jtbPlay, "alignx center,gap bottom 20,wrap");
     add(tpst, "alignx center,width 50%!,aligny bottom,gap bottom 10");
   }
-
 
   /**
    * @return
