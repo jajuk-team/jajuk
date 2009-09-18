@@ -30,6 +30,7 @@ import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 import org.jajuk.util.filters.JajukPredicates;
+import org.jajuk.util.log.Log;
 
 /**
  * Find tags from CDDB on selection
@@ -57,22 +58,26 @@ public class CDDBSelectionAction extends SelectionAction {
    */
   @Override
   public void perform(final ActionEvent e) throws Exception {
-    CDDBSelectionAction.super.perform(e);
-    // Check selection is not void
-    if (selection.size() == 0) {
-      return;
+    try {
+      CDDBSelectionAction.super.perform(e);
+      // Check selection is not void
+      if (selection.size() == 0) {
+        return;
+      }
+      // - We perform here fast computation, no need to use a SwingWorker here.
+      // Actual network call to freedb is done in the CDDBWizard class that uses
+      // a SwingWorker.
+
+      // Build a list of tracks from various items
+      List<Track> tracks = TrackManager.getInstance().getAssociatedTracks(selection, true);
+
+      // Remove video tracks found (clips)
+      CollectionUtils.filter(tracks, new JajukPredicates.NotVideoPredicate());
+
+      // Display the wizard
+      new CDDBWizard(tracks);
+    } catch (Exception ex) {
+      Log.error(ex);
     }
-    // - We perform here fast computation, no need to use a SwingWorker here.
-    // Actual network call to freedb is done in the CDDBWizard class that uses a SwingWorker.
-
-    // Build a list of tracks from various items
-    List<Track> tracks = TrackManager.getInstance().getAssociatedTracks(selection, true);
-
-    // Remove video tracks found (clips)
-    CollectionUtils.filter(tracks, new JajukPredicates.NotVideoPredicate());
-
-    // Display the wizard
-    new CDDBWizard(tracks);
-
   }
 }
