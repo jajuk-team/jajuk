@@ -22,8 +22,11 @@ package org.jajuk.services.lyrics;
 import ext.XMLUtils;
 import ext.services.network.NetworkUtils;
 
+import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.List;
 
@@ -151,8 +154,27 @@ public class TestLyrics extends TestCase {
     Log.info("Downloading: " + url);
 
     String xml = null;
-    xml = DownloadManager.getTextFromCachedFile(url, "UTF-8");
-    assertTrue(StringUtils.isNotBlank(xml));
+    //xml = DownloadManager.getTextFromCachedFile(url, "UTF-8");
+    // Drop the query if user required "none Internet access from jajuk".
+    // This method shouldn't be called anyway because we views have to deal with
+    // this option at their level, this is a additional control.
+    assertFalse(Conf.getBoolean(Const.CONF_NETWORK_NONE_INTERNET_ACCESS));
+
+    File file = DownloadManager.downloadToCache(url);
+    assertNotNull(file);
+    StringBuilder builder = new StringBuilder();
+    InputStream input = new BufferedInputStream(new FileInputStream(file));
+    try {
+      byte[] array = new byte[1024];
+      int read;
+      while ((read = input.read(array)) > 0) {
+        builder.append(new String(array, 0, read, "UTF-8"));
+      }
+    } finally {
+      input.close();
+    }
+    xml = builder.toString();
+    assertTrue(xml, StringUtils.isNotBlank(xml));
 
     Document document = XMLUtils.getDocument(xml);
     assertNotNull(document);
