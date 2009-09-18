@@ -23,7 +23,6 @@ package org.jajuk.ui.views;
 import com.jhlabs.image.PerspectiveFilter;
 
 import java.awt.AlphaComposite;
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -174,6 +173,8 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
   /** Force next track cover reload flag* */
   private boolean bForceCoverReload = true;
 
+  private boolean includeControls;
+
   /**
    * Constructor
    * 
@@ -207,6 +208,8 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
    * @see org.jajuk.ui.IView#display()
    */
   public void initUI(boolean includeControls) {
+    this.includeControls = includeControls;
+
     // Control panel
     jlSearching = new JLabel("", IconLoader.getIcon(JajukIcons.NET_SEARCH), SwingConstants.CENTER);
     jpControl = new JPanel();
@@ -298,10 +301,6 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
       jpControl.add(jlFound, "center,gapright 5::");
       jpControl.add(jcbAccuracy, "grow,gapright 5");
       jpControl.add(jlSearching);
-    } else {
-      jpControl.setLayout(new BorderLayout());
-      jpControl.setBorder(BorderFactory.createEmptyBorder());
-      jpControl.add(jlSearching, BorderLayout.CENTER);
     }
 
     // Cover view used in catalog view should not listen events
@@ -317,7 +316,12 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
       Log.error(e);
     }
     // global layout
-    MigLayout globalLayout = new MigLayout("ins 0,gapy 10", "[grow]", "[30!][grow]");
+    MigLayout globalLayout = null;
+    if (includeControls) {
+      globalLayout = new MigLayout("ins 0,gapy 10", "[grow]", "[30!][grow]");
+    } else {
+      globalLayout = new MigLayout("ins 0,gapy 10", "[grow]", "[grow]");
+    }
     setLayout(globalLayout);
     add(jpControl, "grow,wrap");
     // listen for resize
@@ -847,7 +851,9 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
     if (getComponentCount() > 0) {
       removeAll();
     }
-    add(jpControl, "grow,wrap");
+    if (includeControls) {
+      add(jpControl, "grow,wrap");
+    }
     add(jl, "center,wrap");
     // make sure the image is repainted to avoid overlapping covers
     CoverView.this.revalidate();
