@@ -129,7 +129,7 @@ public class TestLyrics extends TestCase {
     testService(provider);
   }
 
-  private static final String USER_ID = "79o116n89n93sr93p-wnwhx.vasb";
+  private static final String USER_ID = "55593623089-wnwhx.vasb";
 
   /** URL pattern used by jajuk to retrieve lyrics */
   private static final String URL = "http://lyricsfly.com/api/api.php?i="
