@@ -82,9 +82,11 @@ public class PlayerStateMediator implements Observer {
     eventSubjectSet.add(JajukEvents.PLAYER_PAUSE);
     eventSubjectSet.add(JajukEvents.PLAYER_RESUME);
     eventSubjectSet.add(JajukEvents.PLAY_OPENING);
+    eventSubjectSet.add(JajukEvents.PLAY_ERROR);
     eventSubjectSet.add(JajukEvents.ZERO);
     eventSubjectSet.add(JajukEvents.WEBRADIO_LAUNCHED);
     eventSubjectSet.add(JajukEvents.VOLUME_CHANGED);
+    eventSubjectSet.add(JajukEvents.MUTE_STATE);
     return eventSubjectSet;
   }
 
@@ -177,22 +179,26 @@ public class PlayerStateMediator implements Observer {
           // PlayPauseAction
           ActionManager.getAction(PAUSE_RESUME_TRACK).setIcon(
               IconLoader.getIcon(JajukIcons.PLAYER_PAUSE));
-        } else if (JajukEvents.WEBRADIO_LAUNCHED.equals(event.getSubject())) {
+        } else if (JajukEvents.WEBRADIO_LAUNCHED.equals(subject)) {
           ActionManager.getAction(PREVIOUS_TRACK).setEnabled(true);
           ActionManager.getAction(NEXT_TRACK).setEnabled(true);
           ActionManager.getAction(PAUSE_RESUME_TRACK).setEnabled(true);
           ActionManager.getAction(PAUSE_RESUME_TRACK).setIcon(
               IconLoader.getIcon(JajukIcons.PLAYER_PAUSE));
           ActionManager.getAction(STOP_TRACK).setEnabled(true);
-        } else if (JajukEvents.VOLUME_CHANGED.equals(event.getSubject())) {
+        } else if (JajukEvents.VOLUME_CHANGED.equals(subject)) {
           MuteAction.setVolumeIcon(100 * Player.getCurrentVolume());
-        } else if (JajukEvents.MUTE_STATE.equals(event.getSubject()) &&
+        } else if (JajukEvents.MUTE_STATE.equals(subject) &&
         // Update mute icon look when changing the volume
             !Player.isMuted()) {
           MuteAction.setVolumeIcon(Player.getCurrentVolume() * 100);
         }
-        // For all events, refresh the queue
-        ObservationManager.notify(new JajukEvent(JajukEvents.QUEUE_NEED_REFRESH));
+
+        // For all events except Volume Change/Mute, refresh the queue
+        if(!JajukEvents.VOLUME_CHANGED.equals(subject) && 
+            !JajukEvents.MUTE_STATE.equals(subject)) {
+          ObservationManager.notify(new JajukEvent(JajukEvents.QUEUE_NEED_REFRESH));
+        }
       }
     });
   }
