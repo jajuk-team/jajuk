@@ -35,7 +35,8 @@ import org.jajuk.util.log.Log;
  */
 public class LogChecker extends TestCase {
 
-  private static final String FILE_PATH = System.getProperty("java.io.tmpdir")+ File.separator + "jajuk_out.log";
+  private static final String FILE_PATH = System.getProperty("java.io.tmpdir") + File.separator
+      + "jajuk_out.log";
 
   private String logs;
 
@@ -46,11 +47,12 @@ public class LogChecker extends TestCase {
     } catch (JajukException e) {
       // if an exception occurs, ensure it is a "FileNotFound"
       assertNotNull("Should have an underlying cause when catching JajukException", e.getCause());
-      assertTrue("We only accept FileNotFoundException as valid exception in this test", e.getCause() instanceof FileNotFoundException);
-      
+      assertTrue("We only accept FileNotFoundException as valid exception in this test", e
+          .getCause() instanceof FileNotFoundException);
+
       // set string to empty to not fail any of the tests in this case
       logs = "";
-      
+
       // also log a warning to indicate that this test did not do anything
       Log.warn("File " + FILE_PATH + " not found, cannot run checks on log file.");
     }
@@ -75,6 +77,14 @@ public class LogChecker extends TestCase {
    */
   public void testPlayOOT() {
     assertFalse(logs.matches("OOT Mplayer process.*"));
+  }
+
+  /**
+   * Check for EDT violations (this test is required but far not enough as most
+   * of the time, we don't log this kind of errors)
+   */
+  public void testOutEDT() {
+    assertFalse(logs.matches("creation must be done on Event Dispatch Thread "));
   }
 
 }
