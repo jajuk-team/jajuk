@@ -24,6 +24,7 @@ import com.vlsolutions.swing.docking.ui.DockingUISettings;
 
 import java.awt.BorderLayout;
 import java.awt.Frame;
+import java.awt.GraphicsConfiguration;
 import java.awt.Toolkit;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -59,6 +60,7 @@ import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
+import org.jajuk.util.UtilGUI;
 import org.jajuk.util.UtilString;
 import org.jajuk.util.UtilSystem;
 import org.jajuk.util.error.JajukException;
@@ -313,30 +315,50 @@ public class JajukMainWindow extends JFrame implements JajukWindow, Observer {
           * Const.FRAME_INITIAL_BORDER, iScreenHeight - 2 * Const.FRAME_INITIAL_BORDER);
       return;
     }
-    // read stored position and size
+
+        
+    //first get the stored position to get the correct display
     String sPosition = Conf.getString(Const.CONF_WINDOW_POSITION);
+    StringTokenizer st = new StringTokenizer(sPosition, ",");
+    iX = Integer.parseInt(st.nextToken());
+    iY = Integer.parseInt(st.nextToken());
+    iHorizSize = Integer.parseInt(st.nextToken());
+    iVertSize = Integer.parseInt(st.nextToken());
+    //second set the stored position/size
+    setLocation(iX, iY);
+    setSize(iHorizSize, iVertSize);
+    
+    //get the display conf where the main frame is displayed, if the position is outside, the default screen is returned
+    GraphicsConfiguration gConf = UtilGUI.getGraphicsDeviceOfMainFrame().getDefaultConfiguration();
+    int iScreenXzero = (int) gConf.getBounds().getX();
+    int iScreenYzero = (int) gConf.getBounds().getY();
+    iScreenWidth = (int) gConf.getBounds().getWidth();
+    iScreenHeight = (int) gConf.getBounds().getHeight();
+    
+    
+    //check if position/size is correct
+    
     // If user left jajuk maximized, reset this simple configuration
     if (sPosition.equals(Const.FRAME_MAXIMIZED)) {
       // Always set a size that is used when un-maximazing the frame
-      setBounds(Const.FRAME_INITIAL_BORDER, Const.FRAME_INITIAL_BORDER, iScreenWidth - 2
-          * Const.FRAME_INITIAL_BORDER, iScreenHeight - 2 * Const.FRAME_INITIAL_BORDER);
+      setBounds(gConf.getBounds());
       if (Toolkit.getDefaultToolkit().isFrameStateSupported(Frame.MAXIMIZED_BOTH)) {
         setExtendedState(Frame.MAXIMIZED_BOTH);
       }
       return;
     }
-    StringTokenizer st = new StringTokenizer(sPosition, ",");
-    iX = Integer.parseInt(st.nextToken());
+
     // if X position is higher than screen width, set default
-    if (iX < 0 || iX > iScreenWidth) {
+    if (iX < iScreenXzero || iX > iScreenXzero + iScreenWidth) {
       iX = Const.FRAME_INITIAL_BORDER;
     }
-    iY = Integer.parseInt(st.nextToken());
+
+
     // if Y position is higher than screen height, set default
-    if (iY < 0 || iY > iScreenHeight) {
+    if (iY < iScreenYzero || iY > iScreenYzero + iScreenHeight) {
       iY = Const.FRAME_INITIAL_BORDER;
     }
-    iHorizSize = Integer.parseInt(st.nextToken());
+
     // if zero horiz size or
     // if height > to screen height (switching from a dual to a single head
     // for ie),
@@ -345,7 +367,6 @@ public class JajukMainWindow extends JFrame implements JajukWindow, Observer {
       iHorizSize = iScreenWidth - 2 * Const.FRAME_INITIAL_BORDER;
     }
     // Same for width
-    iVertSize = Integer.parseInt(st.nextToken());
     if (iVertSize <= 0 || iVertSize > iScreenHeight) {
       iVertSize = iScreenHeight - 2 * Const.FRAME_INITIAL_BORDER;
     }
