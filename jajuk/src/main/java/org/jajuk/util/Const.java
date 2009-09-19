@@ -272,6 +272,8 @@ public interface Const {
 
   String FILE_THUMB_NO_COVER = "nocover.png";
 
+  String FILE_THUMB_NONE = "none.png"; 
+  
   String FILE_DEFAULT_BESTOF_PLAYLIST = "bestof";
 
   String FILE_DEFAULT_NOVELTIES_PLAYLIST = "novelties";

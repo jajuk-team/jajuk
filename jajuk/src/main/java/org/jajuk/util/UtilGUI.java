@@ -26,6 +26,8 @@ import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.Graphics2D;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
 import java.awt.Image;
 import java.awt.MouseInfo;
 import java.awt.Point;
@@ -154,6 +156,22 @@ public final class UtilGUI {
     } catch (final IOException e) {
       Log.error(e);
     }
+  }
+  
+  /**
+   * @return the current display of the main frame
+   */
+  public static GraphicsDevice getGraphicsDeviceOfMainFrame() {
+    GraphicsEnvironment localGraphicsEnvironment = GraphicsEnvironment
+        .getLocalGraphicsEnvironment();
+    for (int i = 0; i < GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices().length; i++) {
+      GraphicsDevice graphicsDevice = localGraphicsEnvironment.getScreenDevices()[i];
+      if (graphicsDevice.getDefaultConfiguration().getBounds().contains(
+          JajukMainWindow.getInstance().getLocation())) {
+        return graphicsDevice;
+      }
+    }
+    return localGraphicsEnvironment.getDefaultScreenDevice();
   }
 
   /**

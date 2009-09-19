@@ -24,16 +24,25 @@ import static org.jajuk.ui.actions.JajukActions.PAUSE_RESUME_TRACK;
 import static org.jajuk.ui.actions.JajukActions.PREVIOUS_TRACK;
 import static org.jajuk.ui.actions.JajukActions.STOP_TRACK;
 
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
+import java.awt.Point;
+import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JWindow;
+import javax.swing.Timer;
 
 import net.miginfocom.swing.MigLayout;
 
@@ -49,6 +58,7 @@ import org.jajuk.ui.widgets.JajukButton;
 import org.jajuk.ui.widgets.TrackPositionSliderToolbar;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
+import org.jajuk.util.UtilGUI;
 import org.jajuk.util.log.Log;
 import org.jvnet.substance.SubstanceLookAndFeel;
 
@@ -89,6 +99,8 @@ public class JajukFullScreenWindow extends JWindow implements JajukWindow {
 
   private JPanel jtbPlay;
 
+  private Timer hideMouseTimer;
+
   /** Owning frame, see bellow for explanations * */
   private static JFrame owner;
 
@@ -127,7 +139,7 @@ public class JajukFullScreenWindow extends JWindow implements JajukWindow {
       instance.decorator = new WindowStateDecorator(instance) {
         @Override
         public void specificBeforeShown() {
-          instance.graphicsDevice = getGraphicsDeviceOfMainFrame();
+          instance.graphicsDevice = UtilGUI.getGraphicsDeviceOfMainFrame();
         }
 
         @Override
@@ -159,17 +171,19 @@ public class JajukFullScreenWindow extends JWindow implements JajukWindow {
     return instance;
   }
 
-  public static GraphicsDevice getGraphicsDeviceOfMainFrame() {
-    GraphicsEnvironment localGraphicsEnvironment = GraphicsEnvironment
-        .getLocalGraphicsEnvironment();
-    for (int i = 0; i < GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices().length; i++) {
-      GraphicsDevice graphicsDevice = localGraphicsEnvironment.getScreenDevices()[i];
-      if (graphicsDevice.getDefaultConfiguration().getBounds().contains(
-          JajukMainWindow.getInstance().getLocation())) {
-        return graphicsDevice;
-      }
+  private void hideMouseTimer() {
+    setCursor(Cursor.getDefaultCursor());
+    if (hideMouseTimer != null) {
+      hideMouseTimer.restart();
+    } else {
+      hideMouseTimer = new Timer(3000, new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+          setCursor(Toolkit.getDefaultToolkit().createCustomCursor(
+              IconLoader.getIcon(JajukIcons.NONE).getImage(), new Point(0, 0), "invisibleCursor"));
+        }
+      });
     }
-    return localGraphicsEnvironment.getDefaultScreenDevice();
   }
 
   public JajukFullScreenWindow() {
@@ -177,6 +191,25 @@ public class JajukFullScreenWindow extends JWindow implements JajukWindow {
     setAlwaysOnTop(true);
     this.graphicsDevice = GraphicsEnvironment.getLocalGraphicsEnvironment()
         .getDefaultScreenDevice();
+
+    
+    //Add Mouse Listener to disable mouse cursor
+    addMouseListener(new MouseAdapter() {
+      @Override
+      public void mouseClicked(MouseEvent e) {
+        hideMouseTimer();
+      }
+    });
+
+    addMouseMotionListener(new MouseMotionAdapter() {
+      @Override
+      public void mouseMoved(MouseEvent e) {
+        hideMouseTimer();
+      }
+    });
+    
+    //activate Timer
+    hideMouseTimer();
   }
 
   public void initUI() {

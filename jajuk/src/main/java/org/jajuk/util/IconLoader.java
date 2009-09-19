@@ -73,6 +73,10 @@ final public class IconLoader {
       out = new ImageIcon(UtilSystem.getResource("images/included/" + Const.FILE_THUMB_NO_COVER));
     }
 
+    else if (icon == JajukIcons.NONE) {
+      out = new ImageIcon(UtilSystem.getResource("images/included/" + Const.FILE_THUMB_NONE));
+    }
+    
     else if (icon == JajukIcons.NO_COVER_50X50) {
       out = UtilGUI.getResizedImage(getIcon(JajukIcons.NO_COVER), 50, 50);
     }

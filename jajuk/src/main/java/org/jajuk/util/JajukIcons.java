@@ -25,6 +25,8 @@ package org.jajuk.util;
 public enum JajukIcons {
 
   NO_COVER,
+  
+  NONE,
 
   NO_COVER_50X50, NO_COVER_100X100, NO_COVER_150X150, NO_COVER_200X200, NO_COVER_250X250, NO_COVER_300X300,
 
