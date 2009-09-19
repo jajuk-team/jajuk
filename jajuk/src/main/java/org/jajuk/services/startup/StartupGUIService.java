@@ -162,6 +162,8 @@ public class StartupGUIService {
           // is no more available (because the user changed the platform for
           // ie), force the main window mode
           else if (Conf.getInt(Const.CONF_STARTUP_DISPLAY) == Const.DISPLAY_MODE_FULLSCREEN) {
+            // important that the fs frame is shown on the correct display
+            JajukMainWindow.getInstance().applyStoredSize();
             // Display progress
             sc.setProgress(80, Messages.getString("SplashScreen.3"));
             ActionManager.getAction(JajukActions.FULLSCREEN_JAJUK).perform(null);
