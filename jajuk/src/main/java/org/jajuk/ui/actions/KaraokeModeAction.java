@@ -21,7 +21,6 @@ package org.jajuk.ui.actions;
 
 import java.awt.event.ActionEvent;
 
-import org.jajuk.ui.widgets.CommandJPanel;
 import org.jajuk.ui.widgets.JajukJMenuBar;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
@@ -45,6 +44,5 @@ public class KaraokeModeAction extends JajukAction {
     boolean b = Boolean.valueOf(Conf.getString(Const.CONF_STATE_KARAOKE));
     Conf.setProperty(Const.CONF_STATE_KARAOKE, Boolean.toString(!b));
     JajukJMenuBar.getInstance().setKaraokeSelected(!b);
-    CommandJPanel.getInstance().setKaraokeSelected(!b);
   }
 }

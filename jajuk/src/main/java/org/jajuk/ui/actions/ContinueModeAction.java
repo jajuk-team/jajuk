@@ -21,15 +21,12 @@ package org.jajuk.ui.actions;
 
 import java.awt.event.ActionEvent;
 
-import javax.swing.BorderFactory;
-
 import org.jajuk.base.FileManager;
 import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.services.players.QueueModel;
 import org.jajuk.services.players.StackItem;
-import org.jajuk.ui.widgets.CommandJPanel;
 import org.jajuk.ui.widgets.JajukJMenuBar;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
@@ -53,10 +50,8 @@ public class ContinueModeAction extends JajukAction {
     Conf.setProperty(Const.CONF_STATE_CONTINUE, Boolean.toString(!b));
 
     JajukJMenuBar.getInstance().setContinueSelected(!b);
-    CommandJPanel.getInstance().setContinueSelected(!b);
 
     if (!b) { // enabled button
-      CommandJPanel.getInstance().setContinueBorder(BorderFactory.createLoweredBevelBorder());
       if (QueueModel.isStopped()) {
         // if nothing playing, play next track if possible
         StackItem item = QueueModel.getLastPlayed();

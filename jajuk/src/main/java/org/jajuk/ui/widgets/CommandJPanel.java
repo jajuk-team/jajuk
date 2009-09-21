@@ -54,7 +54,6 @@ import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JSlider;
 import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
-import javax.swing.border.Border;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
@@ -110,12 +109,6 @@ public class CommandJPanel extends JXPanel implements ActionListener, ChangeList
   private JajukToggleButton jbRepeat;
 
   private JajukToggleButton jbRandom;
-
-  private JajukToggleButton jbContinue;
-
-  private JajukToggleButton jbIntro;
-
-  private JajukToggleButton jbKaraoke;
 
   private JToolBar jtbSpecial;
 
@@ -634,21 +627,4 @@ public class CommandJPanel extends JXPanel implements ActionListener, ChangeList
   public void setRandomSelected(final boolean b) {
     this.jbRandom.setSelected(b);
   }
-
-  public void setContinueSelected(final boolean b) {
-    this.jbContinue.setSelected(b);
-  }
-
-  public void setContinueBorder(final Border border) {
-    this.jbContinue.setBorder(border);
-  }
-
-  public void setIntroSelected(final boolean b) {
-    this.jbIntro.setSelected(b);
-  }
-
-  public void setKaraokeSelected(final boolean b) {
-    this.jbKaraoke.setSelected(b);
-  }
-
 }

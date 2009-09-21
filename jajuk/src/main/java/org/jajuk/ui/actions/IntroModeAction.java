@@ -21,7 +21,6 @@ package org.jajuk.ui.actions;
 
 import java.awt.event.ActionEvent;
 
-import org.jajuk.ui.widgets.CommandJPanel;
 import org.jajuk.ui.widgets.JajukJMenuBar;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
@@ -42,6 +41,5 @@ public class IntroModeAction extends JajukAction {
     boolean b = Boolean.valueOf(Conf.getString(Const.CONF_STATE_INTRO));
     Conf.setProperty(Const.CONF_STATE_INTRO, Boolean.toString(!b));
     JajukJMenuBar.getInstance().setIntroSelected(!b);
-    CommandJPanel.getInstance().setIntroSelected(!b);
   }
 }
