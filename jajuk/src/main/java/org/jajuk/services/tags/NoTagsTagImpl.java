@@ -26,6 +26,7 @@ import java.util.Map;
 import javazoom.jlgui.basicplayer.BasicController;
 import javazoom.jlgui.basicplayer.BasicPlayer;
 import javazoom.jlgui.basicplayer.BasicPlayerEvent;
+import javazoom.jlgui.basicplayer.BasicPlayerException;
 import javazoom.jlgui.basicplayer.BasicPlayerListener;
 
 import org.jajuk.util.UtilFeatures;
@@ -45,7 +46,7 @@ public class NoTagsTagImpl implements ITagImpl {
    * 
    * @see org.jajuk.base.ITagImpl#getTrackName()
    */
-  public String getTrackName() throws Exception {
+  public String getTrackName() {
     return ""; // doing that, the item wil be the default jajuk unknown
     // string
   }
@@ -55,7 +56,7 @@ public class NoTagsTagImpl implements ITagImpl {
    * 
    * @see org.jajuk.base.ITagImpl#getAlbumName()
    */
-  public String getAlbumName() throws Exception {
+  public String getAlbumName() {
     return ""; // doing that, the item will be the default jajuk unknown
     // string
   }
@@ -65,7 +66,7 @@ public class NoTagsTagImpl implements ITagImpl {
    * 
    * @see org.jajuk.base.ITagImpl#getAuthorName()
    */
-  public String getAuthorName() throws Exception {
+  public String getAuthorName() {
     return ""; // doing that, the item will be the default jajuk unknown
     // string
   }
@@ -75,7 +76,7 @@ public class NoTagsTagImpl implements ITagImpl {
    * 
    * @see org.jajuk.base.ITagImpl#getStyleName()
    */
-  public String getStyleName() throws Exception {
+  public String getStyleName() {
     return ""; // doing that, the item will be the default jajuk unknown
     // string
   }
@@ -85,7 +86,7 @@ public class NoTagsTagImpl implements ITagImpl {
    * 
    * @see org.jajuk.base.ITagImpl#getLength()
    */
-  public long getLength() throws Exception {
+  public long getLength() throws BasicPlayerException {
     // we have to open the file to get length
     BasicPlayer player = new BasicPlayer();
     player.addBasicPlayerListener(new BasicPlayerListener() {
@@ -116,7 +117,7 @@ public class NoTagsTagImpl implements ITagImpl {
    * 
    * @see org.jajuk.base.ITagImpl#getComment()
    */
-  public String getComment() throws Exception {
+  public String getComment() {
     return ""; // by doing that, the item will be the default jajuk
     // unknown string
   }
@@ -126,7 +127,8 @@ public class NoTagsTagImpl implements ITagImpl {
    * 
    * @see org.jajuk.base.ITagImpl#setTrackName(java.lang.String)
    */
-  public void setTrackName(String sTrackName) throws Exception {
+  public void setTrackName(String sTrackName) {
+    // nothing to do here
   }
 
   /*
@@ -134,10 +136,11 @@ public class NoTagsTagImpl implements ITagImpl {
    * 
    * @see org.jajuk.base.ITagImpl#setAlbumName(java.lang.String)
    */
-  public void setAlbumName(String sAlbumName) throws Exception {
+  public void setAlbumName(String sAlbumName) {
   }
 
-  public void setComment(String sComment) throws Exception {
+  public void setComment(String sComment) {
+    // nothing to do here
   }
 
   /*
@@ -145,7 +148,8 @@ public class NoTagsTagImpl implements ITagImpl {
    * 
    * @see org.jajuk.base.ITagImpl#setAuthorName(java.lang.String)
    */
-  public void setAuthorName(String sAuthorName) throws Exception {
+  public void setAuthorName(String sAuthorName) {
+    // nothing to do here
   }
 
   /*
@@ -153,7 +157,8 @@ public class NoTagsTagImpl implements ITagImpl {
    * 
    * @see org.jajuk.base.ITagImpl#setStyleName(java.lang.String)
    */
-  public void setStyleName(String style) throws Exception {
+  public void setStyleName(String style) {
+    // nothing to do here
   }
 
   /*
@@ -162,7 +167,8 @@ public class NoTagsTagImpl implements ITagImpl {
    * @see org.jajuk.base.ITagImpl#setLength(long)
    */
   public void setLength(@SuppressWarnings("unused")
-  long length) throws Exception {
+  long length) {
+    // nothing to do here
   }
 
   /*
@@ -171,7 +177,8 @@ public class NoTagsTagImpl implements ITagImpl {
    * @see org.jajuk.base.ITagImpl#setQuality(java.lang.String)
    */
   public void setQuality(@SuppressWarnings("unused")
-  String sQuality) throws Exception {
+  String sQuality) {
+    // nothing to do here
   }
 
   /*
@@ -179,7 +186,7 @@ public class NoTagsTagImpl implements ITagImpl {
    * 
    * @see org.jajuk.base.ITagImpl#setFile(java.io.File)
    */
-  public void setFile(File fio) throws Exception {
+  public void setFile(File fio) {
     this.fio = fio;
   }
 
@@ -188,7 +195,8 @@ public class NoTagsTagImpl implements ITagImpl {
    * 
    * @see org.jajuk.tag.ITagImpl#commit()
    */
-  public void commit() throws Exception {
+  public void commit() {
+    // nothing to do here
   }
 
   /*
@@ -196,7 +204,7 @@ public class NoTagsTagImpl implements ITagImpl {
    * 
    * @see org.jajuk.tag.ITagImpl#getOrder()
    */
-  public long getOrder() throws Exception {
+  public long getOrder() {
     return 0l;
   }
 
@@ -205,7 +213,8 @@ public class NoTagsTagImpl implements ITagImpl {
    * 
    * @see org.jajuk.tag.ITagImpl#setOrder(java.lang.String)
    */
-  public void setOrder(long lOrder) throws Exception {
+  public void setOrder(long lOrder) {
+    // nothing to do here
   }
 
   /*
@@ -213,7 +222,8 @@ public class NoTagsTagImpl implements ITagImpl {
    * 
    * @see org.jajuk.tag.ITagImpl#setYear(int)
    */
-  public void setYear(String year) throws Exception {
+  public void setYear(String year) {
+    // nothing to do here
   }
 
   /*
@@ -221,7 +231,7 @@ public class NoTagsTagImpl implements ITagImpl {
    * 
    * @see org.jajuk.tag.ITagImpl#getYear()
    */
-  public String getYear() throws Exception {
+  public String getYear() {
     return "0";
   }
 
@@ -230,7 +240,7 @@ public class NoTagsTagImpl implements ITagImpl {
    * 
    * @see org.jajuk.tag.ITagImpl#getQuality()
    */
-  public long getQuality() throws Exception {
+  public long getQuality() {
     return 0l;
   }
 
@@ -239,7 +249,7 @@ public class NoTagsTagImpl implements ITagImpl {
    * 
    * @see org.jajuk.services.tags.ITagImpl#getAlbumArtist()
    */
-  public String getAlbumArtist() throws Exception {
+  public String getAlbumArtist() {
     return "";
   }
 
@@ -248,7 +258,7 @@ public class NoTagsTagImpl implements ITagImpl {
    * 
    * @see org.jajuk.services.tags.ITagImpl#getDiscNumber()
    */
-  public long getDiscNumber() throws Exception {
+  public long getDiscNumber() {
     return 01;
   }
 
@@ -257,9 +267,8 @@ public class NoTagsTagImpl implements ITagImpl {
    * 
    * @see org.jajuk.services.tags.ITagImpl#setAlbumArtist(java.lang.String)
    */
-  public void setAlbumArtist(String albumArtist) throws Exception {
-    // TODO Auto-generated method stub
-
+  public void setAlbumArtist(String albumArtist) {
+    // nothing to do here
   }
 
   /*
@@ -267,9 +276,8 @@ public class NoTagsTagImpl implements ITagImpl {
    * 
    * @see org.jajuk.services.tags.ITagImpl#setDiscNumber(int)
    */
-  public void setDiscNumber(long discnumber) throws Exception {
-    // TODO Auto-generated method stub
-
+  public void setDiscNumber(long discnumber) {
+    // nothing to do here
   }
 
 }

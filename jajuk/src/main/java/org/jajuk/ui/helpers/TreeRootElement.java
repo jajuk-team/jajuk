@@ -36,7 +36,6 @@ public class TreeRootElement extends DefaultMutableTreeNode {
    */
   public TreeRootElement() {
     super();
-    // TODO Auto-generated constructor stub
   }
 
   /**
@@ -45,7 +44,6 @@ public class TreeRootElement extends DefaultMutableTreeNode {
    */
   public TreeRootElement(Object userObject, boolean allowsChildren) {
     super(userObject, allowsChildren);
-    // TODO Auto-generated constructor stub
   }
 
   /**
@@ -53,6 +51,5 @@ public class TreeRootElement extends DefaultMutableTreeNode {
    */
   public TreeRootElement(Object userObject) {
     super(userObject);
-    // TODO Auto-generated constructor stub
   }
 }
