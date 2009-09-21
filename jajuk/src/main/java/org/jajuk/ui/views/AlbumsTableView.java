@@ -34,7 +34,6 @@ import org.jajuk.ui.actions.ActionManager;
 import org.jajuk.ui.actions.JajukActions;
 import org.jajuk.ui.helpers.AlbumsTableModel;
 import org.jajuk.ui.helpers.JajukTableModel;
-import org.jajuk.ui.helpers.TwoStepsDisplayable;
 import org.jajuk.ui.thumbnails.LocalAlbumThumbnail;
 import org.jajuk.ui.thumbnails.ThumbnailPopup;
 import org.jajuk.ui.widgets.JajukTable;
@@ -46,7 +45,7 @@ import org.jajuk.util.UtilGUI;
 /**
  * List collection albums as a table
  */
-public class AlbumsTableView extends AbstractTableView implements TwoStepsDisplayable {
+public class AlbumsTableView extends AbstractTableView {
 
   private static final long serialVersionUID = 7576455252866971945L;
 
@@ -165,6 +164,7 @@ public class AlbumsTableView extends AbstractTableView implements TwoStepsDispla
       }
 
       public void mouseDragged(MouseEvent e) {
+        // nothing to do here
       }
 
     });
@@ -174,8 +174,8 @@ public class AlbumsTableView extends AbstractTableView implements TwoStepsDispla
     jtable.addMouseListener(new MouseAdapter() {
       @Override
       public void mouseExited(MouseEvent e) {
-        // TODO Auto-generated method stub
         super.mouseExited(e);
+
         // Do not hide popup if still in the table to allow user to mouse
         // mouse over the popup (in this case, a table exit event is thrown)
         if (popup != null
