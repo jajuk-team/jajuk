@@ -20,6 +20,7 @@
 
 package org.jajuk.ui.wizard;
 
+import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -69,6 +70,11 @@ import org.jajuk.util.log.Log;
  * Device creation wizard
  */
 public class DeviceWizard extends JajukJDialog implements ActionListener, Const {
+  /**
+   * 
+   */
+  private static final String WRAP = "wrap";
+
   private static final long serialVersionUID = 1L;
 
   private final JComboBox jcbType;
@@ -113,6 +119,8 @@ public class DeviceWizard extends JajukJDialog implements ActionListener, Const 
    * Device wizard by default, is used for void configuration
    */
   public DeviceWizard() {
+    super();
+    
     devices = DeviceManager.getInstance().getDevices();
     addWindowListener(new WindowAdapter() {
       @Override
@@ -160,8 +168,7 @@ public class DeviceWizard extends JajukJDialog implements ActionListener, Const 
         final String prop = e.getPropertyName();
         if (prop.equals(JOptionPane.VALUE_PROPERTY)) {
           // FIXME: this causes trouble on German machines with more than 999
-          // minutes!
-          // FIXME: what is the original purpose of this replacement?
+          // minutes! What is the original purpose of this replacement?
           final double value = Double.valueOf(jftfAutoRefresh.getText().replace(',', '.'));
           jftfAutoRefresh.setValue(value);
           if ((value < 0) || ((value < 0.5d) && (value != 0))) {
@@ -208,12 +215,12 @@ public class DeviceWizard extends JajukJDialog implements ActionListener, Const 
     add(jtfName, "grow,wrap");
     add(jlUrl);
     add(jtfUrl, "split 2,growx");
-    add(jbUrl, "wrap");
+    add(jbUrl, WRAP);
     add(jlAutoRefresh);
     add(jftfAutoRefresh, "grow,split 2");
-    add(jlMinutes, "wrap");
-    add(jcbRefresh, "wrap");
-    add(jcbAutoMount, "wrap");
+    add(jlMinutes, WRAP);
+    add(jcbRefresh, WRAP);
+    add(jcbAutoMount, WRAP);
     add(jcboxSynchronized);
     add(jcbSynchronized, "grow,wrap");
     add(jrbUnidirSynchro, "left,gap left 20,span,wrap");
@@ -239,161 +246,189 @@ public class DeviceWizard extends JajukJDialog implements ActionListener, Const 
    */
   public void actionPerformed(final ActionEvent e) {
     if (e.getSource() == jcboxSynchronized) {
-      if (jcboxSynchronized.isSelected()) {
-        jcbSynchronized.setEnabled(true);
-        jrbBidirSynchro.setEnabled(true);
-        jrbUnidirSynchro.setEnabled(true);
-      } else {
-        jcbSynchronized.setEnabled(false);
-        jrbBidirSynchro.setEnabled(false);
-        jrbUnidirSynchro.setEnabled(false);
-      }
+      handleSynchronized();
     } else if (e.getSource() == okp.getOKButton()) {
-      // surface checks
-      try {
-        jftfAutoRefresh.commitEdit();
-      } catch (final ParseException e1) {
-        Messages.showErrorMessage(137);
-        setVisible(true);
-        return;
-      }
-      if (jtfUrl.getText().trim().equals("")) {
-        Messages.showErrorMessage(21);
-        setVisible(true);
-        return;
-      }
-      if (jtfName.getText().trim().equals("")) {
-        Messages.showErrorMessage(22);
-        setVisible(true);
-        return;
-      }
-      new Thread("Device Wizard Action Thread") {
-        @Override
-        public void run() {
-          // check device availability (test name only if new device)
-          final int code = DeviceManager.getInstance().checkDeviceAvailablity(jtfName.getText(),
-              jcbType.getSelectedIndex(), jtfUrl.getText(), bNew);
-          if (code != 0) {
-            Messages.showErrorMessage(code);
-            setVisible(true); // display wizard window which has been
-            // hidden by the error window
-            return;
-          }
-          if (bNew) {
-            device = DeviceManager.getInstance().registerDevice(jtfName.getText(),
-                jcbType.getSelectedIndex(), jtfUrl.getText());
-          }
-          device.setProperty(Const.XML_DEVICE_AUTO_MOUNT, jcbAutoMount.isSelected());
-          device.setProperty(Const.XML_DEVICE_AUTO_REFRESH, new Double(jftfAutoRefresh.getValue()
-              .toString()));
-          device.setProperty(Const.XML_TYPE, Long.valueOf(jcbType.getSelectedIndex()));
-          device.setUrl(jtfUrl.getText());
-          if (jcbSynchronized.isEnabled() && (jcbSynchronized.getSelectedItem() != null)) {
-            Device selected = DeviceManager.getInstance().getDeviceByName(
-                (String) jcbSynchronized.getSelectedItem());
-            device.setProperty(Const.XML_DEVICE_SYNCHRO_SOURCE, selected.getID());
-            if (jrbBidirSynchro.isSelected()) {
-              device.setProperty(Const.XML_DEVICE_SYNCHRO_MODE, Const.DEVICE_SYNCHRO_MODE_BI);
-            } else {
-              device.setProperty(Const.XML_DEVICE_SYNCHRO_MODE, Const.DEVICE_SYNCHRO_MODE_UNI);
-            }
-          } else { // no synchro
-            device.removeProperty(Const.XML_DEVICE_SYNCHRO_MODE);
-            device.removeProperty(Const.XML_DEVICE_SYNCHRO_SOURCE);
-          }
-          // Force deep refresh if it is a new device or if URL changed
-          if (jcbRefresh.isSelected() && bNew) {
-            try {
-              // Drop existing directory to avoid phantom directories if
-              // existing device
-              DirectoryManager.getInstance().removeDirectory(device.getID());
-              device.refresh(true);
-            } catch (final Exception e2) {
-              Log.error(112, device.getName(), e2);
-              Messages.showErrorMessage(112, device.getName());
-            }
-          } else if (sInitialURL != null && !sInitialURL.equals(jtfUrl.getText())) {
-            // If user changed the URL, force refresh
-            try {
-              // try to remount the device
-              if (!device.isMounted()) {
-                int resu = device.mount(true);
-                // Leave if user canceled device mounting
-                if (resu < 0) {
-                  dispose();
-                  return;
-                }
-              }
-              // Keep previous references when changing device url
-              device.refreshCommand(false);
-              // Force a cleanup *after* the refresh
-              device.cleanRemovedFiles();
-              ObservationManager.notify(new JajukEvent(JajukEvents.DEVICE_REFRESH));
-            } catch (final Exception e2) {
-              Log.error(112, device.getName(), e2);
-              Messages.showErrorMessage(112, device.getName());
-            }
-          }
-          ObservationManager.notify(new JajukEvent(JajukEvents.DEVICE_REFRESH));
-          dispose();
-          if (bNew) {
-            InformationJPanel.getInstance().setMessage(Messages.getString("DeviceWizard.44"),
-                InformationJPanel.INFORMATIVE);
-          }
-        }
-      }.start();
+      handleOk();
     } else if (e.getSource() == okp.getCancelButton()) {
       dispose(); // close window
     } else if (e.getSource() == jbUrl) {
-      final JajukFileChooser jfc = new JajukFileChooser(new JajukFileFilter(DirectoryFilter
-          .getInstance()));
-      jfc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-      jfc.setDialogTitle(Messages.getString("DeviceWizard.43"));
-      jfc.setMultiSelectionEnabled(false);
-      final String sUrl = jtfUrl.getText();
-      if (!"".equals(sUrl)) {
-        // if url is already set, use it as root directory
-        jfc.setCurrentDirectory(new File(sUrl));
-      }
-      final int returnVal = jfc.showOpenDialog(this);
-      if (returnVal == JFileChooser.APPROVE_OPTION) {
-        final java.io.File file = jfc.getSelectedFile();
-        jtfUrl.setText(file.getAbsolutePath());
-      }
+      handleUrl();
     } else if (e.getSource() == jcbType) {
-      switch (jcbType.getSelectedIndex()) {
-      case 0: // directory
-        jcbAutoMount.setSelected(true);
-        if (bNew) {
-          jftfAutoRefresh.setValue(0.5d);
-        }
-        break;
-      case 1: // file cd
-        jcbAutoMount.setSelected(false);
-        if (bNew) {
-          jftfAutoRefresh.setValue(0d);
-        }
-        break;
-      case 2: // network drive
-        jcbAutoMount.setSelected(true);
-        // no auto-refresh by default for network drive
-        if (bNew) {
-          jftfAutoRefresh.setValue(0d);
-        }
-        break;
-      case 3: // ext dd
-        jcbAutoMount.setSelected(true);
-        if (bNew) {
-          jftfAutoRefresh.setValue(3d);
-        }
-        break;
-      case 4: // player
-        jcbAutoMount.setSelected(false);
-        if (bNew) {
-          jftfAutoRefresh.setValue(3d);
-        }
-        break;
+      handleType();
+    }
+  }
+
+  /**
+   * 
+   */
+  private void handleType() {
+    switch (jcbType.getSelectedIndex()) {
+    case 0: // directory
+      jcbAutoMount.setSelected(true);
+      if (bNew) {
+        jftfAutoRefresh.setValue(0.5d);
       }
+      break;
+    case 1: // file cd
+      jcbAutoMount.setSelected(false);
+      if (bNew) {
+        jftfAutoRefresh.setValue(0d);
+      }
+      break;
+    case 2: // network drive
+      jcbAutoMount.setSelected(true);
+      // no auto-refresh by default for network drive
+      if (bNew) {
+        jftfAutoRefresh.setValue(0d);
+      }
+      break;
+    case 3: // ext dd
+      jcbAutoMount.setSelected(true);
+      if (bNew) {
+        jftfAutoRefresh.setValue(3d);
+      }
+      break;
+    case 4: // player
+      jcbAutoMount.setSelected(false);
+      if (bNew) {
+        jftfAutoRefresh.setValue(3d);
+      }
+      break;
+    }
+  }
+
+  /**
+   * @throws HeadlessException
+   */
+  private void handleUrl() throws HeadlessException {
+    final JajukFileChooser jfc = new JajukFileChooser(new JajukFileFilter(DirectoryFilter
+        .getInstance()));
+    jfc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+    jfc.setDialogTitle(Messages.getString("DeviceWizard.43"));
+    jfc.setMultiSelectionEnabled(false);
+    final String sUrl = jtfUrl.getText();
+    if (!"".equals(sUrl)) {
+      // if url is already set, use it as root directory
+      jfc.setCurrentDirectory(new File(sUrl));
+    }
+    final int returnVal = jfc.showOpenDialog(this);
+    if (returnVal == JFileChooser.APPROVE_OPTION) {
+      final java.io.File file = jfc.getSelectedFile();
+      jtfUrl.setText(file.getAbsolutePath());
+    }
+  }
+
+  /**
+   * 
+   */
+  private void handleOk() {
+    // surface checks
+    try {
+      jftfAutoRefresh.commitEdit();
+    } catch (final ParseException e1) {
+      Messages.showErrorMessage(137);
+      setVisible(true);
+      return;
+    }
+    if (jtfUrl.getText().trim().equals("")) {
+      Messages.showErrorMessage(21);
+      setVisible(true);
+      return;
+    }
+    if (jtfName.getText().trim().equals("")) {
+      Messages.showErrorMessage(22);
+      setVisible(true);
+      return;
+    }
+    new Thread("Device Wizard Action Thread") {
+      @Override
+      public void run() {
+        // check device availability (test name only if new device)
+        final int code = DeviceManager.getInstance().checkDeviceAvailablity(jtfName.getText(),
+            jcbType.getSelectedIndex(), jtfUrl.getText(), bNew);
+        if (code != 0) {
+          Messages.showErrorMessage(code);
+          setVisible(true); // display wizard window which has been
+          // hidden by the error window
+          return;
+        }
+        if (bNew) {
+          device = DeviceManager.getInstance().registerDevice(jtfName.getText(),
+              jcbType.getSelectedIndex(), jtfUrl.getText());
+        }
+        device.setProperty(Const.XML_DEVICE_AUTO_MOUNT, jcbAutoMount.isSelected());
+        device.setProperty(Const.XML_DEVICE_AUTO_REFRESH, new Double(jftfAutoRefresh.getValue()
+            .toString()));
+        device.setProperty(Const.XML_TYPE, Long.valueOf(jcbType.getSelectedIndex()));
+        device.setUrl(jtfUrl.getText());
+        if (jcbSynchronized.isEnabled() && (jcbSynchronized.getSelectedItem() != null)) {
+          Device selected = DeviceManager.getInstance().getDeviceByName(
+              (String) jcbSynchronized.getSelectedItem());
+          device.setProperty(Const.XML_DEVICE_SYNCHRO_SOURCE, selected.getID());
+          if (jrbBidirSynchro.isSelected()) {
+            device.setProperty(Const.XML_DEVICE_SYNCHRO_MODE, Const.DEVICE_SYNCHRO_MODE_BI);
+          } else {
+            device.setProperty(Const.XML_DEVICE_SYNCHRO_MODE, Const.DEVICE_SYNCHRO_MODE_UNI);
+          }
+        } else { // no synchro
+          device.removeProperty(Const.XML_DEVICE_SYNCHRO_MODE);
+          device.removeProperty(Const.XML_DEVICE_SYNCHRO_SOURCE);
+        }
+        // Force deep refresh if it is a new device or if URL changed
+        if (jcbRefresh.isSelected() && bNew) {
+          try {
+            // Drop existing directory to avoid phantom directories if
+            // existing device
+            DirectoryManager.getInstance().removeDirectory(device.getID());
+            device.refresh(true);
+          } catch (final Exception e2) {
+            Log.error(112, device.getName(), e2);
+            Messages.showErrorMessage(112, device.getName());
+          }
+        } else if (sInitialURL != null && !sInitialURL.equals(jtfUrl.getText())) {
+          // If user changed the URL, force refresh
+          try {
+            // try to remount the device
+            if (!device.isMounted()) {
+              int resu = device.mount(true);
+              // Leave if user canceled device mounting
+              if (resu < 0) {
+                dispose();
+                return;
+              }
+            }
+            // Keep previous references when changing device url
+            device.refreshCommand(false);
+            // Force a cleanup *after* the refresh
+            device.cleanRemovedFiles();
+            ObservationManager.notify(new JajukEvent(JajukEvents.DEVICE_REFRESH));
+          } catch (final Exception e2) {
+            Log.error(112, device.getName(), e2);
+            Messages.showErrorMessage(112, device.getName());
+          }
+        }
+        ObservationManager.notify(new JajukEvent(JajukEvents.DEVICE_REFRESH));
+        dispose();
+        if (bNew) {
+          InformationJPanel.getInstance().setMessage(Messages.getString("DeviceWizard.44"),
+              InformationJPanel.INFORMATIVE);
+        }
+      }
+    }.start();
+  }
+
+  /**
+   * 
+   */
+  private void handleSynchronized() {
+    if (jcboxSynchronized.isSelected()) {
+      jcbSynchronized.setEnabled(true);
+      jrbBidirSynchro.setEnabled(true);
+      jrbUnidirSynchro.setEnabled(true);
+    } else {
+      jcbSynchronized.setEnabled(false);
+      jrbBidirSynchro.setEnabled(false);
+      jrbUnidirSynchro.setEnabled(false);
     }
   }
 
