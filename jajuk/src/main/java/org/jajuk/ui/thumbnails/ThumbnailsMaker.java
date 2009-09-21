@@ -90,8 +90,8 @@ public final class ThumbnailsMaker {
           for (int i = 50; i <= 300; i += 50) {
             ThumbnailsMaker.launchProcessus(i);
           }
-        } catch (Exception e) { // TODO Auto-generated
-          e.printStackTrace();
+        } catch (Exception e) {
+          Log.error(e);
         } finally {
           bAlreadyRunning = false;
         }
@@ -103,8 +103,8 @@ public final class ThumbnailsMaker {
     if (bSynchronous) {
       try {
         t.join();
-      } catch (final InterruptedException e) { // TODO Auto-generated catch
-        e.printStackTrace();
+      } catch (final InterruptedException e) {
+        Log.error(e);
       }
 
     }
@@ -121,7 +121,7 @@ public final class ThumbnailsMaker {
   public static int launchProcessus(final int size) throws URISyntaxException, IOException {
     final String jvmPath = System.getProperty("java.home") + File.separatorChar + "bin"
         + File.separatorChar + "java";
-    // @TODO Under JNLP mode, following line throw an URI malformed exception
+    // TODO Under JNLP mode, following line throw an URI malformed exception
     // (contains %20 for ie). We
     // don't figured out so far how to
     // build proper JAR path. We keep things like it for the moment, pictures
@@ -199,7 +199,7 @@ public final class ThumbnailsMaker {
     try {
       buildThumbs();
     } catch (final Exception e) {
-      e.printStackTrace();
+      Log.error(e);
       // Leave in error
       System.exit(1);
     }
