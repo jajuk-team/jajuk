@@ -162,17 +162,31 @@ public class TestLyrics extends TestCase {
 
     File file = DownloadManager.downloadToCache(url);
     assertNotNull(file);
+
+    // make sure the file is available correctly
+    assertTrue(file.toString(), file.exists());
+    assertTrue(file.toString(), file.canRead());
+    assertTrue(file.toString(), file.isFile());
+    assertFalse(file.toString(), file.isHidden());
+    assertTrue(file.toString(), file.length() > 0);
+    
     StringBuilder builder = new StringBuilder();
     InputStream input = new BufferedInputStream(new FileInputStream(file));
+    boolean bRead = false;
     try {
       byte[] array = new byte[1024];
       int read;
       while ((read = input.read(array)) > 0) {
         builder.append(new String(array, 0, read, "UTF-8"));
+        bRead = true;
       }
     } finally {
       input.close();
     }
+    
+    // make sure we read at least some bytes/chars
+    assertTrue(file.toString(), bRead);
+    
     xml = builder.toString();
     assertTrue(xml, StringUtils.isNotBlank(xml));
 
@@ -184,7 +198,6 @@ public class TestLyrics extends TestCase {
     lyrics = lyrics.replace("[br]", "");
 
     assertTrue(StringUtils.isNotBlank(lyrics));
-
   }
 
   /**
