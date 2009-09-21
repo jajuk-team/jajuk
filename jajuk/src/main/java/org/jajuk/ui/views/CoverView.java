@@ -39,6 +39,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -1001,6 +1002,15 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
 
       // do not display a stacktrace for FileNotfound as we expect this in cases
       // where the picture is gone on the net
+      Log.warn("Cover image not found at URL: "
+          + (cover == null ? "<null>" : cover.getURL().toString()));
+      return null;
+    } catch (final UnknownHostException e) {
+      setCursor(UtilGUI.DEFAULT_CURSOR);
+      searching(false);
+
+      // do not display a stacktrace for HostNotFound as we expect this in cases
+      // where the whole server is gone on the net
       Log.warn("Cover image not found at URL: "
           + (cover == null ? "<null>" : cover.getURL().toString()));
       return null;
