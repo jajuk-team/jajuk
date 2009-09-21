@@ -54,7 +54,6 @@ import org.jajuk.util.UtilString;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 import org.xml.sax.Attributes;
-import org.xml.sax.ErrorHandler;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 import org.xml.sax.helpers.DefaultHandler;
@@ -66,7 +65,7 @@ import org.xml.sax.helpers.DefaultHandler;
  * .sun.com/javase/6/docs/api/javax/swing/package-summary.html#threading
  * 
  */
-public final class History extends DefaultHandler implements ErrorHandler, HighPriorityObserver {
+public final class History extends DefaultHandler implements HighPriorityObserver {
   /** Self instance */
   private static History history;
 
@@ -111,9 +110,7 @@ public final class History extends DefaultHandler implements ErrorHandler, HighP
     eventSubjectSet.add(JajukEvents.CLEAR_HISTORY);
     eventSubjectSet.add(JajukEvents.FILE_NAME_CHANGED);
     eventSubjectSet.add(JajukEvents.LANGUAGE_CHANGED);
-    eventSubjectSet.add(JajukEvents.WEBRADIO_LAUNCHED); // TODO: this is not
-                                                        // handled in update,
-                                                        // may be not required?
+
     return eventSubjectSet;
   }
 
@@ -304,9 +301,8 @@ public final class History extends DefaultHandler implements ErrorHandler, HighP
       return null;
     }
     hiLast = vHistory.get(0);
-    if (hiLast == null) {
-      return null; // TODO: I don't think this can happen at all right now?!?
-    }
+
+    // we only add valid entries to hiLast, so hiLast cannot be null at this point...
     return hiLast.getFileId();
   }
 
@@ -380,8 +376,8 @@ public final class History extends DefaultHandler implements ErrorHandler, HighP
   public void startElement(String sUri, String sName, String sQName, Attributes attributes)
       throws SAXException {
     if ("history".equals(sQName)) {
-      History.lDateStart = UtilString.fastLongParser(attributes.getValue(attributes
-          .getIndex("begin_date")));
+      setStartDate(UtilString.fastLongParser(attributes.getValue(attributes
+          .getIndex("begin_date"))));
     } else if ("play".equals(sQName)) {
       String sID = attributes.getValue(attributes.getIndex("file"));
       // check id has not been changed
@@ -457,4 +453,7 @@ public final class History extends DefaultHandler implements ErrorHandler, HighP
     return this.formatter;
   }
 
+  public static void setStartDate(long start) {
+    lDateStart = start;
+  }
 }
