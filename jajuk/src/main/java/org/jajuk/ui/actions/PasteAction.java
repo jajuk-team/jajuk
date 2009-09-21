@@ -358,8 +358,7 @@ public class PasteAction extends JajukAction {
    * @param file
    */
   private void showMessage(java.io.File file) {
-    // TODO create a dedicated label
-    String message = Messages.getString("Device.42").substring(3);
+    String message = Messages.getString("Device.45");
     message += file.getAbsolutePath() + "]";
     InformationJPanel.getInstance().setMessage(message, InformationJPanel.INFORMATIVE);
 
