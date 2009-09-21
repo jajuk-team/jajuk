@@ -316,43 +316,43 @@ public class JajukMainWindow extends JFrame implements JajukWindow, Observer {
       return;
     }
 
-        
-    //first get the stored position to get the correct display
+    // first get the stored position to get the correct display
     String sPosition = Conf.getString(Const.CONF_WINDOW_POSITION);
-    StringTokenizer st = new StringTokenizer(sPosition, ",");
-    iX = Integer.parseInt(st.nextToken());
-    iY = Integer.parseInt(st.nextToken());
-    iHorizSize = Integer.parseInt(st.nextToken());
-    iVertSize = Integer.parseInt(st.nextToken());
-    //second set the stored position/size
-    setLocation(iX, iY);
-    setSize(iHorizSize, iVertSize);
-    
-    //get the display conf where the main frame is displayed, if the position is outside, the default screen is returned
-    GraphicsConfiguration gConf = UtilGUI.getGraphicsDeviceOfMainFrame().getDefaultConfiguration();
-    int iScreenXzero = (int) gConf.getBounds().getX();
-    int iScreenYzero = (int) gConf.getBounds().getY();
-    iScreenWidth = (int) gConf.getBounds().getWidth();
-    iScreenHeight = (int) gConf.getBounds().getHeight();
-    
-    
-    //check if position/size is correct
-    
+
     // If user left jajuk maximized, reset this simple configuration
     if (sPosition.equals(Const.FRAME_MAXIMIZED)) {
       // Always set a size that is used when un-maximazing the frame
-      setBounds(gConf.getBounds());
+      setBounds(Const.FRAME_INITIAL_BORDER, Const.FRAME_INITIAL_BORDER, iScreenWidth - 2
+          * Const.FRAME_INITIAL_BORDER, iScreenHeight - 2 * Const.FRAME_INITIAL_BORDER);
       if (Toolkit.getDefaultToolkit().isFrameStateSupported(Frame.MAXIMIZED_BOTH)) {
         setExtendedState(Frame.MAXIMIZED_BOTH);
       }
       return;
     }
 
+    StringTokenizer st = new StringTokenizer(sPosition, ",");
+    iX = Integer.parseInt(st.nextToken());
+    iY = Integer.parseInt(st.nextToken());
+    iHorizSize = Integer.parseInt(st.nextToken());
+    iVertSize = Integer.parseInt(st.nextToken());
+    // second set the stored position/size
+    setLocation(iX, iY);
+    setSize(iHorizSize, iVertSize);
+
+    // get the display conf where the main frame is displayed, if the position
+    // is outside, the default screen is returned
+    GraphicsConfiguration gConf = UtilGUI.getGraphicsDeviceOfMainFrame().getDefaultConfiguration();
+    int iScreenXzero = (int) gConf.getBounds().getX();
+    int iScreenYzero = (int) gConf.getBounds().getY();
+    iScreenWidth = (int) gConf.getBounds().getWidth();
+    iScreenHeight = (int) gConf.getBounds().getHeight();
+
+    // check if position/size is correct
+
     // if X position is higher than screen width, set default
     if (iX < iScreenXzero || iX > iScreenXzero + iScreenWidth) {
       iX = Const.FRAME_INITIAL_BORDER;
     }
-
 
     // if Y position is higher than screen height, set default
     if (iY < iScreenYzero || iY > iScreenYzero + iScreenHeight) {
