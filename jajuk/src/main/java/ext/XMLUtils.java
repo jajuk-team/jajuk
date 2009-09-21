@@ -30,6 +30,7 @@ import java.io.Reader;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import org.apache.commons.lang.StringUtils;
 import org.jajuk.util.log.Log;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -80,6 +81,8 @@ public final class XMLUtils {
       Reader reader = new CharArrayReader(xml.toCharArray());
       out = builder.parse(new InputSource(reader));
     } catch (Exception e) {
+      // print first 500 characters of string that cannot be parsed...
+      Log.debug("First 500 characters of XML: " + StringUtils.substring(xml, 0, 500));      
       Log.error(e);
     }
     return out;
