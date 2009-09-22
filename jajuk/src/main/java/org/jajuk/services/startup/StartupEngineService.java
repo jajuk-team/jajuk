@@ -194,10 +194,9 @@ public class StartupEngineService {
       }
 
       if (index == -1) {
-        if (fileToPlay != null) {
-          // Track not stored, push it first
-          alToPlay.add(0, fileToPlay);
-        }
+        // Track not stored, push it first
+        alToPlay.add(0, fileToPlay);
+        
         index = 0;
       }
 
@@ -238,5 +237,4 @@ public class StartupEngineService {
     }
   }
 
-  
 }
