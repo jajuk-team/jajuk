@@ -42,8 +42,7 @@ import org.jajuk.util.log.Log;
 /**
  * Manages alarms
  * 
- * TODO: bStop in the Alarm-Thread is not used at all, either remove it or provide a "stop" method in AlarmManager
- * TOOO: We could use Timer instead of implementing the Timer loop ourselves here!
+ * TODO: We could use Timer instead of implementing the Timer loop ourselves here!
  */
 
 public class AlarmManager implements Observer {
