@@ -38,6 +38,7 @@ import org.jajuk.ui.windows.JajukMainWindow;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
+import org.jajuk.util.UtilGUI;
 import org.jajuk.util.UtilString;
 import org.jajuk.util.log.Log;
 
@@ -75,7 +76,9 @@ public class DebugLogAction extends JajukAction {
       }
     });
     dialog.setLayout(new MigLayout("insets 10", "[grow]"));
-    dialog.add(new JScrollPane(text), "grow,wrap");
+    JScrollPane panel = new JScrollPane(text);
+    UtilGUI.setEscapeKeyboardAction(dialog, panel);
+    dialog.add(panel, "grow,wrap");
     dialog.add(jbRefresh, "split 2,right,sg button");
     dialog.add(jbClose, "right,sg button");
     dialog.setPreferredSize(new Dimension(800, 600));
