@@ -52,6 +52,7 @@ import org.jajuk.services.players.QueueModel;
 import org.jajuk.ui.actions.ActionManager;
 import org.jajuk.ui.actions.JajukActions;
 import org.jajuk.util.Const;
+import org.jajuk.util.UtilString;
 import org.jajuk.util.log.Log;
 
 /**
@@ -79,13 +80,15 @@ public class DBusSupportImpl implements DBusSupport, Observer {
    * Scope is package protected to only let DBusManager have access to it.
    */
   void connect() {
-    Log.info("Trying to start support for D-Bus on Linux with Bus: ");
+    Log.info("Trying to start support for D-Bus on Linux with Bus: " + BUS + " and Path: " + PATH);
 
     try {
       conn = DBusConnection.getConnection(DBusConnection.SESSION);
       conn.requestBusName(BUS);
 
       conn.exportObject(PATH, this);
+
+      Log.info("D-Bus support started successfully");
     } catch (DBusException e) {
       Log.error(e);
     }
@@ -192,8 +195,7 @@ public class DBusSupportImpl implements DBusSupport, Observer {
     if (QueueModel.isPlayingRadio()) {
       title = QueueModel.getCurrentRadio().getName();
     } else if (file != null && !QueueModel.isStopped()) {
-      title = file.getTrack().getAuthor().getName() + " - " + file.getTrack().getAlbum().getName()
-          + " - " + file.getTrack().getName();
+      title = UtilString.buildTitle(file);
     } else {
       title = "not playing right now...";
     }

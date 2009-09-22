@@ -76,7 +76,7 @@ public interface DBusSupport extends DBusInterface {
   @org.freedesktop.DBus.Description("Returns a string describing the currently played track as HTML snippet.")
   String currentHTML() throws Exception;
 
-  @org.freedesktop.DBus.Description("Returns a string describing the currently played track.")
+  @org.freedesktop.DBus.Description("Returns a string describing the currently played track, the format is controlled with the pattern setting in the configuration.")
   String current() throws Exception;
 
   @org.freedesktop.DBus.Description("Sets the rating of the currently played track so that it is not automatically played anymore. This is a toggle, the ban will be lifted if invoked on a file that is currently 'banned'")
