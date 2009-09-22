@@ -448,8 +448,10 @@ public class LastFmService {
 
         Artist a = Artist.getInfo(artist, locale, UtilString.rot13(API_KEY));
         wikiText = a != null ? a.getWikiSummary() : "";
-        wikiText = wikiText.replaceAll("<.*?>", "");
-        wikiText = StringEscapeUtils.unescapeHtml(wikiText);
+        if(wikiText != null) {
+          wikiText = wikiText.replaceAll("<.*?>", "");
+          wikiText = StringEscapeUtils.unescapeHtml(wikiText);
+        }
 
         lastFmCache.storeArtistWiki(artist, wikiText);
       }
