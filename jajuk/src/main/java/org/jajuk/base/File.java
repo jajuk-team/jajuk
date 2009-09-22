@@ -432,7 +432,9 @@ public class File extends PhysicalItem implements Comparable<File>, Const {
 
   /**
    * 
-   * @return Text to be displayed in the tootip and baloon under windows.
+   * @return Text to be displayed in the tootip and baloon
+   * 
+   * TODO: this is similar to UtilString.buildTitle(), maybe we could combine both and use the pattern here as well...
    * 
    */
   public final String getBasicFormatText() {
