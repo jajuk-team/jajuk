@@ -56,6 +56,7 @@ import javax.swing.JSlider;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionEvent;
@@ -1374,8 +1375,8 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
     jcbCoverSize.addItem(Messages.getString("ParameterView.213"));
     jcbCoverSize.addItem(Messages.getString("ParameterView.214"));
     jcbCoverSize.addItem(Messages.getString("ParameterView.215"));
-    
-    jcb3dCover=new JCheckBox(Messages.getString("ParameterView.273"));
+
+    jcb3dCover = new JCheckBox(Messages.getString("ParameterView.273"));
     jcb3dCover.setToolTipText(Messages.getString("ParameterView.274"));
 
     jlDefaultCoverSearchPattern = new JLabel();
@@ -1571,7 +1572,12 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
           && event.getDetails().get(Const.DETAIL_ORIGIN).equals(this)) {
         return;
       }
-      updateSelection();
+      SwingUtilities.invokeLater(new Runnable() {
+        @Override
+        public void run() {
+          updateSelection();
+        }
+      });
     }
   }
 
