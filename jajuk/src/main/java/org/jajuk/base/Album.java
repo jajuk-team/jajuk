@@ -475,11 +475,6 @@ public class Album extends LogicalItem implements Comparable<Album> {
     // Free thumb memory (DO IT AFTER FULL ImageIcon loading)
     img.flush();
 
-    // TODO: is this really useful? It just frees a local variable that is
-    // going out of scope quickly anyway?
-    // accelerate GC cleanup
-    img = null;
-
     return icon;
   }
 
