@@ -358,11 +358,12 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
     return getID().equals(plfOther.getID()) && plfOther.getType() == type;
   }
 
-  @Override
+  // Item.hashCode() operates on ID, which should be sufficient for now.
+  // no need to overwrite it here
+  /*@Override
   public int hashCode() {
-    // Item.hashCode() operates on ID, which should be sufficient for now.
     return super.hashCode();
-  }
+  }*/
 
   /**
    * Force playlist re-read (don't use the cache). Can be used after a forced
@@ -587,7 +588,7 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
       } finally {
         br.close();
       }
-    } catch (final Exception e) {
+    } catch (final IOException e) {
       Log.error(17, "{{" + getName() + "}}", e);
       throw new JajukException(17, 
           (getDirectory() != null && getFIO() != null ? getFIO().getAbsolutePath() : "<unknown>"), e);
@@ -799,30 +800,35 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
           final java.io.File file = new java.io.File(destDir.getAbsolutePath() + "/playlist.m3u");
           try {
             final BufferedWriter bw = new BufferedWriter(new FileWriter(file));
-            bw.write(Const.PLAYLIST_NOTE);
-            for (final File entry : alFiles) {
-              java.io.File destFile = UtilSystem.copyToDir(entry.getFIO(), destDir);
-              // Rename the file using its Jajuk ID to avoid
-              // naming collisions
-              String newName = destDir.getAbsolutePath() + '/' + entry.getID() + '.'
-                  + entry.getType().getExtension();
-              destFile.renameTo(new java.io.File(newName));
-              bw.newLine();
-              bw.write(entry.getID() + '.' + entry.getType().getExtension());
-              // Notify that a file has been copied
-              Properties properties = new Properties();
-              properties.put(Const.DETAIL_CONTENT, entry.getName());
-              ObservationManager.notify(new JajukEvent(JajukEvents.FILE_COPIED, properties));
+            try {
+              bw.write(Const.PLAYLIST_NOTE);
+              for (final File entry : alFiles) {
+                java.io.File destFile = UtilSystem.copyToDir(entry.getFIO(), destDir);
+                // Rename the file using its Jajuk ID to avoid
+                // naming collisions
+                String newName = destDir.getAbsolutePath() + '/' + entry.getID() + '.'
+                    + entry.getType().getExtension();
+                destFile.renameTo(new java.io.File(newName));
+                bw.newLine();
+                bw.write(entry.getID() + '.' + entry.getType().getExtension());
+                // Notify that a file has been copied
+                Properties properties = new Properties();
+                properties.put(Const.DETAIL_CONTENT, entry.getName());
+                ObservationManager.notify(new JajukEvent(JajukEvents.FILE_COPIED, properties));
+              }
+  
+              bw.flush();
+            } finally {
+              bw.close();
             }
-
-            bw.flush();
-            bw.close();
             // Send a last event with null properties to inform the
             // client that
             // the party is done
             ObservationManager.notify(new JajukEvent(JajukEvents.FILE_COPIED));
 
-          } catch (final Exception e) {
+          } catch (final IOException e) {
+            Log.error(e);
+          } catch (final JajukException e) {
             Log.error(e);
           }
           UtilGUI.stopWaiting();
