@@ -22,6 +22,7 @@ package ext;
 
 import junit.framework.TestCase;
 
+import org.apache.commons.lang.StringUtils;
 import org.jajuk.JUnitHelpers;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -31,46 +32,49 @@ import org.w3c.dom.Element;
  */
 public class TestXMLUtils extends TestCase {
 
-//helper method to emma-coverage of the unused constructor
-  public void testSerializableUtilitiesPrivateConstructor() throws Exception
-  {
-     //For EMMA code-coverage tests
-     JUnitHelpers.executePrivateConstructor(XMLUtils.class);
+  // helper method to emma-coverage of the unused constructor
+  public void testSerializableUtilitiesPrivateConstructor() throws Exception {
+    // For EMMA code-coverage tests
+    JUnitHelpers.executePrivateConstructor(XMLUtils.class);
   }
-  
+
   /**
-   * Test method for {@link ext.XMLUtils#getChildElement(org.w3c.dom.Element, java.lang.String)}.
+   * Test method for
+   * {@link ext.XMLUtils#getChildElement(org.w3c.dom.Element, java.lang.String)}
+   * .
    */
 
   public void testGetChildElement() {
     Document doc = XMLUtils.getDocument("<xml><test/></xml>");
     assertNotNull(doc);
-    
+
     assertNotNull(XMLUtils.getChildElement(doc.getDocumentElement(), "test"));
   }
 
   public void testGetChildElementNull() {
     assertNull(XMLUtils.getChildElement(null, "test"));
   }
-  
+
   public void testGetChildElementNotExisting() {
     Document doc = XMLUtils.getDocument("<xml><test/></xml>");
     assertNotNull(doc);
-    
+
     assertNull(XMLUtils.getChildElement(doc.getDocumentElement(), "notexist"));
   }
-  
+
   /**
-   * Test method for {@link ext.XMLUtils#getAttributeValue(org.w3c.dom.Element, java.lang.String)}.
+   * Test method for
+   * {@link ext.XMLUtils#getAttributeValue(org.w3c.dom.Element, java.lang.String)}
+   * .
    */
 
   public void testGetAttributeValue() {
     Document doc = XMLUtils.getDocument("<xml><test value=\"1\"/></xml>");
     assertNotNull(doc);
-    
+
     Element test = XMLUtils.getChildElement(doc.getDocumentElement(), "test");
     assertNotNull(test);
-    
+
     assertNotNull(XMLUtils.getAttributeValue(test, "value"));
     assertEquals("", XMLUtils.getAttributeValue(test, "notexist"));
     assertEquals("", XMLUtils.getAttributeValue(doc.getDocumentElement(), "value"));
@@ -79,15 +83,17 @@ public class TestXMLUtils extends TestCase {
   public void testGetAttributeValueNull() {
     assertNull(XMLUtils.getAttributeValue(null, "value"));
   }
-  
+
   /**
-   * Test method for {@link ext.XMLUtils#getChildElementContent(org.w3c.dom.Element, java.lang.String)}.
+   * Test method for
+   * {@link ext.XMLUtils#getChildElementContent(org.w3c.dom.Element, java.lang.String)}
+   * .
    */
 
   public void testGetChildElementContent() {
     Document doc = XMLUtils.getDocument("<xml><test value=\"1\">testcontent</test></xml>");
     assertNotNull(doc);
-    
+
     assertEquals("testcontent", XMLUtils.getChildElementContent(doc.getDocumentElement(), "test"));
   }
 
@@ -102,13 +108,15 @@ public class TestXMLUtils extends TestCase {
   public void testGetDocument() {
     Document doc = XMLUtils.getDocument("<xml><test value=\"1\"/></xml>");
     assertNotNull(doc);
-    
+
     assertEquals("xml", doc.getDocumentElement().getTagName());
   }
 
   public void testGetDocumentParseError() {
     Document doc = XMLUtils.getDocument("<xmlinvalid>adsasd<asdksdtest value=\"1\"/></xml>");
     assertNull(doc);
+    doc = XMLUtils.getDocument(StringUtils.repeat("1", 1000));  // more than 500 characters for log.debug
+    assertNull(doc);
   }
-  
+
 }
