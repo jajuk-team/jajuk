@@ -37,10 +37,8 @@ import java.util.logging.Logger;
 import javax.swing.SwingWorker;
 
 import org.jajuk.services.core.SessionService;
-import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.DownloadManager;
-import org.jajuk.util.LocaleManager;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilGUI;
 import org.jajuk.util.UtilSystem;
@@ -95,7 +93,7 @@ public class JajukHtmlPanel extends HtmlPanel {
    * 
    * @throws SAXException
    */
-  public void setURL(final URL url) {
+  public void setURL(final URL url, final String lang) {
 
     SwingWorker<Void, Void> sw = new SwingWorker<Void, Void>() {
       @Override
@@ -128,12 +126,8 @@ public class JajukHtmlPanel extends HtmlPanel {
           }
           sPage = sb.toString();
           // fix internal links
-          // TODO: language should be retrieved from the combo box and not from
-          // the
-          // user settings, but dunno how to get that...
           sPage = sPage.replaceAll("href=\"/", "href=\"http://"
-              + LocaleManager.getLocaleForDesc(LocaleManager.getDescForLocale(Conf
-                  .getString(Const.CONF_WIKIPEDIA_LANGUAGE))) + ".wikipedia.org/");
+              + lang + ".wikipedia.org/");
           // Display the page
           showPage(sPage, page);
           // Set current url as a tooltip
@@ -191,10 +185,10 @@ public class JajukHtmlPanel extends HtmlPanel {
    * 
    * @throws Exception
    */
-  public void setUnknow() throws IOException, SAXException {
+  public void setUnknown() throws IOException, SAXException {
     File page = new File(SessionService.getConfFileByPath(Const.FILE_CACHE).getAbsolutePath() + '/'
         + "noresult.html");
-    String sPage = "<html><body><h1>" + Messages.getString("WikipediaView.3")
+    String sPage = "<html><body><h1>" + Messages.getString("WikipediaView.10")
         + "</h1></body></html>";
     showPage(sPage, page);
   }

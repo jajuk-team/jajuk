@@ -257,7 +257,7 @@ public class WikipediaView extends ViewAdapter implements ActionListener {
           }
           // If search is still null, display an nothing found page
           if (lSearch == null) {
-            browser.setUnknow();
+            browser.setUnknown();
             return;
           }
           // Avoid reloading an existing page
@@ -275,7 +275,7 @@ public class WikipediaView extends ViewAdapter implements ActionListener {
           if (Desktop.isDesktopSupported()) {
             jbLaunchInExternalBrowser.putClientProperty(Const.DETAIL_CONTENT, url.toExternalForm());
           }
-          browser.setURL(url);
+          browser.setURL(url, LocaleManager.getLocaleForDesc((String) jcbLanguage.getSelectedItem()).toString());
         } catch (FileNotFoundException e) {
           // only report a warning for FileNotFoundException and do not show a
           // stacktrace in the logfile as it is expected in many cases where the
