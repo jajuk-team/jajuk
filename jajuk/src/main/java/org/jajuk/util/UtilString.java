@@ -79,7 +79,7 @@ public final class UtilString {
    * @return
    * @throws JajukException
    */
-  static String applyAlbumPattern(final org.jajuk.base.File file, final String sPattern,
+  private static String applyAlbumPattern(final org.jajuk.base.File file, final String sPattern,
       final boolean bMandatory, final boolean normalize, final String out, final Track track)
       throws JajukException {
     String ret = out;
@@ -115,7 +115,7 @@ public final class UtilString {
    * @return
    * @throws JajukException
    */
-  static String applyYearPattern(final org.jajuk.base.File file, final String sPattern,
+  private static String applyYearPattern(final org.jajuk.base.File file, final String sPattern,
       final boolean bMandatory, final String out, final Track track) throws JajukException {
     String ret = out;
     if (sPattern.contains(Const.PATTERN_YEAR)) {
@@ -141,7 +141,7 @@ public final class UtilString {
    * @param track
    * @return
    */
-  static String applyTrackPattern(final String sPattern, final boolean normalize, final String out,
+  private static String applyTrackPattern(final String sPattern, final boolean normalize, final String out,
       final Track track) {
     String ret = out;
     String sValue;
@@ -168,7 +168,7 @@ public final class UtilString {
    * @return
    * @throws JajukException
    */
-  static String applyTrackOrderPattern(final org.jajuk.base.File file, final String sPattern,
+  private static String applyTrackOrderPattern(final org.jajuk.base.File file, final String sPattern,
       final boolean bMandatory, final String out, final Track track) throws JajukException {
     if (sPattern.contains(Const.PATTERN_TRACKORDER)) {
       // override Order from filename if not set explicitly
@@ -217,7 +217,7 @@ public final class UtilString {
    * @return
    * @throws JajukException
    */
-  static String applyStylePattern(final org.jajuk.base.File file, final String sPattern,
+  private static String applyStylePattern(final org.jajuk.base.File file, final String sPattern,
       final boolean bMandatory, final boolean normalize, final String out, final Track track)
       throws JajukException {
     String ret = out;
@@ -859,7 +859,7 @@ public final class UtilString {
    *          string to encode
    * @return encoded string
    */
-  static public String encodeToUnicode(String in) {
+  public static String encodeToUnicode(String in) {
     StringBuilder sb = new StringBuilder(in.length() * 5);
     for (int i = 0; i < in.length(); i++) {
       char c = in.charAt(i);
@@ -877,7 +877,7 @@ public final class UtilString {
    * @param b
    * @return
    */
-  static public String byteToHex(byte b) {
+  public static String byteToHex(byte b) {
     char hexDigit[] = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e',
         'f' };
     char[] array = { hexDigit[(b >> 4) & 0x0f], hexDigit[b & 0x0f] };
