@@ -25,6 +25,7 @@ import javax.swing.JScrollPane;
 import javax.swing.WindowConstants;
 
 import org.jajuk.ui.widgets.JajukJDialog;
+import org.jajuk.util.log.Log;
 
 /**
  * A Wizard dialog displaying one to many screens
@@ -66,9 +67,6 @@ public abstract class Wizard implements ActionListener, WindowListener {
   /** Wizard name */
   String sName;
 
-  /** Initial screen */
-  Class<Screen> initial;
-
   /** Current screen */
   Screen current;
 
@@ -76,7 +74,7 @@ public abstract class Wizard implements ActionListener, WindowListener {
   ImageIcon icon;
 
   /** Wizard data */
-  public static Map<String, Object> data;
+  protected static Map<String, Object> data = new HashMap<String, Object>(10);
 
   /** Wizard header */
   Header header;
@@ -141,14 +139,12 @@ public abstract class Wizard implements ActionListener, WindowListener {
       int iLayoutVPadding) {
     bCancelled = false;
     this.sName = sName;
-    this.initial = initial;
     this.parentWindow = parentWindow;
     if (locale != null) {
       Langpack.setLocale(locale);
     } else {
       Langpack.setLocale(Locale.getDefault());
     }
-    data = new HashMap<String, Object>(10);
     this.icon = icon;
     this.layoutHPadding = iLayoutHPadding;
     this.layoutVPadding = iLayoutVPadding;
@@ -182,14 +178,12 @@ public abstract class Wizard implements ActionListener, WindowListener {
       int iHSize, int iVSize) {
     bCancelled = false;
     this.sName = sName;
-    this.initial = initial;
     this.parentWindow = parentWindow;
     if (locale != null) {
       Langpack.setLocale(locale);
     } else {
       Langpack.setLocale(Locale.getDefault());
     }
-    data = new HashMap<String, Object>(10);
     this.icon = icon;
     createUI();
     setScreen(initial);
@@ -357,8 +351,11 @@ public abstract class Wizard implements ActionListener, WindowListener {
         }
         screen = hmClassScreens.get(screenClass);
       }
-    } catch (Exception e) {
-      e.printStackTrace();
+    } catch (InstantiationException e) {
+      Log.error(e);
+      throw new RuntimeException("setScreen " + screenClass + " caused " + e.toString(), e);
+    } catch (IllegalAccessException e) {
+      Log.error(e);
       throw new RuntimeException("setScreen " + screenClass + " caused " + e.toString(), e);
     }
 
@@ -391,6 +388,7 @@ public abstract class Wizard implements ActionListener, WindowListener {
       jlIcon.addComponentListener(new ComponentListener() {
 
         public void componentShown(ComponentEvent e) {
+          // nothing to do here
         }
 
         public void componentResized(ComponentEvent e) {
@@ -404,9 +402,11 @@ public abstract class Wizard implements ActionListener, WindowListener {
         }
 
         public void componentMoved(ComponentEvent e) {
+          // nothing to do here
         }
 
         public void componentHidden(ComponentEvent e) {
+          // nothing to do here
         }
 
       });
@@ -559,6 +559,7 @@ public abstract class Wizard implements ActionListener, WindowListener {
    * @see java.awt.event.WindowListener#windowOpened(java.awt.event.WindowEvent)
    */
   public void windowOpened(WindowEvent windowEvent) {
+    // nothing to do here
   }
 
   /**
@@ -574,6 +575,7 @@ public abstract class Wizard implements ActionListener, WindowListener {
    * @see java.awt.event.WindowListener#windowClosed(java.awt.event.WindowEvent)
    */
   public void windowClosed(WindowEvent windowEvent) {
+    // nothing to do here
   }
 
   /**
@@ -586,6 +588,7 @@ public abstract class Wizard implements ActionListener, WindowListener {
    * @see java.awt.event.WindowListener#windowIconified(java.awt.event.WindowEvent)
    */
   public void windowIconified(WindowEvent windowEvent) {
+    // nothing to do here
   }
 
   /**
@@ -599,6 +602,7 @@ public abstract class Wizard implements ActionListener, WindowListener {
    * @see java.awt.event.WindowListener#windowDeiconified(java.awt.event.WindowEvent)
    */
   public void windowDeiconified(WindowEvent windowEvent) {
+    // nothing to do here
   }
 
   /**
@@ -611,6 +615,7 @@ public abstract class Wizard implements ActionListener, WindowListener {
    * @see java.awt.event.WindowListener#windowActivated(java.awt.event.WindowEvent)
    */
   public void windowActivated(WindowEvent windowEvent) {
+    // nothing to do here
   }
 
   /**
@@ -623,6 +628,7 @@ public abstract class Wizard implements ActionListener, WindowListener {
    * @see java.awt.event.WindowListener#windowDeactivated(java.awt.event.WindowEvent)
    */
   public void windowDeactivated(WindowEvent windowEvent) {
+    // nothing to do here
   }
 
   public boolean wasCancelled() {
