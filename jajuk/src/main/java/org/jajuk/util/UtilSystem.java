@@ -788,17 +788,8 @@ public final class UtilSystem {
    * @return whether file1 is a file2 descendant
    */
   public static boolean isDescendant(final File file1, final File file2) {
-    // TODO: why don't we use isAncestor(file2, file1) here??
-    File fParent = file1.getParentFile();
-    boolean bOut = false;
-    while (fParent != null) {
-      if (fParent.equals(file2)) {
-        bOut = true;
-        break;
-      }
-      fParent = fParent.getParentFile();
-    }
-    return bOut;
+    // a file is a descendant to another file if the other file is it's ancestor...
+    return isAncestor(file2, file1);
   }
 
   /**
@@ -953,16 +944,19 @@ public final class UtilSystem {
     StringBuilder sb = null;
     try {
       is = Main.class.getResourceAsStream(sURL);
-      // Read
-      final byte[] b = new byte[200];
-      sb = new StringBuilder();
-      int i = 0;
-      do {
-        i = is.read(b, 0, b.length);
-        sb.append(new String(b));
-      } while (i > 0);
-      // Close the bufferedReader
-      is.close();
+      try {
+        // Read
+        final byte[] b = new byte[200];
+        sb = new StringBuilder();
+        int i = 0;
+        do {
+          i = is.read(b, 0, b.length);
+          sb.append(new String(b));
+        } while (i > 0);
+      } finally {
+        // Close the bufferedReader
+        is.close();
+      }
     } catch (final IOException e) {
       throw new JajukException(9, e);
     }
