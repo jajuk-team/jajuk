@@ -416,36 +416,6 @@ public class SessionService {
   }
 
   /**
-   * Get a file extension
-   * 
-   * @param file
-   * @return
-   */
-  public static String getExtension(final File file) {
-    return UtilSystem.getExtension(file.getName());
-  }
-
-  /**
-   * Get a file extension
-   * 
-   * @param filename
-   * @return
-   */
-  public static String getExtension(final String filename) {
-    int dotIndex = filename.lastIndexOf('.');
-    // File without point
-    if (dotIndex == -1) {
-      return "";
-    }
-    if (dotIndex > 0) {
-      return filename.substring(dotIndex + 1, filename.length());
-    } else {
-      // File beginning by a point (unix hidden file)
-      return filename;
-    }
-  }
-
-  /**
    * Return the bootstrap file content
    * 
    * @return the bootstrap file content as a property object
