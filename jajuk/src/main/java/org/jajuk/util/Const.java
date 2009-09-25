@@ -709,6 +709,9 @@ public interface Const {
 
   /** Window position and size */
   String CONF_WINDOW_POSITION = "jajuk.window_position";
+  
+  /** is Window maximized */
+  String CONF_WINDOW_MAXIMIZED = "jajuk.window_MAXIMIZED";
 
   /** Window position and size */
   String CONF_FRAME_TITLE_PATTERN = "jajuk.frame.title";

@@ -258,20 +258,20 @@ public class JajukMainWindow extends JFrame implements JajukWindow, Observer {
    * 
    */
   public void saveSize() {
-    String sValue = null;
-    // If user maximized the frame, store this information and not screen
-    // bounds
-    // (fix for windows issue: at next startup, the screen is shifted by few
-    // pixels)
+
+    boolean maxmimized = false;
+
     if (Toolkit.getDefaultToolkit().isFrameStateSupported(Frame.MAXIMIZED_BOTH)
         && (getExtendedState() & Frame.MAXIMIZED_BOTH) == Frame.MAXIMIZED_BOTH) {
       Log.debug("Frame maximized");
-      sValue = Const.FRAME_MAXIMIZED;
-    } else {
-      sValue = (int) getLocationOnScreen().getX() + "," + (int) getLocationOnScreen().getY() + ","
-          + getBounds().width + "," + getBounds().height;
-      Log.debug("Frame moved or resized, new bounds=" + sValue);
+      maxmimized = true;
     }
+    Conf.setProperty(Const.CONF_WINDOW_MAXIMIZED, Boolean.toString(maxmimized));
+
+    String sValue = (int) getLocationOnScreen().getX() + "," + (int) getLocationOnScreen().getY()
+        + "," + getBounds().width + "," + getBounds().height;
+    Log.debug("Frame moved or resized, new bounds=" + sValue);
+
     // Store the new position
     Conf.setProperty(Const.CONF_WINDOW_POSITION, sValue);
   }
@@ -319,7 +319,10 @@ public class JajukMainWindow extends JFrame implements JajukWindow, Observer {
     // first get the stored position to get the correct display
     String sPosition = Conf.getString(Const.CONF_WINDOW_POSITION);
 
-    // If user left jajuk maximized, reset this simple configuration
+    // workaround: needed for old configuration files to avoid an exception in
+    // the
+    // StringTokenizer, since Jajuk 1.9 Jajuk stores in an extra property if it
+    // is maximized
     if (sPosition.equals(Const.FRAME_MAXIMIZED)) {
       // Always set a size that is used when un-maximazing the frame
       setBounds(Const.FRAME_INITIAL_BORDER, Const.FRAME_INITIAL_BORDER, iScreenWidth - 2
@@ -329,6 +332,8 @@ public class JajukMainWindow extends JFrame implements JajukWindow, Observer {
       }
       return;
     }
+    // workaround: end
+    // could be removed in future releases, also Const.FRAME_MAXIMIZED
 
     StringTokenizer st = new StringTokenizer(sPosition, ",");
     iX = Integer.parseInt(st.nextToken());
@@ -370,8 +375,18 @@ public class JajukMainWindow extends JFrame implements JajukWindow, Observer {
     if (iVertSize <= 0 || iVertSize > iScreenHeight) {
       iVertSize = iScreenHeight - 2 * Const.FRAME_INITIAL_BORDER;
     }
+
     setLocation(iX, iY);
     setSize(iHorizSize, iVertSize);
+
+    // was the frame maximized
+    if (Conf.getBoolean(Const.CONF_WINDOW_MAXIMIZED)) {
+      if (Toolkit.getDefaultToolkit().isFrameStateSupported(Frame.MAXIMIZED_BOTH)) {
+        setBounds(gConf.getBounds());
+        //this method could not be used, because Java takes always the solution of the primary display...
+        //setExtendedState(Frame.MAXIMIZED_BOTH);
+      }
+    }
   }
 
   /*
