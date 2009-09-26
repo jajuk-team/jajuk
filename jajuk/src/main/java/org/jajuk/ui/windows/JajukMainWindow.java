@@ -25,6 +25,7 @@ import com.vlsolutions.swing.docking.ui.DockingUISettings;
 import java.awt.BorderLayout;
 import java.awt.Frame;
 import java.awt.GraphicsConfiguration;
+import java.awt.GraphicsEnvironment;
 import java.awt.Toolkit;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -382,9 +383,20 @@ public class JajukMainWindow extends JFrame implements JajukWindow, Observer {
     // was the frame maximized
     if (Conf.getBoolean(Const.CONF_WINDOW_MAXIMIZED)) {
       if (Toolkit.getDefaultToolkit().isFrameStateSupported(Frame.MAXIMIZED_BOTH)) {
-        setBounds(gConf.getBounds());
-        //this method could not be used, because Java takes always the solution of the primary display...
-        //setExtendedState(Frame.MAXIMIZED_BOTH);
+        // are we on the primary display
+        if (gConf.getBounds().equals(
+            GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice()
+                .getDefaultConfiguration().getBounds())) {
+          // default size, if frame is unmaximized
+          setSize(iScreenWidth - 2 * Const.FRAME_INITIAL_BORDER, iScreenHeight - 2
+              * Const.FRAME_INITIAL_BORDER);
+          if (Toolkit.getDefaultToolkit().isFrameStateSupported(Frame.MAXIMIZED_BOTH))
+            setExtendedState(Frame.MAXIMIZED_BOTH);
+        } else {
+          // setExtendedState not be used on the other displays, because Java
+          // takes always the solution of the primary display...
+          setBounds(gConf.getBounds());
+        }
       }
     }
   }
