@@ -176,14 +176,22 @@ public class JajukFullScreenWindow extends JWindow implements JajukWindow {
     if (hideMouseTimer != null) {
       hideMouseTimer.restart();
     } else {
-      hideMouseTimer = new Timer(3000, new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-          setCursor(Toolkit.getDefaultToolkit().createCustomCursor(
-              IconLoader.getIcon(JajukIcons.NONE).getImage(), new Point(0, 0), "invisibleCursor"));
-        }
-      });
+      initMouseTimer();
     }
+  }
+
+  /**
+   * 
+   */
+  private void initMouseTimer() {
+    hideMouseTimer = new Timer(3000, new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        setCursor(Toolkit.getDefaultToolkit().createCustomCursor(
+            IconLoader.getIcon(JajukIcons.NONE).getImage(), new Point(0, 0), "invisibleCursor"));
+      }
+    });
+    hideMouseTimer.start();
   }
 
   public JajukFullScreenWindow() {
