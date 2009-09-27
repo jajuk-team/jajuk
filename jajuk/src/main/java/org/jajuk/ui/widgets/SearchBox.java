@@ -272,6 +272,12 @@ public abstract class SearchBox extends JTextField implements KeyListener, ListS
             }
           }
           requestFocusInWindow();
+          jlist.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseExited(MouseEvent e) {
+              popup.hide();
+            }
+          });
           setEnabled(true);
           UtilGUI.stopWaiting();
         }
