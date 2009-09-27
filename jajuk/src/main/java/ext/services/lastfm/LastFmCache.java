@@ -879,7 +879,7 @@ public class LastFmCache {
       String fileAbsPath = getFileNameForArtistThumbAtCache(artist);
       if (fileAbsPath != null) {
         UtilGUI.extractImage(image, new File(fileAbsPath));
-        Log.debug(UtilString.concat("Stored artist thumb for ", artist.getName()));
+        Log.debug(UtilString.concat("Stored artist thumb for {{", artist.getName() + "}}"));
       }
     } catch (IOException e) {
       Log.error(e);

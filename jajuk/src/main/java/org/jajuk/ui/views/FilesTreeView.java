@@ -549,7 +549,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
             try {
               alToPlay = plf.getFiles();
             } catch (JajukException je) {
-              Log.error(je.getCode(), plf.getName(), null);
+              Log.error(je.getCode(), "{{" + plf.getName() + "}}", null);
               Messages.showErrorMessage(je.getCode(), plf.getName());
               return;
             }

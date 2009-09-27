@@ -120,15 +120,15 @@ public final class UpgradeManager {
         for (File dj : files) {
           if (UtilSystem.replaceInFile(dj, "org.jajuk.dj.ProportionDigitalDJ",
               Const.XML_DJ_PROPORTION_CLASS, "UTF-8")) {
-            Log.info("Migrated DJ file: " + dj.getName());
+            Log.info("Migrated DJ file: {{" + dj.getName() + "}}");
           }
           if (UtilSystem.replaceInFile(dj, "org.jajuk.dj.TransitionDigitalDJ",
               Const.XML_DJ_TRANSITION_CLASS, "UTF-8")) {
-            Log.info("Migrated DJ file: " + dj.getName());
+            Log.info("Migrated DJ file: {{" + dj.getName() + "}}");
           }
           if (UtilSystem.replaceInFile(dj, "org.jajuk.dj.AmbienceDigitalDJ",
               Const.XML_DJ_AMBIENCE_CLASS, "UTF-8")) {
-            Log.info("Migrated DJ file: " + dj.getName());
+            Log.info("Migrated DJ file: {{" + dj.getName() + "}}");
           }
         }
         // --For jajuk < 0.2 : remove backup file : collection~.xml

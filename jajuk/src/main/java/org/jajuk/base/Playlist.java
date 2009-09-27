@@ -263,7 +263,7 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
       try {
         UtilSystem.copy(temp, getFIO());
         if(!temp.delete()) {
-          Log.warn("Could not delete temporary file: " + temp.getAbsolutePath());
+          Log.warn("Could not delete temporary file: {{" + temp.getAbsolutePath() + "}}");
         }
       } catch (final Exception e1) {
         throw new JajukException(28, getName(), e1);
@@ -272,7 +272,7 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
       try {
         // Try to remove the temp file
         if(!temp.delete()) {
-          Log.warn("Could not delete temporary file: " + temp.getAbsolutePath());
+          Log.warn("Could not delete temporary file: {{" + temp.getAbsolutePath() + "}}");
         }
       } catch (final Exception e1) {
         Log.error(e1);

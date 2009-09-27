@@ -209,7 +209,7 @@ public class Tag {
         style = UtilString.formatTag(sTemp);
       }
     } catch (Exception e) {
-      Log.info("Wrong style name:" + fio.getName());
+      Log.info("Wrong style name: {{" + fio.getName() + "}}");
     }
     // We internalize the style name for memory saving reasons
     return style.intern();
@@ -228,7 +228,7 @@ public class Tag {
     try {
       length = tagImpl.getLength();
     } catch (Exception e) {
-      Log.info("Wrong length:" + fio.getName());
+      Log.info("Wrong length:{{" + fio.getName() + "}}");
     }
     return length;
   }
@@ -244,7 +244,7 @@ public class Tag {
     } catch (Exception e) {
       // just debug, no warn because wrong order are too often and
       // generate too much traces
-      Log.info("Wrong disc number:" + fio.getName());
+      Log.info("Wrong disc number:{{" + fio.getName() + "}}");
       l = 01;
     }
     return l;
@@ -262,7 +262,7 @@ public class Tag {
     try {
       year = tagImpl.getYear(); // check it is an integer
     } catch (Exception e) {
-      Log.info("Wrong year:" + fio.getName());
+      Log.info("Wrong year:{{" + fio.getName() + "}}");
     }
     // We internalize the year name for memory saving reasons
     return year.intern();
@@ -281,7 +281,7 @@ public class Tag {
     try {
       lQuality = tagImpl.getQuality();
     } catch (Exception e) {
-      Log.info("Wrong quality:" + fio.getName());
+      Log.info("Wrong quality:{{" + fio.getName() + "}}");
     }
     return lQuality;
   }
@@ -433,7 +433,7 @@ public class Tag {
     try {
       // Show a commit message except if the tag impl is "no tag" (does nothing)
       if (Log.isDebugEnabled() && !(tagImpl.getClass().equals(NoTagsTagImpl.class))) {
-        Log.debug(Messages.getString("PropertiesWizard.11") + " " + fio.getAbsolutePath());
+        Log.debug(Messages.getString("PropertiesWizard.11") + " {{" + fio.getAbsolutePath() + "}}");
       }
       tagImpl.commit();
       // Display written file full path. Note that we use a limited string for

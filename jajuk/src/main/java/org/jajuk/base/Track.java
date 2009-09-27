@@ -450,7 +450,7 @@ public class Track extends LogicalItem implements Comparable<Track> {
       float playtimeRate = 0.5f;
       if (duration == 0) {
         // If duration = 0, always set playtimeRate to 0.5
-        Log.info("Duration = 0 for: " + getName() + ". Playtime forced to 0.5");
+        Log.info("Duration = 0 for: {{" + getName() + "}}. Playtime forced to 0.5");
       } else {
         // Compute playtime rate = total play time / (play count * track length)
         playtimeRate = (float) getLongValue(Const.XML_TRACK_TOTAL_PLAYTIME)
@@ -460,7 +460,7 @@ public class Track extends LogicalItem implements Comparable<Track> {
       // precision issue or if user seeks back into the track
       // set =1.
       if (playtimeRate > 1) {
-        Log.warn("Playtime rate > 1 for: " + getName() + " value=" + playtimeRate);
+        Log.warn("Playtime rate > 1 for: {{" + getName() + "}} value=" + playtimeRate);
         // We reset tpt and hits to
         // make things clear and to avoid increasing the error with time
         setProperty(Const.XML_TRACK_TOTAL_PLAYTIME, duration * playcount);

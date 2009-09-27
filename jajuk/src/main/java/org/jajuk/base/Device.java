@@ -73,7 +73,8 @@ public class Device extends PhysicalItem implements Comparable<Device> {
   protected static final int OPTION_REFRESH_CANCEL = 2;
 
   // Device type constants
-  // Note: these need to correspond with the static array in @see org.jajuk.base.DeviceManager !! 
+  // Note: these need to correspond with the static array in @see
+  // org.jajuk.base.DeviceManager !!
   public static final int TYPE_DIRECTORY = 0;
 
   public static final int TYPE_CD = 1;
@@ -110,8 +111,8 @@ public class Device extends PhysicalItem implements Comparable<Device> {
 
   /** Progress reporter * */
   private RefreshReporter reporter;
-  
-  /** Refresh deepness choice **/
+
+  /** Refresh deepness choice * */
   private int choice = Device.OPTION_REFRESH_DEEP;
 
   /**
@@ -236,10 +237,10 @@ public class Device extends PhysicalItem implements Comparable<Device> {
    */
   public int compareTo(final Device otherDevice) {
     // should handle null
-    if(otherDevice == null) {
+    if (otherDevice == null) {
       return -1;
     }
-    
+
     // We must be consistent with equals, see
     // http://java.sun.com/javase/6/docs/api/java/lang/Comparable.html
     int comp = getName().compareToIgnoreCase(otherDevice.getName());
@@ -288,7 +289,7 @@ public class Device extends PhysicalItem implements Comparable<Device> {
     if (dirRoot != null) {
       return dirRoot.getFilesRecursively();
     }
-    
+
     // nothing found, return empty list
     return new ArrayList<org.jajuk.base.File>();
   }
@@ -493,15 +494,15 @@ public class Device extends PhysicalItem implements Comparable<Device> {
         SwingUtilities.invokeAndWait(new Runnable() {
           @Override
           public void run() {
-            choice = JOptionPane.showOptionDialog(null, Messages.getString("FilesTreeView.59"), Messages
-                .getString("Option"), JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null,
-                possibleValues, possibleValues[0]);
+            choice = JOptionPane.showOptionDialog(null, Messages.getString("FilesTreeView.59"),
+                Messages.getString("Option"), JOptionPane.DEFAULT_OPTION,
+                JOptionPane.QUESTION_MESSAGE, null, possibleValues, possibleValues[0]);
           }
         });
       } catch (Exception e) {
         Log.error(e);
         choice = Device.OPTION_REFRESH_CANCEL;
-      } 
+      }
       if (choice == Device.OPTION_REFRESH_CANCEL) { // Cancel
         return choice;
       }
@@ -515,7 +516,7 @@ public class Device extends PhysicalItem implements Comparable<Device> {
           return Device.OPTION_REFRESH_CANCEL;
         }
       } catch (final Exception e) {
-        Log.error(11, "{{" + getName() + "}}", e); // mount failed
+        Log.error(11, getName(), e); // mount failed
         Messages.showErrorMessage(11, getName());
         throw new JajukException(11);
       }
@@ -792,7 +793,7 @@ public class Device extends PhysicalItem implements Comparable<Device> {
       try {
         device.mount(true);
       } catch (final Exception e) {
-        Log.error(11, "{{" + getName() + "}}", e); // mount failed
+        Log.error(11, getName(), e); // mount failed
         Messages.showErrorMessage(11, getName());
         return;
       }

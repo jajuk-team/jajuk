@@ -343,7 +343,7 @@ abstract class DigitalDJFactory extends DefaultHandler {
     // Error parsing the DJ ? delete it
     catch (Exception e) {
       Log.error(e);
-      Log.debug("Corrupted DJ: " + file.getAbsolutePath() + " deleted");
+      Log.debug("Corrupted DJ: {{" + file.getAbsolutePath() + "}} deleted");
       if (!file.delete()) {
         Log.warn("Could not delete file: " + file.toString());
       }

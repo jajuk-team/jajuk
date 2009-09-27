@@ -112,7 +112,6 @@ public class StartupCollectionService {
         // try to find mplayer executable in know locations first
         if (mplayerPath == null) {
           try {
-
             Log.debug("Download Mplayer from: " + Const.URL_MPLAYER);
             File fMPlayer = SessionService.getConfFileByPath(Const.FILE_MPLAYER_EXE);
             DownloadManager.download(new URL(Const.URL_MPLAYER), fMPlayer);

@@ -232,7 +232,7 @@ public final class UtilSystem {
    * @throws IOException
    */
   public static void copy(final File file, final File fNew) throws JajukException, IOException {
-    Log.debug("Copying: " + file.getAbsolutePath() + "  to : " + fNew.getAbsolutePath());
+    Log.debug("Copying: {{" + file.getAbsolutePath() + "}}  to : " + fNew.getAbsolutePath());
     if (!file.exists() || !file.canRead()) {
       throw new JajukException(9, file.getAbsolutePath(), null);
     }
@@ -250,7 +250,7 @@ public final class UtilSystem {
     // Display a warning if copied file is void as it can happen with full
     // disks
     if (fNew.length() == 0) {
-      Log.warn("Copied file is void: " + file.getAbsolutePath());
+      Log.warn("Copied file is void: {{" + file.getAbsolutePath() + "}}");
     }
   }
 
@@ -266,7 +266,7 @@ public final class UtilSystem {
    */
   public static void copy(final File file, final String sNewName) throws JajukException,
       IOException {
-    Log.debug("Renaming: " + file.getAbsolutePath() + "  to : " + sNewName);
+    Log.debug("Renaming: {{" + file.getAbsolutePath() + "}}  to : " + sNewName);
     final File fileNew = new File(new StringBuilder(file.getParentFile().getAbsolutePath()).append(
         '/').append(sNewName).toString());
     if (!file.exists() || !file.canRead()) {
@@ -359,7 +359,7 @@ public final class UtilSystem {
    */
   public static File copyToDir(final File file, final File directory) throws JajukException,
       IOException {
-    Log.debug("Copying: " + file.getAbsolutePath() + "  to : " + directory.getAbsolutePath());
+    Log.debug("Copying: {{" + file.getAbsolutePath() + "}}  to : " + directory.getAbsolutePath());
     final File fileNew = new File(new StringBuilder(directory.getAbsolutePath()).append("/")
         .append(file.getName()).toString());
     if (!file.exists() || !file.canRead()) {
@@ -402,7 +402,7 @@ public final class UtilSystem {
    * @throws IOException
    */
   public static void deleteDir(final File dir) throws IOException {
-    Log.debug("Deleting: " + dir.getAbsolutePath());
+    Log.debug("Deleting: {{" + dir.getAbsolutePath() + "}}");
     if (dir.isDirectory()) {
       for (final File file : dir.listFiles()) {
         if (file.isDirectory()) {
@@ -428,7 +428,7 @@ public final class UtilSystem {
    * @throws IOException
    */
   public static void deleteFile(final File file) throws IOException {
-    Log.debug("Deleting: " + file.getAbsolutePath());
+    Log.debug("Deleting: {{" + file.getAbsolutePath() + "}}");
     if (file.isFile() && file.exists()) {
       if (!file.delete()) {
         Log.warn("Could not delete file " + file);
@@ -527,10 +527,11 @@ public final class UtilSystem {
   /**
    * Get a file extension (without the dot!).
    * 
-   * @param filename The file to examine.
+   * @param filename
+   *          The file to examine.
    * 
-   * @return The actual file extension or an empty string if no extension 
-   * is found (i.e. no dot in the filename). 
+   * @return The actual file extension or an empty string if no extension is
+   *         found (i.e. no dot in the filename).
    */
   public static String getExtension(final String filename) {
     int dotIndex = filename.lastIndexOf('.');
@@ -539,7 +540,7 @@ public final class UtilSystem {
     if (dotIndex == -1) {
       return "";
     }
-    
+
     if (dotIndex > 0) {
       return filename.substring(dotIndex + 1, filename.length());
     } else {
@@ -788,7 +789,8 @@ public final class UtilSystem {
    * @return whether file1 is a file2 descendant
    */
   public static boolean isDescendant(final File file1, final File file2) {
-    // a file is a descendant to another file if the other file is it's ancestor...
+    // a file is a descendant to another file if the other file is it's
+    // ancestor...
     return isAncestor(file2, file1);
   }
 
