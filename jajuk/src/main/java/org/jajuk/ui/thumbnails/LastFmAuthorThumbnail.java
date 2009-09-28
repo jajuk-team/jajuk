@@ -157,13 +157,13 @@ public class LastFmAuthorThumbnail extends AbstractThumbnail {
       // generate the popup thumb for ie)
       fCover = DownloadManager.downloadToCache(remote);
       if (fCover == null) {
-        Log.warn("Could not read remote file: " + remote.toString());
+        Log.warn("Could not read remote file: {{" + remote.toString() + "}}");
         return;
       }
 
       BufferedImage image = ImageIO.read(fCover);
       if (image == null) {
-        Log.warn("Could not read image data in file: " + fCover);
+        Log.warn("Could not read image data in file: {{" + fCover + "}}");
         return;
       }
       ImageIcon downloadedImage = new ImageIcon(image);
@@ -180,7 +180,7 @@ public class LastFmAuthorThumbnail extends AbstractThumbnail {
     } catch (IIOException e) {
       // report IIOException only as warning here as we can expect this to
       // happen frequently with images on the net
-      Log.warn("Could not read image: " + author.getImageUrl().toString() + " Cache: " + fCover, e
+      Log.warn("Could not read image: {{" + author.getImageUrl().toString() + "}} Cache: {{" + fCover + "}}", e
           .getMessage());
     } catch (Exception e) {
       Log.error(e);

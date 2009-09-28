@@ -56,7 +56,7 @@ abstract class GenericProvider implements ILyricsProvider {
     try {
       text = DownloadManager.getTextFromCachedFile(url, getResponseEncoding());
     } catch (final Exception e) {
-      Log.warn("Could not retrieve URL [" + url.toString() + "]: " + e.getMessage());
+      Log.warn("Could not retrieve URL {{[" + url.toString() + "]: " + e.getMessage() + "}}");
     }
     return text;
   }
