@@ -21,6 +21,7 @@
 package org.jajuk.ui.views;
 
 import java.text.DateFormat;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -54,19 +55,27 @@ import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.CategoryAxis;
+import org.jfree.chart.axis.CategoryAxis3D;
 import org.jfree.chart.axis.CategoryLabelPosition;
 import org.jfree.chart.axis.CategoryLabelPositions;
 import org.jfree.chart.axis.CategoryLabelWidthType;
+import org.jfree.chart.axis.NumberAxis3D;
+import org.jfree.chart.axis.ValueAxis;
+import org.jfree.chart.labels.StandardCategoryToolTipGenerator;
 import org.jfree.chart.labels.StandardPieSectionLabelGenerator;
+import org.jfree.chart.labels.StandardPieToolTipGenerator;
 import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.PiePlot;
 import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.chart.renderer.category.BarRenderer3D;
+import org.jfree.chart.urls.StandardCategoryURLGenerator;
 import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.general.DatasetUtilities;
 import org.jfree.data.general.DefaultPieDataset;
 import org.jfree.text.TextBlockAnchor;
 import org.jfree.ui.RectangleAnchor;
 import org.jfree.ui.TextAnchor;
+import org.jfree.util.SortOrder;
 
 /**
  * Statistics view
@@ -101,7 +110,6 @@ public class StatView extends ViewAdapter {
    * @return the chart
    */
   private ChartPanel createStyleRepartition() {
-    ChartPanel cpanel = null;
     try {
       DefaultPieDataset pdata = null;
       JFreeChart jfchart = null;
@@ -148,13 +156,13 @@ public class StatView extends ViewAdapter {
       plot.setNoDataMessage(Messages.getString("StatView.2"));
       plot.setForegroundAlpha(0.5f);
       plot.setBackgroundAlpha(0.5f);
-      StandardPieSectionLabelGenerator labels = new StandardPieSectionLabelGenerator("{0} = {2}");
-      plot.setLabelGenerator(labels);
-      cpanel = new ChartPanel(jfchart);
+      plot.setLabelGenerator(new StandardPieSectionLabelGenerator("{0} = {2}"));
+      plot.setToolTipGenerator(new StandardPieToolTipGenerator("{0} = {2}"));
+      return new ChartPanel(jfchart);
     } catch (RuntimeException e) {
       Log.error(e);
+      return null;
     }
-    return cpanel;
   }
 
   /**
@@ -163,7 +171,6 @@ public class StatView extends ViewAdapter {
    * @return the chart
    */
   private ChartPanel createDeviceRepartition() {
-    ChartPanel cpanel = null;
     try {
       DefaultPieDataset pdata = null;
       JFreeChart jfchart = null;
@@ -203,12 +210,13 @@ public class StatView extends ViewAdapter {
       plot.setNoDataMessage(Messages.getString("StatView.5"));
       plot.setForegroundAlpha(0.5f);
       plot.setBackgroundAlpha(0.5f);
-      plot.setLabelGenerator(new StandardPieSectionLabelGenerator());
-      cpanel = new ChartPanel(jfchart);
+      plot.setLabelGenerator(new StandardPieSectionLabelGenerator("{0} = {3} GB"));
+      plot.setToolTipGenerator(new StandardPieToolTipGenerator("{0} = {3} GB"));
+      return new ChartPanel(jfchart);
     } catch (RuntimeException e) {
       Log.error(e);
+      return null;
     }
-    return cpanel;
   }
 
   /**
@@ -217,7 +225,6 @@ public class StatView extends ViewAdapter {
    * @return the chart
    */
   private ChartPanel createCollectionSize() {
-    ChartPanel cpanel = null;
     try {
 
       final DateFormat additionFormatter = UtilString.getAdditionDateFormatter();
@@ -247,8 +254,9 @@ public class StatView extends ViewAdapter {
 
       cdata = DatasetUtilities.createCategoryDataset(new String[] { "" },
           getMonthsLabels(iMonthsNumber), data);
-      // chart
-      jfchart = ChartFactory.createBarChart3D(Messages.getString("StatView.7"), // chart
+      // chart, use local copy of method to use better format string for
+      // tooltips
+      jfchart = createBarChart3D(Messages.getString("StatView.7"), // chart
           // title
           Messages.getString("StatView.8"), // domain axis label
           Messages.getString("StatView.9"), // range axis label
@@ -256,8 +264,8 @@ public class StatView extends ViewAdapter {
           PlotOrientation.VERTICAL, // orientation
           false, // include legend
           true, // tooltips
-          false // urls
-          );
+          false, // urls
+          "{1} = {2} GB");
 
       CategoryPlot plot = jfchart.getCategoryPlot();
       CategoryAxis axis = plot.getDomainAxis();
@@ -270,11 +278,46 @@ public class StatView extends ViewAdapter {
       plot.setForegroundAlpha(0.5f);
       plot.setBackgroundAlpha(0.5f);
       // plot.setBackgroundImage(IconLoader.IMAGES_STAT_PAPER).getImage());
-      cpanel = new ChartPanel(jfchart);
+      return new ChartPanel(jfchart);
     } catch (Exception e) {
       Log.error(e);
+      return null;
     }
-    return cpanel;
+  }
+
+  // copied method from ChartFactory to overwrite format of tooltips which is
+  // otherwise hardcoded in ChartFactory
+  public static JFreeChart createBarChart3D(String title, String categoryAxisLabel,
+      String valueAxisLabel, CategoryDataset dataset, PlotOrientation orientation, boolean legend,
+      boolean tooltips, boolean urls, String format) {
+    if (orientation == null)
+      throw new IllegalArgumentException("Null 'orientation' argument.");
+
+    CategoryAxis categoryAxis = new CategoryAxis3D(categoryAxisLabel);
+    ValueAxis valueAxis = new NumberAxis3D(valueAxisLabel);
+
+    BarRenderer3D renderer = new BarRenderer3D();
+    if (tooltips)
+      renderer.setBaseToolTipGenerator(new StandardCategoryToolTipGenerator(format, NumberFormat
+          .getInstance()));
+
+    if (urls)
+      renderer.setBaseItemURLGenerator(new StandardCategoryURLGenerator());
+
+    CategoryPlot plot = new CategoryPlot(dataset, categoryAxis, valueAxis, renderer);
+
+    plot.setOrientation(orientation);
+    if (orientation == PlotOrientation.HORIZONTAL) {
+
+      plot.setRowRenderingOrder(SortOrder.DESCENDING);
+      plot.setColumnRenderingOrder(SortOrder.DESCENDING);
+    }
+    plot.setForegroundAlpha(0.75F);
+
+    JFreeChart chart = new JFreeChart(title, JFreeChart.DEFAULT_TITLE_FONT, plot, legend);
+
+    ChartFactory.getChartTheme().apply(chart);
+    return chart;
   }
 
   /**
@@ -283,7 +326,6 @@ public class StatView extends ViewAdapter {
    * @return the chart
    */
   private ChartPanel createTrackNumber() {
-    ChartPanel cpanel = null;
     try {
       final DateFormat additionFormatter = UtilString.getAdditionDateFormatter();
 
@@ -317,8 +359,9 @@ public class StatView extends ViewAdapter {
       cdata = DatasetUtilities.createCategoryDataset(new String[] { "" },
           getMonthsLabels(iMonthsNumber), data);
 
-      // chart
-      jfchart = ChartFactory.createBarChart3D(Messages.getString("StatView.12"), // chart
+      // chart, use local copy of method to use better format string for
+      // tooltips
+      jfchart = createBarChart3D(Messages.getString("StatView.12"), // chart
           // title
           Messages.getString("StatView.13"), // domain axis label
           Messages.getString("StatView.14"), // range axis label
@@ -326,8 +369,8 @@ public class StatView extends ViewAdapter {
           PlotOrientation.VERTICAL, // orientation
           false, // include legend
           true, // tooltips
-          false // urls
-          );
+          false, // urls
+          "{1} = {2}");
       CategoryPlot plot = jfchart.getCategoryPlot();
       CategoryAxis axis = plot.getDomainAxis();
       new CategoryLabelPosition(RectangleAnchor.TOP, TextBlockAnchor.TOP_RIGHT,
@@ -339,11 +382,11 @@ public class StatView extends ViewAdapter {
       plot.setForegroundAlpha(0.5f);
       plot.setBackgroundAlpha(0.5f);
       // plot.setBackgroundImage(IconLoader.IMAGES_STAT_PAPER).getImage());
-      cpanel = new ChartPanel(jfchart);
+      return new ChartPanel(jfchart);
     } catch (Exception e) {
       Log.error(e);
+      return null;
     }
-    return cpanel;
   }
 
   /*
@@ -367,34 +410,37 @@ public class StatView extends ViewAdapter {
 
         @Override
         public void run() {
-          UtilGUI.waiting();
-          if (getComponentCount() > 0) {
-            removeAll();
-          }
+          try {
+            UtilGUI.waiting();
+            if (getComponentCount() > 0) {
+              removeAll();
+            }
 
-          ChartPanel cp1 = createStyleRepartition();
-          if (cp1 != null) {
-            add(cp1);
-          }
+            ChartPanel cp1 = createStyleRepartition();
+            if (cp1 != null) {
+              add(cp1);
+            }
 
-          ChartPanel cp2 = createCollectionSize();
-          if (cp2 != null) {
-            add(cp2, "wrap");
-          }
+            ChartPanel cp2 = createCollectionSize();
+            if (cp2 != null) {
+              add(cp2, "wrap");
+            }
 
-          ChartPanel cp3 = createTrackNumber();
-          if (cp3 != null) {
-            add(cp3);
-          }
+            ChartPanel cp3 = createTrackNumber();
+            if (cp3 != null) {
+              add(cp3);
+            }
 
-          ChartPanel cp4 = createDeviceRepartition();
-          if (cp4 != null) {
-            add(cp4, "wrap");
-          }
+            ChartPanel cp4 = createDeviceRepartition();
+            if (cp4 != null) {
+              add(cp4, "wrap");
+            }
 
-          revalidate();
-          repaint();
-          UtilGUI.stopWaiting();
+            revalidate();
+            repaint();
+          } finally {
+            UtilGUI.stopWaiting();
+          }
         }
       });
     }
@@ -403,8 +449,8 @@ public class StatView extends ViewAdapter {
   /**
    * Computes mounts labels
    * 
-   * @param iMonthsNumber :
-   *          number of mounts ( without 'before' ) you want
+   * @param iMonthsNumber
+   *          : number of mounts ( without 'before' ) you want
    * @return the mounts labels
    */
   private String[] getMonthsLabels(int iMonthsNumber) {
