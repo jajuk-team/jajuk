@@ -21,6 +21,7 @@
 package org.jajuk.events;
 
 import java.util.Properties;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.jajuk.JUnitHelpers;
@@ -56,6 +57,22 @@ public class TestObservationManager extends TestCase {
    */
   public void testUnregister() {
     ObservationManager.unregister(new TestObserverRegistry.LocalObserver(called));
+  }
+  
+  public void testUnregisterNull() {
+    ObservationManager.unregister(new Observer() {
+      
+      @Override
+      public void update(JajukEvent event) {
+        // nothing to do        
+      }
+      
+      @Override
+      public Set<JajukEvents> getRegistrationKeys() {
+        // just return null here to check what happens inside Observer unregister
+        return null;
+      }
+    });
   }
 
   /**

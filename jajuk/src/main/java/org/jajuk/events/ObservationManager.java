@@ -96,8 +96,14 @@ public final class ObservationManager {
    */
   public static void unregister(Observer observer) {
     Set<JajukEvents> eventSubjectSet = observer.getRegistrationKeys();
+
+    // can return null if no keys are registered
+    if(eventSubjectSet == null) {
+      return;
+    }
+
     for (JajukEvents subject : eventSubjectSet) {
-      Log.debug("Unregister: \"" + subject + "\" by: " + observer);
+      Log.debug("Unregister: \"" + subject + "\" from: " + observer);
       observerRegistry.unregister(subject, observer);
     }
   }
