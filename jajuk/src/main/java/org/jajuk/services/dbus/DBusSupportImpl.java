@@ -104,6 +104,9 @@ public class DBusSupportImpl implements DBusSupport, Observer {
    */
   void disconnect() {
     Log.info("Disconnecting from D-Bus");
+    
+    ObservationManager.unregister(this);
+    
     if (conn != null) {
       conn.disconnect();
     }
