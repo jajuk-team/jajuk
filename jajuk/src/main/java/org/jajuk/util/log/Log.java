@@ -421,7 +421,7 @@ public final class Log {
    * @param e
    */
   private static void spool(Throwable e) {
-    spool("[ERROR] " + e.getClass() + " / " + e.getMessage() + " / " + e.getCause());
+    spool("[ERROR] " + e.getClass() + " / {{" + e.getMessage() + "}} / " + e.getCause());
     StackTraceElement[] ste = e.getStackTrace();
     for (StackTraceElement element : ste) {
       spool("<font color='red'>" + element.toString() + "</font>");

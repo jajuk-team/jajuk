@@ -270,7 +270,7 @@ public class WikipediaView extends ViewAdapter implements ActionListener {
           URL url = new URL(("http://"
               + LocaleManager.getLocaleForDesc((String) jcbLanguage.getSelectedItem())
               + ".wikipedia.org/wiki/" + lSearch).replaceAll(" ", "_"));
-          Log.debug("Wikipedia search: " + url);
+          Log.debug("Wikipedia search: {{" + url + "}}");
           jbCopy.putClientProperty(Const.DETAIL_CONTENT, url.toExternalForm());
           if (Desktop.isDesktopSupported()) {
             jbLaunchInExternalBrowser.putClientProperty(Const.DETAIL_CONTENT, url.toExternalForm());

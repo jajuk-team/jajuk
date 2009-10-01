@@ -114,15 +114,15 @@ public class LyrcProvider extends GenericProvider {
         if (matches) {
           String urlSkel = URL.substring(0, URL.indexOf("tema1"));
           final String suggestionURL = urlSkel.concat(suggestion.getValue());
-          Log.debug("Detected lyrics match: " + suggestion.getKey());
+          Log.debug("Detected lyrics match: {{" + suggestion.getKey() + "}}");
           try {
             final URL url = new URL(suggestionURL);
             String text = DownloadManager.getTextFromCachedFile(url, getResponseEncoding());
             return cleanLyrics(text);
           } catch (final MalformedURLException e) {
-            Log.warn("Invalid lyrics source URL [" + suggestionURL + "]");
+            Log.warn("Invalid lyrics source URL {{" + suggestionURL + "}}");
           } catch (final Exception e) {
-            Log.warn("Could not retrieve URL [" + suggestionURL + "]");
+            Log.warn("Could not retrieve URL {{" + suggestionURL + "}}");
           }
         }
       }

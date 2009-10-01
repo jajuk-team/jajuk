@@ -735,7 +735,7 @@ public class LastFmCache {
       String fileAbsPath = getFileNameForAlbumCoverAtCache(album);
       if (fileAbsPath != null) {
         UtilGUI.extractImage(cover, new File(fileAbsPath));
-        Log.debug(UtilString.concat("Stored album Cover for album ", album.getTitle()));
+        Log.debug(UtilString.concat("Stored album Cover for album {{", album.getTitle(), "}}"));
       }
     } catch (IOException e) {
       Log.error(e);
@@ -761,7 +761,7 @@ public class LastFmCache {
       String fileAbsPath = getFileNameForAlbumInfoAtCache(artist, album);
       if (fileAbsPath != null) {
         XMLUtils.writeBeanToFile(albumObject, fileAbsPath);
-        Log.debug(UtilString.concat("Stored album info for album ", artist, " ", album));
+        Log.debug(UtilString.concat("Stored album info for album {{", artist, " ", album, "}}"));
       }
     } catch (IOException e) {
       Log.error(e);
@@ -783,7 +783,7 @@ public class LastFmCache {
       String fileAbsPath = getFileNameForArtistInfoAtCache(artist);
       if (fileAbsPath != null) {
         XMLUtils.writeBeanToFile(artistObject, fileAbsPath);
-        Log.debug(UtilString.concat("Stored artist info for artist ", artist));
+        Log.debug(UtilString.concat("Stored artist info for artist {{", artist, "}}"));
       }
     } catch (IOException e) {
       Log.error(e);
@@ -807,7 +807,7 @@ public class LastFmCache {
       String fileAbsPath = getFileNameForArtistImageAtCache(artist);
       if (fileAbsPath != null) {
         UtilGUI.extractImage(image, new File(fileAbsPath));
-        Log.debug(UtilString.concat("Stored artist image for ", artist.getArtistName()));
+        Log.debug(UtilString.concat("Stored artist image for {{", artist.getArtistName(), "}}"));
       }
     } catch (IOException e) {
       Log.error(e);
@@ -831,7 +831,7 @@ public class LastFmCache {
       String fileAbsPath = getFileNameForAlbumListAtCache(artist);
       if (fileAbsPath != null) {
         XMLUtils.writeBeanToFile(list, fileAbsPath);
-        Log.debug(UtilString.concat("Stored album list for ", artist));
+        Log.debug(UtilString.concat("Stored album list for {{", artist, "}}"));
       }
     } catch (IOException e) {
       Log.error(e);
@@ -855,7 +855,7 @@ public class LastFmCache {
       String fileAbsPath = getFileNameForArtistSimilarAtCache(artist);
       if (fileAbsPath != null) {
         XMLUtils.writeBeanToFile(similar, fileAbsPath);
-        Log.debug(UtilString.concat("Stored artist similar for ", artist));
+        Log.debug(UtilString.concat("Stored artist similar for {{", artist, "}}"));
       }
     } catch (IOException e) {
       Log.error(e);
@@ -903,7 +903,7 @@ public class LastFmCache {
       String fileAbsPath = getFileNameForArtistWikiAtCache(artist);
       if (fileAbsPath != null) {
         XMLUtils.writeBeanToFile(wikiText, fileAbsPath);
-        Log.debug(UtilString.concat("Stored artist wiki for ", artist));
+        Log.debug(UtilString.concat("Stored artist wiki for {{", artist, "}}"));
       }
     } catch (IOException e) {
       Log.error(e);
@@ -922,7 +922,7 @@ public class LastFmCache {
       String path = getFileNameForSubmissionCache();
       if (path != null) {
         XMLUtils.writeObjectToFile(submissionDataList, path);
-        Log.debug(UtilString.concat("Stored submission data: " + submissionData));
+        Log.debug(UtilString.concat("Stored submission data: {{" + submissionData, "}}"));
       }
     } catch (IOException e) {
       Log.error(e);

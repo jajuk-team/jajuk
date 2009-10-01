@@ -209,7 +209,7 @@ public class Cover implements Comparable<Cover>, Const {
     try {
       return url.toURI().equals(cOther.getURL().toURI());
     } catch (URISyntaxException e) {
-      Log.warn("Found invalid URL: " + url.toString() + "/" + cOther.getURL().toString());
+      Log.warn("Found invalid URL: {{" + url.toString() + "/" + cOther.getURL().toString() + "}}");
       return false;
     }
 
@@ -224,7 +224,7 @@ public class Cover implements Comparable<Cover>, Const {
     try {
       return this.url.toURI().hashCode() + type.ordinal();
     } catch (URISyntaxException e) {
-      Log.warn("Found invalid URL: " + url.toString());
+      Log.warn("Found invalid URL: {{" + url.toString() + "}}");
       return 0;
     }
   }
