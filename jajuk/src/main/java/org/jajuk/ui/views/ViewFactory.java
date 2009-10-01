@@ -23,11 +23,7 @@ package org.jajuk.ui.views;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
-import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 import org.jajuk.ui.perspectives.IPerspective;
 
@@ -35,9 +31,6 @@ import org.jajuk.ui.perspectives.IPerspective;
  * View Factory, creates view item and manages their ID
  */
 public final class ViewFactory {
-
-  /** Maps view class -> view instances set */
-  private static Map<Class<?>, Set<IView>> hmClassesInstances = new HashMap<Class<?>, Set<IView>>();
 
   /**
    * No instantiation *
@@ -57,11 +50,6 @@ public final class ViewFactory {
    * @return the created view
    */
   public static IView createView(Class<?> className, IPerspective perspective, int id) {
-    Set<IView> views = hmClassesInstances.get(className);
-    if (views == null) {
-      views = new LinkedHashSet<IView>();
-      hmClassesInstances.put(className, views);
-    }
     IView view;
     try {
       view = (IView) className.newInstance();
@@ -70,8 +58,7 @@ public final class ViewFactory {
     }
     view.setID(className.getName() + '/' + id);
     view.setPerspective(perspective);
-    // store the new view
-    views.add(view);
+
     return view;
   }
 
