@@ -25,6 +25,10 @@ import com.vlsolutions.swing.docking.DockableResolver;
 import com.vlsolutions.swing.docking.DockableState;
 import com.vlsolutions.swing.docking.DockingContext;
 import com.vlsolutions.swing.docking.DockingDesktop;
+import com.vlsolutions.swing.docking.event.DockingActionCloseEvent;
+import com.vlsolutions.swing.docking.event.DockingActionDockableEvent;
+import com.vlsolutions.swing.docking.event.DockingActionEvent;
+import com.vlsolutions.swing.docking.event.DockingActionListener;
 
 import java.awt.Container;
 import java.io.BufferedInputStream;
@@ -40,6 +44,8 @@ import java.util.StringTokenizer;
 import javax.swing.ImageIcon;
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.jajuk.events.ObservationManager;
+import org.jajuk.events.Observer;
 import org.jajuk.services.core.SessionService;
 import org.jajuk.ui.views.IView;
 import org.jajuk.ui.views.ViewFactory;
@@ -172,6 +178,29 @@ public abstract class PerspectiveAdapter extends DockingDesktop implements IPers
           return view;
         }
       };
+      
+      // register a listener to unregister the view upon closing
+      ctx.addDockingActionListener(new DockingActionListener() {
+        
+        @Override
+        public void dockingActionPerformed(DockingActionEvent dockingactionevent) {
+          // on closing/removing of a view try to unregister it at the
+          // ObservationManager
+          if (dockingactionevent instanceof DockingActionCloseEvent) {
+            Object obj = ((DockingActionDockableEvent)dockingactionevent).getDockable();
+            if (obj instanceof Observer) {
+              ObservationManager.unregister((Observer) obj);
+            }
+          }
+        }
+        
+        @Override
+        public boolean acceptDockingAction(DockingActionEvent dockingactionevent) {
+          // always accept here
+          return true;
+        }
+      });
+      
       ctx.setDockableResolver(resolver);
       setContext(ctx);
       ctx.addDesktop(this);
