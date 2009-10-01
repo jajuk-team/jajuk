@@ -280,7 +280,7 @@ public class WikipediaView extends ViewAdapter implements ActionListener {
           // only report a warning for FileNotFoundException and do not show a
           // stacktrace in the logfile as it is expected in many cases where the
           // name is not found on Wikipedia
-          Log.warn("Could not load URL, no content found at specified address: " + e.getMessage());
+          Log.warn("Could not load URL, no content found at specified address: {{" + e.getMessage() + "}}");
         } catch (Exception e) {
           Log.error(e);
         }
