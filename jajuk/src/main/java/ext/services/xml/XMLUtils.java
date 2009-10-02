@@ -24,14 +24,23 @@ import java.beans.XMLDecoder;
 import java.beans.XMLEncoder;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
+import java.io.CharArrayReader;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.io.Reader;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+
+import org.apache.commons.lang.StringUtils;
+import org.jajuk.util.log.Log;
+import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;
 
 public final class XMLUtils {
   /** The x stream. */
@@ -168,4 +177,26 @@ public final class XMLUtils {
     }
   }
 
+  /**
+   * Return a DOM document for a given string <br>
+   * In case of parsing error, this method handles the exception and null is
+   * returned
+   * 
+   * @param xml
+   *          the string to parse
+   * @return a DOM document for a given string
+   */
+  public static Document getDocument(String xml) {
+    Document out = null;
+    try {
+      DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+      Reader reader = new CharArrayReader(xml.toCharArray());
+      out = builder.parse(new InputSource(reader));
+    } catch (Exception e) {
+      // print first 500 characters of string that cannot be parsed...
+      Log.debug("First 500 characters of XML: " + StringUtils.substring(xml, 0, 500));      
+      Log.error(e);
+    }
+    return out;
+  }
 }

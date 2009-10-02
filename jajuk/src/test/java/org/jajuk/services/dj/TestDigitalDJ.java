@@ -20,7 +20,7 @@
  */
 package org.jajuk.services.dj;
 
-import ext.XMLUtils;
+import ext.services.xml.XMLUtils;
 
 import java.util.ArrayList;
 import java.util.List;

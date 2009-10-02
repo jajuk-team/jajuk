@@ -19,7 +19,7 @@
  */
 package org.jajuk.services.lyrics;
 
-import ext.XMLUtils;
+import ext.services.xml.XMLUtils;
 import ext.services.network.NetworkUtils;
 
 import java.io.BufferedInputStream;

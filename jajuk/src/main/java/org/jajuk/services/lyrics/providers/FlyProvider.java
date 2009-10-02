@@ -19,7 +19,7 @@
  */
 package org.jajuk.services.lyrics.providers;
 
-import ext.XMLUtils;
+import ext.services.xml.XMLUtils;
 
 import java.net.MalformedURLException;
 import java.net.URL;
