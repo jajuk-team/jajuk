@@ -91,7 +91,9 @@ public class TestLyrics extends TestCase {
    */
   private void testService(ILyricsProvider provider) {
     String lyrics = provider.getLyrics(ARTIST, TITLE);
-    assertTrue("Lyrics: " + lyrics, StringUtils.isNotBlank(lyrics)
+    Log.debug("Resulting Lyrics(" + provider.getProviderHostname() + "): " + lyrics);
+    assertTrue("Lyrics(" + provider.getProviderHostname() + "): " + lyrics, StringUtils
+        .isNotBlank(lyrics)
         && lyrics.indexOf(TESTED_WORD) != -1);
   }
 
@@ -154,7 +156,7 @@ public class TestLyrics extends TestCase {
     Log.info("Downloading: " + url);
 
     String xml = null;
-    //xml = DownloadManager.getTextFromCachedFile(url, "UTF-8");
+    // xml = DownloadManager.getTextFromCachedFile(url, "UTF-8");
     // Drop the query if user required "none Internet access from jajuk".
     // This method shouldn't be called anyway because we views have to deal with
     // this option at their level, this is a additional control.
@@ -169,7 +171,7 @@ public class TestLyrics extends TestCase {
     assertTrue(file.toString(), file.isFile());
     assertFalse(file.toString(), file.isHidden());
     assertTrue(file.toString(), file.length() > 0);
-    
+
     StringBuilder builder = new StringBuilder();
     InputStream input = new BufferedInputStream(new FileInputStream(file));
     boolean bRead = false;
@@ -183,10 +185,10 @@ public class TestLyrics extends TestCase {
     } finally {
       input.close();
     }
-    
+
     // make sure we read at least some bytes/chars
     assertTrue(file.toString(), bRead);
-    
+
     xml = builder.toString();
     assertTrue(xml, StringUtils.isNotBlank(xml));
 
@@ -215,6 +217,56 @@ public class TestLyrics extends TestCase {
     ILyricsProvider provider = new LyricWikiProvider();
     testService(provider);
   }
+
+  /*public void testLyricWikiServiceDetails() throws Exception {
+    LyricWikiProvider provider = new LyricWikiProvider();
+
+    // String lyrics = provider.getLyrics(ARTIST, TITLE);
+    String artist = ARTIST;
+    String title = TITLE;
+
+    // This provider waits for '_' instead of regular '+' for spaces in URL
+    String formattedArtist = artist.replaceAll(" ", "_");
+    String formattedTitle = title.replaceAll(" ", "_");
+    String html = provider.callProvider(formattedArtist, formattedTitle);
+    if (html == null || html.indexOf("") == -1) {
+      fail("Empty return from callProvider().");
+    }
+    Log.debug("HTML: " + html);
+    String lyrics = cleanLyrics(html);
+    Log.debug("Result: " + lyrics);
+
+    assertTrue("Lyrics(" + provider.getProviderHostname() + "): " + lyrics, StringUtils
+        .isNotBlank(lyrics)
+        && lyrics.indexOf(TESTED_WORD) != -1);
+  }
+
+  private String cleanLyrics(final String html) {
+    String ret = html;
+    if (ret.contains("<div class='lyricbox' >") || ret.contains("<div class='lyricbox'>")) {
+      int startIndex = html.indexOf("<div class='lyricbox' >");
+      if(startIndex == -1) {
+        startIndex = html.indexOf("<div class='lyricbox'>");
+      }
+      ret = html.substring(startIndex + 23);
+      int stopIndex = ret.indexOf("<!--");
+      ret = ret.substring(0, stopIndex);
+      ret = ret.replaceAll("<br />", "\n");
+      ret = ret.replaceAll("&#8217;", "'");
+      ret = ret.replaceAll("&#8211;", "-");
+      ret = ret.replaceAll("\u0092", "'");
+      ret = ret.replaceAll("\u009c", "oe");
+      ret = ret.replaceAll("<p>", "\n");
+      ret = ret.replaceAll("<i>", "");
+      ret = ret.replaceAll("</i>", "");
+      ret = ret.replaceAll("<b>", "");
+      ret = ret.replaceAll("</b>", "");
+      return ret;
+
+    } else {
+      return null;
+    }
+  } */
 
   /**
    * Test LyricWiki web url availability

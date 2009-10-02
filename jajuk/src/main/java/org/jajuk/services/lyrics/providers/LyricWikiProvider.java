@@ -57,7 +57,9 @@ public class LyricWikiProvider extends GenericProvider {
       String formattedArtist = artist.replaceAll(" ", "_");
       String formattedTitle = title.replaceAll(" ", "_");
       String html = callProvider(formattedArtist, formattedTitle);
+      // TODO: what does indexOf("") return? I think it always returns 0, so this if-case is useless, right?
       if (html == null || html.indexOf("") == -1) {
+        Log.debug("Empty return from callProvider().");
         return null;
       }
       return cleanLyrics(html);
@@ -75,9 +77,21 @@ public class LyricWikiProvider extends GenericProvider {
    */
   private String cleanLyrics(final String html) {
     String ret = html;
-    if (ret.contains("<div class='lyricbox' >")) {
+    // LyricWiki uses this with and without blank sometimes, maybe we should use a regular expression instead... 
+    if (ret.contains("<div class='lyricbox' >") || ret.contains("<div class='lyricbox'>")) {
       int startIndex = html.indexOf("<div class='lyricbox' >");
-      ret = html.substring(startIndex + 23);
+      if(startIndex == -1) {
+        startIndex = html.indexOf("<div class='lyricbox'>");
+        ret = html.substring(startIndex + 22);
+
+        // LyricWiki added some additional div class now...
+        if(ret.startsWith("<div class='rtMatcher'>")) {
+          startIndex = ret.indexOf("</div>");
+          ret = ret.substring(startIndex + 6);
+        }
+      } else {
+        ret = html.substring(startIndex + 23);
+      }
       int stopIndex = ret.indexOf("<!--");
       ret = ret.substring(0, stopIndex);
       ret = ret.replaceAll("<br />", "\n");
