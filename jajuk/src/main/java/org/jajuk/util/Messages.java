@@ -22,6 +22,7 @@ package org.jajuk.util;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -64,6 +65,11 @@ public class Messages extends DefaultHandler {
 
   /** Specific Yes NO All Cancel option */
   public static final int YES_NO_ALL_CANCEL_OPTION = 11;
+
+  /**
+   * User choice
+   */
+  private static int choice;
 
   /**
    * Messages themselves extracted from an XML file to this properties class*
@@ -299,9 +305,27 @@ public class Messages extends DefaultHandler {
    *          message type like JOptionPane.WARNING
    */
   public static int getChoice(final String sText, final int optionsType, final int iType) {
-    final ConfirmDialog confirm = new ConfirmDialog(sText, getTitleForType(iType), optionsType,
-        iType);
-    return confirm.getResu();
+    try {
+      // Make sure to reset the choice and to return a non-existing choice if
+      // the
+      // GUI fails
+      choice = Integer.MAX_VALUE;
+      SwingUtilities.invokeAndWait(new Runnable() {
+
+        public void run() {
+          // This must be done in the EDT
+          final ConfirmDialog confirm = new ConfirmDialog(sText, getTitleForType(iType),
+              optionsType, iType);
+          choice = confirm.getResu();
+        }
+
+      });
+    } catch (InterruptedException e) {
+      Log.error(e);
+    } catch (InvocationTargetException e) {
+      Log.error(e);
+    }
+    return choice;
   }
 
   /**
@@ -327,8 +351,12 @@ public class Messages extends DefaultHandler {
    * @param sMessage
    */
   public static void showWarningMessage(final String sMessage) {
-    new DetailsMessageDialog(sMessage, getTitleForType(JOptionPane.WARNING_MESSAGE),
-        JOptionPane.WARNING_MESSAGE, null, null);
+    SwingUtilities.invokeLater(new Runnable() {
+      public void run() {
+        new DetailsMessageDialog(sMessage, getTitleForType(JOptionPane.WARNING_MESSAGE),
+            JOptionPane.WARNING_MESSAGE, null, null);
+      }
+    });
   }
 
   /**
