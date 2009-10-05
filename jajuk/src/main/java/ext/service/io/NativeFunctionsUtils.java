@@ -63,6 +63,10 @@ public class NativeFunctionsUtils {
     int bufferSize = (pathname.length() * CHAR_BYTE_WIDTH) + CHAR_BYTE_WIDTH;
     Memory buffer = new Memory(bufferSize);
 
+    if(nativelib == null) {
+      return "";
+    }
+
     if (nativelib.GetShortPathNameW(pathname, buffer, bufferSize) == 0) {
       return "";
     }
