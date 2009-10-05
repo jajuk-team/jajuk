@@ -79,16 +79,23 @@ public class JUnitHelpers {
 
   /**
    * Helper method for removing emma-reports for classes with only static
-   * methods <p/> see
-   * http://sourceforge.net/tracker/index.php?func=detail&aid=1173251&group_id=108932&atid=651900
+   * methods
+   * <p/>
+   * see
+   * http://sourceforge.net/tracker/index.php?func=detail&aid=1173251&group_id
+   * =108932&atid=651900
    * 
    * add this to the test case for any class that has only static methods where
    * EMMA reports the default constructor as not covered
    * 
-   * Template: // helper method to emma-coverage of the unused constructor
-   * public void testPrivateConstructor() throws Exception { // For EMMA
-   * code-coverage tests
-   * JUnitHelpers.executePrivateConstructor(UtilSystem.class); }
+   * Template: <code>
+   
+   // helper method to emma-coverage of the unused constructor
+   public void testPrivateConstructor() throws Exception { // For EMMA code-coverage tests
+     JUnitHelpers.executePrivateConstructor(UtilSystem.class); 
+   }
+
+   * </code>
    * 
    * @param targetClass
    */
@@ -170,7 +177,7 @@ public class JUnitHelpers {
   }
 
   @SuppressWarnings("unchecked")
-  public static <T> void CompareToTest(final Comparable<T> obj, final Comparable<T> equal, 
+  public static <T> void CompareToTest(final Comparable<T> obj, final Comparable<T> equal,
       final Comparable<T> notequal) {
     // none of the three should be null
     Assert.assertNotNull("Object in CompareToTest should not be null!", obj);
@@ -185,45 +192,48 @@ public class JUnitHelpers {
 
     // make sure correct parameters are passed
     // equal should be equal to obj, not-equal should not be equal to obj!
-    Assert.assertEquals("Object and equal-object should compare in CompareToTest!", 
-        0, obj.compareTo((T)equal));
+    Assert.assertEquals("Object and equal-object should compare in CompareToTest!", 0, obj
+        .compareTo((T) equal));
     Assert.assertFalse("Object and non-equal-object should not compare in CompareToTest!", 0 == obj
-        .compareTo((T)notequal));
+        .compareTo((T) notequal));
 
     // first test some general things that should be true with equals
 
     // reflexive: equals to itself
-    Assert
-        .assertEquals("Reflexive: object should be equal to itself in CompareToTest!", 
-            0, obj.compareTo((T)obj));
-    Assert.assertEquals("Reflexive: equal-object should be equal to itself in CompareToTest!", 
-        0, equal.compareTo((T)equal));
+    Assert.assertEquals("Reflexive: object should be equal to itself in CompareToTest!", 0, obj
+        .compareTo((T) obj));
+    Assert.assertEquals("Reflexive: equal-object should be equal to itself in CompareToTest!", 0,
+        equal.compareTo((T) equal));
     Assert.assertEquals("Reflexive: non-equal-object should be equal to itself in CompareToTest!",
-        0, notequal.compareTo((T)notequal));
+        0, notequal.compareTo((T) notequal));
 
     // not equals to null
-    Assert.assertFalse("Object should not be equal to null in CompareToTest!", 
-        0 == obj.compareTo(null));
-    Assert.assertFalse("Equal-object should not be equal to null in CompareToTest!", 
-        0 == equal.compareTo(null));
-    Assert.assertFalse("Non-equal-object should not be equal to null in CompareToTest!", 
+    Assert.assertFalse("Object should not be equal to null in CompareToTest!", 0 == obj
+        .compareTo(null));
+    Assert.assertFalse("Equal-object should not be equal to null in CompareToTest!", 0 == equal
+        .compareTo(null));
+    Assert.assertFalse("Non-equal-object should not be equal to null in CompareToTest!",
         0 == notequal.compareTo(null));
 
     // not equals to a different type of object
-    /*Assert.assertFalse("Object should not be equal to an arbitrary string in CompareToTest!", 
-        0 == obj.compareTo("TestString"));*/
+    /*
+     * Assert.assertFalse("Object should not be equal to an arbitrary string in CompareToTest!"
+     * , 0 == obj.compareTo("TestString"));
+     */
 
     // then test some things with another object that should be equal
 
     // symmetric, if one is (not) equal to another then the reverse must be true
-    Assert.assertEquals("Symmetric: Object should be equal to equal-object in CompareToTest", 
-        0, obj.compareTo((T)equal));
-    Assert.assertEquals("Symmetric: Equals-object should be equal to object in CompareToTest!", 
-        0, equal.compareTo((T)obj));
-    Assert.assertFalse("Symmetric: Object should NOT be equal to non-equal-object in CompareToTest",
-        0 == obj.compareTo((T)notequal));
-    Assert.assertFalse("Symmetric: Non-equals-object should NOT be equal to object in CompareToTest!",
-        0 == notequal.compareTo((T)obj));
+    Assert.assertEquals("Symmetric: Object should be equal to equal-object in CompareToTest", 0,
+        obj.compareTo((T) equal));
+    Assert.assertEquals("Symmetric: Equals-object should be equal to object in CompareToTest!", 0,
+        equal.compareTo((T) obj));
+    Assert.assertFalse(
+        "Symmetric: Object should NOT be equal to non-equal-object in CompareToTest", 0 == obj
+            .compareTo((T) notequal));
+    Assert.assertFalse(
+        "Symmetric: Non-equals-object should NOT be equal to object in CompareToTest!",
+        0 == notequal.compareTo((T) obj));
 
     // transitive: if a.equals(b) and b.equals(c) then a.equals(c)
     // not tested right now
@@ -250,8 +260,8 @@ public class JUnitHelpers {
     String value = obj.toString();
     for (int i = 0; i < 10; i++) {
       Assert.assertEquals(
-          "toString() is expected to result in the same result across repeated calls!", 
-          value, obj.toString());
+          "toString() is expected to result in the same result across repeated calls!", value, obj
+              .toString());
     }
   }
 
