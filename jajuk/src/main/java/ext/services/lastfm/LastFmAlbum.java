@@ -159,6 +159,13 @@ public class LastFmAlbum implements AlbumInfo {
    * @return the artist url
    */
   public String getArtistUrl() {
+    if(url == null) {
+      return null;
+    }
+    if(!url.contains("/")) {
+      return url;
+    }
+
     return url.substring(0, url.lastIndexOf('/'));
   }
 
@@ -195,6 +202,10 @@ public class LastFmAlbum implements AlbumInfo {
    * @return the release date
    */
   public Date getReleaseDate() {
+    if(releaseDateString == null) {
+      return null;
+    }
+
     try {
       return df.get().parse(releaseDateString);
     } catch (ParseException e) {
