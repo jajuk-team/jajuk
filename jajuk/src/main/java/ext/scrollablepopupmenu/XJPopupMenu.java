@@ -47,11 +47,11 @@ public class XJPopupMenu extends JPopupMenu implements ActionListener {
     panelMenus.setLayout(new GridLayout(0, 1));
     panelMenus.setBackground(UIManager.getColor("MenuItem.background"));
     // panelMenus.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
-    init(jframe);
+    init();
 
   }
 
-  private void init(JFrame jframe) {
+  private void init() {
     super.removeAll();
     scroll = new JScrollPane();
     scroll.setViewportView(panelMenus);
@@ -69,7 +69,7 @@ public class XJPopupMenu extends JPopupMenu implements ActionListener {
 
   @Override
   public void show(Component invoker, int x, int y) {
-    init(jframe);
+    init();
     // this.pack();
     panelMenus.validate();
     int maxsize = scroll.getMaximumSize().height;
