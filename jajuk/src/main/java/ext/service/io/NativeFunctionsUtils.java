@@ -51,7 +51,7 @@ public class NativeFunctionsUtils {
   private static final int CHAR_BYTE_WIDTH = 2;
 
   /**
-   * Returns the 8.3 (DOS) file-/pathname for a given file. Only avaible for
+   * Returns the 8.3 (DOS) file-/pathname for a given file. Only available for
    * Windows, so check if this operating system is used before calling. The
    * filename must include the path as whole and be passed as String.
    * 
