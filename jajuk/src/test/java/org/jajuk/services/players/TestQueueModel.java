@@ -971,10 +971,14 @@ public class TestQueueModel extends TestCase {
    */
 
   public void testClean() throws Exception {
+    // wait a bit to let background-threads finish
+    Thread.sleep(200);
+    
     // should work without any items
     QueueModel.clean();
 
     addItems(10);
+    assertEquals(10, QueueModel.getQueueSize());
 
     // right now, cleaning will remove all of them as we don't have the tracks
     // registered with the FileManager
