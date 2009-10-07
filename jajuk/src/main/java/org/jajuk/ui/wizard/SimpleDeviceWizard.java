@@ -28,6 +28,7 @@ import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
+import javax.swing.border.BevelBorder;
 
 import net.miginfocom.swing.MigLayout;
 
@@ -54,6 +55,8 @@ public class SimpleDeviceWizard extends JajukJDialog implements ActionListener {
 
   JButton jbFileSelection;
 
+  JLabel jlSelectedFile;
+
   JTextField jtfRefreshTime;
 
   OKCancelPanel okp;
@@ -70,22 +73,28 @@ public class SimpleDeviceWizard extends JajukJDialog implements ActionListener {
     okp = new OKCancelPanel(this);
     jbFileSelection = new JButton(IconLoader.getIcon(JajukIcons.OPEN_DIR));
     jbFileSelection.addActionListener(this);
+
+    jlSelectedFile = new JLabel(Messages.getString("FirstTimeWizard.9"));
+    jlSelectedFile.setBorder(new BevelBorder(BevelBorder.LOWERED));
+
     jtfRefreshTime = new JTextField(Const.DEFAULT_REFRESH_INTERVAL);
 
     // Add items
     setLayout(new MigLayout("insets 10,gapx 10,gapy 15", "[][grow]"));
     add(new JLabel(UtilGUI.getImage(Const.IMAGE_SEARCH)), "cell 0 0 0 3");
-    add(jbFileSelection, "cell 1 0,split 2");
-    add(new JLabel(Messages.getString("FirstTimeWizard.2")), "wrap"); // please
+    add(new JLabel(Messages.getString("FirstTimeWizard.2")), "cell 1 0,split 2");
+    add(jbFileSelection, ""); // please
+    add(new JLabel(Messages.getString("FirstTimeWizard.8")), "split 2,cell 1 1");
+    add(jlSelectedFile, "cell 1 1, grow");
     // select
     // music
     // location
-    add(new JLabel(Messages.getString("DeviceWizard.53")), "cell 1 1,split 3"); // Refresh
+    add(new JLabel(Messages.getString("DeviceWizard.53")), "cell 1 2,split 3"); // Refresh
     // device
     // every
     add(jtfRefreshTime, "grow");
     add(new JLabel(Messages.getString("DeviceWizard.54")), "wrap"); // mins
-    add(okp, "right,cell 1 2");
+    add(okp, "right,cell 1 3");
 
     getRootPane().setDefaultButton(okp.getOKButton());
   }
@@ -128,7 +137,10 @@ public class SimpleDeviceWizard extends JajukJDialog implements ActionListener {
 
         okp.getOKButton().setEnabled(true);
         okp.getOKButton().grabFocus();
-      }
+        
+        jlSelectedFile.setText(fDir.getAbsolutePath());
+        pack(); // repack as size of dialog can be exceeded now
+    }
     } else if (e.getSource() == okp.getOKButton()) {
       try {
         // Create a directory device
