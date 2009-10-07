@@ -37,6 +37,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.border.BevelBorder;
 import javax.swing.border.EmptyBorder;
 
 import net.miginfocom.swing.MigLayout;
@@ -74,6 +75,8 @@ public class FirstTimeWizard extends JajukJDialog implements ActionListener {
   JPanel jpRightPanel;
 
   JButton jbFileSelection;
+
+  JLabel jlSelectedFile;
 
   PathSelector workspacePath;
 
@@ -132,6 +135,9 @@ public class FirstTimeWizard extends JajukJDialog implements ActionListener {
         }
         jbOk.setEnabled(true);
         jbOk.grabFocus();
+        
+        jlSelectedFile.setText(fDir.getAbsolutePath());
+        pack(); // repack as size of dialog can be exceeded now
       }
     } else if (e.getSource() == jbOk) {
       final boolean bShowHelp = jcbHelp.isSelected();
@@ -212,6 +218,11 @@ public class FirstTimeWizard extends JajukJDialog implements ActionListener {
     JLabel jlFileSelection = new JLabel(Messages.getString("FirstTimeWizard.2"));
     jbFileSelection = new JButton(IconLoader.getIcon(JajukIcons.OPEN_DIR));
     jbFileSelection.addActionListener(this);
+    
+    JLabel jlSelectedFileText = new JLabel(Messages.getString("FirstTimeWizard.8"));
+    jlSelectedFile = new JLabel(Messages.getString("FirstTimeWizard.9"));
+    jlSelectedFile.setBorder(new BevelBorder(BevelBorder.LOWERED));
+    
     final JLabel jlWorkspace = new JLabel(Messages.getString("FirstTimeWizard.7"));
     jlWorkspace.setToolTipText(Messages.getString("FirstTimeWizard.7"));
     workspacePath = new PathSelector(System.getProperty("user.home"));
@@ -233,7 +244,7 @@ public class FirstTimeWizard extends JajukJDialog implements ActionListener {
     // Build the toggle link used to expand / collapse the panel
     final ToggleLink toggle = new ToggleLink(Messages.getString("FirstTimeWizard.6"), advanced);
 
-    // Advanced collapsable panel
+    // Advanced collapsible panel
     advanced.setLayout(new VerticalLayout(10));
     advanced.setCollapsed(true);
     advanced.add(jlWorkspace);
@@ -244,16 +255,17 @@ public class FirstTimeWizard extends JajukJDialog implements ActionListener {
     setLayout(new MigLayout("insets 10,gapx 10,gapy 15", "[][grow]", "[][][][][][]"));
     add(jlLeftIcon, "cell 0 0 1 6,top");
     add(jlWelcome, "cell 1 0");
-    add(jbFileSelection, "split 2,cell 1 1");
-    add(jlFileSelection, "cell 1 1,grow");
-    add(jlRefreshTime, "split 3,cell 1 2");
-    add(jtfRefreshTime, "cell 1 2, grow,width ::100");
-    add(jlMins, "cell 1 2");
-    add(toggle, "cell 1 3,grow");
-    add(advanced, "cell 1 4,grow");
-    add(okp, "right,span,cell 1 5");
+    add(jlFileSelection, "split 2,cell 1 1");
+    add(jbFileSelection, "cell 1 1");
+    add(jlSelectedFileText, "split 2,cell 1 2");
+    add(jlSelectedFile, "cell 1 2, grow");
+    add(jlRefreshTime, "split 3,cell 1 3");
+    add(jtfRefreshTime, "cell 1 3, grow,width ::50");
+    add(jlMins, "cell 1 3");
+    add(toggle, "cell 1 4,grow");
+    add(advanced, "cell 1 5,grow");
+    add(okp, "right,span,cell 1 6");
 
     getRootPane().setDefaultButton(jbOk);
   }
-
 }
