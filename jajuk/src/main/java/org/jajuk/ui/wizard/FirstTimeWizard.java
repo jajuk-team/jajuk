@@ -24,6 +24,8 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -67,7 +69,7 @@ import org.jdesktop.swingx.VerticalLayout;
 /**
  * First time Wizard
  */
-public class FirstTimeWizard extends JajukJDialog implements ActionListener {
+public class FirstTimeWizard extends JajukJDialog implements ActionListener, PropertyChangeListener {
   private static final long serialVersionUID = 1L;
 
   JLabel jlLeftIcon;
@@ -135,7 +137,7 @@ public class FirstTimeWizard extends JajukJDialog implements ActionListener {
         }
         jbOk.setEnabled(true);
         jbOk.grabFocus();
-        
+
         jlSelectedFile.setText(fDir.getAbsolutePath());
         pack(); // repack as size of dialog can be exceeded now
       }
@@ -218,11 +220,11 @@ public class FirstTimeWizard extends JajukJDialog implements ActionListener {
     JLabel jlFileSelection = new JLabel(Messages.getString("FirstTimeWizard.2"));
     jbFileSelection = new JButton(IconLoader.getIcon(JajukIcons.OPEN_DIR));
     jbFileSelection.addActionListener(this);
-    
+
     JLabel jlSelectedFileText = new JLabel(Messages.getString("FirstTimeWizard.8"));
     jlSelectedFile = new JLabel(Messages.getString("FirstTimeWizard.9"));
     jlSelectedFile.setBorder(new BevelBorder(BevelBorder.LOWERED));
-    
+
     final JLabel jlWorkspace = new JLabel(Messages.getString("FirstTimeWizard.7"));
     jlWorkspace.setToolTipText(Messages.getString("FirstTimeWizard.7"));
     workspacePath = new PathSelector(System.getProperty("user.home"));
@@ -241,6 +243,11 @@ public class FirstTimeWizard extends JajukJDialog implements ActionListener {
     jbCancel.setText(Messages.getString("Later"));
     jbOk.setEnabled(false);
     advanced = new JXCollapsiblePane();
+
+    // we need to listen for the animation state property in order to allow to
+    // resize the dialog after the advanced-panel is expanded/collapsed
+    advanced.addPropertyChangeListener("animationState", this); 
+
     // Build the toggle link used to expand / collapse the panel
     final ToggleLink toggle = new ToggleLink(Messages.getString("FirstTimeWizard.6"), advanced);
 
@@ -267,5 +274,21 @@ public class FirstTimeWizard extends JajukJDialog implements ActionListener {
     add(okp, "right,span,cell 1 6");
 
     getRootPane().setDefaultButton(jbOk);
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see
+   * java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent
+   * )
+   */
+  @Override
+  public void propertyChange(PropertyChangeEvent evt) {
+    // if the property changes to "collapsed" or "expanded" the change of the panel is
+    // finished and we should re-pack() the dialog in order to make space for the panel in the dialog correctly
+    if (evt.getNewValue().equals("collapsed") || evt.getNewValue().equals("expanded")) {
+      pack(); // repack as size of dialog can be exceeded now
+    }
   }
 }
