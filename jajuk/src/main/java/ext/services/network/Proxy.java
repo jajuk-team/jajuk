@@ -24,6 +24,8 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.net.UnknownHostException;
 
+import org.apache.commons.codec.binary.Base64;
+
 public class Proxy extends java.net.Proxy {
 
   private static final long serialVersionUID = 7495084217081194366L;
@@ -43,7 +45,7 @@ public class Proxy extends java.net.Proxy {
 
   public URLConnection getConnection(URL u) throws IOException {
     URLConnection con = u.openConnection(this);
-    String encodedUserPwd = Base64Coder.encodeString((user + ':' + password));
+    String encodedUserPwd = new String(Base64.encodeBase64((user + ':' + password).getBytes()));
     con.setRequestProperty("Proxy-Authorization", "Basic " + encodedUserPwd);
     return con;
   }
