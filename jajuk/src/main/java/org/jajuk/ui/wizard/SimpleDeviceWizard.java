@@ -136,7 +136,7 @@ public class SimpleDeviceWizard extends JajukJDialog implements ActionListener {
             fDir.getAbsolutePath());
         device.setProperty(Const.XML_DEVICE_AUTO_MOUNT, true);
         // Set refresh time
-        double dRefreshTime = 5d;
+        double dRefreshTime;
         try {
           dRefreshTime = Double.parseDouble(jtfRefreshTime.getText());
           if (dRefreshTime < 0) {
