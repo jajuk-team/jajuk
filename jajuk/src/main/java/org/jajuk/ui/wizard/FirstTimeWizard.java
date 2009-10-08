@@ -246,6 +246,8 @@ public class FirstTimeWizard extends JajukJDialog implements ActionListener, Pro
 
     // we need to listen for the animation state property in order to allow to
     // resize the dialog after the advanced-panel is expanded/collapsed
+    // see http://forums.java.net/jive/thread.jspa?threadID=67800&tstart=0 for some related discussion
+    // why we need to listen on "animationState" to know when the expanding/collapsing is finished
     advanced.addPropertyChangeListener("animationState", this); 
 
     // Build the toggle link used to expand / collapse the panel
