@@ -55,7 +55,7 @@ public final class ObservationManager {
   /**
    * The observation fifo
    */
-  private static ObservationManagerThread t;
+  private static ObservationManagerThread observationThread;
 
   /**
    * Empty constructor to avoid instantiating this utility class
@@ -94,7 +94,7 @@ public final class ObservationManager {
    * and in other places as otherwise we keep references and through 
    * this memory unnecessarily.
    */
-  public static void unregister(Observer observer) {
+  public static synchronized void unregister(Observer observer) {
     Set<JajukEvents> eventSubjectSet = observer.getRegistrationKeys();
 
     // can return null if no keys are registered
@@ -125,12 +125,12 @@ public final class ObservationManager {
         // synchronize here to avoid creating more than one observation manager
         // thread
         synchronized (ObservationManager.class) {
-          if (t == null || !t.isAlive()) {
-            // If the thread is terminated, a new thread must be instanciated
+          if (observationThread == null || !observationThread.isAlive()) {
+            // If the thread is terminated, a new thread must be instantiated
             // Otherwise an IllegalThreadStateException is thrown
             Log.debug("Observation Manager thread not running, start a new one");
-            t = new ObservationManagerThread();
-            t.start();
+            observationThread = new ObservationManagerThread();
+            observationThread.start();
           }
         }
     } catch (Error e) {
@@ -209,6 +209,15 @@ public final class ObservationManager {
    */
   public static Properties getDetailsLastOccurence(JajukEvents subject) {
     return hLastEventBySubject.get(subject);
+  }
+
+  /**
+   * Remove all registered Observers 
+   */
+  public static void clear() {
+    hLastEventBySubject.clear();
+    queue.clear();
+    observerRegistry.clear();
   }
 }
 

@@ -113,4 +113,14 @@ class ObserverRegistry {
       alComponents.remove(observer);
     }
   }
+
+  /**
+   * Remove any registered item
+   */
+  synchronized public void clear() {
+    hEventComponents.clear();
+    synchronized (canals) {
+      canals.clear();
+    }
+  }
 }
