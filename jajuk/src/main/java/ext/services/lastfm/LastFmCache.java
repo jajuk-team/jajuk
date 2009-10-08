@@ -140,7 +140,13 @@ public class LastFmCache {
       Log.info("Could not delete all files from artist info cache");
       exception = true;
     }
-
+    try {
+      FileUtils.cleanDirectory(getSubmissionDataDir());
+    } catch (IOException e) {
+      Log.info("Could not delete all files from submission data cache");
+      exception = true;
+    }
+    
     return exception;
   }
 
