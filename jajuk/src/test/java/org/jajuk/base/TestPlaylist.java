@@ -813,11 +813,6 @@ public class TestPlaylist extends JajukTestCase {
   }
 
   public final void testReplaceFileQueue() throws Exception {
-    // wait for any thread or swingutilities to let any dangling thread finish changing the queue
-    JUnitHelpers.waitForThreadToFinish("Playlist Prepare Party Thread");
-    JUnitHelpers.waitForThreadToFinish("Queue Push Thread");
-    JUnitHelpers.clearSwingUtilitiesQueue();
-    
     // make sure Queue is empty
     QueueModel.clear();
     

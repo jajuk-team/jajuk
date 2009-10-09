@@ -971,11 +971,6 @@ public class TestQueueModel extends JajukTestCase {
    */
 
   public void testClean() throws Exception {
-    // just to make sure no thread is running we are waiting for things to finish
-    JUnitHelpers.clearSwingUtilitiesQueue();
-    JUnitHelpers.waitForThreadToFinish("Queue Push Thread");
-
-    
     // should work without any items
     QueueModel.clean();
 
