@@ -100,8 +100,8 @@ public class JUnitHelpers {
    * Template: <code>
    
    // helper method to emma-coverage of the unused constructor
-   public void testPrivateConstructor() throws Exception { // For EMMA code-coverage tests
-     JUnitHelpers.executePrivateConstructor(UtilSystem.class); 
+   public void testPrivateConstructor() throws Exception {
+     JUnitHelpers.executePrivateConstructor(<yourclass>.class); 
    }
 
    * </code>
@@ -416,6 +416,7 @@ public class JUnitHelpers {
     JUnitHelpers.waitForThreadToFinish("Queue Push Thread");
     JUnitHelpers.waitForThreadToFinish("Device Refresh Thread");
     JUnitHelpers.waitForThreadToFinish("Playlist Prepare Party Thread");
+    JUnitHelpers.waitForThreadToFinish("LastFM Update Thread");
 
     // clear this for all available events
 //    for(JajukEvents event : JajukEvents.values()) {
