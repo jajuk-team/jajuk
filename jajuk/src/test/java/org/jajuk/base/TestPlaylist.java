@@ -24,7 +24,7 @@ import java.awt.HeadlessException;
 import java.util.ArrayList;
 import java.util.List;
 
-import junit.framework.TestCase;
+import org.jajuk.JajukTestCase;
 
 import org.apache.commons.lang.StringUtils;
 import org.jajuk.JUnitHelpers;
@@ -38,7 +38,7 @@ import org.jajuk.util.Const;
 /**
  * 
  */
-public class TestPlaylist extends TestCase {
+public class TestPlaylist extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.base.Playlist#hashCode()}.
@@ -242,7 +242,7 @@ public class TestPlaylist extends TestCase {
     play.addFile(file);
     
     // wait a bit to let the "push" be done in a separate thread
-    Thread.sleep(200);
+    JUnitHelpers.waitForThreadToFinish("Queue Push Thread");
     
     assertEquals(1, QueueModel.getQueueSize());
     
@@ -251,7 +251,7 @@ public class TestPlaylist extends TestCase {
     play.addFile(1, file);
 
     // wait a bit to let the "push" be done in a separate thread
-    Thread.sleep(200);
+    JUnitHelpers.waitForThreadToFinish("Queue Push Thread");
 
     assertEquals(2, QueueModel.getQueueSize());
     assertEquals(2, play.getFiles().size());
@@ -264,7 +264,7 @@ public class TestPlaylist extends TestCase {
     play.addFile(1, file);
 
     // wait a bit to let the "push" be done in a separate thread
-    Thread.sleep(200);
+    JUnitHelpers.waitForThreadToFinish("Queue Push Thread");
 
     assertEquals(3, QueueModel.getQueueSize());
     assertEquals(3, play.getFiles().size());
@@ -806,15 +806,17 @@ public class TestPlaylist extends TestCase {
 
     play.addFile(getFile());
 
-    // sleep a bit to let other threads finish before doing this
-    Thread.sleep(200);
+    // wait for the thread to finish before doing this
+    JUnitHelpers.waitForThreadToFinish("Queue Push Thread");
     
     play.replaceFile(play.getFiles().get(0), getFile());
   }
 
   public final void testReplaceFileQueue() throws Exception {
-    // sleep a bit upfront to let any dangling thread finish changing the queue
-    Thread.sleep(300);
+    // wait for any thread or swingutilities to let any dangling thread finish changing the queue
+    JUnitHelpers.waitForThreadToFinish("Playlist Prepare Party Thread");
+    JUnitHelpers.waitForThreadToFinish("Queue Push Thread");
+    JUnitHelpers.clearSwingUtilitiesQueue();
     
     // make sure Queue is empty
     QueueModel.clear();

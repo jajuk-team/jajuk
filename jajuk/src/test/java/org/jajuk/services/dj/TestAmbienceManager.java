@@ -33,12 +33,12 @@ import org.jajuk.util.Const;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UpgradeManager;
 
-import junit.framework.TestCase;
+import org.jajuk.JajukTestCase;
 
 /**
  * 
  */
-public class TestAmbienceManager extends TestCase {
+public class TestAmbienceManager extends JajukTestCase {
 
   @Override
   protected void setUp() throws Exception {

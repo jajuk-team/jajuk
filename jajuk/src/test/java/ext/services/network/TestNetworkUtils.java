@@ -26,7 +26,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.Proxy.Type;
 
-import junit.framework.TestCase;
+import org.jajuk.JajukTestCase;
 
 import org.apache.commons.lang.StringUtils;
 import org.jajuk.JUnitHelpers;
@@ -37,7 +37,7 @@ import org.jajuk.util.log.Log;
 /**
  * 
  */
-public class TestNetworkUtils extends TestCase {
+public class TestNetworkUtils extends JajukTestCase {
 
   private static final int PROXY_PORT = 0; // auto-choose
   private static final String URL = "http://www.google.com/";
@@ -139,6 +139,8 @@ public class TestNetworkUtils extends TestCase {
       connection.disconnect();
     } finally {
       bStop = true;
+      socket.close();
+      thread.join();
     }
   }
 

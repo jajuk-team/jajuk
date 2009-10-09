@@ -24,12 +24,12 @@ import java.awt.HeadlessException;
 
 import org.jajuk.util.log.Log;
 
-import junit.framework.TestCase;
+import org.jajuk.JajukTestCase;
 
 /**
  * 
  */
-public class TestDebugLogAction extends TestCase {
+public class TestDebugLogAction extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.ui.actions.DebugLogAction#perform(java.awt.event.ActionEvent)}.

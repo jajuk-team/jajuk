@@ -22,7 +22,7 @@ package org.jajuk.base;
 
 import java.util.Date;
 
-import junit.framework.TestCase;
+import org.jajuk.JajukTestCase;
 
 import org.jajuk.JUnitHelpers;
 import org.jajuk.services.startup.StartupCollectionService;
@@ -32,7 +32,7 @@ import org.jajuk.util.Messages;
 /**
  * 
  */
-public class TestAlbum extends TestCase {
+public class TestAlbum extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.base.Album#getDesc()}.

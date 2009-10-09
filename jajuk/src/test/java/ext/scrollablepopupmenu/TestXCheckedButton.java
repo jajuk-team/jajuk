@@ -32,13 +32,12 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
 import org.apache.commons.lang.ArrayUtils;
-
-import junit.framework.TestCase;
+import org.jajuk.JajukTestCase;
 
 /**
  * 
  */
-public class TestXCheckedButton extends TestCase {
+public class TestXCheckedButton extends JajukTestCase {
 
   /**
    * Test method for

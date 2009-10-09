@@ -28,7 +28,7 @@ import java.util.List;
 
 import javax.swing.ImageIcon;
 
-import junit.framework.TestCase;
+import org.jajuk.JajukTestCase;
 
 import org.apache.commons.collections.Predicate;
 import org.apache.commons.lang.StringUtils;
@@ -38,7 +38,7 @@ import org.jajuk.util.Const;
 /**
  * 
  */
-public class TestItemManager extends TestCase {
+public class TestItemManager extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.base.ItemManager#ItemManager()}.

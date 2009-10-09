@@ -38,12 +38,12 @@ import org.jajuk.services.players.IPlayerImpl;
 import org.jajuk.services.players.TestQueueModel.MockPlayer;
 import org.jajuk.util.Const;
 
-import junit.framework.TestCase;
+import org.jajuk.JajukTestCase;
 
 /**
  * 
  */
-public class TestBookmarks extends TestCase {
+public class TestBookmarks extends JajukTestCase {
 
   /*
    * (non-Javadoc)

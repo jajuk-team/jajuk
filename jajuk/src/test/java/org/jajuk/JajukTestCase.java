@@ -18,27 +18,23 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *  $Revision: 3132 $
  */
-package org.jajuk.services.dbus;
+package org.jajuk;
 
-import org.jajuk.JajukTestCase;
+import junit.framework.TestCase;
 
 /**
  * 
  */
-public class TestDBusSignalImpl extends JajukTestCase {
+public abstract class JajukTestCase extends TestCase {
 
-  /**
-   * Test method for {@link org.jajuk.services.dbus.DBusSignalImpl#isRemote()}.
+  /* (non-Javadoc)
+   * @see junit.framework.TestCase#setUp()
    */
-  public final void testIsRemote() {
-    // currently false
-    assertFalse(new DBusSignalImpl().isRemote());
-  }
-
-  public final void testFileChangedSignal() throws Exception {
-    DBusSignalImpl.FileChangedSignal signal = 
-      new DBusSignalImpl.FileChangedSignal("testfile", "/path/test");
+  @Override
+  protected void setUp() throws Exception {
+    // let's clean up before we begin any test
+    JUnitHelpers.waitForAllWorkToFinishAndCleanup();
     
-    assertEquals("testfile", signal.getFilename());
+    super.setUp();
   }
 }

@@ -28,12 +28,12 @@ import org.jajuk.events.JajukEvents;
 import org.jajuk.ui.actions.ActionManager;
 import org.jajuk.util.Const;
 
-import junit.framework.TestCase;
+import org.jajuk.JajukTestCase;
 
 /**
  * 
  */
-public class TestDBusSupportImpl extends TestCase {
+public class TestDBusSupportImpl extends JajukTestCase {
 
   
   @Override

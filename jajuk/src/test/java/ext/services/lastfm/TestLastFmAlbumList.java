@@ -27,12 +27,12 @@ import net.roarsoftware.lastfm.Album;
 
 import org.jajuk.util.UtilString;
 
-import junit.framework.TestCase;
+import org.jajuk.JajukTestCase;
 
 /**
  * 
  */
-public class TestLastFmAlbumList extends TestCase {
+public class TestLastFmAlbumList extends JajukTestCase {
   private static final String API_KEY = "711591ss6q695ps349o6681pr1oq1467";
 
   /**

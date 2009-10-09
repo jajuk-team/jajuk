@@ -22,7 +22,7 @@ package org.jajuk.services.bookmark;
 
 import java.util.Properties;
 
-import junit.framework.TestCase;
+import org.jajuk.JajukTestCase;
 
 import org.apache.commons.io.FileUtils;
 import org.jajuk.JUnitHelpers;
@@ -50,17 +50,10 @@ import org.xml.sax.SAXParseException;
 /**
  * 
  */
-public class TestHistory extends TestCase {
+public class TestHistory extends JajukTestCase {
 
   @Override
   protected void setUp() throws Exception {
-    // clean history for each test to remove any leftovers
-    History.getInstance().clear();
-    FileManager.getInstance().clear();
-
-    // we have to sleep a bit as it is executed in the background
-    Thread.sleep(100);
-    
     super.setUp();
   }
 
@@ -176,7 +169,7 @@ public class TestHistory extends TestCase {
     History.getInstance().clear();
 
     // we have to sleep a bit as it is executed in the background
-    Thread.sleep(100);
+    JUnitHelpers.clearSwingUtilitiesQueue();
 
     // size should be zero again now
     assertEquals(0, History.getInstance().getHistory().size());
@@ -246,7 +239,8 @@ public class TestHistory extends TestCase {
     // cleanup should keep this file as it is registered correctly
     History.getInstance().cleanup();
     // we have to sleep a bit as it is executed in the background
-    Thread.sleep(100);
+    JUnitHelpers.clearSwingUtilitiesQueue();
+    
     assertEquals(1, History.getInstance().getHistory().size());
     
     // add another file and unregister it from the FileManager
@@ -259,14 +253,16 @@ public class TestHistory extends TestCase {
     // cleanup should now remove one file!
     History.getInstance().cleanup();
     // we have to sleep a bit as it is executed in the background
-    Thread.sleep(100);
+    JUnitHelpers.clearSwingUtilitiesQueue();
+    
     assertEquals(1, History.getInstance().getHistory().size());
 
     // if we clean out FileManager, cleanup should remove this file as well
     FileManager.getInstance().clear();
     History.getInstance().cleanup();
     // we have to sleep a bit as it is executed in the background
-    Thread.sleep(100);
+    JUnitHelpers.clearSwingUtilitiesQueue();
+    
     assertEquals(0, History.getInstance().getHistory().size());
   }
 
@@ -290,7 +286,8 @@ public class TestHistory extends TestCase {
     // change from id 2 to 3
     History.getInstance().changeID("2", "3");
     // we have to sleep a bit as it is executed in the background
-    Thread.sleep(100);
+    JUnitHelpers.clearSwingUtilitiesQueue();
+    
     assertEquals(1, History.getInstance().getHistory().size());
     assertEquals("3", History.getInstance().getHistoryItem(0).getFileId());
     // it is not automatically changed in FileManager itself!
@@ -318,13 +315,15 @@ public class TestHistory extends TestCase {
     // minus 1 means endlessly
     History.getInstance().clear(-1);
     // we have to sleep a bit as it is executed in the background
-    Thread.sleep(100);
+    JUnitHelpers.clearSwingUtilitiesQueue();
+    
     assertEquals(1, History.getInstance().getHistory().size());
 
     // stating a day will clean the file
     History.getInstance().clear(2);
     // we have to sleep a bit as it is executed in the background
-    Thread.sleep(100);
+    JUnitHelpers.clearSwingUtilitiesQueue();
+    
     assertEquals(0, History.getInstance().getHistory().size());
   }
 
@@ -337,7 +336,8 @@ public class TestHistory extends TestCase {
     // stating a day bigger than one will keep the file
     History.getInstance().clear(2);
     // we have to sleep a bit as it is executed in the background
-    Thread.sleep(100);
+    JUnitHelpers.clearSwingUtilitiesQueue();
+    
     assertEquals(1, History.getInstance().getHistory().size());
   }
   
@@ -351,7 +351,8 @@ public class TestHistory extends TestCase {
     FileManager.getInstance().clear();
     History.getInstance().clear(2);
     // we have to sleep a bit as it is executed in the background
-    Thread.sleep(100);
+    JUnitHelpers.clearSwingUtilitiesQueue();
+    
     assertEquals(0, History.getInstance().getHistory().size());
   }
 
@@ -377,7 +378,8 @@ public class TestHistory extends TestCase {
     // clear the history, now the item is gone
     History.getInstance().clear();
     // we have to sleep a bit as it is executed in the background
-    Thread.sleep(100);
+    JUnitHelpers.clearSwingUtilitiesQueue();
+    
     assertEquals(0, History.getInstance().getHistory().size());
     
     // now load the data again
@@ -546,7 +548,8 @@ public class TestHistory extends TestCase {
     
     History.getInstance().update(new JajukEvent(JajukEvents.FILE_LAUNCHED, detail));
     // we have to sleep a bit as it is executed in the background
-    Thread.sleep(100);
+    JUnitHelpers.clearSwingUtilitiesQueue();
+    
     // now the file should be added
     assertEquals(2, History.getInstance().getHistory().size());
     assertEquals("3", History.getInstance().getHistoryItem(0).getFileId());
@@ -565,7 +568,10 @@ public class TestHistory extends TestCase {
     // trigger the refresh-event
     History.getInstance().update(new JajukEvent(JajukEvents.DEVICE_REFRESH, null));
     // we have to sleep a bit as it is executed in the background
-    Thread.sleep(100);
+    JUnitHelpers.clearSwingUtilitiesQueue();
+    // we need to wait a second time because we have an invokeLater() inside another invokeLater() here...
+    JUnitHelpers.clearSwingUtilitiesQueue();
+    
     // now the item is removed because it is not available any more in the FileManager
     assertEquals(0, History.getInstance().getHistory().size());
   }
@@ -581,9 +587,8 @@ public class TestHistory extends TestCase {
     History.getInstance().update(new JajukEvent(JajukEvents.CLEAR_HISTORY, null));
     // here we actually have to sleep a few times as there are two thread-calls done, once inside update() and then 
     // another one in clear() itself, one "sleep()" only gives up thread-control once and then gains control again later
-    Thread.sleep(100);
-    Thread.sleep(100);
-    Thread.sleep(100);
+    JUnitHelpers.clearSwingUtilitiesQueue();
+    
     // now the item is cleared
     // TODO: this test fails in Hudson for some reason, I could not find out why, it works
     // in Eclipse as well as in a local Hudson instance that I did set up, so I can only 
@@ -598,9 +603,7 @@ public class TestHistory extends TestCase {
   public final void testUpdateFileNameChanged() throws Exception {
     // it seems there are some rare cases where we still have some threads doing some updates, 
     // therefore sleep some more up-front to let that clear out before we start the test here
-    Thread.sleep(100);
-    Thread.sleep(100);
-    Thread.sleep(100);
+    JUnitHelpers.clearSwingUtilitiesQueue();
 
     // enable history  
     Conf.setProperty(Const.CONF_HISTORY, "1");
@@ -630,11 +633,8 @@ public class TestHistory extends TestCase {
     History.getInstance().update(new JajukEvent(JajukEvents.FILE_NAME_CHANGED, detail));
     // we have to sleep a bit as it is executed in the background, sometimes hudson did
     // fail this test, so let's try to do sleep a few times
-    Thread.sleep(100);
-    Thread.sleep(100);
-    Thread.sleep(100);
-    Thread.sleep(100);
-    Thread.sleep(100);
+    JUnitHelpers.clearSwingUtilitiesQueue();
+    
     // now we only should have the item "3"
     assertEquals(1, History.getInstance().getHistory().size());
     // TODO: this test fails in Hudson for some reason, I could not find out why, it works
@@ -654,10 +654,9 @@ public class TestHistory extends TestCase {
   }
 
   public final void testConstructorAlreadyLaunched() throws Exception {
-    // it seems there are some rare cases where we still have some threads doing some updates, 
+    // it seems there are some cases where we still have some Queues doing some updates, 
     // therefore sleep some more up-front to let that clear out before we start the test here
-    Thread.sleep(100);
-    Thread.sleep(100);
+    JUnitHelpers.clearSwingUtilitiesQueue();
     Thread.sleep(100);
     
     // enable history  
@@ -680,10 +679,8 @@ public class TestHistory extends TestCase {
     // call the constructor via reflection
     History hist = JUnitHelpers.executePrivateConstructor(History.class);
 
-    // we have to sleep a bit as it is executed in the background
-    Thread.sleep(100);
-    Thread.sleep(100);
-    Thread.sleep(100);
+    // we have to wait for the queue to be empty
+    JUnitHelpers.clearSwingUtilitiesQueue();
 
     // it seems there is sometimes still work done by other tests, we saw failures here, 
     // I added this check here again to see if that actually happens...

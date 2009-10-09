@@ -25,7 +25,7 @@ import ext.services.xml.XMLUtils;
 import java.util.ArrayList;
 import java.util.List;
 
-import junit.framework.TestCase;
+import org.jajuk.JajukTestCase;
 
 import org.apache.commons.lang.StringUtils;
 import org.jajuk.JUnitHelpers;
@@ -44,7 +44,7 @@ import org.w3c.dom.Document;
 /**
  * 
  */
-public class TestDigitalDJ extends TestCase {
+public class TestDigitalDJ extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.services.dj.DigitalDJ#hashCode()}.

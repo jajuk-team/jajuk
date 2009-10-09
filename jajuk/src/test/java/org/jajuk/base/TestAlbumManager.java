@@ -23,7 +23,7 @@ package org.jajuk.base;
 import java.util.List;
 import java.util.Set;
 
-import junit.framework.TestCase;
+import org.jajuk.JajukTestCase;
 
 import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
@@ -38,7 +38,7 @@ import org.jajuk.util.Const;
 /**
  * 
  */
-public class TestAlbumManager extends TestCase {
+public class TestAlbumManager extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.base.AlbumManager#getLabel()}.

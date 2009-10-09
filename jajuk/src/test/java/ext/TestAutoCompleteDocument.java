@@ -27,7 +27,7 @@ import javax.swing.JTextField;
 import javax.swing.text.Document;
 import javax.swing.text.JTextComponent;
 
-import junit.framework.TestCase;
+import org.jajuk.JajukTestCase;
 
 import org.jdesktop.swingx.autocomplete.AbstractAutoCompleteAdaptor;
 import org.jdesktop.swingx.autocomplete.ComboBoxAdaptor;
@@ -37,7 +37,7 @@ import org.jdesktop.swingx.autocomplete.TextComponentAdaptor;
 /**
  * 
  */
-public class TestAutoCompleteDocument extends TestCase {
+public class TestAutoCompleteDocument extends JajukTestCase {
 
   /**
    * Test method for {@link ext.AutoCompleteDocument#remove(int, int)}.

@@ -24,12 +24,12 @@ import org.jajuk.services.startup.StartupCollectionService;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 
-import junit.framework.TestCase;
+import org.jajuk.JajukTestCase;
 
 /**
  * 
  */
-public class TestDeviceManager extends TestCase {
+public class TestDeviceManager extends JajukTestCase {
 
   
   

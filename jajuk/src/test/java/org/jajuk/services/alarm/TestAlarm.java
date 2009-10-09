@@ -24,7 +24,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import junit.framework.TestCase;
+import org.jajuk.JajukTestCase;
 
 import org.apache.commons.lang.time.DateUtils;
 import org.jajuk.base.File;
@@ -33,7 +33,7 @@ import org.jajuk.util.Const;
 /**
  * 
  */
-public class TestAlarm extends TestCase {
+public class TestAlarm extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.services.alarm.Alarm#Alarm(java.util.Date, java.util.List, java.lang.String)}.

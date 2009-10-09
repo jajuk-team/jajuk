@@ -24,7 +24,7 @@ import java.awt.HeadlessException;
 import java.io.File;
 import java.net.URL;
 
-import junit.framework.TestCase;
+import org.jajuk.JajukTestCase;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
@@ -34,7 +34,7 @@ import org.jajuk.services.covers.Cover.CoverType;
 /**
  * 
  */
-public class TestCover extends TestCase {
+public class TestCover extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.services.covers.Cover#hashCode()}.

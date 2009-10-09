@@ -29,7 +29,7 @@ import java.io.OutputStream;
 import java.util.Random;
 import java.util.zip.ZipException;
 
-import junit.framework.TestCase;
+import org.jajuk.JajukTestCase;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.SystemUtils;
@@ -39,7 +39,7 @@ import org.jajuk.util.error.JajukException;
 /**
  * 
  */
-public class TestUtilSystem extends TestCase {
+public class TestUtilSystem extends JajukTestCase {
   private File file1, file2;
 
   /*

@@ -25,12 +25,12 @@ import org.jajuk.JUnitHelpers;
 import org.jajuk.services.startup.StartupCollectionService;
 import org.jajuk.util.Const;
 
-import junit.framework.TestCase;
+import org.jajuk.JajukTestCase;
 
 /**
  * 
  */
-public class TestAuthor extends TestCase {
+public class TestAuthor extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.base.Author#getDesc()}.

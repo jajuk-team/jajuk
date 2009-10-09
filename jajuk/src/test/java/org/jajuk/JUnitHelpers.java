@@ -26,9 +26,18 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
+import javax.swing.SwingUtilities;
+
 import junit.framework.Assert;
 
+import org.jajuk.base.DeviceManager;
+import org.jajuk.base.DirectoryManager;
+import org.jajuk.base.FileManager;
+import org.jajuk.events.JajukEvents;
+import org.jajuk.events.ObservationManager;
+import org.jajuk.services.bookmark.History;
 import org.jajuk.services.core.SessionService;
+import org.jajuk.services.players.QueueModel;
 import org.jajuk.util.Const;
 
 /**
@@ -354,5 +363,89 @@ public class JUnitHelpers {
     } catch (IllegalArgumentException e) {
       Assert.assertTrue(e.getMessage(), e.getMessage().contains("No enum const class"));
     }
+  }
+
+  public static void clearSwingUtilitiesQueue() throws InterruptedException, InvocationTargetException {
+    // we try to wait for all items that were sent via
+    // "SwingUtilities.invokeLater()" in order
+    // to have a deterministic state in the tests where we know that the
+    // asynchronous action
+    // done in any "invokeLater()" was actually finished
+
+    SwingUtilities.invokeAndWait(new Runnable() {
+      @Override
+      public void run() {
+        // nothing to do here, we just want the runnable to run...
+      }
+    });
+    
+    //Thread.currentThread().
+  }
+  
+  public static void waitForThreadToFinish(final String name) throws InterruptedException  {
+    int count = Thread.currentThread().getThreadGroup().activeCount();
+    
+    Thread[] threads = new Thread[count];
+    /*int received = */Thread.currentThread().getThreadGroup().enumerate(threads);
+    
+    /* we ignore this check as we can not do anything anyway if we receive not all threads
+    if(count != received) {
+      throw new IllegalStateException("Could not read all threads: Expected: " + count + " Found: " + received);
+    }*/
+
+    for(Thread t : threads) {
+      if(t != null && name.equals(t.getName())) {
+        t.join();
+      }
+    }
+  }
+  
+  public static void waitForAllWorkToFinishAndCleanup() throws InterruptedException, InvocationTargetException {
+    ObservationManager.clear();
+    
+    QueueModel.stopRequest();
+    QueueModel.clear();
+
+    FileManager.getInstance().clear();
+    DirectoryManager.getInstance().clear();
+    DeviceManager.getInstance().cleanAllDevices();
+    History.getInstance().clear();
+    
+    // wait a bit to let deferred actions take place before we shut down
+    JUnitHelpers.waitForThreadToFinish("Cover Refresh Thread");
+    JUnitHelpers.waitForThreadToFinish("Queue Push Thread");
+    JUnitHelpers.waitForThreadToFinish("Device Refresh Thread");
+    JUnitHelpers.waitForThreadToFinish("Playlist Prepare Party Thread");
+
+    // clear this for all available events
+//    for(JajukEvents event : JajukEvents.values()) {
+//      JUnitHelpers.waitForThreadToFinish("Event Executor for: " + event.toString());
+//    }
+    JUnitHelpers.waitForThreadToFinish("Event Executor for: " + JajukEvents.ALARMS_CHANGE.toString());
+    JUnitHelpers.waitForThreadToFinish("Event Executor for: " + JajukEvents.ALBUM_CHANGED.toString());
+    JUnitHelpers.waitForThreadToFinish("Event Executor for: " + JajukEvents.BANNED.toString());
+    JUnitHelpers.waitForThreadToFinish("Event Executor for: " + JajukEvents.CDDB_WIZARD.toString());
+    JUnitHelpers.waitForThreadToFinish("Event Executor for: " + JajukEvents.CLEAR_HISTORY.toString());
+    JUnitHelpers.waitForThreadToFinish("Event Executor for: " + JajukEvents.COVER_NEED_REFRESH.toString());
+    JUnitHelpers.waitForThreadToFinish("Event Executor for: " + JajukEvents.DEVICE_REFRESH.toString());
+    JUnitHelpers.waitForThreadToFinish("Event Executor for: " + JajukEvents.FILE_FINISHED.toString());
+    JUnitHelpers.waitForThreadToFinish("Event Executor for: " + JajukEvents.FILE_LAUNCHED.toString());
+    JUnitHelpers.waitForThreadToFinish("Event Executor for: " + JajukEvents.FILE_NAME_CHANGED.toString());
+    JUnitHelpers.waitForThreadToFinish("Event Executor for: " + JajukEvents.LANGUAGE_CHANGED.toString());
+    JUnitHelpers.waitForThreadToFinish("Event Executor for: " + JajukEvents.MUTE_STATE.toString());
+    JUnitHelpers.waitForThreadToFinish("Event Executor for: " + JajukEvents.PLAYER_PAUSE.toString());
+    JUnitHelpers.waitForThreadToFinish("Event Executor for: " + JajukEvents.PLAYER_PLAY.toString());
+    JUnitHelpers.waitForThreadToFinish("Event Executor for: " + JajukEvents.PLAYER_RESUME.toString());
+    JUnitHelpers.waitForThreadToFinish("Event Executor for: " + JajukEvents.PLAYER_STOP.toString());
+    JUnitHelpers.waitForThreadToFinish("Event Executor for: " + JajukEvents.PLAY_ERROR.toString());
+    JUnitHelpers.waitForThreadToFinish("Event Executor for: " + JajukEvents.PLAY_OPENING.toString());
+    JUnitHelpers.waitForThreadToFinish("Event Executor for: " + JajukEvents.PREFERENCES_RESET.toString());
+    JUnitHelpers.waitForThreadToFinish("Event Executor for: " + JajukEvents.RATE_RESET.toString());
+    JUnitHelpers.waitForThreadToFinish("Event Executor for: " + JajukEvents.STYLE_NAME_CHANGED.toString());
+    JUnitHelpers.waitForThreadToFinish("Event Executor for: " + JajukEvents.VOLUME_CHANGED.toString());
+    JUnitHelpers.waitForThreadToFinish("Event Executor for: " + JajukEvents.WEBRADIO_LAUNCHED.toString());
+    JUnitHelpers.waitForThreadToFinish("Event Executor for: " + JajukEvents.ZERO.toString());
+
+    JUnitHelpers.clearSwingUtilitiesQueue();
   }
 }

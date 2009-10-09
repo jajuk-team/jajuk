@@ -22,7 +22,7 @@ package org.jajuk.ui.wizard;
 
 import java.awt.HeadlessException;
 
-import junit.framework.TestCase;
+import org.jajuk.JajukTestCase;
 
 import org.jajuk.services.dj.AmbienceManager;
 import org.jajuk.services.dj.DigitalDJ;
@@ -33,7 +33,7 @@ import org.qdwizard.Screen;
 /**
  * 
  */
-public class TestDigitalDJWizard extends TestCase {
+public class TestDigitalDJWizard extends JajukTestCase {
   /**
    * Test method for
    * {@link org.jajuk.ui.wizard.DigitalDJWizard#getPreviousScreen(java.lang.Class)}

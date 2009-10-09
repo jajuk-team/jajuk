@@ -23,7 +23,7 @@ package ext.services.xml;
 import java.io.File;
 import java.io.IOException;
 
-import junit.framework.TestCase;
+import org.jajuk.JajukTestCase;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
@@ -35,7 +35,7 @@ import org.w3c.dom.Element;
 /**
  * 
  */
-public class TestXMLUtils extends TestCase {
+public class TestXMLUtils extends JajukTestCase {
 
   // helper method to emma-coverage of the unused constructor
   public void testSerializableUtilitiesPrivateConstructor() throws Exception {

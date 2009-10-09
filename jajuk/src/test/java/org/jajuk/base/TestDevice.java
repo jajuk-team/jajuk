@@ -24,24 +24,26 @@ import java.awt.HeadlessException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
-import junit.framework.TestCase;
+import org.jajuk.JajukTestCase;
 
 import org.apache.commons.lang.StringUtils;
 import org.jajuk.JUnitHelpers;
 import org.jajuk.base.TestAlbumManager.MockPlayer;
+import org.jajuk.services.core.ExitService;
 import org.jajuk.services.players.IPlayerImpl;
 import org.jajuk.services.players.QueueModel;
 import org.jajuk.services.players.StackItem;
 import org.jajuk.services.startup.StartupCollectionService;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
+import org.jajuk.util.MD5Processor;
 import org.jajuk.util.error.JajukException;
 import org.xml.sax.Attributes;
 
 /**
  * 
  */
-public class TestDevice extends TestCase {
+public class TestDevice extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.base.Device#getDesc()}.
@@ -80,7 +82,7 @@ public class TestDevice extends TestCase {
         new PropertyMetaInformation("att3", true, false, true, false, false, String.class, null));
     DeviceManager.getInstance().registerProperty(
         new PropertyMetaInformation(Const.XML_DEVICE_AUTO_REFRESH, true, false, true, false, false,
-            String.class, null));
+            Double.class, null));
 
     device.populateProperties(new MockAttributes());
 
@@ -128,7 +130,7 @@ public class TestDevice extends TestCase {
         new PropertyMetaInformation("att3", true, false, true, false, false, String.class, null));
     DeviceManager.getInstance().registerProperty(
         new PropertyMetaInformation(Const.XML_DEVICE_AUTO_REFRESH, true, false, true, false, false,
-            String.class, null));
+            Double.class, null));
 
     device.populateProperties(new MockAttributes());
     assertNotNull(device.getHumanValue("att1"));
@@ -227,6 +229,9 @@ public class TestDevice extends TestCase {
     File file = getFile(8, dir);
     PlaylistManager.getInstance().registerPlaylistFile(file.getFIO(), dir);
 
+    // ensure we are not exiting, this would invalidate the test
+    assertFalse(ExitService.isExiting());
+    
     // now we have removals
     assertTrue(device.cleanRemovedFiles());
 
@@ -288,7 +293,7 @@ public class TestDevice extends TestCase {
    */
   public void testGetFilesRecursively() {
     Device device = new Device("1", "name");
-    device.setUrl(System.getProperty("java.io.tmpdir"));
+    device.setUrl(System.getProperty("java.io.tmpdir") + System.currentTimeMillis());
 
     // no files without a directory
     List<File> files = device.getFilesRecursively();
@@ -300,7 +305,7 @@ public class TestDevice extends TestCase {
     files = device.getFilesRecursively();
     assertEquals(0, files.size()); // no file available
 
-    getFile(1, dir);
+    getFile(100, dir);
 
     // now it should find some
     files = device.getFilesRecursively();
@@ -324,7 +329,8 @@ public class TestDevice extends TestCase {
     Track track = new Track(Integer.valueOf(i).toString(), "name", album, style, author, 120, year,
         1, type, 1);
 
-    return FileManager.getInstance().registerFile(Integer.valueOf(i).toString(), "test.tst", dir,
+    return FileManager.getInstance().registerFile(Integer.valueOf(i).toString(), 
+        "test" + Long.valueOf(System.currentTimeMillis()).toString() + ".tst", dir,
         track, 120, 70);
   }
 
@@ -343,16 +349,20 @@ public class TestDevice extends TestCase {
 
   /**
    * Test method for {@link org.jajuk.base.Device#getRootDirectory()}.
+   * @throws Exception 
    */
-  public void testGetRootDirectory() {
-    Device device = new Device("1", "name");
+  public void testGetRootDirectory() throws Exception {
+    // create a unique id here...
+    Device device = new Device(MD5Processor.hash("getRootDirectory"), "getRootDirectory");
+
     assertNull(device.getRootDirectory());
 
-    device.setUrl(System.getProperty("java.io.tmpdir"));
+    java.io.File file = java.io.File.createTempFile("test", "tst");
+        
+    device.setUrl(file.getAbsolutePath());
     DirectoryManager.getInstance().registerDirectory(device);
 
     assertNotNull(device.getRootDirectory());
-
   }
 
   /**
@@ -434,7 +444,6 @@ public class TestDevice extends TestCase {
     Device device = new Device("1", "name");
     device.setUrl(System.getProperty("java.io.tmpdir"));
     device.prepareRefresh(false);
-
   }
 
   public void testPrepareRefreshAsk() throws Exception {
@@ -515,8 +524,9 @@ public class TestDevice extends TestCase {
 
   /**
    * Test method for {@link org.jajuk.base.Device#refresh(boolean)}.
+   * @throws Exception 
    */
-  public void testRefreshBoolean() {
+  public void testRefreshBoolean() throws Exception {
     Device device = new Device("1", "name");
     device.setUrl(System.getProperty("java.io.tmpdir"));
 
@@ -537,8 +547,9 @@ public class TestDevice extends TestCase {
 
   /**
    * Test method for {@link org.jajuk.base.Device#refresh(boolean, boolean)}.
+   * @throws Exception 
    */
-  public void testRefreshBooleanBoolean() {
+  public void testRefreshBooleanBoolean() throws Exception {
     Device device = new Device("1", "name");
     device.setUrl(System.getProperty("java.io.tmpdir"));
 

@@ -25,12 +25,12 @@ import java.util.List;
 
 import org.jajuk.base.Item;
 
-import junit.framework.TestCase;
+import org.jajuk.JajukTestCase;
 
 /**
  * 
  */
-public class TestFilter extends TestCase {
+public class TestFilter extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.util.Filter#Filter(java.lang.String, java.lang.String, boolean, boolean)}.

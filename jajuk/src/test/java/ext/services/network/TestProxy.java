@@ -29,12 +29,12 @@ import java.net.Proxy.Type;
 
 import org.jajuk.util.log.Log;
 
-import junit.framework.TestCase;
+import org.jajuk.JajukTestCase;
 
 /**
  * 
  */
-public class TestProxy extends TestCase {
+public class TestProxy extends JajukTestCase {
   private static final int PROXY_PORT = 0; // auto-choose
   ServerSocket socket;
 

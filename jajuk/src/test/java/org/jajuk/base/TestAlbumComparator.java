@@ -22,12 +22,12 @@ package org.jajuk.base;
 
 import java.util.Date;
 
-import junit.framework.TestCase;
+import org.jajuk.JajukTestCase;
 
 /**
  * 
  */
-public class TestAlbumComparator extends TestCase {
+public class TestAlbumComparator extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.base.AlbumComparator#AlbumComparator(int)}.

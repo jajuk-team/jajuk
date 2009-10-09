@@ -21,7 +21,7 @@
 package org.jajuk.services.dj;
 
 import ext.services.xml.XMLUtils;
-import junit.framework.TestCase;
+import org.jajuk.JajukTestCase;
 
 import org.apache.commons.lang.StringUtils;
 import org.jajuk.base.Album;
@@ -41,7 +41,7 @@ import org.jajuk.util.Const;
 /**
  * 
  */
-public class TestAmbienceDigitalDJ extends TestCase {
+public class TestAmbienceDigitalDJ extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.services.dj.AmbienceDigitalDJ#toXML()}.
@@ -78,6 +78,14 @@ public class TestAmbienceDigitalDJ extends TestCase {
     dj.setAmbience(new Ambience("5", "ambience", new String[] {"mystyle"} ));
     
     getFile(6, style);
+    
+    // assert a few conditions to find out why this test fails sometimes when run in combination with others
+    assertFalse(dj.isTrackUnicity());
+    assertTrue(FileManager.getInstance().getGlobalShufflePlaylist().size() > 0);
+    assertTrue(
+        dj.getAmbience().getStyles().contains(
+        FileManager.getInstance().getGlobalShufflePlaylist().get(0).getTrack().getStyle()));
+  
     
     assertEquals(Const.MIN_TRACKS_NUMBER_WITHOUT_UNICITY, dj.generatePlaylist().size());
     

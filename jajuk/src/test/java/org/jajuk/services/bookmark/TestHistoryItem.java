@@ -35,12 +35,12 @@ import org.jajuk.services.players.IPlayerImpl;
 import org.jajuk.services.players.TestQueueModel.MockPlayer;
 import org.jajuk.util.Const;
 
-import junit.framework.TestCase;
+import org.jajuk.JajukTestCase;
 
 /**
  * 
  */
-public class TestHistoryItem extends TestCase {
+public class TestHistoryItem extends JajukTestCase {
 
   /**
    * Test method for

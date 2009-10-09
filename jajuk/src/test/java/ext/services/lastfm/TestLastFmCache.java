@@ -25,14 +25,14 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
-import junit.framework.TestCase;
+import org.jajuk.JajukTestCase;
 
 import org.jajuk.JUnitHelpers;
 
 /**
  * 
  */
-public class TestLastFmCache extends TestCase {
+public class TestLastFmCache extends JajukTestCase {
 
   /*
    * (non-Javadoc)
@@ -42,7 +42,7 @@ public class TestLastFmCache extends TestCase {
   @Override
   protected void setUp() throws Exception {
     JUnitHelpers.createSessionDirectory();
-
+    
     // make sure the cache is cleaned up front to not find items from previous runs
     LastFmCache cache = new LastFmCache();
     cache.clearCache();

@@ -20,12 +20,12 @@
  */
 package org.jajuk.services.dbus;
 
-import junit.framework.TestCase;
+import org.jajuk.JajukTestCase;
 
 /**
  * 
  */
-public class TestDBusManager extends TestCase {
+public class TestDBusManager extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.services.dbus.DBusManager#getInstance()}.

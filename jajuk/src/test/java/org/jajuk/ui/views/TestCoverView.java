@@ -26,8 +26,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ComponentEvent;
 import java.util.Set;
 
-import junit.framework.TestCase;
+import org.jajuk.JajukTestCase;
 
+import org.jajuk.JUnitHelpers;
 import org.jajuk.base.Album;
 import org.jajuk.base.Author;
 import org.jajuk.base.Device;
@@ -45,39 +46,33 @@ import org.jajuk.util.Const;
 /**
  * 
  */
-public class TestCoverView extends TestCase {
-  
-  @Override
-  protected void tearDown() throws Exception {
-    // wait a bit to let deferred actions take place before we shut down
-    Thread.sleep(100);
-  }
-
+public class TestCoverView extends JajukTestCase {
   /**
    * Test method for
-   * {@link org.jajuk.ui.views.CoverView#componentResized(java.awt.event.ComponentEvent)}.
+   * {@link org.jajuk.ui.views.CoverView#componentResized(java.awt.event.ComponentEvent)}
+   * .
    */
-  
+
   public final void testComponentResized() {
     CoverView view = new CoverView();
 
     // this expects the UI to be available
     view.initUI();
 
-    view.componentResized(new ComponentEvent(new Component(){
+    view.componentResized(new ComponentEvent(new Component() {
       private static final long serialVersionUID = 1L;
-      }, 9));
-    
+    }, 9));
+
     // resize immediately again to cover the time delay mechanism
-    view.componentResized(new ComponentEvent(new Component(){
+    view.componentResized(new ComponentEvent(new Component() {
       private static final long serialVersionUID = 1L;
-      }, 9));    
+    }, 9));
   }
 
   /**
    * Test method for {@link org.jajuk.ui.views.CoverView#CoverView()}.
    */
-  
+
   public final void testCoverView() {
     new CoverView();
   }
@@ -86,11 +81,11 @@ public class TestCoverView extends TestCase {
    * Test method for
    * {@link org.jajuk.ui.views.CoverView#CoverView(org.jajuk.base.File)}.
    */
-  
+
   public final void testCoverViewFile() {
-     new CoverView(getFile());
+    new CoverView(getFile());
   }
-  
+
   private File getFile() {
     Style style = new Style("5", "name");
     Album album = new Album("4", "name", "artis", 23);
@@ -100,14 +95,14 @@ public class TestCoverView extends TestCase {
     Track track = new Track("3", "name", album, style, author, 120, year, 1, type, 1);
     Device device = new Device("9", "name");
     Directory dir = new Directory("2", "name", null, device);
-    
+
     return new org.jajuk.base.File("1", "test.tst", dir, track, 120, 70);
   }
 
   /**
    * Test method for {@link org.jajuk.ui.views.CoverView#initUI()}.
    */
-  
+
   public final void testInitUI() {
     CoverView view = new CoverView();
     view.initUI();
@@ -116,7 +111,7 @@ public class TestCoverView extends TestCase {
   /**
    * Test method for {@link org.jajuk.ui.views.CoverView#initUI(boolean)}.
    */
-  
+
   public final void testInitUIBoolean() {
     {
       CoverView view = new CoverView();
@@ -131,9 +126,10 @@ public class TestCoverView extends TestCase {
 
   /**
    * Test method for
-   * {@link org.jajuk.ui.views.CoverView#actionPerformed(java.awt.event.ActionEvent)}.
+   * {@link org.jajuk.ui.views.CoverView#actionPerformed(java.awt.event.ActionEvent)}
+   * .
    */
-  
+
   public final void testActionPerformed() {
     CoverView view = new CoverView();
 
@@ -141,10 +137,10 @@ public class TestCoverView extends TestCase {
 
     // disable confirmations to not show UI during running tests
     Conf.setProperty(Const.CONF_CONFIRMATIONS_DELETE_COVER, "false");
-    
+
     // different source, will not trigger anything
     view.actionPerformed(new ActionEvent("testsource", 1, "test"));
-    
+
     // now try to trigger actions on each of the components in the view
     recursiveActionPerformed(view, view);
   }
@@ -153,20 +149,21 @@ public class TestCoverView extends TestCase {
    * @param view
    */
   private void recursiveActionPerformed(Container cmp, CoverView view) {
-    for(int i = 0;i < cmp.getComponentCount();i++) {
+    for (int i = 0; i < cmp.getComponentCount(); i++) {
       // first call actionPerfomed with this component
-      view.actionPerformed(new ActionEvent(
-          cmp.getComponent(i)
-          , 1, "test")); 
+      view.actionPerformed(new ActionEvent(cmp.getComponent(i), 1, "test"));
 
       // then again with CTRL-Mask set to trigger all parts
-      view.actionPerformed(new ActionEvent(
-          cmp.getComponent(i)
-          , 1, "test", ActionEvent.CTRL_MASK)); // set CTRL_MASK to trigger all code
-      
+      view.actionPerformed(new ActionEvent(cmp.getComponent(i), 1, "test", ActionEvent.CTRL_MASK)); // set
+                                                                                                    // CTRL_MASK
+                                                                                                    // to
+                                                                                                    // trigger
+                                                                                                    // all
+                                                                                                    // code
+
       // then recusively step into this components
-      if(cmp.getComponent(i) instanceof Container) {
-        recursiveActionPerformed((Container)cmp.getComponent(i), view);
+      if (cmp.getComponent(i) instanceof Container) {
+        recursiveActionPerformed((Container) cmp.getComponent(i), view);
       }
     }
   }
@@ -175,7 +172,7 @@ public class TestCoverView extends TestCase {
    * Test method for
    * {@link org.jajuk.ui.views.CoverView#createQuery(org.jajuk.base.File)}.
    */
-  
+
   public final void testCreateQuery() {
     CoverView view = new CoverView();
     // NPE: view.createQuery(null);
@@ -185,7 +182,7 @@ public class TestCoverView extends TestCase {
   /**
    * Test method for {@link org.jajuk.ui.views.CoverView#getDesc()}.
    */
-  
+
   public final void testGetDesc() {
     CoverView view = new CoverView();
 
@@ -196,7 +193,7 @@ public class TestCoverView extends TestCase {
   /**
    * Test method for {@link org.jajuk.ui.views.CoverView#getRegistrationKeys()}.
    */
-  
+
   public final void testGetRegistrationKeys() {
     CoverView view = new CoverView();
     Set<JajukEvents> eventSubjectSet = view.getRegistrationKeys();
@@ -207,11 +204,11 @@ public class TestCoverView extends TestCase {
   /**
    * Test method for {@link org.jajuk.ui.views.CoverView#searching(boolean)}.
    */
-  
+
   public final void testSearching() {
     CoverView view = new CoverView();
     view.initUI();
-    
+
     view.searching(true);
     view.searching(false);
   }
@@ -219,14 +216,14 @@ public class TestCoverView extends TestCase {
   /**
    * Test method for {@link org.jajuk.ui.views.CoverView#getCurrentImage()}.
    */
-  
+
   public final void testGetCurrentImage() throws Exception {
     CoverView view = new CoverView();
 
     // need to cover initialized
     view.initUI();
 
-    // there is always a dummy image... 
+    // there is always a dummy image...
     assertNotNull(view.getCurrentImage());
   }
 
@@ -234,13 +231,13 @@ public class TestCoverView extends TestCase {
    * Test method for
    * {@link org.jajuk.ui.views.CoverView#update(org.jajuk.events.JajukEvent)}.
    */
-  
+
   public final void testUpdateJajukEvent() {
     CoverView view = new CoverView();
-    
+
     // this expects the UI to be available
     view.initUI();
-    
+
     // this is not catched currently, but should still not cause trouble
     view.update(new JajukEvent(JajukEvents.ALARMS_CHANGE));
 
@@ -249,6 +246,6 @@ public class TestCoverView extends TestCase {
     view.update(new JajukEvent(JajukEvents.WEBRADIO_LAUNCHED));
     view.update(new JajukEvent(JajukEvents.ZERO));
     view.update(new JajukEvent(JajukEvents.PLAYER_STOP));
-    view.update(new JajukEvent(JajukEvents.COVER_NEED_REFRESH));  
-    }
+    view.update(new JajukEvent(JajukEvents.COVER_NEED_REFRESH));
+  }
 }

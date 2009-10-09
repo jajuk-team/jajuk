@@ -20,7 +20,7 @@
  */
 package org.jajuk.base;
 
-import junit.framework.TestCase;
+import org.jajuk.JajukTestCase;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
@@ -33,7 +33,7 @@ import org.xml.sax.SAXParseException;
 /**
  * 
  */
-public class TestCollection extends TestCase {
+public class TestCollection extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.base.Collection#startDocument()}.
@@ -115,13 +115,20 @@ public class TestCollection extends TestCase {
           type, 1);
     }
     YearManager.getInstance().registerYear("1900");
+    Device device = new Device("6", System.getProperty("java.io.tmpdir"));
+    device.setUrl(System.getProperty("java.io.tmpdir"));
     PlaylistManager.getInstance().registerPlaylistFile("4", "plf", new Directory("4", "directory", null, 
-        new Device("6", System.getProperty("java.io.tmpdir"))));
+        device));
     AuthorManager.getInstance().registerAuthor("testauthor");
     AlbumManager.getInstance().registerAlbum("album2", "artist1", 0);
-    DirectoryManager.getInstance().registerDirectory(new Device("7", System.getProperty("java.io.tmpdir")));
+    
+    device = new Device("7", System.getProperty("java.io.tmpdir"));
+    device.setUrl(System.getProperty("java.io.tmpdir"));
+    DirectoryManager.getInstance().registerDirectory(device);
+    device = new Device("6", System.getProperty("java.io.tmpdir"));
+    device.setUrl(System.getProperty("java.io.tmpdir"));
     FileManager.getInstance().registerFile("5", "thisfile.mp3", new Directory("4", "directory", null, 
-        new Device("6", System.getProperty("java.io.tmpdir"))), TrackManager.getInstance().getTracks().get(0), 120, 100);
+        device), TrackManager.getInstance().getTracks().get(0), 120, 100);
     
     // delete the file before writing the collection
     assertTrue(file.delete());

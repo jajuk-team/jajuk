@@ -22,7 +22,7 @@ package org.jajuk.services.core;
 
 import java.util.Set;
 
-import junit.framework.TestCase;
+import org.jajuk.JajukTestCase;
 
 import org.jajuk.base.Album;
 import org.jajuk.base.Author;
@@ -47,7 +47,7 @@ import org.jajuk.util.Const;
 /**
  * 
  */
-public class TestRatingManager extends TestCase {
+public class TestRatingManager extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.services.core.RatingManager#run()}.

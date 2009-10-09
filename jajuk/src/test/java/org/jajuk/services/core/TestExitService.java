@@ -20,7 +20,7 @@
  */
 package org.jajuk.services.core;
 
-import junit.framework.TestCase;
+import org.jajuk.JajukTestCase;
 
 import org.jajuk.JUnitHelpers;
 import org.jajuk.services.startup.StartupCollectionService;
@@ -28,7 +28,7 @@ import org.jajuk.services.startup.StartupCollectionService;
 /**
  * 
  */
-public class TestExitService extends TestCase {
+public class TestExitService extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.services.core.ExitService#run()}.

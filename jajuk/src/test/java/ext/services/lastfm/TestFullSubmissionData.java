@@ -20,12 +20,12 @@
  */
 package ext.services.lastfm;
 
-import junit.framework.TestCase;
+import org.jajuk.JajukTestCase;
 
 /**
  * 
  */
-public class TestFullSubmissionData extends TestCase {
+public class TestFullSubmissionData extends JajukTestCase {
 
   /**
    * Test method for {@link ext.services.lastfm.FullSubmissionData#FullSubmissionData(java.lang.String, java.lang.String, java.lang.String, int, int, java.lang.String, int)}.

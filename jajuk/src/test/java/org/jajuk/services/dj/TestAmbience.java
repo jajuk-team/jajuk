@@ -28,12 +28,12 @@ import org.jajuk.JUnitHelpers;
 import org.jajuk.base.Style;
 import org.jajuk.base.StyleManager;
 
-import junit.framework.TestCase;
+import org.jajuk.JajukTestCase;
 
 /**
  * 
  */
-public class TestAmbience extends TestCase {
+public class TestAmbience extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.services.dj.Ambience#hashCode()}.

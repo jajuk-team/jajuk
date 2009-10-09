@@ -32,7 +32,7 @@ import javax.swing.event.TreeExpansionEvent;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.tree.TreePath;
 
-import junit.framework.TestCase;
+import org.jajuk.JajukTestCase;
 
 import org.jajuk.JUnitHelpers;
 import org.jajuk.base.Album;
@@ -50,7 +50,7 @@ import org.jajuk.util.Const;
 /**
  * 
  */
-public class TestTracksTreeView extends TestCase {
+public class TestTracksTreeView extends JajukTestCase {
 
   @Override
   protected void setUp() throws Exception {

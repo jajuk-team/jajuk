@@ -23,8 +23,9 @@ package org.jajuk.ui.helpers;
 import java.util.List;
 import java.util.Set;
 
-import junit.framework.TestCase;
+import org.jajuk.JajukTestCase;
 
+import org.jajuk.JUnitHelpers;
 import org.jajuk.base.Album;
 import org.jajuk.base.Author;
 import org.jajuk.base.Device;
@@ -49,7 +50,7 @@ import org.jajuk.util.Const;
 /**
  * 
  */
-public class TestPlayerStateMediator extends TestCase {
+public class TestPlayerStateMediator extends JajukTestCase {
 
   @Override
   protected void setUp() throws Exception {
@@ -93,13 +94,11 @@ public class TestPlayerStateMediator extends TestCase {
   public final void testUpdatePlay() throws Exception {
     PlayerStateMediator med = PlayerStateMediator.getInstance();
     med.update(new JajukEvent(JajukEvents.PLAYER_PLAY, null));
-    Thread.sleep(100); // sleep a bit to let swing invoke the action
   }
 
   public final void testUpdateStop() throws Exception {
     PlayerStateMediator med = PlayerStateMediator.getInstance();
     med.update(new JajukEvent(JajukEvents.PLAYER_STOP, null));
-    Thread.sleep(100); // sleep a bit to let swing invoke the action
   }
 
   public final void testUpdateStopQueueModel() throws Exception {
@@ -121,7 +120,6 @@ public class TestPlayerStateMediator extends TestCase {
 
     // run the method
     med.update(new JajukEvent(JajukEvents.PLAYER_STOP, null));
-    Thread.sleep(100); // sleep a bit to let swing invoke the action
   }
 
   @SuppressWarnings("unchecked")
@@ -148,53 +146,46 @@ public class TestPlayerStateMediator extends TestCase {
   public final void testUpdatePaused() throws Exception {
     PlayerStateMediator med = PlayerStateMediator.getInstance();
     med.update(new JajukEvent(JajukEvents.PLAYER_PAUSE, null));
-    Thread.sleep(100); // sleep a bit to let swing invoke the action
   }
 
   public final void testUpdateResume() throws Exception {
     PlayerStateMediator med = PlayerStateMediator.getInstance();
     med.update(new JajukEvent(JajukEvents.PLAYER_RESUME, null));
-    Thread.sleep(100); // sleep a bit to let swing invoke the action
   }
 
   public final void testUpdateOpeningError() throws Exception {
     PlayerStateMediator med = PlayerStateMediator.getInstance();
     med.update(new JajukEvent(JajukEvents.PLAY_OPENING, null));
-    Thread.sleep(100); // sleep a bit to let swing invoke the action
   }
 
   public final void testUpdateZero() throws Exception {
     PlayerStateMediator med = PlayerStateMediator.getInstance();
     med.update(new JajukEvent(JajukEvents.ZERO, null));
-    Thread.sleep(100); // sleep a bit to let swing invoke the action
   }
 
   public final void testUpdateWebradio() throws Exception {
     PlayerStateMediator med = PlayerStateMediator.getInstance();
     med.update(new JajukEvent(JajukEvents.WEBRADIO_LAUNCHED, null));
-    Thread.sleep(100); // sleep a bit to let swing invoke the action
   }
 
   public final void testUpdateVolume() throws Exception {
     PlayerStateMediator med = PlayerStateMediator.getInstance();
     med.update(new JajukEvent(JajukEvents.VOLUME_CHANGED, null));
-    Thread.sleep(100); // sleep a bit to let swing invoke the action
   }
 
   public final void testUpdateMute() throws Exception {
     PlayerStateMediator med = PlayerStateMediator.getInstance();
     med.update(new JajukEvent(JajukEvents.MUTE_STATE, null));
-    Thread.sleep(100); // sleep a bit to let swing invoke the action
+    JUnitHelpers.clearSwingUtilitiesQueue();
 
     // test with muted player
     Player.mute();
 
     med.update(new JajukEvent(JajukEvents.MUTE_STATE, null));
-    Thread.sleep(100); // sleep a bit to let swing invoke the action
+    JUnitHelpers.clearSwingUtilitiesQueue();
     
     Player.mute(false);
 
     med.update(new JajukEvent(JajukEvents.MUTE_STATE, null));
-    Thread.sleep(100); // sleep a bit to let swing invoke the action
   }
 }

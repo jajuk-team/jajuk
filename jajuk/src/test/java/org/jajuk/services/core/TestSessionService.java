@@ -23,7 +23,7 @@ package org.jajuk.services.core;
 import java.io.File;
 import java.net.URL;
 
-import junit.framework.TestCase;
+import org.jajuk.JajukTestCase;
 
 import org.jajuk.JUnitHelpers;
 import org.jajuk.util.Const;
@@ -31,7 +31,7 @@ import org.jajuk.util.Const;
 /**
  * 
  */
-public class TestSessionService extends TestCase {
+public class TestSessionService extends JajukTestCase {
   /*
    * (non-Javadoc)
    * 

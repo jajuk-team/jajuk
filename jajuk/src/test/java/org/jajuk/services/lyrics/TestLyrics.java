@@ -30,7 +30,7 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.List;
 
-import junit.framework.TestCase;
+import org.jajuk.JajukTestCase;
 
 import org.apache.commons.lang.StringUtils;
 import org.jajuk.JUnitHelpers;
@@ -48,7 +48,7 @@ import org.w3c.dom.Document;
 /**
  * Lyrics unit tests
  */
-public class TestLyrics extends TestCase {
+public class TestLyrics extends JajukTestCase {
 
   private final File tmp = new File("test.tmp");
   private static final String ARTIST = "Massive Attack";

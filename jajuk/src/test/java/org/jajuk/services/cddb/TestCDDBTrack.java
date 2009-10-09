@@ -20,7 +20,7 @@
  */
 package org.jajuk.services.cddb;
 
-import junit.framework.TestCase;
+import org.jajuk.JajukTestCase;
 
 import org.jajuk.JUnitHelpers;
 import org.jajuk.base.Album;
@@ -35,7 +35,7 @@ import org.jajuk.util.Const;
 /**
  * 
  */
-public class TestCDDBTrack extends TestCase {
+public class TestCDDBTrack extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.services.cddb.CDDBTrack#CDDBTrack(org.jajuk.base.Track)}.

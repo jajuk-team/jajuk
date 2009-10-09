@@ -34,12 +34,12 @@ import org.jajuk.services.players.TestQueueModel.MockPlayer;
 import org.jajuk.util.Const;
 import org.jajuk.util.error.JajukException;
 
-import junit.framework.TestCase;
+import org.jajuk.JajukTestCase;
 
 /**
  * 
  */
-public class TestStackItem extends TestCase {
+public class TestStackItem extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.services.players.StackItem#hashCode()}.

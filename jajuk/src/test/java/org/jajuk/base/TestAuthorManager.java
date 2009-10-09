@@ -24,7 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
-import junit.framework.TestCase;
+import org.jajuk.JajukTestCase;
 
 import org.apache.commons.lang.StringUtils;
 import org.jajuk.ThreadTestHelper;
@@ -40,7 +40,7 @@ import org.jajuk.util.ReadOnlyIterator;
 /**
  * 
  */
-public class TestAuthorManager extends TestCase {
+public class TestAuthorManager extends JajukTestCase {
 
   private static final int NUMBER_OF_TESTS = 10;
   private static final int NUMBER_OF_THREADS = 10;

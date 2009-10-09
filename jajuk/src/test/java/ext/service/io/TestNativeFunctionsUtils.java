@@ -22,12 +22,12 @@ package ext.service.io;
 
 import org.jajuk.JUnitHelpers;
 
-import junit.framework.TestCase;
+import org.jajuk.JajukTestCase;
 
 /**
  * 
  */
-public class TestNativeFunctionsUtils extends TestCase {
+public class TestNativeFunctionsUtils extends JajukTestCase {
 
   /**
    * Test method for

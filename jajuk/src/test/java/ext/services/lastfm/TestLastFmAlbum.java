@@ -23,7 +23,7 @@ package ext.services.lastfm;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
-import junit.framework.TestCase;
+import org.jajuk.JajukTestCase;
 import net.roarsoftware.lastfm.Album;
 import net.roarsoftware.lastfm.Playlist;
 
@@ -34,7 +34,7 @@ import org.jajuk.util.UtilString;
 /**
  * 
  */
-public class TestLastFmAlbum extends TestCase {
+public class TestLastFmAlbum extends JajukTestCase {
   private static final String API_KEY = "711591ss6q695ps349o6681pr1oq1467";
 
   /**

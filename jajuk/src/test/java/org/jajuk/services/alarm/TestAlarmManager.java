@@ -24,7 +24,7 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Set;
 
-import junit.framework.TestCase;
+import org.jajuk.JajukTestCase;
 
 import org.jajuk.JUnitHelpers;
 import org.jajuk.base.FileManager;
@@ -36,7 +36,7 @@ import org.jajuk.util.Const;
 /**
  * 
  */
-public class TestAlarmManager extends TestCase {
+public class TestAlarmManager extends JajukTestCase {
 
   @Override
   protected void setUp() throws Exception {

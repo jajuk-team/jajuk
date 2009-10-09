@@ -23,7 +23,7 @@ package org.jajuk.services.players;
 import java.util.ArrayList;
 import java.util.List;
 
-import junit.framework.TestCase;
+import org.jajuk.JajukTestCase;
 
 import org.apache.commons.io.FileUtils;
 import org.jajuk.JUnitHelpers;
@@ -46,7 +46,7 @@ import org.jajuk.util.error.JajukException;
 /**
  * 
  */
-public class TestQueueModel extends TestCase {
+public class TestQueueModel extends JajukTestCase {
 
   /*
    * (non-Javadoc)
@@ -87,8 +87,8 @@ public class TestQueueModel extends TestCase {
    */
   @Override
   protected void tearDown() throws Exception {
-    // wait a bit to let background-threads finish
-    Thread.sleep(200);
+    // make sure that the SwingUtilities.invokeLater() are all done
+    JUnitHelpers.clearSwingUtilitiesQueue();
 
     super.tearDown();
   }
@@ -142,8 +142,8 @@ public class TestQueueModel extends TestCase {
 
     QueueModel.push(list, true);
 
-    // there is a thread started, so delay a bit to let that happen...
-    Thread.sleep(400);
+    // we try to wait for the thread started inside push() to finish
+    JUnitHelpers.waitForThreadToFinish("Queue Push Thread");
 
     assertEquals(1, QueueModel.getQueue().size());
   }
@@ -154,8 +154,8 @@ public class TestQueueModel extends TestCase {
 
     QueueModel.push(list, false);
 
-    // there is a thread started, so delay a bit to let that happen...
-    Thread.sleep(400);
+    // we try to wait for the thread started inside push() to finish
+    JUnitHelpers.waitForThreadToFinish("Queue Push Thread");
 
     assertEquals(1, QueueModel.getQueue().size());
   }
@@ -168,8 +168,8 @@ public class TestQueueModel extends TestCase {
 
     QueueModel.push(list, true);
 
-    // there is a thread started, so delay a bit to let that happen...
-    Thread.sleep(400);
+    // we try to wait for the thread started inside push() to finish
+    JUnitHelpers.waitForThreadToFinish("Queue Push Thread");
 
     assertEquals(2, QueueModel.getQueue().size());
   }
@@ -186,8 +186,8 @@ public class TestQueueModel extends TestCase {
 
     QueueModel.push(list, true, true);
 
-    // there is a thread started, so delay a bit to let that happen...
-    Thread.sleep(200);
+    // we try to wait for the thread started inside push() to finish
+    JUnitHelpers.waitForThreadToFinish("Queue Push Thread");
 
     assertEquals(1, QueueModel.getQueue().size());
   }
@@ -198,8 +198,8 @@ public class TestQueueModel extends TestCase {
 
     QueueModel.push(list, false, false);
 
-    // there is a thread started, so delay a bit to let that happen...
-    Thread.sleep(200);
+    // we try to wait for the thread started inside push() to finish
+    JUnitHelpers.waitForThreadToFinish("Queue Push Thread");
 
     assertEquals(1, QueueModel.getQueue().size());
   }
@@ -213,8 +213,8 @@ public class TestQueueModel extends TestCase {
   public void testPushStackItemBoolean() throws Exception {
     QueueModel.push(new StackItem(getFile(1)), true);
 
-    // there is a thread started, so delay a bit to let that happen...
-    Thread.sleep(200);
+    // we try to wait for the thread started inside push() to finish
+    JUnitHelpers.waitForThreadToFinish("Queue Push Thread");
 
     assertEquals(1, QueueModel.getQueue().size());
   }
@@ -228,8 +228,8 @@ public class TestQueueModel extends TestCase {
   public void testPushStackItemBooleanBoolean() throws Exception {
     QueueModel.push(new StackItem(getFile(1)), true, true);
 
-    // there is a thread started, so delay a bit to let that happen...
-    Thread.sleep(200);
+    // we try to wait for the thread started inside push() to finish
+    JUnitHelpers.waitForThreadToFinish("Queue Push Thread");
 
     assertEquals(1, QueueModel.getQueue().size());
   }
@@ -971,8 +971,10 @@ public class TestQueueModel extends TestCase {
    */
 
   public void testClean() throws Exception {
-    // wait a bit to let background-threads finish
-    Thread.sleep(200);
+    // just to make sure no thread is running we are waiting for things to finish
+    JUnitHelpers.clearSwingUtilitiesQueue();
+    JUnitHelpers.waitForThreadToFinish("Queue Push Thread");
+
     
     // should work without any items
     QueueModel.clean();

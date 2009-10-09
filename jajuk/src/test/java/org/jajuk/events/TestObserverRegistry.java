@@ -26,9 +26,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import org.jajuk.ThreadTestHelper;
 
-import junit.framework.TestCase;
+import org.jajuk.JajukTestCase;
 
-public class TestObserverRegistry extends TestCase {
+public class TestObserverRegistry extends JajukTestCase {
 
   private static final int NUMBER_OF_THREADS = 15;    // 15 is the limit on concurrent events
   private static final int NUMBER_OF_TESTS = 1000;

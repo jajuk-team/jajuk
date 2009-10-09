@@ -26,12 +26,12 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import org.jajuk.JUnitHelpers;
 
-import junit.framework.TestCase;
+import org.jajuk.JajukTestCase;
 
 /**
  * 
  */
-public class TestObservationManager extends TestCase {
+public class TestObservationManager extends JajukTestCase {
   AtomicInteger called = new AtomicInteger(0);
   
   /* (non-Javadoc)
@@ -39,9 +39,6 @@ public class TestObservationManager extends TestCase {
    */
   @Override
   protected void tearDown() throws Exception {
-    // sleep a bit to let async threads finish before we run next test...
-    Thread.sleep(100);
-
     super.tearDown();
   }
 

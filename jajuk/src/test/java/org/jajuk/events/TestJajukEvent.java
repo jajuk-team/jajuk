@@ -24,12 +24,12 @@ import java.util.Properties;
 
 import org.jajuk.JUnitHelpers;
 
-import junit.framework.TestCase;
+import org.jajuk.JajukTestCase;
 
 /**
  * 
  */
-public class TestJajukEvent extends TestCase {
+public class TestJajukEvent extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.events.JajukEvent#hashCode()}.
