@@ -45,7 +45,11 @@ import org.apache.commons.lang.StringUtils;
  * 
  */
 public class JajukFileFilter extends FileFilter implements java.io.FileFilter, Const {
-
+  // TODO: this class contains two things: filtering on a list of extensions, but also basic FileFiltering
+  // that is overwritten later on, we should investigate if we can separate those two concerns...
+  // also some filters do not really depend on JajukFileFilter, e.g. DirectoryFilter, and thus
+  // might return incorrect data in certain cases, e.g. extension...
+  
   /** Filters */
   private JajukFileFilter[] filters = {};
 
