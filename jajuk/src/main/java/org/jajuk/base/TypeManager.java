@@ -522,4 +522,14 @@ public final class TypeManager extends ItemManager {
         .getResource(ICON_16X16_VIDEO).toExternalForm());
   }
 
+  /* (non-Javadoc)
+   * @see org.jajuk.base.ItemManager#clear()
+   */
+  @Override
+  public synchronized void clear() {
+    // we should clear the types as well
+    hmSupportedTypes.clear();
+    
+    super.clear();
+  }
 }
