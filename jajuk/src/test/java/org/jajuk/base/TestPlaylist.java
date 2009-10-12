@@ -371,12 +371,12 @@ public class TestPlaylist extends JajukTestCase {
     play.clear();
   }
 
-  public final void testClearQueue() throws Exception {
+  public final void testClearQueue() {
     Playlist play = getPlaylistQueue();
     play.clear();
   }
 
-  public final void testClearBookmark() throws Exception {
+  public final void testClearBookmark() {
     Playlist play = getPlaylistBookmark();
     play.clear();
   }
@@ -493,7 +493,7 @@ public class TestPlaylist extends JajukTestCase {
     assertEquals("name4", play.getFiles().get(3).getName());
   }
 
-  public final void testDownBookmark() throws Exception {
+  public final void testDownBookmark() {
     Playlist play = getPlaylistBookmark();
     play.down(0);
     play.up(0);
@@ -506,7 +506,7 @@ public class TestPlaylist extends JajukTestCase {
     return new Playlist(Playlist.Type.BOOKMARK, "1", "name", null);
   }
 
-  public final void testDownQueue() throws Exception {
+  public final void testDownQueue() {
     Playlist play = getPlaylistQueue();
     play.down(-1);
     play.up(0);

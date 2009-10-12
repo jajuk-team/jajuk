@@ -656,7 +656,7 @@ public class TestDevice extends JajukTestCase {
     assertFalse(device.test());
   }
 
-  public void testTestMounted() throws Exception {
+  public void testTestMounted() {
     Device device = new Device("1", "name");
     device.setUrl(System.getProperty("java.io.tmpdir"));
 

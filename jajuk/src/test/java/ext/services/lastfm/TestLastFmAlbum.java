@@ -20,11 +20,13 @@
  */
 package ext.services.lastfm;
 
+import java.net.UnknownHostException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 import org.jajuk.JajukTestCase;
 import net.roarsoftware.lastfm.Album;
+import net.roarsoftware.lastfm.CallException;
 import net.roarsoftware.lastfm.Playlist;
 
 import org.jajuk.JUnitHelpers;
@@ -52,8 +54,13 @@ public class TestLastFmAlbum extends JajukTestCase {
     Album a = Album.getInfo("Red Hot Chilli Peppers", "By The Way", UtilString.rot13(API_KEY));
     assertNotNull(a);
 
+    try { // may fail if internet is not available
     Playlist p = Playlist.fetchAlbumPlaylist(a.getId(), UtilString.rot13(API_KEY));
     assertNotNull(p);
+    } catch (CallException e) {
+      // ignore for now if it contains an UnknownHostException inside
+      assertTrue(e.getMessage(), e.getCause() instanceof UnknownHostException);
+    }
 
     /**
      * TODO: find out how to get a Session here...
@@ -139,7 +146,7 @@ public class TestLastFmAlbum extends JajukTestCase {
 
   }
 
-  public void testGetReleaseDateInvalid() throws Exception {
+  public void testGetReleaseDateInvalid() {
     LastFmAlbum album = new LastFmAlbum();
     assertNull(album.getReleaseDate());
     album.setReleaseDateString("Invalid date...");

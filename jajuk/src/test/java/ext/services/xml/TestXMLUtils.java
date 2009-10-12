@@ -151,7 +151,7 @@ public class TestXMLUtils extends JajukTestCase {
     */
   }
 
-  public final void testWriteBeanToFileInvalidFile() throws Exception {
+  public final void testWriteBeanToFileInvalidFile() {
     
     PersonBean bean = new PersonBean();
     bean.setName("testvalue");
@@ -277,7 +277,7 @@ public class TestXMLUtils extends JajukTestCase {
     */
   }
   
-  public final void testWriteObjectToFileInvalidFile() throws Exception {
+  public final void testWriteObjectToFileInvalidFile() {
     String str = new String("teststring");
     
     try {

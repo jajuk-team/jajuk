@@ -53,7 +53,7 @@ public class TestLastFmCache extends JajukTestCase {
   /**
    * Test method for {@link ext.services.lastfm.LastFmCache#clearCache()}.
    */
-  public void testClearCache() throws Exception {
+  public void testClearCache() {
     LastFmCache cache = new LastFmCache();
     cache.clearCache();
   }

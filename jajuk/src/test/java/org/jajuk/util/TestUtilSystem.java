@@ -74,7 +74,7 @@ public class TestUtilSystem extends JajukTestCase {
    * Test method for
    * {@link org.jajuk.util.UtilSystem#backupFile(java.io.File, int)}.
    */
-  public void testBackupFile() throws Exception {
+  public void testBackupFile() {
     // first test with no backup size set
     Conf.setProperty(Const.CONF_BACKUP_SIZE, "0");
     UtilSystem.backupFile(file1, 1);
@@ -188,7 +188,7 @@ public class TestUtilSystem extends JajukTestCase {
     assertEquals("", FileUtils.readFileToString(file2));
   }
 
-  public void testCopyURLStringNotExists() throws Exception {
+  public void testCopyURLStringNotExists() {
     assertTrue(file1.delete());
     assertFalse(file1.exists());
     try {
@@ -287,7 +287,7 @@ public class TestUtilSystem extends JajukTestCase {
     assertEquals("", FileUtils.readFileToString(file1));
   }
 
-  public void testCreateEmptyFileException() throws Exception {
+  public void testCreateEmptyFileException() {
     assertTrue(file1.delete());
     assertFalse(file1.exists());
     assertTrue(file1.mkdir()); // test should fail if we try to create a file
@@ -407,7 +407,7 @@ public class TestUtilSystem extends JajukTestCase {
     assertFalse(UtilSystem.getFileChecksum(file1).equals(""));
   }
 
-  public void testGetFileChecksumError() throws Exception {
+  public void testGetFileChecksumError() {
     try {
       UtilSystem.getFileChecksum(new File("notexistingfile.txt"));
       fail("Should throw exception");
@@ -593,7 +593,7 @@ public class TestUtilSystem extends JajukTestCase {
     assertEquals("this is some test data", builder.toString());
   }
 
-  public void testReadFileError() throws Exception {
+  public void testReadFileError() {
     try {
       UtilSystem.readFile("notexistingfile");
       fail("Should throw exception");

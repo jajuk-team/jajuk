@@ -106,7 +106,7 @@ public class TestObservationManager extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.events.ObservationManager#getDetailLastOccurence(org.jajuk.events.JajukEvents, java.lang.String)}.
    */
-  public void testGetDetailLastOccurence() throws Exception {
+  public void testGetDetailLastOccurence() {
     assertNull(ObservationManager.getDetailLastOccurence(JajukEvents.ALARMS_CHANGE, "notexists"));
     Properties prop = new Properties();
     prop.setProperty("test", "value");
@@ -134,7 +134,7 @@ public class TestObservationManager extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.events.ObservationManager#getDetailsLastOccurence(org.jajuk.events.JajukEvents)}.
    */
-  public void testGetDetailsLastOccurence() throws Exception {
+  public void testGetDetailsLastOccurence() {
     assertNull(ObservationManager.getDetailLastOccurence(JajukEvents.ALARMS_CHANGE, "notexists"));
     Properties prop = new Properties();
     prop.setProperty("test", "value");
@@ -149,7 +149,7 @@ public class TestObservationManager extends JajukTestCase {
     JUnitHelpers.executePrivateConstructor(ObservationManager.class);
   }
 
-  public void testException() throws Exception {
+  public void testException() {
     Observer observer = new TestObserverRegistry.LocalObserver(true, called);
     ObservationManager.register(observer);
     ObservationManager.notifySync(new JajukEvent(JajukEvents.ALBUM_CHANGED));

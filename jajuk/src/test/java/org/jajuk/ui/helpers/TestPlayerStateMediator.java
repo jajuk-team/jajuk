@@ -96,7 +96,7 @@ public class TestPlayerStateMediator extends JajukTestCase {
     med.update(new JajukEvent(JajukEvents.PLAYER_PLAY, null));
   }
 
-  public final void testUpdateStop() throws Exception {
+  public final void testUpdateStop() {
     PlayerStateMediator med = PlayerStateMediator.getInstance();
     med.update(new JajukEvent(JajukEvents.PLAYER_STOP, null));
   }
@@ -143,32 +143,32 @@ public class TestPlayerStateMediator extends JajukTestCase {
         track, 120, 70);
   }
 
-  public final void testUpdatePaused() throws Exception {
+  public final void testUpdatePaused() {
     PlayerStateMediator med = PlayerStateMediator.getInstance();
     med.update(new JajukEvent(JajukEvents.PLAYER_PAUSE, null));
   }
 
-  public final void testUpdateResume() throws Exception {
+  public final void testUpdateResume() {
     PlayerStateMediator med = PlayerStateMediator.getInstance();
     med.update(new JajukEvent(JajukEvents.PLAYER_RESUME, null));
   }
 
-  public final void testUpdateOpeningError() throws Exception {
+  public final void testUpdateOpeningError() {
     PlayerStateMediator med = PlayerStateMediator.getInstance();
     med.update(new JajukEvent(JajukEvents.PLAY_OPENING, null));
   }
 
-  public final void testUpdateZero() throws Exception {
+  public final void testUpdateZero() {
     PlayerStateMediator med = PlayerStateMediator.getInstance();
     med.update(new JajukEvent(JajukEvents.ZERO, null));
   }
 
-  public final void testUpdateWebradio() throws Exception {
+  public final void testUpdateWebradio() {
     PlayerStateMediator med = PlayerStateMediator.getInstance();
     med.update(new JajukEvent(JajukEvents.WEBRADIO_LAUNCHED, null));
   }
 
-  public final void testUpdateVolume() throws Exception {
+  public final void testUpdateVolume() {
     PlayerStateMediator med = PlayerStateMediator.getInstance();
     med.update(new JajukEvent(JajukEvents.VOLUME_CHANGED, null));
   }

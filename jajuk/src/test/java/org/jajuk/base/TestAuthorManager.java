@@ -163,7 +163,7 @@ public class TestAuthorManager extends JajukTestCase {
     });
   }
 
-  public void testMultipleThreads() throws Exception {
+  public void testMultipleThreads() {
   }
 
   @SuppressWarnings("unchecked")

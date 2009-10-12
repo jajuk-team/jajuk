@@ -378,7 +378,7 @@ public class TestAlbumManager extends JajukTestCase {
     assertEquals(albums.toString(), 4, albums.size());
   }
 
-  public void testGetBestOfAlbumZero() throws Exception {
+  public void testGetBestOfAlbumZero() {
     AlbumManager.getInstance().clear();
 
     List<Album> albums = AlbumManager.getInstance().getBestOfAlbums(false, 3);

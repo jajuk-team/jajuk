@@ -213,7 +213,7 @@ public class TestLyrics extends JajukTestCase {
   /**
    * Test LyricWiki provider response to get lyrics
    */
-  public void testLyricWikiService() throws Exception {
+  public void testLyricWikiService() {
     ILyricsProvider provider = new LyricWikiProvider();
     testService(provider);
   }

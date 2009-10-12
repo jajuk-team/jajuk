@@ -71,27 +71,27 @@ public class TestAlarmManager extends JajukTestCase {
     AlarmManager.getInstance().update(new JajukEvent(JajukEvents.ALARMS_CHANGE));
   }
 
-  public void testUpdate2() throws Exception {
+  public void testUpdate2() {
     Conf.setProperty(Conf.CONF_ALARM_ENABLED, "true");
 
     AlarmManager.getInstance().update(new JajukEvent(JajukEvents.ALARMS_CHANGE));
   }
 
-  public void testUpdate3() throws Exception {
+  public void testUpdate3() {
     Conf.setProperty(Conf.CONF_ALARM_ENABLED, "true");
     Conf.setProperty(Const.CONF_ALARM_MODE, Const.STARTUP_MODE_FILE);  
 
     AlarmManager.getInstance().update(new JajukEvent(JajukEvents.ALARMS_CHANGE));
   }
 
-  public void testUpdate4() throws Exception {
+  public void testUpdate4() {
     Conf.setProperty(Conf.CONF_ALARM_ENABLED, "true");
     Conf.setProperty(Const.CONF_ALARM_MODE, Const.STARTUP_MODE_BESTOF);  
 
     AlarmManager.getInstance().update(new JajukEvent(JajukEvents.ALARMS_CHANGE));
   }
 
-  public void testUpdate5() throws Exception {
+  public void testUpdate5() {
     Conf.setProperty(Conf.CONF_ALARM_ENABLED, "true");
     Conf.setProperty(Const.CONF_ALARM_MODE, Const.STARTUP_MODE_NOVELTIES);  
 
