@@ -188,8 +188,8 @@ public final class Log {
    * 
    * @param code
    *          error code
-   * @param sInfosup :
-   *          error context information
+   * @param sInfosup
+   *          : error context information
    * @param t
    *          the exception itself
    */
@@ -217,8 +217,8 @@ public final class Log {
    * 
    * @param code
    *          error code
-   * @param sInfosup :
-   *          error context information
+   * @param sInfosup
+   *          : error context information
    * @param t
    *          the exception itself
    */
@@ -332,7 +332,7 @@ public final class Log {
    * 
    * @return int
    */
-  public int getVerbosity() {
+  public static int getVerbosity() {
     return verbosity;
   }
 
@@ -398,21 +398,21 @@ public final class Log {
    * @param sMessage
    */
   private synchronized static void spool(String sMessage) {
-    // we have to make some room
-    if (alSpool.size() > Const.FEEDBACK_LINES) {
+    // we maz have to make some room
+    if (alSpool.size() >= Const.FEEDBACK_LINES) {
       alSpool.remove(0);
     }
-    try {
-      // anonymize standard labels (with {{xxx}})
-      String sAnonymizedMessage = sMessage.replaceAll("\\{\\{.*\\}\\}", "***");
-      // anonymize Basic Player logs
-      if (sAnonymizedMessage.indexOf("Player state changed: OPENING") != -1) {
-        sAnonymizedMessage = sAnonymizedMessage.substring(0, 40);
-      }
-      alSpool.add(sAnonymizedMessage);
-    } catch (Exception e) { // make sure to avoid looping tracing
-      System.out.print("Spooling error:" + e);
+
+    // anonymize standard labels (with {{xxx}})
+    String sAnonymizedMessage = sMessage.replaceAll("\\{\\{.*\\}\\}", "***");
+
+    // additionally anonymize Basic Player logs
+    int pos = sAnonymizedMessage.indexOf("Player state changed: OPENING");
+    if (pos != -1) {
+      // cut away trailing stuff which is personal data
+      sAnonymizedMessage = sAnonymizedMessage.substring(0, pos + 40);
     }
+    alSpool.add(sAnonymizedMessage);
   }
 
   /**
