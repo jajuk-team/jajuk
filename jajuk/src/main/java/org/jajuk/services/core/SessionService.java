@@ -78,6 +78,10 @@ public class SessionService {
 
   /* *Bootstrap file content. format is <test|final>=<workspace location>* */
   private static Properties versionWorkspace = new Properties();
+  
+  /** Whether we are regular process are a thumb builder process **/
+  private static boolean inThumbMaker = false;
+
 
   /**
    * For performances, store conf root path
@@ -422,6 +426,20 @@ public class SessionService {
    */
   public static Properties getVersionWorkspace() {
     return versionWorkspace;
+  }
+  
+    /**
+   * @return whether we are regular process are a thumb builder process
+   */
+  public static boolean isInThumbMaker() {
+    return inThumbMaker;
+  }
+
+  /**
+   * @param inThumbMaker the inThumbMaker to set
+   */
+  public static void setInThumbMaker(boolean inThumbMaker) {
+    SessionService.inThumbMaker = inThumbMaker;
   }
 
 }

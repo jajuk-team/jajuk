@@ -22,7 +22,6 @@ import ext.JVM;
 
 import java.util.Locale;
 
-import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 
 import org.jajuk.base.Collection;
@@ -42,11 +41,9 @@ import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.DownloadManager;
 import org.jajuk.util.LocaleManager;
-import org.jajuk.util.Messages;
 import org.jajuk.util.UpgradeManager;
 import org.jajuk.util.UtilGUI;
 import org.jajuk.util.UtilString;
-import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 import org.jvnet.substance.skin.SubstanceBusinessLookAndFeel;
 
@@ -221,6 +218,7 @@ public final class Main {
   public static void initializeFromThumbnailsMaker(final boolean bTest, final String workspace) {
     SessionService.setTestMode(bTest);
     SessionService.setWorkspace(workspace);
+    SessionService.setInThumbMaker(true);
   }
 
 }

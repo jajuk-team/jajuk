@@ -159,7 +159,9 @@ public class StartupCollectionService {
       if (mplayerStatus != UtilSystem.MPlayerStatus.MPLAYER_STATUS_OK) {
         // No mplayer, show mplayer warnings
         Log.debug("Mplayer status=" + mplayerStatus);
-        if (mplayerStatus != UtilSystem.MPlayerStatus.MPLAYER_STATUS_OK) {
+        if (mplayerStatus != UtilSystem.MPlayerStatus.MPLAYER_STATUS_OK
+        // In thumb maker process, don't display warning messages
+            && !SessionService.isInThumbMaker()) {
           // Test if user didn't already select "don't show again"
           if (!Conf.getBoolean(Const.CONF_NOT_SHOW_AGAIN_PLAYER)) {
             if (mplayerStatus == UtilSystem.MPlayerStatus.MPLAYER_STATUS_NOT_FOUND) {
@@ -195,7 +197,7 @@ public class StartupCollectionService {
           Thread.sleep(Const.AUTO_COMMIT_DELAY);
           Log.debug("Auto commit");
 
-          // call the overall "commit" to store things like Queue and 
+          // call the overall "commit" to store things like Queue and
           // configuration periodically as well
           ExitService.commit(false);
         } catch (Exception e) {
