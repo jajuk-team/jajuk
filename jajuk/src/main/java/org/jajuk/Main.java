@@ -196,15 +196,6 @@ public final class Main {
       // Launch the right jajuk window
       StartupGUIService.launchUI();
 
-    } catch (final JajukException je) { // last chance to catch any error
-      // for
-      // logging purpose
-      Log.error(je);
-      if (je.getCode() == 5) {
-        Messages.getChoice(Messages.getErrorMessage(5), JOptionPane.DEFAULT_OPTION,
-            JOptionPane.ERROR_MESSAGE);
-        ExitService.exit(1);
-      }
     } catch (final Exception e) { // last chance to catch any error for
       // logging
       // purpose

@@ -103,7 +103,7 @@ public final class UpgradeManager {
   /**
    * Actions to migrate an existing installation Step1 just at startup
    */
-  public static void upgradeStep1() throws Exception {
+  public static void upgradeStep1() {
     // We ignore errors during upgrade
     try {
       if (isUpgradeDetected()) {
