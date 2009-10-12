@@ -63,22 +63,23 @@ public final class AudioFilter extends JajukFileFilter {
   public boolean accept(final File f) {
     // Force directories acceptation if user wants to navigate into
     // directories
-    if (bShowDirectories && f.isDirectory()) {
-      return true;
-    } else {
-      if (f.isDirectory()) {
+    if (f.isDirectory()) {
+      if (bShowDirectories) {
+        return true;
+      } else {
         return false;
       }
-      final TypeManager mgr = TypeManager.getInstance();
-      final String extension = UtilSystem.getExtension(f);
-
-      // check extension is known
-      if (TypeManager.getInstance().isExtensionSupported(extension)) {
-        // check it is an audio file
-        return (Boolean) mgr.getTypeByExtension(extension).getValue(Const.XML_TYPE_IS_MUSIC);
-      }
-      return false;
     }
+
+    final TypeManager mgr = TypeManager.getInstance();
+    final String extension = UtilSystem.getExtension(f);
+
+    // check extension is known
+    if (TypeManager.getInstance().isExtensionSupported(extension)) {
+      // check it is an audio file
+      return (Boolean) mgr.getTypeByExtension(extension).getValue(Const.XML_TYPE_IS_MUSIC);
+    }
+    return false;
   }
 
   /*

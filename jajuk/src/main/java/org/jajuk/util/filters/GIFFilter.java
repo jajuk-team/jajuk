@@ -41,10 +41,9 @@ public class GIFFilter extends JajukFileFilter {
   }
 
   /**
-   * Singleton constructor (protected for testing purposes)
+   * Singleton constructor
    */
-  protected GIFFilter() {
+  private GIFFilter() {
     super(new String[] { "gif" });
   }
-
 }

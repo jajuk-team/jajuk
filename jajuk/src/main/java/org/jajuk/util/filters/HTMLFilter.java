@@ -42,9 +42,9 @@ public class HTMLFilter extends JajukFileFilter {
   }
 
   /**
-   * Singleton constructor (protected for testing purposes)
+   * Singleton constructor
    */
-  protected HTMLFilter() {
+  private HTMLFilter() {
     super(new String[] { "html" });
   }
 
