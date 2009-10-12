@@ -20,7 +20,8 @@
 package org.jajuk.ui.actions;
 
 /**
- * This enum contains a constant for all actions present in Jajuk. <p/>
+ * This enum contains a constant for all actions present in Jajuk.
+ * <p/>
  */
 public enum JajukActions {
 
@@ -297,6 +298,11 @@ public enum JajukActions {
    * Used to jump to the previous track.
    */
   PREVIOUS_TRACK,
+
+  /**
+   * Used to display the current queue in slim bar
+   */
+  QUEUE_TO_SLIM,
 
   /**
    * Replay current album

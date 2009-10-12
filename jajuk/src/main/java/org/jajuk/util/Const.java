@@ -648,6 +648,8 @@ public interface Const {
 
   /** Slimbar position */
   String CONF_SLIMBAR_POSITION = "jajuk.slimbar_pos";
+  
+  String CONF_SLIMBAR_DISPLAY_QUEUE = "jajuk.slimbar_display_queue";
 
   /** Gain (float) */
   String CONF_VOLUME = "jajuk.volume";

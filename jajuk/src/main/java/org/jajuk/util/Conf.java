@@ -323,6 +323,7 @@ public final class Conf implements Const {
       }
     }
     defaults.put(CONF_SLIMBAR_POSITION, "0," + slimbarYPos);
+    defaults.put(CONF_SLIMBAR_DISPLAY_QUEUE, FALSE);
     defaults.put(CONF_SLIMBAR_SMART_MODE, JajukActions.SHUFFLE_GLOBAL.toString());
     defaults.put(CONF_ALARM_ACTION, ALARM_START_ACTION);
     defaults.put(CONF_ALARM_ENABLED, FALSE);

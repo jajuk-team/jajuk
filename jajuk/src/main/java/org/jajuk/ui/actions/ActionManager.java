@@ -97,6 +97,7 @@ import static org.jajuk.ui.actions.JajukActions.UNMOUNTED;
 import static org.jajuk.ui.actions.JajukActions.UN_BAN_SELECTION;
 import static org.jajuk.ui.actions.JajukActions.VIEW_RESTORE_DEFAULTS;
 import static org.jajuk.ui.actions.JajukActions.WEB_RADIO;
+import static org.jajuk.ui.actions.JajukActions.QUEUE_TO_SLIM;
 
 import java.awt.Desktop;
 import java.util.ArrayList;
@@ -220,6 +221,7 @@ public final class ActionManager {
     installAction(ALARM_CLOCK, new AlarmClockAction(), false);
     installAction(SHOW_ALBUM_DETAILS, new ShowAlbumDetailsAction(), false);
     installAction(SLIM_JAJUK, new SlimbarAction(), false);
+    installAction(QUEUE_TO_SLIM, new SlimBarQueueAction(), false);
     // Install full screen actions only if supported
     installAction(FULLSCREEN_JAJUK, new FullscreenAction(), false);
     installAction(PREPARE_PARTY, new PreparePartyAction(), false);

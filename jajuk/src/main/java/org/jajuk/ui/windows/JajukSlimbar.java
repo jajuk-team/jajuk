@@ -24,6 +24,7 @@ import static org.jajuk.ui.actions.JajukActions.NEXT_TRACK;
 import static org.jajuk.ui.actions.JajukActions.PAUSE_RESUME_TRACK;
 import static org.jajuk.ui.actions.JajukActions.PREVIOUS_TRACK;
 import static org.jajuk.ui.actions.JajukActions.STOP_TRACK;
+import static org.jajuk.ui.actions.JajukActions.QUEUE_TO_SLIM;
 import ext.DropDownButton;
 
 import java.awt.Dimension;
@@ -54,6 +55,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.JRootPane;
 import javax.swing.JToolBar;
+import javax.swing.JWindow;
 import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 import javax.swing.event.ListSelectionEvent;
@@ -72,6 +74,7 @@ import org.jajuk.ui.actions.ActionManager;
 import org.jajuk.ui.actions.JajukActions;
 import org.jajuk.ui.actions.MuteAction;
 import org.jajuk.ui.helpers.PlayerStateMediator;
+import org.jajuk.ui.views.QueueView;
 import org.jajuk.ui.widgets.JajukBalloon;
 import org.jajuk.ui.widgets.JajukButton;
 import org.jajuk.ui.widgets.JajukJToolbar;
@@ -98,6 +101,8 @@ public final class JajukSlimbar extends JFrame implements JajukWindow, Observer,
     MouseWheelListener, ActionListener {
 
   private static final long serialVersionUID = 1L;
+
+  private JWindow queueViewWindow;
 
   private JButton jbInfo;
 
@@ -173,6 +178,21 @@ public final class JajukSlimbar extends JFrame implements JajukWindow, Observer,
     return self;
   }
 
+  public void setDisplayQueue(boolean display) {
+    if (display) {
+      // Set position of queue dialog
+      queueViewWindow.setLocation(this.getLocation().x, this.getLocation().y
+          + this.getSize().height);
+      queueViewWindow.setSize(this.getSize().width, queueViewWindow.getSize().height);
+    }
+    queueViewWindow.setVisible(display);
+    Conf.setProperty(Const.CONF_SLIMBAR_DISPLAY_QUEUE, Boolean.toString(isDisplayQueue()));
+  }
+
+  public boolean isDisplayQueue() {
+    return queueViewWindow.isVisible();
+  }
+
   /*
    * (non-Javadoc)
    * 
@@ -198,9 +218,12 @@ public final class JajukSlimbar extends JFrame implements JajukWindow, Observer,
       point = new Point((int) (point.getX() - relativePoint.getX()),
           (int) (point.getY() - relativePoint.getY()));
       setLocation(point);
+      setDisplayQueue(isDisplayQueue());
       Conf.setProperty(Const.CONF_SLIMBAR_POSITION, (int) point.getX() + "," + (int) point.getY());
     }
   };
+
+  private SizedButton jbQueue;
 
   private JajukSlimbar() {
     setUndecorated(true);
@@ -255,10 +278,14 @@ public final class JajukSlimbar extends JFrame implements JajukWindow, Observer,
     jbStop = new SizedButton(ActionManager.getAction(STOP_TRACK), false);
     jbStop.addMouseMotionListener(motionAdapter);
 
+    jbQueue = new SizedButton(ActionManager.getAction(QUEUE_TO_SLIM), false);
+    jbQueue.addMouseMotionListener(motionAdapter);
+
     jtbPlay.add(jbPrevious);
     jtbPlay.add(jbPlayPause);
     jtbPlay.add(jbStop);
     jtbPlay.add(jbNext);
+    jtbPlay.add(jbQueue);
 
     JToolBar jtbSmart = new JajukJToolbar();
 
@@ -411,6 +438,7 @@ public final class JajukSlimbar extends JFrame implements JajukWindow, Observer,
     getRootPane().setToolTipText(getPlayerInfo());
 
     add(slimJajuk);
+
     ObservationManager.register(this);
 
     getRootPane().setWindowDecorationStyle(JRootPane.NONE);
@@ -451,6 +479,23 @@ public final class JajukSlimbar extends JFrame implements JajukWindow, Observer,
     // Install global keystrokes
     WindowGlobalKeystrokeManager.getInstance();
 
+    createQueueWindow();
+  }
+
+  /**
+   * 
+   */
+  private void createQueueWindow() {
+    QueueView queueView = new QueueView();
+    queueView.initUI();
+    queueViewWindow = new JWindow(this);
+    queueViewWindow.getContentPane().add(queueView);
+    queueViewWindow.pack();
+    // Set position of queue dialog
+    queueViewWindow.setLocation(this.getLocation().x, this.getLocation().y + this.getSize().height);
+    queueViewWindow.setSize(this.getSize().width, queueViewWindow.getSize().height / 2);
+
+    queueViewWindow.setVisible(Conf.getBoolean(Const.CONF_SLIMBAR_DISPLAY_QUEUE));
   }
 
   private void updateCurrentTitle() {
@@ -491,7 +536,8 @@ public final class JajukSlimbar extends JFrame implements JajukWindow, Observer,
   /*
    * (non-Javadoc)
    * 
-   * @see java.awt.event.MouseWheelListener#mouseWheelMoved(java.awt.event.MouseWheelEvent)
+   * @seejava.awt.event.MouseWheelListener#mouseWheelMoved(java.awt.event.
+   * MouseWheelEvent)
    */
   public void mouseWheelMoved(MouseWheelEvent e) {
     if (e.getSource().equals(jbVolume)) {
