@@ -23,6 +23,7 @@ package org.jajuk.services.core;
 import java.io.File;
 import java.net.URL;
 
+import org.apache.commons.io.FileUtils;
 import org.jajuk.JajukTestCase;
 
 import org.jajuk.JUnitHelpers;
@@ -159,14 +160,15 @@ public class TestSessionService extends JajukTestCase {
     { // ensure that the base jajuk-directory exists, otherwise the
       // "first time wizard" is run, which blocks the test
       File bootstrap = new File(Const.FILE_BOOTSTRAP);
-      
+
       // try to create it if it is missing
       if (!bootstrap.exists()) {
-        assertTrue(bootstrap.mkdir());
+        FileUtils.writeStringToFile(bootstrap, "#Sat May 16 20:31:29 CEST 2009\n"
+            + "final=" + System.getProperty("user.home") + "\n" + "test=" + System.getProperty("user.home") + "\n");
       }
 
       // needs to be a directory, needs to be readable, ...
-      assertTrue(bootstrap.isDirectory());
+      assertTrue(bootstrap.isFile());
       assertTrue(bootstrap.canRead());
     }
 
