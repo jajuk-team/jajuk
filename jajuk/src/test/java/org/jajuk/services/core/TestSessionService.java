@@ -156,6 +156,20 @@ public class TestSessionService extends JajukTestCase {
    * @throws Exception
    */
   public void testDiscoverWorkspace() throws Exception {
+    { // ensure that the base jajuk-directory exists, otherwise the
+      // "first time wizard" is run, which blocks the test
+      File bootstrap = new File(Const.FILE_BOOTSTRAP);
+      
+      // try to create it if it is missing
+      if (!bootstrap.exists()) {
+        assertTrue(bootstrap.mkdir());
+      }
+
+      // needs to be a directory, needs to be readable, ...
+      assertTrue(bootstrap.isDirectory());
+      assertTrue(bootstrap.canRead());
+    }
+
     SessionService.discoverWorkspace();
 
     // without test mode...
@@ -209,11 +223,12 @@ public class TestSessionService extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.services.core.SessionService#clearCache()}
    * .
-   * @throws Exception 
+   * 
+   * @throws Exception
    */
   public void testClearCache() throws Exception {
     SessionService.clearCache();
-    
+
     // create some dummy file
     File file = SessionService.getConfFileByPath(Const.FILE_CACHE);
     assertNotNull(file);
