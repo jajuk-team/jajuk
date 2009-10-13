@@ -619,20 +619,27 @@ public class TestHistory extends JajukTestCase {
     assertEquals(History.getInstance().getHistory().toString(), 
         1, History.getInstance().getHistory().size());
     
-    // change from id 2 to 3
+    // change from id 11 to 3
     Properties detail = new Properties();
     File file = FileManager.getInstance().getFileByID("11");
+    // there needs to be such a file because we added it above...
+    assertNotNull(file);
     detail.put(Const.DETAIL_OLD, file);
     
     // read the file "3" and then remove it from the filemanager to be clean there as well
     file = FileManager.getInstance().getFileByID("3");
+    // there needs to be such a file because we added it above...
+    assertNotNull(file);
     detail.put(Const.DETAIL_NEW, file);
     FileManager.getInstance().removeFile(file);
     
     // now trigger the update
     History.getInstance().update(new JajukEvent(JajukEvents.FILE_NAME_CHANGED, detail));
-    // we have to sleep a bit as it is executed in the background, sometimes hudson did
-    // fail this test, so let's try to do sleep a few times
+    
+    // we have to wait for the SwingUtilities here as the update is executed in the background
+    JUnitHelpers.clearSwingUtilitiesQueue();
+    // we actually execute an invokeLater() in another invokeLater() which means we need to 
+    // wait twice here until all work is guaranteed to be done
     JUnitHelpers.clearSwingUtilitiesQueue();
     
     // now we only should have the item "3"
