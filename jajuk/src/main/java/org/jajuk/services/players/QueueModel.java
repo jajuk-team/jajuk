@@ -979,7 +979,7 @@ public final class QueueModel {
    * @return
    */
   public static boolean canUnmount(Device device) {
-    if (isStopped()) { // currently stopped
+    if (isStopped() || isPlayingRadio()) {
       return true;
     }
     if (getPlayingFile() != null && getPlayingFile().getDirectory().getDevice().equals(device)) {
