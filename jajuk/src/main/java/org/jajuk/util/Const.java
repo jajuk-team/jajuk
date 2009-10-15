@@ -607,6 +607,8 @@ public interface Const {
   /** Show popup */
   String CONF_UI_SHOW_BALLOON = "jajuk.options.show_popup";
 
+  String CONF_UI_SHOW_OSD = "jajuk.options.show_osd";
+
   String CONF_P2P_SHARE = "jajuk.options.p2p.share";
 
   String CONF_P2P_ADD_REMOTE_PROPERTIES = "jajuk.options.p2p.add_remote_properties";

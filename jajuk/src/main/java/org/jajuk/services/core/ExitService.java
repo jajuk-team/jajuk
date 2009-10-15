@@ -29,6 +29,7 @@ import org.jajuk.events.ObservationManager;
 import org.jajuk.services.bookmark.History;
 import org.jajuk.services.dbus.DBusManager;
 import org.jajuk.services.dj.AmbienceManager;
+import org.jajuk.services.osd.OSDSupportImpl;
 import org.jajuk.services.players.Player;
 import org.jajuk.services.players.QueueModel;
 import org.jajuk.services.webradio.WebRadioManager;
@@ -121,6 +122,9 @@ public class ExitService extends Thread {
         // Disconnect Dbus if required
         DBusManager.disconnect();
 
+        // unregister OSDSupport if it was started
+        OSDSupportImpl.unregisterOSDSupport();
+        
         /* release keystrokes resources */
         JajukAction.cleanup();
 

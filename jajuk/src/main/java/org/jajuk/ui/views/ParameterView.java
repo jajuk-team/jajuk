@@ -76,6 +76,7 @@ import org.jajuk.events.ObservationManager;
 import org.jajuk.services.core.RatingManager;
 import org.jajuk.services.core.SessionService;
 import org.jajuk.services.lastfm.LastFmManager;
+import org.jajuk.services.osd.OSDSupportImpl;
 import org.jajuk.ui.actions.ActionManager;
 import org.jajuk.ui.actions.JajukActions;
 import org.jajuk.ui.helpers.DefaultMouseWheelListener;
@@ -211,6 +212,8 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
 
   private JCheckBox jcbShowBaloon;
 
+  private JCheckBox jcbShowOSD;
+
   private JCheckBox jcbHotkeys;
 
   private JPanel jpTags;
@@ -343,7 +346,8 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
   /*
    * (non-Javadoc)
    * 
-   * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+   * @see
+   * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
    */
   public void actionPerformed(final ActionEvent e) {
 
@@ -785,6 +789,24 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
       public void actionPerformed(ActionEvent e) {
         // Store configuration
         Conf.setProperty(Const.CONF_UI_SHOW_BALLOON, Boolean.toString(jcbShowBaloon.isSelected()));
+
+        // remember what it was before
+        boolean bOSD = Conf.getBoolean(Const.CONF_UI_SHOW_OSD);
+        // set the new property
+        Conf.setProperty(Const.CONF_UI_SHOW_OSD, Boolean.toString(jcbShowOSD.isSelected()));
+        // check now if we should try to re-enable the support, i.e. if it is
+        // enabled now, but was not before
+        if (Conf.getBoolean(Const.CONF_UI_SHOW_OSD) && !bOSD) {
+          if (OSDSupportImpl.isOSDAvailable()) {
+            OSDSupportImpl.registerOSDSupport();
+          }
+        } else if(bOSD && !Conf.getBoolean(Const.CONF_UI_SHOW_OSD)) {
+          // if it was enabled before and is not any more, we should unregister support for OSD
+        
+          // just make sure it is not registered any more if it is not configured any more now
+          OSDSupportImpl.unregisterOSDSupport();
+        }
+
         Conf.setProperty(Const.CONF_SHOW_POPUPS, Boolean.toString(jcbShowPopups.isSelected()));
         Conf.setProperty(Const.CONF_OPTIONS_SYNC_TABLE_TREE, Boolean.toString(jcbSyncTableTree
             .isSelected()));
@@ -1461,6 +1483,11 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
     jcbShowBaloon.setToolTipText(Messages.getString("ParameterView.185"));
     jcbShowBaloon.addActionListener(alUI);
 
+    // Show Balloon
+    jcbShowOSD = new JCheckBox(Messages.getString("ParameterView.275"));
+    jcbShowOSD.setToolTipText(Messages.getString("ParameterView.275"));
+    jcbShowOSD.addActionListener(alUI);
+
     // LaF
     jlLAF = new JLabel(Messages.getString("ParameterView.43"));
     jlLAF.setToolTipText(Messages.getString("ParameterView.44"));
@@ -1479,6 +1506,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
     jpUI.add(jcbShowPopups, WRAP);
     jpUI.add(jcbShowSystray, WRAP);
     jpUI.add(jcbShowBaloon, WRAP);
+    jpUI.add(jcbShowOSD, WRAP);
     jpUI.add(jlFonts);
     jpUI.add(jsFonts, WRAP_GROW);
     jpUI.add(jlLAF);
@@ -1551,7 +1579,9 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
   /*
    * (non-Javadoc)
    * 
-   * @see javax.swing.event.ChangeListener#stateChanged(javax.swing.event.ChangeEvent )
+   * @see
+   * javax.swing.event.ChangeListener#stateChanged(javax.swing.event.ChangeEvent
+   * )
    */
   public void stateChanged(final ChangeEvent e) {
     // when changing tab, store it for future jajuk sessions
@@ -1703,6 +1733,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
     }
     // UI
     jcbShowBaloon.setSelected(Conf.getBoolean(Const.CONF_UI_SHOW_BALLOON));
+    jcbShowOSD.setSelected(Conf.getBoolean(Const.CONF_UI_SHOW_OSD));
     jcbShowPopups.setSelected(Conf.getBoolean(Const.CONF_SHOW_POPUPS));
     jcbShowSystray.setSelected(Conf.getBoolean(Const.CONF_SHOW_SYSTRAY));
     scbLAF.removeActionListener(this);

@@ -28,6 +28,7 @@ import org.jajuk.services.core.ExitService;
 import org.jajuk.services.core.RatingManager;
 import org.jajuk.services.core.SessionService;
 import org.jajuk.services.dbus.DBusManager;
+import org.jajuk.services.osd.OSDSupportImpl;
 import org.jajuk.services.players.QueueController;
 import org.jajuk.ui.thumbnails.ThumbnailManager;
 import org.jajuk.ui.thumbnails.ThumbnailsMaker;
@@ -87,6 +88,11 @@ public class StartupAsyncService {
           if (UtilSystem.isUnderLinux()) {
             // make sure the singleton is initialized here
             DBusManager.getInstance();
+          }
+          
+          // register OSD support
+          if(OSDSupportImpl.isOSDAvailable()) {
+            OSDSupportImpl.registerOSDSupport();
           }
 
           // Wait few secs to avoid GUI startup perturbations
