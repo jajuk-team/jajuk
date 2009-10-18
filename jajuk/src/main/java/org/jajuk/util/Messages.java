@@ -306,16 +306,30 @@ public class Messages extends DefaultHandler {
    *          message type like JOptionPane.WARNING
    */
   public static int getChoice(final String sText, final int optionsType, final int iType) {
-
-    // Make sure to reset the choice and to return a non-existing choice if
-    // the
-    // GUI fails
-    choice = Integer.MAX_VALUE;
-
-    final ConfirmDialog confirm = new ConfirmDialog(sText, getTitleForType(iType), optionsType,
-        iType);
-    choice = confirm.getResu();
-
+    try {
+      // Make sure to reset the choice and to return a non-existing choice if
+      // the GUI fails
+      choice = JOptionPane.DEFAULT_OPTION;
+      Runnable t = new Thread("Get choice thread"){
+        public void run() {
+          // This must be done in the EDT
+          final ConfirmDialog confirm = new ConfirmDialog(sText, getTitleForType(iType),
+              optionsType, iType);
+          choice = confirm.getResu();
+        }
+      };
+      // invokeAndWait method cannot be called from the EDT
+      if (SwingUtilities.isEventDispatchThread()){
+        t.run();
+      }
+      else{
+        SwingUtilities.invokeAndWait(t);
+      }
+    } catch (InterruptedException e) {
+      Log.error(e);
+    } catch (InvocationTargetException e) {
+      Log.error(e);
+    }
     return choice;
   }
 
