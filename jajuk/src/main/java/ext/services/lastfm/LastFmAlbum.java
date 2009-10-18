@@ -46,8 +46,8 @@ import org.jajuk.util.UtilString;
  */
 public class LastFmAlbum implements AlbumInfo {
 
-  /** The Constant df. */
-  private static final ThreadLocal<SimpleDateFormat> df = new ThreadLocal<SimpleDateFormat>() {
+  /** The Constant DF. */
+  private static final ThreadLocal<SimpleDateFormat> DF = new ThreadLocal<SimpleDateFormat>() {
     @Override
     protected SimpleDateFormat initialValue() {
       return new SimpleDateFormat("d MMM yyyy, HH:mm", Locale.US);
@@ -108,40 +108,45 @@ public class LastFmAlbum implements AlbumInfo {
       // {} as "(Live)" then it's removed from all of them
       // In this way track names are more accurate
       if (!ts.isEmpty()) {
-        String firstTrackTitle = ts.get(0).getTitle();
-        // Get all text between () [] {}
-        List<String> tokensOfFirstTrackTitle = UtilString.getTextBetweenChars(firstTrackTitle, '(',
-            ')');
-        tokensOfFirstTrackTitle.addAll(UtilString.getTextBetweenChars(firstTrackTitle, '[', ']'));
-        tokensOfFirstTrackTitle.addAll(UtilString.getTextBetweenChars(firstTrackTitle, '{', '}'));
-
-        // Check what tokens are present in all track titles
-        List<String> commonTokens = new ArrayList<String>();
-        for (String token : tokensOfFirstTrackTitle) {
-          boolean common = true;
-          for (int i = 1; i < ts.size() && common; i++) {
-            if (!ts.get(i).getTitle().contains(token)) {
-              common = false;
-            }
-          }
-          if (common) {
-            commonTokens.add(token);
-          }
-        }
-
-        // Then remove common tokens from all titles
-        for (TrackInfo ti : ts) {
-          for (String token : commonTokens) {
-            ti.setTitle(ti.getTitle().replace(token, ""));
-          }
-          ti.setTitle(ti.getTitle().trim());
-        }
+        handleTracks(ts);
       }
 
       album.tracks = ts;
     }
 
     return album;
+  }
+
+  private static void handleTracks(List<TrackInfo> ts) {
+    String firstTrackTitle = ts.get(0).getTitle();
+    // Get all text between () [] {}
+    List<String> tokensOfFirstTrackTitle = UtilString.getTextBetweenChars(firstTrackTitle, '(',
+        ')');
+    tokensOfFirstTrackTitle.addAll(UtilString.getTextBetweenChars(firstTrackTitle, '[', ']'));
+    tokensOfFirstTrackTitle.addAll(UtilString.getTextBetweenChars(firstTrackTitle, '{', '}'));
+
+    // Check what tokens are present in all track titles
+    List<String> commonTokens = new ArrayList<String>();
+    for (String token : tokensOfFirstTrackTitle) {
+      boolean common = true;
+      for (int i = 1; i < ts.size() && common; i++) {
+        if (!ts.get(i).getTitle().contains(token)) {
+          common = false;
+        }
+      }
+
+      if (common) {
+        commonTokens.add(token);
+      }
+    }
+
+    // Then remove common tokens from all titles
+    for (TrackInfo ti : ts) {
+      for (String token : commonTokens) {
+        ti.setTitle(ti.getTitle().replace(token, ""));
+      }
+      ti.setTitle(ti.getTitle().trim());
+    }
   }
 
   /**
@@ -207,7 +212,7 @@ public class LastFmAlbum implements AlbumInfo {
     }
 
     try {
-      return df.get().parse(releaseDateString);
+      return DF.get().parse(releaseDateString);
     } catch (ParseException e) {
       return null;
     }
