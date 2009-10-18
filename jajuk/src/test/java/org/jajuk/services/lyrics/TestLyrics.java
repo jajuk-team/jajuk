@@ -34,6 +34,7 @@ import org.jajuk.JajukTestCase;
 
 import org.apache.commons.lang.StringUtils;
 import org.jajuk.JUnitHelpers;
+import org.jajuk.services.core.SessionService;
 import org.jajuk.services.lyrics.providers.FlyProvider;
 import org.jajuk.services.lyrics.providers.ILyricsProvider;
 import org.jajuk.services.lyrics.providers.LyrcProvider;
@@ -156,12 +157,23 @@ public class TestLyrics extends JajukTestCase {
     Log.info("Downloading: " + url);
 
     String xml = null;
+    
     // xml = DownloadManager.getTextFromCachedFile(url, "UTF-8");
     // Drop the query if user required "none Internet access from jajuk".
     // This method shouldn't be called anyway because we views have to deal with
     // this option at their level, this is a additional control.
     assertFalse(Conf.getBoolean(Const.CONF_NETWORK_NONE_INTERNET_ACCESS));
 
+    // make sure that we remove any existing cache for this file before we run this test
+    {
+      File file = SessionService.getCachePath(url);
+      assertNotNull(file);
+      if(file.exists()) {
+        Log.info("Removing existing cache file: " + file);
+        assertTrue(file.toString(), file.delete());
+      }
+    }
+    
     File file = DownloadManager.downloadToCache(url);
     assertNotNull(file);
 
@@ -192,6 +204,7 @@ public class TestLyrics extends JajukTestCase {
     xml = builder.toString();
     assertTrue(xml, StringUtils.isNotBlank(xml));
 
+    // FlyProvider.getLyrics()
     Document document = XMLUtils.getDocument(xml);
     assertNotNull(document);
 
@@ -199,7 +212,7 @@ public class TestLyrics extends JajukTestCase {
     lyrics = XMLUtils.getChildElementContent(document.getDocumentElement(), "tx");
     lyrics = lyrics.replace("[br]", "");
 
-    assertTrue(StringUtils.isNotBlank(lyrics));
+    assertTrue(xml, StringUtils.isNotBlank(lyrics));
   }
 
   /**
