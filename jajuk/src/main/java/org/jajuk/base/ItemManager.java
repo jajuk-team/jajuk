@@ -561,10 +561,13 @@ public abstract class ItemManager {
    * We remove all items and add them all again to force sorting
    */
   public synchronized void forceSorting() {
+    // first create a copy
     ArrayList<Item> itemsCopy = new ArrayList<Item>(items);
-    for (Item item : itemsCopy) {
-      removeItem(item);
-    }
+    
+    // then remove all elements
+    clear();
+    
+    // and then re-add all items again to make them correctly sorted again
     for (Item item : itemsCopy) {
       registerItem(item);
     }

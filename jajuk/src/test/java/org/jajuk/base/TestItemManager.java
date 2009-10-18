@@ -455,13 +455,25 @@ public class TestItemManager extends JajukTestCase {
     man.registerItem(item);
     item = new TestItem("10", "name10");
     man.registerItem(item);
+
+    // now the order is in there, first 9, then 10
+    Iterator<? extends Item> it = man.getItemsIterator();
+    assertEquals("9", it.next().getID());
+    assertEquals("10", it.next().getID());
     
+    
+    assertEquals(2, man.getElementCount());
     man.forceSorting();
     
-    // TODO: check the effect
+    // still the same size
+    assertEquals(2, man.getElementCount());
+    
+    // the iterator should still return 9 before 10
+    it = man.getItemsIterator();
+    assertEquals("9", it.next().getID());
+    assertEquals("10", it.next().getID());
   }
 
-  
   private static class LocalIM extends ItemManager {
     @Override
     public String getLabel() {
