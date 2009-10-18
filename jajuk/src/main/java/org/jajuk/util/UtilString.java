@@ -49,10 +49,10 @@ public final class UtilString {
   private final static String ESCAPE_CHARACTERS = "\\[](){}.*+?$^|-";
 
   /**
-   * Constant date formatter, one by thread for perfs, we need an instance by
+   * Constant date FORMATTER, one by thread for perfs, we need an instance by
    * thread because this class is not thread safe
    */
-  private static final ThreadLocal<SimpleDateFormat> formatter = new ThreadLocal<SimpleDateFormat>() {
+  private static final ThreadLocal<SimpleDateFormat> FORMATTER = new ThreadLocal<SimpleDateFormat>() {
     @Override
     protected SimpleDateFormat initialValue() {
       return new SimpleDateFormat(Const.ADDITION_DATE_FORMAT, Locale.getDefault());
@@ -172,25 +172,7 @@ public final class UtilString {
       final boolean bMandatory, final String out, final Track track) throws JajukException {
     if (sPattern.contains(Const.PATTERN_TRACKORDER)) {
       // override Order from filename if not set explicitly
-      long lOrder = track.getOrder();
-      if (lOrder == 0) {
-        final String sFilename = file.getName();
-        if (Character.isDigit(sFilename.charAt(0))) {
-          final String sTo = sFilename.substring(0, 3).trim().replaceAll("[^0-9]", "");
-          for (final char c : sTo.toCharArray()) {
-            if (!Character.isDigit(c)) {
-              throw new JajukException(152, file.getAbsolutePath());
-            }
-          }
-          lOrder = Long.parseLong(sTo);
-        } else {
-          if (bMandatory) {
-            throw new JajukException(152, file.getAbsolutePath());
-          } else {
-            lOrder = 0;
-          }
-        }
-      }
+      long lOrder = handleOrder(file, bMandatory, track);
 
       // prepend one digit numbers with "0"
       if (lOrder < 10) {
@@ -201,6 +183,30 @@ public final class UtilString {
     }
 
     return out;
+  }
+
+  private static long handleOrder(final org.jajuk.base.File file, final boolean bMandatory,
+      final Track track) throws JajukException {
+    long lOrder = track.getOrder();
+    if (lOrder == 0) {
+      final String sFilename = file.getName();
+      if (Character.isDigit(sFilename.charAt(0))) {
+        final String sTo = sFilename.substring(0, 3).trim().replaceAll("[^0-9]", "");
+        for (final char c : sTo.toCharArray()) {
+          if (!Character.isDigit(c)) {
+            throw new JajukException(152, file.getAbsolutePath());
+          }
+        }
+        lOrder = Long.parseLong(sTo);
+      } else {
+        if (bMandatory) {
+          throw new JajukException(152, file.getAbsolutePath());
+        } else {
+          lOrder = 0;
+        }
+      }
+    }
+    return lOrder;
   }
 
   /**
@@ -304,7 +310,7 @@ public final class UtilString {
 
     // Check Album artist
     // Check Author name
-    out = UtilString.applyAlbumArtistPattern(file, sPattern, normalize, out, track);
+    out = UtilString.applyAlbumArtistPattern(sPattern, normalize, out, track);
 
     // Check Style name
     out = UtilString.applyStylePattern(file, sPattern, bMandatory, normalize, out, track);
@@ -328,14 +334,13 @@ public final class UtilString {
   }
 
   /**
-   * @param file
    * @param pattern
    * @param normalize
    * @param out
    * @param track
    * @return
    */
-  private static String applyAlbumArtistPattern(File file, String sPattern, boolean normalize,
+  private static String applyAlbumArtistPattern(String sPattern, boolean normalize,
       String out, Track track) {
     String ret = out;
     String sValue;
@@ -366,25 +371,7 @@ public final class UtilString {
       String out, Track track) throws JajukException {
     if (sPattern.contains(Const.PATTERN_DISC)) {
       // override Order from filename if not set explicitly
-      long lDiscNumber = track.getDiscNumber();
-      if (lDiscNumber == 0) {
-        final String sFilename = file.getName();
-        if (Character.isDigit(sFilename.charAt(0))) {
-          final String sTo = sFilename.substring(0, 3).trim().replaceAll("[^0-9]", "");
-          for (final char c : sTo.toCharArray()) {
-            if (!Character.isDigit(c)) {
-              throw new JajukException(152, file.getAbsolutePath());
-            }
-          }
-          lDiscNumber = Long.parseLong(sTo);
-        } else {
-          if (bMandatory) {
-            throw new JajukException(152, file.getAbsolutePath());
-          } else {
-            lDiscNumber = 0;
-          }
-        }
-      }
+      long lDiscNumber = handleDiscNumber(file, bMandatory, track);
 
       // prepend one digit numbers with "0"
       if (lDiscNumber < 10) {
@@ -395,6 +382,30 @@ public final class UtilString {
     }
 
     return out;
+  }
+
+  private static long handleDiscNumber(File file, boolean bMandatory, Track track)
+      throws JajukException {
+    long lDiscNumber = track.getDiscNumber();
+    if (lDiscNumber == 0) {
+      final String sFilename = file.getName();
+      if (Character.isDigit(sFilename.charAt(0))) {
+        final String sTo = sFilename.substring(0, 3).trim().replaceAll("[^0-9]", "");
+        for (final char c : sTo.toCharArray()) {
+          if (!Character.isDigit(c)) {
+            throw new JajukException(152, file.getAbsolutePath());
+          }
+        }
+        lDiscNumber = Long.parseLong(sTo);
+      } else {
+        if (bMandatory) {
+          throw new JajukException(152, file.getAbsolutePath());
+        } else {
+          lDiscNumber = 0;
+        }
+      }
+    }
+    return lDiscNumber;
   }
 
   /**
@@ -493,7 +504,7 @@ public final class UtilString {
   }
 
   /**
-   * @return locale date formatter instance
+   * @return locale date FORMATTER instance
    */
   public static DateFormat getLocaleDateFormatter() {
     return DateFormat.getDateInstance(DateFormat.DEFAULT, Locale.getDefault());
@@ -629,7 +640,7 @@ public final class UtilString {
    * @return Thread-safe addition date simple format instance
    */
   public static DateFormat getAdditionDateFormatter() {
-    return formatter.get();
+    return FORMATTER.get();
   }
 
   /**
@@ -748,15 +759,7 @@ public final class UtilString {
       ClassNotFoundException {
     Object oDefaultValue = sValue; // String by default
     if (cType.equals(Boolean.class)) {
-      // "y" and "n" is an old boolean
-      // attribute notation prior to 1.0
-      if ("y".equals(sValue)) {
-        oDefaultValue = true;
-      } else if ("n".equals(sValue)) {
-        oDefaultValue = false;
-      } else {
-        oDefaultValue = fastBooleanParser(sValue);
-      }
+      oDefaultValue = handleBoolean(sValue);
     } else if (cType.equals(Date.class)) {
       oDefaultValue = getAdditionDateFormatter().parseObject(sValue);
     } else if (cType.equals(Long.class)) {
@@ -767,6 +770,20 @@ public final class UtilString {
       oDefaultValue = Class.forName(sValue);
     }
     return oDefaultValue;
+  }
+
+  private static Boolean handleBoolean(final String sValue) {
+    Boolean oValue;
+    // "y" and "n" is an old boolean
+    // attribute notation prior to 1.0
+    if ("y".equals(sValue)) {
+      oValue = true;
+    } else if ("n".equals(sValue)) {
+      oValue = false;
+    } else {
+      oValue = fastBooleanParser(sValue);
+    }
+    return oValue;
   }
 
   /**
