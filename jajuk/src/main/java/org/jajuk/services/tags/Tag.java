@@ -321,7 +321,7 @@ public class Tag {
     } catch (Exception e) {
       // just debug, no warn because wrong order are too often and
       // generate too much traces
-      Log.info("Wrong order:" + fio.getName());
+      Log.info("Wrong order:{{" + fio.getName() + "}}");
       l = 0;
     }
     return l;
