@@ -22,7 +22,6 @@ package org.jajuk.util;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -113,7 +112,9 @@ public class Messages extends DefaultHandler {
   }
 
   /**
-   * Fetch all messages from a given base key. <P/> Example:
+   * Fetch all messages from a given base key.
+   * <P/>
+   * Example:
    * 
    * <pre>
    *     example.0=Message 1
@@ -122,16 +123,17 @@ public class Messages extends DefaultHandler {
    * </pre>
    * 
    * Using <tt>Messages.getAll("example");</tt> will return a size 3 String
-   * array containing the messages in order. <P/> The keys need to have
-   * continuous numbers. So, adding <tt>example.5=Message 5</tt> to the
-   * bundle, will not result in adding it to the array without first adding
-   * <tt>example.3</tt> and <tt>example.4</tt>.
+   * array containing the messages in order.
+   * <P/>
+   * The keys need to have continuous numbers. So, adding
+   * <tt>example.5=Message 5</tt> to the bundle, will not result in adding it to
+   * the array without first adding <tt>example.3</tt> and <tt>example.4</tt>.
    * 
    * @param base
    *          The base to use for generating the keys.
    * @return An array of Strings containing the messages linked to the key,
-   *         never <tt>null</tt>. If <tt>base.0</tt> is not found, and
-   *         empty array is returned.
+   *         never <tt>null</tt>. If <tt>base.0</tt> is not found, and empty
+   *         array is returned.
    */
   public static String[] getAll(final String base) {
     final List<String> msgs = new ArrayList<String>();
@@ -293,38 +295,27 @@ public class Messages extends DefaultHandler {
   /**
    * Show a dialog waiting for a user decision
    * <p>
-   * CAUTION! the thread which calls this method musn't have locks on resources :
-   * otherwise it can conduct to GUI freeze
+   * CAUTION! the thread which calls this method musn't have locks on resources
+   * : otherwise it can conduct to GUI freeze
    * </p>
    * 
-   * @param sText :
-   *          dialog text
-   * @param int
-   *          optionType : kind of options like JOptionPane.OK_CANCEL
+   * @param sText
+   *          : dialog text
+   * @param int optionType : kind of options like JOptionPane.OK_CANCEL
    * @param iType
    *          message type like JOptionPane.WARNING
    */
   public static int getChoice(final String sText, final int optionsType, final int iType) {
-    try {
-      // Make sure to reset the choice and to return a non-existing choice if
-      // the
-      // GUI fails
-      choice = Integer.MAX_VALUE;
-      SwingUtilities.invokeAndWait(new Runnable() {
 
-        public void run() {
-          // This must be done in the EDT
-          final ConfirmDialog confirm = new ConfirmDialog(sText, getTitleForType(iType),
-              optionsType, iType);
-          choice = confirm.getResu();
-        }
+    // Make sure to reset the choice and to return a non-existing choice if
+    // the
+    // GUI fails
+    choice = Integer.MAX_VALUE;
 
-      });
-    } catch (InterruptedException e) {
-      Log.error(e);
-    } catch (InvocationTargetException e) {
-      Log.error(e);
-    }
+    final ConfirmDialog confirm = new ConfirmDialog(sText, getTitleForType(iType), optionsType,
+        iType);
+    choice = confirm.getResu();
+
     return choice;
   }
 
@@ -363,8 +354,8 @@ public class Messages extends DefaultHandler {
    * Show a dialog with specified warning message + a "not show again" button
    * 
    * @param sMessage
-   * @param sProperty :
-   *          property name
+   * @param sProperty
+   *          : property name
    */
   public static void showHideableWarningMessage(final String sMessage, final String sProperty) {
     // User required to hide this message
@@ -520,11 +511,10 @@ class ConfirmDialog extends JajukDialog {
    * 
    * @param sText
    * @param sTitle
-   * @param int
-   *          optionType : kind of options like JOptionPane.OK_CANCEL
-   *          <p>
-   *          Specific option: Messages.ALL_OPTION
-   *          </p>
+   * @param int optionType : kind of options like JOptionPane.OK_CANCEL
+   *        <p>
+   *        Specific option: Messages.ALL_OPTION
+   *        </p>
    * @param iType
    *          message type like JOptionPane.WARNING
    */
