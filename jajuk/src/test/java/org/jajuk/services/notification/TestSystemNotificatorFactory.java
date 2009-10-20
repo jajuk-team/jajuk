@@ -47,6 +47,8 @@ public class TestSystemNotificatorFactory extends JajukTestCase {
       SystemNotificatorFactory.setTrayIcon(tray);
     } catch (NoClassDefFoundError e) {
       // expected when run without UI support
+    } catch (ExceptionInInitializerError e) {
+      // expected when run without UI support
     }
 
     // enable Tooltip/Notification

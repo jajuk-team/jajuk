@@ -51,6 +51,8 @@ public class TestJavaSystrayNotificator extends JajukTestCase {
       assertTrue(not.isAvailable());
     } catch (ExceptionInInitializerError e) {
       // expected when run without UI support
+    } catch (NoClassDefFoundError e) {
+      // expected when run without UI support
     }
   }
 
