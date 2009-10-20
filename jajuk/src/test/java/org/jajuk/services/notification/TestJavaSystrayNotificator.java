@@ -20,9 +20,9 @@
  */
 package org.jajuk.services.notification;
 
-import java.awt.TrayIcon;
-
 import ext.JXTrayIcon;
+
+import java.awt.TrayIcon;
 
 import org.jajuk.JajukTestCase;
 import org.jajuk.util.IconLoader;
@@ -34,34 +34,49 @@ import org.jajuk.util.JajukIcons;
 public class TestJavaSystrayNotificator extends JajukTestCase {
 
   /**
-   * Test method for {@link org.jajuk.services.notification.JavaSystrayNotificator#JavaSystrayNotificator(java.awt.TrayIcon)}.
+   * Test method for
+   * {@link org.jajuk.services.notification.JavaSystrayNotificator#JavaSystrayNotificator(java.awt.TrayIcon)}
+   * .
    */
   public void testJavaSystrayNotificator() {
-    // should initialize with null correctly., but return false for "isAvailable"
+    // should initialize with null correctly., but return false for
+    // "isAvailable"
     JavaSystrayNotificator not = new JavaSystrayNotificator(null);
     assertFalse(not.isAvailable());
-    
-    // should initialize correctly and return true for valid TrayIcon
-    TrayIcon tray = new JXTrayIcon(IconLoader.getIcon(JajukIcons.TRAY).getImage());
-    not = new JavaSystrayNotificator(tray);
-    assertTrue(not.isAvailable());
+
+    try {
+      // should initialize correctly and return true for valid TrayIcon
+      TrayIcon tray = new JXTrayIcon(IconLoader.getIcon(JajukIcons.TRAY).getImage());
+      not = new JavaSystrayNotificator(tray);
+      assertTrue(not.isAvailable());
+    } catch (ExceptionInInitializerError e) {
+      // expected when run without UI support
+    }
   }
 
   /**
-   * Test method for {@link org.jajuk.services.notification.JavaSystrayNotificator#isAvailable()}.
+   * Test method for
+   * {@link org.jajuk.services.notification.JavaSystrayNotificator#isAvailable()}
+   * .
    */
   public void testIsAvailable() {
     // tested above
   }
 
   /**
-   * Test method for {@link org.jajuk.services.notification.JavaSystrayNotificator#notify(java.lang.String, java.lang.String)}.
+   * Test method for
+   * {@link org.jajuk.services.notification.JavaSystrayNotificator#notify(java.lang.String, java.lang.String)}
+   * .
    */
   public void testNotifyStringString() {
-    TrayIcon tray = new JXTrayIcon(IconLoader.getIcon(JajukIcons.TRAY).getImage());
-    JavaSystrayNotificator not = new JavaSystrayNotificator(tray);
-    
-    not.notify("title", "text to display");
+    try {
+      TrayIcon tray = new JXTrayIcon(IconLoader.getIcon(JajukIcons.TRAY).getImage());
+      JavaSystrayNotificator not = new JavaSystrayNotificator(tray);
+
+      not.notify("title", "text to display");
+    } catch (NoClassDefFoundError e) {
+      // expected when run without UI support
+    }
   }
 
 }

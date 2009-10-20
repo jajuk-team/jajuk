@@ -36,28 +36,38 @@ import org.jajuk.util.JajukIcons;
 public class TestSystemNotificatorFactory extends JajukTestCase {
 
   /**
-   * Test method for {@link org.jajuk.services.notification.SystemNotificatorFactory#setTrayIcon(java.awt.TrayIcon)}.
+   * Test method for
+   * {@link org.jajuk.services.notification.SystemNotificatorFactory#setTrayIcon(java.awt.TrayIcon)}
+   * .
    */
   public void testSetTrayIcon() {
-    // just try to set a tray icon, should work in all cases
-    TrayIcon tray = new JXTrayIcon(IconLoader.getIcon(JajukIcons.TRAY).getImage());
-    SystemNotificatorFactory.setTrayIcon(tray);
-    
+    try {
+      // just try to set a tray icon, should work in all cases
+      TrayIcon tray = new JXTrayIcon(IconLoader.getIcon(JajukIcons.TRAY).getImage());
+      SystemNotificatorFactory.setTrayIcon(tray);
+    } catch (NoClassDefFoundError e) {
+      // expected when run without UI support
+    }
+
     // enable Tooltip/Notification
     Conf.setProperty(Const.CONF_UI_SHOW_BALLOON, "true");
 
-    // now try to get a notificator, but we cannot be sure if this works on all machines
+    // now try to get a notificator, but we cannot be sure if this works on all
+    // machines
     SystemNotificatorFactory.getSystemNotificator();
   }
 
   /**
-   * Test method for {@link org.jajuk.services.notification.SystemNotificatorFactory#getSystemNotificator()}.
+   * Test method for
+   * {@link org.jajuk.services.notification.SystemNotificatorFactory#getSystemNotificator()}
+   * .
    */
   public void testGetSystemNotificator() {
     // enable Tooltip/Notification
     Conf.setProperty(Const.CONF_UI_SHOW_BALLOON, "true");
 
-    // now try to get a notificator, but we cannot be sure if this works on all machines
+    // now try to get a notificator, but we cannot be sure if this works on all
+    // machines
     SystemNotificatorFactory.getSystemNotificator();
   }
 
