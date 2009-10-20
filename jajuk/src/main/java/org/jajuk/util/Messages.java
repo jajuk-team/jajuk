@@ -312,6 +312,7 @@ public class Messages extends DefaultHandler {
       // the GUI fails
       choice = JOptionPane.DEFAULT_OPTION;
       Runnable t = new Thread("Get choice thread"){
+        @Override
         public void run() {
           // This must be done in the EDT
           final ConfirmDialog confirm = new ConfirmDialog(sText, getTitleForType(iType),
