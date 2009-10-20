@@ -69,6 +69,8 @@ import org.jajuk.util.log.Log;
  */
 public final class UtilSystem {
 
+  private static final String LOCAL_IP = "127.0.0.1";
+
   /** MPlayer status possible values * */
   public static enum MPlayerStatus {
     MPLAYER_STATUS_OK, MPLAYER_STATUS_NOT_FOUND, MPLAYER_STATUS_WRONG_VERSION, MPLAYER_STATUS_JNLP_DOWNLOAD_PBM
@@ -589,7 +591,7 @@ public final class UtilSystem {
     if (sHostname == null) {
       // Try using IP now
       try {
-        final java.net.InetAddress inetAdd = java.net.InetAddress.getByName("127.0.0.1");
+        final java.net.InetAddress inetAdd = java.net.InetAddress.getByName(LOCAL_IP);
         sHostname = inetAdd.getHostName();
       } catch (final Exception e) {
         Log.debug("Cannot get Hostname by IP");
