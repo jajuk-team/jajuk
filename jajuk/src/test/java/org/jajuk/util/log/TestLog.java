@@ -186,6 +186,9 @@ public class TestLog extends JajukTestCase {
    * Test method for {@link org.jajuk.util.log.Log#getVerbosity()}.
    */
   public void testGetVerbosity() {
+    // set verbosity first as we can not rely on INFO being set because other tests might have adjusted it somehow
+    Log.setVerbosity(Log.INFO);
+    
     assertEquals(Log.INFO, Log.getVerbosity());
     Log.setVerbosity(Log.DEBUG);
     assertEquals(Log.DEBUG, Log.getVerbosity());
