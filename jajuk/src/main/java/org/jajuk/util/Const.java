@@ -605,7 +605,7 @@ public interface Const {
   String CONF_OPTIONS_SYNC_TABLE_TREE = "jajuk.options.sync_table_tree";
 
   /** Show popup */
-  String CONF_UI_SHOW_BALLOON = "jajuk.options.show_popup";
+  String CONF_UI_SHOW_SYSTEM_NOTIFICATION = "jajuk.options.show_popup";
 
   String CONF_P2P_SHARE = "jajuk.options.p2p.share";
 

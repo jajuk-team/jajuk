@@ -223,21 +223,7 @@ public class PlayerStateMediator implements Observer {
             }
 
             File file = FileManager.getInstance().getFileByID(id);
-
-            /* old code from JajukSystray, not sure if this is still needed...
-            
-            <code>
-            String sOut = "";
-            if (file != null) {
-              sOut = file.getBasicFormatText();
-            } else {
-              // display a "Ready to play" message
-              sOut = Messages.getString("JajukWindow.18");
-            }
-            </code> */
-
             Log.debug("Got update for new file launched, item: " + file);
-
             notifier.notify(Messages.getString("JajukWindow.39"), UtilString.buildTitle(file));
           }
         }

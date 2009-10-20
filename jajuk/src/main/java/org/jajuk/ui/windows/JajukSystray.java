@@ -202,7 +202,7 @@ public class JajukSystray extends CommandJPanel implements JajukWindow {
     jmiNovelties = new SizedJMenuItem(ActionManager.getAction(JajukActions.NOVELTIES));
 
     jcbmiShowBalloon = new JCheckBoxMenuItem(Messages.getString("ParameterView.185"));
-    jcbmiShowBalloon.setState(Conf.getBoolean(Const.CONF_UI_SHOW_BALLOON));
+    jcbmiShowBalloon.setState(Conf.getBoolean(Const.CONF_UI_SHOW_SYSTEM_NOTIFICATION));
     jcbmiShowBalloon.addActionListener(this);
     jcbmiShowBalloon.setToolTipText(Messages.getString("ParameterView.185"));
 
@@ -325,7 +325,7 @@ public class JajukSystray extends CommandJPanel implements JajukWindow {
     // with the thread
     try {
       if (e.getSource() == jcbmiShowBalloon) {
-        Conf.setProperty(Const.CONF_UI_SHOW_BALLOON, Boolean.toString(jcbmiShowBalloon.getState()));
+        Conf.setProperty(Const.CONF_UI_SHOW_SYSTEM_NOTIFICATION, Boolean.toString(jcbmiShowBalloon.getState()));
         // Launch an event that can be trapped by the tray to
         // synchronize the state
         Properties details = new Properties();
@@ -386,7 +386,7 @@ public class JajukSystray extends CommandJPanel implements JajukWindow {
           }
           populateAmbiences();
         } else if (JajukEvents.PARAMETERS_CHANGE.equals(subject)) {
-          jcbmiShowBalloon.setState(Conf.getBoolean(Const.CONF_UI_SHOW_BALLOON));
+          jcbmiShowBalloon.setState(Conf.getBoolean(Const.CONF_UI_SHOW_SYSTEM_NOTIFICATION));
         }
       }
     });

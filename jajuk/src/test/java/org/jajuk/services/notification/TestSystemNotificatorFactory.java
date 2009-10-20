@@ -52,7 +52,7 @@ public class TestSystemNotificatorFactory extends JajukTestCase {
     }
 
     // enable Tooltip/Notification
-    Conf.setProperty(Const.CONF_UI_SHOW_BALLOON, "true");
+    Conf.setProperty(Const.CONF_UI_SHOW_SYSTEM_NOTIFICATION, "true");
 
     // now try to get a notificator, but we cannot be sure if this works on all
     // machines
@@ -66,7 +66,7 @@ public class TestSystemNotificatorFactory extends JajukTestCase {
    */
   public void testGetSystemNotificator() {
     // enable Tooltip/Notification
-    Conf.setProperty(Const.CONF_UI_SHOW_BALLOON, "true");
+    Conf.setProperty(Const.CONF_UI_SHOW_SYSTEM_NOTIFICATION, "true");
 
     // now try to get a notificator, but we cannot be sure if this works on all
     // machines
@@ -75,7 +75,7 @@ public class TestSystemNotificatorFactory extends JajukTestCase {
 
   public void testGetSystemNotificatorFalse() {
     // disable Tooltip/Notification
-    Conf.setProperty(Const.CONF_UI_SHOW_BALLOON, "false");
+    Conf.setProperty(Const.CONF_UI_SHOW_SYSTEM_NOTIFICATION, "false");
 
     // here we need to get null back as it is disabled
     assertNull(SystemNotificatorFactory.getSystemNotificator());

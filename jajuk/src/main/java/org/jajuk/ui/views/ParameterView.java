@@ -785,7 +785,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
 
       public void actionPerformed(ActionEvent e) {
         // Store configuration
-        Conf.setProperty(Const.CONF_UI_SHOW_BALLOON, Boolean.toString(jcbShowBaloon.isSelected()));
+        Conf.setProperty(Const.CONF_UI_SHOW_SYSTEM_NOTIFICATION, Boolean.toString(jcbShowBaloon.isSelected()));
         Conf.setProperty(Const.CONF_SHOW_POPUPS, Boolean.toString(jcbShowPopups.isSelected()));
         Conf.setProperty(Const.CONF_OPTIONS_SYNC_TABLE_TREE, Boolean.toString(jcbSyncTableTree
             .isSelected()));
@@ -1705,7 +1705,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
       jpfASPassword.setEnabled(false);
     }
     // UI
-    jcbShowBaloon.setSelected(Conf.getBoolean(Const.CONF_UI_SHOW_BALLOON));
+    jcbShowBaloon.setSelected(Conf.getBoolean(Const.CONF_UI_SHOW_SYSTEM_NOTIFICATION));
     jcbShowPopups.setSelected(Conf.getBoolean(Const.CONF_SHOW_POPUPS));
     jcbShowSystray.setSelected(Conf.getBoolean(Const.CONF_SHOW_SYSTRAY));
     scbLAF.removeActionListener(this);

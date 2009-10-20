@@ -172,7 +172,7 @@ public class TestPlayerStateMediator extends JajukTestCase {
 
   public final void testUpdateWebradioNotifcator() {
     // enable Tooltip/Notification
-    Conf.setProperty(Const.CONF_UI_SHOW_BALLOON, "true");
+    Conf.setProperty(Const.CONF_UI_SHOW_SYSTEM_NOTIFICATION, "true");
     
     Properties prop = new Properties();
     prop.put(Const.DETAIL_CONTENT, new WebRadio("test", "testurl"));
@@ -183,7 +183,7 @@ public class TestPlayerStateMediator extends JajukTestCase {
 
   public final void testUpdateFileLaunched() throws Exception {
     // enable Tooltip/Notification
-    Conf.setProperty(Const.CONF_UI_SHOW_BALLOON, "true");
+    Conf.setProperty(Const.CONF_UI_SHOW_SYSTEM_NOTIFICATION, "true");
     
     Device device = new Device("1", "name");
     device.setUrl(System.getProperty("java.io.tmpdir"));
@@ -201,7 +201,7 @@ public class TestPlayerStateMediator extends JajukTestCase {
 
   public final void testUpdateFileLaunchedNull() {
     // enable Tooltip/Notification
-    Conf.setProperty(Const.CONF_UI_SHOW_BALLOON, "true");
+    Conf.setProperty(Const.CONF_UI_SHOW_SYSTEM_NOTIFICATION, "true");
 
     // just provide empty properties
     Properties prop = new Properties();
