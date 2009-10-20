@@ -27,6 +27,7 @@ import java.lang.reflect.InvocationTargetException;
 import javax.swing.SwingUtilities;
 
 import org.jajuk.services.core.SessionService;
+import org.jajuk.services.notification.SystemNotificatorFactory;
 import org.jajuk.ui.actions.ActionManager;
 import org.jajuk.ui.actions.JajukActions;
 import org.jajuk.ui.helpers.FontManager;
@@ -178,6 +179,9 @@ public class StartupGUIService {
           if (Conf.getBoolean(Const.CONF_SHOW_SYSTRAY) && SystemTray.isSupported()) {
             JajukSystray tray = JajukSystray.getInstance();
             tray.getWindowStateDecorator().display(true);
+            
+            // set the tray icon in the factory for system notifications
+            SystemNotificatorFactory.setTrayIcon(tray.getTrayIcon());
           }
           // Display tip of the day if required (not at the first
           // session to avoid displaying too many windows once)

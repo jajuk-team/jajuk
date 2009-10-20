@@ -34,12 +34,17 @@ import java.util.Set;
 
 import javax.swing.SwingUtilities;
 
+import org.jajuk.base.File;
+import org.jajuk.base.FileManager;
 import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.events.Observer;
+import org.jajuk.services.notification.ISystemNotificator;
+import org.jajuk.services.notification.SystemNotificatorFactory;
 import org.jajuk.services.players.Player;
 import org.jajuk.services.players.QueueModel;
+import org.jajuk.services.webradio.WebRadio;
 import org.jajuk.ui.actions.ActionManager;
 import org.jajuk.ui.actions.MuteAction;
 import org.jajuk.util.Conf;
@@ -48,6 +53,8 @@ import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilFeatures;
+import org.jajuk.util.UtilString;
+import org.jajuk.util.log.Log;
 
 /**
  * This mediator observes events on player state and change actions (and player
@@ -87,6 +94,10 @@ public class PlayerStateMediator implements Observer {
     eventSubjectSet.add(JajukEvents.WEBRADIO_LAUNCHED);
     eventSubjectSet.add(JajukEvents.VOLUME_CHANGED);
     eventSubjectSet.add(JajukEvents.MUTE_STATE);
+
+    // for notification display
+    eventSubjectSet.add(JajukEvents.FILE_LAUNCHED);
+
     return eventSubjectSet;
   }
 
@@ -186,17 +197,54 @@ public class PlayerStateMediator implements Observer {
           ActionManager.getAction(PAUSE_RESUME_TRACK).setIcon(
               IconLoader.getIcon(JajukIcons.PLAYER_PAUSE));
           ActionManager.getAction(STOP_TRACK).setEnabled(true);
+
+          // display a system notification if specified
+          ISystemNotificator notifier = SystemNotificatorFactory.getSystemNotificator();
+          if (notifier != null) {
+            WebRadio radio = (WebRadio) (event.getDetails().get(Const.DETAIL_CONTENT));
+
+            Log.debug("Got update for new webradio launched, item: " + radio);
+
+            notifier.notify("WebRadio", radio.getName());
+          }
         } else if (JajukEvents.VOLUME_CHANGED.equals(subject)) {
           MuteAction.setVolumeIcon(100 * Player.getCurrentVolume());
         } else if (JajukEvents.MUTE_STATE.equals(subject) &&
         // Update mute icon look when changing the volume
             !Player.isMuted()) {
           MuteAction.setVolumeIcon(Player.getCurrentVolume() * 100);
+        } else if (subject.equals(JajukEvents.FILE_LAUNCHED)) {
+          ISystemNotificator notifier = SystemNotificatorFactory.getSystemNotificator();
+          if (notifier != null) {
+            String id = (String) ObservationManager.getDetail(event, Const.DETAIL_CURRENT_FILE_ID);
+            if (id == null) {
+              Log.debug("No id found on FILE_LAUNCHED");
+              return;
+            }
+
+            File file = FileManager.getInstance().getFileByID(id);
+
+            /* old code from JajukSystray, not sure if this is still needed...
+            
+            <code>
+            String sOut = "";
+            if (file != null) {
+              sOut = file.getBasicFormatText();
+            } else {
+              // display a "Ready to play" message
+              sOut = Messages.getString("JajukWindow.18");
+            }
+            </code> */
+
+            Log.debug("Got update for new file launched, item: " + file);
+
+            notifier.notify(Messages.getString("JajukWindow.39"), UtilString.buildTitle(file));
+          }
         }
 
         // For all events except Volume Change/Mute, refresh the queue
-        if(!JajukEvents.VOLUME_CHANGED.equals(subject) && 
-            !JajukEvents.MUTE_STATE.equals(subject)) {
+        if (!JajukEvents.VOLUME_CHANGED.equals(subject) && !JajukEvents.MUTE_STATE.equals(subject) &&
+            !JajukEvents.FILE_LAUNCHED.equals(subject)) {
           ObservationManager.notify(new JajukEvent(JajukEvents.QUEUE_NEED_REFRESH));
         }
       }

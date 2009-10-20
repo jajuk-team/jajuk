@@ -41,8 +41,6 @@ import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.SwingUtilities;
 
-import org.jajuk.base.File;
-import org.jajuk.base.FileManager;
 import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
@@ -355,24 +353,6 @@ public class JajukSystray extends CommandJPanel implements JajukWindow {
           jmiNext.setEnabled(true);
           jmiPrevious.setEnabled(true);
           jmiFinishAlbum.setEnabled(true);
-          String sID = (String) ObservationManager.getDetail(event, Const.DETAIL_CURRENT_FILE_ID);
-          if (sID == null) {
-            return;
-          }
-          File file = FileManager.getInstance().getFileByID(
-              (String) ObservationManager.getDetail(event, Const.DETAIL_CURRENT_FILE_ID));
-          String sOut = "";
-          if (file != null) {
-            sOut = file.getBasicFormatText();
-          } else {
-            // display a "Ready to play" message
-            sOut = Messages.getString("JajukWindow.18");
-          }
-          // check show balloon option
-          if (Conf.getBoolean(Const.CONF_UI_SHOW_BALLOON)) {
-            trayIcon.displayMessage(Messages.getString("JajukWindow.35"), sOut,
-                TrayIcon.MessageType.INFO);
-          }
         } else if (JajukEvents.PLAYER_STOP.equals(subject)) {
           // Enable the play button to allow restarting the queue but disable if
           // the queue is void
@@ -466,6 +446,13 @@ public class JajukSystray extends CommandJPanel implements JajukWindow {
 
   public JPopupMenu getMenu() {
     return this.jmenu;
+  }
+
+  /**
+   * @return the trayIcon
+   */
+  public TrayIcon getTrayIcon() {
+    return this.trayIcon;
   }
 
 }

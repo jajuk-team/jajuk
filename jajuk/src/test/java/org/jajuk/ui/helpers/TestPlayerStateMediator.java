@@ -21,11 +21,11 @@
 package org.jajuk.ui.helpers;
 
 import java.util.List;
+import java.util.Properties;
 import java.util.Set;
 
-import org.jajuk.JajukTestCase;
-
 import org.jajuk.JUnitHelpers;
+import org.jajuk.JajukTestCase;
 import org.jajuk.base.Album;
 import org.jajuk.base.Author;
 import org.jajuk.base.Device;
@@ -44,7 +44,9 @@ import org.jajuk.services.players.IPlayerImpl;
 import org.jajuk.services.players.Player;
 import org.jajuk.services.players.QueueModel;
 import org.jajuk.services.players.StackItem;
+import org.jajuk.services.webradio.WebRadio;
 import org.jajuk.ui.actions.ActionManager;
+import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 
 /**
@@ -168,6 +170,46 @@ public class TestPlayerStateMediator extends JajukTestCase {
     med.update(new JajukEvent(JajukEvents.WEBRADIO_LAUNCHED, null));
   }
 
+  public final void testUpdateWebradioNotifcator() {
+    // enable Tooltip/Notification
+    Conf.setProperty(Const.CONF_UI_SHOW_BALLOON, "true");
+    
+    Properties prop = new Properties();
+    prop.put(Const.DETAIL_CONTENT, new WebRadio("test", "testurl"));
+    
+    PlayerStateMediator med = PlayerStateMediator.getInstance();
+    med.update(new JajukEvent(JajukEvents.WEBRADIO_LAUNCHED, prop));
+  }
+
+  public final void testUpdateFileLaunched() throws Exception {
+    // enable Tooltip/Notification
+    Conf.setProperty(Const.CONF_UI_SHOW_BALLOON, "true");
+    
+    Device device = new Device("1", "name");
+    device.setUrl(System.getProperty("java.io.tmpdir"));
+    Directory dir = DirectoryManager.getInstance().registerDirectory(device);
+    File file = getFile(3, dir);
+    
+    Properties prop = new Properties();
+    prop.put(Const.DETAIL_CURRENT_FILE_ID, file.getID());
+    
+    PlayerStateMediator med = PlayerStateMediator.getInstance();
+    med.update(new JajukEvent(JajukEvents.FILE_LAUNCHED, prop));
+    
+    JUnitHelpers.clearSwingUtilitiesQueue();
+  }
+
+  public final void testUpdateFileLaunchedNull() {
+    // enable Tooltip/Notification
+    Conf.setProperty(Const.CONF_UI_SHOW_BALLOON, "true");
+
+    // just provide empty properties
+    Properties prop = new Properties();
+   
+    PlayerStateMediator med = PlayerStateMediator.getInstance();
+    med.update(new JajukEvent(JajukEvents.FILE_LAUNCHED, prop));
+  }
+  
   public final void testUpdateVolume() {
     PlayerStateMediator med = PlayerStateMediator.getInstance();
     med.update(new JajukEvent(JajukEvents.VOLUME_CHANGED, null));
