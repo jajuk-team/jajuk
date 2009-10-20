@@ -48,7 +48,7 @@ public class SystemNotificatorFactory {
    * 
    * @return
    */
-  public static ISystemNotificator getSystemNotificator() {
+  public synchronized static ISystemNotificator getSystemNotificator() {
     // first check show balloon option and return null
     if (!Conf.getBoolean(Const.CONF_UI_SHOW_BALLOON)) {
       return null;
