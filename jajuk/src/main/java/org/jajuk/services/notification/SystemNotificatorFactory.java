@@ -70,6 +70,9 @@ public class SystemNotificatorFactory {
     if(notification.isAvailable()) {
       Log.debug("Java systray implementation is available for system notifications.");
       return notification;
+    } else {
+      // reset member again to not keep an implementation that does not work...
+      notification = null;
     }
     
     // none available, return null
