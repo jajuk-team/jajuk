@@ -22,6 +22,7 @@ package org.jajuk.services.notification;
 
 import ext.JXTrayIcon;
 
+import java.awt.HeadlessException;
 import java.awt.TrayIcon;
 
 import org.jajuk.JajukTestCase;
@@ -77,6 +78,8 @@ public class TestJavaSystrayNotificator extends JajukTestCase {
 
       not.notify("title", "text to display");
     } catch (NoClassDefFoundError e) {
+      // expected when run without UI support
+    } catch (HeadlessException e) {
       // expected when run without UI support
     }
   }
