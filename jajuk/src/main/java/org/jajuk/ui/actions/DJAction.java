@@ -60,8 +60,7 @@ public class DJAction extends JajukAction {
             if (dj != null) {
               Conf.setProperty(Const.CONF_FADE_DURATION, Integer.toString(dj.getFadingDuration()));
               UtilGUI.waiting();
-              List<File> al = null;
-              al = dj.generatePlaylist();
+              List<File> al = dj.generatePlaylist();
               if (al != null && al.size() == 0) { // DJ constraints cannot be
                 // respected
                 Messages.showErrorMessage(158);

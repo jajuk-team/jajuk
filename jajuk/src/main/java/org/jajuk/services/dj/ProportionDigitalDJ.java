@@ -120,6 +120,10 @@ public class ProportionDigitalDJ extends DigitalDJ {
     }
     // shuffle selection
     Collections.shuffle(out, UtilSystem.getRandom());
+
+    // finally ensure that we don't select more than the max number of tracks
+    filterFilesByMaxTrack(out);
+
     return out;
   }
 

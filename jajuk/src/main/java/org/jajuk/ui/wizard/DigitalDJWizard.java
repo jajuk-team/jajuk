@@ -39,6 +39,7 @@ import javax.swing.JSlider;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
+import javax.swing.border.BevelBorder;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
 import javax.swing.event.ChangeEvent;
@@ -98,10 +99,10 @@ public class DigitalDJWizard extends Wizard {
   /** Fade duration */
   private static final String KEY_FADE_DURATION = "FADE_DURATION";
 
-  /** transitions */
+  /** Transitions */
   private static final String KEY_TRANSITIONS = "TRANSITIONS";
 
-  /** proportions */
+  /** Proportions */
   private static final String KEY_PROPORTIONS = "PROPORTIONS";
 
   /** Ambience */
@@ -112,6 +113,9 @@ public class DigitalDJWizard extends Wizard {
 
   /** DJ to change */
   private static final String KEY_CHANGE = "CHANGE";
+
+  /** Max number of tracks to queue */
+  private static final String KEY_MAX_TRACKS = "MAXTRACKS";
 
   /**
    * 
@@ -166,7 +170,8 @@ public class DigitalDJWizard extends Wizard {
     /*
      * (non-Javadoc)
      * 
-     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+     * @see
+     * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
 
     public void actionPerformed(ActionEvent e) {
@@ -241,7 +246,8 @@ public class DigitalDJWizard extends Wizard {
     /*
      * (non-Javadoc)
      * 
-     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+     * @see
+     * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
 
     public void actionPerformed(ActionEvent e) {
@@ -315,7 +321,8 @@ public class DigitalDJWizard extends Wizard {
     /*
      * (non-Javadoc)
      * 
-     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+     * @see
+     * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
 
     public void actionPerformed(ActionEvent e) {
@@ -402,7 +409,8 @@ public class DigitalDJWizard extends Wizard {
     /*
      * (non-Javadoc)
      * 
-     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+     * @see
+     * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
 
     public void actionPerformed(ActionEvent e) {
@@ -433,6 +441,11 @@ public class DigitalDJWizard extends Wizard {
   public static class GeneralOptionsPanel extends Screen implements ActionListener, CaretListener,
       ChangeListener {
 
+    /**
+     * 
+     */
+    private static final String NO_MAX_TRACKS = "  ";
+
     private static final long serialVersionUID = 1L;
 
     JLabel jlName;
@@ -446,6 +459,12 @@ public class DigitalDJWizard extends Wizard {
     JLabel jlFadeDuration;
 
     JSlider jsFadeDuration;
+
+    JCheckBox jcbMaxTracks;
+
+    JSlider jsMaxTracks;
+
+    JLabel jnMaxTracks;
 
     JCheckBox jcbUnicity;
 
@@ -470,41 +489,71 @@ public class DigitalDJWizard extends Wizard {
         data.put(KEY_FADE_DURATION, 10);
         data.put(KEY_RATINGS_LEVEL, 0); // all tracks by default
         data.put(KEY_UNICITY, false);
+        data.put(KEY_MAX_TRACKS, -1);
       } else if (ActionSelectionPanel.ACTION_CHANGE.equals(data.get(KEY_ACTION))) {
         // keep existing DJ values
         DigitalDJ dj = (DigitalDJ) data.get(KEY_CHANGE);
         data.put(KEY_FADE_DURATION, dj.getFadingDuration());
         data.put(KEY_RATINGS_LEVEL, dj.getRatingLevel());
         data.put(KEY_UNICITY, dj.isTrackUnicity());
+        data.put(KEY_MAX_TRACKS, dj.getMaxTracks());
       }
       jlName = new JLabel(Messages.getString("DigitalDJWizard.6"));
       jtfName = new JTextField();
       jtfName.setToolTipText(Messages.getString("DigitalDJWizard.6"));
       jtfName.addCaretListener(this);
       jtfName.requestFocusInWindow();
+
       jlRatingLevel = new JLabel(Messages.getString("DigitalDJWizard.8"));
       jlRatingLevel.setToolTipText(Messages.getString("DigitalDJWizard.53"));
       jsRatingLevel = new JSlider(0, 4, (Integer) data.get(KEY_RATINGS_LEVEL));
-      jsRatingLevel.setToolTipText(Messages.getString("DigitalDJWizard.53"));
       jsRatingLevel.setMajorTickSpacing(1);
       jsRatingLevel.setMinorTickSpacing(1);
       jsRatingLevel.setPaintTicks(true);
       jsRatingLevel.setSnapToTicks(true);
       jsRatingLevel.setPaintLabels(true);
-      jsRatingLevel.setToolTipText(Messages.getString("DigitalDJWizard.8"));
+      jsRatingLevel.setToolTipText(Messages.getString("DigitalDJWizard.53"));
       jsRatingLevel.addMouseWheelListener(new DefaultMouseWheelListener(jsRatingLevel));
       jsRatingLevel.addChangeListener(this);
+
       jlFadeDuration = new JLabel(Messages.getString("DigitalDJWizard.9"));
       jlFadeDuration.setToolTipText(Messages.getString("DigitalDJWizard.54"));
       jsFadeDuration = new JSlider(0, 30, (Integer) data.get(KEY_FADE_DURATION));
-      jsFadeDuration.setToolTipText(Messages.getString("DigitalDJWizard.54"));
       jsFadeDuration.addMouseWheelListener(new DefaultMouseWheelListener(jsFadeDuration));
       jsFadeDuration.addChangeListener(this);
       jsFadeDuration.setMajorTickSpacing(10);
       jsFadeDuration.setMinorTickSpacing(1);
       jsFadeDuration.setPaintTicks(true);
       jsFadeDuration.setPaintLabels(true);
-      jsFadeDuration.setToolTipText(Messages.getString("DigitalDJWizard.9"));
+      jsFadeDuration.setToolTipText(Messages.getString("DigitalDJWizard.54"));
+
+      // CheckBox for enabling/disabling slider, jsMaxTrack
+      int nMaxTracks = (Integer) data.get(KEY_MAX_TRACKS);
+      jcbMaxTracks = new JCheckBox(Messages.getString("DigitalDJWizard.67"), nMaxTracks != -1);
+      jcbMaxTracks.setToolTipText(Messages.getString("DigitalDJWizard.68"));
+
+      // initialize the slider based if max track is enabled or not
+      if (nMaxTracks != -1) {
+        jsMaxTracks = new JSlider(0, 5000, nMaxTracks);
+        jsMaxTracks.setEnabled(true);
+        jnMaxTracks = new JLabel(Integer.toString(nMaxTracks));
+      } else {
+        jsMaxTracks = new JSlider(0, 5000, 100);
+        jsMaxTracks.setEnabled(false);
+        jnMaxTracks = new JLabel(NO_MAX_TRACKS);
+      }
+      jnMaxTracks.setBorder(new BevelBorder(BevelBorder.LOWERED));
+      jsMaxTracks.addMouseWheelListener(new DefaultMouseWheelListener(jsMaxTracks));
+      jsMaxTracks.addChangeListener(this);
+      jsMaxTracks.setMajorTickSpacing(100);
+      jsMaxTracks.setMinorTickSpacing(10);
+      jsMaxTracks.setPaintTicks(false);
+      jsMaxTracks.setPaintLabels(false);
+      jsMaxTracks.setToolTipText(Messages.getString("DigitalDJWizard.68"));
+
+      // enable/disable slider depending on checkbox
+      jcbMaxTracks.addActionListener(this);
+
       jcbUnicity = new JCheckBox(Messages.getString("DigitalDJWizard.10"), (Boolean) data
           .get(KEY_UNICITY));
       jcbUnicity.setToolTipText(Messages.getString("DigitalDJWizard.55"));
@@ -513,6 +562,7 @@ public class DigitalDJWizard extends Wizard {
           data.put(KEY_UNICITY, jcbUnicity.isSelected());
         }
       });
+
       // DJ change, set default values
       if (ActionSelectionPanel.ACTION_CHANGE.equals(data.get(KEY_ACTION))) {
         DigitalDJ dj = (DigitalDJ) data.get(KEY_CHANGE);
@@ -520,9 +570,15 @@ public class DigitalDJWizard extends Wizard {
         jsFadeDuration.setValue((Integer) data.get(KEY_FADE_DURATION));
         jsRatingLevel.setValue((Integer) data.get(KEY_RATINGS_LEVEL));
         jcbUnicity.setSelected((Boolean) data.get(KEY_UNICITY));
+        if (((Integer) data.get(KEY_MAX_TRACKS)) != -1) {
+          jsMaxTracks.setValue((Integer) data.get(KEY_MAX_TRACKS));
+        } else {
+          jsMaxTracks.setValue(100);
+        }
       } else { // new dj, dj name is required
         setProblem(Messages.getString("DigitalDJWizard.41"));
       }
+
       setLayout(new MigLayout("insets 10,gapx 10,gapy 15", "[][grow]"));
       add(jlName);
       add(jtfName, "grow,wrap");
@@ -530,25 +586,39 @@ public class DigitalDJWizard extends Wizard {
       add(jsRatingLevel, "grow,wrap");
       add(jlFadeDuration);
       add(jsFadeDuration, "grow,wrap");
+      add(jcbMaxTracks);
+      {
+        JPanel panel = new JPanel();
+        panel.setLayout(new MigLayout("", "[grow][]"));
+        panel.add(jsMaxTracks, "grow");
+        panel.add(jnMaxTracks);
+        add(panel, "grow,wrap");
+      }
       add(jcbUnicity, "wrap");
     }
 
     /*
      * (non-Javadoc)
      * 
-     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+     * @see
+     * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
 
     public void actionPerformed(ActionEvent ae) {
       if (ae.getSource() == jcbUnicity) {
         data.put(KEY_UNICITY, jcbUnicity.isSelected());
+      } else 
+      if (ae.getSource() == jcbMaxTracks) {
+        jsMaxTracks.setEnabled(jcbMaxTracks.isSelected());
+        updateMaxTracks();
       }
     }
 
     /*
      * (non-Javadoc)
      * 
-     * @see javax.swing.event.CaretListener#caretUpdate(javax.swing.event.CaretEvent)
+     * @see
+     * javax.swing.event.CaretListener#caretUpdate(javax.swing.event.CaretEvent)
      */
 
     public void caretUpdate(CaretEvent ce) {
@@ -579,7 +649,9 @@ public class DigitalDJWizard extends Wizard {
     /*
      * (non-Javadoc)
      * 
-     * @see javax.swing.event.ChangeListener#stateChanged(javax.swing.event.ChangeEvent)
+     * @see
+     * javax.swing.event.ChangeListener#stateChanged(javax.swing.event.ChangeEvent
+     * )
      */
 
     public void stateChanged(ChangeEvent ie) {
@@ -587,8 +659,28 @@ public class DigitalDJWizard extends Wizard {
         data.put(KEY_FADE_DURATION, jsFadeDuration.getValue());
       } else if (ie.getSource() == jsRatingLevel && !jsRatingLevel.getValueIsAdjusting()) {
         data.put(KEY_RATINGS_LEVEL, jsRatingLevel.getValue());
+      } else if (ie.getSource() == jsMaxTracks) {
+        updateMaxTracks();
       }
 
+    }
+
+    /**
+     * Update all items related to the Max Track feature
+     */
+    private void updateMaxTracks() {
+      // store -1 if checkbox is not enabled and update the label accordingly
+      if (jcbMaxTracks.isSelected()) {
+        if (!jsMaxTracks.getValueIsAdjusting()) {
+          data.put(KEY_MAX_TRACKS, jsMaxTracks.getValue());
+        }
+        jnMaxTracks.setText(Integer.toString(jsMaxTracks.getValue()));
+      } else {
+        if (!jsMaxTracks.getValueIsAdjusting()) {
+          data.put(KEY_MAX_TRACKS, -1);
+        }
+        jnMaxTracks.setText(NO_MAX_TRACKS);
+      }
     }
   }
 
@@ -1207,7 +1299,8 @@ public class DigitalDJWizard extends Wizard {
     /*
      * (non-Javadoc)
      * 
-     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+     * @see
+     * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent e) {
       int row = getWidgetIndex(widgets, (JComponent) e.getSource());
@@ -1320,7 +1413,6 @@ public class DigitalDJWizard extends Wizard {
       DigitalDJManager.getInstance().remove((DigitalDJ) data.get(KEY_REMOVE));
     } else if (ActionSelectionPanel.ACTION_CREATION.equals(sAction)) {
       String sType = (String) data.get(KEY_DJ_TYPE);
-      String sName = (String) data.get(KEY_DJ_NAME);
       // create a unique ID for this DJ, simply use current time in ms
       String sID = Long.toString(System.currentTimeMillis());
       if (TypeSelectionPanel.DJ_TYPE_AMBIENCE.equals(sType)) {
@@ -1338,13 +1430,7 @@ public class DigitalDJWizard extends Wizard {
       } else {
         throw new IllegalArgumentException("Unknown type of DJ: " + sType);
       }
-      int iFadeDuration = (Integer) data.get(KEY_FADE_DURATION);
-      int iRateLevel = (Integer) data.get(KEY_RATINGS_LEVEL);
-      boolean bUnicity = (Boolean) data.get(KEY_UNICITY);
-      dj.setName(sName);
-      dj.setFadingDuration(iFadeDuration);
-      dj.setRatingLevel(iRateLevel);
-      dj.setTrackUnicity(bUnicity);
+      setProperties(dj);
       DigitalDJManager.getInstance().register(dj);
       // commit the DJ right now
       DigitalDJManager.commit(dj);
@@ -1365,18 +1451,28 @@ public class DigitalDJWizard extends Wizard {
         List<Transition> transitions = (List) data.get(KEY_TRANSITIONS);
         ((TransitionDigitalDJ) dj).setTransitions(transitions);
       }
-      String sName = (String) data.get(KEY_DJ_NAME);
-      int iFadeDuration = (Integer) data.get(KEY_FADE_DURATION);
-      int iRateLevel = (Integer) data.get(KEY_RATINGS_LEVEL);
-      boolean bUnicity = (Boolean) data.get(KEY_UNICITY);
-      dj.setName(sName);
-      dj.setFadingDuration(iFadeDuration);
-      dj.setRatingLevel(iRateLevel);
-      dj.setTrackUnicity(bUnicity);
+      setProperties(dj);
       // commit the DJ right now
       DigitalDJManager.commit(dj);
     }
     // Refresh command panel (useful for ie if DJ names changed)
     ObservationManager.notify(new JajukEvent(JajukEvents.DJS_CHANGE));
+  }
+
+  /** Store the properties from the Wizard to the specified DJ.
+   *  
+   * @param dj The DJ to populate.
+   */
+  private void setProperties(DigitalDJ dj) {
+    String sName = (String) data.get(KEY_DJ_NAME);
+    int iFadeDuration = (Integer) data.get(KEY_FADE_DURATION);
+    int iRateLevel = (Integer) data.get(KEY_RATINGS_LEVEL);
+    boolean bUnicity = (Boolean) data.get(KEY_UNICITY);
+    int iMaxTracks = (Integer) data.get(KEY_MAX_TRACKS);
+    dj.setName(sName);
+    dj.setFadingDuration(iFadeDuration);
+    dj.setRatingLevel(iRateLevel);
+    dj.setTrackUnicity(bUnicity);
+    dj.setMaxTracks(iMaxTracks);
   }
 }

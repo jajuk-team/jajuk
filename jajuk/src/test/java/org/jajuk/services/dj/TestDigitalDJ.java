@@ -155,6 +155,39 @@ public class TestDigitalDJ extends JajukTestCase {
     assertEquals(2, files.size());
   }
 
+  public final void testFilterFilesByMaxTrack() throws Exception {
+    DigitalDJ dj = new AmbienceDigitalDJ("3");
+    dj.setName("ambience1");
+
+    List<File> files = new ArrayList<File>();
+    File file = getFile(1);
+    file.getTrack().setProperty(Const.XML_TRACK_RATE, 1l);
+    files.add(file);
+
+    file = getFile(2); 
+    file.getTrack().setProperty(Const.XML_TRACK_RATE, 26l);
+    files.add(file);
+
+    file = getFile(3); 
+    file.getTrack().setProperty(Const.XML_TRACK_RATE, 51l);
+    files.add(file);
+
+    // with max-tracks -1 nothing is cut off
+    dj.setMaxTracks(-1);
+    dj.filterFilesByMaxTrack(files);
+    assertEquals(3, files.size());
+    
+    // nothing happens if max is higher
+    dj.setMaxTracks(4);
+    dj.filterFilesByMaxTrack(files);
+    assertEquals(3, files.size());
+
+    // set max level and see if tracks are removed
+    dj.setMaxTracks(2);
+    dj.filterFilesByMaxTrack(files);
+    assertEquals(2, files.size());
+  }
+
   private File getFile(int i) throws Exception {
     Style style = new Style(Integer.valueOf(i).toString(), "name");
     Album album = new Album(Integer.valueOf(i).toString(), "name", "artis", 23);
@@ -290,4 +323,22 @@ public class TestDigitalDJ extends JajukTestCase {
     // tested above
   }
 
+  /**
+   * Test method for {@link org.jajuk.services.dj.DigitalDJ#getRatingLevel()}.
+   */
+  public final void testGetAndSetMaxTracks() {
+    DigitalDJ dj = new AmbienceDigitalDJ("3");
+    dj.setName("ambience1");
+    
+    assertEquals(-1, dj.getMaxTracks());
+    dj.setMaxTracks(3);
+    assertEquals(3, dj.getMaxTracks());
+  }
+
+  /**
+   * Test method for {@link org.jajuk.services.dj.DigitalDJ#setRatingLevel(int)}.
+   */
+  public final void testSetMaxTracks() {
+    // tested above
+  }
 }

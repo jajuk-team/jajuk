@@ -211,6 +211,8 @@ public final class DigitalDJManager implements Observer {
    */
   public void loadAllDJs() {
     try {
+      // read all files that end with ".dj" in the configuration directory for
+      // DJs
       File[] files = SessionService.getConfFileByPath(Const.FILE_DJ_DIR).listFiles(
           new FileFilter() {
             public boolean accept(File file) {
@@ -220,6 +222,8 @@ public final class DigitalDJManager implements Observer {
               return false;
             }
           });
+
+      // read each of the files
       for (File element : files) {
         try { // try each DJ to continue others if one fails
           DigitalDJFactory factory = DigitalDJFactory.getFactory(element);
@@ -276,6 +280,8 @@ abstract class DigitalDJFactory extends DefaultHandler {
   /** Track unicity */
   protected boolean bTrackUnicity = false;
 
+  protected int maxTracks;
+
   /** General parameters handlers */
   abstract class GeneralDefaultHandler extends DefaultHandler {
 
@@ -297,6 +303,14 @@ abstract class DigitalDJFactory extends DefaultHandler {
             .getIndex(Const.XML_DJ_RATING_LEVEL)));
         fadeDuration = Integer.parseInt(attributes.getValue(attributes
             .getIndex(Const.XML_DJ_FADE_DURATION)));
+
+        // keep older DJs without this attribute usable
+        if (attributes.getValue(attributes.getIndex(Const.XML_DJ_MAX_TRACKS)) != null) {
+          maxTracks = Integer.parseInt(attributes.getValue(attributes
+              .getIndex(Const.XML_DJ_MAX_TRACKS)));
+        } else {
+          maxTracks = -1; // default is infinity
+        }
       } else {// others implementation dependant-operation
         othersTags(sQName, attributes);
       }
@@ -352,6 +366,17 @@ abstract class DigitalDJFactory extends DefaultHandler {
   }
 
   /**
+   * @param dj
+   */
+  protected void setGeneralProperties(DigitalDJ dj) {
+    dj.setName(name);
+    dj.setFadingDuration(fadeDuration);
+    dj.setRatingLevel(iRatingLevel);
+    dj.setTrackUnicity(bTrackUnicity);
+    dj.setMaxTracks(maxTracks);
+  }
+
+  /**
    * 
    * @return DigitalDJ from associated factory
    * @param file
@@ -400,10 +425,7 @@ class DigitalDJFactoryProportionImpl extends DigitalDJFactory {
     SAXParser saxParser = spf.newSAXParser();
     saxParser.parse(file, handler);
     ProportionDigitalDJ dj = new ProportionDigitalDJ(id);
-    dj.setName(name);
-    dj.setFadingDuration(fadeDuration);
-    dj.setRatingLevel(iRatingLevel);
-    dj.setTrackUnicity(bTrackUnicity);
+    setGeneralProperties(dj);
     dj.setProportions(proportions);
     return dj;
   }
@@ -437,10 +459,7 @@ class DigitalDJFactoryAmbienceImpl extends DigitalDJFactory {
     SAXParser saxParser = spf.newSAXParser();
     saxParser.parse(file, handler);
     AmbienceDigitalDJ dj = new AmbienceDigitalDJ(id);
-    dj.setName(name);
-    dj.setFadingDuration(fadeDuration);
-    dj.setRatingLevel(iRatingLevel);
-    dj.setTrackUnicity(bTrackUnicity);
+    setGeneralProperties(dj);
     dj.setAmbience(ambience);
     return dj;
   }
@@ -488,11 +507,9 @@ class DigitalDJFactoryTransitionImpl extends DigitalDJFactory {
     SAXParserFactory spf = SAXParserFactory.newInstance();
     SAXParser saxParser = spf.newSAXParser();
     saxParser.parse(file, handler);
+
     TransitionDigitalDJ dj = new TransitionDigitalDJ(id);
-    dj.setName(name);
-    dj.setFadingDuration(fadeDuration);
-    dj.setRatingLevel(iRatingLevel);
-    dj.setTrackUnicity(bTrackUnicity);
+    setGeneralProperties(dj);
     dj.setTransitions(transitions);
     return dj;
   }

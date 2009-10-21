@@ -49,6 +49,8 @@ public abstract class DigitalDJ implements Comparable<DigitalDJ> {
   /** Track unicity */
   protected boolean bUnicity = false;
 
+  private int iMaxTracks = -1;
+
   /**
    * Constructor with ID
    * 
@@ -79,7 +81,7 @@ public abstract class DigitalDJ implements Comparable<DigitalDJ> {
    */
   public int compareTo(DigitalDJ other) {
     // 
-    if(other == null) {
+    if (other == null) {
       return -1;
     }
 
@@ -104,7 +106,8 @@ public abstract class DigitalDJ implements Comparable<DigitalDJ> {
     sb.append("\t<" + Const.XML_DJ_GENERAL + " ");
     sb.append(Const.XML_DJ_RATING_LEVEL + "='" + iRatingLevel + "' ");
     sb.append(Const.XML_DJ_UNICITY + "='" + bUnicity + "' ");
-    sb.append(Const.XML_DJ_FADE_DURATION + "='" + iFadingDuration + "'/>\n");
+    sb.append(Const.XML_DJ_FADE_DURATION + "='" + iFadingDuration + "' ");
+    sb.append(Const.XML_DJ_MAX_TRACKS + "='" + iMaxTracks + "'/>\n");
     return sb.toString();
   }
 
@@ -127,6 +130,21 @@ public abstract class DigitalDJ implements Comparable<DigitalDJ> {
         } else {
           selectedTracks.add(file.getTrack());
         }
+      }
+    }
+  }
+
+  void filterFilesByMaxTrack(List<File> files) {
+    // cut off some tracks if less are selected for queuing
+    if (iMaxTracks > 0) {
+      // return without any copying if we have less entries than max
+      if(iMaxTracks > files.size()) {
+        return;
+      }
+      
+      // remove until we have less than max tracks
+      while(files.size() > iMaxTracks) {
+        files.remove(files.size()-1);
       }
     }
   }
@@ -213,4 +231,21 @@ public abstract class DigitalDJ implements Comparable<DigitalDJ> {
     this.bUnicity = trackUnicity;
   }
 
+  /**
+   * @return The configured number of max tracks to queue for this DJ. -1
+   *         denotes infinity.
+   */
+  public int getMaxTracks() {
+    return this.iMaxTracks;
+  }
+
+  /**
+   * Set the new max number of tracks to queue.
+   * 
+   * @param iMaxTracks
+   *          The new max number of tracks to queue for this DJ. -1 for infinity
+   */
+  public void setMaxTracks(int iMaxTracks) {
+    this.iMaxTracks = iMaxTracks;
+  }
 }

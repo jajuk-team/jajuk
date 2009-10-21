@@ -161,6 +161,9 @@ public class TransitionDigitalDJ extends DigitalDJ {
           }
         }
       } else { // no more tracks for this ambience ? leave
+        // finally ensure that we don't select more than the max number of tracks
+        filterFilesByMaxTrack(out);
+
         return out;
       }
       if (currentTransition != null) {
@@ -169,6 +172,10 @@ public class TransitionDigitalDJ extends DigitalDJ {
         break;
       }
     }
+
+    // finally ensure that we don't select more than the max number of tracks
+    filterFilesByMaxTrack(out);
+
     return out;
   }
 

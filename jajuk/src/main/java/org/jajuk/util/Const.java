@@ -1082,6 +1082,8 @@ public interface Const {
   String XML_DJ_UNICITY = "unicity";
 
   String XML_DJ_FADE_DURATION = "fade_duration";
+  
+  String XML_DJ_MAX_TRACKS = "max_tracks";
 
   String XML_DJ_PROPORTIONS = "proportions";
 
