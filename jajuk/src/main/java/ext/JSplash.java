@@ -142,7 +142,7 @@ public final class JSplash extends JFrame {
     setContentPane(panel);
 
     if(url == null) {
-      throw new IllegalArgumentException("Resource for splashscreen not found in Classpath!");
+      throw new IllegalArgumentException("Invalid URL specified for Splashscreen");
     }
     // build a label and set it's icon
     JSplashLabel label = new JSplashLabel(url, copyrightString, versionString, versionStringFont);

@@ -69,12 +69,12 @@ public final class JSplashLabel extends JLabel {
    * 
    * @param url
    *          The location of the image (<b>it cannot be null</b>).
-   * @param s
+   * @param text
    *          The string to draw (can be null).
-   * @param f
+   * @param font
    *          The font to use (can be null).
    */
-  public JSplashLabel(URL url, String copyright, String s, Font f) {
+  public JSplashLabel(URL url, String copyright, String text, Font font) {
     super();
 
     ImageIcon icon = new ImageIcon(url);
@@ -84,8 +84,8 @@ public final class JSplashLabel extends JLabel {
     } else {
       setIcon(icon);
       mCopyright = copyright;
-      mText = s;
-      mFont = f;
+      mText = text;
+      mFont = font;
       if (mFont != null) {
         setFont(mFont);
       }
