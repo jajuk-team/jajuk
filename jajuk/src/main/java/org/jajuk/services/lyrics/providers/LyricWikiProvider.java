@@ -25,7 +25,9 @@ package org.jajuk.services.lyrics.providers;
 import ext.services.network.NetworkUtils;
 
 import java.net.MalformedURLException;
+import java.util.StringTokenizer;
 
+import org.apache.commons.lang.StringUtils;
 import org.jajuk.util.Const;
 import org.jajuk.util.log.Log;
 
@@ -57,12 +59,31 @@ public class LyricWikiProvider extends GenericProvider {
       String formattedArtist = artist.replaceAll(" ", "_");
       String formattedTitle = title.replaceAll(" ", "_");
       String html = callProvider(formattedArtist, formattedTitle);
-      // TODO: what does indexOf("") return? I think it always returns 0, so this if-case is useless, right?
-      if (html == null || html.indexOf("") == -1) {
+      if (StringUtils.isBlank(html)) {
         Log.debug("Empty return from callProvider().");
         return null;
       }
-      return cleanLyrics(html);
+      // Remove html part
+      html = cleanLyrics(html);
+      // From oct 2009, lyrics wiki returns lyrics encoded as HTML chars
+      // like &#83;&#104;&#97; ...
+      StringBuffer sbFinalHtml = new StringBuffer(1000);
+      StringTokenizer st = new StringTokenizer(html, "&#");
+      while (st.hasMoreTokens()) {
+        String token = st.nextToken();
+        // Remove trailing ';'
+        if (token.endsWith("\n")) {
+          String trailing = token.substring(token.indexOf(';') + 1);
+          token = token.substring(0, token.indexOf(';'));
+          sbFinalHtml.append((char) Integer.parseInt(token, 10));
+          // Re-add carriage returns
+          sbFinalHtml.append(trailing);
+        } else {
+          token = token.substring(0, token.length() - 1);
+          sbFinalHtml.append((char) Integer.parseInt(token, 10));
+        }
+      }
+      return sbFinalHtml.toString();
     } catch (Exception e) {
       Log.debug("Cannot fetch lyrics for: {{" + artist + "/" + title + "}}");
       return null;

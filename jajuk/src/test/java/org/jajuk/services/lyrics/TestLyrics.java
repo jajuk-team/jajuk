@@ -295,17 +295,17 @@ public class TestLyrics extends JajukTestCase {
    */
   public void testProvidersOrder() {
     LyricsService.getLyrics(ARTIST, TITLE);
-    assertTrue("Instance: " + LyricsService.getCurrentProvider().getClass(), LyricsService
+    assertTrue("Instance: " + LyricsService.getCurrentProvider().getClass() + " but expected LyricWikiProvider", LyricsService
         .getCurrentProvider() instanceof LyricWikiProvider);
 
     LyricsService.getProviders().remove(0);
     LyricsService.getLyrics(ARTIST, TITLE);
-    assertTrue("Instance: " + LyricsService.getCurrentProvider().getClass(), LyricsService
+    assertTrue("Instance: " + LyricsService.getCurrentProvider().getClass() + " but expected FlyProvider", LyricsService
         .getCurrentProvider() instanceof FlyProvider);
 
     LyricsService.getProviders().remove(0);
     LyricsService.getLyrics(ARTIST, TITLE);
-    assertTrue("Instance: " + LyricsService.getCurrentProvider().getClass(), LyricsService
+    assertTrue("Instance: " + LyricsService.getCurrentProvider().getClass() + " but expected LyrcProvider", LyricsService
         .getCurrentProvider() instanceof LyrcProvider);
   }
 
