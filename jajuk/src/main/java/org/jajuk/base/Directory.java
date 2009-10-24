@@ -227,6 +227,7 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
     // Create a list of music files and playlist files to consider
     List<File> musicFiles = new ArrayList<File>(filelist.length);
     List<File> playlistFiles = new ArrayList<File>(filelist.length);
+    List<Long> durations = new ArrayList<Long>(filelist.length);
 
     for (int i = 0; i < filelist.length; i++) {
       // Leave ASAP if exit request
@@ -249,8 +250,19 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
       // check if we recognize the file as music file
       String extension = UtilSystem.getExtension(filelist[i]);
       Type type = TypeManager.getInstance().getTypeByExtension(extension);
-      boolean bIsMusic = (Boolean) type.getValue(Const.XML_TYPE_IS_MUSIC);
 
+      // Now, compute disc ID and cache tags (only in deep mode because we don't
+      // want to read tags in fast modes)
+      if (bDeepScan && type.getTagImpl() != null) {
+        try {
+          Tag tag = Tag.getTagForFio(filelist[i], false);
+          durations.add(tag.getLength());
+        } catch (JajukException je) {
+          Log.error(je);
+        }
+      }
+
+      boolean bIsMusic = (Boolean) type.getValue(Const.XML_TYPE_IS_MUSIC);
       if (bIsMusic) {
         musicFiles.add(filelist[i]);
       } else { // playlist
@@ -258,20 +270,9 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
       }
     }
 
-    // Now, compute disc ID and cache tags (only in deep mode because we don't
-    // want to
-    // read tags in fast modes)
+    // Compute the disc id (deep mode only)
     if (bDeepScan) {
-      try {
-        List<Long> durations = new ArrayList<Long>(musicFiles.size());
-        for (File musicfile : musicFiles) {
-          Tag tag = Tag.getTagForFio(musicfile, false);
-          durations.add(tag.getLength());
-        }
-        this.discID = UtilFeatures.computeDiscID(durations);
-      } catch (Exception e) {
-        Log.error(e);
-      }
+      this.discID = UtilFeatures.computeDiscID(durations);
     }
 
     // Perform actual scan and check errors for each file

@@ -25,6 +25,7 @@ import ext.services.lastfm.LastFmService;
 import ext.services.lastfm.TrackInfo;
 
 import java.awt.Color;
+import java.awt.Desktop;
 import java.awt.image.BufferedImage;
 import java.io.FileNotFoundException;
 import java.net.SocketTimeoutException;
@@ -242,7 +243,9 @@ public class LastFmAlbumThumbnail extends AbstractThumbnail {
       jmiProperties.setEnabled(false);
     }
     // Set URL to open
-    jmiOpenLastFMSite.putClientProperty(Const.DETAIL_CONTENT, album.getUrl());
+    if (Desktop.isDesktopSupported()) {
+      jmiOpenLastFMSite.putClientProperty(Const.DETAIL_CONTENT, album.getUrl());
+    }
 
   }
 

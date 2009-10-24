@@ -54,7 +54,7 @@ public class AlbumsTableModel extends JajukTableModel {
    *          columns names
    */
   public AlbumsTableModel() {
-    super(10);
+    super(12);
     setEditable(Conf.getBoolean(Const.CONF_ALBUMS_TABLE_EDITION));
     // Columns names
     // First column is play icon, need to set a space character
@@ -98,6 +98,14 @@ public class AlbumsTableModel extends JajukTableModel {
     // Sum of all tracks hits
     vColNames.add(Messages.getString(Const.PROPERTY_SEPARATOR + Const.XML_TRACK_HITS));
     idList.add(Const.XML_TRACK_HITS);
+
+    // Album artist
+    vColNames.add(Messages.getString(Const.PROPERTY_SEPARATOR + Const.XML_ALBUM_ARTIST));
+    idList.add(Const.XML_ALBUM_ARTIST);
+
+    // Disc ID
+    vColNames.add(Messages.getString(Const.PROPERTY_SEPARATOR + Const.XML_ALBUM_DISC_ID));
+    idList.add(Const.XML_ALBUM_DISC_ID);
 
     // custom properties now
     for (PropertyMetaInformation meta : AlbumManager.getInstance().getCustomProperties()) {
@@ -150,6 +158,9 @@ public class AlbumsTableModel extends JajukTableModel {
     boolean bDiscovery = (columnsToShow != null && columnsToShow
         .contains(Const.XML_TRACK_DISCOVERY_DATE));
     boolean bHits = (columnsToShow != null && columnsToShow.contains(Const.XML_TRACK_HITS));
+    boolean bAlbumArtist = (columnsToShow != null && columnsToShow.contains(Const.XML_ALBUM_ARTIST));
+    boolean bAlbumDiscID = (columnsToShow != null && columnsToShow
+        .contains(Const.XML_ALBUM_DISC_ID));
 
     for (int iRow = 0; it.hasNext(); iRow++) {
       Album album = it.next();
@@ -255,6 +266,22 @@ public class AlbumsTableModel extends JajukTableModel {
         oValues[iRow][9] = "";
       }
       bCellEditable[iRow][9] = false;
+
+      // Album artist
+      if (bAlbumArtist) {
+        oValues[iRow][10] = album.getAlbumArtist2();
+      } else {
+        oValues[iRow][10] = "";
+      }
+      bCellEditable[iRow][10] = false;
+
+      // Album artist
+      if (bAlbumDiscID) {
+        oValues[iRow][11] = Long.toHexString(album.getDiscID());
+      } else {
+        oValues[iRow][11] = "";
+      }
+      bCellEditable[iRow][11] = false;
 
       // Custom properties now
       Iterator it2 = AlbumManager.getInstance().getCustomProperties().iterator();

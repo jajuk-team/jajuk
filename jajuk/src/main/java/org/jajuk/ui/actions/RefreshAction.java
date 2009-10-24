@@ -34,9 +34,6 @@ import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 
 public class RefreshAction extends JajukAction {
-  /**
-   * 
-   */
   private static final long serialVersionUID = 1L;
 
   RefreshAction() {
@@ -59,9 +56,8 @@ public class RefreshAction extends JajukAction {
       dir.manualRefresh(true, true);
     } else if (item instanceof Device) {
       Device device = (Device) item;
-      // ask user if he wants to make deep or
-      // fast scan
-      device.refresh(true, true);
+      // ask user if he wants to make deep or fast scan
+      device.refresh(true, true, false);
     }
 
   }

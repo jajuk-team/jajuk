@@ -276,7 +276,7 @@ public final class FileManager extends ItemManager {
    */
   public synchronized void removeFile(File file) {
     // We need to remove the file from the track !
-    file.getTrack().removeFile(file);
+    TrackManager.getInstance().removefile(file.getTrack(), file);
     removeItem(file);
   }
 

@@ -65,6 +65,7 @@ import javax.swing.plaf.basic.BasicComboBoxRenderer;
 
 import net.miginfocom.swing.MigLayout;
 
+import org.apache.commons.lang.StringUtils;
 import org.jajuk.base.Album;
 import org.jajuk.base.Author;
 import org.jajuk.base.Directory;
@@ -544,7 +545,6 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
           if (fCurrent == null) {
             fCurrent = QueueModel.getPlayingFile();
           }
-          fCurrent.getTrack().getAlbum().setProperty(XML_ALBUM_COVER, null);
           // Notify cover change
           ObservationManager.notify(new JajukEvent(JajukEvents.COVER_NEED_REFRESH));
           // add new cover in others cover views
@@ -621,7 +621,6 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
             if (fCurrent == null) {
               fCurrent = QueueModel.getPlayingFile();
             }
-            fCurrent.getTrack().getAlbum().setProperty(XML_ALBUM_COVER, null);
             // Notify cover change
             ObservationManager.notify(new JajukEvent(JajukEvents.COVER_NEED_REFRESH));
           } catch (final Exception ex) {
@@ -647,55 +646,56 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
       return;
     }
 
-    { // choose a default
-      // first commit this cover on the disk if it is a remote cover
-      final Cover cover = alCovers.get(index);
-      final String sFilename = UtilSystem.getOnlyFile(cover.getURL().toString());
-      if (cover.getType() == CoverType.REMOTE_COVER) {
-        String sFilePath = dirReference.getFio().getPath() + "/" + sFilename;
+     // choose a default
+    // first commit this cover on the disk if it is a remote cover
+    org.jajuk.base.File fCurrent = fileReference;
+    if (fCurrent == null) {
+      fCurrent = QueueModel.getPlayingFile();
+    }
+    final Cover cover = alCovers.get(index);
+    final String sFilename = UtilSystem.getOnlyFile(cover.getURL().toString());
+    if (cover.getType() == CoverType.REMOTE_COVER) {
+      String sFilePath = dirReference.getFio().getPath() + "/" + sFilename;
 
-        sFilePath = getCoverFilePath(sFilePath);
-        try {
-          // copy file from cache
-          final File fSource = DownloadManager.downloadToCache(cover.getURL());
-          final File file = new File(sFilePath);
-          UtilSystem.copy(fSource, file);
-          final Cover cover2 = new Cover(file, CoverType.SELECTED_COVER);
-          if (!alCovers.contains(cover2)) {
-            alCovers.add(cover2);
-            setFoundText();
-          }
-          // Remove previous thumbs to avoid using outdated images
-          org.jajuk.base.File fCurrent = fileReference;
-          if (fCurrent == null) {
-            fCurrent = QueueModel.getPlayingFile();
-          }
-          // Reset cached cover
-          ThumbnailManager.cleanThumbs(fCurrent.getTrack().getAlbum());
-          fCurrent.getTrack().getAlbum().setProperty(XML_ALBUM_COVER, null);
-          refreshThumbs(cover);
-          InformationJPanel.getInstance().setMessage(Messages.getString("CoverView.11"),
-              InformationJPanel.INFORMATIVE);
-        } catch (final IOException ex) {
-          Log.error(24, ex);
-          Messages.showErrorMessage(24);
-        } catch (final JajukException ex) {
-          Log.error(24, ex);
-          Messages.showErrorMessage(24);
-        } catch (final RuntimeException ex) {
-          Log.error(24, ex);
-          Messages.showErrorMessage(24);
+      sFilePath = getCoverFilePath(sFilePath);
+      try {
+        // copy file from cache
+        final File fSource = DownloadManager.downloadToCache(cover.getURL());
+        final File file = new File(sFilePath);
+        UtilSystem.copy(fSource, file);
+        final Cover cover2 = new Cover(file, CoverType.SELECTED_COVER);
+        if (!alCovers.contains(cover2)) {
+          alCovers.add(cover2);
+          setFoundText();
         }
-      } else {
+        // Remove previous thumbs to avoid using outdated images
+        // Reset cached cover
+        ThumbnailManager.cleanThumbs(fCurrent.getTrack().getAlbum());
+        // fCurrent.getTrack().getAlbum().setProperty(XML_ALBUM_COVER, null);
         refreshThumbs(cover);
-        InformationJPanel.getInstance().setMessage(Messages.getString("Success"),
+        InformationJPanel.getInstance().setMessage(Messages.getString("CoverView.11"),
             InformationJPanel.INFORMATIVE);
+      } catch (final IOException ex) {
+        Log.error(24, ex);
+        Messages.showErrorMessage(24);
+      } catch (final JajukException ex) {
+        Log.error(24, ex);
+        Messages.showErrorMessage(24);
+      } catch (final RuntimeException ex) {
+        Log.error(24, ex);
+        Messages.showErrorMessage(24);
       }
-      ObservationManager.notify(new JajukEvent(JajukEvents.COVER_DEFAULT_CHANGED));
-      // then make it the default cover in this directory
-      if (dirReference != null) {
-        dirReference.setProperty("default_cover", UtilSystem.getOnlyFile(sFilename));
-      }
+    } else {
+      refreshThumbs(cover);
+      InformationJPanel.getInstance().setMessage(Messages.getString("Success"),
+          InformationJPanel.INFORMATIVE);
+    }
+    ObservationManager.notify(new JajukEvent(JajukEvents.COVER_DEFAULT_CHANGED));
+    // then make it the default cover for this album
+    if (fCurrent != null && fCurrent.getTrack() != null && fCurrent.getTrack().getAlbum() != null
+        && cover.getFile() != null) {
+      fCurrent.getTrack().getAlbum()
+          .setProperty(XML_ALBUM_COVER, cover.getFile().getAbsolutePath());
     }
   }
 
@@ -1387,6 +1387,17 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
     // display them together
     final Track trackCurrent = fCurrent.getTrack();
     final List<org.jajuk.base.File> alFiles = trackCurrent.getFiles();
+
+    // Add any absolute default cover
+    String defaultCoverPath = trackCurrent.getAlbum().getStringValue(XML_ALBUM_COVER);
+    if (StringUtils.isNotBlank(defaultCoverPath)) {
+      File coverFile = new File(defaultCoverPath);
+      if (coverFile.exists()) {
+        final Cover cover = new Cover(coverFile, CoverType.SELECTED_COVER);
+        alCovers.add(cover);
+      }
+    }
+
     // list of files mapping the track
     for (final org.jajuk.base.File file : alFiles) {
       final Directory dirScanned = file.getDirectory();
@@ -1394,10 +1405,9 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
         // if the device is not ready, just ignore it
         continue;
       }
-      final java.io.File[] files = dirScanned.getFio().listFiles();
+      // Now search for regular local covers
       // null if none file found
-      boolean bAbsoluteCover = false;
-      // whether an absolute cover (unique) has been found
+      final java.io.File[] files = dirScanned.getFio().listFiles();
       for (int i = 0; (files != null) && (i < files.length); i++) {
         // check size to avoid out of memory errors
         if (files[i].length() > Const.MAX_COVER_SIZE * 1024) {
@@ -1405,28 +1415,19 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
         }
         final JajukFileFilter filter = ImageFilter.getInstance();
         if (filter.accept(files[i])) {
-          if (!bAbsoluteCover
-              && UtilFeatures.isAbsoluteDefaultCover(fCurrent.getDirectory(), files[i].getName())) {
-            // test the cover is not already used
-            final Cover cover = new Cover(files[i], CoverType.SELECTED_COVER);
-            if (!alCovers.contains(cover)) {
-              alCovers.add(cover);
-            }
-            bAbsoluteCover = true;
-          } else { // normal or standard local cover
-            Cover cover = null;
-            if (UtilFeatures.isStandardCover(files[i])) {
-              cover = new Cover(files[i], CoverType.STANDARD_COVER);
-            } else {
-              cover = new Cover(files[i], CoverType.LOCAL_COVER);
-            }
-            if (!alCovers.contains(cover)) {
-              alCovers.add(cover);
-            }
+          Cover cover = null;
+          if (UtilFeatures.isStandardCover(files[i])) {
+            cover = new Cover(files[i], CoverType.STANDARD_COVER);
+          } else {
+            cover = new Cover(files[i], CoverType.LOCAL_COVER);
+          }
+          if (!alCovers.contains(cover)) {
+            alCovers.add(cover);
           }
         }
       }
     }
+    
     // Then we search for web covers online if max
     // connection errors number is not reached or if user
     // already managed to connect.

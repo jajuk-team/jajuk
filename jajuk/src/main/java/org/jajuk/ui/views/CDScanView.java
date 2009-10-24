@@ -100,7 +100,8 @@ public class CDScanView extends ViewAdapter implements ActionListener {
                 jtfMountPoint.getText().trim());
             try {
               device.mount(true);
-              device.refresh(false); // refresh synchronously
+              // refresh synchronously
+              device.refresh(false, false, false);
               device.unmount(true, true);
             } catch (Exception ex) {
               DeviceManager.getInstance().removeDevice(device);

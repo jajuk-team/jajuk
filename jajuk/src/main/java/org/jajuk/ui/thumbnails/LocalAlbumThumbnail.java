@@ -23,6 +23,7 @@ package org.jajuk.ui.thumbnails;
 import com.vlsolutions.swing.docking.ShadowBorder;
 
 import java.awt.Color;
+import java.awt.Desktop;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
@@ -147,7 +148,9 @@ public class LocalAlbumThumbnail extends AbstractThumbnail {
     pjmFiles = new PreferencesJMenu(getItem());
     jmenu.add(pjmFiles, 9);
     // disable inadequate menu items
-    jmenu.remove(jmiOpenLastFMSite);
+    if (Desktop.isDesktopSupported()) {
+      jmenu.remove(jmiOpenLastFMSite);
+    }
     // Set keystrokes
     setKeystrokes();
   }

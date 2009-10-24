@@ -427,8 +427,9 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
       }
     } else if (e.getSource() == jmiDevRefresh) {
       Device device = ((DeviceNode) (paths[0].getLastPathComponent())).getDevice();
-      device.refresh(true, true); // ask user if he wants to make deep or
-      // fast scan
+      // ask user if he wants to make deep
+      // or fast scan
+      device.refresh(true, true, false);
     } else if (e.getSource() == jmiDevSynchronize) {
       Device device = ((DeviceNode) (paths[0].getLastPathComponent())).getDevice();
       device.synchronize(true);

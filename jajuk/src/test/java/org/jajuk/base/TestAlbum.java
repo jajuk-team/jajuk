@@ -247,9 +247,6 @@ public class TestAlbum extends JajukTestCase {
     Track track = getTrack(album);
     track.addFile(getFile(7, track, album));
     track.addFile(getFile(8, track, album));
-    track.getFiles().get(0).getDirectory().setProperty(Const.XML_DIRECTORY_DEFAULT_COVER, 
-        System.getProperty("java.io.tmpdir") + java.io.File.separator + "dircover.tst");
-    
     album.getTracksCache().add(track);
     assertNull(album.getCoverFile());
     

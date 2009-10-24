@@ -433,8 +433,10 @@ public class Device extends PhysicalItem implements Comparable<Device> {
    * @param bAsk:
    *          Should we ask user if a deep or fast scan is required?
    *          default=deep
+   * @param bAfterMove:
+   *          is it a refreshing after a device move ?
    */
-  private void manualRefresh(final boolean bAsk) {
+  private void manualRefresh(final boolean bAsk, final boolean bAfterMove) {
     int i = 0;
     try {
       i = prepareRefresh(bAsk);
@@ -451,12 +453,21 @@ public class Device extends PhysicalItem implements Comparable<Device> {
       reporter = new ManualDeviceRefreshReporter(this);
       reporter.startup();
       // clean old files up (takes a while)
-      cleanRemovedFiles();
+      if (!bAfterMove) {
+        cleanRemovedFiles();
+      }
       reporter.cleanupDone();
+
       // Actual refresh
       refreshCommand((i == Device.OPTION_REFRESH_DEEP));
       // cleanup logical items
       org.jajuk.base.Collection.cleanupLogical();
+
+      // if it is a move, clean old files *after* the refresh
+      if (bAfterMove) {
+        cleanRemovedFiles();
+      }
+
       // notify views to refresh
       ObservationManager.notify(new JajukEvent(JajukEvents.DEVICE_REFRESH));
       // commit collection at each refresh (can be useful if application
@@ -628,32 +639,21 @@ public class Device extends PhysicalItem implements Comparable<Device> {
    * @param bAsk:
    *          should we ask user if he wants to perform a deep or fast scan?
    *          default=deep
+   * @param bAfterMove:
+   *          is it a refreshing after a device move ?
    */
-  public void refresh(final boolean bAsynchronous) {
-    refresh(bAsynchronous, false);
-  }
-
-  /**
-   * Refresh : scan asynchronously the device to find tracks
-   * 
-   * @param bAsynchronous :
-   *          set asynchronous or synchronous mode
-   * @param bAsk:
-   *          should we ask user if he wants to perform a deep or fast scan?
-   *          default=deep
-   */
-  public void refresh(final boolean bAsynchronous, final boolean bAsk) {
+  public void refresh(final boolean bAsynchronous, final boolean bAsk, final boolean bAfterMove) {
     if (bAsynchronous) {
       final Thread t = new Thread("Device Refresh Thread") {
         @Override
         public void run() {
-          manualRefresh(bAsk);
+          manualRefresh(bAsk, bAfterMove);
         }
       };
       t.setPriority(Thread.MIN_PRIORITY);
       t.start();
     } else {
-      manualRefresh(bAsk);
+      manualRefresh(bAsk, bAfterMove);
     }
 
   }

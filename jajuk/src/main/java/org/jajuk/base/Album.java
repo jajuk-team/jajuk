@@ -104,10 +104,11 @@ public class Album extends LogicalItem implements Comparable<Album> {
       return albumArtist;
     }
     // various artist? check if all authors are the same
+    String various = Messages.getString(Const.VARIOUS_ARTIST);
     Author author = getAuthor();
     if (author == null) {
       // Several different author, return translated "various"
-      return Messages.getString(Const.VARIOUS_ARTIST);
+      return various;
     } else {
       // single artist, return it
       return author.getName2();
@@ -159,10 +160,6 @@ public class Album extends LogicalItem implements Comparable<Album> {
    * @return comparison result
    */
   public int compareTo(Album otherAlbum) {
-    if (otherAlbum == null) {
-      return -1;
-    }
-
     // compare using name and id to differentiate unknown items
     StringBuilder current = new StringBuilder(getName2());
     current.append(getID());
@@ -337,29 +334,6 @@ public class Album extends LogicalItem implements Comparable<Album> {
       return null;
     }
 
-    // look for absolute cover in collection
-    for (Directory dir : dirs) {
-      String sAbsolut = dir.getStringValue(Const.XML_DIRECTORY_DEFAULT_COVER);
-      if (!StringUtils.isBlank(sAbsolut.trim())) {
-        File fAbsoluteDefault = new File(dir.getAbsolutePath() + '/' + sAbsolut);
-        if (fAbsoluteDefault.exists()) {
-          // Test the image is not corrupted
-          try {
-            MediaTracker mediaTracker = new MediaTracker(new Container());
-            ImageIcon ii = new ImageIcon(fAbsoluteDefault.getAbsolutePath());
-            mediaTracker.addImage(ii.getImage(), 0);
-            mediaTracker.waitForID(0); // wait for image
-            if (!mediaTracker.isErrorAny()) {
-              setProperty(XML_ALBUM_COVER, fAbsoluteDefault.getAbsolutePath());
-              return fAbsoluteDefault;
-            }
-          } catch (Exception e) {
-            Log.error(e);
-          }
-        }
-      }
-    }
-
     // look for standard cover in collection
     for (Directory dir : dirs) {
       fDir = dir.getFio(); // store this dir
@@ -474,7 +448,8 @@ public class Album extends LogicalItem implements Comparable<Album> {
     ImageIcon icon = new ImageIcon(img);
     // Free thumb memory (DO IT AFTER FULL ImageIcon loading)
     img.flush();
-
+    // accelerate GC cleanup
+    img = null;
     return icon;
   }
 

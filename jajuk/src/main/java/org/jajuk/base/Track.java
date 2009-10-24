@@ -384,15 +384,6 @@ public class Track extends LogicalItem implements Comparable<Track> {
   }
 
   /**
-   * Remove an associated file
-   * 
-   * @param file
-   */
-  public void removeFile(File file) {
-    alFiles.remove(file);
-  }
-
-  /**
    * @param hits
    *          The iHits to set.
    */

@@ -25,8 +25,6 @@ import java.io.FileFilter;
 import java.io.IOException;
 import java.net.URL;
 
-import org.jajuk.base.Album;
-import org.jajuk.base.AlbumManager;
 import org.jajuk.base.Collection;
 import org.jajuk.base.Track;
 import org.jajuk.base.TrackManager;
@@ -287,10 +285,6 @@ public final class UpgradeManager {
             ThumbnailManager.cleanThumbs(Const.THUMBNAIL_SIZE_200X200);
             ThumbnailManager.cleanThumbs(Const.THUMBNAIL_SIZE_250X250);
             ThumbnailManager.cleanThumbs(Const.THUMBNAIL_SIZE_300X300);
-            // Unset default cover
-            for (Album album : AlbumManager.getInstance().getAlbums()) {
-              album.setProperty(Const.XML_ALBUM_COVER, null);
-            }
             // Launch thumbs creation in another process
             ThumbnailsMaker.launchAllSizes(true);
           }

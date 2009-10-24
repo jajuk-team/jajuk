@@ -686,7 +686,8 @@ public final class TrackManager extends ItemManager {
     for (File file : oldTrack.getReadyFiles(filter)) {
       file.setTrack(newTrack);// set new track for the changed file
       newTrack.addFile(file); // add changed file
-      oldTrack.removeFile(file); // remove file from old track
+      // remove file from old track
+      TrackManager.getInstance().removefile(oldTrack, file);
     }
   }
 
@@ -723,6 +724,24 @@ public final class TrackManager extends ItemManager {
         // anymore to any physical item, just remove it
         removeItem(track);
       }
+    }
+  }
+
+  /**
+   * Remove a file mapping from a track
+   * 
+   * @param track
+   * @param file
+   */
+  public synchronized void removefile(Track track, File file) {
+    // If the track contained a single file, it will be empty after this removal
+    // so drop it
+    if (track.getFiles().size() == 1) {
+      // the track don't map
+      // anymore to any physical item, just remove it
+      removeItem(track);
+    } else {
+      track.getFiles().remove(file);
     }
   }
 

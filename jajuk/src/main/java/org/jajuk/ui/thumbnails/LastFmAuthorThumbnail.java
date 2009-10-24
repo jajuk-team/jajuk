@@ -25,6 +25,7 @@ import ext.services.lastfm.ArtistInfo;
 import ext.services.lastfm.LastFmService;
 
 import java.awt.Color;
+import java.awt.Desktop;
 import java.awt.image.BufferedImage;
 import java.net.URL;
 import java.util.List;
@@ -235,7 +236,9 @@ public class LastFmAuthorThumbnail extends AbstractThumbnail {
       jmiProperties.setEnabled(false);
     }
     // Set URL to open
-    jmiOpenLastFMSite.putClientProperty(Const.DETAIL_CONTENT, author.getUrl());
+    if (Desktop.isDesktopSupported()) {
+      jmiOpenLastFMSite.putClientProperty(Const.DETAIL_CONTENT, author.getUrl());
+    }
   }
 
 }

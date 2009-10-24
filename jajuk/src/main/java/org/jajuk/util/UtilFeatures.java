@@ -232,22 +232,6 @@ public final class UtilFeatures {
   }
 
   /**
-   * Tell whether a file is an absolute default cover or not
-   * 
-   * @param directory
-   *          Jajuk Directory in which we analyze the given file name
-   * @param sFileName
-   * @return whether the given filename is an absolute default cover
-   */
-  public static boolean isAbsoluteDefaultCover(final Directory directory, final String sFilename) {
-    final String sDefault = directory.getStringValue(Const.XML_DIRECTORY_DEFAULT_COVER);
-    if ((sDefault != null) && sDefault.equals(sFilename)) {
-      return true;
-    }
-    return false;
-  }
-
-  /**
    * @param sFileName
    * @return whether the given filename is a standard cover or not
    */

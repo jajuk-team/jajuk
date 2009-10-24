@@ -192,7 +192,7 @@ public class FirstTimeWizard extends JajukJDialog implements ActionListener, Pro
           device.setProperty(Const.XML_DEVICE_AUTO_REFRESH, dRefreshTime);
           try {
             // Refresh device synchronously
-            device.refresh(false, false);
+            device.refresh(false, false, false);
           } catch (final Exception e2) {
             Log.error(112, device.getName(), e2);
             Messages.showErrorMessage(112, device.getName());

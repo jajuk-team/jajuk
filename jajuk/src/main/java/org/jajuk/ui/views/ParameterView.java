@@ -64,8 +64,6 @@ import javax.swing.plaf.basic.BasicComboBoxRenderer;
 
 import net.miginfocom.swing.MigLayout;
 
-import org.jajuk.base.Album;
-import org.jajuk.base.AlbumManager;
 import org.jajuk.base.DeviceManager;
 import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
@@ -471,10 +469,6 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
           ThumbnailManager.cleanThumbs(THUMBNAIL_SIZE_200X200);
           ThumbnailManager.cleanThumbs(THUMBNAIL_SIZE_250X250);
           ThumbnailManager.cleanThumbs(THUMBNAIL_SIZE_300X300);
-          // Unset default cover
-          for (Album album : AlbumManager.getInstance().getAlbums()) {
-            album.setProperty(XML_ALBUM_COVER, null);
-          }
           // Display the catalog view voided
           ObservationManager.notify(new JajukEvent(JajukEvents.DEVICE_REFRESH));
           // Launch thumbs creation in another process

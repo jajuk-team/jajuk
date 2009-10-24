@@ -270,7 +270,7 @@ public class File extends PhysicalItem implements Comparable<File>, Const {
     // files). This allow cleaning old tracks after a change of tags from others
     // programs than jajuk
     if (!this.track.equals(track)) {
-      this.track.removeFile(this);
+      TrackManager.getInstance().removefile(this.track, this);
       this.track = track;
       setProperty(Const.XML_TRACK, track.getID());
     }

@@ -103,9 +103,6 @@ public final class DirectoryManager extends ItemManager {
     // Synchronized directory
     registerProperty(new PropertyMetaInformation(Const.XML_DIRECTORY_SYNCHRONIZED, false, false,
         true, false, false, Boolean.class, true));
-    // Default cover
-    registerProperty(new PropertyMetaInformation(Const.XML_DIRECTORY_DEFAULT_COVER, false, false,
-        true, false, false, String.class, null));
   }
 
   /**

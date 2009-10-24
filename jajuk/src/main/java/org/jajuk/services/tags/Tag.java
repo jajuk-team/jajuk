@@ -101,10 +101,14 @@ public class Tag {
    */
   public String getAlbumName() {
     if (tagImpl == null) { // if the type doesn't support tags ( like wav )
-      return Const.UNKNOWN_ALBUM;
+      if (Conf.getBoolean(Const.CONF_TAGS_USE_PARENT_DIR)) {
+        return fio.getParentFile().getName();
+        // if album is not found, take current directory as album name
+      } else {
+        return Messages.getString(Const.UNKNOWN_ALBUM);
+      }
     }
     String sAlbumlName = null;
-
     try {
       String sTemp = tagImpl.getAlbumName().trim();
       if (Messages.getString(Const.UNKNOWN_ALBUM).equals(sTemp)) {
@@ -120,7 +124,7 @@ public class Tag {
     }
 
     if (sAlbumlName == null) { // album tag cannot be found
-      if (Boolean.valueOf(Conf.getString(Const.CONF_TAGS_USE_PARENT_DIR)).booleanValue()) {
+      if (Conf.getBoolean(Const.CONF_TAGS_USE_PARENT_DIR)) {
         sAlbumlName = fio.getParentFile().getName();
         // if album is not found, take current directory as album name
       } else {

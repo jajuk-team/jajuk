@@ -159,7 +159,7 @@ public class SimpleDeviceWizard extends JajukJDialog implements ActionListener {
         }
         device.setProperty(Const.XML_DEVICE_AUTO_REFRESH, dRefreshTime);
         try {
-          device.refresh(true, false);
+          device.refresh(true, false, false);
         } catch (final Exception e2) {
           Log.error(112, device.getName(), e2);
           Messages.showErrorMessage(112, device.getName());

@@ -380,7 +380,7 @@ public class DeviceWizard extends JajukJDialog implements ActionListener, Const 
             // Drop existing directory to avoid phantom directories if
             // existing device
             DirectoryManager.getInstance().removeDirectory(device.getID());
-            device.refresh(true);
+            device.refresh(true, false, false);
           } catch (final Exception e2) {
             Log.error(112, device.getName(), e2);
             Messages.showErrorMessage(112, device.getName());
@@ -398,9 +398,7 @@ public class DeviceWizard extends JajukJDialog implements ActionListener, Const 
               }
             }
             // Keep previous references when changing device url
-            device.refreshCommand(false);
-            // Force a cleanup *after* the refresh
-            device.cleanRemovedFiles();
+            device.refresh(true, false, true);
             ObservationManager.notify(new JajukEvent(JajukEvents.DEVICE_REFRESH));
           } catch (final Exception e2) {
             Log.error(112, device.getName(), e2);

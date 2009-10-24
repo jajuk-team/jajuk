@@ -322,7 +322,8 @@ public class DeviceView extends ViewAdapter implements IView, ActionListener, Mo
       dw.pack();
       dw.setVisible(true);
     } else if (ae.getActionCommand().equals(JajukEvents.DEVICE_REFRESH.toString())) {
-      diSelected.getDevice().refresh(true, true); // ask deep or fast scan
+      diSelected.getDevice().refresh(true, true, false); // ask deep or fast
+      // scan
     } else if (ae.getActionCommand().equals(JajukEvents.DEVICE_SYNCHRO.toString())) {
       diSelected.getDevice().synchronize(true);
     } else if (ae.getActionCommand().equals(JajukEvents.DEVICE_TEST.toString())) {

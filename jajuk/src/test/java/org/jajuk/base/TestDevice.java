@@ -231,7 +231,7 @@ public class TestDevice extends JajukTestCase {
 
     // ensure we are not exiting, this would invalidate the test
     assertFalse(ExitService.isExiting());
-    
+
     // now we have removals
     assertTrue(device.cleanRemovedFiles());
 
@@ -329,9 +329,8 @@ public class TestDevice extends JajukTestCase {
     Track track = new Track(Integer.valueOf(i).toString(), "name", album, style, author, 120, year,
         1, type, 1);
 
-    return FileManager.getInstance().registerFile(Integer.valueOf(i).toString(), 
-        "test" + Long.valueOf(System.currentTimeMillis()).toString() + ".tst", dir,
-        track, 120, 70);
+    return FileManager.getInstance().registerFile(Integer.valueOf(i).toString(),
+        "test" + Long.valueOf(System.currentTimeMillis()).toString() + ".tst", dir, track, 120, 70);
   }
 
   /**
@@ -349,7 +348,8 @@ public class TestDevice extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.base.Device#getRootDirectory()}.
-   * @throws Exception 
+   * 
+   * @throws Exception
    */
   public void testGetRootDirectory() throws Exception {
     // create a unique id here...
@@ -358,7 +358,7 @@ public class TestDevice extends JajukTestCase {
     assertNull(device.getRootDirectory());
 
     java.io.File file = java.io.File.createTempFile("test", "tst");
-        
+
     device.setUrl(file.getAbsolutePath());
     DirectoryManager.getInstance().registerDirectory(device);
 
@@ -524,14 +524,15 @@ public class TestDevice extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.base.Device#refresh(boolean)}.
-   * @throws Exception 
+   * 
+   * @throws Exception
    */
   public void testRefreshBoolean() throws Exception {
     Device device = new Device("1", "name");
     device.setUrl(System.getProperty("java.io.tmpdir"));
 
     try {
-      device.refresh(false);
+      device.refresh(false, false, false);
     } catch (RuntimeException e) {
       // there can be a hidden HeadlessException here
       assertTrue(e.getCause().getMessage(), e.getCause() instanceof InvocationTargetException);
@@ -542,25 +543,26 @@ public class TestDevice extends JajukTestCase {
 
     }
 
-    device.refresh(true);
+    device.refresh(true, false, false);
   }
 
   /**
    * Test method for {@link org.jajuk.base.Device#refresh(boolean, boolean)}.
-   * @throws Exception 
+   * 
+   * @throws Exception
    */
   public void testRefreshBooleanBoolean() throws Exception {
     Device device = new Device("1", "name");
     device.setUrl(System.getProperty("java.io.tmpdir"));
 
     try {
-      device.refresh(false, false);
+      device.refresh(false, false, false);
     } catch (RuntimeException e) {
       // there can be a hidden HeadlessException here
       assertTrue(e.getCause().getMessage(), e.getCause() instanceof InvocationTargetException);
     }
 
-    device.refresh(true, false);
+    device.refresh(true, false, false);
   }
 
   /**
