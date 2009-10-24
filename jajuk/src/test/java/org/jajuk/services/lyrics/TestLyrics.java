@@ -19,8 +19,8 @@
  */
 package org.jajuk.services.lyrics;
 
-import ext.services.xml.XMLUtils;
 import ext.services.network.NetworkUtils;
+import ext.services.xml.XMLUtils;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -30,10 +30,9 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.List;
 
-import org.jajuk.JajukTestCase;
-
 import org.apache.commons.lang.StringUtils;
 import org.jajuk.JUnitHelpers;
+import org.jajuk.JajukTestCase;
 import org.jajuk.services.core.SessionService;
 import org.jajuk.services.lyrics.providers.FlyProvider;
 import org.jajuk.services.lyrics.providers.ILyricsProvider;
@@ -55,6 +54,9 @@ public class TestLyrics extends JajukTestCase {
   private static final String ARTIST = "Massive Attack";
   private static final String TITLE = "Dissolved Girl";
   private static final String TESTED_WORD = "Day, yesterday";
+  
+  //LyricsFly put a delay of 1500 ms before we are allowed to query again, we need to take that into account for some of the tests  
+  private static final long FLY_DELAY = 1500 + 200;
 
   // helper method to emma-coverage of the unused constructor
   public void testPrivateConstructor() throws Exception {
@@ -126,10 +128,14 @@ public class TestLyrics extends JajukTestCase {
 
   /**
    * Test Fly provider response to get lyrics
+   * @throws Exception 
    */
-  public void testFlyService() {
+  public void testFlyService() throws Exception {
     ILyricsProvider provider = new FlyProvider();
     testService(provider);
+    
+    // delay a bit as LyricsFly puts a min. delay before the next request is allowed
+    Thread.sleep(FLY_DELAY);
   }
 
   private static final String USER_ID = "55593623089-wnwhx.vasb";
@@ -213,6 +219,9 @@ public class TestLyrics extends JajukTestCase {
     lyrics = lyrics.replace("[br]", "");
 
     assertTrue(xml, StringUtils.isNotBlank(lyrics));
+    
+    // delay a bit as LyricsFly puts a min. delay before the next request is allowed
+    Thread.sleep(FLY_DELAY);
   }
 
   /**
@@ -221,6 +230,9 @@ public class TestLyrics extends JajukTestCase {
   public void testFlyWeb() throws Exception {
     ILyricsProvider provider = new FlyProvider();
     testWeb(provider);
+    
+    // delay a bit as LyricsFly puts a min. delay before the next request is allowed
+    Thread.sleep(FLY_DELAY);
   }
 
   /**
@@ -292,8 +304,9 @@ public class TestLyrics extends JajukTestCase {
   /**
    * Test providers order For each provider, we test the class and then we
    * remove it from the providers list to allow the others to run
+   * @throws Exception 
    */
-  public void testProvidersOrder() {
+  public void testProvidersOrder() throws Exception {
     LyricsService.getLyrics(ARTIST, TITLE);
     assertTrue("Instance: " + LyricsService.getCurrentProvider().getClass() + " but expected LyricWikiProvider", LyricsService
         .getCurrentProvider() instanceof LyricWikiProvider);
@@ -307,6 +320,9 @@ public class TestLyrics extends JajukTestCase {
     LyricsService.getLyrics(ARTIST, TITLE);
     assertTrue("Instance: " + LyricsService.getCurrentProvider().getClass() + " but expected LyrcProvider", LyricsService
         .getCurrentProvider() instanceof LyrcProvider);
+    
+    // delay a bit as LyricsFly puts a min. delay before the next request is allowed
+    Thread.sleep(FLY_DELAY);
   }
 
 }
