@@ -165,6 +165,13 @@ public class TestAlbum extends JajukTestCase {
     assertEquals("artist", album.getAlbumArtist());
   }
 
+  public final void testGetAlbumArtist2() {
+    Album album = new Album("1", "name", Const.UNKNOWN_AUTHOR, 123);
+    
+    // "unknown author is translated to other languages...
+    assertNotNull(album.getAlbumArtist2());
+  }
+
   /**
    * Test method for {@link org.jajuk.base.Album#getHumanAlbumArtist()}.
    */

@@ -104,11 +104,10 @@ public class Album extends LogicalItem implements Comparable<Album> {
       return albumArtist;
     }
     // various artist? check if all authors are the same
-    String various = Messages.getString(Const.VARIOUS_ARTIST);
     Author author = getAuthor();
     if (author == null) {
       // Several different author, return translated "various"
-      return various;
+      return Messages.getString(Const.VARIOUS_ARTIST);
     } else {
       // single artist, return it
       return author.getName2();
@@ -160,6 +159,10 @@ public class Album extends LogicalItem implements Comparable<Album> {
    * @return comparison result
    */
   public int compareTo(Album otherAlbum) {
+    if (otherAlbum == null) {
+      return -1;
+    }
+
     // compare using name and id to differentiate unknown items
     StringBuilder current = new StringBuilder(getName2());
     current.append(getID());
@@ -448,8 +451,7 @@ public class Album extends LogicalItem implements Comparable<Album> {
     ImageIcon icon = new ImageIcon(img);
     // Free thumb memory (DO IT AFTER FULL ImageIcon loading)
     img.flush();
-    // accelerate GC cleanup
-    img = null;
+
     return icon;
   }
 
