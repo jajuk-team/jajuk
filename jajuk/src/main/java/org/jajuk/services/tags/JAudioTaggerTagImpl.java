@@ -21,6 +21,7 @@ package org.jajuk.services.tags;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.logging.LogManager;
 
 import org.apache.commons.lang.StringUtils;
@@ -30,6 +31,8 @@ import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 import org.jaudiotagger.audio.AudioFile;
 import org.jaudiotagger.audio.AudioFileIO;
+import org.jaudiotagger.tag.FieldDataInvalidException;
+import org.jaudiotagger.tag.KeyNotFoundException;
 import org.jaudiotagger.tag.Tag;
 import org.jaudiotagger.tag.TagFieldKey;
 import org.jaudiotagger.tag.id3.ID3v1Tag;
@@ -40,12 +43,27 @@ import org.jaudiotagger.tag.id3.ID3v24Tag;
  * href="https://jaudiotagger.dev.java.net">JAudiotagger</a>
  */
 public class JAudioTaggerTagImpl implements ITagImpl, Const {
+  
+  private static ArrayList<String> tagFieldKeyArrayList = new ArrayList<String>();
 
-  // Disable Jaudiotagger logs
   static {
     try {
+      // Disable Jaudiotagger logs
       LogManager.getLogManager().readConfiguration(
           new ByteArrayInputStream("org.jaudiotagger.level = OFF".getBytes()));
+      
+      // get supported tags
+      
+      TagFieldKey[] tagFieldKeys = TagFieldKey.values();
+      for (TagFieldKey tfk : tagFieldKeys) {
+        if (!tfk.equals(TagFieldKey.DISC_NO) && !tfk.equals(TagFieldKey.ALBUM)
+            && !tfk.equals(TagFieldKey.ALBUM_ARTIST) && !tfk.equals(TagFieldKey.ARTIST)
+            && !tfk.equals(TagFieldKey.GENRE) && !tfk.equals(TagFieldKey.TITLE)
+            && !tfk.equals(TagFieldKey.TRACK) && !tfk.equals(TagFieldKey.YEAR)
+            && !tfk.equals(TagFieldKey.COMMENT)) {
+          tagFieldKeyArrayList.add(tfk.name());
+        }
+      }      
     } catch (Exception e) {
       Log.error(e);
     }
@@ -237,8 +255,7 @@ public class JAudioTaggerTagImpl implements ITagImpl, Const {
   }
 
   /**
-   * Create a void tag is needed and convert an ID3 V1.0 tag into V2.4 if any
-   * <br>
+   * Create a void tag is needed and convert an ID3 V1.0 tag into V2.4 if any <br>
    * Tags are committed when leaving this method
    * 
    * @throws Exception
@@ -326,6 +343,38 @@ public class JAudioTaggerTagImpl implements ITagImpl, Const {
    */
   public String getAlbumArtist() throws Exception {
     return this.tag.getFirst(TagFieldKey.ALBUM_ARTIST);
+  }
+  
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.jajuk.services.tags.ITagImpl#getTagField(java.lang.String)
+   */
+  @Override
+  public String getTagField(String tagFieldKey) throws Exception {
+    return this.tag.getFirst(tagFieldKey);
+  }
+  
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.jajuk.services.tags.ITagImpl#setTagField(java.lang.String,
+   * java.lang.String)
+   */
+  @Override
+  public void setTagField(String tagFieldKey, String tagFieldValue)
+      throws FieldDataInvalidException, KeyNotFoundException {
+    this.tag.set(tag.createTagField(TagFieldKey.valueOf(tagFieldKey), tagFieldValue));
+  }
+  
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.jajuk.services.tags.ITagImpl#getSupportedTagFields()
+   */
+  @Override
+  public ArrayList<String> getSupportedTagFields() {
+    return tagFieldKeyArrayList;
   }
 
   /*

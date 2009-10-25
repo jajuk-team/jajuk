@@ -21,6 +21,7 @@
 package org.jajuk.services.tags;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Map;
 
 import javazoom.jlgui.basicplayer.BasicController;
@@ -40,6 +41,8 @@ public class NoTagsTagImpl implements ITagImpl {
 
   /** Current file data */
   Map<String, Object> mapInfo;
+
+  private static ArrayList<String> supportedTags = new ArrayList<String>();
 
   /*
    * (non-Javadoc)
@@ -166,8 +169,7 @@ public class NoTagsTagImpl implements ITagImpl {
    * 
    * @see org.jajuk.base.ITagImpl#setLength(long)
    */
-  public void setLength(@SuppressWarnings("unused")
-  long length) {
+  public void setLength(long length) {
     // nothing to do here
   }
 
@@ -176,8 +178,7 @@ public class NoTagsTagImpl implements ITagImpl {
    * 
    * @see org.jajuk.base.ITagImpl#setQuality(java.lang.String)
    */
-  public void setQuality(@SuppressWarnings("unused")
-  String sQuality) {
+  public void setQuality(String sQuality) {
     // nothing to do here
   }
 
@@ -278,6 +279,37 @@ public class NoTagsTagImpl implements ITagImpl {
    */
   public void setDiscNumber(long discnumber) {
     // nothing to do here
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.jajuk.services.tags.ITagImpl#getSupportedTagFields()
+   */
+  @Override
+  public ArrayList<String> getSupportedTagFields() {
+    return supportedTags;
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.jajuk.services.tags.ITagImpl#getTagField(java.lang.String)
+   */
+  @Override
+  public String getTagField(String tagFieldKey) throws Exception {
+    return "";
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.jajuk.services.tags.ITagImpl#setTagField(java.lang.String,
+   * java.lang.String)
+   */
+  @Override
+  public void setTagField(String tagFieldKey, String tagFieldValue) {
+    return;
   }
 
 }

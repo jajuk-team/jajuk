@@ -19,6 +19,11 @@
  */
 package org.jajuk.services.tags;
 
+import java.util.ArrayList;
+
+import org.jaudiotagger.tag.FieldDataInvalidException;
+import org.jaudiotagger.tag.KeyNotFoundException;
+
 /**
  * Mandatory methods required for all tag implementations
  */
@@ -139,5 +144,21 @@ public interface ITagImpl {
    * Commit all changes in the tag
    */
   void commit() throws Exception;
+
+  /**
+   * Get value of tagFieldKey
+   */
+  public String getTagField(String tagFieldKey) throws Exception;
+
+  /**
+   * Set value of tagFieldKey
+   */
+  public void setTagField(String tagFieldKey, String tagFieldValue)
+      throws FieldDataInvalidException, KeyNotFoundException;
+
+  /**
+   * get all supported tags
+   */
+  public ArrayList<String> getSupportedTagFields();
 
 }

@@ -20,6 +20,7 @@
  */
 package org.jajuk.base;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -34,6 +35,8 @@ import org.jajuk.services.startup.StartupCollectionService;
 import org.jajuk.services.tags.ITagImpl;
 import org.jajuk.services.webradio.WebRadio;
 import org.jajuk.util.Const;
+import org.jaudiotagger.tag.FieldDataInvalidException;
+import org.jaudiotagger.tag.KeyNotFoundException;
 
 /**
  * 
@@ -791,6 +794,34 @@ public class TestAlbumManager extends JajukTestCase {
     @Override
     public void setYear(String sYear) throws Exception {
 
+      
+    }
+
+    /* (non-Javadoc)
+     * @see org.jajuk.services.tags.ITagImpl#getSupportedTagFields()
+     */
+    @Override
+    public ArrayList<String> getSupportedTagFields() {
+      // TODO Auto-generated method stub
+      return null;
+    }
+
+    /* (non-Javadoc)
+     * @see org.jajuk.services.tags.ITagImpl#getTagField(java.lang.String)
+     */
+    @Override
+    public String getTagField(String tagFieldKey) throws Exception {
+      // TODO Auto-generated method stub
+      return null;
+    }
+
+    /* (non-Javadoc)
+     * @see org.jajuk.services.tags.ITagImpl#setTagField(java.lang.String, java.lang.String)
+     */
+    @Override
+    public void setTagField(String tagFieldKey, String tagFieldValue)
+        throws FieldDataInvalidException, KeyNotFoundException {
+      // TODO Auto-generated method stub
       
     }
     
