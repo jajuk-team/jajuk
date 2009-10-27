@@ -22,6 +22,7 @@ package org.jajuk.services.alarm;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.lang.time.DateUtils;
 import org.jajuk.base.File;
 import org.jajuk.services.players.QueueModel;
 import org.jajuk.util.Conf;
@@ -64,7 +65,7 @@ public class Alarm {
    * Add 24 hours to current alarm
    */
   public void nextDay() {
-    aTime = new Date(aTime.getTime() + Const.DAY_MS);
+    aTime = DateUtils.addDays(aTime, 1);
   }
 
 }

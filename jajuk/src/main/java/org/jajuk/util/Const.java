@@ -94,9 +94,6 @@ public interface Const {
   /** Need full gc memory % */
   float NEED_FULL_GC_LEVEL = 0.90f;
 
-  /** Number of ms in 24 hours * */
-  long DAY_MS = 24 * 3600 * 1000;
-
   /** Play time to get rate +1 in secs */
   int INC_RATE_TIME = 20;
 

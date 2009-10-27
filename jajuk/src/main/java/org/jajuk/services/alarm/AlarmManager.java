@@ -28,6 +28,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.commons.lang.time.DateUtils;
 import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
 import org.jajuk.events.JajukEvent;
@@ -113,7 +114,7 @@ public class AlarmManager implements Observer {
         // tomorrow
         Date alarmDate = cal.getTime();
         if (alarmDate.before(new Date())) {
-          alarmDate = new Date(alarmDate.getTime() + Const.DAY_MS);
+          alarmDate = DateUtils.addDays(alarmDate, 1);          
         }
         // Compute playlist if required
         List<File> alToPlay = null;
