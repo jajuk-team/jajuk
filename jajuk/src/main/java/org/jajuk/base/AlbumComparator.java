@@ -20,6 +20,7 @@
  */
 package org.jajuk.base;
 
+import java.io.Serializable;
 import java.util.Comparator;
 
 /**
@@ -27,7 +28,8 @@ import java.util.Comparator;
  * 
  * @TODO Convert criteria from int to an enum
  */
-public class AlbumComparator implements Comparator<Album> {
+public class AlbumComparator implements Comparator<Album>, Serializable {
+  private static final long serialVersionUID = -5927167916548652076L;
 
   /*
    * This needs to be kept in-sync with what we use in

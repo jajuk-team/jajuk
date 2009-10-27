@@ -25,6 +25,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -462,369 +463,402 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
         }
       } else {
         // Manage elements themselves using a switch for performances
-        String sItemName = null;
-        String sID = null;
-        String sRightID = null;
-        long lSize = 0;
         switch (stage) {
         case STAGE_FILES:
-          Type type = null;
-          Directory dParent = null;
-          Track track = null;
-          sItemName = attributes.getValue(Const.XML_NAME);
-          // Check file type is still registered, it can be
-          // useful for ie if mplayer is no more available
-          String ext = UtilSystem.getExtension(sItemName);
-          type = TypeManager.getInstance().getTypeByExtension(ext);
-          if (type == null) {
-            return;
-          }
-          String sTrackId = attributes.getValue(Const.XML_TRACK).intern();
-          // UPGRADE check if track Id is right
-          if ((hmWrongRightTrackID.size() > 0) &&
-          // replace wrong by right ID
-              (hmWrongRightTrackID.containsKey(sTrackId))) {
-            sTrackId = hmWrongRightTrackID.get(sTrackId);
-          }
-          track = TrackManager.getInstance().getTrackByID(sTrackId);
-          String sParentID = attributes.getValue(Const.XML_DIRECTORY).intern();
-          // UPGRADE check parent ID is right
-          if ((hmWrongRightDirectoryID.size() > 0) &&
-          // replace wrong by right ID
-              (hmWrongRightDirectoryID.containsKey(sParentID))) {
-            sParentID = hmWrongRightDirectoryID.get(sParentID);
-          }
-          dParent = DirectoryManager.getInstance().getDirectoryByID(sParentID);
-          if (dParent == null || track == null) { // more checkups
-            return;
-          }
-
-          String size = attributes.getValue(Const.XML_SIZE);
-          if (size != null) {
-            lSize = Long.parseLong(size);
-          }
-
-          // Quality analyze, handle format problems (mainly for
-          // upgrades)
-          long lQuality = 0;
-          try {
-            String sQuality = attributes.getValue(Const.XML_QUALITY);
-            if (sQuality != null) {
-              lQuality = UtilString.fastLongParser(sQuality);
-            }
-          } catch (Exception e) {
-            if (Log.isDebugEnabled()) {
-              // wrong format
-              Log.debug(Messages.getString("Error.137") + ":" + sItemName + " Value: "
-                  + attributes.getValue(Const.XML_QUALITY) + " Error:" + e.getMessage());
-            }
-          }
-          sID = attributes.getValue(idIndex).intern();
-          /*
-           * UPGRADE test : if first element we check has the right ID, we avoid
-           * wasting time checking others item one. If is is an upgrade, we
-           * force the check.We always check id in debug mode.
-           */
-          sRightID = sID;
-          if (needCheckID) {
-            sRightID = FileManager.createID(sItemName, dParent).intern();
-            if (sRightID == sID) {
-              needCheckID = UpgradeManager.isUpgradeDetected() || SessionService.isTestMode();
-            } else {
-              Log.debug("** Wrong file Id, upgraded: " + sItemName);
-              hmWrongRightFileID.put(sID, sRightID);
-            }
-          }
-          org.jajuk.base.File file = FileManager.getInstance().registerFile(sRightID, sItemName,
-              dParent, track, lSize, lQuality);
-          file.populateProperties(attributes);
+          handleFiles(attributes, idIndex);
           break;
         case STAGE_DIRECTORIES:
-          dParent = null;
-
-          // dParent = null;
-          sParentID = attributes.getValue(Const.XML_DIRECTORY_PARENT).intern();
-          // UPGRADE
-          if ((hmWrongRightDirectoryID.size() > 0)
-              && (hmWrongRightDirectoryID.containsKey(sParentID))) {
-            sParentID = hmWrongRightDirectoryID.get(sParentID);
-          }
-          // We use intern() here for performances
-          if (sParentID != "-1") {
-            // Parent directory should be already referenced
-            // because of order conservation
-            dParent = DirectoryManager.getInstance().getDirectoryByID(sParentID);
-            // check parent directory exists
-            if (dParent == null) {
-              return;
-            }
-          }
-          String sDeviceID = attributes.getValue(Const.XML_DEVICE).intern();
-          // take upgraded device ID if needed
-          if ((hmWrongRightDeviceID.size() > 0) && (hmWrongRightDeviceID.containsKey(sDeviceID))) {
-            sDeviceID = hmWrongRightDeviceID.get(sDeviceID);
-          }
-          Device device = DeviceManager.getInstance().getDeviceByID(sDeviceID);
-          if (device == null) { // check device exists
-            return;
-          }
-          sItemName = attributes.getValue(Const.XML_NAME);
-          sID = attributes.getValue(idIndex).intern();
-          // UPGRADE test
-          sRightID = sID;
-          if (needCheckID) {
-            sRightID = DirectoryManager.createID(sItemName, device, dParent).intern();
-            if (sRightID == sID) {
-              needCheckID = UpgradeManager.isUpgradeDetected() || SessionService.isTestMode();
-            } else {
-              Log.debug("** Wrong directory Id, upgraded: " + sItemName);
-              hmWrongRightDirectoryID.put(sID, sRightID);
-            }
-          }
-          Directory directory = DirectoryManager.getInstance().registerDirectory(sRightID,
-              sItemName, dParent, device);
-          directory.populateProperties(attributes);
+          handleDirectories(attributes, idIndex);
           break;
         case STAGE_TRACKS:
-          Style style = null;
-          Album album = null;
-          Author author = null;
-          sID = attributes.getValue(idIndex).intern();
-          String sTrackName = attributes.getValue(Const.XML_TRACK_NAME);
-          // album
-          String sAlbumID = attributes.getValue(Const.XML_TRACK_ALBUM).intern();
-          if ((hmWrongRightAlbumID.size() > 0) && (hmWrongRightAlbumID.containsKey(sAlbumID))) {
-            sAlbumID = hmWrongRightAlbumID.get(sAlbumID);
-          }
-          album = AlbumManager.getInstance().getAlbumByID(sAlbumID);
-          // Style
-          String sStyleID = attributes.getValue(Const.XML_TRACK_STYLE).intern();
-          if ((hmWrongRightStyleID.size() > 0) && (hmWrongRightStyleID.containsKey(sStyleID))) {
-            sStyleID = hmWrongRightStyleID.get(sStyleID);
-          }
-          style = StyleManager.getInstance().getStyleByID(sStyleID);
-          // Year
-          String sYearID = attributes.getValue(Const.XML_TRACK_YEAR).intern();
-          Year year = YearManager.getInstance().getYearByID(sYearID);
-          // For jajuk < 1.4
-          if (year == null) {
-            year = YearManager.getInstance().registerYear(sYearID, sYearID);
-          }
-          // Author
-          String sAuthorID = attributes.getValue(Const.XML_TRACK_AUTHOR).intern();
-          if ((hmWrongRightAuthorID.size() > 0) && (hmWrongRightAuthorID.containsKey(sAuthorID))) {
-            sAuthorID = hmWrongRightAuthorID.get(sAuthorID);
-          }
-          author = AuthorManager.getInstance().getAuthorByID(sAuthorID);
-          long length = UtilString.fastLongParser(attributes.getValue(Const.XML_TRACK_LENGTH));
-          // Type
-          String typeID = attributes.getValue(Const.XML_TYPE).intern();
-          if (needCheckConversions) {
-            if (CONVERSION.containsKey(typeID)) {
-              typeID = CONVERSION.get(typeID);
-            } else {
-              needCheckConversions = false;
-            }
-          }
-          type = TypeManager.getInstance().getTypeByID(typeID);
-          // more checkups
-          if (album == null || author == null) {
-            return;
-          }
-          if (style == null || type == null) {
-            return;
-          }
-          // Idem for order
-          long lOrder = 0l;
-          try {
-            lOrder = UtilString.fastLongParser(attributes.getValue(Const.XML_TRACK_ORDER));
-          } catch (Exception e) {
-            if (Log.isDebugEnabled()) {
-              // wrong format
-              Log.debug(Messages.getString("Error.137") + ":" + sTrackName); // wrong
-            }
-          }
-
-          // Idem for disc number
-          long lDiscNumber = 0l;
-          if (attributes.getValue(Const.XML_TRACK_DISC_NUMBER) != null) {
-            try {
-              lDiscNumber = UtilString.fastLongParser(attributes
-                  .getValue(Const.XML_TRACK_DISC_NUMBER));
-            } catch (Exception e) {
-              if (Log.isDebugEnabled()) {
-                // wrong format
-                Log.debug(Messages.getString("Error.137") + ":" + sTrackName);
-              }
-            }
-          }
-
-          // UPGRADE test
-          sRightID = sID;
-          if (needCheckID) {
-            sRightID = TrackManager.createID(sTrackName, album, style, author, length, year,
-                lOrder, type, lDiscNumber).intern();
-            if (sRightID == sID) {
-              needCheckID = UpgradeManager.isUpgradeDetected() || SessionService.isTestMode();
-            } else {
-              Log.debug("** Wrong Track Id, upgraded: " + sTrackName);
-              hmWrongRightTrackID.put(sID, sRightID);
-            }
-          }
-          // Date format should be OK
-          Date dAdditionDate = ADDITION_FORMATTER.parse(attributes.getValue(attributes
-              .getIndex(Const.XML_TRACK_DISCOVERY_DATE)));
-          track = TrackManager.getInstance().registerTrack(sRightID, sTrackName, album, style,
-              author, length, year, lOrder, type, lDiscNumber);
-          TrackManager.getInstance().changeTrackRate(track,
-              UtilString.fastLongParser(attributes.getValue(Const.XML_TRACK_RATE)));
-          track.setHits(UtilString.fastLongParser(attributes.getValue(Const.XML_TRACK_HITS)));
-          track.setDiscoveryDate(dAdditionDate);
-          String sComment = attributes.getValue(Const.XML_TRACK_COMMENT).intern();
-          if (sComment == null) {
-            sComment = "";
-          }
-          track.setComment(sComment);
-          track.populateProperties(attributes);
+          handleTracks(attributes, idIndex);
           break;
         case STAGE_ALBUMS:
-          sID = attributes.getValue(idIndex).intern();
-          sItemName = attributes.getValue(Const.XML_NAME).intern();
-          String sItemAlbumArtist = null;
-          String sAttributeAlbumArtist = attributes.getValue(Const.XML_ALBUM_ARTIST);
-          if (sAttributeAlbumArtist != null) {
-            sItemAlbumArtist = sAttributeAlbumArtist.intern();
-          }
-          long lItemDiscID = 0;
-          String sAttributeDiskId = attributes.getValue(Const.XML_ALBUM_DISC_ID);
-          if (sAttributeDiskId != null) {
-            lItemDiscID = Long.parseLong(sAttributeDiskId);
-          }
-          // UPGRADE test
-          sRightID = sID;
-          if (needCheckID) {
-            sRightID = AlbumManager.createID(sItemName, sItemAlbumArtist, lItemDiscID).intern();
-            if (sRightID == sID) {
-              needCheckID = UpgradeManager.isUpgradeDetected() || SessionService.isTestMode();
-            } else {
-              Log.debug("** Wrong album Id, upgraded: " + sItemName);
-              hmWrongRightAlbumID.put(sID, sRightID);
-            }
-          }
-          album = AlbumManager.getInstance().registerAlbum(sRightID, sItemName, sItemAlbumArtist,
-              lItemDiscID);
-          if (album != null) {
-            album.populateProperties(attributes);
-          }
+          handleAlbums(attributes, idIndex);
           break;
         case STAGE_AUTHORS:
-          sID = attributes.getValue(idIndex).intern();
-          sItemName = attributes.getValue(Const.XML_NAME).intern();
-          // UPGRADE test
-          sRightID = sID;
-          if (needCheckID) {
-            sRightID = AuthorManager.createID(sItemName).intern();
-            if (sRightID == sID) {
-              needCheckID = UpgradeManager.isUpgradeDetected() || SessionService.isTestMode();
-            } else {
-              Log.debug("** Wrong author Id, upgraded: " + sItemName);
-              hmWrongRightAuthorID.put(sID, sRightID);
-            }
-          }
-          author = AuthorManager.getInstance().registerAuthor(sRightID, sItemName);
-          if (author != null) {
-            author.populateProperties(attributes);
-          }
+          handleAuthors(attributes, idIndex);
           break;
         case STAGE_STYLES:
-          sID = attributes.getValue(idIndex).intern();
-          sItemName = attributes.getValue(Const.XML_NAME).intern();
-          // UPGRADE test
-          sRightID = sID;
-          if (needCheckID) {
-            sRightID = StyleManager.createID(sItemName).intern();
-            if (sRightID == sID) {
-              needCheckID = UpgradeManager.isUpgradeDetected() || SessionService.isTestMode();
-            } else {
-              Log.debug("** Wrong style Id, upgraded: " + sItemName);
-              hmWrongRightStyleID.put(sID, sRightID);
-            }
-          }
-          style = StyleManager.getInstance().registerStyle(sRightID, sItemName);
-          if (style != null) {
-            style.populateProperties(attributes);
-          }
+          handleStyles(attributes, idIndex);
           break;
         case STAGE_PLAYLIST_FILES:
-          sParentID = attributes.getValue(Const.XML_DIRECTORY).intern();
-          // UPGRADE check parent ID is right
-          if ((hmWrongRightDirectoryID.size() > 0) &&
-          // replace wrong by right ID
-              (hmWrongRightDirectoryID.containsKey(sParentID))) {
-            sParentID = hmWrongRightDirectoryID.get(sParentID);
-          }
-          dParent = DirectoryManager.getInstance().getDirectoryByID(sParentID);
-          if (dParent == null) { // check directory is exists
-            return;
-          }
-          sID = attributes.getValue(idIndex).intern();
-          sItemName = attributes.getValue(Const.XML_NAME);
-          // UPGRADE test
-          sRightID = sID;
-          if (needCheckID) {
-            sRightID = PlaylistManager.createID(sItemName, dParent).intern();
-            if (sRightID == sID) {
-              needCheckID = UpgradeManager.isUpgradeDetected() || SessionService.isTestMode();
-            } else {
-              Log.debug("** Wrong playlist Id, upgraded: " + sItemName);
-              hmWrongRightPlaylistFileID.put(sID, sRightID);
-            }
-          }
-          Playlist plf = PlaylistManager.getInstance().registerPlaylistFile(sRightID, sItemName,
-              dParent);
-          if (plf != null) {
-            plf.populateProperties(attributes);
-          }
+          handlePlaylistFiles(attributes, idIndex);
           break;
         case STAGE_DEVICES:
-          device = null;
-          sID = attributes.getValue(idIndex).intern();
-          sItemName = attributes.getValue(Const.XML_NAME);
-          long lType = UtilString.fastLongParser(attributes.getValue(Const.XML_TYPE));
-          // UPGRADE test
-          sRightID = sID;
-          if (needCheckID) {
-            sRightID = DeviceManager.createID(sItemName).intern();
-            if (sRightID == sID) {
-              needCheckID = UpgradeManager.isUpgradeDetected() || SessionService.isTestMode();
-            } else {
-              Log.debug("** Wrong device Id, upgraded: " + sItemName);
-              hmWrongRightDeviceID.put(sID, sRightID);
-            }
-          }
-          String sURL = attributes.getValue(Const.XML_URL);
-          device = DeviceManager.getInstance().registerDevice(sRightID, sItemName, lType, sURL);
-          if (device != null) {
-            device.populateProperties(attributes);
-          }
+          handleDevices(attributes, idIndex);
           break;
         case STAGE_YEARS:
-          sID = attributes.getValue(idIndex).intern();
-          sItemName = attributes.getValue(Const.XML_NAME).intern();
-          year = YearManager.getInstance().registerYear(sID, sItemName);
-          if (year != null) {
-            year.populateProperties(attributes);
-          }
+          handleYears(attributes, idIndex);
           break;
         }
       }
-    } catch (Exception re) {
+    } catch (ParseException re) {
       StringBuilder sAttributes = new StringBuilder();
       for (int i = 0; i < attributes.getLength(); i++) {
         sAttributes.append('\n').append(attributes.getQName(i)).append('=').append(
             attributes.getValue(i));
       }
       Log.error(5, sAttributes.toString(), re);
+    } catch (ClassNotFoundException re) {
+      StringBuilder sAttributes = new StringBuilder();
+      for (int i = 0; i < attributes.getLength(); i++) {
+        sAttributes.append('\n').append(attributes.getQName(i)).append('=').append(
+            attributes.getValue(i));
+      }
+      Log.error(5, sAttributes.toString(), re);
+    }
+  }
+
+  private void handleFiles(Attributes attributes, int idIndex) {
+    String sItemName = attributes.getValue(Const.XML_NAME);
+    // Check file type is still registered, it can be
+    // useful for ie if mplayer is no more available
+    String ext = UtilSystem.getExtension(sItemName);
+    Type type = TypeManager.getInstance().getTypeByExtension(ext);
+    if (type == null) {
+      return;
+    }
+    String sTrackId = attributes.getValue(Const.XML_TRACK).intern();
+    // UPGRADE check if track Id is right
+    if ((hmWrongRightTrackID.size() > 0) &&
+    // replace wrong by right ID
+        (hmWrongRightTrackID.containsKey(sTrackId))) {
+      sTrackId = hmWrongRightTrackID.get(sTrackId);
+    }
+    Track track = TrackManager.getInstance().getTrackByID(sTrackId);
+    String sParentID = attributes.getValue(Const.XML_DIRECTORY).intern();
+    // UPGRADE check parent ID is right
+    if ((hmWrongRightDirectoryID.size() > 0) &&
+    // replace wrong by right ID
+        (hmWrongRightDirectoryID.containsKey(sParentID))) {
+      sParentID = hmWrongRightDirectoryID.get(sParentID);
+    }
+    Directory dParent = DirectoryManager.getInstance().getDirectoryByID(sParentID);
+    if (dParent == null || track == null) { // more checkups
+      return;
+    }
+
+    String size = attributes.getValue(Const.XML_SIZE);
+    long lSize = 0;
+    if (size != null) {
+      lSize = Long.parseLong(size);
+    }
+
+    // Quality analyze, handle format problems (mainly for
+    // upgrades)
+    long lQuality = 0;
+    try {
+      String sQuality = attributes.getValue(Const.XML_QUALITY);
+      if (sQuality != null) {
+        lQuality = UtilString.fastLongParser(sQuality);
+      }
+    } catch (Exception e) {
+      if (Log.isDebugEnabled()) {
+        // wrong format
+        Log.debug(Messages.getString("Error.137") + ":" + sItemName + " Value: "
+            + attributes.getValue(Const.XML_QUALITY) + " Error:" + e.getMessage());
+      }
+    }
+    String sID = attributes.getValue(idIndex).intern();
+    /*
+     * UPGRADE test : if first element we check has the right ID, we avoid
+     * wasting time checking others item one. If is is an upgrade, we
+     * force the check.We always check id in debug mode.
+     */
+    String sRightID = sID;
+    if (needCheckID) {
+      sRightID = FileManager.createID(sItemName, dParent).intern();
+      if (sRightID == sID) {
+        needCheckID = UpgradeManager.isUpgradeDetected() || SessionService.isTestMode();
+      } else {
+        Log.debug("** Wrong file Id, upgraded: " + sItemName);
+        hmWrongRightFileID.put(sID, sRightID);
+      }
+    }
+    org.jajuk.base.File file = FileManager.getInstance().registerFile(sRightID, sItemName,
+        dParent, track, lSize, lQuality);
+    file.populateProperties(attributes);
+  }
+
+  private void handleDirectories(Attributes attributes, int idIndex) {
+    Directory dParent = null;
+
+    // dParent = null;
+    String sParentID = attributes.getValue(Const.XML_DIRECTORY_PARENT).intern();
+    // UPGRADE
+    if ((hmWrongRightDirectoryID.size() > 0)
+        && (hmWrongRightDirectoryID.containsKey(sParentID))) {
+      sParentID = hmWrongRightDirectoryID.get(sParentID);
+    }
+    // We use intern() here for performances
+    if (sParentID != "-1") {
+      // Parent directory should be already referenced
+      // because of order conservation
+      dParent = DirectoryManager.getInstance().getDirectoryByID(sParentID);
+      // check parent directory exists
+      if (dParent == null) {
+        return;
+      }
+    }
+    String sDeviceID = attributes.getValue(Const.XML_DEVICE).intern();
+    // take upgraded device ID if needed
+    if ((hmWrongRightDeviceID.size() > 0) && (hmWrongRightDeviceID.containsKey(sDeviceID))) {
+      sDeviceID = hmWrongRightDeviceID.get(sDeviceID);
+    }
+    Device device = DeviceManager.getInstance().getDeviceByID(sDeviceID);
+    if (device == null) { // check device exists
+      return;
+    }
+    String sItemName = attributes.getValue(Const.XML_NAME);
+    String sID = attributes.getValue(idIndex).intern();
+    // UPGRADE test
+    String sRightID = sID;
+    if (needCheckID) {
+      sRightID = DirectoryManager.createID(sItemName, device, dParent).intern();
+      if (sRightID == sID) {
+        needCheckID = UpgradeManager.isUpgradeDetected() || SessionService.isTestMode();
+      } else {
+        Log.debug("** Wrong directory Id, upgraded: " + sItemName);
+        hmWrongRightDirectoryID.put(sID, sRightID);
+      }
+    }
+    Directory directory = DirectoryManager.getInstance().registerDirectory(sRightID,
+        sItemName, dParent, device);
+    directory.populateProperties(attributes);
+  }
+
+  private void handleTracks(Attributes attributes, int idIndex) throws ParseException {
+    String sID = attributes.getValue(idIndex).intern();
+    String sTrackName = attributes.getValue(Const.XML_TRACK_NAME);
+    // album
+    String sAlbumID = attributes.getValue(Const.XML_TRACK_ALBUM).intern();
+    if ((hmWrongRightAlbumID.size() > 0) && (hmWrongRightAlbumID.containsKey(sAlbumID))) {
+      sAlbumID = hmWrongRightAlbumID.get(sAlbumID);
+    }
+    Album album = AlbumManager.getInstance().getAlbumByID(sAlbumID);
+    // Style
+    String sStyleID = attributes.getValue(Const.XML_TRACK_STYLE).intern();
+    if ((hmWrongRightStyleID.size() > 0) && (hmWrongRightStyleID.containsKey(sStyleID))) {
+      sStyleID = hmWrongRightStyleID.get(sStyleID);
+    }
+    Style style = StyleManager.getInstance().getStyleByID(sStyleID);
+    // Year
+    String sYearID = attributes.getValue(Const.XML_TRACK_YEAR).intern();
+    Year year = YearManager.getInstance().getYearByID(sYearID);
+    // For jajuk < 1.4
+    if (year == null) {
+      year = YearManager.getInstance().registerYear(sYearID, sYearID);
+    }
+    // Author
+    String sAuthorID = attributes.getValue(Const.XML_TRACK_AUTHOR).intern();
+    if ((hmWrongRightAuthorID.size() > 0) && (hmWrongRightAuthorID.containsKey(sAuthorID))) {
+      sAuthorID = hmWrongRightAuthorID.get(sAuthorID);
+    }
+    Author author = AuthorManager.getInstance().getAuthorByID(sAuthorID);
+    long length = UtilString.fastLongParser(attributes.getValue(Const.XML_TRACK_LENGTH));
+    // Type
+    String typeID = attributes.getValue(Const.XML_TYPE).intern();
+    if (needCheckConversions) {
+      if (CONVERSION.containsKey(typeID)) {
+        typeID = CONVERSION.get(typeID);
+      } else {
+        needCheckConversions = false;
+      }
+    }
+    Type type = TypeManager.getInstance().getTypeByID(typeID);
+    // more checkups
+    if (album == null || author == null) {
+      return;
+    }
+    if (style == null || type == null) {
+      return;
+    }
+    // Idem for order
+    long lOrder = 0l;
+    try {
+      lOrder = UtilString.fastLongParser(attributes.getValue(Const.XML_TRACK_ORDER));
+    } catch (Exception e) {
+      if (Log.isDebugEnabled()) {
+        // wrong format
+        Log.debug(Messages.getString("Error.137") + ":" + sTrackName); // wrong
+      }
+    }
+
+    // Idem for disc number
+    long lDiscNumber = 0l;
+    if (attributes.getValue(Const.XML_TRACK_DISC_NUMBER) != null) {
+      try {
+        lDiscNumber = UtilString.fastLongParser(attributes
+            .getValue(Const.XML_TRACK_DISC_NUMBER));
+      } catch (Exception e) {
+        if (Log.isDebugEnabled()) {
+          // wrong format
+          Log.debug(Messages.getString("Error.137") + ":" + sTrackName);
+        }
+      }
+    }
+
+    // UPGRADE test
+    String sRightID = sID;
+    if (needCheckID) {
+      sRightID = TrackManager.createID(sTrackName, album, style, author, length, year,
+          lOrder, type, lDiscNumber).intern();
+      if (sRightID == sID) {
+        needCheckID = UpgradeManager.isUpgradeDetected() || SessionService.isTestMode();
+      } else {
+        Log.debug("** Wrong Track Id, upgraded: " + sTrackName);
+        hmWrongRightTrackID.put(sID, sRightID);
+      }
+    }
+    // Date format should be OK
+    Date dAdditionDate = ADDITION_FORMATTER.parse(attributes.getValue(attributes
+        .getIndex(Const.XML_TRACK_DISCOVERY_DATE)));
+    Track track = TrackManager.getInstance().registerTrack(sRightID, sTrackName, album, style,
+        author, length, year, lOrder, type, lDiscNumber);
+    TrackManager.getInstance().changeTrackRate(track,
+        UtilString.fastLongParser(attributes.getValue(Const.XML_TRACK_RATE)));
+    track.setHits(UtilString.fastLongParser(attributes.getValue(Const.XML_TRACK_HITS)));
+    track.setDiscoveryDate(dAdditionDate);
+    String sComment = attributes.getValue(Const.XML_TRACK_COMMENT).intern();
+    if (sComment == null) {
+      sComment = "";
+    }
+    track.setComment(sComment);
+    track.populateProperties(attributes);
+  }
+
+  private void handleAlbums(Attributes attributes, int idIndex) {
+    String sID = attributes.getValue(idIndex).intern();
+    String sItemName = attributes.getValue(Const.XML_NAME).intern();
+    String sItemAlbumArtist = null;
+    String sAttributeAlbumArtist = attributes.getValue(Const.XML_ALBUM_ARTIST);
+    if (sAttributeAlbumArtist != null) {
+      sItemAlbumArtist = sAttributeAlbumArtist.intern();
+    }
+    long lItemDiscID = 0;
+    String sAttributeDiskId = attributes.getValue(Const.XML_ALBUM_DISC_ID);
+    if (sAttributeDiskId != null) {
+      lItemDiscID = Long.parseLong(sAttributeDiskId);
+    }
+    // UPGRADE test
+    String sRightID = sID;
+    if (needCheckID) {
+      sRightID = AlbumManager.createID(sItemName, sItemAlbumArtist, lItemDiscID).intern();
+      if (sRightID == sID) {
+        needCheckID = UpgradeManager.isUpgradeDetected() || SessionService.isTestMode();
+      } else {
+        Log.debug("** Wrong album Id, upgraded: " + sItemName);
+        hmWrongRightAlbumID.put(sID, sRightID);
+      }
+    }
+    Album album = AlbumManager.getInstance().registerAlbum(sRightID, sItemName, sItemAlbumArtist,
+        lItemDiscID);
+    if (album != null) {
+      album.populateProperties(attributes);
+    }
+  }
+
+  private void handleAuthors(Attributes attributes, int idIndex) {
+    String sID = attributes.getValue(idIndex).intern();
+    String sItemName = attributes.getValue(Const.XML_NAME).intern();
+    // UPGRADE test
+    String sRightID = sID;
+    if (needCheckID) {
+      sRightID = AuthorManager.createID(sItemName).intern();
+      if (sRightID == sID) {
+        needCheckID = UpgradeManager.isUpgradeDetected() || SessionService.isTestMode();
+      } else {
+        Log.debug("** Wrong author Id, upgraded: " + sItemName);
+        hmWrongRightAuthorID.put(sID, sRightID);
+      }
+    }
+    Author author = AuthorManager.getInstance().registerAuthor(sRightID, sItemName);
+    if (author != null) {
+      author.populateProperties(attributes);
+    }
+  }
+
+  private void handleStyles(Attributes attributes, int idIndex) {
+    String sID = attributes.getValue(idIndex).intern();
+    String sItemName = attributes.getValue(Const.XML_NAME).intern();
+    // UPGRADE test
+    String sRightID = sID;
+    if (needCheckID) {
+      sRightID = StyleManager.createID(sItemName).intern();
+      if (sRightID == sID) {
+        needCheckID = UpgradeManager.isUpgradeDetected() || SessionService.isTestMode();
+      } else {
+        Log.debug("** Wrong style Id, upgraded: " + sItemName);
+        hmWrongRightStyleID.put(sID, sRightID);
+      }
+    }
+    Style style = StyleManager.getInstance().registerStyle(sRightID, sItemName);
+    if (style != null) {
+      style.populateProperties(attributes);
+    }
+  }
+
+  private void handlePlaylistFiles(Attributes attributes, int idIndex) {
+    String sParentID = attributes.getValue(Const.XML_DIRECTORY).intern();
+    // UPGRADE check parent ID is right
+    if ((hmWrongRightDirectoryID.size() > 0) &&
+    // replace wrong by right ID
+        (hmWrongRightDirectoryID.containsKey(sParentID))) {
+      sParentID = hmWrongRightDirectoryID.get(sParentID);
+    }
+    Directory dParent = DirectoryManager.getInstance().getDirectoryByID(sParentID);
+    if (dParent == null) { // check directory is exists
+      return;
+    }
+    String sID = attributes.getValue(idIndex).intern();
+    String sItemName = attributes.getValue(Const.XML_NAME);
+    // UPGRADE test
+    String sRightID = sID;
+    if (needCheckID) {
+      sRightID = PlaylistManager.createID(sItemName, dParent).intern();
+      if (sRightID == sID) {
+        needCheckID = UpgradeManager.isUpgradeDetected() || SessionService.isTestMode();
+      } else {
+        Log.debug("** Wrong playlist Id, upgraded: " + sItemName);
+        hmWrongRightPlaylistFileID.put(sID, sRightID);
+      }
+    }
+    Playlist plf = PlaylistManager.getInstance().registerPlaylistFile(sRightID, sItemName,
+        dParent);
+    if (plf != null) {
+      plf.populateProperties(attributes);
+    }
+  }
+
+  private void handleDevices(Attributes attributes, int idIndex) {
+    String sID = attributes.getValue(idIndex).intern();
+    String sItemName = attributes.getValue(Const.XML_NAME);
+    long lType = UtilString.fastLongParser(attributes.getValue(Const.XML_TYPE));
+    // UPGRADE test
+    String sRightID = sID;
+    if (needCheckID) {
+      sRightID = DeviceManager.createID(sItemName).intern();
+      if (sRightID == sID) {
+        needCheckID = UpgradeManager.isUpgradeDetected() || SessionService.isTestMode();
+      } else {
+        Log.debug("** Wrong device Id, upgraded: " + sItemName);
+        hmWrongRightDeviceID.put(sID, sRightID);
+      }
+    }
+    String sURL = attributes.getValue(Const.XML_URL);
+    Device device = DeviceManager.getInstance().registerDevice(sRightID, sItemName, lType, sURL);
+    if (device != null) {
+      device.populateProperties(attributes);
+    }
+  }
+
+  private void handleYears(Attributes attributes, int idIndex) {
+    String sID = attributes.getValue(idIndex).intern();
+    String sItemName = attributes.getValue(Const.XML_NAME).intern();
+    Year year = YearManager.getInstance().registerYear(sID, sItemName);
+    if (year != null) {
+      year.populateProperties(attributes);
     }
   }
 
