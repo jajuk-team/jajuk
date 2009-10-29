@@ -36,6 +36,11 @@ import org.jajuk.util.error.JajukException;
  * Singleton
  */
 public final class Log {
+  /**
+   * 
+   */
+  private static final String LOGGER_APACHE_HTTPCLIENT = "org.apache.commons.httpclient";
+
   // verbosity consts
   public static final int FATAL = 0;
 
@@ -57,14 +62,8 @@ public final class Log {
   /** Self instance used for singleton pattern */
   private static Log log = null;
 
-  // Root logger
-  private static Logger loggerRoot;
-
   // Jajuk logger
   private static Logger logger;
-
-  // Http client logger
-  private static Logger loggerHttp;
 
   /** Debug traces spool */
   private static List<String> alSpool;
@@ -84,9 +83,7 @@ public final class Log {
       Log.stack(e);
     }
 
-    loggerRoot = Logger.getRootLogger();
     logger = Logger.getLogger(Log.class.getName());
-    loggerHttp = Logger.getLogger("org.apache.commons.httpclient");
     alSpool = new ArrayList<String>(Const.FEEDBACK_LINES);
     // message for logging system start
     Log.info("******************JAJUK******************");
@@ -347,28 +344,28 @@ public final class Log {
     switch (newVerbosity) {
     case DEBUG:
       logger.setLevel(Level.DEBUG);
-      loggerHttp.setLevel(Level.WARN);
-      loggerRoot.setLevel(Level.WARN);
+      Logger.getLogger(LOGGER_APACHE_HTTPCLIENT).setLevel(Level.WARN);
+      Logger.getRootLogger().setLevel(Level.WARN);
       break;
     case INFO:
       logger.setLevel(Level.INFO);
-      loggerHttp.setLevel(Level.WARN);
-      loggerRoot.setLevel(Level.WARN);
+      Logger.getLogger(LOGGER_APACHE_HTTPCLIENT).setLevel(Level.WARN);
+      Logger.getRootLogger().setLevel(Level.WARN);
       break;
     case WARNING:
       logger.setLevel(Level.WARN);
-      loggerHttp.setLevel(Level.WARN);
-      loggerRoot.setLevel(Level.WARN);
+      Logger.getLogger(LOGGER_APACHE_HTTPCLIENT).setLevel(Level.WARN);
+      Logger.getRootLogger().setLevel(Level.WARN);
       break;
     case ERROR:
       logger.setLevel(Level.ERROR);
-      loggerHttp.setLevel(Level.ERROR);
-      loggerRoot.setLevel(Level.ERROR);
+      Logger.getLogger(LOGGER_APACHE_HTTPCLIENT).setLevel(Level.ERROR);
+      Logger.getRootLogger().setLevel(Level.ERROR);
       break;
     case FATAL:
       logger.setLevel(Level.FATAL);
-      loggerHttp.setLevel(Level.FATAL);
-      loggerRoot.setLevel(Level.FATAL);
+      Logger.getLogger(LOGGER_APACHE_HTTPCLIENT).setLevel(Level.FATAL);
+      Logger.getRootLogger().setLevel(Level.FATAL);
       break;
     }
   }
