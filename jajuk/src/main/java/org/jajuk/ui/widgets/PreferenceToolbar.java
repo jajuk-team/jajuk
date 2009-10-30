@@ -127,6 +127,7 @@ public class PreferenceToolbar extends JajukJToolbar implements Observer {
     eventSubjectSet.add(JajukEvents.ZERO);
     eventSubjectSet.add(JajukEvents.PLAYER_STOP);
     eventSubjectSet.add(JajukEvents.BANNED);
+    eventSubjectSet.add(JajukEvents.WEBRADIO_LAUNCHED);
     return eventSubjectSet;
   }
 
@@ -149,11 +150,14 @@ public class PreferenceToolbar extends JajukJToolbar implements Observer {
   public final void update(final JajukEvent event) {
     SwingUtilities.invokeLater(new Runnable() {
       public void run() {
-        File current = QueueModel.getPlayingFile();
-        // More checks, current track can be null when playing with web radios
-        if (current == null) {
+        // current is null when stopped or when playing web radios, disable the
+        // preference controls
+        if (!QueueModel.isPlayingTrack()) {
+          jbBan.setEnabled(false);
+          jcbPreference.setEnabled(false);
           return;
         }
+        File current = QueueModel.getPlayingFile();
         if (JajukEvents.RATE_CHANGED.equals(event.getSubject())) {
           setPreference(current.getTrack().getLongValue(Const.XML_TRACK_PREFERENCE));
         } else if (JajukEvents.FILE_LAUNCHED.equals(event.getSubject())) {
