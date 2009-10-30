@@ -189,6 +189,7 @@ public class WikipediaView extends ViewAdapter implements ActionListener {
     Set<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
     eventSubjectSet.add(JajukEvents.FILE_LAUNCHED);
     eventSubjectSet.add(JajukEvents.ZERO);
+    eventSubjectSet.add(JajukEvents.WEBRADIO_LAUNCHED);
     eventSubjectSet.add(JajukEvents.AUTHOR_CHANGED);
     eventSubjectSet.add(JajukEvents.ALBUM_CHANGED);
     eventSubjectSet.add(JajukEvents.TRACK_CHANGED);
@@ -205,9 +206,10 @@ public class WikipediaView extends ViewAdapter implements ActionListener {
     JajukEvents subject = event.getSubject();
     // Make a search after a stop period
     if (subject.equals(JajukEvents.FILE_LAUNCHED)
-        || subject.equals(JajukEvents.PERSPECTIVE_CHANGED)) {
+        || subject.equals(JajukEvents.PERSPECTIVE_CHANGED)
+        || subject.equals(JajukEvents.WEBRADIO_LAUNCHED)) {
       // If current state is stopped, reset page
-      if (QueueModel.getPlayingFile() == null) {
+      if (!QueueModel.isPlayingTrack()) {
         reset();
         return;
       }
@@ -275,12 +277,14 @@ public class WikipediaView extends ViewAdapter implements ActionListener {
           if (Desktop.isDesktopSupported()) {
             jbLaunchInExternalBrowser.putClientProperty(Const.DETAIL_CONTENT, url.toExternalForm());
           }
-          browser.setURL(url, LocaleManager.getLocaleForDesc((String) jcbLanguage.getSelectedItem()).toString());
+          browser.setURL(url, LocaleManager
+              .getLocaleForDesc((String) jcbLanguage.getSelectedItem()).toString());
         } catch (FileNotFoundException e) {
           // only report a warning for FileNotFoundException and do not show a
           // stacktrace in the logfile as it is expected in many cases where the
           // name is not found on Wikipedia
-          Log.warn("Could not load URL, no content found at specified address: {{" + e.getMessage() + "}}");
+          Log.warn("Could not load URL, no content found at specified address: {{" + e.getMessage()
+              + "}}");
         } catch (Exception e) {
           Log.error(e);
         }
@@ -304,6 +308,7 @@ public class WikipediaView extends ViewAdapter implements ActionListener {
         if (browser != null) {
           try {
             browser.clearDocument();
+            browser.setToolTipText("");
           } catch (Exception e) {
             Log.error(e);
           }
