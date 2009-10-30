@@ -24,6 +24,7 @@ import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -36,6 +37,7 @@ import java.util.Properties;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 
 import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
@@ -683,52 +685,16 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
    * Save as... the playlist
    * 
    * @throws JajukException
+   * @throws InvocationTargetException 
+   * @throws InterruptedException 
    */
-  public void saveAs() throws JajukException {
-    final JajukFileChooser jfchooser = new JajukFileChooser(new JajukFileFilter(PlaylistFilter
-        .getInstance()));
-    jfchooser.setDialogType(JFileChooser.SAVE_DIALOG);
-    jfchooser.setAcceptDirectories(true);
-    String sPlaylist = Const.DEFAULT_PLAYLIST_FILE;
-    // computes new playlist
-    alFiles = getFiles();
-    if (alFiles.size() > 0) {
-      final File file = alFiles.get(0);
-      if (getType() == Type.BESTOF) {
-        sPlaylist = file.getDevice().getUrl() + java.io.File.separatorChar
-            + Const.FILE_DEFAULT_BESTOF_PLAYLIST;
-      } else if (getType() == Type.BOOKMARK) {
-        sPlaylist = file.getDevice().getUrl() + java.io.File.separatorChar
-            + Const.FILE_DEFAULT_BOOKMARKS_PLAYLIST;
-      } else if (getType() == Type.NOVELTIES) {
-        sPlaylist = file.getDevice().getUrl() + java.io.File.separatorChar
-            + Const.FILE_DEFAULT_NOVELTIES_PLAYLIST;
-      } else if (getType() == Type.QUEUE) {
-        sPlaylist = file.getDevice().getUrl() + java.io.File.separatorChar
-            + Const.FILE_DEFAULT_QUEUE_PLAYLIST
-            + UtilString.getAdditionDateFormatter().format(new Date());
-      } else {
-        sPlaylist = file.getDirectory().getAbsolutePath() + java.io.File.separatorChar
-            + file.getTrack().getHumanValue(Const.XML_ALBUM);
-      }
-    } else {
-      return;
-    }
-    jfchooser.setSelectedFile(new java.io.File(sPlaylist + "." + Const.EXT_PLAYLIST));
-    final int returnVal = jfchooser.showSaveDialog(JajukMainWindow.getInstance());
-    if (returnVal == JFileChooser.APPROVE_OPTION) {
-      java.io.File file = jfchooser.getSelectedFile();
-      // add automatically the extension if required
-      if (file.getAbsolutePath().endsWith(Const.EXT_PLAYLIST)) {
-        file = new java.io.File(file.getAbsolutePath());
-      } else {
-        file = new java.io.File(file.getAbsolutePath() + "." + Const.EXT_PLAYLIST);
-      }
-
-      // set new file path ( this playlist is a special playlist, just in
-      // memory )
-      setFIO(file);
-      commit(); // write it on the disk
+  public void saveAs() throws JajukException, InterruptedException, InvocationTargetException {
+    FileChooserRunnable runnable = new FileChooserRunnable();
+    
+    SwingUtilities.invokeAndWait(runnable);
+    
+    if(runnable.getException() != null) {
+      throw runnable.getException();
     }
   }
 
@@ -929,4 +895,74 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
     return alFiles.size();
   }
 
+  /** 
+   * Small helper class to be able to run 
+   * the FileChoose inside the EDT thread of Swing  
+   */
+  private final class FileChooserRunnable implements Runnable {
+    // records if there are exceptions during doing the call
+    JajukException ex = null;
+    
+    @Override
+    public void run() {
+      try
+      {
+        final JajukFileChooser jfchooser = new JajukFileChooser(new JajukFileFilter(PlaylistFilter
+            .getInstance()));
+        jfchooser.setDialogType(JFileChooser.SAVE_DIALOG);
+        jfchooser.setAcceptDirectories(true);
+        String sPlaylist = Const.DEFAULT_PLAYLIST_FILE;
+        // computes new playlist
+        alFiles = getFiles();
+        if (alFiles.size() > 0) {
+          final File file = alFiles.get(0);
+          if (getType() == Type.BESTOF) {
+            sPlaylist = file.getDevice().getUrl() + java.io.File.separatorChar
+                + Const.FILE_DEFAULT_BESTOF_PLAYLIST;
+          } else if (getType() == Type.BOOKMARK) {
+            sPlaylist = file.getDevice().getUrl() + java.io.File.separatorChar
+                + Const.FILE_DEFAULT_BOOKMARKS_PLAYLIST;
+          } else if (getType() == Type.NOVELTIES) {
+            sPlaylist = file.getDevice().getUrl() + java.io.File.separatorChar
+                + Const.FILE_DEFAULT_NOVELTIES_PLAYLIST;
+          } else if (getType() == Type.QUEUE) {
+            sPlaylist = file.getDevice().getUrl() + java.io.File.separatorChar
+                + Const.FILE_DEFAULT_QUEUE_PLAYLIST
+                + UtilString.getAdditionDateFormatter().format(new Date());
+          } else {
+            sPlaylist = file.getDirectory().getAbsolutePath() + java.io.File.separatorChar
+                + file.getTrack().getHumanValue(Const.XML_ALBUM);
+          }
+        } else {
+          return;
+        }
+        jfchooser.setSelectedFile(new java.io.File(sPlaylist + "." + Const.EXT_PLAYLIST));
+        final int returnVal = jfchooser.showSaveDialog(JajukMainWindow.getInstance());
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+          java.io.File file = jfchooser.getSelectedFile();
+          // add automatically the extension if required
+          if (file.getAbsolutePath().endsWith(Const.EXT_PLAYLIST)) {
+            file = new java.io.File(file.getAbsolutePath());
+          } else {
+            file = new java.io.File(file.getAbsolutePath() + "." + Const.EXT_PLAYLIST);
+          }
+ 
+          // set new file path ( this playlist is a special playlist, just in
+          // memory )
+          setFIO(file);
+          commit(); // write it on the disk
+        }      
+    } catch (JajukException e) {
+      ex = e;
+    }
+    }
+
+    /** Returns any exception caught during running the file chooser.
+     * 
+     * @return null if no exception was caught, the actual exception otherwise. 
+     */
+    public JajukException getException() {
+      return ex;
+    }
+  }
 }
