@@ -86,7 +86,7 @@ public class CDScanView extends ViewAdapter implements ActionListener {
         try {
           UtilGUI.showPictureDialog("http://repository.jajuk.info/images/no2.jpg");
         } catch (MalformedURLException me) {
-          Log.debug("Ignoring exception in AboutWindow: ", me);
+          Log.debug("Ignoring exception in CD-Scan-View: ", me);
         }
         return;
       }
