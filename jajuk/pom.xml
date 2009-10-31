@@ -148,14 +148,14 @@
       <artifactId>cobra</artifactId>
       <version>0.96.5R2</version>
       <scope>system</scope>
-      <systemPath>${basedir}/lib/cobra-0.96.5R2.jar</systemPath>
+      <systemPath>${basedir}/lib/cobra-0.98.4.jar</systemPath>
     </dependency>
     <dependency>
       <groupId>JS</groupId>
       <artifactId>js</artifactId>
       <version>0.96.5R2</version>
       <scope>system</scope>
-      <systemPath>${basedir}/lib/js-0.96.5R2.jar</systemPath>
+      <systemPath>${basedir}/lib/js-0.98.4.jar</systemPath>
     </dependency>
     <dependency>
       <groupId>log4j</groupId>

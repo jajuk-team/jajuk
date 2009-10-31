@@ -43,36 +43,28 @@ import org.jajuk.util.Messages;
 import org.jajuk.util.UtilGUI;
 import org.jajuk.util.UtilSystem;
 import org.jajuk.util.log.Log;
+import org.lobobrowser.html.UserAgentContext;
+import org.lobobrowser.html.gui.HtmlPanel;
+import org.lobobrowser.html.parser.DocumentBuilderImpl;
+import org.lobobrowser.html.parser.InputSourceImpl;
+import org.lobobrowser.html.test.SimpleHtmlRendererContext;
+import org.lobobrowser.html.test.SimpleUserAgentContext;
 import org.w3c.dom.Document;
-import org.xamjwg.html.HtmlParserContext;
-import org.xamjwg.html.gui.HtmlPanel;
-import org.xamjwg.html.parser.DocumentBuilderImpl;
-import org.xamjwg.html.parser.InputSourceImpl;
-import org.xamjwg.html.test.SimpleHtmlParserContext;
-import org.xamjwg.html.test.SimpleHtmlRendererContext;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 /**
- * Type description
+ * Cobra browser HTML panel
  */
 public class JajukHtmlPanel extends HtmlPanel {
 
-  /**
-   * 
-   */
   private static final String COLON = " : ";
 
-  /**
-   * 
-   */
   private static final String URL_COLON = "URL: ";
 
   private static final long serialVersionUID = -4033441908072591661L;
 
   private final SimpleHtmlRendererContext rcontext;
-
-  private final HtmlParserContext context;
 
   private final DocumentBuilderImpl dbi;
 
@@ -83,9 +75,9 @@ public class JajukHtmlPanel extends HtmlPanel {
     super();
     // Disable Cobra traces
     Logger.getLogger("").setLevel(Level.OFF);
-    rcontext = new SimpleHtmlRendererContext(this);
-    context = new SimpleHtmlParserContext();
-    dbi = new DocumentBuilderImpl(context, rcontext);
+    UserAgentContext ucontext = new SimpleUserAgentContext();
+    rcontext = new SimpleHtmlRendererContext(this, ucontext);
+    dbi = new DocumentBuilderImpl(ucontext, rcontext);
   }
 
   /**
@@ -126,8 +118,7 @@ public class JajukHtmlPanel extends HtmlPanel {
           }
           sPage = sb.toString();
           // fix internal links
-          sPage = sPage.replaceAll("href=\"/", "href=\"http://"
-              + lang + ".wikipedia.org/");
+          sPage = sPage.replaceAll("href=\"/", "href=\"http://" + lang + ".wikipedia.org/");
           // Display the page
           showPage(sPage, page);
           // Set current url as a tooltip
@@ -135,7 +126,8 @@ public class JajukHtmlPanel extends HtmlPanel {
         } catch (IOException e) {
           // report IOException only as warning here as we can expect this to
           // happen frequently with images on the net
-          Log.warn("Could not read page: {{" + url.toString() + " Cache: " + page, e.getMessage() + "}}");
+          Log.warn("Could not read page: {{" + url.toString() + " Cache: " + page, e.getMessage()
+              + "}}");
 
           try {
             setFailedToLoad(URL_COLON + url + COLON + e.getClass().getSimpleName() + COLON
