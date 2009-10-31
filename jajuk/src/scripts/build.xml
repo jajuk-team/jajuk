@@ -9,6 +9,10 @@
 		<format property="TODAY" pattern="yyyyMMdd" locale="en,UK" />
 	</tstamp>
 
+	<!-- Current date to be included into JNLP timestamp file -->
+	<tstamp>
+		<format property="TODAY-VERSION" pattern="yyyy-MM-dd hh:mm aa" locale="en,UK" />
+	</tstamp>
 
 	<!--Distribution release  
 	!!! DO NOT USE '-' CHARACTER IN VERSION !!!-->
@@ -100,7 +104,7 @@
 			<format property="JAJUK_TIMESTAMP" pattern="yyyy-MM-dd HH:mm:ss" />
 		</tstamp>
 	</target>
-	
+
 	<target name='clean' description='o Clean up previous build files'>
 		<delete failonerror='true' dir='${rootdir}' />
 		<delete failonerror='true' dir='${jnlpdir}' />
@@ -192,6 +196,12 @@
 			<include name='jajuk.bat' />
 			<replacetoken>TEST_FLAG_REPLACED_BY_ANT</replacetoken>
 		</replace>
+		<!-- Set date in JNLP file -->
+		<replace dir='${distdir}/src/packaging/jnlp' value='${TODAY-VERSION}'>
+			<include name='*.jnlp' />
+			<replacetoken>TIMESTAMP_REPLACED_BY_ANT</replacetoken>
+		</replace>
+
 	</target>
 
 	<target name='compile'>
@@ -204,7 +214,7 @@
 			</src>
 			<classpath>
 				<fileset dir='${distdir}/lib'>
-					<include name='*.jar'/>
+					<include name='*.jar' />
 				</fileset>
 			</classpath>
 		</javac>
