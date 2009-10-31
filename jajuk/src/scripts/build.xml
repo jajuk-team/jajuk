@@ -197,7 +197,7 @@
 			<replacetoken>TEST_FLAG_REPLACED_BY_ANT</replacetoken>
 		</replace>
 		<!-- Set date in JNLP file -->
-		<replace dir='${distdir}/src/packaging/jnlp' value='${TODAY-VERSION}'>
+		<replace dir='${srcdir}/packaging/jnlp' value='${TODAY-VERSION}'>
 			<include name='*.jnlp' />
 			<replacetoken>TIMESTAMP_REPLACED_BY_ANT</replacetoken>
 		</replace>
