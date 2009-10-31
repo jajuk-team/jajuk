@@ -11,7 +11,7 @@
 
 	<!-- Current date to be included into JNLP timestamp file -->
 	<tstamp>
-		<format property="TODAY-VERSION" pattern="yyyy-MM-dd hh:mm aa" locale="en,UK" />
+		<format property="TODAY-VERSION" pattern="yyyy-MM-dd hh:mm:ss" locale="en,UK" />
 	</tstamp>
 
 	<!--Distribution release  
