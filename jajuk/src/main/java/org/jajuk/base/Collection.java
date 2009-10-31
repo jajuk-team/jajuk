@@ -428,7 +428,6 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
           needCheckID = false;
         } else if (Const.XML_PROPERTY == sQName) {
           // A property description
-          String sPropertyName = attributes.getValue(Const.XML_NAME).intern();
           boolean bCustom = Boolean.parseBoolean(attributes.getValue(attributes
               .getIndex(Const.XML_CUSTOM)));
           boolean bConstructor = Boolean.parseBoolean(attributes.getValue(attributes
@@ -454,9 +453,10 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
               oDefaultValue = new Date();
             }
           }
-          PropertyMetaInformation meta = new PropertyMetaInformation(sPropertyName, bCustom,
-              bConstructor, bShouldBeDisplayed, bEditable, bUnique, cType, oDefaultValue);
+          String sPropertyName = attributes.getValue(Const.XML_NAME).intern();
           if (manager.getMetaInformation(sPropertyName) == null) {
+            PropertyMetaInformation meta = new PropertyMetaInformation(sPropertyName, bCustom,
+                bConstructor, bShouldBeDisplayed, bEditable, bUnique, cType, oDefaultValue);
             // standard properties are already loaded
             manager.registerProperty(meta);
           }
