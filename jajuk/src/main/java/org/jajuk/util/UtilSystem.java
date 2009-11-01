@@ -238,17 +238,9 @@ public final class UtilSystem {
     if (!file.exists() || !file.canRead()) {
       throw new JajukException(9, file.getAbsolutePath(), null);
     }
-    final FileChannel fcSrc = new FileInputStream(file).getChannel();
-    try {
-      final FileChannel fcDest = new FileOutputStream(fNew).getChannel();
-      try {
-        fcDest.transferFrom(fcSrc, 0, fcSrc.size());
-      } finally {
-        fcDest.close();
-      }
-    } finally {
-      fcSrc.close();
-    }
+
+    FileUtils.copyFile(file, fNew);
+    
     // Display a warning if copied file is void as it can happen with full
     // disks
     if (fNew.length() == 0) {
@@ -274,17 +266,8 @@ public final class UtilSystem {
     if (!file.exists() || !file.canRead()) {
       throw new JajukException(9, file.getAbsolutePath(), null);
     }
-    final FileChannel fcSrc = new FileInputStream(file).getChannel();
-    try {
-      final FileChannel fcDest = new FileOutputStream(fileNew).getChannel();
-      try {
-        fcDest.transferFrom(fcSrc, 0, fcSrc.size());
-      } finally {
-        fcDest.close();
-      }
-    } finally {
-      fcSrc.close();
-    }
+    
+    FileUtils.copyFile(file, fileNew);
   }
 
   /**
@@ -359,26 +342,14 @@ public final class UtilSystem {
    * @throws JajukException
    * @throws IOException
    */
-  public static File copyToDir(final File file, final File directory) throws JajukException,
+  public static void copyToDir(final File file, final File directory) throws JajukException,
       IOException {
     Log.debug("Copying: {{" + file.getAbsolutePath() + "}}  to : " + directory.getAbsolutePath());
-    final File fileNew = new File(new StringBuilder(directory.getAbsolutePath()).append("/")
-        .append(file.getName()).toString());
     if (!file.exists() || !file.canRead()) {
       throw new JajukException(9, file.getAbsolutePath(), null);
     }
-    final FileChannel fcSrc = new FileInputStream(file).getChannel();
-    try {
-      final FileChannel fcDest = new FileOutputStream(fileNew).getChannel();
-      try {
-        fcDest.transferFrom(fcSrc, 0, fcSrc.size());
-      } finally {
-        fcDest.close();
-      }
-    } finally {
-      fcSrc.close();
-    }
-    return fileNew;
+
+    FileUtils.copyFileToDirectory(file, directory);
   }
 
   /**
