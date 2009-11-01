@@ -147,13 +147,18 @@ public class DuplicateTracksList extends JPanel implements ListSelectionListener
     }
 
     private void deleteFilefromList(int index) {
+      // first iterate over all Lists of files, counting the overall index
       int count = 0;
       for (int r = 0; r < allFiles.size(); r++) {
+        // for each list of files, iterate over in an inner loop
         for (int c = 0; c < allFiles.get(r).size(); c++) {
+          // check if we reached the correct position in the list now 
           if (count == index) {
             if (allFiles.get(r).size() <= 2) {
+              // if only one file is left now, remove the whole element
               allFiles.remove(r);
             } else {
+              // remove the file that is removed
               allFiles.get(r).remove(c);
             }
           }
