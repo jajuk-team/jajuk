@@ -143,6 +143,8 @@ public final class JajukJMenuBar extends JMenuBar implements Observer {
 
   JMenuItem jmialarmClock;
 
+  JMenuItem jmiprepareParty;
+
   JMenu configuration;
 
   JMenuItem jmiDJ;
@@ -270,8 +272,10 @@ public final class JajukJMenuBar extends JMenuBar implements Observer {
     tools = new JMenu(Messages.getString("JajukJMenuBar.28"));
     jmiduplicateFinder = new JMenuItem(ActionManager.getAction(JajukActions.FIND_DUPLICATE_FILES));
     jmialarmClock = new JMenuItem(ActionManager.getAction(JajukActions.ALARM_CLOCK));
+    jmiprepareParty = new JMenuItem(ActionManager.getAction(JajukActions.PREPARE_PARTY));
     tools.add(jmiduplicateFinder);
     tools.add(jmialarmClock);
+    tools.add(jmiprepareParty);
     // tools.addSeparator();
 
     // Configuration menu

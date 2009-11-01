@@ -26,6 +26,7 @@ import java.io.FileFilter;
 import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -101,6 +102,16 @@ public final class DigitalDJManager implements Observer {
    */
   public Collection<DigitalDJ> getDJs() {
     return djs.values();
+  }
+
+  /**
+   * Returns the list of DJs sorted in ascending order according to the natural ordering 
+   * @return DJs iteration
+   */
+  public List<DigitalDJ> getDJsSorted() {
+    List<DigitalDJ> sorted = new ArrayList<DigitalDJ>(djs.values());
+    Collections.sort(sorted);
+    return sorted;
   }
 
   /**

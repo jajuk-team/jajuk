@@ -21,6 +21,7 @@ package org.jajuk.ui.widgets;
 
 import java.awt.Component;
 import java.awt.HeadlessException;
+import java.io.File;
 
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
@@ -46,11 +47,38 @@ public class JajukFileChooser extends JFileChooser {
    *          filter to use
    */
   public JajukFileChooser(JajukFileFilter jfilter) {
-    setDialogTitle(Messages.getString("JajukFileChooser.0"));
+    super();
+    
     this.filter = jfilter;
     for (int i = 0; i < jfilter.getFilters().length; i++) {
       addChoosableFileFilter(jfilter.getFilters()[i]);
     }
+
+    init();
+  }
+
+  /**
+   * Constructor with specified file filter and starting directory/file
+   * 
+   * @param jfilter
+   *          filter to use
+   */
+  public JajukFileChooser(JajukFileFilter jfilter, File file) {
+    super(file);
+    
+    this.filter = jfilter;
+    for (int i = 0; i < jfilter.getFilters().length; i++) {
+      addChoosableFileFilter(jfilter.getFilters()[i]);
+    }
+
+    init();
+  }
+
+  /**
+   * @param jfilter
+   */
+  private final void init() {
+    setDialogTitle(Messages.getString("JajukFileChooser.0"));
     setMultiSelectionEnabled(true);
     // don't hide hidden files
     setFileHidingEnabled(false);

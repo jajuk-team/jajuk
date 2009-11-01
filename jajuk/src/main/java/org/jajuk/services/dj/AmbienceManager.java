@@ -21,7 +21,6 @@
 package org.jajuk.services.dj;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -124,9 +123,9 @@ public final class AmbienceManager implements Observer {
 
   /**
    * 
-   * @return list of registated ambiences
+   * @return sorted list of registered ambiences
    */
-  public Collection<Ambience> getAmbiences() {
+  public List<Ambience> getAmbiences() {
     List<Ambience> al = new ArrayList<Ambience>(ambiences.values());
     Collections.sort(al);
     return al;

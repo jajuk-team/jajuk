@@ -278,4 +278,21 @@ public final class PlaylistManager extends ItemManager implements Observer {
   public synchronized ReadOnlyIterator<Playlist> getPlaylistsIterator() {
     return new ReadOnlyIterator<Playlist>((Iterator<Playlist>) getItemsIterator());
   }
+
+  /**Returns the first playlist with the given name.
+   * 
+   * @param name The name of the Playlist to search
+   * @return The playlist if found, null otherwise.
+   */
+  public Playlist getPlaylistByName(String name) {
+    for(Playlist pl : getPlaylists()) {
+      // if this is the correct playlist, return it
+      if(pl.getName().equals(name)) {
+        return pl;
+      }
+    }
+
+    // none found
+    return null;
+  }
 }

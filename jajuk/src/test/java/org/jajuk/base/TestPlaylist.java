@@ -21,6 +21,7 @@
 package org.jajuk.base;
 
 import java.awt.HeadlessException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -861,6 +862,8 @@ public class TestPlaylist extends JajukTestCase {
     
     try {
       play.saveAs();
+    } catch (InvocationTargetException e) {
+      // this tries to open a FileChooser...
     } catch (HeadlessException e) {
       // this tries to open a FileChooser...
     }
@@ -882,6 +885,8 @@ public class TestPlaylist extends JajukTestCase {
     
     try {
       play.saveAs();
+    } catch (InvocationTargetException e) {
+      // this tries to open a FileChooser...
     } catch (HeadlessException e) {
       // this tries to open a FileChooser...
     }
@@ -891,6 +896,8 @@ public class TestPlaylist extends JajukTestCase {
 
     try {
       play.saveAs();
+    } catch (InvocationTargetException e) {
+      // this tries to open a FileChooser...
     } catch (HeadlessException e) {
       // this tries to open a FileChooser...
     }
@@ -912,6 +919,8 @@ public class TestPlaylist extends JajukTestCase {
 
     try {
       play.saveAs();
+    } catch (InvocationTargetException e) {
+      // this tries to open a FileChooser...
     } catch (HeadlessException e) {
       // this tries to open a FileChooser...
     }
@@ -921,6 +930,8 @@ public class TestPlaylist extends JajukTestCase {
 
     try {
       play.saveAs();
+    } catch (InvocationTargetException e) {
+      // this tries to open a FileChooser...
     } catch (HeadlessException e) {
       // this tries to open a FileChooser...
     }
@@ -1002,18 +1013,6 @@ public class TestPlaylist extends JajukTestCase {
 
     // now "false" again, as we have the device mounted
     assertFalse(play.shouldBeHidden());
-  }
-
-  /**
-   * Test method for {@link org.jajuk.base.Playlist#prepareParty()}.
-   */
-  public final void testPrepareParty() {
-    Playlist play = new Playlist("1", "name", null);
-    try {
-      play.prepareParty();
-    } catch (HeadlessException e) {
-      // this tries to open a FileChooser...
-    }
   }
 
   /**

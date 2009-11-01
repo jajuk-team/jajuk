@@ -25,23 +25,17 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Locale;
-import java.util.Properties;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
-import org.jajuk.events.JajukEvent;
-import org.jajuk.events.JajukEvents;
-import org.jajuk.events.ObservationManager;
 import org.jajuk.services.bookmark.Bookmarks;
 import org.jajuk.services.players.QueueModel;
 import org.jajuk.services.players.StackItem;
@@ -54,11 +48,9 @@ import org.jajuk.util.JajukFileFilter;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilFeatures;
-import org.jajuk.util.UtilGUI;
 import org.jajuk.util.UtilString;
 import org.jajuk.util.UtilSystem;
 import org.jajuk.util.error.JajukException;
-import org.jajuk.util.filters.DirectoryFilter;
 import org.jajuk.util.filters.PlaylistFilter;
 import org.jajuk.util.log.Log;
 
@@ -691,7 +683,7 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
   public void saveAs() throws JajukException, InterruptedException, InvocationTargetException {
     FileChooserRunnable runnable = new FileChooserRunnable();
     
-    SwingUtilities.invokeAndWait(runnable);
+    SwingUtilities.invokeLater(runnable);
     
     if(runnable.getException() != null) {
       throw runnable.getException();
@@ -735,74 +727,6 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
       return false;
     }
     return true;
-  }
-
-  /**
-   * Stores all playlist and mapped files into an external device
-   */
-  public void prepareParty() {
-    final JajukFileChooser jfc = new JajukFileChooser(new JajukFileFilter(DirectoryFilter
-        .getInstance()));
-    jfc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-    jfc.setDialogTitle(Messages.getString("FirstTimeWizard.5"));
-    jfc.setMultiSelectionEnabled(false);
-    final int returnVal = jfc.showDialog(JajukMainWindow.getInstance(), "Ok");
-    if (returnVal == JFileChooser.APPROVE_OPTION) {
-      new Thread("Playlist Prepare Party Thread") {
-        @Override
-        public void run() {
-          UtilGUI.waiting();
-          final java.io.File fDir = jfc.getSelectedFile();
-          final Date curDate = new Date();
-          // Do not use ':' character in destination directory, it's
-          // forbidden under Windows
-          final SimpleDateFormat stamp = new SimpleDateFormat("yyyyMMdd-HHmm", Locale.getDefault());
-          final String dirName = "Party-" + stamp.format(curDate);
-          final java.io.File destDir = new java.io.File(fDir.getAbsolutePath() + "/" + dirName);
-          if (!destDir.mkdir()) {
-            Log.warn("Could not create destination directory " + destDir);
-          }
-
-          final java.io.File file = new java.io.File(destDir.getAbsolutePath() + "/playlist.m3u");
-          try {
-            final BufferedWriter bw = new BufferedWriter(new FileWriter(file));
-            try {
-              bw.write(Const.PLAYLIST_NOTE);
-              for (final File entry : alFiles) {
-                java.io.File destFile = UtilSystem.copyToDir(entry.getFIO(), destDir);
-                // Rename the file using its Jajuk ID to avoid
-                // naming collisions
-                String newName = destDir.getAbsolutePath() + '/' + entry.getID() + '.'
-                    + entry.getType().getExtension();
-                destFile.renameTo(new java.io.File(newName));
-                bw.newLine();
-                bw.write(entry.getID() + '.' + entry.getType().getExtension());
-                // Notify that a file has been copied
-                Properties properties = new Properties();
-                properties.put(Const.DETAIL_CONTENT, entry.getName());
-                ObservationManager.notify(new JajukEvent(JajukEvents.FILE_COPIED, properties));
-              }
-  
-              bw.flush();
-            } finally {
-              bw.close();
-            }
-            // Send a last event with null properties to inform the
-            // client that
-            // the party is done
-            ObservationManager.notify(new JajukEvent(JajukEvents.FILE_COPIED));
-
-          } catch (final IOException e) {
-            Log.error(e);
-          } catch (final JajukException e) {
-            Log.error(e);
-          }
-          UtilGUI.stopWaiting();
-          Messages.showInfoMessage(dirName + " "
-              + Messages.getString("AbstractPlaylistEditorView.28") + " " + fDir.getAbsolutePath());
-        }
-      }.start();
-    }
   }
 
   /**
