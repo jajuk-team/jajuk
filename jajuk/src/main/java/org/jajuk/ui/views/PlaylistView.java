@@ -55,6 +55,7 @@ import javax.swing.KeyStroke;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
+import javax.swing.border.BevelBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableColumn;
@@ -130,7 +131,9 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
   JajukButton jbClear;
   private JajukButton jbPrepParty;
   JLabel jlTitle;
+  
   JajukTable editorTable;
+  
   JMenuItem jmiFilePlay;
   JMenuItem jmiFilePush;
   JMenuItem jmiFileFrontPush;
@@ -280,6 +283,8 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
     jbPrepParty = new JajukButton(ActionManager.getAction(JajukActions.PREPARE_PARTY));
     jbPrepParty.setText(null);
     jlTitle = new JLabel("");
+    jlTitle.setBorder(new BevelBorder(BevelBorder.LOWERED));
+    
     JToolBar jtb = new JajukJToolbar();
 
     // Add items
