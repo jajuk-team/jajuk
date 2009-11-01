@@ -288,8 +288,7 @@ public class DigitalDJWizard extends Wizard {
 
     @Override
     public void initUI() {
-      djs = new ArrayList<DigitalDJ>(DigitalDJManager.getInstance().getDJs());
-      Collections.sort(djs);
+      djs = DigitalDJManager.getInstance().getDJsSorted();
       // We use an inner panel for scrolling purpose
       JPanel jp = new JPanel();
       jp.setLayout(new MigLayout("insets 0,gapx 0,gapy 10"));
@@ -1239,10 +1238,11 @@ public class DigitalDJWizard extends Wizard {
      */
     @Override
     public void initUI() {
-      ambiences = new ArrayList<Ambience>(AmbienceManager.getInstance().getAmbiences());
-      Collections.sort(ambiences);
+      // the returned list is sorted by name
+      ambiences = AmbienceManager.getInstance().getAmbiences();
+
       // We need at least one ambience
-      if (AmbienceManager.getInstance().getAmbiences().size() == 0) {
+      if (ambiences.size() == 0) {
         setProblem(Messages.getString("DigitalDJWizard.38"));
       }
       setCanFinish(true);
