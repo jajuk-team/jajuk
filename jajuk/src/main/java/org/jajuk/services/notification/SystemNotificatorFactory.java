@@ -32,9 +32,10 @@ import org.jajuk.util.log.Log;
 public class SystemNotificatorFactory {
   private static ISystemNotificator notification;
   private static TrayIcon trayIcon;
-  
+
   /**
-   * @param trayIcon the trayIcon to set
+   * @param trayIcon
+   *          the trayIcon to set
    */
   public static void setTrayIcon(TrayIcon trayIcon) {
     SystemNotificatorFactory.trayIcon = trayIcon;
@@ -59,22 +60,28 @@ public class SystemNotificatorFactory {
       return notification;
     }
 
+    notification = new JajukBalloonNotificator();
+    if (notification.isAvailable()) {
+      Log.debug("JajukBalloon implementation is available for system notifications.");
+      return notification;
+    }
+
     // Try the NotifySend implementation first
     notification = new NotifySendNotificator();
-    if(notification.isAvailable()) {
+    if (notification.isAvailable()) {
       Log.debug("'notify-send' implementation is available for system notifications.");
       return notification;
     }
-    
+
     notification = new JavaSystrayNotificator(trayIcon);
-    if(notification.isAvailable()) {
+    if (notification.isAvailable()) {
       Log.debug("Java systray implementation is available for system notifications.");
       return notification;
     } else {
       // reset member again to not keep an implementation that does not work...
       notification = null;
     }
-    
+
     // none available, return null
     Log.debug("No implementation is available for system notifications.");
     return null;

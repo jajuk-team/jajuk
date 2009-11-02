@@ -224,7 +224,8 @@ public class PlayerStateMediator implements Observer {
 
             File file = FileManager.getInstance().getFileByID(id);
             Log.debug("Got update for new file launched, item: " + file);
-            notifier.notify(Messages.getString("JajukWindow.39"), UtilString.buildTitle(file));
+//            notifier.notify(Messages.getString("JajukWindow.39"), UtilString.buildTitle(file));
+			notifier.notify(Messages.getString("JajukWindow.39"), QueueModel.getCurrentFileTitle());
           }
         }
 
