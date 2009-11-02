@@ -88,10 +88,10 @@ public class PreparePartyWizard extends Wizard {
   /** Which source to use for the tracks */
   private static final String KEY_MODE = "MODE";
 
-  /* Which item was selected in the first page of the wizard */
+  /** Which item was selected in the first page of the wizard */
   private static final String KEY_ITEM = "ITEM";
 
-  /* Where to put the files */
+  /** Where to put the files */
   private static final String KEY_DEST_PATH = "DEST_PATH";
 
   /** Max number of tracks to use */
@@ -113,30 +113,51 @@ public class PreparePartyWizard extends Wizard {
   /** Ratings level */
   private static final String KEY_RATINGS_LEVEL = "RATING_LEVEL";
 
-  // store a temporary playlist that is provided by the PlaylistView without storing it in the PlaylistManager
-  // we keep it here to be able to re-display it in the Playlist view later on
-  // We need to keep it outside the ActionSelectionPanel because the panel is re-created during back-forward operations
+  // store a temporary playlist that is provided by the PlaylistView without
+  // storing it in the PlaylistManager
+  // we keep it here to be able to re-display it in the Pages later on
+  // We need to keep it outside the ActionSelectionPanel because the panel is
+  // re-created during back-forward operations
   private static Playlist tempPlaylist;
-  
+
+  // TODO: we could also add "BestOf" and "Novelities" like we have for
+  // Playlists
   private enum Mode {
     DJ, Ambience, Shuffle, Playlist, ProvidedPlaylist
   }
 
-  /*
+  /**
+   * 
    * Default constructor that lets the user choose where the tracks are taken
-   * from
+   * from.
+   * 
+   * @param bProvidedPlaylist
+   *          Indicates that a playlist was provided to the dialog and thus the
+   *          first page is not displayed
    */
   public PreparePartyWizard(boolean bProvidedPlaylist) {
-    super(Messages.getString("PreparePartyWizard.1"), bProvidedPlaylist ? GeneralOptionsPanel.class : ActionSelectionPanel.class, null,
-        JajukMainWindow.getInstance(), LocaleManager.getLocale(), 800, 500);
+    super(Messages.getString("PreparePartyWizard.1"), bProvidedPlaylist ? GeneralOptionsPanel.class
+        : ActionSelectionPanel.class, null, JajukMainWindow.getInstance(), LocaleManager
+        .getLocale(), 800, 500);
     super.setHeaderIcon(IconLoader.getIcon(JajukIcons.PREPARE_PARTY));
   }
 
+  /**
+   * Set the provided playlist so that the first page can be skipped if wanted.
+   * 
+   * This needs to be done as static method as the Wizard-constructor already
+   * needs to have this data available!
+   * 
+   * @param playlist
+   *          The playlist to use for the party
+   */
   public static void setPlaylist(Playlist playlist) {
     // store playlist and the mode that we are now having
     tempPlaylist = playlist;
-    data.put(KEY_ITEM, playlist.getName());
+
+    // store the mode and the playlist in the data as well
     data.put(KEY_MODE, Mode.ProvidedPlaylist);
+    data.put(KEY_ITEM, playlist.getName());
   }
 
   /**
@@ -164,7 +185,8 @@ public class PreparePartyWizard extends Wizard {
     } else if (Mode.Playlist.equals(data.get(KEY_MODE))
         || Mode.ProvidedPlaylist.equals(data.get(KEY_MODE))) {
       try {
-        // for Playlists we need to store the actual Playlist as it could be a temporary one from 
+        // for Playlists we need to store the actual Playlist as it could be a
+        // temporary one from
         // the PlaylistView, so a lookup might not work here
         files = getPlaylistFiles((String) data.get(KEY_ITEM));
       } catch (Exception e1) {
@@ -203,18 +225,20 @@ public class PreparePartyWizard extends Wizard {
       files = filterMaxTracks(files, (Integer) data.get(KEY_MAX_TRACKS));
     }
 
+    // read the target directory
     final File fDir = (File) data.get(KEY_DEST_PATH);
 
     // TODO: create progress dialog, this did not work for some reason
-//    JDialog progress = new JDialog(getDialog());
-//    progress.setLayout(new MigLayout("insets 10,gapx 10,gapy 15"));
-//    JLabel label = new JLabel();
-//    progress.add(label, "grow,wrap");
-//    JProgressBar bar = new JProgressBar(0, files.size());
-//    progress.add(bar, "grow,wrap");
-//    progress.pack();
-//    progress.setVisible(true);
+    // JDialog progress = new JDialog(getDialog());
+    // progress.setLayout(new MigLayout("insets 10,gapx 10,gapy 15"));
+    // JLabel label = new JLabel();
+    // progress.add(label, "grow,wrap");
+    // JProgressBar bar = new JProgressBar(0, files.size());
+    // progress.add(bar, "grow,wrap");
+    // progress.pack();
+    // progress.setVisible(true);
 
+    // define the target directory
     final Date curDate = new Date();
     // Do not use ':' character in destination directory, it's
     // forbidden under Windows
@@ -225,8 +249,10 @@ public class PreparePartyWizard extends Wizard {
       Log.warn("Could not create destination directory " + destDir);
     }
 
-    Log.debug("Going to copy " + files.size() + " files to directory {{" + destDir.getAbsolutePath() + "}}");
+    Log.debug("Going to copy " + files.size() + " files to directory {{"
+        + destDir.getAbsolutePath() + "}}");
 
+    // start copying and create a playlist on the fly
     UtilGUI.waiting();
     final java.io.File file = new java.io.File(destDir.getAbsolutePath() + "/playlist.m3u");
     try {
@@ -237,16 +263,17 @@ public class PreparePartyWizard extends Wizard {
         for (final org.jajuk.base.File entry : files) {
           // update progress
           count++;
-//          bar.setValue(count);
-//          label.setText(entry.getName());
+          // bar.setValue(count);
+          // label.setText(entry.getName());
 
-          // We can use the actual file name as we do numbering of the files, 
+          // We can use the actual file name as we do numbering of the files,
           // this is important for existing playlists to keep the order
-          String name = StringUtils.leftPad(new Integer(
-              count).toString(), 5, '0') + '_' + entry.getFIO().getName();
+          String name = StringUtils.leftPad(new Integer(count).toString(), 5, '0') + '_'
+              + entry.getFIO().getName();
           FileUtils.copyFile(entry.getFIO(), new File(destDir, name));
-          //  + '.' + entry.getType().getExtension()
+          // + '.' + entry.getType().getExtension()
 
+          // write playlist as well
           bw.newLine();
           bw.write(name);
 
@@ -260,6 +287,7 @@ public class PreparePartyWizard extends Wizard {
       } finally {
         bw.close();
       }
+
       // Send a last event with null properties to inform the
       // client that the party is done
       ObservationManager.notify(new JajukEvent(JajukEvents.FILE_COPIED));
@@ -269,18 +297,25 @@ public class PreparePartyWizard extends Wizard {
       Messages.showErrorMessage(180, e.getMessage());
       return;
     } finally {
-      //progress.dispose();
+      // progress.dispose();
       UtilGUI.stopWaiting();
     }
+
+    // inform the user about the number of resulting tracks
     Messages.showInfoMessage(dirName + " " + Messages.getString("AbstractPlaylistEditorView.28")
         + " " + fDir.getAbsolutePath() + ".\n" + files.size()
         + Messages.getString("PreparePartyWizard.23"));
   }
 
   /**
+   * Filter provided list by removing files that have lower rating.
+   * 
    * @param files
-   * @param integer
-   * @return
+   *          the list to process.
+   * @param rate
+   *          The require rating level
+   * 
+   * @return The adjusted list.
    */
   private List<org.jajuk.base.File> filterRating(List<org.jajuk.base.File> files, Integer rate) {
     final List<org.jajuk.base.File> newFiles = new ArrayList<org.jajuk.base.File>();
@@ -295,9 +330,15 @@ public class PreparePartyWizard extends Wizard {
   }
 
   /**
+   * Filter the provided list by removing files if the specified length (in
+   * minutes) is exceeded
+   * 
    * @param files
-   * @param integer
-   * @return
+   *          The list of files to process.
+   * @param time
+   *          The number of minutes playing length to have at max.
+   * 
+   * @return The modified list.
    */
   private List<org.jajuk.base.File> filterMaxLength(List<org.jajuk.base.File> files, Integer time) {
     final List<org.jajuk.base.File> newFiles = new ArrayList<org.jajuk.base.File>();
@@ -318,9 +359,15 @@ public class PreparePartyWizard extends Wizard {
   }
 
   /**
+   * Filter the provided list by removing files after the specified size is
+   * reached.
+   * 
    * @param files
-   * @param integer
-   * @return
+   *          The list of files to process.
+   * @param size
+   *          The size in MB that should not be exceeded.
+   * 
+   * @return The modified list.
    */
   private List<org.jajuk.base.File> filterMaxSize(List<org.jajuk.base.File> files, Integer size) {
     final List<org.jajuk.base.File> newFiles = new ArrayList<org.jajuk.base.File>();
@@ -341,9 +388,15 @@ public class PreparePartyWizard extends Wizard {
   }
 
   /**
+   * Filter the provided list by removing files after the specified number of
+   * tracks is reached.
+   * 
    * @param files
-   * @param integer
-   * @return
+   *          The list of files to process.
+   * @param tracks
+   *          The number of tracks to limit the list.
+   * 
+   * @return The modified list.
    */
   private List<org.jajuk.base.File> filterMaxTracks(List<org.jajuk.base.File> files, Integer tracks) {
     final List<org.jajuk.base.File> newFiles = new ArrayList<org.jajuk.base.File>();
@@ -363,8 +416,15 @@ public class PreparePartyWizard extends Wizard {
   }
 
   /**
+   * Filter the provided list by removing files so only the specified media is
+   * included.
+   * 
    * @param files
-   * @return
+   *          The list of files to process.
+   * @param ext
+   *          The number of tracks to filter the list.
+   * 
+   * @return The modified list.
    */
   private List<org.jajuk.base.File> filterMedia(final List<org.jajuk.base.File> files,
       final String ext) {
@@ -378,11 +438,27 @@ public class PreparePartyWizard extends Wizard {
     return newFiles;
   }
 
+  /**
+   * Get files from the specified DJ.
+   * 
+   * @param name
+   *          The name of the DJ.
+   * 
+   * @return A list of files.
+   */
   private List<org.jajuk.base.File> getDJFiles(final String name) {
     DigitalDJ dj = DigitalDJManager.getInstance().getDJByName(name);
     return dj.generatePlaylist();
   }
 
+  /**
+   * Get files from the specified Ambience.
+   * 
+   * @param name
+   *          The name of the Ambience.
+   * 
+   * @return A list of files.
+   */
   private List<org.jajuk.base.File> getAmbienceFiles(String name) {
     final List<org.jajuk.base.File> files;
     Ambience ambience = AmbienceManager.getInstance().getAmbienceByName(name);
@@ -399,9 +475,19 @@ public class PreparePartyWizard extends Wizard {
     return files;
   }
 
+  /**
+   * Get files from the specified Playlist. If the name of the playlist is equal
+   * to the name of the temporary playlist provided to the Wizard, then this
+   * Playlist is used instead.
+   * 
+   * @param name
+   *          The name of the Playlist.
+   * 
+   * @return A list of files.
+   */
   private List<org.jajuk.base.File> getPlaylistFiles(String name) throws JajukException {
     // if we chose the temp-playlist, use this one
-    if(tempPlaylist != null &&  name.equals(tempPlaylist.getName())) {
+    if (tempPlaylist != null && name.equals(tempPlaylist.getName())) {
       return tempPlaylist.getFiles();
     }
 
@@ -410,11 +496,14 @@ public class PreparePartyWizard extends Wizard {
     return playlist.getFiles();
   }
 
+  /**
+   * Get files in random order.
+   * 
+   * @return Returns a list of all files shuffled into random order.
+   */
   private List<org.jajuk.base.File> getShuffleFiles() {
     // Get a shuffle selection from all files
-    List<org.jajuk.base.File> allFiles = FileManager.getInstance().getGlobalShufflePlaylist();
-
-    return allFiles;
+    return FileManager.getInstance().getGlobalShufflePlaylist();
   }
 
   /*
@@ -467,11 +556,10 @@ public class PreparePartyWizard extends Wizard {
     private JComboBox jcbPlaylist;
 
     private JRadioButton jrbShuffle;
-    
+
     /**
      * Create panel UI
      */
-
     @Override
     public void initUI() {
       bgActions = new ButtonGroup();
@@ -502,11 +590,12 @@ public class PreparePartyWizard extends Wizard {
 
       jcbPlaylist = new JComboBox();
 
-      if(tempPlaylist != null) {
-        // check if this is a "temporary" playlist that is provided by the PlaylistView (i.e. not yet stored in PlaylistManager)
-          jcbPlaylist.addItem(tempPlaylist.getName());
+      if (tempPlaylist != null) {
+        // check if this is a "temporary" playlist that is provided by the
+        // PlaylistView (i.e. not yet stored in PlaylistManager)
+        jcbPlaylist.addItem(tempPlaylist.getName());
       }
-      
+
       List<Playlist> playlists = PlaylistManager.getInstance().getPlaylists();
       for (Playlist pl : playlists) {
         jcbPlaylist.addItem(pl.getName());
@@ -521,6 +610,7 @@ public class PreparePartyWizard extends Wizard {
       bgActions.add(jrbPlaylist);
       bgActions.add(jrbShuffle);
 
+      // populate items from the stored static data
       readData();
 
       // populate the screen
@@ -533,10 +623,17 @@ public class PreparePartyWizard extends Wizard {
       add(jcbPlaylist, "grow,wrap");
       add(jrbShuffle, "left");
 
-      // store initial values
+      // store initial values, done here as well to have them stored if "next"
+      // is pressed immediately
+      // and there was no data stored before (an hence nothing was read in
+      // readData())
       updateData();
     }
 
+    /**
+     * Initialize the UI items of the panel with values from the static data
+     * object
+     */
     private void readData() {
       if (data.containsKey(KEY_MODE)) {
         // read values set before
@@ -553,12 +650,12 @@ public class PreparePartyWizard extends Wizard {
 
         case Playlist:
         case ProvidedPlaylist: // we did a "PrepareParty" from a Playlist
-                               // before, in this case show the Playlist again
-                               // here
+          // before, in this case show the Playlist again
+          // here
           bgActions.setSelected(jrbPlaylist.getModel(), true);
           jcbPlaylist.setSelectedItem((data.get(KEY_ITEM)));
           break;
-          
+
         case Shuffle:
           bgActions.setSelected(jrbShuffle.getModel(), true);
           // no combo box for shuffle...
@@ -596,6 +693,7 @@ public class PreparePartyWizard extends Wizard {
      */
     @Override
     public void actionPerformed(ActionEvent e) {
+      // enable/disable sliders if checkboxes are clicked
       if (e.getSource().equals(jcbDJ)) {
         bgActions.setSelected(jrbDJ.getModel(), true);
       } else if (e.getSource().equals(jcbAmbience)) {
@@ -609,7 +707,7 @@ public class PreparePartyWizard extends Wizard {
     }
 
     /**
-     * 
+     * Store the current values from the UI items into the static data object
      */
     private void updateData() {
       // depending on the selected radio button read the combo box value and set
@@ -687,7 +785,6 @@ public class PreparePartyWizard extends Wizard {
     /**
      * Create panel UI
      */
-
     @Override
     public void initUI() {
       { // Max Tracks
@@ -757,21 +854,22 @@ public class PreparePartyWizard extends Wizard {
         jcbMedia.setToolTipText(Messages.getString("PreparePartyWizard.17"));
       }
 
-      jlRatingLevel = new JLabel(Messages.getString("DigitalDJWizard.8"));
-      jlRatingLevel.setToolTipText(Messages.getString("DigitalDJWizard.53"));
-      jsRatingLevel = new JSlider(0, 4, 0);
-      jsRatingLevel.setMajorTickSpacing(1);
-      jsRatingLevel.setMinorTickSpacing(1);
-      jsRatingLevel.setPaintTicks(true);
-      jsRatingLevel.setSnapToTicks(true);
-      jsRatingLevel.setPaintLabels(true);
-      jsRatingLevel.setToolTipText(Messages.getString("DigitalDJWizard.53"));
-      jsRatingLevel.addMouseWheelListener(new DefaultMouseWheelListener(jsRatingLevel));
-      jsRatingLevel.addChangeListener(this);
+      { // Rating Level
+        jlRatingLevel = new JLabel(Messages.getString("DigitalDJWizard.8"));
+        jlRatingLevel.setToolTipText(Messages.getString("DigitalDJWizard.53"));
+        jsRatingLevel = new JSlider(0, 4, 0);
+        jsRatingLevel.setMajorTickSpacing(1);
+        jsRatingLevel.setMinorTickSpacing(1);
+        jsRatingLevel.setPaintTicks(true);
+        jsRatingLevel.setSnapToTicks(true);
+        jsRatingLevel.setPaintLabels(true);
+        jsRatingLevel.setToolTipText(Messages.getString("DigitalDJWizard.53"));
+      }
 
+      // populate the UI items with values from the static data object
       readData();
 
-      // add listeners after reading initial data to not overwrite with
+      // add listeners after reading initial data to not overwrite them with
       // init-state-change actions
 
       // enable/disable slider depending on checkbox
@@ -792,6 +890,10 @@ public class PreparePartyWizard extends Wizard {
       // enable/disable combobox depending on checkbox
       jcbOneMedia.addActionListener(this);
       jcbMedia.addActionListener(this);
+
+      // get informed about rating level slider changes
+      jsRatingLevel.addMouseWheelListener(new DefaultMouseWheelListener(jsRatingLevel));
+      jsRatingLevel.addChangeListener(this);
 
       setLayout(new MigLayout("insets 10,gapx 10,gapy 15", "[][grow]"));
       add(jcbMaxTracks);
@@ -828,7 +930,7 @@ public class PreparePartyWizard extends Wizard {
     }
 
     /**
-     * 
+     * Populate the UI items with values from the static data object.
      */
     private void readData() {
       // set the values from the stored data
@@ -887,7 +989,7 @@ public class PreparePartyWizard extends Wizard {
     }
 
     /**
-     * 
+     * Write the data from the UI items to the static data object
      */
     private void updateData() {
       // store if checkbox is enabled and update the label accordingly
@@ -906,6 +1008,22 @@ public class PreparePartyWizard extends Wizard {
       data.put(KEY_RATINGS_LEVEL, jsRatingLevel.getValue());
     }
 
+    /**
+     * Helper to handle a checkbox/slider combination. It also updates an
+     * associated Label with the value from the Slider.
+     * 
+     * @param cb
+     *          The checkbox to check for selected/deselected state
+     * @param slider
+     *          The slider to get the value from
+     * @param label
+     *          The Label to populate with the current value from the Slider.
+     * @param key
+     *          The key in the static data object for the value of the Slider.
+     * @param keyOn
+     *          The key in the static data object to store the enabled/disabled
+     *          state.
+     */
     private void updateOneItem(JCheckBox cb, JSlider slider, JLabel label, String key, String keyOn) {
       if (cb.isSelected()) {
         if (!slider.getValueIsAdjusting()) {
@@ -931,7 +1049,8 @@ public class PreparePartyWizard extends Wizard {
      */
 
     public void actionPerformed(ActionEvent ae) {
-      // if a checkbox is pressed, adjust the sliders/comboboxes
+      // if a checkbox is selected/deselected, enable/disable the
+      // sliders/comboboxes accordingly
 
       if (ae.getSource() == jcbMaxTracks) {
         jsMaxTracks.setEnabled(jcbMaxTracks.isSelected());
@@ -959,15 +1078,9 @@ public class PreparePartyWizard extends Wizard {
      * javax.swing.event.ChangeListener#stateChanged(javax.swing.event.ChangeEvent
      * )
      */
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * javax.swing.event.ChangeListener#stateChanged(javax.swing.event.ChangeEvent
-     * )
-     */
     public void stateChanged(ChangeEvent ie) {
+      // just update the stored static data whenever we receive an interesting
+      // event
       if (ie.getSource() == jsMaxTracks) {
         updateData();
       } else if (ie.getSource() == jsMaxSize) {
@@ -982,6 +1095,9 @@ public class PreparePartyWizard extends Wizard {
     }
   }
 
+  /**
+   * Panel for selecting the location in the filesystem.
+   */
   public static class PathSelectionPanel extends Screen implements ActionListener {
     private static final long serialVersionUID = -236180699495019177L;
 
@@ -1038,7 +1154,11 @@ public class PreparePartyWizard extends Wizard {
      */
     @Override
     public void actionPerformed(ActionEvent e) {
+      // display a FileChooser
       if (e.getSource() == jbFileSelection) {
+        // TODO: for some reason the passing of the existing directory does not
+        // work here, seems the implementation in JajukFileChooser does not do
+        // this correctly
         final JajukFileChooser jfc = new JajukFileChooser(new JajukFileFilter(DirectoryFilter
             .getInstance()), fDir);
         jfc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
