@@ -47,7 +47,7 @@ public class NoTagsTagImpl implements ITagImpl {
   /*
    * (non-Javadoc)
    * 
-   * @see org.jajuk.base.ITagImpl#getTrackName()
+   * @see org.jajuk.services.tags.ITagImpl#getTrackName()
    */
   public String getTrackName() {
     return ""; // doing that, the item wil be the default jajuk unknown
@@ -57,7 +57,7 @@ public class NoTagsTagImpl implements ITagImpl {
   /*
    * (non-Javadoc)
    * 
-   * @see org.jajuk.base.ITagImpl#getAlbumName()
+   * @see org.jajuk.services.tags.ITagImpl#getAlbumName()
    */
   public String getAlbumName() {
     return ""; // doing that, the item will be the default jajuk unknown
@@ -67,7 +67,7 @@ public class NoTagsTagImpl implements ITagImpl {
   /*
    * (non-Javadoc)
    * 
-   * @see org.jajuk.base.ITagImpl#getAuthorName()
+   * @see org.jajuk.services.tags.ITagImpl#getAuthorName()
    */
   public String getAuthorName() {
     return ""; // doing that, the item will be the default jajuk unknown
@@ -77,7 +77,7 @@ public class NoTagsTagImpl implements ITagImpl {
   /*
    * (non-Javadoc)
    * 
-   * @see org.jajuk.base.ITagImpl#getStyleName()
+   * @see org.jajuk.services.tags.ITagImpl#getStyleName()
    */
   public String getStyleName() {
     return ""; // doing that, the item will be the default jajuk unknown
@@ -87,7 +87,7 @@ public class NoTagsTagImpl implements ITagImpl {
   /*
    * (non-Javadoc)
    * 
-   * @see org.jajuk.base.ITagImpl#getLength()
+   * @see org.jajuk.services.tags.ITagImpl#getLength()
    */
   public long getLength() throws BasicPlayerException {
     // we have to open the file to get length
@@ -118,7 +118,7 @@ public class NoTagsTagImpl implements ITagImpl {
   /*
    * (non-Javadoc)
    * 
-   * @see org.jajuk.base.ITagImpl#getComment()
+   * @see org.jajuk.services.tags.ITagImpl#getComment()
    */
   public String getComment() {
     return ""; // by doing that, the item will be the default jajuk
@@ -128,7 +128,7 @@ public class NoTagsTagImpl implements ITagImpl {
   /*
    * (non-Javadoc)
    * 
-   * @see org.jajuk.base.ITagImpl#setTrackName(java.lang.String)
+   * @see org.jajuk.services.tags.ITagImpl#setTrackName(java.lang.String)
    */
   public void setTrackName(String sTrackName) {
     // nothing to do here
@@ -137,7 +137,7 @@ public class NoTagsTagImpl implements ITagImpl {
   /*
    * (non-Javadoc)
    * 
-   * @see org.jajuk.base.ITagImpl#setAlbumName(java.lang.String)
+   * @see org.jajuk.services.tags.ITagImpl#setAlbumName(java.lang.String)
    */
   public void setAlbumName(String sAlbumName) {
   }
@@ -149,7 +149,7 @@ public class NoTagsTagImpl implements ITagImpl {
   /*
    * (non-Javadoc)
    * 
-   * @see org.jajuk.base.ITagImpl#setAuthorName(java.lang.String)
+   * @see org.jajuk.services.tags.ITagImpl#setAuthorName(java.lang.String)
    */
   public void setAuthorName(String sAuthorName) {
     // nothing to do here
@@ -158,7 +158,7 @@ public class NoTagsTagImpl implements ITagImpl {
   /*
    * (non-Javadoc)
    * 
-   * @see org.jajuk.base.ITagImpl#setStyleName(java.lang.String)
+   * @see org.jajuk.services.tags.ITagImpl#setStyleName(java.lang.String)
    */
   public void setStyleName(String style) {
     // nothing to do here
@@ -167,25 +167,7 @@ public class NoTagsTagImpl implements ITagImpl {
   /*
    * (non-Javadoc)
    * 
-   * @see org.jajuk.base.ITagImpl#setLength(long)
-   */
-  public void setLength(long length) {
-    // nothing to do here
-  }
-
-  /*
-   * (non-Javadoc)
-   * 
-   * @see org.jajuk.base.ITagImpl#setQuality(java.lang.String)
-   */
-  public void setQuality(String sQuality) {
-    // nothing to do here
-  }
-
-  /*
-   * (non-Javadoc)
-   * 
-   * @see org.jajuk.base.ITagImpl#setFile(java.io.File)
+   * @see org.jajuk.services.tags.ITagImpl#setFile(java.io.File)
    */
   public void setFile(File fio) {
     this.fio = fio;
