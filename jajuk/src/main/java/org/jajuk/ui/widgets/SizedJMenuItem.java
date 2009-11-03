@@ -33,9 +33,6 @@ import org.jajuk.util.UtilGUI;
 public class SizedJMenuItem extends JMenuItem {
   private static final long serialVersionUID = -3859493402696496345L;
 
-  // private int width = 16;
-
-  // private int height = 16;
 
   /**
    * Menu item with a fixed 16x216 icon dimension
@@ -51,16 +48,7 @@ public class SizedJMenuItem extends JMenuItem {
    * 
    * @param action
    *          Action
-   * @param width
-   *          fixed icon width
-   * @param height
-   *          fixed icon height
    */
-  // public SizedJMenuItem(Action action, int width, int height) {
-  // super(action);
-  // //this.width = width;
-  // //this.height = height;
-  // }
   @Override
   public void setIcon(Icon icon) {
     super.setIcon(UtilGUI.getResizedImage((ImageIcon) icon, 16, 16));
