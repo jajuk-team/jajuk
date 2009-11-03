@@ -30,8 +30,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Properties;
 
 import javax.swing.ButtonGroup;
@@ -50,6 +52,7 @@ import javax.swing.event.ChangeListener;
 import net.miginfocom.swing.MigLayout;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang.CharUtils;
 import org.apache.commons.lang.StringUtils;
 import org.jajuk.base.FileManager;
 import org.jajuk.base.Playlist;
@@ -66,6 +69,7 @@ import org.jajuk.services.dj.DigitalDJManager;
 import org.jajuk.ui.helpers.DefaultMouseWheelListener;
 import org.jajuk.ui.widgets.JajukFileChooser;
 import org.jajuk.ui.windows.JajukMainWindow;
+import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukFileFilter;
@@ -84,6 +88,11 @@ import org.qdwizard.Wizard;
  * DJ creation wizard
  */
 public class PreparePartyWizard extends Wizard {
+
+  /**
+   * 
+   */
+  private static final char FILLER_CHAR = '_';
 
   /** Which source to use for the tracks */
   private static final String KEY_MODE = "MODE";
@@ -110,6 +119,9 @@ public class PreparePartyWizard extends Wizard {
   private static final String KEY_ONE_MEDIA_ON = "ONE_MEDIA_ENABLED";
   private static final String KEY_MEDIA = "ONE_MEDIA";
 
+  /** Used to enable replacing characters outside the normal range */
+  private static final String KEY_NORMALIZE_FILENAME_ON = "NORMALIZE_FILENAME";
+
   /** Ratings level */
   private static final String KEY_RATINGS_LEVEL = "RATING_LEVEL";
 
@@ -120,10 +132,8 @@ public class PreparePartyWizard extends Wizard {
   // re-created during back-forward operations
   private static Playlist tempPlaylist;
 
-  // TODO: we could also add "BestOf" and "Novelities" like we have for
-  // Playlists
   private enum Mode {
-    DJ, Ambience, Shuffle, Playlist, ProvidedPlaylist
+    DJ, Ambience, Shuffle, Playlist, BestOf, Novelties, ProvidedPlaylist
   }
 
   /**
@@ -176,6 +186,13 @@ public class PreparePartyWizard extends Wizard {
    */
   @Override
   public void finish() {
+    // write properties to keep the selected directory
+    try {
+      Conf.commit();
+    } catch (IOException e1) {
+      Log.error(e1);
+    }
+
     // retrieve the full list of files according to the selected mode
     List<org.jajuk.base.File> files;
     if (Mode.DJ.equals(data.get(KEY_MODE))) {
@@ -185,16 +202,27 @@ public class PreparePartyWizard extends Wizard {
     } else if (Mode.Playlist.equals(data.get(KEY_MODE))
         || Mode.ProvidedPlaylist.equals(data.get(KEY_MODE))) {
       try {
-        // for Playlists we need to store the actual Playlist as it could be a
-        // temporary one from
-        // the PlaylistView, so a lookup might not work here
         files = getPlaylistFiles((String) data.get(KEY_ITEM));
-      } catch (Exception e1) {
+      } catch (JajukException e1) {
         Log.error(e1);
         return;
       }
     } else if (Mode.Shuffle.equals(data.get(KEY_MODE))) {
       files = getShuffleFiles();
+    } else if (Mode.BestOf.equals(data.get(KEY_MODE))) {
+      try {
+        files = getBestOfFiles();
+      } catch (JajukException e1) {
+        Log.error(e1);
+        return;
+      }
+    } else if (Mode.Novelties.equals(data.get(KEY_MODE))) {
+      try {
+        files = getNoveltiesFiles();
+      } catch (JajukException e1) {
+        Log.error(e1);
+        return;
+      }
     } else {
       throw new IllegalArgumentException("Unknown mode in PreparePartyWizard: "
           + data.get(KEY_MODE));
@@ -225,32 +253,30 @@ public class PreparePartyWizard extends Wizard {
       files = filterMaxTracks(files, (Integer) data.get(KEY_MAX_TRACKS));
     }
 
-    // read the target directory
-    final File fDir = (File) data.get(KEY_DEST_PATH);
-
-    // TODO: create progress dialog, this did not work for some reason
-    // JDialog progress = new JDialog(getDialog());
-    // progress.setLayout(new MigLayout("insets 10,gapx 10,gapy 15"));
-    // JLabel label = new JLabel();
-    // progress.add(label, "grow,wrap");
-    // JProgressBar bar = new JProgressBar(0, files.size());
-    // progress.add(bar, "grow,wrap");
-    // progress.pack();
-    // progress.setVisible(true);
-
     // define the target directory
     final Date curDate = new Date();
     // Do not use ':' character in destination directory, it's
     // forbidden under Windows
     final SimpleDateFormat stamp = new SimpleDateFormat("yyyyMMdd-HHmm", Locale.getDefault());
     final String dirName = "Party-" + stamp.format(curDate);
-    final java.io.File destDir = new java.io.File(fDir.getAbsolutePath() + "/" + dirName);
+    final java.io.File destDir = new java.io.File(((File) data.get(KEY_DEST_PATH))
+        .getAbsolutePath(), dirName);
     if (!destDir.mkdir()) {
       Log.warn("Could not create destination directory " + destDir);
     }
 
     Log.debug("Going to copy " + files.size() + " files to directory {{"
         + destDir.getAbsolutePath() + "}}");
+
+    // TODO: somehow this did not work, we have to find out how to display a
+    // useful progress bar here...
+    // RefreshDialog rdialog = new RefreshDialog(false);
+    // rdialog.setTitle(Messages.getString("PreparePartyWizard.28") + destDir);
+    // rdialog.setAction(Messages.getString("PreparePartyWizard.29"), IconLoader
+    // .getIcon(JajukIcons.INFO));
+
+    // start time to display elapsed time at the end
+    long lRefreshDateStart = System.currentTimeMillis();
 
     // start copying and create a playlist on the fly
     UtilGUI.waiting();
@@ -263,15 +289,23 @@ public class PreparePartyWizard extends Wizard {
         for (final org.jajuk.base.File entry : files) {
           // update progress
           count++;
-          // bar.setValue(count);
-          // label.setText(entry.getName());
 
           // We can use the actual file name as we do numbering of the files,
           // this is important for existing playlists to keep the order
-          String name = StringUtils.leftPad(new Integer(count).toString(), 5, '0') + '_'
+          String name = StringUtils.leftPad(new Integer(count).toString(), 5, '0') + FILLER_CHAR
               + entry.getFIO().getName();
+
+          // normalize filenames if necessary
+          if (isTrue(KEY_NORMALIZE_FILENAME_ON)) {
+            name = normalizeFilename(name);
+          }
+
+          // rdialog.setRefreshing(new
+          // StringBuilder(Messages.getString("PreparePartyWizard.30"))
+          // .append(' ').append(name).toString());
+          // rdialog.setProgress(count / files.size());
+
           FileUtils.copyFile(entry.getFIO(), new File(destDir, name));
-          // + '.' + entry.getType().getExtension()
 
           // write playlist as well
           bw.newLine();
@@ -299,12 +333,26 @@ public class PreparePartyWizard extends Wizard {
     } finally {
       // progress.dispose();
       UtilGUI.stopWaiting();
-    }
 
-    // inform the user about the number of resulting tracks
-    Messages.showInfoMessage(dirName + " " + Messages.getString("AbstractPlaylistEditorView.28")
-        + " " + fDir.getAbsolutePath() + ".\n" + files.size()
-        + Messages.getString("PreparePartyWizard.23"));
+      // Close refresh dialog
+      // rdialog.dispose();
+
+      long refreshTime = System.currentTimeMillis() - lRefreshDateStart;
+
+      // inform the user about the number of resulting tracks
+      StringBuilder sbOut = new StringBuilder();
+      sbOut.append(Messages.getString("PreparePartyWizard.31")).append(" ").append(
+          destDir.getAbsolutePath()).append(".\n").append(files.size()).append(" ").append(
+          Messages.getString("PreparePartyWizard.23")).append(" ").append(
+          ((refreshTime < 1000) ? refreshTime + " ms." : refreshTime / 1000 + " s."));
+
+      String message = sbOut.toString();
+
+      Log.debug(message);
+
+      // Display end of copy message with stats
+      Messages.showInfoMessage(message);
+    }
   }
 
   /**
@@ -430,12 +478,57 @@ public class PreparePartyWizard extends Wizard {
       final String ext) {
     final List<org.jajuk.base.File> newFiles = new ArrayList<org.jajuk.base.File>();
     for (org.jajuk.base.File file : files) {
-      if (file.getType().getExtension().equals(ext)) {
+      if (file.getType() != null && file.getType().getExtension() != null
+          && file.getType().getExtension().equals(ext)) {
         newFiles.add(file);
       }
     }
 
     return newFiles;
+  }
+
+  // map containing all the replacements that we do to "normalize" a filename
+  // TODO: this should be enhanced with more entries for things like nordic languages et. al.
+  static Map<Character, String> replaceMap = new HashMap<Character, String>();
+  {
+    replaceMap.put('ä', "ae");
+    replaceMap.put('ö', "oe");
+    replaceMap.put('ü', "ue");
+    replaceMap.put('Ä', "AE");
+    replaceMap.put('Ö', "OE");
+    replaceMap.put('Ü', "UE");
+    replaceMap.put('ß', "ss");
+    replaceMap.put('€', "EUR");
+    replaceMap.put('&', "and");
+  }
+
+  /**
+   * Normalize filenames so that they do not
+   * 
+   * @param files
+   * @return
+   */
+  private String normalizeFilename(String name) {
+    // TODO: is there some utility method that can do this?
+
+    StringBuilder newName = new StringBuilder(name.length());
+    for (int i = 0; i < name.length(); i++) {
+      char c = name.charAt(i);
+
+      // replace path-separators and colon that could cause trouble on other
+      // OSes
+      if (c == '/' || c == '\\' || c == ':') {
+        newName.append(FILLER_CHAR);
+      } else if (replaceMap.containsKey(c)) { // replace some things that we can replace with other useful values
+        newName.append(replaceMap.get(c));
+      } else if (CharUtils.isAsciiPrintable(c)) {
+        newName.append(c);
+      } else {
+        newName.append(FILLER_CHAR);
+      }
+    }
+
+    return newName.toString();
   }
 
   /**
@@ -506,6 +599,24 @@ public class PreparePartyWizard extends Wizard {
     return FileManager.getInstance().getGlobalShufflePlaylist();
   }
 
+  /**
+   * @return
+   * @throws JajukException
+   */
+  private List<org.jajuk.base.File> getBestOfFiles() throws JajukException {
+    Playlist pl = new Playlist(Playlist.Type.BESTOF, "tmp", "temporary", null);
+    return pl.getFiles();
+  }
+
+  /**
+   * @return
+   * @throws JajukException
+   */
+  private List<org.jajuk.base.File> getNoveltiesFiles() throws JajukException {
+    Playlist pl = new Playlist(Playlist.Type.NOVELTIES, "tmp", "temporary", null);
+    return pl.getFiles();
+  }
+
   /*
    * (non-Javadoc)
    * 
@@ -556,6 +667,8 @@ public class PreparePartyWizard extends Wizard {
     private JComboBox jcbPlaylist;
 
     private JRadioButton jrbShuffle;
+    private JRadioButton jrbBestOf;
+    private JRadioButton jrbNovelties;
 
     /**
      * Create panel UI
@@ -605,9 +718,17 @@ public class PreparePartyWizard extends Wizard {
       jrbShuffle = new JRadioButton(Messages.getString("PreparePartyWizard.9"));
       jrbShuffle.addActionListener(this);
 
+      jrbBestOf = new JRadioButton(Messages.getString("PreparePartyWizard.24"));
+      jrbBestOf.addActionListener(this);
+
+      jrbNovelties = new JRadioButton(Messages.getString("PreparePartyWizard.25"));
+      jrbNovelties.addActionListener(this);
+
       bgActions.add(jrbDJ);
       bgActions.add(jrbAmbience);
       bgActions.add(jrbPlaylist);
+      bgActions.add(jrbBestOf);
+      bgActions.add(jrbNovelties);
       bgActions.add(jrbShuffle);
 
       // populate items from the stored static data
@@ -621,7 +742,9 @@ public class PreparePartyWizard extends Wizard {
       add(jcbAmbience, "grow,wrap");
       add(jrbPlaylist, "left");
       add(jcbPlaylist, "grow,wrap");
-      add(jrbShuffle, "left");
+      add(jrbBestOf, "left,wrap");
+      add(jrbNovelties, "left,wrap");
+      add(jrbShuffle, "left,wrap");
 
       // store initial values, done here as well to have them stored if "next"
       // is pressed immediately
@@ -659,6 +782,16 @@ public class PreparePartyWizard extends Wizard {
         case Shuffle:
           bgActions.setSelected(jrbShuffle.getModel(), true);
           // no combo box for shuffle...
+          break;
+
+        case BestOf:
+          bgActions.setSelected(jrbBestOf.getModel(), true);
+          // no combo box for bestof...
+          break;
+
+        case Novelties:
+          bgActions.setSelected(jrbNovelties.getModel(), true);
+          // no combo box for novelties...
           break;
 
         default:
@@ -724,6 +857,12 @@ public class PreparePartyWizard extends Wizard {
       } else if (jrbShuffle.isSelected()) {
         data.put(KEY_MODE, Mode.Shuffle);
         data.remove(KEY_ITEM);
+      } else if (jrbBestOf.isSelected()) {
+        data.put(KEY_MODE, Mode.BestOf);
+        data.remove(KEY_ITEM);
+      } else if (jrbNovelties.isSelected()) {
+        data.put(KEY_MODE, Mode.Novelties);
+        data.remove(KEY_ITEM);
       }
     }
 
@@ -771,6 +910,8 @@ public class PreparePartyWizard extends Wizard {
 
     private JLabel jlRatingLevel;
     private JSlider jsRatingLevel;
+
+    private JCheckBox jcbNormalizeFilename;
 
     @Override
     public String getDescription() {
@@ -866,6 +1007,9 @@ public class PreparePartyWizard extends Wizard {
         jsRatingLevel.setToolTipText(Messages.getString("DigitalDJWizard.53"));
       }
 
+      jcbNormalizeFilename = new JCheckBox(Messages.getString("PreparePartyWizard.26"));
+      jcbNormalizeFilename.setToolTipText(Messages.getString("PreparePartyWizard.27"));
+
       // populate the UI items with values from the static data object
       readData();
 
@@ -895,6 +1039,8 @@ public class PreparePartyWizard extends Wizard {
       jsRatingLevel.addMouseWheelListener(new DefaultMouseWheelListener(jsRatingLevel));
       jsRatingLevel.addChangeListener(this);
 
+      jcbNormalizeFilename.addActionListener(this);
+
       setLayout(new MigLayout("insets 10,gapx 10,gapy 15", "[][grow]"));
       add(jcbMaxTracks);
       {
@@ -922,6 +1068,7 @@ public class PreparePartyWizard extends Wizard {
       }
       add(jcbOneMedia);
       add(jcbMedia, "grow,wrap");
+      add(jcbNormalizeFilename, "grow,wrap");
       add(jlRatingLevel);
       add(jsRatingLevel, "grow,wrap");
 
@@ -947,7 +1094,7 @@ public class PreparePartyWizard extends Wizard {
         jsMaxTracks.setValue((Integer) data.get(KEY_MAX_TRACKS));
       }
 
-      if (data.containsKey(KEY_MAX_SIZE_ON) && Boolean.TRUE.equals(data.get(KEY_MAX_SIZE_ON))) {
+      if (isTrue(KEY_MAX_SIZE_ON)) {
         jsMaxSize.setEnabled(true);
         jcbMaxSize.setSelected(true);
       } else {
@@ -958,7 +1105,7 @@ public class PreparePartyWizard extends Wizard {
         jsMaxSize.setValue((Integer) data.get(KEY_MAX_SIZE));
       }
 
-      if (data.containsKey(KEY_MAX_LENGTH_ON) && Boolean.TRUE.equals(data.get(KEY_MAX_LENGTH_ON))) {
+      if (isTrue(KEY_MAX_LENGTH_ON)) {
         jsMaxLength.setEnabled(true);
         jcbMaxLength.setSelected(true);
       } else {
@@ -969,7 +1116,7 @@ public class PreparePartyWizard extends Wizard {
         jsMaxLength.setValue((Integer) data.get(KEY_MAX_LENGTH));
       }
 
-      if (data.containsKey(KEY_ONE_MEDIA_ON) && Boolean.TRUE.equals(data.get(KEY_ONE_MEDIA_ON))) {
+      if (isTrue(KEY_ONE_MEDIA_ON)) {
         jcbMedia.setEnabled(true);
         jcbOneMedia.setSelected(true);
       } else {
@@ -985,6 +1132,12 @@ public class PreparePartyWizard extends Wizard {
 
       if (data.containsKey(KEY_RATINGS_LEVEL)) {
         jsRatingLevel.setValue((Integer) data.get(KEY_RATINGS_LEVEL));
+      }
+
+      if (isTrue(KEY_NORMALIZE_FILENAME_ON)) {
+        jcbNormalizeFilename.setSelected(true);
+      } else {
+        jcbNormalizeFilename.setSelected(false);
       }
     }
 
@@ -1006,6 +1159,7 @@ public class PreparePartyWizard extends Wizard {
       }
 
       data.put(KEY_RATINGS_LEVEL, jsRatingLevel.getValue());
+      data.put(KEY_NORMALIZE_FILENAME_ON, jcbNormalizeFilename.isSelected());
     }
 
     /**
@@ -1131,6 +1285,13 @@ public class PreparePartyWizard extends Wizard {
 
         // we also can finish the dialog
         setCanFinish(true);
+      } else if (StringUtils.isNotBlank(Conf.getString(Const.CONF_PARTY_DIRECTORY))) {
+        // we have a stored last-used directory, reuse that one
+        jlSelectedFile.setText(Conf.getString(Const.CONF_PARTY_DIRECTORY));
+        data.put(KEY_DEST_PATH, new File(Conf.getString(Const.CONF_PARTY_DIRECTORY)));
+
+        // we also can finish the dialog
+        setCanFinish(true);
       } else {
         setProblem(Messages.getString("PreparePartyWizard.22"));
 
@@ -1171,6 +1332,11 @@ public class PreparePartyWizard extends Wizard {
           fDir = jfc.getSelectedFile();
           jlSelectedFile.setText(fDir.getAbsolutePath());
           data.put(KEY_DEST_PATH, fDir);
+
+          // store the directory for later invokations
+          Conf.setProperty(Const.CONF_PARTY_DIRECTORY, fDir.getAbsolutePath());
+
+          // we can finish the wizard now
           setProblem(null);
 
           // now we can finish the dialog

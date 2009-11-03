@@ -862,6 +862,9 @@ public interface Const {
   /** None internet access switch */
   String CONF_NETWORK_NONE_INTERNET_ACCESS = "jajuk.network.none_internet_access";
 
+  /** Remembered directory for parties */
+  String CONF_PARTY_DIRECTORY = "jajuk.prepare_party.directory";
+  
   /** Shuffle/novelties mode */
   String MODE_ALBUM = "album";
 
