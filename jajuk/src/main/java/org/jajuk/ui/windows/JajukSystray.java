@@ -36,10 +36,14 @@ import java.util.Properties;
 import java.util.Set;
 
 import javax.swing.JCheckBoxMenuItem;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.SwingUtilities;
+
+import net.miginfocom.swing.MigLayout;
 
 import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
@@ -54,6 +58,7 @@ import org.jajuk.ui.helpers.PlayerStateMediator;
 import org.jajuk.ui.helpers.FontManager.JajukFont;
 import org.jajuk.ui.widgets.CommandJPanel;
 import org.jajuk.ui.widgets.JajukBalloon;
+import org.jajuk.ui.widgets.SearchBox;
 import org.jajuk.ui.widgets.SizedJMenuItem;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
@@ -211,6 +216,13 @@ public class JajukSystray extends CommandJPanel implements JajukWindow {
     jmiPrevious = new SizedJMenuItem(ActionManager.getAction(JajukActions.PREVIOUS_TRACK));
     jmiNext = new SizedJMenuItem(ActionManager.getAction(JajukActions.NEXT_TRACK));
 
+    JLabel jlTitle = new JLabel("Jajuk");
+    jlTitle.setFont(FontManager.getInstance().getFont(JajukFont.BOLD_TITLE));
+    SearchBox searchBox = new SearchBox();
+    JPanel jpTitle = new JPanel(new MigLayout("ins 5","[][grow]"));
+    jpTitle.add(jlTitle, "left,gapx 20px");
+    jpTitle.add(searchBox, "right,grow");
+
     // Ambiences menu
     Ambience defaultAmbience = AmbienceManager.getInstance().getSelectedAmbience();
     jmAmbience = new JMenu(Messages.getString("JajukWindow.36")
@@ -219,12 +231,7 @@ public class JajukSystray extends CommandJPanel implements JajukWindow {
             .getName()));
     populateAmbiences();
 
-    // Add a title. Important: do not add a JLabel, it present action event
-    // to occur under windows
-    JMenuItem jmiTitle = new JMenuItem("Jajuk");
-    jmiTitle.setFont(FontManager.getInstance().getFont(JajukFont.BOLD_TITLE));
-    jmenu.add(jmiTitle);
-    jmenu.addSeparator();
+    jmenu.add(jpTitle);
     jmenu.add(jmAmbience);
     jmenu.addSeparator();
     jmenu.add(jcbmiShowBalloon);
@@ -325,7 +332,8 @@ public class JajukSystray extends CommandJPanel implements JajukWindow {
     // with the thread
     try {
       if (e.getSource() == jcbmiShowBalloon) {
-        Conf.setProperty(Const.CONF_UI_SHOW_SYSTEM_NOTIFICATION, Boolean.toString(jcbmiShowBalloon.getState()));
+        Conf.setProperty(Const.CONF_UI_SHOW_SYSTEM_NOTIFICATION, Boolean.toString(jcbmiShowBalloon
+            .getState()));
         // Launch an event that can be trapped by the tray to
         // synchronize the state
         Properties details = new Properties();

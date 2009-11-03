@@ -26,7 +26,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemListener;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.concurrent.ExecutionException;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JLabel;
@@ -35,15 +34,11 @@ import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
-import javax.swing.SwingWorker;
-import javax.swing.event.ListSelectionEvent;
 import javax.swing.plaf.basic.BasicComboBoxRenderer;
 
 import net.miginfocom.swing.MigLayout;
 
 import org.jajuk.base.FileManager;
-import org.jajuk.base.SearchResult;
-import org.jajuk.base.SearchResult.SearchResultType;
 import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
@@ -153,52 +148,7 @@ public final class SearchJPanel extends JXPanel implements Observer, ActionListe
     PlayerStateMediator.getInstance();
 
     // Search
-    sbSearch = new SearchBox() {
-      private static final long serialVersionUID = 1L;
-
-      public void valueChanged(final ListSelectionEvent e) {
-        SwingWorker<Void, Void> sw = new SwingWorker<Void, Void>() {
-          @Override
-          public Void doInBackground() {
-            if (!e.getValueIsAdjusting()) {
-              SearchResult sr = sbSearch.getResult(sbSearch.getSelectedIndex());
-              try {
-                // If user selected a file
-                if (sr.getType() == SearchResultType.FILE) {
-                  QueueModel.push(new StackItem(sr.getFile(), Conf
-                      .getBoolean(Const.CONF_STATE_REPEAT_ALL), true), Conf
-                      .getBoolean(Const.CONF_OPTIONS_PUSH_ON_CLICK));
-                }
-                // User selected a web radio
-                else if (sr.getType() == SearchResultType.WEBRADIO) {
-                  QueueModel.launchRadio(sr.getWebradio());
-                }
-              } catch (JajukException je) {
-                Log.error(je);
-              }
-            }
-            return null;
-          }
-
-          @Override
-          public void done() {
-            try {
-              get();
-            } catch (InterruptedException e1) {
-              Log.error(e1);
-            } catch (ExecutionException e1) {
-              Log.error(e1);
-            }
-            if (!e.getValueIsAdjusting()) {
-              sbSearch.hidePopup();
-              requestFocusInWindow();
-            }
-          }
-        };
-        sw.execute();
-      }
-    };
-
+    sbSearch = new SearchBox();
     // History
     jcbHistory = new SteppedComboBox();
     final JLabel jlHistory = new JLabel(IconLoader.getIcon(JajukIcons.HISTORY));

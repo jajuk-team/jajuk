@@ -36,6 +36,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
@@ -51,24 +52,31 @@ import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 import javax.swing.Timer;
+import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import org.jajuk.base.SearchResult;
 import org.jajuk.base.TrackManager;
 import org.jajuk.base.SearchResult.SearchResultType;
+import org.jajuk.services.players.QueueModel;
+import org.jajuk.services.players.StackItem;
 import org.jajuk.services.webradio.WebRadioManager;
 import org.jajuk.ui.helpers.FontManager;
 import org.jajuk.ui.helpers.FontManager.JajukFont;
+import org.jajuk.util.Conf;
+import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilGUI;
+import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 
 /**
- * Search combo box. Editable combo with search features
+ * Search combo box. Editable combo with search features. Comes with a default
+ * selection implementation (see valueChanged() method) that could be changed
  */
-public abstract class SearchBox extends JTextField implements KeyListener, ListSelectionListener {
+public class SearchBox extends JTextField implements KeyListener, ListSelectionListener {
 
   private static final long serialVersionUID = 1L;
 
@@ -257,13 +265,13 @@ public abstract class SearchBox extends JTextField implements KeyListener, ListS
             // widgets)
             SwingUtilities.convertPointToScreen(point, SearchBox.this);
             if (((int) point.getY() > 300) && (((int) point.getX() + 500 - (width)) > 0)) {
-              popup = factory.getPopup(SearchBox.this, jsp, (int) point.getX() + 500 - (width),
-                  (int) point.getY() - 250);
+              popup = factory.getPopup(null, jsp, (int) point.getX() + 500 - (width), (int) point
+                  .getY() - 250);
             } else if (((int) point.getX() + 500 - (width)) > 0) {
-              popup = factory.getPopup(SearchBox.this, jsp, (int) point.getX() + 500 - (width),
-                  (int) point.getY() + 30);
+              popup = factory.getPopup(null, jsp, (int) point.getX() + 500 - (width), (int) point
+                  .getY() + 30);
             } else {
-              popup = factory.getPopup(SearchBox.this, jsp, 10, (int) point.getY() + 30);
+              popup = factory.getPopup(null, jsp, 10, (int) point.getY() + 30);
             }
             popup.show();
             jlist.addMouseListener(new MouseAdapter() {
@@ -306,4 +314,51 @@ public abstract class SearchBox extends JTextField implements KeyListener, ListS
     super.paint(g);
     g.drawImage(IconLoader.getIcon(JajukIcons.SEARCH).getImage(), 4, 3, 16, 16, null);
   }
+
+  /**
+   * Default list selection implementation (may be overwride for different
+   * behavior)
+   */
+  public void valueChanged(final ListSelectionEvent e) {
+    SwingWorker<Void, Void> sw = new SwingWorker<Void, Void>() {
+      @Override
+      public Void doInBackground() {
+        if (!e.getValueIsAdjusting()) {
+          SearchResult sr = getResult(getSelectedIndex());
+          try {
+            // If user selected a file
+            if (sr.getType() == SearchResultType.FILE) {
+              QueueModel.push(new StackItem(sr.getFile(), Conf
+                  .getBoolean(Const.CONF_STATE_REPEAT_ALL), true), Conf
+                  .getBoolean(Const.CONF_OPTIONS_PUSH_ON_CLICK));
+            }
+            // User selected a web radio
+            else if (sr.getType() == SearchResultType.WEBRADIO) {
+              QueueModel.launchRadio(sr.getWebradio());
+            }
+          } catch (JajukException je) {
+            Log.error(je);
+          }
+        }
+        return null;
+      }
+
+      @Override
+      public void done() {
+        try {
+          get();
+        } catch (InterruptedException e1) {
+          Log.error(e1);
+        } catch (ExecutionException e1) {
+          Log.error(e1);
+        }
+        if (!e.getValueIsAdjusting()) {
+          hidePopup();
+          requestFocusInWindow();
+        }
+      }
+    };
+    sw.execute();
+  }
+
 }

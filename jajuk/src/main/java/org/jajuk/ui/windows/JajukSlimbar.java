@@ -23,8 +23,8 @@ import static org.jajuk.ui.actions.JajukActions.MUTE_STATE;
 import static org.jajuk.ui.actions.JajukActions.NEXT_TRACK;
 import static org.jajuk.ui.actions.JajukActions.PAUSE_RESUME_TRACK;
 import static org.jajuk.ui.actions.JajukActions.PREVIOUS_TRACK;
-import static org.jajuk.ui.actions.JajukActions.STOP_TRACK;
 import static org.jajuk.ui.actions.JajukActions.QUEUE_TO_SLIM;
+import static org.jajuk.ui.actions.JajukActions.STOP_TRACK;
 import ext.DropDownButton;
 
 import java.awt.Dimension;
@@ -42,7 +42,6 @@ import java.awt.event.WindowEvent;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.StringTokenizer;
-import java.util.concurrent.ExecutionException;
 
 import javax.swing.Action;
 import javax.swing.BorderFactory;
@@ -57,19 +56,14 @@ import javax.swing.JRootPane;
 import javax.swing.JToolBar;
 import javax.swing.JWindow;
 import javax.swing.SwingUtilities;
-import javax.swing.SwingWorker;
-import javax.swing.event.ListSelectionEvent;
 
 import org.jajuk.base.File;
-import org.jajuk.base.SearchResult;
-import org.jajuk.base.SearchResult.SearchResultType;
 import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.events.Observer;
 import org.jajuk.services.players.Player;
 import org.jajuk.services.players.QueueModel;
-import org.jajuk.services.players.StackItem;
 import org.jajuk.ui.actions.ActionManager;
 import org.jajuk.ui.actions.JajukActions;
 import org.jajuk.ui.actions.MuteAction;
@@ -88,7 +82,6 @@ import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilFeatures;
 import org.jajuk.util.UtilString;
-import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 
 /**
@@ -368,51 +361,7 @@ public final class JajukSlimbar extends JFrame implements JajukWindow, Observer,
     jbFinishAlbum = new SizedButton(ActionManager.getAction(JajukActions.FINISH_ALBUM));
 
     // Search
-    sbSearch = new SearchBox() {
-      private static final long serialVersionUID = 1L;
-
-      public void valueChanged(final ListSelectionEvent e) {
-        SwingWorker<Void, Void> sw = new SwingWorker<Void, Void>() {
-          @Override
-          public Void doInBackground() {
-            if (!e.getValueIsAdjusting()) {
-              SearchResult sr = sbSearch.getResult(sbSearch.getSelectedIndex());
-              try {
-                // If user selected a file
-                if (sr.getType() == SearchResultType.FILE) {
-                  QueueModel.push(new StackItem(sr.getFile(), Conf
-                      .getBoolean(Const.CONF_STATE_REPEAT_ALL), true), Conf
-                      .getBoolean(Const.CONF_OPTIONS_PUSH_ON_CLICK));
-                }
-                // User selected a web radio
-                else if (sr.getType() == SearchResultType.WEBRADIO) {
-                  QueueModel.launchRadio(sr.getWebradio());
-                }
-              } catch (JajukException je) {
-                Log.error(je);
-              }
-            }
-            return null;
-          }
-
-          @Override
-          public void done() {
-            try {
-              get();
-            } catch (InterruptedException e) {
-              Log.error(e);
-            } catch (ExecutionException e) {
-              Log.error(e);
-            }
-            if (!e.getValueIsAdjusting()) {
-              sbSearch.hidePopup();
-              requestFocusInWindow();
-            }
-          }
-        };
-        sw.execute();
-      }
-    };
+    sbSearch = new SearchBox();
 
     sbSearch.setPreferredSize(new Dimension(75, 20));
     sbSearch.setMaximumSize(new Dimension(75, 20));
