@@ -23,41 +23,38 @@ package org.jajuk.ui.helpers.animations;
 import java.awt.Window;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+
 /**
- * 
+ * Base implementation of IAnimation 
  */
-public abstract class AbstractAnimation implements Animation
-{
-	protected Window window;
+public abstract class AbstractAnimation implements IAnimation {
+  protected Window window;
 
-	private CopyOnWriteArrayList<AnimationCompletedListener> listeners = new CopyOnWriteArrayList<AnimationCompletedListener>();
-	
-	protected AbstractAnimation(Window window)
-	{
-		this.window = window;
-	}
+  private CopyOnWriteArrayList<AnimationCompletedListener> listeners = new CopyOnWriteArrayList<AnimationCompletedListener>();
 
-	public Window getWindow()
-	{
-		return window;
-	}
+  protected AbstractAnimation(Window window) {
+    this.window = window;
+  }
 
-	public void addAnimationCompletedListener(AnimationCompletedListener listener)
-	{
-		listeners.add(listener);
-	}
+  /* (non-Javadoc)
+   * @see org.jajuk.ui.helpers.animations.IAnimation#getWindow()
+   */
+  public Window getWindow() {
+    return window;
+  }
 
-	public void removeAnimationCompletedListener(AnimationCompletedListener listener)
-	{
-		listeners.remove(listener);
-	}
+  public void addAnimationCompletedListener(AnimationCompletedListener listener) {
+    listeners.add(listener);
+  }
 
-	protected void animationCompleted()
-	{
-		AnimationCompletedEvent event = new AnimationCompletedEvent(this, window);
-		for (AnimationCompletedListener listener : listeners)
-		{
-			listener.animationCompleted(event);
-		}
-	}
+  public void removeAnimationCompletedListener(AnimationCompletedListener listener) {
+    listeners.remove(listener);
+  }
+
+  protected void animationCompleted() {
+    AnimationCompletedEvent event = new AnimationCompletedEvent(this, window);
+    for (AnimationCompletedListener listener : listeners) {
+      listener.animationCompleted(event);
+    }
+  }
 }

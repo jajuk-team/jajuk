@@ -24,6 +24,11 @@ import java.awt.Shape;
 import java.awt.Window;
 import java.lang.reflect.Method;
 
+/**
+ * Wrapper class used to handle cases where JRE AWTUtilities class is not available.
+ *  
+ * See https://trac.jajuk.info/ticket/1464 for more details
+ */
 public class AWTUtilities {
   @SuppressWarnings("unchecked")
   public static boolean isAvailable() {

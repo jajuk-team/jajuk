@@ -20,7 +20,9 @@
 
 package org.jajuk.ui.helpers.animations;
 
-public interface AnimationCompletedListener
-{
-	void animationCompleted(AnimationCompletedEvent e);
+/**
+ * Listener used to track for animation ending
+ */
+public interface AnimationCompletedListener {
+  void animationCompleted(AnimationCompletedEvent e);
 }

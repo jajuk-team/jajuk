@@ -7,7 +7,11 @@ import org.jajuk.ui.helpers.animations.SlideAnimation;
 import org.jajuk.ui.helpers.animations.SlideAnimation.InDirections;
 import org.jajuk.ui.helpers.animations.SlideAnimation.ScreenPositions;
 import org.jajuk.ui.helpers.animations.SlideAnimation.StartingPositions;
+import org.jajuk.util.log.Log;
 
+/**
+ * Animated balloon with album text + cover
+ */
 public class JajukTrackChangeBalloon extends JajukBalloon
 {
 	private static final long serialVersionUID = 1L;
@@ -49,7 +53,7 @@ public class JajukTrackChangeBalloon extends JajukBalloon
 						}
 						catch (InterruptedException ex)
 						{
-
+						   Log.error(ex);
 						}
 						fade.animate(2000);
 					}

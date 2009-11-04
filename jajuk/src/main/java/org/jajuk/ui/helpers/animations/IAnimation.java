@@ -22,8 +22,20 @@ package org.jajuk.ui.helpers.animations;
 
 import java.awt.Window;
 
-public interface Animation
-{
-	void animate(int animationTime);
-	Window getWindow();
+/**
+ * Interface for any kind of animation
+ */
+public interface IAnimation {
+  
+  /**
+   * What the animation is supposed to do
+   * @param animationTime
+   */
+  void animate(int animationTime);
+
+  /**
+   * Parent window
+   * @return Parent window
+   */
+  Window getWindow();
 }

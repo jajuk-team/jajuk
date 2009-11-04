@@ -22,79 +22,59 @@ package org.jajuk.ui.helpers.animations;
 
 import java.awt.Window;
 
-public class FadeAnimation extends AbstractAnimation
-{
-	private Direction opacity;
+import org.jajuk.util.log.Log;
 
-	public FadeAnimation(Window window, Direction opacity)
-	{
-		super(window);
-		this.opacity = opacity;
-	}
+/**
+ * Fade animation implementation
+ */
+public class FadeAnimation extends AbstractAnimation {
+  private Direction opacity;
 
-	@Override
-	public void animate(final int animationTime)
-	{
-		new Thread(new Runnable()
-		{
-			@Override
-			public void run()
-			{
-				try
-				{
-					for (int i = 0; i < 20; i++)
-					{
-						final float progress = i / 20.0f;
-						java.awt.EventQueue.invokeLater(new Runnable()
-						{
-							@Override
-							public void run()
-							{
-								AWTUtilities.setWindowOpacity(window, opacity.getOpacity(progress));
-							}
-						});
-						Thread.sleep(animationTime / 20);
-						java.awt.EventQueue.invokeLater(new Runnable()
-						{
-							@Override
-							public void run()
-							{
-								AWTUtilities.setWindowOpacity(window, opacity.getOpacity(1));
-							}
-						});
-					}
-				}
-				catch (Exception ex)
-				{
+  public FadeAnimation(Window window, Direction opacity) {
+    super(window);
+    this.opacity = opacity;
+  }
 
-				}
-				animationCompleted();
-			}
-		}).start();
-	}
+  @Override
+  public void animate(final int animationTime) {
+    new Thread(new Runnable() {
+      @Override
+      public void run() {
+        try {
+          for (int i = 0; i < 20; i++) {
+            final float progress = i / 20.0f;
+            java.awt.EventQueue.invokeLater(new Runnable() {
+              @Override
+              public void run() {
+                AWTUtilities.setWindowOpacity(window, opacity.getOpacity(progress));
+              }
+            });
+            Thread.sleep(animationTime / 20);
+          }
+        } catch (Exception ex) {
+          Log.error(ex);
+        }
+        animationCompleted();
+      }
+    }).start();
+  }
 
-	public interface Direction
-	{
-		float getOpacity(float progress);
-	}
+  public interface Direction {
+    float getOpacity(float progress);
+  }
 
-	public enum Directions implements Direction
-	{
-		IN
-		{
-			@Override
-			public float getOpacity(float progress)
-			{
-				return progress;
-			}
-		},
-		OUT
-		{
-			@Override
-			public float getOpacity(float progress)
-			{
-				return 1 - progress;
-			}
-		};
-	}
+  public enum Directions implements Direction {
+    IN {
+      @Override
+      public float getOpacity(float progress) {
+        return progress;
+      }
+    },
+    OUT {
+      @Override
+      public float getOpacity(float progress) {
+        return 1 - progress;
+      }
+    };
+  }
 }

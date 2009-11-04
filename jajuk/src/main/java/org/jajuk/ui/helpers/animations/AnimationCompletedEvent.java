@@ -22,24 +22,23 @@ package org.jajuk.ui.helpers.animations;
 
 import java.awt.Window;
 
-public class AnimationCompletedEvent
-{
-	private Animation source;
-	private Window window;
+/**
+ * Event thrown when the naimation is done
+ */
+public class AnimationCompletedEvent {
+  private IAnimation source;
+  private Window window;
 
-	public AnimationCompletedEvent(Animation source, Window window)
-	{
-		this.source = source;
-		this.window = window;
-	}
+  public AnimationCompletedEvent(IAnimation source, Window window) {
+    this.source = source;
+    this.window = window;
+  }
 
-	public Animation getSource()
-	{
-		return source;
-	}
+  public IAnimation getSource() {
+    return source;
+  }
 
-	public Window getWindow()
-	{
-		return window;
-	}
+  public Window getWindow() {
+    return window;
+  }
 }
