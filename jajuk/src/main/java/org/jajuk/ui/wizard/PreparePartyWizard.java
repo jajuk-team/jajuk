@@ -87,14 +87,29 @@ import org.qdwizard.Screen;
 import org.qdwizard.Wizard;
 
 /**
- * DJ creation wizard
+ * Wizard to select a set of files and write them to a separate directory
+ * outside of the collection in order to use them in a MP3 device or any other
+ * media player.
+ * 
+ * TODO: progress bar is not done yet 
+ * 
+ * TODO: a "cancel" button in the progress
+ * bar would be nice to let the user cancel if he finds out that too many were
+ * selected 
+ * 
+ * TODO: add an option to try to convert to the specified media type,
+ * is there a Java library to do this? Otherwise we could allow to specify a
+ * script that is executed
+ * 
+ * TODO: store all selections so that all the selected items are restored the next time 
+ * the dialog is opened
  */
 public class PreparePartyWizard extends Wizard {
 
   /**
    * 
    */
-  private static final char FILLER_CHAR = '_';
+  private static final String FILLER_CHAR = "_";
 
   /** Which source to use for the tracks */
   private static final String KEY_MODE = "MODE";
@@ -285,7 +300,8 @@ public class PreparePartyWizard extends Wizard {
         + destDir.getAbsolutePath() + "}}");
 
     // TODO: somehow this did not work, we have to find out how to display a
-    // useful progress bar here... See also http://java.sun.com/docs/books/tutorial/uiswing/components/progress.html
+    // useful progress bar here... See also
+    // http://java.sun.com/docs/books/tutorial/uiswing/components/progress.html
     // RefreshDialog rdialog = new RefreshDialog(false);
     // rdialog.setTitle(Messages.getString("PreparePartyWizard.28") + destDir);
     // rdialog.setAction(Messages.getString("PreparePartyWizard.29"), IconLoader
@@ -508,6 +524,8 @@ public class PreparePartyWizard extends Wizard {
   // languages et. al.
   static Map<Character, String> replaceMap = new HashMap<Character, String>();
   {
+    // German umlauts can be handled better than just using the filler_char, we
+    // can keep the filename readable
     replaceMap.put('ä', "ae");
     replaceMap.put('ö', "oe");
     replaceMap.put('ü', "ue");
@@ -515,8 +533,19 @@ public class PreparePartyWizard extends Wizard {
     replaceMap.put('Ö', "OE");
     replaceMap.put('Ü', "UE");
     replaceMap.put('ß', "ss");
+
+    // some more special characters that can be replaced with more useful values
+    // than FILLER_CHAR
     replaceMap.put('€', "EUR");
     replaceMap.put('&', "and");
+
+    // replace path-separators and colon that could cause trouble on other
+    // OSes, also question mark and star can produce errors
+    replaceMap.put('/', FILLER_CHAR);
+    replaceMap.put('\\', FILLER_CHAR);
+    replaceMap.put(':', FILLER_CHAR);
+    replaceMap.put('?', FILLER_CHAR);
+    replaceMap.put('*', FILLER_CHAR);
   }
 
   /**
@@ -527,22 +556,18 @@ public class PreparePartyWizard extends Wizard {
    */
   private String normalizeFilename(String name) {
     // TODO: is there some utility method that can do this?
-
     StringBuilder newName = new StringBuilder(name.length());
     for (int i = 0; i < name.length(); i++) {
       char c = name.charAt(i);
 
-      // replace path-separators and colon that could cause trouble on other
-      // OSes
-      if (c == '/' || c == '\\' || c == ':') {
-        newName.append(FILLER_CHAR);
-      } else if (replaceMap.containsKey(c)) { // replace some things that we can
-        // replace with other useful
-        // values
+      // replace some things that we can replace with other useful values
+      if (replaceMap.containsKey(c)) {
         newName.append(replaceMap.get(c));
       } else if (CharUtils.isAsciiPrintable(c)) {
+        // any other ASCII character is added
         newName.append(c);
       } else {
+        // everything else outside the ASCII range is simple removed to not cause any trouble
         newName.append(FILLER_CHAR);
       }
     }
@@ -881,15 +906,17 @@ public class PreparePartyWizard extends Wizard {
         }
       }
 
-      // finally disable some items if there is nothing in there 
+      // finally disable some items if there is nothing in there
       if (jcbDJ.getItemCount() == 0) {
         jrbDJ.setEnabled(false);
         jcbDJ.setEnabled(false);
       }
 
-      // disable Playlist UI if there is no Playlist-Mode already selected by the incoming data...
-      if (jcbPlaylist.getItemCount() == 0 && 
-          !(data.get(KEY_MODE).equals(Mode.Playlist) || data.get(KEY_MODE).equals(Mode.ProvidedPlaylist))) {
+      // disable Playlist UI if there is no Playlist-Mode already selected by
+      // the incoming data...
+      if (jcbPlaylist.getItemCount() == 0
+          && !(data.get(KEY_MODE).equals(Mode.Playlist) || data.get(KEY_MODE).equals(
+              Mode.ProvidedPlaylist))) {
         jrbPlaylist.setEnabled(false);
         jcbPlaylist.setEnabled(false);
       }
@@ -901,7 +928,7 @@ public class PreparePartyWizard extends Wizard {
       if (Bookmarks.getInstance().getFiles().isEmpty()) {
         jrbBookmark.setEnabled(false);
       }
-      
+
     }
 
     /*
@@ -1363,11 +1390,11 @@ public class PreparePartyWizard extends Wizard {
      */
     @Override
     public void initUI() {
-      JLabel jlFileSelection = new JLabel(Messages.getString("FirstTimeWizard.2"));
+      JLabel jlFileSelection = new JLabel(Messages.getString("PreparePartyWizard.20"));
       jbFileSelection = new JButton(IconLoader.getIcon(JajukIcons.OPEN_DIR));
       jbFileSelection.addActionListener(this);
 
-      JLabel jlSelectedFileText = new JLabel(Messages.getString("FirstTimeWizard.8"));
+      JLabel jlSelectedFileText = new JLabel(Messages.getString("PreparePartyWizard.21"));
       jlSelectedFile = new JLabel(Messages.getString("FirstTimeWizard.9"));
       jlSelectedFile.setBorder(new BevelBorder(BevelBorder.LOWERED));
 
