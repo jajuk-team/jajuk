@@ -62,10 +62,12 @@ import org.jajuk.base.TypeManager;
 import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
+import org.jajuk.services.bookmark.Bookmarks;
 import org.jajuk.services.dj.Ambience;
 import org.jajuk.services.dj.AmbienceManager;
 import org.jajuk.services.dj.DigitalDJ;
 import org.jajuk.services.dj.DigitalDJManager;
+import org.jajuk.services.players.QueueModel;
 import org.jajuk.ui.helpers.DefaultMouseWheelListener;
 import org.jajuk.ui.widgets.JajukFileChooser;
 import org.jajuk.ui.windows.JajukMainWindow;
@@ -133,7 +135,7 @@ public class PreparePartyWizard extends Wizard {
   private static Playlist tempPlaylist;
 
   private enum Mode {
-    DJ, Ambience, Shuffle, Playlist, BestOf, Novelties, ProvidedPlaylist
+    DJ, Ambience, Shuffle, Playlist, BestOf, Novelties, Queue, Bookmarks, ProvidedPlaylist
   }
 
   /**
@@ -216,6 +218,20 @@ public class PreparePartyWizard extends Wizard {
         Log.error(e1);
         return;
       }
+    } else if (Mode.Queue.equals(data.get(KEY_MODE))) {
+      try {
+        files = getQueueFiles();
+      } catch (JajukException e1) {
+        Log.error(e1);
+        return;
+      }
+    } else if (Mode.Bookmarks.equals(data.get(KEY_MODE))) {
+      try {
+        files = getBookmarkFiles();
+      } catch (JajukException e1) {
+        Log.error(e1);
+        return;
+      }
     } else if (Mode.Novelties.equals(data.get(KEY_MODE))) {
       try {
         files = getNoveltiesFiles();
@@ -269,7 +285,7 @@ public class PreparePartyWizard extends Wizard {
         + destDir.getAbsolutePath() + "}}");
 
     // TODO: somehow this did not work, we have to find out how to display a
-    // useful progress bar here...
+    // useful progress bar here... See also http://java.sun.com/docs/books/tutorial/uiswing/components/progress.html
     // RefreshDialog rdialog = new RefreshDialog(false);
     // rdialog.setTitle(Messages.getString("PreparePartyWizard.28") + destDir);
     // rdialog.setAction(Messages.getString("PreparePartyWizard.29"), IconLoader
@@ -488,7 +504,8 @@ public class PreparePartyWizard extends Wizard {
   }
 
   // map containing all the replacements that we do to "normalize" a filename
-  // TODO: this should be enhanced with more entries for things like nordic languages et. al.
+  // TODO: this should be enhanced with more entries for things like nordic
+  // languages et. al.
   static Map<Character, String> replaceMap = new HashMap<Character, String>();
   {
     replaceMap.put('ä', "ae");
@@ -519,7 +536,9 @@ public class PreparePartyWizard extends Wizard {
       // OSes
       if (c == '/' || c == '\\' || c == ':') {
         newName.append(FILLER_CHAR);
-      } else if (replaceMap.containsKey(c)) { // replace some things that we can replace with other useful values
+      } else if (replaceMap.containsKey(c)) { // replace some things that we can
+        // replace with other useful
+        // values
         newName.append(replaceMap.get(c));
       } else if (CharUtils.isAsciiPrintable(c)) {
         newName.append(c);
@@ -600,7 +619,10 @@ public class PreparePartyWizard extends Wizard {
   }
 
   /**
-   * @return
+   * Get files from the BestOf-Playlist
+   * 
+   * @return The list of files that match the "BestOf"-criteria
+   * 
    * @throws JajukException
    */
   private List<org.jajuk.base.File> getBestOfFiles() throws JajukException {
@@ -609,11 +631,38 @@ public class PreparePartyWizard extends Wizard {
   }
 
   /**
-   * @return
+   * Get the files from the current "Novelties"-criteria.
+   * 
+   * @return The files that are new currently.
+   * 
    * @throws JajukException
    */
   private List<org.jajuk.base.File> getNoveltiesFiles() throws JajukException {
     Playlist pl = new Playlist(Playlist.Type.NOVELTIES, "tmp", "temporary", null);
+    return pl.getFiles();
+  }
+
+  /**
+   * Get the files from the current Queue
+   * 
+   * @return The currently queued files.
+   * 
+   * @throws JajukException
+   */
+  private List<org.jajuk.base.File> getQueueFiles() throws JajukException {
+    Playlist pl = new Playlist(Playlist.Type.QUEUE, "tmp", "temporary", null);
+    return pl.getFiles();
+  }
+
+  /**
+   * Get the files that are bookmarked.
+   * 
+   * @return The currently bookmarked files.
+   * 
+   * @throws JajukException
+   */
+  private List<org.jajuk.base.File> getBookmarkFiles() throws JajukException {
+    Playlist pl = new Playlist(Playlist.Type.BOOKMARK, "tmp", "temporary", null);
     return pl.getFiles();
   }
 
@@ -667,8 +716,11 @@ public class PreparePartyWizard extends Wizard {
     private JComboBox jcbPlaylist;
 
     private JRadioButton jrbShuffle;
+
     private JRadioButton jrbBestOf;
     private JRadioButton jrbNovelties;
+    private JRadioButton jrbQueue;
+    private JRadioButton jrbBookmark;
 
     /**
      * Create panel UI
@@ -724,11 +776,19 @@ public class PreparePartyWizard extends Wizard {
       jrbNovelties = new JRadioButton(Messages.getString("PreparePartyWizard.25"));
       jrbNovelties.addActionListener(this);
 
+      jrbQueue = new JRadioButton(Messages.getString("PreparePartyWizard.32"));
+      jrbQueue.addActionListener(this);
+
+      jrbBookmark = new JRadioButton(Messages.getString("PreparePartyWizard.33"));
+      jrbBookmark.addActionListener(this);
+
       bgActions.add(jrbDJ);
       bgActions.add(jrbAmbience);
       bgActions.add(jrbPlaylist);
       bgActions.add(jrbBestOf);
       bgActions.add(jrbNovelties);
+      bgActions.add(jrbQueue);
+      bgActions.add(jrbBookmark);
       bgActions.add(jrbShuffle);
 
       // populate items from the stored static data
@@ -744,6 +804,8 @@ public class PreparePartyWizard extends Wizard {
       add(jcbPlaylist, "grow,wrap");
       add(jrbBestOf, "left,wrap");
       add(jrbNovelties, "left,wrap");
+      add(jrbQueue, "left,wrap");
+      add(jrbBookmark, "left,wrap");
       add(jrbShuffle, "left,wrap");
 
       // store initial values, done here as well to have them stored if "next"
@@ -794,28 +856,52 @@ public class PreparePartyWizard extends Wizard {
           // no combo box for novelties...
           break;
 
+        case Queue:
+          bgActions.setSelected(jrbQueue.getModel(), true);
+          // no combo box for queue...
+          break;
+
+        case Bookmarks:
+          bgActions.setSelected(jrbBookmark.getModel(), true);
+          // no combo box for bookmarks...
+          break;
+
         default:
           throw new IllegalArgumentException("Unexpected value in switch!");
         }
       } else {
         // no values set yet, select a useful radio button at least
 
-        // disabled DJ and select Ambience if there is no DJ
+        // select Ambience as default selection if there is no DJ available
         if (jcbDJ.getItemCount() == 0) {
-          jrbDJ.setEnabled(false);
-          jcbDJ.setEnabled(false);
           bgActions.setSelected(jrbAmbience.getModel(), true);
         } else {
           // otherwise select DJ as default option
           bgActions.setSelected(jrbDJ.getModel(), true);
         }
-
-        // disable Playlist UI if there is no Playlist
-        if (jcbPlaylist.getItemCount() == 0) {
-          jrbPlaylist.setEnabled(false);
-          jcbPlaylist.setEnabled(false);
-        }
       }
+
+      // finally disable some items if there is nothing in there 
+      if (jcbDJ.getItemCount() == 0) {
+        jrbDJ.setEnabled(false);
+        jcbDJ.setEnabled(false);
+      }
+
+      // disable Playlist UI if there is no Playlist-Mode already selected by the incoming data...
+      if (jcbPlaylist.getItemCount() == 0 && 
+          !(data.get(KEY_MODE).equals(Mode.Playlist) || data.get(KEY_MODE).equals(Mode.ProvidedPlaylist))) {
+        jrbPlaylist.setEnabled(false);
+        jcbPlaylist.setEnabled(false);
+      }
+
+      // check if we have queue-entries or bookmarks
+      if (QueueModel.getQueue().isEmpty()) {
+        jrbQueue.setEnabled(false);
+      }
+      if (Bookmarks.getInstance().getFiles().isEmpty()) {
+        jrbBookmark.setEnabled(false);
+      }
+      
     }
 
     /*
@@ -862,6 +948,12 @@ public class PreparePartyWizard extends Wizard {
         data.remove(KEY_ITEM);
       } else if (jrbNovelties.isSelected()) {
         data.put(KEY_MODE, Mode.Novelties);
+        data.remove(KEY_ITEM);
+      } else if (jrbQueue.isSelected()) {
+        data.put(KEY_MODE, Mode.Queue);
+        data.remove(KEY_ITEM);
+      } else if (jrbBookmark.isSelected()) {
+        data.put(KEY_MODE, Mode.Bookmarks);
         data.remove(KEY_ITEM);
       }
     }
