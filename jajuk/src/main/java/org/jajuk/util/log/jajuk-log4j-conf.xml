@@ -12,16 +12,7 @@
 			<param name='ConversionPattern' value='%d{yyyy/MM/dd HH:mm:ss} [%p] %m  [%t] (%F:%L) %n'/>
 		</layout>
 	</appender>
-	<appender name='FILE_DEBUG' class='org.apache.log4j.RollingFileAppender'>
-		<param name='Threshold' value='DEBUG'/>
-		<param name='File' value='${user.home}/.jajuk/.jajuk_debug.log'/>
-		<param name='Append' value='false'/>
-		<param name='MaxFileSize' value='50000'/>
-		<param name='MaxBackupIndex' value='0'/>
-		<layout class='org.apache.log4j.PatternLayout'>
-			<param name='ConversionPattern' value='%d{yyyy/MM/dd HH:mm:ss} [%p] %m  [%t] (%F:%L) %n'/>
-		</layout>
-	</appender>
+	
 	<appender name='CONSOLE' class='org.apache.log4j.ConsoleAppender'>
 		<param name='Target' value='System.out'/>
 		<param name='Threshold' value='DEBUG'/>

@@ -79,8 +79,11 @@ public final class UtilSystem {
   /** Current date cached (for performances) * */
   public static final Date TODAY = new Date();
 
-  /** Central random object for all Jajuk * */
+  /** Central random object for all Jajuk **/
   private static final Random RANDOM = new Random();
+
+  /** Cached user home directory **/
+  private static String cachedUserHomeDir;
 
   /**
    * Are we under Linux ? *
@@ -226,10 +229,10 @@ public final class UtilSystem {
   /**
    * Copy a file to another file
    * 
-   * @param file :
-   *          file to copy
-   * @param fNew :
-   *          destination file
+   * @param file
+   *          : file to copy
+   * @param fNew
+   *          : destination file
    * @throws JajukException
    * @throws IOException
    */
@@ -240,7 +243,7 @@ public final class UtilSystem {
     }
 
     FileUtils.copyFile(file, fNew);
-    
+
     // Display a warning if copied file is void as it can happen with full
     // disks
     if (fNew.length() == 0) {
@@ -251,10 +254,10 @@ public final class UtilSystem {
   /**
    * Copy a file
    * 
-   * @param file :
-   *          source file
-   * @param sNewName :
-   *          dest file
+   * @param file
+   *          : source file
+   * @param sNewName
+   *          : dest file
    * @throws JajukException
    * @throws IOException
    */
@@ -266,7 +269,7 @@ public final class UtilSystem {
     if (!file.exists() || !file.canRead()) {
       throw new JajukException(9, file.getAbsolutePath(), null);
     }
-    
+
     FileUtils.copyFile(file, fileNew);
   }
 
@@ -334,10 +337,10 @@ public final class UtilSystem {
   /**
    * Copy a file to given directory
    * 
-   * @param file :
-   *          file to copy
-   * @param directory :
-   *          destination directory
+   * @param file
+   *          : file to copy
+   * @param directory
+   *          : destination directory
    * @return destination file
    * @throws JajukException
    * @throws IOException
@@ -370,8 +373,8 @@ public final class UtilSystem {
   /**
    * Delete a directory
    * 
-   * @param dir :
-   *          source directory
+   * @param dir
+   *          : source directory
    * @throws IOException
    */
   public static void deleteDir(final File dir) throws IOException {
@@ -396,8 +399,8 @@ public final class UtilSystem {
   /**
    * Delete a file
    * 
-   * @param file :
-   *          source file
+   * @param file
+   *          : source file
    * @throws IOException
    */
   public static void deleteFile(final File file) throws IOException {
@@ -868,8 +871,8 @@ public final class UtilSystem {
    * @param path
    *          -File path
    * @return StringBuilder - File content.
-   * @throws JajukException -
-   *           Throws a JajukException if a problem occurs during the file
+   * @throws JajukException
+   *           - Throws a JajukException if a problem occurs during the file
    *           access.
    */
   public static StringBuilder readFile(final String path) throws JajukException {
@@ -906,8 +909,8 @@ public final class UtilSystem {
    * Open a file from current jar and return a string buffer with the file
    * content.
    * 
-   * @param sUrl :
-   *          relative file url
+   * @param sUrl
+   *          : relative file url
    * @return StringBuilder - File content.
    * @throws JajukException
    *           -Throws a JajukException if a problem occurs during the file
@@ -1018,11 +1021,9 @@ public final class UtilSystem {
   }
 
   /**
-   * Opens a directory with the associated explorer program.
-   * <li> Start by trying to open the directory with any provided explorer path
-   * </li>
-   * <li> Then, try to use the JDIC Desktop class if supported by the platform
-   * </li>
+   * Opens a directory with the associated explorer program. <li>Start by trying
+   * to open the directory with any provided explorer path</li> <li>Then, try to
+   * use the JDIC Desktop class if supported by the platform</li>
    * 
    * Inspired from an aTunes method
    * 
@@ -1108,5 +1109,38 @@ public final class UtilSystem {
     } catch (IllegalThreadStateException itse) {
       return -100;
     }
+  }
+
+  /**
+   * Returns current user home directory handling Windows issues on JRE
+   * 
+   * @return current user home directory
+   */
+  public static String getUserHome() {
+    // User home is cached for performances
+    if (cachedUserHomeDir != null) {
+      return cachedUserHomeDir;
+    }
+
+    /**
+     * We search first in USERPROFILE env directory before than user.home.
+     * 
+     * But we give priority to user.home if it already contains a suitable jajuk
+     * collection to maintain backward compatibility
+     * 
+     * See https://trac.jajuk.info/ticket/1473 and
+     * http://bugs.sun.com/view_bug.do?bug_id=4787931
+     **/
+    String testedPath = System.getProperty("user.home") + File.separator
+        + (SessionService.isTestMode() ? ".jajuk_test_" + Const.TEST_VERSION : ".jajuk");
+    if (new File(testedPath).exists()) {
+      cachedUserHomeDir = testedPath;
+    } else {
+      cachedUserHomeDir = System.getenv("USERPROFILE");
+      if (StringUtils.isBlank(System.getenv("USERPROFILE"))) {
+        cachedUserHomeDir = System.getProperty("user.home");
+      }
+    }
+    return cachedUserHomeDir;
   }
 }

@@ -197,7 +197,7 @@ public interface Const {
   // -- Files and paths --
 
   /** Bootstrap file that contains jajuk configuration user directory* */
-  String FILE_BOOTSTRAP = System.getProperty("user.home") + "/.jajuk_bootstrap";
+  String FILE_BOOTSTRAP = UtilSystem.getUserHome() + "/.jajuk_bootstrap";
 
   String FILE_COLLECTION = "collection.xml";
 

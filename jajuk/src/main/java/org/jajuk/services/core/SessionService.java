@@ -56,12 +56,7 @@ import org.jajuk.util.log.Log;
  */
 public class SessionService {
 
-  /**
-   * 
-   */
-  private static final String USER_HOME = "user.home";
-
-  /** Debug mode */
+   /** Debug mode */
   private static boolean bIdeMode = false;
 
   /** Test mode */
@@ -325,7 +320,7 @@ public class SessionService {
       } catch (final IOException e) {
         // Can be an ioexception or an NPE if the file is void
         System.out.println("Cannot read bootstrap file, using ~ directory");
-        SessionService.setWorkspace(System.getProperty(USER_HOME));
+        SessionService.setWorkspace(System.getProperty(UtilSystem.getUserHome()));
       }
     }
     // No bootstrap or unreadable or the path included inside is not
@@ -349,7 +344,7 @@ public class SessionService {
     }
     // In all cases, make sure to set a workspace
     if (SessionService.getWorkspace() == null) {
-      SessionService.setWorkspace(System.getProperty(USER_HOME));
+      SessionService.setWorkspace(System.getProperty(UtilSystem.getUserHome()));
     }
   }
 
@@ -388,7 +383,7 @@ public class SessionService {
    */
   public static final File getConfFileByPath(final String sPATH) {
     if (confRoot == null) {
-      String home = System.getProperty(USER_HOME);
+      String home = System.getProperty(UtilSystem.getUserHome());
       if ((getWorkspace() != null) && !getWorkspace().trim().equals("")) {
         home = getWorkspace();
       }
@@ -403,7 +398,7 @@ public class SessionService {
    * @return default workspace location
    */
   public static final File getDefaultWorkspace() {
-    String home = System.getProperty(USER_HOME);
+    String home = System.getProperty(UtilSystem.getUserHome());
     return new File(home + '/' + (isTestMode() ? ".jajuk_test_" + Const.TEST_VERSION : ".jajuk")
         + '/');
   }

@@ -61,6 +61,7 @@ import org.jajuk.util.JajukFileFilter;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilGUI;
+import org.jajuk.util.UtilSystem;
 import org.jajuk.util.filters.DirectoryFilter;
 import org.jajuk.util.log.Log;
 import org.jdesktop.swingx.JXCollapsiblePane;
@@ -227,7 +228,7 @@ public class FirstTimeWizard extends JajukJDialog implements ActionListener, Pro
 
     final JLabel jlWorkspace = new JLabel(Messages.getString("FirstTimeWizard.7"));
     jlWorkspace.setToolTipText(Messages.getString("FirstTimeWizard.7"));
-    workspacePath = new PathSelector(System.getProperty("user.home"));
+    workspacePath = new PathSelector(UtilSystem.getUserHome());
     workspacePath.setToolTipText(Messages.getString("FirstTimeWizard.7"));
 
     jcbHelp = new JCheckBox(Messages.getString("FirstTimeWizard.4"));
