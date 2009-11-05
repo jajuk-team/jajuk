@@ -1134,10 +1134,12 @@ public final class UtilSystem {
     String testedPath = System.getProperty("user.home") + File.separator
         + (SessionService.isTestMode() ? ".jajuk_test_" + Const.TEST_VERSION : ".jajuk");
     if (new File(testedPath).exists()) {
-      cachedUserHomeDir = testedPath;
+      cachedUserHomeDir = System.getProperty("user.home");
     } else {
-      cachedUserHomeDir = System.getenv("USERPROFILE");
-      if (StringUtils.isBlank(System.getenv("USERPROFILE"))) {
+      if (StringUtils.isNotBlank(System.getenv("USERPROFILE"))) {
+        cachedUserHomeDir = System.getenv("USERPROFILE");
+      }
+      else{
         cachedUserHomeDir = System.getProperty("user.home");
       }
     }
