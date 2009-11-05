@@ -65,6 +65,10 @@ public class FlyProvider extends GenericProvider {
     String lyrics = null;
     try {
       String xml = callProvider(artist, title);
+      if(xml == null) {
+        // there is already log-output in callProvider()...
+        return null;
+      }
       Document document = XMLUtils.getDocument(xml);
       lyrics = XMLUtils.getChildElementContent(document.getDocumentElement(), "tx");
       lyrics = lyrics.replace("[br]", "");
