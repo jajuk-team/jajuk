@@ -217,8 +217,7 @@ public class JajukSystray extends CommandJPanel implements JajukWindow {
     jmiNext = new SizedJMenuItem(ActionManager.getAction(JajukActions.NEXT_TRACK));
 
     JLabel jlTitle = new JLabel("Jajuk");
-	jlTitle.addMouseListener(new MouseAdapter() {
-
+    jlTitle.addMouseListener(new MouseAdapter() {
       @Override
       public void mouseClicked(MouseEvent e) {
         if (e.getButton() == MouseEvent.BUTTON1) {
@@ -233,7 +232,7 @@ public class JajukSystray extends CommandJPanel implements JajukWindow {
     });
     jlTitle.setFont(FontManager.getInstance().getFont(JajukFont.BOLD_TITLE));
     SearchBox searchBox = new SearchBox();
-    JPanel jpTitle = new JPanel(new MigLayout("ins 5","[][grow]"));
+    JPanel jpTitle = new JPanel(new MigLayout("ins 5", "[][grow]"));
     jpTitle.add(jlTitle, "left,gapx 20px");
     jpTitle.add(searchBox, "right,grow");
 
@@ -246,9 +245,10 @@ public class JajukSystray extends CommandJPanel implements JajukWindow {
     populateAmbiences();
 
     jmenu.add(jpTitle);
-    jmenu.add(jmAmbience);
     jmenu.addSeparator();
     jmenu.add(jcbmiShowBalloon);
+    jmenu.addSeparator();
+    jmenu.add(jmAmbience);
     jmenu.addSeparator();
     jmenu.add(jmiPlayPause);
     jmenu.add(jmiStop);
