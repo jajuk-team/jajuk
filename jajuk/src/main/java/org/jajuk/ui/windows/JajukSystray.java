@@ -217,6 +217,20 @@ public class JajukSystray extends CommandJPanel implements JajukWindow {
     jmiNext = new SizedJMenuItem(ActionManager.getAction(JajukActions.NEXT_TRACK));
 
     JLabel jlTitle = new JLabel("Jajuk");
+	jlTitle.addMouseListener(new MouseAdapter() {
+
+      @Override
+      public void mouseClicked(MouseEvent e) {
+        if (e.getButton() == MouseEvent.BUTTON1) {
+          // show main window if it is not visible and hide it if it is visible
+          WindowState mainWindowState = JajukMainWindow.getInstance().getWindowStateDecorator()
+              .getWindowState();
+          boolean bShouldDisplayMainWindow = !(mainWindowState == WindowState.BUILT_DISPLAYED);
+          JajukMainWindow.getInstance().getWindowStateDecorator().display(bShouldDisplayMainWindow);
+        }
+      }
+
+    });
     jlTitle.setFont(FontManager.getInstance().getFont(JajukFont.BOLD_TITLE));
     SearchBox searchBox = new SearchBox();
     JPanel jpTitle = new JPanel(new MigLayout("ins 5","[][grow]"));
