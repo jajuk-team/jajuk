@@ -872,6 +872,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
     sbSearch = new SearchBox() {
       private static final long serialVersionUID = 1L;
 
+      @Override
       public void valueChanged(final ListSelectionEvent e) {
         if (!e.getValueIsAdjusting()) {
           final SearchResult sr = sbSearch.getResult(sbSearch.getSelectedIndex());
