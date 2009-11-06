@@ -755,8 +755,8 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
         removeSelection();
       } else if (ae.getSource() == jbAddShuffle) {
         int iRow = editorTable.getSelectedRow();
-        if (iRow < 0) {
-          // no row is selected, add to the end
+        if (iRow < 0 || iRow > editorTable.getRowCount()) {
+          // no or invalid row is selected, add to the end
           iRow = editorTable.getRowCount();
         }
         File file = FileManager.getInstance().getShuffleFile();
