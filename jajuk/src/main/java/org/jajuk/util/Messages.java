@@ -19,6 +19,7 @@
  */
 package org.jajuk.util;
 
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -316,7 +317,7 @@ public class Messages extends DefaultHandler {
         public void run() {
           // This must be done in the EDT
           final ConfirmDialog confirm = new ConfirmDialog(sText, getTitleForType(iType),
-              optionsType, iType);
+              optionsType, iType, JajukMainWindow.getInstance());
           choice = confirm.getResu();
         }
       };
@@ -534,7 +535,7 @@ class ConfirmDialog extends JajukDialog {
    * @param iType
    *          message type like JOptionPane.WARNING
    */
-  ConfirmDialog(final String sText, final String sTitle, final int optionsType, final int iType) {
+  ConfirmDialog(final String sText, final String sTitle, final int optionsType, final int iType, Component parent) {
     super();
 
     final JOptionPane optionPane = UtilGUI.getNarrowOptionPane(72);
@@ -550,7 +551,7 @@ class ConfirmDialog extends JajukDialog {
     dialog.setModal(true);
     dialog.setAlwaysOnTop(true);
     dialog.pack();
-    dialog.setLocationRelativeTo(JajukMainWindow.getInstance());
+    dialog.setLocationRelativeTo(parent);
     dialog.setVisible(true);
     final Object resu = optionPane.getValue();
     // Set Cancel as default
