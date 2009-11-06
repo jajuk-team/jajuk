@@ -131,6 +131,7 @@ public class AlarmClockDialog extends JajukJDialog implements ActionListener, It
     sbSearch = new SearchBox() {
       private static final long serialVersionUID = 1L;
 
+      @Override
       public void valueChanged(final ListSelectionEvent e) {
         if (!e.getValueIsAdjusting()) {
           sr = sbSearch.getResult(sbSearch.getSelectedIndex());
