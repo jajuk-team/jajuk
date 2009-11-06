@@ -28,6 +28,7 @@ import java.awt.Color;
 import java.awt.Desktop;
 import java.awt.image.BufferedImage;
 import java.net.URL;
+import java.net.UnknownHostException;
 import java.util.List;
 
 import javax.imageio.IIOException;
@@ -183,6 +184,8 @@ public class LastFmAuthorThumbnail extends AbstractThumbnail {
       // happen frequently with images on the net
       Log.warn("Could not read image: {{" + author.getImageUrl().toString() + "}} Cache: {{" + fCover + "}}", e
           .getMessage());
+    } catch (UnknownHostException e) {
+      Log.warn("Could not contact host for loading images: {{" + e.getMessage() + "}}");
     } catch (Exception e) {
       Log.error(e);
     }

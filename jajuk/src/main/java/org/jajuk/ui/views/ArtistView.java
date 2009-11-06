@@ -25,6 +25,7 @@ import ext.services.lastfm.LastFmService;
 
 import java.awt.Dimension;
 import java.awt.Insets;
+import java.net.UnknownHostException;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -207,6 +208,8 @@ public class ArtistView extends SuggestionView implements TwoStepsDisplayable {
     // Prefetch artist thumbs
     try {
       preFetchOthersAlbum();
+    } catch (UnknownHostException e) {
+      Log.warn("Could not contact host for loading album information: {{" + e.getMessage() + "}}");
     } catch (Exception e) {
       Log.error(e);
     }
