@@ -503,18 +503,20 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
    */
   @Override
   public void setVolume(float fVolume) {
-    super.setVolume(fVolume);
-    // Make sure to resume. Indeed, mplayer has a bug that resume
-    // playing after a volume change or a seek. We must make sure that
-    // the jajuk state is coherent with the mplayer one
-    if (Player.isPaused()) {
-      try {
-        bPaused = false;
-        ActionManager.getAction(JajukActions.PAUSE_RESUME_TRACK).perform(null);
-      } catch (Exception e) {
-        Log.error(e);
-      }
-    }
+	  if (!bPaused)
+	  {
+		  super.setVolume(fVolume);
+	  }
+	  else
+	  {
+		this.fVolume = fVolume;
+	  }
+  }
+
+	@Override
+  public void resume() throws Exception {
+	  super.resume();
+	  setVolume(fVolume);
   }
 
   /**
