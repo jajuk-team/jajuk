@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2007 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,31 +16,33 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  $Revision: 1 $
  */
 
-package org.jajuk.services.lyrics.providers;
+package org.jajuk.services.lyrics.persisters;
 
-import org.jajuk.base.File;
+import org.jajuk.services.lyrics.providers.JajukLyricsProvider;
 
 /**
- * Interface for lyrics providers to be used by the modified LyricsService
+ * Interface for lyrics persisters to be used by the modified LyricsService
  */
-public interface ILyricsProvider {
-
+public interface ILyricsPersister {
+  
   /**
-   * Return lyrics for a given artist and title <br>
-   * Returns null if none lyrics found or technical error
+   * Commit lyrics for a given filename <br>
+   * Returns true if commited correctly, false otherwise
    * 
-   * @param file for which to search for lyrics
+   * @param Jajuk lyrics provider
+   * @return true if OK, false otherwise
    */
-  String getLyrics(final File audioFile);
-
+  boolean commitLyrics(JajukLyricsProvider provider);
   /**
-   * Return lyrics provider response encoding (ISO8859-1, UTF-8..)
+   * Deletes Lyrics that user has saved <br>
+   * in Tag or in a Txt file
    * 
-   * @return lyrics provider response encoding (ISO8859-1, UTF-8..)
+   * @param provider
+   * @return
    */
-  String getResponseEncoding();
+  void deleteLyrics(JajukLyricsProvider provider);
 
 }

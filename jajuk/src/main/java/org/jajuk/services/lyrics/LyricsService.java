@@ -27,12 +27,19 @@
 
 package org.jajuk.services.lyrics;
 
+
+
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
+import org.jajuk.base.File;
+import org.jajuk.services.lyrics.persisters.ILyricsPersister;
 import org.jajuk.services.lyrics.providers.ILyricsProvider;
+import org.jajuk.services.lyrics.providers.JajukLyricsProvider;
 import org.jajuk.util.log.Log;
+
+
 
 /**
  * Lyrics retrieval service. This service will retrieves lyrics from various
@@ -47,12 +54,21 @@ public final class LyricsService {
 
   private static List<ILyricsProvider> providers = null;
   private static ILyricsProvider current = null;
+  private static List<ILyricsPersister> persisters = null;
 
   /** Providers list */
   private static String[] providersClasses = new String[] {
-      "org.jajuk.services.lyrics.providers.LyricWikiProvider",
-      "org.jajuk.services.lyrics.providers.FlyProvider",
-      "org.jajuk.services.lyrics.providers.LyrcProvider" };
+      "org.jajuk.services.lyrics.providers.TagLyricsProvider",
+      "org.jajuk.services.lyrics.providers.TxtLyricsProvider",
+      "org.jajuk.services.lyrics.providers.LyricWikiWebLyricsProvider",
+      "org.jajuk.services.lyrics.providers.FlyWebLyricsProvider",
+      "org.jajuk.services.lyrics.providers.LyrcWebLyricsProvider"};
+  
+  /** Persisters list */
+  private static String[] persisterClasses = new String[] {
+    "org.jajuk.services.lyrics.persisters.TagPersister",
+    "org.jajuk.services.lyrics.persisters.TxtPersister"
+  };
 
   /**
    * Empty private constructor to avoid instantiating utility class
@@ -89,28 +105,69 @@ public final class LyricsService {
   }
 
   /**
+   */
+  @SuppressWarnings("unchecked")
+  public static void loadPersisters() {
+    persisters = new ArrayList<ILyricsPersister>(2);
+    try {
+      for (String persisterClass : persisterClasses) {
+        if (!StringUtils.isBlank(persisterClass)) {
+          Class<ILyricsPersister> clazz = (Class<ILyricsPersister>) Class.forName(persisterClass);
+          ILyricsPersister persister = clazz.newInstance();
+          persisters.add(persister);
+          Log.debug("Added Lyrics persister " + persisterClass);
+        }
+      }
+    } catch (Exception e) {
+      Log.error(e);
+    }
+  }
+
+  /**
    * Cycles through lyrics providers to return the best matching lyrics.
    * 
-   * @param artist
-   *          the song's artist
-   * @param title
-   *          the song's title
+   * @param audiofile
+   *          the audio file to search lyrics for
    * 
    * @return the song's lyrics
    */
-  public static String getLyrics(final String artist, final String title) {
+  public static String getLyrics(final File audioFile) {
     String lyrics = null;
-
+    
     current = null;
-    Log.debug("Retrieving lyrics for artist {{" + artist + "}} and song {{" + title + "}}");
+    Log.debug("Retrieving lyrics for file {{" + audioFile + "}}");
     for (final ILyricsProvider provider : getProviders()) {
-      lyrics = provider.getLyrics(artist, title);
+      lyrics = provider.getLyrics(audioFile);
       current = provider;
       if (lyrics != null) {
         break;
       }
     }
     return lyrics;
+  }
+  
+  public static void commitLyrics(JajukLyricsProvider provider) {
+    boolean returnValue = false;
+    Log.debug("Commiting lyrics for file {{" + provider + "}}");
+    for (final ILyricsPersister persister : getPersisters()) {    
+      returnValue = persister.commitLyrics(provider);
+      if (returnValue) {
+        break;
+      }
+    }
+    
+    if (returnValue) {
+      Log.warn("Lyrics successfully commited to " + provider.getFile().getName());
+    }
+    else {
+      Log.warn("Lyrics could not be commited to " + provider.getFile().getName());
+    }
+  }
+  
+  public static void deleteLyrics(JajukLyricsProvider provider) {
+    for (final ILyricsPersister persister : getPersisters()) {    
+      persister.deleteLyrics(provider);
+    }
   }
 
   /**
@@ -127,5 +184,13 @@ public final class LyricsService {
 
   public static ILyricsProvider getCurrentProvider() {
     return current;
+  }
+  
+  public static List<ILyricsPersister> getPersisters() {
+    if (persisters == null) {
+      loadPersisters();
+    }
+    
+    return persisters;
   }
 }

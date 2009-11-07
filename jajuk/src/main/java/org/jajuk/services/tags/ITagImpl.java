@@ -84,6 +84,13 @@ public interface ITagImpl {
    * @throws Exception
    */
   long getOrder() throws Exception;
+  
+  /**
+   * 
+   * @return Lyrics read from Tag
+   * @throws Exception
+   */
+  String getLyrics() throws Exception;
 
   /**
    * @param sTrackName
@@ -124,6 +131,16 @@ public interface ITagImpl {
    * @param sComment
    */
   void setComment(String sComment) throws Exception;
+  
+  /**
+   * @param sLyrics
+   */
+  void setLyrics(String sLyrics) throws Exception;
+  
+  /**
+   * Deletes lyrics saved in Tag
+   */
+  void deleteLyrics() throws Exception;
 
   /**
    * Set current file to work with.

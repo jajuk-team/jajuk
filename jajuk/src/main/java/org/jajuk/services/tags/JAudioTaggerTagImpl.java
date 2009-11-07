@@ -34,6 +34,7 @@ import org.jaudiotagger.audio.AudioFileIO;
 import org.jaudiotagger.tag.FieldDataInvalidException;
 import org.jaudiotagger.tag.KeyNotFoundException;
 import org.jaudiotagger.tag.Tag;
+import org.jaudiotagger.tag.TagField;
 import org.jaudiotagger.tag.TagFieldKey;
 import org.jaudiotagger.tag.id3.ID3v1Tag;
 import org.jaudiotagger.tag.id3.ID3v24Tag;
@@ -206,6 +207,19 @@ public class JAudioTaggerTagImpl implements ITagImpl, Const {
     return result;
   }
 
+  /* (non-Javadoc)
+   * @see org.jajuk.services.tags.ITagImpl#getLyrics()
+   */
+  public String getLyrics() throws Exception {
+    String lyrics = tag.getFirst(TagFieldKey.LYRICS);
+    if (StringUtils.isBlank(lyrics)) {
+      return "";
+    }
+    else {
+      return lyrics;
+    }
+  }
+
   /*
    * (non-Javadoc)
    * 
@@ -234,6 +248,25 @@ public class JAudioTaggerTagImpl implements ITagImpl, Const {
   public void setComment(String comment) throws Exception {
     createTagIfNeeded();
     this.tag.setComment(comment);
+  }
+
+  /* (non-Javadoc)
+   * @see org.jajuk.services.tags.ITagImpl#setLyrics(java.lang.String)
+   */
+  public void setLyrics(String sLyrics) throws Exception {
+    createTagIfNeeded();
+    tag.deleteTagField(TagFieldKey.LYRICS);
+    TagField potson = tag.createTagField(TagFieldKey.LYRICS, sLyrics);
+    tag.add(potson);      
+    commit();
+  }
+
+  /* (non-Javadoc)
+   * @see org.jajuk.services.tags.ITagImpl#deleteLyrics()
+   */
+  public void deleteLyrics() throws Exception {
+    tag.deleteTagField(TagFieldKey.LYRICS);
+    commit();
   }
 
   /*

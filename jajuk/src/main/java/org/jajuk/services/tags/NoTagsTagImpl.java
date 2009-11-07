@@ -263,6 +263,30 @@ public class NoTagsTagImpl implements ITagImpl {
     // nothing to do here
   }
 
+  /* (non-Javadoc)
+   * @see org.jajuk.services.tags.ITagImpl#deleteLyrics()
+   */
+  @Override
+  public void deleteLyrics() throws Exception {
+    // nothing to do here
+  }
+
+  /* (non-Javadoc)
+   * @see org.jajuk.services.tags.ITagImpl#getLyrics()
+   */
+  @Override
+  public String getLyrics() throws Exception {
+    return "";
+  }
+
+  /* (non-Javadoc)
+   * @see org.jajuk.services.tags.ITagImpl#setLyrics(java.lang.String)
+   */
+  @Override
+  public void setLyrics(String sLyrics) throws Exception {
+    // nothing to do here    
+  }
+
   /*
    * (non-Javadoc)
    * 

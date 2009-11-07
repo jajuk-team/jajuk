@@ -330,6 +330,22 @@ public class Tag {
     }
     return l;
   }
+  
+  public String getLyrics() {
+    String sLyrics = "";
+    // if the type doesn't support tags ( like wav )
+    if (tagImpl == null) {      
+      return sLyrics;
+    }
+    
+    try {
+      sLyrics = tagImpl.getLyrics();
+    } catch (Exception e) {
+      Log.info("Wrong lyrics:{{" + fio.getName() + "}}");
+    }
+    
+    return sLyrics;
+  }
 
   /**
    * @param sTrackName
@@ -425,6 +441,25 @@ public class Tag {
   public void setComment(String sComment) throws JajukException {
     try {
       tagImpl.setComment(sComment);
+    } catch (Exception e) {
+      throw new JajukException(104, fio.getName(), e);
+    }
+  }
+  
+  public void setLyrics(String sLyrics) throws JajukException {
+    try {
+      if (NoTagsTagImpl.class.equals(tagImpl.getClass())) {
+        throw new Exception();
+      }
+      tagImpl.setLyrics(sLyrics);
+    } catch (Exception e) {
+      throw new JajukException(104, fio.getName(), e);
+    }    
+  }
+  
+  public void deleteLyrics() throws JajukException {
+    try {
+      tagImpl.deleteLyrics();
     } catch (Exception e) {
       throw new JajukException(104, fio.getName(), e);
     }
