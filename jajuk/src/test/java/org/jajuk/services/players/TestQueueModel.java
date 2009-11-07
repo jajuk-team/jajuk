@@ -63,9 +63,6 @@ public class TestQueueModel extends JajukTestCase {
     // reset conf changes to default
     Conf.setProperty(Const.CONF_STATE_CONTINUE, "false");
 
-    // make sure we reset WebRadio
-    QueueModel.launchRadio(null);
-
     // remove any registered files
     for (File file : FileManager.getInstance().getFiles()) {
       FileManager.getInstance().removeFile(file);
@@ -261,8 +258,8 @@ public class TestQueueModel extends JajukTestCase {
     Class<IPlayerImpl> cl = (Class<IPlayerImpl>) imp.getClass();
 
     Type type = new Type(Integer.valueOf(i).toString(), "name", "mp3", cl, null);
-    Track track = new Track(Integer.valueOf(i).toString(), "name", album, style, author, 120, year, 1,
-        type, 1);
+    Track track = new Track(Integer.valueOf(i).toString(), "name", album, style, author, 120, year,
+        1, type, 1);
 
     Device device = new Device(Integer.valueOf(i).toString(), "name");
     device.setUrl(System.getProperty("java.io.tmpdir"));
@@ -318,17 +315,93 @@ public class TestQueueModel extends JajukTestCase {
    * Test method for
    * {@link org.jajuk.services.players.QueueModel#finished(boolean)}.
    */
-
   public void testFinishedBoolean() throws Exception {
     // without item it just returns
     QueueModel.finished(true);
 
-    // with items, it will go to the next ine
+    // with items, it will go to the next line
     addItems(10);
     QueueModel.setIndex(0);
     assertEquals(0, QueueModel.getIndex());
     QueueModel.finished(true);
     assertEquals(1, QueueModel.getIndex());
+  }
+
+  /**
+   * Test method for
+   * {@link org.jajuk.services.players.QueueModel#finished(boolean)}.
+   */
+  public void testFinishedRepeatSingleItem() throws Exception {
+    addItems(1);
+    StackItem si = QueueModel.getItem(0);
+    si.setRepeat(true);
+
+    QueueModel.setIndex(0);
+    // Finish the track, should play again
+    QueueModel.finished();
+
+    StackItem newSi = QueueModel.getItem(0);
+    assertEquals(0, QueueModel.getIndex());
+    assertTrue(newSi.isRepeat());
+    assertEquals(newSi, QueueModel.getCurrentItem());
+  }
+
+  /**
+   * Test method for
+   * {@link org.jajuk.services.players.QueueModel#finished(boolean)}.
+   */
+  public void testFinishedRepeatLastItem() throws Exception {
+    // We want to make sure that everything's ok when current item is in repeat
+    // mode and the last in the queue
+    addItems(10);
+    StackItem si = QueueModel.getItem(9);
+    si.setRepeat(true);
+    QueueModel.setIndex(9);
+    // Finish the track, should play again
+    QueueModel.finished();
+
+    // same track should be played again as it is in repeat mode and the first
+    // one at index 0 is not
+    StackItem newSi = QueueModel.getCurrentItem();
+    assertEquals(newSi, si);
+    assertTrue(newSi.isRepeat());
+    
+    // Now the same with first track in repeat mode
+    QueueModel.getItem(0).setRepeat(true);
+    QueueModel.finished();
+    newSi = QueueModel.getCurrentItem();
+    assertEquals(newSi, QueueModel.getItem(0));
+    assertTrue(newSi.isRepeat());
+    assertTrue(si.isRepeat());
+  }
+  
+  /**
+   * Test method for
+   * {@link org.jajuk.services.players.QueueModel#finished(boolean)}.
+   */
+  public void testFinishedRepeatNotLastItem() throws Exception {
+    // We want to make sure that everything's ok when current item is in repeat
+    // mode and *not* the last in the queue
+    addItems(10);
+    StackItem si = QueueModel.getItem(5);
+    si.setRepeat(true);
+    QueueModel.setIndex(5);
+    // Finish the track, should play again
+    QueueModel.finished();
+
+    // same track should be played again as it is in repeat mode and the first
+    // one at index 0 is not
+    StackItem newSi = QueueModel.getCurrentItem();
+    assertEquals(newSi, si);
+    assertTrue(newSi.isRepeat());
+    
+    // Now the same with first track in repeat mode
+    QueueModel.getItem(6).setRepeat(true);
+    QueueModel.finished();
+    newSi = QueueModel.getCurrentItem();
+    assertEquals(newSi, QueueModel.getItem(6));
+    assertTrue(newSi.isRepeat());
+    assertTrue(si.isRepeat());
   }
 
   /**
@@ -927,6 +1000,9 @@ public class TestQueueModel extends JajukTestCase {
    */
 
   public void testGetCurrentRadio() {
+    // make sure we reset WebRadio
+    QueueModel.launchRadio(null);
+
     assertNull(QueueModel.getCurrentRadio());
     QueueModel.launchRadio(new WebRadio("name", "invalidurl"));
     assertNotNull(QueueModel.getCurrentRadio());
@@ -955,7 +1031,8 @@ public class TestQueueModel extends JajukTestCase {
 
   public void testGetCurrentFileTitle() throws Exception {
     // always returns some string, without file "Read to play"
-    // can be wrong with different settings assertEquals("Ready to play", QueueModel.getCurrentFileTitle());
+    // can be wrong with different settings assertEquals("Ready to play",
+    // QueueModel.getCurrentFileTitle());
     assertNotNull(QueueModel.getCurrentFileTitle());
 
     addItems(3);

@@ -436,19 +436,16 @@ public final class QueueModel {
       }
 
       if (current.isRepeat()) {
-        // if the track was in repeat mode, don't remove it from the
-        // fifo but inc index
-        // find the next item is in repeat mode if any
-        if (index < alQueue.size() - 1) {
-          StackItem itemNext = alQueue.get(index + 1);
-          // if next track is repeat, inc index
-          if (itemNext.isRepeat() || forceNext) {
+        StackItem itemNext = getNextItem();
+        // if we are in repeat mode and next track too, play next track
+        if (itemNext.isRepeat() || forceNext) {
+          // If we are the next track in the queue, next repeated track is at
+          // the top of the queue
+          if (index < (alQueue.size() - 1)) {
             index++;
-            // no next track in repeat mode, come back to first
-            // element in fifo
+          } else {
+            index = 0;
           }
-        } else {
-          index = 0;
         }
       } else if (index < alQueue.size()) {
         StackItem item = alQueue.get(index);
@@ -496,6 +493,29 @@ public final class QueueModel {
       // refresh playlist editor
       ObservationManager.notify(new JajukEvent(JajukEvents.QUEUE_NEED_REFRESH));
     }
+  }
+  
+  /**
+   * Return next item of current one (looping from end of queue to top) or null
+   * if no different item available
+   * 
+   * @return next item of current one (looping from end of queue to top) or null
+   *         if no different item available
+   */
+  private static StackItem getNextItem() {
+    // Compute next track
+    StackItem itemNext = null;
+    if (alQueue.size() <= 1) {
+      return null;
+    }
+    // If not last item in queue
+    if (index < alQueue.size() - 1) {
+      itemNext = alQueue.get(index + 1);
+    } else {
+      // last item, start back from the top
+      itemNext = alQueue.get(0);
+    }
+    return itemNext;
   }
 
   private static void setEndOfQueue() {
