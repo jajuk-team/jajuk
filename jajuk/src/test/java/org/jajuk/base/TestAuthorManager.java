@@ -443,7 +443,7 @@ public class TestAuthorManager extends JajukTestCase {
      */
     @Override
     public ArrayList<String> getSupportedTagFields() {
-      // TODO Auto-generated method stub
+
       return null;
     }
 
@@ -452,7 +452,7 @@ public class TestAuthorManager extends JajukTestCase {
      */
     @Override
     public String getTagField(String tagFieldKey) throws Exception {
-      // TODO Auto-generated method stub
+
       return null;
     }
 
@@ -462,7 +462,34 @@ public class TestAuthorManager extends JajukTestCase {
     @Override
     public void setTagField(String tagFieldKey, String tagFieldValue)
         throws FieldDataInvalidException, KeyNotFoundException {
-      // TODO Auto-generated method stub
+
+      
+    }
+
+    /* (non-Javadoc)
+     * @see org.jajuk.services.tags.ITagImpl#deleteLyrics()
+     */
+    @Override
+    public void deleteLyrics() throws Exception {
+
+      
+    }
+
+    /* (non-Javadoc)
+     * @see org.jajuk.services.tags.ITagImpl#getLyrics()
+     */
+    @Override
+    public String getLyrics() throws Exception {
+
+      return null;
+    }
+
+    /* (non-Javadoc)
+     * @see org.jajuk.services.tags.ITagImpl#setLyrics(java.lang.String)
+     */
+    @Override
+    public void setLyrics(String sLyrics) throws Exception {
+
       
     }
 
