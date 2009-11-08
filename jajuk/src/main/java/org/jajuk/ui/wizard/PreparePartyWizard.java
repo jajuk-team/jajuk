@@ -87,25 +87,27 @@ import org.qdwizard.Wizard;
  * outside of the collection in order to use them in a MP3 device or any other
  * media player.
  * 
- * TODO: progress bar is not done yet 
+ * TODO: progress bar is not done yet
  * 
- * TODO: a "cancel" button in the progress
- * bar would be nice to let the user cancel if he finds out that too many were
- * selected 
+ * TODO: a "cancel" button in the progress bar would be nice to let the user
+ * cancel if he finds out that too many were selected
  */
 public class PreparePartyWizard extends Wizard {
 
-  /** For MigLayout
+  /**
+   * For MigLayout
    * 
    */
   private static final String GROW_WRAP = "grow,wrap";
 
-  /** For MigLayout
+  /**
+   * For MigLayout
    * 
    */
   private static final String LEFT_WRAP = "left,wrap";
 
-  /** For MigLayout
+  /**
+   * For MigLayout
    * 
    */
   private static final String LEFT = "left";
@@ -147,6 +149,8 @@ public class PreparePartyWizard extends Wizard {
   // We need to keep it outside the ActionSelectionPanel because the panel is
   // re-created during back-forward operations
   private static Playlist tempPlaylist;
+
+  private static boolean bPropertiesRestored = false;
 
   private enum Mode {
     DJ, Ambience, Shuffle, Playlist, BestOf, Novelties, Queue, Bookmarks, ProvidedPlaylist
@@ -204,6 +208,8 @@ public class PreparePartyWizard extends Wizard {
   public void finish() {
     // write properties to keep the selected directory
     try {
+      storeProperties();
+
       Conf.commit();
     } catch (IOException e1) {
       Log.error(e1);
@@ -211,7 +217,7 @@ public class PreparePartyWizard extends Wizard {
 
     // retrieve the full list of files according to the selected mode
     List<org.jajuk.base.File> files = getFiles();
-    if(files == null) {
+    if (files == null) {
       return;
     }
 
@@ -221,8 +227,7 @@ public class PreparePartyWizard extends Wizard {
     // forbidden under Windows
     final SimpleDateFormat stamp = new SimpleDateFormat("yyyyMMdd-HHmm", Locale.getDefault());
     final String dirName = "Party-" + stamp.format(curDate);
-    final java.io.File destDir = new java.io.File(((File) data.get(KEY_DEST_PATH))
-        .getAbsolutePath(), dirName);
+    final java.io.File destDir = new java.io.File(((String) data.get(KEY_DEST_PATH)), dirName);
     if (!destDir.mkdir()) {
       Log.warn("Could not create destination directory " + destDir);
     }
@@ -230,6 +235,19 @@ public class PreparePartyWizard extends Wizard {
     Log.debug("Going to copy " + files.size() + " files to directory {{"
         + destDir.getAbsolutePath() + "}}");
 
+    // perform the actual copying
+    copyFiles(files, destDir);
+  }
+
+  /**
+   * Copies the files contained in the list to the specified directory.
+   * 
+   * @param files
+   *          The list of flies to copy.
+   * @param destDir
+   *          The target location.
+   */
+  private void copyFiles(List<org.jajuk.base.File> files, final java.io.File destDir) {
     // TODO: somehow this did not work, we have to find out how to display a
     // useful progress bar here... See also
     // http://java.sun.com/docs/books/tutorial/uiswing/components/progress.html
@@ -267,6 +285,8 @@ public class PreparePartyWizard extends Wizard {
           // StringBuilder(Messages.getString("PreparePartyWizard.30"))
           // .append(' ').append(name).toString());
           // rdialog.setProgress(count / files.size());
+          //setProgress(100 * files.size() / count, new StringBuilder(Messages
+          //    .getString("PreparePartyWizard.30")).append(' ').append(name).toString());
 
           FileUtils.copyFile(entry.getFIO(), new File(destDir, name));
 
@@ -297,8 +317,8 @@ public class PreparePartyWizard extends Wizard {
       UtilGUI.stopWaiting();
 
       // Close refresh dialog
-      //rdialog.setVisible(false);
-      //rdialog.dispose();
+      // rdialog.setVisible(false);
+      // rdialog.dispose();
 
       long refreshTime = System.currentTimeMillis() - lRefreshDateStart;
 
@@ -398,6 +418,142 @@ public class PreparePartyWizard extends Wizard {
     return files;
   }
 
+  /**
+   * Stores all the values that are stored in the data-map to the Conf-system.
+   */
+  private static void storeProperties() {
+    storeValue(KEY_MODE);
+    storeValue(KEY_ITEM);
+    storeValue(KEY_DEST_PATH);
+    storeValue(KEY_MAX_TRACKS_ON);
+    storeValue(KEY_MAX_TRACKS);
+    storeValue(KEY_MAX_SIZE_ON);
+    storeValue(KEY_MAX_SIZE);
+    storeValue(KEY_MAX_LENGTH_ON);
+    storeValue(KEY_MAX_LENGTH);
+    storeValue(KEY_ONE_MEDIA_ON);
+    storeValue(KEY_MEDIA);
+    storeValue(KEY_NORMALIZE_FILENAME_ON);
+    storeValue(KEY_RATINGS_LEVEL);
+  }
+
+  /**
+   * Store one value as String.
+   */
+  private static void storeValue(final String key) {
+    // nothing to do?
+    if (data.get(key) == null) {
+      return;
+    }
+
+    Conf.setProperty(Conf.CONF_PREPARE_PARTY + key, data.get(key).toString());
+  }
+
+  /**
+   * Restore all the values that are potentially stored in the configuration
+   * system.
+   */
+  private static void restoreProperties() {
+    restoreModeAndItemValue();
+    restoreStringValue(KEY_DEST_PATH);
+    restoreBooleanValue(KEY_MAX_TRACKS_ON);
+    restoreIntValue(KEY_MAX_TRACKS);
+    restoreBooleanValue(KEY_MAX_SIZE_ON);
+    restoreIntValue(KEY_MAX_SIZE);
+    restoreBooleanValue(KEY_MAX_LENGTH_ON);
+    restoreIntValue(KEY_MAX_LENGTH);
+    restoreBooleanValue(KEY_ONE_MEDIA_ON);
+    restoreStringValue(KEY_MEDIA);
+    restoreBooleanValue(KEY_NORMALIZE_FILENAME_ON);
+    restoreIntValue(KEY_RATINGS_LEVEL);
+  }
+
+  /**
+   * Restore one string value from the configuration.
+   * 
+   * @param key
+   *          The key to restore.
+   */
+  private static void restoreStringValue(final String key) {
+    String sValue = Conf.getString(Conf.CONF_PREPARE_PARTY + key);
+
+    // nothing to do if not set
+    if (sValue == null) {
+      return;
+    }
+
+    data.put(key, sValue);
+  }
+
+  /**
+   * Restore one integer value from the configuration.
+   * 
+   * @param key
+   *          The key to restore.
+   */
+  private static void restoreIntValue(final String key) {
+    // do nothing if not available yet
+    if (Conf.getString(Conf.CONF_PREPARE_PARTY + key) == null) {
+      return;
+    }
+
+    data.put(key, Conf.getInt(Conf.CONF_PREPARE_PARTY + key));
+  }
+
+  /**
+   * Restore one boolean value from the configuration.
+   * 
+   * @param key
+   *          The key to restore.
+   */
+  private static void restoreBooleanValue(final String key) {
+    // do nothing if not available yet
+    if (Conf.getString(Conf.CONF_PREPARE_PARTY + key) == null) {
+      return;
+    }
+
+    data.put(key, Conf.getBoolean(Conf.CONF_PREPARE_PARTY + key));
+  }
+
+  /**
+   * Restore mode and item values, they may require some special handling.
+   * 
+   * @param key
+   *          The key to restore.
+   */
+  private static void restoreModeAndItemValue() {
+    String sMode = Conf.getString(Conf.CONF_PREPARE_PARTY + KEY_MODE);
+
+    // nothing to do if not set
+    if (sMode == null) {
+      return;
+    }
+
+    data.put(KEY_MODE, Mode.valueOf(sMode));
+    switch ((Mode) data.get(KEY_MODE)) {
+    // restore the value for the ones where we have a selection
+    case Ambience:
+    case DJ:
+    case Playlist:
+      data.put(KEY_ITEM, Conf.getString(Conf.CONF_PREPARE_PARTY + KEY_ITEM));
+      break;
+
+    // nothing to do
+    case BestOf:
+    case Bookmarks:
+    case Shuffle:
+    case Novelties:
+    case Queue:
+
+      // we usually are not able to restore this, therefore don't do anything
+    case ProvidedPlaylist:
+
+    default:
+      break;
+    }
+
+  }
+
   /*
    * (non-Javadoc)
    * 
@@ -459,6 +615,13 @@ public class PreparePartyWizard extends Wizard {
      */
     @Override
     public void initUI() {
+      // workaround as the dialog is initialized before the constructor of
+      // PreparePartyWizard fully executes
+      if (!bPropertiesRestored) {
+        restoreProperties();
+        bPropertiesRestored = true;
+      }
+
       bgActions = new ButtonGroup();
 
       jrbDJ = new JRadioButton(Messages.getString("PreparePartyWizard.6"));
@@ -622,8 +785,8 @@ public class PreparePartyWizard extends Wizard {
       // disable Playlist UI if there is no Playlist-Mode already selected by
       // the incoming data...
       if (jcbPlaylist.getItemCount() == 0
-          && !(data.get(KEY_MODE).equals(Mode.Playlist) || data.get(KEY_MODE).equals(
-              Mode.ProvidedPlaylist))) {
+          && !(Mode.Playlist.equals(data.get(KEY_MODE)) || Mode.ProvidedPlaylist.equals(data
+              .get(KEY_MODE)))) {
         jrbPlaylist.setEnabled(false);
         jcbPlaylist.setEnabled(false);
       }
@@ -754,6 +917,13 @@ public class PreparePartyWizard extends Wizard {
      */
     @Override
     public void initUI() {
+      // workaround as the dialog is initialized before the constructor of
+      // PreparePartyWizard fully executes
+      if (!bPropertiesRestored) {
+        restoreProperties();
+        bPropertiesRestored = true;
+      }
+
       { // Max Tracks
         jcbMaxTracks = new JCheckBox(Messages.getString("PreparePartyWizard.10"));
         jcbMaxTracks.setToolTipText(Messages.getString("PreparePartyWizard.11"));
@@ -1107,14 +1277,7 @@ public class PreparePartyWizard extends Wizard {
 
       // previous value if available
       if (data.containsKey(KEY_DEST_PATH)) {
-        jlSelectedFile.setText(((File) data.get(KEY_DEST_PATH)).getAbsolutePath());
-
-        // we also can finish the dialog
-        setCanFinish(true);
-      } else if (StringUtils.isNotBlank(Conf.getString(Const.CONF_PARTY_DIRECTORY))) {
-        // we have a stored last-used directory, reuse that one
-        jlSelectedFile.setText(Conf.getString(Const.CONF_PARTY_DIRECTORY));
-        data.put(KEY_DEST_PATH, new File(Conf.getString(Const.CONF_PARTY_DIRECTORY)));
+        jlSelectedFile.setText((String) data.get(KEY_DEST_PATH));
 
         // we also can finish the dialog
         setCanFinish(true);
@@ -1157,10 +1320,7 @@ public class PreparePartyWizard extends Wizard {
           // retrieve selected directory and update it in all necessary places
           fDir = jfc.getSelectedFile();
           jlSelectedFile.setText(fDir.getAbsolutePath());
-          data.put(KEY_DEST_PATH, fDir);
-
-          // store the directory for later invokations
-          Conf.setProperty(Const.CONF_PARTY_DIRECTORY, fDir.getAbsolutePath());
+          data.put(KEY_DEST_PATH, fDir.getAbsolutePath());
 
           // we can finish the wizard now
           setProblem(null);

@@ -863,7 +863,7 @@ public interface Const {
   String CONF_NETWORK_NONE_INTERNET_ACCESS = "jajuk.network.none_internet_access";
 
   /** Remembered directory for parties */
-  String CONF_PARTY_DIRECTORY = "jajuk.prepare_party.directory";
+  String CONF_PREPARE_PARTY = "jajuk.prepare_party.";
   
   /** Shuffle/novelties mode */
   String MODE_ALBUM = "album";
