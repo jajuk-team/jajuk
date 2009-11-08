@@ -98,6 +98,9 @@ public class NotifySendNotificator implements ISystemNotificator {
    */
   @Override
   public void notify(String title, String text) {
+    // workaround: notify-send cannot handle IMG-SRC with "file:"
+    text = text.replace("<img src='file:/", "<img src='/");
+    
     // first build the commandline for "notify-send"
 
     // see http://www.galago-project.org/specs/notification/0.9/x344.html
