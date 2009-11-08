@@ -222,15 +222,17 @@ public class PlayerStateMediator implements Observer {
             }
 
             File file = FileManager.getInstance().getFileByID(id);
-            Log.debug("Got update for new file launched, item: " + file);
-//            notifier.notify(Messages.getString("JajukWindow.39"), UtilString.buildTitle(file));
-			notifier.notify(Messages.getString("JajukWindow.39"), QueueModel.getCurrentFileTitle());
+            Log.debug("Got update for new file launched, item: {{" + file + "}}. Sending text: {{"
+                + QueueModel.getCurrentFileTitle() + "}}");
+            // notifier.notify(Messages.getString("JajukWindow.39"),
+            // UtilString.buildTitle(file));
+            notifier.notify(Messages.getString("JajukWindow.39"), QueueModel.getCurrentFileTitle());
           }
         }
 
         // For all events except Volume Change/Mute, refresh the queue
-        if (!JajukEvents.VOLUME_CHANGED.equals(subject) && !JajukEvents.MUTE_STATE.equals(subject) &&
-            !JajukEvents.FILE_LAUNCHED.equals(subject)) {
+        if (!JajukEvents.VOLUME_CHANGED.equals(subject) && !JajukEvents.MUTE_STATE.equals(subject)
+            && !JajukEvents.FILE_LAUNCHED.equals(subject)) {
           ObservationManager.notify(new JajukEvent(JajukEvents.QUEUE_NEED_REFRESH));
         }
       }
