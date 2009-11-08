@@ -195,10 +195,6 @@ public interface Const {
   String TYPE_VIDEO = "Type.video";
 
   // -- Files and paths --
-
-  /** Bootstrap file that contains jajuk configuration user directory* */
-  String FILE_BOOTSTRAP = UtilSystem.getUserHome() + "/.jajuk_bootstrap";
-
   String FILE_COLLECTION = "collection.xml";
 
   // File written by the exit hook

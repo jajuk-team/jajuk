@@ -675,7 +675,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
         }
         // OK, now write down the bootstrap file if
         // everything's OK
-        final java.io.File bootstrap = new java.io.File(Const.FILE_BOOTSTRAP);
+        final java.io.File bootstrap = new java.io.File(SessionService.getBootstrapPath());
         final Writer bw = new BufferedWriter(new FileWriter(bootstrap));
         try {
           SessionService.getVersionWorkspace().store(bw, null);

@@ -152,7 +152,7 @@ public class FirstTimeWizard extends JajukJDialog implements ActionListener, Pro
       }
       // Set Workspace directory
       try {
-        final java.io.File bootstrap = new java.io.File(Const.FILE_BOOTSTRAP);
+        final java.io.File bootstrap = new java.io.File(SessionService.getBootstrapPath());
         final Writer bw = new BufferedWriter(new FileWriter(bootstrap));
         try {
           bw.write(sPATH);

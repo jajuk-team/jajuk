@@ -1131,18 +1131,12 @@ public final class UtilSystem {
      * See https://trac.jajuk.info/ticket/1473 and
      * http://bugs.sun.com/view_bug.do?bug_id=4787931
      **/
-    String testedPath = System.getProperty("user.home") + File.separator
-        + (SessionService.isTestMode() ? ".jajuk_test_" + Const.TEST_VERSION : ".jajuk");
-    if (new File(testedPath).exists()) {
-      cachedUserHomeDir = System.getProperty("user.home");
+    if (StringUtils.isNotBlank(System.getenv("USERPROFILE"))) {
+      cachedUserHomeDir = System.getenv("USERPROFILE");
     } else {
-      if (StringUtils.isNotBlank(System.getenv("USERPROFILE"))) {
-        cachedUserHomeDir = System.getenv("USERPROFILE");
-      }
-      else{
-        cachedUserHomeDir = System.getProperty("user.home");
-      }
+      cachedUserHomeDir = System.getProperty("user.home");
     }
     return cachedUserHomeDir;
   }
+ 
 }

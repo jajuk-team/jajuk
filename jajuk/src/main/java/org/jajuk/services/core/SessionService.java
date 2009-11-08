@@ -38,6 +38,7 @@ import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
+import org.apache.commons.io.FileUtils;
 import org.jajuk.ui.windows.JajukMainWindow;
 import org.jajuk.ui.wizard.FirstTimeWizard;
 import org.jajuk.util.Conf;
@@ -56,7 +57,7 @@ import org.jajuk.util.log.Log;
  */
 public class SessionService {
 
-   /** Debug mode */
+  /** Debug mode */
   private static boolean bIdeMode = false;
 
   /** Test mode */
@@ -71,12 +72,16 @@ public class SessionService {
   /** Lock used to trigger first time wizard window close* */
   private static short[] isFirstTimeWizardClosed = new short[0];
 
-  /* *Bootstrap file content. format is <test|final>=<workspace location>* */
+  /*   *Bootstrap file content. format is <test|final>=<workspace location>* */
   private static Properties versionWorkspace = new Properties();
-  
+
   /** Whether we are regular process are a thumb builder process **/
   private static boolean inThumbMaker = false;
 
+  /**
+   * Cached bootstrap absolute file path
+   */
+  private static String cachedBootstrapPath;
 
   /**
    * For performances, store conf root path
@@ -263,7 +268,7 @@ public class SessionService {
    */
   public static void discoverWorkspace() throws InterruptedException {
     // Check for bootstrap file presence
-    final File bootstrap = new File(Const.FILE_BOOTSTRAP);
+    final File bootstrap = new File(getBootstrapPath());
     // Default workspace: ~/.jajuk
     final File fDefaultWorkspace = SessionService.getDefaultWorkspace();
     if (bootstrap.canRead()) {
@@ -422,8 +427,8 @@ public class SessionService {
   public static Properties getVersionWorkspace() {
     return versionWorkspace;
   }
-  
-    /**
+
+  /**
    * @return whether we are regular process are a thumb builder process
    */
   public static boolean isInThumbMaker() {
@@ -431,10 +436,42 @@ public class SessionService {
   }
 
   /**
-   * @param inThumbMaker the inThumbMaker to set
+   * @param inThumbMaker
+   *          the inThumbMaker to set
    */
   public static void setInThumbMaker(boolean inThumbMaker) {
     SessionService.inThumbMaker = inThumbMaker;
+  }
+
+  /**
+   * Return bootstrap file absolute path
+   * 
+   * It also fixes #1473 by moving if required the bootstrap file (see See
+   * https://trac.jajuk.info/ticket/1473)
+   * 
+   * At a first glance, this move code could be better located in UpgradeManager
+   * but we keep it here because of its bootstraping nature that make it easier
+   * in a dynamic method than inside a boot process.
+   * 
+   * @return bootstrap file absolute path
+   */
+  public static String getBootstrapPath() {
+    if (cachedBootstrapPath != null) {
+      return cachedBootstrapPath;
+    }
+    cachedBootstrapPath = UtilSystem.getUserHome() + "/.jajuk_bootstrap";
+    if (!new File(UtilSystem.getUserHome() + "/.jajuk_bootstrap").exists()) {
+      if (new File(System.getProperty("user.home") + "/.jajuk_bootstrap").exists()) {
+        try {
+          FileUtils.copyFileToDirectory(new File(System.getProperty("user.home")
+              + "/.jajuk_bootstrap"), new File(UtilSystem.getUserHome()));
+          new File(System.getProperty("user.home") + "/.jajuk_bootstrap").delete();
+        } catch (IOException ex) {
+          Log.error(ex);
+        }
+      }
+    }
+    return cachedBootstrapPath;
   }
 
 }

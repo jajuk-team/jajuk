@@ -160,7 +160,7 @@ public class TestSessionService extends JajukTestCase {
   public void testDiscoverWorkspace() throws Exception {
     { // ensure that the base jajuk-directory exists, otherwise the
       // "first time wizard" is run, which blocks the test
-      File bootstrap = new File(Const.FILE_BOOTSTRAP);
+      File bootstrap = new File(SessionService.getBootstrapPath());
 
       // try to create it if it is missing
       if (!bootstrap.exists()) {
