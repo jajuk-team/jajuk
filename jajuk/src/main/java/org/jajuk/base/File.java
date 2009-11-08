@@ -407,24 +407,24 @@ public class File extends PhysicalItem implements Comparable<File>, Const {
    */
   public String getHTMLFormatText() {
     String sOut = "";
-    sOut += "<HTML><br>";
+    sOut += "<HTML>";
     int size = 100;
     int maxSize = 30;
     ThumbnailManager.refreshThumbnail(QueueModel.getPlayingFile().getTrack().getAlbum(), size);
     java.io.File cover = ThumbnailManager.getThumbBySize(QueueModel.getPlayingFile().getTrack()
         .getAlbum(), size);
     if (cover.canRead()) {
-      sOut += "<p ALIGN=center><img src='file:" + cover.getAbsolutePath() + "'/></p><br>";
+      sOut += "<p ALIGN=center><img src='file:" + cover.getAbsolutePath() + "'/></p>";
     }
-    sOut += "<p><b>" + UtilString.getLimitedString(getTrack().getName(), maxSize)
-        + "</b></font></p>";
+    sOut += "<b>" + UtilString.getLimitedString(getTrack().getName(), maxSize)
+        + "</b><br/>";
     String sAuthor = UtilString.getLimitedString(getTrack().getAuthor().getName(), maxSize);
     if (!sAuthor.equals(UNKNOWN_AUTHOR)) {
-      sOut += "<p>" + sAuthor + "</font></p>";
+      sOut += sAuthor + "<br/>";
     }
     String sAlbum = UtilString.getLimitedString(getTrack().getAlbum().getName(), maxSize);
     if (!sAlbum.equals(UNKNOWN_ALBUM)) {
-      sOut += "<p>" + sAlbum + "</font></p>";
+      sOut += sAlbum + "<br/>";
     }
     sOut += "</HTML>";
     return sOut;
