@@ -96,17 +96,25 @@ import org.qdwizard.Wizard;
  * TODO: a "cancel" button in the progress
  * bar would be nice to let the user cancel if he finds out that too many were
  * selected 
- * 
- * TODO: add an option to try to convert to the specified media type,
- * is there a Java library to do this? Otherwise we could allow to specify a
- * script that is executed
- * 
- * TODO: store all selections so that all the selected items are restored the next time 
- * the dialog is opened
  */
 public class PreparePartyWizard extends Wizard {
 
-  /**
+  /** For MigLayout
+   * 
+   */
+  private static final String GROW_WRAP = "grow,wrap";
+
+  /** For MigLayout
+   * 
+   */
+  private static final String LEFT_WRAP = "left,wrap";
+
+  /** For MigLayout
+   * 
+   */
+  private static final String LEFT = "left";
+  
+  /** character that is used to replace if filename normalization is used.
    * 
    */
   private static final String FILLER_CHAR = "_";
@@ -211,77 +219,9 @@ public class PreparePartyWizard extends Wizard {
     }
 
     // retrieve the full list of files according to the selected mode
-    List<org.jajuk.base.File> files;
-    if (Mode.DJ.equals(data.get(KEY_MODE))) {
-      files = getDJFiles((String) data.get(KEY_ITEM));
-    } else if (Mode.Ambience.equals(data.get(KEY_MODE))) {
-      files = getAmbienceFiles((String) data.get(KEY_ITEM));
-    } else if (Mode.Playlist.equals(data.get(KEY_MODE))
-        || Mode.ProvidedPlaylist.equals(data.get(KEY_MODE))) {
-      try {
-        files = getPlaylistFiles((String) data.get(KEY_ITEM));
-      } catch (JajukException e1) {
-        Log.error(e1);
-        return;
-      }
-    } else if (Mode.Shuffle.equals(data.get(KEY_MODE))) {
-      files = getShuffleFiles();
-    } else if (Mode.BestOf.equals(data.get(KEY_MODE))) {
-      try {
-        files = getBestOfFiles();
-      } catch (JajukException e1) {
-        Log.error(e1);
-        return;
-      }
-    } else if (Mode.Queue.equals(data.get(KEY_MODE))) {
-      try {
-        files = getQueueFiles();
-      } catch (JajukException e1) {
-        Log.error(e1);
-        return;
-      }
-    } else if (Mode.Bookmarks.equals(data.get(KEY_MODE))) {
-      try {
-        files = getBookmarkFiles();
-      } catch (JajukException e1) {
-        Log.error(e1);
-        return;
-      }
-    } else if (Mode.Novelties.equals(data.get(KEY_MODE))) {
-      try {
-        files = getNoveltiesFiles();
-      } catch (JajukException e1) {
-        Log.error(e1);
-        return;
-      }
-    } else {
-      throw new IllegalArgumentException("Unknown mode in PreparePartyWizard: "
-          + data.get(KEY_MODE));
-    }
-
-    // filter by media first
-    if (isTrue(KEY_ONE_MEDIA_ON)) {
-      files = filterMedia(files, (String) data.get(KEY_MEDIA));
-    }
-
-    // then filter out by rating
-    if (data.containsKey(KEY_RATINGS_LEVEL)) {
-      files = filterRating(files, (Integer) data.get(KEY_RATINGS_LEVEL));
-    }
-
-    // filter max length
-    if (isTrue(KEY_MAX_LENGTH_ON)) {
-      files = filterMaxLength(files, (Integer) data.get(KEY_MAX_LENGTH));
-    }
-
-    // filter max size
-    if (isTrue(KEY_MAX_SIZE_ON)) {
-      files = filterMaxSize(files, (Integer) data.get(KEY_MAX_SIZE));
-    }
-
-    // filter max tracks
-    if (isTrue(KEY_MAX_TRACKS_ON)) {
-      files = filterMaxTracks(files, (Integer) data.get(KEY_MAX_TRACKS));
+    List<org.jajuk.base.File> files = getFiles();
+    if(files == null) {
+      return;
     }
 
     // define the target directory
@@ -324,7 +264,7 @@ public class PreparePartyWizard extends Wizard {
 
           // We can use the actual file name as we do numbering of the files,
           // this is important for existing playlists to keep the order
-          String name = StringUtils.leftPad(new Integer(count).toString(), 5, '0') + FILLER_CHAR
+          String name = StringUtils.leftPad(Integer.valueOf(count).toString(), 5, '0') + FILLER_CHAR
               + entry.getFIO().getName();
 
           // normalize filenames if necessary
@@ -363,11 +303,11 @@ public class PreparePartyWizard extends Wizard {
       Messages.showErrorMessage(180, e.getMessage());
       return;
     } finally {
-      // progress.dispose();
       UtilGUI.stopWaiting();
 
       // Close refresh dialog
-      // rdialog.dispose();
+      //rdialog.setVisible(false);
+      //rdialog.dispose();
 
       long refreshTime = System.currentTimeMillis() - lRefreshDateStart;
 
@@ -385,6 +325,86 @@ public class PreparePartyWizard extends Wizard {
       // Display end of copy message with stats
       Messages.showInfoMessage(message);
     }
+  }
+
+  /**
+   * @return
+   */
+  private List<org.jajuk.base.File> getFiles() {
+    List<org.jajuk.base.File> files;
+    if (Mode.DJ.equals(data.get(KEY_MODE))) {
+      files = getDJFiles((String) data.get(KEY_ITEM));
+    } else if (Mode.Ambience.equals(data.get(KEY_MODE))) {
+      files = getAmbienceFiles((String) data.get(KEY_ITEM));
+    } else if (Mode.Playlist.equals(data.get(KEY_MODE))
+        || Mode.ProvidedPlaylist.equals(data.get(KEY_MODE))) {
+      try {
+        files = getPlaylistFiles((String) data.get(KEY_ITEM));
+      } catch (JajukException e1) {
+        Log.error(e1);
+        return null;
+      }
+    } else if (Mode.Shuffle.equals(data.get(KEY_MODE))) {
+      files = getShuffleFiles();
+    } else if (Mode.BestOf.equals(data.get(KEY_MODE))) {
+      try {
+        files = getBestOfFiles();
+      } catch (JajukException e1) {
+        Log.error(e1);
+        return null;
+      }
+    } else if (Mode.Queue.equals(data.get(KEY_MODE))) {
+      try {
+        files = getQueueFiles();
+      } catch (JajukException e1) {
+        Log.error(e1);
+        return null;
+      }
+    } else if (Mode.Bookmarks.equals(data.get(KEY_MODE))) {
+      try {
+        files = getBookmarkFiles();
+      } catch (JajukException e1) {
+        Log.error(e1);
+        return null;
+      }
+    } else if (Mode.Novelties.equals(data.get(KEY_MODE))) {
+      try {
+        files = getNoveltiesFiles();
+      } catch (JajukException e1) {
+        Log.error(e1);
+        return null;
+      }
+    } else {
+      throw new IllegalArgumentException("Unknown mode in PreparePartyWizard: "
+          + data.get(KEY_MODE));
+    }
+
+    // filter by media first
+    if (isTrue(KEY_ONE_MEDIA_ON)) {
+      files = filterMedia(files, (String) data.get(KEY_MEDIA));
+    }
+
+    // then filter out by rating
+    if (data.containsKey(KEY_RATINGS_LEVEL)) {
+      files = filterRating(files, (Integer) data.get(KEY_RATINGS_LEVEL));
+    }
+
+    // filter max length
+    if (isTrue(KEY_MAX_LENGTH_ON)) {
+      files = filterMaxLength(files, (Integer) data.get(KEY_MAX_LENGTH));
+    }
+
+    // filter max size
+    if (isTrue(KEY_MAX_SIZE_ON)) {
+      files = filterMaxSize(files, (Integer) data.get(KEY_MAX_SIZE));
+    }
+
+    // filter max tracks
+    if (isTrue(KEY_MAX_TRACKS_ON)) {
+      files = filterMaxTracks(files, (Integer) data.get(KEY_MAX_TRACKS));
+    }
+
+    return files;
   }
 
   /**
@@ -533,6 +553,9 @@ public class PreparePartyWizard extends Wizard {
     replaceMap.put('Ö', "OE");
     replaceMap.put('Ü', "UE");
     replaceMap.put('ß', "ss");
+    
+    // some more strange characters that I found in some of my sound files
+    replaceMap.put('å', "a");
 
     // some more special characters that can be replaced with more useful values
     // than FILLER_CHAR
@@ -821,17 +844,17 @@ public class PreparePartyWizard extends Wizard {
 
       // populate the screen
       setLayout(new MigLayout("insets 10,gapx 10,gapy 15", "[][grow]"));
-      add(jrbDJ, "left");
-      add(jcbDJ, "grow,wrap");
-      add(jrbAmbience, "left");
-      add(jcbAmbience, "grow,wrap");
-      add(jrbPlaylist, "left");
-      add(jcbPlaylist, "grow,wrap");
-      add(jrbBestOf, "left,wrap");
-      add(jrbNovelties, "left,wrap");
-      add(jrbQueue, "left,wrap");
-      add(jrbBookmark, "left,wrap");
-      add(jrbShuffle, "left,wrap");
+      add(jrbDJ, LEFT);
+      add(jcbDJ, GROW_WRAP);
+      add(jrbAmbience, LEFT);
+      add(jcbAmbience, GROW_WRAP);
+      add(jrbPlaylist, LEFT);
+      add(jcbPlaylist, GROW_WRAP);
+      add(jrbBestOf, LEFT_WRAP);
+      add(jrbNovelties, LEFT_WRAP);
+      add(jrbQueue, LEFT_WRAP);
+      add(jrbBookmark, LEFT_WRAP);
+      add(jrbShuffle, LEFT_WRAP);
 
       // store initial values, done here as well to have them stored if "next"
       // is pressed immediately
@@ -863,7 +886,7 @@ public class PreparePartyWizard extends Wizard {
           // before, in this case show the Playlist again
           // here
           bgActions.setSelected(jrbPlaylist.getModel(), true);
-          jcbPlaylist.setSelectedItem((data.get(KEY_ITEM)));
+          jcbPlaylist.setSelectedItem(data.get(KEY_ITEM));
           break;
 
         case Shuffle:
@@ -1167,7 +1190,7 @@ public class PreparePartyWizard extends Wizard {
         panel.setLayout(new MigLayout("", "[grow][]"));
         panel.add(jsMaxTracks, "grow");
         panel.add(jnMaxTracks);
-        add(panel, "grow,wrap");
+        add(panel, GROW_WRAP);
       }
       add(jcbMaxSize);
       {
@@ -1175,7 +1198,7 @@ public class PreparePartyWizard extends Wizard {
         panel.setLayout(new MigLayout("", "[grow][]"));
         panel.add(jsMaxSize, "grow");
         panel.add(jnMaxSize);
-        add(panel, "grow,wrap");
+        add(panel, GROW_WRAP);
       }
       add(jcbMaxLength);
       {
@@ -1183,13 +1206,13 @@ public class PreparePartyWizard extends Wizard {
         panel.setLayout(new MigLayout("", "[grow][]"));
         panel.add(jsMaxLength, "grow");
         panel.add(jnMaxLength);
-        add(panel, "grow,wrap");
+        add(panel, GROW_WRAP);
       }
       add(jcbOneMedia);
-      add(jcbMedia, "grow,wrap");
-      add(jcbNormalizeFilename, "grow,wrap");
+      add(jcbMedia, GROW_WRAP);
+      add(jcbNormalizeFilename, GROW_WRAP);
       add(jlRatingLevel);
-      add(jsRatingLevel, "grow,wrap");
+      add(jsRatingLevel, GROW_WRAP);
 
       // store initial values and adjust values
       updateData();
