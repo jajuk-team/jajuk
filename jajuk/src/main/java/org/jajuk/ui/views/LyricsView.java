@@ -178,6 +178,7 @@ public class LyricsView extends ViewAdapter {
     jbSave.setToolTipText(Messages.getString("LyricsView.4"));
     jbSave.setVisible(false);
     jbSave.addMouseListener(new MouseAdapter() {      
+      @Override
       public void mouseClicked(final MouseEvent ev) {
         jajukLyricsProvider.setLyrics(textarea.getText());
         LyricsService.commitLyrics(jajukLyricsProvider);
@@ -189,6 +190,7 @@ public class LyricsView extends ViewAdapter {
     jbDelete.setToolTipText(Messages.getString("LyricsView.5"));
     jbDelete.setVisible(false);
     jbDelete.addMouseListener(new MouseAdapter() {      
+      @Override
       public void mouseClicked(final MouseEvent ev) {
         LyricsService.deleteLyrics(jajukLyricsProvider);
         exitEditLyrics(true);  
