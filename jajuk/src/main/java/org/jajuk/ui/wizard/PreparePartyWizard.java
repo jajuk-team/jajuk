@@ -136,6 +136,7 @@ public class PreparePartyWizard extends Wizard {
   /** Max number of tracks to queue */
   private static final String KEY_ONE_MEDIA_ON = "ONE_MEDIA_ENABLED";
   private static final String KEY_MEDIA = "ONE_MEDIA";
+  private static final String KEY_CONVERT_MEDIA = "CONVERT_MEDIA";
 
   /** Used to enable replacing characters outside the normal range */
   private static final String KEY_NORMALIZE_FILENAME_ON = "NORMALIZE_FILENAME";
@@ -168,7 +169,7 @@ public class PreparePartyWizard extends Wizard {
   public PreparePartyWizard(boolean bProvidedPlaylist) {
     super(Messages.getString("PreparePartyWizard.1"), bProvidedPlaylist ? GeneralOptionsPanel.class
         : ActionSelectionPanel.class, null, JajukMainWindow.getInstance(), LocaleManager
-        .getLocale(), 800, 500);
+        .getLocale(), 800, 550);
     super.setHeaderIcon(IconLoader.getIcon(JajukIcons.PREPARE_PARTY));
   }
 
@@ -288,7 +289,14 @@ public class PreparePartyWizard extends Wizard {
           //setProgress(100 * files.size() / count, new StringBuilder(Messages
           //    .getString("PreparePartyWizard.30")).append(' ').append(name).toString());
 
-          FileUtils.copyFile(entry.getFIO(), new File(destDir, name));
+          // check if we need to convert the file format
+          if (isTrue(KEY_ONE_MEDIA_ON) && isTrue(KEY_CONVERT_MEDIA) &&
+              !entry.getType().getExtension().equals(data.get(KEY_MEDIA))) {
+            UtilPrepareParty.convertPACPL(entry, (String)data.get(KEY_MEDIA), destDir, name);
+          } else {            
+            // do a normal copy otherwise
+            FileUtils.copyFile(entry.getFIO(), new File(destDir, name));
+          }
 
           // write playlist as well
           bw.newLine();
@@ -391,7 +399,7 @@ public class PreparePartyWizard extends Wizard {
     }
 
     // filter by media first
-    if (isTrue(KEY_ONE_MEDIA_ON)) {
+    if (isTrue(KEY_ONE_MEDIA_ON) && !isTrue(KEY_CONVERT_MEDIA)) {
       files = UtilPrepareParty.filterMedia(files, (String) data.get(KEY_MEDIA));
     }
 
@@ -433,6 +441,7 @@ public class PreparePartyWizard extends Wizard {
     storeValue(KEY_MAX_LENGTH);
     storeValue(KEY_ONE_MEDIA_ON);
     storeValue(KEY_MEDIA);
+    storeValue(KEY_CONVERT_MEDIA);
     storeValue(KEY_NORMALIZE_FILENAME_ON);
     storeValue(KEY_RATINGS_LEVEL);
   }
@@ -464,6 +473,7 @@ public class PreparePartyWizard extends Wizard {
     restoreIntValue(KEY_MAX_LENGTH);
     restoreBooleanValue(KEY_ONE_MEDIA_ON);
     restoreStringValue(KEY_MEDIA);
+    restoreBooleanValue(KEY_CONVERT_MEDIA);
     restoreBooleanValue(KEY_NORMALIZE_FILENAME_ON);
     restoreIntValue(KEY_RATINGS_LEVEL);
   }
@@ -896,6 +906,7 @@ public class PreparePartyWizard extends Wizard {
     // Limit to one type of media
     private JCheckBox jcbOneMedia;
     private JComboBox jcbMedia;
+    private JCheckBox jcbConvertMedia;
 
     private JLabel jlRatingLevel;
     private JSlider jsRatingLevel;
@@ -986,9 +997,15 @@ public class PreparePartyWizard extends Wizard {
           }
         });
         for (Type type : types) {
-          jcbMedia.addItem(type.getExtension());
+          // exclude playlists and web-radios from selection as we cannot copy those.
+          if(!type.getExtension().equals(Const.EXT_PLAYLIST) && !type.getExtension().equals(Const.EXT_RADIO)) {
+            jcbMedia.addItem(type.getExtension());
+          }
         }
         jcbMedia.setToolTipText(Messages.getString("PreparePartyWizard.17"));
+        
+        jcbConvertMedia = new JCheckBox(Messages.getString("PreparePartyWizard.34"));
+        jcbConvertMedia.setToolTipText(Messages.getString("PreparePartyWizard.35"));
       }
 
       { // Rating Level
@@ -1030,6 +1047,7 @@ public class PreparePartyWizard extends Wizard {
       // enable/disable combobox depending on checkbox
       jcbOneMedia.addActionListener(this);
       jcbMedia.addActionListener(this);
+      jcbConvertMedia.addActionListener(this);
 
       // get informed about rating level slider changes
       jsRatingLevel.addMouseWheelListener(new DefaultMouseWheelListener(jsRatingLevel));
@@ -1064,6 +1082,9 @@ public class PreparePartyWizard extends Wizard {
       }
       add(jcbOneMedia);
       add(jcbMedia, GROW_WRAP);
+      // dummy-Label to get the CheckBox for "convert" into the second column
+      add(new JLabel());
+      add(jcbConvertMedia, GROW_WRAP);
       add(jcbNormalizeFilename, GROW_WRAP);
       add(jlRatingLevel);
       add(jsRatingLevel, GROW_WRAP);
@@ -1115,9 +1136,11 @@ public class PreparePartyWizard extends Wizard {
       if (isTrue(KEY_ONE_MEDIA_ON)) {
         jcbMedia.setEnabled(true);
         jcbOneMedia.setSelected(true);
+        jcbConvertMedia.setSelected(true);
       } else {
         jcbMedia.setEnabled(false);
         jcbOneMedia.setSelected(false);
+        jcbConvertMedia.setSelected(false);
       }
       if (data.containsKey(KEY_MEDIA)) {
         jcbMedia.setSelectedItem(data.get(KEY_MEDIA));
@@ -1153,6 +1176,7 @@ public class PreparePartyWizard extends Wizard {
         // keep old value... data.remove(KEY_MEDIA);
         data.put(KEY_ONE_MEDIA_ON, Boolean.FALSE);
       }
+      data.put(KEY_CONVERT_MEDIA, jcbConvertMedia.isSelected());
 
       data.put(KEY_RATINGS_LEVEL, jsRatingLevel.getValue());
       data.put(KEY_NORMALIZE_FILENAME_ON, jcbNormalizeFilename.isSelected());
@@ -1205,19 +1229,17 @@ public class PreparePartyWizard extends Wizard {
       if (ae.getSource() == jcbMaxTracks) {
         jsMaxTracks.setEnabled(jcbMaxTracks.isSelected());
       }
-
-      if (ae.getSource() == jcbMaxSize) {
+      else if (ae.getSource() == jcbMaxSize) {
         jsMaxSize.setEnabled(jcbMaxSize.isSelected());
       }
-
-      if (ae.getSource() == jcbMaxLength) {
+      else if (ae.getSource() == jcbMaxLength) {
         jsMaxLength.setEnabled(jcbMaxLength.isSelected());
       }
-
-      if (ae.getSource() == jcbOneMedia) {
+      else if (ae.getSource() == jcbOneMedia) {
         jcbMedia.setEnabled(jcbOneMedia.isSelected());
+        jcbConvertMedia.setEnabled(jcbOneMedia.isSelected());
       }
-
+      
       updateData();
     }
 

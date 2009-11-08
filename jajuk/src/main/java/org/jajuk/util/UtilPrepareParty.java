@@ -20,12 +20,17 @@
  */
 package org.jajuk.util;
 
+import ext.ProcessLauncher;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.CharUtils;
+import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
 import org.jajuk.base.Playlist;
 import org.jajuk.base.PlaylistManager;
@@ -34,6 +39,7 @@ import org.jajuk.services.dj.AmbienceManager;
 import org.jajuk.services.dj.DigitalDJ;
 import org.jajuk.services.dj.DigitalDJManager;
 import org.jajuk.util.error.JajukException;
+import org.jajuk.util.log.Log;
 
 /**
  * 
@@ -392,4 +398,74 @@ public class UtilPrepareParty {
     return pl.getFiles();
   }
 
+  /**
+   * Call the external application "pacpl" to convert the specified file into
+   * the specified format and store the resulting file in the directory listed.
+   * 
+   * @param file
+   *          The file to convert.
+   * @param toFormat
+   *          The target format.
+   * @param toDir
+   *          The target location.
+   * @param newName
+   *          The new name to use (this is used for normalizing and numbering
+   *          the files, ...)
+   * 
+   *          TODO: currently this uses the target-location as temporary
+   *          directory if intermeidate-conversion to WAV is necessary, this
+   *          might be sub-optimal for Flash-memory where too many writes kills
+   *          the media card earlier. We probably should use the temporary
+   *          directory for convewrsion instead and do another copy at the end.
+   */
+  public static void convertPACPL(File file, String toFormat, java.io.File toDir, String newName) {
+    // first build the commandline for "pacpl"
+
+    // see the manual page of "pacpl"
+    List<String> list = new ArrayList<String>();
+
+    // basic command
+    list.add("pacpl");
+
+    // where to store the file
+    list.add("--outdir");
+    list.add(toDir.getAbsolutePath());
+
+    // specify new filename
+    list.add("--outfile");
+    list.add(newName);
+
+    // specify output format
+    list.add("--to");
+    list.add(toFormat);
+
+    // now add the actual file to convert
+    list.add(file.getFIO().getAbsolutePath());
+
+    // create streams for catching stdout and stderr
+    ByteArrayOutputStream out = new ByteArrayOutputStream();
+    ByteArrayOutputStream err = new ByteArrayOutputStream();
+
+    int ret = 0;
+    Log.debug("Using this pacpl command: {{" + list.toString() + "}}");
+    final ProcessLauncher launcher = new ProcessLauncher(out, err);
+    try {
+      ret = launcher.exec(list.toArray(new String[list.size()]), null, new java.io.File(System
+          .getProperty("java.io.tmpdir")));
+    } catch (IOException e) {
+      ret = -1;
+      Log.error(e);
+    }
+
+    // log out the results
+    if (!out.toString().isEmpty()) {
+      Log.debug("pacpl command returned to out(" + ret + "): " + out.toString());
+    } else {
+      Log.debug("pacpl command returned: " + ret);
+    }
+
+    if (!err.toString().isEmpty()) {
+      Log.debug("pacpl command returned to err: " + err.toString());
+    }
+  }
 }
