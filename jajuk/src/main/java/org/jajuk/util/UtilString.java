@@ -434,27 +434,6 @@ public final class UtilString {
     return s.replaceAll(" +", "+");
   }
 
-  /**
-   * Build the frame title from user option
-   * 
-   * @param file
-   *          played file
-   * @return built frame title
-   */
-  public static String buildTitle(final org.jajuk.base.File file) {
-    // We use trailing pattern to allow scripting like MSN plugins to
-    // detect jajuk frames and extract current track
-    String title = Conf.getString(Const.CONF_FRAME_TITLE_PATTERN);
-    title = title.replaceAll(Const.PATTERN_TRACKNAME, file.getTrack().getName());
-    title = title.replaceAll(Const.PATTERN_ALBUM, file.getTrack().getAlbum().getName2());
-    title = title.replaceAll(Const.PATTERN_AUTHOR, file.getTrack().getAuthor().getName2());
-    title = title.replaceAll(Const.PATTERN_STYLE, file.getTrack().getStyle().getName2());
-    title = title.replaceAll(Const.PATTERN_TRACKORDER, Long.toString(file.getTrack().getOrder()));
-    title = title.replaceAll(Const.PATTERN_YEAR, file.getTrack().getYear().getName2());
-    title = title.replaceAll(Const.PATTERN_DISC, Long.toString(file.getTrack().getDiscNumber()));
-    return title;
-  }
-
   /*
    * Escape (in the regexp sense) a string Source Search reserved: $ ( ) * + - . ? [ \ ] ^ { | }
    * http://mindprod.com/jgloss/regex.html

@@ -452,4 +452,25 @@ public class File extends PhysicalItem implements Comparable<File>, Const {
     return sOut;
   }
 
+
+  /**
+   * Build the frame title from user option
+   * 
+   * @param file
+   *          played file
+   * @return built frame title
+   */
+  public String buildTitle() {
+    // We use trailing pattern to allow scripting like MSN plugins to
+    // detect jajuk frames and extract current track
+    String title = Conf.getString(Const.CONF_FRAME_TITLE_PATTERN);
+    title = title.replaceAll(Const.PATTERN_TRACKNAME, getTrack().getName());
+    title = title.replaceAll(Const.PATTERN_ALBUM, getTrack().getAlbum().getName2());
+    title = title.replaceAll(Const.PATTERN_AUTHOR, getTrack().getAuthor().getName2());
+    title = title.replaceAll(Const.PATTERN_STYLE, getTrack().getStyle().getName2());
+    title = title.replaceAll(Const.PATTERN_TRACKORDER, Long.toString(getTrack().getOrder()));
+    title = title.replaceAll(Const.PATTERN_YEAR, getTrack().getYear().getName2());
+    title = title.replaceAll(Const.PATTERN_DISC, Long.toString(getTrack().getDiscNumber()));
+    return title;
+  }
 }

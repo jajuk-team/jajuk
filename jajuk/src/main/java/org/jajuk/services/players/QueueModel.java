@@ -949,6 +949,20 @@ public final class QueueModel {
   }
 
   /**
+   * Get the currently played file or null if no playing file
+   * 
+   * @return File
+   */
+  public static String getPlayingFileTitle() {
+    File file = getPlayingFile();
+    if (file != null) {
+      return file.buildTitle();
+    }
+    
+    return null;
+  }
+
+  /**
    * Get the currently played stack item or null if no playing item
    * 
    * @return stack item

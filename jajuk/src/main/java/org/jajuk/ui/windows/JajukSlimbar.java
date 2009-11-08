@@ -81,7 +81,6 @@ import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilFeatures;
-import org.jajuk.util.UtilString;
 import org.jajuk.util.log.Log;
 
 /**
@@ -452,7 +451,7 @@ public final class JajukSlimbar extends JFrame implements JajukWindow, Observer,
     if (QueueModel.isPlayingRadio()) {
       title = QueueModel.getCurrentRadio().getName();
     } else if (file != null && !QueueModel.isStopped()) {
-      title = UtilString.buildTitle(QueueModel.getPlayingFile());
+      title = QueueModel.getPlayingFileTitle();
     } else {
       title = Messages.getString("JajukWindow.18");
     }
@@ -469,12 +468,12 @@ public final class JajukSlimbar extends JFrame implements JajukWindow, Observer,
    */
   public String getPlayerInfo() {
     try {
-      String currentTrack = UtilString.buildTitle(QueueModel.getPlayingFile());
+      String currentTrack = QueueModel.getPlayingFileTitle();
       String nextTrack = "";
       try {
-        nextTrack = UtilString.buildTitle(QueueModel.getItem(QueueModel.getIndex() + 1).getFile());
+        nextTrack = QueueModel.getItem(QueueModel.getIndex() + 1).getFile().buildTitle();
       } catch (Exception e) {
-        nextTrack = UtilString.buildTitle(QueueModel.getPlanned().get(0).getFile());
+        nextTrack = QueueModel.getPlanned().get(0).getFile().buildTitle();
       }
       return "  |  Playing: " + currentTrack + "  |  Next: " + nextTrack;
     } catch (Exception e) {

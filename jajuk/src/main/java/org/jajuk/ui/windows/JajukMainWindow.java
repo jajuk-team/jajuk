@@ -41,7 +41,6 @@ import javax.swing.UIManager;
 
 import net.miginfocom.swing.MigLayout;
 
-import org.jajuk.base.File;
 import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
@@ -62,7 +61,6 @@ import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilGUI;
-import org.jajuk.util.UtilString;
 import org.jajuk.util.UtilSystem;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
@@ -411,9 +409,9 @@ public class JajukMainWindow extends JFrame implements JajukWindow, Observer {
     SwingUtilities.invokeLater(new Runnable() {
       public void run() {
         if (subject.equals(JajukEvents.FILE_LAUNCHED)) {
-          File file = QueueModel.getPlayingFile();
-          if (file != null) {
-            setTitle(UtilString.buildTitle(file));
+          String title = QueueModel.getPlayingFileTitle();
+          if (title != null) {
+            setTitle(title);
           }
         } else if (subject.equals(JajukEvents.ZERO) || subject.equals(JajukEvents.PLAYER_STOP)) {
           setTitle(Messages.getString("JajukWindow.17"));

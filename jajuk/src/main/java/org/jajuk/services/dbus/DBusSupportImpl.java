@@ -52,7 +52,6 @@ import org.jajuk.services.players.QueueModel;
 import org.jajuk.ui.actions.ActionManager;
 import org.jajuk.ui.actions.JajukActions;
 import org.jajuk.util.Const;
-import org.jajuk.util.UtilString;
 import org.jajuk.util.log.Log;
 
 /**
@@ -198,7 +197,7 @@ public class DBusSupportImpl implements DBusSupport, Observer {
     if (QueueModel.isPlayingRadio()) {
       title = QueueModel.getCurrentRadio().getName();
     } else if (file != null && !QueueModel.isStopped()) {
-      title = UtilString.buildTitle(file);
+      title = file.buildTitle();
     } else {
       title = "not playing right now...";
     }
