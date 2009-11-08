@@ -383,7 +383,7 @@ public class SessionService {
    */
   public static final File getConfFileByPath(final String sPATH) {
     if (confRoot == null) {
-      String home = System.getProperty(UtilSystem.getUserHome());
+      String home = UtilSystem.getUserHome();
       if ((getWorkspace() != null) && !getWorkspace().trim().equals("")) {
         home = getWorkspace();
       }
