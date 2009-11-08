@@ -39,7 +39,8 @@ import org.jajuk.util.error.JajukException;
  * 
  */
 public class UtilPrepareParty {
-  /** character that is used to replace if filename normalization is used.
+  /**
+   * character that is used to replace if filename normalization is used.
    * 
    */
   private static final String FILLER_CHAR = "_";
@@ -47,7 +48,7 @@ public class UtilPrepareParty {
   // private constructor to avoid instantiation
   private UtilPrepareParty() {
   }
-  
+
   /**
    * Filter provided list by removing files that have lower rating.
    * 
@@ -81,7 +82,8 @@ public class UtilPrepareParty {
    * 
    * @return The modified list.
    */
-  public static List<org.jajuk.base.File> filterMaxLength(List<org.jajuk.base.File> files, Integer time) {
+  public static List<org.jajuk.base.File> filterMaxLength(List<org.jajuk.base.File> files,
+      Integer time) {
     final List<org.jajuk.base.File> newFiles = new ArrayList<org.jajuk.base.File>();
     long accumulated = 0;
     for (org.jajuk.base.File file : files) {
@@ -110,7 +112,8 @@ public class UtilPrepareParty {
    * 
    * @return The modified list.
    */
-  public static List<org.jajuk.base.File> filterMaxSize(List<org.jajuk.base.File> files, Integer size) {
+  public static List<org.jajuk.base.File> filterMaxSize(List<org.jajuk.base.File> files,
+      Integer size) {
     final List<org.jajuk.base.File> newFiles = new ArrayList<org.jajuk.base.File>();
     long accumulated = 0;
     for (org.jajuk.base.File file : files) {
@@ -139,7 +142,8 @@ public class UtilPrepareParty {
    * 
    * @return The modified list.
    */
-  public static List<org.jajuk.base.File> filterMaxTracks(List<org.jajuk.base.File> files, Integer tracks) {
+  public static List<org.jajuk.base.File> filterMaxTracks(List<org.jajuk.base.File> files,
+      Integer tracks) {
     final List<org.jajuk.base.File> newFiles = new ArrayList<org.jajuk.base.File>();
     int count = 0;
     for (org.jajuk.base.File file : files) {
@@ -183,34 +187,7 @@ public class UtilPrepareParty {
   // map containing all the replacements that we do to "normalize" a filename
   // TODO: this should be enhanced with more entries for things like nordic
   // languages et. al.
-  private static Map<Character, String> replaceMap = new HashMap<Character, String>();
-  {
-    // German umlauts can be handled better than just using the filler_char, we
-    // can keep the filename readable
-    replaceMap.put('ä', "ae");
-    replaceMap.put('ö', "oe");
-    replaceMap.put('ü', "ue");
-    replaceMap.put('Ä', "AE");
-    replaceMap.put('Ö', "OE");
-    replaceMap.put('Ü', "UE");
-    replaceMap.put('ß', "ss");
-    
-    // some more strange characters that I found in some of my sound files
-    replaceMap.put('å', "a");
-
-    // some more special characters that can be replaced with more useful values
-    // than FILLER_CHAR
-    replaceMap.put('€', "EUR");
-    replaceMap.put('&', "and");
-
-    // replace path-separators and colon that could cause trouble on other
-    // OSes, also question mark and star can produce errors
-    replaceMap.put('/', FILLER_CHAR);
-    replaceMap.put('\\', FILLER_CHAR);
-    replaceMap.put(':', FILLER_CHAR);
-    replaceMap.put('?', FILLER_CHAR);
-    replaceMap.put('*', FILLER_CHAR);
-  }
+  private static Map<Character, String> replaceMap = null;
 
   /**
    * Normalize filenames so that they do not
@@ -218,7 +195,65 @@ public class UtilPrepareParty {
    * @param files
    * @return
    */
-  public static String normalizeFilename(String name) {
+  public static synchronized String normalizeFilename(String name) {
+    // initialize map if necessary
+    if (replaceMap == null) {
+      replaceMap = new HashMap<Character, String>();
+
+      // German umlauts can be handled better than just using the filler_char,
+      // we
+      // can keep the filename readable
+      replaceMap.put('ä', "ae");
+      replaceMap.put('å', "a");
+      replaceMap.put('ö', "oe");
+      replaceMap.put('ü', "ue");
+      replaceMap.put('Ä', "AE");
+      replaceMap.put('Ö', "OE");
+      replaceMap.put('Ü', "UE");
+      replaceMap.put('ß', "ss");
+
+      /**
+       * To add:
+       * 
+       * <code>
+           à   á   â   ã   ä   å
+           æ
+           À   Á   Â   Ã   Ä   Å
+           Æ
+           Ç
+           ç
+           Ð
+           È   É   Ê   Ë
+           è   é   ê   ë
+           Ì   Í   Î   Ï
+           ì   í   î   ï
+           Ñ
+           ñ
+           Ò   Ó   Ô   Õ   Ö
+           ò   ó   ô   õ   ö
+           Ù   Ú   Û   Ü
+           ù   ú   û   ü
+           Ý
+           ý   ÿ
+        </code>
+       */
+
+      // some more special characters that can be replaced with more useful
+      // values
+      // than FILLER_CHAR
+      replaceMap.put('€', "EUR");
+      replaceMap.put('&', "and");
+
+      // replace path-separators and colon that could cause trouble on other
+      // OSes, also question mark and star can produce errors
+      replaceMap.put('/', FILLER_CHAR);
+      replaceMap.put('\\', FILLER_CHAR);
+      replaceMap.put(':', FILLER_CHAR);
+      replaceMap.put('?', FILLER_CHAR);
+      replaceMap.put('*', FILLER_CHAR);
+      replaceMap.put('!', FILLER_CHAR);
+    }
+
     // TODO: is there some utility method that can do this?
     StringBuilder newName = new StringBuilder(name.length());
     for (int i = 0; i < name.length(); i++) {
@@ -231,7 +266,8 @@ public class UtilPrepareParty {
         // any other ASCII character is added
         newName.append(c);
       } else {
-        // everything else outside the ASCII range is simple removed to not cause any trouble
+        // everything else outside the ASCII range is simple removed to not
+        // cause any trouble
         newName.append(FILLER_CHAR);
       }
     }
@@ -286,7 +322,8 @@ public class UtilPrepareParty {
    * 
    * @return A list of files.
    */
-  public static List<org.jajuk.base.File> getPlaylistFiles(String name, Playlist tempPlaylist) throws JajukException {
+  public static List<org.jajuk.base.File> getPlaylistFiles(String name, Playlist tempPlaylist)
+      throws JajukException {
     // if we chose the temp-playlist, use this one
     if (tempPlaylist != null && name.equals(tempPlaylist.getName())) {
       return tempPlaylist.getFiles();
