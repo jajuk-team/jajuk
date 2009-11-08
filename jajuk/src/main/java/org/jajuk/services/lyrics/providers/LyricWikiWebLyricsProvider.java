@@ -85,6 +85,7 @@ public class LyricWikiWebLyricsProvider extends GenericWebLyricsProvider {
    * @see org.jajuk.services.lyrics.providers.ILyricsProvider#getWebURL(java.lang.String,
    *      java.lang.String)
    */
+  @Override
   public java.net.URL getWebURL(final String pArtist, final String pTitle) {
     String queryString = WEB_URL;
     // Replace spaces by _

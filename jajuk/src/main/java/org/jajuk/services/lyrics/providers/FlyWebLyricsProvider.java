@@ -94,6 +94,7 @@ public class FlyWebLyricsProvider extends GenericWebLyricsProvider {
    * 
    * see org.jajuk.services.lyrics.providers.GenericWebLyricsProvider#getWebURL(java.lang.String, java.lang.String)
    */
+  @Override
   public URL getWebURL(String artist, String title) {
     URL out = null;
     try {

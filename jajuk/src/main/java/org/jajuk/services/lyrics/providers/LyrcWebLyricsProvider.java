@@ -190,6 +190,7 @@ public class LyrcWebLyricsProvider extends GenericWebLyricsProvider {
    * @see org.jajuk.services.lyrics.providers.ILyricsProvider#getWebURL(java.lang.String,
    *      java.lang.String)
    */
+  @Override
   public URL getWebURL(String artist, String title) {
     // for this provider, the web url equals the web url
     return getActualURL(artist, title);
