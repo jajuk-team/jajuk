@@ -144,5 +144,7 @@ public enum JajukEvents {
   // Thumb created
   THUMB_CREATED,
   // Exiting Jajuk
-  EXITING
+  EXITING,
+  // D-Bus command that shows the notification with the currently played file
+  SHOW_CURRENTLY_PLAYING
 }

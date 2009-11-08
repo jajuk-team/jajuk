@@ -82,7 +82,10 @@ public interface DBusSupport extends DBusInterface {
   @org.freedesktop.DBus.Description("Sets the rating of the currently played track so that it is not automatically played anymore. This is a toggle, the ban will be lifted if invoked on a file that is currently 'banned'")
   void banCurrent() throws Exception;
 
-  /*
+  @org.freedesktop.DBus.Description("Reports the currently played file via the configured notification system, i.e. usually some sort of popup in the Systray-Area.")
+  void showCurrentlyPlaying() throws Exception;
+
+    /*
    * Actions that are not supported (yet): REPEAT_MODE, SHUFFLE_MODE,
    * CONTINUE_MODE, INTRO_MODE, DEVICE_NEW, DEVICE_DELETE, DEVICE_PROPERTIES,
    * DEVICE_MOUNT, DEVICE_UNMOUNT, DEVICE_TEST, DEVICE_REFRESH, DEVICE_SYNCHRO,

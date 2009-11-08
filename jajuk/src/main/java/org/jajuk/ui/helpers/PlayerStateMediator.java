@@ -93,6 +93,7 @@ public class PlayerStateMediator implements Observer {
     eventSubjectSet.add(JajukEvents.WEBRADIO_LAUNCHED);
     eventSubjectSet.add(JajukEvents.VOLUME_CHANGED);
     eventSubjectSet.add(JajukEvents.MUTE_STATE);
+    eventSubjectSet.add(JajukEvents.SHOW_CURRENTLY_PLAYING);
 
     // for notification display
     eventSubjectSet.add(JajukEvents.FILE_LAUNCHED);
@@ -223,6 +224,15 @@ public class PlayerStateMediator implements Observer {
 
             File file = FileManager.getInstance().getFileByID(id);
             Log.debug("Got update for new file launched, item: {{" + file + "}}. Sending text: {{"
+                + QueueModel.getCurrentFileTitle() + "}}");
+            // notifier.notify(Messages.getString("JajukWindow.39"),
+            // UtilString.buildTitle(file));
+            notifier.notify(Messages.getString("JajukWindow.39"), QueueModel.getCurrentFileTitle());
+          }
+        } else if (subject.equals(JajukEvents.SHOW_CURRENTLY_PLAYING)) {
+          ISystemNotificator notifier = SystemNotificatorFactory.getSystemNotificator();
+          if (notifier != null) {
+            Log.debug("Got request to notify with current file information. Sending text: {{"
                 + QueueModel.getCurrentFileTitle() + "}}");
             // notifier.notify(Messages.getString("JajukWindow.39"),
             // UtilString.buildTitle(file));

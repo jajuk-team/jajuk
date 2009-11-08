@@ -209,6 +209,12 @@ public class DBusSupportImpl implements DBusSupport, Observer {
     ActionManager.getAction(JajukActions.BAN).perform(null);
   }
 
+  public void showCurrentlyPlaying() throws Exception {
+    // simply raise the event so any registered handler will take care of it
+    Log.info("Invoking D-Bus action for 'showCurrentlyPlaying'");
+    ObservationManager.notify(new JajukEvent(JajukEvents.SHOW_CURRENTLY_PLAYING));
+  }
+  
   /**
    * Required method for DBusInterface
    */
