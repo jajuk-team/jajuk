@@ -147,16 +147,16 @@ public final class LyricsService {
   }
   
   public static void commitLyrics(JajukLyricsProvider provider) {
-    boolean returnValue = false;
+    boolean commitOK = false;
     Log.debug("Commiting lyrics for file {{" + provider + "}}");
     for (final ILyricsPersister persister : getPersisters()) {    
-      returnValue = persister.commitLyrics(provider);
-      if (returnValue) {
+      commitOK = persister.commitLyrics(provider);
+      if (commitOK) {
         break;
       }
     }
     
-    if (returnValue) {
+    if (commitOK) {
       Log.warn("Lyrics successfully commited to " + provider.getFile().getName());
     }
     else {

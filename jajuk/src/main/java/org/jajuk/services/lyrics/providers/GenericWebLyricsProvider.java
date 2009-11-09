@@ -125,4 +125,11 @@ public abstract class GenericWebLyricsProvider implements ILyricsProvider {
    */
   public abstract java.net.URL getWebURL(String artist, String title);
 
+  /**
+   * @param artist
+   * @param title
+   * @return
+   */
+  public abstract String getLyrics(String artist, String title);
+
 }

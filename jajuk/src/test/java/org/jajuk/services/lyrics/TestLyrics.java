@@ -33,11 +33,14 @@ import java.util.List;
 import org.apache.commons.lang.StringUtils;
 import org.jajuk.JUnitHelpers;
 import org.jajuk.JajukTestCase;
+import org.jajuk.base.Author;
+import org.jajuk.base.Track;
 import org.jajuk.services.core.SessionService;
-import org.jajuk.services.lyrics.providers.FlyProvider;
+import org.jajuk.services.lyrics.providers.FlyWebLyricsProvider;
+import org.jajuk.services.lyrics.providers.GenericWebLyricsProvider;
 import org.jajuk.services.lyrics.providers.ILyricsProvider;
-import org.jajuk.services.lyrics.providers.LyrcProvider;
-import org.jajuk.services.lyrics.providers.LyricWikiProvider;
+import org.jajuk.services.lyrics.providers.LyrcWebLyricsProvider;
+import org.jajuk.services.lyrics.providers.LyricWikiWebLyricsProvider;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.DownloadManager;
@@ -92,7 +95,7 @@ public class TestLyrics extends JajukTestCase {
   /**
    * Test provider response to get lyrics (shared code)
    */
-  private void testService(ILyricsProvider provider) {
+  private void testWebService(GenericWebLyricsProvider provider) {
     String lyrics = provider.getLyrics(ARTIST, TITLE);
     Log.debug("Resulting Lyrics(" + provider.getProviderHostname() + "): " + lyrics);
     assertTrue("Lyrics(" + provider.getProviderHostname() + "): " + lyrics, StringUtils
@@ -103,7 +106,7 @@ public class TestLyrics extends JajukTestCase {
   /**
    * Test provider web site url (shared code)
    */
-  private void testWeb(ILyricsProvider provider) throws IOException {
+  private void testWeb(GenericWebLyricsProvider provider) throws IOException {
     URL url = provider.getWebURL(ARTIST, TITLE);
     assertNotNull(url);
     DownloadManager.download(url, tmp);
@@ -131,8 +134,8 @@ public class TestLyrics extends JajukTestCase {
    * @throws Exception 
    */
   public void testFlyService() throws Exception {
-    ILyricsProvider provider = new FlyProvider();
-    testService(provider);
+    GenericWebLyricsProvider provider = new FlyWebLyricsProvider();
+    testWebService(provider);
     
     // delay a bit as LyricsFly puts a min. delay before the next request is allowed
     Thread.sleep(FLY_DELAY);
@@ -228,7 +231,7 @@ public class TestLyrics extends JajukTestCase {
    * Test Fly web url availability
    */
   public void testFlyWeb() throws Exception {
-    ILyricsProvider provider = new FlyProvider();
+    GenericWebLyricsProvider provider = new FlyWebLyricsProvider();
     testWeb(provider);
     
     // delay a bit as LyricsFly puts a min. delay before the next request is allowed
@@ -239,8 +242,8 @@ public class TestLyrics extends JajukTestCase {
    * Test LyricWiki provider response to get lyrics
    */
   public void testLyricWikiService() {
-    ILyricsProvider provider = new LyricWikiProvider();
-    testService(provider);
+    GenericWebLyricsProvider provider = new LyricWikiWebLyricsProvider();
+    testWebService(provider);
   }
 
   /*public void testLyricWikiServiceDetails() throws Exception {
@@ -297,7 +300,7 @@ public class TestLyrics extends JajukTestCase {
    * Test LyricWiki web url availability
    */
   public void testLyricWikiWeb() throws Exception {
-    ILyricsProvider provider = new LyricWikiProvider();
+    GenericWebLyricsProvider provider = new LyricWikiWebLyricsProvider();
     testWeb(provider);
   }
 
@@ -306,20 +309,27 @@ public class TestLyrics extends JajukTestCase {
    * remove it from the providers list to allow the others to run
    * @throws Exception 
    */
-  public void testProvidersOrder() throws Exception {
-    LyricsService.getLyrics(ARTIST, TITLE);
+  public void testWebProvidersOrder() throws Exception {
+    //Removing TagProvider and TxtProvider
+    LyricsService.getProviders().remove(0);
+    LyricsService.getProviders().remove(0);
+    
+    org.jajuk.base.File dummyFile = new org.jajuk.base.File("1", "test", null,
+        new Track("1", TITLE, null, null, new Author("1", ARTIST), 0, null, 0, null, 0),
+        120l, 70l);
+    LyricsService.getLyrics(dummyFile);
     assertTrue("Instance: " + LyricsService.getCurrentProvider().getClass() + " but expected LyricWikiProvider", LyricsService
-        .getCurrentProvider() instanceof LyricWikiProvider);
+        .getCurrentProvider() instanceof LyricWikiWebLyricsProvider);
 
     LyricsService.getProviders().remove(0);
-    LyricsService.getLyrics(ARTIST, TITLE);
+    LyricsService.getLyrics(dummyFile);
     assertTrue("Instance: " + LyricsService.getCurrentProvider().getClass() + " but expected FlyProvider", LyricsService
-        .getCurrentProvider() instanceof FlyProvider);
+        .getCurrentProvider() instanceof FlyWebLyricsProvider);
 
     LyricsService.getProviders().remove(0);
-    LyricsService.getLyrics(ARTIST, TITLE);
+    LyricsService.getLyrics(dummyFile);
     assertTrue("Instance: " + LyricsService.getCurrentProvider().getClass() + " but expected LyrcProvider", LyricsService
-        .getCurrentProvider() instanceof LyrcProvider);
+        .getCurrentProvider() instanceof LyrcWebLyricsProvider);
     
     // delay a bit as LyricsFly puts a min. delay before the next request is allowed
     Thread.sleep(FLY_DELAY);
