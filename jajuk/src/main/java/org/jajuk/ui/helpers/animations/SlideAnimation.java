@@ -42,7 +42,6 @@ public class SlideAnimation extends AbstractAnimation {
   private Rectangle start;
   private Rectangle windowBounds;
 
-  
   public SlideAnimation(Window window, ScreenPosition screenPosition,
       StartingPosition startingPosition, Direction direction) {
     super(window);
@@ -51,7 +50,9 @@ public class SlideAnimation extends AbstractAnimation {
     this.direction = direction;
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see org.jajuk.ui.helpers.animations.IAnimation#animate(int)
    */
   @Override
@@ -203,7 +204,10 @@ public class SlideAnimation extends AbstractAnimation {
         Rectangle bounds = getDesktopBounds();
         Rectangle position = new Rectangle();
         position.x = bounds.x + bounds.width - size.width;
-        position.y = bounds.y + bounds.height - size.height;
+        // Remove 50 px is useful under Linux as we can't get actual desktop
+        // insets and popup is too low in most cases (see
+        // http://forums.sun.com/thread.jspa?threadID=5169228)
+        position.y = bounds.y + bounds.height - (size.height + 50);
         position.width = size.width;
         position.height = size.height;
         return position;
