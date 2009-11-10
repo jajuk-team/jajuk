@@ -65,31 +65,31 @@ import org.jajuk.util.log.Log;
  */
 public abstract class Wizard implements ActionListener, WindowListener {
   /** Wizard name */
-  String sName;
+  private String sName;
 
   /** Current screen */
-  Screen current;
+  private Screen current;
 
   /** Wizard left side icon */
-  ImageIcon icon;
+  private ImageIcon icon;
 
   /** Wizard data */
-  protected static Map<String, Object> data = new HashMap<String, Object>(10);
+  protected final static Map<String, Object> data = new HashMap<String, Object>(10);
 
   /** Wizard header */
-  Header header;
+  private Header header;
 
   /** Wizard action Panel */
-  ActionsPanel actions;
+  private ActionsPanel actions;
 
   /** Wizard dialog */
-  JDialog dialog;
+  private JDialog dialog;
 
   /** Parent window */
-  Frame parentWindow;
+  private Frame parentWindow;
 
   /** Screens instance repository */
-  Map<Class<? extends Screen>, Screen> hmClassScreens = new HashMap<Class<? extends Screen>, Screen>(
+  private Map<Class<? extends Screen>, Screen> hmClassScreens = new HashMap<Class<? extends Screen>, Screen>(
       10);
 
   /** Default Wizard size */
