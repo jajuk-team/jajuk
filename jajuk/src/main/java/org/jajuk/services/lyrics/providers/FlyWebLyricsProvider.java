@@ -62,6 +62,7 @@ public class FlyWebLyricsProvider extends GenericWebLyricsProvider {
    * @see org.jajuk.services.lyrics.providers.ILyricsProvider#getLyrics(java.lang.String,
    *      java.lang.String)
    */
+  @Override
   public String getLyrics(String artist, String title) {
     String lyrics = null;
     try {

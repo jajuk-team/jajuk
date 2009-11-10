@@ -54,6 +54,7 @@ public class LyrcWebLyricsProvider extends GenericWebLyricsProvider {
    * @see ext.services.lyrics.providers.GenericProvider#getLyrics(java.lang.String,
    *      java.lang.String)
    */
+  @Override
   public String getLyrics(final String artist, final String title) {
     String html = callProvider(artist, title);
     if (html == null) {
