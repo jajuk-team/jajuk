@@ -398,6 +398,46 @@ public class UtilPrepareParty {
     return pl.getFiles();
   }
 
+  public static boolean checkPACPL() {
+    // here we just want to verify that we find pacpl
+    // first build the commandline for "pacpl --help"
+
+    // see the manual page of "pacpl"
+    List<String> list = new ArrayList<String>();
+    list.add("pacpl");
+    list.add("--help");
+
+    // create streams for catching stdout and stderr
+    ByteArrayOutputStream out = new ByteArrayOutputStream();
+    ByteArrayOutputStream err = new ByteArrayOutputStream();
+
+    int ret = 0;
+    final ProcessLauncher launcher = new ProcessLauncher(out, err, 10000);
+    try {
+      ret = launcher.exec(list.toArray(new String[list.size()]));
+    } catch (IOException e) {
+      ret = -1;
+      Log
+          .debug("Exception while checking for 'pacpl', cannot use functionality to convert media files while copying: "
+              + e.getMessage());
+    }
+
+    // if we do not find the application or if we got an error, log some details
+    // and disable notification support
+    if (ret != 0) {
+      // log out the results
+      Log.debug("pacpl command returned to out(" + ret + "): " + out.toString());
+      Log.debug("pacpl command returned to err: " + err.toString());
+
+      Log
+          .info("Cannot use functionality to convert media files, application 'pacpl' seems to be not available correctly.");
+      return false;
+    }
+
+    // pacpl is enabled and seems to be supported by the OS
+    return true;
+  }
+  
   /**
    * Call the external application "pacpl" to convert the specified file into
    * the specified format and store the resulting file in the directory listed.
@@ -412,13 +452,16 @@ public class UtilPrepareParty {
    *          The new name to use (this is used for normalizing and numbering
    *          the files, ...)
    * 
-   *          TODO: currently this uses the target-location as temporary
-   *          directory if intermeidate-conversion to WAV is necessary, this
-   *          might be sub-optimal for Flash-memory where too many writes kills
-   *          the media card earlier. We probably should use the temporary
-   *          directory for convewrsion instead and do another copy at the end.
+   * @return 0 if processing was OK, otherwise the return code indicates the
+   *         return code provided by the pacpl script
+   * 
+   *         TODO: currently this uses the target-location as temporary
+   *         directory if intermediate-conversion to WAV is necessary, this
+   *         might be sub-optimal for Flash-memory where too many writes kills
+   *         the media card earlier. We probably should use the temporary
+   *         directory for conversion instead and do another copy at the end.
    */
-  public static void convertPACPL(File file, String toFormat, java.io.File toDir, String newName) {
+  public static int convertPACPL(File file, String toFormat, java.io.File toDir, String newName) {
     // first build the commandline for "pacpl"
 
     // see the manual page of "pacpl"
@@ -467,5 +510,7 @@ public class UtilPrepareParty {
     if (!err.toString().isEmpty()) {
       Log.debug("pacpl command returned to err: " + err.toString());
     }
+
+    return ret;
   }
 }

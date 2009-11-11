@@ -19,12 +19,17 @@
  */
 package org.jajuk.ui.wizard;
 
+import java.awt.Desktop;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.Comparator;
@@ -152,6 +157,7 @@ public class PreparePartyWizard extends Wizard {
   private static Playlist tempPlaylist;
 
   private static boolean bPropertiesRestored = false;
+  private static boolean bPACPLAvailable = false;
 
   private enum Mode {
     DJ, Ambience, Shuffle, Playlist, BestOf, Novelties, Queue, Bookmarks, ProvidedPlaylist
@@ -171,6 +177,9 @@ public class PreparePartyWizard extends Wizard {
         : ActionSelectionPanel.class, null, JajukMainWindow.getInstance(), LocaleManager
         .getLocale(), 800, 550);
     super.setHeaderIcon(IconLoader.getIcon(JajukIcons.PREPARE_PARTY));
+    
+    // check if pacpl can be used, do it every time the dialog starts as the user might have installed it by now
+    bPACPLAvailable = UtilPrepareParty.checkPACPL();
   }
 
   /**
@@ -262,6 +271,7 @@ public class PreparePartyWizard extends Wizard {
 
     // start copying and create a playlist on the fly
     UtilGUI.waiting();
+    int convert_errors = 0;
     final java.io.File file = new java.io.File(destDir.getAbsolutePath() + "/playlist.m3u");
     try {
       final BufferedWriter bw = new BufferedWriter(new FileWriter(file));
@@ -292,7 +302,10 @@ public class PreparePartyWizard extends Wizard {
           // check if we need to convert the file format
           if (isTrue(KEY_ONE_MEDIA_ON) && isTrue(KEY_CONVERT_MEDIA) &&
               !entry.getType().getExtension().equals(data.get(KEY_MEDIA))) {
-            UtilPrepareParty.convertPACPL(entry, (String)data.get(KEY_MEDIA), destDir, name);
+            int ret = UtilPrepareParty.convertPACPL(entry, (String)data.get(KEY_MEDIA), destDir, name);
+            if(ret != 0) { 
+              convert_errors++;
+            }
           } else {            
             // do a normal copy otherwise
             FileUtils.copyFile(entry.getFIO(), new File(destDir, name));
@@ -337,6 +350,11 @@ public class PreparePartyWizard extends Wizard {
           Messages.getString("PreparePartyWizard.23")).append(" ").append(
           ((refreshTime < 1000) ? refreshTime + " ms." : refreshTime / 1000 + " s."));
 
+      // inform user if converting did not work
+      if(convert_errors > 0) {
+        sbOut.append("\n").append(Integer.toString(convert_errors)).append(Messages.getString("PrepareWizard.36"));
+      }
+      
       String message = sbOut.toString();
 
       Log.debug(message);
@@ -882,7 +900,22 @@ public class PreparePartyWizard extends Wizard {
    * General options panel
    */
   public static class GeneralOptionsPanel extends Screen implements ActionListener, ChangeListener,
-      ClearPoint {
+      ClearPoint, MouseListener {
+
+    /**
+     * Constant for MigLayout
+     */
+    private static final String GROW = "grow";
+
+    /**
+     * Constant for MigLayout
+     */
+    private static final String GROW_RIGHT = "[grow][]";
+
+    /**
+     * Constant for MigLayout
+     */
+    private static final String LABEL_WIDTH = "width 40:40:";
 
     private static final long serialVersionUID = 1L;
 
@@ -907,6 +940,7 @@ public class PreparePartyWizard extends Wizard {
     private JCheckBox jcbOneMedia;
     private JComboBox jcbMedia;
     private JCheckBox jcbConvertMedia;
+    private JLabel jlConvertMedia;
 
     private JLabel jlRatingLevel;
     private JSlider jsRatingLevel;
@@ -942,6 +976,7 @@ public class PreparePartyWizard extends Wizard {
         jsMaxTracks = new JSlider(0, 5000, 100);
         jnMaxTracks = new JLabel(NO_VALUE);
         jnMaxTracks.setBorder(new BevelBorder(BevelBorder.LOWERED));
+        jnMaxTracks.setHorizontalAlignment(JLabel.RIGHT);
         jsMaxTracks.setMajorTickSpacing(100);
         jsMaxTracks.setMinorTickSpacing(10);
         jsMaxTracks.setPaintTicks(false);
@@ -956,6 +991,7 @@ public class PreparePartyWizard extends Wizard {
         jsMaxSize = new JSlider(0, 5000, 100);
         jnMaxSize = new JLabel(NO_VALUE);
         jnMaxSize.setBorder(new BevelBorder(BevelBorder.LOWERED));
+        jnMaxSize.setHorizontalAlignment(JLabel.RIGHT);
         jsMaxSize.setMajorTickSpacing(100);
         jsMaxSize.setMinorTickSpacing(10);
         jsMaxSize.setPaintTicks(false);
@@ -970,6 +1006,7 @@ public class PreparePartyWizard extends Wizard {
         jsMaxLength = new JSlider(0, 5000, 100);
         jnMaxLength = new JLabel(NO_VALUE);
         jnMaxLength.setBorder(new BevelBorder(BevelBorder.LOWERED));
+        jnMaxLength.setHorizontalAlignment(JLabel.RIGHT);
         jsMaxLength.setMajorTickSpacing(100);
         jsMaxLength.setMinorTickSpacing(10);
         jsMaxLength.setPaintTicks(false);
@@ -1006,6 +1043,9 @@ public class PreparePartyWizard extends Wizard {
         
         jcbConvertMedia = new JCheckBox(Messages.getString("PreparePartyWizard.34"));
         jcbConvertMedia.setToolTipText(Messages.getString("PreparePartyWizard.35"));
+        
+        // to show help and allow clicking for viewing the related web-page
+        jlConvertMedia = new JLabel(Messages.getString("PreparePartyWizard.37"));
       }
 
       { // Rating Level
@@ -1048,7 +1088,8 @@ public class PreparePartyWizard extends Wizard {
       jcbOneMedia.addActionListener(this);
       jcbMedia.addActionListener(this);
       jcbConvertMedia.addActionListener(this);
-
+      jlConvertMedia.addMouseListener(this);
+      
       // get informed about rating level slider changes
       jsRatingLevel.addMouseWheelListener(new DefaultMouseWheelListener(jsRatingLevel));
       jsRatingLevel.addChangeListener(this);
@@ -1059,25 +1100,25 @@ public class PreparePartyWizard extends Wizard {
       add(jcbMaxTracks);
       {
         JPanel panel = new JPanel();
-        panel.setLayout(new MigLayout("", "[grow][]"));
-        panel.add(jsMaxTracks, "grow");
-        panel.add(jnMaxTracks);
+        panel.setLayout(new MigLayout("", GROW_RIGHT));
+        panel.add(jsMaxTracks, GROW);
+        panel.add(jnMaxTracks, LABEL_WIDTH);
         add(panel, GROW_WRAP);
       }
       add(jcbMaxSize);
       {
         JPanel panel = new JPanel();
-        panel.setLayout(new MigLayout("", "[grow][]"));
-        panel.add(jsMaxSize, "grow");
-        panel.add(jnMaxSize);
+        panel.setLayout(new MigLayout("", GROW_RIGHT));
+        panel.add(jsMaxSize, GROW);
+        panel.add(jnMaxSize, LABEL_WIDTH);
         add(panel, GROW_WRAP);
       }
       add(jcbMaxLength);
       {
         JPanel panel = new JPanel();
-        panel.setLayout(new MigLayout("", "[grow][]"));
-        panel.add(jsMaxLength, "grow");
-        panel.add(jnMaxLength);
+        panel.setLayout(new MigLayout("", GROW_RIGHT));
+        panel.add(jsMaxLength, GROW);
+        panel.add(jnMaxLength, LABEL_WIDTH);
         add(panel, GROW_WRAP);
       }
       add(jcbOneMedia);
@@ -1085,6 +1126,8 @@ public class PreparePartyWizard extends Wizard {
       // dummy-Label to get the CheckBox for "convert" into the second column
       add(new JLabel());
       add(jcbConvertMedia, GROW_WRAP);
+      add(new JLabel());
+      add(jlConvertMedia, GROW_WRAP);
       add(jcbNormalizeFilename, GROW_WRAP);
       add(jlRatingLevel);
       add(jsRatingLevel, GROW_WRAP);
@@ -1136,12 +1179,24 @@ public class PreparePartyWizard extends Wizard {
       if (isTrue(KEY_ONE_MEDIA_ON)) {
         jcbMedia.setEnabled(true);
         jcbOneMedia.setSelected(true);
-        jcbConvertMedia.setSelected(true);
+        jcbConvertMedia.setEnabled(true);
       } else {
         jcbMedia.setEnabled(false);
         jcbOneMedia.setSelected(false);
+        jcbConvertMedia.setEnabled(false);
+      }
+      // disable media conversion if pacpl is not found
+      if(!bPACPLAvailable) {
+        jcbConvertMedia.setEnabled(false);
+      }
+      
+      // don't set Convert to on from data if PACPL became unavailable 
+      if(isTrue(KEY_CONVERT_MEDIA) && bPACPLAvailable) {
+        jcbConvertMedia.setSelected(true);
+      } else {
         jcbConvertMedia.setSelected(false);
       }
+
       if (data.containsKey(KEY_MEDIA)) {
         jcbMedia.setSelectedItem(data.get(KEY_MEDIA));
       } else {
@@ -1234,8 +1289,7 @@ public class PreparePartyWizard extends Wizard {
       }
       else if (ae.getSource() == jcbMaxLength) {
         jsMaxLength.setEnabled(jcbMaxLength.isSelected());
-      }
-      else if (ae.getSource() == jcbOneMedia) {
+      } else if (ae.getSource() == jcbOneMedia) {
         jcbMedia.setEnabled(jcbOneMedia.isSelected());
         jcbConvertMedia.setEnabled(jcbOneMedia.isSelected());
       }
@@ -1264,6 +1318,58 @@ public class PreparePartyWizard extends Wizard {
       } else if (ie.getSource() == jsRatingLevel) {
         updateData();
       }
+    }
+
+    /* (non-Javadoc)
+     * @see java.awt.event.MouseListener#mouseClicked(java.awt.event.MouseEvent)
+     */
+    @Override
+    public void mouseClicked(MouseEvent e) {
+      if (e.getSource() == jlConvertMedia) {
+        try {
+          Desktop.getDesktop().browse(new URI("http://jajuk.info/index.php/Installing_Perl_Audio_Converter"));
+        } catch (IOException ex) {
+          Log.error(ex);
+        } catch (URISyntaxException ex) {
+          Log.error(ex);
+        }
+      }      
+    }
+
+    /* (non-Javadoc)
+     * @see java.awt.event.MouseListener#mouseEntered(java.awt.event.MouseEvent)
+     */
+    @Override
+    public void mouseEntered(MouseEvent e) {
+      // nothing to do here...
+      
+    }
+
+    /* (non-Javadoc)
+     * @see java.awt.event.MouseListener#mouseExited(java.awt.event.MouseEvent)
+     */
+    @Override
+    public void mouseExited(MouseEvent e) {
+      // nothing to do here...
+      
+    }
+
+    /* (non-Javadoc)
+     * @see java.awt.event.MouseListener#mousePressed(java.awt.event.MouseEvent)
+     */
+    @Override
+    public void mousePressed(MouseEvent e) {
+      // nothing to do here...
+      
+    }
+
+    /* (non-Javadoc)
+     * @see java.awt.event.MouseListener#mouseReleased(java.awt.event.MouseEvent)
+     */
+    @Override
+    public void mouseReleased(MouseEvent e) {
+      // nothing to do here...
+      
     }
   }
 
@@ -1313,7 +1419,7 @@ public class PreparePartyWizard extends Wizard {
       // Add items
       setLayout(new MigLayout("insets 10,gapx 10,gapy 15", "[][grow]"));
       add(jlFileSelection);
-      add(jbFileSelection, "grow,wrap");
+      add(jbFileSelection, "wrap,center");
       add(jlSelectedFileText);
       add(jlSelectedFile, "grow,wrap");
     }
