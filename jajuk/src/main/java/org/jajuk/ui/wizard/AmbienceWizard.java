@@ -147,16 +147,16 @@ public class AmbienceWizard extends Wizard {
       if (styles.size() == 0) {
         return;
       }
-      String sText = "";
+      StringBuilder sText = new StringBuilder();
       // reset old styles
       ambience.setStyles(new HashSet<Style>(10));
       for (final Style style : styles) {
         ambience.addStyle(style);
-        sText += style.getName2() + ',';
+        sText.append(style.getName2()).append(',');
       }
-      sText = sText.substring(0, sText.length() - 1);
+      sText.deleteCharAt(sText.length() - 1);
       // Set button text
-      ((JButton) widgets[row][2]).setText(sText);
+      ((JButton) widgets[row][2]).setText(sText.toString());
       // if we have ambience name and some styles, register the
       // ambience
       if ((ambience.getName().length() > 0) && (ambience.getStyles().size() > 0)) {

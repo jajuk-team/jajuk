@@ -53,6 +53,24 @@ import org.jfree.ui.about.SystemPropertiesPanel;
  */
 public class AboutWindow extends JajukJDialog {
 
+  /**
+   * Handle clicking on the license text.
+   */
+  private static final class LicenseMouseListener extends MouseAdapter {
+    @Override
+    public void mouseClicked(MouseEvent me) {
+      if (me.getClickCount() == 1
+          && ((me.getModifiersEx() & MouseEvent.SHIFT_DOWN_MASK) == MouseEvent.SHIFT_DOWN_MASK)
+          && ((me.getModifiersEx() & MouseEvent.CTRL_DOWN_MASK) == MouseEvent.CTRL_DOWN_MASK)) {
+        try {
+          UtilGUI.showPictureDialog("http://www.jajuk.info/images/flbf.jpg");
+        } catch (Exception e) {
+          Log.debug("Ignoring exception in AboutWindow: ", e);
+        }
+      }
+    }
+  }
+
   private static final long serialVersionUID = 1L;
 
   /** License panel */
@@ -99,20 +117,7 @@ public class AboutWindow extends JajukJDialog {
     jta.setWrapStyleWord(true);
     jta.setCaretPosition(0);
     jta.setEditable(false);
-    jta.addMouseListener(new MouseAdapter() {
-      @Override
-      public void mouseClicked(MouseEvent me) {
-        if (me.getClickCount() == 1
-            && ((me.getModifiersEx() & MouseEvent.SHIFT_DOWN_MASK) == MouseEvent.SHIFT_DOWN_MASK)
-            && ((me.getModifiersEx() & MouseEvent.CTRL_DOWN_MASK) == MouseEvent.CTRL_DOWN_MASK)) {
-          try {
-            UtilGUI.showPictureDialog("http://www.jajuk.info/images/flbf.jpg");
-          } catch (Exception e) {
-            Log.debug("Ignoring exception in AboutWindow: ", e);
-          }
-        }
-      }
-    });
+    jta.addMouseListener(new LicenseMouseListener());
 
     jpLicence.add(new JScrollPane(jta));
     jtp = new JTabbedPane();

@@ -55,7 +55,7 @@ public class WindowGlobalKeystrokeManager {
 
   private static WindowGlobalKeystrokeManager self;
 
-  /** List of action to enable globaly * */
+  /** List of actions to enable globaly * */
   private JajukActions[] globalActions = new JajukActions[] { NEXT_ALBUM, PREVIOUS_ALBUM,
       PREVIOUS_TRACK, NEXT_TRACK, MUTE_STATE, PAUSE_RESUME_TRACK, STOP_TRACK, DECREASE_VOLUME,
       INCREASE_VOLUME, SHUFFLE_MODE, REPEAT_MODE, REWIND_TRACK, FORWARD_TRACK, HELP_REQUIRED };
