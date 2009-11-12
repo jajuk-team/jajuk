@@ -398,13 +398,59 @@ public class UtilPrepareParty {
     return pl.getFiles();
   }
 
-  public static boolean checkPACPL() {
+  private static List<String> splitCommand(String command) {
+    List<String> list = new ArrayList<String>();
+
+    StringBuilder word = new StringBuilder();
+    boolean quote = false;
+    int i = 0;
+    while (i < command.length()) {
+      char c = command.charAt(i);
+      // word boundary
+      if (Character.isWhitespace(c) && !quote) {
+        i++;
+
+        // finish current word
+        list.add(word.toString());
+        word = new StringBuilder();
+
+        // skip more whitespaces
+        while (Character.isWhitespace(command.charAt(i)) && i < command.length()) {
+          i++;
+        }
+      } else {
+        // on quote we either start or end a quoted string
+        if (c == '"') {
+          quote = !quote;
+        }
+
+        word.append(c);
+
+        i++;
+      }
+    }
+
+    // finish last word
+    if (word.length() > 0) {
+      list.add(word.toString());
+    }
+
+    return list;
+  }
+
+  /**
+   * Check if the Perl Audio Converter can be used
+   * 
+   * @param pacpl
+   *          The command-string to call pacpl, e.g. "pacpl" or "perl
+   *          C:\pacpl\pacpl", ...
+   */
+  public static boolean checkPACPL(String pacpl) {
     // here we just want to verify that we find pacpl
     // first build the commandline for "pacpl --help"
 
     // see the manual page of "pacpl"
-    List<String> list = new ArrayList<String>();
-    list.add("pacpl");
+    List<String> list = splitCommand(pacpl);
     list.add("--help");
 
     // create streams for catching stdout and stderr
@@ -437,11 +483,14 @@ public class UtilPrepareParty {
     // pacpl is enabled and seems to be supported by the OS
     return true;
   }
-  
+
   /**
    * Call the external application "pacpl" to convert the specified file into
    * the specified format and store the resulting file in the directory listed.
    * 
+   * @param pacpl
+   *          The command-string to call pacpl, e.g. "pacpl" or "perl
+   *          C:\pacpl\pacpl", ...
    * @param file
    *          The file to convert.
    * @param toFormat
@@ -461,14 +510,15 @@ public class UtilPrepareParty {
    *         the media card earlier. We probably should use the temporary
    *         directory for conversion instead and do another copy at the end.
    */
-  public static int convertPACPL(File file, String toFormat, java.io.File toDir, String newName) {
+  public static int convertPACPL(String pacpl, File file, String toFormat, java.io.File toDir,
+      String newName) {
     // first build the commandline for "pacpl"
 
     // see the manual page of "pacpl"
-    List<String> list = new ArrayList<String>();
 
-    // basic command
-    list.add("pacpl");
+    // first split the command itself with observing quotes, splitting is
+    // necessary because it can be something like "perl <locatoin>/pacpl"
+    List<String> list = splitCommand(pacpl);
 
     // where to store the file
     list.add("--outdir");
