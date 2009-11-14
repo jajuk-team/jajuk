@@ -91,6 +91,7 @@ public class FindDuplicateTracksAction extends JajukAction {
             final JOptionPane optionPane = UtilGUI.getNarrowOptionPane(100);
             final JDialog duplicateFiles = optionPane.createDialog(null, Messages
                 .getString("FindDuplicateTracksAction.3"));
+            duplicateFiles.setResizable(true);
 
             JButton jbClose = new JButton(Messages.getString("Close"));
             jbClose.addActionListener(new ActionListener() {
