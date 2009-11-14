@@ -486,6 +486,14 @@ public class PreparePartyWizard extends Wizard {
    * system.
    */
   private static void restoreProperties() {
+    // only restore once to not overwrite, due to the Wizard implementation we
+    // don't know for sure when this is called;
+    if (bPropertiesRestored) {
+      return;
+    }
+
+    bPropertiesRestored = true;
+
     restoreModeAndItemValue();
     restoreStringValue(KEY_DEST_PATH);
     restoreBooleanValue(KEY_MAX_TRACKS_ON);
@@ -625,6 +633,17 @@ public class PreparePartyWizard extends Wizard {
 
     return null;
   }
+  
+  /* (non-Javadoc)
+   * @see org.qdwizard.Wizard#onCancel()
+   */
+  @Override
+  public boolean onCancel() {
+    // this also clears "data", so we need to reset the restore-state
+    bPropertiesRestored = false;
+    
+    return super.onCancel();
+  }
 
   public static class ActionSelectionPanel extends Screen implements ActionListener, ClearPoint {
 
@@ -655,10 +674,7 @@ public class PreparePartyWizard extends Wizard {
     public void initUI() {
       // workaround as the dialog is initialized before the constructor of
       // PreparePartyWizard fully executes
-      if (!bPropertiesRestored) {
-        restoreProperties();
-        bPropertiesRestored = true;
-      }
+      restoreProperties();
 
       bgActions = new ButtonGroup();
 
@@ -975,10 +991,7 @@ public class PreparePartyWizard extends Wizard {
     public void initUI() {
       // workaround as the dialog is initialized before the constructor of
       // PreparePartyWizard fully executes
-      if (!bPropertiesRestored) {
-        restoreProperties();
-        bPropertiesRestored = true;
-      }
+      restoreProperties();
 
       { // Max Tracks
         jcbMaxTracks = new JCheckBox(Messages.getString("PreparePartyWizard.10"));
