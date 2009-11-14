@@ -50,6 +50,9 @@ public class PreparePartyConvertSettings extends JajukJDialog implements ActionL
 
   public PreparePartyConvertSettings(ChangeListener listener, String command, Frame parent) {
     super(parent, true);
+    
+    setLocationRelativeTo(parent);
+    
     this.listener = listener;
 
     setTitle(Messages.getString("PreparePartyWizard.38"));
