@@ -157,9 +157,15 @@ public class DuplicateTracksList extends JPanel implements ListSelectionListener
             if (allFiles.get(r).size() <= 2) {
               // if only one file is left now, remove the whole element
               allFiles.remove(r);
+              
+              // done, the required index was removed 
+              return;
             } else {
               // remove the file that is removed
               allFiles.get(r).remove(c);
+              
+              // done, the required index was removed
+              return;
             }
           }
           count++;
