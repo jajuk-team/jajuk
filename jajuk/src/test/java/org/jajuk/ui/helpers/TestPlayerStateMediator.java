@@ -90,7 +90,8 @@ public class TestPlayerStateMediator extends JajukTestCase {
 
   /**
    * Test method for
-   * {@link org.jajuk.ui.helpers.PlayerStateMediator#update(org.jajuk.events.JajukEvent)}.
+   * {@link org.jajuk.ui.helpers.PlayerStateMediator#update(org.jajuk.events.JajukEvent)}
+   * .
    * 
    * @throws Exception
    */
@@ -174,10 +175,10 @@ public class TestPlayerStateMediator extends JajukTestCase {
   public final void testUpdateWebradioNotifcator() {
     // enable Tooltip/Notification
     Conf.setProperty(Const.CONF_UI_NOTIFICATOR_TYPE, NotificatorTypes.TOAST.name());
-    
+
     Properties prop = new Properties();
     prop.put(Const.DETAIL_CONTENT, new WebRadio("test", "testurl"));
-    
+
     PlayerStateMediator med = PlayerStateMediator.getInstance();
     med.update(new JajukEvent(JajukEvents.WEBRADIO_LAUNCHED, prop));
   }
@@ -185,18 +186,18 @@ public class TestPlayerStateMediator extends JajukTestCase {
   public final void testUpdateFileLaunched() throws Exception {
     // enable Tooltip/Notification
     Conf.setProperty(Const.CONF_UI_NOTIFICATOR_TYPE, NotificatorTypes.TOAST.name());
-    
+
     Device device = new Device("1", "name");
     device.setUrl(System.getProperty("java.io.tmpdir"));
     Directory dir = DirectoryManager.getInstance().registerDirectory(device);
     File file = getFile(3, dir);
-    
+
     Properties prop = new Properties();
     prop.put(Const.DETAIL_CURRENT_FILE_ID, file.getID());
-    
+
     PlayerStateMediator med = PlayerStateMediator.getInstance();
     med.update(new JajukEvent(JajukEvents.FILE_LAUNCHED, prop));
-    
+
     JUnitHelpers.clearSwingUtilitiesQueue();
   }
 
@@ -206,11 +207,11 @@ public class TestPlayerStateMediator extends JajukTestCase {
 
     // just provide empty properties
     Properties prop = new Properties();
-   
+
     PlayerStateMediator med = PlayerStateMediator.getInstance();
     med.update(new JajukEvent(JajukEvents.FILE_LAUNCHED, prop));
   }
-  
+
   public final void testUpdateVolume() {
     PlayerStateMediator med = PlayerStateMediator.getInstance();
     med.update(new JajukEvent(JajukEvents.VOLUME_CHANGED, null));
@@ -226,7 +227,7 @@ public class TestPlayerStateMediator extends JajukTestCase {
 
     med.update(new JajukEvent(JajukEvents.MUTE_STATE, null));
     JUnitHelpers.clearSwingUtilitiesQueue();
-    
+
     Player.mute(false);
 
     med.update(new JajukEvent(JajukEvents.MUTE_STATE, null));

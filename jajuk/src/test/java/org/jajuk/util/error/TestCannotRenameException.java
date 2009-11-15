@@ -28,15 +28,19 @@ import org.jajuk.JajukTestCase;
 public class TestCannotRenameException extends JajukTestCase {
 
   /**
-   * Test method for {@link org.jajuk.util.error.CannotRenameException#CannotRenameException(int)}.
+   * Test method for
+   * {@link org.jajuk.util.error.CannotRenameException#CannotRenameException(int)}
+   * .
    */
   public void testCannotRenameExceptionInt() {
     new CannotRenameException(10);
-    
+
   }
 
   /**
-   * Test method for {@link org.jajuk.util.error.CannotRenameException#CannotRenameException(int, java.lang.Throwable)}.
+   * Test method for
+   * {@link org.jajuk.util.error.CannotRenameException#CannotRenameException(int, java.lang.Throwable)}
+   * .
    */
   public void testCannotRenameExceptionIntThrowable() {
     new CannotRenameException(22, new Throwable());

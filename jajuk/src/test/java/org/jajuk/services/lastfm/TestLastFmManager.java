@@ -35,14 +35,16 @@ import org.jajuk.util.Const;
 public class TestLastFmManager extends JajukTestCase {
 
   /**
-   * Test method for {@link org.jajuk.services.lastfm.LastFmManager#getInstance()}.
+   * Test method for
+   * {@link org.jajuk.services.lastfm.LastFmManager#getInstance()}.
    */
   public void testGetInstance() {
     assertNotNull(LastFmManager.getInstance());
   }
 
   /**
-   * Test method for {@link org.jajuk.services.lastfm.LastFmManager#getRegistrationKeys()}.
+   * Test method for
+   * {@link org.jajuk.services.lastfm.LastFmManager#getRegistrationKeys()}.
    */
   public void testGetRegistrationKeys() {
     Set<JajukEvents> keys = LastFmManager.getInstance().getRegistrationKeys();
@@ -50,24 +52,28 @@ public class TestLastFmManager extends JajukTestCase {
   }
 
   /**
-   * Test method for {@link org.jajuk.services.lastfm.LastFmManager#configure()}.
+   * Test method for {@link org.jajuk.services.lastfm.LastFmManager#configure()}
+   * .
    */
   public void testConfigure() {
     LastFmManager.getInstance().configure();
   }
 
   /**
-   * Test method for {@link org.jajuk.services.lastfm.LastFmManager#update(org.jajuk.events.JajukEvent)}.
-   * @throws Exception 
+   * Test method for
+   * {@link org.jajuk.services.lastfm.LastFmManager#update(org.jajuk.events.JajukEvent)}
+   * .
+   * 
+   * @throws Exception
    */
   public void testUpdate() throws Exception {
-    // nothing happens if 
+    // nothing happens if
     {
-    Conf.setProperty(Const.CONF_LASTFM_ENABLE, "false");
-    LastFmManager.getInstance().update(new JajukEvent(JajukEvents.FILE_FINISHED, null));
-    
-    // wait for thread to finish
-    JUnitHelpers.waitForThreadToFinish("LastFM Update Thread");
+      Conf.setProperty(Const.CONF_LASTFM_ENABLE, "false");
+      LastFmManager.getInstance().update(new JajukEvent(JajukEvents.FILE_FINISHED, null));
+
+      // wait for thread to finish
+      JUnitHelpers.waitForThreadToFinish("LastFM Update Thread");
     }
   }
 

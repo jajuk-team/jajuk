@@ -24,9 +24,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
-import org.jajuk.JajukTestCase;
-
 import org.apache.commons.lang.StringUtils;
+import org.jajuk.JajukTestCase;
 import org.jajuk.ThreadTestHelper;
 import org.jajuk.services.players.IPlayerImpl;
 import org.jajuk.services.players.QueueModel;
@@ -88,7 +87,8 @@ public class TestAuthorManager extends JajukTestCase {
 
   /**
    * Test method for
-   * {@link org.jajuk.base.AuthorManager#registerAuthor(java.lang.String, java.lang.String)}.
+   * {@link org.jajuk.base.AuthorManager#registerAuthor(java.lang.String, java.lang.String)}
+   * .
    */
   public final void testRegisterAuthorStringString() {
     Author author = AuthorManager.getInstance().registerAuthor("4", "name");
@@ -99,7 +99,8 @@ public class TestAuthorManager extends JajukTestCase {
 
   /**
    * Test method for
-   * {@link org.jajuk.base.AuthorManager#changeAuthorName(org.jajuk.base.Author, java.lang.String)}.
+   * {@link org.jajuk.base.AuthorManager#changeAuthorName(org.jajuk.base.Author, java.lang.String)}
+   * .
    * 
    * @throws Exception
    */
@@ -150,7 +151,6 @@ public class TestAuthorManager extends JajukTestCase {
     // we get the same object back if we have the same name
     assertTrue(authorold == AuthorManager.getInstance().changeAuthorName(authorold, "nameold"));
 
-
     ThreadTestHelper helper = new ThreadTestHelper(NUMBER_OF_THREADS, NUMBER_OF_TESTS);
 
     helper.executeTest(new ThreadTestHelper.TestRunnable() {
@@ -191,7 +191,8 @@ public class TestAuthorManager extends JajukTestCase {
 
     Directory dir = new Directory(Integer.valueOf(i).toString(), "name", null, device);
 
-    File file = new org.jajuk.base.File(Integer.valueOf(i).toString(), "test.tst", dir, track, 120, 70);
+    File file = new org.jajuk.base.File(Integer.valueOf(i).toString(), "test.tst", dir, track, 120,
+        70);
 
     track.addFile(file);
 
@@ -279,8 +280,10 @@ public class TestAuthorManager extends JajukTestCase {
 
   /**
    * Test method for
-   * {@link org.jajuk.base.AuthorManager#getAssociatedAuthors(org.jajuk.base.Item)}.
-   * @throws Exception 
+   * {@link org.jajuk.base.AuthorManager#getAssociatedAuthors(org.jajuk.base.Item)}
+   * .
+   * 
+   * @throws Exception
    */
   public final void testGetAssociatedAuthors() throws Exception {
     // empty list with invalid item
@@ -289,15 +292,15 @@ public class TestAuthorManager extends JajukTestCase {
     assertEquals(0, list.size());
 
     Author author = AuthorManager.getInstance().registerAuthor("myauthorhere");
-    File file = getFile(15, author);  // also registers the Track
+    File file = getFile(15, author); // also registers the Track
     list = AuthorManager.getInstance().getAssociatedAuthors(file.getTrack());
     assertNotNull(list);
     assertEquals(1, list.size());
     assertEquals("myauthorhere", list.get(0).getName());
-    
+
     Album album = file.getTrack().getAlbum();
     album.getTracksCache().add(file.getTrack());
-    
+
     list = AuthorManager.getInstance().getAssociatedAuthors(album);
     assertNotNull(list);
     assertEquals(1, list.size());
@@ -438,7 +441,9 @@ public class TestAuthorManager extends JajukTestCase {
 
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.jajuk.services.tags.ITagImpl#getSupportedTagFields()
      */
     @Override
@@ -447,7 +452,9 @@ public class TestAuthorManager extends JajukTestCase {
       return null;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.jajuk.services.tags.ITagImpl#getTagField(java.lang.String)
      */
     @Override
@@ -456,26 +463,31 @@ public class TestAuthorManager extends JajukTestCase {
       return null;
     }
 
-    /* (non-Javadoc)
-     * @see org.jajuk.services.tags.ITagImpl#setTagField(java.lang.String, java.lang.String)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.jajuk.services.tags.ITagImpl#setTagField(java.lang.String,
+     * java.lang.String)
      */
     @Override
     public void setTagField(String tagFieldKey, String tagFieldValue)
         throws FieldDataInvalidException, KeyNotFoundException {
 
-      
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.jajuk.services.tags.ITagImpl#deleteLyrics()
      */
     @Override
     public void deleteLyrics() throws Exception {
 
-      
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.jajuk.services.tags.ITagImpl#getLyrics()
      */
     @Override
@@ -484,13 +496,14 @@ public class TestAuthorManager extends JajukTestCase {
       return null;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.jajuk.services.tags.ITagImpl#setLyrics(java.lang.String)
      */
     @Override
     public void setLyrics(String sLyrics) throws Exception {
 
-      
     }
 
   }

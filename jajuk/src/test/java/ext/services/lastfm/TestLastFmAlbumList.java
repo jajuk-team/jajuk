@@ -25,9 +25,8 @@ import java.util.List;
 
 import net.roarsoftware.lastfm.Album;
 
-import org.jajuk.util.UtilString;
-
 import org.jajuk.JajukTestCase;
+import org.jajuk.util.UtilString;
 
 /**
  * 

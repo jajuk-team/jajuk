@@ -57,8 +57,9 @@ public class TestLyrics extends JajukTestCase {
   private static final String ARTIST = "Massive Attack";
   private static final String TITLE = "Dissolved Girl";
   private static final String TESTED_WORD = "Day, yesterday";
-  
-  //LyricsFly put a delay of 1500 ms before we are allowed to query again, we need to take that into account for some of the tests  
+
+  // LyricsFly put a delay of 1500 ms before we are allowed to query again, we
+  // need to take that into account for some of the tests
   private static final long FLY_DELAY = 1500 + 200;
 
   // helper method to emma-coverage of the unused constructor
@@ -131,13 +132,15 @@ public class TestLyrics extends JajukTestCase {
 
   /**
    * Test Fly provider response to get lyrics
-   * @throws Exception 
+   * 
+   * @throws Exception
    */
   public void testFlyService() throws Exception {
     GenericWebLyricsProvider provider = new FlyWebLyricsProvider();
     testWebService(provider);
-    
-    // delay a bit as LyricsFly puts a min. delay before the next request is allowed
+
+    // delay a bit as LyricsFly puts a min. delay before the next request is
+    // allowed
     Thread.sleep(FLY_DELAY);
   }
 
@@ -166,23 +169,24 @@ public class TestLyrics extends JajukTestCase {
     Log.info("Downloading: " + url);
 
     String xml = null;
-    
+
     // xml = DownloadManager.getTextFromCachedFile(url, "UTF-8");
     // Drop the query if user required "none Internet access from jajuk".
     // This method shouldn't be called anyway because we views have to deal with
     // this option at their level, this is a additional control.
     assertFalse(Conf.getBoolean(Const.CONF_NETWORK_NONE_INTERNET_ACCESS));
 
-    // make sure that we remove any existing cache for this file before we run this test
+    // make sure that we remove any existing cache for this file before we run
+    // this test
     {
       File file = SessionService.getCachePath(url);
       assertNotNull(file);
-      if(file.exists()) {
+      if (file.exists()) {
         Log.info("Removing existing cache file: " + file);
         assertTrue(file.toString(), file.delete());
       }
     }
-    
+
     File file = DownloadManager.downloadToCache(url);
     assertNotNull(file);
 
@@ -222,8 +226,9 @@ public class TestLyrics extends JajukTestCase {
     lyrics = lyrics.replace("[br]", "");
 
     assertTrue(xml, StringUtils.isNotBlank(lyrics));
-    
-    // delay a bit as LyricsFly puts a min. delay before the next request is allowed
+
+    // delay a bit as LyricsFly puts a min. delay before the next request is
+    // allowed
     Thread.sleep(FLY_DELAY);
   }
 
@@ -233,8 +238,9 @@ public class TestLyrics extends JajukTestCase {
   public void testFlyWeb() throws Exception {
     GenericWebLyricsProvider provider = new FlyWebLyricsProvider();
     testWeb(provider);
-    
-    // delay a bit as LyricsFly puts a min. delay before the next request is allowed
+
+    // delay a bit as LyricsFly puts a min. delay before the next request is
+    // allowed
     Thread.sleep(FLY_DELAY);
   }
 
@@ -246,55 +252,39 @@ public class TestLyrics extends JajukTestCase {
     testWebService(provider);
   }
 
-  /*public void testLyricWikiServiceDetails() throws Exception {
-    LyricWikiProvider provider = new LyricWikiProvider();
-
-    // String lyrics = provider.getLyrics(ARTIST, TITLE);
-    String artist = ARTIST;
-    String title = TITLE;
-
-    // This provider waits for '_' instead of regular '+' for spaces in URL
-    String formattedArtist = artist.replaceAll(" ", "_");
-    String formattedTitle = title.replaceAll(" ", "_");
-    String html = provider.callProvider(formattedArtist, formattedTitle);
-    if (html == null || html.indexOf("") == -1) {
-      fail("Empty return from callProvider().");
-    }
-    Log.debug("HTML: " + html);
-    String lyrics = cleanLyrics(html);
-    Log.debug("Result: " + lyrics);
-
-    assertTrue("Lyrics(" + provider.getProviderHostname() + "): " + lyrics, StringUtils
-        .isNotBlank(lyrics)
-        && lyrics.indexOf(TESTED_WORD) != -1);
-  }
-
-  private String cleanLyrics(final String html) {
-    String ret = html;
-    if (ret.contains("<div class='lyricbox' >") || ret.contains("<div class='lyricbox'>")) {
-      int startIndex = html.indexOf("<div class='lyricbox' >");
-      if(startIndex == -1) {
-        startIndex = html.indexOf("<div class='lyricbox'>");
-      }
-      ret = html.substring(startIndex + 23);
-      int stopIndex = ret.indexOf("<!--");
-      ret = ret.substring(0, stopIndex);
-      ret = ret.replaceAll("<br />", "\n");
-      ret = ret.replaceAll("&#8217;", "'");
-      ret = ret.replaceAll("&#8211;", "-");
-      ret = ret.replaceAll("\u0092", "'");
-      ret = ret.replaceAll("\u009c", "oe");
-      ret = ret.replaceAll("<p>", "\n");
-      ret = ret.replaceAll("<i>", "");
-      ret = ret.replaceAll("</i>", "");
-      ret = ret.replaceAll("<b>", "");
-      ret = ret.replaceAll("</b>", "");
-      return ret;
-
-    } else {
-      return null;
-    }
-  } */
+  /*
+   * public void testLyricWikiServiceDetails() throws Exception {
+   * LyricWikiProvider provider = new LyricWikiProvider();
+   * 
+   * // String lyrics = provider.getLyrics(ARTIST, TITLE); String artist =
+   * ARTIST; String title = TITLE;
+   * 
+   * // This provider waits for '_' instead of regular '+' for spaces in URL
+   * String formattedArtist = artist.replaceAll(" ", "_"); String formattedTitle
+   * = title.replaceAll(" ", "_"); String html =
+   * provider.callProvider(formattedArtist, formattedTitle); if (html == null ||
+   * html.indexOf("") == -1) { fail("Empty return from callProvider()."); }
+   * Log.debug("HTML: " + html); String lyrics = cleanLyrics(html);
+   * Log.debug("Result: " + lyrics);
+   * 
+   * assertTrue("Lyrics(" + provider.getProviderHostname() + "): " + lyrics,
+   * StringUtils .isNotBlank(lyrics) && lyrics.indexOf(TESTED_WORD) != -1); }
+   * 
+   * private String cleanLyrics(final String html) { String ret = html; if
+   * (ret.contains("<div class='lyricbox' >") ||
+   * ret.contains("<div class='lyricbox'>")) { int startIndex =
+   * html.indexOf("<div class='lyricbox' >"); if(startIndex == -1) { startIndex
+   * = html.indexOf("<div class='lyricbox'>"); } ret = html.substring(startIndex
+   * + 23); int stopIndex = ret.indexOf("<!--"); ret = ret.substring(0,
+   * stopIndex); ret = ret.replaceAll("<br />", "\n"); ret =
+   * ret.replaceAll("&#8217;", "'"); ret = ret.replaceAll("&#8211;", "-"); ret =
+   * ret.replaceAll("\u0092", "'"); ret = ret.replaceAll("\u009c", "oe"); ret =
+   * ret.replaceAll("<p>", "\n"); ret = ret.replaceAll("<i>", ""); ret =
+   * ret.replaceAll("</i>", ""); ret = ret.replaceAll("<b>", ""); ret =
+   * ret.replaceAll("</b>", ""); return ret;
+   * 
+   * } else { return null; } }
+   */
 
   /**
    * Test LyricWiki web url availability
@@ -307,31 +297,35 @@ public class TestLyrics extends JajukTestCase {
   /**
    * Test providers order For each provider, we test the class and then we
    * remove it from the providers list to allow the others to run
-   * @throws Exception 
+   * 
+   * @throws Exception
    */
   public void testWebProvidersOrder() throws Exception {
-    //Removing TagProvider and TxtProvider
+    // Removing TagProvider and TxtProvider
     LyricsService.getProviders().remove(0);
     LyricsService.getProviders().remove(0);
-    
-    org.jajuk.base.File dummyFile = new org.jajuk.base.File("1", "test", null,
-        new Track("1", TITLE, null, null, new Author("1", ARTIST), 0, null, 0, null, 0),
-        120l, 70l);
+
+    org.jajuk.base.File dummyFile = new org.jajuk.base.File("1", "test", null, new Track("1",
+        TITLE, null, null, new Author("1", ARTIST), 0, null, 0, null, 0), 120l, 70l);
     LyricsService.getLyrics(dummyFile);
-    assertTrue("Instance: " + LyricsService.getCurrentProvider().getClass() + " but expected LyricWikiProvider", LyricsService
-        .getCurrentProvider() instanceof LyricWikiWebLyricsProvider);
+    assertTrue("Instance: " + LyricsService.getCurrentProvider().getClass()
+        + " but expected LyricWikiProvider",
+        LyricsService.getCurrentProvider() instanceof LyricWikiWebLyricsProvider);
 
     LyricsService.getProviders().remove(0);
     LyricsService.getLyrics(dummyFile);
-    assertTrue("Instance: " + LyricsService.getCurrentProvider().getClass() + " but expected FlyProvider", LyricsService
-        .getCurrentProvider() instanceof FlyWebLyricsProvider);
+    assertTrue("Instance: " + LyricsService.getCurrentProvider().getClass()
+        + " but expected FlyProvider",
+        LyricsService.getCurrentProvider() instanceof FlyWebLyricsProvider);
 
     LyricsService.getProviders().remove(0);
     LyricsService.getLyrics(dummyFile);
-    assertTrue("Instance: " + LyricsService.getCurrentProvider().getClass() + " but expected LyrcProvider", LyricsService
-        .getCurrentProvider() instanceof LyrcWebLyricsProvider);
-    
-    // delay a bit as LyricsFly puts a min. delay before the next request is allowed
+    assertTrue("Instance: " + LyricsService.getCurrentProvider().getClass()
+        + " but expected LyrcProvider",
+        LyricsService.getCurrentProvider() instanceof LyrcWebLyricsProvider);
+
+    // delay a bit as LyricsFly puts a min. delay before the next request is
+    // allowed
     Thread.sleep(FLY_DELAY);
   }
 

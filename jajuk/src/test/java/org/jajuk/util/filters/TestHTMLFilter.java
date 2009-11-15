@@ -38,9 +38,21 @@ public class TestHTMLFilter extends JajukTestCase {
 
   public void testAccept() {
     assertTrue(HTMLFilter.getInstance().accept(new File("test.html")));
-    assertTrue(HTMLFilter.getInstance().accept(new File("test.HTML"))); // uppercase if copied from Windows
-    assertTrue(HTMLFilter.getInstance().accept(new File("test.Html"))); // lower/upper mixed if typed manually
-    assertTrue(HTMLFilter.getInstance().accept(new File("test.hTMl"))); // lower/upper mixed if typed manually
+    assertTrue(HTMLFilter.getInstance().accept(new File("test.HTML"))); // uppercase
+                                                                        // if
+                                                                        // copied
+                                                                        // from
+                                                                        // Windows
+    assertTrue(HTMLFilter.getInstance().accept(new File("test.Html"))); // lower/upper
+                                                                        // mixed
+                                                                        // if
+                                                                        // typed
+                                                                        // manually
+    assertTrue(HTMLFilter.getInstance().accept(new File("test.hTMl"))); // lower/upper
+                                                                        // mixed
+                                                                        // if
+                                                                        // typed
+                                                                        // manually
   }
 
 }

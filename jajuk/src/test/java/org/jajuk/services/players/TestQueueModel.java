@@ -23,10 +23,9 @@ package org.jajuk.services.players;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.jajuk.JajukTestCase;
-
 import org.apache.commons.io.FileUtils;
 import org.jajuk.JUnitHelpers;
+import org.jajuk.JajukTestCase;
 import org.jajuk.base.Album;
 import org.jajuk.base.Author;
 import org.jajuk.base.Device;
@@ -365,7 +364,7 @@ public class TestQueueModel extends JajukTestCase {
     StackItem newSi = QueueModel.getCurrentItem();
     assertEquals(newSi, si);
     assertTrue(newSi.isRepeat());
-    
+
     // Now the same with first track in repeat mode
     QueueModel.getItem(0).setRepeat(true);
     QueueModel.finished();
@@ -374,7 +373,7 @@ public class TestQueueModel extends JajukTestCase {
     assertTrue(newSi.isRepeat());
     assertTrue(si.isRepeat());
   }
-  
+
   /**
    * Test method for
    * {@link org.jajuk.services.players.QueueModel#finished(boolean)}.
@@ -394,7 +393,7 @@ public class TestQueueModel extends JajukTestCase {
     StackItem newSi = QueueModel.getCurrentItem();
     assertEquals(newSi, si);
     assertTrue(newSi.isRepeat());
-    
+
     // Now the same with first track in repeat mode
     QueueModel.getItem(6).setRepeat(true);
     QueueModel.finished();

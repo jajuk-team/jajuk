@@ -49,7 +49,8 @@ public class TestXCheckedButton extends JajukTestCase {
 
   /**
    * Test method for
-   * {@link ext.scrollablepopupmenu.XCheckedButton#XCheckedButton(javax.swing.Action)}.
+   * {@link ext.scrollablepopupmenu.XCheckedButton#XCheckedButton(javax.swing.Action)}
+   * .
    */
   public final void testXCheckedButtonAction() {
     new XCheckedButton(new Action() {
@@ -90,7 +91,8 @@ public class TestXCheckedButton extends JajukTestCase {
 
   /**
    * Test method for
-   * {@link ext.scrollablepopupmenu.XCheckedButton#XCheckedButton(javax.swing.Icon)}.
+   * {@link ext.scrollablepopupmenu.XCheckedButton#XCheckedButton(javax.swing.Icon)}
+   * .
    */
   public final void testXCheckedButtonIcon() {
     new XCheckedButton(new DummyIcon());
@@ -98,7 +100,8 @@ public class TestXCheckedButton extends JajukTestCase {
 
   /**
    * Test method for
-   * {@link ext.scrollablepopupmenu.XCheckedButton#XCheckedButton(java.lang.String, javax.swing.Icon)}.
+   * {@link ext.scrollablepopupmenu.XCheckedButton#XCheckedButton(java.lang.String, javax.swing.Icon)}
+   * .
    */
   public final void testXCheckedButtonStringIcon() {
     new XCheckedButton("testtext", new DummyIcon());
@@ -106,7 +109,8 @@ public class TestXCheckedButton extends JajukTestCase {
 
   /**
    * Test method for
-   * {@link ext.scrollablepopupmenu.XCheckedButton#XCheckedButton(java.lang.String)}.
+   * {@link ext.scrollablepopupmenu.XCheckedButton#XCheckedButton(java.lang.String)}
+   * .
    */
   public final void testXCheckedButtonString() {
     new XCheckedButton("testtext");
@@ -144,7 +148,8 @@ public class TestXCheckedButton extends JajukTestCase {
 
   /**
    * Test method for
-   * {@link ext.scrollablepopupmenu.XCheckedButton#setCheckedIcon(javax.swing.ImageIcon)}.
+   * {@link ext.scrollablepopupmenu.XCheckedButton#setCheckedIcon(javax.swing.ImageIcon)}
+   * .
    */
   public final void testSetCheckedIcon() {
     XCheckedButton button = new XCheckedButton("testtext", new DummyIcon());
@@ -153,7 +158,8 @@ public class TestXCheckedButton extends JajukTestCase {
 
   /**
    * Test method for
-   * {@link ext.scrollablepopupmenu.XCheckedButton#setIconAlwaysVisible(boolean)}.
+   * {@link ext.scrollablepopupmenu.XCheckedButton#setIconAlwaysVisible(boolean)}
+   * .
    */
   public final void testSetIconAlwaysVisible() {
     XCheckedButton button = new XCheckedButton("testtext", new DummyIcon());
@@ -178,11 +184,11 @@ public class TestXCheckedButton extends JajukTestCase {
     public void paintIcon(Component c, Graphics g, int x, int y) {
     }
   }
-  
+
   public void testMouseAdapter() {
     XCheckedButton button = new XCheckedButton("testtext", new DummyIcon());
     // we should have at least one a mouse listener on the button
-    assertTrue(ArrayUtils.toString(button.getMouseListeners()), 
+    assertTrue(ArrayUtils.toString(button.getMouseListeners()),
         button.getMouseListeners().length > 0);
 
     // none of them looks at the actual event right now...
@@ -190,16 +196,16 @@ public class TestXCheckedButton extends JajukTestCase {
     button.getMouseListeners()[1].mouseEntered(null);
     button.getMouseListeners()[1].mouseExited(null);
   }
-  
+
   public void testModel() {
     XCheckedButton button = new XCheckedButton("testtext", new DummyIcon());
     assertNotNull(button.getModel());
 
     button.setSelected(true);
     button.setSelected(false);
-    
-    ((DefaultButtonModel)button.getModel()).setGroup(new ButtonGroup());
-    
+
+    ((DefaultButtonModel) button.getModel()).setGroup(new ButtonGroup());
+
     button.setSelected(true);
     button.setSelected(false);
   }

@@ -21,7 +21,6 @@
 package ext.service.io;
 
 import org.jajuk.JUnitHelpers;
-
 import org.jajuk.JajukTestCase;
 
 /**
@@ -35,11 +34,14 @@ public class TestNativeFunctionsUtils extends JajukTestCase {
    * .
    */
   public void testGetShortPathNameW() {
-    // currently it will always return empty, on Unix because it is not implemented
-    // and on Windows for some unknown reason, maybe the library path is not set correctly...
+    // currently it will always return empty, on Unix because it is not
+    // implemented
+    // and on Windows for some unknown reason, maybe the library path is not set
+    // correctly...
     assertEquals("", NativeFunctionsUtils.getShortPathNameW("testpath.txt"));
     assertEquals("", NativeFunctionsUtils.getShortPathNameW("testpath.long"));
-    assertEquals("", NativeFunctionsUtils.getShortPathNameW("C:\\verylongpathname.testing\\withaverylongtestpath.long"));
+    assertEquals("", NativeFunctionsUtils
+        .getShortPathNameW("C:\\verylongpathname.testing\\withaverylongtestpath.long"));
   }
 
   // helper method to emma-coverage of the unused constructor

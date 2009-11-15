@@ -22,9 +22,8 @@ package org.jajuk.ui.actions;
 
 import java.awt.HeadlessException;
 
-import org.jajuk.util.log.Log;
-
 import org.jajuk.JajukTestCase;
+import org.jajuk.util.log.Log;
 
 /**
  * 
@@ -32,22 +31,26 @@ import org.jajuk.JajukTestCase;
 public class TestDebugLogAction extends JajukTestCase {
 
   /**
-   * Test method for {@link org.jajuk.ui.actions.DebugLogAction#perform(java.awt.event.ActionEvent)}.
+   * Test method for
+   * {@link org.jajuk.ui.actions.DebugLogAction#perform(java.awt.event.ActionEvent)}
+   * .
    */
   public void testPerform() {
     // initialize Log
     assertNotNull(Log.getInstance());
-    
+
     DebugLogAction action = new DebugLogAction();
     try {
-    action.perform(null); // it doesn't look at the actionevent at all right now...
+      action.perform(null); // it doesn't look at the actionevent at all right
+                            // now...
     } catch (HeadlessException e) {
       // thrown on Hudson/Sonar as they do not support tests that require UI
     }
   }
 
   /**
-   * Test method for {@link org.jajuk.ui.actions.DebugLogAction#DebugLogAction()}.
+   * Test method for
+   * {@link org.jajuk.ui.actions.DebugLogAction#DebugLogAction()}.
    */
   public void testDebugLogAction() {
     new DebugLogAction();

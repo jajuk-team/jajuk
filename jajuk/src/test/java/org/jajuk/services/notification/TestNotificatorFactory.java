@@ -29,7 +29,7 @@ import org.jajuk.util.Const;
  */
 public class TestNotificatorFactory extends JajukTestCase {
 
-/**
+  /**
    * Test method for
    * {@link org.jajuk.services.notification.NotificatorFactory#getNotificator()}
    * .
@@ -38,11 +38,12 @@ public class TestNotificatorFactory extends JajukTestCase {
     // enable Tooltip/Notification
     Conf.setProperty(Const.CONF_UI_NOTIFICATOR_TYPE, NotificatorTypes.NONE.name());
 
-    // now try to get a balloon notificator, but we cannot be sure if this works on all
+    // now try to get a balloon notificator, but we cannot be sure if this works
+    // on all
     // machines so we on't assume not null.
     NotificatorFactory.getNotificator();
   }
-  
+
   /**
    * Test method for
    * {@link org.jajuk.services.notification.NotificatorFactory#getNotificator()}
@@ -52,7 +53,8 @@ public class TestNotificatorFactory extends JajukTestCase {
     // enable Tooltip/Notification
     Conf.setProperty(Const.CONF_UI_NOTIFICATOR_TYPE, NotificatorTypes.BALLOON.name());
 
-    // now try to get a balloon notificator, but we cannot be sure if this works on all
+    // now try to get a balloon notificator, but we cannot be sure if this works
+    // on all
     // machines so we on't assume not null.
     NotificatorFactory.getNotificator();
   }

@@ -20,7 +20,7 @@
  */
 package org.jajuk.ui.helpers;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import org.jajuk.JUnitHelpers;
 import org.junit.Test;

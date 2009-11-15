@@ -21,12 +21,10 @@
 package org.jajuk.services.alarm;
 
 import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.Set;
 
-import org.jajuk.JajukTestCase;
-
 import org.jajuk.JUnitHelpers;
+import org.jajuk.JajukTestCase;
 import org.jajuk.base.FileManager;
 import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
@@ -45,80 +43,84 @@ public class TestAlarmManager extends JajukTestCase {
     // make sure the FileManager is registered correctly for each invocation
     // this is done during the first access to the singleton
     FileManager.getInstance();
-    
+
     // clear File Manager to avoid files being left in there and causing trouble
     FileManager.getInstance().clear();
-    
+
     super.setUp();
   }
 
   /**
-   * Test method for {@link org.jajuk.services.alarm.AlarmManager#getInstance()}.
+   * Test method for {@link org.jajuk.services.alarm.AlarmManager#getInstance()}
+   * .
    */
   public void testGetInstance() throws Exception {
-    Conf.setProperty(Conf.CONF_ALARM_ENABLED, "true");
+    Conf.setProperty(Const.CONF_ALARM_ENABLED, "true");
 
     assertNotNull(AlarmManager.getInstance());
-    
+
     // sleep a bit to let internal thread do some work
     Thread.sleep(1100);
   }
 
   /**
-   * Test method for {@link org.jajuk.services.alarm.AlarmManager#update(org.jajuk.events.JajukEvent)}.
+   * Test method for
+   * {@link org.jajuk.services.alarm.AlarmManager#update(org.jajuk.events.JajukEvent)}
+   * .
    */
   public void testUpdate() {
     AlarmManager.getInstance().update(new JajukEvent(JajukEvents.ALARMS_CHANGE));
   }
 
   public void testUpdate2() {
-    Conf.setProperty(Conf.CONF_ALARM_ENABLED, "true");
+    Conf.setProperty(Const.CONF_ALARM_ENABLED, "true");
 
     AlarmManager.getInstance().update(new JajukEvent(JajukEvents.ALARMS_CHANGE));
   }
 
   public void testUpdate3() {
-    Conf.setProperty(Conf.CONF_ALARM_ENABLED, "true");
-    Conf.setProperty(Const.CONF_ALARM_MODE, Const.STARTUP_MODE_FILE);  
+    Conf.setProperty(Const.CONF_ALARM_ENABLED, "true");
+    Conf.setProperty(Const.CONF_ALARM_MODE, Const.STARTUP_MODE_FILE);
 
     AlarmManager.getInstance().update(new JajukEvent(JajukEvents.ALARMS_CHANGE));
   }
 
   public void testUpdate4() {
-    Conf.setProperty(Conf.CONF_ALARM_ENABLED, "true");
-    Conf.setProperty(Const.CONF_ALARM_MODE, Const.STARTUP_MODE_BESTOF);  
+    Conf.setProperty(Const.CONF_ALARM_ENABLED, "true");
+    Conf.setProperty(Const.CONF_ALARM_MODE, Const.STARTUP_MODE_BESTOF);
 
     AlarmManager.getInstance().update(new JajukEvent(JajukEvents.ALARMS_CHANGE));
   }
 
   public void testUpdate5() {
-    Conf.setProperty(Conf.CONF_ALARM_ENABLED, "true");
-    Conf.setProperty(Const.CONF_ALARM_MODE, Const.STARTUP_MODE_NOVELTIES);  
+    Conf.setProperty(Const.CONF_ALARM_ENABLED, "true");
+    Conf.setProperty(Const.CONF_ALARM_MODE, Const.STARTUP_MODE_NOVELTIES);
 
     AlarmManager.getInstance().update(new JajukEvent(JajukEvents.ALARMS_CHANGE));
   }
 
   /**
-   * Test method for {@link org.jajuk.services.alarm.AlarmManager#getRegistrationKeys()}.
+   * Test method for
+   * {@link org.jajuk.services.alarm.AlarmManager#getRegistrationKeys()}.
    */
   public void testGetRegistrationKeys() {
     Set<JajukEvents> set = AlarmManager.getInstance().getRegistrationKeys();
     assertTrue(set.contains(JajukEvents.ALARMS_CHANGE));
   }
-  
+
   public void testTriggerAlarm() throws Exception {
-    Calendar cal = GregorianCalendar.getInstance();
+    Calendar cal = Calendar.getInstance();
     // add one second to let it be triggered immedately
     cal.add(Calendar.SECOND, 1);
-    
-    Conf.setProperty(Conf.CONF_ALARM_ENABLED, "true");
-    Conf.setProperty(Const.CONF_ALARM_MODE, Const.STARTUP_MODE_FILE);  
+
+    Conf.setProperty(Const.CONF_ALARM_ENABLED, "true");
+    Conf.setProperty(Const.CONF_ALARM_MODE, Const.STARTUP_MODE_FILE);
     Conf.setProperty(Const.CONF_ALARM_TIME_HOUR, Integer.toString(cal.get(Calendar.HOUR_OF_DAY)));
     Conf.setProperty(Const.CONF_ALARM_TIME_MINUTES, Integer.toString(cal.get(Calendar.MINUTE)));
     Conf.setProperty(Const.CONF_ALARM_TIME_SECONDS, Integer.toString(cal.get(Calendar.SECOND)));
 
     AlarmManager.getInstance().update(new JajukEvent(JajukEvents.ALARMS_CHANGE));
-    
+
     // sleep a bit to let internal thread do some work
     Thread.sleep(2000);
   }

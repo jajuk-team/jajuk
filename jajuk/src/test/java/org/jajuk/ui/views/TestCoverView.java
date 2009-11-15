@@ -153,11 +153,11 @@ public class TestCoverView extends JajukTestCase {
 
       // then again with CTRL-Mask set to trigger all parts
       view.actionPerformed(new ActionEvent(cmp.getComponent(i), 1, "test", ActionEvent.CTRL_MASK)); // set
-                                                                                                    // CTRL_MASK
-                                                                                                    // to
-                                                                                                    // trigger
-                                                                                                    // all
-                                                                                                    // code
+      // CTRL_MASK
+      // to
+      // trigger
+      // all
+      // code
 
       // then recusively step into this components
       if (cmp.getComponent(i) instanceof Container) {

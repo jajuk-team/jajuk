@@ -24,9 +24,8 @@ import java.io.File;
 import java.net.URL;
 
 import org.apache.commons.io.FileUtils;
-import org.jajuk.JajukTestCase;
-
 import org.jajuk.JUnitHelpers;
+import org.jajuk.JajukTestCase;
 import org.jajuk.util.Const;
 import org.jajuk.util.UtilSystem;
 
@@ -164,8 +163,8 @@ public class TestSessionService extends JajukTestCase {
 
       // try to create it if it is missing
       if (!bootstrap.exists()) {
-        FileUtils.writeStringToFile(bootstrap, "#Sat May 16 20:31:29 CEST 2009\n"
-            + "final=" + UtilSystem.getUserHome() + "\n" + "test=" + UtilSystem.getUserHome() + "\n");
+        FileUtils.writeStringToFile(bootstrap, "#Sat May 16 20:31:29 CEST 2009\n" + "final="
+            + UtilSystem.getUserHome() + "\n" + "test=" + UtilSystem.getUserHome() + "\n");
       }
 
       // needs to be a directory, needs to be readable, ...

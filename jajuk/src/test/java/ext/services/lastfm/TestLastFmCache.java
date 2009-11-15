@@ -25,9 +25,8 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.jajuk.JajukTestCase;
-
 import org.jajuk.JUnitHelpers;
+import org.jajuk.JajukTestCase;
 
 /**
  * 
@@ -42,8 +41,9 @@ public class TestLastFmCache extends JajukTestCase {
   @Override
   protected void setUp() throws Exception {
     JUnitHelpers.createSessionDirectory();
-    
-    // make sure the cache is cleaned up front to not find items from previous runs
+
+    // make sure the cache is cleaned up front to not find items from previous
+    // runs
     LastFmCache cache = new LastFmCache();
     cache.clearCache();
 
@@ -109,7 +109,8 @@ public class TestLastFmCache extends JajukTestCase {
 
   /**
    * Test method for
-   * {@link ext.services.lastfm.LastFmCache#retrieveAlbumList(java.lang.String)}.
+   * {@link ext.services.lastfm.LastFmCache#retrieveAlbumList(java.lang.String)}
+   * .
    */
   public void testRetrieveAlbumList() {
     LastFmCache cache = new LastFmCache();
@@ -247,13 +248,19 @@ public class TestLastFmCache extends JajukTestCase {
 
     assertNotNull(cache.retrieveAlbumList("Red Hot Chili Peppers"));
     assertNotNull(cache.retrieveAlbumList("Red Hot Chili Peppers").getAlbums());
-    assertEquals(cache.retrieveAlbumList("Red Hot Chili Peppers").getAlbums().toString(),
-        2, cache.retrieveAlbumList("Red Hot Chili Peppers").getAlbums().size());
+    assertEquals(cache.retrieveAlbumList("Red Hot Chili Peppers").getAlbums().toString(), 2, cache
+        .retrieveAlbumList("Red Hot Chili Peppers").getAlbums().size());
 
-    /*assertTrue(cache.retrieveAlbumList("Red Hot Chili Peppers").getAlbums().toString(),
-        cache.retrieveAlbumList("Red Hot Chili Peppers").getAlbums().contains(album1));
-    assertTrue(cache.retrieveAlbumList("Red Hot Chili Peppers").getAlbums().toString(),
-        cache.retrieveAlbumList("Red Hot Chili Peppers").getAlbums().contains(album2));*/
+    /*
+     * assertTrue(cache.retrieveAlbumList("Red Hot Chili Peppers").getAlbums().toString
+     * (),
+     * cache.retrieveAlbumList("Red Hot Chili Peppers").getAlbums().contains(
+     * album1));
+     * assertTrue(cache.retrieveAlbumList("Red Hot Chili Peppers").getAlbums
+     * ().toString(),
+     * cache.retrieveAlbumList("Red Hot Chili Peppers").getAlbums(
+     * ).contains(album2));
+     */
   }
 
   /**
@@ -313,9 +320,10 @@ public class TestLastFmCache extends JajukTestCase {
    */
   public void testAddSubmissionData() {
     LastFmCache cache = new LastFmCache();
-    
-    FullSubmissionData data = new FullSubmissionData("Red Hot Chili Peppers", "title", "By The Way", 10, 1, "Source", 10);
-    
+
+    FullSubmissionData data = new FullSubmissionData("Red Hot Chili Peppers", "title",
+        "By The Way", 10, 1, "Source", 10);
+
     cache.addSubmissionData(data);
   }
 
@@ -324,16 +332,21 @@ public class TestLastFmCache extends JajukTestCase {
    * .
    */
   public void testGetSubmissionData() {
-    //TODO: currently this fails because library xpp3 is not found for XML Pull Parsing, not sure why that is not part of
+    // TODO: currently this fails because library xpp3 is not found for XML Pull
+    // Parsing, not sure why that is not part of
     // Jajuk distribution. Are these methods used at all??
-    /*LastFmCache cache = new LastFmCache();
-    
-    FullSubmissionData data = new FullSubmissionData("Red Hot Chili Peppers", "title", "By The Way", 10, 1, "Source", 10);
-    
-    cache.addSubmissionData(data);
-
-    assertEquals(1, cache.getSubmissionData().size());
-    assertEquals(data.getArtist(), cache.getSubmissionData().get(0).getArtist());*/
+    /*
+     * LastFmCache cache = new LastFmCache();
+     * 
+     * FullSubmissionData data = new FullSubmissionData("Red Hot Chili Peppers",
+     * "title", "By The Way", 10, 1, "Source", 10);
+     * 
+     * cache.addSubmissionData(data);
+     * 
+     * assertEquals(1, cache.getSubmissionData().size());
+     * assertEquals(data.getArtist(),
+     * cache.getSubmissionData().get(0).getArtist());
+     */
   }
 
   /**
@@ -341,20 +354,25 @@ public class TestLastFmCache extends JajukTestCase {
    * {@link ext.services.lastfm.LastFmCache#removeSubmissionData()}.
    */
   public void testRemoveSubmissionData() {
-    //TODO: currently this fails because library xpp3 is not found for XML Pull Parsing, not sure why that is not part of
+    // TODO: currently this fails because library xpp3 is not found for XML Pull
+    // Parsing, not sure why that is not part of
     // Jajuk distribution. Are these methods used at all??
-    /*LastFmCache cache = new LastFmCache();
-    
-    FullSubmissionData data = new FullSubmissionData("Red Hot Chili Peppers", "title", "By The Way", 10, 1, "Source", 10);
-    
-    cache.addSubmissionData(data);
-
-    assertEquals(1, cache.getSubmissionData().size());
-    assertEquals(data.getArtist(), cache.getSubmissionData().get(0).getArtist());
-
-    cache.removeSubmissionData();
-    
-    assertEquals(0, cache.getSubmissionData().size());*/
+    /*
+     * LastFmCache cache = new LastFmCache();
+     * 
+     * FullSubmissionData data = new FullSubmissionData("Red Hot Chili Peppers",
+     * "title", "By The Way", 10, 1, "Source", 10);
+     * 
+     * cache.addSubmissionData(data);
+     * 
+     * assertEquals(1, cache.getSubmissionData().size());
+     * assertEquals(data.getArtist(),
+     * cache.getSubmissionData().get(0).getArtist());
+     * 
+     * cache.removeSubmissionData();
+     * 
+     * assertEquals(0, cache.getSubmissionData().size());
+     */
   }
 
 }

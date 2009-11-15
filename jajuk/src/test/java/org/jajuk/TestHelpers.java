@@ -24,7 +24,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import javax.swing.SwingUtilities;
 
-import org.jajuk.JajukTestCase;
 import org.jajuk.base.Album;
 import org.jajuk.base.AlbumManager;
 import org.jajuk.base.Author;
@@ -113,6 +112,7 @@ public class TestHelpers extends JajukTestCase {
 
   /**
    * Return a mock file for testing purposes
+   * 
    * @return a mock file for testing purposes
    */
   public static File getMockFile() {

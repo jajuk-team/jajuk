@@ -39,7 +39,7 @@ public class TestToastNotificator extends JajukTestCase {
    * .
    */
   public void testToastNotificator() {
-     try {
+    try {
       INotificator notificator = ToastNotificator.getInstance();
       assertTrue(notificator.isAvailable());
     } catch (ExceptionInInitializerError e) {

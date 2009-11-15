@@ -23,9 +23,8 @@ package org.jajuk.util;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.jajuk.base.Item;
-
 import org.jajuk.JajukTestCase;
+import org.jajuk.base.Item;
 
 /**
  * 
@@ -33,7 +32,9 @@ import org.jajuk.JajukTestCase;
 public class TestFilter extends JajukTestCase {
 
   /**
-   * Test method for {@link org.jajuk.util.Filter#Filter(java.lang.String, java.lang.String, boolean, boolean)}.
+   * Test method for
+   * {@link org.jajuk.util.Filter#Filter(java.lang.String, java.lang.String, boolean, boolean)}
+   * .
    */
   public final void testFilter() {
     Filter filter = new Filter("test", "test", true, false);
@@ -62,12 +63,14 @@ public class TestFilter extends JajukTestCase {
   }
 
   /**
-   * Test method for {@link org.jajuk.util.Filter#filterItems(java.util.List, org.jajuk.util.Filter)}.
+   * Test method for
+   * {@link org.jajuk.util.Filter#filterItems(java.util.List, org.jajuk.util.Filter)}
+   * .
    */
   public final void testFilterItems() {
-    //works with empty filter
+    // works with empty filter
     Filter.filterItems(null, null);
-    
+
     // returns with empty expression
     Filter filter = new Filter("any", null, true, false);
     Filter.filterItems(null, filter);
@@ -77,14 +80,14 @@ public class TestFilter extends JajukTestCase {
     // try to trigger a regex error
     filter = new Filter("any", "asdfas(sasdfsa", true, false);
     Filter.filterItems(list, filter);
-    
+
     // works with useful filter
     filter = new Filter("any", "test", true, false);
     Filter.filterItems(list, filter);
 
     filter = new Filter("something", "test", true, false);
     Filter.filterItems(list, filter);
-    
+
     // TODO: more sophisticated testing is missing here
   }
 

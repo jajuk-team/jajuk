@@ -29,11 +29,10 @@ import java.io.OutputStream;
 import java.util.Random;
 import java.util.zip.ZipException;
 
-import org.jajuk.JajukTestCase;
-
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.SystemUtils;
 import org.jajuk.JUnitHelpers;
+import org.jajuk.JajukTestCase;
 import org.jajuk.util.error.JajukException;
 
 /**
@@ -102,7 +101,7 @@ public class TestUtilSystem extends JajukTestCase {
     FileUtils.writeStringToFile(file1, "this is some test data");
     assertTrue(file2.delete());
     assertTrue(file2.mkdirs()); // should not be able to write if a directory
-                                // already exists
+    // already exists
 
     try {
       UtilSystem.copy(file1, file2);
@@ -291,7 +290,7 @@ public class TestUtilSystem extends JajukTestCase {
     assertTrue(file1.delete());
     assertFalse(file1.exists());
     assertTrue(file1.mkdir()); // test should fail if we try to create a file
-                               // when a directory already exists
+    // when a directory already exists
 
     try {
       UtilSystem.createEmptyFile(file1);
@@ -363,7 +362,8 @@ public class TestUtilSystem extends JajukTestCase {
       // TODO: currently can not be tested in Eclipse as no Jajuk.jar file is
       // available...
     } catch (ZipException e) {
-      // TODO: seems to fail in Hudson because of some problem with opening the ZipFile...
+      // TODO: seems to fail in Hudson because of some problem with opening the
+      // ZipFile...
     }
   }
 
@@ -600,15 +600,15 @@ public class TestUtilSystem extends JajukTestCase {
     } catch (JajukException e) {
       assertEquals(9, e.getCode());
       assertTrue(e.getMessage(), e.getMessage().contains("notexistingfile")); // do
-                                                                              // we
-                                                                              // also
-                                                                              // have
-                                                                              // the
-                                                                              // invalid
-                                                                              // filename
-                                                                              // in
-                                                                              // the
-                                                                              // error?
+      // we
+      // also
+      // have
+      // the
+      // invalid
+      // filename
+      // in
+      // the
+      // error?
     }
   }
 

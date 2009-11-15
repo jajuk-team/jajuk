@@ -55,25 +55,33 @@ import org.jajuk.util.Const;
 public class TestJSplashLabel extends JajukTestCase {
 
   /**
-   * Test method for {@link ext.JSplashLabel#JSplashLabel(java.net.URL, java.lang.String, java.lang.String, java.awt.Font)}.
-   * @throws Exception 
+   * Test method for
+   * {@link ext.JSplashLabel#JSplashLabel(java.net.URL, java.lang.String, java.lang.String, java.awt.Font)}
+   * .
+   * 
+   * @throws Exception
    */
   public void testJSplashLabel() throws Exception {
     new JSplashLabel(new URL("http://www.example.com/"), "copyright", "teststring", null);
   }
+
   public void testJSplashLabelURL() throws Exception {
     new JSplashLabel(Const.IMAGES_SPLASHSCREEN, "copyright", "teststring", null);
   }
+
   public void testJSplashLabelFont() throws Exception {
-    new JSplashLabel(Const.IMAGES_SPLASHSCREEN, "copyright", "teststring", new Font("Roman", Font.ITALIC, 10));
+    new JSplashLabel(Const.IMAGES_SPLASHSCREEN, "copyright", "teststring", new Font("Roman",
+        Font.ITALIC, 10));
   }
-  
+
   /**
    * Test method for {@link ext.JSplashLabel#paint(java.awt.Graphics)}.
-   * @throws Exception 
+   * 
+   * @throws Exception
    */
   public void testPaintGraphics() throws Exception {
-    JSplashLabel label = new JSplashLabel(Const.IMAGES_SPLASHSCREEN, "copyright", "teststring", null);
+    JSplashLabel label = new JSplashLabel(Const.IMAGES_SPLASHSCREEN, "copyright", "teststring",
+        null);
     label.paint(new MyGraphics2D());
   }
 
@@ -84,42 +92,36 @@ public class TestJSplashLabel extends JajukTestCase {
     @Override
     public void setXORMode(Color c1) {
 
-      
     }
 
     @Override
     public void setPaintMode() {
 
-      
     }
 
     @Override
     public void setFont(Font font) {
 
-      
     }
 
     @Override
     public void setColor(Color c) {
 
-      
     }
 
     @Override
     public void setClip(int x, int y, int width, int height) {
 
-      
     }
 
     @Override
     public void setClip(Shape clip) {
 
-      
     }
 
     @Override
     public FontMetrics getFontMetrics(Font f) {
-      
+
       return new FontMetrics(f) {
         private static final long serialVersionUID = 9139781111511738969L;
 
@@ -137,7 +139,7 @@ public class TestJSplashLabel extends JajukTestCase {
         public int getAscent() {
           return 10;
         }
-        
+
       };
     }
 
@@ -168,61 +170,51 @@ public class TestJSplashLabel extends JajukTestCase {
     @Override
     public void fillRoundRect(int x, int y, int width, int height, int arcWidth, int arcHeight) {
 
-      
     }
 
     @Override
     public void fillRect(int x, int y, int width, int height) {
 
-      
     }
 
     @Override
     public void fillPolygon(int[] xPoints, int[] yPoints, int nPoints) {
 
-      
     }
 
     @Override
     public void fillOval(int x, int y, int width, int height) {
 
-      
     }
 
     @Override
     public void fillArc(int x, int y, int width, int height, int startAngle, int arcAngle) {
 
-      
     }
 
     @Override
     public void drawRoundRect(int x, int y, int width, int height, int arcWidth, int arcHeight) {
 
-      
     }
 
     @Override
     public void drawPolyline(int[] xPoints, int[] yPoints, int nPoints) {
 
-      
     }
 
     @Override
     public void drawPolygon(int[] xPoints, int[] yPoints, int nPoints) {
 
-      
     }
 
     @Override
     public void drawOval(int x, int y, int width, int height) {
 
-      
     }
 
     @Override
     public void drawLine(int x1, int y1, int x2, int y2) {
 
-      
     }
 
     @Override
@@ -267,13 +259,11 @@ public class TestJSplashLabel extends JajukTestCase {
     @Override
     public void drawArc(int x, int y, int width, int height, int startAngle, int arcAngle) {
 
-      
     }
 
     @Override
     public void dispose() {
 
-      
     }
 
     @Override
@@ -285,103 +275,86 @@ public class TestJSplashLabel extends JajukTestCase {
     @Override
     public void copyArea(int x, int y, int width, int height, int dx, int dy) {
 
-      
     }
 
     @Override
     public void clipRect(int x, int y, int width, int height) {
 
-      
     }
 
     @Override
     public void clearRect(int x, int y, int width, int height) {
 
-      
     }
 
     @Override
     public void translate(double tx, double ty) {
 
-      
     }
 
     @Override
     public void translate(int x, int y) {
 
-      
     }
 
     @Override
     public void transform(AffineTransform Tx) {
 
-      
     }
 
     @Override
     public void shear(double shx, double shy) {
 
-      
     }
 
     @Override
     public void setTransform(AffineTransform Tx) {
 
-      
     }
 
     @Override
     public void setStroke(Stroke s) {
 
-      
     }
 
     @Override
     public void setRenderingHints(Map<?, ?> hints) {
 
-      
     }
 
     @Override
     public void setRenderingHint(Key hintKey, Object hintValue) {
 
-      
     }
 
     @Override
     public void setPaint(Paint paint) {
 
-      
     }
 
     @Override
     public void setComposite(Composite comp) {
 
-      
     }
 
     @Override
     public void setBackground(Color color) {
 
-      
     }
 
     @Override
     public void scale(double sx, double sy) {
 
-      
     }
 
     @Override
     public void rotate(double theta, double x, double y) {
 
-      
     }
 
     @Override
     public void rotate(double theta) {
 
-      
     }
 
     @Override
@@ -447,49 +420,41 @@ public class TestJSplashLabel extends JajukTestCase {
     @Override
     public void fill(Shape s) {
 
-      
     }
 
     @Override
     public void drawString(AttributedCharacterIterator iterator, float x, float y) {
 
-      
     }
 
     @Override
     public void drawString(AttributedCharacterIterator iterator, int x, int y) {
 
-      
     }
 
     @Override
     public void drawString(String str, float x, float y) {
 
-      
     }
 
     @Override
     public void drawString(String str, int x, int y) {
 
-      
     }
 
     @Override
     public void drawRenderedImage(RenderedImage img, AffineTransform xform) {
 
-      
     }
 
     @Override
     public void drawRenderableImage(RenderableImage img, AffineTransform xform) {
 
-      
     }
 
     @Override
     public void drawImage(BufferedImage img, BufferedImageOp op, int x, int y) {
 
-      
     }
 
     @Override
@@ -501,25 +466,21 @@ public class TestJSplashLabel extends JajukTestCase {
     @Override
     public void drawGlyphVector(GlyphVector g, float x, float y) {
 
-      
     }
 
     @Override
     public void draw(Shape s) {
 
-      
     }
 
     @Override
     public void clip(Shape s) {
 
-      
     }
 
     @Override
     public void addRenderingHints(Map<?, ?> hints) {
 
-      
     }
   }
 }

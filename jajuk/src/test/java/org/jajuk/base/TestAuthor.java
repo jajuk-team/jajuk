@@ -22,10 +22,9 @@ package org.jajuk.base;
 
 import org.apache.commons.lang.StringUtils;
 import org.jajuk.JUnitHelpers;
+import org.jajuk.JajukTestCase;
 import org.jajuk.services.startup.StartupCollectionService;
 import org.jajuk.util.Const;
-
-import org.jajuk.JajukTestCase;
 
 /**
  * 
@@ -55,7 +54,7 @@ public class TestAuthor extends JajukTestCase {
   public final void testGetHumanValue() {
     // need AuthorManager for MetaInformation here...
     StartupCollectionService.registerItemManagers();
-    
+
     Author author = new Author("1", "name");
     assertEquals("name", author.getHumanValue(Const.XML_NAME));
     assertEquals("1", author.getHumanValue(Const.XML_ID));
@@ -82,10 +81,10 @@ public class TestAuthor extends JajukTestCase {
    */
   public final void testGetName2() {
     Author author = new Author("1", "name");
-    
+
     // usually equal to getName()
     assertEquals("name", author.getName2());
-    
+
     // only different for unknown_author
     author = new Author("2", Const.UNKNOWN_AUTHOR);
     // should be replaced by some localized string
@@ -98,7 +97,7 @@ public class TestAuthor extends JajukTestCase {
   public final void testToString() {
     Author author = new Author("1", "name");
     JUnitHelpers.ToStringTest(author);
-    
+
     author = new Author("1", null);
     JUnitHelpers.ToStringTest(author);
   }
@@ -112,7 +111,7 @@ public class TestAuthor extends JajukTestCase {
     Author equal = new Author("1", "name");
     Author notequal1 = new Author("1", "name2");
     Author notequal2 = new Author("2", "name");
-    
+
     JUnitHelpers.CompareToTest(author, equal, notequal1);
     JUnitHelpers.CompareToTest(author, equal, notequal2);
   }
@@ -123,7 +122,7 @@ public class TestAuthor extends JajukTestCase {
   public final void testIsUnknown() {
     Author author = new Author("1", "name");
     assertFalse(author.isUnknown());
-    
+
     author = new Author("1", Const.UNKNOWN_AUTHOR);
     assertTrue(author.isUnknown());
   }

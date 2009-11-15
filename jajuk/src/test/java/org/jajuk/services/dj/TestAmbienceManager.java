@@ -24,6 +24,7 @@ import java.lang.reflect.Field;
 import java.util.Enumeration;
 import java.util.Properties;
 
+import org.jajuk.JajukTestCase;
 import org.jajuk.base.Style;
 import org.jajuk.base.StyleManager;
 import org.jajuk.events.JajukEvent;
@@ -32,8 +33,6 @@ import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UpgradeManager;
-
-import org.jajuk.JajukTestCase;
 
 /**
  * 
@@ -60,7 +59,8 @@ public class TestAmbienceManager extends JajukTestCase {
   }
 
   /**
-   * Test method for {@link org.jajuk.services.dj.AmbienceManager#getInstance()}.
+   * Test method for {@link org.jajuk.services.dj.AmbienceManager#getInstance()}
+   * .
    */
   public final void testGetInstance() {
     assertNotNull(AmbienceManager.getInstance());
@@ -104,7 +104,7 @@ public class TestAmbienceManager extends JajukTestCase {
         }
       }
     }
-    
+
     // then add set some Ambience-items
     Style style1 = StyleManager.getInstance().registerStyle("style1");
     Style style2 = StyleManager.getInstance().registerStyle("style2");
@@ -120,7 +120,7 @@ public class TestAmbienceManager extends JajukTestCase {
       while (e.hasMoreElements()) {
         String sKey = (String) e.nextElement();
         if (sKey.matches(Const.AMBIENCE_PREFIX + ".*")) {
-          if(sKey.substring(Const.AMBIENCE_PREFIX.length()).indexOf('/') == -1) {
+          if (sKey.substring(Const.AMBIENCE_PREFIX.length()).indexOf('/') == -1) {
             continue;
           }
 
@@ -160,7 +160,8 @@ public class TestAmbienceManager extends JajukTestCase {
 
   /**
    * Test method for
-   * {@link org.jajuk.services.dj.AmbienceManager#getAmbience(java.lang.String)}.
+   * {@link org.jajuk.services.dj.AmbienceManager#getAmbience(java.lang.String)}
+   * .
    */
   public final void testGetAmbience() {
     // this creates the 14 default ambiences
@@ -171,7 +172,8 @@ public class TestAmbienceManager extends JajukTestCase {
 
   /**
    * Test method for
-   * {@link org.jajuk.services.dj.AmbienceManager#getAmbienceByName(java.lang.String)}.
+   * {@link org.jajuk.services.dj.AmbienceManager#getAmbienceByName(java.lang.String)}
+   * .
    */
   public final void testGetAmbienceByName() {
     // this creates the 14 default ambiences
@@ -189,7 +191,8 @@ public class TestAmbienceManager extends JajukTestCase {
 
   /**
    * Test method for
-   * {@link org.jajuk.services.dj.AmbienceManager#registerAmbience(org.jajuk.services.dj.Ambience)}.
+   * {@link org.jajuk.services.dj.AmbienceManager#registerAmbience(org.jajuk.services.dj.Ambience)}
+   * .
    */
   public final void testRegisterAmbience() {
     assertEquals(0, AmbienceManager.getInstance().getAmbiences().size());
@@ -216,7 +219,8 @@ public class TestAmbienceManager extends JajukTestCase {
 
   /**
    * Test method for
-   * {@link org.jajuk.services.dj.AmbienceManager#update(org.jajuk.events.JajukEvent)}.
+   * {@link org.jajuk.services.dj.AmbienceManager#update(org.jajuk.events.JajukEvent)}
+   * .
    */
   public final void testUpdate() {
     Properties prop = new Properties();
@@ -255,7 +259,8 @@ public class TestAmbienceManager extends JajukTestCase {
 
   /**
    * Test method for
-   * {@link org.jajuk.services.dj.AmbienceManager#removeAmbience(java.lang.String)}.
+   * {@link org.jajuk.services.dj.AmbienceManager#removeAmbience(java.lang.String)}
+   * .
    */
   public final void testRemoveAmbience() {
     assertEquals(0, AmbienceManager.getInstance().getAmbiences().size());

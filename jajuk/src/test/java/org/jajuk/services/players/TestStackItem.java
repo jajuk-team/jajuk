@@ -21,6 +21,7 @@
 package org.jajuk.services.players;
 
 import org.jajuk.JUnitHelpers;
+import org.jajuk.JajukTestCase;
 import org.jajuk.base.Album;
 import org.jajuk.base.Author;
 import org.jajuk.base.Device;
@@ -34,8 +35,6 @@ import org.jajuk.services.players.TestQueueModel.MockPlayer;
 import org.jajuk.util.Const;
 import org.jajuk.util.error.JajukException;
 
-import org.jajuk.JajukTestCase;
-
 /**
  * 
  */
@@ -48,27 +47,31 @@ public class TestStackItem extends JajukTestCase {
     File file = getFile(1);
     StackItem item1 = new StackItem(file);
     StackItem item2 = new StackItem(file);
-    
+
     JUnitHelpers.HashCodeTest(item1, item2);
   }
 
   /**
-   * Test method for {@link org.jajuk.services.players.StackItem#StackItem(org.jajuk.base.File)}.
+   * Test method for
+   * {@link org.jajuk.services.players.StackItem#StackItem(org.jajuk.base.File)}
+   * .
    */
   public void testStackItemFile() throws Exception {
     new StackItem(getFile(1));
-    
+
     // test null input
     try {
       new StackItem(null);
       fail("Should throw exception here.");
-    } catch(JajukException e) {
+    } catch (JajukException e) {
       assertEquals(0, e.getCode());
     }
   }
 
   /**
-   * Test method for {@link org.jajuk.services.players.StackItem#StackItem(org.jajuk.base.File, boolean)}.
+   * Test method for
+   * {@link org.jajuk.services.players.StackItem#StackItem(org.jajuk.base.File, boolean)}
+   * .
    */
   public void testStackItemFileBoolean() throws Exception {
     new StackItem(getFile(2), true);
@@ -77,13 +80,15 @@ public class TestStackItem extends JajukTestCase {
     try {
       new StackItem(null, true);
       fail("Should throw exception here.");
-    } catch(JajukException e) {
+    } catch (JajukException e) {
       assertEquals(0, e.getCode());
     }
   }
 
   /**
-   * Test method for {@link org.jajuk.services.players.StackItem#StackItem(org.jajuk.base.File, boolean, boolean)}.
+   * Test method for
+   * {@link org.jajuk.services.players.StackItem#StackItem(org.jajuk.base.File, boolean, boolean)}
+   * .
    */
   public void testStackItemFileBooleanBoolean() throws Exception {
     new StackItem(getFile(2), true, true);
@@ -92,7 +97,7 @@ public class TestStackItem extends JajukTestCase {
     try {
       new StackItem(null, true, true);
       fail("Should throw exception here.");
-    } catch(JajukException e) {
+    } catch (JajukException e) {
       assertEquals(0, e.getCode());
     }
   }
@@ -116,7 +121,8 @@ public class TestStackItem extends JajukTestCase {
   }
 
   /**
-   * Test method for {@link org.jajuk.services.players.StackItem#isUserLaunch()}.
+   * Test method for {@link org.jajuk.services.players.StackItem#isUserLaunch()}
+   * .
    */
   public void testIsAndSetUserLaunch() throws Exception {
     StackItem item = new StackItem(getFile(1));
@@ -144,7 +150,8 @@ public class TestStackItem extends JajukTestCase {
   }
 
   /**
-   * Test method for {@link org.jajuk.services.players.StackItem#equals(java.lang.Object)}.
+   * Test method for
+   * {@link org.jajuk.services.players.StackItem#equals(java.lang.Object)}.
    */
   public void testEqualsObject() throws Exception {
     File file = getFile(1);
@@ -176,8 +183,8 @@ public class TestStackItem extends JajukTestCase {
     Class<IPlayerImpl> cl = (Class<IPlayerImpl>) imp.getClass();
 
     Type type = new Type(Integer.valueOf(i).toString(), "name", "mp3", cl, null);
-    Track track = new Track(Integer.valueOf(i).toString(), "name", album, style, author, 120, year, 1,
-        type, 1);
+    Track track = new Track(Integer.valueOf(i).toString(), "name", album, style, author, 120, year,
+        1, type, 1);
 
     Device device = new Device(Integer.valueOf(i).toString(), "name");
     device.setUrl(System.getProperty("java.io.tmpdir"));

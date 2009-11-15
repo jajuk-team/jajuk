@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.jajuk.JUnitHelpers;
+import org.jajuk.JajukTestCase;
 import org.jajuk.base.Album;
 import org.jajuk.base.Author;
 import org.jajuk.base.Device;
@@ -37,8 +38,6 @@ import org.jajuk.base.Year;
 import org.jajuk.services.players.IPlayerImpl;
 import org.jajuk.services.players.TestQueueModel.MockPlayer;
 import org.jajuk.util.Const;
-
-import org.jajuk.JajukTestCase;
 
 /**
  * 
@@ -243,8 +242,8 @@ public class TestBookmarks extends JajukTestCase {
     Class<IPlayerImpl> cl = (Class<IPlayerImpl>) imp.getClass();
 
     Type type = new Type(Integer.valueOf(i).toString(), "name", "mp3", cl, null);
-    Track track = new Track(Integer.valueOf(i).toString(), "name", album, style, author, 120, year, 1,
-        type, 1);
+    Track track = new Track(Integer.valueOf(i).toString(), "name", album, style, author, 120, year,
+        1, type, 1);
 
     Device device = new Device(Integer.valueOf(i).toString(), "name");
     device.setUrl(System.getProperty("java.io.tmpdir"));
@@ -272,8 +271,8 @@ public class TestBookmarks extends JajukTestCase {
       Class<IPlayerImpl> cl = (Class<IPlayerImpl>) imp.getClass();
 
       Type type = new Type(Integer.valueOf(i).toString(), "name", "mp3", cl, null);
-      Track track = new Track(Integer.valueOf(i).toString(), "name", album, style, author, 120, year,
-          1, type, 1);
+      Track track = new Track(Integer.valueOf(i).toString(), "name", album, style, author, 120,
+          year, 1, type, 1);
 
       Device device = new Device(Integer.valueOf(i).toString(), "name");
       device.setUrl(System.getProperty("java.io.tmpdir"));

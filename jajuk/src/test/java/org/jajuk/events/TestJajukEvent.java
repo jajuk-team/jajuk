@@ -23,7 +23,6 @@ package org.jajuk.events;
 import java.util.Properties;
 
 import org.jajuk.JUnitHelpers;
-
 import org.jajuk.JajukTestCase;
 
 /**
@@ -39,6 +38,7 @@ public class TestJajukEvent extends JajukTestCase {
     JajukEvent event2 = new JajukEvent(JajukEvents.VOLUME_CHANGED);
     JUnitHelpers.HashCodeTest(event1, event2);
   }
+
   public void testHashCode2() {
     Properties prop1 = new Properties();
     prop1.setProperty("test", "value");
@@ -51,7 +51,9 @@ public class TestJajukEvent extends JajukTestCase {
   }
 
   /**
-   * Test method for {@link org.jajuk.events.JajukEvent#JajukEvent(org.jajuk.events.JajukEvents, java.util.Properties)}.
+   * Test method for
+   * {@link org.jajuk.events.JajukEvent#JajukEvent(org.jajuk.events.JajukEvents, java.util.Properties)}
+   * .
    */
   public void testJajukEventJajukEventsProperties() {
     Properties prop1 = new Properties();
@@ -61,7 +63,9 @@ public class TestJajukEvent extends JajukTestCase {
   }
 
   /**
-   * Test method for {@link org.jajuk.events.JajukEvent#JajukEvent(org.jajuk.events.JajukEvents)}.
+   * Test method for
+   * {@link org.jajuk.events.JajukEvent#JajukEvent(org.jajuk.events.JajukEvents)}
+   * .
    */
   public void testJajukEventJajukEvents() {
     new JajukEvent(JajukEvents.VOLUME_CHANGED);
@@ -78,7 +82,7 @@ public class TestJajukEvent extends JajukTestCase {
     assertNotNull(event1.getDetails());
     assertNotNull(event1.getDetails().get("test"));
     assertNull(event1.getDetails().get("notexist"));
-    
+
     JajukEvent event2 = new JajukEvent(JajukEvents.VOLUME_CHANGED);
     assertNull(event2.getDetails());
   }
@@ -103,13 +107,14 @@ public class TestJajukEvent extends JajukTestCase {
 
     JajukEvent event1 = new JajukEvent(JajukEvents.VOLUME_CHANGED, prop1);
     JajukEvent event2 = new JajukEvent(JajukEvents.VOLUME_CHANGED);
-    
+
     JUnitHelpers.ToStringTest(event1);
     JUnitHelpers.ToStringTest(event2);
   }
 
   /**
-   * Test method for {@link org.jajuk.events.JajukEvent#equals(java.lang.Object)}.
+   * Test method for
+   * {@link org.jajuk.events.JajukEvent#equals(java.lang.Object)}.
    */
   public void testEqualsObject() {
     JajukEvent event1 = new JajukEvent(JajukEvents.VOLUME_CHANGED);
@@ -117,6 +122,7 @@ public class TestJajukEvent extends JajukTestCase {
     JajukEvent event3 = new JajukEvent(JajukEvents.FILE_FINISHED);
     JUnitHelpers.EqualsTest(event1, event2, event3);
   }
+
   public void testEqualsObject2() {
     Properties prop1 = new Properties();
     prop1.setProperty("test", "value");

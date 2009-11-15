@@ -24,10 +24,9 @@ import java.awt.HeadlessException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
-import org.jajuk.JajukTestCase;
-
 import org.apache.commons.lang.StringUtils;
 import org.jajuk.JUnitHelpers;
+import org.jajuk.JajukTestCase;
 import org.jajuk.base.TestAlbumManager.MockPlayer;
 import org.jajuk.services.core.ExitService;
 import org.jajuk.services.players.IPlayerImpl;

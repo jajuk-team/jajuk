@@ -28,14 +28,17 @@ import org.jajuk.JajukTestCase;
 public class TestJajukException extends JajukTestCase {
 
   /**
-   * Test method for {@link org.jajuk.util.error.JajukException#JajukException(int)}.
+   * Test method for
+   * {@link org.jajuk.util.error.JajukException#JajukException(int)}.
    */
   public void testJajukExceptionInt() {
     new JajukException(25);
   }
 
   /**
-   * Test method for {@link org.jajuk.util.error.JajukException#JajukException(int, java.lang.Throwable)}.
+   * Test method for
+   * {@link org.jajuk.util.error.JajukException#JajukException(int, java.lang.Throwable)}
+   * .
    */
   public void testJajukExceptionIntThrowable() {
     new JajukException(26, new Throwable("Testexception"));
@@ -50,7 +53,9 @@ public class TestJajukException extends JajukTestCase {
   }
 
   /**
-   * Test method for {@link org.jajuk.util.error.JajukException#JajukException(int, java.lang.String, java.lang.Throwable)}.
+   * Test method for
+   * {@link org.jajuk.util.error.JajukException#JajukException(int, java.lang.String, java.lang.Throwable)}
+   * .
    */
   public void testJajukExceptionIntStringThrowable() {
     JajukException exc = new JajukException(28, "testexceptiontext", new Throwable("Testthrowable"));
@@ -62,7 +67,9 @@ public class TestJajukException extends JajukTestCase {
   }
 
   /**
-   * Test method for {@link org.jajuk.util.error.JajukException#JajukException(int, java.lang.String)}.
+   * Test method for
+   * {@link org.jajuk.util.error.JajukException#JajukException(int, java.lang.String)}
+   * .
    */
   public void testJajukExceptionIntString() {
     JajukException exc = new JajukException(29, "testexceptiontext2");
@@ -70,6 +77,6 @@ public class TestJajukException extends JajukTestCase {
   }
 
   public void testJajukExceptionIntStringNull() {
-    new JajukException(29, (String)null);
+    new JajukException(29, (String) null);
   }
 }

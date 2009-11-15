@@ -44,13 +44,16 @@ public class TestJSplash extends JajukTestCase {
       // expected when tests are executed without UI support
     }
   }
+
   public void testJSplash2() throws Exception {
     try {
-      new JSplash(new URL("http://www.example.com"), true, false, false, "copyright", "version", null);
+      new JSplash(new URL("http://www.example.com"), true, false, false, "copyright", "version",
+          null);
     } catch (HeadlessException e) {
       // expected when tests are executed without UI support
     }
   }
+
   public void testJSplashNullURL() throws Exception {
     try {
       new JSplash(null, true, false, false, "copyright", "version", null);
@@ -64,11 +67,13 @@ public class TestJSplash extends JajukTestCase {
 
   /**
    * Test method for {@link ext.JSplash#splashOn()}.
-   * @throws Exception 
+   * 
+   * @throws Exception
    */
   public void testSplashOn() throws Exception {
     try {
-      JSplash splash = new JSplash(new URL("http://www.example.com"), true, true, true, "copyright", "version", null);
+      JSplash splash = new JSplash(new URL("http://www.example.com"), true, true, true,
+          "copyright", "version", null);
       splash.splashOn();
 
       splash.splashOff();
@@ -79,11 +84,13 @@ public class TestJSplash extends JajukTestCase {
 
   /**
    * Test method for {@link ext.JSplash#splashOff()}.
-   * @throws Exception 
+   * 
+   * @throws Exception
    */
   public void testSplashOff() throws Exception {
     try {
-      JSplash splash = new JSplash(new URL("http://www.example.com"), true, true, true, "copyright", "version", null);
+      JSplash splash = new JSplash(new URL("http://www.example.com"), true, true, true,
+          "copyright", "version", null);
       splash.splashOff();
     } catch (HeadlessException e) {
       // expected when tests are executed without UI support
@@ -92,11 +99,13 @@ public class TestJSplash extends JajukTestCase {
 
   /**
    * Test method for {@link ext.JSplash#setProgress(int)}.
-   * @throws Exception 
+   * 
+   * @throws Exception
    */
   public void testSetProgressInt() throws Exception {
     try {
-      JSplash splash = new JSplash(new URL("http://www.example.com"), true, true, true, "copyright", "version", null);
+      JSplash splash = new JSplash(new URL("http://www.example.com"), true, true, true,
+          "copyright", "version", null);
       splash.setProgress(30);
       splash.splashOff();
     } catch (HeadlessException e) {
@@ -106,20 +115,24 @@ public class TestJSplash extends JajukTestCase {
 
   /**
    * Test method for {@link ext.JSplash#setProgress(int, java.lang.String)}.
-   * @throws Exception 
+   * 
+   * @throws Exception
    */
   public void testSetProgressIntString() throws Exception {
     try {
-      JSplash splash = new JSplash(new URL("http://www.example.com"), true, true, true, "copyright", "version", null);
+      JSplash splash = new JSplash(new URL("http://www.example.com"), true, true, true,
+          "copyright", "version", null);
       splash.setProgress(30, "testmessage");
       splash.splashOff();
     } catch (HeadlessException e) {
       // expected when tests are executed without UI support
     }
   }
+
   public void testSetProgressIntString2() throws Exception {
     try {
-      JSplash splash = new JSplash(new URL("http://www.example.com"), true, true, false, "copyright", "version", null);
+      JSplash splash = new JSplash(new URL("http://www.example.com"), true, true, false,
+          "copyright", "version", null);
       splash.setProgress(30, "testmessage");
       splash.splashOff();
     } catch (HeadlessException e) {

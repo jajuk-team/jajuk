@@ -30,7 +30,8 @@ import org.jajuk.JajukTestCase;
 public class TestAnyFileFilter extends JajukTestCase {
 
   /**
-   * Test method for {@link org.jajuk.util.filters.AnyFileFilter#getDescription()}.
+   * Test method for
+   * {@link org.jajuk.util.filters.AnyFileFilter#getDescription()}.
    */
   public void testGetDescription() {
     AnyFileFilter filter = AnyFileFilter.getInstance();
@@ -38,7 +39,9 @@ public class TestAnyFileFilter extends JajukTestCase {
   }
 
   /**
-   * Test method for {@link org.jajuk.util.filters.AnyFileFilter#isKnownExtension(java.io.File)}.
+   * Test method for
+   * {@link org.jajuk.util.filters.AnyFileFilter#isKnownExtension(java.io.File)}
+   * .
    */
   public void testIsKnownExtension() {
     AnyFileFilter filter = AnyFileFilter.getInstance();

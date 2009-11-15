@@ -28,10 +28,9 @@ import java.util.List;
 
 import javax.swing.ImageIcon;
 
-import org.jajuk.JajukTestCase;
-
 import org.apache.commons.collections.Predicate;
 import org.apache.commons.lang.StringUtils;
+import org.jajuk.JajukTestCase;
 import org.jajuk.services.startup.StartupCollectionService;
 import org.jajuk.util.Const;
 
@@ -49,13 +48,14 @@ public class TestItemManager extends JajukTestCase {
   }
 
   /**
-   * Test method for {@link org.jajuk.base.ItemManager#switchAllManagersToOrderState()}.
+   * Test method for
+   * {@link org.jajuk.base.ItemManager#switchAllManagersToOrderState()}.
    */
 
   public final void testSwitchAllManagersToOrderState() {
     // without Managers this will do nothing
     ItemManager.switchAllManagersToOrderState();
-    
+
     StartupCollectionService.registerItemManagers();
 
     // now it should do more
@@ -72,7 +72,9 @@ public class TestItemManager extends JajukTestCase {
   }
 
   /**
-   * Test method for {@link org.jajuk.base.ItemManager#registerItemManager(java.lang.Class, org.jajuk.base.ItemManager)}.
+   * Test method for
+   * {@link org.jajuk.base.ItemManager#registerItemManager(java.lang.Class, org.jajuk.base.ItemManager)}
+   * .
    */
 
   public final void testRegisterItemManager() {
@@ -87,12 +89,13 @@ public class TestItemManager extends JajukTestCase {
 
   public final void testGetLabel() {
     ItemManager man = new LocalIM();
-    
+
     assertEquals("TestLabel", man.getLabel());
   }
 
   /**
-   * Test method for {@link org.jajuk.base.ItemManager#getMetaInformation(java.lang.String)}.
+   * Test method for
+   * {@link org.jajuk.base.ItemManager#getMetaInformation(java.lang.String)}.
    */
 
   public final void testGetMetaInformation() {
@@ -103,23 +106,25 @@ public class TestItemManager extends JajukTestCase {
   }
 
   /**
-   * Test method for {@link org.jajuk.base.ItemManager#getHumanType(java.lang.String)}.
+   * Test method for
+   * {@link org.jajuk.base.ItemManager#getHumanType(java.lang.String)}.
    */
 
   public final void testGetHumanType() {
-     assertEquals("anykey", ItemManager.getHumanType("anykey"));
-     
-     assertFalse(ItemManager.getHumanType("disc_number"), 
-         "disc_number".equals(ItemManager.getHumanType("disc_number")));
+    assertEquals("anykey", ItemManager.getHumanType("anykey"));
+
+    assertFalse(ItemManager.getHumanType("disc_number"), "disc_number".equals(ItemManager
+        .getHumanType("disc_number")));
   }
 
   /**
-   * Test method for {@link org.jajuk.base.ItemManager#removeProperty(java.lang.String)}.
+   * Test method for
+   * {@link org.jajuk.base.ItemManager#removeProperty(java.lang.String)}.
    */
 
   public final void testRemoveProperty() {
     ItemManager man = new LocalIM();
-    
+
     // one not existing
     man.removeProperty("notexisting");
 
@@ -128,24 +133,28 @@ public class TestItemManager extends JajukTestCase {
   }
 
   /**
-   * Test method for {@link org.jajuk.base.ItemManager#applyRemoveProperty(org.jajuk.base.PropertyMetaInformation)}.
+   * Test method for
+   * {@link org.jajuk.base.ItemManager#applyRemoveProperty(org.jajuk.base.PropertyMetaInformation)}
+   * .
    */
 
   public final void testApplyRemoveProperty() {
     ItemManager man = new LocalIM();
-    
+
     PropertyMetaInformation meta = man.getMetaInformation(Const.XML_ID);
 
     // register some item before
     man.registerItem(new TestItem("3", "name"));
-    
+
     man.applyRemoveProperty(meta);
 
     man.applyNewProperty(meta);
   }
 
   /**
-   * Test method for {@link org.jajuk.base.ItemManager#applyNewProperty(org.jajuk.base.PropertyMetaInformation)}.
+   * Test method for
+   * {@link org.jajuk.base.ItemManager#applyNewProperty(org.jajuk.base.PropertyMetaInformation)}
+   * .
    */
 
   public final void testApplyNewProperty() {
@@ -160,12 +169,12 @@ public class TestItemManager extends JajukTestCase {
     ItemManager man = new LocalIM();
     String xml = man.toXML();
     assertTrue(StringUtils.isNotBlank(xml));
-    
+
     StringBuilder sb = new StringBuilder(xml);
     sb.append("</");
     sb.append(man.getLabel());
     sb.append('>');
-    
+
     // valid xml?
     assertNotNull(sb.toString(), XMLUtils.getDocument(sb.toString()));
   }
@@ -177,7 +186,7 @@ public class TestItemManager extends JajukTestCase {
   public final void testGetProperties() {
     ItemManager man = new LocalIM();
     assertNotNull(man.getProperties());
-    assertEquals(1, man.getProperties().size());    // only one property registered
+    assertEquals(1, man.getProperties().size()); // only one property registered
   }
 
   /**
@@ -186,16 +195,17 @@ public class TestItemManager extends JajukTestCase {
 
   public final void testGetCustomProperties() {
     ItemManager man = new LocalIM();
-    
+
     assertNotNull(man.getCustomProperties());
     assertEquals(0, man.getCustomProperties().size());
-    
+
     // add a custom property.
     man.registerProperty(new PropertyMetaInformation("testprop", true, true, false, false, false,
         String.class, null));
 
     assertNotNull(man.getCustomProperties());
-    assertEquals(1, man.getCustomProperties().size());    // now one property is registered
+    assertEquals(1, man.getCustomProperties().size()); // now one property is
+                                                       // registered
   }
 
   /**
@@ -213,11 +223,14 @@ public class TestItemManager extends JajukTestCase {
         String.class, null));
 
     assertNotNull(man.getVisibleProperties());
-    assertEquals(1, man.getVisibleProperties().size());    // now one visible property is registered
+    assertEquals(1, man.getVisibleProperties().size()); // now one visible
+                                                        // property is
+                                                        // registered
   }
 
   /**
-   * Test method for {@link org.jajuk.base.ItemManager#getItemManager(java.lang.String)}.
+   * Test method for
+   * {@link org.jajuk.base.ItemManager#getItemManager(java.lang.String)}.
    */
 
   public final void testGetItemManagerString() {
@@ -234,12 +247,13 @@ public class TestItemManager extends JajukTestCase {
   }
 
   /**
-   * Test method for {@link org.jajuk.base.ItemManager#getItemManager(java.lang.Class)}.
+   * Test method for
+   * {@link org.jajuk.base.ItemManager#getItemManager(java.lang.Class)}.
    */
 
   public final void testGetItemManagerClassOfQ() {
     StartupCollectionService.registerItemManagers();
-    
+
     assertNotNull(ItemManager.getItemManager(org.jajuk.base.Album.class));
     assertNotNull(ItemManager.getItemManager(org.jajuk.base.Author.class));
     assertNotNull(ItemManager.getItemManager(org.jajuk.base.File.class));
@@ -264,42 +278,45 @@ public class TestItemManager extends JajukTestCase {
   public final void testCleanup() {
     ItemManager man = new LocalIM();
     man.cleanup();
-    
+
     // TODO: add more sophisticated testing here
   }
 
   /**
-   * Test method for {@link org.jajuk.base.ItemManager#cleanOrphanTracks(org.jajuk.base.Item)}.
+   * Test method for
+   * {@link org.jajuk.base.ItemManager#cleanOrphanTracks(org.jajuk.base.Item)}.
    */
 
   public final void testCleanOrphanTracks() {
     ItemManager man = new LocalIM();
     man.cleanOrphanTracks(null);
-    
+
     // TODO: add more sophisticated testing here
   }
 
   /**
-   * Test method for {@link org.jajuk.base.ItemManager#removeItem(org.jajuk.base.Item)}.
+   * Test method for
+   * {@link org.jajuk.base.ItemManager#removeItem(org.jajuk.base.Item)}.
    */
 
   public final void testRemoveItem() {
     ItemManager man = new LocalIM();
     man.removeItem(null);
-    
+
     Item item = new TestItem("4", "name4");
-    
+
     man.registerItem(item);
-    
+
     assertEquals(1, man.getItems().size());
-    
+
     man.removeItem(item);
-    
+
     assertEquals(0, man.getItems().size());
   }
 
   /**
-   * Test method for {@link org.jajuk.base.ItemManager#registerItem(org.jajuk.base.Item)}.
+   * Test method for
+   * {@link org.jajuk.base.ItemManager#registerItem(org.jajuk.base.Item)}.
    */
 
   public final void testRegisterItem() {
@@ -307,7 +324,9 @@ public class TestItemManager extends JajukTestCase {
   }
 
   /**
-   * Test method for {@link org.jajuk.base.ItemManager#registerProperty(org.jajuk.base.PropertyMetaInformation)}.
+   * Test method for
+   * {@link org.jajuk.base.ItemManager#registerProperty(org.jajuk.base.PropertyMetaInformation)}
+   * .
    */
 
   public final void testRegisterProperty() {
@@ -315,8 +334,11 @@ public class TestItemManager extends JajukTestCase {
   }
 
   /**
-   * Test method for {@link org.jajuk.base.ItemManager#changeItem(org.jajuk.base.Item, java.lang.String, java.lang.Object, java.util.Set)}.
-   * @throws Exception 
+   * Test method for
+   * {@link org.jajuk.base.ItemManager#changeItem(org.jajuk.base.Item, java.lang.String, java.lang.Object, java.util.Set)}
+   * .
+   * 
+   * @throws Exception
    */
 
   public final void testChangeItem() throws Exception {
@@ -324,7 +346,7 @@ public class TestItemManager extends JajukTestCase {
 
     Item item = new TestItem("5", "name5");
     man.registerItem(item);
-    
+
     ItemManager.changeItem(item, Const.XML_ID, "6", null);
 
     // TODO: add more sophisticated testing here
@@ -346,7 +368,8 @@ public class TestItemManager extends JajukTestCase {
   }
 
   /**
-   * Test method for {@link org.jajuk.base.ItemManager#getItemByID(java.lang.String)}.
+   * Test method for
+   * {@link org.jajuk.base.ItemManager#getItemByID(java.lang.String)}.
    */
 
   public final void testGetItemByID() {
@@ -356,7 +379,7 @@ public class TestItemManager extends JajukTestCase {
     man.registerItem(item);
 
     assertNotNull(man.getItemByID("5"));
-    
+
     assertNull(man.getItemByID("6"));
   }
 
@@ -376,7 +399,9 @@ public class TestItemManager extends JajukTestCase {
   }
 
   /**
-   * Test method for {@link org.jajuk.base.ItemManager#getFilteredItems(org.apache.commons.collections.Predicate)}.
+   * Test method for
+   * {@link org.jajuk.base.ItemManager#getFilteredItems(org.apache.commons.collections.Predicate)}
+   * .
    */
 
   public final void testGetFilteredItems() {
@@ -394,17 +419,17 @@ public class TestItemManager extends JajukTestCase {
         return true;
       }
     });
-    
+
     assertEquals(list.toString(), 2, list.size());
 
-    // then none 
+    // then none
     list = man.getFilteredItems(new Predicate() {
       @Override
       public boolean evaluate(Object obj) {
         return false;
       }
     });
-    
+
     assertEquals(list.toString(), 0, list.size());
   }
 
@@ -419,7 +444,7 @@ public class TestItemManager extends JajukTestCase {
     man.registerItem(item);
     item = new TestItem("10", "name10");
     man.registerItem(item);
-    
+
     Iterator<? extends Item> items = man.getItemsIterator();
     assertNotNull(items);
     assertTrue(items.hasNext());
@@ -436,9 +461,9 @@ public class TestItemManager extends JajukTestCase {
     man.registerItem(item);
     item = new TestItem("10", "name10");
     man.registerItem(item);
-    
+
     assertEquals(2, man.getElementCount());
-    
+
     man.clear();
 
     assertEquals(0, man.getElementCount());
@@ -460,14 +485,13 @@ public class TestItemManager extends JajukTestCase {
     Iterator<? extends Item> it = man.getItemsIterator();
     assertEquals("9", it.next().getID());
     assertEquals("10", it.next().getID());
-    
-    
+
     assertEquals(2, man.getElementCount());
     man.forceSorting();
-    
+
     // still the same size
     assertEquals(2, man.getElementCount());
-    
+
     // the iterator should still return 9 before 10
     it = man.getItemsIterator();
     assertEquals("9", it.next().getID());
@@ -486,9 +510,9 @@ public class TestItemManager extends JajukTestCase {
       registerProperty(new PropertyMetaInformation(Const.XML_ID, false, true, false, false, false,
           String.class, null));
 
-    }   
+    }
   }
-  
+
   private static class TestItem extends Item {
 
     public TestItem(String id, String name) {
@@ -509,6 +533,6 @@ public class TestItemManager extends JajukTestCase {
     String getLabel() {
       return "Test";
     }
-    
+
   }
 }

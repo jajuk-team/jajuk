@@ -36,9 +36,9 @@ public class TestDBusSignalImpl extends JajukTestCase {
   }
 
   public final void testFileChangedSignal() throws Exception {
-    DBusSignalImpl.FileChangedSignal signal = 
-      new DBusSignalImpl.FileChangedSignal("testfile", "/path/test");
-    
+    DBusSignalImpl.FileChangedSignal signal = new DBusSignalImpl.FileChangedSignal("testfile",
+        "/path/test");
+
     assertEquals("testfile", signal.getFilename());
   }
 }

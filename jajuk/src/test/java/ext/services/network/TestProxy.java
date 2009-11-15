@@ -27,9 +27,8 @@ import java.net.URL;
 import java.net.UnknownHostException;
 import java.net.Proxy.Type;
 
-import org.jajuk.util.log.Log;
-
 import org.jajuk.JajukTestCase;
+import org.jajuk.util.log.Log;
 
 /**
  * 
@@ -40,13 +39,15 @@ public class TestProxy extends JajukTestCase {
 
   boolean bStop = false;
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see junit.framework.TestCase#setUp()
    */
   @Override
   protected void setUp() throws Exception {
     socket = new ServerSocket(PROXY_PORT);
-    
+
     Thread thread = new Thread("ProxySocketAcceptThread") {
       @Override
       public void run() {
@@ -70,29 +71,36 @@ public class TestProxy extends JajukTestCase {
     super.setUp();
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see junit.framework.TestCase#tearDown()
    */
   @Override
   protected void tearDown() throws Exception {
     bStop = true;
     socket.close();
-    
+
     super.tearDown();
   }
 
   /**
-   * Test method for {@link ext.services.network.Proxy#Proxy(java.net.Proxy.Type, java.lang.String, int, java.lang.String, java.lang.String)}.
-   * @throws Exception 
-   * @throws UnknownHostException 
+   * Test method for
+   * {@link ext.services.network.Proxy#Proxy(java.net.Proxy.Type, java.lang.String, int, java.lang.String, java.lang.String)}
+   * .
+   * 
+   * @throws Exception
+   * @throws UnknownHostException
    */
   public void testProxyTypeStringIntStringString() throws UnknownHostException, Exception {
     new Proxy(Type.SOCKS, "localhost", socket.getLocalPort(), "user", "pwd");
   }
 
   /**
-   * Test method for {@link ext.services.network.Proxy#getConnection(java.net.URL)}.
-   * @throws Exception 
+   * Test method for
+   * {@link ext.services.network.Proxy#getConnection(java.net.URL)}.
+   * 
+   * @throws Exception
    */
   public void testGetConnection() throws Exception {
     Proxy proxy = new Proxy(Type.SOCKS, "localhost", socket.getLocalPort(), "user", "pwd");
@@ -101,7 +109,8 @@ public class TestProxy extends JajukTestCase {
 
   /**
    * Test method for {@link ext.services.network.Proxy#getPassword()}.
-   * @throws Exception 
+   * 
+   * @throws Exception
    */
   public void testGetPassword() throws Exception {
     Proxy proxy = new Proxy(Type.SOCKS, "localhost", socket.getLocalPort(), "user", "pwd");

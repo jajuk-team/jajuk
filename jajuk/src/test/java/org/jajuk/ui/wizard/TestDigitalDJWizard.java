@@ -23,7 +23,6 @@ package org.jajuk.ui.wizard;
 import java.awt.HeadlessException;
 
 import org.jajuk.JajukTestCase;
-
 import org.jajuk.services.dj.AmbienceManager;
 import org.jajuk.services.dj.DigitalDJ;
 import org.jajuk.services.dj.DigitalDJManager;

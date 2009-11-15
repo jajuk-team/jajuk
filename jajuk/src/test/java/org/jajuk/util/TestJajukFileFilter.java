@@ -36,7 +36,8 @@ public class TestJajukFileFilter {
 
   /**
    * Test method for
-   * {@link org.jajuk.util.JajukFileFilter#JajukFileFilter(boolean, org.jajuk.util.JajukFileFilter[])}.
+   * {@link org.jajuk.util.JajukFileFilter#JajukFileFilter(boolean, org.jajuk.util.JajukFileFilter[])}
+   * .
    */
   @Test
   public final void testJajukFileFilterBooleanJajukFileFilterArray() {
@@ -45,7 +46,8 @@ public class TestJajukFileFilter {
 
   /**
    * Test method for
-   * {@link org.jajuk.util.JajukFileFilter#JajukFileFilter(org.jajuk.util.JajukFileFilter[])}.
+   * {@link org.jajuk.util.JajukFileFilter#JajukFileFilter(org.jajuk.util.JajukFileFilter[])}
+   * .
    */
   @Test
   public final void testJajukFileFilterJajukFileFilterArray() {
@@ -64,7 +66,8 @@ public class TestJajukFileFilter {
   }
 
   /**
-   * Test method for {@link org.jajuk.util.JajukFileFilter#accept(java.io.File)}.
+   * Test method for {@link org.jajuk.util.JajukFileFilter#accept(java.io.File)}
+   * .
    */
   @Test
   public final void testAcceptFileExtension() {
@@ -74,7 +77,8 @@ public class TestJajukFileFilter {
   }
 
   /**
-   * Test method for {@link org.jajuk.util.JajukFileFilter#accept(java.io.File)}.
+   * Test method for {@link org.jajuk.util.JajukFileFilter#accept(java.io.File)}
+   * .
    */
   @Test
   public final void testAcceptFileFilter() {

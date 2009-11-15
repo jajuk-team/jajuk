@@ -28,14 +28,18 @@ import org.jajuk.JajukTestCase;
 public class TestNoneAccessibleFileException extends JajukTestCase {
 
   /**
-   * Test method for {@link org.jajuk.util.error.NoneAccessibleFileException#NoneAccessibleFileException(int)}.
+   * Test method for
+   * {@link org.jajuk.util.error.NoneAccessibleFileException#NoneAccessibleFileException(int)}
+   * .
    */
   public void testNoneAccessibleFileExceptionInt() {
     new NoneAccessibleFileException(101);
   }
 
   /**
-   * Test method for {@link org.jajuk.util.error.NoneAccessibleFileException#NoneAccessibleFileException(int, java.lang.Throwable)}.
+   * Test method for
+   * {@link org.jajuk.util.error.NoneAccessibleFileException#NoneAccessibleFileException(int, java.lang.Throwable)}
+   * .
    */
   public void testNoneAccessibleFileExceptionIntThrowable() {
     new NoneAccessibleFileException(23, new Throwable("testexception"));

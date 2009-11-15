@@ -24,19 +24,21 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import org.jajuk.ThreadTestHelper;
-
 import org.jajuk.JajukTestCase;
+import org.jajuk.ThreadTestHelper;
 
 public class TestObserverRegistry extends JajukTestCase {
 
-  private static final int NUMBER_OF_THREADS = 15;    // 15 is the limit on concurrent events
+  private static final int NUMBER_OF_THREADS = 15; // 15 is the limit on
+                                                   // concurrent events
   private static final int NUMBER_OF_TESTS = 1000;
-  
+
   private AtomicInteger called = new AtomicInteger(0);
 
   /**
-   * Test method for {@link org.jajuk.events.ObserverRegistry#notifySync(org.jajuk.events.JajukEvent)}.
+   * Test method for
+   * {@link org.jajuk.events.ObserverRegistry#notifySync(org.jajuk.events.JajukEvent)}
+   * .
    */
   public void testNotifySync() {
     ObserverRegistry registry = new ObserverRegistry();
@@ -44,7 +46,9 @@ public class TestObserverRegistry extends JajukTestCase {
   }
 
   /**
-   * Test method for {@link org.jajuk.events.ObserverRegistry#register(org.jajuk.events.JajukEvents, org.jajuk.events.Observer)}.
+   * Test method for
+   * {@link org.jajuk.events.ObserverRegistry#register(org.jajuk.events.JajukEvents, org.jajuk.events.Observer)}
+   * .
    */
   public void testRegister() {
     ObserverRegistry registry = new ObserverRegistry();
@@ -52,7 +56,9 @@ public class TestObserverRegistry extends JajukTestCase {
   }
 
   /**
-   * Test method for {@link org.jajuk.events.ObserverRegistry#unregister(org.jajuk.events.JajukEvents, org.jajuk.events.Observer)}.
+   * Test method for
+   * {@link org.jajuk.events.ObserverRegistry#unregister(org.jajuk.events.JajukEvents, org.jajuk.events.Observer)}
+   * .
    */
   public void testUnregister() {
     ObserverRegistry registry = new ObserverRegistry();
@@ -62,177 +68,163 @@ public class TestObserverRegistry extends JajukTestCase {
   public void testBelowZero() {
     ObserverRegistry registry = new ObserverRegistry();
     Observer observer = new LocalObserver(called);
-    
+
     // first register
     registry.register(JajukEvents.FILE_FINISHED, observer);
-    
+
     assertEquals(0, called.get());
-    
+
     // then notifySync
     registry.notifySync(new JajukEvent(JajukEvents.FILE_FINISHED));
-    
+
     assertEquals(1, called.get());
-    
+
     // then unregister again
     registry.unregister(JajukEvents.FILE_FINISHED, observer);
   }
-  
+
   public void testException() {
     ObserverRegistry registry = new ObserverRegistry();
     Observer observer = new LocalObserver(true, called);
-    
+
     // first register
     registry.register(JajukEvents.FILE_FINISHED, observer);
-    
+
     assertEquals(0, called.get());
-    
-    // then notifySync, this will not return an error even if an exception occurred
+
+    // then notifySync, this will not return an error even if an exception
+    // occurred
     registry.notifySync(new JajukEvent(JajukEvents.FILE_FINISHED));
-    
+
     assertEquals(1, called.get());
-    
+
     // then unregister again
     registry.unregister(JajukEvents.FILE_FINISHED, observer);
   }
 
-  public void testMultipleThreads() throws Exception
-  {
+  public void testMultipleThreads() throws Exception {
     final ObserverRegistry registry = new ObserverRegistry();
     Observer observer = new LocalObserver(called);
-    
+
     // first register
     registry.register(JajukEvents.FILE_FINISHED, observer);
-    
+
     assertEquals(0, called.get());
-    
+
     ThreadTestHelper helper = new ThreadTestHelper(NUMBER_OF_THREADS, NUMBER_OF_TESTS);
 
-      helper.executeTest(new ThreadTestHelper.TestRunnable()
-      {
-          public void doEnd(int threadnum) throws Exception
-          {
-            // nothing to do            
-          }
+    helper.executeTest(new ThreadTestHelper.TestRunnable() {
+      public void doEnd(int threadnum) throws Exception {
+        // nothing to do
+      }
 
-          public void run(int threadnum, int iter)
-          {
-            // then notifySync
-            registry.notifySync(new JajukEvent(JajukEvents.FILE_FINISHED));
-          }
-      });
+      public void run(int threadnum, int iter) {
+        // then notifySync
+        registry.notifySync(new JajukEvent(JajukEvents.FILE_FINISHED));
+      }
+    });
 
-      assertEquals(NUMBER_OF_THREADS * NUMBER_OF_TESTS, called.get());
-      
-      // then unregister again
-      registry.unregister(JajukEvents.FILE_FINISHED, observer);
+    assertEquals(NUMBER_OF_THREADS * NUMBER_OF_TESTS, called.get());
+
+    // then unregister again
+    registry.unregister(JajukEvents.FILE_FINISHED, observer);
   }
 
-  public void testMultipleThreadsWait() throws Exception
-  {
+  public void testMultipleThreadsWait() throws Exception {
     final ObserverRegistry registry = new ObserverRegistry();
-    
+
     // set 100ms wait time to reach event queue size on normal speed machines
-    Observer observer = new LocalObserver(100, called);   
-    
+    Observer observer = new LocalObserver(100, called);
+
     // first register
     registry.register(JajukEvents.FILE_FINISHED, observer);
-    
+
     assertEquals(0, called.get());
-    
-    // more threads so that we reach the limit of 15 concurrent events  
+
+    // more threads so that we reach the limit of 15 concurrent events
     // a bit fewer tests as they will need some time
-    ThreadTestHelper helper = new ThreadTestHelper(NUMBER_OF_THREADS*2, NUMBER_OF_TESTS/20);  
+    ThreadTestHelper helper = new ThreadTestHelper(NUMBER_OF_THREADS * 2, NUMBER_OF_TESTS / 20);
 
-      helper.executeTest(new ThreadTestHelper.TestRunnable()
-      {
-          public void doEnd(int threadnum) throws Exception
-          {
-            // nothing to do            
-          }
+    helper.executeTest(new ThreadTestHelper.TestRunnable() {
+      public void doEnd(int threadnum) throws Exception {
+        // nothing to do
+      }
 
-          public void run(int threadnum, int iter)
-          {
-            // then notifySync
-            registry.notifySync(new JajukEvent(JajukEvents.FILE_FINISHED));
-          }
-      });
+      public void run(int threadnum, int iter) {
+        // then notifySync
+        registry.notifySync(new JajukEvent(JajukEvents.FILE_FINISHED));
+      }
+    });
 
-      // can not test this as we have overflows here! assertEquals(NUMBER_OF_THREADS * NUMBER_OF_TESTS, called.get());
-      
-      // then unregister again
-      registry.unregister(JajukEvents.FILE_FINISHED, observer);
+    // can not test this as we have overflows here!
+    // assertEquals(NUMBER_OF_THREADS * NUMBER_OF_TESTS, called.get());
+
+    // then unregister again
+    registry.unregister(JajukEvents.FILE_FINISHED, observer);
   }
 
-  public void testMultipleThreadsMultipleObservers() throws Exception
-  {
+  public void testMultipleThreadsMultipleObservers() throws Exception {
     final ObserverRegistry registry = new ObserverRegistry();
     Observer observer1 = new LocalObserver(called);
     Observer observer2 = new LocalObserver(called);
-    
+
     // first register
     registry.register(JajukEvents.FILE_FINISHED, observer1);
     registry.register(JajukEvents.FILE_FINISHED, observer2);
-    
+
     assertEquals(0, called.get());
-    
+
     ThreadTestHelper helper = new ThreadTestHelper(NUMBER_OF_THREADS, NUMBER_OF_TESTS);
 
-      helper.executeTest(new ThreadTestHelper.TestRunnable()
-      {
-          public void doEnd(int threadnum) throws Exception
-          {
-            // nothing to do
-          }
+    helper.executeTest(new ThreadTestHelper.TestRunnable() {
+      public void doEnd(int threadnum) throws Exception {
+        // nothing to do
+      }
 
-          public void run(int threadnum, int iter)
-          {
-            // then notifySync
-            registry.notifySync(new JajukEvent(JajukEvents.FILE_FINISHED));
-          }
-      });
+      public void run(int threadnum, int iter) {
+        // then notifySync
+        registry.notifySync(new JajukEvent(JajukEvents.FILE_FINISHED));
+      }
+    });
 
-      // now we were called twice as many times because of two observers...
-      assertEquals(2 * NUMBER_OF_THREADS * NUMBER_OF_TESTS, called.get());
-      
-      // then unregister again
-      registry.unregister(JajukEvents.FILE_FINISHED, observer2);
-      registry.unregister(JajukEvents.FILE_FINISHED, observer1);
+    // now we were called twice as many times because of two observers...
+    assertEquals(2 * NUMBER_OF_THREADS * NUMBER_OF_TESTS, called.get());
+
+    // then unregister again
+    registry.unregister(JajukEvents.FILE_FINISHED, observer2);
+    registry.unregister(JajukEvents.FILE_FINISHED, observer1);
   }
-  
-  public void testHighPriorityObserver() throws Exception
-  {
+
+  public void testHighPriorityObserver() throws Exception {
     final ObserverRegistry registry = new ObserverRegistry();
     LocalObserver observer1 = new LocalObserver(called);
     Observer observer2 = new LocalHighPriorityObserver(observer1, called);
-    
+
     // first register
     registry.register(JajukEvents.FILE_FINISHED, observer1);
     registry.register(JajukEvents.FILE_FINISHED, observer2);
-    
+
     assertEquals(0, called.get());
-    
+
     ThreadTestHelper helper = new ThreadTestHelper(NUMBER_OF_THREADS, NUMBER_OF_TESTS);
 
-      helper.executeTest(new ThreadTestHelper.TestRunnable()
-      {
-          public void doEnd(int threadnum) throws Exception
-          {
-            // nothing to do
-          }
+    helper.executeTest(new ThreadTestHelper.TestRunnable() {
+      public void doEnd(int threadnum) throws Exception {
+        // nothing to do
+      }
 
-          public void run(int threadnum, int iter)
-          {
-            // then notifySync
-            registry.notifySync(new JajukEvent(JajukEvents.FILE_FINISHED));
-          }
-      });
+      public void run(int threadnum, int iter) {
+        // then notifySync
+        registry.notifySync(new JajukEvent(JajukEvents.FILE_FINISHED));
+      }
+    });
 
-      // now we were called twice as many times because of two observers...
-      assertEquals(2 * NUMBER_OF_THREADS * NUMBER_OF_TESTS, called.get());
-      
-      // then unregister again
-      registry.unregister(JajukEvents.FILE_FINISHED, observer2);
-      registry.unregister(JajukEvents.FILE_FINISHED, observer1);
+    // now we were called twice as many times because of two observers...
+    assertEquals(2 * NUMBER_OF_THREADS * NUMBER_OF_TESTS, called.get());
+
+    // then unregister again
+    registry.unregister(JajukEvents.FILE_FINISHED, observer2);
+    registry.unregister(JajukEvents.FILE_FINISHED, observer1);
   }
 
   static class LocalObserver implements Observer {
@@ -240,7 +232,7 @@ public class TestObserverRegistry extends JajukTestCase {
     int wait = 0;
     boolean exception = false;
     AtomicInteger called;
-    
+
     /**
      * 
      */
@@ -258,7 +250,6 @@ public class TestObserverRegistry extends JajukTestCase {
       this.called = called;
     }
 
-    
     /**
      * @param exception
      */
@@ -268,7 +259,9 @@ public class TestObserverRegistry extends JajukTestCase {
       this.called = called;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.jajuk.events.Observer#getRegistrationKeys()
      */
     @Override
@@ -280,18 +273,20 @@ public class TestObserverRegistry extends JajukTestCase {
       return set;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.jajuk.events.Observer#update(org.jajuk.events.JajukEvent)
      */
     @Override
     public void update(JajukEvent event) {
       called.incrementAndGet();
-    
-      if(exception) {
+
+      if (exception) {
         throw new RuntimeException("Exception requested in update...");
       }
-      
-      if(wait > 0) {
+
+      if (wait > 0) {
         try {
           Thread.sleep(wait);
         } catch (InterruptedException e) {
@@ -300,9 +295,9 @@ public class TestObserverRegistry extends JajukTestCase {
       }
     }
   }
-  
+
   private class LocalHighPriorityObserver extends LocalObserver implements HighPriorityObserver {
-    LocalObserver lowprioobserver;  // to check if other was not yet called
+    LocalObserver lowprioobserver; // to check if other was not yet called
 
     /**
      * @param lowprioobserver
@@ -312,18 +307,20 @@ public class TestObserverRegistry extends JajukTestCase {
       this.lowprioobserver = lowprioobserver;
     }
 
-
-    /* (non-Javadoc)
-     * @see org.jajuk.events.TestObserverRegistry.LocalObserver#update(org.jajuk.events.JajukEvent)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.jajuk.events.TestObserverRegistry.LocalObserver#update(org.jajuk.
+     * events.JajukEvent)
      */
     @Override
     public void update(JajukEvent event) {
-      if(lowprioobserver.invoked) {
+      if (lowprioobserver.invoked) {
         throw new RuntimeException("LocalObserver was called before HighPriorityObserver!");
       }
       super.update(event);
     }
-    
-    
+
   }
 }

@@ -25,10 +25,9 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.jajuk.JajukTestCase;
-
 import org.apache.commons.lang.StringUtils;
 import org.jajuk.JUnitHelpers;
+import org.jajuk.JajukTestCase;
 import org.jajuk.services.bookmark.Bookmarks;
 import org.jajuk.services.players.QueueModel;
 import org.jajuk.services.players.StackItem;
@@ -99,26 +98,27 @@ public class TestPlaylist extends JajukTestCase {
 
     // this is what we read here...
     play.setProperty(Const.XML_DIRECTORY, play.getDirectory().getDevice().getID());
-    
+
     String str1 = System.getProperty("java.io.tmpdir");
     String str2 = play.getHumanValue(Const.XML_DIRECTORY);
     str1 = StringUtils.stripEnd(str1, java.io.File.separator);
     str2 = StringUtils.stripEnd(str2, java.io.File.separator);
     assertEquals(str1, str2);
-    
+
     assertEquals("", play.getHumanValue("notexist"));
-    
+
     // define property
     StartupCollectionService.registerItemManagers();
-    ItemManager.getItemManager(Playlist.class).registerProperty(new PropertyMetaInformation("testkey", true, true,
-        true, true, true, String.class, "defaultval"));    
-    
+    ItemManager.getItemManager(Playlist.class).registerProperty(
+        new PropertyMetaInformation("testkey", true, true, true, true, true, String.class,
+            "defaultval"));
+
     play.setProperty("testkey", "testval");
-    
+
     assertEquals("testval", play.getHumanValue("testkey"));
 
     play.removeProperty("testkey");
-    
+
     assertEquals("defaultval", play.getHumanValue("testkey"));
   }
 
@@ -166,7 +166,7 @@ public class TestPlaylist extends JajukTestCase {
 
     // register files
     FileManager.getInstance().registerFile("1", "test.tst", dir, track, 120, 70);
-    
+
     return new org.jajuk.base.File("1", "test.tst", dir, track, 120, 70);
   }
 
@@ -179,7 +179,7 @@ public class TestPlaylist extends JajukTestCase {
     Playlist play = getPlaylist();
     play.remove(0);
     play.remove(0);
-    
+
     assertEquals(0, play.getRate());
 
     play.addFile(getFile());
@@ -201,12 +201,14 @@ public class TestPlaylist extends JajukTestCase {
   public final void testGetRateNull() throws Exception {
     Playlist play = getPlaylist();
     play.setFiles(null);
-    
+
     assertEquals(0, play.getRate());
   }
+
   /**
    * Test method for
-   * {@link org.jajuk.base.Playlist#Playlist(org.jajuk.base.Playlist.Type, java.lang.String, java.lang.String, org.jajuk.base.Directory)}.
+   * {@link org.jajuk.base.Playlist#Playlist(org.jajuk.base.Playlist.Type, java.lang.String, java.lang.String, org.jajuk.base.Directory)}
+   * .
    */
   public final void testPlaylistTypeStringStringDirectory() {
     new Playlist(Playlist.Type.BESTOF, "1", "name", null);
@@ -214,7 +216,8 @@ public class TestPlaylist extends JajukTestCase {
 
   /**
    * Test method for
-   * {@link org.jajuk.base.Playlist#Playlist(java.lang.String, java.lang.String, org.jajuk.base.Directory)}.
+   * {@link org.jajuk.base.Playlist#Playlist(java.lang.String, java.lang.String, org.jajuk.base.Directory)}
+   * .
    */
   public final void testPlaylistStringStringDirectory() {
     new Playlist("1", "name", null);
@@ -241,12 +244,12 @@ public class TestPlaylist extends JajukTestCase {
     File file = getFile();
     file.getDirectory().getDevice().mount(true);
     play.addFile(file);
-    
+
     // wait a bit to let the "push" be done in a separate thread
     JUnitHelpers.waitForThreadToFinish("Queue Push Thread");
-    
+
     assertEquals(1, QueueModel.getQueueSize());
-    
+
     file = getFile();
     file.getDirectory().getDevice().mount(true);
     play.addFile(1, file);
@@ -257,7 +260,8 @@ public class TestPlaylist extends JajukTestCase {
     assertEquals(2, QueueModel.getQueueSize());
     assertEquals(2, play.getFiles().size());
 
-    // test with repeat as well to see if we get repeat set for the new track as well
+    // test with repeat as well to see if we get repeat set for the new track as
+    // well
     QueueModel.getItem(0).setRepeat(true);
 
     file = getFile();
@@ -382,7 +386,7 @@ public class TestPlaylist extends JajukTestCase {
     play.clear();
   }
 
-    /**
+  /**
    * Test method for {@link org.jajuk.base.Playlist#commit()}.
    * 
    * @throws Exception
@@ -397,9 +401,9 @@ public class TestPlaylist extends JajukTestCase {
     new java.io.File(System.getProperty("java.io.tmpdir") + java.io.File.separator + "testdir")
         .mkdir();
 
-    play.setFIO(new java.io.File(System.getProperty("java.io.tmpdir") + java.io.File.separator + "testdir" +
-        java.io.File.separator + "playlist.txt"));
-    
+    play.setFIO(new java.io.File(System.getProperty("java.io.tmpdir") + java.io.File.separator
+        + "testdir" + java.io.File.separator + "playlist.txt"));
+
     play.commit();
   }
 
@@ -409,10 +413,12 @@ public class TestPlaylist extends JajukTestCase {
    */
   public final void testCompareTo() {
     Playlist play = new Playlist("1", "name", null);
-    
+
     Playlist equ = new Playlist("1", "name", null);
-    Playlist equ2 = new Playlist("4", "name", null);  // different id still compares as we just look at name and directory...
-    
+    Playlist equ2 = new Playlist("4", "name", null); // different id still
+                                                     // compares as we just look
+                                                     // at name and directory...
+
     Playlist nonequ1 = new Playlist("2", "name3", null);
     Playlist nonequ2 = new Playlist("5", "name2", null);
     Playlist nonequ3 = new Playlist("2", "name", new Directory("1", "name", null, new Device("9",
@@ -519,7 +525,7 @@ public class TestPlaylist extends JajukTestCase {
   private Playlist getPlaylistQueue() {
     // make sure the Queue is empty before creating a playlist on it
     QueueModel.clear();
-    
+
     return new Playlist(Playlist.Type.QUEUE, "1", "name", null);
   }
 
@@ -534,14 +540,16 @@ public class TestPlaylist extends JajukTestCase {
       Playlist play = getPlaylist();
 
       // need to have URL set for device
-      play.getFiles().get(0).getDirectory().getDevice().setUrl(System.getProperty("java.io.tmpdir"));
-      play.getFiles().get(1).getDirectory().getDevice().setUrl(System.getProperty("java.io.tmpdir"));
+      play.getFiles().get(0).getDirectory().getDevice()
+          .setUrl(System.getProperty("java.io.tmpdir"));
+      play.getFiles().get(1).getDirectory().getDevice()
+          .setUrl(System.getProperty("java.io.tmpdir"));
 
       new java.io.File(System.getProperty("java.io.tmpdir") + java.io.File.separator + "testdir")
           .mkdir();
 
-      play.setFIO(new java.io.File(System.getProperty("java.io.tmpdir") + java.io.File.separator + "testdir" +
-          java.io.File.separator + "playlist.txt"));
+      play.setFIO(new java.io.File(System.getProperty("java.io.tmpdir") + java.io.File.separator
+          + "testdir" + java.io.File.separator + "playlist.txt"));
 
       play.commit();
     }
@@ -612,11 +620,11 @@ public class TestPlaylist extends JajukTestCase {
 
   public final void testGetFilesNull() throws Exception {
     Playlist play = getPlaylist();
-    play.setFiles(null);  // null as list!
+    play.setFiles(null); // null as list!
 
     assertEquals(2, play.getFiles().size());
   }
-  
+
   public final void testGetFilesNovelities() throws Exception {
     Device device = new Device("9", "name");
     device.setUrl(System.getProperty("java.io.tmpdir")); // directory to use
@@ -628,7 +636,7 @@ public class TestPlaylist extends JajukTestCase {
 
     assertNotNull(play.getFiles());
   }
-  
+
   public final void testGetFilesBestOf() throws Exception {
     Device device = new Device("9", "name");
     device.setUrl(System.getProperty("java.io.tmpdir")); // directory to use
@@ -640,7 +648,7 @@ public class TestPlaylist extends JajukTestCase {
 
     assertNotNull(play.getFiles());
   }
-  
+
   public final void testGetFilesNew() throws Exception {
     Device device = new Device("9", "name");
     device.setUrl(System.getProperty("java.io.tmpdir")); // directory to use
@@ -676,7 +684,7 @@ public class TestPlaylist extends JajukTestCase {
    */
   public final void testIsReady() throws Exception {
     Playlist play = getPlaylist();
-    
+
     // mounted initially
     assertTrue(play.isReady());
 
@@ -698,16 +706,19 @@ public class TestPlaylist extends JajukTestCase {
       play.addFile(getFile());
 
       // need to have URL set for device
-      play.getFiles().get(0).getDirectory().getDevice().setUrl(System.getProperty("java.io.tmpdir"));
-      play.getFiles().get(1).getDirectory().getDevice().setUrl(System.getProperty("java.io.tmpdir"));
-      play.getFiles().get(2).getDirectory().getDevice().setUrl(System.getProperty("java.io.tmpdir"));
-      
+      play.getFiles().get(0).getDirectory().getDevice()
+          .setUrl(System.getProperty("java.io.tmpdir"));
+      play.getFiles().get(1).getDirectory().getDevice()
+          .setUrl(System.getProperty("java.io.tmpdir"));
+      play.getFiles().get(2).getDirectory().getDevice()
+          .setUrl(System.getProperty("java.io.tmpdir"));
+
       new java.io.File(System.getProperty("java.io.tmpdir") + java.io.File.separator + "testdir")
           .mkdir();
 
-      play.setFIO(new java.io.File(System.getProperty("java.io.tmpdir") + java.io.File.separator + "testdir" +
-          java.io.File.separator + "playlist.txt"));
-      
+      play.setFIO(new java.io.File(System.getProperty("java.io.tmpdir") + java.io.File.separator
+          + "testdir" + java.io.File.separator + "playlist.txt"));
+
       play.commit();
     }
 
@@ -754,6 +765,7 @@ public class TestPlaylist extends JajukTestCase {
       // this tries to open a FileChooser...
     }
   }
+
   /**
    * Test method for {@link org.jajuk.base.Playlist#remove(int)}.
    * 
@@ -779,7 +791,8 @@ public class TestPlaylist extends JajukTestCase {
 
   /**
    * Test method for
-   * {@link org.jajuk.base.Playlist#replaceFile(org.jajuk.base.File, org.jajuk.base.File)}.
+   * {@link org.jajuk.base.Playlist#replaceFile(org.jajuk.base.File, org.jajuk.base.File)}
+   * .
    * 
    * @throws Exception
    */
@@ -796,9 +809,9 @@ public class TestPlaylist extends JajukTestCase {
     File file = getFile();
     file.getDirectory().getDevice().setUrl(System.getProperty("java.io.tmpdir"));
 
-    play.setFIO(new java.io.File(System.getProperty("java.io.tmpdir") + java.io.File.separator + "testdir" +
-        java.io.File.separator + "playlist.txt"));
-    
+    play.setFIO(new java.io.File(System.getProperty("java.io.tmpdir") + java.io.File.separator
+        + "testdir" + java.io.File.separator + "playlist.txt"));
+
     play.replaceFile(play.getFiles().get(0), file);
   }
 
@@ -809,14 +822,14 @@ public class TestPlaylist extends JajukTestCase {
 
     // wait for the thread to finish before doing this
     JUnitHelpers.waitForThreadToFinish("Queue Push Thread");
-    
+
     play.replaceFile(play.getFiles().get(0), getFile());
   }
 
   public final void testReplaceFileQueue() throws Exception {
     // make sure Queue is empty
     QueueModel.clear();
-    
+
     Playlist play = getPlaylistQueue();
 
     // for type Queue, we need to push to the Queue
@@ -826,7 +839,7 @@ public class TestPlaylist extends JajukTestCase {
 
     assertEquals(1, play.getFiles().size());
     assertNotNull(play.getFiles().get(0));
-    
+
     play.replaceFile(play.getFiles().get(0), getFile());
   }
 
@@ -859,7 +872,7 @@ public class TestPlaylist extends JajukTestCase {
     // need to have URLs set for Devices here
     play.getFiles().get(0).getDirectory().getDevice().setUrl(System.getProperty("java.io.tmpdir"));
     play.getFiles().get(1).getDirectory().getDevice().setUrl(System.getProperty("java.io.tmpdir"));
-    
+
     try {
       play.saveAs();
     } catch (InvocationTargetException e) {
@@ -868,6 +881,7 @@ public class TestPlaylist extends JajukTestCase {
       // this tries to open a FileChooser...
     }
   }
+
   public final void testSaveAsBestOf() throws Exception {
     Device device = new Device("9", "name");
     device.setUrl(System.getProperty("java.io.tmpdir")); // directory to use
@@ -882,7 +896,7 @@ public class TestPlaylist extends JajukTestCase {
     list.add(getFile());
 
     play.setFiles(list);
-    
+
     try {
       play.saveAs();
     } catch (InvocationTargetException e) {
@@ -891,6 +905,7 @@ public class TestPlaylist extends JajukTestCase {
       // this tries to open a FileChooser...
     }
   }
+
   public final void testSaveAsBookmark() throws Exception {
     Playlist play = getPlaylistBookmark();
 
@@ -902,6 +917,7 @@ public class TestPlaylist extends JajukTestCase {
       // this tries to open a FileChooser...
     }
   }
+
   public final void testSaveAsNovelities() throws Exception {
     Device device = new Device("9", "name");
     device.setUrl(System.getProperty("java.io.tmpdir")); // directory to use
@@ -925,6 +941,7 @@ public class TestPlaylist extends JajukTestCase {
       // this tries to open a FileChooser...
     }
   }
+
   public final void testSaveAsQueue() throws Exception {
     Playlist play = getPlaylistQueue();
 
@@ -962,7 +979,8 @@ public class TestPlaylist extends JajukTestCase {
 
   /**
    * Test method for
-   * {@link org.jajuk.base.Playlist#setParentDirectory(org.jajuk.base.Directory)}.
+   * {@link org.jajuk.base.Playlist#setParentDirectory(org.jajuk.base.Directory)}
+   * .
    */
   public final void testSetParentDirectory() {
     Playlist play = new Playlist("1", "name", null);
@@ -1082,7 +1100,7 @@ public class TestPlaylist extends JajukTestCase {
     // first without files
     assertEquals(0, play.getHits());
   }
-  
+
   /**
    * Test method for {@link org.jajuk.base.Playlist#getDuration()}.
    * 
@@ -1116,7 +1134,7 @@ public class TestPlaylist extends JajukTestCase {
     // at first no duration at all
     assertEquals(0, play.getDuration());
   }
-  
+
   /**
    * Test method for {@link org.jajuk.base.Playlist#getNbOfTracks()}.
    * 

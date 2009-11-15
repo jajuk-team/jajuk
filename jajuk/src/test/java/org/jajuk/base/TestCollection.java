@@ -20,10 +20,9 @@
  */
 package org.jajuk.base;
 
-import org.jajuk.JajukTestCase;
-
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
+import org.jajuk.JajukTestCase;
 import org.jajuk.services.startup.StartupCollectionService;
 import org.jajuk.util.Const;
 import org.jajuk.util.error.JajukException;
@@ -41,7 +40,7 @@ public class TestCollection extends JajukTestCase {
   public final void testStartDocument() {
     Collection coll = Collection.getInstance();
     assertNotNull(coll);
-    
+
     // just call it, this is part of the SAX interfaces
     coll.startDocument();
   }
@@ -52,7 +51,7 @@ public class TestCollection extends JajukTestCase {
   public final void testEndDocument() {
     Collection coll = Collection.getInstance();
     assertNotNull(coll);
-    
+
     // just call it, this is part of the SAX interfaces
     coll.endDocument();
   }
@@ -67,22 +66,23 @@ public class TestCollection extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.base.Collection#commit(java.io.File)}.
-   * @throws Exception 
+   * 
+   * @throws Exception
    */
   public final void testCommit() throws Exception {
     StartupCollectionService.registerItemManagers();
-    
+
     Collection coll = Collection.getInstance();
     assertNotNull(coll);
-    
+
     java.io.File file = java.io.File.createTempFile("testcoll", ".xml");
-    
+
     // delete the file before writing the collection
     assertTrue(file.delete());
-    
+
     // commit without any item
     Collection.commit(file);
-    
+
     // now it should exist and have some content
     assertTrue(file.exists());
     String str = FileUtils.readFileToString(file);
@@ -90,7 +90,8 @@ public class TestCollection extends JajukTestCase {
     assertTrue(str, str.contains("<" + Const.XML_COLLECTION));
 
     // now with some content
-    DeviceManager.getInstance().registerDevice("testdevice", 1, System.getProperty("java.io.tmpdir"));
+    DeviceManager.getInstance().registerDevice("testdevice", 1,
+        System.getProperty("java.io.tmpdir"));
     StyleManager.getInstance().registerStyle("cooldown");
     {
       Style style = new Style("5", "name");
@@ -99,43 +100,44 @@ public class TestCollection extends JajukTestCase {
       album.setProperty(Const.XML_ALBUM_COVER, "none"); // don't read covers for
       // this test
       AlbumManager.getInstance().registerAlbum("name", "artis", 23);
-      
+
       Author author = new Author("5", "name");
       AuthorManager.getInstance().registerAuthor("name");
       Year year = new Year("5", "2000");
       YearManager.getInstance().registerYear("2000");
-      
-//      IPlayerImpl imp = new MockPlayer();
-//      Class<IPlayerImpl> cl = (Class<IPlayerImpl>) imp.getClass();
+
+      // IPlayerImpl imp = new MockPlayer();
+      // Class<IPlayerImpl> cl = (Class<IPlayerImpl>) imp.getClass();
 
       Type type = new Type("5", "MP3", "mp3", null, null);
       TypeManager.getInstance().registerType("MP3", "mp3", null, null);
-      
-      TrackManager.getInstance().registerTrack("name5", album, style, author, 120, year, 1,
-          type, 1);
+
+      TrackManager.getInstance()
+          .registerTrack("name5", album, style, author, 120, year, 1, type, 1);
     }
     YearManager.getInstance().registerYear("1900");
     Device device = new Device("6", System.getProperty("java.io.tmpdir"));
     device.setUrl(System.getProperty("java.io.tmpdir"));
-    PlaylistManager.getInstance().registerPlaylistFile("4", "plf", new Directory("4", "directory", null, 
-        device));
+    PlaylistManager.getInstance().registerPlaylistFile("4", "plf",
+        new Directory("4", "directory", null, device));
     AuthorManager.getInstance().registerAuthor("testauthor");
     AlbumManager.getInstance().registerAlbum("album2", "artist1", 0);
-    
+
     device = new Device("7", System.getProperty("java.io.tmpdir"));
     device.setUrl(System.getProperty("java.io.tmpdir"));
     DirectoryManager.getInstance().registerDirectory(device);
     device = new Device("6", System.getProperty("java.io.tmpdir"));
     device.setUrl(System.getProperty("java.io.tmpdir"));
-    FileManager.getInstance().registerFile("5", "thisfile.mp3", new Directory("4", "directory", null, 
-        device), TrackManager.getInstance().getTracks().get(0), 120, 100);
-    
+    FileManager.getInstance().registerFile("5", "thisfile.mp3",
+        new Directory("4", "directory", null, device),
+        TrackManager.getInstance().getTracks().get(0), 120, 100);
+
     // delete the file before writing the collection
     assertTrue(file.delete());
-    
+
     // commit without any item
     Collection.commit(file);
-    
+
     // now it should exist and have some content
     assertTrue(file.exists());
     str = FileUtils.readFileToString(file);
@@ -144,11 +146,12 @@ public class TestCollection extends JajukTestCase {
     // it should also contain the content that we added
     assertTrue(str, str.contains("testdevice"));
     assertTrue(str, str.contains("cooldown"));
-    
+
     // also test loading here
     Collection.load(file);
-    
-    // TODO: loading needs more testing and verification of results after loading...
+
+    // TODO: loading needs more testing and verification of results after
+    // loading...
   }
 
   /**
@@ -157,14 +160,16 @@ public class TestCollection extends JajukTestCase {
   public final void testLoad() {
     // tested above
   }
+
   public final void testLoadNotExists() throws Exception {
     try {
       Collection.load(new java.io.File("Notexistingfile"));
       fail("Should throw an exception here.");
-    } catch(JajukException e) {
+    } catch (JajukException e) {
       assertTrue(e.getMessage(), e.getMessage().contains("Notexistingfile"));
-    }    
+    }
   }
+
   /**
    * Test method for {@link org.jajuk.base.Collection#cleanupLogical()}.
    */
@@ -180,7 +185,8 @@ public class TestCollection extends JajukTestCase {
   }
 
   /**
-   * Test method for {@link org.jajuk.base.Collection#warning(org.xml.sax.SAXParseException)}.
+   * Test method for
+   * {@link org.jajuk.base.Collection#warning(org.xml.sax.SAXParseException)}.
    */
   public final void testWarningSAXParseException() {
     Collection coll = Collection.getInstance();
@@ -188,14 +194,15 @@ public class TestCollection extends JajukTestCase {
       coll.warning(new SAXParseException("Testexception", null));
       fail("Should throw exception here...");
     } catch (SAXException e) {
-      assertTrue(e.getMessage(), 
-          e.getMessage().contains("Testexception"));
+      assertTrue(e.getMessage(), e.getMessage().contains("Testexception"));
     }
   }
 
   /**
-   * Test method for {@link org.jajuk.base.Collection#error(org.xml.sax.SAXParseException)}.
-   * @throws Exception 
+   * Test method for
+   * {@link org.jajuk.base.Collection#error(org.xml.sax.SAXParseException)}.
+   * 
+   * @throws Exception
    */
   public final void testErrorSAXParseException() throws Exception {
     Collection coll = Collection.getInstance();
@@ -203,14 +210,16 @@ public class TestCollection extends JajukTestCase {
       coll.error(new SAXParseException("Testexception", null));
       fail("Should throw exception here...");
     } catch (SAXException e) {
-      assertTrue(e.getMessage(), 
-          e.getMessage().contains("Testexception"));
+      assertTrue(e.getMessage(), e.getMessage().contains("Testexception"));
     }
   }
 
   /**
-   * Test method for {@link org.jajuk.base.Collection#fatalError(org.xml.sax.SAXParseException)}.
-   * @throws Exception 
+   * Test method for
+   * {@link org.jajuk.base.Collection#fatalError(org.xml.sax.SAXParseException)}
+   * .
+   * 
+   * @throws Exception
    */
   public final void testFatalErrorSAXParseException() throws Exception {
     Collection coll = Collection.getInstance();
@@ -218,13 +227,14 @@ public class TestCollection extends JajukTestCase {
       coll.fatalError(new SAXParseException("Testexception", null));
       fail("Should throw exception here...");
     } catch (SAXException e) {
-      assertTrue(e.getMessage(), 
-          e.getMessage().contains("Testexception"));
+      assertTrue(e.getMessage(), e.getMessage().contains("Testexception"));
     }
   }
 
   /**
-   * Test method for {@link org.jajuk.base.Collection#startElement(java.lang.String, java.lang.String, java.lang.String, org.xml.sax.Attributes)}.
+   * Test method for
+   * {@link org.jajuk.base.Collection#startElement(java.lang.String, java.lang.String, java.lang.String, org.xml.sax.Attributes)}
+   * .
    */
   public final void testStartElementStringStringStringAttributes() {
     // tested as part of commit/load

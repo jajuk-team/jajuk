@@ -68,20 +68,21 @@ public class TestPreparePartyAction extends JajukTestCase {
    */
   public void testPreparePartyAction() throws Exception {
     PreparePartyAction action = new PreparePartyAction();
-    
+
     // once with empty properties, this is called from the menu
     try {
-      action.perform(new ActionEvent(new JButton(), 1, null)); 
+      action.perform(new ActionEvent(new JButton(), 1, null));
     } catch (HeadlessException e) {
       // happens when tests are run on servers without ui
     }
 
-    // then with a single and with a list of playlists, this is called from the PlaylistView
+    // then with a single and with a list of playlists, this is called from the
+    // PlaylistView
     JButton button = new JButton();
     button.putClientProperty(Const.DETAIL_SELECTION, getPlaylist(10, false));
     try {
       action.perform(new ActionEvent(button, 1, null)); // once with empty
-                                                        // properties
+      // properties
     } catch (HeadlessException e) {
       // happens when tests are run on servers without ui
     }
@@ -91,7 +92,7 @@ public class TestPreparePartyAction extends JajukTestCase {
     button.putClientProperty(Const.DETAIL_SELECTION, list);
     try {
       action.perform(new ActionEvent(button, 1, null)); // once with empty
-                                                        // properties
+      // properties
     } catch (HeadlessException e) {
       // happens when tests are run on servers without ui
     }

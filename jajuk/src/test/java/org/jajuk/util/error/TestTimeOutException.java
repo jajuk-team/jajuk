@@ -28,14 +28,17 @@ import org.jajuk.JajukTestCase;
 public class TestTimeOutException extends JajukTestCase {
 
   /**
-   * Test method for {@link org.jajuk.util.error.TimeOutException#TimeOutException(int)}.
+   * Test method for
+   * {@link org.jajuk.util.error.TimeOutException#TimeOutException(int)}.
    */
   public void testTimeOutExceptionInt() {
     new TimeOutException(11);
   }
 
   /**
-   * Test method for {@link org.jajuk.util.error.TimeOutException#TimeOutException(int, java.lang.Throwable)}.
+   * Test method for
+   * {@link org.jajuk.util.error.TimeOutException#TimeOutException(int, java.lang.Throwable)}
+   * .
    */
   public void testTimeOutExceptionIntThrowable() {
     new TimeOutException(24, new Throwable("TestException"));

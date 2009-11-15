@@ -27,14 +27,16 @@ import junit.framework.TestCase;
  */
 public abstract class JajukTestCase extends TestCase {
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see junit.framework.TestCase#setUp()
    */
   @Override
   protected void setUp() throws Exception {
     // let's clean up before we begin any test
     JUnitHelpers.waitForAllWorkToFinishAndCleanup();
-    
+
     super.setUp();
   }
 }

@@ -21,6 +21,7 @@
 package org.jajuk.services.bookmark;
 
 import org.jajuk.JUnitHelpers;
+import org.jajuk.JajukTestCase;
 import org.jajuk.base.Album;
 import org.jajuk.base.Author;
 import org.jajuk.base.Device;
@@ -35,8 +36,6 @@ import org.jajuk.services.players.IPlayerImpl;
 import org.jajuk.services.players.TestQueueModel.MockPlayer;
 import org.jajuk.util.Const;
 
-import org.jajuk.JajukTestCase;
-
 /**
  * 
  */
@@ -44,7 +43,8 @@ public class TestHistoryItem extends JajukTestCase {
 
   /**
    * Test method for
-   * {@link org.jajuk.services.bookmark.HistoryItem#HistoryItem(java.lang.String, long)}.
+   * {@link org.jajuk.services.bookmark.HistoryItem#HistoryItem(java.lang.String, long)}
+   * .
    */
 
   public final void testHistoryItem() {
@@ -66,7 +66,8 @@ public class TestHistoryItem extends JajukTestCase {
   }
 
   /**
-   * Test method for {@link org.jajuk.services.bookmark.HistoryItem#getFileId()}.
+   * Test method for {@link org.jajuk.services.bookmark.HistoryItem#getFileId()}
+   * .
    */
 
   public final void testGetAndSetFileId() {

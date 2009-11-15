@@ -31,14 +31,17 @@ public class TestMain extends JajukTestCase {
    * Test method for {@link org.jajuk.Main#main(java.lang.String[])}.
    */
   public void testMain() {
-    // TODO: cannot do this as it will do an System.exit() because of  
+    // TODO: cannot do this as it will do an System.exit() because of
     // HeadlessException
     // Main.main(new String[]{});
   }
 
   /**
-   * Test method for {@link org.jajuk.Main#initializeFromThumbnailsMaker(boolean, java.lang.String)}.
-   * @throws Exception 
+   * Test method for
+   * {@link org.jajuk.Main#initializeFromThumbnailsMaker(boolean, java.lang.String)}
+   * .
+   * 
+   * @throws Exception
    */
   public void testInitializeFromThumbnailsMaker() throws Exception {
     JUnitHelpers.createSessionDirectory();

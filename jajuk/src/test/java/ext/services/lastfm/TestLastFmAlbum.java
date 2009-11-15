@@ -24,12 +24,12 @@ import java.net.UnknownHostException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
-import org.jajuk.JajukTestCase;
 import net.roarsoftware.lastfm.Album;
 import net.roarsoftware.lastfm.CallException;
 import net.roarsoftware.lastfm.Playlist;
 
 import org.jajuk.JUnitHelpers;
+import org.jajuk.JajukTestCase;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.UtilString;
 
@@ -55,8 +55,8 @@ public class TestLastFmAlbum extends JajukTestCase {
     assertNotNull(a);
 
     try { // may fail if internet is not available
-    Playlist p = Playlist.fetchAlbumPlaylist(a.getId(), UtilString.rot13(API_KEY));
-    assertNotNull(p);
+      Playlist p = Playlist.fetchAlbumPlaylist(a.getId(), UtilString.rot13(API_KEY));
+      assertNotNull(p);
     } catch (CallException e) {
       // ignore for now if it contains an UnknownHostException inside
       assertTrue(e.getMessage(), e.getCause() instanceof UnknownHostException);
@@ -89,14 +89,14 @@ public class TestLastFmAlbum extends JajukTestCase {
   public void testGetArtistUrl() {
     LastFmAlbum album = new LastFmAlbum();
     assertNull(album.getArtistUrl());
-    
+
     album.setUrl("testurl");
     assertEquals("testurl", album.getArtistUrl());
-    
+
     // cuts off after last path...
     album.setUrl("http://test.url/url1/url2/url3/test123.html");
     assertEquals("http://test.url/url1/url2/url3", album.getArtistUrl());
-    
+
   }
 
   /**

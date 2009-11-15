@@ -31,14 +31,16 @@ import org.jajuk.util.error.JajukException;
  */
 public class TestLog extends JajukTestCase {
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see org.jajuk.JajukTestCase#setUp()
    */
   @Override
   protected void setUp() throws Exception {
     // make sure we have logging initialized for these tests
     Log.getInstance();
-    
+
     super.setUp();
   }
 
@@ -67,7 +69,9 @@ public class TestLog extends JajukTestCase {
   }
 
   /**
-   * Test method for {@link org.jajuk.util.log.Log#debug(java.lang.String, java.lang.Throwable)}.
+   * Test method for
+   * {@link org.jajuk.util.log.Log#debug(java.lang.String, java.lang.Throwable)}
+   * .
    */
   public void testDebugStringThrowable() {
     Log.debug("testlog2", new Throwable("testthrowable2"));
@@ -78,7 +82,7 @@ public class TestLog extends JajukTestCase {
 
   public void testDebugStringThrowableNull() {
     Log.debug(null, new Throwable("testthrowable2"));
-    //verifySpool("testlog2");
+    // verifySpool("testlog2");
     // this is anonymonized: verifySpool("testthrowable2");
     verifySpool("***");
   }
@@ -100,7 +104,8 @@ public class TestLog extends JajukTestCase {
   }
 
   /**
-   * Test method for {@link org.jajuk.util.log.Log#warn(java.lang.String, java.lang.String)}.
+   * Test method for
+   * {@link org.jajuk.util.log.Log#warn(java.lang.String, java.lang.String)}.
    */
   public void testWarnStringString() {
     Log.warn("warn5", "addinfo");
@@ -109,7 +114,9 @@ public class TestLog extends JajukTestCase {
   }
 
   /**
-   * Test method for {@link org.jajuk.util.log.Log#warn(int, java.lang.String, java.lang.Throwable)}.
+   * Test method for
+   * {@link org.jajuk.util.log.Log#warn(int, java.lang.String, java.lang.Throwable)}
+   * .
    */
   public void testWarnIntStringThrowable() {
     Log.warn(10, "warntext6", new Throwable("testthrowable"));
@@ -123,9 +130,11 @@ public class TestLog extends JajukTestCase {
     // this is anonymonized: verifySpool("testthrowable2");
     verifySpool("***");
   }
-  
+
   /**
-   * Test method for {@link org.jajuk.util.log.Log#error(int, java.lang.String, java.lang.Throwable)}.
+   * Test method for
+   * {@link org.jajuk.util.log.Log#error(int, java.lang.String, java.lang.Throwable)}
+   * .
    */
   public void testErrorIntStringThrowable() {
     Log.error(30, "errortext7", new Throwable("errorthrowable"));
@@ -152,7 +161,8 @@ public class TestLog extends JajukTestCase {
   }
 
   /**
-   * Test method for {@link org.jajuk.util.log.Log#error(int, java.lang.Throwable)}.
+   * Test method for
+   * {@link org.jajuk.util.log.Log#error(int, java.lang.Throwable)}.
    */
   public void testErrorIntThrowable() {
     Log.error(32, new Throwable("testerror9"));
@@ -162,14 +172,17 @@ public class TestLog extends JajukTestCase {
   }
 
   /**
-   * Test method for {@link org.jajuk.util.log.Log#error(java.lang.String, org.jajuk.util.error.JajukException)}.
+   * Test method for
+   * {@link org.jajuk.util.log.Log#error(java.lang.String, org.jajuk.util.error.JajukException)}
+   * .
    */
   public void testErrorStringJajukException() {
     Log.error("teststring", new JajukException(33));
   }
 
   /**
-   * Test method for {@link org.jajuk.util.log.Log#error(org.jajuk.util.error.JajukException)}.
+   * Test method for
+   * {@link org.jajuk.util.log.Log#error(org.jajuk.util.error.JajukException)}.
    */
   public void testErrorJajukException() {
     Log.error(new JajukException(34));
@@ -186,9 +199,10 @@ public class TestLog extends JajukTestCase {
    * Test method for {@link org.jajuk.util.log.Log#getVerbosity()}.
    */
   public void testGetVerbosity() {
-    // set verbosity first as we can not rely on INFO being set because other tests might have adjusted it somehow
+    // set verbosity first as we can not rely on INFO being set because other
+    // tests might have adjusted it somehow
     Log.setVerbosity(Log.INFO);
-    
+
     assertEquals(Log.INFO, Log.getVerbosity());
     Log.setVerbosity(Log.DEBUG);
     assertEquals(Log.DEBUG, Log.getVerbosity());
@@ -235,20 +249,18 @@ public class TestLog extends JajukTestCase {
     assertNotNull(Log.getSpool());
 
     // create enough spool to overflow
-    for(int i = 0;i < Const.FEEDBACK_LINES + 10;i++) {
+    for (int i = 0; i < Const.FEEDBACK_LINES + 10; i++) {
       Log.debug("Spooltest-" + Integer.toString(i) + '|');
     }
-    
+
     // should return the expected number of lines now
-    assertEquals(Log.getSpool().toString(), 
-        Const.FEEDBACK_LINES, Log.getSpool().size());
+    assertEquals(Log.getSpool().toString(), Const.FEEDBACK_LINES, Log.getSpool().size());
 
     // now the first ten should be moved out
     verifySpool("Spooltest-0|", false);
     verifySpool("Spooltest-9|", false);
     verifySpool("Spooltest-11|");
     verifySpool("Spooltest-" + Integer.toString(Const.FEEDBACK_LINES + 9) + '|');
-   
 
     // more details tested in other methods
   }
@@ -256,37 +268,38 @@ public class TestLog extends JajukTestCase {
   private void verifySpool(String substring) {
     verifySpool(substring, true);
   }
-    private void verifySpool(String substring, boolean expected) {
-    List<String> list = Log.getSpool(); 
-    
-    for(String str : list) {
-      if(str.contains(substring)) {
+
+  private void verifySpool(String substring, boolean expected) {
+    List<String> list = Log.getSpool();
+
+    for (String str : list) {
+      if (str.contains(substring)) {
         // expected => return, not expected => fail
-        if(expected) {
+        if (expected) {
           return;
         } else {
           fail("Should not find string '" + substring + "' in spool: " + list.toString());
         }
       }
     }
-    
+
     // if we expected the string, but did not find it we need to fail here
-    if(expected) {
+    if (expected) {
       fail("List does not contain expected string '" + substring + "' in spool: " + list.toString());
-    } 
+    }
   }
-    
+
   public void testAnonymization() {
     // things in {{...}} are replaced in the spool. Verify that this happens
     Log.info("this is {{sensitive}} data...");
     verifySpool("this is");
     verifySpool("sensitive", false);
     verifySpool("data...");
-    
+
     // replaced by "***"
     verifySpool("***");
   }
-  
+
   public void testAnonymizationPlayerState() {
     // special replacement that is done to not show personal data in the spool
     Log.info("Player state changed: OPENING this is secret personal information");
@@ -294,5 +307,5 @@ public class TestLog extends JajukTestCase {
     verifySpool("OPENING");
     verifySpool("secret", false);
   }
-  
+
 }

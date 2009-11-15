@@ -31,7 +31,8 @@ import org.jajuk.JajukTestCase;
 public class TestDirectoryFilter extends JajukTestCase {
 
   /**
-   * Test method for {@link org.jajuk.util.filters.DirectoryFilter#accept(java.io.File)}.
+   * Test method for
+   * {@link org.jajuk.util.filters.DirectoryFilter#accept(java.io.File)}.
    */
   public void testAcceptFile() {
     assertTrue(DirectoryFilter.getInstance().accept(new File(System.getProperty("java.io.tmpdir"))));
@@ -39,7 +40,8 @@ public class TestDirectoryFilter extends JajukTestCase {
   }
 
   /**
-   * Test method for {@link org.jajuk.util.filters.DirectoryFilter#getDescription()}.
+   * Test method for
+   * {@link org.jajuk.util.filters.DirectoryFilter#getDescription()}.
    */
   public void testGetDescription() {
     // contents is locale specific
@@ -47,7 +49,8 @@ public class TestDirectoryFilter extends JajukTestCase {
   }
 
   /**
-   * Test method for {@link org.jajuk.util.filters.DirectoryFilter#getInstance()}.
+   * Test method for
+   * {@link org.jajuk.util.filters.DirectoryFilter#getInstance()}.
    */
   public void testGetInstance() {
     assertNotNull(DirectoryFilter.getInstance());

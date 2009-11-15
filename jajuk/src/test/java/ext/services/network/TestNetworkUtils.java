@@ -26,10 +26,9 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.Proxy.Type;
 
-import org.jajuk.JajukTestCase;
-
 import org.apache.commons.lang.StringUtils;
 import org.jajuk.JUnitHelpers;
+import org.jajuk.JajukTestCase;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.log.Log;
@@ -43,7 +42,9 @@ public class TestNetworkUtils extends JajukTestCase {
   private static final String URL = "http://www.google.com/";
   private static final String FTP_URL = "ftp://www.google.com/";
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see junit.framework.TestCase#setUp()
    */
   @Override

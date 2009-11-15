@@ -23,6 +23,7 @@ package org.jajuk.ui.views;
 import java.awt.Component;
 import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
+import java.awt.event.InputEvent;
 import java.awt.event.MouseEvent;
 import java.util.Set;
 
@@ -32,9 +33,8 @@ import javax.swing.event.TreeExpansionEvent;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.tree.TreePath;
 
-import org.jajuk.JajukTestCase;
-
 import org.jajuk.JUnitHelpers;
+import org.jajuk.JajukTestCase;
 import org.jajuk.base.Album;
 import org.jajuk.base.Author;
 import org.jajuk.base.Style;
@@ -84,7 +84,8 @@ public class TestTracksTreeView extends JajukTestCase {
     } catch (HeadlessException e) {
       // reported on headless settings
     } catch (NullPointerException e) {
-      // sometimes reported deep inside Swing components, I could not find out why...
+      // sometimes reported deep inside Swing components, I could not find out
+      // why...
     }
   }
 
@@ -312,7 +313,8 @@ public class TestTracksTreeView extends JajukTestCase {
 
   /**
    * Test method for
-   * {@link org.jajuk.ui.views.TracksTreeView#actionPerformed(java.awt.event.ActionEvent)}.
+   * {@link org.jajuk.ui.views.TracksTreeView#actionPerformed(java.awt.event.ActionEvent)}
+   * .
    */
   public final void testActionPerformed() {
     TracksTreeView view = new TracksTreeView();
@@ -365,7 +367,7 @@ public class TestTracksTreeView extends JajukTestCase {
     // normal event with CTRL is handled here
     event = new MouseEvent(new Component() {
       private static final long serialVersionUID = 1L;
-    }, 1, 2l, MouseEvent.CTRL_DOWN_MASK, 2, 2, 3, false);
+    }, 1, 2l, InputEvent.CTRL_DOWN_MASK, 2, 2, 3, false);
     try {
       ad.mousePressed(event);
     } catch (NullPointerException e) {
@@ -474,25 +476,32 @@ public class TestTracksTreeView extends JajukTestCase {
 
     Icon icon = ad.getIcon();
     // make sure we have a different icon after each call
-    assertNotNull(ad.getTreeCellRendererComponent(new JTree(), new StyleNode(getStyle()), true, true, true, 1, true));
+    assertNotNull(ad.getTreeCellRendererComponent(new JTree(), new StyleNode(getStyle()), true,
+        true, true, 1, true));
     assertFalse(ad.getIcon().equals(icon));
     icon = ad.getIcon();
-    assertNotNull(ad.getTreeCellRendererComponent(new JTree(), new AuthorNode(getAuthor()), true, true, true, 1, true));
+    assertNotNull(ad.getTreeCellRendererComponent(new JTree(), new AuthorNode(getAuthor()), true,
+        true, true, 1, true));
     assertFalse(icon.equals(ad.getIcon()));
     icon = ad.getIcon();
-    assertNotNull(ad.getTreeCellRendererComponent(new JTree(), new YearNode(getYear()), true, true, true, 1, true));
+    assertNotNull(ad.getTreeCellRendererComponent(new JTree(), new YearNode(getYear()), true, true,
+        true, 1, true));
     assertFalse(icon.equals(ad.getIcon()));
     icon = ad.getIcon();
-    assertNotNull(ad.getTreeCellRendererComponent(new JTree(), new AlbumNode(getAlbum()), true, true, true, 1, true));
+    assertNotNull(ad.getTreeCellRendererComponent(new JTree(), new AlbumNode(getAlbum()), true,
+        true, true, 1, true));
     assertFalse(icon.equals(ad.getIcon()));
     icon = ad.getIcon();
-    assertNotNull(ad.getTreeCellRendererComponent(new JTree(), new TrackNode(getTrack()), true, true, true, 1, true));
+    assertNotNull(ad.getTreeCellRendererComponent(new JTree(), new TrackNode(getTrack()), true,
+        true, true, 1, true));
     assertFalse(icon.equals(ad.getIcon()));
     icon = ad.getIcon();
-    assertNotNull(ad.getTreeCellRendererComponent(new JTree(), new DiscoveryDateNode("str"), true, true, true, 1, true));
+    assertNotNull(ad.getTreeCellRendererComponent(new JTree(), new DiscoveryDateNode("str"), true,
+        true, true, 1, true));
     assertFalse(icon.equals(ad.getIcon()));
     icon = ad.getIcon();
-    assertNotNull(ad.getTreeCellRendererComponent(new JTree(), "unknown object", true, true, true, 1, true));
+    assertNotNull(ad.getTreeCellRendererComponent(new JTree(), "unknown object", true, true, true,
+        1, true));
     assertFalse(icon.equals(ad.getIcon()));
     icon = ad.getIcon();
   }
@@ -511,7 +520,7 @@ public class TestTracksTreeView extends JajukTestCase {
     }
 
     {
-      Author style = getAuthor ();
+      Author style = getAuthor();
       assertNull(style.getProperties().get(Const.XML_EXPANDED));
       ad.treeExpanded(new TreeExpansionEvent("dummy", new TreePath(new AuthorNode(style))));
       assertEquals(true, style.getProperties().get(Const.XML_EXPANDED));

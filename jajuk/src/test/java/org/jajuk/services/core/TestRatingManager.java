@@ -23,7 +23,6 @@ package org.jajuk.services.core;
 import java.util.Set;
 
 import org.jajuk.JajukTestCase;
-
 import org.jajuk.base.Album;
 import org.jajuk.base.Author;
 import org.jajuk.base.Device;
@@ -53,19 +52,21 @@ public class TestRatingManager extends JajukTestCase {
    * Test method for {@link org.jajuk.services.core.RatingManager#run()}.
    */
   public void testRun() {
-    // cannot be tested, is an endless loop: 
+    // cannot be tested, is an endless loop:
     // RatingManager.getInstance().run();
   }
 
   /**
-   * Test method for {@link org.jajuk.services.core.RatingManager#getInstance()}.
+   * Test method for {@link org.jajuk.services.core.RatingManager#getInstance()}
+   * .
    */
   public void testGetInstance() {
     assertNotNull(RatingManager.getInstance());
   }
 
   /**
-   * Test method for {@link org.jajuk.services.core.RatingManager#getMaxPlaycount()}.
+   * Test method for
+   * {@link org.jajuk.services.core.RatingManager#getMaxPlaycount()}.
    */
   public void testGetAndSetMaxPlaycount() {
     assertEquals(0, RatingManager.getMaxPlaycount());
@@ -77,18 +78,20 @@ public class TestRatingManager extends JajukTestCase {
   }
 
   /**
-   * Test method for {@link org.jajuk.services.core.RatingManager#setMaxPlaycount(long)}.
+   * Test method for
+   * {@link org.jajuk.services.core.RatingManager#setMaxPlaycount(long)}.
    */
   public void testSetMaxPlaycount() {
     // tested above
   }
 
   /**
-   * Test method for {@link org.jajuk.services.core.RatingManager#hasRateChanged()}.
+   * Test method for
+   * {@link org.jajuk.services.core.RatingManager#hasRateChanged()}.
    */
   public void testHasAndSetRateChanged() {
     assertTrue(RatingManager.hasRateChanged());
-    
+
     RatingManager.setRateHasChanged(false);
 
     assertFalse(RatingManager.hasRateChanged());
@@ -99,32 +102,37 @@ public class TestRatingManager extends JajukTestCase {
   }
 
   /**
-   * Test method for {@link org.jajuk.services.core.RatingManager#setRateHasChanged(boolean)}.
+   * Test method for
+   * {@link org.jajuk.services.core.RatingManager#setRateHasChanged(boolean)}.
    */
   public void testSetRateHasChanged() {
     // tested above
   }
 
   /**
-   * Test method for {@link org.jajuk.services.core.RatingManager#getRegistrationKeys()}.
+   * Test method for
+   * {@link org.jajuk.services.core.RatingManager#getRegistrationKeys()}.
    */
   public void testGetRegistrationKeys() {
     Set<JajukEvents> set = RatingManager.getInstance().getRegistrationKeys();
-    
+
     assertTrue(set.toString(), set.contains(JajukEvents.RATE_RESET));
   }
 
   /**
-   * Test method for {@link org.jajuk.services.core.RatingManager#update(org.jajuk.events.JajukEvent)}.
-   * @throws Exception 
+   * Test method for
+   * {@link org.jajuk.services.core.RatingManager#update(org.jajuk.events.JajukEvent)}
+   * .
+   * 
+   * @throws Exception
    */
   public void testUpdate() throws Exception {
     StartupCollectionService.registerItemManagers();
-    
+
     // update uses some Tracks
     getTrack(1);
     getTrack(2);
-    
+
     RatingManager.getInstance().update(new JajukEvent(JajukEvents.RATE_RESET, null));
     RatingManager.getInstance().update(new JajukEvent(JajukEvents.PREFERENCES_RESET, null));
   }
@@ -142,11 +150,11 @@ public class TestRatingManager extends JajukTestCase {
     IPlayerImpl imp = new MockPlayer();
     Class<IPlayerImpl> cl = (Class<IPlayerImpl>) imp.getClass();
     ITagImpl tagimp = new MyTagImpl();
-    Class<ITagImpl> tl = (Class<ITagImpl>)tagimp.getClass();
+    Class<ITagImpl> tl = (Class<ITagImpl>) tagimp.getClass();
 
     Type type = new Type(Integer.valueOf(i).toString(), "name", "mp3", cl, tl);
-    Track track = TrackManager.getInstance().registerTrack(Integer.valueOf(i).toString(), "name", album, style, author, 120, year,
-        1, type, 1);
+    Track track = TrackManager.getInstance().registerTrack(Integer.valueOf(i).toString(), "name",
+        album, style, author, 120, year, 1, type, 1);
 
     album.getTracksCache().add(track);
 
@@ -156,12 +164,13 @@ public class TestRatingManager extends JajukTestCase {
 
     Directory dir = new Directory(Integer.valueOf(i).toString(), "name", null, device);
 
-    File file = new org.jajuk.base.File(Integer.valueOf(i).toString(), "test.tst", dir, track, 120, 70);
-    
+    File file = new org.jajuk.base.File(Integer.valueOf(i).toString(), "test.tst", dir, track, 120,
+        70);
+
     track.addFile(file);
-    
-    TypeManager.getInstance().registerType("test", "tst", cl, tl);    
-    
+
+    TypeManager.getInstance().registerType("test", "tst", cl, tl);
+
     return track;
   }
 

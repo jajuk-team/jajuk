@@ -28,7 +28,9 @@ import org.jajuk.JajukTestCase;
 public class TestFullSubmissionData extends JajukTestCase {
 
   /**
-   * Test method for {@link ext.services.lastfm.FullSubmissionData#FullSubmissionData(java.lang.String, java.lang.String, java.lang.String, int, int, java.lang.String, int)}.
+   * Test method for
+   * {@link ext.services.lastfm.FullSubmissionData#FullSubmissionData(java.lang.String, java.lang.String, java.lang.String, int, int, java.lang.String, int)}
+   * .
    */
   public void testFullSubmissionData() {
     new FullSubmissionData("artist", "title", "album", 120, 3, "source", 4);
@@ -45,7 +47,8 @@ public class TestFullSubmissionData extends JajukTestCase {
   }
 
   /**
-   * Test method for {@link ext.services.lastfm.FullSubmissionData#setArtist(java.lang.String)}.
+   * Test method for
+   * {@link ext.services.lastfm.FullSubmissionData#setArtist(java.lang.String)}.
    */
   public void testSetArtist() {
     // tested above
@@ -62,7 +65,8 @@ public class TestFullSubmissionData extends JajukTestCase {
   }
 
   /**
-   * Test method for {@link ext.services.lastfm.FullSubmissionData#setTitle(java.lang.String)}.
+   * Test method for
+   * {@link ext.services.lastfm.FullSubmissionData#setTitle(java.lang.String)}.
    */
   public void testSetTitle() {
     // tested above
@@ -79,14 +83,16 @@ public class TestFullSubmissionData extends JajukTestCase {
   }
 
   /**
-   * Test method for {@link ext.services.lastfm.FullSubmissionData#setAlbum(java.lang.String)}.
+   * Test method for
+   * {@link ext.services.lastfm.FullSubmissionData#setAlbum(java.lang.String)}.
    */
   public void testSetAlbum() {
     // tested above
   }
 
   /**
-   * Test method for {@link ext.services.lastfm.FullSubmissionData#getDuration()}.
+   * Test method for
+   * {@link ext.services.lastfm.FullSubmissionData#getDuration()}.
    */
   public void testGetDuration() {
     FullSubmissionData sub = new FullSubmissionData("artist", "title", "album", 120, 3, "source", 4);
@@ -96,14 +102,16 @@ public class TestFullSubmissionData extends JajukTestCase {
   }
 
   /**
-   * Test method for {@link ext.services.lastfm.FullSubmissionData#setDuration(int)}.
+   * Test method for
+   * {@link ext.services.lastfm.FullSubmissionData#setDuration(int)}.
    */
   public void testSetDuration() {
     // tested above
   }
 
   /**
-   * Test method for {@link ext.services.lastfm.FullSubmissionData#getTrackNumber()}.
+   * Test method for
+   * {@link ext.services.lastfm.FullSubmissionData#getTrackNumber()}.
    */
   public void testGetTrackNumber() {
     FullSubmissionData sub = new FullSubmissionData("artist", "title", "album", 120, 3, "source", 4);
@@ -113,7 +121,8 @@ public class TestFullSubmissionData extends JajukTestCase {
   }
 
   /**
-   * Test method for {@link ext.services.lastfm.FullSubmissionData#setTrackNumber(int)}.
+   * Test method for
+   * {@link ext.services.lastfm.FullSubmissionData#setTrackNumber(int)}.
    */
   public void testSetTrackNumber() {
     // tested above
@@ -130,14 +139,16 @@ public class TestFullSubmissionData extends JajukTestCase {
   }
 
   /**
-   * Test method for {@link ext.services.lastfm.FullSubmissionData#setSource(java.lang.String)}.
+   * Test method for
+   * {@link ext.services.lastfm.FullSubmissionData#setSource(java.lang.String)}.
    */
   public void testSetSource() {
     // tested above
   }
 
   /**
-   * Test method for {@link ext.services.lastfm.FullSubmissionData#getStartTime()}.
+   * Test method for
+   * {@link ext.services.lastfm.FullSubmissionData#getStartTime()}.
    */
   public void testGetStartTime() {
     FullSubmissionData sub = new FullSubmissionData("artist", "title", "album", 120, 3, "source", 4);
@@ -147,7 +158,8 @@ public class TestFullSubmissionData extends JajukTestCase {
   }
 
   /**
-   * Test method for {@link ext.services.lastfm.FullSubmissionData#setStartTime(int)}.
+   * Test method for
+   * {@link ext.services.lastfm.FullSubmissionData#setStartTime(int)}.
    */
   public void testSetStartTime() {
     // tested above

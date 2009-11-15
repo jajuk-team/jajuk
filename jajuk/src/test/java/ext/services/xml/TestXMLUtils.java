@@ -23,11 +23,10 @@ package ext.services.xml;
 import java.io.File;
 import java.io.IOException;
 
-import org.jajuk.JajukTestCase;
-
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.jajuk.JUnitHelpers;
+import org.jajuk.JajukTestCase;
 import org.jajuk.util.log.Log;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -117,171 +116,191 @@ public class TestXMLUtils extends JajukTestCase {
   public void testGetDocumentParseError() {
     Document doc = XMLUtils.getDocument("<xmlinvalid>adsasd<asdksdtest value=\"1\"/></xml>");
     assertNull(doc);
-    doc = XMLUtils.getDocument(StringUtils.repeat("1", 1000));  // more than 500 characters for log.debug
+    doc = XMLUtils.getDocument(StringUtils.repeat("1", 1000)); // more than 500
+                                                               // characters for
+                                                               // log.debug
     assertNull(doc);
   }
-  
+
   /**
-   * Test method for {@link ext.services.xml.XMLUtils#writeBeanToFile(java.lang.Object, java.lang.String)}.
-   * @throws Exception 
+   * Test method for
+   * {@link ext.services.xml.XMLUtils#writeBeanToFile(java.lang.Object, java.lang.String)}
+   * .
+   * 
+   * @throws Exception
    */
   public final void testWriteBeanToFile() throws Exception {
-    
+
     PersonBean bean = new PersonBean();
     bean.setName("testvalue");
-    
+
     File file = File.createTempFile("test", ".bean");
-    assertTrue(file.delete());  // delte file to create it from scratch
+    assertTrue(file.delete()); // delte file to create it from scratch
     assertFalse(file.exists());
     XMLUtils.writeBeanToFile(bean, file.getAbsolutePath());
-    
+
     { // check file
       assertTrue(file.exists());
       String contents = FileUtils.readFileToString(file);
       Log.debug("Contents: " + contents);
       assertTrue(contents, file.length() > 0);
     }
-    
-    /* TODO: somehow this test does not work, we should find out and fix this test...
-    
-    Object obj = XMLUtils.readBeanFromFile(file.getAbsolutePath());
-    assertTrue(obj instanceof PersonBean);
-    
-    assertEquals("testvalue", ((PersonBean)obj).getName());
-    */
+
+    /*
+     * TODO: somehow this test does not work, we should find out and fix this
+     * test...
+     * 
+     * Object obj = XMLUtils.readBeanFromFile(file.getAbsolutePath());
+     * assertTrue(obj instanceof PersonBean);
+     * 
+     * assertEquals("testvalue", ((PersonBean)obj).getName());
+     */
   }
 
   public final void testWriteBeanToFileInvalidFile() {
-    
+
     PersonBean bean = new PersonBean();
     bean.setName("testvalue");
-    
+
     try {
-      XMLUtils.writeBeanToFile(bean, "&@#$@(*^)!#!@#@#)}{?M<>?<?,/.,/.,\"'\\][|}{{:2zqwq;sInvalidFileName/\\/");
+      XMLUtils.writeBeanToFile(bean,
+          "&@#$@(*^)!#!@#@#)}{?M<>?<?,/.,/.,\"'\\][|}{{:2zqwq;sInvalidFileName/\\/");
       fail("Should throw Exception here...");
     } catch (IOException e) {
       // expected...
     }
   }
 
-    /**
+  /**
    * Class <code>PersonBean</code>.
    */
   public class PersonBean implements java.io.Serializable {
     private static final long serialVersionUID = 1124123276327532379L;
 
-      private String name;
-   
-      private boolean deceased;
-   
-      /** No-arg constructor (takes no arguments). */
-      public PersonBean() {
-      }
-   
-      /**
-       * Property <code>name</code> (note capitalization) readable/writable.
-       */
-      public String getName() {
-          return this.name;
-      }
-   
-      /**
-       * Setter for property <code>name</code>.
-       * @param name
-       */
-      public void setName(final String name) {
-          this.name = name;
-      }
-   
-      /**
-       * Getter for property "deceased"
-       * Different syntax for a boolean field (is vs. get)
-       */
-      public boolean isDeceased() {
-          return this.deceased;
-      }
-   
-      /**
-       * Setter for property <code>deceased</code>.
-       * @param deceased
-       */
-      public void setDeceased(final boolean deceased) {
-          this.deceased = deceased;
-      }
+    private String name;
+
+    private boolean deceased;
+
+    /** No-arg constructor (takes no arguments). */
+    public PersonBean() {
+    }
+
+    /**
+     * Property <code>name</code> (note capitalization) readable/writable.
+     */
+    public String getName() {
+      return this.name;
+    }
+
+    /**
+     * Setter for property <code>name</code>.
+     * 
+     * @param name
+     */
+    public void setName(final String name) {
+      this.name = name;
+    }
+
+    /**
+     * Getter for property "deceased" Different syntax for a boolean field (is
+     * vs. get)
+     */
+    public boolean isDeceased() {
+      return this.deceased;
+    }
+
+    /**
+     * Setter for property <code>deceased</code>.
+     * 
+     * @param deceased
+     */
+    public void setDeceased(final boolean deceased) {
+      this.deceased = deceased;
+    }
   }
-  
+
   /**
-   * Test method for {@link ext.services.xml.XMLUtils#readBeanFromFile(java.lang.String)}.
+   * Test method for
+   * {@link ext.services.xml.XMLUtils#readBeanFromFile(java.lang.String)}.
    */
   public final void testReadBeanFromFile() {
     // tested above
   }
 
   /**
-   * Test method for {@link ext.services.xml.XMLUtils#readObjectFromFile(java.lang.String)}.
+   * Test method for
+   * {@link ext.services.xml.XMLUtils#readObjectFromFile(java.lang.String)}.
    */
   public final void testReadObjectFromFile() {
     // tested above
   }
 
   /**
-   * Test method for {@link ext.services.xml.XMLUtils#readObjectFromString(java.lang.String)}.
-   * @throws Exception 
+   * Test method for
+   * {@link ext.services.xml.XMLUtils#readObjectFromString(java.lang.String)}.
+   * 
+   * @throws Exception
    */
   public final void testReadObjectFromString() throws Exception {
     String str = new String("teststring");
-    
+
     File file = File.createTempFile("test", ".bean");
-    assertTrue(file.delete());  // delte file to create it from scratch
+    assertTrue(file.delete()); // delte file to create it from scratch
     assertFalse(file.exists());
     XMLUtils.writeObjectToFile(str, file.getAbsolutePath());
-    
+
     assertTrue(file.exists());
-    
+
     String xml = FileUtils.readFileToString(file);
-    
+
     assertTrue(StringUtils.isNotBlank(xml));
     assertNotNull(XMLUtils.getDocument(xml));
-    
-    /* TODO: currently this reports an error about xpp3 pull parser missing, not sure 
-     * how this works inside Jajuk...
-    
-    Object obj = XMLUtils.readObjectFromString(xml);
-    assertTrue(obj instanceof String);
-    
-    assertEquals("teststring", obj);
-    */
+
+    /*
+     * TODO: currently this reports an error about xpp3 pull parser missing, not
+     * sure how this works inside Jajuk...
+     * 
+     * Object obj = XMLUtils.readObjectFromString(xml); assertTrue(obj
+     * instanceof String);
+     * 
+     * assertEquals("teststring", obj);
+     */
   }
 
   /**
-   * Test method for {@link ext.services.xml.XMLUtils#writeObjectToFile(java.lang.Object, java.lang.String)}.
-   * @throws Exception 
+   * Test method for
+   * {@link ext.services.xml.XMLUtils#writeObjectToFile(java.lang.Object, java.lang.String)}
+   * .
+   * 
+   * @throws Exception
    */
   public final void testWriteObjectToFile() throws Exception {
     String str = new String("teststring");
-    
+
     File file = File.createTempFile("test", ".bean");
-    assertTrue(file.delete());  // delte file to create it from scratch
+    assertTrue(file.delete()); // delte file to create it from scratch
     assertFalse(file.exists());
     XMLUtils.writeObjectToFile(str, file.getAbsolutePath());
-    
+
     assertTrue(file.exists());
-    
-    /* TODO: currently this reports an error about xpp3 pull parser missing, not sure 
-     * how this works inside Jajuk...
-    
-    Object obj = XMLUtils.readObjectFromFile(file.getAbsolutePath());
-    assertTrue(obj instanceof String);
-    
-    assertEquals("teststring", obj);
-    */
+
+    /*
+     * TODO: currently this reports an error about xpp3 pull parser missing, not
+     * sure how this works inside Jajuk...
+     * 
+     * Object obj = XMLUtils.readObjectFromFile(file.getAbsolutePath());
+     * assertTrue(obj instanceof String);
+     * 
+     * assertEquals("teststring", obj);
+     */
   }
-  
+
   public final void testWriteObjectToFileInvalidFile() {
     String str = new String("teststring");
-    
+
     try {
-      XMLUtils.writeObjectToFile(str, "&@#$@(*^)!#!@#@#)}{?M<>?<?,/.,/.,\"'\\][|}{{:2zqwq;sInvalidFileName/\\/");
+      XMLUtils.writeObjectToFile(str,
+          "&@#$@(*^)!#!@#@#)}{?M<>?<?,/.,/.,\"'\\][|}{{:2zqwq;sInvalidFileName/\\/");
       fail("Should throw Exception here...");
     } catch (IOException e) {
       // expected...
