@@ -71,7 +71,7 @@ import org.jdesktop.swingx.JXPanel;
  * <p>
  * Singleton
  */
-public class JajukMainWindow extends JFrame implements JajukWindow, Observer {
+public class JajukMainWindow extends JFrame implements IJajukWindow, Observer {
 
   private static final long serialVersionUID = 1L;
 

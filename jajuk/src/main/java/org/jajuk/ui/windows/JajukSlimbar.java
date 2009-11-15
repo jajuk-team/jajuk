@@ -89,7 +89,7 @@ import org.jajuk.util.log.Log;
  * Singleton
  * </p>
  */
-public final class JajukSlimbar extends JFrame implements JajukWindow, Observer,
+public final class JajukSlimbar extends JFrame implements IJajukWindow, Observer,
     MouseWheelListener, ActionListener {
 
   private static final long serialVersionUID = 1L;

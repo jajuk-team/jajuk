@@ -68,7 +68,7 @@ import org.jvnet.substance.SubstanceLookAndFeel;
  * handle any errors.
  * 
  */
-public class JajukFullScreenWindow extends JWindow implements JajukWindow {
+public class JajukFullScreenWindow extends JWindow implements IJajukWindow {
 
   private static final long serialVersionUID = -2859302706462954993L;
 

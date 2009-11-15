@@ -33,7 +33,7 @@ package org.jajuk.ui.windows;
  * These states are listed in the WindowState enum These states are managed by
  * the WindowStateDecorator
  */
-public interface JajukWindow {
+public interface IJajukWindow {
 
   /**
    * Build the GUI (widgets)

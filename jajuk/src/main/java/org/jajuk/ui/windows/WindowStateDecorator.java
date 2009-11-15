@@ -34,7 +34,7 @@ public abstract class WindowStateDecorator {
   private WindowState state = WindowState.NOT_BUILT;
 
   /** Decorated window * */
-  private JajukWindow window;
+  private IJajukWindow window;
 
   /**
    * Builds the decorator
@@ -42,7 +42,7 @@ public abstract class WindowStateDecorator {
    * @param window
    *          decorated window
    */
-  public WindowStateDecorator(JajukWindow window) {
+  public WindowStateDecorator(IJajukWindow window) {
     this.window = window;
   }
 
