@@ -176,7 +176,7 @@ public class NotifySendBalloonNotificator implements INotificator {
     // log out the results
     if (!out.toString().isEmpty()) {
       Log.debug("notify-send command returned to out(" + ret + "): " + out.toString());
-    } else {
+    } else if (ret != 0) {
       Log.debug("notify-send command returned: " + ret);
     }
 
@@ -202,7 +202,7 @@ public class NotifySendBalloonNotificator implements INotificator {
   @Override
   public void notify(File file) {
     String title = Messages.getString("Notificator.track_change.track_title");
-    String text = file.buildTitle(); 
+    String text = file.buildTitle();
     notify(title, text);
   }
 }
