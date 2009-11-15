@@ -280,6 +280,7 @@ public abstract class AbstractMPlayerImpl implements IPlayerImpl, Const {
    * @see org.jajuk.players.IPlayerImpl#seek(float)
    */
   public void seek(float fPosition) {
+    // required by interface, but nothing to do here...
   }
 
   /**

@@ -96,6 +96,7 @@ public abstract class ViewAdapter extends JXPanel implements IView, Const, Compa
    * @see java.awt.event.ComponentListener#componentHidden(java.awt.event.ComponentEvent)
    */
   public void componentHidden(ComponentEvent e) {
+    // required by interface, but nothing to do here...
   }
 
   /*
@@ -104,6 +105,7 @@ public abstract class ViewAdapter extends JXPanel implements IView, Const, Compa
    * @see java.awt.event.ComponentListener#componentMoved(java.awt.event.ComponentEvent)
    */
   public void componentMoved(ComponentEvent e) {
+    // required by interface, but nothing to do here...
   }
 
   /*
@@ -112,6 +114,7 @@ public abstract class ViewAdapter extends JXPanel implements IView, Const, Compa
    * @see java.awt.event.ComponentListener#componentResized(java.awt.event.ComponentEvent)
    */
   public void componentResized(ComponentEvent e) {
+    // required by interface, but nothing to do here...
   }
 
   /*
@@ -120,6 +123,7 @@ public abstract class ViewAdapter extends JXPanel implements IView, Const, Compa
    * @see java.awt.event.ComponentListener#componentShown(java.awt.event.ComponentEvent)
    */
   public void componentShown(ComponentEvent e) {
+    // required by interface, but nothing to do here...
   }
 
   /*
@@ -187,7 +191,7 @@ public abstract class ViewAdapter extends JXPanel implements IView, Const, Compa
    * Called when the view perspective is selected
    */
   public void onPerspectiveSelection() {
-
+    // required by interface, but nothing to do here...
   }
 
 }

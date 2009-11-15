@@ -446,6 +446,7 @@ public class DeviceView extends ViewAdapter implements IView, ActionListener, Mo
    * @see java.awt.event.MouseListener#mouseExited(java.awt.event.MouseEvent)
    */
   public void mouseExited(MouseEvent arg0) {
+    // required by interface, but nothing to do here...
   }
 
   /*
@@ -454,6 +455,7 @@ public class DeviceView extends ViewAdapter implements IView, ActionListener, Mo
    * @see java.awt.event.MouseListener#mouseEntered(java.awt.event.MouseEvent)
    */
   public void mouseEntered(MouseEvent e) {
+    // required by interface, but nothing to do here...
   }
 
   /*
@@ -462,8 +464,8 @@ public class DeviceView extends ViewAdapter implements IView, ActionListener, Mo
    * @see java.awt.event.MouseListener#mouseClicked(java.awt.event.MouseEvent)
    */
   public void mouseClicked(MouseEvent e) {
+    // required by interface, but nothing to do here...
   }
-
 }
 
 /**

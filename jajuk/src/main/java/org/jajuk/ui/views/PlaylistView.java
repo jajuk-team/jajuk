@@ -927,6 +927,7 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
      */
     @Override
     void initTable() {
+      // required by abstrasct superclass, but nothing to do here...
     }
 
     /*

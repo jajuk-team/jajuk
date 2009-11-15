@@ -166,6 +166,7 @@ public class SearchBox extends JTextField implements KeyListener, ListSelectionL
    * @see java.awt.event.KeyListener#keyPressed(java.awt.event.KeyEvent)
    */
   public void keyPressed(KeyEvent e) {
+    // required by interface, but nothing to do here...
   }
 
   /*
@@ -200,6 +201,7 @@ public class SearchBox extends JTextField implements KeyListener, ListSelectionL
    * @see java.awt.event.KeyListener#keyTyped(java.awt.event.KeyEvent)
    */
   public void keyTyped(KeyEvent e) {
+    // required by interface, but nothing to do here...
   }
 
   /**

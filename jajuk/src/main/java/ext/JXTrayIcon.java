@@ -54,6 +54,7 @@ public class JXTrayIcon extends TrayIcon {
 
   private static PopupMenuListener popupListener = new PopupMenuListener() {
     public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
+      // required by interface, but nothing to do here...
     }
 
     public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {

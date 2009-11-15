@@ -205,6 +205,7 @@ public class TreeTransferHandler implements DragGestureListener, DragSourceListe
    * @see javax.swing.event.TreeWillExpandListener#treeWillCollapse(javax.swing.event.TreeExpansionEvent)
    */
   public void treeWillCollapse(TreeExpansionEvent event) throws ExpandVetoException {
+    // required by interface, but nothing to do here...
   }
 
   /*
@@ -213,6 +214,6 @@ public class TreeTransferHandler implements DragGestureListener, DragSourceListe
    * @see javax.swing.event.TreeWillExpandListener#treeWillExpand(javax.swing.event.TreeExpansionEvent)
    */
   public void treeWillExpand(TreeExpansionEvent event) throws ExpandVetoException {
+    // required by interface, but nothing to do here...
   }
-
 }

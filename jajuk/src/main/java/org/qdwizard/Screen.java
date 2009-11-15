@@ -141,7 +141,7 @@ public abstract class Screen extends JPanel {
    * 
    */
   public void onEnter() {
-
+    // required by interface, but nothing to do here...
   }
 
   /**
@@ -162,6 +162,7 @@ public abstract class Screen extends JPanel {
    * clean up (like stop any threads that this Screen might have created)
    */
   public void onCancelled() {
+    // required by interface, but nothing to do here...
   }
 
   /**
@@ -170,6 +171,7 @@ public abstract class Screen extends JPanel {
    * Screen might have created)
    */
   public void onFinished() {
+    // required by interface, but nothing to do here...
   }
 
   /**

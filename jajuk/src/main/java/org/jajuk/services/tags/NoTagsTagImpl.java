@@ -100,12 +100,15 @@ public class NoTagsTagImpl implements ITagImpl {
 
       @SuppressWarnings("unchecked")
       public void progress(int iBytesread, long lMicroseconds, byte[] bPcmdata, Map mProperties) {
+        // required by interface, but nothing to do here...
       }
 
       public void stateUpdated(BasicPlayerEvent bpe) {
+        // required by interface, but nothing to do here...
       }
 
       public void setController(BasicController arg0) {
+        // required by interface, but nothing to do here...
       }
     });
     if (fio != null) {
@@ -140,6 +143,7 @@ public class NoTagsTagImpl implements ITagImpl {
    * @see org.jajuk.services.tags.ITagImpl#setAlbumName(java.lang.String)
    */
   public void setAlbumName(String sAlbumName) {
+    // required by interface, but nothing to do here...
   }
 
   public void setComment(String sComment) {
