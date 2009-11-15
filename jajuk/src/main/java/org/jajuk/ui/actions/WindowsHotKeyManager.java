@@ -22,6 +22,7 @@ package org.jajuk.ui.actions;
 import com.melloware.jintellitype.HotkeyListener;
 import com.melloware.jintellitype.IntellitypeListener;
 import com.melloware.jintellitype.JIntellitype;
+import com.melloware.jintellitype.JIntellitypeConstants;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -69,25 +70,25 @@ public abstract class WindowsHotKeyManager extends AbstractAction {
         try {
           // Perform right action according to intellitype command
           switch (aCommand) {
-          case JIntellitype.APPCOMMAND_MEDIA_NEXTTRACK:
+          case JIntellitypeConstants.APPCOMMAND_MEDIA_NEXTTRACK:
             ActionManager.getAction(JajukActions.NEXT_TRACK).perform(null);
             break;
-          case JIntellitype.APPCOMMAND_MEDIA_PLAY_PAUSE:
+          case JIntellitypeConstants.APPCOMMAND_MEDIA_PLAY_PAUSE:
             ActionManager.getAction(JajukActions.PAUSE_RESUME_TRACK).perform(null);
             break;
-          case JIntellitype.APPCOMMAND_MEDIA_PREVIOUSTRACK:
+          case JIntellitypeConstants.APPCOMMAND_MEDIA_PREVIOUSTRACK:
             ActionManager.getAction(JajukActions.PREVIOUS_TRACK).perform(null);
             break;
-          case JIntellitype.APPCOMMAND_MEDIA_STOP:
+          case JIntellitypeConstants.APPCOMMAND_MEDIA_STOP:
             ActionManager.getAction(JajukActions.STOP_TRACK).perform(null);
             break;
-          case JIntellitype.APPCOMMAND_VOLUME_DOWN:
+          case JIntellitypeConstants.APPCOMMAND_VOLUME_DOWN:
             ActionManager.getAction(JajukActions.DECREASE_VOLUME).perform(null);
             break;
-          case JIntellitype.APPCOMMAND_VOLUME_UP:
+          case JIntellitypeConstants.APPCOMMAND_VOLUME_UP:
             ActionManager.getAction(JajukActions.INCREASE_VOLUME).perform(null);
             break;
-          case JIntellitype.APPCOMMAND_VOLUME_MUTE:
+          case JIntellitypeConstants.APPCOMMAND_VOLUME_MUTE:
             Log.debug("System mute");
             // Ignore this to fix issue #1042, mute concurrency between the OS
             // key trapper and JIntellitype

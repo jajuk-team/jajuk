@@ -77,6 +77,7 @@ import static org.jajuk.ui.actions.JajukActions.PREVIOUS_TRACK;
 import static org.jajuk.ui.actions.JajukActions.PUSH_FRONT_SELECTION;
 import static org.jajuk.ui.actions.JajukActions.PUSH_SELECTION;
 import static org.jajuk.ui.actions.JajukActions.QUALITY;
+import static org.jajuk.ui.actions.JajukActions.QUEUE_TO_SLIM;
 import static org.jajuk.ui.actions.JajukActions.REFRESH;
 import static org.jajuk.ui.actions.JajukActions.RENAME;
 import static org.jajuk.ui.actions.JajukActions.REPEAT_MODE;
@@ -97,13 +98,13 @@ import static org.jajuk.ui.actions.JajukActions.UNMOUNTED;
 import static org.jajuk.ui.actions.JajukActions.UN_BAN_SELECTION;
 import static org.jajuk.ui.actions.JajukActions.VIEW_RESTORE_DEFAULTS;
 import static org.jajuk.ui.actions.JajukActions.WEB_RADIO;
-import static org.jajuk.ui.actions.JajukActions.QUEUE_TO_SLIM;
 
 import java.awt.Desktop;
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.List;
 
+import javax.swing.Action;
 import javax.swing.InputMap;
 import javax.swing.KeyStroke;
 import javax.swing.UIDefaults;
@@ -293,7 +294,7 @@ public final class ActionManager {
     MAP.put(name, action);
 
     if (removeFromLAF) {
-      KeyStroke stroke = (KeyStroke) action.getValue(JajukAction.ACCELERATOR_KEY);
+      KeyStroke stroke = (KeyStroke) action.getValue(Action.ACCELERATOR_KEY);
       if (stroke != null) {
         STROKE_LIST.add(stroke);
       }

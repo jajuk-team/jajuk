@@ -31,6 +31,7 @@ import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.InputEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
@@ -281,7 +282,7 @@ public abstract class AbstractThumbnail extends JPanel implements ActionListener
       public void mousePressed(MouseEvent e) {
         if (e.isPopupTrigger()) {
           handlePopup(e);
-        } else if ((e.getModifiersEx() & MouseEvent.CTRL_DOWN_MASK) == 0) {
+        } else if ((e.getModifiersEx() & InputEvent.CTRL_DOWN_MASK) == 0) {
           // Leave if already dragging
           if (bDragging) {
             return;

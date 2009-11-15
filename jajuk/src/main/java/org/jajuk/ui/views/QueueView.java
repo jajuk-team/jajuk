@@ -32,7 +32,6 @@ import java.util.Properties;
 import java.util.Set;
 
 import javax.swing.BorderFactory;
-import javax.swing.DefaultListSelectionModel;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
@@ -148,7 +147,7 @@ public class QueueView extends PlaylistView {
     editorModel = new PlaylistTableModel(true);
     editorTable = new JajukTable(editorModel, CONF_QUEUE_COLUMNS);
     editorModel.populateModel(editorTable.getColumnsConf());
-    editorTable.setSelectionMode(DefaultListSelectionModel.MULTIPLE_INTERVAL_SELECTION); // multi-row
+    editorTable.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION); // multi-row
     // selection
     editorTable.setSortable(false);
     editorTable.setDragEnabled(true);

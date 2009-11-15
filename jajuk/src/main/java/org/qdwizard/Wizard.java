@@ -22,6 +22,7 @@ import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.WindowConstants;
 
 import org.jajuk.ui.widgets.JajukJDialog;
@@ -413,8 +414,8 @@ public abstract class Wizard implements ActionListener, WindowListener {
     }
     dialog.add(actions, BorderLayout.SOUTH);
     JScrollPane jsp = new JScrollPane(header);
-    jsp.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-    jsp.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
+    jsp.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+    jsp.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
     jsp.setBorder(BorderFactory.createEmptyBorder());
 
     dialog.add(jsp, BorderLayout.NORTH);

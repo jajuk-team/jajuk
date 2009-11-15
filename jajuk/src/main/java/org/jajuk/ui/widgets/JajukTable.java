@@ -21,6 +21,7 @@
 package org.jajuk.ui.widgets;
 
 import java.awt.Component;
+import java.awt.event.InputEvent;
 import java.awt.event.MouseEvent;
 import java.text.DateFormat;
 import java.util.ArrayList;
@@ -497,7 +498,7 @@ public class JajukTable extends JXTable implements Observer, TableColumnModelLis
   public void mousePressed(MouseEvent e) {
     if (e.isPopupTrigger()) {
       handlePopup(e);
-    } else if (command != null && (e.getModifiersEx() & MouseEvent.CTRL_DOWN_MASK) == 0) {
+    } else if (command != null && (e.getModifiersEx() & InputEvent.CTRL_DOWN_MASK) == 0) {
       command.launch(e.getClickCount());
       int iSelectedRow = rowAtPoint(e.getPoint());
       // Store real row index for drag and drop

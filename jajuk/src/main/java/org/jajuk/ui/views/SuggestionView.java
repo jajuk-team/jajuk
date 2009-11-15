@@ -45,6 +45,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 import javax.swing.event.ChangeEvent;
@@ -411,8 +412,8 @@ public class SuggestionView extends ViewAdapter {
   JScrollPane getLocalSuggestionsPanel(SuggestionType type) {
     FlowScrollPanel out = new FlowScrollPanel();
     out.setLayout(new FlowLayout(FlowLayout.LEFT));
-    JScrollPane jsp = new JScrollPane(out, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
-        JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+    JScrollPane jsp = new JScrollPane(out, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
+        ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
     jsp.setBorder(null);
     out.setScroller(jsp);
     List<Album> albums = null;
@@ -444,8 +445,8 @@ public class SuggestionView extends ViewAdapter {
    */
   JScrollPane getLastFMSuggestionsPanel(SuggestionType type, boolean artistView) {
     FlowScrollPanel flowPanel = new FlowScrollPanel();
-    JScrollPane jsp = new JScrollPane(flowPanel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
-        JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+    JScrollPane jsp = new JScrollPane(flowPanel, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
+        ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
     jsp.setBorder(null);
     flowPanel.setScroller(jsp);
     flowPanel.setLayout(new FlowLayout(FlowLayout.CENTER));

@@ -18,6 +18,7 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
+import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.basic.BasicSeparatorUI;
@@ -153,7 +154,7 @@ public class XJPopupMenu extends JPopupMenu implements ActionListener {
       public void paint(Graphics g, JComponent c) {
         Dimension s = c.getSize();
 
-        if (((JSeparator) c).getOrientation() == JSeparator.VERTICAL) {
+        if (((JSeparator) c).getOrientation() == SwingConstants.VERTICAL) {
           g.setColor(c.getForeground());
           g.drawLine(0, 0, 0, s.height);
 

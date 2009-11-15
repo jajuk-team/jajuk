@@ -32,6 +32,7 @@ import javax.swing.JButton;
 import javax.swing.JScrollPane;
 import javax.swing.JToolBar;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
 import org.jajuk.ui.helpers.FontManager;
@@ -86,7 +87,7 @@ public final class PerspectiveBarJPanel extends JXPanel {
    */
   public void update() {
     // Perspectives tool bar
-    jtbPerspective = new JajukJToolbar(JToolBar.VERTICAL);
+    jtbPerspective = new JajukJToolbar(SwingConstants.VERTICAL);
     Iterator<IPerspective> it = PerspectiveManager.getPerspectives().iterator();
     while (it.hasNext()) {
       final IPerspective perspective = it.next();
@@ -103,8 +104,8 @@ public final class PerspectiveBarJPanel extends JXPanel {
         // No text for icon < 32 pixels in width: too narrow
         jb.setText(desc);
       }
-      jb.setVerticalTextPosition(JButton.BOTTOM);
-      jb.setHorizontalTextPosition(JButton.CENTER);
+      jb.setVerticalTextPosition(SwingConstants.BOTTOM);
+      jb.setHorizontalTextPosition(SwingConstants.CENTER);
       jb.setFont(font);
       jb.addActionListener(new ActionListener() {
         public void actionPerformed(ActionEvent e) {

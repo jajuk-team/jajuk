@@ -31,6 +31,7 @@ import java.util.Set;
 
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingUtilities;
 
 import net.miginfocom.swing.MigLayout;
@@ -255,10 +256,10 @@ public class ArtistView extends SuggestionView implements TwoStepsDisplayable {
     jtaArtistDesc.setOpaque(false);
 
     JScrollPane jspWiki = new JScrollPane(jtaArtistDesc);
-    jspWiki.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+    jspWiki.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
     jspWiki.setBorder(null);
 
-    jspWiki.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+    jspWiki.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
 
     // Add items, layout is different according wiki text availability
     if (StringUtils.isNotBlank(jtaArtistDesc.getText())) {

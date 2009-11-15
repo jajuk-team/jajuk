@@ -35,10 +35,10 @@ import java.io.Writer;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFileChooser;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.WindowConstants;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.EmptyBorder;
 
@@ -110,7 +110,7 @@ public class FirstTimeWizard extends JajukJDialog implements ActionListener, Pro
     pack();
     final Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
     setLocation(((int) dim.getWidth() / 3), ((int) dim.getHeight() / 3));
-    setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+    setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
     setVisible(true);
   }
 

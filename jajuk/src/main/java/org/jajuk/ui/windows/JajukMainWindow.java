@@ -38,6 +38,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
+import javax.swing.WindowConstants;
 
 import net.miginfocom.swing.MigLayout;
 
@@ -171,7 +172,7 @@ public class JajukMainWindow extends JFrame implements IJajukWindow, Observer {
 
     setTitle(Messages.getString("JajukWindow.17"));
     setIconImage(IconLoader.getIcon(JajukIcons.LOGO).getImage());
-    setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+    setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
     // register for given events
     ObservationManager.register(this);
     addWindowListener(new WindowAdapter() {

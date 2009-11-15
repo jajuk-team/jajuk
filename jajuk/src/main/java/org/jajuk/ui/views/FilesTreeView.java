@@ -24,6 +24,7 @@ import java.awt.Component;
 import java.awt.dnd.DnDConstants;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.InputEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.net.MalformedURLException;
@@ -527,7 +528,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
       if (e.isPopupTrigger()) {
         handlePopup(e);
         // Left click
-      } else if ((e.getModifiersEx() & MouseEvent.CTRL_DOWN_MASK) == 0) {
+      } else if ((e.getModifiersEx() & InputEvent.CTRL_DOWN_MASK) == 0) {
         TreePath path = jtree.getPathForLocation(e.getX(), e.getY());
         if (path == null) {
           return;
@@ -1061,7 +1062,7 @@ class FilesTreeCellRenderer extends SubstanceDefaultTreeCellRenderer {
       URL icon = null;
       String sIcon;
       if (type != null) {
-        sIcon = (String) type.getProperties().get(FilesTreeView.XML_TYPE_ICON);
+        sIcon = (String) type.getProperties().get(Const.XML_TYPE_ICON);
         try {
           icon = new URL(sIcon);
         } catch (MalformedURLException e) {
@@ -1119,7 +1120,7 @@ class FilesTreeCellRenderer extends SubstanceDefaultTreeCellRenderer {
     } else if (value instanceof DirectoryNode) {
       setBorder(null);
       Directory dir = ((DirectoryNode) value).getDirectory();
-      boolean bSynchro = dir.getBooleanValue(FilesTreeView.XML_DIRECTORY_SYNCHRONIZED);
+      boolean bSynchro = dir.getBooleanValue(Const.XML_DIRECTORY_SYNCHRONIZED);
       if (bSynchro) { // means this device is not synchronized
         setIcon(IconLoader.getIcon(JajukIcons.DIRECTORY_SYNCHRO));
       } else {

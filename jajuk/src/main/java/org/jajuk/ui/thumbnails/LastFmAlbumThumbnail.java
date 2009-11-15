@@ -34,6 +34,7 @@ import java.net.URL;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import javax.swing.SwingConstants;
 
 import net.miginfocom.swing.MigLayout;
 
@@ -221,7 +222,7 @@ public class LastFmAlbumThumbnail extends AbstractThumbnail {
     if (bKnown) {
       // Album known in collection, display its name in bold
       jlTitle = new JLabel(UtilString.getLimitedString(fullTitle, textLength), IconLoader
-          .getIcon(JajukIcons.ALBUM), JLabel.CENTER);
+          .getIcon(JajukIcons.ALBUM), SwingConstants.CENTER);
       jlTitle.setFont(FontManager.getInstance().getFont(JajukFont.BOLD));
     } else {
       jlTitle = new JLabel(UtilString.getLimitedString(fullTitle, textLength));

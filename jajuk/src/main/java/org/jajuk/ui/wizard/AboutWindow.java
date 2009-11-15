@@ -22,6 +22,7 @@ package org.jajuk.ui.wizard;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.event.InputEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
@@ -60,8 +61,8 @@ public class AboutWindow extends JajukJDialog {
     @Override
     public void mouseClicked(MouseEvent me) {
       if (me.getClickCount() == 1
-          && ((me.getModifiersEx() & MouseEvent.SHIFT_DOWN_MASK) == MouseEvent.SHIFT_DOWN_MASK)
-          && ((me.getModifiersEx() & MouseEvent.CTRL_DOWN_MASK) == MouseEvent.CTRL_DOWN_MASK)) {
+          && ((me.getModifiersEx() & InputEvent.SHIFT_DOWN_MASK) == InputEvent.SHIFT_DOWN_MASK)
+          && ((me.getModifiersEx() & InputEvent.CTRL_DOWN_MASK) == InputEvent.CTRL_DOWN_MASK)) {
         try {
           UtilGUI.showPictureDialog("http://www.jajuk.info/images/flbf.jpg");
         } catch (Exception e) {

@@ -450,7 +450,7 @@ public final class QueueModel {
       } else if (index < alQueue.size()) {
         StackItem item = alQueue.get(index);
         JajukTimer.getInstance().removeTrackTime(item.getFile());
-        if (Conf.getBoolean(Conf.CONF_DROP_PLAYED_TRACKS_FROM_QUEUE)) {
+        if (Conf.getBoolean(Const.CONF_DROP_PLAYED_TRACKS_FROM_QUEUE)) {
           alQueue.remove(index); // remove this file from fifo
         } else {
           index++;
@@ -1197,14 +1197,14 @@ public final class QueueModel {
           properties.put(Const.DETAIL_SELECTION, Const.FALSE);
           ObservationManager.notify(new JajukEvent(JajukEvents.REPEAT_MODE_STATUS_CHANGED,
               properties));
-          if (Conf.getBoolean(Conf.CONF_DROP_PLAYED_TRACKS_FROM_QUEUE)) {
+          if (Conf.getBoolean(Const.CONF_DROP_PLAYED_TRACKS_FROM_QUEUE)) {
             remove(0, pIndex - 1);
           } else {
             QueueModel.index = pIndex;
           }
         }
       } else {
-        if (Conf.getBoolean(Conf.CONF_DROP_PLAYED_TRACKS_FROM_QUEUE)) {
+        if (Conf.getBoolean(Const.CONF_DROP_PLAYED_TRACKS_FROM_QUEUE)) {
           remove(0, pIndex - 1);
         } else {
           QueueModel.index = pIndex;

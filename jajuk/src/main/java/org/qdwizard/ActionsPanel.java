@@ -14,6 +14,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 
 /**
  * Action panel
@@ -58,7 +59,7 @@ class ActionsPanel extends JPanel {
     jlProblem = new JLabel();
     jlProblem.setForeground(Color.RED);
     jlProblem.setFont(new Font("Dialog", Font.BOLD, 12)); //$NON-NLS-1$
-    jlProblem.setHorizontalAlignment(JLabel.CENTER);
+    jlProblem.setHorizontalAlignment(SwingConstants.CENTER);
 
     // Action buttons
     JPanel jpButtons = new JPanel();
@@ -84,16 +85,16 @@ class ActionsPanel extends JPanel {
     jbCancel.setActionCommand("Cancel"); //$NON-NLS-1$
     jbCancel.setPreferredSize(dimButtons);
 
-    jpButtons.add(Box.createHorizontalStrut(10)); //$NON-NLS-1$
-    jpButtons.add(Box.createHorizontalGlue()); //$NON-NLS-1$
-    jpButtons.add(jbPrevious); //$NON-NLS-1$
-    jpButtons.add(Box.createHorizontalStrut(5)); //$NON-NLS-1$
-    jpButtons.add(jbNext); //$NON-NLS-1$
-    jpButtons.add(Box.createHorizontalStrut(10)); //$NON-NLS-1$
-    jpButtons.add(jbFinish); //$NON-NLS-1$
-    jpButtons.add(Box.createHorizontalStrut(20)); //$NON-NLS-1$
-    jpButtons.add(jbCancel); //$NON-NLS-1$
-    jpButtons.add(Box.createHorizontalStrut(10)); //$NON-NLS-1$
+    jpButtons.add(Box.createHorizontalStrut(10)); 
+    jpButtons.add(Box.createHorizontalGlue()); 
+    jpButtons.add(jbPrevious); 
+    jpButtons.add(Box.createHorizontalStrut(5)); 
+    jpButtons.add(jbNext); 
+    jpButtons.add(Box.createHorizontalStrut(10)); 
+    jpButtons.add(jbFinish); 
+    jpButtons.add(Box.createHorizontalStrut(20)); 
+    jpButtons.add(jbCancel); 
+    jpButtons.add(Box.createHorizontalStrut(10)); 
     jpButtons.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
 
     jpButtons.setOpaque(false);
@@ -102,8 +103,8 @@ class ActionsPanel extends JPanel {
 
     // Main panel
     setLayout(new GridLayout(2, 1));
-    add(jlProblem); //$NON-NLS-1$
-    add(jpButtons); //$NON-NLS-1$
+    add(jlProblem); 
+    add(jpButtons); 
   }
 
   /**

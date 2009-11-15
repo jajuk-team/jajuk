@@ -45,7 +45,7 @@ class Header extends JPanel {
     jta = new JPanel();
     jta.setOpaque(true);
     jta.setPreferredSize(new Dimension(0, 70));
-    add(jta); //$NON-NLS-1$
+    add(jta); 
   }
 
   /**

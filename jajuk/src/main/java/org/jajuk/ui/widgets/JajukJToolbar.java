@@ -20,6 +20,7 @@
 package org.jajuk.ui.widgets;
 
 import javax.swing.JToolBar;
+import javax.swing.SwingConstants;
 
 /**
  * Jajuk specific toolbar : non opaque and non floatable
@@ -29,7 +30,7 @@ public class JajukJToolbar extends JToolBar {
   private static final long serialVersionUID = 3947108459544670564L;
 
   public JajukJToolbar() {
-    this(JToolBar.HORIZONTAL);
+    this(SwingConstants.HORIZONTAL);
   }
 
   public JajukJToolbar(int i) {

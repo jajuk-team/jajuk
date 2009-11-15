@@ -25,6 +25,7 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.InputEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
@@ -40,7 +41,6 @@ import java.util.concurrent.ExecutionException;
 import javax.swing.ActionMap;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
-import javax.swing.DefaultListSelectionModel;
 import javax.swing.InputMap;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
@@ -182,7 +182,7 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
       if (e.isPopupTrigger()) {
         handlePopup(e);
         // Left click
-      } else if ((e.getModifiersEx() & MouseEvent.CTRL_DOWN_MASK) == 0) {
+      } else if ((e.getModifiersEx() & InputEvent.CTRL_DOWN_MASK) == 0) {
         SmartPlaylist sp = (SmartPlaylist) e.getComponent();
         if (sp == spSelected) {
           List<File> files;
@@ -304,7 +304,7 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
     editorModel = new PlaylistTableModel(false);
     editorTable = new JajukTable(editorModel, CONF_PLAYLIST_EDITOR_COLUMNS);
     editorModel.populateModel(editorTable.getColumnsConf());
-    editorTable.setSelectionMode(DefaultListSelectionModel.MULTIPLE_INTERVAL_SELECTION); // multi-row
+    editorTable.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION); // multi-row
     // selection
     editorTable.setSortable(false);
     editorTable.setDragEnabled(true);

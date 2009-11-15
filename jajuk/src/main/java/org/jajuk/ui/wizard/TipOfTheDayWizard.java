@@ -38,6 +38,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.KeyStroke;
+import javax.swing.SwingConstants;
 
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
@@ -103,10 +104,10 @@ public class TipOfTheDayWizard extends JFrame {
     JScrollPane scroll = new JScrollPane(tipArea);
     scroll.setPreferredSize(new Dimension(200, 100));
 
-    JLabel lTitle = new JLabel(Messages.getString("TipOfTheDayView.1"), JLabel.LEFT);
+    JLabel lTitle = new JLabel(Messages.getString("TipOfTheDayView.1"), SwingConstants.LEFT);
     Font fTitle = lTitle.getFont();
     lTitle.setFont(new Font(fTitle.getName(), fTitle.getStyle(), (int) (fTitle.getSize() * 1.3)));
-    JLabel lIcon = new JLabel(IconLoader.getIcon(JajukIcons.TIP), JLabel.LEFT);
+    JLabel lIcon = new JLabel(IconLoader.getIcon(JajukIcons.TIP), SwingConstants.LEFT);
 
     KeyStroke stroke = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0);
     

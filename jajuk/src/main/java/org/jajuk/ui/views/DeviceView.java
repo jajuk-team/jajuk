@@ -27,6 +27,7 @@ import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.InputEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
@@ -44,6 +45,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingUtilities;
 
 import net.miginfocom.swing.MigLayout;
@@ -103,8 +105,8 @@ public class DeviceView extends ViewAdapter implements IView, ActionListener, Mo
   public void initUI() {
     // devices
     jpDevices = new FlowScrollPanel();
-    JScrollPane jsp = new JScrollPane(jpDevices, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
-        JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+    JScrollPane jsp = new JScrollPane(jpDevices, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
+        ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
     jsp.setBorder(BorderFactory.createEmptyBorder(0, 1, 0, 0));
 
     jpDevices.setScroller(jsp);
@@ -393,7 +395,7 @@ public class DeviceView extends ViewAdapter implements IView, ActionListener, Mo
     if (e.isPopupTrigger() || popupTrigger) {
       popupTrigger = false;
       handlePopup(e);
-    } else if ((e.getModifiersEx() & MouseEvent.CTRL_DOWN_MASK) == 0) {
+    } else if ((e.getModifiersEx() & InputEvent.CTRL_DOWN_MASK) == 0) {
       popupTrigger = false;
       boolean bSameDevice = ((diSelected != null) && e.getSource().equals(diSelected));// be
       selectItem(e);

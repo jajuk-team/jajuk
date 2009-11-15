@@ -182,7 +182,7 @@ public class Type extends PhysicalItem implements Comparable<Type> {
    * @return whether this type is video
    */
   public boolean isVideo() {
-    return Messages.getString(Type.TYPE_VIDEO).equals(getName());
+    return Messages.getString(Const.TYPE_VIDEO).equals(getName());
   }
 
 }

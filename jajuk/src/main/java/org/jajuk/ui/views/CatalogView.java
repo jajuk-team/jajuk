@@ -50,6 +50,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JSlider;
 import javax.swing.JTextField;
 import javax.swing.JToolBar;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 import javax.swing.event.ChangeEvent;
@@ -343,8 +344,8 @@ public class CatalogView extends ViewAdapter implements ComponentListener, Actio
       removeAll();
     }
     jpItems = new FlowScrollPanel();
-    jsp = new JScrollPane(jpItems, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
-        JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+    jsp = new JScrollPane(jpItems, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
+        ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
     jsp.setBorder(BorderFactory.createEmptyBorder(0, 1, 0, 0));
     jpItems.setScroller(jsp);
     jpItems.setLayout(new FlowLayout(FlowLayout.LEFT));

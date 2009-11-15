@@ -191,7 +191,7 @@ public class XMLExporter extends Exporter {
   @SuppressWarnings("unchecked")
   public void processCollection(int type) throws Exception {
     // If we are tagging the physical collection...
-    if (type == XMLExporter.PHYSICAL_COLLECTION) {
+    if (type == Exporter.PHYSICAL_COLLECTION) {
       // Same effect than selecting all devices
       process((List<Item>) DeviceManager.getInstance().getItems());
     } else if (type == LOGICAL_COLLECTION) {

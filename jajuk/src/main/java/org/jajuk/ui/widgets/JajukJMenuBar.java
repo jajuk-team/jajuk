@@ -52,6 +52,7 @@ import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 
@@ -404,7 +405,7 @@ public final class JajukJMenuBar extends JMenuBar implements Observer {
         }
         // add the new release label if required
         if (UpgradeManager.getNewVersionName() != null) {
-          jlUpdate = new JLabel(" ", IconLoader.getIcon(JajukIcons.UPDATE_MANAGER), JLabel.RIGHT);
+          jlUpdate = new JLabel(" ", IconLoader.getIcon(JajukIcons.UPDATE_MANAGER), SwingConstants.RIGHT);
           String newRelease = UpgradeManager.getNewVersionName();
           if (newRelease != null) {
             jlUpdate.setToolTipText(Messages.getString("UpdateManager.0") + newRelease
