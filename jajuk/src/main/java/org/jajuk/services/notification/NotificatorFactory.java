@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision: 3132 $
+ *  $Revision$
  */
 package org.jajuk.services.notification;
 
@@ -26,9 +26,11 @@ import org.jajuk.util.Const;
 import org.jajuk.util.log.Log;
 
 /**
- * Factory returning a INotifictor according to user choice
+ * Factory returning a INotifictor according to user choice.
  */
 public class NotificatorFactory {
+  
+  /** DOCUMENT_ME. */
   private static INotificator notificator;
   
 
@@ -38,7 +40,7 @@ public class NotificatorFactory {
    * This will return null if notificator is disabled in the configuration or if
    * the platform does not support any of the available notificator methods.
    * 
-   * @return
+   * @return the notificator
    */
   public synchronized static INotificator getNotificator() {
 

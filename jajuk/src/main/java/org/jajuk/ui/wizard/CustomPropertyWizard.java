@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2007 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $$Revision$$
+ *  $Revision$
  */
 
 package org.jajuk.ui.wizard;
@@ -45,22 +46,31 @@ import org.jajuk.ui.windows.JajukMainWindow;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilGUI;
 
+/**
+ * DOCUMENT_ME.
+ */
 public abstract class CustomPropertyWizard extends JajukJDialog implements ActionListener,
     ItemListener {
+  
+  /** Generated serialVersionUID. */
   private static final long serialVersionUID = -5148687837661745898L;
 
+  /** DOCUMENT_ME. */
   JLabel jlItemChoice;
 
+  /** DOCUMENT_ME. */
   JComboBox jcbItemChoice;
 
+  /** DOCUMENT_ME. */
   OKCancelPanel okp;
 
+  /** DOCUMENT_ME. */
   JLabel jlName;
 
   /**
-   * Constuctor
+   * Constuctor.
    * 
-   * @param sTitle
+   * @param sTitle DOCUMENT_ME
    */
   CustomPropertyWizard(String sTitle) {
     setTitle(sTitle);
@@ -69,8 +79,7 @@ public abstract class CustomPropertyWizard extends JajukJDialog implements Actio
   }
 
   /**
-   * Create common UI for property wizards
-   * 
+   * Create common UI for property wizards.
    */
   void populate() {
     getContentPane().setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
@@ -99,6 +108,7 @@ public abstract class CustomPropertyWizard extends JajukJDialog implements Actio
   }
 
   /**
+   * Gets the item manager.
    * 
    * @return ItemManager associated with selected element in combo box
    */

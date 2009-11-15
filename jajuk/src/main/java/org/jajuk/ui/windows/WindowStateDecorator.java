@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision: 3132 $
+ *  $Revision$
  */
 package org.jajuk.ui.windows;
 
@@ -30,23 +30,24 @@ import org.jajuk.util.log.Log;
  */
 public abstract class WindowStateDecorator {
 
-  /** Current state */
+  /** Current state. */
   private WindowState state = WindowState.NOT_BUILT;
 
-  /** Decorated window * */
+  /** Decorated window *. */
   private IJajukWindow window;
 
   /**
-   * Builds the decorator
+   * Builds the decorator.
    * 
-   * @param window
-   *          decorated window
+   * @param window decorated window
    */
   public WindowStateDecorator(IJajukWindow window) {
     this.window = window;
   }
 
   /**
+   * Gets the window state.
+   * 
    * @return Returns the bVisible.
    */
   public WindowState getWindowState() {
@@ -54,10 +55,9 @@ public abstract class WindowStateDecorator {
   }
 
   /**
-   * Set the display state to the window
+   * Set the display state to the window.
    * 
-   * @param state
-   *          Window state
+   * @param state Window state
    */
   public void setWindowState(WindowState state) {
     this.state = state;
@@ -67,10 +67,9 @@ public abstract class WindowStateDecorator {
    * Show or hide the frame
    * <p>
    * Must be called within the EDT
-   * </p>
+   * </p>.
    * 
-   * @param show
-   *          whether the window should be shown or hidden
+   * @param show whether the window should be shown or hidden
    */
   public void display(boolean show) {
     try {
@@ -116,7 +115,7 @@ public abstract class WindowStateDecorator {
   }
 
   /**
-   * convenient method to get build status of the window
+   * convenient method to get build status of the window.
    * 
    * @return whether the initUI() has run successfully or not
    */
@@ -126,7 +125,7 @@ public abstract class WindowStateDecorator {
   }
 
   /**
-   * convenient method to get visible status of the window
+   * convenient method to get visible status of the window.
    * 
    * @return whether the window is displayed
    */
@@ -136,25 +135,25 @@ public abstract class WindowStateDecorator {
 
   /**
    * Specific actions before the window is shown To be overridden in each Window
-   * class WindowDecorator
+   * class WindowDecorator.
    */
   abstract public void specificBeforeShown();
 
   /**
    * Specific actions after the window is shown To be overridden in each Window
-   * class WindowDecorator
+   * class WindowDecorator.
    */
   abstract public void specificAfterShown();
 
   /**
    * Specific actions before the window is hidden To be overridden in each
-   * Window class WindowDecorator
+   * Window class WindowDecorator.
    */
   abstract public void specificBeforeHidden();
 
   /**
    * Specific actions after the window is hidden To be overridden in each Window
-   * class WindowDecorator
+   * class WindowDecorator.
    */
   abstract public void specificAfterHidden();
 

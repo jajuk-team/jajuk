@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2005 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -39,44 +40,36 @@ import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 
 /**
- * Managers parent class
+ * Managers parent class.
  */
 public abstract class ItemManager {
 
-  /**
-   * Maps item classes -> instance, must be a linked map for ordering (mandatory
-   * in commited collection)
-   */
+  /** Maps item classes -> instance, must be a linked map for ordering (mandatory in commited collection). */
   private static Map<Class<?>, ItemManager> hmItemManagers = new LinkedHashMap<Class<?>, ItemManager>(
       10);
 
-  /** Maps properties meta information name and object */
+  /** Maps properties meta information name and object. */
   private final Map<String, PropertyMetaInformation> hmPropertiesMetaInformation = new LinkedHashMap<String, PropertyMetaInformation>(
       10);
 
-  /*****************************************************************************
-   * Items collection
-   * <p>
-   * We use a concrete type here and not an upper bounded wildcard type (?
-   * extends Item) because this prevent from calling methods in it like
-   * put(String,Album)
-   * </p>
-   ****************************************************************************/
+  /** *************************************************************************** Items collection <p> We use a concrete type here and not an upper bounded wildcard type (? extends Item) because this prevent from calling methods in it like put(String,Album) </p> **************************************************************************. */
 
   // use an array list during startup which is faster during loading the
   // collection
   private List<Item> startupItems = new ArrayList<Item>(100);
 
   // also store the items by ID to have quick access if necessary
+  /** DOCUMENT_ME. */
   private final Map<String, Item> internalMap = new HashMap<String, Item>(100);
 
   // at the beginning point to the ArrayList, later this is replaced by a
   // TreeSet to have
   // correct ordering.
+  /** DOCUMENT_ME. */
   private Collection<Item> items = startupItems;
 
   /**
-   * Item manager default constructor
+   * Item manager default constructor.
    */
   ItemManager() {
   }
@@ -98,7 +91,6 @@ public abstract class ItemManager {
    * use an ArrayList to store items first, then few seconds after startup and
    * before user could make changes to the collection, we populate a TreeSet
    * from the ArrayList and begin to use it.
-   * 
    */
   public synchronized void switchToOrderState() {
     // populate a new TreeSet with the startup-items
@@ -111,23 +103,27 @@ public abstract class ItemManager {
   }
 
   /**
-   * Registers a new item manager
+   * Registers a new item manager.
    * 
-   * @param c
-   *          Managed item class
-   * @param itemManager
+   * @param c Managed item class
+   * @param itemManager DOCUMENT_ME
    */
   public static void registerItemManager(Class<?> c, ItemManager itemManager) {
     hmItemManagers.put(c, itemManager);
   }
 
   /**
+   * Gets the label.
+   * 
    * @return identifier used for XML generation
    */
   public abstract String getLabel();
 
   /**
-   * @param sPropertyName
+   * Gets the meta information.
+   * 
+   * @param sPropertyName DOCUMENT_ME
+   * 
    * @return meta data for given property
    */
   public PropertyMetaInformation getMetaInformation(String sPropertyName) {
@@ -138,8 +134,9 @@ public abstract class ItemManager {
    * Return a human representation for a given property name when we don't now
    * item type we work on. Otherwise, use PropertyMetaInformation.getHumanType
    * 
-   * @param s
-   * @return
+   * @param sKey DOCUMENT_ME
+   * 
+   * @return the human type
    */
   public static String getHumanType(String sKey) {
     String sOut = sKey;
@@ -149,14 +146,22 @@ public abstract class ItemManager {
     return sOut;
   }
 
-  /** Remove a property * */
+  /**
+   * Remove a property *.
+   * 
+   * @param sProperty DOCUMENT_ME
+   */
   public void removeProperty(String sProperty) {
     PropertyMetaInformation meta = getMetaInformation(sProperty);
     hmPropertiesMetaInformation.remove(sProperty);
     applyRemoveProperty(meta); // remove this property from all items
   }
 
-  /** Remove a custom property from all items for the given manager */
+  /**
+   * Remove a custom property from all items for the given manager.
+   * 
+   * @param meta DOCUMENT_ME
+   */
   public synchronized void applyRemoveProperty(PropertyMetaInformation meta) {
     for (Item item : items) {
       item.removeProperty(meta.getName());
@@ -164,11 +169,13 @@ public abstract class ItemManager {
   }
 
   /**
-   * Generic method to access to a parameterized list of items
+   * Generic method to access to a parameterized list of items.
+   * 
+   * @param meta DOCUMENT_ME
    * 
    * @return the item-parameterized list
    * 
-   *         protected abstract HashMap<String, Item> getItemsMap();
+   * protected abstract HashMap<String, Item> getItemsMap();
    */
 
   /** Add a custom property to all items for the given manager */
@@ -196,6 +203,8 @@ public abstract class ItemManager {
   }
 
   /**
+   * Gets the properties.
+   * 
    * @return properties Meta informations
    */
   public Collection<PropertyMetaInformation> getProperties() {
@@ -203,6 +212,8 @@ public abstract class ItemManager {
   }
 
   /**
+   * Gets the custom properties.
+   * 
    * @return custom properties Meta informations
    */
   public Collection<PropertyMetaInformation> getCustomProperties() {
@@ -218,6 +229,8 @@ public abstract class ItemManager {
   }
 
   /**
+   * Gets the visible properties.
+   * 
    * @return visible properties Meta informations
    */
   public Collection<PropertyMetaInformation> getVisibleProperties() {
@@ -233,13 +246,12 @@ public abstract class ItemManager {
   }
 
   /**
-   * Get the manager from a given attribute name
+   * Get the manager from a given attribute name.
    * 
-   * @param sProperty
-   *          The property to compare.
+   * @param sProperty The property to compare.
    * 
    * @return an ItemManager if one is found for the property or null if none
-   *         found.
+   * found.
    */
   public static ItemManager getItemManager(String sProperty) {
     if (Const.XML_DEVICE.equals(sProperty)) {
@@ -266,9 +278,10 @@ public abstract class ItemManager {
   }
 
   /**
-   * Get ItemManager manager for given item class
+   * Get ItemManager manager for given item class.
    * 
-   * @param class
+   * @param c DOCUMENT_ME
+   * 
    * @return associated item manager or null if none was found
    */
   public static ItemManager getItemManager(Class<?> c) {
@@ -276,14 +289,16 @@ public abstract class ItemManager {
   }
 
   /**
-   * Return an iteration over item managers
+   * Return an iteration over item managers.
+   * 
+   * @return the item managers
    */
   public static Iterator<ItemManager> getItemManagers() {
     return hmItemManagers.values().iterator();
   }
 
   /**
-   * Perform cleanup : delete useless items
+   * Perform cleanup : delete useless items.
    */
   @SuppressWarnings("unchecked")
   public synchronized void cleanup() {
@@ -327,11 +342,9 @@ public abstract class ItemManager {
   }
 
   /**
-   * Perform a cleanup of all orphan tracks associated with given item
+   * Perform a cleanup of all orphan tracks associated with given item.
    * 
-   * @param item
-   *          item whose associated tracks should be checked for cleanup
-   * 
+   * @param item item whose associated tracks should be checked for cleanup
    */
   protected synchronized void cleanOrphanTracks(Item item) {
     if (TrackManager.getInstance().getAssociatedTracks(item, false).isEmpty()) {
@@ -339,7 +352,11 @@ public abstract class ItemManager {
     }
   }
 
-  /** Remove a given item */
+  /**
+   * Remove a given item.
+   * 
+   * @param item DOCUMENT_ME
+   */
   protected synchronized void removeItem(Item item) {
     if (item != null) {
       items.remove(item);
@@ -348,10 +365,9 @@ public abstract class ItemManager {
   }
 
   /**
-   * Register a given item
+   * Register a given item.
    * 
-   * @param item
-   *          : the item to add
+   * @param item : the item to add
    */
   protected synchronized void registerItem(Item item) {
     items.add(item);
@@ -359,23 +375,25 @@ public abstract class ItemManager {
   }
 
   /**
-   * Register a new property
+   * Register a new property.
    * 
-   * @param meta
+   * @param meta DOCUMENT_ME
    */
   public void registerProperty(PropertyMetaInformation meta) {
     hmPropertiesMetaInformation.put(meta.getName(), meta);
   }
 
   /**
-   * Change any item
+   * Change any item.
    * 
-   * @param itemToChange
-   * @param sKey
-   * @param oValue
-   * @param filter
-   *          : files we want to deal with
+   * @param itemToChange DOCUMENT_ME
+   * @param sKey DOCUMENT_ME
+   * @param oValue DOCUMENT_ME
+   * @param filter : files we want to deal with
+   * 
    * @return the changed item
+   * 
+   * @throws JajukException the jajuk exception
    */
   public static Item changeItem(Item itemToChange, String sKey, Object oValue, Set<File> filter)
       throws JajukException {
@@ -501,6 +519,7 @@ public abstract class ItemManager {
   }
 
   /**
+   * Gets the element count.
    * 
    * @return number of item
    */
@@ -509,8 +528,10 @@ public abstract class ItemManager {
   }
 
   /**
-   * @param sID
-   *          Item ID
+   * Gets the item by id.
+   * 
+   * @param sID Item ID
+   * 
    * @return Item
    */
   public Item getItemByID(String sID) {
@@ -518,7 +539,7 @@ public abstract class ItemManager {
   }
 
   /**
-   * Return a shallow copy of all registered items
+   * Return a shallow copy of all registered items.
    * 
    * @return a shallow copy of all registered items
    */
@@ -528,10 +549,13 @@ public abstract class ItemManager {
 
   /**
    * Return a shallow copy of all registered items filtered using the provided
-   * predicate*
+   * predicate*.
+   * 
+   * @param predicate DOCUMENT_ME
+   * 
+   * @return a shallow copy of all registered items filtered using the provided
    * 
    * @arg predicate : the predicate
-   * @return a shallow copy of all registered items filtered using the provided
    */
   public synchronized List<? extends Item> getFilteredItems(Predicate predicate) {
     ArrayList<Item> itemsCopy = new ArrayList<Item>(items);
@@ -539,16 +563,20 @@ public abstract class ItemManager {
     return itemsCopy;
   }
 
-  /*****************************************************************************
+  /**
+   * ***************************************************************************
    * Return all registered enumeration CAUTION : do not call remove() on this
    * iterator, you should remove effective items
-   ****************************************************************************/
+   * **************************************************************************.
+   * 
+   * @return the items iterator
+   */
   protected synchronized Iterator<? extends Item> getItemsIterator() {
     return items.iterator();
   }
 
   /**
-   * Clear any entries from this manager
+   * Clear any entries from this manager.
    */
   public synchronized void clear() {
     items.clear();

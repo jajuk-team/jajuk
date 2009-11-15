@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2005 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $$Revision: 4113 $$
+ *  $Revision$
  */
 package org.jajuk.ui.actions;
 
@@ -32,15 +33,19 @@ import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 import org.jajuk.util.log.Log;
 
+/**
+ * DOCUMENT_ME.
+ */
 public class AverageSelectionAction extends SelectionAction {
 
+  /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
   /**
    * Set average preference to a selection
    * <p>
    * Selection action
-   * </p>
+   * </p>.
    */
   AverageSelectionAction() {
     super(Messages.getString("Preference.3"), IconLoader.getIcon(JajukIcons.PREFERENCE_AVERAGE),
@@ -48,6 +53,9 @@ public class AverageSelectionAction extends SelectionAction {
     setShortDescription(Messages.getString("Preference.3"));
   }
 
+  /* (non-Javadoc)
+   * @see org.jajuk.ui.actions.SelectionAction#perform(java.awt.event.ActionEvent)
+   */
   @Override
   public void perform(final ActionEvent e) throws Exception {
     new Thread("AverageSelectionAction") {

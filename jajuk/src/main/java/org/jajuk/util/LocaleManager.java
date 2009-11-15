@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2008 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision: 3132 $
+ *  $Revision$
  */
 package org.jajuk.util;
 
@@ -26,28 +27,30 @@ import java.util.List;
 import java.util.Locale;
 
 /**
- * Manages locales used in jajuk
+ * Manages locales used in jajuk.
  */
 public class LocaleManager {
+  
   /**
-   * private constructor for utility class with only static methods
+   * private constructor for utility class with only static methods.
    */
   private LocaleManager() {
     super();
   }
 
-  /** Supported Locals */
+  /** Supported Locals. */
   private static List<Locale> supportedLocales = Arrays.asList(new Locale[] { Locale.ENGLISH,
       Locale.FRENCH, Locale.GERMAN, new Locale("nl"), new Locale("es"), new Locale("ca"),
       new Locale("ko"), new Locale("el"), new Locale("ru"), new Locale("gl"), new Locale("cs") });
 
-  /** Local ( language) to be used, default is English */
+  /** Local ( language) to be used, default is English. */
   private static Locale locale = getNativeLocale();
 
   /**
+   * Gets the native locale.
    * 
    * @return current default native locale or English if the native is not
-   *         supported by Jajuk
+   * supported by Jajuk
    */
   public static Locale getNativeLocale() {
     Locale nativeLocale = new Locale(System.getProperty("user.language"));
@@ -60,10 +63,9 @@ public class LocaleManager {
   }
 
   /**
-   * Change current local
+   * Change current local.
    * 
-   * @param locale
-   *          to set
+   * @param locale to set
    */
   public static void setLocale(final Locale locale) {
     Conf.setProperty(Const.CONF_OPTIONS_LANGUAGE, locale.getLanguage());
@@ -75,6 +77,8 @@ public class LocaleManager {
   }
 
   /**
+   * Gets the locale.
+   * 
    * @return Returns the current locale.
    */
   public static Locale getLocale() {
@@ -82,9 +86,9 @@ public class LocaleManager {
   }
 
   /**
-   * Return list of available locale descriptions
+   * Return list of available locale descriptions.
    * 
-   * @return
+   * @return the locales descs
    */
   public static List<String> getLocalesDescs() {
     final List<String> alDescs = new ArrayList<String>(10);
@@ -96,7 +100,9 @@ public class LocaleManager {
   }
 
   /**
-   * Return Description for a given local id
+   * Return Description for a given local id.
+   * 
+   * @param sLocal DOCUMENT_ME
    * 
    * @return localized description
    */
@@ -105,7 +111,9 @@ public class LocaleManager {
   }
 
   /**
-   * Return local for a given description
+   * Return local for a given description.
+   * 
+   * @param sDesc DOCUMENT_ME
    * 
    * @return local
    */

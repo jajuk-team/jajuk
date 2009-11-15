@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2007 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $$Revision$$
+ *  $Revision$
  */
 
 package org.jajuk.ui.wizard;
@@ -47,35 +48,46 @@ import org.jajuk.util.UtilString;
 import org.jdesktop.swingx.JXDatePicker;
 
 /**
- * 
- * New property wizard
+ * New property wizard.
  */
 public class NewPropertyWizard extends CustomPropertyWizard implements KeyListener {
+  
+  /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
+  /** DOCUMENT_ME. */
   private final JTextField jtfName;
 
+  /** DOCUMENT_ME. */
   private final JComboBox jcbClass;
 
+  /** DOCUMENT_ME. */
   private final JTextField jtfDefault;
 
+  /** DOCUMENT_ME. */
   private final JCheckBox jcbDefault;
 
+  /** DOCUMENT_ME. */
   private final JXDatePicker jdpDefault;
 
   // Types
+  /** The Constant STRING.  DOCUMENT_ME */
   private static final int STRING = 0;
 
+  /** The Constant LONG.  DOCUMENT_ME */
   private static final int LONG = 1;
 
+  /** The Constant DOUBLE.  DOCUMENT_ME */
   private static final int DOUBLE = 2;
 
+  /** The Constant BOOLEAN.  DOCUMENT_ME */
   private static final int BOOLEAN = 3;
 
+  /** The Constant DATE.  DOCUMENT_ME */
   private static final int DATE = 4;
 
   /**
-   * Constructor
+   * Constructor.
    */
   public NewPropertyWizard() {
     super(Messages.getString("NewPropertyWizard.0"));

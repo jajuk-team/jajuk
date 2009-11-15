@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2004 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -34,15 +35,24 @@ import org.jajuk.ui.windows.JajukMainWindow;
 import org.jajuk.util.Messages;
 
 /**
- * A password dialog
+ * A password dialog.
  */
 public class PasswordDialog extends JajukJDialog implements ActionListener {
+  
+  /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
+  /** DOCUMENT_ME. */
   JPasswordField pf;
 
+  /** DOCUMENT_ME. */
   JOptionPane optionPane;
 
+  /**
+   * Instantiates a new password dialog.
+   * 
+   * @param sMessage DOCUMENT_ME
+   */
   public PasswordDialog(String sMessage) {
     setTitle(sMessage);
     pf = new JPasswordField(20);
@@ -87,12 +97,21 @@ public class PasswordDialog extends JajukJDialog implements ActionListener {
     setVisible(true);
   }
 
-  /** This method handles events for the text field. */
+  /**
+   * This method handles events for the text field.
+   * 
+   * @param e DOCUMENT_ME
+   */
   public void actionPerformed(ActionEvent e) {
     optionPane.setValue(new String(pf.getPassword()));
     dispose();
   }
 
+  /**
+   * Gets the option pane.
+   * 
+   * @return the option pane
+   */
   public JOptionPane getOptionPane() {
     return optionPane;
   }

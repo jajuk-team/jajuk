@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -41,40 +42,30 @@ import org.xml.sax.Attributes;
  * Note that some properties can be omitted (not in properties object), in this
  * case, we take default value given in meta infos, this can decrease collection
  * file size
- * </p>
+ * </p>.
  */
 public abstract class Item implements Const {
 
-  /**
-   * We cache the ID to avoid getting it from properties for CPU performance
-   * reasons
-   */
+  /** We cache the ID to avoid getting it from properties for CPU performance reasons. */
   String sID;
 
-  /**
-   * We cache the name to avoid getting it from properties for CPU performance
-   * reasons
-   */
+  /** We cache the name to avoid getting it from properties for CPU performance reasons. */
   String name;
 
-  /**
-   * Item properties, singleton use very high load factor as this size will not
-   * change often
-   */
+  /** Item properties, singleton use very high load factor as this size will not change often. */
   private Map<String, Object> properties = new HashMap<String, Object>(2, 1f);
 
+  /** DOCUMENT_ME. */
   @SuppressWarnings("unchecked")
   private static Map map[] = { new HashMap<Long, IconLabel>(), new HashMap<Long, IconLabel>(),
       new HashMap<Long, IconLabel>(), new HashMap<Long, IconLabel>(),
       new HashMap<Long, IconLabel>() };
 
   /**
-   * Constructor
+   * Constructor.
    * 
-   * @param sId
-   *          element ID
-   * @param sName
-   *          element name
+   * @param sId element ID
+   * @param sName element name
    */
   Item(final String sId, final String sName) {
     this.sID = sId;
@@ -84,14 +75,18 @@ public abstract class Item implements Const {
   }
 
   /**
-   * @return
+   * Gets the iD.
+   * 
+   * @return the iD
    */
   public String getID() {
     return this.sID;
   }
 
   /**
-   * @return
+   * Gets the name.
+   * 
+   * @return the name
    */
   public String getName() {
     return name;
@@ -100,6 +95,8 @@ public abstract class Item implements Const {
   /**
    * Item hashcode (used by the equals method) See
    * http://www.geocities.com/technofundo/tech/java/equalhash.html
+   * 
+   * @return the int
    */
   @Override
   public int hashCode() {
@@ -107,17 +104,18 @@ public abstract class Item implements Const {
   }
 
   /**
-   * Get item description (HTML)
+   * Get item description (HTML).
    * 
    * @return item description
    */
   public abstract String getDesc();
 
   /**
-   * Equal method to check two albums are identical
+   * Equal method to check two albums are identical.
    * 
-   * @param otherAlbum
-   * @return
+   * @param otherItem DOCUMENT_ME
+   * 
+   * @return true, if equals
    */
   @Override
   public boolean equals(Object otherItem) {
@@ -136,12 +134,17 @@ public abstract class Item implements Const {
    * 
    * @see org.jajuk.base.Item#getProperties()
    */
+  /**
+   * Gets the properties.
+   * 
+   * @return the properties
+   */
   public Map<String, Object> getProperties() {
     return properties;
   }
 
   /**
-   * Return a shallow copy of the item properties
+   * Return a shallow copy of the item properties.
    * 
    * @return a shallow copy of the item properties
    */
@@ -158,6 +161,13 @@ public abstract class Item implements Const {
    * 
    * @see org.jajuk.base.Item#getProperty(java.lang.String)
    */
+  /**
+   * Gets the value.
+   * 
+   * @param sKey DOCUMENT_ME
+   * 
+   * @return the value
+   */
   public Object getValue(String sKey) {
     Object out = getProperties().get(sKey);
     // look at properties to check the given property is known
@@ -168,6 +178,13 @@ public abstract class Item implements Const {
     return out;
   }
 
+  /**
+   * Gets the long value.
+   * 
+   * @param sKey DOCUMENT_ME
+   * 
+   * @return the long value
+   */
   public long getLongValue(String sKey) {
     Long out = (Long) getProperties().get(sKey);
     // look at properties to check the given property is known
@@ -178,6 +195,13 @@ public abstract class Item implements Const {
     return out;
   }
 
+  /**
+   * Gets the double value.
+   * 
+   * @param sKey DOCUMENT_ME
+   * 
+   * @return the double value
+   */
   public double getDoubleValue(String sKey) {
     Double out = (Double) getProperties().get(sKey);
     // look at properties to check the given property is known
@@ -191,6 +215,10 @@ public abstract class Item implements Const {
   /**
    * Return String value for String type values. We assume that given property
    * is a String. If you are not sure, use UtilFeatures.parse method
+   * 
+   * @param sKey DOCUMENT_ME
+   * 
+   * @return the string value
    */
   public String getStringValue(String sKey) {
     String out = (String) getProperties().get(sKey);
@@ -202,6 +230,13 @@ public abstract class Item implements Const {
     return out;
   }
 
+  /**
+   * Gets the boolean value.
+   * 
+   * @param sKey DOCUMENT_ME
+   * 
+   * @return the boolean value
+   */
   public boolean getBooleanValue(String sKey) {
     Boolean out = (Boolean) getProperties().get(sKey);
     // look at properties to check the given property is known
@@ -212,6 +247,13 @@ public abstract class Item implements Const {
     return out;
   }
 
+  /**
+   * Gets the date value.
+   * 
+   * @param sKey DOCUMENT_ME
+   * 
+   * @return the date value
+   */
   public Date getDateValue(String sKey) {
     Date out = (Date) getProperties().get(sKey);
     // look at properties to check the given property is known
@@ -222,6 +264,13 @@ public abstract class Item implements Const {
     return out;
   }
 
+  /**
+   * Gets the default value.
+   * 
+   * @param sKey DOCUMENT_ME
+   * 
+   * @return the default value
+   */
   public Object getDefaultValue(String sKey) {
     PropertyMetaInformation meta = getMeta(sKey);
     return meta.getDefaultValue();
@@ -231,6 +280,14 @@ public abstract class Item implements Const {
    * (non-Javadoc)
    * 
    * @see org.jajuk.base.Item#containsKey(java.lang.String)
+   */
+  /**
+   * Contains property.
+   * DOCUMENT_ME
+   * 
+   * @param sKey DOCUMENT_ME
+   * 
+   * @return true if...
    */
   public boolean containsProperty(String sKey) {
     return properties.containsKey(sKey) && properties.get(sKey) != null
@@ -242,6 +299,13 @@ public abstract class Item implements Const {
    * 
    * @see org.jajuk.base.Item#setProperty(java.lang.String, java.lang.String)
    */
+  /**
+   * Sets the property.
+   * DOCUMENT_ME
+   * 
+   * @param sKey DOCUMENT_ME
+   * @param oValue DOCUMENT_ME
+   */
   public final void setProperty(String sKey, Object oValue) {
     getProperties().put(sKey, oValue);
   }
@@ -250,6 +314,11 @@ public abstract class Item implements Const {
    * (non-Javadoc)
    * 
    * @see org.jajuk.base.Item#getAny()
+   */
+  /**
+   * Gets the any.
+   * 
+   * @return the any
    */
   public String getAny() {
     StringBuilder sb = new StringBuilder(100);
@@ -276,14 +345,20 @@ public abstract class Item implements Const {
    * @see org.jajuk.base.Item#setDefaultProperty(java.lang.String,
    *      java.lang.String)
    */
+  /**
+   * Populate default property.
+   * DOCUMENT_ME
+   * 
+   * @param meta DOCUMENT_ME
+   */
   public void populateDefaultProperty(PropertyMetaInformation meta) {
     properties.put(meta.getName(), meta.getDefaultValue());
   }
 
   /**
-   * Return an XML representation of this item
+   * Return an XML representation of this item.
    * 
-   * @return
+   * @return the string
    */
   public String toXml() {
     try {
@@ -300,11 +375,14 @@ public abstract class Item implements Const {
   }
 
   /**
+   * Gets the label.
+   * 
    * @return an identifier used to generate XML representation of this item
    */
   abstract String getLabel();
 
   /**
+   * Gets the properties xml.
    * 
    * @return XML representation for item properties
    */
@@ -341,10 +419,10 @@ public abstract class Item implements Const {
 
   /**
    * Set all personal properties of an XML file for an item (doesn't overwrite
-   * existing properties for perfs)
+   * existing properties for perfs).
    * 
    * @param attributes :
-   *          list of attributes for this XML item
+   * list of attributes for this XML item
    */
   public void populateProperties(Attributes attributes) {
     for (int i = 0; i < attributes.getLength(); i++) {
@@ -364,8 +442,9 @@ public abstract class Item implements Const {
   }
 
   /**
-   * @param properties
-   *          The properties to set.
+   * Sets the properties.
+   * 
+   * @param properties The properties to set.
    */
   public void setProperties(Map<String, Object> properties) {
     this.properties = properties;
@@ -376,12 +455,22 @@ public abstract class Item implements Const {
    * 
    * @see org.jajuk.base.Item#removeProperty(java.lang.String)
    */
+  /**
+   * Removes the property.
+   * DOCUMENT_ME
+   * 
+   * @param sKey DOCUMENT_ME
+   */
   public void removeProperty(String sKey) {
     properties.remove(sKey);
   }
 
   /**
-   * Default implementation for this method, simply return standard value
+   * Default implementation for this method, simply return standard value.
+   * 
+   * @param sKey DOCUMENT_ME
+   * 
+   * @return the human value
    */
   public String getHumanValue(String sKey) {
     try {
@@ -393,8 +482,10 @@ public abstract class Item implements Const {
   }
 
   /**
-   * @param sProperty
-   *          Property name
+   * Gets the meta.
+   * 
+   * @param sProperty Property name
+   * 
    * @return Meta information for current item and given property name
    */
   public PropertyMetaInformation getMeta(String sProperty) {
@@ -403,9 +494,9 @@ public abstract class Item implements Const {
 
   /**
    * Clone all properties from a given properties list but not overwrite
-   * constructor properties
+   * constructor properties.
    * 
-   * @param propertiesSource
+   * @param propertiesSource DOCUMENT_ME
    */
   public void cloneProperties(Item propertiesSource) {
     Iterator<String> it = propertiesSource.getProperties().keySet().iterator();
@@ -418,11 +509,15 @@ public abstract class Item implements Const {
   }
 
   /**
+   * Gets the icon representation.
+   * 
    * @return an icon representation for this item or null if none available
    */
   public abstract ImageIcon getIconRepresentation();
 
   /**
+   * Gets the stars.
+   * 
    * @return the stars icon or ban icon if banned
    */
   @SuppressWarnings("unchecked")
@@ -445,8 +540,11 @@ public abstract class Item implements Const {
   }
 
   /**
-   * @param starsNumber
-   * @return
+   * Gets the icon.
+   * 
+   * @param starsNumber DOCUMENT_ME
+   * 
+   * @return the icon
    */
   private ImageIcon getIcon(int starsNumber) {
     switch (starsNumber) {
@@ -466,6 +564,8 @@ public abstract class Item implements Const {
   }
 
   /**
+   * Gets the stars number.
+   * 
    * @return Number of stars based on the rate of this item
    */
   public int getStarsNumber() {

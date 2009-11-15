@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -38,10 +39,10 @@ import org.jajuk.util.ReadOnlyIterator;
 public class Style extends LogicalItem implements Comparable<Style> {
 
   /**
-   * Style constructor
+   * Style constructor.
    * 
-   * @param id
-   * @param sName
+   * @param sName DOCUMENT_ME
+   * @param sId DOCUMENT_ME
    */
   public Style(String sId, String sName) {
     super(sId, sName);
@@ -58,7 +59,7 @@ public class Style extends LogicalItem implements Comparable<Style> {
   }
 
   /**
-   * Return style name, dealing with unkwnown for any language
+   * Return style name, dealing with unkwnown for any language.
    * 
    * @return author name
    */
@@ -71,7 +72,9 @@ public class Style extends LogicalItem implements Comparable<Style> {
   }
 
   /**
-   * toString method
+   * toString method.
+   * 
+   * @return the string
    */
   @Override
   public String toString() {
@@ -79,10 +82,10 @@ public class Style extends LogicalItem implements Comparable<Style> {
   }
 
   /**
-   * Alphabetical comparator used to display ordered lists
+   * Alphabetical comparator used to display ordered lists.
    * 
-   * @param other
-   *          item to be compared
+   * @param otherItem DOCUMENT_ME
+   * 
    * @return comparison result
    */
   public int compareTo(Style otherItem) {
@@ -95,14 +98,18 @@ public class Style extends LogicalItem implements Comparable<Style> {
   }
 
    /**
-   * @return whether the style is Unknown or not
-   */
+    * Checks if is unknown.
+    * 
+    * @return whether the style is Unknown or not
+    */
   public boolean isUnknown() {
     return this.getName().equals(UNKNOWN_STYLE);
   }
 
   /**
-   * Get item description
+   * Get item description.
+   * 
+   * @return the desc
    */
   @Override
   public String getDesc() {
@@ -124,6 +131,7 @@ public class Style extends LogicalItem implements Comparable<Style> {
   }
 
   /**
+   * Gets the tracks recursively.
    * 
    * @return all tracks associated with this style
    */

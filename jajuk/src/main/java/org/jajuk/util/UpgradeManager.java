@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2007 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $$Revision$$
+ *  $Revision$
  */
 
 package org.jajuk.util;
@@ -35,29 +36,30 @@ import org.jajuk.ui.thumbnails.ThumbnailsMaker;
 import org.jajuk.util.log.Log;
 
 /**
- * Maintain all behavior needed upgrades from releases to releases
+ * Maintain all behavior needed upgrades from releases to releases.
  */
 public final class UpgradeManager {
 
+  /** DOCUMENT_ME. */
   private static String newVersionName;
 
   /** Is it a minor or major X.Y upgrade */
   private static boolean bUpgraded = false;
 
-  /** Is it the first session ever ? */
+  /** Is it the first session ever ?. */
   private static boolean bFirstSession = false;
 
-  /** Is it an old migration (more than 1 major release) ? */
+  /** Is it an old migration (more than 1 major release) ?. */
   private static boolean majorMigration = false;
 
   /**
-   * private constructor to avoid instantiating utility class
+   * private constructor to avoid instantiating utility class.
    */
   private UpgradeManager() {
   }
 
   /**
-   * Detect current release and if an upgrade occurred since last startup
+   * Detect current release and if an upgrade occurred since last startup.
    */
   public static void detectRelease() {
     try {
@@ -89,10 +91,19 @@ public final class UpgradeManager {
     Conf.setProperty(Const.CONF_RELEASE, Const.JAJUK_VERSION);
   }
 
+  /**
+   * Checks if is first sesion.
+   * 
+   * @return true, if is first sesion
+   */
   public static boolean isFirstSesion() {
     return bFirstSession;
   }
 
+  /**
+   * Sets the first session.
+   * DOCUMENT_ME
+   */
   public static void setFirstSession() {
     bFirstSession = true;
   }
@@ -304,7 +315,7 @@ public final class UpgradeManager {
 
   /**
    * For jajuk < 1.7, Update rating system
-   **/
+   */
   private static void upgradeCollectionRating() {
     String sRelease = Conf.getString(Const.CONF_RELEASE);
     if (sRelease == null || sRelease.matches("0..*")
@@ -339,7 +350,7 @@ public final class UpgradeManager {
   }
 
   /**
-   * For any jajuk version, after major upgrade, force thumbs cleanup
+   * For any jajuk version, after major upgrade, force thumbs cleanup.
    */
   private static void upgradeThumbRebuild() {
     // Rebuild thumbs when upgrading
@@ -363,7 +374,7 @@ public final class UpgradeManager {
   /**
    * Actions to migrate an existing installation.
    * 
-   *  Step 2 after collection load
+   * Step 2 after collection load
    */
   public static void upgradeStep2() {
     try {
@@ -383,15 +394,17 @@ public final class UpgradeManager {
   }
 
   /**
+   * Checks if is upgrade detected.
+   * 
    * @return true if it is the first session after a minor or major upgrade
-   *         session
+   * session
    */
   public static boolean isUpgradeDetected() {
     return bUpgraded;
   }
 
   /**
-   * Check for a new Jajuk release
+   * Check for a new Jajuk release.
    * 
    * @return true if a new release has been found
    */
@@ -420,16 +433,21 @@ public final class UpgradeManager {
   }
 
   /**
+   * Gets the new version name.
    * 
    * @return new version name if nay
-   *         <p>
-   *         Example: "1.6", "1.7.8"
+   * <p>
+   * Example: "1.6", "1.7.8"
    */
   public static String getNewVersionName() {
     return newVersionName;
   }
 
-  /** Is it an old migration (more than 1 major release) ? * */
+  /**
+   * Is it an old migration (more than 1 major release) ? *.
+   * 
+   * @return true, if checks if is major migration
+   */
   public static boolean isMajorMigration() {
     return majorMigration;
   }

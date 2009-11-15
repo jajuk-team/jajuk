@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2006 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision: 2164 $
+ *  $Revision$
  */
 
 package org.jajuk.services.reporting;
@@ -52,17 +53,23 @@ import org.jajuk.util.UtilString;
  */
 public class XMLExporter extends Exporter {
 
-  /** Private Constants */
+  /** Private Constants. */
   private static final String NEWLINE = "\n";
 
+  /** The Constant XML_HEADER.  DOCUMENT_ME */
   private static final String XML_HEADER = "<?xml version='1.0' encoding='UTF-8'?>";
 
+  /** DOCUMENT_ME. */
   private final BufferedWriter writer;
 
-  /** Do we want to export tracks ?* */
+  /** Do we want to export tracks ?*. */
   private boolean showTracks = true;
 
-  /** PUBLIC METHODS */
+  /**
+   * PUBLIC METHODS.
+   * 
+   * @throws IOException Signals that an I/O exception has occurred.
+   */
 
   public XMLExporter() throws IOException {
     cache = SessionService.getConfFileByPath(Const.FILE_REPORTING_CACHE_FILE + "_XML_"
@@ -71,13 +78,15 @@ public class XMLExporter extends Exporter {
   }
 
   /**
-   * This method will create a tagging of the specified item
+   * This method will create a tagging of the specified item.
    * 
-   * @param item
-   *          The item to report (can be an album, a year, an author ,a style, a
-   *          directory or a device)
+   * @param item The item to report (can be an album, a year, an author ,a style, a
+   * directory or a device)
+   * 
    * @return Returns a string containing the report, or null if an error
-   *         occurred.
+   * occurred.
+   * 
+   * @throws Exception the exception
    */
   public void process(Item item) throws Exception {
     if (item instanceof Album) {
@@ -98,10 +107,12 @@ public class XMLExporter extends Exporter {
   /**
    * This method will create a tagging of the specified album and its tracks.
    * 
-   * @param album
-   *          The album to tag.
+   * @param album The album to tag.
+   * 
    * @return Returns a string containing the tagging, or null if an error
-   *         occurred.
+   * occurred.
+   * 
+   * @throws Exception the exception
    */
   public void process(Album album) throws Exception {
     // Make sure we have an album.
@@ -114,10 +125,12 @@ public class XMLExporter extends Exporter {
    * This method will create a reporting of the specified year and its albums
    * and associated tracks.
    * 
-   * @param year
-   *          The year to report.
+   * @param year The year to report.
+   * 
    * @return Returns a string containing the report, or null if an error
-   *         occurred.
+   * occurred.
+   * 
+   * @throws Exception the exception
    */
   public void process(Year year) throws Exception {
     if (year != null) {
@@ -129,10 +142,12 @@ public class XMLExporter extends Exporter {
    * This method will create a tagging of the specified author and its albums
    * and associated tracks.
    * 
-   * @param author
-   *          The author to tag.
+   * @param author The author to tag.
+   * 
    * @return Returns a string containing the tagging, or null if an error
-   *         occurred.
+   * occurred.
+   * 
+   * @throws Exception the exception
    */
   public void process(Author author) throws Exception {
     if (author != null) {
@@ -143,10 +158,12 @@ public class XMLExporter extends Exporter {
   /**
    * This method will create a tagging of the specified style.
    * 
-   * @param style
-   *          The style to tag.
+   * @param style The style to tag.
+   * 
    * @return Returns a string containing the tagging, or null is an error
-   *         occurred.
+   * occurred.
+   * 
+   * @throws Exception the exception
    */
   public void process(Style style) throws Exception {
     if (style != null) {
@@ -158,10 +175,12 @@ public class XMLExporter extends Exporter {
    * This method will create a tagging of a directory and all its children files
    * and directories.
    * 
-   * @param directory
-   *          The directory to start from.
+   * @param directory The directory to start from.
+   * 
    * @return Returns a string containing the tagging, or null if an error
-   *         occurred.
+   * occurred.
+   * 
+   * @throws Exception the exception
    */
   public void process(Directory directory) throws Exception {
     if (directory != null) {
@@ -173,10 +192,12 @@ public class XMLExporter extends Exporter {
    * This method will create a tagging of a device and all its children files
    * and directories.
    * 
-   * @param device
-   *          The device to start from.
+   * @param device The device to start from.
+   * 
    * @return Returns a string containing the tagging, or null if an error
-   *         occurred.
+   * occurred.
+   * 
+   * @throws Exception the exception
    */
   public void process(Device device) throws Exception {
     if (device != null) {
@@ -185,6 +206,12 @@ public class XMLExporter extends Exporter {
   }
 
   /**
+   * Process collection.
+   * 
+   * @param type DOCUMENT_ME
+   * 
+   * @throws Exception the exception
+   * 
    * @see Exporter.processColllection
    */
   @Override
@@ -200,7 +227,14 @@ public class XMLExporter extends Exporter {
     }
   }
 
-  /** PRIVATE HELPER METHODS */
+  /**
+   * PRIVATE HELPER METHODS.
+   * 
+   * @param level DOCUMENT_ME
+   * @param directory DOCUMENT_ME
+   * 
+   * @throws Exception the exception
+   */
 
   private void exportDirectoryHelper(int level, Directory directory) throws Exception {
     // Get the children
@@ -224,6 +258,15 @@ public class XMLExporter extends Exporter {
     writer.write(addTabs(level) + Tag.closeTag(Const.XML_DIRECTORY) + NEWLINE);
   }
 
+  /**
+   * Tag file.
+   * DOCUMENT_ME
+   * 
+   * @param file DOCUMENT_ME
+   * @param level DOCUMENT_ME
+   * 
+   * @throws Exception the exception
+   */
   private void tagFile(org.jajuk.base.File file, int level) throws Exception {
     String sFileID = file.getID();
     String sName = UtilString.formatXML(file.getName());
@@ -238,6 +281,14 @@ public class XMLExporter extends Exporter {
     writer.write(addTabs(level) + Tag.closeTag(Const.XML_FILE) + NEWLINE);
   }
 
+  /**
+   * Tag directory.
+   * DOCUMENT_ME
+   * 
+   * @param directory DOCUMENT_ME
+   * 
+   * @throws Exception the exception
+   */
   private void tagDirectory(Directory directory) throws Exception {
     // Make sure we have a directory.
     if (directory != null) {
@@ -263,6 +314,14 @@ public class XMLExporter extends Exporter {
     }
   }
 
+  /**
+   * Tag device.
+   * DOCUMENT_ME
+   * 
+   * @param device DOCUMENT_ME
+   * 
+   * @throws Exception the exception
+   */
   private void tagDevice(Device device) throws Exception {
     String sID = device.getID();
     writer.write(Tag.openTag(Const.XML_DEVICE) + NEWLINE);
@@ -289,6 +348,15 @@ public class XMLExporter extends Exporter {
     writer.write(Tag.closeTag(Const.XML_DEVICE) + NEWLINE);
   }
 
+  /**
+   * Tag track.
+   * DOCUMENT_ME
+   * 
+   * @param track DOCUMENT_ME
+   * @param level DOCUMENT_ME
+   * 
+   * @throws Exception the exception
+   */
   private void tagTrack(Track track, int level) throws Exception {
     String sTrackID = track.getID();
     String sTrackName = UtilString.formatXML(track.getName());
@@ -319,6 +387,15 @@ public class XMLExporter extends Exporter {
     writer.write(addTabs(level) + Tag.closeTag(Const.XML_TRACK) + NEWLINE);
   }
 
+  /**
+   * Tag album.
+   * DOCUMENT_ME
+   * 
+   * @param album DOCUMENT_ME
+   * @param level DOCUMENT_ME
+   * 
+   * @throws Exception the exception
+   */
   private void tagAlbum(Album album, int level) throws Exception {
     String sAlbumID = album.getID();
     String sAlbumName = UtilString.formatXML(album.getName2());
@@ -349,6 +426,15 @@ public class XMLExporter extends Exporter {
     writer.write(addTabs(level) + Tag.closeTag(Const.XML_ALBUM) + NEWLINE);
   }
 
+  /**
+   * Tag author.
+   * DOCUMENT_ME
+   * 
+   * @param author DOCUMENT_ME
+   * @param level DOCUMENT_ME
+   * 
+   * @throws Exception the exception
+   */
   private void tagAuthor(Author author, int level) throws Exception {
     String sAuthorID = author.getID();
     String sAuthorName = UtilString.formatXML(author.getName2());
@@ -362,6 +448,15 @@ public class XMLExporter extends Exporter {
     writer.write(addTabs(level) + Tag.closeTag(Const.XML_AUTHOR) + NEWLINE);
   }
 
+  /**
+   * Tag year.
+   * DOCUMENT_ME
+   * 
+   * @param year DOCUMENT_ME
+   * @param level DOCUMENT_ME
+   * 
+   * @throws Exception the exception
+   */
   private void tagYear(Year year, int level) throws Exception {
     String sYearID = year.getID();
     String sYearName = year.getName();
@@ -375,6 +470,15 @@ public class XMLExporter extends Exporter {
     writer.write(addTabs(level) + Tag.closeTag(Const.XML_YEAR) + NEWLINE);
   }
 
+  /**
+   * Tag style.
+   * DOCUMENT_ME
+   * 
+   * @param style DOCUMENT_ME
+   * @param level DOCUMENT_ME
+   * 
+   * @throws Exception the exception
+   */
   private void tagStyle(Style style, int level) throws Exception {
     String sStyleID = style.getID();
     String sStyleName = UtilString.formatXML(style.getName2());
@@ -392,6 +496,14 @@ public class XMLExporter extends Exporter {
     writer.write(addTabs(level) + Tag.closeTag(Const.XML_STYLE) + NEWLINE);
   }
 
+  /**
+   * Adds the tabs.
+   * DOCUMENT_ME
+   * 
+   * @param num DOCUMENT_ME
+   * 
+   * @return the string
+   */
   private String addTabs(int num) {
     StringBuilder sb = new StringBuilder();
     int i = 0;
@@ -452,6 +564,11 @@ public class XMLExporter extends Exporter {
 
   }
 
+  /**
+   * Sets the show tracks.
+   * 
+   * @param showTracks the new show tracks
+   */
   protected void setShowTracks(boolean showTracks) {
     this.showTracks = showTracks;
   }

@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2004 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision:3266 $
+ *  $Revision$
  */
 
 package org.jajuk.services.dj;
@@ -24,27 +25,25 @@ import org.jajuk.base.Style;
 import org.jajuk.util.UtilFeatures;
 
 /**
- * Represents a transition from one style to another (used by digital DJs)
+ * Represents a transition from one style to another (used by digital DJs).
  */
 public class Transition {
-  /** From styles */
+  
+  /** From styles. */
   private Ambience from;
 
-  /** To styles */
+  /** To styles. */
   private Ambience to;
 
-  /** Nb of tracks */
+  /** Nb of tracks. */
   private int nb;
 
   /**
-   * Constructor
+   * Constructor.
    * 
-   * @param from
-   *          source styles
-   * @param to
-   *          destination style
-   * @param nb
-   *          number of tracks played before changing style
+   * @param from source styles
+   * @param to destination style
+   * @param nb number of tracks played before changing style
    */
   public Transition(Ambience from, Ambience to, int nb) {
     this.from = from;
@@ -53,10 +52,9 @@ public class Transition {
   }
 
   /**
-   * Constructor for void transition
+   * Constructor for void transition.
    * 
-   * @param nb
-   *          initial number of tracks
+   * @param nb initial number of tracks
    */
   public Transition(int nb) {
     this.from = new Ambience(Long.toString(System.currentTimeMillis()), "");
@@ -65,7 +63,9 @@ public class Transition {
   }
 
   /**
-   * equals method
+   * equals method.
+   * 
+   * @param other DOCUMENT_ME
    * 
    * @return whether two object are equals
    */
@@ -78,6 +78,9 @@ public class Transition {
         && getTo().equals(((Transition) other).getTo());
   }
 
+  /* (non-Javadoc)
+   * @see java.lang.Object#hashCode()
+   */
   @Override
   public int hashCode() {
     // for now just combine name and id to a hashcode
@@ -90,6 +93,8 @@ public class Transition {
   }
 
   /**
+   * Gets the from.
+   * 
    * @return Returns the from.
    */
   /**
@@ -101,6 +106,8 @@ public class Transition {
 
   /**
    * From String, return style1,style2,...
+   * 
+   * @return the from string
    */
   public String getFromString() {
     String out = "";
@@ -115,6 +122,8 @@ public class Transition {
 
   /**
    * "To" String, return style1,style2,...
+   * 
+   * @return the to string
    */
   public String getToString() {
     String out = "";
@@ -128,6 +137,8 @@ public class Transition {
   }
 
   /**
+   * Gets the to.
+   * 
    * @return Returns the to.
    */
   /**
@@ -137,29 +148,46 @@ public class Transition {
     return this.to;
   }
 
+  /**
+   * Adds the from style.
+   * DOCUMENT_ME
+   * 
+   * @param style DOCUMENT_ME
+   */
   public void addFromStyle(Style style) {
     from.addStyle(style);
   }
 
   /**
-   * @param style
+   * Removes the from style.
+   * 
+   * @param style DOCUMENT_ME
    */
   public void removeFromStyle(Style style) {
     from.removeStyle(style);
   }
 
+  /**
+   * Adds the to style.
+   * DOCUMENT_ME
+   * 
+   * @param style DOCUMENT_ME
+   */
   public void addToStyle(Style style) {
     to.addStyle(style);
   }
 
   /**
-   * @param style
+   * Removes the to style.
+   * 
+   * @param style DOCUMENT_ME
    */
   public void removeToStyle(Style style) {
     to.removeStyle(style);
   }
 
   /**
+   * Gets the next style.
    * 
    * @return next style to be played or null if no idea
    */
@@ -174,18 +202,38 @@ public class Transition {
     }
   }
 
+  /**
+   * Gets the nb tracks.
+   * 
+   * @return the nb tracks
+   */
   public int getNbTracks() {
     return this.nb;
   }
 
+  /**
+   * Sets the from.
+   * 
+   * @param from the new from
+   */
   public void setFrom(Ambience from) {
     this.from = from;
   }
 
+  /**
+   * Sets the to.
+   * 
+   * @param to the new to
+   */
   public void setTo(Ambience to) {
     this.to = to;
   }
 
+  /**
+   * Sets the nb.
+   * 
+   * @param nb the new nb
+   */
   public void setNb(int nb) {
     this.nb = nb;
   }

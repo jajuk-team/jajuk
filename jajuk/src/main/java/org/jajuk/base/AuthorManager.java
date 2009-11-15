@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -16,7 +17,7 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *  $Revision$
- **/
+ */
 
 package org.jajuk.base;
 
@@ -39,17 +40,19 @@ import org.jajuk.util.ReadOnlyIterator;
 import org.jajuk.util.error.JajukException;
 
 /**
- * Convenient class to manage authors
+ * Convenient class to manage authors.
  */
 public final class AuthorManager extends ItemManager {
-  /** Self instance */
+  
+  /** Self instance. */
   private static AuthorManager singleton;
 
   /* List of all known authors */
+  /** DOCUMENT_ME. */
   private static Vector<String> authorsList = new Vector<String>(100);
 
   /**
-   * No constructor available, only static access
+   * No constructor available, only static access.
    */
   private AuthorManager() {
     super();
@@ -67,6 +70,8 @@ public final class AuthorManager extends ItemManager {
   }
 
   /**
+   * Gets the instance.
+   * 
    * @return singleton
    */
   public static AuthorManager getInstance() {
@@ -77,9 +82,11 @@ public final class AuthorManager extends ItemManager {
   }
 
   /**
-   * Register an author
+   * Register an author.
    * 
-   * @param sName
+   * @param sName DOCUMENT_ME
+   * 
+   * @return the author
    */
   public Author registerAuthor(String sName) {
     String sId = createID(sName);
@@ -87,10 +94,10 @@ public final class AuthorManager extends ItemManager {
   }
 
   /**
-   * Return hashcode for this item
+   * Return hashcode for this item.
    * 
-   * @param sName
-   *          item name
+   * @param sName item name
+   * 
    * @return ItemManager ID
    */
   protected static String createID(String sName) {
@@ -98,9 +105,12 @@ public final class AuthorManager extends ItemManager {
   }
 
   /**
-   * Register an author with a known id
+   * Register an author with a known id.
    * 
-   * @param sName
+   * @param sName DOCUMENT_ME
+   * @param sId DOCUMENT_ME
+   * 
+   * @return the author
    */
   public synchronized Author registerAuthor(String sId, String sName) {
     Author author = getAuthorByID(sId);
@@ -124,11 +134,14 @@ public final class AuthorManager extends ItemManager {
   }
 
   /**
-   * Change the item name
+   * Change the item name.
    * 
-   * @param old
-   * @param sNewName
+   * @param old DOCUMENT_ME
+   * @param sNewName DOCUMENT_ME
+   * 
    * @return new album
+   * 
+   * @throws JajukException the jajuk exception
    */
   public Author changeAuthorName(Author old, String sNewName) throws JajukException {
     synchronized (TrackManager.getInstance()) {
@@ -173,10 +186,11 @@ public final class AuthorManager extends ItemManager {
    * <p>
    * -All in lower case expect first letter of first word
    * <p>
-   * exemple: "My author"
+   * exemple: "My author".
    * 
-   * @param sName
-   * @return
+   * @param sName DOCUMENT_ME
+   * 
+   * @return the string
    * 
    * TODO: the "all lowercase" part is not done currently, should this be changed??
    */
@@ -202,6 +216,7 @@ public final class AuthorManager extends ItemManager {
   }
 
   /**
+   * Gets the authors list.
    * 
    * @return authors as a string list (used for authors combos)
    */
@@ -210,8 +225,10 @@ public final class AuthorManager extends ItemManager {
   }
 
   /**
-   * @param sID
-   *          Item ID
+   * Gets the author by id.
+   * 
+   * @param sID Item ID
+   * 
    * @return Element
    */
   public Author getAuthorByID(String sID) {
@@ -219,6 +236,7 @@ public final class AuthorManager extends ItemManager {
   }
 
   /**
+   * Gets the authors.
    * 
    * @return ordered albums list
    */
@@ -228,6 +246,7 @@ public final class AuthorManager extends ItemManager {
   }
 
   /**
+   * Gets the authors iterator.
    * 
    * @return authors iterator
    */
@@ -237,10 +256,11 @@ public final class AuthorManager extends ItemManager {
   }
 
   /**
-   * Get ordered list of authors associated with this item
+   * Get ordered list of authors associated with this item.
    * 
-   * @param item
-   * @return
+   * @param item DOCUMENT_ME
+   * 
+   * @return the associated authors
    */
   public synchronized List<Author> getAssociatedAuthors(Item item) {
     List<Author> out;
@@ -263,7 +283,10 @@ public final class AuthorManager extends ItemManager {
   }
 
   /**
-   * @param name
+   * Gets the author by name.
+   * 
+   * @param name DOCUMENT_ME
+   * 
    * @return associated author (case insensitive) or null if no match
    */
   public Author getAuthorByName(String name) {

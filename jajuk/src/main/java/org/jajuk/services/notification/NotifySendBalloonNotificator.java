@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision: 3132 $
+ *  $Revision$
  */
 package org.jajuk.services.notification;
 
@@ -40,27 +40,28 @@ import org.jajuk.util.log.Log;
  * <p>
  * Singleton
  * </p>
- * 
  */
 public class NotifySendBalloonNotificator implements INotificator {
-  /**
-   * The number of milliseconds to display the note
-   */
+  
+  /** The number of milliseconds to display the note. */
   private static final String DISPLAY_TIME_MSECS = "8000";
 
-  /** Self instance **/
+  /** Self instance *. */
   private static NotifySendBalloonNotificator self;
 
-  /** Availability state [perf] **/
+  /** Availability state [perf] *. */
   private boolean availability = false;
 
+  /**
+   * Instantiates a new notify send balloon notificator.
+   */
   private NotifySendBalloonNotificator() {
     // Get availability once for all
     populateAvailability();
   }
 
   /**
-   * Return an instance of this singleton
+   * Return an instance of this singleton.
    * 
    * @return an instance of this singleton
    */
@@ -82,7 +83,7 @@ public class NotifySendBalloonNotificator implements INotificator {
   }
 
   /**
-   * Computes notificator availability
+   * Computes notificator availability.
    */
   private void populateAvailability() {
     // not possible on Windows right now
@@ -130,6 +131,13 @@ public class NotifySendBalloonNotificator implements INotificator {
   /*
    * Notification from two strings (code shared between webradio and track
    * notifications)
+   */
+  /**
+   * Notify.
+   * DOCUMENT_ME
+   * 
+   * @param title DOCUMENT_ME
+   * @param pText DOCUMENT_ME
    */
   private void notify(String title, String pText) {
     // workaround: notify-send cannot handle IMG-SRC with "file:"
@@ -199,6 +207,9 @@ public class NotifySendBalloonNotificator implements INotificator {
     notify(title, text);
   }
 
+  /* (non-Javadoc)
+   * @see org.jajuk.services.notification.INotificator#notify(org.jajuk.base.File)
+   */
   @Override
   public void notify(File file) {
     String title = Messages.getString("Notificator.track_change.track_title");

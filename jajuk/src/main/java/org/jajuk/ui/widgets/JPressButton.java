@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- * $Revision$
+ *  $Revision$
  */
 package org.jajuk.ui.widgets;
 
@@ -36,21 +37,16 @@ import javax.swing.plaf.ButtonUI;
  */
 public class JPressButton extends JajukButton {
 
+  /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
+  /** The Constant DEFAULT_INTERVAL.  DOCUMENT_ME */
   private static final long DEFAULT_INTERVAL = 250;
 
-  /**
-   * The interval between successive fireActionPerformed() calls.
-   */
+  /** The interval between successive fireActionPerformed() calls. */
   private long actionInterval;
 
-  /**
-   * Re-use the L&F component of a normal <code>JButton</code>.
-   * 
-   * @see #getUIClassID
-   * @see #readObject
-   */
+  /** Re-use the L&F component of a normal <code>JButton</code>. */
   private static final String UI_CLASS_ID = "ButtonUI";
 
   /**
@@ -63,8 +59,7 @@ public class JPressButton extends JajukButton {
   /**
    * Creates a button with no set text or icon.
    * 
-   * @param actionInterval
-   *          the interval between 2 successive actionperformed calls.
+   * @param actionInterval the interval between 2 successive actionperformed calls.
    */
   public JPressButton(long actionInterval) {
     this(null, null, actionInterval);
@@ -73,8 +68,7 @@ public class JPressButton extends JajukButton {
   /**
    * Creates a button with an icon and a default action interval.
    * 
-   * @param icon
-   *          the Icon image to display on the button
+   * @param icon the Icon image to display on the button
    */
   public JPressButton(Icon icon) {
     this(null, icon, DEFAULT_INTERVAL);
@@ -83,8 +77,8 @@ public class JPressButton extends JajukButton {
   /**
    * Creates a button with an icon.
    * 
-   * @param icon
-   *          the Icon image to display on the button
+   * @param icon the Icon image to display on the button
+   * @param actionInterval DOCUMENT_ME
    */
   public JPressButton(Icon icon, long actionInterval) {
     this(null, icon, actionInterval);
@@ -93,8 +87,7 @@ public class JPressButton extends JajukButton {
   /**
    * Creates a button with text and a default action interval.
    * 
-   * @param text
-   *          the text of the button
+   * @param text the text of the button
    */
   public JPressButton(String text) {
     this(text, null, DEFAULT_INTERVAL);
@@ -103,8 +96,8 @@ public class JPressButton extends JajukButton {
   /**
    * Creates a button with text.
    * 
-   * @param text
-   *          the text of the button
+   * @param text the text of the button
+   * @param actionInterval DOCUMENT_ME
    */
   public JPressButton(String text, long actionInterval) {
     this(text, null, actionInterval);
@@ -114,8 +107,7 @@ public class JPressButton extends JajukButton {
    * Creates a button where properties are taken from the <code>Action</code>
    * supplied. The default action interval is used.
    * 
-   * @param a
-   *          the <code>Action</code> used to specify the new button
+   * @param a the <code>Action</code> used to specify the new button
    */
   public JPressButton(Action a) {
     this(a, DEFAULT_INTERVAL);
@@ -126,8 +118,8 @@ public class JPressButton extends JajukButton {
    * Creates a button where properties are taken from the <code>Action</code>
    * supplied.
    * 
-   * @param a
-   *          the <code>Action</code> used to specify the new button
+   * @param a the <code>Action</code> used to specify the new button
+   * @param actionInterval DOCUMENT_ME
    */
   public JPressButton(Action a, long actionInterval) {
     this();
@@ -139,10 +131,8 @@ public class JPressButton extends JajukButton {
    * Creates a button with initial text and an icon and a default action
    * interval.
    * 
-   * @param text
-   *          the text of the button
-   * @param icon
-   *          the Icon image to display on the button
+   * @param text the text of the button
+   * @param icon the Icon image to display on the button
    */
   public JPressButton(String text, Icon icon) {
     this(text, icon, DEFAULT_INTERVAL);
@@ -151,10 +141,9 @@ public class JPressButton extends JajukButton {
   /**
    * Creates a button with initial text and an icon.
    * 
-   * @param text
-   *          the text of the button
-   * @param icon
-   *          the Icon image to display on the button
+   * @param text the text of the button
+   * @param icon the Icon image to display on the button
+   * @param actionInterval DOCUMENT_ME
    */
   public JPressButton(String text, Icon icon, long actionInterval) {
     this.actionInterval = actionInterval;
@@ -170,6 +159,8 @@ public class JPressButton extends JajukButton {
   }
 
   /**
+   * Gets the action interval.
+   * 
    * @return the used interval between two successive calls to actionPerformed.
    */
   public long getActionInterval() {
@@ -177,8 +168,9 @@ public class JPressButton extends JajukButton {
   }
 
   /**
-   * @param actionInterval
-   *          sets the interval between two successive calls to actionPerformed.
+   * Sets the action interval.
+   * 
+   * @param actionInterval sets the interval between two successive calls to actionPerformed.
    */
   public void setActionInterval(long actionInterval) {
     this.actionInterval = actionInterval;
@@ -199,6 +191,7 @@ public class JPressButton extends JajukButton {
    * component.
    * 
    * @return the string "ButtonUI"
+   * 
    * @see javax.swing.JComponent#getUIClassID
    * @see javax.swing.UIDefaults#getUI
    */
@@ -216,16 +209,27 @@ public class JPressButton extends JajukButton {
    */
   public static class PressButtonModel extends DefaultButtonModel {
 
+    /** Generated serialVersionUID. */
     private static final long serialVersionUID = 1L;
 
+    /** DOCUMENT_ME. */
     private ActionThread thread;
 
+    /** DOCUMENT_ME. */
     private final JPressButton button;
 
+    /**
+     * Instantiates a new press button model.
+     * 
+     * @param button DOCUMENT_ME
+     */
     public PressButtonModel(JPressButton button) {
       this.button = button;
     }
 
+    /* (non-Javadoc)
+     * @see javax.swing.DefaultButtonModel#setPressed(boolean)
+     */
     @Override
     public void setPressed(boolean b) {
       if ((isPressed() == b) || !isEnabled()) {
@@ -267,16 +271,30 @@ public class JPressButton extends JajukButton {
    */
   private class ActionThread extends Thread {
 
+    /** DOCUMENT_ME. */
     private final ActionEvent evt;
 
+    /** DOCUMENT_ME. */
     private boolean active = true;
 
+    /** DOCUMENT_ME. */
     private final long interval;
 
+    /**
+     * Instantiates a new action thread.
+     * 
+     * @param evt DOCUMENT_ME
+     */
     public ActionThread(ActionEvent evt) {
       this(evt, DEFAULT_INTERVAL);
     }
 
+    /**
+     * Instantiates a new action thread.
+     * 
+     * @param evt DOCUMENT_ME
+     * @param interval DOCUMENT_ME
+     */
     public ActionThread(ActionEvent evt, long interval) {
       super("JPressButton Action Thread");
 
@@ -284,10 +302,18 @@ public class JPressButton extends JajukButton {
       this.evt = evt;
     }
 
+    /**
+     * Sets the active.
+     * 
+     * @param active the new active
+     */
     public void setActive(boolean active) {
       this.active = active;
     }
 
+    /* (non-Javadoc)
+     * @see java.lang.Thread#run()
+     */
     @Override
     public void run() {
       while (active) {

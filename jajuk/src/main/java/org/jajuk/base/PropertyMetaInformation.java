@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2004 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -32,62 +33,51 @@ import org.jajuk.util.UtilSystem;
 import org.jajuk.util.log.Log;
 
 /**
- * A Jajuk property meta information
+ * A Jajuk property meta information.
  */
 public class PropertyMetaInformation {
 
-  /** Property name */
+  /** Property name. */
   private final String sName;
 
-  /** Is property a custom property? */
+  /** Is property a custom property?. */
   private boolean bCustom = false;
 
-  /**
-   * Is property element of associated item constructor? (and so used in the
-   * checksum ID hash)
-   */
+  /** Is property element of associated item constructor? (and so used in the checksum ID hash). */
   private boolean bConstructor = false;
 
   /** Property Type (java.lang.String for ie) */
   private final Class<?> cType;
 
-  /** Default value (null: no default) */
+  /** Default value (null: no default). */
   Object oDefaultValue;
 
-  /** This property should be displayed to UI? */
+  /** This property should be displayed to UI?. */
   boolean bShouldBeDisplayed = true;
 
-  /** Editable? */
+  /** Editable?. */
   boolean bEditable = true;
 
-  /** Unique? */
+  /** Unique?. */
   boolean bMergeable = false;
 
-  /** Human Type */
+  /** Human Type. */
   private String sHumanType;
 
-  /** Today */
+  /** Today. */
   public static final Date TODAY = new Date();
 
   /**
-   * constructor
+   * constructor.
    * 
-   * @param sName
-   *          Property name
-   * @param bCustom
-   *          Is custom property
-   * @param bConstructor
-   *          Is constructor property
-   * @param bShouldBeDisplayed
-   *          Does this standard property must be displayed (exp for ie is not)
-   * @param bEditable
-   *          Is this property editable
-   * @param bMergeable
-   *          Is this property mergeable if we display several items together
-   * @param cType
-   *          Property type
-   * @param oDefaultValue
-   *          Default value
+   * @param sName Property name
+   * @param bCustom Is custom property
+   * @param bConstructor Is constructor property
+   * @param bShouldBeDisplayed Does this standard property must be displayed (exp for ie is not)
+   * @param bEditable Is this property editable
+   * @param bMergeable Is this property mergeable if we display several items together
+   * @param cType Property type
+   * @param oDefaultValue Default value
    */
   public PropertyMetaInformation(String sName, boolean bCustom, boolean bConstructor,
       boolean bShouldBeDisplayed, boolean bEditable, boolean bMergeable, Class<?> cType,
@@ -150,28 +140,36 @@ public class PropertyMetaInformation {
   }
 
   /**
-   * @return
+   * Checks if is constructor.
+   * 
+   * @return true, if is constructor
    */
   public boolean isConstructor() {
     return bConstructor;
   }
 
   /**
-   * @return
+   * Checks if is custom.
+   * 
+   * @return true, if is custom
    */
   public boolean isCustom() {
     return bCustom;
   }
 
   /**
-   * @return
+   * Gets the type.
+   * 
+   * @return the type
    */
   public Class<?> getType() {
     return cType;
   }
 
   /**
-   * @return
+   * Gets the name.
+   * 
+   * @return the name
    */
   public String getName() {
     return sName;
@@ -179,7 +177,7 @@ public class PropertyMetaInformation {
 
   /**
    * <property name='toto' custom ='true' constructor='true' type='date'
-   * format='YYYYMMDD'/>
+   * format='YYYYMMDD'/>.
    * 
    * @return property meta information XML description
    */
@@ -200,6 +198,11 @@ public class PropertyMetaInformation {
         + UtilString.formatXML(sDefault) + "'/>";
   }
 
+  /**
+   * Gets the default value.
+   * 
+   * @return the default value
+   */
   public Object getDefaultValue() {
     return oDefaultValue;
   }
@@ -209,6 +212,9 @@ public class PropertyMetaInformation {
    * defaultValue; }
    */
 
+  /* (non-Javadoc)
+   * @see java.lang.Object#toString()
+   */
   @Override
   public String toString() {
     return "Name=" + sName + " Custom=" + bCustom + " Constructor=" + bConstructor + " Type="
@@ -216,19 +222,35 @@ public class PropertyMetaInformation {
         + isVisible() + " Mergeable=" + isMergeable();
   }
 
+  /**
+   * Checks if is visible.
+   * 
+   * @return true, if is visible
+   */
   public boolean isVisible() {
     return bShouldBeDisplayed;
   }
 
+  /**
+   * Checks if is editable.
+   * 
+   * @return true, if is editable
+   */
   public boolean isEditable() {
     return bEditable;
   }
 
+  /**
+   * Checks if is mergeable.
+   * 
+   * @return true, if is mergeable
+   */
   public boolean isMergeable() {
     return bMergeable;
   }
 
   /**
+   * Gets the human type.
    * 
    * @return a human representation for a property type
    */
@@ -236,6 +258,11 @@ public class PropertyMetaInformation {
     return sHumanType;
   }
 
+  /**
+   * Gets the human name.
+   * 
+   * @return the human name
+   */
   public String getHumanName() {
     return Messages.contains("Property_" + getName()) ? Messages.getString("Property_" + getName())
         : getName();

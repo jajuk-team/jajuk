@@ -1,9 +1,22 @@
 /*
- * Code found at: http://groups.google.fr/group/comp.lang.java.gui/browse_thread/thread/11403002a25da9a3/da4cea55cf283a52?q=%2BJscrollPane++%2Bflowlayout&rnum=2&hl=fr#da4cea55cf283a52
- * Chris Long <*> all...@cs.berkeley.edu <*> http://www.cs.berkeley.edu/~allanl 
+ *  Jajuk
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
- * This file has been adapted to Jajuk by the Jajuk Team.
- * Jajuk Copyright (C) 2007 The Jajuk Team
+ *  This program is free software; you can redistribute it and/or
+ *  modify it under the terms of the GNU General Public License
+ *  as published by the Free Software Foundation; either version 2
+ *  of the License, or any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program; if not, write to the Free Software
+ *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ *  $Revision$
  */
 package ext;
 
@@ -22,23 +35,43 @@ import javax.swing.JScrollPane;
 
 import org.jdesktop.swingx.JXPanel;
 
+/**
+ * DOCUMENT_ME.
+ */
 public class FlowScrollPanel extends JXPanel {
+  
+  /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
+  /** DOCUMENT_ME. */
   private FlowLayout layout = new FlowLayout();
 
+  /** DOCUMENT_ME. */
   private JScrollPane scroller;
 
+  /**
+   * Instantiates a new flow scroll panel.
+   */
   public FlowScrollPanel() {
     this(null);
   }
 
+  /**
+   * Instantiates a new flow scroll panel.
+   * 
+   * @param scrollPane DOCUMENT_ME
+   */
   public FlowScrollPanel(JScrollPane scrollPane) {
     super();
     super.setLayout(layout);
     setScroller(scrollPane);
   }
 
+  /**
+   * Sets the scroller.
+   * 
+   * @param scrollPane the new scroller
+   */
   public final void setScroller(JScrollPane scrollPane) {
     // FIXME: do we really want to compare instances here instead of content??
     if (scroller != scrollPane) {
@@ -58,6 +91,9 @@ public class FlowScrollPanel extends JXPanel {
     }
   }
 
+  /* (non-Javadoc)
+   * @see javax.swing.JComponent#getPreferredSize()
+   */
   @Override
   public Dimension getPreferredSize() {
     if (scroller == null) {
@@ -108,6 +144,9 @@ public class FlowScrollPanel extends JXPanel {
     return new Dimension(maxRowWidth, y);
   }
 
+  /* (non-Javadoc)
+   * @see java.awt.Container#setLayout(java.awt.LayoutManager)
+   */
   @Override
   public void setLayout(LayoutManager l) {
     if (l instanceof FlowLayout) {
@@ -122,13 +161,22 @@ public class FlowScrollPanel extends JXPanel {
   // Scrollable methods
   //
 
+  /* (non-Javadoc)
+   * @see org.jdesktop.swingx.JXPanel#getPreferredScrollableViewportSize()
+   */
   @Override
   public Dimension getPreferredScrollableViewportSize() {
     return getPreferredSize();
   }
 
   /**
-   * Returns height of a row
+   * Returns height of a row.
+   * 
+   * @param visibleRect DOCUMENT_ME
+   * @param orientation DOCUMENT_ME
+   * @param direction DOCUMENT_ME
+   * 
+   * @return the scrollable unit increment
    */
   @Override
   public int getScrollableUnitIncrement(Rectangle visibleRect, int orientation, int direction) {
@@ -138,17 +186,29 @@ public class FlowScrollPanel extends JXPanel {
 
   /**
    * returns the height of the visible rect (so it scrolls by one screenfull).
+   * 
+   * @param visibleRect DOCUMENT_ME
+   * @param orientation DOCUMENT_ME
+   * @param direction DOCUMENT_ME
+   * 
+   * @return the scrollable block increment
    */
   @Override
   public int getScrollableBlockIncrement(Rectangle visibleRect, int orientation, int direction) {
     return visibleRect.height;
   }
 
+  /* (non-Javadoc)
+   * @see org.jdesktop.swingx.JXPanel#getScrollableTracksViewportWidth()
+   */
   @Override
   public boolean getScrollableTracksViewportWidth() {
     return true;
   }
 
+  /* (non-Javadoc)
+   * @see org.jdesktop.swingx.JXPanel#getScrollableTracksViewportHeight()
+   */
   @Override
   public boolean getScrollableTracksViewportHeight() {
     return false;

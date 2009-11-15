@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -31,21 +32,20 @@ import org.jajuk.util.ReadOnlyIterator;
 import org.jajuk.util.UtilSystem;
 
 /**
- * Convenient class to manage directories
+ * Convenient class to manage directories.
  */
 public final class DirectoryManager extends ItemManager {
-  /** Self instance */
+  
+  /** Self instance. */
   private static DirectoryManager singleton;
 
   /**
-   * Return hashcode for this item
+   * Return hashcode for this item.
    * 
-   * @param sName
-   *          directory name
-   * @param device
-   *          device
-   * @param dParent
-   *          parent directory
+   * @param sName directory name
+   * @param device device
+   * @param dParent parent directory
+   * 
    * @return ItemManager ID
    */
   protected static String createID(final String sName, final Device device, final Directory dParent) {
@@ -67,6 +67,8 @@ public final class DirectoryManager extends ItemManager {
   }
 
   /**
+   * Gets the instance.
+   * 
    * @return singleton
    */
   public static DirectoryManager getInstance() {
@@ -77,7 +79,7 @@ public final class DirectoryManager extends ItemManager {
   }
 
   /**
-   * No constructor available, only static access
+   * No constructor available, only static access.
    */
   private DirectoryManager() {
     super();
@@ -106,10 +108,10 @@ public final class DirectoryManager extends ItemManager {
   }
 
   /**
-   * Clean all references for the given device
+   * Clean all references for the given device.
    * 
    * @param sId :
-   *          Device id
+   * Device id
    */
   public synchronized void cleanDevice(final String sId) {
     for (Directory directory : getDirectories()) {
@@ -120,6 +122,7 @@ public final class DirectoryManager extends ItemManager {
   }
 
   /**
+   * Gets the directories.
    * 
    * @return ordered directories list
    */
@@ -129,6 +132,7 @@ public final class DirectoryManager extends ItemManager {
   }
 
   /**
+   * Gets the directories iterator.
    * 
    * @return directories iterator
    */
@@ -138,8 +142,10 @@ public final class DirectoryManager extends ItemManager {
   }
 
   /**
-   * @param sID
-   *          Item ID
+   * Gets the directory by id.
+   * 
+   * @param sID Item ID
+   * 
    * @return Directory matching the id
    */
   public Directory getDirectoryByID(final String sID) {
@@ -147,10 +153,11 @@ public final class DirectoryManager extends ItemManager {
   }
 
   /**
-   * @param sID
-   *          Item ID
-   * @param device
-   *          Associated device
+   * Gets the directory for io.
+   * 
+   * @param device Associated device
+   * @param fio DOCUMENT_ME
+   * 
    * @return Directory matching the io file
    */
   public synchronized Directory getDirectoryForIO(final java.io.File fio, Device device) {
@@ -176,18 +183,24 @@ public final class DirectoryManager extends ItemManager {
   }
 
   /**
-   * Register a root device directory
+   * Register a root device directory.
    * 
-   * @param device
+   * @param device DOCUMENT_ME
+   * 
+   * @return the directory
    */
   public Directory registerDirectory(final Device device) {
     return registerDirectory(device.getID(), "", null, device);
   }
 
   /**
-   * Register a directory
+   * Register a directory.
    * 
-   * @param sName
+   * @param sName DOCUMENT_ME
+   * @param dParent DOCUMENT_ME
+   * @param device DOCUMENT_ME
+   * 
+   * @return the directory
    */
   public synchronized Directory registerDirectory(final String sName, final Directory dParent,
       final Device device) {
@@ -196,9 +209,14 @@ public final class DirectoryManager extends ItemManager {
   }
 
   /**
-   * Register a directory with a known id
+   * Register a directory with a known id.
    * 
-   * @param sName
+   * @param sName DOCUMENT_ME
+   * @param sId DOCUMENT_ME
+   * @param dParent DOCUMENT_ME
+   * @param device DOCUMENT_ME
+   * 
+   * @return the directory
    */
   public synchronized Directory registerDirectory(final String sId, final String sName,
       final Directory dParent, final Device device) {
@@ -215,7 +233,7 @@ public final class DirectoryManager extends ItemManager {
    * Remove a directory and all subdirectories from main directory repository.
    * Remove reference from parent directories as well.
    * 
-   * @param sId
+   * @param sId DOCUMENT_ME
    */
   public synchronized void removeDirectory(final String sId) {
     final Directory dir = getDirectoryByID(sId);

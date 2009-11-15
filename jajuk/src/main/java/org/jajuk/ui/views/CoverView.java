@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2005 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $$Revision$$
+ *  $Revision$
  */
 
 package org.jajuk.ui.views;
@@ -105,93 +106,99 @@ import org.jajuk.util.log.Log;
  */
 public class CoverView extends ViewAdapter implements ComponentListener, ActionListener {
 
+  /** The Constant PLUS_QUOTE.  DOCUMENT_ME */
   private static final String PLUS_QUOTE = "+\"";
 
+  /** The Constant QUOTE_BLANK.  DOCUMENT_ME */
   private static final String QUOTE_BLANK = "\" ";
 
+  /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
-  /** No cover cover */
+  /** No cover cover. */
   private static Cover nocover;
 
-  /** Error counter to check connection availability */
+  /** Error counter to check connection availability. */
   private static int iErrorCounter = 0;
 
-  /**
-   * Connected one flag : true if jajuk managed once to connect to the web to
-   * bring covers
-   */
+  /** Connected one flag : true if jajuk managed once to connect to the web to bring covers. */
   private static boolean bOnceConnected = false;
 
-  /** Reference File for cover */
+  /** Reference File for cover. */
   private org.jajuk.base.File fileReference;
 
-  /** File directory used as a cache for perfs */
+  /** File directory used as a cache for perfs. */
   private Directory dirReference;
 
-  /** List of available covers for the current file */
+  /** List of available covers for the current file. */
   private final List<Cover> alCovers = new ArrayList<Cover>(20);
 
   // control panel
+  /** DOCUMENT_ME. */
   JPanel jpControl;
 
+  /** DOCUMENT_ME. */
   JajukButton jbPrevious;
 
+  /** DOCUMENT_ME. */
   JajukButton jbNext;
 
+  /** DOCUMENT_ME. */
   JajukButton jbDelete;
 
+  /** DOCUMENT_ME. */
   JajukButton jbSave;
 
+  /** DOCUMENT_ME. */
   JajukButton jbDefault;
 
+  /** DOCUMENT_ME. */
   JLabel jlSize;
 
+  /** DOCUMENT_ME. */
   JLabel jlFound;
 
+  /** DOCUMENT_ME. */
   JLabel jlSearching;
 
+  /** DOCUMENT_ME. */
   JComboBox jcbAccuracy;
 
-  /** Date last resize (used for adjustment management) */
+  /** Date last resize (used for adjustment management). */
   private long lDateLastResize;
 
-  /** URL and size of the image */
+  /** URL and size of the image. */
   JLabel jl;
 
-  /** Used Cover index */
+  /** Used Cover index. */
   int index = 0;
 
-  /** Event ID */
+  /** Event ID. */
   private volatile int iEventID;
 
-  /** Flag telling that user wants to display a better cover */
+  /** Flag telling that user wants to display a better cover. */
   private boolean bGotoBetter = false;
 
-  /** Final image to display */
+  /** Final image to display. */
   private ImageIcon ii;
 
-  /** Force next track cover reload flag* */
+  /** Force next track cover reload flag*. */
   private boolean bForceCoverReload = true;
 
+  /** DOCUMENT_ME. */
   private boolean includeControls;
 
   /**
-   * Constructor
-   * 
-   * @param sID
-   *          ID used to store independently parameters of views
+   * Constructor.
    */
   public CoverView() {
     super();
   }
 
   /**
-   * Constructor
+   * Constructor.
    * 
-   * @param file
-   *          Reference file
-   * 
+   * @param file Reference file
    */
   public CoverView(final org.jajuk.base.File file) {
     super();
@@ -199,6 +206,9 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
     fileReference = file;
   }
 
+  /* (non-Javadoc)
+   * @see org.jajuk.ui.views.IView#initUI()
+   */
   public void initUI() {
     initUI(true);
   }
@@ -207,6 +217,12 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
    * (non-Javadoc)
    * 
    * @see org.jajuk.ui.IView#display()
+   */
+  /**
+   * Inits the ui.
+   * DOCUMENT_ME
+   * 
+   * @param includeControls DOCUMENT_ME
    */
   public void initUI(boolean includeControls) {
     this.includeControls = includeControls;
@@ -379,7 +395,7 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
   }
 
   /**
-   * Stores accuracy
+   * Stores accuracy.
    */
   private void handleAccuracy() {
     // Note that we have to store/retrieve accuracy using an id. When
@@ -401,7 +417,7 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
   }
 
   /**
-   * Called on the previous cover button event
+   * Called on the previous cover button event.
    */
   private void handlePrevious() {
     // better cover
@@ -416,7 +432,7 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
   }
 
   /**
-   * Called on the next cover button event
+   * Called on the next cover button event.
    */
   private void handleNext() {
     bGotoBetter = false;
@@ -428,7 +444,7 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
   }
 
   /**
-   * Called on the delete cover button event
+   * Called on the delete cover button event.
    */
   private void handleDelete() {
     // sanity check
@@ -499,7 +515,7 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
   }
 
   /**
-   * Called when saving a cover
+   * Called when saving a cover.
    */
   private void handleSave() {
     // sanity check
@@ -557,8 +573,11 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
   }
 
   /**
-   * @param sFilePath
-   * @return
+   * Gets the cover file path.
+   * 
+   * @param sFilePath DOCUMENT_ME
+   * 
+   * @return the cover file path
    */
   private String getCoverFilePath(String sFilePath) {
 
@@ -579,7 +598,7 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
   }
 
   /**
-   * Called when saving as a cover
+   * Called when saving as a cover.
    */
   private void handleSaveAs() {
     // sanity check
@@ -633,7 +652,7 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
   }
 
   /**
-   * Called when making a cover default
+   * Called when making a cover default.
    */
   private void handleDefault() {
     // sanity check
@@ -720,8 +739,10 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
   }
 
   /**
+   * Creates the query.
    * 
-   * @param file
+   * @param file DOCUMENT_ME
+   * 
    * @return an accurate google search query for a file
    */
   public String createQuery(final org.jajuk.base.File file) {
@@ -784,11 +805,9 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
   }
 
   /**
-   * Display given cover
+   * Display given cover.
    * 
-   * @param index
-   *          index of the cover to display
-   * 
+   * @param index index of the cover to display
    */
   private void displayCover(final int index) {
     if ((alCovers.size() == 0) || (index >= alCovers.size()) || (index < 0)) {
@@ -937,6 +956,7 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
   }
 
   /**
+   * Gets the cover number.
    * 
    * @return number of real covers (not default) covers found
    */
@@ -953,6 +973,9 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
     return Messages.getString("CoverView.3");
   }
 
+  /* (non-Javadoc)
+   * @see org.jajuk.events.Observer#getRegistrationKeys()
+   */
   public Set<JajukEvents> getRegistrationKeys() {
     final Set<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
     eventSubjectSet.add(JajukEvents.FILE_LAUNCHED);
@@ -966,9 +989,11 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
   /**
    * Long action to compute image to display (download, resizing...)
    * 
-   * @param index
+   * @param index DOCUMENT_ME
+   * 
    * @return null (just used by the SwingWorker)
-   * @throws JajukException
+   * 
+   * @throws JajukException the jajuk exception
    */
   private Object prepareDisplay(final int index) throws JajukException {
     final int iLocalEventID = iEventID;
@@ -1074,8 +1099,11 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
   }
 
   /**
-   * @param img
-   * @return
+   * Get3d image.
+   * 
+   * @param img DOCUMENT_ME
+   * 
+   * @return the 3d image
    */
   private BufferedImage get3dImage(Image img) {
     // 3d
@@ -1131,8 +1159,9 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
   }
 
   /**
-   * Refresh default cover thumb (used in catalog view)
+   * Refresh default cover thumb (used in catalog view).
    * 
+   * @param cover DOCUMENT_ME
    */
   private void refreshThumbs(final Cover cover) {
     if (dirReference == null) {
@@ -1157,9 +1186,9 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
   }
 
   /**
-   * Display or hide search icon
+   * Display or hide search icon.
    * 
-   * @param bSearching
+   * @param bSearching DOCUMENT_ME
    */
   public void searching(final boolean bSearching) {
     SwingUtilities.invokeLater(new Runnable() {
@@ -1174,7 +1203,7 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
   }
 
   /**
-   * Set the cover Found text
+   * Set the cover Found text.
    */
   private void setFoundText() {
     SwingUtilities.invokeLater(new Runnable() {
@@ -1191,10 +1220,9 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
   }
 
   /**
-   * Set the cover Found text
+   * Set the cover Found text.
    * 
-   * @param sFound
-   *          specified text
+   * @param sFound specified text
    */
   private void setFoundText(final String sFound) {
     if (sFound != null) {
@@ -1207,9 +1235,9 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
   }
 
   /**
-   * Set the cover size text
+   * Set the cover size text.
    * 
-   * @param sFound
+   * @param sSize DOCUMENT_ME
    */
   private void setSizeText(final String sSize) {
     if (sSize != null) {
@@ -1221,6 +1249,15 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
     }
   }
 
+  /**
+   * Gets the current image.
+   * 
+   * @return the current image
+   * 
+   * @throws IOException Signals that an I/O exception has occurred.
+   * @throws InterruptedException the interrupted exception
+   * @throws JajukException the jajuk exception
+   */
   public Image getCurrentImage() throws IOException, InterruptedException, JajukException {
     if (alCovers.size() > 0) {
       return alCovers.get(0).getImage();
@@ -1259,7 +1296,8 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
   }
 
   /**
-   * 
+   * Update stop or web radio launched.
+   * DOCUMENT_ME
    */
   private void updateStopOrWebRadioLaunched() {
     // Ignore this event if a reference file has been set
@@ -1280,9 +1318,12 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
   }
 
   /**
-   * @param event
-   * @param iLocalEventID
-   * @throws IOException
+   * Update file launched.
+   * 
+   * @param event DOCUMENT_ME
+   * @param iLocalEventID DOCUMENT_ME
+   * 
+   * @throws IOException Signals that an I/O exception has occurred.
    */
   private void updateFileLaunched(final JajukEvent event, final int iLocalEventID)
       throws IOException {
@@ -1321,9 +1362,9 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
   }
 
   /**
-   * Convenient method to massively enable/disable this view buttons
+   * Convenient method to massively enable/disable this view buttons.
    * 
-   * @param enable
+   * @param enable DOCUMENT_ME
    */
   private void enableCommands(final boolean enable) {
     SwingUtilities.invokeLater(new Runnable() {
@@ -1346,10 +1387,11 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
    * Covers refreshing effective code
    * <p>
    * Must be called outside the EDT, contains network access
-   * </p>
+   * </p>.
    * 
-   * @param iLocalEventID
-   * @throws IOException
+   * @param iLocalEventID DOCUMENT_ME
+   * 
+   * @throws IOException Signals that an I/O exception has occurred.
    */
   private void refreshCovers(int iLocalEventID) throws IOException {
     // Reset this flag

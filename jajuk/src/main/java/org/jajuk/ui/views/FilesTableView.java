@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2005 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $$Revision$$
+ *  $Revision$
  */
 
 package org.jajuk.ui.views;
@@ -34,14 +35,19 @@ import org.jajuk.util.Messages;
 import org.jajuk.util.UtilGUI;
 
 /**
- * Logical table view
+ * Logical table view.
  */
 public class FilesTableView extends AbstractTableView implements TwoStepsDisplayable {
 
+  /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
+  /** DOCUMENT_ME. */
   private JMenuItem jmiFilePlayDirectory;
 
+  /**
+   * Instantiates a new files table view.
+   */
   public FilesTableView() {
     super();
     columnsConf = CONF_FILES_TABLE_COLUMNS;
@@ -57,6 +63,9 @@ public class FilesTableView extends AbstractTableView implements TwoStepsDisplay
     return Messages.getString("FilesTableView.0");
   }
 
+  /* (non-Javadoc)
+   * @see org.jajuk.ui.views.IView#initUI()
+   */
   public void initUI() {
     UtilGUI.populate(this);
   }
@@ -95,7 +104,11 @@ public class FilesTableView extends AbstractTableView implements TwoStepsDisplay
     return null;
   }
 
-  /** populate the table */
+  /**
+   * populate the table.
+   * 
+   * @return the jajuk table model
+   */
   @Override
   public synchronized JajukTableModel populateTable() {
     // model creation

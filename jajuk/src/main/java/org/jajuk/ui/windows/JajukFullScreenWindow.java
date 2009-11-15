@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2008 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision: 3132 $
+ *  $Revision$
  */
 package org.jajuk.ui.windows;
 
@@ -66,42 +67,52 @@ import org.jvnet.substance.SubstanceLookAndFeel;
  * The full screen window Note that not all operating support full screen mode.
  * If the OS doesn't support it, the user cannot access to it so we have not to
  * handle any errors.
- * 
  */
 public class JajukFullScreenWindow extends JWindow implements IJajukWindow {
 
+  /** Generated serialVersionUID. */
   private static final long serialVersionUID = -2859302706462954993L;
 
+  /** DOCUMENT_ME. */
   private static JajukFullScreenWindow instance = null;
 
+  /** DOCUMENT_ME. */
   private GraphicsDevice graphicsDevice;
 
+  /** DOCUMENT_ME. */
   private JButton jbPrevious;
 
+  /** DOCUMENT_ME. */
   private JButton jbNext;
 
+  /** DOCUMENT_ME. */
   private JButton jbPlayPause;
 
+  /** DOCUMENT_ME. */
   private JButton jbStop;
 
+  /** DOCUMENT_ME. */
   private JajukButton jbFull;
 
+  /** DOCUMENT_ME. */
   private JajukButton jbExit;
 
+  /** DOCUMENT_ME. */
   private CoverView coverView;
 
-  /**
-   * State decorator
-   */
+  /** State decorator. */
   private WindowStateDecorator decorator;
 
+  /** DOCUMENT_ME. */
   private AnimationView animationView;
 
+  /** DOCUMENT_ME. */
   private JPanel jtbPlay;
 
+  /** DOCUMENT_ME. */
   private Timer hideMouseTimer;
 
-  /** Owning frame, see bellow for explanations * */
+  /** Owning frame, see bellow for explanations *. */
   private static JFrame owner;
 
   /**
@@ -132,6 +143,11 @@ public class JajukFullScreenWindow extends JWindow implements IJajukWindow {
     WindowGlobalKeystrokeManager.getInstance();
   }
 
+  /**
+   * Gets the single instance of JajukFullScreenWindow.
+   * 
+   * @return single instance of JajukFullScreenWindow
+   */
   public static JajukFullScreenWindow getInstance() {
     if (instance == null) {
       instance = new JajukFullScreenWindow();
@@ -171,6 +187,10 @@ public class JajukFullScreenWindow extends JWindow implements IJajukWindow {
     return instance;
   }
 
+  /**
+   * Hide mouse timer.
+   * DOCUMENT_ME
+   */
   private void hideMouseTimer() {
     setCursor(Cursor.getDefaultCursor());
     if (hideMouseTimer != null) {
@@ -181,7 +201,8 @@ public class JajukFullScreenWindow extends JWindow implements IJajukWindow {
   }
 
   /**
-   * 
+   * Inits the mouse timer.
+   * DOCUMENT_ME
    */
   private void initMouseTimer() {
     hideMouseTimer = new Timer(3000, new ActionListener() {
@@ -194,6 +215,9 @@ public class JajukFullScreenWindow extends JWindow implements IJajukWindow {
     hideMouseTimer.start();
   }
 
+  /**
+   * Instantiates a new jajuk full screen window.
+   */
   public JajukFullScreenWindow() {
     super(owner);
     setAlwaysOnTop(true);
@@ -220,6 +244,9 @@ public class JajukFullScreenWindow extends JWindow implements IJajukWindow {
     hideMouseTimer();
   }
 
+  /* (non-Javadoc)
+   * @see org.jajuk.ui.windows.IJajukWindow#initUI()
+   */
   public void initUI() {
     // Full screen switch button
     jbFull = new JajukButton(ActionManager.getAction(JajukActions.FULLSCREEN_JAJUK));
@@ -252,7 +279,9 @@ public class JajukFullScreenWindow extends JWindow implements IJajukWindow {
   }
 
   /**
-   * @return
+   * Gets the player panel.
+   * 
+   * @return the player panel
    */
   private JPanel getPlayerPanel() {
     JPanel jPanelPlay = new JPanel();

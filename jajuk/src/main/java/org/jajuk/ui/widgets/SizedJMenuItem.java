@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2007 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -28,26 +29,27 @@ import javax.swing.JMenuItem;
 import org.jajuk.util.UtilGUI;
 
 /**
- * Menu item whose icon has a fixed size
+ * Menu item whose icon has a fixed size.
  */
 public class SizedJMenuItem extends JMenuItem {
+  
+  /** Generated serialVersionUID. */
   private static final long serialVersionUID = -3859493402696496345L;
 
 
   /**
-   * Menu item with a fixed 16x216 icon dimension
+   * Menu item with a fixed 16x216 icon dimension.
    * 
-   * @param action
-   *          action
+   * @param action action
    */
   public SizedJMenuItem(Action action) {
     super(action);
   }
 
   /**
+   * Sets the icon.
    * 
-   * @param action
-   *          Action
+   * @param icon DOCUMENT_ME
    */
   @Override
   public void setIcon(Icon icon) {

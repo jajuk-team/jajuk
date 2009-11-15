@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2007 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -67,28 +68,33 @@ import org.jajuk.util.log.Log;
  */
 public class LocalAlbumThumbnail extends AbstractThumbnail {
 
+  /** Generated serialVersionUID. */
   private static final long serialVersionUID = -282669695411453802L;
 
-  /** Associated album */
+  /** Associated album. */
   Album album;
 
+  /** DOCUMENT_ME. */
   JLabel jlAuthor;
 
+  /** DOCUMENT_ME. */
   JLabel jlAlbum;
 
+  /** DOCUMENT_ME. */
   private final boolean bShowFullText;
 
+  /** DOCUMENT_ME. */
   private PreferencesJMenu pjmFiles;
 
   /**
-   * Constructor
+   * Constructor.
    * 
    * @param album :
-   *          associated album
+   * associated album
    * @param size :
-   *          size of the thumbnail
+   * size of the thumbnail
    * @param bShowText :
-   *          Display full album / author information under the icon or not ?
+   * Display full album / author information under the icon or not ?
    */
   public LocalAlbumThumbnail(Album album, int size, boolean bShowText) {
     super(size);
@@ -97,6 +103,9 @@ public class LocalAlbumThumbnail extends AbstractThumbnail {
     this.fCover = ThumbnailManager.getThumbBySize(album, size);
   }
 
+  /* (non-Javadoc)
+   * @see org.jajuk.ui.thumbnails.AbstractThumbnail#populate()
+   */
   @Override
   public synchronized void populate() {
     if (!album.isThumbAvailable(size)) {
@@ -155,6 +164,11 @@ public class LocalAlbumThumbnail extends AbstractThumbnail {
     setKeystrokes();
   }
 
+  /**
+   * Gets the cover file.
+   * 
+   * @return the cover file
+   */
   public File getCoverFile() {
     return fCover;
   }
@@ -261,7 +275,7 @@ public class LocalAlbumThumbnail extends AbstractThumbnail {
   }
 
   /**
-   * Add keystroke support on the tree
+   * Add keystroke support on the tree.
    */
   private void setKeystrokes() {
     putClientProperty(Const.DETAIL_SELECTION, album);

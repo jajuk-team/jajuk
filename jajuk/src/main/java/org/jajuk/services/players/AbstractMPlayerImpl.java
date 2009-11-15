@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision: 2523 $
+ *  $Revision$
  */
 package org.jajuk.services.players;
 
@@ -33,29 +34,29 @@ import org.jajuk.util.UtilSystem;
 import org.jajuk.util.log.Log;
 
 /**
- * Mplayer player implementation
+ * Mplayer player implementation.
  */
 public abstract class AbstractMPlayerImpl implements IPlayerImpl, Const {
 
-  /** Stored Volume */
+  /** Stored Volume. */
   float fVolume;
 
-  /** Mplayer process */
+  /** Mplayer process. */
   volatile Process proc;
 
-  /** End of file flag * */
+  /** End of file flag *. */
   volatile boolean bEOF = false;
 
-  /** File is opened flag * */
+  /** File is opened flag *. */
   volatile boolean bOpening = false;
 
-  /** Stop position thread flag */
+  /** Stop position thread flag. */
   volatile boolean bStop = false;
 
-  /** Fading state */
+  /** Fading state. */
   volatile boolean bFading = false;
 
-  /** pause flag * */
+  /** pause flag *. */
   protected volatile boolean bPaused = false;
 
   /*
@@ -64,6 +65,9 @@ public abstract class AbstractMPlayerImpl implements IPlayerImpl, Const {
    * easier than sending a quit command). Do not try to send a 'quit' command to
    * mplayer because then, it's not possible to differentiate end of file from
    * forced quit and the fifo will comes out of control
+   */
+  /* (non-Javadoc)
+   * @see org.jajuk.services.players.IPlayerImpl#stop()
    */
   public void stop() throws Exception {
     bFading = false;
@@ -117,9 +121,9 @@ public abstract class AbstractMPlayerImpl implements IPlayerImpl, Const {
   }
 
   /**
-   * Send a command to mplayer slave
+   * Send a command to mplayer slave.
    * 
-   * @param command
+   * @param command DOCUMENT_ME
    */
   protected void sendCommand(String command) {
     if (proc != null) {
@@ -136,6 +140,8 @@ public abstract class AbstractMPlayerImpl implements IPlayerImpl, Const {
   }
 
   /**
+   * Gets the current volume.
+   * 
    * @return current volume as a float ex: 0.2f
    */
   public float getCurrentVolume() {
@@ -143,10 +149,10 @@ public abstract class AbstractMPlayerImpl implements IPlayerImpl, Const {
   }
 
   /**
-   * Build the mplayer command line
+   * Build the mplayer command line.
    * 
-   * @param url
-   *          to play
+   * @param url to play
+   * 
    * @return command line as a String array
    */
   List<String> buildCommand(String url) {
@@ -204,9 +210,9 @@ public abstract class AbstractMPlayerImpl implements IPlayerImpl, Const {
   }
 
   /**
-   * Build the -af audio filters command part
+   * Build the -af audio filters command part.
    * 
-   * @return
+   * @return the string
    */
   private String buildAudioFilters() {
     // Audio filters syntax : -af
@@ -284,6 +290,8 @@ public abstract class AbstractMPlayerImpl implements IPlayerImpl, Const {
   }
 
   /**
+   * Gets the state.
+   * 
    * @return player state, -1 if player is null.
    */
   public int getState() {

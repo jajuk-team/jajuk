@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2004 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision:3266 $ 
+ *  $Revision$
  */
 
 package org.jajuk.services.dj;
@@ -36,15 +37,17 @@ import org.jajuk.util.UtilFeatures;
 import org.jajuk.util.filters.JajukPredicates;
 
 /**
- * Type description
+ * Type description.
  */
 public class TransitionDigitalDJ extends DigitalDJ {
 
-  /** List of transitions, need to be a list, not a set for offset */
+  /** List of transitions, need to be a list, not a set for offset. */
   private List<Transition> transitions;
 
   /**
-   * @param sID
+   * The Constructor.
+   * 
+   * @param sID DOCUMENT_ME
    */
   public TransitionDigitalDJ(String sID) {
     super(sID);
@@ -52,6 +55,8 @@ public class TransitionDigitalDJ extends DigitalDJ {
   }
 
   /**
+   * Gets the transitions.
+   * 
    * @return DJ transitions
    */
   public List<Transition> getTransitions() {
@@ -59,27 +64,29 @@ public class TransitionDigitalDJ extends DigitalDJ {
   }
 
   /**
-   * Delete a transition at given offset
+   * Delete a transition at given offset.
    * 
-   * @param offset
+   * @param offset DOCUMENT_ME
    */
   public void deleteTransition(int offset) {
     this.transitions.remove(offset);
   }
 
   /**
-   * Add a transition
+   * Add a transition.
    * 
-   * @param transition
-   * @param offset
+   * @param transition DOCUMENT_ME
+   * @param offset DOCUMENT_ME
    */
   public void addTransition(Transition transition, int offset) {
     this.transitions.add(offset, transition);
   }
 
   /**
+   * Gets the transition.
    * 
-   * @param style
+   * @param ambience DOCUMENT_ME
+   * 
    * @return transition mapping this FROM ambience or null if none maps it
    */
   public Transition getTransition(Ambience ambience) {
@@ -93,6 +100,9 @@ public class TransitionDigitalDJ extends DigitalDJ {
 
   /*
    * Generate the playlist @return the playlist
+   */
+  /* (non-Javadoc)
+   * @see org.jajuk.services.dj.DigitalDJ#generatePlaylist()
    */
   @Override
   public List<File> generatePlaylist() {
@@ -180,10 +190,10 @@ public class TransitionDigitalDJ extends DigitalDJ {
   }
 
   /**
-   * Returns a map ambience -> set of files
+   * Returns a map ambience -> set of files.
    * 
-   * @param global
-   *          initial set of files to consider
+   * @param global initial set of files to consider
+   * 
    * @return a map ambience -> set of files
    */
   @SuppressWarnings("unchecked")
@@ -208,8 +218,12 @@ public class TransitionDigitalDJ extends DigitalDJ {
   }
 
   /**
+   * Gets the ambience.
+   * 
+   * @param style DOCUMENT_ME
+   * 
    * @return ambience associated with a style known in transitions or null if
-   *         none
+   * none
    */
   private Ambience getAmbience(Style style) {
     for (Transition transition : transitions) {
@@ -221,7 +235,9 @@ public class TransitionDigitalDJ extends DigitalDJ {
   }
 
   /**
-   * (non-Javadoc)
+   * (non-Javadoc).
+   * 
+   * @return the string
    * 
    * @see dj.DigitalDJ#toXML()
    */
@@ -241,6 +257,11 @@ public class TransitionDigitalDJ extends DigitalDJ {
     return sb.toString();
   }
 
+  /**
+   * Sets the transitions.
+   * 
+   * @param transitions the new transitions
+   */
   public void setTransitions(List<Transition> transitions) {
     this.transitions = transitions;
   }

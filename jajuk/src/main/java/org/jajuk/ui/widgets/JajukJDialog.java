@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2007 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -30,12 +31,16 @@ import org.jajuk.util.JajukIcons;
 import org.jajuk.util.UtilGUI;
 
 /**
- * Custom JDialog
+ * Custom JDialog.
  */
 public class JajukJDialog extends JDialog {
 
+  /** Generated serialVersionUID. */
   private static final long serialVersionUID = 3280008357821054703L;
 
+  /**
+   * Instantiates a new jajuk j dialog.
+   */
   public JajukJDialog() {
     super();
     
@@ -43,8 +48,10 @@ public class JajukJDialog extends JDialog {
   }
 
   /**
-   * @param owner
-   * @param modal
+   * The Constructor.
+   * 
+   * @param owner DOCUMENT_ME
+   * @param modal DOCUMENT_ME
    */
   public JajukJDialog(Frame owner, boolean modal) {
     super(owner, modal);
@@ -52,6 +59,9 @@ public class JajukJDialog extends JDialog {
     setIconImage(IconLoader.getIcon(JajukIcons.LOGO).getImage());
   }
 
+  /* (non-Javadoc)
+   * @see javax.swing.JDialog#createRootPane()
+   */
   @Override
   protected JRootPane createRootPane() {
     JRootPane rootPane = new JRootPane();

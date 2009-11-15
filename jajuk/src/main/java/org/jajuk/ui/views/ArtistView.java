@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision: 3132 $
+ *  $Revision$
  */
 package org.jajuk.ui.views;
 
@@ -54,20 +54,26 @@ import org.jajuk.util.log.Log;
 import org.jdesktop.swingx.JXBusyLabel;
 
 /**
- * Display Artist bio and albums
+ * Display Artist bio and albums.
  */
 public class ArtistView extends SuggestionView implements TwoStepsDisplayable {
 
+  /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
-  /** The artist picture + labels */
+  /** The artist picture + labels. */
   private LastFmAuthorThumbnail authorThumb;
 
   /** The artist bio (from last.fm wiki) */
   private JTextArea jtaArtistDesc;
 
+  /** DOCUMENT_ME. */
   private JScrollPane jspAlbums;
+  
+  /** DOCUMENT_ME. */
   private String bio;
+  
+  /** DOCUMENT_ME. */
   private ArtistInfo artistInfo;
 
   /*
@@ -115,7 +121,7 @@ public class ArtistView extends SuggestionView implements TwoStepsDisplayable {
    * Build the GUI for a given author
    * <p>
    * Must be called from the EDT
-   * </p>
+   * </p>.
    */
   private void displayAuthor() {
     UtilGUI.populate(this);
@@ -176,6 +182,9 @@ public class ArtistView extends SuggestionView implements TwoStepsDisplayable {
 
   }
 
+  /* (non-Javadoc)
+   * @see org.jajuk.ui.views.SuggestionView#onPerspectiveSelection()
+   */
   @Override
   public void onPerspectiveSelection() {
     // override the suggestion view behavior
@@ -185,7 +194,7 @@ public class ArtistView extends SuggestionView implements TwoStepsDisplayable {
    * Show reseted view (show a message)
    * <p>
    * Must be called from the EDT
-   * </p>
+   * </p>.
    */
   private void reset() {
     ArtistView.this.author = null;

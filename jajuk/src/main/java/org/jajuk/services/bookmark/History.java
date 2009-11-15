@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -16,7 +17,7 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *  $Revision$
- **/
+ */
 
 package org.jajuk.services.bookmark;
 
@@ -63,22 +64,26 @@ import org.xml.sax.helpers.DefaultHandler;
  * components, so any changes on the model should be done in the EDT see
  * http://java
  * .sun.com/javase/6/docs/api/javax/swing/package-summary.html#threading
- * 
  */
 public final class History extends DefaultHandler implements HighPriorityObserver {
-  /** Self instance */
+  
+  /** Self instance. */
   private static History history;
 
-  /** History repository, last play first */
+  /** History repository, last play first. */
   private static Vector<HistoryItem> vHistory = new Vector<HistoryItem>(100);
 
-  /** History begin date */
+  /** History begin date. */
   private static long lDateStart;
 
-  /** Cached date formatter */
+  /** Cached date formatter. */
   private SimpleDateFormat formatter;
 
-  /** Instance getter */
+  /**
+   * Instance getter.
+   * 
+   * @return the instance
+   */
   public static History getInstance() {
     if (history == null) {
       history = new History();
@@ -86,7 +91,9 @@ public final class History extends DefaultHandler implements HighPriorityObserve
     return history;
   }
 
-  /** Hidden constructor */
+  /**
+   * Hidden constructor.
+   */
   private History() {
     super();
 
@@ -103,6 +110,9 @@ public final class History extends DefaultHandler implements HighPriorityObserve
     formatter = new SimpleDateFormat(Messages.getString("HistoryItem.0"), Locale.getDefault());
   }
 
+  /* (non-Javadoc)
+   * @see org.jajuk.events.Observer#getRegistrationKeys()
+   */
   public Set<JajukEvents> getRegistrationKeys() {
     Set<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
     eventSubjectSet.add(JajukEvents.FILE_LAUNCHED);
@@ -115,6 +125,7 @@ public final class History extends DefaultHandler implements HighPriorityObserve
   }
 
   /**
+   * Gets the history.
    * 
    * @return the history
    */
@@ -123,7 +134,10 @@ public final class History extends DefaultHandler implements HighPriorityObserve
   }
 
   /**
-   * Add an history item
+   * Add an history item.
+   * 
+   * @param sFileId DOCUMENT_ME
+   * @param lDate DOCUMENT_ME
    */
   public void addItem(String sFileId, long lDate) {
     // no history
@@ -153,14 +167,15 @@ public final class History extends DefaultHandler implements HighPriorityObserve
     }
   }
 
-  /** Clear history */
+  /**
+   * Clear history.
+   */
   public void clear() {
     vHistory.clear();
   }
 
   /**
-   * Cleanup history of dead items (removed files after a refresh)
-   * 
+   * Cleanup history of dead items (removed files after a refresh).
    */
   public void cleanup() {
     SwingUtilities.invokeLater(new Runnable() {
@@ -177,10 +192,10 @@ public final class History extends DefaultHandler implements HighPriorityObserve
   }
 
   /**
-   * Change ID for a file
+   * Change ID for a file.
    * 
-   * @param sIDOld
-   * @param sIDNew
+   * @param sIDOld DOCUMENT_ME
+   * @param sIDNew DOCUMENT_ME
    */
   public void changeID(final String sIDOld, final String sIDNew) {
     SwingUtilities.invokeLater(new Runnable() {
@@ -196,7 +211,11 @@ public final class History extends DefaultHandler implements HighPriorityObserve
     });
   }
 
-  /** Clear history for all history items before iDays days */
+  /**
+   * Clear history for all history items before iDays days.
+   * 
+   * @param iDays DOCUMENT_ME
+   */
   public void clear(final int iDays) {
     SwingUtilities.invokeLater(new Runnable() {
       public void run() {
@@ -225,7 +244,9 @@ public final class History extends DefaultHandler implements HighPriorityObserve
   }
 
   /**
-   * Write history on disk
+   * Write history on disk.
+   * 
+   * @throws IOException Signals that an I/O exception has occurred.
    * 
    * @exception IOException
    */
@@ -252,7 +273,7 @@ public final class History extends DefaultHandler implements HighPriorityObserve
   }
 
   /**
-   * Read history from disk
+   * Read history from disk.
    * 
    * @exception JajukException
    */
@@ -292,6 +313,7 @@ public final class History extends DefaultHandler implements HighPriorityObserve
   }
 
   /**
+   * Gets the last file.
    * 
    * @return id of last played registered track or null if history is empty
    */
@@ -307,19 +329,23 @@ public final class History extends DefaultHandler implements HighPriorityObserve
   }
 
   /**
-   * Return the history item by index
+   * Return the history item by index.
    * 
-   * @param index
-   * @return
+   * @param index DOCUMENT_ME
+   * 
+   * @return the history item
    */
   public HistoryItem getHistoryItem(int index) {
     return (index >= 0 && index < vHistory.size() ? vHistory.get(index) : null);
   }
 
   /**
-   * parsing warning
+   * parsing warning.
    * 
-   * @param spe
+   * @param spe DOCUMENT_ME
+   * 
+   * @throws SAXException the SAX exception
+   * 
    * @exception SAXException
    */
   @Override
@@ -329,9 +355,12 @@ public final class History extends DefaultHandler implements HighPriorityObserve
   }
 
   /**
-   * parsing error
+   * parsing error.
    * 
-   * @param spe
+   * @param spe DOCUMENT_ME
+   * 
+   * @throws SAXException the SAX exception
+   * 
    * @exception SAXException
    */
   @Override
@@ -341,9 +370,12 @@ public final class History extends DefaultHandler implements HighPriorityObserve
   }
 
   /**
-   * parsing fatal error
+   * parsing fatal error.
    * 
-   * @param spe
+   * @param spe DOCUMENT_ME
+   * 
+   * @throws SAXException the SAX exception
+   * 
    * @exception SAXException
    */
   @Override
@@ -353,7 +385,7 @@ public final class History extends DefaultHandler implements HighPriorityObserve
   }
 
   /**
-   * Called at parsing start
+   * Called at parsing start.
    */
   @Override
   public void startDocument() {
@@ -361,7 +393,7 @@ public final class History extends DefaultHandler implements HighPriorityObserve
   }
 
   /**
-   * Called at parsing end
+   * Called at parsing end.
    */
   @Override
   public void endDocument() {
@@ -369,8 +401,14 @@ public final class History extends DefaultHandler implements HighPriorityObserve
   }
 
   /**
-   * Called when we start an element
+   * Called when we start an element.
    * 
+   * @param sUri DOCUMENT_ME
+   * @param sName DOCUMENT_ME
+   * @param sQName DOCUMENT_ME
+   * @param attributes DOCUMENT_ME
+   * 
+   * @throws SAXException the SAX exception
    */
   @Override
   public void startElement(String sUri, String sName, String sQName, Attributes attributes)
@@ -396,7 +434,13 @@ public final class History extends DefaultHandler implements HighPriorityObserve
   }
 
   /**
-   * Called when we reach the end of an element
+   * Called when we reach the end of an element.
+   * 
+   * @param sUri DOCUMENT_ME
+   * @param sName DOCUMENT_ME
+   * @param sQName DOCUMENT_ME
+   * 
+   * @throws SAXException the SAX exception
    */
   @Override
   public void endElement(String sUri, String sName, String sQName) throws SAXException {
@@ -446,6 +490,7 @@ public final class History extends DefaultHandler implements HighPriorityObserve
   }
 
   /**
+   * Gets the date formatter.
    * 
    * @return Cached date formatter
    */
@@ -453,6 +498,11 @@ public final class History extends DefaultHandler implements HighPriorityObserve
     return this.formatter;
   }
 
+  /**
+   * Sets the start date.
+   * 
+   * @param start the new start date
+   */
   public static void setStartDate(long start) {
     lDateStart = start;
   }

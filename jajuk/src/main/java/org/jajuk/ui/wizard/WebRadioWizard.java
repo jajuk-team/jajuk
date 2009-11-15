@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2007 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $$Revision: 2482 $$
+ *  $Revision$
  */
 package org.jajuk.ui.wizard;
 
@@ -58,46 +59,60 @@ import org.qdwizard.Screen;
 import org.qdwizard.Wizard;
 
 /**
- * WebRadio management wizard
+ * WebRadio management wizard.
  */
 public class WebRadioWizard extends Wizard {
 
-  /** web radios* */
+  /** web radios*. */
   static List<WebRadio> radios;
 
+  /**
+   * DOCUMENT_ME.
+   */
   public static class RadioPanel extends Screen implements ActionListener {
 
+    /** Generated serialVersionUID. */
     private static final long serialVersionUID = 1L;
 
-    /** All dynamic widgets */
+    /** All dynamic widgets. */
     JComponent[][] widgets;
 
+    /** DOCUMENT_ME. */
     JButton jbNew;
 
+    /** DOCUMENT_ME. */
     JButton jbDelete;
 
+    /** DOCUMENT_ME. */
     JButton jbDefaults;
 
+    /** DOCUMENT_ME. */
     JPanel jpButtons;
 
+    /** DOCUMENT_ME. */
     JScrollPane jsp;
 
-    /** Selected radio index */
+    /** Selected radio index. */
     int radioIndex = 0;
 
+    /* (non-Javadoc)
+     * @see org.qdwizard.Screen#getDescription()
+     */
     @Override
     public String getDescription() {
       return Messages.getString("RadioWizard.0");
     }
 
+    /* (non-Javadoc)
+     * @see org.qdwizard.Screen#getName()
+     */
     @Override
     public String getName() {
       return Messages.getString("RadioWizard.1");
     }
 
     /**
-     * Create panel UI
-     * 
+     * Create panel UI.
      */
     @Override
     public void initUI() {
@@ -127,6 +142,7 @@ public class WebRadioWizard extends Wizard {
     }
 
     /**
+     * Gets the panel.
      * 
      * @return a panel containing all items
      */
@@ -230,7 +246,7 @@ public class WebRadioWizard extends Wizard {
     }
 
     /**
-     * Refresh panel
+     * Refresh panel.
      */
     private void refreshScreen() {
       removeAll();
@@ -300,8 +316,11 @@ public class WebRadioWizard extends Wizard {
   }
 
   /**
+   * Gets the widget index.
    * 
-   * @param widget
+   * @param widget DOCUMENT_ME
+   * @param widgets DOCUMENT_ME
+   * 
    * @return index of a given widget row in the widget table
    */
   private static int getWidgetIndex(JComponent[][] widgets, JComponent widget) {
@@ -337,6 +356,9 @@ public class WebRadioWizard extends Wizard {
     return null;
   }
 
+  /**
+   * Instantiates a new web radio wizard.
+   */
   public WebRadioWizard() {
     super(Messages.getString("RadioWizard.7"), RadioPanel.class, null, JajukMainWindow
         .getInstance(), LocaleManager.getLocale(), 600, 500);

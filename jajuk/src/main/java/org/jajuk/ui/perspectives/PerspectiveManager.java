@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2005 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $$Revision$$
+ *  $Revision$
  */
 package org.jajuk.ui.perspectives;
 
@@ -52,34 +53,31 @@ import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 
 /**
- * Perspectives Manager
+ * Perspectives Manager.
  */
 public final class PerspectiveManager {
-  /** Current perspective */
+  
+  /** Current perspective. */
   private static IPerspective currentPerspective = null;
 
-  /** Perspective name -> perspective */
+  /** Perspective name -> perspective. */
   private static Map<String, IPerspective> hmNameInstance = new HashMap<String, IPerspective>(10);
 
-  /**
-   * perspective, required despite the Map above in order to keep the order of
-   * the perspectives as the order in the Map is undefined
-   */
+  /** perspective, required despite the Map above in order to keep the order of the perspectives as the order in the Map is undefined. */
   private static Set<IPerspective> perspectives = new LinkedHashSet<IPerspective>(10);
 
-  /** List of perspectives that need reset from version n-1 */
+  /** List of perspectives that need reset from version n-1. */
   // None perspective to reset from 1.6 to 1.7
   private static String[] perspectivesToReset = new String[] {};
 
   /**
-   * private constructor to avoid instantiating utility class
+   * private constructor to avoid instantiating utility class.
    */
   private PerspectiveManager() {
   }
 
   /**
-   * Reset registered perspectives
-   * 
+   * Reset registered perspectives.
    */
   private static void reset() {
     perspectives.clear();
@@ -87,9 +85,9 @@ public final class PerspectiveManager {
   }
 
   /**
-   * Load configuration file
+   * Load configuration file.
    * 
-   * @throws JajukException
+   * @throws JajukException the jajuk exception
    */
   public static void load() throws JajukException {
     registerDefaultPerspectives();
@@ -131,7 +129,7 @@ public final class PerspectiveManager {
   }
 
   /**
-   * Begins management
+   * Begins management.
    */
   public static void init() {
     // Use Simple perspective as a default
@@ -153,12 +151,22 @@ public final class PerspectiveManager {
   /*
    * @see org.jajuk.ui.perspectives.IPerspectiveManager#getCurrentPerspective()
    */
+  /**
+   * Gets the current perspective.
+   * 
+   * @return the current perspective
+   */
   public static IPerspective getCurrentPerspective() {
     return PerspectiveManager.currentPerspective;
   }
 
   /*
    * @see org.jajuk.ui.perspectives.IPerspectiveManager#setCurrentPerspective(Perspective)
+   */
+  /**
+   * Sets the current perspective.
+   * 
+   * @param perspective the new current perspective
    */
   public static void setCurrentPerspective(final IPerspective perspective) {
     UtilGUI.waiting();
@@ -204,9 +212,9 @@ public final class PerspectiveManager {
   }
 
   /**
-   * Set current perspective
+   * Set current perspective.
    * 
-   * @param sPerspectiveName
+   * @param sPerspectiveID DOCUMENT_ME
    */
   public static void setCurrentPerspective(String sPerspectiveID) {
     IPerspective perspective = hmNameInstance.get(sPerspectiveID);
@@ -217,7 +225,7 @@ public final class PerspectiveManager {
   }
 
   /**
-   * Get all perspectives
+   * Get all perspectives.
    * 
    * @return all perspectives as a collection
    */
@@ -226,10 +234,10 @@ public final class PerspectiveManager {
   }
 
   /**
-   * Get a perspective by ID or null if none associated perspective found
+   * Get a perspective by ID or null if none associated perspective found.
    * 
-   * @param sID
-   *          perspective ID
+   * @param sID perspective ID
+   * 
    * @return perspective
    */
   public static IPerspective getPerspective(String sID) {
@@ -239,6 +247,8 @@ public final class PerspectiveManager {
   /**
    * Saves perspectives and views position in the perspective.xml file Must be
    * executed in EDT to avoid dead locks on getComponent()
+   * 
+   * @throws Exception the exception
    */
   public static void commit() throws Exception {
     for (IPerspective perspective : getPerspectives()) {
@@ -253,7 +263,6 @@ public final class PerspectiveManager {
    * We set an icon for each perspective, resizing it if user selected another
    * size than 40x40
    * </p>
-   * 
    */
   public static void registerDefaultPerspectives() {
     reset();
@@ -342,9 +351,10 @@ public final class PerspectiveManager {
   }
 
   /**
-   * Register a new perspective
+   * Register a new perspective.
    * 
-   * @param perspective
+   * @param perspective DOCUMENT_ME
+   * 
    * @return registered perspective
    */
   public static IPerspective registerPerspective(IPerspective perspective) {

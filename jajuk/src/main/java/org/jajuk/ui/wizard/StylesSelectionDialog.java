@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2004 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -48,27 +49,35 @@ import org.jajuk.util.Messages;
 import org.jajuk.util.log.Log;
 
 /**
- * Allow a user to select a list of styles
+ * Allow a user to select a list of styles.
  */
 public class StylesSelectionDialog extends JajukJDialog implements ActionListener {
 
+  /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
+  /** DOCUMENT_ME. */
   JComboBox jcbAmbiences;
 
+  /** DOCUMENT_ME. */
   JList jlist;
 
+  /** DOCUMENT_ME. */
   OKCancelPanel okc;
 
+  /** DOCUMENT_ME. */
   Set<Style> selectedStyles;
 
+  /** DOCUMENT_ME. */
   Set<Style> disabledStyles;
 
+  /** DOCUMENT_ME. */
   List<String> list;
 
   /**
+   * The Constructor.
    * 
-   * @param disabledStyles
+   * @param disabledStyles DOCUMENT_ME
    */
   @SuppressWarnings("unchecked")
   public StylesSelectionDialog(Set disabledStyles) {
@@ -84,10 +93,9 @@ public class StylesSelectionDialog extends JajukJDialog implements ActionListene
   }
 
   /**
-   * Set selected item
+   * Set selected item.
    * 
-   * @param selection
-   *          or null to void it
+   * @param selection or null to void it
    */
   public void setSelection(Set<Style> selection) {
     if (selection != null) {
@@ -113,6 +121,7 @@ public class StylesSelectionDialog extends JajukJDialog implements ActionListene
   }
 
   /**
+   * Gets the selected styles.
    * 
    * @return selected styles
    */
@@ -120,6 +129,10 @@ public class StylesSelectionDialog extends JajukJDialog implements ActionListene
     return selectedStyles;
   }
 
+  /**
+   * Inits the ui.
+   * DOCUMENT_ME
+   */
   @SuppressWarnings("unchecked")
   private void initUI() {
     list = (List) (StyleManager.getInstance().getStylesList()).clone();

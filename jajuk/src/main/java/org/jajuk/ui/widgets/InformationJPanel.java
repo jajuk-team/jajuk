@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -53,27 +54,28 @@ import org.jajuk.util.log.Log;
 import org.jdesktop.swingx.JXPanel;
 
 /**
- * Status / information panel ( static view )
+ * Status / information panel ( static view ).
  */
 public final class InformationJPanel extends JXPanel implements Observer {
 
+  /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
   // consts
-  /** Informative message type ( displayed in blue ) * */
+  /** Informative message type ( displayed in blue ) *. */
 
   public static final int INFORMATIVE = 0;
 
-  /** Informative message type ( displayed in red )* */
+  /** Informative message type ( displayed in red )*. */
   public static final int ERROR = 1;
 
-  /** Warning message type ( displayed in orange )* */
+  /** Warning message type ( displayed in orange )*. */
   public static final int WARNING = 2;
 
-  /** Self instance */
+  /** Self instance. */
   private static InformationJPanel ijp = null;
 
-  /** Swing Timer to refresh the component */
+  /** Swing Timer to refresh the component. */
   private final Timer timer = new Timer(JajukTimer.DEFAULT_HEARTBEAT, new ActionListener() {
 
     public void actionPerformed(ActionEvent e) {
@@ -86,9 +88,9 @@ public final class InformationJPanel extends JXPanel implements Observer {
   });
 
   /**
-   * Singleton access
+   * Singleton access.
    * 
-   * @return
+   * @return the instance
    */
   public static InformationJPanel getInstance() {
     if (ijp == null) {
@@ -99,25 +101,35 @@ public final class InformationJPanel extends JXPanel implements Observer {
 
   // widgets declaration
 
+  /** DOCUMENT_ME. */
   public JLabel jlMessage;
 
+  /** DOCUMENT_ME. */
   JLabel jlSelection;
 
+  /** DOCUMENT_ME. */
   JLabel jlTotal;
 
   // attributes
 
+  /** DOCUMENT_ME. */
   String sMessage;
 
-  /** Current message type */
+  /** Current message type. */
   int iType = 0;
 
+  /** DOCUMENT_ME. */
   String sSelection;
 
+  /** DOCUMENT_ME. */
   String sTotalStatus;
 
+  /** DOCUMENT_ME. */
   private final TrackPositionSliderToolbar trackPositionSliderToolbar;
 
+  /**
+   * Instantiates a new information j panel.
+   */
   private InformationJPanel() {
     super();
     // message bar
@@ -173,6 +185,9 @@ public final class InformationJPanel extends JXPanel implements Observer {
     timer.start();
   }
 
+  /* (non-Javadoc)
+   * @see org.jajuk.events.Observer#getRegistrationKeys()
+   */
   public Set<JajukEvents> getRegistrationKeys() {
     Set<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
     eventSubjectSet.add(JajukEvents.ZERO);
@@ -185,21 +200,28 @@ public final class InformationJPanel extends JXPanel implements Observer {
   }
 
   /**
-   * @return
+   * Gets the message.
+   * 
+   * @return the message
    */
   public String getMessage() {
     return sMessage;
   }
 
   /**
-   * @return
+   * Gets the selection.
+   * 
+   * @return the selection
    */
   public String getSelection() {
     return this.sSelection;
   }
 
   /**
-   * @param label
+   * Sets the message.
+   * 
+   * @param sMessage DOCUMENT_ME
+   * @param iMessageType DOCUMENT_ME
    */
   public void setMessage(final String sMessage, final int iMessageType) {
     this.sMessage = sMessage;
@@ -214,7 +236,9 @@ public final class InformationJPanel extends JXPanel implements Observer {
   }
 
   /**
-   * @param label
+   * Sets the selection.
+   * 
+   * @param sSelection DOCUMENT_ME
    */
   public void setSelection(String sSelection) {
     this.sSelection = sSelection;
@@ -223,14 +247,18 @@ public final class InformationJPanel extends JXPanel implements Observer {
   }
 
   /**
-   * @return
+   * Gets the total time message.
+   * 
+   * @return the total time message
    */
   public String getTotalTimeMessage() {
     return sTotalStatus;
   }
 
   /**
-   * @param string
+   * Sets the total time message.
+   * 
+   * @param string DOCUMENT_ME
    */
   public void setTotalTimeMessage(String string) {
     sTotalStatus = string;
@@ -331,13 +359,20 @@ public final class InformationJPanel extends JXPanel implements Observer {
   }
 
   /**
-   * toString() method
+   * toString() method.
+   * 
+   * @return the string
    */
   @Override
   public String toString() {
     return getClass().getName();
   }
 
+  /**
+   * Gets the message type.
+   * 
+   * @return the message type
+   */
   public int getMessageType() {
     return iType;
   }

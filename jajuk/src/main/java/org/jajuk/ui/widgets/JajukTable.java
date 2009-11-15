@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- * $Revision$
+ *  $Revision$
  */
 
 package org.jajuk.ui.widgets;
@@ -71,38 +72,44 @@ import org.jdesktop.swingx.table.TableColumnExt;
  * <p>
  * Maintain a table of selected rows
  * <p>
- * Bring a menu displayed on right click
+ * Bring a menu displayed on right click.
  */
 public class JajukTable extends JXTable implements Observer, TableColumnModelListener,
     ListSelectionListener, java.awt.event.MouseListener {
 
+  /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
+  /** DOCUMENT_ME. */
   private final String sConf;
 
-  /** User Selection* */
+  /** User Selection*. */
   private final List<Item> selection;
 
+  /** DOCUMENT_ME. */
   private final JPopupMenu jmenu;
 
-  /** Specific action on double click */
+  /** Specific action on double click. */
   private ILaunchCommand command;
 
-  /** Model refreshing flag */
+  /** Model refreshing flag. */
   private volatile boolean acceptColumnsEvents = false;
 
+  /** The Constant FORMATTER.  DOCUMENT_ME */
   private static final DateFormat FORMATTER = UtilString.getLocaleDateFormatter();
 
-  /** Stores the last index of column move to* */
+  /** Stores the last index of column move to*. */
   private int lastToIndex = 0;
 
   /**
-   * Constructor
+   * Constructor.
    * 
    * @param model :
-   *          model to use
+   * model to use
    * @param bSortable :
-   *          is this table sortable
+   * is this table sortable
+   * @param sConf DOCUMENT_ME
+   * 
    * @sConf: configuration variable used to store columns conf
    */
   public JajukTable(TableModel model, boolean bSortable, String sConf) {
@@ -127,23 +134,33 @@ public class JajukTable extends JXTable implements Observer, TableColumnModelLis
   }
 
   /**
-   * Constructor
+   * Constructor.
    * 
    * @param model :
-   *          model to use
+   * model to use
+   * @param sConf DOCUMENT_ME
+   * 
    * @sConf: configuration variable used to store columns conf
    */
   public JajukTable(TableModel model, String sConf) {
     this(model, true, sConf);
   }
 
+  /**
+   * Inits the.
+   * DOCUMENT_ME
+   * 
+   * @param bSortable DOCUMENT_ME
+   */
   private void init(boolean bSortable) {
     super.setSortable(bSortable);
     super.setColumnControlVisible(true);
   }
 
   /**
-   * Select columns to show colsToShow list of columns id to keep
+   * Select columns to show colsToShow list of columns id to keep.
+   * 
+   * @param colsToShow DOCUMENT_ME
    */
   @SuppressWarnings("unchecked")
   public void showColumns(List<String> colsToShow) {
@@ -163,6 +180,10 @@ public class JajukTable extends JXTable implements Observer, TableColumnModelLis
 
   /*
    * Reorder columns order according to given conf
+   */
+  /**
+   * Reorder columns.
+   * DOCUMENT_ME
    */
   private void reorderColumns() {
     // Build the index array
@@ -220,10 +241,9 @@ public class JajukTable extends JXTable implements Observer, TableColumnModelLis
   }
 
   /**
+   * Gets the columns conf.
    * 
    * @return list of visible columns names as string
-   * @param Name
-   *          of the configuration key giving configuration
    */
   public List<String> getColumnsConf() {
     List<String> alOut = new ArrayList<String>(10);
@@ -236,9 +256,9 @@ public class JajukTable extends JXTable implements Observer, TableColumnModelLis
   }
 
   /**
-   * Add a new property into columns conf
+   * Add a new property into columns conf.
    * 
-   * @param property
+   * @param property DOCUMENT_ME
    */
   public void addColumnIntoConf(String property) {
     if (sConf == null) {
@@ -252,9 +272,9 @@ public class JajukTable extends JXTable implements Observer, TableColumnModelLis
   }
 
   /**
-   * Remove a property from columns conf
+   * Remove a property from columns conf.
    * 
-   * @param property
+   * @param property DOCUMENT_ME
    */
   public void removeColumnFromConf(String property) {
     if (sConf == null) {
@@ -265,6 +285,10 @@ public class JajukTable extends JXTable implements Observer, TableColumnModelLis
     Conf.setProperty(sConf, getColumnsConf(alOut));
   }
 
+  /**
+   * Column change.
+   * DOCUMENT_ME
+   */
   private void columnChange() {
     // ignore this column change when reloading
     // model
@@ -281,18 +305,27 @@ public class JajukTable extends JXTable implements Observer, TableColumnModelLis
     }
   }
 
+  /* (non-Javadoc)
+   * @see javax.swing.JTable#columnAdded(javax.swing.event.TableColumnModelEvent)
+   */
   @Override
   public void columnAdded(TableColumnModelEvent evt) {
     super.columnAdded(evt);
     columnChange();
   }
 
+  /* (non-Javadoc)
+   * @see org.jdesktop.swingx.JXTable#columnRemoved(javax.swing.event.TableColumnModelEvent)
+   */
   @Override
   public void columnRemoved(TableColumnModelEvent evt) {
     super.columnRemoved(evt);
     columnChange();
   }
 
+  /* (non-Javadoc)
+   * @see javax.swing.JTable#columnMoved(javax.swing.event.TableColumnModelEvent)
+   */
   @Override
   public void columnMoved(TableColumnModelEvent evt) {
     super.columnMoved(evt);
@@ -309,9 +342,7 @@ public class JajukTable extends JXTable implements Observer, TableColumnModelLis
   }
 
   /**
-   * 
-   * Create the jtable visible columns conf
-   * 
+   * Create the jtable visible columns conf.
    */
   public void createColumnsConf() {
     StringBuilder sb = new StringBuilder();
@@ -332,9 +363,11 @@ public class JajukTable extends JXTable implements Observer, TableColumnModelLis
   }
 
   /**
+   * Gets the columns conf.
+   * 
+   * @param alCol DOCUMENT_ME
    * 
    * @return columns configuration from given list of columns identifiers
-   * 
    */
   private String getColumnsConf(List<String> alCol) {
     StringBuilder sb = new StringBuilder();
@@ -351,7 +384,11 @@ public class JajukTable extends JXTable implements Observer, TableColumnModelLis
   }
 
   /**
-   * add tooltips to each cell
+   * add tooltips to each cell.
+   * 
+   * @param e DOCUMENT_ME
+   * 
+   * @return the tool tip text
    */
   @Override
   public String getToolTipText(MouseEvent e) {
@@ -375,10 +412,9 @@ public class JajukTable extends JXTable implements Observer, TableColumnModelLis
   }
 
   /**
-   * Select a list of rows
+   * Select a list of rows.
    * 
-   * @param indexes
-   *          list of row indexes to be selected
+   * @param indexes list of row indexes to be selected
    */
   public void setSelectedRows(int[] indexes) {
     for (int element : indexes) {
@@ -386,6 +422,9 @@ public class JajukTable extends JXTable implements Observer, TableColumnModelLis
     }
   }
 
+  /* (non-Javadoc)
+   * @see javax.swing.JTable#valueChanged(javax.swing.event.ListSelectionEvent)
+   */
   @Override
   public void valueChanged(ListSelectionEvent e) {
     // Ignore adjusting event
@@ -406,10 +445,21 @@ public class JajukTable extends JXTable implements Observer, TableColumnModelLis
     ObservationManager.notify(new JajukEvent(JajukEvents.TABLE_SELECTION_CHANGED));
   }
 
+  /**
+   * Gets the selection.
+   * 
+   * @return the selection
+   */
   public List<Item> getSelection() {
     return this.selection;
   }
 
+  /**
+   * Handle popup.
+   * DOCUMENT_ME
+   * 
+   * @param e DOCUMENT_ME
+   */
   public void handlePopup(final MouseEvent e) {
     int iSelectedRow = rowAtPoint(e.getPoint());
     // Store real row index
@@ -430,9 +480,9 @@ public class JajukTable extends JXTable implements Observer, TableColumnModelLis
    * Return generic popup menu for items in a table. <br>
    * All items are forced to enable state
    * 
-   * @TODO : this is probably not a good idea to force menu items to enable
-   * 
    * @return generic popup menu for items in a table
+   * 
+   * @TODO : this is probably not a good idea to force menu items to enable
    */
   public JPopupMenu getMenu() {
     Component[] components = this.jmenu.getComponents();
@@ -446,8 +496,8 @@ public class JajukTable extends JXTable implements Observer, TableColumnModelLis
    * Return generic popup menu for items in a table. <br>
    * The provided list allow to disable some items
    * 
-   * @param indexToDisable
-   *          list of integer of indexes of items to disable
+   * @param indexToDisable list of integer of indexes of items to disable
+   * 
    * @return generic popup menu for items in a table with filter
    */
   public JPopupMenu getMenu(List<Integer> indexToDisable) {
@@ -506,20 +556,38 @@ public class JajukTable extends JXTable implements Observer, TableColumnModelLis
     }
   }
 
+  /* (non-Javadoc)
+   * @see java.awt.event.MouseListener#mouseReleased(java.awt.event.MouseEvent)
+   */
   public void mouseReleased(MouseEvent e) {
     if (e.isPopupTrigger()) {
       handlePopup(e);
     }
   }
 
+  /**
+   * Gets the command.
+   * 
+   * @return the command
+   */
   public ILaunchCommand getCommand() {
     return this.command;
   }
 
+  /**
+   * Sets the command.
+   * 
+   * @param command the new command
+   */
   public void setCommand(ILaunchCommand command) {
     this.command = command;
   }
 
+  /**
+   * Sets the accept columns events.
+   * 
+   * @param acceptColumnsEvents the new accept columns events
+   */
   public void setAcceptColumnsEvents(boolean acceptColumnsEvents) {
     this.acceptColumnsEvents = acceptColumnsEvents;
   }
@@ -560,12 +628,19 @@ public class JajukTable extends JXTable implements Observer, TableColumnModelLis
     }
   }
 
+  /**
+   * Gets the conf key for is horizontal scrollable.
+   * 
+   * @return the conf key for is horizontal scrollable
+   */
   private String getConfKeyForIsHorizontalScrollable() {
     return getTableId() + ".is_horizontal_scrollable";
   }
 
   /**
+   * Gets the table id.
    * 
+   * @return the table id
    */
   private String getTableId() {
     String tableID = sConf;

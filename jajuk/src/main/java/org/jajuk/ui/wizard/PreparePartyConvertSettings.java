@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2007 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $$Revision: 2321 $$
+ *  $Revision$
  */
 
 package org.jajuk.ui.wizard;
@@ -37,17 +38,29 @@ import org.jajuk.util.Messages;
 
 /**
  * Simple device creation wizard that creates a directory device given a
- * directory
+ * directory.
  */
 public class PreparePartyConvertSettings extends JajukJDialog implements ActionListener {
+  
+  /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
+  /** DOCUMENT_ME. */
   ChangeListener listener;
 
+  /** DOCUMENT_ME. */
   JTextField jtfPACPLCommand;
 
+  /** DOCUMENT_ME. */
   OKCancelPanel okp;
 
+  /**
+   * Instantiates a new prepare party convert settings.
+   * 
+   * @param listener DOCUMENT_ME
+   * @param command DOCUMENT_ME
+   * @param parent DOCUMENT_ME
+   */
   public PreparePartyConvertSettings(ChangeListener listener, String command, Frame parent) {
     super(parent, true);
     
@@ -76,6 +89,9 @@ public class PreparePartyConvertSettings extends JajukJDialog implements ActionL
     setVisible(true);
   }
 
+  /* (non-Javadoc)
+   * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+   */
   public void actionPerformed(final ActionEvent e) {
     if (e.getSource() == okp.getCancelButton()) {
       dispose(); // close window

@@ -1,28 +1,22 @@
 /*
- * JSplash.java
+ *  Jajuk
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
- * This file has been adapted to Jajuk by the Jajuk Team.
- * Jajuk Copyright (C) 2007 The Jajuk Team
+ *  This program is free software; you can redistribute it and/or
+ *  modify it under the terms of the GNU General Public License
+ *  as published by the Free Software Foundation; either version 2
+ *  of the License, or any later version.
  *
- * The original copyrights and license follow:
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
  *
- * Copyright (c) 2004,2005 Gregory Kotsaftis
- * gregkotsaftis@yahoo.com
- * http://zeus-jscl.sourceforge.net/
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program; if not, write to the Free Software
+ *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ *  $Revision$
  */
 package ext;
 
@@ -60,58 +54,45 @@ import org.jajuk.util.UtilSystem;
  * 
  * @author Gregory Kotsaftis
  * @since 1.0
- *        <p>
- *        Adapted to Jajuk by The Jajuk Team
+ * <p>
+ * Adapted to Jajuk by The Jajuk Team
  */
 public final class JSplash extends JFrame {
 
+  /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
+  /** The Constant JAJUK_ICON.  DOCUMENT_ME */
   private static final String JAJUK_ICON = "icons/64x64/jajuk-icon_64x64.png";
 
-  /**
-   * Progress bar to use in the splash screen.
-   */
+  /** Progress bar to use in the splash screen. */
   private JProgressBar mProgress = null;
 
-  /**
-   * Check for whether to use the progress bar or not.
-   */
+  /** Check for whether to use the progress bar or not. */
   private boolean mProgressBar = false;
 
-  /**
-   * Check for whether to use progress bar messages or not.
-   */
+  /** Check for whether to use progress bar messages or not. */
   private boolean mProgressBarMessages = false;
 
-  /**
-   * Check for whether to use percentage values or not.
-   */
+  /** Check for whether to use percentage values or not. */
   private boolean mProgressBarPercent = false;
 
   /**
    * Constructor for the splash window.
    * <p>
    * 
-   * @param url
-   *          Image for ImageIcon.
-   * @param progress
-   *          Do we want a progress bar at all?
-   * @param messages
-   *          If we want a progress bar, do we want to display messages inside
-   *          the progress bar?
-   * @param percent
-   *          If we want a progress bar, do we want to display the percent?
-   * @param copyrightString
-   *          Copyright notice
-   * @param versionString
-   *          If null no string is displayed on the bottom-right of the splash
-   *          window.
-   * @param versionStringFont
-   *          Font for version string, if null default.
-   *          <p>
-   *          <b>NOTE:</b> Use only one flag for: messages / percent (one or
-   *          the other, NOT both).
+   * @param url Image for ImageIcon.
+   * @param progress Do we want a progress bar at all?
+   * @param messages If we want a progress bar, do we want to display messages inside
+   * the progress bar?
+   * @param percent If we want a progress bar, do we want to display the percent?
+   * @param copyrightString Copyright notice
+   * @param versionString If null no string is displayed on the bottom-right of the splash
+   * window.
+   * @param versionStringFont Font for version string, if null default.
+   * <p>
+   * <b>NOTE:</b> Use only one flag for: messages / percent (one or
+   * the other, NOT both).
    */
   public JSplash(URL url, boolean progress, boolean messages, boolean percent,
       String copyrightString, String versionString, Font versionStringFont) {
@@ -199,7 +180,7 @@ public final class JSplash extends JFrame {
   }
 
   /**
-   * Displays the splash screen
+   * Displays the splash screen.
    */
   public void splashOn() {
     setVisible(true);
@@ -207,7 +188,7 @@ public final class JSplash extends JFrame {
   }
 
   /**
-   * Hides and disposes the splash screen
+   * Hides and disposes the splash screen.
    */
   public void splashOff() {
     setVisible(false);
@@ -218,8 +199,7 @@ public final class JSplash extends JFrame {
    * Sets the progress indicator (values: 0 - 100).
    * <p>
    * 
-   * @param value
-   *          The progress indicator value.
+   * @param value The progress indicator value.
    */
   public void setProgress(int value) {
     if (mProgressBar && value >= 0 && value <= 100) {
@@ -232,10 +212,8 @@ public final class JSplash extends JFrame {
    * the progress bar.
    * <p>
    * 
-   * @param value
-   *          The progress indicator value.
-   * @param msg
-   *          The message to print.
+   * @param value The progress indicator value.
+   * @param msg The message to print.
    */
   public void setProgress(int value, String msg) {
     setProgress(value);

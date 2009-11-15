@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision: 3132 $
+ *  $Revision$
  */
 package org.jajuk.services.lyrics.providers;
 
@@ -31,11 +31,14 @@ import org.jajuk.util.UtilSystem;
 import org.jajuk.util.log.Log;
 
 /**
- * 
+ * DOCUMENT_ME.
  */
 public class TxtLyricsProvider implements ILyricsProvider {
 
+  /** DOCUMENT_ME. */
   private BufferedReader lyricsReader = null;
+  
+  /** DOCUMENT_ME. */
   private String readerPath = null;
   
   /* (non-Javadoc)
@@ -72,6 +75,13 @@ public class TxtLyricsProvider implements ILyricsProvider {
     return "UTF-8";
   }
   
+  /**
+   * Gets the lyrics reader.
+   * 
+   * @return the lyrics reader
+   * 
+   * @throws FileNotFoundException the file not found exception
+   */
   private BufferedReader getLyricsReader() throws FileNotFoundException {
     if (lyricsReader == null) {    
       lyricsReader = new BufferedReader(new FileReader(readerPath));

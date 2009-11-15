@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,8 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision: 3156 $
- *
+ *  $Revision$
  */
 
 package org.jajuk.services.alarm;
@@ -43,17 +43,18 @@ import org.jajuk.util.log.Log;
 /**
  * Manages alarms
  * 
- * TODO: We could use Timer instead of implementing the Timer loop ourselves here!
+ * TODO: We could use Timer instead of implementing the Timer loop ourselves here!.
  */
 
 public class AlarmManager implements Observer {
+  
+  /** DOCUMENT_ME. */
   private static AlarmManager singleton;
 
+  /** DOCUMENT_ME. */
   private Alarm alarm;
 
-  /**
-   * This thread looks alarms up and call weak up when it's time
-   */
+  /** This thread looks alarms up and call weak up when it's time. */
   private final Thread clock = new Thread("Alarm manager Thread") {
 
     @Override
@@ -76,6 +77,11 @@ public class AlarmManager implements Observer {
     }
   };
 
+  /**
+   * Gets the single instance of AlarmManager.
+   * 
+   * @return single instance of AlarmManager
+   */
   public static AlarmManager getInstance() {
     if (singleton == null) {
       // create the singleton
@@ -94,6 +100,9 @@ public class AlarmManager implements Observer {
     return singleton;
   }
 
+  /* (non-Javadoc)
+   * @see org.jajuk.events.Observer#update(org.jajuk.events.JajukEvent)
+   */
   public void update(JajukEvent event) {
     JajukEvents subject = event.getSubject();
     // Reset rate and total play time (automatic part of rating system)

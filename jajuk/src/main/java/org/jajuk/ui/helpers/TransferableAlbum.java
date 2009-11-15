@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision: 2403 $
+ *  $Revision$
  */
 
 package org.jajuk.ui.helpers;
@@ -29,24 +30,39 @@ import java.util.Arrays;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 /**
- * Transferable album ( for DND )
+ * Transferable album ( for DND ).
  */
 public class TransferableAlbum extends DefaultMutableTreeNode implements Transferable {
+  
+  /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
+  /** The Constant ALBUM_FLAVOR.  DOCUMENT_ME */
   public static final DataFlavor ALBUM_FLAVOR = new DataFlavor(
       DataFlavor.javaJVMLocalObjectMimeType, "Album");
 
+  /** DOCUMENT_ME. */
   private final Object oData;
 
+  /**
+   * Instantiates a new transferable album.
+   * 
+   * @param oData DOCUMENT_ME
+   */
   public TransferableAlbum(Object oData) {
     this.oData = oData;
   }
 
+  /**
+   * Gets the data.
+   * 
+   * @return the data
+   */
   public Object getData() {
     return oData;
   }
 
+  /** DOCUMENT_ME. */
   private final DataFlavor[] flavors = { ALBUM_FLAVOR };
 
   /*

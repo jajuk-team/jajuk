@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2006 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $1.0$
+ *  $Revision$
  */
 
 package org.jajuk.events;
@@ -30,11 +31,16 @@ import java.util.Map;
 import org.jajuk.util.Const;
 import org.jajuk.util.log.Log;
 
+/**
+ * DOCUMENT_ME.
+ */
 class ObserverRegistry {
+  
+  /** DOCUMENT_ME. */
   private final Map<JajukEvents, List<Observer>> hEventComponents = new Hashtable<JajukEvents, List<Observer>>(
       10);
 
-  /** Number of current executions for a given event */
+  /** Number of current executions for a given event. */
   private static Map<JajukEvent, Integer> canals = new HashMap<JajukEvent, Integer>(10);
 
   /**
@@ -43,8 +49,7 @@ class ObserverRegistry {
    * a given event type. This allow to avoid thread number explosion in some
    * error cases
    * 
-   * @param event
-   *          The event to execute
+   * @param event The event to execute
    */
   @SuppressWarnings("unchecked")
   void notifySync(JajukEvent event) {
@@ -90,6 +95,13 @@ class ObserverRegistry {
     }
   }
 
+  /**
+   * Register.
+   * DOCUMENT_ME
+   * 
+   * @param subject DOCUMENT_ME
+   * @param observer DOCUMENT_ME
+   */
   synchronized void register(JajukEvents subject, Observer observer) {
     List<Observer> observers = hEventComponents.get(subject);
     if (observers == null) {
@@ -107,6 +119,13 @@ class ObserverRegistry {
     }
   }
 
+  /**
+   * Unregister.
+   * DOCUMENT_ME
+   * 
+   * @param subject DOCUMENT_ME
+   * @param observer DOCUMENT_ME
+   */
   synchronized void unregister(JajukEvents subject, Observer observer) {
     List<Observer> alComponents = hEventComponents.get(subject);
     if (alComponents != null) {
@@ -115,7 +134,7 @@ class ObserverRegistry {
   }
 
   /**
-   * Remove any registered item
+   * Remove any registered item.
    */
   synchronized public void clear() {
     hEventComponents.clear();

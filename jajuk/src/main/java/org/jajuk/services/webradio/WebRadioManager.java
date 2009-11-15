@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2007 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -51,28 +52,41 @@ import org.xml.sax.helpers.DefaultHandler;
  * Stores webradios configurated by user
  * <p>
  * Singleton
- * </p>
+ * </p>.
  */
 public final class WebRadioManager extends DefaultHandler {
 
+  /** DOCUMENT_ME. */
   private static Set<WebRadio> webradios = new TreeSet<WebRadio>();
 
   // Self instance
+  /** DOCUMENT_ME. */
   private static WebRadioManager self;
 
+  /** DOCUMENT_ME. */
   private StringBuilder buffer;
 
+  /** DOCUMENT_ME. */
   private boolean inRadio;
+  
+  /** DOCUMENT_ME. */
   private String radioName;
+  
+  /** DOCUMENT_ME. */
   private String radioUrl;
 
   // Webradio file XML tags static strings
+  /** The Constant XML_RADIO.  DOCUMENT_ME */
   private static final String XML_RADIO = "Radio";
   // private static final String XML_URL = "url";
   // private static final String XML_NAME = "name";
 
+  /** DOCUMENT_ME. */
   File fwebradios;
 
+  /**
+   * Instantiates a new web radio manager.
+   */
   private WebRadioManager() {
     super();
 
@@ -95,6 +109,10 @@ public final class WebRadioManager extends DefaultHandler {
 
   }
 
+  /**
+   * Load repository.
+   * DOCUMENT_ME
+   */
   private void loadRepository() {
     try {
       SAXParserFactory spf = SAXParserFactory.newInstance();
@@ -127,7 +145,7 @@ public final class WebRadioManager extends DefaultHandler {
   }
 
   /**
-   * Download asynchronously the default streams list
+   * Download asynchronously the default streams list.
    * 
    * @return the download thread
    */
@@ -147,6 +165,11 @@ public final class WebRadioManager extends DefaultHandler {
 
   }
 
+  /**
+   * Gets the single instance of WebRadioManager.
+   * 
+   * @return single instance of WebRadioManager
+   */
   public static WebRadioManager getInstance() {
     if (self == null) {
       self = new WebRadioManager();
@@ -154,16 +177,30 @@ public final class WebRadioManager extends DefaultHandler {
     return self;
   }
 
+  /**
+   * Adds the web radio.
+   * DOCUMENT_ME
+   * 
+   * @param radio DOCUMENT_ME
+   */
   public void addWebRadio(WebRadio radio) {
     webradios.add(radio);
   }
 
+  /**
+   * Removes the web radio.
+   * DOCUMENT_ME
+   * 
+   * @param radio DOCUMENT_ME
+   */
   public void removeWebRadio(WebRadio radio) {
     webradios.remove(radio);
   }
 
   /**
-   * Write current repository for persistence between sessions
+   * Write current repository for persistence between sessions.
+   * 
+   * @throws IOException Signals that an I/O exception has occurred.
    */
   public void commit() throws IOException {
     // If none radio recorded, do not commit to allow next session
@@ -194,7 +231,9 @@ public final class WebRadioManager extends DefaultHandler {
   }
 
   /**
-   * Copy the default radio file to the current repository file
+   * Copy the default radio file to the current repository file.
+   * 
+   * @throws IOException Signals that an I/O exception has occurred.
    */
   public void restore() throws IOException {
     // Clear existing radios
@@ -210,7 +249,14 @@ public final class WebRadioManager extends DefaultHandler {
   }
 
   /**
-   * Called when we start an element
+   * Called when we start an element.
+   * 
+   * @param sUri DOCUMENT_ME
+   * @param s DOCUMENT_ME
+   * @param sQName DOCUMENT_ME
+   * @param attributes DOCUMENT_ME
+   * 
+   * @throws SAXException the SAX exception
    */
   @Override
   public void startElement(String sUri, String s, String sQName, Attributes attributes)
@@ -237,6 +283,9 @@ public final class WebRadioManager extends DefaultHandler {
     }
   }
 
+  /* (non-Javadoc)
+   * @see org.xml.sax.helpers.DefaultHandler#characters(char[], int, int)
+   */
   @Override
   public void characters(char[] ch, int start, int length) throws SAXException {
     String s = new String(ch, start, length);
@@ -246,8 +295,13 @@ public final class WebRadioManager extends DefaultHandler {
   }
 
   /**
-   * End element in order to read from aTunes radio list
+   * End element in order to read from aTunes radio list.
    * 
+   * @param uri DOCUMENT_ME
+   * @param localName DOCUMENT_ME
+   * @param qName DOCUMENT_ME
+   * 
+   * @throws SAXException the SAX exception
    */
   @Override
   public void endElement(String uri, String localName, String qName) throws SAXException {
@@ -264,10 +318,11 @@ public final class WebRadioManager extends DefaultHandler {
   }
 
   /**
-   * Perform a search in all files names with given criteria
+   * Perform a search in all files names with given criteria.
    * 
-   * @param sCriteria
-   * @return
+   * @param sCriteria DOCUMENT_ME
+   * 
+   * @return the set< search result>
    */
   public Set<SearchResult> search(String sCriteria) {
     synchronized (FileManager.getInstance()) {
@@ -283,6 +338,7 @@ public final class WebRadioManager extends DefaultHandler {
   }
 
   /**
+   * Gets the web radios.
    * 
    * @return All webradios filled (copy)
    */
@@ -292,8 +348,10 @@ public final class WebRadioManager extends DefaultHandler {
   }
 
   /**
+   * Gets the web radio by name.
    * 
-   * @param name
+   * @param name DOCUMENT_ME
+   * 
    * @return WebRadio for a given name or null if no match
    */
   public WebRadio getWebRadioByName(String name) {
@@ -306,8 +364,10 @@ public final class WebRadioManager extends DefaultHandler {
   }
 
   /**
+   * Gets the web radio by url.
    * 
-   * @param name
+   * @param url DOCUMENT_ME
+   * 
    * @return WebRadio for a given url (first match) or null if no match
    */
   public WebRadio getWebRadioByURL(String url) {
@@ -320,6 +380,7 @@ public final class WebRadioManager extends DefaultHandler {
   }
 
   /**
+   * Gets the current web radio tooltip.
    * 
    * @return Current webradio tooltip text
    */

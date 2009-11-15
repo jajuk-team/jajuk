@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2008 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision: 3132 $
+ *  $Revision$
  */
 package org.jajuk.services.dbus;
 
@@ -24,27 +25,37 @@ import org.freedesktop.dbus.DBusSignal;
 import org.freedesktop.dbus.exceptions.DBusException;
 
 /**
- * 
+ * DOCUMENT_ME.
  */
 public class DBusSignalImpl implements DBusInterface {
 
   /**
-   * 
+   * DOCUMENT_ME.
    */
   public static class FileChangedSignal extends DBusSignal {
+    
+    /** DOCUMENT_ME. */
     String filename;
 
     /**
-     * @param path
-     * @param args
-     * @param filename
-     * @throws DBusException
+     * The Constructor.
+     * 
+     * @param path DOCUMENT_ME
+     * @param args DOCUMENT_ME
+     * @param filename DOCUMENT_ME
+     * 
+     * @throws DBusException the d bus exception
      */
     public FileChangedSignal(String filename, String path, Object... args) throws DBusException {
       super(path, args);
       this.filename = filename;
     }
 
+    /**
+     * Gets the filename.
+     * 
+     * @return the filename
+     */
     public String getFilename() {
       return this.filename;
     }

@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2007 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -16,8 +17,6 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *  $Revision$
- *  
- *  Comes initially from aTunes 1.8
  */
 
 package org.jajuk.services.lyrics.providers;
@@ -35,16 +34,18 @@ import org.w3c.dom.Document;
 
 /**
  * Lyrics Provider extracting lyrics from lyricwiki.org
- * 
  */
 public class LyricWikiWebLyricsProvider extends GenericWebLyricsProvider {
 
-  /** URL pattern used by jajuk to retrieve lyrics */
+  /** URL pattern used by jajuk to retrieve lyrics. */
   private static final String URL = "http://lyricwiki.org/api.php?func=getSong&artist=%artist&song=%title&fmt=xml";
 
-  /** URL pattern to web page (see ILyricsProvider interface for details) */
+  /** URL pattern to web page (see ILyricsProvider interface for details). */
   private static final String WEB_URL = "http://lyricwiki.org/%artist:%title";
 
+  /**
+   * Instantiates a new lyric wiki web lyrics provider.
+   */
   public LyricWikiWebLyricsProvider() {
     super(URL);
   }

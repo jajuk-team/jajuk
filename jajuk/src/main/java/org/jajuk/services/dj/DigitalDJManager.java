@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2004 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision:3266 $
+ *  $Revision$
  */
 
 package org.jajuk.services.dj;
@@ -59,27 +60,30 @@ import org.xml.sax.helpers.DefaultHandler;
  * Manages Digital DJs
  * <p>
  * Singleton
- * </p>
+ * </p>.
  */
 public final class DigitalDJManager implements Observer {
 
-  /** List of registrated DJs ID->DJ */
+  /** List of registrated DJs ID->DJ. */
   private final Map<String, DigitalDJ> djs;
 
-  /** self instance */
+  /** self instance. */
   private static DigitalDJManager dj;
 
-  /** Currently selected DJ */
+  /** Currently selected DJ. */
   private static DigitalDJ current;
 
   /**
-   * no instantiation
+   * no instantiation.
    */
   private DigitalDJManager() {
     djs = new HashMap<String, DigitalDJ>();
     ObservationManager.register(this);
   }
 
+  /* (non-Javadoc)
+   * @see org.jajuk.events.Observer#getRegistrationKeys()
+   */
   public Set<JajukEvents> getRegistrationKeys() {
     Set<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
     eventSubjectSet.add(JajukEvents.AMBIENCE_REMOVED);
@@ -87,6 +91,8 @@ public final class DigitalDJManager implements Observer {
   }
 
   /**
+   * Gets the instance.
+   * 
    * @return self instance
    */
   public static DigitalDJManager getInstance() {
@@ -97,6 +103,7 @@ public final class DigitalDJManager implements Observer {
   }
 
   /**
+   * Gets the d js.
    * 
    * @return DJs iteration
    */
@@ -105,7 +112,8 @@ public final class DigitalDJManager implements Observer {
   }
 
   /**
-   * Returns the list of DJs sorted in ascending order according to the natural ordering 
+   * Returns the list of DJs sorted in ascending order according to the natural ordering.
+   * 
    * @return DJs iteration
    */
   public List<DigitalDJ> getDJsSorted() {
@@ -115,6 +123,7 @@ public final class DigitalDJManager implements Observer {
   }
 
   /**
+   * Gets the dj names.
    * 
    * @return DJs names iteration
    */
@@ -127,6 +136,9 @@ public final class DigitalDJManager implements Observer {
   }
 
   /**
+   * Gets the dj by name.
+   * 
+   * @param sName DOCUMENT_ME
    * 
    * @return DJ by name
    */
@@ -140,6 +152,9 @@ public final class DigitalDJManager implements Observer {
   }
 
   /**
+   * Gets the dj by id.
+   * 
+   * @param sID DOCUMENT_ME
    * 
    * @return DJ by ID
    */
@@ -148,9 +163,9 @@ public final class DigitalDJManager implements Observer {
   }
 
   /**
-   * Commit given dj on disk
+   * Commit given dj on disk.
    * 
-   * @param dj
+   * @param dj DOCUMENT_ME
    */
   public static void commit(DigitalDJ dj) {
     try {
@@ -165,9 +180,9 @@ public final class DigitalDJManager implements Observer {
   }
 
   /**
-   * Remove a DJ
+   * Remove a DJ.
    * 
-   * @param DJ
+   * @param dj DOCUMENT_ME
    */
   public void remove(DigitalDJ dj) {
     djs.remove(dj.getID());
@@ -182,9 +197,9 @@ public final class DigitalDJManager implements Observer {
   }
 
   /**
-   * Register a DJ
+   * Register a DJ.
    * 
-   * @param DJ
+   * @param dj DOCUMENT_ME
    */
   public void register(DigitalDJ dj) {
     djs.put(dj.getID(), dj);
@@ -218,7 +233,6 @@ public final class DigitalDJManager implements Observer {
 
   /**
    * Load all DJs (.dj files) found in jajuk home directory
-   * 
    */
   public void loadAllDJs() {
     try {
@@ -252,10 +266,20 @@ public final class DigitalDJManager implements Observer {
     }
   }
 
+  /**
+   * Gets the current dj.
+   * 
+   * @return the current dj
+   */
   public static DigitalDJ getCurrentDJ() {
     return current;
   }
 
+  /**
+   * Sets the current dj.
+   * 
+   * @param dj the new current dj
+   */
   public static void setCurrentDJ(DigitalDJ dj) {
     current = dj;
   }

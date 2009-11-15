@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2005 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $$Revision$$
+ *  $Revision$
  */
 package org.jajuk.ui.actions;
 
@@ -33,15 +34,23 @@ import org.jajuk.util.log.Log;
  */
 public class ForwardTrackAction extends JajukAction {
 
+  /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
+  /** The Constant JUMP_SIZE.  DOCUMENT_ME */
   private static final float JUMP_SIZE = 0.1f;
 
+  /**
+   * Instantiates a new forward track action.
+   */
   ForwardTrackAction() {
     super(IconLoader.getIcon(JajukIcons.FWD), "altGraph F10", false, true);
     setShortDescription(Messages.getString("CommandJPanel.13"));
   }
 
+  /* (non-Javadoc)
+   * @see org.jajuk.ui.actions.JajukAction#perform(java.awt.event.ActionEvent)
+   */
   @Override
   public void perform(ActionEvent evt) {
     new Thread("ForwardTrackAction") {

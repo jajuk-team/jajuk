@@ -1,3 +1,23 @@
+/*
+ *  Jajuk
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
+ *
+ *  This program is free software; you can redistribute it and/or
+ *  modify it under the terms of the GNU General Public License
+ *  as published by the Free Software Foundation; either version 2
+ *  of the License, or any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program; if not, write to the Free Software
+ *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ *  $Revision$
+ */
 package org.qdwizard;
 
 import java.awt.Color;
@@ -20,36 +40,44 @@ import javax.swing.SwingConstants;
  * Action panel
  * <p>
  * contains a problem area where problems are displayed and a buttons area
- * (Previous, Next, Finish, Cancel)
+ * (Previous, Next, Finish, Cancel).
  * 
  * @author Bertrand Florat
  * @created 1 may 2006
  */
 class ActionsPanel extends JPanel {
 
+  /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
-  /** Problem text area */
+  /** Problem text area. */
   JLabel jlProblem;
 
+  /** DOCUMENT_ME. */
   JButton jbPrevious;
 
+  /** DOCUMENT_ME. */
   JButton jbNext;
 
+  /** DOCUMENT_ME. */
   JButton jbFinish;
 
+  /** DOCUMENT_ME. */
   JButton jbCancel;
 
+  /** DOCUMENT_ME. */
   private Color backgroundColor;
 
+  /** DOCUMENT_ME. */
   private Color backgroundColorProblem;
 
-  /** Associated action listener */
+  /** Associated action listener. */
   ActionListener al;
 
   /**
-   * @param al
-   *          associated action listener
+   * The Constructor.
+   * 
+   * @param al associated action listener
    */
   public ActionsPanel(ActionListener al) {
     backgroundColor = Color.WHITE;
@@ -108,10 +136,12 @@ class ActionsPanel extends JPanel {
   }
 
   /**
-   * Set buttons states
+   * Set buttons states.
    * 
-   * @param bNext
-   * @param bFinish
+   * @param bNext DOCUMENT_ME
+   * @param bFinish DOCUMENT_ME
+   * @param bPrevious DOCUMENT_ME
+   * @param bCancel DOCUMENT_ME
    */
   void setState(boolean bPrevious, boolean bNext, boolean bFinish, boolean bCancel) {
     jbPrevious.setEnabled(bPrevious);
@@ -120,38 +150,46 @@ class ActionsPanel extends JPanel {
     jbCancel.setEnabled(bCancel);
   }
 
+  /**
+   * Sets the problem.
+   * 
+   * @param problem the new problem
+   */
   void setProblem(String problem) {
     String sProblem = problem;
     jlProblem.setText(sProblem);
   }
 
   /**
-   * Set the background color of the ActionPanel
+   * Set the background color of the ActionPanel.
    * 
-   * @param color
+   * @param color DOCUMENT_ME
    */
   public void setBackgroundColor(Color color) {
     this.backgroundColor = color;
   }
 
   /**
-   * Set the background color of the ActionPanel's Problem notification area
+   * Set the background color of the ActionPanel's Problem notification area.
    * 
-   * @param color
+   * @param color DOCUMENT_ME
    */
   public void setProblemBackgroundColor(Color color) {
     this.backgroundColorProblem = color;
   }
 
   /**
-   * Set the background color of the ActionPanel's Problem notification area
+   * Set the background color of the ActionPanel's Problem notification area.
    * 
-   * @param color
+   * @param color DOCUMENT_ME
    */
   public void setProblemTextColor(Color color) {
     jlProblem.setForeground(color);
   }
 
+  /* (non-Javadoc)
+   * @see javax.swing.JComponent#paint(java.awt.Graphics)
+   */
   @Override
   public void paint(java.awt.Graphics g) {
     Graphics2D g2D = (Graphics2D) g;

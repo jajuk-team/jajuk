@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2007 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $$Revision: 5405 $$
+ *  $Revision$
  */
 package org.jajuk.ui.wizard;
 
@@ -99,55 +100,58 @@ import org.qdwizard.Wizard;
  */
 public class PreparePartyWizard extends Wizard {
 
-  /**
-   * For MigLayout
-   * 
-   */
+  /** For MigLayout. */
   private static final String GROW_WRAP = "grow,wrap";
 
-  /**
-   * For MigLayout
-   * 
-   */
+  /** For MigLayout. */
   private static final String LEFT_WRAP = "left,wrap";
 
-  /**
-   * For MigLayout
-   * 
-   */
+  /** For MigLayout. */
   private static final String LEFT = "left";
 
-  /** Which source to use for the tracks */
+  /** Which source to use for the tracks. */
   private static final String KEY_MODE = "MODE";
 
-  /** Which item was selected in the first page of the wizard */
+  /** Which item was selected in the first page of the wizard. */
   private static final String KEY_ITEM = "ITEM";
 
-  /** Where to put the files */
+  /** Where to put the files. */
   private static final String KEY_DEST_PATH = "DEST_PATH";
 
-  /** Max number of tracks to use */
+  /** Max number of tracks to use. */
   private static final String KEY_MAX_TRACKS_ON = "MAXTRACKS_ENABLED";
+  
+  /** The Constant KEY_MAX_TRACKS.  DOCUMENT_ME */
   private static final String KEY_MAX_TRACKS = "MAXTRACKS";
 
-  /** Max size to use */
+  /** Max size to use. */
   private static final String KEY_MAX_SIZE_ON = "MAXSIZE_ENABLED";
+  
+  /** The Constant KEY_MAX_SIZE.  DOCUMENT_ME */
   private static final String KEY_MAX_SIZE = "MAXSIZE";
 
-  /** Max playing length of tracks to use */
+  /** Max playing length of tracks to use. */
   private static final String KEY_MAX_LENGTH_ON = "MAXLENGTH_ENABLED";
+  
+  /** The Constant KEY_MAX_LENGTH.  DOCUMENT_ME */
   private static final String KEY_MAX_LENGTH = "MAXLENGTH";
 
-  /** Max number of tracks to queue */
+  /** Max number of tracks to queue. */
   private static final String KEY_ONE_MEDIA_ON = "ONE_MEDIA_ENABLED";
+  
+  /** The Constant KEY_MEDIA.  DOCUMENT_ME */
   private static final String KEY_MEDIA = "ONE_MEDIA";
+  
+  /** The Constant KEY_CONVERT_MEDIA.  DOCUMENT_ME */
   private static final String KEY_CONVERT_MEDIA = "CONVERT_MEDIA";
+  
+  /** The Constant KEY_CONVERT_COMMAND.  DOCUMENT_ME */
   private static final String KEY_CONVERT_COMMAND = "CONVERT_COMMAND";
 
-  /** Used to enable replacing characters outside the normal range */
+  /** Used to enable replacing characters outside the normal range. */
   private static final String KEY_NORMALIZE_FILENAME_ON = "NORMALIZE_FILENAME";
 
-  /** Ratings level */
+  /** Ratings level. */
   private static final String KEY_RATINGS_LEVEL = "RATING_LEVEL";
 
   // store a temporary playlist that is provided by the PlaylistView without
@@ -155,23 +159,46 @@ public class PreparePartyWizard extends Wizard {
   // we keep it here to be able to re-display it in the Pages later on
   // We need to keep it outside the ActionSelectionPanel because the panel is
   // re-created during back-forward operations
+  /** DOCUMENT_ME. */
   private static Playlist tempPlaylist;
 
+  /** DOCUMENT_ME. */
   private static boolean bPropertiesRestored = false;
+  
+  /** DOCUMENT_ME. */
   private static boolean bPACPLAvailable = false;
 
+  /**
+   * DOCUMENT_ME.
+   */
   private enum Mode {
-    DJ, Ambience, Shuffle, Playlist, BestOf, Novelties, Queue, Bookmarks, ProvidedPlaylist
+    
+    /** DOCUMENT_ME. */
+    DJ, 
+ /** DOCUMENT_ME. */
+ Ambience, 
+ /** DOCUMENT_ME. */
+ Shuffle, 
+ /** DOCUMENT_ME. */
+ Playlist, 
+ /** DOCUMENT_ME. */
+ BestOf, 
+ /** DOCUMENT_ME. */
+ Novelties, 
+ /** DOCUMENT_ME. */
+ Queue, 
+ /** DOCUMENT_ME. */
+ Bookmarks, 
+ /** DOCUMENT_ME. */
+ ProvidedPlaylist
   }
 
   /**
-   * 
    * Default constructor that lets the user choose where the tracks are taken
    * from.
    * 
-   * @param bProvidedPlaylist
-   *          Indicates that a playlist was provided to the dialog and thus the
-   *          first page is not displayed
+   * @param bProvidedPlaylist Indicates that a playlist was provided to the dialog and thus the
+   * first page is not displayed
    */
   public PreparePartyWizard(boolean bProvidedPlaylist) {
     super(Messages.getString("PreparePartyWizard.1"), bProvidedPlaylist ? GeneralOptionsPanel.class
@@ -190,8 +217,7 @@ public class PreparePartyWizard extends Wizard {
    * This needs to be done as static method as the Wizard-constructor already
    * needs to have this data available!
    * 
-   * @param playlist
-   *          The playlist to use for the party
+   * @param playlist The playlist to use for the party
    */
   public static void setPlaylist(Playlist playlist) {
     // store playlist and the mode that we are now having
@@ -203,7 +229,9 @@ public class PreparePartyWizard extends Wizard {
   }
 
   /**
-   * Return if the specified element is true in the data-map
+   * Return if the specified element is true in the data-map.
+   * 
+   * @param key DOCUMENT_ME
    * 
    * @return true if the value was stored as boolean true, false otherwise.
    */
@@ -254,10 +282,8 @@ public class PreparePartyWizard extends Wizard {
   /**
    * Copies the files contained in the list to the specified directory.
    * 
-   * @param files
-   *          The list of flies to copy.
-   * @param destDir
-   *          The target location.
+   * @param files The list of flies to copy.
+   * @param destDir The target location.
    */
   private void copyFiles(List<org.jajuk.base.File> files, final java.io.File destDir) {
     // TODO: somehow this did not work, we have to find out how to display a
@@ -369,7 +395,9 @@ public class PreparePartyWizard extends Wizard {
   }
 
   /**
-   * @return
+   * Gets the files.
+   * 
+   * @return the files
    */
   private List<org.jajuk.base.File> getFiles() {
     List<org.jajuk.base.File> files;
@@ -471,6 +499,8 @@ public class PreparePartyWizard extends Wizard {
 
   /**
    * Store one value as String.
+   * 
+   * @param key DOCUMENT_ME
    */
   private static void storeValue(final String key) {
     // nothing to do?
@@ -517,8 +547,7 @@ public class PreparePartyWizard extends Wizard {
   /**
    * Restore one string value from the configuration.
    * 
-   * @param key
-   *          The key to restore.
+   * @param key The key to restore.
    */
   private static void restoreStringValue(final String key) {
     String sValue = Conf.getString(Conf.CONF_PREPARE_PARTY + key);
@@ -534,8 +563,7 @@ public class PreparePartyWizard extends Wizard {
   /**
    * Restore one integer value from the configuration.
    * 
-   * @param key
-   *          The key to restore.
+   * @param key The key to restore.
    */
   private static void restoreIntValue(final String key) {
     // do nothing if not available yet
@@ -549,8 +577,7 @@ public class PreparePartyWizard extends Wizard {
   /**
    * Restore one boolean value from the configuration.
    * 
-   * @param key
-   *          The key to restore.
+   * @param key The key to restore.
    */
   private static void restoreBooleanValue(final String key) {
     // do nothing if not available yet
@@ -563,9 +590,6 @@ public class PreparePartyWizard extends Wizard {
 
   /**
    * Restore mode and item values, they may require some special handling.
-   * 
-   * @param key
-   *          The key to restore.
    */
   private static void restoreModeAndItemValue() {
     String sMode = Conf.getString(Conf.CONF_PREPARE_PARTY + KEY_MODE);
@@ -645,30 +669,52 @@ public class PreparePartyWizard extends Wizard {
     return super.onCancel();
   }
 
+  /**
+   * DOCUMENT_ME.
+   */
   public static class ActionSelectionPanel extends Screen implements ActionListener, ClearPoint {
 
+    /** Generated serialVersionUID. */
     private static final long serialVersionUID = -6981770030816500259L;
 
+    /** DOCUMENT_ME. */
     private ButtonGroup bgActions;
 
+    /** DOCUMENT_ME. */
     private JRadioButton jrbDJ;
+    
+    /** DOCUMENT_ME. */
     private JComboBox jcbDJ;
 
+    /** DOCUMENT_ME. */
     private JRadioButton jrbAmbience;
+    
+    /** DOCUMENT_ME. */
     private JComboBox jcbAmbience;
 
+    /** DOCUMENT_ME. */
     private JRadioButton jrbPlaylist;
+    
+    /** DOCUMENT_ME. */
     private JComboBox jcbPlaylist;
 
+    /** DOCUMENT_ME. */
     private JRadioButton jrbShuffle;
 
+    /** DOCUMENT_ME. */
     private JRadioButton jrbBestOf;
+    
+    /** DOCUMENT_ME. */
     private JRadioButton jrbNovelties;
+    
+    /** DOCUMENT_ME. */
     private JRadioButton jrbQueue;
+    
+    /** DOCUMENT_ME. */
     private JRadioButton jrbBookmark;
 
     /**
-     * Create panel UI
+     * Create panel UI.
      */
     @Override
     public void initUI() {
@@ -766,7 +812,7 @@ public class PreparePartyWizard extends Wizard {
 
     /**
      * Initialize the UI items of the panel with values from the static data
-     * object
+     * object.
      */
     private void readData() {
       if (data.containsKey(KEY_MODE)) {
@@ -877,7 +923,7 @@ public class PreparePartyWizard extends Wizard {
     }
 
     /**
-     * Store the current values from the UI items into the static data object
+     * Store the current values from the UI items into the static data object.
      */
     private void updateData() {
       // depending on the selected radio button read the combo box value and set
@@ -909,11 +955,17 @@ public class PreparePartyWizard extends Wizard {
       }
     }
 
+    /* (non-Javadoc)
+     * @see org.qdwizard.Screen#getDescription()
+     */
     @Override
     public String getDescription() {
       return Messages.getString("PreparePartyWizard.3");
     }
 
+    /* (non-Javadoc)
+     * @see org.qdwizard.Screen#getName()
+     */
     @Override
     public String getName() {
       return Messages.getString("PreparePartyWizard.2");
@@ -922,70 +974,99 @@ public class PreparePartyWizard extends Wizard {
   }
 
   /**
-   * 
-   * General options panel
+   * General options panel.
    */
   public static class GeneralOptionsPanel extends Screen implements ActionListener, ChangeListener,
       ClearPoint, MouseListener {
 
-    /**
-     * Constant for MigLayout
-     */
+    /** Constant for MigLayout. */
     private static final String GROW = "grow";
 
-    /**
-     * Constant for MigLayout
-     */
+    /** Constant for MigLayout. */
     private static final String GROW_TWO_COL = "[grow][]";
 
-    /**
-     * Constant for MigLayout
-     */
+    /** Constant for MigLayout. */
     private static final String LABEL_WIDTH = "width 40:40:";
 
+    /** Generated serialVersionUID. */
     private static final long serialVersionUID = 1L;
 
+    /** The Constant NO_VALUE.  DOCUMENT_ME */
     private static final String NO_VALUE = " ";
 
     // Max. number of tracks to include
+    /** DOCUMENT_ME. */
     private JCheckBox jcbMaxTracks;
+    
+    /** DOCUMENT_ME. */
     private JSlider jsMaxTracks;
+    
+    /** DOCUMENT_ME. */
     private JLabel jnMaxTracks;
 
     // Max size (in MB) of party
+    /** DOCUMENT_ME. */
     private JCheckBox jcbMaxSize;
+    
+    /** DOCUMENT_ME. */
     private JSlider jsMaxSize;
+    
+    /** DOCUMENT_ME. */
     private JLabel jnMaxSize;
 
     // Max playing length of party
+    /** DOCUMENT_ME. */
     private JCheckBox jcbMaxLength;
+    
+    /** DOCUMENT_ME. */
     private JSlider jsMaxLength;
+    
+    /** DOCUMENT_ME. */
     private JLabel jnMaxLength;
 
     // Limit to one type of media
+    /** DOCUMENT_ME. */
     private JCheckBox jcbOneMedia;
+    
+    /** DOCUMENT_ME. */
     private JComboBox jcbMedia;
+    
+    /** DOCUMENT_ME. */
     private JCheckBox jcbConvertMedia;
+    
+    /** DOCUMENT_ME. */
     private JLabel jlConvertMedia;
+    
+    /** DOCUMENT_ME. */
     private JButton jbConvertConfig;
 
+    /** DOCUMENT_ME. */
     private JLabel jlRatingLevel;
+    
+    /** DOCUMENT_ME. */
     private JSlider jsRatingLevel;
 
+    /** DOCUMENT_ME. */
     private JCheckBox jcbNormalizeFilename;
 
+    /* (non-Javadoc)
+     * @see org.qdwizard.Screen#getDescription()
+     */
     @Override
     public String getDescription() {
       return Messages.getString("PreparePartyWizard.5");
     }
 
+    /* (non-Javadoc)
+     * @see org.qdwizard.Screen#getName()
+     */
     @Override
     public String getName() {
       return Messages.getString("PreparePartyWizard.4");
     }
 
     /**
-     * Create panel UI
+     * Create panel UI.
      */
     @Override
     public void initUI() {
@@ -1240,7 +1321,7 @@ public class PreparePartyWizard extends Wizard {
     }
 
     /**
-     * Write the data from the UI items to the static data object
+     * Write the data from the UI items to the static data object.
      */
     private void updateData() {
       // store if checkbox is enabled and update the label accordingly
@@ -1265,17 +1346,12 @@ public class PreparePartyWizard extends Wizard {
      * Helper to handle a checkbox/slider combination. It also updates an
      * associated Label with the value from the Slider.
      * 
-     * @param cb
-     *          The checkbox to check for selected/deselected state
-     * @param slider
-     *          The slider to get the value from
-     * @param label
-     *          The Label to populate with the current value from the Slider.
-     * @param key
-     *          The key in the static data object for the value of the Slider.
-     * @param keyOn
-     *          The key in the static data object to store the enabled/disabled
-     *          state.
+     * @param cb The checkbox to check for selected/deselected state
+     * @param slider The slider to get the value from
+     * @param label The Label to populate with the current value from the Slider.
+     * @param key The key in the static data object for the value of the Slider.
+     * @param keyOn The key in the static data object to store the enabled/disabled
+     * state.
      */
     private void updateOneItem(JCheckBox cb, JSlider slider, JLabel label, String key, String keyOn) {
       if (cb.isSelected()) {
@@ -1435,15 +1511,20 @@ public class PreparePartyWizard extends Wizard {
    * Panel for selecting the location in the filesystem.
    */
   public static class PathSelectionPanel extends Screen implements ActionListener {
+    
+    /** Generated serialVersionUID. */
     private static final long serialVersionUID = -236180699495019177L;
 
+    /** DOCUMENT_ME. */
     JButton jbFileSelection;
 
+    /** DOCUMENT_ME. */
     JLabel jlSelectedFile;
 
+    /** DOCUMENT_ME. */
     JPanel jpMain;
 
-    /** Selected directory */
+    /** Selected directory. */
     private File fDir;
 
     /*
@@ -1517,11 +1598,17 @@ public class PreparePartyWizard extends Wizard {
       }
     }
 
+    /* (non-Javadoc)
+     * @see org.qdwizard.Screen#getDescription()
+     */
     @Override
     public String getDescription() {
       return Messages.getString("PreparePartyWizard.19");
     }
 
+    /* (non-Javadoc)
+     * @see org.qdwizard.Screen#getName()
+     */
     @Override
     public String getName() {
       return Messages.getString("PreparePartyWizard.18");
@@ -1532,6 +1619,10 @@ public class PreparePartyWizard extends Wizard {
    * Compare two types.
    */
   private static final class TypeComparator implements Comparator<Type> {
+    
+    /* (non-Javadoc)
+     * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
+     */
     @Override
     public int compare(Type o1, Type o2) {
       // handle null, always equal

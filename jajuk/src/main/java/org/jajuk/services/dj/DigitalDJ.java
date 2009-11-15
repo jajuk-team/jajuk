@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2004 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision:3266 $ 
+ *  $Revision$
  */
 
 package org.jajuk.services.dj;
@@ -30,41 +31,39 @@ import org.jajuk.base.Track;
 import org.jajuk.util.Const;
 
 /**
- * Digital DJ
+ * Digital DJ.
  */
 public abstract class DigitalDJ implements Comparable<DigitalDJ> {
 
-  /** DJ unique ID */
+  /** DJ unique ID. */
   private final String sID;
 
-  /** DJ name */
+  /** DJ name. */
   protected String sName;
 
-  /** Rating floor */
+  /** Rating floor. */
   protected int iRatingLevel = 0;
 
-  /** Fading duration in sec */
+  /** Fading duration in sec. */
   protected int iFadingDuration = 0;
 
-  /** Track unicity */
+  /** Track unicity. */
   protected boolean bUnicity = false;
 
+  /** DOCUMENT_ME. */
   private int iMaxTracks = -1;
 
   /**
-   * Constructor with ID
+   * Constructor with ID.
    * 
-   * @param sName
-   *          DJ name
-   * @param sID
-   *          DJ ID
+   * @param sID DJ ID
    */
   DigitalDJ(String sID) {
     this.sID = sID;
   }
 
   /**
-   * toString method
+   * toString method.
    * 
    * @return String representation of this object
    */
@@ -74,10 +73,11 @@ public abstract class DigitalDJ implements Comparable<DigitalDJ> {
   }
 
   /**
-   * Compare to method, sorted alphaticaly
+   * Compare to method, sorted alphaticaly.
    * 
-   * @param o
-   * @return
+   * @param other DOCUMENT_ME
+   * 
+   * @return the int
    */
   public int compareTo(DigitalDJ other) {
     // 
@@ -89,11 +89,14 @@ public abstract class DigitalDJ implements Comparable<DigitalDJ> {
   }
 
   /**
+   * To xml.
+   * 
    * @return XML representation of this DJ
    */
   public abstract String toXML();
 
   /**
+   * To xml general parameters.
    * 
    * @return DJ common parameters
    */
@@ -112,9 +115,9 @@ public abstract class DigitalDJ implements Comparable<DigitalDJ> {
   }
 
   /**
-   * Filter by rate and remove duplicates (unicity)
+   * Filter by rate and remove duplicates (unicity).
    * 
-   * @param files
+   * @param files DOCUMENT_ME
    */
   void filterFilesByRate(List<File> files) {
     // this set stores already used tracks
@@ -134,6 +137,12 @@ public abstract class DigitalDJ implements Comparable<DigitalDJ> {
     }
   }
 
+  /**
+   * Filter files by max track.
+   * DOCUMENT_ME
+   * 
+   * @param files DOCUMENT_ME
+   */
   void filterFilesByMaxTrack(List<File> files) {
     // cut off some tracks if less are selected for queuing
     if (iMaxTracks > 0) {
@@ -150,6 +159,7 @@ public abstract class DigitalDJ implements Comparable<DigitalDJ> {
   }
 
   /**
+   * Gets the name.
    * 
    * @return DJ name
    */
@@ -158,7 +168,9 @@ public abstract class DigitalDJ implements Comparable<DigitalDJ> {
   }
 
   /**
-   * equals method
+   * equals method.
+   * 
+   * @param other DOCUMENT_ME
    * 
    * @return whether two object are equals
    */
@@ -171,6 +183,9 @@ public abstract class DigitalDJ implements Comparable<DigitalDJ> {
     return getName().equals(sOtherName);
   }
 
+  /* (non-Javadoc)
+   * @see java.lang.Object#hashCode()
+   */
   @Override
   public int hashCode() {
     // equals only compares on Name, therefore use the same for the hashcode
@@ -178,13 +193,17 @@ public abstract class DigitalDJ implements Comparable<DigitalDJ> {
   }
 
   /**
-   * @param name
+   * Sets the name.
+   * 
+   * @param name DOCUMENT_ME
    */
   public void setName(String name) {
     this.sName = name;
   }
 
   /**
+   * Gets the fading duration.
+   * 
    * @return DJ fade duration
    */
   public int getFadingDuration() {
@@ -192,13 +211,17 @@ public abstract class DigitalDJ implements Comparable<DigitalDJ> {
   }
 
   /**
-   * @param fadingDuration
+   * Sets the fading duration.
+   * 
+   * @param fadingDuration DOCUMENT_ME
    */
   public void setFadingDuration(int fadingDuration) {
     this.iFadingDuration = fadingDuration;
   }
 
   /**
+   * Gets the rating level.
+   * 
    * @return Returns the iRatingFloor.
    */
   public int getRatingLevel() {
@@ -206,34 +229,53 @@ public abstract class DigitalDJ implements Comparable<DigitalDJ> {
   }
 
   /**
-   * @param ratingFloor
-   *          The iRatingFloor to set.
+   * Sets the rating level.
+   * 
+   * @param ratingFloor The iRatingFloor to set.
    */
   public void setRatingLevel(int ratingFloor) {
     this.iRatingLevel = ratingFloor;
   }
 
   /**
+   * Generate playlist.
    * 
    * @return Generated playlist
    */
   public abstract List<File> generatePlaylist();
 
+  /**
+   * Gets the iD.
+   * 
+   * @return the iD
+   */
   public String getID() {
     return this.sID;
   }
 
+  /**
+   * Checks if is track unicity.
+   * 
+   * @return true, if is track unicity
+   */
   public boolean isTrackUnicity() {
     return this.bUnicity;
   }
 
+  /**
+   * Sets the track unicity.
+   * 
+   * @param trackUnicity the new track unicity
+   */
   public void setTrackUnicity(boolean trackUnicity) {
     this.bUnicity = trackUnicity;
   }
 
   /**
+   * Gets the max tracks.
+   * 
    * @return The configured number of max tracks to queue for this DJ. -1
-   *         denotes infinity.
+   * denotes infinity.
    */
   public int getMaxTracks() {
     return this.iMaxTracks;
@@ -242,8 +284,7 @@ public abstract class DigitalDJ implements Comparable<DigitalDJ> {
   /**
    * Set the new max number of tracks to queue.
    * 
-   * @param iMaxTracks
-   *          The new max number of tracks to queue for this DJ. -1 for infinity
+   * @param iMaxTracks The new max number of tracks to queue for this DJ. -1 for infinity
    */
   public void setMaxTracks(int iMaxTracks) {
     this.iMaxTracks = iMaxTracks;

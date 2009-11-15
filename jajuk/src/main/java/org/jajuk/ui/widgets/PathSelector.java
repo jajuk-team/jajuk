@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2007 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -42,23 +43,24 @@ import org.jajuk.util.filters.DirectoryFilter;
 
 /**
  * This is a widgets that contains an editable text field given a PATH and a
- * PATH selection button opening up a file selector
+ * PATH selection button opening up a file selector.
  */
 public class PathSelector extends JPanel {
 
+  /** Generated serialVersionUID. */
   private static final long serialVersionUID = -8370527665529267952L;
 
+  /** DOCUMENT_ME. */
   JTextField jtfUrl;
 
+  /** DOCUMENT_ME. */
   JButton button;
 
   /**
-   * Construct a Path Selector
+   * Construct a Path Selector.
    * 
-   * @param filter
-   *          the filter used to select the item
-   * @param sDefault
-   *          Initialized path, null of none
+   * @param filter the filter used to select the item
+   * @param sDefault Initialized path, null of none
    */
   public PathSelector(final JajukFileFilter filter, final String sDefault) {
     super();
@@ -91,10 +93,9 @@ public class PathSelector extends JPanel {
   }
 
   /**
-   * Construct a Path Selector for directory selection
+   * Construct a Path Selector for directory selection.
    * 
-   * @param sDefault
-   *          Initialized path, null of none
+   * @param sDefault Initialized path, null of none
    */
   public PathSelector(final String sDefault) {
     super();
@@ -128,6 +129,7 @@ public class PathSelector extends JPanel {
   }
 
   /**
+   * Gets the url.
    * 
    * @return URL
    */
@@ -135,6 +137,12 @@ public class PathSelector extends JPanel {
     return jtfUrl.getText();
   }
 
+  /**
+   * Inits the ui.
+   * DOCUMENT_ME
+   * 
+   * @param sDefault DOCUMENT_ME
+   */
   private void initUI(final String sDefault) {
     // Set layout
     setLayout(new MigLayout("ins 0", "[grow][]"));
@@ -154,13 +162,15 @@ public class PathSelector extends JPanel {
 
   /**
    * This method can be extended to perform specific actions when selected
-   * changes URL
-   * 
+   * changes URL.
    */
   public void performOnURLChange() {
     // empty on purpose...
   }
 
+  /* (non-Javadoc)
+   * @see javax.swing.JComponent#setEnabled(boolean)
+   */
   @Override
   public void setEnabled(final boolean b) {
     jtfUrl.setEnabled(b);
@@ -168,9 +178,9 @@ public class PathSelector extends JPanel {
   }
 
   /**
-   * Set tooltip
+   * Set tooltip.
    * 
-   * @param s
+   * @param s DOCUMENT_ME
    */
   @Override
   public void setToolTipText(final String s) {
@@ -178,6 +188,11 @@ public class PathSelector extends JPanel {
     button.setToolTipText(s);
   }
 
+  /**
+   * Sets the uRL.
+   * 
+   * @param sURL the new uRL
+   */
   public void setURL(final String sURL) {
     jtfUrl.setText(sURL);
   }

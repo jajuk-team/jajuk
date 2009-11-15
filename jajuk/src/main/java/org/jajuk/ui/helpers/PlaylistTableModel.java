@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2008 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision: 3132 $
+ *  $Revision$
  */
 package org.jajuk.ui.helpers;
 
@@ -36,21 +37,27 @@ import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 
 /**
- * Playlist model used in queue view or playlist view
+ * Playlist model used in queue view or playlist view.
  */
 public class PlaylistTableModel extends JajukTableModel {
 
-  /** Values */
+  /** Values. */
   private List<StackItem> alItems = new ArrayList<StackItem>(10);
 
-  /** Values planned */
+  /** Values planned. */
   private List<StackItem> alPlanned = new ArrayList<StackItem>(10);
 
+  /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
-  /** Whether this model is used by a Queue View */
+  /** Whether this model is used by a Queue View. */
   private boolean bQueue = false;
 
+  /**
+   * Instantiates a new playlist table model.
+   * 
+   * @param bQueue DOCUMENT_ME
+   */
   public PlaylistTableModel(boolean bQueue) {
     super(17);
     this.bQueue = bQueue;
@@ -59,7 +66,11 @@ public class PlaylistTableModel extends JajukTableModel {
   }
 
   /**
-   * Need to overwrite this method for drag and drop
+   * Need to overwrite this method for drag and drop.
+   * 
+   * @param iRow DOCUMENT_ME
+   * 
+   * @return the item at
    */
   @Override
   public Item getItemAt(int iRow) {
@@ -71,9 +82,10 @@ public class PlaylistTableModel extends JajukTableModel {
   }
 
   /**
-   * Return all stack items from this value to the end of selection
+   * Return all stack items from this value to the end of selection.
    * 
-   * @param index
+   * @param index DOCUMENT_ME
+   * 
    * @return an arraylist of stack items or null if index is out of bounds
    */
   public List<StackItem> getItemsFrom(int index) {
@@ -85,10 +97,11 @@ public class PlaylistTableModel extends JajukTableModel {
   }
 
   /**
-   * Return right stack item in normal or planned stacks
+   * Return right stack item in normal or planned stacks.
    * 
-   * @param index
-   * @return
+   * @param index DOCUMENT_ME
+   * 
+   * @return the stack item
    */
   public StackItem getStackItem(int index) {
     if (alItems.size() == 0) {
@@ -104,8 +117,7 @@ public class PlaylistTableModel extends JajukTableModel {
   }
 
   /**
-   * Create columns configuration
-   * 
+   * Create columns configuration.
    */
   public final void prepareColumns() {
     vColNames.clear();
@@ -196,7 +208,11 @@ public class PlaylistTableModel extends JajukTableModel {
   }
 
   /**
-   * Fill model with data using an optional filter property
+   * Fill model with data using an optional filter property.
+   * 
+   * @param sPropertyName DOCUMENT_ME
+   * @param sPattern DOCUMENT_ME
+   * @param columnsToShow DOCUMENT_ME
    */
   @Override
   public void populateModel(String sPropertyName, String sPattern, List<String> columnsToShow) {
@@ -387,18 +403,38 @@ public class PlaylistTableModel extends JajukTableModel {
     }
   }
 
+  /**
+   * Gets the items.
+   * 
+   * @return the items
+   */
   public List<StackItem> getItems() {
     return this.alItems;
   }
 
+  /**
+   * Sets the items.
+   * 
+   * @param alItems the new items
+   */
   public void setItems(List<StackItem> alItems) {
     this.alItems = alItems;
   }
 
+  /**
+   * Gets the planned.
+   * 
+   * @return the planned
+   */
   public List<StackItem> getPlanned() {
     return this.alPlanned;
   }
 
+  /**
+   * Sets the planned.
+   * 
+   * @param alPlanned the new planned
+   */
   public void setPlanned(List<StackItem> alPlanned) {
     this.alPlanned = alPlanned;
   }

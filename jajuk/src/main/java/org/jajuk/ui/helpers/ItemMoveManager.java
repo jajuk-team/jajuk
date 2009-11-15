@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2005 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision: 3253 $
+ *  $Revision$
  */
 
 package org.jajuk.ui.helpers;
@@ -26,21 +27,36 @@ import java.util.List;
 import org.jajuk.base.Item;
 
 /**
- * Convenient class to manage Items to be moved using Cut/Copy/Paste Actions
+ * Convenient class to manage Items to be moved using Cut/Copy/Paste Actions.
  */
 
 public class ItemMoveManager {
 
+  /** DOCUMENT_ME. */
   private static ItemMoveManager singleton;
 
+  /** DOCUMENT_ME. */
   private final List<Item> itemsToMove = new ArrayList<Item>(20);
 
+  /**
+   * DOCUMENT_ME.
+   */
   public enum MoveActions {
-    CUT, COPY
+    
+    /** DOCUMENT_ME. */
+    CUT, 
+ /** DOCUMENT_ME. */
+ COPY
   }
 
+  /** DOCUMENT_ME. */
   private MoveActions moveAction;
 
+  /**
+   * Gets the single instance of ItemMoveManager.
+   * 
+   * @return single instance of ItemMoveManager
+   */
   public static ItemMoveManager getInstance() {
     if (singleton == null) {
       singleton = new ItemMoveManager();
@@ -48,22 +64,47 @@ public class ItemMoveManager {
     return singleton;
   }
 
+  /**
+   * Adds the items.
+   * DOCUMENT_ME
+   * 
+   * @param items DOCUMENT_ME
+   */
   public void addItems(List<Item> items) {
     itemsToMove.addAll(items);
   }
 
+  /**
+   * Gets the all.
+   * 
+   * @return the all
+   */
   public List<Item> getAll() {
     return itemsToMove;
   }
 
+  /**
+   * Removes the all.
+   * DOCUMENT_ME
+   */
   public void removeAll() {
     itemsToMove.clear();
   }
 
+  /**
+   * Sets the action.
+   * 
+   * @param action the new action
+   */
   public void setAction(MoveActions action) {
     moveAction = action;
   }
 
+  /**
+   * Gets the action.
+   * 
+   * @return the action
+   */
   public MoveActions getAction() {
     return moveAction;
   }

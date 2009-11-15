@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2005 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $$Revision$$
+ *  $Revision$
  */
 
 package org.jajuk.ui.perspectives;
@@ -56,32 +57,27 @@ import org.jajuk.util.log.Log;
 import org.xml.sax.SAXException;
 
 /**
- * Perspective adapter, provide default implementation for perspectives
+ * Perspective adapter, provide default implementation for perspectives.
  */
 public abstract class PerspectiveAdapter extends DockingDesktop implements IPerspective, Const {
-  /**
-   * 
-   */
+  
+  /** The Constant XML_EXT.  DOCUMENT_ME */
   private static final String XML_EXT = ".xml";
 
+  /** Generated serialVersionUID. */
   private static final long serialVersionUID = 698162872976536725L;
 
-  /** Perspective id (class) */
+  /** Perspective id (class). */
   private final String sID;
 
-  /** Perspective icon */
+  /** Perspective icon. */
   private ImageIcon icon;
 
-  /**
-   * As been selected flag (workaround for VLDocking issue when saving position)
-   */
+  /** As been selected flag (workaround for VLDocking issue when saving position). */
   protected boolean bAsBeenSelected = false;
 
   /**
-   * Constructor
-   * 
-   * @param sName
-   * @param sIconName
+   * Constructor.
    */
   public PerspectiveAdapter() {
     super();
@@ -99,7 +95,9 @@ public abstract class PerspectiveAdapter extends DockingDesktop implements IPers
   }
 
   /**
-   * toString method
+   * toString method.
+   * 
+   * @return the string
    */
   @Override
   public String toString() {
@@ -116,7 +114,9 @@ public abstract class PerspectiveAdapter extends DockingDesktop implements IPers
   }
 
   /**
-   * Set icon path
+   * Set icon path.
+   * 
+   * @param icon DOCUMENT_ME
    */
   public void setIcon(ImageIcon icon) {
     this.icon = icon;
@@ -270,6 +270,9 @@ public abstract class PerspectiveAdapter extends DockingDesktop implements IPers
     bAsBeenSelected = b;
   }
 
+  /* (non-Javadoc)
+   * @see org.jajuk.ui.perspectives.IPerspective#getViews()
+   */
   public Set<IView> getViews() {
     Set<IView> views = new HashSet<IView>();
     DockableState[] dockables = getDockables();

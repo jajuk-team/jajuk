@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -13,9 +14,9 @@
  *  GNU General Public License for more details.
  *
  *  You should have received a copy of the GNU General Public License
- *  along with this program; if not, write to the Free Software 
+ *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision: 3231 $
+ *  $Revision$
  */
 package org.jajuk.services.players;
 
@@ -67,38 +68,38 @@ import org.jajuk.util.log.Log;
  */
 public final class QueueModel {
 
-  /** Currently played track index */
+  /** Currently played track index. */
   private static int index;
 
-  /** Last played track */
+  /** Last played track. */
   private static StackItem itemLast;
 
-  /** Fifo itself, contains jajuk File objects */
+  /** Fifo itself, contains jajuk File objects. */
   private static volatile List<StackItem> alQueue = new ArrayList<StackItem>(50);
 
-  /** Planned tracks */
+  /** Planned tracks. */
   private static volatile List<StackItem> alPlanned = new ArrayList<StackItem>(10);
 
-  /** Stop flag* */
+  /** Stop flag*. */
   private static volatile boolean bStop = true;
 
-  /** First played file flag* */
+  /** First played file flag*. */
   private static boolean bFirstFile = true;
 
-  /** Whether we are currently playing radio */
+  /** Whether we are currently playing radio. */
   private static boolean playingRadio = false;
 
-  /** Current played radio */
+  /** Current played radio. */
   private static WebRadio currentRadio;
 
   /**
-   * No constructor, this class is used statically only
+   * No constructor, this class is used statically only.
    */
   private QueueModel() {
   }
 
   /**
-   * FIFO total reinitialization
+   * FIFO total reinitialization.
    */
   public static void reset() {
     clear();
@@ -111,10 +112,8 @@ public final class QueueModel {
    * index, i.e. remove all tracks before and after the current one that have
    * the same album.
    * 
-   * @param index
-   *          The index from where to remove.
-   * @param album
-   *          The album to remove.
+   * @param index The index from where to remove.
+   * @param album The album to remove.
    */
   public static void resetAround(int index, Album album) {
     int begin = 0;
@@ -134,9 +133,9 @@ public final class QueueModel {
   }
 
   /**
-   * Set given repeat mode to all in FIFO
+   * Set given repeat mode to all in FIFO.
    * 
-   * @param bRepeat
+   * @param bRepeat DOCUMENT_ME
    */
   public static void setRepeatModeToAll(boolean bRepeat) {
     for (StackItem item : alQueue) {
@@ -146,10 +145,10 @@ public final class QueueModel {
 
   /**
    * Asynchronous version of push (needed to perform long-task out of awt
-   * dispatcher thread)
+   * dispatcher thread).
    * 
-   * @param alItems
-   * @param bPush
+   * @param alItems DOCUMENT_ME
+   * @param bPush DOCUMENT_ME
    */
   public static void push(final List<StackItem> alItems, final boolean bPush) {
     push(alItems, bPush, false);
@@ -157,11 +156,11 @@ public final class QueueModel {
 
   /**
    * Asynchronous version of push (needed to perform long-task out of awt
-   * dispatcher thread)
+   * dispatcher thread).
    * 
-   * @param alItems
-   * @param bPush
-   * @param bPushNext
+   * @param alItems DOCUMENT_ME
+   * @param bPush DOCUMENT_ME
+   * @param bPushNext DOCUMENT_ME
    */
   public static void push(final List<StackItem> alItems, final boolean bPush,
       final boolean bPushNext) {
@@ -187,10 +186,10 @@ public final class QueueModel {
 
   /**
    * Asynchronous version of push (needed to perform long-task out of awt
-   * dispatcher thread)
+   * dispatcher thread).
    * 
-   * @param item
-   * @param bPush
+   * @param item DOCUMENT_ME
+   * @param bPush DOCUMENT_ME
    */
   public static void push(final StackItem item, final boolean bPush) {
     push(item, bPush, false);
@@ -198,11 +197,11 @@ public final class QueueModel {
 
   /**
    * Asynchronous version of push (needed to perform long-task out of awt
-   * dispatcher thread)
+   * dispatcher thread).
    * 
-   * @param item
-   * @param bPush
-   * @param bPushNext
+   * @param item DOCUMENT_ME
+   * @param bPush DOCUMENT_ME
+   * @param bPushNext DOCUMENT_ME
    */
   public static void push(final StackItem item, final boolean bPush, final boolean bPushNext) {
     Thread t = new Thread("Queue Push Thread") {
@@ -226,10 +225,9 @@ public final class QueueModel {
   }
 
   /**
-   * Launch a web radio
+   * Launch a web radio.
    * 
-   * @param radio
-   *          webradio to launch
+   * @param radio webradio to launch
    */
   public static void launchRadio(WebRadio radio) {
     try {
@@ -264,15 +262,13 @@ public final class QueueModel {
   }
 
   /**
-   * Push some files in the fifo
+   * Push some files in the fifo.
    * 
    * @param item ,
-   *          item to be played
-   * @param bPush
-   *          keep previous files or stop them to start a new one ?
-   * @param bPushNext
-   *          whether the selection is added after playing track (mutual
-   *          exclusive with simple push)
+   * item to be played
+   * @param bPush keep previous files or stop them to start a new one ?
+   * @param bPushNext whether the selection is added after playing track (mutual
+   * exclusive with simple push)
    */
   private static void pushCommand(StackItem item, boolean bPush, final boolean bPushNext) {
     List<StackItem> alFiles = new ArrayList<StackItem>(1);
@@ -281,14 +277,12 @@ public final class QueueModel {
   }
 
   /**
-   * Push some stack items in the fifo
+   * Push some stack items in the fifo.
    * 
    * @param alItems ,
-   *          list of items to be played
-   * @param bPush
-   *          keep previous files or stop them to start a new one ?
-   * @param bPushNext
-   *          whether the selection is added in first in queue
+   * list of items to be played
+   * @param bPush keep previous files or stop them to start a new one ?
+   * @param bPushNext whether the selection is added in first in queue
    */
   private static void pushCommand(List<StackItem> alItems, boolean bPush, final boolean bPushNext) {
     try {
@@ -382,7 +376,10 @@ public final class QueueModel {
   }
 
   /**
-   * @param items
+   * Contains repeated item.
+   * 
+   * @param items DOCUMENT_ME
+   * 
    * @return whether a stack item list contains a least one repeated item
    */
   private static boolean containsRepeatedItem(List<StackItem> items) {
@@ -395,7 +392,8 @@ public final class QueueModel {
   }
 
   /**
-   * @param items
+   * Contains repeat.
+   * 
    * @return whether FIFO contains a least one repeated item
    */
   public static boolean containsRepeat() {
@@ -409,7 +407,7 @@ public final class QueueModel {
 
   /**
    * Finished method, called by the PlayerImpl when the track is finished or
-   * should be finished (in case of intro mode or crass fade)
+   * should be finished (in case of intro mode or crass fade).
    */
   public static void finished() {
     finished(false);
@@ -420,7 +418,7 @@ public final class QueueModel {
    * should be finished (in case of intro mode or crass fade). IF foreceNext,
    * the next track is played, even in single repeat.
    * 
-   * @param forceNext
+   * @param forceNext DOCUMENT_ME
    */
   public static void finished(boolean forceNext) {
     try {
@@ -497,10 +495,10 @@ public final class QueueModel {
   
   /**
    * Return next item of current one (looping from end of queue to top) or null
-   * if no different item available
+   * if no different item available.
    * 
    * @return next item of current one (looping from end of queue to top) or null
-   *         if no different item available
+   * if no different item available
    */
   private static StackItem getNextItem() {
     // Compute next track
@@ -518,6 +516,10 @@ public final class QueueModel {
     return itemNext;
   }
 
+  /**
+   * Sets the end of queue.
+   * DOCUMENT_ME
+   */
   private static void setEndOfQueue() {
     // no ? just reset UI and leave
     JajukTimer.getInstance().reset();
@@ -531,10 +533,7 @@ public final class QueueModel {
   }
 
   /**
-   * Launch track at given index in the fifo
-   * 
-   * @param int
-   *          index
+   * Launch track at given index in the fifo.
    */
   private static void launch() {
     try {
@@ -636,19 +635,19 @@ public final class QueueModel {
   }
 
   /**
-   * Set current index
+   * Set current index.
    * 
-   * @param index
+   * @param index DOCUMENT_ME
    */
   public static void setIndex(int index) {
     QueueModel.index = index;
   }
 
   /**
-   * Computes planned tracks
+   * Computes planned tracks.
    * 
    * @param bClear :
-   *          clear planned tracks stack
+   * clear planned tracks stack
    */
   public static void computesPlanned(boolean bClear) {
     // Check if we are in continue mode and we have some tracks in FIFO, if
@@ -720,8 +719,7 @@ public final class QueueModel {
 
   /**
    * Clears the fifo, for example when we want to add a group of files stopping
-   * previous plays
-   * 
+   * previous plays.
    */
   public static void clear() {
     alQueue.clear();
@@ -730,6 +728,7 @@ public final class QueueModel {
   }
 
   /**
+   * Contains only repeat.
    * 
    * @return whether the FIFO contains only repeated files
    */
@@ -743,10 +742,11 @@ public final class QueueModel {
   }
 
   /**
-   * Get previous track, can add item in first index of FIFO
+   * Get previous track, can add item in first index of FIFO.
    * 
    * @return new index of current file
-   * @throws JajukException
+   * 
+   * @throws JajukException the jajuk exception
    */
   private static int addPrevious() throws JajukException {
     StackItem itemFirst = getItem(0);
@@ -771,7 +771,7 @@ public final class QueueModel {
   }
 
   /**
-   * Play previous track
+   * Play previous track.
    */
   public static void playPrevious() {
     try {
@@ -790,7 +790,7 @@ public final class QueueModel {
   }
 
   /**
-   * Play previous album
+   * Play previous album.
    */
   public static void playPreviousAlbum() {
     try {
@@ -842,7 +842,7 @@ public final class QueueModel {
   }
 
   /**
-   * Play next track in selection
+   * Play next track in selection.
    */
   public static void playNext() {
     try {
@@ -870,7 +870,7 @@ public final class QueueModel {
   }
 
   /**
-   * Play next track in selection
+   * Play next track in selection.
    */
   public static void playNextAlbum() {
     try {
@@ -936,7 +936,7 @@ public final class QueueModel {
   }
 
   /**
-   * Get the currently played file or null if no playing file
+   * Get the currently played file or null if no playing file.
    * 
    * @return File
    */
@@ -949,7 +949,7 @@ public final class QueueModel {
   }
 
   /**
-   * Get the currently played file or null if no playing file
+   * Get the currently played file or null if no playing file.
    * 
    * @return File
    */
@@ -963,7 +963,7 @@ public final class QueueModel {
   }
 
   /**
-   * Get the currently played stack item or null if no playing item
+   * Get the currently played stack item or null if no playing item.
    * 
    * @return stack item
    */
@@ -976,10 +976,11 @@ public final class QueueModel {
   }
 
   /**
-   * Get an item at given index in FIFO
+   * Get an item at given index in FIFO.
    * 
    * @param lIndex :
-   *          index
+   * index
+   * 
    * @return stack item
    */
   public static StackItem getItem(int lIndex) {
@@ -987,7 +988,7 @@ public final class QueueModel {
   }
 
   /**
-   * Get index of the last repeated item, -1 if none repeated
+   * Get index of the last repeated item, -1 if none repeated.
    * 
    * @return index
    */
@@ -1006,11 +1007,11 @@ public final class QueueModel {
   }
 
   /**
-   * Return true if none file is playing or planned to play for the given device
+   * Return true if none file is playing or planned to play for the given device.
    * 
-   * @param device
-   *          device to unmount
-   * @return
+   * @param device device to unmount
+   * 
+   * @return true, if can unmount
    */
   public static boolean canUnmount(Device device) {
     if (isStopped() || isPlayingRadio()) {
@@ -1045,19 +1046,19 @@ public final class QueueModel {
   }
 
   /**
-   * 
    * Returns whether FIFO is stopped or not <br>
    * Caution ! the FIFO may be stopped but current track is not void and a web
-   * radio can be playing
+   * radio can be playing.
    * 
    * @return Returns whether FIFO is stopped or not
-   * 
    */
   public static boolean isStopped() {
     return bStop;
   }
 
   /**
+   * Gets the queue.
+   * 
    * @return Returns a shallow copy of the fifo
    */
   @SuppressWarnings("unchecked")
@@ -1066,7 +1067,7 @@ public final class QueueModel {
   }
 
   /**
-   * Not for performance reasons
+   * Not for performance reasons.
    * 
    * @return FIFO size (do not use getFIFO().size() for performance reasons)
    */
@@ -1075,7 +1076,7 @@ public final class QueueModel {
   }
 
   /**
-   * Shuffle the FIFO, used when user select the Random mode
+   * Shuffle the FIFO, used when user select the Random mode.
    */
   public static void shuffle() {
     if (alQueue.size() > 1) {
@@ -1096,10 +1097,10 @@ public final class QueueModel {
   }
 
   /**
-   * Insert a file to play in FIFO at specified position
+   * Insert a file to play in FIFO at specified position.
    * 
-   * @param file
-   * @param iPos
+   * @param iPos DOCUMENT_ME
+   * @param item DOCUMENT_ME
    */
   public static void insert(StackItem item, int iPos) {
     List<StackItem> alStack = new ArrayList<StackItem>(1);
@@ -1112,10 +1113,10 @@ public final class QueueModel {
 
   /**
    * Insert a file at specified position, any existing item at this position is
-   * shifted on the right
+   * shifted on the right.
    * 
-   * @param file
-   * @param iPos
+   * @param iPos DOCUMENT_ME
+   * @param alFiles DOCUMENT_ME
    */
   public static void insert(List<StackItem> alFiles, int iPos) {
     if (iPos <= alQueue.size()) {
@@ -1131,9 +1132,9 @@ public final class QueueModel {
   }
 
   /**
-   * Put up an item from given index to index-1
+   * Put up an item from given index to index-1.
    * 
-   * @param lIndex
+   * @param lIndex DOCUMENT_ME
    */
   public static void up(int lIndex) {
     if (lIndex == 0 || lIndex == alQueue.size()) {
@@ -1155,9 +1156,9 @@ public final class QueueModel {
   }
 
   /**
-   * Put down an item from given index to index+1
+   * Put down an item from given index to index+1.
    * 
-   * @param lIndex
+   * @param lIndex DOCUMENT_ME
    */
   public static void down(int lIndex) {
     if (/* lIndex == 0 || */lIndex == alQueue.size() - 1
@@ -1176,9 +1177,9 @@ public final class QueueModel {
   }
 
   /**
-   * Go to given index and launch it
+   * Go to given index and launch it.
    * 
-   * @param index
+   * @param pIndex DOCUMENT_ME
    */
   public static void goTo(final int pIndex) {
     bStop = false;
@@ -1220,12 +1221,10 @@ public final class QueueModel {
   }
 
   /**
-   * Remove files at specified positions
+   * Remove files at specified positions.
    * 
-   * @param start
-   *          index
-   * @param stop
-   *          index
+   * @param iStart DOCUMENT_ME
+   * @param iStop DOCUMENT_ME
    */
   public static void remove(int iStart, int iStop) {
     if (iStart <= iStop && iStart >= 0 && iStop < alQueue.size() + alPlanned.size()) {
@@ -1252,6 +1251,7 @@ public final class QueueModel {
   }
 
   /**
+   * Gets the last.
    * 
    * @return Last Stack item in FIFO
    */
@@ -1263,6 +1263,7 @@ public final class QueueModel {
   }
 
   /**
+   * Gets the last played.
    * 
    * @return Last played item
    */
@@ -1271,17 +1272,26 @@ public final class QueueModel {
   }
 
   /**
+   * Gets the index.
+   * 
    * @return Returns the index.
    */
   public static int getIndex() {
     return index;
   }
 
+  /**
+   * Gets the count tracks left.
+   * 
+   * @return the count tracks left
+   */
   public static int getCountTracksLeft() {
     return alQueue.size() - index;
   }
 
   /**
+   * Gets the planned.
+   * 
    * @return Returns a shallow copy of planned files
    */
   @SuppressWarnings("unchecked")
@@ -1290,16 +1300,18 @@ public final class QueueModel {
   }
 
   /**
-   * Set the first file flag
+   * Set the first file flag.
    * 
-   * @param bFirstFile
+   * @param bFirstFile DOCUMENT_ME
    */
   public static void setFirstFile(boolean bFirstFile) {
     QueueModel.bFirstFile = bFirstFile;
   }
 
   /**
-   * Store current FIFO as a list
+   * Store current FIFO as a list.
+   * 
+   * @throws IOException Signals that an I/O exception has occurred.
    */
   public static void commit() throws IOException {
     java.io.File file = SessionService.getConfFileByPath(Const.FILE_FIFO);
@@ -1313,7 +1325,7 @@ public final class QueueModel {
   }
 
   /**
-   * Return whether a web radio is being played
+   * Return whether a web radio is being played.
    * 
    * @return whether a web radio is being played
    */
@@ -1322,7 +1334,7 @@ public final class QueueModel {
   }
 
   /**
-   * Return current web radio if any or null otherwise
+   * Return current web radio if any or null otherwise.
    * 
    * @return current web radio if any or null otherwise
    */
@@ -1331,7 +1343,7 @@ public final class QueueModel {
   }
 
   /**
-   * Return whether a track is being played
+   * Return whether a track is being played.
    * 
    * @return whether a track is being played
    */
@@ -1340,6 +1352,8 @@ public final class QueueModel {
   }
 
   /**
+   * Gets the current file title.
+   * 
    * @return a string representation for current played item or stop state
    */
   public static String getCurrentFileTitle() {
@@ -1357,6 +1371,10 @@ public final class QueueModel {
 
   /*
    * Force FIFO cleanup, for example after files deletion
+   */
+  /**
+   * Clean.
+   * DOCUMENT_ME
    */
   public static synchronized void clean() {
     Iterator<StackItem> it = alQueue.iterator();

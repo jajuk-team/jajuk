@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2008 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision: 3132 $
+ *  $Revision$
  */
 package org.jajuk.util;
 
@@ -65,57 +66,59 @@ import org.jajuk.util.filters.KnownTypeFilter;
 import org.jajuk.util.log.Log;
 
 /**
- * Set of convenient methods for system and IO
+ * Set of convenient methods for system and IO.
  */
 public final class UtilSystem {
 
+  /** The Constant LOCAL_IP.  DOCUMENT_ME */
   private static final String LOCAL_IP = "127.0.0.1";
 
-  /** MPlayer status possible values * */
+  /**
+   * MPlayer status possible values *.
+   */
   public static enum MPlayerStatus {
-    MPLAYER_STATUS_OK, MPLAYER_STATUS_NOT_FOUND, MPLAYER_STATUS_WRONG_VERSION, MPLAYER_STATUS_JNLP_DOWNLOAD_PBM
+    
+    /** DOCUMENT_ME. */
+    MPLAYER_STATUS_OK, 
+ /** DOCUMENT_ME. */
+ MPLAYER_STATUS_NOT_FOUND, 
+ /** DOCUMENT_ME. */
+ MPLAYER_STATUS_WRONG_VERSION, 
+ /** DOCUMENT_ME. */
+ MPLAYER_STATUS_JNLP_DOWNLOAD_PBM
   }
 
-  /** Current date cached (for performances) * */
+  /** Current date cached (for performances) *. */
   public static final Date TODAY = new Date();
 
-  /** Central random object for all Jajuk **/
+  /** Central random object for all Jajuk *. */
   private static final Random RANDOM = new Random();
 
-  /** Cached user home directory **/
+  /** Cached user home directory *. */
   private static String cachedUserHomeDir;
 
-  /**
-   * Are we under Linux ? *
-   */
+  /** Are we under Linux ? *. */
   private static final boolean UNDER_LINUX;
-  /**
-   * Are we under MAC OS Intel ? *
-   */
+  
+  /** Are we under MAC OS Intel ? *. */
   private static final boolean UNDER_OSX_INTEL;
-  /**
-   * Are we under MAC OS power ? *
-   */
+  
+  /** Are we under MAC OS power ? *. */
   private static final boolean UNDER_OSX_POWER;
-  /**
-   * Are we under Windows ? *
-   */
+  
+  /** Are we under Windows ? *. */
   private static final boolean UNDER_WINDOWS;
-  /**
-   * Are we under Windows 32 bits ? *
-   */
+  
+  /** Are we under Windows 32 bits ? *. */
   private static final boolean UNDER_WINDOWS_32BIT;
-  /**
-   * Are we under Windows 64 bits ? *
-   */
+  
+  /** Are we under Windows 64 bits ? *. */
   private static final boolean UNDER_WINDOWS_64BIT;
-  /**
-   * Directory filter used in refresh
-   */
+  
+  /** Directory filter used in refresh. */
   private static JajukFileFilter dirFilter;
-  /**
-   * File filter used in refresh
-   */
+  
+  /** File filter used in refresh. */
   private static JajukFileFilter fileFilter;
 
   // Computes OS detection operations for perf reasons (can be called in loop
@@ -156,15 +159,17 @@ public final class UtilSystem {
         && ((sArch != null) && !sArch.matches(".*86"));
   }
 
-  /** Icons cache */
+  /** Icons cache. */
   static Map<String, ImageIcon> iconCache = new HashMap<String, ImageIcon>(200);
-  /** Mplayer exe path */
+  
+  /** Mplayer exe path. */
   private static File mplayerPath = null;
-  /** current class loader */
+  
+  /** current class loader. */
   private static ClassLoader classLoader = null;
 
   /**
-   * private constructor to avoid instantiating utility class
+   * private constructor to avoid instantiating utility class.
    */
   private UtilSystem() {
   }
@@ -173,8 +178,8 @@ public final class UtilSystem {
    * Save a file in the same directory with name <filename>_YYYYmmddHHMM.xml and
    * with a given maximum Mb size for the file and its backup files
    * 
-   * @param file
-   *          The file to back up
+   * @param file The file to back up
+   * @param iMB DOCUMENT_ME
    */
   public static void backupFile(final File file, final int iMB) {
     try {
@@ -227,14 +232,13 @@ public final class UtilSystem {
   }
 
   /**
-   * Copy a file to another file
+   * Copy a file to another file.
    * 
-   * @param file
-   *          : file to copy
-   * @param fNew
-   *          : destination file
-   * @throws JajukException
-   * @throws IOException
+   * @param file : file to copy
+   * @param fNew : destination file
+   * 
+   * @throws JajukException the jajuk exception
+   * @throws IOException Signals that an I/O exception has occurred.
    */
   public static void copy(final File file, final File fNew) throws JajukException, IOException {
     Log.debug("Copying: {{" + file.getAbsolutePath() + "}}  to : " + fNew.getAbsolutePath());
@@ -252,14 +256,13 @@ public final class UtilSystem {
   }
 
   /**
-   * Copy a file
+   * Copy a file.
    * 
-   * @param file
-   *          : source file
-   * @param sNewName
-   *          : dest file
-   * @throws JajukException
-   * @throws IOException
+   * @param file : source file
+   * @param sNewName : dest file
+   * 
+   * @throws JajukException the jajuk exception
+   * @throws IOException Signals that an I/O exception has occurred.
    */
   public static void copy(final File file, final String sNewName) throws JajukException,
       IOException {
@@ -276,14 +279,12 @@ public final class UtilSystem {
   /**
    * Copy a URL resource to a file We don't use nio but Buffered Reader / writer
    * because we can only get channels from a FileInputStream that can be or not
-   * be in a Jar (production / test)
+   * be in a Jar (production / test).
    * 
-   * @param src
-   *          source designed by URL
-   * @param dest
-   *          destination file full path
-   * @throws IOException
-   *           If the src or dest cannot be opened/created.
+   * @param src source designed by URL
+   * @param dest destination file full path
+   * 
+   * @throws IOException If the src or dest cannot be opened/created.
    */
   public static void copy(final URL src, final String dest) throws IOException {
     final BufferedReader br = new BufferedReader(new InputStreamReader(src.openStream()));
@@ -308,14 +309,13 @@ public final class UtilSystem {
   }
 
   /**
-   * Copy recursively files and directories
+   * Copy recursively files and directories.
    * 
-   * @param str
-   *          The source to copy from, can be a directory or a file
-   * @param dst
-   * @throws IOException
-   * @throws JajukException
-   * @throws IOException
+   * @param dst DOCUMENT_ME
+   * @param src DOCUMENT_ME
+   * 
+   * @throws IOException Signals that an I/O exception has occurred.
+   * @throws JajukException the jajuk exception
    */
   public static void copyRecursively(final File src, final File dst) throws JajukException,
       IOException {
@@ -335,15 +335,15 @@ public final class UtilSystem {
   }
 
   /**
-   * Copy a file to given directory
+   * Copy a file to given directory.
    * 
-   * @param file
-   *          : file to copy
-   * @param directory
-   *          : destination directory
+   * @param file : file to copy
+   * @param directory : destination directory
+   * 
    * @return destination file
-   * @throws JajukException
-   * @throws IOException
+   * 
+   * @throws JajukException the jajuk exception
+   * @throws IOException Signals that an I/O exception has occurred.
    */
   public static void copyToDir(final File file, final File directory) throws JajukException,
       IOException {
@@ -356,10 +356,11 @@ public final class UtilSystem {
   }
 
   /**
-   * Create empty file
+   * Create empty file.
    * 
-   * @param sFullPath
-   * @throws IOException
+   * @param file DOCUMENT_ME
+   * 
+   * @throws IOException Signals that an I/O exception has occurred.
    */
   public static void createEmptyFile(final File file) throws IOException {
     final OutputStream fos = new FileOutputStream(file);
@@ -371,11 +372,11 @@ public final class UtilSystem {
   }
 
   /**
-   * Delete a directory
+   * Delete a directory.
    * 
-   * @param dir
-   *          : source directory
-   * @throws IOException
+   * @param dir : source directory
+   * 
+   * @throws IOException Signals that an I/O exception has occurred.
    */
   public static void deleteDir(final File dir) throws IOException {
     Log.debug("Deleting: {{" + dir.getAbsolutePath() + "}}");
@@ -397,11 +398,11 @@ public final class UtilSystem {
   }
 
   /**
-   * Delete a file
+   * Delete a file.
    * 
-   * @param file
-   *          : source file
-   * @throws IOException
+   * @param file : source file
+   * 
+   * @throws IOException Signals that an I/O exception has occurred.
    */
   public static void deleteFile(final File file) throws IOException {
     Log.debug("Deleting: {{" + file.getAbsolutePath() + "}}");
@@ -426,11 +427,10 @@ public final class UtilSystem {
    * Thanks several websites, especially
    * http://www.developer.com/java/other/article.php/607931
    * 
-   * @param entryName
-   *          name of the file to extract. Example: img.png
-   * @param file
-   *          destination PATH
-   * @throws IOException
+   * @param entryName name of the file to extract. Example: img.png
+   * @param destName DOCUMENT_ME
+   * 
+   * @throws IOException Signals that an I/O exception has occurred.
    */
   public static void extractFile(final String entryName, final String destName) throws IOException {
     JarFile jar = null;
@@ -491,10 +491,11 @@ public final class UtilSystem {
   }
 
   /**
-   * Get a file extension
+   * Get a file extension.
    * 
-   * @param file
-   * @return
+   * @param file DOCUMENT_ME
+   * 
+   * @return the extension
    */
   public static String getExtension(final File file) {
     return UtilSystem.getExtension(file.getName());
@@ -503,11 +504,10 @@ public final class UtilSystem {
   /**
    * Get a file extension (without the dot!).
    * 
-   * @param filename
-   *          The file to examine.
+   * @param filename The file to examine.
    * 
    * @return The actual file extension or an empty string if no extension is
-   *         found (i.e. no dot in the filename).
+   * found (i.e. no dot in the filename).
    */
   public static String getExtension(final String filename) {
     int dotIndex = filename.lastIndexOf('.');
@@ -531,7 +531,11 @@ public final class UtilSystem {
    * <p>
    * uses nio api for performances
    * 
-   * @return
+   * @param fio DOCUMENT_ME
+   * 
+   * @return the file checksum
+   * 
+   * @throws JajukException the jajuk exception
    */
   public static String getFileChecksum(final File fio) throws JajukException {
     try {
@@ -551,6 +555,7 @@ public final class UtilSystem {
   }
 
   /**
+   * Gets the host name.
    * 
    * @return This box hostname
    */
@@ -579,7 +584,9 @@ public final class UtilSystem {
   }
 
   /**
-   * Return url of jar we are executing
+   * Return url of jar we are executing.
+   * 
+   * @param cClass DOCUMENT_ME
    * 
    * @return URL of jar we are executing
    */
@@ -588,6 +595,8 @@ public final class UtilSystem {
   }
 
   /**
+   * Gets the m player osx path.
+   * 
    * @return MPLayer binary MAC full path
    */
   public static String getMPlayerOSXPath() {
@@ -606,6 +615,13 @@ public final class UtilSystem {
     }
   }
 
+  /**
+   * Gets the mplayer status.
+   * 
+   * @param mplayerPATH DOCUMENT_ME
+   * 
+   * @return the mplayer status
+   */
   public static UtilSystem.MPlayerStatus getMplayerStatus(final String mplayerPATH) {
     Process proc = null;
     UtilSystem.MPlayerStatus mplayerStatus = UtilSystem.MPlayerStatus.MPLAYER_STATUS_NOT_FOUND;
@@ -644,6 +660,8 @@ public final class UtilSystem {
   }
 
   /**
+   * Gets the m player windows path.
+   * 
    * @return MPlayer exe file
    */
   public static File getMPlayerWindowsPath() {
@@ -705,8 +723,8 @@ public final class UtilSystem {
    * This method intends to cleanup a future filename so it can be created on
    * all operating systems. Windows forbids characters : /\"<>|:*?
    * 
-   * @param in
-   *          filename
+   * @param in filename
+   * 
    * @return filename with forbidden characters replaced at best
    */
   public static String getNormalizedFilename(final String in) {
@@ -721,10 +739,11 @@ public final class UtilSystem {
   }
 
   /**
-   * Return only the name of a file from a complete URL
+   * Return only the name of a file from a complete URL.
    * 
-   * @param sPath
-   * @return
+   * @param sPath DOCUMENT_ME
+   * 
+   * @return the only file
    */
   public static String getOnlyFile(final String sPath) {
     return new File(sPath).getName();
@@ -734,16 +753,21 @@ public final class UtilSystem {
    * Resource loading is done this way to meet the requirements for Web Start.
    * http
    * ://java.sun.com/j2se/1.5.0/docs/guide/javaws/developersguide/faq.html#211
+   * 
+   * @param name DOCUMENT_ME
+   * 
+   * @return the resource
    */
   public static URL getResource(final String name) {
     return UtilSystem.getClassLoader().getResource(name);
   }
 
   /**
-   * @param file1
-   *          potential ancestor
-   * @param file2
-   *          potential child
+   * Checks if is ancestor.
+   * 
+   * @param file1 potential ancestor
+   * @param file2 potential child
+   * 
    * @return whether file1 is a file2 ancestor
    */
   public static boolean isAncestor(final File file1, final File file2) {
@@ -760,8 +784,11 @@ public final class UtilSystem {
   }
 
   /**
-   * @param file1
-   * @param file2
+   * Checks if is descendant.
+   * 
+   * @param file1 DOCUMENT_ME
+   * @param file2 DOCUMENT_ME
+   * 
    * @return whether file1 is a file2 descendant
    */
   public static boolean isDescendant(final File file1, final File file2) {
@@ -771,6 +798,8 @@ public final class UtilSystem {
   }
 
   /**
+   * Checks if is under linux.
+   * 
    * @return whether we are under Linux
    */
   public static boolean isUnderLinux() {
@@ -778,6 +807,8 @@ public final class UtilSystem {
   }
 
   /**
+   * Checks if is under os xintel.
+   * 
    * @return whether we are under OS X Intel
    */
   public static boolean isUnderOSXintel() {
@@ -785,6 +816,8 @@ public final class UtilSystem {
   }
 
   /**
+   * Checks if is under os xpower.
+   * 
    * @return whether we are under OS X Power
    */
   public static boolean isUnderOSXpower() {
@@ -792,6 +825,8 @@ public final class UtilSystem {
   }
 
   /**
+   * Checks if is under windows.
+   * 
    * @return whether we are under Windows
    */
   public static boolean isUnderWindows() {
@@ -799,6 +834,8 @@ public final class UtilSystem {
   }
 
   /**
+   * Checks if is under windows32bits.
+   * 
    * @return whether we are under Windows 32 bits
    */
   public static boolean isUnderWindows32bits() {
@@ -806,6 +843,8 @@ public final class UtilSystem {
   }
 
   /**
+   * Checks if is under windows64bits.
+   * 
    * @return whether we are under Windows 64 bits
    */
   public static boolean isUnderWindows64bits() {
@@ -813,10 +852,11 @@ public final class UtilSystem {
   }
 
   /**
-   * @param parent
-   *          parent directory
-   * @param name
-   *          file name
+   * Checks if is valid file name.
+   * 
+   * @param parent parent directory
+   * @param name file name
+   * 
    * @return whether the file name is correct on the current filesystem
    */
   public static boolean isValidFileName(final File parent, final String name) {
@@ -856,6 +896,8 @@ public final class UtilSystem {
   }
 
   /**
+   * Need full fc.
+   * 
    * @return whether we need a full gc or not
    */
   public static boolean needFullFC() {
@@ -868,12 +910,12 @@ public final class UtilSystem {
   /**
    * Open a file and return a string buffer with the file content.
    * 
-   * @param path
-   *          -File path
+   * @param path -File path
+   * 
    * @return StringBuilder - File content.
-   * @throws JajukException
-   *           - Throws a JajukException if a problem occurs during the file
-   *           access.
+   * 
+   * @throws JajukException - Throws a JajukException if a problem occurs during the file
+   * access.
    */
   public static StringBuilder readFile(final String path) throws JajukException {
     // Read
@@ -909,12 +951,12 @@ public final class UtilSystem {
    * Open a file from current jar and return a string buffer with the file
    * content.
    * 
-   * @param sUrl
-   *          : relative file url
+   * @param sURL DOCUMENT_ME
+   * 
    * @return StringBuilder - File content.
-   * @throws JajukException
-   *           -Throws a JajukException if a problem occurs during the file
-   *           access.
+   * 
+   * @throws JajukException -Throws a JajukException if a problem occurs during the file
+   * access.
    */
   public static StringBuilder readJarFile(final String sURL) throws JajukException {
     // Read
@@ -943,15 +985,21 @@ public final class UtilSystem {
   }
 
   /**
-   * Remove an extension from a file name
+   * Remove an extension from a file name.
    * 
-   * @param filename
+   * @param sFilename DOCUMENT_ME
+   * 
    * @return filename without extension
    */
   public static String removeExtension(final String sFilename) {
     return sFilename.substring(0, sFilename.lastIndexOf('.'));
   }
 
+  /**
+   * Gets the class loader.
+   * 
+   * @return the class loader
+   */
   public static ClassLoader getClassLoader() {
     if (UtilSystem.classLoader == null) {
       UtilSystem.classLoader = Thread.currentThread().getContextClassLoader();
@@ -959,6 +1007,11 @@ public final class UtilSystem {
     return UtilSystem.classLoader;
   }
 
+  /**
+   * Gets the dir filter.
+   * 
+   * @return the dir filter
+   */
   public static JajukFileFilter getDirFilter() {
     if (dirFilter == null) {
       dirFilter = new JajukFileFilter(DirectoryFilter.getInstance());
@@ -966,6 +1019,11 @@ public final class UtilSystem {
     return dirFilter;
   }
 
+  /**
+   * Gets the file filter.
+   * 
+   * @return the file filter
+   */
   public static JajukFileFilter getFileFilter() {
     if (fileFilter == null) {
       fileFilter = new JajukFileFilter(KnownTypeFilter.getInstance());
@@ -974,16 +1032,13 @@ public final class UtilSystem {
   }
 
   /**
-   * Replace a string inside a given file
+   * Replace a string inside a given file.
    * 
-   * @param file
-   *          the file
-   * @param oldS
-   *          the string to replace
-   * @param newS
-   *          the new string
-   * @param encoding
-   *          the encoding of the file
+   * @param file the file
+   * @param oldS the string to replace
+   * @param newS the new string
+   * @param encoding the encoding of the file
+   * 
    * @return whether some replacements occurred
    */
   public static boolean replaceInFile(File file, String oldS, String newS, String encoding) {
@@ -1013,7 +1068,6 @@ public final class UtilSystem {
    * random could be created at the same exact date in different threads or the
    * same.
    * 
-   * 
    * @return Jajuk singleton random object
    */
   public static Random getRandom() {
@@ -1027,8 +1081,7 @@ public final class UtilSystem {
    * 
    * Inspired from an aTunes method
    * 
-   * @param file
-   *          The file that should be opened
+   * @param directory DOCUMENT_ME
    */
   public static void openInExplorer(File directory) {
     final File directoryToOpen;
@@ -1081,10 +1134,10 @@ public final class UtilSystem {
   }
 
   /**
-   * Return whether a process is still running
+   * Return whether a process is still running.
    * 
-   * @param process
-   *          the process
+   * @param process the process
+   * 
    * @return whether the process is still running
    */
   public static boolean isRunning(Process process) {
@@ -1097,10 +1150,10 @@ public final class UtilSystem {
   }
 
   /**
-   * Return a process exit value, -100 if the process is stopped
+   * Return a process exit value, -100 if the process is stopped.
    * 
-   * @param process
-   *          the process
+   * @param process the process
+   * 
    * @return the process exit value, -100 if the process is running
    */
   public static int getExitValue(Process process) {
@@ -1112,7 +1165,7 @@ public final class UtilSystem {
   }
 
   /**
-   * Returns current user home directory handling Windows issues on JRE
+   * Returns current user home directory handling Windows issues on JRE.
    * 
    * @return current user home directory
    */

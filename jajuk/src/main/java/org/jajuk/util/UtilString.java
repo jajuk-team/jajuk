@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2008 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision: 3132 $
+ *  $Revision$
  */
 package org.jajuk.util;
 
@@ -39,19 +40,14 @@ import org.jajuk.base.Track;
 import org.jajuk.util.error.JajukException;
 
 /**
- * Set of convenient classes for string manipulation
+ * Set of convenient classes for string manipulation.
  */
 public final class UtilString {
 
-  /**
-   * The list of characters that we need to escape in strings
-   */
+  /** The list of characters that we need to escape in strings. */
   private final static String ESCAPE_CHARACTERS = "\\[](){}.*+?$^|-";
 
-  /**
-   * Constant date FORMATTER, one by thread for perfs, we need an instance by
-   * thread because this class is not thread safe
-   */
+  /** Constant date FORMATTER, one by thread for perfs, we need an instance by thread because this class is not thread safe. */
   private static final ThreadLocal<SimpleDateFormat> FORMATTER = new ThreadLocal<SimpleDateFormat>() {
     @Override
     protected SimpleDateFormat initialValue() {
@@ -60,7 +56,7 @@ public final class UtilString {
   };
 
   /**
-   * private constructor to avoid instantiating utility class
+   * private constructor to avoid instantiating utility class.
    */
   private UtilString() {
   }
@@ -68,16 +64,16 @@ public final class UtilString {
   /**
    * Apply the Album pattern.
    * 
-   * @param file
-   *          file to apply pattern to
-   * @param sPattern
-   * @param bMandatory
-   *          are all needed tags mandatory ?
-   * @param normalize
-   * @param out
-   * @param track
-   * @return
-   * @throws JajukException
+   * @param file file to apply pattern to
+   * @param sPattern DOCUMENT_ME
+   * @param bMandatory are all needed tags mandatory ?
+   * @param normalize DOCUMENT_ME
+   * @param out DOCUMENT_ME
+   * @param track DOCUMENT_ME
+   * 
+   * @return the string
+   * 
+   * @throws JajukException the jajuk exception
    */
   private static String applyAlbumPattern(final org.jajuk.base.File file, final String sPattern,
       final boolean bMandatory, final boolean normalize, final String out, final Track track)
@@ -105,15 +101,15 @@ public final class UtilString {
   /**
    * Apply the Year pattern.
    * 
-   * @param file
-   *          file to apply pattern to
-   * @param sPattern
-   * @param bMandatory
-   *          are all needed tags mandatory ?
-   * @param out
-   * @param track
-   * @return
-   * @throws JajukException
+   * @param file file to apply pattern to
+   * @param sPattern DOCUMENT_ME
+   * @param bMandatory are all needed tags mandatory ?
+   * @param out DOCUMENT_ME
+   * @param track DOCUMENT_ME
+   * 
+   * @return the string
+   * 
+   * @throws JajukException the jajuk exception
    */
   private static String applyYearPattern(final org.jajuk.base.File file, final String sPattern,
       final boolean bMandatory, final String out, final Track track) throws JajukException {
@@ -135,11 +131,12 @@ public final class UtilString {
   /**
    * Apply the Track pattern.
    * 
-   * @param sPattern
-   * @param normalize
-   * @param out
-   * @param track
-   * @return
+   * @param sPattern DOCUMENT_ME
+   * @param normalize DOCUMENT_ME
+   * @param out DOCUMENT_ME
+   * @param track DOCUMENT_ME
+   * 
+   * @return the string
    */
   private static String applyTrackPattern(final String sPattern, final boolean normalize, final String out,
       final Track track) {
@@ -158,15 +155,15 @@ public final class UtilString {
   /**
    * Apply the Track Order pattern.
    * 
-   * @param file
-   *          file to apply pattern to
-   * @param sPattern
-   * @param bMandatory
-   *          are all needed tags mandatory ?
-   * @param out
-   * @param track
-   * @return
-   * @throws JajukException
+   * @param file file to apply pattern to
+   * @param sPattern DOCUMENT_ME
+   * @param bMandatory are all needed tags mandatory ?
+   * @param out DOCUMENT_ME
+   * @param track DOCUMENT_ME
+   * 
+   * @return the string
+   * 
+   * @throws JajukException the jajuk exception
    */
   private static String applyTrackOrderPattern(final org.jajuk.base.File file, final String sPattern,
       final boolean bMandatory, final String out, final Track track) throws JajukException {
@@ -185,6 +182,18 @@ public final class UtilString {
     return out;
   }
 
+  /**
+   * Handle order.
+   * DOCUMENT_ME
+   * 
+   * @param file DOCUMENT_ME
+   * @param bMandatory DOCUMENT_ME
+   * @param track DOCUMENT_ME
+   * 
+   * @return the long
+   * 
+   * @throws JajukException the jajuk exception
+   */
   private static long handleOrder(final org.jajuk.base.File file, final boolean bMandatory,
       final Track track) throws JajukException {
     long lOrder = track.getOrder();
@@ -212,16 +221,16 @@ public final class UtilString {
   /**
    * Apply the Style pattern.
    * 
-   * @param file
-   *          file to apply pattern to
-   * @param sPattern
-   * @param bMandatory
-   *          are all needed tags mandatory ?
-   * @param normalize
-   * @param out
-   * @param track
-   * @return
-   * @throws JajukException
+   * @param file file to apply pattern to
+   * @param sPattern DOCUMENT_ME
+   * @param bMandatory are all needed tags mandatory ?
+   * @param normalize DOCUMENT_ME
+   * @param out DOCUMENT_ME
+   * @param track DOCUMENT_ME
+   * 
+   * @return the string
+   * 
+   * @throws JajukException the jajuk exception
    */
   private static String applyStylePattern(final org.jajuk.base.File file, final String sPattern,
       final boolean bMandatory, final boolean normalize, final String out, final Track track)
@@ -249,16 +258,16 @@ public final class UtilString {
   /**
    * Apply the Author pattern.
    * 
-   * @param file
-   *          file to apply pattern to
-   * @param sPattern
-   * @param bMandatory
-   *          are all needed tags mandatory ?
-   * @param normalize
-   * @param out
-   * @param track
-   * @return
-   * @throws JajukException
+   * @param file file to apply pattern to
+   * @param sPattern DOCUMENT_ME
+   * @param bMandatory are all needed tags mandatory ?
+   * @param normalize DOCUMENT_ME
+   * @param out DOCUMENT_ME
+   * @param track DOCUMENT_ME
+   * 
+   * @return the string
+   * 
+   * @throws JajukException the jajuk exception
    */
   private static String applyAuthorPattern(final org.jajuk.base.File file, final String sPattern,
       final boolean bMandatory, final boolean normalize, final String out, final Track track)
@@ -289,16 +298,16 @@ public final class UtilString {
    * Apply a pattern. This replaces certain patterns in the provided Pattern
    * with information from the file and returns the result.
    * 
-   * @param file
-   *          file to apply pattern to
-   * @param sPattern
-   * @param bMandatory
-   *          are all needed tags mandatory ?
+   * @param file file to apply pattern to
+   * @param sPattern DOCUMENT_ME
+   * @param bMandatory are all needed tags mandatory ?
+   * @param normalize DOCUMENT_ME
+   * 
    * @return computed string
-   * @return make sure the created string can be used as file name on target
-   *         file system
-   * @throws JajukException
-   *           if some tags are missing
+   * make sure the created string can be used as file name on target
+   * file system
+   * 
+   * @throws JajukException if some tags are missing
    */
   public static String applyPattern(final org.jajuk.base.File file, final String sPattern,
       final boolean bMandatory, final boolean normalize) throws JajukException {
@@ -334,11 +343,14 @@ public final class UtilString {
   }
 
   /**
-   * @param pattern
-   * @param normalize
-   * @param out
-   * @param track
-   * @return
+   * Apply album artist pattern.
+   * 
+   * @param normalize DOCUMENT_ME
+   * @param out DOCUMENT_ME
+   * @param track DOCUMENT_ME
+   * @param sPattern DOCUMENT_ME
+   * 
+   * @return the string
    */
   private static String applyAlbumArtistPattern(String sPattern, boolean normalize,
       String out, Track track) {
@@ -359,13 +371,17 @@ public final class UtilString {
   }
 
   /**
-   * @param file
-   * @param pattern
-   * @param mandatory
-   * @param out
-   * @param track
-   * @return
-   * @throws JajukException
+   * Apply disc pattern.
+   * 
+   * @param file DOCUMENT_ME
+   * @param out DOCUMENT_ME
+   * @param track DOCUMENT_ME
+   * @param sPattern DOCUMENT_ME
+   * @param bMandatory DOCUMENT_ME
+   * 
+   * @return the string
+   * 
+   * @throws JajukException the jajuk exception
    */
   private static String applyDiscPattern(File file, String sPattern, boolean bMandatory,
       String out, Track track) throws JajukException {
@@ -384,6 +400,18 @@ public final class UtilString {
     return out;
   }
 
+  /**
+   * Handle disc number.
+   * DOCUMENT_ME
+   * 
+   * @param file DOCUMENT_ME
+   * @param bMandatory DOCUMENT_ME
+   * @param track DOCUMENT_ME
+   * 
+   * @return the long
+   * 
+   * @throws JajukException the jajuk exception
+   */
   private static long handleDiscNumber(File file, boolean bMandatory, Track track)
       throws JajukException {
     long lDiscNumber = track.getDiscNumber();
@@ -409,8 +437,10 @@ public final class UtilString {
   }
 
   /**
-   * @param s
-   *          String to analyse
+   * Contains non digit or letters.
+   * 
+   * @param s String to analyse
+   * 
    * @return whether the given string contains non digit or letter characters
    */
   public static boolean containsNonDigitOrLetters(final String s) {
@@ -425,10 +455,11 @@ public final class UtilString {
   }
 
   /**
-   * Encode URLS
+   * Encode URLS.
    * 
-   * @param s
-   * @return
+   * @param s DOCUMENT_ME
+   * 
+   * @return the string
    */
   public static String encodeURL(final String s) {
     return s.replaceAll(" +", "+");
@@ -437,6 +468,14 @@ public final class UtilString {
   /*
    * Escape (in the regexp sense) a string Source Search reserved: $ ( ) * + - . ? [ \ ] ^ { | }
    * http://mindprod.com/jgloss/regex.html
+   */
+  /**
+   * Escape string.
+   * DOCUMENT_ME
+   * 
+   * @param s DOCUMENT_ME
+   * 
+   * @return the string
    */
   public static String escapeString(String s) {
     int length = s.length();
@@ -459,11 +498,11 @@ public final class UtilString {
   /**
    * Format an object to a string.
    * 
-   * @param sValue
-   * @param cType
-   * @param bHuman
-   *          is this string intended to be human-readable ?
-   * @return
+   * @param bHuman is this string intended to be human-readable ?
+   * @param oValue DOCUMENT_ME
+   * @param meta DOCUMENT_ME
+   * 
+   * @return the string
    */
   public static String format(final Object oValue, final PropertyMetaInformation meta,
       final boolean bHuman) {
@@ -483,6 +522,8 @@ public final class UtilString {
   }
 
   /**
+   * Gets the locale date formatter.
+   * 
    * @return locale date FORMATTER instance
    */
   public static DateFormat getLocaleDateFormatter() {
@@ -490,20 +531,22 @@ public final class UtilString {
   }
 
   /**
-   * Formatter for properties dialog window
+   * Formatter for properties dialog window.
    * 
-   * @param sDesc
-   * @return
+   * @param sDesc DOCUMENT_ME
+   * 
+   * @return the string
    */
   public static String formatPropertyDesc(final String sDesc) {
     return "<HTML><center><b><font size=+0 color=#000000>" + sDesc + "</font></b><HTML>";
   }
 
   /**
-   * format style: first letter uppercase and others lowercase
+   * format style: first letter uppercase and others lowercase.
    * 
-   * @param style
-   * @return
+   * @param style DOCUMENT_ME
+   * 
+   * @return the string
    */
   public static String formatStyle(final String style) {
     if (style.length() == 0) {
@@ -519,10 +562,11 @@ public final class UtilString {
   }
 
   /**
-   * Performs some cleanups for strings comming from tag libs
+   * Performs some cleanups for strings comming from tag libs.
    * 
-   * @param s
-   * @return
+   * @param s DOCUMENT_ME
+   * 
+   * @return the string
    */
   public static String formatTag(final String s) {
     // we delete all non char characters to avoid parsing errors
@@ -537,7 +581,13 @@ public final class UtilString {
     return sb.toString().trim();
   }
 
-  /** Format a time from secs to a human readable format */
+  /**
+   * Format a time from secs to a human readable format.
+   * 
+   * @param lTime DOCUMENT_ME
+   * 
+   * @return the string
+   */
   public static String formatTimeBySec(final long lTime) {
     // Convert time to int for performance reasons
     int l = (int) lTime;
@@ -570,8 +620,9 @@ public final class UtilString {
    * <p>> to &gt;
    * <p> & to &amp;
    * 
-   * @param s
-   * @return
+   * @param s DOCUMENT_ME
+   * 
+   * @return the string
    */
   public static String formatXML(final String s) {
     String sOut = replaceReservedXMLChars(s);
@@ -592,8 +643,11 @@ public final class UtilString {
   }
 
   /**
-   * @param s
-   * @return
+   * Replace reserved xml chars.
+   * 
+   * @param s DOCUMENT_ME
+   * 
+   * @return the string
    */
   private static String replaceReservedXMLChars(final String s) {
     String sOut = s;
@@ -616,6 +670,8 @@ public final class UtilString {
   }
 
   /**
+   * Gets the addition date formatter.
+   * 
    * @return Thread-safe addition date simple format instance
    */
   public static DateFormat getAdditionDateFormatter() {
@@ -623,6 +679,8 @@ public final class UtilString {
   }
 
   /**
+   * Gets the anonymized jajuk properties.
+   * 
    * @return Anonymized Jajuk properties (for log or quality agent)
    */
   public static Properties getAnonymizedJajukProperties() {
@@ -636,6 +694,8 @@ public final class UtilString {
   }
 
   /**
+   * Gets the anonymized system properties.
+   * 
    * @return Anonymized System properties (for log or quality agent)
    */
   public static Properties getAnonymizedSystemProperties() {
@@ -658,12 +718,11 @@ public final class UtilString {
   }
 
   /**
-   * Make sure to reduce a string to the given size
+   * Make sure to reduce a string to the given size.
    * 
-   * @param sIn
-   *          Input string, exemple: blabla
-   * @param iSize
-   *          max size, exemple: 3
+   * @param sIn Input string, exemple: blabla
+   * @param iSize max size, exemple: 3
+   * 
    * @return bla...
    */
   public static String getLimitedString(final String sIn, final int iSize) {
@@ -675,10 +734,12 @@ public final class UtilString {
   }
 
   /**
-   * @param ucs4char
-   *          char to test
+   * Checks if is char.
+   * 
+   * @param ucs4char char to test
+   * 
    * @return whether the char is valid, code taken from Apache sax
-   *         implementation
+   * implementation
    */
   public static boolean isChar(final int ucs4char) {
     return ((ucs4char >= 32) && (ucs4char <= 55295)) || (ucs4char == 10) || (ucs4char == 9)
@@ -687,7 +748,10 @@ public final class UtilString {
   }
 
   /**
-   * @param s
+   * Checks if is xml valid.
+   * 
+   * @param s DOCUMENT_ME
+   * 
    * @return whether given string is XML-valid
    */
   public static boolean isXMLValid(final String s) {
@@ -709,13 +773,12 @@ public final class UtilString {
   }
 
   /**
-   * Pad an int with zeros
+   * Pad an int with zeros.
    * 
-   * @param l
-   *          the number to be padded
-   * @param size
-   *          the targeted size
-   * @return
+   * @param l the number to be padded
+   * @param size the targeted size
+   * 
+   * @return the string
    */
   public static String padNumber(final long l, final int size) {
     final StringBuilder sb = new StringBuilder(Long.toString(l));
@@ -726,13 +789,15 @@ public final class UtilString {
   }
 
   /**
-   * Parse a string to an object
+   * Parse a string to an object.
    * 
-   * @param sValue
-   * @param cType
+   * @param sValue DOCUMENT_ME
+   * @param cType DOCUMENT_ME
+   * 
    * @return parsed item
-   * @throws ParseException
-   * @throws ClassNotFoundException
+   * 
+   * @throws ParseException the parse exception
+   * @throws ClassNotFoundException the class not found exception
    */
   public static Object parse(final String sValue, final Class<?> cType) throws ParseException,
       ClassNotFoundException {
@@ -751,6 +816,14 @@ public final class UtilString {
     return oDefaultValue;
   }
 
+  /**
+   * Handle boolean.
+   * DOCUMENT_ME
+   * 
+   * @param sValue DOCUMENT_ME
+   * 
+   * @return the boolean
+   */
   private static Boolean handleBoolean(final String sValue) {
     Boolean oValue;
     // "y" and "n" is an old boolean
@@ -771,9 +844,9 @@ public final class UtilString {
    * CAUTION : do not use if the value can be negative or you will get
    * unexpected results
    * 
-   * @param in
-   *          must be a set of digits with a size > 0 and be positive
-   * @return
+   * @param in must be a set of digits with a size > 0 and be positive
+   * 
+   * @return the long
    */
   public static long fastLongParser(String in) {
     int length = in.length();
@@ -792,9 +865,9 @@ public final class UtilString {
   /**
    * Fast Boolean parser, low level check, replacement of Boolean.parseBoolean()
    * 
-   * @param in
-   *          must be a string beginning by true or false (lower case)
-   * @return
+   * @param in must be a string beginning by true or false (lower case)
+   * 
+   * @return true, if fast boolean parser
    */
   public static boolean fastBooleanParser(String in) {
     return (in.charAt(0) == 't');
@@ -807,8 +880,8 @@ public final class UtilString {
    * java_cryptography_extension/rot13.java
    * </p>
    * 
-   * @param in
-   *          text to encode / decode in rote 13
+   * @param in text to encode / decode in rote 13
+   * 
    * @return encoded /decoded text
    */
   public static String rot13(final String in) {
@@ -828,11 +901,11 @@ public final class UtilString {
   }
 
   /**
+   * Matches ignore case and order.
    * 
-   * @param tested
-   *          the string to be tested
-   * @param key
-   *          the search criteria, can be several words separated by a space
+   * @param tested the string to be tested
+   * @param key the search criteria, can be several words separated by a space
+   * 
    * @return whether the given tested string matches the key
    */
   public static boolean matchesIgnoreCaseAndOrder(final String tested, final String key) {
@@ -851,8 +924,8 @@ public final class UtilString {
   /**
    * Encode a string to unicode representation (ie \\uxxxx\\uyyyyy...)
    * 
-   * @param in
-   *          string to encode
+   * @param in string to encode
+   * 
    * @return encoded string
    */
   public static String encodeToUnicode(String in) {
@@ -868,10 +941,11 @@ public final class UtilString {
   }
 
   /**
-   * Convert byte to hexadecimal representation
+   * Convert byte to hexadecimal representation.
    * 
-   * @param b
-   * @return
+   * @param b DOCUMENT_ME
+   * 
+   * @return the string
    */
   public static String byteToHex(byte b) {
     char hexDigit[] = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e',
@@ -883,8 +957,7 @@ public final class UtilString {
   /**
    * Returns a concatenation of argument array.
    * 
-   * @param strings
-   *          strings to be concatened
+   * @param strings strings to be concatened
    * 
    * @return concatenation of given strings
    */
@@ -897,7 +970,6 @@ public final class UtilString {
   }
 
   /**
-   * 
    * Code token from aTunes 1.14.0 *Copyright (C) 2006-2009 Alex Aranda, Sylvain
    * Gaudard, Thomas Beckers and contributors Returns list of text between
    * specified chars. Both chars are included in result elements. Returns empty
@@ -905,10 +977,11 @@ public final class UtilString {
    * string "ab cd (ef) gh (ij)" and chars '(' and ')' will return a list with
    * two strings: "(ef)" and "(ij)"
    * 
-   * @param string
-   * @param beginChar
-   * @param endChar
-   * @return
+   * @param string DOCUMENT_ME
+   * @param beginChar DOCUMENT_ME
+   * @param endChar DOCUMENT_ME
+   * 
+   * @return the text between chars
    */
   public static final List<String> getTextBetweenChars(String string, char beginChar, char endChar) {
     List<String> result = new ArrayList<String>();

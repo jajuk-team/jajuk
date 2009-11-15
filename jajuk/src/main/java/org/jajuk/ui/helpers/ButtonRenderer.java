@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2004 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -28,12 +29,19 @@ import javax.swing.JTable;
 import javax.swing.table.TableCellRenderer;
 
 /**
- * Button render inside a table
+ * Button render inside a table.
  */
 public class ButtonRenderer extends JButton implements TableCellRenderer {
 
+  /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
+  /**
+   * Instantiates a new button renderer.
+   * 
+   * @param sText DOCUMENT_ME
+   * @param icon DOCUMENT_ME
+   */
   public ButtonRenderer(String sText, Icon icon) {
     super(sText, icon);
   }

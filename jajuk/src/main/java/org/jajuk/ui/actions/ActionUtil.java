@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2005 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $$Revision:3308 $$ 
+ *  $Revision$
  */
 package org.jajuk.ui.actions;
 
@@ -32,11 +33,12 @@ import javax.swing.KeyStroke;
  */
 public final class ActionUtil {
 
-  /**
-   * The character to use as mnemonic indicator.
-   */
+  /** The character to use as mnemonic indicator. */
   public static final char INDICATOR = '_';
 
+  /**
+   * Instantiates a new action util.
+   */
   private ActionUtil() {
     // Private access to disallow construction.
   }
@@ -45,11 +47,11 @@ public final class ActionUtil {
    * Strips a mnemonic character out of a given text. A text's mnemonic is the
    * first character following a <code>'_'</code> character.
    * 
-   * @param text
-   *          The text to strip the mnemonic character from.
+   * @param text The text to strip the mnemonic character from.
+   * 
    * @return An <code>int</code> defining the mnemonic character for the given
-   *         text. If there was no mnemonic indicator found, <code>-1</code>
-   *         will be returned.
+   * text. If there was no mnemonic indicator found, <code>-1</code>
+   * will be returned.
    */
   public static int getMnemonic(String text) {
     for (int i = 0; i < text.length() - 1; i++) {
@@ -63,10 +65,11 @@ public final class ActionUtil {
   /**
    * Strips the text from mnemonic indicators.
    * 
-   * @param text
-   *          The text to work on.
+   * @param text The text to work on.
+   * 
    * @return The text with all mnemonic indicators stripped. If there are no
-   *         indicators in the given text, the original text will be returned.
+   * indicators in the given text, the original text will be returned.
+   * 
    * @see #INDICATOR
    */
   public static String strip(String text) {
@@ -78,10 +81,8 @@ public final class ActionUtil {
    * keystrokes are added with {@link JComponent#WHEN_IN_FOCUSED_WINDOW}
    * condition.
    * 
-   * @param component
-   *          The component to which the key stroke will be added.
-   * @param actions
-   *          The actions to add to the keystrokes.
+   * @param component The component to which the key stroke will be added.
+   * @param actions The actions to add to the keystrokes.
    */
   public static void installKeystrokes(JComponent component, Action... actions) {
     for (Action action : actions) {
@@ -97,10 +98,11 @@ public final class ActionUtil {
   }
 
   /**
-   * Return whether a key event matches the mnemonic of a provided action
+   * Return whether a key event matches the mnemonic of a provided action.
    * 
-   * @param action
-   * @param ke
+   * @param action DOCUMENT_ME
+   * @param ke DOCUMENT_ME
+   * 
    * @return whether a key event matches the mnemonic of a provided action
    */
   public static boolean matches(Action action, KeyEvent ke) {

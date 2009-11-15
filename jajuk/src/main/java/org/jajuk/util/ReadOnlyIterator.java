@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2008 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision: 3132 $
+ *  $Revision$
  */
 package org.jajuk.util;
 
@@ -23,21 +24,38 @@ import java.util.Iterator;
 
 /**
  * A convenient class that prevent remove() method from an iterator <br>
- * Generic class
+ * Generic class.
  */
 public class ReadOnlyIterator<V> {
 
-  /** Managed iterator * */
+  /** Managed iterator *. */
   Iterator<V> iterator;
 
+  /**
+   * Instantiates a new read only iterator.
+   * 
+   * @param it DOCUMENT_ME
+   */
   public ReadOnlyIterator(Iterator<V> it) {
     this.iterator = it;
   }
 
+  /**
+   * Next.
+   * DOCUMENT_ME
+   * 
+   * @return the v
+   */
   public V next() {
     return iterator.next();
   }
 
+  /**
+   * Checks for next.
+   * DOCUMENT_ME
+   * 
+   * @return true if...
+   */
   public boolean hasNext() {
     return iterator.hasNext();
   }

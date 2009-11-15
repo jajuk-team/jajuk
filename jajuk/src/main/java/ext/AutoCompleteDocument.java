@@ -1,30 +1,22 @@
 /*
- * Jajuk Specific version of this swingx class to fix 
- * this: https://swingx.dev.java.net/issues/show_bug.cgi?id=464
- * 
- * $Id: AutoCompleteDocument.java,v 1.4 2006/07/29 14:57:47 Bierhance Exp $
+ *  Jajuk
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
- * This file has been adapted to Jajuk by the Jajuk Team.
- * Jajuk Copyright (C) 2007 The Jajuk Team
+ *  This program is free software; you can redistribute it and/or
+ *  modify it under the terms of the GNU General Public License
+ *  as published by the Free Software Foundation; either version 2
+ *  of the License, or any later version.
  *
- * The original copyrights and license follow:
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
  *
- * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
- * Santa Clara, California 95054, U.S.A. All rights reserved.
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- * 
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program; if not, write to the Free Software
+ *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ *  $Revision$
  */
 package ext;
 
@@ -43,40 +35,29 @@ import org.jdesktop.swingx.autocomplete.ObjectToStringConverter;
  */
 public class AutoCompleteDocument extends PlainDocument {
 
+  /** Generated serialVersionUID. */
   private static final long serialVersionUID = -4353609211147483101L;
 
-  /**
-   * Flag to indicate if adaptor.setSelectedItem has been called. Subsequent
-   * calls to remove/insertString should be ignored as they are likely have been
-   * caused by the adapted Component that is trying to set the text for the
-   * selected component.
-   */
+  /** Flag to indicate if adaptor.setSelectedItem has been called. Subsequent calls to remove/insertString should be ignored as they are likely have been caused by the adapted Component that is trying to set the text for the selected component. */
   boolean selecting = false;
 
-  /**
-   * true, if only items from the adaptors's list can be entered false,
-   * otherwise (selected item might not be in the adaptors's list)
-   */
+  /** true, if only items from the adaptors's list can be entered false, otherwise (selected item might not be in the adaptors's list). */
   boolean strictMatching;
 
-  /**
-   * The adaptor that is used to find and select items.
-   */
+  /** The adaptor that is used to find and select items. */
   AbstractAutoCompleteAdaptor adaptor;
 
+  /** DOCUMENT_ME. */
   ObjectToStringConverter stringConverter;
 
   /**
    * Creates a new AutoCompleteDocument for the given
    * AbstractAutoCompleteAdaptor.
    * 
-   * @param adaptor
-   *          The adaptor that will be used to find and select matching items.
-   * @param strictMatching
-   *          true, if only items from the adaptor's list should be allowed to
-   *          be entered
-   * @param stringConverter
-   *          the converter used to transform items to strings
+   * @param adaptor The adaptor that will be used to find and select matching items.
+   * @param strictMatching true, if only items from the adaptor's list should be allowed to
+   * be entered
+   * @param stringConverter the converter used to transform items to strings
    */
   public AutoCompleteDocument(AbstractAutoCompleteAdaptor adaptor, boolean strictMatching,
       ObjectToStringConverter stringConverter) {
@@ -95,11 +76,9 @@ public class AutoCompleteDocument extends PlainDocument {
    * Creates a new AutoCompleteDocument for the given
    * AbstractAutoCompleteAdaptor.
    * 
-   * @param strictMatching
-   *          true, if only items from the adaptor's list should be allowed to
-   *          be entered
-   * @param adaptor
-   *          The adaptor that will be used to find and select matching items.
+   * @param strictMatching true, if only items from the adaptor's list should be allowed to
+   * be entered
+   * @param adaptor The adaptor that will be used to find and select matching items.
    */
   public AutoCompleteDocument(AbstractAutoCompleteAdaptor adaptor, boolean strictMatching) {
     this(adaptor, strictMatching, ObjectToStringConverter.DEFAULT_IMPLEMENTATION);
@@ -110,12 +89,15 @@ public class AutoCompleteDocument extends PlainDocument {
    * entered.
    * 
    * @return if only items from the adaptor's list should be allowed to be
-   *         entered
+   * entered
    */
   public boolean isStrictMatching() {
     return strictMatching;
   }
 
+  /* (non-Javadoc)
+   * @see javax.swing.text.AbstractDocument#remove(int, int)
+   */
   @Override
   public void remove(int offs, int len) throws BadLocationException {
     // return immediately when selecting an item
@@ -130,6 +112,9 @@ public class AutoCompleteDocument extends PlainDocument {
     }
   }
 
+  /* (non-Javadoc)
+   * @see javax.swing.text.PlainDocument#insertString(int, java.lang.String, javax.swing.text.AttributeSet)
+   */
   @Override
   public void insertString(int pOffs, String str, AttributeSet a) throws BadLocationException {
     int offs = pOffs;
@@ -168,8 +153,7 @@ public class AutoCompleteDocument extends PlainDocument {
   /**
    * Sets the text of this AutoCompleteDocument to the given text.
    * 
-   * @param text
-   *          the text that will be set for this document
+   * @param text the text that will be set for this document
    */
   private void setText(String text) {
     try {
@@ -184,10 +168,8 @@ public class AutoCompleteDocument extends PlainDocument {
   /**
    * Selects the given item using the AbstractAutoCompleteAdaptor.
    * 
-   * @param itemAsString
-   *          string representation of the item to be selected
-   * @param item
-   *          the item that is to be selected
+   * @param itemAsString string representation of the item to be selected
+   * @param item the item that is to be selected
    */
   private void setSelectedItem(Object item, String itemAsString) {
     selecting = true;
@@ -202,10 +184,10 @@ public class AutoCompleteDocument extends PlainDocument {
    * match is case-sensitive and will only match at the beginning of each item's
    * string representation.
    * 
-   * @param pattern
-   *          the pattern that should be matched
+   * @param pattern the pattern that should be matched
+   * 
    * @return the first item that matches the pattern or <code>null</code> if
-   *         no item matches
+   * no item matches
    */
   private LookupResult lookupItem(String pattern) {
     // iterate over all items to find an exact match
@@ -235,7 +217,12 @@ public class AutoCompleteDocument extends PlainDocument {
   }
 
   /**
-   * @param pattern
+   * Find match.
+   * 
+   * @param pattern DOCUMENT_ME
+   * @param exactMatch DOCUMENT_ME
+   * 
+   * @return the lookup result
    */
   private LookupResult findMatch(final String pattern, final boolean exactMatch) {
     String[] possibleStrings;
@@ -257,10 +244,23 @@ public class AutoCompleteDocument extends PlainDocument {
     return null;
   }
 
+  /**
+   * DOCUMENT_ME.
+   */
   private static class LookupResult {
+    
+    /** DOCUMENT_ME. */
     Object matchingItem;
+    
+    /** DOCUMENT_ME. */
     String matchingString;
 
+    /**
+     * Instantiates a new lookup result.
+     * 
+     * @param matchingItem DOCUMENT_ME
+     * @param matchingString DOCUMENT_ME
+     */
     public LookupResult(Object matchingItem, String matchingString) {
       this.matchingItem = matchingItem;
       this.matchingString = matchingString;
@@ -271,12 +271,11 @@ public class AutoCompleteDocument extends PlainDocument {
    * Returns true if <code>base</code> starts with <code>prefix</code>
    * (taking case into account).
    * 
-   * @param base
-   *          the string to be checked
-   * @param prefix
-   *          the prefix to check for
+   * @param base the string to be checked
+   * @param prefix the prefix to check for
+   * 
    * @return true if <code>base</code> starts with <code>prefix</code>;
-   *         false otherwise
+   * false otherwise
    */
   private boolean startsWith(String base, String prefix) {
     if (base.length() < prefix.length()) {

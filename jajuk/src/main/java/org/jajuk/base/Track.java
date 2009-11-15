@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -40,43 +41,44 @@ import org.jajuk.util.log.Log;
 /**
  * A track
  * <p>
- * Logical item
+ * Logical item.
  */
 public class Track extends LogicalItem implements Comparable<Track> {
 
-  /** Track album* */
+  /** Track album*. */
   private final Album album;
 
-  /** Track style */
+  /** Track style. */
   private final Style style;
 
-  /** Track author */
+  /** Track author. */
   private final Author author;
 
-  /** Track length */
+  /** Track length. */
   private final long length;
 
-  /** Track year */
+  /** Track year. */
   private final Year year;
 
-  /** Track type */
+  /** Track type. */
   private final Type type;
 
-  /** Track associated files */
+  /** Track associated files. */
   private final List<File> alFiles = new ArrayList<File>(1);
 
   /**
-   * Track constructor
+   * Track constructor.
    * 
-   * @param sId
-   * @param sName
-   * @param album
-   * @param style
-   * @param author
-   * @param length
-   * @param sYear
-   * @param type
-   * @param sAlbumArtist
+   * @param sId DOCUMENT_ME
+   * @param sName DOCUMENT_ME
+   * @param album DOCUMENT_ME
+   * @param style DOCUMENT_ME
+   * @param author DOCUMENT_ME
+   * @param length DOCUMENT_ME
+   * @param type DOCUMENT_ME
+   * @param year DOCUMENT_ME
+   * @param lOrder DOCUMENT_ME
+   * @param lDiscNumber DOCUMENT_ME
    */
   public Track(String sId, String sName, Album album, Style style, Author author, long length,
       Year year, long lOrder, Type type, long lDiscNumber) {
@@ -110,7 +112,9 @@ public class Track extends LogicalItem implements Comparable<Track> {
   }
 
   /**
-   * toString method
+   * toString method.
+   * 
+   * @return the string
    */
   @Override
   public String toString() {
@@ -130,6 +134,8 @@ public class Track extends LogicalItem implements Comparable<Track> {
   }
 
   /**
+   * Gets the any.
+   * 
    * @return a human representation of all concatenated properties
    */
   @Override
@@ -148,8 +154,8 @@ public class Track extends LogicalItem implements Comparable<Track> {
    * Default comparator for tracks, not used for sorting (use TrackComparator
    * for that) But only for storage.
    * 
-   * @param other
-   *          track to be compared
+   * @param otherTrack DOCUMENT_ME
+   * 
    * @return comparison result
    */
   public int compareTo(Track otherTrack) {
@@ -157,13 +163,17 @@ public class Track extends LogicalItem implements Comparable<Track> {
   }
 
   /**
-   * @return
+   * Gets the album.
+   * 
+   * @return the album
    */
   public Album getAlbum() {
     return album;
   }
 
   /**
+   * Gets the files.
+   * 
    * @return all associated files
    */
   public List<org.jajuk.base.File> getFiles() {
@@ -171,9 +181,11 @@ public class Track extends LogicalItem implements Comparable<Track> {
   }
 
   /**
+   * Gets the files.
+   * 
+   * @param filter files we want to deal with, null means no filter
+   * 
    * @return all associated files
-   * @param filter
-   *          files we want to deal with, null means no filter
    */
   public List<org.jajuk.base.File> getFiles(Set<File> filter) {
     List<File> out = new ArrayList<File>(alFiles.size());
@@ -186,6 +198,8 @@ public class Track extends LogicalItem implements Comparable<Track> {
   }
 
   /**
+   * Gets the ready files.
+   * 
    * @return ready files
    */
   public List<File> getReadyFiles() {
@@ -199,9 +213,11 @@ public class Track extends LogicalItem implements Comparable<Track> {
   }
 
   /**
+   * Gets the ready files.
+   * 
+   * @param filter files we want to deal with, null means no filter
+   * 
    * @return ready files with given filter
-   * @param filter
-   *          files we want to deal with, null means no filter
    */
   public List<File> getReadyFiles(Set<File> filter) {
     List<File> alReadyFiles = new ArrayList<File>(alFiles.size());
@@ -214,7 +230,7 @@ public class Track extends LogicalItem implements Comparable<Track> {
   }
 
   /**
-   * Get sum size of all files this track map to
+   * Get sum size of all files this track map to.
    * 
    * @return the total size
    */
@@ -228,9 +244,11 @@ public class Track extends LogicalItem implements Comparable<Track> {
   }
 
   /**
+   * Gets the playeable file.
+   * 
+   * @param bHideUnmounted Do we return unmounted files
+   * 
    * @return best file to play for this track or null if none available
-   * @param bHideUnmounted
-   *          Do we return unmounted files
    */
   public File getPlayeableFile(boolean bHideUnmounted) {
     File fileOut = null;
@@ -271,71 +289,79 @@ public class Track extends LogicalItem implements Comparable<Track> {
   }
 
   /**
-   * @return
+   * Gets the hits.
+   * 
+   * @return the hits
    */
   public long getHits() {
     return getLongValue(Const.XML_TRACK_HITS);
   }
 
   /**
-   * @return
+   * Gets the comment.
+   * 
+   * @return the comment
    */
   public String getComment() {
     return getStringValue(Const.XML_TRACK_COMMENT);
   }
 
   /**
-   * Get track number
+   * Get track number.
    * 
-   * @return
+   * @return the order
    */
   public long getOrder() {
     return getLongValue(Const.XML_TRACK_ORDER);
   }
 
   /**
-   * Get disc number
+   * Get disc number.
    * 
-   * @return
+   * @return the disc number
    */
   public long getDiscNumber() {
     return getLongValue(Const.XML_TRACK_DISC_NUMBER);
   }
 
   /**
-   * Get album artist
+   * Get album artist.
    * 
-   * @return
+   * @return the album artist
    */
   public String getAlbumArtist() {
     return album.getAlbumArtist();
   }
 
   /**
-   * Get translated album artist or author if album artist not available
+   * Get translated album artist or author if album artist not available.
    * 
-   * @return
+   * @return the album artist or artist
    */
   public String getAlbumArtistOrArtist() {
     return album.getAlbumArtistOrArtist();
   }
 
   /**
-   * @return
+   * Gets the year.
+   * 
+   * @return the year
    */
   public Year getYear() {
     return year;
   }
 
   /**
+   * Gets the duration.
+   * 
    * @return length in sec
    */
   public long getDuration() {
     return length;
   }
 
-  /**
-   * @return
+  /* (non-Javadoc)
+   * @see org.jajuk.base.Item#getRate()
    */
   @Override
   public long getRate() {
@@ -343,38 +369,46 @@ public class Track extends LogicalItem implements Comparable<Track> {
   }
 
   /**
+   * Gets the discovery date.
+   * 
    * @return the date where the track has been discovered (added into the
-   *         collection)
+   * collection)
    */
   public Date getDiscoveryDate() {
     return getDateValue(Const.XML_TRACK_DISCOVERY_DATE);
   }
 
   /**
-   * @return
+   * Gets the type.
+   * 
+   * @return the type
    */
   public Type getType() {
     return type;
   }
 
   /**
-   * @return
+   * Gets the author.
+   * 
+   * @return the author
    */
   public Author getAuthor() {
     return author;
   }
 
   /**
-   * @return
+   * Gets the style.
+   * 
+   * @return the style
    */
   public Style getStyle() {
     return style;
   }
 
   /**
-   * Add an associated file
+   * Add an associated file.
    * 
-   * @param file
+   * @param file DOCUMENT_ME
    */
   public void addFile(File file) {
     // make sure a file will be referenced by only one track (first found)
@@ -384,8 +418,9 @@ public class Track extends LogicalItem implements Comparable<Track> {
   }
 
   /**
-   * @param hits
-   *          The iHits to set.
+   * Sets the hits.
+   * 
+   * @param hits The iHits to set.
    */
   public void setHits(long hits) {
     setProperty(Const.XML_TRACK_HITS, hits);
@@ -396,7 +431,7 @@ public class Track extends LogicalItem implements Comparable<Track> {
   }
 
   /**
-   * Increase playcount number
+   * Increase playcount number.
    */
   public void incHits() {
     long value = getHits() + 1;
@@ -408,8 +443,7 @@ public class Track extends LogicalItem implements Comparable<Track> {
    * +2=love +3=crazy). The preference is a factor given by the user to increase
    * or decrease a track rate.
    * 
-   * @param preference
-   *          from -3 to 3
+   * @param preference from -3 to 3
    */
   public void setPreference(long preference) {
     Log.debug("Changed preference of " + getID() + "=" + preference);
@@ -423,7 +457,7 @@ public class Track extends LogicalItem implements Comparable<Track> {
   }
 
   /**
-   * Compute final track rate
+   * Compute final track rate.
    * 
    * @see http://trac.jajuk.info/ticket/1179
    */
@@ -486,8 +520,9 @@ public class Track extends LogicalItem implements Comparable<Track> {
   }
 
   /**
-   * @param rate
-   *          The lRate to set.
+   * Sets the rate.
+   * 
+   * @param rate The lRate to set.
    */
   protected void setRate(long rate) {
     setProperty(Const.XML_TRACK_RATE, rate);
@@ -495,23 +530,25 @@ public class Track extends LogicalItem implements Comparable<Track> {
   }
 
   /**
-   * @param rate
-   *          The lRate to set.
+   * Sets the comment.
+   * 
+   * @param sComment DOCUMENT_ME
    */
   public void setComment(String sComment) {
     setProperty(Const.XML_TRACK_COMMENT, sComment);
   }
 
   /**
-   * @param additionDate
-   *          The sAdditionDate to set.
+   * Sets the discovery date.
+   * 
+   * @param additionDate The sAdditionDate to set.
    */
   public void setDiscoveryDate(Date additionDate) {
     setProperty(Const.XML_TRACK_DISCOVERY_DATE, additionDate);
   }
 
   /**
-   * Return whether this item should be hidden with hide option
+   * Return whether this item should be hidden with hide option.
    * 
    * @return whether this item should be hidden with hide option
    */
@@ -533,7 +570,9 @@ public class Track extends LogicalItem implements Comparable<Track> {
   }
 
   /**
-   * Get item description
+   * Get item description.
+   * 
+   * @return the desc
    */
   @Override
   public String getDesc() {
@@ -599,6 +638,7 @@ public class Track extends LogicalItem implements Comparable<Track> {
   }
 
   /**
+   * Gets the files string.
    * 
    * @return a list of associated files in format : file1,file2...
    */

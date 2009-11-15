@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2007 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $$Revision$$
+ *  $Revision$
  */
 
 package org.jajuk.ui.wizard;
@@ -86,47 +87,46 @@ import org.jdesktop.swingx.JXDatePicker;
 import org.jdesktop.swingx.VerticalLayout;
 
 /**
- * ItemManager properties wizard for any jajuk item
+ * ItemManager properties wizard for any jajuk item.
  */
 public class PropertiesWizard extends JajukJDialog implements ActionListener {
 
-  /**
-   * 
-   */
+  /** The Constant PROPERTIES_WIZARD_6.  DOCUMENT_ME */
   private static final String PROPERTIES_WIZARD_6 = "PropertiesWizard.6";
 
+  /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
   /* Main panel */
+  /** DOCUMENT_ME. */
   JPanel jpMain;
 
-  /** OK/Cancel panel */
+  /** OK/Cancel panel. */
   OKCancelPanel okc;
 
-  /** Items */
+  /** Items. */
   List<Item> alItems;
 
-  /** Items2 */
+  /** Items2. */
   List<Item> alItems2;
 
-  /** Files filter */
+  /** Files filter. */
   Set<File> filter = null;
 
-  /** number of editable items (all panels) */
+  /** number of editable items (all panels). */
   int iEditable = 0;
 
-  /** First property panel */
+  /** First property panel. */
   PropertiesPanel panel1;
 
-  /** Second property panel */
+  /** Second property panel. */
   PropertiesPanel panel2;
 
   /**
    * Constructor for normal wizard with only one wizard panel and n items to
-   * display
+   * display.
    * 
-   * @param alItems
-   *          items to display
+   * @param alItems items to display
    */
   public PropertiesWizard(List<Item> alItems) {
     super();
@@ -158,12 +158,10 @@ public class PropertiesWizard extends JajukJDialog implements ActionListener {
 
   /**
    * Constructor for file wizard for ie with 2 wizard panels and n items to
-   * display
+   * display.
    * 
-   * @param alItems1
-   *          items to display in the first wizard panel (file for ie)
-   * @param alItems2
-   *          items to display in the second panel (associated track for ie )
+   * @param alItems1 items to display in the first wizard panel (file for ie)
+   * @param alItems2 items to display in the second panel (associated track for ie )
    */
   public PropertiesWizard(List<Item> alItems1, List<Item> alItems2) {
     super();
@@ -236,6 +234,10 @@ public class PropertiesWizard extends JajukJDialog implements ActionListener {
     display();
   }
 
+  /**
+   * Display.
+   * DOCUMENT_ME
+   */
   private void display() {
     SwingUtilities.invokeLater(new Runnable() {
       public void run() {
@@ -252,6 +254,9 @@ public class PropertiesWizard extends JajukJDialog implements ActionListener {
     });
   }
 
+  /* (non-Javadoc)
+   * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+   */
   public void actionPerformed(ActionEvent e) {
     if (e.getSource() == okc.getCancelButton()) {
       dispose();
@@ -285,10 +290,11 @@ public class PropertiesWizard extends JajukJDialog implements ActionListener {
   }
 
   /**
-   * Tells whether a link button should be shown for a given property
+   * Tells whether a link button should be shown for a given property.
    * 
-   * @param meta
-   * @return
+   * @param meta DOCUMENT_ME
+   * 
+   * @return true, if checks if is linkable
    */
   public boolean isLinkable(PropertyMetaInformation meta) {
     String sKey = meta.getName();
@@ -304,43 +310,41 @@ public class PropertiesWizard extends JajukJDialog implements ActionListener {
   }
 
   /**
-   * 
-   * A properties panel
+   * A properties panel.
    */
   class PropertiesPanel extends JPanel implements ActionListener {
 
+    /** Generated serialVersionUID. */
     private static final long serialVersionUID = 1L;
 
-    /** Properties panel */
+    /** Properties panel. */
     JPanel jpProperties;
 
-    /** ItemManager description */
+    /** ItemManager description. */
     JLabel jlDesc;
 
-    /** All dynamic widgets */
+    /** All dynamic widgets. */
     JComponent[][] widgets;
 
-    /** Properties to display */
+    /** Properties to display. */
     List<PropertyMetaInformation> alToDisplay;
 
-    /** Items */
+    /** Items. */
     List<Item> alItems;
 
-    /** Changed properties */
+    /** Changed properties. */
     Map<PropertyMetaInformation, Object> hmPropertyToChange = new HashMap<PropertyMetaInformation, Object>();
 
-    /** Merge flag */
+    /** Merge flag. */
     boolean bMerged = false;
 
     /**
-     * Property panel for single types elements
+     * Property panel for single types elements.
      * 
-     * @param alItems
-     *          items to display
-     * @param sDesc
-     *          Description (title)
+     * @param alItems items to display
+     * @param sDesc Description (title)
      * @param bMerged :
-     *          whether this panel contains merged values
+     * whether this panel contains merged values
      */
     PropertiesPanel(List<Item> alItems, String sDesc, boolean bMerged) {
       super();
@@ -695,7 +699,7 @@ public class PropertiesWizard extends JajukJDialog implements ActionListener {
     }
 
     /**
-     * Save changes in tags
+     * Save changes in tags.
      */
     protected void save() {
       try {
@@ -863,8 +867,10 @@ public class PropertiesWizard extends JajukJDialog implements ActionListener {
     }
 
     /**
+     * Gets the widget index.
      * 
-     * @param widget
+     * @param widget DOCUMENT_ME
+     * 
      * @return index of a given widget in the widget table
      */
     private int getWidgetIndex(JComponent widget) {

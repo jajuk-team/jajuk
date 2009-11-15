@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2007 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -46,19 +47,20 @@ import org.jajuk.util.UtilSystem;
 import org.jajuk.util.log.Log;
 
 /**
- * Manage thumbnails
+ * Manage thumbnails.
  */
 public final class ThumbnailManager {
 
-  /** No instances */
+  /**
+   * No instances.
+   */
   private ThumbnailManager() {
   }
 
   /**
-   * Delete all thumbs for a given size
+   * Delete all thumbs for a given size.
    * 
-   * @param size
-   *          size, eg: Const.THUMBNAIL_SIZE_150x150
+   * @param size size, eg: Const.THUMBNAIL_SIZE_150x150
    */
   public static void cleanThumbs(String size) {
     File fThumb = SessionService.getConfFileByPath(Const.FILE_THUMBS + '/' + size);
@@ -89,9 +91,9 @@ public final class ThumbnailManager {
   }
 
   /**
-   * Delete all thumbs for a given album
+   * Delete all thumbs for a given album.
    * 
-   * @param album
+   * @param album DOCUMENT_ME
    */
   public static void cleanThumbs(Album album) {
     // Now delete thumb files
@@ -113,14 +115,12 @@ public final class ThumbnailManager {
    * Marco Schmidt
    * http://schmidt.devlib.org/java/save-jpeg-thumbnail.html#source
    * 
-   * @param orig
-   *          source image
-   * @param thumb
-   *          destination file (jpg)
-   * @param maxDim
-   *          required size
-   * @throws IOException
-   * @throws InterruptedException
+   * @param orig source image
+   * @param thumb destination file (jpg)
+   * @param maxDim required size
+   * 
+   * @throws IOException Signals that an I/O exception has occurred.
+   * @throws InterruptedException the interrupted exception
    */
   public static void createThumbnail(final File orig, final File thumb, final int maxDim)
       throws InterruptedException, IOException {
@@ -135,16 +135,13 @@ public final class ThumbnailManager {
    * if necessary. the thumbnail must be maxDim pixels or less. Thanks Marco
    * Schmidt http://schmidt.devlib.org/java/save-jpeg-thumbnail.html#source
    * 
-   * @param orig
-   *          source image
-   * @param thumb
-   *          destination file (jpg)
-   * @param maxDim
-   *          required size
-   * @throws InterruptedException
-   * @throws IOException
-   * @throws Exception
-   */
+   * @param thumb destination file (jpg)
+   * @param maxDim required size
+   * @param ii DOCUMENT_ME
+   * 
+   * @throws InterruptedException the interrupted exception
+   * @throws IOException Signals that an I/O exception has occurred.
+   * @throws Exception    */
   public static void createThumbnail(final ImageIcon ii, final File thumb, final int maxDim)
       throws InterruptedException, IOException {
     final Image image = ii.getImage();
@@ -176,10 +173,9 @@ public final class ThumbnailManager {
   }
 
   /**
-   * Check all thumbs existence for performance reasons
+   * Check all thumbs existence for performance reasons.
    * 
-   * @param size
-   *          size of thumbs to be checked
+   * @param size size of thumbs to be checked
    */
   public static void populateCache(final int size) {
     for (Album album : AlbumManager.getInstance().getAlbums()) {
@@ -192,7 +188,9 @@ public final class ThumbnailManager {
    * Make thumbnail file exists (album id.jpg or.gif or .png) in thumbs
    * directory if it doesn't exist yet
    * 
-   * @param album
+   * @param album DOCUMENT_ME
+   * @param size DOCUMENT_ME
+   * 
    * @return whether a new cover has been created
    */
   public static boolean refreshThumbnail(final Album album, final int size) {
@@ -220,12 +218,11 @@ public final class ThumbnailManager {
   }
 
   /**
-   * Return thumb file by album and size
+   * Return thumb file by album and size.
    * 
-   * @param album
-   *          the album
-   * @param size
-   *          the size (like 50)
+   * @param album the album
+   * @param size the size (like 50)
+   * 
    * @return thumb file by album and size
    */
   public static File getThumbBySize(Album album, int size) {

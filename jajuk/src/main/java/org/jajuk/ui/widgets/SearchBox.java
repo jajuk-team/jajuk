@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- * $Revision$
+ *  $Revision$
  */
 
 package org.jajuk.ui.widgets;
@@ -78,30 +79,34 @@ import org.jajuk.util.log.Log;
  */
 public class SearchBox extends JTextField implements KeyListener, ListSelectionListener {
 
+  /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
-  /** Do search panel need a search */
+  /** Do search panel need a search. */
   private boolean bNeedSearch = false;
 
-  /** Default time in ms before launching a search automatically */
+  /** Default time in ms before launching a search automatically. */
   private static final int WAIT_TIME = 1000;
 
-  /** Minimum number of characters to start a search */
+  /** Minimum number of characters to start a search. */
   private static final int MIN_CRITERIA_LENGTH = 2;
 
-  /** Search result */
+  /** Search result. */
   private List<SearchResult> alResults;
 
-  /** Typed string */
+  /** Typed string. */
   private String sTyped;
 
+  /** DOCUMENT_ME. */
   private Popup popup;
 
+  /** DOCUMENT_ME. */
   private JList jlist;
 
+  /** DOCUMENT_ME. */
   private long lDateTyped;
 
-  /** Search when typing timer */
+  /** Search when typing timer. */
   Timer timer = new Timer(100, new ActionListener() {
     public void actionPerformed(ActionEvent arg0) {
       if (bNeedSearch && (System.currentTimeMillis() - lDateTyped >= WAIT_TIME)) {
@@ -111,11 +116,16 @@ public class SearchBox extends JTextField implements KeyListener, ListSelectionL
   });
 
   /**
-   * Display results as a jlabel with an icon
+   * Display results as a jlabel with an icon.
    */
   private static class SearchListRenderer extends JPanel implements ListCellRenderer {
+    
+    /** Generated serialVersionUID. */
     private static final long serialVersionUID = 8975989658927794678L;
 
+    /* (non-Javadoc)
+     * @see javax.swing.ListCellRenderer#getListCellRendererComponent(javax.swing.JList, java.lang.Object, int, boolean, boolean)
+     */
     public Component getListCellRendererComponent(JList list, Object value, int index,
         boolean isSelected, boolean cellHasFocus) {
       SearchResult sr = (SearchResult) value;
@@ -134,9 +144,7 @@ public class SearchBox extends JTextField implements KeyListener, ListSelectionL
   }
 
   /**
-   * Constructor
-   * 
-   * @param lsl
+   * Constructor.
    */
   public SearchBox() {
     setMargin(new Insets(0, 20, 0, 0));
@@ -206,7 +214,7 @@ public class SearchBox extends JTextField implements KeyListener, ListSelectionL
 
   /**
    * Perform a search when user stop to type in the search combo for 2 sec or
-   * pressed enter
+   * pressed enter.
    */
   private void search() {
     bNeedSearch = false;
@@ -296,20 +304,38 @@ public class SearchBox extends JTextField implements KeyListener, ListSelectionL
     }
   }
 
+  /**
+   * Gets the selected index.
+   * 
+   * @return the selected index
+   */
   public int getSelectedIndex() {
     return jlist.getSelectedIndex();
   }
 
+  /**
+   * Gets the result.
+   * 
+   * @param index DOCUMENT_ME
+   * 
+   * @return the result
+   */
   public SearchResult getResult(final int index) {
     return alResults.get(index);
   }
 
+  /**
+   * Hide popup.
+   * DOCUMENT_ME
+   */
   public void hidePopup() {
     popup.hide();
   }
 
   /**
-   * Display the search icon inside the texfield
+   * Display the search icon inside the texfield.
+   * 
+   * @param g DOCUMENT_ME
    */
   @Override
   public void paint(Graphics g) {
@@ -319,7 +345,9 @@ public class SearchBox extends JTextField implements KeyListener, ListSelectionL
 
   /**
    * Default list selection implementation (may be overwride for different
-   * behavior)
+   * behavior).
+   * 
+   * @param e DOCUMENT_ME
    */
   public void valueChanged(final ListSelectionEvent e) {
     SwingWorker<Void, Void> sw = new SwingWorker<Void, Void>() {

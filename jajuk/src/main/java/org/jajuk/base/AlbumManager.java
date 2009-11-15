@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -16,7 +17,6 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *  $Revision$
- *
  */
 
 package org.jajuk.base;
@@ -45,20 +45,21 @@ import org.jajuk.util.ReadOnlyIterator;
 import org.jajuk.util.error.JajukException;
 
 /**
- * Convenient class to manage Albums
- * 
+ * Convenient class to manage Albums.
  */
 public final class AlbumManager extends ItemManager implements Observer {
-  /** Self instance */
+  
+  /** Self instance. */
   private static AlbumManager singleton;
 
-  /** Album max rating */
+  /** Album max rating. */
   private long maxRate = 0l;
 
+  /** DOCUMENT_ME. */
   private int comp = 0;
 
   /**
-   * No constructor available, only static access
+   * No constructor available, only static access.
    */
   private AlbumManager() {
     super();
@@ -85,6 +86,9 @@ public final class AlbumManager extends ItemManager implements Observer {
     ObservationManager.register(this);
   }
 
+  /* (non-Javadoc)
+   * @see org.jajuk.events.Observer#getRegistrationKeys()
+   */
   public Set<JajukEvents> getRegistrationKeys() {
     Set<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
     eventSubjectSet.add(JajukEvents.FILE_LAUNCHED);
@@ -92,6 +96,8 @@ public final class AlbumManager extends ItemManager implements Observer {
   }
 
   /**
+   * Gets the instance.
+   * 
    * @return singleton
    */
   public static AlbumManager getInstance() {
@@ -102,14 +108,11 @@ public final class AlbumManager extends ItemManager implements Observer {
   }
 
   /**
-   * Return hashcode for this item
+   * Return hashcode for this item.
    * 
-   * @param sName
-   *          item name
-   * @param String
-   *          sAlbumArtist : the album artist tag or null is none
-   * @param long discId the CD disk ID (in the CDDB meaning), 0 if doesn't
-   *        computed yet
+   * @param sName item name
+   * @param sAlbumArtist DOCUMENT_ME
+   * @param discId DOCUMENT_ME
    * 
    * @return ItemManager ID
    */
@@ -131,9 +134,14 @@ public final class AlbumManager extends ItemManager implements Observer {
   }
 
   /**
-   * Register an Album with a known id
+   * Register an Album with a known id.
    * 
-   * @param sName
+   * @param sName DOCUMENT_ME
+   * @param sId DOCUMENT_ME
+   * @param sAlbumArtist DOCUMENT_ME
+   * @param discID DOCUMENT_ME
+   * 
+   * @return the album
    */
   public synchronized Album registerAlbum(String sId, String sName, String sAlbumArtist, long discID) {
     Album album = getAlbumByID(sId);
@@ -153,9 +161,13 @@ public final class AlbumManager extends ItemManager implements Observer {
   }
 
   /**
-   * Register an Album
+   * Register an Album.
    * 
-   * @param sName
+   * @param sName DOCUMENT_ME
+   * @param sAlbumArtist DOCUMENT_ME
+   * @param discID DOCUMENT_ME
+   * 
+   * @return the album
    */
   public Album registerAlbum(String sName, String sAlbumArtist, long discID) {
     String sId = createID(sName, sAlbumArtist, discID);
@@ -163,11 +175,14 @@ public final class AlbumManager extends ItemManager implements Observer {
   }
 
   /**
-   * Change the item
+   * Change the item.
    * 
-   * @param old
-   * @param sNewName
+   * @param old DOCUMENT_ME
+   * @param sNewName DOCUMENT_ME
+   * 
    * @return new album
+   * 
+   * @throws JajukException the jajuk exception
    */
   public Album changeAlbumName(Album old, String sNewName) throws JajukException {
     // check there is actually a change
@@ -205,11 +220,14 @@ public final class AlbumManager extends ItemManager implements Observer {
   }
 
   /**
-   * Change the item
+   * Change the item.
    * 
-   * @param old
-   * @param sNewName
+   * @param old DOCUMENT_ME
+   * @param sNewName DOCUMENT_ME
+   * 
    * @return new album
+   * 
+   * @throws JajukException the jajuk exception
    */
   public Album changeAlbumArtist(Album old, String sNewName) throws JajukException {
     // check there is actually a change
@@ -253,10 +271,9 @@ public final class AlbumManager extends ItemManager implements Observer {
    * <p>
    * -All in lower case expect first letter of first word
    * <p>
-   * example: "My album title"
+   * example: "My album title".
    * 
-   * @param sName
-   *          The name to format.
+   * @param sName The name to format.
    * 
    * @return The formatted string.
    */
@@ -281,8 +298,10 @@ public final class AlbumManager extends ItemManager implements Observer {
   }
 
   /**
-   * @param sID
-   *          Item ID
+   * Gets the album by id.
+   * 
+   * @param sID Item ID
+   * 
    * @return Element
    */
   public Album getAlbumByID(String sID) {
@@ -290,6 +309,7 @@ public final class AlbumManager extends ItemManager implements Observer {
   }
 
   /**
+   * Gets the albums.
    * 
    * @return ordered albums list
    */
@@ -299,6 +319,7 @@ public final class AlbumManager extends ItemManager implements Observer {
   }
 
   /**
+   * Gets the albums iterator.
    * 
    * @return albums iterator
    */
@@ -308,9 +329,10 @@ public final class AlbumManager extends ItemManager implements Observer {
   }
 
   /**
-   * Get sorted list of albums associated with this item
+   * Get sorted list of albums associated with this item.
    * 
-   * @param item
+   * @param item DOCUMENT_ME
+   * 
    * @return a list of item, void list if no result
    */
   public synchronized List<Album> getAssociatedAlbums(Item item) {
@@ -343,14 +365,13 @@ public final class AlbumManager extends ItemManager implements Observer {
   }
 
   /**
-   * Return sorted top albums based on the average of each album rating
+   * Return sorted top albums based on the average of each album rating.
    * 
-   * @param bHideUnmounted
-   *          if true, unmounted albums are not chosen
-   * @param iNbBestofAlbums
-   *          nb of items to return
+   * @param bHideUnmounted if true, unmounted albums are not chosen
+   * @param iNbBestofAlbums nb of items to return
+   * 
    * @return top albums, can be less items than required according to nb of
-   *         available albums
+   * available albums
    */
   public List<Album> getBestOfAlbums(boolean bHideUnmounted, int iNbBestofAlbums) {
     // TODO: this code does not look at "bHideUnmounted" at all, so most of this
@@ -379,12 +400,11 @@ public final class AlbumManager extends ItemManager implements Observer {
   }
 
   /**
-   * Return ordered list of newest albums
+   * Return ordered list of newest albums.
    * 
-   * @param bHideUnmounted
-   *          if true, unmounted albums are not chosen
-   * @param iNb
-   *          nb of items to return
+   * @param bHideUnmounted if true, unmounted albums are not chosen
+   * @param iNb nb of items to return
+   * 
    * @return newest albums
    */
   public List<Album> getNewestAlbums(boolean bHideUnmounted, int iNb) {
@@ -411,14 +431,13 @@ public final class AlbumManager extends ItemManager implements Observer {
   }
 
   /**
-   * Return ordered rarely listen albums list
+   * Return ordered rarely listen albums list.
    * 
-   * @param bHideUnmounted
-   *          if true, unmounted albums are not chosen
-   * @param iNb
-   *          nb of items to return
+   * @param bHideUnmounted if true, unmounted albums are not chosen
+   * @param iNb nb of items to return
+   * 
    * @return top albums, can be less items than required according to nb of
-   *         available albums
+   * available albums
    */
   public List<Album> getRarelyListenAlbums(boolean bHideUnmounted, int iNb) {
     // create a temporary table to remove unmounted albums
@@ -463,12 +482,11 @@ public final class AlbumManager extends ItemManager implements Observer {
   /**
    * Convenient method to keep top albums (used by getBestof, newest... albums)
    * 
-   * @param sortedAlbums
-   *          sorted albums according desired criteria, size >= iNb
-   * @param iNb
-   *          Number of albums to return
+   * @param sortedAlbums sorted albums according desired criteria, size >= iNb
+   * @param iNb Number of albums to return
+   * 
    * @return a nicely sorted / shuffled list of albums or a void list of none
-   *         available albums
+   * available albums
    */
   private List<Album> getTopAlbums(List<Album> sortedAlbums, int iNb) {
     // Keep only 3 * desired size or less if not enough available albums
@@ -490,6 +508,7 @@ public final class AlbumManager extends ItemManager implements Observer {
   }
 
   /**
+   * Gets the max rate.
    * 
    * @return max rating for an album
    */
@@ -499,7 +518,7 @@ public final class AlbumManager extends ItemManager implements Observer {
 
   /**
    * Force to refresh the album max rating, it is not done soon as it is pretty
-   * CPU consumming and we don't need a track by track rating precision
+   * CPU consumming and we don't need a track by track rating precision.
    */
   public void refreshMaxRating() {
     // create a temporary table to remove unmounted albums
@@ -537,8 +556,10 @@ public final class AlbumManager extends ItemManager implements Observer {
   }
 
   /**
+   * Gets the album by name.
    * 
-   * @param name
+   * @param name DOCUMENT_ME
+   * 
    * @return associated album (case insensitive) or null if no match
    */
   public Album getAlbumByName(String name) {
@@ -554,7 +575,7 @@ public final class AlbumManager extends ItemManager implements Observer {
   }
 
   /**
-   * Specialize switchToOrderState, here we sort the album cache in addition
+   * Specialize switchToOrderState, here we sort the album cache in addition.
    */
   public synchronized void orderCache() {
     for (ReadOnlyIterator<Album> it = getAlbumsIterator(); it.hasNext();) {

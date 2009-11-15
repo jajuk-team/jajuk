@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- * $Revision$
+ *  $Revision$
  */
 package org.jajuk.ui.widgets;
 
@@ -32,39 +33,70 @@ import javax.swing.plaf.basic.ComboPopup;
 import org.jajuk.util.log.Log;
 
 /**
- * Stepped combo box allowing to display a long text in the history bar
+ * Stepped combo box allowing to display a long text in the history bar.
  */
 
 public class SteppedComboBox extends JComboBox {
+  
+  /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
+  /** DOCUMENT_ME. */
   protected int popupWidth;
 
+  /**
+   * Instantiates a new stepped combo box.
+   */
   public SteppedComboBox() {
     super();
     init();
   }
 
+  /**
+   * Instantiates a new stepped combo box.
+   * 
+   * @param aModel DOCUMENT_ME
+   */
   public SteppedComboBox(ComboBoxModel aModel) {
     super(aModel);
     init();
   }
 
+  /**
+   * Instantiates a new stepped combo box.
+   * 
+   * @param items DOCUMENT_ME
+   */
   public SteppedComboBox(final Object[] items) {
     super(items);
     init();
   }
 
+  /**
+   * Instantiates a new stepped combo box.
+   * 
+   * @param items DOCUMENT_ME
+   */
   @SuppressWarnings("unchecked")
   public SteppedComboBox(List<?> items) {
     super(new Vector(items));
     init();
   }
 
+  /**
+   * Sets the popup width.
+   * 
+   * @param width the new popup width
+   */
   public void setPopupWidth(int width) {
     popupWidth = width;
   }
 
+  /**
+   * Gets the popup size.
+   * 
+   * @return the popup size
+   */
   public Dimension getPopupSize() {
     Dimension size = getSize();
     if (popupWidth < 1) {
@@ -73,6 +105,10 @@ public class SteppedComboBox extends JComboBox {
     return new Dimension(popupWidth, size.height);
   }
 
+  /**
+   * Inits the.
+   * DOCUMENT_ME
+   */
   protected final void init() {
     try {
       ComboBoxUI cbui = new org.jvnet.substance.SubstanceComboBoxUI() {

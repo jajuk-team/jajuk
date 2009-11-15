@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2007 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $$Revision$$
+ *  $Revision$
  */
 package org.jajuk.util;
 
@@ -41,10 +42,10 @@ import org.jajuk.util.log.Log;
  */
 public final class Conf implements Const {
 
-  /** Properties in memory */
+  /** Properties in memory. */
   private static volatile Properties properties = new Properties();
 
-  /** Default properties cache */
+  /** Default properties cache. */
   private static volatile Properties defaults = new Properties();
 
   static {
@@ -52,6 +53,9 @@ public final class Conf implements Const {
     properties = (Properties) properties.clone();
   }
 
+  /**
+   * Instantiates a new conf.
+   */
   private Conf() {
     // empty hidden constructor
   }
@@ -59,8 +63,8 @@ public final class Conf implements Const {
   /**
    * Return the value of a property, or null if the property is not found.
    * 
-   * @param pName
-   *          Name of the property.
+   * @param pName Name of the property.
+   * 
    * @return String Value of the property named pName.
    */
   public static String getString(String pName) {
@@ -69,10 +73,10 @@ public final class Conf implements Const {
 
   /**
    * Return the value of a property as a boolean or default value or default
-   * value if value cannot be parsed
+   * value if value cannot be parsed.
    * 
-   * @param pName
-   *          Name of the property.
+   * @param pName Name of the property.
+   * 
    * @return boolean value of the property named pName.
    */
   public static boolean getBoolean(String pName) {
@@ -88,9 +92,9 @@ public final class Conf implements Const {
   }
 
   /**
-   * Invert a boolean value
+   * Invert a boolean value.
    * 
-   * @param pName
+   * @param pName DOCUMENT_ME
    */
   public static void invert(String pName) {
     boolean b = Boolean.parseBoolean(properties.getProperty(pName));
@@ -99,10 +103,10 @@ public final class Conf implements Const {
 
   /**
    * Return the value of a property as a float or default value or default value
-   * if value cannot be parsed
+   * if value cannot be parsed.
    * 
-   * @param pName
-   *          Name of the property.
+   * @param pName Name of the property.
+   * 
    * @return float value of the property named pName.
    */
   public static float getFloat(String pName) {
@@ -119,10 +123,10 @@ public final class Conf implements Const {
 
   /**
    * Return the value of a property as an integer or default value if value
-   * cannot be parsed
+   * cannot be parsed.
    * 
-   * @param pName
-   *          Name of the property.
+   * @param pName Name of the property.
+   * 
    * @return int value of the property named pName.
    */
   public static int getInt(String pName) {
@@ -138,9 +142,9 @@ public final class Conf implements Const {
   }
 
   /**
-   * Reset a given property to its defaults
+   * Reset a given property to its defaults.
    * 
-   * @param property
+   * @param property DOCUMENT_ME
    */
   public static void setDefaultProperty(String property) {
     String defaultValue = (String) defaults.get(property);
@@ -152,8 +156,7 @@ public final class Conf implements Const {
   }
 
   /**
-   * Set default values
-   * 
+   * Set default values.
    */
   public static void setDefaultProperties() {
     // We fill with current values to keep some parameters
@@ -347,19 +350,19 @@ public final class Conf implements Const {
   }
 
   /**
-   * Set a property
+   * Set a property.
    * 
-   * @param sName
-   * @param sValue
+   * @param sName DOCUMENT_ME
+   * @param sValue DOCUMENT_ME
    */
   public static void setProperty(String sName, String sValue) {
     properties.setProperty(sName, sValue);
   }
 
   /**
-   * Commit properties in a file
+   * Commit properties in a file.
    * 
-   * @throws IOException
+   * @throws IOException Signals that an I/O exception has occurred.
    */
   public static void commit() throws IOException {
     OutputStream str = new FileOutputStream(SessionService
@@ -372,15 +375,19 @@ public final class Conf implements Const {
   }
 
   /**
+   * Contains property.
    * 
-   * @param property
+   * @param property DOCUMENT_ME
+   * 
    * @return whether the given property is known
    */
   public static boolean containsProperty(String property) {
     return properties.containsKey(property);
   }
 
-  /** Load properties from in file */
+  /**
+   * Load properties from in file.
+   */
   public static void load() {
     try {
       InputStream str = new FileInputStream(SessionService
@@ -397,6 +404,8 @@ public final class Conf implements Const {
   }
 
   /**
+   * Gets the properties.
+   * 
    * @return Returns the properties.
    */
   public static Properties getProperties() {
@@ -404,10 +413,9 @@ public final class Conf implements Const {
   }
 
   /**
-   * Remove a property
+   * Remove a property.
    * 
-   * @param sKey
-   *          property key to remove
+   * @param sKey property key to remove
    */
   public static void removeProperty(String sKey) {
     properties.remove(sKey);

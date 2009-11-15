@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2005 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $$Revision:3308 $$
+ *  $Revision$
  */
 
 package org.jajuk.ui.actions;
@@ -43,21 +44,27 @@ import org.jajuk.util.error.JajukException;
 import org.jajuk.util.filters.NotAudioFilter;
 import org.jajuk.util.log.Log;
 
+/**
+ * DOCUMENT_ME.
+ */
 public class RefactorAction {
 
+  /** DOCUMENT_ME. */
   private static boolean bStopAll = false;
 
+  /** DOCUMENT_ME. */
   private static String sFS = java.io.File.separator;
 
+  /** DOCUMENT_ME. */
   private final List<File> alFiles;
 
-  /** [PERF] Stores directory to be refreshed to avoid rescanning them twice */
+  /** [PERF] Stores directory to be refreshed to avoid rescanning them twice. */
   private final List<Directory> toBeRefreshed = new ArrayList<Directory>(1);
 
   /**
+   * The Constructor.
    * 
-   * @param pFiles
-   *          files to be reorganized (can be from different directories)
+   * @param pFiles files to be reorganized (can be from different directories)
    */
   public RefactorAction(final List<File> pFiles) {
     this.alFiles = pFiles;
@@ -94,7 +101,7 @@ public class RefactorAction {
   }
 
   /**
-   * Refactoring itself
+   * Refactoring itself.
    */
   public void refactor() {
     boolean bOKToOverwrite = false;
@@ -216,10 +223,19 @@ public class RefactorAction {
 
   }
 
+  /**
+   * Checks if is stop all.
+   * 
+   * @return true, if is stop all
+   */
   public static boolean isStopAll() {
     return bStopAll;
   }
 
+  /**
+   * Reset stop all.
+   * DOCUMENT_ME
+   */
   public static void resetStopAll() {
     bStopAll = false;
   }

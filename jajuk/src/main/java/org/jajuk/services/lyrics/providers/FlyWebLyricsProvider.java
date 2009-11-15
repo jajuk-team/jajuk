@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2008 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision: 3132 $
+ *  $Revision$
  */
 package org.jajuk.services.lyrics.providers;
 
@@ -37,20 +38,18 @@ import org.w3c.dom.Document;
  */
 public class FlyWebLyricsProvider extends GenericWebLyricsProvider {
 
-  /** The Constant USER_ID. 
-   * DO NOT USE THESE KEYS FOR OTHER APPLICATIONS THAN Jajuk !
-   */
+  /** The Constant USER_ID. DO NOT USE THESE KEYS FOR OTHER APPLICATIONS THAN Jajuk ! */
   private static final String USER_ID = "79o116n89n93sr93p-wnwhx.vasb";
 
-  /** URL pattern used by jajuk to retrieve lyrics */
+  /** URL pattern used by jajuk to retrieve lyrics. */
   private static final String URL = "http://lyricsfly.com/api/api.php?i="
       + UtilString.rot13(USER_ID) + "&a=%artist&t=%title";
   
-  /** URL pattern to web page (see ILyricsProvider interface for details) */
+  /** URL pattern to web page (see ILyricsProvider interface for details). */
   private static final String WEB_URL = "http://www.lyricsfly.com/";
 
   /**
-   * @param queryUrlTemplate
+   * The Constructor.
    */
   public FlyWebLyricsProvider() {
     super(URL);

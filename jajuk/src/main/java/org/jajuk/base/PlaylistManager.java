@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -38,14 +39,15 @@ import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 
 /**
- * Convenient class to manage playlists
+ * Convenient class to manage playlists.
  */
 public final class PlaylistManager extends ItemManager implements Observer {
-  /** Self instance */
+  
+  /** Self instance. */
   private static PlaylistManager singleton;
 
   /**
-   * No constructor available, only static access
+   * No constructor available, only static access.
    */
   private PlaylistManager() {
     super();
@@ -62,6 +64,8 @@ public final class PlaylistManager extends ItemManager implements Observer {
   }
 
   /**
+   * Gets the instance.
+   * 
    * @return singleton
    */
   public static PlaylistManager getInstance() {
@@ -72,10 +76,12 @@ public final class PlaylistManager extends ItemManager implements Observer {
   }
 
   /**
-   * Register an Playlist with a known id
+   * Register an Playlist with a known id.
    * 
-   * @param fio
-   * @param dParentDirectory
+   * @param fio DOCUMENT_ME
+   * @param dParentDirectory DOCUMENT_ME
+   * 
+   * @return the playlist
    */
   public synchronized Playlist registerPlaylistFile(java.io.File fio, Directory dParentDirectory) {
     String sId = createID(fio.getName(), dParentDirectory);
@@ -83,8 +89,11 @@ public final class PlaylistManager extends ItemManager implements Observer {
   }
 
   /**
-   * @param sName
-   * @param dParentDirectory
+   * Creates the id.
+   * 
+   * @param sName DOCUMENT_ME
+   * @param dParentDirectory DOCUMENT_ME
+   * 
    * @return ItemManager ID
    */
   protected static String createID(String sName, Directory dParentDirectory) {
@@ -93,8 +102,9 @@ public final class PlaylistManager extends ItemManager implements Observer {
   }
 
   /**
-   * Delete a playlist
+   * Delete a playlist.
    * 
+   * @param plf DOCUMENT_ME
    */
   public synchronized void removePlaylistFile(Playlist plf) {
     String sFileToDelete = plf.getDirectory().getFio().getAbsoluteFile().toString()
@@ -117,9 +127,13 @@ public final class PlaylistManager extends ItemManager implements Observer {
   }
 
   /**
-   * Register an Playlist with a known id
+   * Register an Playlist with a known id.
    * 
-   * @param sName
+   * @param sName DOCUMENT_ME
+   * @param sId DOCUMENT_ME
+   * @param dParentDirectory DOCUMENT_ME
+   * 
+   * @return the playlist
    */
   public synchronized Playlist registerPlaylistFile(String sId, String sName,
       Directory dParentDirectory) {
@@ -136,10 +150,10 @@ public final class PlaylistManager extends ItemManager implements Observer {
   }
 
   /**
-   * Clean all references for the given device
+   * Clean all references for the given device.
    * 
    * @param sId :
-   *          Device id
+   * Device id
    */
   public synchronized void cleanDevice(String sId) {
     for (Playlist plf : getPlaylists()) {
@@ -160,11 +174,14 @@ public final class PlaylistManager extends ItemManager implements Observer {
   }
 
   /**
-   * Change a playlist name
+   * Change a playlist name.
    * 
-   * @param plfOld
-   * @param sNewName
+   * @param plfOld DOCUMENT_ME
+   * @param sNewName DOCUMENT_ME
+   * 
    * @return new playlist
+   * 
+   * @throws JajukException the jajuk exception
    */
   public synchronized Playlist changePlaylistFileName(Playlist plfOld, String sNewName)
       throws JajukException {
@@ -246,6 +263,9 @@ public final class PlaylistManager extends ItemManager implements Observer {
     }
   }
 
+  /* (non-Javadoc)
+   * @see org.jajuk.events.Observer#getRegistrationKeys()
+   */
   public Set<JajukEvents> getRegistrationKeys() {
     Set<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
     eventSubjectSet.add(JajukEvents.FILE_NAME_CHANGED);
@@ -253,8 +273,10 @@ public final class PlaylistManager extends ItemManager implements Observer {
   }
 
   /**
-   * @param sID
-   *          Item ID
+   * Gets the playlist by id.
+   * 
+   * @param sID Item ID
+   * 
    * @return item
    */
   public Playlist getPlaylistByID(String sID) {
@@ -262,6 +284,7 @@ public final class PlaylistManager extends ItemManager implements Observer {
   }
 
   /**
+   * Gets the playlists.
    * 
    * @return ordered playlists list
    */
@@ -271,6 +294,7 @@ public final class PlaylistManager extends ItemManager implements Observer {
   }
 
   /**
+   * Gets the playlists iterator.
    * 
    * @return playlists iterator
    */
@@ -279,9 +303,11 @@ public final class PlaylistManager extends ItemManager implements Observer {
     return new ReadOnlyIterator<Playlist>((Iterator<Playlist>) getItemsIterator());
   }
 
-  /**Returns the first playlist with the given name.
+  /**
+   * Returns the first playlist with the given name.
    * 
    * @param name The name of the Playlist to search
+   * 
    * @return The playlist if found, null otherwise.
    */
   public Playlist getPlaylistByName(String name) {

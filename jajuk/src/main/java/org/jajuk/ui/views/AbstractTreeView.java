@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2005 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $$Revision$$
+ *  $Revision$
  */
 
 package org.jajuk.ui.views;
@@ -55,71 +56,93 @@ import org.jdesktop.swingx.JXTree;
  */
 public abstract class AbstractTreeView extends ViewAdapter {
 
+  /** Generated serialVersionUID. */
   private static final long serialVersionUID = 8330315957562739918L;
 
-  /** The tree scrollpane */
+  /** The tree scrollpane. */
   JScrollPane jspTree;
 
-  /** The phyical tree */
+  /** The phyical tree. */
   JXTree jtree;
 
-  /** Current selection */
+  /** Current selection. */
   TreePath[] paths;
 
-  /** Resursive items selection */
+  /** Resursive items selection. */
   Set<Item> selectedRecursively = new HashSet<Item>(100);
 
-  /** Items selection */
+  /** Items selection. */
   List<Item> alSelected = new ArrayList<Item>(100);
 
-  /** Top tree node */
+  /** Top tree node. */
   DefaultMutableTreeNode top;
 
+  /** DOCUMENT_ME. */
   javax.swing.JPopupMenu jmenu;
 
+  /** DOCUMENT_ME. */
   JMenuItem jmiPlay;
 
+  /** DOCUMENT_ME. */
   JMenuItem jmiPush;
 
+  /** DOCUMENT_ME. */
   JMenuItem jmiFrontPush;
 
+  /** DOCUMENT_ME. */
   JMenuItem jmiPlayShuffle;
 
+  /** DOCUMENT_ME. */
   JMenuItem jmiPlayRepeat;
 
+  /** DOCUMENT_ME. */
   JMenuItem jmiCut;
 
+  /** DOCUMENT_ME. */
   JMenuItem jmiCopy;
 
+  /** DOCUMENT_ME. */
   JMenuItem jmiPaste;
 
+  /** DOCUMENT_ME. */
   JMenuItem jmiRename;
 
+  /** DOCUMENT_ME. */
   JMenuItem jmiDelete;
 
+  /** DOCUMENT_ME. */
   JMenuItem jmiNewFolder;
 
+  /** DOCUMENT_ME. */
   JMenuItem jmiAddFavorite;
 
+  /** DOCUMENT_ME. */
   JMenuItem jmiReport;
 
+  /** DOCUMENT_ME. */
   JMenuItem jmiProperties;
 
+  /** DOCUMENT_ME. */
   JMenuItem jmiCDDBWizard;
 
+  /** DOCUMENT_ME. */
   JMenuItem jmiCopyURL;
 
-  /** Jtree scroller position* */
+  /** Jtree scroller position*. */
   int pos;
 
-  /** Preference menu */
+  /** Preference menu. */
   PreferencesJMenu pjmTracks;
 
-  /**
-   * Used to differentiate user action tree collapse from code tree collapse
-   */
+  /** Used to differentiate user action tree collapse from code tree collapse. */
   boolean bAutoCollapse = false;
 
+  /**
+   * Creates the tree.
+   * DOCUMENT_ME
+   * 
+   * @return the j tree
+   */
   protected JTree createTree() {
     jtree = new JXTree(top);
     jtree.putClientProperty("JTree.lineStyle", "Angled");
@@ -128,6 +151,9 @@ public abstract class AbstractTreeView extends ViewAdapter {
     return jtree;
   }
 
+  /* (non-Javadoc)
+   * @see org.jajuk.ui.views.IView#initUI()
+   */
   public void initUI() {
     jmiPlay = new JMenuItem(ActionManager.getAction(JajukActions.PLAY_SELECTION));
     jmiPlay.putClientProperty(Const.DETAIL_SELECTION, alSelected);
@@ -167,12 +193,20 @@ public abstract class AbstractTreeView extends ViewAdapter {
     pjmTracks = new PreferencesJMenu(alSelected);
   }
 
+  /**
+   * Populate tree.
+   * DOCUMENT_ME
+   */
   abstract void populateTree();
 
+  /**
+   * Expand.
+   * DOCUMENT_ME
+   */
   abstract void expand();
 
   /**
-   * Add keystroke support on the tree
+   * Add keystroke support on the tree.
    */
   private void setKeystrokes() {
     jtree.putClientProperty(Const.DETAIL_SELECTION, alSelected);
@@ -205,6 +239,9 @@ public abstract class AbstractTreeView extends ViewAdapter {
     actionMap.put("rename", action);
   }
 
+  /* (non-Javadoc)
+   * @see org.jajuk.events.Observer#update(org.jajuk.events.JajukEvent)
+   */
   public void update(JajukEvent event) {
     final JajukEvents subject = event.getSubject();
     if (subject.equals(JajukEvents.DEVICE_MOUNT) || subject.equals(JajukEvents.DEVICE_UNMOUNT)

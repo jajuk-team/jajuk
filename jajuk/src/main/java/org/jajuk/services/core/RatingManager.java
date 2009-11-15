@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2007 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -48,17 +49,18 @@ import org.jajuk.util.log.Log;
  */
 public final class RatingManager extends Thread implements Observer {
 
+  /** DOCUMENT_ME. */
   private static RatingManager self;
 
-  /**
-   * Flag the fact a rate has change for a track, used by bestof view refresh
-   * for perfs
-   */
+  /** Flag the fact a rate has change for a track, used by bestof view refresh for perfs. */
   private static boolean bRateHasChanged = true;
 
-  /** Max rate */
+  /** Max rate. */
   private static long lMaxPlaycount = 0l;
 
+  /**
+   * Instantiates a new rating manager.
+   */
   private RatingManager() {
     // set thread name
     super("Rating Manager Thread");
@@ -67,6 +69,11 @@ public final class RatingManager extends Thread implements Observer {
     ObservationManager.register(this);
   }
 
+  /**
+   * Gets the single instance of RatingManager.
+   * 
+   * @return single instance of RatingManager
+   */
   public static RatingManager getInstance() {
     if (self == null) {
       self = new RatingManager();
@@ -74,6 +81,9 @@ public final class RatingManager extends Thread implements Observer {
     return self;
   }
 
+  /* (non-Javadoc)
+   * @see java.lang.Thread#run()
+   */
   @Override
   public void run() {
     while (!ExitService.isExiting()) {
@@ -95,6 +105,8 @@ public final class RatingManager extends Thread implements Observer {
   }
 
   /**
+   * Gets the max playcount.
+   * 
    * @return maximum rating between all tracks
    */
   public static long getMaxPlaycount() {
@@ -102,10 +114,9 @@ public final class RatingManager extends Thread implements Observer {
   }
 
   /**
-   * Set max playcount
+   * Set max playcount.
    * 
-   * @param value
-   *          the playcount value
+   * @param value the playcount value
    */
   public static void setMaxPlaycount(long value) {
     lMaxPlaycount = value;
@@ -117,6 +128,8 @@ public final class RatingManager extends Thread implements Observer {
   }
 
   /**
+   * Checks for rate changed.
+   * 
    * @return Returns the bRateHasChanged.
    */
   public static boolean hasRateChanged() {
@@ -124,8 +137,9 @@ public final class RatingManager extends Thread implements Observer {
   }
 
   /**
-   * @param rateHasChanged
-   *          The bRateHasChanged to set.
+   * Sets the rate has changed.
+   * 
+   * @param rateHasChanged The bRateHasChanged to set.
    */
   public static void setRateHasChanged(boolean rateHasChanged) {
     bRateHasChanged = rateHasChanged;

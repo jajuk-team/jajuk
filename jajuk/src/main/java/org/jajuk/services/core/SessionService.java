@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2008 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision: 3132 $
+ *  $Revision$
  */
 package org.jajuk.services.core;
 
@@ -53,51 +54,47 @@ import org.jajuk.util.UtilSystem;
 import org.jajuk.util.log.Log;
 
 /**
- * Multi-session and test/final mode facilities
+ * Multi-session and test/final mode facilities.
  */
 public class SessionService {
 
-  /** Debug mode */
+  /** Debug mode. */
   private static boolean bIdeMode = false;
 
-  /** Test mode */
+  /** Test mode. */
   private static boolean bTestMode = false;
 
-  /** Workspace PATH* */
+  /** Workspace PATH*. */
   private static String workspace;
 
-  /** Directory used to flag the current jajuk session */
+  /** Directory used to flag the current jajuk session. */
   private static File sessionIdFile;
 
-  /** Lock used to trigger first time wizard window close* */
+  /** Lock used to trigger first time wizard window close*. */
   private static short[] isFirstTimeWizardClosed = new short[0];
 
   /*   *Bootstrap file content. format is <test|final>=<workspace location>* */
+  /** DOCUMENT_ME. */
   private static Properties versionWorkspace = new Properties();
 
-  /** Whether we are regular process are a thumb builder process **/
+  /** Whether we are regular process are a thumb builder process *. */
   private static boolean inThumbMaker = false;
 
-  /**
-   * Cached bootstrap absolute file path
-   */
+  /** Cached bootstrap absolute file path. */
   private static String cachedBootstrapPath;
 
-  /**
-   * For performances, store conf root path
-   */
+  /** For performances, store conf root path. */
   private static String confRoot;
 
   /**
-   * private constructor for utility class with only static methods
+   * private constructor for utility class with only static methods.
    */
   private SessionService() {
     super();
   }
 
   /**
-   * check if another session is already started
-   * 
+   * check if another session is already started.
    */
   public static void checkOtherSession() {
 
@@ -164,26 +161,56 @@ public class SessionService {
     }
   }
 
+  /**
+   * Checks if is ide mode.
+   * 
+   * @return true, if is ide mode
+   */
   public static boolean isIdeMode() {
     return bIdeMode;
   }
 
+  /**
+   * Checks if is test mode.
+   * 
+   * @return true, if is test mode
+   */
   public static boolean isTestMode() {
     return bTestMode;
   }
 
+  /**
+   * Gets the workspace.
+   * 
+   * @return the workspace
+   */
   public static String getWorkspace() {
     return workspace;
   }
 
+  /**
+   * Sets the test mode.
+   * 
+   * @param bTestMode the new test mode
+   */
   public static void setTestMode(boolean bTestMode) {
     SessionService.bTestMode = bTestMode;
   }
 
+  /**
+   * Sets the ide mode.
+   * 
+   * @param bIdeMode the new ide mode
+   */
   public static void setIdeMode(boolean bIdeMode) {
     SessionService.bIdeMode = bIdeMode;
   }
 
+  /**
+   * Sets the workspace.
+   * 
+   * @param workspace the new workspace
+   */
   public static void setWorkspace(String workspace) {
     SessionService.workspace = workspace;
     if (isTestMode()) {
@@ -193,6 +220,11 @@ public class SessionService {
     }
   }
 
+  /**
+   * Gets the session id file.
+   * 
+   * @return the session id file
+   */
   public static File getSessionIdFile() {
     if (sessionIdFile == null) {
       String sHostname;
@@ -212,8 +244,7 @@ public class SessionService {
    * Walks through the command line arguments and sets flags for any one that we
    * recognize.
    * 
-   * @param args
-   *          The list of command line arguments that is passed to main()
+   * @param args The list of command line arguments that is passed to main()
    */
   public static void handleCommandline(final String[] args) {
     // walk through all arguments and check if there is one that we
@@ -235,8 +266,7 @@ public class SessionService {
 
   /**
    * Load system properties provided when calling jvm (-Dxxx=yyy) <br>
-   * This is usefull for unit tests
-   * 
+   * This is usefull for unit tests.
    */
   public static void handleSystemProperties() {
     // walk through all system properties and check if there is one that we
@@ -257,6 +287,10 @@ public class SessionService {
     }
   }
 
+  /**
+   * Creates the session file.
+   * DOCUMENT_ME
+   */
   public static void createSessionFile() {
     if (!getSessionIdFile().mkdir()) {
       Log.warn("Could not create directory for session: " + sessionIdFile);
@@ -264,7 +298,9 @@ public class SessionService {
   }
 
   /**
-   * Discover the jajuk workspace by reading the bootstrap file
+   * Discover the jajuk workspace by reading the bootstrap file.
+   * 
+   * @throws InterruptedException the interrupted exception
    */
   public static void discoverWorkspace() throws InterruptedException {
     // Check for bootstrap file presence
@@ -355,7 +391,6 @@ public class SessionService {
 
   /**
    * Notify the system about the first time wizard being closed.
-   * 
    */
   public static void notifyFirstTimeWizardClosed() {
     synchronized (isFirstTimeWizardClosed) {
@@ -366,12 +401,11 @@ public class SessionService {
   /**
    * Return destination file in cache for a given URL <br>
    * We store the file using the URL's MD3 5 hash to ensure unicity and avoid
-   * unexpected characters in file names
+   * unexpected characters in file names.
    * 
-   * @param url
-   *          resource URL
+   * @param url resource URL
+   * 
    * @return File in cache if any or null otherwise
-   * 
    */
   public static File getCachePath(final URL url) {
     File out = null;
@@ -381,9 +415,10 @@ public class SessionService {
   }
 
   /**
+   * Gets the conf file by path.
    * 
-   * @param sPATH
-   *          Configuration file or directory path
+   * @param sPATH Configuration file or directory path
+   * 
    * @return the file relative to jajuk directory
    */
   public static final File getConfFileByPath(final String sPATH) {
@@ -398,7 +433,7 @@ public class SessionService {
   }
 
   /**
-   * Return default workspace location
+   * Return default workspace location.
    * 
    * @return default workspace location
    */
@@ -409,7 +444,7 @@ public class SessionService {
   }
 
   /**
-   * Clear locale images cache
+   * Clear locale images cache.
    */
   public static void clearCache() {
     final File fCache = getConfFileByPath(Const.FILE_CACHE);
@@ -420,7 +455,7 @@ public class SessionService {
   }
 
   /**
-   * Return the bootstrap file content
+   * Return the bootstrap file content.
    * 
    * @return the bootstrap file content as a property object
    */
@@ -429,6 +464,8 @@ public class SessionService {
   }
 
   /**
+   * Checks if is in thumb maker.
+   * 
    * @return whether we are regular process are a thumb builder process
    */
   public static boolean isInThumbMaker() {
@@ -436,8 +473,9 @@ public class SessionService {
   }
 
   /**
-   * @param inThumbMaker
-   *          the inThumbMaker to set
+   * Sets the in thumb maker.
+   * 
+   * @param inThumbMaker the inThumbMaker to set
    */
   public static void setInThumbMaker(boolean inThumbMaker) {
     SessionService.inThumbMaker = inThumbMaker;

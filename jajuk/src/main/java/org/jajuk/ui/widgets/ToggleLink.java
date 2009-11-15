@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2007 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -29,17 +30,18 @@ import org.jdesktop.swingx.JXCollapsiblePane;
 import org.jdesktop.swingx.JXHyperlink;
 
 /**
- * Generic toggle hyperlink to open/collapse a collapsable panel
+ * Generic toggle hyperlink to open/collapse a collapsable panel.
  */
 public class ToggleLink extends JXHyperlink {
 
+  /** Generated serialVersionUID. */
   private static final long serialVersionUID = 8652043694603450888L;
 
   /**
-   * @param text
-   *          hyperlink text
-   * @param panel
-   *          the associated collapsible panel
+   * The Constructor.
+   * 
+   * @param text hyperlink text
+   * @param panel the associated collapsible panel
    */
   public ToggleLink(String text, JXCollapsiblePane panel) {
     // get the built-in toggle action

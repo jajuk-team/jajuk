@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -69,58 +70,76 @@ import org.jajuk.util.log.Log;
 
 /**
  * Jajuk systray <br>
- * Extends CommandJPanel for volume slider heritage only
+ * Extends CommandJPanel for volume slider heritage only.
  */
 public class JajukSystray extends CommandJPanel implements IJajukWindow {
+  
+  /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
-  /**
-   * State decorator
-   */
+  /** State decorator. */
   private WindowStateDecorator decorator;
 
   // Systray variables
+  /** DOCUMENT_ME. */
   SystemTray stray;
 
+  /** DOCUMENT_ME. */
   JXTrayIcon trayIcon;
 
+  /** DOCUMENT_ME. */
   JPopupMenu jmenu;
 
+  /** DOCUMENT_ME. */
   JMenuItem jmiExit;
 
+  /** DOCUMENT_ME. */
   JMenuItem jmiSlimbar;
 
+  /** DOCUMENT_ME. */
   JMenuItem jmiMute;
 
+  /** DOCUMENT_ME. */
   JMenuItem jmiShuffle;
 
+  /** DOCUMENT_ME. */
   JMenuItem jmiBestof;
 
+  /** DOCUMENT_ME. */
   JMenuItem jmiDJ;
 
+  /** DOCUMENT_ME. */
   JMenuItem jmiNovelties;
 
+  /** DOCUMENT_ME. */
   JMenuItem jmiFinishAlbum;
 
+  /** DOCUMENT_ME. */
   JMenuItem jmiPlayPause;
 
+  /** DOCUMENT_ME. */
   JMenuItem jmiStop;
 
+  /** DOCUMENT_ME. */
   JMenuItem jmiPrevious;
 
+  /** DOCUMENT_ME. */
   JMenuItem jmiNext;
 
+  /** DOCUMENT_ME. */
   JMenu jmAmbience;
 
+  /** DOCUMENT_ME. */
   long lDateLastAdjust;
 
-  /** Self instance singleton */
+  /** Self instance singleton. */
   private static JajukSystray jsystray;
 
-  /** HTML Tooltip */
+  /** HTML Tooltip. */
   JajukInformationDialog balloon;
 
   /**
+   * Checks if is loaded.
    * 
    * @return whether the tray is loaded
    */
@@ -129,6 +148,7 @@ public class JajukSystray extends CommandJPanel implements IJajukWindow {
   }
 
   /**
+   * Gets the instance.
    * 
    * @return singleton
    */
@@ -174,8 +194,7 @@ public class JajukSystray extends CommandJPanel implements IJajukWindow {
   }
 
   /**
-   * Systray constructor
-   * 
+   * Systray constructor.
    */
   public JajukSystray() {
     super();
@@ -184,6 +203,9 @@ public class JajukSystray extends CommandJPanel implements IJajukWindow {
     }
   }
 
+  /* (non-Javadoc)
+   * @see org.jajuk.ui.widgets.CommandJPanel#initUI()
+   */
   @Override
   public final void initUI() {
     // Instanciate the PlayerStateMediator to listen for player basic controls
@@ -313,6 +335,9 @@ public class JajukSystray extends CommandJPanel implements IJajukWindow {
 
   }
 
+  /* (non-Javadoc)
+   * @see org.jajuk.ui.widgets.CommandJPanel#getRegistrationKeys()
+   */
   @Override
   public Set<JajukEvents> getRegistrationKeys() {
     Set<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
@@ -380,7 +405,7 @@ public class JajukSystray extends CommandJPanel implements IJajukWindow {
   }
 
   /**
-   * Hide systray
+   * Hide systray.
    */
   public void closeSystray() {
     if (stray != null && trayIcon != null) {
@@ -389,7 +414,7 @@ public class JajukSystray extends CommandJPanel implements IJajukWindow {
   }
 
   /**
-   * Populate ambiences
+   * Populate ambiences.
    */
   final void populateAmbiences() {
     // Ambience selection listener
@@ -431,11 +456,18 @@ public class JajukSystray extends CommandJPanel implements IJajukWindow {
     }
   }
 
+  /**
+   * Gets the menu.
+   * 
+   * @return the menu
+   */
   public JPopupMenu getMenu() {
     return this.jmenu;
   }
 
   /**
+   * Gets the tray icon.
+   * 
    * @return the trayIcon
    */
   public TrayIcon getTrayIcon() {

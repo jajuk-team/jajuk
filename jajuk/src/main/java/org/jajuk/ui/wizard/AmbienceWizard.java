@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2007 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $$Revision$$
+ *  $Revision$
  */
 package org.jajuk.ui.wizard;
 
@@ -60,27 +61,34 @@ import org.qdwizard.Screen;
 import org.qdwizard.Wizard;
 
 /**
- * Ambiences management wizard
+ * Ambiences management wizard.
  */
 public class AmbienceWizard extends Wizard {
 
+  /**
+   * DOCUMENT_ME.
+   */
   public static class AmbiencePanel extends Screen implements ActionListener {
 
+    /** Generated serialVersionUID. */
     private static final long serialVersionUID = 1L;
 
-    /** All dynamic widgets */
+    /** All dynamic widgets. */
     JComponent[][] widgets;
 
+    /** DOCUMENT_ME. */
     JButton jbNew;
 
+    /** DOCUMENT_ME. */
     JButton jbDelete;
 
+    /** DOCUMENT_ME. */
     JButton jbDefaults;
 
-    /** DJ* */
+    /** DJ*. */
     AmbienceDigitalDJ dj = null;
 
-    /** Selected ambience index */
+    /** Selected ambience index. */
     int ambienceIndex = 0;
 
     /*
@@ -131,10 +139,9 @@ public class AmbienceWizard extends Wizard {
     }
 
     /**
-     * Add a style to a proportion
+     * Add a style to a proportion.
      * 
-     * @param row
-     *          row
+     * @param row row
      */
     private void addStyle(final int row) {
       final Ambience ambience = AmbienceWizard.ambiences.get(row);
@@ -166,17 +173,24 @@ public class AmbienceWizard extends Wizard {
       }
     }
 
+    /* (non-Javadoc)
+     * @see org.qdwizard.Screen#getDescription()
+     */
     @Override
     public String getDescription() {
       return Messages.getString("DigitalDJWizard.47");
     }
 
+    /* (non-Javadoc)
+     * @see org.qdwizard.Screen#getName()
+     */
     @Override
     public String getName() {
       return Messages.getString("DigitalDJWizard.57");
     }
 
     /**
+     * Gets the panel.
      * 
      * @return a panel containing all items
      */
@@ -280,8 +294,7 @@ public class AmbienceWizard extends Wizard {
     }
 
     /**
-     * Create panel UI
-     * 
+     * Create panel UI.
      */
     @Override
     public void initUI() {
@@ -307,7 +320,7 @@ public class AmbienceWizard extends Wizard {
     }
 
     /**
-     * Refresh panel
+     * Refresh panel.
      */
     private void refreshScreen() {
       setLayout(new MigLayout("insets 5,gapy 15", "[center,grow]"));
@@ -322,12 +335,15 @@ public class AmbienceWizard extends Wizard {
     }
   }
 
-  /** Ambiences* */
+  /** Ambiences*. */
   static List<Ambience> ambiences;
 
   /**
+   * Gets the widget index.
    * 
-   * @param widget
+   * @param widget DOCUMENT_ME
+   * @param widgets DOCUMENT_ME
+   * 
    * @return index of a given widget row in the widget table
    */
   private static int getWidgetIndex(final JComponent[][] widgets, final JComponent widget) {
@@ -341,6 +357,9 @@ public class AmbienceWizard extends Wizard {
     return -1;
   }
 
+  /**
+   * Instantiates a new ambience wizard.
+   */
   public AmbienceWizard() {
     super(Messages.getString("DigitalDJWizard.56"), AmbiencePanel.class, null, JajukMainWindow
         .getInstance(), LocaleManager.getLocale(), 500, 600);

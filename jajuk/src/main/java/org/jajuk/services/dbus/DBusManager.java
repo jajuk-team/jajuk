@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2008 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,23 +16,25 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision: 3132 $
+ *  $Revision$
  */
 package org.jajuk.services.dbus;
 
 import org.jajuk.util.log.Log;
 
 /**
- * 
+ * DOCUMENT_ME.
  */
 public final class DBusManager {
-  /** Self instance */
+  
+  /** Self instance. */
   private static DBusManager self = null;
 
-  /** Support for D-Bus remote control of Jajuk */
+  /** Support for D-Bus remote control of Jajuk. */
   private final DBusSupportImpl dbus;
 
   /**
+   * Gets the instance.
    * 
    * @return singleton
    */
@@ -46,6 +49,9 @@ public final class DBusManager {
     return self;
   }
 
+  /**
+   * Instantiates a new d bus manager.
+   */
   private DBusManager() {
     dbus = new DBusSupportImpl();
 
@@ -54,6 +60,10 @@ public final class DBusManager {
     dbus.connect();
   }
 
+  /**
+   * Disconnect.
+   * DOCUMENT_ME
+   */
   public static void disconnect() {
     try {
       if (self != null) {

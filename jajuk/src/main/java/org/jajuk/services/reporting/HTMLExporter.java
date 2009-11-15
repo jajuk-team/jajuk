@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2006 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision: 2118 $
+ *  $Revision$
  */
 
 package org.jajuk.services.reporting;
@@ -39,7 +40,9 @@ import org.jajuk.util.UtilSystem;
  */
 public class HTMLExporter extends Exporter {
 
-  /** PUBLIC METHODS */
+  /**
+   * PUBLIC METHODS.
+   */
 
   public HTMLExporter() {
     cache = SessionService.getConfFileByPath(Const.FILE_REPORTING_CACHE_FILE + "_html_"
@@ -47,6 +50,12 @@ public class HTMLExporter extends Exporter {
   }
 
   /**
+   * Process collection.
+   * 
+   * @param type DOCUMENT_ME
+   * 
+   * @throws Exception the exception
+   * 
    * @see Exporter.processColllection
    */
   @Override
@@ -94,6 +103,9 @@ public class HTMLExporter extends Exporter {
     }
   }
 
+  /* (non-Javadoc)
+   * @see org.jajuk.services.reporting.Exporter#saveToFile(java.lang.String)
+   */
   @Override
   public void saveToFile(String sPath) throws Exception {
     super.saveToFile(sPath);

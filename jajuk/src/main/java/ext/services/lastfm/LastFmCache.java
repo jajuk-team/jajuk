@@ -1,25 +1,22 @@
 /*
- * Adapted by Jajuk team
- * Copyright (C) 2003-2009 the Jajuk Team
- * http://jajuk.info
- * 
- * aTunes 1.14.0
- * Copyright (C) 2006-2009 Alex Aranda, Sylvain Gaudard, Thomas Beckers and contributors
+ *  Jajuk
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
- * See http://www.atunes.org/wiki/index.php?title=Contributing for information about contributors
+ *  This program is free software; you can redistribute it and/or
+ *  modify it under the terms of the GNU General Public License
+ *  as published by the Free Software Foundation; either version 2
+ *  of the License, or any later version.
  *
- * http://www.atunes.org
- * http://sourceforge.net/projects/atunes
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
  *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program; if not, write to the Free Software
+ *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ *  $Revision$
  */
 
 package ext.services.lastfm;
@@ -59,6 +56,7 @@ public class LastFmCache {
   private static File albumInfoCacheDir = SessionService.getConfFileByPath(Const.FILE_CACHE + '/'
       + Const.LASTFM_CACHE + '/' + Const.LAST_FM_ALBUM_INFO_CACHE_DIR);
 
+  /** DOCUMENT_ME. */
   private static File artistInfoCacheDir = SessionService.getConfFileByPath(Const.FILE_CACHE + '/'
       + Const.LASTFM_CACHE + '/' + Const.LAST_FM_ARTIST_INFO_CACHE_DIR);
 
@@ -82,6 +80,7 @@ public class LastFmCache {
   private static File artistWikiCacheDir = SessionService.getConfFileByPath(Const.FILE_CACHE + '/'
       + Const.LASTFM_CACHE + '/' + Const.LAST_FM_ARTIST_WIKI_CACHE_DIR);
 
+  /** DOCUMENT_ME. */
   private static File submissionCacheDir = SessionService.getConfFileByPath(Const.FILE_CACHE + '/'
       + Const.LASTFM_CACHE + '/' + Const.LAST_FM_SUBMISSION_CACHE_DIR);
 
@@ -155,8 +154,7 @@ public class LastFmCache {
    * 
    * @return the album cover cache dir
    * 
-   * @throws IOException
-   *           Signals that an I/O exception has occurred.
+   * @throws IOException Signals that an I/O exception has occurred.
    */
   private synchronized File getAlbumCoverCacheDir() throws IOException {
     if (!albumCoverCacheDir.exists()) {
@@ -170,8 +168,7 @@ public class LastFmCache {
    * 
    * @return the album info cache dir
    * 
-   * @throws IOException
-   *           Signals that an I/O exception has occurred.
+   * @throws IOException Signals that an I/O exception has occurred.
    */
   private synchronized File getAlbumInfoCacheDir() throws IOException {
     if (!albumInfoCacheDir.exists()) {
@@ -185,8 +182,7 @@ public class LastFmCache {
    * 
    * @return the artist info cache dir
    * 
-   * @throws IOException
-   *           Signals that an I/O exception has occurred.
+   * @throws IOException Signals that an I/O exception has occurred.
    */
   private synchronized File getArtistInfoCacheDir() throws IOException {
     if (!artistInfoCacheDir.exists()) {
@@ -200,8 +196,7 @@ public class LastFmCache {
    * 
    * @return the artist image cache dir
    * 
-   * @throws IOException
-   *           Signals that an I/O exception has occurred.
+   * @throws IOException Signals that an I/O exception has occurred.
    */
   private synchronized File getArtistImageCacheDir() throws IOException {
     if (!artistImageCacheDir.exists()) {
@@ -215,8 +210,7 @@ public class LastFmCache {
    * 
    * @return the artist info cache dir
    * 
-   * @throws IOException
-   *           Signals that an I/O exception has occurred.
+   * @throws IOException Signals that an I/O exception has occurred.
    */
   private synchronized File getAlbumListCacheDir() throws IOException {
     if (!albumListCacheDir.exists()) {
@@ -231,8 +225,7 @@ public class LastFmCache {
    * 
    * @return the artist similar cache dir
    * 
-   * @throws IOException
-   *           Signals that an I/O exception has occurred.
+   * @throws IOException Signals that an I/O exception has occurred.
    */
   private synchronized File getArtistSimilarCacheDir() throws IOException {
     if (!artistSimilarCacheDir.exists()) {
@@ -246,8 +239,7 @@ public class LastFmCache {
    * 
    * @return the artist thumbs cache dir
    * 
-   * @throws IOException
-   *           Signals that an I/O exception has occurred.
+   * @throws IOException Signals that an I/O exception has occurred.
    */
   private synchronized File getArtistThumbsCacheDir() throws IOException {
     if (!artistThumbCacheDir.exists()) {
@@ -261,8 +253,7 @@ public class LastFmCache {
    * 
    * @return the artist wiki cache dir
    * 
-   * @throws IOException
-   *           Signals that an I/O exception has occurred.
+   * @throws IOException Signals that an I/O exception has occurred.
    */
   private synchronized File getArtistWikiCacheDir() throws IOException {
     if (!artistWikiCacheDir.exists()) {
@@ -271,6 +262,13 @@ public class LastFmCache {
     return artistWikiCacheDir;
   }
 
+  /**
+   * Gets the submission data dir.
+   * 
+   * @return the submission data dir
+   * 
+   * @throws IOException Signals that an I/O exception has occurred.
+   */
   private synchronized File getSubmissionDataDir() throws IOException {
     if (!submissionCacheDir.exists()) {
       FileUtils.forceMkdir(submissionCacheDir);
@@ -281,8 +279,7 @@ public class LastFmCache {
   /**
    * Album Cover Filename.
    * 
-   * @param album
-   *          the album
+   * @param album the album
    * 
    * @return the file name for album cover
    */
@@ -294,13 +291,11 @@ public class LastFmCache {
   /**
    * Absolute Path to Album Cover Filename.
    * 
-   * @param album
-   *          the album
+   * @param album the album
    * 
    * @return the file name for album cover at cache
    * 
-   * @throws IOException
-   *           Signals that an I/O exception has occurred.
+   * @throws IOException Signals that an I/O exception has occurred.
    */
   private String getFileNameForAlbumCoverAtCache(AlbumInfo album) throws IOException {
     File albumCoverCacheDirFile = getAlbumCoverCacheDir();
@@ -316,10 +311,8 @@ public class LastFmCache {
   /**
    * Album Cover Filename.
    * 
-   * @param album
-   *          the album
-   * @param artist
-   *          the artist
+   * @param album the album
+   * @param artist the artist
    * 
    * @return the file name for album info
    */
@@ -331,15 +324,12 @@ public class LastFmCache {
   /**
    * Absolute Path to Album Info Filename.
    * 
-   * @param album
-   *          the album
-   * @param artist
-   *          the artist
+   * @param album the album
+   * @param artist the artist
    * 
    * @return the file name for album info at cache
    * 
-   * @throws IOException
-   *           Signals that an I/O exception has occurred.
+   * @throws IOException Signals that an I/O exception has occurred.
    */
   private String getFileNameForAlbumInfoAtCache(String artist, String album) throws IOException {
     File albumInfoCacheDirFile = getAlbumInfoCacheDir();
@@ -355,13 +345,11 @@ public class LastFmCache {
   /**
    * Absolute Path to Artist Info Filename.
    * 
-   * @param artist
-   *          the artist
+   * @param artist the artist
    * 
    * @return the file name for artist info at cache
    * 
-   * @throws IOException
-   *           Signals that an I/O exception has occurred.
+   * @throws IOException Signals that an I/O exception has occurred.
    */
   private String getFileNameForArtistInfoAtCache(String artist) throws IOException {
     File artistInfoCacheDirFile = getArtistInfoCacheDir();
@@ -377,8 +365,7 @@ public class LastFmCache {
   /**
    * Artist Image Filename.
    * 
-   * @param artist
-   *          the artist
+   * @param artist the artist
    * 
    * @return the file name for artist image
    */
@@ -390,13 +377,11 @@ public class LastFmCache {
   /**
    * Absolute Path to Artist Image Filename.
    * 
-   * @param artist
-   *          the artist
+   * @param artist the artist
    * 
    * @return the file name for artist image at cache
    * 
-   * @throws IOException
-   *           Signals that an I/O exception has occurred.
+   * @throws IOException Signals that an I/O exception has occurred.
    */
   private String getFileNameForArtistImageAtCache(SimilarArtistsInfo artist) throws IOException {
     File artistImageCacheDirFile = getArtistImageCacheDir();
@@ -412,8 +397,7 @@ public class LastFmCache {
   /**
    * Artist Info Filename.
    * 
-   * @param artist
-   *          the artist
+   * @param artist the artist
    * 
    * @return the file name for artist info
    */
@@ -425,13 +409,11 @@ public class LastFmCache {
   /**
    * Absolute Path to Artist info Filename.
    * 
-   * @param artist
-   *          the artist
+   * @param artist the artist
    * 
    * @return the file name for artist info at cache
    * 
-   * @throws IOException
-   *           Signals that an I/O exception has occurred.
+   * @throws IOException Signals that an I/O exception has occurred.
    */
   private String getFileNameForAlbumListAtCache(String artist) throws IOException {
     File albumListCacheDirFile = getAlbumListCacheDir();
@@ -447,8 +429,7 @@ public class LastFmCache {
   /**
    * Artist Similar Filename.
    * 
-   * @param artist
-   *          the artist
+   * @param artist the artist
    * 
    * @return the file name for artist similar
    */
@@ -460,13 +441,11 @@ public class LastFmCache {
   /**
    * Absolute Path to Artist similar Filename.
    * 
-   * @param artist
-   *          the artist
+   * @param artist the artist
    * 
    * @return the file name for artist similar at cache
    * 
-   * @throws IOException
-   *           Signals that an I/O exception has occurred.
+   * @throws IOException Signals that an I/O exception has occurred.
    */
   private String getFileNameForArtistSimilarAtCache(String artist) throws IOException {
     File artistSimilarCacheDirFile = getArtistSimilarCacheDir();
@@ -482,8 +461,7 @@ public class LastFmCache {
   /**
    * Artist Thumb Filename.
    * 
-   * @param artist
-   *          the artist
+   * @param artist the artist
    * 
    * @return the file name for artist thumb
    */
@@ -495,13 +473,11 @@ public class LastFmCache {
   /**
    * Absolute Path to Artist Thumb Filename.
    * 
-   * @param artist
-   *          the artist
+   * @param artist the artist
    * 
    * @return the file name for artist thumb at cache
    * 
-   * @throws IOException
-   *           Signals that an I/O exception has occurred.
+   * @throws IOException Signals that an I/O exception has occurred.
    */
   private String getFileNameForArtistThumbAtCache(ArtistInfo artist) throws IOException {
     File artistThumbCacheDirFile = getArtistThumbsCacheDir();
@@ -517,8 +493,7 @@ public class LastFmCache {
   /**
    * Artist Info Filename.
    * 
-   * @param artist
-   *          the artist
+   * @param artist the artist
    * 
    * @return the file name for artist wiki
    */
@@ -530,13 +505,11 @@ public class LastFmCache {
   /**
    * Absolute Path to Artist similar Filename.
    * 
-   * @param artist
-   *          the artist
+   * @param artist the artist
    * 
    * @return the file name for artist wiki at cache
    * 
-   * @throws IOException
-   *           Signals that an I/O exception has occurred.
+   * @throws IOException Signals that an I/O exception has occurred.
    */
   private String getFileNameForArtistWikiAtCache(String artist) throws IOException {
     File artistWikiCacheDirFile = getArtistWikiCacheDir();
@@ -549,6 +522,13 @@ public class LastFmCache {
         getFileNameForArtistWiki(artist));
   }
 
+  /**
+   * Gets the file name for submission cache.
+   * 
+   * @return the file name for submission cache
+   * 
+   * @throws IOException Signals that an I/O exception has occurred.
+   */
   private String getFileNameForSubmissionCache() throws IOException {
     File submissionDataDirFile = getSubmissionDataDir();
 
@@ -563,8 +543,7 @@ public class LastFmCache {
   /**
    * Retrieves an Album Cover from cache.
    * 
-   * @param album
-   *          the album
+   * @param album the album
    * 
    * @return the image
    */
@@ -583,10 +562,8 @@ public class LastFmCache {
   /**
    * Retrieves an Album Cover from cache.
    * 
-   * @param album
-   *          the album
-   * @param artist
-   *          the artist
+   * @param album the album
+   * @param artist the artist
    * 
    * @return the audio scrobbler album
    */
@@ -605,10 +582,7 @@ public class LastFmCache {
   /**
    * Retrieves an artist infos from cache.
    * 
-   * @param artist
-   *          the artist
-   * @param artist
-   *          the artist
+   * @param artist the artist
    * 
    * @return the audio scrobbler artist
    */
@@ -627,8 +601,7 @@ public class LastFmCache {
   /**
    * Retrieves an Artist Image from cache.
    * 
-   * @param artist
-   *          the artist
+   * @param artist the artist
    * 
    * @return the image
    */
@@ -647,8 +620,7 @@ public class LastFmCache {
   /**
    * Retrieves an albumList from cache.
    * 
-   * @param artist
-   *          the artist
+   * @param artist the artist
    * 
    * @return the audio scrobbler album list
    */
@@ -667,8 +639,7 @@ public class LastFmCache {
   /**
    * Retrieves an Artist similar from cache.
    * 
-   * @param artist
-   *          the artist
+   * @param artist the artist
    * 
    * @return the audio scrobbler similar artists
    */
@@ -687,8 +658,7 @@ public class LastFmCache {
   /**
    * Retrieves an Artist Thumb from cache.
    * 
-   * @param artist
-   *          the artist
+   * @param artist the artist
    * 
    * @return the image
    */
@@ -707,8 +677,7 @@ public class LastFmCache {
   /**
    * Retrieves an Artist wiki from cache.
    * 
-   * @param artist
-   *          the artist
+   * @param artist the artist
    * 
    * @return the string
    */
@@ -727,10 +696,8 @@ public class LastFmCache {
   /**
    * Stores an Album Cover at cache.
    * 
-   * @param album
-   *          the album
-   * @param cover
-   *          the cover
+   * @param album the album
+   * @param cover the cover
    */
   public synchronized void storeAlbumCover(AlbumInfo album, Image cover) {
     if (cover == null || album == null) {
@@ -751,12 +718,9 @@ public class LastFmCache {
   /**
    * Stores an Album Cover at cache.
    * 
-   * @param album
-   *          the album
-   * @param artist
-   *          the artist
-   * @param albumObject
-   *          the album object
+   * @param album the album
+   * @param artist the artist
+   * @param albumObject the album object
    */
   public synchronized void storeAlbumInfo(String artist, String album, AlbumInfo albumObject) {
     if (artist == null || album == null || albumObject == null) {
@@ -777,8 +741,8 @@ public class LastFmCache {
   /**
    * Stores an artist info at cache.
    * 
-   * @param artist
-   *          the artist
+   * @param artist the artist
+   * @param artistObject DOCUMENT_ME
    */
   public synchronized void storeArtistInfo(String artist, ArtistInfo artistObject) {
     if (artist == null) {
@@ -799,10 +763,8 @@ public class LastFmCache {
   /**
    * Store an Artist Image at cache.
    * 
-   * @param artist
-   *          the artist
-   * @param image
-   *          the image
+   * @param artist the artist
+   * @param image the image
    */
   public synchronized void storeArtistImage(SimilarArtistsInfo artist, Image image) {
     if (image == null || artist == null) {
@@ -823,10 +785,8 @@ public class LastFmCache {
   /**
    * Store an album list at cache.
    * 
-   * @param artist
-   *          the artist
-   * @param list
-   *          the list
+   * @param artist the artist
+   * @param list the list
    */
   public synchronized void storeAlbumList(String artist, AlbumListInfo list) {
     if (artist == null || list == null) {
@@ -847,10 +807,8 @@ public class LastFmCache {
   /**
    * Store an Artist similar at cache.
    * 
-   * @param artist
-   *          the artist
-   * @param similar
-   *          the similar
+   * @param artist the artist
+   * @param similar the similar
    */
   public synchronized void storeArtistSimilar(String artist, SimilarArtistsInfo similar) {
     if (artist == null || similar == null) {
@@ -871,10 +829,8 @@ public class LastFmCache {
   /**
    * Stores an Artist Thumb at cache.
    * 
-   * @param artist
-   *          the artist
-   * @param image
-   *          the image
+   * @param artist the artist
+   * @param image the image
    */
   public synchronized void storeArtistThumbImage(ArtistInfo artist, Image image) {
     if (image == null || artist == null) {
@@ -895,10 +851,8 @@ public class LastFmCache {
   /**
    * Store an Artist wiki at cache.
    * 
-   * @param artist
-   *          the artist
-   * @param wikiText
-   *          the wiki text
+   * @param artist the artist
+   * @param wikiText the wiki text
    */
   public synchronized void storeArtistWiki(String artist, String wikiText) {
     if (artist == null || wikiText == null) {
@@ -916,6 +870,12 @@ public class LastFmCache {
     }
   }
 
+  /**
+   * Adds the submission data.
+   * DOCUMENT_ME
+   * 
+   * @param submissionData DOCUMENT_ME
+   */
   public synchronized void addSubmissionData(FullSubmissionData submissionData) {
     List<FullSubmissionData> submissionDataList = getSubmissionData();
     submissionDataList.add(submissionData);
@@ -936,6 +896,11 @@ public class LastFmCache {
 
   }
 
+  /**
+   * Gets the submission data.
+   * 
+   * @return the submission data
+   */
   @SuppressWarnings("unchecked")
   public synchronized List<FullSubmissionData> getSubmissionData() {
     try {
@@ -949,6 +914,10 @@ public class LastFmCache {
     return new ArrayList<FullSubmissionData>();
   }
 
+  /**
+   * Removes the submission data.
+   * DOCUMENT_ME
+   */
   public synchronized void removeSubmissionData() {
     try {
       String path = getFileNameForSubmissionCache();

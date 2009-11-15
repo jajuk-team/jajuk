@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2007 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $$Revision: 2321 $$
+ *  $Revision$
  */
 
 package org.jajuk.ui.wizard;
@@ -48,24 +49,34 @@ import org.jajuk.util.log.Log;
 
 /**
  * Simple device creation wizard that creates a directory device given a
- * directory
+ * directory.
  */
 public class SimpleDeviceWizard extends JajukJDialog implements ActionListener {
+  
+  /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
+  /** DOCUMENT_ME. */
   JButton jbFileSelection;
 
+  /** DOCUMENT_ME. */
   JLabel jlSelectedFile;
 
+  /** DOCUMENT_ME. */
   JTextField jtfRefreshTime;
 
+  /** DOCUMENT_ME. */
   OKCancelPanel okp;
 
+  /** DOCUMENT_ME. */
   String deviceName;
 
-  /** Selected directory */
+  /** Selected directory. */
   private File fDir;
 
+  /**
+   * Instantiates a new simple device wizard.
+   */
   public SimpleDeviceWizard() {
     setTitle(Messages.getString("SimpleDeviceWizard.0"));
     setAlwaysOnTop(true);
@@ -99,6 +110,9 @@ public class SimpleDeviceWizard extends JajukJDialog implements ActionListener {
     getRootPane().setDefaultButton(okp.getOKButton());
   }
 
+  /* (non-Javadoc)
+   * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+   */
   public void actionPerformed(final ActionEvent e) {
     if (e.getSource() == okp.getCancelButton()) {
       dispose(); // close window

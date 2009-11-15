@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -26,21 +27,30 @@ import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
 
 /**
- * An history item
+ * An history item.
  */
 public class HistoryItem {
-  /** File Id */
+  
+  /** File Id. */
   private String sFileId;
 
-  /** Play date */
+  /** Play date. */
   private long lDate;
 
+  /**
+   * Instantiates a new history item.
+   * 
+   * @param sFileId DOCUMENT_ME
+   * @param lDate DOCUMENT_ME
+   */
   public HistoryItem(String sFileId, long lDate) {
     this.sFileId = sFileId;
     this.lDate = lDate;
   }
 
   /**
+   * Gets the date.
+   * 
    * @return Returns the date.
    */
   public long getDate() {
@@ -48,14 +58,17 @@ public class HistoryItem {
   }
 
   /**
-   * @param date
-   *          The date to set.
+   * Sets the date.
+   * 
+   * @param lDate DOCUMENT_ME
    */
   public void setDate(long lDate) {
     this.lDate = lDate;
   }
 
   /**
+   * Gets the file id.
+   * 
    * @return Returns the sFileId.
    */
   public String getFileId() {
@@ -63,8 +76,9 @@ public class HistoryItem {
   }
 
   /**
-   * @param fileId
-   *          The sFileId to set.
+   * Sets the file id.
+   * 
+   * @param fileId The sFileId to set.
    */
   public void setFileId(String fileId) {
     sFileId = fileId;
@@ -72,7 +86,7 @@ public class HistoryItem {
 
   /**
    * Human readable representation of this history item as read in the history
-   * bar
+   * bar.
    * 
    * @return String
    */

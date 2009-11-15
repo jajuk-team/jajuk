@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -29,15 +30,15 @@ import org.jajuk.util.Messages;
 /**
  * An author *
  * <p>
- * Logical item
+ * Logical item.
  */
 public class Author extends LogicalItem implements Comparable<Author> {
 
   /**
-   * Author constructor
+   * Author constructor.
    * 
-   * @param id
-   * @param sName
+   * @param sName DOCUMENT_ME
+   * @param sId DOCUMENT_ME
    */
   public Author(String sId, String sName) {
     super(sId, sName);
@@ -54,7 +55,7 @@ public class Author extends LogicalItem implements Comparable<Author> {
   }
 
   /**
-   * Return author name, dealing with unkwnown for any language
+   * Return author name, dealing with unkwnown for any language.
    * 
    * @return author name
    */
@@ -67,7 +68,9 @@ public class Author extends LogicalItem implements Comparable<Author> {
   }
 
   /**
-   * toString method
+   * toString method.
+   * 
+   * @return the string
    */
   @Override
   public String toString() {
@@ -75,10 +78,10 @@ public class Author extends LogicalItem implements Comparable<Author> {
   }
 
   /**
-   * Alphabetical comparator used to display ordered lists
+   * Alphabetical comparator used to display ordered lists.
    * 
-   * @param other
-   *          item to be compared
+   * @param otherItem DOCUMENT_ME
+   * 
    * @return comparison result
    */
   public int compareTo(Author otherItem) {
@@ -96,6 +99,8 @@ public class Author extends LogicalItem implements Comparable<Author> {
   }
 
   /**
+   * Checks if is unknown.
+   * 
    * @return whether the author is Unknown or not
    */
   public boolean isUnknown() {
@@ -103,7 +108,9 @@ public class Author extends LogicalItem implements Comparable<Author> {
   }
 
   /**
-   * Get item description
+   * Get item description.
+   * 
+   * @return the desc
    */
   @Override
   public String getDesc() {

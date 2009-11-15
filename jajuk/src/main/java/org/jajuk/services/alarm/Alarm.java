@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2005 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $$Revision: 3156 $$
+ *  $Revision$
  */
 package org.jajuk.services.alarm;
 
@@ -31,13 +32,26 @@ import org.jajuk.util.UtilFeatures;
 import org.jajuk.util.log.Log;
 
 /**
- * An Alarm
+ * An Alarm.
  */
 public class Alarm {
+  
+  /** DOCUMENT_ME. */
   private final List<File> alToPlay;
+  
+  /** DOCUMENT_ME. */
   private final String alarmAction;
+  
+  /** DOCUMENT_ME. */
   private Date aTime;
 
+  /**
+   * Instantiates a new alarm.
+   * 
+   * @param aTime DOCUMENT_ME
+   * @param alFiles DOCUMENT_ME
+   * @param mode DOCUMENT_ME
+   */
   public Alarm(java.util.Date aTime, List<File> alFiles, String mode) {
     this.aTime = aTime;
     this.alToPlay = alFiles;
@@ -45,7 +59,7 @@ public class Alarm {
   }
 
   /**
-   * Effective action to perform by the alarm
+   * Effective action to perform by the alarm.
    */
   public void wakeUpSleeper() {
     Log.debug("Wake up at " + new Date());
@@ -57,12 +71,17 @@ public class Alarm {
     }
   }
 
+  /**
+   * Gets the alarm time.
+   * 
+   * @return the alarm time
+   */
   public Date getAlarmTime() {
     return this.aTime;
   }
 
   /**
-   * Add 24 hours to current alarm
+   * Add 24 hours to current alarm.
    */
   public void nextDay() {
     aTime = DateUtils.addDays(aTime, 1);

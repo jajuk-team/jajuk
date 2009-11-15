@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2007 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $$Revision$$
+ *  $Revision$
  */
 
 package org.jajuk.ui.views;
@@ -80,10 +81,11 @@ import org.jfree.util.SortOrder;
 /**
  * Statistics view
  * <p>
- * Help perspective
+ * Help perspective.
  */
 public class StatView extends ViewAdapter {
 
+  /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
   /*
@@ -97,6 +99,9 @@ public class StatView extends ViewAdapter {
     update(new JajukEvent(JajukEvents.DEVICE_REFRESH));
   }
 
+  /* (non-Javadoc)
+   * @see org.jajuk.events.Observer#getRegistrationKeys()
+   */
   public Set<JajukEvents> getRegistrationKeys() {
     Set<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
     eventSubjectSet.add(JajukEvents.DEVICE_DELETE);
@@ -105,7 +110,7 @@ public class StatView extends ViewAdapter {
   }
 
   /**
-   * Style repartition pie
+   * Style repartition pie.
    * 
    * @return the chart
    */
@@ -166,7 +171,7 @@ public class StatView extends ViewAdapter {
   }
 
   /**
-   * Device size pie
+   * Device size pie.
    * 
    * @return the chart
    */
@@ -220,7 +225,7 @@ public class StatView extends ViewAdapter {
   }
 
   /**
-   * Collection size bars
+   * Collection size bars.
    * 
    * @return the chart
    */
@@ -287,6 +292,22 @@ public class StatView extends ViewAdapter {
 
   // copied method from ChartFactory to overwrite format of tooltips which is
   // otherwise hardcoded in ChartFactory
+  /**
+   * Creates the bar chart3 d.
+   * DOCUMENT_ME
+   * 
+   * @param title DOCUMENT_ME
+   * @param categoryAxisLabel DOCUMENT_ME
+   * @param valueAxisLabel DOCUMENT_ME
+   * @param dataset DOCUMENT_ME
+   * @param orientation DOCUMENT_ME
+   * @param legend DOCUMENT_ME
+   * @param tooltips DOCUMENT_ME
+   * @param urls DOCUMENT_ME
+   * @param format DOCUMENT_ME
+   * 
+   * @return the j free chart
+   */
   public static JFreeChart createBarChart3D(String title, String categoryAxisLabel,
       String valueAxisLabel, CategoryDataset dataset, PlotOrientation orientation, boolean legend,
       boolean tooltips, boolean urls, String format) {
@@ -321,7 +342,7 @@ public class StatView extends ViewAdapter {
   }
 
   /**
-   * Track number bars
+   * Track number bars.
    * 
    * @return the chart
    */
@@ -447,10 +468,10 @@ public class StatView extends ViewAdapter {
   }
 
   /**
-   * Computes mounts labels
+   * Computes mounts labels.
    * 
-   * @param iMonthsNumber
-   *          : number of mounts ( without 'before' ) you want
+   * @param iMonthsNumber : number of mounts ( without 'before' ) you want
+   * 
    * @return the mounts labels
    */
   private String[] getMonthsLabels(int iMonthsNumber) {
@@ -475,10 +496,11 @@ public class StatView extends ViewAdapter {
   }
 
   /**
-   * Get months as integers
+   * Get months as integers.
    * 
-   * @param iMonthsNumber
-   * @return
+   * @param iMonthsNumber DOCUMENT_ME
+   * 
+   * @return the months
    */
   private int[] getMonths(int iMonthsNumber) {
     int[] iMonths = new int[iMonthsNumber + 1];

@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision: 2503 $
+ *  $Revision$
  */
 package org.jajuk.ui.wizard;
 
@@ -32,33 +33,38 @@ import org.jajuk.util.JajukIcons;
 import org.jdesktop.swingx.JXBusyLabel;
 
 /**
- * Refresh dialog
- * 
+ * Refresh dialog.
  */
 public class RefreshDialog extends JFrame {
 
+  /** Generated serialVersionUID. */
   private static final long serialVersionUID = -7883506101436294760L;
 
+  /** DOCUMENT_ME. */
   private JXBusyLabel jlAction;
 
+  /** DOCUMENT_ME. */
   private JProgressBar progress;
 
+  /** DOCUMENT_ME. */
   private JLabel jlRefreshing;
 
+  /** DOCUMENT_ME. */
   private boolean indeterminate = false;
 
+  /** DOCUMENT_ME. */
   private long dateLastUpdateRefresh;
 
+  /** DOCUMENT_ME. */
   private long dateLastUpdateProgress;
 
-  /** Minimum dialog refresh interval in ms, avoid to saturate the EDT* */
+  /** Minimum dialog refresh interval in ms, avoid to saturate the EDT*. */
   private static int MIN_REFRESH_INTERVAL = 100;
 
   /**
-   * Refresh dialog (labels and a progress bar)
+   * Refresh dialog (labels and a progress bar).
    * 
-   * @param indeterminate
-   *          whether the progress is indeterminate or not
+   * @param indeterminate whether the progress is indeterminate or not
    */
   public RefreshDialog(final boolean indeterminate) {
     this.indeterminate = indeterminate;
@@ -81,6 +87,13 @@ public class RefreshDialog extends JFrame {
     });
   }
 
+  /**
+   * Sets the action.
+   * DOCUMENT_ME
+   * 
+   * @param action DOCUMENT_ME
+   * @param icon DOCUMENT_ME
+   */
   public void setAction(final String action, final Icon icon) {
     SwingUtilities.invokeLater(new Runnable() {
       public void run() {
@@ -91,6 +104,11 @@ public class RefreshDialog extends JFrame {
     });
   }
 
+  /**
+   * Sets the refreshing.
+   * 
+   * @param path the new refreshing
+   */
   public void setRefreshing(final String path) {
     // No more than one GUI refresh every 100 ms
     if ((System.currentTimeMillis() - dateLastUpdateRefresh) < MIN_REFRESH_INTERVAL) {
@@ -106,9 +124,9 @@ public class RefreshDialog extends JFrame {
   }
 
   /**
+   * Sets the progress.
    * 
-   * @param pos
-   *          position from 0 to 100
+   * @param pos position from 0 to 100
    */
   public void setProgress(final int pos) {
     if (!this.indeterminate) {

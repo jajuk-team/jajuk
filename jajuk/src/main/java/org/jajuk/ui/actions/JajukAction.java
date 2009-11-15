@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2005 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $$Revision$$
+ *  $Revision$
  */
 package org.jajuk.ui.actions;
 
@@ -38,12 +39,13 @@ import org.jajuk.util.log.Log;
  */
 public abstract class JajukAction extends AbstractAction {
 
+  /** Generated serialVersionUID. */
   private static final long serialVersionUID = -2535230785022978297L;
 
-  /** Is this action an hotkey ? */
+  /** Is this action an hotkey ?. */
   private boolean bHotkey = false;
 
-  /** enable state */
+  /** enable state. */
   private boolean bEnable = true;
 
   // Instantiate a static jintellitype object
@@ -61,20 +63,11 @@ public abstract class JajukAction extends AbstractAction {
   /**
    * Construct an action with the given name, icon and accelerator keystroke.
    * 
-   * @param name
-   *          The unique name for the action. This name is used in the labels
-   *          for visualization. If the name contains a '_' (underscore)
-   *          character. The character following this underscore is used as
-   *          mnemonic key for the action.
-   * @param icon
-   *          The icon to use for visualization of the action.
-   * @param stroke
-   *          The keystroke to use.
-   * @param enabled
-   *          By default enable or disable the action.
-   * @param hotkey
-   *          Is this command should be enabled even when jajuk has not the
-   *          focus (has a effect under windows only)
+   * @param icon The icon to use for visualization of the action.
+   * @param stroke The keystroke to use.
+   * @param enabled By default enable or disable the action.
+   * @param pName DOCUMENT_ME
+   * @param bHotkey DOCUMENT_ME
    */
   protected JajukAction(String pName, Icon icon, KeyStroke stroke, boolean enabled, boolean bHotkey) {
     // check hotkeys are enabled (false by default)
@@ -121,23 +114,17 @@ public abstract class JajukAction extends AbstractAction {
   /**
    * Construct an action with the given name, icon and accelerator keystroke.
    * 
-   * @param name
-   *          The unique name for the action. This name is used in the labels
-   *          for visualization. If the name contains a '_' (underscore)
-   *          character. The character following this underscore is used as
-   *          mnemonic key for the action.
-   * @param icon
-   *          The icon to use for visualization of the action.
-   * @param stroke
-   *          The keystroke to use. If the keystroke given is not a valid
-   *          keystroke using the rules describe in
-   *          {@link javax.swing.KeyStroke#getKeyStroke(String)}, null is used
-   *          instead.
-   * @param enabled
-   *          By default enable or disable the action.
-   * @param hotkey
-   *          Is this command should be enabled even when jajuk has not the
-   *          focus (has a effect under windows only)
+   * @param name The unique name for the action. This name is used in the labels
+   * for visualization. If the name contains a '_' (underscore)
+   * character. The character following this underscore is used as
+   * mnemonic key for the action.
+   * @param icon The icon to use for visualization of the action.
+   * @param stroke The keystroke to use. If the keystroke given is not a valid
+   * keystroke using the rules describe in
+   * {@link javax.swing.KeyStroke#getKeyStroke(String)}, null is used
+   * instead.
+   * @param enabled By default enable or disable the action.
+   * @param bHotkey DOCUMENT_ME
    */
   protected JajukAction(String name, Icon icon, String stroke, boolean enabled, boolean bHotkey) {
     this(name, icon, KeyStroke.getKeyStroke(stroke), enabled, bHotkey);
@@ -146,18 +133,13 @@ public abstract class JajukAction extends AbstractAction {
   /**
    * Construct an action with the given name and accelerator keystroke, no icon.
    * 
-   * @param name
-   *          The unique name for the action. This name is used in the labels
-   *          for visualization. If the name contains a '_' (underscore)
-   *          character. The character following this underscore is used as
-   *          mnemonic key for the action.
-   * @param stroke
-   *          The keystroke to use.
-   * @param enabled
-   *          By default enable or disable the action.
-   * @param hotkey
-   *          Is this command should be enabled even when jajuk has not the
-   *          focus (has a effect under windows only)
+   * @param name The unique name for the action. This name is used in the labels
+   * for visualization. If the name contains a '_' (underscore)
+   * character. The character following this underscore is used as
+   * mnemonic key for the action.
+   * @param stroke The keystroke to use.
+   * @param enabled By default enable or disable the action.
+   * @param bHotkey DOCUMENT_ME
    */
   protected JajukAction(String name, KeyStroke stroke, boolean enabled, boolean bHotkey) {
     this(name, null, stroke, enabled, bHotkey);
@@ -166,21 +148,16 @@ public abstract class JajukAction extends AbstractAction {
   /**
    * Construct an action with the given name and accelerator keystroke, no icon.
    * 
-   * @param name
-   *          The unique name for the action. This name is used in the labels
-   *          for visualization. If the name contains a '_' (underscore)
-   *          character. The character following this underscore is used as
-   *          mnemonic key for the action.
-   * @param stroke
-   *          The keystroke to use. If the keystroke given is not a valid
-   *          keystroke using the rules describe in
-   *          {@link javax.swing.KeyStroke#getKeyStroke(String)}, null is used
-   *          instead.
-   * @param enabled
-   *          By default enable or disable the action.
-   * @param hotkey
-   *          Is this command should be enabled even when jajuk has not the
-   *          focus (has a effect under windows only)
+   * @param name The unique name for the action. This name is used in the labels
+   * for visualization. If the name contains a '_' (underscore)
+   * character. The character following this underscore is used as
+   * mnemonic key for the action.
+   * @param stroke The keystroke to use. If the keystroke given is not a valid
+   * keystroke using the rules describe in
+   * {@link javax.swing.KeyStroke#getKeyStroke(String)}, null is used
+   * instead.
+   * @param enabled By default enable or disable the action.
+   * @param bHotkey DOCUMENT_ME
    */
   protected JajukAction(String name, String stroke, boolean enabled, boolean bHotkey) {
     this(name, null, stroke, enabled, bHotkey);
@@ -189,15 +166,11 @@ public abstract class JajukAction extends AbstractAction {
   /**
    * Construct an action with the given icon and accelerator keystroke, no name.
    * 
-   * @param icon
-   *          The icon to use for visualization of the action.
-   * @param stroke
-   *          The keystroke to use.
-   * @param enabled
-   *          By default enable or disable the action.
-   * @param hotkey
-   *          Is this command should be enabled even when jajuk has not the
-   *          focus (has a effect under windows only)
+   * @param icon The icon to use for visualization of the action.
+   * @param stroke The keystroke to use.
+   * @param enabled By default enable or disable the action.
+   * @param bHotkey DOCUMENT_ME
+   * 
    * @see javax.swing.KeyStroke#getKeyStroke(String)
    */
   protected JajukAction(Icon icon, KeyStroke stroke, boolean enabled, boolean bHotkey) {
@@ -207,18 +180,14 @@ public abstract class JajukAction extends AbstractAction {
   /**
    * Construct an action with the given icon and accelerator keystroke, no name.
    * 
-   * @param icon
-   *          The icon to use for visualization of the action.
-   * @param stroke
-   *          The keystroke to use. If the keystroke given is not a valid
-   *          keystroke using the rules describe in
-   *          {@link javax.swing.KeyStroke#getKeyStroke(String)}, null is used
-   *          instead.
-   * @param enabled
-   *          By default enable or disable the action.
-   * @param hotkey
-   *          Is this command should be enabled even when jajuk has not the
-   *          focus (has a effect under windows only)
+   * @param icon The icon to use for visualization of the action.
+   * @param stroke The keystroke to use. If the keystroke given is not a valid
+   * keystroke using the rules describe in
+   * {@link javax.swing.KeyStroke#getKeyStroke(String)}, null is used
+   * instead.
+   * @param enabled By default enable or disable the action.
+   * @param bHotkey DOCUMENT_ME
+   * 
    * @see javax.swing.KeyStroke#getKeyStroke(String)
    */
   protected JajukAction(Icon icon, String stroke, boolean enabled, boolean bHotkey) {
@@ -228,15 +197,12 @@ public abstract class JajukAction extends AbstractAction {
   /**
    * Construct an action with the given name and icon, no accelerator keystroke.
    * 
-   * @param name
-   *          The unique name for the action. This name is used in the labels
-   *          for visualization. If the name contains a '_' (underscore)
-   *          character. The character following this underscore is used as
-   *          mnemonic key for the action.
-   * @param icon
-   *          The icon to use for visualization of the action.
-   * @param enabled
-   *          By default enable or disable the action.
+   * @param name The unique name for the action. This name is used in the labels
+   * for visualization. If the name contains a '_' (underscore)
+   * character. The character following this underscore is used as
+   * mnemonic key for the action.
+   * @param icon The icon to use for visualization of the action.
+   * @param enabled By default enable or disable the action.
    */
   protected JajukAction(String name, Icon icon, boolean enabled) {
     this(name, icon, (KeyStroke) null, enabled, false);
@@ -245,10 +211,8 @@ public abstract class JajukAction extends AbstractAction {
   /**
    * Construct an action with the given icon, no name, no accelerator keystroke.
    * 
-   * @param icon
-   *          The icon to use for visualization of the action.
-   * @param enabled
-   *          By default enable or disable the action.
+   * @param icon The icon to use for visualization of the action.
+   * @param enabled By default enable or disable the action.
    */
   protected JajukAction(Icon icon, boolean enabled) {
     this(null, icon, (KeyStroke) null, enabled, false);
@@ -257,56 +221,59 @@ public abstract class JajukAction extends AbstractAction {
   /**
    * Construct an action with the given name, no icon, no accelerator keystroke.
    * 
-   * @param name
-   *          The unique name for the action. This name is used in the labels
-   *          for visualization. If the name contains a '_' (underscore)
-   *          character. The character following this underscore is used as
-   *          mnemonic key for the action.
-   * @param enabled
-   *          By default enable or disable the action.
+   * @param name The unique name for the action. This name is used in the labels
+   * for visualization. If the name contains a '_' (underscore)
+   * character. The character following this underscore is used as
+   * mnemonic key for the action.
+   * @param enabled By default enable or disable the action.
    */
   protected JajukAction(String name, boolean enabled) {
     this(name, null, (KeyStroke) null, enabled, false);
   }
 
   /**
-   * @param name
-   *          The name for the action. This name is used for a menu or a button.
+   * Sets the name.
+   * 
+   * @param name The name for the action. This name is used for a menu or a button.
    */
   public final void setName(String name) {
     putValue(NAME, name);
   }
 
   /**
-   * @param description
-   *          The short description for the action. This is used for tooltip
-   *          text.
+   * Sets the short description.
+   * 
+   * @param description The short description for the action. This is used for tooltip
+   * text.
    */
   public void setShortDescription(String description) {
     putValue(SHORT_DESCRIPTION, description);
   }
 
   /**
-   * @param description
-   *          The long description for the action. This can be used for
-   *          context-sensitive help.
+   * Sets the long description.
+   * 
+   * @param description The long description for the action. This can be used for
+   * context-sensitive help.
    */
   public void setLongDescription(String description) {
     putValue(LONG_DESCRIPTION, description);
   }
 
   /**
-   * @param icon
-   *          The small icon for the action. Use for toolbar buttons.
+   * Sets the icon.
+   * 
+   * @param icon The small icon for the action. Use for toolbar buttons.
    */
   public final void setIcon(Icon icon) {
     putValue(SMALL_ICON, icon);
   }
 
   /**
-   * @param actionCommand
-   *          The action command for this action. This is used for creating the
-   *          <code>ActionEvent</code>.
+   * Sets the action command.
+   * 
+   * @param actionCommand The action command for this action. This is used for creating the
+   * <code>ActionEvent</code>.
    */
 
   public void setActionCommand(String actionCommand) {
@@ -314,20 +281,22 @@ public abstract class JajukAction extends AbstractAction {
   }
 
   /**
-   * @param stroke
-   *          The keystroke for the action. This is used as a shortcut key.
+   * Sets the accelerator key.
+   * 
+   * @param stroke The keystroke for the action. This is used as a shortcut key.
    */
   public final void setAcceleratorKey(KeyStroke stroke) {
     putValue(ACCELERATOR_KEY, stroke);
   }
 
   /**
-   * @param stroke
-   *          The keystroke for the action. If the keystroke given is not a
-   *          valid keystroke using the rules described in
-   *          {@link javax.swing.KeyStroke#getKeyStroke(String)},
-   *          <code>null</code> is used instead. This is used as a shortcut
-   *          key.
+   * Sets the accelerator key.
+   * 
+   * @param stroke The keystroke for the action. If the keystroke given is not a
+   * valid keystroke using the rules described in
+   * {@link javax.swing.KeyStroke#getKeyStroke(String)},
+   * <code>null</code> is used instead. This is used as a shortcut
+   * key.
    */
   public final void setAcceleratorKey(String stroke) {
     putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(stroke));
@@ -344,11 +313,11 @@ public abstract class JajukAction extends AbstractAction {
    * string, the first occurrence of it will be underlined to indicate the
    * mnemonic to the user.
    * 
-   * @param mnemonic
-   *          The key code which represents the mnemonic. The mnemonic is the
-   *          key which when combined with the look and feel's mouseless
-   *          modifier (usually <b>Alt</b>) will activate this button if focus
-   *          is contained somewhere within this action's ancestor window.
+   * @param mnemonic The key code which represents the mnemonic. The mnemonic is the
+   * key which when combined with the look and feel's mouseless
+   * modifier (usually <b>Alt</b>) will activate this button if focus
+   * is contained somewhere within this action's ancestor window.
+   * 
    * @see java.awt.event.KeyEvent
    */
   public final void setMnemonic(int mnemonic) {
@@ -360,8 +329,7 @@ public abstract class JajukAction extends AbstractAction {
    * {@link #perform(java.awt.event.ActionEvent)} to add error handling and
    * logging to the action system.
    * 
-   * @param evt
-   *          The event.
+   * @param evt The event.
    */
   public final void actionPerformed(ActionEvent evt) {
     try {
@@ -374,14 +342,16 @@ public abstract class JajukAction extends AbstractAction {
   /**
    * Perform the action.
    * 
-   * @throws Exception
-   *           When anything goes wrong when performing the action.
-   * @param evt
+   * @param evt DOCUMENT_ME
+   * 
+   * @throws Exception When anything goes wrong when performing the action.
    */
   public abstract void perform(ActionEvent evt) throws Exception;
 
   /**
-   * Free intellipad resources
+   * Free intellipad resources.
+   * 
+   * @throws Exception the exception
    */
   public static void cleanup() throws Exception {
     if (UtilSystem.isUnderWindows()) {
@@ -391,6 +361,7 @@ public abstract class JajukAction extends AbstractAction {
   }
 
   /**
+   * Checks if is hotkey.
    * 
    * @return whether it is an hotkey
    */
@@ -399,15 +370,17 @@ public abstract class JajukAction extends AbstractAction {
   }
 
   /**
-   * Enable or disable the action
+   * Enable or disable the action.
    * 
-   * @param enable
+   * @param enable DOCUMENT_ME
    */
   protected void enable(boolean enable) {
     this.bEnable = enable;
   }
 
   /**
+   * Checks if is enable.
+   * 
    * @return enable state for the action
    */
   protected boolean isEnable() {

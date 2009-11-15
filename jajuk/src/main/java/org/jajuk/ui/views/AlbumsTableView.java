@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2007 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -43,14 +44,19 @@ import org.jajuk.util.Messages;
 import org.jajuk.util.UtilGUI;
 
 /**
- * List collection albums as a table
+ * List collection albums as a table.
  */
 public class AlbumsTableView extends AbstractTableView {
 
+  /** Generated serialVersionUID. */
   private static final long serialVersionUID = 7576455252866971945L;
 
+  /** DOCUMENT_ME. */
   private static ThumbnailPopup popup = null;
 
+  /**
+   * Instantiates a new albums table view.
+   */
   public AlbumsTableView() {
     super();
     columnsConf = CONF_ALBUMS_TABLE_COLUMNS;

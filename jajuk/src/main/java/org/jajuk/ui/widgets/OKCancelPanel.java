@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -31,19 +32,27 @@ import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 
 /**
- * Ok Cancel generic panel
+ * Ok Cancel generic panel.
  */
 public class OKCancelPanel extends JPanel {
 
+  /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
+  /** DOCUMENT_ME. */
   private final JajukButton jbOk;
 
+  /** DOCUMENT_ME. */
   private final JajukButton jbCancel;
 
-  /** Associated action listener */
+  /** Associated action listener. */
   ActionListener al;
 
+  /**
+   * Instantiates a new oK cancel panel.
+   * 
+   * @param al DOCUMENT_ME
+   */
   public OKCancelPanel(ActionListener al) {
     this.al = al;
     // buttons
@@ -57,11 +66,11 @@ public class OKCancelPanel extends JPanel {
   }
 
   /**
-   * OK Cancel panel with given button names
+   * OK Cancel panel with given button names.
    * 
-   * @param al
-   * @param sOKTitle
-   * @param sCancelTitle
+   * @param al DOCUMENT_ME
+   * @param sOKTitle DOCUMENT_ME
+   * @param sCancelTitle DOCUMENT_ME
    */
   public OKCancelPanel(ActionListener al, String sOKTitle, String sCancelTitle) {
     this(al);
@@ -69,10 +78,20 @@ public class OKCancelPanel extends JPanel {
     jbCancel.setText(sCancelTitle);
   }
 
+  /**
+   * Gets the oK button.
+   * 
+   * @return the oK button
+   */
   public JajukButton getOKButton() {
     return jbOk;
   }
 
+  /**
+   * Gets the cancel button.
+   * 
+   * @return the cancel button
+   */
   public JajukButton getCancelButton() {
     return jbCancel;
   }

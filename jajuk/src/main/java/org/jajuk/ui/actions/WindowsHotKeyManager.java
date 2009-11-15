@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2005 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $$Revision: 2359 $$
+ *  $Revision$
  */
 package org.jajuk.ui.actions;
 
@@ -42,20 +43,23 @@ import org.jajuk.util.log.Log;
  * <p>
  * Delete this class before compiling if you want to build jajuk without
  * Jintellitype jar
- * </p>
+ * </p>.
  */
 public abstract class WindowsHotKeyManager extends AbstractAction {
+  
+  /** Generated serialVersionUID. */
   private static final long serialVersionUID = -6948447651091264530L;
 
-  /** Maps hotkeylisteners with the event ID */
+  /** Maps hotkeylisteners with the event ID. */
   private static Map<Integer, JajukAction> hmIndexAction = new HashMap<Integer, JajukAction>(20);
 
-  /**
-   * Jintellitype object used for hotkeys and intellitype events management
-   * under windows only
-   */
+  /** Jintellitype object used for hotkeys and intellitype events management under windows only. */
   private static JIntellitype jintellitype;
 
+  /**
+   * Register j intellitype.
+   * DOCUMENT_ME
+   */
   public static void registerJIntellitype() {
     jintellitype = JIntellitype.getInstance();
     // assign this class to be a IntellitypeListener
@@ -105,6 +109,13 @@ public abstract class WindowsHotKeyManager extends AbstractAction {
 
   }
 
+  /**
+   * Register hot key.
+   * DOCUMENT_ME
+   * 
+   * @param stroke DOCUMENT_ME
+   * @param ab DOCUMENT_ME
+   */
   public static void registerHotKey(KeyStroke stroke, final JajukAction ab) {
     // under windows, use hotkey that can be used even when window
     // has not the focus. Note that all keys are nor hotkeys (given
@@ -138,7 +149,7 @@ public abstract class WindowsHotKeyManager extends AbstractAction {
   }
 
   /**
-   * Free Jintellipad resources
+   * Free Jintellipad resources.
    */
   public static void cleanup() {
     if (jintellitype != null) {

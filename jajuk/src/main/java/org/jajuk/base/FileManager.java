@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -47,16 +48,17 @@ import org.jajuk.util.filters.JajukPredicates;
 import org.jajuk.util.log.Log;
 
 /**
- * Convenient class to manage files
+ * Convenient class to manage files.
  */
 public final class FileManager extends ItemManager {
-  /** Best of files */
+  
+  /** Best of files. */
   private final List<File> alBestofFiles = new ArrayList<File>(20);
 
-  /** Self instance */
+  /** Self instance. */
   private static FileManager singleton;
 
-  /** File comparator based on rate */
+  /** File comparator based on rate. */
   private final Comparator<File> rateComparator = new Comparator<File>() {
     public int compare(File file1, File file2) {
       long lRate1 = file1.getTrack().getRate();
@@ -72,7 +74,7 @@ public final class FileManager extends ItemManager {
   };
 
   /**
-   * No constructor available, only static access
+   * No constructor available, only static access.
    */
   private FileManager() {
     super();
@@ -101,6 +103,8 @@ public final class FileManager extends ItemManager {
   }
 
   /**
+   * Gets the instance.
+   * 
    * @return singleton
    */
   public static FileManager getInstance() {
@@ -111,9 +115,16 @@ public final class FileManager extends ItemManager {
   }
 
   /**
-   * Register an File with a known id
+   * Register an File with a known id.
    * 
-   * @param sName
+   * @param sName DOCUMENT_ME
+   * @param sId DOCUMENT_ME
+   * @param directory DOCUMENT_ME
+   * @param track DOCUMENT_ME
+   * @param lSize DOCUMENT_ME
+   * @param lQuality DOCUMENT_ME
+   * 
+   * @return the file
    */
   public synchronized File registerFile(String sId, String sName, Directory directory, Track track,
       long lSize, long lQuality) {
@@ -138,11 +149,11 @@ public final class FileManager extends ItemManager {
   }
 
   /**
-   * Get file hashcode (ID)
+   * Get file hashcode (ID).
    * 
-   * @param sName
-   * @param device
-   * @param dir
+   * @param sName DOCUMENT_ME
+   * @param dir DOCUMENT_ME
+   * 
    * @return file ID
    */
   protected static String createID(String sName, Directory dir) {
@@ -161,11 +172,14 @@ public final class FileManager extends ItemManager {
   }
 
   /**
-   * Change a file name
+   * Change a file name.
    * 
-   * @param fileOld
-   * @param sNewName
+   * @param fileOld DOCUMENT_ME
+   * @param sNewName DOCUMENT_ME
+   * 
    * @return new file
+   * 
+   * @throws JajukException the jajuk exception
    */
   public synchronized File changeFileName(org.jajuk.base.File fileOld, String sNewName)
       throws JajukException {
@@ -227,12 +241,11 @@ public final class FileManager extends ItemManager {
   }
 
   /**
-   * Change a file directory
+   * Change a file directory.
    * 
-   * @param old
-   *          old file
-   * @param newDir
-   *          new dir
+   * @param old old file
+   * @param newDir new dir
+   * 
    * @return new file or null if an error occurs
    */
   public synchronized File changeFileDirectory(File old, Directory newDir) {
@@ -256,10 +269,10 @@ public final class FileManager extends ItemManager {
   }
 
   /**
-   * Clear all references for the given device
+   * Clear all references for the given device.
    * 
    * @param sId :
-   *          Device id
+   * Device id
    */
   public synchronized void clearDevice(String sId) {
     for (File file : getFiles()) {
@@ -270,9 +283,9 @@ public final class FileManager extends ItemManager {
   }
 
   /**
-   * Remove a file reference
+   * Remove a file reference.
    * 
-   * @param file
+   * @param file DOCUMENT_ME
    */
   public synchronized void removeFile(File file) {
     // We need to remove the file from the track !
@@ -281,10 +294,11 @@ public final class FileManager extends ItemManager {
   }
 
   /**
-   * Return file by full path
+   * Return file by full path.
    * 
    * @param sPath :
-   *          full path
+   * full path
+   * 
    * @return file or null if given path is not known
    */
 
@@ -305,6 +319,8 @@ public final class FileManager extends ItemManager {
   }
 
   /**
+   * Gets the ready files.
+   * 
    * @return All accessible files of the collection
    */
   public List<File> getReadyFiles() {
@@ -316,7 +332,7 @@ public final class FileManager extends ItemManager {
 
   /**
    * Return a shuffle mounted and unbaned file from the entire collection or
-   * null if none available using these criterias
+   * null if none available using these criterias.
    * 
    * @return the file
    */
@@ -333,10 +349,10 @@ public final class FileManager extends ItemManager {
   }
 
   /**
-   * Return an ordered playlist with the entire accessible shuffle collection
+   * Return an ordered playlist with the entire accessible shuffle collection.
    * 
    * @return The entire accessible shuffle collection (can return a void
-   *         collection)
+   * collection)
    */
   public List<File> getGlobalShufflePlaylist() {
     List<File> alEligibleFiles = getReadyFiles();
@@ -381,9 +397,9 @@ public final class FileManager extends ItemManager {
   }
 
   /**
-   * Return a shuffle mounted file from the novelties
+   * Return a shuffle mounted file from the novelties.
    * 
-   * @return
+   * @return the novelty file
    */
   public File getNoveltyFile() {
     List<File> alEligibleFiles = getGlobalNoveltiesPlaylist();
@@ -391,10 +407,10 @@ public final class FileManager extends ItemManager {
   }
 
   /**
-   * Return a shuffled playlist with the entire accessible novelties collection
+   * Return a shuffled playlist with the entire accessible novelties collection.
    * 
    * @return The entire accessible novelties collection (can return a void
-   *         collection)
+   * collection)
    */
   public List<org.jajuk.base.File> getGlobalNoveltiesPlaylist() {
     return getGlobalNoveltiesPlaylist(true);
@@ -403,9 +419,10 @@ public final class FileManager extends ItemManager {
   /**
    * Return an ordered playlist with the accessible novelties collection The
    * number of returned items is limited to NB_TRACKS_ON_ACTION for performance
-   * reasons
+   * reasons.
    * 
-   * @param bHideUnmounted
+   * @param bHideUnmounted DOCUMENT_ME
+   * 
    * @return The entire accessible novelties collection
    */
   public List<File> getGlobalNoveltiesPlaylist(boolean bHideUnmounted) {
@@ -440,7 +457,7 @@ public final class FileManager extends ItemManager {
   }
 
   /**
-   * Return a shuffled playlist with the entire accessible novelties collection
+   * Return a shuffled playlist with the entire accessible novelties collection.
    * 
    * @return The entire accessible novelties collection
    */
@@ -458,9 +475,10 @@ public final class FileManager extends ItemManager {
   }
 
   /**
-   * Convenient method used to return shuffled files by album
+   * Convenient method used to return shuffled files by album.
    * 
-   * @param alEligibleFiles
+   * @param alEligibleFiles DOCUMENT_ME
+   * 
    * @return Shuffled tracks by album
    */
   private List<File> getShuffledFilesByAlbum(List<File> alEligibleFiles) {
@@ -492,6 +510,8 @@ public final class FileManager extends ItemManager {
   }
 
   /**
+   * Gets the sorted by rate.
+   * 
    * @return a sorted set of the collection by rate, highest first
    */
   private List<File> getSortedByRate() {
@@ -504,7 +524,7 @@ public final class FileManager extends ItemManager {
 
   /**
    * Return a shuffled playlist with the entire accessible bestof collection,
-   * best first
+   * best first.
    * 
    * @return Shuffled best tracks (n% of favorite)
    */
@@ -526,10 +546,8 @@ public final class FileManager extends ItemManager {
   }
 
   /**
-   * Return ordered (by rate) bestof files
+   * Return ordered (by rate) bestof files.
    * 
-   * @param bHideUnmounted
-   *          if true, unmounted files are not chosen
    * @return top files
    */
   public List<File> getBestOfFiles() {
@@ -537,6 +555,10 @@ public final class FileManager extends ItemManager {
     return alBestofFiles;
   }
 
+  /**
+   * Refresh best of files.
+   * DOCUMENT_ME
+   */
   public void refreshBestOfFiles() {
     int iNbBestofFiles = Integer.parseInt(Conf.getString(Const.CONF_BESTOF_TRACKS_SIZE));
     // clear data
@@ -563,10 +585,11 @@ public final class FileManager extends ItemManager {
   }
 
   /**
-   * Return next mounted file ( used in continue mode )
+   * Return next mounted file ( used in continue mode ).
    * 
    * @param file :
-   *          a file
+   * a file
+   * 
    * @return next file from entire collection
    */
   public synchronized File getNextFile(File file) {
@@ -601,10 +624,11 @@ public final class FileManager extends ItemManager {
   }
 
   /**
-   * Return next mounted file from a different album than the provided file
+   * Return next mounted file from a different album than the provided file.
    * 
    * @param file :
-   *          a file
+   * a file
+   * 
    * @return next file from entire collection
    */
   public synchronized File getNextAlbumFile(File file) {
@@ -624,10 +648,11 @@ public final class FileManager extends ItemManager {
   }
 
   /**
-   * Return previous mounted file
+   * Return previous mounted file.
    * 
    * @param file :
-   *          a file
+   * a file
+   * 
    * @return previous file from entire collection
    */
   public synchronized File getPreviousFile(File file) {
@@ -660,10 +685,11 @@ public final class FileManager extends ItemManager {
   }
 
   /**
-   * Return whether the given file is the very first file from collection
+   * Return whether the given file is the very first file from collection.
    * 
-   * @param file
-   * @return
+   * @param file DOCUMENT_ME
+   * 
+   * @return true, if checks if is veryfirst file
    */
   public boolean isVeryfirstFile(File file) {
     List<File> files = getFiles();
@@ -684,8 +710,10 @@ public final class FileManager extends ItemManager {
   }
 
   /**
-   * @param sID
-   *          Item ID
+   * Gets the file by id.
+   * 
+   * @param sID Item ID
+   * 
    * @return File matching the id
    */
   public File getFileByID(String sID) {
@@ -693,6 +721,7 @@ public final class FileManager extends ItemManager {
   }
 
   /**
+   * Gets the files.
    * 
    * @return ordered files list
    */
@@ -702,6 +731,7 @@ public final class FileManager extends ItemManager {
   }
 
   /**
+   * Gets the files iterator.
    * 
    * @return files iterator
    */

@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2005 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $$Revision$$
+ *  $Revision$
  */
 package org.jajuk.ui.actions;
 
@@ -40,14 +41,22 @@ import org.jajuk.util.log.Log;
  * <code>CTRL + RIGHT ARROW</code>.
  */
 public class NextTrackAction extends JajukAction {
+  
+  /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
+  /**
+   * Instantiates a new next track action.
+   */
   NextTrackAction() {
     super(Messages.getString("JajukWindow.14"), IconLoader.getIcon(JajukIcons.PLAYER_NEXT_SMALL),
         "F10", false, true);
     setShortDescription(Messages.getString("CommandJPanel.9"));
   }
 
+  /* (non-Javadoc)
+   * @see org.jajuk.ui.actions.JajukAction#perform(java.awt.event.ActionEvent)
+   */
   @Override
   public void perform(ActionEvent evt) {
     // check modifiers to see if it is a movement inside track, between

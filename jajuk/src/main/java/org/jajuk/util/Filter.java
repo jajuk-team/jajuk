@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2007 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $$Revision$$
+ *  $Revision$
  */
 
 package org.jajuk.util;
@@ -31,34 +32,30 @@ import org.jajuk.base.PropertyMetaInformation;
 import org.jajuk.util.log.Log;
 
 /**
- * Filter on meta information
+ * Filter on meta information.
  */
 public class Filter {
 
-  /** Key */
+  /** Key. */
   String key;
 
-  /** Value* */
+  /** Value*. */
   String sValue;
 
-  /** Human* */
+  /** Human*. */
   boolean bHuman = false;
 
-  /** Exact* */
+  /** Exact*. */
   boolean bExact = false;
 
   /**
-   * Filter constructor
+   * Filter constructor.
    * 
-   * @param key
-   *          key (property name). null if the filter is on any property
-   * @param sValue
-   *          value
-   * @param bHuman
-   *          is the filter apply value itself or its human representation if
-   *          different ?
-   * @param bExact
-   *          is the filter should match exactly the value ?
+   * @param key key (property name). null if the filter is on any property
+   * @param sValue value
+   * @param bHuman is the filter apply value itself or its human representation if
+   * different ?
+   * @param bExact is the filter should match exactly the value ?
    */
   public Filter(String key, String sValue, boolean bHuman, boolean bExact) {
     this.key = key;
@@ -67,18 +64,38 @@ public class Filter {
     this.bExact = bExact;
   }
 
+  /**
+   * Checks if is exact.
+   * 
+   * @return true, if is exact
+   */
   public boolean isExact() {
     return bExact;
   }
 
+  /**
+   * Checks if is human.
+   * 
+   * @return true, if is human
+   */
   public boolean isHuman() {
     return bHuman;
   }
 
+  /**
+   * Gets the property.
+   * 
+   * @return the property
+   */
   public String getProperty() {
     return key;
   }
 
+  /**
+   * Gets the value.
+   * 
+   * @return the value
+   */
   public String getValue() {
     return sValue;
   }
@@ -93,10 +110,8 @@ public class Filter {
    * This filter is not thread safe.
    * </p>
    * 
-   * @param list
-   *          The input list to filter. Filtering is done in-place on this list.
-   * @param filter
-   *          The filter to apply on the list.
+   * @param list The input list to filter. Filtering is done in-place on this list.
+   * @param filter The filter to apply on the list.
    */
   public static void filterItems(List<? extends Item> list, Filter filter) {
     if (filter == null || filter.getValue() == null) {

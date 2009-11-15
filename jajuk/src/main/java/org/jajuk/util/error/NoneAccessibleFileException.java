@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2007 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,19 +16,22 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $$Revision$$
+ *  $Revision$
  */
 package org.jajuk.util.error;
 
+/**
+ * DOCUMENT_ME.
+ */
 public class NoneAccessibleFileException extends JajukException {
 
+  /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
   /**
    * constructor.
    * 
-   * @param code
-   *          Code of the current error.
+   * @param code Code of the current error.
    */
   public NoneAccessibleFileException(int code) {
     super(code);
@@ -36,10 +40,8 @@ public class NoneAccessibleFileException extends JajukException {
   /**
    * JajukException constructor.
    * 
-   * @param code
-   *          Code of the current error.
-   * @param pCause
-   *          Original exception of the error.
+   * @param code Code of the current error.
+   * @param pCause Original exception of the error.
    */
   public NoneAccessibleFileException(int code, Throwable pCause) {
     super(code, pCause);

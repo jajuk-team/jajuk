@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2004 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision:3266 $
+ *  $Revision$
  */
 
 package org.jajuk.services.dj;
@@ -45,23 +46,26 @@ import org.jajuk.util.UpgradeManager;
 import org.jajuk.util.log.Log;
 
 /**
- * Ambience manager
+ * Ambience manager.
  */
 public final class AmbienceManager implements Observer {
 
-  /** Ambience id-> ambience */
+  /** Ambience id-> ambience. */
   private final Map<String, Ambience> ambiences = new HashMap<String, Ambience>(10);
 
-  /** Self instance */
+  /** Self instance. */
   private static AmbienceManager self;
 
   /**
-   * No direct constructor
+   * No direct constructor.
    */
   private AmbienceManager() {
     ObservationManager.register(this);
   }
 
+  /* (non-Javadoc)
+   * @see org.jajuk.events.Observer#getRegistrationKeys()
+   */
   public Set<JajukEvents> getRegistrationKeys() {
     Set<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
     eventSubjectSet.add(JajukEvents.STYLE_NAME_CHANGED);
@@ -69,6 +73,7 @@ public final class AmbienceManager implements Observer {
   }
 
   /**
+   * Gets the instance.
    * 
    * @return singleton
    */
@@ -122,6 +127,7 @@ public final class AmbienceManager implements Observer {
   }
 
   /**
+   * Gets the ambiences.
    * 
    * @return sorted list of registered ambiences
    */
@@ -132,9 +138,10 @@ public final class AmbienceManager implements Observer {
   }
 
   /**
+   * Gets the ambience.
    * 
-   * @param sID
-   *          Ambience id
+   * @param sID Ambience id
+   * 
    * @return registrated ambience
    */
   public Ambience getAmbience(String sID) {
@@ -142,9 +149,10 @@ public final class AmbienceManager implements Observer {
   }
 
   /**
+   * Gets the ambience by name.
    * 
-   * @param sName
-   *          Ambience name
+   * @param sName Ambience name
+   * 
    * @return registrated ambience or null if no matching name
    */
   public Ambience getAmbienceByName(String sName) {
@@ -157,16 +165,16 @@ public final class AmbienceManager implements Observer {
   }
 
   /**
-   * Register a new ambience
+   * Register a new ambience.
    * 
-   * @param ambience
-   *          ambience to register
+   * @param ambience ambience to register
    */
   public void registerAmbience(Ambience ambience) {
     ambiences.put(ambience.getID(), ambience);
   }
 
   /**
+   * Gets the selected ambience.
    * 
    * @return currently selected ambience or null if "all" ambience selected
    */
@@ -197,8 +205,7 @@ public final class AmbienceManager implements Observer {
   }
 
   /**
-   * Perform required operations before exit
-   * 
+   * Perform required operations before exit.
    */
   public void commit() {
     // first, remove all ambiences from configuration
@@ -224,10 +231,9 @@ public final class AmbienceManager implements Observer {
   }
 
   /**
-   * Remove a ambience
+   * Remove a ambience.
    * 
-   * @param sAmbienceID
-   *          the ambience to remove
+   * @param sAmbienceID the ambience to remove
    */
   public void removeAmbience(String sAmbienceID) {
     this.ambiences.remove(sAmbienceID);
@@ -238,8 +244,7 @@ public final class AmbienceManager implements Observer {
   }
 
   /**
-   * Create out of the box ambiences
-   * 
+   * Create out of the box ambiences.
    */
   public void createDefaultAmbiences() {
     // Define default ambience by style name

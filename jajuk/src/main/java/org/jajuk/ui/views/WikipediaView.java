@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2007 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $$Revision$$
+ *  $Revision$
  */
 
 package org.jajuk.ui.views;
@@ -60,39 +61,57 @@ import org.jajuk.util.UtilFeatures;
 import org.jajuk.util.log.Log;
 
 /**
- * Wikipedia view
+ * Wikipedia view.
  */
 public class WikipediaView extends ViewAdapter implements ActionListener {
 
+  /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
+  /** DOCUMENT_ME. */
   JLabel jlLanguage;
 
+  /** DOCUMENT_ME. */
   JComboBox jcbLanguage;
 
-  /** Cobra web browser */
+  /** Cobra web browser. */
   JajukHtmlPanel browser;
 
+  /** DOCUMENT_ME. */
   JButton jbCopy;
 
+  /** DOCUMENT_ME. */
   JButton jbLaunchInExternalBrowser;
 
+  /** DOCUMENT_ME. */
   JToggleButton jbAuthorSearch;
 
+  /** DOCUMENT_ME. */
   JToggleButton jbAlbumSearch;
 
+  /** DOCUMENT_ME. */
   JToggleButton jbTrackSearch;
 
-  /** Language index */
+  /** Language index. */
   int indexLang = 0;
 
+  /**
+   * DOCUMENT_ME.
+   */
   enum Type {
-    AUTHOR, ALBUM, TRACK
+    
+    /** DOCUMENT_ME. */
+    AUTHOR, 
+ /** DOCUMENT_ME. */
+ ALBUM, 
+ /** DOCUMENT_ME. */
+ TRACK
   }
 
+  /** DOCUMENT_ME. */
   Type type = Type.AUTHOR;
 
-  /** Current search */
+  /** Current search. */
   String search = null;
 
   /*
@@ -185,6 +204,9 @@ public class WikipediaView extends ViewAdapter implements ActionListener {
     UtilFeatures.updateStatus(this);
   }
 
+  /* (non-Javadoc)
+   * @see org.jajuk.events.Observer#getRegistrationKeys()
+   */
   public Set<JajukEvents> getRegistrationKeys() {
     Set<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
     eventSubjectSet.add(JajukEvents.FILE_LAUNCHED);
@@ -229,10 +251,9 @@ public class WikipediaView extends ViewAdapter implements ActionListener {
   }
 
   /**
-   * Perform wikipedia search
+   * Perform wikipedia search.
    * 
-   * @param bForceReload
-   *          force the page display
+   * @param bForceReload force the page display
    */
   private void launchSearch(final boolean bForceReload) {
     Thread t = new Thread("Wikipedia Search Thread") {
@@ -297,6 +318,10 @@ public class WikipediaView extends ViewAdapter implements ActionListener {
 
   /*
    * Reset view
+   */
+  /**
+   * Reset.
+   * DOCUMENT_ME
    */
   private void reset() {
     // Reset current search

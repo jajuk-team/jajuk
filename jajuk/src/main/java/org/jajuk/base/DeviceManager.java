@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -44,30 +45,28 @@ import org.jajuk.util.UtilSystem;
 import org.jajuk.util.log.Log;
 
 /**
- * Convenient class to manage devices
+ * Convenient class to manage devices.
  */
 public final class DeviceManager extends ItemManager {
-  /** Supported device types names */
+  
+  /** Supported device types names. */
   private final List<String> alDevicesTypes = new ArrayList<String>(10);
 
-  /** Self instance */
+  /** Self instance. */
   private static DeviceManager singleton;
 
-  /** Date last global refresh */
+  /** Date last global refresh. */
   private long lDateLastGlobalRefresh = 0;
 
-  /** List of deep-refresh devices after an upgrade */
+  /** List of deep-refresh devices after an upgrade. */
   private final Set<Device> devicesDeepRefreshed = new HashSet<Device>();
   
-  /** DeviceTypes Identification strings 
-   * 
-   * Note: this needs to correspond with the constants in @see org.jajuk.base.Device !! 
-   */
+  /** DeviceTypes Identification strings  Note: this needs to correspond with the constants in @see org.jajuk.base.Device !! */
   public static final String[] DEVICE_TYPES = { "Device_type.directory", "Device_type.file_cd",
       "Device_type.network_drive", "Device_type.extdd", "Device_type.player" };
 
 
-  /** Auto-refresh thread */
+  /** Auto-refresh thread. */
   private final Thread tAutoRefresh = new Thread("Device Auto Refresh Thread") {
     @Override
     public void run() {
@@ -82,10 +81,11 @@ public final class DeviceManager extends ItemManager {
     }
   };
 
+  /** DOCUMENT_ME. */
   private boolean bGlobalRefreshing = false;
 
   /**
-   * No constructor available, only static access
+   * No constructor available, only static access.
    */
   private DeviceManager() {
     super();
@@ -119,6 +119,10 @@ public final class DeviceManager extends ItemManager {
         false, false, String.class, null));
   }
 
+  /**
+   * Start auto refresh thread.
+   * DOCUMENT_ME
+   */
   public void startAutoRefreshThread() {
     if(!tAutoRefresh.isAlive()) {
       tAutoRefresh.setPriority(Thread.MIN_PRIORITY);
@@ -127,6 +131,8 @@ public final class DeviceManager extends ItemManager {
   }
 
   /**
+   * Gets the instance.
+   * 
    * @return singleton
    */
   public static DeviceManager getInstance() {
@@ -137,9 +143,12 @@ public final class DeviceManager extends ItemManager {
   }
 
   /**
-   * Register a device
+   * Register a device.
    * 
-   * @param sName
+   * @param sName DOCUMENT_ME
+   * @param lDeviceType DOCUMENT_ME
+   * @param sUrl DOCUMENT_ME
+   * 
    * @return device
    */
   public Device registerDevice(String sName, long lDeviceType, String sUrl) {
@@ -148,9 +157,13 @@ public final class DeviceManager extends ItemManager {
   }
 
   /**
-   * Register a device with a known id
+   * Register a device with a known id.
    * 
-   * @param sName
+   * @param sName DOCUMENT_ME
+   * @param sId DOCUMENT_ME
+   * @param lDeviceType DOCUMENT_ME
+   * @param sUrl DOCUMENT_ME
+   * 
    * @return device
    */
   public synchronized Device registerDevice(String sId, String sName, long lDeviceType, String sUrl) {
@@ -166,9 +179,10 @@ public final class DeviceManager extends ItemManager {
   }
 
   /**
-   * Process to compute a device id
+   * Process to compute a device id.
    * 
-   * @param sName
+   * @param sName DOCUMENT_ME
+   * 
    * @return An id
    */
   protected static String createID(String sName) {
@@ -176,13 +190,13 @@ public final class DeviceManager extends ItemManager {
   }
 
   /**
-   * Check none device already has this name or is a parent directory
+   * Check none device already has this name or is a parent directory.
    * 
-   * @param sName
-   * @param iDeviceType
-   * @param sUrl
-   * @param bNew:
-   *          is it a new device ?
+   * @param sName DOCUMENT_ME
+   * @param iDeviceType DOCUMENT_ME
+   * @param sUrl DOCUMENT_ME
+   * @param bNew DOCUMENT_ME
+   * 
    * @return 0:ok or error code
    */
   public int checkDeviceAvailablity(String sName, int iDeviceType, String sUrl, boolean bNew) {
@@ -223,15 +237,17 @@ public final class DeviceManager extends ItemManager {
   }
 
   /**
-   * Register a device type
+   * Register a device type.
    * 
-   * @param sDeviceType
+   * @param sDeviceType DOCUMENT_ME
    */
   public void registerDeviceType(String sDeviceType) {
     alDevicesTypes.add(sDeviceType);
   }
 
   /**
+   * Gets the device types number.
+   * 
    * @return number of registered devices
    */
   public int getDeviceTypesNumber() {
@@ -239,6 +255,8 @@ public final class DeviceManager extends ItemManager {
   }
 
   /**
+   * Gets the device types.
+   * 
    * @return Device types iteration
    */
   public Iterator<String> getDeviceTypes() {
@@ -246,9 +264,10 @@ public final class DeviceManager extends ItemManager {
   }
 
   /**
-   * Get a device type name for a given index
+   * Get a device type name for a given index.
    * 
-   * @param index
+   * @param index DOCUMENT_ME
+   * 
    * @return device name for a given index
    */
   public String getDeviceType(long index) {
@@ -256,9 +275,9 @@ public final class DeviceManager extends ItemManager {
   }
 
   /**
-   * Remove a device
+   * Remove a device.
    * 
-   * @param device
+   * @param device DOCUMENT_ME
    */
   public synchronized void removeDevice(Device device) {
     // show confirmation message if required
@@ -309,6 +328,8 @@ public final class DeviceManager extends ItemManager {
   }
 
   /**
+   * Checks if is any device refreshing.
+   * 
    * @return whether any device is currently refreshing
    */
   public boolean isAnyDeviceRefreshing() {
@@ -325,7 +346,7 @@ public final class DeviceManager extends ItemManager {
   }
 
   /**
-   * Clean all devices
+   * Clean all devices.
    */
   public synchronized void cleanAllDevices() {
     for (Device device : getDevices()) {
@@ -351,13 +372,18 @@ public final class DeviceManager extends ItemManager {
     return Const.XML_DEVICES;
   }
 
+  /**
+   * Gets the date last global refresh.
+   * 
+   * @return the date last global refresh
+   */
   public long getDateLastGlobalRefresh() {
     return lDateLastGlobalRefresh;
   }
 
   /**
    * Refresh of all devices with auto-refresh enabled (used in automatic mode)
-   * Must be the shortest possible
+   * Must be the shortest possible.
    */
   public void refreshAllDevices() {
     try {
@@ -422,8 +448,10 @@ public final class DeviceManager extends ItemManager {
   }
 
   /**
-   * @param sID
-   *          Item ID
+   * Gets the device by id.
+   * 
+   * @param sID Item ID
+   * 
    * @return Element
    */
   public Device getDeviceByID(String sID) {
@@ -431,8 +459,10 @@ public final class DeviceManager extends ItemManager {
   }
 
   /**
-   * @param sName
-   *          device name
+   * Gets the device by name.
+   * 
+   * @param sName device name
+   * 
    * @return device by given name or null if no match
    */
   public Device getDeviceByName(String sName) {
@@ -445,6 +475,7 @@ public final class DeviceManager extends ItemManager {
   }
 
   /**
+   * Gets the devices.
    * 
    * @return ordered devices list
    */
@@ -454,6 +485,7 @@ public final class DeviceManager extends ItemManager {
   }
 
   /**
+   * Gets the devices iterator.
    * 
    * @return devices iterator
    */

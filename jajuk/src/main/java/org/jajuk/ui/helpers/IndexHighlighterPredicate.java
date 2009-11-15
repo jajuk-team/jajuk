@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2008 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision: 3132 $
+ *  $Revision$
  */
 package org.jajuk.ui.helpers;
 
@@ -27,14 +28,20 @@ import org.jdesktop.swingx.decorator.HighlightPredicate;
 
 /**
  * Jajuk playing highlighter used in some tables to change the cell background
- * if the index is at the given row
+ * if the index is at the given row.
  */
 public class IndexHighlighterPredicate implements HighlightPredicate {
 
+  /**
+   * Instantiates a new index highlighter predicate.
+   */
   public IndexHighlighterPredicate() {
 
   }
 
+  /* (non-Javadoc)
+   * @see org.jdesktop.swingx.decorator.HighlightPredicate#isHighlighted(java.awt.Component, org.jdesktop.swingx.decorator.ComponentAdapter)
+   */
   public boolean isHighlighted(Component renderer, ComponentAdapter adapter) {
     // always highlight the current index
     if (QueueModel.getIndex() == adapter.row) {

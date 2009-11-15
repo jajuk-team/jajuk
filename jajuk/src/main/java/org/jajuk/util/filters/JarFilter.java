@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2008 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,22 +16,22 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision: 3132 $
+ *  $Revision$
  */
 package org.jajuk.util.filters;
 
 import org.jajuk.util.JajukFileFilter;
 
 /**
- * 
- * Jar filter
+ * Jar filter.
  */
 public class JarFilter extends JajukFileFilter {
 
-  /** Self instance */
+  /** Self instance. */
   private static JarFilter self = null;
 
   /**
+   * Gets the instance.
    * 
    * @return singleton
    */
@@ -42,7 +43,7 @@ public class JarFilter extends JajukFileFilter {
   }
 
   /**
-   * Singleton constructor (protected for testing purposes)
+   * Singleton constructor (protected for testing purposes).
    */
   protected JarFilter() {
     super(new String[] { "jar" });

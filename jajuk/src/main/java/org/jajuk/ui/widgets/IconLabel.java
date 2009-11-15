@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2004 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -35,40 +36,43 @@ import org.jajuk.util.Messages;
 import org.jajuk.util.log.Log;
 
 /**
- * Encapsulates a label with a text and an icon, used for tables
+ * Encapsulates a label with a text and an icon, used for tables.
  */
 public class IconLabel extends ImageIcon implements Comparable<IconLabel> {
 
+  /** Generated serialVersionUID. */
   private static final long serialVersionUID = 3794262035337113611L;
 
-  /** Text */
+  /** Text. */
   private final String sText;
 
-  /** Background color */
+  /** Background color. */
   private Color cBackground;
 
-  /** Foreground color */
+  /** Foreground color. */
   private Color cForeground;
 
-  /** Font */
+  /** Font. */
   private Font font;
 
-  /** Tooltip */
+  /** Tooltip. */
   private String sTooltip;
 
-  /** Whether this is a integer */
+  /** Whether this is a integer. */
   private boolean bInteger = false;
 
+  /** DOCUMENT_ME. */
   private static Map<JajukIcons, IconLabel> cachedIcons = new HashMap<JajukIcons, IconLabel>();
 
   /**
-   * Constructor
+   * Constructor.
    * 
-   * @param icon
-   * @param sText
-   * @param cBackground
-   * @param cForeground
-   * @param font
+   * @param icon DOCUMENT_ME
+   * @param sText DOCUMENT_ME
+   * @param cBackground DOCUMENT_ME
+   * @param cForeground DOCUMENT_ME
+   * @param font DOCUMENT_ME
+   * @param sTooltip DOCUMENT_ME
    */
   public IconLabel(ImageIcon icon, String sText, Color cBackground, Color cForeground, Font font,
       String sTooltip) {
@@ -80,12 +84,20 @@ public class IconLabel extends ImageIcon implements Comparable<IconLabel> {
     this.sTooltip = sTooltip;
   }
 
+  /**
+   * Instantiates a new icon label.
+   * 
+   * @param icon DOCUMENT_ME
+   * @param sText DOCUMENT_ME
+   */
   public IconLabel(ImageIcon icon, String sText) {
     super(icon.getImage());
     this.sText = sText;
   }
 
   /**
+   * Gets the text.
+   * 
    * @return Returns the sText.
    */
   public String getText() {
@@ -93,6 +105,8 @@ public class IconLabel extends ImageIcon implements Comparable<IconLabel> {
   }
 
   /**
+   * Gets the background.
+   * 
    * @return Returns the cBackground.
    */
   public Color getBackground() {
@@ -100,6 +114,8 @@ public class IconLabel extends ImageIcon implements Comparable<IconLabel> {
   }
 
   /**
+   * Gets the foreground.
+   * 
    * @return Returns the cForeground.
    */
   public Color getForeground() {
@@ -107,6 +123,8 @@ public class IconLabel extends ImageIcon implements Comparable<IconLabel> {
   }
 
   /**
+   * Gets the font.
+   * 
    * @return Returns the font.
    */
   public Font getFont() {
@@ -114,7 +132,9 @@ public class IconLabel extends ImageIcon implements Comparable<IconLabel> {
   }
 
   /**
-   * toString method
+   * toString method.
+   * 
+   * @return the string
    */
   @Override
   public String toString() {
@@ -122,6 +142,8 @@ public class IconLabel extends ImageIcon implements Comparable<IconLabel> {
   }
 
   /**
+   * Gets the tooltip.
+   * 
    * @return Returns the sTooltip.
    */
   public String getTooltip() {
@@ -148,12 +170,21 @@ public class IconLabel extends ImageIcon implements Comparable<IconLabel> {
   }
 
   /**
-   * @param integer
+   * Sets the integer.
+   * 
+   * @param integer DOCUMENT_ME
    */
   public void setInteger(boolean integer) {
     bInteger = integer;
   }
 
+  /**
+   * Gets the icon.
+   * 
+   * @param icon DOCUMENT_ME
+   * 
+   * @return the icon
+   */
   public static IconLabel getIcon(JajukIcons icon) {
     if (icon == JajukIcons.TRACK_FIFO_PLANNED) {
       if (!cachedIcons.containsKey(icon)) {

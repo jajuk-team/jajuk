@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision: 2118 $
+ *  $Revision$
  */
 package org.jajuk.base;
 
@@ -27,18 +28,18 @@ import org.jajuk.util.Messages;
 import org.jajuk.util.UtilString;
 
 /**
- * 
- * Year object
+ * Year object.
  */
 public class Year extends LogicalItem implements Comparable<Year> {
 
+  /** DOCUMENT_ME. */
   private final long value;
 
   /**
-   * Year constructor
+   * Year constructor.
    * 
-   * @param id
-   * @param sName
+   * @param sId DOCUMENT_ME
+   * @param sValue DOCUMENT_ME
    */
   public Year(String sId, String sValue) {
     super(sId, sValue);
@@ -56,7 +57,9 @@ public class Year extends LogicalItem implements Comparable<Year> {
   }
 
   /**
-   * toString method
+   * toString method.
+   * 
+   * @return the string
    */
   @Override
   public String toString() {
@@ -64,6 +67,7 @@ public class Year extends LogicalItem implements Comparable<Year> {
   }
 
   /**
+   * Gets the value.
    * 
    * @return year as a long
    */
@@ -72,10 +76,10 @@ public class Year extends LogicalItem implements Comparable<Year> {
   }
 
   /**
-   * Alphabetical comparator used to display ordered lists
+   * Alphabetical comparator used to display ordered lists.
    * 
-   * @param other
-   *          item to be compared
+   * @param other item to be compared
+   * 
    * @return comparison result
    */
   public int compareTo(Year other) {
@@ -83,7 +87,9 @@ public class Year extends LogicalItem implements Comparable<Year> {
   }
 
   /**
-   * Get item description
+   * Get item description.
+   * 
+   * @return the desc
    */
   @Override
   public String getDesc() {
@@ -91,6 +97,7 @@ public class Year extends LogicalItem implements Comparable<Year> {
   }
 
   /**
+   * Gets the name2.
    * 
    * @return a human-readable year format
    */
@@ -113,9 +120,9 @@ public class Year extends LogicalItem implements Comparable<Year> {
   }
 
   /**
-   * Return whether this year looks valid or not
+   * Return whether this year looks valid or not.
    * 
-   * @return
+   * @return true, if looks valid
    */
   public boolean looksValid() {
     return value > 1000 && value < 3000;

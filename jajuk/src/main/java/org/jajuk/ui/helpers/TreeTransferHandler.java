@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -54,18 +55,31 @@ import javax.swing.tree.TreePath;
 public class TreeTransferHandler implements DragGestureListener, DragSourceListener,
     DropTargetListener, TreeWillExpandListener {
 
+  /** DOCUMENT_ME. */
   private final JTree tree;
 
+  /** DOCUMENT_ME. */
   private final DragSource dragSource; // dragsource
 
+  /** DOCUMENT_ME. */
   private static DefaultMutableTreeNode draggedNode;
 
+  /** DOCUMENT_ME. */
   private static BufferedImage image = null; // buff image
 
+  /** DOCUMENT_ME. */
   private final Rectangle rect2D = new Rectangle();
 
+  /** DOCUMENT_ME. */
   private final boolean drawImage;
 
+  /**
+   * Instantiates a new tree transfer handler.
+   * 
+   * @param tree DOCUMENT_ME
+   * @param action DOCUMENT_ME
+   * @param drawIcon DOCUMENT_ME
+   */
   public TreeTransferHandler(JTree tree, int action, boolean drawIcon) {
     this.tree = tree;
     tree.addTreeWillExpandListener(this);
@@ -75,9 +89,15 @@ public class TreeTransferHandler implements DragGestureListener, DragSourceListe
   }
 
   /* Methods for DragSourceListener */
+  /* (non-Javadoc)
+   * @see java.awt.dnd.DragSourceListener#dragDropEnd(java.awt.dnd.DragSourceDropEvent)
+   */
   public void dragDropEnd(DragSourceDropEvent dsde) {
   }
 
+  /* (non-Javadoc)
+   * @see java.awt.dnd.DragSourceListener#dragEnter(java.awt.dnd.DragSourceDragEvent)
+   */
   public final void dragEnter(DragSourceDragEvent dsde) {
     int action = dsde.getDropAction();
     if (action == DnDConstants.ACTION_COPY) {
@@ -91,6 +111,9 @@ public class TreeTransferHandler implements DragGestureListener, DragSourceListe
     }
   }
 
+  /* (non-Javadoc)
+   * @see java.awt.dnd.DragSourceListener#dragOver(java.awt.dnd.DragSourceDragEvent)
+   */
   public final void dragOver(DragSourceDragEvent dsde) {
     int action = dsde.getDropAction();
     if (action == DnDConstants.ACTION_COPY) {
@@ -104,6 +127,9 @@ public class TreeTransferHandler implements DragGestureListener, DragSourceListe
     }
   }
 
+  /* (non-Javadoc)
+   * @see java.awt.dnd.DragSourceListener#dropActionChanged(java.awt.dnd.DragSourceDragEvent)
+   */
   public final void dropActionChanged(DragSourceDragEvent dsde) {
     int action = dsde.getDropAction();
     if (action == DnDConstants.ACTION_COPY) {
@@ -117,11 +143,17 @@ public class TreeTransferHandler implements DragGestureListener, DragSourceListe
     }
   }
 
+  /* (non-Javadoc)
+   * @see java.awt.dnd.DragSourceListener#dragExit(java.awt.dnd.DragSourceEvent)
+   */
   public final void dragExit(DragSourceEvent dse) {
     dse.getDragSourceContext().setCursor(DragSource.DefaultMoveNoDrop);
   }
 
   /* Methods for DragGestureListener */
+  /* (non-Javadoc)
+   * @see java.awt.dnd.DragGestureListener#dragGestureRecognized(java.awt.dnd.DragGestureEvent)
+   */
   public final void dragGestureRecognized(DragGestureEvent dge) {
     TreePath path = tree.getSelectionPath();
     if (path != null) {
@@ -152,6 +184,9 @@ public class TreeTransferHandler implements DragGestureListener, DragSourceListe
 
   /* Methods for DropTargetListener */
 
+  /* (non-Javadoc)
+   * @see java.awt.dnd.DropTargetListener#dragEnter(java.awt.dnd.DropTargetDragEvent)
+   */
   public final void dragEnter(DropTargetDragEvent dtde) {
     Point pt = dtde.getLocation();
     int action = dtde.getDropAction();
@@ -161,12 +196,18 @@ public class TreeTransferHandler implements DragGestureListener, DragSourceListe
     dtde.acceptDrag(action);
   }
 
+  /* (non-Javadoc)
+   * @see java.awt.dnd.DropTargetListener#dragExit(java.awt.dnd.DropTargetEvent)
+   */
   public final void dragExit(DropTargetEvent dte) {
     if (drawImage) {
       clearImage();
     }
   }
 
+  /* (non-Javadoc)
+   * @see java.awt.dnd.DropTargetListener#dragOver(java.awt.dnd.DropTargetDragEvent)
+   */
   public final void dragOver(DropTargetDragEvent dtde) {
     Point pt = dtde.getLocation();
     int action = dtde.getDropAction();
@@ -176,6 +217,9 @@ public class TreeTransferHandler implements DragGestureListener, DragSourceListe
     dtde.acceptDrag(action);
   }
 
+  /* (non-Javadoc)
+   * @see java.awt.dnd.DropTargetListener#dropActionChanged(java.awt.dnd.DropTargetDragEvent)
+   */
   public final void dropActionChanged(DropTargetDragEvent dtde) {
     Point pt = dtde.getLocation();
     int action = dtde.getDropAction();
@@ -185,16 +229,29 @@ public class TreeTransferHandler implements DragGestureListener, DragSourceListe
     dtde.acceptDrag(action);
   }
 
+  /* (non-Javadoc)
+   * @see java.awt.dnd.DropTargetListener#drop(java.awt.dnd.DropTargetDropEvent)
+   */
   public final void drop(DropTargetDropEvent dtde) {
     clearImage();
   }
 
+  /**
+   * Paint image.
+   * DOCUMENT_ME
+   * 
+   * @param pt DOCUMENT_ME
+   */
   private final void paintImage(Point pt) {
     tree.paintImmediately(rect2D.getBounds());
     rect2D.setRect((int) pt.getX(), (int) pt.getY(), image.getWidth(), image.getHeight());
     tree.getGraphics().drawImage(image, (int) pt.getX(), (int) pt.getY(), tree);
   }
 
+  /**
+   * Clear image.
+   * DOCUMENT_ME
+   */
   private final void clearImage() {
     tree.paintImmediately(rect2D.getBounds());
   }

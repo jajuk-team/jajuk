@@ -1,22 +1,22 @@
-/*    
- *  ProccessLauncher is a tool to launch an extern application
- *  in a Java program with stream managed in separate threads.
- * 
- *  Copyright (C) 2006  Fabio MARAZZATO, Yann D'ISANTO
+/*
+ *  Jajuk
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
- *  This library is free software; you can redistribute it and/or
- *  modify it under the terms of the GNU Lesser General Public
- *  License as published by the Free Software Foundation; either
- *  version 2.1 of the License, or (at your option) any later version.
+ *  This program is free software; you can redistribute it and/or
+ *  modify it under the terms of the GNU General Public License
+ *  as published by the Free Software Foundation; either version 2
+ *  of the License, or any later version.
  *
- *  This library is distributed in the hope that it will be useful,
+ *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- *  Lesser General Public License for more details.
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
  *
- *  You should have received a copy of the GNU Lesser General Public
- *  License along with this library; if not, write to the Free Software
- *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program; if not, write to the Free Software
+ *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ *  $Revision$
  */
 
 package ext;
@@ -40,77 +40,82 @@ import org.jajuk.util.log.Log;
  */
 public class ProcessLauncher {
 
+  /** DOCUMENT_ME. */
   private OutputStream out = null;
 
+  /** DOCUMENT_ME. */
   private OutputStream err = null;
 
+  /** DOCUMENT_ME. */
   private InputStream in = null;
 
+  /** DOCUMENT_ME. */
   private Process process;
 
+  /** DOCUMENT_ME. */
   private long timeout = 0L;
 
+  /** DOCUMENT_ME. */
   private boolean finished = false;
 
+  /**
+   * Instantiates a new process launcher.
+   */
   public ProcessLauncher() {
     this(null, null, null, 0L);
   }
 
   /**
-   * @param out
-   *          Outputstream vers lequel sera redirige la sortie standard de
-   *          l'application externe (null pour ne pas rediriger).
-   * @param err
-   *          Outputstream vers lequel sera redirige la sortie d'erreur de
-   *          l'application externe (null pour ne pas rediriger).
+   * The Constructor.
+   * 
+   * @param out Outputstream vers lequel sera redirige la sortie standard de
+   * l'application externe (null pour ne pas rediriger).
+   * @param err Outputstream vers lequel sera redirige la sortie d'erreur de
+   * l'application externe (null pour ne pas rediriger).
    */
   public ProcessLauncher(OutputStream out, OutputStream err) {
     this(out, err, null, 0L);
   }
 
   /**
-   * @param out
-   *          Outputstream vers lequel sera redirige la sortie standard de
-   *          l'application externe (null pour ne pas rediriger).
-   * @param err
-   *          Outputstream vers lequel sera redirige la sortie d'erreur de
-   *          l'application externe (null pour ne pas rediriger).
-   * @param in
-   *          InputStream vers lequel sera redirige l'entree standard de
-   *          l'application externe (null pour ne pas rediriger).
+   * The Constructor.
+   * 
+   * @param out Outputstream vers lequel sera redirige la sortie standard de
+   * l'application externe (null pour ne pas rediriger).
+   * @param err Outputstream vers lequel sera redirige la sortie d'erreur de
+   * l'application externe (null pour ne pas rediriger).
+   * @param in InputStream vers lequel sera redirige l'entree standard de
+   * l'application externe (null pour ne pas rediriger).
    */
   public ProcessLauncher(OutputStream out, OutputStream err, InputStream in) {
     this(out, err, in, 0L);
   }
 
   /**
-   * @param out
-   *          Outputstream vers lequel sera redirige la sortie standard de
-   *          l'application externe (null pour ne pas rediriger).
-   * @param err
-   *          Outputstream vers lequel sera redirige la sortie d'erreur de
-   *          l'application externe (null pour ne pas rediriger).
-   * @param timeout
-   *          temps en millisecondes avant de forcer l'arret de l'application
-   *          externe (0 pour ne jamais forcer l'arret).
+   * The Constructor.
+   * 
+   * @param out Outputstream vers lequel sera redirige la sortie standard de
+   * l'application externe (null pour ne pas rediriger).
+   * @param err Outputstream vers lequel sera redirige la sortie d'erreur de
+   * l'application externe (null pour ne pas rediriger).
+   * @param timeout temps en millisecondes avant de forcer l'arret de l'application
+   * externe (0 pour ne jamais forcer l'arret).
    */
   public ProcessLauncher(OutputStream out, OutputStream err, long timeout) {
     this(out, err, null, timeout);
   }
 
   /**
-   * @param out
-   *          Outputstream vers lequel sera redirige la sortie standard de
-   *          l'application externe (null pour ne pas rediriger).
-   * @param err
-   *          Outputstream vers lequel sera redirige la sortie d'erreur de
-   *          l'application externe (null pour ne pas rediriger).
-   * @param in
-   *          InputStream vers lequel sera redirige l'entree standard de
-   *          l'application externe (null pour ne pas rediriger).
-   * @param timeout
-   *          temps en millisecondes avant de forcer l'arret de l'application
-   *          externe (0 pour ne jamais forcer l'arret).
+   * The Constructor.
+   * 
+   * @param out Outputstream vers lequel sera redirige la sortie standard de
+   * l'application externe (null pour ne pas rediriger).
+   * @param err Outputstream vers lequel sera redirige la sortie d'erreur de
+   * l'application externe (null pour ne pas rediriger).
+   * @param in InputStream vers lequel sera redirige l'entree standard de
+   * l'application externe (null pour ne pas rediriger).
+   * @param timeout temps en millisecondes avant de forcer l'arret de l'application
+   * externe (0 pour ne jamais forcer l'arret).
    */
   public ProcessLauncher(OutputStream out, OutputStream err, InputStream in, long timeout) {
     this.out = out;
@@ -122,9 +127,11 @@ public class ProcessLauncher {
   /**
    * Execute une ligne de commande dans un processus separe.
    * 
-   * @param command
-   *          ligne de commande a executer
+   * @param command ligne de commande a executer
+   * 
    * @return valeur de retour du processus
+   * 
+   * @throws IOException Signals that an I/O exception has occurred.
    */
   final public int exec(String command) throws IOException {
     process = Runtime.getRuntime().exec(command);
@@ -134,9 +141,11 @@ public class ProcessLauncher {
   /**
    * Execute une commande avec ses parametres dans un processus separe.
    * 
-   * @param cmdarray
-   *          tableau de String contenant la commande et ses parametres
+   * @param cmdarray tableau de String contenant la commande et ses parametres
+   * 
    * @return valeur de retour du processus
+   * 
+   * @throws IOException Signals that an I/O exception has occurred.
    */
   final public int exec(String[] cmdarray) throws IOException {
     process = Runtime.getRuntime().exec(cmdarray);
@@ -147,11 +156,12 @@ public class ProcessLauncher {
    * Execute une commande avec ses parametres dans un processus separe en
    * specifiant des variables d'environnement.
    * 
-   * @param cmdarray
-   *          tableau de String contenant la commande et ses parametres
-   * @param envp
-   *          variables d'environnement
+   * @param cmdarray tableau de String contenant la commande et ses parametres
+   * @param envp variables d'environnement
+   * 
    * @return valeur de retour du processus
+   * 
+   * @throws IOException Signals that an I/O exception has occurred.
    */
   final public int exec(String[] cmdarray, String[] envp) throws IOException {
     process = Runtime.getRuntime().exec(cmdarray, envp);
@@ -162,13 +172,13 @@ public class ProcessLauncher {
    * Execute une commande avec ses parametres dans un processus separe en
    * specifiant des variables d'environnement et le repertoire de travail.
    * 
-   * @param cmdarray
-   *          tableau de String contenant la commande et ses parametres
-   * @param envp
-   *          variables d'environnement
-   * @param dir
-   *          repertoire de travail
+   * @param cmdarray tableau de String contenant la commande et ses parametres
+   * @param envp variables d'environnement
+   * @param dir repertoire de travail
+   * 
    * @return valeur de retour du processus
+   * 
+   * @throws IOException Signals that an I/O exception has occurred.
    */
   final public int exec(String[] cmdarray, String[] envp, File dir) throws IOException {
     process = Runtime.getRuntime().exec(cmdarray, envp, dir);
@@ -179,11 +189,12 @@ public class ProcessLauncher {
    * Execute une ligne de commande dans un processus separe en specifiant des
    * variables d'environnement.
    * 
-   * @param command
-   *          ligne de commande
-   * @param envp
-   *          variables d'environnement
+   * @param command ligne de commande
+   * @param envp variables d'environnement
+   * 
    * @return valeur de retour du processus
+   * 
+   * @throws IOException Signals that an I/O exception has occurred.
    */
   final public int exec(String command, String[] envp) throws IOException {
     process = Runtime.getRuntime().exec(command, envp);
@@ -194,19 +205,25 @@ public class ProcessLauncher {
    * Execute une ligne de commande dans un processus separe en specifiant des
    * variables d'environnement et le repertoire de travail.
    * 
-   * @param command
-   *          ligne de commande
-   * @param envp
-   *          variables d'environnement
-   * @param dir
-   *          repertoire de travail
+   * @param command ligne de commande
+   * @param envp variables d'environnement
+   * @param dir repertoire de travail
+   * 
    * @return valeur de retour du processus
+   * 
+   * @throws IOException Signals that an I/O exception has occurred.
    */
   final public int exec(String command, String[] envp, File dir) throws IOException {
     process = Runtime.getRuntime().exec(command, envp, dir);
     return execute();
   }
 
+  /**
+   * Execute.
+   * DOCUMENT_ME
+   * 
+   * @return the int
+   */
   private int execute() {
     int status = -1;
 
@@ -261,6 +278,13 @@ public class ProcessLauncher {
     return status;
   }
 
+  /**
+   * Creates the stream thread.
+   * DOCUMENT_ME
+   * 
+   * @param is DOCUMENT_ME
+   * @param os DOCUMENT_ME
+   */
   private void createStreamThread(final InputStream is, final OutputStream os) {
     new Thread(new Runnable() {
       public void run() {
@@ -288,6 +312,14 @@ public class ProcessLauncher {
     }, "Create Stream Thread").start();
   }
 
+  /**
+   * Creates the process thread.
+   * DOCUMENT_ME
+   * 
+   * @param process DOCUMENT_ME
+   * 
+   * @return the thread
+   */
   private Thread createProcessThread(final Process process) {
     return new Thread("Process Watcher Thread") {
       @Override
@@ -306,7 +338,7 @@ public class ProcessLauncher {
    * l'application externe.
    * 
    * @return l'OutputStream vers lequel a ete redirige le flux d'erreur de
-   *         l'application externe
+   * l'application externe
    */
   public OutputStream getErrorStream() {
     return err;
@@ -317,7 +349,7 @@ public class ProcessLauncher {
    * standard de l'application externe.
    * 
    * @return l'InputStream duquel les donnees sont envoyees au flux d'entree
-   *         standard de l'application externe
+   * standard de l'application externe
    */
   public InputStream getInputStream() {
     return in;
@@ -325,10 +357,10 @@ public class ProcessLauncher {
 
   /**
    * Renvoie l'OutputStream vers lequel a ete redirige le flux de sortie
-   * standard de l'application externe
+   * standard de l'application externe.
    * 
    * @return l'OutputStream vers lequel a ete redirige le flux de sortie
-   *         standard de l'application externe
+   * standard de l'application externe
    */
   public OutputStream getOutputStream() {
     return out;
@@ -347,9 +379,8 @@ public class ProcessLauncher {
    * Specifie l'Outputstream vers lequel sera redirige la sortie d'erreur de
    * l'application externe.
    * 
-   * @param err
-   *          Outputstream vers lequel sera redirige la sortie d'erreur de
-   *          l'application externe (null pour ne pas rediriger)
+   * @param err Outputstream vers lequel sera redirige la sortie d'erreur de
+   * l'application externe (null pour ne pas rediriger)
    */
   public void setErrorStream(OutputStream err) {
     this.err = err;
@@ -359,9 +390,8 @@ public class ProcessLauncher {
    * Specifie l'InputStream vers lequel sera redirige l'entree standard de
    * l'application externe.
    * 
-   * @param in
-   *          InputStream vers lequel sera redirige l'entree standard de
-   *          l'application externe (null pour ne pas rediriger)
+   * @param in InputStream vers lequel sera redirige l'entree standard de
+   * l'application externe (null pour ne pas rediriger)
    */
   public void setInputStream(InputStream in) {
     this.in = in;
@@ -371,9 +401,8 @@ public class ProcessLauncher {
    * Specifie l'Outputstream vers lequel sera redirige la sortie standard de
    * l'application externe.
    * 
-   * @param out
-   *          Outputstream vers lequel sera redirige la sortie standard de
-   *          l'application externe (null pour ne pas rediriger)
+   * @param out Outputstream vers lequel sera redirige la sortie standard de
+   * l'application externe (null pour ne pas rediriger)
    */
   public void setOutputStream(OutputStream out) {
     this.out = out;
@@ -383,9 +412,8 @@ public class ProcessLauncher {
    * Specifie le timeout temps en millisecondes avant de forcer l'arret de
    * l'application externe.
    * 
-   * @param timeout
-   *          temps en millisecondes avant de forcer l'arret de l'application
-   *          externe (0 pour ne jamais forcer l'arret)
+   * @param timeout temps en millisecondes avant de forcer l'arret de l'application
+   * externe (0 pour ne jamais forcer l'arret)
    */
   public void setTimeout(long timeout) {
     this.timeout = timeout;

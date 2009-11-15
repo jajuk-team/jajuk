@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- * $Revision: 4714 $
+ *  $Revision$
  */
 
 package org.jajuk.ui.windows;
@@ -70,33 +71,32 @@ import org.jdesktop.swingx.JXPanel;
 /**
  * Jajuk main window
  * <p>
- * Singleton
+ * Singleton.
  */
 public class JajukMainWindow extends JFrame implements IJajukWindow, Observer {
 
+  /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
-  /** Self instance */
+  /** Self instance. */
   private static JajukMainWindow jw;
 
-  /** Left side perspective selection panel */
+  /** Left side perspective selection panel. */
   private PerspectiveBarJPanel perspectiveBar;
 
-  /** Main frame panel */
+  /** Main frame panel. */
   private JPanel jpFrame;
 
-  /** specific perspective panel */
+  /** specific perspective panel. */
   private JPanel perspectivePanel;
 
-  /**
-   * State decorator
-   */
+  /** State decorator. */
   private WindowStateDecorator decorator;
 
   /**
-   * Get the window instance and create the specific WindowStateHandler
+   * Get the window instance and create the specific WindowStateHandler.
    * 
-   * @return
+   * @return the instance
    */
   public static JajukMainWindow getInstance() {
     if (jw == null) {
@@ -148,7 +148,7 @@ public class JajukMainWindow extends JFrame implements IJajukWindow, Observer {
   }
 
   /**
-   * Constructor
+   * Constructor.
    */
   private JajukMainWindow() {
   }
@@ -162,6 +162,9 @@ public class JajukMainWindow extends JFrame implements IJajukWindow, Observer {
     return decorator;
   }
 
+  /* (non-Javadoc)
+   * @see org.jajuk.ui.windows.IJajukWindow#initUI()
+   */
   public void initUI() {
     if (UtilSystem.isUnderOSXintel() || UtilSystem.isUnderOSXpower()) {
       // mac integration
@@ -244,6 +247,9 @@ public class JajukMainWindow extends JFrame implements IJajukWindow, Observer {
     jpFrame.add(commandDesktop, BorderLayout.CENTER);
   }
 
+  /* (non-Javadoc)
+   * @see org.jajuk.events.Observer#getRegistrationKeys()
+   */
   public Set<JajukEvents> getRegistrationKeys() {
     Set<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
     eventSubjectSet.add(JajukEvents.FILE_LAUNCHED);
@@ -254,8 +260,7 @@ public class JajukMainWindow extends JFrame implements IJajukWindow, Observer {
   }
 
   /**
-   * Save current window size and position
-   * 
+   * Save current window size and position.
    */
   public void saveSize() {
 
@@ -277,8 +282,7 @@ public class JajukMainWindow extends JFrame implements IJajukWindow, Observer {
   }
 
   /**
-   * Apply size and position stored as property
-   * 
+   * Apply size and position stored as property.
    */
   public void applyStoredSize() {
     // Note that defaults sizes (for very first startup) are set in
@@ -428,6 +432,11 @@ public class JajukMainWindow extends JFrame implements IJajukWindow, Observer {
     });
   }
 
+  /**
+   * Gets the perspective panel.
+   * 
+   * @return the perspective panel
+   */
   public JPanel getPerspectivePanel() {
     return perspectivePanel;
   }

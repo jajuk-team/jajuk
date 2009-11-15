@@ -1,19 +1,22 @@
-/**
- * aTunes 1.6.6
- * Copyright (C) 2006-2007 Alex Aranda (fleax) alex@atunes.org
+/*
+ *  Jajuk
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
- * http://www.atunes.org
- * http://sourceforge.net/projects/atunes
+ *  This program is free software; you can redistribute it and/or
+ *  modify it under the terms of the GNU General Public License
+ *  as published by the Free Software Foundation; either version 2
+ *  of the License, or any later version.
  *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program; if not, write to the Free Software
+ *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ *  $Revision$
  */
 
 package ext.services.network;
@@ -35,12 +38,28 @@ import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.log.Log;
 
+/**
+ * DOCUMENT_ME.
+ */
 public final class NetworkUtils {
 
+  /**
+   * Instantiates a new network utils.
+   */
   private NetworkUtils() {
     // default hidden constructor for utility classes
   }
 
+  /**
+   * Gets the connection.
+   * 
+   * @param urlString DOCUMENT_ME
+   * @param proxy DOCUMENT_ME
+   * 
+   * @return the connection
+   * 
+   * @throws IOException Signals that an I/O exception has occurred.
+   */
   public static HttpURLConnection getConnection(String urlString, Proxy proxy) throws IOException {
     // Drop the query if user required "none Internet access from jajuk".
     // This method shouldn't be called anyway because we views have to deal with
@@ -54,6 +73,16 @@ public final class NetworkUtils {
     return connection;
   }
 
+  /**
+   * Gets the connection.
+   * 
+   * @param url DOCUMENT_ME
+   * @param proxy DOCUMENT_ME
+   * 
+   * @return the connection
+   * 
+   * @throws IOException Signals that an I/O exception has occurred.
+   */
   public static HttpURLConnection getConnection(URL url, Proxy proxy) throws IOException {
     // Drop the query if user required "none Internet access from jajuk".
     // This method shouldn't be called anyway because we views have to deal with
@@ -77,6 +106,11 @@ public final class NetworkUtils {
     return connection;
   }
 
+  /**
+   * Sets the configuration.
+   * 
+   * @param connection the new configuration
+   */
   private static void setConfiguration(HttpURLConnection connection) {
     connection.setConnectTimeout(1000 * Conf.getInt(Const.CONF_NETWORK_CONNECTION_TO));
     // Google needs this
@@ -88,6 +122,17 @@ public final class NetworkUtils {
     connection.addRequestProperty("Connection", "Keep-Alive");
   }
 
+  /**
+   * Read url.
+   * DOCUMENT_ME
+   * 
+   * @param connection DOCUMENT_ME
+   * @param charset DOCUMENT_ME
+   * 
+   * @return the string
+   * 
+   * @throws IOException Signals that an I/O exception has occurred.
+   */
   public static String readURL(URLConnection connection, String charset) throws IOException {
     // Drop the query if user required "none Internet access from jajuk".
     // This method shouldn't be called anyway because we views have to deal with
@@ -109,10 +154,31 @@ public final class NetworkUtils {
     return builder.toString();
   }
 
+  /**
+   * Read url.
+   * DOCUMENT_ME
+   * 
+   * @param connection DOCUMENT_ME
+   * 
+   * @return the string
+   * 
+   * @throws IOException Signals that an I/O exception has occurred.
+   */
   public static String readURL(URLConnection connection) throws IOException {
     return readURL(connection, "UTF-8");
   }
 
+  /**
+   * Read post url.
+   * DOCUMENT_ME
+   * 
+   * @param connection DOCUMENT_ME
+   * @param post DOCUMENT_ME
+   * 
+   * @return the string
+   * 
+   * @throws IOException Signals that an I/O exception has occurred.
+   */
   public static String readPostURL(HttpURLConnection connection, String post) throws IOException {
     // Drop the query if user required "none Internet access from jajuk".
     // This method shouldn't be called anyway because we views have to deal with
@@ -148,6 +214,15 @@ public final class NetworkUtils {
     return builder.toString();
   }
 
+  /**
+   * Gets the image.
+   * 
+   * @param connection DOCUMENT_ME
+   * 
+   * @return the image
+   * 
+   * @throws IOException Signals that an I/O exception has occurred.
+   */
   public static Image getImage(URLConnection connection) throws IOException {
     // Drop the query if user required "none Internet access from jajuk".
     // This method shouldn't be called anyway because we views have to deal with
@@ -160,10 +235,11 @@ public final class NetworkUtils {
   }
 
   /**
-   * Encodes a string in a format suitable to send a http request
+   * Encodes a string in a format suitable to send a http request.
    * 
-   * @param s
-   * @return
+   * @param s DOCUMENT_ME
+   * 
+   * @return the string
    */
   public static String encodeString(String s) {
     try {

@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2008 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision: 3132 $
+ *  $Revision$
  */
 package org.jajuk.ui.widgets;
 
@@ -51,19 +52,25 @@ import org.jajuk.util.Messages;
  * <p>
  * It contains the ban button to ban the current track<br>
  * and an evaluation combo box to evaluate current track
- * </p>
- * 
+ * </p>.
  */
 public class PreferenceToolbar extends JajukJToolbar implements Observer {
 
+  /** Generated serialVersionUID. */
   private static final long serialVersionUID = 3869208492725759632L;
 
+  /** DOCUMENT_ME. */
   JajukButton jbBan;
 
+  /** DOCUMENT_ME. */
   JComboBox jcbPreference;
 
+  /** DOCUMENT_ME. */
   ActionListener listener;
 
+  /**
+   * Instantiates a new preference toolbar.
+   */
   public PreferenceToolbar() {
     super();
 
@@ -120,6 +127,9 @@ public class PreferenceToolbar extends JajukJToolbar implements Observer {
     }
   }
 
+  /* (non-Javadoc)
+   * @see org.jajuk.events.Observer#getRegistrationKeys()
+   */
   public Set<JajukEvents> getRegistrationKeys() {
     Set<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
     eventSubjectSet.add(JajukEvents.RATE_CHANGED);
@@ -132,9 +142,9 @@ public class PreferenceToolbar extends JajukJToolbar implements Observer {
   }
 
   /**
-   * Set right combo selection for given selection
+   * Set right combo selection for given selection.
    * 
-   * @param preference
+   * @param preference DOCUMENT_ME
    */
   public final void setPreference(long preference) {
     jcbPreference.removeActionListener(listener);
@@ -180,7 +190,7 @@ public class PreferenceToolbar extends JajukJToolbar implements Observer {
   }
 
   /**
-   * Update ban icon state according to current track
+   * Update ban icon state according to current track.
    */
   private void updateBanIcon() {
     if (QueueModel.getPlayingFile() == null || QueueModel.isStopped()) {
@@ -198,9 +208,17 @@ public class PreferenceToolbar extends JajukJToolbar implements Observer {
     }
   }
 
+  /**
+   * DOCUMENT_ME.
+   */
   private class ComboBoxRenderer extends BasicComboBoxRenderer {
+    
+    /** Generated serialVersionUID. */
     private static final long serialVersionUID = -6943363556191659895L;
 
+    /* (non-Javadoc)
+     * @see javax.swing.plaf.basic.BasicComboBoxRenderer#getListCellRendererComponent(javax.swing.JList, java.lang.Object, int, boolean, boolean)
+     */
     @Override
     public Component getListCellRendererComponent(final JList list, final Object value,
         final int index, final boolean isSelected, final boolean cellHasFocus) {

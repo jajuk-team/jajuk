@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2007 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -44,30 +45,73 @@ import org.jvnet.substance.fonts.FontPolicy;
 import org.jvnet.substance.fonts.FontSet;
 
 /**
- * Manages Jajuk fonts, stores or update them
+ * Manages Jajuk fonts, stores or update them.
  */
 public final class FontManager implements Observer {
 
-  /**
-   * 
-   */
+  /** The Constant SANS_SERIF.  DOCUMENT_ME */
   private static final String SANS_SERIF = "sans-serif";
 
+  /**
+   * DOCUMENT_ME.
+   */
   public enum JajukFont {
-    DEFAULT, PLAIN, PLAIN_S, PLAIN_L, PLAIN_XL, BOLD, BOLD_L, BOLD_XL, BOLD_XXL, BOLD_TITLE, PERSPECTIVES, PLANNED, SEARCHBOX, SPLASH, SPLASH_PROGRESS, VIEW_FONT
+    
+    /** DOCUMENT_ME. */
+    DEFAULT, 
+ /** DOCUMENT_ME. */
+ PLAIN, 
+ /** DOCUMENT_ME. */
+ PLAIN_S, 
+ /** DOCUMENT_ME. */
+ PLAIN_L, 
+ /** DOCUMENT_ME. */
+ PLAIN_XL, 
+ /** DOCUMENT_ME. */
+ BOLD, 
+ /** DOCUMENT_ME. */
+ BOLD_L, 
+ /** DOCUMENT_ME. */
+ BOLD_XL, 
+ /** DOCUMENT_ME. */
+ BOLD_XXL, 
+ /** DOCUMENT_ME. */
+ BOLD_TITLE, 
+ /** DOCUMENT_ME. */
+ PERSPECTIVES, 
+ /** DOCUMENT_ME. */
+ PLANNED, 
+ /** DOCUMENT_ME. */
+ SEARCHBOX, 
+ /** DOCUMENT_ME. */
+ SPLASH, 
+ /** DOCUMENT_ME. */
+ SPLASH_PROGRESS, 
+ /** DOCUMENT_ME. */
+ VIEW_FONT
   }
 
+  /** DOCUMENT_ME. */
   private static Map<JajukFont, Font> fontCache = new HashMap<JajukFont, Font>(10);
 
+  /** DOCUMENT_ME. */
   private static FontManager self;
 
   // No instantiation
+  /**
+   * Instantiates a new font manager.
+   */
   private FontManager() {
 
     registerFonts();
     ObservationManager.register(this);
   }
 
+  /**
+   * Gets the single instance of FontManager.
+   * 
+   * @return single instance of FontManager
+   */
   public static FontManager getInstance() {
     if (self == null) {
       self = new FontManager();
@@ -75,6 +119,10 @@ public final class FontManager implements Observer {
     return self;
   }
 
+  /**
+   * Register fonts.
+   * DOCUMENT_ME
+   */
   private void registerFonts() {
     // static fonts
     fontCache.put(JajukFont.BOLD_TITLE, new Font(SANS_SERIF, Font.PLAIN, 20));
@@ -109,10 +157,21 @@ public final class FontManager implements Observer {
     fontCache.put(JajukFont.VIEW_FONT, font);
   }
 
+  /**
+   * Gets the font.
+   * 
+   * @param font DOCUMENT_ME
+   * 
+   * @return the font
+   */
   public Font getFont(JajukFont font) {
     return fontCache.get(font);
   }
 
+  /**
+   * Sets the default font.
+   * DOCUMENT_ME
+   */
   public void setDefaultFont() {
     SwingUtilities.invokeLater(new Runnable() {
 
@@ -148,14 +207,14 @@ public final class FontManager implements Observer {
   }
 
   /**
-   * 
    * This method return the number of characters of a given string that fits in
-   * the given size in pixels
+   * the given size in pixels.
    * 
-   * @param text
-   * @param font
-   * @param maxSize
-   * @return
+   * @param text DOCUMENT_ME
+   * @param font DOCUMENT_ME
+   * @param maxSize DOCUMENT_ME
+   * 
+   * @return the rows for text
    */
   public static int getRowsForText(String text, Font font, int maxSize) {
     int resu = 0;
@@ -184,33 +243,61 @@ public final class FontManager implements Observer {
     }
   }
 
+  /**
+   * DOCUMENT_ME.
+   */
   private static class CustomFontSet implements FontSet {
+    
+    /** DOCUMENT_ME. */
     protected FontUIResource font;
 
+    /**
+     * Instantiates a new custom font set.
+     * 
+     * @param font DOCUMENT_ME
+     */
     public CustomFontSet(Font font) {
       this.font = new FontUIResource(font);
     }
 
+    /* (non-Javadoc)
+     * @see org.jvnet.substance.fonts.FontSet#getControlFont()
+     */
     public FontUIResource getControlFont() {
       return this.font;
     }
 
+    /* (non-Javadoc)
+     * @see org.jvnet.substance.fonts.FontSet#getMenuFont()
+     */
     public FontUIResource getMenuFont() {
       return this.font;
     }
 
+    /* (non-Javadoc)
+     * @see org.jvnet.substance.fonts.FontSet#getMessageFont()
+     */
     public FontUIResource getMessageFont() {
       return this.font;
     }
 
+    /* (non-Javadoc)
+     * @see org.jvnet.substance.fonts.FontSet#getSmallFont()
+     */
     public FontUIResource getSmallFont() {
       return this.font;
     }
 
+    /* (non-Javadoc)
+     * @see org.jvnet.substance.fonts.FontSet#getTitleFont()
+     */
     public FontUIResource getTitleFont() {
       return this.font;
     }
 
+    /* (non-Javadoc)
+     * @see org.jvnet.substance.fonts.FontSet#getWindowTitleFont()
+     */
     public FontUIResource getWindowTitleFont() {
       return this.font;
     }

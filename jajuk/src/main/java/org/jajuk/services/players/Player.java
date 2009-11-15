@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -38,51 +39,47 @@ import org.jajuk.util.Messages;
 import org.jajuk.util.log.Log;
 
 /**
- * abstract class for music player, independent from real implementation
+ * abstract class for music player, independent from real implementation.
  */
 public final class Player {
 
-  /**
-   * 
-   */
+  /** The Constant PLAYER_0.  DOCUMENT_ME */
   private static final String PLAYER_0 = "Player.0";
 
-  /** Current file read */
+  /** Current file read. */
   private static File fCurrent;
 
-  /** Current player used */
+  /** Current player used. */
   private static IPlayerImpl playerImpl;
 
-  /** Current player used nb 1 */
+  /** Current player used nb 1. */
   private static IPlayerImpl playerImpl1;
 
-  /** Current player used nb 2 */
+  /** Current player used nb 2. */
   private static IPlayerImpl playerImpl2;
 
-  /** Mute flag */
+  /** Mute flag. */
   private static boolean bMute = false;
 
-  /** Paused flag */
+  /** Paused flag. */
   private static boolean bPaused = false;
 
-  /** Playing ? */
+  /** Playing ?. */
   private static boolean bPlaying = false;
 
   /**
-   * private constructor to avoid instantiating utility class
+   * private constructor to avoid instantiating utility class.
    */
   private Player() {
   }
 
   /**
-   * Asynchronous play for specified file with specified time interval
+   * Asynchronous play for specified file with specified time interval.
    * 
-   * @param file
-   *          to play
-   * @param position
-   *          in % of the file length. ex 0.1 for 10%
-   * @param length
-   *          in ms
+   * @param file to play
+   * @param length in ms
+   * @param fPosition DOCUMENT_ME
+   * 
    * @return true if play is OK
    */
   public static boolean play(final File file, final float fPosition, final long length) {
@@ -152,9 +149,11 @@ public final class Player {
   }
 
   /**
-   * Play a web radio stream
+   * Play a web radio stream.
    * 
-   * @param radio
+   * @param radio DOCUMENT_ME
+   * 
+   * @return true, if play
    */
   public static boolean play(WebRadio radio) {
     try {
@@ -209,10 +208,9 @@ public final class Player {
   }
 
   /**
-   * Stop the played track
+   * Stop the played track.
    * 
-   * @param bAll
-   *          stop fading tracks as well ?
+   * @param bAll stop fading tracks as well ?
    */
   public static void stop(boolean bAll) {
     try {
@@ -232,21 +230,20 @@ public final class Player {
   }
 
   /**
-   * Alternative Mute/unmute the player
+   * Alternative Mute/unmute the player.
    * 
-   * @throws Exception
-   */
+   * @throws Exception    */
   public static void mute() {
     Player.bMute = !Player.bMute;
     mute(Player.bMute);
   }
 
   /**
-   * Mute/unmute the player
+   * Mute/unmute the player.
    * 
-   * @param bMute
-   * @throws Exception
-   */
+   * @param pMute DOCUMENT_ME
+   * 
+   * @throws Exception    */
   public static void mute(boolean pMute) {
     try {
       if (playerImpl == null) { // none current player, leave
@@ -269,21 +266,21 @@ public final class Player {
   }
 
   /**
+   * Checks if is muted.
    * 
    * @return whether the player is muted or not
-   * @throws Exception
-   */
+   * 
+   * @throws Exception    */
   public static boolean isMuted() {
     return bMute;
   }
 
   /**
-   * Set the gain
+   * Set the gain.
    * 
-   * @param fVolume :
-   *          gain from 0 to 1
-   * @throws Exception
-   */
+   * @param pVolume DOCUMENT_ME
+   * 
+   * @throws Exception    */
   public static void setVolume(float pVolume) {
     float fVolume = pVolume;
     try {
@@ -312,6 +309,8 @@ public final class Player {
   }
 
   /**
+   * Gets the elapsed time.
+   * 
    * @return Returns the lTime in ms
    */
   public static long getElapsedTime() {
@@ -322,7 +321,9 @@ public final class Player {
     }
   }
 
-  /** Pause the player */
+  /**
+   * Pause the player.
+   */
   public static void pause() {
     try {
       if (!bPlaying) { // ignore pause when not playing to avoid
@@ -338,7 +339,9 @@ public final class Player {
     }
   }
 
-  /** resume the player */
+  /**
+   * resume the player.
+   */
   public static void resume() {
     try {
       if (playerImpl == null) { // none current player, leave
@@ -352,6 +355,8 @@ public final class Player {
   }
 
   /**
+   * Checks if is paused.
+   * 
    * @return whether player is paused
    */
   public static boolean isPaused() {
@@ -360,15 +365,19 @@ public final class Player {
 
   /**
    * Force the bPaused state to allow to cancel a pause without restarting the
-   * current played track (rew for exemple)
+   * current played track (rew for exemple).
    * 
-   * @param bPaused
+   * @param bPaused DOCUMENT_ME
    */
   public static void setPaused(boolean bPaused) {
     Player.bPaused = bPaused;
   }
 
-  /** Seek to a given position in %. ex : 0.2 for 20% */
+  /**
+   * Seek to a given position in %. ex : 0.2 for 20%
+   * 
+   * @param pfPosition DOCUMENT_ME
+   */
   public static void seek(float pfPosition) {
     float fPosition = pfPosition;
     if (playerImpl == null) { // none current player, leave
@@ -390,6 +399,8 @@ public final class Player {
   }
 
   /**
+   * Gets the current position.
+   * 
    * @return position in track in %
    */
   public static float getCurrentPosition() {
@@ -401,6 +412,8 @@ public final class Player {
   }
 
   /**
+   * Gets the current length.
+   * 
    * @return current track length in secs
    */
   public static long getCurrentLength() {
@@ -412,6 +425,8 @@ public final class Player {
   }
 
   /**
+   * Gets the current volume.
+   * 
    * @return volume in track in %, ex : 0.2 for 20%
    */
   public static float getCurrentVolume() {
@@ -423,6 +438,8 @@ public final class Player {
   }
 
   /**
+   * Checks if is playing.
+   * 
    * @return Returns the bPlaying.
    */
   public static boolean isPlaying() {
@@ -430,6 +447,7 @@ public final class Player {
   }
 
   /**
+   * Checks if is seeking.
    * 
    * @return whether current player is seeking
    */

@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2008 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision: 3132 $
+ *  $Revision$
  */
 package org.jajuk.services.startup;
 
@@ -58,24 +59,29 @@ import org.jajuk.util.log.Log;
 import org.xml.sax.SAXException;
 
 /**
- * Startup facilities of the collection
+ * Startup facilities of the collection.
  */
 public class StartupCollectionService {
 
-  /** Mplayer state */
+  /** Mplayer state. */
   private static UtilSystem.MPlayerStatus mplayerStatus;
 
-  /** Does a collection parsing error occurred ? * */
+  /** Does a collection parsing error occurred ? *. */
   private static boolean bCollectionLoadRecover = true;
 
-  /** Lock used to trigger a first time wizard device creation and refresh * */
+  /** Lock used to trigger a first time wizard device creation and refresh *. */
   static short[] canLaunchRefresh = new short[0];
 
+  /**
+   * Instantiates a new startup collection service.
+   */
   private StartupCollectionService() {
     // private constructor to hide it from the outside
   }
 
-  /** Register device types* */
+  /**
+   * Register device types*.
+   */
   public static void registerDevicesTypes() {
     for (final String deviceTypeId : DeviceManager.DEVICE_TYPES) {
       DeviceManager.getInstance().registerDeviceType(Messages.getString(deviceTypeId));
@@ -84,8 +90,7 @@ public class StartupCollectionService {
 
   /**
    * Register all the different managers for the types of items that we know
-   * about
-   * 
+   * about.
    */
   public static void registerItemManagers() {
     ItemManager.registerItemManager(org.jajuk.base.Album.class, AlbumManager.getInstance());
@@ -101,7 +106,7 @@ public class StartupCollectionService {
   }
 
   /**
-   * Registers supported audio supports and default properties
+   * Registers supported audio supports and default properties.
    */
   public static void registerTypes() {
     try {
@@ -188,7 +193,7 @@ public class StartupCollectionService {
     }
   }
 
-  /** Auto commit thread */
+  /** Auto commit thread. */
   private static Thread tAutoCommit = new Thread("Auto Commit Thread") {
     @Override
     public void run() {
@@ -208,7 +213,7 @@ public class StartupCollectionService {
   };
 
   /**
-   * Load persisted collection file
+   * Load persisted collection file.
    */
   public static void loadCollection() {
     if (UpgradeManager.isFirstSesion()) {
@@ -339,7 +344,7 @@ public class StartupCollectionService {
   }
 
   /**
-   * Wait until user selected a device path in first time wizard
+   * Wait until user selected a device path in first time wizard.
    */
   public static void waitForLaunchRefresh() {
     synchronized (canLaunchRefresh) {
@@ -351,6 +356,11 @@ public class StartupCollectionService {
     }
   }
 
+  /**
+   * Checks if is collection load recover.
+   * 
+   * @return true, if is collection load recover
+   */
   public static boolean isCollectionLoadRecover() {
     return bCollectionLoadRecover;
   }

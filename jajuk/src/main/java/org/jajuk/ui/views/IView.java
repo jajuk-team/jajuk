@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -26,7 +27,7 @@ import java.awt.event.ComponentListener;
 import org.jajuk.ui.perspectives.IPerspective;
 
 /**
- * A view
+ * A view.
  */
 public interface IView extends ComponentListener, Dockable {
 
@@ -38,51 +39,54 @@ public interface IView extends ComponentListener, Dockable {
   String getID();
 
   /**
-   * Set view ID
+   * Set view ID.
    * 
-   * @param sID
+   * @param sID DOCUMENT_ME
    */
   void setID(String sID);
 
   /**
-   * Returns the view description as i18n key
+   * Returns the view description as i18n key.
    * 
    * @return View description.
    */
   String getDesc();
 
   /**
-   * Display view UI
+   * Display view UI.
    */
   void initUI();
 
   /**
-   * Get displayed state
+   * Get displayed state.
    * 
    * @return populated state
    */
   boolean isPopulated();
 
   /**
-   * @param The
-   *          bIsPopulated to set.
+   * Sets the is populated.
+   * 
+   * @param isDisplayed DOCUMENT_ME
    */
   void setIsPopulated(boolean isDisplayed);
 
   /**
+   * Gets the perspective.
    * 
    * @return current perspective for this view
    */
   IPerspective getPerspective();
 
   /**
+   * Sets the perspective.
    * 
-   * @param perspective
+   * @param perspective DOCUMENT_ME
    */
   void setPerspective(IPerspective perspective);
 
   /**
-   * Called when the view perspective is selected
+   * Called when the view perspective is selected.
    */
   void onPerspectiveSelection();
 

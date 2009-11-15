@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 Bertrand Florat
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision: 2118 $
+ *  $Revision$
  */
 
 package org.jajuk.ui.widgets;
@@ -29,19 +30,28 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.plaf.basic.BasicComboPopup;
 
 /**
- * Basic combo popup
+ * Basic combo popup.
  * 
  * @author Bertrand Florat
  * @created 28 nov. 2003
  */
 public class JajukBasicComboPopup extends BasicComboPopup {
 
+  /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
+  /**
+   * Instantiates a new jajuk basic combo popup.
+   * 
+   * @param jcb DOCUMENT_ME
+   */
   public JajukBasicComboPopup(JComboBox jcb) {
     super(jcb);
   }
 
+  /* (non-Javadoc)
+   * @see javax.swing.plaf.basic.BasicComboPopup#show()
+   */
   @Override
   public void show() {
     Dimension popupSize = ((SteppedComboBox) comboBox).getPopupSize();
@@ -63,6 +73,9 @@ public class JajukBasicComboPopup extends BasicComboPopup {
     show(comboBox, popupBounds.x, popupBounds.y);
   }
 
+  /* (non-Javadoc)
+   * @see javax.swing.plaf.basic.BasicComboPopup#createScroller()
+   */
   @Override
   protected JScrollPane createScroller() {
     return new JScrollPane(list, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,

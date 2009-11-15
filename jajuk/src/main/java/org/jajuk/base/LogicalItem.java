@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2007 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -26,8 +27,10 @@ package org.jajuk.base;
 public abstract class LogicalItem extends Item {
 
   /**
-   * @param sId
-   * @param sName
+   * The Constructor.
+   * 
+   * @param sId DOCUMENT_ME
+   * @param sName DOCUMENT_ME
    */
   LogicalItem(String sId, String sName) {
     super(sId, sName);

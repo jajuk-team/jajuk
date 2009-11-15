@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2007 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  
+ *  $Revision$
  */
 
 package org.jajuk.ui.widgets;
@@ -47,20 +48,44 @@ import org.jajuk.util.Messages;
 import org.jajuk.util.UtilSystem;
 import org.jajuk.util.log.Log;
 
+/**
+ * DOCUMENT_ME.
+ */
 public class DuplicateTracksList extends JPanel implements ListSelectionListener {
 
+  /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
+  /** DOCUMENT_ME. */
   private final JList list;
+  
+  /** DOCUMENT_ME. */
   private final JScrollPane listScrollPane;
+  
+  /** DOCUMENT_ME. */
   private final DefaultListModel listModel = new DefaultListModel();
+  
+  /** DOCUMENT_ME. */
   private final List<List<File>> allFiles;
+  
+  /** DOCUMENT_ME. */
   private List<File> flatFilesList;
 
+  /** DOCUMENT_ME. */
   private final JButton deleteButton;
+  
+  /** DOCUMENT_ME. */
   private final JButton selectAllButton;
+  
+  /** DOCUMENT_ME. */
   private final JButton closeButton;
 
+  /**
+   * Instantiates a new duplicate tracks list.
+   * 
+   * @param files DOCUMENT_ME
+   * @param jbClose DOCUMENT_ME
+   */
   public DuplicateTracksList(List<List<File>> files, JButton jbClose) {
     super(new BorderLayout());
     allFiles = files;
@@ -92,6 +117,12 @@ public class DuplicateTracksList extends JPanel implements ListSelectionListener
     add(buttonPane, BorderLayout.PAGE_END);
   }
 
+  /**
+   * Populate list.
+   * DOCUMENT_ME
+   * 
+   * @param allFiles DOCUMENT_ME
+   */
   public final void populateList(List<List<File>> allFiles) {
     flatFilesList = new ArrayList<File>();
     for (List<File> lFiles : allFiles) {
@@ -111,7 +142,14 @@ public class DuplicateTracksList extends JPanel implements ListSelectionListener
     }
   }
 
+  /**
+   * DOCUMENT_ME.
+   */
   class DeleteListener implements ActionListener {
+    
+    /* (non-Javadoc)
+     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+     */
     public void actionPerformed(ActionEvent e) {
       int indices[] = list.getSelectedIndices();
       String sFiles = getSelectedFiles(indices);
@@ -146,6 +184,12 @@ public class DuplicateTracksList extends JPanel implements ListSelectionListener
       ObservationManager.notify(new JajukEvent(JajukEvents.DEVICE_REFRESH));
     }
 
+    /**
+     * Delete filefrom list.
+     * DOCUMENT_ME
+     * 
+     * @param index DOCUMENT_ME
+     */
     private void deleteFilefromList(int index) {
       // first iterate over all Lists of files, counting the overall index
       int count = 0;
@@ -173,6 +217,13 @@ public class DuplicateTracksList extends JPanel implements ListSelectionListener
       }
     }
 
+    /**
+     * Gets the selected files.
+     * 
+     * @param indices DOCUMENT_ME
+     * 
+     * @return the selected files
+     */
     private String getSelectedFiles(int indices[]) {
       String sFiles = "";
       for (int k : indices) {
@@ -182,7 +233,14 @@ public class DuplicateTracksList extends JPanel implements ListSelectionListener
     }
   }
 
+  /**
+   * DOCUMENT_ME.
+   */
   class SelectAllListener implements ActionListener {
+    
+    /* (non-Javadoc)
+     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+     */
     public void actionPerformed(ActionEvent e) {
       List<Integer> iList = new ArrayList<Integer>();
       int i = 0;
@@ -201,6 +259,9 @@ public class DuplicateTracksList extends JPanel implements ListSelectionListener
     }
   }
 
+  /* (non-Javadoc)
+   * @see javax.swing.event.ListSelectionListener#valueChanged(javax.swing.event.ListSelectionEvent)
+   */
   public void valueChanged(ListSelectionEvent e) {
     if (!e.getValueIsAdjusting()) {
 

@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -48,27 +49,23 @@ import org.jajuk.util.log.Log;
 /**
  * An Album *
  * <p>
- * Logical item
+ * Logical item.
  */
 public class Album extends LogicalItem implements Comparable<Album> {
 
-  /**
-   * For perfs, we cache the associated tracks. This cache is filled by the
-   * TrackManager using the getTracksCache() method
-   */
+  /** For perfs, we cache the associated tracks. This cache is filled by the TrackManager using the getTracksCache() method */
   private final List<Track> cache = new ArrayList<Track>(15);
 
-  /**
-   * This array stores thumbnail presence for all the available size
-   * (performance) By default all booleans are false
-   */
+  /** This array stores thumbnail presence for all the available size (performance) By default all booleans are false. */
   private boolean[] availableTumbs;
 
   /**
-   * Album constructor
+   * Album constructor.
    * 
-   * @param id
-   * @param sName
+   * @param sName DOCUMENT_ME
+   * @param sId DOCUMENT_ME
+   * @param sAlbumArtist DOCUMENT_ME
+   * @param discID DOCUMENT_ME
    */
   public Album(String sId, String sName, String sAlbumArtist, long discID) {
     super(sId, sName);
@@ -77,6 +74,8 @@ public class Album extends LogicalItem implements Comparable<Album> {
   }
 
   /**
+   * Gets the disc id.
+   * 
    * @return the discID
    */
   public long getDiscID() {
@@ -84,6 +83,8 @@ public class Album extends LogicalItem implements Comparable<Album> {
   }
 
   /**
+   * Gets the album artist.
+   * 
    * @return the albumArtiest
    */
   public String getAlbumArtist() {
@@ -91,11 +92,13 @@ public class Album extends LogicalItem implements Comparable<Album> {
   }
 
   /**
+   * Gets the album artist or artist.
+   * 
    * @return the albumArtist or author if album artist not available
-   *         <p>
-   *         If this is various, the album artist is tried to be defined by the
-   *         track artists of this album
-   *         </p>
+   * <p>
+   * If this is various, the album artist is tried to be defined by the
+   * track artists of this album
+   * </p>
    */
   public String getAlbumArtistOrArtist() {
     // If the album artist tag is provided, perfect, let's use it !
@@ -115,7 +118,7 @@ public class Album extends LogicalItem implements Comparable<Album> {
   }
 
   /**
-   * Return album name, dealing with unknown for any language
+   * Return album name, dealing with unknown for any language.
    * 
    * @return album name
    */
@@ -128,7 +131,7 @@ public class Album extends LogicalItem implements Comparable<Album> {
   }
 
   /**
-   * Return album-artist name, dealing with unknown for any language
+   * Return album-artist name, dealing with unknown for any language.
    * 
    * @return album-artist name
    */
@@ -141,7 +144,9 @@ public class Album extends LogicalItem implements Comparable<Album> {
   }
 
   /**
-   * toString method
+   * toString method.
+   * 
+   * @return the string
    */
   @Override
   public String toString() {
@@ -152,10 +157,10 @@ public class Album extends LogicalItem implements Comparable<Album> {
   /**
    * Alphabetical comparator on the name
    * <p>
-   * Used to display ordered lists
+   * Used to display ordered lists.
    * 
-   * @param other
-   *          item to be compared
+   * @param otherAlbum DOCUMENT_ME
+   * 
    * @return comparison result
    */
   public int compareTo(Album otherAlbum) {
@@ -172,6 +177,8 @@ public class Album extends LogicalItem implements Comparable<Album> {
   }
 
   /**
+   * Checks if is unknown.
+   * 
    * @return whether the album is Unknown or not
    */
   public boolean isUnknown() {
@@ -189,7 +196,9 @@ public class Album extends LogicalItem implements Comparable<Album> {
   }
 
   /**
-   * Get item description
+   * Get item description.
+   * 
+   * @return the desc
    */
   @Override
   public String getDesc() {
@@ -233,7 +242,10 @@ public class Album extends LogicalItem implements Comparable<Album> {
   }
 
   /**
-   * @return
+   * Handle author.
+   * DOCUMENT_ME
+   * 
+   * @return the string
    */
   private String handleAuthor() {
     Author author = getAuthor();
@@ -246,7 +258,10 @@ public class Album extends LogicalItem implements Comparable<Album> {
   }
 
   /**
-   * @return
+   * Handle style.
+   * DOCUMENT_ME
+   * 
+   * @return the string
    */
   private String handleStyle() {
     Style style = getStyle();
@@ -259,7 +274,10 @@ public class Album extends LogicalItem implements Comparable<Album> {
   }
 
   /**
-   * @return
+   * Handle year.
+   * DOCUMENT_ME
+   * 
+   * @return the string
    */
   private String handleYear() {
     Year year = getYear();
@@ -271,6 +289,8 @@ public class Album extends LogicalItem implements Comparable<Album> {
   }
 
   /**
+   * Gets the any.
+   * 
    * @return a human representation of all concatenated properties
    */
   @Override
@@ -301,8 +321,10 @@ public class Album extends LogicalItem implements Comparable<Album> {
   }
 
   /**
+   * Gets the cover file.
+   * 
    * @return associated best cover file available or null if none. The returned
-   *         file can not be readable, so use a try/catch around a future access
+   * file can not be readable, so use a try/catch around a future access
    */
   public File getCoverFile() {
     String cachedCoverPath = getStringValue(XML_ALBUM_COVER);
@@ -413,6 +435,8 @@ public class Album extends LogicalItem implements Comparable<Album> {
   }
 
   /**
+   * Gets the rate.
+   * 
    * @return album rating
    */
   @Override
@@ -425,9 +449,10 @@ public class Album extends LogicalItem implements Comparable<Album> {
   }
 
   /**
+   * Gets the thumbnail.
    * 
-   * @param size
-   *          size using format width x height
+   * @param size size using format width x height
+   * 
    * @return album thumb for given size
    */
   public ImageIcon getThumbnail(int size) {
@@ -456,9 +481,10 @@ public class Album extends LogicalItem implements Comparable<Album> {
   }
 
   /**
+   * Gets the style.
    * 
    * @return style for the album. Return null if the album contains tracks with
-   *         different styles
+   * different styles
    */
   public Style getStyle() {
     Set<Style> styles = new HashSet<Style>(1);
@@ -474,9 +500,10 @@ public class Album extends LogicalItem implements Comparable<Album> {
   }
 
   /**
+   * Gets the author.
    * 
    * @return author for the album. <br>
-   *         Return null if the album contains tracks with different authors
+   * Return null if the album contains tracks with different authors
    */
   public Author getAuthor() {
     if (cache.size() == 0) {
@@ -492,9 +519,10 @@ public class Album extends LogicalItem implements Comparable<Album> {
   }
 
   /**
+   * Gets the year.
    * 
    * @return year for the album. Return null if the album contains tracks with
-   *         different years
+   * different years
    */
   public Year getYear() {
     Set<Year> years = new HashSet<Year>(1);
@@ -510,7 +538,9 @@ public class Album extends LogicalItem implements Comparable<Album> {
   }
 
   /**
-   * Return full album length in secs
+   * Return full album length in secs.
+   * 
+   * @return the duration
    */
   public long getDuration() {
     long length = 0;
@@ -521,6 +551,8 @@ public class Album extends LogicalItem implements Comparable<Album> {
   }
 
   /**
+   * Gets the nb of tracks.
+   * 
    * @return album nb of tracks
    */
   public int getNbOfTracks() {
@@ -528,6 +560,8 @@ public class Album extends LogicalItem implements Comparable<Album> {
   }
 
   /**
+   * Gets the hits.
+   * 
    * @return album total nb of hits
    */
   public long getHits() {
@@ -539,6 +573,8 @@ public class Album extends LogicalItem implements Comparable<Album> {
   }
 
   /**
+   * Contains ready files.
+   * 
    * @return whether the album contains a least one available track
    */
   public boolean containsReadyFiles() {
@@ -551,6 +587,8 @@ public class Album extends LogicalItem implements Comparable<Album> {
   }
 
   /**
+   * Gets the discovery date.
+   * 
    * @return First found track discovery date
    */
   public Date getDiscoveryDate() {
@@ -565,11 +603,11 @@ public class Album extends LogicalItem implements Comparable<Album> {
    * Returns true, if the pattern matches the specified property.
    * 
    * Currently only Const.XML_ALBUM and Const.XML_STYLE are supported
-   * properties. The pattern is used for a case-insensitive sub-string match, 
+   * properties. The pattern is used for a case-insensitive sub-string match,
    * no regular expression is used!
    * 
-   * @param property The property to use for the match, currently either Cosnt.XML_ALBUM 
-   *                  or Const.XML_STYLE
+   * @param property The property to use for the match, currently either Cosnt.XML_ALBUM
+   * or Const.XML_STYLE
    * @param pattern The string to search for as case-insensitive sub-string
    * 
    * @return true if either parameter is null or if the pattern matches, false otherwise.
@@ -600,13 +638,14 @@ public class Album extends LogicalItem implements Comparable<Album> {
   }
 
   /**
-   * Reset tracks cache
+   * Reset tracks cache.
    */
   protected void resetTracks() {
     cache.clear();
   }
 
   /**
+   * Gets the tracks cache.
    * 
    * @return ordered tracks cache for this album (perf)
    */
@@ -615,6 +654,7 @@ public class Album extends LogicalItem implements Comparable<Album> {
   }
 
   /**
+   * Gets the any track.
    * 
    * @return a track from this album
    */
@@ -627,11 +667,10 @@ public class Album extends LogicalItem implements Comparable<Album> {
   }
 
   /**
-   * Set that the thumb for given size is available
+   * Set that the thumb for given size is available.
    * 
-   * @param size
-   *          (thumb size like 50)
-   * @param available
+   * @param size (thumb size like 50)
+   * @param available DOCUMENT_ME
    */
   public void setAvailableThumb(int size, boolean available) {
     if (availableTumbs == null) {
@@ -641,10 +680,10 @@ public class Album extends LogicalItem implements Comparable<Album> {
   }
 
   /**
-   * Return whether a thumb is available for given size
+   * Return whether a thumb is available for given size.
    * 
-   * @param size
-   *          (thumb size like 50)
+   * @param size (thumb size like 50)
+   * 
    * @return whether a thumb is available for given size
    */
   public boolean isThumbAvailable(int size) {

@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2004 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -26,16 +27,17 @@ import java.awt.event.MouseWheelListener;
 import javax.swing.JSlider;
 
 /**
- * A basic Mouse wheel listener for jsliders
+ * A basic Mouse wheel listener for jsliders.
  */
 public class DefaultMouseWheelListener implements MouseWheelListener {
 
+  /** DOCUMENT_ME. */
   JSlider js;
 
   /**
+   * The Constructor.
    * 
-   * @param js
-   *          associated jslider
+   * @param js associated jslider
    */
   public DefaultMouseWheelListener(JSlider js) {
     super();

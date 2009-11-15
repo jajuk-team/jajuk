@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2005 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $$Revision:3308 $$
+ *  $Revision$
  */
 
 package org.jajuk.ui.actions;
@@ -38,14 +39,24 @@ import org.jajuk.util.UtilGUI;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 
+/**
+ * DOCUMENT_ME.
+ */
 public class DJAction extends JajukAction {
 
+  /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
+  /**
+   * Instantiates a new dJ action.
+   */
   DJAction() {
     super(Messages.getString("CommandJPanel.16"), IconLoader.getIcon(JajukIcons.DIGITAL_DJ), true);
   }
 
+  /* (non-Javadoc)
+   * @see org.jajuk.ui.actions.JajukAction#perform(java.awt.event.ActionEvent)
+   */
   @Override
   public void perform(ActionEvent evt) throws JajukException {
     if (StyleManager.getInstance().getElementCount() == 0) {

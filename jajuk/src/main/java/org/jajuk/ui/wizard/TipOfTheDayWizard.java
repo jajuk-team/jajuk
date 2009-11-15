@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2007 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $$Revision$$
+ *  $Revision$
  */
 package org.jajuk.ui.wizard;
 
@@ -47,20 +48,32 @@ import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilSystem;
 
+/**
+ * DOCUMENT_ME.
+ */
 public class TipOfTheDayWizard extends JFrame {
 
+  /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
+  /** The Constant TIPS.  DOCUMENT_ME */
   private static final String[] TIPS = Messages.getAll("TipOfTheDay");
 
+  /** DOCUMENT_ME. */
   private final JCheckBox cbShow;
 
+  /** DOCUMENT_ME. */
   private final JTextArea tipArea;
 
+  /** DOCUMENT_ME. */
   private final JLabel lCounter;
 
+  /** DOCUMENT_ME. */
   private int currentIndex = 0;
 
+  /**
+   * Instantiates a new tip of the day wizard.
+   */
   public TipOfTheDayWizard() {
     super(Messages.getString("TipOfTheDayView.0"));
     setAlwaysOnTop(true);
@@ -153,6 +166,13 @@ public class TipOfTheDayWizard extends JFrame {
     }
   }
 
+  /**
+   * Sets the escape key.
+   * DOCUMENT_ME
+   * 
+   * @param stroke DOCUMENT_ME
+   * @param pTop DOCUMENT_ME
+   */
   private void setEscapeKey(KeyStroke stroke, JPanel pTop) {
     pTop.registerKeyboardAction(new ActionListener() {
       public void actionPerformed(ActionEvent actionEvent) {
@@ -163,21 +183,21 @@ public class TipOfTheDayWizard extends JFrame {
   }
 
   /**
-   * Show random TOTD
+   * Show random TOTD.
    */
   private void shuffleIndex() {
     currentIndex = (int) (UtilSystem.getRandom().nextFloat() * (TIPS.length - 1));
   }
 
   /**
-   * Increment the TOTD index
+   * Increment the TOTD index.
    */
   private void incIndex() {
     currentIndex = (currentIndex + 1) % TIPS.length;
   }
 
   /**
-   * Decrement the TOTD index
+   * Decrement the TOTD index.
    */
   private void decIndex() {
     if (currentIndex == 0) {
@@ -188,7 +208,7 @@ public class TipOfTheDayWizard extends JFrame {
   }
 
   /**
-   * Update the TOTD with index from Conf
+   * Update the TOTD with index from Conf.
    */
   private final void updateTip() {
     tipArea.setText(TIPS[currentIndex]);
@@ -197,6 +217,9 @@ public class TipOfTheDayWizard extends JFrame {
     tipArea.setCaretPosition(0);
   }
 
+  /* (non-Javadoc)
+   * @see java.awt.Window#setVisible(boolean)
+   */
   @Override
   public void setVisible(boolean flag) {
     super.setVisible(flag);

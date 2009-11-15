@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -29,24 +30,39 @@ import java.util.Arrays;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 /**
- * Transferable table row ( for DND )
+ * Transferable table row ( for DND ).
  */
 public class TransferableTableRow extends DefaultMutableTreeNode implements Transferable {
+  
+  /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
+  /** The Constant ROW_FLAVOR.  DOCUMENT_ME */
   public static final DataFlavor ROW_FLAVOR = new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType,
       "Row");
 
+  /** DOCUMENT_ME. */
   private final Object oData;
 
+  /**
+   * Instantiates a new transferable table row.
+   * 
+   * @param oData DOCUMENT_ME
+   */
   public TransferableTableRow(Object oData) {
     this.oData = oData;
   }
 
+  /**
+   * Gets the data.
+   * 
+   * @return the data
+   */
   public Object getData() {
     return oData;
   }
 
+  /** DOCUMENT_ME. */
   private final DataFlavor[] flavors = { ROW_FLAVOR };
 
   /*

@@ -39,11 +39,15 @@ public interface IJajukWindow {
    * Build the GUI (widgets)
    * <p>
    * Must be called from the EDT, called by the WindowstateDecorator only
-   * </p>
+   * </p>.
    */
   void initUI();
 
-  /** Return the window state decorator* */
+  /**
+   * Return the window state decorator*.
+   * 
+   * @return the window state decorator
+   */
   public WindowStateDecorator getWindowStateDecorator();
 
 }

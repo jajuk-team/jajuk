@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2008 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision: 3132 $
+ *  $Revision$
  */
 package org.jajuk.ui.actions;
 
@@ -32,20 +33,26 @@ import org.jajuk.base.Playlist;
 import org.jajuk.util.Const;
 
 /**
- * Convenient abstract class to factorize operations on selection
+ * Convenient abstract class to factorize operations on selection.
  */
 public abstract class SelectionAction extends JajukAction {
 
+  /** Generated serialVersionUID. */
   private static final long serialVersionUID = -6072746800882488360L;
 
+  /** DOCUMENT_ME. */
   List<Item> selection = null;
 
-  /**
-   * Whether the selection should contain the playlist itself (false) or mapped
-   * files (true)
-   */
+  /** Whether the selection should contain the playlist itself (false) or mapped files (true). */
   boolean expandPlaylists = true;
 
+  /**
+   * Instantiates a new selection action.
+   * 
+   * @param msg DOCUMENT_ME
+   * @param icon DOCUMENT_ME
+   * @param enabled DOCUMENT_ME
+   */
   protected SelectionAction(String msg, ImageIcon icon, boolean enabled) {
     super(msg, icon, enabled);
   }
@@ -53,6 +60,9 @@ public abstract class SelectionAction extends JajukAction {
   /*
    * This method transforms various entries to a list of items
    * 
+   * @see org.jajuk.ui.actions.JajukAction#perform(java.awt.event.ActionEvent)
+   */
+  /* (non-Javadoc)
    * @see org.jajuk.ui.actions.JajukAction#perform(java.awt.event.ActionEvent)
    */
   @SuppressWarnings("unchecked")

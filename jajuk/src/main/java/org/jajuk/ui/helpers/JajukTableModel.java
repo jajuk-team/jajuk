@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2005 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -34,55 +35,61 @@ import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 
 /**
- * Jajuk table model, adds identifier to model
+ * Jajuk table model, adds identifier to model.
  */
 public abstract class JajukTableModel extends DefaultTableModel {
 
+  /** Generated serialVersionUID. */
   private static final long serialVersionUID = -7296786603161189590L;
 
-  /** Column identifiers */
+  /** Column identifiers. */
   volatile protected List<String> idList = new ArrayList<String>(10);
 
-  /** Rows number */
+  /** Rows number. */
   protected int iRowNum;
 
-  /** Values table* */
+  /** Values table*. */
   protected Object[][] oValues;
 
   // Play icon in cache
+  /** The Constant PLAY_ICON.  DOCUMENT_ME */
   protected static final ImageIcon PLAY_ICON = IconLoader.getIcon(JajukIcons.PLAY_TABLE);
 
   // Unmount Play icon in cache
+  /** The Constant UNMOUNT_PLAY_ICON.  DOCUMENT_ME */
   protected static final ImageIcon UNMOUNT_PLAY_ICON = IconLoader.getIcon(JajukIcons.UNKNOWN);
 
-  /** Objects */
+  /** Objects. */
   protected Item[] oItems;
 
-  /** Number of standard columns */
+  /** Number of standard columns. */
   protected int iNumberStandardCols;
 
-  /** Cell editable flag */
+  /** Cell editable flag. */
   protected boolean[][] bCellEditable;
 
-  /** Column names */
+  /** Column names. */
   protected List<String> vColNames = new ArrayList<String>(10);
 
-  /** Last value used for undo */
+  /** Last value used for undo. */
   private Object oLast = null;
 
-  /** Editable flag */
+  /** Editable flag. */
   boolean bEditable = false;
 
-  /** Tree selection */
+  /** Tree selection. */
   protected Set<Item> treeSelection;
 
+  /** DOCUMENT_ME. */
   protected IconLabel play_icon = null;
+  
+  /** DOCUMENT_ME. */
   protected IconLabel unmount_play_icon = null;
 
   /**
+   * The Constructor.
    * 
-   * @param iNumberStandardCols
-   *          Number of columns of this model (without custom properties)
+   * @param iNumberStandardCols Number of columns of this model (without custom properties)
    */
   public JajukTableModel(int iNumberStandardCols) {
     super();
@@ -91,8 +98,7 @@ public abstract class JajukTableModel extends DefaultTableModel {
   }
 
   /**
-   * 
-   * Default constructor
+   * Default constructor.
    */
   public JajukTableModel() {
     super();
@@ -101,7 +107,10 @@ public abstract class JajukTableModel extends DefaultTableModel {
   }
 
   /**
-   * @param sColName
+   * Gets the identifier.
+   * 
+   * @param sColName DOCUMENT_ME
+   * 
    * @return Column identifier for a given column title
    */
   public String getIdentifier(String sColName) {
@@ -109,26 +118,29 @@ public abstract class JajukTableModel extends DefaultTableModel {
   }
 
   /**
-   * Return item at given position
+   * Return item at given position.
    * 
-   * @param iRow
-   * @return
+   * @param iRow DOCUMENT_ME
+   * 
+   * @return the item at
    */
   public Item getItemAt(int iRow) {
     return oItems[iRow];
   }
 
   /**
-   * Set item at given position
+   * Set item at given position.
    * 
-   * @param iRow
-   * @param IPropertyabe
-   *          item to set
+   * @param iRow DOCUMENT_ME
+   * @param item DOCUMENT_ME
    */
   public void setItemAt(int iRow, Item item) {
     oItems[iRow] = item;
   }
 
+  /* (non-Javadoc)
+   * @see javax.swing.table.DefaultTableModel#getValueAt(int, int)
+   */
   @Override
   public Object getValueAt(int rowIndex, int columnIndex) {
     // We need to test this as UI may request it before table is populated
@@ -138,6 +150,9 @@ public abstract class JajukTableModel extends DefaultTableModel {
     return oValues[rowIndex][columnIndex];
   }
 
+  /* (non-Javadoc)
+   * @see javax.swing.table.DefaultTableModel#setValueAt(java.lang.Object, int, int)
+   */
   @Override
   public void setValueAt(Object oValue, int rowIndex, int columnIndex) {
     oLast = oValues[rowIndex][columnIndex];
@@ -156,8 +171,10 @@ public abstract class JajukTableModel extends DefaultTableModel {
   }
 
   /**
-   * Undo last change
+   * Undo last change.
    * 
+   * @param rowIndex DOCUMENT_ME
+   * @param columnIndex DOCUMENT_ME
    */
   public void undo(int rowIndex, int columnIndex) {
     if (oLast != null) {
@@ -165,26 +182,45 @@ public abstract class JajukTableModel extends DefaultTableModel {
     }
   }
 
+  /* (non-Javadoc)
+   * @see javax.swing.table.DefaultTableModel#getColumnName(int)
+   */
   @Override
   public String getColumnName(int column) {
     return vColNames.get(column);
   }
 
+  /**
+   * Gets the identifier.
+   * 
+   * @param column DOCUMENT_ME
+   * 
+   * @return the identifier
+   */
   public String getIdentifier(int column) {
     return idList.get(column);
   }
 
+  /* (non-Javadoc)
+   * @see javax.swing.table.DefaultTableModel#getRowCount()
+   */
   @Override
   public int getRowCount() {
     // iRowNum is set in concrete classes
     return iRowNum;
   }
 
+  /* (non-Javadoc)
+   * @see javax.swing.table.DefaultTableModel#isCellEditable(int, int)
+   */
   @Override
   public boolean isCellEditable(int rowIndex, int columnIndex) {
     return bEditable && bCellEditable[rowIndex][columnIndex];
   }
 
+  /* (non-Javadoc)
+   * @see javax.swing.table.AbstractTableModel#getColumnClass(int)
+   */
   @Override
   public Class<? extends Object> getColumnClass(int columnIndex) {
     Object o = getValueAt(0, columnIndex);
@@ -196,47 +232,58 @@ public abstract class JajukTableModel extends DefaultTableModel {
   }
 
   /**
-   * Fill model with data using an optional filter property and pattern
+   * Fill model with data using an optional filter property and pattern.
    * 
-   * @param sProperty
-   *          Property (column) to filter
-   * @param sPattern
-   *          pattern
-   * @param columnsToShow
-   *          List of elements to show in the table (liek files,hits...). This
-   *          is useful for models for memory performances as model doesn't fill
-   *          values for hidden columns
+   * @param sProperty Property (column) to filter
+   * @param sPattern pattern
+   * @param columnsToShow List of elements to show in the table (liek files,hits...). This
+   * is useful for models for memory performances as model doesn't fill
+   * values for hidden columns
    */
   public abstract void populateModel(String sProperty, String sPattern, List<String> columnsToShow);
 
   /**
-   * Fill model with data
+   * Fill model with data.
+   * 
+   * @param columnsToShow DOCUMENT_ME
    */
   public synchronized void populateModel(List<String> columnsToShow) {
     populateModel(null, null, columnsToShow);
   }
 
   /**
-   * Set this model editable state
+   * Set this model editable state.
    * 
-   * @param b
-   *          whether model is editable or not
+   * @param b whether model is editable or not
    */
   public void setEditable(boolean b) {
     this.bEditable = b;
   }
 
+  /**
+   * Gets the tree selection.
+   * 
+   * @return the tree selection
+   */
   public Set<Item> getTreeSelection() {
     return this.treeSelection;
   }
 
+  /**
+   * Sets the tree selection.
+   * 
+   * @param treeSelection the new tree selection
+   */
   public void setTreeSelection(Set<Item> treeSelection) {
     this.treeSelection = treeSelection;
   }
 
   /**
-   * @param unmountPlayIcon
-   * @return
+   * Gets the icon.
+   * 
+   * @param unmount DOCUMENT_ME
+   * 
+   * @return the icon
    */
   protected IconLabel getIcon(boolean unmount) {
     if (!unmount) {

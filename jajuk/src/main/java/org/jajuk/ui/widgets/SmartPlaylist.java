@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- * $Revision: 3216 $
+ *  $Revision$
  */
 
 package org.jajuk.ui.widgets;
@@ -31,24 +32,26 @@ import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 
 /**
- * A physical playlist icon + text
+ * A physical playlist icon + text.
  */
 public class SmartPlaylist extends JPanel {
+  
+  /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
-  /** Icon */
+  /** Icon. */
   private JLabel jlIcon;
 
+  /** DOCUMENT_ME. */
   private final Type type;
 
-  /** Associated playlist */
+  /** Associated playlist. */
   private Playlist plf;
 
   /**
-   * Constructor
+   * Constructor.
    * 
-   * @param iType :
-   *          playlist type (see Type enum)
+   * @param type DOCUMENT_ME
    */
   public SmartPlaylist(Playlist.Type type) {
     this.type = type;
@@ -74,6 +77,8 @@ public class SmartPlaylist extends JPanel {
   }
 
   /**
+   * Gets the type.
+   * 
    * @return Returns the Type.
    */
   public Type getType() {
@@ -81,6 +86,8 @@ public class SmartPlaylist extends JPanel {
   }
 
   /**
+   * Gets the playlist.
+   * 
    * @return Associated playlist
    */
   public Playlist getPlaylist() {
@@ -88,7 +95,7 @@ public class SmartPlaylist extends JPanel {
   }
 
   /**
-   * Get a name for this playlist item
+   * Get a name for this playlist item.
    * 
    * @return playlist item name ( playlist name or label for special ones )
    */
@@ -108,6 +115,8 @@ public class SmartPlaylist extends JPanel {
   }
 
   /**
+   * Gets the icon.
+   * 
    * @return icon
    */
   public JLabel getIcon() {

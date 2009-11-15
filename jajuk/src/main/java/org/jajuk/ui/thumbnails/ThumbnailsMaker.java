@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2007 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -48,13 +49,14 @@ import org.jajuk.util.log.Log;
  * Creating thumbs use a large amount of RAM. This executable class is intended
  * to build all thumbs in a separated java process to free memory when the
  * process is done.
- * 
  */
 public final class ThumbnailsMaker {
 
+  /** DOCUMENT_ME. */
   private static boolean bAlreadyRunning = false;
 
   /**
+   * Gets the jar separator.
    * 
    * @return separator between a '-cp' argument
    */
@@ -67,10 +69,9 @@ public final class ThumbnailsMaker {
   }
 
   /**
-   * Convenient method to launch all thumb makers, one for each size
+   * Convenient method to launch all thumb makers, one for each size.
    * 
-   * @param bSynchronous
-   *          do you have to wait all process done ?
+   * @param bSynchronous do you have to wait all process done ?
    */
   public static void launchAllSizes(final boolean bSynchronous) {
     // We need this mutex to make sure auto-refresh cannot launch several times
@@ -111,12 +112,14 @@ public final class ThumbnailsMaker {
   }
 
   /**
-   * Convenient method to launch the thumb creation in another JVM
+   * Convenient method to launch the thumb creation in another JVM.
    * 
-   * @param size
+   * @param size DOCUMENT_ME
+   * 
    * @return status : 0 if OK, 1 ok error
-   * @throws URISyntaxException
-   * @throws IOException
+   * 
+   * @throws URISyntaxException the URI syntax exception
+   * @throws IOException Signals that an I/O exception has occurred.
    */
   public static int launchProcessus(final int size) throws URISyntaxException, IOException {
     final String jvmPath = System.getProperty("java.home") + File.separatorChar + "bin"
@@ -168,27 +171,38 @@ public final class ThumbnailsMaker {
   }
 
   /**
-   * @param args :
-   *          size: thumb size like 100, or 300 boolean; test mode ? workspace
-   *          session id full path
+   * The main method.
    * 
+   * @param args :
+   * size: thumb size like 100, or 300 boolean; test mode ? workspace
+   * session id full path
    */
   public static void main(final String[] args) {
     new ThumbnailsMaker(Integer.parseInt(args[0]), Boolean.parseBoolean(args[1]), args[2], args[3]);
   }
 
+  /** DOCUMENT_ME. */
   private int size = 0;
 
+  /** DOCUMENT_ME. */
   private int stat = 0;
 
+  /** DOCUMENT_ME. */
   private boolean bTest = false;
 
+  /** DOCUMENT_ME. */
   private final String workspace;
 
+  /** DOCUMENT_ME. */
   private final File sessionId;
 
   /**
-   * No instances
+   * No instances.
+   * 
+   * @param pSize DOCUMENT_ME
+   * @param pTest DOCUMENT_ME
+   * @param pWorkspace DOCUMENT_ME
+   * @param pSessionIdFile DOCUMENT_ME
    */
   private ThumbnailsMaker(final int pSize, final boolean pTest, final String pWorkspace,
       final String pSessionIdFile) {
@@ -209,9 +223,9 @@ public final class ThumbnailsMaker {
 
   /**
    * Build thumbs for given parameters We make a minimal jajuk startup here to
-   * make the process possible
+   * make the process possible.
    * 
-   * @throws Exception
+   * @throws Exception the exception
    */
   private void buildThumbs() throws Exception {
     Log.info("[Thumb maker] Creating thumbs for size: " + size);

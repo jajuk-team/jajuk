@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2008 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,20 +16,20 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision: 3132 $
+ *  $Revision$
  */
 package org.jajuk.ui.helpers;
 
 /**
- * Command to be executed on a jajuk table after a left click
+ * Command to be executed on a jajuk table after a left click.
  */
 public interface ILaunchCommand {
 
   /**
-   * Action on launch
+   * Action on launch.
    * 
    * @param nbClicks :
-   *          number of mouse clicks
+   * number of mouse clicks
    */
   void launch(int nbClicks);
 

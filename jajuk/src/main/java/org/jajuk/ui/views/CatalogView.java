@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2005 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $$Revision$$
+ *  $Revision$
  */
 
 package org.jajuk.ui.views;
@@ -96,83 +97,99 @@ import org.jdesktop.swingx.JXBusyLabel;
 public class CatalogView extends ViewAdapter implements ComponentListener, ActionListener,
     TwoStepsDisplayable {
 
+  /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
   // Top control panel
+  /** DOCUMENT_ME. */
   JPanel jpControlTop;
 
+  /** DOCUMENT_ME. */
   JLabel jlSorter;
 
+  /** DOCUMENT_ME. */
   SteppedComboBox jcbSorter;
 
+  /** DOCUMENT_ME. */
   JLabel jlFilter;
 
+  /** DOCUMENT_ME. */
   SteppedComboBox jcbFilter;
 
+  /** DOCUMENT_ME. */
   JLabel jlContains;
 
+  /** DOCUMENT_ME. */
   JTextField jtfValue;
 
+  /** DOCUMENT_ME. */
   JButton jbPrev;
 
+  /** DOCUMENT_ME. */
   JButton jbNext;
 
+  /** DOCUMENT_ME. */
   SteppedComboBox jcbPage;
 
   // Bottom control panel
+  /** DOCUMENT_ME. */
   JPanel jpControlBottom;
 
+  /** DOCUMENT_ME. */
   JComboBox jcbShowCover;
 
+  /** DOCUMENT_ME. */
   JSlider jsSize;
 
+  /** DOCUMENT_ME. */
   FlowScrollPanel jpItems;
 
+  /** DOCUMENT_ME. */
   JScrollPane jsp;
 
-  /** Filter properties */
+  /** Filter properties. */
   List<PropertyMetaInformation> alFilters;
 
-  /** Sorter properties */
+  /** Sorter properties. */
   List<PropertyMetaInformation> alSorters;
 
-  /** Items* */
+  /** Items*. */
   Set<LocalAlbumThumbnail> hsItems;
 
-  /** Do search panel need a search */
+  /** Do search panel need a search. */
   private boolean bNeedSearch = false;
 
-  /** Populating flag */
+  /** Populating flag. */
   private boolean bPopulating = false;
 
-  /** Default time in ms before launching a search automatically */
+  /** Default time in ms before launching a search automatically. */
   private static final int WAIT_TIME = 600;
 
-  /** Date last key pressed */
+  /** Date last key pressed. */
   private long lDateTyped;
 
-  /** Last selected item */
+  /** Last selected item. */
   private LocalAlbumThumbnail item;
 
-  /** Page index */
+  /** Page index. */
   private int page = 0;
 
-  /** Number of page in current selection */
+  /** Number of page in current selection. */
   int iNbPages = 0;
 
-  /** Utility list used by size selector */
+  /** Utility list used by size selector. */
   private final List<String> sizes = new ArrayList<String>(10);
 
-  /** Internal cache of albums to be displayed * */
+  /** Internal cache of albums to be displayed *. */
   private List<LocalAlbumThumbnail> alItemsToDisplay;
 
-  /** Thumbs list * */
+  /** Thumbs list *. */
   private List<LocalAlbumThumbnail> thumbs;
 
-  /** Last scrollbar position * */
+  /** Last scrollbar position *. */
   private int scrollPosition;
 
-  /** Swing Timer to refresh the component */
+  /** Swing Timer to refresh the component. */
   private final Timer timerSearch = new Timer(WAIT_TIME, new ActionListener() {
     public void actionPerformed(ActionEvent e) {
       if (bNeedSearch && !bPopulating && (System.currentTimeMillis() - lDateTyped >= WAIT_TIME)) {
@@ -184,6 +201,11 @@ public class CatalogView extends ViewAdapter implements ComponentListener, Actio
     }
   });
 
+  /**
+   * Gets the selected item.
+   * 
+   * @return the selected item
+   */
   public LocalAlbumThumbnail getSelectedItem() {
     return item;
   }
@@ -313,7 +335,8 @@ public class CatalogView extends ViewAdapter implements ComponentListener, Actio
   }
 
   /**
-   * 
+   * Inits the meta information.
+   * DOCUMENT_ME
    */
   private void initMetaInformation() {
     alFilters = new ArrayList<PropertyMetaInformation>(10);
@@ -336,7 +359,7 @@ public class CatalogView extends ViewAdapter implements ComponentListener, Actio
   }
 
   /**
-   * Initialize final layout and add main panels
+   * Initialize final layout and add main panels.
    */
   private void initLayout() {
     // Remove any busy label
@@ -359,7 +382,7 @@ public class CatalogView extends ViewAdapter implements ComponentListener, Actio
   }
 
   /**
-   * Reset the catalog view and show a busy label Must be called from the EDT
+   * Reset the catalog view and show a busy label Must be called from the EDT.
    */
   private void showBusyLabel() {
     if (getComponentCount() > 0) {
@@ -374,8 +397,7 @@ public class CatalogView extends ViewAdapter implements ComponentListener, Actio
   }
 
   /**
-   * Show various information in the information panel
-   * 
+   * Show various information in the information panel.
    */
   private void showFacts() {
     // display facts in the information panel
@@ -390,6 +412,9 @@ public class CatalogView extends ViewAdapter implements ComponentListener, Actio
     InformationJPanel.getInstance().setSelection(sMessage);
   }
 
+  /* (non-Javadoc)
+   * @see org.jajuk.events.Observer#getRegistrationKeys()
+   */
   public Set<JajukEvents> getRegistrationKeys() {
     Set<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
     eventSubjectSet.add(JajukEvents.DEVICE_REFRESH);
@@ -403,7 +428,7 @@ public class CatalogView extends ViewAdapter implements ComponentListener, Actio
   /**
    * Populate the catalog
    * <p>
-   * Must be called from the EDT
+   * Must be called from the EDT.
    */
   private void populateCatalog() {
     // Prevent unwanted view population requests, do not try to synchronize
@@ -429,6 +454,8 @@ public class CatalogView extends ViewAdapter implements ComponentListener, Actio
    * Compute the catalog page to be displayed.
    * <p>
    * Do *not* call this from the EDT, can take a while to run
+   * 
+   * @return the object
    */
   @Override
   public Object longCall() {
@@ -524,7 +551,9 @@ public class CatalogView extends ViewAdapter implements ComponentListener, Actio
   }
 
   /**
-   * Catalog page display (must be called from the EDT)
+   * Catalog page display (must be called from the EDT).
+   * 
+   * @param in DOCUMENT_ME
    */
   @Override
   public void shortCall(Object in) {
@@ -705,13 +734,22 @@ public class CatalogView extends ViewAdapter implements ComponentListener, Actio
   }
 
   /**
+   * Gets the selected size.
+   * 
    * @return current thumbs size as selected with the combo
    */
   private int getSelectedSize() {
     return 50 + (50 * jsSize.getValue());
   }
 
+  /**
+   * DOCUMENT_ME.
+   */
   private class CatalogViewKeyAdaptor extends KeyAdapter {
+    
+    /* (non-Javadoc)
+     * @see java.awt.event.KeyAdapter#keyReleased(java.awt.event.KeyEvent)
+     */
     @Override
     public void keyReleased(KeyEvent e) {
       // Ignore escape press, they can come from popup closing
@@ -722,12 +760,23 @@ public class CatalogView extends ViewAdapter implements ComponentListener, Actio
     }
   }
 
+  /**
+   * DOCUMENT_ME.
+   */
   private class CatalogViewMouseWheelListener extends DefaultMouseWheelListener {
 
+    /**
+     * Instantiates a new catalog view mouse wheel listener.
+     * 
+     * @param js DOCUMENT_ME
+     */
     public CatalogViewMouseWheelListener(JSlider js) {
       super(js);
     }
 
+    /* (non-Javadoc)
+     * @see org.jajuk.ui.helpers.DefaultMouseWheelListener#mouseWheelMoved(java.awt.event.MouseWheelEvent)
+     */
     @Override
     public void mouseWheelMoved(MouseWheelEvent mwe) {
       ChangeListener cl = jsSize.getChangeListeners()[0];
@@ -748,8 +797,14 @@ public class CatalogView extends ViewAdapter implements ComponentListener, Actio
 
   }
 
+  /**
+   * DOCUMENT_ME.
+   */
   private class CatalogViewChangeListener implements ChangeListener {
 
+    /* (non-Javadoc)
+     * @see javax.swing.event.ChangeListener#stateChanged(javax.swing.event.ChangeEvent)
+     */
     public void stateChanged(ChangeEvent e) {
       // Leave user didn't release the move yet
       if (jsSize.getValueIsAdjusting()) {

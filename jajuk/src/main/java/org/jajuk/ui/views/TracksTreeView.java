@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2005 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $$Revision$$
+ *  $Revision$
  */
 
 package org.jajuk.ui.views;
@@ -92,21 +93,26 @@ import org.jajuk.util.log.Log;
 import org.jvnet.substance.api.renderers.SubstanceDefaultTreeCellRenderer;
 
 /**
- * Logical tree view
+ * Logical tree view.
  */
 public class TracksTreeView extends AbstractTreeView implements ActionListener {
 
+  /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
-  /** Track selection */
+  /** Track selection. */
   private List<Track> alTracks;
 
+  /** DOCUMENT_ME. */
   private JPopupMenu jmenuCollection;
 
+  /** DOCUMENT_ME. */
   private JMenuItem jmiCollectionReport;
 
+  /** DOCUMENT_ME. */
   private JMenuItem jmiCollectionDuplicateFiles;
 
+  /** DOCUMENT_ME. */
   private JComboBox jcbSort;
 
   /*
@@ -118,11 +124,16 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
     return Messages.getString("TracksTreeView.0");
   }
 
-  /** Constructor */
+  /**
+   * Constructor.
+   */
   public TracksTreeView() {
     super();
   }
 
+  /* (non-Javadoc)
+   * @see org.jajuk.events.Observer#getRegistrationKeys()
+   */
   public Set<JajukEvents> getRegistrationKeys() {
     Set<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
     eventSubjectSet.add(JajukEvents.FILE_LAUNCHED);
@@ -217,7 +228,9 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
     expand();
   }
 
-  /** Fill the tree */
+  /**
+   * Fill the tree.
+   */
 
   @Override
   public synchronized void populateTree() {
@@ -251,7 +264,9 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
     }
   }
 
-  /** Fill the tree by style */
+  /**
+   * Fill the tree by style.
+   */
   @SuppressWarnings("unchecked")
   public void populateTreeByStyle() {
     // delete previous tree
@@ -329,7 +344,9 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
     }
   }
 
-  /** Fill the tree by author */
+  /**
+   * Fill the tree by author.
+   */
   @SuppressWarnings("unchecked")
   public void populateTreeByAuthor() {
     // delete previous tree
@@ -388,7 +405,9 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
 
   }
 
-  /** Fill the tree by year */
+  /**
+   * Fill the tree by year.
+   */
   @SuppressWarnings("unchecked")
   public void populateTreeByYear() {
     // delete previous tree
@@ -445,7 +464,9 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
     }
   }
 
-  /** Fill the tree */
+  /**
+   * Fill the tree.
+   */
   public void populateTreeByAlbum() {
     // delete previous tree
     top.removeAllChildren();
@@ -458,7 +479,9 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
     }
   }
 
-  /** Fill the tree by discovery */
+  /**
+   * Fill the tree by discovery.
+   */
   public void populateTreeByDiscovery() {
     // delete previous tree
     top.removeAllChildren();
@@ -523,7 +546,9 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
     }
   }
 
-  /** Fill the tree by Rate */
+  /**
+   * Fill the tree by Rate.
+   */
   public void populateTreeByRate() {
     // delete previous tree
     top.removeAllChildren();
@@ -536,7 +561,9 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
     }
   }
 
-  /** Fill the tree by Hits */
+  /**
+   * Fill the tree by Hits.
+   */
   public void populateTreeByHits() {
     // delete previous tree
     top.removeAllChildren();
@@ -550,10 +577,10 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
   }
 
   /**
-   * Utility method used by populateByDiscovery method
+   * Utility method used by populateByDiscovery method.
    * 
-   * @param node
-   * @param track
+   * @param node DOCUMENT_ME
+   * @param track DOCUMENT_ME
    */
   @SuppressWarnings("unchecked")
   private void addTrackAndAlbum(DefaultMutableTreeNode node, Track track) {
@@ -580,7 +607,7 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
   }
 
   /**
-   * Create a Misc node
+   * Create a Misc node.
    */
   @SuppressWarnings("unchecked")
   public void cleanTree() {
@@ -649,8 +676,7 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
   }
 
   /**
-   * Manages auto-expand
-   * 
+   * Manages auto-expand.
    */
   @Override
   void expand() {
@@ -681,6 +707,8 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
   }
 
   /**
+   * Gets the track selection.
+   * 
    * @return Returns the alTracks.
    */
   public List<Track> getTrackSelection() {
@@ -688,7 +716,14 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
   }
 
   // needs to be inner class as it accesses various members
+  /**
+   * DOCUMENT_ME.
+   */
   class TracksTreeSelectionListener implements TreeSelectionListener {
+    
+    /* (non-Javadoc)
+     * @see javax.swing.event.TreeSelectionListener#valueChanged(javax.swing.event.TreeSelectionEvent)
+     */
     public void valueChanged(TreeSelectionEvent e) {
       TreePath[] tpSelected = jtree.getSelectionModel().getSelectionPaths();
       if (tpSelected == null) {
@@ -716,8 +751,11 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
     }
 
     /**
-     * @param tpSelected
-     * @return
+     * Handle selected.
+     * 
+     * @param tpSelected DOCUMENT_ME
+     * 
+     * @return the int
      */
     @SuppressWarnings("unchecked")
     private int handleSelected(TreePath[] tpSelected) {
@@ -755,14 +793,27 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
     }
   }
 
+  /**
+   * DOCUMENT_ME.
+   */
   class TracksMouseAdapter extends MouseAdapter {
+    
+    /** DOCUMENT_ME. */
     private final JMenuItem jmiShowAlbumDetails;
 
+    /**
+     * Instantiates a new tracks mouse adapter.
+     * 
+     * @param jmiShowAlbumDetails DOCUMENT_ME
+     */
     public TracksMouseAdapter(JMenuItem jmiShowAlbumDetails) {
       super();
       this.jmiShowAlbumDetails = jmiShowAlbumDetails;
     }
 
+    /* (non-Javadoc)
+     * @see java.awt.event.MouseAdapter#mousePressed(java.awt.event.MouseEvent)
+     */
     @Override
     public void mousePressed(MouseEvent e) {
       if (e.isPopupTrigger()) {
@@ -774,7 +825,9 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
     }
 
     /**
-     * @param e
+     * Handle mouse event.
+     * 
+     * @param e DOCUMENT_ME
      */
     private void handleMouseEvent(MouseEvent e) {
       TreePath path = jtree.getPathForLocation(e.getX(), e.getY());
@@ -797,6 +850,9 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
       }
     }
 
+    /* (non-Javadoc)
+     * @see java.awt.event.MouseAdapter#mouseReleased(java.awt.event.MouseEvent)
+     */
     @Override
     public void mouseReleased(MouseEvent e) {
       if (e.isPopupTrigger()) {
@@ -804,6 +860,12 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
       }
     }
 
+    /**
+     * Handle popup.
+     * DOCUMENT_ME
+     * 
+     * @param e DOCUMENT_ME
+     */
     @SuppressWarnings("unchecked")
     public void handlePopup(final MouseEvent e) {
       TreePath path = jtree.getPathForLocation(e.getX(), e.getY());
@@ -851,7 +913,9 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
     }
 
     /**
-     * @param e
+     * Builds the menu.
+     * 
+     * @param e DOCUMENT_ME
      */
     private void buildMenu(final MouseEvent e) {
       if (paths[0].getLastPathComponent() instanceof TrackNode) {

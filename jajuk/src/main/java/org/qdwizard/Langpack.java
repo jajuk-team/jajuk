@@ -1,6 +1,7 @@
 /*
- *  QDwizard
- *  Copyright (C) 2009 The QDwizard Team
+ *  Jajuk
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision: 3132 $
+ *  $Revision$
  */
 package org.qdwizard;
 
@@ -32,9 +33,11 @@ import java.util.Map;
  */
 public class Langpack {
 
+  /** DOCUMENT_ME. */
   private static List<String> defaults = Arrays.asList("Finish", "Cancel", "Previous", "Next");
 
   // Strings content : "Finish", "Cancel", "Previous", "Next"
+  /** DOCUMENT_ME. */
   static private Map<Locale, List<String>> strings = new HashMap<Locale, List<String>>(4);
 
   /** static set of strings, can contain non-ISO8859 chars * */
@@ -52,30 +55,30 @@ public class Langpack {
     strings.put(new Locale("ru"), Arrays.asList("Готово", "Отмена", "Назад", "Дальше"));
   }
 
-  /** Used locale for the wizard buttons, use English as a default * */
+  /** Used locale for the wizard buttons, use English as a default *. */
   private static Locale locale = new Locale("en");
 
   /**
-   * private constructor for utility class with only static methods
+   * private constructor for utility class with only static methods.
    */
   private Langpack() {
     super();
   }
 
   /**
-   * Set the QDwizard locale
+   * Set the QDwizard locale.
    * 
-   * @param locale
+   * @param locale DOCUMENT_ME
    */
   public static void setLocale(Locale locale) {
     Langpack.locale = locale;
   }
 
   /**
-   * Return label for given key or null if not matching key is found
+   * Return label for given key or null if not matching key is found.
    * 
-   * @param key
-   *          the key as a string using the default locale
+   * @param key the key as a string using the default locale
+   * 
    * @return label for given key or null if not matching key is found
    */
   public static String getMessage(String key) {

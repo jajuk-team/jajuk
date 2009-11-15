@@ -1,3 +1,23 @@
+/*
+ *  Jajuk
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
+ *
+ *  This program is free software; you can redistribute it and/or
+ *  modify it under the terms of the GNU General Public License
+ *  as published by the Free Software Foundation; either version 2
+ *  of the License, or any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program; if not, write to the Free Software
+ *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ *  $Revision$
+ */
 package org.qdwizard;
 
 import java.util.Map;
@@ -20,17 +40,21 @@ import javax.swing.SwingUtilities;
  * @created 1 may 2006
  */
 public abstract class Screen extends JPanel {
+  
+  /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
+  /** DOCUMENT_ME. */
   private final ScreenState state;
 
+  /** DOCUMENT_ME. */
   public Map<String, Object> data;
 
+  /** DOCUMENT_ME. */
   private Wizard wizard;
 
   /**
-   * Construct a screen
-   * 
+   * Construct a screen.
    */
   public Screen() {
     data = Wizard.data;
@@ -47,44 +71,68 @@ public abstract class Screen extends JPanel {
   abstract public String getName();
 
   /**
-   * Screen description (optional)
+   * Screen description (optional).
    * 
    * @return screen description
    */
   abstract public String getDescription();
 
+  /**
+   * Can finish.
+   * DOCUMENT_ME
+   * 
+   * @return true if...
+   */
   boolean canFinish() {
     // Can finish only if none problem
     return state.getCanFinish() && (state.getProblem() == null);
   }
 
   /**
-   * Set whether the finish button should be enabled
+   * Set whether the finish button should be enabled.
    * 
-   * @param b
+   * @param b DOCUMENT_ME
    */
   public void setCanFinish(boolean b) {
     state.setCanFinish(b);
     notifyGUI();
   }
 
+  /**
+   * Can go next.
+   * DOCUMENT_ME
+   * 
+   * @return true if...
+   */
   boolean canGoNext() {
     // if screen is last one, cannot go further
     return state.getCanGoNext() && !state.getCanFinish() && (state.getProblem() == null);
   }
 
+  /**
+   * Can cancel.
+   * DOCUMENT_ME
+   * 
+   * @return true if...
+   */
   public boolean canCancel() {
     return state.getCanCancel();
   }
 
+  /**
+   * Can go previous.
+   * DOCUMENT_ME
+   * 
+   * @return true if...
+   */
   boolean canGoPrevious() {
     return state.getCanGoPrevious();
   }
 
   /**
-   * Set whether the next button should be enabled
+   * Set whether the next button should be enabled.
    * 
-   * @param b
+   * @param b DOCUMENT_ME
    */
   void setCanGoNext(boolean b) {
     state.setCanGoNext(b);
@@ -92,9 +140,9 @@ public abstract class Screen extends JPanel {
   }
 
   /**
-   * Set whether the previous button should be enabled
+   * Set whether the previous button should be enabled.
    * 
-   * @param b
+   * @param b DOCUMENT_ME
    */
   void setCanGoPrevious(boolean b) {
     state.setCanGoPrevious(b);
@@ -102,9 +150,9 @@ public abstract class Screen extends JPanel {
   }
 
   /**
-   * Set whether the cancel (or System menu close) button should be enabled
+   * Set whether the cancel (or System menu close) button should be enabled.
    * 
-   * @param b
+   * @param b DOCUMENT_ME
    */
   public void setCanCancel(boolean b) {
     state.setCanCancel(b);
@@ -112,10 +160,9 @@ public abstract class Screen extends JPanel {
   }
 
   /**
-   * Set a problem (set to null if problem is fixed)
+   * Set a problem (set to null if problem is fixed).
    * 
-   * @param sProblem
-   *          Problem string or null if no more problem
+   * @param sProblem Problem string or null if no more problem
    */
   public void setProblem(String sProblem) {
     state.setProblem(sProblem);
@@ -123,7 +170,7 @@ public abstract class Screen extends JPanel {
   }
 
   /**
-   * Get current problem
+   * Get current problem.
    * 
    * @return the current problem
    */
@@ -131,14 +178,15 @@ public abstract class Screen extends JPanel {
     return state.getProblem();
   }
 
-  /** UI creation */
+  /**
+   * UI creation.
+   */
   abstract public void initUI();
 
   /**
    * Called by wizard before the screen is displayed. This happens only in
    * forward mode, which means onEnter won't be called when you return to a
    * screen via the previous button.
-   * 
    */
   public void onEnter() {
     // required by interface, but nothing to do here...
@@ -151,7 +199,7 @@ public abstract class Screen extends JPanel {
    * <p>
    * 
    * @return return true if the Wizard should display the next screen
-   * @return return false if the Wizard should stay on the current screen
+   * return false if the Wizard should stay on the current screen
    */
   public boolean onNext() {
     return true;
@@ -175,18 +223,27 @@ public abstract class Screen extends JPanel {
   }
 
   /**
-   * access to wizard instance
+   * access to wizard instance.
    * 
-   * @return
+   * @return the wizard
    */
   public Wizard getWizard() {
     return wizard;
   }
 
+  /**
+   * Sets the wizard.
+   * 
+   * @param wizard the new wizard
+   */
   protected void setWizard(Wizard wizard) {
     this.wizard = wizard;
   }
 
+  /**
+   * Notify gui.
+   * DOCUMENT_ME
+   */
   private void notifyGUI() {
     SwingUtilities.invokeLater(new Runnable() {
 

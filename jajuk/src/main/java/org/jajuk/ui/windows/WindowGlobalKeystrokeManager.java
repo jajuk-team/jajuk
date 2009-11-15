@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision: 3132 $
+ *  $Revision$
  */
 package org.jajuk.ui.windows;
 
@@ -49,17 +49,23 @@ import org.jajuk.util.log.Log;
  * Keystrokes manager for any window type
  * <p>
  * Singleton
- * </p>
+ * </p>.
  */
 public class WindowGlobalKeystrokeManager {
 
+  /** DOCUMENT_ME. */
   private static WindowGlobalKeystrokeManager self;
 
-  /** List of actions to enable globaly * */
+  /** List of actions to enable globaly *. */
   private JajukActions[] globalActions = new JajukActions[] { NEXT_ALBUM, PREVIOUS_ALBUM,
       PREVIOUS_TRACK, NEXT_TRACK, MUTE_STATE, PAUSE_RESUME_TRACK, STOP_TRACK, DECREASE_VOLUME,
       INCREASE_VOLUME, SHUFFLE_MODE, REPEAT_MODE, REWIND_TRACK, FORWARD_TRACK, HELP_REQUIRED };
 
+  /**
+   * Gets the single instance of WindowGlobalKeystrokeManager.
+   * 
+   * @return single instance of WindowGlobalKeystrokeManager
+   */
   static WindowGlobalKeystrokeManager getInstance() {
     if (self == null) {
       self = new WindowGlobalKeystrokeManager();
@@ -67,6 +73,9 @@ public class WindowGlobalKeystrokeManager {
     return self;
   }
 
+  /**
+   * Instantiates a new window global keystroke manager.
+   */
   public WindowGlobalKeystrokeManager() {
     KeyEventDispatcher ked = new KeyEventDispatcher() {
 

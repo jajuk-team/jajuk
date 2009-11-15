@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2007 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $$Revision$$
+ *  $Revision$
  */
 
 package org.jajuk.ui.wizard;
@@ -67,56 +68,69 @@ import org.jajuk.util.filters.DirectoryFilter;
 import org.jajuk.util.log.Log;
 
 /**
- * Device creation wizard
+ * Device creation wizard.
  */
 public class DeviceWizard extends JajukJDialog implements ActionListener, Const {
-  /**
-   * 
-   */
+  
+  /** The Constant WRAP.  DOCUMENT_ME */
   private static final String WRAP = "wrap";
 
+  /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
+  /** DOCUMENT_ME. */
   private final JComboBox jcbType;
 
+  /** DOCUMENT_ME. */
   private final JTextField jtfName;
 
+  /** DOCUMENT_ME. */
   private final JTextField jtfUrl;
 
+  /** DOCUMENT_ME. */
   private final JButton jbUrl;
 
+  /** DOCUMENT_ME. */
   private final JCheckBox jcbRefresh;
 
+  /** DOCUMENT_ME. */
   private final JCheckBox jcbAutoMount;
 
+  /** DOCUMENT_ME. */
   private final JFormattedTextField jftfAutoRefresh;
 
+  /** DOCUMENT_ME. */
   private final JCheckBox jcboxSynchronized;
 
+  /** DOCUMENT_ME. */
   private final JComboBox jcbSynchronized;
 
+  /** DOCUMENT_ME. */
   private final ButtonGroup bgSynchro;
 
+  /** DOCUMENT_ME. */
   private final JRadioButton jrbBidirSynchro;
 
+  /** DOCUMENT_ME. */
   private final JRadioButton jrbUnidirSynchro;
 
+  /** DOCUMENT_ME. */
   private final OKCancelPanel okp;
 
-  /** New device flag */
+  /** New device flag. */
   private boolean bNew = true;
 
-  /** Current device */
+  /** Current device. */
   private Device device;
 
-  /** All devices expect itself */
+  /** All devices expect itself. */
   private final List<Device> devices;
 
-  /** Initial URL* */
+  /** Initial URL*. */
   private String sInitialURL;
 
   /**
-   * Device wizard by default, is used for void configuration
+   * Device wizard by default, is used for void configuration.
    */
   public DeviceWizard() {
     super();
@@ -259,7 +273,8 @@ public class DeviceWizard extends JajukJDialog implements ActionListener, Const 
   }
 
   /**
-   * 
+   * Handle type.
+   * DOCUMENT_ME
    */
   private void handleType() {
     switch (jcbType.getSelectedIndex()) {
@@ -298,7 +313,9 @@ public class DeviceWizard extends JajukJDialog implements ActionListener, Const 
   }
 
   /**
-   * @throws HeadlessException
+   * Handle url.
+   * 
+   * @throws HeadlessException the headless exception
    */
   private void handleUrl() throws HeadlessException {
     final JajukFileChooser jfc = new JajukFileChooser(new JajukFileFilter(DirectoryFilter
@@ -319,7 +336,8 @@ public class DeviceWizard extends JajukJDialog implements ActionListener, Const 
   }
 
   /**
-   * 
+   * Handle ok.
+   * DOCUMENT_ME
    */
   private void handleOk() {
     // surface checks
@@ -416,7 +434,8 @@ public class DeviceWizard extends JajukJDialog implements ActionListener, Const 
   }
 
   /**
-   * 
+   * Handle synchronized.
+   * DOCUMENT_ME
    */
   private void handleSynchronized() {
     if (jcboxSynchronized.isSelected()) {
@@ -431,7 +450,9 @@ public class DeviceWizard extends JajukJDialog implements ActionListener, Const 
   }
 
   /**
-   * Update widgets for device property state
+   * Update widgets for device property state.
+   * 
+   * @param device1 DOCUMENT_ME
    */
   public void updateWidgets(final Device device1) {
     bNew = false;
@@ -486,7 +507,7 @@ public class DeviceWizard extends JajukJDialog implements ActionListener, Const 
   }
 
   /**
-   * Update widgets for default state
+   * Update widgets for default state.
    */
   public void updateWidgetsDefault() {
     jcbRefresh.setSelected(true);

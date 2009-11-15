@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2009 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision: 4739 $
+ *  $Revision$
  */
 package org.jajuk.ui.widgets;
 
@@ -66,21 +67,33 @@ import org.jajuk.util.log.Log;
 import org.jdesktop.swingx.JXPanel;
 
 /**
- * History, search panel
+ * History, search panel.
  */
 public final class SearchJPanel extends JXPanel implements Observer, ActionListener {
 
+  /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
-  /** Self instance */
+  /** Self instance. */
   private static SearchJPanel ijp = null;
 
+  /** DOCUMENT_ME. */
   private SearchBox sbSearch;
+  
+  /** DOCUMENT_ME. */
   private SteppedComboBox jcbHistory;
+  
+  /** DOCUMENT_ME. */
   private SteppedComboBox ambiencesCombo;
 
-  /** Ambience combo listener */
+  /**
+   * Ambience combo listener.
+   */
   class AmbienceListener implements ActionListener {
+    
+    /* (non-Javadoc)
+     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+     */
     public void actionPerformed(ActionEvent ae) {
       // Ambience Configuration
       if (ambiencesCombo.getSelectedIndex() == 0) {
@@ -121,13 +134,13 @@ public final class SearchJPanel extends JXPanel implements Observer, ActionListe
     }
   }
 
-  /** An instance of the ambience combo listener */
+  /** An instance of the ambience combo listener. */
   AmbienceListener ambienceListener;
 
   /**
-   * Singleton access
+   * Singleton access.
    * 
-   * @return
+   * @return the instance
    */
   public static SearchJPanel getInstance() {
     if (ijp == null) {
@@ -138,11 +151,18 @@ public final class SearchJPanel extends JXPanel implements Observer, ActionListe
 
   // widgets declaration
 
+  /**
+   * Instantiates a new search j panel.
+   */
   private SearchJPanel() {
     super();
 
   }
 
+  /**
+   * Inits the ui.
+   * DOCUMENT_ME
+   */
   public void initUI() {
     // Instanciate the PlayerStateMediator to listen for player basic controls
     PlayerStateMediator.getInstance();
@@ -232,6 +252,9 @@ public final class SearchJPanel extends JXPanel implements Observer, ActionListe
     UtilFeatures.updateStatus(this);
   }
 
+  /* (non-Javadoc)
+   * @see org.jajuk.events.Observer#getRegistrationKeys()
+   */
   public Set<JajukEvents> getRegistrationKeys() {
     Set<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
     eventSubjectSet.add(JajukEvents.PLAYER_STOP);
@@ -244,8 +267,7 @@ public final class SearchJPanel extends JXPanel implements Observer, ActionListe
   }
 
   /**
-   * Populate ambiences combo
-   * 
+   * Populate ambiences combo.
    */
   void populateAmbiences() {
     ambiencesCombo.removeActionListener(ambienceListener);
@@ -353,8 +375,7 @@ public final class SearchJPanel extends JXPanel implements Observer, ActionListe
 
   /**
    * Update global functions tooltip after a change in ambiences or an ambience
-   * selection using the ambience selector
-   * 
+   * selection using the ambience selector.
    */
   private void updateTooltips() {
     // Selected 'Any" ambience

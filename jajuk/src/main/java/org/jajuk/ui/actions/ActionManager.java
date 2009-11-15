@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2005 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $$Revision$$
+ *  $Revision$
  */
 package org.jajuk.ui.actions;
 
@@ -118,15 +119,18 @@ import javax.swing.UIManager;
  */
 public final class ActionManager {
 
+  /** The Constant MAP.  DOCUMENT_ME */
   private static final EnumMap<JajukActions, JajukAction> MAP = new EnumMap<JajukActions, JajukAction>(
       JajukActions.class);
 
+  /** The Constant STROKE_LIST.  DOCUMENT_ME */
   private static final List<KeyStroke> STROKE_LIST = new ArrayList<KeyStroke>();
 
-  /** Self instance */
+  /** Self instance. */
   private static ActionManager self = null;
 
   /**
+   * Gets the instance.
    * 
    * @return singleton
    */
@@ -137,6 +141,9 @@ public final class ActionManager {
     return self;
   }
 
+  /**
+   * Instantiates a new action manager.
+   */
   private ActionManager() {
     // Private constructor to disallow instantiation.
     // CommandJPanel: Mode Panel
@@ -264,10 +271,12 @@ public final class ActionManager {
   }
 
   /**
-   * @param action
-   *          The <code>JajukActions</code> to get.
+   * Gets the action.
+   * 
+   * @param action The <code>JajukActions</code> to get.
+   * 
    * @return The <code>JajukAction</code> implementation linked to the
-   *         <code>JajukActions</code>.
+   * <code>JajukActions</code>.
    */
   public static JajukAction getAction(JajukActions action) {
     JajukAction actionBase = MAP.get(action);
@@ -283,12 +292,9 @@ public final class ActionManager {
    * stored in list. To remove these keystrokes from the <code>InputMap</code>s
    * of the different components, call {@link #uninstallStrokes()}.
    * 
-   * @param name
-   *          The name for the action.
-   * @param action
-   *          The action implementation.
-   * @param removeFromLAF
-   *          Remove default keystrokes from look and feel.
+   * @param name The name for the action.
+   * @param action The action implementation.
+   * @param removeFromLAF Remove default keystrokes from look and feel.
    */
   private static void installAction(JajukActions name, JajukAction action, boolean removeFromLAF) {
     MAP.put(name, action);
@@ -318,11 +324,10 @@ public final class ActionManager {
   }
 
   /**
-   * Enable or disable the action
+   * Enable or disable the action.
    * 
-   * @param the
-   *          action
-   * @param enable
+   * @param enable DOCUMENT_ME
+   * @param action DOCUMENT_ME
    */
   public void enable(JajukAction action, boolean enable) {
     action.enable(enable);

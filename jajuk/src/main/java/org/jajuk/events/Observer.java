@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -23,23 +24,22 @@ package org.jajuk.events;
 import java.util.Set;
 
 /**
- * GoF Observer pattern Observer
+ * GoF Observer pattern Observer.
  */
 public interface Observer {
 
   /**
-   * Action to be done when receiving an event with this ID
+   * Action to be done when receiving an event with this ID.
    * 
-   * @param event
-   *          The JajukEvent maps a subject and details of the event
+   * @param event The JajukEvent maps a subject and details of the event
    */
   void update(JajukEvent event);
 
-  /** 
+  /**
    * Used by @see ObservationManager to retrieve all the events on which
    * the Observer wants to listen to.
-   *  
-   * @return A set of JajukEvents on which the Observer would like to listen. 
+   * 
+   * @return A set of JajukEvents on which the Observer would like to listen.
    */
   Set<JajukEvents> getRegistrationKeys();
 }

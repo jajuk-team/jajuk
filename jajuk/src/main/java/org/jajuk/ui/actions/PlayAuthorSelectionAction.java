@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2008 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision: 3132 $
+ *  $Revision$
  */
 package org.jajuk.ui.actions;
 
@@ -47,8 +48,12 @@ import org.jajuk.util.log.Log;
  */
 public class PlayAuthorSelectionAction extends SelectionAction {
 
+  /** Generated serialVersionUID. */
   private static final long serialVersionUID = -8078402652430413821L;
 
+  /**
+   * Instantiates a new play author selection action.
+   */
   PlayAuthorSelectionAction() {
     super(Messages.getString("TracksTableView.12"), IconLoader.getIcon(JajukIcons.AUTHOR), true);
     setShortDescription(Messages.getString("TracksTableView.12"));

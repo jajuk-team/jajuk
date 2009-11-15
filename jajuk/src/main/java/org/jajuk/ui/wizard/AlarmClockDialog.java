@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2004 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision: 3156 $
+ *  $Revision$
  */
 
 package org.jajuk.ui.wizard;
@@ -56,45 +57,67 @@ import org.jajuk.util.Messages;
 import org.jajuk.util.log.Log;
 
 /**
- * Alarm Clock Dialog window
+ * Alarm Clock Dialog window.
  */
 public class AlarmClockDialog extends JajukJDialog implements ActionListener, ItemListener, Const {
+  
+  /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
+  /** DOCUMENT_ME. */
   private final JPanel jpOKCancel;
 
+  /** DOCUMENT_ME. */
   private final JLabel jlChoice;
 
+  /** DOCUMENT_ME. */
   private final ButtonGroup bgChoices;
 
+  /** DOCUMENT_ME. */
   private final JButton jbOK;
 
+  /** DOCUMENT_ME. */
   private final JButton jbCancel;
 
+  /** DOCUMENT_ME. */
   private final JCheckBox jcbTime;
 
+  /** DOCUMENT_ME. */
   private final JLabel jlAlarmAction;
 
+  /** DOCUMENT_ME. */
   private final JRadioButton jrbShuffle;
 
+  /** DOCUMENT_ME. */
   private final JRadioButton jrbBestof;
 
+  /** DOCUMENT_ME. */
   private final JRadioButton jrbNovelties;
 
+  /** DOCUMENT_ME. */
   private final JRadioButton jrbFile;
 
+  /** DOCUMENT_ME. */
   private final JTextField jtfHour;
 
+  /** DOCUMENT_ME. */
   private final JTextField jtfMinutes;
 
+  /** DOCUMENT_ME. */
   private final JTextField jtfSeconds;
 
+  /** DOCUMENT_ME. */
   private final JComboBox jcbAlarmAction;
 
+  /** DOCUMENT_ME. */
   private final SearchBox sbSearch;
 
+  /** DOCUMENT_ME. */
   transient private SearchResult sr;
 
+  /**
+   * Instantiates a new alarm clock dialog.
+   */
   public AlarmClockDialog() {
     super();
 
@@ -190,6 +213,9 @@ public class AlarmClockDialog extends JajukJDialog implements ActionListener, It
     setVisible(true);
   }
 
+  /* (non-Javadoc)
+   * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+   */
   public final void actionPerformed(final ActionEvent e) {
     boolean playAction = (jcbAlarmAction.getSelectedIndex() == 0);
     if (e.getSource() == jcbAlarmAction) {
@@ -204,7 +230,9 @@ public class AlarmClockDialog extends JajukJDialog implements ActionListener, It
   }
 
   /**
-   * @param playAction
+   * Handle action.
+   * 
+   * @param playAction DOCUMENT_ME
    */
   private void handleAction(boolean playAction) {
     jlChoice.setEnabled(playAction);
@@ -216,7 +244,9 @@ public class AlarmClockDialog extends JajukJDialog implements ActionListener, It
   }
 
   /**
-   * @param playAction
+   * Handle time checkbox.
+   * 
+   * @param playAction DOCUMENT_ME
    */
   private void handleTimeCheckbox(boolean playAction) {
     // Enable/ disable all widgets if user enables or disables the entire
@@ -234,6 +264,9 @@ public class AlarmClockDialog extends JajukJDialog implements ActionListener, It
     sbSearch.setEnabled(enabled && playAction);
   }
 
+  /* (non-Javadoc)
+   * @see java.awt.event.ItemListener#itemStateChanged(java.awt.event.ItemEvent)
+   */
   public void itemStateChanged(final ItemEvent e) {
     if (e.getSource() == jrbFile) {
       sbSearch.setEnabled(jrbFile.isSelected());
@@ -241,7 +274,7 @@ public class AlarmClockDialog extends JajukJDialog implements ActionListener, It
   }
 
   /**
-   * Store GUI values to persisted values
+   * Store GUI values to persisted values.
    */
   public void saveValues() {
     // Parse the final alarm value
@@ -291,7 +324,7 @@ public class AlarmClockDialog extends JajukJDialog implements ActionListener, It
   }
 
   /**
-   * Load persisted values to GUI
+   * Load persisted values to GUI.
    */
   private final void loadValues() {
     jcbTime.setSelected(Conf.getBoolean(CONF_ALARM_ENABLED));

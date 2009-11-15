@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2008 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision: 3132 $
+ *  $Revision$
  */
 package org.jajuk.services.startup;
 
@@ -32,12 +33,14 @@ import org.jajuk.util.UtilGUI;
 import org.jajuk.util.log.Log;
 
 /**
- * Startup facilities for configuration controls
+ * Startup facilities for configuration controls.
  */
 public class StartupControlsService {
 
+  /** The Constant CONFIG_CHECKS.  DOCUMENT_ME */
   private static final String[] CONFIG_CHECKS = { Const.FILE_CONFIGURATION, Const.FILE_HISTORY };
 
+  /** The Constant DIR_CHECKS.  DOCUMENT_ME */
   private static final String[] DIR_CHECKS = {
       // internal pictures cache directory
       Const.FILE_CACHE + '/' + Const.FILE_INTERNAL_CACHE,
@@ -51,16 +54,18 @@ public class StartupControlsService {
       // DJs directories
       Const.FILE_DJ_DIR };
 
+  /**
+   * Instantiates a new startup controls service.
+   */
   private StartupControlsService() {
     // private constructor to hide it from the outside
   }
 
   /**
-   * Performs some basic startup tests
+   * Performs some basic startup tests.
    * 
-   * @throws InterruptedException
-   * @throws Exception
-   * @throws Exception
+   * @throws InterruptedException the interrupted exception
+   * @throws Exception    * @throws IOException Signals that an I/O exception has occurred.
    */
   public static void initialCheckups() throws IOException, InterruptedException {
     // Populate workspace path

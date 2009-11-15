@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2004 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -27,39 +28,58 @@ import java.util.Comparator;
 import org.jajuk.util.UtilString;
 
 /**
- * 
- * Multi-method track comparator
+ * Multi-method track comparator.
  */
 public class TrackComparator implements Comparator<Track>, Serializable {
+  
+  /** Generated serialVersionUID. */
   private static final long serialVersionUID = -4735723947400147134L;
 
-  /**
-   * Sorting method
-   */
+  /** Sorting method. */
   private final TrackComparatorType comparatorType;
 
-  /** Sorting methods constants */
+  /**
+   * Sorting methods constants.
+   */
   public enum TrackComparatorType {
-    STYLE_AUTHOR_ALBUM, AUTHOR_ALBUM, ALBUM, YEAR_ALBUM, DISCOVERY_ALBUM, RATE_ALBUM, HITS_ALBUM, ORDER
+    
+    /** DOCUMENT_ME. */
+    STYLE_AUTHOR_ALBUM, 
+ /** DOCUMENT_ME. */
+ AUTHOR_ALBUM, 
+ /** DOCUMENT_ME. */
+ ALBUM, 
+ /** DOCUMENT_ME. */
+ YEAR_ALBUM, 
+ /** DOCUMENT_ME. */
+ DISCOVERY_ALBUM, 
+ /** DOCUMENT_ME. */
+ RATE_ALBUM, 
+ /** DOCUMENT_ME. */
+ HITS_ALBUM, 
+ /** DOCUMENT_ME. */
+ ORDER
   }
 
+  /** The Constant FORMATTER.  DOCUMENT_ME */
   private static final DateFormat FORMATTER = UtilString.getAdditionDateFormatter();
 
   /**
-   * Constructor
+   * Constructor.
    * 
-   * @param iSortingMethod
-   *          Sorting method
+   * @param comparatorType DOCUMENT_ME
    */
   public TrackComparator(TrackComparatorType comparatorType) {
     this.comparatorType = comparatorType;
   }
 
   /**
+   * Gets the compare string.
    * 
-   * @param track
+   * @param track DOCUMENT_ME
+   * 
    * @return Hashcode string used to compare two tracks in accordance with the
-   *         sorting method
+   * sorting method
    */
   private String getCompareString(Track track) {
     String sHashCompare = null;
@@ -117,11 +137,12 @@ public class TrackComparator implements Comparator<Track>, Serializable {
   }
 
   /**
-   * Tracks compare
+   * Tracks compare.
    * 
-   * @param arg0
-   * @param arg1
-   * @return
+   * @param track1 DOCUMENT_ME
+   * @param track2 DOCUMENT_ME
+   * 
+   * @return the int
    */
   public int compare(Track track1, Track track2) {
     String sHashCompare = getCompareString(track1);

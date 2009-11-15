@@ -1,3 +1,23 @@
+/*
+ *  Jajuk
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
+ *
+ *  This program is free software; you can redistribute it and/or
+ *  modify it under the terms of the GNU General Public License
+ *  as published by the Free Software Foundation; either version 2
+ *  of the License, or any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program; if not, write to the Free Software
+ *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ *  $Revision$
+ */
 package org.qdwizard;
 
 /**
@@ -7,43 +27,40 @@ package org.qdwizard;
  * <li>can finish ?</li>
  * <li>can go next ?</li>
  * <li>can go previous ?</li>
- * </ul>
+ * </ul>.
  */
 public class ScreenState {
+  
+  /** DOCUMENT_ME. */
   private boolean bCanFinish;
 
-  /** Can Go Next */
+  /** Can Go Next. */
   private boolean bCanGoNext;
 
-  /** Can Go Previous */
+  /** Can Go Previous. */
   private boolean bCanGoPrevious;
 
-  /** Can Cancel */
+  /** Can Cancel. */
   private boolean bCanCancel;
 
-  /** Problem */
+  /** Problem. */
   private String sProblem;
 
   /**
-   * Construct a ScreenState
+   * Construct a ScreenState.
    */
   public ScreenState() {
     this(false, false, false, false, null);
   }
 
   /**
-   * Construct a ScreenState
+   * Construct a ScreenState.
    * 
-   * @param bCanGoNext
-   *          next button is enabled
-   * @param bCanGoPrevious
-   *          previous button is enabled
-   * @param bCanCancel
-   *          cancel button is enabled
-   * @param bCanFinish
-   *          cancel button is enabled
-   * @param sProblem
-   *          problem text
+   * @param bCanGoNext next button is enabled
+   * @param bCanGoPrevious previous button is enabled
+   * @param bCanCancel cancel button is enabled
+   * @param bCanFinish cancel button is enabled
+   * @param sProblem problem text
    */
   public ScreenState(boolean bCanGoNext, boolean bCanGoPrevious, boolean bCanCancel,
       boolean bCanFinish, String sProblem) {
@@ -55,6 +72,8 @@ public class ScreenState {
   }
 
   /**
+   * Gets the can finish.
+   * 
    * @return Finish button enabled
    */
   public boolean getCanFinish() {
@@ -62,15 +81,17 @@ public class ScreenState {
   }
 
   /**
-   * Set whether the finish button should be enabled
+   * Set whether the finish button should be enabled.
    * 
-   * @param bCanFinish
+   * @param bCanFinish DOCUMENT_ME
    */
   public void setCanFinish(boolean bCanFinish) {
     this.bCanFinish = bCanFinish;
   }
 
   /**
+   * Gets the can go next.
+   * 
    * @return Next button enabled
    */
   public boolean getCanGoNext() {
@@ -78,15 +99,17 @@ public class ScreenState {
   }
 
   /**
-   * Set whether the next button should be enabled
+   * Set whether the next button should be enabled.
    * 
-   * @param bCanGoNext
+   * @param bCanGoNext DOCUMENT_ME
    */
   public void setCanGoNext(boolean bCanGoNext) {
     this.bCanGoNext = bCanGoNext;
   }
 
   /**
+   * Gets the can go previous.
+   * 
    * @return Previous button enabled
    */
   public boolean getCanGoPrevious() {
@@ -94,15 +117,17 @@ public class ScreenState {
   }
 
   /**
-   * Set whether the previous button should be enabled
+   * Set whether the previous button should be enabled.
    * 
-   * @param bCanGoPrevious
+   * @param bCanGoPrevious DOCUMENT_ME
    */
   public void setCanGoPrevious(boolean bCanGoPrevious) {
     this.bCanGoPrevious = bCanGoPrevious;
   }
 
   /**
+   * Gets the can cancel.
+   * 
    * @return Cancel button enabled
    */
   public boolean getCanCancel() {
@@ -110,15 +135,17 @@ public class ScreenState {
   }
 
   /**
-   * Set whether the cancel (or System menu close) button should be enabled
+   * Set whether the cancel (or System menu close) button should be enabled.
    * 
-   * @param bCanCancel
+   * @param bCanCancel DOCUMENT_ME
    */
   public void setCanCancel(boolean bCanCancel) {
     this.bCanCancel = bCanCancel;
   }
 
   /**
+   * Gets the problem.
+   * 
    * @return Problem button enabled
    */
   public String getProblem() {
@@ -126,10 +153,9 @@ public class ScreenState {
   }
 
   /**
-   * Set a problem (set to null if problem is fixed)
+   * Set a problem (set to null if problem is fixed).
    * 
-   * @param sProblem
-   *          Problem string or null if no more problem
+   * @param sProblem Problem string or null if no more problem
    */
   public void setProblem(String sProblem) {
     this.sProblem = sProblem;

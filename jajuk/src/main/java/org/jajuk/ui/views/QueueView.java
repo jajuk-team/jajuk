@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2005 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $$Revision: 3402 $$
+ *  $Revision$
  */
 
 package org.jajuk.ui.views;
@@ -78,12 +79,17 @@ import org.jvnet.substance.api.SubstanceColorScheme;
 import org.jvnet.substance.api.SubstanceSkin;
 
 /**
- * Adapter for playlists editors *
+ * Adapter for playlists editors *.
  */
 public class QueueView extends PlaylistView {
 
+  /** Generated serialVersionUID. */
   private static final long serialVersionUID = -2851288035506442507L;
+  
+  /** DOCUMENT_ME. */
   private JScrollPane jsp;
+  
+  /** DOCUMENT_ME. */
   private JajukToggleButton jtbAutoScroll;
 
   /*
@@ -253,6 +259,9 @@ public class QueueView extends PlaylistView {
     }.start();
   }
 
+  /* (non-Javadoc)
+   * @see org.jajuk.ui.views.PlaylistView#getRegistrationKeys()
+   */
   @Override
   public Set<JajukEvents> getRegistrationKeys() {
     Set<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
@@ -388,6 +397,10 @@ public class QueueView extends PlaylistView {
 
   }
 
+  /**
+   * Refresh queue.
+   * DOCUMENT_ME
+   */
   private void refreshQueue() {
     // when nothing is selected, set default button state
     if (editorTable.getSelectionModel().getMinSelectionIndex() == -1) {
@@ -409,8 +422,7 @@ public class QueueView extends PlaylistView {
   }
 
   /**
-   * Set default button state
-   * 
+   * Set default button state.
    */
   private void setDefaultButtonState() {
     // set buttons
@@ -427,6 +439,9 @@ public class QueueView extends PlaylistView {
     // disable prepare party for queue playlist
   }
 
+  /* (non-Javadoc)
+   * @see org.jajuk.ui.views.PlaylistView#actionPerformed(java.awt.event.ActionEvent)
+   */
   @Override
   public void actionPerformed(ActionEvent ae) {
     try {
@@ -492,6 +507,10 @@ public class QueueView extends PlaylistView {
     }
   }
 
+  /**
+   * Removes the selection.
+   * DOCUMENT_ME
+   */
   private void removeSelection() {
     int[] iRows = editorTable.getSelectedRows();
     if (iRows.length > 1) {// if multiple selection, remove
@@ -510,7 +529,9 @@ public class QueueView extends PlaylistView {
   }
 
   /**
-   * Called when table selection changed
+   * Called when table selection changed.
+   * 
+   * @param e DOCUMENT_ME
    */
   @Override
   public void valueChanged(ListSelectionEvent e) {

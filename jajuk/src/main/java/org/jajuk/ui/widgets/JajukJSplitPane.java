@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2008 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision: 3132 $
+ *  $Revision$
  */
 package org.jajuk.ui.widgets;
 
@@ -29,11 +30,21 @@ import javax.swing.JSplitPane;
  */
 public class JajukJSplitPane extends JSplitPane {
 
+  /** Generated serialVersionUID. */
   private static final long serialVersionUID = -7358047597849102849L;
+  
+  /** DOCUMENT_ME. */
   protected boolean isPainted = false;
+  
+  /** DOCUMENT_ME. */
   protected boolean hasProportionalLocation = false;
+  
+  /** DOCUMENT_ME. */
   protected double proportionalLocation = -1;
 
+  /* (non-Javadoc)
+   * @see javax.swing.JSplitPane#setDividerLocation(double)
+   */
   @Override
   public void setDividerLocation(double proportionalLocation) {
     if (!isPainted) {
@@ -44,6 +55,9 @@ public class JajukJSplitPane extends JSplitPane {
     }
   }
 
+  /* (non-Javadoc)
+   * @see javax.swing.JComponent#paint(java.awt.Graphics)
+   */
   @Override
   public void paint(Graphics g) {
     if (!isPainted) {
@@ -55,6 +69,11 @@ public class JajukJSplitPane extends JSplitPane {
     super.paint(g);
   }
 
+  /**
+   * Instantiates a new jajuk j split pane.
+   * 
+   * @param orientation DOCUMENT_ME
+   */
   public JajukJSplitPane(int orientation) {
     super(orientation);
   }

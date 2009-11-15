@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2007 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $$Revision$$
+ *  $Revision$
  */
 package org.jajuk.util;
 
@@ -28,11 +29,12 @@ import org.jajuk.util.log.Log;
 
 /**
  * Convenient class to compute MD5 hashcodes and return them using predefined
- * base
+ * base.
  */
 
 public final class MD5Processor {
 
+  /** DOCUMENT_ME. */
   private static MessageDigest msgDigest;
 
   static {
@@ -44,16 +46,16 @@ public final class MD5Processor {
   }
 
   /**
-   * private constructor to avoid instantiating utility class
+   * private constructor to avoid instantiating utility class.
    */
   private MD5Processor() {
   }
 
   /**
-   * MD5 hashcoding, return a hashcode
+   * MD5 hashcoding, return a hashcode.
    * 
-   * @param sIn
-   *          input String
+   * @param sIn input String
+   * 
    * @return hashed output
    */
   public static final String hash(String sIn) {

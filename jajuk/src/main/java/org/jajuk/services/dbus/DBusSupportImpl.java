@@ -1,6 +1,7 @@
 /*
  *  Jajuk
  *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision: 3132 $
+ *  $Revision$
  */
 package org.jajuk.services.dbus;
 
@@ -55,19 +56,17 @@ import org.jajuk.util.Const;
 import org.jajuk.util.log.Log;
 
 /**
- * 
+ * DOCUMENT_ME.
  */
 public class DBusSupportImpl implements DBusSupport, Observer {
 
-  /**
-   * The D-Bus Path that is used
-   */
+  /** The D-Bus Path that is used. */
   private static final String PATH = "/JajukDBus";
 
-  /**
-   * The D-Bus name of the Bus that we request
-   */
+  /** The D-Bus name of the Bus that we request. */
   private static final String BUS = "org.jajuk.dbus.DBusSupport";
+  
+  /** DOCUMENT_ME. */
   DBusConnection conn;
 
   /**
@@ -119,76 +118,121 @@ public class DBusSupportImpl implements DBusSupport, Observer {
    * 
    */
 
+  /* (non-Javadoc)
+   * @see org.jajuk.services.dbus.DBusSupport#forward()
+   */
   public void forward() throws Exception {
     Log.info("Invoking D-Bus action for 'forward'");
     ActionManager.getAction(FORWARD_TRACK).perform(null);
   }
 
+  /* (non-Javadoc)
+   * @see org.jajuk.services.dbus.DBusSupport#next()
+   */
   public void next() throws Exception {
     Log.info("Invoking D-Bus action for 'next'");
     ActionManager.getAction(NEXT_TRACK).perform(null);
   }
 
+  /* (non-Javadoc)
+   * @see org.jajuk.services.dbus.DBusSupport#playPause()
+   */
   public void playPause() throws Exception {
     Log.info("Invoking D-Bus action for 'play/pause'");
     ActionManager.getAction(PAUSE_RESUME_TRACK).perform(null);
   }
 
+  /* (non-Javadoc)
+   * @see org.jajuk.services.dbus.DBusSupport#previous()
+   */
   public void previous() throws Exception {
     Log.info("Invoking D-Bus action for 'previous'");
     ActionManager.getAction(PREVIOUS_TRACK).perform(null);
   }
 
+  /* (non-Javadoc)
+   * @see org.jajuk.services.dbus.DBusSupport#rewind()
+   */
   public void rewind() throws Exception {
     Log.info("Invoking D-Bus action for 'rewind'");
     ActionManager.getAction(REWIND_TRACK).perform(null);
   }
 
+  /* (non-Javadoc)
+   * @see org.jajuk.services.dbus.DBusSupport#stop()
+   */
   public void stop() throws Exception {
     Log.info("Invoking D-Bus action for 'stop'");
     ActionManager.getAction(STOP_TRACK).perform(null);
   }
 
+  /* (non-Javadoc)
+   * @see org.jajuk.services.dbus.DBusSupport#decreaseVolume()
+   */
   public void decreaseVolume() throws Exception {
     Log.info("Invoking D-Bus action for 'decreaseVolume'");
     ActionManager.getAction(DECREASE_VOLUME).perform(null);
   }
 
+  /* (non-Javadoc)
+   * @see org.jajuk.services.dbus.DBusSupport#exit()
+   */
   public void exit() throws Exception {
     Log.info("Invoking D-Bus action for 'exit'");
     ActionManager.getAction(EXIT).perform(null);
   }
 
+  /* (non-Javadoc)
+   * @see org.jajuk.services.dbus.DBusSupport#increaseVolume()
+   */
   public void increaseVolume() throws Exception {
     Log.info("Invoking D-Bus action for 'increaseVolume'");
     ActionManager.getAction(INCREASE_VOLUME).perform(null);
   }
 
+  /* (non-Javadoc)
+   * @see org.jajuk.services.dbus.DBusSupport#nextAlbum()
+   */
   public void nextAlbum() throws Exception {
     Log.info("Invoking D-Bus action for 'nextAlbum'");
     ActionManager.getAction(NEXT_ALBUM).perform(null);
   }
 
+  /* (non-Javadoc)
+   * @see org.jajuk.services.dbus.DBusSupport#previousAlbum()
+   */
   public void previousAlbum() throws Exception {
     Log.info("Invoking D-Bus action for 'previousAlbum'");
     ActionManager.getAction(PREVIOUS_ALBUM).perform(null);
   }
 
+  /* (non-Javadoc)
+   * @see org.jajuk.services.dbus.DBusSupport#shuffleGlobal()
+   */
   public void shuffleGlobal() throws Exception {
     Log.info("Invoking D-Bus action for 'shuffleGlobal'");
     ActionManager.getAction(SHUFFLE_GLOBAL).perform(null);
   }
 
+  /* (non-Javadoc)
+   * @see org.jajuk.services.dbus.DBusSupport#mute()
+   */
   public void mute() throws Exception {
     Log.info("Invoking D-Bus action for 'mute'");
     ActionManager.getAction(JajukActions.MUTE_STATE).perform(null);
   }
 
+  /* (non-Javadoc)
+   * @see org.jajuk.services.dbus.DBusSupport#currentHTML()
+   */
   public String currentHTML() throws Exception {
     Log.info("Invoking D-Bus action for 'currentHTML'");
     return QueueModel.getCurrentFileTitle();
   }
 
+  /* (non-Javadoc)
+   * @see org.jajuk.services.dbus.DBusSupport#current()
+   */
   public String current() throws Exception {
     Log.info("Invoking D-Bus action for 'current'");
 
@@ -204,11 +248,17 @@ public class DBusSupportImpl implements DBusSupport, Observer {
     return title;
   }
 
+  /* (non-Javadoc)
+   * @see org.jajuk.services.dbus.DBusSupport#banCurrent()
+   */
   public void banCurrent() throws Exception {
     Log.info("Invoking D-Bus action for 'banCurrent'");
     ActionManager.getAction(JajukActions.BAN).perform(null);
   }
 
+  /* (non-Javadoc)
+   * @see org.jajuk.services.dbus.DBusSupport#showCurrentlyPlaying()
+   */
   public void showCurrentlyPlaying() throws Exception {
     // simply raise the event so any registered handler will take care of it
     Log.info("Invoking D-Bus action for 'showCurrentlyPlaying'");
@@ -216,7 +266,9 @@ public class DBusSupportImpl implements DBusSupport, Observer {
   }
   
   /**
-   * Required method for DBusInterface
+   * Required method for DBusInterface.
+   * 
+   * @return true, if checks if is remote
    */
   public boolean isRemote() {
     return false;

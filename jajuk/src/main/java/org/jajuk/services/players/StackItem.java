@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2004 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision: 3156 $
+ *  $Revision$
  */
 
 package org.jajuk.services.players;
@@ -25,27 +26,28 @@ import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 
 /**
- * A FIFO item
+ * A FIFO item.
  */
 public class StackItem implements Cloneable {
 
-  /** Associated file */
+  /** Associated file. */
   private final File file;
 
-  /** Repeat flag */
+  /** Repeat flag. */
   private boolean bRepeat = false;
 
-  /** User launch flag */
+  /** User launch flag. */
   private boolean bUserLaunch = false;
 
-  /** Planned track ? */
+  /** Planned track ?. */
   private boolean bPlanned = false;
 
   /**
-   * Constructor
+   * Constructor.
    * 
-   * @param file
-   *          associated file
+   * @param file associated file
+   * 
+   * @throws JajukException the jajuk exception
    */
   public StackItem(File file) throws JajukException {
     if (file == null) {
@@ -55,20 +57,25 @@ public class StackItem implements Cloneable {
   }
 
   /**
-   * Constructor
+   * Constructor.
    * 
-   * @param file
-   * @param bUserLauched
+   * @param file DOCUMENT_ME
+   * @param bUserLauched DOCUMENT_ME
+   * 
+   * @throws JajukException the jajuk exception
    */
   public StackItem(File file, boolean bUserLauched) throws JajukException {
     this(file, false, bUserLauched);
   }
 
   /**
-   * Constructor
+   * Constructor.
    * 
-   * @param file
-   * @param bUserLauched
+   * @param file DOCUMENT_ME
+   * @param bUserLauched DOCUMENT_ME
+   * @param bRepeat DOCUMENT_ME
+   * 
+   * @throws JajukException the jajuk exception
    */
   public StackItem(File file, boolean bRepeat, boolean bUserLauched) throws JajukException {
     if (file == null) {
@@ -81,6 +88,8 @@ public class StackItem implements Cloneable {
   }
 
   /**
+   * Checks if is repeat.
+   * 
    * @return Returns the bRepeat.
    */
   public boolean isRepeat() {
@@ -88,14 +97,17 @@ public class StackItem implements Cloneable {
   }
 
   /**
-   * @param repeat
-   *          The bRepeat to set.
+   * Sets the repeat.
+   * 
+   * @param repeat The bRepeat to set.
    */
   public void setRepeat(boolean repeat) {
     bRepeat = repeat;
   }
 
   /**
+   * Gets the file.
+   * 
    * @return Returns the file.
    */
   public File getFile() {
@@ -103,6 +115,8 @@ public class StackItem implements Cloneable {
   }
 
   /**
+   * Checks if is user launch.
+   * 
    * @return Returns the bUserLaunch.
    */
   public boolean isUserLaunch() {
@@ -110,14 +124,17 @@ public class StackItem implements Cloneable {
   }
 
   /**
-   * @param userLaunch
-   *          The bUserLaunch to set.
+   * Sets the user launch.
+   * 
+   * @param userLaunch The bUserLaunch to set.
    */
   public void setUserLaunch(boolean userLaunch) {
     bUserLaunch = userLaunch;
   }
 
   /**
+   * Checks if is planned.
+   * 
    * @return Returns the bPlanned.
    */
   public boolean isPlanned() {
@@ -125,17 +142,20 @@ public class StackItem implements Cloneable {
   }
 
   /**
-   * @param planned
-   *          The bPlanned to set.
+   * Sets the planned.
+   * 
+   * @param planned The bPlanned to set.
    */
   public void setPlanned(boolean planned) {
     bPlanned = planned;
   }
 
   /**
-   * Clone method
+   * Clone method.
    * 
    * @return a cloned stack item
+   * 
+   * @throws CloneNotSupportedException the clone not supported exception
    */
   @Override
   public Object clone() throws CloneNotSupportedException {
@@ -152,10 +172,12 @@ public class StackItem implements Cloneable {
   }
 
   /**
-   * Equals method
+   * Equals method.
+   * 
+   * @param o DOCUMENT_ME
    * 
    * @return whether both items are equals. Condition : file is the same and
-   *         planned flag is the same
+   * planned flag is the same
    */
   @Override
   public boolean equals(Object o) {
@@ -174,8 +196,9 @@ public class StackItem implements Cloneable {
   }
 
   /**
-   * Hash code method to go along with equals
+   * Hash code method to go along with equals.
    * 
+   * @return the int
    */
   @Override
   public int hashCode() {
@@ -185,7 +208,9 @@ public class StackItem implements Cloneable {
   }
 
   /**
-   * toString method
+   * toString method.
+   * 
+   * @return the string
    */
   @Override
   public String toString() {

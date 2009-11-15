@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -27,60 +28,76 @@ import javax.swing.ImageIcon;
 import org.jajuk.ui.views.IView;
 
 /**
- * Representation of a perspective
+ * Representation of a perspective.
  */
 
 public interface IPerspective {
 
   /**
+   * Gets the id.
+   * 
    * @return the perspective's id
    */
   String getID();
 
+  /**
+   * Gets the desc.
+   * 
+   * @return the desc
+   */
   String getDesc();
 
   /**
-   * Return the icon
+   * Return the icon.
    * 
    * @return perspective icon
    */
   ImageIcon getIcon();
 
   /**
-   * Set icon
+   * Set icon.
    * 
-   * @param iconURL
-   *          icon
+   * @param icon DOCUMENT_ME
    */
   void setIcon(ImageIcon icon);
 
   /**
+   * Gets the views.
+   * 
    * @return Arraylist views registered in the perspective.
    */
   Set<IView> getViews();
 
   /**
+   * Gets the content pane.
+   * 
    * @return Returns the desktop.
    */
   Container getContentPane();
 
   /**
-   * Serialize the perspective
+   * Serialize the perspective.
+   * 
+   * @throws Exception the exception
    */
   void commit() throws Exception;
 
   /**
-   * Deserialize the perspective
+   * Deserialize the perspective.
+   * 
+   * @throws Exception the exception
    */
   void load() throws Exception;
 
   /**
-   * Restore defaults views
+   * Restore defaults views.
    */
   void restoreDefaults();
 
   /**
-   * As been selected flag
+   * As been selected flag.
+   * 
+   * @param b DOCUMENT_ME
    */
   void setAsBeenSelected(boolean b);
 }

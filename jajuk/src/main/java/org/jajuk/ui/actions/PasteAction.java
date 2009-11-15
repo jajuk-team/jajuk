@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2005 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $$Revision: 2920 $$
+ *  $Revision$
  */
 package org.jajuk.ui.actions;
 
@@ -52,16 +53,26 @@ import org.jajuk.util.UtilSystem;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 
+/**
+ * DOCUMENT_ME.
+ */
 public class PasteAction extends JajukAction {
 
+  /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
+  /**
+   * Instantiates a new paste action.
+   */
   PasteAction() {
     super(Messages.getString("ActionMove.0"), IconLoader.getIcon(JajukIcons.PASTE), "ctrl V", true,
         false);
     setShortDescription(Messages.getString("ActionMove.0"));
   }
 
+  /* (non-Javadoc)
+   * @see org.jajuk.ui.actions.JajukAction#perform(java.awt.event.ActionEvent)
+   */
   @Override
   @SuppressWarnings("unchecked")
   public void perform(ActionEvent e) {
@@ -353,9 +364,9 @@ public class PasteAction extends JajukAction {
   }
 
   /**
-   * Display currently copied file to information panel
+   * Display currently copied file to information panel.
    * 
-   * @param file
+   * @param file DOCUMENT_ME
    */
   private void showMessage(java.io.File file) {
     String message = Messages.getString("Device.45");

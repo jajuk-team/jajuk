@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- * $Revision: 3612 $
+ *  $Revision$
  */
 package org.jajuk.ui.windows;
 
@@ -87,60 +88,85 @@ import org.jajuk.util.log.Log;
  * Jajuk Slim Interface
  * <p>
  * Singleton
- * </p>
+ * </p>.
  */
 public final class JajukSlimbar extends JFrame implements IJajukWindow, Observer,
     MouseWheelListener, ActionListener {
 
+  /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
+  /** DOCUMENT_ME. */
   private JWindow queueViewWindow;
 
+  /** DOCUMENT_ME. */
   private JButton jbInfo;
 
+  /** DOCUMENT_ME. */
   private SizedButton jbPrevious;
 
+  /** DOCUMENT_ME. */
   private SizedButton jbNext;
 
+  /** DOCUMENT_ME. */
   private SizedButton jbPlayPause;
 
+  /** DOCUMENT_ME. */
   private SizedButton jbStop;
 
+  /** DOCUMENT_ME. */
   private PreferenceToolbar preferences;
 
+  /** DOCUMENT_ME. */
   private DropDownButton jddbSmart;
 
+  /** DOCUMENT_ME. */
   private JPopupMenu jpmSmart;
 
+  /** DOCUMENT_ME. */
   private JMenuItem jbBestof;
 
+  /** DOCUMENT_ME. */
   private JMenuItem jbNovelties;
 
+  /** DOCUMENT_ME. */
   private JMenuItem jbRandom;
 
+  /** DOCUMENT_ME. */
   private SizedButton jbFinishAlbum;
 
+  /** DOCUMENT_ME. */
   private JButton jbMaximize;
 
+  /** DOCUMENT_ME. */
   private SizedButton jbVolume;
 
+  /** DOCUMENT_ME. */
   private SearchBox sbSearch;
 
+  /** DOCUMENT_ME. */
   private JToolBar slimJajuk;
 
+  /** DOCUMENT_ME. */
   private JToolBar jtbPlay;
 
+  /** DOCUMENT_ME. */
   private String title = "";
 
-  /**
-   * State decorator
-   */
+  /** State decorator. */
   private WindowStateDecorator decorator;
 
+  /** DOCUMENT_ME. */
   JajukInformationDialog balloon;
 
+  /** DOCUMENT_ME. */
   private static JajukSlimbar self;
 
+  /**
+   * Gets the single instance of JajukSlimbar.
+   * 
+   * @return single instance of JajukSlimbar
+   */
   public static JajukSlimbar getInstance() {
     if (self == null) {
       self = new JajukSlimbar();
@@ -170,6 +196,11 @@ public final class JajukSlimbar extends JFrame implements IJajukWindow, Observer
     return self;
   }
 
+  /**
+   * Sets the display queue.
+   * 
+   * @param display the new display queue
+   */
   public void setDisplayQueue(boolean display) {
     if (display) {
       // Set position of queue dialog
@@ -181,6 +212,11 @@ public final class JajukSlimbar extends JFrame implements IJajukWindow, Observer
     Conf.setProperty(Const.CONF_SLIMBAR_DISPLAY_QUEUE, Boolean.toString(isDisplayQueue()));
   }
 
+  /**
+   * Checks if is display queue.
+   * 
+   * @return true, if is display queue
+   */
   public boolean isDisplayQueue() {
     return queueViewWindow.isVisible();
   }
@@ -194,9 +230,7 @@ public final class JajukSlimbar extends JFrame implements IJajukWindow, Observer
     return decorator;
   }
 
-  /**
-   * This mouse motion listener allows the whole slim bar dragging
-   */
+  /** This mouse motion listener allows the whole slim bar dragging. */
 
   private final MouseMotionAdapter motionAdapter = new MouseMotionAdapter() {
     @Override
@@ -215,8 +249,12 @@ public final class JajukSlimbar extends JFrame implements IJajukWindow, Observer
     }
   };
 
+  /** DOCUMENT_ME. */
   private SizedButton jbQueue;
 
+  /**
+   * Instantiates a new jajuk slimbar.
+   */
   private JajukSlimbar() {
     setUndecorated(true);
     setAlwaysOnTop(true);
@@ -225,6 +263,9 @@ public final class JajukSlimbar extends JFrame implements IJajukWindow, Observer
     JDialog.setDefaultLookAndFeelDecorated(true);
   }
 
+  /* (non-Javadoc)
+   * @see org.jajuk.ui.windows.IJajukWindow#initUI()
+   */
   public void initUI() {
     // Instanciate the PlayerStateMediator to listen for player basic controls
     PlayerStateMediator.getInstance();
@@ -431,7 +472,8 @@ public final class JajukSlimbar extends JFrame implements IJajukWindow, Observer
   }
 
   /**
-   * 
+   * Creates the queue window.
+   * DOCUMENT_ME
    */
   private void createQueueWindow() {
     QueueView queueView = new QueueView();
@@ -446,6 +488,10 @@ public final class JajukSlimbar extends JFrame implements IJajukWindow, Observer
     queueViewWindow.setVisible(Conf.getBoolean(Const.CONF_SLIMBAR_DISPLAY_QUEUE));
   }
 
+  /**
+   * Update current title.
+   * DOCUMENT_ME
+   */
   private void updateCurrentTitle() {
     File file = QueueModel.getPlayingFile();
     if (QueueModel.isPlayingRadio()) {
@@ -464,6 +510,8 @@ public final class JajukSlimbar extends JFrame implements IJajukWindow, Observer
   }
 
   /**
+   * Gets the player info.
+   * 
    * @return Player Info : current and next track
    */
   public String getPlayerInfo() {
@@ -513,7 +561,7 @@ public final class JajukSlimbar extends JFrame implements IJajukWindow, Observer
    * Force tooltip refresh Thanks Santhosh Kumar
    * http://www.jroller.com/santhosh/entry/tooltips_can_say_more
    * 
-   * @param comp
+   * @param comp DOCUMENT_ME
    */
   public static void postToolTip(JComponent comp) {
     Action action = comp.getActionMap().get("postTip");
@@ -529,7 +577,7 @@ public final class JajukSlimbar extends JFrame implements IJajukWindow, Observer
    * Remove tooltip Thanks Santhosh Kumar
    * http://www.jroller.com/santhosh/entry/tooltips_can_say_more
    * 
-   * @param comp
+   * @param comp DOCUMENT_ME
    */
   public static void hideToolTip(JComponent comp) {
     Action action = comp.getActionMap().get("hideTip");
@@ -541,6 +589,9 @@ public final class JajukSlimbar extends JFrame implements IJajukWindow, Observer
     action.actionPerformed(ae);
   }
 
+  /* (non-Javadoc)
+   * @see org.jajuk.events.Observer#getRegistrationKeys()
+   */
   public Set<JajukEvents> getRegistrationKeys() {
     Set<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
     eventSubjectSet.add(JajukEvents.FILE_LAUNCHED);
@@ -550,6 +601,9 @@ public final class JajukSlimbar extends JFrame implements IJajukWindow, Observer
     return eventSubjectSet;
   }
 
+  /* (non-Javadoc)
+   * @see org.jajuk.events.Observer#update(org.jajuk.events.JajukEvent)
+   */
   public void update(final JajukEvent event) {
     JajukEvents subject = event.getSubject();
     if (JajukEvents.FILE_LAUNCHED.equals(subject) || JajukEvents.WEBRADIO_LAUNCHED.equals(subject)
@@ -558,6 +612,9 @@ public final class JajukSlimbar extends JFrame implements IJajukWindow, Observer
     }
   }
 
+  /* (non-Javadoc)
+   * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+   */
   public void actionPerformed(final ActionEvent ae) {
     if (ae.getSource() == jbBestof) {
       jddbSmart.setAction(ActionManager.getAction(JajukActions.BEST_OF));
@@ -578,7 +635,7 @@ public final class JajukSlimbar extends JFrame implements IJajukWindow, Observer
 
   /**
    * Display the current playing album balloon when moving mouse over jbInfo or
-   * when clicking on it
+   * when clicking on it.
    */
   private void showBalloon() {
     // Leave if baloon already visible

@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2005 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $$Revision$$
+ *  $Revision$
  */
 
 package org.jajuk.ui.views;
@@ -96,64 +97,87 @@ import org.jajuk.util.log.Log;
 import org.jvnet.substance.api.renderers.SubstanceDefaultTreeCellRenderer;
 
 /**
- * Physical tree view
+ * Physical tree view.
  */
 public class FilesTreeView extends AbstractTreeView implements ActionListener,
     org.jajuk.events.Observer {
 
+  /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
-  /** Files selection */
+  /** Files selection. */
   List<File> alFiles = new ArrayList<File>(100);
 
-  /** Directories selection */
+  /** Directories selection. */
   List<Directory> alDirs = new ArrayList<Directory>(10);
 
-  /** Collection export */
+  /** Collection export. */
   JPopupMenu jmenuCollection;
 
+  /** DOCUMENT_ME. */
   JMenuItem jmiCollectionReport;
 
+  /** DOCUMENT_ME. */
   JMenuItem jmiCollectionDuplicateFiles;
 
+  /** DOCUMENT_ME. */
   JMenuItem jmiDirRefresh;
 
+  /** DOCUMENT_ME. */
   JMenuItem jmiDirDesynchro;
 
+  /** DOCUMENT_ME. */
   JMenuItem jmiDirResynchro;
 
+  /** DOCUMENT_ME. */
   JMenuItem jmiDirCreatePlaylist;
 
+  /** DOCUMENT_ME. */
   JMenuItem jmiDirRefactor;
 
+  /** DOCUMENT_ME. */
   JMenuItem jmiDirCopyURL;
 
+  /** DOCUMENT_ME. */
   JMenuItem jmiDirOpenExplorer;
 
+  /** DOCUMENT_ME. */
   JMenuItem jmiDevMount;
 
+  /** DOCUMENT_ME. */
   JMenuItem jmiDevUnmount;
 
+  /** DOCUMENT_ME. */
   JMenuItem jmiDevRefresh;
 
+  /** DOCUMENT_ME. */
   JMenuItem jmiDevSynchronize;
 
+  /** DOCUMENT_ME. */
   JMenuItem jmiDevTest;
 
+  /** DOCUMENT_ME. */
   JMenuItem jmiDevOrganize;
 
+  /** DOCUMENT_ME. */
   JMenuItem jmiDevConfiguration;
 
+  /** DOCUMENT_ME. */
   JMenuItem jmiDevDelete;
 
+  /** DOCUMENT_ME. */
   JMenuItem jmiPlaylistFileCopy;
 
+  /** DOCUMENT_ME. */
   JMenuItem jmiPlaylistFileCut;
 
+  /** DOCUMENT_ME. */
   JMenuItem jmiPlaylistFilePaste;
 
+  /** DOCUMENT_ME. */
   JMenuItem jmiPlaylistCopyURL;
 
+  /** DOCUMENT_ME. */
   JMenuItem jmiPlaylistPrepareParty;
 
   /*
@@ -165,10 +189,15 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
     return Messages.getString("FilesTreeView.0");
   }
 
-  /** Constructor */
+  /**
+   * Constructor.
+   */
   public FilesTreeView() {
   }
 
+  /* (non-Javadoc)
+   * @see org.jajuk.events.Observer#getRegistrationKeys()
+   */
   public Set<JajukEvents> getRegistrationKeys() {
     Set<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
     eventSubjectSet.add(JajukEvents.FILE_LAUNCHED);
@@ -311,7 +340,9 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
     expand();
   }
 
-  /** Fill the tree */
+  /**
+   * Fill the tree.
+   */
   @Override
   public synchronized void populateTree() {
     top.removeAllChildren();
@@ -495,7 +526,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
    * </p>
    * <p>
    * When unmounting a device from the tree, the device node is collapsed
-   * </p>
+   * </p>.
    */
   @Override
   void expand() {
@@ -521,8 +552,14 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
     }
   }
 
+  /**
+   * DOCUMENT_ME.
+   */
   class FilesMouseAdapter extends MouseAdapter {
 
+    /* (non-Javadoc)
+     * @see java.awt.event.MouseAdapter#mousePressed(java.awt.event.MouseEvent)
+     */
     @Override
     public void mousePressed(final MouseEvent e) {
       if (e.isPopupTrigger()) {
@@ -569,6 +606,9 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
       }
     }
 
+    /* (non-Javadoc)
+     * @see java.awt.event.MouseAdapter#mouseReleased(java.awt.event.MouseEvent)
+     */
     @Override
     public void mouseReleased(final MouseEvent e) {
       if (e.isPopupTrigger()) {
@@ -576,6 +616,12 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
       }
     }
 
+    /**
+     * Handle popup.
+     * DOCUMENT_ME
+     * 
+     * @param e DOCUMENT_ME
+     */
     @SuppressWarnings("unchecked")
     public void handlePopup(final MouseEvent e) {
       TreePath path = jtree.getPathForLocation(e.getX(), e.getY());
@@ -776,7 +822,14 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
     }
   }
 
+  /**
+   * DOCUMENT_ME.
+   */
   class FilesTreeSelectionListener implements TreeSelectionListener {
+    
+    /* (non-Javadoc)
+     * @see javax.swing.event.TreeSelectionListener#valueChanged(javax.swing.event.TreeSelectionEvent)
+     */
     @SuppressWarnings("unchecked")
     public void valueChanged(TreeSelectionEvent e) {
       paths = jtree.getSelectionModel().getSelectionPaths();
@@ -862,7 +915,14 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
     }
   }
 
+  /**
+   * DOCUMENT_ME.
+   */
   class FilesTreeExpansionListener implements TreeExpansionListener {
+    
+    /* (non-Javadoc)
+     * @see javax.swing.event.TreeExpansionListener#treeCollapsed(javax.swing.event.TreeExpansionEvent)
+     */
     public void treeCollapsed(TreeExpansionEvent event) {
       Object o = event.getPath().getLastPathComponent();
       if (o instanceof DirectoryNode && !bAutoCollapse) {
@@ -874,6 +934,9 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
       }
     }
 
+    /* (non-Javadoc)
+     * @see javax.swing.event.TreeExpansionListener#treeExpanded(javax.swing.event.TreeExpansionEvent)
+     */
     public void treeExpanded(TreeExpansionEvent event) {
       Object o = event.getPath().getLastPathComponent();
       if (o instanceof DirectoryNode && !bAutoCollapse) {

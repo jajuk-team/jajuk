@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision: 3132 $
+ *  $Revision$
  */
 package org.jajuk.services.notification;
 
@@ -33,18 +33,17 @@ import org.jajuk.util.Messages;
  * <p>
  * Singleton
  * </p>
- * 
  */
 public class JavaBalloonNotificator implements INotificator {
   // the Systray is used to display the notification
+  /** DOCUMENT_ME. */
   TrayIcon trayIcon;
 
-  /** Self instance **/
+  /** Self instance *. */
   private static JavaBalloonNotificator self;
 
   /**
-   * 
-   * Return an instance of this singleton
+   * Return an instance of this singleton.
    * 
    * @return an instance of this singleton
    */
@@ -58,10 +57,6 @@ public class JavaBalloonNotificator implements INotificator {
   /**
    * Creates an instance, the link to tray provides the necessary Java Systray
    * implementation.
-   * 
-   * @param tray
-   *          The initialized system tray. isAvailable() will return false, if
-   *          this is passed null.
    */
   private JavaBalloonNotificator() {
     this.trayIcon = JajukSystray.getInstance().getTrayIcon();
@@ -77,6 +72,9 @@ public class JavaBalloonNotificator implements INotificator {
     return (trayIcon != null);
   }
 
+  /* (non-Javadoc)
+   * @see org.jajuk.services.notification.INotificator#notify(org.jajuk.services.webradio.WebRadio)
+   */
   @Override
   public void notify(WebRadio webradio) {
     String title = Messages.getString("Notificator.track_change.webradio_title");
@@ -85,6 +83,9 @@ public class JavaBalloonNotificator implements INotificator {
     trayIcon.displayMessage(title, text, TrayIcon.MessageType.INFO);
   }
 
+  /* (non-Javadoc)
+   * @see org.jajuk.services.notification.INotificator#notify(org.jajuk.base.File)
+   */
   @Override
   public void notify(File file) {
     String title = Messages.getString("Notificator.track_change.track_title");

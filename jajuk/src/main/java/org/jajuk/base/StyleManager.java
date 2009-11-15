@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -39,17 +40,19 @@ import org.jajuk.util.UtilFeatures;
 import org.jajuk.util.error.JajukException;
 
 /**
- * Convenient class to manage styles
+ * Convenient class to manage styles.
  */
 public final class StyleManager extends ItemManager {
-  /** Self instance */
+  
+  /** Self instance. */
   private static StyleManager singleton;
 
   /* List of all known styles */
+  /** DOCUMENT_ME. */
   private Vector<String> stylesList;
 
   /**
-   * No constructor available, only static access
+   * No constructor available, only static access.
    */
   private StyleManager() {
     super();
@@ -68,6 +71,8 @@ public final class StyleManager extends ItemManager {
   }
 
   /**
+   * Gets the instance.
+   * 
    * @return singleton
    */
   public static StyleManager getInstance() {
@@ -78,9 +83,11 @@ public final class StyleManager extends ItemManager {
   }
 
   /**
-   * Register a style
+   * Register a style.
    * 
-   * @param sName
+   * @param sName DOCUMENT_ME
+   * 
+   * @return the style
    */
   public Style registerStyle(String sName) {
     String sId = createID(sName);
@@ -88,10 +95,10 @@ public final class StyleManager extends ItemManager {
   }
 
   /**
-   * Return hashcode for this item
+   * Return hashcode for this item.
    * 
-   * @param sName
-   *          item name
+   * @param sName item name
+   * 
    * @return ItemManager ID
    */
   protected static String createID(String sName) {
@@ -99,9 +106,12 @@ public final class StyleManager extends ItemManager {
   }
 
   /**
-   * Register a style with a known id
+   * Register a style with a known id.
    * 
-   * @param sName
+   * @param sName DOCUMENT_ME
+   * @param sId DOCUMENT_ME
+   * 
+   * @return the style
    */
   public synchronized Style registerStyle(String sId, String sName) {
     Style style = getStyleByID(sId);
@@ -123,6 +133,10 @@ public final class StyleManager extends ItemManager {
     return style;
   }
 
+  /**
+   * Register preset styles.
+   * DOCUMENT_ME
+   */
   public synchronized void registerPresetStyles() {
     // create default style list
     stylesList = new Vector<String>(Arrays.asList(UtilFeatures.GENRES));
@@ -133,10 +147,11 @@ public final class StyleManager extends ItemManager {
   }
 
   /**
-   * Return style by name
+   * Return style by name.
    * 
-   * @param name
-   * @return
+   * @param name DOCUMENT_ME
+   * 
+   * @return the style by name
    */
   public Style getStyleByName(String name) {
     Style out = null;
@@ -151,11 +166,14 @@ public final class StyleManager extends ItemManager {
   }
 
   /**
-   * Change the item name
+   * Change the item name.
    * 
-   * @param old
-   * @param sNewName
+   * @param old DOCUMENT_ME
+   * @param sNewName DOCUMENT_ME
+   * 
    * @return new item
+   * 
+   * @throws JajukException the jajuk exception
    */
   public Style changeStyleName(Style old, String sNewName) throws JajukException {
     synchronized (TrackManager.getInstance()) {
@@ -195,10 +213,11 @@ public final class StyleManager extends ItemManager {
    * <p>
    * -All in upper case
    * <p>
-   * exemple: "ROCK"
+   * exemple: "ROCK".
    * 
-   * @param sName
-   * @return
+   * @param sName DOCUMENT_ME
+   * 
+   * @return the string
    */
   public static String format(String sName) {
     String sOut;
@@ -220,16 +239,20 @@ public final class StyleManager extends ItemManager {
   }
 
   /**
+   * Gets the styles list.
+   * 
    * @return Human readable list of registrated styles <br>
-   *         ordered (alphabeticaly)
+   * ordered (alphabeticaly)
    */
   public Vector<String> getStylesList() {
     return stylesList;
   }
 
   /**
-   * @param sID
-   *          Item ID
+   * Gets the style by id.
+   * 
+   * @param sID Item ID
+   * 
    * @return item
    */
   public Style getStyleByID(String sID) {
@@ -237,6 +260,7 @@ public final class StyleManager extends ItemManager {
   }
 
   /**
+   * Gets the styles.
    * 
    * @return ordered styles list
    */
@@ -246,6 +270,7 @@ public final class StyleManager extends ItemManager {
   }
 
   /**
+   * Gets the styles iterator.
    * 
    * @return styles iterator
    */

@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2007 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $$Revision$$
+ *  $Revision$
  */
 
 package org.jajuk.ui.views;
@@ -31,30 +32,28 @@ import org.jajuk.util.Const;
 import org.jdesktop.swingx.JXPanel;
 
 /**
- * Default implementation for views
+ * Default implementation for views.
  */
 public abstract class ViewAdapter extends JXPanel implements IView, Const, Comparable<IView>,
     Observer {
 
+  /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1526958318911770642L;
 
-  /** Populated state */
+  /** Populated state. */
   private boolean bIsPopulated = false;
 
-  /**
-   * View ID; note that a same view can be used several times in the same or in
-   * others perspectives
-   */
+  /** View ID; note that a same view can be used several times in the same or in others perspectives. */
   private String sID;
 
-  /** Associated perspective* */
+  /** Associated perspective*. */
   private IPerspective perspective;
 
-  /** Associated DockKey */
+  /** Associated DockKey. */
   private final DockKey key;
 
   /**
-   * Constructor
+   * Constructor.
    */
   public ViewAdapter() {
     super();
@@ -68,7 +67,9 @@ public abstract class ViewAdapter extends JXPanel implements IView, Const, Compa
   }
 
   /**
-   * toString method
+   * toString method.
+   * 
+   * @return the string
    */
   @Override
   public String toString() {
@@ -76,6 +77,8 @@ public abstract class ViewAdapter extends JXPanel implements IView, Const, Compa
   }
 
   /**
+   * Checks if is populated.
+   * 
    * @return Returns the bIsPopulated.
    */
   public boolean isPopulated() {
@@ -83,8 +86,9 @@ public abstract class ViewAdapter extends JXPanel implements IView, Const, Compa
   }
 
   /**
-   * @param isDisplayed
-   *          The bIsPopulated to set.
+   * Sets the is populated.
+   * 
+   * @param isPopulated DOCUMENT_ME
    */
   public void setIsPopulated(boolean isPopulated) {
     bIsPopulated = isPopulated;
@@ -145,16 +149,18 @@ public abstract class ViewAdapter extends JXPanel implements IView, Const, Compa
   }
 
   /**
-   * Default impl for ID
+   * Default impl for ID.
+   * 
+   * @return the ID
    */
   public String getID() {
     return sID;
   }
 
   /**
-   * Set the view ID
+   * Set the view ID.
    * 
-   * @param sID
+   * @param sID DOCUMENT_ME
    */
   public void setID(String sID) {
     key.setKey(sID);
@@ -180,6 +186,9 @@ public abstract class ViewAdapter extends JXPanel implements IView, Const, Compa
   }
 
   /**
+   * Compare to.
+   * 
+   * @param other DOCUMENT_ME
    * 
    * @return Natural order
    */
@@ -188,7 +197,7 @@ public abstract class ViewAdapter extends JXPanel implements IView, Const, Compa
   }
 
   /**
-   * Called when the view perspective is selected
+   * Called when the view perspective is selected.
    */
   public void onPerspectiveSelection() {
     // required by interface, but nothing to do here...

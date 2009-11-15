@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2007 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -21,27 +22,48 @@
 package org.jajuk.services.webradio;
 
 /**
- * A web Radio
+ * A web Radio.
  */
 public class WebRadio implements Comparable<WebRadio> {
 
+  /** DOCUMENT_ME. */
   private String name;
 
+  /** DOCUMENT_ME. */
   private String url;
 
+  /**
+   * Instantiates a new web radio.
+   * 
+   * @param name DOCUMENT_ME
+   * @param url DOCUMENT_ME
+   */
   public WebRadio(String name, String url) {
     this.name = name;
     this.url = url;
   }
 
+  /**
+   * Gets the name.
+   * 
+   * @return the name
+   */
   public String getName() {
     return this.name;
   }
 
+  /**
+   * Gets the url.
+   * 
+   * @return the url
+   */
   public String getUrl() {
     return this.url;
   }
 
+  /* (non-Javadoc)
+   * @see java.lang.Object#equals(java.lang.Object)
+   */
   @Override
   public boolean equals(Object other) {
     if (!(other instanceof WebRadio)) {
@@ -50,12 +72,18 @@ public class WebRadio implements Comparable<WebRadio> {
     return name.equals(((WebRadio) other).getName());
   }
 
+  /* (non-Javadoc)
+   * @see java.lang.Object#hashCode()
+   */
   @Override
   public int hashCode() {
     // equals only compares on Name, therefore use the same for the hashcode
     return name.hashCode();
   }
 
+  /* (non-Javadoc)
+   * @see java.lang.Comparable#compareTo(java.lang.Object)
+   */
   public int compareTo(WebRadio other) {
     // make null url web radio to appear first (useful for the wizard)
     if (getUrl() == null) {
@@ -64,15 +92,28 @@ public class WebRadio implements Comparable<WebRadio> {
     return name.compareToIgnoreCase(other.getName());
   }
 
+  /* (non-Javadoc)
+   * @see java.lang.Object#toString()
+   */
   @Override
   public String toString() {
     return name + " (" + url + ")";
   }
 
+  /**
+   * Sets the name.
+   * 
+   * @param name the new name
+   */
   public void setName(String name) {
     this.name = name;
   }
 
+  /**
+   * Sets the url.
+   * 
+   * @param url the new url
+   */
   public void setUrl(String url) {
     this.url = url;
   }

@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2007 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -68,18 +69,23 @@ import org.jajuk.util.log.Log;
  * </p>
  * <p>
  * We use a JWindow instead of a JDialog because the painting is faster
- * </p>
+ * </p>.
  */
 public class ThumbnailPopup extends JWindow {
 
+  /** Generated serialVersionUID. */
   private static final long serialVersionUID = -8131528719972829954L;
 
+  /** DOCUMENT_ME. */
   JPanel jp;
 
+  /** DOCUMENT_ME. */
   final JEditorPane text;
 
   /**
-   * Launch selection and set right cursor
+   * Launch selection and set right cursor.
+   * 
+   * @param tracks DOCUMENT_ME
    */
   private void launchLink(List<Track> tracks) {
     List<org.jajuk.base.File> toPlay = new ArrayList<org.jajuk.base.File>(1);
@@ -105,15 +111,15 @@ public class ThumbnailPopup extends JWindow {
   }
 
   /**
+   * The Constructor.
    * 
-   * @param description
-   *          HTML text to display (HTML 3.0)
+   * @param description HTML text to display (HTML 3.0)
    * @param origin :
-   *          coordinates of the origin item on whish we want to display the
-   *          popup
+   * coordinates of the origin item on whish we want to display the
+   * popup
    * @param autoclose :
-   *          whether the popup should close when mouse leave the origin item or
-   *          is displayed as a regular Dialog
+   * whether the popup should close when mouse leave the origin item or
+   * is displayed as a regular Dialog
    */
   public ThumbnailPopup(String description, Rectangle origin, boolean autoclose) {
     getRootPane().setOpaque(true);

@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision: 3132 $
+ *  $Revision$
  */
 package org.jajuk.base;
 
@@ -24,11 +24,13 @@ import java.io.Serializable;
 import java.util.Comparator;
 
 /**
- * Compares albums
+ * Compares albums.
  * 
  * @TODO Convert criteria from int to an enum
  */
 public class AlbumComparator implements Comparator<Album>, Serializable {
+  
+  /** Generated serialVersionUID. */
   private static final long serialVersionUID = -5927167916548652076L;
 
   /*
@@ -38,12 +40,21 @@ public class AlbumComparator implements Comparator<Album>, Serializable {
    * 0 .. style 1 .. author 2 .. album 3 .. year 4 .. discovery date 5 .. rate 6 ..
    * hits
    */
+  /** DOCUMENT_ME. */
   private int criteria = 0;
 
+  /**
+   * Instantiates a new album comparator.
+   * 
+   * @param criteria DOCUMENT_ME
+   */
   public AlbumComparator(int criteria) {
     this.criteria = criteria;
   }
 
+  /* (non-Javadoc)
+   * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
+   */
   public int compare(Album album1, Album album2) {
     // for albums, perform a fast compare
     if (criteria == 2) {

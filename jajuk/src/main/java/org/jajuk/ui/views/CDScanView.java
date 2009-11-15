@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2005 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $$Revision$$
+ *  $Revision$
  */
 
 package org.jajuk.ui.views;
@@ -52,24 +53,30 @@ import org.jajuk.util.log.Log;
 /**
  * Scan CD to build the collection as fast as possible
  * <p>
- * Configuration perspective *
+ * Configuration perspective *.
  */
 public class CDScanView extends ViewAdapter implements ActionListener {
 
+  /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
+  /** DOCUMENT_ME. */
   JTextField jtfName;
 
+  /** DOCUMENT_ME. */
   JLabel jlMountPoint;
 
+  /** DOCUMENT_ME. */
   JTextField jtfMountPoint;
 
+  /** DOCUMENT_ME. */
   JButton jbScan;
 
+  /** DOCUMENT_ME. */
   JButton jbUrl;
 
   /**
-   * Constructor
+   * Constructor.
    */
   public CDScanView() {
     super();

@@ -1,7 +1,8 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 The Jajuk Team
- *  
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
+ *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
  *  as published by the Free Software Foundation; either version 2
@@ -49,23 +50,22 @@ import org.jdesktop.swingx.JXPanel;
  */
 public final class PerspectiveBarJPanel extends JXPanel {
 
+  /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
-  /** Perspectives tool bar* */
+  /** Perspectives tool bar*. */
   private JToolBar jtbPerspective;
 
-  /** Self instance */
+  /** Self instance. */
   private static PerspectiveBarJPanel pb;
 
-  /**
-   * Perspective button
-   */
+  /** Perspective button. */
   private final List<JButton> alButtons = new ArrayList<JButton>(10);
 
   /**
-   * Singleton access
+   * Singleton access.
    * 
-   * @return
+   * @return the instance
    */
   public static PerspectiveBarJPanel getInstance() {
     if (pb == null) {
@@ -82,8 +82,7 @@ public final class PerspectiveBarJPanel extends JXPanel {
   }
 
   /**
-   * update contents
-   * 
+   * update contents.
    */
   public void update() {
     // Perspectives tool bar
@@ -124,9 +123,9 @@ public final class PerspectiveBarJPanel extends JXPanel {
   }
 
   /**
-   * Show selected perspective
+   * Show selected perspective.
    * 
-   * @param perspective
+   * @param perspective DOCUMENT_ME
    */
   public void setActivated(IPerspective perspective) {
     Collection<IPerspective> perspectives = PerspectiveManager.getPerspectives();
@@ -145,7 +144,9 @@ public final class PerspectiveBarJPanel extends JXPanel {
   }
 
   /**
-   * ToString() method
+   * ToString() method.
+   * 
+   * @return the string
    */
   @Override
   public String toString() {

@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -30,24 +31,35 @@ import org.jajuk.base.FileManager;
 import org.jajuk.ui.widgets.JajukTable;
 
 /**
- * DND handler for table
+ * DND handler for table.
  */
 
 public class TableTransferHandler extends TransferHandler {
 
+  /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
+  /** DOCUMENT_ME. */
   private final JTable jtable;
 
+  /** DOCUMENT_ME. */
   private static int iSelectedRow = 0;
 
-  /** Constructor */
+  /**
+   * Constructor.
+   * 
+   * @param jtable DOCUMENT_ME
+   */
   public TableTransferHandler(JTable jtable) {
     this.jtable = jtable;
   }
 
   /**
-   * Called when dragging
+   * Called when dragging.
+   * 
+   * @param c DOCUMENT_ME
+   * 
+   * @return the transferable
    */
   @Override
   protected Transferable createTransferable(JComponent c) {
@@ -70,13 +82,22 @@ public class TableTransferHandler extends TransferHandler {
   }
 
   /**
-   * return action type
+   * return action type.
+   * 
+   * @param c DOCUMENT_ME
+   * 
+   * @return the source actions
    */
   @Override
   public int getSourceActions(JComponent c) {
     return COPY_OR_MOVE;
   }
 
+  /**
+   * Sets the selected row.
+   * 
+   * @param selectedRow the new selected row
+   */
   public static void setSelectedRow(int selectedRow) {
     iSelectedRow = selectedRow;
   }

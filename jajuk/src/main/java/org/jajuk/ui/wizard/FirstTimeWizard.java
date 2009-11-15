@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2007 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $$Revision$$
+ *  $Revision$
  */
 
 package org.jajuk.ui.wizard;
@@ -68,40 +69,54 @@ import org.jdesktop.swingx.JXCollapsiblePane;
 import org.jdesktop.swingx.VerticalLayout;
 
 /**
- * First time Wizard
+ * First time Wizard.
  */
 public class FirstTimeWizard extends JajukJDialog implements ActionListener, PropertyChangeListener {
+  
+  /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
+  /** DOCUMENT_ME. */
   JLabel jlLeftIcon;
 
+  /** DOCUMENT_ME. */
   JPanel jpRightPanel;
 
+  /** DOCUMENT_ME. */
   JButton jbFileSelection;
 
+  /** DOCUMENT_ME. */
   JLabel jlSelectedFile;
 
+  /** DOCUMENT_ME. */
   PathSelector workspacePath;
 
+  /** DOCUMENT_ME. */
   JLabel jlRefreshTime;
 
+  /** DOCUMENT_ME. */
   JTextField jtfRefreshTime;
 
+  /** DOCUMENT_ME. */
   JCheckBox jcbHelp;
 
+  /** DOCUMENT_ME. */
   JXCollapsiblePane advanced;
 
+  /** DOCUMENT_ME. */
   JButton jbOk;
 
+  /** DOCUMENT_ME. */
   JButton jbCancel;
 
+  /** DOCUMENT_ME. */
   JPanel jpMain;
 
-  /** Selected directory */
+  /** Selected directory. */
   private File fDir;
 
   /**
-   * First time wizard
+   * First time wizard.
    */
   public FirstTimeWizard() {
     super();
@@ -114,6 +129,9 @@ public class FirstTimeWizard extends JajukJDialog implements ActionListener, Pro
     setVisible(true);
   }
 
+  /* (non-Javadoc)
+   * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+   */
   public void actionPerformed(final ActionEvent e) {
     if (e.getSource() == jbCancel) {
       dispose(); // close window
@@ -212,6 +230,10 @@ public class FirstTimeWizard extends JajukJDialog implements ActionListener, Pro
     }
   }
 
+  /**
+   * Inits the ui.
+   * DOCUMENT_ME
+   */
   private void initUI() {
     setTitle(Messages.getString("FirstTimeWizard.0"));
     jlLeftIcon = new JLabel(UtilGUI.getImage(Const.IMAGE_SEARCH));

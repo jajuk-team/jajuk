@@ -1,3 +1,23 @@
+/*
+ *  Jajuk
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
+ *
+ *  This program is free software; you can redistribute it and/or
+ *  modify it under the terms of the GNU General Public License
+ *  as published by the Free Software Foundation; either version 2
+ *  of the License, or any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program; if not, write to the Free Software
+ *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ *  $Revision$
+ */
 package ext.scrollablepopupmenu;
 
 import java.awt.BorderLayout;
@@ -24,23 +44,33 @@ import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.basic.BasicSeparatorUI;
 
 /**
- * This class implements a scrollable Popup Menu
+ * This class implements a scrollable Popup Menu.
  * 
  * @author balajihe from
- *         http://www.beginner-java-tutorial.com/scrollable-jpopupmenu.html
- * 
+ * http://www.beginner-java-tutorial.com/scrollable-jpopupmenu.html
  */
 public class XJPopupMenu extends JPopupMenu implements ActionListener {
+  
+  /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1;
 
+  /** DOCUMENT_ME. */
   private final JPanel panelMenus = new JPanel();
 
+  /** DOCUMENT_ME. */
   private JScrollPane scroll = null;
 
+  /** DOCUMENT_ME. */
   private JFrame jframe = null;
 
+  /** The Constant EMPTY_IMAGE_ICON.  DOCUMENT_ME */
   public static final Icon EMPTY_IMAGE_ICON = new ImageIcon("menu_spacer.gif");
 
+  /**
+   * Instantiates a new xJ popup menu.
+   * 
+   * @param jframe DOCUMENT_ME
+   */
   public XJPopupMenu(JFrame jframe) {
     super();
     this.jframe = jframe;
@@ -52,6 +82,10 @@ public class XJPopupMenu extends JPopupMenu implements ActionListener {
 
   }
 
+  /**
+   * Inits the.
+   * DOCUMENT_ME
+   */
   private void init() {
     super.removeAll();
     scroll = new JScrollPane();
@@ -68,6 +102,9 @@ public class XJPopupMenu extends JPopupMenu implements ActionListener {
     // super.add(scroll);
   }
 
+  /* (non-Javadoc)
+   * @see javax.swing.JPopupMenu#show(java.awt.Component, int, int)
+   */
   @Override
   public void show(Component invoker, int x, int y) {
     init();
@@ -98,12 +135,22 @@ public class XJPopupMenu extends JPopupMenu implements ActionListener {
     this.setVisible(true);
   }
 
+  /**
+   * Hidemenu.
+   * DOCUMENT_ME
+   */
   public void hidemenu() {
     if (this.isVisible()) {
       this.setVisible(false);
     }
   }
 
+  /**
+   * Adds the.
+   * DOCUMENT_ME
+   * 
+   * @param menuItem DOCUMENT_ME
+   */
   public void add(AbstractButton menuItem) {
     // menuItem.setMargin(new Insets(0, 20, 0 , 0));
     if (menuItem == null) {
@@ -117,39 +164,73 @@ public class XJPopupMenu extends JPopupMenu implements ActionListener {
     }
   }
 
+  /* (non-Javadoc)
+   * @see javax.swing.JPopupMenu#addSeparator()
+   */
   @Override
   public void addSeparator() {
     panelMenus.add(new XSeperator());
   }
 
+  /* (non-Javadoc)
+   * @see java.awt.Container#removeAll()
+   */
   @Override
   public void removeAll() {
     panelMenus.removeAll();
   }
 
+  /* (non-Javadoc)
+   * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+   */
   public void actionPerformed(ActionEvent e) {
     this.hidemenu();
   }
 
+  /* (non-Javadoc)
+   * @see java.awt.Container#getComponents()
+   */
   @Override
   public Component[] getComponents() {
     return panelMenus.getComponents();
   }
 
+  /**
+   * DOCUMENT_ME.
+   */
   private static class XSeperator extends JSeparator {
+    
+    /** Generated serialVersionUID. */
     private static final long serialVersionUID = -6249719411021239596L;
 
+    /**
+     * Instantiates a new x seperator.
+     */
     XSeperator() {
       ComponentUI ui = XBasicSeparatorUI.createUI(this);
       XSeperator.this.setUI(ui);
     }
 
+    /**
+     * DOCUMENT_ME.
+     */
     private static class XBasicSeparatorUI extends BasicSeparatorUI {
 
+      /**
+       * Creates the ui.
+       * DOCUMENT_ME
+       * 
+       * @param c DOCUMENT_ME
+       * 
+       * @return the component ui
+       */
       public static ComponentUI createUI(JComponent c) {
         return new XBasicSeparatorUI();
       }
 
+      /* (non-Javadoc)
+       * @see javax.swing.plaf.basic.BasicSeparatorUI#paint(java.awt.Graphics, javax.swing.JComponent)
+       */
       @Override
       public void paint(Graphics g, JComponent c) {
         Dimension s = c.getSize();

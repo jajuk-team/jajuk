@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2007 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -72,55 +73,73 @@ import org.jajuk.util.log.Log;
  */
 public abstract class AbstractThumbnail extends JPanel implements ActionListener, Transferable {
 
+  /** Generated serialVersionUID. */
   private static final long serialVersionUID = -6396225563540281695L;
 
-  /** Size */
+  /** Size. */
   int size;
 
+  /** DOCUMENT_ME. */
   protected JLabel jlIcon;
 
+  /** DOCUMENT_ME. */
   private static long lDateLastMove;
 
+  /** DOCUMENT_ME. */
   private static Point lastPosition;
 
+  /** DOCUMENT_ME. */
   JPopupMenu jmenu;
 
+  /** DOCUMENT_ME. */
   JMenuItem jmiPlay;
 
+  /** DOCUMENT_ME. */
   JMenuItem jmiPush;
 
+  /** DOCUMENT_ME. */
   JMenuItem jmiFrontPush;
 
+  /** DOCUMENT_ME. */
   JMenuItem jmiDelete;
 
+  /** DOCUMENT_ME. */
   JMenuItem jmiPlayShuffle;
 
+  /** DOCUMENT_ME. */
   JMenuItem jmiPlayRepeat;
 
+  /** DOCUMENT_ME. */
   JMenuItem jmiGetCovers;
 
+  /** DOCUMENT_ME. */
   JMenuItem jmiShowPopup;
 
+  /** DOCUMENT_ME. */
   JMenuItem jmiCDDBWizard;
 
+  /** DOCUMENT_ME. */
   JMenuItem jmiProperties;
 
+  /** DOCUMENT_ME. */
   JMenuItem jmiOpenLastFMSite;
 
-  /** Dragging flag used to disable simple click behavior */
+  /** Dragging flag used to disable simple click behavior. */
   private static boolean bDragging = false;
 
-  /** Current details dialog */
+  /** Current details dialog. */
   private static ThumbnailPopup details;
 
+  /** DOCUMENT_ME. */
   private static AbstractThumbnail last;
 
+  /** DOCUMENT_ME. */
   private static AbstractThumbnail mouseOverItem = null;
 
-  /** Whether this thumb is used in artist view * */
+  /** Whether this thumb is used in artist view *. */
   private boolean artistView;
 
-  /** Associated file */
+  /** Associated file. */
   File fCover;
 
   /** Timer used to launch popup */
@@ -157,26 +176,36 @@ public abstract class AbstractThumbnail extends JPanel implements ActionListener
   }
 
   /**
-   * Constructor
+   * Constructor.
    * 
    * @param size :
-   *          size of the thumbnail
+   * size of the thumbnail
    */
   public AbstractThumbnail(int size) {
     this.size = size;
     setSelected(false);
   }
 
+  /**
+   * Checks if is artist view.
+   * 
+   * @return true, if is artist view
+   */
   protected boolean isArtistView() {
     return this.artistView;
   }
 
+  /**
+   * Sets the artist view.
+   * 
+   * @param artistBioThumb the new artist view
+   */
   public void setArtistView(boolean artistBioThumb) {
     this.artistView = artistBioThumb;
   }
 
   /**
-   * display a popup over the catalog item
+   * display a popup over the catalog item.
    */
   public void displayPopup() {
     // close popup if any visible
@@ -198,13 +227,21 @@ public abstract class AbstractThumbnail extends JPanel implements ActionListener
     }
   }
 
+  /**
+   * Populate.
+   * DOCUMENT_ME
+   */
   public abstract void populate();
 
-  /** Return HTML text to display in the popup */
+  /**
+   * Return HTML text to display in the popup.
+   * 
+   * @return the description
+   */
   public abstract String getDescription();
 
   /**
-   * Performs common UI operations for any kind of thumb
+   * Performs common UI operations for any kind of thumb.
    */
   void postPopulate() {
     // Album menu
@@ -339,8 +376,9 @@ public abstract class AbstractThumbnail extends JPanel implements ActionListener
   }
 
   /**
+   * Sets the selected.
    * 
-   * @param b
+   * @param b DOCUMENT_ME
    */
   public final void setSelected(boolean b) {
     requestFocusInWindow();
@@ -354,6 +392,10 @@ public abstract class AbstractThumbnail extends JPanel implements ActionListener
     }
   }
 
+  /**
+   * Launch.
+   * DOCUMENT_ME
+   */
   public abstract void launch();
 
   /**
@@ -425,6 +467,11 @@ public abstract class AbstractThumbnail extends JPanel implements ActionListener
     return false;
   }
 
+  /**
+   * Gets the icon.
+   * 
+   * @return the icon
+   */
   public JLabel getIcon() {
     return this.jlIcon;
   }

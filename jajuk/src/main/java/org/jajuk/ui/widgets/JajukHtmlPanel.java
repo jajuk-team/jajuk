@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2007 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -54,22 +55,27 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 /**
- * Cobra browser HTML panel
+ * Cobra browser HTML panel.
  */
 public class JajukHtmlPanel extends HtmlPanel {
 
+  /** The Constant COLON.  DOCUMENT_ME */
   private static final String COLON = " : ";
 
+  /** The Constant URL_COLON.  DOCUMENT_ME */
   private static final String URL_COLON = "URL: ";
 
+  /** Generated serialVersionUID. */
   private static final long serialVersionUID = -4033441908072591661L;
 
+  /** DOCUMENT_ME. */
   private final SimpleHtmlRendererContext rcontext;
 
+  /** DOCUMENT_ME. */
   private final DocumentBuilderImpl dbi;
 
   /**
-   * A HTML renderer based on Cobra
+   * A HTML renderer based on Cobra.
    */
   public JajukHtmlPanel() {
     super();
@@ -81,10 +87,12 @@ public class JajukHtmlPanel extends HtmlPanel {
   }
 
   /**
-   * Display a wikipedia url
+   * Display a wikipedia url.
    * 
-   * @throws SAXException
-   */
+   * @param url DOCUMENT_ME
+   * @param lang DOCUMENT_ME
+   * 
+   * @throws SAXException    */
   public void setURL(final URL url, final String lang) {
 
     SwingWorker<Void, Void> sw = new SwingWorker<Void, Void>() {
@@ -171,11 +179,10 @@ public class JajukHtmlPanel extends HtmlPanel {
   }
 
   /**
-   * Display a "nothing found" page
+   * Display a "nothing found" page.
    * 
-   * @throws SAXException
-   * 
-   * @throws Exception
+   * @throws SAXException the SAX exception
+   * @throws Exception    * @throws IOException Signals that an I/O exception has occurred.
    */
   public void setUnknown() throws IOException, SAXException {
     File page = new File(SessionService.getConfFileByPath(Const.FILE_CACHE).getAbsolutePath() + '/'
@@ -185,6 +192,14 @@ public class JajukHtmlPanel extends HtmlPanel {
     showPage(sPage, page);
   }
 
+  /**
+   * Sets the loading.
+   * 
+   * @param url the new loading
+   * 
+   * @throws IOException Signals that an I/O exception has occurred.
+   * @throws SAXException the SAX exception
+   */
   private void setLoading(final URL url) throws IOException, SAXException {
     File page = new File(SessionService.getConfFileByPath(Const.FILE_CACHE).getAbsolutePath() + '/'
         + "loading.html");
@@ -193,6 +208,14 @@ public class JajukHtmlPanel extends HtmlPanel {
     showPage(sPage, page);
   }
 
+  /**
+   * Sets the failed to load.
+   * 
+   * @param msg the new failed to load
+   * 
+   * @throws IOException Signals that an I/O exception has occurred.
+   * @throws SAXException the SAX exception
+   */
   private void setFailedToLoad(String msg) throws IOException, SAXException {
     File page = new File(SessionService.getConfFileByPath(Const.FILE_CACHE).getAbsolutePath() + '/'
         + "failed.html");
@@ -202,12 +225,13 @@ public class JajukHtmlPanel extends HtmlPanel {
   }
 
   /**
-   * Make the internal operations
+   * Make the internal operations.
    * 
-   * @param sPage
-   * @param page
-   * @throws IOException
-   * @throws SAXException
+   * @param sPage DOCUMENT_ME
+   * @param page DOCUMENT_ME
+   * 
+   * @throws IOException Signals that an I/O exception has occurred.
+   * @throws SAXException the SAX exception
    */
   private void showPage(String sPage, File page) throws IOException, SAXException {
     // Write the page itself
@@ -238,6 +262,10 @@ public class JajukHtmlPanel extends HtmlPanel {
     }
   }
 
+  /**
+   * Back.
+   * DOCUMENT_ME
+   */
   public void back() {
     rcontext.back();
   }

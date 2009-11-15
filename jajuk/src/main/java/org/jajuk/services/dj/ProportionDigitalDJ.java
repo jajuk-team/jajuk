@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2004 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -38,11 +39,13 @@ import org.jajuk.util.UtilSystem;
  */
 public class ProportionDigitalDJ extends DigitalDJ {
 
-  /** Set of proportions */
+  /** Set of proportions. */
   private List<Proportion> proportions;
 
   /**
-   * @param sID
+   * The Constructor.
+   * 
+   * @param sID DOCUMENT_ME
    */
   public ProportionDigitalDJ(String sID) {
     super(sID);
@@ -66,6 +69,7 @@ public class ProportionDigitalDJ extends DigitalDJ {
   }
 
   /**
+   * Gets the sequence.
    * 
    * @return a single loop sequence
    */
@@ -128,6 +132,8 @@ public class ProportionDigitalDJ extends DigitalDJ {
   }
 
   /**
+   * Gets the proportions.
+   * 
    * @return Proportions
    */
   public List<Proportion> getProportions() {
@@ -135,7 +141,9 @@ public class ProportionDigitalDJ extends DigitalDJ {
   }
 
   /**
-   * (non-Javadoc)
+   * (non-Javadoc).
+   * 
+   * @return the string
    * 
    * @see dj.DigitalDJ#toXML()
    */
@@ -159,6 +167,11 @@ public class ProportionDigitalDJ extends DigitalDJ {
     return sb.toString();
   }
 
+  /**
+   * Sets the proportions.
+   * 
+   * @param proportions the new proportions
+   */
   public void setProportions(List<Proportion> proportions) {
     this.proportions = proportions;
   }

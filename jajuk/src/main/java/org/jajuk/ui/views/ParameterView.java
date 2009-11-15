@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2005 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $$Revision: 3010 $$
+ *  $Revision$
  */
 
 package org.jajuk.ui.views;
@@ -112,228 +113,334 @@ import org.jvnet.substance.skin.SkinInfo;
 public class ParameterView extends ViewAdapter implements ActionListener, ItemListener,
     ChangeListener {
 
+  /** The Constant WRAP_GROW.  DOCUMENT_ME */
   private static final String WRAP_GROW = "wrap,grow";
 
+  /** The Constant GROW_WRAP.  DOCUMENT_ME */
   private static final String GROW_WRAP = "grow,wrap";
 
+  /** The Constant WRAP.  DOCUMENT_ME */
   private static final String WRAP = "wrap";
 
+  /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
+  /** The Constant NOTIFICATOR_PREFIX.  DOCUMENT_ME */
   private static final String NOTIFICATOR_PREFIX = "Notificator.";
 
+  /** DOCUMENT_ME. */
   private JTabbedPane jtpMain;
 
+  /** DOCUMENT_ME. */
   private JTextField jtfHistory;
 
+  /** DOCUMENT_ME. */
   private JButton jbClearHistory;
 
+  /** DOCUMENT_ME. */
   private JButton jbResetRatings;
 
+  /** DOCUMENT_ME. */
   private JButton jbResetPreferences;
 
+  /** DOCUMENT_ME. */
   private ButtonGroup bgStart;
 
+  /** DOCUMENT_ME. */
   private JRadioButton jrbNothing;
 
+  /** DOCUMENT_ME. */
   private JRadioButton jrbLast;
 
+  /** DOCUMENT_ME. */
   private JRadioButton jrbLastKeepPos;
 
+  /** DOCUMENT_ME. */
   private JRadioButton jrbShuffle;
 
+  /** DOCUMENT_ME. */
   private JRadioButton jrbBestof;
 
+  /** DOCUMENT_ME. */
   private JRadioButton jrbNovelties;
 
+  /** DOCUMENT_ME. */
   private JRadioButton jrbFile;
 
+  /** DOCUMENT_ME. */
   private SearchBox sbSearch;
 
+  /** DOCUMENT_ME. */
   private JPanel jpConfirmations;
 
+  /** DOCUMENT_ME. */
   private JCheckBox jcbBeforeDelete;
 
+  /** DOCUMENT_ME. */
   private JCheckBox jcbBeforeExit;
 
+  /** DOCUMENT_ME. */
   private JCheckBox jcbBeforeRemoveDevice;
 
+  /** DOCUMENT_ME. */
   private JCheckBox jcbBeforeDeleteCover;
 
+  /** DOCUMENT_ME. */
   private JCheckBox jcbBeforeClearingHistory;
 
+  /** DOCUMENT_ME. */
   private JCheckBox jcbBeforeResetingRatings;
 
+  /** DOCUMENT_ME. */
   private JCheckBox jcbBeforeRefactorFiles;
 
+  /** DOCUMENT_ME. */
   private JPanel jpOptions;
 
+  /** DOCUMENT_ME. */
   private JCheckBox jcbDisplayUnmounted;
 
+  /** DOCUMENT_ME. */
   private JCheckBox jcbSyncTableTree;
 
+  /** DOCUMENT_ME. */
   private JCheckBox jcbAudioScrobbler;
 
+  /** DOCUMENT_ME. */
   private JLabel jlASUser;
 
+  /** DOCUMENT_ME. */
   private JTextField jtfASUser;
 
+  /** DOCUMENT_ME. */
   private JLabel jlASPassword;
 
+  /** DOCUMENT_ME. */
   private JPasswordField jpfASPassword;
 
+  /** DOCUMENT_ME. */
   private SteppedComboBox scbLanguage;
 
+  /** DOCUMENT_ME. */
   private JLabel jlFrameTitle;
 
+  /** DOCUMENT_ME. */
   private JTextField jtfFrameTitle;
 
+  /** DOCUMENT_ME. */
   private JLabel jlLAF;
 
+  /** DOCUMENT_ME. */
   private SteppedComboBox scbLAF;
 
+  /** DOCUMENT_ME. */
   private SteppedComboBox scbLogLevel;
 
+  /** DOCUMENT_ME. */
   private JSlider introPosition;
 
+  /** DOCUMENT_ME. */
   private JSlider introLength;
 
+  /** DOCUMENT_ME. */
   private JTextField jtfBestofSize;
 
+  /** DOCUMENT_ME. */
   private JTextField jtfNoveltiesAge;
 
+  /** DOCUMENT_ME. */
   private JTextField jtfVisiblePlanned;
 
+  /** DOCUMENT_ME. */
   private JSlider crossFadeDuration;
 
+  /** DOCUMENT_ME. */
   private JCheckBox jcbDefaultActionClick;
 
+  /** DOCUMENT_ME. */
   private JCheckBox jcbDefaultActionDrop;
 
+  /** DOCUMENT_ME. */
   private JLabel jlNotificationType;
 
+  /** DOCUMENT_ME. */
   private JComboBox jcbNotificationType;
 
+  /** DOCUMENT_ME. */
   private JCheckBox jcbHotkeys;
 
+  /** DOCUMENT_ME. */
   private JPanel jpTags;
 
+  /** DOCUMENT_ME. */
   private JCheckBox jcbUseParentDir;
 
+  /** DOCUMENT_ME. */
   private JFormattedTextField jtfRefactorPattern;
 
+  /** DOCUMENT_ME. */
   private JTextField jtfAnimationPattern;
 
+  /** DOCUMENT_ME. */
   private JPanel jpAdvanced;
 
+  /** DOCUMENT_ME. */
   private JCheckBox jcbBackup;
 
+  /** DOCUMENT_ME. */
   private JSlider backupSize;
 
+  /** DOCUMENT_ME. */
   private JComboBox jcbCollectionEncoding;
 
+  /** DOCUMENT_ME. */
   private JCheckBox jcbRegexp;
 
+  /** DOCUMENT_ME. */
   private JPanel jpNetwork;
 
+  /** DOCUMENT_ME. */
   private ButtonGroup bgProxy;
 
+  /** DOCUMENT_ME. */
   private JCheckBox jcbNoneInternetAccess;
 
+  /** DOCUMENT_ME. */
   private JRadioButton jcbProxyNone;
 
+  /** DOCUMENT_ME. */
   private JRadioButton jcbProxyHttp;
 
+  /** DOCUMENT_ME. */
   private JRadioButton jcbProxySocks;
 
+  /** DOCUMENT_ME. */
   private JLabel jlProxyHostname;
 
+  /** DOCUMENT_ME. */
   private JTextField jtfProxyHostname;
 
+  /** DOCUMENT_ME. */
   private JLabel jlProxyPort;
 
+  /** DOCUMENT_ME. */
   private JTextField jtfProxyPort;
 
+  /** DOCUMENT_ME. */
   private JLabel jlProxyLogin;
 
+  /** DOCUMENT_ME. */
   private JTextField jtfProxyLogin;
 
+  /** DOCUMENT_ME. */
   private JLabel jlProxyPwd;
 
+  /** DOCUMENT_ME. */
   private JPasswordField jtfProxyPwd;
 
+  /** DOCUMENT_ME. */
   private JLabel jlConnectionTO;
 
+  /** DOCUMENT_ME. */
   private JSlider connectionTO;
 
+  /** DOCUMENT_ME. */
   private JPanel jpCovers;
 
+  /** DOCUMENT_ME. */
   private JCheckBox jcbAutoCover;
 
+  /** DOCUMENT_ME. */
   private JCheckBox jcbShuffleCover;
 
+  /** DOCUMENT_ME. */
   private JLabel jlCoverSize;
 
+  /** DOCUMENT_ME. */
   private JComboBox jcbCoverSize;
 
+  /** DOCUMENT_ME. */
   private JTextField jtfMPlayerArgs;
 
+  /** DOCUMENT_ME. */
   private JTextField jtfEnvVariables;
 
+  /** DOCUMENT_ME. */
   private JTextField jtfMPlayerPath;
 
+  /** DOCUMENT_ME. */
   private PathSelector psJajukWorkspace;
 
+  /** DOCUMENT_ME. */
   private JLabel jlCatalogPages;
 
+  /** DOCUMENT_ME. */
   private JSlider jsCatalogPages;
 
+  /** DOCUMENT_ME. */
   private JButton jbCatalogRefresh;
 
+  /** DOCUMENT_ME. */
   private JCheckBox jcbShowPopups;
 
+  /** DOCUMENT_ME. */
   private JCheckBox jcbShowSystray;
 
+  /** DOCUMENT_ME. */
   private JPanel jpUI;
 
+  /** DOCUMENT_ME. */
   private JLabel jlFonts;
 
+  /** DOCUMENT_ME. */
   private JSlider jsFonts;
 
+  /** DOCUMENT_ME. */
   private JPanel jpLastFM;
 
+  /** DOCUMENT_ME. */
   private JCheckBox jcbEnableLastFMInformation;
 
+  /** DOCUMENT_ME. */
   private JButton jbOK;
 
+  /** DOCUMENT_ME. */
   private JButton jbDefault;
 
+  /** DOCUMENT_ME. */
   private JCheckBox jcbCheckUpdates;
 
+  /** DOCUMENT_ME. */
   private JCheckBox jcbForceFileDate;
 
+  /** DOCUMENT_ME. */
   private JSlider jsPerspectiveSize;
 
+  /** DOCUMENT_ME. */
   private JCheckBox jcbUseVolnorm;
 
+  /** DOCUMENT_ME. */
   private boolean someOptionsAppliedAtNextStartup = false;
 
+  /** DOCUMENT_ME. */
   private JTextField jtfExplorerPath;
 
-  /**
-   * whether the "theme will be token into account" message has been already
-   * displayed
-   */
+  /** whether the "theme will be token into account" message has been already displayed. */
   boolean bLAFMessage = false;
 
+  /** DOCUMENT_ME. */
   private JLabel jlDefaultCoverSearchPattern;
 
+  /** DOCUMENT_ME. */
   private JTextField jtfDefaultCoverSearchPattern;
 
+  /** DOCUMENT_ME. */
   private JCheckBox jcbSaveExplorerFriendly;
 
+  /** DOCUMENT_ME. */
   private JCheckBox jcbDropPlayedTracksFromQueue;
 
+  /** DOCUMENT_ME. */
   private JCheckBox jcb3dCover;
 
   /**
@@ -484,6 +591,10 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
     }
   }
 
+  /**
+   * Apply parameters.
+   * DOCUMENT_ME
+   */
   private void applyParameters() {
     // **Read all parameters**
     // Options
@@ -774,6 +885,9 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
     return Messages.getString("ParameterView.87");
   }
 
+  /* (non-Javadoc)
+   * @see org.jajuk.events.Observer#getRegistrationKeys()
+   */
   public Set<JajukEvents> getRegistrationKeys() {
     final Set<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
     eventSubjectSet.add(JajukEvents.PARAMETERS_CHANGE);
@@ -1598,7 +1712,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
   }
 
   /**
-   * Set widgets to specified value in options
+   * Set widgets to specified value in options.
    */
   private void updateSelection() {
     jtfHistory.setText(Conf.getString(Const.CONF_HISTORY));

@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision: 2523 $
+ *  $Revision$
  */
 package org.jajuk.services.players;
 
@@ -35,14 +36,15 @@ import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 
 /**
- * Jajuk web radio player implementation based on Mplayer
+ * Jajuk web radio player implementation based on Mplayer.
  */
 public class WebRadioPlayerImpl extends AbstractMPlayerImpl {
 
   /**
-   * Reader : read information from mplayer like position
+   * Reader : read information from mplayer like position.
    */
   private class ReaderThread extends Thread {
+    
     /**
      * Implemented to set a useful thread name.
      */
@@ -50,6 +52,9 @@ public class WebRadioPlayerImpl extends AbstractMPlayerImpl {
       super("WebRadio Reader Thread");
     }
 
+    /* (non-Javadoc)
+     * @see java.lang.Thread#run()
+     */
     @Override
     public void run() {
       try {
@@ -77,13 +82,16 @@ public class WebRadioPlayerImpl extends AbstractMPlayerImpl {
   }
 
   /**
-   * (non-Javadoc)
+   * (non-Javadoc).
    * 
-   * @throws IOException
-   * @throws JajukException
+   * @param radio DOCUMENT_ME
+   * @param fVolume DOCUMENT_ME
+   * 
+   * @throws IOException Signals that an I/O exception has occurred.
+   * @throws JajukException the jajuk exception
    * 
    * @see org.jajuk.players.IPlayerImpl#play(org.jajuk.base.File, float, long,
-   *      float)
+   * float)
    */
   @Override
   public void play(WebRadio radio, float fVolume) throws IOException, JajukException {

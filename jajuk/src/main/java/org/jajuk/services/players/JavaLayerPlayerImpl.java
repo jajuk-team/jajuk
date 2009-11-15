@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -41,66 +42,59 @@ import org.jajuk.util.UtilSystem;
 import org.jajuk.util.log.Log;
 
 /**
- * Jajuk player implementation based on javazoom BasicPlayer
+ * Jajuk player implementation based on javazoom BasicPlayer.
  */
 public class JavaLayerPlayerImpl implements IPlayerImpl, Const, BasicPlayerListener {
 
-  /**
-   * 
-   */
+  /** The Constant AUDIO_LENGTH_BYTES.  DOCUMENT_ME */
   private static final String AUDIO_LENGTH_BYTES = "audio.length.bytes";
 
-  /** Current player */
+  /** Current player. */
   private BasicPlayer player;
 
-  /** Time elapsed in ms */
+  /** Time elapsed in ms. */
   private long lTime = 0;
 
-  /** Date of last elapsed time update */
+  /** Date of last elapsed time update. */
   private long lDateLastUpdate = System.currentTimeMillis();
 
-  /** current track info */
+  /** current track info. */
   private Map<String, Object> mPlayingData;
 
-  /** Current position in % */
+  /** Current position in %. */
   private float fPos;
 
-  /** Length to be played in secs */
+  /** Length to be played in secs. */
   private long length;
 
-  /** Stored Volume */
+  /** Stored Volume. */
   private float fVolume;
 
-  /** Current track estimated duration in ms */
+  /** Current track estimated duration in ms. */
   private long lDuration;
 
-  /** Cross fade duration in ms */
+  /** Cross fade duration in ms. */
   int iFadeDuration = 0;
 
-  /** Fading state */
+  /** Fading state. */
   boolean bFading = false;
 
-  /**
-   * Progress step in ms, do not set less than 300 or 400 to avoid using too
-   * much CPU
-   */
+  /** Progress step in ms, do not set less than 300 or 400 to avoid using too much CPU. */
   private static final int PROGRESS_STEP = 500;
 
-  /**
-   * Total play time is refreshed every TOTAL_PLAYTIME_UPDATE_INTERVAL times
-   */
+  /** Total play time is refreshed every TOTAL_PLAYTIME_UPDATE_INTERVAL times. */
   private static final int TOTAL_PLAYTIME_UPDATE_INTERVAL = 2;
 
-  /** Volume when starting fade */
+  /** Volume when starting fade. */
   private float fadingVolume;
 
-  /** current file */
+  /** current file. */
   private org.jajuk.base.File fCurrent;
 
-  /** Inc rating flag */
+  /** Inc rating flag. */
   private boolean bHasBeenRated = false;
 
-  /** Used to compute total played time */
+  /** Used to compute total played time. */
   private int comp = 0;
 
   /*
@@ -170,6 +164,8 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, Const, BasicPlayerListe
   }
 
   /**
+   * Gets the current position.
+   * 
    * @return current position as a float ex: 0.2f
    */
   public float getCurrentPosition() {
@@ -177,6 +173,8 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, Const, BasicPlayerListe
   }
 
   /**
+   * Gets the current volume.
+   * 
    * @return current volume as a float ex: 0.2f
    */
   public float getCurrentVolume() {
@@ -184,6 +182,8 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, Const, BasicPlayerListe
   }
 
   /**
+   * Gets the elapsed time.
+   * 
    * @return Returns the lTime in ms
    */
   public long getElapsedTime() {
@@ -199,6 +199,9 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, Const, BasicPlayerListe
     player.pause();
   }
 
+  /* (non-Javadoc)
+   * @see org.jajuk.services.players.IPlayerImpl#resume()
+   */
   public void resume() throws Exception {
     player.resume();
   }
@@ -249,6 +252,8 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, Const, BasicPlayerListe
   }
 
   /**
+   * Gets the state.
+   * 
    * @return player state, -1 if player is null.
    */
   public int getState() {
@@ -262,7 +267,10 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, Const, BasicPlayerListe
   }
 
   /**
-   * Opened listener implementation
+   * Opened listener implementation.
+   * 
+   * @param arg0 DOCUMENT_ME
+   * @param arg1 DOCUMENT_ME
    */
   @SuppressWarnings("unchecked")
   public void opened(Object arg0, Map arg1) {
@@ -272,6 +280,11 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, Const, BasicPlayerListe
 
   /**
    * Progress listener implementation. Called several times by sec
+   * 
+   * @param iBytesread DOCUMENT_ME
+   * @param lMicroseconds DOCUMENT_ME
+   * @param bPcmdata DOCUMENT_ME
+   * @param mProperties DOCUMENT_ME
    */
   @SuppressWarnings("unchecked")
   public void progress(int iBytesread, long lMicroseconds, byte[] bPcmdata, Map mProperties) {
@@ -358,7 +371,9 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, Const, BasicPlayerListe
   }
 
   /**
-   * State updated implementation
+   * State updated implementation.
+   * 
+   * @param bpe DOCUMENT_ME
    */
   public void stateUpdated(BasicPlayerEvent bpe) {
     if (bpe.getCode() != 10) { // do not trace volume changes
@@ -383,7 +398,9 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, Const, BasicPlayerListe
   }
 
   /**
-   * Set controler implementation
+   * Set controler implementation.
+   * 
+   * @param arg0 DOCUMENT_ME
    */
   public void setController(BasicController arg0) {
     // nothing to do here
@@ -398,6 +415,12 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, Const, BasicPlayerListe
     return lDuration;
   }
 
+  /**
+   * Scrobble.
+   * DOCUMENT_ME
+   * 
+   * @return the int
+   */
   public int scrobble() {
     return 1;
   }

@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -64,81 +65,86 @@ import org.xml.sax.Attributes;
  * <p>
  * Some properties of a device are immuatable : name, url and type *
  * <p>
- * Physical item
+ * Physical item.
  */
 public class Device extends PhysicalItem implements Comparable<Device> {
 
+  /** The Constant OPTION_REFRESH_DEEP.  DOCUMENT_ME */
   protected static final int OPTION_REFRESH_DEEP = 1;
 
+  /** The Constant OPTION_REFRESH_CANCEL.  DOCUMENT_ME */
   protected static final int OPTION_REFRESH_CANCEL = 2;
 
   // Device type constants
   // Note: these need to correspond with the static array in @see
   // org.jajuk.base.DeviceManager !!
+  /** The Constant TYPE_DIRECTORY.  DOCUMENT_ME */
   public static final int TYPE_DIRECTORY = 0;
 
+  /** The Constant TYPE_CD.  DOCUMENT_ME */
   public static final int TYPE_CD = 1;
 
+  /** The Constant TYPE_NETWORK_DRIVE.  DOCUMENT_ME */
   public static final int TYPE_NETWORK_DRIVE = 2;
 
+  /** The Constant TYPE_EXT_DD.  DOCUMENT_ME */
   public static final int TYPE_EXT_DD = 3;
 
+  /** The Constant TYPE_PLAYER.  DOCUMENT_ME */
   public static final int TYPE_PLAYER = 4;
 
-  /** Device URL (performances) */
+  /** Device URL (performances). */
   private String sUrl;
 
-  /** IO file for optimizations* */
+  /** IO file for optimizations*. */
   private java.io.File fio;
 
-  /** Mounted device flag */
+  /** Mounted device flag. */
   private boolean bMounted = false;
 
-  /** directories */
+  /** directories. */
   private final List<Directory> alDirectories = new ArrayList<Directory>(20);
 
-  /** Already refreshing flag */
+  /** Already refreshing flag. */
   private volatile boolean bAlreadyRefreshing = false;
 
-  /** Already synchronizing flag */
+  /** Already synchronizing flag. */
   private volatile boolean bAlreadySynchronizing = false;
 
-  /** Volume of created files during synchronization */
+  /** Volume of created files during synchronization. */
   long lVolume = 0;
 
-  /** date last refresh */
+  /** date last refresh. */
   long lDateLastRefresh;
 
-  /** Progress reporter * */
+  /** Progress reporter *. */
   private RefreshReporter reporter;
 
-  /** Refresh deepness choice * */
+  /** Refresh deepness choice *. */
   private int choice = Device.OPTION_REFRESH_DEEP;
 
   /**
-   * Device constructor
+   * Device constructor.
    * 
-   * @param sId
-   * @param sName
-   * @param iDeviceType
-   * @param sUrl
+   * @param sId DOCUMENT_ME
+   * @param sName DOCUMENT_ME
    */
   public Device(final String sId, final String sName) {
     super(sId, sName);
   }
 
   /**
-   * @param directory
+   * Adds the directory.
+   * 
+   * @param directory DOCUMENT_ME
    */
   public void addDirectory(final Directory directory) {
     alDirectories.add(directory);
   }
 
   /**
-   * Scan directories to cleanup removed files and playlists
+   * Scan directories to cleanup removed files and playlists.
    * 
-   * @param device
-   *          device to cleanup
    * @return whether some items have been removed
    */
   public boolean cleanRemovedFiles() {
@@ -166,7 +172,7 @@ public class Device extends PhysicalItem implements Comparable<Device> {
   }
 
   /**
-   * Walk through all Playlists and remove the ones for the current device
+   * Walk through all Playlists and remove the ones for the current device.
    * 
    * @return true if there was any playlist removed
    */
@@ -229,10 +235,10 @@ public class Device extends PhysicalItem implements Comparable<Device> {
   }
 
   /**
-   * Alphabetical comparator used to display ordered lists of devices
+   * Alphabetical comparator used to display ordered lists of devices.
    * 
-   * @param other
-   *          device to be compared
+   * @param otherDevice DOCUMENT_ME
+   * 
    * @return comparison result
    */
   public int compareTo(final Device otherDevice) {
@@ -251,12 +257,19 @@ public class Device extends PhysicalItem implements Comparable<Device> {
     }
   }
 
+  /**
+   * Gets the date last refresh.
+   * 
+   * @return the date last refresh
+   */
   public long getDateLastRefresh() {
     return lDateLastRefresh;
   }
 
   /**
-   * Get item description
+   * Get item description.
+   * 
+   * @return the desc
    */
   @Override
   public String getDesc() {
@@ -264,22 +277,25 @@ public class Device extends PhysicalItem implements Comparable<Device> {
   }
 
   /**
-   * @return
+   * Gets the device type s.
+   * 
+   * @return the device type s
    */
   public String getDeviceTypeS() {
     return DeviceManager.getInstance().getDeviceType(getType());
   }
 
   /**
-   * @return
+   * Gets the directories.
+   * 
+   * @return the directories
    */
   public List<Directory> getDirectories() {
     return alDirectories;
   }
 
   /**
-   * return ordered child files recursively
-   * 
+   * return ordered child files recursively.
    * 
    * @return child files recursively
    */
@@ -295,6 +311,8 @@ public class Device extends PhysicalItem implements Comparable<Device> {
   }
 
   /**
+   * Gets the fio.
+   * 
    * @return Returns the IO file reference to this directory.
    */
   public File getFio() {
@@ -346,13 +364,13 @@ public class Device extends PhysicalItem implements Comparable<Device> {
   }
 
   /**
-   * @param mountedIcon
-   *          The icon to return for a mounted device
-   * @param unmountedIcon
-   *          The icon to return for an unmounted device
+   * Sets the icon.
+   * 
+   * @param mountedIcon The icon to return for a mounted device
+   * @param unmountedIcon The icon to return for an unmounted device
    * 
    * @return Returns either of the two provided icons depending on the state of
-   *         the device
+   * the device
    */
   private ImageIcon setIcon(ImageIcon mountedIcon, ImageIcon unmountedIcon) {
     if (isMounted()) {
@@ -373,6 +391,7 @@ public class Device extends PhysicalItem implements Comparable<Device> {
   }
 
   /**
+   * Gets the root directory.
    * 
    * @return Associated root directory
    */
@@ -381,28 +400,34 @@ public class Device extends PhysicalItem implements Comparable<Device> {
   }
 
   /**
-   * @return
+   * Gets the type.
+   * 
+   * @return the type
    */
   public long getType() {
     return getLongValue(Const.XML_TYPE);
   }
 
   /**
-   * @return
+   * Gets the url.
+   * 
+   * @return the url
    */
   public String getUrl() {
     return sUrl;
   }
 
   /**
-   * @return
+   * Checks if is mounted.
+   * 
+   * @return true, if is mounted
    */
   public boolean isMounted() {
     return bMounted;
   }
 
   /**
-   * Return true if the device can be accessed right now
+   * Return true if the device can be accessed right now.
    * 
    * @return true the file can be accessed right now
    */
@@ -414,27 +439,28 @@ public class Device extends PhysicalItem implements Comparable<Device> {
   }
 
   /**
-   * Tells if a device is refreshing
+   * Tells if a device is refreshing.
+   * 
+   * @return true, if checks if is refreshing
    */
   public boolean isRefreshing() {
     return bAlreadyRefreshing;
   }
 
   /**
-   * Tells if a device is synchronizing
+   * Tells if a device is synchronizing.
+   * 
+   * @return true, if checks if is synchronizing
    */
   public boolean isSynchronizing() {
     return bAlreadySynchronizing;
   }
 
   /**
-   * Manual refresh
+   * Manual refresh.
    * 
-   * @param bAsk:
-   *          Should we ask user if a deep or fast scan is required?
-   *          default=deep
-   * @param bAfterMove:
-   *          is it a refreshing after a device move ?
+   * @param bAsk DOCUMENT_ME
+   * @param bAfterMove DOCUMENT_ME
    */
   private void manualRefresh(final boolean bAsk, final boolean bAfterMove) {
     int i = 0;
@@ -488,13 +514,14 @@ public class Device extends PhysicalItem implements Comparable<Device> {
   }
 
   /**
-   * Prepare manual refresh
+   * Prepare manual refresh.
    * 
-   * @param bAsk
+   * @param bAsk DOCUMENT_ME
+   * 
    * @return the user choice (deep or fast)
-   * @throws JajukException
-   *           if user canceled, device cannot be refreshed or device already
-   *           refreshing
+   * 
+   * @throws JajukException if user canceled, device cannot be refreshed or device already
+   * refreshing
    */
   public int prepareRefresh(final boolean bAsk) throws JajukException {
     if (bAsk) {
@@ -539,13 +566,13 @@ public class Device extends PhysicalItem implements Comparable<Device> {
   }
 
   /**
-   * Mount the device
+   * Mount the device.
    * 
-   * @param bManual
-   *          set whether mount is manual or auto
+   * @param bManual set whether mount is manual or auto
+   * 
    * @return 0 if operation succeed or a negative value otherwise
-   * @throws Exception
-   *           if device cannot be mounted
+   * 
+   * @throws Exception if device cannot be mounted
    */
   public int mount(final boolean bManual) throws Exception {
     if (bMounted) {
@@ -588,10 +615,10 @@ public class Device extends PhysicalItem implements Comparable<Device> {
 
   /**
    * Set all personal properties of an XML file for an item (doesn't overwrite
-   * existing properties for perfs)
+   * existing properties for perfs).
    * 
    * @param attributes :
-   *          list of attributes for this XML item
+   * list of attributes for this XML item
    */
   @Override
   public void populateProperties(final Attributes attributes) {
@@ -632,15 +659,12 @@ public class Device extends PhysicalItem implements Comparable<Device> {
   }
 
   /**
-   * Refresh : scan asynchronously the device to find tracks
+   * Refresh : scan asynchronously the device to find tracks.
    * 
    * @param bAsynchronous :
-   *          set asynchronous or synchronous mode
-   * @param bAsk:
-   *          should we ask user if he wants to perform a deep or fast scan?
-   *          default=deep
-   * @param bAfterMove:
-   *          is it a refreshing after a device move ?
+   * set asynchronous or synchronous mode
+   * @param bAsk DOCUMENT_ME
+   * @param bAfterMove DOCUMENT_ME
    */
   public void refresh(final boolean bAsynchronous, final boolean bAsk, final boolean bAfterMove) {
     if (bAsynchronous) {
@@ -659,10 +683,11 @@ public class Device extends PhysicalItem implements Comparable<Device> {
   }
 
   /**
-   * The refresh itself
+   * The refresh itself.
+   * 
+   * @param bDeepScan DOCUMENT_ME
    * 
    * @return true if some changes occurred in device
-   * 
    */
   public synchronized boolean refreshCommand(final boolean bDeepScan) {
     try {
@@ -734,6 +759,13 @@ public class Device extends PhysicalItem implements Comparable<Device> {
     }
   }
 
+  /**
+   * Scan recursively.
+   * DOCUMENT_ME
+   * 
+   * @param dir DOCUMENT_ME
+   * @param bDeepScan DOCUMENT_ME
+   */
   private void scanRecursively(final Directory dir, final boolean bDeepScan) {
     dir.scan(bDeepScan, reporter);
     if (reporter != null) {
@@ -754,8 +786,9 @@ public class Device extends PhysicalItem implements Comparable<Device> {
   }
 
   /**
-   * @param url
-   *          The sUrl to set.
+   * Sets the url.
+   * 
+   * @param url The sUrl to set.
    */
   public void setUrl(final String url) {
     sUrl = url;
@@ -776,11 +809,10 @@ public class Device extends PhysicalItem implements Comparable<Device> {
   }
 
   /**
-   * Synchroning asynchronously
+   * Synchroning asynchronously.
    * 
    * @param bAsynchronous :
-   *          set asynchronous or synchronous mode
-   * @return
+   * set asynchronous or synchronous mode
    */
   public void synchronize(final boolean bAsynchronous) {
     // Check a source device is defined
@@ -813,10 +845,7 @@ public class Device extends PhysicalItem implements Comparable<Device> {
   }
 
   /**
-   * Synchronize action itself
-   * 
-   * @param device :
-   *          device to synchronize
+   * Synchronize action itself.
    */
   public void synchronizeCommand() {
     try {
@@ -882,10 +911,11 @@ public class Device extends PhysicalItem implements Comparable<Device> {
   }
 
   /**
-   * Synchronize a device with another one (unidirectional)
+   * Synchronize a device with another one (unidirectional).
    * 
-   * @param device :
-   *          device to synchronize
+   * @param dSrc DOCUMENT_ME
+   * @param dest DOCUMENT_ME
+   * 
    * @return nb of created files
    */
   private int synchronizeUnidirectonal(final Device dSrc, final Device dest) {
@@ -989,7 +1019,7 @@ public class Device extends PhysicalItem implements Comparable<Device> {
   }
 
   /**
-   * Test device accessibility
+   * Test device accessibility.
    * 
    * @return true if the device is available
    */
@@ -1047,7 +1077,9 @@ public class Device extends PhysicalItem implements Comparable<Device> {
   }
 
   /**
-   * toString method
+   * toString method.
+   * 
+   * @return the string
    */
   @Override
   public String toString() {
@@ -1057,20 +1089,17 @@ public class Device extends PhysicalItem implements Comparable<Device> {
   }
 
   /**
-   * Unmount the device
-   * 
+   * Unmount the device.
    */
   public void unmount() {
     unmount(false, true);
   }
 
   /**
-   * Unmount the device with ejection
+   * Unmount the device with ejection.
    * 
-   * @param bEjection
-   *          set whether the device must be ejected
-   * @param bUIRefresh
-   *          set wheter the UI should be refreshed
+   * @param bEjection set whether the device must be ejected
+   * @param bUIRefresh set wheter the UI should be refreshed
    */
   public void unmount(final boolean bEjection, final boolean bUIRefresh) {
     // look to see if the device is already mounted

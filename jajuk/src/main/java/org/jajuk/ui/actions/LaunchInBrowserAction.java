@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2005 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $$Revision: 2403 $$
+ *  $Revision$
  */
 package org.jajuk.ui.actions;
 
@@ -33,13 +34,16 @@ import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 
 /**
- * 
  * Launch the URL from UtilFeatures.url in the default browser
  */
 public class LaunchInBrowserAction extends JajukAction {
 
+  /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
+  /**
+   * Instantiates a new launch in browser action.
+   */
   LaunchInBrowserAction() {
     // this action is available only under linux and windows for now
     super(Messages.getString("LaunchInBrowserAction.0"), IconLoader.getIcon(JajukIcons.LAUNCH),
@@ -47,6 +51,9 @@ public class LaunchInBrowserAction extends JajukAction {
     setShortDescription(Messages.getString("LaunchInBrowserAction.0"));
   }
 
+  /* (non-Javadoc)
+   * @see org.jajuk.ui.actions.JajukAction#perform(java.awt.event.ActionEvent)
+   */
   @Override
   public void perform(final ActionEvent evt) throws JajukException {
     new Thread("LaunchInBrowserAction") {

@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2005 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $$Revision$$
+ *  $Revision$
  */
 
 package org.jajuk.ui.views;
@@ -97,69 +98,90 @@ import org.jdesktop.swingx.table.TableColumnExt;
 
 /**
  * Abstract table view : common implementation for both files and tracks table
- * views
+ * views.
  */
 public abstract class AbstractTableView extends ViewAdapter implements ActionListener,
     ItemListener, TableModelListener, TwoStepsDisplayable {
 
+  /** Generated serialVersionUID. */
   private static final long serialVersionUID = -4418626517605128694L;
 
+  /** DOCUMENT_ME. */
   JajukTable jtable;
 
+  /** DOCUMENT_ME. */
   private JPanel jpControl;
 
+  /** DOCUMENT_ME. */
   JajukToggleButton jtbEditable;
 
+  /** DOCUMENT_ME. */
   private JLabel jlFilter;
 
+  /** DOCUMENT_ME. */
   private JComboBox jcbProperty;
 
+  /** DOCUMENT_ME. */
   private JLabel jlEquals;
 
+  /** DOCUMENT_ME. */
   private JTextField jtfValue;
 
-  /** Table model */
+  /** Table model. */
   JajukTableModel model;
 
-  /** Currently applied filter */
+  /** Currently applied filter. */
   private String sAppliedFilter = "";
 
-  /** Currently applied criteria */
+  /** Currently applied criteria. */
   private String sAppliedCriteria;
 
-  /** Do search panel need a search */
+  /** Do search panel need a search. */
   private boolean bNeedSearch = false;
 
-  /** Default time in ms before launching a search automatically */
+  /** Default time in ms before launching a search automatically. */
   private static final int WAIT_TIME = 300;
 
-  /** Date last key pressed */
+  /** Date last key pressed. */
   private long lDateTyped;
 
-  /** Editable table configuration name, must be overwritten by child classes */
+  /** Editable table configuration name, must be overwritten by child classes. */
   String editableConf;
 
-  /**
-   * Columns to show table configuration name, must be overwritten by child
-   * classes
-   */
+  /** Columns to show table configuration name, must be overwritten by child classes. */
   String columnsConf;
 
+  /** DOCUMENT_ME. */
   JMenuItem jmiPlay;
+  
+  /** DOCUMENT_ME. */
   JMenuItem jmiPush;
+  
+  /** DOCUMENT_ME. */
   JMenuItem jmiFrontPush;
+  
+  /** DOCUMENT_ME. */
   JMenuItem jmiDelete;
+  
+  /** DOCUMENT_ME. */
   JMenuItem jmiPlayRepeat;
+  
+  /** DOCUMENT_ME. */
   JMenuItem jmiPlayShuffle;
+  
+  /** DOCUMENT_ME. */
   JMenuItem jmiBookmark;
+  
+  /** DOCUMENT_ME. */
   JMenuItem jmiProperties;
+  
+  /** DOCUMENT_ME. */
   JMenuItem jmiFileCopyURL;
 
+  /** DOCUMENT_ME. */
   PreferencesJMenu pjmTracks;
 
-  /**
-   * Launches a thread used to perform dynamic filtering when user is typing
-   */
+  /** Launches a thread used to perform dynamic filtering when user is typing. */
   Thread filteringThread = new Thread("Dynamic user input filtering thread") {
     @Override
     public void run() {
@@ -180,6 +202,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
   };
 
   /**
+   * Gets the apply criteria.
    * 
    * @return Applied criteria
    */
@@ -195,9 +218,9 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
 
   /**
    * Code used in child class SwingWorker for long delay computations (used in
-   * initUI())
+   * initUI()).
    * 
-   * @return
+   * @return the object
    */
   public Object longCall() {
     model = populateTable();
@@ -206,9 +229,9 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
 
   /**
    * Code used in child class SwingWorker for display computations (used in
-   * initUI())
+   * initUI()).
    * 
-   * @return
+   * @param in DOCUMENT_ME
    */
   public void shortCall(Object in) {
     // Add generic menus
@@ -351,6 +374,9 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
     setKeystrokes();
   }
 
+  /* (non-Javadoc)
+   * @see org.jajuk.events.Observer#getRegistrationKeys()
+   */
   public Set<JajukEvents> getRegistrationKeys() {
     Set<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
     eventSubjectSet.add(JajukEvents.DEVICE_MOUNT);
@@ -369,7 +395,10 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
 
   /**
    * Apply a filter, to be implemented by files and tracks tables, alter the
-   * model
+   * model.
+   * 
+   * @param sPropertyName DOCUMENT_ME
+   * @param sPropertyValue DOCUMENT_ME
    */
   public void applyFilter(final String sPropertyName, final String sPropertyValue) {
     SwingWorker<Void, Void> sw = new SwingWorker<Void, Void>() {
@@ -502,7 +531,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
   }
 
   /**
-   * Add keystroke support on the tree
+   * Add keystroke support on the tree.
    */
   private void setKeystrokes() {
     jtable.putClientProperty(Const.DETAIL_SELECTION, jtable.getSelection());
@@ -520,9 +549,17 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
     actionMap.put("properties", action);
   }
 
-  /** Fill the table */
+  /**
+   * Fill the table.
+   * 
+   * @return the jajuk table model
+   */
   abstract JajukTableModel populateTable();
 
+  /**
+   * Sets the cell editors.
+   * DOCUMENT_ME
+   */
   private void setCellEditors() {
     for (TableColumn tc : ((DefaultTableColumnModelExt) jtable.getColumnModel()).getColumns(true)) {
       TableColumnExt col = (TableColumnExt) tc;
@@ -556,7 +593,9 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
   }
 
   /**
-   * Detect property change
+   * Detect property change.
+   * 
+   * @param ie DOCUMENT_ME
    */
   public void itemStateChanged(ItemEvent ie) {
     if (ie.getSource() == jcbProperty) {
@@ -614,8 +653,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
   }
 
   /**
-   * Table initialization after table display
-   * 
+   * Table initialization after table display.
    */
   abstract void initTable();
 

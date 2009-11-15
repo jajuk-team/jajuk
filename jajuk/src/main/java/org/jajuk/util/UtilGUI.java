@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2008 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision: 3132 $
+ *  $Revision$
  */
 package org.jajuk.util;
 
@@ -89,27 +90,34 @@ import org.jvnet.substance.skin.SkinInfo;
 import org.jvnet.substance.skin.SubstanceBusinessLookAndFeel;
 
 /**
- * Set of GUI convenient methods
+ * Set of GUI convenient methods.
  */
 public final class UtilGUI {
 
   /* different types of Cursors that are available */
+  /** The Constant WAIT_CURSOR.  DOCUMENT_ME */
   public static final Cursor WAIT_CURSOR = new Cursor(Cursor.WAIT_CURSOR);
+  
+  /** The Constant LINK_CURSOR.  DOCUMENT_ME */
   public static final Cursor LINK_CURSOR = new Cursor(Cursor.HAND_CURSOR);
+  
+  /** The Constant DEFAULT_CURSOR.  DOCUMENT_ME */
   public static final Cursor DEFAULT_CURSOR = new Cursor(Cursor.DEFAULT_CURSOR);
 
   // Current cursor that is displayed
+  /** DOCUMENT_ME. */
   private static Cursor currentCursor = DEFAULT_CURSOR;
 
-  /** Substance theme * */
+  /** Substance theme *. */
   private static String theme;
 
+  /** DOCUMENT_ME. */
   private static Highlighter defaultHighlighter;
 
-  /** Current active color scheme * */
+  /** Current active color scheme *. */
   private static SubstanceColorScheme colorScheme;
 
-  /** Set cursor thread, stored to avoid construction */
+  /** Set cursor thread, stored to avoid construction. */
   private static Runnable setCursorThread = new Runnable() {
     public void run() {
       Container container = null;
@@ -132,9 +140,9 @@ public final class UtilGUI {
   }
 
   /**
-   * Display a given image in a frame (for debuging purpose)
+   * Display a given image in a frame (for debuging purpose).
    * 
-   * @param ii
+   * @param ii DOCUMENT_ME
    */
   public static void displayImage(final ImageIcon ii) {
     final JFrame jf = new JFrame();
@@ -144,10 +152,10 @@ public final class UtilGUI {
   }
 
   /**
-   * Write down a memory image to a file
+   * Write down a memory image to a file.
    * 
-   * @param src
-   * @param dest
+   * @param src DOCUMENT_ME
+   * @param dest DOCUMENT_ME
    */
   public static void extractImage(final Image src, final File dest) {
     final BufferedImage bi = UtilGUI.toBufferedImage(src, !(UtilSystem.getExtension(dest)
@@ -161,6 +169,8 @@ public final class UtilGUI {
   }
   
   /**
+   * Gets the graphics device of main frame.
+   * 
    * @return the current display of the main frame
    */
   public static GraphicsDevice getGraphicsDeviceOfMainFrame() {
@@ -177,7 +187,10 @@ public final class UtilGUI {
   }
 
   /**
-   * @param jc
+   * Gets the centred panel.
+   * 
+   * @param jc DOCUMENT_ME
+   * 
    * @return an horizontaly centred panel
    */
   public static JPanel getCentredPanel(final JComponent jc) {
@@ -185,10 +198,13 @@ public final class UtilGUI {
   }
 
   /**
-   * @param jc
+   * Gets the centred panel.
+   * 
+   * @param jc DOCUMENT_ME
    * @param iOrientation :
-   *          vertical or horizontal orientation, use BoxLayout.X_AXIS or
-   *          BoxLayout.Y_AXIS
+   * vertical or horizontal orientation, use BoxLayout.X_AXIS or
+   * BoxLayout.Y_AXIS
+   * 
    * @return a centred panel
    */
   public static JPanel getCentredPanel(final JComponent jc, final int iOrientation) {
@@ -207,8 +223,10 @@ public final class UtilGUI {
   }
 
   /**
-   * @param color
-   *          java color
+   * Gets the html color.
+   * 
+   * @param color java color
+   * 
    * @return HTML RGB color ex: FF0000
    */
   public static String getHTMLColor(final Color color) {
@@ -218,9 +236,10 @@ public final class UtilGUI {
   }
 
   /**
-   * Get required image with specified url
+   * Get required image with specified url.
    * 
-   * @param sURL
+   * @param url DOCUMENT_ME
+   * 
    * @return the image
    */
   public static ImageIcon getImage(final URL url) {
@@ -241,11 +260,12 @@ public final class UtilGUI {
   }
 
   /**
+   * Gets the limited message.
    * 
-   * @param sText
-   *          text to display, lines separated by \n characters
+   * @param sText text to display, lines separated by \n characters
    * @param limit :
-   *          max number of lines to be displayed without scroller
+   * max number of lines to be displayed without scroller
+   * 
    * @return formated message: either a string, or a textarea
    */
   public static Object getLimitedMessage(final String sText, final int limit) {
@@ -268,8 +288,9 @@ public final class UtilGUI {
    * http://java.sun.com/developer/onlineTraining/new2java/supplements/
    * 2005/July05.html#1 Used to correctly display long messages
    * 
-   * @param maxCharactersPerLineCount
-   * @return
+   * @param maxCharactersPerLineCount DOCUMENT_ME
+   * 
+   * @return the narrow option pane
    */
   public static JOptionPane getNarrowOptionPane(final int maxCharactersPerLineCount) {
     // Our inner class definition
@@ -293,12 +314,12 @@ public final class UtilGUI {
   }
 
   /**
-   * Resize an image
+   * Resize an image.
    * 
-   * @param img
-   *          image to resize
-   * @param iNewWidth
-   * @param iNewHeight
+   * @param img image to resize
+   * @param iNewWidth DOCUMENT_ME
+   * @param iNewHeight DOCUMENT_ME
+   * 
    * @return resized image
    */
   public static ImageIcon getResizedImage(final ImageIcon img, final int iNewWidth,
@@ -310,8 +331,11 @@ public final class UtilGUI {
   }
 
   /**
-   * @param img
-   * @param iScale
+   * Gets the scaled image.
+   * 
+   * @param img DOCUMENT_ME
+   * @param iScale DOCUMENT_ME
+   * 
    * @return a scaled image
    */
   public static ImageIcon getScaledImage(final ImageIcon img, final int iScale) {
@@ -332,9 +356,9 @@ public final class UtilGUI {
   }
 
   /**
-   * Setup Substance look and feel
+   * Setup Substance look and feel.
    * 
-   * @param theme
+   * @param pTheme DOCUMENT_ME
    */
   public static void setupSubstanceLookAndFeel(final String pTheme) {
     // Check the theme is known, if not take the default theme
@@ -399,20 +423,18 @@ public final class UtilGUI {
   }
 
   /**
-   * Display given container at given position
+   * Display given container at given position.
    * 
-   * @param container
-   * @param iFromTop
-   *          max number of pixels from top
-   * @param iFromLeft
-   *          max number of pixels from left
+   * @param iFromTop max number of pixels from top
+   * @param iFromLeft max number of pixels from left
+   * @param window DOCUMENT_ME
    */
   public static void setShuffleLocation(final Window window, final int iFromTop, final int iFromLeft) {
     window.setLocation((int) (Math.random() * iFromTop), (int) (Math.random() * iFromLeft));
   }
 
   /**
-   * Set current cursor as waiting cursor
+   * Set current cursor as waiting cursor.
    */
   public static synchronized void waiting() {
     if (!currentCursor.equals(WAIT_CURSOR)) {
@@ -422,7 +444,7 @@ public final class UtilGUI {
   }
 
   /**
-   * Set current cursor as default cursor
+   * Set current cursor as default cursor.
    */
   public static synchronized void stopWaiting() {
     if (!currentCursor.equals(DEFAULT_CURSOR)) {
@@ -431,6 +453,15 @@ public final class UtilGUI {
     }
   }
 
+  /**
+   * To buffered image.
+   * DOCUMENT_ME
+   * 
+   * @param image DOCUMENT_ME
+   * @param alpha DOCUMENT_ME
+   * 
+   * @return the buffered image
+   */
   public static BufferedImage toBufferedImage(final Image image, final boolean alpha) {
     return UtilGUI.toBufferedImage(image, alpha, image.getWidth(null), image.getHeight(null));
   }
@@ -441,13 +472,11 @@ public final class UtilGUI {
    * Thanks http://java.developpez.com/faq/java/?page=graphique_general_images
    * </p>
    * 
-   * @param image
-   * @param Do
-   *          we need alpha (transparency) ?
-   * @param new
-   *          image width
-   * @param height
-   *          new image height
+   * @param image DOCUMENT_ME
+   * @param height new image height
+   * @param alpha DOCUMENT_ME
+   * @param width DOCUMENT_ME
+   * 
    * @return buffured image from an image
    */
   public static BufferedImage toBufferedImage(final Image image, final boolean alpha,
@@ -496,6 +525,8 @@ public final class UtilGUI {
    * the current look and feel. Based on the Sun
    * SwingUtilities.updateComponentTreeUI, but ensures that the update happens
    * on the components of a JToolbar before the JToolbar itself.
+   * 
+   * @param c DOCUMENT_ME
    */
   public static void updateComponentTreeUI(final Component c) {
     UtilGUI.updateComponentTreeUI0(c);
@@ -504,6 +535,12 @@ public final class UtilGUI {
     c.repaint();
   }
 
+  /**
+   * Update component tree u i0.
+   * DOCUMENT_ME
+   * 
+   * @param c DOCUMENT_ME
+   */
   private static void updateComponentTreeUI0(final Component c) {
 
     Component[] children = null;
@@ -541,9 +578,8 @@ public final class UtilGUI {
    * Method to attempt a dynamic update for all components of the given
    * <code>Window</code>.
    * 
-   * @param window
-   *          The <code>Window</code> for which the look and feel update has
-   *          to be performed against.
+   * @param window The <code>Window</code> for which the look and feel update has
+   * to be performed against.
    */
   public static void updateWindowUI(final Window window) {
     try {
@@ -559,6 +595,8 @@ public final class UtilGUI {
   }
 
   /**
+   * Gets the alternate highlighter.
+   * 
    * @return a theme-dependent alternate row highlighter used in tables or trees
    */
   public static Highlighter getAlternateHighlighter() {
@@ -579,11 +617,11 @@ public final class UtilGUI {
   }
 
   /**
+   * Checks if is over.
    * 
-   * @param component
-   *          location
-   * @param component
-   *          dimension
+   * @param location DOCUMENT_ME
+   * @param dimension DOCUMENT_ME
+   * 
    * @return whether the current mouse cursor if above a given component
    */
   public static boolean isOver(Point location, Dimension dimension) {
@@ -598,6 +636,8 @@ public final class UtilGUI {
   }
 
   /**
+   * Gets the ultra light color.
+   * 
    * @return ultralight color for current color scheme
    */
   static public Color getUltraLightColor() {
@@ -605,6 +645,8 @@ public final class UtilGUI {
   }
 
   /**
+   * Gets the foreground color.
+   * 
    * @return foreground color for current color scheme
    */
   static public Color getForegroundColor() {
@@ -612,10 +654,11 @@ public final class UtilGUI {
   }
 
   /**
-   * Display a dialog with given url picture
+   * Display a dialog with given url picture.
    * 
-   * @param url
-   * @throws MalformedURLException
+   * @param url DOCUMENT_ME
+   * 
+   * @throws MalformedURLException the malformed url exception
    */
   static public void showPictureDialog(String url) throws MalformedURLException {
     JDialog jd = new JDialog(JajukMainWindow.getInstance());
@@ -631,9 +674,9 @@ public final class UtilGUI {
   }
 
   /**
-   * configures gui for repeat single enable/disable
+   * configures gui for repeat single enable/disable.
    * 
-   * @param enable
+   * @param enable DOCUMENT_ME
    */
   public static void setRepeatSingleGui(boolean enable) {
     // always disable repeat all
@@ -649,9 +692,9 @@ public final class UtilGUI {
   }
 
   /**
-   * configures gui for repeat all enable/disable
+   * configures gui for repeat all enable/disable.
    * 
-   * @param enable
+   * @param enable DOCUMENT_ME
    */
   public static void setRepeatAllGui(boolean enable) {
     // always disable repeat single
@@ -667,10 +710,10 @@ public final class UtilGUI {
   }
 
   /**
-   * Registers the ESCAPE key on the Panel so that it closes the Dialog
+   * Registers the ESCAPE key on the Panel so that it closes the Dialog.
    * 
-   * @param dialog
-   * @param pane
+   * @param dialog DOCUMENT_ME
+   * @param pane DOCUMENT_ME
    */
   public static void setEscapeKeyboardAction(final JDialog dialog, JComponent pane) {
     KeyStroke stroke = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0);
@@ -689,7 +732,7 @@ public final class UtilGUI {
    * it to the fastCall() one.
    * </p>
    * 
-   * @param displayable
+   * @param displayable DOCUMENT_ME
    */
   public static void populate(final TwoStepsDisplayable displayable) {
     SwingWorker<Object, Void> sw = new SwingWorker<Object, Void>() {
@@ -715,8 +758,9 @@ public final class UtilGUI {
   }
 
   /**
-   * Center a given window to the center of the screen
-   * @param window
+   * Center a given window to the center of the screen.
+   * 
+   * @param window DOCUMENT_ME
    */
   public static void centerWindow(Window window) {
     Toolkit tk = Toolkit.getDefaultToolkit();
@@ -728,7 +772,8 @@ public final class UtilGUI {
   }
   
   /**
-   * Return any displayed window (between main window, slimbar...) 
+   * Return any displayed window (between main window, slimbar...)
+   * 
    * @return any displayed window (between main window, slimbar...)
    */
   public static Window getActiveWindow(){

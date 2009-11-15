@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2007 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $$Revision$$
+ *  $Revision$
  */
 package org.jajuk.ui.helpers;
 
@@ -30,17 +31,16 @@ import org.jajuk.services.cddb.CDDBTrack;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilString;
 
+/**
+ * DOCUMENT_ME.
+ */
 public class CDDBTableModel extends JajukTableModel {
 
+  /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
   /**
-   * Model constructor
-   * 
-   * @param iColNum
-   *          number of rows
-   * @param sColName
-   *          columns names
+   * Model constructor.
    */
   public CDDBTableModel() {
     super(8);
@@ -79,7 +79,10 @@ public class CDDBTableModel extends JajukTableModel {
   }
 
   /**
-   * Fill model with tracks
+   * Fill model with tracks.
+   * 
+   * @param currentTracks DOCUMENT_ME
+   * @param fdbReader DOCUMENT_ME
    */
   public void populateModel(List<CDDBTrack> currentTracks, FreedbReadResult fdbReader) {
     iRowNum = currentTracks.size();

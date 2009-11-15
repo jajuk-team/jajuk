@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2008 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision: 3132 $
+ *  $Revision$
  */
 package ext;
 
@@ -32,30 +33,64 @@ import java.util.TimerTask;
 
 import javax.swing.JLabel;
 
+/**
+ * DOCUMENT_ME.
+ */
 public class JScrollingText extends JLabel {
 
+  /** Generated serialVersionUID. */
   private static final long serialVersionUID = 3068213731703270035L;
 
+  /** DOCUMENT_ME. */
   private final int speed;
 
+  /** DOCUMENT_ME. */
   private final int period;
 
+  /** DOCUMENT_ME. */
   private final int offset;
 
+  /** DOCUMENT_ME. */
   private int x = 300;
 
+  /**
+   * Instantiates a new j scrolling text.
+   * 
+   * @param text DOCUMENT_ME
+   */
   public JScrollingText(String text) {
     this(text, 1);
   }
 
+  /**
+   * Instantiates a new j scrolling text.
+   * 
+   * @param text DOCUMENT_ME
+   * @param speed DOCUMENT_ME
+   */
   public JScrollingText(String text, int speed) {
     this(text, speed, 100);
   }
 
+  /**
+   * Instantiates a new j scrolling text.
+   * 
+   * @param text DOCUMENT_ME
+   * @param speed DOCUMENT_ME
+   * @param period DOCUMENT_ME
+   */
   public JScrollingText(String text, int speed, int period) {
     this(text, speed, period, 0);
   }
 
+  /**
+   * Instantiates a new j scrolling text.
+   * 
+   * @param text DOCUMENT_ME
+   * @param speed DOCUMENT_ME
+   * @param period DOCUMENT_ME
+   * @param offset DOCUMENT_ME
+   */
   public JScrollingText(String text, int speed, int period, int offset) {
     super(text);
     this.speed = speed;
@@ -63,6 +98,9 @@ public class JScrollingText extends JLabel {
     this.offset = offset;
   }
 
+  /* (non-Javadoc)
+   * @see javax.swing.JComponent#paintComponent(java.awt.Graphics)
+   */
   @Override
   public void paintComponent(Graphics g) {
     if (isOpaque()) {
@@ -90,6 +128,10 @@ public class JScrollingText extends JLabel {
     g.drawString(getText(), textX + (speed > 0 ? -width : width), textY);
   }
 
+  /**
+   * Start.
+   * DOCUMENT_ME
+   */
   public void start() {
     Timer timer = new Timer("Scrolling Text Timer");
     TimerTask task = new TimerTask() {

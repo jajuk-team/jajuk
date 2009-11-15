@@ -1,13 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2007 The Jajuk Team
- *
- *  Originally taken from:
- *   aTunes 1.6.0
- *   Copyright (C) 2006-2007 Alex Aranda (fleax) alex.aranda@gmail.com
- *
- *   http://www.atunes.org
- *   http://sourceforge.net/projects/atunes
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -52,11 +46,16 @@ import org.jajuk.util.log.Log;
  */
 public final class LyricsService {
 
+  /** DOCUMENT_ME. */
   private static List<ILyricsProvider> providers = null;
+  
+  /** DOCUMENT_ME. */
   private static ILyricsProvider current = null;
+  
+  /** DOCUMENT_ME. */
   private static List<ILyricsPersister> persisters = null;
 
-  /** Providers list */
+  /** Providers list. */
   private static String[] providersClasses = new String[] {
       "org.jajuk.services.lyrics.providers.TagLyricsProvider",
       "org.jajuk.services.lyrics.providers.TxtLyricsProvider",
@@ -64,14 +63,14 @@ public final class LyricsService {
       "org.jajuk.services.lyrics.providers.FlyWebLyricsProvider",
       "org.jajuk.services.lyrics.providers.LyrcWebLyricsProvider"};
   
-  /** Persisters list */
+  /** Persisters list. */
   private static String[] persisterClasses = new String[] {
     "org.jajuk.services.lyrics.persisters.TagPersister",
     "org.jajuk.services.lyrics.persisters.TxtPersister"
   };
 
   /**
-   * Empty private constructor to avoid instantiating utility class
+   * Empty private constructor to avoid instantiating utility class.
    */
   private LyricsService() {
 
@@ -83,9 +82,7 @@ public final class LyricsService {
    * authors service preferred ordering
    * 
    * @TODO this behavior could eventually be switched to a shuffle provider list
-   *       for performance or better resources usage reasons
-   * 
-   * 
+   * for performance or better resources usage reasons
    */
   @SuppressWarnings("unchecked")
   public static void loadProviders() {
@@ -105,6 +102,8 @@ public final class LyricsService {
   }
 
   /**
+   * Load persisters.
+   * DOCUMENT_ME
    */
   @SuppressWarnings("unchecked")
   public static void loadPersisters() {
@@ -126,8 +125,7 @@ public final class LyricsService {
   /**
    * Cycles through lyrics providers to return the best matching lyrics.
    * 
-   * @param audiofile
-   *          the audio file to search lyrics for
+   * @param audioFile DOCUMENT_ME
    * 
    * @return the song's lyrics
    */
@@ -146,6 +144,12 @@ public final class LyricsService {
     return lyrics;
   }
   
+  /**
+   * Commit lyrics.
+   * DOCUMENT_ME
+   * 
+   * @param provider DOCUMENT_ME
+   */
   public static void commitLyrics(JajukLyricsProvider provider) {
     boolean commitOK = false;
     Log.debug("Commiting lyrics for file {{" + provider + "}}");
@@ -164,6 +168,12 @@ public final class LyricsService {
     }
   }
   
+  /**
+   * Delete lyrics.
+   * DOCUMENT_ME
+   * 
+   * @param provider DOCUMENT_ME
+   */
   public static void deleteLyrics(JajukLyricsProvider provider) {
     for (final ILyricsPersister persister : getPersisters()) {    
       persister.deleteLyrics(provider);
@@ -171,7 +181,7 @@ public final class LyricsService {
   }
 
   /**
-   * Returns the lazy-instantiated providers collection
+   * Returns the lazy-instantiated providers collection.
    * 
    * @return the map of loaded providers
    */
@@ -182,10 +192,20 @@ public final class LyricsService {
     return providers;
   }
 
+  /**
+   * Gets the current provider.
+   * 
+   * @return the current provider
+   */
   public static ILyricsProvider getCurrentProvider() {
     return current;
   }
   
+  /**
+   * Gets the persisters.
+   * 
+   * @return the persisters
+   */
   public static List<ILyricsPersister> getPersisters() {
     if (persisters == null) {
       loadPersisters();

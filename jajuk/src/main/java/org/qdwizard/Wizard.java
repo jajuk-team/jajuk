@@ -1,3 +1,23 @@
+/*
+ *  Jajuk
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
+ *
+ *  This program is free software; you can redistribute it and/or
+ *  modify it under the terms of the GNU General Public License
+ *  as published by the Free Software Foundation; either version 2
+ *  of the License, or any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program; if not, write to the Free Software
+ *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ *  $Revision$
+ */
 package org.qdwizard;
 
 import java.awt.BorderLayout;
@@ -36,10 +56,10 @@ import org.jajuk.util.log.Log;
  * <li> Displaying the wizard:</li>
  * 
  * <pre>
- *  MyWizard wizard = new MyWizard(String sName,Class initial,
- *  ImageIcon icon,Frame parentWindow,
- *  Locale locale,int iHSize,int iVSize);
- *  wizard.show();
+ * MyWizard wizard = new MyWizard(String sName,Class initial,
+ * ImageIcon icon,Frame parentWindow,
+ * Locale locale,int iHSize,int iVSize);
+ * wizard.show();
  * </pre>
  * 
  * <li>finish() method implements actions to be done at the end of the wizard</li>
@@ -48,14 +68,14 @@ import org.jajuk.util.log.Log;
  * 
  * <pre>
  * public Class getNextScreen(Class screen) {
- *   if (ActionSelectionPanel.class.equals(getCurrentScreen())) {
- *     String sAction = (String) data.get(KEY_ACTION);
- *     if (ActionSelectionPanel.ACTION_CREATION.equals(sAction)) {
- *       return TypeSelectionPanel.class;
- *     } else if (ActionSelectionPanel.ACTION_DELETE.equals(sAction)) {
- *       return RemovePanel.class;
- *     }
- *   }
+ * if (ActionSelectionPanel.class.equals(getCurrentScreen())) {
+ * String sAction = (String) data.get(KEY_ACTION);
+ * if (ActionSelectionPanel.ACTION_CREATION.equals(sAction)) {
+ * return TypeSelectionPanel.class;
+ * } else if (ActionSelectionPanel.ACTION_DELETE.equals(sAction)) {
+ * return RemovePanel.class;
+ * }
+ * }
  * }
  * </pre>
  * 
@@ -65,74 +85,69 @@ import org.jajuk.util.log.Log;
  * @created 1 may 2006
  */
 public abstract class Wizard implements ActionListener, WindowListener {
-  /** Wizard name */
+  
+  /** Wizard name. */
   private String sName;
 
-  /** Current screen */
+  /** Current screen. */
   private Screen current;
 
-  /** Wizard left side icon */
+  /** Wizard left side icon. */
   private ImageIcon icon;
 
-  /** Wizard data */
+  /** Wizard data. */
   protected final static Map<String, Object> data = new HashMap<String, Object>(10);
 
-  /** Wizard header */
+  /** Wizard header. */
   private Header header;
 
-  /** Wizard action Panel */
+  /** Wizard action Panel. */
   private ActionsPanel actions;
 
-  /** Wizard dialog */
+  /** Wizard dialog. */
   private JDialog dialog;
 
-  /** Parent window */
+  /** Parent window. */
   private Frame parentWindow;
 
-  /** Screens instance repository */
+  /** Screens instance repository. */
   private Map<Class<? extends Screen>, Screen> hmClassScreens = new HashMap<Class<? extends Screen>, Screen>(
       10);
 
-  /** Default Wizard size */
+  /** Default Wizard size. */
   protected static final int DEFAULT_H_SIZE = 700;
 
+  /** The Constant DEFAULT_V_SIZE.  DOCUMENT_ME */
   protected static final int DEFAULT_V_SIZE = 500;
 
+  /** The Constant DEFAULT_H_LAYOUT_PADDING.  DOCUMENT_ME */
   protected static final int DEFAULT_H_LAYOUT_PADDING = 5;
 
+  /** The Constant DEFAULT_V_LAYOUT_PADDING.  DOCUMENT_ME */
   protected static final int DEFAULT_V_LAYOUT_PADDING = 5;
 
-  /** Was the Wizard Canceled? */
+  /** Was the Wizard Canceled?. */
   private boolean bCancelled;
 
-  /** Layout Padding */
+  /** Layout Padding. */
   private int layoutHPadding = DEFAULT_H_LAYOUT_PADDING;
 
+  /** DOCUMENT_ME. */
   private int layoutVPadding = DEFAULT_V_LAYOUT_PADDING;
 
   /**
-   * Wizard constructor
+   * Wizard constructor.
    * 
-   * @param sName
-   *          Wizard name displayed in dialog title
-   * @param initial
-   *          Initial screen class
-   * @param icon
-   *          Wizard icon (null if no icon)
-   * @param backgroundImage
-   *          background image
-   * @param parentWindow
-   *          wizard parent window
-   * @param locale
-   *          Wizard locale
-   * @param iHSize
-   *          Horizontal size
-   * @param iVSize
-   *          Vertical size
-   * @param iLayoutHPadding
-   *          Horizontal layout padding
-   * @param iLayoutVPadding
-   *          Vertical layout padding
+   * @param sName Wizard name displayed in dialog title
+   * @param initial Initial screen class
+   * @param icon Wizard icon (null if no icon)
+   * @param backgroundImage background image
+   * @param parentWindow wizard parent window
+   * @param locale Wizard locale
+   * @param iHSize Horizontal size
+   * @param iVSize Vertical size
+   * @param iLayoutHPadding Horizontal layout padding
+   * @param iLayoutVPadding Vertical layout padding
    */
   @SuppressWarnings("unchecked")
   public Wizard(String sName, Class initial, ImageIcon icon, Image backgroundImage,
@@ -157,22 +172,15 @@ public abstract class Wizard implements ActionListener, WindowListener {
   }
 
   /**
-   * Wizard constructor
+   * Wizard constructor.
    * 
-   * @param sName
-   *          Wizard name displayed in dialog title
-   * @param initial
-   *          Initial screen class
-   * @param icon
-   *          Wizard icon (null if no icon)
-   * @param parentWindow
-   *          wizard parent window
-   * @param locale
-   *          Wizard locale
-   * @param iHSize
-   *          Horizontal size
-   * @param iVSize
-   *          Vertical size
+   * @param sName Wizard name displayed in dialog title
+   * @param initial Initial screen class
+   * @param icon Wizard icon (null if no icon)
+   * @param parentWindow wizard parent window
+   * @param locale Wizard locale
+   * @param iHSize Horizontal size
+   * @param iVSize Vertical size
    */
   @SuppressWarnings("unchecked")
   public Wizard(String sName, Class initial, ImageIcon icon, Frame parentWindow, Locale locale,
@@ -193,20 +201,14 @@ public abstract class Wizard implements ActionListener, WindowListener {
   }
 
   /**
-   * Wizard constructor
+   * Wizard constructor.
    * 
-   * @param sName
-   *          Wizard name displayed in dialog title
-   * @param initial
-   *          Initial screen class
-   * @param icon
-   *          Wizard icon (null if no icon)
-   * @param backgroundImage
-   *          Wizard header background (null if no image)
-   * @param parentWindow
-   *          wizard parent window
-   * @param locale
-   *          Wizard locale
+   * @param sName Wizard name displayed in dialog title
+   * @param initial Initial screen class
+   * @param icon Wizard icon (null if no icon)
+   * @param backgroundImage Wizard header background (null if no image)
+   * @param parentWindow wizard parent window
+   * @param locale Wizard locale
    */
   public Wizard(String sName, Class<? extends Screen> initial, ImageIcon icon,
       Image backgroundImage, Frame parentWindow, Locale locale) {
@@ -215,18 +217,13 @@ public abstract class Wizard implements ActionListener, WindowListener {
   }
 
   /**
-   * Wizard constructor
+   * Wizard constructor.
    * 
-   * @param sName
-   *          Wizard name displayed in dialog title
-   * @param initial
-   *          Initial screen class
-   * @param icon
-   *          Wizard icon (null if no icon)
-   * @param parentWindow
-   *          wizard parent window
-   * @param locale
-   *          Wizard locale
+   * @param sName Wizard name displayed in dialog title
+   * @param initial Initial screen class
+   * @param icon Wizard icon (null if no icon)
+   * @param parentWindow wizard parent window
+   * @param locale Wizard locale
    */
   public Wizard(String sName, Class<? extends Screen> initial, ImageIcon icon, Frame parentWindow,
       Locale locale) {
@@ -235,18 +232,13 @@ public abstract class Wizard implements ActionListener, WindowListener {
   }
 
   /**
-   * Wizard constructor (uses default locale)
+   * Wizard constructor (uses default locale).
    * 
-   * @param sName
-   *          Wizard name displayed in dialog title
-   * @param initial
-   *          Initial screen class
-   * @param icon
-   *          Wizard icon (null if no icon)
-   * @param backgroundImage
-   *          Wizard header background (null if no image)
-   * @param parentWindow
-   *          wizard parent window
+   * @param sName Wizard name displayed in dialog title
+   * @param initial Initial screen class
+   * @param icon Wizard icon (null if no icon)
+   * @param backgroundImage Wizard header background (null if no image)
+   * @param parentWindow wizard parent window
    */
   public Wizard(String sName, Class<? extends Screen> initial, ImageIcon icon,
       Image backgroundImage, Frame parentWindow) {
@@ -254,28 +246,28 @@ public abstract class Wizard implements ActionListener, WindowListener {
   }
 
   /**
-   * Wizard constructor (uses default locale)
+   * Wizard constructor (uses default locale).
    * 
-   * @param sName
-   *          Wizard name displayed in dialog title
-   * @param initial
-   *          Initial screen class
-   * @param icon
-   *          Wizard icon (null if no icon)
-   * @param parentWindow
-   *          wizard parent window
+   * @param sName Wizard name displayed in dialog title
+   * @param initial Initial screen class
+   * @param icon Wizard icon (null if no icon)
+   * @param parentWindow wizard parent window
    */
   public Wizard(String sName, Class<? extends Screen> initial, ImageIcon icon, Frame parentWindow) {
     this(sName, initial, icon, null, parentWindow, Locale.getDefault());
   }
 
+  /**
+   * Show.
+   * DOCUMENT_ME
+   */
   public void show() {
     dialog.setVisible(true);
   }
 
   /**
    * access to the JDialog of the wizard, in case we need it (for instance to
-   * set a glass pane when waiting)
+   * set a glass pane when waiting).
    * 
    * @return the wizard dialog
    */
@@ -284,7 +276,7 @@ public abstract class Wizard implements ActionListener, WindowListener {
   }
 
   /**
-   * UI manager
+   * UI manager.
    */
   private void createUI() {
     dialog = new JajukJDialog(parentWindow, true);// modal
@@ -332,9 +324,9 @@ public abstract class Wizard implements ActionListener, WindowListener {
   }
 
   /**
-   * Set the screen to display a a class
+   * Set the screen to display a a class.
    * 
-   * @param screenClass
+   * @param screenClass DOCUMENT_ME
    */
   private void setScreen(Class<? extends Screen> screenClass) {
     Screen screen = null;
@@ -376,7 +368,7 @@ public abstract class Wizard implements ActionListener, WindowListener {
   }
 
   /**
-   * Called at each screen refresh
+   * Called at each screen refresh.
    */
   private void display() {
     ((JPanel) dialog.getContentPane()).removeAll();
@@ -430,61 +422,68 @@ public abstract class Wizard implements ActionListener, WindowListener {
   }
 
   /**
-   * Set the header image
+   * Set the header image.
    * 
-   * @param img
+   * @param img DOCUMENT_ME
    */
   public void setHeaderImage(Image img) {
     header.setImage(img);
   }
 
   /**
-   * Set the header icon
+   * Set the header icon.
    * 
-   * @param img
+   * @param icon DOCUMENT_ME
    */
   public void setHeaderIcon(ImageIcon icon) {
     header.setIcon(icon);
   }
 
   /**
-   * Set the background color of the ActionPanel
+   * Set the background color of the ActionPanel.
    * 
-   * @param color
+   * @param color DOCUMENT_ME
    */
   public void setActionsBackgroundColor(Color color) {
     actions.setBackgroundColor(color);
   }
 
   /**
-   * Set the background color of the ActionPanel's Problem notification area
+   * Set the background color of the ActionPanel's Problem notification area.
    * 
-   * @param color
+   * @param color DOCUMENT_ME
    */
   public void setProblemBackgroundColor(Color color) {
     actions.setProblemBackgroundColor(color);
   }
 
   /**
+   * Gets the previous screen.
+   * 
+   * @param screen DOCUMENT_ME
+   * 
    * @return previous screen class
    */
   abstract public Class<? extends Screen> getPreviousScreen(Class<? extends Screen> screen);
 
   /**
-   * Clear screens history
+   * Clear screens history.
    */
   public final void clearScreens() {
     hmClassScreens.clear();
   }
 
   /**
+   * Gets the next screen.
+   * 
+   * @param screen DOCUMENT_ME
    * 
    * @return next screen class
    */
   abstract public Class<? extends Screen> getNextScreen(Class<? extends Screen> screen);
 
   /**
-   * Get current screen
+   * Get current screen.
    * 
    * @return current screen class
    */
@@ -516,18 +515,19 @@ public abstract class Wizard implements ActionListener, WindowListener {
    * <p>
    * 
    * @return return true if the Wizard should continue to close
-   * @return return false if the Wizard should abort the cancellation
+   * return false if the Wizard should abort the cancellation
    */
   public boolean onCancel() {
     return true;
   }
 
   /**
-   * Icon resizing
+   * Icon resizing.
    * 
-   * @param img
-   * @param iNewWidth
-   * @param iNewHeight
+   * @param img DOCUMENT_ME
+   * @param iNewWidth DOCUMENT_ME
+   * @param iNewHeight DOCUMENT_ME
+   * 
    * @return resized icon
    */
   private static ImageIcon getResizedImage(ImageIcon img, int iNewWidth, int iNewHeight) {
@@ -541,6 +541,9 @@ public abstract class Wizard implements ActionListener, WindowListener {
     return iiNew;
   }
 
+  /* (non-Javadoc)
+   * @see java.awt.event.WindowListener#windowClosing(java.awt.event.WindowEvent)
+   */
   public void windowClosing(WindowEvent windowEvent) {
     // if cancel is disabled, then don't call the onCancel function and
     // don't dispose
@@ -553,6 +556,8 @@ public abstract class Wizard implements ActionListener, WindowListener {
   /**
    * Called when the wizard dialog opens. Override it if you want notification
    * of this event.
+   * 
+   * @param windowEvent DOCUMENT_ME
    */
   /*
    * (non-Javadoc)
@@ -569,6 +574,8 @@ public abstract class Wizard implements ActionListener, WindowListener {
    * <p>
    * <b>caution:</b> You must always call super.windowClosed(windowEvent)
    * within the override function to ensure that the Wizard closes completely.
+   * 
+   * @param windowEvent DOCUMENT_ME
    */
   /*
    * (non-Javadoc)
@@ -582,6 +589,8 @@ public abstract class Wizard implements ActionListener, WindowListener {
   /**
    * Called when the wizard dialog is iconified. Override it if you want
    * notification of this event.
+   * 
+   * @param windowEvent DOCUMENT_ME
    */
   /*
    * (non-Javadoc)
@@ -596,6 +605,7 @@ public abstract class Wizard implements ActionListener, WindowListener {
    * Called when the wizard dialog is deiconified. Override it if you want
    * notification of this event.
    * 
+   * @param windowEvent DOCUMENT_ME
    */
   /*
    * (non-Javadoc)
@@ -609,6 +619,8 @@ public abstract class Wizard implements ActionListener, WindowListener {
   /**
    * Called when the wizard dialog is activated. Override it if you want
    * notification of this event.
+   * 
+   * @param windowEvent DOCUMENT_ME
    */
   /*
    * (non-Javadoc)
@@ -622,6 +634,8 @@ public abstract class Wizard implements ActionListener, WindowListener {
   /**
    * Called when the wizard dialog is deactivated. Override it if you want
    * notification of this event.
+   * 
+   * @param windowEvent DOCUMENT_ME
    */
   /*
    * (non-Javadoc)
@@ -632,6 +646,12 @@ public abstract class Wizard implements ActionListener, WindowListener {
     // nothing to do here
   }
 
+  /**
+   * Was cancelled.
+   * DOCUMENT_ME
+   * 
+   * @return true if...
+   */
   public boolean wasCancelled() {
     return bCancelled;
   }

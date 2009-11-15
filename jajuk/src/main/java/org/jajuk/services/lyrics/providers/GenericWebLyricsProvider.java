@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2007 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -39,9 +40,17 @@ import org.jajuk.util.log.Log;
  */
 public abstract class GenericWebLyricsProvider implements ILyricsProvider {
 
+  /** DOCUMENT_ME. */
   private String source = null;
+  
+  /** DOCUMENT_ME. */
   private String queryUrlTemplate = null;
 
+  /**
+   * Instantiates a new generic web lyrics provider.
+   * 
+   * @param queryUrlTemplate DOCUMENT_ME
+   */
   public GenericWebLyricsProvider(final String queryUrlTemplate) {
     this.queryUrlTemplate = queryUrlTemplate;
   }
@@ -49,6 +58,15 @@ public abstract class GenericWebLyricsProvider implements ILyricsProvider {
   /*
    * Call the provider @artist non encoded artist @title non encoded title
    * @return query return or null if query fails
+   */
+  /**
+   * Call provider.
+   * DOCUMENT_ME
+   * 
+   * @param artist DOCUMENT_ME
+   * @param title DOCUMENT_ME
+   * 
+   * @return the string
    */
   public String callProvider(final String artist, final String title) {
     String text = null;
@@ -72,9 +90,9 @@ public abstract class GenericWebLyricsProvider implements ILyricsProvider {
 
   /**
    * Return the hostname of the lyrics provider, used as unique identifier for
-   * the provider
+   * the provider.
    * 
-   * @return
+   * @return the provider hostname
    */
   public String getProviderHostname() {
     if (source == null) {
@@ -88,14 +106,12 @@ public abstract class GenericWebLyricsProvider implements ILyricsProvider {
   }
 
   /**
-   * Build the actual formated and valorized URL to the provider
+   * Build the actual formated and valorized URL to the provider.
    * 
-   * @param artist
-   *          the artist
-   * @param title
-   *          the title
+   * @param artist the artist
+   * @param title the title
+   * 
    * @return URL the final url
-   * 
    */
   URL getActualURL(final String artist, final String title) {
     try {
@@ -119,16 +135,22 @@ public abstract class GenericWebLyricsProvider implements ILyricsProvider {
    * Note that this URL can be different from the jajuk used url for example if
    * a provider provides a web service interface (jajuk then uses the
    * corresponding URL) and a Web page (this is this URL that is returned from
-   * this method)
+   * this method).
+   * 
+   * @param artist DOCUMENT_ME
+   * @param title DOCUMENT_ME
    * 
    * @return the Web URL or null if a problem occurred
    */
   public abstract java.net.URL getWebURL(String artist, String title);
 
   /**
-   * @param artist
-   * @param title
-   * @return
+   * Gets the lyrics.
+   * 
+   * @param artist DOCUMENT_ME
+   * @param title DOCUMENT_ME
+   * 
+   * @return the lyrics
    */
   public abstract String getLyrics(String artist, String title);
 

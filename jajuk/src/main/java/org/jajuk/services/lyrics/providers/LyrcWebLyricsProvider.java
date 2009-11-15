@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2007 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -38,12 +39,23 @@ import org.jajuk.util.log.Log;
  */
 public class LyrcWebLyricsProvider extends GenericWebLyricsProvider {
 
+  /** The Constant URL.  DOCUMENT_ME */
   private static final String URL = "http://www.lyrc.com.ar/en/tema1en.php?artist=%artist&songname=%title";
 
+  /**
+   * Instantiates a new lyrc web lyrics provider.
+   */
   public LyrcWebLyricsProvider() {
     super(URL);
   }
 
+  /**
+   * Gets the tokenizer.
+   * 
+   * @param source DOCUMENT_ME
+   * 
+   * @return the tokenizer
+   */
   private StringTokenizer getTokenizer(final String source) {
     return new StringTokenizer((source != null) ? source : "", " '?!-,");
   }
@@ -130,6 +142,14 @@ public class LyrcWebLyricsProvider extends GenericWebLyricsProvider {
     return cleanLyrics(html);
   }
 
+  /**
+   * Gets the tag position.
+   * 
+   * @param html DOCUMENT_ME
+   * @param tag DOCUMENT_ME
+   * 
+   * @return the tag position
+   */
   private int getTagPosition(final String html, final String tag) {
     int pos = Integer.MAX_VALUE;
 
@@ -145,6 +165,8 @@ public class LyrcWebLyricsProvider extends GenericWebLyricsProvider {
   /**
    * Extracts lyrics from the HTML page. The correct subsection is to be
    * extracted first, before being cleaned and stripped from useless HTML tags.
+   * 
+   * @param html DOCUMENT_ME
    * 
    * @return the lyrics
    */
@@ -170,7 +192,11 @@ public class LyrcWebLyricsProvider extends GenericWebLyricsProvider {
   }
 
   /**
-   * Returns true if a string is composed only by letters
+   * Returns true if a string is composed only by letters.
+   * 
+   * @param token DOCUMENT_ME
+   * 
+   * @return true, if valid token
    */
   private static boolean validToken(final String token) {
     return token.matches("[A-Za-z0-9]+");

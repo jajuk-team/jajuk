@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- * $Revision$
+ *  $Revision$
  */
 package org.jajuk.ui.widgets;
 
@@ -94,89 +95,120 @@ import org.jvnet.substance.SubstanceLookAndFeel;
  * Command panel ( static view )
  * <p>
  * Singleton
- * </p>
+ * </p>.
  */
 public class CommandJPanel extends JXPanel implements ActionListener, ChangeListener, Observer,
     MouseWheelListener {
 
+  /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
   // singleton
+  /** DOCUMENT_ME. */
   private static CommandJPanel command;
 
   // widgets declaration
 
+  /** DOCUMENT_ME. */
   private JajukToggleButton jbRepeat;
 
+  /** DOCUMENT_ME. */
   private JajukToggleButton jbRandom;
 
+  /** DOCUMENT_ME. */
   private JToolBar jtbSpecial;
 
+  /** DOCUMENT_ME. */
   private DropDownButton ddbGlobalRandom;
 
+  /** DOCUMENT_ME. */
   private JRadioButtonMenuItem jmiShuffleModeSong;
 
+  /** DOCUMENT_ME. */
   private JRadioButtonMenuItem jmiShuffleModeAlbum;
 
+  /** DOCUMENT_ME. */
   private JRadioButtonMenuItem jmiShuffleModeAlbum2;
 
+  /** DOCUMENT_ME. */
   private JPopupMenu popupGlobalRandom;
 
+  /** DOCUMENT_ME. */
   private JajukButton jbBestof;
 
+  /** DOCUMENT_ME. */
   private DropDownButton ddbNovelties;
 
+  /** DOCUMENT_ME. */
   private JPopupMenu popupNovelties;
 
+  /** DOCUMENT_ME. */
   private DropDownButton ddbWebRadio;
 
+  /** DOCUMENT_ME. */
   private XJPopupMenu popupWebRadio;
 
+  /** DOCUMENT_ME. */
   private JRadioButtonMenuItem jmiNoveltiesModeSong;
 
+  /** DOCUMENT_ME. */
   private JRadioButtonMenuItem jmiNoveltiesModeAlbum;
 
+  /** DOCUMENT_ME. */
   private JajukButton jbNorm;
 
+  /** DOCUMENT_ME. */
   private DropDownButton ddbDDJ;
 
+  /** DOCUMENT_ME. */
   private JPopupMenu popupDDJ;
 
+  /** DOCUMENT_ME. */
   private JButton jbPrevious;
 
+  /** DOCUMENT_ME. */
   private JButton jbNext;
 
+  /** DOCUMENT_ME. */
   private JButton jbPlayPause;
 
+  /** DOCUMENT_ME. */
   private JButton jbStop;
 
+  /** DOCUMENT_ME. */
   JSlider jsVolume;
 
+  /** DOCUMENT_ME. */
   JLabel jlVolume;
 
+  /** DOCUMENT_ME. */
   private PreferenceToolbar evaltoobar;
 
+  /** DOCUMENT_ME. */
   private JajukButton jbMute;
 
   // variables declaration
-  /** Repeat mode flag */
+  /** Repeat mode flag. */
   static boolean bIsRepeatEnabled = false;
 
-  /** Shuffle mode flag */
+  /** Shuffle mode flag. */
   static boolean bIsShuffleEnabled = false;
 
-  /** Continue mode flag */
+  /** Continue mode flag. */
   static boolean bIsContinueEnabled = true;
 
-  /** Intro mode flag */
+  /** Intro mode flag. */
   static boolean bIsIntroEnabled = false;
 
-  /** Forward or rewind jump size in track percentage */
+  /** Forward or rewind jump size in track percentage. */
   static final float JUMP_SIZE = 0.1f;
 
+  /** DOCUMENT_ME. */
   private JajukToggleButton jbRepeatAll;
 
   /**
+   * Gets the instance.
+   * 
    * @return singleton
    */
   public static CommandJPanel getInstance() {
@@ -188,12 +220,16 @@ public class CommandJPanel extends JXPanel implements ActionListener, ChangeList
 
   /**
    * Constructor, this objects needs to be implemented for the tray (child
-   * object)
+   * object).
    */
   public CommandJPanel() {
     super();
   }
 
+  /**
+   * Inits the ui.
+   * DOCUMENT_ME
+   */
   public void initUI() {
     // Instanciate the PlayerStateMediator to listen for player basic controls
     PlayerStateMediator.getInstance();
@@ -388,6 +424,9 @@ public class CommandJPanel extends JXPanel implements ActionListener, ChangeList
 
   }
 
+  /* (non-Javadoc)
+   * @see org.jajuk.events.Observer#getRegistrationKeys()
+   */
   public Set<JajukEvents> getRegistrationKeys() {
     Set<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
     eventSubjectSet.add(JajukEvents.PLAYER_STOP);
@@ -435,6 +474,9 @@ public class CommandJPanel extends JXPanel implements ActionListener, ChangeList
   /*
    * @see javax.swing.event.ChangeListener#stateChanged(javax.swing.event.ChangeEvent )
    */
+  /* (non-Javadoc)
+   * @see javax.swing.event.ChangeListener#stateChanged(javax.swing.event.ChangeEvent)
+   */
   public void stateChanged(ChangeEvent e) {
     if (e.getSource() == jsVolume) {
       float newVolume = (float) jsVolume.getValue() / 100;
@@ -457,6 +499,8 @@ public class CommandJPanel extends JXPanel implements ActionListener, ChangeList
   }
 
   /**
+   * Gets the current volume.
+   * 
    * @return Volume value
    */
   public int getCurrentVolume() {
@@ -532,8 +576,7 @@ public class CommandJPanel extends JXPanel implements ActionListener, ChangeList
   }
 
   /**
-   * Populate DJs
-   * 
+   * Populate DJs.
    */
   private void populateDJs() {
     try {
@@ -568,8 +611,7 @@ public class CommandJPanel extends JXPanel implements ActionListener, ChangeList
   }
 
   /**
-   * Populate webradios
-   * 
+   * Populate webradios.
    */
   private void populateWebRadios() {
     try {
@@ -609,21 +651,38 @@ public class CommandJPanel extends JXPanel implements ActionListener, ChangeList
   }
 
   /**
-   * ToString() method
+   * ToString() method.
+   * 
+   * @return the string
    */
   @Override
   public String toString() {
     return getClass().getName();
   }
 
+  /**
+   * Sets the repeat selected.
+   * 
+   * @param b the new repeat selected
+   */
   public void setRepeatSelected(final boolean b) {
     this.jbRepeat.setSelected(b);
   }
 
+  /**
+   * Sets the repeat all selected.
+   * 
+   * @param b the new repeat all selected
+   */
   public void setRepeatAllSelected(final boolean b) {
     this.jbRepeatAll.setSelected(b);
   }
 
+  /**
+   * Sets the random selected.
+   * 
+   * @param b the new random selected
+   */
   public void setRandomSelected(final boolean b) {
     this.jbRandom.setSelected(b);
   }

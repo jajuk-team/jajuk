@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2008 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision: 3132 $
+ *  $Revision$
  */
 package org.jajuk.ui.helpers;
 
@@ -35,19 +36,29 @@ import org.jajuk.util.Messages;
 import org.jajuk.util.log.Log;
 
 /**
- * Refresh reporter with GUI special operations
+ * Refresh reporter with GUI special operations.
  */
 public class ManualDeviceRefreshReporter extends RefreshReporter {
 
   // Refresh dialog
+  /** DOCUMENT_ME. */
   private RefreshDialog rdialog;
 
+  /** DOCUMENT_ME. */
   private int progress;
 
+  /**
+   * Instantiates a new manual device refresh reporter.
+   * 
+   * @param device DOCUMENT_ME
+   */
   public ManualDeviceRefreshReporter(Device device) {
     super(device);
   }
 
+  /* (non-Javadoc)
+   * @see org.jajuk.ui.helpers.RefreshReporter#startup()
+   */
   @Override
   public void startup() {
     super.startup();
@@ -69,6 +80,9 @@ public class ManualDeviceRefreshReporter extends RefreshReporter {
     }
   }
 
+  /* (non-Javadoc)
+   * @see org.jajuk.ui.helpers.RefreshReporter#reset()
+   */
   @Override
   public void reset() {
     super.reset();
@@ -76,6 +90,9 @@ public class ManualDeviceRefreshReporter extends RefreshReporter {
 
   }
 
+  /* (non-Javadoc)
+   * @see org.jajuk.ui.helpers.RefreshReporter#cleanupDone()
+   */
   @Override
   public void cleanupDone() {
     // We estimate that cleanup represents about 20% of the total workload
@@ -88,6 +105,9 @@ public class ManualDeviceRefreshReporter extends RefreshReporter {
     }
   }
 
+  /* (non-Javadoc)
+   * @see org.jajuk.ui.helpers.RefreshReporter#updateState(org.jajuk.base.Directory)
+   */
   @Override
   public void updateState(Directory dir) {
     if (rdialog != null) {
@@ -102,6 +122,9 @@ public class ManualDeviceRefreshReporter extends RefreshReporter {
     dirCount++;
   }
 
+  /* (non-Javadoc)
+   * @see org.jajuk.ui.helpers.RefreshReporter#done()
+   */
   @Override
   public void done() {
     long refreshTime = System.currentTimeMillis() - lRefreshDateStart;
@@ -116,11 +139,7 @@ public class ManualDeviceRefreshReporter extends RefreshReporter {
     Messages.showInfoMessage(message);
   }
 
-  /**
-   * This timer limit dialog title changes (this can have side effect on
-   * performances or other in some window managers. Too many window title change
-   * causes others menu bar items freezes under KDE for ie)
-   */
+  /** This timer limit dialog title changes (this can have side effect on performances or other in some window managers. Too many window title change causes others menu bar items freezes under KDE for ie) */
   Timer updateDialogTitle = new Timer(1000, new ActionListener() {
 
     public void actionPerformed(ActionEvent e) {

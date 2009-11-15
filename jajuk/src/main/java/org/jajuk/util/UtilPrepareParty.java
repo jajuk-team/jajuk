@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision: 3132 $
+ *  $Revision$
  */
 package org.jajuk.util;
 
@@ -42,26 +42,25 @@ import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 
 /**
- * 
+ * DOCUMENT_ME.
  */
 public class UtilPrepareParty {
-  /**
-   * character that is used to replace if filename normalization is used.
-   * 
-   */
+  
+  /** character that is used to replace if filename normalization is used. */
   private static final String FILLER_CHAR = "_";
 
   // private constructor to avoid instantiation
+  /**
+   * Instantiates a new util prepare party.
+   */
   private UtilPrepareParty() {
   }
 
   /**
    * Filter provided list by removing files that have lower rating.
    * 
-   * @param files
-   *          the list to process.
-   * @param rate
-   *          The require rating level
+   * @param files the list to process.
+   * @param rate The require rating level
    * 
    * @return The adjusted list.
    */
@@ -79,12 +78,10 @@ public class UtilPrepareParty {
 
   /**
    * Filter the provided list by removing files if the specified length (in
-   * minutes) is exceeded
+   * minutes) is exceeded.
    * 
-   * @param files
-   *          The list of files to process.
-   * @param time
-   *          The number of minutes playing length to have at max.
+   * @param files The list of files to process.
+   * @param time The number of minutes playing length to have at max.
    * 
    * @return The modified list.
    */
@@ -111,10 +108,8 @@ public class UtilPrepareParty {
    * Filter the provided list by removing files after the specified size is
    * reached.
    * 
-   * @param files
-   *          The list of files to process.
-   * @param size
-   *          The size in MB that should not be exceeded.
+   * @param files The list of files to process.
+   * @param size The size in MB that should not be exceeded.
    * 
    * @return The modified list.
    */
@@ -141,10 +136,8 @@ public class UtilPrepareParty {
    * Filter the provided list by removing files after the specified number of
    * tracks is reached.
    * 
-   * @param files
-   *          The list of files to process.
-   * @param tracks
-   *          The number of tracks to limit the list.
+   * @param files The list of files to process.
+   * @param tracks The number of tracks to limit the list.
    * 
    * @return The modified list.
    */
@@ -170,10 +163,8 @@ public class UtilPrepareParty {
    * Filter the provided list by removing files so only the specified media is
    * included.
    * 
-   * @param files
-   *          The list of files to process.
-   * @param ext
-   *          The number of tracks to filter the list.
+   * @param files The list of files to process.
+   * @param ext The number of tracks to filter the list.
    * 
    * @return The modified list.
    */
@@ -193,13 +184,15 @@ public class UtilPrepareParty {
   // map containing all the replacements that we do to "normalize" a filename
   // TODO: this should be enhanced with more entries for things like nordic
   // languages et. al.
+  /** DOCUMENT_ME. */
   private static Map<Character, String> replaceMap = null;
 
   /**
-   * Normalize filenames so that they do not
+   * Normalize filenames so that they do not.
    * 
-   * @param files
-   * @return
+   * @param name DOCUMENT_ME
+   * 
+   * @return the string
    */
   public static synchronized String normalizeFilename(String name) {
     // initialize map if necessary
@@ -284,8 +277,7 @@ public class UtilPrepareParty {
   /**
    * Get files from the specified DJ.
    * 
-   * @param name
-   *          The name of the DJ.
+   * @param name The name of the DJ.
    * 
    * @return A list of files.
    */
@@ -297,8 +289,7 @@ public class UtilPrepareParty {
   /**
    * Get files from the specified Ambience.
    * 
-   * @param name
-   *          The name of the Ambience.
+   * @param name The name of the Ambience.
    * 
    * @return A list of files.
    */
@@ -323,10 +314,12 @@ public class UtilPrepareParty {
    * to the name of the temporary playlist provided to the Wizard, then this
    * Playlist is used instead.
    * 
-   * @param name
-   *          The name of the Playlist.
+   * @param name The name of the Playlist.
+   * @param tempPlaylist DOCUMENT_ME
    * 
    * @return A list of files.
+   * 
+   * @throws JajukException the jajuk exception
    */
   public static List<org.jajuk.base.File> getPlaylistFiles(String name, Playlist tempPlaylist)
       throws JajukException {
@@ -351,11 +344,11 @@ public class UtilPrepareParty {
   }
 
   /**
-   * Get files from the BestOf-Playlist
+   * Get files from the BestOf-Playlist.
    * 
    * @return The list of files that match the "BestOf"-criteria
    * 
-   * @throws JajukException
+   * @throws JajukException the jajuk exception
    */
   public static List<org.jajuk.base.File> getBestOfFiles() throws JajukException {
     Playlist pl = new Playlist(Playlist.Type.BESTOF, "tmp", "temporary", null);
@@ -367,7 +360,7 @@ public class UtilPrepareParty {
    * 
    * @return The files that are new currently.
    * 
-   * @throws JajukException
+   * @throws JajukException the jajuk exception
    */
   public static List<org.jajuk.base.File> getNoveltiesFiles() throws JajukException {
     Playlist pl = new Playlist(Playlist.Type.NOVELTIES, "tmp", "temporary", null);
@@ -375,11 +368,11 @@ public class UtilPrepareParty {
   }
 
   /**
-   * Get the files from the current Queue
+   * Get the files from the current Queue.
    * 
    * @return The currently queued files.
    * 
-   * @throws JajukException
+   * @throws JajukException the jajuk exception
    */
   public static List<org.jajuk.base.File> getQueueFiles() throws JajukException {
     Playlist pl = new Playlist(Playlist.Type.QUEUE, "tmp", "temporary", null);
@@ -391,13 +384,21 @@ public class UtilPrepareParty {
    * 
    * @return The currently bookmarked files.
    * 
-   * @throws JajukException
+   * @throws JajukException the jajuk exception
    */
   public static List<org.jajuk.base.File> getBookmarkFiles() throws JajukException {
     Playlist pl = new Playlist(Playlist.Type.BOOKMARK, "tmp", "temporary", null);
     return pl.getFiles();
   }
 
+  /**
+   * Split command.
+   * DOCUMENT_ME
+   * 
+   * @param command DOCUMENT_ME
+   * 
+   * @return the list< string>
+   */
   private static List<String> splitCommand(String command) {
     List<String> list = new ArrayList<String>();
 
@@ -439,11 +440,12 @@ public class UtilPrepareParty {
   }
 
   /**
-   * Check if the Perl Audio Converter can be used
+   * Check if the Perl Audio Converter can be used.
    * 
-   * @param pacpl
-   *          The command-string to call pacpl, e.g. "pacpl" or "perl
-   *          C:\pacpl\pacpl", ...
+   * @param pacpl The command-string to call pacpl, e.g. "pacpl" or "perl
+   * C:\pacpl\pacpl", ...
+   * 
+   * @return true, if check pacpl
    */
   public static boolean checkPACPL(String pacpl) {
     // here we just want to verify that we find pacpl
@@ -488,27 +490,22 @@ public class UtilPrepareParty {
    * Call the external application "pacpl" to convert the specified file into
    * the specified format and store the resulting file in the directory listed.
    * 
-   * @param pacpl
-   *          The command-string to call pacpl, e.g. "pacpl" or "perl
-   *          C:\pacpl\pacpl", ...
-   * @param file
-   *          The file to convert.
-   * @param toFormat
-   *          The target format.
-   * @param toDir
-   *          The target location.
-   * @param newName
-   *          The new name to use (this is used for normalizing and numbering
-   *          the files, ...)
+   * @param pacpl The command-string to call pacpl, e.g. "pacpl" or "perl
+   * C:\pacpl\pacpl", ...
+   * @param file The file to convert.
+   * @param toFormat The target format.
+   * @param toDir The target location.
+   * @param newName The new name to use (this is used for normalizing and numbering
+   * the files, ...)
    * 
    * @return 0 if processing was OK, otherwise the return code indicates the
-   *         return code provided by the pacpl script
+   * return code provided by the pacpl script
    * 
-   *         TODO: currently this uses the target-location as temporary
-   *         directory if intermediate-conversion to WAV is necessary, this
-   *         might be sub-optimal for Flash-memory where too many writes kills
-   *         the media card earlier. We probably should use the temporary
-   *         directory for conversion instead and do another copy at the end.
+   * TODO: currently this uses the target-location as temporary
+   * directory if intermediate-conversion to WAV is necessary, this
+   * might be sub-optimal for Flash-memory where too many writes kills
+   * the media card earlier. We probably should use the temporary
+   * directory for conversion instead and do another copy at the end.
    */
   public static int convertPACPL(String pacpl, File file, String toFormat, java.io.File toDir,
       String newName) {

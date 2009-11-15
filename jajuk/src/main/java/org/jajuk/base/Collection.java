@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -51,44 +52,47 @@ import org.xml.sax.SAXParseException;
 import org.xml.sax.helpers.DefaultHandler;
 
 /**
- * Items root container
+ * Items root container.
  */
 public final class Collection extends DefaultHandler implements ErrorHandler {
 
+  /** The Constant TAG_CLOSE_NEWLINE.  DOCUMENT_ME */
   private static final String TAG_CLOSE_NEWLINE = ">\n";
 
+  /** The Constant TAB_CLOSE_TAG_START.  DOCUMENT_ME */
   private static final String TAB_CLOSE_TAG_START = "</";
 
-  /** Self instance */
+  /** Self instance. */
   private static Collection collection = new Collection();
 
+  /** DOCUMENT_ME. */
   private static long lTime;
 
-  /** Current ItemManager manager */
+  /** Current ItemManager manager. */
   private ItemManager manager;
 
-  /** upgrade for track IDs */
+  /** upgrade for track IDs. */
   private final Map<String, String> hmWrongRightTrackID = new HashMap<String, String>();
 
-  /** upgrade for album IDs */
+  /** upgrade for album IDs. */
   private final Map<String, String> hmWrongRightAlbumID = new HashMap<String, String>();
 
-  /** upgrade for author IDs */
+  /** upgrade for author IDs. */
   private final Map<String, String> hmWrongRightAuthorID = new HashMap<String, String>();
 
-  /** upgrade for style IDs */
+  /** upgrade for style IDs. */
   private final Map<String, String> hmWrongRightStyleID = new HashMap<String, String>();
 
-  /** upgrade for device IDs */
+  /** upgrade for device IDs. */
   private final Map<String, String> hmWrongRightDeviceID = new HashMap<String, String>();
 
-  /** upgrade for directory IDs */
+  /** upgrade for directory IDs. */
   private final Map<String, String> hmWrongRightDirectoryID = new HashMap<String, String>();
 
-  /** upgrade for file IDs */
+  /** upgrade for file IDs. */
   private final Map<String, String> hmWrongRightFileID = new HashMap<String, String>();
 
-  /** upgrade for playlist IDs */
+  /** upgrade for playlist IDs. */
   private final Map<String, String> hmWrongRightPlaylistFileID = new HashMap<String, String>();
 
   /** Conversion of types from < 1.4 */
@@ -107,60 +111,76 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
     CONVERSION.put("9", "ram");
     CONVERSION.put("10", "mp2");
   }
-  /** [Perf] flag used to accelerate conversion */
+  
+  /** [Perf] flag used to accelerate conversion. */
   private boolean needCheckConversions = true;
 
-  /*****************************************************************************
-   * [PERF] provide current stage (files, tracks...) used to optimize switch
-   * when parsing the collection
-   ****************************************************************************/
+  /** *************************************************************************** [PERF] provide current stage (files, tracks...) used to optimize switch when parsing the collection ************************************************************************** */
   private short stage = -1;
 
-  /**
-   * [PERF] Does the type has been checked once for ID computation change ?
-   * Indeed, we check only one element of each type to check if this computation
-   * changed for perfs
-   */
+  /** [PERF] Does the type has been checked once for ID computation change ? Indeed, we check only one element of each type to check if this computation changed for perfs. */
   private boolean needCheckID = false;
 
   // Constants value, use lower value for mist numerous items to parse
+  /** The Constant STAGE_FILES.  DOCUMENT_ME */
   private static final short STAGE_FILES = 0;
 
+  /** The Constant STAGE_DIRECTORIES.  DOCUMENT_ME */
   private static final short STAGE_DIRECTORIES = 1;
 
+  /** The Constant STAGE_TRACKS.  DOCUMENT_ME */
   private static final short STAGE_TRACKS = 2;
 
+  /** The Constant STAGE_ALBUMS.  DOCUMENT_ME */
   private static final short STAGE_ALBUMS = 3;
 
+  /** The Constant STAGE_AUTHORS.  DOCUMENT_ME */
   private static final short STAGE_AUTHORS = 4;
 
+  /** The Constant STAGE_STYLES.  DOCUMENT_ME */
   private static final short STAGE_STYLES = 5;
 
+  /** The Constant STAGE_PLAYLIST_FILES.  DOCUMENT_ME */
   private static final short STAGE_PLAYLIST_FILES = 6;
 
+  /** The Constant STAGE_PLAYLISTS.  DOCUMENT_ME */
   private static final short STAGE_PLAYLISTS = 7;
 
+  /** The Constant STAGE_TYPES.  DOCUMENT_ME */
   private static final short STAGE_TYPES = 8;
 
+  /** The Constant STAGE_DEVICES.  DOCUMENT_ME */
   private static final short STAGE_DEVICES = 9;
 
+  /** The Constant STAGE_YEARS.  DOCUMENT_ME */
   private static final short STAGE_YEARS = 10;
 
+  /** The Constant ADDITION_FORMATTER.  DOCUMENT_ME */
   private static final DateFormat ADDITION_FORMATTER = UtilString.getAdditionDateFormatter();
 
-  /** Instance getter */
+  /**
+   * Instance getter.
+   * 
+   * @return the instance
+   */
   public static Collection getInstance() {
     return collection;
   }
 
-  /** Hidden constructor */
+  /**
+   * Hidden constructor.
+   */
   private Collection() {
     super();
   }
 
   /**
    * Write current collection to collection file for persistence between
-   * sessions
+   * sessions.
+   * 
+   * @param collectionFile DOCUMENT_ME
+   * 
+   * @throws IOException Signals that an I/O exception has occurred.
    */
   public static void commit(File collectionFile) throws IOException {
     long time = System.currentTimeMillis();
@@ -227,6 +247,18 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
     Log.debug("Collection commited in " + (System.currentTimeMillis() - time) + " ms");
   }
 
+  /**
+   * Write item list.
+   * DOCUMENT_ME
+   * 
+   * @param bw DOCUMENT_ME
+   * @param header DOCUMENT_ME
+   * @param items DOCUMENT_ME
+   * @param footer DOCUMENT_ME
+   * @param buffer DOCUMENT_ME
+   * 
+   * @throws IOException Signals that an I/O exception has occurred.
+   */
   private static void writeItemList(BufferedWriter bw, String header,
       ReadOnlyIterator<? extends Item> items, String footer, int buffer) throws IOException {
     bw.write(header);
@@ -238,6 +270,16 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
     writeString(bw, footer, buffer);
   }
 
+  /**
+   * Write string.
+   * DOCUMENT_ME
+   * 
+   * @param bw DOCUMENT_ME
+   * @param toWrite DOCUMENT_ME
+   * @param buffer DOCUMENT_ME
+   * 
+   * @throws IOException Signals that an I/O exception has occurred.
+   */
   private static void writeString(BufferedWriter bw, String toWrite, int buffer) throws IOException {
     StringBuilder sb = new StringBuilder(buffer);
     sb.append(TAB_CLOSE_TAG_START);
@@ -249,11 +291,12 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
   /**
    * Parse collection.xml file and put all collection information into memory
    * 
-   * @throws SAXException
-   * @throws ParserConfigurationException
-   * @throws JajukException
-   * @throws IOException
+   * @param file DOCUMENT_ME
    * 
+   * @throws SAXException the SAX exception
+   * @throws ParserConfigurationException the parser configuration exception
+   * @throws JajukException the jajuk exception
+   * @throws IOException Signals that an I/O exception has occurred.
    */
   public static void load(File file) throws SAXException, ParserConfigurationException,
       JajukException, IOException {
@@ -275,7 +318,7 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
   /**
    * Perform a collection clean up for logical items ( delete orphan data ) Note
    * that we don't cleanup styles up because we want to keep styles even without
-   * associated tracks for ambiences for instance
+   * associated tracks for ambiences for instance.
    */
   public static synchronized void cleanupLogical() {
     // Tracks cleanup
@@ -290,7 +333,7 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
 
   /**
    * Clear the full collection Note that we don't clear TypeManager as it is not
-   * read from a file but filled programmatically
+   * read from a file but filled programmatically.
    */
   public static synchronized void clearCollection() {
     TrackManager.getInstance().clear();
@@ -304,9 +347,12 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
   }
 
   /**
-   * parsing warning
+   * parsing warning.
    * 
-   * @param spe
+   * @param spe DOCUMENT_ME
+   * 
+   * @throws SAXException the SAX exception
+   * 
    * @exception SAXException
    */
   @Override
@@ -316,9 +362,12 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
   }
 
   /**
-   * parsing error
+   * parsing error.
    * 
-   * @param spe
+   * @param spe DOCUMENT_ME
+   * 
+   * @throws SAXException the SAX exception
+   * 
    * @exception SAXException
    */
   @Override
@@ -328,9 +377,12 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
   }
 
   /**
-   * parsing fatal error
+   * parsing fatal error.
    * 
-   * @param spe
+   * @param spe DOCUMENT_ME
+   * 
+   * @throws SAXException the SAX exception
+   * 
    * @exception SAXException
    */
   @Override
@@ -340,7 +392,7 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
   }
 
   /**
-   * Called at parsing start
+   * Called at parsing start.
    */
   @Override
   public void startDocument() {
@@ -348,7 +400,7 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
   }
 
   /**
-   * Called at parsing end
+   * Called at parsing end.
    */
   @Override
   public void endDocument() {
@@ -370,6 +422,12 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
    * all raw items, we don't perform equals on item name but we compare the
    * string hashcode
    * 
+   * @param sUri DOCUMENT_ME
+   * @param s DOCUMENT_ME
+   * @param sQName DOCUMENT_ME
+   * @param attributes DOCUMENT_ME
+   * 
+   * @throws SAXException the SAX exception
    */
   @Override
   public void startElement(String sUri, String s, String sQName, Attributes attributes)
@@ -510,6 +568,13 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
     }
   }
 
+  /**
+   * Handle files.
+   * DOCUMENT_ME
+   * 
+   * @param attributes DOCUMENT_ME
+   * @param idIndex DOCUMENT_ME
+   */
   private void handleFiles(Attributes attributes, int idIndex) {
     String sItemName = attributes.getValue(Const.XML_NAME);
     // Check file type is still registered, it can be
@@ -581,6 +646,13 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
     file.populateProperties(attributes);
   }
 
+  /**
+   * Handle directories.
+   * DOCUMENT_ME
+   * 
+   * @param attributes DOCUMENT_ME
+   * @param idIndex DOCUMENT_ME
+   */
   private void handleDirectories(Attributes attributes, int idIndex) {
     Directory dParent = null;
 
@@ -628,6 +700,15 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
     directory.populateProperties(attributes);
   }
 
+  /**
+   * Handle tracks.
+   * DOCUMENT_ME
+   * 
+   * @param attributes DOCUMENT_ME
+   * @param idIndex DOCUMENT_ME
+   * 
+   * @throws ParseException the parse exception
+   */
   private void handleTracks(Attributes attributes, int idIndex) throws ParseException {
     String sID = attributes.getValue(idIndex).intern();
     String sTrackName = attributes.getValue(Const.XML_TRACK_NAME);
@@ -728,6 +809,13 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
     track.populateProperties(attributes);
   }
 
+  /**
+   * Handle albums.
+   * DOCUMENT_ME
+   * 
+   * @param attributes DOCUMENT_ME
+   * @param idIndex DOCUMENT_ME
+   */
   private void handleAlbums(Attributes attributes, int idIndex) {
     String sID = attributes.getValue(idIndex).intern();
     String sItemName = attributes.getValue(Const.XML_NAME).intern();
@@ -759,6 +847,13 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
     }
   }
 
+  /**
+   * Handle authors.
+   * DOCUMENT_ME
+   * 
+   * @param attributes DOCUMENT_ME
+   * @param idIndex DOCUMENT_ME
+   */
   private void handleAuthors(Attributes attributes, int idIndex) {
     String sID = attributes.getValue(idIndex).intern();
     String sItemName = attributes.getValue(Const.XML_NAME).intern();
@@ -779,6 +874,13 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
     }
   }
 
+  /**
+   * Handle styles.
+   * DOCUMENT_ME
+   * 
+   * @param attributes DOCUMENT_ME
+   * @param idIndex DOCUMENT_ME
+   */
   private void handleStyles(Attributes attributes, int idIndex) {
     String sID = attributes.getValue(idIndex).intern();
     String sItemName = attributes.getValue(Const.XML_NAME).intern();
@@ -799,6 +901,13 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
     }
   }
 
+  /**
+   * Handle playlist files.
+   * DOCUMENT_ME
+   * 
+   * @param attributes DOCUMENT_ME
+   * @param idIndex DOCUMENT_ME
+   */
   private void handlePlaylistFiles(Attributes attributes, int idIndex) {
     String sParentID = attributes.getValue(Const.XML_DIRECTORY).intern();
     // UPGRADE check parent ID is right
@@ -831,6 +940,13 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
     }
   }
 
+  /**
+   * Handle devices.
+   * DOCUMENT_ME
+   * 
+   * @param attributes DOCUMENT_ME
+   * @param idIndex DOCUMENT_ME
+   */
   private void handleDevices(Attributes attributes, int idIndex) {
     String sID = attributes.getValue(idIndex).intern();
     String sItemName = attributes.getValue(Const.XML_NAME);
@@ -853,6 +969,13 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
     }
   }
 
+  /**
+   * Handle years.
+   * DOCUMENT_ME
+   * 
+   * @param attributes DOCUMENT_ME
+   * @param idIndex DOCUMENT_ME
+   */
   private void handleYears(Attributes attributes, int idIndex) {
     String sID = attributes.getValue(idIndex).intern();
     String sItemName = attributes.getValue(Const.XML_NAME).intern();
@@ -863,12 +986,19 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
   }
 
   /**
+   * Gets the hm wrong right file id.
+   * 
    * @return list of wrong file id (used by history)
    */
   public Map<String, String> getHmWrongRightFileID() {
     return hmWrongRightFileID;
   }
 
+  /**
+   * Gets the wrong right album i ds.
+   * 
+   * @return the wrong right album i ds
+   */
   public Map<String, String> getWrongRightAlbumIDs() {
     return this.hmWrongRightAlbumID;
   }

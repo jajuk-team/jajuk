@@ -1,20 +1,22 @@
 /*
- * Copyright 2008 Sun Microsystems, Inc., 4150 Network Circle,
- * Santa Clara, California 95054, U.S.A. All rights reserved.
+ *  Jajuk
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
+ *  This program is free software; you can redistribute it and/or
+ *  modify it under the terms of the GNU General Public License
+ *  as published by the Free Software Foundation; either version 2
+ *  of the License, or any later version.
  *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program; if not, write to the Free Software
+ *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ *  $Revision$
  */
 
 package ext;
@@ -43,8 +45,15 @@ import javax.swing.UIManager;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 
+/**
+ * DOCUMENT_ME.
+ */
 public class JXTrayIcon extends TrayIcon {
+  
+  /** DOCUMENT_ME. */
   private JPopupMenu menu;
+  
+  /** DOCUMENT_ME. */
   private static JDialog dialog;
   static {
     dialog = new JDialog((Frame) null, "TrayDialog");
@@ -52,6 +61,7 @@ public class JXTrayIcon extends TrayIcon {
     dialog.setAlwaysOnTop(true);
   }
 
+  /** DOCUMENT_ME. */
   private static PopupMenuListener popupListener = new PopupMenuListener() {
     public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
       // required by interface, but nothing to do here...
@@ -66,6 +76,11 @@ public class JXTrayIcon extends TrayIcon {
     }
   };
 
+  /**
+   * Instantiates a new jX tray icon.
+   * 
+   * @param image DOCUMENT_ME
+   */
   public JXTrayIcon(Image image) {
     super(image);
     addMouseListener(new MouseAdapter() {
@@ -81,6 +96,12 @@ public class JXTrayIcon extends TrayIcon {
     });
   }
 
+  /**
+   * Show j popup menu.
+   * DOCUMENT_ME
+   * 
+   * @param e DOCUMENT_ME
+   */
   private void showJPopupMenu(MouseEvent e) {
     if (e.isPopupTrigger() && menu != null) {
       Dimension size = menu.getPreferredSize();
@@ -92,10 +113,20 @@ public class JXTrayIcon extends TrayIcon {
     }
   }
 
+  /**
+   * Gets the j popu menu.
+   * 
+   * @return the j popu menu
+   */
   public JPopupMenu getJPopuMenu() {
     return menu;
   }
 
+  /**
+   * Sets the j popu menu.
+   * 
+   * @param menu the new j popu menu
+   */
   public void setJPopuMenu(JPopupMenu menu) {
     if (this.menu != null) {
       this.menu.removePopupMenuListener(popupListener);
@@ -104,6 +135,10 @@ public class JXTrayIcon extends TrayIcon {
     menu.addPopupMenuListener(popupListener);
   }
 
+  /**
+   * Creates the gui.
+   * DOCUMENT_ME
+   */
   private static void createGui() {
     JXTrayIcon tray = new JXTrayIcon(createImage());
     tray.setJPopuMenu(createJPopupMenu());
@@ -114,6 +149,13 @@ public class JXTrayIcon extends TrayIcon {
     }
   }
 
+  /**
+   * The main method.
+   * 
+   * @param args the arguments
+   * 
+   * @throws Exception the exception
+   */
   public static void main(String[] args) throws Exception {
 
     UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -125,6 +167,12 @@ public class JXTrayIcon extends TrayIcon {
     });
   }
 
+  /**
+   * Creates the image.
+   * DOCUMENT_ME
+   * 
+   * @return the image
+   */
   static Image createImage() {
     BufferedImage i = new BufferedImage(32, 32, BufferedImage.TYPE_INT_ARGB);
     Graphics2D g2 = (Graphics2D) i.getGraphics();
@@ -134,6 +182,12 @@ public class JXTrayIcon extends TrayIcon {
     return i;
   }
 
+  /**
+   * Creates the j popup menu.
+   * DOCUMENT_ME
+   * 
+   * @return the j popup menu
+   */
   static JPopupMenu createJPopupMenu() {
     final JPopupMenu m = new JPopupMenu();
     m.add(new JMenuItem("Item 1"));

@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- * $Revision$
+ *  $Revision$
  */
 
 package org.jajuk.base;
@@ -23,40 +24,65 @@ package org.jajuk.base;
 import org.jajuk.services.webradio.WebRadio;
 
 /**
- * A search result, contains a file and a search description
+ * A search result, contains a file and a search description.
  */
 public class SearchResult implements Comparable<SearchResult> {
 
-  /** Result type * */
+  /**
+   * Result type *.
+   */
   public enum SearchResultType {
-    FILE, WEBRADIO
+    
+    /** DOCUMENT_ME. */
+    FILE, 
+ /** DOCUMENT_ME. */
+ WEBRADIO
   }
 
-  /** The associated file */
+  /** The associated file. */
   File file;
 
-  /** The associated web radio */
+  /** The associated web radio. */
   WebRadio radio;
 
-  /** Pre-calculated search string */
+  /** Pre-calculated search string. */
   String sResu;
 
+  /**
+   * Instantiates a new search result.
+   * 
+   * @param file DOCUMENT_ME
+   */
   public SearchResult(File file) {
     this(file, file.toStringSearch());
   }
 
+  /**
+   * Instantiates a new search result.
+   * 
+   * @param file DOCUMENT_ME
+   * @param sResu DOCUMENT_ME
+   */
   public SearchResult(File file, String sResu) {
     this.file = file;
     this.sResu = sResu;
   }
 
+  /**
+   * Instantiates a new search result.
+   * 
+   * @param radio DOCUMENT_ME
+   * @param sResu DOCUMENT_ME
+   */
   public SearchResult(WebRadio radio, String sResu) {
     this.radio = radio;
     this.sResu = sResu;
   }
 
   /**
-   * Return hashcode, used during sorting
+   * Return hashcode, used during sorting.
+   * 
+   * @return the int
    */
   @Override
   public int hashCode() {
@@ -73,6 +99,8 @@ public class SearchResult implements Comparable<SearchResult> {
   }
 
   /**
+   * Gets the file.
+   * 
    * @return Returns the file.
    */
   public File getFile() {
@@ -80,6 +108,7 @@ public class SearchResult implements Comparable<SearchResult> {
   }
 
   /**
+   * Gets the type.
    * 
    * @return result type: file or web radio
    */
@@ -92,6 +121,8 @@ public class SearchResult implements Comparable<SearchResult> {
   }
 
   /**
+   * Gets the webradio.
+   * 
    * @return Returns the webradio.
    */
   public WebRadio getWebradio() {
@@ -99,6 +130,8 @@ public class SearchResult implements Comparable<SearchResult> {
   }
 
   /**
+   * Gets the resu.
+   * 
    * @return Returns the sResu.
    */
   public String getResu() {

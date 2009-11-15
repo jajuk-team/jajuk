@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2007 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -33,18 +34,19 @@ import javax.swing.ImageIcon;
  */
 final public class IconLoader {
 
-  /** Icons cache * */
+  /** Icons cache *. */
   private static Map<JajukIcons, ImageIcon> cache = new HashMap<JajukIcons, ImageIcon>(200);
 
   /**
-   * No instantiation
+   * No instantiation.
    */
   private IconLoader() {
   }
 
   /**
-   * @param size
-   *          The size of the icon to return.
+   * Gets the no cover icon.
+   * 
+   * @param size The size of the icon to return.
    * 
    * @return the nocover icon for specified size
    */
@@ -55,10 +57,12 @@ final public class IconLoader {
   }
 
   /**
-   * @param icon
-   *          the JajukIcons name
+   * Gets the icon.
+   * 
+   * @param icon the JajukIcons name
+   * 
    * @return an image icon for given icon name.Note that all images are cached
-   *         before being returned.
+   * before being returned.
    */
   public static ImageIcon getIcon(JajukIcons icon) {
 

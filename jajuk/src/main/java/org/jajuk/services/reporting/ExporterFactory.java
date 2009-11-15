@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2007 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,15 +16,19 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision: 2118 $
+ *  $Revision$
  */
 package org.jajuk.services.reporting;
 
 import java.io.IOException;
 
+/**
+ * DOCUMENT_ME.
+ */
 public final class ExporterFactory {
+  
   /**
-   * private constructor to avoid instantiating utility class
+   * private constructor to avoid instantiating utility class.
    */
   private ExporterFactory() {
   }
@@ -31,9 +36,11 @@ public final class ExporterFactory {
   /**
    * This methods returns an instance of Exporter.
    * 
-   * @param extention
-   *          Exporter type (.xml or .html)
+   * @param extension DOCUMENT_ME
+   * 
    * @return Returns an instance of XMLExporter.
+   * 
+   * @throws IOException Signals that an I/O exception has occurred.
    */
   public static Exporter createExporter(String extension) throws IOException {
     if ("html".equals(extension)) {

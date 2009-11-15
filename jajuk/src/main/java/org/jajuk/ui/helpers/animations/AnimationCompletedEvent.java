@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2009 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- * $Revision: 2921 $
+ *  $Revision$
  */
 
 package org.jajuk.ui.helpers.animations;
@@ -23,21 +24,41 @@ package org.jajuk.ui.helpers.animations;
 import java.awt.Window;
 
 /**
- * Event thrown when the naimation is done
+ * Event thrown when the naimation is done.
  */
 public class AnimationCompletedEvent {
+  
+  /** DOCUMENT_ME. */
   private IAnimation source;
+  
+  /** DOCUMENT_ME. */
   private Window window;
 
+  /**
+   * Instantiates a new animation completed event.
+   * 
+   * @param source DOCUMENT_ME
+   * @param window DOCUMENT_ME
+   */
   public AnimationCompletedEvent(IAnimation source, Window window) {
     this.source = source;
     this.window = window;
   }
 
+  /**
+   * Gets the source.
+   * 
+   * @return the source
+   */
   public IAnimation getSource() {
     return source;
   }
 
+  /**
+   * Gets the window.
+   * 
+   * @return the window
+   */
   public Window getWindow() {
     return window;
   }

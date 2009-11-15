@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2007 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -29,36 +30,48 @@ import org.jajuk.util.log.Log;
 
 /**
  * Provides devices refresh report features <br>
- * Is responsible to manage various UI items changed during refreshing
+ * Is responsible to manage various UI items changed during refreshing.
  */
 public class RefreshReporter {
 
+  /** DOCUMENT_ME. */
   protected Device device;
 
+  /** DOCUMENT_ME. */
   protected int dirTotal;
 
+  /** DOCUMENT_ME. */
   protected int dirCount;
 
-  /** Actual refresh date start* */
+  /** Actual refresh date start*. */
   protected long lRefreshDateStart;
 
-  /** Number of new files found during refresh for stats */
+  /** Number of new files found during refresh for stats. */
   protected int iNbNewFiles;
 
-  /** Number of corrupted files found during refresh for stats */
+  /** Number of corrupted files found during refresh for stats. */
   protected int iNbCorruptedFiles;
 
+  /**
+   * Instantiates a new refresh reporter.
+   * 
+   * @param device DOCUMENT_ME
+   */
   public RefreshReporter(Device device) {
     this.device = device;
   }
 
+  /**
+   * Startup.
+   * DOCUMENT_ME
+   */
   public void startup() {
     // reset all values as this object is reused
     reset();
   }
 
   /**
-   * Reset all values
+   * Reset all values.
    */
   protected void reset() {
     this.dirTotal = -1;
@@ -78,18 +91,38 @@ public class RefreshReporter {
     dirTotal *= 1.05;
   }
 
+  /**
+   * Notify corrupted file.
+   * DOCUMENT_ME
+   */
   public void notifyCorruptedFile() {
     iNbCorruptedFiles++;
   }
 
+  /**
+   * Notify new file.
+   * DOCUMENT_ME
+   */
   public void notifyNewFile() {
     iNbNewFiles++;
   }
 
+  /**
+   * Refresh started.
+   * DOCUMENT_ME
+   */
   public void refreshStarted() {
     lRefreshDateStart = System.currentTimeMillis();
   }
 
+  /**
+   * Builds the final message.
+   * DOCUMENT_ME
+   * 
+   * @param time DOCUMENT_ME
+   * 
+   * @return the string
+   */
   protected String buildFinalMessage(long time) {
     StringBuilder sbOut = new StringBuilder("[").append(device.getName()).append(
         Messages.getString("Device.25"))
@@ -102,7 +135,7 @@ public class RefreshReporter {
   }
 
   /**
-   * Callback method called at the end of the refresh
+   * Callback method called at the end of the refresh.
    */
   public void done() {
     long refreshTime = System.currentTimeMillis() - lRefreshDateStart;
@@ -123,7 +156,7 @@ public class RefreshReporter {
    * Callback method when an update state is required. Can be overwritten for
    * specific behaviors
    * 
-   * @param dir
+   * @param dir DOCUMENT_ME
    */
   public void updateState(Directory dir) {
     // Intentionnal NOP

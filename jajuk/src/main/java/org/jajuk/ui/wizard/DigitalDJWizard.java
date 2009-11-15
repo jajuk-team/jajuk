@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2007 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $$Revision$$
+ *  $Revision$
  */
 package org.jajuk.ui.wizard;
 
@@ -77,74 +78,77 @@ import org.qdwizard.Screen;
 import org.qdwizard.Wizard;
 
 /**
- * DJ creation wizard
+ * DJ creation wizard.
  */
 public class DigitalDJWizard extends Wizard {
 
-  /** Wizard action */
+  /** Wizard action. */
   private static final String KEY_ACTION = "ACTION";
 
-  /** DJ type variable name */
+  /** DJ type variable name. */
   private static final String KEY_DJ_TYPE = "TYPE";
 
-  /** DJ name variable name */
+  /** DJ name variable name. */
   private static final String KEY_DJ_NAME = "NAME";
 
-  /** Track unicity */
+  /** Track unicity. */
   private static final String KEY_UNICITY = "UNICITY";
 
-  /** Ratings level */
+  /** Ratings level. */
   private static final String KEY_RATINGS_LEVEL = "RATING_LEVEL";
 
-  /** Fade duration */
+  /** Fade duration. */
   private static final String KEY_FADE_DURATION = "FADE_DURATION";
 
-  /** Transitions */
+  /** Transitions. */
   private static final String KEY_TRANSITIONS = "TRANSITIONS";
 
-  /** Proportions */
+  /** Proportions. */
   private static final String KEY_PROPORTIONS = "PROPORTIONS";
 
-  /** Ambience */
+  /** Ambience. */
   private static final String KEY_AMBIENCE = "AMBIENCE";
 
-  /** DJ to remove */
+  /** DJ to remove. */
   private static final String KEY_REMOVE = "REMOVE";
 
-  /** DJ to change */
+  /** DJ to change. */
   private static final String KEY_CHANGE = "CHANGE";
 
-  /** Max number of tracks to queue */
+  /** Max number of tracks to queue. */
   private static final String KEY_MAX_TRACKS = "MAXTRACKS";
 
   /**
-   * 
-   * DJ type choice
+   * DJ type choice.
    */
   public static class TypeSelectionPanel extends Screen implements ActionListener {
 
+    /** Generated serialVersionUID. */
     private static final long serialVersionUID = 1L;
 
-    /** Transition DJ code */
+    /** Transition DJ code. */
     private static final String DJ_TYPE_TRANSITION = "0";
 
-    /** Proportions DJ code */
+    /** Proportions DJ code. */
     private static final String DJ_TYPE_PROPORTION = "1";
 
-    /** Ambience DJ code */
+    /** Ambience DJ code. */
     private static final String DJ_TYPE_AMBIENCE = "2";
 
+    /** DOCUMENT_ME. */
     ButtonGroup bgTypes;
 
+    /** DOCUMENT_ME. */
     JRadioButton jrbTransitions;
 
+    /** DOCUMENT_ME. */
     JRadioButton jrbProp;
 
+    /** DOCUMENT_ME. */
     JRadioButton jrbAmbiance;
 
     /**
-     * Create panel UI
-     * 
+     * Create panel UI.
      */
     @Override
     public void initUI() {
@@ -184,11 +188,17 @@ public class DigitalDJWizard extends Wizard {
       }
     }
 
+    /* (non-Javadoc)
+     * @see org.qdwizard.Screen#getDescription()
+     */
     @Override
     public String getDescription() {
       return Messages.getString("DigitalDJWizard.0");
     }
 
+    /* (non-Javadoc)
+     * @see org.qdwizard.Screen#getName()
+     */
     @Override
     public String getName() {
       return Messages.getString("DigitalDJWizard.46");
@@ -196,22 +206,24 @@ public class DigitalDJWizard extends Wizard {
   }
 
   /**
-   * 
-   * DJ removal
+   * DJ removal.
    */
   public static class RemovePanel extends Screen implements ActionListener {
 
+    /** Generated serialVersionUID. */
     private static final long serialVersionUID = 1L;
 
+    /** DOCUMENT_ME. */
     JComponent[][] widgets;
 
+    /** DOCUMENT_ME. */
     ButtonGroup bgDJS;
 
+    /** DOCUMENT_ME. */
     List<DigitalDJ> djs;
 
     /**
-     * Create panel UI
-     * 
+     * Create panel UI.
      */
 
     @Override
@@ -256,11 +268,17 @@ public class DigitalDJWizard extends Wizard {
       setProblem(null);
     }
 
+    /* (non-Javadoc)
+     * @see org.qdwizard.Screen#getDescription()
+     */
     @Override
     public String getDescription() {
       return Messages.getString("DigitalDJWizard.40");
     }
 
+    /* (non-Javadoc)
+     * @see org.qdwizard.Screen#getName()
+     */
     @Override
     public String getName() {
       return Messages.getString("DigitalDJWizard.51");
@@ -268,22 +286,24 @@ public class DigitalDJWizard extends Wizard {
   }
 
   /**
-   * 
-   * DJ Selection for change
+   * DJ Selection for change.
    */
   public static class ChangePanel extends Screen implements ActionListener {
 
+    /** Generated serialVersionUID. */
     private static final long serialVersionUID = 1L;
 
+    /** DOCUMENT_ME. */
     JComponent[][] widgets;
 
+    /** DOCUMENT_ME. */
     ButtonGroup bgDJS;
 
+    /** DOCUMENT_ME. */
     List<DigitalDJ> djs;
 
     /**
-     * Create panel UI
-     * 
+     * Create panel UI.
      */
 
     @Override
@@ -341,11 +361,17 @@ public class DigitalDJWizard extends Wizard {
       setProblem(null);
     }
 
+    /* (non-Javadoc)
+     * @see org.qdwizard.Screen#getDescription()
+     */
     @Override
     public String getDescription() {
       return Messages.getString("DigitalDJWizard.44");
     }
 
+    /* (non-Javadoc)
+     * @see org.qdwizard.Screen#getName()
+     */
     @Override
     public String getName() {
       return Messages.getString("DigitalDJWizard.43");
@@ -353,33 +379,36 @@ public class DigitalDJWizard extends Wizard {
   }
 
   /**
-   * 
-   * Action type (new or alter)
+   * Action type (new or alter).
    */
   public static class ActionSelectionPanel extends Screen implements ClearPoint, ActionListener {
 
+    /** Generated serialVersionUID. */
     private static final long serialVersionUID = 1L;
 
-    /** NEW code */
+    /** NEW code. */
     public static final String ACTION_CREATION = "0";
 
-    /** CHANGE code */
+    /** CHANGE code. */
     public static final String ACTION_CHANGE = "1";
 
-    /** DELETE code */
+    /** DELETE code. */
     public static final String ACTION_DELETE = "2";
 
+    /** DOCUMENT_ME. */
     ButtonGroup bgActions;
 
+    /** DOCUMENT_ME. */
     JRadioButton jrbNew;
 
+    /** DOCUMENT_ME. */
     JRadioButton jrbChange;
 
+    /** DOCUMENT_ME. */
     JRadioButton jrbDelete;
 
     /**
-     * Create panel UI
-     * 
+     * Create panel UI.
      */
     @Override
     public void initUI() {
@@ -422,11 +451,17 @@ public class DigitalDJWizard extends Wizard {
       }
     }
 
+    /* (non-Javadoc)
+     * @see org.qdwizard.Screen#getDescription()
+     */
     @Override
     public String getDescription() {
       return Messages.getString("DigitalDJWizard.16");
     }
 
+    /* (non-Javadoc)
+     * @see org.qdwizard.Screen#getName()
+     */
     @Override
     public String getName() {
       return Messages.getString("DigitalDJWizard.45");
@@ -434,51 +469,65 @@ public class DigitalDJWizard extends Wizard {
   }
 
   /**
-   * 
-   * General options panel
+   * General options panel.
    */
   public static class GeneralOptionsPanel extends Screen implements ActionListener, CaretListener,
       ChangeListener {
 
-    /**
-     * 
-     */
+    /** The Constant NO_MAX_TRACKS.  DOCUMENT_ME */
     private static final String NO_MAX_TRACKS = "  ";
 
+    /** Generated serialVersionUID. */
     private static final long serialVersionUID = 1L;
 
+    /** DOCUMENT_ME. */
     JLabel jlName;
 
+    /** DOCUMENT_ME. */
     JTextField jtfName;
 
+    /** DOCUMENT_ME. */
     JLabel jlRatingLevel;
 
+    /** DOCUMENT_ME. */
     JSlider jsRatingLevel;
 
+    /** DOCUMENT_ME. */
     JLabel jlFadeDuration;
 
+    /** DOCUMENT_ME. */
     JSlider jsFadeDuration;
 
+    /** DOCUMENT_ME. */
     JCheckBox jcbMaxTracks;
 
+    /** DOCUMENT_ME. */
     JSlider jsMaxTracks;
 
+    /** DOCUMENT_ME. */
     JLabel jnMaxTracks;
 
+    /** DOCUMENT_ME. */
     JCheckBox jcbUnicity;
 
+    /* (non-Javadoc)
+     * @see org.qdwizard.Screen#getDescription()
+     */
     @Override
     public String getDescription() {
       return Messages.getString("DigitalDJWizard.49");
     }
 
+    /* (non-Javadoc)
+     * @see org.qdwizard.Screen#getName()
+     */
     @Override
     public String getName() {
       return Messages.getString("DigitalDJWizard.48");
     }
 
     /**
-     * Create panel UI
+     * Create panel UI.
      */
 
     @Override
@@ -665,7 +714,7 @@ public class DigitalDJWizard extends Wizard {
     }
 
     /**
-     * Update all items related to the Max Track feature
+     * Update all items related to the Max Track feature.
      */
     private void updateMaxTracks() {
       // store -1 if checkbox is not enabled and update the label accordingly
@@ -684,30 +733,37 @@ public class DigitalDJWizard extends Wizard {
   }
 
   /**
-   * 
-   * Transitions panel
+   * Transitions panel.
    */
   public static class TransitionsPanel extends Screen {
 
+    /** Generated serialVersionUID. */
     private static final long serialVersionUID = 1L;
 
-    /** All dynamic widgets */
+    /** All dynamic widgets. */
     JComponent[][] widgets;
 
-    /** Transitions* */
+    /** Transitions*. */
     List<Transition> alTransitions;
 
+    /* (non-Javadoc)
+     * @see org.qdwizard.Screen#getDescription()
+     */
     @Override
     public String getDescription() {
       return Messages.getString("DigitalDJWizard.52");
     }
 
+    /* (non-Javadoc)
+     * @see org.qdwizard.Screen#getName()
+     */
     @Override
     public String getName() {
       return Messages.getString("DigitalDJWizard.20");
     }
 
     /**
+     * Gets the cleaned transitions.
      * 
      * @return Filled transitions only
      */
@@ -724,8 +780,7 @@ public class DigitalDJWizard extends Wizard {
     }
 
     /**
-     * Create panel UI
-     * 
+     * Create panel UI.
      */
 
     @Override
@@ -750,6 +805,7 @@ public class DigitalDJWizard extends Wizard {
     }
 
     /**
+     * Gets the transitions panel.
      * 
      * @return a panel containing all transitions
      */
@@ -842,12 +898,10 @@ public class DigitalDJWizard extends Wizard {
     }
 
     /**
-     * Add a style to a transition
+     * Add a style to a transition.
      * 
-     * @param row
-     *          row
-     * @param bFrom
-     *          is it a from button ?
+     * @param row row
+     * @param bFrom is it a from button ?
      */
     private void addStyle(int row, boolean bFrom) {
       synchronized (StyleManager.getInstance()) {
@@ -916,9 +970,10 @@ public class DigitalDJWizard extends Wizard {
     }
 
     /**
+     * Contains void item.
      * 
      * @return whether a void item already exist (used to avoid creating several
-     *         void items)
+     * void items)
      */
     private boolean containsVoidItem() {
       for (JComponent[] element : widgets) {
@@ -932,8 +987,7 @@ public class DigitalDJWizard extends Wizard {
     }
 
     /**
-     * Refresh panel
-     * 
+     * Refresh panel.
      */
     private void refreshScreen() {
       removeAll();
@@ -946,31 +1000,37 @@ public class DigitalDJWizard extends Wizard {
   }
 
   /**
-   * 
-   * Proportion panel
+   * Proportion panel.
    */
   public static class ProportionsPanel extends Screen {
 
+    /** Generated serialVersionUID. */
     private static final long serialVersionUID = 1L;
 
-    /** All dynamic widgets */
+    /** All dynamic widgets. */
     JComponent[][] widgets;
 
-    /** Proportions* */
+    /** Proportions*. */
     List<Proportion> proportions;
 
+    /* (non-Javadoc)
+     * @see org.qdwizard.Screen#getDescription()
+     */
     @Override
     public String getDescription() {
       return Messages.getString("DigitalDJWizard.50");
     }
 
+    /* (non-Javadoc)
+     * @see org.qdwizard.Screen#getName()
+     */
     @Override
     public String getName() {
       return Messages.getString("DigitalDJWizard.29");
     }
 
     /**
-     * Create panel UI
+     * Create panel UI.
      */
 
     @Override
@@ -995,6 +1055,7 @@ public class DigitalDJWizard extends Wizard {
     }
 
     /**
+     * Gets the cleaned proportions.
      * 
      * @return Filled proportions only
      */
@@ -1009,6 +1070,7 @@ public class DigitalDJWizard extends Wizard {
     }
 
     /**
+     * Gets the proportions panel.
      * 
      * @return a panel containing all proportions
      */
@@ -1094,6 +1156,7 @@ public class DigitalDJWizard extends Wizard {
     }
 
     /**
+     * Gets the total value.
      * 
      * @return Sum of all proportions
      */
@@ -1112,10 +1175,9 @@ public class DigitalDJWizard extends Wizard {
     }
 
     /**
-     * Add a style to a proportion
+     * Add a style to a proportion.
      * 
-     * @param row
-     *          row
+     * @param row row
      */
     private void addStyle(int row) {
       synchronized (StyleManager.getInstance()) {
@@ -1175,9 +1237,10 @@ public class DigitalDJWizard extends Wizard {
     }
 
     /**
+     * Contains void item.
      * 
      * @return whether a void item already exist (used to avoid creating several
-     *         void items)
+     * void items)
      */
     private boolean containsVoidItem() {
       for (JComponent[] element : widgets) {
@@ -1190,8 +1253,7 @@ public class DigitalDJWizard extends Wizard {
     }
 
     /**
-     * Refresh panel
-     * 
+     * Refresh panel.
      */
     private void refreshScreen() {
       removeAll();
@@ -1203,38 +1265,43 @@ public class DigitalDJWizard extends Wizard {
   }
 
   /**
-   * 
-   * Ambience based
+   * Ambience based.
    */
   public static class AmbiencePanel extends Screen implements ActionListener {
 
+    /** Generated serialVersionUID. */
     private static final long serialVersionUID = 1L;
 
-    /** All dynamic widgets */
+    /** All dynamic widgets. */
     JComponent[][] widgets;
 
-    /** Ambiences* */
+    /** Ambiences*. */
     List<Ambience> ambiences;
 
-    /** DJ* */
+    /** DJ*. */
     AmbienceDigitalDJ dj = null;
 
-    /** Selected ambience index */
+    /** Selected ambience index. */
     int ambienceIndex = 0;
 
+    /* (non-Javadoc)
+     * @see org.qdwizard.Screen#getDescription()
+     */
     @Override
     public String getDescription() {
       return Messages.getString("DigitalDJWizard.47");
     }
 
+    /* (non-Javadoc)
+     * @see org.qdwizard.Screen#getName()
+     */
     @Override
     public String getName() {
       return Messages.getString("DigitalDJWizard.31");
     }
 
     /**
-     * Create panel UI
-     * 
+     * Create panel UI.
      */
     @Override
     public void initUI() {
@@ -1255,6 +1322,7 @@ public class DigitalDJWizard extends Wizard {
     }
 
     /**
+     * Gets the ambiences panel.
      * 
      * @return a panel containing all ambiences
      */
@@ -1311,8 +1379,11 @@ public class DigitalDJWizard extends Wizard {
   }
 
   /**
+   * Gets the widget index.
    * 
-   * @param widget
+   * @param widget DOCUMENT_ME
+   * @param widgets DOCUMENT_ME
+   * 
    * @return index of a given widget row in the widget table
    */
   private static int getWidgetIndex(JComponent[][] widgets, JComponent widget) {
@@ -1392,6 +1463,9 @@ public class DigitalDJWizard extends Wizard {
     return null;
   }
 
+  /**
+   * Instantiates a new digital dj wizard.
+   */
   public DigitalDJWizard() {
     super(Messages.getString("DigitalDJWizard.4"), ActionSelectionPanel.class, null,
         JajukMainWindow.getInstance(), LocaleManager.getLocale());
@@ -1459,8 +1533,9 @@ public class DigitalDJWizard extends Wizard {
     ObservationManager.notify(new JajukEvent(JajukEvents.DJS_CHANGE));
   }
 
-  /** Store the properties from the Wizard to the specified DJ.
-   *  
+  /**
+   * Store the properties from the Wizard to the specified DJ.
+   * 
    * @param dj The DJ to populate.
    */
   private void setProperties(DigitalDJ dj) {

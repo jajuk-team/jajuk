@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2008 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision: 3132 $
+ *  $Revision$
  */
 package org.jajuk.util.filters;
 
@@ -27,15 +28,15 @@ import org.jajuk.util.JajukFileFilter;
 import org.jajuk.util.UtilSystem;
 
 /**
- * 
- * Not Audio file filter (must be a file)
+ * Not Audio file filter (must be a file).
  */
 public final class NotAudioFilter extends JajukFileFilter {
 
-  /** Self instance */
+  /** Self instance. */
   private static NotAudioFilter self = null;
 
   /**
+   * Gets the instance.
    * 
    * @return singleton
    */
@@ -47,7 +48,7 @@ public final class NotAudioFilter extends JajukFileFilter {
   }
 
   /**
-   * Singleton constructor (protected for testing purposes)
+   * Singleton constructor (protected for testing purposes).
    */
   private NotAudioFilter() {
   }

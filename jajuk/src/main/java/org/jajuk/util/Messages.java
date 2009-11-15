@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -54,35 +55,33 @@ import org.xml.sax.helpers.DefaultHandler;
  * Utility class to get strings from localized property files
  * <p>
  * Singleton
- * </p>
+ * </p>.
  */
 public class Messages extends DefaultHandler {
 
-  /** Messages initialized flag */
+  /** Messages initialized flag. */
   protected static boolean bInitialized = false;
 
-  /** All choice option, completes JDialog options */
+  /** All choice option, completes JDialog options. */
   public static final int ALL_OPTION = 10;
 
-  /** Specific Yes NO All Cancel option */
+  /** Specific Yes NO All Cancel option. */
   public static final int YES_NO_ALL_CANCEL_OPTION = 11;
 
-  /**
-   * User choice
-   */
+  /** User choice. */
   private static int choice;
 
-  /**
-   * Messages themselves extracted from an XML file to this properties class*
-   */
+  /** Messages themselves extracted from an XML file to this properties class*. */
   protected static Properties properties;
 
-  /** English messages used as default* */
+  /** English messages used as default*. */
   private static Properties propertiesEn;
 
   /**
+   * Contains.
    * 
-   * @param sKey
+   * @param sKey DOCUMENT_ME
+   * 
    * @return whether given key exists
    */
   public static boolean contains(final String sKey) {
@@ -90,8 +89,11 @@ public class Messages extends DefaultHandler {
   }
 
   /**
-   * @param key
-   * @return
+   * Gets the string.
+   * 
+   * @param key DOCUMENT_ME
+   * 
+   * @return the string
    */
   public static String getString(final String key) {
     String sOut = key;
@@ -119,9 +121,9 @@ public class Messages extends DefaultHandler {
    * Example:
    * 
    * <pre>
-   *     example.0=Message 1
-   *     example.1=Message 2
-   *     example.2=Message 3
+   * example.0=Message 1
+   * example.1=Message 2
+   * example.2=Message 3
    * </pre>
    * 
    * Using <tt>Messages.getAll("example");</tt> will return a size 3 String
@@ -131,11 +133,11 @@ public class Messages extends DefaultHandler {
    * <tt>example.5=Message 5</tt> to the bundle, will not result in adding it to
    * the array without first adding <tt>example.3</tt> and <tt>example.4</tt>.
    * 
-   * @param base
-   *          The base to use for generating the keys.
+   * @param base The base to use for generating the keys.
+   * 
    * @return An array of Strings containing the messages linked to the key,
-   *         never <tt>null</tt>. If <tt>base.0</tt> is not found, and empty
-   *         array is returned.
+   * never <tt>null</tt>. If <tt>base.0</tt> is not found, and empty
+   * array is returned.
    */
   public static String[] getAll(final String base) {
     final List<String> msgs = new ArrayList<String>();
@@ -168,6 +170,7 @@ public class Messages extends DefaultHandler {
   }
 
   /**
+   * Gets the shuffle tip of the day.
    * 
    * @return a shuffled tip of the day <br>
    */
@@ -192,11 +195,11 @@ public class Messages extends DefaultHandler {
   }
 
   /**
-   * Return Flag icon for given description
+   * Return Flag icon for given description.
    * 
-   * @param dDesc
-   *          language description
-   * @return
+   * @param sDesc DOCUMENT_ME
+   * 
+   * @return the icon
    */
   public static Icon getIcon(final String sDesc) {
     Icon icon = new ImageIcon(UtilSystem.getResource("icons/16x16/flag_"
@@ -204,16 +207,18 @@ public class Messages extends DefaultHandler {
     return icon;
   }
 
-  /*****************************************************************************
-   * Parse a fake properties file inside an XML file as CDATA
+  /**
+   * ***************************************************************************
+   * Parse a fake properties file inside an XML file as CDATA.
    * 
-   * @param local
+   * @param locale DOCUMENT_ME
+   * 
    * @return a properties with all entries
-   * @throws IOException
-   * @throws SAXException
-   * @throws ParserConfigurationException
-   * @throws Exception
-   */
+   * 
+   * @throws IOException Signals that an I/O exception has occurred.
+   * @throws SAXException the SAX exception
+   * @throws ParserConfigurationException the parser configuration exception
+   * @throws Exception    */
   private static Properties parseLangpack(final Locale locale) throws SAXException, IOException,
       ParserConfigurationException {
     final Properties lProperties = new Properties();
@@ -280,8 +285,8 @@ public class Messages extends DefaultHandler {
   /**
    * Return the message display to the user corresponding to the error code.
    * 
-   * @param code
-   *          Error code.
+   * @param code Error code.
+   * 
    * @return String Message corresponding to the error code.
    */
   public static String getErrorMessage(final int code) {
@@ -299,13 +304,13 @@ public class Messages extends DefaultHandler {
    * <p>
    * CAUTION! the thread which calls this method musn't have locks on resources
    * : otherwise it can conduct to GUI freeze
-   * </p>
+   * </p>.
    * 
-   * @param sText
-   *          : dialog text
-   * @param int optionType : kind of options like JOptionPane.OK_CANCEL
-   * @param iType
-   *          message type like JOptionPane.WARNING
+   * @param sText : dialog text
+   * @param iType message type like JOptionPane.WARNING
+   * @param optionsType DOCUMENT_ME
+   * 
+   * @return the choice
    */
   public static int getChoice(final String sText, final int optionsType, final int iType) {
     try {
@@ -337,8 +342,10 @@ public class Messages extends DefaultHandler {
   }
 
   /**
+   * Gets the title for type.
    * 
-   * @param iType
+   * @param iType DOCUMENT_ME
+   * 
    * @return String for given JOptionPane message type
    */
   private static String getTitleForType(final int iType) {
@@ -354,9 +361,9 @@ public class Messages extends DefaultHandler {
   }
 
   /**
-   * Show a dialog with specified warning message
+   * Show a dialog with specified warning message.
    * 
-   * @param sMessage
+   * @param sMessage DOCUMENT_ME
    */
   public static void showWarningMessage(final String sMessage) {
     SwingUtilities.invokeLater(new Runnable() {
@@ -368,11 +375,10 @@ public class Messages extends DefaultHandler {
   }
 
   /**
-   * Show a dialog with specified warning message + a "not show again" button
+   * Show a dialog with specified warning message + a "not show again" button.
    * 
-   * @param sMessage
-   * @param sProperty
-   *          : property name
+   * @param sMessage DOCUMENT_ME
+   * @param sProperty : property name
    */
   public static void showHideableWarningMessage(final String sMessage, final String sProperty) {
     // User required to hide this message
@@ -391,9 +397,10 @@ public class Messages extends DefaultHandler {
   }
 
   /**
-   * Show a dialog with specified error message and an icon
+   * Show a dialog with specified error message and an icon.
    * 
-   * @param sMessage
+   * @param sMessage DOCUMENT_ME
+   * @param icon DOCUMENT_ME
    */
   public static void showInfoMessage(final String sMessage, final Icon icon) {
     SwingUtilities.invokeLater(new Runnable() {
@@ -405,10 +412,10 @@ public class Messages extends DefaultHandler {
   }
 
   /**
-   * Show a dialog with specified error message and infosup
+   * Show a dialog with specified error message and infosup.
    * 
-   * @param code
-   * @param sInfoSup
+   * @param code DOCUMENT_ME
+   * @param sInfoSup DOCUMENT_ME
    */
   public static void showErrorMessage(final int code, final String sInfoSup) {
     SwingUtilities.invokeLater(new Runnable() {
@@ -419,19 +426,20 @@ public class Messages extends DefaultHandler {
   }
 
   /**
-   * Show a dialog with specified error message
+   * Show a dialog with specified error message.
    * 
-   * @param sCode
+   * @param code DOCUMENT_ME
    */
   public static void showErrorMessage(final int code) {
     showErrorMessage(code, null);
   }
 
   /**
-   * Show a dialog with specified error message and infosup and details
+   * Show a dialog with specified error message and infosup and details.
    * 
-   * @param sCode
-   * @param sInfoSup
+   * @param sInfoSup DOCUMENT_ME
+   * @param code DOCUMENT_ME
+   * @param sDetails DOCUMENT_ME
    */
   public static void showDetailedErrorMessage(final int code, final String sInfoSup,
       final String sDetails) {
@@ -444,10 +452,10 @@ public class Messages extends DefaultHandler {
   }
 
   /**
-   * Show a dialog with specified error message with infos up
+   * Show a dialog with specified error message with infos up.
    * 
-   * @param sMessage
-   * @param sInfoSup
+   * @param sMessage DOCUMENT_ME
+   * @param sInfoSup DOCUMENT_ME
    */
   public static void showInfoMessage(final String sMessage, final String sInfoSup) {
     SwingUtilities.invokeLater(new Runnable() {
@@ -460,9 +468,9 @@ public class Messages extends DefaultHandler {
   }
 
   /**
-   * Show a dialog with specified error message
+   * Show a dialog with specified error message.
    * 
-   * @param sMessage
+   * @param sMessage DOCUMENT_ME
    */
   public static void showInfoMessage(final String sMessage) {
     SwingUtilities.invokeLater(new Runnable() {
@@ -476,19 +484,22 @@ public class Messages extends DefaultHandler {
   /**
    * Return true if the messaging system is started, can be useful mainly at
    * startup by services ( like logs) using them to avoid dead locks Messages
-   * service is initialized after current has been set
+   * service is initialized after current has been set.
    * 
-   * @return
+   * @return true, if checks if is initialized
    */
   public static boolean isInitialized() {
     return bInitialized;
   }
 
   /**
+   * Gets the properties.
+   * 
    * @return Returns the properties.
-   * @throws ParserConfigurationException
-   * @throws IOException
-   * @throws SAXException
+   * 
+   * @throws ParserConfigurationException the parser configuration exception
+   * @throws IOException Signals that an I/O exception has occurred.
+   * @throws SAXException the SAX exception
    */
   public static Properties getProperties() throws SAXException, IOException,
       ParserConfigurationException {
@@ -504,6 +515,8 @@ public class Messages extends DefaultHandler {
   }
 
   /**
+   * Gets the properties en.
+   * 
    * @return Returns the propertiesEn.
    */
   public static Properties getPropertiesEn() {

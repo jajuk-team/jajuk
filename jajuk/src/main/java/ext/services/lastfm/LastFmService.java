@@ -1,25 +1,22 @@
 /*
- * Adapted by Jajuk team
- * Copyright (C) 2003-2009 the Jajuk Team
- * http://jajuk.info
- * 
- * aTunes 1.14.0
- * Copyright (C) 2006-2009 Alex Aranda, Sylvain Gaudard, Thomas Beckers and contributors
+ *  Jajuk
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
- * See http://www.atunes.org/wiki/index.php?title=Contributing for information about contributors
+ *  This program is free software; you can redistribute it and/or
+ *  modify it under the terms of the GNU General Public License
+ *  as published by the Free Software Foundation; either version 2
+ *  of the License, or any later version.
  *
- * http://www.atunes.org
- * http://sourceforge.net/projects/atunes
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
  *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program; if not, write to the Free Software
+ *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ *  $Revision$
  */
 
 package ext.services.lastfm;
@@ -67,45 +64,70 @@ public class LastFmService {
   /*
    * DO NOT USE THESE KEYS FOR OTHER APPLICATIONS THAN Jajuk!
    */
+  /** The Constant API_KEY.  DOCUMENT_ME */
   private static final String API_KEY = "711591ss6q695ps349o6681pr1oq1467";
+  
+  /** The Constant CLIENT_ID.  DOCUMENT_ME */
   private static final String CLIENT_ID = "jaj";
+  
+  /** The Constant CLIENT_VERSION.  DOCUMENT_ME */
   private static final String CLIENT_VERSION = "0.2"; // Assigned by Last.FM
   // team
 
+  /** The Constant ARTIST_WILDCARD.  DOCUMENT_ME */
   private static final String ARTIST_WILDCARD = "(%ARTIST%)";
+  
+  /** The Constant LANGUAGE_PARAM.  DOCUMENT_ME */
   private static final String LANGUAGE_PARAM = "?setlang=";
+  
+  /** The Constant LANGUAGE_WILDCARD.  DOCUMENT_ME */
   private static final String LANGUAGE_WILDCARD = "(%LANGUAGE%)";
+  
+  /** The Constant ARTIST_WIKI_URL.  DOCUMENT_ME */
   private static final String ARTIST_WIKI_URL = UtilString.concat("http://www.lastfm.com/music/",
       ARTIST_WILDCARD, "/+wiki", LANGUAGE_PARAM, LANGUAGE_WILDCARD);
 
+  /** The Constant VARIOUS_ARTISTS.  DOCUMENT_ME */
   private static final String VARIOUS_ARTISTS = "Various Artists";
 
+  /** The Constant MIN_DURATION_TO_SUBMIT.  DOCUMENT_ME */
   private static final int MIN_DURATION_TO_SUBMIT = 30;
 
+  /** The Constant MAX_SUBMISSIONS.  DOCUMENT_ME */
   private static final int MAX_SUBMISSIONS = 50;
 
+  /** DOCUMENT_ME. */
   private ext.services.network.Proxy proxy;
 
+  /** DOCUMENT_ME. */
   private Scrobbler scrobbler;
+  
+  /** DOCUMENT_ME. */
   private String user;
+  
+  /** DOCUMENT_ME. */
   private String password;
+  
+  /** DOCUMENT_ME. */
   private boolean handshakePerformed;
+  
+  /** DOCUMENT_ME. */
   private Locale locale;
 
+  /** DOCUMENT_ME. */
   private LastFmCache lastFmCache;
 
-  /** The singleton */
+  /** The singleton. */
   private static LastFmService self;
 
   /**
    * Instantiates a new Last.fm service
    * 
-   * @param proxy
-   *          the proxy
-   * @param user
-   *          the Last.fm username
-   * @param password
-   *          the Last.fm password
+   * @param proxy the proxy
+   * @param user the Last.fm username
+   * @param password the Last.fm password
+   * @param locale DOCUMENT_ME
+   * @param lastFmCache DOCUMENT_ME
    */
   private LastFmService(ext.services.network.Proxy proxy, String user, String password,
       Locale locale, LastFmCache lastFmCache) {
@@ -124,7 +146,7 @@ public class LastFmService {
   }
 
   /**
-   * Return the LastFMService singleton
+   * Return the LastFMService singleton.
    * 
    * @return the LastFMService singleton
    */
@@ -140,6 +162,13 @@ public class LastFmService {
     return self;
   }
 
+  /**
+   * Gets the artist.
+   * 
+   * @param artist DOCUMENT_ME
+   * 
+   * @return the artist
+   */
   public ArtistInfo getArtist(String artist) {
     try {
       // Try to get from cache
@@ -161,10 +190,8 @@ public class LastFmService {
   /**
    * Gets the album.
    * 
-   * @param artist
-   *          the artist
-   * @param album
-   *          the album
+   * @param artist the artist
+   * @param album the album
    * 
    * @return the album
    */
@@ -190,15 +217,10 @@ public class LastFmService {
   /**
    * Gets the album list.
    * 
-   * @param artist
-   *          the artist
-   * 
-   * @param hideVariousArtists
-   *          if <code>true</code> albums with artist name "Various Artists"
-   *          are nor returned
-   * 
-   * @param minimumSongNumber
-   *          albums with less songs than this argument won't be returned
+   * @param artist the artist
+   * @param hideVariousArtists if <code>true</code> albums with artist name "Various Artists"
+   * are nor returned
+   * @param minimumSongNumber albums with less songs than this argument won't be returned
    * 
    * @return the album list
    */
@@ -265,8 +287,7 @@ public class LastFmService {
   /**
    * Gets the artist top tag.
    * 
-   * @param artist
-   *          the artist
+   * @param artist the artist
    * 
    * @return the artist top tag
    */
@@ -284,8 +305,7 @@ public class LastFmService {
   /**
    * Gets the image.
    * 
-   * @param album
-   *          the album
+   * @param album the album
    * 
    * @return the image
    */
@@ -308,10 +328,9 @@ public class LastFmService {
   }
 
   /**
-   * Gets the image of an artist
+   * Gets the image of an artist.
    * 
-   * @param artist
-   *          the artist
+   * @param artist the artist
    * 
    * @return the image
    */
@@ -339,10 +358,9 @@ public class LastFmService {
   }
 
   /**
-   * Gets the image of the artist
+   * Gets the image of the artist.
    * 
-   * @param similar
-   *          the similar
+   * @param similar the similar
    * 
    * @return the image
    */
@@ -379,10 +397,11 @@ public class LastFmService {
   }
 
   /**
-   * Returns current artist image at LastFM
+   * Returns current artist image at LastFM.
    * 
-   * @param artistName
-   * @return
+   * @param artistName DOCUMENT_ME
+   * 
+   * @return the artist image from last fm
    */
   private Image getArtistImageFromLastFM(String artistName) {
     try {
@@ -408,8 +427,7 @@ public class LastFmService {
   /**
    * Gets the similar artists.
    * 
-   * @param artist
-   *          the artist
+   * @param artist the artist
    * 
    * @return the similar artists
    */
@@ -435,8 +453,7 @@ public class LastFmService {
   /**
    * Gets the wiki text.
    * 
-   * @param artist
-   *          the artist
+   * @param artist the artist
    * 
    * @return the wiki text
    */
@@ -465,8 +482,7 @@ public class LastFmService {
   /**
    * Gets the wiki url.
    * 
-   * @param artist
-   *          the artist
+   * @param artist the artist
    * 
    * @return the wiki url
    */
@@ -479,11 +495,10 @@ public class LastFmService {
   /**
    * Submits song to Last.fm
    * 
-   * @param file
-   *          audio file
-   * @param secondsPlayed
-   *          seconds the audio file has already played
-   * @throws ScrobblerException
+   * @param secondsPlayed seconds the audio file has already played
+   * @param track DOCUMENT_ME
+   * 
+   * @throws ScrobblerException the scrobbler exception
    */
   public void submit(Track track, long secondsPlayed) throws ScrobblerException {
     // Do all necessary checks
@@ -526,7 +541,7 @@ public class LastFmService {
   /**
    * Submits cache data to Last.fm
    * 
-   * @throws ScrobblerException
+   * @throws ScrobblerException the scrobbler exception
    */
   public void submitCache() throws ScrobblerException {
     // Do all necessary checks
@@ -577,9 +592,9 @@ public class LastFmService {
   /**
    * Submits now playing info to Last.fm
    * 
-   * @param file
-   *          audio file
-   * @throws ScrobblerException
+   * @param track DOCUMENT_ME
+   * 
+   * @throws ScrobblerException the scrobbler exception
    */
   public void submitNowPlayingInfo(Track track) throws ScrobblerException {
     // Do all necessary checks
@@ -606,10 +621,10 @@ public class LastFmService {
   }
 
   /**
-   * Performs handshake for submissions if needed
+   * Performs handshake for submissions if needed.
    * 
-   * @throws IOException
-   * @throws ScrobblerException
+   * @throws IOException Signals that an I/O exception has occurred.
+   * @throws ScrobblerException the scrobbler exception
    */
   private void performHandshakeIfNeeded() throws IOException, ScrobblerException {
     if (!handshakePerformed) {
@@ -622,9 +637,9 @@ public class LastFmService {
   }
 
   /**
-   * Checks user
+   * Checks user.
    * 
-   * @return
+   * @return true, if check user
    */
   private boolean checkUser() {
     if (user == null || user.equals("")) {
@@ -635,9 +650,9 @@ public class LastFmService {
   }
 
   /**
-   * Check password
+   * Check password.
    * 
-   * @return
+   * @return true, if check password
    */
   private boolean checkPassword() {
     if (StringUtils.isBlank(password)) {
@@ -648,10 +663,11 @@ public class LastFmService {
   }
 
   /**
-   * Check artist
+   * Check artist.
    * 
-   * @param ao
-   * @return
+   * @param track DOCUMENT_ME
+   * 
+   * @return true, if check artist
    */
   private boolean checkArtist(Track track) {
     String sArtist = track.getAuthor().getName2();
@@ -664,10 +680,11 @@ public class LastFmService {
   }
 
   /**
-   * Check title
+   * Check title.
    * 
-   * @param ao
-   * @return
+   * @param track DOCUMENT_ME
+   * 
+   * @return true, if check title
    */
   private boolean checkTitle(Track track) {
     if (StringUtils.isBlank(track.getName())) {
@@ -678,10 +695,11 @@ public class LastFmService {
   }
 
   /**
-   * Check duration
+   * Check duration.
    * 
-   * @param ao
-   * @return
+   * @param track DOCUMENT_ME
+   * 
+   * @return true, if check duration
    */
   private boolean checkDuration(Track track) {
     if (track.getDuration() < MIN_DURATION_TO_SUBMIT) {
@@ -691,26 +709,56 @@ public class LastFmService {
     return true;
   }
 
+  /**
+   * Gets the proxy.
+   * 
+   * @return the proxy
+   */
   public ext.services.network.Proxy getProxy() {
     return this.proxy;
   }
 
+  /**
+   * Sets the proxy.
+   * 
+   * @param proxy the new proxy
+   */
   public void setProxy(ext.services.network.Proxy proxy) {
     this.proxy = proxy;
   }
 
+  /**
+   * Gets the user.
+   * 
+   * @return the user
+   */
   public String getUser() {
     return this.user;
   }
 
+  /**
+   * Sets the user.
+   * 
+   * @param user the new user
+   */
   public void setUser(String user) {
     this.user = user;
   }
 
+  /**
+   * Gets the password.
+   * 
+   * @return the password
+   */
   public String getPassword() {
     return this.password;
   }
 
+  /**
+   * Sets the password.
+   * 
+   * @param password the new password
+   */
   public void setPassword(String password) {
     this.password = password;
   }

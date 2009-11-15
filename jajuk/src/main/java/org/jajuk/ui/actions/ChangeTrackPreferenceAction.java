@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2005 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $$Revision: 2403 $$
+ *  $Revision$
  */
 package org.jajuk.ui.actions;
 
@@ -36,18 +37,24 @@ import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 
 /**
- * 
- * Manual preference change of current played track
+ * Manual preference change of current played track.
  */
 public class ChangeTrackPreferenceAction extends JajukAction {
 
+  /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
+  /**
+   * Instantiates a new change track preference action.
+   */
   ChangeTrackPreferenceAction() {
     super(Messages.getString("IncRateAction.0"), IconLoader.getIcon(JajukIcons.INC_RATING), true);
     setShortDescription(Messages.getString("IncRateAction.0"));
   }
 
+  /* (non-Javadoc)
+   * @see org.jajuk.ui.actions.JajukAction#perform(java.awt.event.ActionEvent)
+   */
   @Override
   public void perform(ActionEvent evt) throws JajukException {
     new Thread("ChangeTrackPreferenceAction") {

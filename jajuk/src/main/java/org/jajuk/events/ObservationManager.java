@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision:3950 $ 
+ *  $Revision$
  */
 
 package org.jajuk.events;
@@ -33,45 +34,34 @@ import org.jajuk.util.log.Log;
 /**
  * This is a mediator managing relationships between subjects and observers
  * <p>
- * All notification methods are synchronized to assure event order
+ * All notification methods are synchronized to assure event order.
  */
 public final class ObservationManager {
 
-  /** one event -> list of components */
+  /** one event -> list of components. */
   static ObserverRegistry observerRegistry = new ObserverRegistry();
 
-  /**
-   * Last event for a given subject (used for new objects that just registrated
-   * to this subject)
-   */
+  /** Last event for a given subject (used for new objects that just registrated to this subject). */
   static Map<JajukEvents, Properties> hLastEventBySubject = new HashMap<JajukEvents, Properties>(10);
 
-  /**
-   * The queue itself. Must be synchronized, so we use a ConcurrentLinkedQueue
-   * which is tread-safe
-   */
+  /** The queue itself. Must be synchronized, so we use a ConcurrentLinkedQueue which is tread-safe */
   static volatile Queue<JajukEvent> queue = new ConcurrentLinkedQueue<JajukEvent>();
 
-  /**
-   * The observation fifo
-   */
+  /** The observation fifo. */
   private static ObservationManagerThread observationThread;
 
   /**
-   * Empty constructor to avoid instantiating this utility class
+   * Empty constructor to avoid instantiating this utility class.
    */
   private ObservationManager() {
   }
 
   /**
-   * Register a component for a given subject. This calls the 
-   * interface @see Observer.getRegistrationKeys() to retrieve 
+   * Register a component for a given subject. This calls the
+   * interface @see Observer.getRegistrationKeys() to retrieve
    * a list of events which the Observer is interested in.
    * 
-   * @param subject
-   *          Subject ( event ) to observe
-   * @param jc
-   *          component to register
+   * @param observer DOCUMENT_ME
    */
   public static synchronized void register(Observer observer) {
     Set<JajukEvents> eventSubjectSet = observer.getRegistrationKeys();
@@ -82,17 +72,9 @@ public final class ObservationManager {
   }
 
   /**
-   * Unregister a component for a given subject
+   * Unregister a component for a given subject.
    * 
-   * @param subject
-   *          Subject ( event ) to observe
-   * @param jc
-   *          component to deregister
-   *          
-   * TODO: this seems to be not used anywhere right now?! 
-   * It would probably make sense to call this when a View is closed
-   * and in other places as otherwise we keep references and through 
-   * this memory unnecessarily.
+   * @param observer DOCUMENT_ME
    */
   public static synchronized void unregister(Observer observer) {
     Set<JajukEvents> eventSubjectSet = observer.getRegistrationKeys();
@@ -109,9 +91,9 @@ public final class ObservationManager {
   }
 
   /**
-   * Notify all components having registered for the given subject
+   * Notify all components having registered for the given subject.
    * 
-   * @param subject
+   * @param event DOCUMENT_ME
    */
   public static void notify(JajukEvent event) {
     // asynchronous notification by default to avoid
@@ -141,9 +123,9 @@ public final class ObservationManager {
   }
 
   /**
-   * Notify synchronously all components having registered for the given subject
+   * Notify synchronously all components having registered for the given subject.
    * 
-   * @param subject
+   * @param event DOCUMENT_ME
    */
   public static void notifySync(JajukEvent event) {
     JajukEvents subject = event.getSubject();
@@ -154,10 +136,11 @@ public final class ObservationManager {
   }
 
   /**
-   * Return whether the event already occurred at least once
+   * Return whether the event already occurred at least once.
    * 
-   * @param subject
-   * @return
+   * @param subject DOCUMENT_ME
+   * 
+   * @return true, if contains event
    */
   public static boolean containsEvent(JajukEvents subject) {
     return hLastEventBySubject.containsKey(subject);
@@ -165,14 +148,13 @@ public final class ObservationManager {
 
   /**
    * Return the details for last event of the given subject, or null if there is
-   * no details
+   * no details.
    * 
-   * @param sEvent
-   *          event name
-   * @param sDetail
-   *          Detail name
+   * @param subject DOCUMENT_ME
+   * @param sDetailName DOCUMENT_ME
+   * 
    * @return the detail as an object or null if the event or the detail doesn't
-   *         exist
+   * exist
    */
   public static Object getDetailLastOccurence(JajukEvents subject, String sDetailName) {
     Properties pDetails = hLastEventBySubject.get(subject);
@@ -183,14 +165,13 @@ public final class ObservationManager {
   }
 
   /**
-   * Return the details for an event, or null if there is no details
+   * Return the details for an event, or null if there is no details.
    * 
-   * @param sEvent
-   *          event name
-   * @param sDetail
-   *          Detail name
+   * @param event DOCUMENT_ME
+   * @param sDetailName DOCUMENT_ME
+   * 
    * @return the detail as an object or null if the event or the detail doesn't
-   *         exist
+   * exist
    */
   public static Object getDetail(JajukEvent event, String sDetailName) {
     Properties pDetails = event.getDetails();
@@ -201,10 +182,10 @@ public final class ObservationManager {
   }
 
   /**
-   * Return the details for an event, or null if there is no details
+   * Return the details for an event, or null if there is no details.
    * 
-   * @param sEvent
-   *          event name
+   * @param subject DOCUMENT_ME
+   * 
    * @return the details or null there are not details
    */
   public static Properties getDetailsLastOccurence(JajukEvents subject) {
@@ -212,7 +193,7 @@ public final class ObservationManager {
   }
 
   /**
-   * Remove all registered Observers 
+   * Remove all registered Observers.
    */
   public static void clear() {
     hLastEventBySubject.clear();

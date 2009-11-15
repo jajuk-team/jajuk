@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2005 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -23,25 +24,21 @@ package org.jajuk.events;
 import java.util.Properties;
 
 /**
- * Jajuk event (Observer pattern)
+ * Jajuk event (Observer pattern).
  */
 public class JajukEvent {
 
-  /**
-   * Event subject
-   */
+  /** Event subject. */
   private final JajukEvents subject;
 
-  /**
-   * Event properties
-   */
+  /** Event properties. */
   private Properties pDetails;
 
   /**
-   * Event constructor
+   * Event constructor.
    * 
-   * @param sSubject
-   * @param pDetails
+   * @param pDetails DOCUMENT_ME
+   * @param subject DOCUMENT_ME
    */
   public JajukEvent(JajukEvents subject, Properties pDetails) {
     this.subject = subject;
@@ -51,15 +48,17 @@ public class JajukEvent {
   }
 
   /**
-   * Event constructor
+   * Event constructor.
    * 
-   * @param sSubject
+   * @param subject DOCUMENT_ME
    */
   public JajukEvent(JajukEvents subject) {
     this(subject, null);
   }
 
   /**
+   * Gets the details.
+   * 
    * @return Returns the pDetails.
    */
   public Properties getDetails() {
@@ -67,6 +66,8 @@ public class JajukEvent {
   }
 
   /**
+   * Gets the subject.
+   * 
    * @return Returns the sSubject.
    */
   public JajukEvents getSubject() {
@@ -74,7 +75,9 @@ public class JajukEvent {
   }
 
   /**
-   * ToString method
+   * ToString method.
+   * 
+   * @return the string
    */
   @Override
   public String toString() {
@@ -87,7 +90,11 @@ public class JajukEvent {
   }
 
   /**
-   * event equals method
+   * event equals method.
+   * 
+   * @param obj DOCUMENT_ME
+   * 
+   * @return true, if equals
    */
   @Override
   public boolean equals(Object obj) {
@@ -107,6 +114,9 @@ public class JajukEvent {
     return bOut;
   }
 
+  /* (non-Javadoc)
+   * @see java.lang.Object#hashCode()
+   */
   @Override
   public int hashCode() {
     // very simple implementation, needs to be revisited if this object is used

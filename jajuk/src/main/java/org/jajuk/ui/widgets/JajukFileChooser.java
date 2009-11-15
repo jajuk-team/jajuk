@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -31,20 +32,20 @@ import org.jajuk.util.JajukFileFilter;
 import org.jajuk.util.Messages;
 
 /**
- * Music-oriented file chooser
- * 
+ * Music-oriented file chooser.
  */
 public class JajukFileChooser extends JFileChooser {
 
+  /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
+  /** DOCUMENT_ME. */
   private final JajukFileFilter filter;
 
   /**
-   * Constructor with specified file filter
+   * Constructor with specified file filter.
    * 
-   * @param jfilter
-   *          filter to use
+   * @param jfilter filter to use
    */
   public JajukFileChooser(JajukFileFilter jfilter) {
     super();
@@ -58,10 +59,10 @@ public class JajukFileChooser extends JFileChooser {
   }
 
   /**
-   * Constructor with specified file filter and starting directory/file
+   * Constructor with specified file filter and starting directory/file.
    * 
-   * @param jfilter
-   *          filter to use
+   * @param jfilter filter to use
+   * @param file DOCUMENT_ME
    */
   public JajukFileChooser(JajukFileFilter jfilter, File file) {
     super(file);
@@ -75,7 +76,7 @@ public class JajukFileChooser extends JFileChooser {
   }
 
   /**
-   * @param jfilter
+   * Inits the.
    */
   private final void init() {
     setDialogTitle(Messages.getString("JajukFileChooser.0"));
@@ -89,9 +90,9 @@ public class JajukFileChooser extends JFileChooser {
   }
 
   /**
-   * Force the filter to accept directories
+   * Force the filter to accept directories.
    * 
-   * @param b
+   * @param b DOCUMENT_ME
    */
   public void setAcceptDirectories(boolean b) {
     for (int i = 0; i < filter.getFilters().length; i++) {
@@ -99,7 +100,15 @@ public class JajukFileChooser extends JFileChooser {
     }
   }
 
-  /** Make sure to keep the dialog always on top */
+  /**
+   * Make sure to keep the dialog always on top.
+   * 
+   * @param parent DOCUMENT_ME
+   * 
+   * @return the j dialog
+   * 
+   * @throws HeadlessException the headless exception
+   */
   @Override
   protected JDialog createDialog(Component parent) throws HeadlessException {
     JDialog dialog = super.createDialog(parent);

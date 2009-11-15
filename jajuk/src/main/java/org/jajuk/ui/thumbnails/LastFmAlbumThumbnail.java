@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2007 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -60,20 +61,23 @@ import org.jdesktop.swingx.border.DropShadowBorder;
  */
 public class LastFmAlbumThumbnail extends AbstractThumbnail {
 
+  /** Generated serialVersionUID. */
   private static final long serialVersionUID = -804471264407148566L;
 
-  /** Associated album */
+  /** Associated album. */
   private AlbumInfo album;
 
-  /** Is this author known in collection ? */
+  /** Is this author known in collection ?. */
   private final boolean bKnown;
 
-  /** Thumb associated image * */
+  /** Thumb associated image *. */
   ImageIcon ii;
 
   /**
+   * The Constructor.
+   * 
    * @param album :
-   *          associated album
+   * associated album
    */
   public LastFmAlbumThumbnail(AlbumInfo album) {
     super(100);
@@ -195,7 +199,7 @@ public class LastFmAlbumThumbnail extends AbstractThumbnail {
   }
 
   /**
-   * Thumb populating done in EDT
+   * Thumb populating done in EDT.
    */
   @Override
   public void populate() {

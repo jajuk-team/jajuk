@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- * $Revision$
+ *  $Revision$
  */
 
 package org.jajuk.services.bookmark;
@@ -31,17 +32,21 @@ import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 
 /**
- * Manages bookmarks
- * 
+ * Manages bookmarks.
  */
 public final class Bookmarks {
 
-  /** Singleton self-instance */
+  /** Singleton self-instance. */
   private static Bookmarks bookmarks;
 
-  /** Bookmarked files */
+  /** Bookmarked files. */
   private List<File> alFiles = new ArrayList<File>(100);
 
+  /**
+   * Gets the single instance of Bookmarks.
+   * 
+   * @return single instance of Bookmarks
+   */
   public static Bookmarks getInstance() {
     if (bookmarks == null) {
       bookmarks = new Bookmarks();
@@ -49,7 +54,9 @@ public final class Bookmarks {
     return bookmarks;
   }
 
-  /** Private constructor */
+  /**
+   * Private constructor.
+   */
   private Bookmarks() {
     String sBookmarks = Conf.getString(Const.CONF_BOOKMARKS);
     if (sBookmarks == null || "".equals(sBookmarks.trim())) {
@@ -66,7 +73,9 @@ public final class Bookmarks {
   }
 
   /**
-   * Return bookmarks as a colon separated list of file ids
+   * Return bookmarks as a colon separated list of file ids.
+   * 
+   * @return the string
    */
   @Override
   public String toString() {
@@ -83,14 +92,17 @@ public final class Bookmarks {
     }
   }
 
-  /** Return bookmarked files */
+  /**
+   * Return bookmarked files.
+   * 
+   * @return the files
+   */
   public List<File> getFiles() {
     return alFiles;
   }
 
   /**
-   * Clear bookmarks
-   * 
+   * Clear bookmarks.
    */
   public void clear() {
     alFiles.clear();
@@ -98,9 +110,9 @@ public final class Bookmarks {
   }
 
   /**
-   * Down a track in the playlist
+   * Down a track in the playlist.
    * 
-   * @param index
+   * @param index DOCUMENT_ME
    */
   public synchronized void down(int index) {
     if (index < alFiles.size() - 1) { // the last track cannot go
@@ -111,9 +123,9 @@ public final class Bookmarks {
   }
 
   /**
-   * Up a track in the playlist
+   * Up a track in the playlist.
    * 
-   * @param index
+   * @param index DOCUMENT_ME
    */
   public synchronized void up(int index) {
     if (index > 0) { // the first track cannot go further
@@ -123,9 +135,9 @@ public final class Bookmarks {
   }
 
   /**
-   * Remove a track from the playlist
+   * Remove a track from the playlist.
    * 
-   * @param index
+   * @param index DOCUMENT_ME
    */
   public synchronized void remove(int index) {
     alFiles.remove(index);
@@ -133,9 +145,10 @@ public final class Bookmarks {
   }
 
   /**
-   * Add a track from the playlist
+   * Add a track from the playlist.
    * 
-   * @param index
+   * @param index DOCUMENT_ME
+   * @param file DOCUMENT_ME
    */
   public synchronized void addFile(int index, File file) {
     alFiles.add(index, file);
@@ -143,9 +156,9 @@ public final class Bookmarks {
   }
 
   /**
-   * Add a file to this playlist
+   * Add a file to this playlist.
    * 
-   * @param file
+   * @param file DOCUMENT_ME
    */
   public void addFile(File file) {
     int index = alFiles.size();
@@ -153,9 +166,9 @@ public final class Bookmarks {
   }
 
   /**
-   * Add files to this playlist
+   * Add files to this playlist.
    * 
-   * @param alFilesToAdd
+   * @param alFilesToAdd DOCUMENT_ME
    */
   public void addFiles(List<File> alFilesToAdd) {
     for (File file : alFilesToAdd) {

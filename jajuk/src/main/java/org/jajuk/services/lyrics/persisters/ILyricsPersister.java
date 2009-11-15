@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision: 1 $
+ *  $Revision$
  */
 
 package org.jajuk.services.lyrics.persisters;
@@ -24,24 +24,25 @@ package org.jajuk.services.lyrics.persisters;
 import org.jajuk.services.lyrics.providers.JajukLyricsProvider;
 
 /**
- * Interface for lyrics persisters to be used by the modified LyricsService
+ * Interface for lyrics persisters to be used by the modified LyricsService.
  */
 public interface ILyricsPersister {
   
   /**
    * Commit lyrics for a given filename <br>
-   * Returns true if commited correctly, false otherwise
+   * Returns true if commited correctly, false otherwise.
    * 
-   * @param Jajuk lyrics provider
+   * @param provider DOCUMENT_ME
+   * 
    * @return true if OK, false otherwise
    */
   boolean commitLyrics(JajukLyricsProvider provider);
+  
   /**
    * Deletes Lyrics that user has saved <br>
-   * in Tag or in a Txt file
+   * in Tag or in a Txt file.
    * 
-   * @param provider
-   * @return
+   * @param provider DOCUMENT_ME
    */
   void deleteLyrics(JajukLyricsProvider provider);
 

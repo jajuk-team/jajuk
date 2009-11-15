@@ -1,25 +1,22 @@
 /*
- * Adapted by Jajuk team
- * Copyright (C) 2003-2009 the Jajuk Team
- * http://jajuk.info
- * 
- * aTunes 1.14.0
- * Copyright (C) 2006-2009 Alex Aranda, Sylvain Gaudard, Thomas Beckers and contributors
+ *  Jajuk
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
- * See http://www.atunes.org/wiki/index.php?title=Contributing for information about contributors
+ *  This program is free software; you can redistribute it and/or
+ *  modify it under the terms of the GNU General Public License
+ *  as published by the Free Software Foundation; either version 2
+ *  of the License, or any later version.
  *
- * http://www.atunes.org
- * http://sourceforge.net/projects/atunes
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
  *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program; if not, write to the Free Software
+ *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ *  $Revision$
  */
 
 package ext.services.lastfm;
@@ -29,6 +26,9 @@ import java.util.List;
 
 import javax.swing.ImageIcon;
 
+/**
+ * DOCUMENT_ME.
+ */
 public interface AlbumInfo {
 
   /**
@@ -118,72 +118,63 @@ public interface AlbumInfo {
   /**
    * Sets the artist.
    * 
-   * @param artist
-   *          the artist to set
+   * @param artist the artist to set
    */
   public void setArtist(String artist);
 
   /**
    * Sets the big cover url.
    * 
-   * @param bigCoverURL
-   *          the bigCoverURL to set
+   * @param bigCoverURL the bigCoverURL to set
    */
   public void setBigCoverURL(String bigCoverURL);
 
   /**
    * Sets the cover.
    * 
-   * @param cover
-   *          the cover to set
+   * @param cover the cover to set
    */
   public void setCover(ImageIcon cover);
 
   /**
    * Sets the cover url.
    * 
-   * @param coverURL
-   *          the coverURL to set
+   * @param coverURL the coverURL to set
    */
   public void setCoverURL(String coverURL);
 
   /**
    * Sets the release date string.
    * 
-   * @param releaseDateString
-   *          the releaseDateString to set
+   * @param releaseDateString the releaseDateString to set
    */
   public void setReleaseDateString(String releaseDateString);
 
   /**
    * Sets the small cover url.
    * 
-   * @param smallCoverURL
-   *          the smallCoverURL to set
+   * @param smallCoverURL the smallCoverURL to set
    */
   public void setSmallCoverURL(String smallCoverURL);
 
   /**
    * Sets the title.
    * 
-   * @param title
-   *          the title to set
+   * @param title the title to set
    */
   public void setTitle(String title);
 
   /**
    * Sets the tracks.
    * 
-   * @param tracks
-   *          the tracks to set
+   * @param tracks the tracks to set
    */
   public void setTracks(List<? extends TrackInfo> tracks);
 
   /**
    * Sets the url.
    * 
-   * @param url
-   *          the url to set
+   * @param url the url to set
    */
   public void setUrl(String url);
 
@@ -191,6 +182,12 @@ public interface AlbumInfo {
    * (non-Javadoc)
    * 
    * @see java.lang.Object#toString()
+   */
+  /**
+   * To string.
+   * DOCUMENT_ME
+   * 
+   * @return the string
    */
   public String toString();
 

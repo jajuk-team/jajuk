@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2008 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision: 3132 $
+ *  $Revision$
  */
 package org.jajuk.ui.widgets;
 
@@ -23,16 +24,25 @@ import javax.swing.JToolBar;
 import javax.swing.SwingConstants;
 
 /**
- * Jajuk specific toolbar : non opaque and non floatable
+ * Jajuk specific toolbar : non opaque and non floatable.
  */
 public class JajukJToolbar extends JToolBar {
 
+  /** Generated serialVersionUID. */
   private static final long serialVersionUID = 3947108459544670564L;
 
+  /**
+   * Instantiates a new jajuk j toolbar.
+   */
   public JajukJToolbar() {
     this(SwingConstants.HORIZONTAL);
   }
 
+  /**
+   * Instantiates a new jajuk j toolbar.
+   * 
+   * @param i DOCUMENT_ME
+   */
   public JajukJToolbar(int i) {
     super(i);
     setFloatable(false);

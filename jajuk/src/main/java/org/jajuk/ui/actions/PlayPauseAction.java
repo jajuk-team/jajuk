@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2005 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $$Revision:3308 $$
+ *  $Revision$
  */
 package org.jajuk.ui.actions;
 
@@ -27,18 +28,29 @@ import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 
+/**
+ * DOCUMENT_ME.
+ */
 public class PlayPauseAction extends JajukAction {
 
+  /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
+  /** DOCUMENT_ME. */
   private static boolean bAlreadyLaunching = false;
 
+  /**
+   * Instantiates a new play pause action.
+   */
   PlayPauseAction() {
     super(Messages.getString("JajukWindow.10"), IconLoader.getIcon(JajukIcons.PLAYER_PAUSE),
         "ctrl P", false, true);
     setShortDescription(Messages.getString("JajukWindow.26"));
   }
 
+  /* (non-Javadoc)
+   * @see org.jajuk.ui.actions.JajukAction#perform(java.awt.event.ActionEvent)
+   */
   @Override
   public void perform(ActionEvent evt) {
     if (QueueModel.isStopped()) {

@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2007 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -44,25 +45,35 @@ import org.jvnet.substance.api.renderers.SubstanceDefaultTableCellRenderer;
  */
 public class JajukCellRenderer extends SubstanceDefaultTableCellRenderer implements Const {
 
+  /** Generated serialVersionUID. */
   private static final long serialVersionUID = 154545454L;
 
+  /** DOCUMENT_ME. */
   private final Color color;
 
   /**
-   * @param color
-   *          background color for cells or null if default
+   * The Constructor.
+   * 
+   * @param color background color for cells or null if default
    */
   public JajukCellRenderer(Color color) {
     super();
     this.color = color;
   }
 
+  /**
+   * Instantiates a new jajuk cell renderer.
+   */
   public JajukCellRenderer() {
     this(null);
   }
 
+  /** DOCUMENT_ME. */
   private final SubstanceDefaultTableCellRenderer.BooleanRenderer booleanRenderer = new SubstanceDefaultTableCellRenderer.BooleanRenderer();
 
+  /* (non-Javadoc)
+   * @see org.jvnet.substance.api.renderers.SubstanceDefaultTableCellRenderer#getTableCellRendererComponent(javax.swing.JTable, java.lang.Object, boolean, boolean, int, int)
+   */
   @Override
   public Component getTableCellRendererComponent(JTable table, Object oValue, boolean selected,
       boolean focused, int row, int column) {

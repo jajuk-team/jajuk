@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2004 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -25,22 +26,21 @@ import java.util.Set;
 import org.jajuk.base.Style;
 
 /**
- * Represent a style proportion (used by digital DJs)
+ * Represent a style proportion (used by digital DJs).
  */
 public class Proportion {
-  /** styles */
+  
+  /** styles. */
   private Ambience ambience;
 
-  /** Proportion* */
+  /** Proportion*. */
   private float proportion;
 
   /**
-   * Constructor
+   * Constructor.
    * 
-   * @param style
-   *          styles
-   * @param proportion
-   *          style proportion in %. Ex: 0.1
+   * @param proportion style proportion in %. Ex: 0.1
+   * @param ambience DOCUMENT_ME
    */
   public Proportion(Ambience ambience, float proportion) {
     this.ambience = ambience;
@@ -48,7 +48,7 @@ public class Proportion {
   }
 
   /**
-   * Constructor for void proportion
+   * Constructor for void proportion.
    */
   public Proportion() {
     this.ambience = new Ambience(Long.toString(System.currentTimeMillis()), "");
@@ -56,7 +56,9 @@ public class Proportion {
   }
 
   /**
-   * equals method
+   * equals method.
+   * 
+   * @param other DOCUMENT_ME
    * 
    * @return whether two object are equals
    */
@@ -70,6 +72,9 @@ public class Proportion {
         && getStyles().equals(((Proportion) other).getStyles());
   }
 
+  /* (non-Javadoc)
+   * @see java.lang.Object#hashCode()
+   */
   @Override
   public int hashCode() {
     // for now just use ambience for the hashCode, not sure if we should include
@@ -78,6 +83,8 @@ public class Proportion {
   }
 
   /**
+   * Gets the styles.
+   * 
    * @return Returns the styles
    */
   public Set<Style> getStyles() {
@@ -85,13 +92,17 @@ public class Proportion {
   }
 
   /**
-   * Add a style
+   * Add a style.
+   * 
+   * @param style DOCUMENT_ME
    */
   public void addStyle(Style style) {
     ambience.addStyle(style);
   }
 
   /**
+   * To string.
+   * 
    * @return String representation of this proportion
    */
   @Override
@@ -101,6 +112,8 @@ public class Proportion {
 
   /**
    * From String, return style1,style2,...
+   * 
+   * @return the styles desc
    */
   public String getStylesDesc() {
     String out = "";
@@ -114,6 +127,7 @@ public class Proportion {
   }
 
   /**
+   * Gets the next style.
    * 
    * @return next style to be played or null if no idea
    */
@@ -121,14 +135,29 @@ public class Proportion {
     return null;
   }
 
+  /**
+   * Gets the proportion.
+   * 
+   * @return the proportion
+   */
   public float getProportion() {
     return this.proportion;
   }
 
+  /**
+   * Sets the style.
+   * 
+   * @param ambience the new style
+   */
   public void setStyle(Ambience ambience) {
     this.ambience = ambience;
   }
 
+  /**
+   * Sets the proportion.
+   * 
+   * @param proportion the new proportion
+   */
   public void setProportion(float proportion) {
     this.proportion = proportion;
   }

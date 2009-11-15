@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2007 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -48,12 +49,16 @@ import org.jajuk.util.log.Log;
  * </p>
  */
 public final class LastFmManager implements Observer, Const {
-  /** Self instance */
+  
+  /** Self instance. */
   private static LastFmManager self;
 
-  /** Lastfm service */
+  /** Lastfm service. */
   private LastFmService service;
 
+  /**
+   * Instantiates a new last fm manager.
+   */
   private LastFmManager() {
     // Register on the list for subject we are interested in
     ObservationManager.register(this);
@@ -73,6 +78,11 @@ public final class LastFmManager implements Observer, Const {
 
   }
 
+  /**
+   * Gets the single instance of LastFmManager.
+   * 
+   * @return single instance of LastFmManager
+   */
   public static LastFmManager getInstance() {
     if (self == null) {
       self = new LastFmManager();
@@ -91,6 +101,10 @@ public final class LastFmManager implements Observer, Const {
     return eventSubjectSet;
   }
 
+  /**
+   * Configure.
+   * DOCUMENT_ME
+   */
   public void configure() {
     service.setPassword(UtilString.rot13(Conf.getString(Const.CONF_LASTFM_PASSWORD)));
     service.setUser(Conf.getString(Const.CONF_LASTFM_USER));

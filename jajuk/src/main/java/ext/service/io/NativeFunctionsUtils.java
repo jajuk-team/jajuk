@@ -1,19 +1,22 @@
 /*
- * Common-jukebox
- * Copyright (C) 2008 Common-jukebox team
+ *  Jajuk
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
+ *  This program is free software; you can redistribute it and/or
+ *  modify it under the terms of the GNU General Public License
+ *  as published by the Free Software Foundation; either version 2
+ *  of the License, or any later version.
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * 
- * Initially created from aTunes 1.8.2
- * Copyright (C) 2006-2008 Alex Aranda, Sylvain Gaudard, Thomas Beckers and contributors
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program; if not, write to the Free Software
+ *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ *  $Revision$
  */
 package ext.service.io;
 
@@ -29,15 +32,22 @@ import org.jajuk.util.log.Log;
  * 
  * Requires: JNA https://jna.dev.java.net/#getting_started
  */
+/**
+ * DOCUMENT_ME.
+ */
 public class NativeFunctionsUtils {
 
   // private static final Logger logger = new Logger();
 
   // hiden utility class constructor
+  /**
+   * Instantiates a new native functions utils.
+   */
   private NativeFunctionsUtils() {
     super();
   }
 
+  /** DOCUMENT_ME. */
   private static Kernel32 nativelib;
   static {
     try {
@@ -48,6 +58,7 @@ public class NativeFunctionsUtils {
     }
   }
 
+  /** The Constant CHAR_BYTE_WIDTH.  DOCUMENT_ME */
   private static final int CHAR_BYTE_WIDTH = 2;
 
   /**
@@ -55,7 +66,8 @@ public class NativeFunctionsUtils {
    * Windows, so check if this operating system is used before calling. The
    * filename must include the path as whole and be passed as String.
    * 
-   * @param longPathName
+   * @param longPathName DOCUMENT_ME
+   * 
    * @return File/Path in 8.3 format
    */
   public static String getShortPathNameW(String longPathName) {

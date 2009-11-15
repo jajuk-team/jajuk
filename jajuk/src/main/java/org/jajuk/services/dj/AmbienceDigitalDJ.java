@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2004 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -29,15 +30,17 @@ import org.jajuk.util.Const;
 import org.jajuk.util.Messages;
 
 /**
- * Ambience DJ
+ * Ambience DJ.
  */
 public class AmbienceDigitalDJ extends DigitalDJ {
 
-  /** Used ambience */
+  /** Used ambience. */
   private Ambience ambience;
 
   /**
-   * @param ID
+   * The Constructor.
+   * 
+   * @param sID DOCUMENT_ME
    */
   public AmbienceDigitalDJ(String sID) {
     super(sID);
@@ -64,6 +67,7 @@ public class AmbienceDigitalDJ extends DigitalDJ {
   }
 
   /**
+   * Gets the sequence.
    * 
    * @return a single loop sequence
    */
@@ -87,6 +91,8 @@ public class AmbienceDigitalDJ extends DigitalDJ {
   }
 
   /**
+   * Gets the ambience.
+   * 
    * @return Ambience
    */
   public Ambience getAmbience() {
@@ -94,7 +100,9 @@ public class AmbienceDigitalDJ extends DigitalDJ {
   }
 
   /**
-   * (non-Javadoc)
+   * (non-Javadoc).
+   * 
+   * @return the string
    * 
    * @see dj.DigitalDJ#toXML()
    */
@@ -108,6 +116,11 @@ public class AmbienceDigitalDJ extends DigitalDJ {
     return sb.toString();
   }
 
+  /**
+   * Sets the ambience.
+   * 
+   * @param ambience the new ambience
+   */
   public void setAmbience(Ambience ambience) {
     this.ambience = ambience;
   }

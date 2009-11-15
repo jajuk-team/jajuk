@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2005 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $$Revision$$
+ *  $Revision$
  */
 
 package org.jajuk.ui.views;
@@ -65,35 +66,52 @@ import org.jajuk.util.UtilGUI;
 /**
  * Device view used to create and modify Jajuk devices
  * <p>
- * Configuration perspective
+ * Configuration perspective.
  */
 public class DeviceView extends ViewAdapter implements IView, ActionListener, MouseListener {
+  
+  /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
+  /** DOCUMENT_ME. */
   private static DeviceView dv; // self instance
 
+  /** DOCUMENT_ME. */
   FlowScrollPanel jpDevices;
 
+  /** DOCUMENT_ME. */
   JPopupMenu jpmenu;
 
+  /** DOCUMENT_ME. */
   JMenuItem jmiDelete;
 
+  /** DOCUMENT_ME. */
   JMenuItem jmiProperties;
 
+  /** DOCUMENT_ME. */
   JMenuItem jmiMount;
 
+  /** DOCUMENT_ME. */
   JMenuItem jmiUnmount;
 
+  /** DOCUMENT_ME. */
   JMenuItem jmiTest;
 
+  /** DOCUMENT_ME. */
   JMenuItem jmiRefresh;
 
+  /** DOCUMENT_ME. */
   JMenuItem jmiSynchronize;
 
+  /** DOCUMENT_ME. */
   DeviceItem diSelected;
 
+  /** DOCUMENT_ME. */
   volatile boolean popupTrigger = false;
 
+  /**
+   * Instantiates a new device view.
+   */
   public DeviceView() {
   }
 
@@ -168,6 +186,9 @@ public class DeviceView extends ViewAdapter implements IView, ActionListener, Mo
     ObservationManager.register(this);
   }
 
+  /* (non-Javadoc)
+   * @see org.jajuk.events.Observer#getRegistrationKeys()
+   */
   public Set<JajukEvents> getRegistrationKeys() {
     Set<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
     eventSubjectSet.add(JajukEvents.DEVICE_MOUNT);
@@ -177,6 +198,10 @@ public class DeviceView extends ViewAdapter implements IView, ActionListener, Mo
     return eventSubjectSet;
   }
 
+  /**
+   * Refresh devices.
+   * DOCUMENT_ME
+   */
   private void refreshDevices() {
     // remove all devices
     if (jpDevices.getComponentCount() > 0) {
@@ -280,9 +305,9 @@ public class DeviceView extends ViewAdapter implements IView, ActionListener, Mo
   }
 
   /**
-   * Singleton implementation
+   * Singleton implementation.
    * 
-   * @return
+   * @return the instance
    */
   public static DeviceView getInstance() {
     if (dv == null) {
@@ -291,6 +316,9 @@ public class DeviceView extends ViewAdapter implements IView, ActionListener, Mo
     return dv;
   }
 
+  /* (non-Javadoc)
+   * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+   */
   public void actionPerformed(final ActionEvent ae) {
     if (ae.getActionCommand().equals(JajukEvents.DEVICE_NEW.toString())) {
       DeviceWizard dw = new DeviceWizard();
@@ -346,7 +374,7 @@ public class DeviceView extends ViewAdapter implements IView, ActionListener, Mo
   }
 
   /**
-   * Device deleting
+   * Device deleting.
    */
   void handleDelete() {
     DeviceManager.getInstance().removeDevice(diSelected.getDevice());
@@ -385,12 +413,18 @@ public class DeviceView extends ViewAdapter implements IView, ActionListener, Mo
     }
   }
 
+  /* (non-Javadoc)
+   * @see java.awt.event.MouseListener#mousePressed(java.awt.event.MouseEvent)
+   */
   public void mousePressed(MouseEvent e) {
     if (e.isPopupTrigger()) {
       popupTrigger = true;
     }
   }
 
+  /* (non-Javadoc)
+   * @see java.awt.event.MouseListener#mouseReleased(java.awt.event.MouseEvent)
+   */
   public void mouseReleased(MouseEvent e) {
     if (e.isPopupTrigger() || popupTrigger) {
       popupTrigger = false;
@@ -413,6 +447,12 @@ public class DeviceView extends ViewAdapter implements IView, ActionListener, Mo
     }
   }
 
+  /**
+   * Handle popup.
+   * DOCUMENT_ME
+   * 
+   * @param e DOCUMENT_ME
+   */
   public void handlePopup(final MouseEvent e) {
     selectItem(e);
     // a new device is selected
@@ -420,6 +460,12 @@ public class DeviceView extends ViewAdapter implements IView, ActionListener, Mo
     jpmenu.show(e.getComponent(), e.getX(), e.getY());
   }
 
+  /**
+   * Select item.
+   * DOCUMENT_ME
+   * 
+   * @param e DOCUMENT_ME
+   */
   private void selectItem(final MouseEvent e) {
     boolean bSameDevice = ((diSelected != null) && e.getSource().equals(diSelected));
     // remove old device item border if needed

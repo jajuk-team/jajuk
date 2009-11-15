@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2007 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -24,35 +25,63 @@ import javax.swing.Icon;
 import javax.swing.JButton;
 
 /**
- * jajuk default button, comes with few GUI default properties
+ * jajuk default button, comes with few GUI default properties.
  */
 public class JajukButton extends JButton {
 
+  /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
+  /**
+   * Instantiates a new jajuk button.
+   */
   public JajukButton() {
     this(null, null);
   }
 
+  /**
+   * Instantiates a new jajuk button.
+   * 
+   * @param icon DOCUMENT_ME
+   */
   public JajukButton(Icon icon) {
     this(null, icon);
   }
 
+  /**
+   * Instantiates a new jajuk button.
+   * 
+   * @param text DOCUMENT_ME
+   */
   public JajukButton(String text) {
     this(text, null);
   }
 
+  /**
+   * Instantiates a new jajuk button.
+   * 
+   * @param a DOCUMENT_ME
+   */
   public JajukButton(Action a) {
     super(a);
     setOpaque(false);
     setRolloverEnabled(true);
   }
 
+  /**
+   * Instantiates a new jajuk button.
+   * 
+   * @param text DOCUMENT_ME
+   * @param icon DOCUMENT_ME
+   */
   public JajukButton(String text, Icon icon) {
     super(text, icon);
     setOpaque(false);
   }
 
+  /* (non-Javadoc)
+   * @see javax.swing.AbstractButton#init(java.lang.String, javax.swing.Icon)
+   */
   @Override
   protected void init(String text, Icon icon) {
     // Hide action text on button
@@ -62,6 +91,9 @@ public class JajukButton extends JButton {
     super.init(text, icon);
   }
 
+  /* (non-Javadoc)
+   * @see javax.swing.AbstractButton#configurePropertiesFromAction(javax.swing.Action)
+   */
   @Override
   protected void configurePropertiesFromAction(Action action) {
     if (action.getValue(Action.SMALL_ICON) != null) {

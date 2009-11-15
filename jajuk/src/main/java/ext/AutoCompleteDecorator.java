@@ -1,29 +1,22 @@
 /*
- * Jajuk Specific version of this swingx class to fix 
- * this: https://swingx.dev.java.net/issues/show_bug.cgi?id=464
+ *  Jajuk
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
- * This file has been adapted to Jajuk by the Jajuk Team.
- * Jajuk Copyright (C) 2007 The Jajuk Team
+ *  This program is free software; you can redistribute it and/or
+ *  modify it under the terms of the GNU General Public License
+ *  as published by the Free Software Foundation; either version 2
+ *  of the License, or any later version.
  *
- * The original copyrights and license follow:
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
  *
- * Copyright 2004 Sun Microsystems, Inc., 4150
- * Network Circle, Santa Clara, California 95054, U.S.A. All rights
- * reserved.
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- * 
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program; if not, write to the Free Software
+ *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ *  $Revision$
  */
 
 package ext;
@@ -83,8 +76,9 @@ import org.jdesktop.swingx.autocomplete.TextComponentAdaptor;
  * @author Thomas Bierhance
  */
 public final class AutoCompleteDecorator {
+  
   /**
-   * private constructor to avoid instantiating utility class
+   * private constructor to avoid instantiating utility class.
    */
   private AutoCompleteDecorator() {
   }
@@ -93,13 +87,10 @@ public final class AutoCompleteDecorator {
    * Enables automatic completion for the given JTextComponent based on the
    * items contained in the given <tt>List</tt>.
    * 
-   * @param textComponent
-   *          the text component that will be used for automatic completion.
-   * @param items
-   *          contains the items that are used for autocompletion
-   * @param strictMatching
-   *          <tt>true</tt>, if only given items should be allowed to be
-   *          entered
+   * @param textComponent the text component that will be used for automatic completion.
+   * @param items contains the items that are used for autocompletion
+   * @param strictMatching <tt>true</tt>, if only given items should be allowed to be
+   * entered
    */
   public static void decorate(JTextComponent textComponent, List<Object> items,
       boolean strictMatching) {
@@ -110,15 +101,11 @@ public final class AutoCompleteDecorator {
    * Enables automatic completion for the given JTextComponent based on the
    * items contained in the given <tt>List</tt>.
    * 
-   * @param items
-   *          contains the items that are used for autocompletion
-   * @param textComponent
-   *          the text component that will be used for automatic completion.
-   * @param strictMatching
-   *          <tt>true</tt>, if only given items should be allowed to be
-   *          entered
-   * @param stringConverter
-   *          the converter used to transform items to strings
+   * @param items contains the items that are used for autocompletion
+   * @param textComponent the text component that will be used for automatic completion.
+   * @param strictMatching <tt>true</tt>, if only given items should be allowed to be
+   * entered
+   * @param stringConverter the converter used to transform items to strings
    */
   public static void decorate(JTextComponent textComponent, List<Object> items,
       boolean strictMatching, ObjectToStringConverter stringConverter) {
@@ -133,10 +120,8 @@ public final class AutoCompleteDecorator {
    * items contained in the given JList. The two components will be
    * synchronized. The automatic completion will always be strict.
    * 
-   * @param list
-   *          a <tt>JList</tt> containing the items for automatic completion
-   * @param textComponent
-   *          the text component that will be enabled for automatic completion
+   * @param list a <tt>JList</tt> containing the items for automatic completion
+   * @param textComponent the text component that will be enabled for automatic completion
    */
   public static void decorate(JList list, JTextComponent textComponent) {
     decorate(list, textComponent, ObjectToStringConverter.DEFAULT_IMPLEMENTATION);
@@ -147,12 +132,9 @@ public final class AutoCompleteDecorator {
    * items contained in the given JList. The two components will be
    * synchronized. The automatic completion will always be strict.
    * 
-   * @param list
-   *          a <tt>JList</tt> containing the items for automatic completion
-   * @param textComponent
-   *          the text component that will be used for automatic completion
-   * @param stringConverter
-   *          the converter used to transform items to strings
+   * @param list a <tt>JList</tt> containing the items for automatic completion
+   * @param textComponent the text component that will be used for automatic completion
+   * @param stringConverter the converter used to transform items to strings
    */
   public static void decorate(JList list, JTextComponent textComponent,
       ObjectToStringConverter stringConverter) {
@@ -166,8 +148,7 @@ public final class AutoCompleteDecorator {
    * completion will be strict (only items from the combo box can be selected)
    * if the combo box is not editable.
    * 
-   * @param comboBox
-   *          a combo box
+   * @param comboBox a combo box
    */
   public static void decorate(final JComboBox comboBox) {
     decorate(comboBox, ObjectToStringConverter.DEFAULT_IMPLEMENTATION);
@@ -178,10 +159,8 @@ public final class AutoCompleteDecorator {
    * completion will be strict (only items from the combo box can be selected)
    * if the combo box is not editable.
    * 
-   * @param comboBox
-   *          a combo box
-   * @param stringConverter
-   *          the converter used to transform items to strings
+   * @param comboBox a combo box
+   * @param stringConverter the converter used to transform items to strings
    */
   public static void decorate(final JComboBox comboBox,
       final ObjectToStringConverter stringConverter) {
@@ -255,13 +234,9 @@ public final class AutoCompleteDecorator {
    * Decorates a given text component for automatic completion using the given
    * AutoCompleteDocument and AbstractAutoCompleteAdaptor.
    * 
-   * 
-   * @param textComponent
-   *          a text component that should be decorated
-   * @param document
-   *          the AutoCompleteDocument to be installed on the text component
-   * @param adaptor
-   *          the AbstractAutoCompleteAdaptor to be used
+   * @param textComponent a text component that should be decorated
+   * @param document the AutoCompleteDocument to be installed on the text component
+   * @param adaptor the AbstractAutoCompleteAdaptor to be used
    */
   public static void decorate(JTextComponent textComponent, AutoCompleteDocument document,
       final AbstractAutoCompleteAdaptor adaptor) {
@@ -304,15 +279,30 @@ public final class AutoCompleteDecorator {
     }
   }
 
+  /**
+   * DOCUMENT_ME.
+   */
   static class NonStrictBackspaceAction extends TextAction {
+    
+    /** Generated serialVersionUID. */
     private static final long serialVersionUID = -5508607690462561673L;
 
+    /** DOCUMENT_ME. */
     Action backspace;
 
+    /** DOCUMENT_ME. */
     Action selectionBackward;
 
+    /** DOCUMENT_ME. */
     AbstractAutoCompleteAdaptor adaptor;
 
+    /**
+     * Instantiates a new non strict backspace action.
+     * 
+     * @param backspace DOCUMENT_ME
+     * @param selectionBackward DOCUMENT_ME
+     * @param adaptor DOCUMENT_ME
+     */
     public NonStrictBackspaceAction(Action backspace, Action selectionBackward,
         AbstractAutoCompleteAdaptor adaptor) {
       super("nonstrict-backspace");
@@ -321,6 +311,9 @@ public final class AutoCompleteDecorator {
       this.adaptor = adaptor;
     }
 
+    /* (non-Javadoc)
+     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+     */
     public void actionPerformed(ActionEvent e) {
       if (adaptor.listContainsSelectedItem()) {
         selectionBackward.actionPerformed(e);
@@ -330,10 +323,7 @@ public final class AutoCompleteDecorator {
     }
   }
 
-  /**
-   * A TextAction that provides an error feedback for the text component that
-   * invoked the action. The error feedback is most likely a "beep".
-   */
+  /** A TextAction that provides an error feedback for the text component that invoked the action. The error feedback is most likely a "beep". */
   static Object errorFeedbackAction = new TextAction("provide-error-feedback") {
     private static final long serialVersionUID = -3868819565696640330L;
 

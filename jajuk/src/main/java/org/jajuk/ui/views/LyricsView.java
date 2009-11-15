@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2007 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -71,30 +72,63 @@ import org.jdesktop.swingx.JXBusyLabel;
  * Lyrics view
  * <p>
  * Data comes from the Tag of the file or a txt file
- * if present; otherwise from www.lyrc.com.ar, 
+ * if present; otherwise from www.lyrc.com.ar,
  * lyrics.wikia.com or lyricsfly.com
  * </p>
  */
 public class LyricsView extends ViewAdapter {
 
+  /** Generated serialVersionUID. */
   private static final long serialVersionUID = 2229941034734574056L;
 
+  /** DOCUMENT_ME. */
   private JTextArea textarea = null;
+  
+  /** DOCUMENT_ME. */
   private JScrollPane jsp = null;
+  
+  /** DOCUMENT_ME. */
   private JLabel jlTitle = null;
+  
+  /** DOCUMENT_ME. */
   private JLabel jlAuthor = null;
+  
+  /** DOCUMENT_ME. */
   private String sURL = null;
+  
+  /** DOCUMENT_ME. */
   private Track track = null;
+  
+  /** DOCUMENT_ME. */
   private String lyrics = null;
+  
+  /** DOCUMENT_ME. */
   private JMenuItem jmiCopyToClipboard = null;
+  
+  /** DOCUMENT_ME. */
   private JMenuItem jmiLaunchInBrowser = null;
+  
+  /** DOCUMENT_ME. */
   private final JXBusyLabel busy = new JXBusyLabel();
+  
+  /** DOCUMENT_ME. */
   private JPanel p;
+  
+  /** DOCUMENT_ME. */
   private JajukButton jbSave = null;
+  
+  /** DOCUMENT_ME. */
   private JajukButton jbDelete = null;
+  
+  /** DOCUMENT_ME. */
   private JajukToggleButton jtbEdit = null;
+  
+  /** DOCUMENT_ME. */
   private JajukLyricsProvider jajukLyricsProvider = null; 
 
+  /**
+   * Instantiates a new lyrics view.
+   */
   public LyricsView() {
     super();
   }
@@ -156,7 +190,7 @@ public class LyricsView extends ViewAdapter {
   }
   
   /**
-   * Initializes the UI of edit lyrics mode
+   * Initializes the UI of edit lyrics mode.
    */
   public void initEditUI() {
     jtbEdit = getJtbEdit();
@@ -198,6 +232,12 @@ public class LyricsView extends ViewAdapter {
     });    
   }
 
+  /**
+   * Handle popup.
+   * DOCUMENT_ME
+   * 
+   * @param e DOCUMENT_ME
+   */
   public void handlePopup(final MouseEvent e) {
     final JPopupMenu menu = new JPopupMenu();
 
@@ -211,7 +251,8 @@ public class LyricsView extends ViewAdapter {
   }
   
   /**
-   * Switch from lyrics view to edit mode
+   * Switch from lyrics view to edit mode.
+   * 
    * @param file The file to edit lyrics for
    */
   public void editLyrics(final File file) {
@@ -227,8 +268,9 @@ public class LyricsView extends ViewAdapter {
   }
   
   /**
-   * Switch from lyrics edit to view mode
-   * @param callUpdate Whether to call an update after switching  
+   * Switch from lyrics edit to view mode.
+   * 
+   * @param callUpdate Whether to call an update after switching
    */
   public void exitEditLyrics(boolean callUpdate) {
     textarea.setEditable(false);
@@ -378,7 +420,7 @@ public class LyricsView extends ViewAdapter {
   }
 
   /**
-   * Hide lyrics scrollable text and display a "Ready to play" message
+   * Hide lyrics scrollable text and display a "Ready to play" message.
    */
   private void reset() {
     SwingUtilities.invokeLater(new Runnable() {
@@ -402,6 +444,11 @@ public class LyricsView extends ViewAdapter {
     return Messages.getString("LyricsView.0");
   }
 
+  /**
+   * Gets the text area.
+   * 
+   * @return the text area
+   */
   private JTextArea getTextArea() {
     if (textarea == null) {
       textarea = new JTextArea();
@@ -409,6 +456,11 @@ public class LyricsView extends ViewAdapter {
     return textarea;
   }
 
+  /**
+   * Gets the jsp.
+   * 
+   * @return the jsp
+   */
   private JScrollPane getJsp() {
     if (jsp == null) {
       jsp = new JScrollPane(getTextArea());
@@ -416,6 +468,11 @@ public class LyricsView extends ViewAdapter {
     return jsp;
   }
   
+  /**
+   * Gets the jl title.
+   * 
+   * @return the jl title
+   */
   private JLabel getJlTitle() {
     if (jlTitle == null) {
       jlTitle = new JLabel();
@@ -423,6 +480,11 @@ public class LyricsView extends ViewAdapter {
     return jlTitle;
   }
 
+  /**
+   * Gets the jl author.
+   * 
+   * @return the jl author
+   */
   private JLabel getJlAuthor() {
     if (jlAuthor == null) {
       jlAuthor = new JLabel();
@@ -430,6 +492,11 @@ public class LyricsView extends ViewAdapter {
     return jlAuthor;
   }
   
+  /**
+   * Gets the jb save.
+   * 
+   * @return the jb save
+   */
   private JajukButton getJbSave() {
     if (jbSave == null) {
       jbSave = new JajukButton(IconLoader.getIcon(JajukIcons.SAVE));
@@ -438,7 +505,9 @@ public class LyricsView extends ViewAdapter {
   }
   
   /**
-   * @return
+   * Gets the jb delete.
+   * 
+   * @return the jb delete
    */
   private JajukButton getJbDelete() {
     if (jbDelete == null) {
@@ -447,6 +516,11 @@ public class LyricsView extends ViewAdapter {
     return jbDelete;
   }
 
+  /**
+   * Gets the jtb edit.
+   * 
+   * @return the jtb edit
+   */
   private JajukToggleButton getJtbEdit() {
     if (jtbEdit == null) {
       jtbEdit = new JajukToggleButton(IconLoader.getIcon(JajukIcons.EDIT));
@@ -455,6 +529,11 @@ public class LyricsView extends ViewAdapter {
     return jtbEdit;
   }
 
+  /**
+   * Gets the jmi copy to clipboard.
+   * 
+   * @return the jmi copy to clipboard
+   */
   private JMenuItem getJmiCopyToClipboard() {
     if (jmiCopyToClipboard == null) {
       jmiCopyToClipboard = new JMenuItem(ActionManager.getAction(JajukActions.COPY_TO_CLIPBOARD));
@@ -462,6 +541,11 @@ public class LyricsView extends ViewAdapter {
     return jmiCopyToClipboard;
   }
 
+  /**
+   * Gets the jmi launch in browser.
+   * 
+   * @return the jmi launch in browser
+   */
   private JMenuItem getJmiLaunchInBrowser() {
     if (jmiLaunchInBrowser == null) {
       jmiLaunchInBrowser = new JMenuItem(ActionManager.getAction(JajukActions.LAUNCH_IN_BROWSER));
@@ -469,6 +553,11 @@ public class LyricsView extends ViewAdapter {
     return jmiLaunchInBrowser;
   }
   
+  /**
+   * Gets the jajuk lyrics provider.
+   * 
+   * @return the jajuk lyrics provider
+   */
   private JajukLyricsProvider getJajukLyricsProvider() {
     if (jajukLyricsProvider == null) {
       jajukLyricsProvider = new JajukLyricsProvider();

@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2005 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $$Revision: 2563 $$
+ *  $Revision$
  */
 
 package org.jajuk.ui.views;
@@ -77,43 +78,80 @@ import org.jdesktop.swingx.JXBusyLabel;
 
 /**
  * Show suggested albums based on current collection (bestof, novelties) and
- * LAstFM
+ * LAstFM.
  */
 public class SuggestionView extends ViewAdapter {
 
+  /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
+  /** DOCUMENT_ME. */
   private JTabbedPane tabs;
 
+  /** DOCUMENT_ME. */
   protected String author;
 
+  /**
+   * DOCUMENT_ME.
+   */
   enum SuggestionType {
-    BEST_OF, NEWEST, RARE, OTHERS_ALBUMS, SIMILAR_AUTHORS
+    
+    /** DOCUMENT_ME. */
+    BEST_OF, 
+ /** DOCUMENT_ME. */
+ NEWEST, 
+ /** DOCUMENT_ME. */
+ RARE, 
+ /** DOCUMENT_ME. */
+ OTHERS_ALBUMS, 
+ /** DOCUMENT_ME. */
+ SIMILAR_AUTHORS
   }
 
+  /** DOCUMENT_ME. */
   JScrollPane jpBestof;
 
+  /** DOCUMENT_ME. */
   JScrollPane jpNewest;
 
+  /** DOCUMENT_ME. */
   JScrollPane jpRare;
 
+  /** DOCUMENT_ME. */
   JScrollPane jpOthersAlbums;
 
+  /** DOCUMENT_ME. */
   JScrollPane jpSimilarAuthors;
 
+  /** DOCUMENT_ME. */
   private int comp = 0;
 
+  /** DOCUMENT_ME. */
   List<Album> albumsNewest;
+  
+  /** DOCUMENT_ME. */
   List<Album> albumsPrefered;
+  
+  /** DOCUMENT_ME. */
   List<Album> albumsRare;
 
-  /** Currently selected thumb */
+  /** Currently selected thumb. */
   AbstractThumbnail selectedThumb;
 
+  /** DOCUMENT_ME. */
   private AlbumListInfo albums;
+  
+  /** DOCUMENT_ME. */
   private SimilarArtistsInfo similar;
 
+  /**
+   * DOCUMENT_ME.
+   */
   class ThumbMouseListener extends MouseAdapter {
+    
+    /* (non-Javadoc)
+     * @see java.awt.event.MouseAdapter#mousePressed(java.awt.event.MouseEvent)
+     */
     @Override
     public void mousePressed(MouseEvent e) {
       AbstractThumbnail thumb = (AbstractThumbnail) ((JLabel) e.getSource()).getParent();
@@ -128,6 +166,9 @@ public class SuggestionView extends ViewAdapter {
     }
   }
 
+  /**
+   * Instantiates a new suggestion view.
+   */
   public SuggestionView() {
     super();
   }
@@ -206,6 +247,9 @@ public class SuggestionView extends ViewAdapter {
     ObservationManager.register(this);
   }
 
+  /* (non-Javadoc)
+   * @see org.jajuk.events.Observer#getRegistrationKeys()
+   */
   public Set<JajukEvents> getRegistrationKeys() {
     Set<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
     eventSubjectSet.add(JajukEvents.FILE_LAUNCHED);
@@ -216,10 +260,7 @@ public class SuggestionView extends ViewAdapter {
   }
 
   /**
-   * Refresh local thumbs
-   * 
-   * @param search
-   *          force searching new thumbs, if false, just UI refresh
+   * Refresh local thumbs.
    */
   private void refreshLocalCollectionTabs() {
     // Display a busy panel in the mean-time
@@ -286,6 +327,10 @@ public class SuggestionView extends ViewAdapter {
     sw.execute();
   }
 
+  /**
+   * Refresh last fm collection tabs.
+   * DOCUMENT_ME
+   */
   private void refreshLastFMCollectionTabs() {
     String newAuthor = null;
     File current = QueueModel.getPlayingFile();
@@ -357,9 +402,9 @@ public class SuggestionView extends ViewAdapter {
   }
 
   /**
-   * Pre-load other album (done outside the EDT)
+   * Pre-load other album (done outside the EDT).
    * 
-   * @throws Exception
+   * @throws Exception the exception
    */
   void preFetchOthersAlbum() throws Exception {
     albums = LastFmService.getInstance().getAlbumList(author, true, 0);
@@ -380,9 +425,9 @@ public class SuggestionView extends ViewAdapter {
   }
 
   /**
-   * Pre-load other album (done outside the EDT)
+   * Pre-load other album (done outside the EDT).
    * 
-   * @throws Exception
+   * @throws Exception the exception
    */
   void preFetchSimilarArtists() throws Exception {
     // Perform last.fm calls
@@ -404,10 +449,11 @@ public class SuggestionView extends ViewAdapter {
   }
 
   /**
-   * Return the result panel for local albums
+   * Return the result panel for local albums.
    * 
-   * @param type
-   * @return
+   * @param type DOCUMENT_ME
+   * 
+   * @return the local suggestions panel
    */
   JScrollPane getLocalSuggestionsPanel(SuggestionType type) {
     FlowScrollPanel out = new FlowScrollPanel();
@@ -438,10 +484,12 @@ public class SuggestionView extends ViewAdapter {
   }
 
   /**
-   * Return the result panel for lastFM information
+   * Return the result panel for lastFM information.
    * 
-   * @param type
-   * @return
+   * @param type DOCUMENT_ME
+   * @param artistView DOCUMENT_ME
+   * 
+   * @return the last fm suggestions panel
    */
   JScrollPane getLastFMSuggestionsPanel(SuggestionType type, boolean artistView) {
     FlowScrollPanel flowPanel = new FlowScrollPanel();
@@ -517,7 +565,7 @@ public class SuggestionView extends ViewAdapter {
   }
 
   /**
-   * [Perf]
+   * [Perf].
    * 
    * @return whether LastFM tabs are visible or not
    */
@@ -529,7 +577,7 @@ public class SuggestionView extends ViewAdapter {
   }
 
   /**
-   * Refresh lastFM tabs on perspective selection if tabs visible
+   * Refresh lastFM tabs on perspective selection if tabs visible.
    */
   @Override
   public void onPerspectiveSelection() {
@@ -537,6 +585,8 @@ public class SuggestionView extends ViewAdapter {
   }
 
   /**
+   * Gets the nothing found panel.
+   * 
    * @return a panel with text explaining why no item has been found
    */
   JPanel getNothingFoundPanel() {

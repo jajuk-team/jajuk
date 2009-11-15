@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2004 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -35,24 +36,21 @@ import org.jajuk.util.log.Log;
  */
 public class Ambience implements Comparable<Ambience> {
 
-  /** List of styles */
+  /** List of styles. */
   private Set<Style> styles;
 
-  /** Ambience name */
+  /** Ambience name. */
   private String sName;
 
-  /** Ambience ID */
+  /** Ambience ID. */
   private final String sID;
 
   /**
-   * Constructor
+   * Constructor.
    * 
-   * @param sID
-   *          Ambience unique id
-   * @param sName
-   *          Ambience name
-   * @param styles
-   *          list of styles
+   * @param sID Ambience unique id
+   * @param sName Ambience name
+   * @param styles list of styles
    */
   public Ambience(String sID, String sName, Set<Style> styles) {
     this.sID = sID;
@@ -61,14 +59,11 @@ public class Ambience implements Comparable<Ambience> {
   }
 
   /**
-   * Constructor
+   * Constructor.
    * 
-   * @param sID
-   *          Ambience unique id
-   * @param sName
-   *          Ambience name
-   * @param styles
-   *          list by name
+   * @param sID Ambience unique id
+   * @param sName Ambience name
+   * @param styles list by name
    */
   public Ambience(String sID, String sName, String[] styles) {
     Set<Style> hstyles = new HashSet<Style>(styles.length);
@@ -86,17 +81,17 @@ public class Ambience implements Comparable<Ambience> {
   }
 
   /**
-   * Constructor
+   * Constructor.
    * 
-   * @param sName
-   *          Ambience name
+   * @param sName Ambience name
+   * @param sID DOCUMENT_ME
    */
   public Ambience(String sID, String sName) {
     this(sID, sName, new HashSet<Style>(10));
   }
 
   /**
-   * Constructor
+   * Constructor.
    */
   public Ambience() {
     this.sID = "" + System.currentTimeMillis();
@@ -104,38 +99,77 @@ public class Ambience implements Comparable<Ambience> {
     this.styles = new HashSet<Style>(10);
   }
 
+  /**
+   * Adds the style.
+   * DOCUMENT_ME
+   * 
+   * @param style DOCUMENT_ME
+   */
   public void addStyle(Style style) {
     if (style != null) {
       styles.add(style);
     }
   }
 
+  /**
+   * Removes the style.
+   * DOCUMENT_ME
+   * 
+   * @param style DOCUMENT_ME
+   */
   public void removeStyle(Style style) {
     styles.remove(style);
   }
 
+  /**
+   * Gets the name.
+   * 
+   * @return the name
+   */
   public String getName() {
     return this.sName;
   }
 
+  /**
+   * Gets the iD.
+   * 
+   * @return the iD
+   */
   public String getID() {
     return this.sID;
   }
 
+  /**
+   * Sets the name.
+   * 
+   * @param name the new name
+   */
   public void setName(String name) {
     this.sName = name;
   }
 
+  /**
+   * Gets the styles.
+   * 
+   * @return the styles
+   */
   public Set<Style> getStyles() {
     return this.styles;
   }
 
+  /**
+   * Sets the styles.
+   * 
+   * @param styles the new styles
+   */
   public void setStyles(Set<Style> styles) {
     this.styles = styles;
   }
 
   /**
    * From String, return style1,style2,...
+   * 
+   * @return the styles desc
    */
   public String getStylesDesc() {
     // check if we have styles at all
@@ -152,7 +186,7 @@ public class Ambience implements Comparable<Ambience> {
   }
 
   /**
-   * toString method
+   * toString method.
    * 
    * @return String representation of this item
    */
@@ -162,7 +196,9 @@ public class Ambience implements Comparable<Ambience> {
   }
 
   /**
-   * Equals method
+   * Equals method.
+   * 
+   * @param o DOCUMENT_ME
    * 
    * @return true if ambience have the same same and contains the same styles
    */
@@ -177,6 +213,9 @@ public class Ambience implements Comparable<Ambience> {
         && this.styles.equals(ambienceOther.getStyles());
   }
 
+  /* (non-Javadoc)
+   * @see java.lang.Object#hashCode()
+   */
   @Override
   public int hashCode() {
     // for now just combine name and id to a hashcode
@@ -189,7 +228,11 @@ public class Ambience implements Comparable<Ambience> {
   }
 
   /**
-   * Compare to method : alphabetical
+   * Compare to method : alphabetical.
+   * 
+   * @param ambience DOCUMENT_ME
+   * 
+   * @return the int
    */
   public int compareTo(Ambience ambience) {
     // check for null

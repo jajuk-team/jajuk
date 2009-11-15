@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2005 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $$Revision$$
+ *  $Revision$
  */
 
 package org.jajuk.ui.views;
@@ -53,25 +54,34 @@ import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 
 /**
- * Animation-based view
+ * Animation-based view.
  */
 public class AnimationView extends ViewAdapter implements ComponentListener {
 
+  /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
+  /** The Constant DEFAULT_FRAME_RATE.  DOCUMENT_ME */
   private static final int DEFAULT_FRAME_RATE = 25;
 
+  /** The Constant DEFAULT_DURATION.  DOCUMENT_ME */
   private static final int DEFAULT_DURATION = 5000;
 
+  /** The Constant DEFAULT_PAUSE.  DOCUMENT_ME */
   private static final int DEFAULT_PAUSE = 500;
 
-  /** Current panel width* */
+  /** Current panel width*. */
   private int iSize;
 
+  /** DOCUMENT_ME. */
   private BasicTextLabel btl1;
 
+  /** DOCUMENT_ME. */
   private Animator animator;
 
+  /**
+   * Instantiates a new animation view.
+   */
   public AnimationView() {
   }
 
@@ -101,6 +111,9 @@ public class AnimationView extends ViewAdapter implements ComponentListener {
 
   }
 
+  /* (non-Javadoc)
+   * @see org.jajuk.events.Observer#getRegistrationKeys()
+   */
   public Set<JajukEvents> getRegistrationKeys() {
     Set<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
     eventSubjectSet.add(JajukEvents.FILE_LAUNCHED);
@@ -110,7 +123,11 @@ public class AnimationView extends ViewAdapter implements ComponentListener {
     return eventSubjectSet;
   }
 
-  /** Set the text to be displayed* */
+  /**
+   * Set the text to be displayed*.
+   * 
+   * @param sText DOCUMENT_ME
+   */
   public void setText(final String sText) {
     SwingUtilities.invokeLater(new Runnable() {
       // this is mandatory to

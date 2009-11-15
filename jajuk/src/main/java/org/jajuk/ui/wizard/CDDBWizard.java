@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2007 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $$Revision$$
+ *  $Revision$
  */
 package org.jajuk.ui.wizard;
 
@@ -58,36 +59,45 @@ import org.jajuk.util.UtilString;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 
+/**
+ * DOCUMENT_ME.
+ */
 public class CDDBWizard extends JajukJDialog implements ActionListener {
 
+  /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
+  /** DOCUMENT_ME. */
   SteppedComboBox jcbAlbum;
 
+  /** DOCUMENT_ME. */
   JajukTable jtable;
 
+  /** DOCUMENT_ME. */
   CDDBTableModel model;
 
-  /** OK/Cancel panel */
+  /** OK/Cancel panel. */
   OKCancelPanel okc;
 
-  /** Items to be retagged */
+  /** Items to be retagged. */
   List<CDDBTrack> alCddbTracks;
 
-  /** Freedb Items */
+  /** Freedb Items. */
   Freedb fdb;
 
+  /** DOCUMENT_ME. */
   FreedbQueryResult[] foundAlbums;
 
+  /** DOCUMENT_ME. */
   FreedbReadResult fdbReader;
 
+  /** DOCUMENT_ME. */
   List<String> jcbFoundAlbums;
 
   /**
-   * CDDB wizard
+   * CDDB wizard.
    * 
-   * @param dir
-   *          directory to retag
+   * @param tracks DOCUMENT_ME
    */
   public CDDBWizard(final List<Track> tracks) {
     super();
@@ -142,7 +152,11 @@ public class CDDBWizard extends JajukJDialog implements ActionListener {
     sw.execute();
   }
 
-  /** Fill the table */
+  /**
+   * Fill the table.
+   * 
+   * @return the jajuk table
+   */
   public JajukTable populateTable() {
     model = populateModel();
     jtable = new JajukTable(model, true, null);
@@ -151,6 +165,12 @@ public class CDDBWizard extends JajukJDialog implements ActionListener {
     return jtable;
   }
 
+  /**
+   * Populate model.
+   * DOCUMENT_ME
+   * 
+   * @return the cDDB table model
+   */
   public CDDBTableModel populateModel() {
     try {
       // Display first result found when the frame opens, then select the combo
@@ -171,6 +191,10 @@ public class CDDBWizard extends JajukJDialog implements ActionListener {
     return model;
   }
 
+  /**
+   * Inits the ui.
+   * DOCUMENT_ME
+   */
   public void initUI() {
     okc = new OKCancelPanel(CDDBWizard.this, Messages.getString("Apply"), Messages
         .getString("Close"));
@@ -207,11 +231,12 @@ public class CDDBWizard extends JajukJDialog implements ActionListener {
   }
 
   /**
-   * Perform the actual freedb query
+   * Perform the actual freedb query.
    * 
-   * @param cddbtracks
+   * @param cddbtracks DOCUMENT_ME
+   * 
    * @return number of results (0 if no result). -1 if a technical problem
-   *         occurred.
+   * occurred.
    */
   public int performQuery(CDDBTrack[] cddbtracks) {
     fdb = new Freedb();
@@ -246,6 +271,10 @@ public class CDDBWizard extends JajukJDialog implements ActionListener {
     }
   }
 
+  /**
+   * Retag files.
+   * DOCUMENT_ME
+   */
   public void retagFiles() {
     int[] aIdxToTag = jtable.getSelectedRows();
     if (aIdxToTag.length == 0) {
@@ -286,10 +315,14 @@ public class CDDBWizard extends JajukJDialog implements ActionListener {
   }
 
   /**
-   * @param iRow
-   * @param track
-   * @return
-   * @throws JajukException
+   * Retag internal.
+   * 
+   * @param iRow DOCUMENT_ME
+   * @param trackin DOCUMENT_ME
+   * 
+   * @return the track
+   * 
+   * @throws JajukException the jajuk exception
    */
   private Track retagInternal(final int iRow, final Track trackin) throws JajukException {
     Track track = trackin;
@@ -331,6 +364,9 @@ public class CDDBWizard extends JajukJDialog implements ActionListener {
     return track;
   }
 
+  /* (non-Javadoc)
+   * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+   */
   public void actionPerformed(ActionEvent e) {
     if (e.getSource() == okc.getCancelButton()) {
       dispose();

@@ -1,6 +1,7 @@
 /*
  *  Jajuk
  *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision: 3132 $
+ *  $Revision$
  */
 package org.jajuk.services.dbus;
 
@@ -28,60 +29,165 @@ import org.freedesktop.dbus.DBusInterface;
  * TODO: Audio player usually also provide the following type of information -
  * current track that is playing including additional information that is
  * available - next planned track(s) - position in the current track - remaining
- * time in the current track - current Volume
- * 
+ * time in the current track - current Volume.
  */
 @org.freedesktop.DBus.Description("Methods to remotely control Jajuk including play/pause/next/prev track and some other useful actions.")
 public interface DBusSupport extends DBusInterface {
 
+  /**
+   * Previous.
+   * DOCUMENT_ME
+   * 
+   * @throws Exception the exception
+   */
   @org.freedesktop.DBus.Description("Switches to the previous track.")
   void previous() throws Exception;
 
+  /**
+   * Next.
+   * DOCUMENT_ME
+   * 
+   * @throws Exception the exception
+   */
   @org.freedesktop.DBus.Description("Switches to the next  track.")
   void next() throws Exception;
 
+  /**
+   * Rewind.
+   * DOCUMENT_ME
+   * 
+   * @throws Exception the exception
+   */
   @org.freedesktop.DBus.Description("Moves back in the currently played track.")
   void rewind() throws Exception;
 
+  /**
+   * Play pause.
+   * DOCUMENT_ME
+   * 
+   * @throws Exception the exception
+   */
   @org.freedesktop.DBus.Description("Toggles playing/pausing the current track.")
   void playPause() throws Exception;
 
+  /**
+   * Stop.
+   * DOCUMENT_ME
+   * 
+   * @throws Exception the exception
+   */
   @org.freedesktop.DBus.Description("Stops playing.")
   void stop() throws Exception;
 
+  /**
+   * Forward.
+   * DOCUMENT_ME
+   * 
+   * @throws Exception the exception
+   */
   @org.freedesktop.DBus.Description("Moves back in the currently played track.")
   void forward() throws Exception;
 
+  /**
+   * Exit.
+   * DOCUMENT_ME
+   * 
+   * @throws Exception the exception
+   */
   @org.freedesktop.DBus.Description("Shuts off Jajuk, depending on configuration this can show a message box that needs to be confirmed with 'Yes'.")
   void exit() throws Exception;
 
+  /**
+   * Shuffle global.
+   * DOCUMENT_ME
+   * 
+   * @throws Exception the exception
+   */
   @org.freedesktop.DBus.Description("Shuffles all planned tracks.")
   void shuffleGlobal() throws Exception;
 
+  /**
+   * Previous album.
+   * DOCUMENT_ME
+   * 
+   * @throws Exception the exception
+   */
   @org.freedesktop.DBus.Description("Plays the previous album.")
   void previousAlbum() throws Exception;
 
+  /**
+   * Next album.
+   * DOCUMENT_ME
+   * 
+   * @throws Exception the exception
+   */
   @org.freedesktop.DBus.Description("Plays the next album.")
   void nextAlbum() throws Exception;
 
+  /**
+   * Increase volume.
+   * DOCUMENT_ME
+   * 
+   * @throws Exception the exception
+   */
   @org.freedesktop.DBus.Description("Increase volume by 5 percent.")
   void increaseVolume() throws Exception;
 
+  /**
+   * Decrease volume.
+   * DOCUMENT_ME
+   * 
+   * @throws Exception the exception
+   */
   @org.freedesktop.DBus.Description("Decrease volume by 5 percent.")
   void decreaseVolume() throws Exception;
 
+  /**
+   * Mute.
+   * DOCUMENT_ME
+   * 
+   * @throws Exception the exception
+   */
   @org.freedesktop.DBus.Description("Toggles Mute on/off.")
   void mute() throws Exception;
 
+  /**
+   * Current html.
+   * DOCUMENT_ME
+   * 
+   * @return the string
+   * 
+   * @throws Exception the exception
+   */
   @org.freedesktop.DBus.Description("Returns a string describing the currently played track as HTML snippet.")
   String currentHTML() throws Exception;
 
+  /**
+   * Current.
+   * DOCUMENT_ME
+   * 
+   * @return the string
+   * 
+   * @throws Exception the exception
+   */
   @org.freedesktop.DBus.Description("Returns a string describing the currently played track, the format is controlled with the pattern setting in the configuration.")
   String current() throws Exception;
 
+  /**
+   * Ban current.
+   * DOCUMENT_ME
+   * 
+   * @throws Exception the exception
+   */
   @org.freedesktop.DBus.Description("Sets the rating of the currently played track so that it is not automatically played anymore. This is a toggle, the ban will be lifted if invoked on a file that is currently 'banned'")
   void banCurrent() throws Exception;
 
+  /**
+   * Show currently playing.
+   * DOCUMENT_ME
+   * 
+   * @throws Exception the exception
+   */
   @org.freedesktop.DBus.Description("Reports the currently played file via the configured notification system, i.e. usually some sort of popup in the Systray-Area.")
   void showCurrentlyPlaying() throws Exception;
 

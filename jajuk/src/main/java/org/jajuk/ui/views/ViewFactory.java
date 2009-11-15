@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2007 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $$Revision$$
+ *  $Revision$
  */
 
 package org.jajuk.ui.views;
@@ -28,25 +29,23 @@ import java.util.List;
 import org.jajuk.ui.perspectives.IPerspective;
 
 /**
- * View Factory, creates view item and manages their ID
+ * View Factory, creates view item and manages their ID.
  */
 public final class ViewFactory {
 
   /**
-   * No instantiation *
+   * No instantiation *.
    */
   private ViewFactory() {
   }
 
   /**
-   * Create a new view instance
+   * Create a new view instance.
    * 
-   * @param className
-   *          view class
-   * @param perspective
-   *          view perspective
-   * @param id
-   *          integer id used as vldocking key id
+   * @param className view class
+   * @param perspective view perspective
+   * @param id integer id used as vldocking key id
+   * 
    * @return the created view
    */
   public static IView createView(Class<?> className, IPerspective perspective, int id) {
@@ -63,10 +62,12 @@ public final class ViewFactory {
   }
 
   /**
+   * Gets the known views.
    * 
    * @return All known views sorted by name
+   * 
    * @TODO Refactor this, the known views should be get by reflection (from the
-   *       default perspectives XML file ?)
+   * default perspectives XML file ?)
    */
   @SuppressWarnings("unchecked")
   public static List<Class<? extends IView>> getKnownViews() {

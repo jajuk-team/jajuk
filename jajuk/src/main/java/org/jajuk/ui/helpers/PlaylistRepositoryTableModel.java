@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- * $Revision: 2921 $
+ *  $Revision$
  */
 
 package org.jajuk.ui.helpers;
@@ -40,19 +41,15 @@ import org.jajuk.util.Messages;
 import org.jajuk.util.filters.JajukPredicates;
 
 /**
- * Table model used holding playlist repository data
+ * Table model used holding playlist repository data.
  */
 public class PlaylistRepositoryTableModel extends JajukTableModel {
 
+  /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
   /**
-   * Model constructor
-   * 
-   * @param iColNum
-   *          number of rows
-   * @param sColName
-   *          columns names
+   * Model constructor.
    */
   public PlaylistRepositoryTableModel() {
     super(5);
@@ -88,6 +85,10 @@ public class PlaylistRepositoryTableModel extends JajukTableModel {
    * For now, this table will not be editable (except for custom properties) for
    * complexity reasons. This may be implemented in the future if required
    * </p>
+   * 
+   * @param sPropertyName DOCUMENT_ME
+   * @param sPattern DOCUMENT_ME
+   * @param columnsToShow DOCUMENT_ME
    */
   @Override
   @SuppressWarnings("unchecked")

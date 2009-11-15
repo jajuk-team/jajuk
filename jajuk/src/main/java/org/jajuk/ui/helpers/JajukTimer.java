@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2004 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -32,22 +33,25 @@ import org.jajuk.services.players.StackItem;
  * This class is a convenient timer class, mainly for UI
  * <p>
  * Singleton
- * </p>
+ * </p>.
  */
 public final class JajukTimer {
 
-  /** Self instance */
+  /** Self instance. */
   private static JajukTimer timer;
 
-  /** Total time to play in secs */
+  /** Total time to play in secs. */
   private long lTimeToPlay = 0;
 
-  /** A default heartbeat time in ms */
+  /** A default heartbeat time in ms. */
   public static final int DEFAULT_HEARTBEAT = 800;
 
+  /** The Constant D_MS_HEARTBEAT.  DOCUMENT_ME */
   public static final int D_MS_HEARTBEAT = 500;
 
   /**
+   * Gets the instance.
+   * 
    * @return JajukTimer singleton
    */
   public static JajukTimer getInstance() {
@@ -57,14 +61,16 @@ public final class JajukTimer {
     return timer;
   }
 
-  /** Private constructor */
+  /**
+   * Private constructor.
+   */
   private JajukTimer() {
   }
 
   /**
-   * Add time of the given file
+   * Add time of the given file.
    * 
-   * @param file
+   * @param file DOCUMENT_ME
    */
   public void addTrackTime(File file) {
     if (file != null) {
@@ -73,9 +79,9 @@ public final class JajukTimer {
   }
 
   /**
-   * Add time of the given set of files
+   * Add time of the given set of files.
    * 
-   * @param alFiles
+   * @param alFiles DOCUMENT_ME
    */
   public void addTrackTime(java.util.List<StackItem> alFiles) {
     Iterator<StackItem> it = alFiles.iterator();
@@ -93,9 +99,9 @@ public final class JajukTimer {
   }
 
   /**
-   * Remove time of the given file
+   * Remove time of the given file.
    * 
-   * @param file
+   * @param file DOCUMENT_ME
    */
   public void removeTrackTime(File file) {
     if (file != null) {
@@ -104,9 +110,9 @@ public final class JajukTimer {
   }
 
   /**
-   * Remove time of the given set of files
+   * Remove time of the given set of files.
    * 
-   * @param alFiles
+   * @param alFiles DOCUMENT_ME
    */
   public void removeTrackTime(List<File> alFiles) {
     Iterator<File> it = alFiles.iterator();
@@ -119,6 +125,8 @@ public final class JajukTimer {
   }
 
   /**
+   * Gets the current track ellapsed time.
+   * 
    * @return Current track ellapsed time in secs
    */
   public long getCurrentTrackEllapsedTime() {
@@ -126,6 +134,8 @@ public final class JajukTimer {
   }
 
   /**
+   * Gets the current track position.
+   * 
    * @return Current track position in % (ex:0.2)
    */
   public float getCurrentTrackPosition() {
@@ -133,6 +143,8 @@ public final class JajukTimer {
   }
 
   /**
+   * Gets the current track total time.
+   * 
    * @return Current track total time in secs
    */
   public long getCurrentTrackTotalTime() {
@@ -140,9 +152,10 @@ public final class JajukTimer {
   }
 
   /**
+   * Gets the total time to play.
    * 
    * @return FIFO total time to be played in secs ( includes current track time
-   *         to play). Returns -1 if repeat mode
+   * to play). Returns -1 if repeat mode
    */
   public long getTotalTimeToPlay() {
     if (QueueModel.containsRepeat()) {
@@ -156,8 +169,7 @@ public final class JajukTimer {
   }
 
   /**
-   * Reset timer
-   * 
+   * Reset timer.
    */
   public void reset() {
     lTimeToPlay = 0;

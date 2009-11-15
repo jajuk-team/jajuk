@@ -16,22 +16,25 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision: 3132 $
+ *  $Revision$
  */
 package org.jajuk.ui.windows;
 
 /**
- * Possible states for a Jajuk window
+ * Possible states for a Jajuk window.
  */
 public enum WindowState {
 
   // Not yet build
+  /** DOCUMENT_ME. */
   NOT_BUILT,
 
   // Build but not yet displayed
+  /** DOCUMENT_ME. */
   BUILT_NOT_DISPLAYED,
 
   // Build and displayed
+  /** DOCUMENT_ME. */
   BUILT_DISPLAYED,
 
 }

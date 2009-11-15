@@ -1,13 +1,22 @@
 /*
- * This file has been adapted to Jajuk by the Jajuk Team.
- * Jajuk Copyright (C) 2007 The Jajuk Team
- * 
- * Found at http://www.jroller.com/santhosh/date/20050528
- * Original copyright information follows:
+ *  Jajuk
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
- * Copyright santhosh kumar
- * 
- * @author santhosh kumar - santhosh@in.fiorano.com Drop down button
+ *  This program is free software; you can redistribute it and/or
+ *  modify it under the terms of the GNU General Public License
+ *  as published by the Free Software Foundation; either version 2
+ *  of the License, or any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program; if not, write to the Free Software
+ *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ *  $Revision$
  */
 
 package ext;
@@ -33,15 +42,26 @@ import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 
+/**
+ * DOCUMENT_ME.
+ */
 public abstract class DropDownButton extends JajukButton implements ChangeListener,
     PopupMenuListener, ActionListener, PropertyChangeListener, Const {
 
+  /** Generated serialVersionUID. */
   private static final long serialVersionUID = 9126200472940409277L;
 
+  /** DOCUMENT_ME. */
   private final JButton arrowButton;
 
+  /** DOCUMENT_ME. */
   private boolean popupVisible = false;
 
+  /**
+   * Instantiates a new drop down button.
+   * 
+   * @param icon DOCUMENT_ME
+   */
   public DropDownButton(ImageIcon icon) {
     super(icon);
     if (icon.getIconWidth() < 20) {
@@ -59,12 +79,18 @@ public abstract class DropDownButton extends JajukButton implements ChangeListen
 
   /*------------------------------[ PropertyChangeListener ]---------------------------------------------------*/
 
+  /* (non-Javadoc)
+   * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
+   */
   public void propertyChange(PropertyChangeEvent evt) {
     arrowButton.setEnabled(isEnabled());
   }
 
   /*------------------------------[ ChangeListener ]---------------------------------------------------*/
 
+  /* (non-Javadoc)
+   * @see javax.swing.event.ChangeListener#stateChanged(javax.swing.event.ChangeEvent)
+   */
   public void stateChanged(ChangeEvent e) {
     if (e.getSource() == getModel()) {
       if (popupVisible && !getModel().isRollover()) {
@@ -84,6 +110,9 @@ public abstract class DropDownButton extends JajukButton implements ChangeListen
 
   /*------------------------------[ ActionListener ]---------------------------------------------------*/
 
+  /* (non-Javadoc)
+   * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+   */
   public void actionPerformed(ActionEvent ae) {
     JPopupMenu popup = getPopupMenu();
     popup.addPopupMenuListener(this);
@@ -92,12 +121,18 @@ public abstract class DropDownButton extends JajukButton implements ChangeListen
 
   /*------------------------------[ PopupMenuListener ]---------------------------------------------------*/
 
+  /* (non-Javadoc)
+   * @see javax.swing.event.PopupMenuListener#popupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent)
+   */
   public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
     popupVisible = true;
     getModel().setRollover(true);
     arrowButton.getModel().setSelected(true);
   }
 
+  /* (non-Javadoc)
+   * @see javax.swing.event.PopupMenuListener#popupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent)
+   */
   public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
     popupVisible = false;
 
@@ -107,14 +142,30 @@ public abstract class DropDownButton extends JajukButton implements ChangeListen
     // act as good programmer :)
   }
 
+  /* (non-Javadoc)
+   * @see javax.swing.event.PopupMenuListener#popupMenuCanceled(javax.swing.event.PopupMenuEvent)
+   */
   public void popupMenuCanceled(PopupMenuEvent e) {
     popupVisible = false;
   }
 
   /*------------------------------[ Other Methods ]---------------------------------------------------*/
 
+  /**
+   * Gets the popup menu.
+   * 
+   * @return the popup menu
+   */
   protected abstract JPopupMenu getPopupMenu();
 
+  /**
+   * Adds the to tool bar.
+   * DOCUMENT_ME
+   * 
+   * @param toolbar DOCUMENT_ME
+   * 
+   * @return the j button
+   */
   public JButton addToToolBar(JToolBar toolbar) {
     JToolBar tempBar = new JajukJToolbar();
     tempBar.setAlignmentX(0.5f);

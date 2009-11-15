@@ -16,27 +16,43 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision: 3132 $
+ *  $Revision$
  */
 package org.jajuk.services.lyrics.providers;
 
 import org.jajuk.base.File;
 
 /**
- * Class container of lyrics written by user
+ * Class container of lyrics written by user.
  */
 public class JajukLyricsProvider {
+  
+  /** DOCUMENT_ME. */
   private String sLyrics = null;
+  
+  /** DOCUMENT_ME. */
   private String sArtist = null;
+  
+  /** DOCUMENT_ME. */
   private String sTitle = null;
+  
+  /** DOCUMENT_ME. */
   private File audioFile = null;
   
+  /**
+   * Instantiates a new jajuk lyrics provider.
+   */
   public JajukLyricsProvider() {
     
   }  
 
   /* (non-Javadoc)
    * @see org.jajuk.services.lyrics.providers.ILyricsProvider#getLyrics(org.jajuk.base.File)
+   */
+  /**
+   * Gets the lyrics.
+   * 
+   * @return the lyrics
    */
   public String getLyrics() {
     return sLyrics;
@@ -45,27 +61,57 @@ public class JajukLyricsProvider {
   /* (non-Javadoc)
    * @see org.jajuk.services.lyrics.providers.ILyricsProvider#getResponseEncoding()
    */
+  /**
+   * Gets the response encoding.
+   * 
+   * @return the response encoding
+   */
   public String getResponseEncoding() {
     return "UTF-8";
   }
 
+  /**
+   * Gets the artist.
+   * 
+   * @return the artist
+   */
   public String getArtist() {
     return sArtist;
   }
   
+  /**
+   * Gets the title.
+   * 
+   * @return the title
+   */
   public String getTitle() {
     return sTitle;
   }
   
+  /**
+   * Gets the file.
+   * 
+   * @return the file
+   */
   public File getFile() {
     return audioFile;
     
   }
   
+  /**
+   * Sets the lyrics.
+   * 
+   * @param sLyrics the new lyrics
+   */
   public void setLyrics(String sLyrics) {
     this.sLyrics = sLyrics;
   }
   
+  /**
+   * Sets the file.
+   * 
+   * @param audioFile the new file
+   */
   public void setFile(File audioFile) {
     this.audioFile = audioFile;
     sArtist = this.audioFile.getTrack().getAuthor().getName2();

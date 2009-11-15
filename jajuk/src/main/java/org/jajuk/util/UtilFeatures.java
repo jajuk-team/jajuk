@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2007 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $$Revision: 3974 $$
+ *  $Revision$
  */
 package org.jajuk.util;
 
@@ -46,13 +47,11 @@ import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 
 /**
- * General use utilities methods
+ * General use utilities methods.
  */
 public final class UtilFeatures {
 
-  /**
-   * Genres
-   */
+  /** Genres. */
   public static final String[] GENRES = { "Blues", "Classic Rock", "Country", "Dance", "Disco",
       "Funk", "Grunge", "Hip-Hop", "Jazz", "Metal", "New Age", "Oldies", "Other", "Pop", "R&B",
       "Rap", "Reggae", "Rock", "Techno", "Industrial", "Alternative", "Ska", "Death Metal",
@@ -76,7 +75,10 @@ public final class UtilFeatures {
       "Thrash Metal", "Anime", "JPop", "SynthPop" };
 
   /**
-   * @param alFiles
+   * Apply play option.
+   * 
+   * @param alFiles DOCUMENT_ME
+   * 
    * @return Given list to play with shuffle or others runles applied
    */
   @SuppressWarnings("unchecked")
@@ -95,12 +97,13 @@ public final class UtilFeatures {
    * Convert a list of files into a list of StackItem
    * <p>
    * null files are ignored
-   * </p>
+   * </p>.
    * 
-   * @param alFiles
-   * @param bRepeat
-   * @param bUserLauched
-   * @return
+   * @param alFiles DOCUMENT_ME
+   * @param bRepeat DOCUMENT_ME
+   * @param bUserLauched DOCUMENT_ME
+   * 
+   * @return the list< stack item>
    */
   public static List<StackItem> createStackItems(final List<org.jajuk.base.File> alFiles,
       final boolean bRepeat, final boolean bUserLauched) {
@@ -121,12 +124,11 @@ public final class UtilFeatures {
   }
 
   /**
-   * Filter a given file list by ambience
+   * Filter a given file list by ambience.
    * 
-   * @param al
-   *          file list
-   * @param ambience
-   *          ambience
+   * @param al file list
+   * @param ambience ambience
+   * 
    * @return the list filtered
    */
   public static List<org.jajuk.base.File> filterByAmbience(final List<org.jajuk.base.File> al,
@@ -146,9 +148,10 @@ public final class UtilFeatures {
   }
 
   /**
-   * Convenient method for getPlayableFiles(collection<item>)
+   * Convenient method for getPlayableFiles(collection<item>).
    * 
-   * @param item
+   * @param item DOCUMENT_ME
+   * 
    * @return files
    */
   public static List<org.jajuk.base.File> getPlayableFiles(Item item) {
@@ -163,10 +166,10 @@ public final class UtilFeatures {
    * We assume that the collection elements all own the same type
    * </p>
    * Unmounted files are selected according to the value of
-   * CONF_OPTIONS_HIDE_UNMOUNTED option
+   * CONF_OPTIONS_HIDE_UNMOUNTED option.
    * 
-   * @param selection
-   *          an item selection (directories, files...)
+   * @param selection an item selection (directories, files...)
+   * 
    * @return the files (empty list if none matching)
    */
   public static List<org.jajuk.base.File> getPlayableFiles(List<Item> selection) {
@@ -205,9 +208,12 @@ public final class UtilFeatures {
   }
 
   /**
-   * @param col
+   * Gets the shuffle item.
+   * 
+   * @param col DOCUMENT_ME
+   * 
    * @return a single shuffle element from a list, null if none element in
-   *         provided collection
+   * provided collection
    */
   public static Object getShuffleItem(final Collection<? extends Object> col) {
     if (col.size() == 0) {
@@ -222,7 +228,13 @@ public final class UtilFeatures {
     return list.get((int) (Math.random() * list.size()));
   }
 
-  /** Return a genre string for a given genre id * */
+  /**
+   * Return a genre string for a given genre id *.
+   * 
+   * @param i DOCUMENT_ME
+   * 
+   * @return the string genre
+   */
   public static String getStringGenre(final int i) {
     if ((i >= 0) && (i < 126)) {
       return GENRES[i];
@@ -232,7 +244,10 @@ public final class UtilFeatures {
   }
 
   /**
-   * @param sFileName
+   * Checks if is standard cover.
+   * 
+   * @param file DOCUMENT_ME
+   * 
    * @return whether the given filename is a standard cover or not
    */
   public static boolean isStandardCover(final File file) {
@@ -259,7 +274,7 @@ public final class UtilFeatures {
   }
 
   /**
-   * No constructor
+   * No constructor.
    */
   private UtilFeatures() {
   }
@@ -267,6 +282,10 @@ public final class UtilFeatures {
   /**
    * Try to compute time length in milliseconds using BasicPlayer API. (code
    * from jlGui 2.3)
+   * 
+   * @param properties DOCUMENT_ME
+   * 
+   * @return the time length estimation
    */
   public static long getTimeLengthEstimation(final Map<String, Object> properties) {
     long milliseconds = -1;
@@ -306,8 +325,10 @@ public final class UtilFeatures {
   }
 
   /**
+   * Gets the preference for selection.
    * 
-   * @param selection
+   * @param selection DOCUMENT_ME
+   * 
    * @return first item in selection preference
    */
   public static long getPreferenceForSelection(List<? extends Item> selection) {
@@ -337,10 +358,9 @@ public final class UtilFeatures {
   }
 
   /**
-   * Perform updates on this view to reflect current playing item status
+   * Perform updates on this view to reflect current playing item status.
    * 
-   * @param observer
-   *          the observer to apply update to
+   * @param oberver DOCUMENT_ME
    */
   public static void updateStatus(Observer oberver) {
     // check if a track or a webradio has already been launched
@@ -365,6 +385,10 @@ public final class UtilFeatures {
   /**
    * Return sum of decimal digits in n. Code from
    * http://www.cs.princeton.edu/introcs/51data/CDDB.java.html
+   * 
+   * @param n DOCUMENT_ME
+   * 
+   * @return the long
    */
   private static long sumOfDigits(long n) {
     long i = n;
@@ -380,8 +404,8 @@ public final class UtilFeatures {
    * Computes a disk id. Code based on
    * http://www.cs.princeton.edu/introcs/51data/CDDB.java.html
    * 
-   * @param durations
-   *          List of durations
+   * @param durations List of durations
+   * 
    * @return the disk ID as a long
    */
   public static long computeDiscID(List<Long> durations) {

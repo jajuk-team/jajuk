@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -80,108 +81,160 @@ import org.jajuk.util.log.Log;
 /**
  * Jajuk menu bar
  * <p>
- * Singleton
+ * Singleton.
  */
 public final class JajukJMenuBar extends JMenuBar implements Observer {
 
+  /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
+  /** DOCUMENT_ME. */
   static JajukJMenuBar jjmb;
 
+  /** DOCUMENT_ME. */
   JMenu file;
 
+  /** DOCUMENT_ME. */
   JMenuItem jmiFileOpen;
 
+  /** DOCUMENT_ME. */
   JajukFileChooser jfchooser;
 
+  /** DOCUMENT_ME. */
   JMenuItem jmiFileExit;
 
+  /** DOCUMENT_ME. */
   JMenu views;
 
+  /** DOCUMENT_ME. */
   JMenuItem jmiRestoreDefaultViews;
 
+  /** DOCUMENT_ME. */
   JMenuItem jmiRestoreDefaultViewsAllPerpsectives;
 
+  /** DOCUMENT_ME. */
   JMenu properties;
 
+  /** DOCUMENT_ME. */
   JMenuItem jmiNewProperty;
 
+  /** DOCUMENT_ME. */
   JMenuItem jmiRemoveProperty;
 
+  /** DOCUMENT_ME. */
   JMenu mode;
 
+  /** DOCUMENT_ME. */
   JCheckBoxMenuItem jcbShowPopups;
 
+  /** DOCUMENT_ME. */
   JCheckBoxMenuItem jcbSyncTableTree;
 
+  /** DOCUMENT_ME. */
   JCheckBoxMenuItem jcbNoneInternetAccess;
 
+  /** DOCUMENT_ME. */
   private final JCheckBoxMenuItem jcbmiRepeat;
 
+  /** DOCUMENT_ME. */
   private final JCheckBoxMenuItem jcbmiShuffle;
 
+  /** DOCUMENT_ME. */
   private final JCheckBoxMenuItem jcbmiContinue;
 
+  /** DOCUMENT_ME. */
   private final JCheckBoxMenuItem jcbmiIntro;
 
+  /** DOCUMENT_ME. */
   private final JCheckBoxMenuItem jcbmiKaraoke;
 
+  /** DOCUMENT_ME. */
   JMenuBar mainmenu;
 
+  /** DOCUMENT_ME. */
   JMenu smart;
 
+  /** DOCUMENT_ME. */
   JMenuItem jmiShuffle;
 
+  /** DOCUMENT_ME. */
   JMenuItem jmiBestof;
 
+  /** DOCUMENT_ME. */
   JMenuItem jmiNovelties;
 
+  /** DOCUMENT_ME. */
   JMenuItem jmiFinishAlbum;
 
+  /** DOCUMENT_ME. */
   JMenu tools;
 
+  /** DOCUMENT_ME. */
   JMenuItem jmiduplicateFinder;
 
+  /** DOCUMENT_ME. */
   JMenuItem jmialarmClock;
 
+  /** DOCUMENT_ME. */
   JMenuItem jmiprepareParty;
 
+  /** DOCUMENT_ME. */
   JMenu configuration;
 
+  /** DOCUMENT_ME. */
   JMenuItem jmiDJ;
 
+  /** DOCUMENT_ME. */
   JMenuItem jmiAmbience;
 
+  /** DOCUMENT_ME. */
   JMenuItem jmiWebradios;
 
+  /** DOCUMENT_ME. */
   JMenuItem jmiWizard;
 
+  /** DOCUMENT_ME. */
   JMenuItem jmiOptions;
 
+  /** DOCUMENT_ME. */
   JCheckBoxMenuItem jmiUnmounted;
 
+  /** DOCUMENT_ME. */
   JMenu help;
 
+  /** DOCUMENT_ME. */
   JMenuItem jmiHelp;
 
+  /** DOCUMENT_ME. */
   JMenuItem jmiTipOfTheDay;
 
+  /** DOCUMENT_ME. */
   JMenuItem jmiQualityAgent;
 
+  /** DOCUMENT_ME. */
   JMenuItem jmiTraces;
 
+  /** DOCUMENT_ME. */
   JMenuItem jmiCheckforUpdates;
 
+  /** DOCUMENT_ME. */
   JMenuItem jmiAbout;
 
+  /** DOCUMENT_ME. */
   JLabel jlUpdate;
 
+  /** DOCUMENT_ME. */
   JButton jbSlim;
 
+  /** DOCUMENT_ME. */
   private JajukButton jbFull = null;
 
+  /** DOCUMENT_ME. */
   private final JCheckBoxMenuItem jcbmiRepeatAll;
 
+  /**
+   * Instantiates a new jajuk j menu bar.
+   */
   private JajukJMenuBar() {
     setAlignmentX(0.0f);
     // File menu
@@ -426,6 +479,11 @@ public final class JajukJMenuBar extends JMenuBar implements Observer {
     ObservationManager.register(this);
   }
 
+  /**
+   * Gets the single instance of JajukJMenuBar.
+   * 
+   * @return single instance of JajukJMenuBar
+   */
   public static JajukJMenuBar getInstance() {
     if (jjmb == null) {
       jjmb = new JajukJMenuBar();
@@ -433,6 +491,9 @@ public final class JajukJMenuBar extends JMenuBar implements Observer {
     return jjmb;
   }
 
+  /* (non-Javadoc)
+   * @see org.jajuk.events.Observer#getRegistrationKeys()
+   */
   public Set<JajukEvents> getRegistrationKeys() {
     Set<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
     eventSubjectSet.add(JajukEvents.PARAMETERS_CHANGE);
@@ -440,7 +501,7 @@ public final class JajukJMenuBar extends JMenuBar implements Observer {
   }
 
   /**
-   * Apply all mnemonics for all menus (follow i18n)
+   * Apply all mnemonics for all menus (follow i18n).
    */
   private void applyMnemonics() {
     for (int i = 0; i < mainmenu.getMenuCount(); i++) {
@@ -474,26 +535,56 @@ public final class JajukJMenuBar extends JMenuBar implements Observer {
     });
   }
 
+  /**
+   * Sets the repeat selected.
+   * 
+   * @param b the new repeat selected
+   */
   public void setRepeatSelected(final boolean b) {
     jcbmiRepeat.setSelected(b);
   }
 
+  /**
+   * Sets the repeat all selected.
+   * 
+   * @param b the new repeat all selected
+   */
   public void setRepeatAllSelected(final boolean b) {
     jcbmiRepeatAll.setSelected(b);
   }
 
+  /**
+   * Sets the shuffle selected.
+   * 
+   * @param b the new shuffle selected
+   */
   public void setShuffleSelected(final boolean b) {
     jcbmiShuffle.setSelected(b);
   }
 
+  /**
+   * Sets the continue selected.
+   * 
+   * @param b the new continue selected
+   */
   public void setContinueSelected(final boolean b) {
     jcbmiContinue.setSelected(b);
   }
 
+  /**
+   * Sets the intro selected.
+   * 
+   * @param b the new intro selected
+   */
   public void setIntroSelected(final boolean b) {
     jcbmiIntro.setSelected(b);
   }
 
+  /**
+   * Sets the karaoke selected.
+   * 
+   * @param b the new karaoke selected
+   */
   public void setKaraokeSelected(final boolean b) {
     jcbmiKaraoke.setSelected(b);
   }

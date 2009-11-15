@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2008 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision: 3132 $
+ *  $Revision$
  */
 package org.jajuk.services.tags;
 
@@ -45,6 +46,7 @@ import org.jaudiotagger.tag.id3.ID3v24Tag;
  */
 public class JAudioTaggerTagImpl implements ITagImpl, Const {
   
+  /** DOCUMENT_ME. */
   private static ArrayList<String> tagFieldKeyArrayList = new ArrayList<String>();
 
   static {
@@ -70,15 +72,10 @@ public class JAudioTaggerTagImpl implements ITagImpl, Const {
     }
   }
 
-  /**
-   * the current audio file instance (set by {@link #setFile(File)}).<br>
-   */
+  /** the current audio file instance (set by {@link #setFile(File)}).<br> */
   private AudioFile audioFile;
 
-  /**
-   * the current {@linkplain Tag tag} ( {@link AudioFile#getTag()} ) set by
-   * {@link #setFile(File)}.<br>
-   */
+  /** the current {@linkplain Tag tag} ( {@link AudioFile#getTag()} ) set by {@link #setFile(File)}.<br> */
   private Tag tag;
 
   /*
@@ -291,7 +288,7 @@ public class JAudioTaggerTagImpl implements ITagImpl, Const {
    * Create a void tag is needed and convert an ID3 V1.0 tag into V2.4 if any <br>
    * Tags are committed when leaving this method
    * 
-   * @throws Exception
+   * @throws Exception the exception
    */
   private void createTagIfNeeded() throws Exception {
     // No tag ? create one

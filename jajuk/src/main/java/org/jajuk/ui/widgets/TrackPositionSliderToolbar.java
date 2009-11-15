@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2008 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision: 3132 $
+ *  $Revision$
  */
 package org.jajuk.ui.widgets;
 
@@ -52,26 +53,27 @@ import org.jajuk.util.UtilString;
 import org.jajuk.util.log.Log;
 
 /**
- * 
+ * DOCUMENT_ME.
  */
 public class TrackPositionSliderToolbar extends JajukJToolbar implements ChangeListener,
     MouseWheelListener, Observer {
 
-  /**
-   * Generic playing position toolbar, used in information panel a full screen
-   */
+  /** Generic playing position toolbar, used in information panel a full screen. */
   private static final long serialVersionUID = 1L;
 
-  /** Last slider manual move date */
+  /** Last slider manual move date. */
   private static long lDateLastAdjust;
 
+  /** DOCUMENT_ME. */
   private JSlider jsPosition;
 
+  /** DOCUMENT_ME. */
   private JLabel jlCurrent;
 
+  /** DOCUMENT_ME. */
   String sCurrentStatus;
 
-  /** Swing Timer to refresh the component */
+  /** Swing Timer to refresh the component. */
   private final Timer timer = new Timer(JajukTimer.D_MS_HEARTBEAT, new ActionListener() {
 
     public void actionPerformed(ActionEvent e) {
@@ -83,6 +85,9 @@ public class TrackPositionSliderToolbar extends JajukJToolbar implements ChangeL
     }
   });
 
+  /**
+   * Instantiates a new track position slider toolbar.
+   */
   public TrackPositionSliderToolbar() {
     initGui();
 
@@ -103,7 +108,8 @@ public class TrackPositionSliderToolbar extends JajukJToolbar implements ChangeL
   }
 
   /**
-   * 
+   * Inits the gui.
+   * DOCUMENT_ME
    */
   private void initGui() {
     setToolTipText(Messages.getString("InformationJPanel.7"));
@@ -140,9 +146,9 @@ public class TrackPositionSliderToolbar extends JajukJToolbar implements ChangeL
   }
 
   /**
-   * Call a seek
+   * Call a seek.
    * 
-   * @param fPosition
+   * @param fPosition DOCUMENT_ME
    */
   private void setPosition(final float fPosition) {
     new Thread("TrackSlider Position Thread") {
@@ -169,6 +175,8 @@ public class TrackPositionSliderToolbar extends JajukJToolbar implements ChangeL
   }
 
   /**
+   * Gets the current position.
+   * 
    * @return Position value
    */
   public int getCurrentPosition() {
@@ -176,10 +184,10 @@ public class TrackPositionSliderToolbar extends JajukJToolbar implements ChangeL
   }
 
   /**
+   * Set the current status for current track ex : 01:01:01/02:02:02.
    * 
-   * Set the current status for current track ex : 01:01:01/02:02:02
-   * 
-   * @param string
+   * @param lTime DOCUMENT_ME
+   * @param length DOCUMENT_ME
    */
   public void setCurrentTimeMessage(long lTime, long length) {
     String string;
@@ -315,7 +323,9 @@ public class TrackPositionSliderToolbar extends JajukJToolbar implements ChangeL
   }
 
   /**
-   * @return
+   * Gets the current status message.
+   * 
+   * @return the current status message
    */
   public String getCurrentStatusMessage() {
     return sCurrentStatus;

@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2008 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision: 3132 $
+ *  $Revision$
  */
 package org.jajuk.services.core;
 
@@ -39,23 +40,31 @@ import org.jajuk.util.UtilSystem;
 import org.jajuk.util.log.Log;
 
 /**
- * All code related to jajuk exit
+ * All code related to jajuk exit.
  */
 public class ExitService extends Thread {
 
-  /** Exit code */
+  /** Exit code. */
   private static int iExitCode = 0;
 
-  /** Exiting flag */
+  /** Exiting flag. */
   private static boolean bExiting = false;
 
+  /**
+   * Instantiates a new exit service.
+   */
   public ExitService() {
     super("Exit hook thread");
   }
 
-  /** commit some of the managers and other things that are
+  /**
+   * commit some of the managers and other things that are
    * stored. This is usually only called during exit, but
    * should be called in-between sometimes.
+   * 
+   * @param bExit DOCUMENT_ME
+   * 
+   * @throws Exception the exception
    */
   public static void commit(boolean bExit) throws Exception {
     Log.debug("Commiting Queue, Ambiences, WebRadio, Configuration and collection.");
@@ -103,6 +112,9 @@ public class ExitService extends Thread {
     }
   }
   
+  /* (non-Javadoc)
+   * @see java.lang.Thread#run()
+   */
   @Override
   public void run() {
     Log.debug("Exit Hook begin");
@@ -158,14 +170,13 @@ public class ExitService extends Thread {
   }
 
   /**
-   * Exit code, then system will execute the exit hook
+   * Exit code, then system will execute the exit hook.
    * 
-   * @param iExitCode
-   *          exit code
-   *          <p>
-   *          0 : normal exit
-   *          <p>
-   *          1: unexpected error
+   * @param iExitCode exit code
+   * <p>
+   * 0 : normal exit
+   * <p>
+   * 1: unexpected error
    */
   public static void exit(final int iExitCode) {
     // set exiting flag
@@ -178,6 +189,8 @@ public class ExitService extends Thread {
   }
 
   /**
+   * Checks if is exiting.
+   * 
    * @return Returns whether jajuk is in exiting state
    */
   public static boolean isExiting() {

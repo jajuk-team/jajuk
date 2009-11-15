@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2008 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision: 3132 $
+ *  $Revision$
  */
 package org.jajuk.services.startup;
 
@@ -41,21 +42,26 @@ import org.jajuk.util.UpgradeManager;
 import org.jajuk.util.log.Log;
 
 /**
- * Startup facilities for GUI part
+ * Startup facilities for GUI part.
  */
 public class StartupGUIService {
 
-  /** default perspective to choose, if null, we take the configuration one */
+  /** default perspective to choose, if null, we take the configuration one. */
   private static String sPerspective;
 
-  /** splash screen */
+  /** splash screen. */
   private static JSplash sc;
 
+  /**
+   * Instantiates a new startup gui service.
+   */
   private StartupGUIService() {
     // private constructor to hide it from the outside
   }
 
   /**
+   * Gets the default perspective.
+   * 
    * @return Returns the sPerspective.
    */
   public static String getDefaultPerspective() {
@@ -63,13 +69,21 @@ public class StartupGUIService {
   }
 
   /**
-   * @param perspective
-   *          The sPerspective to set.
+   * Sets the default perspective.
+   * 
+   * @param perspective The sPerspective to set.
    */
   public static void setDefaultPerspective(final String perspective) {
     sPerspective = perspective;
   }
 
+  /**
+   * Launch splash screen.
+   * DOCUMENT_ME
+   * 
+   * @throws InterruptedException the interrupted exception
+   * @throws InvocationTargetException the invocation target exception
+   */
   public static void launchSplashScreen() throws InterruptedException, InvocationTargetException {
     // Launch splashscreen. Depends on: log.setVerbosity,
     // configurationManager.load (for local)
@@ -88,6 +102,10 @@ public class StartupGUIService {
     });
   }
 
+  /**
+   * Fire step one over.
+   * DOCUMENT_ME
+   */
   public static void fireStepOneOver() {
     if (sc != null) {
       SwingUtilities.invokeLater(new Runnable() {
@@ -98,6 +116,10 @@ public class StartupGUIService {
     }
   }
 
+  /**
+   * Fire step two over.
+   * DOCUMENT_ME
+   */
   public static void fireStepTwoOver() {
     if (sc != null) {
       SwingUtilities.invokeLater(new Runnable() {
@@ -108,6 +130,10 @@ public class StartupGUIService {
     }
   }
 
+  /**
+   * Fire step three over.
+   * DOCUMENT_ME
+   */
   public static void fireStepThreeOver() {
     if (sc != null) {
       SwingUtilities.invokeLater(new Runnable() {
@@ -119,6 +145,10 @@ public class StartupGUIService {
   }
     
 
+  /**
+   * Startup over.
+   * DOCUMENT_ME
+   */
   public static void startupOver() {
     SwingUtilities.invokeLater(new Runnable() {
       public void run() {
@@ -133,7 +163,7 @@ public class StartupGUIService {
   }
 
   /**
-   * Display the right window according to configuration and handles problems
+   * Display the right window according to configuration and handles problems.
    */
   public static void launchUI() {
     // ui init

@@ -1,3 +1,23 @@
+/*
+ *  Jajuk
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
+ *
+ *  This program is free software; you can redistribute it and/or
+ *  modify it under the terms of the GNU General Public License
+ *  as published by the Free Software Foundation; either version 2
+ *  of the License, or any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program; if not, write to the Free Software
+ *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ *  $Revision$
+ */
 package org.qdwizard;
 
 import java.awt.Dimension;
@@ -11,34 +31,37 @@ import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
 /**
- * 
  * Screen Header
  * <p>
  * Contains a wizard title, a subtitle used to display the name of the current
  * screen and an optional background image
- * </p>
+ * </p>.
  * 
  * @author Bertrand Florat
  * @created 1 may 2006
  */
 class Header extends JPanel {
 
+  /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
+  /** DOCUMENT_ME. */
   JPanel jta;
 
+  /** DOCUMENT_ME. */
   Image backgroundImage;
 
+  /** DOCUMENT_ME. */
   ImageIcon icon;
 
+  /** DOCUMENT_ME. */
   String sTitleText;
 
+  /** DOCUMENT_ME. */
   String sSubtitleText;
 
   /**
-   * 
-   * @param sTextID
-   *          I18N ID of header
+   * The Constructor.
    */
   public Header() {
     setLayout(new GridLayout());
@@ -49,41 +72,44 @@ class Header extends JPanel {
   }
 
   /**
-   * Set the header title text
+   * Set the header title text.
    * 
-   * @param sText
+   * @param sText DOCUMENT_ME
    */
   public void setTitleText(String sText) {
     sTitleText = sText;
   }
 
   /**
-   * Set the header subtitle text
+   * Set the header subtitle text.
    * 
-   * @param sText
+   * @param sText DOCUMENT_ME
    */
   public void setSubtitleText(String sText) {
     sSubtitleText = sText;
   }
 
   /**
-   * Set the header Image
+   * Set the header Image.
    * 
-   * @param img
+   * @param img DOCUMENT_ME
    */
   public void setImage(Image img) {
     backgroundImage = img;
   }
 
   /**
-   * Set the header right-side icon
+   * Set the header right-side icon.
    * 
-   * @param img
+   * @param icon DOCUMENT_ME
    */
   public void setIcon(ImageIcon icon) {
     this.icon = icon;
   }
 
+  /* (non-Javadoc)
+   * @see javax.swing.JComponent#paint(java.awt.Graphics)
+   */
   @Override
   public void paint(java.awt.Graphics g) {
     super.paint(g);

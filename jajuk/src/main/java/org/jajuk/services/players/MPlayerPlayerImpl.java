@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision:3266 $
+ *  $Revision$
  */
 package org.jajuk.services.players;
 
@@ -38,67 +39,69 @@ import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 
 /**
- * Jajuk player implementation based on Mplayer
+ * Jajuk player implementation based on Mplayer.
  */
 public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
 
-  /** Time elapsed in ms */
+  /** Time elapsed in ms. */
   private long lTime = 0;
 
-  /** Length to be played in secs */
+  /** Length to be played in secs. */
   private long length;
 
-  /** Starting position */
+  /** Starting position. */
   private float fPosition;
 
-  /** Current track estimated duration in ms */
+  /** Current track estimated duration in ms. */
   private long lDuration;
 
-  /** Volume when starting fade */
+  /** Volume when starting fade. */
   private float fadingVolume;
 
-  /** Cross fade duration in ms */
+  /** Cross fade duration in ms. */
   int iFadeDuration = 0;
 
-  /** Time track started * */
+  /** Time track started *. */
   private long dateStart;
 
-  /** Pause time correction * */
+  /** Pause time correction *. */
   private long pauseCount = 0;
+  
+  /** DOCUMENT_ME. */
   private long pauseCountStamp = -1;
 
-  /** Does the user made a seek in current track ?* */
+  /** Does the user made a seek in current track ?*. */
   private boolean seeked;
 
-  /**
-   * VBR correction. VBR MP3 files are confusing for mplayer that shows wrong
-   * length and seek position. This value is the correction computed with id3
-   * tag when available
-   */
+  /** VBR correction. VBR MP3 files are confusing for mplayer that shows wrong length and seek position. This value is the correction computed with id3 tag when available */
   float vbrCorrection = 1.0f;
 
-  /**
-   * Progress step in ms, do not set less than 300 or 400 to avoid using too
-   * much CPU
-   */
+  /** Progress step in ms, do not set less than 300 or 400 to avoid using too much CPU. */
   private static final int PROGRESS_STEP = 500;
 
-  /**
-   * Total play time is refreshed every TOTAL_PLAYTIME_UPDATE_INTERVAL times
-   */
+  /** Total play time is refreshed every TOTAL_PLAYTIME_UPDATE_INTERVAL times. */
   private static final int TOTAL_PLAYTIME_UPDATE_INTERVAL = 2;
 
-  /** current file */
+  /** current file. */
   private org.jajuk.base.File fCurrent;
 
   /**
-   * Position and elapsed time getter
+   * Position and elapsed time getter.
    */
   private class PositionThread extends Thread {
+    
+    /**
+     * Instantiates a new position thread.
+     * 
+     * @param name DOCUMENT_ME
+     */
     public PositionThread(String name) {
       super(name);
     }
 
+    /* (non-Javadoc)
+     * @see java.lang.Thread#run()
+     */
     @Override
     public void run() {
       int comp = 0;
@@ -141,13 +144,22 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
   }
 
   /**
-   * Reader : read information from mplayer like position
+   * Reader : read information from mplayer like position.
    */
   private class ReaderThread extends Thread {
+    
+    /**
+     * Instantiates a new reader thread.
+     * 
+     * @param name DOCUMENT_ME
+     */
     public ReaderThread(String name) {
       super(name);
     }
 
+    /* (non-Javadoc)
+     * @see java.lang.Thread#run()
+     */
     @Override
     public void run() {
       try {
@@ -311,6 +323,9 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
     }
   }
 
+  /* (non-Javadoc)
+   * @see org.jajuk.services.players.AbstractMPlayerImpl#stop()
+   */
   @Override
   public void stop() throws Exception {
     // Call generic stop
@@ -375,6 +390,12 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
     }
   }
 
+  /**
+   * Launch mplayer.
+   * DOCUMENT_ME
+   * 
+   * @throws IOException Signals that an I/O exception has occurred.
+   */
   private void launchMplayer() throws IOException {
     // Build the file url. Under windows 32 bits, we convert path to short
     // version to fix a mplayer bug when reading some pathnames including
@@ -416,6 +437,8 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
   }
 
   /**
+   * Gets the current position.
+   * 
    * @return current position as a float ex: 0.2f
    */
   @Override
@@ -427,6 +450,8 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
   }
 
   /**
+   * Gets the elapsed time.
+   * 
    * @return Returns the lTime in ms
    */
   @Override
@@ -464,6 +489,8 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
   }
 
   /**
+   * Gets the state.
+   * 
    * @return player state, -1 if player is null.
    */
   @Override
@@ -513,6 +540,9 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
 	  }
   }
 
+	/* (non-Javadoc)
+	 * @see org.jajuk.services.players.AbstractMPlayerImpl#resume()
+	 */
 	@Override
   public void resume() throws Exception {
 	  super.resume();

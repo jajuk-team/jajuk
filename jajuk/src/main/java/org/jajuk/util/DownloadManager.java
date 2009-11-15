@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2007 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $$Revision$$
+ *  $Revision$
  */
 
 package org.jajuk.util;
@@ -46,22 +47,27 @@ import org.jajuk.services.core.SessionService;
 import org.jajuk.util.log.Log;
 
 /**
- * Manages network downloads
+ * Manages network downloads.
  */
 public final class DownloadManager {
 
+  /** DOCUMENT_ME. */
   private static Proxy proxy;
 
   /**
-   * private constructor to avoid instantiating utility class
+   * private constructor to avoid instantiating utility class.
    */
   private DownloadManager() {
   }
 
   /**
-   * @param search
+   * Gets the remote covers list.
+   * 
+   * @param search DOCUMENT_ME
+   * 
    * @return a list of urls
-   * @throws IOException
+   * 
+   * @throws IOException Signals that an I/O exception has occurred.
    */
   public static List<URL> getRemoteCoversList(String search) throws IOException {
     List<URL> alOut = new ArrayList<URL>(20); // URL list
@@ -121,14 +127,12 @@ public final class DownloadManager {
   }
 
   /**
-   * Download the resource at the given url
+   * Download the resource at the given url.
    * 
-   * @param url
-   *          url to download
-   * @param fDestination
-   *          destination file
-   * @throws IOException
-   *           If a network problem occurs.
+   * @param url url to download
+   * @param fDestination destination file
+   * 
+   * @throws IOException If a network problem occurs.
    */
   public static void download(URL url, File fDestination) throws IOException {
     // Drop the query if user required "none Internet access from jajuk".
@@ -160,14 +164,14 @@ public final class DownloadManager {
   /**
    * Download the resource at the given url and cache it <br>
    * If the file is already in cache, it is returned immediately <br>
-   * The cache is currently cleared at each Jajuk session startup
+   * The cache is currently cleared at each Jajuk session startup.
    * 
-   * @param url
-   *          url to download
+   * @param url url to download
+   * 
    * @return cached file or null if a problem occurred
-   * @throws IOException
-   *           If a network problem occurs or a temporary file cannot be
-   *           written.
+   * 
+   * @throws IOException If a network problem occurs or a temporary file cannot be
+   * written.
    */
   public static File downloadToCache(URL url) throws IOException {
     // Drop the query if user required "none Internet access from jajuk".
@@ -206,12 +210,14 @@ public final class DownloadManager {
   }
 
   /**
-   * Download the cover list
+   * Download the cover list.
    * 
-   * @param url
-   *          to download
+   * @param url to download
+   * @param charset DOCUMENT_ME
+   * 
    * @return result as an array of bytes, null if a problem occurred
-   * @throws IOException
+   * 
+   * @throws IOException Signals that an I/O exception has occurred.
    */
   public static String downloadText(URL url, String charset) throws IOException {
     // Drop the query if user required "none Internet access from jajuk".
@@ -229,11 +235,13 @@ public final class DownloadManager {
   }
 
   /**
-   * Download text with the default charset UTF-8
+   * Download text with the default charset UTF-8.
    * 
-   * @param url
-   * @return
-   * @throws IOException
+   * @param url DOCUMENT_ME
+   * 
+   * @return the string
+   * 
+   * @throws IOException Signals that an I/O exception has occurred.
    */
   public static String downloadText(URL url) throws IOException {
     return downloadText(url, "UTF-8");
@@ -241,14 +249,14 @@ public final class DownloadManager {
 
   /**
    * Return a string for a given URL and encoding, used to retrieve text from a
-   * cached file
+   * cached file.
    * 
-   * @param url
-   *          url to read
-   * @param encoding
-   *          encoding of the content of the file
+   * @param url url to read
+   * @param encoding encoding of the content of the file
+   * 
    * @return a string for a given URL and encoding
-   * @throws IOException
+   * 
+   * @throws IOException Signals that an I/O exception has occurred.
    */
   public static String getTextFromCachedFile(URL url, String encoding) throws IOException {
     // Drop the query if user required "none Internet access from jajuk".
@@ -273,8 +281,7 @@ public final class DownloadManager {
   }
 
   /**
-   * Set default proxy settings, used by cobra for ie
-   * 
+   * Set default proxy settings, used by cobra for ie.
    */
   public synchronized static void setDefaultProxySettings() {
     String sProxyHost = Conf.getString(Const.CONF_NETWORK_PROXY_HOSTNAME);
@@ -319,6 +326,11 @@ public final class DownloadManager {
     }
   }
 
+  /**
+   * Gets the proxy.
+   * 
+   * @return the proxy
+   */
   public static Proxy getProxy() {
     return proxy;
   }

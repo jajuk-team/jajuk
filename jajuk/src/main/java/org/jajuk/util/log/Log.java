@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2007 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $$Revision$$
+ *  $Revision$
  */
 package org.jajuk.util.log;
 
@@ -33,45 +34,47 @@ import org.jajuk.util.error.JajukException;
 /**
  * Logging utility class, facade to logging system
  * <p>
- * Singleton
+ * Singleton.
  */
 public final class Log {
-  /**
-   * 
-   */
+  
+  /** The Constant LOGGER_APACHE_HTTPCLIENT.  DOCUMENT_ME */
   private static final String LOGGER_APACHE_HTTPCLIENT = "org.apache.commons.httpclient";
 
   // verbosity consts
+  /** The Constant FATAL.  DOCUMENT_ME */
   public static final int FATAL = 0;
 
+  /** The Constant ERROR.  DOCUMENT_ME */
   public static final int ERROR = 1;
 
+  /** The Constant WARNING.  DOCUMENT_ME */
   public static final int WARNING = 2;
 
+  /** The Constant INFO.  DOCUMENT_ME */
   public static final int INFO = 3;
 
+  /** The Constant DEBUG.  DOCUMENT_ME */
   public static final int DEBUG = 4;
 
-  /**
-   * Verbosity level of the logger( between 1 and 5 )
-   * <p>
-   * Default used at statup is INFO
-   */
+  /** Verbosity level of the logger( between 1 and 5 ) <p> Default used at statup is INFO. */
   private static int verbosity = INFO;
 
-  /** Self instance used for singleton pattern */
+  /** Self instance used for singleton pattern. */
   private static Log log = null;
 
   // Jajuk logger
+  /** DOCUMENT_ME. */
   private static Logger logger;
 
-  /** Debug traces spool */
+  /** Debug traces spool. */
   private static List<String> alSpool;
 
+  /** The Constant FULL_QUALIFIED_CLASS_NAME.  DOCUMENT_ME */
   private static final String FULL_QUALIFIED_CLASS_NAME = Log.class.getName();
 
   /**
-   * Constructor for the Log object
+   * Constructor for the Log object.
    */
   private Log() {
     try {
@@ -93,7 +96,9 @@ public final class Log {
   /**
    * Return a self instance
    * <p>
-   * Implementation of the singleton pattern
+   * Implementation of the singleton pattern.
+   * 
+   * @return the instance
    */
   public static synchronized Log getInstance() {
     if (Log.log == null) {
@@ -103,7 +108,9 @@ public final class Log {
   }
 
   /**
-   * Log a debug-level message
+   * Log a debug-level message.
+   * 
+   * @param s DOCUMENT_ME
    */
   public static void debug(String s) {
     // Just display the message if Log is not yet enabled
@@ -115,10 +122,23 @@ public final class Log {
     logger.log(FULL_QUALIFIED_CLASS_NAME, Level.DEBUG, s, null);
   }
 
+  /**
+   * Debug.
+   * DOCUMENT_ME
+   * 
+   * @param t DOCUMENT_ME
+   */
   public static void debug(Throwable t) {
     debug("", t);
   }
 
+  /**
+   * Debug.
+   * DOCUMENT_ME
+   * 
+   * @param sInfosup DOCUMENT_ME
+   * @param t DOCUMENT_ME
+   */
   public static void debug(String sInfosup, Throwable t) {
     // Just make a print stake trace if Log is not yet enabled (example:
     // collection commit problem in initialCheckups)
@@ -141,7 +161,9 @@ public final class Log {
   }
 
   /**
-   * Log a info-level message
+   * Log a info-level message.
+   * 
+   * @param s DOCUMENT_ME
    */
   public static void info(String s) {
     // Just display the message if Log is not yet enabled
@@ -154,7 +176,9 @@ public final class Log {
   }
 
   /**
-   * Log a warning-level message
+   * Log a warning-level message.
+   * 
+   * @param s DOCUMENT_ME
    */
   public static void warn(String s) {
     // Just display the message if Log is not yet enabled
@@ -167,7 +191,10 @@ public final class Log {
   }
 
   /**
-   * Log a warning-level message with info sup
+   * Log a warning-level message with info sup.
+   * 
+   * @param s DOCUMENT_ME
+   * @param sInfoSup DOCUMENT_ME
    */
   public static void warn(String s, String sInfoSup) {
     String sOut = s + ": " + sInfoSup;
@@ -181,14 +208,11 @@ public final class Log {
   }
 
   /**
-   * Log an warning-level message
+   * Log an warning-level message.
    * 
-   * @param code
-   *          error code
-   * @param sInfosup
-   *          : error context information
-   * @param t
-   *          the exception itself
+   * @param code error code
+   * @param sInfosup : error context information
+   * @param t the exception itself
    */
   public static void warn(int code, String sInfosup, Throwable t) {
     String sOut;
@@ -210,14 +234,11 @@ public final class Log {
   }
 
   /**
-   * Log an error-level message
+   * Log an error-level message.
    * 
-   * @param code
-   *          error code
-   * @param sInfosup
-   *          : error context information
-   * @param t
-   *          the exception itself
+   * @param code error code
+   * @param sInfosup : error context information
+   * @param t the exception itself
    */
   public static void error(int code, String sInfosup, Throwable t) {
     // Just make a print stake trace if Log is not yet enabled (example:
@@ -242,10 +263,9 @@ public final class Log {
   }
 
   /**
-   * Log an error-level message
+   * Log an error-level message.
    * 
-   * @param code
-   *          error code
+   * @param code error code
    */
   public static void error(int code) {
     String sOut;
@@ -265,10 +285,9 @@ public final class Log {
   }
 
   /**
-   * Log an error-level message
+   * Log an error-level message.
    * 
-   * @param t
-   *          the exception itself
+   * @param t the exception itself
    */
   public static void error(Throwable t) {
     // Just make a print stake trace if Log is not yet enabled (example:
@@ -282,36 +301,38 @@ public final class Log {
   }
 
   /**
-   * Log an error-level message
+   * Log an error-level message.
    * 
-   * @param sInfosup
-   * @param t
+   * @param t DOCUMENT_ME
+   * @param code DOCUMENT_ME
    */
   public static void error(int code, Throwable t) {
     error(code, null, t);
   }
 
   /**
-   * Log an error-level message
+   * Log an error-level message.
    * 
-   * @param sInfosup
-   * @param je
+   * @param sInfosup DOCUMENT_ME
+   * @param je DOCUMENT_ME
    */
   public static void error(String sInfosup, JajukException je) {
     error(je.getCode(), sInfosup, je);
   }
 
   /**
-   * Log an error-level message
+   * Log an error-level message.
    * 
-   * @param je
+   * @param je DOCUMENT_ME
    */
   public static void error(JajukException je) {
     error(je.getCode(), null, je);
   }
 
   /**
-   * Log a fatal error message
+   * Log a fatal error message.
+   * 
+   * @param s DOCUMENT_ME
    */
   public static void fatal(String s) {
     // Just make a print stake trace if Log is not yet enabled (example:
@@ -336,8 +357,7 @@ public final class Log {
   /**
    * Sets the verbosity.
    * 
-   * @param verbosity
-   *          The verbosity to set
+   * @param newVerbosity DOCUMENT_ME
    */
   public static void setVerbosity(int newVerbosity) {
     verbosity = newVerbosity;
@@ -371,16 +391,18 @@ public final class Log {
   }
 
   /**
-   * Convenient method to display stacks properly
+   * Convenient method to display stacks properly.
+   * 
+   * @param e DOCUMENT_ME
    */
   public static void stack(Exception e) {
     e.printStackTrace();
   }
 
   /**
-   * Return whether Log are in debug mode
+   * Return whether Log are in debug mode.
    * 
-   * @return
+   * @return true, if checks if is debug enabled
    */
   public static boolean isDebugEnabled() {
     if (verbosity == Log.DEBUG) {
@@ -390,9 +412,9 @@ public final class Log {
   }
 
   /**
-   * Add this message in the memory spool
+   * Add this message in the memory spool.
    * 
-   * @param sMessage
+   * @param sMessage DOCUMENT_ME
    */
   private synchronized static void spool(String sMessage) {
     // we maz have to make some room
@@ -413,9 +435,9 @@ public final class Log {
   }
 
   /**
-   * Spool an exception with stack traces
+   * Spool an exception with stack traces.
    * 
-   * @param e
+   * @param e DOCUMENT_ME
    */
   private static void spool(Throwable e) {
     spool("[ERROR] " + e.getClass() + " / {{" + e.getMessage() + "}} / " + e.getCause());
@@ -426,6 +448,8 @@ public final class Log {
   }
 
   /**
+   * Gets the spool.
+   * 
    * @return Spool traces
    */
   @SuppressWarnings("unchecked")

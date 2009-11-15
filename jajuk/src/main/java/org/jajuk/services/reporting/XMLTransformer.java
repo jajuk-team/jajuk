@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2006 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision: 2315 $
+ *  $Revision$
  */
 
 package org.jajuk.services.reporting;
@@ -55,22 +56,16 @@ public final class XMLTransformer {
 
   /**
    * This method will convert an XML file into an HTML file using an xslt
-   * transformation
+   * transformation.
    * 
-   * @param xml
-   *          The XML file to convert.
-   * @param html
-   *          The HTML file to convert.
-   * @param xsl
-   *          The url of the XSLT style sheet to use.
-   * @throws ParserConfigurationException
-   *           if the XML Parser can not be instantiated.
-   * @throws IOException
-   *           If the file cannot be opened.
-   * @throws SAXException
-   *           If an exception during parsing the XML file occurs.
-   * @throws TransformerException
-   *           If processing the XSL script causes an error.
+   * @param xml The XML file to convert.
+   * @param html The HTML file to convert.
+   * @param xsl The url of the XSLT style sheet to use.
+   * 
+   * @throws ParserConfigurationException if the XML Parser can not be instantiated.
+   * @throws IOException If the file cannot be opened.
+   * @throws SAXException If an exception during parsing the XML file occurs.
+   * @throws TransformerException If processing the XSL script causes an error.
    */
   public static void xmlToHTML(File xml, File html, URL xsl) throws ParserConfigurationException,
       SAXException, IOException, TransformerException {

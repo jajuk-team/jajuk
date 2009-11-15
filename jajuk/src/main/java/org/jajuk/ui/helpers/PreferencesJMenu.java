@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2008 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision: 3132 $
+ *  $Revision$
  */
 package org.jajuk.ui.helpers;
 
@@ -34,26 +35,44 @@ import org.jajuk.util.Messages;
 import org.jajuk.util.UtilFeatures;
 
 /**
- * Preference menu item including ban/unban and preference choice
+ * Preference menu item including ban/unban and preference choice.
  */
 public class PreferencesJMenu extends JMenu {
 
+  /** Generated serialVersionUID. */
   private static final long serialVersionUID = -4041513018474249903L;
 
+  /** DOCUMENT_ME. */
   private JMenuItem jmiBan;
+  
+  /** DOCUMENT_ME. */
   private JMenuItem jmiUnBan;
+  
+  /** DOCUMENT_ME. */
   private JMenuItem jmiAdore;
+  
+  /** DOCUMENT_ME. */
   private JMenuItem jmiLove;
+  
+  /** DOCUMENT_ME. */
   private JMenuItem jmiLike;
+  
+  /** DOCUMENT_ME. */
   private JMenuItem jmiUnset;
+  
+  /** DOCUMENT_ME. */
   private JMenuItem jmiAverage;
+  
+  /** DOCUMENT_ME. */
   private JMenuItem jmiPoor;
+  
+  /** DOCUMENT_ME. */
   private JMenuItem jmiHate;
 
   /**
-   * Constructs a Preference menu
+   * Constructs a Preference menu.
    * 
-   * @param item
+   * @param item DOCUMENT_ME
    */
   public PreferencesJMenu(Item item) {
     super(Messages.getString("Preference.7"));
@@ -63,10 +82,9 @@ public class PreferencesJMenu extends JMenu {
   }
 
   /**
-   * Constructs a Preference menu
+   * Constructs a Preference menu.
    * 
-   * @param selection
-   *          selection list bound to the actions
+   * @param selection selection list bound to the actions
    */
   public PreferencesJMenu(List<? extends Item> selection) {
     super(Messages.getString("Preference.7"));
@@ -74,9 +92,9 @@ public class PreferencesJMenu extends JMenu {
   }
 
   /**
-   * initUI
+   * initUI.
    * 
-   * @param selection
+   * @param selection DOCUMENT_ME
    */
   private void initUI(List<? extends Item> selection) {
     // We compute preference of first item in selection to set right
@@ -150,7 +168,7 @@ public class PreferencesJMenu extends JMenu {
    * in valueChanged() method as we can't build a popup menu in mouse adapter
    * methods because the selection is not always yet set
    * 
-   * @param selection
+   * @param selection DOCUMENT_ME
    */
   public synchronized void resetUI(List<? extends Item> selection) {
     removeAll();

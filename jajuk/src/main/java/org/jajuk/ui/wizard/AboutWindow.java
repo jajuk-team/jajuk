@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2005 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $$Revision: 2644 $$
+ *  $Revision$
  */
 
 package org.jajuk.ui.wizard;
@@ -58,6 +59,10 @@ public class AboutWindow extends JajukJDialog {
    * Handle clicking on the license text.
    */
   private static final class LicenseMouseListener extends MouseAdapter {
+    
+    /* (non-Javadoc)
+     * @see java.awt.event.MouseAdapter#mouseClicked(java.awt.event.MouseEvent)
+     */
     @Override
     public void mouseClicked(MouseEvent me) {
       if (me.getClickCount() == 1
@@ -72,25 +77,26 @@ public class AboutWindow extends JajukJDialog {
     }
   }
 
+  /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
-  /** License panel */
+  /** License panel. */
   private JPanel jpLicence;
 
-  /** General informations panel */
+  /** General informations panel. */
   private AboutPanel ap;
 
-  /** JVM properties panel */
+  /** JVM properties panel. */
   private SystemPropertiesPanel spp;
 
-  /** Tabbed pane with previous panels */
+  /** Tabbed pane with previous panels. */
   private JTabbedPane jtp;
 
-  /** Additional informations */
+  /** Additional informations. */
   private static final String INFOS = "http://jajuk.info";
 
   /**
-   * Constructor
+   * Constructor.
    */
   public AboutWindow() {
     SwingUtilities.invokeLater(new Runnable() {
@@ -109,6 +115,10 @@ public class AboutWindow extends JajukJDialog {
    * (non-Javadoc)
    * 
    * @see org.jajuk.ui.IView#display()
+   */
+  /**
+   * Inits the ui.
+   * DOCUMENT_ME
    */
   public void initUI() {
     // license panel
@@ -151,6 +161,11 @@ public class AboutWindow extends JajukJDialog {
    * (non-Javadoc)
    * 
    * @see org.jajuk.ui.IView#getDesc()
+   */
+  /**
+   * Gets the desc.
+   * 
+   * @return the desc
    */
   public String getDesc() {
     return Messages.getString("AboutView.10");

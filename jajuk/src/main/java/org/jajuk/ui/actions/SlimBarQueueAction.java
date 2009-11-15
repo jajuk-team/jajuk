@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2008 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision: 3132 $
+ *  $Revision$
  */
 package org.jajuk.ui.actions;
 
@@ -27,18 +28,25 @@ import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 
 /**
- * 
+ * DOCUMENT_ME.
  */
 public class SlimBarQueueAction extends JajukAction {
 
+  /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1223773056757729079L;
 
+  /**
+   * Instantiates a new slim bar queue action.
+   */
   SlimBarQueueAction() {
     super(Messages.getString("PhysicalPlaylistRepositoryView.9"), IconLoader
         .getIcon(JajukIcons.PLAYLIST_FILE), true);
     setShortDescription(Messages.getString("PhysicalPlaylistRepositoryView.9"));
   }
 
+  /* (non-Javadoc)
+   * @see org.jajuk.ui.actions.JajukAction#perform(java.awt.event.ActionEvent)
+   */
   @Override
   public void perform(ActionEvent evt) throws Exception {
     JajukSlimbar slimBar = JajukSlimbar.getInstance();

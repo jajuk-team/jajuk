@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2008 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision: 3132 $
+ *  $Revision$
  */
 package org.jajuk.services.startup;
 
@@ -50,16 +51,19 @@ import org.jajuk.util.UtilSystem;
 import org.jajuk.util.log.Log;
 
 /**
- * Startup facilities for sound engine
+ * Startup facilities for sound engine.
  */
 public class StartupEngineService {
 
+  /**
+   * Instantiates a new startup engine service.
+   */
   private StartupEngineService() {
     // private constructor to hide it from the outside
   }
 
   /**
-   * Launch initial track at startup
+   * Launch initial track at startup.
    */
   public static void launchInitialTrack() {
     // List of items to play at startup
@@ -221,8 +225,7 @@ public class StartupEngineService {
   }
 
   /**
-   * Auto-Mount required devices
-   * 
+   * Auto-Mount required devices.
    */
   public static void autoMount() {
     for (final Device device : DeviceManager.getInstance().getDevices()) {

@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision: 3132 $
+ *  $Revision$
  */
 package org.jajuk.services.lyrics.persisters;
 
@@ -30,12 +30,17 @@ import org.jajuk.util.UtilSystem;
 import org.jajuk.util.log.Log;
 
 /**
- * Class to read/write lyrics to TXT file
+ * Class to read/write lyrics to TXT file.
  */
 public class TxtPersister implements ILyricsPersister {
 
+  /** DOCUMENT_ME. */
   private java.io.File lyricsFile = null;
+  
+  /** DOCUMENT_ME. */
   private Writer lyricsWriter = null;
+  
+  /** DOCUMENT_ME. */
   private JajukLyricsProvider provider = null;
   
   /* (non-Javadoc)
@@ -71,6 +76,11 @@ public class TxtPersister implements ILyricsPersister {
     lyricsFile.delete();    
   }
 
+  /**
+   * Gets the lyrics file.
+   * 
+   * @return the lyrics file
+   */
   private java.io.File getLyricsFile() {
     if (lyricsFile == null) {
       lyricsFile = new java.io.File(UtilSystem.removeExtension(
@@ -79,6 +89,13 @@ public class TxtPersister implements ILyricsPersister {
     return lyricsFile;
   }
   
+  /**
+   * Gets the lyrics writer.
+   * 
+   * @return the lyrics writer
+   * 
+   * @throws IOException Signals that an I/O exception has occurred.
+   */
   private Writer getLyricsWriter() throws IOException {
     lyricsFile = getLyricsFile();
     if (lyricsWriter == null) {

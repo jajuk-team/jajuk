@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -39,7 +40,7 @@ import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 
 /**
- * A cover, encapsulates URL, files and manages cover priority to display
+ * A cover, encapsulates URL, files and manages cover priority to display.
  */
 public class Cover implements Comparable<Cover>, Const {
 
@@ -64,27 +65,36 @@ public class Cover implements Comparable<Cover>, Const {
    * </p>
    */
   public enum CoverType {
-    NO_COVER, REMOTE_COVER, LOCAL_COVER, STANDARD_COVER, SELECTED_COVER
+    
+    /** DOCUMENT_ME. */
+    NO_COVER, 
+ /** DOCUMENT_ME. */
+ REMOTE_COVER, 
+ /** DOCUMENT_ME. */
+ LOCAL_COVER, 
+ /** DOCUMENT_ME. */
+ STANDARD_COVER, 
+ /** DOCUMENT_ME. */
+ SELECTED_COVER
   }
 
-  /** Cover URL* */
+  /** Cover URL*. */
   private final URL url;
 
-  /** Cover Type */
+  /** Cover Type. */
   private final CoverType type;
 
-  /** Associated file */
+  /** Associated file. */
   private File file;
 
-  /** Default cover image */
+  /** Default cover image. */
   private static final ImageIcon DEFAULT_COVER_ICON = UtilGUI.getImage(IMAGES_SPLASHSCREEN);
 
   /**
-   * Constructor for remote covers
+   * Constructor for remote covers.
    * 
-   * @param sUrl
-   *          cover url : http url
-   * @param type
+   * @param type DOCUMENT_ME
+   * @param url DOCUMENT_ME
    */
   public Cover(final URL url, final CoverType type) {
     this.url = url;
@@ -97,12 +107,12 @@ public class Cover implements Comparable<Cover>, Const {
   }
 
   /**
-   * Constructor for local covers
+   * Constructor for local covers.
    * 
-   * @param file
-   *          cover file
-   * @param type
-   * @throws IOException
+   * @param type DOCUMENT_ME
+   * @param localFile DOCUMENT_ME
+   * 
+   * @throws IOException Signals that an I/O exception has occurred.
    */
   public Cover(final File localFile, final CoverType type) throws IOException {
     this.type = type;
@@ -127,6 +137,8 @@ public class Cover implements Comparable<Cover>, Const {
   }
 
   /**
+   * Gets the type.
+   * 
    * @return Returns the type.
    */
   public CoverType getType() {
@@ -134,6 +146,8 @@ public class Cover implements Comparable<Cover>, Const {
   }
 
   /**
+   * Gets the url.
+   * 
    * @return Returns the sURL.
    */
   public URL getURL() {
@@ -141,9 +155,9 @@ public class Cover implements Comparable<Cover>, Const {
   }
 
   /**
-   * Return cover image size in kilobyte
+   * Return cover image size in kilobyte.
    * 
-   * @return
+   * @return the size
    */
   public String getSize() {
     int iSize = (int) (Math.ceil(((double) file.length()) / 1024));
@@ -151,9 +165,13 @@ public class Cover implements Comparable<Cover>, Const {
   }
 
   /**
+   * Gets the image.
+   * 
    * @return Returns the image.
-   * @throws InterruptedException
-   * @throws IOException
+   * 
+   * @throws InterruptedException the interrupted exception
+   * @throws IOException Signals that an I/O exception has occurred.
+   * @throws JajukException the jajuk exception
    */
   public Image getImage() throws IOException, InterruptedException, JajukException {
     // default cover image is cached in memory for perfs
@@ -180,7 +198,9 @@ public class Cover implements Comparable<Cover>, Const {
   }
 
   /**
-   * toString method
+   * toString method.
+   * 
+   * @return the string
    */
   @Override
   public String toString() {
@@ -188,7 +208,11 @@ public class Cover implements Comparable<Cover>, Const {
   }
 
   /**
-   * Equals needed for consistency for sorting
+   * Equals needed for consistency for sorting.
+   * 
+   * @param o DOCUMENT_ME
+   * 
+   * @return true, if equals
    */
   @Override
   public boolean equals(Object o) {
@@ -216,6 +240,7 @@ public class Cover implements Comparable<Cover>, Const {
   }
 
   /**
+   * Hash code.
    * 
    * @return object hashcode
    */
@@ -229,6 +254,11 @@ public class Cover implements Comparable<Cover>, Const {
     }
   }
 
+  /**
+   * Gets the file.
+   * 
+   * @return the file
+   */
   public File getFile() {
     return this.file;
   }

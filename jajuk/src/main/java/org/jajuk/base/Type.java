@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -30,34 +31,29 @@ import org.jajuk.util.Messages;
 import org.jajuk.util.log.Log;
 
 /**
- * Music type
+ * Music type.
  */
 public class Type extends PhysicalItem implements Comparable<Type> {
 
-  /** Type extension ex:mp3,ogg */
+  /** Type extension ex:mp3,ogg. */
   private final String sExtension;
 
-  /** Player impl */
+  /** Player impl. */
   private final Class<ITagImpl> cTagImpl;
 
-  /** Player class */
+  /** Player class. */
   private final Class<IPlayerImpl> cPlayerImpl;
 
   /**
-   * Constructor
+   * Constructor.
    * 
-   * @param sId
-   *          type id if given
-   * @param sName
-   *          type name
-   * @param sExtension
-   *          type file extension (.mp3...)
-   * @param sPlayerImpl
-   *          Type player implementation class
-   * @param sTagImpl
-   *          Type Tagger implementation class
-   * @throws Exception
-   */
+   * @param sId type id if given
+   * @param sName type name
+   * @param sExtension type file extension (.mp3...)
+   * @param cPlayerImpl DOCUMENT_ME
+   * @param cTagImpl DOCUMENT_ME
+   * 
+   * @throws Exception    */
   public Type(final String sId, final String sName, final String sExtension,
       final Class<IPlayerImpl> cPlayerImpl, final Class<ITagImpl> cTagImpl) {
     super(sId, sName);
@@ -72,10 +68,10 @@ public class Type extends PhysicalItem implements Comparable<Type> {
   }
 
   /**
-   * Alphabetical comparator used to display ordered lists
+   * Alphabetical comparator used to display ordered lists.
    * 
-   * @param other
-   *          item to be compared
+   * @param other item to be compared
+   * 
    * @return comparison result
    */
   public int compareTo(final Type other) {
@@ -83,7 +79,9 @@ public class Type extends PhysicalItem implements Comparable<Type> {
   }
 
   /**
-   * Get item description
+   * Get item description.
+   * 
+   * @return the desc
    */
   @Override
   public String getDesc() {
@@ -91,7 +89,9 @@ public class Type extends PhysicalItem implements Comparable<Type> {
   }
 
   /**
-   * @return
+   * Gets the extension.
+   * 
+   * @return the extension
    */
   public String getExtension() {
     return sExtension;
@@ -118,6 +118,8 @@ public class Type extends PhysicalItem implements Comparable<Type> {
   }
 
   /**
+   * Gets the player class.
+   * 
    * @return Player class for this type
    */
   public Class<IPlayerImpl> getPlayerClass() {
@@ -125,6 +127,8 @@ public class Type extends PhysicalItem implements Comparable<Type> {
   }
 
   /**
+   * Gets the tagger class.
+   * 
    * @return Tagger class for this type
    */
   public Class<ITagImpl> getTaggerClass() {
@@ -132,6 +136,8 @@ public class Type extends PhysicalItem implements Comparable<Type> {
   }
 
   /**
+   * Gets the tag impl.
+   * 
    * @return Returns the tagImpl.
    */
   public ITagImpl getTagImpl() {
@@ -147,7 +153,9 @@ public class Type extends PhysicalItem implements Comparable<Type> {
   }
 
   /**
-   * toString method
+   * toString method.
+   * 
+   * @return the string
    */
   @Override
   public String toString() {
@@ -155,10 +163,10 @@ public class Type extends PhysicalItem implements Comparable<Type> {
   }
 
   /**
-   * Return an array of supported file extensions for given types
+   * Return an array of supported file extensions for given types.
    * 
-   * @param types
-   *          the types
+   * @param types the types
+   * 
    * @return Return an array of supported file extensions
    */
   public static String[] getExtensionsFromTypes(final List<Type> types) {
@@ -177,7 +185,7 @@ public class Type extends PhysicalItem implements Comparable<Type> {
   }
 
   /**
-   * Return whether this type is video
+   * Return whether this type is video.
    * 
    * @return whether this type is video
    */

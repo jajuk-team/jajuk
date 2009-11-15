@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision: 3132 $
+ *  $Revision$
  */
 package org.jajuk.services.notification;
 
@@ -35,11 +35,12 @@ import org.jajuk.services.webradio.WebRadio;
  * Base interface for multiple different notification services that we can use.
  */
 public interface INotificator {
+  
   /**
    * Indicates if this notificator is available on the current platform.
    * 
    * @return true if this notificator can display notifications on this
-   *         installation, false otherwise.
+   * installation, false otherwise.
    */
   boolean isAvailable();
 
@@ -50,6 +51,7 @@ public interface INotificator {
    * 
    * This method should only be called if @link isAvailable() returns true!
    * 
+   * @param webradio DOCUMENT_ME
    */
   void notify(WebRadio webradio);
 
@@ -60,6 +62,7 @@ public interface INotificator {
    * 
    * This method should only be called if @link isAvailable() returns true!
    * 
+   * @param file DOCUMENT_ME
    */
   void notify(File file);
 }

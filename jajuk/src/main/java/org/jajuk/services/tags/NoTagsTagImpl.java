@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision: 3216 $
+ *  $Revision$
  */
 
 package org.jajuk.services.tags;
@@ -33,15 +34,17 @@ import javazoom.jlgui.basicplayer.BasicPlayerListener;
 import org.jajuk.util.UtilFeatures;
 
 /**
- * Tagger implementation for formats without tags and read by BasicPlayer API
+ * Tagger implementation for formats without tags and read by BasicPlayer API.
  */
 public class NoTagsTagImpl implements ITagImpl {
-  /** Analyzed file */
+  
+  /** Analyzed file. */
   File fio;
 
-  /** Current file data */
+  /** Current file data. */
   Map<String, Object> mapInfo;
 
+  /** DOCUMENT_ME. */
   private static ArrayList<String> supportedTags = new ArrayList<String>();
 
   /*
@@ -146,6 +149,9 @@ public class NoTagsTagImpl implements ITagImpl {
     // required by interface, but nothing to do here...
   }
 
+  /* (non-Javadoc)
+   * @see org.jajuk.services.tags.ITagImpl#setComment(java.lang.String)
+   */
   public void setComment(String sComment) {
     // nothing to do here
   }

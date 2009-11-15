@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2008 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision: 3132 $
+ *  $Revision$
  */
 package org.jajuk.ui.widgets;
 
@@ -33,15 +34,17 @@ import org.jajuk.util.UtilGUI;
 import org.jajuk.util.log.Log;
 
 /**
- * Dialog displayed by slimbar and tray or notificators
+ * Dialog displayed by slimbar and tray or notificators.
  */
 public class JajukInformationDialog extends JDialog {
 
+  /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
   /**
-   * @param text
-   *          : text to display
+   * The Constructor.
+   * 
+   * @param text : text to display
    */
   public JajukInformationDialog(String text) {
     // We have to set the owner window to fix a JRE issue under Linux only
@@ -61,7 +64,7 @@ public class JajukInformationDialog extends JDialog {
   }
 
   /**
-   * Show the balloon and hide it after few secs
+   * Show the balloon and hide it after few secs.
    */
   public void display() {
     setVisible(true);

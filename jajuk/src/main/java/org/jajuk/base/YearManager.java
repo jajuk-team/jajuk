@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,8 +16,8 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision: 2315 $
- **/
+ *  $Revision$
+ */
 
 package org.jajuk.base;
 
@@ -27,14 +28,15 @@ import org.jajuk.util.Const;
 import org.jajuk.util.ReadOnlyIterator;
 
 /**
- * Convenient class to manage years
+ * Convenient class to manage years.
  */
 public final class YearManager extends ItemManager {
-  /** Self instance */
+  
+  /** Self instance. */
   private static YearManager singleton;
 
   /**
-   * No constructor available, only static access
+   * No constructor available, only static access.
    */
   private YearManager() {
     super();
@@ -51,6 +53,8 @@ public final class YearManager extends ItemManager {
   }
 
   /**
+   * Gets the instance.
+   * 
    * @return singleton
    */
   public static YearManager getInstance() {
@@ -61,9 +65,11 @@ public final class YearManager extends ItemManager {
   }
 
   /**
-   * Register a year
+   * Register a year.
    * 
-   * @param sName
+   * @param pYear DOCUMENT_ME
+   * 
+   * @return the year
    */
   public Year registerYear(String pYear) {
     String sId = pYear;
@@ -71,9 +77,12 @@ public final class YearManager extends ItemManager {
   }
 
   /**
-   * Register a year with a known id
+   * Register a year with a known id.
    * 
-   * @param sName
+   * @param sId DOCUMENT_ME
+   * @param pYear DOCUMENT_ME
+   * 
+   * @return the year
    */
   public synchronized Year registerYear(String sId, String pYear) {
     Year year = getYearByID(sId);
@@ -96,8 +105,10 @@ public final class YearManager extends ItemManager {
   }
 
   /**
-   * @param sID
-   *          Item ID
+   * Gets the year by id.
+   * 
+   * @param sID Item ID
+   * 
    * @return Element
    */
   public Year getYearByID(String sID) {
@@ -105,6 +116,7 @@ public final class YearManager extends ItemManager {
   }
 
   /**
+   * Gets the years.
    * 
    * @return ordered years list
    */
@@ -114,6 +126,7 @@ public final class YearManager extends ItemManager {
   }
 
   /**
+   * Gets the years iterator.
    * 
    * @return years iterator
    */

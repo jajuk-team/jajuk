@@ -1,27 +1,22 @@
 /*
- * $Id: JVM.java,v 1.2 2005/10/10 18:03:00 rbair Exp $
+ *  Jajuk
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
- * This file has been adapted to Jajuk by the Jajuk Team.
- * Jajuk Copyright (C) 2007 The Jajuk Team
+ *  This program is free software; you can redistribute it and/or
+ *  modify it under the terms of the GNU General Public License
+ *  as published by the Free Software Foundation; either version 2
+ *  of the License, or any later version.
  *
- * The original copyrights and license follow:
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
  *
- * Copyright 2004 Sun Microsystems, Inc., 4150 Network Circle,
- * Santa Clara, California 95054, U.S.A. All rights reserved.
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- * 
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program; if not, write to the Free Software
+ *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ *  $Revision$
  */
 package ext;
 
@@ -30,50 +25,65 @@ package ext;
  */
 public class JVM {
 
+  /** The Constant JDK1_0.  DOCUMENT_ME */
   public static final int JDK1_0 = 10;
 
+  /** The Constant JDK1_1.  DOCUMENT_ME */
   public static final int JDK1_1 = 11;
 
+  /** The Constant JDK1_2.  DOCUMENT_ME */
   public static final int JDK1_2 = 12;
 
+  /** The Constant JDK1_3.  DOCUMENT_ME */
   public static final int JDK1_3 = 13;
 
+  /** The Constant JDK1_4.  DOCUMENT_ME */
   public static final int JDK1_4 = 14;
 
+  /** The Constant JDK1_5.  DOCUMENT_ME */
   public static final int JDK1_5 = 15;
 
+  /** The Constant JDK1_6.  DOCUMENT_ME */
   public static final int JDK1_6 = 16;
 
+  /** The Constant JDK1_7.  DOCUMENT_ME */
   public static final int JDK1_7 = 17;
 
+  /** The Constant JDK1_8.  DOCUMENT_ME */
   public static final int JDK1_8 = 18;
 
+  /** The Constant JDK1_9.  DOCUMENT_ME */
   public static final int JDK1_9 = 19;
 
+  /** DOCUMENT_ME. */
   private static JVM current;
   static {
     current = new JVM();
   }
 
   /**
+   * Current.
+   * 
    * @return the current JVM object
    */
   public static JVM current() {
     return current;
   }
 
+  /** DOCUMENT_ME. */
   private int jdkVersion;
 
   /**
    * Creates a new JVM data from the <code>java.version</code> System property
-   * 
    */
   public JVM() {
     this(System.getProperty("java.version"));
   }
 
   /**
-   * Constructor for the OS object
+   * Constructor for the OS object.
+   * 
+   * @param pJavaVersion DOCUMENT_ME
    */
   public JVM(String pJavaVersion) {
     if (pJavaVersion.startsWith("1.9.")) {
@@ -102,42 +112,94 @@ public class JVM {
     }
   }
 
+  /**
+   * Checks if is or later.
+   * 
+   * @param pVersion DOCUMENT_ME
+   * 
+   * @return true, if is or later
+   */
   public boolean isOrLater(int pVersion) {
     return jdkVersion >= pVersion;
   }
 
+  /**
+   * Checks if is one dot one.
+   * 
+   * @return true, if is one dot one
+   */
   public boolean isOneDotOne() {
     return jdkVersion == JDK1_1;
   }
 
+  /**
+   * Checks if is one dot two.
+   * 
+   * @return true, if is one dot two
+   */
   public boolean isOneDotTwo() {
     return jdkVersion == JDK1_2;
   }
 
+  /**
+   * Checks if is one dot three.
+   * 
+   * @return true, if is one dot three
+   */
   public boolean isOneDotThree() {
     return jdkVersion == JDK1_3;
   }
 
+  /**
+   * Checks if is one dot four.
+   * 
+   * @return true, if is one dot four
+   */
   public boolean isOneDotFour() {
     return jdkVersion == JDK1_4;
   }
 
+  /**
+   * Checks if is one dot five.
+   * 
+   * @return true, if is one dot five
+   */
   public boolean isOneDotFive() {
     return jdkVersion == JDK1_5;
   }
 
+  /**
+   * Checks if is one dot six.
+   * 
+   * @return true, if is one dot six
+   */
   public boolean isOneDotSix() {
     return jdkVersion == JDK1_6;
   }
 
+  /**
+   * Checks if is one dot seven.
+   * 
+   * @return true, if is one dot seven
+   */
   public boolean isOneDotSeven() {
     return jdkVersion == JDK1_7;
   }
 
+  /**
+   * Checks if is one dot eight.
+   * 
+   * @return true, if is one dot eight
+   */
   public boolean isOneDotEight() {
     return jdkVersion == JDK1_8;
   }
 
+  /**
+   * Checks if is one dot nine.
+   * 
+   * @return true, if is one dot nine
+   */
   public boolean isOneDotNine() {
     return jdkVersion == JDK1_9;
   }

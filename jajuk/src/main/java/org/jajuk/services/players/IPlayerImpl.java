@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -23,77 +24,105 @@ import org.jajuk.base.File;
 import org.jajuk.services.webradio.WebRadio;
 
 /**
- * Minimum methods required for all Player implementations
+ * Minimum methods required for all Player implementations.
  */
 public interface IPlayerImpl {
 
   /**
-   * Launches player
+   * Launches player.
    * 
    * @param file :
-   *          jajuk file to be played
-   * @param fPosition
-   *          position in % of the file
-   * @param length
-   *          length to play in ms or TO_THE_END of you want to play to the end
-   *          of the current file
-   * @param bMuted
-   *          mute state
-   * @param fVolume
-   *          volume
-   * @throws Exception
+   * jajuk file to be played
+   * @param fPosition position in % of the file
+   * @param length length to play in ms or TO_THE_END of you want to play to the end
+   * of the current file
+   * @param fVolume volume
+   * 
+   * @throws Exception the exception
    */
   void play(File file, float fPosition, long length, float fVolume) throws Exception;
 
   /**
-   * Play a web radio stream
+   * Play a web radio stream.
    * 
-   * @param radio
-   * @param fVolume
-   * @throws Exception
+   * @param radio DOCUMENT_ME
+   * @param fVolume DOCUMENT_ME
+   * 
+   * @throws Exception the exception
    */
   void play(WebRadio radio, float fVolume) throws Exception;
 
   /**
-   * Stop current player
+   * Stop current player.
    * 
-   * @throws Exception
+   * @throws Exception the exception
    */
   void stop() throws Exception;
 
   /**
-   * Set the gain
+   * Set the gain.
    * 
    * @param fVolume :
-   *          gain from 0 to 1
-   * @throws Exception
+   * gain from 0 to 1
+   * 
+   * @throws Exception the exception
    */
   void setVolume(float fVolume) throws Exception;
 
   /**
+   * Gets the elapsed time.
+   * 
    * @return elapsed time (ms) for this player
    */
   long getElapsedTime();
 
-  /** Pause the player */
+  /**
+   * Pause the player.
+   * 
+   * @throws Exception the exception
+   */
   void pause() throws Exception;
 
-  /** Resume the player */
+  /**
+   * Resume the player.
+   * 
+   * @throws Exception the exception
+   */
   void resume() throws Exception;
 
-  /** Seek to a given position in %. ex : 0.2 for 20% */
+  /**
+   * Seek to a given position in %. ex : 0.2 for 20%
+   * 
+   * @param fPosition DOCUMENT_ME
+   */
   void seek(float fPosition);
 
-  /** Return track LENGTH in */
+  /**
+   * Return track LENGTH in.
+   * 
+   * @return the current position
+   */
   float getCurrentPosition();
 
-  /** Return track position in ms */
+  /**
+   * Return track position in ms.
+   * 
+   * @return the current length
+   */
   long getCurrentLength();
 
-  /** Return volume in % */
+  /**
+   * Return volume in %.
+   * 
+   * @return the current volume
+   */
   float getCurrentVolume();
 
-  /** Return player state */
+  /**
+   * Return player state.
+   * 
+   * @return the state
+   */
   int getState();
 
 }

@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2009 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,14 +16,21 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- * $Revision: 2921 $
+ *  $Revision$
  */
 
 package org.jajuk.ui.helpers.animations;
 
 /**
- * Listener used to track for animation ending
+ * Listener used to track for animation ending.
  */
 public interface AnimationCompletedListener {
+  
+  /**
+   * Animation completed.
+   * DOCUMENT_ME
+   * 
+   * @param e DOCUMENT_ME
+   */
   void animationCompleted(AnimationCompletedEvent e);
 }
