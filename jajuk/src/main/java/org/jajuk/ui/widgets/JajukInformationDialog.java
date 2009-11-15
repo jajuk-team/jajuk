@@ -29,6 +29,7 @@ import javax.swing.border.LineBorder;
 
 import org.jajuk.ui.helpers.FontManager;
 import org.jajuk.ui.helpers.FontManager.JajukFont;
+import org.jajuk.util.UtilGUI;
 import org.jajuk.util.log.Log;
 
 /**
@@ -43,7 +44,12 @@ public class JajukInformationDialog extends JDialog {
    *          : text to display
    */
   public JajukInformationDialog(String text) {
-    super();
+    // We have to set the owner window to fix a JRE issue under Linux only
+    // See
+    // http://www.velocityreviews.com/forums/t125048-re-jdialog-in-taskbar-under-linux.html
+    // Otherwise, if no owner window is given or if the owner window is not
+    // displayed, an ugly task entry appears on the task bar
+    super(UtilGUI.getActiveWindow());
     setUndecorated(true);
     getRootPane().setWindowDecorationStyle(JRootPane.NONE);
     getRootPane().setBorder(new LineBorder(Color.BLACK));

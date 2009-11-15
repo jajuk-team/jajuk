@@ -75,7 +75,9 @@ import org.jajuk.ui.widgets.CommandJPanel;
 import org.jajuk.ui.widgets.InformationJPanel;
 import org.jajuk.ui.widgets.JajukJMenuBar;
 import org.jajuk.ui.widgets.PerspectiveBarJPanel;
+import org.jajuk.ui.windows.JajukFullScreenWindow;
 import org.jajuk.ui.windows.JajukMainWindow;
+import org.jajuk.ui.windows.JajukSlimbar;
 import org.jajuk.ui.windows.JajukSystray;
 import org.jajuk.util.log.Log;
 import org.jdesktop.swingx.decorator.Highlighter;
@@ -723,5 +725,25 @@ public final class UtilGUI {
     int screenWidth = screenSize.width;
     window.setLocation((screenWidth / 2) - (window.getWidth() / 2), (screenHeight / 2)
         - (window.getHeight() / 2));
+  }
+  
+  /**
+   * Return any displayed window (between main window, slimbar...) 
+   * @return any displayed window (between main window, slimbar...)
+   */
+  public static Window getActiveWindow(){
+    if (JajukMainWindow.getInstance().getWindowStateDecorator().isDisplayed()){
+      return JajukMainWindow.getInstance();
+    }
+    else if (JajukSlimbar.getInstance().getWindowStateDecorator().isDisplayed()){
+      return JajukSlimbar.getInstance();
+    }
+    else if (JajukFullScreenWindow.getInstance().getWindowStateDecorator().isDisplayed()){
+      return JajukFullScreenWindow.getInstance();
+    }
+    else{
+      // Can happen in sys tray mode only
+      return null;
+    }
   }
 }
