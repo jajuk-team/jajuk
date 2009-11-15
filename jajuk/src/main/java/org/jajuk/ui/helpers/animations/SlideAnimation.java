@@ -20,9 +20,12 @@
 
 package org.jajuk.ui.helpers.animations;
 
+import java.awt.Dimension;
 import java.awt.GraphicsEnvironment;
+import java.awt.Insets;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.Toolkit;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -204,10 +207,7 @@ public class SlideAnimation extends AbstractAnimation {
         Rectangle bounds = getDesktopBounds();
         Rectangle position = new Rectangle();
         position.x = bounds.x + bounds.width - size.width;
-        // Remove 50 px is useful under Linux as we can't get actual desktop
-        // insets and popup is too low in most cases (see
-        // http://forums.sun.com/thread.jspa?threadID=5169228)
-        position.y = bounds.y + bounds.height - (size.height + 50);
+		position.y = bounds.y + bounds.height - size.height;
         position.width = size.width;
         position.height = size.height;
         return position;
@@ -221,7 +221,15 @@ public class SlideAnimation extends AbstractAnimation {
     };
 
     protected Rectangle getDesktopBounds() {
-      return GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();
+		// Remove 50 px is useful under Linux as we can't get actual desktop
+        // insets and popup is too low in most cases (see
+        // http://forums.sun.com/thread.jspa?threadID=5169228)
+		Insets insets = Toolkit.getDefaultToolkit().getScreenInsets(GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration());
+		if (insets.equals(new Insets(0, 0, 0, 0))) {
+			insets.bottom = 50;
+		}
+		Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
+		return new Rectangle(insets.left, insets.top, size.width - insets.left - insets.right, size.height - insets.top - insets.bottom);
     }
   }
 
