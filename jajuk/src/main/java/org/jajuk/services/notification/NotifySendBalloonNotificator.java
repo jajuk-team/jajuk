@@ -88,6 +88,7 @@ public class NotifySendBalloonNotificator implements INotificator {
     // not possible on Windows right now
     if (UtilSystem.isUnderWindows()) {
       availability = false;
+      return;
     }
 
     // check if we have "notify-send"
@@ -127,7 +128,7 @@ public class NotifySendBalloonNotificator implements INotificator {
   }
 
   /*
-   * Notification from two strings (code shared betweeb webradio and track
+   * Notification from two strings (code shared between webradio and track
    * notifications)
    */
   private void notify(String title, String pText) {
