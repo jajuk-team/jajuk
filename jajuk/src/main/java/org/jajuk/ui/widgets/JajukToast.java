@@ -12,14 +12,14 @@ import org.jajuk.ui.helpers.animations.SlideAnimation.StartingPositions;
 import org.jajuk.util.log.Log;
 
 /**
- * Animated balloon with album text + cover
+ * Animated information dialog that appears and disappears by itself
  */
-public class JajukTrackChangeBalloon extends JajukBalloon {
+public class JajukToast extends JajukInformationDialog {
   private static final long serialVersionUID = 1L;
   private int showTime;
 
-  public JajukTrackChangeBalloon(String title, int showTime) {
-    super(title);
+  public JajukToast(String text, int showTime) {
+    super(text);
     this.showTime = showTime;
     setAlwaysOnTop(true);
     setFocusableWindowState(false);
@@ -42,7 +42,7 @@ public class JajukTrackChangeBalloon extends JajukBalloon {
         fade.addAnimationCompletedListener(new AnimationCompletedListener() {
           @Override
           public void animationCompleted(AnimationCompletedEvent e) {
-            JajukTrackChangeBalloon.this.dispose();
+            JajukToast.this.dispose();
           }
         });
         new Thread(new Runnable() {

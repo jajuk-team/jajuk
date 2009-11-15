@@ -40,8 +40,8 @@ import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.events.Observer;
-import org.jajuk.services.notification.ISystemNotificator;
-import org.jajuk.services.notification.SystemNotificatorFactory;
+import org.jajuk.services.notification.INotificator;
+import org.jajuk.services.notification.NotificatorFactory;
 import org.jajuk.services.players.Player;
 import org.jajuk.services.players.QueueModel;
 import org.jajuk.services.webradio.WebRadio;
@@ -199,13 +199,11 @@ public class PlayerStateMediator implements Observer {
           ActionManager.getAction(STOP_TRACK).setEnabled(true);
 
           // display a system notification if specified
-          ISystemNotificator notifier = SystemNotificatorFactory.getSystemNotificator();
+          INotificator notifier = NotificatorFactory.getNotificator();
           if (notifier != null) {
             WebRadio radio = (WebRadio) (event.getDetails().get(Const.DETAIL_CONTENT));
-
             Log.debug("Got update for new webradio launched, item: " + radio);
-
-            notifier.notify("WebRadio", radio.getName());
+            notifier.notify(radio);
           }
         } else if (JajukEvents.VOLUME_CHANGED.equals(subject)) {
           MuteAction.setVolumeIcon(100 * Player.getCurrentVolume());
@@ -214,7 +212,7 @@ public class PlayerStateMediator implements Observer {
             !Player.isMuted()) {
           MuteAction.setVolumeIcon(Player.getCurrentVolume() * 100);
         } else if (subject.equals(JajukEvents.FILE_LAUNCHED)) {
-          ISystemNotificator notifier = SystemNotificatorFactory.getSystemNotificator();
+          INotificator notifier = NotificatorFactory.getNotificator();
           if (notifier != null) {
             String id = (String) ObservationManager.getDetail(event, Const.DETAIL_CURRENT_FILE_ID);
             if (id == null) {
@@ -225,18 +223,14 @@ public class PlayerStateMediator implements Observer {
             File file = FileManager.getInstance().getFileByID(id);
             Log.debug("Got update for new file launched, item: {{" + file + "}}. Sending text: {{"
                 + QueueModel.getCurrentFileTitle() + "}}");
-            // notifier.notify(Messages.getString("JajukWindow.39"),
-            // UtilString.buildTitle(file));
-            notifier.notify(Messages.getString("JajukWindow.39"), QueueModel.getCurrentFileTitle());
+            notifier.notify(file);
           }
         } else if (subject.equals(JajukEvents.SHOW_CURRENTLY_PLAYING)) {
-          ISystemNotificator notifier = SystemNotificatorFactory.getSystemNotificator();
+          INotificator notifier = NotificatorFactory.getNotificator();
           if (notifier != null) {
             Log.debug("Got request to notify with current file information. Sending text: {{"
                 + QueueModel.getCurrentFileTitle() + "}}");
-            // notifier.notify(Messages.getString("JajukWindow.39"),
-            // UtilString.buildTitle(file));
-            notifier.notify(Messages.getString("JajukWindow.39"), QueueModel.getCurrentFileTitle());
+            notifier.notify(QueueModel.getCurrentItem().getFile());
           }
         }
 

@@ -29,6 +29,7 @@ import java.io.OutputStream;
 import java.util.Properties;
 
 import org.jajuk.services.core.SessionService;
+import org.jajuk.services.notification.NotificatorTypes;
 import org.jajuk.ui.actions.JajukActions;
 import org.jajuk.ui.perspectives.SimplePerspective;
 import org.jajuk.util.log.Log;
@@ -197,7 +198,7 @@ public final class Conf implements Const {
     defaults.put(CONF_OPTIONS_INTRO_BEGIN, "0");
     defaults.put(CONF_OPTIONS_INTRO_LENGTH, "20");
     defaults.put(CONF_OPTIONS_SYNC_TABLE_TREE, FALSE);
-    defaults.put(CONF_UI_SHOW_SYSTEM_NOTIFICATION, FALSE);
+    defaults.put(CONF_UI_NOTIFICATOR_TYPE, NotificatorTypes.TOAST.name());
     defaults.put(CONF_P2P_SHARE, FALSE);
     defaults.put(CONF_P2P_ADD_REMOTE_PROPERTIES, FALSE);
     defaults.put(CONF_P2P_HIDE_LOCAL_PROPERTIES, TRUE);

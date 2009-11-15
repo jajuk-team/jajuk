@@ -74,6 +74,7 @@ import org.jajuk.events.ObservationManager;
 import org.jajuk.services.core.RatingManager;
 import org.jajuk.services.core.SessionService;
 import org.jajuk.services.lastfm.LastFmManager;
+import org.jajuk.services.notification.NotificatorTypes;
 import org.jajuk.ui.actions.ActionManager;
 import org.jajuk.ui.actions.JajukActions;
 import org.jajuk.ui.helpers.DefaultMouseWheelListener;
@@ -118,6 +119,8 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
   private static final String WRAP = "wrap";
 
   private static final long serialVersionUID = 1L;
+
+  private static final String NOTIFICATOR_PREFIX = "Notificator.";
 
   private JTabbedPane jtpMain;
 
@@ -207,7 +210,9 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
 
   private JCheckBox jcbDefaultActionDrop;
 
-  private JCheckBox jcbShowBaloon;
+  private JLabel jlNotificationType;
+
+  private JComboBox jcbNotificationType;
 
   private JCheckBox jcbHotkeys;
 
@@ -332,7 +337,8 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
   private JCheckBox jcb3dCover;
 
   /**
-   * 
+   * View providing main jajuk configuration GUI. Known in the doc as
+   * "Preferences view"
    */
   public ParameterView() {
     super();
@@ -598,6 +604,13 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
       someOptionsAppliedAtNextStartup = true;
     }
     Conf.setProperty(Const.CONF_FONTS_SIZE, Integer.toString(jsFonts.getValue()));
+    // Notificator type
+    String notificatorTypeDisplayed = (String) jcbNotificationType.getSelectedItem();
+    for (NotificatorTypes notificatorType : NotificatorTypes.values()) {
+      if (Messages.getString(NOTIFICATOR_PREFIX + notificatorType).equals(notificatorTypeDisplayed)) {
+        Conf.setProperty(Const.CONF_UI_NOTIFICATOR_TYPE, notificatorType.name());
+      }
+    }
 
     // Message if show systray is changed
     final boolean bOldShowSystray = Conf.getBoolean(Const.CONF_SHOW_SYSTRAY);
@@ -779,7 +792,6 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
 
       public void actionPerformed(ActionEvent e) {
         // Store configuration
-        Conf.setProperty(Const.CONF_UI_SHOW_SYSTEM_NOTIFICATION, Boolean.toString(jcbShowBaloon.isSelected()));
         Conf.setProperty(Const.CONF_SHOW_POPUPS, Boolean.toString(jcbShowPopups.isSelected()));
         Conf.setProperty(Const.CONF_OPTIONS_SYNC_TABLE_TREE, Boolean.toString(jcbSyncTableTree
             .isSelected()));
@@ -1452,10 +1464,15 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
     jsFonts.setPaintLabels(true);
     jsFonts.setToolTipText(Messages.getString("ParameterView.224"));
 
-    // Show Balloon
-    jcbShowBaloon = new JCheckBox(Messages.getString("ParameterView.185"));
-    jcbShowBaloon.setToolTipText(Messages.getString("ParameterView.185"));
-    jcbShowBaloon.addActionListener(alUI);
+    // Notification type
+    jlNotificationType = new JLabel(Messages.getString("ParameterView.275"));
+    jlNotificationType.setToolTipText(Messages.getString("ParameterView.276"));
+    jcbNotificationType = new JComboBox();
+    jcbNotificationType.setToolTipText(Messages.getString("ParameterView.276"));
+    for (NotificatorTypes type : NotificatorTypes.values()) {
+      String notificatorType = Messages.getString(NOTIFICATOR_PREFIX + type);
+      jcbNotificationType.addItem(notificatorType);
+    }
 
     // LaF
     jlLAF = new JLabel(Messages.getString("ParameterView.43"));
@@ -1474,9 +1491,10 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
     jpUI = new JPanel(new MigLayout("insets 10,gapx 10,gapy 15"));
     jpUI.add(jcbShowPopups, WRAP);
     jpUI.add(jcbShowSystray, WRAP);
-    jpUI.add(jcbShowBaloon, WRAP);
     jpUI.add(jlFonts);
     jpUI.add(jsFonts, WRAP_GROW);
+    jpUI.add(jlNotificationType);
+    jpUI.add(jcbNotificationType, WRAP);
     jpUI.add(jlLAF);
     jpUI.add(scbLAF, WRAP_GROW);
     jpUI.add(jlPerspectiveSize);
@@ -1700,8 +1718,10 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
       jpfASPassword.setEnabled(false);
     }
     // UI
-    jcbShowBaloon.setSelected(Conf.getBoolean(Const.CONF_UI_SHOW_SYSTEM_NOTIFICATION));
-    jcbShowPopups.setSelected(Conf.getBoolean(Const.CONF_SHOW_POPUPS));
+    String notificatorType = Messages.getString(NOTIFICATOR_PREFIX
+        + Conf.getString(Const.CONF_UI_NOTIFICATOR_TYPE));
+    jcbNotificationType.setSelectedItem(notificatorType);
+
     jcbShowSystray.setSelected(Conf.getBoolean(Const.CONF_SHOW_SYSTRAY));
     scbLAF.removeActionListener(this);
     scbLAF.setSelectedItem(Conf.getString(Const.CONF_OPTIONS_LNF));

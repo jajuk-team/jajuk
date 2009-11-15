@@ -27,30 +27,67 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.jajuk.base.File;
+import org.jajuk.services.webradio.WebRadio;
+import org.jajuk.util.Messages;
 import org.jajuk.util.UtilSystem;
 import org.jajuk.util.log.Log;
 
 /**
- * An implementation of ISystemNotificator which uses the notify-send
- * functionality which is available on Linux/Unix systems.
+ * An implementation of INotificator which uses the notify-send functionality
+ * which is available on Linux/Unix systems.
+ * 
+ * <p>
+ * Singleton
+ * </p>
  * 
  */
-public class NotifySendNotificator implements ISystemNotificator {
+public class NotifySendBalloonNotificator implements INotificator {
   /**
    * The number of milliseconds to display the note
    */
   private static final String DISPLAY_TIME_MSECS = "8000";
 
+  /** Self instance **/
+  private static NotifySendBalloonNotificator self;
+
+  /** Availability state [perf] **/
+  private boolean availability = false;
+
+  private NotifySendBalloonNotificator() {
+    // Get availability once for all
+    populateAvailability();
+  }
+
+  /**
+   * Return an instance of this singleton
+   * 
+   * @return an instance of this singleton
+   */
+  public static NotifySendBalloonNotificator getInstance() {
+    if (self == null) {
+      self = new NotifySendBalloonNotificator();
+    }
+    return self;
+  }
+
   /*
    * (non-Javadoc)
    * 
-   * @see org.jajuk.services.notification.ISystemNotificator#isAvailable()
+   * @see org.jajuk.services.notification.INotificator#isAvailable()
    */
   @Override
   public boolean isAvailable() {
+    return availability;
+  }
+
+  /**
+   * Computes notificator availability
+   */
+  private void populateAvailability() {
     // not possible on Windows right now
     if (UtilSystem.isUnderWindows()) {
-      return false;
+      availability = false;
     }
 
     // check if we have "notify-send"
@@ -82,25 +119,21 @@ public class NotifySendNotificator implements ISystemNotificator {
 
       Log
           .info("Cannot use notify-send functionality, application 'notify-send' seems to be not available correctly.");
-      return false;
+      availability = false;
     }
 
     // notify-send is enabled and seems to be supported by the OS
-    return true;
+    availability = true;
   }
 
   /*
-   * (non-Javadoc)
-   * 
-   * @see
-   * org.jajuk.services.notification.ISystemNotificator#notify(java.lang.String
-   * , java.lang.String)
+   * Notification from two strings (code shared betweeb webradio and track
+   * notifications)
    */
-  @Override
-  public void notify(String title, String text) {
+  private void notify(String title, String pText) {
     // workaround: notify-send cannot handle IMG-SRC with "file:"
-    text = text.replace("<img src='file:/", "<img src='/");
-    
+    String text = pText.replace("<img src='file:/", "<img src='/");
+
     // first build the commandline for "notify-send"
 
     // see http://www.galago-project.org/specs/notification/0.9/x344.html
@@ -149,5 +182,26 @@ public class NotifySendNotificator implements ISystemNotificator {
     if (!err.toString().isEmpty()) {
       Log.debug("notify-send command returned to err: " + err.toString());
     }
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see
+   * org.jajuk.services.notification.INotificator#notify(org.jajuk.services.
+   * webradio.WebRadio)
+   */
+  @Override
+  public void notify(WebRadio webradio) {
+    String title = Messages.getString("Notificator.track_change.webradio_title");
+    String text = webradio.getName();
+    notify(title, text);
+  }
+
+  @Override
+  public void notify(File file) {
+    String title = Messages.getString("Notificator.track_change.track_title");
+    String text = file.buildTitle(); 
+    notify(title, text);
   }
 }

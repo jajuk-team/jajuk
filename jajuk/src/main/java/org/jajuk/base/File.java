@@ -24,7 +24,6 @@ import java.net.URL;
 
 import javax.swing.ImageIcon;
 
-import org.jajuk.services.players.QueueModel;
 import org.jajuk.ui.thumbnails.ThumbnailManager;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
@@ -410,14 +409,12 @@ public class File extends PhysicalItem implements Comparable<File>, Const {
     sOut += "<HTML>";
     int size = 100;
     int maxSize = 30;
-    ThumbnailManager.refreshThumbnail(QueueModel.getPlayingFile().getTrack().getAlbum(), size);
-    java.io.File cover = ThumbnailManager.getThumbBySize(QueueModel.getPlayingFile().getTrack()
-        .getAlbum(), size);
+    ThumbnailManager.refreshThumbnail(getTrack().getAlbum(), size);
+    java.io.File cover = ThumbnailManager.getThumbBySize(getTrack().getAlbum(), size);
     if (cover.canRead()) {
       sOut += "<p ALIGN=center><img src='file:" + cover.getAbsolutePath() + "'/></p>";
     }
-    sOut += "<b>" + UtilString.getLimitedString(getTrack().getName(), maxSize)
-        + "</b><br/>";
+    sOut += "<b>" + UtilString.getLimitedString(getTrack().getName(), maxSize) + "</b><br/>";
     String sAuthor = UtilString.getLimitedString(getTrack().getAuthor().getName(), maxSize);
     if (!sAuthor.equals(UNKNOWN_AUTHOR)) {
       sOut += sAuthor + "<br/>";
@@ -434,7 +431,8 @@ public class File extends PhysicalItem implements Comparable<File>, Const {
    * 
    * @return Text to be displayed in the tootip and baloon
    * 
-   * TODO: this is similar to UtilString.buildTitle(), maybe we could combine both and use the pattern here as well...
+   *         TODO: this is similar to UtilString.buildTitle(), maybe we could
+   *         combine both and use the pattern here as well...
    * 
    */
   public final String getBasicFormatText() {
@@ -451,7 +449,6 @@ public class File extends PhysicalItem implements Comparable<File>, Const {
     sOut += getTrack().getName();
     return sOut;
   }
-
 
   /**
    * Build the frame title from user option

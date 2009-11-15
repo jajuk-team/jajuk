@@ -20,36 +20,28 @@
  */
 package org.jajuk.services.notification;
 
-import ext.JXTrayIcon;
-
 import java.awt.HeadlessException;
-import java.awt.TrayIcon;
 
 import org.jajuk.JajukTestCase;
-import org.jajuk.util.IconLoader;
-import org.jajuk.util.JajukIcons;
+import org.jajuk.TestHelpers;
+import org.jajuk.base.File;
+import org.jajuk.services.startup.StartupCollectionService;
+import org.jajuk.services.webradio.WebRadio;
 
 /**
  * 
  */
-public class TestJavaSystrayNotificator extends JajukTestCase {
+public class TestToastNotificator extends JajukTestCase {
 
   /**
    * Test method for
-   * {@link org.jajuk.services.notification.JavaSystrayNotificator#JavaSystrayNotificator(java.awt.TrayIcon)}
+   * {@link org.jajuk.services.notification.ToastNotificator#ToastNotificator()}
    * .
    */
-  public void testJavaSystrayNotificator() {
-    // should initialize with null correctly., but return false for
-    // "isAvailable"
-    JavaSystrayNotificator not = new JavaSystrayNotificator(null);
-    assertFalse(not.isAvailable());
-
-    try {
-      // should initialize correctly and return true for valid TrayIcon
-      TrayIcon tray = new JXTrayIcon(IconLoader.getIcon(JajukIcons.TRAY).getImage());
-      not = new JavaSystrayNotificator(tray);
-      assertTrue(not.isAvailable());
+  public void testToastNotificator() {
+     try {
+      INotificator notificator = ToastNotificator.getInstance();
+      assertTrue(notificator.isAvailable());
     } catch (ExceptionInInitializerError e) {
       // expected when run without UI support
     } catch (NoClassDefFoundError e) {
@@ -59,7 +51,7 @@ public class TestJavaSystrayNotificator extends JajukTestCase {
 
   /**
    * Test method for
-   * {@link org.jajuk.services.notification.JavaSystrayNotificator#isAvailable()}
+   * {@link org.jajuk.services.notification.JavaBalloonNotificator#isAvailable()}
    * .
    */
   public void testIsAvailable() {
@@ -68,15 +60,15 @@ public class TestJavaSystrayNotificator extends JajukTestCase {
 
   /**
    * Test method for
-   * {@link org.jajuk.services.notification.JavaSystrayNotificator#notify(java.lang.String, java.lang.String)}
+   * {@link org.jajuk.services.notification.JavaBalloonNotificator#notify(org.jajuk.base.File)}
    * .
    */
-  public void testNotifyStringString() {
+  public void testNotifyFile() {
     try {
-      TrayIcon tray = new JXTrayIcon(IconLoader.getIcon(JajukIcons.TRAY).getImage());
-      JavaSystrayNotificator not = new JavaSystrayNotificator(tray);
-
-      not.notify("title", "text to display");
+      StartupCollectionService.registerItemManagers();
+      ToastNotificator notificator = ToastNotificator.getInstance();
+      File file = TestHelpers.getMockFile();
+      notificator.notify(file);
     } catch (NoClassDefFoundError e) {
       // expected when run without UI support
     } catch (HeadlessException e) {
@@ -84,4 +76,20 @@ public class TestJavaSystrayNotificator extends JajukTestCase {
     }
   }
 
+  /**
+   * Test method for
+   * {@link org.jajuk.services.notification.JavaBalloonNotificator#notify(org.jajuk.services.webradio.WebRadio)}
+   * .
+   */
+  public void testNotifyWebradio() {
+    try {
+      ToastNotificator notificator = ToastNotificator.getInstance();
+      WebRadio webradio = new WebRadio("a web radio", "http://www.test.org/webradio");
+      notificator.notify(webradio);
+    } catch (NoClassDefFoundError e) {
+      // expected when run without UI support
+    } catch (HeadlessException e) {
+      // expected when run without UI support
+    }
+  }
 }

@@ -20,6 +20,9 @@
  */
 package org.jajuk.services.notification;
 
+import org.jajuk.base.File;
+import org.jajuk.services.webradio.WebRadio;
+
 /**
  * System notification in Jajuk means informing the user about things like newly
  * started tracks via a system specific notification mechanism.
@@ -31,7 +34,7 @@ package org.jajuk.services.notification;
  * 
  * Base interface for multiple different notification services that we can use.
  */
-public interface ISystemNotificator {
+public interface INotificator {
   /**
    * Indicates if this notificator is available on the current platform.
    * 
@@ -41,17 +44,22 @@ public interface ISystemNotificator {
   boolean isAvailable();
 
   /**
-   * Use the provided information to display a notification using this
-   * notificator.
+   * Require the notificator to notify web radio change.
+   * 
+   * Note that the text itself is got by the notificator itself.
    * 
    * This method should only be called if @link isAvailable() returns true!
    * 
-   * @param title
-   *          The title of the notification, usually what happens, e.g.
-   *          "Now playing".
-   * @param text
-   *          The text of the notification, e.g. while title started to play
-   *          now.
    */
-  void notify(String title, String text);
+  void notify(WebRadio webradio);
+
+  /**
+   * Require the notificator to notify a track change.
+   * 
+   * Note that the text itself is got by the notificator itself.
+   * 
+   * This method should only be called if @link isAvailable() returns true!
+   * 
+   */
+  void notify(File file);
 }

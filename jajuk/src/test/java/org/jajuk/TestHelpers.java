@@ -25,6 +25,26 @@ import java.util.concurrent.atomic.AtomicInteger;
 import javax.swing.SwingUtilities;
 
 import org.jajuk.JajukTestCase;
+import org.jajuk.base.Album;
+import org.jajuk.base.AlbumManager;
+import org.jajuk.base.Author;
+import org.jajuk.base.AuthorManager;
+import org.jajuk.base.Device;
+import org.jajuk.base.DeviceManager;
+import org.jajuk.base.Directory;
+import org.jajuk.base.DirectoryManager;
+import org.jajuk.base.File;
+import org.jajuk.base.FileManager;
+import org.jajuk.base.Style;
+import org.jajuk.base.StyleManager;
+import org.jajuk.base.Track;
+import org.jajuk.base.TrackManager;
+import org.jajuk.base.Type;
+import org.jajuk.base.TypeManager;
+import org.jajuk.base.Year;
+import org.jajuk.base.YearManager;
+import org.jajuk.services.players.MPlayerPlayerImpl;
+import org.jajuk.services.tags.JAudioTaggerTagImpl;
 
 /**
  * 
@@ -70,7 +90,7 @@ public class TestHelpers extends JajukTestCase {
         @Override
         public void run() {
           try {
-            Thread.sleep(1000/COUNT);
+            Thread.sleep(1000 / COUNT);
 
             count.incrementAndGet();
           } catch (InterruptedException e) {
@@ -86,6 +106,28 @@ public class TestHelpers extends JajukTestCase {
     JUnitHelpers.clearSwingUtilitiesQueue();
 
     // now the finished needs to be true
-    assertTrue("Elapsed time(ms): " + (System.currentTimeMillis() - now) + " Count: " + count.get(), count.get() == COUNT);
+    assertTrue(
+        "Elapsed time(ms): " + (System.currentTimeMillis() - now) + " Count: " + count.get(), count
+            .get() == COUNT);
+  }
+
+  /**
+   * Return a mock file for testing purposes
+   * @return a mock file for testing purposes
+   */
+  public static File getMockFile() {
+    Type type = TypeManager.getInstance().registerType("mp3", "mp3", MPlayerPlayerImpl.class,
+        JAudioTaggerTagImpl.class);
+    Album album = AlbumManager.getInstance().registerAlbum("album name", "album artist", 2222l);
+    Style style = StyleManager.getInstance().registerStyle("style name");
+    Author author = AuthorManager.getInstance().registerAuthor("author name");
+    Year year = YearManager.getInstance().registerYear("2000");
+    Track track = TrackManager.getInstance().registerTrack("track name", album, style, author, 12l,
+        year, 1l, type, 1l);
+    Device device = DeviceManager.getInstance().registerDevice("device name", 1l, "/tmp");
+    Directory dir = DirectoryManager.getInstance()
+        .registerDirectory("directory name", null, device);
+    File file = FileManager.getInstance().registerFile("123", "file name", dir, track, 12, 128);
+    return file;
   }
 }

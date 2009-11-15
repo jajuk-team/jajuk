@@ -597,8 +597,8 @@ public interface Const {
   /** Synchronize table and tree views */
   String CONF_OPTIONS_SYNC_TABLE_TREE = "jajuk.options.sync_table_tree";
 
-  /** Show popup */
-  String CONF_UI_SHOW_SYSTEM_NOTIFICATION = "jajuk.options.show_popup";
+  /** Notificator type */
+  String CONF_UI_NOTIFICATOR_TYPE = "jajuk.options.notificator_type";
 
   String CONF_P2P_SHARE = "jajuk.options.p2p.share";
 

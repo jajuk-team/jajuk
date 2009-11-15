@@ -69,7 +69,7 @@ import org.jajuk.ui.actions.JajukActions;
 import org.jajuk.ui.actions.MuteAction;
 import org.jajuk.ui.helpers.PlayerStateMediator;
 import org.jajuk.ui.views.QueueView;
-import org.jajuk.ui.widgets.JajukBalloon;
+import org.jajuk.ui.widgets.JajukInformationDialog;
 import org.jajuk.ui.widgets.JajukButton;
 import org.jajuk.ui.widgets.JajukJToolbar;
 import org.jajuk.ui.widgets.PreferenceToolbar;
@@ -137,7 +137,7 @@ public final class JajukSlimbar extends JFrame implements JajukWindow, Observer,
    */
   private WindowStateDecorator decorator;
 
-  JajukBalloon balloon;
+  JajukInformationDialog balloon;
 
   private static JajukSlimbar self;
 
@@ -585,7 +585,7 @@ public final class JajukSlimbar extends JFrame implements JajukWindow, Observer,
     if (balloon != null && balloon.isVisible()) {
       return;
     }
-    balloon = new JajukBalloon(QueueModel.getCurrentFileTitle());
+    balloon = new JajukInformationDialog(QueueModel.getCurrentFileTitle());
     Point buttonLocation = jbInfo.getLocationOnScreen();
     Point location = null;
     // If slimbar is too height in the screen, display the popup bellow it

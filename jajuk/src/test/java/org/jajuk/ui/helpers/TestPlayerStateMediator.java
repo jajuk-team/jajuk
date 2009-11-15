@@ -40,6 +40,7 @@ import org.jajuk.base.Year;
 import org.jajuk.base.TestAlbumManager.MockPlayer;
 import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
+import org.jajuk.services.notification.NotificatorTypes;
 import org.jajuk.services.players.IPlayerImpl;
 import org.jajuk.services.players.Player;
 import org.jajuk.services.players.QueueModel;
@@ -172,7 +173,7 @@ public class TestPlayerStateMediator extends JajukTestCase {
 
   public final void testUpdateWebradioNotifcator() {
     // enable Tooltip/Notification
-    Conf.setProperty(Const.CONF_UI_SHOW_SYSTEM_NOTIFICATION, "true");
+    Conf.setProperty(Const.CONF_UI_NOTIFICATOR_TYPE, NotificatorTypes.TOAST.name());
     
     Properties prop = new Properties();
     prop.put(Const.DETAIL_CONTENT, new WebRadio("test", "testurl"));
@@ -183,7 +184,7 @@ public class TestPlayerStateMediator extends JajukTestCase {
 
   public final void testUpdateFileLaunched() throws Exception {
     // enable Tooltip/Notification
-    Conf.setProperty(Const.CONF_UI_SHOW_SYSTEM_NOTIFICATION, "true");
+    Conf.setProperty(Const.CONF_UI_NOTIFICATOR_TYPE, NotificatorTypes.TOAST.name());
     
     Device device = new Device("1", "name");
     device.setUrl(System.getProperty("java.io.tmpdir"));
@@ -201,7 +202,7 @@ public class TestPlayerStateMediator extends JajukTestCase {
 
   public final void testUpdateFileLaunchedNull() {
     // enable Tooltip/Notification
-    Conf.setProperty(Const.CONF_UI_SHOW_SYSTEM_NOTIFICATION, "true");
+    Conf.setProperty(Const.CONF_UI_NOTIFICATOR_TYPE, NotificatorTypes.TOAST.name());
 
     // just provide empty properties
     Properties prop = new Properties();

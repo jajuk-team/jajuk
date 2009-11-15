@@ -32,26 +32,22 @@ import org.jajuk.ui.helpers.FontManager.JajukFont;
 import org.jajuk.util.log.Log;
 
 /**
- * Balloon frame displayed by slimbar and tray. Contains current track
- * information.
+ * Dialog displayed by slimbar and tray or notificators
  */
-public class JajukBalloon extends JDialog {
+public class JajukInformationDialog extends JDialog {
 
-  /**
-   * 
-   */
   private static final long serialVersionUID = 1L;
 
   /**
-   * @param title :
-   *          text to display
+   * @param text
+   *          : text to display
    */
-  public JajukBalloon(String title) {
+  public JajukInformationDialog(String text) {
     super();
     setUndecorated(true);
     getRootPane().setWindowDecorationStyle(JRootPane.NONE);
     getRootPane().setBorder(new LineBorder(Color.BLACK));
-    JLabel jl = new JLabel(title);
+    JLabel jl = new JLabel(text);
     jl.setFont(FontManager.getInstance().getFont(JajukFont.DEFAULT));
     jl.setBorder(new EmptyBorder(5, 5, 5, 5));
     add(jl);
@@ -59,7 +55,7 @@ public class JajukBalloon extends JDialog {
   }
 
   /**
-   * Show the baloon and hide it after few secs
+   * Show the balloon and hide it after few secs
    */
   public void display() {
     setVisible(true);

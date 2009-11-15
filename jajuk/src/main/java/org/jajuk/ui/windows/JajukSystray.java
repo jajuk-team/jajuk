@@ -32,10 +32,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.util.HashSet;
-import java.util.Properties;
 import java.util.Set;
 
-import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
@@ -57,7 +55,7 @@ import org.jajuk.ui.helpers.FontManager;
 import org.jajuk.ui.helpers.PlayerStateMediator;
 import org.jajuk.ui.helpers.FontManager.JajukFont;
 import org.jajuk.ui.widgets.CommandJPanel;
-import org.jajuk.ui.widgets.JajukBalloon;
+import org.jajuk.ui.widgets.JajukInformationDialog;
 import org.jajuk.ui.widgets.SearchBox;
 import org.jajuk.ui.widgets.SizedJMenuItem;
 import org.jajuk.util.Conf;
@@ -116,14 +114,11 @@ public class JajukSystray extends CommandJPanel implements JajukWindow {
 
   long lDateLastAdjust;
 
-  /** Show balloon? */
-  JCheckBoxMenuItem jcbmiShowBalloon;
-
   /** Self instance singleton */
   private static JajukSystray jsystray;
 
   /** HTML Tooltip */
-  JajukBalloon balloon;
+  JajukInformationDialog balloon;
 
   /**
    * 
@@ -206,11 +201,6 @@ public class JajukSystray extends CommandJPanel implements JajukWindow {
     jmiFinishAlbum = new SizedJMenuItem(ActionManager.getAction(JajukActions.FINISH_ALBUM));
     jmiNovelties = new SizedJMenuItem(ActionManager.getAction(JajukActions.NOVELTIES));
 
-    jcbmiShowBalloon = new JCheckBoxMenuItem(Messages.getString("ParameterView.185"));
-    jcbmiShowBalloon.setState(Conf.getBoolean(Const.CONF_UI_SHOW_SYSTEM_NOTIFICATION));
-    jcbmiShowBalloon.addActionListener(this);
-    jcbmiShowBalloon.setToolTipText(Messages.getString("ParameterView.185"));
-
     jmiPlayPause = new SizedJMenuItem(ActionManager.getAction(JajukActions.PAUSE_RESUME_TRACK));
     jmiStop = new SizedJMenuItem(ActionManager.getAction(JajukActions.STOP_TRACK));
     jmiPrevious = new SizedJMenuItem(ActionManager.getAction(JajukActions.PREVIOUS_TRACK));
@@ -246,7 +236,6 @@ public class JajukSystray extends CommandJPanel implements JajukWindow {
 
     jmenu.add(jpTitle);
     jmenu.addSeparator();
-    jmenu.add(jcbmiShowBalloon);
     jmenu.addSeparator();
     jmenu.add(jmAmbience);
     jmenu.addSeparator();
@@ -291,7 +280,7 @@ public class JajukSystray extends CommandJPanel implements JajukWindow {
         if (balloon != null && balloon.isVisible()) {
           return;
         }
-        balloon = new JajukBalloon(title);
+        balloon = new JajukInformationDialog(title);
         Point location = new Point(e.getX() - balloon.getWidth(), e.getY()
             - (20 + balloon.getHeight()));
         balloon.setLocation(location);
@@ -335,28 +324,6 @@ public class JajukSystray extends CommandJPanel implements JajukWindow {
     eventSubjectSet.add(JajukEvents.AMBIENCES_SELECTION_CHANGE);
     eventSubjectSet.add(JajukEvents.PARAMETERS_CHANGE);
     return eventSubjectSet;
-  }
-
-  /**
-   * ActionListener
-   */
-  @Override
-  public void actionPerformed(final ActionEvent e) {
-    // do not run this in a separate thread because Player actions would die
-    // with the thread
-    try {
-      if (e.getSource() == jcbmiShowBalloon) {
-        Conf.setProperty(Const.CONF_UI_SHOW_SYSTEM_NOTIFICATION, Boolean.toString(jcbmiShowBalloon
-            .getState()));
-        // Launch an event that can be trapped by the tray to
-        // synchronize the state
-        Properties details = new Properties();
-        details.put(Const.DETAIL_ORIGIN, this);
-        ObservationManager.notify(new JajukEvent(JajukEvents.PARAMETERS_CHANGE, details));
-      }
-    } catch (Exception e2) {
-      Log.error(e2);
-    }
   }
 
   /*
@@ -407,8 +374,6 @@ public class JajukSystray extends CommandJPanel implements JajukWindow {
             jmAmbience.setText(Messages.getString("JajukWindow.37"));
           }
           populateAmbiences();
-        } else if (JajukEvents.PARAMETERS_CHANGE.equals(subject)) {
-          jcbmiShowBalloon.setState(Conf.getBoolean(Const.CONF_UI_SHOW_SYSTEM_NOTIFICATION));
         }
       }
     });
