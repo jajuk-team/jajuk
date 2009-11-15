@@ -228,15 +228,21 @@ public class PlayerStateMediator implements Observer {
         } else if (subject.equals(JajukEvents.SHOW_CURRENTLY_PLAYING)) {
           INotificator notifier = NotificatorFactory.getNotificator();
           if (notifier != null) {
-            Log.debug("Got request to notify with current file information. Sending text: {{"
-                + QueueModel.getCurrentFileTitle() + "}}");
-            notifier.notify(QueueModel.getCurrentItem().getFile());
+            if (QueueModel.getCurrentRadio() != null) {
+              Log.debug("Got request to notify with current webradio information: {{"
+                  + QueueModel.getCurrentRadio() + "}}");
+              notifier.notify(QueueModel.getCurrentRadio());
+            } else {
+              Log.debug("Got request to notify with current file information: {{"
+                  + QueueModel.getCurrentItem().getFile() + "}}");
+              notifier.notify(QueueModel.getCurrentItem().getFile());
+            }
           }
         }
 
         // For all events except Volume Change/Mute, refresh the queue
         if (!JajukEvents.VOLUME_CHANGED.equals(subject) && !JajukEvents.MUTE_STATE.equals(subject)
-            && !JajukEvents.FILE_LAUNCHED.equals(subject)) {
+            && !JajukEvents.FILE_LAUNCHED.equals(subject) && !JajukEvents.SHOW_CURRENTLY_PLAYING.equals(subject)) {
           ObservationManager.notify(new JajukEvent(JajukEvents.QUEUE_NEED_REFRESH));
         }
       }
