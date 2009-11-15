@@ -1494,7 +1494,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
     jpUI.add(jlFonts);
     jpUI.add(jsFonts, WRAP_GROW);
     jpUI.add(jlNotificationType);
-    jpUI.add(jcbNotificationType, WRAP);
+    jpUI.add(jcbNotificationType, WRAP_GROW);
     jpUI.add(jlLAF);
     jpUI.add(scbLAF, WRAP_GROW);
     jpUI.add(jlPerspectiveSize);
