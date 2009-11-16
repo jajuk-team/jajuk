@@ -126,6 +126,7 @@ public class NotifySendBalloonNotificator implements INotificator {
       Log
           .info("Cannot use notify-send functionality, application 'notify-send' seems to be not available correctly.");
       availability = false;
+	    return;
     }
 
     // notify-send is enabled and seems to be supported by the OS
