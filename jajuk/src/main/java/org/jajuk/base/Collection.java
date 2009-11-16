@@ -819,10 +819,9 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
   private void handleAlbums(Attributes attributes, int idIndex) {
     String sID = attributes.getValue(idIndex).intern();
     String sItemName = attributes.getValue(Const.XML_NAME).intern();
-    String sItemAlbumArtist = null;
     String sAttributeAlbumArtist = attributes.getValue(Const.XML_ALBUM_ARTIST);
     if (sAttributeAlbumArtist != null) {
-      sItemAlbumArtist = sAttributeAlbumArtist.intern();
+      sAttributeAlbumArtist = sAttributeAlbumArtist.intern();
     }
     long lItemDiscID = 0;
     String sAttributeDiskId = attributes.getValue(Const.XML_ALBUM_DISC_ID);
@@ -832,7 +831,7 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
     // UPGRADE test
     String sRightID = sID;
     if (needCheckID) {
-      sRightID = AlbumManager.createID(sItemName, sItemAlbumArtist, lItemDiscID).intern();
+      sRightID = AlbumManager.createID(sItemName, sAttributeAlbumArtist, lItemDiscID).intern();
       if (sRightID == sID) {
         needCheckID = UpgradeManager.isUpgradeDetected() || SessionService.isTestMode();
       } else {
@@ -840,7 +839,7 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
         hmWrongRightAlbumID.put(sID, sRightID);
       }
     }
-    Album album = AlbumManager.getInstance().registerAlbum(sRightID, sItemName, sItemAlbumArtist,
+    Album album = AlbumManager.getInstance().registerAlbum(sRightID, sItemName, sAttributeAlbumArtist,
         lItemDiscID);
     if (album != null) {
       album.populateProperties(attributes);
