@@ -54,12 +54,18 @@ public class File extends PhysicalItem implements Comparable<File>, Const {
   /**
    * File instanciation.
    * 
-   * @param sId DOCUMENT_ME
-   * @param sName DOCUMENT_ME
-   * @param directory DOCUMENT_ME
-   * @param track DOCUMENT_ME
-   * @param lSize DOCUMENT_ME
-   * @param lQuality DOCUMENT_ME
+   * @param sId
+   *          DOCUMENT_ME
+   * @param sName
+   *          DOCUMENT_ME
+   * @param directory
+   *          DOCUMENT_ME
+   * @param track
+   *          DOCUMENT_ME
+   * @param lSize
+   *          DOCUMENT_ME
+   * @param lQuality
+   *          DOCUMENT_ME
    */
   public File(String sId, String sName, Directory directory, Track track, long lSize, long lQuality) {
     super(sId, sName);
@@ -108,7 +114,8 @@ public class File extends PhysicalItem implements Comparable<File>, Const {
   /**
    * Return true is the specified directory is an ancestor for this file.
    * 
-   * @param directory DOCUMENT_ME
+   * @param directory
+   *          DOCUMENT_ME
    * 
    * @return true, if checks for ancestor
    */
@@ -199,9 +206,11 @@ public class File extends PhysicalItem implements Comparable<File>, Const {
    * Alphabetical comparator used to display ordered lists of files
    * <p>
    * Sort ignoring cases
-   * </p>.
+   * </p>
+   * .
    * 
-   * @param otherFile DOCUMENT_ME
+   * @param otherFile
+   *          DOCUMENT_ME
    * 
    * @return comparison result
    */
@@ -281,7 +290,8 @@ public class File extends PhysicalItem implements Comparable<File>, Const {
   /**
    * Sets the track.
    * 
-   * @param track The track to set.
+   * @param track
+   *          The track to set.
    */
   public void setTrack(Track track) {
     // We remove previous track so it will be cleanup (if it maps no more
@@ -416,7 +426,8 @@ public class File extends PhysicalItem implements Comparable<File>, Const {
   /**
    * Set name (useful for Windows because same object can have different cases).
    * 
-   * @param name Item name
+   * @param name
+   *          Item name
    */
   protected void setName(String name) {
     setProperty(Const.XML_NAME, name);
@@ -427,7 +438,7 @@ public class File extends PhysicalItem implements Comparable<File>, Const {
    * Gets the html format text.
    * 
    * @return text to be displayed in the tray balloon and tooltip with HTML
-   * formating that is used correctly under Linux
+   *         formating that is used correctly under Linux
    */
   public String getHTMLFormatText() {
     String sOut = "";
@@ -451,46 +462,5 @@ public class File extends PhysicalItem implements Comparable<File>, Const {
     sOut += "</HTML>";
     return sOut;
   }
-
-  /**
-   * Gets the basic format text.
-   * 
-   * @return Text to be displayed in the tootip and baloon
-   * 
-   * TODO: this is similar to UtilString.buildTitle(), maybe we could
-   * combine both and use the pattern here as well...
-   */
-  public final String getBasicFormatText() {
-    String sOut = "";
-    sOut = "";
-    String sAuthor = getTrack().getAuthor().getName();
-    if (!sAuthor.equals(UNKNOWN_AUTHOR)) {
-      sOut += sAuthor + " / ";
-    }
-    String sAlbum = getTrack().getAlbum().getName();
-    if (!sAlbum.equals(UNKNOWN_ALBUM)) {
-      sOut += sAlbum + " / ";
-    }
-    sOut += getTrack().getName();
-    return sOut;
-  }
-
-  /**
-   * Build the frame title from user option.
-   * 
-   * @return built frame title
-   */
-  public String buildTitle() {
-    // We use trailing pattern to allow scripting like MSN plugins to
-    // detect jajuk frames and extract current track
-    String title = Conf.getString(Const.CONF_FRAME_TITLE_PATTERN);
-    title = title.replaceAll(Const.PATTERN_TRACKNAME, getTrack().getName());
-    title = title.replaceAll(Const.PATTERN_ALBUM, getTrack().getAlbum().getName2());
-    title = title.replaceAll(Const.PATTERN_AUTHOR, getTrack().getAuthor().getName2());
-    title = title.replaceAll(Const.PATTERN_STYLE, getTrack().getStyle().getName2());
-    title = title.replaceAll(Const.PATTERN_TRACKORDER, Long.toString(getTrack().getOrder()));
-    title = title.replaceAll(Const.PATTERN_YEAR, getTrack().getYear().getName2());
-    title = title.replaceAll(Const.PATTERN_DISC, Long.toString(getTrack().getDiscNumber()));
-    return title;
-  }
+ 
 }

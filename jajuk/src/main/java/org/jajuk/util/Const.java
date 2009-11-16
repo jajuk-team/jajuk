@@ -101,7 +101,10 @@ public interface Const {
   /** Min Number of tracks in an AuthorNode. */
   int MIN_TRACKS_NUMBER = 4;
 
-  /** Max number of concurrent executions by observation manager for a given event. */
+  /**
+   * Max number of concurrent executions by observation manager for a given
+   * event.
+   */
   int MAX_EVENT_EXECUTIONS = 15;
 
   /** Min number of tracks in a DJ selection without track unicity. */
@@ -153,7 +156,10 @@ public interface Const {
   /** Cache max age (in ms). */
   long CACHE_MAX_AGE = 10 * 24 * 3600 * 1000; // 10 days
 
-  /** The time we wait for mplayer to start up in ms. It can take some time on slow or heavily loaded machines... */
+  /**
+   * The time we wait for mplayer to start up in ms. It can take some time on
+   * slow or heavily loaded machines...
+   */
   int MPLAYER_START_TIMEOUT = 15000;
 
   /** Number of milliseconds in a day. */
@@ -287,8 +293,8 @@ public interface Const {
   String FILE_THUMB_NO_COVER = "nocover.png";
 
   /** DOCUMENT_ME. */
-  String FILE_THUMB_NONE = "none.png"; 
-  
+  String FILE_THUMB_NONE = "none.png";
+
   /** DOCUMENT_ME. */
   String FILE_DEFAULT_BESTOF_PLAYLIST = "bestof";
 
@@ -543,97 +549,97 @@ public interface Const {
   // extensions
   /** DOCUMENT_ME. */
   String EXT_MP3 = "mp3";
-  
+
   /** DOCUMENT_ME. */
   String EXT_MP2 = "mp2";
-  
+
   /** DOCUMENT_ME. */
   String EXT_PLAYLIST = "m3u";
-  
+
   /** DOCUMENT_ME. */
   String EXT_OGG = "ogg";
-  
+
   /** DOCUMENT_ME. */
   String EXT_WAV = "wav";
-  
+
   /** DOCUMENT_ME. */
   String EXT_AU = "au";
-  
+
   /** DOCUMENT_ME. */
   String EXT_AIFF = "aiff";
-  
+
   /** DOCUMENT_ME. */
   String EXT_FLAC = "flac";
-  
+
   /** DOCUMENT_ME. */
   String EXT_THUMB = "jpg";
-  
+
   /** DOCUMENT_ME. */
   String EXT_MPC = "mpc";
-  
+
   /** DOCUMENT_ME. */
   String EXT_MPPLUS = "mp+";
-  
+
   /** DOCUMENT_ME. */
   String EXT_MPP = "mpp";
-  
+
   /** DOCUMENT_ME. */
   String EXT_WMA = "wma";
-  
+
   /** DOCUMENT_ME. */
   String EXT_APE = "ape";
-  
+
   /** DOCUMENT_ME. */
   String EXT_APL = "apl";
-  
+
   /** DOCUMENT_ME. */
   String EXT_MAC = "mac";
-  
+
   /** DOCUMENT_ME. */
   String EXT_AAC = "aac";
-  
+
   /** DOCUMENT_ME. */
   String EXT_M4A = "m4a";
-  
+
   /** DOCUMENT_ME. */
   String EXT_REAL = "ram";
-  
+
   /** DOCUMENT_ME. */
   String EXT_REAL_RM = "rm";
-  
+
   /** DOCUMENT_ME. */
   String EXT_REAL_RA = "ra";
-  
+
   /** DOCUMENT_ME. */
   String EXT_RADIO = "radio";
-  
+
   /** DOCUMENT_ME. */
   String EXT_AVI = "avi";
-  
+
   /** DOCUMENT_ME. */
   String EXT_MPG = "mpg";
-  
+
   /** DOCUMENT_ME. */
   String EXT_MPEG = "mpeg";
-  
+
   /** DOCUMENT_ME. */
   String EXT_MKV = "mkv";
-  
+
   /** DOCUMENT_ME. */
   String EXT_ASF = "asf";
-  
+
   /** DOCUMENT_ME. */
   String EXT_WMV = "wmv";
-  
+
   /** DOCUMENT_ME. */
   String EXT_MOV = "mov";
-  
+
   /** DOCUMENT_ME. */
   String EXT_OGM = "ogm";
-  
+
   /** DOCUMENT_ME. */
   String EXT_MP4 = "mp4";
-  
+
   /** DOCUMENT_ME. */
   String EXT_WV = "wv";
 
@@ -837,7 +843,10 @@ public interface Const {
   /** Contains files id separated by a colon. */
   String CONF_BOOKMARKS = "jajuk.bookmarks";
 
-  /** Startup display mode: 0= main window + tray, 1: tray only, 2: slimbar + tray 3 : full screen. */
+  /**
+   * Startup display mode: 0= main window + tray, 1: tray only, 2: slimbar +
+   * tray 3 : full screen.
+   */
   String CONF_STARTUP_DISPLAY = "jajuk.startup_display_mode";
 
   /** DOCUMENT_ME. */
@@ -854,10 +863,10 @@ public interface Const {
 
   /** Catalog view cover mode. */
   int CATALOG_VIEW_COVER_MODE_ALL = 0;
-  
+
   /** DOCUMENT_ME. */
   int CATALOG_VIEW_COVER_MODE_WITH = 1;
-  
+
   /** DOCUMENT_ME. */
   int CATALOG_VIEW_COVER_MODE_WITHOUT = 2;
 
@@ -866,7 +875,7 @@ public interface Const {
 
   /** Slimbar position. */
   String CONF_SLIMBAR_POSITION = "jajuk.slimbar_pos";
-  
+
   /** DOCUMENT_ME. */
   String CONF_SLIMBAR_DISPLAY_QUEUE = "jajuk.slimbar_display_queue";
 
@@ -920,7 +929,7 @@ public interface Const {
 
   /** DOCUMENT_ME. */
   String CONF_COVERS_MIRROW_COVER = "jajuk.covers.mirrow_cover";
-  
+
   /** DOCUMENT_ME. */
   String CONF_COVERS_SHUFFLE = "jajuk.covers.shuffle";
 
@@ -947,12 +956,24 @@ public interface Const {
 
   /** Window position and size. */
   String CONF_WINDOW_POSITION = "jajuk.window_position";
-  
+
   /** is Window maximized. */
   String CONF_WINDOW_MAXIMIZED = "jajuk.window_MAXIMIZED";
 
   /** Window position and size. */
-  String CONF_FRAME_TITLE_PATTERN = "jajuk.frame.title";
+  String CONF_PATTERN_FRAME_TITLE = "jajuk.frame.title";
+
+  /** Refactoring pattern*. */
+  String CONF_PATTERN_REFACTOR = "jajuk.refactor_pattern";
+
+  /** Animation pattern*. */
+  String CONF_PATTERN_ANIMATION = "jajuk.animation_pattern";
+
+  /** Balloon notifier pattern. */
+  String CONF_PATTERN_BALLOON_NOTIFIER = "jajuk.pattern.balloon_pattern";
+
+  /** Information view pattern. */
+  String CONF_PATTERN_INFORMATION = "jajuk.pattern.information_pattern";
 
   /** Files table columns. */
   String CONF_FILES_TABLE_COLUMNS = "jajuk.ui.physical_table_columns";
@@ -1005,9 +1026,6 @@ public interface Const {
   /** Logical tree sort order. */
   String CONF_LOGICAL_TREE_SORT_ORDER = "jajuk.logical_tree_sort_order";
 
-  /** Logical tree sort order*. */
-  String CONF_REFACTOR_PATTERN = "jajuk.refactor_pattern";
-
   /** Default dj. */
   String CONF_DEFAULT_DJ = "jajuk.default_dj";
 
@@ -1044,9 +1062,6 @@ public interface Const {
 
   /** Novelties random mode: song or album level ?*. */
   String CONF_NOVELTIES_MODE = "jajuk.global_novelties.mode";
-
-  /** Animation pattern*. */
-  String CONF_ANIMATION_PATTERN = "jajuk.animation_pattern";
 
   /** Initial frame size/position forced value *. */
   String CONF_FRAME_POS_FORCED = "jajuk.frame.forced_position";
@@ -1105,7 +1120,7 @@ public interface Const {
 
   /** Remembered directory for parties. */
   String CONF_PREPARE_PARTY = "jajuk.prepare_party.";
-  
+
   /** Shuffle/novelties mode. */
   String MODE_ALBUM = "album";
 
@@ -1415,7 +1430,7 @@ public interface Const {
 
   /** DOCUMENT_ME. */
   String XML_DJ_FADE_DURATION = "fade_duration";
-  
+
   /** DOCUMENT_ME. */
   String XML_DJ_MAX_TRACKS = "max_tracks";
 
@@ -1616,22 +1631,22 @@ public interface Const {
   // Preferences
   /** DOCUMENT_ME. */
   long PREFERENCE_ADORE = 3;
-  
+
   /** DOCUMENT_ME. */
   long PREFERENCE_LOVE = 2;
-  
+
   /** DOCUMENT_ME. */
   long PREFERENCE_LIKE = 1;
-  
+
   /** DOCUMENT_ME. */
   long PREFERENCE_UNSET = 0;
-  
+
   /** DOCUMENT_ME. */
   long PREFERENCE_AVERAGE = -1;
-  
+
   /** DOCUMENT_ME. */
   long PREFERENCE_POOR = -2;
-  
+
   /** DOCUMENT_ME. */
   long PREFERENCE_HATE = -3;
 

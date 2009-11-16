@@ -82,13 +82,16 @@ import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilFeatures;
+import org.jajuk.util.UtilString;
+import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 
 /**
  * Jajuk Slim Interface
  * <p>
  * Singleton
- * </p>.
+ * </p>
+ * .
  */
 public final class JajukSlimbar extends JFrame implements IJajukWindow, Observer,
     MouseWheelListener, ActionListener {
@@ -199,7 +202,8 @@ public final class JajukSlimbar extends JFrame implements IJajukWindow, Observer
   /**
    * Sets the display queue.
    * 
-   * @param display the new display queue
+   * @param display
+   *          the new display queue
    */
   public void setDisplayQueue(boolean display) {
     if (display) {
@@ -263,7 +267,9 @@ public final class JajukSlimbar extends JFrame implements IJajukWindow, Observer
     JDialog.setDefaultLookAndFeelDecorated(true);
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see org.jajuk.ui.windows.IJajukWindow#initUI()
    */
   public void initUI() {
@@ -472,8 +478,7 @@ public final class JajukSlimbar extends JFrame implements IJajukWindow, Observer
   }
 
   /**
-   * Creates the queue window.
-   * DOCUMENT_ME
+   * Creates the queue window. DOCUMENT_ME
    */
   private void createQueueWindow() {
     QueueView queueView = new QueueView();
@@ -489,8 +494,7 @@ public final class JajukSlimbar extends JFrame implements IJajukWindow, Observer
   }
 
   /**
-   * Update current title.
-   * DOCUMENT_ME
+   * Update current title. DOCUMENT_ME
    */
   private void updateCurrentTitle() {
     File file = QueueModel.getPlayingFile();
@@ -517,13 +521,20 @@ public final class JajukSlimbar extends JFrame implements IJajukWindow, Observer
   public String getPlayerInfo() {
     try {
       String currentTrack = QueueModel.getPlayingFileTitle();
-      String nextTrack = "";
+      String nextFileTitle = "";
+      File nextFile;
       try {
-        nextTrack = QueueModel.getItem(QueueModel.getIndex() + 1).getFile().buildTitle();
+        nextFile = QueueModel.getItem(QueueModel.getIndex() + 1).getFile();
       } catch (Exception e) {
-        nextTrack = QueueModel.getPlanned().get(0).getFile().buildTitle();
+        nextFile = QueueModel.getPlanned().get(0).getFile();
       }
-      return "  |  Playing: " + currentTrack + "  |  Next: " + nextTrack;
+      String pattern = Conf.getString(Const.CONF_PATTERN_FRAME_TITLE);
+      try {
+        nextFileTitle = UtilString.applyPattern(nextFile, pattern, false, false);
+      } catch (JajukException e) {
+        Log.error(e);
+      }
+      return "  |  Playing: " + currentTrack + "  |  Next: " + nextFileTitle;
     } catch (Exception e) {
       return Messages.getString("JajukWindow.17");
     }
@@ -561,7 +572,8 @@ public final class JajukSlimbar extends JFrame implements IJajukWindow, Observer
    * Force tooltip refresh Thanks Santhosh Kumar
    * http://www.jroller.com/santhosh/entry/tooltips_can_say_more
    * 
-   * @param comp DOCUMENT_ME
+   * @param comp
+   *          DOCUMENT_ME
    */
   public static void postToolTip(JComponent comp) {
     Action action = comp.getActionMap().get("postTip");
@@ -577,7 +589,8 @@ public final class JajukSlimbar extends JFrame implements IJajukWindow, Observer
    * Remove tooltip Thanks Santhosh Kumar
    * http://www.jroller.com/santhosh/entry/tooltips_can_say_more
    * 
-   * @param comp DOCUMENT_ME
+   * @param comp
+   *          DOCUMENT_ME
    */
   public static void hideToolTip(JComponent comp) {
     Action action = comp.getActionMap().get("hideTip");
@@ -589,7 +602,9 @@ public final class JajukSlimbar extends JFrame implements IJajukWindow, Observer
     action.actionPerformed(ae);
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see org.jajuk.events.Observer#getRegistrationKeys()
    */
   public Set<JajukEvents> getRegistrationKeys() {
@@ -601,7 +616,9 @@ public final class JajukSlimbar extends JFrame implements IJajukWindow, Observer
     return eventSubjectSet;
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see org.jajuk.events.Observer#update(org.jajuk.events.JajukEvent)
    */
   public void update(final JajukEvent event) {
@@ -612,8 +629,11 @@ public final class JajukSlimbar extends JFrame implements IJajukWindow, Observer
     }
   }
 
-  /* (non-Javadoc)
-   * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+  /*
+   * (non-Javadoc)
+   * 
+   * @see
+   * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
    */
   public void actionPerformed(final ActionEvent ae) {
     if (ae.getSource() == jbBestof) {

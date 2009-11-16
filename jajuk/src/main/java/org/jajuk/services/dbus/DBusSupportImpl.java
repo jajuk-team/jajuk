@@ -52,7 +52,10 @@ import org.jajuk.events.Observer;
 import org.jajuk.services.players.QueueModel;
 import org.jajuk.ui.actions.ActionManager;
 import org.jajuk.ui.actions.JajukActions;
+import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
+import org.jajuk.util.UtilString;
+import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 
 /**
@@ -65,7 +68,7 @@ public class DBusSupportImpl implements DBusSupport, Observer {
 
   /** The D-Bus name of the Bus that we request. */
   private static final String BUS = "org.jajuk.dbus.DBusSupport";
-  
+
   /** DOCUMENT_ME. */
   DBusConnection conn;
 
@@ -102,9 +105,9 @@ public class DBusSupportImpl implements DBusSupport, Observer {
    */
   void disconnect() {
     Log.info("Disconnecting from D-Bus");
-    
+
     ObservationManager.unregister(this);
-    
+
     if (conn != null) {
       conn.disconnect();
     }
@@ -115,10 +118,11 @@ public class DBusSupportImpl implements DBusSupport, Observer {
    * 
    * These methods are invoked via D-Bus and trigger the corresponding action in
    * Jajuk
-   * 
    */
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see org.jajuk.services.dbus.DBusSupport#forward()
    */
   public void forward() throws Exception {
@@ -126,7 +130,9 @@ public class DBusSupportImpl implements DBusSupport, Observer {
     ActionManager.getAction(FORWARD_TRACK).perform(null);
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see org.jajuk.services.dbus.DBusSupport#next()
    */
   public void next() throws Exception {
@@ -134,7 +140,9 @@ public class DBusSupportImpl implements DBusSupport, Observer {
     ActionManager.getAction(NEXT_TRACK).perform(null);
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see org.jajuk.services.dbus.DBusSupport#playPause()
    */
   public void playPause() throws Exception {
@@ -142,7 +150,9 @@ public class DBusSupportImpl implements DBusSupport, Observer {
     ActionManager.getAction(PAUSE_RESUME_TRACK).perform(null);
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see org.jajuk.services.dbus.DBusSupport#previous()
    */
   public void previous() throws Exception {
@@ -150,7 +160,9 @@ public class DBusSupportImpl implements DBusSupport, Observer {
     ActionManager.getAction(PREVIOUS_TRACK).perform(null);
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see org.jajuk.services.dbus.DBusSupport#rewind()
    */
   public void rewind() throws Exception {
@@ -158,7 +170,9 @@ public class DBusSupportImpl implements DBusSupport, Observer {
     ActionManager.getAction(REWIND_TRACK).perform(null);
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see org.jajuk.services.dbus.DBusSupport#stop()
    */
   public void stop() throws Exception {
@@ -166,7 +180,9 @@ public class DBusSupportImpl implements DBusSupport, Observer {
     ActionManager.getAction(STOP_TRACK).perform(null);
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see org.jajuk.services.dbus.DBusSupport#decreaseVolume()
    */
   public void decreaseVolume() throws Exception {
@@ -174,7 +190,9 @@ public class DBusSupportImpl implements DBusSupport, Observer {
     ActionManager.getAction(DECREASE_VOLUME).perform(null);
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see org.jajuk.services.dbus.DBusSupport#exit()
    */
   public void exit() throws Exception {
@@ -182,7 +200,9 @@ public class DBusSupportImpl implements DBusSupport, Observer {
     ActionManager.getAction(EXIT).perform(null);
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see org.jajuk.services.dbus.DBusSupport#increaseVolume()
    */
   public void increaseVolume() throws Exception {
@@ -190,7 +210,9 @@ public class DBusSupportImpl implements DBusSupport, Observer {
     ActionManager.getAction(INCREASE_VOLUME).perform(null);
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see org.jajuk.services.dbus.DBusSupport#nextAlbum()
    */
   public void nextAlbum() throws Exception {
@@ -198,7 +220,9 @@ public class DBusSupportImpl implements DBusSupport, Observer {
     ActionManager.getAction(NEXT_ALBUM).perform(null);
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see org.jajuk.services.dbus.DBusSupport#previousAlbum()
    */
   public void previousAlbum() throws Exception {
@@ -206,7 +230,9 @@ public class DBusSupportImpl implements DBusSupport, Observer {
     ActionManager.getAction(PREVIOUS_ALBUM).perform(null);
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see org.jajuk.services.dbus.DBusSupport#shuffleGlobal()
    */
   public void shuffleGlobal() throws Exception {
@@ -214,7 +240,9 @@ public class DBusSupportImpl implements DBusSupport, Observer {
     ActionManager.getAction(SHUFFLE_GLOBAL).perform(null);
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see org.jajuk.services.dbus.DBusSupport#mute()
    */
   public void mute() throws Exception {
@@ -222,7 +250,9 @@ public class DBusSupportImpl implements DBusSupport, Observer {
     ActionManager.getAction(JajukActions.MUTE_STATE).perform(null);
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see org.jajuk.services.dbus.DBusSupport#currentHTML()
    */
   public String currentHTML() throws Exception {
@@ -230,7 +260,9 @@ public class DBusSupportImpl implements DBusSupport, Observer {
     return QueueModel.getCurrentFileTitle();
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see org.jajuk.services.dbus.DBusSupport#current()
    */
   public String current() throws Exception {
@@ -241,14 +273,21 @@ public class DBusSupportImpl implements DBusSupport, Observer {
     if (QueueModel.isPlayingRadio()) {
       title = QueueModel.getCurrentRadio().getName();
     } else if (file != null && !QueueModel.isStopped()) {
-      title = file.buildTitle();
+      String pattern = Conf.getString(Const.CONF_PATTERN_FRAME_TITLE);
+      try {
+        title = UtilString.applyPattern(file, pattern, false, false);
+      } catch (JajukException e) {
+        Log.error(e);
+      }
     } else {
       title = "not playing right now...";
     }
     return title;
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see org.jajuk.services.dbus.DBusSupport#banCurrent()
    */
   public void banCurrent() throws Exception {
@@ -256,7 +295,9 @@ public class DBusSupportImpl implements DBusSupport, Observer {
     ActionManager.getAction(JajukActions.BAN).perform(null);
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see org.jajuk.services.dbus.DBusSupport#showCurrentlyPlaying()
    */
   public void showCurrentlyPlaying() throws Exception {
@@ -264,7 +305,7 @@ public class DBusSupportImpl implements DBusSupport, Observer {
     Log.info("Invoking D-Bus action for 'showCurrentlyPlaying'");
     ObservationManager.notify(new JajukEvent(JajukEvents.SHOW_CURRENTLY_PLAYING));
   }
-  
+
   /**
    * Required method for DBusInterface.
    * 
@@ -303,7 +344,7 @@ public class DBusSupportImpl implements DBusSupport, Observer {
       Log.debug("Got update for new file launched, item: " + item);
 
       try {
-        if(conn == null) {
+        if (conn == null) {
           Log.warn("Cannot send DBus-Signal when not connected to D-Bus!");
           return;
         }

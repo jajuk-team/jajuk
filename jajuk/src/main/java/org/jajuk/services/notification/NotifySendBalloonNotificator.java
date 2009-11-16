@@ -29,8 +29,12 @@ import java.util.List;
 
 import org.jajuk.base.File;
 import org.jajuk.services.webradio.WebRadio;
+import org.jajuk.util.Conf;
+import org.jajuk.util.Const;
 import org.jajuk.util.Messages;
+import org.jajuk.util.UtilString;
 import org.jajuk.util.UtilSystem;
+import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 
 /**
@@ -42,7 +46,7 @@ import org.jajuk.util.log.Log;
  * </p>
  */
 public class NotifySendBalloonNotificator implements INotificator {
-  
+
   /** The number of milliseconds to display the note. */
   private static final String DISPLAY_TIME_MSECS = "8000";
 
@@ -133,11 +137,12 @@ public class NotifySendBalloonNotificator implements INotificator {
    * notifications)
    */
   /**
-   * Notify.
-   * DOCUMENT_ME
+   * Notify. DOCUMENT_ME
    * 
-   * @param title DOCUMENT_ME
-   * @param pText DOCUMENT_ME
+   * @param title
+   *          DOCUMENT_ME
+   * @param pText
+   *          DOCUMENT_ME
    */
   private void notify(String title, String pText) {
     // workaround: notify-send cannot handle IMG-SRC with "file:"
@@ -207,13 +212,22 @@ public class NotifySendBalloonNotificator implements INotificator {
     notify(title, text);
   }
 
-  /* (non-Javadoc)
-   * @see org.jajuk.services.notification.INotificator#notify(org.jajuk.base.File)
+  /*
+   * (non-Javadoc)
+   * 
+   * @see
+   * org.jajuk.services.notification.INotificator#notify(org.jajuk.base.File)
    */
   @Override
   public void notify(File file) {
     String title = Messages.getString("Notificator.track_change.track_title");
-    String text = file.buildTitle();
-    notify(title, text);
+    String pattern = Conf.getString(Const.CONF_PATTERN_BALLOON_NOTIFIER);
+    String text;
+    try {
+      text = UtilString.applyPattern(file, pattern, false, false);
+      notify(title, text);
+    } catch (JajukException e) {
+      Log.error(e);
+    }
   }
 }

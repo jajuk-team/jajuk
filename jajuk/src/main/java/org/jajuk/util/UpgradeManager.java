@@ -169,9 +169,9 @@ public final class UpgradeManager {
    * For Jajuk < 1.3 : changed track pattern from %track to %title
    */
   private static void upgradeTrackPattern() {
-    String sPattern = Conf.getString(Const.CONF_REFACTOR_PATTERN);
+    String sPattern = Conf.getString(Const.CONF_PATTERN_REFACTOR);
     if (sPattern.contains("track")) {
-      Conf.setProperty(Const.CONF_REFACTOR_PATTERN, sPattern.replaceAll("track", "title"));
+      Conf.setProperty(Const.CONF_PATTERN_REFACTOR, sPattern.replaceAll("track", "title"));
     }
   }
 

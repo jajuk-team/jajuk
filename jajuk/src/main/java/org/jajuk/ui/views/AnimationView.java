@@ -189,7 +189,7 @@ public class AnimationView extends ViewAdapter implements ComponentListener {
       if (file != null) {
         String s = "";
         try {
-          s = UtilString.applyPattern(file, Conf.getString(Const.CONF_ANIMATION_PATTERN), false,
+          s = UtilString.applyPattern(file, Conf.getString(Const.CONF_PATTERN_ANIMATION), false,
               false);
         } catch (JajukException e) {
           Log.error(e);

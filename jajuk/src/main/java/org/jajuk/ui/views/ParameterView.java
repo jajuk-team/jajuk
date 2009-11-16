@@ -113,19 +113,19 @@ import org.jvnet.substance.skin.SkinInfo;
 public class ParameterView extends ViewAdapter implements ActionListener, ItemListener,
     ChangeListener {
 
-  /** The Constant WRAP_GROW.  DOCUMENT_ME */
+  /** The Constant WRAP_GROW. DOCUMENT_ME */
   private static final String WRAP_GROW = "wrap,grow";
 
-  /** The Constant GROW_WRAP.  DOCUMENT_ME */
+  /** The Constant GROW_WRAP. DOCUMENT_ME */
   private static final String GROW_WRAP = "grow,wrap";
 
-  /** The Constant WRAP.  DOCUMENT_ME */
+  /** The Constant WRAP. DOCUMENT_ME */
   private static final String WRAP = "wrap";
 
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
-  /** The Constant NOTIFICATOR_PREFIX.  DOCUMENT_ME */
+  /** The Constant NOTIFICATOR_PREFIX. DOCUMENT_ME */
   private static final String NOTIFICATOR_PREFIX = "Notificator.";
 
   /** DOCUMENT_ME. */
@@ -222,10 +222,13 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
   private SteppedComboBox scbLanguage;
 
   /** DOCUMENT_ME. */
-  private JLabel jlFrameTitle;
-
-  /** DOCUMENT_ME. */
   private JTextField jtfFrameTitle;
+
+  /** Balloon notifier pattern text field */
+  private JTextField jtfBalloonNotifierPattern;
+
+  /** Information pattern textfield */
+  private JTextField jtfInformationPattern;
 
   /** DOCUMENT_ME. */
   private JLabel jlLAF;
@@ -425,7 +428,10 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
   /** DOCUMENT_ME. */
   private JTextField jtfExplorerPath;
 
-  /** whether the "theme will be token into account" message has been already displayed. */
+  /**
+   * whether the "theme will be token into account" message has been already
+   * displayed.
+   */
   boolean bLAFMessage = false;
 
   /** DOCUMENT_ME. */
@@ -592,8 +598,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
   }
 
   /**
-   * Apply parameters.
-   * DOCUMENT_ME
+   * Apply parameters. DOCUMENT_ME
    */
   private void applyParameters() {
     // **Read all parameters**
@@ -683,10 +688,11 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
       Conf.setProperty(Const.CONF_HISTORY, sHistoryDuration);
     }
     // Patterns
-    // Get and check reorg pattern
-    Conf.setProperty(Const.CONF_REFACTOR_PATTERN, jtfRefactorPattern.getText());
-    Conf.setProperty(Const.CONF_ANIMATION_PATTERN, jtfAnimationPattern.getText());
-    Conf.setProperty(Const.CONF_FRAME_TITLE_PATTERN, jtfFrameTitle.getText());
+    Conf.setProperty(Const.CONF_PATTERN_REFACTOR, jtfRefactorPattern.getText());
+    Conf.setProperty(Const.CONF_PATTERN_ANIMATION, jtfAnimationPattern.getText());
+    Conf.setProperty(Const.CONF_PATTERN_FRAME_TITLE, jtfFrameTitle.getText());
+    Conf.setProperty(Const.CONF_PATTERN_BALLOON_NOTIFIER, jtfBalloonNotifierPattern.getText());
+    Conf.setProperty(Const.CONF_PATTERN_INFORMATION, jtfInformationPattern.getText());
 
     // Advanced
     Conf.setProperty(Const.CONF_BACKUP_SIZE, Integer.toString(backupSize.getValue()));
@@ -885,7 +891,9 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
     return Messages.getString("ParameterView.87");
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see org.jajuk.events.Observer#getRegistrationKeys()
    */
   public Set<JajukEvents> getRegistrationKeys() {
@@ -1278,11 +1286,24 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
     jlAnimationPattern.setToolTipText(Messages.getString("ParameterView.193"));
     jtfAnimationPattern = new JTextField();
     jtfAnimationPattern.setToolTipText(Messages.getString("ParameterView.193"));
+
     // Frame Title Options
-    jlFrameTitle = new JLabel(Messages.getString("ParameterView.248"));
+    JLabel jlFrameTitle = new JLabel(Messages.getString("ParameterView.248"));
     jlFrameTitle.setToolTipText(Messages.getString("ParameterView.193"));
     jtfFrameTitle = new JTextField();
     jtfFrameTitle.setToolTipText(Messages.getString("ParameterView.193"));
+
+    // Balloon Notifier pattern
+    JLabel jlBalloonNotifierPattern = new JLabel(Messages.getString("ParameterView.277"));
+    jlBalloonNotifierPattern.setToolTipText(Messages.getString("ParameterView.278"));
+    jtfBalloonNotifierPattern = new JTextField();
+    jtfBalloonNotifierPattern.setToolTipText(Messages.getString("ParameterView.278"));
+
+    // Information view pattern
+    JLabel jlInformationPattern = new JLabel(Messages.getString("ParameterView.279"));
+    jlInformationPattern.setToolTipText(Messages.getString("ParameterView.280"));
+    jtfInformationPattern = new JTextField();
+    jtfInformationPattern.setToolTipText(Messages.getString("ParameterView.280"));
 
     jpTags.add(jlRefactorPattern);
     jpTags.add(jtfRefactorPattern, "grow");
@@ -1290,6 +1311,10 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
     jpTags.add(jtfAnimationPattern, "grow");
     jpTags.add(jlFrameTitle);
     jpTags.add(jtfFrameTitle, "grow");
+    jpTags.add(jlBalloonNotifierPattern);
+    jpTags.add(jtfBalloonNotifierPattern, "grow");
+    jpTags.add(jlInformationPattern);
+    jpTags.add(jtfInformationPattern, "grow");
 
     // --Advanced
     jcbBackup = new JCheckBox(Messages.getString("ParameterView.116"));
@@ -1780,9 +1805,12 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
     }
     backupSize.setValue(iBackupSize);
     jcbCollectionEncoding.setSelectedItem(Conf.getString(Const.CONF_COLLECTION_CHARSET));
-    jtfRefactorPattern.setText(Conf.getString(Const.CONF_REFACTOR_PATTERN));
-    jtfAnimationPattern.setText(Conf.getString(Const.CONF_ANIMATION_PATTERN));
-    jtfFrameTitle.setText(Conf.getString(Const.CONF_FRAME_TITLE_PATTERN));
+    jtfRefactorPattern.setText(Conf.getString(Const.CONF_PATTERN_REFACTOR));
+    jtfAnimationPattern.setText(Conf.getString(Const.CONF_PATTERN_ANIMATION));
+    jtfFrameTitle.setText(Conf.getString(Const.CONF_PATTERN_FRAME_TITLE));
+    jtfBalloonNotifierPattern.setText(Conf.getString(Const.CONF_PATTERN_BALLOON_NOTIFIER));
+    jtfInformationPattern.setText(Conf.getString(Const.CONF_PATTERN_INFORMATION));
+
     jtfMPlayerPath.setText(Conf.getString(Const.CONF_MPLAYER_PATH_FORCED));
     jtfMPlayerArgs.setText(Conf.getString(Const.CONF_MPLAYER_ARGS));
     jtfEnvVariables.setText(Conf.getString(Const.CONF_ENV_VARIABLES));

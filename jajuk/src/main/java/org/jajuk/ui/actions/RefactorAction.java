@@ -110,7 +110,7 @@ public class RefactorAction {
     for (final File fCurrent : alFiles) {
       final Track tCurrent = fCurrent.getTrack();
       try {
-        filename = UtilString.applyPattern(fCurrent, Conf.getString(Const.CONF_REFACTOR_PATTERN),
+        filename = UtilString.applyPattern(fCurrent, Conf.getString(Const.CONF_PATTERN_REFACTOR),
             true, true);
       } catch (final JajukException je) {
         sErrors += je.getMessage() + '\n';

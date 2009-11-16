@@ -63,7 +63,8 @@ public final class Conf implements Const {
   /**
    * Return the value of a property, or null if the property is not found.
    * 
-   * @param pName Name of the property.
+   * @param pName
+   *          Name of the property.
    * 
    * @return String Value of the property named pName.
    */
@@ -75,7 +76,8 @@ public final class Conf implements Const {
    * Return the value of a property as a boolean or default value or default
    * value if value cannot be parsed.
    * 
-   * @param pName Name of the property.
+   * @param pName
+   *          Name of the property.
    * 
    * @return boolean value of the property named pName.
    */
@@ -94,7 +96,8 @@ public final class Conf implements Const {
   /**
    * Invert a boolean value.
    * 
-   * @param pName DOCUMENT_ME
+   * @param pName
+   *          DOCUMENT_ME
    */
   public static void invert(String pName) {
     boolean b = Boolean.parseBoolean(properties.getProperty(pName));
@@ -105,7 +108,8 @@ public final class Conf implements Const {
    * Return the value of a property as a float or default value or default value
    * if value cannot be parsed.
    * 
-   * @param pName Name of the property.
+   * @param pName
+   *          Name of the property.
    * 
    * @return float value of the property named pName.
    */
@@ -125,7 +129,8 @@ public final class Conf implements Const {
    * Return the value of a property as an integer or default value if value
    * cannot be parsed.
    * 
-   * @param pName Name of the property.
+   * @param pName
+   *          Name of the property.
    * 
    * @return int value of the property named pName.
    */
@@ -144,7 +149,8 @@ public final class Conf implements Const {
   /**
    * Reset a given property to its defaults.
    * 
-   * @param property DOCUMENT_ME
+   * @param property
+   *          DOCUMENT_ME
    */
   public static void setDefaultProperty(String property) {
     String defaultValue = (String) defaults.get(property);
@@ -216,7 +222,7 @@ public final class Conf implements Const {
     defaults.put(CONF_REGEXP, FALSE);
     defaults.put(CONF_SHORT_NAMES, TRUE);
     defaults.put(CONF_BACKUP_SIZE, "40");
-    defaults.put(CONF_REFACTOR_PATTERN, PATTERN_DEFAULT_REORG);
+    defaults.put(CONF_PATTERN_REFACTOR, PATTERN_DEFAULT_REORG);
     defaults.put(CONF_COLLECTION_CHARSET, "UTF-8");
     defaults.put(CONF_NETWORK_USE_PROXY, FALSE);
     defaults.put(CONF_NETWORK_NONE_INTERNET_ACCESS, FALSE);
@@ -292,7 +298,7 @@ public final class Conf implements Const {
     // wrong player show again boolean
     defaults.put(CONF_GLOBAL_RANDOM_MODE, MODE_TRACK);
     defaults.put(CONF_NOVELTIES_MODE, MODE_TRACK);
-    defaults.put(CONF_ANIMATION_PATTERN, PATTERN_DEFAULT_ANIMATION);
+    defaults.put(CONF_PATTERN_ANIMATION, PATTERN_DEFAULT_ANIMATION);
     defaults.put(CONF_FRAME_POS_FORCED, "");
     defaults.put(CONF_OPTIONS_HOTKEYS, FALSE);
     defaults.put(CONF_MPLAYER_ARGS, "");
@@ -314,7 +320,13 @@ public final class Conf implements Const {
     defaults.put(CONF_LASTFM_INFO, TRUE);
     defaults.put(CONF_WEBRADIO_WAS_PLAYING, FALSE);
     defaults.put(CONF_PERSPECTIVE_ICONS_SIZE, "32");
-    defaults.put(CONF_FRAME_TITLE_PATTERN, '~' + PATTERN_TRACKNAME + " (" + PATTERN_AUTHOR + ")~");
+    // We use trailing pattern to allow scripting like MSN plugins to
+    // detect jajuk frames and extract current track
+    defaults.put(CONF_PATTERN_FRAME_TITLE, '~' + PATTERN_TRACKNAME + " (" + PATTERN_AUTHOR + ")~");
+    defaults.put(CONF_PATTERN_BALLOON_NOTIFIER, Messages.getString("FIFO.10") + " "
+        + Messages.getString("InformationJPanel.8"));
+    defaults.put(CONF_PATTERN_INFORMATION, Messages.getString("FIFO.10") + " "
+        + Messages.getString("InformationJPanel.8"));
     defaults.put(CONF_SHOW_DUPLICATE_PLAYLISTS, FALSE);
     defaults.put(CONF_FORMAT_TIME_ELAPSED, "0");
     // Display slimbar at the lower part of the screen to fix #768 : under MAC,
@@ -352,8 +364,10 @@ public final class Conf implements Const {
   /**
    * Set a property.
    * 
-   * @param sName DOCUMENT_ME
-   * @param sValue DOCUMENT_ME
+   * @param sName
+   *          DOCUMENT_ME
+   * @param sValue
+   *          DOCUMENT_ME
    */
   public static void setProperty(String sName, String sValue) {
     properties.setProperty(sName, sValue);
@@ -362,7 +376,8 @@ public final class Conf implements Const {
   /**
    * Commit properties in a file.
    * 
-   * @throws IOException Signals that an I/O exception has occurred.
+   * @throws IOException
+   *           Signals that an I/O exception has occurred.
    */
   public static void commit() throws IOException {
     OutputStream str = new FileOutputStream(SessionService
@@ -377,7 +392,8 @@ public final class Conf implements Const {
   /**
    * Contains property.
    * 
-   * @param property DOCUMENT_ME
+   * @param property
+   *          DOCUMENT_ME
    * 
    * @return whether the given property is known
    */
@@ -415,7 +431,8 @@ public final class Conf implements Const {
   /**
    * Remove a property.
    * 
-   * @param sKey property key to remove
+   * @param sKey
+   *          property key to remove
    */
   public static void removeProperty(String sKey) {
     properties.remove(sKey);

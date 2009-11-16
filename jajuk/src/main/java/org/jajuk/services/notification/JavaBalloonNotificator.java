@@ -25,7 +25,12 @@ import java.awt.TrayIcon;
 import org.jajuk.base.File;
 import org.jajuk.services.webradio.WebRadio;
 import org.jajuk.ui.windows.JajukSystray;
+import org.jajuk.util.Conf;
+import org.jajuk.util.Const;
 import org.jajuk.util.Messages;
+import org.jajuk.util.UtilString;
+import org.jajuk.util.error.JajukException;
+import org.jajuk.util.log.Log;
 
 /**
  * Implementation of @link INotificator which uses the standard Java Systray for
@@ -72,8 +77,12 @@ public class JavaBalloonNotificator implements INotificator {
     return (trayIcon != null);
   }
 
-  /* (non-Javadoc)
-   * @see org.jajuk.services.notification.INotificator#notify(org.jajuk.services.webradio.WebRadio)
+  /*
+   * (non-Javadoc)
+   * 
+   * @see
+   * org.jajuk.services.notification.INotificator#notify(org.jajuk.services.
+   * webradio.WebRadio)
    */
   @Override
   public void notify(WebRadio webradio) {
@@ -83,15 +92,24 @@ public class JavaBalloonNotificator implements INotificator {
     trayIcon.displayMessage(title, text, TrayIcon.MessageType.INFO);
   }
 
-  /* (non-Javadoc)
-   * @see org.jajuk.services.notification.INotificator#notify(org.jajuk.base.File)
+  /*
+   * (non-Javadoc)
+   * 
+   * @see
+   * org.jajuk.services.notification.INotificator#notify(org.jajuk.base.File)
    */
   @Override
   public void notify(File file) {
     String title = Messages.getString("Notificator.track_change.track_title");
-    String text = file.buildTitle();
-    // simply call the display method on the tray icon that is provided
-    trayIcon.displayMessage(title, text, TrayIcon.MessageType.INFO);
+    String pattern = Conf.getString(Const.CONF_PATTERN_BALLOON_NOTIFIER);
+    String text;
+    try {
+      text = UtilString.applyPattern(file, pattern, false, false);
+      // simply call the display method on the tray icon that is provided
+      trayIcon.displayMessage(title, text, TrayIcon.MessageType.INFO);
+    } catch (JajukException e) {
+      Log.error(e);
+    }
   }
 
 }

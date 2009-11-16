@@ -23,7 +23,6 @@ package org.jajuk.ui.widgets;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.text.MessageFormat;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -50,6 +49,7 @@ import org.jajuk.util.Const;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilFeatures;
 import org.jajuk.util.UtilString;
+import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 import org.jdesktop.swingx.JXPanel;
 
@@ -185,7 +185,9 @@ public final class InformationJPanel extends JXPanel implements Observer {
     timer.start();
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see org.jajuk.events.Observer#getRegistrationKeys()
    */
   public Set<JajukEvents> getRegistrationKeys() {
@@ -220,8 +222,10 @@ public final class InformationJPanel extends JXPanel implements Observer {
   /**
    * Sets the message.
    * 
-   * @param sMessage DOCUMENT_ME
-   * @param iMessageType DOCUMENT_ME
+   * @param sMessage
+   *          DOCUMENT_ME
+   * @param iMessageType
+   *          DOCUMENT_ME
    */
   public void setMessage(final String sMessage, final int iMessageType) {
     this.sMessage = sMessage;
@@ -238,7 +242,8 @@ public final class InformationJPanel extends JXPanel implements Observer {
   /**
    * Sets the selection.
    * 
-   * @param sSelection DOCUMENT_ME
+   * @param sSelection
+   *          DOCUMENT_ME
    */
   public void setSelection(String sSelection) {
     this.sSelection = sSelection;
@@ -258,7 +263,8 @@ public final class InformationJPanel extends JXPanel implements Observer {
   /**
    * Sets the total time message.
    * 
-   * @param string DOCUMENT_ME
+   * @param string
+   *          DOCUMENT_ME
    */
   public void setTotalTimeMessage(String string) {
     sTotalStatus = string;
@@ -335,11 +341,13 @@ public final class InformationJPanel extends JXPanel implements Observer {
           } else if (JajukEvents.FILE_LAUNCHED.equals(subject)) {
             File file = QueueModel.getPlayingFile();
             if (file != null) {
-              MessageFormat sMessageFormat = new MessageFormat(Messages.getString("FIFO.10") + " "
-                  + Messages.getString("InformationJPanel.8"));
-              Object[] stArgs = { file.getTrack().getName(),
-                  file.getTrack().getAuthor().getName2(), file.getTrack().getAlbum().getName2() };
-              String message = sMessageFormat.format(stArgs);
+              String message = "";
+              String pattern = Conf.getString(Const.CONF_PATTERN_INFORMATION);
+              try {
+                message = UtilString.applyPattern(file, pattern, false, false);
+              } catch (JajukException e) {
+                Log.error(e);
+              }
               setMessage(message, InformationJPanel.INFORMATIVE);
             }
           } else if (JajukEvents.WEBRADIO_LAUNCHED.equals(subject)) {
