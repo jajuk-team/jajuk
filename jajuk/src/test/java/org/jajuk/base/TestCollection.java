@@ -25,6 +25,7 @@ import org.apache.commons.lang.StringUtils;
 import org.jajuk.JajukTestCase;
 import org.jajuk.services.startup.StartupCollectionService;
 import org.jajuk.util.Const;
+import org.jajuk.util.UtilString;
 import org.jajuk.util.error.JajukException;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
@@ -97,7 +98,7 @@ public class TestCollection extends JajukTestCase {
       Style style = new Style("5", "name");
       StyleManager.getInstance().registerStyle("name");
       Album album = new Album("5", "name", "artis", 23);
-      album.setProperty(Const.XML_ALBUM_COVER, "none"); // don't read covers for
+      album.setProperty(Const.XML_ALBUM_COVER, Const.COVER_NONE); // don't read covers for
       // this test
       AlbumManager.getInstance().registerAlbum("name", "artis", 23);
 
@@ -147,6 +148,9 @@ public class TestCollection extends JajukTestCase {
     assertTrue(str, str.contains("testdevice"));
     assertTrue(str, str.contains("cooldown"));
 
+    // add test for strange error in this testcase on hudson
+    assertNotNull(UtilString.getAdditionDateFormatter());
+    
     // also test loading here
     Collection.load(file);
 
