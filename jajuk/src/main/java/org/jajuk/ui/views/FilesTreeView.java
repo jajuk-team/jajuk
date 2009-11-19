@@ -105,9 +105,6 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
-  /** Files selection. */
-  List<File> alFiles = new ArrayList<File>(100);
-
   /** Directories selection. */
   List<Directory> alDirs = new ArrayList<Directory>(10);
 
@@ -419,7 +416,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
   public void actionPerformed(final ActionEvent e) {
     // multiple selection on properties(note we handle files and dirs
     // properties later)
-    if ((alFiles != null && (e.getSource() == jmiDirRefactor || e.getSource() == jmiDevOrganize))) {
+    if ((e.getSource() == jmiDirRefactor || e.getSource() == jmiDevOrganize)) {
       UtilGUI.waiting();
       for (Item item : alSelected) {
         // Check if user made a global cancel
@@ -637,7 +634,6 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
         jtree.getSelectionModel().setSelectionPath(path);
       }
       paths = jtree.getSelectionModel().getSelectionPaths();
-      alFiles.clear();
       alDirs.clear();
       // test mix between types ( not allowed )
       Class<?> c = paths[0].getLastPathComponent().getClass();
@@ -699,9 +695,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
             .depthFirstEnumeration();
         while (e2.hasMoreElements()) {
           DefaultMutableTreeNode node = e2.nextElement();
-          if (node instanceof FileNode) {
-            alFiles.add(((FileNode) node).getFile());
-          } else if (node instanceof DirectoryNode) {
+          if (node instanceof DirectoryNode) {
             Directory dir = ((DirectoryNode) node).getDirectory();
             alDirs.add(dir);
           }
