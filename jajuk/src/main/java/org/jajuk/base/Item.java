@@ -434,10 +434,10 @@ public abstract class Item implements Const {
           if (meta != null) {
             // small memory optimization: there are some properties that we do not automatically intern during collection loading, 
             // therefore do it manually here to not have the strings duplicated.
-            // This is currently useful for "ALBUM_ARTIST" and for "none" Cover in Albums
+            // This is currently useful for "ALBUM_ARTIST" and for Const.NONE Cover in Albums
             // measured gain: aprox. 1MB for 25k tracks 
             if(Const.XML_ALBUM_ARTIST.equals(sProperty) ||
-                "none".equals(sValue)) {
+                Const.COVER_NONE.equals(sValue)) {
               setProperty(sProperty, UtilString.parse(sValue.intern(), meta.getType()));
             } else {
               setProperty(sProperty, UtilString.parse(sValue, meta.getType()));

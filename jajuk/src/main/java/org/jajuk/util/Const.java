@@ -394,6 +394,8 @@ public interface Const {
   /** DOCUMENT_ME. */
   String VARIOUS_ARTIST = "various_artist";
 
+  String COVER_NONE = "none";
+  
   // images
   /** DOCUMENT_ME. */
   URL IMAGES_SPLASHSCREEN = UtilSystem.getResource("images/included/jajuk-splashscreen.jpg");

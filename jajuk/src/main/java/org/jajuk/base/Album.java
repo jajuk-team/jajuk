@@ -330,7 +330,7 @@ public class Album extends LogicalItem implements Comparable<Album> {
     String cachedCoverPath = getStringValue(XML_ALBUM_COVER);
     // If none cover is found, we save this information to save discovery time
     // afterwards (performance factor x2 or x3 in catalog view)
-    if ("none".equals(cachedCoverPath)) {
+    if (COVER_NONE.equals(cachedCoverPath)) {
       return null;
     } else if (!StringUtils.isBlank(cachedCoverPath)) {
       return new File(cachedCoverPath);
@@ -340,7 +340,7 @@ public class Album extends LogicalItem implements Comparable<Album> {
     // to reach other devices covers and display them together
     List<Track> lTracks = TrackManager.getInstance().getAssociatedTracks(this, false);
     if (lTracks.size() == 0) {
-      setProperty(XML_ALBUM_COVER, "none");
+      setProperty(XML_ALBUM_COVER, COVER_NONE);
       return null;
     }
     // List if directories we have to look in
@@ -420,7 +420,7 @@ public class Album extends LogicalItem implements Comparable<Album> {
         }
       }
     }
-    setProperty(XML_ALBUM_COVER, "none");
+    setProperty(XML_ALBUM_COVER, COVER_NONE);
     return null;
   }
 

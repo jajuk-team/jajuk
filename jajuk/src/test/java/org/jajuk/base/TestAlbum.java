@@ -253,7 +253,7 @@ public class TestAlbum extends JajukTestCase {
     assertNull(album.getCoverFile());
 
     // none
-    album.setProperty(Const.XML_ALBUM_COVER, "none");
+    album.setProperty(Const.XML_ALBUM_COVER, Const.COVER_NONE);
     assertNull(album.getCoverFile());
 
     // set a cover file
