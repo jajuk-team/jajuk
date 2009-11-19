@@ -1397,6 +1397,12 @@ public class PreparePartyWizard extends Wizard {
 
           @Override
           public void stateChanged(ChangeEvent e) {
+            // no need for re-checking if the same command is chosen as before
+            if(e.getSource().toString().equals(data.get(KEY_CONVERT_COMMAND))) {
+              Log.debug("Same pacpl-command as before: " + e.getSource().toString());
+              return;
+            }
+
             Log.debug("New pacpl-command: " + e.getSource().toString());
             data.put(KEY_CONVERT_COMMAND, e.getSource().toString());
 
