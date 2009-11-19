@@ -42,16 +42,18 @@ import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 
 /**
- * DOCUMENT_ME.
+ * Utilities for the Prepare Party Wizard. Extracted into a separate class for
+ * easier testing.
  */
 public class UtilPrepareParty {
-  
+
   /** character that is used to replace if filename normalization is used. */
   private static final String FILLER_CHAR = "_";
 
-  // private constructor to avoid instantiation
   /**
    * Instantiates a new util prepare party.
+   * 
+   * private constructor to avoid instantiation
    */
   private UtilPrepareParty() {
   }
@@ -59,8 +61,10 @@ public class UtilPrepareParty {
   /**
    * Filter provided list by removing files that have lower rating.
    * 
-   * @param files the list to process.
-   * @param rate The require rating level
+   * @param files
+   *          the list to process.
+   * @param rate
+   *          The require rating level
    * 
    * @return The adjusted list.
    */
@@ -80,8 +84,10 @@ public class UtilPrepareParty {
    * Filter the provided list by removing files if the specified length (in
    * minutes) is exceeded.
    * 
-   * @param files The list of files to process.
-   * @param time The number of minutes playing length to have at max.
+   * @param files
+   *          The list of files to process.
+   * @param time
+   *          The number of minutes playing length to have at max.
    * 
    * @return The modified list.
    */
@@ -108,8 +114,10 @@ public class UtilPrepareParty {
    * Filter the provided list by removing files after the specified size is
    * reached.
    * 
-   * @param files The list of files to process.
-   * @param size The size in MB that should not be exceeded.
+   * @param files
+   *          The list of files to process.
+   * @param size
+   *          The size in MB that should not be exceeded.
    * 
    * @return The modified list.
    */
@@ -136,8 +144,10 @@ public class UtilPrepareParty {
    * Filter the provided list by removing files after the specified number of
    * tracks is reached.
    * 
-   * @param files The list of files to process.
-   * @param tracks The number of tracks to limit the list.
+   * @param files
+   *          The list of files to process.
+   * @param tracks
+   *          The number of tracks to limit the list.
    * 
    * @return The modified list.
    */
@@ -163,8 +173,10 @@ public class UtilPrepareParty {
    * Filter the provided list by removing files so only the specified media is
    * included.
    * 
-   * @param files The list of files to process.
-   * @param ext The number of tracks to filter the list.
+   * @param files
+   *          The list of files to process.
+   * @param ext
+   *          The number of tracks to filter the list.
    * 
    * @return The modified list.
    */
@@ -181,18 +193,20 @@ public class UtilPrepareParty {
     return newFiles;
   }
 
-  // map containing all the replacements that we do to "normalize" a filename
-  // TODO: this should be enhanced with more entries for things like nordic
-  // languages et. al.
-  /** DOCUMENT_ME. */
+  /**
+   * Map containing all the replacements that we do to "normalize" a filename
+   */
   private static Map<Character, String> replaceMap = null;
 
   /**
    * Normalize filenames so that they do not.
    * 
-   * @param name DOCUMENT_ME
+   * TODO: is there some utility method that can do this?
    * 
-   * @return the string
+   * @param name
+   *          Name that should be normalized
+   * 
+   * @return the filename where special characters are replaced/removed
    */
   public static synchronized String normalizeFilename(String name) {
     // initialize map if necessary
@@ -202,40 +216,77 @@ public class UtilPrepareParty {
       // German umlauts can be handled better than just using the filler_char,
       // we
       // can keep the filename readable
+      replaceMap.put('à', "a");
+      replaceMap.put('á', "a");
+      replaceMap.put('â', "a");
+      replaceMap.put('ã', "a");
       replaceMap.put('ä', "ae");
       replaceMap.put('å', "a");
-      replaceMap.put('ö', "oe");
-      replaceMap.put('ü', "ue");
+      replaceMap.put('æ', "ae");
+      replaceMap.put('À', "A");
+      replaceMap.put('Á', "A");
+      replaceMap.put('Â', "A");
+      replaceMap.put('Ã', "A");
       replaceMap.put('Ä', "AE");
+      replaceMap.put('Å', "A");
+      replaceMap.put('Æ', "AE");
+
+      replaceMap.put('Ç', "C");
+      replaceMap.put('ç', "c");
+
+      replaceMap.put('Ð', "D");
+
+      replaceMap.put('È', "E");
+      replaceMap.put('É', "E");
+      replaceMap.put('Ê', "E");
+      replaceMap.put('Ë', "E");
+      replaceMap.put('é', "e");
+      replaceMap.put('è', "e");
+      replaceMap.put('é', "e");
+      replaceMap.put('ê', "e");
+      replaceMap.put('ë', "e");
+
+      replaceMap.put('Ì', "I");
+      replaceMap.put('Í', "I");
+      replaceMap.put('Î', "I");
+      replaceMap.put('Ï', "I");
+      replaceMap.put('ì', "i");
+      replaceMap.put('í', "i");
+      replaceMap.put('î', "i");
+      replaceMap.put('ï', "i");
+
+      replaceMap.put('Ñ', "N");
+      replaceMap.put('ñ', "n");
+
+      replaceMap.put('Ò', "O");
+      replaceMap.put('Ó', "O");
+      replaceMap.put('Ô', "O");
+      replaceMap.put('Õ', "O");
       replaceMap.put('Ö', "OE");
-      replaceMap.put('Ü', "UE");
+      replaceMap.put('Ő', "O");
+      replaceMap.put('Œ', "O");
+      replaceMap.put('ò', "o");
+      replaceMap.put('ó', "o");
+      replaceMap.put('ô', "o");
+      replaceMap.put('õ', "o");
+      replaceMap.put('ö', "oe");
+      replaceMap.put('ő', "o");
+      replaceMap.put('œ', "oe");
+
       replaceMap.put('ß', "ss");
 
-      /**
-       * To add:
-       * 
-       * <code>
-           à   á   â   ã   ä   å
-           æ
-           À   Á   Â   Ã   Ä   Å
-           Æ
-           Ç
-           ç
-           Ð
-           È   É   Ê   Ë
-           è   é   ê   ë
-           Ì   Í   Î   Ï
-           ì   í   î   ï
-           Ñ
-           ñ
-           Ò   Ó   Ô   Õ   Ö
-           ò   ó   ô   õ   ö
-           Ù   Ú   Û   Ü
-           ù   ú   û   ü
-           Ý
-           ý   ÿ
-        </code>
-       */
+      replaceMap.put('Ù', "U");
+      replaceMap.put('Ú', "U");
+      replaceMap.put('Û', "U");
+      replaceMap.put('Ü', "UE");
+      replaceMap.put('ù', "u");
+      replaceMap.put('ú', "u");
+      replaceMap.put('û', "u");
+      replaceMap.put('ü', "ue");
+
+      replaceMap.put('Ý', "Y");
+      replaceMap.put('ý', "y");
+      replaceMap.put('ÿ', "y");
 
       // some more special characters that can be replaced with more useful
       // values
@@ -253,7 +304,6 @@ public class UtilPrepareParty {
       replaceMap.put('!', FILLER_CHAR);
     }
 
-    // TODO: is there some utility method that can do this?
     StringBuilder newName = new StringBuilder(name.length());
     for (int i = 0; i < name.length(); i++) {
       char c = name.charAt(i);
@@ -277,7 +327,8 @@ public class UtilPrepareParty {
   /**
    * Get files from the specified DJ.
    * 
-   * @param name The name of the DJ.
+   * @param name
+   *          The name of the DJ.
    * 
    * @return A list of files.
    */
@@ -289,7 +340,8 @@ public class UtilPrepareParty {
   /**
    * Get files from the specified Ambience.
    * 
-   * @param name The name of the Ambience.
+   * @param name
+   *          The name of the Ambience.
    * 
    * @return A list of files.
    */
@@ -314,12 +366,16 @@ public class UtilPrepareParty {
    * to the name of the temporary playlist provided to the Wizard, then this
    * Playlist is used instead.
    * 
-   * @param name The name of the Playlist.
-   * @param tempPlaylist DOCUMENT_ME
+   * @param name
+   *          The name of the Playlist.
+   * @param tempPlaylist
+   *          The playlist provided upon starting of the Wizard, null if none
+   *          provided.
    * 
    * @return A list of files.
    * 
-   * @throws JajukException the jajuk exception
+   * @throws JajukException
+   *           the jajuk exception
    */
   public static List<org.jajuk.base.File> getPlaylistFiles(String name, Playlist tempPlaylist)
       throws JajukException {
@@ -348,7 +404,8 @@ public class UtilPrepareParty {
    * 
    * @return The list of files that match the "BestOf"-criteria
    * 
-   * @throws JajukException the jajuk exception
+   * @throws JajukException
+   *           the jajuk exception
    */
   public static List<org.jajuk.base.File> getBestOfFiles() throws JajukException {
     Playlist pl = new Playlist(Playlist.Type.BESTOF, "tmp", "temporary", null);
@@ -360,7 +417,8 @@ public class UtilPrepareParty {
    * 
    * @return The files that are new currently.
    * 
-   * @throws JajukException the jajuk exception
+   * @throws JajukException
+   *           the jajuk exception
    */
   public static List<org.jajuk.base.File> getNoveltiesFiles() throws JajukException {
     Playlist pl = new Playlist(Playlist.Type.NOVELTIES, "tmp", "temporary", null);
@@ -372,7 +430,8 @@ public class UtilPrepareParty {
    * 
    * @return The currently queued files.
    * 
-   * @throws JajukException the jajuk exception
+   * @throws JajukException
+   *           the jajuk exception
    */
   public static List<org.jajuk.base.File> getQueueFiles() throws JajukException {
     Playlist pl = new Playlist(Playlist.Type.QUEUE, "tmp", "temporary", null);
@@ -384,7 +443,8 @@ public class UtilPrepareParty {
    * 
    * @return The currently bookmarked files.
    * 
-   * @throws JajukException the jajuk exception
+   * @throws JajukException
+   *           the jajuk exception
    */
   public static List<org.jajuk.base.File> getBookmarkFiles() throws JajukException {
     Playlist pl = new Playlist(Playlist.Type.BOOKMARK, "tmp", "temporary", null);
@@ -392,12 +452,12 @@ public class UtilPrepareParty {
   }
 
   /**
-   * Split command.
-   * DOCUMENT_ME
+   * Split the commandline into separate elements by observing double quotes.
    * 
-   * @param command DOCUMENT_ME
+   * @param command
+   *          The command in one string. E.g. "perl /usr/bin/pacpl".
    * 
-   * @return the list< string>
+   * @return A list of single command elements. e.g. {"perl", "/usr/bin/pacpl"}
    */
   private static List<String> splitCommand(String command) {
     List<String> list = new ArrayList<String>();
@@ -442,8 +502,9 @@ public class UtilPrepareParty {
   /**
    * Check if the Perl Audio Converter can be used.
    * 
-   * @param pacpl The command-string to call pacpl, e.g. "pacpl" or "perl
-   * C:\pacpl\pacpl", ...
+   * @param pacpl
+   *          The command-string to call pacpl, e.g. "pacpl" or "perl
+   *          C:\pacpl\pacpl", ...
    * 
    * @return true, if check pacpl
    */
@@ -490,22 +551,27 @@ public class UtilPrepareParty {
    * Call the external application "pacpl" to convert the specified file into
    * the specified format and store the resulting file in the directory listed.
    * 
-   * @param pacpl The command-string to call pacpl, e.g. "pacpl" or "perl
-   * C:\pacpl\pacpl", ...
-   * @param file The file to convert.
-   * @param toFormat The target format.
-   * @param toDir The target location.
-   * @param newName The new name to use (this is used for normalizing and numbering
-   * the files, ...)
+   * @param pacpl
+   *          The command-string to call pacpl, e.g. "pacpl" or "perl
+   *          C:\pacpl\pacpl", ...
+   * @param file
+   *          The file to convert.
+   * @param toFormat
+   *          The target format.
+   * @param toDir
+   *          The target location.
+   * @param newName
+   *          The new name to use (this is used for normalizing and numbering
+   *          the files, ...)
    * 
    * @return 0 if processing was OK, otherwise the return code indicates the
-   * return code provided by the pacpl script
+   *         return code provided by the pacpl script
    * 
-   * TODO: currently this uses the target-location as temporary
-   * directory if intermediate-conversion to WAV is necessary, this
-   * might be sub-optimal for Flash-memory where too many writes kills
-   * the media card earlier. We probably should use the temporary
-   * directory for conversion instead and do another copy at the end.
+   *         TODO: currently this uses the target-location as temporary
+   *         directory if intermediate-conversion to WAV is necessary, this
+   *         might be sub-optimal for Flash-memory where too many writes kills
+   *         the media card earlier. We probably should use the temporary
+   *         directory for conversion instead and do another copy at the end.
    */
   public static int convertPACPL(String pacpl, File file, String toFormat, java.io.File toDir,
       String newName) {
