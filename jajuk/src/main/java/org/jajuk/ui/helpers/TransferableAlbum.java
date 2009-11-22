@@ -41,25 +41,13 @@ public class TransferableAlbum extends DefaultMutableTreeNode implements Transfe
   public static final DataFlavor ALBUM_FLAVOR = new DataFlavor(
       DataFlavor.javaJVMLocalObjectMimeType, "Album");
 
-  /** DOCUMENT_ME. */
-  private final Object oData;
-
   /**
    * Instantiates a new transferable album.
    * 
    * @param oData DOCUMENT_ME
    */
   public TransferableAlbum(Object oData) {
-    this.oData = oData;
-  }
-
-  /**
-   * Gets the data.
-   * 
-   * @return the data
-   */
-  public Object getData() {
-    return oData;
+    super(oData);
   }
 
   /** DOCUMENT_ME. */

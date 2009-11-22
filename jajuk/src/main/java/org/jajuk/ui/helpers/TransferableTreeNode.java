@@ -32,7 +32,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 /**
  * Transferable tree node ( for DND ).
  */
-public class TransferableTreeNode extends DefaultMutableTreeNode implements Transferable {
+public abstract class TransferableTreeNode extends DefaultMutableTreeNode implements Transferable {
   
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
@@ -41,25 +41,14 @@ public class TransferableTreeNode extends DefaultMutableTreeNode implements Tran
   public static final DataFlavor NODE_FLAVOR = new DataFlavor(
       DataFlavor.javaJVMLocalObjectMimeType, "Node");
 
-  /** DOCUMENT_ME. */
-  private final Object oData;
-
   /**
    * Instantiates a new transferable tree node.
    * 
-   * @param oData DOCUMENT_ME
+   * @param userObject an Object provided by the user that constitutes
+     *                   the node's data
    */
-  public TransferableTreeNode(Object oData) {
-    this.oData = oData;
-  }
-
-  /**
-   * Gets the data.
-   * 
-   * @return the data
-   */
-  public Object getData() {
-    return oData;
+  public TransferableTreeNode(Object userObject) {
+    super(userObject);
   }
 
   /** DOCUMENT_ME. */

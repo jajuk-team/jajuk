@@ -32,10 +32,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Enumeration;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
@@ -52,6 +50,8 @@ import javax.swing.event.TreeExpansionListener;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.MutableTreeNode;
 import javax.swing.tree.TreePath;
 
 import org.jajuk.base.Device;
@@ -62,7 +62,6 @@ import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
 import org.jajuk.base.Item;
 import org.jajuk.base.Playlist;
-import org.jajuk.base.PlaylistManager;
 import org.jajuk.base.Type;
 import org.jajuk.base.TypeManager;
 import org.jajuk.events.JajukEvent;
@@ -75,6 +74,7 @@ import org.jajuk.ui.actions.JajukActions;
 import org.jajuk.ui.actions.RefactorAction;
 import org.jajuk.ui.helpers.FontManager;
 import org.jajuk.ui.helpers.ItemMoveManager;
+import org.jajuk.ui.helpers.LazyLoadingTreeNode;
 import org.jajuk.ui.helpers.TransferableTreeNode;
 import org.jajuk.ui.helpers.TreeRootElement;
 import org.jajuk.ui.helpers.TreeTransferHandler;
@@ -88,7 +88,6 @@ import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
-import org.jajuk.util.ReadOnlyIterator;
 import org.jajuk.util.UtilFeatures;
 import org.jajuk.util.UtilGUI;
 import org.jajuk.util.UtilSystem;
@@ -192,7 +191,9 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
   public FilesTreeView() {
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see org.jajuk.events.Observer#getRegistrationKeys()
    */
   public Set<JajukEvents> getRegistrationKeys() {
@@ -310,7 +311,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
     populateTree();
 
     // create tree
-    createTree();
+    createTree(true);
 
     /**
      * CAUTION ! we register several listeners against this tree Swing can't
@@ -343,75 +344,21 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
   @Override
   public synchronized void populateTree() {
     top.removeAllChildren();
-    // add devices
+    // add all devices as "LazyLoading" nodes so all subsequent elements are
+    // only
+    // populated if necessary
     List<Device> devices = DeviceManager.getInstance().getDevices();
     for (Device device : devices) {
       DefaultMutableTreeNode nodeDevice = new DeviceNode(device);
       top.add(nodeDevice);
-    }
-    /*
-     * Add directories (do not use an iterator here but a shallow copy as
-     * concurrent modifications are likely to happen)
-     */
-    List<Directory> dirs = DirectoryManager.getInstance().getDirectories();
-    for (Directory directory : dirs) {
-      if (directory.shouldBeHidden()) {
-        continue;
-      }
-      // if device root directory, do not display
-      if (directory.getParentDirectory() != null) {
-        // parent directory is a device
-        if (directory.getParentDirectory().getParentDirectory() == null) {
-          DeviceNode deviceNode = DeviceNode.getDeviceNode(directory.getDevice());
-          deviceNode.add(new DirectoryNode(directory));
-        } else { // parent directory not root
-          DirectoryNode parentDirectoryNode = DirectoryNode.getDirectoryNode(directory
-              .getParentDirectory());
-          parentDirectoryNode.add(new DirectoryNode(directory));
-        }
-      }
-    }
-    // add files
-    ReadOnlyIterator<File> files = FileManager.getInstance().getFilesIterator();
-    while (files.hasNext()) {
-      File file = files.next();
-      if (file.shouldBeHidden()) { // should be hidden by option
-        continue;
-      }
-      DirectoryNode directoryNode = DirectoryNode.getDirectoryNode(file.getDirectory());
-      if (directoryNode == null) {
-        // means this file is at root of a device
-        DeviceNode deviceNode = DeviceNode.getDeviceNode(file.getDevice());
-        deviceNode.add(new FileNode(file));
-      } else {
-        // this file is in a regular directory
-        directoryNode.add(new FileNode(file));
-      }
-    }
-    // add playlists
-    ReadOnlyIterator<Playlist> playlists = PlaylistManager.getInstance().getPlaylistsIterator();
-    while (playlists.hasNext()) {
-      Playlist playlistFile = playlists.next();
-      // should be hidden by option
-      if (playlistFile.shouldBeHidden()) {
-        continue;
-      }
-      DirectoryNode directoryNode = DirectoryNode.getDirectoryNode(playlistFile.getDirectory());
-      if (directoryNode == null) {
-        // Add the playlist under the device node
-        DeviceNode deviceNode = DeviceNode.getDeviceNode(playlistFile.getDirectory().getDevice());
-        deviceNode.add(new PlaylistFileNode(playlistFile));
-      } else {
-        // Add the playlist under a common directory node
-        directoryNode.add(new PlaylistFileNode(playlistFile));
-      }
     }
   }
 
   /*
    * (non-Javadoc)
    * 
-   * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+   * @see
+   * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
    */
   public void actionPerformed(final ActionEvent e) {
     // multiple selection on properties(note we handle files and dirs
@@ -523,10 +470,14 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
    * </p>
    * <p>
    * When unmounting a device from the tree, the device node is collapsed
-   * </p>.
+   * </p>
+   * .
    */
   @Override
   void expand() {
+    // make sure the main element is expanded
+    jtree.expandRow(0);
+
     // begin by expanding all needed devices and directory, only after,
     // collapse unmounted devices if required
     for (int i = 0; i < jtree.getRowCount(); i++) {
@@ -554,7 +505,9 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
    */
   class FilesMouseAdapter extends MouseAdapter {
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see java.awt.event.MouseAdapter#mousePressed(java.awt.event.MouseEvent)
      */
     @Override
@@ -603,7 +556,9 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
       }
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see java.awt.event.MouseAdapter#mouseReleased(java.awt.event.MouseEvent)
      */
     @Override
@@ -614,10 +569,10 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
     }
 
     /**
-     * Handle popup.
-     * DOCUMENT_ME
+     * Handle popup. DOCUMENT_ME
      * 
-     * @param e DOCUMENT_ME
+     * @param e
+     *          DOCUMENT_ME
      */
     @SuppressWarnings("unchecked")
     public void handlePopup(final MouseEvent e) {
@@ -820,9 +775,13 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
    * DOCUMENT_ME.
    */
   class FilesTreeSelectionListener implements TreeSelectionListener {
-    
-    /* (non-Javadoc)
-     * @see javax.swing.event.TreeSelectionListener#valueChanged(javax.swing.event.TreeSelectionEvent)
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * javax.swing.event.TreeSelectionListener#valueChanged(javax.swing.event
+     * .TreeSelectionEvent)
      */
     @SuppressWarnings("unchecked")
     public void valueChanged(TreeSelectionEvent e) {
@@ -846,9 +805,10 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
           }
           break;
         } else {
-          Item item = (Item) ((TransferableTreeNode) o).getData();
+          Item item = (Item) ((TransferableTreeNode) o).getUserObject();
           alSelected.add(item);
         }
+
         // return all childs nodes recursively
         Enumeration<DefaultMutableTreeNode> e2 = ((DefaultMutableTreeNode) o)
             .depthFirstEnumeration();
@@ -913,9 +873,13 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
    * DOCUMENT_ME.
    */
   class FilesTreeExpansionListener implements TreeExpansionListener {
-    
-    /* (non-Javadoc)
-     * @see javax.swing.event.TreeExpansionListener#treeCollapsed(javax.swing.event.TreeExpansionEvent)
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * javax.swing.event.TreeExpansionListener#treeCollapsed(javax.swing.event
+     * .TreeExpansionEvent)
      */
     public void treeCollapsed(TreeExpansionEvent event) {
       Object o = event.getPath().getLastPathComponent();
@@ -928,8 +892,12 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
       }
     }
 
-    /* (non-Javadoc)
-     * @see javax.swing.event.TreeExpansionListener#treeExpanded(javax.swing.event.TreeExpansionEvent)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * javax.swing.event.TreeExpansionListener#treeExpanded(javax.swing.event
+     * .TreeExpansionEvent)
      */
     public void treeExpanded(TreeExpansionEvent event) {
       Object o = event.getPath().getLastPathComponent();
@@ -943,6 +911,44 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
 
     }
   }
+
+  /**
+   * Fill the provided list with sub-elements for that directory, i.e.
+   * sub-directories, files and playlists.
+   * 
+   * @param parent
+   *          The parent-directory to start from.
+   * @param model
+   *          The DefaultTreeModel to use.
+   * @param list
+   *          The list to add elements to. This list can contain elements before
+   *          which will not be touched.
+   */
+  static void populateFromDirectory(Directory parent,
+      List<MutableTreeNode> list) {
+    // now we get all directories in this device
+    for (Directory directory : parent.getDirectories()) {
+      if (directory.shouldBeHidden()) {
+        continue;
+      }
+      list.add(new DirectoryNode(directory));
+    }
+    // then files
+    for (File file : parent.getFiles()) {
+      if (file.shouldBeHidden()) {
+        continue;
+      }
+      list.add(new FileNode(file));
+    }
+    // and playlists
+    for (Playlist pl : parent.getPlaylistFiles()) {
+      if (pl.shouldBeHidden()) {
+        continue;
+      }
+      list.add(new PlaylistFileNode(pl));
+    }
+  }
+
 }
 
 /**
@@ -966,27 +972,23 @@ class FileNode extends TransferableTreeNode {
    */
   @Override
   public String toString() {
-    return ((File) super.getData()).getName();
+    return getFile().getName();
   }
 
   /**
    * @return Returns the file.
    */
   public File getFile() {
-    return (File) super.getData();
+    return (File) super.getUserObject();
   }
-
 }
 
 /**
  * Device node
  */
-class DeviceNode extends TransferableTreeNode {
+class DeviceNode extends LazyLoadingTreeNode {
 
   private static final long serialVersionUID = 1L;
-
-  /** device -> deviceNode hashmap */
-  private static Map<Device, DeviceNode> hmDeviceDeviceNode = new HashMap<Device, DeviceNode>(2);
 
   /**
    * Constructor
@@ -995,12 +997,6 @@ class DeviceNode extends TransferableTreeNode {
    */
   public DeviceNode(Device device) {
     super(device);
-    hmDeviceDeviceNode.put(device, this);
-  }
-
-  /** Return associated device node */
-  public static DeviceNode getDeviceNode(Device device) {
-    return hmDeviceDeviceNode.get(device);
   }
 
   /**
@@ -1008,14 +1004,34 @@ class DeviceNode extends TransferableTreeNode {
    */
   @Override
   public String toString() {
-    return ((Device) super.getData()).getName();
+    return getDevice().getName();
   }
 
   /**
    * @return Returns the device.
    */
   public Device getDevice() {
-    return (Device) super.getData();
+    return (Device) super.getUserObject();
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see
+   * org.jajuk.ui.widgets.LazyLoadingTreeNode#loadChildren(javax.swing.tree.
+   * DefaultTreeModel)
+   */
+  @Override
+  public MutableTreeNode[] loadChildren(DefaultTreeModel model) {
+    List<MutableTreeNode> list = new ArrayList<MutableTreeNode>();
+
+    // first level is the directory of the device itself, usually only one
+    for (Directory parent : getDevice().getDirectories()) {
+      // so for each directory that is listed for that Device we build up the
+      // list of sub-elements
+      FilesTreeView.populateFromDirectory(parent, list);
+    }
+    return list.toArray(new MutableTreeNode[list.size()]);
   }
 
 }
@@ -1023,16 +1039,8 @@ class DeviceNode extends TransferableTreeNode {
 /**
  * Directory node
  */
-class DirectoryNode extends TransferableTreeNode {
-
-  /**
-   * 
-   */
+class DirectoryNode extends LazyLoadingTreeNode {
   private static final long serialVersionUID = 1L;
-
-  /** directory -> directoryNode hashmap */
-  private static Map<Directory, DirectoryNode> hmDirectoryDirectoryNode = new HashMap<Directory, DirectoryNode>(
-      100);
 
   /**
    * Constructor
@@ -1041,12 +1049,6 @@ class DirectoryNode extends TransferableTreeNode {
    */
   public DirectoryNode(Directory directory) {
     super(directory);
-    hmDirectoryDirectoryNode.put(directory, this);
-  }
-
-  /** Return associated directory node */
-  public static DirectoryNode getDirectoryNode(Directory directory) {
-    return hmDirectoryDirectoryNode.get(directory);
   }
 
   /**
@@ -1054,14 +1056,30 @@ class DirectoryNode extends TransferableTreeNode {
    */
   @Override
   public String toString() {
-    return ((Directory) getData()).getName();
+    return getDirectory().getName();
   }
 
   /**
    * @return Returns the directory.
    */
   public Directory getDirectory() {
-    return (Directory) getData();
+    return (Directory) getUserObject();
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.jajuk.ui.helpers.LazyLoadingTreeNode#loadChildren(javax.swing.tree
+   * .DefaultTreeModel)
+   */
+  @Override
+  public MutableTreeNode[] loadChildren(DefaultTreeModel model) {
+    List<MutableTreeNode> list = new ArrayList<MutableTreeNode>();
+
+    // simply collect all items one level below that directory
+    FilesTreeView.populateFromDirectory(getDirectory(), list);
+
+    return list.toArray(new MutableTreeNode[list.size()]);
   }
 
 }
@@ -1070,7 +1088,6 @@ class DirectoryNode extends TransferableTreeNode {
  * Playlist node
  */
 class PlaylistFileNode extends TransferableTreeNode {
-
   private static final long serialVersionUID = 1L;
 
   /**
@@ -1087,16 +1104,15 @@ class PlaylistFileNode extends TransferableTreeNode {
    */
   @Override
   public String toString() {
-    return ((Playlist) super.getData()).getName();
+    return getPlaylistFile().getName();
   }
 
   /**
    * @return Returns the playlist node.
    */
   public Playlist getPlaylistFile() {
-    return (Playlist) getData();
+    return (Playlist) getUserObject();
   }
-
 }
 
 class FilesTreeCellRenderer extends SubstanceDefaultTreeCellRenderer {

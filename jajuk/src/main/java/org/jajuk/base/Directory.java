@@ -184,7 +184,7 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
     ReadOnlyIterator<Playlist> it = PlaylistManager.getInstance().getPlaylistsIterator();
     while (it.hasNext()) {
       Playlist plf = it.next();
-      if (plf.getFIO().getParent().equals(this.getFio())) {
+      if (plf.getFIO().getParentFile().equals(this.getFio())) {
         out.add(plf);
       }
     }

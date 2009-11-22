@@ -38,6 +38,7 @@ import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
@@ -138,20 +139,29 @@ public abstract class AbstractTreeView extends ViewAdapter {
   boolean bAutoCollapse = false;
 
   /**
-   * Creates the tree.
-   * DOCUMENT_ME
+   * Creates the tree. DOCUMENT_ME
    * 
    * @return the j tree
    */
-  protected JTree createTree() {
+  protected JTree createTree(boolean bLazy) {
     jtree = new JXTree(top);
     jtree.putClientProperty("JTree.lineStyle", "Angled");
     jtree.getSelectionModel().setSelectionMode(TreeSelectionModel.DISCONTIGUOUS_TREE_SELECTION);
     setKeystrokes();
+
+    // set the special controller for doing lazy loading if used for this View
+    if (bLazy) {
+      final org.jajuk.ui.helpers.LazyLoadingTreeExpander controller = new org.jajuk.ui.helpers.LazyLoadingTreeExpander(
+          (DefaultTreeModel) jtree.getModel());
+      jtree.addTreeWillExpandListener(controller);
+    }
+
     return jtree;
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see org.jajuk.ui.views.IView#initUI()
    */
   public void initUI() {
@@ -194,14 +204,12 @@ public abstract class AbstractTreeView extends ViewAdapter {
   }
 
   /**
-   * Populate tree.
-   * DOCUMENT_ME
+   * Populate tree. DOCUMENT_ME
    */
   abstract void populateTree();
 
   /**
-   * Expand.
-   * DOCUMENT_ME
+   * Expand. DOCUMENT_ME
    */
   abstract void expand();
 
@@ -239,7 +247,9 @@ public abstract class AbstractTreeView extends ViewAdapter {
     actionMap.put("rename", action);
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see org.jajuk.events.Observer#update(org.jajuk.events.JajukEvent)
    */
   public void update(JajukEvent event) {

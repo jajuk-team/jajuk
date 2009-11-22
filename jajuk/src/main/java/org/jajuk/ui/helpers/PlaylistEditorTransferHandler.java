@@ -132,17 +132,17 @@ public class PlaylistEditorTransferHandler extends TransferHandler {
             TransferableTableRow.ROW_FLAVOR.getHumanPresentableName())) {
           TransferableTableRow ttr = (TransferableTableRow) t
               .getTransferData(TransferableTableRow.ROW_FLAVOR);
-          oData = ttr.getData();
+          oData = ttr.getUserObject();
         } else if (flavor.getHumanPresentableName().equals(
             TransferableTreeNode.NODE_FLAVOR.getHumanPresentableName())) {
           TransferableTreeNode ttn = (TransferableTreeNode) t
               .getTransferData(TransferableTreeNode.NODE_FLAVOR);
-          oData = ttn.getData();
+          oData = ttn.getUserObject();
         } else if (flavor.getHumanPresentableName().equals(
             TransferableAlbum.ALBUM_FLAVOR.getHumanPresentableName())) {
           TransferableAlbum ttn = (TransferableAlbum) t
               .getTransferData(TransferableAlbum.ALBUM_FLAVOR);
-          oData = ttn.getData();
+          oData = ttn.getUserObject();
         }
         List<File> alSelectedFiles = UtilFeatures.getPlayableFiles((Item) oData);
         // queue case

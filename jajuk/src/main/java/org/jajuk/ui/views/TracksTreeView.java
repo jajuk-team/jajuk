@@ -28,7 +28,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Enumeration;
@@ -99,9 +98,6 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
 
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
-
-  /** Track selection. */
-  private List<Track> alTracks;
 
   /** DOCUMENT_ME. */
   private JPopupMenu jmenuCollection;
@@ -198,7 +194,7 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
     populateTree();
 
     // create tree
-    createTree();
+    createTree(false);
 
     jtree.setCellRenderer(new TracksTreeCellRenderer());
 
@@ -706,15 +702,6 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
     }
   }
 
-  /**
-   * Gets the track selection.
-   * 
-   * @return Returns the alTracks.
-   */
-  public List<Track> getTrackSelection() {
-    return alTracks;
-  }
-
   // needs to be inner class as it accesses various members
   /**
    * DOCUMENT_ME.
@@ -771,7 +758,7 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
         } else if (o instanceof TransferableTreeNode) {
           // this is a standard node except "by date"
           // discovery nodes
-          alSelected.add((Item) ((TransferableTreeNode) o).getData());
+          alSelected.add((Item) ((TransferableTreeNode) o).getUserObject());
         }
 
         // return all child nodes recursively
@@ -866,7 +853,6 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
      * 
      * @param e DOCUMENT_ME
      */
-    @SuppressWarnings("unchecked")
     public void handlePopup(final MouseEvent e) {
       TreePath path = jtree.getPathForLocation(e.getX(), e.getY());
       if (path == null) {
@@ -881,30 +867,12 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
         jtree.getSelectionModel().setSelectionPath(path);
       }
       paths = jtree.getSelectionModel().getSelectionPaths();
-      alTracks = new ArrayList<Track>(100);
 
       // test mix between types ( not allowed )
       String sClass = paths[0].getLastPathComponent().getClass().toString();
       for (int i = 0; i < paths.length; i++) {
         if (!paths[i].getLastPathComponent().getClass().toString().equals(sClass)) {
           return;
-        }
-      }
-
-      // get all components recursively
-      for (TreePath element : paths) {
-        Object o = element.getLastPathComponent();
-        Enumeration<DefaultMutableTreeNode> e2 = ((DefaultMutableTreeNode) o)
-            .depthFirstEnumeration();
-        // return all childs nodes recursively
-        while (e2.hasMoreElements()) {
-          DefaultMutableTreeNode node = e2.nextElement();
-          if (node instanceof TrackNode) {
-            Track track = ((TrackNode) node).getTrack();
-            if (track.getPlayeableFile(false) != null) {
-              alTracks.add(((TrackNode) node).getTrack());
-            }
-          }
         }
       }
 
@@ -1022,14 +990,14 @@ class StyleNode extends TransferableTreeNode {
    */
   @Override
   public String toString() {
-    return ((Style) super.getData()).getName2();
+    return getStyle().getName2();
   }
 
   /**
    * @return Returns the track.
    */
   public Style getStyle() {
-    return (Style) super.getData();
+    return (Style) super.getUserObject();
   }
 }
 
@@ -1057,16 +1025,15 @@ class AuthorNode extends TransferableTreeNode {
    */
   @Override
   public String toString() {
-    return ((Author) super.getData()).getName2();
+    return getAuthor().getName2();
   }
 
   /**
    * @return Returns the author.
    */
   public Author getAuthor() {
-    return (Author) super.getData();
+    return (Author) super.getUserObject();
   }
-
 }
 
 /**
@@ -1093,8 +1060,8 @@ class YearNode extends TransferableTreeNode {
    */
   @Override
   public String toString() {
-    if (((Year) super.getData()).getValue() > 0) {
-      return ((Year) super.getData()).getName();
+    if (getYear().getValue() > 0) {
+      return getYear().getName();
     } else {
       return Messages.getString("unknown_year");
     }
@@ -1104,9 +1071,8 @@ class YearNode extends TransferableTreeNode {
    * @return Returns the year.
    */
   public Year getYear() {
-    return (Year) super.getData();
+    return (Year) super.getUserObject();
   }
-
 }
 
 /**
@@ -1130,14 +1096,14 @@ class AlbumNode extends TransferableTreeNode {
    */
   @Override
   public String toString() {
-    return ((Album) super.getData()).getName2();
+    return getAlbum().getName2();
   }
 
   /**
    * @return Returns the album.
    */
   public Album getAlbum() {
-    return (Album) super.getData();
+    return (Album) super.getUserObject();
   }
 }
 
@@ -1162,14 +1128,14 @@ class TrackNode extends TransferableTreeNode {
    */
   @Override
   public String toString() {
-    return ((Track) super.getData()).getName();
+    return getTrack().getName();
   }
 
   /**
    * @return Returns the track.
    */
   public Track getTrack() {
-    return (Track) super.getData();
+    return (Track) super.getUserObject();
   }
 }
 

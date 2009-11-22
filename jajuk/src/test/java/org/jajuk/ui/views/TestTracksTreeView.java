@@ -321,15 +321,6 @@ public class TestTracksTreeView extends JajukTestCase {
     view.actionPerformed(new ActionEvent(this, 1, ""));
   }
 
-  /**
-   * Test method for
-   * {@link org.jajuk.ui.views.TracksTreeView#getTrackSelection()}.
-   */
-  public final void testGetTrackSelection() {
-    TracksTreeView view = new TracksTreeView();
-    view.getTrackSelection();
-  }
-
   public final void testTracksTreeSelectionListener() {
     TracksTreeView view = new TracksTreeView();
     TracksTreeView.TracksTreeSelectionListener task = view.new TracksTreeSelectionListener();

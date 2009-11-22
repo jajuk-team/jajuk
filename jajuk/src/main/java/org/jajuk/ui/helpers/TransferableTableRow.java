@@ -41,25 +41,13 @@ public class TransferableTableRow extends DefaultMutableTreeNode implements Tran
   public static final DataFlavor ROW_FLAVOR = new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType,
       "Row");
 
-  /** DOCUMENT_ME. */
-  private final Object oData;
-
   /**
    * Instantiates a new transferable table row.
    * 
    * @param oData DOCUMENT_ME
    */
   public TransferableTableRow(Object oData) {
-    this.oData = oData;
-  }
-
-  /**
-   * Gets the data.
-   * 
-   * @return the data
-   */
-  public Object getData() {
-    return oData;
+    super(oData);
   }
 
   /** DOCUMENT_ME. */

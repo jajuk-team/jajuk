@@ -698,6 +698,11 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
     Directory directory = DirectoryManager.getInstance().registerDirectory(sRightID,
         sItemName, dParent, device);
     directory.populateProperties(attributes);
+    
+    // also remember top-level directories at the device
+    if(dParent == null) {
+      device.addDirectory(directory);
+    }
   }
 
   /**
