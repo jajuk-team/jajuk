@@ -600,6 +600,9 @@ public enum JajukIcons {
   /** DOCUMENT_ME. */
   PREPARE_PARTY,
 
+  /** Larger icon for Prepare Party Wizard */
+  PREPARE_PARTY_32X32,
+  
   /** DOCUMENT_ME. */
   COPY_TO_CLIPBOARD,
 

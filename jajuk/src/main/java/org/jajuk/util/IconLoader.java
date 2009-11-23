@@ -878,6 +878,10 @@ final public class IconLoader {
       out = new ImageIcon(UtilSystem.getResource("icons/16x16/ext_drive_16x16.png"));
     }
 
+    else if (icon == JajukIcons.PREPARE_PARTY_32X32) {
+      out = new ImageIcon(UtilSystem.getResource("icons/32x32/ext_drive_32x32.png"));
+    }
+
     else if (icon == JajukIcons.COPY_TO_CLIPBOARD) {
       out = new ImageIcon(UtilSystem.getResource("icons/16x16/copy_url_clipboard_16x16.png"));
     }

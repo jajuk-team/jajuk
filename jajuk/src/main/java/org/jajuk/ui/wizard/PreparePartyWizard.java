@@ -204,7 +204,7 @@ public class PreparePartyWizard extends Wizard {
     super(Messages.getString("PreparePartyWizard.1"), bProvidedPlaylist ? GeneralOptionsPanel.class
         : ActionSelectionPanel.class, null, JajukMainWindow.getInstance(), LocaleManager
         .getLocale(), 800, 550);
-    super.setHeaderIcon(IconLoader.getIcon(JajukIcons.PREPARE_PARTY));
+    super.setHeaderIcon(IconLoader.getIcon(JajukIcons.PREPARE_PARTY_32X32));
 
     // check if pacpl can be used, do it every time the dialog starts as the
     // user might have installed it by now
