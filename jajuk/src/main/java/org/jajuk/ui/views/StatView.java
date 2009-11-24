@@ -215,8 +215,8 @@ public class StatView extends ViewAdapter {
       plot.setNoDataMessage(Messages.getString("StatView.5"));
       plot.setForegroundAlpha(0.5f);
       plot.setBackgroundAlpha(0.5f);
-      plot.setLabelGenerator(new StandardPieSectionLabelGenerator("{0} = {3} GB"));
-      plot.setToolTipGenerator(new StandardPieToolTipGenerator("{0} = {3} GB"));
+      plot.setLabelGenerator(new StandardPieSectionLabelGenerator("{0} = {1} GB ({2})"));
+      plot.setToolTipGenerator(new StandardPieToolTipGenerator("{0} = {1} GB ({2})"));
       return new ChartPanel(jfchart);
     } catch (RuntimeException e) {
       Log.error(e);
