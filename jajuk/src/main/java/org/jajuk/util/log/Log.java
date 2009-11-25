@@ -38,6 +38,11 @@ import org.jajuk.util.error.JajukException;
  */
 public final class Log {
   
+  /**
+   * 
+   */
+  private static final String FONT_END = "</font>";
+
   /** The Constant LOGGER_APACHE_HTTPCLIENT.  DOCUMENT_ME */
   private static final String LOGGER_APACHE_HTTPCLIENT = "org.apache.commons.httpclient";
 
@@ -144,7 +149,7 @@ public final class Log {
     // collection commit problem in initialCheckups)
     if (log == null) {
       System.out.println("[DEBUG] " + sInfosup);
-      t.printStackTrace();
+      stack(t);
       return;
     }
     String sOut;
@@ -153,7 +158,7 @@ public final class Log {
     } else {
       sOut = ((sInfosup == null) ? "" : ":" + sInfosup);
     }
-    spool("<font color='red'>[DEBUG] " + sOut + "</font>");
+    spool("<font color='red'>[DEBUG] " + sOut + FONT_END);
     if (t != null) {
       spool(t);
     }
@@ -171,7 +176,7 @@ public final class Log {
       System.out.println("[INFO] " + s);
       return;
     }
-    spool("<font color='blue'>[INFO] " + s + "</font>");
+    spool("<font color='blue'>[INFO] " + s + FONT_END);
     logger.log(FULL_QUALIFIED_CLASS_NAME, Level.INFO, s, null);
   }
 
@@ -186,7 +191,7 @@ public final class Log {
       System.out.println("[WARN] " + s);
       return;
     }
-    spool("<font color='orange'>[WARN] " + s + "</font>");
+    spool("<font color='orange'>[WARN] " + s + FONT_END);
     logger.log(FULL_QUALIFIED_CLASS_NAME, Level.WARN, s, null);
   }
 
@@ -203,7 +208,7 @@ public final class Log {
       System.out.println("[WARN] " + sOut);
       return;
     }
-    spool("<font color='orange'>[INFO] " + sOut + "</font>");
+    spool("<font color='orange'>[INFO] " + sOut + FONT_END);
     logger.log(FULL_QUALIFIED_CLASS_NAME, Level.WARN, sOut, null);
   }
 
@@ -225,10 +230,10 @@ public final class Log {
     // Just display the message if Log is not yet enabled
     if (log == null) {
       System.out.println("[WARN] " + sOut);
-      t.printStackTrace();
+      stack(t);
       return;
     }
-    spool("<font color='orange'>[WARN] " + sOut + "</font>");
+    spool("<font color='orange'>[WARN] " + sOut + FONT_END);
     spool(t);
     logger.log(FULL_QUALIFIED_CLASS_NAME, Level.WARN, sOut, t);
   }
@@ -245,7 +250,7 @@ public final class Log {
     // collection commit problem in initialCheckups)
     if (log == null) {
       System.out.println("[ERROR] " + code + " / " + sInfosup);
-      t.printStackTrace();
+      stack(t);
       return;
     }
     String sOut;
@@ -255,7 +260,7 @@ public final class Log {
     } else {
       sOut = "(" + code + ") " + ((sInfosup == null) ? "" : ":" + sInfosup);
     }
-    spool("<font color='red'>[ERROR] " + sOut + "</font>");
+    spool("<font color='red'>[ERROR] " + sOut + FONT_END);
     if (t != null) {
       spool(t);
     }
@@ -280,7 +285,7 @@ public final class Log {
       System.out.println("[ERROR] " + sOut);
       return;
     }
-    spool("<font color='red'>[ERROR] " + sOut + "</font>");
+    spool("<font color='red'>[ERROR] " + sOut + FONT_END);
     logger.log(FULL_QUALIFIED_CLASS_NAME, Level.ERROR, sOut, null);
   }
 
@@ -293,7 +298,7 @@ public final class Log {
     // Just make a print stake trace if Log is not yet enabled (example:
     // collection commit problem in initialCheckups)
     if (log == null) {
-      t.printStackTrace();
+      stack(t);
       return;
     }
     spool(t);
@@ -395,7 +400,7 @@ public final class Log {
    * 
    * @param e DOCUMENT_ME
    */
-  public static void stack(Exception e) {
+  public static void stack(Throwable e) {
     e.printStackTrace();
   }
 
@@ -443,7 +448,7 @@ public final class Log {
     spool("[ERROR] " + e.getClass() + " / {{" + e.getMessage() + "}} / " + e.getCause());
     StackTraceElement[] ste = e.getStackTrace();
     for (StackTraceElement element : ste) {
-      spool("<font color='red'>" + element.toString() + "</font>");
+      spool("<font color='red'>" + element.toString() + FONT_END);
     }
   }
 
