@@ -61,17 +61,16 @@ import org.jajuk.util.log.Log;
  */
 public class AlarmClockDialog extends JajukJDialog implements ActionListener, ItemListener, Const {
   
+  /** 
+   * Constant for MigLayout hint.
+   */
+  private static final String LEFT_WRAP = "left,wrap";
+
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
   /** DOCUMENT_ME. */
-  private final JPanel jpOKCancel;
-
-  /** DOCUMENT_ME. */
   private final JLabel jlChoice;
-
-  /** DOCUMENT_ME. */
-  private final ButtonGroup bgChoices;
 
   /** DOCUMENT_ME. */
   private final JButton jbOK;
@@ -81,9 +80,6 @@ public class AlarmClockDialog extends JajukJDialog implements ActionListener, It
 
   /** DOCUMENT_ME. */
   private final JCheckBox jcbTime;
-
-  /** DOCUMENT_ME. */
-  private final JLabel jlAlarmAction;
 
   /** DOCUMENT_ME. */
   private final JRadioButton jrbShuffle;
@@ -131,7 +127,7 @@ public class AlarmClockDialog extends JajukJDialog implements ActionListener, It
     jtfSeconds = new JTextField(2);
     jtfSeconds.setToolTipText(Messages.getString("AlarmDialog.3"));
 
-    jlAlarmAction = new JLabel(Messages.getString("AlarmDialog.4"));
+    final JLabel jlAlarmAction = new JLabel(Messages.getString("AlarmDialog.4"));
     jcbAlarmAction = new JComboBox();
     jcbAlarmAction.addItem(Const.ALARM_START_ACTION);
     jcbAlarmAction.addItem(Const.ALARM_STOP_ACTION);
@@ -167,7 +163,7 @@ public class AlarmClockDialog extends JajukJDialog implements ActionListener, It
     sbSearch.setEnabled(false);
     sbSearch.setToolTipText(Messages.getString("ParameterView.18"));
 
-    bgChoices = new ButtonGroup();
+    final ButtonGroup bgChoices = new ButtonGroup();
     bgChoices.add(jrbShuffle);
     bgChoices.add(jrbBestof);
     bgChoices.add(jrbNovelties);
@@ -175,7 +171,7 @@ public class AlarmClockDialog extends JajukJDialog implements ActionListener, It
 
     jrbShuffle.setSelected(true);
 
-    jpOKCancel = new JPanel();
+    final JPanel jpOKCancel = new JPanel();
     jpOKCancel.setLayout(new FlowLayout());
     jbOK = new JButton(Messages.getString("Ok"));
     jbOK.addActionListener(this);
@@ -193,11 +189,11 @@ public class AlarmClockDialog extends JajukJDialog implements ActionListener, It
     add(new JLabel(":"));
     add(jtfSeconds, "width 30!,wrap");
     add(jlAlarmAction, "center");
-    add(jcbAlarmAction, "left,wrap");
-    add(jlChoice, "left,wrap");
-    add(jrbShuffle, "left,wrap");
-    add(jrbBestof, "left,wrap");
-    add(jrbNovelties, "left,wrap");
+    add(jcbAlarmAction, LEFT_WRAP);
+    add(jlChoice, LEFT_WRAP);
+    add(jrbShuffle, LEFT_WRAP);
+    add(jrbBestof, LEFT_WRAP);
+    add(jrbNovelties, LEFT_WRAP);
     add(jrbFile, "left");
     add(sbSearch, "left,wrap,grow");
     add(jpOKCancel, "center,grow,span");
@@ -350,7 +346,7 @@ public class AlarmClockDialog extends JajukJDialog implements ActionListener, It
     } else if (Const.STARTUP_MODE_SHUFFLE.equals(Conf.getString(CONF_ALARM_MODE))) {
       jrbShuffle.setSelected(true);
     }
-    // Force an an action event to update enable state of widgets
+    // Force an action event to update enable state of widgets
     actionPerformed(new ActionEvent(jcbTime, 0, null));
   }
 

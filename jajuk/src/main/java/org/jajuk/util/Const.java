@@ -166,7 +166,7 @@ public interface Const {
   int MILLISECONDS_IN_A_DAY = MILLISECONDS_IN_A_SECOND * SECONDS_IN_A_MINUTE * MINUTES_IN_AN_HOUR
       * HOURS_IN_A_DAY;
 
-  /** Last alapsed time display mode format + 1 *. */
+  /** Last elapsed time display mode format + 1 *. */
   int FORMAT_TIME_ELAPSED_MAX = 4;
 
   /** Mplayer windows exe size in bytes. */

@@ -62,7 +62,7 @@ public class TrackPositionSliderToolbar extends JajukJToolbar implements ChangeL
   private static final long serialVersionUID = 1L;
 
   /** Last slider manual move date. */
-  private static long lDateLastAdjust;
+  private long lDateLastAdjust;
 
   /** DOCUMENT_ME. */
   private JSlider jsPosition;
@@ -89,6 +89,8 @@ public class TrackPositionSliderToolbar extends JajukJToolbar implements ChangeL
    * Instantiates a new track position slider toolbar.
    */
   public TrackPositionSliderToolbar() {
+    super();
+
     initGui();
 
     // check if some errors occurred before the view has been displayed
@@ -108,8 +110,7 @@ public class TrackPositionSliderToolbar extends JajukJToolbar implements ChangeL
   }
 
   /**
-   * Inits the gui.
-   * DOCUMENT_ME
+   * Inits the gui. DOCUMENT_ME
    */
   private void initGui() {
     setToolTipText(Messages.getString("InformationJPanel.7"));
@@ -121,14 +122,7 @@ public class TrackPositionSliderToolbar extends JajukJToolbar implements ChangeL
     add(jsPosition);
     jlCurrent = new JLabel();
     jlCurrent.setToolTipText(Messages.getString("CommandJPanel.15"));
-    jlCurrent.addMouseListener(new MouseAdapter() {
-      @Override
-      public void mouseClicked(MouseEvent e) {
-        int currentFormat = Conf.getInt(Const.CONF_FORMAT_TIME_ELAPSED);
-        Conf.setProperty(Const.CONF_FORMAT_TIME_ELAPSED, Integer
-            .toString(((currentFormat + 1) % Const.FORMAT_TIME_ELAPSED_MAX)));
-      }
-    });
+    jlCurrent.addMouseListener(new TimeDisplaySwitchMouseAdapter());
     add(jlCurrent);
     add(Box.createHorizontalStrut(6));
   }
@@ -136,7 +130,9 @@ public class TrackPositionSliderToolbar extends JajukJToolbar implements ChangeL
   /*
    * (non-Javadoc)
    * 
-   * @see javax.swing.event.ChangeListener#stateChanged(javax.swing.event.ChangeEvent )
+   * @see
+   * javax.swing.event.ChangeListener#stateChanged(javax.swing.event.ChangeEvent
+   * )
    */
   public void stateChanged(ChangeEvent e) {
     if (e.getSource() == jsPosition && !jsPosition.getValueIsAdjusting()) {
@@ -148,7 +144,8 @@ public class TrackPositionSliderToolbar extends JajukJToolbar implements ChangeL
   /**
    * Call a seek.
    * 
-   * @param fPosition DOCUMENT_ME
+   * @param fPosition
+   *          DOCUMENT_ME
    */
   private void setPosition(final float fPosition) {
     new Thread("TrackSlider Position Thread") {
@@ -186,10 +183,12 @@ public class TrackPositionSliderToolbar extends JajukJToolbar implements ChangeL
   /**
    * Set the current status for current track ex : 01:01:01/02:02:02.
    * 
-   * @param lTime DOCUMENT_ME
-   * @param length DOCUMENT_ME
+   * @param lTime
+   *          DOCUMENT_ME
+   * @param length
+   *          DOCUMENT_ME
    */
-  public void setCurrentTimeMessage(long lTime, long length) {
+  public final void setCurrentTimeMessage(long lTime, long length) {
     String string;
     int timeFormat = 0;
     // Set the required decimal precision for percentage here
@@ -205,8 +204,8 @@ public class TrackPositionSliderToolbar extends JajukJToolbar implements ChangeL
     }
     switch (timeFormat) {
     /*
-     * same as default... case 0: { string = UtilString.formatTimeBySec(lTime) + " / " +
-     * UtilString.formatTimeBySec(length); break; }
+     * same as default... case 0: { string = UtilString.formatTimeBySec(lTime) +
+     * " / " + UtilString.formatTimeBySec(length); break; }
      */
     case 1: {
       string = "-" + UtilString.formatTimeBySec(length - lTime) + " / "
@@ -329,5 +328,18 @@ public class TrackPositionSliderToolbar extends JajukJToolbar implements ChangeL
    */
   public String getCurrentStatusMessage() {
     return sCurrentStatus;
+  }
+
+  /**
+   * Small MouseAdapter to loop through the different ways of displaying the
+   * elapsed time
+   */
+  private final class TimeDisplaySwitchMouseAdapter extends MouseAdapter {
+    @Override
+    public void mouseClicked(MouseEvent e) {
+      int currentFormat = Conf.getInt(Const.CONF_FORMAT_TIME_ELAPSED);
+      Conf.setProperty(Const.CONF_FORMAT_TIME_ELAPSED, Integer
+          .toString(((currentFormat + 1) % Const.FORMAT_TIME_ELAPSED_MAX)));
+    }
   }
 }

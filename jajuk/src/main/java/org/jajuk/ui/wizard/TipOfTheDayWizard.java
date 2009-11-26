@@ -49,14 +49,14 @@ import org.jajuk.util.Messages;
 import org.jajuk.util.UtilSystem;
 
 /**
- * DOCUMENT_ME.
+ * Small dialog which displays the "Tip of the Day" from a list of useful hints.
  */
 public class TipOfTheDayWizard extends JFrame {
 
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
-  /** The Constant TIPS.  DOCUMENT_ME */
+  /** The Constant TIPS. DOCUMENT_ME */
   private static final String[] TIPS = Messages.getAll("TipOfTheDay");
 
   /** DOCUMENT_ME. */
@@ -123,7 +123,7 @@ public class TipOfTheDayWizard extends JFrame {
     JLabel lIcon = new JLabel(IconLoader.getIcon(JajukIcons.TIP), SwingConstants.LEFT);
 
     KeyStroke stroke = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0);
-    
+
     JPanel pTop = new JPanel(new BorderLayout());
     pTop.add(lIcon, BorderLayout.WEST);
     pTop.add(lTitle, BorderLayout.CENTER);
@@ -167,13 +167,14 @@ public class TipOfTheDayWizard extends JFrame {
   }
 
   /**
-   * Sets the escape key.
-   * DOCUMENT_ME
+   * Sets the escape key. DOCUMENT_ME
    * 
-   * @param stroke DOCUMENT_ME
-   * @param pTop DOCUMENT_ME
+   * @param stroke
+   *          DOCUMENT_ME
+   * @param pTop
+   *          DOCUMENT_ME
    */
-  private void setEscapeKey(KeyStroke stroke, JPanel pTop) {
+  private final void setEscapeKey(KeyStroke stroke, JPanel pTop) {
     pTop.registerKeyboardAction(new ActionListener() {
       public void actionPerformed(ActionEvent actionEvent) {
         // setVisible(false);
@@ -217,7 +218,9 @@ public class TipOfTheDayWizard extends JFrame {
     tipArea.setCaretPosition(0);
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see java.awt.Window#setVisible(boolean)
    */
   @Override
