@@ -92,7 +92,7 @@ public class StartupAsyncService {
           // implemented on Linux
           if (UtilSystem.isUnderLinux()) {
             // make sure the singleton is initialized here
-            DBusManager.getInstance();
+            DBusManager.connect();
           }
           
           // Wait few secs to avoid GUI startup perturbations

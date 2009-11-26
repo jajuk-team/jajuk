@@ -20,58 +20,45 @@
  */
 package org.jajuk.services.dbus;
 
-import org.jajuk.util.log.Log;
-
 /**
- * DOCUMENT_ME.
+ * Base class to connect/disconnect to the session wide DBus daemon.
  */
 public final class DBusManager {
-  
-  /** Self instance. */
-  private static DBusManager self = null;
 
   /** Support for D-Bus remote control of Jajuk. */
-  private final DBusSupportImpl dbus;
+  private static DBusSupportImpl dbus;
 
   /**
-   * Gets the instance.
+   * Gets the instance. This is usually called during startup to initialize the
+   * connection to D-Bus.
    * 
-   * @return singleton
+   * This call will usually not return an exception if there is a problem with
+   * D-Bus, but will only report problems to the Log.
+   * 
+   * @see disconnect()
    */
-  public static DBusManager getInstance() {
-    if (self == null) {
-      try {
-        self = new DBusManager();
-      } catch (Throwable t) {
-        Log.error(t);
-      }
+  public static void connect() {
+    if (dbus == null) {
+      dbus = new DBusSupportImpl();
+
+      // the connect method will internally catch errors and report them to the
+      // logfile
+      dbus.connect();
     }
-    return self;
   }
 
   /**
-   * Instantiates a new d bus manager.
-   */
-  private DBusManager() {
-    dbus = new DBusSupportImpl();
-
-    // the connect method will internally catch errors and report them to the
-    // logfile
-    dbus.connect();
-  }
-
-  /**
-   * Disconnect.
-   * DOCUMENT_ME
+   * De-initialize the D-Bus connection. Nothing is done here if the connection
+   * is not established (yet).
+   * 
+   * @see connect()
    */
   public static void disconnect() {
-    try {
-      if (self != null) {
-        self.dbus.disconnect();
-      }
-    } catch (Throwable t) {
-      Log.error(t);
+    if (dbus != null) {
+      dbus.disconnect();
+      
+      // reset to let initialize work correctly in all cases
+      dbus = null;
     }
   }
-
 }
