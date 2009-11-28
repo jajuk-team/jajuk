@@ -53,6 +53,7 @@ public class JajukInformationDialog extends JDialog {
     // Otherwise, if no owner window is given or if the owner window is not
     // displayed, an ugly task entry appears on the task bar
     super(UtilGUI.getActiveWindow());
+    setFocusableWindowState(false); 
     setUndecorated(true);
     getRootPane().setWindowDecorationStyle(JRootPane.NONE);
     getRootPane().setBorder(new LineBorder(Color.BLACK));
