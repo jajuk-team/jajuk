@@ -56,6 +56,7 @@ import org.jajuk.services.webradio.WebRadio;
 import org.jajuk.ui.actions.ActionManager;
 import org.jajuk.ui.actions.JajukActions;
 import org.jajuk.ui.helpers.FontManager;
+import org.jajuk.ui.helpers.JajukMouseAdapter;
 import org.jajuk.ui.helpers.FontManager.JajukFont;
 import org.jajuk.ui.widgets.JajukButton;
 import org.jajuk.ui.widgets.JajukToggleButton;
@@ -71,9 +72,8 @@ import org.jdesktop.swingx.JXBusyLabel;
 /**
  * Lyrics view
  * <p>
- * Data comes from the Tag of the file or a txt file
- * if present; otherwise from www.lyrc.com.ar,
- * lyrics.wikia.com or lyricsfly.com
+ * Data comes from the Tag of the file or a txt file if present; otherwise from
+ * www.lyrc.com.ar, lyrics.wikia.com or lyricsfly.com
  * </p>
  */
 public class LyricsView extends ViewAdapter {
@@ -83,48 +83,48 @@ public class LyricsView extends ViewAdapter {
 
   /** DOCUMENT_ME. */
   private JTextArea textarea = null;
-  
+
   /** DOCUMENT_ME. */
   private JScrollPane jsp = null;
-  
+
   /** DOCUMENT_ME. */
   private JLabel jlTitle = null;
-  
+
   /** DOCUMENT_ME. */
   private JLabel jlAuthor = null;
-  
+
   /** DOCUMENT_ME. */
   private String sURL = null;
-  
+
   /** DOCUMENT_ME. */
   private Track track = null;
-  
+
   /** DOCUMENT_ME. */
   private String lyrics = null;
-  
+
   /** DOCUMENT_ME. */
   private JMenuItem jmiCopyToClipboard = null;
-  
+
   /** DOCUMENT_ME. */
   private JMenuItem jmiLaunchInBrowser = null;
-  
+
   /** DOCUMENT_ME. */
   private final JXBusyLabel busy = new JXBusyLabel();
-  
+
   /** DOCUMENT_ME. */
   private JPanel p;
-  
+
   /** DOCUMENT_ME. */
   private JajukButton jbSave = null;
-  
+
   /** DOCUMENT_ME. */
   private JajukButton jbDelete = null;
-  
+
   /** DOCUMENT_ME. */
   private JajukToggleButton jtbEdit = null;
-  
+
   /** DOCUMENT_ME. */
-  private JajukLyricsProvider jajukLyricsProvider = null; 
+  private JajukLyricsProvider jajukLyricsProvider = null;
 
   /**
    * Instantiates a new lyrics view.
@@ -150,32 +150,29 @@ public class LyricsView extends ViewAdapter {
     ta.setEditable(false);
     ta.setMargin(new Insets(10, 10, 10, 10));
     ta.setFont(fmgr.getFont(JajukFont.BOLD));
-    ta.addMouseListener(new MouseAdapter() {
+    ta.addMouseListener(new JajukMouseAdapter() {
 
       @Override
-      public void mousePressed(final MouseEvent e) {
-        if (e.isPopupTrigger()) {
-          handlePopup(e);
+      public void handlePopup(final MouseEvent e) {
+        final JPopupMenu menu = new JPopupMenu();
+        menu.add(getJmiCopyToClipboard());
+        if (Desktop.isDesktopSupported()) {
+          getJmiLaunchInBrowser().putClientProperty(Const.DETAIL_CONTENT, sURL);
+          getJmiCopyToClipboard().putClientProperty(Const.DETAIL_CONTENT, sURL);
+          menu.add(getJmiLaunchInBrowser());
         }
+        menu.show(getTextArea(), e.getX(), e.getY());
       }
-
-      @Override
-      public void mouseReleased(final MouseEvent e) {
-        if (e.isPopupTrigger()) {
-          handlePopup(e);
-        }
-      }
-
     });
+    
     author.setFont(fmgr.getFont(JajukFont.PLAIN_L));
     title.setFont(fmgr.getFont(JajukFont.PLAIN_XL));
     ta.setFont(fmgr.getFont(JajukFont.PLAIN));
-
     initEditUI();
-    
+
     // Add items
     p = new JPanel(new MigLayout("insets 5,gapx 3, gapy 5,filly", "[grow]", "[][][][grow]"));
-    p.add(jlTitle, "wrap,center");    
+    p.add(jlTitle, "wrap,center");
     p.add(jlAuthor, "wrap,center");
     p.add(jtbEdit, "left,split 3");
     p.add(jbSave, "center");
@@ -188,89 +185,72 @@ public class LyricsView extends ViewAdapter {
     // Force initial message refresh
     UtilFeatures.updateStatus(this);
   }
-  
+
   /**
    * Initializes the UI of edit lyrics mode.
    */
   public void initEditUI() {
     jtbEdit = getJtbEdit();
     jtbEdit.setToolTipText(Messages.getString("LyricsView.2"));
-    jtbEdit.addItemListener(new ItemListener() {             
+    jtbEdit.addItemListener(new ItemListener() {
       public void itemStateChanged(ItemEvent ev) {
         if (jtbEdit.isSelected()) {
           editLyrics(QueueModel.getPlayingFile());
           jtbEdit.setToolTipText(Messages.getString("LyricsView.3"));
-        }
-        else {
+        } else {
           exitEditLyrics(true);
           jtbEdit.setToolTipText(Messages.getString("LyricsView.2"));
         }
       }
     });
-    
+
     jbSave = getJbSave();
     jbSave.setToolTipText(Messages.getString("LyricsView.4"));
     jbSave.setVisible(false);
-    jbSave.addMouseListener(new MouseAdapter() {      
+    jbSave.addMouseListener(new MouseAdapter() {
       @Override
       public void mouseClicked(final MouseEvent ev) {
         jajukLyricsProvider.setLyrics(textarea.getText());
         LyricsService.commitLyrics(jajukLyricsProvider);
-        exitEditLyrics(false);           
+        exitEditLyrics(false);
       }
     });
-    
+
     jbDelete = getJbDelete();
     jbDelete.setToolTipText(Messages.getString("LyricsView.5"));
     jbDelete.setVisible(false);
-    jbDelete.addMouseListener(new MouseAdapter() {      
+    jbDelete.addMouseListener(new MouseAdapter() {
       @Override
       public void mouseClicked(final MouseEvent ev) {
         LyricsService.deleteLyrics(jajukLyricsProvider);
-        exitEditLyrics(true);  
+        exitEditLyrics(true);
       }
-    });    
+    });
   }
 
-  /**
-   * Handle popup.
-   * DOCUMENT_ME
-   * 
-   * @param e DOCUMENT_ME
-   */
-  public void handlePopup(final MouseEvent e) {
-    final JPopupMenu menu = new JPopupMenu();
-
-    menu.add(getJmiCopyToClipboard());
-    if (Desktop.isDesktopSupported()) {
-      getJmiLaunchInBrowser().putClientProperty(Const.DETAIL_CONTENT, sURL);
-      getJmiCopyToClipboard().putClientProperty(Const.DETAIL_CONTENT, sURL);
-      menu.add(getJmiLaunchInBrowser());
-    }
-    menu.show(getTextArea(), e.getX(), e.getY());
-  }
-  
   /**
    * Switch from lyrics view to edit mode.
    * 
-   * @param file The file to edit lyrics for
+   * @param file
+   *          The file to edit lyrics for
    */
   public void editLyrics(final File file) {
     jajukLyricsProvider = getJajukLyricsProvider();
     jajukLyricsProvider.setFile(file);
-    
-    jbSave.setVisible(true);    
+
+    jbSave.setVisible(true);
     textarea.setEditable(true);
-    //If lyrics already exist in tag or txt show delete button
+    // If lyrics already exist in tag or txt show delete button
     if (!(LyricsService.getCurrentProvider() instanceof GenericWebLyricsProvider)) {
       jbDelete.setVisible(true);
     }
   }
-  
+
   /**
    * Switch from lyrics edit to view mode.
    * 
-   * @param callUpdate Whether to call an update after switching
+   * @param callUpdate
+   *          Whether to call an update after switching
    */
   public void exitEditLyrics(boolean callUpdate) {
     textarea.setEditable(false);
@@ -280,7 +260,7 @@ public class LyricsView extends ViewAdapter {
     if (callUpdate) {
       update(new JajukEvent(JajukEvents.FILE_LAUNCHED));
     }
-  }    
+  }
 
   /*
    * (non-Javadoc)
@@ -355,16 +335,14 @@ public class LyricsView extends ViewAdapter {
           if (lyrics != null) {
             ILyricsProvider provider = LyricsService.getCurrentProvider();
             if (provider instanceof GenericWebLyricsProvider) {
-              sURL = ((GenericWebLyricsProvider)provider).getWebURL(track.getAuthor().getName2(),
+              sURL = ((GenericWebLyricsProvider) provider).getWebURL(track.getAuthor().getName2(),
                   track.getName()).toString();
-            }
-            else if (provider instanceof TagLyricsProvider){
+            } else if (provider instanceof TagLyricsProvider) {
               sURL = "<Tag>";
-            }
-            else {
+            } else {
               sURL = "<Txt>";
             }
-            
+
           } else {
             sURL = "<none>";
           }
@@ -467,7 +445,7 @@ public class LyricsView extends ViewAdapter {
     }
     return jsp;
   }
-  
+
   /**
    * Gets the jl title.
    * 
@@ -491,7 +469,7 @@ public class LyricsView extends ViewAdapter {
     }
     return jlAuthor;
   }
-  
+
   /**
    * Gets the jb save.
    * 
@@ -503,7 +481,7 @@ public class LyricsView extends ViewAdapter {
     }
     return jbSave;
   }
-  
+
   /**
    * Gets the jb delete.
    * 
@@ -552,7 +530,7 @@ public class LyricsView extends ViewAdapter {
     }
     return jmiLaunchInBrowser;
   }
-  
+
   /**
    * Gets the jajuk lyrics provider.
    * 

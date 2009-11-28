@@ -25,8 +25,6 @@ import java.awt.Component;
 import java.awt.dnd.DnDConstants;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.InputEvent;
-import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Collections;
 import java.util.Date;
@@ -75,6 +73,7 @@ import org.jajuk.services.players.StackItem;
 import org.jajuk.ui.actions.ActionManager;
 import org.jajuk.ui.actions.JajukActions;
 import org.jajuk.ui.helpers.FontManager;
+import org.jajuk.ui.helpers.JajukMouseAdapter;
 import org.jajuk.ui.helpers.TransferableTreeNode;
 import org.jajuk.ui.helpers.TreeRootElement;
 import org.jajuk.ui.helpers.TreeTransferHandler;
@@ -127,7 +126,9 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
     super();
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see org.jajuk.events.Observer#getRegistrationKeys()
    */
   public Set<JajukEvents> getRegistrationKeys() {
@@ -575,8 +576,10 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
   /**
    * Utility method used by populateByDiscovery method.
    * 
-   * @param node DOCUMENT_ME
-   * @param track DOCUMENT_ME
+   * @param node
+   *          DOCUMENT_ME
+   * @param track
+   *          DOCUMENT_ME
    */
   @SuppressWarnings("unchecked")
   private void addTrackAndAlbum(DefaultMutableTreeNode node, Track track) {
@@ -707,8 +710,10 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
    * DOCUMENT_ME.
    */
   class TracksTreeSelectionListener implements TreeSelectionListener {
-    
-    /* (non-Javadoc)
+
+    /*
+     * (non-Javadoc)
+     * 
      * @see javax.swing.event.TreeSelectionListener#valueChanged(javax.swing.event.TreeSelectionEvent)
      */
     public void valueChanged(TreeSelectionEvent e) {
@@ -740,7 +745,8 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
     /**
      * Handle selected.
      * 
-     * @param tpSelected DOCUMENT_ME
+     * @param tpSelected
+     *          DOCUMENT_ME
      * 
      * @return the int
      */
@@ -781,44 +787,28 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
   }
 
   /**
-   * DOCUMENT_ME.
+   * Tracks Tree view mouse adapter
    */
-  class TracksMouseAdapter extends MouseAdapter {
-    
+  class TracksMouseAdapter extends JajukMouseAdapter {
+
     /** DOCUMENT_ME. */
     private final JMenuItem jmiShowAlbumDetails;
 
     /**
      * Instantiates a new tracks mouse adapter.
      * 
-     * @param jmiShowAlbumDetails DOCUMENT_ME
+     * @param jmiShowAlbumDetails
+     *          DOCUMENT_ME
      */
     public TracksMouseAdapter(JMenuItem jmiShowAlbumDetails) {
       super();
       this.jmiShowAlbumDetails = jmiShowAlbumDetails;
     }
 
-    /* (non-Javadoc)
-     * @see java.awt.event.MouseAdapter#mousePressed(java.awt.event.MouseEvent)
-     */
     @Override
-    public void mousePressed(MouseEvent e) {
-      if (e.isPopupTrigger()) {
-        handlePopup(e);
-        // Left click
-      } else if ((e.getModifiersEx() & InputEvent.CTRL_DOWN_MASK) == 0) {
-        handleMouseEvent(e);
-      }
-    }
-
-    /**
-     * Handle mouse event.
-     * 
-     * @param e DOCUMENT_ME
-     */
-    private void handleMouseEvent(MouseEvent e) {
+    public void handleActionSeveralClicks(final MouseEvent e) {
       TreePath path = jtree.getPathForLocation(e.getX(), e.getY());
-      if (path != null && e.getClickCount() == 2) {
+      if (path != null) {
         Object o = path.getLastPathComponent();
         if (o instanceof TrackNode) {
           Track track = ((TrackNode) o).getTrack();
@@ -837,22 +827,7 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
       }
     }
 
-    /* (non-Javadoc)
-     * @see java.awt.event.MouseAdapter#mouseReleased(java.awt.event.MouseEvent)
-     */
     @Override
-    public void mouseReleased(MouseEvent e) {
-      if (e.isPopupTrigger()) {
-        handlePopup(e);
-      }
-    }
-
-    /**
-     * Handle popup.
-     * DOCUMENT_ME
-     * 
-     * @param e DOCUMENT_ME
-     */
     public void handlePopup(final MouseEvent e) {
       TreePath path = jtree.getPathForLocation(e.getX(), e.getY());
       if (path == null) {
@@ -883,7 +858,8 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
     /**
      * Builds the menu.
      * 
-     * @param e DOCUMENT_ME
+     * @param e
+     *          DOCUMENT_ME
      */
     private void buildMenu(final MouseEvent e) {
       if (paths[0].getLastPathComponent() instanceof TrackNode) {

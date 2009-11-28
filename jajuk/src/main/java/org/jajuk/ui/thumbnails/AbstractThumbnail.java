@@ -32,8 +32,6 @@ import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.InputEvent;
-import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.io.File;
@@ -56,6 +54,7 @@ import org.jajuk.base.TrackManager;
 import org.jajuk.ui.actions.ActionManager;
 import org.jajuk.ui.actions.JajukAction;
 import org.jajuk.ui.actions.JajukActions;
+import org.jajuk.ui.helpers.JajukMouseAdapter;
 import org.jajuk.ui.views.CoverView;
 import org.jajuk.ui.windows.JajukMainWindow;
 import org.jajuk.util.Conf;
@@ -179,7 +178,7 @@ public abstract class AbstractThumbnail extends JPanel implements ActionListener
    * Constructor.
    * 
    * @param size :
-   * size of the thumbnail
+   *          size of the thumbnail
    */
   public AbstractThumbnail(int size) {
     this.size = size;
@@ -198,7 +197,8 @@ public abstract class AbstractThumbnail extends JPanel implements ActionListener
   /**
    * Sets the artist view.
    * 
-   * @param artistBioThumb the new artist view
+   * @param artistBioThumb
+   *          the new artist view
    */
   public void setArtistView(boolean artistBioThumb) {
     this.artistView = artistBioThumb;
@@ -228,8 +228,7 @@ public abstract class AbstractThumbnail extends JPanel implements ActionListener
   }
 
   /**
-   * Populate.
-   * DOCUMENT_ME
+   * Populate. DOCUMENT_ME
    */
   public abstract void populate();
 
@@ -314,22 +313,32 @@ public abstract class AbstractThumbnail extends JPanel implements ActionListener
 
     });
 
-    jlIcon.addMouseListener(new MouseAdapter() {
+    jlIcon.addMouseListener(new JajukMouseAdapter() {
+
       @Override
-      public void mousePressed(MouseEvent e) {
-        if (e.isPopupTrigger()) {
-          handlePopup(e);
-        } else if ((e.getModifiersEx() & InputEvent.CTRL_DOWN_MASK) == 0) {
-          // Leave if already dragging
-          if (bDragging) {
-            return;
-          }
-          // Left click
-          if (e.getButton() == MouseEvent.BUTTON1 && e.getSource() == jlIcon
-              && e.getClickCount() > 1) {
-            launch();
+      public void handlePopup(MouseEvent e) {
+        if (e.getSource() == jlIcon) {
+          // Show contextual menu
+          jmenu.show(jlIcon, e.getX(), e.getY());
+          // Hide any details frame
+          if (details != null) {
+            details.dispose();
+            details = null;
           }
         }
+      }
+
+      @Override
+      public void handleActionSeveralClicks(MouseEvent e) {
+        launch();
+      }
+
+      @Override
+      public void mousePressed(MouseEvent e) {
+        if (bDragging) {
+          return;
+        }
+        super.mousePressed(e);
       }
 
       @Override
@@ -355,21 +364,7 @@ public abstract class AbstractThumbnail extends JPanel implements ActionListener
         if (bDragging) {
           return;
         }
-        if (e.isPopupTrigger()) {
-          handlePopup(e);
-        }
-      }
-
-      public void handlePopup(final MouseEvent e) {
-        if (e.getSource() == jlIcon) {
-          // Show contextual menu
-          jmenu.show(jlIcon, e.getX(), e.getY());
-          // Hide any details frame
-          if (details != null) {
-            details.dispose();
-            details = null;
-          }
-        }
+        super.mouseReleased(e);
       }
 
     });
@@ -378,7 +373,8 @@ public abstract class AbstractThumbnail extends JPanel implements ActionListener
   /**
    * Sets the selected.
    * 
-   * @param b DOCUMENT_ME
+   * @param b
+   *          DOCUMENT_ME
    */
   public final void setSelected(boolean b) {
     requestFocusInWindow();
@@ -393,8 +389,7 @@ public abstract class AbstractThumbnail extends JPanel implements ActionListener
   }
 
   /**
-   * Launch.
-   * DOCUMENT_ME
+   * Launch. DOCUMENT_ME
    */
   public abstract void launch();
 

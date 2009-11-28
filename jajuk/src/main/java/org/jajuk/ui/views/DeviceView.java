@@ -28,12 +28,10 @@ import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.InputEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -56,6 +54,7 @@ import org.jajuk.base.DeviceManager;
 import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
+import org.jajuk.ui.helpers.JajukMouseAdapter;
 import org.jajuk.ui.wizard.DeviceWizard;
 import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
@@ -68,8 +67,8 @@ import org.jajuk.util.UtilGUI;
  * <p>
  * Configuration perspective.
  */
-public class DeviceView extends ViewAdapter implements IView, ActionListener, MouseListener {
-  
+public class DeviceView extends ViewAdapter implements IView, ActionListener {
+
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
@@ -106,8 +105,35 @@ public class DeviceView extends ViewAdapter implements IView, ActionListener, Mo
   /** DOCUMENT_ME. */
   DeviceItem diSelected;
 
-  /** DOCUMENT_ME. */
-  volatile boolean popupTrigger = false;
+  /**
+   * Mouse adapter used over device items to manage action or popup clicks
+   */
+  MouseAdapter ma = new JajukMouseAdapter() {
+
+    @Override
+    public void handleActionSingleClick(final MouseEvent e) {
+      boolean bSameDevice = ((diSelected != null) && e.getSource().equals(diSelected));// be
+      selectItem(e);
+      if (bSameDevice) {
+        // one device already selected + right click
+        DeviceWizard dw = new DeviceWizard();
+        dw.updateWidgets(diSelected.getDevice());
+        dw.pack();
+        dw.setVisible(true);
+      } else {
+        // a new device is selected
+        diSelected.setBorder(BorderFactory.createLineBorder(Color.BLACK, 5));
+      }
+    }
+
+    @Override
+    public void handlePopup(final MouseEvent e) {
+      selectItem(e);
+      // a new device is selected
+      diSelected.setBorder(BorderFactory.createLineBorder(Color.BLACK, 5));
+      jpmenu.show(e.getComponent(), e.getX(), e.getY());
+    }
+  };
 
   /**
    * Instantiates a new device view.
@@ -186,7 +212,9 @@ public class DeviceView extends ViewAdapter implements IView, ActionListener, Mo
     ObservationManager.register(this);
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see org.jajuk.events.Observer#getRegistrationKeys()
    */
   public Set<JajukEvents> getRegistrationKeys() {
@@ -199,8 +227,7 @@ public class DeviceView extends ViewAdapter implements IView, ActionListener, Mo
   }
 
   /**
-   * Refresh devices.
-   * DOCUMENT_ME
+   * Refresh devices. DOCUMENT_ME
    */
   private void refreshDevices() {
     // remove all devices
@@ -270,7 +297,7 @@ public class DeviceView extends ViewAdapter implements IView, ActionListener, Mo
       }
       DeviceItem di = new DeviceItem(icon, device.getName(), device);
       di.setToolTipText(sTooltip);
-      di.addMouseListener(this);
+      di.addMouseListener(ma);
       di.setToolTipText(device.getDeviceTypeS());
       di.addKeyListener(new KeyAdapter() {
         @Override
@@ -316,7 +343,9 @@ public class DeviceView extends ViewAdapter implements IView, ActionListener, Mo
     return dv;
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
    */
   public void actionPerformed(final ActionEvent ae) {
@@ -413,58 +442,11 @@ public class DeviceView extends ViewAdapter implements IView, ActionListener, Mo
     }
   }
 
-  /* (non-Javadoc)
-   * @see java.awt.event.MouseListener#mousePressed(java.awt.event.MouseEvent)
-   */
-  public void mousePressed(MouseEvent e) {
-    if (e.isPopupTrigger()) {
-      popupTrigger = true;
-    }
-  }
-
-  /* (non-Javadoc)
-   * @see java.awt.event.MouseListener#mouseReleased(java.awt.event.MouseEvent)
-   */
-  public void mouseReleased(MouseEvent e) {
-    if (e.isPopupTrigger() || popupTrigger) {
-      popupTrigger = false;
-      handlePopup(e);
-    } else if ((e.getModifiersEx() & InputEvent.CTRL_DOWN_MASK) == 0) {
-      popupTrigger = false;
-      boolean bSameDevice = ((diSelected != null) && e.getSource().equals(diSelected));// be
-      selectItem(e);
-      if (bSameDevice) {
-        // one device already selected + right click
-        DeviceWizard dw = new DeviceWizard();
-        dw.updateWidgets(diSelected.getDevice());
-        dw.pack();
-        dw.setVisible(true);
-      } else {
-        // a new device is selected
-        diSelected.setBorder(BorderFactory.createLineBorder(Color.BLACK, 5));
-      }
-
-    }
-  }
-
   /**
-   * Handle popup.
-   * DOCUMENT_ME
+   * Select item. DOCUMENT_ME
    * 
-   * @param e DOCUMENT_ME
-   */
-  public void handlePopup(final MouseEvent e) {
-    selectItem(e);
-    // a new device is selected
-    diSelected.setBorder(BorderFactory.createLineBorder(Color.BLACK, 5));
-    jpmenu.show(e.getComponent(), e.getX(), e.getY());
-  }
-
-  /**
-   * Select item.
-   * DOCUMENT_ME
-   * 
-   * @param e DOCUMENT_ME
+   * @param e
+   *          DOCUMENT_ME
    */
   private void selectItem(final MouseEvent e) {
     boolean bSameDevice = ((diSelected != null) && e.getSource().equals(diSelected));

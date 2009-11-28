@@ -25,8 +25,6 @@ import java.awt.Component;
 import java.awt.dnd.DnDConstants;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.InputEvent;
-import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -74,6 +72,7 @@ import org.jajuk.ui.actions.JajukActions;
 import org.jajuk.ui.actions.RefactorAction;
 import org.jajuk.ui.helpers.FontManager;
 import org.jajuk.ui.helpers.ItemMoveManager;
+import org.jajuk.ui.helpers.JajukMouseAdapter;
 import org.jajuk.ui.helpers.LazyLoadingTreeNode;
 import org.jajuk.ui.helpers.TransferableTreeNode;
 import org.jajuk.ui.helpers.TreeRootElement;
@@ -503,77 +502,48 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
   /**
    * DOCUMENT_ME.
    */
-  class FilesMouseAdapter extends MouseAdapter {
+  class FilesMouseAdapter extends JajukMouseAdapter {
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.awt.event.MouseAdapter#mousePressed(java.awt.event.MouseEvent)
-     */
     @Override
-    public void mousePressed(final MouseEvent e) {
-      if (e.isPopupTrigger()) {
-        handlePopup(e);
-        // Left click
-      } else if ((e.getModifiersEx() & InputEvent.CTRL_DOWN_MASK) == 0) {
-        TreePath path = jtree.getPathForLocation(e.getX(), e.getY());
-        if (path == null) {
+    public void handleActionSeveralClicks(final MouseEvent e){
+      TreePath path = jtree.getPathForLocation(e.getX(), e.getY());
+      if (path == null) {
+        return;
+      }
+      Object o = path.getLastPathComponent();
+      if (o instanceof FileNode) {
+        File file = ((FileNode) o).getFile();
+        try {
+          QueueModel.push(new StackItem(file, Conf.getBoolean(Const.CONF_STATE_REPEAT_ALL),
+              true), Conf.getBoolean(Const.CONF_OPTIONS_PUSH_ON_CLICK));
+        } catch (JajukException je) {
+          Log.error(je);
+        }
+      }
+      // double click on a playlist
+      else if (o instanceof PlaylistFileNode) {
+        Playlist plf = ((PlaylistFileNode) o).getPlaylistFile();
+        List<File> alToPlay = null;
+        try {
+          alToPlay = plf.getFiles();
+        } catch (JajukException je) {
+          Log.error(je.getCode(), "{{" + plf.getName() + "}}", null);
+          Messages.showErrorMessage(je.getCode(), plf.getName());
           return;
         }
-        if (e.getClickCount() == 2) {
-          Object o = path.getLastPathComponent();
-          if (o instanceof FileNode) {
-            File file = ((FileNode) o).getFile();
-            try {
-              QueueModel.push(new StackItem(file, Conf.getBoolean(Const.CONF_STATE_REPEAT_ALL),
-                  true), Conf.getBoolean(Const.CONF_OPTIONS_PUSH_ON_CLICK));
-            } catch (JajukException je) {
-              Log.error(je);
-            }
-          }
-          // double click on a playlist
-          else if (o instanceof PlaylistFileNode) {
-            Playlist plf = ((PlaylistFileNode) o).getPlaylistFile();
-            List<File> alToPlay = null;
-            try {
-              alToPlay = plf.getFiles();
-            } catch (JajukException je) {
-              Log.error(je.getCode(), "{{" + plf.getName() + "}}", null);
-              Messages.showErrorMessage(je.getCode(), plf.getName());
-              return;
-            }
-            // check playlist contains accessible
-            // tracks
-            if (alToPlay == null || alToPlay.size() == 0) {
-              Messages.showErrorMessage(18);
-              return;
-            } else {
-              QueueModel.push(UtilFeatures.createStackItems(UtilFeatures.applyPlayOption(alToPlay),
-                  Conf.getBoolean(Const.CONF_STATE_REPEAT), true), false);
-            }
-          }
+        // check playlist contains accessible
+        // tracks
+        if (alToPlay == null || alToPlay.size() == 0) {
+          Messages.showErrorMessage(18);
+          return;
+        } else {
+          QueueModel.push(UtilFeatures.createStackItems(UtilFeatures.applyPlayOption(alToPlay),
+              Conf.getBoolean(Const.CONF_STATE_REPEAT), true), false);
         }
       }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.awt.event.MouseAdapter#mouseReleased(java.awt.event.MouseEvent)
-     */
     @Override
-    public void mouseReleased(final MouseEvent e) {
-      if (e.isPopupTrigger()) {
-        handlePopup(e);
-      }
-    }
-
-    /**
-     * Handle popup. DOCUMENT_ME
-     * 
-     * @param e
-     *          DOCUMENT_ME
-     */
     @SuppressWarnings("unchecked")
     public void handlePopup(final MouseEvent e) {
       TreePath path = jtree.getPathForLocation(e.getX(), e.getY());
