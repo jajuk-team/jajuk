@@ -128,10 +128,6 @@ public class SlideAnimation extends AbstractAnimation {
           }
 
           animationTimer.stop();
-          window.pack();
-          window.repaint();
-
-          window.setVisible(visible);
           animationCompleted();
         } else {
           float progress = (float) elapsed / animationTime;
