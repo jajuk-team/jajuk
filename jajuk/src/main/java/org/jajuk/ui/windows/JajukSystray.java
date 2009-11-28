@@ -258,7 +258,6 @@ public class JajukSystray extends CommandJPanel implements IJajukWindow {
 
     jmenu.add(jpTitle);
     jmenu.addSeparator();
-    jmenu.addSeparator();
     jmenu.add(jmAmbience);
     jmenu.addSeparator();
     jmenu.add(jmiPlayPause);
