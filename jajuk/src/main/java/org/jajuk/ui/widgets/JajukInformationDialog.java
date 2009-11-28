@@ -55,6 +55,7 @@ public class JajukInformationDialog extends JDialog {
     super(UtilGUI.getActiveWindow());
     setFocusableWindowState(false); 
     setUndecorated(true);
+    setAlwaysOnTop(true);
     getRootPane().setWindowDecorationStyle(JRootPane.NONE);
     getRootPane().setBorder(new LineBorder(Color.BLACK));
     JLabel jl = new JLabel(text);
