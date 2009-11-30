@@ -200,7 +200,7 @@ public class StartupEngineService {
       if (index == -1) {
         // Track not stored, push it first
         alToPlay.add(0, fileToPlay);
-        
+
         index = 0;
       }
 
@@ -219,7 +219,13 @@ public class StartupEngineService {
 
       // do not start playing if do nothing at startup is selected
       if (!Conf.getString(Const.CONF_STARTUP_MODE).equals(Const.STARTUP_MODE_NOTHING)) {
-        QueueModel.goTo(index);
+        final int finalIndex = index;
+        new Thread("Track Startup Thread") {
+          @Override
+          public void run() {
+            QueueModel.goTo(finalIndex);
+          }
+        }.start();
       }
     }
   }
