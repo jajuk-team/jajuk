@@ -45,7 +45,7 @@ import org.jaudiotagger.tag.id3.ID3v24Tag;
  * href="https://jaudiotagger.dev.java.net">JAudiotagger</a>
  */
 public class JAudioTaggerTagImpl implements ITagImpl, Const {
-  
+
   /** DOCUMENT_ME. */
   private static ArrayList<String> tagFieldKeyArrayList = new ArrayList<String>();
 
@@ -54,9 +54,9 @@ public class JAudioTaggerTagImpl implements ITagImpl, Const {
       // Disable Jaudiotagger logs
       LogManager.getLogManager().readConfiguration(
           new ByteArrayInputStream("org.jaudiotagger.level = OFF".getBytes()));
-      
+
       // get supported tags
-      
+
       TagFieldKey[] tagFieldKeys = TagFieldKey.values();
       for (TagFieldKey tfk : tagFieldKeys) {
         if (!tfk.equals(TagFieldKey.DISC_NO) && !tfk.equals(TagFieldKey.ALBUM)
@@ -66,7 +66,7 @@ public class JAudioTaggerTagImpl implements ITagImpl, Const {
             && !tfk.equals(TagFieldKey.COMMENT)) {
           tagFieldKeyArrayList.add(tfk.name());
         }
-      }      
+      }
     } catch (Exception e) {
       Log.error(e);
     }
@@ -75,7 +75,10 @@ public class JAudioTaggerTagImpl implements ITagImpl, Const {
   /** the current audio file instance (set by {@link #setFile(File)}).<br> */
   private AudioFile audioFile;
 
-  /** the current {@linkplain Tag tag} ( {@link AudioFile#getTag()} ) set by {@link #setFile(File)}.<br> */
+  /**
+   * the current {@linkplain Tag tag} ( {@link AudioFile#getTag()} ) set by
+   * {@link #setFile(File)}.<br>
+   */
   private Tag tag;
 
   /*
@@ -204,15 +207,16 @@ public class JAudioTaggerTagImpl implements ITagImpl, Const {
     return result;
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see org.jajuk.services.tags.ITagImpl#getLyrics()
    */
   public String getLyrics() throws Exception {
     String lyrics = tag.getFirst(TagFieldKey.LYRICS);
     if (StringUtils.isBlank(lyrics)) {
       return "";
-    }
-    else {
+    } else {
       return lyrics;
     }
   }
@@ -247,18 +251,22 @@ public class JAudioTaggerTagImpl implements ITagImpl, Const {
     this.tag.setComment(comment);
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see org.jajuk.services.tags.ITagImpl#setLyrics(java.lang.String)
    */
   public void setLyrics(String sLyrics) throws Exception {
     createTagIfNeeded();
     tag.deleteTagField(TagFieldKey.LYRICS);
     TagField potson = tag.createTagField(TagFieldKey.LYRICS, sLyrics);
-    tag.add(potson);      
+    tag.add(potson);
     commit();
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see org.jajuk.services.tags.ITagImpl#deleteLyrics()
    */
   public void deleteLyrics() throws Exception {
@@ -288,7 +296,8 @@ public class JAudioTaggerTagImpl implements ITagImpl, Const {
    * Create a void tag is needed and convert an ID3 V1.0 tag into V2.4 if any <br>
    * Tags are committed when leaving this method
    * 
-   * @throws Exception the exception
+   * @throws Exception
+   *           the exception
    */
   private void createTagIfNeeded() throws Exception {
     // No tag ? create one
@@ -374,7 +383,7 @@ public class JAudioTaggerTagImpl implements ITagImpl, Const {
   public String getAlbumArtist() throws Exception {
     return this.tag.getFirst(TagFieldKey.ALBUM_ARTIST);
   }
-  
+
   /*
    * (non-Javadoc)
    * 
@@ -382,9 +391,9 @@ public class JAudioTaggerTagImpl implements ITagImpl, Const {
    */
   @Override
   public String getTagField(String tagFieldKey) throws Exception {
-    return this.tag.getFirst(tagFieldKey);
+    return this.tag.getFirst(TagFieldKey.valueOf(tagFieldKey));
   }
-  
+
   /*
    * (non-Javadoc)
    * 
@@ -392,18 +401,23 @@ public class JAudioTaggerTagImpl implements ITagImpl, Const {
    * java.lang.String)
    */
   @Override
-  public void setTagField(String tagFieldKey, String tagFieldValue)
-      throws FieldDataInvalidException, KeyNotFoundException {
-    this.tag.set(tag.createTagField(TagFieldKey.valueOf(tagFieldKey), tagFieldValue));
+  public void setTagField(String tagFieldKey, String tagFieldValue) {
+    try {
+      this.tag.set(tag.createTagField(TagFieldKey.valueOf(tagFieldKey), tagFieldValue));
+    } catch (FieldDataInvalidException e) {
+      Log.error(e);
+    } catch (KeyNotFoundException e) {
+      Log.error(e);
+    }
   }
-  
-  /*
-   * (non-Javadoc)
+
+
+  /**
+   * Gets the supported tag fields.
    * 
-   * @see org.jajuk.services.tags.ITagImpl#getSupportedTagFields()
+   * @return the supported tag fields
    */
-  @Override
-  public ArrayList<String> getSupportedTagFields() {
+  public static ArrayList<String> getSupportedTagFields() {
     return tagFieldKeyArrayList;
   }
 

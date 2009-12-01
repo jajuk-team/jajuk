@@ -20,7 +20,6 @@
  */
 package org.jajuk.base;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -232,10 +231,10 @@ public class TestAlbumManager extends JajukTestCase {
     assertNotNull(album);
 
     Album album2 = AlbumManager.getInstance().changeAlbumArtist(album, "artist1"); // same
-                                                                                   // name,
-                                                                                   // nothing
-                                                                                   // to
-                                                                                   // do
+    // name,
+    // nothing
+    // to
+    // do
 
     // check that we get physically the same object
     assertTrue(album2.toString(), album == album2);
@@ -575,7 +574,8 @@ public class TestAlbumManager extends JajukTestCase {
     Style style = new Style(Integer.valueOf(i).toString(), "name");
     // Album album = new Album(Integer.valueOf(i).toString(), "name", "artis",
     // 23);
-    album.setProperty(Const.XML_ALBUM_COVER, Const.COVER_NONE); // don't read covers for
+    album.setProperty(Const.XML_ALBUM_COVER, Const.COVER_NONE); // don't read
+                                                                // covers for
     // this test
 
     Author author = new Author(Integer.valueOf(i).toString(), "name");
@@ -839,17 +839,6 @@ public class TestAlbumManager extends JajukTestCase {
     @Override
     public void setYear(String sYear) throws Exception {
 
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.jajuk.services.tags.ITagImpl#getSupportedTagFields()
-     */
-    @Override
-    public ArrayList<String> getSupportedTagFields() {
-
-      return null;
     }
 
     /*

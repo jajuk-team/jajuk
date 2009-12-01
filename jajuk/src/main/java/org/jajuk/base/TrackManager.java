@@ -35,6 +35,7 @@ import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.services.players.QueueModel;
+import org.jajuk.services.tags.JAudioTaggerTagImpl;
 import org.jajuk.services.tags.Tag;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
@@ -49,7 +50,7 @@ import org.jajuk.util.log.Log;
  * Convenient class to manage Tracks.
  */
 public final class TrackManager extends ItemManager {
-  
+
   /** Self instance. */
   private static TrackManager singleton;
 
@@ -60,10 +61,26 @@ public final class TrackManager extends ItemManager {
   private final Set<Tag> tagsToCommit = new HashSet<Tag>(10);
 
   /**
+   * @return the activatedExtraTags
+   */
+  public ArrayList<String> getActivatedExtraTags() {
+    ArrayList<String> activeExtraTagsArrayList = new ArrayList<String>();
+
+    for (PropertyMetaInformation m : getCustomProperties()) {
+      if (JAudioTaggerTagImpl.getSupportedTagFields().contains(m.getName())) {
+        activeExtraTagsArrayList.add(m.getName());
+      }
+    }
+
+    return activeExtraTagsArrayList;
+  }
+
+  /**
    * No constructor available, only static access.
    */
   private TrackManager() {
     super();
+
     // ---register properties---
     // ID
     registerProperty(new PropertyMetaInformation(Const.XML_ID, false, true, false, false, false,
@@ -123,6 +140,7 @@ public final class TrackManager extends ItemManager {
     // Track ban status
     registerProperty(new PropertyMetaInformation(Const.XML_TRACK_BANNED, false, false, true, true,
         false, Boolean.class, false));
+
   }
 
   /**
@@ -140,15 +158,24 @@ public final class TrackManager extends ItemManager {
   /**
    * Register an Track.
    * 
-   * @param sName DOCUMENT_ME
-   * @param album DOCUMENT_ME
-   * @param style DOCUMENT_ME
-   * @param author DOCUMENT_ME
-   * @param length DOCUMENT_ME
-   * @param year DOCUMENT_ME
-   * @param lOrder DOCUMENT_ME
-   * @param type DOCUMENT_ME
-   * @param lDiscNumber DOCUMENT_ME
+   * @param sName
+   *          DOCUMENT_ME
+   * @param album
+   *          DOCUMENT_ME
+   * @param style
+   *          DOCUMENT_ME
+   * @param author
+   *          DOCUMENT_ME
+   * @param length
+   *          DOCUMENT_ME
+   * @param year
+   *          DOCUMENT_ME
+   * @param lOrder
+   *          DOCUMENT_ME
+   * @param type
+   *          DOCUMENT_ME
+   * @param lDiscNumber
+   *          DOCUMENT_ME
    * 
    * @return the track
    */
@@ -161,15 +188,24 @@ public final class TrackManager extends ItemManager {
   /**
    * Return hashcode for a track.
    * 
-   * @param sName DOCUMENT_ME
-   * @param album DOCUMENT_ME
-   * @param style DOCUMENT_ME
-   * @param author DOCUMENT_ME
-   * @param length DOCUMENT_ME
-   * @param year DOCUMENT_ME
-   * @param lOrder DOCUMENT_ME
-   * @param type DOCUMENT_ME
-   * @param lDiscNumber DOCUMENT_ME
+   * @param sName
+   *          DOCUMENT_ME
+   * @param album
+   *          DOCUMENT_ME
+   * @param style
+   *          DOCUMENT_ME
+   * @param author
+   *          DOCUMENT_ME
+   * @param length
+   *          DOCUMENT_ME
+   * @param year
+   *          DOCUMENT_ME
+   * @param lOrder
+   *          DOCUMENT_ME
+   * @param type
+   *          DOCUMENT_ME
+   * @param lDiscNumber
+   *          DOCUMENT_ME
    * 
    * @return the string
    */
@@ -186,16 +222,26 @@ public final class TrackManager extends ItemManager {
   /**
    * Register an Track with a known id.
    * 
-   * @param sName DOCUMENT_ME
-   * @param sId DOCUMENT_ME
-   * @param album DOCUMENT_ME
-   * @param style DOCUMENT_ME
-   * @param author DOCUMENT_ME
-   * @param length DOCUMENT_ME
-   * @param year DOCUMENT_ME
-   * @param lOrder DOCUMENT_ME
-   * @param type DOCUMENT_ME
-   * @param lDiscNumber DOCUMENT_ME
+   * @param sName
+   *          DOCUMENT_ME
+   * @param sId
+   *          DOCUMENT_ME
+   * @param album
+   *          DOCUMENT_ME
+   * @param style
+   *          DOCUMENT_ME
+   * @param author
+   *          DOCUMENT_ME
+   * @param length
+   *          DOCUMENT_ME
+   * @param year
+   *          DOCUMENT_ME
+   * @param lOrder
+   *          DOCUMENT_ME
+   * @param type
+   *          DOCUMENT_ME
+   * @param lDiscNumber
+   *          DOCUMENT_ME
    * 
    * @return the track
    */
@@ -217,7 +263,8 @@ public final class TrackManager extends ItemManager {
   /**
    * Commit tags.
    * 
-   * @throws JajukException the jajuk exception
+   * @throws JajukException
+   *           the jajuk exception
    * 
    * @throw an exception if a tag cannot be commited
    */
@@ -246,13 +293,17 @@ public final class TrackManager extends ItemManager {
   /**
    * Change a track album.
    * 
-   * @param filter files we want to deal with
-   * @param track DOCUMENT_ME
-   * @param sNewAlbum DOCUMENT_ME
+   * @param filter
+   *          files we want to deal with
+   * @param track
+   *          DOCUMENT_ME
+   * @param sNewAlbum
+   *          DOCUMENT_ME
    * 
    * @return new track
    * 
-   * @throws JajukException the jajuk exception
+   * @throws JajukException
+   *           the jajuk exception
    */
   public synchronized Track changeTrackAlbum(Track track, String sNewAlbum, Set<File> filter)
       throws JajukException {
@@ -298,13 +349,17 @@ public final class TrackManager extends ItemManager {
   /**
    * Change a track author.
    * 
-   * @param filter files we want to deal with
-   * @param track DOCUMENT_ME
-   * @param sNewAuthor DOCUMENT_ME
+   * @param filter
+   *          files we want to deal with
+   * @param track
+   *          DOCUMENT_ME
+   * @param sNewAuthor
+   *          DOCUMENT_ME
    * 
    * @return new track
    * 
-   * @throws JajukException the jajuk exception
+   * @throws JajukException
+   *           the jajuk exception
    */
   public synchronized Track changeTrackAuthor(Track track, String sNewAuthor, Set<File> filter)
       throws JajukException {
@@ -351,13 +406,17 @@ public final class TrackManager extends ItemManager {
   /**
    * Change a track style.
    * 
-   * @param filter files we want to deal with
-   * @param track DOCUMENT_ME
-   * @param sNewStyle DOCUMENT_ME
+   * @param filter
+   *          files we want to deal with
+   * @param track
+   *          DOCUMENT_ME
+   * @param sNewStyle
+   *          DOCUMENT_ME
    * 
    * @return new track
    * 
-   * @throws JajukException the jajuk exception
+   * @throws JajukException
+   *           the jajuk exception
    */
   public synchronized Track changeTrackStyle(Track track, String sNewStyle, Set<File> filter)
       throws JajukException {
@@ -400,13 +459,17 @@ public final class TrackManager extends ItemManager {
   /**
    * Change a track year.
    * 
-   * @param filter files we want to deal with
-   * @param track DOCUMENT_ME
-   * @param newItem DOCUMENT_ME
+   * @param filter
+   *          files we want to deal with
+   * @param track
+   *          DOCUMENT_ME
+   * @param newItem
+   *          DOCUMENT_ME
    * 
    * @return new track or null if wrong format
    * 
-   * @throws JajukException the jajuk exception
+   * @throws JajukException
+   *           the jajuk exception
    */
   public synchronized Track changeTrackYear(Track track, String newItem, Set<File> filter)
       throws JajukException {
@@ -450,13 +513,17 @@ public final class TrackManager extends ItemManager {
   /**
    * Change a track comment.
    * 
-   * @param filter files we want to deal with
-   * @param track DOCUMENT_ME
-   * @param sNewItem DOCUMENT_ME
+   * @param filter
+   *          files we want to deal with
+   * @param track
+   *          DOCUMENT_ME
+   * @param sNewItem
+   *          DOCUMENT_ME
    * 
    * @return new track or null if wronf format
    * 
-   * @throws JajukException the jajuk exception
+   * @throws JajukException
+   *           the jajuk exception
    */
   public synchronized Track changeTrackComment(Track track, String sNewItem, Set<File> filter)
       throws JajukException {
@@ -496,8 +563,10 @@ public final class TrackManager extends ItemManager {
   /**
    * Change a track rate.
    * 
-   * @param track DOCUMENT_ME
-   * @param lNew DOCUMENT_ME
+   * @param track
+   *          DOCUMENT_ME
+   * @param lNew
+   *          DOCUMENT_ME
    * 
    * @return new track or null if wrong format
    */
@@ -519,13 +588,17 @@ public final class TrackManager extends ItemManager {
   /**
    * Change a track order.
    * 
-   * @param filter files we want to deal with
-   * @param track DOCUMENT_ME
-   * @param lNewOrder DOCUMENT_ME
+   * @param filter
+   *          files we want to deal with
+   * @param track
+   *          DOCUMENT_ME
+   * @param lNewOrder
+   *          DOCUMENT_ME
    * 
    * @return new track or null if wrong format
    * 
-   * @throws JajukException the jajuk exception
+   * @throws JajukException
+   *           the jajuk exception
    */
   public synchronized Track changeTrackOrder(Track track, long lNewOrder, Set<File> filter)
       throws JajukException {
@@ -567,13 +640,17 @@ public final class TrackManager extends ItemManager {
   /**
    * Change a track name.
    * 
-   * @param filter files we want to deal with
-   * @param track DOCUMENT_ME
-   * @param sNewItem DOCUMENT_ME
+   * @param filter
+   *          files we want to deal with
+   * @param track
+   *          DOCUMENT_ME
+   * @param sNewItem
+   *          DOCUMENT_ME
    * 
    * @return new track
    * 
-   * @throws JajukException the jajuk exception
+   * @throws JajukException
+   *           the jajuk exception
    */
   public synchronized Track changeTrackName(Track track, String sNewItem, Set<File> filter)
       throws JajukException {
@@ -615,13 +692,17 @@ public final class TrackManager extends ItemManager {
   /**
    * Change track album artist.
    * 
-   * @param track DOCUMENT_ME
-   * @param filter DOCUMENT_ME
-   * @param sNewItem DOCUMENT_ME
+   * @param track
+   *          DOCUMENT_ME
+   * @param filter
+   *          DOCUMENT_ME
+   * @param sNewItem
+   *          DOCUMENT_ME
    * 
    * @return the item
    * 
-   * @throws JajukException the jajuk exception
+   * @throws JajukException
+   *           the jajuk exception
    */
   public Item changeTrackAlbumArtist(Track track, String sNewItem, Set<File> filter)
       throws JajukException {
@@ -676,13 +757,17 @@ public final class TrackManager extends ItemManager {
   /**
    * Change track disc number.
    * 
-   * @param track DOCUMENT_ME
-   * @param filter DOCUMENT_ME
-   * @param lNewDiscNumber DOCUMENT_ME
+   * @param track
+   *          DOCUMENT_ME
+   * @param filter
+   *          DOCUMENT_ME
+   * @param lNewDiscNumber
+   *          DOCUMENT_ME
    * 
    * @return the item
    * 
-   * @throws JajukException the jajuk exception
+   * @throws JajukException
+   *           the jajuk exception
    */
   public Item changeTrackDiscNumber(Track track, long lNewDiscNumber, Set<File> filter)
       throws JajukException {
@@ -728,12 +813,14 @@ public final class TrackManager extends ItemManager {
   }
 
   /**
-   * Update files references.
-   * DOCUMENT_ME
+   * Update files references. DOCUMENT_ME
    * 
-   * @param oldTrack DOCUMENT_ME
-   * @param newTrack DOCUMENT_ME
-   * @param filter DOCUMENT_ME
+   * @param oldTrack
+   *          DOCUMENT_ME
+   * @param newTrack
+   *          DOCUMENT_ME
+   * @param filter
+   *          DOCUMENT_ME
    */
   private synchronized void updateFilesReferences(Track oldTrack, Track newTrack, Set<File> filter) {
     // Reset files property before adding new files
@@ -746,12 +833,14 @@ public final class TrackManager extends ItemManager {
   }
 
   /**
-   * Post change.
-   * DOCUMENT_ME
+   * Post change. DOCUMENT_ME
    * 
-   * @param track DOCUMENT_ME
-   * @param newTrack DOCUMENT_ME
-   * @param filter DOCUMENT_ME
+   * @param track
+   *          DOCUMENT_ME
+   * @param newTrack
+   *          DOCUMENT_ME
+   * @param filter
+   *          DOCUMENT_ME
    */
   private synchronized void postChange(Track track, Track newTrack, Set<File> filter) {
     // re apply old properties from old item
@@ -792,8 +881,10 @@ public final class TrackManager extends ItemManager {
   /**
    * Remove a file mapping from a track.
    * 
-   * @param track DOCUMENT_ME
-   * @param file DOCUMENT_ME
+   * @param track
+   *          DOCUMENT_ME
+   * @param file
+   *          DOCUMENT_ME
    */
   public synchronized void removefile(Track track, File file) {
     // If the track contained a single file, it will be empty after this removal
@@ -821,11 +912,14 @@ public final class TrackManager extends ItemManager {
    * Get ordered tracks list associated with this item
    * <p>
    * This is a shallow copy only
-   * </p>.
+   * </p>
+   * .
    * 
-   * @param item DOCUMENT_ME
-   * @param sorted Whether the output should be sorted on it (actually applied on
-   * artists,years and styles because others items are already sorted)
+   * @param item
+   *          DOCUMENT_ME
+   * @param sorted
+   *          Whether the output should be sorted on it (actually applied on
+   *          artists,years and styles because others items are already sorted)
    * 
    * @return the associated tracks
    */
@@ -839,11 +933,14 @@ public final class TrackManager extends ItemManager {
    * Get ordered tracks list associated with a list of items (of the same type)
    * <p>
    * This is a shallow copy only
-   * </p>.
+   * </p>
+   * .
    * 
-   * @param sorted Whether the output should be sorted on it (actually applied on
-   * artists,years and styles because others items are already sorted)
-   * @param items DOCUMENT_ME
+   * @param sorted
+   *          Whether the output should be sorted on it (actually applied on
+   *          artists,years and styles because others items are already sorted)
+   * @param items
+   *          DOCUMENT_ME
    * 
    * @return the associated tracks
    */
@@ -971,7 +1068,8 @@ public final class TrackManager extends ItemManager {
   /**
    * Gets the track by id.
    * 
-   * @param sID Item ID
+   * @param sID
+   *          Item ID
    * 
    * @return item
    */
@@ -1002,7 +1100,8 @@ public final class TrackManager extends ItemManager {
   /**
    * Perform a search in all files names with given criteria.
    * 
-   * @param criteria DOCUMENT_ME
+   * @param criteria
+   *          DOCUMENT_ME
    * 
    * @return an ordered list of available files
    */
@@ -1036,7 +1135,8 @@ public final class TrackManager extends ItemManager {
   /**
    * Set autocommit behavior for tags.
    * 
-   * @param autocommit DOCUMENT_ME
+   * @param autocommit
+   *          DOCUMENT_ME
    */
   public synchronized void setAutocommit(boolean autocommit) {
     this.bAutocommit = autocommit;

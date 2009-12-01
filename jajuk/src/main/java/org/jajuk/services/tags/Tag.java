@@ -55,10 +55,13 @@ public class Tag {
   /**
    * Tag constructor.
    * 
-   * @param fio DOCUMENT_ME
-   * @param bIgnoreErrors DOCUMENT_ME
+   * @param fio
+   *          DOCUMENT_ME
+   * @param bIgnoreErrors
+   *          DOCUMENT_ME
    * 
-   * @throws JajukException the jajuk exception
+   * @throws JajukException
+   *           the jajuk exception
    * 
    * @bIgnoreError : ignore error and keep instance
    */
@@ -355,7 +358,7 @@ public class Tag {
     }
     return l;
   }
-  
+
   /**
    * Gets the lyrics.
    * 
@@ -364,25 +367,27 @@ public class Tag {
   public String getLyrics() {
     String sLyrics = "";
     // if the type doesn't support tags ( like wav )
-    if (tagImpl == null) {      
+    if (tagImpl == null) {
       return sLyrics;
     }
-    
+
     try {
       sLyrics = tagImpl.getLyrics();
     } catch (Exception e) {
       Log.info("Wrong lyrics:{{" + fio.getName() + "}}");
     }
-    
+
     return sLyrics;
   }
 
   /**
    * Sets the track name.
    * 
-   * @param sTrackName DOCUMENT_ME
+   * @param sTrackName
+   *          DOCUMENT_ME
    * 
-   * @throws JajukException the jajuk exception
+   * @throws JajukException
+   *           the jajuk exception
    */
   public void setTrackName(String sTrackName) throws JajukException {
     try {
@@ -395,9 +400,11 @@ public class Tag {
   /**
    * Sets the album name.
    * 
-   * @param sAlbumName DOCUMENT_ME
+   * @param sAlbumName
+   *          DOCUMENT_ME
    * 
-   * @throws JajukException the jajuk exception
+   * @throws JajukException
+   *           the jajuk exception
    */
   public void setAlbumName(String sAlbumName) throws JajukException {
     try {
@@ -410,9 +417,11 @@ public class Tag {
   /**
    * Sets the author name.
    * 
-   * @param sAuthorName DOCUMENT_ME
+   * @param sAuthorName
+   *          DOCUMENT_ME
    * 
-   * @throws JajukException the jajuk exception
+   * @throws JajukException
+   *           the jajuk exception
    */
   public void setAuthorName(String sAuthorName) throws JajukException {
     try {
@@ -425,9 +434,11 @@ public class Tag {
   /**
    * Sets the album artist.
    * 
-   * @param sAlbumArtist DOCUMENT_ME
+   * @param sAlbumArtist
+   *          DOCUMENT_ME
    * 
-   * @throws JajukException the jajuk exception
+   * @throws JajukException
+   *           the jajuk exception
    */
   public void setAlbumArtist(String sAlbumArtist) throws JajukException {
     try {
@@ -440,9 +451,11 @@ public class Tag {
   /**
    * Sets the style name.
    * 
-   * @param style DOCUMENT_ME
+   * @param style
+   *          DOCUMENT_ME
    * 
-   * @throws JajukException the jajuk exception
+   * @throws JajukException
+   *           the jajuk exception
    */
   public void setStyleName(String style) throws JajukException {
     try {
@@ -455,9 +468,11 @@ public class Tag {
   /**
    * Sets the order.
    * 
-   * @param lOrder DOCUMENT_ME
+   * @param lOrder
+   *          DOCUMENT_ME
    * 
-   * @throws JajukException the jajuk exception
+   * @throws JajukException
+   *           the jajuk exception
    */
   public void setOrder(long lOrder) throws JajukException {
     try {
@@ -470,9 +485,11 @@ public class Tag {
   /**
    * Sets the year.
    * 
-   * @param sYear DOCUMENT_ME
+   * @param sYear
+   *          DOCUMENT_ME
    * 
-   * @throws JajukException the jajuk exception
+   * @throws JajukException
+   *           the jajuk exception
    */
   public void setYear(String sYear) throws JajukException {
     try {
@@ -485,9 +502,11 @@ public class Tag {
   /**
    * Sets the disc number.
    * 
-   * @param discnumber DOCUMENT_ME
+   * @param discnumber
+   *          DOCUMENT_ME
    * 
-   * @throws JajukException the jajuk exception
+   * @throws JajukException
+   *           the jajuk exception
    */
   public void setDiscNumber(long discnumber) throws JajukException {
     try {
@@ -500,9 +519,11 @@ public class Tag {
   /**
    * Sets the comment.
    * 
-   * @param sComment DOCUMENT_ME
+   * @param sComment
+   *          DOCUMENT_ME
    * 
-   * @throws JajukException the jajuk exception
+   * @throws JajukException
+   *           the jajuk exception
    */
   public void setComment(String sComment) throws JajukException {
     try {
@@ -511,13 +532,15 @@ public class Tag {
       throw new JajukException(104, fio.getName(), e);
     }
   }
-  
+
   /**
    * Sets the lyrics.
    * 
-   * @param sLyrics the new lyrics
+   * @param sLyrics
+   *          the new lyrics
    * 
-   * @throws JajukException the jajuk exception
+   * @throws JajukException
+   *           the jajuk exception
    */
   public void setLyrics(String sLyrics) throws JajukException {
     try {
@@ -527,14 +550,14 @@ public class Tag {
       tagImpl.setLyrics(sLyrics);
     } catch (Exception e) {
       throw new JajukException(104, fio.getName(), e);
-    }    
+    }
   }
-  
+
   /**
-   * Delete lyrics.
-   * DOCUMENT_ME
+   * Delete lyrics. DOCUMENT_ME
    * 
-   * @throws JajukException the jajuk exception
+   * @throws JajukException
+   *           the jajuk exception
    */
   public void deleteLyrics() throws JajukException {
     try {
@@ -547,7 +570,8 @@ public class Tag {
   /**
    * Commit tags.
    * 
-   * @throws JajukException the jajuk exception
+   * @throws JajukException
+   *           the jajuk exception
    */
   public synchronized void commit() throws JajukException {
     try {
@@ -583,7 +607,8 @@ public class Tag {
   /**
    * Sets the corrupted.
    * 
-   * @param corrupted the new corrupted
+   * @param corrupted
+   *          the new corrupted
    */
   public void setCorrupted(boolean corrupted) {
     bCorrupted = corrupted;
@@ -598,7 +623,9 @@ public class Tag {
     return this.fio;
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see java.lang.Object#equals(java.lang.Object)
    */
   @Override
@@ -609,7 +636,9 @@ public class Tag {
     return this.fio.equals(((Tag) other).getFio());
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see java.lang.Object#hashCode()
    */
   @Override
@@ -617,7 +646,9 @@ public class Tag {
     return fio.getAbsolutePath().hashCode();
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see java.lang.Object#toString()
    */
   @Override
@@ -628,12 +659,15 @@ public class Tag {
   /**
    * Return cached tag or new tag if non already in cache.
    * 
-   * @param fio the audio file containing the tag
-   * @param bIgnoreErrors DOCUMENT_ME
+   * @param fio
+   *          the audio file containing the tag
+   * @param bIgnoreErrors
+   *          DOCUMENT_ME
    * 
    * @return cached tag or new tag if non already in cache
    * 
-   * @throws JajukException the jajuk exception
+   * @throws JajukException
+   *           the jajuk exception
    * 
    * @bIgnoreError : ignore any error and keep instance in cache
    */
@@ -652,6 +686,15 @@ public class Tag {
    */
   public static void clearCache() {
     tagsCache.clear();
+  }
+
+  public String getTagField(String tagFieldKey) {
+    try {
+      return tagImpl.getTagField(tagFieldKey).trim();
+    } catch (Exception e) {
+      //this file does not support this tag, so we do nothing
+    }
+    return "";
   }
 
 }

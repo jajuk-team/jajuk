@@ -187,6 +187,9 @@ public enum JajukActions {
 
   /** Used to display an about dialog. */
   SHOW_ABOUT,
+  
+  /** Used to display an tag configure dialog. */
+  SHOW_ACTIVATE_TAGS,
 
   /** Used to jump to the previous track. */
   PREVIOUS_TRACK,

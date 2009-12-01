@@ -86,6 +86,7 @@ import static org.jajuk.ui.actions.JajukActions.REPLAY_ALBUM;
 import static org.jajuk.ui.actions.JajukActions.REWIND_TRACK;
 import static org.jajuk.ui.actions.JajukActions.SAVE_AS;
 import static org.jajuk.ui.actions.JajukActions.SHOW_ABOUT;
+import static org.jajuk.ui.actions.JajukActions.SHOW_ACTIVATE_TAGS;
 import static org.jajuk.ui.actions.JajukActions.SHOW_ALBUM_DETAILS;
 import static org.jajuk.ui.actions.JajukActions.SHOW_PROPERTIES;
 import static org.jajuk.ui.actions.JajukActions.SHOW_TRACES;
@@ -200,7 +201,8 @@ public final class ActionManager {
 
     // JajukJMenuBar: Help Menu
     installAction(HELP_REQUIRED, new HelpRequiredAction(), false);
-    installAction(SHOW_ABOUT, new ShowAboutAction(), false);
+    installAction(SHOW_ABOUT, new ShowAboutAction(), false);    
+    installAction(SHOW_ACTIVATE_TAGS, new ShowActivateTagsAction(), false);
     // Install this action only if Desktop class is supported, it is used to
     // open default mail client
     if (Desktop.isDesktopSupported()) {

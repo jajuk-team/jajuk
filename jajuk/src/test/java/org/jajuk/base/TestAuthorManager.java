@@ -172,7 +172,8 @@ public class TestAuthorManager extends JajukTestCase {
   private File getFile(int i, Author author) throws Exception {
     Style style = new Style(Integer.valueOf(i).toString(), "name");
     Album album = new Album(Integer.valueOf(i).toString(), "name", "artis", 23);
-    album.setProperty(Const.XML_ALBUM_COVER, Const.COVER_NONE); // don't read covers for
+    album.setProperty(Const.XML_ALBUM_COVER, Const.COVER_NONE); // don't read
+                                                                // covers for
     // this test
 
     Year year = new Year(Integer.valueOf(i).toString(), "2000");
@@ -439,17 +440,6 @@ public class TestAuthorManager extends JajukTestCase {
     @Override
     public void setYear(String year) throws Exception {
 
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.jajuk.services.tags.ITagImpl#getSupportedTagFields()
-     */
-    @Override
-    public ArrayList<String> getSupportedTagFields() {
-
-      return null;
     }
 
     /*

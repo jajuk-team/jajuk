@@ -373,8 +373,15 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
       // file if we cannot read it
       reporter.notifyNewFile();
     }
-    registerFile(music, sId, sTrackName, sAlbumName, sAuthorName, sStyle, length, sYear, lQuality,
+    
+
+    
+    Track track = registerFile(music, sId, sTrackName, sAlbumName, sAuthorName, sStyle, length, sYear, lQuality,
         sComment, lOrder, sAlbumArtist, discID, discNumber);
+    
+    for(String s: TrackManager.getInstance().getActivatedExtraTags()){
+      track.setProperty(s, tag.getTagField(s));
+    }
   }
 
   /**
@@ -395,7 +402,7 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
    * @param discID DOCUMENT_ME
    * @param discNumber DOCUMENT_ME
    */
-  private void registerFile(java.io.File music, String sId, String sTrackName, String sAlbumName,
+  private Track registerFile(java.io.File music, String sId, String sTrackName, String sAlbumName,
       String sAuthorName, String sStyle, long length, String sYear, long lQuality, String sComment,
       long lOrder, String sAlbumArtist, long discID, long discNumber) {
     Album album = null;
@@ -441,6 +448,8 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
     track.setComment(sComment);
     // Make sure to refresh file size
     file.setProperty(Const.XML_SIZE, music.length());
+    
+    return track;
   }
 
   /**

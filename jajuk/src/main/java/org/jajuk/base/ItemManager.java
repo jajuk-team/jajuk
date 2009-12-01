@@ -212,7 +212,7 @@ public abstract class ItemManager {
   }
 
   /**
-   * Gets the custom properties.
+   * Gets the custom properties including activated extra tags.
    * 
    * @return custom properties Meta informations
    */
@@ -222,6 +222,23 @@ public abstract class ItemManager {
     while (it.hasNext()) {
       PropertyMetaInformation meta = it.next();
       if (meta.isCustom()) {
+        col.add(meta);
+      }
+    }
+    return col;
+  }
+  
+  /**
+   * Gets the custom properties without the activated extra tags.
+   * 
+   * @return custom properties Meta informations
+   */
+  public Collection<PropertyMetaInformation> getUserCustomProperties() {
+    List<PropertyMetaInformation> col = new ArrayList<PropertyMetaInformation>();
+    Iterator<PropertyMetaInformation> it = hmPropertiesMetaInformation.values().iterator();
+    while (it.hasNext()) {
+      PropertyMetaInformation meta = it.next();
+      if (meta.isCustom()&&!TrackManager.getInstance().getActivatedExtraTags().contains(meta.getName())) {
         col.add(meta);
       }
     }

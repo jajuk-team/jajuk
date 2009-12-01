@@ -20,8 +20,6 @@
  */
 package org.jajuk.services.tags;
 
-import java.util.ArrayList;
-
 import org.jaudiotagger.tag.FieldDataInvalidException;
 import org.jaudiotagger.tag.KeyNotFoundException;
 
@@ -35,7 +33,8 @@ public interface ITagImpl {
    * 
    * @return track name as defined in tags are file name otherwise
    * 
-   * @throws Exception the exception
+   * @throws Exception
+   *           the exception
    */
   String getTrackName() throws Exception;
 
@@ -44,7 +43,8 @@ public interface ITagImpl {
    * 
    * @return album name
    * 
-   * @throws Exception the exception
+   * @throws Exception
+   *           the exception
    */
   String getAlbumName() throws Exception;
 
@@ -53,7 +53,8 @@ public interface ITagImpl {
    * 
    * @return author name
    * 
-   * @throws Exception the exception
+   * @throws Exception
+   *           the exception
    */
   String getAuthorName() throws Exception;
 
@@ -62,7 +63,8 @@ public interface ITagImpl {
    * 
    * @return album artist
    * 
-   * @throws Exception the exception
+   * @throws Exception
+   *           the exception
    */
   String getAlbumArtist() throws Exception;
 
@@ -71,7 +73,8 @@ public interface ITagImpl {
    * 
    * @return disc number
    * 
-   * @throws Exception the exception
+   * @throws Exception
+   *           the exception
    */
   long getDiscNumber() throws Exception;
 
@@ -80,7 +83,8 @@ public interface ITagImpl {
    * 
    * @return style name
    * 
-   * @throws Exception the exception
+   * @throws Exception
+   *           the exception
    */
   String getStyleName() throws Exception;
 
@@ -89,7 +93,8 @@ public interface ITagImpl {
    * 
    * @return length in sec
    * 
-   * @throws Exception the exception
+   * @throws Exception
+   *           the exception
    */
   long getLength() throws Exception;
 
@@ -98,7 +103,8 @@ public interface ITagImpl {
    * 
    * @return creation year
    * 
-   * @throws Exception the exception
+   * @throws Exception
+   *           the exception
    */
   String getYear() throws Exception;
 
@@ -107,7 +113,8 @@ public interface ITagImpl {
    * 
    * @return quality
    * 
-   * @throws Exception the exception
+   * @throws Exception
+   *           the exception
    */
   long getQuality() throws Exception;
 
@@ -116,7 +123,8 @@ public interface ITagImpl {
    * 
    * @return comment
    * 
-   * @throws Exception the exception
+   * @throws Exception
+   *           the exception
    */
   String getComment() throws Exception;
 
@@ -125,140 +133,168 @@ public interface ITagImpl {
    * 
    * @return track order
    * 
-   * @throws Exception the exception
+   * @throws Exception
+   *           the exception
    */
   long getOrder() throws Exception;
-  
+
   /**
    * Gets the lyrics.
    * 
    * @return Lyrics read from Tag
    * 
-   * @throws Exception the exception
+   * @throws Exception
+   *           the exception
    */
   String getLyrics() throws Exception;
 
   /**
    * Sets the track name.
    * 
-   * @param sTrackName DOCUMENT_ME
+   * @param sTrackName
+   *          DOCUMENT_ME
    * 
-   * @throws Exception the exception
+   * @throws Exception
+   *           the exception
    */
   void setTrackName(String sTrackName) throws Exception;
 
   /**
    * Sets the album name.
    * 
-   * @param sAlbumName DOCUMENT_ME
+   * @param sAlbumName
+   *          DOCUMENT_ME
    * 
-   * @throws Exception the exception
+   * @throws Exception
+   *           the exception
    */
   void setAlbumName(String sAlbumName) throws Exception;
 
   /**
    * Sets the author name.
    * 
-   * @param sAuthorName DOCUMENT_ME
+   * @param sAuthorName
+   *          DOCUMENT_ME
    * 
-   * @throws Exception the exception
+   * @throws Exception
+   *           the exception
    */
   void setAuthorName(String sAuthorName) throws Exception;
 
   /**
    * Sets the album artist.
    * 
-   * @param sAlbumArtist DOCUMENT_ME
+   * @param sAlbumArtist
+   *          DOCUMENT_ME
    * 
-   * @throws Exception the exception
+   * @throws Exception
+   *           the exception
    */
   void setAlbumArtist(String sAlbumArtist) throws Exception;
 
   /**
    * Sets the disc number.
    * 
-   * @param discnumber DOCUMENT_ME
+   * @param discnumber
+   *          DOCUMENT_ME
    * 
-   * @throws Exception the exception
+   * @throws Exception
+   *           the exception
    */
   void setDiscNumber(long discnumber) throws Exception;
 
   /**
    * Sets the style name.
    * 
-   * @param style DOCUMENT_ME
+   * @param style
+   *          DOCUMENT_ME
    * 
-   * @throws Exception the exception
+   * @throws Exception
+   *           the exception
    */
   void setStyleName(String style) throws Exception;
 
   /**
    * Sets the year.
    * 
-   * @param sYear DOCUMENT_ME
+   * @param sYear
+   *          DOCUMENT_ME
    * 
-   * @throws Exception the exception
+   * @throws Exception
+   *           the exception
    */
   void setYear(String sYear) throws Exception;
 
   /**
    * Sets the comment.
    * 
-   * @param sComment DOCUMENT_ME
+   * @param sComment
+   *          DOCUMENT_ME
    * 
-   * @throws Exception the exception
+   * @throws Exception
+   *           the exception
    */
   void setComment(String sComment) throws Exception;
-  
+
   /**
    * Sets the lyrics.
    * 
-   * @param sLyrics DOCUMENT_ME
+   * @param sLyrics
+   *          DOCUMENT_ME
    * 
-   * @throws Exception the exception
+   * @throws Exception
+   *           the exception
    */
   void setLyrics(String sLyrics) throws Exception;
-  
+
   /**
    * Deletes lyrics saved in Tag.
    * 
-   * @throws Exception the exception
+   * @throws Exception
+   *           the exception
    */
   void deleteLyrics() throws Exception;
 
   /**
    * Set current file to work with.
    * 
-   * @param fio DOCUMENT_ME
+   * @param fio
+   *          DOCUMENT_ME
    * 
-   * @throws Exception the exception
+   * @throws Exception
+   *           the exception
    */
   void setFile(java.io.File fio) throws Exception;
 
   /**
    * Set track order.
    * 
-   * @param lOrder DOCUMENT_ME
+   * @param lOrder
+   *          DOCUMENT_ME
    * 
-   * @throws Exception the exception
+   * @throws Exception
+   *           the exception
    */
   void setOrder(long lOrder) throws Exception;
 
   /**
    * Commit all changes in the tag.
    * 
-   * @throws Exception the exception
+   * @throws Exception
+   *           the exception
    */
   void commit() throws Exception;
 
   /**
    * Get value of tagFieldKey.
    * 
-   * @param tagFieldKey DOCUMENT_ME
+   * @param tagFieldKey
+   *          DOCUMENT_ME
    * 
    * @return the tag field
    * 
-   * @throws Exception the exception
+   * @throws Exception
+   *           the exception
    */
   public String getTagField(String tagFieldKey) throws Exception;
 
@@ -270,15 +306,8 @@ public interface ITagImpl {
    * 
    * @throws FieldDataInvalidException the field data invalid exception
    * @throws KeyNotFoundException the key not found exception
+   * @throws Exception the exception
    */
-  public void setTagField(String tagFieldKey, String tagFieldValue)
-      throws FieldDataInvalidException, KeyNotFoundException;
-
-  /**
-   * get all supported tags.
-   * 
-   * @return the supported tag fields
-   */
-  public ArrayList<String> getSupportedTagFields();
+  public void setTagField(String tagFieldKey, String tagFieldValue) throws Exception;
 
 }

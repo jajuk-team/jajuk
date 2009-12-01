@@ -25,6 +25,7 @@ import static org.jajuk.ui.actions.JajukActions.CONFIGURE_DJS;
 import static org.jajuk.ui.actions.JajukActions.CONTINUE_MODE;
 import static org.jajuk.ui.actions.JajukActions.CUSTOM_PROPERTIES_ADD;
 import static org.jajuk.ui.actions.JajukActions.CUSTOM_PROPERTIES_REMOVE;
+import static org.jajuk.ui.actions.JajukActions.SHOW_ACTIVATE_TAGS;
 import static org.jajuk.ui.actions.JajukActions.HELP_REQUIRED;
 import static org.jajuk.ui.actions.JajukActions.INTRO_MODE;
 import static org.jajuk.ui.actions.JajukActions.OPTIONS;
@@ -232,6 +233,9 @@ public final class JajukJMenuBar extends JMenuBar implements Observer {
   /** DOCUMENT_ME. */
   private final JCheckBoxMenuItem jcbmiRepeatAll;
 
+  /** The jmi activate tags. */
+  private JMenuItem jmiActivateTags;
+
   /**
    * Instantiates a new jajuk j menu bar.
    */
@@ -248,8 +252,10 @@ public final class JajukJMenuBar extends JMenuBar implements Observer {
 
     jmiNewProperty = new JMenuItem(ActionManager.getAction(CUSTOM_PROPERTIES_ADD));
     jmiRemoveProperty = new JMenuItem(ActionManager.getAction(CUSTOM_PROPERTIES_REMOVE));
+    jmiActivateTags = new JMenuItem(ActionManager.getAction(SHOW_ACTIVATE_TAGS));
     properties.add(jmiNewProperty);
     properties.add(jmiRemoveProperty);
+    properties.add(jmiActivateTags);
 
     // View menu
     views = new JMenu(Messages.getString("JajukJMenuBar.8"));

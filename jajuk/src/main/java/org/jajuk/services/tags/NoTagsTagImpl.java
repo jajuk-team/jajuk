@@ -22,7 +22,6 @@
 package org.jajuk.services.tags;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Map;
 
 import javazoom.jlgui.basicplayer.BasicController;
@@ -37,15 +36,12 @@ import org.jajuk.util.UtilFeatures;
  * Tagger implementation for formats without tags and read by BasicPlayer API.
  */
 public class NoTagsTagImpl implements ITagImpl {
-  
+
   /** Analyzed file. */
   File fio;
 
   /** Current file data. */
   Map<String, Object> mapInfo;
-
-  /** DOCUMENT_ME. */
-  private static ArrayList<String> supportedTags = new ArrayList<String>();
 
   /*
    * (non-Javadoc)
@@ -149,7 +145,9 @@ public class NoTagsTagImpl implements ITagImpl {
     // required by interface, but nothing to do here...
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see org.jajuk.services.tags.ITagImpl#setComment(java.lang.String)
    */
   public void setComment(String sComment) {
@@ -273,7 +271,9 @@ public class NoTagsTagImpl implements ITagImpl {
     // nothing to do here
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see org.jajuk.services.tags.ITagImpl#deleteLyrics()
    */
   @Override
@@ -281,7 +281,9 @@ public class NoTagsTagImpl implements ITagImpl {
     // nothing to do here
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see org.jajuk.services.tags.ITagImpl#getLyrics()
    */
   @Override
@@ -289,22 +291,14 @@ public class NoTagsTagImpl implements ITagImpl {
     return "";
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see org.jajuk.services.tags.ITagImpl#setLyrics(java.lang.String)
    */
   @Override
   public void setLyrics(String sLyrics) throws Exception {
-    // nothing to do here    
-  }
-
-  /*
-   * (non-Javadoc)
-   * 
-   * @see org.jajuk.services.tags.ITagImpl#getSupportedTagFields()
-   */
-  @Override
-  public ArrayList<String> getSupportedTagFields() {
-    return supportedTags;
+    // nothing to do here
   }
 
   /*
