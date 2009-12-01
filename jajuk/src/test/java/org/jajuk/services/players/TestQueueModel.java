@@ -27,15 +27,9 @@ import org.apache.commons.io.FileUtils;
 import org.jajuk.JUnitHelpers;
 import org.jajuk.JajukTestCase;
 import org.jajuk.base.Album;
-import org.jajuk.base.Author;
 import org.jajuk.base.Device;
-import org.jajuk.base.Directory;
 import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
-import org.jajuk.base.Style;
-import org.jajuk.base.Track;
-import org.jajuk.base.Type;
-import org.jajuk.base.Year;
 import org.jajuk.services.core.SessionService;
 import org.jajuk.services.webradio.WebRadio;
 import org.jajuk.util.Conf;
@@ -134,7 +128,7 @@ public class TestQueueModel extends JajukTestCase {
 
   public void testPushListOfStackItemBoolean() throws Exception {
     List<StackItem> list = new ArrayList<StackItem>();
-    list.add(new StackItem(getFile(1)));
+    list.add(new StackItem(JUnitHelpers.getFile(1, true)));
 
     QueueModel.push(list, true);
 
@@ -146,7 +140,7 @@ public class TestQueueModel extends JajukTestCase {
 
   public void testPushListOfStackItemBooleanNoPush() throws Exception {
     List<StackItem> list = new ArrayList<StackItem>();
-    list.add(new StackItem(getFile(1)));
+    list.add(new StackItem(JUnitHelpers.getFile(1, true)));
 
     QueueModel.push(list, false);
 
@@ -158,9 +152,9 @@ public class TestQueueModel extends JajukTestCase {
 
   public void testPushListOfStackItemBooleanNullItems() throws Exception {
     List<StackItem> list = new ArrayList<StackItem>();
-    list.add(new StackItem(getFile(1)));
+    list.add(new StackItem(JUnitHelpers.getFile(1, true)));
     list.add(null);
-    list.add(new StackItem(getFile(3)));
+    list.add(new StackItem(JUnitHelpers.getFile(3, true)));
 
     QueueModel.push(list, true);
 
@@ -178,7 +172,7 @@ public class TestQueueModel extends JajukTestCase {
 
   public void testPushListOfStackItemBooleanBoolean() throws Exception {
     List<StackItem> list = new ArrayList<StackItem>();
-    list.add(new StackItem(getFile(1)));
+    list.add(new StackItem(JUnitHelpers.getFile(1, true)));
 
     QueueModel.push(list, true, true);
 
@@ -190,7 +184,7 @@ public class TestQueueModel extends JajukTestCase {
 
   public void testPushListOfStackItemBooleanBooleanNoPushNext() throws Exception {
     List<StackItem> list = new ArrayList<StackItem>();
-    list.add(new StackItem(getFile(1)));
+    list.add(new StackItem(JUnitHelpers.getFile(1, true)));
 
     QueueModel.push(list, false, false);
 
@@ -207,7 +201,7 @@ public class TestQueueModel extends JajukTestCase {
    */
 
   public void testPushStackItemBoolean() throws Exception {
-    QueueModel.push(new StackItem(getFile(1)), true);
+    QueueModel.push(new StackItem(JUnitHelpers.getFile(1, true)), true);
 
     // we try to wait for the thread started inside push() to finish
     JUnitHelpers.waitForThreadToFinish("Queue Push Thread");
@@ -222,7 +216,7 @@ public class TestQueueModel extends JajukTestCase {
    */
 
   public void testPushStackItemBooleanBoolean() throws Exception {
-    QueueModel.push(new StackItem(getFile(1)), true, true);
+    QueueModel.push(new StackItem(JUnitHelpers.getFile(1, true)), true, true);
 
     // we try to wait for the thread started inside push() to finish
     JUnitHelpers.waitForThreadToFinish("Queue Push Thread");
@@ -238,35 +232,9 @@ public class TestQueueModel extends JajukTestCase {
   private void addItems(int count) throws Exception {
     List<StackItem> list = new ArrayList<StackItem>();
     for (int i = 0; i < count; i++) {
-      list.add(new StackItem(getFile(i)));
+      list.add(new StackItem(JUnitHelpers.getFile(i, true)));
     }
     QueueModel.insert(list, 0);
-  }
-
-  @SuppressWarnings("unchecked")
-  private File getFile(int i) throws Exception {
-    Style style = new Style(Integer.valueOf(i).toString(), "name");
-    Album album = new Album(Integer.valueOf(i).toString(), "name", "artis", 23);
-    album.setProperty(Const.XML_ALBUM_COVER, Const.COVER_NONE); // don't read covers for
-    // this test
-
-    Author author = new Author(Integer.valueOf(i).toString(), "name");
-    Year year = new Year(Integer.valueOf(i).toString(), "2000");
-
-    IPlayerImpl imp = new MockPlayer();
-    Class<IPlayerImpl> cl = (Class<IPlayerImpl>) imp.getClass();
-
-    Type type = new Type(Integer.valueOf(i).toString(), "name", "mp3", cl, null);
-    Track track = new Track(Integer.valueOf(i).toString(), "name", album, style, author, 120, year,
-        1, type, 1);
-
-    Device device = new Device(Integer.valueOf(i).toString(), "name");
-    device.setUrl(System.getProperty("java.io.tmpdir"));
-    device.mount(true);
-
-    Directory dir = new Directory(Integer.valueOf(i).toString(), "name", null, device);
-
-    return new org.jajuk.base.File(Integer.valueOf(i).toString(), "test.tst", dir, track, 120, 70);
   }
 
   /**
@@ -656,19 +624,19 @@ public class TestQueueModel extends JajukTestCase {
 
   public void testInsertStackItemInt() throws Exception {
     assertEquals(0, QueueModel.getQueueSize());
-    QueueModel.insert(new StackItem(getFile(0)), 0);
+    QueueModel.insert(new StackItem(JUnitHelpers.getFile(0, true)), 0);
 
     assertEquals(1, QueueModel.getQueueSize());
 
     // when we insert the next one at 0, the previous one should be moved
-    QueueModel.insert(new StackItem(getFile(1)), 0);
+    QueueModel.insert(new StackItem(JUnitHelpers.getFile(1, true)), 0);
 
     assertEquals(2, QueueModel.getQueueSize());
     assertEquals("1", QueueModel.getItem(0).getFile().getID());
     assertEquals("0", QueueModel.getItem(1).getFile().getID());
 
     // adding in between now, should again adjust the queue accordingly
-    QueueModel.insert(new StackItem(getFile(2)), 1);
+    QueueModel.insert(new StackItem(JUnitHelpers.getFile(2, true)), 1);
 
     assertEquals(3, QueueModel.getQueueSize());
     assertEquals("1", QueueModel.getItem(0).getFile().getID());
@@ -676,7 +644,7 @@ public class TestQueueModel extends JajukTestCase {
     assertEquals("0", QueueModel.getItem(2).getFile().getID());
 
     // and adding at the end should work as well
-    QueueModel.insert(new StackItem(getFile(3)), 3);
+    QueueModel.insert(new StackItem(JUnitHelpers.getFile(3, true)), 3);
 
     assertEquals(4, QueueModel.getQueueSize());
     assertEquals("1", QueueModel.getItem(0).getFile().getID());
@@ -840,10 +808,10 @@ public class TestQueueModel extends JajukTestCase {
     Conf.setProperty(Const.CONF_STATE_CONTINUE, "true");
 
     // register some file
-    File file = getFile(11);
+    File file = JUnitHelpers.getFile(11, true);
     FileManager.getInstance().registerFile(file.getID(), file.getName(), file.getDirectory(),
         file.getTrack(), file.getSize(), file.getQuality());
-    file = getFile(12);
+    file = JUnitHelpers.getFile(12, true);
     FileManager.getInstance().registerFile(file.getID(), file.getName(), file.getDirectory(),
         file.getTrack(), file.getSize(), file.getQuality());
 
@@ -944,7 +912,7 @@ public class TestQueueModel extends JajukTestCase {
     QueueModel.computesPlanned(false);
     assertEquals(0, QueueModel.getPlanned().size());
 
-    File file = getFile(11);
+    File file = JUnitHelpers.getFile(11, true);
     FileManager.getInstance().registerFile(file.getID(), file.getName(), file.getDirectory(),
         file.getTrack(), file.getSize(), file.getQuality());
 
@@ -1058,61 +1026,5 @@ public class TestQueueModel extends JajukTestCase {
     QueueModel.clean();
 
     assertEquals(0, QueueModel.getQueueSize());
-  }
-
-  // needs to be public to be callable from the outside...
-  public static class MockPlayer implements IPlayerImpl {
-    public void stop() throws Exception {
-
-    }
-
-    public void setVolume(float fVolume) throws Exception {
-
-    }
-
-    public void seek(float fPosition) {
-
-    }
-
-    public void resume() throws Exception {
-
-    }
-
-    public void play(WebRadio radio, float fVolume) throws Exception {
-
-    }
-
-    public void play(File file, float fPosition, long length, float fVolume) throws Exception {
-
-    }
-
-    public void pause() throws Exception {
-
-    }
-
-    public int getState() {
-
-      return 0;
-    }
-
-    public long getElapsedTime() {
-
-      return 0;
-    }
-
-    public float getCurrentVolume() {
-
-      return 0;
-    }
-
-    public float getCurrentPosition() {
-
-      return 0;
-    }
-
-    public long getCurrentLength() {
-
-      return 0;
-    }
   }
 }

@@ -28,6 +28,7 @@ import java.util.List;
 import javax.swing.JButton;
 
 import org.apache.commons.io.FileUtils;
+import org.jajuk.JUnitHelpers;
 import org.jajuk.JajukTestCase;
 import org.jajuk.base.Album;
 import org.jajuk.base.Author;
@@ -42,7 +43,6 @@ import org.jajuk.base.Track;
 import org.jajuk.base.Type;
 import org.jajuk.base.Year;
 import org.jajuk.services.players.IPlayerImpl;
-import org.jajuk.services.players.TestQueueModel.MockPlayer;
 import org.jajuk.util.Const;
 import org.jajuk.util.log.Log;
 
@@ -108,7 +108,7 @@ public class TestPreparePartyAction extends JajukTestCase {
     Author author = new Author(Integer.valueOf(i).toString(), "name");
     Year year = new Year(Integer.valueOf(i).toString(), "2000");
 
-    IPlayerImpl imp = new MockPlayer();
+    IPlayerImpl imp = new JUnitHelpers.MockPlayer();
     Class<IPlayerImpl> cl = (Class<IPlayerImpl>) imp.getClass();
 
     Type type = new Type(Integer.valueOf(i).toString(), "name", "mp3", cl, null);

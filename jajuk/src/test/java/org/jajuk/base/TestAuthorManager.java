@@ -25,12 +25,12 @@ import java.util.List;
 import java.util.Vector;
 
 import org.apache.commons.lang.StringUtils;
+import org.jajuk.JUnitHelpers;
 import org.jajuk.JajukTestCase;
 import org.jajuk.ThreadTestHelper;
 import org.jajuk.services.players.IPlayerImpl;
 import org.jajuk.services.players.QueueModel;
 import org.jajuk.services.players.StackItem;
-import org.jajuk.services.players.TestQueueModel.MockPlayer;
 import org.jajuk.services.startup.StartupCollectionService;
 import org.jajuk.services.tags.ITagImpl;
 import org.jajuk.util.Const;
@@ -178,7 +178,7 @@ public class TestAuthorManager extends JajukTestCase {
 
     Year year = new Year(Integer.valueOf(i).toString(), "2000");
 
-    IPlayerImpl imp = new MockPlayer();
+    IPlayerImpl imp = new JUnitHelpers.MockPlayer();
     Class<IPlayerImpl> cl = (Class<IPlayerImpl>) imp.getClass();
 
     Type type = TypeManager.getInstance().registerType("name", "tst", cl, MyTagImpl.class);

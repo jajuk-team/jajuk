@@ -25,22 +25,12 @@ import java.util.Properties;
 import org.apache.commons.io.FileUtils;
 import org.jajuk.JUnitHelpers;
 import org.jajuk.JajukTestCase;
-import org.jajuk.base.Album;
-import org.jajuk.base.Author;
-import org.jajuk.base.Device;
-import org.jajuk.base.Directory;
 import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
-import org.jajuk.base.Style;
-import org.jajuk.base.Track;
-import org.jajuk.base.Type;
-import org.jajuk.base.Year;
 import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.services.core.SessionService;
-import org.jajuk.services.players.IPlayerImpl;
-import org.jajuk.services.players.TestQueueModel.MockPlayer;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.xml.sax.SAXException;
@@ -90,8 +80,9 @@ public class TestHistory extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.services.bookmark.History#getHistory()}.
+   * @throws Exception 
    */
-  public final void testGetHistory() {
+  public final void testGetHistory() throws Exception {
     assertNotNull(History.getInstance().getHistory());
 
     // has size 0 at the beginning
@@ -110,7 +101,7 @@ public class TestHistory extends JajukTestCase {
 
     // register a new file with the file manager, but still no go as we have a
     // different id!
-    getAndRegisterFile(2);
+    JUnitHelpers.getFile(2, false);
     History.getInstance().addItem("1", 123);
     assertEquals(0, History.getInstance().getHistory().size());
 
@@ -119,9 +110,9 @@ public class TestHistory extends JajukTestCase {
     assertEquals(1, History.getInstance().getHistory().size());
 
     // now try to update the history with more files
-    getAndRegisterFile(3);
-    getAndRegisterFile(4);
-    getAndRegisterFile(5);
+    JUnitHelpers.getFile(3, false);
+    JUnitHelpers.getFile(4, false);
+    JUnitHelpers.getFile(5, false);
     History.getInstance().addItem("3", 123);
     History.getInstance().addItem("4", 123);
     History.getInstance().addItem("5", 123);
@@ -144,7 +135,7 @@ public class TestHistory extends JajukTestCase {
 
     // register enough files (one more than the max size)
     for (int i = 0; i < Const.MAX_HISTORY_SIZE + 1; i++) {
-      getAndRegisterFile(i);
+      JUnitHelpers.getFile(i, false);
     }
 
     // add up to max items
@@ -180,34 +171,7 @@ public class TestHistory extends JajukTestCase {
     assertEquals(0, History.getInstance().getHistory().size());
   }
 
-  @SuppressWarnings("unchecked")
-  private File getAndRegisterFile(int i) {
-    String sID = Integer.valueOf(i).toString();
-
-    Style style = new Style(sID, "name");
-    Album album = new Album(sID, "name", "artis", 23);
-    album.setProperty(Const.XML_ALBUM_COVER, Const.COVER_NONE); // don't read covers for
-    // this test
-
-    Author author = new Author(sID, "name");
-    Year year = new Year(sID, "2000");
-
-    IPlayerImpl imp = new MockPlayer();
-    Class<IPlayerImpl> cl = (Class<IPlayerImpl>) imp.getClass();
-
-    Type type = new Type(sID, "name", "mp3", cl, null);
-    Track track = new Track(sID, "name" + sID, album, style, author, 120, year, 1, type, 1);
-
-    Device device = new Device(sID, "name");
-    device.setUrl(System.getProperty("java.io.tmpdir"));
-    // device.mount(true);
-
-    Directory dir = new Directory(sID, "name", null, device);
-
-    FileManager.getInstance().registerFile(sID, "test.tst", dir, track, 120, 70);
-
-    return new org.jajuk.base.File(sID, "test.tst", dir, track, 120, 70);
-  }
+  
 
   /**
    * Test method for
@@ -235,7 +199,7 @@ public class TestHistory extends JajukTestCase {
     Conf.setProperty(Const.CONF_HISTORY, "1");
 
     // register the file
-    getAndRegisterFile(2);
+    JUnitHelpers.getFile(2, false);
 
     // add the file
     History.getInstance().addItem("2", 123);
@@ -251,7 +215,7 @@ public class TestHistory extends JajukTestCase {
     assertEquals(1, History.getInstance().getHistory().size());
 
     // add another file and unregister it from the FileManager
-    getAndRegisterFile(3);
+    JUnitHelpers.getFile(3, false);
     History.getInstance().addItem("3", 123);
     assertEquals(2, History.getInstance().getHistory().size());
     FileManager.getInstance().removeFile(FileManager.getInstance().getFileByID("3"));
@@ -285,7 +249,7 @@ public class TestHistory extends JajukTestCase {
     Conf.setProperty(Const.CONF_HISTORY, "1");
 
     // register the file
-    getAndRegisterFile(2);
+    JUnitHelpers.getFile(2, false);
 
     // add the file
     History.getInstance().addItem("2", 123);
@@ -315,7 +279,7 @@ public class TestHistory extends JajukTestCase {
     Conf.setProperty(Const.CONF_HISTORY, "1");
 
     // register the file
-    getAndRegisterFile(2);
+    JUnitHelpers.getFile(2, false);
 
     // add the file
     History.getInstance().addItem("2", 123);
@@ -339,7 +303,7 @@ public class TestHistory extends JajukTestCase {
   }
 
   public final void testClearIntKeep() throws Exception {
-    addHistoryItem("2", System.currentTimeMillis());
+    addHistoryItem(2, System.currentTimeMillis());
 
     // now it is there
     assertEquals(1, History.getInstance().getHistory().size());
@@ -353,7 +317,7 @@ public class TestHistory extends JajukTestCase {
   }
 
   public final void testClearIntRemoved() throws Exception {
-    addHistoryItem("2", System.currentTimeMillis());
+    addHistoryItem(2, System.currentTimeMillis());
 
     // now it is there
     assertEquals(1, History.getInstance().getHistory().size());
@@ -374,7 +338,7 @@ public class TestHistory extends JajukTestCase {
    */
   public final void testCommit() throws Exception {
     long date = System.currentTimeMillis();
-    addHistoryItem("2", date);
+    addHistoryItem(2, date);
 
     // now it is there
     assertEquals(1, History.getInstance().getHistory().size());
@@ -408,17 +372,19 @@ public class TestHistory extends JajukTestCase {
    *          The id of the item to create
    * @param timestamp
    *          The timestamp to use for the HistoryItem
+   * @throws Exception 
+   * @throws NumberFormatException 
    * 
    */
-  private void addHistoryItem(String sID, long timestamp) {
+  private void addHistoryItem(int nID, long timestamp) throws NumberFormatException, Exception {
     // enable history
     Conf.setProperty(Const.CONF_HISTORY, "1");
 
     // register the file
-    getAndRegisterFile(new Integer(sID));
+    JUnitHelpers.getFile(nID, false);
 
     // add the file with current date
-    History.getInstance().addItem(sID, timestamp);
+    History.getInstance().addItem(Integer.toString(nID), timestamp);
   }
 
   /**
@@ -445,12 +411,14 @@ public class TestHistory extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.services.bookmark.History#getLastFile()}.
+   * @throws Exception 
+   * @throws NumberFormatException 
    */
-  public final void testGetLastFile() {
+  public final void testGetLastFile() throws NumberFormatException, Exception {
     // null without history
     assertNull(History.getInstance().getLastFile());
 
-    addHistoryItem("2", 123);
+    addHistoryItem(2, 123);
 
     // now it is there
     assertEquals(1, History.getInstance().getHistory().size());
@@ -458,25 +426,27 @@ public class TestHistory extends JajukTestCase {
     // now returns the correct item
     assertEquals("2", History.getInstance().getLastFile());
 
-    addHistoryItem("3", 123);
+    addHistoryItem(3, 123);
     assertEquals("3", History.getInstance().getLastFile());
 
     // now it is there
     assertEquals(2, History.getInstance().getHistory().size());
 
-    addHistoryItem("2", 123);
+    addHistoryItem(2, 123);
     assertEquals("2", History.getInstance().getLastFile());
   }
 
   /**
    * Test method for
    * {@link org.jajuk.services.bookmark.History#getHistoryItem(int)}.
+   * @throws Exception 
+   * @throws NumberFormatException 
    */
-  public final void testGetHistoryItem() {
+  public final void testGetHistoryItem() throws NumberFormatException, Exception {
     // null without any history
     assertNull(History.getInstance().getHistoryItem(0));
 
-    addHistoryItem("2", 123);
+    addHistoryItem(2, 123);
 
     // now it is there
     assertEquals(1, History.getInstance().getHistory().size());
@@ -489,7 +459,7 @@ public class TestHistory extends JajukTestCase {
     assertNull(History.getInstance().getHistoryItem(-1));
 
     // try with more than one item, the new one is added as first item!
-    addHistoryItem("4", 123);
+    addHistoryItem(4, 123);
     assertEquals("4", History.getInstance().getHistoryItem(0).getFileId());
     assertEquals("2", History.getInstance().getHistoryItem(1).getFileId());
   }
@@ -565,10 +535,10 @@ public class TestHistory extends JajukTestCase {
     // enable history
     Conf.setProperty(Const.CONF_HISTORY, "1");
 
-    addHistoryItem("2", 12345);
+    addHistoryItem(2, 12345);
     assertEquals(1, History.getInstance().getHistory().size());
 
-    getAndRegisterFile(3);
+    JUnitHelpers.getFile(3, false);
 
     Properties detail = new Properties();
     detail.put(Const.DETAIL_CURRENT_FILE_ID, "3");
@@ -587,7 +557,7 @@ public class TestHistory extends JajukTestCase {
     // enable history
     Conf.setProperty(Const.CONF_HISTORY, "1");
 
-    addHistoryItem("2", 12345);
+    addHistoryItem(2, 12345);
     assertEquals(1, History.getInstance().getHistory().size());
 
     // remove the file from the FileManager
@@ -610,7 +580,7 @@ public class TestHistory extends JajukTestCase {
     // enable history
     Conf.setProperty(Const.CONF_HISTORY, "1");
 
-    addHistoryItem("14", 12345);
+    addHistoryItem(14, 12345);
     assertEquals(1, History.getInstance().getHistory().size());
 
     // trigger the clear-event
@@ -645,8 +615,8 @@ public class TestHistory extends JajukTestCase {
     Conf.setProperty(Const.CONF_HISTORY, "1");
 
     // register the file
-    getAndRegisterFile(11);
-    getAndRegisterFile(3);
+    JUnitHelpers.getFile(11, false);
+    JUnitHelpers.getFile(3, false);
 
     // add the file
     History.getInstance().addItem("11", 123);
@@ -714,7 +684,7 @@ public class TestHistory extends JajukTestCase {
     // enable history
     Conf.setProperty(Const.CONF_HISTORY, "1");
 
-    getAndRegisterFile(3);
+    JUnitHelpers.getFile(3, false);
 
     Properties detail = new Properties();
     detail.put(Const.DETAIL_CURRENT_FILE_ID, "3");

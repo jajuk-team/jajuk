@@ -33,7 +33,6 @@ import org.jajuk.base.Track;
 import org.jajuk.base.Type;
 import org.jajuk.base.Year;
 import org.jajuk.services.players.IPlayerImpl;
-import org.jajuk.services.players.TestQueueModel.MockPlayer;
 import org.jajuk.util.Const;
 
 /**
@@ -104,7 +103,7 @@ public class TestHistoryItem extends JajukTestCase {
       Author author = new Author("3", "authorname");
       Year year = new Year("3", "2000");
 
-      IPlayerImpl imp = new MockPlayer();
+      IPlayerImpl imp = new JUnitHelpers.MockPlayer();
       Class<IPlayerImpl> cl = (Class<IPlayerImpl>) imp.getClass();
 
       Type type = new Type("3", "typename", "mp3", cl, null);

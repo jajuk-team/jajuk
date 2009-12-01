@@ -28,14 +28,7 @@ import javax.swing.SwingUtilities;
 
 import org.jajuk.JUnitHelpers;
 import org.jajuk.JajukTestCase;
-import org.jajuk.base.Album;
-import org.jajuk.base.Author;
-import org.jajuk.base.Style;
 import org.jajuk.base.Track;
-import org.jajuk.base.Type;
-import org.jajuk.base.Year;
-import org.jajuk.services.players.IPlayerImpl;
-import org.jajuk.services.players.TestQueueModel.MockPlayer;
 import org.jajuk.util.Const;
 
 /**
@@ -103,11 +96,11 @@ public class TestLastFmAlbumsRunnable extends JajukTestCase {
    * @throws Exception
    */
   public void testGetImageForAudioFileNone() throws Exception {
-    LastFmAlbumsRunnable.getImageForAudioFile(getTrack(2), 100, 100);
+    LastFmAlbumsRunnable.getImageForAudioFile(JUnitHelpers.getTrack(2), 100, 100);
   }
 
   public void testGetImageForAudioFileNotExists() {
-    Track track = getTrack(3);
+    Track track = JUnitHelpers.getTrack(3);
     track.getAlbum().setProperty(Const.XML_ALBUM_COVER,
         System.getProperty("java.io.tmpdir") + "nonexist"); // don't read covers
                                                             // for
@@ -115,7 +108,7 @@ public class TestLastFmAlbumsRunnable extends JajukTestCase {
   }
 
   public void testGetImageForAudioFileExists() throws Exception {
-    Track track = getTrack(3);
+    Track track = JUnitHelpers.getTrack(3);
     File file = File.createTempFile("test", ".img");
     track.getAlbum().setProperty(Const.XML_ALBUM_COVER, file.getAbsolutePath()); // don't
                                                                                  // read
@@ -130,7 +123,7 @@ public class TestLastFmAlbumsRunnable extends JajukTestCase {
   }
 
   public void testGetImageForAudioFileExistsMaxSize() throws Exception {
-    Track track = getTrack(3);
+    Track track = JUnitHelpers.getTrack(3);
     File file = File.createTempFile("test", ".img");
     track.getAlbum().setProperty(Const.XML_ALBUM_COVER, file.getAbsolutePath()); // don't
                                                                                  // read
@@ -145,7 +138,7 @@ public class TestLastFmAlbumsRunnable extends JajukTestCase {
   }
 
   public void testGetImageForAudioFileExistsNoResize() throws Exception {
-    Track track = getTrack(3);
+    Track track = JUnitHelpers.getTrack(3);
     File file = File.createTempFile("test", ".img");
     track.getAlbum().setProperty(Const.XML_ALBUM_COVER, file.getAbsolutePath()); // don't
                                                                                  // read
@@ -157,24 +150,6 @@ public class TestLastFmAlbumsRunnable extends JajukTestCase {
     // TODO: cleanup does not work on Windows because the file seems to still be
     // used somewhere
     file.delete();
-  }
-
-  @SuppressWarnings("unchecked")
-  private Track getTrack(int i) {
-    Style style = new Style(Integer.valueOf(i).toString(), "name");
-    Album album = new Album(Integer.valueOf(i).toString(), "name", "artis", 23);
-    album.setProperty(Const.XML_ALBUM_COVER, Const.COVER_NONE); // don't read covers for
-    // this test
-
-    Author author = new Author(Integer.valueOf(i).toString(), "name");
-    Year year = new Year(Integer.valueOf(i).toString(), "2000");
-
-    IPlayerImpl imp = new MockPlayer();
-    Class<IPlayerImpl> cl = (Class<IPlayerImpl>) imp.getClass();
-
-    Type type = new Type(Integer.valueOf(i).toString(), "name", "mp3", cl, null);
-    return new Track(Integer.valueOf(i).toString(), "name", album, style, author, 120, year, 1,
-        type, 1);
   }
 
   /**

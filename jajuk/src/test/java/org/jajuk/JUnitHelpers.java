@@ -30,14 +30,24 @@ import javax.swing.SwingUtilities;
 
 import junit.framework.Assert;
 
+import org.jajuk.base.Album;
+import org.jajuk.base.Author;
+import org.jajuk.base.Device;
 import org.jajuk.base.DeviceManager;
+import org.jajuk.base.Directory;
 import org.jajuk.base.DirectoryManager;
 import org.jajuk.base.FileManager;
+import org.jajuk.base.Style;
+import org.jajuk.base.Track;
+import org.jajuk.base.Type;
+import org.jajuk.base.Year;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.services.bookmark.History;
 import org.jajuk.services.core.SessionService;
+import org.jajuk.services.players.IPlayerImpl;
 import org.jajuk.services.players.QueueModel;
+import org.jajuk.services.webradio.WebRadio;
 import org.jajuk.util.Const;
 
 /**
@@ -471,4 +481,107 @@ public class JUnitHelpers {
 
     JUnitHelpers.clearSwingUtilitiesQueue();
   }
+
+  @SuppressWarnings("unchecked")
+  public
+  static org.jajuk.base.File getFile(int i, boolean mount) throws Exception {
+    Style style = new Style(Integer.valueOf(i).toString(), "name");
+    Album album = new Album(Integer.valueOf(i).toString(), "name", "artis", 23);
+    album.setProperty(Const.XML_ALBUM_COVER, Const.COVER_NONE); // don't read covers for
+    // this test
+  
+    Author author = new Author(Integer.valueOf(i).toString(), "name");
+    Year year = new Year(Integer.valueOf(i).toString(), "2000");
+  
+    IPlayerImpl imp = new MockPlayer();
+    Class<IPlayerImpl> cl = (Class<IPlayerImpl>) imp.getClass();
+  
+    Type type = new Type(Integer.valueOf(i).toString(), "name", "mp3", cl, null);
+    Track track = new Track(Integer.valueOf(i).toString(), "name", album, style, author, 120, year,
+        1, type, 1);
+  
+    Device device = new Device(Integer.valueOf(i).toString(), "name");
+    device.setUrl(System.getProperty("java.io.tmpdir"));
+    if(mount) {
+      device.mount(true);
+    }
+  
+    Directory dir = new Directory(Integer.valueOf(i).toString(), "name", null, device);
+  
+    return FileManager.getInstance().registerFile(Integer.valueOf(i).toString(), "test.tst", dir, track, 120, 70);
+  }
+
+  // needs to be public to be callable from the outside...
+  public static class MockPlayer implements IPlayerImpl {
+    public void stop() throws Exception {
+
+    }
+
+    public void setVolume(float fVolume) throws Exception {
+
+    }
+
+    public void seek(float fPosition) {
+
+    }
+
+    public void resume() throws Exception {
+
+    }
+
+    public void play(WebRadio radio, float fVolume) throws Exception {
+
+    }
+
+    public void play(org.jajuk.base.File file, float fPosition, long length, float fVolume) throws Exception {
+
+    }
+
+    public void pause() throws Exception {
+
+    }
+
+    public int getState() {
+
+      return 0;
+    }
+
+    public long getElapsedTime() {
+
+      return 0;
+    }
+
+    public float getCurrentVolume() {
+
+      return 0;
+    }
+
+    public float getCurrentPosition() {
+
+      return 0;
+    }
+
+    public long getCurrentLength() {
+
+      return 0;
+    }
+  }
+
+  @SuppressWarnings("unchecked")
+  public static Track getTrack(int i) {
+    Style style = new Style(Integer.valueOf(i).toString(), "name");
+    Album album = new Album(Integer.valueOf(i).toString(), "name", "artis", 23);
+    album.setProperty(Const.XML_ALBUM_COVER, Const.COVER_NONE); // don't read covers for
+    // this test
+  
+    Author author = new Author(Integer.valueOf(i).toString(), "name");
+    Year year = new Year(Integer.valueOf(i).toString(), "2000");
+  
+    IPlayerImpl imp = new MockPlayer();
+    Class<IPlayerImpl> cl = (Class<IPlayerImpl>) imp.getClass();
+  
+    Type type = new Type(Integer.valueOf(i).toString(), "name", "mp3", cl, null);
+    return new Track(Integer.valueOf(i).toString(), "name", album, style, author, 120, year, 1,
+        type, 1);
+  }  
 }
