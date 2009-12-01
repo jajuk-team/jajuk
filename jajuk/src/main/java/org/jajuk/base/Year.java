@@ -32,18 +32,24 @@ import org.jajuk.util.UtilString;
  */
 public class Year extends LogicalItem implements Comparable<Year> {
 
-  /** DOCUMENT_ME. */
+  /** The year that is stored in this object */
   private final long value;
 
   /**
    * Year constructor.
    * 
-   * @param sId DOCUMENT_ME
-   * @param sValue DOCUMENT_ME
+   * @param sId
+   *          The generated id (usually a md5hash)
+   * @param sValue
+   *          The Year-Value as string. Only a simple parsing is done, things
+   *          like AC, BC, ... are not supported.
    */
   public Year(String sId, String sValue) {
     super(sId, sValue);
-    this.value = UtilString.fastLongParser(sValue);
+    if (sValue != null)
+      this.value = UtilString.fastLongParser(sValue);
+    else
+      this.value = 0;
   }
 
   /*
@@ -78,11 +84,16 @@ public class Year extends LogicalItem implements Comparable<Year> {
   /**
    * Alphabetical comparator used to display ordered lists.
    * 
-   * @param other item to be compared
+   * @param other
+   *          item to be compared
    * 
    * @return comparison result
    */
   public int compareTo(Year other) {
+    if (other == null) {
+      return -1;
+    }
+
     return (int) (getValue() - other.getValue());
   }
 
@@ -104,7 +115,7 @@ public class Year extends LogicalItem implements Comparable<Year> {
   public String getName2() {
     String s = getName();
     if ("0".equals(s)) {
-      return Messages.getString(UNKNOWN_STYLE);
+      return Messages.getString(UNKNOWN_YEAR);
     }
     return s;
   }
