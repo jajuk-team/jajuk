@@ -161,7 +161,7 @@ public final class LyricsService {
     }
     
     if (commitOK) {
-      Log.warn("Lyrics successfully commited to " + provider.getFile().getName());
+      Log.info("Lyrics successfully commited to " + provider.getFile().getName());
     }
     else {
       Log.warn("Lyrics could not be commited to " + provider.getFile().getName());

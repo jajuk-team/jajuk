@@ -124,15 +124,15 @@ public class LyrcWebLyricsProvider extends GenericWebLyricsProvider {
         }
         if (matches) {
           final String suggestionURL = URL.concat(suggestion.getValue());
-          Log.debug("Found suggestion " + suggestion.getKey());
+          Log.debug("Found suggestion {{" + suggestion.getKey() + "}}");
           try {
             final URL url = new URL(suggestionURL);
             String text = DownloadManager.getTextFromCachedFile(url, getResponseEncoding());
             return cleanLyrics(text);
           } catch (final MalformedURLException e) {
-            Log.warn("Invalid lyrics source URL [" + suggestionURL + "]");
+            Log.warn("Invalid lyrics source URL {{" + suggestionURL + "}}", e.getMessage());
           } catch (final Exception e) {
-            Log.warn("Could not retrieve URL [" + suggestionURL + "]");
+            Log.warn("Could not retrieve URL {{" + suggestionURL + "}}", e.getMessage());
           }
         }
       }

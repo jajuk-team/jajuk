@@ -66,6 +66,10 @@ public class FlyWebLyricsProvider extends GenericWebLyricsProvider {
     String lyrics = null;
     try {
       String xml = callProvider(artist, title);
+      if(xml == null) {
+        Log.debug("No lyrics found for: {{" + artist + "/" + title + "}}");
+        return null;
+      }
       Document document = XMLUtils.getDocument(xml);
       lyrics = XMLUtils.getChildElementContent(document.getDocumentElement(), "tx");
       lyrics = lyrics.replace("[br]", "");
@@ -75,7 +79,7 @@ public class FlyWebLyricsProvider extends GenericWebLyricsProvider {
       }
       return lyrics;
     } catch (Exception e) {
-      Log.debug("Cannot fetch lyrics for: " + artist + "/" + title);
+      Log.debug("Cannot fetch lyrics for: {{" + artist + "/" + title + "}}");
     }
     return lyrics;
   }
