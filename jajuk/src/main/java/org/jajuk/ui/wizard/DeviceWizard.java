@@ -26,11 +26,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.io.File;
-import java.text.NumberFormat;
-import java.text.ParseException;
 import java.util.Iterator;
 import java.util.List;
 
@@ -40,9 +36,7 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
-import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
@@ -71,8 +65,8 @@ import org.jajuk.util.log.Log;
  * Device creation wizard.
  */
 public class DeviceWizard extends JajukJDialog implements ActionListener, Const {
-  
-  /** The Constant WRAP.  DOCUMENT_ME */
+
+  /** The Constant WRAP. DOCUMENT_ME */
   private static final String WRAP = "wrap";
 
   /** Generated serialVersionUID. */
@@ -97,7 +91,7 @@ public class DeviceWizard extends JajukJDialog implements ActionListener, Const 
   private final JCheckBox jcbAutoMount;
 
   /** DOCUMENT_ME. */
-  private final JFormattedTextField jftfAutoRefresh;
+  private final JTextField jtfAutoRefresh;
 
   /** DOCUMENT_ME. */
   private final JCheckBox jcboxSynchronized;
@@ -134,7 +128,7 @@ public class DeviceWizard extends JajukJDialog implements ActionListener, Const 
    */
   public DeviceWizard() {
     super();
-    
+
     devices = DeviceManager.getInstance().getDevices();
     addWindowListener(new WindowAdapter() {
       @Override
@@ -175,23 +169,10 @@ public class DeviceWizard extends JajukJDialog implements ActionListener, Const 
     JLabel jlAutoRefresh = new JLabel(Messages.getString("DeviceWizard.53"));
     jlAutoRefresh.setToolTipText(Messages.getString("DeviceWizard.50"));
     JLabel jlMinutes = new JLabel(Messages.getString("DeviceWizard.54"));
-    jftfAutoRefresh = new JFormattedTextField(NumberFormat.getNumberInstance());
-    // Minimum delay is half a minute
-    jftfAutoRefresh.addPropertyChangeListener(new PropertyChangeListener() {
-      public void propertyChange(final PropertyChangeEvent e) {
-        final String prop = e.getPropertyName();
-        if (prop.equals(JOptionPane.VALUE_PROPERTY)) {
-          // FIXME: this causes trouble on German machines with more than 999
-          // minutes! What is the original purpose of this replacement?
-          final double value = Double.valueOf(jftfAutoRefresh.getText().replace(',', '.'));
-          jftfAutoRefresh.setValue(value);
-          if ((value < 0) || ((value < 0.5d) && (value != 0))) {
-            jftfAutoRefresh.setValue(0.5d);
-          }
-        }
-      }
-    });
-    jftfAutoRefresh.setToolTipText(Messages.getString("DeviceWizard.50"));
+    /* jtfAutoRefresh rules : Minimum delay is half a minute */
+    jtfAutoRefresh = new JTextField();
+
+    jtfAutoRefresh.setToolTipText(Messages.getString("DeviceWizard.50"));
     jcboxSynchronized = new JCheckBox(Messages.getString("DeviceWizard.10"));
     jcboxSynchronized.setToolTipText(Messages.getString("DeviceWizard.51"));
     jcboxSynchronized.addActionListener(this);
@@ -231,7 +212,7 @@ public class DeviceWizard extends JajukJDialog implements ActionListener, Const 
     add(jtfUrl, "split 2,growx");
     add(jbUrl, WRAP);
     add(jlAutoRefresh);
-    add(jftfAutoRefresh, "grow,split 2");
+    add(jtfAutoRefresh, "grow,split 2");
     add(jlMinutes, WRAP);
     add(jcbRefresh, WRAP);
     add(jcbAutoMount, WRAP);
@@ -256,7 +237,8 @@ public class DeviceWizard extends JajukJDialog implements ActionListener, Const 
   /*
    * (non-Javadoc)
    * 
-   * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+   * @see
+   * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
    */
   public void actionPerformed(final ActionEvent e) {
     if (e.getSource() == jcboxSynchronized) {
@@ -273,40 +255,39 @@ public class DeviceWizard extends JajukJDialog implements ActionListener, Const 
   }
 
   /**
-   * Handle type.
-   * DOCUMENT_ME
+   * Handle type. DOCUMENT_ME
    */
   private void handleType() {
     switch (jcbType.getSelectedIndex()) {
     case 0: // directory
       jcbAutoMount.setSelected(true);
       if (bNew) {
-        jftfAutoRefresh.setValue(0.5d);
+        jtfAutoRefresh.setText("1");
       }
       break;
     case 1: // file cd
       jcbAutoMount.setSelected(false);
       if (bNew) {
-        jftfAutoRefresh.setValue(0d);
+        jtfAutoRefresh.setText("0");
       }
       break;
     case 2: // network drive
       jcbAutoMount.setSelected(true);
       // no auto-refresh by default for network drive
       if (bNew) {
-        jftfAutoRefresh.setValue(0d);
+        jtfAutoRefresh.setText("0");
       }
       break;
     case 3: // ext dd
       jcbAutoMount.setSelected(true);
       if (bNew) {
-        jftfAutoRefresh.setValue(3d);
+        jtfAutoRefresh.setText("3");
       }
       break;
     case 4: // player
       jcbAutoMount.setSelected(false);
       if (bNew) {
-        jftfAutoRefresh.setValue(3d);
+        jtfAutoRefresh.setText("3");
       }
       break;
     }
@@ -315,7 +296,8 @@ public class DeviceWizard extends JajukJDialog implements ActionListener, Const 
   /**
    * Handle url.
    * 
-   * @throws HeadlessException the headless exception
+   * @throws HeadlessException
+   *           the headless exception
    */
   private void handleUrl() throws HeadlessException {
     final JajukFileChooser jfc = new JajukFileChooser(new JajukFileFilter(DirectoryFilter
@@ -336,28 +318,9 @@ public class DeviceWizard extends JajukJDialog implements ActionListener, Const 
   }
 
   /**
-   * Handle ok.
-   * DOCUMENT_ME
+   * Handle ok. DOCUMENT_ME
    */
   private void handleOk() {
-    // surface checks
-    try {
-      jftfAutoRefresh.commitEdit();
-    } catch (final ParseException e1) {
-      Messages.showErrorMessage(137);
-      setVisible(true);
-      return;
-    }
-    if (jtfUrl.getText().trim().equals("")) {
-      Messages.showErrorMessage(21);
-      setVisible(true);
-      return;
-    }
-    if (jtfName.getText().trim().equals("")) {
-      Messages.showErrorMessage(22);
-      setVisible(true);
-      return;
-    }
     new Thread("Device Wizard Action Thread") {
       @Override
       public void run() {
@@ -375,8 +338,8 @@ public class DeviceWizard extends JajukJDialog implements ActionListener, Const 
               jcbType.getSelectedIndex(), jtfUrl.getText());
         }
         device.setProperty(Const.XML_DEVICE_AUTO_MOUNT, jcbAutoMount.isSelected());
-        device.setProperty(Const.XML_DEVICE_AUTO_REFRESH, new Double(jftfAutoRefresh.getValue()
-            .toString()));
+        device.setProperty(Const.XML_DEVICE_AUTO_REFRESH, Double.parseDouble(jtfAutoRefresh
+            .getText()));
         device.setProperty(Const.XML_TYPE, Long.valueOf(jcbType.getSelectedIndex()));
         device.setUrl(jtfUrl.getText());
         if (jcbSynchronized.isEnabled() && (jcbSynchronized.getSelectedItem() != null)) {
@@ -434,8 +397,7 @@ public class DeviceWizard extends JajukJDialog implements ActionListener, Const 
   }
 
   /**
-   * Handle synchronized.
-   * DOCUMENT_ME
+   * Handle synchronized. DOCUMENT_ME
    */
   private void handleSynchronized() {
     if (jcboxSynchronized.isSelected()) {
@@ -452,7 +414,8 @@ public class DeviceWizard extends JajukJDialog implements ActionListener, Const 
   /**
    * Update widgets for device property state.
    * 
-   * @param device1 DOCUMENT_ME
+   * @param device1
+   *          DOCUMENT_ME
    */
   public void updateWidgets(final Device device1) {
     bNew = false;
@@ -483,7 +446,7 @@ public class DeviceWizard extends JajukJDialog implements ActionListener, Const 
     } else {
       jcbAutoMount.setSelected(false);
     }
-    jftfAutoRefresh.setValue(device1.getDoubleValue(Const.XML_DEVICE_AUTO_REFRESH));
+    jtfAutoRefresh.setText(device1.getStringValue(Const.XML_DEVICE_AUTO_REFRESH));
     if (jcbSynchronized.getItemCount() == 0) {
       jcboxSynchronized.setEnabled(false);
       jcbSynchronized.setEnabled(false);
@@ -512,7 +475,7 @@ public class DeviceWizard extends JajukJDialog implements ActionListener, Const 
   public void updateWidgetsDefault() {
     jcbRefresh.setSelected(true);
     jcbAutoMount.setSelected(true);
-    jftfAutoRefresh.setValue(0.5d);
+    jtfAutoRefresh.setText("1");
     jcboxSynchronized.setSelected(false);
     jrbUnidirSynchro.setSelected(true);// default synchro mode
     jrbBidirSynchro.setEnabled(false);

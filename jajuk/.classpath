@@ -43,5 +43,6 @@
 	<classpathentry kind="lib" path="lib/jfreechart-1.0.13.jar"/>
 	<classpathentry kind="lib" path="lib/cobra-0.98.4.jar"/>
 	<classpathentry kind="lib" path="lib/js-0.98.4.jar"/>
+	<classpathentry kind="lib" path="lib/simple_validation-0.4.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
