@@ -536,7 +536,7 @@ public final class FileManager extends ItemManager {
     if (al.size() > 0) {
       // find superior interval value
       int sup = (int) ((Const.BESTOF_PROPORTION) * al.size());
-      if (sup < 0) {
+      if (sup < 2) {
         sup = al.size();
       }
       alBest = al.subList(0, sup - 1);

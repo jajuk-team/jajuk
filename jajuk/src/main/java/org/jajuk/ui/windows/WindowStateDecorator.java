@@ -91,7 +91,7 @@ public abstract class WindowStateDecorator {
         window.getWindowStateDecorator().specificBeforeHidden();
       }
 
-      // Display the window
+      // Display or hide the window
       ((Component) window).setVisible(show);
 
       // Show or hide specific code after the window is made visible

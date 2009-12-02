@@ -42,7 +42,7 @@ public class FlyWebLyricsProvider extends GenericWebLyricsProvider {
   private static final String USER_ID = "79o116n89n93sr93p-wnwhx.vasb";
 
   /** URL pattern used by jajuk to retrieve lyrics. */
-  private static final String URL = "http://lyricsfly.com/api/api.php?i="
+  private static final String URL = "http://api.lyricsfly.com/api/api.php?i="
       + UtilString.rot13(USER_ID) + "&a=%artist&t=%title";
   
   /** URL pattern to web page (see ILyricsProvider interface for details). */

@@ -333,6 +333,7 @@ public final class Conf implements Const {
         + Messages.getString("InformationJPanel.8"));
     defaults.put(CONF_SHOW_DUPLICATE_PLAYLISTS, FALSE);
     defaults.put(CONF_FORMAT_TIME_ELAPSED, "0");
+    defaults.put(CONF_AUTO_SCROLL, TRUE);
     // Display slimbar at the lower part of the screen to fix #768 : under MAC,
     // it overlays the menu bar
     int slimbarYPos = 0;

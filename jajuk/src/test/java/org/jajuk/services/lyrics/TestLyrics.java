@@ -27,6 +27,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Field;
 import java.net.URL;
 import java.util.List;
 
@@ -44,7 +45,6 @@ import org.jajuk.services.lyrics.providers.LyricWikiWebLyricsProvider;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.DownloadManager;
-import org.jajuk.util.UtilString;
 import org.jajuk.util.log.Log;
 import org.w3c.dom.Document;
 
@@ -116,20 +116,7 @@ public class TestLyrics extends JajukTestCase {
     assertTrue(tmp.length() > 0);
   }
 
-  /**
-   * Test Lyrc provider response to get lyrics
-   * 
-   * public void testLyrcService() { ILyricsProvider provider = new
-   * LyrcProvider(); testService(provider); }
-   */
-
-  /**
-   * Test Lyrc web url availability
-   * 
-   * public void testLyrcWeb() { ILyricsProvider provider = new LyrcProvider();
-   * testWeb(provider); }
-   */
-
+ 
   /**
    * Test Fly provider response to get lyrics
    * 
@@ -144,19 +131,15 @@ public class TestLyrics extends JajukTestCase {
     Thread.sleep(FLY_DELAY);
   }
 
-  private static final String USER_ID = "55593623089-wnwhx.vasb";
-
-  /** URL pattern used by jajuk to retrieve lyrics */
-  private static final String URL = "http://lyricsfly.com/api/api.php?i="
-      + UtilString.rot13(USER_ID) + "&a=%artist&t=%title";
-
   public void testFlyServiceSonar() throws Exception {
     // ensure that this is not configured somehow
     assertFalse(Conf.getBoolean(Const.CONF_NETWORK_NONE_INTERNET_ACCESS));
 
     // do some in-depth test here to find out why this fails in Sonar
 
-    String queryString = URL;
+    Field urlField = FlyWebLyricsProvider.class.getDeclaredField("URL");
+    urlField.setAccessible(true);
+    String queryString = (String)(urlField.get(null));
 
     queryString = queryString.replace(Const.PATTERN_AUTHOR, (ARTIST != null) ? NetworkUtils
         .encodeString(ARTIST) : "");
@@ -252,40 +235,7 @@ public class TestLyrics extends JajukTestCase {
     testWebService(provider);
   }
 
-  /*
-   * public void testLyricWikiServiceDetails() throws Exception {
-   * LyricWikiProvider provider = new LyricWikiProvider();
-   * 
-   * // String lyrics = provider.getLyrics(ARTIST, TITLE); String artist =
-   * ARTIST; String title = TITLE;
-   * 
-   * // This provider waits for '_' instead of regular '+' for spaces in URL
-   * String formattedArtist = artist.replaceAll(" ", "_"); String formattedTitle
-   * = title.replaceAll(" ", "_"); String html =
-   * provider.callProvider(formattedArtist, formattedTitle); if (html == null ||
-   * html.indexOf("") == -1) { fail("Empty return from callProvider()."); }
-   * Log.debug("HTML: " + html); String lyrics = cleanLyrics(html);
-   * Log.debug("Result: " + lyrics);
-   * 
-   * assertTrue("Lyrics(" + provider.getProviderHostname() + "): " + lyrics,
-   * StringUtils .isNotBlank(lyrics) && lyrics.indexOf(TESTED_WORD) != -1); }
-   * 
-   * private String cleanLyrics(final String html) { String ret = html; if
-   * (ret.contains("<div class='lyricbox' >") ||
-   * ret.contains("<div class='lyricbox'>")) { int startIndex =
-   * html.indexOf("<div class='lyricbox' >"); if(startIndex == -1) { startIndex
-   * = html.indexOf("<div class='lyricbox'>"); } ret = html.substring(startIndex
-   * + 23); int stopIndex = ret.indexOf("<!--"); ret = ret.substring(0,
-   * stopIndex); ret = ret.replaceAll("<br />", "\n"); ret =
-   * ret.replaceAll("&#8217;", "'"); ret = ret.replaceAll("&#8211;", "-"); ret =
-   * ret.replaceAll("\u0092", "'"); ret = ret.replaceAll("\u009c", "oe"); ret =
-   * ret.replaceAll("<p>", "\n"); ret = ret.replaceAll("<i>", ""); ret =
-   * ret.replaceAll("</i>", ""); ret = ret.replaceAll("<b>", ""); ret =
-   * ret.replaceAll("</b>", ""); return ret;
-   * 
-   * } else { return null; } }
-   */
-
+ 
   /**
    * Test LyricWiki web url availability
    */

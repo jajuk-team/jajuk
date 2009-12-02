@@ -129,10 +129,14 @@ public final class UtilFeatures {
    * @param al file list
    * @param ambience ambience
    * 
-   * @return the list filtered
+   * @return the list filtered or a void list if none available track
    */
   public static List<org.jajuk.base.File> filterByAmbience(final List<org.jajuk.base.File> al,
       final Ambience ambience) {
+    // If track list is null, return a void list
+    if (al == null || al.size() == 0) {
+      return new ArrayList<org.jajuk.base.File>(0);
+    }
     // Void filter, return the input
     if ((ambience == null) || (ambience.getStyles().size() == 0)) {
       return al;

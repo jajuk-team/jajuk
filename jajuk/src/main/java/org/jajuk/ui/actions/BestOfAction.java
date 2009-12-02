@@ -68,7 +68,7 @@ public class BestOfAction extends JajukAction {
           // For perfs (mainly playlist editor view refresh), we set a ceil for
           // tracks
           // number
-          if (alToPlay.size() > Const.NB_TRACKS_ON_ACTION) {
+          if (alToPlay.size() > 0 && alToPlay.size() > Const.NB_TRACKS_ON_ACTION) {
             alToPlay = alToPlay.subList(0, Const.NB_TRACKS_ON_ACTION);
           }
           QueueModel.push(UtilFeatures.createStackItems(alToPlay, Conf

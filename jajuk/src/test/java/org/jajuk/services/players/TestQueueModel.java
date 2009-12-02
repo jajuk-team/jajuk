@@ -149,6 +149,21 @@ public class TestQueueModel extends JajukTestCase {
 
     assertEquals(1, QueueModel.getQueue().size());
   }
+  
+  /**
+   * Check right behavior when pushing void list of items.
+   * If run with GUI, you should get a warning popup
+   * @throws Exception
+   */
+  public void testPushListOfStackItemVoid() throws Exception {
+    List<StackItem> list = new ArrayList<StackItem>();
+    QueueModel.push(list, false);
+
+    // there is a thread started, so delay a bit to let that happen...
+    Thread.sleep(400);
+
+    assertEquals(0, QueueModel.getQueue().size());
+  }
 
   public void testPushListOfStackItemBooleanNullItems() throws Exception {
     List<StackItem> list = new ArrayList<StackItem>();

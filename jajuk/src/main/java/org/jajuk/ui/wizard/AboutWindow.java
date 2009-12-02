@@ -29,13 +29,14 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-import javax.swing.Box;
-import javax.swing.BoxLayout;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
+
+import net.miginfocom.swing.MigLayout;
 
 import org.jajuk.ui.widgets.JajukJDialog;
 import org.jajuk.util.Const;
@@ -128,17 +129,14 @@ public class AboutWindow extends JajukJDialog {
     jta.setWrapStyleWord(true);
     jta.setCaretPosition(0);
     jta.setEditable(false);
-    jta.addMouseListener(new LicenseMouseListener());
-
     jpLicence.add(new JScrollPane(jta));
     jtp = new JTabbedPane();
-    JPanel jpAbout = new JPanel();
-    jpAbout.setLayout(new BoxLayout(jpAbout, BoxLayout.Y_AXIS));
-    ap = new AboutPanel("Jajuk", Const.JAJUK_VERSION + " <" + Const.JAJUK_CODENAME + ">" + " "
-        + Const.JAJUK_VERSION_DATE, Messages.getString("AboutView.11"), INFOS, IconLoader.getIcon(
-        JajukIcons.LOGO).getImage());
-    jpAbout.add(ap);
-    jpAbout.add(Box.createVerticalGlue());
+    JPanel jpAbout = new JPanel(new MigLayout("ins 5", "[grow]", "[grow][grow][grow]"));
+    jpAbout.add(new JLabel(IconLoader.getIcon(JajukIcons.LOGO)), "left,split 2");
+    jpAbout.add(new JLabel("Jajuk " + Const.JAJUK_VERSION + " <" + Const.JAJUK_CODENAME + ">" + " "
+        + Const.JAJUK_VERSION_DATE), "wrap");
+    jpAbout.add(new JLabel(Messages.getString("AboutView.11")), "center,wrap,grow");
+    jpAbout.add(new JLabel(INFOS), "center,grow,wrap");
     spp = new SystemPropertiesPanel();
     jtp.addTab(Messages.getString("AboutView.7"), jpAbout);
     jtp.addTab(Messages.getString("AboutView.8"), jpLicence);

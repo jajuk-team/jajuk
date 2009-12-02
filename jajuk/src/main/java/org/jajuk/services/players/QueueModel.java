@@ -348,6 +348,7 @@ public final class QueueModel {
       synchronized (QueueModel.class) {
         // test if we have yet some files to consider
         if (alItems.size() == 0) {
+          Messages.showWarningMessage(Messages.getString("Warning.6"));
           return;
         }
 
@@ -455,16 +456,19 @@ public final class QueueModel {
       }
 
       if (current.isRepeat()) {
-        StackItem itemNext = getNextItem();
-        // if we are in repeat mode and next track too, play next track
-        if (itemNext.isRepeat() || forceNext) {
-          // If we are the next track in the queue, next repeated track is at
-          // the top of the queue
-          if (index < (alQueue.size() - 1)) {
+        // if the track was in repeat mode, don't remove it from the
+        // fifo but inc index
+        // find the next item is in repeat mode if any
+        if (index < alQueue.size() - 1) {
+          StackItem itemNext = alQueue.get(index + 1);
+          // if next track is repeat, inc index
+          if (itemNext.isRepeat() || forceNext) {
             index++;
-          } else {
-            index = 0;
+            // no next track in repeat mode, come back to first
+            // element in fifo
           }
+        } else {
+          index = 0;
         }
       } else if (index < alQueue.size()) {
         StackItem item = alQueue.get(index);
