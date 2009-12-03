@@ -23,7 +23,7 @@ package org.jajuk.util;
 import java.util.Iterator;
 
 /**
- * A convenient class that prevent remove() method from an iterator <br>
+ * A convenient class that prevents remove() method from an iterator <br>
  * Generic class.
  */
 public class ReadOnlyIterator<V> {
@@ -34,27 +34,25 @@ public class ReadOnlyIterator<V> {
   /**
    * Instantiates a new read only iterator.
    * 
-   * @param it DOCUMENT_ME
+   * @param it The source iterator that should be wrapped.
    */
   public ReadOnlyIterator(Iterator<V> it) {
     this.iterator = it;
   }
 
   /**
-   * Next.
-   * DOCUMENT_ME
+   * Return the next value from the iterator.
    * 
-   * @return the v
+   * @return The next element from the collection.
    */
   public V next() {
     return iterator.next();
   }
 
   /**
-   * Checks for next.
-   * DOCUMENT_ME
+   * Checks if there is another element in the collection. 
    * 
-   * @return true if...
+   * @return true if there is another element, false otherwise.
    */
   public boolean hasNext() {
     return iterator.hasNext();
