@@ -66,7 +66,7 @@ public class FlyWebLyricsProvider extends GenericWebLyricsProvider {
     String lyrics = null;
     try {
       String xml = callProvider(artist, title);
-      if(xml == null) {
+      if(StringUtils.isBlank(xml)) {
         Log.debug("No lyrics found for: {{" + artist + "/" + title + "}}");
         return null;
       }
