@@ -21,8 +21,8 @@
 
 package org.jajuk.util;
 
+import java.util.Collection;
 import java.util.Iterator;
-import java.util.List;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
@@ -113,7 +113,7 @@ public class Filter {
    * @param list The input list to filter. Filtering is done in-place on this list.
    * @param filter The filter to apply on the list.
    */
-  public static void filterItems(List<? extends Item> list, Filter filter) {
+  public static void filterItems(Collection<? extends Item> list, Filter filter) {
     if (filter == null || filter.getValue() == null) {
       return;
     }
