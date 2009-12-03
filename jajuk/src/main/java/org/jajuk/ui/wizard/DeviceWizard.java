@@ -446,7 +446,7 @@ public class DeviceWizard extends JajukJDialog implements ActionListener, Const 
     } else {
       jcbAutoMount.setSelected(false);
     }
-    jtfAutoRefresh.setText(device1.getStringValue(Const.XML_DEVICE_AUTO_REFRESH));
+    jtfAutoRefresh.setText(Double.toString(device1.getDoubleValue(Const.XML_DEVICE_AUTO_REFRESH)));
     if (jcbSynchronized.getItemCount() == 0) {
       jcboxSynchronized.setEnabled(false);
       jcbSynchronized.setEnabled(false);
