@@ -59,7 +59,7 @@ import org.jajuk.util.UtilGUI;
 /**
  * 
  */
-public class ActivateTagsWizard extends JajukJDialog {
+public class TagConfigurationWizard extends JajukJDialog {
 
   /**
    * 
@@ -71,7 +71,7 @@ public class ActivateTagsWizard extends JajukJDialog {
   private ArrayList<String> availableList = new ArrayList<String>();
   private ArrayList<String> activatedList = new ArrayList<String>();
 
-  public ActivateTagsWizard() {
+  public TagConfigurationWizard() {
     SwingUtilities.invokeLater(new Runnable() {
       public void run() {
         setTitle(Messages.getString("JajukWindow.40"));
@@ -80,7 +80,7 @@ public class ActivateTagsWizard extends JajukJDialog {
         refreshList();
         populate();
         setSize(new Dimension(600, 500));
-        UtilGUI.centerWindow(ActivateTagsWizard.this);
+        UtilGUI.centerWindow(TagConfigurationWizard.this);
         setVisible(true);
       }
     });
