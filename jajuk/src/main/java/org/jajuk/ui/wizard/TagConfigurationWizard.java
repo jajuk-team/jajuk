@@ -20,9 +20,9 @@
  */
 package org.jajuk.ui.wizard;
 
-import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -39,7 +39,8 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
-import javax.swing.SwingUtilities;
+
+import net.miginfocom.swing.MigLayout;
 
 import org.jajuk.base.Device;
 import org.jajuk.base.DeviceManager;
@@ -65,25 +66,21 @@ public class TagConfigurationWizard extends JajukJDialog {
    * 
    */
   private static final long serialVersionUID = 1L;
-  private JList availableTags;
-  private JList activatedTags;
+  private JList availableTagsJList;
+  private JList activatedTagsJList;
 
   private ArrayList<String> availableList = new ArrayList<String>();
   private ArrayList<String> activatedList = new ArrayList<String>();
 
   public TagConfigurationWizard() {
-    SwingUtilities.invokeLater(new Runnable() {
-      public void run() {
-        setTitle(Messages.getString("JajukWindow.40"));
-        setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-        initUI();
-        refreshList();
-        populate();
-        setSize(new Dimension(600, 500));
-        UtilGUI.centerWindow(TagConfigurationWizard.this);
-        setVisible(true);
-      }
-    });
+    setTitle(Messages.getString("JajukWindow.40"));
+    setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+    initUI();
+    refreshList();
+    populate();
+    pack();
+    UtilGUI.centerWindow(TagConfigurationWizard.this);
+    setVisible(true);
   }
 
   private void refreshList() {
@@ -102,25 +99,25 @@ public class TagConfigurationWizard extends JajukJDialog {
   }
 
   private void populate() {
-    DefaultListModel model = (DefaultListModel) availableTags.getModel();
+    DefaultListModel model = (DefaultListModel) availableTagsJList.getModel();
     model.clear();
     for (String s : availableList) {
       model.addElement(s);
     }
 
-    availableTags.setModel(model);
+    availableTagsJList.setModel(model);
 
-    model = (DefaultListModel) activatedTags.getModel();
+    model = (DefaultListModel) activatedTagsJList.getModel();
     model.clear();
     for (String s : activatedList) {
       model.addElement(s);
     }
-    activatedTags.setModel(model);
+    activatedTagsJList.setModel(model);
   }
 
   private void initUI() {
     JPanel mainPanel = new JPanel();
-    mainPanel.setLayout(new BorderLayout(5, 5));
+    mainPanel.setLayout(new MigLayout("", "", ""));
     mainPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
     JTextArea ta = new JTextArea();
@@ -128,30 +125,26 @@ public class TagConfigurationWizard extends JajukJDialog {
     ta.setLineWrap(true);
     ta.setEditable(false);
     ta.setWrapStyleWord(true);
-    ta.setBorder(BorderFactory.createRaisedBevelBorder());
-    mainPanel.add(ta, BorderLayout.NORTH);
+    ta.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
+    ta.setMargin(new Insets(5, 5, 5, 5));
+    mainPanel.add(ta, "cell 0 0 3 0, grow");
 
     // available tags
-    JPanel availablePanel = new JPanel();
-    availablePanel.setLayout(new BorderLayout());
     JLabel label = new JLabel(Messages.getString("ActiveTagsWizard.1"));
     label.setPreferredSize(new Dimension(250, 20));
-    availablePanel.add(label, BorderLayout.NORTH);
-    availableTags = new JList();
-    availableTags.setModel(new DefaultListModel());
-    availablePanel.add(new JScrollPane(availableTags), BorderLayout.CENTER);
-    mainPanel.add(availablePanel, BorderLayout.WEST);
+    mainPanel.add(label, "cell 0 1");
+    availableTagsJList = new JList();
+    availableTagsJList.setModel(new DefaultListModel());
+    mainPanel.add(new JScrollPane(availableTagsJList), "cell 0 2, grow");
 
     // control buttons
-    JPanel controlPanel = new JPanel();
-    controlPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
     Box controlBox = new Box(BoxLayout.Y_AXIS);
     JButton addButton = new JButton(IconLoader.getIcon(JajukIcons.PLAYER_NEXT));
     addButton.addActionListener(new ActionListener() {
 
       @Override
       public void actionPerformed(ActionEvent e) {
-        for (Object o : availableTags.getSelectedValues()) {
+        for (Object o : availableTagsJList.getSelectedValues()) {
           activatedList.add(availableList.remove(availableList.indexOf(o)));
         }
         populate();
@@ -164,30 +157,25 @@ public class TagConfigurationWizard extends JajukJDialog {
 
       @Override
       public void actionPerformed(ActionEvent e) {
-        for (Object o : activatedTags.getSelectedValues()) {
+        for (Object o : activatedTagsJList.getSelectedValues()) {
           availableList.add(activatedList.remove(activatedList.indexOf(o)));
         }
         populate();
       }
     });
     controlBox.add(removeButton);
-    controlPanel.add(controlBox);
-    mainPanel.add(controlPanel, BorderLayout.CENTER);
+
+    mainPanel.add(controlBox, "cell 1 2, center");
 
     // activated tags
-    JPanel activatedPanel = new JPanel();
-    activatedPanel.setLayout(new BorderLayout());
     label = new JLabel(Messages.getString("ActiveTagsWizard.2"));
     label.setPreferredSize(new Dimension(250, 20));
-    activatedPanel.add(label, BorderLayout.NORTH);
-    activatedTags = new JList();
-    activatedTags.setModel(new DefaultListModel());
-    activatedPanel.add(new JScrollPane(activatedTags), BorderLayout.CENTER);
-    mainPanel.add(activatedPanel, BorderLayout.EAST);
+    mainPanel.add(label, "cell 2 1");
+    activatedTagsJList = new JList();
+    activatedTagsJList.setModel(new DefaultListModel());
+    mainPanel.add(new JScrollPane(activatedTagsJList), "cell 2 2, grow");
 
     // confirm buttons
-    JPanel confirmPanel = new JPanel();
-    confirmPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
     JButton okButton = new JButton(Messages.getString("Ok"));
     okButton.addActionListener(new ActionListener() {
 
@@ -196,7 +184,7 @@ public class TagConfigurationWizard extends JajukJDialog {
         okAction();
       }
     });
-    confirmPanel.add(okButton);
+    mainPanel.add(okButton, "cell 0 3, align right");
 
     JButton cancelButton = new JButton(Messages.getString("Cancel"));
     cancelButton.addActionListener(new ActionListener() {
@@ -207,8 +195,7 @@ public class TagConfigurationWizard extends JajukJDialog {
         dispose();
       }
     });
-    confirmPanel.add(cancelButton);
-    mainPanel.add(confirmPanel, BorderLayout.SOUTH);
+    mainPanel.add(cancelButton, "cell 2 3");
 
     getContentPane().add(mainPanel);
 
