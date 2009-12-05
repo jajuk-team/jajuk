@@ -50,13 +50,16 @@ public class ManualDeviceRefreshReporter extends RefreshReporter {
   /**
    * Instantiates a new manual device refresh reporter.
    * 
-   * @param device DOCUMENT_ME
+   * @param device
+   *          DOCUMENT_ME
    */
   public ManualDeviceRefreshReporter(Device device) {
     super(device);
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see org.jajuk.ui.helpers.RefreshReporter#startup()
    */
   @Override
@@ -66,7 +69,8 @@ public class ManualDeviceRefreshReporter extends RefreshReporter {
       SwingUtilities.invokeAndWait(new Runnable() {
         @Override
         public void run() {
-          // if <0 directories count -> the progress bar is in indeterminate state
+          // if <0 directories count -> the progress bar is in indeterminate
+          // state
           rdialog = new RefreshDialog((dirTotal < 0));
           rdialog.setTitle(Messages.getString("RefreshDialog.2") + " " + device.getName());
           rdialog.setAction(Messages.getString("RefreshDialog.3"), IconLoader
@@ -80,7 +84,9 @@ public class ManualDeviceRefreshReporter extends RefreshReporter {
     }
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see org.jajuk.ui.helpers.RefreshReporter#reset()
    */
   @Override
@@ -90,7 +96,9 @@ public class ManualDeviceRefreshReporter extends RefreshReporter {
 
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see org.jajuk.ui.helpers.RefreshReporter#cleanupDone()
    */
   @Override
@@ -105,8 +113,11 @@ public class ManualDeviceRefreshReporter extends RefreshReporter {
     }
   }
 
-  /* (non-Javadoc)
-   * @see org.jajuk.ui.helpers.RefreshReporter#updateState(org.jajuk.base.Directory)
+  /*
+   * (non-Javadoc)
+   * 
+   * @see
+   * org.jajuk.ui.helpers.RefreshReporter#updateState(org.jajuk.base.Directory)
    */
   @Override
   public void updateState(Directory dir) {
@@ -122,11 +133,22 @@ public class ManualDeviceRefreshReporter extends RefreshReporter {
     dirCount++;
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see org.jajuk.ui.helpers.RefreshReporter#done()
    */
   @Override
   public void done() {
+    done(true);
+  }
+
+  /**
+   * Done.
+   * 
+   * @param showInfoMessageDuration show info message with total duration when finished
+   */
+  public void done(boolean showInfoMessageDuration) {
     long refreshTime = System.currentTimeMillis() - lRefreshDateStart;
     String message = buildFinalMessage(refreshTime);
     Log.debug(message);
@@ -136,10 +158,16 @@ public class ManualDeviceRefreshReporter extends RefreshReporter {
     // Close title timer
     updateDialogTitle.stop();
     // Display end of refresh message with stats
-    Messages.showInfoMessage(message);
+    if (showInfoMessageDuration) {
+      Messages.showInfoMessage(message);
+    }
   }
 
-  /** This timer limit dialog title changes (this can have side effect on performances or other in some window managers. Too many window title change causes others menu bar items freezes under KDE for ie) */
+  /**
+   * This timer limit dialog title changes (this can have side effect on
+   * performances or other in some window managers. Too many window title change
+   * causes others menu bar items freezes under KDE for ie)
+   */
   Timer updateDialogTitle = new Timer(1000, new ActionListener() {
 
     public void actionPerformed(ActionEvent e) {

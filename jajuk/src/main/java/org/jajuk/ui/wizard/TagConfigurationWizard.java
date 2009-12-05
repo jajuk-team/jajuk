@@ -39,6 +39,7 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.SwingUtilities;
 
 import net.miginfocom.swing.MigLayout;
 
@@ -50,7 +51,9 @@ import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.services.tags.JAudioTaggerTagImpl;
+import org.jajuk.ui.helpers.ManualDeviceRefreshReporter;
 import org.jajuk.ui.widgets.JajukJDialog;
+import org.jajuk.ui.windows.JajukMainWindow;
 import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
@@ -73,6 +76,7 @@ public class TagConfigurationWizard extends JajukJDialog {
   private ArrayList<String> activatedList = new ArrayList<String>();
 
   public TagConfigurationWizard() {
+    super(JajukMainWindow.getInstance(), true);
     setTitle(Messages.getString("JajukWindow.40"));
     setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
     initUI();
@@ -242,10 +246,25 @@ public class TagConfigurationWizard extends JajukJDialog {
     }
 
     if (deepScanNeeded) {
-      for (Device d : DeviceManager.getInstance().getDevices()) {
-        if (d.isReady())
-          d.refreshCommand(true);
-      }
+      // we are inside the EDT
+      new Thread(new Runnable() {
+
+        @Override
+        public void run() {
+          for (Device d : DeviceManager.getInstance().getDevices()) {
+            ManualDeviceRefreshReporter reporter = null;
+            if (d.isReady()) {
+              reporter = new ManualDeviceRefreshReporter(d);
+              reporter.startup();
+              reporter.cleanupDone();
+              reporter.refreshStarted();
+              d.refreshCommand(true);
+              reporter.done(false);
+              reporter = null;
+            }
+          }
+        }
+      }).start();
     }
 
     setVisible(false);
