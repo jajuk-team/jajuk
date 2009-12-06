@@ -39,7 +39,6 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
-import javax.swing.SwingUtilities;
 
 import net.miginfocom.swing.MigLayout;
 
@@ -103,14 +102,15 @@ public class TagConfigurationWizard extends JajukJDialog {
   }
 
   private void populate() {
+    availableTagsJList.clearSelection();
     DefaultListModel model = (DefaultListModel) availableTagsJList.getModel();
     model.clear();
     for (String s : availableList) {
       model.addElement(s);
     }
-
     availableTagsJList.setModel(model);
 
+    activatedTagsJList.clearSelection();
     model = (DefaultListModel) activatedTagsJList.getModel();
     model.clear();
     for (String s : activatedList) {
