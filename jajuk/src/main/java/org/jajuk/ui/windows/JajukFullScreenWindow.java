@@ -124,6 +124,7 @@ public class JajukFullScreenWindow extends JWindow implements IJajukWindow {
     owner = new JFrame();
     owner.setSize(new Dimension(0, 0));
     owner.setUndecorated(true);
+    owner.requestFocus();
 
     // Add escape listening to exit full-screen mode
     owner.addKeyListener(new KeyAdapter() {
@@ -165,7 +166,7 @@ public class JajukFullScreenWindow extends JWindow implements IJajukWindow {
           instance.setLocation(instance.graphicsDevice.getDefaultConfiguration().getBounds()
               .getLocation());
           owner.setVisible(true);
-          instance.requestFocus();
+          owner.requestFocus();
         }
 
         @Override
