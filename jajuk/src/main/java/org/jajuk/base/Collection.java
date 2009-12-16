@@ -56,14 +56,14 @@ import org.xml.sax.helpers.DefaultHandler;
  */
 public final class Collection extends DefaultHandler implements ErrorHandler {
 
-  /** The Constant TAG_CLOSE_NEWLINE.  DOCUMENT_ME */
+  /** The Constant TAG_CLOSE_NEWLINE. DOCUMENT_ME */
   private static final String TAG_CLOSE_NEWLINE = ">\n";
 
-  /** The Constant TAB_CLOSE_TAG_START.  DOCUMENT_ME */
+  /** The Constant TAB_CLOSE_TAG_START. DOCUMENT_ME */
   private static final String TAB_CLOSE_TAG_START = "</";
 
   /** Self instance. */
-  private static Collection collection = new Collection();
+  private static Collection coll = new Collection();
 
   /** DOCUMENT_ME. */
   private static long lTime;
@@ -111,51 +111,64 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
     CONVERSION.put("9", "ram");
     CONVERSION.put("10", "mp2");
   }
-  
+
   /** [Perf] flag used to accelerate conversion. */
   private boolean needCheckConversions = true;
 
-  /** *************************************************************************** [PERF] provide current stage (files, tracks...) used to optimize switch when parsing the collection ************************************************************************** */
-  private short stage = -1;
-
-  /** [PERF] Does the type has been checked once for ID computation change ? Indeed, we check only one element of each type to check if this computation changed for perfs. */
+  /**
+   * [PERF] Does the type has been checked once for ID computation change ?
+   * Indeed, we check only one element of each type to check if this computation
+   * changed for perfs.
+   */
   private boolean needCheckID = false;
 
   // Constants value, use lower value for mist numerous items to parse
-  /** The Constant STAGE_FILES.  DOCUMENT_ME */
-  private static final short STAGE_FILES = 0;
+  private enum Stage {
+    STAGE_NONE,
 
-  /** The Constant STAGE_DIRECTORIES.  DOCUMENT_ME */
-  private static final short STAGE_DIRECTORIES = 1;
+    /** The Constant STAGE_FILES. DOCUMENT_ME */
+    STAGE_FILES,
 
-  /** The Constant STAGE_TRACKS.  DOCUMENT_ME */
-  private static final short STAGE_TRACKS = 2;
+    /** The Constant STAGE_DIRECTORIES. DOCUMENT_ME */
+    STAGE_DIRECTORIES,
 
-  /** The Constant STAGE_ALBUMS.  DOCUMENT_ME */
-  private static final short STAGE_ALBUMS = 3;
+    /** The Constant STAGE_TRACKS. DOCUMENT_ME */
+    STAGE_TRACKS,
 
-  /** The Constant STAGE_AUTHORS.  DOCUMENT_ME */
-  private static final short STAGE_AUTHORS = 4;
+    /** The Constant STAGE_ALBUMS. DOCUMENT_ME */
+    STAGE_ALBUMS,
 
-  /** The Constant STAGE_STYLES.  DOCUMENT_ME */
-  private static final short STAGE_STYLES = 5;
+    /** The Constant STAGE_AUTHORS. DOCUMENT_ME */
+    STAGE_AUTHORS,
 
-  /** The Constant STAGE_PLAYLIST_FILES.  DOCUMENT_ME */
-  private static final short STAGE_PLAYLIST_FILES = 6;
+    /** The Constant STAGE_STYLES. DOCUMENT_ME */
+    STAGE_STYLES,
 
-  /** The Constant STAGE_PLAYLISTS.  DOCUMENT_ME */
-  private static final short STAGE_PLAYLISTS = 7;
+    /** The Constant STAGE_PLAYLIST_FILES. DOCUMENT_ME */
+    STAGE_PLAYLIST_FILES,
 
-  /** The Constant STAGE_TYPES.  DOCUMENT_ME */
-  private static final short STAGE_TYPES = 8;
+    /** The Constant STAGE_PLAYLISTS. DOCUMENT_ME */
+    STAGE_PLAYLISTS,
 
-  /** The Constant STAGE_DEVICES.  DOCUMENT_ME */
-  private static final short STAGE_DEVICES = 9;
+    /** The Constant STAGE_TYPES. DOCUMENT_ME */
+    STAGE_TYPES,
 
-  /** The Constant STAGE_YEARS.  DOCUMENT_ME */
-  private static final short STAGE_YEARS = 10;
+    /** The Constant STAGE_DEVICES. DOCUMENT_ME */
+    STAGE_DEVICES,
 
-  /** The Constant ADDITION_FORMATTER.  DOCUMENT_ME */
+    /** The Constant STAGE_YEARS. DOCUMENT_ME */
+    STAGE_YEARS
+  }
+
+  /**
+   * ***************************************************************************
+   * [PERF] provide current stage (files, tracks...) used to optimize switch
+   * when parsing the collection
+   * **************************************************************************
+   */
+  private Stage stage = Stage.STAGE_NONE;
+
+  /** The Constant ADDITION_FORMATTER. DOCUMENT_ME */
   private static final DateFormat ADDITION_FORMATTER = UtilString.getAdditionDateFormatter();
 
   /**
@@ -164,7 +177,7 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
    * @return the instance
    */
   public static Collection getInstance() {
-    return collection;
+    return coll;
   }
 
   /**
@@ -178,9 +191,11 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
    * Write current collection to collection file for persistence between
    * sessions.
    * 
-   * @param collectionFile DOCUMENT_ME
+   * @param collectionFile
+   *          DOCUMENT_ME
    * 
-   * @throws IOException Signals that an I/O exception has occurred.
+   * @throws IOException
+   *           Signals that an I/O exception has occurred.
    */
   public static void commit(File collectionFile) throws IOException {
     long time = System.currentTimeMillis();
@@ -248,16 +263,21 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
   }
 
   /**
-   * Write item list.
-   * DOCUMENT_ME
+   * Write item list. DOCUMENT_ME
    * 
-   * @param bw DOCUMENT_ME
-   * @param header DOCUMENT_ME
-   * @param items DOCUMENT_ME
-   * @param footer DOCUMENT_ME
-   * @param buffer DOCUMENT_ME
+   * @param bw
+   *          DOCUMENT_ME
+   * @param header
+   *          DOCUMENT_ME
+   * @param items
+   *          DOCUMENT_ME
+   * @param footer
+   *          DOCUMENT_ME
+   * @param buffer
+   *          DOCUMENT_ME
    * 
-   * @throws IOException Signals that an I/O exception has occurred.
+   * @throws IOException
+   *           Signals that an I/O exception has occurred.
    */
   private static void writeItemList(BufferedWriter bw, String header,
       ReadOnlyIterator<? extends Item> items, String footer, int buffer) throws IOException {
@@ -271,14 +291,17 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
   }
 
   /**
-   * Write string.
-   * DOCUMENT_ME
+   * Write string. DOCUMENT_ME
    * 
-   * @param bw DOCUMENT_ME
-   * @param toWrite DOCUMENT_ME
-   * @param buffer DOCUMENT_ME
+   * @param bw
+   *          DOCUMENT_ME
+   * @param toWrite
+   *          DOCUMENT_ME
+   * @param buffer
+   *          DOCUMENT_ME
    * 
-   * @throws IOException Signals that an I/O exception has occurred.
+   * @throws IOException
+   *           Signals that an I/O exception has occurred.
    */
   private static void writeString(BufferedWriter bw, String toWrite, int buffer) throws IOException {
     StringBuilder sb = new StringBuilder(buffer);
@@ -291,12 +314,17 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
   /**
    * Parse collection.xml file and put all collection information into memory
    * 
-   * @param file DOCUMENT_ME
+   * @param file
+   *          DOCUMENT_ME
    * 
-   * @throws SAXException the SAX exception
-   * @throws ParserConfigurationException the parser configuration exception
-   * @throws JajukException the jajuk exception
-   * @throws IOException Signals that an I/O exception has occurred.
+   * @throws SAXException
+   *           the SAX exception
+   * @throws ParserConfigurationException
+   *           the parser configuration exception
+   * @throws JajukException
+   *           the jajuk exception
+   * @throws IOException
+   *           Signals that an I/O exception has occurred.
    */
   public static void load(File file) throws SAXException, ParserConfigurationException,
       JajukException, IOException {
@@ -349,9 +377,11 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
   /**
    * parsing warning.
    * 
-   * @param spe DOCUMENT_ME
+   * @param spe
+   *          DOCUMENT_ME
    * 
-   * @throws SAXException the SAX exception
+   * @throws SAXException
+   *           the SAX exception
    * 
    * @exception SAXException
    */
@@ -364,9 +394,11 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
   /**
    * parsing error.
    * 
-   * @param spe DOCUMENT_ME
+   * @param spe
+   *          DOCUMENT_ME
    * 
-   * @throws SAXException the SAX exception
+   * @throws SAXException
+   *           the SAX exception
    * 
    * @exception SAXException
    */
@@ -379,9 +411,11 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
   /**
    * parsing fatal error.
    * 
-   * @param spe DOCUMENT_ME
+   * @param spe
+   *          DOCUMENT_ME
    * 
-   * @throws SAXException the SAX exception
+   * @throws SAXException
+   *           the SAX exception
    * 
    * @exception SAXException
    */
@@ -418,16 +452,21 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
    * want startup to be as fast as possible. Note that the use of intern() save
    * around 1/4 of overall heap memory
    * 
-   * We use sax-interning for the main items sections (<styles> for ie). For
-   * all raw items, we don't perform equals on item name but we compare the
-   * string hashcode
+   * We use sax-interning for the main items sections (<styles> for ie). For all
+   * raw items, we don't perform equals on item name but we compare the string
+   * hashcode
    * 
-   * @param sUri DOCUMENT_ME
-   * @param s DOCUMENT_ME
-   * @param sQName DOCUMENT_ME
-   * @param attributes DOCUMENT_ME
+   * @param sUri
+   *          DOCUMENT_ME
+   * @param s
+   *          DOCUMENT_ME
+   * @param sQName
+   *          DOCUMENT_ME
+   * @param attributes
+   *          DOCUMENT_ME
    * 
-   * @throws SAXException the SAX exception
+   * @throws SAXException
+   *           the SAX exception
    */
   @Override
   public void startElement(String sUri, String s, String sQName, Attributes attributes)
@@ -439,50 +478,50 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
       if (idIndex == -1) {
         if (Const.XML_DEVICES == sQName) {
           manager = DeviceManager.getInstance();
-          stage = STAGE_DEVICES;
+          stage = Stage.STAGE_DEVICES;
           needCheckID = true;
         } else if (Const.XML_ALBUMS == sQName) {
           manager = AlbumManager.getInstance();
-          stage = STAGE_ALBUMS;
+          stage = Stage.STAGE_ALBUMS;
           needCheckID = true;
         } else if (Const.XML_AUTHORS == sQName) {
           manager = AuthorManager.getInstance();
-          stage = STAGE_AUTHORS;
+          stage = Stage.STAGE_AUTHORS;
           needCheckID = true;
         } else if (Const.XML_DIRECTORIES == sQName) {
           manager = DirectoryManager.getInstance();
-          stage = STAGE_DIRECTORIES;
+          stage = Stage.STAGE_DIRECTORIES;
           needCheckID = true;
         } else if (Const.XML_FILES == sQName) {
           manager = FileManager.getInstance();
-          stage = STAGE_FILES;
+          stage = Stage.STAGE_FILES;
           needCheckID = true;
         } else if (Const.XML_PLAYLISTS == sQName) {
           // This code is here for Jajuk < 1.6 compatibility
           manager = PlaylistManager.getInstance();
-          stage = STAGE_PLAYLISTS;
+          stage = Stage.STAGE_PLAYLISTS;
           needCheckID = true;
         } else if (Const.XML_PLAYLIST_FILES == sQName) {
           manager = PlaylistManager.getInstance();
-          stage = STAGE_PLAYLIST_FILES;
+          stage = Stage.STAGE_PLAYLIST_FILES;
           needCheckID = true;
         } else if (Const.XML_STYLES == sQName) {
           manager = StyleManager.getInstance();
-          stage = STAGE_STYLES;
+          stage = Stage.STAGE_STYLES;
           needCheckID = true;
         } else if (Const.XML_TRACKS == sQName) {
           manager = TrackManager.getInstance();
-          stage = STAGE_TRACKS;
+          stage = Stage.STAGE_TRACKS;
           needCheckID = true;
         } else if (Const.XML_YEARS == sQName) {
           manager = YearManager.getInstance();
-          stage = STAGE_YEARS;
+          stage = Stage.STAGE_YEARS;
           needCheckID = true;
         } else if (Const.XML_TYPES == sQName) {
           // This is here for pre-1.7 collections, after we don't commit types
           // anymore (they are set programmatically)
           manager = TypeManager.getInstance();
-          stage = STAGE_TYPES;
+          stage = Stage.STAGE_TYPES;
           needCheckID = false;
         } else if (Const.XML_PROPERTY == sQName) {
           // A property description
@@ -519,6 +558,12 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
             manager.registerProperty(meta);
           }
         }
+        
+        if(Const.XML_PROPERTY == sQName) {
+          Log.debug("Found property: " + attributes.getValue(Const.XML_NAME));
+        } else {
+          Log.debug("Starting stage: '" + stage + "' with property: '" + sQName + "' manager: " + (manager != null ? manager.getLabel() : "<null>"));
+        }
       } else {
         // Manage elements themselves using a switch for performances
         switch (stage) {
@@ -549,6 +594,11 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
         case STAGE_YEARS:
           handleYears(attributes, idIndex);
           break;
+        case STAGE_TYPES:
+          Log.warn("Unexpected Stage: STAGE_TYPES");
+          break;
+        default:
+          Log.warn("Unexpected Stage: " + stage);
         }
       }
     } catch (ParseException re) {
@@ -569,11 +619,12 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
   }
 
   /**
-   * Handle files.
-   * DOCUMENT_ME
+   * Handle files. DOCUMENT_ME
    * 
-   * @param attributes DOCUMENT_ME
-   * @param idIndex DOCUMENT_ME
+   * @param attributes
+   *          DOCUMENT_ME
+   * @param idIndex
+   *          DOCUMENT_ME
    */
   private void handleFiles(Attributes attributes, int idIndex) {
     String sItemName = attributes.getValue(Const.XML_NAME);
@@ -628,8 +679,8 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
     String sID = attributes.getValue(idIndex).intern();
     /*
      * UPGRADE test : if first element we check has the right ID, we avoid
-     * wasting time checking others item one. If is is an upgrade, we
-     * force the check.We always check id in debug mode.
+     * wasting time checking others item one. If is is an upgrade, we force the
+     * check.We always check id in debug mode.
      */
     String sRightID = sID;
     if (needCheckID) {
@@ -641,17 +692,18 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
         hmWrongRightFileID.put(sID, sRightID);
       }
     }
-    org.jajuk.base.File file = FileManager.getInstance().registerFile(sRightID, sItemName,
-        dParent, track, lSize, lQuality);
+    org.jajuk.base.File file = FileManager.getInstance().registerFile(sRightID, sItemName, dParent,
+        track, lSize, lQuality);
     file.populateProperties(attributes);
   }
 
   /**
-   * Handle directories.
-   * DOCUMENT_ME
+   * Handle directories. DOCUMENT_ME
    * 
-   * @param attributes DOCUMENT_ME
-   * @param idIndex DOCUMENT_ME
+   * @param attributes
+   *          DOCUMENT_ME
+   * @param idIndex
+   *          DOCUMENT_ME
    */
   private void handleDirectories(Attributes attributes, int idIndex) {
     Directory dParent = null;
@@ -659,8 +711,7 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
     // dParent = null;
     String sParentID = attributes.getValue(Const.XML_DIRECTORY_PARENT).intern();
     // UPGRADE
-    if ((hmWrongRightDirectoryID.size() > 0)
-        && (hmWrongRightDirectoryID.containsKey(sParentID))) {
+    if ((hmWrongRightDirectoryID.size() > 0) && (hmWrongRightDirectoryID.containsKey(sParentID))) {
       sParentID = hmWrongRightDirectoryID.get(sParentID);
     }
     // We use intern() here for performances
@@ -695,24 +746,26 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
         hmWrongRightDirectoryID.put(sID, sRightID);
       }
     }
-    Directory directory = DirectoryManager.getInstance().registerDirectory(sRightID,
-        sItemName, dParent, device);
+    Directory directory = DirectoryManager.getInstance().registerDirectory(sRightID, sItemName,
+        dParent, device);
     directory.populateProperties(attributes);
-    
+
     // also remember top-level directories at the device
-    if(dParent == null) {
+    if (dParent == null) {
       device.addDirectory(directory);
     }
   }
 
   /**
-   * Handle tracks.
-   * DOCUMENT_ME
+   * Handle tracks. DOCUMENT_ME
    * 
-   * @param attributes DOCUMENT_ME
-   * @param idIndex DOCUMENT_ME
+   * @param attributes
+   *          DOCUMENT_ME
+   * @param idIndex
+   *          DOCUMENT_ME
    * 
-   * @throws ParseException the parse exception
+   * @throws ParseException
+   *           the parse exception
    */
   private void handleTracks(Attributes attributes, int idIndex) throws ParseException {
     String sID = attributes.getValue(idIndex).intern();
@@ -775,8 +828,7 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
     long lDiscNumber = 0l;
     if (attributes.getValue(Const.XML_TRACK_DISC_NUMBER) != null) {
       try {
-        lDiscNumber = UtilString.fastLongParser(attributes
-            .getValue(Const.XML_TRACK_DISC_NUMBER));
+        lDiscNumber = UtilString.fastLongParser(attributes.getValue(Const.XML_TRACK_DISC_NUMBER));
       } catch (Exception e) {
         if (Log.isDebugEnabled()) {
           // wrong format
@@ -788,8 +840,8 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
     // UPGRADE test
     String sRightID = sID;
     if (needCheckID) {
-      sRightID = TrackManager.createID(sTrackName, album, style, author, length, year,
-          lOrder, type, lDiscNumber).intern();
+      sRightID = TrackManager.createID(sTrackName, album, style, author, length, year, lOrder,
+          type, lDiscNumber).intern();
       if (sRightID == sID) {
         needCheckID = UpgradeManager.isUpgradeDetected() || SessionService.isTestMode();
       } else {
@@ -815,11 +867,12 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
   }
 
   /**
-   * Handle albums.
-   * DOCUMENT_ME
+   * Handle albums. DOCUMENT_ME
    * 
-   * @param attributes DOCUMENT_ME
-   * @param idIndex DOCUMENT_ME
+   * @param attributes
+   *          DOCUMENT_ME
+   * @param idIndex
+   *          DOCUMENT_ME
    */
   private void handleAlbums(Attributes attributes, int idIndex) {
     String sID = attributes.getValue(idIndex).intern();
@@ -844,19 +897,20 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
         hmWrongRightAlbumID.put(sID, sRightID);
       }
     }
-    Album album = AlbumManager.getInstance().registerAlbum(sRightID, sItemName, sAttributeAlbumArtist,
-        lItemDiscID);
+    Album album = AlbumManager.getInstance().registerAlbum(sRightID, sItemName,
+        sAttributeAlbumArtist, lItemDiscID);
     if (album != null) {
       album.populateProperties(attributes);
     }
   }
 
   /**
-   * Handle authors.
-   * DOCUMENT_ME
+   * Handle authors. DOCUMENT_ME
    * 
-   * @param attributes DOCUMENT_ME
-   * @param idIndex DOCUMENT_ME
+   * @param attributes
+   *          DOCUMENT_ME
+   * @param idIndex
+   *          DOCUMENT_ME
    */
   private void handleAuthors(Attributes attributes, int idIndex) {
     String sID = attributes.getValue(idIndex).intern();
@@ -879,11 +933,12 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
   }
 
   /**
-   * Handle styles.
-   * DOCUMENT_ME
+   * Handle styles. DOCUMENT_ME
    * 
-   * @param attributes DOCUMENT_ME
-   * @param idIndex DOCUMENT_ME
+   * @param attributes
+   *          DOCUMENT_ME
+   * @param idIndex
+   *          DOCUMENT_ME
    */
   private void handleStyles(Attributes attributes, int idIndex) {
     String sID = attributes.getValue(idIndex).intern();
@@ -906,11 +961,12 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
   }
 
   /**
-   * Handle playlist files.
-   * DOCUMENT_ME
+   * Handle playlist files. DOCUMENT_ME
    * 
-   * @param attributes DOCUMENT_ME
-   * @param idIndex DOCUMENT_ME
+   * @param attributes
+   *          DOCUMENT_ME
+   * @param idIndex
+   *          DOCUMENT_ME
    */
   private void handlePlaylistFiles(Attributes attributes, int idIndex) {
     String sParentID = attributes.getValue(Const.XML_DIRECTORY).intern();
@@ -937,19 +993,19 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
         hmWrongRightPlaylistFileID.put(sID, sRightID);
       }
     }
-    Playlist plf = PlaylistManager.getInstance().registerPlaylistFile(sRightID, sItemName,
-        dParent);
+    Playlist plf = PlaylistManager.getInstance().registerPlaylistFile(sRightID, sItemName, dParent);
     if (plf != null) {
       plf.populateProperties(attributes);
     }
   }
 
   /**
-   * Handle devices.
-   * DOCUMENT_ME
+   * Handle devices. DOCUMENT_ME
    * 
-   * @param attributes DOCUMENT_ME
-   * @param idIndex DOCUMENT_ME
+   * @param attributes
+   *          DOCUMENT_ME
+   * @param idIndex
+   *          DOCUMENT_ME
    */
   private void handleDevices(Attributes attributes, int idIndex) {
     String sID = attributes.getValue(idIndex).intern();
@@ -974,11 +1030,12 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
   }
 
   /**
-   * Handle years.
-   * DOCUMENT_ME
+   * Handle years. DOCUMENT_ME
    * 
-   * @param attributes DOCUMENT_ME
-   * @param idIndex DOCUMENT_ME
+   * @param attributes
+   *          DOCUMENT_ME
+   * @param idIndex
+   *          DOCUMENT_ME
    */
   private void handleYears(Attributes attributes, int idIndex) {
     String sID = attributes.getValue(idIndex).intern();
