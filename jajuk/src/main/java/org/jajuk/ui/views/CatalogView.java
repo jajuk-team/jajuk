@@ -153,9 +153,6 @@ public class CatalogView extends ViewAdapter implements ComponentListener, Actio
   /** Sorter properties. */
   List<PropertyMetaInformation> alSorters;
 
-  /** Items*. */
-  Set<LocalAlbumThumbnail> hsItems;
-
   /** Do search panel need a search. */
   private boolean bNeedSearch = false;
 
@@ -179,9 +176,6 @@ public class CatalogView extends ViewAdapter implements ComponentListener, Actio
 
   /** Utility list used by size selector. */
   private final List<String> sizes = new ArrayList<String>(10);
-
-  /** Internal cache of albums to be displayed *. */
-  private List<LocalAlbumThumbnail> alItemsToDisplay;
 
   /** Thumbs list *. */
   private List<LocalAlbumThumbnail> thumbs;
@@ -217,8 +211,6 @@ public class CatalogView extends ViewAdapter implements ComponentListener, Actio
    */
   public void initUI() {
     initMetaInformation();
-
-    hsItems = new HashSet<LocalAlbumThumbnail>();
 
     sizes.add(THUMBNAIL_SIZE_50X50);
     sizes.add(THUMBNAIL_SIZE_100X100);
@@ -499,7 +491,6 @@ public class CatalogView extends ViewAdapter implements ComponentListener, Actio
 
       // Now process each album
       Set<Directory> directories = new HashSet<Directory>(albums.size());
-      alItemsToDisplay = new ArrayList<LocalAlbumThumbnail>(albums.size());
       Iterator<Album> it = albums.iterator();
       while (it.hasNext()) {
         Album album = it.next();
@@ -562,19 +553,13 @@ public class CatalogView extends ViewAdapter implements ComponentListener, Actio
     if (in == null) {
       return;
     }
-    for (Album album : albums) {
-      LocalAlbumThumbnail cover = new LocalAlbumThumbnail(album, getSelectedSize(), true);
-      alItemsToDisplay.add(cover);
-      // stores information on non-null covers
-      hsItems.add(cover);
-    }
     // computes the number of pages
     int iSize = Conf.getInt(Const.CONF_CATALOG_PAGE_SIZE);
     if (iSize == 0) {
       iNbPages = 1;
     } else {
       // add one page for trailing items
-      iNbPages = alItemsToDisplay.size() / iSize + ((alItemsToDisplay.size() % iSize == 0) ? 0 : 1);
+      iNbPages = albums.size() / iSize + ((albums.size() % iSize == 0) ? 0 : 1);
     }
     if (iNbPages > 0) {
       // After user changed the number of thumbs on a page, we can be
@@ -584,7 +569,7 @@ public class CatalogView extends ViewAdapter implements ComponentListener, Actio
         page = 0;
       }
       // Add all items
-      int max = alItemsToDisplay.size(); // upper limit
+      int max = albums.size(); // upper limit
       if (page < (iNbPages - 1)) {
         // if last page, take simply to total number of
         // items to display
@@ -592,9 +577,18 @@ public class CatalogView extends ViewAdapter implements ComponentListener, Actio
       }
       // Populate each thumb if required (THIS IS LOOOOOONG)
       for (int i = page * Conf.getInt(Const.CONF_CATALOG_PAGE_SIZE); i < max; i++) {
-        final LocalAlbumThumbnail thumb = alItemsToDisplay.get(i);
+        final LocalAlbumThumbnail thumb = new LocalAlbumThumbnail(albums.get(i), getSelectedSize(), true);
         thumb.populate();
         thumbs.add(thumb);
+
+        // restore previous selected item if still set
+        if(item != null) {
+                if (((Album) thumb.getItem()).equals(item.getItem())) {
+                  CatalogView.this.item = thumb;
+                  CatalogView.this.item.setSelected(true);
+                }
+          }
+
         thumb.getIcon().addMouseListener(new MouseAdapter() {
           @Override
           public void mousePressed(MouseEvent e) {
@@ -608,6 +602,7 @@ public class CatalogView extends ViewAdapter implements ComponentListener, Actio
             CatalogView.this.item = thumb;
           }
         });
+        
       }
     }
 
@@ -654,23 +649,7 @@ public class CatalogView extends ViewAdapter implements ComponentListener, Actio
       SwingUtilities.invokeLater(new Runnable() {
 
         public void run() {
-          // save selected item
-          LocalAlbumThumbnail oldItem = CatalogView.this.item;
-          // reset paging
-          // page = 0;
           populateCatalog();
-          // try to restore previous item
-          if (oldItem != null) {
-            synchronized (this) {
-              for (LocalAlbumThumbnail it : hsItems) {
-                if (((Album) it.getItem()).equals(oldItem.getItem())) {
-                  CatalogView.this.item = it;
-                  CatalogView.this.item.setSelected(true);
-                  break;
-                }
-              }
-            }
-          }
         }
       });
     }
