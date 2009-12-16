@@ -47,8 +47,7 @@ public final class AuthorManager extends ItemManager {
   /** Self instance. */
   private static AuthorManager singleton;
 
-  /* List of all known authors */
-  /** DOCUMENT_ME. */
+  /** List of all known authors */
   private static Vector<String> authorsList = new Vector<String>(100);
 
   /**
@@ -84,7 +83,7 @@ public final class AuthorManager extends ItemManager {
   /**
    * Register an author.
    * 
-   * @param sName DOCUMENT_ME
+   * @param sName The name of the author to search for.
    * 
    * @return the author
    */
@@ -107,13 +106,14 @@ public final class AuthorManager extends ItemManager {
   /**
    * Register an author with a known id.
    * 
-   * @param sName DOCUMENT_ME
-   * @param sId DOCUMENT_ME
+   * @param sName The name of the new author.
+   * @param sId the ID of the new author.
    * 
    * @return the author
    */
   public synchronized Author registerAuthor(String sId, String sName) {
     Author author = getAuthorByID(sId);
+    // if we have this author already, simply return the existing one
     if (author != null) {
       return author;
     }
@@ -136,12 +136,12 @@ public final class AuthorManager extends ItemManager {
   /**
    * Change the item name.
    * 
-   * @param old DOCUMENT_ME
-   * @param sNewName DOCUMENT_ME
+   * @param old The name of the author to update.
+   * @param sNewName The new name of the author.
    * 
-   * @return new album
+   * @return The new Album-Instance.
    * 
-   * @throws JajukException the jajuk exception
+   * @throws JajukException Thrown if adjusting the name fails for some reason.
    */
   public Author changeAuthorName(Author old, String sNewName) throws JajukException {
     synchronized (TrackManager.getInstance()) {
@@ -188,7 +188,7 @@ public final class AuthorManager extends ItemManager {
    * <p>
    * exemple: "My author".
    * 
-   * @param sName DOCUMENT_ME
+   * @param sName The name to format.
    * 
    * @return the string
    * 
@@ -258,7 +258,7 @@ public final class AuthorManager extends ItemManager {
   /**
    * Get ordered list of authors associated with this item.
    * 
-   * @param item DOCUMENT_ME
+   * @param item The author-item to look for.
    * 
    * @return the associated authors
    */
@@ -285,7 +285,7 @@ public final class AuthorManager extends ItemManager {
   /**
    * Gets the author by name.
    * 
-   * @param name DOCUMENT_ME
+   * @param name The name of the author.
    * 
    * @return associated author (case insensitive) or null if no match
    */
@@ -300,5 +300,4 @@ public final class AuthorManager extends ItemManager {
     }
     return out;
   }
-
 }
