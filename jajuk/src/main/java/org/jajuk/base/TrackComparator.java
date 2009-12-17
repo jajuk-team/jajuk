@@ -31,7 +31,7 @@ import org.jajuk.util.UtilString;
  * Multi-method track comparator.
  */
 public class TrackComparator implements Comparator<Track>, Serializable {
-  
+
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = -4735723947400147134L;
 
@@ -42,44 +42,46 @@ public class TrackComparator implements Comparator<Track>, Serializable {
    * Sorting methods constants.
    */
   public enum TrackComparatorType {
-    
-    /** DOCUMENT_ME. */
-    STYLE_AUTHOR_ALBUM, 
- /** DOCUMENT_ME. */
- AUTHOR_ALBUM, 
- /** DOCUMENT_ME. */
- ALBUM, 
- /** DOCUMENT_ME. */
- YEAR_ALBUM, 
- /** DOCUMENT_ME. */
- DISCOVERY_ALBUM, 
- /** DOCUMENT_ME. */
- RATE_ALBUM, 
- /** DOCUMENT_ME. */
- HITS_ALBUM, 
- /** DOCUMENT_ME. */
- ORDER
+    /** Compare first based on the style, then on author and then on album. */
+    STYLE_AUTHOR_ALBUM,
+    /** Compare based on author and then album. */
+    AUTHOR_ALBUM,
+    /** Compare only on album. */
+    ALBUM,
+    /** Compare only on year. */
+    YEAR_ALBUM,
+    /** Compare only on the discovery date of the album. */
+    DISCOVERY_ALBUM,
+    /** Compare on the rate and then the album. */
+    RATE_ALBUM,
+    /** Compare on the number of hits and then on the album. */
+    HITS_ALBUM,
+    /** Compare on disc number and order of the track in the album. */
+    ORDER
   }
 
-  /** The Constant FORMATTER.  DOCUMENT_ME */
+  /** The Constant FORMATTER. Used to correctly compare dates. */
   private static final DateFormat FORMATTER = UtilString.getAdditionDateFormatter();
 
   /**
    * Constructor.
    * 
-   * @param comparatorType DOCUMENT_ME
+   * @param comparatorType
+   *          Specifies the type of comparison that should be done.
    */
   public TrackComparator(TrackComparatorType comparatorType) {
     this.comparatorType = comparatorType;
   }
 
   /**
-   * Gets the compare string.
+   * Gets the compare string based on the input-track and the type of comparison
+   * that is selected when constructing the comparator.
    * 
-   * @param track DOCUMENT_ME
+   * @param track
+   *          The track that should be used for constructing the string.
    * 
    * @return Hashcode string used to compare two tracks in accordance with the
-   * sorting method
+   *         sorting method
    */
   private String getCompareString(Track track) {
     String sHashCompare = null;
@@ -137,12 +139,17 @@ public class TrackComparator implements Comparator<Track>, Serializable {
   }
 
   /**
-   * Tracks compare.
+   * Compares two tracks according to the type selected during constructing of
+   * the comparator..
    * 
-   * @param track1 DOCUMENT_ME
-   * @param track2 DOCUMENT_ME
+   * @param track1
+   *          The first track for comparison.
+   * @param track2
+   *          The second track for comparison.
    * 
-   * @return the int
+   * @return the value <code>0</code> if track1 is equal to track2; a value less
+   *         than <code>0</code> if track1 is less than track2; and a value
+   *         greater than <code>0</code> if track1 is greater than track2.
    */
   public int compare(Track track1, Track track2) {
     String sHashCompare = getCompareString(track1);
