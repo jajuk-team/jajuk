@@ -35,7 +35,9 @@ import org.jajuk.util.UtilString;
 import org.jajuk.util.log.Log;
 
 /**
- * Action for displaying the tip of the day.
+ * Action for collecting some system information and opening a browser-window
+ * with the URL to report a new ticket. The user can then simply paste the
+ * information into the ticket.
  */
 public class QualityAction extends JajukAction {
 
@@ -50,9 +52,10 @@ public class QualityAction extends JajukAction {
   }
 
   /**
-   * Invoked when an action occurs.
+   * Invoked when the user chooses to report a ticket.
    * 
-   * @param evt DOCUMENT_ME
+   * @param evt
+   *          The event, not used currently.
    */
   @Override
   public void perform(ActionEvent evt) {
