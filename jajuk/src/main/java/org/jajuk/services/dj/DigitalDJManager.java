@@ -467,7 +467,7 @@ class DigitalDJFactoryProportionImpl extends DigitalDJFactory {
 
   /** No direct constructor */
   DigitalDJFactoryProportionImpl() {
-
+    super();
   }
 }
 
@@ -501,7 +501,7 @@ class DigitalDJFactoryAmbienceImpl extends DigitalDJFactory {
 
   /** No direct constructor */
   DigitalDJFactoryAmbienceImpl() {
-
+    super();
   }
 }
 
@@ -551,6 +551,6 @@ class DigitalDJFactoryTransitionImpl extends DigitalDJFactory {
 
   /** No direct constructor */
   DigitalDJFactoryTransitionImpl() {
-
+    super();
   }
 }
