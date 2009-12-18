@@ -24,6 +24,7 @@ package org.jajuk.ui.widgets;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -131,11 +132,21 @@ public class JajukHtmlPanel extends HtmlPanel {
           showPage(sPage, page);
           // Set current url as a tooltip
           setToolTipText(url.toString());
+        } catch (FileNotFoundException e) {
+          // This happens whenever the Artist is not listed on Wikipedia, so we should report this more user-friendly
+          Log.debug("Could not read page: {{" + url.toString() + " Cache: " + page + "}}");
+
+          try {
+            setFailedToLoad(Messages.getString("WikipediaView.9") + ": " + url.toString());
+          } catch (IOException e1) {
+            Log.error(e1);
+          } catch (SAXException e1) {
+            Log.error(e1);
+          }
         } catch (IOException e) {
           // report IOException only as warning here as we can expect this to
           // happen frequently with images on the net
-          Log.warn("Could not read page: {{" + url.toString() + " Cache: " + page, e.getMessage()
-              + "}}");
+          Log.warn("Could not read page: {{" + url.toString() + " Cache: " + page + "}}", e.getMessage());
 
           try {
             setFailedToLoad(URL_COLON + url + COLON + e.getClass().getSimpleName() + COLON
