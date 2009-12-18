@@ -107,13 +107,22 @@ public class DebugLogAction extends JajukAction {
   private String getTraces() {
     // Store system properties
     StringBuilder traces = new StringBuilder("<HTML><font color='green'><b>").append(
-        UtilString.getAnonymizedSystemProperties().toString()).append("<br>").append(
-        UtilString.getAnonymizedJajukProperties().toString()).append("</b></font><br>");
+        cleanHTML(UtilString.getAnonymizedSystemProperties().toString())).append("<br>").append(
+        cleanHTML(UtilString.getAnonymizedJajukProperties().toString())).append("</b></font><br>");
     // Store last traces
     for (String line : Log.getSpool()) {
       traces.append(line).append("<br>");
     }
     traces.append("</HTML>");
+    
     return traces.toString();
+  }
+
+  /** Replace some HTML in the properties to make them suitable for printing
+   * @param properties
+   */
+  private static String cleanHTML(String str) {
+    // don't allow HTML-formatting
+    return str.replace("<", "&lt;");
   }
 }
