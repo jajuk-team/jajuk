@@ -139,6 +139,7 @@ public class DeviceView extends ViewAdapter implements IView, ActionListener {
    * Instantiates a new device view.
    */
   public DeviceView() {
+    super();
   }
 
   /*
@@ -319,6 +320,7 @@ public class DeviceView extends ViewAdapter implements IView, ActionListener {
    */
   @Override
   public void setVisible(boolean pVisible) {
+    // don't do anything here
   }
 
   /*
@@ -509,6 +511,8 @@ class DeviceItem extends JPanel {
    * Constructor
    */
   DeviceItem(ImageIcon icon, String sName, Device device) {
+    super();
+    
     this.device = device;
     setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
     setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
