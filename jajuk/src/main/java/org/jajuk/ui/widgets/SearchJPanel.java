@@ -176,6 +176,8 @@ public final class SearchJPanel extends JXPanel implements Observer, ActionListe
     // - Increase rating button
     JajukAction actionIncRate = ActionManager.getAction(JajukActions.INC_RATE);
     actionIncRate.setName(null);
+    
+    // TODO: is this used currently??
     final JPopupMenu jpmIncRating = new JPopupMenu();
     for (int i = 3; i >= -3; i--) {
       final int j = i;
