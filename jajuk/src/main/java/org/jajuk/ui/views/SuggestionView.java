@@ -274,7 +274,7 @@ public class SuggestionView extends ViewAdapter {
         busy3.setBusy(true);
         tabs.setComponentAt(0, UtilGUI.getCentredPanel(busy1));
         tabs.setComponentAt(1, UtilGUI.getCentredPanel(busy2));
-        tabs.setComponentAt(3, UtilGUI.getCentredPanel(busy3));
+        tabs.setComponentAt(2, UtilGUI.getCentredPanel(busy3));
       }
     });
 
@@ -314,6 +314,7 @@ public class SuggestionView extends ViewAdapter {
         } catch (ExecutionException e) {
           Log.error(e);
         }
+        stopAllBusyLabels();
         jsp1 = getLocalSuggestionsPanel(SuggestionType.BEST_OF);
         jsp2 = getLocalSuggestionsPanel(SuggestionType.NEWEST);
         jsp3 = getLocalSuggestionsPanel(SuggestionType.RARE);
@@ -391,6 +392,7 @@ public class SuggestionView extends ViewAdapter {
 
       @Override
       public void done() {
+        stopAllBusyLabels();
         jsp1 = getLastFMSuggestionsPanel(SuggestionType.OTHERS_ALBUMS, false);
         jsp2 = getLastFMSuggestionsPanel(SuggestionType.SIMILAR_AUTHORS, false);
         tabs.setComponentAt(3, (jsp1 == null) ? new JPanel() : jsp1);

@@ -143,4 +143,16 @@ public class RefreshDialog extends JFrame {
     }
   }
 
+  /* (non-Javadoc)
+   * @see java.awt.Window#dispose()
+   */
+  @Override
+  public void dispose() {
+    if(jlAction != null) {
+      jlAction.setBusy(false);
+      jlAction = null;
+    }
+
+    super.dispose();
+  }
 }
