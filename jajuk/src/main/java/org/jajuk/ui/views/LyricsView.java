@@ -109,9 +109,6 @@ public class LyricsView extends ViewAdapter {
   private JMenuItem jmiLaunchInBrowser = null;
 
   /** DOCUMENT_ME. */
-  private final JXBusyLabel busy = new JXBusyLabel();
-
-  /** DOCUMENT_ME. */
   private JPanel p;
 
   /** DOCUMENT_ME. */
@@ -164,7 +161,7 @@ public class LyricsView extends ViewAdapter {
         menu.show(getTextArea(), e.getX(), e.getY());
       }
     });
-    
+
     author.setFont(fmgr.getFont(JajukFont.PLAIN_L));
     title.setFont(fmgr.getFont(JajukFont.PLAIN_XL));
     ta.setFont(fmgr.getFont(JajukFont.PLAIN));
@@ -320,6 +317,7 @@ public class LyricsView extends ViewAdapter {
       SwingUtilities.invokeLater(new Runnable() {
         public void run() {
           removeAll();
+          final JXBusyLabel busy = new JXBusyLabel();
           busy.setBusy(true);
           add(UtilGUI.getCentredPanel(busy, BoxLayout.X_AXIS));
           revalidate();
