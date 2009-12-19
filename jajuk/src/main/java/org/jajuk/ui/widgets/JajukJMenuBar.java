@@ -25,7 +25,6 @@ import static org.jajuk.ui.actions.JajukActions.CONFIGURE_DJS;
 import static org.jajuk.ui.actions.JajukActions.CONTINUE_MODE;
 import static org.jajuk.ui.actions.JajukActions.CUSTOM_PROPERTIES_ADD;
 import static org.jajuk.ui.actions.JajukActions.CUSTOM_PROPERTIES_REMOVE;
-import static org.jajuk.ui.actions.JajukActions.SHOW_ACTIVATE_TAGS;
 import static org.jajuk.ui.actions.JajukActions.HELP_REQUIRED;
 import static org.jajuk.ui.actions.JajukActions.INTRO_MODE;
 import static org.jajuk.ui.actions.JajukActions.OPTIONS;
@@ -33,6 +32,7 @@ import static org.jajuk.ui.actions.JajukActions.QUALITY;
 import static org.jajuk.ui.actions.JajukActions.REPEAT_ALL_MODE;
 import static org.jajuk.ui.actions.JajukActions.REPEAT_MODE;
 import static org.jajuk.ui.actions.JajukActions.SHOW_ABOUT;
+import static org.jajuk.ui.actions.JajukActions.SHOW_ACTIVATE_TAGS;
 import static org.jajuk.ui.actions.JajukActions.SHOW_TRACES;
 import static org.jajuk.ui.actions.JajukActions.SHUFFLE_MODE;
 import static org.jajuk.ui.actions.JajukActions.SIMPLE_DEVICE_WIZARD;
@@ -63,6 +63,7 @@ import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.events.Observer;
+import org.jajuk.services.core.SessionService;
 import org.jajuk.ui.actions.ActionManager;
 import org.jajuk.ui.actions.ActionUtil;
 import org.jajuk.ui.actions.JajukActions;
@@ -224,6 +225,9 @@ public final class JajukJMenuBar extends JMenuBar implements Observer {
   /** DOCUMENT_ME. */
   JLabel jlUpdate;
 
+  /** DOCUMENT_ME. */
+  JButton jbGC;
+  
   /** DOCUMENT_ME. */
   JButton jbSlim;
 
@@ -433,10 +437,17 @@ public final class JajukJMenuBar extends JMenuBar implements Observer {
     // Apply mnemonics (Alt + first char of the menu keystroke)
     applyMnemonics();
 
+    if(SessionService.isTestMode()) {
+      jbGC = new JajukButton(ActionManager.getAction(JajukActions.GC));
+    }
     jbSlim = new JajukButton(ActionManager.getAction(JajukActions.SLIM_JAJUK));
     jbFull = new JajukButton(ActionManager.getAction(JajukActions.FULLSCREEN_JAJUK));
 
     JMenuBar eastmenu = new JMenuBar();
+    // only show GC-button in test-mode
+    if(SessionService.isTestMode()) {
+      eastmenu.add(jbGC);
+    }
     eastmenu.add(jbSlim);
     eastmenu.add(jbFull);
 

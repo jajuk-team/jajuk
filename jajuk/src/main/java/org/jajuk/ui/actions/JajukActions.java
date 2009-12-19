@@ -326,6 +326,9 @@ public enum JajukActions {
   /** Used to create a slim interface for Jajuk. */
   SLIM_JAJUK,
   
+  /** Used to perform GC. */
+  GC,
+  
   /** Save as. */
   SAVE_AS,
   
