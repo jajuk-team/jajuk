@@ -23,11 +23,6 @@ package org.jajuk.ui.wizard;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.event.InputEvent;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -44,8 +39,6 @@ import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilGUI;
-import org.jajuk.util.log.Log;
-import org.jfree.ui.about.AboutPanel;
 import org.jfree.ui.about.Licences;
 import org.jfree.ui.about.SystemPropertiesPanel;
 
@@ -55,37 +48,11 @@ import org.jfree.ui.about.SystemPropertiesPanel;
  * Help perspective *
  */
 public class AboutWindow extends JajukJDialog {
-
-  /**
-   * Handle clicking on the license text.
-   */
-  private static final class LicenseMouseListener extends MouseAdapter {
-    
-    /* (non-Javadoc)
-     * @see java.awt.event.MouseAdapter#mouseClicked(java.awt.event.MouseEvent)
-     */
-    @Override
-    public void mouseClicked(MouseEvent me) {
-      if (me.getClickCount() == 1
-          && ((me.getModifiersEx() & InputEvent.SHIFT_DOWN_MASK) == InputEvent.SHIFT_DOWN_MASK)
-          && ((me.getModifiersEx() & InputEvent.CTRL_DOWN_MASK) == InputEvent.CTRL_DOWN_MASK)) {
-        try {
-          UtilGUI.showPictureDialog("http://www.jajuk.info/images/flbf.jpg");
-        } catch (Exception e) {
-          Log.debug("Ignoring exception in AboutWindow: ", e);
-        }
-      }
-    }
-  }
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
   /** License panel. */
   private JPanel jpLicence;
-
-  /** General informations panel. */
-  private AboutPanel ap;
 
   /** JVM properties panel. */
   private SystemPropertiesPanel spp;
@@ -100,6 +67,8 @@ public class AboutWindow extends JajukJDialog {
    * Constructor.
    */
   public AboutWindow() {
+    super();
+    
     SwingUtilities.invokeLater(new Runnable() {
       public void run() {
         setTitle(Messages.getString("JajukJMenuBar.16"));
@@ -142,17 +111,8 @@ public class AboutWindow extends JajukJDialog {
     jtp.addTab(Messages.getString("AboutView.8"), jpLicence);
     jtp.addTab(Messages.getString("AboutView.9"), spp);
     add(jtp);
-
-    // Add key listener to enable Escape key to close the window
-    this.addKeyListener(new KeyAdapter() {
-      @Override
-      public void keyPressed(KeyEvent e) {
-        // allow to close the dialog with Escape
-        if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
-          dispose();
-        }
-      }
-    });
+    
+    UtilGUI.setEscapeKeyboardAction(this, jtp);
   }
 
   /*

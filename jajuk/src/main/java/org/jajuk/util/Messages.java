@@ -595,6 +595,9 @@ class ConfirmDialog extends JajukDialog {
       // result is an integer when using JOptionPane standard types
       iResu = (Integer) resu;
     }
+
+    // manually dispose to free up memory, somehow this is not done automatically!
+    dialog.dispose();
   }
 
 }
@@ -650,7 +653,13 @@ class DetailsMessageDialog extends JajukDialog {
       dialogDetail.pack();
       dialogDetail.setLocationRelativeTo(JajukMainWindow.getInstance());
       dialogDetail.setVisible(true);
+      
+      // manually dispose to free up memory, somehow this is not done automatically!
+      dialog.dispose();
     }
+
+    // manually dispose to free up memory, somehow this is not done automatically!
+    dialog.dispose();
   }
 
 }
@@ -692,6 +701,9 @@ class HideableMessageDialog extends JajukDialog {
       // Not show again
       Conf.setProperty(sProperty, Const.TRUE);
     }
+
+    // manually dispose to free up memory, somehow this is not done automatically!
+    dialog.dispose();
   }
 
 }
@@ -726,6 +738,9 @@ class ErrorMessageDialog extends JajukDialog {
     dialog.pack();
     dialog.setLocationRelativeTo(JajukMainWindow.getInstance());
     dialog.setVisible(true);
+
+    // manually dispose to free up memory, somehow this is not done automatically!
+    dialog.dispose();
   }
 }
 

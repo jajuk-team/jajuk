@@ -712,15 +712,15 @@ public final class UtilGUI {
   /**
    * Registers the ESCAPE key on the Panel so that it closes the Dialog.
    * 
-   * @param dialog DOCUMENT_ME
+   * @param window DOCUMENT_ME
    * @param pane DOCUMENT_ME
    */
-  public static void setEscapeKeyboardAction(final JDialog dialog, JComponent pane) {
+  public static void setEscapeKeyboardAction(final Window window, JComponent pane) {
     KeyStroke stroke = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0);
     pane.registerKeyboardAction(new ActionListener() {
       public void actionPerformed(ActionEvent actionEvent) {
         // setVisible(false);
-        dialog.dispose();
+        window.dispose();
       }
     }, stroke, JComponent.WHEN_IN_FOCUSED_WINDOW);
   }

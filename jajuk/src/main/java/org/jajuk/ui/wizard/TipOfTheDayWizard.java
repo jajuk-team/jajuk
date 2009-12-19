@@ -27,18 +27,15 @@ import java.awt.Font;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
-import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
-import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
 
 import org.jajuk.util.Conf;
@@ -46,6 +43,7 @@ import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
+import org.jajuk.util.UtilGUI;
 import org.jajuk.util.UtilSystem;
 
 /**
@@ -122,17 +120,15 @@ public class TipOfTheDayWizard extends JFrame {
     lTitle.setFont(new Font(fTitle.getName(), fTitle.getStyle(), (int) (fTitle.getSize() * 1.3)));
     JLabel lIcon = new JLabel(IconLoader.getIcon(JajukIcons.TIP), SwingConstants.LEFT);
 
-    KeyStroke stroke = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0);
-
     JPanel pTop = new JPanel(new BorderLayout());
     pTop.add(lIcon, BorderLayout.WEST);
     pTop.add(lTitle, BorderLayout.CENTER);
-    setEscapeKey(stroke, pTop);
+    UtilGUI.setEscapeKeyboardAction(this, pTop);
 
     JPanel pCenter = new JPanel(new BorderLayout());
     pCenter.setBorder(BorderFactory.createEmptyBorder(10, 10, 3, 10));
     pCenter.add(scroll, BorderLayout.CENTER);
-    setEscapeKey(stroke, pCenter);
+    UtilGUI.setEscapeKeyboardAction(this, pCenter);
 
     JPanel pPrevNext = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 10));
     pPrevNext.add(bPrevious);
@@ -150,7 +146,7 @@ public class TipOfTheDayWizard extends JFrame {
     JPanel pBottom = new JPanel(new BorderLayout());
     pBottom.add(pControls, BorderLayout.NORTH);
     pBottom.add(pButton);
-    setEscapeKey(stroke, pBottom);
+    UtilGUI.setEscapeKeyboardAction(this, pBottom);
 
     add(pTop, BorderLayout.NORTH);
     add(pCenter, BorderLayout.CENTER);
@@ -164,23 +160,6 @@ public class TipOfTheDayWizard extends JFrame {
     if (getWidth() < 400) {
       setSize(400, getHeight());
     }
-  }
-
-  /**
-   * Sets the escape key. DOCUMENT_ME
-   * 
-   * @param stroke
-   *          DOCUMENT_ME
-   * @param pTop
-   *          DOCUMENT_ME
-   */
-  private final void setEscapeKey(KeyStroke stroke, JPanel pTop) {
-    pTop.registerKeyboardAction(new ActionListener() {
-      public void actionPerformed(ActionEvent actionEvent) {
-        // setVisible(false);
-        TipOfTheDayWizard.this.setVisible(false);
-      }
-    }, stroke, JComponent.WHEN_IN_FOCUSED_WINDOW);
   }
 
   /**
