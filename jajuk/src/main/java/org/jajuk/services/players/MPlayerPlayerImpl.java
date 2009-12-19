@@ -186,14 +186,14 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
 
               StringTokenizer st = new StringTokenizer(line, "=");
               st.nextToken();
-              // We need to compute the elasped time. The issue here is the fact
+              // We need to compute the elapsed time. The issue here is the fact
               // that mplayer sometimes returns false getPos() values (for vbr).
               // The other problem is that the user can seek forward or rewind
               // in
               // the track so we can't just count the system time.
               // The solution we got is :
               // - If user never seeked into the current track, compute the
-              // elasped time upon real system date.
+              // elapsed time upon real system date.
               // - If user seeked, take the mplayer time but use a vbr
               // correction.
               // Note however that the resulting time, while being better than
