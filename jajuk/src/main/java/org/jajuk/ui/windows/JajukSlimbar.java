@@ -674,4 +674,15 @@ public final class JajukSlimbar extends JFrame implements IJajukWindow, Observer
     balloon.setLocation(location);
     balloon.display();
   }
+
+  /* (non-Javadoc)
+   * @see java.awt.Window#dispose()
+   */
+  @Override
+  public void dispose() {
+    // there are some resources to close in the Search-Box that I could not get rid of with any of the default dispose-methods in Swing...
+    sbSearch.close();
+    
+    super.dispose();
+  }
 }

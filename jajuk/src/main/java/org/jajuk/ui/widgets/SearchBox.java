@@ -119,12 +119,16 @@ public class SearchBox extends JTextField implements KeyListener, ListSelectionL
    * Display results as a jlabel with an icon.
    */
   private static class SearchListRenderer extends JPanel implements ListCellRenderer {
-    
+
     /** Generated serialVersionUID. */
     private static final long serialVersionUID = 8975989658927794678L;
 
-    /* (non-Javadoc)
-     * @see javax.swing.ListCellRenderer#getListCellRendererComponent(javax.swing.JList, java.lang.Object, int, boolean, boolean)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * javax.swing.ListCellRenderer#getListCellRendererComponent(javax.swing
+     * .JList, java.lang.Object, int, boolean, boolean)
      */
     public Component getListCellRendererComponent(JList list, Object value, int index,
         boolean isSelected, boolean cellHasFocus) {
@@ -316,7 +320,8 @@ public class SearchBox extends JTextField implements KeyListener, ListSelectionL
   /**
    * Gets the result.
    * 
-   * @param index DOCUMENT_ME
+   * @param index
+   *          DOCUMENT_ME
    * 
    * @return the result
    */
@@ -325,8 +330,7 @@ public class SearchBox extends JTextField implements KeyListener, ListSelectionL
   }
 
   /**
-   * Hide popup.
-   * DOCUMENT_ME
+   * Hide popup. DOCUMENT_ME
    */
   public void hidePopup() {
     popup.hide();
@@ -335,7 +339,8 @@ public class SearchBox extends JTextField implements KeyListener, ListSelectionL
   /**
    * Display the search icon inside the texfield.
    * 
-   * @param g DOCUMENT_ME
+   * @param g
+   *          DOCUMENT_ME
    */
   @Override
   public void paint(Graphics g) {
@@ -344,10 +349,11 @@ public class SearchBox extends JTextField implements KeyListener, ListSelectionL
   }
 
   /**
-   * Default list selection implementation (may be overwride for different
+   * Default list selection implementation (may be overwritten for different
    * behavior).
    * 
-   * @param e DOCUMENT_ME
+   * @param e
+   *          DOCUMENT_ME
    */
   public void valueChanged(final ListSelectionEvent e) {
     SwingWorker<Void, Void> sw = new SwingWorker<Void, Void>() {
@@ -391,4 +397,14 @@ public class SearchBox extends JTextField implements KeyListener, ListSelectionL
     sw.execute();
   }
 
+  /**
+   * Free up resources, timers, ...
+   * 
+   * TODO: I could not find out any way to do this automatically! How can I
+   * listen on some event that is sent when the enclosing dialog is closed?
+   */
+  public void close() {
+    // stop the timer so it does not keep the element from garbage collection
+    timer.stop();
+  }
 }

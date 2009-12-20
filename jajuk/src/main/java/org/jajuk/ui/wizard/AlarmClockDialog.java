@@ -42,6 +42,7 @@ import javax.swing.event.ListSelectionEvent;
 
 import net.miginfocom.swing.MigLayout;
 
+import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
 import org.jajuk.base.SearchResult;
 import org.jajuk.events.JajukEvent;
@@ -200,7 +201,7 @@ public class AlarmClockDialog extends JajukJDialog implements ActionListener, It
 
     // Reload on GUI saved values
     loadValues();
-
+    
     setTitle(Messages.getString("AlarmClock.0"));
     setMinimumSize(new Dimension(250, 100));
     setModal(true);
@@ -340,9 +341,11 @@ public class AlarmClockDialog extends JajukJDialog implements ActionListener, It
       jrbNovelties.setSelected(true);
     } else if (Const.STARTUP_MODE_FILE.equals(Conf.getString(CONF_ALARM_MODE))) {
       jrbFile.setSelected(true);
-      String fileName = FileManager.getInstance()
-          .getFileByID(Conf.getString(Const.CONF_ALARM_FILE)).getName();
-      sbSearch.setText(fileName);
+      File file = FileManager.getInstance()
+      .getFileByID(Conf.getString(Const.CONF_ALARM_FILE));
+      if(file != null) {
+        sbSearch.setText(file.getName());
+      }
     } else if (Const.STARTUP_MODE_SHUFFLE.equals(Conf.getString(CONF_ALARM_MODE))) {
       jrbShuffle.setSelected(true);
     }
@@ -350,4 +353,14 @@ public class AlarmClockDialog extends JajukJDialog implements ActionListener, It
     actionPerformed(new ActionEvent(jcbTime, 0, null));
   }
 
+  /* (non-Javadoc)
+   * @see java.awt.Window#dispose()
+   */
+  @Override
+  public void dispose() {
+    // there are some resources to close in the Search-Box that I could not get rid of with any of the default dispose-methods in Swing...
+    sbSearch.close();
+    
+    super.dispose();
+  }
 }
