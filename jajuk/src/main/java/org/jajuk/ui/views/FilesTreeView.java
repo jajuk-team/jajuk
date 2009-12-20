@@ -106,15 +106,6 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
   /** Directories selection. */
   List<Directory> alDirs = new ArrayList<Directory>(10);
 
-  /** Collection export. */
-  JPopupMenu jmenuCollection;
-
-  /** DOCUMENT_ME. */
-  JMenuItem jmiCollectionReport;
-
-  /** DOCUMENT_ME. */
-  JMenuItem jmiCollectionDuplicateFiles;
-
   /** DOCUMENT_ME. */
   JMenuItem jmiDirRefresh;
 
@@ -214,20 +205,6 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
   @Override
   public void initUI() {
     super.initUI();
-
-    // Collection menu
-    jmenuCollection = new JPopupMenu();
-    // Export
-    Action actionReportCollection = ActionManager.getAction(JajukActions.CREATE_REPORT);
-    jmiCollectionReport = new JMenuItem(actionReportCollection);
-    // Add custom data to this component in order to allow the ReportAction
-    // to be able to get it
-    jmiCollectionReport.putClientProperty(Const.DETAIL_ORIGIN, COLLECTION_PHYSICAL);
-    jmenuCollection.add(jmiCollectionReport);
-
-    Action actionDuplicateFiles = ActionManager.getAction(JajukActions.FIND_DUPLICATE_FILES);
-    jmiCollectionDuplicateFiles = new JMenuItem(actionDuplicateFiles);
-    jmenuCollection.add(jmiCollectionDuplicateFiles);
 
     // Directory menu
     Action actionRefreshDir = ActionManager.getAction(JajukActions.REFRESH);
@@ -734,6 +711,20 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
         }
         jmenu.show(jtree, e.getX(), e.getY());
       } else if (paths[0].getLastPathComponent() instanceof DefaultMutableTreeNode) {
+        // Collection menu
+        JPopupMenu jmenuCollection = new JPopupMenu();
+        // Export
+        Action actionReportCollection = ActionManager.getAction(JajukActions.CREATE_REPORT);
+        JMenuItem jmiCollectionReport = new JMenuItem(actionReportCollection);
+        // Add custom data to this component in order to allow the ReportAction
+        // to be able to get it
+        jmiCollectionReport.putClientProperty(Const.DETAIL_ORIGIN, COLLECTION_PHYSICAL);
+        jmenuCollection.add(jmiCollectionReport);
+
+        Action actionDuplicateFiles = ActionManager.getAction(JajukActions.FIND_DUPLICATE_FILES);
+        JMenuItem jmiCollectionDuplicateFiles = new JMenuItem(actionDuplicateFiles);
+        jmenuCollection.add(jmiCollectionDuplicateFiles);
+
         // collection
         jmenuCollection.show(jtree, e.getX(), e.getY());
       }
