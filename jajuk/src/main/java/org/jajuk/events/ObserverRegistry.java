@@ -91,6 +91,12 @@ class ObserverRegistry {
         int numberOfExecutions = canals.get(event);
         assert (numberOfExecutions > 0);
         canals.put(event, numberOfExecutions - 1);
+        
+        // to avoid adding more and more memory via the canals-map, we should remove items when they reach zero again
+        // the effect on memory is rather small, but it shows up after some time in memory profiles nevertheless.
+        if(canals.get(event) == 0) {
+          canals.remove(event);
+        }
       }
     }
   }
