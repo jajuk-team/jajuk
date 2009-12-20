@@ -99,15 +99,6 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
   private static final long serialVersionUID = 1L;
 
   /** DOCUMENT_ME. */
-  private JPopupMenu jmenuCollection;
-
-  /** DOCUMENT_ME. */
-  private JMenuItem jmiCollectionReport;
-
-  /** DOCUMENT_ME. */
-  private JMenuItem jmiCollectionDuplicateFiles;
-
-  /** DOCUMENT_ME. */
   private JComboBox jcbSort;
 
   /*
@@ -165,21 +156,6 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
     jcbSort.setSelectedIndex(Conf.getInt(Const.CONF_LOGICAL_TREE_SORT_ORDER));
     jcbSort.setActionCommand(JajukEvents.LOGICAL_TREE_SORT.toString());
     jcbSort.addActionListener(this);
-    // Collection menu
-    jmenuCollection = new JPopupMenu();
-
-    // Collection Report
-    Action actionReportCollection = ActionManager.getAction(JajukActions.CREATE_REPORT);
-    jmiCollectionReport = new JMenuItem(actionReportCollection);
-    // Add custom data to this component in order to allow the ReportAction
-    // to be able to get it
-    jmiCollectionReport.putClientProperty(Const.DETAIL_ORIGIN, COLLECTION_LOGICAL);
-    jmenuCollection.add(jmiCollectionReport);
-
-    // Find duplicate files
-    Action actionDuplicateFiles = ActionManager.getAction(JajukActions.FIND_DUPLICATE_FILES);
-    jmiCollectionDuplicateFiles = new JMenuItem(actionDuplicateFiles);
-    jmenuCollection.add(jmiCollectionDuplicateFiles);
 
     // Album details
     final JMenuItem jmiShowAlbumDetails = new JMenuItem(ActionManager
@@ -244,7 +220,7 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
       populateTreeByAlbum();
     }
     // Year / album
-    if (comparatorType == TrackComparatorType.YEAR_ALBUM) {
+    else if (comparatorType == TrackComparatorType.YEAR_ALBUM) {
       populateTreeByYear();
     }
     // discovery date / album
@@ -939,6 +915,22 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
         jmenu.add(jmiProperties);
         jmenu.show(jtree, e.getX(), e.getY());
       } else if (paths[0].getLastPathComponent() instanceof DefaultMutableTreeNode) {
+        // Collection menu
+        JPopupMenu jmenuCollection = new JPopupMenu();
+
+        // Collection Report
+        Action actionReportCollection = ActionManager.getAction(JajukActions.CREATE_REPORT);
+        JMenuItem jmiCollectionReport = new JMenuItem(actionReportCollection);
+        // Add custom data to this component in order to allow the ReportAction
+        // to be able to get it
+        jmiCollectionReport.putClientProperty(Const.DETAIL_ORIGIN, COLLECTION_LOGICAL);
+        jmenuCollection.add(jmiCollectionReport);
+
+        // Find duplicate files
+        Action actionDuplicateFiles = ActionManager.getAction(JajukActions.FIND_DUPLICATE_FILES);
+        JMenuItem jmiCollectionDuplicateFiles = new JMenuItem(actionDuplicateFiles);
+        jmenuCollection.add(jmiCollectionDuplicateFiles);
+
         jmenuCollection.show(jtree, e.getX(), e.getY());
       }
     }
