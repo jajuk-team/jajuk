@@ -39,8 +39,8 @@ public class GCAction extends JajukAction {
    * Instantiates a new action.
    */
   GCAction() {
-    super(Messages.getString("JajukSlimWindow.0"), IconLoader.getIcon(JajukIcons.ADD), true);
-    setShortDescription(Messages.getString("JajukSlimWindow.0"));
+    super(Messages.getString("JajukJMenuBar.32"), IconLoader.getIcon(JajukIcons.CLEAR_FILTER), true);
+    setShortDescription(Messages.getString("JajukJMenuBar.32"));
   }
 
   /* (non-Javadoc)
