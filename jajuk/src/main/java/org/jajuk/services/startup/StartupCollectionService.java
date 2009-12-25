@@ -33,6 +33,8 @@ import java.util.List;
 import javax.swing.JOptionPane;
 import javax.xml.parsers.ParserConfigurationException;
 
+import net.miginfocom.layout.LinkHandler;
+
 import org.apache.commons.lang.StringUtils;
 import org.jajuk.base.AlbumManager;
 import org.jajuk.base.AuthorManager;
@@ -48,6 +50,7 @@ import org.jajuk.base.TypeManager;
 import org.jajuk.base.YearManager;
 import org.jajuk.services.core.ExitService;
 import org.jajuk.services.core.SessionService;
+import org.jajuk.services.tags.Tag;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.DownloadManager;
@@ -205,6 +208,13 @@ public class StartupCollectionService {
           // call the overall "commit" to store things like Queue and
           // configuration periodically as well
           ExitService.commit(false);
+          
+          // workaround to free space in MigLayout
+          // see http://migcalendar.com/forum/viewtopic.php?f=8&t=3236&p=7012
+          LinkHandler.getValue("", "", 1); // simulated read
+
+          // Clear the tag cache to avoid growing memory usage over time
+          Tag.clearCache();
         } catch (Exception e) {
           Log.error(e);
         }
@@ -338,6 +348,13 @@ public class StartupCollectionService {
         Log.error(e2);
       }
     }
+
+    Log.debug("Loaded " + FileManager.getInstance().getElementCount() + " files with " + TrackManager.getInstance().getElementCount() + " tracks, " + 
+        AlbumManager.getInstance().getElementCount() + " albums, " +
+        AuthorManager.getInstance().getElementCount() + " artists, " + 
+        PlaylistManager.getInstance().getElementCount() + " playlists in " + 
+        DirectoryManager.getInstance().getElementCount() + " directories on " + 
+        DeviceManager.getInstance().getElementCount() + "devices.");
 
     // start auto commit thread
     tAutoCommit.start();
