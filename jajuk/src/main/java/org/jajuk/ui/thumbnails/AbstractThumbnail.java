@@ -191,7 +191,7 @@ public abstract class AbstractThumbnail extends JPanel implements ActionListener
    * @return true, if is artist view
    */
   protected boolean isArtistView() {
-    return this.artistView;
+    return artistView;
   }
 
   /**
@@ -434,7 +434,7 @@ public abstract class AbstractThumbnail extends JPanel implements ActionListener
         Messages.showErrorMessage(166);
       }
     } else if (e.getSource() == jmiShowPopup) {
-      this.displayPopup();
+      displayPopup();
     }
   }
 
@@ -471,7 +471,7 @@ public abstract class AbstractThumbnail extends JPanel implements ActionListener
    * @return the icon
    */
   public JLabel getIcon() {
-    return this.jlIcon;
+    return jlIcon;
   }
 
 }
