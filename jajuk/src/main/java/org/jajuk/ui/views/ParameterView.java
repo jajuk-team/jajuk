@@ -1871,4 +1871,16 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
     jsPerspectiveSize.setValue(Conf.getInt(Const.CONF_PERSPECTIVE_ICONS_SIZE));
   }
 
+  /* (non-Javadoc)
+   * @see java.awt.Container#removeAll()
+   */
+  @Override
+  public void removeAll() {
+    // We have to override removeAll() to work around a memory leak related to SearchBox..
+    
+    // first look for any JXBusyLabel and stop it
+    sbSearch.close();
+    
+    super.removeAll();
+  }
 }
