@@ -272,6 +272,7 @@ public class SuggestionView extends ViewAdapter {
         busy2.setBusy(true);
         JXBusyLabel busy3 = new JXBusyLabel();
         busy3.setBusy(true);
+        stopAllBusyLabels();
         tabs.setComponentAt(0, UtilGUI.getCentredPanel(busy1));
         tabs.setComponentAt(1, UtilGUI.getCentredPanel(busy2));
         tabs.setComponentAt(2, UtilGUI.getCentredPanel(busy3));
@@ -314,12 +315,12 @@ public class SuggestionView extends ViewAdapter {
         } catch (ExecutionException e) {
           Log.error(e);
         }
-        stopAllBusyLabels();
         jsp1 = getLocalSuggestionsPanel(SuggestionType.BEST_OF);
         jsp2 = getLocalSuggestionsPanel(SuggestionType.NEWEST);
         jsp3 = getLocalSuggestionsPanel(SuggestionType.RARE);
         // If panel is void, add a void panel as a null object keeps
         // previous element
+        stopAllBusyLabels();
         tabs.setComponentAt(0, (jsp1 == null) ? new JPanel() : jsp1);
         tabs.setComponentAt(1, (jsp2 == null) ? new JPanel() : jsp2);
         tabs.setComponentAt(2, (jsp3 == null) ? new JPanel() : jsp3);
@@ -349,6 +350,7 @@ public class SuggestionView extends ViewAdapter {
       // Set empty panels
       SwingUtilities.invokeLater(new Runnable() {
         public void run() {
+          stopAllBusyLabels();
           tabs.setComponentAt(3, new JLabel(Messages.getString("SuggestionView.7")));
           tabs.setComponentAt(4, new JLabel(Messages.getString("SuggestionView.7")));
         }
@@ -368,6 +370,7 @@ public class SuggestionView extends ViewAdapter {
         busy1.setBusy(true);
         JXBusyLabel busy2 = new JXBusyLabel();
         busy2.setBusy(true);
+        stopAllBusyLabels();
         tabs.setComponentAt(3, UtilGUI.getCentredPanel(busy1));
         tabs.setComponentAt(4, UtilGUI.getCentredPanel(busy2));
       }
@@ -392,9 +395,9 @@ public class SuggestionView extends ViewAdapter {
 
       @Override
       public void done() {
-        stopAllBusyLabels();
         jsp1 = getLastFMSuggestionsPanel(SuggestionType.OTHERS_ALBUMS, false);
         jsp2 = getLastFMSuggestionsPanel(SuggestionType.SIMILAR_AUTHORS, false);
+        stopAllBusyLabels();
         tabs.setComponentAt(3, (jsp1 == null) ? new JPanel() : jsp1);
         tabs.setComponentAt(4, (jsp2 == null) ? new JPanel() : jsp2);
       }
