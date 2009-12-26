@@ -551,6 +551,7 @@ public class CatalogView extends ViewAdapter implements ComponentListener, Actio
     @SuppressWarnings("unchecked")
     List<Album> albums = (List<Album>) in;
     if (in == null) {
+      stopAllBusyLabels();
       return;
     }
     // computes the number of pages
