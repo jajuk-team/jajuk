@@ -63,7 +63,8 @@ public final class Main {
   /**
    * Main entry.
    * 
-   * @param args DOCUMENT_ME
+   * @param args
+   *          DOCUMENT_ME
    */
   public static void main(final String[] args) {
     // non ui init
@@ -94,6 +95,10 @@ public final class Main {
 
       // Load user configuration. Depends on: initialCheckups
       Conf.load();
+
+      Log.debug("----------------------------------------------------------------------------");
+      Log.debug("Starting Jajuk" + Const.JAJUK_VERSION + " <" + Const.JAJUK_CODENAME + ">" + " "
+          + Const.JAJUK_VERSION_DATE);
 
       // Full substance configuration now (must be done out of EDT)
       UtilGUI.setupSubstanceLookAndFeel(Conf.getString(Const.CONF_OPTIONS_LNF));
@@ -201,7 +206,7 @@ public final class Main {
       e.printStackTrace();
       Log.error(106, e);
       ExitService.exit(1);
-    } catch (final Error error) { 
+    } catch (final Error error) {
       // last chance to catch any error for logging purpose
       error.printStackTrace();
       Log.error(106, error);
@@ -213,10 +218,13 @@ public final class Main {
   }
 
   /**
-   * Called when starting Jajuk from the thumb maker process, set jajuk in light mode.
+   * Called when starting Jajuk from the thumb maker process, set jajuk in light
+   * mode.
    * 
-   * @param bTest DOCUMENT_ME
-   * @param workspace DOCUMENT_ME
+   * @param bTest
+   *          DOCUMENT_ME
+   * @param workspace
+   *          DOCUMENT_ME
    */
   public static void initializeFromThumbnailsMaker(final boolean bTest, final String workspace) {
     SessionService.setTestMode(bTest);
