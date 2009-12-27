@@ -21,7 +21,6 @@
 package org.jajuk.ui.widgets;
 
 import java.awt.Component;
-import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashSet;
@@ -32,6 +31,8 @@ import javax.swing.JList;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 import javax.swing.plaf.basic.BasicComboBoxRenderer;
+
+import net.miginfocom.swing.MigLayout;
 
 import org.jajuk.base.File;
 import org.jajuk.base.Track;
@@ -84,8 +85,6 @@ public class PreferenceToolbar extends JajukJToolbar implements Observer {
     jcbPreference = new JComboBox();
     // Add tooltips on combo items
     jcbPreference.setRenderer(new ComboBoxRenderer());
-    jcbPreference.setMinimumSize(new Dimension(40, 0));
-    jcbPreference.setPreferredSize(new Dimension(40, 0));
     jcbPreference.setToolTipText(Messages.getString("Preference.0"));
 
     jcbPreference.addItem(IconLoader.getIcon(JajukIcons.PREFERENCE_ADORE));
@@ -118,8 +117,9 @@ public class PreferenceToolbar extends JajukJToolbar implements Observer {
     };
 
     jcbPreference.addActionListener(listener);
-    add(jbBan);
-    add(jcbPreference);
+    setLayout(new MigLayout("insets 0", "[grow][grow]","[22!]"));
+    add(jbBan,"grow,left");
+    add(jcbPreference,"width 46!,grow,right");
     ObservationManager.register(this);
     // Force initial update
     if (QueueModel.isPlayingTrack()) {
