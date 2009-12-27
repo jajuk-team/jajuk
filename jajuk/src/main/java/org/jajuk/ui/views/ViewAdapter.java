@@ -45,7 +45,10 @@ public abstract class ViewAdapter extends JXPanel implements IView, Const, Compa
   /** Populated state. */
   private boolean bIsPopulated = false;
 
-  /** View ID; note that a same view can be used several times in the same or in others perspectives. */
+  /**
+   * View ID; note that a same view can be used several times in the same or in
+   * others perspectives.
+   */
   private String sID;
 
   /** Associated perspective*. */
@@ -90,7 +93,8 @@ public abstract class ViewAdapter extends JXPanel implements IView, Const, Compa
   /**
    * Sets the is populated.
    * 
-   * @param isPopulated DOCUMENT_ME
+   * @param isPopulated
+   *          Defines, if this View is populated fully.
    */
   public void setIsPopulated(boolean isPopulated) {
     bIsPopulated = isPopulated;
@@ -99,7 +103,9 @@ public abstract class ViewAdapter extends JXPanel implements IView, Const, Compa
   /*
    * (non-Javadoc)
    * 
-   * @see java.awt.event.ComponentListener#componentHidden(java.awt.event.ComponentEvent)
+   * @see
+   * java.awt.event.ComponentListener#componentHidden(java.awt.event.ComponentEvent
+   * )
    */
   public void componentHidden(ComponentEvent e) {
     // required by interface, but nothing to do here...
@@ -108,7 +114,9 @@ public abstract class ViewAdapter extends JXPanel implements IView, Const, Compa
   /*
    * (non-Javadoc)
    * 
-   * @see java.awt.event.ComponentListener#componentMoved(java.awt.event.ComponentEvent)
+   * @see
+   * java.awt.event.ComponentListener#componentMoved(java.awt.event.ComponentEvent
+   * )
    */
   public void componentMoved(ComponentEvent e) {
     // required by interface, but nothing to do here...
@@ -117,7 +125,9 @@ public abstract class ViewAdapter extends JXPanel implements IView, Const, Compa
   /*
    * (non-Javadoc)
    * 
-   * @see java.awt.event.ComponentListener#componentResized(java.awt.event.ComponentEvent)
+   * @see
+   * java.awt.event.ComponentListener#componentResized(java.awt.event.ComponentEvent
+   * )
    */
   public void componentResized(ComponentEvent e) {
     // required by interface, but nothing to do here...
@@ -126,7 +136,9 @@ public abstract class ViewAdapter extends JXPanel implements IView, Const, Compa
   /*
    * (non-Javadoc)
    * 
-   * @see java.awt.event.ComponentListener#componentShown(java.awt.event.ComponentEvent)
+   * @see
+   * java.awt.event.ComponentListener#componentShown(java.awt.event.ComponentEvent
+   * )
    */
   public void componentShown(ComponentEvent e) {
     // required by interface, but nothing to do here...
@@ -162,7 +174,8 @@ public abstract class ViewAdapter extends JXPanel implements IView, Const, Compa
   /**
    * Set the view ID.
    * 
-   * @param sID DOCUMENT_ME
+   * @param sID
+   *          The new ID of this view.
    */
   public void setID(String sID) {
     key.setKey(sID);
@@ -188,9 +201,10 @@ public abstract class ViewAdapter extends JXPanel implements IView, Const, Compa
   }
 
   /**
-   * Compare to.
+   * Compare this view with another view-object.
    * 
-   * @param other DOCUMENT_ME
+   * @param other
+   *          The second view to compare to.
    * 
    * @return Natural order
    */
@@ -205,16 +219,19 @@ public abstract class ViewAdapter extends JXPanel implements IView, Const, Compa
     // required by interface, but nothing to do here...
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see java.awt.Container#removeAll()
    */
   @Override
   public void removeAll() {
-    // We have to override removeAll() to work around a memory leak related to JXBusyLabel..
-    
+    // We have to override removeAll() to work around a memory leak related to
+    // JXBusyLabel..
+
     // first look for any JXBusyLabel and stop it
     stopAllBusyLabels(this);
-    
+
     super.removeAll();
   }
 
@@ -224,19 +241,25 @@ public abstract class ViewAdapter extends JXPanel implements IView, Const, Compa
   public void stopAllBusyLabels() {
     stopAllBusyLabels(this);
   }
-  
-  /** 
-   * walk through the list of components and stop any BusyLabel 
+
+  /**
+   * walk through the list of components and stop any BusyLabel
    */
   private static void stopAllBusyLabels(Container c) {
-    for(int i = 0; i < c.getComponentCount();i++) {
+    for (int i = 0; i < c.getComponentCount(); i++) {
       Component comp = c.getComponent(i);
-      if(comp instanceof JXBusyLabel) {
-        // make sure we correctly stop the BusyLabel in all cases here, sometimes this did not work...
-        ((JXBusyLabel)comp).setBusy(false);
+      if (comp instanceof JXBusyLabel) {
+        JXBusyLabel busy = (JXBusyLabel) comp;
+        if (busy.isBusy()) {
+          // make sure we correctly stop the BusyLabel in all cases here,
+          // sometimes this did not work...
+          // this can probably removed after upgrading swingx, see
+          // https://swingx.dev.java.net/issues/show_bug.cgi?id=626
+          busy.setBusy(false);
+        }
       } else if (comp instanceof Container) {
         // recursively call the Container to also look at it's components
-        stopAllBusyLabels((Container)comp);
+        stopAllBusyLabels((Container) comp);
       }
     }
   }
