@@ -320,6 +320,12 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
   @Override
   public synchronized void populateTree() {
     top.removeAllChildren();
+
+    // see http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6472844 for a small memory leak that is caused here...
+    if(jtree != null && jtree.getModel() != null) {
+      ((DefaultTreeModel)(jtree.getModel())).reload();
+    }
+    
     // add all devices as "LazyLoading" nodes so all subsequent elements are
     // only
     // populated if necessary
@@ -879,8 +885,6 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
    * 
    * @param parent
    *          The parent-directory to start from.
-   * @param model
-   *          The DefaultTreeModel to use.
    * @param list
    *          The list to add elements to. This list can contain elements before
    *          which will not be touched.

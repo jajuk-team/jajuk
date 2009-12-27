@@ -50,6 +50,7 @@ import javax.swing.event.TreeExpansionListener;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 
 import net.miginfocom.swing.MigLayout;
@@ -207,6 +208,14 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
 
   @Override
   public synchronized void populateTree() {
+    // delete previous tree
+    top.removeAllChildren();
+
+    // see http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6472844 for a small memory leak that is caused here...
+    if(jtree != null && jtree.getModel() != null) {
+      ((DefaultTreeModel)(jtree.getModel())).reload();
+    }
+    
     TrackComparatorType comparatorType = TrackComparatorType.values()[Conf
         .getInt(Const.CONF_LOGICAL_TREE_SORT_ORDER)];
     if (comparatorType == TrackComparatorType.STYLE_AUTHOR_ALBUM) {
@@ -242,8 +251,6 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
    */
   @SuppressWarnings("unchecked")
   public void populateTreeByStyle() {
-    // delete previous tree
-    top.removeAllChildren();
     List<Track> tracks = TrackManager.getInstance().getTracks();
     Collections.sort(tracks, TrackManager.getInstance().getComparator());
     for (Track track : tracks) {
@@ -322,8 +329,6 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
    */
   @SuppressWarnings("unchecked")
   public void populateTreeByAuthor() {
-    // delete previous tree
-    top.removeAllChildren();
     List<Track> tracks = TrackManager.getInstance().getTracks();
     Collections.sort(tracks, TrackManager.getInstance().getComparator());
     for (Track track : tracks) {
@@ -383,8 +388,6 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
    */
   @SuppressWarnings("unchecked")
   public void populateTreeByYear() {
-    // delete previous tree
-    top.removeAllChildren();
     List<Track> tracks = TrackManager.getInstance().getTracks();
     Collections.sort(tracks, TrackManager.getInstance().getComparator());
     for (Track track : tracks) {
@@ -441,8 +444,6 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
    * Fill the tree.
    */
   public void populateTreeByAlbum() {
-    // delete previous tree
-    top.removeAllChildren();
     List<Track> tracks = TrackManager.getInstance().getTracks();
     Collections.sort(tracks, TrackManager.getInstance().getComparator());
     for (Track track : tracks) {
@@ -456,8 +457,6 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
    * Fill the tree by discovery.
    */
   public void populateTreeByDiscovery() {
-    // delete previous tree
-    top.removeAllChildren();
     List<Track> tracks = TrackManager.getInstance().getTracks();
     Collections.sort(tracks, TrackManager.getInstance().getComparator());
     // Create separator nodes
@@ -523,8 +522,6 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
    * Fill the tree by Rate.
    */
   public void populateTreeByRate() {
-    // delete previous tree
-    top.removeAllChildren();
     List<Track> tracks = TrackManager.getInstance().getTracks();
     Collections.sort(tracks, TrackManager.getInstance().getComparator());
     for (Track track : tracks) {
@@ -538,8 +535,6 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
    * Fill the tree by Hits.
    */
   public void populateTreeByHits() {
-    // delete previous tree
-    top.removeAllChildren();
     List<Track> tracks = TrackManager.getInstance().getTracks();
     Collections.sort(tracks, TrackManager.getInstance().getComparator());
     for (Track track : tracks) {
