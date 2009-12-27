@@ -194,6 +194,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
     eventSubjectSet.add(JajukEvents.DEVICE_REFRESH);
     eventSubjectSet.add(JajukEvents.CDDB_WIZARD);
     eventSubjectSet.add(JajukEvents.PARAMETERS_CHANGE);
+    eventSubjectSet.add(JajukEvents.SYNC_TREE_TABLE);
     return eventSubjectSet;
   }
 
@@ -321,11 +322,12 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
   public synchronized void populateTree() {
     top.removeAllChildren();
 
-    // see http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6472844 for a small memory leak that is caused here...
-    if(jtree != null && jtree.getModel() != null) {
-      ((DefaultTreeModel)(jtree.getModel())).reload();
+    // see http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6472844 for a
+    // small memory leak that is caused here...
+    if (jtree != null && jtree.getModel() != null) {
+      ((DefaultTreeModel) (jtree.getModel())).reload();
     }
-    
+
     // add all devices as "LazyLoading" nodes so all subsequent elements are
     // only
     // populated if necessary
@@ -482,13 +484,36 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
     }
   }
 
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.jajuk.ui.views.AbstractTreeView#expand(org.jajuk.base.Item)
+   */
+  @Override
+  void expand(Item item) {
+    // We are waiting for a File here
+    File file = (File) item;
+    Directory directory = file.getDirectory();
+    for (int i = 0; i < jtree.getRowCount(); i++) {
+      Object o = jtree.getPathForRow(i).getLastPathComponent();
+      if (o instanceof DirectoryNode) {
+        Directory dir = ((DirectoryNode) o).getDirectory();
+        // == here thanks to .intern optimization
+        if (dir.getID() == directory.getID()) {
+          jtree.expandRow(i);
+          jtree.scrollPathToVisible(jtree.getPathForRow(i));
+        }
+      }
+    }
+  }
+
   /**
    * DOCUMENT_ME.
    */
   class FilesMouseAdapter extends JajukMouseAdapter {
 
     @Override
-    public void handleActionSeveralClicks(final MouseEvent e){
+    public void handleActionSeveralClicks(final MouseEvent e) {
       TreePath path = jtree.getPathForLocation(e.getX(), e.getY());
       if (path == null) {
         return;
@@ -497,8 +522,8 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
       if (o instanceof FileNode) {
         File file = ((FileNode) o).getFile();
         try {
-          QueueModel.push(new StackItem(file, Conf.getBoolean(Const.CONF_STATE_REPEAT_ALL),
-              true), Conf.getBoolean(Const.CONF_OPTIONS_PUSH_ON_CLICK));
+          QueueModel.push(new StackItem(file, Conf.getBoolean(Const.CONF_STATE_REPEAT_ALL), true),
+              Conf.getBoolean(Const.CONF_OPTIONS_PUSH_ON_CLICK));
         } catch (JajukException je) {
           Log.error(je);
         }
@@ -750,7 +775,6 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
      * javax.swing.event.TreeSelectionListener#valueChanged(javax.swing.event
      * .TreeSelectionEvent)
      */
-    @SuppressWarnings("unchecked")
     public void valueChanged(TreeSelectionEvent e) {
       paths = jtree.getSelectionModel().getSelectionPaths();
       // nothing selected, can be called during dnd
@@ -762,39 +786,41 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
       // get all components recursively
       selectedRecursively.clear();
       alSelected.clear();
-      for (TreePath element : paths) {
-        Object o = element.getLastPathComponent();
-        if (o instanceof TreeRootElement) {// root node
-          items = FileManager.getInstance().getElementCount();
-          selectedRecursively.addAll(FileManager.getInstance().getFiles());
-          for (Item item : selectedRecursively) {
-            lSize += ((File) item).getSize();
-          }
-          break;
-        } else {
+      // Treat case when use selected the tree's root
+      Object firstPath = paths[0].getLastPathComponent();
+      if (firstPath instanceof TreeRootElement) {
+        selectedRecursively.addAll(FileManager.getInstance().getFiles());
+      } else {
+        // Regular selection, one or more nodes
+        for (TreePath element : paths) {
+          // return all childs nodes recursively, do not count on the tree's
+          // model as it is lazy loaded
+          Object o = element.getLastPathComponent();
           Item item = (Item) ((TransferableTreeNode) o).getUserObject();
           alSelected.add(item);
-        }
-
-        // return all childs nodes recursively
-        Enumeration<DefaultMutableTreeNode> e2 = ((DefaultMutableTreeNode) o)
-            .depthFirstEnumeration();
-        while (e2.hasMoreElements()) {
-          DefaultMutableTreeNode node = e2.nextElement();
-          if (node instanceof FileNode) {
-            File file = ((FileNode) node).getFile();
-            // don't count same file twice if user
-            // select directory and then files inside
-            selectedRecursively.add(file);
-            lSize += file.getSize();
-            items++;
-          } else if (node instanceof PlaylistFileNode) {
-            Playlist plf = ((PlaylistFileNode) node).getPlaylistFile();
-            selectedRecursively.add(plf);
-            items++;
+          Directory directory = null;
+          if (o instanceof DeviceNode) {
+            directory = ((DeviceNode) o).getDevice().getRootDirectory();
+          } else {
+            directory = ((DirectoryNode) o).getDirectory();
+          }
+          if (directory != null) {
+            selectedRecursively.addAll(directory.getFilesRecursively());
+            selectedRecursively.addAll(directory.getPlaylistFiles());
+          } else if (o instanceof FileNode) {
+            selectedRecursively.add(((FileNode) o).getFile());
+          } else if (o instanceof PlaylistFileNode) {
+            selectedRecursively.add(((PlaylistFileNode) o).getPlaylistFile());
           }
         }
       }
+      // Compute recursive selection size, nb of items...
+      for (Item item : selectedRecursively) {
+        if (item instanceof File) {
+          lSize += ((File) item).getSize();
+        }
+      }
+      items = selectedRecursively.size();
       lSize /= 1048576; // set size in MB
       StringBuilder sbOut = new StringBuilder().append(items).append(
           Messages.getString("FilesTreeView.52"));
@@ -810,7 +836,9 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
         // selection change
         Properties properties = new Properties();
         properties.put(Const.DETAIL_SELECTION, selectedRecursively);
-        properties.put(Const.DETAIL_ORIGIN, PerspectiveManager.getCurrentPerspective().getID());
+        properties
+            .put(Const.DETAIL_PERSPECTIVE, PerspectiveManager.getCurrentPerspective().getID());
+        properties.put(Const.DETAIL_VIEW, getID());
         ObservationManager.notify(new JajukEvent(JajukEvents.SYNC_TREE_TABLE, properties));
       }
       // Enable CDDB retagging only for a single directory selection
@@ -885,12 +913,13 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
    * 
    * @param parent
    *          The parent-directory to start from.
+   * @param model
+   *          The DefaultTreeModel to use.
    * @param list
    *          The list to add elements to. This list can contain elements before
    *          which will not be touched.
    */
-  static void populateFromDirectory(Directory parent,
-      List<MutableTreeNode> list) {
+  static void populateFromDirectory(Directory parent, List<MutableTreeNode> list) {
     // now we get all directories in this device
     for (Directory directory : parent.getDirectories()) {
       if (directory.shouldBeHidden()) {

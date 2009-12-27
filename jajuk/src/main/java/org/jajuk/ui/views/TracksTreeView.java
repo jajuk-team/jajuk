@@ -613,7 +613,8 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
   /*
    * (non-Javadoc)
    * 
-   * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+   * @see
+   * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
    */
   public void actionPerformed(final ActionEvent e) {
     if (e.getSource() == jcbSort) {
@@ -685,7 +686,9 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
     /*
      * (non-Javadoc)
      * 
-     * @see javax.swing.event.TreeSelectionListener#valueChanged(javax.swing.event.TreeSelectionEvent)
+     * @see
+     * javax.swing.event.TreeSelectionListener#valueChanged(javax.swing.event
+     * .TreeSelectionEvent)
      */
     public void valueChanged(TreeSelectionEvent e) {
       TreePath[] tpSelected = jtree.getSelectionModel().getSelectionPaths();
@@ -927,6 +930,30 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
         jmenuCollection.add(jmiCollectionDuplicateFiles);
 
         jmenuCollection.show(jtree, e.getX(), e.getY());
+      }
+    }
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.jajuk.ui.views.AbstractTreeView#expand(org.jajuk.base.Item)
+   */
+  @Override
+  void expand(Item item) {
+    Track track = (Track) item;
+
+    // make sure the main element is expanded
+    jtree.expandRow(0);
+
+    for (int i = 0; i < jtree.getRowCount(); i++) {
+      Object o = jtree.getPathForRow(i).getLastPathComponent();
+      if (o instanceof TrackNode) {
+        Track tested = ((TrackNode) o).getTrack();
+        // == here thanks to .intern optimization
+        if (tested.getID() == track.getID()) {
+          jtree.expandRow(i);
+        }
       }
     }
   }

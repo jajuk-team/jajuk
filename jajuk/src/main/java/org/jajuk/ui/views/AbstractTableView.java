@@ -77,6 +77,7 @@ import org.jajuk.ui.helpers.PreferencesJMenu;
 import org.jajuk.ui.helpers.TableTransferHandler;
 import org.jajuk.ui.helpers.TwoStepsDisplayable;
 import org.jajuk.ui.helpers.FontManager.JajukFont;
+import org.jajuk.ui.perspectives.PerspectiveManager;
 import org.jajuk.ui.widgets.InformationJPanel;
 import org.jajuk.ui.widgets.JajukTable;
 import org.jajuk.ui.widgets.JajukToggleButton;
@@ -92,7 +93,6 @@ import org.jajuk.util.error.JajukException;
 import org.jajuk.util.error.NoneAccessibleFileException;
 import org.jajuk.util.log.Log;
 import org.jdesktop.swingx.autocomplete.ComboBoxCellEditor;
-import org.jdesktop.swingx.decorator.SortOrder;
 import org.jdesktop.swingx.table.DefaultTableColumnModelExt;
 import org.jdesktop.swingx.table.TableColumnExt;
 
@@ -148,33 +148,36 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
   /** Editable table configuration name, must be overwritten by child classes. */
   String editableConf;
 
-  /** Columns to show table configuration name, must be overwritten by child classes. */
+  /**
+   * Columns to show table configuration name, must be overwritten by child
+   * classes.
+   */
   String columnsConf;
 
   /** DOCUMENT_ME. */
   JMenuItem jmiPlay;
-  
+
   /** DOCUMENT_ME. */
   JMenuItem jmiPush;
-  
+
   /** DOCUMENT_ME. */
   JMenuItem jmiFrontPush;
-  
+
   /** DOCUMENT_ME. */
   JMenuItem jmiDelete;
-  
+
   /** DOCUMENT_ME. */
   JMenuItem jmiPlayRepeat;
-  
+
   /** DOCUMENT_ME. */
   JMenuItem jmiPlayShuffle;
-  
+
   /** DOCUMENT_ME. */
   JMenuItem jmiBookmark;
-  
+
   /** DOCUMENT_ME. */
   JMenuItem jmiProperties;
-  
+
   /** DOCUMENT_ME. */
   JMenuItem jmiFileCopyURL;
 
@@ -231,7 +234,8 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
    * Code used in child class SwingWorker for display computations (used in
    * initUI()).
    * 
-   * @param in DOCUMENT_ME
+   * @param in
+   *          DOCUMENT_ME
    */
   public void shortCall(Object in) {
     // Add generic menus
@@ -349,7 +353,6 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
     jtable.setTransferHandler(new TableTransferHandler(jtable));
     jtable.showColumns(jtable.getColumnsConf());
     applyFilter(null, null);
-    jtable.setSortOrder(0, SortOrder.ASCENDING);
     jtable.setHighlighters(UtilGUI.getAlternateHighlighter());
 
     // Hide the copy url if several items selection. Do not simply disable them
@@ -374,7 +377,9 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
     setKeystrokes();
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see org.jajuk.events.Observer#getRegistrationKeys()
    */
   public Set<JajukEvents> getRegistrationKeys() {
@@ -397,8 +402,10 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
    * Apply a filter, to be implemented by files and tracks tables, alter the
    * model.
    * 
-   * @param sPropertyName DOCUMENT_ME
-   * @param sPropertyValue DOCUMENT_ME
+   * @param sPropertyName
+   *          DOCUMENT_ME
+   * @param sPropertyValue
+   *          DOCUMENT_ME
    */
   public void applyFilter(final String sPropertyName, final String sPropertyValue) {
     SwingWorker<Void, Void> sw = new SwingWorker<Void, Void>() {
@@ -446,11 +453,13 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
             // force filter to refresh
             applyFilter(sAppliedCriteria, sAppliedFilter);
           } else if (JajukEvents.SYNC_TREE_TABLE.equals(subject)) {
-            // Consume only events from the same perspective for
-            // table/tree synchronization
-            if (event.getDetails() != null
-                && !(event.getDetails().getProperty(Const.DETAIL_ORIGIN).equals(getPerspective()
-                    .getID()))) {
+            // Consume only events from the same perspective and different view
+            // (for table/tree synchronization)
+            Properties details = event.getDetails();
+            if (details != null
+                && (!(details.getProperty(Const.DETAIL_PERSPECTIVE)
+                    .equals(getPerspective().getID())) || details.getProperty(Const.DETAIL_VIEW)
+                    .equals(getID()))) {
               return;
             }
             // Update model tree selection
@@ -519,8 +528,23 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
           } else if (JajukEvents.TABLE_SELECTION_CHANGED.equals(subject)) {
             // Refresh the preference menu according to the selection
             pjmTracks.resetUI(jtable.getSelection());
+            // Notify tree/table sync. Note that the tree send all the selection
+            // model to the table while the table only send a single selected
+            // item because we want to expand only the first item selected in
+            // table.
+            if (Conf.getBoolean(Const.CONF_OPTIONS_SYNC_TABLE_TREE)
+            // Ignore this event if the new selection is <none>
+                && jtable.getSelection().size() > 0) {
+              // if table is synchronized with tree, notify the
+              // selection change
+              Properties properties = new Properties();
+              properties.put(Const.DETAIL_SELECTION, jtable.getSelection().get(0));
+              properties.put(Const.DETAIL_PERSPECTIVE, PerspectiveManager.getCurrentPerspective()
+                  .getID());
+              properties.put(Const.DETAIL_VIEW, getID());
+              ObservationManager.notify(new JajukEvent(JajukEvents.SYNC_TREE_TABLE, properties));
+            }
           }
-
         } catch (Exception e) {
           Log.error(e);
         } finally {
@@ -557,8 +581,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
   abstract JajukTableModel populateTable();
 
   /**
-   * Sets the cell editors.
-   * DOCUMENT_ME
+   * Sets the cell editors. DOCUMENT_ME
    */
   private void setCellEditors() {
     for (TableColumn tc : ((DefaultTableColumnModelExt) jtable.getColumnModel()).getColumns(true)) {
@@ -595,7 +618,8 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
   /**
    * Detect property change.
    * 
-   * @param ie DOCUMENT_ME
+   * @param ie
+   *          DOCUMENT_ME
    */
   public void itemStateChanged(ItemEvent ie) {
     if (ie.getSource() == jcbProperty) {
@@ -608,7 +632,8 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
   /*
    * (non-Javadoc)
    * 
-   * @see javax.swing.event.TableModelListener#tableChanged(javax.swing.event.TableModelEvent)
+   * @seejavax.swing.event.TableModelListener#tableChanged(javax.swing.event.
+   * TableModelEvent)
    */
   public void tableChanged(TableModelEvent e) {
     // Check the table change event has not been generated by a
@@ -660,7 +685,8 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
   /*
    * (non-Javadoc)
    * 
-   * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+   * @see
+   * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
    */
   public void actionPerformed(final ActionEvent e) {
     // Editable state
