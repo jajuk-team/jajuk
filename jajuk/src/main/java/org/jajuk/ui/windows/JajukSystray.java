@@ -346,7 +346,6 @@ public class JajukSystray extends CommandJPanel implements IJajukWindow {
     eventSubjectSet.add(JajukEvents.PLAYER_STOP);
     eventSubjectSet.add(JajukEvents.AMBIENCES_CHANGE);
     eventSubjectSet.add(JajukEvents.AMBIENCES_SELECTION_CHANGE);
-    eventSubjectSet.add(JajukEvents.PARAMETERS_CHANGE);
     return eventSubjectSet;
   }
 
