@@ -475,7 +475,7 @@ public class DeviceView extends ViewAdapter implements IView, ActionListener {
    * 
    * @see java.awt.event.MouseListener#mouseExited(java.awt.event.MouseEvent)
    */
-  public void mouseExited(MouseEvent arg0) {
+  public void mouseExited(@SuppressWarnings("unused") MouseEvent arg0) {
     // required by interface, but nothing to do here...
   }
 
@@ -484,7 +484,7 @@ public class DeviceView extends ViewAdapter implements IView, ActionListener {
    * 
    * @see java.awt.event.MouseListener#mouseEntered(java.awt.event.MouseEvent)
    */
-  public void mouseEntered(MouseEvent e) {
+  public void mouseEntered(@SuppressWarnings("unused") MouseEvent e) {
     // required by interface, but nothing to do here...
   }
 
@@ -493,7 +493,7 @@ public class DeviceView extends ViewAdapter implements IView, ActionListener {
    * 
    * @see java.awt.event.MouseListener#mouseClicked(java.awt.event.MouseEvent)
    */
-  public void mouseClicked(MouseEvent e) {
+  public void mouseClicked(@SuppressWarnings("unused") MouseEvent e) {
     // required by interface, but nothing to do here...
   }
 }
