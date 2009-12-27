@@ -61,11 +61,16 @@ import org.jajuk.util.log.Log;
  * even outside AWT dispatcher thread
  * </p>
  * 
- * General todo-items: TODO: we catch exceptions a lot in various places here.
- * Why? We should probably rather avoid or handle them correctly TODO: insert()
- * and push() are quite similar, but implemented differently, they should be
- * combined TOOD: the queue/planned handling is cumbersome and planned tracks
- * are not correctly handled sometimes, should be refactored into separate class
+ * General todo-items:
+ * 
+ * TODO: we catch exceptions a lot in various places here. Why? We should
+ * probably rather avoid or handle them correctly
+ * 
+ * TODO: insert() and push() are quite similar, but implemented differently,
+ * they should be combined
+ * 
+ * TOOD: the queue/planned handling is cumbersome and planned tracks are not
+ * correctly handled sometimes, should be refactored into separate class
  */
 public final class QueueModel {
 
@@ -139,7 +144,7 @@ public final class QueueModel {
    * Set given repeat mode to all in FIFO.
    * 
    * @param bRepeat
-   *          DOCUMENT_ME
+   *          True, if repeat mode should be turned on, false otherwise.
    */
   public static void setRepeatModeToAll(boolean bRepeat) {
     for (StackItem item : alQueue) {
@@ -152,12 +157,12 @@ public final class QueueModel {
    * dispatcher thread).
    * 
    * @param alItems
-   *          DOCUMENT_ME
-   * @param bPush
-   *          DOCUMENT_ME
+   *          The list of items to push.
+   * @param bKeepPrevious
+   *          keep previous files or stop them to start a new one ?
    */
-  public static void push(final List<StackItem> alItems, final boolean bPush) {
-    push(alItems, bPush, false);
+  public static void push(final List<StackItem> alItems, final boolean bKeepPrevious) {
+    push(alItems, bKeepPrevious, false);
   }
 
   /**
@@ -165,13 +170,14 @@ public final class QueueModel {
    * dispatcher thread).
    * 
    * @param alItems
-   *          DOCUMENT_ME
-   * @param bPush
-   *          DOCUMENT_ME
+   *          The list of items to push.
+   * @param bKeepPrevious
+   *          keep previous files or stop them to start a new one ?
    * @param bPushNext
-   *          DOCUMENT_ME
+   *          whether the selection is added after playing track (mutual
+   *          exclusive with simple push)
    */
-  public static void push(final List<StackItem> alItems, final boolean bPush,
+  public static void push(final List<StackItem> alItems, final boolean bKeepPrevious,
       final boolean bPushNext) {
     Thread t = new Thread("Queue Push Thread") { // do it in a thread to make
       // UI more reactive
@@ -179,7 +185,7 @@ public final class QueueModel {
       public void run() {
         try {
           UtilGUI.waiting();
-          QueueModel.pushCommand(alItems, bPush, bPushNext);
+          QueueModel.pushCommand(alItems, bKeepPrevious, bPushNext);
         } catch (Exception e) {
           Log.error(e);
         } finally {
@@ -198,12 +204,12 @@ public final class QueueModel {
    * dispatcher thread).
    * 
    * @param item
-   *          DOCUMENT_ME
-   * @param bPush
-   *          DOCUMENT_ME
+   *          The item to push.
+   * @param bKeepPrevious
+   *          keep previous files or stop them to start a new one ?
    */
-  public static void push(final StackItem item, final boolean bPush) {
-    push(item, bPush, false);
+  public static void push(final StackItem item, final boolean bKeepPrevious) {
+    push(item, bKeepPrevious, false);
   }
 
   /**
@@ -211,20 +217,21 @@ public final class QueueModel {
    * dispatcher thread).
    * 
    * @param item
-   *          DOCUMENT_ME
-   * @param bPush
-   *          DOCUMENT_ME
+   *          The item to push.
+   * @param bKeepPrevious
+   *          keep previous files or stop them to start a new one ?
    * @param bPushNext
-   *          DOCUMENT_ME
+   *          whether the selection is added after playing track (mutual
+   *          exclusive with simple push)
    */
-  public static void push(final StackItem item, final boolean bPush, final boolean bPushNext) {
+  public static void push(final StackItem item, final boolean bKeepPrevious, final boolean bPushNext) {
     Thread t = new Thread("Queue Push Thread") {
       // do it in a thread to make UI more reactive
       @Override
       public void run() {
         try {
           UtilGUI.waiting();
-          pushCommand(item, bPush, bPushNext);
+          pushCommand(item, bKeepPrevious, bPushNext);
         } catch (Exception e) {
           Log.error(e);
         } finally {
@@ -281,16 +288,16 @@ public final class QueueModel {
    * 
    * @param item
    *          , item to be played
-   * @param bPush
+   * @param bKeepPrevious
    *          keep previous files or stop them to start a new one ?
    * @param bPushNext
    *          whether the selection is added after playing track (mutual
    *          exclusive with simple push)
    */
-  private static void pushCommand(StackItem item, boolean bPush, final boolean bPushNext) {
+  private static void pushCommand(StackItem item, boolean bKeepPrevious, final boolean bPushNext) {
     List<StackItem> alFiles = new ArrayList<StackItem>(1);
     alFiles.add(item);
-    pushCommand(alFiles, bPush, bPushNext);
+    pushCommand(alFiles, bKeepPrevious, bPushNext);
   }
 
   /**
@@ -298,12 +305,13 @@ public final class QueueModel {
    * 
    * @param alItems
    *          , list of items to be played
-   * @param bPush
+   * @param bKeepPrevious
    *          keep previous files or stop them to start a new one ?
    * @param bPushNext
    *          whether the selection is added in first in queue
    */
-  private static void pushCommand(List<StackItem> alItems, boolean bPush, final boolean bPushNext) {
+  private static void pushCommand(List<StackItem> alItems, boolean bKeepPrevious,
+      final boolean bPushNext) {
     try {
       // wake up FIFO if stopped
       bStop = false;
@@ -356,7 +364,7 @@ public final class QueueModel {
         int pos = (alQueue.size() == 0) ? 0 : alQueue.size();
 
         // OK, stop current track if no append
-        if (!bPush && !bPushNext) {
+        if (!bKeepPrevious && !bPushNext) {
           index = pos;
           Player.stop(false);
         }
@@ -365,7 +373,7 @@ public final class QueueModel {
           pos = index + 1;
         }
         // If push, not play, add items at the end
-        else if (bPush && alQueue.size() > 0) {
+        else if (bKeepPrevious && alQueue.size() > 0) {
           pos = alQueue.size();
         }
 
@@ -399,7 +407,7 @@ public final class QueueModel {
    * Contains repeated item.
    * 
    * @param items
-   *          DOCUMENT_ME
+   *          The items to check for repeat.
    * 
    * @return whether a stack item list contains a least one repeated item
    */
@@ -519,30 +527,7 @@ public final class QueueModel {
   }
 
   /**
-   * Return next item of current one (looping from end of queue to top) or null
-   * if no different item available.
-   * 
-   * @return next item of current one (looping from end of queue to top) or null
-   *         if no different item available
-   */
-  private static StackItem getNextItem() {
-    // Compute next track
-    StackItem itemNext = null;
-    if (alQueue.size() <= 1) {
-      return null;
-    }
-    // If not last item in queue
-    if (index < alQueue.size() - 1) {
-      itemNext = alQueue.get(index + 1);
-    } else {
-      // last item, start back from the top
-      itemNext = alQueue.get(0);
-    }
-    return itemNext;
-  }
-
-  /**
-   * Sets the end of queue. DOCUMENT_ME
+   * Sets the end of queue.
    */
   private static void setEndOfQueue() {
     // no ? just reset UI and leave
@@ -662,7 +647,7 @@ public final class QueueModel {
    * Set current index.
    * 
    * @param index
-   *          DOCUMENT_ME
+   *          The index to set.
    */
   public static void setIndex(int index) {
     QueueModel.index = index;
@@ -1135,9 +1120,9 @@ public final class QueueModel {
    * Insert a file to play in FIFO at specified position.
    * 
    * @param iPos
-   *          DOCUMENT_ME
+   *          The position where the item is inserted.
    * @param item
-   *          DOCUMENT_ME
+   *          the item to insert.
    */
   public static void insert(StackItem item, int iPos) {
     List<StackItem> alStack = new ArrayList<StackItem>(1);
@@ -1153,9 +1138,9 @@ public final class QueueModel {
    * shifted on the right.
    * 
    * @param iPos
-   *          DOCUMENT_ME
+   *          The position where the items are inserted.
    * @param alFiles
-   *          DOCUMENT_ME
+   *          The list of items to insert.
    */
   public static void insert(List<StackItem> alFiles, int iPos) {
     if (iPos <= alQueue.size()) {
@@ -1174,7 +1159,7 @@ public final class QueueModel {
    * Put up an item from given index to index-1.
    * 
    * @param lIndex
-   *          DOCUMENT_ME
+   *          The index to move up in the queue.
    */
   public static void up(int lIndex) {
     if (lIndex == 0 || lIndex == alQueue.size()) {
@@ -1199,7 +1184,7 @@ public final class QueueModel {
    * Put down an item from given index to index+1.
    * 
    * @param lIndex
-   *          DOCUMENT_ME
+   *          The index to move down in the queue.
    */
   public static void down(int lIndex) {
     if (/* lIndex == 0 || */lIndex == alQueue.size() - 1
@@ -1221,7 +1206,7 @@ public final class QueueModel {
    * Go to given index and launch it.
    * 
    * @param pIndex
-   *          DOCUMENT_ME
+   *          The index to go to in the queue.
    */
   public static void goTo(final int pIndex) {
     bStop = false;
@@ -1266,9 +1251,9 @@ public final class QueueModel {
    * Remove files at specified positions.
    * 
    * @param iStart
-   *          DOCUMENT_ME
+   *          Position from where to start removing.
    * @param iStop
-   *          DOCUMENT_ME
+   *          Position from up to where items are removed.
    */
   public static void remove(int iStart, int iStop) {
     if (iStart <= iStop && iStart >= 0 && iStop < alQueue.size() + alPlanned.size()) {
@@ -1344,10 +1329,11 @@ public final class QueueModel {
   }
 
   /**
-   * Set the first file flag.
+   * Set the first file flag. This is used mainly to reposition into the file at
+   * the position where playing was stopped before.
    * 
    * @param bFirstFile
-   *          DOCUMENT_ME
+   *          If this is the first file after startup.
    */
   public static void setFirstFile(boolean bFirstFile) {
     QueueModel.bFirstFile = bFirstFile;
@@ -1415,11 +1401,8 @@ public final class QueueModel {
     return title;
   }
 
-  /*
-   * Force FIFO cleanup, for example after files deletion
-   */
   /**
-   * Clean. DOCUMENT_ME
+   * Force FIFO cleanup, for example after files deletion
    */
   public static synchronized void clean() {
     Iterator<StackItem> it = alQueue.iterator();
@@ -1431,5 +1414,4 @@ public final class QueueModel {
     }
     computesPlanned(true);
   }
-
 }
