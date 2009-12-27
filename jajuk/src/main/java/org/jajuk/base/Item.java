@@ -214,7 +214,7 @@ public abstract class Item implements Const {
 
   /**
    * Return String value for String type values. We assume that given property
-   * is a String. If you are not sure, use UtilFeatures.parse method
+   * is a String.
    * 
    * @param sKey DOCUMENT_ME
    * 
