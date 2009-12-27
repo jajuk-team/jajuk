@@ -27,6 +27,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
+import java.text.NumberFormat;
+import java.text.ParseException;
 import java.util.Iterator;
 import java.util.List;
 
@@ -60,55 +62,59 @@ import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 import org.jajuk.util.filters.DirectoryFilter;
 import org.jajuk.util.log.Log;
+import org.netbeans.validation.api.Problem;
+import org.netbeans.validation.api.Problems;
+import org.netbeans.validation.api.Severity;
+import org.netbeans.validation.api.Validator;
+import org.netbeans.validation.api.builtin.Validators;
+import org.netbeans.validation.api.ui.ValidationGroup;
+import org.netbeans.validation.api.ui.ValidationPanel;
 
 /**
  * Device creation wizard.
  */
 public class DeviceWizard extends JajukJDialog implements ActionListener, Const {
 
-  /** The Constant WRAP. DOCUMENT_ME */
+  /** The Constant WRAP. */
   private static final String WRAP = "wrap";
 
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
-  /** DOCUMENT_ME. */
+  /** Device type combo. */
   private final JComboBox jcbType;
 
-  /** DOCUMENT_ME. */
+  /** Device name text field. */
   private final JTextField jtfName;
 
-  /** DOCUMENT_ME. */
+  /** Device url text field. */
   private final JTextField jtfUrl;
 
-  /** DOCUMENT_ME. */
+  /** Device url path selector button. */
   private final JButton jbUrl;
 
-  /** DOCUMENT_ME. */
+  /** Auto-refresh device checkbox. */
   private final JCheckBox jcbRefresh;
 
-  /** DOCUMENT_ME. */
+  /** Auto-mount checkbox. */
   private final JCheckBox jcbAutoMount;
 
-  /** DOCUMENT_ME. */
+  /** Auto-refresh interval. */
   private final JTextField jtfAutoRefresh;
 
-  /** DOCUMENT_ME. */
+  /** Device sync checkbox */
   private final JCheckBox jcboxSynchronized;
 
-  /** DOCUMENT_ME. */
+  /** Other device combo */
   private final JComboBox jcbSynchronized;
 
-  /** DOCUMENT_ME. */
-  private final ButtonGroup bgSynchro;
-
-  /** DOCUMENT_ME. */
+  /** Bidi sync choice. */
   private final JRadioButton jrbBidirSynchro;
 
-  /** DOCUMENT_ME. */
+  /** Unidir sync choice. */
   private final JRadioButton jrbUnidirSynchro;
 
-  /** DOCUMENT_ME. */
+  /** Ok Cancel panel. */
   private final OKCancelPanel okp;
 
   /** New device flag. */
@@ -122,6 +128,12 @@ public class DeviceWizard extends JajukJDialog implements ActionListener, Const 
 
   /** Initial URL*. */
   private String sInitialURL;
+
+  /** A convenient NumberFormat instance */
+  private NumberFormat nformat = NumberFormat.getInstance();
+
+  /** Validation group */
+  ValidationGroup vg;
 
   /**
    * Device wizard by default, is used for void configuration.
@@ -171,7 +183,7 @@ public class DeviceWizard extends JajukJDialog implements ActionListener, Const 
     JLabel jlMinutes = new JLabel(Messages.getString("DeviceWizard.54"));
     /* jtfAutoRefresh rules : Minimum delay is half a minute */
     jtfAutoRefresh = new JTextField();
-
+    jtfAutoRefresh.setName(Messages.getString("DeviceWizard.54"));
     jtfAutoRefresh.setToolTipText(Messages.getString("DeviceWizard.50"));
     jcboxSynchronized = new JCheckBox(Messages.getString("DeviceWizard.10"));
     jcboxSynchronized.setToolTipText(Messages.getString("DeviceWizard.51"));
@@ -185,7 +197,7 @@ public class DeviceWizard extends JajukJDialog implements ActionListener, Const 
     jcbSynchronized.setToolTipText(Messages.getString("DeviceWizard.52"));
     // Default automount behavior
     jcbType.addActionListener(this);
-    bgSynchro = new ButtonGroup();
+    ButtonGroup bgSynchro = new ButtonGroup();
     jrbUnidirSynchro = new JRadioButton(Messages.getString("DeviceWizard.11"));
     jrbUnidirSynchro.setToolTipText(Messages.getString("DeviceWizard.12"));
     jrbUnidirSynchro.setBorder(BorderFactory.createEmptyBorder(0, 25, 0, 0));
@@ -199,8 +211,15 @@ public class DeviceWizard extends JajukJDialog implements ActionListener, Const 
     bgSynchro.add(jrbBidirSynchro);
     bgSynchro.add(jrbUnidirSynchro);
 
+    // Validation
+    ValidationPanel vp = new ValidationPanel();
+    vg = vp.getValidationGroup();
+
+    installValidators();
+
     // buttons
     okp = new OKCancelPanel(this);
+    okp.getOKButton().setEnabled(false);
 
     // Add items
     setLayout(new MigLayout("insets 10,gapx 10, gapy 15", "[][grow]"));
@@ -220,6 +239,7 @@ public class DeviceWizard extends JajukJDialog implements ActionListener, Const 
     add(jcbSynchronized, "grow,wrap");
     add(jrbUnidirSynchro, "left,gap left 20,span,wrap");
     add(jrbBidirSynchro, "left,gap left 20,span,wrap");
+    add(vp, "height 25!,span,wrap");
     add(okp, "span,right");
 
     // Set default behaviors
@@ -231,7 +251,78 @@ public class DeviceWizard extends JajukJDialog implements ActionListener, Const 
     getRootPane().setDefaultButton(okp.getOKButton());
     pack();
     okp.getOKButton().requestFocusInWindow();
+  }
 
+  /**
+   * Install validators.
+   */
+  @SuppressWarnings("unchecked")
+  private void installValidators() {
+    // Auto-refresh interval validation : should be 0 or a double >= 0.5
+    vg.add(jtfAutoRefresh, Validators.REQUIRE_NON_NEGATIVE_NUMBER, Validators.NO_WHITESPACE,
+        Validators.REQUIRE_VALID_NUMBER, new Validator<String>() {
+          @Override
+          public boolean validate(Problems problems, String compName, String model) {
+            try {
+              double value = nformat.parse(model).doubleValue();
+              // If value is zero, validate the user input
+              boolean resu = (value == 0 || value >= 0.5d);
+              // If a problem occurred, add this problem to the problem stack
+              if (!resu) {
+                Problem problem = new Problem(Messages.getString("DeviceWizard.55"), Severity.FATAL);
+                problems.add(problem);
+              }
+              // Disable the wizard OK button if user selection is not in the
+              // right interval or if previous validators thrown an error
+              // already
+              okp.getOKButton().setEnabled(resu && problems.isEmpty());
+              return resu;
+            } catch (Exception e) {
+              // This happen when the text field is not yet populated (model is
+              // void). Note that wrong number format issues are already handled
+              // by the previous Validators
+              okp.getOKButton().setEnabled(false);
+              return true;
+            }
+          }
+        });
+
+    // Validate device name
+    vg.add(jtfName, new Validator<String>() {
+      @Override
+      public boolean validate(Problems problems, String compName, String model) {
+        // By default, we disable the OK button, we re-enable it only if the
+        // name is OK
+        okp.getOKButton().setEnabled(false);
+        for (Device deviceToCheck : DeviceManager.getInstance().getDevices()) {
+          // check for a new device with an existing name
+          if (bNew && (jtfName.getText().equalsIgnoreCase(deviceToCheck.getName()))) {
+            problems.add(new Problem(Messages.getErrorMessage(19), Severity.FATAL));
+            return false;
+          }
+        }
+        okp.getOKButton().setEnabled(problems.isEmpty());
+        return true;
+      }
+    });
+
+    // Validate device url
+    vg.add(jtfUrl, new Validator<String>() {
+      @Override
+      public boolean validate(Problems problems, String compName, String model) {
+        // By default, we disable the OK button, we re-enable it only if the
+        // name is OK
+        okp.getOKButton().setEnabled(false);
+        int code = DeviceManager.getInstance().checkDeviceAvailablity(jtfName.getText(),
+            jcbType.getSelectedIndex(), model, bNew);
+        if (code != 0) {
+          problems.add(new Problem(Messages.getErrorMessage(code), Severity.FATAL));
+          return false;
+        }
+        okp.getOKButton().setEnabled(problems.isEmpty());
+        return true;
+      }
+    });
   }
 
   /*
@@ -262,32 +353,32 @@ public class DeviceWizard extends JajukJDialog implements ActionListener, Const 
     case 0: // directory
       jcbAutoMount.setSelected(true);
       if (bNew) {
-        jtfAutoRefresh.setText("1");
+        jtfAutoRefresh.setText(nformat.format(Const.DEFAULT_REFRESH_INTERVAL_DIRECTORY));
       }
       break;
     case 1: // file cd
       jcbAutoMount.setSelected(false);
       if (bNew) {
-        jtfAutoRefresh.setText("0");
+        jtfAutoRefresh.setText(nformat.format(Const.DEFAULT_REFRESH_INTERVAL_CD));
       }
       break;
     case 2: // network drive
       jcbAutoMount.setSelected(true);
       // no auto-refresh by default for network drive
       if (bNew) {
-        jtfAutoRefresh.setText("0");
+        jtfAutoRefresh.setText(nformat.format(Const.DEFAULT_REFRESH_INTERVAL_NETWORK_DRIVE));
       }
       break;
     case 3: // ext dd
       jcbAutoMount.setSelected(true);
       if (bNew) {
-        jtfAutoRefresh.setText("3");
+        jtfAutoRefresh.setText(nformat.format(Const.DEFAULT_REFRESH_INTERVAL_EXTERNAL_DRIVE));
       }
       break;
     case 4: // player
       jcbAutoMount.setSelected(false);
       if (bNew) {
-        jtfAutoRefresh.setText("3");
+        jtfAutoRefresh.setText(nformat.format(Const.DEFAULT_REFRESH_INTERVAL_PLAYER));
       }
       break;
     }
@@ -324,22 +415,18 @@ public class DeviceWizard extends JajukJDialog implements ActionListener, Const 
     new Thread("Device Wizard Action Thread") {
       @Override
       public void run() {
-        // check device availability (test name only if new device)
-        final int code = DeviceManager.getInstance().checkDeviceAvailablity(jtfName.getText(),
-            jcbType.getSelectedIndex(), jtfUrl.getText(), bNew);
-        if (code != 0) {
-          Messages.showErrorMessage(code);
-          setVisible(true); // display wizard window which has been
-          // hidden by the error window
-          return;
-        }
         if (bNew) {
           device = DeviceManager.getInstance().registerDevice(jtfName.getText(),
               jcbType.getSelectedIndex(), jtfUrl.getText());
         }
         device.setProperty(Const.XML_DEVICE_AUTO_MOUNT, jcbAutoMount.isSelected());
-        device.setProperty(Const.XML_DEVICE_AUTO_REFRESH, Double.parseDouble(jtfAutoRefresh
-            .getText()));
+        try {
+          device.setProperty(Const.XML_DEVICE_AUTO_REFRESH, nformat.parse(jtfAutoRefresh.getText())
+              .doubleValue());
+        } catch (ParseException e) {
+          // Should not happen thanks GUI validators
+          Log.error(e);
+        }
         device.setProperty(Const.XML_TYPE, Long.valueOf(jcbType.getSelectedIndex()));
         device.setUrl(jtfUrl.getText());
         if (jcbSynchronized.isEnabled() && (jcbSynchronized.getSelectedItem() != null)) {
@@ -446,7 +533,7 @@ public class DeviceWizard extends JajukJDialog implements ActionListener, Const 
     } else {
       jcbAutoMount.setSelected(false);
     }
-    jtfAutoRefresh.setText(Double.toString(device1.getDoubleValue(Const.XML_DEVICE_AUTO_REFRESH)));
+    jtfAutoRefresh.setText(nformat.format(device1.getDoubleValue(Const.XML_DEVICE_AUTO_REFRESH)));
     if (jcbSynchronized.getItemCount() == 0) {
       jcboxSynchronized.setEnabled(false);
       jcbSynchronized.setEnabled(false);
@@ -475,7 +562,7 @@ public class DeviceWizard extends JajukJDialog implements ActionListener, Const 
   public void updateWidgetsDefault() {
     jcbRefresh.setSelected(true);
     jcbAutoMount.setSelected(true);
-    jtfAutoRefresh.setText("1");
+    jtfAutoRefresh.setText(nformat.format(Const.DEFAULT_REFRESH_INTERVAL_DIRECTORY));
     jcboxSynchronized.setSelected(false);
     jrbUnidirSynchro.setSelected(true);// default synchro mode
     jrbBidirSynchro.setEnabled(false);

@@ -156,6 +156,22 @@ public interface Const {
   /** Cache max age (in ms). */
   long CACHE_MAX_AGE = 10 * 24 * 3600 * 1000; // 10 days
 
+  /** Default auto-refresh delay for directory-type devices (mins). */
+  double DEFAULT_REFRESH_INTERVAL_DIRECTORY = 0.5d;
+
+  /** Default auto-refresh delay for CD-type devices (mins). */
+  double DEFAULT_REFRESH_INTERVAL_CD = 0.0d;
+
+  /** Default auto-refresh delay for directory-type devices (mins). */
+  double DEFAULT_REFRESH_INTERVAL_NETWORK_DRIVE = 0.0d;
+
+  /** Default auto-refresh delay for directory-type devices (mins). */
+  double DEFAULT_REFRESH_INTERVAL_EXTERNAL_DRIVE = 3.0d;
+
+  /** Default auto-refresh delay for directory-type devices (mins). */
+  double DEFAULT_REFRESH_INTERVAL_PLAYER = 3.0d;
+
+  
   /**
    * The time we wait for mplayer to start up in ms. It can take some time on
    * slow or heavily loaded machines...
@@ -687,6 +703,12 @@ public interface Const {
 
   /** DOCUMENT_ME. */
   String DETAIL_ORIGIN = "origin";
+
+  /** Provides details on the perspective that thrown the event. */
+  String DETAIL_PERSPECTIVE = "perspective";
+
+  /** Provides details on the view that thrown the event. */
+  String DETAIL_VIEW = "view";
 
   /** DOCUMENT_ME. */
   String DETAIL_REASON = "reason";
