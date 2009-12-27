@@ -514,6 +514,7 @@ public final class JajukJMenuBar extends JMenuBar implements Observer {
   public Set<JajukEvents> getRegistrationKeys() {
     Set<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
     eventSubjectSet.add(JajukEvents.PARAMETERS_CHANGE);
+    eventSubjectSet.add(JajukEvents.SLIMBAR_VISIBILTY_CHANGED);
     return eventSubjectSet;
   }
 
@@ -540,7 +541,8 @@ public final class JajukJMenuBar extends JMenuBar implements Observer {
     SwingUtilities.invokeLater(new Runnable() {
 
       public void run() {
-        if (JajukEvents.PARAMETERS_CHANGE.equals(event.getSubject())) {
+        if (JajukEvents.PARAMETERS_CHANGE.equals(event.getSubject()) ||
+            JajukEvents.SLIMBAR_VISIBILTY_CHANGED.equals(event.getSubject())) {
           jcbShowPopups.setSelected(Conf.getBoolean(Const.CONF_SHOW_POPUPS));
           jmiUnmounted.setSelected(Conf.getBoolean(Const.CONF_OPTIONS_HIDE_UNMOUNTED));
           jcbSyncTableTree.setSelected(Conf.getBoolean(Const.CONF_OPTIONS_SYNC_TABLE_TREE));
