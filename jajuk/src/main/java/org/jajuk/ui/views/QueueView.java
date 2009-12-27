@@ -85,10 +85,10 @@ public class QueueView extends PlaylistView {
 
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = -2851288035506442507L;
-  
+
   /** DOCUMENT_ME. */
   private JScrollPane jsp;
-  
+
   /** DOCUMENT_ME. */
   private JajukToggleButton jtbAutoScroll;
 
@@ -192,8 +192,8 @@ public class QueueView extends PlaylistView {
     } else {
       queueHighlighterColor = scheme.getLineColor();
     }
-    ColorHighlighter colorHighlighter = new ColorHighlighter(queueHighlighterColor, null,
-        new IndexHighlighterPredicate());
+    ColorHighlighter colorHighlighter = new ColorHighlighter(new IndexHighlighterPredicate(),
+        queueHighlighterColor, null);
     Highlighter alternate = UtilGUI.getAlternateHighlighter();
     editorTable.setHighlighters(alternate, colorHighlighter);
     // register events
@@ -259,7 +259,9 @@ public class QueueView extends PlaylistView {
     }.start();
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see org.jajuk.ui.views.PlaylistView#getRegistrationKeys()
    */
   @Override
@@ -398,8 +400,7 @@ public class QueueView extends PlaylistView {
   }
 
   /**
-   * Refresh queue.
-   * DOCUMENT_ME
+   * Refresh queue. DOCUMENT_ME
    */
   private void refreshQueue() {
     // when nothing is selected, set default button state
@@ -439,8 +440,11 @@ public class QueueView extends PlaylistView {
     // disable prepare party for queue playlist
   }
 
-  /* (non-Javadoc)
-   * @see org.jajuk.ui.views.PlaylistView#actionPerformed(java.awt.event.ActionEvent)
+  /*
+   * (non-Javadoc)
+   * 
+   * @see
+   * org.jajuk.ui.views.PlaylistView#actionPerformed(java.awt.event.ActionEvent)
    */
   @Override
   public void actionPerformed(ActionEvent ae) {
@@ -508,8 +512,7 @@ public class QueueView extends PlaylistView {
   }
 
   /**
-   * Removes the selection.
-   * DOCUMENT_ME
+   * Removes the selection. DOCUMENT_ME
    */
   private void removeSelection() {
     int[] iRows = editorTable.getSelectedRows();
@@ -531,7 +534,8 @@ public class QueueView extends PlaylistView {
   /**
    * Called when table selection changed.
    * 
-   * @param e DOCUMENT_ME
+   * @param e
+   *          DOCUMENT_ME
    */
   @Override
   public void valueChanged(ListSelectionEvent e) {

@@ -89,7 +89,7 @@ import org.jdesktop.swingx.VerticalLayout;
  */
 public class PropertiesWizard extends JajukJDialog implements ActionListener {
 
-  /** The Constant PROPERTIES_WIZARD_6.  DOCUMENT_ME */
+  /** The Constant PROPERTIES_WIZARD_6. DOCUMENT_ME */
   private static final String PROPERTIES_WIZARD_6 = "PropertiesWizard.6";
 
   /** Generated serialVersionUID. */
@@ -223,8 +223,7 @@ public class PropertiesWizard extends JajukJDialog implements ActionListener {
   }
 
   /**
-   * Display.
-   * DOCUMENT_ME
+   * Display. DOCUMENT_ME
    */
   private void display() {
     SwingUtilities.invokeLater(new Runnable() {
@@ -242,8 +241,11 @@ public class PropertiesWizard extends JajukJDialog implements ActionListener {
     });
   }
 
-  /* (non-Javadoc)
-   * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+  /*
+   * (non-Javadoc)
+   * 
+   * @see
+   * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
    */
   public void actionPerformed(ActionEvent e) {
     if (e.getSource() == okc.getCancelButton()) {
@@ -331,8 +333,7 @@ public class PropertiesWizard extends JajukJDialog implements ActionListener {
      * 
      * @param alItems items to display
      * @param sDesc Description (title)
-     * @param bMerged :
-     * whether this panel contains merged values
+     * @param bMerged : whether this panel contains merged values
      */
     PropertiesPanel(List<Item> alItems, String sDesc, boolean bMerged) {
       super();
@@ -417,7 +418,7 @@ public class PropertiesWizard extends JajukJDialog implements ActionListener {
               // Make sure to set default date to 1970, not today to allow user
               // to set date to today for multiple selection and to allow jajuk
               // to detect a change
-              jdp.setDateInMillis(0l);
+              jdp.setDate(new Date(0));
             }
             widgets[index][1] = jdp;
           } else if (meta.getType().equals(Boolean.class)) {
@@ -645,7 +646,8 @@ public class PropertiesWizard extends JajukJDialog implements ActionListener {
     /*
      * (non-Javadoc)
      * 
-     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+     * @see
+     * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent ae) {
       // Link

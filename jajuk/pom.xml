@@ -108,7 +108,7 @@
       <artifactId>swingx</artifactId>
       <version>2007_07_22</version>
       <scope>system</scope>
-      <systemPath>${basedir}/lib/swingx-2007_12_30.jar</systemPath>
+      <systemPath>${basedir}/lib/swingx-1.6.jar</systemPath>
     </dependency>
     <dependency>
       <groupId>commons-codec</groupId>
@@ -261,6 +261,14 @@
       <version>7.3</version>
       <scope>system</scope>
       <systemPath>${basedir}/lib/last.fm-bindings-7.3.jar</systemPath>
+    </dependency>  
+    
+    <dependency>
+      <groupId>netbeans</groupId>
+      <artifactId>simple_validation</artifactId>
+      <version>0.4</version>
+      <scope>system</scope>
+      <systemPath>${basedir}/lib/simple_validation-0.4.jar</systemPath>
     </dependency>    
             
   </dependencies>

@@ -55,7 +55,6 @@ import javax.swing.KeyStroke;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
-import javax.swing.border.BevelBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableColumn;
@@ -329,8 +328,7 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
     jbPrepParty = new JajukButton(ActionManager.getAction(JajukActions.PREPARE_PARTY));
     jbPrepParty.setText(null);
     jlTitle = new JLabel("");
-    jlTitle.setBorder(new BevelBorder(BevelBorder.LOWERED));
-
+    
     JToolBar jtb = new JajukJToolbar();
 
     // Add items
@@ -374,8 +372,8 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
 
     initMenuItems();
 
-    ColorHighlighter colorHighlighter = new ColorHighlighter(Color.ORANGE, null,
-        new PlayHighlighterPredicate(editorModel));
+    ColorHighlighter colorHighlighter = new ColorHighlighter(new PlayHighlighterPredicate(
+        editorModel), Color.ORANGE, null);
     Highlighter alternate = UtilGUI.getAlternateHighlighter();
     editorTable.setHighlighters(alternate, colorHighlighter);
     // register events
@@ -740,7 +738,8 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
   /*
    * (non-Javadoc)
    * 
-   * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+   * @see
+   * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
    */
   public void actionPerformed(ActionEvent ae) {
     try {
@@ -1083,7 +1082,9 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
     /*
      * (non-Javadoc)
      * 
-     * @see javax.swing.event.ListSelectionListener#valueChanged(javax.swing.event.ListSelectionEvent)
+     * @see
+     * javax.swing.event.ListSelectionListener#valueChanged(javax.swing.event
+     * .ListSelectionEvent)
      */
     public void valueChanged(ListSelectionEvent e) {
       if (e.getValueIsAdjusting()) {
