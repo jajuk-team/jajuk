@@ -161,7 +161,7 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
   /** DOCUMENT_ME. */
   JLabel jlSearching;
 
-  /** DOCUMENT_ME. */
+  /** Cover search accuracy combo. */
   JComboBox jcbAccuracy;
 
   /** Date last resize (used for adjustment management). */
@@ -283,8 +283,6 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
         return this;
       }
     });
-    jcbAccuracy.setMinimumSize(new Dimension(40, 0));
-    jcbAccuracy.setPreferredSize(new Dimension(40, 0));
     jcbAccuracy.setToolTipText(Messages.getString("ParameterView.155"));
 
     jcbAccuracy.addItem(IconLoader.getIcon(JajukIcons.ACCURACY_LOW));
@@ -316,7 +314,7 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
       jpControl.add(jtb);
       jpControl.add(jlSize, "center,gapright 5::");
       jpControl.add(jlFound, "center,gapright 5::");
-      jpControl.add(jcbAccuracy, "grow,gapright 5");
+      jpControl.add(jcbAccuracy, "grow,width 47!,gapright 5");
       jpControl.add(jlSearching);
     }
 
