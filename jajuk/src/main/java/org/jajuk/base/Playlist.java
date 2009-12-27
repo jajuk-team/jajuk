@@ -874,6 +874,28 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
 
     return alFiles.size();
   }
+  
+    /**
+   * Return true is the specified directory is an ancestor for this playlist.
+   * 
+   * @param directory
+   *          DOCUMENT_ME
+   * 
+   * @return true, if checks for ancestor
+   */
+  public boolean hasAncestor(Directory directory) {
+    Directory dirTested = getDirectory();
+    while (true) {
+      if (dirTested.equals(directory)) {
+        return true;
+      } else {
+        dirTested = dirTested.getParentDirectory();
+        if (dirTested == null) {
+          return false;
+        }
+      }
+    }
+  }
 
   /**
    * Small helper class to be able to run

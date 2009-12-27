@@ -223,6 +223,22 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
     }
     return alFiles;
   }
+  
+   /**
+   * return ordered child playlists recursively.
+   * 
+   * @return child playlists recursively
+   */
+  public List<Playlist> getPlaylistsRecursively() {
+    List<Playlist> alPlaylists = new ArrayList<Playlist>(100);
+    for (Item item : PlaylistManager.getInstance().getPlaylists()) {
+      Playlist playlist = (Playlist) item;
+      if (playlist.hasAncestor(this)) {
+        alPlaylists.add(playlist);
+      }
+    }
+    return alPlaylists;
+  }
 
   /**
    * Scan all files in a directory.

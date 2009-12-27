@@ -24,6 +24,7 @@ package org.jajuk.ui.views;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Properties;
 import java.util.Set;
 import java.util.concurrent.ExecutionException;
 
@@ -47,6 +48,7 @@ import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.ui.actions.ActionManager;
 import org.jajuk.ui.actions.JajukActions;
+import org.jajuk.ui.helpers.LazyLoadingTreeExpander;
 import org.jajuk.ui.helpers.PreferencesJMenu;
 import org.jajuk.util.Const;
 import org.jajuk.util.log.Log;
@@ -151,7 +153,7 @@ public abstract class AbstractTreeView extends ViewAdapter {
 
     // set the special controller for doing lazy loading if used for this View
     if (bLazy) {
-      final org.jajuk.ui.helpers.LazyLoadingTreeExpander controller = new org.jajuk.ui.helpers.LazyLoadingTreeExpander(
+      final LazyLoadingTreeExpander controller = new LazyLoadingTreeExpander(
           (DefaultTreeModel) jtree.getModel());
       jtree.addTreeWillExpandListener(controller);
     }
@@ -212,6 +214,11 @@ public abstract class AbstractTreeView extends ViewAdapter {
    * Expand. DOCUMENT_ME
    */
   abstract void expand();
+
+  /**
+   * Expand a given item
+   */
+  abstract void expand(Item item);
 
   /**
    * Add keystroke support on the tree.
@@ -296,6 +303,24 @@ public abstract class AbstractTreeView extends ViewAdapter {
       sw.execute();
       // Make sure to refresh cells (useful to remove highlighters for ie)
       repaint();
+    } else if (JajukEvents.SYNC_TREE_TABLE.equals(subject)) {
+      // Consume only events from the same perspective and different view
+      // (for table/tree synchronization)
+      Properties details = event.getDetails();
+      if (details != null
+          && (!(details.getProperty(Const.DETAIL_PERSPECTIVE).equals(getPerspective().getID())) || details
+              .getProperty(Const.DETAIL_VIEW).equals(getID()))) {
+        return;
+      }
+      final Item item = (Item) (details.get(Const.DETAIL_SELECTION));
+      SwingUtilities.invokeLater(new Runnable() {
+
+        @Override
+        public void run() {
+          expand(item);
+        }
+      });
+
     }
   }
 
