@@ -189,9 +189,9 @@
 	<dependency>
       <groupId>com.sun.jna</groupId>
       <artifactId>jna</artifactId>
-      <version>3.0.5</version>
+      <version>3.2.4</version>
       <scope>system</scope>
-      <systemPath>${basedir}/lib/jna-3.0.5.jar</systemPath>
+      <systemPath>${basedir}/lib/jna-3.2.4.jar</systemPath>
 	</dependency>
     <dependency>
       <groupId>DBus-Java</groupId>
