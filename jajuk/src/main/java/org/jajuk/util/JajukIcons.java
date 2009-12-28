@@ -628,5 +628,8 @@ public enum JajukIcons {
   PLAYER_REWIND_BIG,
 
   /** DOCUMENT_ME. */
-  AUTOSCROLL
+  AUTOSCROLL,
+  
+  /** Tree/table synchronization icon. */
+  TREE_TABLE_SYNC
 }

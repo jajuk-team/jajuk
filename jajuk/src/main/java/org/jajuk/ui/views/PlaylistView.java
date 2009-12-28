@@ -86,6 +86,7 @@ import org.jajuk.ui.helpers.PlaylistRepositoryTableModel;
 import org.jajuk.ui.helpers.PlaylistTableModel;
 import org.jajuk.ui.helpers.PreferencesJMenu;
 import org.jajuk.ui.helpers.TwoStepsDisplayable;
+import org.jajuk.ui.perspectives.PerspectiveManager;
 import org.jajuk.ui.widgets.InformationJPanel;
 import org.jajuk.ui.widgets.JajukButton;
 import org.jajuk.ui.widgets.JajukJSplitPane;
@@ -328,7 +329,7 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
     jbPrepParty = new JajukButton(ActionManager.getAction(JajukActions.PREPARE_PARTY));
     jbPrepParty.setText(null);
     jlTitle = new JLabel("");
-    
+
     JToolBar jtb = new JajukJToolbar();
 
     // Add items
@@ -616,8 +617,7 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
               refreshCurrentPlaylist();
             }
           } else if (JajukEvents.TABLE_SELECTION_CHANGED.equals(subject)) {
-            // Refresh the preference menu according to the selection
-            pjmFilesEditor.resetUI(editorTable.getSelection());
+            handleTableSelectionChange();
           }
         } catch (Exception e) {
           Log.error(e);
@@ -626,6 +626,29 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
         }
       }
     });
+  }
+
+  /**
+   * Called when table selection changed
+   */
+  protected void handleTableSelectionChange() {
+    // Refresh the preference menu according to the selection
+    pjmFilesEditor.resetUI(editorTable.getSelection());
+    // Notify tree/table sync. Note that the tree send all the selection
+    // model to the table while the table only send a single selected
+    // item because we want to expand only the first item selected in
+    // table.
+    if (Conf.getBoolean(Const.CONF_OPTIONS_SYNC_TABLE_TREE)
+    // Ignore this event if the new selection is <none>
+        && editorTable.getSelection().size() > 0) {
+      // if table is synchronized with tree, notify the
+      // selection change
+      Properties properties = new Properties();
+      properties.put(Const.DETAIL_SELECTION, editorTable.getSelection().get(0));
+      properties.put(Const.DETAIL_PERSPECTIVE, PerspectiveManager.getCurrentPerspective().getID());
+      properties.put(Const.DETAIL_VIEW, getID());
+      ObservationManager.notify(new JajukEvent(JajukEvents.SYNC_TREE_TABLE, properties));
+    }
   }
 
   /**
@@ -1008,7 +1031,7 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
      */
     @Override
     void initTable() {
-      // required by abstrasct superclass, but nothing to do here...
+      // required by abstract superclass, but nothing to do here...
     }
 
     /*
@@ -1028,6 +1051,14 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
      */
     public String getDesc() {
       return null;
+    }
+
+    /**
+     * Override this method to make sure to provide a non-null view ID when
+     * required
+     */
+    public String getID() {
+      return PlaylistView.this.getID() + "/PlaylistRepository";
     }
 
     /*

@@ -30,10 +30,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Enumeration;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Properties;
-import java.util.Set;
 
 import javax.swing.Action;
 import javax.swing.BorderFactory;
@@ -179,23 +177,6 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
    * Constructor.
    */
   public FilesTreeView() {
-  }
-
-  /*
-   * (non-Javadoc)
-   * 
-   * @see org.jajuk.events.Observer#getRegistrationKeys()
-   */
-  public Set<JajukEvents> getRegistrationKeys() {
-    Set<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
-    eventSubjectSet.add(JajukEvents.FILE_LAUNCHED);
-    eventSubjectSet.add(JajukEvents.DEVICE_MOUNT);
-    eventSubjectSet.add(JajukEvents.DEVICE_UNMOUNT);
-    eventSubjectSet.add(JajukEvents.DEVICE_REFRESH);
-    eventSubjectSet.add(JajukEvents.CDDB_WIZARD);
-    eventSubjectSet.add(JajukEvents.PARAMETERS_CHANGE);
-    eventSubjectSet.add(JajukEvents.SYNC_TREE_TABLE);
-    return eventSubjectSet;
   }
 
   /*
@@ -487,21 +468,30 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
   /*
    * (non-Javadoc)
    * 
-   * @see org.jajuk.ui.views.AbstractTreeView#expand(org.jajuk.base.Item)
+   * @see org.jajuk.ui.views.AbstractTreeView#scrollTo(org.jajuk.base.Item)
    */
   @Override
-  void expand(Item item) {
-    // We are waiting for a File here
-    File file = (File) item;
-    Directory directory = file.getDirectory();
+  void scrollTo(Item item) {
+    // make sure the main element is expanded
+    jtree.expandRow(0);
+
+    // item is etiher a file or a playlist
     for (int i = 0; i < jtree.getRowCount(); i++) {
       Object o = jtree.getPathForRow(i).getLastPathComponent();
       if (o instanceof DirectoryNode) {
-        Directory dir = ((DirectoryNode) o).getDirectory();
-        // == here thanks to .intern optimization
-        if (dir.getID() == directory.getID()) {
-          jtree.expandRow(i);
-          jtree.scrollPathToVisible(jtree.getPathForRow(i));
+        Directory testedDirectory = ((DirectoryNode) o).getDirectory();
+        if (item instanceof File) {
+          File file = (File) item;
+          if (file.hasAncestor(testedDirectory)) {
+            jtree.expandRow(i);
+            jtree.scrollPathToVisible(jtree.getPathForRow(i));
+          }
+        } else if (item instanceof Playlist) {
+          Playlist playlist = (Playlist) item;
+          if (playlist.hasAncestor(testedDirectory)) {
+            jtree.expandRow(i);
+            jtree.scrollPathToVisible(jtree.getPathForRow(i));
+          }
         }
       }
     }
@@ -801,7 +791,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
           Directory directory = null;
           if (o instanceof DeviceNode) {
             directory = ((DeviceNode) o).getDevice().getRootDirectory();
-          } else {
+          } else if (o instanceof DirectoryNode) {
             directory = ((DirectoryNode) o).getDirectory();
           }
           if (directory != null) {

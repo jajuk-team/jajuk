@@ -29,10 +29,8 @@ import java.awt.event.MouseEvent;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Enumeration;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Properties;
-import java.util.Set;
 import java.util.concurrent.ExecutionException;
 
 import javax.swing.Action;
@@ -121,21 +119,6 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
   /*
    * (non-Javadoc)
    * 
-   * @see org.jajuk.events.Observer#getRegistrationKeys()
-   */
-  public Set<JajukEvents> getRegistrationKeys() {
-    Set<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
-    eventSubjectSet.add(JajukEvents.FILE_LAUNCHED);
-    eventSubjectSet.add(JajukEvents.DEVICE_MOUNT);
-    eventSubjectSet.add(JajukEvents.DEVICE_UNMOUNT);
-    eventSubjectSet.add(JajukEvents.DEVICE_REFRESH);
-    eventSubjectSet.add(JajukEvents.PARAMETERS_CHANGE);
-    return eventSubjectSet;
-  }
-
-  /*
-   * (non-Javadoc)
-   * 
    * @see org.jajuk.ui.IView#display()
    */
   @Override
@@ -211,11 +194,12 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
     // delete previous tree
     top.removeAllChildren();
 
-    // see http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6472844 for a small memory leak that is caused here...
-    if(jtree != null && jtree.getModel() != null) {
-      ((DefaultTreeModel)(jtree.getModel())).reload();
+    // see http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6472844 for a
+    // small memory leak that is caused here...
+    if (jtree != null && jtree.getModel() != null) {
+      ((DefaultTreeModel) (jtree.getModel())).reload();
     }
-    
+
     TrackComparatorType comparatorType = TrackComparatorType.values()[Conf
         .getInt(Const.CONF_LOGICAL_TREE_SORT_ORDER)];
     if (comparatorType == TrackComparatorType.STYLE_AUTHOR_ALBUM) {
@@ -709,7 +693,9 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
         // selection change
         Properties properties = new Properties();
         properties.put(Const.DETAIL_SELECTION, selectedRecursively);
-        properties.put(Const.DETAIL_ORIGIN, PerspectiveManager.getCurrentPerspective().getID());
+        properties
+            .put(Const.DETAIL_PERSPECTIVE, PerspectiveManager.getCurrentPerspective().getID());
+        properties.put(Const.DETAIL_VIEW, getID());
         ObservationManager.notify(new JajukEvent(JajukEvents.SYNC_TREE_TABLE, properties));
       }
       // Update preference menu
@@ -937,22 +923,52 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
   /*
    * (non-Javadoc)
    * 
-   * @see org.jajuk.ui.views.AbstractTreeView#expand(org.jajuk.base.Item)
+   * @see org.jajuk.ui.views.AbstractTreeView#scrollTo(org.jajuk.base.Item)
    */
   @Override
-  void expand(Item item) {
-    Track track = (Track) item;
-
+  void scrollTo(Item item) {
     // make sure the main element is expanded
     jtree.expandRow(0);
-
+    Track track = null;
+    // received item is a file when the event comes from a queue view in the
+    // track perspective
+    if (item instanceof File) {
+      track = ((File) item).getTrack();
+    } else {
+      track = (Track) item;
+    }
     for (int i = 0; i < jtree.getRowCount(); i++) {
       Object o = jtree.getPathForRow(i).getLastPathComponent();
-      if (o instanceof TrackNode) {
+      if (o instanceof AlbumNode) {
+        Album testedAlbum = ((AlbumNode) o).getAlbum();
+        if (track.getAlbum().equals(testedAlbum)) {
+          jtree.expandRow(i);
+          jtree.scrollPathToVisible(jtree.getPathForRow(i));
+        }
+      } else if (o instanceof AuthorNode) {
+        Author testedAuthor = ((AuthorNode) o).getAuthor();
+        if (track.getAuthor().equals(testedAuthor)) {
+          jtree.expandRow(i);
+          jtree.scrollPathToVisible(jtree.getPathForRow(i));
+        }
+      } else if (o instanceof StyleNode) {
+        Style testedStyle = ((StyleNode) o).getStyle();
+        if (track.getStyle().equals(testedStyle)) {
+          jtree.expandRow(i);
+          jtree.scrollPathToVisible(jtree.getPathForRow(i));
+        }
+      } else if (o instanceof YearNode) {
+        Year testedYear = ((YearNode) o).getYear();
+        if (track.getYear().equals(testedYear)) {
+          jtree.expandRow(i);
+          jtree.scrollPathToVisible(jtree.getPathForRow(i));
+        }
+      } else if (o instanceof TrackNode) {
         Track tested = ((TrackNode) o).getTrack();
         // == here thanks to .intern optimization
         if (tested.getID() == track.getID()) {
           jtree.expandRow(i);
+          jtree.scrollPathToVisible(jtree.getPathForRow(i));
         }
       }
     }

@@ -384,8 +384,7 @@ public class QueueView extends PlaylistView {
               refreshQueue();
             }
           } else if (JajukEvents.TABLE_SELECTION_CHANGED.equals(subject)) {
-            // Refresh the preference menu according to the selection
-            pjmFilesEditor.resetUI(editorTable.getSelection());
+            handleTableSelectionChange();
           }
         } catch (Exception e) {
           Log.error(e);

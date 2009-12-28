@@ -50,6 +50,7 @@ import org.jajuk.ui.actions.ActionManager;
 import org.jajuk.ui.actions.JajukActions;
 import org.jajuk.ui.helpers.LazyLoadingTreeExpander;
 import org.jajuk.ui.helpers.PreferencesJMenu;
+import org.jajuk.ui.widgets.JajukToggleButton;
 import org.jajuk.util.Const;
 import org.jajuk.util.log.Log;
 import org.jdesktop.swingx.JXTree;
@@ -67,6 +68,9 @@ public abstract class AbstractTreeView extends ViewAdapter {
 
   /** The phyical tree. */
   JXTree jtree;
+  
+  /** The table/tree sync toggle button */
+  JajukToggleButton jtbSync;
 
   /** Current selection. */
   TreePath[] paths;
@@ -140,6 +144,23 @@ public abstract class AbstractTreeView extends ViewAdapter {
   /** Used to differentiate user action tree collapse from code tree collapse. */
   boolean bAutoCollapse = false;
 
+   /*
+   * (non-Javadoc)
+   * 
+   * @see org.jajuk.events.Observer#getRegistrationKeys()
+   */
+  public Set<JajukEvents> getRegistrationKeys() {
+    Set<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
+    eventSubjectSet.add(JajukEvents.FILE_LAUNCHED);
+    eventSubjectSet.add(JajukEvents.DEVICE_MOUNT);
+    eventSubjectSet.add(JajukEvents.DEVICE_UNMOUNT);
+    eventSubjectSet.add(JajukEvents.DEVICE_REFRESH);
+    eventSubjectSet.add(JajukEvents.CDDB_WIZARD);
+    eventSubjectSet.add(JajukEvents.PARAMETERS_CHANGE);
+    eventSubjectSet.add(JajukEvents.SYNC_TREE_TABLE);
+    return eventSubjectSet;
+  }
+  
   /**
    * Creates the tree. DOCUMENT_ME
    * 
@@ -203,6 +224,9 @@ public abstract class AbstractTreeView extends ViewAdapter {
     jmiCopyURL = new JMenuItem(ActionManager.getAction(JajukActions.COPY_TO_CLIPBOARD));
     jmiCopyURL.putClientProperty(Const.DETAIL_CONTENT, alSelected);
     pjmTracks = new PreferencesJMenu(alSelected);
+
+    //Create the sync toggle button
+    jtbSync = new JajukToggleButton();
   }
 
   /**
@@ -218,7 +242,7 @@ public abstract class AbstractTreeView extends ViewAdapter {
   /**
    * Expand a given item
    */
-  abstract void expand(Item item);
+  abstract void scrollTo(Item item);
 
   /**
    * Add keystroke support on the tree.
@@ -317,7 +341,7 @@ public abstract class AbstractTreeView extends ViewAdapter {
 
         @Override
         public void run() {
-          expand(item);
+          scrollTo(item);
         }
       });
 

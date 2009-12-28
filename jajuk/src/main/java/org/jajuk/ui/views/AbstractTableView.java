@@ -456,11 +456,18 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
             // Consume only events from the same perspective and different view
             // (for table/tree synchronization)
             Properties details = event.getDetails();
-            if (details != null
-                && (!(details.getProperty(Const.DETAIL_PERSPECTIVE)
-                    .equals(getPerspective().getID())) || details.getProperty(Const.DETAIL_VIEW)
-                    .equals(getID()))) {
-              return;
+            if (details != null) {
+              String sourcePerspective = details.getProperty(Const.DETAIL_PERSPECTIVE);
+              String sourceView = details.getProperty(Const.DETAIL_VIEW);
+              if (
+              // Check that the event comes from the same perspective
+              !(sourcePerspective.equals(getPerspective().getID()))
+              // Check that the event comes from a different view
+                  || sourceView.equals(getID())
+                  // Check that the event comes from a tree view
+                  || sourceView.indexOf("Tree") == -1) {
+                return;
+              }
             }
             // Update model tree selection
             model.setTreeSelection((Set<Item>) event.getDetails().get(Const.DETAIL_SELECTION));
