@@ -1057,6 +1057,7 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
      * Override this method to make sure to provide a non-null view ID when
      * required
      */
+    @Override
     public String getID() {
       return PlaylistView.this.getID() + "/PlaylistRepository";
     }
