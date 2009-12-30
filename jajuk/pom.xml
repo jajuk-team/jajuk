@@ -106,7 +106,7 @@
     <dependency>
       <groupId>Swingx</groupId>
       <artifactId>swingx</artifactId>
-      <version>2007_07_22</version>
+      <version>1.6</version>
       <scope>system</scope>
       <systemPath>${basedir}/lib/swingx-1.6.jar</systemPath>
     </dependency>
