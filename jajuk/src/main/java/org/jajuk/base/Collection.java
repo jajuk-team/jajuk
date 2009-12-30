@@ -22,6 +22,7 @@ package org.jajuk.base;
 
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
@@ -30,6 +31,8 @@ import java.text.ParseException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.zip.ZipInputStream;
+import java.util.zip.ZipOutputStream;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
@@ -47,6 +50,7 @@ import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 import org.xml.sax.Attributes;
 import org.xml.sax.ErrorHandler;
+import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 import org.xml.sax.helpers.DefaultHandler;
@@ -200,8 +204,14 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
   public static void commit(File collectionFile) throws IOException {
     long time = System.currentTimeMillis();
     String sCharset = Conf.getString(Const.CONF_COLLECTION_CHARSET);
-    BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(
-        collectionFile), sCharset), 1000000);
+    final BufferedWriter bw; 
+    if(collectionFile.getAbsolutePath().endsWith(".zip")) {
+      bw = new BufferedWriter(new OutputStreamWriter(new ZipOutputStream(new FileOutputStream(
+        collectionFile)), sCharset), 1000000);
+    } else {
+      bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(
+          collectionFile), sCharset), 1000000);
+    }
     try {
       bw.write("<?xml version='1.0' encoding='" + sCharset + "'?>\n");
       bw.write("<" + Const.XML_COLLECTION + " " + Const.XML_VERSION + "='" + Const.JAJUK_VERSION
@@ -210,22 +220,27 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
       // Devices
       writeItemList(bw, DeviceManager.getInstance().toXML(), DeviceManager.getInstance()
           .getDevicesIterator(), DeviceManager.getInstance().getLabel(), 40);
-
+      Log.debug("Devices committed.");
+      
       // Styles
       writeItemList(bw, StyleManager.getInstance().toXML(), StyleManager.getInstance()
           .getStylesIterator(), StyleManager.getInstance().getLabel(), 40);
+      Log.debug("Styles committed.");
 
       // Authors
       writeItemList(bw, AuthorManager.getInstance().toXML(), AuthorManager.getInstance()
           .getAuthorsIterator(), AuthorManager.getInstance().getLabel(), 40);
+      Log.debug("Authors committed.");
 
       // Albums
       writeItemList(bw, AlbumManager.getInstance().toXML(), AlbumManager.getInstance()
           .getAlbumsIterator(), AlbumManager.getInstance().getLabel(), 40);
+      Log.debug("Albums committed.");
 
       // Years
       writeItemList(bw, YearManager.getInstance().toXML(), YearManager.getInstance()
           .getYearsIterator(), YearManager.getInstance().getLabel(), 40);
+      Log.debug("Years committed.");
 
       // Tracks
       // Cannot use method as we have a bit of special handling inside the loop
@@ -240,18 +255,22 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
         }
       }
       writeString(bw, TrackManager.getInstance().getLabel(), 200);
+      Log.debug("Tracks committed.");
 
       // Directories
       writeItemList(bw, DirectoryManager.getInstance().toXML(), DirectoryManager.getInstance()
           .getDirectoriesIterator(), DirectoryManager.getInstance().getLabel(), 100);
+      Log.debug("Directories committed.");
 
       // Files
       writeItemList(bw, FileManager.getInstance().toXML(), FileManager.getInstance()
           .getFilesIterator(), FileManager.getInstance().getLabel(), 200);
+      Log.debug("Files committed.");
 
       // Playlists
       writeItemList(bw, PlaylistManager.getInstance().toXML(), PlaylistManager.getInstance()
           .getPlaylistsIterator(), PlaylistManager.getInstance().getLabel(), 200);
+      Log.debug("Playlists committed.");
 
       // end of collection
       bw.write("</" + Const.XML_COLLECTION + TAG_CLOSE_NEWLINE);
@@ -340,7 +359,12 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
     if (!file.exists()) {
       throw new JajukException(5, file.toString());
     }
-    saxParser.parse(file.toURI().toURL().toString(), getInstance());
+    if(file.getAbsolutePath().endsWith(".zip")) {
+      InputSource input = new InputSource(new ZipInputStream(new FileInputStream(file)));
+      saxParser.parse(input, getInstance());
+    } else {
+      saxParser.parse(file.toURI().toURL().toString(), getInstance());      
+    }
   }
 
   /**
@@ -849,20 +873,24 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
         hmWrongRightTrackID.put(sID, sRightID);
       }
     }
-    // Date format should be OK
-    Date dAdditionDate = ADDITION_FORMATTER.parse(attributes.getValue(attributes
-        .getIndex(Const.XML_TRACK_DISCOVERY_DATE)));
     Track track = TrackManager.getInstance().registerTrack(sRightID, sTrackName, album, style,
         author, length, year, lOrder, type, lDiscNumber);
     TrackManager.getInstance().changeTrackRate(track,
         UtilString.fastLongParser(attributes.getValue(Const.XML_TRACK_RATE)));
     track.setHits(UtilString.fastLongParser(attributes.getValue(Const.XML_TRACK_HITS)));
-    track.setDiscoveryDate(dAdditionDate);
-    String sComment = attributes.getValue(Const.XML_TRACK_COMMENT).intern();
+    // only set discovery date if it is available in the file
+    if(attributes.getValue(Const.XML_TRACK_DISCOVERY_DATE) != null) {
+      // Date format should be OK
+      Date dAdditionDate = ADDITION_FORMATTER.parse(attributes.getValue(Const.XML_TRACK_DISCOVERY_DATE));
+      track.setDiscoveryDate(dAdditionDate);
+    }
+    
+    String sComment = attributes.getValue(Const.XML_TRACK_COMMENT);
     if (sComment == null) {
       sComment = "";
     }
-    track.setComment(sComment);
+    track.setComment(sComment.intern());
+    
     track.populateProperties(attributes);
   }
 
