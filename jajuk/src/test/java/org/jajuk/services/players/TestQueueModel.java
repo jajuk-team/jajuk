@@ -27,9 +27,15 @@ import org.apache.commons.io.FileUtils;
 import org.jajuk.JUnitHelpers;
 import org.jajuk.JajukTestCase;
 import org.jajuk.base.Album;
+import org.jajuk.base.Author;
 import org.jajuk.base.Device;
+import org.jajuk.base.Directory;
 import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
+import org.jajuk.base.Style;
+import org.jajuk.base.Track;
+import org.jajuk.base.Type;
+import org.jajuk.base.Year;
 import org.jajuk.services.core.SessionService;
 import org.jajuk.services.webradio.WebRadio;
 import org.jajuk.util.Conf;
@@ -357,6 +363,31 @@ public class TestQueueModel extends JajukTestCase {
     assertTrue(si.isRepeat());
   }
 
+  public void testFinishedRepeatLastItemNotLast() throws Exception {
+    // We want to make sure that everything's ok when current item is in repeat
+    // mode and the last in the queue
+    addItems(10);
+    StackItem si = QueueModel.getItem(5);
+    si.setRepeat(true);
+    QueueModel.setIndex(5);
+    // Finish the track, should play again
+    QueueModel.finished();
+
+    // same track should be played again as it is in repeat mode and the first
+    // one at index 0 is not
+    StackItem newSi = QueueModel.getCurrentItem();
+    assertEquals(newSi, si);
+    assertTrue(newSi.isRepeat());
+
+    // Now the same with first track in repeat mode
+    QueueModel.getItem(6).setRepeat(true);
+    QueueModel.finished();
+    newSi = QueueModel.getCurrentItem();
+    assertEquals(newSi, QueueModel.getItem(6));
+    assertTrue(newSi.isRepeat());
+    assertTrue(si.isRepeat());
+  }
+  
   /**
    * Test method for
    * {@link org.jajuk.services.players.QueueModel#finished(boolean)}.
@@ -923,16 +954,6 @@ public class TestQueueModel extends JajukTestCase {
 
     QueueModel.computesPlanned(false);
 
-    // still no items because we don't have any files to plan
-    QueueModel.computesPlanned(false);
-    assertEquals(0, QueueModel.getPlanned().size());
-
-    File file = JUnitHelpers.getFile(11, true);
-    FileManager.getInstance().registerFile(file.getID(), file.getName(), file.getDirectory(),
-        file.getTrack(), file.getSize(), file.getQuality());
-
-    QueueModel.computesPlanned(false);
-
     assertTrue(QueueModel.getPlanned().size() > 0);
   }
 
@@ -1036,10 +1057,40 @@ public class TestQueueModel extends JajukTestCase {
     addItems(10);
     assertEquals(10, QueueModel.getQueueSize());
 
-    // right now, cleaning will remove all of them as we don't have the tracks
-    // registered with the FileManager
+    // here clean will not remove things as they are correctly listed in the FileManager
     QueueModel.clean();
 
-    assertEquals(0, QueueModel.getQueueSize());
+    assertEquals(10, QueueModel.getQueueSize());
+    
+    // we can add a dummy-file and check that it is removed
+    Style style = new Style("99", "name");
+    Album album = new Album("99", "name", "artis", 23);
+    album.setProperty(Const.XML_ALBUM_COVER, Const.COVER_NONE); // don't read covers for
+    // this test
+  
+    Author author = new Author("99", "name");
+    Year year = new Year("99", "2000");
+  
+    Type type = new Type("99", "name", "mp3", null, null);
+    Track track = new Track("99", "name", album, style, author, 120, year,
+        1, type, 1);
+  
+    Device device = new Device("99", "name");
+    device.setUrl(System.getProperty("java.io.tmpdir"));
+  
+    Directory dir = new Directory("99", "name", null, device);
+  
+    File file = new File ("99", "test.tst", dir, track, 120, 70);
+    
+    QueueModel.insert(new StackItem(file), 0);
+    
+    // now we have 11 elements
+    assertEquals(11, QueueModel.getQueueSize());
+
+    // here clean will remove one item that is not listed in the FileManager
+    QueueModel.clean();
+
+    // should be 10 again now
+    assertEquals(10, QueueModel.getQueueSize());
   }
 }

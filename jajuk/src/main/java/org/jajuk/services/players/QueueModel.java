@@ -476,7 +476,11 @@ public final class QueueModel {
             // element in fifo
           }
         } else {
-          index = 0;
+          StackItem itemNext = alQueue.get(0);
+          // if next track is repeat, inc index
+          if (itemNext.isRepeat() || forceNext) {
+            index = 0;
+          }
         }
       } else if (index < alQueue.size()) {
         StackItem item = alQueue.get(index);
