@@ -670,8 +670,12 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
       // it is called in a loop
     }
     int[] rows = editorTable.getSelectedRows();
-    // save selection
-    editorModel.fireTableDataChanged();// refresh
+    // Do not fire the change if model is void, it throws some exceptions
+    // maybe due to bad Swingx handling
+    if (editorModel.getRowCount() > 0) {
+      editorModel.fireTableDataChanged();
+    }
+    // Save selection
     bSettingSelection = true;
     for (int element : rows) {
       // set saved selection after a refresh
