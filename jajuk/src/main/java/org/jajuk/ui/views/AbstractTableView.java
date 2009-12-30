@@ -419,11 +419,6 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
 
       @Override
       public void done() {
-        // Do not fire the change if model is void, it throws some exceptions
-        // maybe due to bad Swingx handling
-        if (model.getRowCount() > 0) {
-          model.fireTableDataChanged();
-        }
         // Force table repaint (for instance for rating stars update)
         jtable.revalidate();
         jtable.repaint();

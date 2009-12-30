@@ -412,11 +412,8 @@ public class QueueView extends PlaylistView {
     // save selection to avoid reseting selection the user is doing
     int[] rows = editorTable.getSelectedRows();
     // force table refresh
-    // Do not fire the change if model is void, it throws some exceptions
-    // maybe due to bad Swingx handling
-    if (editorModel.getRowCount() > 0) {
-      editorModel.fireTableDataChanged();
-    }
+    editorTable.revalidate();
+    editorTable.repaint();
     bSettingSelection = true;
     for (int element : rows) {
       // set saved selection after a refresh
