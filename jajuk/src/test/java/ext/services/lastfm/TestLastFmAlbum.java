@@ -23,6 +23,7 @@ package ext.services.lastfm;
 import java.net.UnknownHostException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Locale;
 
 import net.roarsoftware.lastfm.Album;
 import net.roarsoftware.lastfm.CallException;
@@ -141,7 +142,7 @@ public class TestLastFmAlbum extends JajukTestCase {
     LastFmAlbum album = new LastFmAlbum();
     assertNull(album.getReleaseDate());
     album.setReleaseDateString("1 January 2009, 00:00");
-    assertEquals(new SimpleDateFormat("d MMM yyyy, HH:mm").parse("1 January 2009, 00:00"), album
+    assertEquals(new SimpleDateFormat("d MMM yyyy, HH:mm", Locale.ENGLISH).parse("1 January 2009, 00:00"), album
         .getReleaseDate());
 
   }
