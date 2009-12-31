@@ -21,6 +21,8 @@
 
 package org.jajuk.ui.views;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -31,6 +33,7 @@ import java.util.concurrent.ExecutionException;
 import javax.swing.Action;
 import javax.swing.ActionMap;
 import javax.swing.InputMap;
+import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JMenuItem;
 import javax.swing.JScrollPane;
@@ -52,6 +55,9 @@ import org.jajuk.ui.helpers.LazyLoadingTreeExpander;
 import org.jajuk.ui.helpers.PreferencesJMenu;
 import org.jajuk.ui.widgets.JajukToggleButton;
 import org.jajuk.util.Const;
+import org.jajuk.util.IconLoader;
+import org.jajuk.util.JajukIcons;
+import org.jajuk.util.Messages;
 import org.jajuk.util.log.Log;
 import org.jdesktop.swingx.JXTree;
 
@@ -68,9 +74,12 @@ public abstract class AbstractTreeView extends ViewAdapter {
 
   /** The phyical tree. */
   JXTree jtree;
-  
+
   /** The table/tree sync toggle button */
   JajukToggleButton jtbSync;
+
+  /** the collapse all button */
+  JButton jbCollapseAll;
 
   /** Current selection. */
   TreePath[] paths;
@@ -144,7 +153,7 @@ public abstract class AbstractTreeView extends ViewAdapter {
   /** Used to differentiate user action tree collapse from code tree collapse. */
   boolean bAutoCollapse = false;
 
-   /*
+  /*
    * (non-Javadoc)
    * 
    * @see org.jajuk.events.Observer#getRegistrationKeys()
@@ -160,7 +169,7 @@ public abstract class AbstractTreeView extends ViewAdapter {
     eventSubjectSet.add(JajukEvents.SYNC_TREE_TABLE);
     return eventSubjectSet;
   }
-  
+
   /**
    * Creates the tree. DOCUMENT_ME
    * 
@@ -225,8 +234,23 @@ public abstract class AbstractTreeView extends ViewAdapter {
     jmiCopyURL.putClientProperty(Const.DETAIL_CONTENT, alSelected);
     pjmTracks = new PreferencesJMenu(alSelected);
 
-    //Create the sync toggle button
+    // Create the sync toggle button
     jtbSync = new JajukToggleButton();
+
+    // Create the collapse all button, no need to a dedicated Action here as it
+    // is used only in this class
+    jbCollapseAll = new JButton(IconLoader.getIcon(JajukIcons.REMOVE));
+    jbCollapseAll.setToolTipText(Messages.getString("AbstractTreeView.0"));
+    jbCollapseAll.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        jtree.collapseAll();
+        // better to show at least the first level of items
+        jtree.expandRow(0);
+        jtree.setSelectionInterval(0, 0);
+      }
+    });
+
   }
 
   /**

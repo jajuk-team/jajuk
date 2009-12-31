@@ -25,6 +25,8 @@ import java.awt.Component;
 import java.awt.dnd.DnDConstants;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.MouseEvent;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -35,8 +37,8 @@ import java.util.Properties;
 
 import javax.swing.Action;
 import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
+import javax.swing.JLayeredPane;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
@@ -49,6 +51,8 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.MutableTreeNode;
 import javax.swing.tree.TreePath;
+
+import net.miginfocom.swing.MigLayout;
 
 import org.jajuk.base.Device;
 import org.jajuk.base.DeviceManager;
@@ -259,7 +263,6 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
     // By default disable paste
     jmiPaste.setEnabled(false);
 
-    setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
     top = new TreeRootElement(Messages.getString("FilesTreeView.47"));
 
     // Register on the list for subject we are interested in
@@ -285,12 +288,33 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
     // Expansion analyzed to keep expended state
     jtree.addTreeExpansionListener(new FilesTreeExpansionListener());
     jtree.setAutoscrolls(true);
-    // DND support
-    new TreeTransferHandler(jtree, DnDConstants.ACTION_COPY_OR_MOVE, true);
-    // tree itself
+
     jspTree = new JScrollPane(jtree);
     jspTree.setBorder(BorderFactory.createEmptyBorder(0, 1, 0, 0));
-    add(jspTree);
+    // DND support
+    new TreeTransferHandler(jtree, DnDConstants.ACTION_COPY_OR_MOVE, true);
+
+    // layout : the tree takes all the available height and we display the
+    // command buttons on a different layer (because we don't want to use a
+    // dedicated row like in the Tracks tree table : it's too ugly and
+    // space-consuming)
+    setLayout(new MigLayout("ins 3", "[grow]", "[grow]"));
+    final JLayeredPane lp = new JLayeredPane();
+    addComponentListener(new ComponentAdapter() {
+      @Override
+      public void componentResized(ComponentEvent e) {
+        // At first display and afterwards at each view resize, we cleanup and
+        // re-add tree and command buttons adapted to the new view size.
+        lp.removeAll();
+        jspTree.setBounds(0, 0, getWidth() - 5, getHeight() - 5);
+        lp.add(jspTree, JLayeredPane.DEFAULT_LAYER);
+        jbCollapseAll.setBounds(getWidth() - 50, 0, 20, 20);
+        lp.add(jbCollapseAll, JLayeredPane.PALETTE_LAYER);
+        lp.revalidate();
+        lp.repaint();
+      }
+    });
+    add(lp, "grow");
 
     // expand all
     expand();
