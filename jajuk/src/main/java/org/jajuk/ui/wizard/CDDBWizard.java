@@ -97,7 +97,8 @@ public class CDDBWizard extends JajukJDialog implements ActionListener {
   /**
    * CDDB wizard.
    * 
-   * @param tracks DOCUMENT_ME
+   * @param tracks
+   *          DOCUMENT_ME
    */
   public CDDBWizard(final List<Track> tracks) {
     super();
@@ -166,8 +167,7 @@ public class CDDBWizard extends JajukJDialog implements ActionListener {
   }
 
   /**
-   * Populate model.
-   * DOCUMENT_ME
+   * Populate model. DOCUMENT_ME
    * 
    * @return the cDDB table model
    */
@@ -187,13 +187,16 @@ public class CDDBWizard extends JajukJDialog implements ActionListener {
     // Re-populate model
     model = new CDDBTableModel();
     model.populateModel(alCddbTracks, fdbReader);
-    model.fireTableDataChanged();
+    // Do not fire the change if model is void, it throws some exceptions maybe
+    // due to bad Swingx handling
+    if (model.getRowCount() > 0) {
+      model.fireTableDataChanged();
+    }
     return model;
   }
 
   /**
-   * Inits the ui.
-   * DOCUMENT_ME
+   * Inits the ui. DOCUMENT_ME
    */
   public void initUI() {
     okc = new OKCancelPanel(CDDBWizard.this, Messages.getString("Apply"), Messages
@@ -272,8 +275,7 @@ public class CDDBWizard extends JajukJDialog implements ActionListener {
   }
 
   /**
-   * Retag files.
-   * DOCUMENT_ME
+   * Retag files. DOCUMENT_ME
    */
   public void retagFiles() {
     int[] aIdxToTag = jtable.getSelectedRows();
@@ -317,12 +319,15 @@ public class CDDBWizard extends JajukJDialog implements ActionListener {
   /**
    * Retag internal.
    * 
-   * @param iRow DOCUMENT_ME
-   * @param trackin DOCUMENT_ME
+   * @param iRow
+   *          DOCUMENT_ME
+   * @param trackin
+   *          DOCUMENT_ME
    * 
    * @return the track
    * 
-   * @throws JajukException the jajuk exception
+   * @throws JajukException
+   *           the jajuk exception
    */
   private Track retagInternal(final int iRow, final Track trackin) throws JajukException {
     Track track = trackin;
@@ -364,8 +369,11 @@ public class CDDBWizard extends JajukJDialog implements ActionListener {
     return track;
   }
 
-  /* (non-Javadoc)
-   * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+  /*
+   * (non-Javadoc)
+   * 
+   * @see
+   * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
    */
   public void actionPerformed(ActionEvent e) {
     if (e.getSource() == okc.getCancelButton()) {
