@@ -181,7 +181,6 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
     setLayout(new MigLayout("ins 3", "[][grow][]", "[][grow]"));
     add(jlSort, "left,gapx 5::");
     add(jcbSort, "grow,left");
-    add(jbCollapseAll,"right,wrap");
     add(jspTree, "grow,span");
     expand();
   }
