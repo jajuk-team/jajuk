@@ -417,7 +417,8 @@ public final class JajukSlimbar extends JFrame implements IJajukWindow, Observer
     slimJajuk = new JajukJToolbar();
 
     AmbienceComboBox ambienceCombo = new AmbienceComboBox();
-    ambienceCombo.setPreferredSize(new Dimension(43,20));
+    ambienceCombo.setPreferredSize(new Dimension(43, 20));
+    ambienceCombo.addMouseMotionListener(motionAdapter);
 
     slimJajuk.add(Box.createHorizontalStrut(4));
     slimJajuk.add(jbInfo);
