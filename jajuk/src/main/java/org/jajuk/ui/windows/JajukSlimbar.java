@@ -70,6 +70,7 @@ import org.jajuk.ui.actions.JajukActions;
 import org.jajuk.ui.actions.MuteAction;
 import org.jajuk.ui.helpers.PlayerStateMediator;
 import org.jajuk.ui.views.QueueView;
+import org.jajuk.ui.widgets.AmbienceComboBox;
 import org.jajuk.ui.widgets.JajukButton;
 import org.jajuk.ui.widgets.JajukInformationDialog;
 import org.jajuk.ui.widgets.JajukJToolbar;
@@ -415,6 +416,9 @@ public final class JajukSlimbar extends JFrame implements IJajukWindow, Observer
 
     slimJajuk = new JajukJToolbar();
 
+    AmbienceComboBox ambienceCombo = new AmbienceComboBox();
+    ambienceCombo.setPreferredSize(new Dimension(43,20));
+
     slimJajuk.add(Box.createHorizontalStrut(4));
     slimJajuk.add(jbInfo);
     slimJajuk.addSeparator();
@@ -422,6 +426,8 @@ public final class JajukSlimbar extends JFrame implements IJajukWindow, Observer
     slimJajuk.addSeparator();
     slimJajuk.add(jtbSmart);
     slimJajuk.add(jbFinishAlbum);
+    slimJajuk.addSeparator();
+    slimJajuk.add(ambienceCombo);
     slimJajuk.addSeparator();
     slimJajuk.add(jtbPlay);
     slimJajuk.addSeparator();
@@ -675,14 +681,17 @@ public final class JajukSlimbar extends JFrame implements IJajukWindow, Observer
     balloon.display();
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see java.awt.Window#dispose()
    */
   @Override
   public void dispose() {
-    // there are some resources to close in the Search-Box that I could not get rid of with any of the default dispose-methods in Swing...
+    // there are some resources to close in the Search-Box that I could not get
+    // rid of with any of the default dispose-methods in Swing...
     sbSearch.close();
-    
+
     super.dispose();
   }
 }

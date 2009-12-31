@@ -24,16 +24,12 @@ import java.awt.Component;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ItemListener;
 import java.util.HashSet;
 import java.util.Set;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JLabel;
 import javax.swing.JList;
-import javax.swing.JMenuItem;
-import javax.swing.JPopupMenu;
-import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.plaf.basic.BasicComboBoxRenderer;
 
@@ -53,9 +49,7 @@ import org.jajuk.services.players.StackItem;
 import org.jajuk.ui.actions.ActionManager;
 import org.jajuk.ui.actions.JajukAction;
 import org.jajuk.ui.actions.JajukActions;
-import org.jajuk.ui.helpers.FontManager;
 import org.jajuk.ui.helpers.PlayerStateMediator;
-import org.jajuk.ui.helpers.FontManager.JajukFont;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
@@ -67,7 +61,7 @@ import org.jajuk.util.log.Log;
 import org.jdesktop.swingx.JXPanel;
 
 /**
- * History, search panel.
+ * Ambience + History + search panel used in main jajuk window
  */
 public final class SearchJPanel extends JXPanel implements Observer, ActionListener {
 
@@ -77,65 +71,14 @@ public final class SearchJPanel extends JXPanel implements Observer, ActionListe
   /** Self instance. */
   private static SearchJPanel ijp = null;
 
-  /** DOCUMENT_ME. */
+  /** The search box (text field). */
   private SearchBox sbSearch;
-  
-  /** DOCUMENT_ME. */
+
+  /** the combo-style history. */
   private SteppedComboBox jcbHistory;
-  
-  /** DOCUMENT_ME. */
-  private SteppedComboBox ambiencesCombo;
 
-  /**
-   * Ambience combo listener.
-   */
-  class AmbienceListener implements ActionListener {
-    
-    /* (non-Javadoc)
-     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
-     */
-    public void actionPerformed(ActionEvent ae) {
-      // Ambience Configuration
-      if (ambiencesCombo.getSelectedIndex() == 0) {
-        // display the wizard
-        try {
-          ActionManager.getAction(JajukActions.CONFIGURE_AMBIENCES).perform(null);
-        } catch (Exception e) {
-          Log.error(e);
-        }
-        // Reset combo to last selected item. We do this to avoid to select the
-        // "0" item that is not an ambience
-        ambiencesCombo.removeActionListener(ambienceListener);
-        Ambience defaultAmbience = AmbienceManager.getInstance().getAmbience(
-            Conf.getString(Const.CONF_DEFAULT_AMBIENCE));
-        if (defaultAmbience != null) {
-          for (int i = 0; i < ambiencesCombo.getItemCount(); i++) {
-            if (((JLabel) ambiencesCombo.getItemAt(i)).getText().equals(defaultAmbience.getName())) {
-              ambiencesCombo.setSelectedIndex(i);
-              break;
-            }
-          }
-        } else {
-          ambiencesCombo.setSelectedIndex(1);
-        }
-        ambiencesCombo.addActionListener(ambienceListener);
-      }
-      // Selected 'Any" ambience
-      else if (ambiencesCombo.getSelectedIndex() == 1) {
-        // reset default ambience
-        Conf.setProperty(Const.CONF_DEFAULT_AMBIENCE, "");
-        ObservationManager.notify(new JajukEvent(JajukEvents.AMBIENCES_SELECTION_CHANGE));
-      } else {// Selected an ambience
-        Ambience ambience = AmbienceManager.getInstance().getAmbienceByName(
-            ((JLabel) ambiencesCombo.getSelectedItem()).getText());
-        Conf.setProperty(Const.CONF_DEFAULT_AMBIENCE, ambience.getID());
-        ObservationManager.notify(new JajukEvent(JajukEvents.AMBIENCES_SELECTION_CHANGE));
-      }
-    }
-  }
-
-  /** An instance of the ambience combo listener. */
-  AmbienceListener ambienceListener;
+  /** the Ambience selection combo. */
+  private AmbienceComboBox ambiencesCombo;
 
   /**
    * Singleton access.
@@ -160,8 +103,7 @@ public final class SearchJPanel extends JXPanel implements Observer, ActionListe
   }
 
   /**
-   * Inits the ui.
-   * DOCUMENT_ME
+   * Inits the gui.
    */
   public void initUI() {
     // Instanciate the PlayerStateMediator to listen for player basic controls
@@ -173,27 +115,8 @@ public final class SearchJPanel extends JXPanel implements Observer, ActionListe
     jcbHistory = new SteppedComboBox();
     final JLabel jlHistory = new JLabel(IconLoader.getIcon(JajukIcons.HISTORY));
     jlHistory.setToolTipText(Messages.getString("CommandJPanel.0"));
-    // - Increase rating button
-    JajukAction actionIncRate = ActionManager.getAction(JajukActions.INC_RATE);
-    actionIncRate.setName(null);
-    
-    // TODO: is this used currently??
-    final JPopupMenu jpmIncRating = new JPopupMenu();
-    for (int i = 3; i >= -3; i--) {
-      final int j = i;
-      JMenuItem jmi = new JMenuItem(Integer.toString(i));
-      if (Conf.getInt(Const.CONF_INC_RATING) == i) {
-        jmi.setFont(FontManager.getInstance().getFont(JajukFont.BOLD));
-      }
-      // Store selected value
-      jmi.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          Conf.setProperty(Const.CONF_INC_RATING, "" + j);
-        }
-      });
-      jpmIncRating.add(jmi);
-    }
-    // we use a combo box model to make sure we get good performances after
+
+    // We use a combo box model to make sure we get good performances after
     // rebuilding the entire model like after a refresh
     jcbHistory.setModel(new DefaultComboBoxModel(History.getInstance().getHistory()));
     // None selection because if we start in stop mode, a selection of the
@@ -219,27 +142,7 @@ public final class SearchJPanel extends JXPanel implements Observer, ActionListe
       }
     });
     // Ambience combo
-    ambiencesCombo = new SteppedComboBox();
-    iWidth = (int) (Toolkit.getDefaultToolkit().getScreenSize().getWidth() / 4);
-    ambiencesCombo.setPopupWidth(iWidth);
-    // size of the combo itself
-    ambiencesCombo.setRenderer(new BasicComboBoxRenderer() {
-      private static final long serialVersionUID = -6943363556191659895L;
-
-      @Override
-      public Component getListCellRendererComponent(JList list, Object value, int index,
-          boolean isSelected, boolean cellHasFocus) {
-        super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-        JLabel jl = (JLabel) value;
-        setIcon(jl.getIcon());
-        setText(jl.getText());
-        return this;
-      }
-    });
-    ambiencesCombo.setToolTipText(Messages.getString("DigitalDJWizard.66"));
-    populateAmbiences();
-    ambienceListener = new AmbienceListener();
-    ambiencesCombo.addActionListener(ambienceListener);
+    ambiencesCombo = new AmbienceComboBox();
 
     // Add items
     setLayout(new MigLayout("insets 5 0 4 3,gapx 30", "[grow 20][grow 70][grow 10]"));
@@ -254,7 +157,9 @@ public final class SearchJPanel extends JXPanel implements Observer, ActionListe
     UtilFeatures.updateStatus(this);
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see org.jajuk.events.Observer#getRegistrationKeys()
    */
   public Set<JajukEvents> getRegistrationKeys() {
@@ -268,46 +173,11 @@ public final class SearchJPanel extends JXPanel implements Observer, ActionListe
     return eventSubjectSet;
   }
 
-  /**
-   * Populate ambiences combo.
-   */
-  void populateAmbiences() {
-    ambiencesCombo.removeActionListener(ambienceListener);
-    ItemListener[] il = ambiencesCombo.getItemListeners();
-    for (ItemListener element : il) {
-      ambiencesCombo.removeItemListener(element);
-    }
-    ambiencesCombo.removeAllItems();
-    ambiencesCombo.addItem(new JLabel(Messages.getString("CommandJPanel.19"), IconLoader
-        .getIcon(JajukIcons.CONFIGURATION), SwingConstants.LEFT));
-    ambiencesCombo.addItem(new JLabel("<html><i>" + Messages.getString("DigitalDJWizard.64")
-        + "</i></html>", IconLoader.getIcon(JajukIcons.STYLE), SwingConstants.LEFT));
-    // Add available ambiences
-    for (final Ambience ambience : AmbienceManager.getInstance().getAmbiences()) {
-      ambiencesCombo.addItem(new JLabel(ambience.getName(), IconLoader.getIcon(JajukIcons.STYLE),
-          SwingConstants.LEFT));
-    }
-    // Select right item
-    Ambience defaultAmbience = AmbienceManager.getInstance().getAmbience(
-        Conf.getString(Const.CONF_DEFAULT_AMBIENCE));
-    if (defaultAmbience != null) {
-      for (int i = 0; i < ambiencesCombo.getItemCount(); i++) {
-        if (((JLabel) ambiencesCombo.getItemAt(i)).getText().equals(defaultAmbience.getName())) {
-          ambiencesCombo.setSelectedIndex(i);
-          break;
-        }
-      }
-    } else {
-      // or "any" ambience
-      ambiencesCombo.setSelectedIndex(1);
-    }
-    ambiencesCombo.addActionListener(ambienceListener);
-  }
-
   /*
    * (non-Javadoc)
    * 
-   * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+   * @see
+   * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
    */
   public void actionPerformed(final ActionEvent ae) {
     // do not run this in a separate thread because Player actions would die
@@ -368,7 +238,7 @@ public final class SearchJPanel extends JXPanel implements Observer, ActionListe
           jcbHistory.setSelectedItem(null);
         } else if (JajukEvents.AMBIENCES_CHANGE.equals(event.getSubject())
             || JajukEvents.AMBIENCES_SELECTION_CHANGE.equals(event.getSubject())) {
-          populateAmbiences();
+          ambiencesCombo.populateAmbiences();
           updateTooltips();
         }
       }
