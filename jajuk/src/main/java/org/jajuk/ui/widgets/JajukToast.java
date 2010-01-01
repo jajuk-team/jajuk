@@ -20,9 +20,6 @@
  */
 package org.jajuk.ui.widgets;
 
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-
 import org.jajuk.ui.helpers.animations.AnimationCompletedEvent;
 import org.jajuk.ui.helpers.animations.AnimationCompletedListener;
 import org.jajuk.ui.helpers.animations.FadeAnimation;
@@ -54,12 +51,6 @@ public class JajukToast extends JajukInformationDialog {
     this.showTime = showTime;
     setAlwaysOnTop(true);
     setFocusableWindowState(false);
-    addMouseListener(new MouseAdapter() {
-      @Override
-      public void mouseClicked(MouseEvent e) {
-        dispose();
-      }
-    });
   }
 
   /* (non-Javadoc)

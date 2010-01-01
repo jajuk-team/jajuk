@@ -21,6 +21,8 @@
 package org.jajuk.ui.widgets;
 
 import java.awt.Color;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import javax.swing.JDialog;
 import javax.swing.JLabel;
@@ -62,6 +64,13 @@ public class JajukInformationDialog extends JDialog {
     JLabel jl = new JLabel(text);
     jl.setFont(FontManager.getInstance().getFont(JajukFont.DEFAULT));
     jl.setBorder(new EmptyBorder(5, 5, 5, 5));
+    // Allow user to close the dialog by clicking on it
+    addMouseListener(new MouseAdapter() {
+      @Override
+      public void mouseClicked(MouseEvent e) {
+        dispose();
+      }
+    });
     add(jl);
     pack();
   }
