@@ -25,6 +25,7 @@ import java.awt.Color;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JRootPane;
+import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
@@ -53,7 +54,7 @@ public class JajukInformationDialog extends JDialog {
     // Otherwise, if no owner window is given or if the owner window is not
     // displayed, an ugly task entry appears on the task bar
     super(UtilGUI.getActiveWindow());
-    setFocusableWindowState(false); 
+    setFocusableWindowState(false);
     setUndecorated(true);
     setAlwaysOnTop(true);
     getRootPane().setWindowDecorationStyle(JRootPane.NONE);
@@ -79,7 +80,14 @@ public class JajukInformationDialog extends JDialog {
       public void run() {
         try {
           Thread.sleep(3000);
-          dispose();
+          // Call dispose from the EDT, otherwise, it seems to block in some rare cases under
+          // Windows, see #1514
+          SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+              dispose();
+            }
+          });
         } catch (InterruptedException e) {
           Log.error(e);
         }
