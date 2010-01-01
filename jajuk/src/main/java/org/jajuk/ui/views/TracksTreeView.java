@@ -97,7 +97,7 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
-  /** DOCUMENT_ME. */
+  /** Sorting method selection combo */
   private JComboBox jcbSort;
 
   /*
@@ -161,10 +161,9 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
 
     /**
      * CAUTION ! we register several listeners against this tree Swing can't
-     * ensure the order where listeners will treat them so don't count in the
+     * ensure the order where listeners will treat them so don't rely on the
      * mouse listener to get correct selection from selection listener
      */
-
     // Tree selection listener to detect a selection
     jtree.addTreeSelectionListener(new TracksTreeSelectionListener());
 
@@ -178,13 +177,13 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
     new TreeTransferHandler(jtree, DnDConstants.ACTION_COPY_OR_MOVE, true);
     jspTree = new JScrollPane(jtree);
     jspTree.setBorder(BorderFactory.createEmptyBorder(0, 1, 0, 0));
-    setLayout(new MigLayout("ins 3", "[][grow][]", "[][grow]"));
+    setLayout(new MigLayout("ins 3", "[][grow][][]", "[][grow]"));
     add(jlSort, "left,gapx 5::");
     add(jcbSort, "grow,left");
-    add(jbCollapseAll,"right,wrap");
+    add(jtbSync, "right");
+    add(jbCollapseAll, "right,wrap");
     add(jspTree, "grow,span");
     expand();
-    
   }
 
   /**
@@ -201,7 +200,6 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
     if (jtree != null && jtree.getModel() != null) {
       ((DefaultTreeModel) (jtree.getModel())).reload();
     }
-
     TrackComparatorType comparatorType = TrackComparatorType.values()[Conf
         .getInt(Const.CONF_LOGICAL_TREE_SORT_ORDER)];
     if (comparatorType == TrackComparatorType.STYLE_AUTHOR_ALBUM) {
@@ -599,8 +597,7 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
   /*
    * (non-Javadoc)
    * 
-   * @see
-   * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+   * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
    */
   public void actionPerformed(final ActionEvent e) {
     if (e.getSource() == jcbSort) {
@@ -672,8 +669,7 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
     /*
      * (non-Javadoc)
      * 
-     * @see
-     * javax.swing.event.TreeSelectionListener#valueChanged(javax.swing.event
+     * @see javax.swing.event.TreeSelectionListener#valueChanged(javax.swing.event
      * .TreeSelectionEvent)
      */
     public void valueChanged(TreeSelectionEvent e) {
@@ -690,16 +686,14 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
       StringBuilder sbOut = new StringBuilder().append(items).append(
           Messages.getString("TracksTreeView.31"));
       InformationJPanel.getInstance().setSelection(sbOut.toString());
-      if (Conf.getBoolean(Const.CONF_OPTIONS_SYNC_TABLE_TREE)) {
-        // if table is synchronized with tree, notify the
-        // selection change
-        Properties properties = new Properties();
-        properties.put(Const.DETAIL_SELECTION, selectedRecursively);
-        properties
-            .put(Const.DETAIL_PERSPECTIVE, PerspectiveManager.getCurrentPerspective().getID());
-        properties.put(Const.DETAIL_VIEW, getID());
-        ObservationManager.notify(new JajukEvent(JajukEvents.SYNC_TREE_TABLE, properties));
-      }
+
+      // Notify the tree selection change (used by tree/table sync)
+      Properties properties = new Properties();
+      properties.put(Const.DETAIL_SELECTION, selectedRecursively);
+      properties.put(Const.DETAIL_PERSPECTIVE, PerspectiveManager.getCurrentPerspective().getID());
+      properties.put(Const.DETAIL_VIEW, getID());
+      ObservationManager.notify(new JajukEvent(JajukEvents.TREE_SELECTION_CHANGED, properties));
+
       // Update preference menu
       pjmTracks.resetUI(alSelected);
     }

@@ -86,7 +86,6 @@ import org.jajuk.ui.helpers.PlaylistRepositoryTableModel;
 import org.jajuk.ui.helpers.PlaylistTableModel;
 import org.jajuk.ui.helpers.PreferencesJMenu;
 import org.jajuk.ui.helpers.TwoStepsDisplayable;
-import org.jajuk.ui.perspectives.PerspectiveManager;
 import org.jajuk.ui.widgets.InformationJPanel;
 import org.jajuk.ui.widgets.JajukButton;
 import org.jajuk.ui.widgets.JajukJSplitPane;
@@ -115,9 +114,8 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
   private static final long serialVersionUID = -2851288035506442507L;
 
   /*
-   * Some widgets are private to make sure QueueView that extends this class
-   * will not use them TODO : refactoring : check for unifying smart and regular
-   * playlists (a single mouse adapter for ie)
+   * Some widgets are private to make sure QueueView that extends this class will not use them TODO
+   * : refactoring : check for unifying smart and regular playlists (a single mouse adapter for ie)
    */
   /** DOCUMENT_ME. */
   private JajukJSplitPane split;
@@ -634,21 +632,6 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
   protected void handleTableSelectionChange() {
     // Refresh the preference menu according to the selection
     pjmFilesEditor.resetUI(editorTable.getSelection());
-    // Notify tree/table sync. Note that the tree send all the selection
-    // model to the table while the table only send a single selected
-    // item because we want to expand only the first item selected in
-    // table.
-    if (Conf.getBoolean(Const.CONF_OPTIONS_SYNC_TABLE_TREE)
-    // Ignore this event if the new selection is <none>
-        && editorTable.getSelection().size() > 0) {
-      // if table is synchronized with tree, notify the
-      // selection change
-      Properties properties = new Properties();
-      properties.put(Const.DETAIL_SELECTION, editorTable.getSelection().get(0));
-      properties.put(Const.DETAIL_PERSPECTIVE, PerspectiveManager.getCurrentPerspective().getID());
-      properties.put(Const.DETAIL_VIEW, getID());
-      ObservationManager.notify(new JajukEvent(JajukEvents.SYNC_TREE_TABLE, properties));
-    }
   }
 
   /**
@@ -765,8 +748,7 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
   /*
    * (non-Javadoc)
    * 
-   * @see
-   * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+   * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
    */
   public void actionPerformed(ActionEvent ae) {
     try {
@@ -1118,8 +1100,7 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
     /*
      * (non-Javadoc)
      * 
-     * @see
-     * javax.swing.event.ListSelectionListener#valueChanged(javax.swing.event
+     * @see javax.swing.event.ListSelectionListener#valueChanged(javax.swing.event
      * .ListSelectionEvent)
      */
     public void valueChanged(ListSelectionEvent e) {

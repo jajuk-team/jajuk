@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2009 The Jajuk Team
+ *  Copyright (C) 2003-2010 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -48,11 +48,17 @@ public class FilesTableModel extends JajukTableModel {
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
+  /** Associated view ID */
+  private String viewID;
+
   /**
    * Model constructor.
+   * 
+   * @param viewID Associated view ID
    */
-  public FilesTableModel() {
+  public FilesTableModel(String viewID) {
     super(20);
+    this.viewID = viewID;
     setEditable(Conf.getBoolean(Const.CONF_FILES_TABLE_EDITION));
     // Columns names
     // First column is play icon, need to set a space character
@@ -135,27 +141,28 @@ public class FilesTableModel extends JajukTableModel {
     }
   }
 
-  /**
-   * Fill model with data using an optional filter property and pattern.
+  /*
+   * (non-Javadoc)
    * 
-   * @param sPropertyName DOCUMENT_ME
-   * @param sPattern DOCUMENT_ME
-   * @param columnsToShow DOCUMENT_ME
+   * @see org.jajuk.ui.helpers.JajukTableModel#populateModel(java.lang.String, java.lang.String,
+   * java.util.List)
    */
   @Override
   public void populateModel(String sPropertyName, String sPattern, List<String> columnsToShow) {
     // This should be monitor file manager to avoid NPE when changing items
     List<File> alToShow = FileManager.getInstance().getFiles();
+
     // Filter mounted files if needed and apply sync table with tree
     // option if needed
-    final boolean bSyncWithTreeOption = Conf.getBoolean(Const.CONF_OPTIONS_SYNC_TABLE_TREE);
+    final boolean syncTreeTable = Conf.getBoolean(Const.CONF_SYNC_TABLE_TREE + "." + viewID);
+
     oItems = new Item[iRowNum];
     CollectionUtils.filter(alToShow, new Predicate() {
 
       public boolean evaluate(Object o) {
         File file = (File) o;
         // show it if no sync option or if item is in the selection
-        boolean bShowWithTree = !bSyncWithTreeOption
+        boolean bShowWithTree = !syncTreeTable
         // tree selection = null means none selection have been
             // done in tree so far
             || treeSelection == null
@@ -416,4 +423,5 @@ public class FilesTableModel extends JajukTableModel {
       }
     }
   }
+
 }

@@ -56,8 +56,10 @@ import org.jajuk.ui.helpers.JajukCellRenderer;
 import org.jajuk.ui.helpers.JajukMouseAdapter;
 import org.jajuk.ui.helpers.JajukTableModel;
 import org.jajuk.ui.helpers.TableTransferHandler;
+import org.jajuk.ui.perspectives.PerspectiveManager;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
+import org.jajuk.util.UtilGUI;
 import org.jajuk.util.UtilString;
 import org.jdesktop.swingx.JXTable;
 import org.jdesktop.swingx.table.DefaultTableColumnModelExt;
@@ -101,6 +103,9 @@ public class JajukTable extends JXTable implements Observer, TableColumnModelLis
   /** Stores the last index of column move to*. */
   private int lastToIndex = 0;
 
+  /** Last time the selection changed (ms) */
+  private long dateLastSelectionUpdate = 0l;
+
   /**
    * The Jajuk table mouse adapter used to handle click events
    */
@@ -135,10 +140,10 @@ public class JajukTable extends JXTable implements Observer, TableColumnModelLis
   /**
    * Constructor.
    * 
-   * @param model :
-   *          model to use
-   * @param bSortable :
-   *          is this table sortable
+   * @param model
+   *          : model to use
+   * @param bSortable
+   *          : is this table sortable
    * @param sConf
    *          DOCUMENT_ME
    * 
@@ -168,8 +173,8 @@ public class JajukTable extends JXTable implements Observer, TableColumnModelLis
   /**
    * Constructor.
    * 
-   * @param model :
-   *          model to use
+   * @param model
+   *          : model to use
    * @param sConf
    *          DOCUMENT_ME
    * 
@@ -353,7 +358,7 @@ public class JajukTable extends JXTable implements Observer, TableColumnModelLis
   /*
    * (non-Javadoc)
    * 
-   * @see org.jdesktop.swingx.JXTable#columnRemoved(javax.swing.event.TableColumnModelEvent)
+   * @seeorg.jdesktop.swingx.JXTable#columnRemoved(javax.swing.event. TableColumnModelEvent)
    */
   @Override
   public void columnRemoved(TableColumnModelEvent evt) {
@@ -370,8 +375,8 @@ public class JajukTable extends JXTable implements Observer, TableColumnModelLis
   public void columnMoved(TableColumnModelEvent evt) {
     super.columnMoved(evt);
     /*
-     * We ignore events if last to index is still the same for performances
-     * reasons (this event doesn't come with a isAdjusting() method)
+     * We ignore events if last to index is still the same for performances reasons (this event
+     * doesn't come with a isAdjusting() method)
      */
     if (acceptColumnsEvents && evt.getToIndex() != lastToIndex) {
       lastToIndex = evt.getToIndex();
@@ -472,10 +477,12 @@ public class JajukTable extends JXTable implements Observer, TableColumnModelLis
    */
   @Override
   public void valueChanged(ListSelectionEvent e) {
-    // Ignore adjusting event
-    if (e.getValueIsAdjusting()) {
+    // Ignore adjusting event. For unknown reasons, this doesn't work on some JVM, we have to handle
+    // it by ourself : we ignore duplicate events launched less than 50 ms after the previous one.
+    if (e.getValueIsAdjusting() || (System.currentTimeMillis() - dateLastSelectionUpdate < 50)) {
       return;
     }
+    dateLastSelectionUpdate = System.currentTimeMillis();
     // Make sure this table uses a Jajuk table model
     if (!(getModel() instanceof JajukTableModel)) {
       return;
@@ -487,7 +494,13 @@ public class JajukTable extends JXTable implements Observer, TableColumnModelLis
       Item o = model.getItemAt(convertRowIndexToModel(element));
       selection.add(o);
     }
-    ObservationManager.notify(new JajukEvent(JajukEvents.TABLE_SELECTION_CHANGED));
+    // throw a table selection changed event providing the current perspective, view and
+    // selection (used for tree/table sync)
+    Properties properties = new Properties();
+    properties.put(Const.DETAIL_SELECTION, getSelection());
+    properties.put(Const.DETAIL_PERSPECTIVE, PerspectiveManager.getCurrentPerspective().getID());
+    properties.put(Const.DETAIL_VIEW, UtilGUI.getParentView(this));
+    ObservationManager.notify(new JajukEvent(JajukEvents.TABLE_SELECTION_CHANGED, properties));
   }
 
   /**
@@ -542,7 +555,7 @@ public class JajukTable extends JXTable implements Observer, TableColumnModelLis
    * 
    * @see java.awt.event.MouseListener#mouseClicked(java.awt.event.MouseEvent)
    */
-  public void mouseClicked(MouseEvent e) {
+  public void mouseClicked(@SuppressWarnings("unused") MouseEvent e) {
     // nothing to do here for now
   }
 
@@ -551,7 +564,7 @@ public class JajukTable extends JXTable implements Observer, TableColumnModelLis
    * 
    * @see java.awt.event.MouseListener#mouseEntered(java.awt.event.MouseEvent)
    */
-  public void mouseEntered(MouseEvent e) {
+  public void mouseEntered(@SuppressWarnings("unused") MouseEvent e) {
     // nothing to do here for now
   }
 
@@ -560,7 +573,7 @@ public class JajukTable extends JXTable implements Observer, TableColumnModelLis
    * 
    * @see java.awt.event.MouseListener#mouseExited(java.awt.event.MouseEvent)
    */
-  public void mouseExited(MouseEvent e) {
+  public void mouseExited(@SuppressWarnings("unused") MouseEvent e) {
     // nothing to do here for now
   }
 

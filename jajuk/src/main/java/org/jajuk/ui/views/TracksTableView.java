@@ -37,7 +37,7 @@ import org.jajuk.util.UtilGUI;
 /**
  * Logical table view.
  */
-public class TracksTableView extends AbstractTableView implements TwoStepsDisplayable{
+public class TracksTableView extends AbstractTableView implements TwoStepsDisplayable {
 
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
@@ -66,15 +66,16 @@ public class TracksTableView extends AbstractTableView implements TwoStepsDispla
     return Messages.getString("TracksTableView.0");
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see org.jajuk.ui.views.IView#initUI()
    */
   public void initUI() {
     UtilGUI.populate(this);
   }
 
-  
-   /*
+  /*
    * (non-Javadoc)
    * 
    * @see org.jajuk.ui.helpers.TwoStepsDisplayable#shortCall(java.lang.Object)
@@ -98,8 +99,8 @@ public class TracksTableView extends AbstractTableView implements TwoStepsDispla
     jtable.getMenu().addSeparator();
     jtable.getMenu().add(jmiProperties);
   }
-  
-   /*
+
+  /*
    * (non-Javadoc)
    * 
    * @see org.jajuk.ui.helpers.TwoStepsDisplayable#longCall()
@@ -109,7 +110,7 @@ public class TracksTableView extends AbstractTableView implements TwoStepsDispla
     super.longCall();
     return null;
   }
-  
+
   /**
    * Fill the table.
    * 
@@ -118,7 +119,7 @@ public class TracksTableView extends AbstractTableView implements TwoStepsDispla
   @Override
   public synchronized JajukTableModel populateTable() {
     // model creation
-    return new TracksTableModel();
+    return new TracksTableModel(getID());
   }
 
   /*

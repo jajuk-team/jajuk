@@ -77,7 +77,6 @@ import org.jajuk.ui.helpers.PreferencesJMenu;
 import org.jajuk.ui.helpers.TableTransferHandler;
 import org.jajuk.ui.helpers.TwoStepsDisplayable;
 import org.jajuk.ui.helpers.FontManager.JajukFont;
-import org.jajuk.ui.perspectives.PerspectiveManager;
 import org.jajuk.ui.widgets.InformationJPanel;
 import org.jajuk.ui.widgets.JajukTable;
 import org.jajuk.ui.widgets.JajukToggleButton;
@@ -183,6 +182,9 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
 
   /** DOCUMENT_ME. */
   PreferencesJMenu pjmTracks;
+
+  /** The table/tree sync toggle button */
+  JajukToggleButton jtbSync;
 
   /** Launches a thread used to perform dynamic filtering when user is typing. */
   Thread filteringThread = new Thread("Dynamic user input filtering thread") {
@@ -314,6 +316,12 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
     jtbEditable = new JajukToggleButton(IconLoader.getIcon(JajukIcons.EDIT));
     jtbEditable.setToolTipText(Messages.getString("AbstractTableView.11"));
     jtbEditable.addActionListener(this);
+
+    // Create the sync toggle button and restore its state
+    jtbSync = new JajukToggleButton(ActionManager.getAction(JajukActions.SYNC_TREE_TABLE));
+    jtbSync.putClientProperty(Const.DETAIL_VIEW, getID());
+    jtbSync.setSelected(Conf.getBoolean(Const.CONF_SYNC_TABLE_TREE + "." + getID()));
+
     jlFilter = new JLabel(Messages.getString("AbstractTableView.0"));
     // properties combo box, fill with columns names expect ID
     jcbProperty = new JComboBox();
@@ -338,8 +346,9 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
       }
     });
     jtfValue.setToolTipText(Messages.getString("AbstractTableView.3"));
-    jpControl.setLayout(new MigLayout("insets 5", "[20][grow,gp 70][grow]"));
-    jpControl.add(jtbEditable, "gapleft 5,gapright 15");
+    jpControl.setLayout(new MigLayout("insets 5", "[][20][grow,gp 70][grow]"));
+    jpControl.add(jtbSync, "gapleft 5");
+    jpControl.add(jtbEditable, "gapright 15");
     jpControl.add(jlFilter, "split 2");
     jpControl.add(jcbProperty, "grow,gapright 15");
     jpControl.add(jlEquals, "split 2");
@@ -387,7 +396,6 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
     eventSubjectSet.add(JajukEvents.DEVICE_MOUNT);
     eventSubjectSet.add(JajukEvents.DEVICE_UNMOUNT);
     eventSubjectSet.add(JajukEvents.DEVICE_REFRESH);
-    eventSubjectSet.add(JajukEvents.SYNC_TREE_TABLE);
     eventSubjectSet.add(JajukEvents.CUSTOM_PROPERTIES_ADD);
     eventSubjectSet.add(JajukEvents.CUSTOM_PROPERTIES_REMOVE);
     eventSubjectSet.add(JajukEvents.RATE_CHANGED);
@@ -395,6 +403,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
     eventSubjectSet.add(JajukEvents.PARAMETERS_CHANGE);
     eventSubjectSet.add(JajukEvents.VIEW_REFRESH_REQUEST);
     eventSubjectSet.add(JajukEvents.TABLE_SELECTION_CHANGED);
+    eventSubjectSet.add(JajukEvents.TREE_SELECTION_CHANGED);
     return eventSubjectSet;
   }
 
@@ -451,29 +460,27 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
             jtable.clearSelection();
             // force filter to refresh
             applyFilter(sAppliedCriteria, sAppliedFilter);
-          } else if (JajukEvents.SYNC_TREE_TABLE.equals(subject)) {
-            // Consume only events from the same perspective and different view
-            // (for table/tree synchronization)
-            Properties details = event.getDetails();
-            if (details != null) {
-              String sourcePerspective = details.getProperty(Const.DETAIL_PERSPECTIVE);
-              String sourceView = details.getProperty(Const.DETAIL_VIEW);
-              if (
-              // Check that the event comes from the same perspective
-              !(sourcePerspective.equals(getPerspective().getID()))
-              // Check that the event comes from a different view
-                  || sourceView.equals(getID())
-                  // Check that the event comes from a tree view
-                  || sourceView.indexOf("Tree") == -1) {
-                return;
+          } else if (JajukEvents.TREE_SELECTION_CHANGED.equals(subject)) {
+            // Check if the sync tree table option is set for this tree
+            if (jtbSync.isSelected()) {
+              // Consume only events from the same perspective and different view
+              // (for table/tree synchronization)
+              Properties details = event.getDetails();
+              if (details != null) {
+                String sourcePerspective = details.getProperty(Const.DETAIL_PERSPECTIVE);
+                String sourceView = details.getProperty(Const.DETAIL_VIEW);
+                if (!(sourcePerspective.equals(getPerspective().getID()))
+                    || sourceView.equals(getID())) {
+                  return;
+                }
               }
+              // Update model tree selection
+              model.setTreeSelection((Set<Item>) details.get(Const.DETAIL_SELECTION));
+              // force redisplay to apply the filter
+              jtable.clearSelection();
+              // force filter to refresh
+              applyFilter(sAppliedCriteria, sAppliedFilter);
             }
-            // Update model tree selection
-            model.setTreeSelection((Set<Item>) event.getDetails().get(Const.DETAIL_SELECTION));
-            // force redisplay to apply the filter
-            jtable.clearSelection();
-            // force filter to refresh
-            applyFilter(sAppliedCriteria, sAppliedFilter);
           } else if (JajukEvents.PARAMETERS_CHANGE.equals(subject)) {
             // force redisplay to apply the filter
             jtable.clearSelection();
@@ -534,22 +541,6 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
           } else if (JajukEvents.TABLE_SELECTION_CHANGED.equals(subject)) {
             // Refresh the preference menu according to the selection
             pjmTracks.resetUI(jtable.getSelection());
-            // Notify tree/table sync. Note that the tree send all the selection
-            // model to the table while the table only send a single selected
-            // item because we want to expand only the first item selected in
-            // table.
-            if (Conf.getBoolean(Const.CONF_OPTIONS_SYNC_TABLE_TREE)
-            // Ignore this event if the new selection is <none>
-                && jtable.getSelection().size() > 0) {
-              // if table is synchronized with tree, notify the
-              // selection change
-              Properties properties = new Properties();
-              properties.put(Const.DETAIL_SELECTION, jtable.getSelection().get(0));
-              properties.put(Const.DETAIL_PERSPECTIVE, PerspectiveManager.getCurrentPerspective()
-                  .getID());
-              properties.put(Const.DETAIL_VIEW, getID());
-              ObservationManager.notify(new JajukEvent(JajukEvents.SYNC_TREE_TABLE, properties));
-            }
           }
         } catch (Exception e) {
           Log.error(e);
@@ -561,7 +552,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
   }
 
   /**
-   * Add keystroke support on the tree.
+   * Add keystroke support.
    */
   private void setKeystrokes() {
     jtable.putClientProperty(Const.DETAIL_SELECTION, jtable.getSelection());
@@ -638,8 +629,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
   /*
    * (non-Javadoc)
    * 
-   * @seejavax.swing.event.TableModelListener#tableChanged(javax.swing.event.
-   * TableModelEvent)
+   * @seejavax.swing.event.TableModelListener#tableChanged(javax.swing.event. TableModelEvent)
    */
   public void tableChanged(TableModelEvent e) {
     // Check the table change event has not been generated by a
@@ -691,8 +681,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
   /*
    * (non-Javadoc)
    * 
-   * @see
-   * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+   * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
    */
   public void actionPerformed(final ActionEvent e) {
     // Editable state

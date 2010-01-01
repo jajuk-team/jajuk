@@ -288,9 +288,9 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
     // Expansion analyzed to keep expended state
     jtree.addTreeExpansionListener(new FilesTreeExpansionListener());
     jtree.setAutoscrolls(true);
-
     jspTree = new JScrollPane(jtree);
     jspTree.setBorder(BorderFactory.createEmptyBorder(0, 1, 0, 0));
+
     // DND support
     new TreeTransferHandler(jtree, DnDConstants.ACTION_COPY_OR_MOVE, true);
 
@@ -308,8 +308,10 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
         lp.removeAll();
         jspTree.setBounds(0, 0, getWidth() - 5, getHeight() - 5);
         lp.add(jspTree, JLayeredPane.DEFAULT_LAYER);
-        jbCollapseAll.setBounds(getWidth() - 50, 0, 20, 20);
-        lp.add(jbCollapseAll, JLayeredPane.PALETTE_LAYER);
+        jtbSync.setBounds(getWidth() - 80, 0, 25, 22);
+        lp.add(jtbSync, JLayeredPane.POPUP_LAYER);
+        jbCollapseAll.setBounds(getWidth() - 50, 0, 23, 22);
+        lp.add(jbCollapseAll, JLayeredPane.POPUP_LAYER);
         lp.revalidate();
         lp.repaint();
       }
@@ -346,8 +348,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
   /*
    * (non-Javadoc)
    * 
-   * @see
-   * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+   * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
    */
   public void actionPerformed(final ActionEvent e) {
     // multiple selection on properties(note we handle files and dirs
@@ -496,14 +497,25 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
    */
   @Override
   void scrollTo(Item item) {
-    // make sure the main element is expanded
+    // make sure the main element is expanded, for the expand method to actually work (JRE doc
+    // is
+    // unclear on this), we have to expand all parent nodes explicitely, it doesn't work
+    // recursively.
     jtree.expandRow(0);
 
     // item is etiher a file or a playlist
     for (int i = 0; i < jtree.getRowCount(); i++) {
       Object o = jtree.getPathForRow(i).getLastPathComponent();
-      if (o instanceof DirectoryNode) {
-        Directory testedDirectory = ((DirectoryNode) o).getDirectory();
+
+      if (o instanceof DirectoryNode || o instanceof DeviceNode) {
+        Directory testedDirectory = null;
+        // If the node is a device, search its root directory and check it
+        if (o instanceof DeviceNode) {
+          Device testedDevice = ((DeviceNode) o).getDevice();
+          testedDirectory = testedDevice.getRootDirectory();
+        } else {
+          testedDirectory = ((DirectoryNode) o).getDirectory();
+        }
         if (item instanceof File) {
           File file = (File) item;
           if (file.hasAncestor(testedDirectory)) {
@@ -785,8 +797,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
     /*
      * (non-Javadoc)
      * 
-     * @see
-     * javax.swing.event.TreeSelectionListener#valueChanged(javax.swing.event
+     * @see javax.swing.event.TreeSelectionListener#valueChanged(javax.swing.event
      * .TreeSelectionEvent)
      */
     public void valueChanged(TreeSelectionEvent e) {
@@ -845,16 +856,14 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
         sbOut.append(lSize).append(Messages.getString("FilesTreeView.54"));
       }
       InformationJPanel.getInstance().setSelection(sbOut.toString());
-      if (Conf.getBoolean(Const.CONF_OPTIONS_SYNC_TABLE_TREE)) {
-        // if table is synchronized with tree, notify the
-        // selection change
-        Properties properties = new Properties();
-        properties.put(Const.DETAIL_SELECTION, selectedRecursively);
-        properties
-            .put(Const.DETAIL_PERSPECTIVE, PerspectiveManager.getCurrentPerspective().getID());
-        properties.put(Const.DETAIL_VIEW, getID());
-        ObservationManager.notify(new JajukEvent(JajukEvents.SYNC_TREE_TABLE, properties));
-      }
+
+      // Notify the tree selection change (used by tree/table sync)
+      Properties properties = new Properties();
+      properties.put(Const.DETAIL_SELECTION, selectedRecursively);
+      properties.put(Const.DETAIL_PERSPECTIVE, PerspectiveManager.getCurrentPerspective().getID());
+      properties.put(Const.DETAIL_VIEW, getID());
+      ObservationManager.notify(new JajukEvent(JajukEvents.TREE_SELECTION_CHANGED, properties));
+
       // Enable CDDB retagging only for a single directory selection
       jmiCDDBWizard.setEnabled(alSelected.size() == 1 && alSelected.get(0) instanceof Directory);
 
@@ -886,8 +895,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
     /*
      * (non-Javadoc)
      * 
-     * @see
-     * javax.swing.event.TreeExpansionListener#treeCollapsed(javax.swing.event
+     * @see javax.swing.event.TreeExpansionListener#treeCollapsed(javax.swing.event
      * .TreeExpansionEvent)
      */
     public void treeCollapsed(TreeExpansionEvent event) {
@@ -904,8 +912,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
     /*
      * (non-Javadoc)
      * 
-     * @see
-     * javax.swing.event.TreeExpansionListener#treeExpanded(javax.swing.event
+     * @see javax.swing.event.TreeExpansionListener#treeExpanded(javax.swing.event
      * .TreeExpansionEvent)
      */
     public void treeExpanded(TreeExpansionEvent event) {
@@ -1025,9 +1032,7 @@ class DeviceNode extends LazyLoadingTreeNode {
   /*
    * (non-Javadoc)
    * 
-   * @see
-   * org.jajuk.ui.widgets.LazyLoadingTreeNode#loadChildren(javax.swing.tree.
-   * DefaultTreeModel)
+   * @see org.jajuk.ui.widgets.LazyLoadingTreeNode#loadChildren(javax.swing.tree. DefaultTreeModel)
    */
   @Override
   public MutableTreeNode[] loadChildren(DefaultTreeModel model) {
@@ -1077,8 +1082,7 @@ class DirectoryNode extends LazyLoadingTreeNode {
   /*
    * (non-Javadoc)
    * 
-   * @see org.jajuk.ui.helpers.LazyLoadingTreeNode#loadChildren(javax.swing.tree
-   * .DefaultTreeModel)
+   * @see org.jajuk.ui.helpers.LazyLoadingTreeNode#loadChildren(javax.swing.tree .DefaultTreeModel)
    */
   @Override
   public MutableTreeNode[] loadChildren(DefaultTreeModel model) {

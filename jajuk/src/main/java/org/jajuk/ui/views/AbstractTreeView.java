@@ -54,6 +54,7 @@ import org.jajuk.ui.actions.JajukActions;
 import org.jajuk.ui.helpers.LazyLoadingTreeExpander;
 import org.jajuk.ui.helpers.PreferencesJMenu;
 import org.jajuk.ui.widgets.JajukToggleButton;
+import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
@@ -166,7 +167,7 @@ public abstract class AbstractTreeView extends ViewAdapter {
     eventSubjectSet.add(JajukEvents.DEVICE_REFRESH);
     eventSubjectSet.add(JajukEvents.CDDB_WIZARD);
     eventSubjectSet.add(JajukEvents.PARAMETERS_CHANGE);
-    eventSubjectSet.add(JajukEvents.SYNC_TREE_TABLE);
+    eventSubjectSet.add(JajukEvents.TABLE_SELECTION_CHANGED);
     return eventSubjectSet;
   }
 
@@ -234,8 +235,10 @@ public abstract class AbstractTreeView extends ViewAdapter {
     jmiCopyURL.putClientProperty(Const.DETAIL_CONTENT, alSelected);
     pjmTracks = new PreferencesJMenu(alSelected);
 
-    // Create the sync toggle button
-    jtbSync = new JajukToggleButton();
+    // Create the sync toggle button and restore its state
+    jtbSync = new JajukToggleButton(ActionManager.getAction(JajukActions.SYNC_TREE_TABLE));
+    jtbSync.putClientProperty(Const.DETAIL_VIEW, getID());
+    jtbSync.setSelected(Conf.getBoolean(Const.CONF_SYNC_TABLE_TREE + "." + getID()));
 
     // Create the collapse all button, no need to a dedicated Action here as it
     // is used only in this class
@@ -351,25 +354,36 @@ public abstract class AbstractTreeView extends ViewAdapter {
       sw.execute();
       // Make sure to refresh cells (useful to remove highlighters for ie)
       repaint();
-    } else if (JajukEvents.SYNC_TREE_TABLE.equals(subject)) {
-      // Consume only events from the same perspective and different view
-      // (for table/tree synchronization)
-      Properties details = event.getDetails();
-      if (details != null
-          && (!(details.getProperty(Const.DETAIL_PERSPECTIVE).equals(getPerspective().getID())) || details
-              .getProperty(Const.DETAIL_VIEW).equals(getID()))) {
-        return;
-      }
-      final Item item = (Item) (details.get(Const.DETAIL_SELECTION));
-      SwingUtilities.invokeLater(new Runnable() {
-
-        @Override
-        public void run() {
-          scrollTo(item);
+    } else if (JajukEvents.TABLE_SELECTION_CHANGED.equals(subject)) {
+      // Check if the sync tree table option is set for this tree
+      if (Conf.getBoolean(Const.CONF_SYNC_TABLE_TREE + "." + getID())) {
+        // Consume only events from the same perspective and different view
+        // (for table/tree synchronization)
+        Properties details = event.getDetails();
+        if (details != null) {
+          String sourcePerspective = details.getProperty(Const.DETAIL_PERSPECTIVE);
+          IView sourceView = (IView) details.get(Const.DETAIL_VIEW);
+          if (!(sourcePerspective.equals(getPerspective().getID()))
+              || sourceView.getID().equals(getID())) {
+            return;
+          }
         }
-      });
-
+        @SuppressWarnings("unchecked")
+        List<Item> selection = (List<Item>) details.get(Const.DETAIL_SELECTION);
+        if (selection.size() == 0) {
+          return;
+        }
+        // for tree/table consideration, we only expand the first found item, we don't
+        // support
+        // multiple expands (useful?)
+        final Item item = selection.get(0);
+        SwingUtilities.invokeLater(new Runnable() {
+          @Override
+          public void run() {
+            scrollTo(item);
+          }
+        });
+      }
     }
   }
-
 }

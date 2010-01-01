@@ -52,11 +52,17 @@ public class TracksTableModel extends JajukTableModel {
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
+  /** Associated view ID */
+  private String viewID;
+
   /**
    * Model constructor.
+   * 
+   * @param viewID Associated view ID
    */
-  public TracksTableModel() {
+  public TracksTableModel(String viewID) {
     super(15);
+    this.viewID = viewID;
     setEditable(Conf.getBoolean(Const.CONF_TRACKS_TABLE_EDITION));
     // Columns names
     // First column is play icon, need to set a space character
@@ -113,8 +119,11 @@ public class TracksTableModel extends JajukTableModel {
     }
   }
 
-  /* (non-Javadoc)
-   * @see org.jajuk.ui.helpers.JajukTableModel#populateModel(java.lang.String, java.lang.String, java.util.List)
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.jajuk.ui.helpers.JajukTableModel#populateModel(java.lang.String, java.lang.String,
+   * java.util.List)
    */
   @Override
   public void populateModel(String property, String sPattern, List<String> columnsToShow) {
@@ -122,15 +131,16 @@ public class TracksTableModel extends JajukTableModel {
     // This should be monitor file manager to avoid NPE when changing items
     List<Track> alToShow = TrackManager.getInstance().getTracks();
 
-    // Filter mounted files if needed and apply sync table with tree
+    // / Filter mounted files if needed and apply sync table with tree
     // option if needed
-    final boolean bSyncWithTreeOption = Conf.getBoolean(Const.CONF_OPTIONS_SYNC_TABLE_TREE);
+    final boolean syncTreeTable = Conf.getBoolean(Const.CONF_SYNC_TABLE_TREE + "." + viewID);
+
     CollectionUtils.filter(alToShow, new Predicate() {
 
       public boolean evaluate(Object o) {
         Track track = (Track) o;
         // show it if no sync option or if item is in the selection
-        boolean bShowWithTree = !bSyncWithTreeOption
+        boolean bShowWithTree = !syncTreeTable
         // tree selection = null means none election have been
             // selected in tree so far
             || treeSelection == null
@@ -143,14 +153,15 @@ public class TracksTableModel extends JajukTableModel {
     // Filter values using given pattern
     Filter filter = new Filter(property, sPattern, true, Conf.getBoolean(Const.CONF_REGEXP));
     Filter.filterItems(alToShow, filter);
-    
+
     // sort by album
     long before = System.currentTimeMillis();
     Collections.sort(alToShow, new TrackComparator(TrackComparatorType.ALBUM));
-    
-    //Collections.sort(alToShow, new TrackComparator(TrackComparatorType.ALBUM));
-    Log.debug("Sorting of " + alToShow.size() + " elements took: " + (System.currentTimeMillis()-before) + " mseconds");
-    
+
+    // Collections.sort(alToShow, new TrackComparator(TrackComparatorType.ALBUM));
+    Log.debug("Sorting of " + alToShow.size() + " elements took: "
+        + (System.currentTimeMillis() - before) + " mseconds");
+
     Iterator<Track> it = alToShow.iterator();
     int iColNum = iNumberStandardCols + TrackManager.getInstance().getCustomProperties().size();
     iRowNum = alToShow.size();

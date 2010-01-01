@@ -130,9 +130,6 @@ public final class JajukJMenuBar extends JMenuBar implements Observer {
   JCheckBoxMenuItem jcbShowPopups;
 
   /** DOCUMENT_ME. */
-  JCheckBoxMenuItem jcbSyncTableTree;
-
-  /** DOCUMENT_ME. */
   JCheckBoxMenuItem jcbNoneInternetAccess;
 
   /** DOCUMENT_ME. */
@@ -227,7 +224,7 @@ public final class JajukJMenuBar extends JMenuBar implements Observer {
 
   /** DOCUMENT_ME. */
   JButton jbGC;
-  
+
   /** DOCUMENT_ME. */
   JButton jbSlim;
 
@@ -367,18 +364,6 @@ public final class JajukJMenuBar extends JMenuBar implements Observer {
       }
     });
 
-    jcbSyncTableTree = new JCheckBoxMenuItem(Messages.getString("ParameterView.183"));
-    jcbSyncTableTree.setToolTipText(Messages.getString("ParameterView.184"));
-    jcbSyncTableTree.setSelected(Conf.getBoolean(Const.CONF_OPTIONS_SYNC_TABLE_TREE));
-    jcbSyncTableTree.addActionListener(new ActionListener() {
-      public void actionPerformed(ActionEvent e) {
-        Conf.setProperty(Const.CONF_OPTIONS_SYNC_TABLE_TREE, Boolean.toString(jcbSyncTableTree
-            .isSelected()));
-        // force parameter view to take this into account
-        ObservationManager.notify(new JajukEvent(JajukEvents.PARAMETERS_CHANGE));
-      }
-    });
-
     jcbNoneInternetAccess = new JCheckBoxMenuItem(Messages.getString("ParameterView.264"));
     jcbNoneInternetAccess.setToolTipText(Messages.getString("ParameterView.265"));
     jcbNoneInternetAccess.setSelected(Conf.getBoolean(Const.CONF_NETWORK_NONE_INTERNET_ACCESS));
@@ -393,7 +378,6 @@ public final class JajukJMenuBar extends JMenuBar implements Observer {
 
     configuration.add(jmiUnmounted);
     configuration.add(jcbShowPopups);
-    configuration.add(jcbSyncTableTree);
     configuration.add(jcbNoneInternetAccess);
     configuration.addSeparator();
     configuration.add(jmiDJ);
@@ -437,7 +421,7 @@ public final class JajukJMenuBar extends JMenuBar implements Observer {
     // Apply mnemonics (Alt + first char of the menu keystroke)
     applyMnemonics();
 
-    if(SessionService.isTestMode()) {
+    if (SessionService.isTestMode()) {
       jbGC = new JajukButton(ActionManager.getAction(JajukActions.GC));
     }
     jbSlim = new JajukButton(ActionManager.getAction(JajukActions.SLIM_JAJUK));
@@ -445,7 +429,7 @@ public final class JajukJMenuBar extends JMenuBar implements Observer {
 
     JMenuBar eastmenu = new JMenuBar();
     // only show GC-button in test-mode
-    if(SessionService.isTestMode()) {
+    if (SessionService.isTestMode()) {
       eastmenu.add(jbGC);
     }
     eastmenu.add(jbSlim);
@@ -475,7 +459,8 @@ public final class JajukJMenuBar extends JMenuBar implements Observer {
         }
         // add the new release label if required
         if (UpgradeManager.getNewVersionName() != null) {
-          jlUpdate = new JLabel(" ", IconLoader.getIcon(JajukIcons.UPDATE_MANAGER), SwingConstants.RIGHT);
+          jlUpdate = new JLabel(" ", IconLoader.getIcon(JajukIcons.UPDATE_MANAGER),
+              SwingConstants.RIGHT);
           String newRelease = UpgradeManager.getNewVersionName();
           if (newRelease != null) {
             jlUpdate.setToolTipText(Messages.getString("UpdateManager.0") + newRelease
@@ -508,7 +493,9 @@ public final class JajukJMenuBar extends JMenuBar implements Observer {
     return jjmb;
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see org.jajuk.events.Observer#getRegistrationKeys()
    */
   public Set<JajukEvents> getRegistrationKeys() {
@@ -541,11 +528,10 @@ public final class JajukJMenuBar extends JMenuBar implements Observer {
     SwingUtilities.invokeLater(new Runnable() {
 
       public void run() {
-        if (JajukEvents.PARAMETERS_CHANGE.equals(event.getSubject()) ||
-            JajukEvents.SLIMBAR_VISIBILTY_CHANGED.equals(event.getSubject())) {
+        if (JajukEvents.PARAMETERS_CHANGE.equals(event.getSubject())
+            || JajukEvents.SLIMBAR_VISIBILTY_CHANGED.equals(event.getSubject())) {
           jcbShowPopups.setSelected(Conf.getBoolean(Const.CONF_SHOW_POPUPS));
           jmiUnmounted.setSelected(Conf.getBoolean(Const.CONF_OPTIONS_HIDE_UNMOUNTED));
-          jcbSyncTableTree.setSelected(Conf.getBoolean(Const.CONF_OPTIONS_SYNC_TABLE_TREE));
           jcbNoneInternetAccess.setSelected(Conf
               .getBoolean(Const.CONF_NETWORK_NONE_INTERNET_ACCESS));
         }

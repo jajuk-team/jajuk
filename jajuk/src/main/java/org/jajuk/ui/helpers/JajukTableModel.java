@@ -82,7 +82,7 @@ public abstract class JajukTableModel extends DefaultTableModel {
 
   /** DOCUMENT_ME. */
   protected IconLabel play_icon = null;
-  
+
   /** DOCUMENT_ME. */
   protected IconLabel unmount_play_icon = null;
 
@@ -138,7 +138,9 @@ public abstract class JajukTableModel extends DefaultTableModel {
     oItems[iRow] = item;
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see javax.swing.table.DefaultTableModel#getValueAt(int, int)
    */
   @Override
@@ -150,7 +152,9 @@ public abstract class JajukTableModel extends DefaultTableModel {
     return oValues[rowIndex][columnIndex];
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see javax.swing.table.DefaultTableModel#setValueAt(java.lang.Object, int, int)
    */
   @Override
@@ -182,7 +186,9 @@ public abstract class JajukTableModel extends DefaultTableModel {
     }
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see javax.swing.table.DefaultTableModel#getColumnName(int)
    */
   @Override
@@ -201,7 +207,9 @@ public abstract class JajukTableModel extends DefaultTableModel {
     return idList.get(column);
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see javax.swing.table.DefaultTableModel#getRowCount()
    */
   @Override
@@ -210,7 +218,9 @@ public abstract class JajukTableModel extends DefaultTableModel {
     return iRowNum;
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see javax.swing.table.DefaultTableModel#isCellEditable(int, int)
    */
   @Override
@@ -218,7 +228,9 @@ public abstract class JajukTableModel extends DefaultTableModel {
     return bEditable && bCellEditable[rowIndex][columnIndex];
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see javax.swing.table.AbstractTableModel#getColumnClass(int)
    */
   @Override
@@ -236,7 +248,7 @@ public abstract class JajukTableModel extends DefaultTableModel {
    * 
    * @param sProperty Property (column) to filter
    * @param sPattern pattern
-   * @param columnsToShow List of elements to show in the table (liek files,hits...). This
+   * @param columnsToShow List of elements to show in the table (like files,hits...). This
    * is useful for models for memory performances as model doesn't fill
    * values for hidden columns
    */

@@ -201,9 +201,6 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
   private JCheckBox jcbDisplayUnmounted;
 
   /** DOCUMENT_ME. */
-  private JCheckBox jcbSyncTableTree;
-
-  /** DOCUMENT_ME. */
   private JCheckBox jcbAudioScrobbler;
 
   /** DOCUMENT_ME. */
@@ -460,8 +457,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
   /*
    * (non-Javadoc)
    * 
-   * @see
-   * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+   * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
    */
   public void actionPerformed(final ActionEvent e) {
 
@@ -608,8 +604,6 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
     Conf.setProperty(Const.CONF_OPTIONS_PUSH_ON_CLICK, Boolean.toString(jcbDefaultActionClick
         .isSelected()));
     Conf.setProperty(Const.CONF_OPTIONS_DEFAULT_ACTION_DROP, Boolean.toString(jcbDefaultActionDrop
-        .isSelected()));
-    Conf.setProperty(Const.CONF_OPTIONS_SYNC_TABLE_TREE, Boolean.toString(jcbSyncTableTree
         .isSelected()));
     Conf.setProperty(Const.CONF_OPTIONS_HOTKEYS, Boolean.toString(jcbHotkeys.isSelected()));
     Conf.setProperty(Const.CONF_LASTFM_ENABLE, Boolean.toString(jcbAudioScrobbler.isSelected()));
@@ -915,8 +909,6 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
       public void actionPerformed(ActionEvent e) {
         // Store configuration
         Conf.setProperty(Const.CONF_SHOW_POPUPS, Boolean.toString(jcbShowPopups.isSelected()));
-        Conf.setProperty(Const.CONF_OPTIONS_SYNC_TABLE_TREE, Boolean.toString(jcbSyncTableTree
-            .isSelected()));
         Conf.setProperty(Const.CONF_NETWORK_NONE_INTERNET_ACCESS, Boolean
             .toString(jcbNoneInternetAccess.isSelected()));
         // Launch an event that can be trapped by the tray to
@@ -1221,10 +1213,6 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
     jcbDisplayUnmounted.setToolTipText(Messages.getString("ParameterView.35"));
     jcbDisplayUnmounted.addActionListener(alUI);
 
-    jcbSyncTableTree = new JCheckBox(Messages.getString("ParameterView.183"));
-    jcbSyncTableTree.setToolTipText(Messages.getString("ParameterView.184"));
-    jcbSyncTableTree.addActionListener(alUI);
-
     jcbDefaultActionClick = new JCheckBox(Messages.getString("ParameterView.179"));
     jcbDefaultActionClick.setToolTipText(Messages.getString("ParameterView.180"));
 
@@ -1270,7 +1258,6 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
     jpOptions.add(jcbDisplayUnmounted);
     jpOptions.add(jcbDefaultActionClick);
     jpOptions.add(jcbDefaultActionDrop);
-    jpOptions.add(jcbSyncTableTree);
     jpOptions.add(jcbHotkeys);
     jpOptions.add(jcbUseParentDir);
     jpOptions.add(jcbDropPlayedTracksFromQueue);
@@ -1704,9 +1691,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
   /*
    * (non-Javadoc)
    * 
-   * @see
-   * javax.swing.event.ChangeListener#stateChanged(javax.swing.event.ChangeEvent
-   * )
+   * @see javax.swing.event.ChangeListener#stateChanged(javax.swing.event.ChangeEvent )
    */
   public void stateChanged(final ChangeEvent e) {
     // when changing tab, store it for future jajuk sessions
@@ -1771,7 +1756,6 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
     jcbDefaultActionDrop.setSelected(Conf.getBoolean(Const.CONF_OPTIONS_DEFAULT_ACTION_DROP));
     jcbHotkeys.setSelected(Conf.getBoolean(Const.CONF_OPTIONS_HOTKEYS));
 
-    jcbSyncTableTree.setSelected(Conf.getBoolean(Const.CONF_OPTIONS_SYNC_TABLE_TREE));
     String rightLanguageDesc = LocaleManager.getDescForLocale(Conf
         .getString(Const.CONF_OPTIONS_LANGUAGE));
     // Select the right language
@@ -1871,16 +1855,18 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
     jsPerspectiveSize.setValue(Conf.getInt(Const.CONF_PERSPECTIVE_ICONS_SIZE));
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see java.awt.Container#removeAll()
    */
   @Override
   public void removeAll() {
     // We have to override removeAll() to work around a memory leak related to SearchBox..
-    
+
     // first look for any JXBusyLabel and stop it
     sbSearch.close();
-    
+
     super.removeAll();
   }
 }

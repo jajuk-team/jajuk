@@ -63,7 +63,9 @@ public class FilesTableView extends AbstractTableView implements TwoStepsDisplay
     return Messages.getString("FilesTableView.0");
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see org.jajuk.ui.views.IView#initUI()
    */
   public void initUI() {
@@ -112,7 +114,7 @@ public class FilesTableView extends AbstractTableView implements TwoStepsDisplay
   @Override
   public synchronized JajukTableModel populateTable() {
     // model creation
-    return new FilesTableModel();
+    return new FilesTableModel(getID());
   }
 
   /*

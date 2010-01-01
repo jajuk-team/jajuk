@@ -171,7 +171,6 @@ public interface Const {
   /** Default auto-refresh delay for directory-type devices (mins). */
   double DEFAULT_REFRESH_INTERVAL_PLAYER = 3.0d;
 
-  
   /**
    * The time we wait for mplayer to start up in ms. It can take some time on
    * slow or heavily loaded machines...
@@ -411,7 +410,7 @@ public interface Const {
   String VARIOUS_ARTIST = "various_artist";
 
   String COVER_NONE = "none";
-  
+
   // images
   /** DOCUMENT_ME. */
   URL IMAGES_SPLASHSCREEN = UtilSystem.getResource("images/included/jajuk-splashscreen.jpg");
@@ -837,8 +836,8 @@ public interface Const {
   /** Default action (play or push) when dropping on an item. */
   String CONF_OPTIONS_DEFAULT_ACTION_DROP = "jajuk.options.default_action_drop";
 
-  /** Synchronize table and tree views. */
-  String CONF_OPTIONS_SYNC_TABLE_TREE = "jajuk.options.sync_table_tree";
+  /** Table / tree sync option prefix. */
+  String CONF_SYNC_TABLE_TREE = "jajuk.sync_table_tree";
 
   /** Notificator type. */
   String CONF_UI_NOTIFICATOR_TYPE = "jajuk.options.notificator_type";
@@ -1513,8 +1512,8 @@ public interface Const {
   String XML_STREAM = "stream";
 
   /*
-   * Reserved XML tags for property names (note that a user can choose a
-   * property name equals to meta information attributes names without pbm)
+   * Reserved XML tags for property names (note that a user can choose a property name equals to
+   * meta information attributes names without pbm)
    */
   /** DOCUMENT_ME. */
   String[] XML_RESERVED_ATTRIBUTE_NAMES = { XML_NAME, XML_ID, XML_TYPE_EXTENSION,

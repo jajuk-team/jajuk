@@ -120,7 +120,7 @@ public final class ActionManager {
 
     // JajukJMenuBar: Help Menu
     installAction(JajukActions.HELP_REQUIRED, new HelpRequiredAction(), false);
-    installAction(JajukActions.SHOW_ABOUT, new ShowAboutAction(), false);    
+    installAction(JajukActions.SHOW_ABOUT, new ShowAboutAction(), false);
     installAction(JajukActions.SHOW_ACTIVATE_TAGS, new ShowActivateTagsAction(), false);
     // Install this action only if Desktop class is supported, it is used to
     // open default mail client
@@ -169,6 +169,7 @@ public final class ActionManager {
     installAction(JajukActions.PLAY_DIRECTORY_SELECTION, new PlayDirectorySelectionAction(), false);
     installAction(JajukActions.CDDB_SELECTION, new CDDBSelectionAction(), false);
     installAction(JajukActions.SAVE_AS, new SaveAsAction(), false);
+    installAction(JajukActions.SYNC_TREE_TABLE, new SyncTreeTableAction(), false);
 
     // Preferences
     installAction(JajukActions.BAN, new BanCurrentAction(), false);

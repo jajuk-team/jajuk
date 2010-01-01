@@ -85,7 +85,7 @@ public enum JajukActions {
 
   /** Used when defaults settings need to be restored. */
   VIEW_RESTORE_DEFAULTS,
-  
+
   /** Used when defaults settings for all perspectives. */
   ALL_VIEW_RESTORE_DEFAULTS,
 
@@ -146,7 +146,7 @@ public enum JajukActions {
   /** Used when the mute state changed. */
   MUTE_STATE,
 
-  /** Used when table and tree views need to be synched. */
+  /** Used when table and tree views need to be synchronized. */
   SYNC_TREE_TABLE,
 
   /** Used when history should be cleared. */
@@ -181,13 +181,13 @@ public enum JajukActions {
 
   /** Used to display a tip of the day window. */
   TIP_OF_THE_DAY,
-  
+
   /** Used to check for jajuk updates. */
   CHECK_FOR_UPDATES,
 
   /** Used to display an about dialog. */
   SHOW_ABOUT,
-  
+
   /** Used to display an tag configure dialog. */
   SHOW_ACTIVATE_TAGS,
 
@@ -235,136 +235,136 @@ public enum JajukActions {
 
   /** Used to configure ambiences. */
   CONFIGURE_AMBIENCES,
-  
+
   /** Used to configure webradios. */
   CONFIGURE_WEBRADIOS,
-  
+
   /** Used to configure the application. */
   OPTIONS,
-  
+
   /** Used to show or hide unmounted devices. */
   UNMOUNTED,
-  
+
   /** Create a report. */
   CREATE_REPORT,
-  
+
   /** Copy to clipboard data from UtilFeatures.copyData */
   COPY_TO_CLIPBOARD,
-  
+
   /** Open directory in default explorer program. */
   OPEN_EXPLORER,
-  
+
   /** Launch in an external browser the url given in UtilFeatures.url */
   LAUNCH_IN_BROWSER,
-  
+
   /** Launch a web radio. */
   WEB_RADIO,
-  
+
   /** Used to delete selected files/directories from disk. */
   DELETE,
-  
+
   /** Used to move selected files and directories. */
   PASTE,
-  
+
   /** Used to refresh a directory. */
   REFRESH,
-  
+
   /** Used to find duplicate files. */
   FIND_DUPLICATE_FILES,
-  
+
   /** Used to set alarm clock. */
   ALARM_CLOCK,
-  
+
   /** Show properties on a single or a selection of items. */
   SHOW_PROPERTIES,
-  
+
   /** Play a selection. */
   PLAY_SELECTION,
-  
+
   /** Play randomly a selection. */
   PLAY_SHUFFLE_SELECTION,
-  
+
   /** Play a selection in a loop. */
   PLAY_REPEAT_SELECTION,
-  
+
   /** Push a selection. */
   PUSH_SELECTION,
-  
+
   /** Push a selection to the front. */
   PUSH_FRONT_SELECTION,
-  
+
   /** Bookmark selection. */
   BOOKMARK_SELECTION,
-  
+
   /** Play album for selection. */
   PLAY_ALBUM_SELECTION,
-  
+
   /** Play artist for selection. */
   PLAY_AUTHOR_SELECTION,
-  
+
   /** Play full directory for selection. */
   PLAY_DIRECTORY_SELECTION,
-  
+
   /** Search online tags. */
   CDDB_SELECTION,
-  
+
   /** Show album details. */
   SHOW_ALBUM_DETAILS,
-  
+
   /** Used to cut and move Selected Items. */
   CUT,
-  
+
   /** Used to copy and move Selected Items. */
   COPY,
-  
+
   /** Used to rename files/directories. */
   RENAME,
-  
+
   /** Used to create New Folder. */
   NEW_FOLDER,
-  
+
   /** Used to create a slim interface for Jajuk. */
   SLIM_JAJUK,
-  
+
   /** Used to perform GC. */
   GC,
-  
+
   /** Save as. */
   SAVE_AS,
-  
+
   /** Ban current item. */
   BAN,
-  
+
   /** Ban selection. */
   BAN_SELECTION,
-  
+
   /** Un-Ban selection. */
   UN_BAN_SELECTION,
-  
+
   /** Set adore preference to selection. */
   PREFERENCE_ADORE,
-  
+
   /** Set love preference to selection. */
   PREFERENCE_LOVE,
-  
+
   /** Set like preference to selection. */
   PREFERENCE_LIKE,
-  
+
   /** Set average preference to selection. */
   PREFERENCE_AVERAGE,
-  
+
   /** Set poor preference to selection. */
   PREFERENCE_POOR,
-  
+
   /** Set hate preference to selection. */
   PREFERENCE_HATE,
-  
+
   /** Set unset preference to selection. */
   PREFERENCE_UNSET,
-  
+
   /** Prepare party. */
   PREPARE_PARTY,
-  
+
   /** fullscreen. */
   FULLSCREEN_JAJUK
 
