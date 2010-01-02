@@ -661,8 +661,7 @@ public final class FileManager extends ItemManager {
       return null;
     }
     File filePrevious = null;
-    List<Item> alSortedFiles = new ArrayList<Item>(files);
-    int i = alSortedFiles.indexOf(file);
+    int i = files.indexOf(file);
     // test if this file is the very first one
     if (i == 0) {
       Messages.showErrorMessage(128);
@@ -671,7 +670,7 @@ public final class FileManager extends ItemManager {
     // look for a correct file from index to collection begin
     boolean bOk = false;
     for (int index = i - 1; index >= 0; index--) {
-      filePrevious = (File) alSortedFiles.get(index);
+      filePrevious = files.get(index);
       if (filePrevious.isReady()) { // file must be on a mounted
         // device not refreshing
         bOk = true;
