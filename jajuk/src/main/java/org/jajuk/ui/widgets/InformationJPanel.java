@@ -326,11 +326,18 @@ public final class InformationJPanel extends JXPanel implements Observer {
       setMessage(Messages.getString("CatalogView.5") + " " + album.getName2(),
           InformationJPanel.INFORMATIVE);
     } else {
-      final long timeToPlay = JajukTimer.getInstance().getTotalTimeToPlay();
       SwingUtilities.invokeLater(new Runnable() {
         public void run() {
           if (JajukEvents.HEART_BEAT.equals(subject) && !QueueModel.isStopped()
               && !Player.isPaused() && !QueueModel.isPlayingRadio()) {
+            final long timeToPlay;
+            if (QueueModel.containsRepeat()) {
+              // if repeat mode, total
+              // time has no sense
+              timeToPlay = -1;
+            } else {
+              timeToPlay = JajukTimer.getInstance().getTotalTimeToPlay();
+            }
             String sCurrentTotalMessage = UtilString.formatTimeBySec(timeToPlay);
             setTotalTimeMessage(sCurrentTotalMessage + " [" + QueueModel.getCountTracksLeft() + "]");
           } else if (JajukEvents.ZERO.equals(subject) || JajukEvents.PLAYER_STOP.equals(subject)) {

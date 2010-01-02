@@ -271,7 +271,7 @@ public class TrackPositionSliderToolbar extends JajukJToolbar implements ChangeL
               && !Player.isPaused()) {
             long length = JajukTimer.getInstance().getCurrentTrackTotalTime();
             long lTime = JajukTimer.getInstance().getCurrentTrackEllapsedTime();
-            int iPos = (int) (100 * JajukTimer.getInstance().getCurrentTrackPosition());
+            int iPos = (int) (100 * Player.getCurrentPosition());
             setCurrentTimeMessage(lTime, length);
             // Make sure to enable the slider
             if (!jsPosition.isEnabled()) {

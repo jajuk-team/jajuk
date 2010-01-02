@@ -26,11 +26,10 @@ import java.util.List;
 
 import org.jajuk.base.File;
 import org.jajuk.services.players.Player;
-import org.jajuk.services.players.QueueModel;
 import org.jajuk.services.players.StackItem;
 
 /**
- * This class is a convenient timer class, mainly for UI
+ * This class is a convenient class to sum up the remaining playing time of tracks, mainly for UI
  * <p>
  * Singleton
  * </p>.
@@ -46,7 +45,7 @@ public final class JajukTimer {
   /** A default heartbeat time in ms. */
   public static final int DEFAULT_HEARTBEAT = 800;
 
-  /** The Constant D_MS_HEARTBEAT.  DOCUMENT_ME */
+  /** The heartbeat for the Track Position Slider Toolbar. */
   public static final int D_MS_HEARTBEAT = 500;
 
   /**
@@ -70,7 +69,7 @@ public final class JajukTimer {
   /**
    * Add time of the given file.
    * 
-   * @param file DOCUMENT_ME
+   * @param file The file to read the duration from.
    */
   public void addTrackTime(File file) {
     if (file != null) {
@@ -81,7 +80,7 @@ public final class JajukTimer {
   /**
    * Add time of the given set of files.
    * 
-   * @param alFiles DOCUMENT_ME
+   * @param alFiles The list of StackItems to get the duration from the contained files.
    */
   public void addTrackTime(java.util.List<StackItem> alFiles) {
     Iterator<StackItem> it = alFiles.iterator();
@@ -101,7 +100,7 @@ public final class JajukTimer {
   /**
    * Remove time of the given file.
    * 
-   * @param file DOCUMENT_ME
+   * @param file The file to read the duration to remove from overall playing time.
    */
   public void removeTrackTime(File file) {
     if (file != null) {
@@ -112,7 +111,7 @@ public final class JajukTimer {
   /**
    * Remove time of the given set of files.
    * 
-   * @param alFiles DOCUMENT_ME
+   * @param alFiles The list of files which duration to remove from the overall playing time.
    */
   public void removeTrackTime(List<File> alFiles) {
     Iterator<File> it = alFiles.iterator();
@@ -125,21 +124,12 @@ public final class JajukTimer {
   }
 
   /**
-   * Gets the current track ellapsed time.
+   * Gets the current track elapsed time.
    * 
-   * @return Current track ellapsed time in secs
+   * @return Current track elapsed time in secs
    */
   public long getCurrentTrackEllapsedTime() {
     return Player.getElapsedTime() / 1000;
-  }
-
-  /**
-   * Gets the current track position.
-   * 
-   * @return Current track position in % (ex:0.2)
-   */
-  public float getCurrentTrackPosition() {
-    return Player.getCurrentPosition();
   }
 
   /**
@@ -158,11 +148,6 @@ public final class JajukTimer {
    * to play). Returns -1 if repeat mode
    */
   public long getTotalTimeToPlay() {
-    if (QueueModel.containsRepeat()) {
-      // if repeat mode, total
-      // time has no sense
-      return -1;
-    }
     return lTimeToPlay - getCurrentTrackEllapsedTime();
     // total time to play equals total time to play -
     // current track elapsed time
