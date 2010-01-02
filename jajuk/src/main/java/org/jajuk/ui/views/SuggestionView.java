@@ -272,6 +272,7 @@ public class SuggestionView extends ViewAdapter {
         busy2.setBusy(true);
         JXBusyLabel busy3 = new JXBusyLabel();
         busy3.setBusy(true);
+        // stop all existing busy labels before we add the new ones...
         stopAllBusyLabels();
         tabs.setComponentAt(0, UtilGUI.getCentredPanel(busy1));
         tabs.setComponentAt(1, UtilGUI.getCentredPanel(busy2));
@@ -370,6 +371,7 @@ public class SuggestionView extends ViewAdapter {
         busy1.setBusy(true);
         JXBusyLabel busy2 = new JXBusyLabel();
         busy2.setBusy(true);
+        // stop all existing busy labels before we add the new ones...
         stopAllBusyLabels();
         tabs.setComponentAt(3, UtilGUI.getCentredPanel(busy1));
         tabs.setComponentAt(4, UtilGUI.getCentredPanel(busy2));
