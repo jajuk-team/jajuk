@@ -27,6 +27,7 @@ import org.apache.commons.io.FileUtils;
 import org.jajuk.JUnitHelpers;
 import org.jajuk.JajukTestCase;
 import org.jajuk.base.Album;
+import org.jajuk.base.AlbumManager;
 import org.jajuk.base.Author;
 import org.jajuk.base.Device;
 import org.jajuk.base.Directory;
@@ -37,6 +38,7 @@ import org.jajuk.base.Track;
 import org.jajuk.base.Type;
 import org.jajuk.base.Year;
 import org.jajuk.services.core.SessionService;
+import org.jajuk.services.startup.StartupCollectionService;
 import org.jajuk.services.webradio.WebRadio;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
@@ -61,7 +63,10 @@ public class TestQueueModel extends JajukTestCase {
 
     // reset conf changes to default
     Conf.setProperty(Const.CONF_STATE_CONTINUE, "false");
-
+    Conf.setProperty(Const.CONF_DROP_PLAYED_TRACKS_FROM_QUEUE, "false");
+    Conf.setProperty(Const.CONF_STATE_CONTINUE, "false");
+    Conf.setProperty(Const.CONF_STATE_SHUFFLE, "false");
+    
     // remove any registered files
     for (File file : FileManager.getInstance().getFiles()) {
       FileManager.getInstance().removeFile(file);
@@ -114,7 +119,12 @@ public class TestQueueModel extends JajukTestCase {
 
   public void testResetAround() throws Exception {
     addItems(10);
-    QueueModel.resetAround(1, new Album("1", "name", "artist", 0));
+    
+    // empty call, does not find anything
+    QueueModel.resetAround(1, new Album("99", "name99", "artist99", 0));
+    
+    // do a normal call
+    QueueModel.resetAround(1, AlbumManager.getInstance().getAlbumByID("1"));
   }
 
   /**
@@ -313,8 +323,83 @@ public class TestQueueModel extends JajukTestCase {
     assertEquals(0, QueueModel.getIndex());
     QueueModel.finished(true);
     assertEquals(1, QueueModel.getIndex());
+    
+    // still 10 as we do not remove items from queue in default setup
+    assertEquals(10, QueueModel.getQueueSize());
   }
 
+  public void testFinishedBooleanRemovePlayed() throws Exception {
+    // set config option that we want to test
+    Conf.setProperty(Const.CONF_DROP_PLAYED_TRACKS_FROM_QUEUE, "true");
+    
+    // without item it just returns
+    QueueModel.finished(true);
+
+    // with items, it will go to the next line
+    addItems(10);
+    QueueModel.setIndex(0);
+    assertEquals(0, QueueModel.getIndex());
+    QueueModel.finished(true);
+    assertEquals(0, QueueModel.getIndex());
+    
+    // here we should have 9 now...
+    assertEquals(9, QueueModel.getQueueSize());
+  }
+  
+  public void testFinishedEndOfQueueNoPlanned() throws Exception {
+    // without item it just returns
+    QueueModel.finished(true);
+
+    // with items, it will go to the next line
+    addItems(2);
+    QueueModel.setIndex(0);
+    assertEquals(0, QueueModel.getIndex());
+    QueueModel.finished(true);
+    assertEquals(1, QueueModel.getIndex());
+    
+    // still 2 as we do not remove items from queue in default setup
+    assertEquals(2, QueueModel.getQueueSize());
+
+    // next time it will reset the index as we do not "plan" new tracks automatically
+    QueueModel.finished(true);
+    assertEquals(0, QueueModel.getIndex());
+  }
+
+  public void testFinishedEndOfQueueWithPlanned() throws Exception {
+    Conf.setProperty(Const.CONF_STATE_CONTINUE, "true");
+    // without item it just returns
+    QueueModel.finished(true);
+
+    // with items, it will go to the next line
+    addItems(2);
+    QueueModel.setIndex(0);
+    assertEquals(0, QueueModel.getIndex());
+    QueueModel.finished(true);
+    assertEquals(1, QueueModel.getIndex());
+    
+    // still 2 as we do not remove items from queue in default setup
+    assertEquals(2, QueueModel.getQueueSize());
+    
+    { // start a track
+      List<StackItem> list = new ArrayList<StackItem>();
+      list.add(new StackItem(JUnitHelpers.getFile(21, true)));
+
+      QueueModel.push(list, true);
+
+      // we try to wait for the thread started inside push() to finish
+      JUnitHelpers.waitForThreadToFinish("Queue Push Thread");
+
+      assertEquals(3, QueueModel.getQueue().size());
+    }
+    
+    // one more to finish now
+    QueueModel.finished(true);
+
+    // next time it will reset the index as we do not "plan" new tracks automatically
+    QueueModel.finished(true);
+    assertEquals(3, QueueModel.getIndex());     // index stays at "3"
+  }
+  
   /**
    * Test method for
    * {@link org.jajuk.services.players.QueueModel#finished(boolean)}.
@@ -446,6 +531,23 @@ public class TestQueueModel extends JajukTestCase {
 
   }
 
+  public void testComputesPlannedClear() throws Exception {
+    Conf.setProperty(Const.CONF_STATE_CONTINUE, "true");
+    
+    // without tracks it will not do much, but it will hit the "clearPlanned"
+    QueueModel.computesPlanned(true);
+  }
+
+  public void testComputesPlannedShuffle() throws Exception {
+    // set Property to hit the "Shuffle" branch
+    Conf.setProperty(Const.CONF_STATE_SHUFFLE, "true");
+    
+    // with tracks, it will look at planned items
+    addItems(10);
+    QueueModel.computesPlanned(true);
+
+  }
+  
   /**
    * Test method for {@link org.jajuk.services.players.QueueModel#clear()}.
    */
@@ -490,6 +592,29 @@ public class TestQueueModel extends JajukTestCase {
     QueueModel.setIndex(2);
     QueueModel.playPrevious();
     assertEquals(1, QueueModel.getIndex());
+  }
+
+  public void testPlayPreviousAtZero() throws Exception {
+    // do nothing without items
+    QueueModel.playPrevious();
+
+    // with items:
+    addItems(10);
+    QueueModel.setIndex(0);
+    QueueModel.playPrevious();
+    assertEquals(0, QueueModel.getIndex());
+  }
+
+  public void testPlayPreviousAtZeroWithRepeat() throws Exception {
+    // do nothing without items
+    QueueModel.playPrevious();
+
+    // with items:
+    addItems(10);
+    QueueModel.setIndex(0);
+    QueueModel.getItem(0).setRepeat(true);
+    QueueModel.playPrevious();
+    assertEquals(0, QueueModel.getIndex());
   }
 
   /**
@@ -540,6 +665,18 @@ public class TestQueueModel extends JajukTestCase {
     assertNotNull(QueueModel.getPlayingFile());
     // we start at 0
     assertEquals("0", QueueModel.getPlayingFile().getID());
+  }
+
+  public void testGetPlayingFileTitle() throws Exception {
+    assertNull(QueueModel.getPlayingFileTitle());
+
+    addItems(10);
+    // QueueModel.playNext();
+    QueueModel.goTo(0);
+    assertFalse(QueueModel.isStopped());
+    assertNotNull(QueueModel.getPlayingFileTitle());
+    // we start at 0
+    assertTrue(QueueModel.getPlayingFileTitle(), QueueModel.getPlayingFileTitle().contains("name"));
   }
 
   /**
@@ -847,6 +984,8 @@ public class TestQueueModel extends JajukTestCase {
   }
 
   public void testRemovePlanned() throws Exception {
+    StartupCollectionService.registerItemManagers();
+    
     // now add some items
     addItems(5);
 
@@ -935,6 +1074,8 @@ public class TestQueueModel extends JajukTestCase {
    */
 
   public void testGetPlanned() throws Exception {
+    StartupCollectionService.registerItemManagers();
+    
     assertEquals(0, QueueModel.getPlanned().size());
 
     QueueModel.computesPlanned(false);

@@ -80,16 +80,13 @@ public final class QueueModel {
   /** Last played track. */
   private static StackItem itemLast;
 
-  /** Fifo itself, contains jajuk File objects. */
-  private static volatile List<StackItem> alQueue = new ArrayList<StackItem>(50);
-
-  /** Planned tracks. */
-  private static volatile List<StackItem> alPlanned = new ArrayList<StackItem>(10);
+  /** The Fifo itself, contains jajuk File objects. This also includes an optional bunch of planned tracks which are accessible with separate methods. */
+  private static volatile QueueImpl alQueue = new QueueImpl();
 
   /** Stop flag*. */
   private static volatile boolean bStop = true;
 
-  /** First played file flag*. */
+  /** First played file flag. */
   private static boolean bFirstFile = true;
 
   /** Whether we are currently playing radio. */
@@ -105,7 +102,7 @@ public final class QueueModel {
   }
 
   /**
-   * FIFO total reinitialization.
+   * FIFO total re-initialization.
    */
   public static void reset() {
     clear();
@@ -185,7 +182,7 @@ public final class QueueModel {
       public void run() {
         try {
           UtilGUI.waiting();
-          QueueModel.pushCommand(alItems, bKeepPrevious, bPushNext);
+          pushCommand(alItems, bKeepPrevious, bPushNext);
         } catch (Exception e) {
           Log.error(e);
         } finally {
@@ -426,12 +423,7 @@ public final class QueueModel {
    * @return whether FIFO contains a least one repeated item
    */
   public static boolean containsRepeat() {
-    for (StackItem item : alQueue) {
-      if (item.isRepeat()) {
-        return true;
-      }
-    }
-    return false;
+    return alQueue.containsRepeat();
   }
 
   /**
@@ -495,16 +487,16 @@ public final class QueueModel {
         // play
         // check if we in continue mode
         if (Conf.getBoolean(Const.CONF_STATE_CONTINUE) && itemLast != null) {
-          File file = null;
+          final StackItem item = alQueue.popNextPlanned();
+          final File file;
           // if some tracks are planned (can be 0 if planned size=0)
-          if (alPlanned.size() != 0) {
-            file = alPlanned.get(0).getFile();
-            // remove the planned track
-            alPlanned.remove(0);
+          if(item != null) {
+            file = item.getFile(); 
           } else {
             // otherwise, take next track from file manager
             file = FileManager.getInstance().getNextFile(itemLast.getFile());
           }
+
           if (file != null) {
             // push it, it will be played
             pushCommand(new StackItem(file), false, false);
@@ -637,7 +629,7 @@ public final class QueueModel {
         // We test if user required stop. Must be done here to make a chance to
         // stop before starting a new track
         if (!bStop) {
-          QueueModel.finished();
+          finished();
         }
       }
     } catch (Throwable t) {// catch even Errors (OutOfMemory for example)
@@ -667,14 +659,14 @@ public final class QueueModel {
     // Check if we are in continue mode and we have some tracks in FIFO, if
     // not : no planned tracks
     if (!Conf.getBoolean(Const.CONF_STATE_CONTINUE) || containsRepeat() || alQueue.size() == 0) {
-      alPlanned.clear();
+      alQueue.clearPlanned();
       return;
     }
     if (bClear) {
-      alPlanned.clear();
+      alQueue.clearPlanned();
     }
-    int iPlannedSize = alPlanned.size();
-    int missingPlannedSize = Conf.getInt(Const.CONF_OPTIONS_VISIBLE_PLANNED) - iPlannedSize;
+
+    int missingPlannedSize = Conf.getInt(Const.CONF_OPTIONS_VISIBLE_PLANNED) - alQueue.sizePlanned();
 
     /*
      * To compute missing planned tracks in shuffle state, we get a global
@@ -682,29 +674,28 @@ public final class QueueModel {
      * file manager file by file because it is very costly
      */
     if (Conf.getBoolean(Const.CONF_STATE_SHUFFLE)) {
+      // first get a list of "candidates"
       List<File> alFiles = FileManager.getInstance().getGlobalShufflePlaylist();
-      // Remove already planned tracks
-      for (StackItem item : alPlanned) {
-        if (alFiles.contains(item.getFile())) {
-          alFiles.remove(item.getFile());
-        }
-      }
+      
+      // then remove already planned tracks from the list
+      alQueue.removePlannedFromList(alFiles);
+      
+      // cut down list to the number of files that are missing
       if (alFiles.size() >= missingPlannedSize) {
         alFiles = alFiles.subList(0, missingPlannedSize - 1);
       }
+      
+      // wrap the Files in StackItems and add them as planned items.
       List<StackItem> missingPlanned = UtilFeatures.createStackItems(alFiles, Conf
           .getBoolean(Const.CONF_STATE_REPEAT_ALL), false);
-      for (StackItem item : missingPlanned) {
-        item.setPlanned(true);
-        alPlanned.add(item);
-      }
+      alQueue.addPlanned(missingPlanned);
     } else {
       for (int i = 0; i < missingPlannedSize; i++) {
         StackItem item = null;
         StackItem siLast = null; // last item in fifo or planned
         // if planned stack contains yet some tracks
-        if (alPlanned.size() > 0) {
-          siLast = alPlanned.get(alPlanned.size() - 1); // last one
+        if (alQueue.sizePlanned() > 0) {
+          siLast = alQueue.getPlanned(alQueue.sizePlanned() - 1); // last one
         } else if (alQueue.size() > 0) { // if fifo contains yet some
           // tracks to play
           siLast = alQueue.get(alQueue.size() - 1); // last one
@@ -721,7 +712,7 @@ public final class QueueModel {
           // Tell it is a planned item
           item.setPlanned(true);
           // add the new item
-          alPlanned.add(item);
+          alQueue.addPlanned(item);
         } catch (JajukException je) {
           // can be thrown if FileManager return a null file (like when
           // reaching end of collection)
@@ -738,7 +729,7 @@ public final class QueueModel {
   public static void clear() {
     alQueue.clear();
     index = 0;
-    alPlanned.clear();
+    alQueue.clearPlanned();
   }
 
   /**
@@ -747,12 +738,7 @@ public final class QueueModel {
    * @return whether the FIFO contains only repeated files
    */
   public static boolean containsOnlyRepeat() {
-    for (StackItem item : alQueue) {
-      if (!item.isRepeat()) {
-        return false;
-      }
-    }
-    return true;
+    return alQueue.containsOnlyRepeat();
   }
 
   /**
@@ -1085,9 +1071,8 @@ public final class QueueModel {
    * 
    * @return Returns a shallow copy of the fifo
    */
-  @SuppressWarnings("unchecked")
   public static List<StackItem> getQueue() {
-    return (List<StackItem>) ((ArrayList<StackItem>) alQueue).clone();
+    return alQueue.getQueue();
   }
 
   /**
@@ -1117,7 +1102,7 @@ public final class QueueModel {
         ObservationManager.notify(new JajukEvent(JajukEvents.QUEUE_NEED_REFRESH));
       }
     }
-    alPlanned.clear(); // force recomputes planned tracks
+    alQueue.clearPlanned(); // force recomputes planned tracks
   }
 
   /**
@@ -1177,7 +1162,7 @@ public final class QueueModel {
       alQueue.remove(lIndex); // remove the item
       alQueue.add(lIndex - 1, item); // add it again above
     } else { // planned track
-      StackItem item = alPlanned.get(lIndex - alQueue.size());
+      StackItem item = alQueue.getPlanned(lIndex - alQueue.size());
       alQueue.remove(lIndex - alQueue.size()); // remove the item
       // add it again above
       alQueue.add(lIndex - alQueue.size() - 1, item);
@@ -1192,7 +1177,7 @@ public final class QueueModel {
    */
   public static void down(int lIndex) {
     if (/* lIndex == 0 || */lIndex == alQueue.size() - 1
-        || lIndex == alQueue.size() + alPlanned.size() - 1) {
+        || lIndex == alQueue.size() + alQueue.sizePlanned() - 1) {
       // Can't put down current track, nor last track in FIFO, nor last
       // planned track. This should be already made by ui behavior
       return;
@@ -1220,7 +1205,7 @@ public final class QueueModel {
         if (getItem(pIndex).isRepeat()) {
           // the selected line is in repeat mode, ok,
           // keep repeat mode and just change index
-          QueueModel.index = pIndex;
+          index = pIndex;
         } else {
           // the selected line was not a repeated item,
           // take it as a wish to reset repeat mode
@@ -1232,14 +1217,14 @@ public final class QueueModel {
           if (Conf.getBoolean(Const.CONF_DROP_PLAYED_TRACKS_FROM_QUEUE)) {
             remove(0, pIndex - 1);
           } else {
-            QueueModel.index = pIndex;
+            index = pIndex;
           }
         }
       } else {
         if (Conf.getBoolean(Const.CONF_DROP_PLAYED_TRACKS_FROM_QUEUE)) {
           remove(0, pIndex - 1);
         } else {
-          QueueModel.index = pIndex;
+          index = pIndex;
         }
       }
       // need to stop before launching! this fix a
@@ -1260,13 +1245,13 @@ public final class QueueModel {
    *          Position from up to where items are removed.
    */
   public static void remove(int iStart, int iStop) {
-    if (iStart <= iStop && iStart >= 0 && iStop < alQueue.size() + alPlanned.size()) {
+    if (iStart <= iStop && iStart >= 0 && iStop < alQueue.size() + alQueue.sizePlanned()) {
       // check size drop items from the end to the beginning
       for (int i = iStop; i >= iStart; i--) {
         // FIFO items
         if (i >= alQueue.size()) {
           // remove this file from plan
-          alPlanned.remove(i - alQueue.size());
+          alQueue.removePlanned(i - alQueue.size());
           // complete missing planned tracks
           computesPlanned(false);
 
@@ -1327,9 +1312,8 @@ public final class QueueModel {
    * 
    * @return Returns a shallow copy of planned files
    */
-  @SuppressWarnings("unchecked")
   public static List<StackItem> getPlanned() {
-    return (List<StackItem>) ((ArrayList<StackItem>) alPlanned).clone();
+    return alQueue.getPlanned();
   }
 
   /**
@@ -1366,7 +1350,7 @@ public final class QueueModel {
    * @return whether a web radio is being played
    */
   public static boolean isPlayingRadio() {
-    return QueueModel.playingRadio;
+    return playingRadio;
   }
 
   /**
@@ -1375,7 +1359,7 @@ public final class QueueModel {
    * @return current web radio if any or null otherwise
    */
   public static WebRadio getCurrentRadio() {
-    return QueueModel.currentRadio;
+    return currentRadio;
   }
 
   /**
@@ -1394,10 +1378,10 @@ public final class QueueModel {
    */
   public static String getCurrentFileTitle() {
     String title = null;
-    File file = QueueModel.getPlayingFile();
-    if (QueueModel.isPlayingRadio()) {
-      title = QueueModel.getCurrentRadio().getName();
-    } else if (file != null && !QueueModel.isStopped()) {
+    File file = getPlayingFile();
+    if (isPlayingRadio()) {
+      title = getCurrentRadio().getName();
+    } else if (file != null && !isStopped()) {
       title = file.getHTMLFormatText();
     } else {
       title = Messages.getString("JajukWindow.18");
