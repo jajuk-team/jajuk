@@ -552,6 +552,10 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
    * @return comparison result
    */
   public int compareTo(Directory otherDirectory) {
+    if(otherDirectory == null) {
+      return -1;
+    }
+
     // Perf: leave if directories are equals
     if (otherDirectory.equals(this)) {
       return 0;
@@ -614,7 +618,11 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
         return parentdir.getFio().getAbsolutePath();
       }
     } else if (Const.XML_DEVICE.equals(sKey)) {
-      return DeviceManager.getInstance().getDeviceByID((String) getValue(sKey)).getName();
+      Device dev = DeviceManager.getInstance().getDeviceByID((String) getValue(sKey));
+      if(dev == null) {
+        return "";
+      }
+      return dev.getName();
     }
     if (Const.XML_NAME.equals(sKey)) {
       if (dParent == null) { // if no parent, take device name
