@@ -429,8 +429,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
       @Override
       public void done() {
         // Force table repaint (for instance for rating stars update)
-        jtable.revalidate();
-        jtable.repaint();
+        model.fireTableDataChanged();
         UtilGUI.stopWaiting();
       }
     };

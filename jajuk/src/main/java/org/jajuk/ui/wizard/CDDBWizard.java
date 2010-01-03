@@ -187,11 +187,8 @@ public class CDDBWizard extends JajukJDialog implements ActionListener {
     // Re-populate model
     model = new CDDBTableModel();
     model.populateModel(alCddbTracks, fdbReader);
-    // Do not fire the change if model is void, it throws some exceptions maybe
-    // due to bad Swingx handling
-    if (model.getRowCount() > 0) {
-      model.fireTableDataChanged();
-    }
+    // Force table refreshing
+    model.fireTableDataChanged();
     return model;
   }
 
@@ -372,8 +369,7 @@ public class CDDBWizard extends JajukJDialog implements ActionListener {
   /*
    * (non-Javadoc)
    * 
-   * @see
-   * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+   * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
    */
   public void actionPerformed(ActionEvent e) {
     if (e.getSource() == okc.getCancelButton()) {

@@ -411,9 +411,10 @@ public class QueueView extends PlaylistView {
     ((JajukTableModel) editorTable.getModel()).populateModel(editorTable.getColumnsConf());
     // save selection to avoid reseting selection the user is doing
     int[] rows = editorTable.getSelectedRows();
+    
     // force table refresh
-    editorTable.revalidate();
-    editorTable.repaint();
+    editorModel.fireTableDataChanged();
+    
     bSettingSelection = true;
     for (int element : rows) {
       // set saved selection after a refresh

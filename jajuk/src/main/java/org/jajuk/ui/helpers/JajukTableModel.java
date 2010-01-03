@@ -239,7 +239,7 @@ public abstract class JajukTableModel extends DefaultTableModel {
     if (o != null) {
       return o.getClass();
     } else {
-      return null;
+      return Object.class;
     }
   }
 
