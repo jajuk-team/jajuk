@@ -329,6 +329,9 @@ public enum JajukActions {
   /** Used to perform GC. */
   GC,
 
+  /** Used to manually save settings and collection. */
+  COMMIT,
+
   /** Save as. */
   SAVE_AS,
 

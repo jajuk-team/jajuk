@@ -226,6 +226,9 @@ public final class JajukJMenuBar extends JMenuBar implements Observer {
   JButton jbGC;
 
   /** DOCUMENT_ME. */
+  JButton jbCommit;
+  
+  /** DOCUMENT_ME. */
   JButton jbSlim;
 
   /** DOCUMENT_ME. */
@@ -422,6 +425,7 @@ public final class JajukJMenuBar extends JMenuBar implements Observer {
     applyMnemonics();
 
     if (SessionService.isTestMode()) {
+      jbCommit = new JajukButton(ActionManager.getAction(JajukActions.COMMIT));
       jbGC = new JajukButton(ActionManager.getAction(JajukActions.GC));
     }
     jbSlim = new JajukButton(ActionManager.getAction(JajukActions.SLIM_JAJUK));
@@ -430,6 +434,7 @@ public final class JajukJMenuBar extends JMenuBar implements Observer {
     JMenuBar eastmenu = new JMenuBar();
     // only show GC-button in test-mode
     if (SessionService.isTestMode()) {
+      eastmenu.add(jbCommit);
       eastmenu.add(jbGC);
     }
     eastmenu.add(jbSlim);

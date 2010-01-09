@@ -150,6 +150,7 @@ public final class ActionManager {
     installAction(JajukActions.ALARM_CLOCK, new AlarmClockAction(), false);
     installAction(JajukActions.SHOW_ALBUM_DETAILS, new ShowAlbumDetailsAction(), false);
     installAction(JajukActions.SLIM_JAJUK, new SlimbarAction(), false);
+    installAction(JajukActions.COMMIT, new CommitAction(), false);
     installAction(JajukActions.GC, new GCAction(), false);
     installAction(JajukActions.QUEUE_TO_SLIM, new SlimBarQueueAction(), false);
     // Install full screen actions only if supported
