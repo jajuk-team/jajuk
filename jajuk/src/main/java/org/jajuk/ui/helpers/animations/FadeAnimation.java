@@ -23,15 +23,20 @@ package org.jajuk.ui.helpers.animations;
 
 import java.awt.Window;
 
+import javax.swing.SwingUtilities;
+
 import org.jajuk.util.log.Log;
 
 /**
  * Fade animation implementation.
  */
 public class FadeAnimation extends AbstractAnimation {
-  
+
   /** DOCUMENT_ME. */
   private Direction opacity;
+
+  /** Number of frames */
+  private static final int FRAME_NUMBER = 50;
 
   /**
    * Instantiates a new fade animation.
@@ -44,7 +49,8 @@ public class FadeAnimation extends AbstractAnimation {
     this.opacity = opacity;
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
    * @see org.jajuk.ui.helpers.animations.IAnimation#animate(int)
    */
   @Override
@@ -53,15 +59,17 @@ public class FadeAnimation extends AbstractAnimation {
       @Override
       public void run() {
         try {
-          for (int i = 0; i < 20; i++) {
-            final float progress = i / 20.0f;
-            java.awt.EventQueue.invokeLater(new Runnable() {
+          window.setVisible(true);
+          for (int i = 1; i < FRAME_NUMBER; i++) {
+            final float progress = i / (float) FRAME_NUMBER;
+            SwingUtilities.invokeLater(new Runnable() {
               @Override
               public void run() {
                 AWTUtilities.setWindowOpacity(window, opacity.getOpacity(progress));
+                window.repaint();
               }
             });
-            Thread.sleep(animationTime / 20);
+            Thread.sleep(animationTime / FRAME_NUMBER);
           }
         } catch (Exception ex) {
           Log.error(ex);
@@ -75,7 +83,7 @@ public class FadeAnimation extends AbstractAnimation {
    * DOCUMENT_ME.
    */
   public interface Direction {
-    
+
     /**
      * Gets the opacity.
      * 
@@ -90,7 +98,7 @@ public class FadeAnimation extends AbstractAnimation {
    * DOCUMENT_ME.
    */
   public enum Directions implements Direction {
-    
+
     /** DOCUMENT_ME. */
     IN {
       @Override
@@ -98,7 +106,7 @@ public class FadeAnimation extends AbstractAnimation {
         return progress;
       }
     },
-    
+
     /** DOCUMENT_ME. */
     OUT {
       @Override

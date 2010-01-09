@@ -31,7 +31,7 @@ import java.lang.reflect.Method;
  * See https://trac.jajuk.info/ticket/1464 for more details
  */
 public class AWTUtilities {
-  
+
   /**
    * Checks if is available.
    * 
@@ -44,7 +44,8 @@ public class AWTUtilities {
       Class awtutil = Class.forName("com.sun.awt.AWTUtilities");
       return true;
     } catch (Exception ex) {
-
+      // Void on purpose, means that this JRE doesn't support the com.sun.awt.AWTUtilities class, do
+      // nothing
     }
     return false;
   }
@@ -63,7 +64,8 @@ public class AWTUtilities {
       Method setWindowShape = awtutil.getMethod("setWindowShape", Window.class, Shape.class);
       setWindowShape.invoke(null, window, shape);
     } catch (Exception ex) {
-
+      // Void on purpose, means that this JRE doesn't support the com.sun.awt.AWTUtilities class, do
+      // nothing
     }
   }
 
@@ -81,7 +83,8 @@ public class AWTUtilities {
       Method setWindowOpaque = awtutil.getMethod("setWindowOpacity", Window.class, float.class);
       setWindowOpaque.invoke(null, window, alpha);
     } catch (Exception ex) {
-
+      // Void on purpose, means that this JRE doesn't support the com.sun.awt.AWTUtilities class, do
+      // nothing
     }
   }
 

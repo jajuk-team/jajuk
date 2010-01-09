@@ -27,33 +27,29 @@ import org.jajuk.ui.helpers.animations.SlideAnimation;
 import org.jajuk.ui.helpers.animations.SlideAnimation.InDirections;
 import org.jajuk.ui.helpers.animations.SlideAnimation.ScreenPositions;
 import org.jajuk.ui.helpers.animations.SlideAnimation.StartingPositions;
-import org.jajuk.util.log.Log;
 
 /**
  * Animated information dialog that appears and disappears by itself.
  */
 public class JajukToast extends JajukInformationDialog {
-  
+
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
-  
-  /** DOCUMENT_ME. */
-  private int showTime;
 
+ 
   /**
    * Instantiates a new jajuk toast.
    * 
    * @param text DOCUMENT_ME
-   * @param showTime DOCUMENT_ME
    */
-  public JajukToast(String text, int showTime) {
+  public JajukToast(String text) {
     super(text);
-    this.showTime = showTime;
     setAlwaysOnTop(true);
     setFocusableWindowState(false);
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
    * @see org.jajuk.ui.widgets.JajukInformationDialog#display()
    */
   @Override
@@ -70,17 +66,7 @@ public class JajukToast extends JajukInformationDialog {
             JajukToast.this.dispose();
           }
         });
-        new Thread(new Runnable() {
-          @Override
-          public void run() {
-            try {
-              Thread.sleep(showTime);
-            } catch (InterruptedException ex) {
-              Log.error(ex);
-            }
-            fade.animate(2000);
-          }
-        }).start();
+        fade.animate(1000);
       }
     });
     slide.animate(2000);

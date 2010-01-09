@@ -75,7 +75,7 @@ public class ToastNotificator implements INotificator {
   public void notify(WebRadio webradio) {
     String text = Messages.getString("Notificator.track_change.webradio_title")
         + webradio.getName();
-    new JajukToast(text, 3000).display();
+    new JajukToast(text).display();
   }
 
   /*
@@ -87,6 +87,6 @@ public class ToastNotificator implements INotificator {
   @Override
   public void notify(File file) {
     String text = file.getHTMLFormatText();
-    new JajukToast(text, 3000).display();
+    new JajukToast(text).display();
   }
 }

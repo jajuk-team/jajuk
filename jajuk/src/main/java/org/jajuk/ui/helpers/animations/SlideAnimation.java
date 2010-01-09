@@ -31,7 +31,10 @@ import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.SwingUtilities;
 import javax.swing.Timer;
+
+import org.jajuk.util.log.Log;
 
 /**
  * Slide animation implementation.
@@ -58,6 +61,9 @@ public class SlideAnimation extends AbstractAnimation {
   
   /** DOCUMENT_ME. */
   private Rectangle windowBounds;
+  
+  /** Time (ms) of a frame displaying */
+  private static final int FRAME_DURATION = 5;
 
   /**
    * Instantiates a new slide animation.
@@ -90,7 +96,7 @@ public class SlideAnimation extends AbstractAnimation {
     start.height = windowBounds.height;
 
     if (!AWTUtilities.isAvailable()) {
-      java.awt.EventQueue.invokeLater(new Runnable() {
+      SwingUtilities.invokeLater(new Runnable() {
         @Override
         public void run() {
           window.setLocation(direction.getCurrentLocation(start, 1));
@@ -100,7 +106,7 @@ public class SlideAnimation extends AbstractAnimation {
               try {
                 Thread.sleep(animationTime);
               } catch (Exception ex) {
-
+                Log.error(ex);
               }
               animationCompleted();
             }
@@ -116,42 +122,18 @@ public class SlideAnimation extends AbstractAnimation {
         long elapsed = System.currentTimeMillis() - animationStart;
 
         if (elapsed > animationTime) {
-          window.pack();
-
-          Point position = direction.getCurrentLocation(start, 1);
-          window.setLocation(position);
-
-          Rectangle bounds = direction.getShowingBounds(start, 1);
-          boolean visible = !(bounds.width == 0 || bounds.height == 0);
-          if (visible) {
-            AWTUtilities.setWindowShape(window, bounds);
-          }
-
           animationTimer.stop();
           animationCompleted();
         } else {
           float progress = (float) elapsed / animationTime;
-
-          if (progress > 1) {
-            progress = 1;
-          }
-
-          Rectangle bounds = direction.getShowingBounds(start, progress);
-          boolean visible = !(bounds.width == 0 || bounds.height == 0);
-          if (visible) {
-            AWTUtilities.setWindowShape(window, bounds);
-          }
-
           window.setLocation(direction.getCurrentLocation(start, progress));
-
-          window.pack();
           window.setVisible(true);
           window.repaint();
         }
       }
     };
 
-    animationTimer = new Timer(50, animationLogic);
+    animationTimer = new Timer(FRAME_DURATION, animationLogic);
     animationStart = System.currentTimeMillis();
     animationTimer.start();
   }
