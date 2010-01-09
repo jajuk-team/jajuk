@@ -75,7 +75,9 @@ public class Cover implements Comparable<Cover>, Const {
  /** DOCUMENT_ME. */
  STANDARD_COVER, 
  /** DOCUMENT_ME. */
- SELECTED_COVER
+ SELECTED_COVER,
+ //cover stored in the tag of a file
+ TAG_COVER
   }
 
   /** Cover URL*. */
@@ -229,13 +231,7 @@ public class Cover implements Comparable<Cover>, Const {
       return false;
     }
 
-    // From here, types are equals
-    try {
-      return url.toURI().equals(cOther.getURL().toURI());
-    } catch (URISyntaxException e) {
-      Log.warn("Found invalid URL: {{" + url.toString() + "/" + cOther.getURL().toString() + "}}");
-      return false;
-    }
+    return url.toString().equals(cOther.getURL().toString());
 
   }
 

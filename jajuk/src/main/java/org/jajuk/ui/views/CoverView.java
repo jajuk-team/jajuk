@@ -544,7 +544,9 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
           Log.debug("Try to save a local cover");
           return;
         }
+
         String sFilePath = null;
+
         sFilePath = dirReference.getFio().getPath() + "/"
             + UtilSystem.getOnlyFile(cover.getURL().toString());
 
@@ -678,8 +680,25 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
       fCurrent = QueueModel.getPlayingFile();
     }
     final Cover cover = alCovers.get(index);
-    final String sFilename = UtilSystem.getOnlyFile(cover.getURL().toString());
-    if (cover.getType() == CoverType.REMOTE_COVER) {
+
+    if (cover.getType() == CoverType.TAG_COVER) {
+      String sFilePath = getCoverFilePath(cover.getFile().getAbsolutePath());
+      File destFile = new File(sFilePath);
+      try {
+        // copy file
+        UtilSystem.copy(cover.getFile(), destFile);
+        alCovers.add(new Cover(destFile, CoverType.SELECTED_COVER));
+        ThumbnailManager.cleanThumbs(fCurrent.getTrack().getAlbum());
+        refreshThumbs(cover);
+        InformationJPanel.getInstance().setMessage(Messages.getString("CoverView.11"),
+            InformationJPanel.INFORMATIVE);
+      } catch (JajukException e) {
+        Log.error(e);
+      } catch (IOException e) {
+        Log.error(e);
+      }
+    } else if (cover.getType() == CoverType.REMOTE_COVER) {
+      final String sFilename = UtilSystem.getOnlyFile(cover.getURL().toString());
       String sFilePath = dirReference.getFio().getPath() + "/" + sFilename;
 
       sFilePath = getCoverFilePath(sFilePath);
@@ -1554,8 +1573,22 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
       alCovers.add(CoverView.nocover);
     }
 
+    // if the last file had a tag cover, we must remove it
+    // we can not use the cover type because a tag cover could be set as default.
+    if (!dirChanged) {
+      Cover coverToRemove = null;
+      for (Cover c : alCovers) {
+
+        if (c.getFile().getName().equalsIgnoreCase(Const.TAG_COVER_FILE)) {
+          coverToRemove = c;
+          break;
+        }
+      }
+      if (coverToRemove != null)
+        alCovers.remove(coverToRemove);
+    }
+
     // check if a cover is stored in the file
-    boolean tagCoverExists = false;
     try {
       AudioFile f = AudioFileIO.read(fCurrent.getFIO());
       Tag tag = f.getTag();
@@ -1568,26 +1601,19 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
           if (bi != null) {
             File coverFile = new File(dirReference.getAbsolutePath() + "/" + Const.TAG_COVER_FILE);
             ImageIO.write(bi, "png", coverFile);
-            tagCoverExists = true;
-            if (alCovers.size() == 0
-                || !alCovers.getLast().getFile().getName().equalsIgnoreCase(Const.TAG_COVER_FILE)) {
-              Cover cover = new Cover(coverFile, CoverType.LOCAL_COVER);
-              alCovers.addLast(cover);
-            }
-
+            Cover cover = new Cover(coverFile, CoverType.TAG_COVER);
+            alCovers.addLast(cover);
           }
+
         }
+
       }
     } catch (Exception e1) {
       // current file is not supported by jaudiotagger
       Log.error(e1);
     }
 
-    // current file hast no cover in its tag
-    if (!tagCoverExists && alCovers.size() > 0
-        && alCovers.getLast().getFile().getName().equalsIgnoreCase(Const.TAG_COVER_FILE)) {
-      alCovers.removeLast();
-    }
+    Collections.sort(alCovers);
 
     Log.debug("Local cover list: {{" + alCovers + "}}");
     if (Conf.getBoolean(Const.CONF_COVERS_SHUFFLE)) {
