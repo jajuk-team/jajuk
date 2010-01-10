@@ -77,6 +77,7 @@ import org.jajuk.base.Track;
 import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
+import org.jajuk.services.core.SessionService;
 import org.jajuk.services.covers.Cover;
 import org.jajuk.services.covers.Cover.CoverType;
 import org.jajuk.services.players.QueueModel;
@@ -682,7 +683,9 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
     final Cover cover = alCovers.get(index);
 
     if (cover.getType() == CoverType.TAG_COVER) {
-      String sFilePath = getCoverFilePath(cover.getFile().getAbsolutePath());
+      String sFilePath = getCoverFilePath(QueueModel.getPlayingFile().getFIO().getParentFile()
+          .getAbsolutePath()
+          + "/" + cover.getFile().getName());
       File destFile = new File(sFilePath);
       try {
         // copy file
@@ -692,6 +695,14 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
         refreshThumbs(cover);
         InformationJPanel.getInstance().setMessage(Messages.getString("CoverView.11"),
             InformationJPanel.INFORMATIVE);
+
+        // set default
+        fCurrent.getTrack().getAlbum().setProperty(XML_ALBUM_COVER, destFile.getAbsolutePath());
+
+        ObservationManager.notify(new JajukEvent(JajukEvents.COVER_DEFAULT_CHANGED));
+        ObservationManager.notify(new JajukEvent(JajukEvents.COVER_NEED_REFRESH));
+
+        return;
       } catch (JajukException e) {
         Log.error(e);
       } catch (IOException e) {
@@ -1465,7 +1476,7 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
       String defaultCoverPath = trackCurrent.getAlbum().getStringValue(XML_ALBUM_COVER);
       if (StringUtils.isNotBlank(defaultCoverPath)) {
         File coverFile = new File(defaultCoverPath);
-        if (coverFile.exists() && !coverFile.getName().equalsIgnoreCase(Const.TAG_COVER_FILE)) {
+        if (coverFile.exists()) {
           final Cover cover = new Cover(coverFile, CoverType.SELECTED_COVER);
           alCovers.add(cover);
         }
@@ -1482,10 +1493,6 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
         // null if none file found
         final java.io.File[] files = dirScanned.getFio().listFiles();
         for (int i = 0; (files != null) && (i < files.length); i++) {
-          // do not load the tag_cover
-          if (files[i].getName().equalsIgnoreCase(Const.TAG_COVER_FILE)) {
-            continue;
-          }
           // check size to avoid out of memory errors
           if (files[i].length() > Const.MAX_COVER_SIZE * 1024) {
             continue;
@@ -1599,7 +1606,7 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
         if (imageRawData != null) {
           BufferedImage bi = ImageIO.read(new ByteArrayInputStream(imageRawData));
           if (bi != null) {
-            File coverFile = new File(dirReference.getAbsolutePath() + "/" + Const.TAG_COVER_FILE);
+            File coverFile = SessionService.getConfFileByPath(Const.TAG_COVER_FILE);
             ImageIO.write(bi, "png", coverFile);
             Cover cover = new Cover(coverFile, CoverType.TAG_COVER);
             alCovers.addLast(cover);
