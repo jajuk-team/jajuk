@@ -23,11 +23,10 @@ package org.jajuk.base;
 import java.util.List;
 import java.util.Set;
 
-import junit.framework.TestCase;
-
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.jajuk.JUnitHelpers;
+import org.jajuk.JajukTestCase;
 import org.jajuk.JUnitHelpers.MockPlayer;
 import org.jajuk.services.players.IPlayerImpl;
 import org.jajuk.services.startup.StartupCollectionService;
@@ -37,7 +36,7 @@ import org.jajuk.util.Const;
 /**
  * TODO: some more coverage is possible by enhancing the tests accordingly.
  */
-public class TestDirectory extends TestCase {
+public class TestDirectory extends JajukTestCase {
 
   /* (non-Javadoc)
    * @see junit.framework.TestCase#setUp()
