@@ -683,8 +683,7 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
     final Cover cover = alCovers.get(index);
 
     if (cover.getType() == CoverType.TAG_COVER) {
-      String sFilePath = getCoverFilePath(QueueModel.getPlayingFile().getFIO().getParentFile()
-          .getAbsolutePath()
+      String sFilePath = getCoverFilePath(dirReference.getFio().getPath()
           + "/" + cover.getFile().getName());
       File destFile = new File(sFilePath);
       try {
