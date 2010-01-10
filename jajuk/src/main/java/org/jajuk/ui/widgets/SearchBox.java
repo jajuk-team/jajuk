@@ -39,13 +39,17 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
+import javax.swing.ActionMap;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
+import javax.swing.InputMap;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+import javax.swing.KeyStroke;
 import javax.swing.ListCellRenderer;
 import javax.swing.Popup;
 import javax.swing.PopupFactory;
@@ -62,6 +66,7 @@ import org.jajuk.base.SearchResult.SearchResultType;
 import org.jajuk.services.players.QueueModel;
 import org.jajuk.services.players.StackItem;
 import org.jajuk.services.webradio.WebRadioManager;
+import org.jajuk.ui.actions.JajukAction;
 import org.jajuk.ui.helpers.FontManager;
 import org.jajuk.ui.helpers.FontManager.JajukFont;
 import org.jajuk.util.Conf;
@@ -126,9 +131,8 @@ public class SearchBox extends JTextField implements KeyListener, ListSelectionL
     /*
      * (non-Javadoc)
      * 
-     * @see
-     * javax.swing.ListCellRenderer#getListCellRendererComponent(javax.swing
-     * .JList, java.lang.Object, int, boolean, boolean)
+     * @see javax.swing.ListCellRenderer#getListCellRendererComponent(javax.swing .JList,
+     * java.lang.Object, int, boolean, boolean)
      */
     public Component getListCellRendererComponent(JList list, Object value, int index,
         boolean isSelected, boolean cellHasFocus) {
@@ -160,6 +164,7 @@ public class SearchBox extends JTextField implements KeyListener, ListSelectionL
     setFont(FontManager.getInstance().getFont(JajukFont.SEARCHBOX));
     Color mediumGray = new Color(172, 172, 172);
     setForeground(mediumGray);
+    installKeysrokes();
     // Double click empties the field
     addMouseListener(new MouseAdapter() {
       @Override
@@ -406,5 +411,23 @@ public class SearchBox extends JTextField implements KeyListener, ListSelectionL
   public void close() {
     // stop the timer so it does not keep the element from garbage collection
     timer.stop();
+  }
+
+  /**
+   * Search box specific keystrokes
+   */
+  private void installKeysrokes() {
+    InputMap inputMap = getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+    ActionMap actionMap = getActionMap();
+    inputMap.put(KeyStroke.getKeyStroke("ctrl F"), "search");
+    // We don't create a JajukAction dedicated class for this very simple case 
+    actionMap.put("search", new JajukAction("search", true) {
+      private static final long serialVersionUID = 1L;
+
+      @Override
+      public void perform(ActionEvent evt) throws Exception {
+        requestFocusInWindow();
+      }
+    });
   }
 }
