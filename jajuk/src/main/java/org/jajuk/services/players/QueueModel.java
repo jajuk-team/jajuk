@@ -468,6 +468,9 @@ public final class QueueModel {
             // element in fifo
           }
         } else {
+          if (Conf.getBoolean(Const.CONF_STATE_SHUFFLE) && alQueue.containsOnlyRepeat()) {
+            QueueModel.shuffle();
+          }
           StackItem itemNext = alQueue.get(0);
           // if next track is repeat, inc index
           if (itemNext.isRepeat() || forceNext) {
@@ -490,8 +493,8 @@ public final class QueueModel {
           final StackItem item = alQueue.popNextPlanned();
           final File file;
           // if some tracks are planned (can be 0 if planned size=0)
-          if(item != null) {
-            file = item.getFile(); 
+          if (item != null) {
+            file = item.getFile();
           } else {
             // otherwise, take next track from file manager
             file = FileManager.getInstance().getNextFile(itemLast.getFile());
@@ -666,25 +669,26 @@ public final class QueueModel {
       alQueue.clearPlanned();
     }
 
-    int missingPlannedSize = Conf.getInt(Const.CONF_OPTIONS_VISIBLE_PLANNED) - alQueue.sizePlanned();
+    int missingPlannedSize = Conf.getInt(Const.CONF_OPTIONS_VISIBLE_PLANNED)
+        - alQueue.sizePlanned();
 
     /*
-     * To compute missing planned tracks in shuffle state, we get a global
-     * shuffle list and we sub list it. This avoid calling a getShuffle() on
-     * file manager file by file because it is very costly
+     * To compute missing planned tracks in shuffle state, we get a global shuffle list and we sub
+     * list it. This avoid calling a getShuffle() on file manager file by file because it is very
+     * costly
      */
     if (Conf.getBoolean(Const.CONF_STATE_SHUFFLE)) {
       // first get a list of "candidates"
       List<File> alFiles = FileManager.getInstance().getGlobalShufflePlaylist();
-      
+
       // then remove already planned tracks from the list
       alQueue.removePlannedFromList(alFiles);
-      
+
       // cut down list to the number of files that are missing
       if (alFiles.size() >= missingPlannedSize) {
         alFiles = alFiles.subList(0, missingPlannedSize - 1);
       }
-      
+
       // wrap the Files in StackItems and add them as planned items.
       List<StackItem> missingPlanned = UtilFeatures.createStackItems(alFiles, Conf
           .getBoolean(Const.CONF_STATE_REPEAT_ALL), false);

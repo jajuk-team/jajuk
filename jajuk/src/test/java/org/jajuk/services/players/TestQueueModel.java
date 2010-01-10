@@ -66,7 +66,7 @@ public class TestQueueModel extends JajukTestCase {
     Conf.setProperty(Const.CONF_DROP_PLAYED_TRACKS_FROM_QUEUE, "false");
     Conf.setProperty(Const.CONF_STATE_CONTINUE, "false");
     Conf.setProperty(Const.CONF_STATE_SHUFFLE, "false");
-    
+
     // remove any registered files
     for (File file : FileManager.getInstance().getFiles()) {
       FileManager.getInstance().removeFile(file);
@@ -119,10 +119,10 @@ public class TestQueueModel extends JajukTestCase {
 
   public void testResetAround() throws Exception {
     addItems(10);
-    
+
     // empty call, does not find anything
     QueueModel.resetAround(1, new Album("99", "name99", "artist99", 0));
-    
+
     // do a normal call
     QueueModel.resetAround(1, AlbumManager.getInstance().getAlbumByID("1"));
   }
@@ -165,7 +165,7 @@ public class TestQueueModel extends JajukTestCase {
 
     assertEquals(1, QueueModel.getQueue().size());
   }
-  
+
   /**
    * Check right behavior when pushing void list of items.
    * If run with GUI, you should get a warning popup
@@ -310,6 +310,30 @@ public class TestQueueModel extends JajukTestCase {
   }
 
   /**
+  * Test method for
+  * {@link org.jajuk.services.players.QueueModel#finished()}.
+  * Test for feature #1441 (Repeat all shuffle mode) : in repeat 
+  * all mode + shuffle mode, queue should be shuffled when reaching its end
+  */
+  public void testFinishedRepeatAndShuffle() throws Exception {
+    addItems(5);
+    StackItem firstItem = QueueModel.getItem(0);
+    QueueModel.setRepeatModeToAll(true);
+    Conf.setProperty(Const.CONF_STATE_REPEAT, "false");
+    Conf.setProperty(Const.CONF_STATE_REPEAT_ALL, "true");
+    Conf.setProperty(Const.CONF_STATE_SHUFFLE, "true");
+    assertTrue(QueueModel.containsOnlyRepeat());
+    QueueModel.finished();
+    QueueModel.finished();
+    QueueModel.finished();
+    QueueModel.finished();
+    assertTrue(QueueModel.getItem(0).equals(firstItem));
+    QueueModel.finished();
+    // Queue should be shuffled then
+    assertFalse(QueueModel.getItem(0).equals(firstItem));
+  }
+
+  /**
    * Test method for
    * {@link org.jajuk.services.players.QueueModel#finished(boolean)}.
    */
@@ -323,7 +347,7 @@ public class TestQueueModel extends JajukTestCase {
     assertEquals(0, QueueModel.getIndex());
     QueueModel.finished(true);
     assertEquals(1, QueueModel.getIndex());
-    
+
     // still 10 as we do not remove items from queue in default setup
     assertEquals(10, QueueModel.getQueueSize());
   }
@@ -331,7 +355,7 @@ public class TestQueueModel extends JajukTestCase {
   public void testFinishedBooleanRemovePlayed() throws Exception {
     // set config option that we want to test
     Conf.setProperty(Const.CONF_DROP_PLAYED_TRACKS_FROM_QUEUE, "true");
-    
+
     // without item it just returns
     QueueModel.finished(true);
 
@@ -341,11 +365,11 @@ public class TestQueueModel extends JajukTestCase {
     assertEquals(0, QueueModel.getIndex());
     QueueModel.finished(true);
     assertEquals(0, QueueModel.getIndex());
-    
+
     // here we should have 9 now...
     assertEquals(9, QueueModel.getQueueSize());
   }
-  
+
   public void testFinishedEndOfQueueNoPlanned() throws Exception {
     // without item it just returns
     QueueModel.finished(true);
@@ -356,7 +380,7 @@ public class TestQueueModel extends JajukTestCase {
     assertEquals(0, QueueModel.getIndex());
     QueueModel.finished(true);
     assertEquals(1, QueueModel.getIndex());
-    
+
     // still 2 as we do not remove items from queue in default setup
     assertEquals(2, QueueModel.getQueueSize());
 
@@ -376,10 +400,10 @@ public class TestQueueModel extends JajukTestCase {
     assertEquals(0, QueueModel.getIndex());
     QueueModel.finished(true);
     assertEquals(1, QueueModel.getIndex());
-    
+
     // still 2 as we do not remove items from queue in default setup
     assertEquals(2, QueueModel.getQueueSize());
-    
+
     { // start a track
       List<StackItem> list = new ArrayList<StackItem>();
       list.add(new StackItem(JUnitHelpers.getFile(21, true)));
@@ -391,15 +415,15 @@ public class TestQueueModel extends JajukTestCase {
 
       assertEquals(3, QueueModel.getQueue().size());
     }
-    
+
     // one more to finish now
     QueueModel.finished(true);
 
     // next time it will reset the index as we do not "plan" new tracks automatically
     QueueModel.finished(true);
-    assertEquals(3, QueueModel.getIndex());     // index stays at "3"
+    assertEquals(3, QueueModel.getIndex()); // index stays at "3"
   }
-  
+
   /**
    * Test method for
    * {@link org.jajuk.services.players.QueueModel#finished(boolean)}.
@@ -472,7 +496,7 @@ public class TestQueueModel extends JajukTestCase {
     assertTrue(newSi.isRepeat());
     assertTrue(si.isRepeat());
   }
-  
+
   /**
    * Test method for
    * {@link org.jajuk.services.players.QueueModel#finished(boolean)}.
@@ -533,7 +557,7 @@ public class TestQueueModel extends JajukTestCase {
 
   public void testComputesPlannedClear() throws Exception {
     Conf.setProperty(Const.CONF_STATE_CONTINUE, "true");
-    
+
     // without tracks it will not do much, but it will hit the "clearPlanned"
     QueueModel.computesPlanned(true);
   }
@@ -541,13 +565,13 @@ public class TestQueueModel extends JajukTestCase {
   public void testComputesPlannedShuffle() throws Exception {
     // set Property to hit the "Shuffle" branch
     Conf.setProperty(Const.CONF_STATE_SHUFFLE, "true");
-    
+
     // with tracks, it will look at planned items
     addItems(10);
     QueueModel.computesPlanned(true);
 
   }
-  
+
   /**
    * Test method for {@link org.jajuk.services.players.QueueModel#clear()}.
    */
@@ -985,7 +1009,7 @@ public class TestQueueModel extends JajukTestCase {
 
   public void testRemovePlanned() throws Exception {
     StartupCollectionService.registerItemManagers();
-    
+
     // now add some items
     addItems(5);
 
@@ -1075,7 +1099,7 @@ public class TestQueueModel extends JajukTestCase {
 
   public void testGetPlanned() throws Exception {
     StartupCollectionService.registerItemManagers();
-    
+
     assertEquals(0, QueueModel.getPlanned().size());
 
     QueueModel.computesPlanned(false);
@@ -1202,29 +1226,28 @@ public class TestQueueModel extends JajukTestCase {
     QueueModel.clean();
 
     assertEquals(10, QueueModel.getQueueSize());
-    
+
     // we can add a dummy-file and check that it is removed
     Style style = new Style("99", "name");
     Album album = new Album("99", "name", "artis", 23);
     album.setProperty(Const.XML_ALBUM_COVER, Const.COVER_NONE); // don't read covers for
     // this test
-  
+
     Author author = new Author("99", "name");
     Year year = new Year("99", "2000");
-  
+
     Type type = new Type("99", "name", "mp3", null, null);
-    Track track = new Track("99", "name", album, style, author, 120, year,
-        1, type, 1);
-  
+    Track track = new Track("99", "name", album, style, author, 120, year, 1, type, 1);
+
     Device device = new Device("99", "name");
     device.setUrl(System.getProperty("java.io.tmpdir"));
-  
+
     Directory dir = new Directory("99", "name", null, device);
-  
-    File file = new File ("99", "test.tst", dir, track, 120, 70);
-    
+
+    File file = new File("99", "test.tst", dir, track, 120, 70);
+
     QueueModel.insert(new StackItem(file), 0);
-    
+
     // now we have 11 elements
     assertEquals(11, QueueModel.getQueueSize());
 
