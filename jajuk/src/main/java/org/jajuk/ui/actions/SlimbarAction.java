@@ -32,6 +32,7 @@ import org.jajuk.ui.windows.WindowStateDecorator;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
+import org.jajuk.util.UtilGUI;
 
 /**
  * Action to hide slim bar.
@@ -49,16 +50,17 @@ public class SlimbarAction extends JajukAction {
     setShortDescription(Messages.getString("JajukSlimWindow.0"));
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see org.jajuk.ui.actions.JajukAction#perform(java.awt.event.ActionEvent)
    */
   @Override
   public void perform(ActionEvent evt) throws Exception {
     /*
-     * If slimbar is visible, hide it and show the main window. Note that both
-     * main window and slimbar can be displayed at the same time: If the slimbar
-     * is visible and user display main window by right clicking on the tray,
-     * the main window is displayed, this is a normal behavior
+     * If slimbar is visible, hide it and show the main window. Note that both main window and
+     * slimbar can be displayed at the same time: If the slimbar is visible and user display main
+     * window by right clicking on the tray, the main window is displayed, this is a normal behavior
      */
     WindowStateDecorator sdSlimbar = JajukSlimbar.getInstance().getWindowStateDecorator();
     WindowStateDecorator sdMainWindow = JajukMainWindow.getInstance().getWindowStateDecorator();
@@ -75,6 +77,10 @@ public class SlimbarAction extends JajukAction {
       // Update the icon according to status
       setIcon(IconLoader.getIcon(JajukIcons.FULL_SCREEN));
     }
+
+    // Store window-type displayed (useful for tray display/hide feature for ie.)
+    UtilGUI.storeWindowSate();
+
     // Notify that slimbar visibility change (menu bar is interested in it)
     ObservationManager.notify(new JajukEvent(JajukEvents.SLIMBAR_VISIBILTY_CHANGED));
   }

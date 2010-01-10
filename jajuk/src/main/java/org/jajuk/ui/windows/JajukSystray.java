@@ -73,7 +73,7 @@ import org.jajuk.util.log.Log;
  * Extends CommandJPanel for volume slider heritage only.
  */
 public class JajukSystray extends CommandJPanel implements IJajukWindow {
-  
+
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
@@ -92,9 +92,6 @@ public class JajukSystray extends CommandJPanel implements IJajukWindow {
 
   /** DOCUMENT_ME. */
   JMenuItem jmiExit;
-
-  /** DOCUMENT_ME. */
-  JMenuItem jmiSlimbar;
 
   /** DOCUMENT_ME. */
   JMenuItem jmiMute;
@@ -203,7 +200,9 @@ public class JajukSystray extends CommandJPanel implements IJajukWindow {
     }
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see org.jajuk.ui.widgets.CommandJPanel#initUI()
    */
   @Override
@@ -212,7 +211,6 @@ public class JajukSystray extends CommandJPanel implements IJajukWindow {
     PlayerStateMediator.getInstance();
     jmenu = new JPopupMenu(Messages.getString("JajukWindow.3"));
     jmiExit = new JMenuItem(ActionManager.getAction(JajukActions.EXIT));
-    jmiSlimbar = new JMenuItem(ActionManager.getAction(JajukActions.SLIM_JAJUK));
 
     // force icon to be display in 16x16
     jmiMute = new SizedJMenuItem(ActionManager.getAction(JajukActions.MUTE_STATE));
@@ -271,7 +269,6 @@ public class JajukSystray extends CommandJPanel implements IJajukWindow {
     jmenu.add(jmiNovelties);
     jmenu.add(jmiFinishAlbum);
     jmenu.addSeparator();
-    jmenu.add(jmiSlimbar);
     jmenu.add(jmiMute);
     jmenu.addSeparator();
     jmenu.add(jmiExit);
@@ -313,12 +310,17 @@ public class JajukSystray extends CommandJPanel implements IJajukWindow {
 
       @Override
       public void mouseClicked(MouseEvent e) {
-        if (e.getButton() == MouseEvent.BUTTON1) {
-          // show main window if it is not visible and hide it if it is visible
-          WindowState mainWindowState = JajukMainWindow.getInstance().getWindowStateDecorator()
-              .getWindowState();
-          boolean bShouldDisplayMainWindow = !(mainWindowState == WindowState.BUILT_DISPLAYED);
-          JajukMainWindow.getInstance().getWindowStateDecorator().display(bShouldDisplayMainWindow);
+        // Invert current window visibility with a left click on the tray icon
+        if (!e.isPopupTrigger()) {
+          WindowStateDecorator windowDecorator = null;
+          if (Conf.getInt(Const.CONF_STARTUP_DISPLAY) == Const.DISPLAY_MODE_MAIN_WINDOW) {
+            windowDecorator = JajukMainWindow.getInstance().getWindowStateDecorator();
+          } else if (Conf.getInt(Const.CONF_STARTUP_DISPLAY) == Const.DISPLAY_MODE_SLIMBAR_TRAY) {
+            windowDecorator = JajukSlimbar.getInstance().getWindowStateDecorator();
+          }
+          // Invert visibility for the current window
+          boolean bShouldDisplay = !(windowDecorator.getWindowState() == WindowState.BUILT_DISPLAYED);
+          windowDecorator.display(bShouldDisplay);
         }
       }
 
@@ -334,7 +336,9 @@ public class JajukSystray extends CommandJPanel implements IJajukWindow {
 
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see org.jajuk.ui.widgets.CommandJPanel#getRegistrationKeys()
    */
   @Override

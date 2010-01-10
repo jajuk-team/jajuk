@@ -440,4 +440,5 @@ public class JajukMainWindow extends JFrame implements IJajukWindow, Observer {
   public JPanel getPerspectivePanel() {
     return perspectivePanel;
   }
+    
 }

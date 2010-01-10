@@ -31,20 +31,19 @@ import org.jajuk.ui.windows.JajukFullScreenWindow;
 import org.jajuk.ui.windows.JajukMainWindow;
 import org.jajuk.ui.windows.JajukSlimbar;
 import org.jajuk.ui.windows.JajukSystray;
-import org.jajuk.ui.windows.WindowState;
-import org.jajuk.ui.windows.WindowStateDecorator;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
+import org.jajuk.util.UtilGUI;
 import org.jajuk.util.log.Log;
 
 /**
  * DOCUMENT_ME.
  */
 public class ExitAction extends JajukAction {
-  
+
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
@@ -57,7 +56,9 @@ public class ExitAction extends JajukAction {
     setShortDescription(Messages.getString("JajukWindow.21"));
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see org.jajuk.ui.actions.JajukAction#perform(java.awt.event.ActionEvent)
    */
   @Override
@@ -89,53 +90,25 @@ public class ExitAction extends JajukAction {
       }
 
       // Store window/tray/slimbar configuration
-
-      WindowStateDecorator sdSlimbar = JajukSlimbar.getInstance().getWindowStateDecorator();
-      WindowStateDecorator sdMainWindow = JajukMainWindow.getInstance().getWindowStateDecorator();
-      WindowStateDecorator sdTray = JajukSystray.getInstance().getWindowStateDecorator();
-      WindowStateDecorator sdfullscreen = JajukFullScreenWindow.getInstance()
-          .getWindowStateDecorator();
-
-      // Set main window display at next startup as a default
-      Conf
-          .setProperty(Const.CONF_STARTUP_DISPLAY, Integer.toString(Const.DISPLAY_MODE_MAIN_WINDOW));
-
-      if (sdSlimbar.getWindowState() == WindowState.BUILT_DISPLAYED) {
-        Conf.setProperty(Const.CONF_STARTUP_DISPLAY, Integer
-            .toString(Const.DISPLAY_MODE_SLIMBAR_TRAY));
-      }
-
-      if (sdMainWindow.isDisplayed()) {
-        Conf.setProperty(Const.CONF_STARTUP_DISPLAY, Integer
-            .toString(Const.DISPLAY_MODE_MAIN_WINDOW));
-      }
-
-      // None window displayed ? set the tray only (if the show tray option is
-      // set)
-      if (!sdSlimbar.isDisplayed() && !sdMainWindow.isDisplayed() && !sdfullscreen.isDisplayed()
-          && Conf.getBoolean(Const.CONF_SHOW_SYSTRAY)) {
-        Conf.setProperty(Const.CONF_STARTUP_DISPLAY, Integer.toString(Const.DISPLAY_MODE_TRAY));
-      }
-
-      if (sdfullscreen.getWindowState() == WindowState.BUILT_DISPLAYED) {
-        Conf.setProperty(Const.CONF_STARTUP_DISPLAY, Integer
-            .toString(Const.DISPLAY_MODE_FULLSCREEN));
-      }
+      UtilGUI.storeWindowSate();
 
       // hide windows ASAP
-      sdMainWindow.display(false);
+      JajukMainWindow.getInstance().getWindowStateDecorator().display(false);
 
       // hide systray
-      sdTray.display(false);
+      JajukSystray.getInstance().getWindowStateDecorator().display(false);
 
       // Hide slimbar
-      sdSlimbar.display(false);
+      JajukSlimbar.getInstance().getWindowStateDecorator().display(false);
 
       // Hide full screen
-      sdfullscreen.display(false);
+      JajukFullScreenWindow.getInstance().getWindowStateDecorator().display(false);
 
     }
     // Exit Jajuk
     ExitService.exit(0);
   }
+
+
+  
 }
