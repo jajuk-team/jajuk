@@ -89,12 +89,17 @@ public class SearchResult implements Comparable<SearchResult> {
     return sResu.hashCode();
   }
 
+ 
   /*
    * (non-Javadoc)
    * 
    * @see java.lang.Comparable#compareTo(java.lang.Object)
    */
   public int compareTo(SearchResult sr) {
+    if(sr == null) {
+      return -1;
+    }
+
     return sResu.compareToIgnoreCase(sr.getResu());
   }
 
