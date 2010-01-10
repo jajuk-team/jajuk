@@ -226,11 +226,6 @@ public class Cover implements Comparable<Cover>, Const {
     // we have an item of type Cover, so we can cast it safely
     Cover cOther = (Cover) o;
 
-    // check type
-    if (getType() != cOther.getType()) {
-      return false;
-    }
-
     return url.toString().equals(cOther.getURL().toString());
 
   }
