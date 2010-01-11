@@ -683,8 +683,8 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
     final Cover cover = alCovers.get(index);
 
     if (cover.getType() == CoverType.TAG_COVER) {
-      String sFilePath = getCoverFilePath(dirReference.getFio().getPath()
-          + "/" + cover.getFile().getName());
+      String sFilePath = getCoverFilePath(dirReference.getFio().getPath() + "/"
+          + cover.getFile().getName());
       File destFile = new File(sFilePath);
       try {
         // copy file
@@ -864,6 +864,8 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
       if (cover.getType() == CoverType.REMOTE_COVER) {
         sType = "(@)"; // Web cover
         jbSave.setEnabled(true);
+      } else if (cover.getType() == CoverType.TAG_COVER) {
+        sType = "(T)"; // Tag cover
       }
       final String size = cover.getSize();
       jl = new JLabel(ii);
@@ -871,7 +873,11 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
       // false, true));
       jl.setMinimumSize(new Dimension(0, 0)); // required for info
       // node resizing
-      jl.setToolTipText("<html>" + url.toString() + "<br>" + size + "K");
+      if (cover.getType() == CoverType.TAG_COVER) {
+        jl.setToolTipText("<html>Tag<br>" + size + "K");
+      } else {
+        jl.setToolTipText("<html>" + url.toString() + "<br>" + size + "K");
+      }
       setSizeText(size + "K" + sType);
       setFoundText();
     }
