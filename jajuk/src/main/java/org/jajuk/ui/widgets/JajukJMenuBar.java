@@ -32,7 +32,7 @@ import static org.jajuk.ui.actions.JajukActions.QUALITY;
 import static org.jajuk.ui.actions.JajukActions.REPEAT_ALL_MODE;
 import static org.jajuk.ui.actions.JajukActions.REPEAT_MODE;
 import static org.jajuk.ui.actions.JajukActions.SHOW_ABOUT;
-import static org.jajuk.ui.actions.JajukActions.SHOW_ACTIVATE_TAGS;
+import static org.jajuk.ui.actions.JajukActions.EXTRA_TAGS_WIZARD;
 import static org.jajuk.ui.actions.JajukActions.SHOW_TRACES;
 import static org.jajuk.ui.actions.JajukActions.SHUFFLE_MODE;
 import static org.jajuk.ui.actions.JajukActions.SIMPLE_DEVICE_WIZARD;
@@ -256,7 +256,7 @@ public final class JajukJMenuBar extends JMenuBar implements Observer {
 
     jmiNewProperty = new JMenuItem(ActionManager.getAction(CUSTOM_PROPERTIES_ADD));
     jmiRemoveProperty = new JMenuItem(ActionManager.getAction(CUSTOM_PROPERTIES_REMOVE));
-    jmiActivateTags = new JMenuItem(ActionManager.getAction(SHOW_ACTIVATE_TAGS));
+    jmiActivateTags = new JMenuItem(ActionManager.getAction(EXTRA_TAGS_WIZARD));
     properties.add(jmiNewProperty);
     properties.add(jmiRemoveProperty);
     properties.add(jmiActivateTags);

@@ -22,7 +22,7 @@ package org.jajuk.ui.actions;
 
 import java.awt.event.ActionEvent;
 
-import org.jajuk.ui.wizard.TagConfigurationWizard;
+import org.jajuk.ui.wizard.ExtraTagsConfigurationWizard;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
@@ -51,6 +51,6 @@ public class ShowActivateTagsAction extends JajukAction {
    */
   @Override
   public void perform(ActionEvent evt) {
-    new TagConfigurationWizard();
+    new ExtraTagsConfigurationWizard();
   }
 }

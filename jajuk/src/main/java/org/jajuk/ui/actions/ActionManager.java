@@ -121,7 +121,7 @@ public final class ActionManager {
     // JajukJMenuBar: Help Menu
     installAction(JajukActions.HELP_REQUIRED, new HelpRequiredAction(), false);
     installAction(JajukActions.SHOW_ABOUT, new ShowAboutAction(), false);
-    installAction(JajukActions.SHOW_ACTIVATE_TAGS, new ShowActivateTagsAction(), false);
+    installAction(JajukActions.EXTRA_TAGS_WIZARD, new ShowActivateTagsAction(), false);
     // Install this action only if Desktop class is supported, it is used to
     // open default mail client
     if (Desktop.isDesktopSupported()) {
