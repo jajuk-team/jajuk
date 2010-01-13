@@ -39,7 +39,7 @@ public class ShowActivateTagsAction extends JajukAction {
    * Instantiates a new show about action.
    */
   ShowActivateTagsAction() {
-    super(Messages.getString("JajukWindow.40"), IconLoader.getIcon(JajukIcons.TRACK), true);
+    super(Messages.getString("JajukWindow.40"), IconLoader.getIcon(JajukIcons.ADD), true);
     setShortDescription(Messages.getString("JajukWindow.41"));
   }
 
