@@ -263,7 +263,7 @@ public class TestLyrics extends JajukTestCase {
     LyricsService.getProviders().remove(0);
 
     org.jajuk.base.File dummyFile = new org.jajuk.base.File("1", "test", new Directory("1", "dir", null, new Device("1", "test")), new Track("1",
-        TITLE, new Album("1", "Album", "artist", 1), new Style("1", "style"), new Author("1",
+        TITLE, new Album("1", "Album", 1), new Style("1", "style"), new Author("1",
             ARTIST), 0, new Year("1", "100"), 0, new Type("1", "name", "ext", null, null), 0),
         120l, 70l);
     LyricsService.getLyrics(dummyFile);

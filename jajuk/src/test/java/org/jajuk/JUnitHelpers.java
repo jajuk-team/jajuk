@@ -486,7 +486,7 @@ public class JUnitHelpers {
   public
   static org.jajuk.base.File getFile(int i, boolean mount) throws Exception {
     Style style = new Style(Integer.valueOf(i).toString(), "name");
-    Album album = new Album(Integer.valueOf(i).toString(), "name", "artis", 23);
+    Album album = new Album(Integer.valueOf(i).toString(), "name", 23);
     album.setProperty(Const.XML_ALBUM_COVER, Const.COVER_NONE); // don't read covers for
     // this test
   
@@ -570,7 +570,7 @@ public class JUnitHelpers {
   @SuppressWarnings("unchecked")
   public static Track getTrack(int i) {
     Style style = new Style(Integer.valueOf(i).toString(), "name");
-    Album album = new Album(Integer.valueOf(i).toString(), "name", "artis", 23);
+    Album album = new Album(Integer.valueOf(i).toString(), "name", 23);
     album.setProperty(Const.XML_ALBUM_COVER, Const.COVER_NONE); // don't read covers for
     // this test
   

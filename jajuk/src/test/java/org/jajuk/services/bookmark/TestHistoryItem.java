@@ -96,7 +96,7 @@ public class TestHistoryItem extends JajukTestCase {
     File file;
     {
       Style style = new Style("3", "stylename");
-      Album album = new Album("3", "albumname", "artist", 23);
+      Album album = new Album("3", "albumname", 23);
       album.setProperty(Const.XML_ALBUM_COVER, Const.COVER_NONE); // don't read covers for
       // this test
 

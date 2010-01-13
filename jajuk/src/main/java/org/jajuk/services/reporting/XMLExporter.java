@@ -402,7 +402,6 @@ public class XMLExporter extends Exporter {
     String sStyleName = "";
     String sAuthorName = "";
     String sYear = "";
-    String sAlbumArtist = UtilString.formatXML(album.getAlbumArtist());
     List<Track> tracks = TrackManager.getInstance().getAssociatedTracks(album, true);
     if (tracks.size() > 0) {
       sStyleName = UtilString.formatXML(tracks.iterator().next().getStyle().getName2());
@@ -415,7 +414,6 @@ public class XMLExporter extends Exporter {
     writer.write(addTabs(level + 1) + Tag.tagData(Const.XML_AUTHOR, sAuthorName) + NEWLINE);
     writer.write(addTabs(level + 1) + Tag.tagData(Const.XML_STYLE, sStyleName) + NEWLINE);
     writer.write(addTabs(level + 1) + Tag.tagData(Const.XML_YEAR, sYear) + NEWLINE);
-    writer.write(addTabs(level + 1) + Tag.tagData(Const.XML_ALBUM_ARTIST, sAlbumArtist) + NEWLINE);
     // For full collection, we don't show detailed tracks for performance
     // reasons
     if (showTracks) {

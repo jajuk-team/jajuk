@@ -101,7 +101,7 @@ public class TestPreparePartyAction extends JajukTestCase {
   @SuppressWarnings("unchecked")
   private static Playlist getPlaylist(int i, boolean register) throws Exception {
     Style style = new Style(Integer.valueOf(i).toString(), "name");
-    Album album = new Album(Integer.valueOf(i).toString(), "name", "artis", 23);
+    Album album = new Album(Integer.valueOf(i).toString(), "name", 23);
     album.setProperty(Const.XML_ALBUM_COVER, Const.COVER_NONE); // don't read covers for
     // this test
 

@@ -69,22 +69,18 @@ public class TestAlbumManager extends JajukTestCase {
    * .
    */
   public void testCreateID() {
-    assertNotNull(AlbumManager.createID("name", "artist", 3));
-
+    assertNotNull(AlbumManager.createID("name", 3));
     // other cases...
-    assertNotNull(AlbumManager.createID("name", Const.UNKNOWN_AUTHOR, 0));
-    assertNotNull(AlbumManager.createID("name", "", 0));
-    assertNotNull(AlbumManager.createID("name", null, 0));
-    assertNotNull(AlbumManager.createID("name", null, 3));
+    assertNotNull(AlbumManager.createID("name", 0));
   }
 
   /**
    * Test method for
-   * {@link org.jajuk.base.AlbumManager#registerAlbum(java.lang.String, java.lang.String, java.lang.String, long)}
+   * {@link org.jajuk.base.AlbumManager#registerAlbum(java.lang.String, java.lang.String, long)}
    * .
    */
   public void testRegisterAlbumStringStringStringLong() {
-    assertNotNull(AlbumManager.getInstance().registerAlbum("1", "name1", "artist1", 1));
+    assertNotNull(AlbumManager.getInstance().registerAlbum("1", "name1", 1));
 
     assertNotNull(AlbumManager.getInstance().getAlbumByID("1"));
   }
@@ -92,8 +88,7 @@ public class TestAlbumManager extends JajukTestCase {
   public void testRegisterAlbumEmptyArtist() {
     AlbumManager.getInstance().clear();
 
-    assertNotNull(AlbumManager.getInstance().registerAlbum("1", "name1", "", 1));
-    assertNotNull(AlbumManager.getInstance().registerAlbum("1", "name1", "", 1));
+    assertNotNull(AlbumManager.getInstance().registerAlbum("1", "name1", 1));
   }
 
   /**
@@ -169,74 +164,6 @@ public class TestAlbumManager extends JajukTestCase {
     Album album2 = AlbumManager.getInstance().changeAlbumName(album, "name3");
 
     // we expect the same physical item
-    assertTrue(album2.toString(), album == album2);
-  }
-
-  /**
-   * Test method for
-   * {@link org.jajuk.base.AlbumManager#changeAlbumArtist(org.jajuk.base.Album, java.lang.String)}
-   * .
-   * 
-   * @throws Exception
-   */
-  public void testChangeAlbumArtist() throws Exception {
-    StartupCollectionService.registerItemManagers();
-
-    Album album = AlbumManager.getInstance().registerAlbum("name3", "artist1", 1);
-    assertNotNull(album);
-
-    AlbumManager.getInstance().changeAlbumArtist(album, "artist2");
-
-    assertNotNull(AlbumManager.getInstance().getAlbumByName("name3"));
-    assertEquals("artist2", AlbumManager.getInstance().getAlbumByName("name3").getAlbumArtist());
-  }
-
-  public void testChangeAlbumArtistWithTrack() throws Exception {
-    StartupCollectionService.registerItemManagers();
-
-    Album album = AlbumManager.getInstance().registerAlbum("name3", "artist1", 1);
-    assertNotNull(album);
-
-    getTrack(8, album);
-    getTrack(9, album);
-
-    AlbumManager.getInstance().changeAlbumArtist(album, "artist2");
-
-    assertNotNull(AlbumManager.getInstance().getAlbumByName("name3"));
-    assertEquals("artist2", AlbumManager.getInstance().getAlbumByName("name3").getAlbumArtist());
-  }
-
-  public void testChangeAlbumArtistWithQueue() throws Exception {
-    StartupCollectionService.registerItemManagers();
-
-    Album album = AlbumManager.getInstance().registerAlbum("name3", "artist1", 1);
-    assertNotNull(album);
-
-    getTrack(8, album);
-    getTrack(9, album);
-
-    QueueModel.insert(new StackItem(album.getTracksCache().get(0).getFiles().get(0)), 0);
-    QueueModel.goTo(0);
-
-    AlbumManager.getInstance().changeAlbumArtist(album, "artist2");
-
-    assertNotNull(AlbumManager.getInstance().getAlbumByName("name3"));
-    assertEquals("artist2", AlbumManager.getInstance().getAlbumByName("name3").getAlbumArtist());
-  }
-
-  public void testChangeAlbumArtistSameName() throws Exception {
-    StartupCollectionService.registerItemManagers();
-
-    Album album = AlbumManager.getInstance().registerAlbum("name3", "artist1", 1);
-    assertNotNull(album);
-
-    Album album2 = AlbumManager.getInstance().changeAlbumArtist(album, "artist1"); // same
-    // name,
-    // nothing
-    // to
-    // do
-
-    // check that we get physically the same object
     assertTrue(album2.toString(), album == album2);
   }
 
@@ -575,7 +502,7 @@ public class TestAlbumManager extends JajukTestCase {
     // Album album = new Album(Integer.valueOf(i).toString(), "name", "artis",
     // 23);
     album.setProperty(Const.XML_ALBUM_COVER, Const.COVER_NONE); // don't read
-                                                                // covers for
+    // covers for
     // this test
 
     Author author = new Author(Integer.valueOf(i).toString(), "name");
@@ -855,8 +782,7 @@ public class TestAlbumManager extends JajukTestCase {
     /*
      * (non-Javadoc)
      * 
-     * @see org.jajuk.services.tags.ITagImpl#setTagField(java.lang.String,
-     * java.lang.String)
+     * @see org.jajuk.services.tags.ITagImpl#setTagField(java.lang.String, java.lang.String)
      */
     @Override
     public void setTagField(String tagFieldKey, String tagFieldValue)

@@ -436,7 +436,7 @@ public class TestTracksTreeView extends JajukTestCase {
    * @return
    */
   private Album getAlbum() {
-    return new Album("1", "name", "artist", 234);
+    return new Album("1", "name", 234);
   }
 
   public final void testTrackNode() {

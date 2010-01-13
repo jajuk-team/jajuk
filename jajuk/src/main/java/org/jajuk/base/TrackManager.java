@@ -97,6 +97,9 @@ public final class TrackManager extends ItemManager {
     // Author
     registerProperty(new PropertyMetaInformation(Const.XML_AUTHOR, false, true, true, true, true,
         String.class, null));
+    // Album-artist
+    registerProperty(new PropertyMetaInformation(Const.XML_ALBUM_ARTIST, false, true, true, true,
+        true, String.class, null));
     // Length
     registerProperty(new PropertyMetaInformation(Const.XML_TRACK_LENGTH, false, true, true, false,
         false, Long.class, null));
@@ -336,7 +339,7 @@ public final class TrackManager extends ItemManager {
     }
     // register the new album
     Album newAlbum = AlbumManager.getInstance().registerAlbum(sNewAlbum,
-        track.getAlbum().getAlbumArtist(), track.getAlbum().getDiscID());
+        track.getAlbum().getDiscID());
     Track newTrack = registerTrack(track.getName(), newAlbum, track.getStyle(), track.getAuthor(),
         track.getDuration(), track.getYear(), track.getOrder(), track.getType(), track
             .getDiscNumber());

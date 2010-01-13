@@ -154,7 +154,7 @@ public class TestPlaylist extends JajukTestCase {
 
   private File getFile() {
     Style style = new Style("5", "name");
-    Album album = new Album("4", "name", "artis", 23);
+    Album album = new Album("4", "name", 23);
     Author author = new Author("6", "name");
     Year year = new Year("7", "2000");
     Type type = new Type("8", "name", "mp3", null, null);

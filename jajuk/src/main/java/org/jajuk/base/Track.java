@@ -29,6 +29,7 @@ import java.util.Set;
 
 import javax.swing.ImageIcon;
 
+import org.apache.commons.lang.StringUtils;
 import org.jajuk.services.core.RatingManager;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
@@ -323,25 +324,41 @@ public class Track extends LogicalItem implements Comparable<Track> {
   public long getDiscNumber() {
     return getLongValue(Const.XML_TRACK_DISC_NUMBER);
   }
-
+  
   /**
    * Get album artist.
    * 
    * @return the album artist
    */
   public String getAlbumArtist() {
-    return album.getAlbumArtist();
+    return getStringValue(Const.XML_ALBUM_ARTIST);
   }
 
   /**
-   * Get translated album artist or author if album artist not available.
+   * Gets the album artist or artist if album-artist is not available.
    * 
-   * @return the album artist or artist
+   * @return the albumArtist or author if album artist not available
+   * <p>
+   * If this is various, the album artist is tried to be defined by the
+   * track artists of this album
+   * </p>
    */
   public String getAlbumArtistOrArtist() {
-    return album.getAlbumArtistOrArtist();
+    // If the album artist tag is provided, perfect, let's use it !
+    String albumArtist = getAlbumArtist();
+    if (StringUtils.isNotBlank(albumArtist) && !(Const.UNKNOWN_AUTHOR.equals(albumArtist))) {
+      return albumArtist;
+    }
+    // various artist? check if all authors are the same
+    Author author = getAuthor();
+    if (author == null) {
+      // Several different author, return translated "various"
+      return Messages.getString(Const.VARIOUS_ARTIST);
+    } else {
+      // single artist, return it
+      return author.getName2();
+    }
   }
-
   /**
    * Gets the year.
    * 

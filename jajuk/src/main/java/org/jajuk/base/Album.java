@@ -64,12 +64,10 @@ public class Album extends LogicalItem implements Comparable<Album> {
    * 
    * @param sName DOCUMENT_ME
    * @param sId DOCUMENT_ME
-   * @param sAlbumArtist DOCUMENT_ME
    * @param discID DOCUMENT_ME
    */
-  public Album(String sId, String sName, String sAlbumArtist, long discID) {
+  public Album(String sId, String sName, long discID) {
     super(sId, sName);
-    setProperty(Const.XML_ALBUM_ARTIST, sAlbumArtist);
     setProperty(Const.XML_ALBUM_DISC_ID, discID);
   }
 
@@ -80,41 +78,6 @@ public class Album extends LogicalItem implements Comparable<Album> {
    */
   public long getDiscID() {
     return getLongValue(Const.XML_ALBUM_DISC_ID);
-  }
-
-  /**
-   * Gets the album artist.
-   * 
-   * @return the albumArtiest
-   */
-  public String getAlbumArtist() {
-    return getStringValue(Const.XML_ALBUM_ARTIST);
-  }
-
-  /**
-   * Gets the album artist or artist.
-   * 
-   * @return the albumArtist or author if album artist not available
-   * <p>
-   * If this is various, the album artist is tried to be defined by the
-   * track artists of this album
-   * </p>
-   */
-  public String getAlbumArtistOrArtist() {
-    // If the album artist tag is provided, perfect, let's use it !
-    String albumArtist = getAlbumArtist();
-    if (StringUtils.isNotBlank(albumArtist) && !(Const.UNKNOWN_AUTHOR.equals(albumArtist))) {
-      return albumArtist;
-    }
-    // various artist? check if all authors are the same
-    Author author = getAuthor();
-    if (author == null) {
-      // Several different author, return translated "various"
-      return Messages.getString(Const.VARIOUS_ARTIST);
-    } else {
-      // single artist, return it
-      return author.getName2();
-    }
   }
 
   /**
@@ -131,27 +94,14 @@ public class Album extends LogicalItem implements Comparable<Album> {
   }
 
   /**
-   * Return album-artist name, dealing with unknown for any language.
-   * 
-   * @return album-artist name
-   */
-  public String getAlbumArtist2() {
-    String sOut = getAlbumArtist();
-    if (sOut.equals(UNKNOWN_AUTHOR)) {
-      sOut = Messages.getString(UNKNOWN_AUTHOR);
-    }
-    return sOut;
-  }
-
-  /**
    * toString method.
    * 
    * @return the string
    */
   @Override
   public String toString() {
-    return "Album[ID=" + getID() + " Name={{" + getName() + "}}" + " Album Artist={{"
-        + getAlbumArtist() + "}}" + " disk ID={{" + getDiscID() + "}}]";
+    return "Album[ID=" + getID() + " Name={{" + getName() + "}}" + " Album Artist={{" + "}}"
+        + " disk ID={{" + getDiscID() + "}}]";
   }
 
   /**
@@ -234,9 +184,7 @@ public class Album extends LogicalItem implements Comparable<Album> {
       return Long.toString(getHits());
     } else if (Const.XML_ANY.equals(sKey)) {
       return getAny();
-    } else if (Const.XML_ALBUM_ARTIST.equals(sKey)) {
-      return getAlbumArtist2();
-    }
+    } 
     // default
     return super.getHumanValue(sKey);
   }
@@ -616,7 +564,7 @@ public class Album extends LogicalItem implements Comparable<Album> {
     if (StringUtils.isBlank(property) || StringUtils.isBlank(pattern)) {
       return true;
     }
-    
+
     String sValue = null;
     if (Const.XML_ALBUM.equals(property)) {
       sValue = getName2();

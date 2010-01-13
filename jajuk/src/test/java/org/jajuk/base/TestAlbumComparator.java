@@ -48,9 +48,9 @@ public class TestAlbumComparator extends JajukTestCase {
    */
   public final void testCompareStyle() {
     AlbumComparator compare = new AlbumComparator(0);
-    Album album = new Album("1", "name", "artist", 2);
-    Album equal = new Album("1", "name", "artist", 2);
-    Album notequal = new Album("1", "name", "artist", 2);
+    Album album = new Album("1", "name", 2);
+    Album equal = new Album("1", "name", 2);
+    Album notequal = new Album("1", "name", 2);
 
     // just differ in Style
     album.getTracksCache().add(getTrack(album));
@@ -65,9 +65,9 @@ public class TestAlbumComparator extends JajukTestCase {
 
   public final void testCompareStyle2() {
     AlbumComparator compare = new AlbumComparator(0);
-    Album album = new Album("1", "name", "artist", 2);
-    Album equal = new Album("1", "name", "artist", 2);
-    Album notequal = new Album("1", "name", "artist", 2);
+    Album album = new Album("1", "name", 2);
+    Album equal = new Album("1", "name", 2);
+    Album notequal = new Album("1", "name", 2);
 
     // just differ in Style, this time we have the physical same style
     Style style = new Style("8", "name8");
@@ -83,9 +83,9 @@ public class TestAlbumComparator extends JajukTestCase {
 
   public final void testCompareStyle4AlbumArtistDifferent() {
     AlbumComparator compare = new AlbumComparator(0);
-    Album album = new Album("1", "name", "artist", 2);
-    Album equal = new Album("1", "name", "artist2", 2);
-    Album notequal = new Album("1", "name", "artist", 2);
+    Album album = new Album("1", "name", 2);
+    Album equal = new Album("1", "name", 2);
+    Album notequal = new Album("1", "name", 2);
 
     // just differ in Style, this time we have the physical same style
     Style style = new Style("8", "name8");
@@ -101,9 +101,9 @@ public class TestAlbumComparator extends JajukTestCase {
 
   public final void testCompareStyle3SameYear() {
     AlbumComparator compare = new AlbumComparator(0);
-    Album album = new Album("1", "name", "artist", 2);
-    Album equal = new Album("1", "name", "artist", 2);
-    Album notequal = new Album("1", "name", "artist", 2);
+    Album album = new Album("1", "name", 2);
+    Album equal = new Album("1", "name", 2);
+    Album notequal = new Album("1", "name", 2);
 
     // just differ in Style, this time we have the physical same style
     Style style = new Style("8", "name8");
@@ -120,9 +120,9 @@ public class TestAlbumComparator extends JajukTestCase {
 
   public final void testCompareAuthor() {
     AlbumComparator compare = new AlbumComparator(1);
-    Album album = new Album("1", "name", "artist", 2);
-    Album equal = new Album("1", "name", "artist", 2);
-    Album notequal = new Album("1", "name", "artist2", 2);
+    Album album = new Album("1", "name", 2);
+    Album equal = new Album("1", "name", 2);
+    Album notequal = new Album("1", "name", 2);
 
     // just differ in Author
     album.getTracksCache().add(getTrack(album));
@@ -140,9 +140,9 @@ public class TestAlbumComparator extends JajukTestCase {
 
   public final void testCompareAuthorSameYear() {
     AlbumComparator compare = new AlbumComparator(1);
-    Album album = new Album("1", "name", "artist", 2);
-    Album equal = new Album("1", "name", "artist", 2);
-    Album notequal = new Album("1", "name", "artist2", 2);
+    Album album = new Album("1", "name", 2);
+    Album equal = new Album("1", "name", 2);
+    Album notequal = new Album("1", "name", 2);
 
     // just differ in Author
     Style style = new Style("8", "name8");
@@ -162,9 +162,9 @@ public class TestAlbumComparator extends JajukTestCase {
 
   public final void testCompareAlbum() {
     AlbumComparator compare = new AlbumComparator(2);
-    Album album = new Album("1", "name", "artist", 2);
-    Album equal = new Album("1", "name", "artist", 2);
-    Album notequal = new Album("2", "name2", "artist2", 2);
+    Album album = new Album("1", "name", 2);
+    Album equal = new Album("1", "name", 2);
+    Album notequal = new Album("2", "name2",2);
 
     assertEquals(0, compare.compare(album, equal));
     assertTrue(0 < compare.compare(album, notequal) || 0 > compare.compare(album, notequal));
@@ -172,9 +172,9 @@ public class TestAlbumComparator extends JajukTestCase {
 
   public final void testCompareYear() {
     AlbumComparator compare = new AlbumComparator(3);
-    Album album = new Album("1", "name", "artist", 2);
-    Album equal = new Album("1", "name", "artist", 2);
-    Album notequal = new Album("1", "name", "artist", 2);
+    Album album = new Album("1", "name", 2);
+    Album equal = new Album("1", "name", 2);
+    Album notequal = new Album("1", "name", 2);
 
     // just differ in Year
     album.getTracksCache().add(getTrack(album));
@@ -189,9 +189,9 @@ public class TestAlbumComparator extends JajukTestCase {
 
   public final void testCompareYearSameYear() {
     AlbumComparator compare = new AlbumComparator(3);
-    Album album = new Album("1", "name", "artist", 2);
-    Album equal = new Album("1", "name", "artist", 2);
-    Album notequal = new Album("1", "name", "artist", 2);
+    Album album = new Album("1", "name", 2);
+    Album equal = new Album("1", "name", 2);
+    Album notequal = new Album("1", "name", 2);
 
     // just differ in Year
     Style style = new Style("8", "name8");
@@ -208,9 +208,9 @@ public class TestAlbumComparator extends JajukTestCase {
 
   public final void testCompareYearSameYearDiffArtist() {
     AlbumComparator compare = new AlbumComparator(3);
-    Album album = new Album("1", "name", "artist", 2);
-    Album equal = new Album("1", "name", "artist2", 2);
-    Album notequal = new Album("1", "name", "artist", 2);
+    Album album = new Album("1", "name", 2);
+    Album equal = new Album("1", "name", 2);
+    Album notequal = new Album("1", "name", 2);
 
     // just differ in Year
     Style style = new Style("8", "name8");
@@ -227,9 +227,9 @@ public class TestAlbumComparator extends JajukTestCase {
 
   public final void testCompareDiscoveryDate() {
     AlbumComparator compare = new AlbumComparator(4);
-    Album album = new Album("1", "name", "artist", 2);
-    Album equal = new Album("1", "name", "artist", 2);
-    Album notequal = new Album("1", "name", "artist", 2);
+    Album album = new Album("1", "name", 2);
+    Album equal = new Album("1", "name", 2);
+    Album notequal = new Album("1", "name", 2);
 
     Date date1 = new Date();
     Date date2 = new Date(12345); // needs to be different to date1
@@ -248,9 +248,9 @@ public class TestAlbumComparator extends JajukTestCase {
 
   public final void testCompareRate() {
     AlbumComparator compare = new AlbumComparator(5);
-    Album album = new Album("1", "name", "artist", 2);
-    Album equal = new Album("1", "name", "artist", 2);
-    Album notequal = new Album("1", "name", "artist", 2);
+    Album album = new Album("1", "name", 2);
+    Album equal = new Album("1", "name", 2);
+    Album notequal = new Album("1", "name", 2);
 
     // just differ in Rate
     album.getTracksCache().add(getTrack(album));
@@ -266,9 +266,9 @@ public class TestAlbumComparator extends JajukTestCase {
 
   public final void testCompareRateGT() {
     AlbumComparator compare = new AlbumComparator(5);
-    Album album = new Album("1", "name", "artist", 2);
-    Album equal = new Album("1", "name", "artist", 2);
-    Album notequal = new Album("1", "name", "artist", 2);
+    Album album = new Album("1", "name", 2);
+    Album equal = new Album("1", "name", 2);
+    Album notequal = new Album("1", "name", 2);
 
     // just differ in Rate
     album.getTracksCache().add(getTrack(album));
@@ -284,9 +284,9 @@ public class TestAlbumComparator extends JajukTestCase {
 
   public final void testCompareHits() {
     AlbumComparator compare = new AlbumComparator(6);
-    Album album = new Album("1", "name", "artist", 2);
-    Album equal = new Album("1", "name", "artist", 2);
-    Album notequal = new Album("1", "name", "artist", 2);
+    Album album = new Album("1", "name", 2);
+    Album equal = new Album("1", "name", 2);
+    Album notequal = new Album("1", "name", 2);
 
     // just differ in Hits
     album.getTracksCache().add(getTrack(album));
@@ -302,9 +302,9 @@ public class TestAlbumComparator extends JajukTestCase {
 
   public final void testCompareHitsGT() {
     AlbumComparator compare = new AlbumComparator(6);
-    Album album = new Album("1", "name", "artist", 2);
-    Album equal = new Album("1", "name", "artist", 2);
-    Album notequal = new Album("1", "name", "artist", 2);
+    Album album = new Album("1", "name", 2);
+    Album equal = new Album("1", "name", 2);
+    Album notequal = new Album("1", "name", 2);
 
     // just differ in Hits
     album.getTracksCache().add(getTrack(album));
@@ -334,9 +334,9 @@ public class TestAlbumComparator extends JajukTestCase {
 
   public final void testCompareNoTrack() {
     AlbumComparator compare = new AlbumComparator(0);
-    Album album = new Album("1", "name", "artist", 2);
-    Album equal = new Album("1", "name", "artist", 2);
-    Album notequal = new Album("2", "name2", "artist2", 2);
+    Album album = new Album("1", "name", 2);
+    Album equal = new Album("1", "name", 2);
+    Album notequal = new Album("2", "name2",2);
 
     // without actual tracks, anything compares...
     assertEquals(0, compare.compare(album, equal));
@@ -345,9 +345,9 @@ public class TestAlbumComparator extends JajukTestCase {
 
   public final void testCompareCriteriaOutside() {
     AlbumComparator compare = new AlbumComparator(99);
-    Album album = new Album("1", "name", "artist", 2);
-    Album equal = new Album("1", "name", "artist", 2);
-    Album notequal = new Album("2", "name2", "artist2", 2);
+    Album album = new Album("1", "name", 2);
+    Album equal = new Album("1", "name", 2);
+    Album notequal = new Album("2", "name2",2);
 
     // add the same type of track in all albums to not stop comparison early
     album.getTracksCache().add(getTrack(album));

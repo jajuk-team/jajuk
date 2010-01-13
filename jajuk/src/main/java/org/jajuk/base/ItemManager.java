@@ -510,9 +510,6 @@ public abstract class ItemManager {
     } else if (itemToChange instanceof Album) {
       if (Const.XML_NAME.equals(sKey)) {
         newItem = AlbumManager.getInstance().changeAlbumName((Album) itemToChange, (String) oValue);
-      } else if (Const.XML_ALBUM_ARTIST.equals(sKey)) {
-        newItem = AlbumManager.getInstance().changeAlbumArtist((Album) itemToChange,
-            (String) oValue);
       } else { // others properties
         itemToChange.setProperty(sKey, oValue);
       }

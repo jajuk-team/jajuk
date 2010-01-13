@@ -204,13 +204,13 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
   public static void commit(File collectionFile) throws IOException {
     long time = System.currentTimeMillis();
     String sCharset = Conf.getString(Const.CONF_COLLECTION_CHARSET);
-    final BufferedWriter bw; 
-    if(collectionFile.getAbsolutePath().endsWith(".zip")) {
+    final BufferedWriter bw;
+    if (collectionFile.getAbsolutePath().endsWith(".zip")) {
       bw = new BufferedWriter(new OutputStreamWriter(new ZipOutputStream(new FileOutputStream(
-        collectionFile)), sCharset), 1000000);
+          collectionFile)), sCharset), 1000000);
     } else {
-      bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(
-          collectionFile), sCharset), 1000000);
+      bw = new BufferedWriter(
+          new OutputStreamWriter(new FileOutputStream(collectionFile), sCharset), 1000000);
     }
     try {
       bw.write("<?xml version='1.0' encoding='" + sCharset + "'?>\n");
@@ -221,7 +221,7 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
       writeItemList(bw, DeviceManager.getInstance().toXML(), DeviceManager.getInstance()
           .getDevicesIterator(), DeviceManager.getInstance().getLabel(), 40);
       Log.debug("Devices committed.");
-      
+
       // Styles
       writeItemList(bw, StyleManager.getInstance().toXML(), StyleManager.getInstance()
           .getStylesIterator(), StyleManager.getInstance().getLabel(), 40);
@@ -359,11 +359,11 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
     if (!file.exists()) {
       throw new JajukException(5, file.toString());
     }
-    if(file.getAbsolutePath().endsWith(".zip")) {
+    if (file.getAbsolutePath().endsWith(".zip")) {
       InputSource input = new InputSource(new ZipInputStream(new FileInputStream(file)));
       saxParser.parse(input, getInstance());
     } else {
-      saxParser.parse(file.toURI().toURL().toString(), getInstance());      
+      saxParser.parse(file.toURI().toURL().toString(), getInstance());
     }
   }
 
@@ -582,11 +582,12 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
             manager.registerProperty(meta);
           }
         }
-        
-        if(Const.XML_PROPERTY == sQName) {
+
+        if (Const.XML_PROPERTY == sQName) {
           Log.debug("Found property: " + attributes.getValue(Const.XML_NAME));
         } else {
-          Log.debug("Starting stage: '" + stage + "' with property: '" + sQName + "' manager: " + (manager != null ? manager.getLabel() : "<null>"));
+          Log.debug("Starting stage: '" + stage + "' with property: '" + sQName + "' manager: "
+              + (manager != null ? manager.getLabel() : "<null>"));
         }
       } else {
         // Manage elements themselves using a switch for performances
@@ -702,9 +703,8 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
     }
     String sID = attributes.getValue(idIndex).intern();
     /*
-     * UPGRADE test : if first element we check has the right ID, we avoid
-     * wasting time checking others item one. If is is an upgrade, we force the
-     * check.We always check id in debug mode.
+     * UPGRADE test : if first element we check has the right ID, we avoid wasting time checking
+     * others item one. If is is an upgrade, we force the check.We always check id in debug mode.
      */
     String sRightID = sID;
     if (needCheckID) {
@@ -879,18 +879,19 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
         UtilString.fastLongParser(attributes.getValue(Const.XML_TRACK_RATE)));
     track.setHits(UtilString.fastLongParser(attributes.getValue(Const.XML_TRACK_HITS)));
     // only set discovery date if it is available in the file
-    if(attributes.getValue(Const.XML_TRACK_DISCOVERY_DATE) != null) {
+    if (attributes.getValue(Const.XML_TRACK_DISCOVERY_DATE) != null) {
       // Date format should be OK
-      Date dAdditionDate = ADDITION_FORMATTER.parse(attributes.getValue(Const.XML_TRACK_DISCOVERY_DATE));
+      Date dAdditionDate = ADDITION_FORMATTER.parse(attributes
+          .getValue(Const.XML_TRACK_DISCOVERY_DATE));
       track.setDiscoveryDate(dAdditionDate);
     }
-    
+
     String sComment = attributes.getValue(Const.XML_TRACK_COMMENT);
     if (sComment == null) {
       sComment = "";
     }
     track.setComment(sComment.intern());
-    
+
     track.populateProperties(attributes);
   }
 
@@ -917,7 +918,7 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
     // UPGRADE test
     String sRightID = sID;
     if (needCheckID) {
-      sRightID = AlbumManager.createID(sItemName, sAttributeAlbumArtist, lItemDiscID).intern();
+      sRightID = AlbumManager.createID(sItemName, lItemDiscID).intern();
       if (sRightID == sID) {
         needCheckID = UpgradeManager.isUpgradeDetected() || SessionService.isTestMode();
       } else {
@@ -925,8 +926,7 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
         hmWrongRightAlbumID.put(sID, sRightID);
       }
     }
-    Album album = AlbumManager.getInstance().registerAlbum(sRightID, sItemName,
-        sAttributeAlbumArtist, lItemDiscID);
+    Album album = AlbumManager.getInstance().registerAlbum(sRightID, sItemName, lItemDiscID);
     if (album != null) {
       album.populateProperties(attributes);
     }

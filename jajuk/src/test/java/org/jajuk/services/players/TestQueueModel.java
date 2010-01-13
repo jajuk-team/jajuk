@@ -121,8 +121,8 @@ public class TestQueueModel extends JajukTestCase {
     addItems(10);
 
     // empty call, does not find anything
-    QueueModel.resetAround(1, new Album("99", "name99", "artist99", 0));
-
+    QueueModel.resetAround(1, new Album("99", "name99", 0));
+    
     // do a normal call
     QueueModel.resetAround(1, AlbumManager.getInstance().getAlbumByID("1"));
   }
@@ -1229,7 +1229,7 @@ public class TestQueueModel extends JajukTestCase {
 
     // we can add a dummy-file and check that it is removed
     Style style = new Style("99", "name");
-    Album album = new Album("99", "name", "artis", 23);
+    Album album = new Album("99", "name", 23);
     album.setProperty(Const.XML_ALBUM_COVER, Const.COVER_NONE); // don't read covers for
     // this test
 

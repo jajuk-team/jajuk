@@ -97,10 +97,10 @@ public class TestCollection extends JajukTestCase {
     {
       Style style = new Style("5", "name");
       StyleManager.getInstance().registerStyle("name");
-      Album album = new Album("5", "name", "artis", 23);
+      Album album = new Album("5", "name", 23);
       album.setProperty(Const.XML_ALBUM_COVER, Const.COVER_NONE); // don't read covers for
       // this test
-      AlbumManager.getInstance().registerAlbum("name", "artis", 23);
+      AlbumManager.getInstance().registerAlbum("name", 23);
 
       Author author = new Author("5", "name");
       AuthorManager.getInstance().registerAuthor("name");

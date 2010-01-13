@@ -69,62 +69,47 @@ public class AlbumComparator implements Comparator<Album>, Serializable {
       return 0;
     }
 
-    String albumArtist1 = null;
-    String albumArtist2 = null;
-
     // @TODO
     // beware, this code is not consistent with equals. This should be ok as
     // result is used by a List but it could be a drama if we used a Set
     // See : http: // java.sun.com/j2se/1.4.2/docs/api/java/lang/Comparable.html
     switch (criteria) {
     case 0: // style
-      // Cache this, time consuming
-      albumArtist1 = album1.getAlbumArtistOrArtist();
-      albumArtist2 = album2.getAlbumArtistOrArtist();
-
       // Sort on Style/Author/Year/Title
       if (track1.getStyle() == track2.getStyle()) {
         // [Perf] We can make this '==' comparison because all these strings are
         // internalized
-        if (albumArtist1 == albumArtist2) {
+        if (track1.getAuthor() == track2.getAuthor()) {
           if (track1.getYear() == track2.getYear()) {
             return album1.compareTo(album2);
           } else {
             return track1.getYear().compareTo(track2.getYear());
           }
         } else {
-          return albumArtist1.compareTo(albumArtist2);
+          return track1.getAuthor().compareTo(track2.getAuthor());
         }
       } else {
         return track1.getStyle().compareTo(track2.getStyle());
       }
     case 1: // author
-      // Cache this, time consuming
-      albumArtist1 = album1.getAlbumArtistOrArtist();
-      albumArtist2 = album2.getAlbumArtistOrArtist();
-
       // Sort on Author/Year/Title
       // we use now the album artist
-      if (albumArtist1 == albumArtist2) {
+      if (track1.getAuthor() == track2.getAuthor()) {
         if (track1.getYear() == track2.getYear()) {
           return album1.compareTo(album2);
         } else {
           return track1.getYear().compareTo(track2.getYear());
         }
       } else {
-        return albumArtist1.compareTo(albumArtist2);
+        return track1.getAuthor().compareTo(track2.getAuthor());
       }
     case 3: // year
-      // Cache this, time consuming
-      albumArtist1 = album1.getAlbumArtistOrArtist();
-      albumArtist2 = album2.getAlbumArtistOrArtist();
-
       // Sort on: Year/Author/Title
       if (track1.getYear() == track2.getYear()) {
-        if (albumArtist1 == albumArtist2) {
+        if (track1.getAuthor() == track2.getAuthor()) {
           return album1.compareTo(album2);
         } else {
-          return albumArtist1.compareTo(albumArtist2);
+          return track1.getAuthor().compareTo(track2.getAuthor());
         }
       } else {
         return track1.getYear().compareTo(track2.getYear());

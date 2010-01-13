@@ -32,7 +32,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.commons.lang.StringUtils;
 import org.jajuk.base.TrackComparator.TrackComparatorType;
 import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
@@ -48,7 +47,7 @@ import org.jajuk.util.error.JajukException;
  * Convenient class to manage Albums.
  */
 public final class AlbumManager extends ItemManager implements Observer {
-  
+
   /** Self instance. */
   private static AlbumManager singleton;
 
@@ -76,17 +75,15 @@ public final class AlbumManager extends ItemManager implements Observer {
     // Cover path
     registerProperty(new PropertyMetaInformation(Const.XML_ALBUM_COVER, false, false, false, false,
         false, String.class, null));
-    // Name
-    registerProperty(new PropertyMetaInformation(Const.XML_ALBUM_ARTIST, false, true, true, true,
-        true, String.class, null));
-    // Name
+    // Disc id
     registerProperty(new PropertyMetaInformation(Const.XML_ALBUM_DISC_ID, false, true, false,
         false, false, Long.class, -1l));
     // Register events
     ObservationManager.register(this);
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
    * @see org.jajuk.events.Observer#getRegistrationKeys()
    */
   public Set<JajukEvents> getRegistrationKeys() {
@@ -111,26 +108,12 @@ public final class AlbumManager extends ItemManager implements Observer {
    * Return hashcode for this item.
    * 
    * @param sName item name
-   * @param sAlbumArtist DOCUMENT_ME
    * @param discId DOCUMENT_ME
    * 
    * @return ItemManager ID
    */
-  protected static String createID(String sName, String sAlbumArtist, long discId) {
-    // The hash is done this way:
-    // If album artist tag is provided, use it + name
-    // If not, use name + diskId (or only the name if the disc id is not yet
-    // computed)
-    if (sAlbumArtist == null || Const.UNKNOWN_AUTHOR.equals(sAlbumArtist)
-        || StringUtils.isBlank(sAlbumArtist)) {
-      if (discId > 0) {
-        return MD5Processor.hash(sName + discId);
-      } else {
-        return MD5Processor.hash(sName);
-      }
-    } else {
-      return MD5Processor.hash(sName + sAlbumArtist);
-    }
+  protected static String createID(String sName, long discId) {
+    return MD5Processor.hash(sName + discId);
   }
 
   /**
@@ -138,24 +121,16 @@ public final class AlbumManager extends ItemManager implements Observer {
    * 
    * @param sName DOCUMENT_ME
    * @param sId DOCUMENT_ME
-   * @param sAlbumArtist DOCUMENT_ME
    * @param discID DOCUMENT_ME
    * 
    * @return the album
    */
-  public synchronized Album registerAlbum(String sId, String sName, String sAlbumArtist, long discID) {
+  public synchronized Album registerAlbum(String sId, String sName, long discID) {
     Album album = getAlbumByID(sId);
     if (album != null) {
-      // Due to a change in album artist default value, we have to force the
-      // property
-      // TODO remove this test in 1.9, we assume all testers will have run this
-      // test once then
-      if ("".equals(album.getAlbumArtist())) {
-        album.setProperty(Const.XML_ALBUM_ARTIST, Const.UNKNOWN_AUTHOR);
-      }
       return album;
     }
-    album = new Album(sId, sName, sAlbumArtist, discID);
+    album = new Album(sId, sName, discID);
     registerItem(album);
     return album;
   }
@@ -169,9 +144,9 @@ public final class AlbumManager extends ItemManager implements Observer {
    * 
    * @return the album
    */
-  public Album registerAlbum(String sName, String sAlbumArtist, long discID) {
-    String sId = createID(sName, sAlbumArtist, discID);
-    return registerAlbum(sId, sName, sAlbumArtist, discID);
+  public Album registerAlbum(String sName, long discID) {
+    String sId = createID(sName, discID);
+    return registerAlbum(sId, sName, discID);
   }
 
   /**
@@ -194,10 +169,10 @@ public final class AlbumManager extends ItemManager implements Observer {
     boolean bQueueUpdateRequired = false;
     if (QueueModel.getPlayingFile() != null
         && QueueModel.getPlayingFile().getTrack().getAlbum().equals(old)) {
-      bQueueUpdateRequired=true;
+      bQueueUpdateRequired = true;
     }
-    
-    Album newItem = registerAlbum(sNewName, old.getAlbumArtist(), old.getDiscID());
+
+    Album newItem = registerAlbum(sNewName, old.getDiscID());
     // re apply old properties from old item
     newItem.cloneProperties(old);
 
@@ -212,56 +187,13 @@ public final class AlbumManager extends ItemManager implements Observer {
     if (bQueueUpdateRequired) {
       ObservationManager.notify(new JajukEvent(JajukEvents.ALBUM_CHANGED));
     }
-    
-    // remove old item
-    removeItem(old);
-    
-    return newItem;
-  }
-
-  /**
-   * Change the item.
-   * 
-   * @param old DOCUMENT_ME
-   * @param sNewName DOCUMENT_ME
-   * 
-   * @return new album
-   * 
-   * @throws JajukException the jajuk exception
-   */
-  public Album changeAlbumArtist(Album old, String sNewName) throws JajukException {
-    // check there is actually a change
-    if (old.getAlbumArtist().equals(sNewName)) {
-      return old;
-    }
-    Album newItem = registerAlbum(old.getName(), sNewName, old.getDiscID());
-    // re apply old properties from old item
-    newItem.cloneProperties(old);
-
-    // check up front as later the state of the track is already changed
-    boolean bQueueUpdateRequired = false;
-    if (QueueModel.getPlayingFile() != null
-        && QueueModel.getPlayingFile().getTrack().getAlbum().equals(old)) {
-      bQueueUpdateRequired=true;
-    }
-
-    // update tracks
-    for (Track track : TrackManager.getInstance().getTracks()) {
-      if (track.getAlbum().equals(old)) {
-        TrackManager.getInstance().changeTrackAlbumArtist(track, sNewName, null);
-      }
-    }
-    // if current track album name is changed, notify it
-    if (bQueueUpdateRequired) {
-      ObservationManager.notify(new JajukEvent(JajukEvents.ALBUM_CHANGED));
-    }
 
     // remove old item
     removeItem(old);
 
     return newItem;
   }
-
+ 
   /**
    * Format the album name to be normalized :
    * <p>

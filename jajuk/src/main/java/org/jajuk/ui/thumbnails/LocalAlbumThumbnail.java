@@ -43,6 +43,8 @@ import javax.swing.border.EmptyBorder;
 import net.miginfocom.swing.MigLayout;
 
 import org.jajuk.base.Album;
+import org.jajuk.base.Author;
+import org.jajuk.base.AuthorManager;
 import org.jajuk.base.Item;
 import org.jajuk.base.Track;
 import org.jajuk.base.TrackComparator;
@@ -122,11 +124,11 @@ public class LocalAlbumThumbnail extends AbstractThumbnail {
     }
     if (bShowFullText) {
       int iRows = 7 + 7 * ((size / 50) - 1);
+      Author author = AuthorManager.getInstance().getAssociatedAuthors(album).iterator().next();
+      String authorName = author.getName2();
 
-      String albumArtist = album.getAlbumArtistOrArtist();
-
-      jlAuthor = new JLabel(UtilString.getLimitedString(albumArtist, iRows));
-      jlAuthor.setToolTipText(albumArtist);
+      jlAuthor = new JLabel(UtilString.getLimitedString(authorName, iRows));
+      jlAuthor.setToolTipText(authorName);
       jlAuthor.setFont(FontManager.getInstance().getFont(JajukFont.BOLD));
 
       // we have to use a empty border to avoid getting default border
