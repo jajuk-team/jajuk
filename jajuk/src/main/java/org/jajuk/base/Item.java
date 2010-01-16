@@ -111,7 +111,7 @@ public abstract class Item implements Const {
   public abstract String getDesc();
 
   /**
-   * Equal method to check two albums are identical.
+   * Equal method to check two items are identical.
    * 
    * @param otherItem DOCUMENT_ME
    * 
