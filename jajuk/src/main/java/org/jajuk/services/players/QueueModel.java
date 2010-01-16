@@ -81,7 +81,7 @@ public final class QueueModel {
   private static StackItem itemLast;
 
   /** The Fifo itself, contains jajuk File objects. This also includes an optional bunch of planned tracks which are accessible with separate methods. */
-  private static volatile QueueImpl alQueue = new QueueImpl();
+  private static volatile QueueList alQueue = new QueueList();
 
   /** Stop flag*. */
   private static volatile boolean bStop = true;

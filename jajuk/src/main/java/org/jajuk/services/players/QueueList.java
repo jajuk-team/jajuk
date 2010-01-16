@@ -31,7 +31,7 @@ import org.jajuk.base.File;
 /**
  * Provides a container that encapsulates the normal queued items as well as the automatically planned items.
  */
-public class QueueImpl implements List<StackItem> {
+public class QueueList implements List<StackItem> {
 
   /** Fifo itself, contains jajuk File objects. */
   private static volatile List<StackItem> alQueue = new ArrayList<StackItem>(50);

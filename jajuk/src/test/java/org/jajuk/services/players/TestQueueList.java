@@ -33,24 +33,24 @@ import org.jajuk.util.error.JajukException;
 /**
  * 
  */
-public class TestQueueImpl extends JajukTestCase {
+public class TestQueueList extends JajukTestCase {
 
   /**
-   * Test method for {@link org.jajuk.services.players.QueueImpl#add(org.jajuk.services.players.StackItem)}.
+   * Test method for {@link org.jajuk.services.players.QueueList#add(org.jajuk.services.players.StackItem)}.
    * @throws Exception 
    */
   public void testAddStackItem() throws Exception {
-    QueueImpl impl = new QueueImpl();
+    QueueList impl = new QueueList();
     impl.add(new StackItem(JUnitHelpers.getFile(1, false)));
     assertEquals(1, impl.size());
   }
 
   /**
-   * Test method for {@link org.jajuk.services.players.QueueImpl#add(int, org.jajuk.services.players.StackItem)}.
+   * Test method for {@link org.jajuk.services.players.QueueList#add(int, org.jajuk.services.players.StackItem)}.
    * @throws Exception 
    */
   public void testAddIntStackItem() throws Exception {
-    QueueImpl impl = new QueueImpl();
+    QueueList impl = new QueueList();
     impl.add(new StackItem(JUnitHelpers.getFile(1, false)));
     assertEquals(1, impl.size());
     impl.add(0, new StackItem(JUnitHelpers.getFile(2, false)));
@@ -61,22 +61,22 @@ public class TestQueueImpl extends JajukTestCase {
   }
 
   /**
-   * Test method for {@link org.jajuk.services.players.QueueImpl#addAll(java.util.Collection)}.
+   * Test method for {@link org.jajuk.services.players.QueueList#addAll(java.util.Collection)}.
    * @throws Exception 
    */
   public void testAddAllCollectionOfQextendsStackItem() throws Exception {
-    QueueImpl impl = new QueueImpl();
+    QueueList impl = new QueueList();
 
     prepareQueueImpl(impl);
     assertEquals(3, impl.size());
   }
 
   /**
-   * Test method for {@link org.jajuk.services.players.QueueImpl#addAll(int, java.util.Collection)}.
+   * Test method for {@link org.jajuk.services.players.QueueList#addAll(int, java.util.Collection)}.
    * @throws Exception 
    */
   public void testAddAllIntCollectionOfQextendsStackItem() throws Exception {
-    QueueImpl impl = new QueueImpl();
+    QueueList impl = new QueueList();
 
     impl.add(new StackItem(JUnitHelpers.getFile(10, false)));
     assertEquals(1, impl.size());
@@ -92,11 +92,11 @@ public class TestQueueImpl extends JajukTestCase {
   }
 
   /**
-   * Test method for {@link org.jajuk.services.players.QueueImpl#clear()}.
+   * Test method for {@link org.jajuk.services.players.QueueList#clear()}.
    * @throws Exception 
    */
   public void testClear() throws Exception {
-    QueueImpl impl = new QueueImpl();
+    QueueList impl = new QueueList();
 
     impl.add(new StackItem(JUnitHelpers.getFile(10, false)));
     assertEquals(1, impl.size());
@@ -106,11 +106,11 @@ public class TestQueueImpl extends JajukTestCase {
   }
 
   /**
-   * Test method for {@link org.jajuk.services.players.QueueImpl#contains(java.lang.Object)}.
+   * Test method for {@link org.jajuk.services.players.QueueList#contains(java.lang.Object)}.
    * @throws Exception 
    */
   public void testContains() throws Exception {
-    QueueImpl impl = new QueueImpl();
+    QueueList impl = new QueueList();
 
     prepareQueueImpl(impl);
     assertEquals(3, impl.size());
@@ -120,11 +120,11 @@ public class TestQueueImpl extends JajukTestCase {
   }
 
   /**
-   * Test method for {@link org.jajuk.services.players.QueueImpl#containsAll(java.util.Collection)}.
+   * Test method for {@link org.jajuk.services.players.QueueList#containsAll(java.util.Collection)}.
    * @throws Exception 
    */
   public void testContainsAll() throws Exception {
-    QueueImpl impl = new QueueImpl();
+    QueueList impl = new QueueList();
 
     List<StackItem> set = prepareQueueImpl(impl);
     assertEquals(3, impl.size());
@@ -137,17 +137,17 @@ public class TestQueueImpl extends JajukTestCase {
   }
 
   /**
-   * Test method for {@link org.jajuk.services.players.QueueImpl#get(int)}.
+   * Test method for {@link org.jajuk.services.players.QueueList#get(int)}.
    */
   public void testGet() throws Exception {
     // tested above
   }
 
   /**
-   * Test method for {@link org.jajuk.services.players.QueueImpl#indexOf(java.lang.Object)}.
+   * Test method for {@link org.jajuk.services.players.QueueList#indexOf(java.lang.Object)}.
    */
   public void testIndexOf() throws Exception {
-    QueueImpl impl = new QueueImpl();
+    QueueList impl = new QueueList();
 
     prepareQueueImpl(impl);
     assertEquals(3, impl.size());
@@ -157,10 +157,10 @@ public class TestQueueImpl extends JajukTestCase {
   }
 
   /**
-   * Test method for {@link org.jajuk.services.players.QueueImpl#isEmpty()}.
+   * Test method for {@link org.jajuk.services.players.QueueList#isEmpty()}.
    */
   public void testIsEmpty() throws Exception {
-    QueueImpl impl = new QueueImpl();
+    QueueList impl = new QueueList();
 
     assertTrue(impl.isEmpty());
 
@@ -170,10 +170,10 @@ public class TestQueueImpl extends JajukTestCase {
   }
 
   /**
-   * Test method for {@link org.jajuk.services.players.QueueImpl#iterator()}.
+   * Test method for {@link org.jajuk.services.players.QueueList#iterator()}.
    */
   public void testIterator() throws Exception {
-    QueueImpl impl = new QueueImpl();
+    QueueList impl = new QueueList();
 
     prepareQueueImpl(impl);
     assertEquals(3, impl.size());
@@ -189,10 +189,10 @@ public class TestQueueImpl extends JajukTestCase {
   }
 
   /**
-   * Test method for {@link org.jajuk.services.players.QueueImpl#lastIndexOf(java.lang.Object)}.
+   * Test method for {@link org.jajuk.services.players.QueueList#lastIndexOf(java.lang.Object)}.
    */
   public void testLastIndexOf() throws Exception {
-    QueueImpl impl = new QueueImpl();
+    QueueList impl = new QueueList();
 
     prepareQueueImpl(impl);
     assertEquals(3, impl.size());
@@ -201,10 +201,10 @@ public class TestQueueImpl extends JajukTestCase {
   }
 
   /**
-   * Test method for {@link org.jajuk.services.players.QueueImpl#listIterator()}.
+   * Test method for {@link org.jajuk.services.players.QueueList#listIterator()}.
    */
   public void testListIterator() throws Exception {
-    QueueImpl impl = new QueueImpl();
+    QueueList impl = new QueueList();
 
     prepareQueueImpl(impl);
     assertEquals(3, impl.size());
@@ -213,10 +213,10 @@ public class TestQueueImpl extends JajukTestCase {
   }
 
   /**
-   * Test method for {@link org.jajuk.services.players.QueueImpl#listIterator(int)}.
+   * Test method for {@link org.jajuk.services.players.QueueList#listIterator(int)}.
    */
   public void testListIteratorInt() throws Exception {
-    QueueImpl impl = new QueueImpl();
+    QueueList impl = new QueueList();
 
     prepareQueueImpl(impl);
     assertEquals(3, impl.size());
@@ -225,10 +225,10 @@ public class TestQueueImpl extends JajukTestCase {
   }
 
   /**
-   * Test method for {@link org.jajuk.services.players.QueueImpl#remove(java.lang.Object)}.
+   * Test method for {@link org.jajuk.services.players.QueueList#remove(java.lang.Object)}.
    */
   public void testRemoveObject() throws Exception {
-    QueueImpl impl = new QueueImpl();
+    QueueList impl = new QueueList();
 
     prepareQueueImpl(impl);
     assertEquals(3, impl.size());
@@ -241,10 +241,10 @@ public class TestQueueImpl extends JajukTestCase {
   }
 
   /**
-   * Test method for {@link org.jajuk.services.players.QueueImpl#remove(int)}.
+   * Test method for {@link org.jajuk.services.players.QueueList#remove(int)}.
    */
   public void testRemoveInt() throws Exception {
-    QueueImpl impl = new QueueImpl();
+    QueueList impl = new QueueList();
 
     prepareQueueImpl(impl);
 
@@ -261,10 +261,10 @@ public class TestQueueImpl extends JajukTestCase {
   }
 
   /**
-   * Test method for {@link org.jajuk.services.players.QueueImpl#removeAll(java.util.Collection)}.
+   * Test method for {@link org.jajuk.services.players.QueueList#removeAll(java.util.Collection)}.
    */
   public void testRemoveAll() throws Exception {
-    QueueImpl impl = new QueueImpl();
+    QueueList impl = new QueueList();
 
     List<StackItem> set = prepareQueueImpl(impl);
 
@@ -276,10 +276,10 @@ public class TestQueueImpl extends JajukTestCase {
   }
 
   /**
-   * Test method for {@link org.jajuk.services.players.QueueImpl#retainAll(java.util.Collection)}.
+   * Test method for {@link org.jajuk.services.players.QueueList#retainAll(java.util.Collection)}.
    */
   public void testRetainAll() throws Exception {
-    QueueImpl impl = new QueueImpl();
+    QueueList impl = new QueueList();
 
     List<StackItem> set = prepareQueueImpl(impl);
 
@@ -291,10 +291,10 @@ public class TestQueueImpl extends JajukTestCase {
   }
 
   /**
-   * Test method for {@link org.jajuk.services.players.QueueImpl#set(int, org.jajuk.services.players.StackItem)}.
+   * Test method for {@link org.jajuk.services.players.QueueList#set(int, org.jajuk.services.players.StackItem)}.
    */
   public void testSet() throws Exception {
-    QueueImpl impl = new QueueImpl();
+    QueueList impl = new QueueList();
     prepareQueueImpl(impl);
 
     impl.set(0, new StackItem(JUnitHelpers.getFile(4, false)));
@@ -303,17 +303,17 @@ public class TestQueueImpl extends JajukTestCase {
   }
 
   /**
-   * Test method for {@link org.jajuk.services.players.QueueImpl#size()}.
+   * Test method for {@link org.jajuk.services.players.QueueList#size()}.
    */
   public void testSize() throws Exception {
     // tested above
   }
 
   /**
-   * Test method for {@link org.jajuk.services.players.QueueImpl#subList(int, int)}.
+   * Test method for {@link org.jajuk.services.players.QueueList#subList(int, int)}.
    */
   public void testSubList() throws Exception {
-    QueueImpl impl = new QueueImpl();
+    QueueList impl = new QueueList();
     prepareQueueImpl(impl);
 
     List<StackItem> items = impl.subList(1, 3);
@@ -321,10 +321,10 @@ public class TestQueueImpl extends JajukTestCase {
   }
 
   /**
-   * Test method for {@link org.jajuk.services.players.QueueImpl#toArray()}.
+   * Test method for {@link org.jajuk.services.players.QueueList#toArray()}.
    */
   public void testToArray() throws Exception {
-    QueueImpl impl = new QueueImpl();
+    QueueList impl = new QueueList();
     prepareQueueImpl(impl);
 
     Object[] arr = impl.toArray();
@@ -332,10 +332,10 @@ public class TestQueueImpl extends JajukTestCase {
   }
 
   /**
-   * Test method for {@link org.jajuk.services.players.QueueImpl#toArray(T[])}.
+   * Test method for {@link org.jajuk.services.players.QueueList#toArray(T[])}.
    */
   public void testToArrayTArray() throws Exception {
-    QueueImpl impl = new QueueImpl();
+    QueueList impl = new QueueList();
     prepareQueueImpl(impl);
 
     StackItem[] arr = impl.toArray(new StackItem[] {});
@@ -343,10 +343,10 @@ public class TestQueueImpl extends JajukTestCase {
   }
 
   /**
-   * Test method for {@link org.jajuk.services.players.QueueImpl#getQueue()}.
+   * Test method for {@link org.jajuk.services.players.QueueList#getQueue()}.
    */
   public void testGetQueue() throws Exception {
-    QueueImpl impl = new QueueImpl();
+    QueueList impl = new QueueList();
     prepareQueueImpl(impl);
 
     List<StackItem> queue = impl.getQueue();
@@ -354,10 +354,10 @@ public class TestQueueImpl extends JajukTestCase {
   }
 
   /**
-   * Test method for {@link org.jajuk.services.players.QueueImpl#sizePlanned()}.
+   * Test method for {@link org.jajuk.services.players.QueueList#sizePlanned()}.
    */
   public void testSizePlanned() throws Exception {
-    QueueImpl impl = new QueueImpl();
+    QueueList impl = new QueueList();
     prepareQueueImpl(impl);
 
     assertEquals(0, impl.sizePlanned());
@@ -367,17 +367,17 @@ public class TestQueueImpl extends JajukTestCase {
   }
 
   /**
-   * Test method for {@link org.jajuk.services.players.QueueImpl#addPlanned(org.jajuk.services.players.StackItem)}.
+   * Test method for {@link org.jajuk.services.players.QueueList#addPlanned(org.jajuk.services.players.StackItem)}.
    */
   public void testAddPlannedStackItem() throws Exception {
     // tested above
   }
 
   /**
-   * Test method for {@link org.jajuk.services.players.QueueImpl#addPlanned(java.util.List)}.
+   * Test method for {@link org.jajuk.services.players.QueueList#addPlanned(java.util.List)}.
    */
   public void testAddPlannedListOfStackItem() throws Exception {
-    QueueImpl impl = new QueueImpl();
+    QueueList impl = new QueueList();
     prepareQueueImpl(impl);
 
     prepareQueueImplPlanned(impl);
@@ -386,10 +386,10 @@ public class TestQueueImpl extends JajukTestCase {
   }
 
   /**
-   * Test method for {@link org.jajuk.services.players.QueueImpl#removePlanned(int)}.
+   * Test method for {@link org.jajuk.services.players.QueueList#removePlanned(int)}.
    */
   public void testRemovePlanned() throws Exception {
-    QueueImpl impl = new QueueImpl();
+    QueueList impl = new QueueList();
     prepareQueueImpl(impl);
 
     prepareQueueImplPlanned(impl);
@@ -404,10 +404,10 @@ public class TestQueueImpl extends JajukTestCase {
   }
 
   /**
-   * Test method for {@link org.jajuk.services.players.QueueImpl#getPlanned(int)}.
+   * Test method for {@link org.jajuk.services.players.QueueList#getPlanned(int)}.
    */
   public void testGetPlannedInt() throws Exception {
-    QueueImpl impl = new QueueImpl();
+    QueueList impl = new QueueList();
     prepareQueueImpl(impl);
 
     prepareQueueImplPlanned(impl);
@@ -417,10 +417,10 @@ public class TestQueueImpl extends JajukTestCase {
   }
 
   /**
-   * Test method for {@link org.jajuk.services.players.QueueImpl#getPlanned()}.
+   * Test method for {@link org.jajuk.services.players.QueueList#getPlanned()}.
    */
   public void testGetPlanned() throws Exception {
-    QueueImpl impl = new QueueImpl();
+    QueueList impl = new QueueList();
     prepareQueueImpl(impl);
 
     prepareQueueImplPlanned(impl);
@@ -429,10 +429,10 @@ public class TestQueueImpl extends JajukTestCase {
   }
 
   /**
-   * Test method for {@link org.jajuk.services.players.QueueImpl#removePlannedFromList(java.util.List)}.
+   * Test method for {@link org.jajuk.services.players.QueueList#removePlannedFromList(java.util.List)}.
    */
   public void testRemovePlannedFromList() throws Exception {
-    QueueImpl impl = new QueueImpl();
+    QueueList impl = new QueueList();
     prepareQueueImpl(impl);
 
     prepareQueueImplPlanned(impl);
@@ -458,10 +458,10 @@ public class TestQueueImpl extends JajukTestCase {
   }
 
   /**
-   * Test method for {@link org.jajuk.services.players.QueueImpl#clearPlanned()}.
+   * Test method for {@link org.jajuk.services.players.QueueList#clearPlanned()}.
    */
   public void testClearPlanned() throws Exception {
-    QueueImpl impl = new QueueImpl();
+    QueueList impl = new QueueList();
     prepareQueueImpl(impl);
 
     prepareQueueImplPlanned(impl);
@@ -473,10 +473,10 @@ public class TestQueueImpl extends JajukTestCase {
   }
 
   /**
-   * Test method for {@link org.jajuk.services.players.QueueImpl#containsRepeat()}.
+   * Test method for {@link org.jajuk.services.players.QueueList#containsRepeat()}.
    */
   public void testContainsRepeat() throws Exception {
-    QueueImpl impl = new QueueImpl();
+    QueueList impl = new QueueList();
     prepareQueueImpl(impl);
 
     // repeat is not automatically set
@@ -492,10 +492,10 @@ public class TestQueueImpl extends JajukTestCase {
   }
 
   /**
-   * Test method for {@link org.jajuk.services.players.QueueImpl#popNextPlanned()}.
+   * Test method for {@link org.jajuk.services.players.QueueList#popNextPlanned()}.
    */
   public void testPopNextPlanned() throws Exception {
-    QueueImpl impl = new QueueImpl();
+    QueueList impl = new QueueList();
     prepareQueueImpl(impl);
 
     prepareQueueImplPlanned(impl);
@@ -506,10 +506,10 @@ public class TestQueueImpl extends JajukTestCase {
   }
 
   /**
-   * Test method for {@link org.jajuk.services.players.QueueImpl#containsOnlyRepeat()}.
+   * Test method for {@link org.jajuk.services.players.QueueList#containsOnlyRepeat()}.
    */
   public void testContainsOnlyRepeat() throws Exception {
-    QueueImpl impl = new QueueImpl();
+    QueueList impl = new QueueList();
     prepareQueueImpl(impl);
 
     // repeat is not automatically set
@@ -529,7 +529,7 @@ public class TestQueueImpl extends JajukTestCase {
     assertFalse(impl.containsOnlyRepeat());
   }
 
-  private List<StackItem> prepareQueueImpl(QueueImpl impl) throws JajukException, Exception {
+  private List<StackItem> prepareQueueImpl(QueueList impl) throws JajukException, Exception {
     List<StackItem> set = new ArrayList<StackItem>();
     set.add(new StackItem(JUnitHelpers.getFile(1, false)));
     set.add(new StackItem(JUnitHelpers.getFile(2, false)));
@@ -539,7 +539,7 @@ public class TestQueueImpl extends JajukTestCase {
     return set;
   }
 
-  private List<StackItem> prepareQueueImplPlanned(QueueImpl impl) throws JajukException, Exception {
+  private List<StackItem> prepareQueueImplPlanned(QueueList impl) throws JajukException, Exception {
     List<StackItem> set = new ArrayList<StackItem>();
     set.add(new StackItem(JUnitHelpers.getFile(9, false)));
     set.add(new StackItem(JUnitHelpers.getFile(8, false)));
