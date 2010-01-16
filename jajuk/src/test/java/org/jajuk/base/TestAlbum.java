@@ -232,8 +232,8 @@ public class TestAlbum extends JajukTestCase {
     // try with a track and no cover file set
     album.removeProperty(Const.XML_ALBUM_COVER);
     Track track = getTrack(album);
-    track.addFile(getFile(7, track, album));
-    track.addFile(getFile(8, track, album));
+    track.addFile(getFile(7, track));
+    track.addFile(getFile(8, track));
     album.getTracksCache().add(track);
     assertNull(album.getCoverFile());
 
@@ -374,7 +374,7 @@ public class TestAlbum extends JajukTestCase {
     assertEquals(8, album.getHits());
   }
 
-  private File getFile(int i, Track track, @SuppressWarnings("unused") Album album)
+  private File getFile(int i, Track track)
       throws Exception {
     Device device = new Device(Integer.valueOf(i).toString(), "name");
     device.setUrl(System.getProperty("java.io.tmpdir"));
@@ -398,7 +398,7 @@ public class TestAlbum extends JajukTestCase {
 
     // add a track/file
     Track track = getTrack(album);
-    track.addFile(getFile(6, track, album));
+    track.addFile(getFile(6, track));
     album.getTracksCache().add(track);
     assertTrue(album.containsReadyFiles());
   }
