@@ -57,11 +57,11 @@ public final class ObservationManager {
   }
 
   /**
-   * Register a component for a given subject. This calls the
+   * Register a component for a list of subjects. This calls the
    * interface @see Observer.getRegistrationKeys() to retrieve
    * a list of events which the Observer is interested in.
    * 
-   * @param observer DOCUMENT_ME
+   * @param observer The Observer to register.
    */
   public static synchronized void register(Observer observer) {
     Set<JajukEvents> eventSubjectSet = observer.getRegistrationKeys();
@@ -72,9 +72,11 @@ public final class ObservationManager {
   }
 
   /**
-   * Unregister a component for a given subject.
+   * Unregister a component for a list of subjects.
+   * @see Observer.getRegistrationKeys() is called on the Observer
+   * to get the list of events.
    * 
-   * @param observer DOCUMENT_ME
+   * @param observer The Observer to unregister.
    */
   public static synchronized void unregister(Observer observer) {
     Set<JajukEvents> eventSubjectSet = observer.getRegistrationKeys();
@@ -85,15 +87,18 @@ public final class ObservationManager {
     }
 
     for (JajukEvents subject : eventSubjectSet) {
-      Log.debug("Unregister: \"" + subject + "\" from: " + observer);
-      observerRegistry.unregister(subject, observer);
+      boolean bRemoved = observerRegistry.unregister(subject, observer);
+      if(bRemoved) {
+        Log.debug("Unregister: \"" + subject + "\" from: " + observer);
+      }
     }
   }
 
   /**
    * Notify all components having registered for the given subject.
    * 
-   * @param event DOCUMENT_ME
+   * @param event The event that is triggered including any additional
+   * data that is of interest as part of the event. 
    */
   public static void notify(JajukEvent event) {
     // asynchronous notification by default to avoid
@@ -125,7 +130,8 @@ public final class ObservationManager {
   /**
    * Notify synchronously all components having registered for the given subject.
    * 
-   * @param event DOCUMENT_ME
+   * @param event The event that is triggered including any additional
+   * data that is of interest as part of the event. 
    */
   public static void notifySync(JajukEvent event) {
     JajukEvents subject = event.getSubject();
@@ -138,9 +144,9 @@ public final class ObservationManager {
   /**
    * Return whether the event already occurred at least once.
    * 
-   * @param subject DOCUMENT_ME
+   * @param subject The type of event to check for.
    * 
-   * @return true, if contains event
+   * @return true, if contains event, false otherwise.
    */
   public static boolean containsEvent(JajukEvents subject) {
     return hLastEventBySubject.containsKey(subject);
@@ -150,8 +156,8 @@ public final class ObservationManager {
    * Return the details for last event of the given subject, or null if there is
    * no details.
    * 
-   * @param subject DOCUMENT_ME
-   * @param sDetailName DOCUMENT_ME
+   * @param subject The type of event to check for.
+   * @param sDetailName The detailed piece of information to fetch.
    * 
    * @return the detail as an object or null if the event or the detail doesn't
    * exist
@@ -167,8 +173,8 @@ public final class ObservationManager {
   /**
    * Return the details for an event, or null if there is no details.
    * 
-   * @param event DOCUMENT_ME
-   * @param sDetailName DOCUMENT_ME
+   * @param event The event to retrieve the detail from.
+   * @param sDetailName The detailed piece of information to fetch.
    * 
    * @return the detail as an object or null if the event or the detail doesn't
    * exist
@@ -184,7 +190,7 @@ public final class ObservationManager {
   /**
    * Return the details for an event, or null if there is no details.
    * 
-   * @param subject DOCUMENT_ME
+   * @param subject The event to query for.
    * 
    * @return the details or null there are not details
    */
@@ -193,7 +199,8 @@ public final class ObservationManager {
   }
 
   /**
-   * Remove all registered Observers.
+   * Remove all registered Observers. This is mainly used in Unit Tests
+   * to get a clean state again.
    */
   public static void clear() {
     hLastEventBySubject.clear();

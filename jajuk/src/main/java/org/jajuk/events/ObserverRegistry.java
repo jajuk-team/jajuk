@@ -32,11 +32,12 @@ import org.jajuk.util.Const;
 import org.jajuk.util.log.Log;
 
 /**
- * DOCUMENT_ME.
+ * Registry of Observers for each of the JajukEvents. Used by ObservationManager 
+ * to handle informing observers about events happening in other objects.
  */
 class ObserverRegistry {
-  
-  /** DOCUMENT_ME. */
+
+  /** The list of Observers per JajukEvents */
   private final Map<JajukEvents, List<Observer>> hEventComponents = new Hashtable<JajukEvents, List<Observer>>(
       10);
 
@@ -91,10 +92,12 @@ class ObserverRegistry {
         int numberOfExecutions = canals.get(event);
         assert (numberOfExecutions > 0);
         canals.put(event, numberOfExecutions - 1);
-        
-        // to avoid adding more and more memory via the canals-map, we should remove items when they reach zero again
-        // the effect on memory is rather small, but it shows up after some time in memory profiles nevertheless.
-        if(canals.get(event) == 0) {
+
+        // to avoid adding more and more memory via the canals-map, we should remove items when they
+        // reach zero again
+        // the effect on memory is rather small, but it shows up after some time in memory profiles
+        // nevertheless.
+        if (canals.get(event) == 0) {
           canals.remove(event);
         }
       }
@@ -102,11 +105,11 @@ class ObserverRegistry {
   }
 
   /**
-   * Register.
-   * DOCUMENT_ME
+   * Register an Observer for an event.
    * 
-   * @param subject DOCUMENT_ME
-   * @param observer DOCUMENT_ME
+   * @param subject The event to register for.
+   * @param observer The Observer that should be informed about 
+   * the event as soon as it is reported somewhere else.
    */
   synchronized void register(JajukEvents subject, Observer observer) {
     List<Observer> observers = hEventComponents.get(subject);
@@ -126,21 +129,25 @@ class ObserverRegistry {
   }
 
   /**
-   * Unregister.
-   * DOCUMENT_ME
+   * Unregister the Observer from an event.
    * 
-   * @param subject DOCUMENT_ME
-   * @param observer DOCUMENT_ME
+   * @param subject The event to unregister from.
+   * @param observer The Observer that is no longer interested in this event.
+   * 
+   * @return true if the event was unregistered, false if it was not 
+   * registered (any more) and thus did not need to be removed
    */
-  synchronized void unregister(JajukEvents subject, Observer observer) {
+  synchronized boolean unregister(JajukEvents subject, Observer observer) {
     List<Observer> alComponents = hEventComponents.get(subject);
     if (alComponents != null) {
-      alComponents.remove(observer);
+      return alComponents.remove(observer);
     }
+    return false;
   }
 
   /**
-   * Remove any registered item.
+   * Remove any registered item. This is mainly used in UnitTests to 
+   * get a clean state again. 
    */
   synchronized public void clear() {
     hEventComponents.clear();
