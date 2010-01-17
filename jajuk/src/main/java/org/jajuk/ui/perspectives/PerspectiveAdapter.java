@@ -21,6 +21,9 @@
 
 package org.jajuk.ui.perspectives;
 
+import com.vlsolutions.swing.docking.AutoHideButton;
+import com.vlsolutions.swing.docking.AutoHideExpandPanel;
+import com.vlsolutions.swing.docking.DockKey;
 import com.vlsolutions.swing.docking.Dockable;
 import com.vlsolutions.swing.docking.DockableResolver;
 import com.vlsolutions.swing.docking.DockableState;
@@ -31,6 +34,7 @@ import com.vlsolutions.swing.docking.event.DockingActionDockableEvent;
 import com.vlsolutions.swing.docking.event.DockingActionEvent;
 import com.vlsolutions.swing.docking.event.DockingActionListener;
 
+import java.awt.Component;
 import java.awt.Container;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -49,6 +53,7 @@ import org.jajuk.events.ObservationManager;
 import org.jajuk.events.Observer;
 import org.jajuk.services.core.SessionService;
 import org.jajuk.ui.views.IView;
+import org.jajuk.ui.views.ViewAdapter;
 import org.jajuk.ui.views.ViewFactory;
 import org.jajuk.util.Const;
 import org.jajuk.util.Messages;
@@ -60,7 +65,7 @@ import org.xml.sax.SAXException;
  * Perspective adapter, provide default implementation for perspectives.
  */
 public abstract class PerspectiveAdapter extends DockingDesktop implements IPerspective, Const {
-  
+
   /** The Constant XML_EXT.  DOCUMENT_ME */
   private static final String XML_EXT = ".xml";
 
@@ -178,29 +183,44 @@ public abstract class PerspectiveAdapter extends DockingDesktop implements IPers
           return view;
         }
       };
-      
+
       // register a listener to unregister the view upon closing
       ctx.addDockingActionListener(new DockingActionListener() {
-        
+
         @Override
         public void dockingActionPerformed(DockingActionEvent dockingactionevent) {
           // on closing/removing of a view try to unregister it at the
           // ObservationManager
           if (dockingactionevent instanceof DockingActionCloseEvent) {
-            Object obj = ((DockingActionDockableEvent)dockingactionevent).getDockable();
+            Dockable obj = ((DockingActionDockableEvent) dockingactionevent).getDockable();
             if (obj instanceof Observer) {
               ObservationManager.unregister((Observer) obj);
             }
+
+            // it seems the Docking-library does not unregister these things by itself
+            // so we need to do it on our own here as well. We create the Dockable (i.e.
+            // the View) from scratch every time (see constructor of JajukJMenuBar where we create
+            // the menu entries to add new views and ViewFactory)
+            unregisterDockable(obj);
+
+            // workaround for DockingDesktop-leaks, we need to remove the Dockable from the "TitleBar"
+            // if it is one of those that are hidden on the left side.
+            removeFromDockingDesktop(PerspectiveAdapter.this, obj);
+            
+            // do some additional cleanup on the View itself if necessary
+            if(obj instanceof ViewAdapter) {
+              ((ViewAdapter)obj).cleanup();
+            }
           }
         }
-        
+
         @Override
         public boolean acceptDockingAction(DockingActionEvent dockingactionevent) {
           // always accept here
           return true;
         }
       });
-      
+
       ctx.setDockableResolver(resolver);
       setContext(ctx);
       ctx.addDesktop(this);
@@ -218,6 +238,67 @@ public abstract class PerspectiveAdapter extends DockingDesktop implements IPers
       }
     } finally {
       in.close(); // stream isn't closed
+    }
+  }
+
+  /**
+   * Helper method that performs some additional cleanup for the Dockable.
+   * 
+   * @param c The Container to look at, usually the DockingDesktop, i.e. 
+   *            the PerspectiveAdapter in this case. 
+   * @param dockable The Dockable to remove/replace.
+   */
+  private static void removeFromDockingDesktop(Container c, Dockable dockable) {
+    /**
+     * walk through the list of components and replace the Dockable with 
+     * an empty new one whereever necessary to free all references
+     */
+    for (int i = 0; i < c.getComponentCount(); i++) {
+      Component comp = c.getComponent(i);
+      
+      // on the AutoHideExpandPanel, we need to set a new Dockable on the TitleBar
+      // as it otherwise keeps the Dockable as "target"
+      if (comp instanceof AutoHideExpandPanel) {
+        AutoHideExpandPanel panel = (AutoHideExpandPanel) comp;
+        panel.getTitleBar().setDockable(new Dockable() {
+
+          @Override
+          public DockKey getDockKey() {
+            return new DockKey();
+          }
+
+          @Override
+          public Component getComponent() {
+            return null;
+          }
+        });
+      }
+      
+      // the AutoHideButton points at the dockable, replace it with a new one here as well
+      if (comp instanceof AutoHideButton) {
+        AutoHideButton button = (AutoHideButton) comp;
+
+        if (button.getDockable() == dockable) {
+          // set an empty dockable to free up this one...
+          button.init(new Dockable() {
+
+            @Override
+            public DockKey getDockKey() {
+              return new DockKey();
+            }
+
+            @Override
+            public Component getComponent() {
+              return null;
+            }
+          }, button.getZone());
+        }
+      } 
+      
+      // recursively call the Container to also look at it's components
+      if (comp instanceof Container) {
+        removeFromDockingDesktop((Container) comp, dockable);
+      }
     }
   }
 
@@ -270,7 +351,9 @@ public abstract class PerspectiveAdapter extends DockingDesktop implements IPers
     bAsBeenSelected = b;
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see org.jajuk.ui.perspectives.IPerspective#getViews()
    */
   public Set<IView> getViews() {

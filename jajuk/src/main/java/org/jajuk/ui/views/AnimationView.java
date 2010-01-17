@@ -220,4 +220,18 @@ public class AnimationView extends ViewAdapter implements ComponentListener {
       }
     });
   }
+
+  /* (non-Javadoc)
+   * @see org.jajuk.ui.views.ViewAdapter#cleanup()
+   */
+  @Override
+  public void cleanup() {
+    // make sure animation is stopped
+    if (animator != null) {
+      animator.stop();
+      animator = null;
+    }
+    
+    super.cleanup();
+  }
 }

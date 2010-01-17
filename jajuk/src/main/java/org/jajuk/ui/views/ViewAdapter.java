@@ -26,7 +26,9 @@ import com.vlsolutions.swing.docking.DockKey;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.event.ComponentEvent;
+import java.awt.event.KeyListener;
 
+import org.jajuk.events.ObservationManager;
 import org.jajuk.events.Observer;
 import org.jajuk.ui.perspectives.IPerspective;
 import org.jajuk.util.Const;
@@ -260,6 +262,42 @@ public abstract class ViewAdapter extends JXPanel implements IView, Const, Compa
       } else if (comp instanceof Container) {
         // recursively call the Container to also look at it's components
         stopAllBusyLabels((Container) comp);
+      }
+    }
+  }
+  
+  public void cleanup() {
+    // unregister any component that is still registered as observer
+    cleanupRecursive(this);
+  }
+
+  /**
+   * walk through the list of components and unregister any Observer to free all references
+   */
+  private static void cleanupRecursive(Container c) {
+    for (int i = 0; i < c.getComponentCount(); i++) {
+      Component comp = c.getComponent(i);
+      
+      // unregister any Observer that is contained as Component here, e.g. JajukTable instances
+      if (comp instanceof Observer) {
+        ObservationManager.unregister((Observer) comp);
+      }
+      
+      // iterate over all KeyListeners and remove them
+      for(KeyListener key : comp.getKeyListeners()) {
+        comp.removeKeyListener(key);
+      }
+      
+      // if the component is a nested ViewAdapter (e.g. PlaylistView$PlaylistRepository, 
+      // we need to do this cleanup in the nested object as well
+      if(comp instanceof ViewAdapter) {
+        // we also need to cleanup the RepositoryPanel
+        ((ViewAdapter)comp).cleanup();
+      }
+      
+      // recursively call any Container to also look at it's components
+      if (comp instanceof Container) {
+        cleanupRecursive((Container) comp);
       }
     }
   }

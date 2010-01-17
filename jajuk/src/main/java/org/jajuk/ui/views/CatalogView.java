@@ -43,6 +43,7 @@ import java.util.List;
 import java.util.Set;
 
 import javax.swing.BorderFactory;
+import javax.swing.FocusManager;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -801,4 +802,18 @@ public class CatalogView extends ViewAdapter implements ComponentListener, Actio
     }
   }
 
+  /* (non-Javadoc)
+   * @see org.jajuk.ui.views.ViewAdapter#cleanup()
+   */
+  @Override
+  public void cleanup() {
+    // make sure the timer is not running any more
+    timerSearch.stop();
+    
+    // we specifically request the focus for jtfValue, therefore we should make sure that we release that focus to let this be destroyed
+    FocusManager.getCurrentKeyboardFocusManager().clearGlobalFocusOwner();
+    
+    // call the parent class to do more cleanup if necessary
+    super.cleanup();
+  }
 }

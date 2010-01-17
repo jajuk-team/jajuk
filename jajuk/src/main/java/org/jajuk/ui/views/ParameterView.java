@@ -1864,9 +1864,22 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
   public void removeAll() {
     // We have to override removeAll() to work around a memory leak related to SearchBox..
 
-    // first look for any JXBusyLabel and stop it
+    // make sure that the search box stops waking to free up the reference to the Timer
     sbSearch.close();
 
     super.removeAll();
   }
+
+  /* (non-Javadoc)
+   * @see org.jajuk.ui.views.ViewAdapter#cleanup()
+   */
+  @Override
+  public void cleanup() {
+    // make sure that the search box stops to free up the reference to the Timer
+    sbSearch.close();
+
+    super.cleanup();
+  }
+  
+  
 }

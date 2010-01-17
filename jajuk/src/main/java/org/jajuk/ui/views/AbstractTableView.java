@@ -186,11 +186,13 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
   /** The table/tree sync toggle button */
   JajukToggleButton jtbSync;
 
+  boolean bStopThread = false;
+  
   /** Launches a thread used to perform dynamic filtering when user is typing. */
   Thread filteringThread = new Thread("Dynamic user input filtering thread") {
     @Override
     public void run() {
-      while (true) {
+      while (!bStopThread) {
         try {
           Thread.sleep(200);
         } catch (InterruptedException ie) {
@@ -691,5 +693,26 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
     }
 
   }
+
+  /* (non-Javadoc)
+   * @see org.jajuk.ui.views.ViewAdapter#cleanup()
+   */
+  @Override
+  public void cleanup() {
+    // stop the thread that is waiting for input
+    if(filteringThread != null) {
+      bStopThread = true;
+      try {
+        filteringThread.join();
+        filteringThread = null;
+      } catch (InterruptedException e) {
+        Log.error(e);
+      }
+    }
+    
+    super.cleanup();
+  }
+  
+  
 
 }
