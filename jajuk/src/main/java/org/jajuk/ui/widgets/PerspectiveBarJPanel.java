@@ -29,6 +29,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JScrollPane;
 import javax.swing.JToolBar;
@@ -42,6 +43,7 @@ import org.jajuk.ui.perspectives.IPerspective;
 import org.jajuk.ui.perspectives.PerspectiveManager;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
+import org.jajuk.util.UtilGUI;
 import org.jajuk.util.UtilString;
 import org.jdesktop.swingx.JXPanel;
 
@@ -92,7 +94,14 @@ public final class PerspectiveBarJPanel extends JXPanel {
       final IPerspective perspective = it.next();
       Font font = FontManager.getInstance().getFont(JajukFont.PERSPECTIVES);
       int iconSize = Conf.getInt(Const.CONF_PERSPECTIVE_ICONS_SIZE);
-      JButton jb = new JButton(perspective.getIcon());
+
+      // resize if necessary
+      ImageIcon icon = perspective.getIcon();
+      if (Conf.getInt(Const.CONF_PERSPECTIVE_ICONS_SIZE) != 40) {
+        icon = UtilGUI.getResizedImage(icon, iconSize, iconSize);
+      }
+      
+      JButton jb = new JButton(icon);
       jb.setToolTipText(perspective.getDesc());
       jb.setBorder(new EmptyBorder(5, 5, 0, 5));
       if (iconSize >= 32) {

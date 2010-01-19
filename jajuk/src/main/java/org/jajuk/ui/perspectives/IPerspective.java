@@ -55,13 +55,6 @@ public interface IPerspective {
   ImageIcon getIcon();
 
   /**
-   * Set icon.
-   * 
-   * @param icon DOCUMENT_ME
-   */
-  void setIcon(ImageIcon icon);
-
-  /**
    * Gets the views.
    * 
    * @return Arraylist views registered in the perspective.

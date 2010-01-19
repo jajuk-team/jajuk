@@ -21,6 +21,10 @@
 
 package org.jajuk.ui.perspectives;
 
+import javax.swing.ImageIcon;
+
+import org.jajuk.util.IconLoader;
+import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 
 /**
@@ -40,4 +44,11 @@ public class InfoPerspective extends PerspectiveAdapter {
     return Messages.getString("Perspective_Description_Info");
   }
 
+  /* (non-Javadoc)
+   * @see org.jajuk.ui.perspectives.IPerspective#getIcon()
+   */
+  @Override
+  public ImageIcon getIcon() {
+    return IconLoader.getIcon(JajukIcons.PERSPECTIVE_INFORMATION);
+  }
 }

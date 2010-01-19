@@ -46,7 +46,6 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.StringTokenizer;
 
-import javax.swing.ImageIcon;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.jajuk.events.ObservationManager;
@@ -74,9 +73,6 @@ public abstract class PerspectiveAdapter extends DockingDesktop implements IPers
 
   /** Perspective id (class). */
   private final String sID;
-
-  /** Perspective icon. */
-  private ImageIcon icon;
 
   /** As been selected flag (workaround for VLDocking issue when saving position). */
   protected boolean bAsBeenSelected = false;
@@ -107,24 +103,6 @@ public abstract class PerspectiveAdapter extends DockingDesktop implements IPers
   @Override
   public String toString() {
     return "Perspective[name=" + getID() + " description='" + getDesc() + "]";
-  }
-
-  /*
-   * (non-Javadoc)
-   * 
-   * @see org.jajuk.ui.IPerspective#getIconPath()
-   */
-  public ImageIcon getIcon() {
-    return icon;
-  }
-
-  /**
-   * Set icon path.
-   * 
-   * @param icon DOCUMENT_ME
-   */
-  public void setIcon(ImageIcon icon) {
-    this.icon = icon;
   }
 
   /*
@@ -332,7 +310,6 @@ public abstract class PerspectiveAdapter extends DockingDesktop implements IPers
       for (DockableState element : ds) {
         close(element.getDockable());
       }
-
 
       // force reload
       load();
