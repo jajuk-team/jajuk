@@ -326,11 +326,14 @@ public abstract class PerspectiveAdapter extends DockingDesktop implements IPers
       if (!loadFile.delete()) {
         Log.warn("Could not delete file " + loadFile.toString());
       }
+
       // Remove all registered dockables
       DockableState[] ds = getDockables();
       for (DockableState element : ds) {
-        remove(element.getDockable());
+        close(element.getDockable());
       }
+
+
       // force reload
       load();
       // set perspective again to force UI refresh
