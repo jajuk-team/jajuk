@@ -98,7 +98,7 @@ public final class TrackManager extends ItemManager {
     registerProperty(new PropertyMetaInformation(Const.XML_AUTHOR, false, true, true, true, true,
         String.class, null));
     // Album-artist
-    registerProperty(new PropertyMetaInformation(Const.XML_ALBUM_ARTIST, false, true, true, true,
+    registerProperty(new PropertyMetaInformation(Const.XML_ALBUM_ARTIST, false, false, true, true,
         true, String.class, null));
     // Length
     registerProperty(new PropertyMetaInformation(Const.XML_TRACK_LENGTH, false, true, true, false,
@@ -556,9 +556,6 @@ public final class TrackManager extends ItemManager {
         tagsToCommit.add(tag);
       }
     }
-    // Remove the track from the old album
-    track.getAlbum().getTracksCache().remove(track);
-
     track.setComment(sNewItem);
     return track;
   }
@@ -735,25 +732,10 @@ public final class TrackManager extends ItemManager {
         tagsToCommit.add(tag);
       }
     }
-    // Remove the track from the old album
-    Album oldAlbum = track.getAlbum();
-    oldAlbum.getTracksCache().remove(track);
-
-    // if current track album name is changed, notify it
-    if (QueueModel.getPlayingFile() != null
-        && QueueModel.getPlayingFile().getTrack().getAlbum().equals(track.getAlbum())) {
-      ObservationManager.notify(new JajukEvent(JajukEvents.ALBUM_CHANGED));
-    }
-    // register the new album
-    Album newAlbum = AlbumManager.getInstance().registerAlbum(oldAlbum.getName(), sNewItem,
-        oldAlbum.getDiscID());
-    Track newTrack = registerTrack(track.getName(), newAlbum, track.getStyle(), track.getAuthor(),
-        track.getDuration(), track.getYear(), track.getOrder(), track.getType(), track
-            .getDiscNumber());
-    postChange(track, newTrack, filter);
-    // remove this album if no more references
-    AlbumManager.getInstance().cleanOrphanTracks(oldAlbum);
-    return newTrack;
+    // register the new item
+    AlbumArtist newAlbumArtist = (AlbumArtist)AlbumArtistManager.getInstance().registerAuthor(sNewItem);
+    track.setAlbumArtist(newAlbumArtist);
+    return track;
 
   }
 
