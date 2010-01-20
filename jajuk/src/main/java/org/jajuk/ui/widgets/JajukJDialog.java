@@ -26,6 +26,7 @@ import java.awt.Frame;
 import javax.swing.JDialog;
 import javax.swing.JRootPane;
 
+import org.jajuk.ui.windows.JajukMainWindow;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.UtilGUI;
@@ -42,7 +43,7 @@ public class JajukJDialog extends JDialog {
    * Instantiates a new jajuk j dialog.
    */
   public JajukJDialog() {
-    super();
+    super(JajukMainWindow.getInstance());
     
     setIconImage(IconLoader.getIcon(JajukIcons.LOGO).getImage());
   }
