@@ -32,6 +32,7 @@ import static org.jajuk.ui.actions.JajukActions.QUALITY;
 import static org.jajuk.ui.actions.JajukActions.REPEAT_ALL_MODE;
 import static org.jajuk.ui.actions.JajukActions.REPEAT_MODE;
 import static org.jajuk.ui.actions.JajukActions.SHOW_ABOUT;
+import static org.jajuk.ui.actions.JajukActions.SHOW_DONATE;
 import static org.jajuk.ui.actions.JajukActions.EXTRA_TAGS_WIZARD;
 import static org.jajuk.ui.actions.JajukActions.SHOW_TRACES;
 import static org.jajuk.ui.actions.JajukActions.SHUFFLE_MODE;
@@ -227,7 +228,7 @@ public final class JajukJMenuBar extends JMenuBar implements Observer {
 
   /** DOCUMENT_ME. */
   JButton jbCommit;
-  
+
   /** DOCUMENT_ME. */
   JButton jbSlim;
 
@@ -239,6 +240,8 @@ public final class JajukJMenuBar extends JMenuBar implements Observer {
 
   /** The jmi activate tags. */
   private JMenuItem jmiActivateTags;
+
+  private JMenuItem jmiDonate;
 
   /**
    * Instantiates a new jajuk j menu bar.
@@ -393,6 +396,7 @@ public final class JajukJMenuBar extends JMenuBar implements Observer {
     String helpText = Messages.getString("JajukJMenuBar.14");
     help = new JMenu(ActionUtil.strip(helpText));
     jmiHelp = new JMenuItem(ActionManager.getAction(HELP_REQUIRED));
+    jmiDonate = new JMenuItem(ActionManager.getAction(SHOW_DONATE));
     jmiAbout = new JMenuItem(ActionManager.getAction(SHOW_ABOUT));
     jmiTraces = new JMenuItem(ActionManager.getAction(SHOW_TRACES));
     jmiTraces = new JMenuItem(ActionManager.getAction(SHOW_TRACES));
@@ -409,6 +413,7 @@ public final class JajukJMenuBar extends JMenuBar implements Observer {
     }
     help.add(jmiTraces);
     help.add(jmiCheckforUpdates);
+    help.add(jmiDonate);
     help.add(jmiAbout);
 
     mainmenu = new JMenuBar();

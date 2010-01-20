@@ -120,6 +120,7 @@ public final class ActionManager {
 
     // JajukJMenuBar: Help Menu
     installAction(JajukActions.HELP_REQUIRED, new HelpRequiredAction(), false);
+    installAction(JajukActions.SHOW_DONATE, new ShowDonateAction(), false);
     installAction(JajukActions.SHOW_ABOUT, new ShowAboutAction(), false);
     installAction(JajukActions.EXTRA_TAGS_WIZARD, new ShowActivateTagsAction(), false);
     // Install this action only if Desktop class is supported, it is used to
