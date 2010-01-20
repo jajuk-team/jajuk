@@ -422,7 +422,7 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
       String sAuthorName, String sStyle, long length, String sYear, long lQuality, String sComment,
       long lOrder, String sAlbumArtist, long discID, long discNumber) {
     Album album = null;
-    album = AlbumManager.getInstance().registerAlbum(sAlbumName, sAlbumArtist, discID);
+    album = AlbumManager.getInstance().registerAlbum(sId, sAlbumName, discID);
     Style style = StyleManager.getInstance().registerStyle(sStyle);
     Year year = YearManager.getInstance().registerYear(sYear);
     Author author = AuthorManager.getInstance().registerAuthor(sAuthorName);
