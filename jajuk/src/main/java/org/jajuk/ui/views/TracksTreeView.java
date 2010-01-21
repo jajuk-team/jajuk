@@ -54,9 +54,7 @@ import javax.swing.tree.TreePath;
 import net.miginfocom.swing.MigLayout;
 
 import org.jajuk.base.Album;
-import org.jajuk.base.AlbumManager;
 import org.jajuk.base.Author;
-import org.jajuk.base.AuthorManager;
 import org.jajuk.base.File;
 import org.jajuk.base.Item;
 import org.jajuk.base.Style;
@@ -560,40 +558,7 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
 
   }
 
-  /**
-   * Create a Misc node.
-   */
-  @SuppressWarnings("unchecked")
-  public void cleanTree() {
-    AuthorNode amisc = new AuthorNode(AuthorManager.getInstance().registerAuthor("Misc"));
-
-    DefaultMutableTreeNode authorNode = null;
-    DefaultMutableTreeNode albumNode = new DefaultMutableTreeNode();
-    AlbumNode misc;
-    Enumeration eAuthor = top.children();
-
-    while (eAuthor.hasMoreElements()) {
-      authorNode = (AuthorNode) eAuthor.nextElement();
-      misc = new AlbumNode(AlbumManager.getInstance().registerAlbum("Misc", "Misc", 0));
-
-      for (Enumeration<AlbumNode> eAlbum = authorNode.children(); eAlbum.hasMoreElements();) {
-        albumNode = eAlbum.nextElement();
-        if (albumNode.getChildCount() < MIN_TRACKS_NUMBER) {
-          while (albumNode.getChildCount() > 0) {
-            // FIXME: why do we do an empty busy loop here?
-          }
-        }
-      }
-      authorNode.remove(albumNode);
-      if (misc.getChildCount() > 0) {
-        authorNode.add(misc);
-      }
-    }
-    if (amisc.getChildCount() > 0) {
-      top.add(amisc);
-    }
-  }
-
+  
   /*
    * (non-Javadoc)
    * 

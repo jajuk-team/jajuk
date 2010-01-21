@@ -31,6 +31,7 @@ import java.util.Properties;
 import java.util.StringTokenizer;
 
 import org.apache.commons.lang.StringUtils;
+import org.jajuk.base.AlbumArtistManager;
 import org.jajuk.base.AlbumManager;
 import org.jajuk.base.AuthorManager;
 import org.jajuk.base.File;
@@ -357,15 +358,11 @@ public final class UtilString {
     String ret = out;
     String sValue;
     if (sPattern.contains(Const.PATTERN_ALBUM_ARTIST)) {
-
       sValue = track.getAlbumArtistOrArtist();
-
       if (normalize) {
         sValue = UtilSystem.getNormalizedFilename(sValue);
       }
-
-      ret = ret.replaceAll(Const.PATTERN_ALBUM_ARTIST, AuthorManager.format(sValue));
-
+      ret = ret.replaceAll(Const.PATTERN_ALBUM_ARTIST, AlbumArtistManager.format(sValue));
     }
     return ret;
   }

@@ -63,6 +63,9 @@ public class Track extends LogicalItem implements Comparable<Track> {
 
   /** Track type. */
   private final Type type;
+  
+  /** Album Artist */
+  private AlbumArtist albumArtist;
 
   /** Track associated files. */
   private final List<File> alFiles = new ArrayList<File>(1);
@@ -330,8 +333,8 @@ public class Track extends LogicalItem implements Comparable<Track> {
    * 
    * @return the album artist
    */
-  public String getAlbumArtist() {
-    return getStringValue(Const.XML_ALBUM_ARTIST);
+  public AlbumArtist getAlbumArtist() {
+    return albumArtist;
   }
 
   /**
@@ -345,7 +348,7 @@ public class Track extends LogicalItem implements Comparable<Track> {
    */
   public String getAlbumArtistOrArtist() {
     // If the album artist tag is provided, perfect, let's use it !
-    String albumArtist = getAlbumArtist();
+    String albumArtist = getAlbumArtist().getName2();
     if (StringUtils.isNotBlank(albumArtist) && !(Const.UNKNOWN_AUTHOR.equals(albumArtist))) {
       return albumArtist;
     }
@@ -554,6 +557,17 @@ public class Track extends LogicalItem implements Comparable<Track> {
   public void setComment(String sComment) {
     setProperty(Const.XML_TRACK_COMMENT, sComment);
   }
+  
+  /**
+   * Sets the album artist
+   * 
+   * @param albumArtist : the album artist
+   */
+  public void setAlbumArtist(AlbumArtist albumArtist) {
+    this.albumArtist = albumArtist;
+    // We store the album-artist ID string, not the album-artist itself
+    setProperty(Const.XML_ALBUM_ARTIST, albumArtist.getID());
+  }
 
   /**
    * Sets the discovery date.
@@ -613,6 +627,12 @@ public class Track extends LogicalItem implements Comparable<Track> {
       Author lAuthor = AuthorManager.getInstance().getAuthorByID(getStringValue(sKey));
       if (lAuthor != null) { // can be null after a fresh change
         return lAuthor.getName2();
+      }
+      return null;
+    } else if (Const.XML_ALBUM_ARTIST.equals(sKey)) {
+      AlbumArtist albumArtist = AlbumArtistManager.getInstance().getAlbumArtistByID(getStringValue(sKey));
+      if (albumArtist != null) { // can be null after a fresh change
+        return albumArtist.getName2();
       }
       return null;
     } else if (Const.XML_STYLE.equals(sKey)) {

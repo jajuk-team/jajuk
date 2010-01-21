@@ -34,6 +34,7 @@ import java.util.TreeSet;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.Predicate;
 import org.jajuk.util.Const;
+import org.jajuk.util.MD5Processor;
 import org.jajuk.util.Messages;
 import org.jajuk.util.ReadOnlyIterator;
 import org.jajuk.util.error.JajukException;
@@ -201,6 +202,34 @@ public abstract class ItemManager {
     }
     return sb.append('\n').toString();
   }
+  
+  /**
+   * Format the item name to be normalized :
+   * <p>
+   * -no underscores or other non-ascii characters
+   * <p>
+   * -no spaces at the begin and the end
+   * <p>
+   * -All in lower case expect first letter of first word
+   * <p>
+   * exemple: "My author".
+   * 
+   * @param sName The name to format.
+   * 
+   * @return the string
+   * 
+   * TODO: the "all lowercase" part is not done currently, should this be changed??
+   */
+  public static String format(String sName) {
+    String sOut;
+    sOut = sName.trim(); // suppress spaces at the begin and the end
+    sOut = sOut.replace('-', ' '); // move - to space
+    sOut = sOut.replace('_', ' '); // move _ to space
+    char c = sOut.charAt(0);
+    StringBuilder sb = new StringBuilder(sOut);
+    sb.setCharAt(0, Character.toUpperCase(c));
+    return sb.toString();
+  }
 
   /**
    * Gets the properties.
@@ -279,6 +308,8 @@ public abstract class ItemManager {
       return AlbumManager.getInstance();
     } else if (Const.XML_AUTHOR.equals(sProperty)) {
       return AuthorManager.getInstance();
+    } else if (Const.XML_ALBUM_ARTIST.equals(sProperty)) {
+      return AlbumArtistManager.getInstance();
     } else if (Const.XML_STYLE.equals(sProperty)) {
       return StyleManager.getInstance();
     } else if (Const.XML_DIRECTORY.equals(sProperty)) {
@@ -328,6 +359,8 @@ public abstract class ItemManager {
       return;
     } else if (this instanceof YearManager) {
       managerType = 2;
+    } else if (this instanceof AlbumArtistManager) {
+      managerType = 3;
     }
     // build used items set
     List<Item> lItems = new ArrayList<Item>(100);
@@ -343,6 +376,9 @@ public abstract class ItemManager {
         break;
       case 2:
         lItems.add(track.getYear());
+        break;
+      case 3:
+        lItems.add(track.getAlbumArtist());
         break;
       }
     }
@@ -443,9 +479,6 @@ public abstract class ItemManager {
       } else if (Const.XML_ALBUM_ARTIST.equals(sKey)) {
         newItem = TrackManager.getInstance().changeTrackAlbumArtist(file.getTrack(),
             (String) oValue, filter);
-      } else if (Const.XML_TRACK_DISC_NUMBER.equals(sKey)) {
-        newItem = TrackManager.getInstance().changeTrackDiscNumber(file.getTrack(), (Long) oValue,
-            filter);
       } else if (Const.XML_YEAR.equals(sKey)) {
         newItem = TrackManager.getInstance().changeTrackYear(file.getTrack(),
             String.valueOf(oValue), filter);
@@ -493,7 +526,10 @@ public abstract class ItemManager {
       } else if (Const.XML_AUTHOR.equals(sKey)) {
         newItem = TrackManager.getInstance().changeTrackAuthor((Track) itemToChange,
             (String) oValue, filter);
-      } else if (Const.XML_TRACK_COMMENT.equals(sKey)) {
+      } else if (Const.XML_ALBUM_ARTIST.equals(sKey)) {
+        newItem = TrackManager.getInstance().changeTrackAlbumArtist((Track) itemToChange,
+            (String) oValue, filter);
+      }else if (Const.XML_TRACK_COMMENT.equals(sKey)) {
         newItem = TrackManager.getInstance().changeTrackComment((Track) itemToChange,
             (String) oValue, filter);
       } else if (Const.XML_TRACK_ORDER.equals(sKey)) {
@@ -613,5 +649,16 @@ public abstract class ItemManager {
     for (Item item : itemsCopy) {
       registerItem(item);
     }
+  }
+  
+  /**
+   * Basic implementation for item hashcode computation
+   * 
+   * @param sName item name
+   * 
+   * @return ItemManager ID
+   */
+  protected static String createID(String sName) {
+    return MD5Processor.hash(sName);
   }
 }

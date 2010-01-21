@@ -87,6 +87,8 @@ public abstract class CustomPropertyWizard extends JajukJDialog implements Actio
     jlItemChoice = new JLabel(Messages.getString("CustomPropertyWizard.0"));
     jlName = new JLabel(Messages.getString("CustomPropertyWizard.1"));
     jcbItemChoice = new JComboBox();
+    // Note : we don't provide the possibility to add custom properties to AlbumArtists
+    // (we don't see the need for it)
     jcbItemChoice.addItem(Messages.getString("Item_Track"));
     jcbItemChoice.addItem(Messages.getString("Item_File"));
     jcbItemChoice.addItem(Messages.getString("Item_Style"));

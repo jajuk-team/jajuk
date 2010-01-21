@@ -38,6 +38,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
+import org.apache.commons.lang.StringUtils;
 import org.jajuk.services.core.SessionService;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
@@ -84,6 +85,9 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
   /** upgrade for author IDs. */
   private final Map<String, String> hmWrongRightAuthorID = new HashMap<String, String>();
 
+  /** upgrade for album-artists IDs. */
+  private final Map<String, String> hmWrongRightAlbumArtistID = new HashMap<String, String>();
+
   /** upgrade for style IDs. */
   private final Map<String, String> hmWrongRightStyleID = new HashMap<String, String>();
 
@@ -99,7 +103,7 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
   /** upgrade for playlist IDs. */
   private final Map<String, String> hmWrongRightPlaylistFileID = new HashMap<String, String>();
 
-  /** Conversion of types from < 1.4 */
+  /** Conversion of types from Jajuk < 1.4 */
   private final static Map<String, String> CONVERSION;
   static {
     CONVERSION = new HashMap<String, String>(12);
@@ -161,7 +165,10 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
     STAGE_DEVICES,
 
     /** The Constant STAGE_YEARS. DOCUMENT_ME */
-    STAGE_YEARS
+    STAGE_YEARS,
+
+    /** STAGE_ALBUM_ARTIST */
+    STAGE_ALBUM_ARTIST
   }
 
   /**
@@ -232,6 +239,11 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
           .getAuthorsIterator(), AuthorManager.getInstance().getLabel(), 40);
       Log.debug("Authors committed.");
 
+      // Album artists
+      writeItemList(bw, AlbumArtistManager.getInstance().toXML(), AlbumArtistManager.getInstance()
+          .getAlbumArtistsIterator(), AlbumArtistManager.getInstance().getLabel(), 40);
+      Log.debug("Album-artists committed.");
+
       // Albums
       writeItemList(bw, AlbumManager.getInstance().toXML(), AlbumManager.getInstance()
           .getAlbumsIterator(), AlbumManager.getInstance().getLabel(), 40);
@@ -243,8 +255,7 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
       Log.debug("Years committed.");
 
       // Tracks
-      // Cannot use method as we have a bit of special handling inside the loop
-      // here
+      // Cannot use method as we have a bit of special handling inside the loop here
       ReadOnlyIterator<Track> tracks = TrackManager.getInstance().getTracksIterator();
       bw.write(TrackManager.getInstance().toXML());
       while (tracks.hasNext()) {
@@ -377,6 +388,8 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
     TrackManager.getInstance().cleanup();
     // Authors cleanup
     AuthorManager.getInstance().cleanup();
+    // Album-artist cleanup
+    AlbumArtistManager.getInstance().cleanup();
     // albums cleanup
     AlbumManager.getInstance().cleanup();
     // years cleanup
@@ -391,6 +404,7 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
     TrackManager.getInstance().clear();
     StyleManager.getInstance().clear();
     AuthorManager.getInstance().clear();
+    AlbumArtistManager.getInstance().clear();
     AlbumManager.getInstance().clear();
     YearManager.getInstance().clear();
     FileManager.getInstance().clear();
@@ -512,6 +526,10 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
           manager = AuthorManager.getInstance();
           stage = Stage.STAGE_AUTHORS;
           needCheckID = true;
+        } else if (Const.XML_ALBUM_ARTISTS == sQName) {
+          manager = AlbumArtistManager.getInstance();
+          stage = Stage.STAGE_ALBUM_ARTIST;
+          needCheckID = true;
         } else if (Const.XML_DIRECTORIES == sQName) {
           manager = DirectoryManager.getInstance();
           stage = Stage.STAGE_DIRECTORIES;
@@ -607,6 +625,9 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
         case STAGE_AUTHORS:
           handleAuthors(attributes, idIndex);
           break;
+        case STAGE_ALBUM_ARTIST:
+          handleAlbumArtists(attributes, idIndex);
+          break;
         case STAGE_STYLES:
           handleStyles(attributes, idIndex);
           break;
@@ -626,20 +647,15 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
           Log.warn("Unexpected Stage: " + stage);
         }
       }
-    } catch (ParseException re) {
+    } catch (Throwable e) {
+      // Make sure to catch every issue here (including runtime exceptions) so we make sure to start
+      // jajuk
       StringBuilder sAttributes = new StringBuilder();
       for (int i = 0; i < attributes.getLength(); i++) {
         sAttributes.append('\n').append(attributes.getQName(i)).append('=').append(
             attributes.getValue(i));
       }
-      Log.error(5, sAttributes.toString(), re);
-    } catch (ClassNotFoundException re) {
-      StringBuilder sAttributes = new StringBuilder();
-      for (int i = 0; i < attributes.getLength(); i++) {
-        sAttributes.append('\n').append(attributes.getQName(i)).append('=').append(
-            attributes.getValue(i));
-      }
-      Log.error(5, sAttributes.toString(), re);
+      Log.error(5, sAttributes.toString(), e);
     }
   }
 
@@ -819,6 +835,20 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
       sAuthorID = hmWrongRightAuthorID.get(sAuthorID);
     }
     Author author = AuthorManager.getInstance().getAuthorByID(sAuthorID);
+
+    // Album-artist (not a constructor level property)
+    String sAlbumArtist = attributes.getValue(Const.XML_ALBUM_ARTIST);
+    if (StringUtils.isNotBlank(sAlbumArtist)) {
+      sAlbumArtist = sAlbumArtist.intern();
+    }
+    if ((hmWrongRightAlbumArtistID.size() > 0)
+        && (hmWrongRightAlbumArtistID.containsKey(sAlbumArtist))) {
+      sAlbumArtist = hmWrongRightAlbumArtistID.get(sAlbumArtist);
+    }
+    AlbumArtist albumArtist = (AlbumArtist) AlbumArtistManager.getInstance().getAlbumArtistByID(
+        sAlbumArtist);
+
+    // Length
     long length = UtilString.fastLongParser(attributes.getValue(Const.XML_TRACK_LENGTH));
     // Type
     String typeID = attributes.getValue(Const.XML_TYPE).intern();
@@ -891,7 +921,7 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
       sComment = "";
     }
     track.setComment(sComment.intern());
-
+    track.setAlbumArtist(albumArtist);
     track.populateProperties(attributes);
   }
 
@@ -1071,6 +1101,24 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
     Year year = YearManager.getInstance().registerYear(sID, sItemName);
     if (year != null) {
       year.populateProperties(attributes);
+    }
+  }
+
+  /**
+   * Handle album artists
+   * 
+   * @param attributes
+   *          DOCUMENT_ME
+   * @param idIndex
+   *          DOCUMENT_ME
+   */
+  private void handleAlbumArtists(Attributes attributes, int idIndex) {
+    String sID = attributes.getValue(idIndex).intern();
+    String sItemName = attributes.getValue(Const.XML_NAME).intern();
+    AlbumArtist albumArtist = (AlbumArtist) AlbumArtistManager.getInstance().registerAlbumArtist(
+        sID, sItemName);
+    if (albumArtist != null) {
+      albumArtist.populateProperties(attributes);
     }
   }
 

@@ -36,6 +36,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import net.miginfocom.layout.LinkHandler;
 
 import org.apache.commons.lang.StringUtils;
+import org.jajuk.base.AlbumArtistManager;
 import org.jajuk.base.AlbumManager;
 import org.jajuk.base.AuthorManager;
 import org.jajuk.base.Collection;
@@ -98,6 +99,7 @@ public class StartupCollectionService {
   public static void registerItemManagers() {
     ItemManager.registerItemManager(org.jajuk.base.Album.class, AlbumManager.getInstance());
     ItemManager.registerItemManager(org.jajuk.base.Author.class, AuthorManager.getInstance());
+    ItemManager.registerItemManager(org.jajuk.base.AlbumArtist.class, AlbumArtistManager.getInstance());
     ItemManager.registerItemManager(org.jajuk.base.Device.class, DeviceManager.getInstance());
     ItemManager.registerItemManager(org.jajuk.base.File.class, FileManager.getInstance());
     ItemManager.registerItemManager(org.jajuk.base.Directory.class, DirectoryManager.getInstance());
@@ -352,6 +354,7 @@ public class StartupCollectionService {
     Log.debug("Loaded " + FileManager.getInstance().getElementCount() + " files with " + TrackManager.getInstance().getElementCount() + " tracks, " + 
         AlbumManager.getInstance().getElementCount() + " albums, " +
         AuthorManager.getInstance().getElementCount() + " artists, " + 
+        AlbumArtistManager.getInstance().getElementCount() + " album-artists, " + 
         PlaylistManager.getInstance().getElementCount() + " playlists in " + 
         DirectoryManager.getInstance().getElementCount() + " directories on " + 
         DeviceManager.getInstance().getElementCount() + "devices.");

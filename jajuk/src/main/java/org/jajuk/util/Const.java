@@ -1229,6 +1229,9 @@ public interface Const {
   String XML_AUTHORS = "authors";
 
   /** DOCUMENT_ME. */
+  String XML_ALBUM_ARTISTS = "album-artists";
+
+  /** DOCUMENT_ME. */
   String XML_AUTHOR = "author";
 
   /** DOCUMENT_ME. */

@@ -733,7 +733,7 @@ public final class TrackManager extends ItemManager {
       }
     }
     // register the new item
-    AlbumArtist newAlbumArtist = (AlbumArtist)AlbumArtistManager.getInstance().registerAuthor(sNewItem);
+    AlbumArtist newAlbumArtist = AlbumArtistManager.getInstance().registerAlbumArtist(sNewItem);
     track.setAlbumArtist(newAlbumArtist);
     return track;
 

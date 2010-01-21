@@ -298,19 +298,7 @@ public class TestTracksTreeView extends JajukTestCase {
     }
   }
 
-  /**
-   * Test method for {@link org.jajuk.ui.views.TracksTreeView#cleanTree()}.
-   */
-  public final void testCleanTree() {
-    TracksTreeView view = new TracksTreeView();
-
-    try {
-      view.cleanTree();
-    } catch (NullPointerException e) {
-      // reported on headless settings
-    }
-  }
-
+ 
   /**
    * Test method for
    * {@link org.jajuk.ui.views.TracksTreeView#actionPerformed(java.awt.event.ActionEvent)}

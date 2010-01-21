@@ -37,7 +37,6 @@ import org.jajuk.services.core.ExitService;
 import org.jajuk.services.players.QueueModel;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
-import org.jajuk.util.MD5Processor;
 import org.jajuk.util.Messages;
 import org.jajuk.util.ReadOnlyIterator;
 import org.jajuk.util.UpgradeManager;
@@ -176,17 +175,6 @@ public final class DeviceManager extends ItemManager {
     device.setUrl(sUrl);
     registerItem(device);
     return device;
-  }
-
-  /**
-   * Process to compute a device id.
-   * 
-   * @param sName DOCUMENT_ME
-   * 
-   * @return An id
-   */
-  protected static String createID(String sName) {
-    return MD5Processor.hash(sName); // reprocess id;
   }
 
   /**

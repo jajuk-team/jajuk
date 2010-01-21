@@ -34,7 +34,6 @@ import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.util.Const;
-import org.jajuk.util.MD5Processor;
 import org.jajuk.util.ReadOnlyIterator;
 import org.jajuk.util.UtilFeatures;
 import org.jajuk.util.error.JajukException;
@@ -92,17 +91,6 @@ public final class StyleManager extends ItemManager {
   public Style registerStyle(String sName) {
     String sId = createID(sName);
     return registerStyle(sId, sName);
-  }
-
-  /**
-   * Return hashcode for this item.
-   * 
-   * @param sName item name
-   * 
-   * @return ItemManager ID
-   */
-  protected static String createID(String sName) {
-    return MD5Processor.hash(sName);
   }
 
   /**

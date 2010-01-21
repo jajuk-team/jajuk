@@ -35,7 +35,6 @@ import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.services.players.QueueModel;
 import org.jajuk.util.Const;
-import org.jajuk.util.MD5Processor;
 import org.jajuk.util.ReadOnlyIterator;
 import org.jajuk.util.error.JajukException;
 
@@ -46,14 +45,15 @@ public final class AuthorManager extends ItemManager {
   
   /** Self instance. */
   private static AuthorManager singleton;
-
+  
   /** List of all known authors */
-  private static Vector<String> authorsList = new Vector<String>(100);
+  private Vector<String> authorsList = new Vector<String>(100);
 
   /**
    * No constructor available, only static access.
+   * Not private to allow AlbumArtistManager extends
    */
-  private AuthorManager() {
+  AuthorManager() {
     super();
     // register properties
     // ID
@@ -65,7 +65,6 @@ public final class AuthorManager extends ItemManager {
     // Expand
     registerProperty(new PropertyMetaInformation(Const.XML_EXPANDED, false, false, false, false,
         true, Boolean.class, false));
-    // create author list
   }
 
   /**
@@ -76,7 +75,7 @@ public final class AuthorManager extends ItemManager {
   public static AuthorManager getInstance() {
     if (singleton == null) {
       singleton = new AuthorManager();
-    }
+   }
     return singleton;
   }
 
@@ -90,17 +89,6 @@ public final class AuthorManager extends ItemManager {
   public Author registerAuthor(String sName) {
     String sId = createID(sName);
     return registerAuthor(sId, sName);
-  }
-
-  /**
-   * Return hashcode for this item.
-   * 
-   * @param sName item name
-   * 
-   * @return ItemManager ID
-   */
-  protected static String createID(String sName) {
-    return MD5Processor.hash(sName);
   }
 
   /**
@@ -177,34 +165,7 @@ public final class AuthorManager extends ItemManager {
     }
   }
 
-  /**
-   * Format the author name to be normalized :
-   * <p>
-   * -no underscores or other non-ascii characters
-   * <p>
-   * -no spaces at the begin and the end
-   * <p>
-   * -All in lower case expect first letter of first word
-   * <p>
-   * exemple: "My author".
-   * 
-   * @param sName The name to format.
-   * 
-   * @return the string
-   * 
-   * TODO: the "all lowercase" part is not done currently, should this be changed??
-   */
-  public static String format(String sName) {
-    String sOut;
-    sOut = sName.trim(); // suppress spaces at the begin and the end
-    sOut = sOut.replace('-', ' '); // move - to space
-    sOut = sOut.replace('_', ' '); // move _ to space
-    char c = sOut.charAt(0);
-    StringBuilder sb = new StringBuilder(sOut);
-    sb.setCharAt(0, Character.toUpperCase(c));
-    return sb.toString();
-  }
-
+  
   /*
    * (non-Javadoc)
    * 
@@ -221,7 +182,7 @@ public final class AuthorManager extends ItemManager {
    * @return authors as a string list (used for authors combos)
    */
   public static Vector<String> getAuthorsList() {
-    return authorsList;
+    return getInstance().authorsList;
   }
 
   /**

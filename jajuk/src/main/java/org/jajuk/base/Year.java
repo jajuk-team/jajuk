@@ -29,6 +29,7 @@ import org.jajuk.util.UtilString;
 
 /**
  * Year object.
+ * <br>Logical item
  */
 public class Year extends LogicalItem implements Comparable<Year> {
 
@@ -60,16 +61,6 @@ public class Year extends LogicalItem implements Comparable<Year> {
   @Override
   public final String getLabel() {
     return XML_YEAR;
-  }
-
-  /**
-   * toString method.
-   * 
-   * @return the string
-   */
-  @Override
-  public String toString() {
-    return Long.toString(getValue());
   }
 
   /**

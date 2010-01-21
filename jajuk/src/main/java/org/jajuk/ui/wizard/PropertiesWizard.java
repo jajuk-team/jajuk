@@ -51,6 +51,7 @@ import javax.swing.SwingUtilities;
 
 import net.miginfocom.swing.MigLayout;
 
+import org.jajuk.base.AlbumArtistManager;
 import org.jajuk.base.AuthorManager;
 import org.jajuk.base.Device;
 import org.jajuk.base.Directory;
@@ -519,9 +520,16 @@ public class PropertiesWizard extends JajukJDialog implements ActionListener {
               }
             });
             widgets[index][1] = jcb;
-          } else if (meta.getType().equals(String.class) && meta.getName().equals(Const.XML_AUTHOR)) {
-            // for authors
-            Vector<String> authors = AuthorManager.getAuthorsList();
+          } else if (meta.getType().equals(String.class) && 
+              (Const.XML_AUTHOR.equals(meta.getName()) || Const.XML_ALBUM_ARTIST.equals(meta.getName()))) {
+            // for authors or album-artists
+            Vector<String> authors = null;
+            if (Const.XML_AUTHOR.equals(meta.getName())){
+              authors = AuthorManager.getAuthorsList();
+            }
+            else if (Const.XML_ALBUM_ARTIST.equals(meta.getName())){
+              authors = AlbumArtistManager.getAlbumArtistsList();
+            }
             final JComboBox jcb = new JComboBox(authors);
             jcb.setEditable(true);
             AutoCompleteDecorator.decorate(jcb);

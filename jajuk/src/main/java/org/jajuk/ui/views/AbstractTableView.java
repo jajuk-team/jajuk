@@ -59,6 +59,7 @@ import javax.swing.table.TableColumn;
 
 import net.miginfocom.swing.MigLayout;
 
+import org.jajuk.base.AlbumArtistManager;
 import org.jajuk.base.AuthorManager;
 import org.jajuk.base.File;
 import org.jajuk.base.Item;
@@ -596,8 +597,15 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
       }
       // create a combo box for authors, note that we can't add new
       // authors dynamically
-      if (Const.XML_AUTHOR.equals(sIdentifier)) {
+      else if (Const.XML_AUTHOR.equals(sIdentifier)) {
         JComboBox jcb = new JComboBox(AuthorManager.getAuthorsList());
+        jcb.setEditable(true);
+        AutoCompleteDecorator.decorate(jcb);
+        col.setCellEditor(new ComboBoxCellEditor(jcb));
+      }
+      // Same for for album-artists
+      else if (Const.XML_ALBUM_ARTIST.equals(sIdentifier)) {
+        JComboBox jcb = new JComboBox(AlbumArtistManager.getAlbumArtistsList());
         jcb.setEditable(true);
         AutoCompleteDecorator.decorate(jcb);
         col.setCellEditor(new ComboBoxCellEditor(jcb));

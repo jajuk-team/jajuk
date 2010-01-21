@@ -389,9 +389,7 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
       // file if we cannot read it
       reporter.notifyNewFile();
     }
-    
-
-    
+        
     Track track = registerFile(music, sId, sTrackName, sAlbumName, sAuthorName, sStyle, length, sYear, lQuality,
         sComment, lOrder, sAlbumArtist, discID, discNumber);
     
@@ -421,11 +419,11 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
   private Track registerFile(java.io.File music, String sId, String sTrackName, String sAlbumName,
       String sAuthorName, String sStyle, long length, String sYear, long lQuality, String sComment,
       long lOrder, String sAlbumArtist, long discID, long discNumber) {
-    Album album = null;
-    album = AlbumManager.getInstance().registerAlbum(sId, sAlbumName, discID);
+    Album album = AlbumManager.getInstance().registerAlbum(sId, sAlbumName, discID);
     Style style = StyleManager.getInstance().registerStyle(sStyle);
     Year year = YearManager.getInstance().registerYear(sYear);
     Author author = AuthorManager.getInstance().registerAuthor(sAuthorName);
+    AlbumArtist albumArtist = AlbumArtistManager.getInstance().registerAlbumArtist(sAlbumArtist);
     Type type = TypeManager.getInstance().getTypeByExtension(UtilSystem.getExtension(music));
     // Store number of tracks in collection
     long trackNumber = TrackManager.getInstance().getElementCount();
@@ -462,6 +460,8 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
     // found file comment but we changing a comment, we will
     // apply to all files for a track
     track.setComment(sComment);
+    // Apply the album artist
+    track.setAlbumArtist(albumArtist);
     // Make sure to refresh file size
     file.setProperty(Const.XML_SIZE, music.length());
     

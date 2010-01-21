@@ -50,12 +50,12 @@ public class Author extends LogicalItem implements Comparable<Author> {
    * @see org.jajuk.base.Item#getIdentifier()
    */
   @Override
-  public final String getLabel() {
+  public String getLabel() {
     return XML_AUTHOR;
   }
 
   /**
-   * Return author name, dealing with unkwnown for any language.
+   * Return author name, dealing with unknown for any language.
    * 
    * @return author name
    */
@@ -65,16 +65,6 @@ public class Author extends LogicalItem implements Comparable<Author> {
     }
     
     return getName();
-  }
-
-  /**
-   * toString method.
-   * 
-   * @return the string
-   */
-  @Override
-  public String toString() {
-    return "Author[ID=" + getID() + " Name={{" + getName() + "}}]";
   }
 
   /**

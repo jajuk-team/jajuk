@@ -72,16 +72,6 @@ public class Style extends LogicalItem implements Comparable<Style> {
   }
 
   /**
-   * toString method.
-   * 
-   * @return the string
-   */
-  @Override
-  public String toString() {
-    return "Style[ID=" + getID() + " Name={{" + getName() + "}}]";
-  }
-
-  /**
    * Alphabetical comparator used to display ordered lists.
    * 
    * @param otherItem DOCUMENT_ME
