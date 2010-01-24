@@ -28,9 +28,12 @@ import java.awt.Container;
 import java.awt.event.ComponentEvent;
 import java.awt.event.KeyListener;
 
+import org.jajuk.events.JajukEvent;
+import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.events.Observer;
 import org.jajuk.ui.perspectives.IPerspective;
+import org.jajuk.ui.widgets.JajukTable;
 import org.jajuk.util.Const;
 import org.jdesktop.swingx.JXBusyLabel;
 import org.jdesktop.swingx.JXPanel;
@@ -288,6 +291,12 @@ public abstract class ViewAdapter extends JXPanel implements IView, Const, Compa
         comp.removeKeyListener(key);
       }
       
+      if(comp instanceof JajukTable) {
+        // JajukTable sends TABLE_SELECTION_CHANGED with views as part of the properties. Therefore try to clean up these references 
+        // here for every JajukTable that we find by sending an empty TABLE_SELECTION_CHANGED event which clears the last one that is still stored
+        // in the ObservationManager
+        ObservationManager.notifySync(new JajukEvent(JajukEvents.TABLE_SELECTION_CHANGED, null));
+      }
       // if the component is a nested ViewAdapter (e.g. PlaylistView$PlaylistRepository, 
       // we need to do this cleanup in the nested object as well
       if(comp instanceof ViewAdapter) {

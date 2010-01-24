@@ -367,22 +367,23 @@ public abstract class AbstractTreeView extends ViewAdapter {
               || sourceView.getID().equals(getID())) {
             return;
           }
-        }
-        @SuppressWarnings("unchecked")
-        List<Item> selection = (List<Item>) details.get(Const.DETAIL_SELECTION);
-        if (selection.size() == 0) {
-          return;
-        }
-        // for tree/table consideration, we only expand the first found item, we don't
-        // support
-        // multiple expands (useful?)
-        final Item item = selection.get(0);
-        SwingUtilities.invokeLater(new Runnable() {
-          @Override
-          public void run() {
-            scrollTo(item);
+
+          @SuppressWarnings("unchecked")
+          List<Item> selection = (List<Item>) details.get(Const.DETAIL_SELECTION);
+          if (selection.size() == 0) {
+            return;
           }
-        });
+          // for tree/table consideration, we only expand the first found item, we don't
+          // support
+          // multiple expands (useful?)
+          final Item item = selection.get(0);
+          SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+              scrollTo(item);
+            }
+          });
+        }
       }
     }
   }
