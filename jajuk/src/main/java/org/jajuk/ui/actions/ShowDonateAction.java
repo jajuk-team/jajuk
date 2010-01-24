@@ -23,6 +23,8 @@ package org.jajuk.ui.actions;
 import java.awt.event.ActionEvent;
 
 import org.jajuk.ui.wizard.DonateWindow;
+import org.jajuk.util.IconLoader;
+import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 
 /**
@@ -37,7 +39,7 @@ public class ShowDonateAction extends JajukAction {
    * Instantiates a new show about action.
    */
   ShowDonateAction() {
-    super(Messages.getString("JajukDonate.1"), true);
+    super(Messages.getString("JajukDonate.1"), IconLoader.getIcon(JajukIcons.DONATE), true);
     setShortDescription(Messages.getString("JajukDonate.4"));
   }
 

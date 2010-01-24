@@ -631,5 +631,8 @@ public enum JajukIcons {
   AUTOSCROLL,
   
   /** Tree/table synchronization icon. */
-  TREE_TABLE_SYNC
+  TREE_TABLE_SYNC,
+  
+  /** Money */
+  DONATE
 }

@@ -897,6 +897,10 @@ final public class IconLoader {
     else if (icon == JajukIcons.TREE_TABLE_SYNC) {
       out = new ImageIcon(UtilSystem.getResource("icons/16x16/tree-table-sync_16x16.png"));
     }
+    
+    else if (icon == JajukIcons.DONATE) {
+      out = new ImageIcon(UtilSystem.getResource("icons/16x16/donate_16x16.png"));
+    }
 
     // Cache the result
     if (!cache.containsKey(icon)) {
