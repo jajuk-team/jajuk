@@ -184,7 +184,7 @@ public class Album extends LogicalItem implements Comparable<Album> {
       return Long.toString(getHits());
     } else if (Const.XML_ANY.equals(sKey)) {
       return getAny();
-    } 
+    }
     // default
     return super.getHumanValue(sKey);
   }
@@ -251,6 +251,11 @@ public class Album extends LogicalItem implements Comparable<Album> {
     if (author != null) {
       sb.append(author.getName2());
     }
+    // Try to add album artist
+    Track first = getTracksCache().get(0);
+    // (every track maps at minimum an "unknown artist" album artist
+    sb.append(first.getAlbumArtist().getStringValue(Const.XML_NAME));
+
     Style style = getStyle();
     if (style != null) {
       sb.append(style.getName2());
@@ -264,7 +269,6 @@ public class Album extends LogicalItem implements Comparable<Album> {
     sb.append(getHumanValue(Const.XML_TRACKS));
     sb.append(getHumanValue(Const.XML_TRACK_DISCOVERY_DATE));
     sb.append(getHumanValue(Const.XML_TRACK_HITS));
-    sb.append(getHumanValue(Const.XML_ALBUM_ARTIST));
     return sb.toString();
   }
 
@@ -464,6 +468,37 @@ public class Album extends LogicalItem implements Comparable<Album> {
       }
     }
     return first;
+  }
+
+  /**
+   * Gets the author or the album artist if not available
+   * 
+   * <u>Used algorithm is following :
+   *  <li>If none available tags : return "unknown artist"</li>
+   *  <li>If the album contains tracks with different artists, display the first album artist found if any</li>
+   *  <li>In this case, if no album artist is available, display the first artist found</li>
+   * </u>
+   * @return author for the album. <br>
+   * Return Always an author, eventually a "Unknown Artist" one 
+   */
+  public String getAuthorOrALbumArtist() {
+    String out = Const.UNKNOWN_AUTHOR;
+    if (cache.size() == 0) {
+      return out;
+    }
+    Author artist = getAuthor();
+    if (artist != null && !artist.isUnknown()) {
+      out = artist.getName();
+    } else {
+      Track first = cache.get(0);
+      AlbumArtist albumArtist = first.getAlbumArtist();
+      if (!albumArtist.isUnknown()) {
+        out = albumArtist.getName();
+      } else {
+        out = first.getAuthor().getName();
+      }
+    }
+    return out;
   }
 
   /**

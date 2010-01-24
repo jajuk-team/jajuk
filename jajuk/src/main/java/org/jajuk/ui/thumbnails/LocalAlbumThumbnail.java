@@ -43,8 +43,6 @@ import javax.swing.border.EmptyBorder;
 import net.miginfocom.swing.MigLayout;
 
 import org.jajuk.base.Album;
-import org.jajuk.base.Author;
-import org.jajuk.base.AuthorManager;
 import org.jajuk.base.Item;
 import org.jajuk.base.Track;
 import org.jajuk.base.TrackComparator;
@@ -124,8 +122,7 @@ public class LocalAlbumThumbnail extends AbstractThumbnail {
     }
     if (bShowFullText) {
       int iRows = 7 + 7 * ((size / 50) - 1);
-      Author author = AuthorManager.getInstance().getAssociatedAuthors(album).iterator().next();
-      String authorName = author.getName2();
+      String authorName = album.getAuthorOrALbumArtist();
 
       jlAuthor = new JLabel(UtilString.getLimitedString(authorName, iRows));
       jlAuthor.setToolTipText(authorName);
@@ -208,6 +205,8 @@ public class LocalAlbumThumbnail extends AbstractThumbnail {
     if (cover.exists()) {
       sOut += "<img src='file:" + cover.getAbsolutePath() + "'><br>";
     }
+    //TODO : add AlbumArtist value and hyperlink here
+    
     // Display author as global value only if it is a single author album
     // We use file://<item type>?<item id> as HTML hyperlink format
     if (album.getAuthor() != null) {
