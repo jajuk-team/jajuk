@@ -845,8 +845,13 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
         && (hmWrongRightAlbumArtistID.containsKey(sAlbumArtist))) {
       sAlbumArtist = hmWrongRightAlbumArtistID.get(sAlbumArtist);
     }
-    AlbumArtist albumArtist = (AlbumArtist) AlbumArtistManager.getInstance().getAlbumArtistByID(
-        sAlbumArtist);
+    // Note that when upgrading from jajuk < 1.9, album artists field is alway null, call on the
+    // next line always return null
+    AlbumArtist albumArtist = AlbumArtistManager.getInstance().getAlbumArtistByID(sAlbumArtist);
+    if (albumArtist == null) {
+      // we force album artist to this default, a deep scan will be required to get actual values
+      albumArtist = AlbumArtistManager.getInstance().registerAlbumArtist(Const.UNKNOWN_AUTHOR);
+    }
 
     // Length
     long length = UtilString.fastLongParser(attributes.getValue(Const.XML_TRACK_LENGTH));
@@ -1115,8 +1120,7 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
   private void handleAlbumArtists(Attributes attributes, int idIndex) {
     String sID = attributes.getValue(idIndex).intern();
     String sItemName = attributes.getValue(Const.XML_NAME).intern();
-    AlbumArtist albumArtist = (AlbumArtist) AlbumArtistManager.getInstance().registerAlbumArtist(
-        sID, sItemName);
+    AlbumArtist albumArtist = AlbumArtistManager.getInstance().registerAlbumArtist(sID, sItemName);
     if (albumArtist != null) {
       albumArtist.populateProperties(attributes);
     }
