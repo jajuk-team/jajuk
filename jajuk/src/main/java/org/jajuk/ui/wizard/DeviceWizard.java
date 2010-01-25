@@ -305,24 +305,6 @@ public class DeviceWizard extends JajukJDialog implements ActionListener, Const 
         return true;
       }
     });
-
-    // Validate device url
-    vg.add(jtfUrl, new Validator<String>() {
-      @Override
-      public boolean validate(Problems problems, String compName, String model) {
-        // By default, we disable the OK button, we re-enable it only if the
-        // name is OK
-        okp.getOKButton().setEnabled(false);
-        int code = DeviceManager.getInstance().checkDeviceAvailablity(jtfName.getText(),
-            jcbType.getSelectedIndex(), model, bNew);
-        if (code != 0) {
-          problems.add(new Problem(Messages.getErrorMessage(code), Severity.FATAL));
-          return false;
-        }
-        okp.getOKButton().setEnabled(problems.isEmpty());
-        return true;
-      }
-    });
   }
 
   /*
