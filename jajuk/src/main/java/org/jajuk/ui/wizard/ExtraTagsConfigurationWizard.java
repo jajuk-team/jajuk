@@ -48,7 +48,6 @@ import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.services.tags.JAudioTaggerTagImpl;
-import org.jajuk.ui.helpers.ManualDeviceRefreshReporter;
 import org.jajuk.ui.widgets.JajukJDialog;
 import org.jajuk.ui.widgets.OKCancelPanel;
 import org.jajuk.ui.windows.JajukMainWindow;
@@ -252,15 +251,8 @@ public class ExtraTagsConfigurationWizard extends JajukJDialog {
         @Override
         public void run() {
           for (Device d : DeviceManager.getInstance().getDevices()) {
-            ManualDeviceRefreshReporter reporter = null;
             if (d.isReady()) {
-              reporter = new ManualDeviceRefreshReporter(d);
-              reporter.startup();
-              reporter.cleanupDone();
-              reporter.refreshStarted();
-              d.refreshCommand(true);
-              reporter.done(false);
-              reporter = null;
+              d.manualRefreshDeep();
             }
           }
         }
