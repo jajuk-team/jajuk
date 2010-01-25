@@ -25,8 +25,13 @@ import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
 import java.net.URL;
+import java.util.List;
+
+import javax.swing.JOptionPane;
 
 import org.jajuk.base.Collection;
+import org.jajuk.base.Device;
+import org.jajuk.base.DeviceManager;
 import org.jajuk.base.Track;
 import org.jajuk.base.TrackManager;
 import org.jajuk.services.core.SessionService;
@@ -108,7 +113,6 @@ public final class UpgradeManager {
     bFirstSession = true;
   }
 
-  
   /**
    * Actions to migrate an existing installation.
    * 
@@ -139,7 +143,7 @@ public final class UpgradeManager {
 
         // For Jajuk < 1.7
         upgradeElapsedTimeFormat();
-       
+
       }
     } catch (Exception e) {
       Log.error(e);
@@ -385,9 +389,26 @@ public final class UpgradeManager {
       // Major releases upgrade specific operations
       if (isMajorMigration()) {
         upgradeThumbRebuild();
-      }
 
-    } catch (Exception e) {
+      }
+    } catch (Throwable e) {
+      Log.error(e);
+    }
+
+  }
+
+  /**
+   * Actions to migrate an existing installation.
+   * 
+   * Step 3 after full jajuk startup
+   */
+  public static void upgradeStep3() {
+    try {
+      // Major releases upgrade specific operations
+      if (isMajorMigration()) {
+        deepScanRequest();
+      }
+    } catch (Throwable e) {
       Log.error(e);
     }
 
@@ -450,5 +471,32 @@ public final class UpgradeManager {
    */
   public static boolean isMajorMigration() {
     return majorMigration;
+  }
+
+  /**
+   * Require user to perform a deep scan
+   */
+  public static void deepScanRequest() {
+    int reply = Messages.getChoice(Messages.getString("Warning.7"),
+        JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
+    if (reply == JOptionPane.CANCEL_OPTION || reply == JOptionPane.NO_OPTION) {
+      return;
+    }
+    if (reply == JOptionPane.YES_OPTION) {
+      final Thread t = new Thread("Device Refresh Thread after upgrade") {
+        @Override
+        public void run() {
+          List<Device> devices = DeviceManager.getInstance().getDevices();
+          for (Device device : devices) {
+            if (device.isReady()) {
+              device.manualRefreshDeep();
+            }
+          }
+        }
+      };
+      t.setPriority(Thread.MIN_PRIORITY);
+      t.start();
+
+    }
   }
 }

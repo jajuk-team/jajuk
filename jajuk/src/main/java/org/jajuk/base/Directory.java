@@ -223,12 +223,12 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
     }
     return alFiles;
   }
-  
-   /**
-   * return ordered child playlists recursively.
-   * 
-   * @return child playlists recursively
-   */
+
+  /**
+  * return ordered child playlists recursively.
+  * 
+  * @return child playlists recursively
+  */
   public List<Playlist> getPlaylistsRecursively() {
     List<Playlist> alPlaylists = new ArrayList<Playlist>(100);
     for (Item item : PlaylistManager.getInstance().getPlaylists()) {
@@ -389,11 +389,11 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
       // file if we cannot read it
       reporter.notifyNewFile();
     }
-        
-    Track track = registerFile(music, sId, sTrackName, sAlbumName, sAuthorName, sStyle, length, sYear, lQuality,
-        sComment, lOrder, sAlbumArtist, discID, discNumber);
-    
-    for(String s: TrackManager.getInstance().getActivatedExtraTags()){
+
+    Track track = registerFile(music, sId, sTrackName, sAlbumName, sAuthorName, sStyle, length,
+        sYear, lQuality, sComment, lOrder, sAlbumArtist, discID, discNumber);
+
+    for (String s : TrackManager.getInstance().getActivatedExtraTags()) {
       track.setProperty(s, tag.getTagField(s));
     }
   }
@@ -464,7 +464,7 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
     track.setAlbumArtist(albumArtist);
     // Make sure to refresh file size
     file.setProperty(Const.XML_SIZE, music.length());
-    
+
     return track;
   }
 
@@ -552,7 +552,7 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
    * @return comparison result
    */
   public int compareTo(Directory otherDirectory) {
-    if(otherDirectory == null) {
+    if (otherDirectory == null) {
       return -1;
     }
 
@@ -619,7 +619,7 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
       }
     } else if (Const.XML_DEVICE.equals(sKey)) {
       Device dev = DeviceManager.getInstance().getDeviceByID((String) getValue(sKey));
-      if(dev == null) {
+      if (dev == null) {
         return "";
       }
       return dev.getName();
@@ -715,16 +715,18 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
           org.jajuk.base.Collection.cleanupLogical();
           ObservationManager.notify(new JajukEvent(JajukEvents.DEVICE_REFRESH));
           reporter.done();
-          // commit collection at each refresh (can be useful if
+          // Commit collection at each refresh (can be useful if
           // application
           // is closed brutally with control-C or shutdown and that
-          // exit hook
-          // have no time to perform commit)
-          try {
-            org.jajuk.base.Collection.commit(SessionService
-                .getConfFileByPath(Const.FILE_COLLECTION));
-          } catch (final IOException e) {
-            Log.error(e);
+          // exit hook has no time to perform commit).
+          // But don't commit when any device is refreshing to avoid collisions. 
+          if (!DeviceManager.getInstance().isAnyDeviceRefreshing()) {
+            try {
+              org.jajuk.base.Collection.commit(SessionService
+                  .getConfFileByPath(Const.FILE_COLLECTION));
+            } catch (final IOException e) {
+              Log.error(e);
+            }
           }
         } catch (JajukException e) {
           Messages.showErrorMessage(e.getCode());

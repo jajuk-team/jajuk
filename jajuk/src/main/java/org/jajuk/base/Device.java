@@ -460,9 +460,10 @@ public class Device extends PhysicalItem implements Comparable<Device> {
    * Manual refresh.
    * 
    * @param bAsk DOCUMENT_ME
-   * @param bAfterMove DOCUMENT_ME
+   * @param bAfterMove is this refresh done after a device location change ?
+   * @param forcedDeep : override bAsk and force a deep refresh
    */
-  private void manualRefresh(final boolean bAsk, final boolean bAfterMove) {
+  private void manualRefresh(final boolean bAsk, final boolean bAfterMove, final boolean forcedDeep) {
     int i = 0;
     try {
       i = prepareRefresh(bAsk);
@@ -485,7 +486,7 @@ public class Device extends PhysicalItem implements Comparable<Device> {
       reporter.cleanupDone();
 
       // Actual refresh
-      refreshCommand((i == Device.OPTION_REFRESH_DEEP));
+      refreshCommand((i == Device.OPTION_REFRESH_DEEP) || forcedDeep);
       // cleanup logical items
       org.jajuk.base.Collection.cleanupLogical();
 
@@ -496,13 +497,17 @@ public class Device extends PhysicalItem implements Comparable<Device> {
 
       // notify views to refresh
       ObservationManager.notify(new JajukEvent(JajukEvents.DEVICE_REFRESH));
-      // commit collection at each refresh (can be useful if application
-      // is closed brutally with control-C or shutdown and that exit hook
-      // have no time to perform commit)
-      try {
-        org.jajuk.base.Collection.commit(SessionService.getConfFileByPath(Const.FILE_COLLECTION));
-      } catch (final IOException e) {
-        Log.error(e);
+      // Commit collection at each refresh (can be useful if
+      // application
+      // is closed brutally with control-C or shutdown and that
+      // exit hook has no time to perform commit).
+      // But don't commit when any device is refreshing to avoid collisions.
+      if (!DeviceManager.getInstance().isAnyDeviceRefreshing()) {
+        try {
+          org.jajuk.base.Collection.commit(SessionService.getConfFileByPath(Const.FILE_COLLECTION));
+        } catch (final IOException e) {
+          Log.error(e);
+        }
       }
     } finally {
       // Do not let current reporter as a manual reporter because it would fail
@@ -588,8 +593,8 @@ public class Device extends PhysicalItem implements Comparable<Device> {
       throw new JajukException(11, getName(), e);
     }
     /*
-     * Cannot mount void devices because of reference garbager thread ( a
-     * refresh would clear the device)
+     * Cannot mount void devices because of reference garbager thread ( a refresh would clear the
+     * device)
      */
     final File file = new File(getUrl());
     if ((file.listFiles() == null) || (file.listFiles().length == 0)) {
@@ -659,7 +664,8 @@ public class Device extends PhysicalItem implements Comparable<Device> {
   }
 
   /**
-   * Refresh : scan asynchronously the device to find tracks.
+   * Refresh : scan the device to find tracks. 
+   * This method is only called from GUI. auto-refresh uses refreshCommand() directly.
    * 
    * @param bAsynchronous :
    * set asynchronous or synchronous mode
@@ -668,18 +674,32 @@ public class Device extends PhysicalItem implements Comparable<Device> {
    */
   public void refresh(final boolean bAsynchronous, final boolean bAsk, final boolean bAfterMove) {
     if (bAsynchronous) {
-      final Thread t = new Thread("Device Refresh Thread") {
+      final Thread t = new Thread("Device Refresh Thread for : " + name) {
         @Override
         public void run() {
-          manualRefresh(bAsk, bAfterMove);
+          manualRefresh(bAsk, bAfterMove, false);
         }
       };
       t.setPriority(Thread.MIN_PRIORITY);
       t.start();
     } else {
-      manualRefresh(bAsk, bAfterMove);
+      manualRefresh(bAsk, bAfterMove, false);
     }
+  }
 
+  /**
+   * Deep Refresh with GUI 
+   * 
+   */
+  public void manualRefreshDeep() {
+    final Thread t = new Thread("Device Deep Refresh Thread for : " + name) {
+      @Override
+      public void run() {
+        manualRefresh(false, false, true);
+      }
+    };
+    t.setPriority(Thread.MIN_PRIORITY);
+    t.start();
   }
 
   /**

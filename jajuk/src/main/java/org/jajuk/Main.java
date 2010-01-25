@@ -199,6 +199,9 @@ public final class Main {
 
       // Launch the right jajuk window
       StartupGUIService.launchUI();
+      
+      // Late collection upgrade actions
+      UpgradeManager.upgradeStep3();
 
     } catch (final Exception e) { // last chance to catch any error for
       // logging
