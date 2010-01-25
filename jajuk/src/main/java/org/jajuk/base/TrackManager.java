@@ -707,7 +707,7 @@ public final class TrackManager extends ItemManager {
   public Item changeTrackAlbumArtist(Track track, String sNewItem, Set<File> filter)
       throws JajukException {
     // check there is actually a change
-    if (track.getAlbumArtist().equals(sNewItem)) {
+    if (track.getAlbumArtist().getName2().equals(sNewItem)) {
       return track;
     }
     List<File> alReady = null;

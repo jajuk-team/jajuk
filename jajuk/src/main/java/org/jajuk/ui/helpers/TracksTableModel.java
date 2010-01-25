@@ -240,7 +240,7 @@ public class TracksTableModel extends JajukTableModel {
 
       // Album Artist
       if (bAlbumArtist) {
-        oValues[iRow][4] = track.getAlbumArtist();
+        oValues[iRow][4] = track.getAlbumArtist().getName2();
       } else {
         oValues[iRow][4] = "";
       }

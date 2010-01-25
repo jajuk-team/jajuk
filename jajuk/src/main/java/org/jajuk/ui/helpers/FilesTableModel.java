@@ -255,7 +255,7 @@ public class FilesTableModel extends JajukTableModel {
 
       // AlbumArtist
       if (bAlbumArtist) {
-        oValues[iRow][4] = file.getTrack().getAlbumArtist();
+        oValues[iRow][4] = file.getTrack().getAlbumArtist().getName2();
       } else {
         oValues[iRow][4] = "";
       }

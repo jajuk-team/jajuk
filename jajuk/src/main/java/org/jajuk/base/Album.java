@@ -254,7 +254,7 @@ public class Album extends LogicalItem implements Comparable<Album> {
     // Try to add album artist
     Track first = getTracksCache().get(0);
     // (every track maps at minimum an "unknown artist" album artist
-    sb.append(first.getAlbumArtist().getStringValue(Const.XML_NAME));
+    sb.append(first.getAlbumArtist().getName2());
 
     Style style = getStyle();
     if (style != null) {

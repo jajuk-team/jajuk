@@ -208,7 +208,7 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
    * @throws IOException
    *           Signals that an I/O exception has occurred.
    */
-  public static void commit(File collectionFile) throws IOException {
+  public static synchronized void commit(File collectionFile) throws IOException {
     long time = System.currentTimeMillis();
     String sCharset = Conf.getString(Const.CONF_COLLECTION_CHARSET);
     final BufferedWriter bw;

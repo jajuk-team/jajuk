@@ -284,7 +284,7 @@ public class PlaylistTableModel extends JajukTableModel {
 
       // AlbumArtist
       if (bAlbumArtist) {
-        oValues[iRow][4] = bf.getTrack().getAlbumArtist();
+        oValues[iRow][4] = bf.getTrack().getAlbumArtist().getName2();
       } else {
         oValues[iRow][4] = "";
       }
