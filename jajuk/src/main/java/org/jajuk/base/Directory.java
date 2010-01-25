@@ -416,10 +416,10 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
    * @param discID DOCUMENT_ME
    * @param discNumber DOCUMENT_ME
    */
-  private Track registerFile(java.io.File music, String sId, String sTrackName, String sAlbumName,
+  private Track registerFile(java.io.File music, String sFileId, String sTrackName, String sAlbumName,
       String sAuthorName, String sStyle, long length, String sYear, long lQuality, String sComment,
       long lOrder, String sAlbumArtist, long discID, long discNumber) {
-    Album album = AlbumManager.getInstance().registerAlbum(sId, sAlbumName, discID);
+    Album album = AlbumManager.getInstance().registerAlbum(sAlbumName, discID);
     Style style = StyleManager.getInstance().registerStyle(sStyle);
     Year year = YearManager.getInstance().registerYear(sYear);
     Author author = AuthorManager.getInstance().registerAuthor(sAuthorName);
@@ -452,7 +452,7 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
       track.setDiscoveryDate(new Date());
     }
 
-    org.jajuk.base.File file = FileManager.getInstance().registerFile(sId, music.getName(), this,
+    org.jajuk.base.File file = FileManager.getInstance().registerFile(sFileId, music.getName(), this,
         track, music.length(), lQuality);
     // Set file date
     file.setProperty(Const.XML_FILE_DATE, new Date(lastModified));
@@ -719,7 +719,7 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
           // application
           // is closed brutally with control-C or shutdown and that
           // exit hook has no time to perform commit).
-          // But don't commit when any device is refreshing to avoid collisions. 
+          // But don't commit when any device is refreshing to avoid collisions.
           if (!DeviceManager.getInstance().isAnyDeviceRefreshing()) {
             try {
               org.jajuk.base.Collection.commit(SessionService
