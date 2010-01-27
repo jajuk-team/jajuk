@@ -232,15 +232,15 @@ public class TestAlbumManager extends JajukTestCase {
     assertNotNull(albums);
     assertEquals(albums.toString(), 1, albums.size());
 
-    Style style = track.getStyle();
-    Author author = track.getAuthor();
+    Genre genre = track.getGenre();
+    Artist artist = track.getArtist();
     Year year = track.getYear();
 
-    albums = AlbumManager.getInstance().getAssociatedAlbums(style);
+    albums = AlbumManager.getInstance().getAssociatedAlbums(genre);
     assertNotNull(albums);
     assertEquals(albums.toString(), 1, albums.size());
 
-    albums = AlbumManager.getInstance().getAssociatedAlbums(author);
+    albums = AlbumManager.getInstance().getAssociatedAlbums(artist);
     assertNotNull(albums);
     assertEquals(albums.toString(), 1, albums.size());
 
@@ -498,14 +498,14 @@ public class TestAlbumManager extends JajukTestCase {
 
   @SuppressWarnings("unchecked")
   private Track getTrack(int i, Album album) throws Exception {
-    Style style = new Style(Integer.valueOf(i).toString(), "name");
+    Genre genre = new Genre(Integer.valueOf(i).toString(), "name");
     // Album album = new Album(Integer.valueOf(i).toString(), "name", "artis",
     // 23);
     album.setProperty(Const.XML_ALBUM_COVER, Const.COVER_NONE); // don't read
     // covers for
     // this test
 
-    Author author = new Author(Integer.valueOf(i).toString(), "name");
+    Artist artist = new Artist(Integer.valueOf(i).toString(), "name");
     Year year = new Year(Integer.valueOf(i).toString(), "2000");
 
     IPlayerImpl imp = new MockPlayer();
@@ -515,7 +515,7 @@ public class TestAlbumManager extends JajukTestCase {
 
     Type type = new Type(Integer.valueOf(i).toString(), "name", "mp3", cl, tl);
     Track track = TrackManager.getInstance().registerTrack(Integer.valueOf(i).toString(), "name",
-        album, style, author, 120, year, 1, type, 1);
+        album, genre, artist, 120, year, 1, type, 1);
 
     album.getTracksCache().add(track);
 
@@ -572,10 +572,10 @@ public class TestAlbumManager extends JajukTestCase {
     /*
      * (non-Javadoc)
      * 
-     * @see org.jajuk.services.tags.ITagImpl#getAuthorName()
+     * @see org.jajuk.services.tags.ITagImpl#getName()
      */
     @Override
-    public String getAuthorName() throws Exception {
+    public String getArtistName() throws Exception {
 
       return null;
     }
@@ -638,10 +638,10 @@ public class TestAlbumManager extends JajukTestCase {
     /*
      * (non-Javadoc)
      * 
-     * @see org.jajuk.services.tags.ITagImpl#getStyleName()
+     * @see org.jajuk.services.tags.ITagImpl#getGenreName()
      */
     @Override
-    public String getStyleName() throws Exception {
+    public String getGenreName() throws Exception {
 
       return null;
     }
@@ -691,10 +691,10 @@ public class TestAlbumManager extends JajukTestCase {
     /*
      * (non-Javadoc)
      * 
-     * @see org.jajuk.services.tags.ITagImpl#setAuthorName(java.lang.String)
+     * @see org.jajuk.services.tags.ITagImpl#setArtistName(java.lang.String)
      */
     @Override
-    public void setAuthorName(String sAuthorName) throws Exception {
+    public void setArtistName(String sArtistName) throws Exception {
 
     }
 
@@ -741,10 +741,10 @@ public class TestAlbumManager extends JajukTestCase {
     /*
      * (non-Javadoc)
      * 
-     * @see org.jajuk.services.tags.ITagImpl#setStyleName(java.lang.String)
+     * @see org.jajuk.services.tags.ITagImpl#setGenreName(java.lang.String)
      */
     @Override
-    public void setStyleName(String style) throws Exception {
+    public void setGenreName(String genre) throws Exception {
 
     }
 

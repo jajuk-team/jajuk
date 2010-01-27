@@ -57,26 +57,26 @@ public class TestAlbum extends JajukTestCase {
      * album.getAny(); assertFalse(str.isEmpty());
      */
 
-    // add a style and year and check again
+    // add a genre and year and check again
     album.getTracksCache().add(getTrack(album));
     assertFalse(album.getAny().isEmpty());
     /*
-     * assertFalse("getAny() should return differently as soon as we have style and year"
+     * assertFalse("getAny() should return differently as soon as we have genre and year"
      * , str.equals(album.getAny()));
      */
   }
 
   private Track getTrack(Album album) {
-    return new Track("1", "trackname", album, getStyle(), getAuthor(), 123, getYear(), 1, new Type(
+    return new Track("1", "trackname", album, getGenre(), getArtist(), 123, getYear(), 1, new Type(
         "3", "typename", "ext", null, null), 1);
   }
 
-  private Author getAuthor() {
-    return new Author("1", "authorname");
+  private Artist getArtist() {
+    return new Artist("1", "artistname");
   }
 
-  private Style getStyle() {
-    return new Style("1", "stylename");
+  private Genre getGenre() {
+    return new Genre("1", "genrename");
   }
 
   private Year getYear() {
@@ -104,17 +104,17 @@ public class TestAlbum extends JajukTestCase {
     assertFalse(album.getHumanValue(Const.XML_ALBUM).isEmpty());
 
     // things are empty before adding a track...
-    assertTrue(album.getHumanValue(Const.XML_AUTHOR).isEmpty());
-    assertTrue(album.getHumanValue(Const.XML_STYLE).isEmpty());
+    assertTrue(album.getHumanValue(Const.XML_ARTIST).isEmpty());
+    assertTrue(album.getHumanValue(Const.XML_GENRE).isEmpty());
     assertTrue(album.getHumanValue(Const.XML_YEAR).isEmpty());
 
-    // add a style and year
+    // add a genre and year
     Track track = getTrack(album);
     track.setProperty(Const.XML_TRACK_DISCOVERY_DATE, new Date());
     album.getTracksCache().add(track);
-    assertFalse(album.getHumanValue(Const.XML_STYLE).isEmpty());
+    assertFalse(album.getHumanValue(Const.XML_GENRE).isEmpty());
 
-    assertFalse(album.getHumanValue(Const.XML_AUTHOR).isEmpty());
+    assertFalse(album.getHumanValue(Const.XML_ARTIST).isEmpty());
     assertFalse(album.getHumanValue(Const.XML_YEAR).isEmpty());
     assertFalse(album.getHumanValue(Const.XML_TRACK_RATE).isEmpty());
     assertFalse(album.getHumanValue(Const.XML_TRACK_LENGTH).isEmpty());
@@ -257,38 +257,38 @@ public class TestAlbum extends JajukTestCase {
   }
 
   /**
-   * Test method for {@link org.jajuk.base.Album#getStyle()}.
+   * Test method for {@link org.jajuk.base.Album#getGenre()}.
    */
-  public final void testGetStyle() {
+  public final void testGetGenre() {
     Album album = new Album("1", "name", 123);
 
-    // now style without track
-    assertNull(album.getStyle());
+    // now genre without track
+    assertNull(album.getGenre());
 
-    // style with at least one track
+    // genre with at least one track
     album.getTracksCache().add(getTrack(album));
-    assertNotNull(album.getStyle());
+    assertNotNull(album.getGenre());
   }
 
   /**
-   * Test method for {@link org.jajuk.base.Album#getAuthor()}.
+   * Test method for {@link org.jajuk.base.Album#getArtist()}.
    */
-  public final void testGetAuthor() {
+  public final void testGetArtist() {
     Album album = new Album("1", "name", 123);
 
-    // no author without track
-    assertNull(album.getAuthor());
+    // no artist without track
+    assertNull(album.getArtist());
 
     album.getTracksCache().add(getTrack(album));
-    assertNotNull(album.getStyle());
+    assertNotNull(album.getGenre());
 
-    // add a second track with different author
-    Track track = new Track("2", "trackname2", album, getStyle(), new Author("2", "authorname2"),
+    // add a second track with different artist
+    Track track = new Track("2", "trackname2", album, getGenre(), new Artist("2", "artistname2"),
         123, getYear(), 1, new Type("4", "typename2", "ext", null, null), 1);
     album.getTracksCache().add(track);
 
-    // now null again as multiple different authors are in the list
-    assertNull(album.getAuthor());
+    // now null again as multiple different artists are in the list
+    assertNull(album.getArtist());
   }
 
   /**
@@ -297,18 +297,18 @@ public class TestAlbum extends JajukTestCase {
   public final void testGetYear() {
     Album album = new Album("1", "name", 123);
 
-    // no author without track
+    // no artist without track
     assertNull(album.getYear());
 
     album.getTracksCache().add(getTrack(album));
     assertNotNull(album.getYear());
 
     // add a second track with different year
-    Track track = new Track("2", "trackname2", album, getStyle(), getAuthor(), 123, new Year("2",
+    Track track = new Track("2", "trackname2", album, getGenre(), getArtist(), 123, new Year("2",
         "yearname2"), 1, new Type("4", "typename2", "ext", null, null), 1);
     album.getTracksCache().add(track);
 
-    // now null again as multiple different authors are in the list
+    // now null again as multiple different artists are in the list
     assertNull(album.getYear());
   }
 
@@ -436,14 +436,14 @@ public class TestAlbum extends JajukTestCase {
     assertTrue(album.matches(Const.XML_ALBUM, "name"));
     assertFalse(album.matches(Const.XML_ALBUM, "notexist"));
 
-    // false without Style
-    assertFalse(album.matches(Const.XML_STYLE, "."));
+    // false without Genre
+    assertFalse(album.matches(Const.XML_GENRE, "."));
 
     Track track = getTrack(album);
     album.getTracksCache().add(track);
 
-    // now the style should be found as well
-    assertTrue(album.matches(Const.XML_STYLE, "stylename"));
+    // now the genre should be found as well
+    assertTrue(album.matches(Const.XML_GENRE, "genrename"));
   }
 
   /**

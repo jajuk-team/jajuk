@@ -40,7 +40,7 @@ import javax.swing.JLabel;
 import net.miginfocom.swing.MigLayout;
 
 import org.apache.commons.lang.StringUtils;
-import org.jajuk.base.AuthorManager;
+import org.jajuk.base.ArtistManager;
 import org.jajuk.base.Item;
 import org.jajuk.ui.helpers.FontManager;
 import org.jajuk.ui.helpers.FontManager.JajukFont;
@@ -57,15 +57,15 @@ import org.jdesktop.swingx.border.DropShadowBorder;
  * Last.FM Album thumb represented as artists label + (optionally) others text
  * information display...
  */
-public class LastFmAuthorThumbnail extends AbstractThumbnail {
+public class LastFmArtistThumbnail extends AbstractThumbnail {
 
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = -804471264407148566L;
 
-  /** Associated author. */
-  private final ArtistInfo author;
+  /** Associated artist. */
+  private final ArtistInfo artist;
 
-  /** Is this author known in collection ?. */
+  /** Is this artist known in collection ?. */
   private final boolean bKnown;
 
   /** Thumb associated image *. */
@@ -74,12 +74,12 @@ public class LastFmAuthorThumbnail extends AbstractThumbnail {
   /**
    * The Constructor.
    * 
-   * @param author DOCUMENT_ME
+   * @param artist DOCUMENT_ME
    */
-  public LastFmAuthorThumbnail(ArtistInfo author) {
+  public LastFmArtistThumbnail(ArtistInfo artist) {
     super(100);
-    this.author = author;
-    bKnown = (AuthorManager.getInstance().getAuthorByName(author.getName()) != null);
+    this.artist = artist;
+    bKnown = (ArtistManager.getInstance().getArtistByName(artist.getName()) != null);
   }
 
   /*
@@ -89,7 +89,7 @@ public class LastFmAuthorThumbnail extends AbstractThumbnail {
    */
   @Override
   public Item getItem() {
-    org.jajuk.base.Author item = AuthorManager.getInstance().getAuthorByName(author.getName());
+    org.jajuk.base.Artist item = ArtistManager.getInstance().getArtistByName(artist.getName());
     if (item != null) {
       return item;
     }
@@ -107,11 +107,11 @@ public class LastFmAuthorThumbnail extends AbstractThumbnail {
     Color fgcolor = UtilGUI.getForegroundColor();
     String sOut = "<html bgcolor='#" + UtilGUI.getHTMLColor(bgcolor) + "'><TABLE color='"
         + UtilGUI.getHTMLColor(fgcolor) + "'><TR><TD VALIGN='TOP'> <b>" + "<a href='file://"
-        + Const.XML_URL + '?' + author.getUrl() + "'>" + author.getName() + "</a>" + "</b><br><br>";
+        + Const.XML_URL + '?' + artist.getUrl() + "'>" + artist.getName() + "</a>" + "</b><br><br>";
     // display picture
-    sOut += "<img src='" + author.getImageUrl() + "'></TD>";
-    // Show each album for this Author
-    List<AlbumInfo> albums = LastFmService.getInstance().getAlbumList(author.getName(), true, 0)
+    sOut += "<img src='" + artist.getImageUrl() + "'></TD>";
+    // Show each album for this Artist
+    List<AlbumInfo> albums = LastFmService.getInstance().getAlbumList(artist.getName(), true, 0)
         .getAlbums();
     if (albums != null && albums.size() > 0) {
       sOut += "<TD>";
@@ -136,7 +136,7 @@ public class LastFmAuthorThumbnail extends AbstractThumbnail {
   @Override
   public void launch() {
     if (bKnown) {
-      // Play the author
+      // Play the artist
       jmiPlay.doClick();
     } else {
       // Open the last.FM page
@@ -151,13 +151,13 @@ public class LastFmAuthorThumbnail extends AbstractThumbnail {
    */
   public void preLoad() {
     try {
-      // Check if author is null
-      String authorUrl = author.getImageUrl();
-      if (StringUtils.isBlank(authorUrl)) {
+      // Check if artist is null
+      String artistUrl = artist.getImageUrl();
+      if (StringUtils.isBlank(artistUrl)) {
         return;
       }
       // Download thumb
-      URL remote = new URL(authorUrl);
+      URL remote = new URL(artistUrl);
       // Download the picture and store file reference (to
       // generate the popup thumb for ie)
       fCover = DownloadManager.downloadToCache(remote);
@@ -185,7 +185,7 @@ public class LastFmAuthorThumbnail extends AbstractThumbnail {
     } catch (IIOException e) {
       // report IIOException only as warning here as we can expect this to
       // happen frequently with images on the net
-      Log.warn("Could not read image: {{" + author.getImageUrl().toString() + "}} Cache: {{" + fCover + "}}", e
+      Log.warn("Could not read image: {{" + artist.getImageUrl().toString() + "}} Cache: {{" + fCover + "}}", e
           .getMessage());
     } catch (UnknownHostException e) {
       Log.warn("Could not contact host for loading images: {{" + e.getMessage() + "}}");
@@ -214,11 +214,11 @@ public class LastFmAuthorThumbnail extends AbstractThumbnail {
     if (isArtistView()) {
       textLength = 50;
     }
-    JLabel jlTitle = new JLabel(UtilString.getLimitedString(author.getName(), textLength));
-    jlTitle.setToolTipText(author.getName());
+    JLabel jlTitle = new JLabel(UtilString.getLimitedString(artist.getName(), textLength));
+    jlTitle.setToolTipText(artist.getName());
     if (bKnown && !isArtistView()) {
       // Artist known in collection, display its name in bold
-      jlTitle.setIcon(IconLoader.getIcon(JajukIcons.AUTHOR));
+      jlTitle.setIcon(IconLoader.getIcon(JajukIcons.ARTIST));
       jlTitle.setFont(FontManager.getInstance().getFont(JajukFont.BOLD));
     } else {
       jlTitle.setFont(FontManager.getInstance().getFont(JajukFont.PLAIN));
@@ -243,7 +243,7 @@ public class LastFmAuthorThumbnail extends AbstractThumbnail {
     }
     // Set URL to open
     if (Desktop.isDesktopSupported()) {
-      jmiOpenLastFMSite.putClientProperty(Const.DETAIL_CONTENT, author.getUrl());
+      jmiOpenLastFMSite.putClientProperty(Const.DETAIL_CONTENT, artist.getUrl());
     }
   }
 

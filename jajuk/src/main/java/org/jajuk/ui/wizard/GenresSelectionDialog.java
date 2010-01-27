@@ -38,8 +38,8 @@ import javax.swing.JScrollPane;
 
 import net.miginfocom.swing.MigLayout;
 
-import org.jajuk.base.Style;
-import org.jajuk.base.StyleManager;
+import org.jajuk.base.Genre;
+import org.jajuk.base.GenreManager;
 import org.jajuk.services.dj.Ambience;
 import org.jajuk.services.dj.AmbienceManager;
 import org.jajuk.ui.widgets.JajukJDialog;
@@ -49,9 +49,9 @@ import org.jajuk.util.Messages;
 import org.jajuk.util.log.Log;
 
 /**
- * Allow a user to select a list of styles.
+ * Allow a user to select a list of genres.
  */
-public class StylesSelectionDialog extends JajukJDialog implements ActionListener {
+public class GenresSelectionDialog extends JajukJDialog implements ActionListener {
 
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
@@ -66,10 +66,10 @@ public class StylesSelectionDialog extends JajukJDialog implements ActionListene
   OKCancelPanel okc;
 
   /** DOCUMENT_ME. */
-  Set<Style> selectedStyles;
+  Set<Genre> selectedGenres;
 
   /** DOCUMENT_ME. */
-  Set<Style> disabledStyles;
+  Set<Genre> disabledGenres;
 
   /** DOCUMENT_ME. */
   List<String> list;
@@ -77,13 +77,13 @@ public class StylesSelectionDialog extends JajukJDialog implements ActionListene
   /**
    * The Constructor.
    * 
-   * @param disabledStyles DOCUMENT_ME
+   * @param disabledGenres DOCUMENT_ME
    */
   @SuppressWarnings("unchecked")
-  public StylesSelectionDialog(Set disabledStyles) {
+  public GenresSelectionDialog(Set disabledGenres) {
     super();
-    this.selectedStyles = new HashSet<Style>();
-    this.disabledStyles = disabledStyles;
+    this.selectedGenres = new HashSet<Genre>();
+    this.disabledGenres = disabledGenres;
     setLocationByPlatform(true);
     setTitle(Messages.getString("DigitalDJWizard.14"));
     setModal(true);
@@ -97,7 +97,7 @@ public class StylesSelectionDialog extends JajukJDialog implements ActionListene
    * 
    * @param selection or null to void it
    */
-  public void setSelection(Set<Style> selection) {
+  public void setSelection(Set<Genre> selection) {
     if (selection != null) {
       int[] indices = new int[selection.size()];
       // reset all indices to -1 to avoid selecting zero th item
@@ -107,9 +107,9 @@ public class StylesSelectionDialog extends JajukJDialog implements ActionListene
       // find all matching items
       int comp = 0;
       for (int i = 0; i < jlist.getModel().getSize(); i++) {
-        String modelStyle = (String) jlist.getModel().getElementAt(i);
-        for (Style style : selection) {
-          if (style.getName2().equals(modelStyle)) {
+        String modelGenre = (String) jlist.getModel().getElementAt(i);
+        for (Genre genre : selection) {
+          if (genre.getName2().equals(modelGenre)) {
             indices[comp] = i;
             comp++;
           }
@@ -121,12 +121,12 @@ public class StylesSelectionDialog extends JajukJDialog implements ActionListene
   }
 
   /**
-   * Gets the selected styles.
+   * Gets the selected genres.
    * 
-   * @return selected styles
+   * @return selected genres
    */
-  public Set<Style> getSelectedStyles() {
-    return selectedStyles;
+  public Set<Genre> getSelectedGenres() {
+    return selectedGenres;
   }
 
   /**
@@ -135,14 +135,14 @@ public class StylesSelectionDialog extends JajukJDialog implements ActionListene
    */
   @SuppressWarnings("unchecked")
   private void initUI() {
-    list = (List) (StyleManager.getInstance().getStylesList()).clone();
+    list = (List) (GenreManager.getInstance().getGenresList()).clone();
     // remove disabled items
-    if (disabledStyles != null) {
+    if (disabledGenres != null) {
       Iterator it = list.iterator();
       while (it.hasNext()) {
-        String testedStyle = (String) it.next();
-        for (Style disabledStyle : disabledStyles) {
-          if (disabledStyle.getName2().equals(testedStyle)) {
+        String testedGenre = (String) it.next();
+        for (Genre disabledGenre : disabledGenres) {
+          if (disabledGenre.getName2().equals(testedGenre)) {
             it.remove();
           }
         }
@@ -180,16 +180,16 @@ public class StylesSelectionDialog extends JajukJDialog implements ActionListene
           int[] selection = jlist.getSelectedIndices();
           for (int element : selection) {
             String name = (String) jlist.getModel().getElementAt(element);
-            Style style = StyleManager.getInstance().getStyleByName(name);
-            if (style == null) {
-              if (name.equals(Messages.getString(Const.UNKNOWN_STYLE))) {
-                Log.warn("Use '" + Const.UNKNOWN_STYLE + "' instead of '" + name);
-                selectedStyles.add(StyleManager.getInstance().getStyleByName(Const.UNKNOWN_STYLE));
+            Genre genre = GenreManager.getInstance().getGenreByName(name);
+            if (genre == null) {
+              if (name.equals(Messages.getString(Const.UNKNOWN_GENRE))) {
+                Log.warn("Use '" + Const.UNKNOWN_GENRE + "' instead of '" + name);
+                selectedGenres.add(GenreManager.getInstance().getGenreByName(Const.UNKNOWN_GENRE));
               } else {
-                Log.warn("Could not read style for name: " + name);
+                Log.warn("Could not read genre for name: " + name);
               }
             } else {
-              selectedStyles.add(style);
+              selectedGenres.add(genre);
             }
           }
         }
@@ -213,8 +213,8 @@ public class StylesSelectionDialog extends JajukJDialog implements ActionListene
       List<Ambience> alAmbiences = new ArrayList<Ambience>(AmbienceManager.getInstance()
           .getAmbiences());
       Ambience ambience = alAmbiences.get(jcbAmbiences.getSelectedIndex());
-      // select all styles for this ambience
-      setSelection(ambience.getStyles());
+      // select all genres for this ambience
+      setSelection(ambience.getGenres());
     }
   }
 }

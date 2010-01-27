@@ -46,7 +46,7 @@ public class TracksTableView extends AbstractTableView implements TwoStepsDispla
   private JMenuItem jmiTrackPlayAlbum;
 
   /** DOCUMENT_ME. */
-  private JMenuItem jmiTrackPlayAuthor;
+  private JMenuItem jmiTrackPlayArtist;
 
   /**
    * Instantiates a new tracks table view.
@@ -87,10 +87,10 @@ public class TracksTableView extends AbstractTableView implements TwoStepsDispla
     // Track menu
     jmiTrackPlayAlbum = new JMenuItem(ActionManager.getAction(JajukActions.PLAY_ALBUM_SELECTION));
     jmiTrackPlayAlbum.putClientProperty(Const.DETAIL_SELECTION, jtable.getSelection());
-    jmiTrackPlayAuthor = new JMenuItem(ActionManager.getAction(JajukActions.PLAY_AUTHOR_SELECTION));
-    jmiTrackPlayAuthor.putClientProperty(Const.DETAIL_SELECTION, jtable.getSelection());
+    jmiTrackPlayArtist = new JMenuItem(ActionManager.getAction(JajukActions.PLAY_ARTIST_SELECTION));
+    jmiTrackPlayArtist.putClientProperty(Const.DETAIL_SELECTION, jtable.getSelection());
     jtable.getMenu().add(jmiTrackPlayAlbum, 4);
-    jtable.getMenu().add(jmiTrackPlayAuthor, 5);
+    jtable.getMenu().add(jmiTrackPlayArtist, 5);
     // Add this generic menu item manually to ensure it's the last one in
     // the list for GUI reasons
     jtable.getMenu().addSeparator();

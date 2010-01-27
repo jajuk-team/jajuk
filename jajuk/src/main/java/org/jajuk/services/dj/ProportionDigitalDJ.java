@@ -30,7 +30,7 @@ import java.util.Map.Entry;
 
 import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
-import org.jajuk.base.Style;
+import org.jajuk.base.Genre;
 import org.jajuk.util.Const;
 import org.jajuk.util.UtilSystem;
 
@@ -77,13 +77,13 @@ public class ProportionDigitalDJ extends DigitalDJ {
     List<File> out = new ArrayList<File>(100);
     Map<Proportion, List<File>> list = new HashMap<Proportion, List<File>>(10);
     // get a global shuffle selection, we will keep only tracks with wanted
-    // styles
+    // genres
     List<File> global = FileManager.getInstance().getGlobalShufflePlaylist();
     // Select by rate if needed
     filterFilesByRate(global);
     for (File file : global) {
       for (Proportion prop : proportions) {
-        if (prop.getStyles().contains(file.getTrack().getStyle())) {
+        if (prop.getGenres().contains(file.getTrack().getGenre())) {
           List<File> files = list.get(prop);
           if (files == null) { // not yet file list
             files = new ArrayList<File>(100);
@@ -153,13 +153,13 @@ public class ProportionDigitalDJ extends DigitalDJ {
     sb.append(toXMLGeneralParameters());
     sb.append("\t<" + Const.XML_DJ_PROPORTIONS + ">\n");
     for (Proportion proportion : proportions) {
-      String stylesDesc = "";
-      for (Style style : proportion.getStyles()) {
-        stylesDesc += style.getID() + ',';
+      String genresDesc = "";
+      for (Genre genre : proportion.getGenres()) {
+        genresDesc += genre.getID() + ',';
       }
       // remove trailing coma
-      stylesDesc = stylesDesc.substring(0, stylesDesc.length() - 1);
-      sb.append("\t\t<" + Const.XML_DJ_PROPORTION + " " + Const.XML_DJ_STYLES + "='" + stylesDesc
+      genresDesc = genresDesc.substring(0, genresDesc.length() - 1);
+      sb.append("\t\t<" + Const.XML_DJ_PROPORTION + " " + Const.XML_DJ_GENRES + "='" + genresDesc
           + "' " + Const.XML_DJ_VALUE + "='" + proportion.getProportion() + "'/>\n");
     }
     sb.append("\t</" + Const.XML_DJ_PROPORTIONS + ">\n");

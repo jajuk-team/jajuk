@@ -61,13 +61,13 @@ public class CDDBTableModel extends JajukTableModel {
     vColNames.add(Messages.getString("CDDBWizard.4"));
     idList.add("CDDBWizard.4");
 
-    // Proposed Track Author
-    vColNames.add(Messages.getString("Property_author"));
-    idList.add("Property_author");
+    // Proposed Track Artist
+    vColNames.add(Messages.getString("Property_artist"));
+    idList.add("Property_artist");
 
-    // Proposed Track style
-    vColNames.add(Messages.getString("Property_style"));
-    idList.add("Property_style");
+    // Proposed Track genre
+    vColNames.add(Messages.getString("Property_genre"));
+    idList.add("Property_genre");
 
     // Proposed Track year
     vColNames.add(Messages.getString("Property_year"));
@@ -108,10 +108,10 @@ public class CDDBTableModel extends JajukTableModel {
       // Proposed track name
       oValues[iRow][3] = fdbReader.getTrackTitle(iRow);
       bCellEditable[iRow][3] = false;
-      // Proposed track author
+      // Proposed track artist
       oValues[iRow][4] = fdbReader.getArtist();
       bCellEditable[iRow][4] = false;
-      // Proposed track style
+      // Proposed track genre
       oValues[iRow][5] = fdbReader.getGenre();
       bCellEditable[iRow][5] = false;
       // Proposed track year

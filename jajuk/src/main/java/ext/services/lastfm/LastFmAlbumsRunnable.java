@@ -141,7 +141,7 @@ public class LastFmAlbumsRunnable implements Runnable {
       if (!interrupted) {
         String sArtist = audioObject.getArtist();
         if (StringUtils.isNotBlank(sArtist)
-            && !sArtist.equalsIgnoreCase(Messages.getString("unknown_author"))) {
+            && !sArtist.equalsIgnoreCase(Messages.getString("unknown_artist"))) {
           AlbumListInfo albumList = service.getAlbumList(sArtist, true, 0);
           if (albumList != null) {
             albums = albumList.getAlbums();

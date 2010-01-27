@@ -102,9 +102,9 @@ public class JAudioTaggerTagImpl implements ITagImpl, Const {
   /*
    * (non-Javadoc)
    * 
-   * @see org.jajuk.services.tags.ITagImpl#getAuthorName()
+   * @see org.jajuk.services.tags.ITagImpl#getArtistName()
    */
-  public String getAuthorName() throws Exception {
+  public String getArtistName() throws Exception {
     return this.tag.getFirstArtist();
   }
 
@@ -154,15 +154,15 @@ public class JAudioTaggerTagImpl implements ITagImpl, Const {
   /*
    * (non-Javadoc)
    * 
-   * @see org.jajuk.services.tags.ITagImpl#getStyleName()
+   * @see org.jajuk.services.tags.ITagImpl#getGenreName()
    */
-  public String getStyleName() throws Exception {
+  public String getGenreName() throws Exception {
     String result = this.tag.getFirstGenre();
     if (StringUtils.isBlank(result) || "genre".equals(result)) {
       // the item will be the default jajuk unknown string
       return "";
     }
-    // Sometimes, the style has this form : (nb)
+    // Sometimes, the genre has this form : (nb)
     if (result.matches("\\(.*\\).*")) {
       result = result.substring(1, result.indexOf(')'));
       try {
@@ -171,7 +171,7 @@ public class JAudioTaggerTagImpl implements ITagImpl, Const {
         return ""; // error, return unknown
       }
     }
-    // If genre is a number mapping a known style, use this style
+    // If genre is a number mapping a known genre, use this genre
     try {
       int number = Integer.parseInt(result);
       if (number >= 0 && number < UtilFeatures.GENRES.length) {
@@ -234,11 +234,11 @@ public class JAudioTaggerTagImpl implements ITagImpl, Const {
   /*
    * (non-Javadoc)
    * 
-   * @see org.jajuk.services.tags.ITagImpl#setAuthorName(java.lang.String)
+   * @see org.jajuk.services.tags.ITagImpl#setArtistName(java.lang.String)
    */
-  public void setAuthorName(String authorName) throws Exception {
+  public void setArtistName(String artistName) throws Exception {
     createTagIfNeeded();
-    this.tag.setArtist(authorName);
+    this.tag.setArtist(artistName);
   }
 
   /*
@@ -346,13 +346,13 @@ public class JAudioTaggerTagImpl implements ITagImpl, Const {
   /*
    * (non-Javadoc)
    * 
-   * @see org.jajuk.services.tags.ITagImpl#setStyleName(java.lang.String)
+   * @see org.jajuk.services.tags.ITagImpl#setGenreName(java.lang.String)
    */
-  public void setStyleName(String style) throws Exception {
+  public void setGenreName(String genre) throws Exception {
     createTagIfNeeded();
     // Workaround for mp4 genre - Allows genres not in genre list to be written
     this.tag.deleteTagField(TagFieldKey.GENRE);
-    this.tag.set(tag.createTagField(TagFieldKey.GENRE, style));
+    this.tag.set(tag.createTagField(TagFieldKey.GENRE, genre));
   }
 
   /*

@@ -555,7 +555,7 @@ public class JajukTable extends JXTable implements Observer, TableColumnModelLis
    * 
    * @see java.awt.event.MouseListener#mouseClicked(java.awt.event.MouseEvent)
    */
-  public void mouseClicked(@SuppressWarnings("unused") MouseEvent e) {
+  public void mouseClicked(MouseEvent e) {
     // nothing to do here for now
   }
 
@@ -564,7 +564,7 @@ public class JajukTable extends JXTable implements Observer, TableColumnModelLis
    * 
    * @see java.awt.event.MouseListener#mouseEntered(java.awt.event.MouseEvent)
    */
-  public void mouseEntered(@SuppressWarnings("unused") MouseEvent e) {
+  public void mouseEntered(MouseEvent e) {
     // nothing to do here for now
   }
 
@@ -573,7 +573,7 @@ public class JajukTable extends JXTable implements Observer, TableColumnModelLis
    * 
    * @see java.awt.event.MouseListener#mouseExited(java.awt.event.MouseEvent)
    */
-  public void mouseExited(@SuppressWarnings("unused") MouseEvent e) {
+  public void mouseExited(MouseEvent e) {
     // nothing to do here for now
   }
 

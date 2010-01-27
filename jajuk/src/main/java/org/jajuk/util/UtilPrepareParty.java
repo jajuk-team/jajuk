@@ -352,9 +352,9 @@ public class UtilPrepareParty {
     files = new ArrayList<org.jajuk.base.File>();
     // Get a shuffle selection
     List<org.jajuk.base.File> allFiles = FileManager.getInstance().getGlobalShufflePlaylist();
-    // Keep only right styles and check for unicity
+    // Keep only right genres and check for unicity
     for (org.jajuk.base.File file : allFiles) {
-      if (ambience.getStyles().contains(file.getTrack().getStyle())) {
+      if (ambience.getGenres().contains(file.getTrack().getGenre())) {
         files.add(file);
       }
     }

@@ -35,10 +35,10 @@ import org.apache.commons.lang.StringUtils;
 import org.jajuk.JUnitHelpers;
 import org.jajuk.JajukTestCase;
 import org.jajuk.base.Album;
-import org.jajuk.base.Author;
+import org.jajuk.base.Artist;
 import org.jajuk.base.Device;
 import org.jajuk.base.Directory;
-import org.jajuk.base.Style;
+import org.jajuk.base.Genre;
 import org.jajuk.base.Track;
 import org.jajuk.base.Type;
 import org.jajuk.base.Year;
@@ -149,7 +149,7 @@ public class TestLyrics extends JajukTestCase {
     urlField.setAccessible(true);
     String queryString = (String) (urlField.get(null));
 
-    queryString = queryString.replace(Const.PATTERN_AUTHOR, (ARTIST != null) ? NetworkUtils
+    queryString = queryString.replace(Const.PATTERN_ARTIST, (ARTIST != null) ? NetworkUtils
         .encodeString(ARTIST) : "");
 
     queryString = queryString.replace(Const.PATTERN_TRACKNAME, (TITLE != null) ? NetworkUtils
@@ -263,7 +263,7 @@ public class TestLyrics extends JajukTestCase {
     LyricsService.getProviders().remove(0);
 
     org.jajuk.base.File dummyFile = new org.jajuk.base.File("1", "test", new Directory("1", "dir", null, new Device("1", "test")), new Track("1",
-        TITLE, new Album("1", "Album", 1), new Style("1", "style"), new Author("1",
+        TITLE, new Album("1", "Album", 1), new Genre("1", "genre"), new Artist("1",
             ARTIST), 0, new Year("1", "100"), 0, new Type("1", "name", "ext", null, null), 0),
         120l, 70l);
     LyricsService.getLyrics(dummyFile);

@@ -183,7 +183,7 @@ public class JajukPredicates {
      */
     public boolean evaluate(Object o) {
       File tested = (File) o;
-      return ambience.getStyles().contains(tested.getTrack().getStyle());
+      return ambience.getGenres().contains(tested.getTrack().getGenre());
     }
 
   }

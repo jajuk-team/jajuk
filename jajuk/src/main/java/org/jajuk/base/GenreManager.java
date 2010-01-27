@@ -39,21 +39,21 @@ import org.jajuk.util.UtilFeatures;
 import org.jajuk.util.error.JajukException;
 
 /**
- * Convenient class to manage styles.
+ * Convenient class to manage genres.
  */
-public final class StyleManager extends ItemManager {
+public final class GenreManager extends ItemManager {
   
   /** Self instance. */
-  private static StyleManager singleton;
+  private static GenreManager singleton;
 
-  /* List of all known styles */
+  /* List of all known genres */
   /** DOCUMENT_ME. */
-  private Vector<String> stylesList;
+  private Vector<String> genresList;
 
   /**
    * No constructor available, only static access.
    */
-  private StyleManager() {
+  private GenreManager() {
     super();
     // register properties
     // ID
@@ -65,8 +65,8 @@ public final class StyleManager extends ItemManager {
     // Expand
     registerProperty(new PropertyMetaInformation(Const.XML_EXPANDED, false, false, false, false,
         true, Boolean.class, false));
-    // Add preset styles
-    registerPresetStyles();
+    // Add preset genres
+    registerPresetGenres();
   }
 
   /**
@@ -74,79 +74,79 @@ public final class StyleManager extends ItemManager {
    * 
    * @return singleton
    */
-  public static StyleManager getInstance() {
+  public static GenreManager getInstance() {
     if (singleton == null) {
-      singleton = new StyleManager();
+      singleton = new GenreManager();
     }
     return singleton;
   }
 
   /**
-   * Register a style.
+   * Register a genre.
    * 
    * @param sName DOCUMENT_ME
    * 
-   * @return the style
+   * @return the genre
    */
-  public Style registerStyle(String sName) {
+  public Genre registerGenre(String sName) {
     String sId = createID(sName);
-    return registerStyle(sId, sName);
+    return registerGenre(sId, sName);
   }
 
   /**
-   * Register a style with a known id.
+   * Register a genre with a known id.
    * 
    * @param sName DOCUMENT_ME
    * @param sId DOCUMENT_ME
    * 
-   * @return the style
+   * @return the genre
    */
-  public synchronized Style registerStyle(String sId, String sName) {
-    Style style = getStyleByID(sId);
-    if (style != null) {
-      return style;
+  public synchronized Genre registerGenre(String sId, String sName) {
+    Genre genre = getGenreByID(sId);
+    if (genre != null) {
+      return genre;
     }
-    style = new Style(sId, sName);
-    registerItem(style);
-    // add it in styles list if new
-    if (!stylesList.contains(sName)) {
-      stylesList.add(style.getName2());
+    genre = new Genre(sId, sName);
+    registerItem(genre);
+    // add it in genres list if new
+    if (!genresList.contains(sName)) {
+      genresList.add(genre.getName2());
       // Sort items ignoring case
-      Collections.sort(stylesList, new Comparator<String>() {
+      Collections.sort(genresList, new Comparator<String>() {
         public int compare(String o1, String o2) {
           return o1.compareToIgnoreCase(o2);
         }
       });
     }
-    return style;
+    return genre;
   }
 
   /**
-   * Register preset styles.
+   * Register preset genres.
    * DOCUMENT_ME
    */
-  public synchronized void registerPresetStyles() {
-    // create default style list
-    stylesList = new Vector<String>(Arrays.asList(UtilFeatures.GENRES));
-    Collections.sort(stylesList);
-    for (String style : stylesList) {
-      registerStyle(style.intern());
+  public synchronized void registerPresetGenres() {
+    // create default genre list
+    genresList = new Vector<String>(Arrays.asList(UtilFeatures.GENRES));
+    Collections.sort(genresList);
+    for (String genre : genresList) {
+      registerGenre(genre.intern());
     }
   }
 
   /**
-   * Return style by name.
+   * Return genre by name.
    * 
    * @param name DOCUMENT_ME
    * 
-   * @return the style by name
+   * @return the genre by name
    */
-  public Style getStyleByName(String name) {
-    Style out = null;
-    for (ReadOnlyIterator<Style> it = getStylesIterator(); it.hasNext();) {
-      Style style = it.next();
-      if (style.getName().equals(name)) {
-        out = style;
+  public Genre getGenreByName(String name) {
+    Genre out = null;
+    for (ReadOnlyIterator<Genre> it = getGenresIterator(); it.hasNext();) {
+      Genre genre = it.next();
+      if (genre.getName().equals(name)) {
+        out = genre;
         break;
       }
     }
@@ -163,13 +163,13 @@ public final class StyleManager extends ItemManager {
    * 
    * @throws JajukException the jajuk exception
    */
-  public Style changeStyleName(Style old, String sNewName) throws JajukException {
+  public Genre changeGenreName(Genre old, String sNewName) throws JajukException {
     synchronized (TrackManager.getInstance()) {
       // check there is actually a change
       if (old.getName2().equals(sNewName)) {
         return old;
       }
-      Style newItem = registerStyle(sNewName);
+      Genre newItem = registerGenre(sNewName);
       // re apply old properties from old item
       newItem.cloneProperties(old);
       // update tracks
@@ -178,8 +178,8 @@ public final class StyleManager extends ItemManager {
       Iterator<Track> it = alTracks.iterator();
       while (it.hasNext()) {
         Track track = it.next();
-        if (track.getStyle().equals(old)) {
-          TrackManager.getInstance().changeTrackStyle(track, sNewName, null);
+        if (track.getGenre().equals(old)) {
+          TrackManager.getInstance().changeTrackGenre(track, sNewName, null);
         }
       }
       // notify everybody for the file change
@@ -193,7 +193,7 @@ public final class StyleManager extends ItemManager {
   }
 
   /**
-   * Format the Style name to be normalized :
+   * Format the Genre name to be normalized :
    * <p>
    * -no underscores or other non-ascii characters
    * <p>
@@ -223,48 +223,48 @@ public final class StyleManager extends ItemManager {
    */
   @Override
   public String getLabel() {
-    return Const.XML_STYLES;
+    return Const.XML_GENRES;
   }
 
   /**
-   * Gets the styles list.
+   * Gets the genres list.
    * 
-   * @return Human readable list of registrated styles <br>
+   * @return Human readable list of registrated genres <br>
    * ordered (alphabeticaly)
    */
-  public Vector<String> getStylesList() {
-    return stylesList;
+  public Vector<String> getGenresList() {
+    return genresList;
   }
 
   /**
-   * Gets the style by id.
+   * Gets the genre by id.
    * 
    * @param sID Item ID
    * 
    * @return item
    */
-  public Style getStyleByID(String sID) {
-    return (Style) getItemByID(sID);
+  public Genre getGenreByID(String sID) {
+    return (Genre) getItemByID(sID);
   }
 
   /**
-   * Gets the styles.
+   * Gets the genres.
    * 
-   * @return ordered styles list
+   * @return ordered genres list
    */
   @SuppressWarnings("unchecked")
-  public synchronized List<Style> getStyles() {
-    return (List<Style>) getItems();
+  public synchronized List<Genre> getGenres() {
+    return (List<Genre>) getItems();
   }
 
   /**
-   * Gets the styles iterator.
+   * Gets the genres iterator.
    * 
-   * @return styles iterator
+   * @return genres iterator
    */
   @SuppressWarnings("unchecked")
-  public synchronized ReadOnlyIterator<Style> getStylesIterator() {
-    return new ReadOnlyIterator<Style>((Iterator<Style>) getItemsIterator());
+  public synchronized ReadOnlyIterator<Genre> getGenresIterator() {
+    return new ReadOnlyIterator<Genre>((Iterator<Genre>) getItemsIterator());
   }
 
 }

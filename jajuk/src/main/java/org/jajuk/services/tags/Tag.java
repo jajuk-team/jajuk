@@ -122,7 +122,7 @@ public class Tag {
     try {
       String sTemp = tagImpl.getAlbumName().trim();
       if (Messages.getString(Const.UNKNOWN_ALBUM).equals(sTemp)) {
-        // it is done to avoid duplicates unknown styles if
+        // it is done to avoid duplicates unknown genres if
         // the tag is the real string "unknown" in the
         // current language
         sAlbumlName = Const.UNKNOWN_ALBUM;
@@ -147,32 +147,32 @@ public class Tag {
   }
 
   /**
-   * Gets the author name.
+   * Gets the artist name.
    * 
-   * @return author name
+   * @return artist name
    */
-  public String getAuthorName() {
-    String sAuthorName = Const.UNKNOWN_AUTHOR;
+  public String getArtistName() {
+    String sArtistName = Const.UNKNOWN_ARTIST;
     // if the type doesn't support tags ( like wav )
     if (tagImpl == null) {
-      return sAuthorName;
+      return sArtistName;
     }
 
     try {
-      String sTemp = tagImpl.getAuthorName().trim();
-      if (Messages.getString(Const.UNKNOWN_AUTHOR).equals(sTemp)) {
-        // it is done to avoid duplicates unknown styles if
+      String sTemp = tagImpl.getArtistName().trim();
+      if (Messages.getString(Const.UNKNOWN_ARTIST).equals(sTemp)) {
+        // it is done to avoid duplicates unknown genres if
         // the tag is the real string "unknown" in the
         // current language
-        sAuthorName = Const.UNKNOWN_AUTHOR;
+        sArtistName = Const.UNKNOWN_ARTIST;
       } else if (!"".equals(sTemp)) {
-        sAuthorName = UtilString.formatTag(sTemp);
+        sArtistName = UtilString.formatTag(sTemp);
       }
     } catch (Exception e) {
-      Log.info("Wrong author name:{{" + fio.getName() + "}}");
+      Log.info("Wrong artist name:{{" + fio.getName() + "}}");
     }
-    // We internalize the author name for memory saving reasons
-    return sAuthorName.intern();
+    // We internalize the artist name for memory saving reasons
+    return sArtistName.intern();
 
   }
 
@@ -182,7 +182,7 @@ public class Tag {
    * @return album artist
    */
   public String getAlbumArtist() {
-    String sAlbumArtist = Const.UNKNOWN_AUTHOR;
+    String sAlbumArtist = Const.UNKNOWN_ARTIST;
     // if the type doesn't support tags ( like wav )
     if (tagImpl == null) {
       return sAlbumArtist;
@@ -190,49 +190,49 @@ public class Tag {
 
     try {
       String sTemp = tagImpl.getAlbumArtist().trim();
-      if (Messages.getString(Const.UNKNOWN_AUTHOR).equals(sTemp)) {
-        sAlbumArtist = Const.UNKNOWN_AUTHOR;
+      if (Messages.getString(Const.UNKNOWN_ARTIST).equals(sTemp)) {
+        sAlbumArtist = Const.UNKNOWN_ARTIST;
       } else if (!"".equals(sTemp)) {
         sAlbumArtist = UtilString.formatTag(sTemp);
       }
     } catch (Exception e) {
       Log.info("Wrong album artist:{{" + fio.getName() + "}}");
     }
-    // We internalize the author name for memory saving reasons
+    // We internalize the artist name for memory saving reasons
     return sAlbumArtist.intern();
 
   }
 
   /**
-   * Gets the style name.
+   * Gets the genre name.
    * 
-   * @return style name
+   * @return genre name
    */
-  public String getStyleName() {
-    String style = Const.UNKNOWN_STYLE;
+  public String getGenreName() {
+    String genre = Const.UNKNOWN_GENRE;
     // if the type doesn't support tags ( like wav )
     if (tagImpl == null) {
-      return style;
+      return genre;
     }
 
     try {
-      String sTemp = tagImpl.getStyleName().trim();
-      if (Messages.getString(Const.UNKNOWN_STYLE).equals(sTemp)) {
-        // it is done to avoid duplicates unknown styles if
+      String sTemp = tagImpl.getGenreName().trim();
+      if (Messages.getString(Const.UNKNOWN_GENRE).equals(sTemp)) {
+        // it is done to avoid duplicates unknown genres if
         // the tag is the real string "unknown" in the
         // current language
-        style = Const.UNKNOWN_STYLE;
+        genre = Const.UNKNOWN_GENRE;
       } else if (!"".equals(sTemp)) {
         if ("unknown".equals(sTemp)) {
-          sTemp = style;
+          sTemp = genre;
         }
-        style = UtilString.formatTag(sTemp);
+        genre = UtilString.formatTag(sTemp);
       }
     } catch (Exception e) {
-      Log.info("Wrong style name: {{" + fio.getName() + "}}");
+      Log.info("Wrong genre name: {{" + fio.getName() + "}}");
     }
-    // We internalize the style name for memory saving reasons
-    return style.intern();
+    // We internalize the genre name for memory saving reasons
+    return genre.intern();
 
   }
 
@@ -415,17 +415,17 @@ public class Tag {
   }
 
   /**
-   * Sets the author name.
+   * Sets the artist name.
    * 
-   * @param sAuthorName
+   * @param sArtistName
    *          DOCUMENT_ME
    * 
    * @throws JajukException
    *           the jajuk exception
    */
-  public void setAuthorName(String sAuthorName) throws JajukException {
+  public void setArtistName(String sArtistName) throws JajukException {
     try {
-      tagImpl.setAuthorName(sAuthorName);
+      tagImpl.setArtistName(sArtistName);
     } catch (Exception e) {
       throw new JajukException(104, fio.getName(), e);
     }
@@ -449,17 +449,17 @@ public class Tag {
   }
 
   /**
-   * Sets the style name.
+   * Sets the genre name.
    * 
-   * @param style
+   * @param genre
    *          DOCUMENT_ME
    * 
    * @throws JajukException
    *           the jajuk exception
    */
-  public void setStyleName(String style) throws JajukException {
+  public void setGenreName(String genre) throws JajukException {
     try {
-      tagImpl.setStyleName(style);
+      tagImpl.setGenreName(genre);
     } catch (Exception e) {
       throw new JajukException(104, fio.getName(), e);
     }

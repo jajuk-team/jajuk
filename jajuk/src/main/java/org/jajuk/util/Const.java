@@ -98,7 +98,7 @@ public interface Const {
   /** Play time to get rate +1 in secs. */
   int INC_RATE_TIME = 20;
 
-  /** Min Number of tracks in an AuthorNode. */
+  /** Min Number of tracks in an ArtistNode. */
   int MIN_TRACKS_NUMBER = 4;
 
   /**
@@ -392,13 +392,13 @@ public interface Const {
 
   // Unknown
   /** DOCUMENT_ME. */
-  String UNKNOWN_AUTHOR = "unknown_author";
+  String UNKNOWN_ARTIST = "unknown_artist";
 
   /** DOCUMENT_ME. */
   String UNKNOWN_ALBUM = "unknown_album";
 
   /** DOCUMENT_ME. */
-  String UNKNOWN_STYLE = "unknown_style";
+  String UNKNOWN_GENRE = "unknown_genre";
 
   /** DOCUMENT_ME. */
   String UNKNOWN_YEAR = "unknown_year";
@@ -423,16 +423,16 @@ public interface Const {
 
   // XSLT Files
   /** DOCUMENT_ME. */
-  URL XSLT_AUTHOR = UtilSystem.getResource("xslt/author.xsl");
+  URL XSLT_ARTIST = UtilSystem.getResource("xslt/artist.xsl");
 
   /** DOCUMENT_ME. */
   URL XSLT_ALBUM = UtilSystem.getResource("xslt/album.xsl");
 
   /** DOCUMENT_ME. */
-  URL XSLT_STYLE = UtilSystem.getResource("xslt/style.xsl");
+  URL XSLT_GENRE = UtilSystem.getResource("xslt/genre.xsl");
 
   /** DOCUMENT_ME. */
-  URL XSLT_YEAR = UtilSystem.getResource("xslt/style.xsl");
+  URL XSLT_YEAR = UtilSystem.getResource("xslt/genre.xsl");
 
   /** DOCUMENT_ME. */
   URL XSLT_DIRECTORY = UtilSystem.getResource("xslt/directory.xsl");
@@ -1220,19 +1220,19 @@ public interface Const {
   String XML_DEVICE = "device";
 
   /** DOCUMENT_ME. */
-  String XML_STYLES = "styles";
+  String XML_GENRES = "styles";
 
   /** DOCUMENT_ME. */
-  String XML_STYLE = "style";
+  String XML_GENRE = "style";
 
   /** DOCUMENT_ME. */
-  String XML_AUTHORS = "authors";
+  String XML_ARTISTS = "authors";
 
   /** DOCUMENT_ME. */
   String XML_ALBUM_ARTISTS = "album-artists";
 
   /** DOCUMENT_ME. */
-  String XML_AUTHOR = "author";
+  String XML_ARTIST = "author";
 
   /** DOCUMENT_ME. */
   String XML_ALBUMS = "albums";
@@ -1295,10 +1295,10 @@ public interface Const {
   String XML_TRACK_ALBUM = "album";
 
   /** DOCUMENT_ME. */
-  String XML_TRACK_STYLE = "style";
+  String XML_TRACK_GENRE = "style";
 
   /** DOCUMENT_ME. */
-  String XML_TRACK_AUTHOR = "author";
+  String XML_TRACK_ARTIST = "author";
 
   /** DOCUMENT_ME. */
   String XML_TRACK_YEAR = "year";
@@ -1473,7 +1473,7 @@ public interface Const {
   String XML_DJ_AMBIENCE = "ambience";
 
   /** DOCUMENT_ME. */
-  String XML_DJ_STYLES = "styles";
+  String XML_DJ_GENRES = "styles";
 
   /** DOCUMENT_ME. */
   String XML_DJ_VALUE = "values";
@@ -1522,7 +1522,7 @@ public interface Const {
   String[] XML_RESERVED_ATTRIBUTE_NAMES = { XML_NAME, XML_ID, XML_TYPE_EXTENSION,
       XML_TYPE_PLAYER_IMPL, XML_TYPE_TAG_IMPL, XML_TYPE_SEEK_SUPPORTED, XML_TYPE_ICON,
       XML_TYPE_IS_MUSIC, XML_TYPE, XML_URL, XML_DEVICE_AUTO_MOUNT, XML_DEVICE_AUTO_REFRESH,
-      XML_EXPANDED, XML_DEVICE_MOUNT_POINT, XML_ALBUM, XML_AUTHOR, XML_STYLE, XML_TRACK_LENGTH,
+      XML_EXPANDED, XML_DEVICE_MOUNT_POINT, XML_ALBUM, XML_ARTIST, XML_GENRE, XML_TRACK_LENGTH,
       XML_YEAR, XML_TRACK_RATE, XML_FILES, XML_TRACK_HITS, XML_TRACK_DISCOVERY_DATE,
       XML_DIRECTORY_PARENT, XML_DEVICE, XML_DIRECTORY, XML_TRACK, XML_SIZE, XML_QUALITY,
       XML_PLAYLIST_FILES, XML_TRACK_COMMENT, XML_ANY, XML_TRACK_ORDER, XML_DEVICE_SYNCHRO_MODE,
@@ -1569,7 +1569,7 @@ public interface Const {
 
   // Patterns
   /** DOCUMENT_ME. */
-  String PATTERN_AUTHOR = "%artist";
+  String PATTERN_ARTIST = "%artist";
 
   /** DOCUMENT_ME. */
   String PATTERN_ALBUM_ARTIST = "%album_artist";
@@ -1581,7 +1581,7 @@ public interface Const {
   String PATTERN_ALBUM = "%album";
 
   /** DOCUMENT_ME. */
-  String PATTERN_STYLE = "%genre";
+  String PATTERN_GENRE = "%genre";
 
   /** DOCUMENT_ME. */
   String PATTERN_YEAR = "%year";
@@ -1594,10 +1594,10 @@ public interface Const {
 
   /** DOCUMENT_ME. */
   String PATTERN_DEFAULT_REORG = PATTERN_ALBUM_ARTIST + "/" + PATTERN_YEAR + " - " + PATTERN_ALBUM
-      + "/" + PATTERN_TRACKORDER + " - " + PATTERN_AUTHOR + " - " + PATTERN_TRACKNAME;
+      + "/" + PATTERN_TRACKORDER + " - " + PATTERN_ARTIST + " - " + PATTERN_TRACKNAME;
 
   /** DOCUMENT_ME. */
-  String PATTERN_DEFAULT_ANIMATION = PATTERN_TRACKNAME + " (" + PATTERN_AUTHOR + ")";
+  String PATTERN_DEFAULT_ANIMATION = PATTERN_TRACKNAME + " (" + PATTERN_ARTIST + ")";
 
   // Actions
   /** DOCUMENT_ME. */

@@ -191,19 +191,19 @@ public class TestDirectory extends JajukTestCase {
   @SuppressWarnings("unchecked")
   public
   static org.jajuk.base.File getFileInDir(int i, Directory dir) throws Exception {
-    Style style = new Style(Integer.valueOf(i).toString(), "name");
+    Genre genre = new Genre(Integer.valueOf(i).toString(), "name");
     Album album = new Album(Integer.valueOf(i).toString(), "name", 23);
     album.setProperty(Const.XML_ALBUM_COVER, Const.COVER_NONE); // don't read covers for
     // this test
   
-    Author author = new Author(Integer.valueOf(i).toString(), "name");
+    Artist artist = new Artist(Integer.valueOf(i).toString(), "name");
     Year year = new Year(Integer.valueOf(i).toString(), "2000");
   
     IPlayerImpl imp = new MockPlayer();
     Class<IPlayerImpl> cl = (Class<IPlayerImpl>) imp.getClass();
   
     Type type = new Type(Integer.valueOf(i).toString(), "name", "mp3", cl, null);
-    Track track = new Track(Integer.valueOf(i).toString(), "name", album, style, author, 120, year,
+    Track track = new Track(Integer.valueOf(i).toString(), "name", album, genre, artist, 120, year,
         1, type, 1);
   
     return FileManager.getInstance().registerFile(Integer.valueOf(i).toString(), "test.tst", dir, track, 120, 70);

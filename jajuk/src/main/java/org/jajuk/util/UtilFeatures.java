@@ -138,13 +138,13 @@ public final class UtilFeatures {
       return new ArrayList<org.jajuk.base.File>(0);
     }
     // Void filter, return the input
-    if ((ambience == null) || (ambience.getStyles().size() == 0)) {
+    if ((ambience == null) || (ambience.getGenres().size() == 0)) {
       return al;
     }
     // Filter by ambience
     final List<org.jajuk.base.File> out = new ArrayList<org.jajuk.base.File>(al.size() / 2);
     for (final org.jajuk.base.File file : al) {
-      if (ambience.getStyles().contains(file.getTrack().getStyle())) {
+      if (ambience.getGenres().contains(file.getTrack().getGenre())) {
         out.add(file);
       }
     }
@@ -243,7 +243,7 @@ public final class UtilFeatures {
     if ((i >= 0) && (i < 126)) {
       return GENRES[i];
     } else {
-      return Messages.getString("unknown_style");
+      return Messages.getString("unknown_genre");
     }
   }
 

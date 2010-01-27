@@ -87,7 +87,7 @@ public abstract class SelectionAction extends JajukAction {
           }
         }
       } else {
-        // List of albums, authors ... files or tracks : just perform a cast
+        // List of albums, artists ... files or tracks : just perform a cast
         selection = (List<Item>) source.getClientProperty(Const.DETAIL_SELECTION);
       }
     } else if (o instanceof Set) {

@@ -49,11 +49,11 @@ public class Track extends LogicalItem implements Comparable<Track> {
   /** Track album*. */
   private final Album album;
 
-  /** Track style. */
-  private final Style style;
+  /** Track genre. */
+  private final Genre genre;
 
-  /** Track author. */
-  private final Author author;
+  /** Track artist. */
+  private final Artist artist;
 
   /** Track length. */
   private final long length;
@@ -76,26 +76,26 @@ public class Track extends LogicalItem implements Comparable<Track> {
    * @param sId DOCUMENT_ME
    * @param sName DOCUMENT_ME
    * @param album DOCUMENT_ME
-   * @param style DOCUMENT_ME
-   * @param author DOCUMENT_ME
+   * @param genre DOCUMENT_ME
+   * @param artist DOCUMENT_ME
    * @param length DOCUMENT_ME
    * @param type DOCUMENT_ME
    * @param year DOCUMENT_ME
    * @param lOrder DOCUMENT_ME
    * @param lDiscNumber DOCUMENT_ME
    */
-  public Track(String sId, String sName, Album album, Style style, Author author, long length,
+  public Track(String sId, String sName, Album album, Genre genre, Artist artist, long length,
       Year year, long lOrder, Type type, long lDiscNumber) {
     super(sId, sName);
     // album
     this.album = album;
     setProperty(Const.XML_ALBUM, album.getID());
-    // style
-    this.style = style;
-    setProperty(Const.XML_STYLE, style.getID());
-    // author
-    this.author = author;
-    setProperty(Const.XML_AUTHOR, author.getID());
+    // genre
+    this.genre = genre;
+    setProperty(Const.XML_GENRE, genre.getID());
+    // artist
+    this.artist = artist;
+    setProperty(Const.XML_ARTIST, artist.getID());
     // Length
     this.length = length;
     setProperty(Const.XML_TRACK_LENGTH, length);
@@ -125,7 +125,7 @@ public class Track extends LogicalItem implements Comparable<Track> {
     StringBuilder sOut = new StringBuilder();
 
     sOut.append("Track[ID=").append(getID()).append(" Name={{").append(getName()).append("}} ")
-        .append(album).append(" ").append(style).append(" ").append(author).append(" Length=")
+        .append(album).append(" ").append(genre).append(" ").append(artist).append(" Length=")
         .append(length).append(" Year=").append(year.getValue()).append(" Rate=").append(getRate())
         .append(" ").append(type).append(" Hits=").append(getHits()).append(" Addition date=")
         .append(getDiscoveryDate()).append(" Comment=").append(getComment()).append(" order=")
@@ -340,7 +340,7 @@ public class Track extends LogicalItem implements Comparable<Track> {
   /**
    * Gets the album artist or artist if album-artist is not available.
    * 
-   * @return the albumArtist or author if album artist not available
+   * @return the albumArtist or artist if album artist not available
    * <p>
    * If this is various, the album artist is tried to be defined by the
    * track artists of this album
@@ -349,17 +349,17 @@ public class Track extends LogicalItem implements Comparable<Track> {
   public String getAlbumArtistOrArtist() {
     // If the album artist tag is provided, perfect, let's use it !
     String albumArtist = getAlbumArtist().getName2();
-    if (StringUtils.isNotBlank(albumArtist) && !(Const.UNKNOWN_AUTHOR.equals(albumArtist))) {
+    if (StringUtils.isNotBlank(albumArtist) && !(Const.UNKNOWN_ARTIST.equals(albumArtist))) {
       return albumArtist;
     }
-    // various artist? check if all authors are the same
-    Author author = getAuthor();
-    if (author == null) {
-      // Several different author, return translated "various"
+    // various artist? check if all artists are the same
+    Artist artist = getArtist();
+    if (artist == null) {
+      // Several different artist, return translated "various"
       return Messages.getString(Const.VARIOUS_ARTIST);
     } else {
       // single artist, return it
-      return author.getName2();
+      return artist.getName2();
     }
   }
   /**
@@ -408,21 +408,21 @@ public class Track extends LogicalItem implements Comparable<Track> {
   }
 
   /**
-   * Gets the author.
+   * Gets the artist.
    * 
-   * @return the author
+   * @return the artist
    */
-  public Author getAuthor() {
-    return author;
+  public Artist getArtist() {
+    return artist;
   }
 
   /**
-   * Gets the style.
+   * Gets the genre.
    * 
-   * @return the style
+   * @return the genre
    */
-  public Style getStyle() {
-    return style;
+  public Genre getGenre() {
+    return genre;
   }
 
   /**
@@ -623,10 +623,10 @@ public class Track extends LogicalItem implements Comparable<Track> {
         return lAlbum.getName2();
       }
       return null;
-    } else if (Const.XML_AUTHOR.equals(sKey)) {
-      Author lAuthor = AuthorManager.getInstance().getAuthorByID(getStringValue(sKey));
-      if (lAuthor != null) { // can be null after a fresh change
-        return lAuthor.getName2();
+    } else if (Const.XML_ARTIST.equals(sKey)) {
+      Artist artist = ArtistManager.getInstance().getArtistByID(getStringValue(sKey));
+      if (artist != null) { // can be null after a fresh change
+        return artist.getName2();
       }
       return null;
     } else if (Const.XML_ALBUM_ARTIST.equals(sKey)) {
@@ -635,10 +635,10 @@ public class Track extends LogicalItem implements Comparable<Track> {
         return albumArtist.getName2();
       }
       return null;
-    } else if (Const.XML_STYLE.equals(sKey)) {
-      Style lStyle = StyleManager.getInstance().getStyleByID(getStringValue(sKey));
-      if (lStyle != null) { // can be null after a fresh change
-        return lStyle.getName2();
+    } else if (Const.XML_GENRE.equals(sKey)) {
+      Genre genre = GenreManager.getInstance().getGenreByID(getStringValue(sKey));
+      if (genre != null) { // can be null after a fresh change
+        return genre.getName2();
       }
       return null;
     } else if (Const.XML_TRACK_LENGTH.equals(sKey)) {

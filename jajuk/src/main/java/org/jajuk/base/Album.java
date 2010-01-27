@@ -164,12 +164,12 @@ public class Album extends LogicalItem implements Comparable<Album> {
   public String getHumanValue(String sKey) {
     // We compute here all pseudo keys (non album real attributes) that can be
     // required on an album
-    if (Const.XML_AUTHOR.equals(sKey)) {
-      return handleAuthor();
+    if (Const.XML_ARTIST.equals(sKey)) {
+      return handleArtist();
     } else if (Const.XML_ALBUM.equals(sKey)) {
       return getName2();
-    } else if (Const.XML_STYLE.equals(sKey)) {
-      return handleStyle();
+    } else if (Const.XML_GENRE.equals(sKey)) {
+      return handleGenre();
     } else if (Const.XML_YEAR.equals(sKey)) {
       return handleYear();
     } else if (Const.XML_TRACK_RATE.equals(sKey)) {
@@ -190,33 +190,33 @@ public class Album extends LogicalItem implements Comparable<Album> {
   }
 
   /**
-   * Handle author.
+   * Handle artist.
    * DOCUMENT_ME
    * 
    * @return the string
    */
-  private String handleAuthor() {
-    Author author = getAuthor();
-    if (author != null) {
-      return author.getName2();
+  private String handleArtist() {
+    Artist artist = getArtist();
+    if (artist != null) {
+      return artist.getName2();
     } else {
-      // More than one author, display void string
+      // More than one artist, display void string
       return "";
     }
   }
 
   /**
-   * Handle style.
+   * Handle genre.
    * DOCUMENT_ME
    * 
    * @return the string
    */
-  private String handleStyle() {
-    Style style = getStyle();
-    if (style != null) {
-      return style.getName2();
+  private String handleGenre() {
+    Genre genre = getGenre();
+    if (genre != null) {
+      return genre.getName2();
     } else {
-      // More than one style, display void string
+      // More than one genre, display void string
       return "";
     }
   }
@@ -247,18 +247,18 @@ public class Album extends LogicalItem implements Comparable<Album> {
     StringBuilder sb = new StringBuilder(100);
     sb.append(super.getAny()); // add all album-based properties
     // now add others properties
-    Author author = getAuthor();
-    if (author != null) {
-      sb.append(author.getName2());
+    Artist artist = getArtist();
+    if (artist != null) {
+      sb.append(artist.getName2());
     }
     // Try to add album artist
     Track first = getTracksCache().get(0);
     // (every track maps at minimum an "unknown artist" album artist
     sb.append(first.getAlbumArtist().getName2());
 
-    Style style = getStyle();
-    if (style != null) {
-      sb.append(style.getName2());
+    Genre genre = getGenre();
+    if (genre != null) {
+      sb.append(genre.getName2());
     }
     Year year = getYear();
     if (year != null) {
@@ -433,37 +433,37 @@ public class Album extends LogicalItem implements Comparable<Album> {
   }
 
   /**
-   * Gets the style.
+   * Gets the genre.
    * 
-   * @return style for the album. Return null if the album contains tracks with
-   * different styles
+   * @return genre for the album. Return null if the album contains tracks with
+   * different genres
    */
-  public Style getStyle() {
-    Set<Style> styles = new HashSet<Style>(1);
+  public Genre getGenre() {
+    Set<Genre> genres = new HashSet<Genre>(1);
     for (Track track : cache) {
-      styles.add(track.getStyle());
+      genres.add(track.getGenre());
     }
-    // If different styles, the album style is null
-    if (styles.size() == 1) {
-      return styles.iterator().next();
+    // If different genres, the album genre is null
+    if (genres.size() == 1) {
+      return genres.iterator().next();
     } else {
       return null;
     }
   }
 
   /**
-   * Gets the author.
+   * Gets the artist.
    * 
-   * @return author for the album. <br>
-   * Return null if the album contains tracks with different authors
+   * @return artist for the album. <br>
+   * Return null if the album contains tracks with different artists
    */
-  public Author getAuthor() {
+  public Artist getArtist() {
     if (cache.size() == 0) {
       return null;
     }
-    Author first = cache.get(0).getAuthor();
+    Artist first = cache.get(0).getArtist();
     for (Track track : cache) {
-      if (!track.getAuthor().equals(first)) {
+      if (!track.getArtist().equals(first)) {
         return null;
       }
     }
@@ -471,22 +471,22 @@ public class Album extends LogicalItem implements Comparable<Album> {
   }
 
   /**
-   * Gets the author or the album artist if not available
+   * Gets the artist or the album artist if not available
    * 
    * <u>Used algorithm is following :
    *  <li>If none available tags : return "unknown artist"</li>
    *  <li>If the album contains tracks with different artists, display the first album artist found if any</li>
    *  <li>In this case, if no album artist is available, display the first artist found</li>
    * </u>
-   * @return author for the album. <br>
-   * Return Always an author, eventually a "Unknown Artist" one 
+   * @return artist for the album. <br>
+   * Return Always an artist, eventually a "Unknown Artist" one 
    */
-  public String getAuthorOrALbumArtist() {
-    String out = Const.UNKNOWN_AUTHOR;
+  public String getArtistOrALbumArtist() {
+    String out = Const.UNKNOWN_ARTIST;
     if (cache.size() == 0) {
       return out;
     }
-    Author artist = getAuthor();
+    Artist artist = getArtist();
     if (artist != null && !artist.isUnknown()) {
       out = artist.getName();
     } else {
@@ -495,7 +495,7 @@ public class Album extends LogicalItem implements Comparable<Album> {
       if (!albumArtist.isUnknown()) {
         out = albumArtist.getName();
       } else {
-        out = first.getAuthor().getName();
+        out = first.getArtist().getName();
       }
     }
     return out;
@@ -512,7 +512,7 @@ public class Album extends LogicalItem implements Comparable<Album> {
     for (Track track : cache) {
       years.add(track.getYear());
     }
-    // If different Authors, the album Author is null
+    // If different Artists, the album Artist is null
     if (years.size() == 1) {
       return years.iterator().next();
     } else {
@@ -585,12 +585,12 @@ public class Album extends LogicalItem implements Comparable<Album> {
   /**
    * Returns true, if the pattern matches the specified property.
    * 
-   * Currently only Const.XML_ALBUM and Const.XML_STYLE are supported
+   * Currently only Const.XML_ALBUM and Const.XML_GENRE are supported
    * properties. The pattern is used for a case-insensitive sub-string match,
    * no regular expression is used!
    * 
    * @param property The property to use for the match, currently either Cosnt.XML_ALBUM
-   * or Const.XML_STYLE
+   * or Const.XML_GENRE
    * @param pattern The string to search for as case-insensitive sub-string
    * 
    * @return true if either parameter is null or if the pattern matches, false otherwise.
@@ -603,12 +603,12 @@ public class Album extends LogicalItem implements Comparable<Album> {
     String sValue = null;
     if (Const.XML_ALBUM.equals(property)) {
       sValue = getName2();
-    } else if (Const.XML_STYLE.equals(property)) {
-      Style style = getStyle();
-      if (style == null) {
+    } else if (Const.XML_GENRE.equals(property)) {
+      Genre genre = getGenre();
+      if (genre == null) {
         return false;
       }
-      sValue = style.getName2();
+      sValue = genre.getName2();
     }
     if (sValue == null) {
       return false;

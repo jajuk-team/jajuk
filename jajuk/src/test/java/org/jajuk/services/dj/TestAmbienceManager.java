@@ -25,8 +25,8 @@ import java.util.Enumeration;
 import java.util.Properties;
 
 import org.jajuk.JajukTestCase;
-import org.jajuk.base.Style;
-import org.jajuk.base.StyleManager;
+import org.jajuk.base.Genre;
+import org.jajuk.base.GenreManager;
 import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.util.Conf;
@@ -106,10 +106,10 @@ public class TestAmbienceManager extends JajukTestCase {
     }
 
     // then add set some Ambience-items
-    Style style1 = StyleManager.getInstance().registerStyle("style1");
-    Style style2 = StyleManager.getInstance().registerStyle("style2");
+    Genre genre1 = GenreManager.getInstance().registerGenre("genre1");
+    Genre genre2 = GenreManager.getInstance().registerGenre("genre2");
     Conf
-        .setProperty(Const.AMBIENCE_PREFIX + "12/myambience", style1.getID() + "," + style2.getID());
+        .setProperty(Const.AMBIENCE_PREFIX + "12/myambience", genre1.getID() + "," + genre2.getID());
     assertEquals(0, AmbienceManager.getInstance().getAmbiences().size());
 
     { // check all the conditions to find out why it fails in Hudson
@@ -139,7 +139,7 @@ public class TestAmbienceManager extends JajukTestCase {
       AmbienceManager.getInstance().removeAmbience(amb.getID());
     }
     assertEquals(0, AmbienceManager.getInstance().getAmbiences().size());
-    Conf.setProperty(Const.AMBIENCE_PREFIX + "12", style1.getID() + "," + style2.getID());
+    Conf.setProperty(Const.AMBIENCE_PREFIX + "12", genre1.getID() + "," + genre2.getID());
     Conf.removeProperty(Const.AMBIENCE_PREFIX + "12/myambience");
     AmbienceManager.getInstance().load();
     // now 14 as this could not be loaded and thus the default ones were
@@ -225,23 +225,23 @@ public class TestAmbienceManager extends JajukTestCase {
   public final void testUpdate() {
     Properties prop = new Properties();
 
-    Style style1 = StyleManager.getInstance().registerStyle("style1");
-    Style style2 = StyleManager.getInstance().registerStyle("style2");
+    Genre genre1 = GenreManager.getInstance().registerGenre("genre1");
+    Genre genre2 = GenreManager.getInstance().registerGenre("genre2");
 
-    Ambience ambience = new Ambience("23", "testamb", new String[] { "style1" });
+    Ambience ambience = new Ambience("23", "testamb", new String[] { "genre1" });
 
-    prop.put(Const.DETAIL_OLD, style1);
-    prop.put(Const.DETAIL_NEW, style2);
+    prop.put(Const.DETAIL_OLD, genre1);
+    prop.put(Const.DETAIL_NEW, genre2);
 
     AmbienceManager.getInstance().registerAmbience(ambience);
 
     AmbienceManager.getInstance().update(new JajukEvent(JajukEvents.STYLE_NAME_CHANGED, prop));
 
     assertEquals(1, AmbienceManager.getInstance().getAmbiences().size());
-    assertEquals(1, AmbienceManager.getInstance().getAmbiences().iterator().next().getStyles()
+    assertEquals(1, AmbienceManager.getInstance().getAmbiences().iterator().next().getGenres()
         .size());
-    assertEquals("style2", AmbienceManager.getInstance().getAmbiences().iterator().next()
-        .getStyles().iterator().next().getName());
+    assertEquals("genre2", AmbienceManager.getInstance().getAmbiences().iterator().next()
+        .getGenres().iterator().next().getName());
   }
 
   /**

@@ -153,12 +153,12 @@ public class TestPlaylist extends JajukTestCase {
   }
 
   private File getFile() {
-    Style style = new Style("5", "name");
+    Genre genre = new Genre("5", "name");
     Album album = new Album("4", "name", 23);
-    Author author = new Author("6", "name");
+    Artist artist = new Artist("6", "name");
     Year year = new Year("7", "2000");
     Type type = new Type("8", "name", "mp3", null, null);
-    Track track = new Track("3", "name", album, style, author, 120, year, 1, type, 1);
+    Track track = new Track("3", "name", album, genre, artist, 120, year, 1, type, 1);
     track.setRate(2);
     Device device = new Device("9", "name");
     device.setUrl(System.getProperty("java.io.tmpdir"));

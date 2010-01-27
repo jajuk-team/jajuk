@@ -28,7 +28,7 @@ import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 
 import org.jajuk.base.Album;
-import org.jajuk.base.Author;
+import org.jajuk.base.Artist;
 import org.jajuk.base.Device;
 import org.jajuk.base.Directory;
 import org.jajuk.base.DirectoryManager;
@@ -36,7 +36,7 @@ import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
 import org.jajuk.base.Item;
 import org.jajuk.base.Playlist;
-import org.jajuk.base.Style;
+import org.jajuk.base.Genre;
 import org.jajuk.base.Track;
 import org.jajuk.base.TrackManager;
 import org.jajuk.events.JajukEvent;
@@ -98,7 +98,7 @@ public class PasteAction extends JajukAction {
         }
         Item first = itemsToMove.get(0);
 
-        if (first instanceof Album || first instanceof Author || first instanceof Style) {
+        if (first instanceof Album || first instanceof Artist || first instanceof Genre) {
           List<Track> tracks = TrackManager.getInstance().getAssociatedTracks(itemsToMove, true);
           for (Track track : tracks) {
             alFiles.addAll(track.getFiles());

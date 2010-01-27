@@ -43,11 +43,11 @@ import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 import javax.swing.event.HyperlinkEvent.EventType;
 
-import org.jajuk.base.Author;
-import org.jajuk.base.AuthorManager;
+import org.jajuk.base.Artist;
+import org.jajuk.base.ArtistManager;
 import org.jajuk.base.File;
-import org.jajuk.base.Style;
-import org.jajuk.base.StyleManager;
+import org.jajuk.base.Genre;
+import org.jajuk.base.GenreManager;
 import org.jajuk.base.Track;
 import org.jajuk.base.TrackManager;
 import org.jajuk.base.Year;
@@ -131,14 +131,14 @@ public class ThumbnailPopup extends JWindow {
       public void hyperlinkUpdate(HyperlinkEvent e) {
         if (e.getEventType() == EventType.ACTIVATED) {
           URL url = e.getURL();
-          if (Const.XML_AUTHOR.equals(url.getHost())) {
-            Author author = (Author) AuthorManager.getInstance().getItemByID(url.getQuery());
-            List<Track> tracks = TrackManager.getInstance().getAssociatedTracks(author, false);
+          if (Const.XML_ARTIST.equals(url.getHost())) {
+            Artist artist = (Artist) ArtistManager.getInstance().getItemByID(url.getQuery());
+            List<Track> tracks = TrackManager.getInstance().getAssociatedTracks(artist, false);
             Collections.shuffle(tracks);
             launchLink(tracks);
-          } else if (Const.XML_STYLE.equals(url.getHost())) {
-            Style style = (Style) StyleManager.getInstance().getItemByID(url.getQuery());
-            List<Track> tracks = TrackManager.getInstance().getAssociatedTracks(style, false);
+          } else if (Const.XML_GENRE.equals(url.getHost())) {
+            Genre genre = (Genre) GenreManager.getInstance().getItemByID(url.getQuery());
+            List<Track> tracks = TrackManager.getInstance().getAssociatedTracks(genre, false);
             Collections.shuffle(tracks);
             launchLink(tracks);
           } else if (Const.XML_YEAR.equals(url.getHost())) {

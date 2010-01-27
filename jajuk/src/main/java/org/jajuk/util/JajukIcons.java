@@ -346,7 +346,7 @@ public enum JajukIcons {
   EMPTY,
 
   /** DOCUMENT_ME. */
-  AUTHOR,
+  ARTIST,
 
   /** DOCUMENT_ME. */
   ALBUM,

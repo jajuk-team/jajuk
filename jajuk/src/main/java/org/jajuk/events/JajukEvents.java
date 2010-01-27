@@ -117,7 +117,7 @@ public enum JajukEvents {
   /** file name change. */
   FILE_NAME_CHANGED,
 
-  /** Style name change. */
+  /** Genre name change. */
   STYLE_NAME_CHANGED,
 
   /** file rate change. */
@@ -152,9 +152,9 @@ public enum JajukEvents {
   /** An ambience has been removed. */
   AMBIENCE_REMOVED,
 
-  /** Current played track author name has been. */
+  /** Current played track artist name has been. */
   /** changed */
-  AUTHOR_CHANGED,
+  ARTIST_CHANGED,
 
   /** Current played track album name has been. */
   /** changed */

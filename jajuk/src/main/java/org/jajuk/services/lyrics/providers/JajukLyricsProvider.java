@@ -114,7 +114,7 @@ public class JajukLyricsProvider {
    */
   public void setFile(File audioFile) {
     this.audioFile = audioFile;
-    sArtist = this.audioFile.getTrack().getAuthor().getName2();
+    sArtist = this.audioFile.getTrack().getArtist().getName2();
     sTitle = this.audioFile.getTrack().getName();
   }
 

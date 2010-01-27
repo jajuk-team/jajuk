@@ -24,20 +24,20 @@ package org.jajuk.services.dj;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.jajuk.base.Style;
-import org.jajuk.base.StyleManager;
+import org.jajuk.base.Genre;
+import org.jajuk.base.GenreManager;
 import org.jajuk.util.log.Log;
 
 /**
- * An ambience is a set of styles <br>
+ * An ambience is a set of genres <br>
  * Note that an ambience is identified by an id and not its name Several
  * ambiences can eventually share the same name. This is because ambience is
  * translated and can change with current locale
  */
 public class Ambience implements Comparable<Ambience> {
 
-  /** List of styles. */
-  private Set<Style> styles;
+  /** List of genres. */
+  private Set<Genre> genres;
 
   /** Ambience name. */
   private String sName;
@@ -50,12 +50,12 @@ public class Ambience implements Comparable<Ambience> {
    * 
    * @param sID Ambience unique id
    * @param sName Ambience name
-   * @param styles list of styles
+   * @param genres list of genres
    */
-  public Ambience(String sID, String sName, Set<Style> styles) {
+  public Ambience(String sID, String sName, Set<Genre> genres) {
     this.sID = sID;
     this.sName = sName;
-    this.styles = styles;
+    this.genres = genres;
   }
 
   /**
@@ -63,21 +63,21 @@ public class Ambience implements Comparable<Ambience> {
    * 
    * @param sID Ambience unique id
    * @param sName Ambience name
-   * @param styles list by name
+   * @param genres list by name
    */
-  public Ambience(String sID, String sName, String[] styles) {
-    Set<Style> hstyles = new HashSet<Style>(styles.length);
-    for (String element : styles) {
-      Style style = StyleManager.getInstance().getStyleByName(element);
-      if (style != null) {
-        hstyles.add(style);
+  public Ambience(String sID, String sName, String[] genres) {
+    Set<Genre> hgenres = new HashSet<Genre>(genres.length);
+    for (String element : genres) {
+      Genre genre = GenreManager.getInstance().getGenreByName(element);
+      if (genre != null) {
+        hgenres.add(genre);
       } else {
-        Log.debug("Unknown style");
+        Log.debug("Unknown genre");
       }
     }
     this.sID = sID;
     this.sName = sName;
-    this.styles = hstyles;
+    this.genres = hgenres;
   }
 
   /**
@@ -87,7 +87,7 @@ public class Ambience implements Comparable<Ambience> {
    * @param sID DOCUMENT_ME
    */
   public Ambience(String sID, String sName) {
-    this(sID, sName, new HashSet<Style>(10));
+    this(sID, sName, new HashSet<Genre>(10));
   }
 
   /**
@@ -96,29 +96,29 @@ public class Ambience implements Comparable<Ambience> {
   public Ambience() {
     this.sID = "" + System.currentTimeMillis();
     this.sName = "";
-    this.styles = new HashSet<Style>(10);
+    this.genres = new HashSet<Genre>(10);
   }
 
   /**
-   * Adds the style.
+   * Adds the genre.
    * DOCUMENT_ME
    * 
-   * @param style DOCUMENT_ME
+   * @param genre DOCUMENT_ME
    */
-  public void addStyle(Style style) {
-    if (style != null) {
-      styles.add(style);
+  public void addGenre(Genre genre) {
+    if (genre != null) {
+      genres.add(genre);
     }
   }
 
   /**
-   * Removes the style.
+   * Removes the genre.
    * DOCUMENT_ME
    * 
-   * @param style DOCUMENT_ME
+   * @param genre DOCUMENT_ME
    */
-  public void removeStyle(Style style) {
-    styles.remove(style);
+  public void removeGenre(Genre genre) {
+    genres.remove(genre);
   }
 
   /**
@@ -149,36 +149,36 @@ public class Ambience implements Comparable<Ambience> {
   }
 
   /**
-   * Gets the styles.
+   * Gets the genres.
    * 
-   * @return the styles
+   * @return the genres
    */
-  public Set<Style> getStyles() {
-    return this.styles;
+  public Set<Genre> getGenres() {
+    return this.genres;
   }
 
   /**
-   * Sets the styles.
+   * Sets the genres.
    * 
-   * @param styles the new styles
+   * @param genres the new genres
    */
-  public void setStyles(Set<Style> styles) {
-    this.styles = styles;
+  public void setGenres(Set<Genre> genres) {
+    this.genres = genres;
   }
 
   /**
-   * From String, return style1,style2,...
+   * From String, return genre1,genre2,...
    * 
-   * @return the styles desc
+   * @return the genres desc
    */
-  public String getStylesDesc() {
-    // check if we have styles at all
-    if(getStyles().size() == 0) {
+  public String getGenresDesc() {
+    // check if we have genres at all
+    if(getGenres().size() == 0) {
       return "";
     }
     
     StringBuilder out = new StringBuilder();
-    for (Style s : getStyles()) {
+    for (Genre s : getGenres()) {
       out.append(s.getName2()).append(',');
     }
 
@@ -192,7 +192,7 @@ public class Ambience implements Comparable<Ambience> {
    */
   @Override
   public String toString() {
-    return sName + " " + styles;
+    return sName + " " + genres;
   }
 
   /**
@@ -200,7 +200,7 @@ public class Ambience implements Comparable<Ambience> {
    * 
    * @param o DOCUMENT_ME
    * 
-   * @return true if ambience have the same same and contains the same styles
+   * @return true if ambience have the same same and contains the same genres
    */
   @Override
   public boolean equals(Object o) {
@@ -210,7 +210,7 @@ public class Ambience implements Comparable<Ambience> {
     }
     Ambience ambienceOther = (Ambience) o;
     return this.sName.equals(ambienceOther.getName())
-        && this.styles.equals(ambienceOther.getStyles());
+        && this.genres.equals(ambienceOther.getGenres());
   }
 
   /* (non-Javadoc)
@@ -245,19 +245,19 @@ public class Ambience implements Comparable<Ambience> {
   }
 
   /**
-   * return "style1,style2,..,style_n"
+   * return "genre1,genre2,..,genre_n"
    * 
    * @return String used in DJ XML representation
    */
   public String toXML() {
-    // check if we have styles at all 
-    if(getStyles().size() == 0) {
+    // check if we have genres at all 
+    if(getGenres().size() == 0) {
       return "";
     }
     
     StringBuilder s = new StringBuilder();
-    for (Style style : getStyles()) {
-      s.append(style.getID()).append(',');
+    for (Genre genre : getGenres()) {
+      s.append(genre.getID()).append(',');
     }
     
     return s.substring(0, s.length() - 1); // remove last coma

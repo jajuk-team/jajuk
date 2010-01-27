@@ -33,10 +33,10 @@ import java.util.StringTokenizer;
 import org.apache.commons.lang.StringUtils;
 import org.jajuk.base.AlbumArtistManager;
 import org.jajuk.base.AlbumManager;
-import org.jajuk.base.AuthorManager;
+import org.jajuk.base.ArtistManager;
 import org.jajuk.base.File;
 import org.jajuk.base.PropertyMetaInformation;
-import org.jajuk.base.StyleManager;
+import org.jajuk.base.GenreManager;
 import org.jajuk.base.Track;
 import org.jajuk.util.error.JajukException;
 
@@ -220,7 +220,7 @@ public final class UtilString {
   }
 
   /**
-   * Apply the Style pattern.
+   * Apply the Genre pattern.
    * 
    * @param file file to apply pattern to
    * @param sPattern DOCUMENT_ME
@@ -233,23 +233,23 @@ public final class UtilString {
    * 
    * @throws JajukException the jajuk exception
    */
-  private static String applyStylePattern(final org.jajuk.base.File file, final String sPattern,
+  private static String applyGenrePattern(final org.jajuk.base.File file, final String sPattern,
       final boolean bMandatory, final boolean normalize, final String out, final Track track)
       throws JajukException {
     String ret = out;
     String sValue;
-    if (sPattern.contains(Const.PATTERN_STYLE)) {
-      sValue = track.getStyle().getName();
+    if (sPattern.contains(Const.PATTERN_GENRE)) {
+      sValue = track.getGenre().getName();
       if (normalize) {
         sValue = UtilSystem.getNormalizedFilename(sValue);
       }
-      if (!sValue.equals(Const.UNKNOWN_STYLE)) {
-        ret = ret.replace(Const.PATTERN_STYLE, StyleManager.format(sValue));
+      if (!sValue.equals(Const.UNKNOWN_GENRE)) {
+        ret = ret.replace(Const.PATTERN_GENRE, GenreManager.format(sValue));
       } else {
         if (bMandatory) {
           throw new JajukException(153, file.getAbsolutePath());
         } else {
-          ret = ret.replace(Const.PATTERN_STYLE, Messages.getString(Const.UNKNOWN_STYLE));
+          ret = ret.replace(Const.PATTERN_GENRE, Messages.getString(Const.UNKNOWN_GENRE));
         }
       }
     }
@@ -257,7 +257,7 @@ public final class UtilString {
   }
 
   /**
-   * Apply the Author pattern.
+   * Apply the Artist pattern.
    * 
    * @param file file to apply pattern to
    * @param sPattern DOCUMENT_ME
@@ -270,25 +270,25 @@ public final class UtilString {
    * 
    * @throws JajukException the jajuk exception
    */
-  private static String applyAuthorPattern(final org.jajuk.base.File file, final String sPattern,
+  private static String applyArtistPattern(final org.jajuk.base.File file, final String sPattern,
       final boolean bMandatory, final boolean normalize, final String out, final Track track)
       throws JajukException {
     String ret = out;
     String sValue;
-    if (sPattern.contains(Const.PATTERN_AUTHOR)) {
+    if (sPattern.contains(Const.PATTERN_ARTIST)) {
 
-      sValue = track.getAuthor().getName();
+      sValue = track.getArtist().getName();
 
       if (normalize) {
         sValue = UtilSystem.getNormalizedFilename(sValue);
       }
-      if (!sValue.equals(Const.UNKNOWN_AUTHOR)) {
-        ret = ret.replaceAll(Const.PATTERN_AUTHOR, AuthorManager.format(sValue));
+      if (!sValue.equals(Const.UNKNOWN_ARTIST)) {
+        ret = ret.replaceAll(Const.PATTERN_ARTIST, ArtistManager.format(sValue));
       } else {
         if (bMandatory) {
           throw new JajukException(150, file.getAbsolutePath());
         } else {
-          ret = ret.replaceAll(Const.PATTERN_AUTHOR, Messages.getString(Const.UNKNOWN_AUTHOR));
+          ret = ret.replaceAll(Const.PATTERN_ARTIST, Messages.getString(Const.UNKNOWN_ARTIST));
         }
       }
     }
@@ -315,15 +315,15 @@ public final class UtilString {
     String out = sPattern;
     final Track track = file.getTrack();
 
-    // Check Author name
-    out = UtilString.applyAuthorPattern(file, sPattern, bMandatory, normalize, out, track);
+    // Check Artist name
+    out = UtilString.applyArtistPattern(file, sPattern, bMandatory, normalize, out, track);
 
     // Check Album artist
-    // Check Author name
+    // Check Artist name
     out = UtilString.applyAlbumArtistPattern(sPattern, normalize, out, track);
 
-    // Check Style name
-    out = UtilString.applyStylePattern(file, sPattern, bMandatory, normalize, out, track);
+    // Check Genre name
+    out = UtilString.applyGenrePattern(file, sPattern, bMandatory, normalize, out, track);
 
     // Check Album Name
     out = UtilString.applyAlbumPattern(file, sPattern, bMandatory, normalize, out, track);
@@ -539,23 +539,23 @@ public final class UtilString {
   }
 
   /**
-   * format style: first letter uppercase and others lowercase.
+   * format genre: first letter uppercase and others lowercase.
    * 
-   * @param style DOCUMENT_ME
+   * @param genre DOCUMENT_ME
    * 
    * @return the string
    */
-  public static String formatStyle(final String style) {
-    if (style.length() == 0) {
+  public static String formatGenre(final String genre) {
+    if (genre.length() == 0) {
       return "";
     }
-    if (style.length() == 1) {
-      return style.substring(0, 1).toUpperCase(Locale.getDefault());
+    if (genre.length() == 1) {
+      return genre.substring(0, 1).toUpperCase(Locale.getDefault());
     }
 
     // construct string with first letter uppercase and rest lowercase
-    return style.substring(0, 1).toUpperCase(Locale.getDefault())
-        + style.toLowerCase(Locale.getDefault()).substring(1);
+    return genre.substring(0, 1).toUpperCase(Locale.getDefault())
+        + genre.toLowerCase(Locale.getDefault()).substring(1);
   }
 
   /**

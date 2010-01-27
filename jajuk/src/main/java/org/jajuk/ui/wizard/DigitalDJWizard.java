@@ -48,8 +48,8 @@ import javax.swing.event.ChangeListener;
 
 import net.miginfocom.swing.MigLayout;
 
-import org.jajuk.base.Style;
-import org.jajuk.base.StyleManager;
+import org.jajuk.base.Genre;
+import org.jajuk.base.GenreManager;
 import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
@@ -771,8 +771,8 @@ public class DigitalDJWizard extends Wizard {
       List<Transition> out = new ArrayList<Transition>(alTransitions.size());
       for (Transition transition : alTransitions) {
         if (transition.getFrom() != null && transition.getTo() != null
-            && transition.getFrom().getStyles().size() > 0
-            && transition.getTo().getStyles().size() > 0) {
+            && transition.getFrom().getGenres().size() > 0
+            && transition.getTo().getGenres().size() > 0) {
           out.add(transition);
         }
       }
@@ -831,31 +831,31 @@ public class DigitalDJWizard extends Wizard {
         }
         jbDelete.setToolTipText(Messages.getString("DigitalDJWizard.21"));
         widgets[index][0] = jbDelete;
-        // From style list
+        // From genre list
         JButton jbFrom = new JButton(IconLoader.getIcon(JajukIcons.LIST));
         Transition transition = alTransitions.get(index);
-        if (transition.getFrom().getStyles().size() > 0) {
+        if (transition.getFrom().getGenres().size() > 0) {
           jbFrom.setText(transition.getFromString());
           jbFrom.setToolTipText(transition.getFromString());
         }
         jbFrom.addActionListener(new ActionListener() {
           public void actionPerformed(ActionEvent ae) {
             int row = getWidgetIndex(widgets, (JComponent) ae.getSource());
-            addStyle(row, true);
+            addGenre(row, true);
           }
         });
         jbFrom.setToolTipText(Messages.getString("DigitalDJWizard.22"));
         widgets[index][1] = jbFrom;
-        // To style list
+        // To genre list
         JButton jbTo = new JButton(IconLoader.getIcon(JajukIcons.LIST));
-        if (transition.getTo().getStyles().size() > 0) {
+        if (transition.getTo().getGenres().size() > 0) {
           jbTo.setText(transition.getToString());
           jbTo.setToolTipText(transition.getToString());
         }
         jbTo.addActionListener(new ActionListener() {
           public void actionPerformed(ActionEvent ae) {
             int row = getWidgetIndex(widgets, (JComponent) ae.getSource());
-            addStyle(row, false);
+            addGenre(row, false);
           }
         });
         jbTo.setToolTipText(Messages.getString("DigitalDJWizard.23"));
@@ -898,38 +898,38 @@ public class DigitalDJWizard extends Wizard {
     }
 
     /**
-     * Add a style to a transition.
+     * Add a genre to a transition.
      * 
      * @param row row
      * @param bFrom is it a from button ?
      */
-    private void addStyle(int row, boolean bFrom) {
-      synchronized (StyleManager.getInstance()) {
+    private void addGenre(int row, boolean bFrom) {
+      synchronized (GenreManager.getInstance()) {
         Transition transition = alTransitions.get(row);
-        // create list of styles used in existing transitions
-        Set<Style> disabledStyles = new HashSet<Style>();
+        // create list of genres used in existing transitions
+        Set<Genre> disabledGenres = new HashSet<Genre>();
         for (int i = 0; i < alTransitions.size(); i++) {
           Transition t = alTransitions.get(i);
-          // ignore all styles expect those from current button
+          // ignore all genres expect those from current button
           if (bFrom && i != row) {
-            disabledStyles.addAll(t.getFrom().getStyles());
+            disabledGenres.addAll(t.getFrom().getGenres());
           }
         }
-        StylesSelectionDialog dialog = new StylesSelectionDialog(disabledStyles);
+        GenresSelectionDialog dialog = new GenresSelectionDialog(disabledGenres);
         if (bFrom) {
-          dialog.setSelection(transition.getFrom().getStyles());
+          dialog.setSelection(transition.getFrom().getGenres());
         } else {
-          dialog.setSelection(transition.getTo().getStyles());
+          dialog.setSelection(transition.getTo().getGenres());
         }
         dialog.setVisible(true);
-        Set<Style> styles = dialog.getSelectedStyles();
-        // check if at least one style has been selected
-        if (styles.size() == 0) {
+        Set<Genre> genres = dialog.getSelectedGenres();
+        // check if at least one genre has been selected
+        if (genres.size() == 0) {
           return;
         }
         String sText = "";
-        for (Style style : styles) {
-          sText += style.getName2() + ',';
+        for (Genre genre : genres) {
+          sText += genre.getName2() + ',';
         }
         sText = sText.substring(0, sText.length() - 1);
         int nb = Integer.parseInt(((JSpinner) widgets[row][3]).getValue().toString());
@@ -939,15 +939,15 @@ public class DigitalDJWizard extends Wizard {
         } else {
           ((JButton) widgets[row][2]).setText(sText);
         }
-        // set selected style in transition object
+        // set selected genre in transition object
         if (bFrom) {
-          transition.setFrom(new Ambience(Long.toString(System.currentTimeMillis()), "", styles));
+          transition.setFrom(new Ambience(Long.toString(System.currentTimeMillis()), "", genres));
         } else {
-          transition.setTo(new Ambience(Long.toString(System.currentTimeMillis()), "", styles));
+          transition.setTo(new Ambience(Long.toString(System.currentTimeMillis()), "", genres));
         }
         // check if the transaction is fully selected now
-        if (transition.getFrom().getStyles().size() > 0
-            && transition.getTo().getStyles().size() > 0) {
+        if (transition.getFrom().getGenres().size() > 0
+            && transition.getTo().getGenres().size() > 0) {
           // Make sure current delete button is now enabled
           ((JButton) widgets[row][0]).setEnabled(true);
 
@@ -1062,7 +1062,7 @@ public class DigitalDJWizard extends Wizard {
     private List<Proportion> getCleanedProportions() {
       List<Proportion> out = new ArrayList<Proportion>(proportions.size());
       for (Proportion proportion : proportions) {
-        if (proportion.getStyles() != null && proportion.getStyles().size() > 0) {
+        if (proportion.getGenres() != null && proportion.getGenres().size() > 0) {
           out.add(proportion);
         }
       }
@@ -1077,7 +1077,7 @@ public class DigitalDJWizard extends Wizard {
     private JScrollPane getProportionsPanel() {
       widgets = new JComponent[proportions.size()][3];
       JPanel out = new JPanel();
-      // Delete|Style list|proportion in %
+      // Delete|Genre list|proportion in %
       // now add all known proportions
       for (int index = 0; index < proportions.size(); index++) {
         // Delete button
@@ -1096,21 +1096,21 @@ public class DigitalDJWizard extends Wizard {
         }
         jbDelete.setToolTipText(Messages.getString("DigitalDJWizard.21"));
         widgets[index][0] = jbDelete;
-        // style list
-        JButton jbStyle = new JButton(IconLoader.getIcon(JajukIcons.LIST));
+        // genre list
+        JButton jbGenre = new JButton(IconLoader.getIcon(JajukIcons.LIST));
         Proportion proportion = proportions.get(index);
-        if (proportion.getStyles() != null) {
-          jbStyle.setText(proportion.getStylesDesc());
-          jbStyle.setToolTipText(proportion.getStylesDesc());
+        if (proportion.getGenres() != null) {
+          jbGenre.setText(proportion.getGenresDesc());
+          jbGenre.setToolTipText(proportion.getGenresDesc());
         }
-        jbStyle.addActionListener(new ActionListener() {
+        jbGenre.addActionListener(new ActionListener() {
           public void actionPerformed(ActionEvent ae) {
             int row = getWidgetIndex(widgets, (JComponent) ae.getSource());
-            addStyle(row);
+            addGenre(row);
           }
         });
-        jbStyle.setToolTipText(Messages.getString("DigitalDJWizard.27"));
-        widgets[index][1] = jbStyle;
+        jbGenre.setToolTipText(Messages.getString("DigitalDJWizard.27"));
+        widgets[index][1] = jbGenre;
         // Proportion
         JSpinner jsNb = new JSpinner(new SpinnerNumberModel(
             (int) (proportion.getProportion() * 100), 1, 100, 1));
@@ -1175,47 +1175,47 @@ public class DigitalDJWizard extends Wizard {
     }
 
     /**
-     * Add a style to a proportion.
+     * Add a genre to a proportion.
      * 
      * @param row row
      */
-    private void addStyle(int row) {
-      synchronized (StyleManager.getInstance()) {
+    private void addGenre(int row) {
+      synchronized (GenreManager.getInstance()) {
         Proportion proportion = proportions.get(row);
-        // create list of styles used in existing transitions
-        Set<Style> disabledStyles = new HashSet<Style>();
+        // create list of genres used in existing transitions
+        Set<Genre> disabledGenres = new HashSet<Genre>();
         for (int i = 0; i < proportions.size(); i++) {
           if (i != row) { // do not exclude current proportion that
             // will be selected
-            disabledStyles.addAll(proportions.get(i).getStyles());
+            disabledGenres.addAll(proportions.get(i).getGenres());
           }
         }
-        StylesSelectionDialog dialog = new StylesSelectionDialog(disabledStyles);
-        dialog.setSelection(proportion.getStyles());
+        GenresSelectionDialog dialog = new GenresSelectionDialog(disabledGenres);
+        dialog.setSelection(proportion.getGenres());
         dialog.setVisible(true);
-        Set<Style> styles = dialog.getSelectedStyles();
-        // check if at least one style has been selected
-        if (styles.size() == 0) {
+        Set<Genre> genres = dialog.getSelectedGenres();
+        // check if at least one genre has been selected
+        if (genres.size() == 0) {
           return;
         }
-        // reset styles
-        proportion.setStyle(new Ambience());
+        // reset genres
+        proportion.setGenre(new Ambience());
         String sText = "";
-        for (Style style : styles) {
+        for (Genre genre : genres) {
           // handle null
-          if (style == null) {
-            Log.warn("Could not add style, got an empty style from the Wizard Dialog!");
+          if (genre == null) {
+            Log.warn("Could not add genre, got an empty genre from the Wizard Dialog!");
             continue;
           }
 
-          proportion.addStyle(style);
-          sText += style.getName2() + ',';
+          proportion.addGenre(genre);
+          sText += genre.getName2() + ',';
         }
         sText = sText.substring(0, sText.length() - 1);
         // Set button text
         ((JButton) widgets[row][1]).setText(sText);
         // check if the proportion is fully selected now
-        if (proportion.getStyles().size() > 0) {
+        if (proportion.getGenres().size() > 0) {
           // Make sure current delete button is now enabled
           ((JButton) widgets[row][0]).setEnabled(true);
 

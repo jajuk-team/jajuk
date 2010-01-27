@@ -41,7 +41,7 @@ import javax.swing.event.CaretListener;
 
 import net.miginfocom.swing.MigLayout;
 
-import org.jajuk.base.Style;
+import org.jajuk.base.Genre;
 import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
@@ -139,34 +139,34 @@ public class AmbienceWizard extends Wizard {
     }
 
     /**
-     * Add a style to a proportion.
+     * Add a genre to a proportion.
      * 
      * @param row row
      */
-    private void addStyle(final int row) {
+    private void addGenre(final int row) {
       final Ambience ambience = AmbienceWizard.ambiences.get(row);
-      // create list of styles used in current selection
-      final StylesSelectionDialog dialog = new StylesSelectionDialog(null);
-      dialog.setSelection(ambience.getStyles());
+      // create list of genres used in current selection
+      final GenresSelectionDialog dialog = new GenresSelectionDialog(null);
+      dialog.setSelection(ambience.getGenres());
       dialog.setVisible(true);
-      final Set<Style> styles = dialog.getSelectedStyles();
-      // check if at least one style has been selected
-      if (styles.size() == 0) {
+      final Set<Genre> genres = dialog.getSelectedGenres();
+      // check if at least one genre has been selected
+      if (genres.size() == 0) {
         return;
       }
       StringBuilder sText = new StringBuilder();
-      // reset old styles
-      ambience.setStyles(new HashSet<Style>(10));
-      for (final Style style : styles) {
-        ambience.addStyle(style);
-        sText.append(style.getName2()).append(',');
+      // reset old genres
+      ambience.setGenres(new HashSet<Genre>(10));
+      for (final Genre genre : genres) {
+        ambience.addGenre(genre);
+        sText.append(genre.getName2()).append(',');
       }
       sText.deleteCharAt(sText.length() - 1);
       // Set button text
       ((JButton) widgets[row][2]).setText(sText.toString());
-      // if we have ambience name and some styles, register the
+      // if we have ambience name and some genres, register the
       // ambience
-      if ((ambience.getName().length() > 0) && (ambience.getStyles().size() > 0)) {
+      if ((ambience.getName().length() > 0) && (ambience.getGenres().size() > 0)) {
         // no more error message if at least one ambience
         setProblem(null);
         jbNew.setEnabled(true);
@@ -197,7 +197,7 @@ public class AmbienceWizard extends Wizard {
     private JScrollPane getPanel() {
       widgets = new JComponent[AmbienceWizard.ambiences.size()][3];
       final JPanel out = new JPanel();
-      // Delete|Style name|styles list
+      // Delete|Genre name|genres list
       final ButtonGroup group = new ButtonGroup();
       // now add all ambiences
       for (int index = 0; index < AmbienceWizard.ambiences.size(); index++) {
@@ -248,26 +248,26 @@ public class AmbienceWizard extends Wizard {
           jrbAmbience.setSelected(true);
         }
         final Ambience ambience = AmbienceWizard.ambiences.get(index);
-        // style list
-        final JButton jbStyle = new JButton(IconLoader.getIcon(JajukIcons.STYLE));
+        // genre list
+        final JButton jbGenre = new JButton(IconLoader.getIcon(JajukIcons.STYLE));
         if (ambience.getName().length() == 0) {
-          jbStyle.setEnabled(false);
+          jbGenre.setEnabled(false);
         }
-        if ((ambience.getStyles() != null) && (ambience.getStyles().size() > 0)) {
-          jbStyle.setText(ambience.getStylesDesc());
-          jbStyle.setToolTipText(ambience.getStylesDesc());
+        if ((ambience.getGenres() != null) && (ambience.getGenres().size() > 0)) {
+          jbGenre.setText(ambience.getGenresDesc());
+          jbGenre.setToolTipText(ambience.getGenresDesc());
         }
-        jbStyle.addActionListener(new ActionListener() {
+        jbGenre.addActionListener(new ActionListener() {
           public void actionPerformed(final ActionEvent ae) {
             final int row = AmbienceWizard.getWidgetIndex(widgets, (JComponent) ae.getSource());
-            addStyle(row);
+            addGenre(row);
             // refresh ambience (force an action event)
             final JRadioButton jrb = (JRadioButton) widgets[row][0];
             jrb.doClick();
           }
         });
-        jbStyle.setToolTipText(Messages.getString("DigitalDJWizard.27"));
-        widgets[index][2] = jbStyle;
+        jbGenre.setToolTipText(Messages.getString("DigitalDJWizard.27"));
+        widgets[index][2] = jbGenre;
       }
       // Create layout
       out.setLayout(new MigLayout("insets 5,gapx 5", "[][][grow]"));

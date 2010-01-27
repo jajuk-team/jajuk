@@ -65,7 +65,7 @@ import org.jajuk.services.players.QueueModel;
 import org.jajuk.ui.perspectives.PerspectiveManager;
 import org.jajuk.ui.thumbnails.AbstractThumbnail;
 import org.jajuk.ui.thumbnails.LastFmAlbumThumbnail;
-import org.jajuk.ui.thumbnails.LastFmAuthorThumbnail;
+import org.jajuk.ui.thumbnails.LastFmArtistThumbnail;
 import org.jajuk.ui.thumbnails.LocalAlbumThumbnail;
 import org.jajuk.ui.thumbnails.ThumbnailManager;
 import org.jajuk.util.Conf;
@@ -89,7 +89,7 @@ public class SuggestionView extends ViewAdapter {
   private JTabbedPane tabs;
 
   /** DOCUMENT_ME. */
-  protected String author;
+  protected String artist;
 
   /**
    * DOCUMENT_ME.
@@ -105,7 +105,7 @@ public class SuggestionView extends ViewAdapter {
  /** DOCUMENT_ME. */
  OTHERS_ALBUMS, 
  /** DOCUMENT_ME. */
- SIMILAR_AUTHORS
+ SIMILAR_ARTISTS
   }
 
   /** DOCUMENT_ME. */
@@ -121,7 +121,7 @@ public class SuggestionView extends ViewAdapter {
   JScrollPane jpOthersAlbums;
 
   /** DOCUMENT_ME. */
-  JScrollPane jpSimilarAuthors;
+  JScrollPane jpSimilarArtists;
 
   /** DOCUMENT_ME. */
   private int comp = 0;
@@ -335,10 +335,10 @@ public class SuggestionView extends ViewAdapter {
    * DOCUMENT_ME
    */
   private void refreshLastFMCollectionTabs() {
-    String newAuthor = null;
+    String newArtist = null;
     File current = QueueModel.getPlayingFile();
     if (current != null) {
-      newAuthor = current.getTrack().getAuthor().getName2();
+      newArtist = current.getTrack().getArtist().getName2();
     }
     // if none track playing
     if (current == null
@@ -346,8 +346,8 @@ public class SuggestionView extends ViewAdapter {
         || !Conf.getBoolean(Const.CONF_LASTFM_INFO)
         // None internet access option is set
         || Conf.getBoolean(Const.CONF_NETWORK_NONE_INTERNET_ACCESS)
-        // If unknown author
-        || (newAuthor == null || newAuthor.equals(Messages.getString(UNKNOWN_AUTHOR)))) {
+        // If unknown artist
+        || (newArtist == null || newArtist.equals(Messages.getString(UNKNOWN_ARTIST)))) {
       // Set empty panels
       SwingUtilities.invokeLater(new Runnable() {
         public void run() {
@@ -358,12 +358,12 @@ public class SuggestionView extends ViewAdapter {
       });
       return;
     }
-    // Check if author changed, otherwise, just leave
-    if (newAuthor.equals(this.author)) {
+    // Check if artist changed, otherwise, just leave
+    if (newArtist.equals(this.artist)) {
       return;
     }
-    // Save current author
-    author = newAuthor;
+    // Save current artist
+    artist = newArtist;
     // Display a busy panel in the mean-time
     SwingUtilities.invokeLater(new Runnable() {
       public void run() {
@@ -398,7 +398,7 @@ public class SuggestionView extends ViewAdapter {
       @Override
       public void done() {
         jsp1 = getLastFMSuggestionsPanel(SuggestionType.OTHERS_ALBUMS, false);
-        jsp2 = getLastFMSuggestionsPanel(SuggestionType.SIMILAR_AUTHORS, false);
+        jsp2 = getLastFMSuggestionsPanel(SuggestionType.SIMILAR_ARTISTS, false);
         stopAllBusyLabels();
         tabs.setComponentAt(3, (jsp1 == null) ? new JPanel() : jsp1);
         tabs.setComponentAt(4, (jsp2 == null) ? new JPanel() : jsp2);
@@ -414,7 +414,7 @@ public class SuggestionView extends ViewAdapter {
    * @throws Exception the exception
    */
   void preFetchOthersAlbum() throws Exception {
-    albums = LastFmService.getInstance().getAlbumList(author, true, 0);
+    albums = LastFmService.getInstance().getAlbumList(artist, true, 0);
     // Perform images downloads and caching
     if (albums != null && albums.getAlbums().size() > 0) {
       for (AlbumInfo album : albums.getAlbums()) {
@@ -438,16 +438,16 @@ public class SuggestionView extends ViewAdapter {
    */
   void preFetchSimilarArtists() throws Exception {
     // Perform last.fm calls
-    similar = LastFmService.getInstance().getSimilarArtists(author);
+    similar = LastFmService.getInstance().getSimilarArtists(artist);
     if (similar != null) {
-      List<ArtistInfo> authors = similar.getArtists();
-      for (ArtistInfo similarAuthor : authors) {
-        String authorUrl = similarAuthor.getImageUrl();
-        if (StringUtils.isBlank(authorUrl)) {
+      List<ArtistInfo> artists = similar.getArtists();
+      for (ArtistInfo similarArtist : artists) {
+        String artistUrl = similarArtist.getImageUrl();
+        if (StringUtils.isBlank(artistUrl)) {
           continue;
         }
         // Download thumb
-        URL remote = new URL(authorUrl);
+        URL remote = new URL(artistUrl);
         // Download the picture and store file reference (to
         // generate the popup thumb for ie)
         DownloadManager.downloadToCache(remote);
@@ -522,11 +522,11 @@ public class SuggestionView extends ViewAdapter {
       else {
         return new JScrollPane(getNothingFoundPanel());
       }
-    } else if (type == SuggestionType.SIMILAR_AUTHORS) {
+    } else if (type == SuggestionType.SIMILAR_ARTISTS) {
       if (similar != null) {
-        List<ArtistInfo> authors = similar.getArtists();
-        for (ArtistInfo similarAuthor : authors) {
-          AbstractThumbnail thumb = new LastFmAuthorThumbnail(similarAuthor);
+        List<ArtistInfo> artists = similar.getArtists();
+        for (ArtistInfo similarArtist : artists) {
+          AbstractThumbnail thumb = new LastFmArtistThumbnail(similarArtist);
           thumb.setArtistView(artistView);
           thumb.populate();
           if (thumb.getIcon() != null) {
@@ -577,7 +577,7 @@ public class SuggestionView extends ViewAdapter {
    * @return whether LastFM tabs are visible or not
    */
   private boolean isLastFMTabsVisible() {
-    // Refresh authors only if user selected similar authors or albums tab
+    // Refresh artists only if user selected similar artists or albums tab
     return (tabs.getSelectedIndex() == 3 || tabs.getSelectedIndex() == 4)
     // Check this view perspective is visible
         && PerspectiveManager.getCurrentPerspective().equals(this.getPerspective());

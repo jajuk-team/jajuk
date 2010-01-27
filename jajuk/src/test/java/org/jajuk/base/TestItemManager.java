@@ -237,8 +237,8 @@ public class TestItemManager extends JajukTestCase {
     assertNotNull(ItemManager.getItemManager(Const.XML_DEVICE));
     assertNotNull(ItemManager.getItemManager(Const.XML_TRACK));
     assertNotNull(ItemManager.getItemManager(Const.XML_ALBUM));
-    assertNotNull(ItemManager.getItemManager(Const.XML_AUTHOR));
-    assertNotNull(ItemManager.getItemManager(Const.XML_STYLE));
+    assertNotNull(ItemManager.getItemManager(Const.XML_ARTIST));
+    assertNotNull(ItemManager.getItemManager(Const.XML_GENRE));
     assertNotNull(ItemManager.getItemManager(Const.XML_DIRECTORY));
     assertNotNull(ItemManager.getItemManager(Const.XML_FILE));
     assertNotNull(ItemManager.getItemManager(Const.XML_PLAYLIST_FILE));
@@ -255,7 +255,7 @@ public class TestItemManager extends JajukTestCase {
     StartupCollectionService.registerItemManagers();
 
     assertNotNull(ItemManager.getItemManager(org.jajuk.base.Album.class));
-    assertNotNull(ItemManager.getItemManager(org.jajuk.base.Author.class));
+    assertNotNull(ItemManager.getItemManager(org.jajuk.base.Artist.class));
     assertNotNull(ItemManager.getItemManager(org.jajuk.base.File.class));
 
     // take care, String.class is used for LocalIM which might be registered...

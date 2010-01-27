@@ -72,7 +72,7 @@ import net.miginfocom.swing.MigLayout;
 
 import org.apache.commons.lang.StringUtils;
 import org.jajuk.base.Album;
-import org.jajuk.base.Author;
+import org.jajuk.base.Artist;
 import org.jajuk.base.Directory;
 import org.jajuk.base.Track;
 import org.jajuk.events.JajukEvent;
@@ -299,7 +299,7 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
     jcbAccuracy.addItem(IconLoader.getIcon(JajukIcons.ACCURACY_LOW));
     jcbAccuracy.addItem(IconLoader.getIcon(JajukIcons.ACCURACY_MEDIUM));
     jcbAccuracy.addItem(IconLoader.getIcon(JajukIcons.ACCURACY_HIGH));
-    jcbAccuracy.addItem(IconLoader.getIcon(JajukIcons.AUTHOR));
+    jcbAccuracy.addItem(IconLoader.getIcon(JajukIcons.ARTIST));
     jcbAccuracy.addItem(IconLoader.getIcon(JajukIcons.ALBUM));
     jcbAccuracy.addItem(IconLoader.getIcon(JajukIcons.TRACK));
 
@@ -790,20 +790,20 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
       Log.debug("Unknown accuracy");
     }
     final Track track = file.getTrack();
-    final Author author = track.getAuthor();
+    final Artist artist = track.getArtist();
     final Album album = track.getAlbum();
     switch (iAccuracy) {
     case 0: // low, default
-      if (!author.isUnknown()) {
-        sQuery += author.getName() + " ";
+      if (!artist.isUnknown()) {
+        sQuery += artist.getName() + " ";
       }
       if (!album.isUnknown()) {
         sQuery += album.getName() + " ";
       }
       break;
     case 1: // medium
-      if (!author.isUnknown()) {
-        sQuery += '\"' + author.getName() + QUOTE_BLANK;
+      if (!artist.isUnknown()) {
+        sQuery += '\"' + artist.getName() + QUOTE_BLANK;
         // put quotes around it
       }
       if (!album.isUnknown()) {
@@ -811,17 +811,17 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
       }
       break;
     case 2: // high
-      if (!author.isUnknown()) {
-        sQuery += PLUS_QUOTE + author.getName() + QUOTE_BLANK;
+      if (!artist.isUnknown()) {
+        sQuery += PLUS_QUOTE + artist.getName() + QUOTE_BLANK;
         // put "" around it
       }
       if (!album.isUnknown()) {
         sQuery += PLUS_QUOTE + album.getName() + QUOTE_BLANK;
       }
       break;
-    case 3: // by author
-      if (!author.isUnknown()) {
-        sQuery += author.getName() + " ";
+    case 3: // by artist
+      if (!artist.isUnknown()) {
+        sQuery += artist.getName() + " ";
       }
       break;
     case 4: // by album

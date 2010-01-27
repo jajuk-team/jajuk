@@ -37,14 +37,14 @@ import javax.swing.SwingUtilities;
 import net.miginfocom.swing.MigLayout;
 
 import org.apache.commons.lang.StringUtils;
-import org.jajuk.base.Author;
+import org.jajuk.base.Artist;
 import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.services.players.QueueModel;
 import org.jajuk.services.players.StackItem;
 import org.jajuk.ui.helpers.TwoStepsDisplayable;
-import org.jajuk.ui.thumbnails.LastFmAuthorThumbnail;
+import org.jajuk.ui.thumbnails.LastFmArtistThumbnail;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.Messages;
@@ -62,7 +62,7 @@ public class ArtistView extends SuggestionView implements TwoStepsDisplayable {
   private static final long serialVersionUID = 1L;
 
   /** The artist picture + labels. */
-  private LastFmAuthorThumbnail authorThumb;
+  private LastFmArtistThumbnail artistThumb;
 
   /** The artist bio (from last.fm wiki) */
   private JTextArea jtaArtistDesc;
@@ -118,12 +118,12 @@ public class ArtistView extends SuggestionView implements TwoStepsDisplayable {
   }
 
   /**
-   * Build the GUI for a given author
+   * Build the GUI for a given artist
    * <p>
    * Must be called from the EDT
    * </p>.
    */
-  private void displayAuthor() {
+  private void displayArtist() {
     UtilGUI.populate(this);
   }
 
@@ -153,9 +153,9 @@ public class ArtistView extends SuggestionView implements TwoStepsDisplayable {
             reset();
             return;
           }
-          Author author = currentItem.getFile().getTrack().getAuthor();
+          Artist artist = currentItem.getFile().getTrack().getArtist();
           // If we already display the artist, leave
-          if (author.getName().equals(ArtistView.this.author)) {
+          if (artist.getName().equals(ArtistView.this.artist)) {
             return;
           } else {
             // Display a busy panel in the mean-time
@@ -167,11 +167,11 @@ public class ArtistView extends SuggestionView implements TwoStepsDisplayable {
             revalidate();
             repaint();
 
-            ArtistView.this.author = author.getName();
+            ArtistView.this.artist = artist.getName();
             // Display the panel only if the artist is not unknown
-            if (!author.isUnknown()) {
+            if (!artist.isUnknown()) {
               // This is done in a swing worker
-              displayAuthor();
+              displayArtist();
             } else {
               reset();
             }
@@ -197,7 +197,7 @@ public class ArtistView extends SuggestionView implements TwoStepsDisplayable {
    * </p>.
    */
   private void reset() {
-    ArtistView.this.author = null;
+    ArtistView.this.artist = null;
     removeAll();
     setLayout(new MigLayout("ins 5,gapy 5", "[grow]"));
     add(getNothingFoundPanel());
@@ -213,8 +213,8 @@ public class ArtistView extends SuggestionView implements TwoStepsDisplayable {
   @Override
   public Object longCall() {
     // Call last.fm wiki
-    bio = LastFmService.getInstance().getWikiText(author);
-    artistInfo = LastFmService.getInstance().getArtist(author);
+    bio = LastFmService.getInstance().getWikiText(artist);
+    artistInfo = LastFmService.getInstance().getArtist(artist);
     // Prefetch artist thumbs
     try {
       preFetchOthersAlbum();
@@ -243,10 +243,10 @@ public class ArtistView extends SuggestionView implements TwoStepsDisplayable {
       reset();
       return;
     }
-    authorThumb = new LastFmAuthorThumbnail(artistInfo);
+    artistThumb = new LastFmArtistThumbnail(artistInfo);
     // No known icon next to artist thumb
-    authorThumb.setArtistView(true);
-    authorThumb.populate();
+    artistThumb.setArtistView(true);
+    artistThumb.populate();
 
     jtaArtistDesc = new JTextArea(bio) {
       private static final long serialVersionUID = 9217998016482118852L;
@@ -273,13 +273,13 @@ public class ArtistView extends SuggestionView implements TwoStepsDisplayable {
     // Add items, layout is different according wiki text availability
     if (StringUtils.isNotBlank(jtaArtistDesc.getText())) {
       setLayout(new MigLayout("ins 5,gapy 5", "[grow]", "[grow][20%!][grow]"));
-      add(authorThumb, "center,wrap");
+      add(artistThumb, "center,wrap");
       // don't add the textarea if no wiki text available
       add(jspWiki, "growx,wrap");
       add(jspAlbums, "grow,wrap");
     } else {
       setLayout(new MigLayout("ins 5,gapy 5", "[grow]"));
-      add(authorThumb, "center,wrap");
+      add(artistThumb, "center,wrap");
       // don't add the textarea if no wiki text available
       add(jspAlbums, "grow,wrap");
     }

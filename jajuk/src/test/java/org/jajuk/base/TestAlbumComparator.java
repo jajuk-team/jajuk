@@ -38,7 +38,7 @@ public class TestAlbumComparator extends JajukTestCase {
   }
 
   /*
-   * 0 .. style 1 .. author 2 .. album 3 .. year 4 .. discovery date 5 .. rate 6
+   * 0 .. genre 1 .. artist 2 .. album 3 .. year 4 .. discovery date 5 .. rate 6
    * .. hits
    */
   /**
@@ -46,91 +46,91 @@ public class TestAlbumComparator extends JajukTestCase {
    * {@link org.jajuk.base.AlbumComparator#compare(org.jajuk.base.Album, org.jajuk.base.Album)}
    * .
    */
-  public final void testCompareStyle() {
+  public final void testCompareGenre() {
     AlbumComparator compare = new AlbumComparator(0);
     Album album = new Album("1", "name", 2);
     Album equal = new Album("1", "name", 2);
     Album notequal = new Album("1", "name", 2);
 
-    // just differ in Style
+    // just differ in Genre
     album.getTracksCache().add(getTrack(album));
     equal.getTracksCache().add(getTrack(album));
     notequal.getTracksCache().add(
-        new Track("2", "name2", album, new Style("7", "name7"), new Author("4", "name4"), 10,
+        new Track("2", "name2", album, new Genre("7", "name7"), new Artist("4", "name4"), 10,
             new Year("5", "name5"), 1, new Type("6", "name6", "ext", null, null), 3));
 
     assertEquals(0, compare.compare(album, equal));
     assertTrue(0 < compare.compare(album, notequal) || 0 > compare.compare(album, notequal));
   }
 
-  public final void testCompareStyle2() {
+  public final void testCompareGenre2() {
     AlbumComparator compare = new AlbumComparator(0);
     Album album = new Album("1", "name", 2);
     Album equal = new Album("1", "name", 2);
     Album notequal = new Album("1", "name", 2);
 
-    // just differ in Style, this time we have the physical same style
-    Style style = new Style("8", "name8");
-    album.getTracksCache().add(getTrack(album, style, new Year("5", "name5")));
-    equal.getTracksCache().add(getTrack(album, style, new Year("5", "name5")));
+    // just differ in Genre, this time we have the physical same genre
+    Genre genre = new Genre("8", "name8");
+    album.getTracksCache().add(getTrack(album, genre, new Year("5", "name5")));
+    equal.getTracksCache().add(getTrack(album, genre, new Year("5", "name5")));
     notequal.getTracksCache().add(
-        new Track("2", "name2", album, new Style("7", "name7"), new Author("4", "name4"), 10,
+        new Track("2", "name2", album, new Genre("7", "name7"), new Artist("4", "name4"), 10,
             new Year("5", "name5"), 1, new Type("6", "name6", "ext", null, null), 3));
 
     assertEquals(0, compare.compare(album, equal));
     assertTrue(0 < compare.compare(album, notequal) || 0 > compare.compare(album, notequal));
   }
 
-  public final void testCompareStyle4AlbumArtistDifferent() {
+  public final void testCompareGenre4AlbumArtistDifferent() {
     AlbumComparator compare = new AlbumComparator(0);
     Album album = new Album("1", "name", 2);
     Album equal = new Album("1", "name", 2);
     Album notequal = new Album("1", "name", 2);
 
-    // just differ in Style, this time we have the physical same style
-    Style style = new Style("8", "name8");
-    album.getTracksCache().add(getTrack(album, style, new Year("5", "name5")));
-    equal.getTracksCache().add(getTrack(album, style, new Year("5", "name5")));
+    // just differ in Genre, this time we have the physical same genre
+    Genre genre = new Genre("8", "name8");
+    album.getTracksCache().add(getTrack(album, genre, new Year("5", "name5")));
+    equal.getTracksCache().add(getTrack(album, genre, new Year("5", "name5")));
     notequal.getTracksCache().add(
-        new Track("2", "name2", album, new Style("7", "name7"), new Author("4", "name4"), 10,
+        new Track("2", "name2", album, new Genre("7", "name7"), new Artist("4", "name4"), 10,
             new Year("5", "name5"), 1, new Type("6", "name6", "ext", null, null), 3));
 
     assertEquals(-1, compare.compare(album, equal));
     assertTrue(0 < compare.compare(album, notequal) || 0 > compare.compare(album, notequal));
   }
 
-  public final void testCompareStyle3SameYear() {
+  public final void testCompareGenre3SameYear() {
     AlbumComparator compare = new AlbumComparator(0);
     Album album = new Album("1", "name", 2);
     Album equal = new Album("1", "name", 2);
     Album notequal = new Album("1", "name", 2);
 
-    // just differ in Style, this time we have the physical same style
-    Style style = new Style("8", "name8");
+    // just differ in Genre, this time we have the physical same genre
+    Genre genre = new Genre("8", "name8");
     Year year = new Year("5", "name5");
-    album.getTracksCache().add(getTrack(album, style, year));
-    equal.getTracksCache().add(getTrack(album, style, year));
+    album.getTracksCache().add(getTrack(album, genre, year));
+    equal.getTracksCache().add(getTrack(album, genre, year));
     notequal.getTracksCache().add(
-        new Track("2", "name2", album, new Style("7", "name7"), new Author("4", "name4"), 10,
+        new Track("2", "name2", album, new Genre("7", "name7"), new Artist("4", "name4"), 10,
             new Year("5", "name5"), 1, new Type("6", "name6", "ext", null, null), 3));
 
     assertEquals(0, compare.compare(album, equal));
     assertTrue(0 < compare.compare(album, notequal) || 0 > compare.compare(album, notequal));
   }
 
-  public final void testCompareAuthor() {
+  public final void testCompareArtist() {
     AlbumComparator compare = new AlbumComparator(1);
     Album album = new Album("1", "name", 2);
     Album equal = new Album("1", "name", 2);
     Album notequal = new Album("1", "name", 2);
 
-    // just differ in Author
+    // just differ in Artist
     album.getTracksCache().add(getTrack(album));
     equal.getTracksCache().add(getTrack(equal));
     notequal.getTracksCache().add(getTrack(notequal));
     /*
      * notequal.getTracksCache().add( new Track("2", "name2", album, new
-     * Style("3", "name3"), new Author("7", "name7"), 10, new Year("5",
+     * Genre("3", "name3"), new Artist("7", "name7"), 10, new Year("5",
      * "name5"), 1, new Type("6", "name6", "ext", null, null), 3));
      */
 
@@ -138,21 +138,21 @@ public class TestAlbumComparator extends JajukTestCase {
     assertTrue(0 < compare.compare(album, notequal) || 0 > compare.compare(album, notequal));
   }
 
-  public final void testCompareAuthorSameYear() {
+  public final void testCompareArtistSameYear() {
     AlbumComparator compare = new AlbumComparator(1);
     Album album = new Album("1", "name", 2);
     Album equal = new Album("1", "name", 2);
     Album notequal = new Album("1", "name", 2);
 
-    // just differ in Author
-    Style style = new Style("8", "name8");
+    // just differ in Artist
+    Genre genre = new Genre("8", "name8");
     Year year = new Year("5", "name5");
-    album.getTracksCache().add(getTrack(album, style, year));
-    equal.getTracksCache().add(getTrack(equal, style, year));
+    album.getTracksCache().add(getTrack(album, genre, year));
+    equal.getTracksCache().add(getTrack(equal, genre, year));
     notequal.getTracksCache().add(getTrack(notequal));
     /*
      * notequal.getTracksCache().add( new Track("2", "name2", album, new
-     * Style("3", "name3"), new Author("7", "name7"), 10, new Year("5",
+     * Genre("3", "name3"), new Artist("7", "name7"), 10, new Year("5",
      * "name5"), 1, new Type("6", "name6", "ext", null, null), 3));
      */
 
@@ -180,7 +180,7 @@ public class TestAlbumComparator extends JajukTestCase {
     album.getTracksCache().add(getTrack(album));
     equal.getTracksCache().add(getTrack(album));
     notequal.getTracksCache().add(
-        new Track("2", "name2", album, new Style("3", "name3"), new Author("4", "name4"), 10,
+        new Track("2", "name2", album, new Genre("3", "name3"), new Artist("4", "name4"), 10,
             new Year("7", "name7"), 1, new Type("6", "name6", "ext", null, null), 3));
 
     assertEquals(0, compare.compare(album, equal));
@@ -194,12 +194,12 @@ public class TestAlbumComparator extends JajukTestCase {
     Album notequal = new Album("1", "name", 2);
 
     // just differ in Year
-    Style style = new Style("8", "name8");
+    Genre genre = new Genre("8", "name8");
     Year year = new Year("5", "name5");
-    album.getTracksCache().add(getTrack(album, style, year));
-    equal.getTracksCache().add(getTrack(album, style, year));
+    album.getTracksCache().add(getTrack(album, genre, year));
+    equal.getTracksCache().add(getTrack(album, genre, year));
     notequal.getTracksCache().add(
-        new Track("2", "name2", album, new Style("3", "name3"), new Author("4", "name4"), 10,
+        new Track("2", "name2", album, new Genre("3", "name3"), new Artist("4", "name4"), 10,
             new Year("7", "name7"), 1, new Type("6", "name6", "ext", null, null), 3));
 
     assertEquals(0, compare.compare(album, equal));
@@ -213,12 +213,12 @@ public class TestAlbumComparator extends JajukTestCase {
     Album notequal = new Album("1", "name", 2);
 
     // just differ in Year
-    Style style = new Style("8", "name8");
+    Genre genre = new Genre("8", "name8");
     Year year = new Year("5", "name5");
-    album.getTracksCache().add(getTrack(album, style, year));
-    equal.getTracksCache().add(getTrack(album, style, year));
+    album.getTracksCache().add(getTrack(album, genre, year));
+    equal.getTracksCache().add(getTrack(album, genre, year));
     notequal.getTracksCache().add(
-        new Track("2", "name2", album, new Style("3", "name3"), new Author("4", "name4"), 10,
+        new Track("2", "name2", album, new Genre("3", "name3"), new Artist("4", "name4"), 10,
             new Year("7", "name7"), 1, new Type("6", "name6", "ext", null, null), 3));
 
     assertEquals(-1, compare.compare(album, equal));
@@ -323,12 +323,12 @@ public class TestAlbumComparator extends JajukTestCase {
    * @return
    */
   private Track getTrack(Album album) {
-    return new Track("2", "name2", album, new Style("3", "name3"), new Author("4", "name4"), 10,
+    return new Track("2", "name2", album, new Genre("3", "name3"), new Artist("4", "name4"), 10,
         new Year("5", "name5"), 1, new Type("6", "name6", "ext", null, null), 3);
   }
 
-  private Track getTrack(Album album, Style style, Year year) {
-    return new Track("2", "name2", album, style, new Author("4", "name4"), 10, year, 1, new Type(
+  private Track getTrack(Album album, Genre genre, Year year) {
+    return new Track("2", "name2", album, genre, new Artist("4", "name4"), 10, year, 1, new Type(
         "6", "name6", "ext", null, null), 3);
   }
 

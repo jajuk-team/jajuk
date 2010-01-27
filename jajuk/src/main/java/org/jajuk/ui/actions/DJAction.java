@@ -25,7 +25,7 @@ import java.awt.event.ActionEvent;
 import java.util.List;
 
 import org.jajuk.base.File;
-import org.jajuk.base.StyleManager;
+import org.jajuk.base.GenreManager;
 import org.jajuk.services.dj.DigitalDJ;
 import org.jajuk.services.dj.DigitalDJManager;
 import org.jajuk.services.players.QueueModel;
@@ -59,7 +59,7 @@ public class DJAction extends JajukAction {
    */
   @Override
   public void perform(ActionEvent evt) throws JajukException {
-    if (StyleManager.getInstance().getElementCount() == 0) {
+    if (GenreManager.getInstance().getElementCount() == 0) {
       Messages.showErrorMessage(156); // void collection error
     } else {
       new Thread("DJ Thread") {

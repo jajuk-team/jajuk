@@ -300,7 +300,7 @@ public enum JajukActions {
   PLAY_ALBUM_SELECTION,
 
   /** Play artist for selection. */
-  PLAY_AUTHOR_SELECTION,
+  PLAY_ARTIST_SELECTION,
 
   /** Play full directory for selection. */
   PLAY_DIRECTORY_SELECTION,

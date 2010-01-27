@@ -91,11 +91,11 @@ public final class TrackManager extends ItemManager {
     // Album
     registerProperty(new PropertyMetaInformation(Const.XML_ALBUM, false, true, true, true, true,
         String.class, null));
-    // Style
-    registerProperty(new PropertyMetaInformation(Const.XML_STYLE, false, true, true, true, true,
+    // Genre
+    registerProperty(new PropertyMetaInformation(Const.XML_GENRE, false, true, true, true, true,
         String.class, null));
-    // Author
-    registerProperty(new PropertyMetaInformation(Const.XML_AUTHOR, false, true, true, true, true,
+    // Artist
+    registerProperty(new PropertyMetaInformation(Const.XML_ARTIST, false, true, true, true, true,
         String.class, null));
     // Album-artist
     registerProperty(new PropertyMetaInformation(Const.XML_ALBUM_ARTIST, false, false, true, true,
@@ -165,9 +165,9 @@ public final class TrackManager extends ItemManager {
    *          DOCUMENT_ME
    * @param album
    *          DOCUMENT_ME
-   * @param style
+   * @param genre
    *          DOCUMENT_ME
-   * @param author
+   * @param artist
    *          DOCUMENT_ME
    * @param length
    *          DOCUMENT_ME
@@ -182,10 +182,10 @@ public final class TrackManager extends ItemManager {
    * 
    * @return the track
    */
-  public synchronized Track registerTrack(String sName, Album album, Style style, Author author,
+  public synchronized Track registerTrack(String sName, Album album, Genre genre, Artist artist,
       long length, Year year, long lOrder, Type type, long lDiscNumber) {
-    String sId = createID(sName, album, style, author, length, year, lOrder, type, lDiscNumber);
-    return registerTrack(sId, sName, album, style, author, length, year, lOrder, type, lDiscNumber);
+    String sId = createID(sName, album, genre, artist, length, year, lOrder, type, lDiscNumber);
+    return registerTrack(sId, sName, album, genre, artist, length, year, lOrder, type, lDiscNumber);
   }
 
   /**
@@ -195,9 +195,9 @@ public final class TrackManager extends ItemManager {
    *          DOCUMENT_ME
    * @param album
    *          DOCUMENT_ME
-   * @param style
+   * @param genre
    *          DOCUMENT_ME
-   * @param author
+   * @param artist
    *          DOCUMENT_ME
    * @param length
    *          DOCUMENT_ME
@@ -212,10 +212,10 @@ public final class TrackManager extends ItemManager {
    * 
    * @return the string
    */
-  protected static String createID(String sName, Album album, Style style, Author author,
+  protected static String createID(String sName, Album album, Genre genre, Artist artist,
       long length, Year year, long lOrder, Type type, long lDiscNumber) {
     StringBuilder sb = new StringBuilder(100);
-    sb.append(style.getID()).append(author.getID()).append(album.getID()).append(sName).append(
+    sb.append(genre.getID()).append(artist.getID()).append(album.getID()).append(sName).append(
         year.getValue()).append(length).append(lOrder).append(type.getID()).append(lDiscNumber);
     // distinguish tracks by type because we can't find best file
     // on different quality levels by format
@@ -231,9 +231,9 @@ public final class TrackManager extends ItemManager {
    *          DOCUMENT_ME
    * @param album
    *          DOCUMENT_ME
-   * @param style
+   * @param genre
    *          DOCUMENT_ME
-   * @param author
+   * @param artist
    *          DOCUMENT_ME
    * @param length
    *          DOCUMENT_ME
@@ -248,15 +248,15 @@ public final class TrackManager extends ItemManager {
    * 
    * @return the track
    */
-  public synchronized Track registerTrack(String sId, String sName, Album album, Style style,
-      Author author, long length, Year year, long lOrder, Type type, long lDiscNumber) {
+  public synchronized Track registerTrack(String sId, String sName, Album album, Genre genre,
+      Artist artist, long length, Year year, long lOrder, Type type, long lDiscNumber) {
     // We absolutely need to return the same track if already registrated to
     // avoid duplicates and properties lost
     Track track = getTrackByID(sId);
     if (track != null) {
       return track;
     }
-    track = new Track(sId, sName, album, style, author, length, year, lOrder, type, lDiscNumber);
+    track = new Track(sId, sName, album, genre, artist, length, year, lOrder, type, lDiscNumber);
     registerItem(track);
     // For performances, add the track to the album cache
     album.getTracksCache().add(track);
@@ -340,7 +340,7 @@ public final class TrackManager extends ItemManager {
     // register the new album
     Album newAlbum = AlbumManager.getInstance().registerAlbum(sNewAlbum,
         track.getAlbum().getDiscID());
-    Track newTrack = registerTrack(track.getName(), newAlbum, track.getStyle(), track.getAuthor(),
+    Track newTrack = registerTrack(track.getName(), newAlbum, track.getGenre(), track.getArtist(),
         track.getDuration(), track.getYear(), track.getOrder(), track.getType(), track
             .getDiscNumber());
     postChange(track, newTrack, filter);
@@ -350,13 +350,13 @@ public final class TrackManager extends ItemManager {
   }
 
   /**
-   * Change a track author.
+   * Change a track artist.
    * 
    * @param filter
    *          files we want to deal with
    * @param track
    *          DOCUMENT_ME
-   * @param sNewAuthor
+   * @param sNewArtist
    *          DOCUMENT_ME
    * 
    * @return new track
@@ -364,10 +364,10 @@ public final class TrackManager extends ItemManager {
    * @throws JajukException
    *           the jajuk exception
    */
-  public synchronized Track changeTrackAuthor(Track track, String sNewAuthor, Set<File> filter)
+  public synchronized Track changeTrackArtist(Track track, String sNewArtist, Set<File> filter)
       throws JajukException {
     // check there is actually a change
-    if (track.getAuthor().getName2().equals(sNewAuthor)) {
+    if (track.getArtist().getName2().equals(sNewArtist)) {
       return track;
     }
     List<File> alReady = null;
@@ -380,7 +380,7 @@ public final class TrackManager extends ItemManager {
     for (final File file : alReady) {
       final Tag tag = Tag.getTagForFio(file.getFIO(), false);
 
-      tag.setAuthorName(sNewAuthor);
+      tag.setArtistName(sNewArtist);
       if (bAutocommit) {
         tag.commit();
       } else {
@@ -390,30 +390,30 @@ public final class TrackManager extends ItemManager {
     // Remove the track from the old album
     track.getAlbum().getTracksCache().remove(track);
 
-    // if current track author name is changed, notify it
+    // if current track artist name is changed, notify it
     if (QueueModel.getPlayingFile() != null
-        && QueueModel.getPlayingFile().getTrack().getAuthor().equals(track.getAuthor())) {
-      ObservationManager.notify(new JajukEvent(JajukEvents.AUTHOR_CHANGED));
+        && QueueModel.getPlayingFile().getTrack().getArtist().equals(track.getArtist())) {
+      ObservationManager.notify(new JajukEvent(JajukEvents.ARTIST_CHANGED));
     }
     // register the new item
-    Author newAuthor = AuthorManager.getInstance().registerAuthor(sNewAuthor);
-    Track newTrack = registerTrack(track.getName(), track.getAlbum(), track.getStyle(), newAuthor,
+    Artist newArtist = ArtistManager.getInstance().registerArtist(sNewArtist);
+    Track newTrack = registerTrack(track.getName(), track.getAlbum(), track.getGenre(), newArtist,
         track.getDuration(), track.getYear(), track.getOrder(), track.getType(), track
             .getDiscNumber());
     postChange(track, newTrack, filter);
     // remove this item if no more references
-    AuthorManager.getInstance().cleanOrphanTracks(track.getAuthor());
+    ArtistManager.getInstance().cleanOrphanTracks(track.getArtist());
     return newTrack;
   }
 
   /**
-   * Change a track style.
+   * Change a track genre.
    * 
    * @param filter
    *          files we want to deal with
    * @param track
    *          DOCUMENT_ME
-   * @param sNewStyle
+   * @param sNewGenre
    *          DOCUMENT_ME
    * 
    * @return new track
@@ -421,11 +421,11 @@ public final class TrackManager extends ItemManager {
    * @throws JajukException
    *           the jajuk exception
    */
-  public synchronized Track changeTrackStyle(Track track, String sNewStyle, Set<File> filter)
+  public synchronized Track changeTrackGenre(Track track, String sNewGenre, Set<File> filter)
       throws JajukException {
     // check there is actually a change
 
-    if (track.getStyle().getName2().equals(sNewStyle)) {
+    if (track.getGenre().getName2().equals(sNewGenre)) {
       return track;
     }
     List<File> alReady = null;
@@ -438,7 +438,7 @@ public final class TrackManager extends ItemManager {
     for (final File file : alReady) {
       Tag tag = Tag.getTagForFio(file.getFIO(), false);
 
-      tag.setStyleName(sNewStyle);
+      tag.setGenreName(sNewGenre);
       if (bAutocommit) {
         tag.commit();
       } else {
@@ -449,13 +449,13 @@ public final class TrackManager extends ItemManager {
     track.getAlbum().getTracksCache().remove(track);
 
     // register the new item
-    Style newStyle = StyleManager.getInstance().registerStyle(sNewStyle);
-    Track newTrack = registerTrack(track.getName(), track.getAlbum(), newStyle, track.getAuthor(),
+    Genre newGenre = GenreManager.getInstance().registerGenre(sNewGenre);
+    Track newTrack = registerTrack(track.getName(), track.getAlbum(), newGenre, track.getArtist(),
         track.getDuration(), track.getYear(), track.getOrder(), track.getType(), track
             .getDiscNumber());
     postChange(track, newTrack, filter);
     // remove this item if no more references
-    StyleManager.getInstance().cleanOrphanTracks(track.getStyle());
+    GenreManager.getInstance().cleanOrphanTracks(track.getGenre());
     return newTrack;
   }
 
@@ -506,8 +506,8 @@ public final class TrackManager extends ItemManager {
 
     // Register new item
     Year newYear = YearManager.getInstance().registerYear(newItem);
-    Track newTrack = registerTrack(track.getName(), track.getAlbum(), track.getStyle(), track
-        .getAuthor(), track.getDuration(), newYear, track.getOrder(), track.getType(), track
+    Track newTrack = registerTrack(track.getName(), track.getAlbum(), track.getGenre(), track
+        .getArtist(), track.getDuration(), newYear, track.getOrder(), track.getType(), track
         .getDiscNumber());
     postChange(track, newTrack, filter);
     return newTrack;
@@ -630,8 +630,8 @@ public final class TrackManager extends ItemManager {
     // Remove the track from the old album
     track.getAlbum().getTracksCache().remove(track);
 
-    Track newTrack = registerTrack(track.getName(), track.getAlbum(), track.getStyle(), track
-        .getAuthor(), track.getDuration(), track.getYear(), lNewOrder, track.getType(), track
+    Track newTrack = registerTrack(track.getName(), track.getAlbum(), track.getGenre(), track
+        .getArtist(), track.getDuration(), track.getYear(), lNewOrder, track.getType(), track
         .getDiscNumber());
     postChange(track, newTrack, filter);
     return newTrack;
@@ -678,7 +678,7 @@ public final class TrackManager extends ItemManager {
     // Remove old track from the album
     track.getAlbum().getTracksCache().remove(track);
 
-    Track newTrack = registerTrack(sNewItem, track.getAlbum(), track.getStyle(), track.getAuthor(),
+    Track newTrack = registerTrack(sNewItem, track.getAlbum(), track.getGenre(), track.getArtist(),
         track.getDuration(), track.getYear(), track.getOrder(), track.getType(), track
             .getDiscNumber());
     postChange(track, newTrack, filter);
@@ -790,8 +790,8 @@ public final class TrackManager extends ItemManager {
       ObservationManager.notify(new JajukEvent(JajukEvents.ALBUM_CHANGED));
     }
 
-    Track newTrack = registerTrack(track.getName(), track.getAlbum(), track.getStyle(), track
-        .getAuthor(), track.getDuration(), track.getYear(), track.getDiscNumber(), track.getType(),
+    Track newTrack = registerTrack(track.getName(), track.getAlbum(), track.getGenre(), track
+        .getArtist(), track.getDuration(), track.getYear(), track.getDiscNumber(), track.getType(),
         lNewDiscNumber);
     postChange(track, newTrack, filter);
     return newTrack;
@@ -904,7 +904,7 @@ public final class TrackManager extends ItemManager {
    *          DOCUMENT_ME
    * @param sorted
    *          Whether the output should be sorted on it (actually applied on
-   *          artists,years and styles because others items are already sorted)
+   *          artists,years and genres because others items are already sorted)
    * 
    * @return the associated tracks
    */
@@ -923,7 +923,7 @@ public final class TrackManager extends ItemManager {
    * 
    * @param sorted
    *          Whether the output should be sorted on it (actually applied on
-   *          artists,years and styles because others items are already sorted)
+   *          artists,years and genres because others items are already sorted)
    * @param items
    *          DOCUMENT_ME
    * 
@@ -999,29 +999,29 @@ public final class TrackManager extends ItemManager {
       if (sorted) {
         Collections.sort(out, new TrackComparator(TrackComparatorType.ALBUM));
       }
-    } else if (items.get(0) instanceof Author) {
+    } else if (items.get(0) instanceof Artist) {
       Iterator<Item> tracks = (Iterator<Item>) getItemsIterator();
       while (tracks.hasNext()) {
         Track track = (Track) tracks.next();
-        if (items.contains(track.getAuthor())) {
+        if (items.contains(track.getArtist())) {
           out.add(track);
         }
         // Sort by album
         if (sorted) {
-          Collections.sort(out, new TrackComparator(TrackComparatorType.AUTHOR_ALBUM));
+          Collections.sort(out, new TrackComparator(TrackComparatorType.ARTIST_ALBUM));
         }
       }
       return out;
-    } else if (items.get(0) instanceof Style) {
+    } else if (items.get(0) instanceof Genre) {
       Iterator<Item> tracks = (Iterator<Item>) getItemsIterator();
       while (tracks.hasNext()) {
         Track track = (Track) tracks.next();
-        if (items.contains(track.getStyle())) {
+        if (items.contains(track.getGenre())) {
           out.add(track);
         }
-        // Sort by style
+        // Sort by genre
         if (sorted) {
-          Collections.sort(out, new TrackComparator(TrackComparatorType.STYLE_AUTHOR_ALBUM));
+          Collections.sort(out, new TrackComparator(TrackComparatorType.GENRE_ARTIST_ALBUM));
         }
       }
     } else if (items.get(0) instanceof Year) {

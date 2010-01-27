@@ -280,9 +280,9 @@ public final class AlbumManager extends ItemManager implements Observer {
       while (albums.hasNext()) {
         Album album = albums.next();
         for (Track track : album.getTracksCache()) {
-          if (item instanceof Author && track.getAuthor().equals(item)) {
+          if (item instanceof Artist && track.getArtist().equals(item)) {
             albumSet.add(album);
-          } else if (item instanceof Style && track.getStyle().equals(item)) {
+          } else if (item instanceof Genre && track.getGenre().equals(item)) {
             albumSet.add(album);
           }
           if (item instanceof Year && track.getYear().equals(item)) {

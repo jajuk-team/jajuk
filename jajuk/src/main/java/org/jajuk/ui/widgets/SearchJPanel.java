@@ -74,7 +74,7 @@ public final class SearchJPanel extends JXPanel implements Observer, ActionListe
   /** The search box (text field). */
   private SearchBox sbSearch;
 
-  /** the combo-style history. */
+  /** the combo-genre history. */
   private SteppedComboBox jcbHistory;
 
   /** the Ambience selection combo. */

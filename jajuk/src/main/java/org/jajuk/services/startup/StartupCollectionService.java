@@ -38,14 +38,14 @@ import net.miginfocom.layout.LinkHandler;
 import org.apache.commons.lang.StringUtils;
 import org.jajuk.base.AlbumArtistManager;
 import org.jajuk.base.AlbumManager;
-import org.jajuk.base.AuthorManager;
+import org.jajuk.base.ArtistManager;
 import org.jajuk.base.Collection;
 import org.jajuk.base.DeviceManager;
 import org.jajuk.base.DirectoryManager;
 import org.jajuk.base.FileManager;
 import org.jajuk.base.ItemManager;
 import org.jajuk.base.PlaylistManager;
-import org.jajuk.base.StyleManager;
+import org.jajuk.base.GenreManager;
 import org.jajuk.base.TrackManager;
 import org.jajuk.base.TypeManager;
 import org.jajuk.base.YearManager;
@@ -98,13 +98,13 @@ public class StartupCollectionService {
    */
   public static void registerItemManagers() {
     ItemManager.registerItemManager(org.jajuk.base.Album.class, AlbumManager.getInstance());
-    ItemManager.registerItemManager(org.jajuk.base.Author.class, AuthorManager.getInstance());
+    ItemManager.registerItemManager(org.jajuk.base.Artist.class, ArtistManager.getInstance());
     ItemManager.registerItemManager(org.jajuk.base.AlbumArtist.class, AlbumArtistManager.getInstance());
     ItemManager.registerItemManager(org.jajuk.base.Device.class, DeviceManager.getInstance());
     ItemManager.registerItemManager(org.jajuk.base.File.class, FileManager.getInstance());
     ItemManager.registerItemManager(org.jajuk.base.Directory.class, DirectoryManager.getInstance());
     ItemManager.registerItemManager(org.jajuk.base.Playlist.class, PlaylistManager.getInstance());
-    ItemManager.registerItemManager(org.jajuk.base.Style.class, StyleManager.getInstance());
+    ItemManager.registerItemManager(org.jajuk.base.Genre.class, GenreManager.getInstance());
     ItemManager.registerItemManager(org.jajuk.base.Track.class, TrackManager.getInstance());
     ItemManager.registerItemManager(org.jajuk.base.Type.class, TypeManager.getInstance());
     ItemManager.registerItemManager(org.jajuk.base.Year.class, YearManager.getInstance());
@@ -353,7 +353,7 @@ public class StartupCollectionService {
 
     Log.debug("Loaded " + FileManager.getInstance().getElementCount() + " files with " + TrackManager.getInstance().getElementCount() + " tracks, " + 
         AlbumManager.getInstance().getElementCount() + " albums, " +
-        AuthorManager.getInstance().getElementCount() + " artists, " + 
+        ArtistManager.getInstance().getElementCount() + " artists, " + 
         AlbumArtistManager.getInstance().getElementCount() + " album-artists, " + 
         PlaylistManager.getInstance().getElementCount() + " playlists in " + 
         DirectoryManager.getInstance().getElementCount() + " directories on " + 

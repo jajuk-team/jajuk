@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <!-- 
-	Description: This XSLT transforms a xml file containing the tagging of an author into an html file.
+	Description: This XSLT transforms a xml file containing the tagging of an artist into an html file.
 	Author: The Jajuk Team
 	Created: August 23, 2006
 -->
@@ -42,14 +42,14 @@
 					<xsl:value-of
 							select='collection/i18n/ReportAction.6' />
 				</h2>
-				<xsl:apply-templates select='collection/author' />
+				<xsl:apply-templates select='collection/artist' />
 			</body>
 		</html>
 	</xsl:template>
 
 	<xsl:template match='collection'>
 		<table border='0' cellspacing='5'>
-			<xsl:for-each select='author'>
+			<xsl:for-each select='artist'>
 				<tr>
 					<xsl:variable name='id' select='id' />
 					<td width='100%'>
@@ -62,7 +62,7 @@
 		</table>
 	</xsl:template>
 
-	<xsl:template match='collection/author'>
+	<xsl:template match='collection/artist'>
 		<xsl:variable name='id' select='id' />
 		<h3 id='a{id}'>
 				<xsl:value-of select='name' />
@@ -79,7 +79,7 @@
 				</th>
 				<th>
 					<xsl:value-of
-						select='/collection/i18n/ReportAction.style' />
+						select='/collection/i18n/ReportAction.genre' />
 				</th>
 			</tr>
 			<xsl:for-each select='album'>
@@ -91,7 +91,7 @@
 						<xsl:value-of select='year' />
 					</td>
 					<td>
-						<xsl:value-of select='style' />
+						<xsl:value-of select='genre' />
 					</td>
 				</tr>
 			</xsl:for-each>

@@ -54,10 +54,10 @@ import javax.swing.tree.TreePath;
 import net.miginfocom.swing.MigLayout;
 
 import org.jajuk.base.Album;
-import org.jajuk.base.Author;
+import org.jajuk.base.Artist;
 import org.jajuk.base.File;
 import org.jajuk.base.Item;
-import org.jajuk.base.Style;
+import org.jajuk.base.Genre;
 import org.jajuk.base.Track;
 import org.jajuk.base.TrackManager;
 import org.jajuk.base.Year;
@@ -125,9 +125,9 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
     // ComboBox sort
     JLabel jlSort = new JLabel(Messages.getString("Sort"));
     jcbSort = new JComboBox();
-    jcbSort.addItem(Messages.getString("Property_style")); // sort by
+    jcbSort.addItem(Messages.getString("Property_genre")); // sort by
     // Genre/Artist/Album
-    jcbSort.addItem(Messages.getString("Property_author")); // sort by
+    jcbSort.addItem(Messages.getString("Property_artist")); // sort by
     // Artist/Album
     jcbSort.addItem(Messages.getString("Property_album")); // sort by Album
     jcbSort.addItem(Messages.getString("Property_year")); // sort by Year
@@ -200,11 +200,11 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
     }
     TrackComparatorType comparatorType = TrackComparatorType.values()[Conf
         .getInt(Const.CONF_LOGICAL_TREE_SORT_ORDER)];
-    if (comparatorType == TrackComparatorType.STYLE_AUTHOR_ALBUM) {
-      populateTreeByStyle();
-    }// Author/album
-    else if (comparatorType == TrackComparatorType.AUTHOR_ALBUM) {
-      populateTreeByAuthor();
+    if (comparatorType == TrackComparatorType.GENRE_ARTIST_ALBUM) {
+      populateTreeByGenre();
+    }// Artist/album
+    else if (comparatorType == TrackComparatorType.ARTIST_ALBUM) {
+      populateTreeByArtist();
     }
     // Album
     else if (comparatorType == TrackComparatorType.ALBUM) {
@@ -229,60 +229,60 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
   }
 
   /**
-   * Fill the tree by style.
+   * Fill the tree by genre.
    */
   @SuppressWarnings("unchecked")
-  public void populateTreeByStyle() {
+  public void populateTreeByGenre() {
     List<Track> tracks = TrackManager.getInstance().getTracks();
     Collections.sort(tracks, TrackManager.getInstance().getComparator());
     for (Track track : tracks) {
       if (!track.shouldBeHidden()) {
-        StyleNode styleNode = null;
-        Style style = track.getStyle();
-        AuthorNode authorNode = null;
-        Author author = track.getAuthor();
+        GenreNode genreNode = null;
+        Genre genre = track.getGenre();
+        ArtistNode artistNode = null;
+        Artist artist = track.getArtist();
         AlbumNode albumNode = null;
         Album album = track.getAlbum();
 
-        // create style
+        // create genre
         Enumeration e = top.children();
         boolean b = false;
-        while (e.hasMoreElements()) { // check the style doesn't
+        while (e.hasMoreElements()) { // check the genre doesn't
           // already exist
-          StyleNode sn = (StyleNode) e.nextElement();
-          if (sn.getStyle().equals(style)) {
+          GenreNode sn = (GenreNode) e.nextElement();
+          if (sn.getGenre().equals(genre)) {
             b = true;
-            styleNode = sn;
+            genreNode = sn;
             break;
           }
         }
         if (!b) {
-          styleNode = new StyleNode(style);
-          top.add(styleNode);
+          genreNode = new GenreNode(genre);
+          top.add(genreNode);
         }
-        // create author
-        if (styleNode != null) {
-          e = styleNode.children();
+        // create artist
+        if (genreNode != null) {
+          e = genreNode.children();
         } else {
           continue;
         }
         b = false;
-        while (e.hasMoreElements()) { // check if the author doesn't
+        while (e.hasMoreElements()) { // check if the artist doesn't
           // already exist
-          AuthorNode an = (AuthorNode) e.nextElement();
-          if (an.getAuthor().equals(author)) {
+          ArtistNode an = (ArtistNode) e.nextElement();
+          if (an.getArtist().equals(artist)) {
             b = true;
-            authorNode = an;
+            artistNode = an;
             break;
           }
         }
         if (!b) {
-          authorNode = new AuthorNode(author);
-          styleNode.add(authorNode);
+          artistNode = new ArtistNode(artist);
+          genreNode.add(artistNode);
         }
         // create album
-        if (authorNode != null) {
-          e = authorNode.children();
+        if (artistNode != null) {
+          e = artistNode.children();
         } else {
           continue;
         }
@@ -297,7 +297,7 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
         }
         if (!b) {
           albumNode = new AlbumNode(album);
-          authorNode.add(albumNode);
+          artistNode.add(albumNode);
         }
         // create track
         assert albumNode != null;
@@ -307,38 +307,38 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
   }
 
   /**
-   * Fill the tree by author.
+   * Fill the tree by artist.
    */
   @SuppressWarnings("unchecked")
-  public void populateTreeByAuthor() {
+  public void populateTreeByArtist() {
     List<Track> tracks = TrackManager.getInstance().getTracks();
     Collections.sort(tracks, TrackManager.getInstance().getComparator());
     for (Track track : tracks) {
       if (!track.shouldBeHidden()) {
-        AuthorNode authorNode = null;
-        Author author = track.getAuthor();
+        ArtistNode artistNode = null;
+        Artist artist = track.getArtist();
         AlbumNode albumNode = null;
         Album album = track.getAlbum();
 
-        // create author
+        // create artist
         Enumeration e = top.children();
         boolean b = false;
-        while (e.hasMoreElements()) { // check if the author doesn't
+        while (e.hasMoreElements()) { // check if the artist doesn't
           // already exist
-          AuthorNode an = (AuthorNode) e.nextElement();
-          if (an.getAuthor().equals(author)) {
+          ArtistNode an = (ArtistNode) e.nextElement();
+          if (an.getArtist().equals(artist)) {
             b = true;
-            authorNode = an;
+            artistNode = an;
             break;
           }
         }
         if (!b) {
-          authorNode = new AuthorNode(author);
-          top.add(authorNode);
+          artistNode = new ArtistNode(artist);
+          top.add(artistNode);
         }
         // create album
-        if (authorNode != null) {
-          e = authorNode.children();
+        if (artistNode != null) {
+          e = artistNode.children();
         } else {
           continue;
         }
@@ -354,7 +354,7 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
         }
         if (!b) {
           albumNode = new AlbumNode(album);
-          authorNode.add(albumNode);
+          artistNode.add(albumNode);
         }
         // create track
         if (albumNode != null) {
@@ -381,7 +381,7 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
         // create Year
         Enumeration e = top.children();
         boolean b = false;
-        // check if the author doesn't already exist
+        // check if the artist doesn't already exist
         while (e.hasMoreElements()) {
           YearNode yn = (YearNode) e.nextElement();
           if (yn.getYear().equals(year)) {
@@ -604,12 +604,12 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
       boolean bExp = false;
 
       Object o = jtree.getPathForRow(i).getLastPathComponent();
-      if (o instanceof StyleNode) {
-        Style style = ((StyleNode) o).getStyle();
-        bExp = style.getBooleanValue(Const.XML_EXPANDED);
-      } else if (o instanceof AuthorNode) {
-        Author author = ((AuthorNode) o).getAuthor();
-        bExp = author.getBooleanValue(Const.XML_EXPANDED);
+      if (o instanceof GenreNode) {
+        Genre genre = ((GenreNode) o).getGenre();
+        bExp = genre.getBooleanValue(Const.XML_EXPANDED);
+      } else if (o instanceof ArtistNode) {
+        Artist artist = ((ArtistNode) o).getArtist();
+        bExp = artist.getBooleanValue(Const.XML_EXPANDED);
       } else if (o instanceof AlbumNode) {
         Album album = ((AlbumNode) o).getAlbum();
         bExp = album.getBooleanValue(Const.XML_EXPANDED);
@@ -815,7 +815,7 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
         jmenu.addSeparator();
         jmenu.add(jmiProperties);
         jmenu.show(jtree, e.getX(), e.getY());
-      } else if (paths[0].getLastPathComponent() instanceof AuthorNode) {
+      } else if (paths[0].getLastPathComponent() instanceof ArtistNode) {
         jmenu = new JPopupMenu();
         jmenu.add(jmiPlay);
         jmenu.add(jmiFrontPush);
@@ -831,7 +831,7 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
         jmenu.addSeparator();
         jmenu.add(jmiProperties);
         jmenu.show(jtree, e.getX(), e.getY());
-      } else if (paths[0].getLastPathComponent() instanceof StyleNode) {
+      } else if (paths[0].getLastPathComponent() instanceof GenreNode) {
         jmenu = new JPopupMenu();
         jmenu.add(jmiPlay);
         jmenu.add(jmiFrontPush);
@@ -906,15 +906,15 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
           jtree.expandRow(i);
           jtree.scrollPathToVisible(jtree.getPathForRow(i));
         }
-      } else if (o instanceof AuthorNode) {
-        Author testedAuthor = ((AuthorNode) o).getAuthor();
-        if (track.getAuthor().equals(testedAuthor)) {
+      } else if (o instanceof ArtistNode) {
+        Artist testedArtist = ((ArtistNode) o).getArtist();
+        if (track.getArtist().equals(testedArtist)) {
           jtree.expandRow(i);
           jtree.scrollPathToVisible(jtree.getPathForRow(i));
         }
-      } else if (o instanceof StyleNode) {
-        Style testedStyle = ((StyleNode) o).getStyle();
-        if (track.getStyle().equals(testedStyle)) {
+      } else if (o instanceof GenreNode) {
+        Genre testedGenre = ((GenreNode) o).getGenre();
+        if (track.getGenre().equals(testedGenre)) {
           jtree.expandRow(i);
           jtree.scrollPathToVisible(jtree.getPathForRow(i));
         }
@@ -937,9 +937,9 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
 }
 
 /**
- * Style node
+ * Genre node
  */
-class StyleNode extends TransferableTreeNode {
+class GenreNode extends TransferableTreeNode {
 
   private static final long serialVersionUID = 1L;
 
@@ -948,7 +948,7 @@ class StyleNode extends TransferableTreeNode {
    * 
    * @param track
    */
-  public StyleNode(Style track) {
+  public GenreNode(Genre track) {
     super(track);
   }
 
@@ -957,21 +957,21 @@ class StyleNode extends TransferableTreeNode {
    */
   @Override
   public String toString() {
-    return getStyle().getName2();
+    return getGenre().getName2();
   }
 
   /**
    * @return Returns the track.
    */
-  public Style getStyle() {
-    return (Style) super.getUserObject();
+  public Genre getGenre() {
+    return (Genre) super.getUserObject();
   }
 }
 
 /**
- * Author node
+ * Artist node
  */
-class AuthorNode extends TransferableTreeNode {
+class ArtistNode extends TransferableTreeNode {
 
   /**
    * 
@@ -981,25 +981,25 @@ class AuthorNode extends TransferableTreeNode {
   /**
    * Constructor
    * 
-   * @param author
+   * @param artist
    */
-  public AuthorNode(Author author) {
-    super(author);
+  public ArtistNode(Artist artist) {
+    super(artist);
   }
 
   /**
-   * return a string representation of this author node
+   * return a string representation of this artist node
    */
   @Override
   public String toString() {
-    return getAuthor().getName2();
+    return getArtist().getName2();
   }
 
   /**
-   * @return Returns the author.
+   * @return Returns the artist.
    */
-  public Author getAuthor() {
-    return (Author) super.getUserObject();
+  public Artist getArtist() {
+    return (Artist) super.getUserObject();
   }
 }
 
@@ -1016,7 +1016,7 @@ class YearNode extends TransferableTreeNode {
   /**
    * Constructor
    * 
-   * @param author
+   * @param artist
    */
   public YearNode(Year year) {
     super(year);
@@ -1132,10 +1132,10 @@ class TracksTreeCellRenderer extends SubstanceDefaultTreeCellRenderer {
     super.getTreeCellRendererComponent(tree, value, sel, expanded, leaf, row, hasFocus);
     setFont(FontManager.getInstance().getFont(JajukFont.PLAIN));
 
-    if (value instanceof StyleNode) {
+    if (value instanceof GenreNode) {
       setIcon(IconLoader.getIcon(JajukIcons.STYLE));
-    } else if (value instanceof AuthorNode) {
-      setIcon(IconLoader.getIcon(JajukIcons.AUTHOR));
+    } else if (value instanceof ArtistNode) {
+      setIcon(IconLoader.getIcon(JajukIcons.ARTIST));
     } else if (value instanceof YearNode) {
       setIcon(IconLoader.getIcon(JajukIcons.YEAR));
     } else if (value instanceof AlbumNode) {
@@ -1157,12 +1157,12 @@ class TracksTreeCellRenderer extends SubstanceDefaultTreeCellRenderer {
 class TracksTreeExpansionListener implements TreeExpansionListener {
   public void treeCollapsed(TreeExpansionEvent event) {
     Object o = event.getPath().getLastPathComponent();
-    if (o instanceof StyleNode) {
-      Style style = ((StyleNode) o).getStyle();
-      style.removeProperty(Const.XML_EXPANDED);
-    } else if (o instanceof AuthorNode) {
-      Author author = ((AuthorNode) o).getAuthor();
-      author.removeProperty(Const.XML_EXPANDED);
+    if (o instanceof GenreNode) {
+      Genre genre = ((GenreNode) o).getGenre();
+      genre.removeProperty(Const.XML_EXPANDED);
+    } else if (o instanceof ArtistNode) {
+      Artist artist = ((ArtistNode) o).getArtist();
+      artist.removeProperty(Const.XML_EXPANDED);
     } else if (o instanceof AlbumNode) {
       Album album = ((AlbumNode) o).getAlbum();
       album.removeProperty(Const.XML_EXPANDED);
@@ -1174,12 +1174,12 @@ class TracksTreeExpansionListener implements TreeExpansionListener {
 
   public void treeExpanded(TreeExpansionEvent event) {
     Object o = event.getPath().getLastPathComponent();
-    if (o instanceof StyleNode) {
-      Style style = ((StyleNode) o).getStyle();
-      style.setProperty(Const.XML_EXPANDED, true);
-    } else if (o instanceof AuthorNode) {
-      Author author = ((AuthorNode) o).getAuthor();
-      author.setProperty(Const.XML_EXPANDED, true);
+    if (o instanceof GenreNode) {
+      Genre genre = ((GenreNode) o).getGenre();
+      genre.setProperty(Const.XML_EXPANDED, true);
+    } else if (o instanceof ArtistNode) {
+      Artist artist = ((ArtistNode) o).getArtist();
+      artist.setProperty(Const.XML_EXPANDED, true);
     } else if (o instanceof AlbumNode) {
       Album album = ((AlbumNode) o).getAlbum();
       album.setProperty(Const.XML_EXPANDED, true);

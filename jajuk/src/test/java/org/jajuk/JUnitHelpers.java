@@ -31,13 +31,13 @@ import javax.swing.SwingUtilities;
 import junit.framework.Assert;
 
 import org.jajuk.base.Album;
-import org.jajuk.base.Author;
+import org.jajuk.base.Artist;
 import org.jajuk.base.Device;
 import org.jajuk.base.DeviceManager;
 import org.jajuk.base.Directory;
 import org.jajuk.base.DirectoryManager;
 import org.jajuk.base.FileManager;
-import org.jajuk.base.Style;
+import org.jajuk.base.Genre;
 import org.jajuk.base.Track;
 import org.jajuk.base.Type;
 import org.jajuk.base.Year;
@@ -485,19 +485,19 @@ public class JUnitHelpers {
   @SuppressWarnings("unchecked")
   public
   static org.jajuk.base.File getFile(int i, boolean mount) throws Exception {
-    Style style = new Style(Integer.valueOf(i).toString(), "name");
+    Genre genre = new Genre(Integer.valueOf(i).toString(), "name");
     Album album = new Album(Integer.valueOf(i).toString(), "name", 23);
     album.setProperty(Const.XML_ALBUM_COVER, Const.COVER_NONE); // don't read covers for
     // this test
   
-    Author author = new Author(Integer.valueOf(i).toString(), "name");
+    Artist artist = new Artist(Integer.valueOf(i).toString(), "name");
     Year year = new Year(Integer.valueOf(i).toString(), "2000");
   
     IPlayerImpl imp = new MockPlayer();
     Class<IPlayerImpl> cl = (Class<IPlayerImpl>) imp.getClass();
   
     Type type = new Type(Integer.valueOf(i).toString(), "name", "mp3", cl, null);
-    Track track = new Track(Integer.valueOf(i).toString(), "name", album, style, author, 120, year,
+    Track track = new Track(Integer.valueOf(i).toString(), "name", album, genre, artist, 120, year,
         1, type, 1);
   
     Device device = new Device(Integer.valueOf(i).toString(), "name");
@@ -569,19 +569,19 @@ public class JUnitHelpers {
 
   @SuppressWarnings("unchecked")
   public static Track getTrack(int i) {
-    Style style = new Style(Integer.valueOf(i).toString(), "name");
+    Genre genre = new Genre(Integer.valueOf(i).toString(), "name");
     Album album = new Album(Integer.valueOf(i).toString(), "name", 23);
     album.setProperty(Const.XML_ALBUM_COVER, Const.COVER_NONE); // don't read covers for
     // this test
   
-    Author author = new Author(Integer.valueOf(i).toString(), "name");
+    Artist artist = new Artist(Integer.valueOf(i).toString(), "name");
     Year year = new Year(Integer.valueOf(i).toString(), "2000");
   
     IPlayerImpl imp = new MockPlayer();
     Class<IPlayerImpl> cl = (Class<IPlayerImpl>) imp.getClass();
   
     Type type = new Type(Integer.valueOf(i).toString(), "name", "mp3", cl, null);
-    return new Track(Integer.valueOf(i).toString(), "name", album, style, author, 120, year, 1,
+    return new Track(Integer.valueOf(i).toString(), "name", album, genre, artist, 120, year, 1,
         type, 1);
   }  
 }

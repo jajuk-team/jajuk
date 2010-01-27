@@ -23,8 +23,8 @@ package org.jajuk.services.cddb;
 import org.jajuk.JUnitHelpers;
 import org.jajuk.JajukTestCase;
 import org.jajuk.base.Album;
-import org.jajuk.base.Author;
-import org.jajuk.base.Style;
+import org.jajuk.base.Artist;
+import org.jajuk.base.Genre;
 import org.jajuk.base.Track;
 import org.jajuk.base.Type;
 import org.jajuk.base.Year;
@@ -82,16 +82,16 @@ public class TestCDDBTrack extends JajukTestCase {
   }
 
   private Track getTrack(int i) {
-    Style style = new Style(Integer.valueOf(i).toString(), "name");
+    Genre genre = new Genre(Integer.valueOf(i).toString(), "name");
     Album album = new Album(Integer.valueOf(i).toString(), "name", 23);
     album.setProperty(Const.XML_ALBUM_COVER, Const.COVER_NONE); // don't read covers for
     // this test
 
-    Author author = new Author(Integer.valueOf(i).toString(), "name");
+    Artist artist = new Artist(Integer.valueOf(i).toString(), "name");
     Year year = new Year(Integer.valueOf(i).toString(), "2000");
 
     Type type = new Type(Integer.valueOf(i).toString(), "name", "mp3", null, null);
-    return new Track(Integer.valueOf(i).toString(), "name", album, style, author, 120, year, 1,
+    return new Track(Integer.valueOf(i).toString(), "name", album, genre, artist, 120, year, 1,
         type, 1);
   }
 

@@ -32,12 +32,12 @@ import org.jajuk.util.Messages;
  * Logical item.
  * <p>
  * Album artist objects are not widely used in jajuk (mainly in tracks tree view), 
- * so we leverage the Author and AuthorManager classes to limit complexity and 
- * code duplication. The drawback is the need for casts from Author to AlbumArtist.
+ * so we leverage the Artist and ArtistManager classes to limit complexity and 
+ * code duplication. The drawback is the need for casts from Artist to AlbumArtist.
  * </p>
  * 
  */
-public class AlbumArtist extends Author {
+public class AlbumArtist extends Artist {
   
    /**
    * Builds an album-artist.
@@ -77,6 +77,6 @@ public class AlbumArtist extends Author {
    */
   @Override
   public ImageIcon getIconRepresentation() {
-    return IconLoader.getIcon(JajukIcons.AUTHOR);
+    return IconLoader.getIcon(JajukIcons.ARTIST);
   }
 }

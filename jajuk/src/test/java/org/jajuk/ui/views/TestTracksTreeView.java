@@ -36,8 +36,8 @@ import javax.swing.tree.TreePath;
 import org.jajuk.JUnitHelpers;
 import org.jajuk.JajukTestCase;
 import org.jajuk.base.Album;
-import org.jajuk.base.Author;
-import org.jajuk.base.Style;
+import org.jajuk.base.Artist;
+import org.jajuk.base.Genre;
 import org.jajuk.base.Track;
 import org.jajuk.base.Type;
 import org.jajuk.base.Year;
@@ -202,13 +202,13 @@ public class TestTracksTreeView extends JajukTestCase {
 
   /**
    * Test method for
-   * {@link org.jajuk.ui.views.TracksTreeView#populateTreeByStyle()}.
+   * {@link org.jajuk.ui.views.TracksTreeView#populateTreeByGenre()}.
    */
-  public final void testPopulateTreeByStyle() {
+  public final void testPopulateTreeByGenre() {
     TracksTreeView view = new TracksTreeView();
 
     try {
-      view.populateTreeByStyle();
+      view.populateTreeByGenre();
     } catch (NullPointerException e) {
       // reported on headless settings
     }
@@ -216,13 +216,13 @@ public class TestTracksTreeView extends JajukTestCase {
 
   /**
    * Test method for
-   * {@link org.jajuk.ui.views.TracksTreeView#populateTreeByAuthor()}.
+   * {@link org.jajuk.ui.views.TracksTreeView#populateTreeByArtist()}.
    */
-  public final void testPopulateTreeByAuthor() {
+  public final void testPopulateTreeByArtist() {
     TracksTreeView view = new TracksTreeView();
 
     try {
-      view.populateTreeByAuthor();
+      view.populateTreeByArtist();
     } catch (NullPointerException e) {
       // reported on headless settings
     }
@@ -363,36 +363,36 @@ public class TestTracksTreeView extends JajukTestCase {
     }
   }
 
-  public final void testStyleNode() {
-    StyleNode ad = new StyleNode(getStyle());
+  public final void testGenreNode() {
+    GenreNode ad = new GenreNode(getGenre());
     assertNotNull(ad);
 
     JUnitHelpers.ToStringTest(ad);
-    assertNotNull(ad.getStyle());
-    assertEquals("1", ad.getStyle().getID());
+    assertNotNull(ad.getGenre());
+    assertEquals("1", ad.getGenre().getID());
   }
 
   /**
    * @return
    */
-  private Style getStyle() {
-    return new Style("1", "name");
+  private Genre getGenre() {
+    return new Genre("1", "name");
   }
 
-  public final void testAuthorNode() {
-    AuthorNode ad = new AuthorNode(getAuthor());
+  public final void testArtistNode() {
+    ArtistNode ad = new ArtistNode(getArtist());
     assertNotNull(ad);
 
     JUnitHelpers.ToStringTest(ad);
-    assertNotNull(ad.getAuthor());
-    assertEquals("1", ad.getAuthor().getID());
+    assertNotNull(ad.getArtist());
+    assertEquals("1", ad.getArtist().getID());
   }
 
   /**
    * @return
    */
-  private Author getAuthor() {
-    return new Author("1", "name");
+  private Artist getArtist() {
+    return new Artist("1", "name");
   }
 
   public final void testYearNode() {
@@ -440,7 +440,7 @@ public class TestTracksTreeView extends JajukTestCase {
    * @return
    */
   private Track getTrack() {
-    return new Track("1", "name", getAlbum(), getStyle(), getAuthor(), 123, getYear(), 1, new Type(
+    return new Track("1", "name", getAlbum(), getGenre(), getArtist(), 123, getYear(), 1, new Type(
         "3", "name", "ext", null, null), 1);
   }
 
@@ -455,11 +455,11 @@ public class TestTracksTreeView extends JajukTestCase {
 
     Icon icon = ad.getIcon();
     // make sure we have a different icon after each call
-    assertNotNull(ad.getTreeCellRendererComponent(new JTree(), new StyleNode(getStyle()), true,
+    assertNotNull(ad.getTreeCellRendererComponent(new JTree(), new GenreNode(getGenre()), true,
         true, true, 1, true));
     assertFalse(ad.getIcon().equals(icon));
     icon = ad.getIcon();
-    assertNotNull(ad.getTreeCellRendererComponent(new JTree(), new AuthorNode(getAuthor()), true,
+    assertNotNull(ad.getTreeCellRendererComponent(new JTree(), new ArtistNode(getArtist()), true,
         true, true, 1, true));
     assertFalse(icon.equals(ad.getIcon()));
     icon = ad.getIcon();
@@ -490,39 +490,39 @@ public class TestTracksTreeView extends JajukTestCase {
     assertNotNull(ad);
 
     {
-      Style style = getStyle();
-      assertNull(style.getProperties().get(Const.XML_EXPANDED));
-      ad.treeExpanded(new TreeExpansionEvent("dummy", new TreePath(new StyleNode(style))));
-      assertEquals(true, style.getProperties().get(Const.XML_EXPANDED));
-      ad.treeCollapsed(new TreeExpansionEvent("dummy", new TreePath(new StyleNode(style))));
-      assertNull(style.getProperties().get(Const.XML_EXPANDED));
+      Genre genre = getGenre();
+      assertNull(genre.getProperties().get(Const.XML_EXPANDED));
+      ad.treeExpanded(new TreeExpansionEvent("dummy", new TreePath(new GenreNode(genre))));
+      assertEquals(true, genre.getProperties().get(Const.XML_EXPANDED));
+      ad.treeCollapsed(new TreeExpansionEvent("dummy", new TreePath(new GenreNode(genre))));
+      assertNull(genre.getProperties().get(Const.XML_EXPANDED));
     }
 
     {
-      Author style = getAuthor();
-      assertNull(style.getProperties().get(Const.XML_EXPANDED));
-      ad.treeExpanded(new TreeExpansionEvent("dummy", new TreePath(new AuthorNode(style))));
-      assertEquals(true, style.getProperties().get(Const.XML_EXPANDED));
-      ad.treeCollapsed(new TreeExpansionEvent("dummy", new TreePath(new AuthorNode(style))));
-      assertNull(style.getProperties().get(Const.XML_EXPANDED));
+      Artist genre = getArtist();
+      assertNull(genre.getProperties().get(Const.XML_EXPANDED));
+      ad.treeExpanded(new TreeExpansionEvent("dummy", new TreePath(new ArtistNode(genre))));
+      assertEquals(true, genre.getProperties().get(Const.XML_EXPANDED));
+      ad.treeCollapsed(new TreeExpansionEvent("dummy", new TreePath(new ArtistNode(genre))));
+      assertNull(genre.getProperties().get(Const.XML_EXPANDED));
     }
 
     {
-      Album style = getAlbum();
-      assertNull(style.getProperties().get(Const.XML_EXPANDED));
-      ad.treeExpanded(new TreeExpansionEvent("dummy", new TreePath(new AlbumNode(style))));
-      assertEquals(true, style.getProperties().get(Const.XML_EXPANDED));
-      ad.treeCollapsed(new TreeExpansionEvent("dummy", new TreePath(new AlbumNode(style))));
-      assertNull(style.getProperties().get(Const.XML_EXPANDED));
+      Album genre = getAlbum();
+      assertNull(genre.getProperties().get(Const.XML_EXPANDED));
+      ad.treeExpanded(new TreeExpansionEvent("dummy", new TreePath(new AlbumNode(genre))));
+      assertEquals(true, genre.getProperties().get(Const.XML_EXPANDED));
+      ad.treeCollapsed(new TreeExpansionEvent("dummy", new TreePath(new AlbumNode(genre))));
+      assertNull(genre.getProperties().get(Const.XML_EXPANDED));
     }
 
     {
-      Year style = getYear();
-      assertNull(style.getProperties().get(Const.XML_EXPANDED));
-      ad.treeExpanded(new TreeExpansionEvent("dummy", new TreePath(new YearNode(style))));
-      assertEquals(true, style.getProperties().get(Const.XML_EXPANDED));
-      ad.treeCollapsed(new TreeExpansionEvent("dummy", new TreePath(new YearNode(style))));
-      assertNull(style.getProperties().get(Const.XML_EXPANDED));
+      Year genre = getYear();
+      assertNull(genre.getProperties().get(Const.XML_EXPANDED));
+      ad.treeExpanded(new TreeExpansionEvent("dummy", new TreePath(new YearNode(genre))));
+      assertEquals(true, genre.getProperties().get(Const.XML_EXPANDED));
+      ad.treeCollapsed(new TreeExpansionEvent("dummy", new TreePath(new YearNode(genre))));
+      assertNull(genre.getProperties().get(Const.XML_EXPANDED));
     }
   }
 }

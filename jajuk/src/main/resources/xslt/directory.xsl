@@ -86,11 +86,11 @@
 				</th>
 				<th>
 					<xsl:value-of
-						select='/collection/i18n/ReportAction.style' />
+						select='/collection/i18n/ReportAction.genre' />
 				</th>
 				<th>
 					<xsl:value-of
-						select='/collection/i18n/ReportAction.author' />
+						select='/collection/i18n/ReportAction.artist' />
 				</th>
 				<th>
 					<xsl:value-of
@@ -121,11 +121,11 @@
 					<td class='track'>
 						<xsl:value-of select='track/name' />
 					</td>
-					<td class='style'>
-						<xsl:value-of select='track/style' />
+					<td class='genre'>
+						<xsl:value-of select='track/genre' />
 					</td>
-					<td class='author'>
-						<xsl:value-of select='track/author' />
+					<td class='artist'>
+						<xsl:value-of select='track/artist' />
 					</td>
 					<td class='album'>
 						<xsl:value-of select='track/album' />

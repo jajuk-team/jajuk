@@ -49,14 +49,14 @@ public interface ITagImpl {
   String getAlbumName() throws Exception;
 
   /**
-   * Gets the author name.
+   * Gets the artist name.
    * 
-   * @return author name
+   * @return artist name
    * 
    * @throws Exception
    *           the exception
    */
-  String getAuthorName() throws Exception;
+  String getArtistName() throws Exception;
 
   /**
    * Gets the album artist.
@@ -79,14 +79,14 @@ public interface ITagImpl {
   long getDiscNumber() throws Exception;
 
   /**
-   * Gets the style name.
+   * Gets the genre name.
    * 
-   * @return style name
+   * @return genre name
    * 
    * @throws Exception
    *           the exception
    */
-  String getStyleName() throws Exception;
+  String getGenreName() throws Exception;
 
   /**
    * Gets the length.
@@ -171,15 +171,15 @@ public interface ITagImpl {
   void setAlbumName(String sAlbumName) throws Exception;
 
   /**
-   * Sets the author name.
+   * Sets the artist name.
    * 
-   * @param sAuthorName
+   * @param sArtistName
    *          DOCUMENT_ME
    * 
    * @throws Exception
    *           the exception
    */
-  void setAuthorName(String sAuthorName) throws Exception;
+  void setArtistName(String sArtistName) throws Exception;
 
   /**
    * Sets the album artist.
@@ -204,15 +204,15 @@ public interface ITagImpl {
   void setDiscNumber(long discnumber) throws Exception;
 
   /**
-   * Sets the style name.
+   * Sets the genre name.
    * 
-   * @param style
+   * @param genre
    *          DOCUMENT_ME
    * 
    * @throws Exception
    *           the exception
    */
-  void setStyleName(String style) throws Exception;
+  void setGenreName(String genre) throws Exception;
 
   /**
    * Sets the year.

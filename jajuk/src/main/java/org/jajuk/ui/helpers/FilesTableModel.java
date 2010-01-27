@@ -66,61 +66,61 @@ public class FilesTableModel extends JajukTableModel {
     vColNames.add(" ");
     idList.add(Const.XML_PLAY);
 
-    vColNames.add(Messages.getString(Const.PROPERTY_SEPARATOR + Const.XML_NAME));
+    vColNames.add(Messages.getString("Property_name"));
     idList.add(Const.XML_TRACK);
 
-    vColNames.add(Messages.getString(Const.PROPERTY_SEPARATOR + Const.XML_ALBUM));
+    vColNames.add(Messages.getString("Property_album"));
     idList.add(Const.XML_ALBUM);
 
-    vColNames.add(Messages.getString(Const.PROPERTY_SEPARATOR + Const.XML_AUTHOR));
-    idList.add(Const.XML_AUTHOR);
+    vColNames.add(Messages.getString("Property_artist"));
+    idList.add(Const.XML_ARTIST);
 
-    vColNames.add(Messages.getString(Const.PROPERTY_SEPARATOR + Const.XML_ALBUM_ARTIST));
+    vColNames.add(Messages.getString("Property_album_artist"));
     idList.add(Const.XML_ALBUM_ARTIST);
 
-    vColNames.add(Messages.getString(Const.PROPERTY_SEPARATOR + Const.XML_STYLE));
-    idList.add(Const.XML_STYLE);
+    vColNames.add(Messages.getString("Property_genre"));
+    idList.add(Const.XML_GENRE);
 
-    vColNames.add(Messages.getString(Const.PROPERTY_SEPARATOR + Const.XML_TRACK_RATE));
+    vColNames.add(Messages.getString("Property_rate"));
     idList.add(Const.XML_TRACK_RATE);
 
-    vColNames.add(Messages.getString(Const.PROPERTY_SEPARATOR + Const.XML_TRACK_LENGTH));
+    vColNames.add(Messages.getString("Property_length"));
     idList.add(Const.XML_TRACK_LENGTH);
 
-    vColNames.add(Messages.getString(Const.PROPERTY_SEPARATOR + Const.XML_DEVICE));
+    vColNames.add(Messages.getString("Property_device"));
     idList.add(Const.XML_DEVICE);
 
-    vColNames.add(Messages.getString(Const.PROPERTY_SEPARATOR + Const.XML_FILE_NAME));
+    vColNames.add(Messages.getString("Property_filename"));
     idList.add(Const.XML_NAME);
 
-    vColNames.add(Messages.getString(Const.PROPERTY_SEPARATOR + Const.XML_TRACK_COMMENT));
+    vColNames.add(Messages.getString("Property_comment"));
     idList.add(Const.XML_TRACK_COMMENT);
 
-    vColNames.add(Messages.getString(Const.PROPERTY_SEPARATOR + Const.XML_QUALITY));
+    vColNames.add(Messages.getString("Property_quality"));
     idList.add(Const.XML_QUALITY);
 
-    vColNames.add(Messages.getString(Const.PROPERTY_SEPARATOR + Const.XML_SIZE));
+    vColNames.add(Messages.getString("Property_size"));
     idList.add(Const.XML_SIZE);
 
-    vColNames.add(Messages.getString(Const.PROPERTY_SEPARATOR + Const.XML_TRACK_ORDER));
+    vColNames.add(Messages.getString("Property_order"));
     idList.add(Const.XML_TRACK_ORDER);
 
-    vColNames.add(Messages.getString(Const.PROPERTY_SEPARATOR + Const.XML_TRACK_DISC_NUMBER));
+    vColNames.add(Messages.getString("Property_disc_number"));
     idList.add(Const.XML_TRACK_DISC_NUMBER);
 
-    vColNames.add(Messages.getString(Const.PROPERTY_SEPARATOR + Const.XML_YEAR));
+    vColNames.add(Messages.getString("Property_year"));
     idList.add(Const.XML_YEAR);
 
-    vColNames.add(Messages.getString(Const.PROPERTY_SEPARATOR + Const.XML_DIRECTORY));
+    vColNames.add(Messages.getString("Property_directory"));
     idList.add(Const.XML_DIRECTORY);
 
-    vColNames.add(Messages.getString(Const.PROPERTY_SEPARATOR + Const.XML_FILE_DATE));
+    vColNames.add(Messages.getString("Property_date"));
     idList.add(Const.XML_FILE_DATE);
 
-    vColNames.add(Messages.getString(Const.PROPERTY_SEPARATOR + Const.XML_TRACK_HITS));
+    vColNames.add(Messages.getString("Property_hits"));
     idList.add(Const.XML_TRACK_HITS);
 
-    vColNames.add(Messages.getString(Const.PROPERTY_SEPARATOR + Const.XML_TRACK_DISCOVERY_DATE));
+    vColNames.add(Messages.getString("Property_added"));
     idList.add(Const.XML_TRACK_DISCOVERY_DATE);
 
     // -- Custom properties now--
@@ -187,9 +187,9 @@ public class FilesTableModel extends JajukTableModel {
     // For perfs, prepare columns visibility
     boolean bTrackName = (columnsToShow != null && columnsToShow.contains(Const.XML_TRACK));
     boolean bAlbum = (columnsToShow != null && columnsToShow.contains(Const.XML_ALBUM));
-    boolean bAuthor = (columnsToShow != null && columnsToShow.contains(Const.XML_AUTHOR));
+    boolean bArtist = (columnsToShow != null && columnsToShow.contains(Const.XML_ARTIST));
     boolean bAlbumArtist = (columnsToShow != null && columnsToShow.contains(Const.XML_ALBUM_ARTIST));
-    boolean bStyle = (columnsToShow != null && columnsToShow.contains(Const.XML_STYLE));
+    boolean bGenre = (columnsToShow != null && columnsToShow.contains(Const.XML_GENRE));
     boolean bRate = (columnsToShow != null && columnsToShow.contains(Const.XML_TRACK_RATE));
     boolean bLength = (columnsToShow != null && columnsToShow.contains(Const.XML_TRACK_LENGTH));
     boolean bDevice = (columnsToShow != null && columnsToShow.contains(Const.XML_DEVICE));
@@ -245,9 +245,9 @@ public class FilesTableModel extends JajukTableModel {
       }
       bCellEditable[iRow][2] = bHasATagEditor;
 
-      // Author
-      if (bAuthor) {
-        oValues[iRow][3] = file.getTrack().getAuthor().getName2();
+      // Artist
+      if (bArtist) {
+        oValues[iRow][3] = file.getTrack().getArtist().getName2();
       } else {
         oValues[iRow][3] = "";
       }
@@ -261,9 +261,9 @@ public class FilesTableModel extends JajukTableModel {
       }
       bCellEditable[iRow][4] = bHasATagEditor;
 
-      // Style
-      if (bStyle) {
-        oValues[iRow][5] = file.getTrack().getStyle().getName2();
+      // Genre
+      if (bGenre) {
+        oValues[iRow][5] = file.getTrack().getGenre().getName2();
       } else {
         oValues[iRow][5] = "";
       }

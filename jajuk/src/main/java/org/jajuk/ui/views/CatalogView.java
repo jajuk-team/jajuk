@@ -225,8 +225,8 @@ public class CatalogView extends ViewAdapter implements ComponentListener, Actio
     jlSorter = new JLabel(Messages.getString("Sort") + " ");
     jcbSorter = new SteppedComboBox();
     jcbSorter.setEditable(false);
-    // note that a single album can contains tracks with different authors
-    // or styles, we will show it only one
+    // note that a single album can contains tracks with different artists
+    // or genres, we will show it only one
     for (PropertyMetaInformation meta : alSorters) {
       jcbSorter.addItem(meta.getHumanName());
     }
@@ -237,8 +237,8 @@ public class CatalogView extends ViewAdapter implements ComponentListener, Actio
     jlContains = new JLabel("   " + Messages.getString("AbstractTableView.7") + " ");
     jcbFilter = new SteppedComboBox();
     jcbFilter.setEditable(false);
-    // note that a single album can contains tracks with different authors
-    // or styles, we will show it only one
+    // note that a single album can contains tracks with different artists
+    // or genres, we will show it only one
     for (PropertyMetaInformation meta : alFilters) {
       if (meta == null) { // "any" filter
         jcbFilter.addItem(Messages.getString("AbstractTableView.8"));
@@ -334,16 +334,16 @@ public class CatalogView extends ViewAdapter implements ComponentListener, Actio
   private void initMetaInformation() {
     alFilters = new ArrayList<PropertyMetaInformation>(10);
     alFilters.add(null); // All
-    alFilters.add(TrackManager.getInstance().getMetaInformation(Const.XML_TRACK_STYLE));
-    alFilters.add(TrackManager.getInstance().getMetaInformation(Const.XML_TRACK_AUTHOR));
+    alFilters.add(TrackManager.getInstance().getMetaInformation(Const.XML_TRACK_GENRE));
+    alFilters.add(TrackManager.getInstance().getMetaInformation(Const.XML_TRACK_ARTIST));
     alFilters.add(TrackManager.getInstance().getMetaInformation(Const.XML_TRACK_ALBUM));
     alFilters.add(TrackManager.getInstance().getMetaInformation(Const.XML_YEAR));
 
     // please note: this needs to be kept in-sync with what we do in
     // AlbumComparator!
     alSorters = new ArrayList<PropertyMetaInformation>(10);
-    alSorters.add(TrackManager.getInstance().getMetaInformation(Const.XML_TRACK_STYLE));
-    alSorters.add(TrackManager.getInstance().getMetaInformation(Const.XML_TRACK_AUTHOR));
+    alSorters.add(TrackManager.getInstance().getMetaInformation(Const.XML_TRACK_GENRE));
+    alSorters.add(TrackManager.getInstance().getMetaInformation(Const.XML_TRACK_ARTIST));
     alSorters.add(TrackManager.getInstance().getMetaInformation(Const.XML_TRACK_ALBUM));
     alSorters.add(TrackManager.getInstance().getMetaInformation(Const.XML_YEAR));
     alSorters.add(TrackManager.getInstance().getMetaInformation(Const.XML_TRACK_DISCOVERY_DATE));

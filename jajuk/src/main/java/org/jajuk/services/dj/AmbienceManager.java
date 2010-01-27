@@ -33,8 +33,8 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.StringTokenizer;
 
-import org.jajuk.base.Style;
-import org.jajuk.base.StyleManager;
+import org.jajuk.base.Genre;
+import org.jajuk.base.GenreManager;
 import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
@@ -85,7 +85,7 @@ public final class AmbienceManager implements Observer {
   }
 
   /**
-   * Load properties from in file Format: jajuk.ambience.<ID>/<name>=style1,style2,...
+   * Load properties from in file Format: jajuk.ambience.<ID>/<name>=genre1,genre2,...
    */
   public void load() {
     // if first startup, define default ambiences
@@ -99,12 +99,12 @@ public final class AmbienceManager implements Observer {
     while (e.hasMoreElements()) {
       String sKey = (String) e.nextElement();
       if (sKey.matches(Const.AMBIENCE_PREFIX + ".*")) {
-        Set<Style> styles = new HashSet<Style>(10);
+        Set<Genre> genres = new HashSet<Genre>(10);
         StringTokenizer st = new StringTokenizer((String) properties.get(sKey), ",");
         while (st.hasMoreTokens()) {
-          Style style = StyleManager.getInstance().getStyleByID(st.nextToken());
-          if (style != null) {
-            styles.add(style);
+          Genre genre = GenreManager.getInstance().getGenreByID(st.nextToken());
+          if (genre != null) {
+            genres.add(genre);
           }
         }
         String ambienceDesc = sKey.substring(Const.AMBIENCE_PREFIX.length());
@@ -114,11 +114,11 @@ public final class AmbienceManager implements Observer {
         }
         String ambienceID = ambienceDesc.substring(0, index);
         String ambienceName = ambienceDesc.substring(index + 1);
-        Ambience ambience = new Ambience(ambienceID, ambienceName, styles);
+        Ambience ambience = new Ambience(ambienceID, ambienceName, genres);
         ambiences.put(ambienceID, ambience);
       }
     }
-    // If none ambience, means ambience can have been reset after a style
+    // If none ambience, means ambience can have been reset after a genre
     // hashcode computation change, reset to defaults
     if (ambiences.size() == 0) {
       Log.debug("No ambiences loaded, creating default Ambiences.");
@@ -192,13 +192,13 @@ public final class AmbienceManager implements Observer {
     JajukEvents subject = event.getSubject();
     if (JajukEvents.STYLE_NAME_CHANGED.equals(subject)) {
       Properties properties = event.getDetails();
-      Style old = (Style) properties.get(Const.DETAIL_OLD);
-      Style newStyle = (Style) properties.get(Const.DETAIL_NEW);
-      // replace style into all styles
+      Genre old = (Genre) properties.get(Const.DETAIL_OLD);
+      Genre newGenre = (Genre) properties.get(Const.DETAIL_NEW);
+      // replace genre into all genres
       for (Ambience ambience : ambiences.values()) {
-        if (ambience.getStyles().contains(old)) {
-          ambience.removeStyle(old);
-          ambience.addStyle(newStyle);
+        if (ambience.getGenres().contains(old)) {
+          ambience.removeGenre(old);
+          ambience.addGenre(newGenre);
         }
       }
     }
@@ -219,13 +219,13 @@ public final class AmbienceManager implements Observer {
     }
     // now create and set each ambience
     for (Ambience ambience : ambiences.values()) {
-      if (ambience.getStyles().size() > 0) {
-        StringBuilder styles = new StringBuilder();
-        for (Style style : ambience.getStyles()) {
-          styles.append(style.getID()).append(',');
+      if (ambience.getGenres().size() > 0) {
+        StringBuilder genres = new StringBuilder();
+        for (Genre genre : ambience.getGenres()) {
+          genres.append(genre.getID()).append(',');
         }
         Conf.setProperty(Const.AMBIENCE_PREFIX + ambience.getID() + '/' + ambience.getName(),
-            styles.toString().substring(0, styles.length() - 1));
+            genres.toString().substring(0, genres.length() - 1));
       }
     }
   }
@@ -247,65 +247,65 @@ public final class AmbienceManager implements Observer {
    * Create out of the box ambiences.
    */
   public void createDefaultAmbiences() {
-    // Define default ambience by style name
-    String[] stylesRockPop = new String[] { "Classic Rock", "Pop", "Rock", "Ska", "AlternRock",
+    // Define default ambience by genre name
+    String[] genresRockPop = new String[] { "Classic Rock", "Pop", "Rock", "Ska", "AlternRock",
         "Instrumental Pop", "Instrumental Rock", "Southern Rock", "Pop/Funk", "Folk-Rock",
         "Rock & Roll", "Symphonic Rock", "Ballad", "Christian Rock", "JPop", "SynthPop" };
     AmbienceManager.getInstance().registerAmbience(
-        new Ambience("0", Messages.getString("Ambience.0"), stylesRockPop));
-    String[] stylesRap = new String[] { "Hip-Hop", "R&B", "Rap", "Fusion", "Gangsta",
+        new Ambience("0", Messages.getString("Ambience.0"), genresRockPop));
+    String[] genresRap = new String[] { "Hip-Hop", "R&B", "Rap", "Fusion", "Gangsta",
         "Christian Rap", "Porn Groove", "Rhytmic Soul", "Christian Gangsta" };
     AmbienceManager.getInstance().registerAmbience(
-        new Ambience("1", Messages.getString("Ambience.1"), stylesRap));
-    String[] stylesHardRock = new String[] { "Grunge", "Metal", "Industrial", "Death Metal",
+        new Ambience("1", Messages.getString("Ambience.1"), genresRap));
+    String[] genresHardRock = new String[] { "Grunge", "Metal", "Industrial", "Death Metal",
         "Fusion", "Punk", "Gothic", "Darkwave", "Fast Fusion", "Hard Rock", "Gothic Rock",
         "Progressive Rock", "Punk Rock", "Terror", "Negerpunk", "Polsk Punk", "Heavy Metal",
         "Black Metal", "Thrash Metal" };
     AmbienceManager.getInstance().registerAmbience(
-        new Ambience("2", Messages.getString("Ambience.2"), stylesHardRock));
-    String[] stylesTechno = new String[] { "Dance", "New Age", "Techno", "Euro-Techno", "Ambient",
+        new Ambience("2", Messages.getString("Ambience.2"), genresHardRock));
+    String[] genresTechno = new String[] { "Dance", "New Age", "Techno", "Euro-Techno", "Ambient",
         "Trance", "House", "Game", "Space", "Techno-Industrial", "Eurodance", "Dream", "Jungle",
         "Rave", "Euro-House", "Goa", "Club-House", "Hardcore", "Beat" };
     AmbienceManager.getInstance().registerAmbience(
-        new Ambience("3", Messages.getString("Ambience.3"), stylesTechno));
-    String[] stylesElectro = new String[] { "Trip-Hop", "Acid", "Electronic", "Club" };
+        new Ambience("3", Messages.getString("Ambience.3"), genresTechno));
+    String[] genresElectro = new String[] { "Trip-Hop", "Acid", "Electronic", "Club" };
     AmbienceManager.getInstance().registerAmbience(
-        new Ambience("4", Messages.getString("Ambience.4"), stylesElectro));
-    String[] stylesClassical = new String[] { "Classical", "Chorus", "Opera", "Chamber Music",
+        new Ambience("4", Messages.getString("Ambience.4"), genresElectro));
+    String[] genresClassical = new String[] { "Classical", "Chorus", "Opera", "Chamber Music",
         "Sonata", "Symphony" };
     AmbienceManager.getInstance().registerAmbience(
-        new Ambience("5", Messages.getString("Ambience.5"), stylesClassical));
-    String[] stylesSoft = new String[] { "Reggae", "Acid Jazz", "Slow Rock", "Jazz",
+        new Ambience("5", Messages.getString("Ambience.5"), genresClassical));
+    String[] genresSoft = new String[] { "Reggae", "Acid Jazz", "Slow Rock", "Jazz",
         "Easy Listening", "Acoustic", "Ballad" };
     AmbienceManager.getInstance().registerAmbience(
-        new Ambience("6", Messages.getString("Ambience.6"), stylesSoft));
-    String[] stylesParty = new String[] { "Dance", "Disco", "Funk", "Ska", "Soul", "Eurodance",
+        new Ambience("6", Messages.getString("Ambience.6"), genresSoft));
+    String[] genresParty = new String[] { "Dance", "Disco", "Funk", "Ska", "Soul", "Eurodance",
         "Big Band", "Club", "Rhytmic Soul", "Dance Hall", "Club-House" };
     AmbienceManager.getInstance().registerAmbience(
-        new Ambience("7", Messages.getString("Ambience.7"), stylesParty));
-    String[] stylesJazzBlues = new String[] { "Jazz", "Jazz+Funk", "Bass", "Acid Jazz" };
+        new Ambience("7", Messages.getString("Ambience.7"), genresParty));
+    String[] genresJazzBlues = new String[] { "Jazz", "Jazz+Funk", "Bass", "Acid Jazz" };
     AmbienceManager.getInstance().registerAmbience(
-        new Ambience("8", Messages.getString("Ambience.8"), stylesJazzBlues));
-    String[] stylesWorld = new String[] { "Ethnic", "Native American", "Tribal", "Polka", "Celtic",
+        new Ambience("8", Messages.getString("Ambience.8"), genresJazzBlues));
+    String[] genresWorld = new String[] { "Ethnic", "Native American", "Tribal", "Polka", "Celtic",
         "Folklore", "Indie" };
     AmbienceManager.getInstance().registerAmbience(
-        new Ambience("9", Messages.getString("Ambience.9"), stylesWorld));
-    String[] stylesOthers = new String[] { "Other", "Alternative", "Soundtrack", "Vocal",
+        new Ambience("9", Messages.getString("Ambience.9"), genresWorld));
+    String[] genresOthers = new String[] { "Other", "Alternative", "Soundtrack", "Vocal",
         "Meditative", "Comedy", "Humour", "Speech", "Anime" };
     AmbienceManager.getInstance().registerAmbience(
-        new Ambience("10", Messages.getString("Ambience.10"), stylesOthers));
-    String[] stylesFolkOldies = new String[] { "Country", "Oldies", "Gospel", "Pop-Folk",
+        new Ambience("10", Messages.getString("Ambience.10"), genresOthers));
+    String[] genresFolkOldies = new String[] { "Country", "Oldies", "Gospel", "Pop-Folk",
         "Southern Rock", "Cabaret", "Retro", "Folk-Rock", "National Folk", "Swing", "Rock & Roll",
         "Folk", "Revival", "Chanson" };
     AmbienceManager.getInstance().registerAmbience(
-        new Ambience("11", Messages.getString("Ambience.11"), stylesFolkOldies));
-    String[] stylesInde = new String[] { "Noise", "AlternRock", "New Wave", "Psychedelic",
-        "Acid Punk", "Avantgarde", "Psychedelic Rock", "Freestyle", "Drum Solo", "Drum & Bass" };
+        new Ambience("11", Messages.getString("Ambience.11"), genresFolkOldies));
+    String[] genresInde = new String[] { "Noise", "AlternRock", "New Wave", "Psychedelic",
+        "Acid Punk", "Avantgarde", "Psychedelic Rock", "Freegenre", "Drum Solo", "Drum & Bass" };
     AmbienceManager.getInstance().registerAmbience(
-        new Ambience("12", Messages.getString("Ambience.12"), stylesInde));
-    String[] stylesLatin = new String[] { "Latin", "Tango", "Samba", "Acapella", "Salsa" };
+        new Ambience("12", Messages.getString("Ambience.12"), genresInde));
+    String[] genresLatin = new String[] { "Latin", "Tango", "Samba", "Acapella", "Salsa" };
     AmbienceManager.getInstance().registerAmbience(
-        new Ambience("13", Messages.getString("Ambience.13"), stylesLatin));
+        new Ambience("13", Messages.getString("Ambience.13"), genresLatin));
   }
 
 }

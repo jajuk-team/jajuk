@@ -31,15 +31,15 @@ import java.util.TreeSet;
 
 import org.jajuk.base.Album;
 import org.jajuk.base.AlbumManager;
-import org.jajuk.base.Author;
-import org.jajuk.base.AuthorManager;
+import org.jajuk.base.Artist;
+import org.jajuk.base.ArtistManager;
 import org.jajuk.base.Device;
 import org.jajuk.base.DeviceManager;
 import org.jajuk.base.Directory;
 import org.jajuk.base.DirectoryManager;
 import org.jajuk.base.Item;
-import org.jajuk.base.Style;
-import org.jajuk.base.StyleManager;
+import org.jajuk.base.Genre;
+import org.jajuk.base.GenreManager;
 import org.jajuk.base.Track;
 import org.jajuk.base.TrackManager;
 import org.jajuk.base.Year;
@@ -80,7 +80,7 @@ public class XMLExporter extends Exporter {
   /**
    * This method will create a tagging of the specified item.
    * 
-   * @param item The item to report (can be an album, a year, an author ,a style, a
+   * @param item The item to report (can be an album, a year, an artist, a genre, a
    * directory or a device)
    * 
    * @return Returns a string containing the report, or null if an error
@@ -91,10 +91,10 @@ public class XMLExporter extends Exporter {
   public void process(Item item) throws Exception {
     if (item instanceof Album) {
       process((Album) item);
-    } else if (item instanceof Author) {
-      process((Author) item);
-    } else if (item instanceof Style) {
-      process((Style) item);
+    } else if (item instanceof Artist) {
+      process((Artist) item);
+    } else if (item instanceof Genre) {
+      process((Genre) item);
     } else if (item instanceof Year) {
       process((Year) item);
     } else if (item instanceof Directory) {
@@ -139,35 +139,35 @@ public class XMLExporter extends Exporter {
   }
 
   /**
-   * This method will create a tagging of the specified author and its albums
+   * This method will create a tagging of the specified artist and its albums
    * and associated tracks.
    * 
-   * @param author The author to tag.
+   * @param artist The artist to tag.
    * 
    * @return Returns a string containing the tagging, or null if an error
    * occurred.
    * 
    * @throws Exception the exception
    */
-  public void process(Author author) throws Exception {
-    if (author != null) {
-      tagAuthor(author, 0);
+  public void process(Artist artist) throws Exception {
+    if (artist != null) {
+      tagArtist(artist, 0);
     }
   }
 
   /**
-   * This method will create a tagging of the specified style.
+   * This method will create a tagging of the specified genre.
    * 
-   * @param style The style to tag.
+   * @param genre The genre to tag.
    * 
    * @return Returns a string containing the tagging, or null is an error
    * occurred.
    * 
    * @throws Exception the exception
    */
-  public void process(Style style) throws Exception {
-    if (style != null) {
-      tagStyle(style, 0);
+  public void process(Genre genre) throws Exception {
+    if (genre != null) {
+      tagGenre(genre, 0);
     }
   }
 
@@ -222,8 +222,8 @@ public class XMLExporter extends Exporter {
       // Same effect than selecting all devices
       process((List<Item>) DeviceManager.getInstance().getItems());
     } else if (type == LOGICAL_COLLECTION) {
-      // Same effect than selecting all styles
-      process((List<Item>) StyleManager.getInstance().getItems());
+      // Same effect than selecting all genres
+      process((List<Item>) GenreManager.getInstance().getItems());
     }
   }
 
@@ -360,8 +360,8 @@ public class XMLExporter extends Exporter {
   private void tagTrack(Track track, int level) throws Exception {
     String sTrackID = track.getID();
     String sTrackName = UtilString.formatXML(track.getName());
-    String sTrackStyle = UtilString.formatXML(track.getStyle().getName2());
-    String sTrackAuthor = UtilString.formatXML(track.getAuthor().getName2());
+    String sTrackGenre = UtilString.formatXML(track.getGenre().getName2());
+    String sTrackArtist = UtilString.formatXML(track.getArtist().getName2());
     String sTrackAlbum = UtilString.formatXML(track.getAlbum().getName2());
     long lTrackLength = track.getDuration();
     long lTrackRate = track.getRate();
@@ -371,8 +371,8 @@ public class XMLExporter extends Exporter {
     writer.write(addTabs(level) + Tag.openTag(Const.XML_TRACK) + NEWLINE);
     writer.write(addTabs(level + 1) + Tag.tagData(Const.XML_ID, sTrackID) + NEWLINE);
     writer.write(addTabs(level + 1) + Tag.tagData(Const.XML_TRACK_NAME, sTrackName) + NEWLINE);
-    writer.write(addTabs(level + 1) + Tag.tagData(Const.XML_TRACK_STYLE, sTrackStyle) + NEWLINE);
-    writer.write(addTabs(level + 1) + Tag.tagData(Const.XML_TRACK_AUTHOR, sTrackAuthor) + NEWLINE);
+    writer.write(addTabs(level + 1) + Tag.tagData(Const.XML_TRACK_GENRE, sTrackGenre) + NEWLINE);
+    writer.write(addTabs(level + 1) + Tag.tagData(Const.XML_TRACK_ARTIST, sTrackArtist) + NEWLINE);
     writer.write(addTabs(level + 1)
         + Tag.tagData(Const.XML_TRACK_LENGTH, UtilString.formatTimeBySec(lTrackLength)) + NEWLINE);
     writer.write(addTabs(level + 1) + Tag.tagData(Const.XML_TRACK_RATE, lTrackRate) + NEWLINE);
@@ -399,20 +399,20 @@ public class XMLExporter extends Exporter {
   private void tagAlbum(Album album, int level) throws Exception {
     String sAlbumID = album.getID();
     String sAlbumName = UtilString.formatXML(album.getName2());
-    String sStyleName = "";
-    String sAuthorName = "";
+    String sGenreName = "";
+    String sArtistName = "";
     String sYear = "";
     List<Track> tracks = TrackManager.getInstance().getAssociatedTracks(album, true);
     if (tracks.size() > 0) {
-      sStyleName = UtilString.formatXML(tracks.iterator().next().getStyle().getName2());
-      sAuthorName = UtilString.formatXML(tracks.iterator().next().getAuthor().getName2());
+      sGenreName = UtilString.formatXML(tracks.iterator().next().getGenre().getName2());
+      sArtistName = UtilString.formatXML(tracks.iterator().next().getArtist().getName2());
       sYear = tracks.iterator().next().getYear().getName2();
     }
     writer.write(addTabs(level) + Tag.openTag(Const.XML_ALBUM) + NEWLINE);
     writer.write(addTabs(level + 1) + Tag.tagData(Const.XML_ID, sAlbumID) + NEWLINE);
     writer.write(addTabs(level + 1) + Tag.tagData(Const.XML_NAME, sAlbumName) + NEWLINE);
-    writer.write(addTabs(level + 1) + Tag.tagData(Const.XML_AUTHOR, sAuthorName) + NEWLINE);
-    writer.write(addTabs(level + 1) + Tag.tagData(Const.XML_STYLE, sStyleName) + NEWLINE);
+    writer.write(addTabs(level + 1) + Tag.tagData(Const.XML_ARTIST, sArtistName) + NEWLINE);
+    writer.write(addTabs(level + 1) + Tag.tagData(Const.XML_GENRE, sGenreName) + NEWLINE);
     writer.write(addTabs(level + 1) + Tag.tagData(Const.XML_YEAR, sYear) + NEWLINE);
     // For full collection, we don't show detailed tracks for performance
     // reasons
@@ -425,25 +425,25 @@ public class XMLExporter extends Exporter {
   }
 
   /**
-   * Tag author.
+   * Tag artist.
    * DOCUMENT_ME
    * 
-   * @param author DOCUMENT_ME
+   * @param artist DOCUMENT_ME
    * @param level DOCUMENT_ME
    * 
    * @throws Exception the exception
    */
-  private void tagAuthor(Author author, int level) throws Exception {
-    String sAuthorID = author.getID();
-    String sAuthorName = UtilString.formatXML(author.getName2());
-    writer.write(addTabs(level) + Tag.openTag(Const.XML_AUTHOR) + NEWLINE);
-    writer.write(addTabs(level + 1) + Tag.tagData(Const.XML_ID, sAuthorID) + NEWLINE);
-    writer.write(addTabs(level + 1) + Tag.tagData(Const.XML_NAME, sAuthorName) + NEWLINE);
-    List<Album> albums = AlbumManager.getInstance().getAssociatedAlbums(author);
+  private void tagArtist(Artist artist, int level) throws Exception {
+    String sArtistID = artist.getID();
+    String sArtistName = UtilString.formatXML(artist.getName2());
+    writer.write(addTabs(level) + Tag.openTag(Const.XML_ARTIST) + NEWLINE);
+    writer.write(addTabs(level + 1) + Tag.tagData(Const.XML_ID, sArtistID) + NEWLINE);
+    writer.write(addTabs(level + 1) + Tag.tagData(Const.XML_NAME, sArtistName) + NEWLINE);
+    List<Album> albums = AlbumManager.getInstance().getAssociatedAlbums(artist);
     for (Album album : albums) {
       tagAlbum(album, level + 1);
     }
-    writer.write(addTabs(level) + Tag.closeTag(Const.XML_AUTHOR) + NEWLINE);
+    writer.write(addTabs(level) + Tag.closeTag(Const.XML_ARTIST) + NEWLINE);
   }
 
   /**
@@ -469,29 +469,29 @@ public class XMLExporter extends Exporter {
   }
 
   /**
-   * Tag style.
+   * Tag genre.
    * DOCUMENT_ME
    * 
-   * @param style DOCUMENT_ME
+   * @param genre DOCUMENT_ME
    * @param level DOCUMENT_ME
    * 
    * @throws Exception the exception
    */
-  private void tagStyle(Style style, int level) throws Exception {
-    String sStyleID = style.getID();
-    String sStyleName = UtilString.formatXML(style.getName2());
-    writer.write(addTabs(level) + Tag.openTag(Const.XML_STYLE) + NEWLINE);
-    writer.write(addTabs(level + 1) + Tag.tagData(Const.XML_ID, sStyleID) + NEWLINE);
-    writer.write(addTabs(level + 1) + Tag.tagData(Const.XML_NAME, sStyleName) + NEWLINE);
-    List<Album> albums = AlbumManager.getInstance().getAssociatedAlbums(style);
+  private void tagGenre(Genre genre, int level) throws Exception {
+    String sGenreID = genre.getID();
+    String sGenreName = UtilString.formatXML(genre.getName2());
+    writer.write(addTabs(level) + Tag.openTag(Const.XML_GENRE) + NEWLINE);
+    writer.write(addTabs(level + 1) + Tag.tagData(Const.XML_ID, sGenreID) + NEWLINE);
+    writer.write(addTabs(level + 1) + Tag.tagData(Const.XML_NAME, sGenreName) + NEWLINE);
+    List<Album> albums = AlbumManager.getInstance().getAssociatedAlbums(genre);
     for (Album album : albums) {
       tagAlbum(album, level + 1);
     }
-    List<Author> authors = AuthorManager.getInstance().getAssociatedAuthors(style);
-    for (Author author : authors) {
-      tagAuthor(author, level + 1);
+    List<Artist> artists = ArtistManager.getInstance().getAssociatedArtists(genre);
+    for (Artist artist : artists) {
+      tagArtist(artist, level + 1);
     }
-    writer.write(addTabs(level) + Tag.closeTag(Const.XML_STYLE) + NEWLINE);
+    writer.write(addTabs(level) + Tag.closeTag(Const.XML_GENRE) + NEWLINE);
   }
 
   /**
@@ -540,8 +540,8 @@ public class XMLExporter extends Exporter {
       }
       writer.write('\t' + Tag.tagData("ReportAction.name", Messages.getString("Property_name")));
       writer
-          .write('\t' + Tag.tagData("ReportAction.author", Messages.getString("Property_author")));
-      writer.write('\t' + Tag.tagData("ReportAction.style", Messages.getString("Property_style")));
+          .write('\t' + Tag.tagData("ReportAction.artist", Messages.getString("Property_artist")));
+      writer.write('\t' + Tag.tagData("ReportAction.genre", Messages.getString("Property_genre")));
       writer.write('\t' + Tag.tagData("ReportAction.order", Messages.getString("Property_track")));
       writer.write('\t' + Tag.tagData("ReportAction.track", Messages.getString("Item_Track")));
       writer.write('\t' + Tag.tagData("ReportAction.album", Messages.getString("Property_album")));

@@ -60,11 +60,11 @@ import javax.swing.table.TableColumn;
 import net.miginfocom.swing.MigLayout;
 
 import org.jajuk.base.AlbumArtistManager;
-import org.jajuk.base.AuthorManager;
+import org.jajuk.base.ArtistManager;
 import org.jajuk.base.File;
 import org.jajuk.base.Item;
 import org.jajuk.base.ItemManager;
-import org.jajuk.base.StyleManager;
+import org.jajuk.base.GenreManager;
 import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
@@ -586,19 +586,19 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
     for (TableColumn tc : ((DefaultTableColumnModelExt) jtable.getColumnModel()).getColumns(true)) {
       TableColumnExt col = (TableColumnExt) tc;
       String sIdentifier = model.getIdentifier(col.getModelIndex());
-      // create a combo box for styles, note that we can't add new
-      // styles dynamically
-      if (Const.XML_STYLE.equals(sIdentifier)) {
-        JComboBox jcb = new JComboBox(StyleManager.getInstance().getStylesList());
+      // create a combo box for genres, note that we can't add new
+      // genres dynamically
+      if (Const.XML_GENRE.equals(sIdentifier)) {
+        JComboBox jcb = new JComboBox(GenreManager.getInstance().getGenresList());
         jcb.setEditable(true);
         AutoCompleteDecorator.decorate(jcb);
         col.setCellEditor(new ComboBoxCellEditor(jcb));
         col.setSortable(true);
       }
-      // create a combo box for authors, note that we can't add new
-      // authors dynamically
-      else if (Const.XML_AUTHOR.equals(sIdentifier)) {
-        JComboBox jcb = new JComboBox(AuthorManager.getAuthorsList());
+      // create a combo box for artists, note that we can't add new
+      // artists dynamically
+      else if (Const.XML_ARTIST.equals(sIdentifier)) {
+        JComboBox jcb = new JComboBox(ArtistManager.getArtistsList());
         jcb.setEditable(true);
         AutoCompleteDecorator.decorate(jcb);
         col.setCellEditor(new ComboBoxCellEditor(jcb));

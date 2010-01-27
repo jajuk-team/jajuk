@@ -39,21 +39,21 @@ import org.jajuk.util.ReadOnlyIterator;
 import org.jajuk.util.error.JajukException;
 
 /**
- * Convenient class to manage authors.
+ * Convenient class to manage artists.
  */
-public final class AuthorManager extends ItemManager {
+public final class ArtistManager extends ItemManager {
   
   /** Self instance. */
-  private static AuthorManager singleton;
+  private static ArtistManager singleton;
   
-  /** List of all known authors */
-  private Vector<String> authorsList = new Vector<String>(100);
+  /** List of all known artists */
+  private Vector<String> artistsList = new Vector<String>(100);
 
   /**
    * No constructor available, only static access.
    * Not private to allow AlbumArtistManager extends
    */
-  AuthorManager() {
+  ArtistManager() {
     super();
     // register properties
     // ID
@@ -72,66 +72,66 @@ public final class AuthorManager extends ItemManager {
    * 
    * @return singleton
    */
-  public static AuthorManager getInstance() {
+  public static ArtistManager getInstance() {
     if (singleton == null) {
-      singleton = new AuthorManager();
+      singleton = new ArtistManager();
    }
     return singleton;
   }
 
   /**
-   * Register an author.
+   * Register an artist.
    * 
-   * @param sName The name of the author to search for.
+   * @param sName The name of the artist to search for.
    * 
-   * @return the author
+   * @return the artist
    */
-  public Author registerAuthor(String sName) {
+  public Artist registerArtist(String sName) {
     String sId = createID(sName);
-    return registerAuthor(sId, sName);
+    return registerArtist(sId, sName);
   }
 
   /**
-   * Register an author with a known id.
+   * Register an artist with a known id.
    * 
-   * @param sName The name of the new author.
-   * @param sId the ID of the new author.
+   * @param sName The name of the new artist.
+   * @param sId the ID of the new artist.
    * 
-   * @return the author
+   * @return the artist
    */
-  public synchronized Author registerAuthor(String sId, String sName) {
-    Author author = getAuthorByID(sId);
-    // if we have this author already, simply return the existing one
-    if (author != null) {
-      return author;
+  public synchronized Artist registerArtist(String sId, String sName) {
+    Artist artist = getArtistByID(sId);
+    // if we have this artist already, simply return the existing one
+    if (artist != null) {
+      return artist;
     }
-    author = new Author(sId, sName);
-    registerItem(author);
-    // add it in styles list if new
-    if (!authorsList.contains(sName)) {
-      authorsList.add(author.getName2());
+    artist = new Artist(sId, sName);
+    registerItem(artist);
+    // add it in genres list if new
+    if (!artistsList.contains(sName)) {
+      artistsList.add(artist.getName2());
       // Sort items ignoring case
-      Collections.sort(authorsList, new Comparator<String>() {
+      Collections.sort(artistsList, new Comparator<String>() {
         public int compare(String o1, String o2) {
           return o1.compareToIgnoreCase(o2);
         }
       });
     }
 
-    return author;
+    return artist;
   }
 
   /**
    * Change the item name.
    * 
-   * @param old The name of the author to update.
-   * @param sNewName The new name of the author.
+   * @param old The name of the artist to update.
+   * @param sNewName The new name of the artist.
    * 
    * @return The new Album-Instance.
    * 
    * @throws JajukException Thrown if adjusting the name fails for some reason.
    */
-  public Author changeAuthorName(Author old, String sNewName) throws JajukException {
+  public Artist changeArtistName(Artist old, String sNewName) throws JajukException {
     synchronized (TrackManager.getInstance()) {
       // check there is actually a change
       if (old.getName2().equals(sNewName)) {
@@ -141,24 +141,24 @@ public final class AuthorManager extends ItemManager {
       // find out if the QueueModel is playing this track before we change the track!
       boolean queueNeedsUpdate = false;
       if (QueueModel.getPlayingFile() != null
-          && QueueModel.getPlayingFile().getTrack().getAuthor().equals(old)) {
+          && QueueModel.getPlayingFile().getTrack().getArtist().equals(old)) {
         queueNeedsUpdate = true;
       }
       
-      Author newItem = registerAuthor(sNewName);
+      Artist newItem = registerArtist(sNewName);
       // re apply old properties from old item
       newItem.cloneProperties(old);
 
       // update tracks
       for (Track track : TrackManager.getInstance().getTracks()) {
-        if (track.getAuthor().equals(old)) {
-          TrackManager.getInstance().changeTrackAuthor(track, sNewName, null);
+        if (track.getArtist().equals(old)) {
+          TrackManager.getInstance().changeTrackArtist(track, sNewName, null);
         }
       }
 
-      // if current track author name is changed, notify it
+      // if current track artist name is changed, notify it
       if (queueNeedsUpdate) {
-        ObservationManager.notify(new JajukEvent(JajukEvents.AUTHOR_CHANGED));
+        ObservationManager.notify(new JajukEvent(JajukEvents.ARTIST_CHANGED));
       }
 
       return newItem;
@@ -173,89 +173,89 @@ public final class AuthorManager extends ItemManager {
    */
   @Override
   public String getLabel() {
-    return Const.XML_AUTHORS;
+    return Const.XML_ARTISTS;
   }
 
   /**
-   * Gets the authors list.
+   * Gets the artists list.
    * 
-   * @return authors as a string list (used for authors combos)
+   * @return artists as a string list (used for artists combos)
    */
-  public static Vector<String> getAuthorsList() {
-    return getInstance().authorsList;
+  public static Vector<String> getArtistsList() {
+    return getInstance().artistsList;
   }
 
   /**
-   * Gets the author by id.
+   * Gets the artist by id.
    * 
    * @param sID Item ID
    * 
    * @return Element
    */
-  public Author getAuthorByID(String sID) {
-    return (Author) getItemByID(sID);
+  public Artist getArtistByID(String sID) {
+    return (Artist) getItemByID(sID);
   }
 
   /**
-   * Gets the authors.
+   * Gets the artists.
    * 
    * @return ordered albums list
    */
   @SuppressWarnings("unchecked")
-  public List<Author> getAuthors() {
-    return (List<Author>) getItems();
+  public List<Artist> getArtists() {
+    return (List<Artist>) getItems();
   }
 
   /**
-   * Gets the authors iterator.
+   * Gets the artists iterator.
    * 
-   * @return authors iterator
+   * @return artists iterator
    */
   @SuppressWarnings("unchecked")
-  public synchronized ReadOnlyIterator<Author> getAuthorsIterator() {
-    return new ReadOnlyIterator<Author>((Iterator<Author>) getItemsIterator());
+  public synchronized ReadOnlyIterator<Artist> getArtistsIterator() {
+    return new ReadOnlyIterator<Artist>((Iterator<Artist>) getItemsIterator());
   }
 
   /**
-   * Get ordered list of authors associated with this item.
+   * Get ordered list of artists associated with this item.
    * 
-   * @param item The author-item to look for.
+   * @param item The artist item to look for.
    * 
-   * @return the associated authors
+   * @return the associated artists
    */
-  public synchronized List<Author> getAssociatedAuthors(Item item) {
-    List<Author> out;
+  public synchronized List<Artist> getAssociatedArtists(Item item) {
+    List<Artist> out;
     if (item instanceof Track) {
-      out = new ArrayList<Author>(1);
-      out.add(((Track) item).getAuthor());
+      out = new ArrayList<Artist>(1);
+      out.add(((Track) item).getArtist());
     } else {
-      // [Perf] If item is a track, just return its author
+      // [Perf] If item is a track, just return its artist
       // Use a set to avoid dups
-      Set<Author> authorSet = new HashSet<Author>();
+      Set<Artist> artistSet = new HashSet<Artist>();
 
       List<Track> tracks = TrackManager.getInstance().getAssociatedTracks(item, true);
       for (Track track : tracks) {
-        authorSet.add(track.getAuthor());
+        artistSet.add(track.getArtist());
       }
-      out = new ArrayList<Author>(authorSet);
+      out = new ArrayList<Artist>(artistSet);
       Collections.sort(out);
     }
     return out;
   }
 
   /**
-   * Gets the author by name.
+   * Gets the artist by name.
    * 
-   * @param name The name of the author.
+   * @param name The name of the artist.
    * 
-   * @return associated author (case insensitive) or null if no match
+   * @return associated artist (case insensitive) or null if no match
    */
-  public Author getAuthorByName(String name) {
-    Author out = null;
-    for (ReadOnlyIterator<Author> it = getAuthorsIterator(); it.hasNext();) {
-      Author author = it.next();
-      if (author.getName().equals(name)) {
-        out = author;
+  public Artist getArtistByName(String name) {
+    Artist out = null;
+    for (ReadOnlyIterator<Artist> it = getArtistsIterator(); it.hasNext();) {
+      Artist artist = it.next();
+      if (artist.getName().equals(name)) {
+        out = artist;
         break;
       }
     }

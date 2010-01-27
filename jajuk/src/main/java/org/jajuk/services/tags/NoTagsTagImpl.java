@@ -66,9 +66,9 @@ public class NoTagsTagImpl implements ITagImpl {
   /*
    * (non-Javadoc)
    * 
-   * @see org.jajuk.services.tags.ITagImpl#getAuthorName()
+   * @see org.jajuk.services.tags.ITagImpl#getArtistName()
    */
-  public String getAuthorName() {
+  public String getArtistName() {
     return ""; // doing that, the item will be the default jajuk unknown
     // string
   }
@@ -76,9 +76,9 @@ public class NoTagsTagImpl implements ITagImpl {
   /*
    * (non-Javadoc)
    * 
-   * @see org.jajuk.services.tags.ITagImpl#getStyleName()
+   * @see org.jajuk.services.tags.ITagImpl#getGenreName()
    */
-  public String getStyleName() {
+  public String getGenreName() {
     return ""; // doing that, the item will be the default jajuk unknown
     // string
   }
@@ -157,18 +157,18 @@ public class NoTagsTagImpl implements ITagImpl {
   /*
    * (non-Javadoc)
    * 
-   * @see org.jajuk.services.tags.ITagImpl#setAuthorName(java.lang.String)
+   * @see org.jajuk.services.tags.ITagImpl#setArtistName(java.lang.String)
    */
-  public void setAuthorName(String sAuthorName) {
+  public void setArtistName(String sArtistName) {
     // nothing to do here
   }
 
   /*
    * (non-Javadoc)
    * 
-   * @see org.jajuk.services.tags.ITagImpl#setStyleName(java.lang.String)
+   * @see org.jajuk.services.tags.ITagImpl#setGenreName(java.lang.String)
    */
-  public void setStyleName(String style) {
+  public void setGenreName(String genre) {
     // nothing to do here
   }
 

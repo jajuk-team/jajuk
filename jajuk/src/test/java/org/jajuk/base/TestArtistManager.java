@@ -41,86 +41,86 @@ import org.jaudiotagger.tag.KeyNotFoundException;
 /**
  * 
  */
-public class TestAuthorManager extends JajukTestCase {
+public class TestArtistManager extends JajukTestCase {
 
   private static final int NUMBER_OF_TESTS = 10;
   private static final int NUMBER_OF_THREADS = 10;
 
   /**
-   * Test method for {@link org.jajuk.base.AuthorManager#getLabel()}.
+   * Test method for {@link org.jajuk.base.ArtistManager#getLabel()}.
    */
   public final void testGetLabel() {
-    assertEquals(Const.XML_AUTHORS, AuthorManager.getInstance().getLabel());
+    assertEquals(Const.XML_ARTISTS, ArtistManager.getInstance().getLabel());
   }
 
   /**
-   * Test method for {@link org.jajuk.base.AuthorManager#getInstance()}.
+   * Test method for {@link org.jajuk.base.ArtistManager#getInstance()}.
    */
   public final void testGetInstance() {
-    assertNotNull(AuthorManager.getInstance());
+    assertNotNull(ArtistManager.getInstance());
   }
 
   /**
    * Test method for
-   * {@link org.jajuk.base.AuthorManager#registerAuthor(java.lang.String)}.
+   * {@link org.jajuk.base.ArtistManager#registerArtist(java.lang.String)}.
    */
-  public final void testRegisterAuthorString() {
-    Author author = AuthorManager.getInstance().registerAuthor("name");
-    assertNotNull(author);
-    assertTrue(StringUtils.isNotBlank(author.getID()));
-    assertEquals("name", author.getName());
+  public final void testRegisterArtistString() {
+    Artist artist = ArtistManager.getInstance().registerArtist("name");
+    assertNotNull(artist);
+    assertTrue(StringUtils.isNotBlank(artist.getID()));
+    assertEquals("name", artist.getName());
   }
 
   /**
    * Test method for
-   * {@link org.jajuk.base.AuthorManager#createID(java.lang.String)}.
+   * {@link org.jajuk.base.ArtistManager#createID(java.lang.String)}.
    */
   public final void testCreateID() {
-    String id = AuthorManager.createID("name");
+    String id = ArtistManager.createID("name");
 
     // same for same name
-    assertEquals(id, AuthorManager.createID("name"));
+    assertEquals(id, ArtistManager.createID("name"));
 
     // different for other name
-    assertFalse(id.equals(AuthorManager.createID("name2")));
+    assertFalse(id.equals(ArtistManager.createID("name2")));
   }
 
   /**
    * Test method for
-   * {@link org.jajuk.base.AuthorManager#registerAuthor(java.lang.String, java.lang.String)}
+   * {@link org.jajuk.base.ArtistManager#registerArtist(java.lang.String, java.lang.String)}
    * .
    */
-  public final void testRegisterAuthorStringString() {
-    Author author = AuthorManager.getInstance().registerAuthor("4", "name");
-    assertNotNull(author);
-    assertEquals("4", author.getID());
-    assertEquals("name", author.getName());
+  public final void testRegisterArtistStringString() {
+    Artist artist = ArtistManager.getInstance().registerArtist("4", "name");
+    assertNotNull(artist);
+    assertEquals("4", artist.getID());
+    assertEquals("name", artist.getName());
   }
 
   /**
    * Test method for
-   * {@link org.jajuk.base.AuthorManager#changeAuthorName(org.jajuk.base.Author, java.lang.String)}
+   * {@link org.jajuk.base.ArtistManager#changeArtistName(org.jajuk.base.Artist, java.lang.String)}
    * .
    * 
    * @throws Exception
    */
-  public final void testChangeAuthorName() throws Exception {
+  public final void testChangeArtistName() throws Exception {
     StartupCollectionService.registerItemManagers();
 
-    Author authorold = new Author("4", "nameold");
+    Artist artistold = new Artist("4", "nameold");
 
     // we get the same object back if we have the same name
-    assertTrue(authorold == AuthorManager.getInstance().changeAuthorName(authorold, "nameold"));
+    assertTrue(artistold == ArtistManager.getInstance().changeArtistName(artistold, "nameold"));
 
     // now try with a new name
-    Author author = AuthorManager.getInstance().changeAuthorName(authorold, "namenew");
-    assertFalse(authorold == author); // not null
-    assertFalse("4".equals(author.getID())); // new ID
-    assertTrue(StringUtils.isNotBlank(author.getID())); // useful ID
-    assertEquals("namenew", author.getName()); // correct name
+    Artist artist = ArtistManager.getInstance().changeArtistName(artistold, "namenew");
+    assertFalse(artistold == artist); // not null
+    assertFalse("4".equals(artist.getID())); // new ID
+    assertTrue(StringUtils.isNotBlank(artist.getID())); // useful ID
+    assertEquals("namenew", artist.getName()); // correct name
 
-    // test with Tracks for the author and Queue Model playing that file
-    File track1 = getFile(14, author);
+    // test with Tracks for the artist and Queue Model playing that file
+    File track1 = getFile(14, artist);
     List<StackItem> list = new ArrayList<StackItem>();
     list.add(new StackItem(track1));
     QueueModel.insert(list, 0);
@@ -130,26 +130,26 @@ public class TestAuthorManager extends JajukTestCase {
     assertFalse(QueueModel.isStopped());
     assertNotNull(QueueModel.getPlayingFile());
     assertNotNull(QueueModel.getPlayingFile().getTrack());
-    assertNotNull(QueueModel.getPlayingFile().getTrack().getAuthor());
+    assertNotNull(QueueModel.getPlayingFile().getTrack().getArtist());
     assertEquals(track1.getTrack(), QueueModel.getPlayingFile().getTrack());
-    assertEquals(author, QueueModel.getPlayingFile().getTrack().getAuthor());
+    assertEquals(artist, QueueModel.getPlayingFile().getTrack().getArtist());
 
     // now try to change again with the track and the item playing in the queue
-    author = AuthorManager.getInstance().changeAuthorName(author, "namenewnew");
-    assertFalse(authorold == author); // not null
-    assertFalse("4".equals(author.getID())); // new ID
-    assertTrue(StringUtils.isNotBlank(author.getID())); // useful ID
-    assertEquals("namenewnew", author.getName()); // correct name
+    artist = ArtistManager.getInstance().changeArtistName(artist, "namenewnew");
+    assertFalse(artistold == artist); // not null
+    assertFalse("4".equals(artist.getID())); // new ID
+    assertTrue(StringUtils.isNotBlank(artist.getID())); // useful ID
+    assertEquals("namenewnew", artist.getName()); // correct name
   }
 
   // test this in a thread as well to cover the synchronized block...
-  public final void testChangeAuthorNameThreads() throws Exception {
+  public final void testChangeArtistNameThreads() throws Exception {
     StartupCollectionService.registerItemManagers();
 
-    final Author authorold = new Author("4", "nameold");
+    final Artist artistold = new Artist("4", "nameold");
 
     // we get the same object back if we have the same name
-    assertTrue(authorold == AuthorManager.getInstance().changeAuthorName(authorold, "nameold"));
+    assertTrue(artistold == ArtistManager.getInstance().changeArtistName(artistold, "nameold"));
 
     ThreadTestHelper helper = new ThreadTestHelper(NUMBER_OF_THREADS, NUMBER_OF_TESTS);
 
@@ -160,7 +160,7 @@ public class TestAuthorManager extends JajukTestCase {
 
       public void run(int threadnum, int iter) throws Exception {
         // just call the method in a thread multiple times at the same time
-        AuthorManager.getInstance().changeAuthorName(authorold, "namenew");
+        ArtistManager.getInstance().changeArtistName(artistold, "namenew");
       }
     });
   }
@@ -169,8 +169,8 @@ public class TestAuthorManager extends JajukTestCase {
   }
 
   @SuppressWarnings("unchecked")
-  private File getFile(int i, Author author) throws Exception {
-    Style style = new Style(Integer.valueOf(i).toString(), "name");
+  private File getFile(int i, Artist artist) throws Exception {
+    Genre genre = new Genre(Integer.valueOf(i).toString(), "name");
     Album album = new Album(Integer.valueOf(i).toString(), "name", 23);
     album.setProperty(Const.XML_ALBUM_COVER, Const.COVER_NONE); // don't read
                                                                 // covers for
@@ -183,7 +183,7 @@ public class TestAuthorManager extends JajukTestCase {
 
     Type type = TypeManager.getInstance().registerType("name", "tst", cl, MyTagImpl.class);
 
-    Track track = TrackManager.getInstance().registerTrack("name", album, style, author, 120, year,
+    Track track = TrackManager.getInstance().registerTrack("name", album, genre, artist, 120, year,
         1, type, 1);
 
     Device device = new Device(Integer.valueOf(i).toString(), "name");
@@ -202,36 +202,36 @@ public class TestAuthorManager extends JajukTestCase {
 
   /**
    * Test method for
-   * {@link org.jajuk.base.AuthorManager#format(java.lang.String)}.
+   * {@link org.jajuk.base.ArtistManager#format(java.lang.String)}.
    */
   public final void testFormat() {
-    assertEquals("Testname", AuthorManager.format("testname"));
+    assertEquals("Testname", ArtistManager.format("testname"));
 
     // trim spaces
-    assertEquals("Testname", AuthorManager.format("  testname  "));
+    assertEquals("Testname", ArtistManager.format("  testname  "));
 
     // -
-    assertEquals("Te s tname", AuthorManager.format("  te-s-tname  "));
+    assertEquals("Te s tname", ArtistManager.format("  te-s-tname  "));
 
     // _
-    assertEquals("Te s tname", AuthorManager.format("  te_s_tname  "));
+    assertEquals("Te s tname", ArtistManager.format("  te_s_tname  "));
 
     // all of them
-    assertEquals("TE s tnam  e ", AuthorManager.format("  tE_s_tnam--e-  "));
+    assertEquals("TE s tnam  e ", ArtistManager.format("  tE_s_tnam--e-  "));
   }
 
   /**
-   * Test method for {@link org.jajuk.base.AuthorManager#getAuthorsList()}.
+   * Test method for {@link org.jajuk.base.ArtistManager#getArtistsList()}.
    */
-  public final void testGetAuthorsList() {
-    Vector<String> list = AuthorManager.getAuthorsList();
+  public final void testGetArtistsList() {
+    Vector<String> list = ArtistManager.getArtistsList();
     assertNotNull(list);
 
     // not sure how many elements we should expect as this is static and other
     // tests
     // could already have added some items, let's just try to add a new one
     int i = list.size();
-    AuthorManager.getInstance().registerAuthor("newandnotanywhereelseusedname");
+    ArtistManager.getInstance().registerArtist("newandnotanywhereelseusedname");
 
     // the vector should be updated directly, we use the same in the
     // combobox-models,
@@ -241,39 +241,39 @@ public class TestAuthorManager extends JajukTestCase {
 
   /**
    * Test method for
-   * {@link org.jajuk.base.AuthorManager#getAuthorByID(java.lang.String)}.
+   * {@link org.jajuk.base.ArtistManager#getArtistByID(java.lang.String)}.
    */
-  public final void testGetAuthorByID() {
-    Author author = AuthorManager.getInstance().registerAuthor("anothernewauthor");
+  public final void testGetArtistByID() {
+    Artist artist = ArtistManager.getInstance().registerArtist("anothernewartist");
 
-    Author author2 = AuthorManager.getInstance().getAuthorByID(author.getID());
-    assertEquals("anothernewauthor", author2.getName());
+    Artist artist2 = ArtistManager.getInstance().getArtistByID(artist.getID());
+    assertEquals("anothernewartist", artist2.getName());
   }
 
   /**
-   * Test method for {@link org.jajuk.base.AuthorManager#getAuthors()}.
+   * Test method for {@link org.jajuk.base.ArtistManager#getArtists()}.
    */
-  public final void testGetAuthors() {
-    List<Author> list = AuthorManager.getInstance().getAuthors();
+  public final void testGetArtists() {
+    List<Artist> list = ArtistManager.getInstance().getArtists();
     assertNotNull(list);
 
     // not sure how many elements we should expect as this is static and other
     // tests
     // could already have added some items, let's just try to add a new one
     int i = list.size();
-    AuthorManager.getInstance().registerAuthor("newname");
+    ArtistManager.getInstance().registerArtist("newname");
 
     // the list is a copy, so we need to get it again
-    list = AuthorManager.getInstance().getAuthors();
+    list = ArtistManager.getInstance().getArtists();
     assertEquals(i + 1, list.size());
   }
 
   /**
-   * Test method for {@link org.jajuk.base.AuthorManager#getAuthorsIterator()}.
+   * Test method for {@link org.jajuk.base.ArtistManager#getArtistsIterator()}.
    */
-  public final void testGetAuthorsIterator() {
-    AuthorManager.getInstance().registerAuthor("anothernewname");
-    ReadOnlyIterator<Author> it = AuthorManager.getInstance().getAuthorsIterator();
+  public final void testGetArtistsIterator() {
+    ArtistManager.getInstance().registerArtist("anothernewname");
+    ReadOnlyIterator<Artist> it = ArtistManager.getInstance().getArtistsIterator();
     assertNotNull(it);
     assertTrue(it.hasNext()); // there can be items from before, so just expect
     // at least one item...
@@ -281,42 +281,42 @@ public class TestAuthorManager extends JajukTestCase {
 
   /**
    * Test method for
-   * {@link org.jajuk.base.AuthorManager#getAssociatedAuthors(org.jajuk.base.Item)}
+   * {@link org.jajuk.base.ArtistManager#getAssociatedArtists(org.jajuk.base.Item)}
    * .
    * 
    * @throws Exception
    */
-  public final void testGetAssociatedAuthors() throws Exception {
+  public final void testGetAssociatedArtists() throws Exception {
     // empty list with invalid item
-    List<Author> list = AuthorManager.getInstance().getAssociatedAuthors(null);
+    List<Artist> list = ArtistManager.getInstance().getAssociatedArtists(null);
     assertNotNull(list);
     assertEquals(0, list.size());
 
-    Author author = AuthorManager.getInstance().registerAuthor("myauthorhere");
-    File file = getFile(15, author); // also registers the Track
-    list = AuthorManager.getInstance().getAssociatedAuthors(file.getTrack());
+    Artist artist = ArtistManager.getInstance().registerArtist("myartisthere");
+    File file = getFile(15, artist); // also registers the Track
+    list = ArtistManager.getInstance().getAssociatedArtists(file.getTrack());
     assertNotNull(list);
     assertEquals(1, list.size());
-    assertEquals("myauthorhere", list.get(0).getName());
+    assertEquals("myartisthere", list.get(0).getName());
 
     Album album = file.getTrack().getAlbum();
     album.getTracksCache().add(file.getTrack());
 
-    list = AuthorManager.getInstance().getAssociatedAuthors(album);
+    list = ArtistManager.getInstance().getAssociatedArtists(album);
     assertNotNull(list);
     assertEquals(1, list.size());
-    assertEquals("myauthorhere", list.get(0).getName());
+    assertEquals("myartisthere", list.get(0).getName());
   }
 
   /**
    * Test method for
-   * {@link org.jajuk.base.AuthorManager#getAuthorByName(java.lang.String)}.
+   * {@link org.jajuk.base.ArtistManager#getArtistByName(java.lang.String)}.
    */
-  public final void testGetAuthorByName() {
-    Author author = AuthorManager.getInstance().registerAuthor("anothernewauthor");
+  public final void testGetArtistByName() {
+    Artist artist = ArtistManager.getInstance().registerArtist("anothernewartist");
 
-    Author author2 = AuthorManager.getInstance().getAuthorByName("anothernewauthor");
-    assertEquals(author.getID(), author2.getID());
+    Artist artist2 = ArtistManager.getInstance().getArtistByName("anothernewartist");
+    assertEquals(artist.getID(), artist2.getID());
   }
 
   public static class MyTagImpl implements ITagImpl {
@@ -339,7 +339,7 @@ public class TestAuthorManager extends JajukTestCase {
     }
 
     @Override
-    public String getAuthorName() throws Exception {
+    public String getArtistName() throws Exception {
 
       return null;
     }
@@ -375,7 +375,7 @@ public class TestAuthorManager extends JajukTestCase {
     }
 
     @Override
-    public String getStyleName() throws Exception {
+    public String getGenreName() throws Exception {
 
       return null;
     }
@@ -403,7 +403,7 @@ public class TestAuthorManager extends JajukTestCase {
     }
 
     @Override
-    public void setAuthorName(String authorName) throws Exception {
+    public void setArtistName(String artistName) throws Exception {
 
     }
 
@@ -428,7 +428,7 @@ public class TestAuthorManager extends JajukTestCase {
     }
 
     @Override
-    public void setStyleName(String style) throws Exception {
+    public void setGenreName(String genre) throws Exception {
 
     }
 

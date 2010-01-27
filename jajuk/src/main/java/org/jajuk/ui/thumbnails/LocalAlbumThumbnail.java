@@ -75,7 +75,7 @@ public class LocalAlbumThumbnail extends AbstractThumbnail {
   Album album;
 
   /** DOCUMENT_ME. */
-  JLabel jlAuthor;
+  JLabel jlArtist;
 
   /** DOCUMENT_ME. */
   JLabel jlAlbum;
@@ -94,7 +94,7 @@ public class LocalAlbumThumbnail extends AbstractThumbnail {
    * @param size :
    * size of the thumbnail
    * @param bShowText :
-   * Display full album / author information under the icon or not ?
+   * Display full album / artist information under the icon or not ?
    */
   public LocalAlbumThumbnail(Album album, int size, boolean bShowText) {
     super(size);
@@ -122,14 +122,14 @@ public class LocalAlbumThumbnail extends AbstractThumbnail {
     }
     if (bShowFullText) {
       int iRows = 7 + 7 * ((size / 50) - 1);
-      String authorName = album.getAuthorOrALbumArtist();
+      String artistName = album.getArtistOrALbumArtist();
 
-      jlAuthor = new JLabel(UtilString.getLimitedString(authorName, iRows));
-      jlAuthor.setToolTipText(authorName);
-      jlAuthor.setFont(FontManager.getInstance().getFont(JajukFont.BOLD));
+      jlArtist = new JLabel(UtilString.getLimitedString(artistName, iRows));
+      jlArtist.setToolTipText(artistName);
+      jlArtist.setFont(FontManager.getInstance().getFont(JajukFont.BOLD));
 
       // we have to use a empty border to avoid getting default border
-      jlAuthor.setBorder(new EmptyBorder(0, 0, 0, 0));
+      jlArtist.setBorder(new EmptyBorder(0, 0, 0, 0));
       jlAlbum = new JLabel(UtilString.getLimitedString(album.getName2(), iRows));
       jlAlbum.setToolTipText(album.getName2());
       jlAlbum.setBorder(new EmptyBorder(0, 0, 0, 0));
@@ -137,7 +137,7 @@ public class LocalAlbumThumbnail extends AbstractThumbnail {
       // Add items
       setLayout(new MigLayout("", "[grow]", "[" + (size + 10) + "!][grow][grow]"));
       add(jlIcon, "wrap,center");
-      add(jlAuthor, "wrap,center");
+      add(jlArtist, "wrap,center");
       add(jlAlbum, "wrap,center");
     } else {
       setLayout(new MigLayout("ins 0,gapy 2"));
@@ -207,18 +207,18 @@ public class LocalAlbumThumbnail extends AbstractThumbnail {
     }
     //TODO : add AlbumArtist value and hyperlink here
     
-    // Display author as global value only if it is a single author album
+    // Display artist as global value only if it is a single artist album
     // We use file://<item type>?<item id> as HTML hyperlink format
-    if (album.getAuthor() != null) {
-      sOut += "<br>" + Messages.getString("Property_author") + ": <a href='file://"
-          + Const.XML_AUTHOR + '?' + firstTrack.getAuthor().getID() + "'>"
-          + firstTrack.getAuthor().getName2() + "</a>";
+    if (album.getArtist() != null) {
+      sOut += "<br>" + Messages.getString("Property_artist") + ": <a href='file://"
+          + Const.XML_ARTIST + '?' + firstTrack.getArtist().getID() + "'>"
+          + firstTrack.getArtist().getName2() + "</a>";
     }
-    // Display style
-    if (album.getStyle() != null) {
-      sOut += "<br>" + Messages.getString("Property_style") + ": <a href='file://"
-          + Const.XML_STYLE + '?' + firstTrack.getStyle().getID() + "'>"
-          + UtilString.getLimitedString(firstTrack.getStyle().getName2(), 20) + "</a>";
+    // Display genre
+    if (album.getGenre() != null) {
+      sOut += "<br>" + Messages.getString("Property_genre") + ": <a href='file://"
+          + Const.XML_GENRE + '?' + firstTrack.getGenre().getID() + "'>"
+          + UtilString.getLimitedString(firstTrack.getGenre().getName2(), 20) + "</a>";
     }
     // Display year
     if (album.getYear() != null) {
@@ -253,11 +253,11 @@ public class LocalAlbumThumbnail extends AbstractThumbnail {
       if (album.getYear() == null && track.getYear().getValue() != 0) {
         sOut += " - " + track.getYear().getValue() + "   ";
       }
-      // Show author if known and if it is not already shown at album
+      // Show artist if known and if it is not already shown at album
       // level
-      if (album.getAuthor() == null
-          && !track.getAuthor().getName2().equals(Messages.getString(Const.UNKNOWN_AUTHOR))) {
-        sOut += " - " + UtilString.getLimitedString(track.getAuthor().getName2(), 20) + "   ";
+      if (album.getArtist() == null
+          && !track.getArtist().getName2().equals(Messages.getString(Const.UNKNOWN_ARTIST))) {
+        sOut += " - " + UtilString.getLimitedString(track.getArtist().getName2(), 20) + "   ";
       }
     }
     sOut += "</TD></TR></TABLE></html>";

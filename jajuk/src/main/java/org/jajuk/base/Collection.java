@@ -82,14 +82,14 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
   /** upgrade for album IDs. */
   private final Map<String, String> hmWrongRightAlbumID = new HashMap<String, String>();
 
-  /** upgrade for author IDs. */
-  private final Map<String, String> hmWrongRightAuthorID = new HashMap<String, String>();
+  /** upgrade for artist IDs. */
+  private final Map<String, String> hmWrongRightArtistID = new HashMap<String, String>();
 
   /** upgrade for album-artists IDs. */
   private final Map<String, String> hmWrongRightAlbumArtistID = new HashMap<String, String>();
 
-  /** upgrade for style IDs. */
-  private final Map<String, String> hmWrongRightStyleID = new HashMap<String, String>();
+  /** upgrade for genre IDs. */
+  private final Map<String, String> hmWrongRightGenreID = new HashMap<String, String>();
 
   /** upgrade for device IDs. */
   private final Map<String, String> hmWrongRightDeviceID = new HashMap<String, String>();
@@ -146,8 +146,8 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
     /** The Constant STAGE_ALBUMS. DOCUMENT_ME */
     STAGE_ALBUMS,
 
-    /** The Constant STAGE_AUTHORS. DOCUMENT_ME */
-    STAGE_AUTHORS,
+    /** The Constant STAGE_ARTISTS. DOCUMENT_ME */
+    STAGE_ARTISTS,
 
     /** The Constant STAGE_STYLES. DOCUMENT_ME */
     STAGE_STYLES,
@@ -229,15 +229,15 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
           .getDevicesIterator(), DeviceManager.getInstance().getLabel(), 40);
       Log.debug("Devices committed.");
 
-      // Styles
-      writeItemList(bw, StyleManager.getInstance().toXML(), StyleManager.getInstance()
-          .getStylesIterator(), StyleManager.getInstance().getLabel(), 40);
-      Log.debug("Styles committed.");
+      // Genres
+      writeItemList(bw, GenreManager.getInstance().toXML(), GenreManager.getInstance()
+          .getGenresIterator(), GenreManager.getInstance().getLabel(), 40);
+      Log.debug("Genres committed.");
 
-      // Authors
-      writeItemList(bw, AuthorManager.getInstance().toXML(), AuthorManager.getInstance()
-          .getAuthorsIterator(), AuthorManager.getInstance().getLabel(), 40);
-      Log.debug("Authors committed.");
+      // Artists
+      writeItemList(bw, ArtistManager.getInstance().toXML(), ArtistManager.getInstance()
+          .getArtistsIterator(), ArtistManager.getInstance().getLabel(), 40);
+      Log.debug("Artists committed.");
 
       // Album artists
       writeItemList(bw, AlbumArtistManager.getInstance().toXML(), AlbumArtistManager.getInstance()
@@ -380,14 +380,14 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
 
   /**
    * Perform a collection clean up for logical items ( delete orphan data ) Note
-   * that we don't cleanup styles up because we want to keep styles even without
+   * that we don't cleanup genres up because we want to keep genres even without
    * associated tracks for ambiences for instance.
    */
   public static synchronized void cleanupLogical() {
     // Tracks cleanup
     TrackManager.getInstance().cleanup();
-    // Authors cleanup
-    AuthorManager.getInstance().cleanup();
+    // Artists cleanup
+    ArtistManager.getInstance().cleanup();
     // Album-artist cleanup
     AlbumArtistManager.getInstance().cleanup();
     // albums cleanup
@@ -402,8 +402,8 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
    */
   public static synchronized void clearCollection() {
     TrackManager.getInstance().clear();
-    StyleManager.getInstance().clear();
-    AuthorManager.getInstance().clear();
+    GenreManager.getInstance().clear();
+    ArtistManager.getInstance().clear();
     AlbumArtistManager.getInstance().clear();
     AlbumManager.getInstance().clear();
     YearManager.getInstance().clear();
@@ -483,7 +483,7 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
   /**
    * Called when we start an element intern() method use policy : we use this
    * method when adding a new string into JVM that will probably be referenced
-   * by several objects like the Style ID that is referenced by many tracks. In
+   * by several objects like the Genre ID that is referenced by many tracks. In
    * this case, all the String objects share the same char[]. On another hand,
    * it musn't be used for strings that have low probability to be used several
    * times (like raw names) as it uses a lot of CPU (equals() is called) and we
@@ -522,9 +522,9 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
           manager = AlbumManager.getInstance();
           stage = Stage.STAGE_ALBUMS;
           needCheckID = true;
-        } else if (Const.XML_AUTHORS == sQName) {
-          manager = AuthorManager.getInstance();
-          stage = Stage.STAGE_AUTHORS;
+        } else if (Const.XML_ARTISTS == sQName) {
+          manager = ArtistManager.getInstance();
+          stage = Stage.STAGE_ARTISTS;
           needCheckID = true;
         } else if (Const.XML_ALBUM_ARTISTS == sQName) {
           manager = AlbumArtistManager.getInstance();
@@ -547,8 +547,8 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
           manager = PlaylistManager.getInstance();
           stage = Stage.STAGE_PLAYLIST_FILES;
           needCheckID = true;
-        } else if (Const.XML_STYLES == sQName) {
-          manager = StyleManager.getInstance();
+        } else if (Const.XML_GENRES == sQName) {
+          manager = GenreManager.getInstance();
           stage = Stage.STAGE_STYLES;
           needCheckID = true;
         } else if (Const.XML_TRACKS == sQName) {
@@ -622,14 +622,14 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
         case STAGE_ALBUMS:
           handleAlbums(attributes, idIndex);
           break;
-        case STAGE_AUTHORS:
-          handleAuthors(attributes, idIndex);
+        case STAGE_ARTISTS:
+          handleArtists(attributes, idIndex);
           break;
         case STAGE_ALBUM_ARTIST:
           handleAlbumArtists(attributes, idIndex);
           break;
         case STAGE_STYLES:
-          handleStyles(attributes, idIndex);
+          handleGenres(attributes, idIndex);
           break;
         case STAGE_PLAYLIST_FILES:
           handlePlaylistFiles(attributes, idIndex);
@@ -816,12 +816,12 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
       sAlbumID = hmWrongRightAlbumID.get(sAlbumID);
     }
     Album album = AlbumManager.getInstance().getAlbumByID(sAlbumID);
-    // Style
-    String sStyleID = attributes.getValue(Const.XML_TRACK_STYLE).intern();
-    if ((hmWrongRightStyleID.size() > 0) && (hmWrongRightStyleID.containsKey(sStyleID))) {
-      sStyleID = hmWrongRightStyleID.get(sStyleID);
+    // Genre
+    String sGenreID = attributes.getValue(Const.XML_TRACK_GENRE).intern();
+    if ((hmWrongRightGenreID.size() > 0) && (hmWrongRightGenreID.containsKey(sGenreID))) {
+      sGenreID = hmWrongRightGenreID.get(sGenreID);
     }
-    Style style = StyleManager.getInstance().getStyleByID(sStyleID);
+    Genre genre = GenreManager.getInstance().getGenreByID(sGenreID);
     // Year
     String sYearID = attributes.getValue(Const.XML_TRACK_YEAR).intern();
     Year year = YearManager.getInstance().getYearByID(sYearID);
@@ -829,12 +829,12 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
     if (year == null) {
       year = YearManager.getInstance().registerYear(sYearID, sYearID);
     }
-    // Author
-    String sAuthorID = attributes.getValue(Const.XML_TRACK_AUTHOR).intern();
-    if ((hmWrongRightAuthorID.size() > 0) && (hmWrongRightAuthorID.containsKey(sAuthorID))) {
-      sAuthorID = hmWrongRightAuthorID.get(sAuthorID);
+    // Artist
+    String sArtistID = attributes.getValue(Const.XML_TRACK_ARTIST).intern();
+    if ((hmWrongRightArtistID.size() > 0) && (hmWrongRightArtistID.containsKey(sArtistID))) {
+      sArtistID = hmWrongRightArtistID.get(sArtistID);
     }
-    Author author = AuthorManager.getInstance().getAuthorByID(sAuthorID);
+    Artist artist = ArtistManager.getInstance().getArtistByID(sArtistID);
 
     // Album-artist (not a constructor level property)
     String sAlbumArtist = attributes.getValue(Const.XML_ALBUM_ARTIST);
@@ -850,7 +850,7 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
     AlbumArtist albumArtist = AlbumArtistManager.getInstance().getAlbumArtistByID(sAlbumArtist);
     if (albumArtist == null) {
       // we force album artist to this default, a deep scan will be required to get actual values
-      albumArtist = AlbumArtistManager.getInstance().registerAlbumArtist(Const.UNKNOWN_AUTHOR);
+      albumArtist = AlbumArtistManager.getInstance().registerAlbumArtist(Const.UNKNOWN_ARTIST);
     }
 
     // Length
@@ -866,10 +866,10 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
     }
     Type type = TypeManager.getInstance().getTypeByID(typeID);
     // more checkups
-    if (album == null || author == null) {
+    if (album == null || artist == null) {
       return;
     }
-    if (style == null || type == null) {
+    if (genre == null || type == null) {
       return;
     }
     // Idem for order
@@ -899,7 +899,7 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
     // UPGRADE test
     String sRightID = sID;
     if (needCheckID) {
-      sRightID = TrackManager.createID(sTrackName, album, style, author, length, year, lOrder,
+      sRightID = TrackManager.createID(sTrackName, album, genre, artist, length, year, lOrder,
           type, lDiscNumber).intern();
       if (sRightID == sID) {
         needCheckID = UpgradeManager.isUpgradeDetected() || SessionService.isTestMode();
@@ -908,8 +908,8 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
         hmWrongRightTrackID.put(sID, sRightID);
       }
     }
-    Track track = TrackManager.getInstance().registerTrack(sRightID, sTrackName, album, style,
-        author, length, year, lOrder, type, lDiscNumber);
+    Track track = TrackManager.getInstance().registerTrack(sRightID, sTrackName, album, genre,
+        artist, length, year, lOrder, type, lDiscNumber);
     TrackManager.getInstance().changeTrackRate(track,
         UtilString.fastLongParser(attributes.getValue(Const.XML_TRACK_RATE)));
     track.setHits(UtilString.fastLongParser(attributes.getValue(Const.XML_TRACK_HITS)));
@@ -968,58 +968,58 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
   }
 
   /**
-   * Handle authors. DOCUMENT_ME
+   * Handle artists. DOCUMENT_ME
    * 
    * @param attributes
    *          DOCUMENT_ME
    * @param idIndex
    *          DOCUMENT_ME
    */
-  private void handleAuthors(Attributes attributes, int idIndex) {
+  private void handleArtists(Attributes attributes, int idIndex) {
     String sID = attributes.getValue(idIndex).intern();
     String sItemName = attributes.getValue(Const.XML_NAME).intern();
     // UPGRADE test
     String sRightID = sID;
     if (needCheckID) {
-      sRightID = AuthorManager.createID(sItemName).intern();
+      sRightID = ArtistManager.createID(sItemName).intern();
       if (sRightID == sID) {
         needCheckID = UpgradeManager.isUpgradeDetected() || SessionService.isTestMode();
       } else {
-        Log.debug("** Wrong author Id, upgraded: " + sItemName);
-        hmWrongRightAuthorID.put(sID, sRightID);
+        Log.debug("** Wrong artist Id, upgraded: " + sItemName);
+        hmWrongRightArtistID.put(sID, sRightID);
       }
     }
-    Author author = AuthorManager.getInstance().registerAuthor(sRightID, sItemName);
-    if (author != null) {
-      author.populateProperties(attributes);
+    Artist artist = ArtistManager.getInstance().registerArtist(sRightID, sItemName);
+    if (artist != null) {
+      artist.populateProperties(attributes);
     }
   }
 
   /**
-   * Handle styles. DOCUMENT_ME
+   * Handle genres. DOCUMENT_ME
    * 
    * @param attributes
    *          DOCUMENT_ME
    * @param idIndex
    *          DOCUMENT_ME
    */
-  private void handleStyles(Attributes attributes, int idIndex) {
+  private void handleGenres(Attributes attributes, int idIndex) {
     String sID = attributes.getValue(idIndex).intern();
     String sItemName = attributes.getValue(Const.XML_NAME).intern();
     // UPGRADE test
     String sRightID = sID;
     if (needCheckID) {
-      sRightID = StyleManager.createID(sItemName).intern();
+      sRightID = GenreManager.createID(sItemName).intern();
       if (sRightID == sID) {
         needCheckID = UpgradeManager.isUpgradeDetected() || SessionService.isTestMode();
       } else {
-        Log.debug("** Wrong style Id, upgraded: " + sItemName);
-        hmWrongRightStyleID.put(sID, sRightID);
+        Log.debug("** Wrong genre Id, upgraded: " + sItemName);
+        hmWrongRightGenreID.put(sID, sRightID);
       }
     }
-    Style style = StyleManager.getInstance().registerStyle(sRightID, sItemName);
-    if (style != null) {
-      style.populateProperties(attributes);
+    Genre genre = GenreManager.getInstance().registerGenre(sRightID, sItemName);
+    if (genre != null) {
+      genre.populateProperties(attributes);
     }
   }
 

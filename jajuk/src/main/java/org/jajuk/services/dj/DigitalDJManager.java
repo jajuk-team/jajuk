@@ -40,8 +40,8 @@ import javax.swing.JOptionPane;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
-import org.jajuk.base.Style;
-import org.jajuk.base.StyleManager;
+import org.jajuk.base.Genre;
+import org.jajuk.base.GenreManager;
 import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
@@ -309,8 +309,8 @@ abstract class DigitalDJFactory extends DefaultHandler {
   /** Rating level */
   protected int iRatingLevel;
 
-  /** Startup style */
-  protected Style startupStyle;
+  /** Startup genre */
+  protected Genre startupGenre;
 
   /** Track unicity */
   protected boolean bTrackUnicity = false;
@@ -427,8 +427,8 @@ abstract class DigitalDJFactory extends DefaultHandler {
  */
 class DigitalDJFactoryProportionImpl extends DigitalDJFactory {
 
-  /** Intermediate styles variable used during parsing */
-  private String styles;
+  /** Intermediate genres variable used during parsing */
+  private String genres;
 
   /** Intermediate proportion variable used during parsing */
   private float proportion;
@@ -443,13 +443,13 @@ class DigitalDJFactoryProportionImpl extends DigitalDJFactory {
       @Override
       protected void othersTags(String sQname, Attributes attributes) {
         if (Const.XML_DJ_PROPORTION.equals(sQname)) {
-          styles = attributes.getValue(attributes.getIndex(Const.XML_DJ_STYLES));
+          genres = attributes.getValue(attributes.getIndex(Const.XML_DJ_GENRES));
           proportion = Float.parseFloat(attributes
               .getValue(attributes.getIndex(Const.XML_DJ_VALUE)));
-          StringTokenizer st = new StringTokenizer(styles, ",");
+          StringTokenizer st = new StringTokenizer(genres, ",");
           Ambience ambience = new Ambience(Long.toString(System.currentTimeMillis()), "");
           while (st.hasMoreTokens()) {
-            ambience.addStyle(StyleManager.getInstance().getStyleByID(st.nextToken()));
+            ambience.addGenre(GenreManager.getInstance().getGenreByID(st.nextToken()));
           }
           proportions.add(new Proportion(ambience, proportion));
         }
@@ -523,17 +523,17 @@ class DigitalDJFactoryTransitionImpl extends DigitalDJFactory {
         if (Const.XML_DJ_TRANSITION.equals(sQname)) {
           int number = Integer.parseInt(attributes.getValue(attributes
               .getIndex(Const.XML_DJ_NUMBER)));
-          String fromStyles = attributes.getValue(attributes.getIndex(Const.XML_DJ_FROM));
-          StringTokenizer st = new StringTokenizer(fromStyles, ",");
+          String fromGenres = attributes.getValue(attributes.getIndex(Const.XML_DJ_FROM));
+          StringTokenizer st = new StringTokenizer(fromGenres, ",");
           Ambience fromAmbience = new Ambience();
           while (st.hasMoreTokens()) {
-            fromAmbience.addStyle(StyleManager.getInstance().getStyleByID(st.nextToken()));
+            fromAmbience.addGenre(GenreManager.getInstance().getGenreByID(st.nextToken()));
           }
-          String toStyles = attributes.getValue(attributes.getIndex(Const.XML_DJ_TO));
+          String toGenres = attributes.getValue(attributes.getIndex(Const.XML_DJ_TO));
           Ambience toAmbience = new Ambience();
-          st = new StringTokenizer(toStyles, ",");
+          st = new StringTokenizer(toGenres, ",");
           while (st.hasMoreTokens()) {
-            toAmbience.addStyle(StyleManager.getInstance().getStyleByID(st.nextToken()));
+            toAmbience.addGenre(GenreManager.getInstance().getGenreByID(st.nextToken()));
           }
           transitions.add(new Transition(fromAmbience, toAmbience, number));
         }

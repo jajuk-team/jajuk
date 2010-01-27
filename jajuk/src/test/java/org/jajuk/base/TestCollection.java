@@ -93,17 +93,17 @@ public class TestCollection extends JajukTestCase {
     // now with some content
     DeviceManager.getInstance().registerDevice("testdevice", 1,
         System.getProperty("java.io.tmpdir"));
-    StyleManager.getInstance().registerStyle("cooldown");
+    GenreManager.getInstance().registerGenre("cooldown");
     {
-      Style style = new Style("5", "name");
-      StyleManager.getInstance().registerStyle("name");
+      Genre genre = new Genre("5", "name");
+      GenreManager.getInstance().registerGenre("name");
       Album album = new Album("5", "name", 23);
       album.setProperty(Const.XML_ALBUM_COVER, Const.COVER_NONE); // don't read covers for
       // this test
       AlbumManager.getInstance().registerAlbum("name", 23);
 
-      Author author = new Author("5", "name");
-      AuthorManager.getInstance().registerAuthor("name");
+      Artist artist = new Artist("5", "name");
+      ArtistManager.getInstance().registerArtist("name");
       Year year = new Year("5", "2000");
       YearManager.getInstance().registerYear("2000");
 
@@ -114,14 +114,14 @@ public class TestCollection extends JajukTestCase {
       TypeManager.getInstance().registerType("MP3", "mp3", null, null);
 
       TrackManager.getInstance()
-          .registerTrack("name5", album, style, author, 120, year, 1, type, 1);
+          .registerTrack("name5", album, genre, artist, 120, year, 1, type, 1);
     }
     YearManager.getInstance().registerYear("1900");
     Device device = new Device("6", System.getProperty("java.io.tmpdir"));
     device.setUrl(System.getProperty("java.io.tmpdir"));
     PlaylistManager.getInstance().registerPlaylistFile("4", "plf",
         new Directory("4", "directory", null, device));
-    AuthorManager.getInstance().registerAuthor("testauthor");
+    ArtistManager.getInstance().registerArtist("testartist");
     AlbumManager.getInstance().registerAlbum("album2", "artist1", 0);
 
     device = new Device("7", System.getProperty("java.io.tmpdir"));

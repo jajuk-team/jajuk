@@ -134,55 +134,55 @@ public class PlaylistTableModel extends JajukTableModel {
     idList.add(Const.XML_TRACK_NAME);
 
     // Album
-    vColNames.add(Messages.getString(Const.PROPERTY_SEPARATOR + Const.XML_TRACK_ALBUM));
+    vColNames.add(Messages.getString("Property_album"));
     idList.add(Const.XML_TRACK_ALBUM);
 
-    // Author
-    vColNames.add(Messages.getString(Const.PROPERTY_SEPARATOR + Const.XML_TRACK_AUTHOR));
-    idList.add(Const.XML_TRACK_AUTHOR);
+    // Artist
+    vColNames.add(Messages.getString("Property_artist"));
+    idList.add(Const.XML_TRACK_ARTIST);
 
-    // Author
-    vColNames.add(Messages.getString(Const.PROPERTY_SEPARATOR + Const.XML_ALBUM_ARTIST));
+    // Artist
+    vColNames.add(Messages.getString("Property_album_artist"));
     idList.add(Const.XML_ALBUM_ARTIST);
 
-    // Style
-    vColNames.add(Messages.getString(Const.PROPERTY_SEPARATOR + Const.XML_TRACK_STYLE));
-    idList.add(Const.XML_TRACK_STYLE);
+    // Genre
+    vColNames.add(Messages.getString("Property_genre"));
+    idList.add(Const.XML_TRACK_GENRE);
 
     // Stars
-    vColNames.add(Messages.getString(Const.PROPERTY_SEPARATOR + Const.XML_TRACK_RATE));
+    vColNames.add(Messages.getString("Property_rate"));
     idList.add(Const.XML_TRACK_RATE);
 
     // Year
-    vColNames.add(Messages.getString(Const.PROPERTY_SEPARATOR + Const.XML_YEAR));
+    vColNames.add(Messages.getString("Property_year"));
     idList.add(Const.XML_YEAR);
 
     // Length
-    vColNames.add(Messages.getString(Const.PROPERTY_SEPARATOR + Const.XML_TRACK_LENGTH));
+    vColNames.add(Messages.getString("Property_length"));
     idList.add(Const.XML_TRACK_LENGTH);
 
     // comments
-    vColNames.add(Messages.getString(Const.PROPERTY_SEPARATOR + Const.XML_TRACK_COMMENT));
+    vColNames.add(Messages.getString("Property_comment"));
     idList.add(Const.XML_TRACK_COMMENT);
 
     // Added date
-    vColNames.add(Messages.getString(Const.PROPERTY_SEPARATOR + Const.XML_TRACK_DISCOVERY_DATE));
+    vColNames.add(Messages.getString("Property_added"));
     idList.add(Const.XML_TRACK_DISCOVERY_DATE);
 
     // Order
-    vColNames.add(Messages.getString(Const.PROPERTY_SEPARATOR + Const.XML_TRACK_ORDER));
+    vColNames.add(Messages.getString("Property_order"));
     idList.add(Const.XML_TRACK_ORDER);
 
     // Disc number
-    vColNames.add(Messages.getString(Const.PROPERTY_SEPARATOR + Const.XML_TRACK_DISC_NUMBER));
+    vColNames.add(Messages.getString("Property_disc_number"));
     idList.add(Const.XML_TRACK_DISC_NUMBER);
 
     // Device
-    vColNames.add(Messages.getString(Const.PROPERTY_SEPARATOR + Const.XML_DEVICE));
+    vColNames.add(Messages.getString("Property_device"));
     idList.add(Const.XML_DEVICE);
 
     // Directory
-    vColNames.add(Messages.getString(Const.PROPERTY_SEPARATOR + Const.XML_DIRECTORY));
+    vColNames.add(Messages.getString("Property_directory"));
     idList.add(Const.XML_DIRECTORY);
 
     // File name
@@ -224,9 +224,9 @@ public class PlaylistTableModel extends JajukTableModel {
     // For perfs, prepare columns visibility
     boolean bName = (columnsToShow != null && columnsToShow.contains(Const.XML_NAME));
     boolean bAlbum = (columnsToShow != null && columnsToShow.contains(Const.XML_ALBUM));
-    boolean bAuthor = (columnsToShow != null && columnsToShow.contains(Const.XML_AUTHOR));
+    boolean bArtist = (columnsToShow != null && columnsToShow.contains(Const.XML_ARTIST));
     boolean bAlbumArtist = (columnsToShow != null && columnsToShow.contains(Const.XML_ALBUM_ARTIST));
-    boolean bStyle = (columnsToShow != null && columnsToShow.contains(Const.XML_STYLE));
+    boolean bGenre = (columnsToShow != null && columnsToShow.contains(Const.XML_GENRE));
     boolean bYear = (columnsToShow != null && columnsToShow.contains(Const.XML_YEAR));
     boolean bRate = (columnsToShow != null && columnsToShow.contains(Const.XML_TRACK_RATE));
     boolean bLength = (columnsToShow != null && columnsToShow.contains(Const.XML_TRACK_LENGTH));
@@ -275,9 +275,9 @@ public class PlaylistTableModel extends JajukTableModel {
         oValues[iRow][2] = "";
       }
 
-      // Author
-      if (bAuthor) {
-        oValues[iRow][3] = bf.getTrack().getAuthor().getName2();
+      // Artist
+      if (bArtist) {
+        oValues[iRow][3] = bf.getTrack().getArtist().getName2();
       } else {
         oValues[iRow][3] = "";
       }
@@ -289,9 +289,9 @@ public class PlaylistTableModel extends JajukTableModel {
         oValues[iRow][4] = "";
       }
 
-      // Style
-      if (bStyle) {
-        oValues[iRow][5] = bf.getTrack().getStyle().getName2();
+      // Genre
+      if (bGenre) {
+        oValues[iRow][5] = bf.getTrack().getGenre().getName2();
       } else {
         oValues[iRow][5] = "";
       }

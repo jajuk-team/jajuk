@@ -227,7 +227,7 @@ public abstract class AbstractTreeView extends ViewAdapter {
     jmiReport = new JMenuItem(ActionManager.getAction(JajukActions.CREATE_REPORT));
     // Add custom data to this component in order to allow the ReportAction
     // to be able to get it
-    jmiReport.putClientProperty(Const.DETAIL_ORIGIN, XML_STYLE);
+    jmiReport.putClientProperty(Const.DETAIL_ORIGIN, XML_GENRE);
     jmiReport.putClientProperty(Const.DETAIL_SELECTION, alSelected);
     jmiProperties = new JMenuItem(ActionManager.getAction(JajukActions.SHOW_PROPERTIES));
     jmiProperties.putClientProperty(Const.DETAIL_SELECTION, alSelected);

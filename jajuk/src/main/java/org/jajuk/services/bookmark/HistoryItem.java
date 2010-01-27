@@ -100,7 +100,7 @@ public class HistoryItem {
     String sDate = History.getInstance().getDateFormatter().format(new Date(getDate()));
     StringBuilder sb = new StringBuilder();
     sb.append('[').append(sDate).append("] ");
-    sb.append(file.getTrack().getAuthor().getName2());
+    sb.append(file.getTrack().getArtist().getName2());
     sb.append(" / ").append(file.getTrack().getName());
     return sb.toString();
   }

@@ -67,7 +67,7 @@ public class LastFmAlbumThumbnail extends AbstractThumbnail {
   /** Associated album. */
   private AlbumInfo album;
 
-  /** Is this author known in collection ?. */
+  /** Is this artist known in collection ?. */
   private final boolean bKnown;
 
   /** Thumb associated image *. */
@@ -121,9 +121,9 @@ public class LastFmAlbumThumbnail extends AbstractThumbnail {
         + Const.XML_URL + '?' + album.getUrl() + "'>" + album.getTitle() + "</a>" + "</b><br><br>";
     // display cover
     sOut += "<img src='" + album.getBigCoverURL() + "'><br>";
-    // Display author as global value only if it is a single author album
+    // Display artist as global value only if it is a single artist album
     // We use file://<item type>?<item id> as HTML hyperlink format
-    sOut += "<br>" + Messages.getString("Property_author") + " : " + "<a href='file://"
+    sOut += "<br>" + Messages.getString("Property_artist") + " : " + "<a href='file://"
         + Const.XML_URL + '?' + album.getArtistUrl() + "'>" + album.getArtist() + "</a>";
     // Display year if available
     String year = album.getYear();

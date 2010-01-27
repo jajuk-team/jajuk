@@ -22,7 +22,7 @@
 package org.jajuk.base;
 
 /**
- * A logical Item (style, author, year, album...)
+ * A logical Item (genre, artist, year, album...)
  */
 public abstract class LogicalItem extends Item {
 

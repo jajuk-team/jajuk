@@ -397,7 +397,7 @@ public abstract class AbstractThumbnail extends JPanel implements ActionListener
   public abstract void launch();
 
   /**
-   * If the thumb represents something (album, author...) known in the
+   * If the thumb represents something (album, artist...) known in the
    * collection, the implementation of this method should return the associated
    * item
    * 

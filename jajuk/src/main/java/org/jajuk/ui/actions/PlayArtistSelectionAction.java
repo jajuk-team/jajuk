@@ -23,7 +23,7 @@ package org.jajuk.ui.actions;
 import java.awt.event.ActionEvent;
 import java.util.List;
 
-import org.jajuk.base.Author;
+import org.jajuk.base.Artist;
 import org.jajuk.base.File;
 import org.jajuk.base.Track;
 import org.jajuk.services.players.QueueModel;
@@ -36,26 +36,26 @@ import org.jajuk.util.UtilFeatures;
 import org.jajuk.util.log.Log;
 
 /**
- * Play authors a selection. We expect the selection to be tracks and we play
- * only the first found author
+ * Play artists a selection. We expect the selection to be tracks and we play
+ * only the first found artist
  * <p>
- * Action emitter is responsible to ensure all items provided share the same
+ * Action launcher is responsible to ensure all items provided share the same
  * type
  * </p>
  * <p>
  * Selection data is provided using the swing properties DETAIL_SELECTION
  * </p>
  */
-public class PlayAuthorSelectionAction extends SelectionAction {
+public class PlayArtistSelectionAction extends SelectionAction {
 
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = -8078402652430413821L;
 
   /**
-   * Instantiates a new play author selection action.
+   * Instantiates a new play artist selection action.
    */
-  PlayAuthorSelectionAction() {
-    super(Messages.getString("TracksTableView.12"), IconLoader.getIcon(JajukIcons.AUTHOR), true);
+  PlayArtistSelectionAction() {
+    super(Messages.getString("TracksTableView.12"), IconLoader.getIcon(JajukIcons.ARTIST), true);
     setShortDescription(Messages.getString("TracksTableView.12"));
   }
 
@@ -66,17 +66,17 @@ public class PlayAuthorSelectionAction extends SelectionAction {
    */
   @Override
   public void perform(final ActionEvent e) throws Exception {
-    new Thread("PlayAuthorSelectionAction") {
+    new Thread("PlayArtistSelectionAction") {
       @Override
       public void run() {
         try {
-          PlayAuthorSelectionAction.super.perform(e);
+          PlayArtistSelectionAction.super.perform(e);
           if (selection.size() == 0 || !(selection.get(0) instanceof Track)) {
             return;
           }
           // Select all files from the first found album
-          Author author = ((Track) selection.get(0)).getAuthor();
-          List<File> files = UtilFeatures.getPlayableFiles(author);
+          Artist artist = ((Track) selection.get(0)).getArtist();
+          List<File> files = UtilFeatures.getPlayableFiles(artist);
           QueueModel.push(UtilFeatures.createStackItems(UtilFeatures.applyPlayOption(files), Conf
               .getBoolean(Const.CONF_STATE_REPEAT_ALL), true), false);
         } catch (Exception e) {

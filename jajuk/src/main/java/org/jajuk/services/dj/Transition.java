@@ -21,18 +21,18 @@
 
 package org.jajuk.services.dj;
 
-import org.jajuk.base.Style;
+import org.jajuk.base.Genre;
 import org.jajuk.util.UtilFeatures;
 
 /**
- * Represents a transition from one style to another (used by digital DJs).
+ * Represents a transition from one genre to another (used by digital DJs).
  */
 public class Transition {
   
-  /** From styles. */
+  /** From genres. */
   private Ambience from;
 
-  /** To styles. */
+  /** To genres. */
   private Ambience to;
 
   /** Nb of tracks. */
@@ -41,9 +41,9 @@ public class Transition {
   /**
    * Constructor.
    * 
-   * @param from source styles
-   * @param to destination style
-   * @param nb number of tracks played before changing style
+   * @param from source genres
+   * @param to destination genre
+   * @param nb number of tracks played before changing genre
    */
   public Transition(Ambience from, Ambience to, int nb) {
     this.from = from;
@@ -105,13 +105,13 @@ public class Transition {
   }
 
   /**
-   * From String, return style1,style2,...
+   * From String, return genre1,genre2,...
    * 
    * @return the from string
    */
   public String getFromString() {
     String out = "";
-    for (Style s : from.getStyles()) {
+    for (Genre s : from.getGenres()) {
       out += s.getName2() + ',';
     }
     if (out.length() > 0) {
@@ -121,13 +121,13 @@ public class Transition {
   }
 
   /**
-   * "To" String, return style1,style2,...
+   * "To" String, return genre1,genre2,...
    * 
    * @return the to string
    */
   public String getToString() {
     String out = "";
-    for (Style s : to.getStyles()) {
+    for (Genre s : to.getGenres()) {
       out += s.getName2() + ',';
     }
     if (out.length() > 0) {
@@ -149,56 +149,56 @@ public class Transition {
   }
 
   /**
-   * Adds the from style.
+   * Adds the from genre.
    * DOCUMENT_ME
    * 
-   * @param style DOCUMENT_ME
+   * @param genre DOCUMENT_ME
    */
-  public void addFromStyle(Style style) {
-    from.addStyle(style);
+  public void addFromGenre(Genre genre) {
+    from.addGenre(genre);
   }
 
   /**
-   * Removes the from style.
+   * Removes the from genre.
    * 
-   * @param style DOCUMENT_ME
+   * @param genre DOCUMENT_ME
    */
-  public void removeFromStyle(Style style) {
-    from.removeStyle(style);
+  public void removeFromGenre(Genre genre) {
+    from.removeGenre(genre);
   }
 
   /**
-   * Adds the to style.
+   * Adds the to genre.
    * DOCUMENT_ME
    * 
-   * @param style DOCUMENT_ME
+   * @param genre DOCUMENT_ME
    */
-  public void addToStyle(Style style) {
-    to.addStyle(style);
+  public void addToGenre(Genre genre) {
+    to.addGenre(genre);
   }
 
   /**
-   * Removes the to style.
+   * Removes the to genre.
    * 
-   * @param style DOCUMENT_ME
+   * @param genre DOCUMENT_ME
    */
-  public void removeToStyle(Style style) {
-    to.removeStyle(style);
+  public void removeToGenre(Genre genre) {
+    to.removeGenre(genre);
   }
 
   /**
-   * Gets the next style.
+   * Gets the next genre.
    * 
-   * @return next style to be played or null if no idea
+   * @return next genre to be played or null if no idea
    */
-  public Style getNextStyle() {
-    if (to.getStyles().size() == 0) {
+  public Genre getNextGenre() {
+    if (to.getGenres().size() == 0) {
       return null;
-    } else if (to.getStyles().size() == 1) {
-      return to.getStyles().iterator().next();
+    } else if (to.getGenres().size() == 1) {
+      return to.getGenres().iterator().next();
     } else {
-      // several destination styles, return a shuffle one
-      return (Style) UtilFeatures.getShuffleItem(to.getStyles());
+      // several destination genres, return a shuffle one
+      return (Genre) UtilFeatures.getShuffleItem(to.getGenres());
     }
   }
 

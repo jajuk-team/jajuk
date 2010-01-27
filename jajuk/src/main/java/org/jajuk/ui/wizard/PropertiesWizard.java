@@ -52,7 +52,7 @@ import javax.swing.SwingUtilities;
 import net.miginfocom.swing.MigLayout;
 
 import org.jajuk.base.AlbumArtistManager;
-import org.jajuk.base.AuthorManager;
+import org.jajuk.base.ArtistManager;
 import org.jajuk.base.Device;
 import org.jajuk.base.Directory;
 import org.jajuk.base.File;
@@ -62,7 +62,7 @@ import org.jajuk.base.ItemManager;
 import org.jajuk.base.Playlist;
 import org.jajuk.base.PlaylistManager;
 import org.jajuk.base.PropertyMetaInformation;
-import org.jajuk.base.StyleManager;
+import org.jajuk.base.GenreManager;
 import org.jajuk.base.Track;
 import org.jajuk.base.TrackManager;
 import org.jajuk.events.JajukEvent;
@@ -291,8 +291,8 @@ public class PropertiesWizard extends JajukJDialog implements ActionListener {
     String sKey = meta.getName();
     return sKey.equals(Const.XML_DEVICE) || sKey.equals(Const.XML_TRACK)
         || sKey.equals(Const.XML_DEVICE) || sKey.equals(Const.XML_TRACK)
-        || sKey.equals(Const.XML_ALBUM) || sKey.equals(Const.XML_AUTHOR)
-        || sKey.equals(Const.XML_YEAR) || sKey.equals(Const.XML_STYLE)
+        || sKey.equals(Const.XML_ALBUM) || sKey.equals(Const.XML_ARTIST)
+        || sKey.equals(Const.XML_YEAR) || sKey.equals(Const.XML_GENRE)
         || sKey.equals(Const.XML_DIRECTORY) || sKey.equals(Const.XML_FILE)
         || sKey.equals(Const.XML_PLAYLIST) || sKey.equals(Const.XML_PLAYLIST_FILE)
         || sKey.equals(Const.XML_FILES) || sKey.equals(Const.XML_PLAYLIST_FILES)
@@ -480,25 +480,25 @@ public class PropertiesWizard extends JajukJDialog implements ActionListener {
             }
             widgets[index][1] = jtfValue;
           } else if (meta.getType().equals(String.class)
-          // for styles
-              && meta.getName().equals(Const.XML_STYLE)) {
-            Vector<String> styles = StyleManager.getInstance().getStylesList();
-            final JComboBox jcb = new JComboBox(styles);
+          // for genres
+              && meta.getName().equals(Const.XML_GENRE)) {
+            Vector<String> genres = GenreManager.getInstance().getGenresList();
+            final JComboBox jcb = new JComboBox(genres);
             jcb.setEditable(true);
             AutoCompleteDecorator.decorate(jcb);
-            // set current style to combo
+            // set current genre to combo
             int i = -1;
             int comp = 0;
-            String sCurrentStyle = pa.getHumanValue(Const.XML_STYLE);
-            for (String s : styles) {
-              if (s.equals(sCurrentStyle)) {
+            String sCurrentGenre = pa.getHumanValue(Const.XML_GENRE);
+            for (String s : genres) {
+              if (s.equals(sCurrentGenre)) {
                 i = comp;
                 break;
               }
               comp++;
             }
             jcb.setSelectedIndex(i);
-            // if different style, don't show anything
+            // if different genre, don't show anything
             if (!bAllEquals) {
               jcb.setSelectedIndex(-1);
             }
@@ -521,31 +521,31 @@ public class PropertiesWizard extends JajukJDialog implements ActionListener {
             });
             widgets[index][1] = jcb;
           } else if (meta.getType().equals(String.class) && 
-              (Const.XML_AUTHOR.equals(meta.getName()) || Const.XML_ALBUM_ARTIST.equals(meta.getName()))) {
-            // for authors or album-artists
-            Vector<String> authors = null;
-            if (Const.XML_AUTHOR.equals(meta.getName())){
-              authors = AuthorManager.getAuthorsList();
+              (Const.XML_ARTIST.equals(meta.getName()) || Const.XML_ALBUM_ARTIST.equals(meta.getName()))) {
+            // for artists or album-artists
+            Vector<String> artists = null;
+            if (Const.XML_ARTIST.equals(meta.getName())){
+              artists = ArtistManager.getArtistsList();
             }
             else if (Const.XML_ALBUM_ARTIST.equals(meta.getName())){
-              authors = AlbumArtistManager.getAlbumArtistsList();
+              artists = AlbumArtistManager.getAlbumArtistsList();
             }
-            final JComboBox jcb = new JComboBox(authors);
+            final JComboBox jcb = new JComboBox(artists);
             jcb.setEditable(true);
             AutoCompleteDecorator.decorate(jcb);
-            // set current style to combo
+            // set current genre to combo
             int i = -1;
             int comp = 0;
-            String sCurrentAuthor = pa.getHumanValue(Const.XML_AUTHOR);
-            for (String s : authors) {
-              if (s.equals(sCurrentAuthor)) {
+            String sCurrentArtist = pa.getHumanValue(Const.XML_ARTIST);
+            for (String s : artists) {
+              if (s.equals(sCurrentArtist)) {
                 i = comp;
                 break;
               }
               comp++;
             }
             jcb.setSelectedIndex(i);
-            // if different author, don't show anything
+            // if different artist, don't show anything
             if (!bAllEquals) {
               jcb.setSelectedIndex(-1);
             }

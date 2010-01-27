@@ -106,7 +106,7 @@ public final class AlbumArtistManager extends ItemManager {
     }
     albumArtist = new AlbumArtist(sId, sName);
     registerItem(albumArtist);
-    // add it in styles list if new
+    // add it in genres list if new
     if (!albumArtistsList.contains(sName)) {
       albumArtistsList.add(albumArtist.getName2());
       // Sort items ignoring case
@@ -156,8 +156,8 @@ public final class AlbumArtistManager extends ItemManager {
       }
       // if current track albumArtist name is changed, notify it
       if (queueNeedsUpdate) {
-        // We use the same event than for authors to keep things simple
-        ObservationManager.notify(new JajukEvent(JajukEvents.AUTHOR_CHANGED));
+        // We use the same event than for artists to keep things simple
+        ObservationManager.notify(new JajukEvent(JajukEvents.ARTIST_CHANGED));
       }
       return newItem;
     }

@@ -23,12 +23,12 @@ package org.jajuk.services.bookmark;
 import org.jajuk.JUnitHelpers;
 import org.jajuk.JajukTestCase;
 import org.jajuk.base.Album;
-import org.jajuk.base.Author;
+import org.jajuk.base.Artist;
 import org.jajuk.base.Device;
 import org.jajuk.base.Directory;
 import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
-import org.jajuk.base.Style;
+import org.jajuk.base.Genre;
 import org.jajuk.base.Track;
 import org.jajuk.base.Type;
 import org.jajuk.base.Year;
@@ -95,19 +95,19 @@ public class TestHistoryItem extends JajukTestCase {
   public final void testToStringFile() {
     File file;
     {
-      Style style = new Style("3", "stylename");
+      Genre genre = new Genre("3", "genrename");
       Album album = new Album("3", "albumname", 23);
       album.setProperty(Const.XML_ALBUM_COVER, Const.COVER_NONE); // don't read covers for
       // this test
 
-      Author author = new Author("3", "authorname");
+      Artist artist = new Artist("3", "artistname");
       Year year = new Year("3", "2000");
 
       IPlayerImpl imp = new JUnitHelpers.MockPlayer();
       Class<IPlayerImpl> cl = (Class<IPlayerImpl>) imp.getClass();
 
       Type type = new Type("3", "typename", "mp3", cl, null);
-      Track track = new Track("3", "trackname", album, style, author, 120, year, 1, type, 1);
+      Track track = new Track("3", "trackname", album, genre, artist, 120, year, 1, type, 1);
 
       Device device = new Device("3", "devicename");
       device.setUrl(System.getProperty("java.io.tmpdir"));
@@ -127,6 +127,6 @@ public class TestHistoryItem extends JajukTestCase {
 
     // verify that the necessary information is contained
     assertTrue(item.toString(), item.toString().contains("trackname"));
-    assertTrue(item.toString(), item.toString().contains("authorname"));
+    assertTrue(item.toString(), item.toString().contains("artistname"));
   }
 }

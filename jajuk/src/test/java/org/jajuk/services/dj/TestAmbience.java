@@ -26,8 +26,8 @@ import java.util.Set;
 import org.apache.commons.lang.StringUtils;
 import org.jajuk.JUnitHelpers;
 import org.jajuk.JajukTestCase;
-import org.jajuk.base.Style;
-import org.jajuk.base.StyleManager;
+import org.jajuk.base.Genre;
+import org.jajuk.base.GenreManager;
 
 /**
  * 
@@ -49,11 +49,11 @@ public class TestAmbience extends JajukTestCase {
    * {@link org.jajuk.services.dj.Ambience#Ambience(java.lang.String, java.lang.String, java.util.Set)}
    * .
    */
-  public final void testAmbienceStringStringSetOfStyle() {
-    Set<Style> styles = new HashSet<Style>();
-    styles.add(new Style("3", "mystyle"));
+  public final void testAmbienceStringStringSetOfGenre() {
+    Set<Genre> genres = new HashSet<Genre>();
+    genres.add(new Genre("3", "mygenre"));
 
-    new Ambience("1", "name", styles);
+    new Ambience("1", "name", genres);
   }
 
   /**
@@ -62,11 +62,11 @@ public class TestAmbience extends JajukTestCase {
    * .
    */
   public final void testAmbienceStringStringStringArray() {
-    StyleManager.getInstance().registerStyle("anotherstyle");
-    StyleManager.getInstance().registerStyle("yetanotherstyle");
+    GenreManager.getInstance().registerGenre("anothergenre");
+    GenreManager.getInstance().registerGenre("yetanothergenre");
 
-    // try with one unknown style here...
-    new Ambience("1", "name", new String[] { "anotherstyle", "yetanotherstyle", "unknownstyle" });
+    // try with one unknown genre here...
+    new Ambience("1", "name", new String[] { "anothergenre", "yetanothergenre", "unknowngenre" });
   }
 
   /**
@@ -87,37 +87,37 @@ public class TestAmbience extends JajukTestCase {
 
   /**
    * Test method for
-   * {@link org.jajuk.services.dj.Ambience#addStyle(org.jajuk.base.Style)}.
+   * {@link org.jajuk.services.dj.Ambience#addGenre(org.jajuk.base.Genre)}.
    */
-  public final void testAddStyle() {
+  public final void testAddGenre() {
     Ambience amb = new Ambience("1", "name");
 
-    amb.addStyle(new Style("1", "anotherstyle"));
+    amb.addGenre(new Genre("1", "anothergenre"));
   }
 
   /**
    * Test method for
-   * {@link org.jajuk.services.dj.Ambience#removeStyle(org.jajuk.base.Style)}.
+   * {@link org.jajuk.services.dj.Ambience#removeGenre(org.jajuk.base.Genre)}.
    */
-  public final void testRemoveStyle() {
+  public final void testRemoveGenre() {
     Ambience amb = new Ambience("1", "name");
 
-    Style style = new Style("1", "anotherstyle");
+    Genre genre = new Genre("1", "anothergenre");
 
-    assertEquals(0, amb.getStyles().size());
+    assertEquals(0, amb.getGenres().size());
 
-    amb.addStyle(style);
+    amb.addGenre(genre);
 
-    assertEquals(1, amb.getStyles().size());
+    assertEquals(1, amb.getGenres().size());
 
-    amb.removeStyle(style);
+    amb.removeGenre(genre);
 
-    assertEquals(0, amb.getStyles().size());
+    assertEquals(0, amb.getGenres().size());
 
     // try it again
-    amb.removeStyle(style);
+    amb.removeGenre(genre);
 
-    assertEquals(0, amb.getStyles().size());
+    assertEquals(0, amb.getGenres().size());
   }
 
   /**
@@ -148,46 +148,46 @@ public class TestAmbience extends JajukTestCase {
   }
 
   /**
-   * Test method for {@link org.jajuk.services.dj.Ambience#getStyles()}.
+   * Test method for {@link org.jajuk.services.dj.Ambience#getGenres()}.
    */
-  public final void testGetStyles() {
+  public final void testGetGenres() {
     // tested above
   }
 
   /**
    * Test method for
-   * {@link org.jajuk.services.dj.Ambience#setStyles(java.util.Set)}.
+   * {@link org.jajuk.services.dj.Ambience#setGenres(java.util.Set)}.
    */
-  public final void testSetStyles() {
+  public final void testSetGenres() {
     Ambience amb = new Ambience("1", "name");
 
-    assertEquals(0, amb.getStyles().size());
+    assertEquals(0, amb.getGenres().size());
 
-    Set<Style> styles = new HashSet<Style>();
-    styles.add(new Style("3", "mystyle"));
-    styles.add(new Style("4", "mystyle2"));
-    styles.add(new Style("5", "mystyle3"));
+    Set<Genre> genres = new HashSet<Genre>();
+    genres.add(new Genre("3", "mygenre"));
+    genres.add(new Genre("4", "mygenre2"));
+    genres.add(new Genre("5", "mygenre3"));
 
-    amb.setStyles(styles);
+    amb.setGenres(genres);
 
-    assertEquals(3, amb.getStyles().size());
+    assertEquals(3, amb.getGenres().size());
   }
 
   /**
-   * Test method for {@link org.jajuk.services.dj.Ambience#getStylesDesc()}.
+   * Test method for {@link org.jajuk.services.dj.Ambience#getGenresDesc()}.
    */
-  public final void testGetStylesDesc() {
+  public final void testGetGenresDesc() {
     Ambience amb = new Ambience("1", "name");
 
-    // first an empty string results without any style set
-    assertEquals("", amb.getStylesDesc());
+    // first an empty string results without any genre set
+    assertEquals("", amb.getGenresDesc());
 
-    // then add some styles
-    amb.addStyle(new Style("3", "mystyle"));
-    amb.addStyle(new Style("4", "mystyle2"));
-    amb.addStyle(new Style("5", "mystyle3"));
+    // then add some genres
+    amb.addGenre(new Genre("3", "mygenre"));
+    amb.addGenre(new Genre("4", "mygenre2"));
+    amb.addGenre(new Genre("5", "mygenre3"));
 
-    assertTrue(StringUtils.isNotBlank(amb.getStylesDesc()));
+    assertTrue(StringUtils.isNotBlank(amb.getGenresDesc()));
   }
 
   /**
@@ -205,10 +205,10 @@ public class TestAmbience extends JajukTestCase {
     amb = new Ambience(null, null);
     JUnitHelpers.ToStringTest(amb);
 
-    // also with styles
+    // also with genres
     amb = new Ambience("9", "name0987");
-    amb.addStyle(new Style("3", "mystyle"));
-    amb.addStyle(new Style("4", "mystyle2"));
+    amb.addGenre(new Genre("3", "mygenre"));
+    amb.addGenre(new Genre("4", "mygenre2"));
     JUnitHelpers.ToStringTest(amb);
   }
 
@@ -223,9 +223,9 @@ public class TestAmbience extends JajukTestCase {
     // equals compares on name
     Ambience notequal1 = new Ambience("1", "name1");
 
-    // and also compares on styles
+    // and also compares on genres
     Ambience notequal2 = new Ambience("1", "name");
-    notequal2.addStyle(new Style("4", "mystyle2"));
+    notequal2.addGenre(new Genre("4", "mygenre2"));
 
     JUnitHelpers.EqualsTest(amb, equal, notequal1);
     JUnitHelpers.EqualsTest(amb, equal, notequal2);
@@ -233,16 +233,16 @@ public class TestAmbience extends JajukTestCase {
 
   public final void testEqualsObject2() {
     Ambience amb = new Ambience("1", "name");
-    amb.addStyle(new Style("4", "mystyle4"));
+    amb.addGenre(new Genre("4", "mygenre4"));
     Ambience equal = new Ambience("1", "name");
-    equal.addStyle(new Style("4", "mystyle4"));
+    equal.addGenre(new Genre("4", "mygenre4"));
 
     // equals compares on name
     Ambience notequal1 = new Ambience("1", "name1");
 
-    // and also compares on styles
+    // and also compares on genres
     Ambience notequal2 = new Ambience("1", "name");
-    notequal2.addStyle(new Style("5", "mystyle2"));
+    notequal2.addGenre(new Genre("5", "mygenre2"));
 
     JUnitHelpers.EqualsTest(amb, equal, notequal1);
     JUnitHelpers.EqualsTest(amb, equal, notequal2);
@@ -270,15 +270,15 @@ public class TestAmbience extends JajukTestCase {
 
     // just returns a comma-separated list, not a full XML here...
 
-    // try without any styles, returns an empty string
+    // try without any genres, returns an empty string
     assertEquals("", amb.toXML());
 
     // then add some
-    amb.addStyle(new Style("11", "mystyle4123"));
+    amb.addGenre(new Genre("11", "mygenre4123"));
     assertTrue(StringUtils.isNotBlank(amb.toXML()));
 
     // and then some more
-    amb.addStyle(new Style("12", "mystyle4234"));
-    amb.addStyle(new Style("13", "mystyle834874"));
+    amb.addGenre(new Genre("12", "mygenre4234"));
+    amb.addGenre(new Genre("13", "mygenre834874"));
   }
 }

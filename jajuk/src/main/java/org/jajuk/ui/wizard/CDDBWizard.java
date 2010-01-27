@@ -334,7 +334,7 @@ public class CDDBWizard extends JajukJDialog implements ActionListener {
     }
     sValue = fdbReader.getArtist();
     if (sValue != null && sValue.trim().length() > 0) {
-      track = TrackManager.getInstance().changeTrackAuthor(track, sValue, null);
+      track = TrackManager.getInstance().changeTrackArtist(track, sValue, null);
     }
     sValue = fdbReader.getTrackTitle(iRow);
     if (sValue != null && sValue.trim().length() > 0) {
@@ -342,7 +342,7 @@ public class CDDBWizard extends JajukJDialog implements ActionListener {
     }
     sValue = fdbReader.getGenre();
     if (sValue != null && sValue.trim().length() > 0) {
-      track = TrackManager.getInstance().changeTrackStyle(track, sValue, null);
+      track = TrackManager.getInstance().changeTrackGenre(track, sValue, null);
     }
     // Track# can be absent from CDDB database, ignore if not provided
     try {

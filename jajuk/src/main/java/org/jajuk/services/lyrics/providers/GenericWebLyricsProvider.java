@@ -117,7 +117,7 @@ public abstract class GenericWebLyricsProvider implements ILyricsProvider {
     try {
       String queryString = getQueryURLTemplate();
 
-      queryString = queryString.replace(Const.PATTERN_AUTHOR, (artist != null) ? NetworkUtils
+      queryString = queryString.replace(Const.PATTERN_ARTIST, (artist != null) ? NetworkUtils
           .encodeString(artist) : "");
       queryString = queryString.replace(Const.PATTERN_TRACKNAME, (title != null) ? NetworkUtils
           .encodeString(title) : "");

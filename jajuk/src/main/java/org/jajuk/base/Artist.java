@@ -20,31 +20,27 @@
  */
 package org.jajuk.base;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.swing.ImageIcon;
 
 import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
-import org.jajuk.util.ReadOnlyIterator;
 
 /**
- * A music style ( jazz, rock...)
+ * An artist *
  * <p>
- * Logical item
+ * Logical item.
  */
-public class Style extends LogicalItem implements Comparable<Style> {
+public class Artist extends LogicalItem implements Comparable<Artist> {
 
   /**
-   * Style constructor.
+   * Artist constructor.
    * 
    * @param sName DOCUMENT_ME
    * @param sId DOCUMENT_ME
    */
-  public Style(String sId, String sName) {
+  public Artist(String sId, String sName) {
     super(sId, sName);
   }
 
@@ -55,20 +51,20 @@ public class Style extends LogicalItem implements Comparable<Style> {
    */
   @Override
   public String getLabel() {
-    return XML_STYLE;
+    return XML_ARTIST;
   }
 
   /**
-   * Return style name, dealing with unkwnown for any language.
+   * Return artist name, dealing with unknown for any language.
    * 
-   * @return author name
+   * @return artist name
    */
   public String getName2() {
-    String sOut = getName();
-    if (sOut.equals(UNKNOWN_STYLE)) {
-      sOut = Messages.getString(UNKNOWN_STYLE);
+    if(isUnknown()) {
+      return Messages.getString(UNKNOWN_ARTIST);
     }
-    return sOut;
+    
+    return getName();
   }
 
   /**
@@ -78,7 +74,12 @@ public class Style extends LogicalItem implements Comparable<Style> {
    * 
    * @return comparison result
    */
-  public int compareTo(Style otherItem) {
+  public int compareTo(Artist otherItem) {
+    // not equal if other is null
+    if(otherItem == null) {
+      return 1;
+    }
+    
     // compare using name and id to differentiate unknown items
     StringBuilder current = new StringBuilder(getName2());
     current.append(getID());
@@ -87,13 +88,13 @@ public class Style extends LogicalItem implements Comparable<Style> {
     return current.toString().compareToIgnoreCase(other.toString());
   }
 
-   /**
-    * Checks if is unknown.
-    * 
-    * @return whether the style is Unknown or not
-    */
+  /**
+   * Checks if is unknown.
+   * 
+   * @return whether the artist is Unknown or not
+   */
   public boolean isUnknown() {
-    return this.getName().equals(UNKNOWN_STYLE);
+    return this.getName().equals(UNKNOWN_ARTIST);
   }
 
   /**
@@ -103,7 +104,7 @@ public class Style extends LogicalItem implements Comparable<Style> {
    */
   @Override
   public String getDesc() {
-    return Messages.getString("Item_Style") + " : " + getName2();
+    return Messages.getString("Item_Artist") + " : " + getName2();
   }
 
   /*
@@ -112,29 +113,12 @@ public class Style extends LogicalItem implements Comparable<Style> {
    * @see org.jajuk.base.Item#getHumanValue(java.lang.String)
    */
   @Override
-  public final String getHumanValue(String sKey) {
+  public String getHumanValue(String sKey) {
     if (Const.XML_NAME.equals(sKey)) {
       return getName2();
-    } else {// default
-      return super.getHumanValue(sKey);
     }
-  }
-
-  /**
-   * Gets the tracks recursively.
-   * 
-   * @return all tracks associated with this style
-   */
-  public List<Track> getTracksRecursively() {
-    List<Track> alTracks = new ArrayList<Track>(1000);
-    ReadOnlyIterator<Track> it = TrackManager.getInstance().getTracksIterator();
-    while (it.hasNext()) {
-      Track track = it.next();
-      if (track.getStyle().equals(this)) {
-        alTracks.add(track);
-      }
-    }
-    return alTracks;
+    // default
+    return super.getHumanValue(sKey);
   }
 
   /*
@@ -144,7 +128,6 @@ public class Style extends LogicalItem implements Comparable<Style> {
    */
   @Override
   public ImageIcon getIconRepresentation() {
-    return IconLoader.getIcon(JajukIcons.STYLE);
+    return IconLoader.getIcon(JajukIcons.ARTIST);
   }
-
 }

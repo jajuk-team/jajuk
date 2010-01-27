@@ -32,7 +32,6 @@ import javax.swing.plaf.basic.BasicComboPopup;
 /**
  * Basic combo popup.
  * 
- * @author Bertrand Florat
  * @created 28 nov. 2003
  */
 public class JajukBasicComboPopup extends BasicComboPopup {

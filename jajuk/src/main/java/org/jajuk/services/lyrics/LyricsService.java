@@ -79,7 +79,7 @@ public final class LyricsService {
   /**
    * Loads the appropriate providers from the properties file. For now,
    * providers order is static and the providersClasses array reflect jajuk
-   * authors service preferred ordering
+   * artists service preferred ordering
    * 
    * @TODO this behavior could eventually be switched to a shuffle provider list
    * for performance or better resources usage reasons

@@ -29,13 +29,13 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 
 import org.jajuk.base.AlbumManager;
-import org.jajuk.base.AuthorManager;
+import org.jajuk.base.ArtistManager;
 import org.jajuk.base.DeviceManager;
 import org.jajuk.base.DirectoryManager;
 import org.jajuk.base.FileManager;
 import org.jajuk.base.ItemManager;
 import org.jajuk.base.PlaylistManager;
-import org.jajuk.base.StyleManager;
+import org.jajuk.base.GenreManager;
 import org.jajuk.base.TrackManager;
 import org.jajuk.base.YearManager;
 import org.jajuk.ui.perspectives.FilesPerspective;
@@ -91,8 +91,8 @@ public abstract class CustomPropertyWizard extends JajukJDialog implements Actio
     // (we don't see the need for it)
     jcbItemChoice.addItem(Messages.getString("Item_Track"));
     jcbItemChoice.addItem(Messages.getString("Item_File"));
-    jcbItemChoice.addItem(Messages.getString("Item_Style"));
-    jcbItemChoice.addItem(Messages.getString("Item_Author"));
+    jcbItemChoice.addItem(Messages.getString("Item_Genre"));
+    jcbItemChoice.addItem(Messages.getString("Item_Artist"));
     jcbItemChoice.addItem(Messages.getString("Item_Album"));
     jcbItemChoice.addItem(Messages.getString("Item_Device"));
     jcbItemChoice.addItem(Messages.getString("Item_Directory"));
@@ -124,10 +124,10 @@ public abstract class CustomPropertyWizard extends JajukJDialog implements Actio
       im = FileManager.getInstance();
       break;
     case 2:
-      im = StyleManager.getInstance();
+      im = GenreManager.getInstance();
       break;
     case 3:
-      im = AuthorManager.getInstance();
+      im = ArtistManager.getInstance();
       break;
     case 4:
       im = AlbumManager.getInstance();

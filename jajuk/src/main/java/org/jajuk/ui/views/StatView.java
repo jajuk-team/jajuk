@@ -40,8 +40,8 @@ import org.jajuk.base.Device;
 import org.jajuk.base.DeviceManager;
 import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
-import org.jajuk.base.Style;
-import org.jajuk.base.StyleManager;
+import org.jajuk.base.Genre;
+import org.jajuk.base.GenreManager;
 import org.jajuk.base.Track;
 import org.jajuk.base.TrackManager;
 import org.jajuk.events.JajukEvent;
@@ -110,11 +110,11 @@ public class StatView extends ViewAdapter {
   }
 
   /**
-   * Style repartition pie.
+   * Genre repartition pie.
    * 
    * @return the chart
    */
-  private ChartPanel createStyleRepartition() {
+  private ChartPanel createGenreRepartition() {
     try {
       DefaultPieDataset pdata = null;
       JFreeChart jfchart = null;
@@ -122,22 +122,22 @@ public class StatView extends ViewAdapter {
       pdata = new DefaultPieDataset();
       int iTotal = TrackManager.getInstance().getElementCount();
       double dOthers = 0;
-      // Prepare a map style -> nb tracks
-      Map<Style, Integer> styleNbTracks = new HashMap<Style, Integer>(StyleManager.getInstance()
+      // Prepare a map genre -> nb tracks
+      Map<Genre, Integer> genreNbTracks = new HashMap<Genre, Integer>(GenreManager.getInstance()
           .getElementCount());
       ReadOnlyIterator<Track> it = TrackManager.getInstance().getTracksIterator();
       while (it.hasNext()) {
         Track track = it.next();
-        Style style = track.getStyle();
-        Integer nbTracks = styleNbTracks.get(style);
+        Genre genre = track.getGenre();
+        Integer nbTracks = genreNbTracks.get(genre);
         if (nbTracks == null) {
-          styleNbTracks.put(style, 1);
+          genreNbTracks.put(genre, 1);
         } else {
-          styleNbTracks.put(style, nbTracks + 1);
+          genreNbTracks.put(genre, nbTracks + 1);
         }
       }
-      // Cleanup style with weight < 5 %
-      for (Map.Entry<Style, Integer> entry : styleNbTracks.entrySet()) {
+      // Cleanup genre with weight < 5 %
+      for (Map.Entry<Genre, Integer> entry : genreNbTracks.entrySet()) {
         double d = entry.getValue();
         if (iTotal > 0 && d / iTotal < 0.05) {
           // less than 5% -> go to others
@@ -437,7 +437,7 @@ public class StatView extends ViewAdapter {
               removeAll();
             }
 
-            ChartPanel cp1 = createStyleRepartition();
+            ChartPanel cp1 = createGenreRepartition();
             if (cp1 != null) {
               add(cp1);
             }

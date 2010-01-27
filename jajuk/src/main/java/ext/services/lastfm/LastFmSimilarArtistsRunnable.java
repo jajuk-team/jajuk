@@ -78,7 +78,7 @@ public class LastFmSimilarArtistsRunnable implements Runnable {
    */
   public void run() {
     if (!interrupted && StringUtils.isNotBlank(artist)
-        && !artist.equalsIgnoreCase(Messages.getString("unknown_author"))) {
+        && !artist.equalsIgnoreCase(Messages.getString("unknown_artist"))) {
       SimilarArtistsInfo artists = service.getSimilarArtists(artist);
 
       if (!interrupted && artists != null) {

@@ -373,8 +373,8 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
 
     String sTrackName = tag.getTrackName();
     String sAlbumName = tag.getAlbumName();
-    String sAuthorName = tag.getAuthorName();
-    String sStyle = tag.getStyleName();
+    String sArtistName = tag.getArtistName();
+    String sGenre = tag.getGenreName();
     long length = tag.getLength(); // length in sec
     String sYear = tag.getYear();
     long lQuality = tag.getQuality();
@@ -390,7 +390,7 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
       reporter.notifyNewFile();
     }
 
-    Track track = registerFile(music, sId, sTrackName, sAlbumName, sAuthorName, sStyle, length,
+    Track track = registerFile(music, sId, sTrackName, sAlbumName, sArtistName, sGenre, length,
         sYear, lQuality, sComment, lOrder, sAlbumArtist, discID, discNumber);
 
     for (String s : TrackManager.getInstance().getActivatedExtraTags()) {
@@ -405,8 +405,8 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
    * @param sId DOCUMENT_ME
    * @param sTrackName DOCUMENT_ME
    * @param sAlbumName DOCUMENT_ME
-   * @param sAuthorName DOCUMENT_ME
-   * @param sStyle DOCUMENT_ME
+   * @param sArtistName DOCUMENT_ME
+   * @param sGenre DOCUMENT_ME
    * @param length DOCUMENT_ME
    * @param sYear DOCUMENT_ME
    * @param lQuality DOCUMENT_ME
@@ -417,17 +417,17 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
    * @param discNumber DOCUMENT_ME
    */
   private Track registerFile(java.io.File music, String sFileId, String sTrackName, String sAlbumName,
-      String sAuthorName, String sStyle, long length, String sYear, long lQuality, String sComment,
+      String sArtistName, String sGenre, long length, String sYear, long lQuality, String sComment,
       long lOrder, String sAlbumArtist, long discID, long discNumber) {
     Album album = AlbumManager.getInstance().registerAlbum(sAlbumName, discID);
-    Style style = StyleManager.getInstance().registerStyle(sStyle);
+    Genre genre = GenreManager.getInstance().registerGenre(sGenre);
     Year year = YearManager.getInstance().registerYear(sYear);
-    Author author = AuthorManager.getInstance().registerAuthor(sAuthorName);
+    Artist artist = ArtistManager.getInstance().registerArtist(sArtistName);
     AlbumArtist albumArtist = AlbumArtistManager.getInstance().registerAlbumArtist(sAlbumArtist);
     Type type = TypeManager.getInstance().getTypeByExtension(UtilSystem.getExtension(music));
     // Store number of tracks in collection
     long trackNumber = TrackManager.getInstance().getElementCount();
-    Track track = TrackManager.getInstance().registerTrack(sTrackName, album, style, author,
+    Track track = TrackManager.getInstance().registerTrack(sTrackName, album, genre, artist,
         length, year, lOrder, type, discNumber);
 
     // Note date for file date property. CAUTION: do not try to

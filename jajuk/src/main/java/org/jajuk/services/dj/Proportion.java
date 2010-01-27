@@ -23,14 +23,14 @@ package org.jajuk.services.dj;
 
 import java.util.Set;
 
-import org.jajuk.base.Style;
+import org.jajuk.base.Genre;
 
 /**
- * Represent a style proportion (used by digital DJs).
+ * Represent a genre proportion (used by digital DJs).
  */
 public class Proportion {
   
-  /** styles. */
+  /** genres. */
   private Ambience ambience;
 
   /** Proportion*. */
@@ -39,7 +39,7 @@ public class Proportion {
   /**
    * Constructor.
    * 
-   * @param proportion style proportion in %. Ex: 0.1
+   * @param proportion genre proportion in %. Ex: 0.1
    * @param ambience DOCUMENT_ME
    */
   public Proportion(Ambience ambience, float proportion) {
@@ -69,7 +69,7 @@ public class Proportion {
       return false;
     }
     return getProportion() == ((Proportion) other).getProportion()
-        && getStyles().equals(((Proportion) other).getStyles());
+        && getGenres().equals(((Proportion) other).getGenres());
   }
 
   /* (non-Javadoc)
@@ -83,21 +83,21 @@ public class Proportion {
   }
 
   /**
-   * Gets the styles.
+   * Gets the genres.
    * 
-   * @return Returns the styles
+   * @return Returns the genres
    */
-  public Set<Style> getStyles() {
-    return this.ambience.getStyles();
+  public Set<Genre> getGenres() {
+    return this.ambience.getGenres();
   }
 
   /**
-   * Add a style.
+   * Add a genre.
    * 
-   * @param style DOCUMENT_ME
+   * @param genre DOCUMENT_ME
    */
-  public void addStyle(Style style) {
-    ambience.addStyle(style);
+  public void addGenre(Genre genre) {
+    ambience.addGenre(genre);
   }
 
   /**
@@ -111,13 +111,13 @@ public class Proportion {
   }
 
   /**
-   * From String, return style1,style2,...
+   * From String, return genre1,genre2,...
    * 
-   * @return the styles desc
+   * @return the genres desc
    */
-  public String getStylesDesc() {
+  public String getGenresDesc() {
     String out = "";
-    for (Style s : ambience.getStyles()) {
+    for (Genre s : ambience.getGenres()) {
       out += s.getName2() + ',';
     }
     if (out.length() > 0) {
@@ -127,11 +127,11 @@ public class Proportion {
   }
 
   /**
-   * Gets the next style.
+   * Gets the next genre.
    * 
-   * @return next style to be played or null if no idea
+   * @return next genre to be played or null if no idea
    */
-  public Style getNextStyle() {
+  public Genre getNextGenre() {
     return null;
   }
 
@@ -145,11 +145,11 @@ public class Proportion {
   }
 
   /**
-   * Sets the style.
+   * Sets the genre.
    * 
-   * @param ambience the new style
+   * @param ambience the new genre
    */
-  public void setStyle(Ambience ambience) {
+  public void setGenre(Ambience ambience) {
     this.ambience = ambience;
   }
 

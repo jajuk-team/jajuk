@@ -241,19 +241,19 @@ public final class Conf implements Const {
     defaults.put(CONF_FILES_TABLE_EDITION, FALSE);
     defaults.put(CONF_ALBUMS_TABLE_EDITION, FALSE);
     defaults.put(CONF_FILES_TABLE_COLUMNS, XML_PLAY + ',' + Const.XML_TRACK + ',' + Const.XML_ALBUM
-        + ',' + Const.XML_AUTHOR + ',' + Const.XML_TRACK_STYLE + ',' + Const.XML_TRACK_RATE + ','
+        + ',' + Const.XML_ARTIST + ',' + Const.XML_TRACK_GENRE + ',' + Const.XML_TRACK_RATE + ','
         + Const.XML_TRACK_LENGTH);
     defaults.put(CONF_TRACKS_TABLE_COLUMNS, XML_PLAY + ',' + Const.XML_NAME + ',' + Const.XML_ALBUM
-        + ',' + Const.XML_AUTHOR + ',' + Const.XML_TRACK_STYLE + ',' + Const.XML_TRACK_LENGTH + ','
+        + ',' + Const.XML_ARTIST + ',' + Const.XML_TRACK_GENRE + ',' + Const.XML_TRACK_LENGTH + ','
         + ',' + Const.XML_TRACK_RATE);
     defaults.put(CONF_PLAYLIST_EDITOR_COLUMNS, XML_PLAY + ',' + Const.XML_TRACK_NAME + ',' + ','
-        + Const.XML_TRACK_AUTHOR + ',' + Const.XML_TRACK_RATE);
+        + Const.XML_TRACK_ARTIST + ',' + Const.XML_TRACK_RATE);
     defaults.put(CONF_PLAYLIST_REPOSITORY_COLUMNS, XML_PLAY + ',' + Const.XML_NAME + ','
         + Const.XML_PATH);
     defaults.put(CONF_QUEUE_COLUMNS, XML_PLAY + ',' + Const.XML_TRACK_NAME + ',' + ','
-        + Const.XML_TRACK_AUTHOR + ',' + Const.XML_TRACK_RATE);
+        + Const.XML_TRACK_ARTIST + ',' + Const.XML_TRACK_RATE);
     defaults.put(CONF_ALBUMS_TABLE_COLUMNS, XML_PLAY + ',' + Const.XML_ALBUM + ','
-        + Const.XML_AUTHOR + ',' + Const.XML_STYLE + ',' + Const.XML_YEAR + ','
+        + Const.XML_ARTIST + ',' + Const.XML_GENRE + ',' + Const.XML_YEAR + ','
         + Const.XML_TRACK_RATE + ',' + Const.XML_TRACK_LENGTH + ',' + Const.XML_TRACKS + ','
         + Const.XML_TRACK_DISCOVERY_DATE);
     int width = 800;
@@ -290,7 +290,7 @@ public final class Conf implements Const {
     defaults.put(CONF_THUMBS_FILTER, "0");
     defaults.put(CONF_WIKIPEDIA_LANGUAGE, defaults.get(CONF_OPTIONS_LANGUAGE));
     defaults.put(CONF_FADE_DURATION, "6");
-    // sort by style
+    // sort by genre
     defaults.put(CONF_LOGICAL_TREE_SORT_ORDER, "0");
     defaults.put(CONF_DEFAULT_DJ, "");// default dj
     defaults.put(CONF_DEFAULT_AMBIENCE, "");// default ambience
@@ -325,7 +325,7 @@ public final class Conf implements Const {
     defaults.put(CONF_PERSPECTIVE_ICONS_SIZE, "32");
     // We use trailing pattern to allow scripting like MSN plugins to
     // detect jajuk frames and extract current track
-    defaults.put(CONF_PATTERN_FRAME_TITLE, '~' + PATTERN_TRACKNAME + " (" + PATTERN_AUTHOR + ")~");
+    defaults.put(CONF_PATTERN_FRAME_TITLE, '~' + PATTERN_TRACKNAME + " (" + PATTERN_ARTIST + ")~");
     defaults.put(CONF_PATTERN_BALLOON_NOTIFIER, Messages.getString("FIFO.10") + " "
         + Messages.getString("InformationJPanel.8"));
     defaults.put(CONF_PATTERN_INFORMATION, Messages.getString("FIFO.10") + " "

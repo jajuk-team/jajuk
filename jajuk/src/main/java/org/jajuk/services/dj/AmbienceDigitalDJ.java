@@ -75,9 +75,9 @@ public class AmbienceDigitalDJ extends DigitalDJ {
     List<File> out = new ArrayList<File>(100);
     // Get a shuffle selection
     List<File> files = FileManager.getInstance().getGlobalShufflePlaylist();
-    // Keep only right styles and check for unicity
+    // Keep only right genres and check for unicity
     for (File file : files) {
-      if (ambience.getStyles().contains(file.getTrack().getStyle())) {
+      if (ambience.getGenres().contains(file.getTrack().getGenre())) {
         out.add(file);
       }
     }

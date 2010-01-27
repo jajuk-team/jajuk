@@ -212,7 +212,7 @@ public abstract class ItemManager {
    * <p>
    * -All in lower case expect first letter of first word
    * <p>
-   * exemple: "My author".
+   * exemple: "My artist".
    * 
    * @param sName The name to format.
    * 
@@ -306,12 +306,12 @@ public abstract class ItemManager {
       return TrackManager.getInstance();
     } else if (Const.XML_ALBUM.equals(sProperty)) {
       return AlbumManager.getInstance();
-    } else if (Const.XML_AUTHOR.equals(sProperty)) {
-      return AuthorManager.getInstance();
+    } else if (Const.XML_ARTIST.equals(sProperty)) {
+      return ArtistManager.getInstance();
     } else if (Const.XML_ALBUM_ARTIST.equals(sProperty)) {
       return AlbumArtistManager.getInstance();
-    } else if (Const.XML_STYLE.equals(sProperty)) {
-      return StyleManager.getInstance();
+    } else if (Const.XML_GENRE.equals(sProperty)) {
+      return GenreManager.getInstance();
     } else if (Const.XML_DIRECTORY.equals(sProperty)) {
       return DirectoryManager.getInstance();
     } else if (Const.XML_FILE.equals(sProperty)) {
@@ -352,10 +352,10 @@ public abstract class ItemManager {
   public synchronized void cleanup() {
     // Prefetch item manager type for performances
     short managerType = 0; // Album
-    if (this instanceof AuthorManager) {
+    if (this instanceof ArtistManager) {
       managerType = 1;
-    } else if (this instanceof StyleManager) {
-      Log.debug("Style cleanup not allowed");
+    } else if (this instanceof GenreManager) {
+      Log.debug("Genre cleanup not allowed");
       return;
     } else if (this instanceof YearManager) {
       managerType = 2;
@@ -372,7 +372,7 @@ public abstract class ItemManager {
         lItems.add(track.getAlbum());
         break;
       case 1:
-        lItems.add(track.getAuthor());
+        lItems.add(track.getArtist());
         break;
       case 2:
         lItems.add(track.getYear());
@@ -461,14 +461,14 @@ public abstract class ItemManager {
       } else if (Const.XML_TRACK.equals(sKey)) { // track name
         newItem = TrackManager.getInstance().changeTrackName(file.getTrack(), (String) oValue,
             filter);
-      } else if (Const.XML_STYLE.equals(sKey)) {
-        newItem = TrackManager.getInstance().changeTrackStyle(file.getTrack(), (String) oValue,
+      } else if (Const.XML_GENRE.equals(sKey)) {
+        newItem = TrackManager.getInstance().changeTrackGenre(file.getTrack(), (String) oValue,
             filter);
       } else if (Const.XML_ALBUM.equals(sKey)) {
         newItem = TrackManager.getInstance().changeTrackAlbum(file.getTrack(), (String) oValue,
             filter);
-      } else if (Const.XML_AUTHOR.equals(sKey)) {
-        newItem = TrackManager.getInstance().changeTrackAuthor(file.getTrack(), (String) oValue,
+      } else if (Const.XML_ARTIST.equals(sKey)) {
+        newItem = TrackManager.getInstance().changeTrackArtist(file.getTrack(), (String) oValue,
             filter);
       } else if (Const.XML_TRACK_COMMENT.equals(sKey)) {
         newItem = TrackManager.getInstance().changeTrackComment(file.getTrack(), (String) oValue,
@@ -517,14 +517,14 @@ public abstract class ItemManager {
       if (Const.XML_NAME.equals(sKey)) {
         newItem = TrackManager.getInstance().changeTrackName((Track) itemToChange, (String) oValue,
             filter);
-      } else if (Const.XML_STYLE.equals(sKey)) {
-        newItem = TrackManager.getInstance().changeTrackStyle((Track) itemToChange,
+      } else if (Const.XML_GENRE.equals(sKey)) {
+        newItem = TrackManager.getInstance().changeTrackGenre((Track) itemToChange,
             (String) oValue, filter);
       } else if (Const.XML_ALBUM.equals(sKey)) {
         newItem = TrackManager.getInstance().changeTrackAlbum((Track) itemToChange,
             (String) oValue, filter);
-      } else if (Const.XML_AUTHOR.equals(sKey)) {
-        newItem = TrackManager.getInstance().changeTrackAuthor((Track) itemToChange,
+      } else if (Const.XML_ARTIST.equals(sKey)) {
+        newItem = TrackManager.getInstance().changeTrackArtist((Track) itemToChange,
             (String) oValue, filter);
       } else if (Const.XML_ALBUM_ARTIST.equals(sKey)) {
         newItem = TrackManager.getInstance().changeTrackAlbumArtist((Track) itemToChange,
@@ -549,16 +549,16 @@ public abstract class ItemManager {
       } else { // others properties
         itemToChange.setProperty(sKey, oValue);
       }
-    } else if (itemToChange instanceof Author) {
+    } else if (itemToChange instanceof Artist) {
       if (Const.XML_NAME.equals(sKey)) {
-        newItem = AuthorManager.getInstance().changeAuthorName((Author) itemToChange,
+        newItem = ArtistManager.getInstance().changeArtistName((Artist) itemToChange,
             (String) oValue);
       } else { // others properties
         itemToChange.setProperty(sKey, oValue);
       }
-    } else if (itemToChange instanceof Style) {
+    } else if (itemToChange instanceof Genre) {
       if (Const.XML_NAME.equals(sKey)) {
-        newItem = StyleManager.getInstance().changeStyleName((Style) itemToChange, (String) oValue);
+        newItem = GenreManager.getInstance().changeGenreName((Genre) itemToChange, (String) oValue);
       } else { // others properties
         itemToChange.setProperty(sKey, oValue);
       }

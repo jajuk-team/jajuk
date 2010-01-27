@@ -115,7 +115,7 @@ public class FlyWebLyricsProvider extends GenericWebLyricsProvider {
    * @see org.jajuk.services.lyrics.providers.ILyricsProvider#getLyrics(org.jajuk.base.File)
    */
   public String getLyrics(File audioFile) {
-    return getLyrics(audioFile.getTrack().getAuthor().getName2(), 
+    return getLyrics(audioFile.getTrack().getArtist().getName2(), 
         audioFile.getTrack().getName());
   }
 }

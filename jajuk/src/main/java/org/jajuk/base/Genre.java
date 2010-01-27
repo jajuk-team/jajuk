@@ -20,27 +20,31 @@
  */
 package org.jajuk.base;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.swing.ImageIcon;
 
 import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
+import org.jajuk.util.ReadOnlyIterator;
 
 /**
- * An author *
+ * A music genre ( jazz, rock...)
  * <p>
- * Logical item.
+ * Logical item
  */
-public class Author extends LogicalItem implements Comparable<Author> {
+public class Genre extends LogicalItem implements Comparable<Genre> {
 
   /**
-   * Author constructor.
+   * Genre constructor.
    * 
    * @param sName DOCUMENT_ME
    * @param sId DOCUMENT_ME
    */
-  public Author(String sId, String sName) {
+  public Genre(String sId, String sName) {
     super(sId, sName);
   }
 
@@ -51,20 +55,20 @@ public class Author extends LogicalItem implements Comparable<Author> {
    */
   @Override
   public String getLabel() {
-    return XML_AUTHOR;
+    return XML_GENRE;
   }
 
   /**
-   * Return author name, dealing with unknown for any language.
+   * Return genre name, dealing with unknown for any language.
    * 
-   * @return author name
+   * @return artist name
    */
   public String getName2() {
-    if(isUnknown()) {
-      return Messages.getString(UNKNOWN_AUTHOR);
+    String sOut = getName();
+    if (sOut.equals(UNKNOWN_GENRE)) {
+      sOut = Messages.getString(UNKNOWN_GENRE);
     }
-    
-    return getName();
+    return sOut;
   }
 
   /**
@@ -74,12 +78,7 @@ public class Author extends LogicalItem implements Comparable<Author> {
    * 
    * @return comparison result
    */
-  public int compareTo(Author otherItem) {
-    // not equal if other is null
-    if(otherItem == null) {
-      return 1;
-    }
-    
+  public int compareTo(Genre otherItem) {
     // compare using name and id to differentiate unknown items
     StringBuilder current = new StringBuilder(getName2());
     current.append(getID());
@@ -88,13 +87,13 @@ public class Author extends LogicalItem implements Comparable<Author> {
     return current.toString().compareToIgnoreCase(other.toString());
   }
 
-  /**
-   * Checks if is unknown.
-   * 
-   * @return whether the author is Unknown or not
-   */
+   /**
+    * Checks if is unknown.
+    * 
+    * @return whether the genre is Unknown or not
+    */
   public boolean isUnknown() {
-    return this.getName().equals(UNKNOWN_AUTHOR);
+    return this.getName().equals(UNKNOWN_GENRE);
   }
 
   /**
@@ -104,7 +103,7 @@ public class Author extends LogicalItem implements Comparable<Author> {
    */
   @Override
   public String getDesc() {
-    return Messages.getString("Item_Author") + " : " + getName2();
+    return Messages.getString("Item_Genre") + " : " + getName2();
   }
 
   /*
@@ -113,12 +112,29 @@ public class Author extends LogicalItem implements Comparable<Author> {
    * @see org.jajuk.base.Item#getHumanValue(java.lang.String)
    */
   @Override
-  public String getHumanValue(String sKey) {
+  public final String getHumanValue(String sKey) {
     if (Const.XML_NAME.equals(sKey)) {
       return getName2();
+    } else {// default
+      return super.getHumanValue(sKey);
     }
-    // default
-    return super.getHumanValue(sKey);
+  }
+
+  /**
+   * Gets the tracks recursively.
+   * 
+   * @return all tracks associated with this genre
+   */
+  public List<Track> getTracksRecursively() {
+    List<Track> alTracks = new ArrayList<Track>(1000);
+    ReadOnlyIterator<Track> it = TrackManager.getInstance().getTracksIterator();
+    while (it.hasNext()) {
+      Track track = it.next();
+      if (track.getGenre().equals(this)) {
+        alTracks.add(track);
+      }
+    }
+    return alTracks;
   }
 
   /*
@@ -128,6 +144,7 @@ public class Author extends LogicalItem implements Comparable<Author> {
    */
   @Override
   public ImageIcon getIconRepresentation() {
-    return IconLoader.getIcon(JajukIcons.AUTHOR);
+    return IconLoader.getIcon(JajukIcons.STYLE);
   }
+
 }

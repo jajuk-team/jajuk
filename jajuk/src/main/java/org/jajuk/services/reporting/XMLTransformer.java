@@ -60,7 +60,7 @@ public final class XMLTransformer {
    * 
    * @param xml The XML file to convert.
    * @param html The HTML file to convert.
-   * @param xsl The url of the XSLT style sheet to use.
+   * @param xsl The url of the XSLT genre sheet to use.
    * 
    * @throws ParserConfigurationException if the XML Parser can not be instantiated.
    * @throws IOException If the file cannot be opened.
@@ -81,8 +81,8 @@ public final class XMLTransformer {
 
     // Transformer configuration
     TransformerFactory transformerFactory = TransformerFactory.newInstance();
-    StreamSource stylesource = new StreamSource(xsl.openStream());
-    Transformer transformer = transformerFactory.newTransformer(stylesource);
+    StreamSource genresource = new StreamSource(xsl.openStream());
+    Transformer transformer = transformerFactory.newTransformer(genresource);
     transformer.setOutputProperty(OutputKeys.METHOD, "html");
 
     // Transformation

@@ -28,12 +28,12 @@ import org.jajuk.JUnitHelpers;
 import org.jajuk.JajukTestCase;
 import org.jajuk.base.Album;
 import org.jajuk.base.AlbumManager;
-import org.jajuk.base.Author;
+import org.jajuk.base.Artist;
 import org.jajuk.base.Device;
 import org.jajuk.base.Directory;
 import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
-import org.jajuk.base.Style;
+import org.jajuk.base.Genre;
 import org.jajuk.base.Track;
 import org.jajuk.base.Type;
 import org.jajuk.base.Year;
@@ -1228,16 +1228,16 @@ public class TestQueueModel extends JajukTestCase {
     assertEquals(10, QueueModel.getQueueSize());
 
     // we can add a dummy-file and check that it is removed
-    Style style = new Style("99", "name");
+    Genre genre = new Genre("99", "name");
     Album album = new Album("99", "name", 23);
     album.setProperty(Const.XML_ALBUM_COVER, Const.COVER_NONE); // don't read covers for
     // this test
 
-    Author author = new Author("99", "name");
+    Artist artist = new Artist("99", "name");
     Year year = new Year("99", "2000");
 
     Type type = new Type("99", "name", "mp3", null, null);
-    Track track = new Track("99", "name", album, style, author, 120, year, 1, type, 1);
+    Track track = new Track("99", "name", album, genre, artist, 120, year, 1, type, 1);
 
     Device device = new Device("99", "name");
     device.setUrl(System.getProperty("java.io.tmpdir"));

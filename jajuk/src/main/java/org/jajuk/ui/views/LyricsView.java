@@ -91,7 +91,7 @@ public class LyricsView extends ViewAdapter {
   private JLabel jlTitle = null;
 
   /** DOCUMENT_ME. */
-  private JLabel jlAuthor = null;
+  private JLabel jlArtist = null;
 
   /** DOCUMENT_ME. */
   private String sURL = null;
@@ -137,7 +137,7 @@ public class LyricsView extends ViewAdapter {
    */
   public void initUI() {
     final JTextArea ta = getTextArea();
-    final JLabel author = getJlAuthor();
+    final JLabel artist = getJlArtist();
     final JLabel title = getJlTitle();
     final JScrollPane jspLyrics = getJsp();
     final FontManager fmgr = FontManager.getInstance();
@@ -162,7 +162,7 @@ public class LyricsView extends ViewAdapter {
       }
     });
 
-    author.setFont(fmgr.getFont(JajukFont.PLAIN_L));
+    artist.setFont(fmgr.getFont(JajukFont.PLAIN_L));
     title.setFont(fmgr.getFont(JajukFont.PLAIN_XL));
     ta.setFont(fmgr.getFont(JajukFont.PLAIN));
     initEditUI();
@@ -170,7 +170,7 @@ public class LyricsView extends ViewAdapter {
     // Add items
     p = new JPanel(new MigLayout("insets 5,gapx 3, gapy 5,filly", "[grow]", "[][][][grow]"));
     p.add(jlTitle, "wrap,center");
-    p.add(jlAuthor, "wrap,center");
+    p.add(jlArtist, "wrap,center");
     p.add(jtbEdit, "left,split 3");
     p.add(jbSave, "center");
     p.add(jbDelete, "wrap,right");
@@ -301,7 +301,7 @@ public class LyricsView extends ViewAdapter {
           public void run() {
             removeAll();
             add(p);
-            jlAuthor.setText(track.getAuthor().getName2());
+            jlArtist.setText(track.getArtist().getName2());
             jlTitle.setText(track.getName());
             jtbEdit.setVisible(true);
             textarea.setText(Messages.getString("LyricsView.1"));
@@ -324,7 +324,7 @@ public class LyricsView extends ViewAdapter {
           repaint();
         }
       });
-      new Thread("Lyrics Update Thread-" + track.getAuthor().getName2() + "-" + track.getName()) {
+      new Thread("Lyrics Update Thread-" + track.getArtist().getName2() + "-" + track.getName()) {
         @Override
         public void run() {
           // Launch lyrics service asynchronously and out of the
@@ -333,7 +333,7 @@ public class LyricsView extends ViewAdapter {
           if (lyrics != null) {
             ILyricsProvider provider = LyricsService.getCurrentProvider();
             if (provider instanceof GenericWebLyricsProvider) {
-              sURL = ((GenericWebLyricsProvider) provider).getWebURL(track.getAuthor().getName2(),
+              sURL = ((GenericWebLyricsProvider) provider).getWebURL(track.getArtist().getName2(),
                   track.getName()).toString();
             } else if (provider instanceof TagLyricsProvider) {
               sURL = "<Tag>";
@@ -357,7 +357,7 @@ public class LyricsView extends ViewAdapter {
           final WebRadio radio = (WebRadio) event.getDetails().get(Const.DETAIL_CONTENT);
           if (radio != null) {
             jlTitle.setText(radio.getName());
-            jlAuthor.setText("");
+            jlArtist.setText("");
             jtbEdit.setVisible(false);
             jsp.setVisible(false);
             revalidate();
@@ -384,7 +384,7 @@ public class LyricsView extends ViewAdapter {
               jsp.getVerticalScrollBar().setValue(0);
             }
           });
-          jlAuthor.setText(track.getAuthor().getName2());
+          jlArtist.setText(track.getArtist().getName2());
           jlTitle.setText(track.getName());
           jsp.setVisible(true);
           jtbEdit.setVisible(true);
@@ -404,7 +404,7 @@ public class LyricsView extends ViewAdapter {
       public void run() {
         jsp.setVisible(false);
         jtbEdit.setVisible(false);
-        jlAuthor.setText("");
+        jlArtist.setText("");
         jlTitle.setText(Messages.getString("JajukWindow.18"));
       }
 
@@ -457,15 +457,15 @@ public class LyricsView extends ViewAdapter {
   }
 
   /**
-   * Gets the jl author.
+   * Gets the jl artist.
    * 
-   * @return the jl author
+   * @return the jl artist
    */
-  private JLabel getJlAuthor() {
-    if (jlAuthor == null) {
-      jlAuthor = new JLabel();
+  private JLabel getJlArtist() {
+    if (jlArtist == null) {
+      jlArtist = new JLabel();
     }
-    return jlAuthor;
+    return jlArtist;
   }
 
   /**

@@ -42,10 +42,10 @@ public class TrackComparator implements Comparator<Track>, Serializable {
    * Sorting methods constants.
    */
   public enum TrackComparatorType {
-    /** Compare first based on the style, then on author and then on album. */
-    STYLE_AUTHOR_ALBUM,
-    /** Compare based on author and then album. */
-    AUTHOR_ALBUM,
+    /** Compare first based on the genre, then on artist and then on album. */
+    GENRE_ARTIST_ALBUM,
+    /** Compare based on artist and then album. */
+    ARTIST_ALBUM,
     /** Compare only on album. */
     ALBUM,
     /** Compare only on year. */
@@ -85,18 +85,18 @@ public class TrackComparator implements Comparator<Track>, Serializable {
    */
   private String getCompareString(Track track) {
     String sHashCompare = null;
-    // comparison based on style, author, album, name and year to
+    // comparison based on genre, artist, album, name and year to
     // differentiate 2 tracks with all the same attributes
     // note we need to use year because in sorted set, we must differentiate
     // 2 tracks with different years
-    // Style/author/album
-    if (comparatorType == TrackComparatorType.STYLE_AUTHOR_ALBUM) {
-      sHashCompare = new StringBuilder().append(track.getStyle().getName2()).append(
-          track.getAuthor().getName2()).append(track.getAlbum().getName2()).append(
+    // Genre/artist/album
+    if (comparatorType == TrackComparatorType.GENRE_ARTIST_ALBUM) {
+      sHashCompare = new StringBuilder().append(track.getGenre().getName2()).append(
+          track.getArtist().getName2()).append(track.getAlbum().getName2()).append(
           UtilString.padNumber(track.getOrder(), 5)).append(track.getName()).toString();
-    }// Author/album
-    else if (comparatorType == TrackComparatorType.AUTHOR_ALBUM) {
-      sHashCompare = new StringBuilder().append(track.getAuthor().getName2()).append(
+    }// Artist/album
+    else if (comparatorType == TrackComparatorType.ARTIST_ALBUM) {
+      sHashCompare = new StringBuilder().append(track.getArtist().getName2()).append(
           track.getAlbum().getName2()).append(UtilString.padNumber(track.getOrder(), 5)).append(
           track.getName()).toString();
     }

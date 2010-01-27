@@ -25,13 +25,13 @@ import ext.services.xml.XMLUtils;
 import org.apache.commons.lang.StringUtils;
 import org.jajuk.JajukTestCase;
 import org.jajuk.base.Album;
-import org.jajuk.base.Author;
+import org.jajuk.base.Artist;
 import org.jajuk.base.Device;
 import org.jajuk.base.Directory;
 import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
-import org.jajuk.base.Style;
-import org.jajuk.base.StyleManager;
+import org.jajuk.base.Genre;
+import org.jajuk.base.GenreManager;
 import org.jajuk.base.Track;
 import org.jajuk.base.Type;
 import org.jajuk.base.Year;
@@ -54,7 +54,7 @@ public class TestAmbienceDigitalDJ extends JajukTestCase {
     XMLUtils.getDocument(dj.toXML());
 
     // set an Ambience
-    StyleManager.getInstance().registerStyle("mystyle");
+    GenreManager.getInstance().registerGenre("mystyle");
     dj.setAmbience(new Ambience("5", "ambience", new String[] { "mystyle" }));
 
     // try to parse the resulting XML
@@ -76,17 +76,17 @@ public class TestAmbienceDigitalDJ extends JajukTestCase {
     assertEquals(0, dj.generatePlaylist().size());
 
     // set an Ambience
-    Style style = StyleManager.getInstance().registerStyle("mystyle");
+    Genre genre = GenreManager.getInstance().registerGenre("mystyle");
     dj.setAmbience(new Ambience("5", "ambience", new String[] { "mystyle" }));
 
-    getFile(6, style);
+    getFile(6, genre);
 
     // assert a few conditions to find out why this test fails sometimes when
     // run in combination with others
     assertFalse(dj.isTrackUnicity());
     assertTrue(FileManager.getInstance().getGlobalShufflePlaylist().size() > 0);
-    assertTrue(dj.getAmbience().getStyles().contains(
-        FileManager.getInstance().getGlobalShufflePlaylist().get(0).getTrack().getStyle()));
+    assertTrue(dj.getAmbience().getGenres().contains(
+        FileManager.getInstance().getGlobalShufflePlaylist().get(0).getTrack().getGenre()));
 
     assertEquals(Const.MIN_TRACKS_NUMBER_WITHOUT_UNICITY, dj.generatePlaylist().size());
 
@@ -96,19 +96,19 @@ public class TestAmbienceDigitalDJ extends JajukTestCase {
 
   }
 
-  private File getFile(int i, Style style) throws Exception {
+  private File getFile(int i, Genre genre) throws Exception {
     Album album = new Album(Integer.valueOf(i).toString(), "name", 23);
     album.setProperty(Const.XML_ALBUM_COVER, Const.COVER_NONE); // don't read covers for
     // this test
 
-    Author author = new Author(Integer.valueOf(i).toString(), "name");
+    Artist artist = new Artist(Integer.valueOf(i).toString(), "name");
     Year year = new Year(Integer.valueOf(i).toString(), "2000");
 
     // IPlayerImpl imp = new MockPlayer();
     // Class<IPlayerImpl> cl = (Class<IPlayerImpl>) imp.getClass();
 
     Type type = new Type(Integer.valueOf(i).toString(), "name", "mp3", null, null);
-    Track track = new Track(Integer.valueOf(i).toString(), "name", album, style, author, 120, year,
+    Track track = new Track(Integer.valueOf(i).toString(), "name", album, genre, artist, 120, year,
         1, type, 1);
 
     Device device = new Device(Integer.valueOf(i).toString(), "name");
@@ -141,7 +141,7 @@ public class TestAmbienceDigitalDJ extends JajukTestCase {
     assertNull(dj.getAmbience());
 
     // set an Ambience
-    StyleManager.getInstance().registerStyle("mystyle");
+    GenreManager.getInstance().registerGenre("mystyle");
     dj.setAmbience(new Ambience("5", "ambience", new String[] { "mystyle" }));
 
     assertNotNull(dj.getAmbience());

@@ -84,7 +84,7 @@ public class WikipediaView extends ViewAdapter implements ActionListener {
   JButton jbLaunchInExternalBrowser;
 
   /** DOCUMENT_ME. */
-  JToggleButton jbAuthorSearch;
+  JToggleButton jbArtistSearch;
 
   /** DOCUMENT_ME. */
   JToggleButton jbAlbumSearch;
@@ -101,7 +101,7 @@ public class WikipediaView extends ViewAdapter implements ActionListener {
   enum Type {
     
     /** DOCUMENT_ME. */
-    AUTHOR, 
+    ARTIST, 
  /** DOCUMENT_ME. */
  ALBUM, 
  /** DOCUMENT_ME. */
@@ -109,7 +109,7 @@ public class WikipediaView extends ViewAdapter implements ActionListener {
   }
 
   /** DOCUMENT_ME. */
-  Type type = Type.AUTHOR;
+  Type type = Type.ARTIST;
 
   /** Current search. */
   String search = null;
@@ -149,11 +149,11 @@ public class WikipediaView extends ViewAdapter implements ActionListener {
     }
     jbCopy.setText(null);
     ButtonGroup bg = new ButtonGroup();
-    jbAuthorSearch = new JToggleButton(IconLoader.getIcon(JajukIcons.AUTHOR), false);
-    jbAuthorSearch.setToolTipText(Messages.getString("WikipediaView.5"));
-    // Select author search (default)
-    jbAuthorSearch.setSelected(true);
-    jbAuthorSearch.addActionListener(this);
+    jbArtistSearch = new JToggleButton(IconLoader.getIcon(JajukIcons.ARTIST), false);
+    jbArtistSearch.setToolTipText(Messages.getString("WikipediaView.5"));
+    // Select artist search (default)
+    jbArtistSearch.setSelected(true);
+    jbArtistSearch.addActionListener(this);
     jbAlbumSearch = new JToggleButton(IconLoader.getIcon(JajukIcons.ALBUM), true);
     jbAlbumSearch.setToolTipText(Messages.getString("WikipediaView.6"));
     jbAlbumSearch.addActionListener(this);
@@ -161,14 +161,14 @@ public class WikipediaView extends ViewAdapter implements ActionListener {
     jbTrackSearch.setToolTipText(Messages.getString("WikipediaView.7"));
     jbTrackSearch.addActionListener(this);
     // Group this three mutual exclusive buttons
-    bg.add(jbAuthorSearch);
+    bg.add(jbArtistSearch);
     bg.add(jbAlbumSearch);
     bg.add(jbTrackSearch);
 
     JToolBar jtb = new JajukJToolbar();
     jtb.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
     // Add items
-    jtb.add(jbAuthorSearch);
+    jtb.add(jbArtistSearch);
     jtb.add(jbAlbumSearch);
     jtb.add(jbTrackSearch);
     jtb.addSeparator();
@@ -212,7 +212,7 @@ public class WikipediaView extends ViewAdapter implements ActionListener {
     eventSubjectSet.add(JajukEvents.FILE_LAUNCHED);
     eventSubjectSet.add(JajukEvents.ZERO);
     eventSubjectSet.add(JajukEvents.WEBRADIO_LAUNCHED);
-    eventSubjectSet.add(JajukEvents.AUTHOR_CHANGED);
+    eventSubjectSet.add(JajukEvents.ARTIST_CHANGED);
     eventSubjectSet.add(JajukEvents.ALBUM_CHANGED);
     eventSubjectSet.add(JajukEvents.TRACK_CHANGED);
     eventSubjectSet.add(JajukEvents.PERSPECTIVE_CHANGED);
@@ -243,8 +243,8 @@ public class WikipediaView extends ViewAdapter implements ActionListener {
       reset();
     }
     // User changed current track tags, so we have to reload
-    // new author wikipedia page
-    else if (subject.equals(JajukEvents.AUTHOR_CHANGED)
+    // new artist wikipedia page
+    else if (subject.equals(JajukEvents.ARTIST_CHANGED)
         || subject.equals(JajukEvents.ALBUM_CHANGED) || subject.equals(JajukEvents.TRACK_CHANGED)) {
       update(new JajukEvent(JajukEvents.FILE_LAUNCHED));
     }
@@ -262,10 +262,10 @@ public class WikipediaView extends ViewAdapter implements ActionListener {
         try {
           String lSearch = null;
           if (QueueModel.getPlayingFile() != null) {
-            if (type == Type.AUTHOR) {
-              lSearch = QueueModel.getPlayingFile().getTrack().getAuthor().getName2();
+            if (type == Type.ARTIST) {
+              lSearch = QueueModel.getPlayingFile().getTrack().getArtist().getName2();
               // don't display page if item is unknown
-              if (Messages.getString(UNKNOWN_AUTHOR).equals(lSearch)) {
+              if (Messages.getString(UNKNOWN_ARTIST).equals(lSearch)) {
                 lSearch = null;
               }
             } else if (type == Type.ALBUM) {
@@ -358,8 +358,8 @@ public class WikipediaView extends ViewAdapter implements ActionListener {
       type = Type.ALBUM;
       // force event
       launchSearch(true);
-    } else if (arg0.getSource() == jbAuthorSearch) {
-      type = Type.AUTHOR;
+    } else if (arg0.getSource() == jbArtistSearch) {
+      type = Type.ARTIST;
       // force event
       launchSearch(true);
     } else if (arg0.getSource() == jbTrackSearch) {

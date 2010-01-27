@@ -37,7 +37,7 @@ public class AlbumComparator implements Comparator<Album>, Serializable {
    * This needs to be kept in-sync with what we use in
    * CatalogView.initMetaInformation()!
    * 
-   * 0 .. style 1 .. author 2 .. album 3 .. year 4 .. discovery date 5 .. rate 6 ..
+   * 0 .. genre 1 .. artist 2 .. album 3 .. year 4 .. discovery date 5 .. rate 6 ..
    * hits
    */
   /** DOCUMENT_ME. */
@@ -74,42 +74,42 @@ public class AlbumComparator implements Comparator<Album>, Serializable {
     // result is used by a List but it could be a drama if we used a Set
     // See : http: // java.sun.com/j2se/1.4.2/docs/api/java/lang/Comparable.html
     switch (criteria) {
-    case 0: // style
-      // Sort on Style/Author/Year/Title
-      if (track1.getStyle() == track2.getStyle()) {
+    case 0: // genre
+      // Sort on Genre/Artist/Year/Title
+      if (track1.getGenre() == track2.getGenre()) {
         // [Perf] We can make this '==' comparison because all these strings are
         // internalized
-        if (track1.getAuthor() == track2.getAuthor()) {
+        if (track1.getArtist() == track2.getArtist()) {
           if (track1.getYear() == track2.getYear()) {
             return album1.compareTo(album2);
           } else {
             return track1.getYear().compareTo(track2.getYear());
           }
         } else {
-          return track1.getAuthor().compareTo(track2.getAuthor());
+          return track1.getArtist().compareTo(track2.getArtist());
         }
       } else {
-        return track1.getStyle().compareTo(track2.getStyle());
+        return track1.getGenre().compareTo(track2.getGenre());
       }
-    case 1: // author
-      // Sort on Author/Year/Title
+    case 1: // artist
+      // Sort on Artist/Year/Title
       // we use now the album artist
-      if (track1.getAuthor() == track2.getAuthor()) {
+      if (track1.getArtist() == track2.getArtist()) {
         if (track1.getYear() == track2.getYear()) {
           return album1.compareTo(album2);
         } else {
           return track1.getYear().compareTo(track2.getYear());
         }
       } else {
-        return track1.getAuthor().compareTo(track2.getAuthor());
+        return track1.getArtist().compareTo(track2.getArtist());
       }
     case 3: // year
-      // Sort on: Year/Author/Title
+      // Sort on: Year/Artist/Title
       if (track1.getYear() == track2.getYear()) {
-        if (track1.getAuthor() == track2.getAuthor()) {
+        if (track1.getArtist() == track2.getArtist()) {
           return album1.compareTo(album2);
         } else {
-          return track1.getAuthor().compareTo(track2.getAuthor());
+          return track1.getArtist().compareTo(track2.getArtist());
         }
       } else {
         return track1.getYear().compareTo(track2.getYear());

@@ -167,7 +167,7 @@ public final class ActionManager {
     installAction(JajukActions.PUSH_SELECTION, new PushSelectionAction(), false);
     installAction(JajukActions.BOOKMARK_SELECTION, new BookmarkSelectionAction(), false);
     installAction(JajukActions.PLAY_ALBUM_SELECTION, new PlayAlbumSelectionAction(), false);
-    installAction(JajukActions.PLAY_AUTHOR_SELECTION, new PlayAuthorSelectionAction(), false);
+    installAction(JajukActions.PLAY_ARTIST_SELECTION, new PlayArtistSelectionAction(), false);
     installAction(JajukActions.PLAY_DIRECTORY_SELECTION, new PlayDirectorySelectionAction(), false);
     installAction(JajukActions.CDDB_SELECTION, new CDDBSelectionAction(), false);
     installAction(JajukActions.SAVE_AS, new SaveAsAction(), false);

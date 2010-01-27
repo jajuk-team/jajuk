@@ -31,7 +31,7 @@ import java.util.Set;
 import org.apache.commons.collections.CollectionUtils;
 import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
-import org.jajuk.base.Style;
+import org.jajuk.base.Genre;
 import org.jajuk.util.Const;
 import org.jajuk.util.UtilFeatures;
 import org.jajuk.util.filters.JajukPredicates;
@@ -91,7 +91,7 @@ public class TransitionDigitalDJ extends DigitalDJ {
    */
   public Transition getTransition(Ambience ambience) {
     for (Transition transition : transitions) {
-      if (CollectionUtils.containsAny(transition.getFrom().getStyles(), ambience.getStyles())) {
+      if (CollectionUtils.containsAny(transition.getFrom().getGenres(), ambience.getGenres())) {
         return transition;
       }
     }
@@ -128,11 +128,11 @@ public class TransitionDigitalDJ extends DigitalDJ {
 
     // Get first track
     for (File file : global) {
-      if (transitions.get(0).getFrom().getStyles().contains(file.getTrack().getStyle())) {
+      if (transitions.get(0).getFrom().getGenres().contains(file.getTrack().getGenre())) {
         out.add(file);
         // Unicity in selection, remove it from this ambience
         if (bUnicity) {
-          List<File> files = hmAmbienceFiles.get(getAmbience(file.getTrack().getStyle()));
+          List<File> files = hmAmbienceFiles.get(getAmbience(file.getTrack().getGenre()));
           files.remove(file);
         }
         items--;
@@ -146,10 +146,10 @@ public class TransitionDigitalDJ extends DigitalDJ {
 
     // initialize current ambience with first track ambience (can be null for
     // unsorted tracks)
-    Ambience currentAmbience = getAmbience(out.get(0).getTrack().getStyle());
+    Ambience currentAmbience = getAmbience(out.get(0).getTrack().getGenre());
     // start transition applying
     while (items > 0) {
-      // A style can be in only one transition
+      // A genre can be in only one transition
       Transition currentTransition = getTransition(currentAmbience);
       List<File> files = hmAmbienceFiles.get(currentAmbience);
       int nbTracks = 2;
@@ -220,14 +220,14 @@ public class TransitionDigitalDJ extends DigitalDJ {
   /**
    * Gets the ambience.
    * 
-   * @param style DOCUMENT_ME
+   * @param genre DOCUMENT_ME
    * 
-   * @return ambience associated with a style known in transitions or null if
+   * @return ambience associated with a genre known in transitions or null if
    * none
    */
-  private Ambience getAmbience(Style style) {
+  private Ambience getAmbience(Genre genre) {
     for (Transition transition : transitions) {
-      if (transition.getFrom().getStyles().contains(style)) {
+      if (transition.getFrom().getGenres().contains(genre)) {
         return transition.getFrom();
       }
     }

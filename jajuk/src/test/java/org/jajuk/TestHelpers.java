@@ -26,16 +26,16 @@ import javax.swing.SwingUtilities;
 
 import org.jajuk.base.Album;
 import org.jajuk.base.AlbumManager;
-import org.jajuk.base.Author;
-import org.jajuk.base.AuthorManager;
+import org.jajuk.base.Artist;
+import org.jajuk.base.ArtistManager;
 import org.jajuk.base.Device;
 import org.jajuk.base.DeviceManager;
 import org.jajuk.base.Directory;
 import org.jajuk.base.DirectoryManager;
 import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
-import org.jajuk.base.Style;
-import org.jajuk.base.StyleManager;
+import org.jajuk.base.Genre;
+import org.jajuk.base.GenreManager;
 import org.jajuk.base.Track;
 import org.jajuk.base.TrackManager;
 import org.jajuk.base.Type;
@@ -119,10 +119,10 @@ public class TestHelpers extends JajukTestCase {
     Type type = TypeManager.getInstance().registerType("mp3", "mp3", MPlayerPlayerImpl.class,
         JAudioTaggerTagImpl.class);
     Album album = AlbumManager.getInstance().registerAlbum("album name", "album artist", 2222l);
-    Style style = StyleManager.getInstance().registerStyle("style name");
-    Author author = AuthorManager.getInstance().registerAuthor("author name");
+    Genre genre = GenreManager.getInstance().registerGenre("genre name");
+    Artist artist = ArtistManager.getInstance().registerArtist("artist name");
     Year year = YearManager.getInstance().registerYear("2000");
-    Track track = TrackManager.getInstance().registerTrack("track name", album, style, author, 12l,
+    Track track = TrackManager.getInstance().registerTrack("track name", album, genre, artist, 12l,
         year, 1l, type, 1l);
     Device device = DeviceManager.getInstance().registerDevice("device name", 1l, "/tmp");
     Directory dir = DirectoryManager.getInstance()

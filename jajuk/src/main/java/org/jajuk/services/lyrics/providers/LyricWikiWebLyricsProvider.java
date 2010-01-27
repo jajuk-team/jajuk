@@ -94,7 +94,7 @@ public class LyricWikiWebLyricsProvider extends GenericWebLyricsProvider {
     String artist = pArtist.replaceAll(" ", "_");
     String title = pTitle.replaceAll(" ", "_");
 
-    queryString = queryString.replace(Const.PATTERN_AUTHOR, (artist != null) ? NetworkUtils
+    queryString = queryString.replace(Const.PATTERN_ARTIST, (artist != null) ? NetworkUtils
         .encodeString(artist) : "");
     queryString = queryString.replace(Const.PATTERN_TRACKNAME, (title != null) ? NetworkUtils
         .encodeString(title) : "");
@@ -112,7 +112,7 @@ public class LyricWikiWebLyricsProvider extends GenericWebLyricsProvider {
    * @see org.jajuk.services.lyrics.providers.ILyricsProvider#getLyrics(org.jajuk.base.File)
    */
   public String getLyrics(File audioFile) {
-    return getLyrics(audioFile.getTrack().getAuthor().getName2(), 
+    return getLyrics(audioFile.getTrack().getArtist().getName2(), 
         audioFile.getTrack().getName());
   }
 

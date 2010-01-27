@@ -513,7 +513,7 @@ public class LastFmService {
     Log.info("Trying to submit song to Last.fm");
     try {
       performHandshakeIfNeeded();
-      SubmissionData submissionData = new SubmissionData(track.getAuthor().getName2(), track
+      SubmissionData submissionData = new SubmissionData(track.getArtist().getName2(), track
           .getName(), track.getAlbum().getName2(), (int) track.getDuration(), (int) track
           .getOrder(), Source.USER, null, startedToPlay);
       ResponseStatus status = scrobbler.submit(submissionData);
@@ -521,7 +521,7 @@ public class LastFmService {
         Log.info("Song submitted to Last.fm");
       } else {
         handshakePerformed = false;
-        lastFmCache.addSubmissionData(new FullSubmissionData(track.getAuthor().getName2(), track
+        lastFmCache.addSubmissionData(new FullSubmissionData(track.getArtist().getName2(), track
             .getName(), track.getAlbum().getName2(), (int) track.getDuration(), (int) track
             .getOrder(), Source.USER.toString(), (int) startedToPlay));
 
@@ -531,7 +531,7 @@ public class LastFmService {
     } catch (IOException e) {
       Log.error(e);
       handshakePerformed = false;
-      lastFmCache.addSubmissionData(new FullSubmissionData(track.getAuthor().getName2(), track
+      lastFmCache.addSubmissionData(new FullSubmissionData(track.getArtist().getName2(), track
           .getName(), track.getAlbum().getName2(), (int) track.getDuration(), (int) track
           .getOrder(), Source.USER.toString(), (int) startedToPlay));
       throw new ScrobblerException(e.getMessage());
@@ -605,7 +605,7 @@ public class LastFmService {
     Log.info("Trying to submit now playing info to Last.fm");
     try {
       performHandshakeIfNeeded();
-      ResponseStatus status = scrobbler.nowPlaying(track.getAuthor().getName2(), track.getName(),
+      ResponseStatus status = scrobbler.nowPlaying(track.getArtist().getName2(), track.getName(),
           track.getAlbum().getName2(), (int) track.getDuration(), (int) track.getOrder());
       if (status.ok()) {
         Log.info("Now playing info submitted to Last.fm");
@@ -670,9 +670,9 @@ public class LastFmService {
    * @return true, if check artist
    */
   private boolean checkArtist(Track track) {
-    String sArtist = track.getAuthor().getName2();
+    String sArtist = track.getArtist().getName2();
     if (StringUtils.isBlank(sArtist)
-        || sArtist.equalsIgnoreCase(Messages.getString("unknown_author"))) {
+        || sArtist.equalsIgnoreCase(Messages.getString("unknown_artist"))) {
       Log.debug("Don't submit to Last.fm: Unknown artist");
       return false;
     }

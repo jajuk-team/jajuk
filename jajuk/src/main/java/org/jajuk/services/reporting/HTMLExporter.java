@@ -25,11 +25,11 @@ import java.io.File;
 import java.util.List;
 
 import org.jajuk.base.Album;
-import org.jajuk.base.Author;
+import org.jajuk.base.Artist;
 import org.jajuk.base.Device;
 import org.jajuk.base.Directory;
 import org.jajuk.base.Item;
-import org.jajuk.base.Style;
+import org.jajuk.base.Genre;
 import org.jajuk.base.Year;
 import org.jajuk.services.core.SessionService;
 import org.jajuk.util.Const;
@@ -88,10 +88,10 @@ public class HTMLExporter extends Exporter {
     // Create an xml tagging of this collection
     xmlExporter.process(collection);
     Item first = collection.get(0);
-    if (first instanceof Style) {
-      XMLTransformer.xmlToHTML(xmlExporter.getCacheFile(), cache, Const.XSLT_STYLE);
-    } else if (first instanceof Author) {
-      XMLTransformer.xmlToHTML(xmlExporter.getCacheFile(), cache, Const.XSLT_AUTHOR);
+    if (first instanceof Genre) {
+      XMLTransformer.xmlToHTML(xmlExporter.getCacheFile(), cache, Const.XSLT_GENRE);
+    } else if (first instanceof Artist) {
+      XMLTransformer.xmlToHTML(xmlExporter.getCacheFile(), cache, Const.XSLT_ARTIST);
     } else if (first instanceof Year) {
       XMLTransformer.xmlToHTML(xmlExporter.getCacheFile(), cache, Const.XSLT_YEAR);
     } else if (first instanceof Album) {

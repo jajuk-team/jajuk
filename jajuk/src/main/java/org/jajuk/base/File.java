@@ -104,8 +104,8 @@ public class File extends PhysicalItem implements Comparable<File>, Const {
    * @return the string
    */
   public String toStringSearch() {
-    StringBuilder sb = new StringBuilder(track.getStyle().getName2()).append('/').append(
-        track.getAuthor().getName2()).append('/').append(track.getAlbum().getName2()).append('/')
+    StringBuilder sb = new StringBuilder(track.getGenre().getName2()).append('/').append(
+        track.getArtist().getName2()).append('/').append(track.getAlbum().getName2()).append('/')
         .append(track.getName()).append(" [").append(directory.getName()).append('/').append(
             getName()).append(']');
     return sb.toString();
@@ -332,10 +332,10 @@ public class File extends PhysicalItem implements Comparable<File>, Const {
       return getQuality() + Messages.getString("FIFO.13");
     } else if (Const.XML_ALBUM.equals(sKey)) {
       return getTrack().getAlbum().getName2();
-    } else if (Const.XML_STYLE.equals(sKey)) {
-      return getTrack().getStyle().getName2();
-    } else if (Const.XML_AUTHOR.equals(sKey)) {
-      return getTrack().getAuthor().getName2();
+    } else if (Const.XML_GENRE.equals(sKey)) {
+      return getTrack().getGenre().getName2();
+    } else if (Const.XML_ARTIST.equals(sKey)) {
+      return getTrack().getArtist().getName2();
     } else if (Const.XML_TRACK_LENGTH.equals(sKey)) {
       return UtilString.formatTimeBySec(getTrack().getDuration());
     } else if (Const.XML_TRACK_RATE.equals(sKey)) {
@@ -373,8 +373,8 @@ public class File extends PhysicalItem implements Comparable<File>, Const {
     // now add others properties
     sb.append(file.getDirectory().getDevice().getName());
     sb.append(lTrack.getName());
-    sb.append(lTrack.getStyle().getName2());
-    sb.append(lTrack.getAuthor().getName2());
+    sb.append(lTrack.getGenre().getName2());
+    sb.append(lTrack.getArtist().getName2());
     sb.append(lTrack.getAlbum().getName2());
     sb.append(lTrack.getDuration());
     sb.append(lTrack.getRate());
@@ -451,9 +451,9 @@ public class File extends PhysicalItem implements Comparable<File>, Const {
       sOut += "<p ALIGN=center><img src='file:" + cover.getAbsolutePath() + "'/></p>";
     }
     sOut += "<b>" + UtilString.getLimitedString(getTrack().getName(), maxSize) + "</b><br/>";
-    String sAuthor = UtilString.getLimitedString(getTrack().getAuthor().getName(), maxSize);
-    if (!sAuthor.equals(UNKNOWN_AUTHOR)) {
-      sOut += sAuthor + "<br/>";
+    String sArtist = UtilString.getLimitedString(getTrack().getArtist().getName(), maxSize);
+    if (!sArtist.equals(UNKNOWN_ARTIST)) {
+      sOut += sArtist + "<br/>";
     }
     String sAlbum = UtilString.getLimitedString(getTrack().getAlbum().getName(), maxSize);
     if (!sAlbum.equals(UNKNOWN_ALBUM)) {

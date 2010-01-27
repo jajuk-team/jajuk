@@ -531,15 +531,15 @@ final public class IconLoader {
     }
 
     else if (icon == JajukIcons.STYLE) {
-      out = new ImageIcon(UtilSystem.getResource("icons/16x16/style_16x16.png"));
+      out = new ImageIcon(UtilSystem.getResource("icons/16x16/genre_16x16.png"));
     }
 
     else if (icon == JajukIcons.EMPTY) {
       out = new ImageIcon(UtilSystem.getResource("icons/16x16/empty_16x16.png"));
     }
 
-    else if (icon == JajukIcons.AUTHOR) {
-      out = new ImageIcon(UtilSystem.getResource("icons/16x16/author_16x16.png"));
+    else if (icon == JajukIcons.ARTIST) {
+      out = new ImageIcon(UtilSystem.getResource("icons/16x16/artist_16x16.png"));
     }
 
     else if (icon == JajukIcons.ALBUM) {
