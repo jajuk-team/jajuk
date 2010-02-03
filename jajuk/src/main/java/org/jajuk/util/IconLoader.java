@@ -530,7 +530,7 @@ final public class IconLoader {
       out = new ImageIcon(UtilSystem.getResource("icons/16x16/playlist_16x16.png"));
     }
 
-    else if (icon == JajukIcons.STYLE) {
+    else if (icon == JajukIcons.GENRE) {
       out = new ImageIcon(UtilSystem.getResource("icons/16x16/genre_16x16.png"));
     }
 
@@ -901,7 +901,11 @@ final public class IconLoader {
     else if (icon == JajukIcons.DONATE) {
       out = new ImageIcon(UtilSystem.getResource("icons/16x16/donate_16x16.png"));
     }
-
+    
+    else if (icon == JajukIcons.DISC_NUMBER) {
+      out = new ImageIcon(UtilSystem.getResource("icons/16x16/disc_number_16x16.png"));
+    }
+    
     // Cache the result
     if (!cache.containsKey(icon)) {
       cache.put(icon, out);

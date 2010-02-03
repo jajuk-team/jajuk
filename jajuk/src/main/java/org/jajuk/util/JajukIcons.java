@@ -340,7 +340,7 @@ public enum JajukIcons {
   PLAYLIST_FILE,
 
   /** DOCUMENT_ME. */
-  STYLE,
+  GENRE,
 
   /** DOCUMENT_ME. */
   EMPTY,
@@ -634,5 +634,8 @@ public enum JajukIcons {
   TREE_TABLE_SYNC,
   
   /** Money */
-  DONATE
+  DONATE,
+  
+  /** Disc number */
+  DISC_NUMBER
 }
