@@ -27,8 +27,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.util.Collections;
-import java.util.Date;
+import java.util.Comparator;
 import java.util.Enumeration;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Properties;
 import java.util.concurrent.ExecutionException;
@@ -54,14 +55,14 @@ import javax.swing.tree.TreePath;
 import net.miginfocom.swing.MigLayout;
 
 import org.jajuk.base.Album;
+import org.jajuk.base.AlbumArtist;
 import org.jajuk.base.Artist;
 import org.jajuk.base.File;
-import org.jajuk.base.Item;
 import org.jajuk.base.Genre;
+import org.jajuk.base.Item;
 import org.jajuk.base.Track;
 import org.jajuk.base.TrackManager;
 import org.jajuk.base.Year;
-import org.jajuk.base.TrackComparator.TrackComparatorType;
 import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
@@ -83,6 +84,7 @@ import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilGUI;
+import org.jajuk.util.UtilString;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 import org.jvnet.substance.api.renderers.SubstanceDefaultTreeCellRenderer;
@@ -125,16 +127,7 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
     // ComboBox sort
     JLabel jlSort = new JLabel(Messages.getString("Sort"));
     jcbSort = new JComboBox();
-    jcbSort.addItem(Messages.getString("Property_genre")); // sort by
-    // Genre/Artist/Album
-    jcbSort.addItem(Messages.getString("Property_artist")); // sort by
-    // Artist/Album
-    jcbSort.addItem(Messages.getString("Property_album")); // sort by Album
-    jcbSort.addItem(Messages.getString("Property_year")); // sort by Year
-    jcbSort.addItem(Messages.getString("TracksTreeView.35")); // sort by
-    // Discovery Date
-    jcbSort.addItem(Messages.getString("Property_rate")); // sort by rate
-    jcbSort.addItem(Messages.getString("Property_hits")); // sort by hits
+    populateSortingMethods();
     jcbSort.setSelectedIndex(Conf.getInt(Const.CONF_LOGICAL_TREE_SORT_ORDER));
     jcbSort.setActionCommand(JajukEvents.LOGICAL_TREE_SORT.toString());
     jcbSort.addActionListener(this);
@@ -185,380 +178,258 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
   }
 
   /**
-   * Fill the tree.
+   * Populate the sorting method selection combobox with most useful combinations 
    */
+  private void populateSortingMethods() {
+    String genre = Messages.getString("Property_genre");
+    String artist = Messages.getString("Property_artist");
+    String album = Messages.getString("Property_album");
+    String albumArtist = Messages.getString("Property_album-artist");
+    String year = Messages.getString("Property_year");
+    String discovery = Messages.getString("TracksTreeView.35");
+    String hits = Messages.getString("Property_hits");
+    String rate = Messages.getString("Property_rate");
+    String discNumber = Messages.getString("Property_disc_number");
 
-  @Override
+    jcbSort.addItem(genre + "/" + artist + "/" + album);
+    jcbSort.addItem(genre + "/" + albumArtist + "/" + album);
+    jcbSort.addItem(artist + "/" + album);
+    jcbSort.addItem(album);
+    jcbSort.addItem(genre + "/" + artist + "/" + album + "/" + discNumber);
+    jcbSort.addItem(artist + "/" + album + "/" + discNumber);
+    jcbSort.addItem(album + "/" + discNumber);
+    jcbSort.addItem(year + "/" + album);
+    jcbSort.addItem(discovery + "/" + album);
+    jcbSort.addItem(rate + "/" + album);
+    jcbSort.addItem(hits + "/" + album);
+  }
+
   public synchronized void populateTree() {
-    // delete previous tree
-    top.removeAllChildren();
+    List<ComparableProperty> properties = ComparableProperty
+        .getList("ARTIST,ALBUM,DISC_NUMBER,TRACK_NUMBER,NAME");
+    TreeTrackComparator comparator = new TreeTrackComparator(properties);
 
+    top.removeAllChildren();
     // see http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6472844 for a
     // small memory leak that is caused here...
     if (jtree != null && jtree.getModel() != null) {
       ((DefaultTreeModel) (jtree.getModel())).reload();
     }
-    TrackComparatorType comparatorType = TrackComparatorType.values()[Conf
-        .getInt(Const.CONF_LOGICAL_TREE_SORT_ORDER)];
-    if (comparatorType == TrackComparatorType.GENRE_ARTIST_ALBUM) {
-      populateTreeByGenre();
-    }// Artist/album
-    else if (comparatorType == TrackComparatorType.ARTIST_ALBUM) {
-      populateTreeByArtist();
-    }
-    // Album
-    else if (comparatorType == TrackComparatorType.ALBUM) {
-      populateTreeByAlbum();
-    }
-    // Year / album
-    else if (comparatorType == TrackComparatorType.YEAR_ALBUM) {
-      populateTreeByYear();
-    }
-    // discovery date / album
-    else if (comparatorType == TrackComparatorType.DISCOVERY_ALBUM) {
-      populateTreeByDiscovery();
-    }
-    // Rate / album
-    else if (comparatorType == TrackComparatorType.RATE_ALBUM) {
-      populateTreeByRate();
-    }
-    // Hits / album
-    else if (comparatorType == TrackComparatorType.HITS_ALBUM) {
-      populateTreeByHits();
-    }
-  }
-
-  /**
-   * Fill the tree by genre.
-   */
-  @SuppressWarnings("unchecked")
-  public void populateTreeByGenre() {
     List<Track> tracks = TrackManager.getInstance().getTracks();
-    Collections.sort(tracks, TrackManager.getInstance().getComparator());
+    Collections.sort(tracks, comparator);
+
     for (Track track : tracks) {
       if (!track.shouldBeHidden()) {
-        GenreNode genreNode = null;
-        Genre genre = track.getGenre();
-        ArtistNode artistNode = null;
-        Artist artist = track.getArtist();
-        AlbumNode albumNode = null;
-        Album album = track.getAlbum();
-
-        // create genre
-        Enumeration e = top.children();
-        boolean b = false;
-        while (e.hasMoreElements()) { // check the genre doesn't
-          // already exist
-          GenreNode sn = (GenreNode) e.nextElement();
-          if (sn.getGenre().equals(genre)) {
-            b = true;
-            genreNode = sn;
+        DefaultMutableTreeNode node = top;
+        for (ComparableProperty property : properties) {
+          if (!property.needsNode()) {
             break;
           }
-        }
-        if (!b) {
-          genreNode = new GenreNode(genre);
-          top.add(genreNode);
-        }
-        // create artist
-        if (genreNode != null) {
-          e = genreNode.children();
-        } else {
-          continue;
-        }
-        b = false;
-        while (e.hasMoreElements()) { // check if the artist doesn't
-          // already exist
-          ArtistNode an = (ArtistNode) e.nextElement();
-          if (an.getArtist().equals(artist)) {
-            b = true;
-            artistNode = an;
-            break;
+          Enumeration<?> e = node.children();
+          boolean b = false;
+          while (e.hasMoreElements()) {
+            DefaultMutableTreeNode currentNode = (DefaultMutableTreeNode) e.nextElement();
+            if (property.isInNode(currentNode, track)) {
+              b = true;
+              node = currentNode;
+              break;
+            }
+          }
+          if (!b) {
+            DefaultMutableTreeNode newNode = property.getNode(track);
+            node.add(newNode);
+            node = newNode;
           }
         }
-        if (!b) {
-          artistNode = new ArtistNode(artist);
-          genreNode.add(artistNode);
-        }
-        // create album
-        if (artistNode != null) {
-          e = artistNode.children();
-        } else {
-          continue;
-        }
-        b = false;
-        while (e.hasMoreElements()) {
-          AlbumNode an = (AlbumNode) e.nextElement();
-          if (an.getAlbum().equals(album)) {
-            b = true;
-            albumNode = an;
-            break;
-          }
-        }
-        if (!b) {
-          albumNode = new AlbumNode(album);
-          artistNode.add(albumNode);
-        }
-        // create track
-        assert albumNode != null;
-        albumNode.add(new TrackNode(track));
+
+        node.add(new TrackNode(track));
       }
     }
   }
 
-  /**
-   * Fill the tree by artist.
-   */
-  @SuppressWarnings("unchecked")
-  public void populateTreeByArtist() {
-    List<Track> tracks = TrackManager.getInstance().getTracks();
-    Collections.sort(tracks, TrackManager.getInstance().getComparator());
-    for (Track track : tracks) {
-      if (!track.shouldBeHidden()) {
-        ArtistNode artistNode = null;
-        Artist artist = track.getArtist();
-        AlbumNode albumNode = null;
-        Album album = track.getAlbum();
-
-        // create artist
-        Enumeration e = top.children();
-        boolean b = false;
-        while (e.hasMoreElements()) { // check if the artist doesn't
-          // already exist
-          ArtistNode an = (ArtistNode) e.nextElement();
-          if (an.getArtist().equals(artist)) {
-            b = true;
-            artistNode = an;
-            break;
-          }
-        }
-        if (!b) {
-          artistNode = new ArtistNode(artist);
-          top.add(artistNode);
-        }
-        // create album
-        if (artistNode != null) {
-          e = artistNode.children();
-        } else {
-          continue;
-        }
-        b = false;
-        while (e.hasMoreElements()) { // check if the album doesn't
-          // already exist
-          AlbumNode an = (AlbumNode) e.nextElement();
-          if (an.getAlbum().equals(album)) {
-            b = true;
-            albumNode = an;
-            break;
-          }
-        }
-        if (!b) {
-          albumNode = new AlbumNode(album);
-          artistNode.add(albumNode);
-        }
-        // create track
-        if (albumNode != null) {
-          albumNode.add(new TrackNode(track));
-        }
+  public enum ComparableProperty {
+    NAME {
+      @Override
+      public String getValue(Track track) {
+        return track.getName();
       }
+
+      @Override
+      public TrackNode getNode(Track track) {
+        return new TrackNode(track);
+      }
+
+      @Override
+      public boolean isInNode(DefaultMutableTreeNode node, Track track) {
+        return ((TrackNode) node).getTrack().equals(track);
+      }
+    },
+    TRACK_NUMBER {
+      @Override
+      public String getValue(Track track) {
+        return UtilString.padNumber(track.getOrder(), 5);
+      }
+
+      @Override
+      public TrackNode getNode(Track track) {
+        return null;
+      }
+
+      @Override
+      public boolean needsNode() {
+        return false;
+      }
+
+      @Override
+      public boolean isInNode(DefaultMutableTreeNode node, Track track) {
+        return true;
+      }
+    },
+    ARTIST {
+      @Override
+      public String getValue(Track track) {
+        return track.getArtist().getName2();
+      }
+
+      @Override
+      public ArtistNode getNode(Track track) {
+        return new ArtistNode(track.getArtist());
+      }
+
+      @Override
+      public boolean isInNode(DefaultMutableTreeNode node, Track track) {
+        return ((ArtistNode) node).getArtist().equals(track.getArtist());
+      }
+    },
+    ALBUM {
+      @Override
+      public String getValue(Track track) {
+        return track.getAlbum().getName2();
+      }
+
+      @Override
+      public AlbumNode getNode(Track track) {
+        return new AlbumNode(track.getAlbum());
+      }
+
+      @Override
+      public boolean isInNode(DefaultMutableTreeNode node, Track track) {
+        return ((AlbumNode) node).getAlbum().equals(track.getAlbum());
+      }
+    },
+    ALBUM_ARTIST {
+      @Override
+      public String getValue(Track track) {
+        return track.getAlbumArtist().getName2();
+      }
+
+      @Override
+      public AlbumArtistNode getNode(Track track) {
+        return new AlbumArtistNode(track.getAlbumArtist());
+      }
+
+      @Override
+      public boolean isInNode(DefaultMutableTreeNode node, Track track) {
+        return ((AlbumArtistNode) node).getAlbumArtist().equals(track.getAlbumArtistOrArtist());
+      }
+    },
+    DISC_NUMBER {
+      @Override
+      public String getValue(Track track) {
+        return UtilString.padNumber(track.getDiscNumber(), 5);
+      }
+
+      @Override
+      public DiscNumberNode getNode(Track track) {
+        return new DiscNumberNode(track.getDiscNumber());
+      }
+
+      @Override
+      public boolean isInNode(DefaultMutableTreeNode node, Track track) {
+        return ((DiscNumberNode) node).getDiscNumber().equals(track.getDiscNumber());
+      }
+    },
+    YEAR {
+      @Override
+      public String getValue(Track track) {
+        return UtilString.padNumber(999999999 - track.getYear().getValue(), 10);
+      }
+
+      @Override
+      public YearNode getNode(Track track) {
+        return new YearNode(track.getYear());
+      }
+
+      @Override
+      public boolean isInNode(DefaultMutableTreeNode node, Track track) {
+        return ((YearNode) node).getYear().equals(track.getYear());
+      }
+    },
+    GENRE {
+      @Override
+      public String getValue(Track track) {
+        return track.getGenre().getName2();
+      }
+
+      @Override
+      public GenreNode getNode(Track track) {
+        return new GenreNode(track.getGenre());
+      }
+
+      @Override
+      public boolean isInNode(DefaultMutableTreeNode node, Track track) {
+        return ((GenreNode) node).getGenre().equals(track.getGenre());
+      }
+    };
+
+    public abstract String getValue(Track track);
+
+    public abstract TransferableTreeNode getNode(Track track);
+
+    public boolean needsNode() {
+      return true;
     }
 
-  }
+    public abstract boolean isInNode(DefaultMutableTreeNode node, Track track);
 
-  /**
-   * Fill the tree by year.
-   */
-  @SuppressWarnings("unchecked")
-  public void populateTreeByYear() {
-    List<Track> tracks = TrackManager.getInstance().getTracks();
-    Collections.sort(tracks, TrackManager.getInstance().getComparator());
-    for (Track track : tracks) {
-      if (!track.shouldBeHidden()) {
-        YearNode yearNode = null;
-        AlbumNode albumNode = null;
-        Album album = track.getAlbum();
-        Year year = track.getYear();
-        // create Year
-        Enumeration e = top.children();
-        boolean b = false;
-        // check if the artist doesn't already exist
-        while (e.hasMoreElements()) {
-          YearNode yn = (YearNode) e.nextElement();
-          if (yn.getYear().equals(year)) {
-            b = true;
-            yearNode = yn;
-            break;
-          }
-        }
-        if (!b) {
-          yearNode = new YearNode(year);
-          top.add(yearNode);
-        }
-        // create album
-        if (yearNode != null) {
-          e = yearNode.children();
-        } else {
-          continue;
-        }
-        b = false;
-        while (e.hasMoreElements()) { // check if the album doesn't
-          // already exist
-          AlbumNode an = (AlbumNode) e.nextElement();
-          if (an.getAlbum().equals(album)) {
-            b = true;
-            albumNode = an;
-            break;
-          }
-        }
-        if (!b) {
-          albumNode = new AlbumNode(album);
-          yearNode.add(albumNode);
-        }
-        // create track
-        if (albumNode != null) {
-          albumNode.add(new TrackNode(track));
-        }
+    public static List<List<ComparableProperty>> getLists(String string) {
+      List<List<ComparableProperty>> list = new LinkedList<List<ComparableProperty>>();
+      String[] tokens = string.split(";");
+      for (String token : tokens) {
+        list.add(getList(token));
       }
+      return list;
     }
-  }
 
-  /**
-   * Fill the tree.
-   */
-  public void populateTreeByAlbum() {
-    List<Track> tracks = TrackManager.getInstance().getTracks();
-    Collections.sort(tracks, TrackManager.getInstance().getComparator());
-    for (Track track : tracks) {
-      if (!track.shouldBeHidden()) {
-        addTrackAndAlbum(top, track);
+    public static List<ComparableProperty> getList(String string) {
+      List<ComparableProperty> list = new LinkedList<ComparableProperty>();
+      String[] tokens = string.split(",");
+      for (String token : tokens) {
+        list.add(ComparableProperty.valueOf(token));
       }
-    }
-  }
-
-  /**
-   * Fill the tree by discovery.
-   */
-  public void populateTreeByDiscovery() {
-    List<Track> tracks = TrackManager.getInstance().getTracks();
-    Collections.sort(tracks, TrackManager.getInstance().getComparator());
-    // Create separator nodes
-    DefaultMutableTreeNode nodeWeekly = new DiscoveryDateNode(Messages
-        .getString("TracksTreeView.36"));
-    DefaultMutableTreeNode nodeMontly = new DiscoveryDateNode(Messages
-        .getString("TracksTreeView.37"));
-    DefaultMutableTreeNode nodeThreeMontly = new DiscoveryDateNode(Messages
-        .getString("TracksTreeView.44"));
-    DefaultMutableTreeNode nodeSixMontly = new DiscoveryDateNode(Messages
-        .getString("TracksTreeView.38"));
-    DefaultMutableTreeNode nodeYearly = new DiscoveryDateNode(Messages
-        .getString("TracksTreeView.40"));
-    DefaultMutableTreeNode nodeTwoYearly = new DiscoveryDateNode(Messages
-        .getString("TracksTreeView.41"));
-    DefaultMutableTreeNode nodeFiveYearly = new DiscoveryDateNode(Messages
-        .getString("TracksTreeView.42"));
-    DefaultMutableTreeNode nodeTenYearly = new DiscoveryDateNode(Messages
-        .getString("TracksTreeView.43"));
-    DefaultMutableTreeNode nodeOlder = new DiscoveryDateNode(Messages
-        .getString("TracksTreeView.39"));
-    // Add separator nodes
-    top.add(nodeWeekly);
-    top.add(nodeMontly);
-    top.add(nodeThreeMontly);
-    top.add(nodeSixMontly);
-    top.add(nodeYearly);
-    top.add(nodeTwoYearly);
-    top.add(nodeFiveYearly);
-    top.add(nodeTenYearly);
-    top.add(nodeOlder);
-    Date today = new Date();
-    // Sort tracks into these categories
-    for (Track track : tracks) {
-      if (track.shouldBeHidden()) {
-        continue;
-      }
-      // less than one week ?
-      long diff = today.getTime() - track.getDiscoveryDate().getTime();
-      if (diff < 604800000l) {
-        addTrackAndAlbum(nodeWeekly, track);
-      } else if (diff < 2628000000l) {
-        addTrackAndAlbum(nodeMontly, track);
-      } else if (diff < 7884000000l) {
-        addTrackAndAlbum(nodeThreeMontly, track);
-      } else if (diff < 15768000000l) {
-        addTrackAndAlbum(nodeSixMontly, track);
-      } else if (diff < 31536000000l) {
-        addTrackAndAlbum(nodeYearly, track);
-      } else if (diff < 63072000000l) {
-        addTrackAndAlbum(nodeTwoYearly, track);
-      } else if (diff < 157680000000l) {
-        addTrackAndAlbum(nodeFiveYearly, track);
-      } else if (diff < 315360000000l) {
-        addTrackAndAlbum(nodeTenYearly, track);
-      } else {
-        addTrackAndAlbum(nodeOlder, track);
-      }
+      return list;
     }
   }
 
-  /**
-   * Fill the tree by Rate.
-   */
-  public void populateTreeByRate() {
-    List<Track> tracks = TrackManager.getInstance().getTracks();
-    Collections.sort(tracks, TrackManager.getInstance().getComparator());
-    for (Track track : tracks) {
-      if (!track.shouldBeHidden()) {
-        addTrackAndAlbum(top, track);
+  class TreeTrackComparator implements Comparator<Track> {
+    private List<ComparableProperty> properties;
+
+    public TreeTrackComparator(List<ComparableProperty> properties) {
+      this.properties = properties;
+    }
+
+    @Override
+    public int compare(Track o1, Track o2) {
+      for (ComparableProperty property : properties) {
+        int n = property.getValue(o1).compareTo(property.getValue(o2));
+        if (n != 0) {
+          return n;
+        }
       }
+      return 0;
     }
   }
 
-  /**
-   * Fill the tree by Hits.
-   */
-  public void populateTreeByHits() {
-    List<Track> tracks = TrackManager.getInstance().getTracks();
-    Collections.sort(tracks, TrackManager.getInstance().getComparator());
-    for (Track track : tracks) {
-      if (!track.shouldBeHidden()) {
-        addTrackAndAlbum(top, track);
-      }
-    }
-  }
-
-  /**
-   * Utility method used by populateByDiscovery method.
-   * 
-   * @param node
-   *          DOCUMENT_ME
-   * @param track
-   *          DOCUMENT_ME
-   */
-  @SuppressWarnings("unchecked")
-  private void addTrackAndAlbum(DefaultMutableTreeNode node, Track track) {
-    boolean bAlbumExists = false;
-    AlbumNode currentAlbum = null;
-    Enumeration<AlbumNode> e = node.children();
-    while (e.hasMoreElements()) {
-      AlbumNode an = e.nextElement();
-      if (an.getAlbum().equals(track.getAlbum())) {
-        bAlbumExists = true;
-        currentAlbum = an;
-        break;
-      }
-    }
-    if (!bAlbumExists) {
-      currentAlbum = new AlbumNode(track.getAlbum());
-      node.add(currentAlbum);
-    }
-    // create track
-    if (currentAlbum != null) {
-      currentAlbum.add(new TrackNode(track));
-    }
-
-  }
-
-  
   /*
    * (non-Javadoc)
    * 
@@ -665,10 +536,10 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
 
     /**
      * Handle selected.
-     * 
+     *
      * @param tpSelected
      *          DOCUMENT_ME
-     * 
+     *
      * @return the int
      */
     @SuppressWarnings("unchecked")
@@ -717,7 +588,7 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
 
     /**
      * Instantiates a new tracks mouse adapter.
-     * 
+     *
      * @param jmiShowAlbumDetails
      *          DOCUMENT_ME
      */
@@ -778,7 +649,7 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
 
     /**
      * Builds the menu.
-     * 
+     *
      * @param e
      *          DOCUMENT_ME
      */
@@ -945,11 +816,11 @@ class GenreNode extends TransferableTreeNode {
 
   /**
    * Constructor
-   * 
+   *
    * @param track
    */
-  public GenreNode(Genre track) {
-    super(track);
+  public GenreNode(Genre genre) {
+    super(genre);
   }
 
   /**
@@ -968,19 +839,65 @@ class GenreNode extends TransferableTreeNode {
   }
 }
 
+class AlbumArtistNode extends TransferableTreeNode {
+  private static final long serialVersionUID = 1L;
+
+  public AlbumArtistNode(AlbumArtist albumArtist) {
+    super(albumArtist);
+  }
+
+  /**
+   * return a string representation of this artist node
+   */
+  @Override
+  public String toString() {
+    return getAlbumArtist().getName2();
+  }
+
+  /**
+   * @return Returns the artist.
+   */
+  public AlbumArtist getAlbumArtist() {
+    return (AlbumArtist) getUserObject();
+  }
+}
+
+class DiscNumberNode extends TransferableTreeNode {
+  private static final long serialVersionUID = 1L;
+
+  public DiscNumberNode(long artist) {
+    super(artist);
+  }
+
+  /**
+   * return a string representation of this artist node
+   */
+  @Override
+  public String toString() {
+    return getDiscNumber().toString();
+  }
+
+  /**
+   * @return Returns the artist.
+   */
+  public Long getDiscNumber() {
+    return (Long) super.getUserObject();
+  }
+}
+
 /**
  * Artist node
  */
 class ArtistNode extends TransferableTreeNode {
 
   /**
-   * 
+   *
    */
   private static final long serialVersionUID = 1L;
 
   /**
    * Constructor
-   * 
+   *
    * @param artist
    */
   public ArtistNode(Artist artist) {
@@ -1009,13 +926,13 @@ class ArtistNode extends TransferableTreeNode {
 class YearNode extends TransferableTreeNode {
 
   /**
-   * 
+   *
    */
   private static final long serialVersionUID = 1L;
 
   /**
    * Constructor
-   * 
+   *
    * @param artist
    */
   public YearNode(Year year) {
@@ -1051,7 +968,7 @@ class AlbumNode extends TransferableTreeNode {
 
   /**
    * Constructor
-   * 
+   *
    * @param album
    */
   public AlbumNode(Album album) {
@@ -1083,7 +1000,7 @@ class TrackNode extends TransferableTreeNode {
 
   /**
    * Constructor
-   * 
+   *
    * @param track
    */
   public TrackNode(Track track) {
@@ -1107,7 +1024,7 @@ class TrackNode extends TransferableTreeNode {
 }
 
 /**
- * 
+ *
  * Discovery date filter tree node
  */
 class DiscoveryDateNode extends DefaultMutableTreeNode {
@@ -1133,13 +1050,15 @@ class TracksTreeCellRenderer extends SubstanceDefaultTreeCellRenderer {
     setFont(FontManager.getInstance().getFont(JajukFont.PLAIN));
 
     if (value instanceof GenreNode) {
-      setIcon(IconLoader.getIcon(JajukIcons.STYLE));
+      setIcon(IconLoader.getIcon(JajukIcons.GENRE));
     } else if (value instanceof ArtistNode) {
       setIcon(IconLoader.getIcon(JajukIcons.ARTIST));
     } else if (value instanceof YearNode) {
       setIcon(IconLoader.getIcon(JajukIcons.YEAR));
     } else if (value instanceof AlbumNode) {
       setIcon(IconLoader.getIcon(JajukIcons.ALBUM));
+    } else if (value instanceof DiscNumberNode) {
+      setIcon(IconLoader.getIcon(JajukIcons.DISC_NUMBER));
     } else if (value instanceof TrackNode) {
       setIcon(IconLoader.getIcon(JajukIcons.TRACK));
       // Discovery date filter
@@ -1149,7 +1068,6 @@ class TracksTreeCellRenderer extends SubstanceDefaultTreeCellRenderer {
     } else {
       setIcon(IconLoader.getIcon(JajukIcons.LIST));
     }
-
     return this;
   }
 }
@@ -1169,6 +1087,9 @@ class TracksTreeExpansionListener implements TreeExpansionListener {
     } else if (o instanceof YearNode) {
       Year year = ((YearNode) o).getYear();
       year.removeProperty(Const.XML_EXPANDED);
+    } else if (o instanceof AlbumArtistNode) {
+      AlbumArtist albumArtist = ((AlbumArtistNode) o).getAlbumArtist();
+      albumArtist.removeProperty(Const.XML_EXPANDED);
     }
   }
 
@@ -1186,6 +1107,9 @@ class TracksTreeExpansionListener implements TreeExpansionListener {
     } else if (o instanceof YearNode) {
       Year year = ((YearNode) o).getYear();
       year.setProperty(Const.XML_EXPANDED, true);
+    } else if (o instanceof AlbumArtistNode) {
+      AlbumArtist albumArtist = ((AlbumArtistNode) o).getAlbumArtist();
+      albumArtist.setProperty(Const.XML_EXPANDED, true);
     }
   }
 }
