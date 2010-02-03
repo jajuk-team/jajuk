@@ -187,7 +187,7 @@ public final class GenreManager extends ItemManager {
       properties.put(Const.DETAIL_OLD, old);
       properties.put(Const.DETAIL_NEW, newItem);
       // Notify interested items (like ambience manager)
-      ObservationManager.notifySync(new JajukEvent(JajukEvents.STYLE_NAME_CHANGED, properties));
+      ObservationManager.notifySync(new JajukEvent(JajukEvents.GENRE_NAME_CHANGED, properties));
       return newItem;
     }
   }

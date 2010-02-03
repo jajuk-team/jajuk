@@ -118,7 +118,7 @@ public enum JajukEvents {
   FILE_NAME_CHANGED,
 
   /** Genre name change. */
-  STYLE_NAME_CHANGED,
+  GENRE_NAME_CHANGED,
 
   /** file rate change. */
   RATE_CHANGED,

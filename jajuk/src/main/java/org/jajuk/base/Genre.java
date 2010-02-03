@@ -144,7 +144,7 @@ public class Genre extends LogicalItem implements Comparable<Genre> {
    */
   @Override
   public ImageIcon getIconRepresentation() {
-    return IconLoader.getIcon(JajukIcons.STYLE);
+    return IconLoader.getIcon(JajukIcons.GENRE);
   }
 
 }

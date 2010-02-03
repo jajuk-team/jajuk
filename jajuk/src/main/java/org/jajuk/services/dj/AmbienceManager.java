@@ -68,7 +68,7 @@ public final class AmbienceManager implements Observer {
    */
   public Set<JajukEvents> getRegistrationKeys() {
     Set<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
-    eventSubjectSet.add(JajukEvents.STYLE_NAME_CHANGED);
+    eventSubjectSet.add(JajukEvents.GENRE_NAME_CHANGED);
     return eventSubjectSet;
   }
 
@@ -190,7 +190,7 @@ public final class AmbienceManager implements Observer {
    */
   public void update(JajukEvent event) {
     JajukEvents subject = event.getSubject();
-    if (JajukEvents.STYLE_NAME_CHANGED.equals(subject)) {
+    if (JajukEvents.GENRE_NAME_CHANGED.equals(subject)) {
       Properties properties = event.getDetails();
       Genre old = (Genre) properties.get(Const.DETAIL_OLD);
       Genre newGenre = (Genre) properties.get(Const.DETAIL_NEW);

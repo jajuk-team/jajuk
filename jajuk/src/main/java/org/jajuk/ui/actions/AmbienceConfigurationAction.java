@@ -41,7 +41,7 @@ public class AmbienceConfigurationAction extends JajukAction {
    * Instantiates a new ambience configuration action.
    */
   AmbienceConfigurationAction() {
-    super(Messages.getString("CommandJPanel.19"), IconLoader.getIcon(JajukIcons.STYLE), true);
+    super(Messages.getString("CommandJPanel.19"), IconLoader.getIcon(JajukIcons.GENRE), true);
   }
 
   /* (non-Javadoc)

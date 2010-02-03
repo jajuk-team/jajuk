@@ -472,7 +472,7 @@ public class JUnitHelpers {
         + JajukEvents.PREFERENCES_RESET.toString());
     JUnitHelpers.waitForThreadToFinish("Event Executor for: " + JajukEvents.RATE_RESET.toString());
     JUnitHelpers.waitForThreadToFinish("Event Executor for: "
-        + JajukEvents.STYLE_NAME_CHANGED.toString());
+        + JajukEvents.GENRE_NAME_CHANGED.toString());
     JUnitHelpers.waitForThreadToFinish("Event Executor for: "
         + JajukEvents.VOLUME_CHANGED.toString());
     JUnitHelpers.waitForThreadToFinish("Event Executor for: "

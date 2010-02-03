@@ -428,7 +428,7 @@ public class TestAlbum extends JajukTestCase {
     assertTrue(album.matches(Const.XML_ALBUM, null));
     assertTrue(album.matches(null, ".*art.*"));
 
-    // false when not "ALBUM" or "STYLE"
+    // false when not "ALBUM" or "GENRE"
     assertFalse(album.matches(Const.XML_ALBUM_ARTIST, ".*art.*"));
 
     // useful match?

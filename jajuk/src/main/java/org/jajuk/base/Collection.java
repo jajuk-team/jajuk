@@ -149,8 +149,8 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
     /** The Constant STAGE_ARTISTS. DOCUMENT_ME */
     STAGE_ARTISTS,
 
-    /** The Constant STAGE_STYLES. DOCUMENT_ME */
-    STAGE_STYLES,
+    /** The Constant STAGE_GENRES. DOCUMENT_ME */
+    STAGE_GENRES,
 
     /** The Constant STAGE_PLAYLIST_FILES. DOCUMENT_ME */
     STAGE_PLAYLIST_FILES,
@@ -549,7 +549,7 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
           needCheckID = true;
         } else if (Const.XML_GENRES == sQName) {
           manager = GenreManager.getInstance();
-          stage = Stage.STAGE_STYLES;
+          stage = Stage.STAGE_GENRES;
           needCheckID = true;
         } else if (Const.XML_TRACKS == sQName) {
           manager = TrackManager.getInstance();
@@ -628,7 +628,7 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
         case STAGE_ALBUM_ARTIST:
           handleAlbumArtists(attributes, idIndex);
           break;
-        case STAGE_STYLES:
+        case STAGE_GENRES:
           handleGenres(attributes, idIndex);
           break;
         case STAGE_PLAYLIST_FILES:

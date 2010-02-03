@@ -249,7 +249,7 @@ public class AmbienceWizard extends Wizard {
         }
         final Ambience ambience = AmbienceWizard.ambiences.get(index);
         // genre list
-        final JButton jbGenre = new JButton(IconLoader.getIcon(JajukIcons.STYLE));
+        final JButton jbGenre = new JButton(IconLoader.getIcon(JajukIcons.GENRE));
         if (ambience.getName().length() == 0) {
           jbGenre.setEnabled(false);
         }

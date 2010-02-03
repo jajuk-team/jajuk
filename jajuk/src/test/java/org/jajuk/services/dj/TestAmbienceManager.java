@@ -55,7 +55,7 @@ public class TestAmbienceManager extends JajukTestCase {
    */
   public final void testGetRegistrationKeys() {
     java.util.Set<JajukEvents> set = AmbienceManager.getInstance().getRegistrationKeys();
-    assertTrue(set.contains(JajukEvents.STYLE_NAME_CHANGED));
+    assertTrue(set.contains(JajukEvents.GENRE_NAME_CHANGED));
   }
 
   /**
@@ -235,7 +235,7 @@ public class TestAmbienceManager extends JajukTestCase {
 
     AmbienceManager.getInstance().registerAmbience(ambience);
 
-    AmbienceManager.getInstance().update(new JajukEvent(JajukEvents.STYLE_NAME_CHANGED, prop));
+    AmbienceManager.getInstance().update(new JajukEvent(JajukEvents.GENRE_NAME_CHANGED, prop));
 
     assertEquals(1, AmbienceManager.getInstance().getAmbiences().size());
     assertEquals(1, AmbienceManager.getInstance().getAmbiences().iterator().next().getGenres()
