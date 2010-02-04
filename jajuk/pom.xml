@@ -177,9 +177,9 @@
     <dependency>
       <groupId>org.jaudiotagger</groupId>
       <artifactId>jaudiotagger</artifactId>
-      <version>20090629</version>
+      <version>20100202</version>
       <scope>system</scope>
-      <systemPath>${basedir}/lib/jaudiotagger-20090629.jar</systemPath>
+      <systemPath>${basedir}/lib/jaudiotagger-20100202.jar</systemPath>
     </dependency>
     <dependency>
       <groupId>junit</groupId>
