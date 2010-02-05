@@ -344,7 +344,7 @@ public class FilesTableModel extends JajukTableModel {
 
       // year
       if (bYear) {
-        oValues[iRow][15] = file.getTrack().getYear();
+        oValues[iRow][15] = file.getTrack().getYear().getValue();
       } else {
         oValues[iRow][15] = "";
       }
