@@ -1055,6 +1055,8 @@ public final class QueueModel {
     // before exiting
     bStop = true;
     Player.stop(true); // stop player
+    // No more playing webradio
+    playingRadio = false;
     // notify views like commandJPanel to update ui
     ObservationManager.notify(new JajukEvent(JajukEvents.PLAYER_STOP));
   }

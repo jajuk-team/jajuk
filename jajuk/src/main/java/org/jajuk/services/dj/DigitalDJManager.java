@@ -24,7 +24,8 @@ package org.jajuk.services.dj;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileFilter;
-import java.io.FileWriter;
+import java.io.FileOutputStream;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -81,7 +82,9 @@ public final class DigitalDJManager implements Observer {
     ObservationManager.register(this);
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see org.jajuk.events.Observer#getRegistrationKeys()
    */
   public Set<JajukEvents> getRegistrationKeys() {
@@ -169,8 +172,9 @@ public final class DigitalDJManager implements Observer {
    */
   public static void commit(DigitalDJ dj) {
     try {
-      BufferedWriter bw = new BufferedWriter(new FileWriter(SessionService
-          .getConfFileByPath(Const.FILE_DJ_DIR + "/" + dj.getID() + "." + Const.XML_DJ_EXTENSION)));
+      BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(
+          SessionService.getConfFileByPath(Const.FILE_DJ_DIR + "/" + dj.getID() + "."
+              + Const.XML_DJ_EXTENSION)), "UTF-8"));
       bw.write(dj.toXML());
       bw.flush();
       bw.close();

@@ -20,6 +20,8 @@
  */
 package org.jajuk.ui.actions;
 
+import com.melloware.jintellitype.JIntellitype;
+
 import java.awt.event.ActionEvent;
 import java.lang.reflect.InvocationTargetException;
 
@@ -48,9 +50,9 @@ public abstract class JajukAction extends AbstractAction {
   /** enable state. */
   private boolean bEnable = true;
 
-  // Instantiate a static jintellitype object
+  // Instantiate a static JIntellitype object
   static {
-    if (UtilSystem.isUnderWindows()) {
+    if (JIntellitype.isJIntellitypeSupported()) {
       try {
         Class.forName("org.jajuk.ui.actions.WindowsHotKeyManager")
             .getMethod("registerJIntellitype").invoke(null, (Object[]) null);

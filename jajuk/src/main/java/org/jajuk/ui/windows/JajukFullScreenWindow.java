@@ -42,6 +42,7 @@ import java.awt.event.MouseMotionAdapter;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JWindow;
 import javax.swing.Timer;
 
@@ -49,6 +50,7 @@ import net.miginfocom.swing.MigLayout;
 
 import org.jajuk.ui.actions.ActionManager;
 import org.jajuk.ui.actions.JajukActions;
+import org.jajuk.ui.helpers.JajukMouseAdapter;
 import org.jajuk.ui.substance.CircleButtonShaper;
 import org.jajuk.ui.substance.LeftConcaveButtonShaper;
 import org.jajuk.ui.substance.RightConcaveButtonShaper;
@@ -225,8 +227,7 @@ public class JajukFullScreenWindow extends JWindow implements IJajukWindow {
     this.graphicsDevice = GraphicsEnvironment.getLocalGraphicsEnvironment()
         .getDefaultScreenDevice();
 
-    
-    //Add Mouse Listener to disable mouse cursor
+    // Add Mouse Listener to disable mouse cursor
     addMouseListener(new MouseAdapter() {
       @Override
       public void mouseClicked(MouseEvent e) {
@@ -240,12 +241,14 @@ public class JajukFullScreenWindow extends JWindow implements IJajukWindow {
         hideMouseTimer();
       }
     });
-    
-    //activate Timer
+
+    // activate Timer
     hideMouseTimer();
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see org.jajuk.ui.windows.IJajukWindow#initUI()
    */
   public void initUI() {
@@ -277,6 +280,26 @@ public class JajukFullScreenWindow extends JWindow implements IJajukWindow {
     add(coverView, "alignx center, grow,gap bottom 20,wrap");
     add(jtbPlay, "alignx center,gap bottom 20,wrap");
     add(tpst, "alignx center,width 50%!,aligny bottom,gap bottom 10");
+
+    // Add a contextual menu to leave full screen mode or quit, see also
+    // issue #1492
+    // TODO : For some reasons, the popup doesn't appears over the cover pic,
+    // I have no idea of the reason so far.
+    final JPopupMenu popup = new JPopupMenu();
+    popup.add(ActionManager.getAction(JajukActions.FULLSCREEN_JAJUK));
+    popup.add(ActionManager.getAction(JajukActions.EXIT));
+    addMouseListener(new JajukMouseAdapter() {
+
+      @Override
+      public void handlePopup(MouseEvent e) {
+        popup.show(e.getComponent(), e.getX(), e.getY());
+      }
+
+      @Override
+      public void handleAction(MouseEvent e) {
+        // Void on purpose
+      }
+    });
   }
 
   /**

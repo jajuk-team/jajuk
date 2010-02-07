@@ -350,13 +350,17 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
     }
     setLayout(globalLayout);
     add(jpControl, "grow,wrap");
-    // listen for resize
-    addComponentListener(CoverView.this);
 
-    // Force initial cover refresh (outside the EDT please!)
-    new Thread("Cover Refresh Thread") {
+    // Force initial cover refresh
+    new Thread() {
       @Override
       public void run() {
+        // Wait a while to make sure that the view has been fully displayed
+        try {
+          Thread.sleep(2000);
+        } catch (InterruptedException e) {
+          Log.error(e);
+        }
         if (fileReference == null) {
           if (QueueModel.isStopped()) {
             update(new JajukEvent(JajukEvents.ZERO));
@@ -372,6 +376,10 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
         } else {
           update(new JajukEvent(JajukEvents.COVER_NEED_REFRESH));
         }
+
+        // listen for resize. We do it here to avoid a useless resize event at
+        // init and an associated blinking effect
+        addComponentListener(CoverView.this);
 
       }
     }.start();
@@ -1130,7 +1138,8 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
     }
     if (iEventID == iLocalEventID) {
       ii = UtilGUI.getResizedImage(icon, iNewWidth, iNewHeight);
-      // Force waiting to scaled instance. The getResizedImage method can finish asynchronously and this maybe
+      // Force waiting to scaled instance. The getResizedImage method can finish asynchronously and
+      // this maybe
       // explain some void covers effects.
       MediaTracker tracker = new MediaTracker(this);
       tracker.addImage(ii.getImage(), 0);
