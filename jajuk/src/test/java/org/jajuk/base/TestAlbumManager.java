@@ -98,7 +98,7 @@ public class TestAlbumManager extends JajukTestCase {
    * .
    */
   public void testRegisterAlbumStringStringLong() {
-    assertNotNull(AlbumManager.getInstance().registerAlbum("name2", "artist1", 1));
+    assertNotNull(AlbumManager.getInstance().registerAlbum("2", "name2", 1));
 
     assertNotNull(AlbumManager.getInstance().getAlbumByName("name2"));
   }
@@ -158,7 +158,7 @@ public class TestAlbumManager extends JajukTestCase {
   public void testChangeAlbumNameSameName() throws Exception {
     StartupCollectionService.registerItemManagers();
 
-    Album album = AlbumManager.getInstance().registerAlbum("name3", "artist1", 1);
+    Album album = AlbumManager.getInstance().registerAlbum("3", "name3", 1);
     assertNotNull(album);
 
     // nothing happens if we use the same name
@@ -173,7 +173,7 @@ public class TestAlbumManager extends JajukTestCase {
    * {@link org.jajuk.base.AlbumManager#format(java.lang.String)}.
    */
   public void testFormat() {
-    Album album = AlbumManager.getInstance().registerAlbum("name3", "artist1", 1);
+    Album album = AlbumManager.getInstance().registerAlbum("3", "name3", 1);
     assertNotNull(album);
 
     assertEquals("Name1", AlbumManager.format("name1"));
@@ -199,8 +199,8 @@ public class TestAlbumManager extends JajukTestCase {
   public void testGetAlbums() {
     AlbumManager.getInstance().clear();
 
-    assertNotNull(AlbumManager.getInstance().registerAlbum("name1", "artist1", 1));
-    assertNotNull(AlbumManager.getInstance().registerAlbum("name2", "artist2", 1));
+    assertNotNull(AlbumManager.getInstance().registerAlbum("1", "name1", 1));
+    assertNotNull(AlbumManager.getInstance().registerAlbum("2", "name2", 1));
 
     assertEquals(2, AlbumManager.getInstance().getAlbums().size());
   }
@@ -211,8 +211,8 @@ public class TestAlbumManager extends JajukTestCase {
   public void testGetAlbumsIterator() {
     AlbumManager.getInstance().clear();
 
-    assertNotNull(AlbumManager.getInstance().registerAlbum("name1", "artist1", 1));
-    assertNotNull(AlbumManager.getInstance().registerAlbum("name2", "artist2", 1));
+    assertNotNull(AlbumManager.getInstance().registerAlbum("1", "name1", 1));
+    assertNotNull(AlbumManager.getInstance().registerAlbum("2", "name2", 1));
 
     assertTrue(AlbumManager.getInstance().getAlbumsIterator().hasNext());
   }
@@ -225,7 +225,7 @@ public class TestAlbumManager extends JajukTestCase {
    * @throws Exception
    */
   public void testGetAssociatedAlbums() throws Exception {
-    Album album = AlbumManager.getInstance().registerAlbum("name1", "artist1", 1);
+    Album album = AlbumManager.getInstance().registerAlbum("1", "name1", 1);
 
     Track track = getTrack(1, album);
 
@@ -259,11 +259,11 @@ public class TestAlbumManager extends JajukTestCase {
   public void testGetBestOfAlbums() throws Exception {
     AlbumManager.getInstance().clear();
 
-    Album album = AlbumManager.getInstance().registerAlbum("name1", "artist1", 1);
+    Album album = AlbumManager.getInstance().registerAlbum("1", "name1", 1);
     getTrack(2, album);
     getTrack(3, album);
 
-    album = AlbumManager.getInstance().registerAlbum("name2", "artist2", 1);
+    album = AlbumManager.getInstance().registerAlbum("2", "name2", 1);
     getTrack(4, album);
     getTrack(5, album);
 
@@ -288,11 +288,11 @@ public class TestAlbumManager extends JajukTestCase {
   public void testGetBestOfAlbumsLess() throws Exception {
     AlbumManager.getInstance().clear();
 
-    Album album = AlbumManager.getInstance().registerAlbum("name1", "artist1", 1);
+    Album album = AlbumManager.getInstance().registerAlbum("1", "name1", 1);
     getTrack(2, album);
     getTrack(3, album);
 
-    album = AlbumManager.getInstance().registerAlbum("name2", "artist2", 1);
+    album = AlbumManager.getInstance().registerAlbum("2", "name2", 1);
     getTrack(4, album);
     getTrack(5, album);
 
@@ -330,11 +330,11 @@ public class TestAlbumManager extends JajukTestCase {
   public void testGetNewestAlbums() throws Exception {
     AlbumManager.getInstance().clear();
 
-    Album album = AlbumManager.getInstance().registerAlbum("name1", "artist1", 1);
+    Album album = AlbumManager.getInstance().registerAlbum("1", "name1", 1);
     getTrack(2, album);
     getTrack(3, album);
 
-    album = AlbumManager.getInstance().registerAlbum("name2", "artist2", 1);
+    album = AlbumManager.getInstance().registerAlbum("2", "name2", 1);
     getTrack(4, album);
     getTrack(5, album);
 
@@ -365,11 +365,11 @@ public class TestAlbumManager extends JajukTestCase {
   public void testGetRarelyListenAlbums() throws Exception {
     AlbumManager.getInstance().clear();
 
-    Album album = AlbumManager.getInstance().registerAlbum("name1", "artist1", 1);
+    Album album = AlbumManager.getInstance().registerAlbum("1", "name1", 1);
     getTrack(2, album);
     getTrack(3, album);
 
-    album = AlbumManager.getInstance().registerAlbum("name2", "artist2", 1);
+    album = AlbumManager.getInstance().registerAlbum("2", "name2", 1);
     getTrack(4, album);
     getTrack(5, album);
 
@@ -399,13 +399,13 @@ public class TestAlbumManager extends JajukTestCase {
   public void testGetMaxRate() throws Exception {
     AlbumManager.getInstance().clear();
 
-    Album album = AlbumManager.getInstance().registerAlbum("name1", "artist1", 1);
+    Album album = AlbumManager.getInstance().registerAlbum("1", "name1", 1);
     Track track = getTrack(2, album);
     track.setRate(12);
     track = getTrack(3, album);
     track.setRate(14);
 
-    album = AlbumManager.getInstance().registerAlbum("name2", "artist2", 1);
+    album = AlbumManager.getInstance().registerAlbum("2", "name2", 1);
     track = getTrack(4, album);
     track.setRate(10);
     track = getTrack(5, album);
@@ -486,11 +486,11 @@ public class TestAlbumManager extends JajukTestCase {
   public void testOrderCache() throws Exception {
     AlbumManager.getInstance().clear();
 
-    Album album = AlbumManager.getInstance().registerAlbum("name1", "artist1", 1);
+    Album album = AlbumManager.getInstance().registerAlbum("1", "name1", 1);
     getTrack(2, album);
     getTrack(3, album);
 
-    album = AlbumManager.getInstance().registerAlbum("name2", "artist2", 1);
+    album = AlbumManager.getInstance().registerAlbum("2", "name2", 1);
     getTrack(4, album);
     getTrack(5, album);
 
