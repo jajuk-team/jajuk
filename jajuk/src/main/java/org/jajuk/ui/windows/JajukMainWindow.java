@@ -190,6 +190,14 @@ public class JajukMainWindow extends JFrame implements IJajukWindow, Observer {
           Log.error(e1);
         }
       }
+      
+      @Override
+      public void windowIconified(WindowEvent we){
+        if (Conf.getBoolean(Const.CONF_MINIMIZE_TO_TRAY)){
+          getWindowStateDecorator().display(false);
+        }
+      }
+      
     });
 
     // Light drag and drop for VLDocking

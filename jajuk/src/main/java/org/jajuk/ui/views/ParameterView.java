@@ -387,6 +387,9 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
   private JCheckBox jcbShowSystray;
 
   /** DOCUMENT_ME. */
+  private JCheckBox jcbMinimizeToTray;
+  
+  /** DOCUMENT_ME. */
   private JPanel jpUI;
 
   /** DOCUMENT_ME. */
@@ -729,6 +732,9 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
       someOptionsAppliedAtNextStartup = true;
     }
     Conf.setProperty(Const.CONF_SHOW_SYSTRAY, Boolean.toString(jcbShowSystray.isSelected()));
+    
+    // Minimize to tray
+    Conf.setProperty(Const.CONF_MINIMIZE_TO_TRAY, Boolean.toString(jcbMinimizeToTray.isSelected()));
 
     final int oldPerspectiveSize = Conf.getInt(Const.CONF_PERSPECTIVE_ICONS_SIZE);
     // If we perspective size changed and no font message have been already
@@ -1555,7 +1561,20 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
     jcbShowSystray = new JCheckBox(Messages.getString("ParameterView.271"));
     // Disable this option if the tray is not supported by the platform
     jcbShowSystray.setEnabled(SystemTray.isSupported());
+    // Disable minimize to systray optino if unchecked
+    jcbShowSystray.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        jcbMinimizeToTray.setSelected(jcbShowSystray.isSelected());
+        jcbMinimizeToTray.setEnabled(jcbShowSystray.isSelected());
+      }
+    });
     jcbShowSystray.setToolTipText(Messages.getString("ParameterView.272"));
+
+    jcbMinimizeToTray = new JCheckBox(Messages.getString("ParameterView.281"));
+    // Disable this option if the tray is not supported by the platform
+    jcbMinimizeToTray.setEnabled(SystemTray.isSupported());
+    jcbMinimizeToTray.setToolTipText(Messages.getString("ParameterView.282"));
 
     JLabel jlPerspectiveSize = new JLabel(Messages.getString("ParameterView.246"));
     jsPerspectiveSize = new JSlider(16, 45, Conf.getInt(Const.CONF_PERSPECTIVE_ICONS_SIZE));
@@ -1616,7 +1635,8 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
     // Add items
     jpUI = new JPanel(new MigLayout("insets 10,gapx 10,gapy 15"));
     jpUI.add(jcbShowPopups, WRAP);
-    jpUI.add(jcbShowSystray, WRAP);
+    jpUI.add(jcbShowSystray, "split 2");
+    jpUI.add(jcbMinimizeToTray, WRAP);
     jpUI.add(jlFonts);
     jpUI.add(jsFonts, WRAP_GROW);
     jpUI.add(jlNotificationType);
@@ -1849,6 +1869,8 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
     jcbNotificationType.setSelectedItem(notificatorType);
 
     jcbShowSystray.setSelected(Conf.getBoolean(Const.CONF_SHOW_SYSTRAY));
+    jcbMinimizeToTray.setSelected(Conf.getBoolean(Const.CONF_MINIMIZE_TO_TRAY));
+    
     scbLAF.removeActionListener(this);
     scbLAF.setSelectedItem(Conf.getString(Const.CONF_OPTIONS_LNF));
     scbLAF.addActionListener(this);

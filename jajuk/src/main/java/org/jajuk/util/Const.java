@@ -1111,6 +1111,9 @@ public interface Const {
   /** Show systray. */
   String CONF_SHOW_SYSTRAY = "jajuk.show_systray";
 
+  /** Minimize to tray. */
+  String CONF_MINIMIZE_TO_TRAY = "jajuk.minimize_to_tray";
+
   /** Enable Last.FM information queries */
   String CONF_LASTFM_INFO = "jajuk.lastfm_information";
 
