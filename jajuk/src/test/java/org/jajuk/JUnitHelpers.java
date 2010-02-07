@@ -326,6 +326,9 @@ public class JUnitHelpers {
    * @throws Exception
    */
   public static void HashCodeTest(final Object obj, final Object equ) {
+    Assert.assertFalse("HashCodeTest expects two distinct objects with equal hashCode, but the same object is provided twice!", 
+        obj == equ);
+    		
     // The same object returns the same hashCode always
     final int hash = obj.hashCode();
     Assert.assertEquals("hashCode() on object returned different hash after some iterations!",
@@ -343,7 +346,8 @@ public class JUnitHelpers {
     // the other way around is not required,
     // different objects can have the same hashCode!!
     Assert.assertEquals(
-        "Equal Assert.failed, but input to HashCodeTest should be two equal objects!", obj, equ);
+        "Equal Assert failed, but input to HashCodeTest should be two equal objects! Check if the class implements equals() as well to fullfill this contract", 
+        obj, equ);
     Assert.assertEquals("Equal objects should have equal hashCode() by Java contract!", obj
         .hashCode(), equ.hashCode());
   }
