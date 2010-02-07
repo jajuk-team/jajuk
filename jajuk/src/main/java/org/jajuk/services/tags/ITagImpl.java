@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2009 The Jajuk Team
+ *  Copyright (C) 2003-2010 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -19,6 +19,8 @@
  *  $Revision$
  */
 package org.jajuk.services.tags;
+
+import java.util.ArrayList;
 
 import org.jaudiotagger.tag.FieldDataInvalidException;
 import org.jaudiotagger.tag.KeyNotFoundException;
@@ -309,5 +311,12 @@ public interface ITagImpl {
    * @throws Exception the exception
    */
   public void setTagField(String tagFieldKey, String tagFieldValue) throws Exception;
+  
+  /**
+   * Gets the supported tag fields.
+   * 
+   * @return the supported tag fields
+   */
+  public ArrayList<String> getSupportedTagFields();
 
 }

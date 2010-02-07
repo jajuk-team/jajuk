@@ -20,6 +20,7 @@
  */
 package org.jajuk.base;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -819,6 +820,15 @@ public class TestAlbumManager extends JajukTestCase {
     @Override
     public void setLyrics(String sLyrics) throws Exception {
 
+    }
+
+    /* (non-Javadoc)
+     * @see org.jajuk.services.tags.ITagImpl#getSupportedTagFields()
+     */
+    @Override
+    public ArrayList<String> getSupportedTagFields() {
+      // TODO Auto-generated method stub
+      return null;
     }
 
   }

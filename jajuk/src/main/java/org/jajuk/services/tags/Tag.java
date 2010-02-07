@@ -21,9 +21,12 @@
 package org.jajuk.services.tags;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.jajuk.base.PropertyMetaInformation;
+import org.jajuk.base.TrackManager;
 import org.jajuk.base.Type;
 import org.jajuk.base.TypeManager;
 import org.jajuk.ui.widgets.InformationJPanel;
@@ -51,6 +54,8 @@ public class Tag {
 
   /** File -> tag cache This is required by the autocommit=false operations. */
   static private Map<File, Tag> tagsCache = new HashMap<File, Tag>(10);
+
+  private static ArrayList<String> supportedTagFields = null;
 
   /**
    * Tag constructor.
@@ -692,9 +697,54 @@ public class Tag {
     try {
       return tagImpl.getTagField(tagFieldKey).trim();
     } catch (Exception e) {
-      //this file does not support this tag, so we do nothing
+      // this file does not support this tag, so we do nothing
     }
     return "";
   }
 
+  public static ArrayList<String> getSupportedTagFields() {
+    if (supportedTagFields == null) {
+      supportedTagFields = new ArrayList<String>();
+
+      // get all available tag impls
+      ArrayList<ITagImpl> tagImplList = new ArrayList<ITagImpl>(2);
+      for (Type t : TypeManager.getInstance().getAllMusicTypes()) {
+        if (t.getTaggerClass() != null && !tagImplList.contains(t.getTaggerClass())) {
+          try {
+            tagImplList.add(t.getTaggerClass().newInstance());
+          } catch (InstantiationException e) {
+            Log.error(e);
+          } catch (IllegalAccessException e) {
+            Log.error(e);
+          }
+        }
+      }
+      
+      for (ITagImpl t : tagImplList) {
+        for (String s : t.getSupportedTagFields()) {
+          if (!supportedTagFields.contains(s)) {
+            supportedTagFields.add(s);
+          }
+        }
+      }
+    }
+
+    return supportedTagFields;
+  }
+
+  /**
+   * @return the activatedExtraTags
+   */
+  public static ArrayList<String> getActivatedExtraTags() {
+
+    ArrayList<String> activeExtraTagsArrayList = new ArrayList<String>();
+
+    // check all custom properties
+    for (PropertyMetaInformation m : TrackManager.getInstance().getCustomProperties()) {
+      if (getSupportedTagFields().contains(m.getName())) {
+        activeExtraTagsArrayList.add(m.getName());
+      }
+    }
+    return activeExtraTagsArrayList;
+  }
 }

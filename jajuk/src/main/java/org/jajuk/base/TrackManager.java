@@ -35,7 +35,6 @@ import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.services.players.QueueModel;
-import org.jajuk.services.tags.JAudioTaggerTagImpl;
 import org.jajuk.services.tags.Tag;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
@@ -59,21 +58,6 @@ public final class TrackManager extends ItemManager {
 
   /** Set of tags to commit. */
   private final Set<Tag> tagsToCommit = new HashSet<Tag>(10);
-
-  /**
-   * @return the activatedExtraTags
-   */
-  public ArrayList<String> getActivatedExtraTags() {
-    ArrayList<String> activeExtraTagsArrayList = new ArrayList<String>();
-
-    for (PropertyMetaInformation m : getCustomProperties()) {
-      if (JAudioTaggerTagImpl.getSupportedTagFields().contains(m.getName())) {
-        activeExtraTagsArrayList.add(m.getName());
-      }
-    }
-
-    return activeExtraTagsArrayList;
-  }
 
   /**
    * No constructor available, only static access.

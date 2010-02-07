@@ -22,6 +22,7 @@
 package org.jajuk.services.tags;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Map;
 
 import javazoom.jlgui.basicplayer.BasicController;
@@ -42,6 +43,9 @@ public class NoTagsTagImpl implements ITagImpl {
 
   /** Current file data. */
   Map<String, Object> mapInfo;
+  
+  /** DOCUMENT_ME. */
+  private static ArrayList<String> tagFieldKeyArrayList = new ArrayList<String>();
 
   /*
    * (non-Javadoc)
@@ -320,6 +324,14 @@ public class NoTagsTagImpl implements ITagImpl {
   @Override
   public void setTagField(String tagFieldKey, String tagFieldValue) {
     return;
+  }
+
+  /* (non-Javadoc)
+   * @see org.jajuk.services.tags.ITagImpl#getSupportedTagFields()
+   */
+  @Override
+  public ArrayList<String> getSupportedTagFields() {
+    return tagFieldKeyArrayList;
   }
 
 }

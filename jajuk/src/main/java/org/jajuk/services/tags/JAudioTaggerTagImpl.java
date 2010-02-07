@@ -402,7 +402,7 @@ public class JAudioTaggerTagImpl implements ITagImpl, Const {
    * 
    * @return the supported tag fields
    */
-  public static ArrayList<String> getSupportedTagFields() {
+  public  ArrayList<String> getSupportedTagFields() {
     return tagFieldKeyArrayList;
   }
 

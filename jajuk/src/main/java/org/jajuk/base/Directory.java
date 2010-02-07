@@ -393,7 +393,7 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
     Track track = registerFile(music, sId, sTrackName, sAlbumName, sArtistName, sGenre, length,
         sYear, lQuality, sComment, lOrder, sAlbumArtist, discID, discNumber);
 
-    for (String s : TrackManager.getInstance().getActivatedExtraTags()) {
+    for (String s : Tag.getActivatedExtraTags()) {
       track.setProperty(s, tag.getTagField(s));
     }
   }

@@ -496,5 +496,14 @@ public class TestArtistManager extends JajukTestCase {
 
     }
 
+    /* (non-Javadoc)
+     * @see org.jajuk.services.tags.ITagImpl#getSupportedTagFields()
+     */
+    @Override
+    public ArrayList<String> getSupportedTagFields() {
+      // TODO Auto-generated method stub
+      return null;
+    }
+
   }
 }

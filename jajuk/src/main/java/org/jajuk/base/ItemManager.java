@@ -33,6 +33,7 @@ import java.util.TreeSet;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.Predicate;
+import org.jajuk.services.tags.Tag;
 import org.jajuk.util.Const;
 import org.jajuk.util.MD5Processor;
 import org.jajuk.util.Messages;
@@ -267,7 +268,7 @@ public abstract class ItemManager {
     Iterator<PropertyMetaInformation> it = hmPropertiesMetaInformation.values().iterator();
     while (it.hasNext()) {
       PropertyMetaInformation meta = it.next();
-      if (meta.isCustom()&&!TrackManager.getInstance().getActivatedExtraTags().contains(meta.getName())) {
+      if (meta.isCustom() && !Tag.getActivatedExtraTags().contains(meta.getName())) {
         col.add(meta);
       }
     }

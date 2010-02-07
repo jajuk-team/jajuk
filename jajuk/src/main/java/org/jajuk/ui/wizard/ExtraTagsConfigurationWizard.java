@@ -47,7 +47,7 @@ import org.jajuk.base.TrackManager;
 import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
-import org.jajuk.services.tags.JAudioTaggerTagImpl;
+import org.jajuk.services.tags.Tag;
 import org.jajuk.ui.widgets.JajukJDialog;
 import org.jajuk.ui.widgets.OKCancelPanel;
 import org.jajuk.ui.windows.JajukMainWindow;
@@ -87,15 +87,14 @@ public class ExtraTagsConfigurationWizard extends JajukJDialog {
 
   private void refreshList() {
     availableList.clear();
-    TrackManager tm = TrackManager.getInstance();
-    for (String s : JAudioTaggerTagImpl.getSupportedTagFields()) {
-      if (!tm.getActivatedExtraTags().contains(s)) {
+    for (String s : Tag.getSupportedTagFields()) {
+      if (!Tag.getActivatedExtraTags().contains(s)) {
         availableList.add(s);
       }
     }
 
     activatedList.clear();
-    for (String s : tm.getActivatedExtraTags()) {
+    for (String s : Tag.getActivatedExtraTags()) {
       activatedList.add(s);
     }
   }
@@ -211,7 +210,7 @@ public class ExtraTagsConfigurationWizard extends JajukJDialog {
     TrackManager tm = TrackManager.getInstance();
     // cleanup removed tags
     for (PropertyMetaInformation m : tm.getCustomProperties()) {
-      if (JAudioTaggerTagImpl.getSupportedTagFields().contains(m.getName())
+      if (Tag.getSupportedTagFields().contains(m.getName())
           && !activatedList.contains(m.getName())) {
         tm.removeProperty(m.getName());
         Properties properties = new Properties();
