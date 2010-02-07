@@ -128,12 +128,14 @@ public class JScrollingText extends JLabel {
     g.drawString(getText(), textX + (speed > 0 ? -width : width), textY);
   }
 
+  Timer timer;
+  
   /**
    * Start.
    * DOCUMENT_ME
    */
   public void start() {
-    Timer timer = new Timer("Scrolling Text Timer");
+    timer = new Timer("Scrolling Text Timer");
     TimerTask task = new TimerTask() {
       @Override
       public void run() {
@@ -142,5 +144,21 @@ public class JScrollingText extends JLabel {
       }
     };
     timer.scheduleAtFixedRate(task, 1000, period);
+  }
+
+  /* (non-Javadoc)
+   * @see javax.swing.JComponent#removeNotify()
+   */
+  @Override
+  public void removeNotify() {
+//    System.out.println("Removing Notify in JSCrollingText");
+    
+    // clean out the timer
+    if(timer != null) {
+      timer.cancel();
+      timer = null;
+    }
+    
+    super.removeNotify();
   }
 }
