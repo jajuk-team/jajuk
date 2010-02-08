@@ -560,12 +560,16 @@ public final class FileManager extends ItemManager {
    * DOCUMENT_ME
    */
   public void refreshBestOfFiles() {
-    int iNbBestofFiles = Integer.parseInt(Conf.getString(Const.CONF_BESTOF_TRACKS_SIZE));
+    Log.debug("Invoking Refresh of BestOf-Files");
+    
     // clear data
     alBestofFiles.clear();
+    
     // create a temporary table to remove unmounted files
+    int iNbBestofFiles = Integer.parseInt(Conf.getString(Const.CONF_BESTOF_TRACKS_SIZE));
     List<File> alEligibleFiles = new ArrayList<File>(iNbBestofFiles);
     List<Track> tracks = TrackManager.getInstance().getTracks();
+
     // filter banned tracks
     CollectionUtils.filter(tracks, new JajukPredicates.BannedTrackPredicate());
     for (Track track : tracks) {
@@ -575,6 +579,7 @@ public final class FileManager extends ItemManager {
       }
     }
     Collections.sort(alEligibleFiles, rateComparator);
+    
     // Keep as much items as we can
     int i = 0;
     while (i < alEligibleFiles.size() && i < iNbBestofFiles) {
