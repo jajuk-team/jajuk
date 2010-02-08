@@ -254,7 +254,9 @@ public class Album extends LogicalItem implements Comparable<Album> {
     // Try to add album artist
     Track first = getTracksCache().get(0);
     // (every track maps at minimum an "unknown artist" album artist
-    sb.append(first.getAlbumArtist().getName2());
+    if(first.getAlbumArtist() != null) {
+      sb.append(first.getAlbumArtist().getName2());
+    }
 
     Genre genre = getGenre();
     if (genre != null) {
@@ -482,23 +484,23 @@ public class Album extends LogicalItem implements Comparable<Album> {
    * Return Always an artist, eventually a "Unknown Artist" one 
    */
   public String getArtistOrALbumArtist() {
-    String out = Const.UNKNOWN_ARTIST;
+    // no track => no artist
     if (cache.size() == 0) {
-      return out;
+      return Const.UNKNOWN_ARTIST;
     }
+
     Artist artist = getArtist();
     if (artist != null && !artist.isUnknown()) {
-      out = artist.getName();
+      return artist.getName();
     } else {
       Track first = cache.get(0);
       AlbumArtist albumArtist = first.getAlbumArtist();
       if (!albumArtist.isUnknown()) {
-        out = albumArtist.getName();
+        return albumArtist.getName();
       } else {
-        out = first.getArtist().getName();
+        return first.getArtist().getName();
       }
     }
-    return out;
   }
 
   /**

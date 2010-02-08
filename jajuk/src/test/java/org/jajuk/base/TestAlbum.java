@@ -53,16 +53,39 @@ public class TestAlbum extends JajukTestCase {
     /*
      * album.getTracksCache().add(getTrack(album));
      * 
-     * album.setProperty(Const.XML_TRACK_DISCOVERY_DATE, System.) String str =
-     * album.getAny(); assertFalse(str.isEmpty());
+     * album.setProperty(Const.XML_TRACK_DISCOVERY_DATE, System.) String str = album.getAny();
+     * assertFalse(str.isEmpty());
      */
 
     // add a genre and year and check again
     album.getTracksCache().add(getTrack(album));
     assertFalse(album.getAny().isEmpty());
     /*
-     * assertFalse("getAny() should return differently as soon as we have genre and year"
-     * , str.equals(album.getAny()));
+     * assertFalse("getAny() should return differently as soon as we have genre and year" ,
+     * str.equals(album.getAny()));
+     */
+  }
+
+  public final void testGetAnyAlbumArtist() {
+    // need item managers to do this step
+    StartupCollectionService.registerItemManagers();
+
+    Album album = new Album("1", "name", 123);
+    /*
+     * album.getTracksCache().add(getTrack(album));
+     * 
+     * album.setProperty(Const.XML_TRACK_DISCOVERY_DATE, System.) String str = album.getAny();
+     * assertFalse(str.isEmpty());
+     */
+
+    // add a genre and year and check again
+    Track track = getTrack(album);
+    track.setAlbumArtist(new AlbumArtist("4", "artist"));
+    album.getTracksCache().add(track);
+    assertFalse(album.getAny().isEmpty());
+    /*
+     * assertFalse("getAny() should return differently as soon as we have genre and year" ,
+     * str.equals(album.getAny()));
      */
   }
 
@@ -123,7 +146,7 @@ public class TestAlbum extends JajukTestCase {
     assertEquals("Value: " + album.getHumanValue(Const.XML_TRACK_HITS), "0", album
         .getHumanValue(Const.XML_TRACK_HITS));
     assertFalse(album.getHumanValue(Const.XML_ANY).isEmpty());
-    assertFalse(album.getHumanValue(Const.XML_ALBUM_ARTIST).isEmpty());
+    assertTrue(album.getHumanValue(Const.XML_ALBUM_ARTIST).isEmpty());
     assertTrue(album.getHumanValue(Const.XML_ALBUM_COVER).isEmpty());
   }
 
@@ -165,7 +188,6 @@ public class TestAlbum extends JajukTestCase {
     Album album = new Album("1", "name", 123);
     assertEquals(123, album.getDiscID());
   }
-
 
   /**
    * Test method for {@link org.jajuk.base.Album#getName2()}.
@@ -374,8 +396,7 @@ public class TestAlbum extends JajukTestCase {
     assertEquals(8, album.getHits());
   }
 
-  private File getFile(int i, Track track)
-      throws Exception {
+  private File getFile(int i, Track track) throws Exception {
     Device device = new Device(Integer.valueOf(i).toString(), "name");
     device.setUrl(System.getProperty("java.io.tmpdir"));
     device.mount(true);
@@ -503,5 +524,80 @@ public class TestAlbum extends JajukTestCase {
     // test once more with a new album to create the thumbs-array there as well
     album = new Album("1", "name", 123);
     album.setAvailableThumb(100, false);
+  }
+
+
+  public final void testGetArtistOrAlbumArtist_Unknown() {
+    StartupCollectionService.registerItemManagers();
+
+    Album album = new Album("1", "name", 123);
+
+    // unknown artist is returned without a track
+    assertEquals(Const.UNKNOWN_ARTIST, album.getArtistOrALbumArtist());
+  }
+
+  public final void testGetArtistOrAlbumArtist_AlbumArtist() {
+    // need item managers to do this step
+    StartupCollectionService.registerItemManagers();
+
+    Album album = new Album("1", "name", 123);
+
+    // add a genre and year and check again
+    Track track = getTrack(album);
+    track.setAlbumArtist(new AlbumArtist("4", "albumartist"));
+    
+    album.getTracksCache().add(track);
+    album.getTracksCache().add(new Track("1", "trackname", album, getGenre(), new Artist("2", "artistname2"), 123, getYear(), 1, new Type(
+        "3", "typename", "ext", null, null), 1));
+    
+    // here we should get the album artist from the Track because we have two tracks with different artists
+    assertEquals("albumartist", album.getArtistOrALbumArtist());
+  }
+
+  public final void testGetArtistOrAlbumArtist_TrackArtist() {
+    // need item managers to do this step
+    StartupCollectionService.registerItemManagers();
+
+    Album album = new Album("1", "name", 123);
+
+    // add a genre and year and check again
+    Track track = getTrack(album);
+    album.getTracksCache().add(track);
+
+    // here we should get the artist from the Track as no album artist is set
+    assertEquals("artistname", album.getArtistOrALbumArtist());
+  }
+
+  public final void testGetArtistOrAlbumArtist_TrackArtist2() {
+    // need item managers to do this step
+    StartupCollectionService.registerItemManagers();
+
+    Album album = new Album("1", "name", 123);
+
+    // add a genre and year and check again
+    Track track = getTrack(album);
+    track.setAlbumArtist(new AlbumArtist("4", "albumartist"));
+    album.getTracksCache().add(track);
+
+    // here we should get the artist from the Track as all tracks have the same artist
+    assertEquals("artistname", album.getArtistOrALbumArtist());
+  }
+
+  public final void testGetArtistOrAlbumArtist_AlbumArtistUnknown() {
+    // need item managers to do this step
+    StartupCollectionService.registerItemManagers();
+
+    Album album = new Album("1", "name", 123);
+
+    // add a genre and year and check again
+    Track track = getTrack(album);
+    track.setAlbumArtist(new AlbumArtist("4", Const.UNKNOWN_ARTIST));
+    
+    album.getTracksCache().add(track);
+    album.getTracksCache().add(new Track("1", "trackname", album, getGenre(), new Artist("2", "artistname2"), 123, getYear(), 1, new Type(
+        "3", "typename", "ext", null, null), 1));
+    
+    // here we should get the artist from the first Track as the album artist is "unknown"
+    assertEquals("artistname", album.getArtistOrALbumArtist());
   }
 }
