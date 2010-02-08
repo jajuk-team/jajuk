@@ -65,4 +65,11 @@ public interface INotificator {
    * @param file DOCUMENT_ME
    */
   void notify(File file);
+  
+  /**
+   * Ask the notificator to provide some arbitrary status information.
+   * 
+   * @param status The string to print.
+   */
+  void notify(String title, String status);
 }

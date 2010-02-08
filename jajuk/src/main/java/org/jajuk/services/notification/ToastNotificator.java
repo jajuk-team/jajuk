@@ -89,4 +89,12 @@ public class ToastNotificator implements INotificator {
     String text = file.getHTMLFormatText();
     new JajukToast(text).display();
   }
+
+  /* (non-Javadoc)
+   * @see org.jajuk.services.notification.INotificator#notify(java.lang.String, java.lang.String)
+   */
+  @Override
+  public void notify(String title, String status) {
+    new JajukToast(status).display();
+  }
 }

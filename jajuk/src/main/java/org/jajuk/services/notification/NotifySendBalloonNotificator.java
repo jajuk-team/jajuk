@@ -145,7 +145,7 @@ public class NotifySendBalloonNotificator implements INotificator {
    * @param pText
    *          DOCUMENT_ME
    */
-  private void notify(String title, String pText) {
+  public void notify(String title, String pText) {
     // workaround: notify-send cannot handle IMG-SRC with "file:"
     String text = pText.replace("<img src='file:/", "<img src='/");
 

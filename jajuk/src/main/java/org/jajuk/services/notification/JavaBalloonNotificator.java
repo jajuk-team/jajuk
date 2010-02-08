@@ -112,4 +112,15 @@ public class JavaBalloonNotificator implements INotificator {
     }
   }
 
+  /*
+   * (non-Javadoc)
+   * 
+   * @see
+   * org.jajuk.services.notification.INotificator#notify(String)
+   */
+  @Override
+  public void notify(String title, String status) {
+    // simply call the display method on the tray icon that is provided
+    trayIcon.displayMessage(title, status, TrayIcon.MessageType.INFO);
+  }
 }
