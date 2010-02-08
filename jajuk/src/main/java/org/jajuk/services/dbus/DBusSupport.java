@@ -191,6 +191,14 @@ public interface DBusSupport extends DBusInterface {
   @org.freedesktop.DBus.Description("Reports the currently played file via the configured notification system, i.e. usually some sort of popup in the Systray-Area.")
   void showCurrentlyPlaying() throws Exception;
 
+  /**
+   * Bookmark current track
+   * 
+   * @throws Exception the exception
+   */
+  @org.freedesktop.DBus.Description("Adds the currently playing track to the list of bookmarks/favourites. Does nothing, if there is no file currently playing.")
+  void bookmarkCurrentlyPlaying() throws Exception;
+  
     /*
    * Actions that are not supported (yet): REPEAT_MODE, SHUFFLE_MODE,
    * CONTINUE_MODE, INTRO_MODE, DEVICE_NEW, DEVICE_DELETE, DEVICE_PROPERTIES,
@@ -209,7 +217,7 @@ public interface DBusSupport extends DBusInterface {
    * CREATE_REPORT, COPY_TO_CLIPBOARD, LAUNCH_IN_BROWSER, WEB_RADIO, DELETE,
    * PASTE, REFRESH, FIND_DUPLICATE_FILES, ALARM_CLOCK, SHOW_PROPERTIES,
    * PLAY_SELECTION, PLAY_SHUFFLE_SELECTION, PLAY_REPEAT_SELECTION,
-   * PUSH_SELECTION, PUSH_FRONT_SELECTION, BOOKMARK_SELECTION,
+   * PUSH_SELECTION, PUSH_FRONT_SELECTION, 
    * PLAY_ALBUM_SELECTION, PLAY_ARTIST_SELECTION, PLAY_DIRECTORY_SELECTION,
    * CDDB_SELECTION, SHOW_ALBUM_DETAILS, CUT, COPY, RENAME, NEW_FOLDER,
    * SLIM_JAJUK, SAVE_AS, BAN_SELECTION, UN_BAN_SELECTION,
