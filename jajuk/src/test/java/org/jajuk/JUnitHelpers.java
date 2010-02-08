@@ -436,6 +436,7 @@ public class JUnitHelpers {
     JUnitHelpers.waitForThreadToFinish("Playlist Prepare Party Thread");
     JUnitHelpers.waitForThreadToFinish("LastFM Update Thread");
     JUnitHelpers.waitForThreadToFinish("Parameter Catalog refresh Thread");
+    JUnitHelpers.waitForThreadToFinish("Manual Refresh Thread");
 
     // clear this for all available events
     // for(JajukEvents event : JajukEvents.values()) {
