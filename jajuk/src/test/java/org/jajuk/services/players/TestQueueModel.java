@@ -316,6 +316,8 @@ public class TestQueueModel extends JajukTestCase {
   * all mode + shuffle mode, queue should be shuffled when reaching its end
   */
   public void testFinishedRepeatAndShuffle() throws Exception {
+    QueueModel.clear();
+    
     addItems(5);
     StackItem firstItem = QueueModel.getItem(0);
     QueueModel.setRepeatModeToAll(true);
@@ -330,7 +332,8 @@ public class TestQueueModel extends JajukTestCase {
     assertTrue(QueueModel.getItem(0).equals(firstItem));
     QueueModel.finished();
     // Queue should be shuffled then
-    assertFalse(QueueModel.getItem(0).equals(firstItem));
+    assertFalse("Item0: " + QueueModel.getItem(0) + "\nFirstItem: " + firstItem, 
+        QueueModel.getItem(0).equals(firstItem));
   }
 
   /**
@@ -421,7 +424,7 @@ public class TestQueueModel extends JajukTestCase {
 
     // next time it will reset the index as we do not "plan" new tracks automatically
     QueueModel.finished(true);
-    assertEquals(3, QueueModel.getIndex()); // index stays at "3"
+    assertEquals(0, QueueModel.getIndex());
   }
 
   /**
