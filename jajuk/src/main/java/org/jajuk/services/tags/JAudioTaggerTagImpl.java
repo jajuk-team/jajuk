@@ -321,7 +321,13 @@ public class JAudioTaggerTagImpl implements ITagImpl, Const {
       newTag.setField(FieldKey.GENRE, tag.getFirst(FieldKey.GENRE));
       newTag.setField(FieldKey.YEAR, tag.getFirst(FieldKey.YEAR));
       newTag.setField(FieldKey.ALBUM_ARTIST, tag.getFirst(FieldKey.ALBUM_ARTIST));
-      newTag.setField(FieldKey.DISC_NO, tag.getFirst(FieldKey.DISC_NO));
+      
+      // only set the discnumber if we have a useful one
+      String discno = tag.getFirst(FieldKey.DISC_NO);
+      if(StringUtils.isNotEmpty(discno) && StringUtils.isNumeric(discno)) {
+        newTag.setField(FieldKey.DISC_NO, discno);
+      }
+
       // Delete the id3 V1 tag
       AudioFileIO.delete(audioFile);
       // Add the new one
