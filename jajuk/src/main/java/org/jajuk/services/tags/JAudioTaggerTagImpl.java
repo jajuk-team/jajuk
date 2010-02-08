@@ -258,9 +258,8 @@ public class JAudioTaggerTagImpl implements ITagImpl, Const {
    */
   public void setLyrics(String sLyrics) throws Exception {
     createTagIfNeeded();
-    tag.deleteField(FieldKey.LYRICS);
     TagField tagLyrics = tag.createField(FieldKey.LYRICS, sLyrics);
-    tag.addField(tagLyrics);
+    tag.setField(tagLyrics);
     commit();
   }
 
