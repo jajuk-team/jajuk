@@ -27,6 +27,7 @@ import java.awt.BorderLayout;
 import java.awt.Frame;
 import java.awt.GraphicsConfiguration;
 import java.awt.GraphicsEnvironment;
+import java.awt.SystemTray;
 import java.awt.Toolkit;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -162,7 +163,9 @@ public class JajukMainWindow extends JFrame implements IJajukWindow, Observer {
     return decorator;
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see org.jajuk.ui.windows.IJajukWindow#initUI()
    */
   public void initUI() {
@@ -190,14 +193,16 @@ public class JajukMainWindow extends JFrame implements IJajukWindow, Observer {
           Log.error(e1);
         }
       }
-      
+
       @Override
-      public void windowIconified(WindowEvent we){
-        if (Conf.getBoolean(Const.CONF_MINIMIZE_TO_TRAY)){
+      public void windowIconified(WindowEvent we) {
+        // If user set the minimize to tray option and if the tray is supported, we 
+        // minimize to tray only
+        if (Conf.getBoolean(Const.CONF_MINIMIZE_TO_TRAY) && SystemTray.isSupported()) {
           getWindowStateDecorator().display(false);
         }
       }
-      
+
     });
 
     // Light drag and drop for VLDocking
@@ -255,7 +260,9 @@ public class JajukMainWindow extends JFrame implements IJajukWindow, Observer {
     jpFrame.add(commandDesktop, BorderLayout.CENTER);
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see org.jajuk.events.Observer#getRegistrationKeys()
    */
   public Set<JajukEvents> getRegistrationKeys() {
@@ -448,5 +455,5 @@ public class JajukMainWindow extends JFrame implements IJajukWindow, Observer {
   public JPanel getPerspectivePanel() {
     return perspectivePanel;
   }
-    
+
 }
