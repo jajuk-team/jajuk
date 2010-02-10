@@ -20,8 +20,6 @@
  */
 package org.jajuk.ui.actions;
 
-import com.melloware.jintellitype.JIntellitype;
-
 import java.awt.event.ActionEvent;
 import java.lang.reflect.InvocationTargetException;
 
@@ -50,9 +48,12 @@ public abstract class JajukAction extends AbstractAction {
   /** enable state. */
   private boolean bEnable = true;
 
-  // Instantiate a static JIntellitype object
+  // Instantiate a static JIntellitype object if under Windows
+  // BEWARE ! don't use direct call to JIntellitype like
+  // JIntellitype.isJIntellitypeSupported()) because we don't want to create a linkage
+  // dependency for non Windows OS. The JIntellitype jar is not available under Debian for ie
   static {
-    if (JIntellitype.isJIntellitypeSupported()) {
+    if (UtilSystem.isUnderWindows()) {
       try {
         Class.forName("org.jajuk.ui.actions.WindowsHotKeyManager")
             .getMethod("registerJIntellitype").invoke(null, (Object[]) null);
