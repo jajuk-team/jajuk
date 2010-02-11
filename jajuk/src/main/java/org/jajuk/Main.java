@@ -24,7 +24,9 @@ import ext.JVM;
 
 import java.util.Locale;
 
+import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 import org.jajuk.base.Collection;
 import org.jajuk.services.bookmark.History;
@@ -83,8 +85,18 @@ public final class Main {
 
       // Set substance theme (for raw error windows displayed by initial
       // checkups only)
-      // (must be done out of EDT)
-      UIManager.setLookAndFeel(new SubstanceBusinessLookAndFeel());
+      // (must be done in the EDT)
+      SwingUtilities.invokeLater(new Runnable() {
+        @Override
+        public void run() {
+          try {
+            UIManager.setLookAndFeel(new SubstanceBusinessLookAndFeel());
+          } catch (UnsupportedLookAndFeelException e) {
+            // No Log here, logs are not yet initialized
+            e.printStackTrace();
+          }
+        }
+      });
 
       // perform initial checkups and create needed files
       StartupControlsService.initialCheckups();
@@ -100,8 +112,14 @@ public final class Main {
       Log.debug("Starting Jajuk" + Const.JAJUK_VERSION + " <" + Const.JAJUK_CODENAME + ">" + " "
           + Const.JAJUK_VERSION_DATE);
 
-      // Full substance configuration now (must be done out of EDT)
-      UtilGUI.setupSubstanceLookAndFeel(Conf.getString(Const.CONF_OPTIONS_LNF));
+      // Full substance configuration now
+      // (must be done in the EDT)
+      SwingUtilities.invokeLater(new Runnable() {
+        @Override
+        public void run() {
+          UtilGUI.setupSubstanceLookAndFeel(Conf.getString(Const.CONF_OPTIONS_LNF));
+        }
+      });
 
       // Set default fonts
       FontManager.getInstance().setDefaultFont();
@@ -199,7 +217,7 @@ public final class Main {
 
       // Launch the right jajuk window
       StartupGUIService.launchUI();
-      
+
       // Late collection upgrade actions
       UpgradeManager.upgradeStep3();
 

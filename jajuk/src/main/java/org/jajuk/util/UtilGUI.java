@@ -394,50 +394,43 @@ public final class UtilGUI {
       Log.error(e);
     }
 
-    SwingUtilities.invokeLater(new Runnable() {
+    // Set substance LAF
+    SubstanceLookAndFeel.setSkin(themes.get(theme).getClassName());
 
-      @Override
-      public void run() {
-        // Set substance LAF
-        SubstanceLookAndFeel.setSkin(themes.get(theme).getClassName());
+    // hide some useless elements such locker for not editable labels
+    UIManager.put(SubstanceLookAndFeel.SHOW_EXTRA_WIDGETS, Boolean.FALSE);
 
-        // hide some useless elements such locker for not editable labels
-        UIManager.put(SubstanceLookAndFeel.SHOW_EXTRA_WIDGETS, Boolean.FALSE);
+    // Store current color scheme (cannot change for the wall session)
+    colorScheme = SubstanceLookAndFeel.getCurrentSkin().getMainActiveColorScheme();
 
-        // Store current color scheme (cannot change for the wall session)
-        colorScheme = SubstanceLookAndFeel.getCurrentSkin().getMainActiveColorScheme();
+    // Set view foreground colors
+    SubstanceSkin theme = SubstanceLookAndFeel.getCurrentSkin();
+    SubstanceColorScheme scheme = theme.getMainActiveColorScheme();
+    Color foregroundActive = null;
+    Color foregroundInactive = null;
+    Color backgroundActive = null;
+    Color backgroundInactive = null;
+    if (scheme.isDark()) {
+      foregroundActive = Color.BLACK;
+      foregroundInactive = Color.WHITE;
+      backgroundActive = scheme.getUltraLightColor();
+      backgroundInactive = scheme.getUltraDarkColor();
+    } else {
+      foregroundActive = Color.WHITE;
+      foregroundInactive = Color.BLACK;
+      backgroundActive = scheme.getDarkColor();
+      backgroundInactive = scheme.getLightColor();
+    }
+    UIManager.put("InternalFrame.activeTitleForeground", foregroundActive);
+    UIManager.put("InternalFrame.inactiveTitleForeground", foregroundInactive);
+    UIManager.put("InternalFrame.activeTitleBackground", backgroundActive);
+    UIManager.put("InternalFrame.inactiveTitleBackground", backgroundInactive);
+    UIManager.put("DockViewTitleBar.titleFont", FontManager.getInstance().getFont(
+        JajukFont.VIEW_FONT));
 
-        // Set view foreground colors
-        SubstanceSkin theme = SubstanceLookAndFeel.getCurrentSkin();
-        SubstanceColorScheme scheme = theme.getMainActiveColorScheme();
-        Color foregroundActive = null;
-        Color foregroundInactive = null;
-        Color backgroundActive = null;
-        Color backgroundInactive = null;
-        if (scheme.isDark()) {
-          foregroundActive = Color.BLACK;
-          foregroundInactive = Color.WHITE;
-          backgroundActive = scheme.getUltraLightColor();
-          backgroundInactive = scheme.getUltraDarkColor();
-        } else {
-          foregroundActive = Color.WHITE;
-          foregroundInactive = Color.BLACK;
-          backgroundActive = scheme.getDarkColor();
-          backgroundInactive = scheme.getLightColor();
-        }
-        UIManager.put("InternalFrame.activeTitleForeground", foregroundActive);
-        UIManager.put("InternalFrame.inactiveTitleForeground", foregroundInactive);
-        UIManager.put("InternalFrame.activeTitleBackground", backgroundActive);
-        UIManager.put("InternalFrame.inactiveTitleBackground", backgroundInactive);
-        UIManager.put("DockViewTitleBar.titleFont", FontManager.getInstance().getFont(
-            JajukFont.VIEW_FONT));
-
-        // Set windows decoration to look and feel
-        JFrame.setDefaultLookAndFeelDecorated(true);
-        JDialog.setDefaultLookAndFeelDecorated(true);
-      }
-    });
-
+    // Set windows decoration to look and feel
+    JFrame.setDefaultLookAndFeelDecorated(true);
+    JDialog.setDefaultLookAndFeelDecorated(true);
   }
 
   /**
@@ -846,7 +839,7 @@ public final class UtilGUI {
       return null;
     }
   }
-  
+
   /**
    * Store window-type configuration
    */
