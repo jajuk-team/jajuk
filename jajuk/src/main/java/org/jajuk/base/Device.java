@@ -746,6 +746,14 @@ public class Device extends PhysicalItem implements Comparable<Device> {
       final Directory top = DirectoryManager.getInstance().registerDirectory(this);
       // Start actual scan
       scanRecursively(top, bDeepScan);
+      
+      // Force cover detection (after done once, the cover file is cached as album property)
+      // We need this to avoid bug #1550 : if the device is created, then unplugged, catalog 
+      // view cover/nocover filter is doomed because the findCover() method always return null
+      for (Album album : AlbumManager.getInstance().getAlbums()){
+        album.findCoverFile();
+      }
+      
       // refresh thumbs required if nb of files or dirs changed, but it is
       // costly, do it only if many albums was discovered
       if (((FileManager.getInstance().getElementCount() - iNbFilesBeforeRefresh) > 200)
@@ -754,6 +762,7 @@ public class Device extends PhysicalItem implements Comparable<Device> {
         ThumbnailsMaker.launchAllSizes(false);
         return true;
       }
+     
       // force a GUI refresh if new files or directories discovered or have been
       // removed
       else if (((FileManager.getInstance().getElementCount() - iNbFilesBeforeRefresh) != 0)
