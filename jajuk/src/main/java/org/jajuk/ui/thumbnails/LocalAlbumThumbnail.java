@@ -135,7 +135,7 @@ public class LocalAlbumThumbnail extends AbstractThumbnail {
       jlAlbum.setBorder(new EmptyBorder(0, 0, 0, 0));
 
       // Add items
-      setLayout(new MigLayout("", "[grow]", "[" + (size + 10) + "!][grow][grow]"));
+      setLayout(new MigLayout("ins 0", "[grow]", "[" + (size + 10) + "!][grow][grow]"));
       add(jlIcon, "wrap,center");
       add(jlArtist, "wrap,center");
       add(jlAlbum, "wrap,center");
