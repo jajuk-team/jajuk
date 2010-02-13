@@ -100,7 +100,7 @@ public class Album extends LogicalItem implements Comparable<Album> {
    */
   @Override
   public String toString() {
-    return "Album[ID=" + getID() + " Name={{" + getName() + "}}" + " Album Artist={{" + "}}"
+    return "Album[ID=" + getID() + " Name={{" + getName() + "}}" 
         + " disk ID={{" + getDiscID() + "}}]";
   }
 
@@ -276,11 +276,12 @@ public class Album extends LogicalItem implements Comparable<Album> {
 
   /**
    * Gets the cover file.
+   * <p>Can be a long action</p>
    * 
    * @return associated best cover file available or null if none. The returned
    * file can not be readable, so use a try/catch around a future access
    */
-  public File getCoverFile() {
+  public File findCoverFile() {
     String cachedCoverPath = getStringValue(XML_ALBUM_COVER);
     // If none cover is found, we save this information to save discovery time
     // afterwards (performance factor x2 or x3 in catalog view)

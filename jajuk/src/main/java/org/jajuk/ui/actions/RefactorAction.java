@@ -142,7 +142,7 @@ public class RefactorAction {
       // Move file and related cover but save old Directory pathname
       // for future deletion
       try {
-        final java.io.File fCover = tCurrent.getAlbum().getCoverFile();
+        final java.io.File fCover = tCurrent.getAlbum().findCoverFile();
         if (fCover != null) {
           fCover
               .renameTo(new java.io.File(fNew.getParent() + RefactorAction.sFS + fCover.getName()));

@@ -297,7 +297,7 @@ public final class DeviceManager extends ItemManager {
     }
     removeItem(device);
     DirectoryManager.getInstance().cleanDevice(device.getID());
-    FileManager.getInstance().clearDevice(device.getID());
+    FileManager.getInstance().cleanDevice(device.getID());
     PlaylistManager.getInstance().cleanDevice(device.getID());
     // Clean the collection up
     org.jajuk.base.Collection.cleanupLogical();
@@ -343,7 +343,7 @@ public final class DeviceManager extends ItemManager {
       if (device.getType() == Device.TYPE_CD) {
         continue;
       }
-      FileManager.getInstance().clearDevice(device.getName());
+      FileManager.getInstance().cleanDevice(device.getName());
       DirectoryManager.getInstance().cleanDevice(device.getName());
       PlaylistManager.getInstance().cleanDevice(device.getName());
     }

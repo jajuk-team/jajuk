@@ -232,7 +232,7 @@ public class TestAlbum extends JajukTestCase {
   }
 
   /**
-   * Test method for {@link org.jajuk.base.Album#getCoverFile()}.
+   * Test method for {@link org.jajuk.base.Album#findCoverFile()}.
    * 
    * @throws Exception
    */
@@ -240,16 +240,16 @@ public class TestAlbum extends JajukTestCase {
     Album album = new Album("1", "name", 123);
 
     // no file at first
-    assertNull(album.getCoverFile());
+    assertNull(album.findCoverFile());
 
     // none
     album.setProperty(Const.XML_ALBUM_COVER, Const.COVER_NONE);
-    assertNull(album.getCoverFile());
+    assertNull(album.findCoverFile());
 
     // set a cover file
     album.setProperty(Const.XML_ALBUM_COVER, System.getProperty("java.io.tmpdir")
         + java.io.File.separator + "cover.tst");
-    assertNotNull(album.getCoverFile());
+    assertNotNull(album.findCoverFile());
 
     // try with a track and no cover file set
     album.removeProperty(Const.XML_ALBUM_COVER);
@@ -257,7 +257,7 @@ public class TestAlbum extends JajukTestCase {
     track.addFile(getFile(7, track));
     track.addFile(getFile(8, track));
     album.getTracksCache().add(track);
-    assertNull(album.getCoverFile());
+    assertNull(album.findCoverFile());
 
     // TODO: some code is still not covered here, need to find out how to do
     // that...

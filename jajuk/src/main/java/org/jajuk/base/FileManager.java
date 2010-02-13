@@ -269,12 +269,12 @@ public final class FileManager extends ItemManager {
   }
 
   /**
-   * Clear all references for the given device.
+   * Clean all references for the given device.
    * 
    * @param sId :
    * Device id
    */
-  public synchronized void clearDevice(String sId) {
+  public synchronized void cleanDevice(String sId) {
     for (File file : getFiles()) {
       if (file.getDirectory() == null || file.getDirectory().getDevice().getID().equals(sId)) {
         removeItem(file);

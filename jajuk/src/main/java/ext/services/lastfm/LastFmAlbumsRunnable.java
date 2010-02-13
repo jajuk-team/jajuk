@@ -254,7 +254,7 @@ public class LastFmAlbumsRunnable implements Runnable {
   public static ImageIcon getImageForAudioFile(Track track, int width, int height) {
     ImageIcon result = null;
 
-    File fileCover = track.getAlbum().getCoverFile();
+    File fileCover = track.getAlbum().findCoverFile();
     if (fileCover != null) {
       if (fileCover.exists()) {
         ImageIcon image = new ImageIcon(fileCover.getAbsolutePath());

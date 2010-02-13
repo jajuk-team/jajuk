@@ -199,7 +199,7 @@ public final class ThumbnailManager {
       return false;
     }
     final File fThumb = getThumbBySize(album, size);
-    final File fCover = album.getCoverFile();
+    final File fCover = album.findCoverFile();
     if (fCover != null) {
       try {
         createThumbnail(fCover, fThumb, size);
