@@ -305,7 +305,12 @@ public class CatalogView extends ViewAdapter implements ComponentListener, Actio
     // compute size string for slider tooltip
     String sizeToDisplay = "" + (50 + 50 * index) + "x" + "" + (50 + 50 * index);
     jsSize.setToolTipText(Messages.getString("CatalogView.4") + " " + sizeToDisplay);
-    jsSize.addChangeListener(new CatalogViewChangeListener());
+    jsSize.addChangeListener(new ChangeListener() {
+      @Override
+      public void stateChanged(ChangeEvent arg0) {
+        sliderValueChanged();
+      }
+    });
 
     jpControlBottom = new JPanel(new MigLayout("gapx 20"));
     jpControlBottom.add(jcbShowCover);
@@ -405,7 +410,9 @@ public class CatalogView extends ViewAdapter implements ComponentListener, Actio
     InformationJPanel.getInstance().setSelection(sMessage);
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see org.jajuk.events.Observer#getRegistrationKeys()
    */
   public Set<JajukEvents> getRegistrationKeys() {
@@ -476,14 +483,15 @@ public class CatalogView extends ViewAdapter implements ComponentListener, Actio
       while (itAlbums.hasNext()) {
         Album album = itAlbums.next();
         if (jcbShowCover.getSelectedIndex() == Const.CATALOG_VIEW_COVER_MODE_WITH
-            && album.getCoverFile() == null) {
+            && album.findCoverFile() == null) {
           itAlbums.remove();
         }
         if (jcbShowCover.getSelectedIndex() == Const.CATALOG_VIEW_COVER_MODE_WITHOUT
-            && album.getCoverFile() != null) {
+            && album.findCoverFile() != null) {
           itAlbums.remove();
         }
       }
+
       albums = new ArrayList<Album>(hsAlbums);
 
       // sort albums
@@ -579,17 +587,18 @@ public class CatalogView extends ViewAdapter implements ComponentListener, Actio
       }
       // Populate each thumb if required (THIS IS LOOOOOONG)
       for (int i = page * Conf.getInt(Const.CONF_CATALOG_PAGE_SIZE); i < max; i++) {
-        final LocalAlbumThumbnail thumb = new LocalAlbumThumbnail(albums.get(i), getSelectedSize(), true);
+        final LocalAlbumThumbnail thumb = new LocalAlbumThumbnail(albums.get(i), getSelectedSize(),
+            true);
         thumb.populate();
         thumbs.add(thumb);
 
         // restore previous selected item if still set
-        if(item != null) {
-                if (((Album) thumb.getItem()).equals(item.getItem())) {
-                  CatalogView.this.item = thumb;
-                  CatalogView.this.item.setSelected(true);
-                }
+        if (item != null) {
+          if (((Album) thumb.getItem()).equals(item.getItem())) {
+            CatalogView.this.item = thumb;
+            CatalogView.this.item.setSelected(true);
           }
+        }
 
         thumb.getIcon().addMouseListener(new MouseAdapter() {
           @Override
@@ -604,7 +613,7 @@ public class CatalogView extends ViewAdapter implements ComponentListener, Actio
             CatalogView.this.item = thumb;
           }
         });
-        
+
       }
     }
 
@@ -671,8 +680,7 @@ public class CatalogView extends ViewAdapter implements ComponentListener, Actio
   /*
    * (non-Javadoc)
    * 
-   * @see
-   * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+   * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
    */
   public void actionPerformed(final ActionEvent e) {
     if (e.getSource() == jcbFilter) {
@@ -727,8 +735,10 @@ public class CatalogView extends ViewAdapter implements ComponentListener, Actio
    * DOCUMENT_ME.
    */
   private class CatalogViewKeyAdaptor extends KeyAdapter {
-    
-    /* (non-Javadoc)
+
+    /*
+     * (non-Javadoc)
+     * 
      * @see java.awt.event.KeyAdapter#keyReleased(java.awt.event.KeyEvent)
      */
     @Override
@@ -755,23 +765,20 @@ public class CatalogView extends ViewAdapter implements ComponentListener, Actio
       super(js);
     }
 
-    /* (non-Javadoc)
-     * @see org.jajuk.ui.helpers.DefaultMouseWheelListener#mouseWheelMoved(java.awt.event.MouseWheelEvent)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.jajuk.ui.helpers.DefaultMouseWheelListener#mouseWheelMoved(java.awt.event.MouseWheelEvent
+     * )
      */
     @Override
     public void mouseWheelMoved(MouseWheelEvent mwe) {
       ChangeListener cl = jsSize.getChangeListeners()[0];
       // Remove the concurrent change listener
       jsSize.removeChangeListener(cl);
-      // Leave user didn't release the move yet
-      if (jsSize.getValueIsAdjusting()) {
-        return;
-      }
       super.mouseWheelMoved(mwe);
-      // Store size
-      Conf.setProperty(Const.CONF_THUMBS_SIZE, sizes.get(jsSize.getValue()));
-      // display thumbs
-      populateCatalog();
+      sliderValueChanged();
       // Add again the change listener
       jsSize.addChangeListener(cl);
     }
@@ -779,40 +786,37 @@ public class CatalogView extends ViewAdapter implements ComponentListener, Actio
   }
 
   /**
-   * DOCUMENT_ME.
+   * Factorized code for thumb size change
    */
-  private class CatalogViewChangeListener implements ChangeListener {
-
-    /* (non-Javadoc)
-     * @see javax.swing.event.ChangeListener#stateChanged(javax.swing.event.ChangeEvent)
-     */
-    public void stateChanged(ChangeEvent e) {
-      // Leave user didn't release the move yet
-      if (jsSize.getValueIsAdjusting()) {
-        return;
-      }
-      // Store size
-      Conf.setProperty(Const.CONF_THUMBS_SIZE, sizes.get(jsSize.getValue()));
-      // display thumbs
-      populateCatalog();
-      // Adjust tooltips
-      // compute size string for slider tooltip
-      String size = "" + (50 + 50 * jsSize.getValue()) + "x" + "" + (50 + 50 * jsSize.getValue());
-      jsSize.setToolTipText(Messages.getString("CatalogView.4") + " " + size);
+  private void sliderValueChanged() {
+    // Leave user didn't release the move yet
+    if (jsSize.getValueIsAdjusting()) {
+      return;
     }
+    // Store size
+    Conf.setProperty(Const.CONF_THUMBS_SIZE, sizes.get(jsSize.getValue()));
+    // display thumbs
+    populateCatalog();
+    // Adjust tooltips
+    // compute size string for slider tooltip
+    String size = "" + (50 + 50 * jsSize.getValue()) + "x" + "" + (50 + 50 * jsSize.getValue());
+    jsSize.setToolTipText(Messages.getString("CatalogView.4") + " " + size);
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see org.jajuk.ui.views.ViewAdapter#cleanup()
    */
   @Override
   public void cleanup() {
     // make sure the timer is not running any more
     timerSearch.stop();
-    
-    // we specifically request the focus for jtfValue, therefore we should make sure that we release that focus to let this be destroyed
+
+    // we specifically request the focus for jtfValue, therefore we should make sure that we release
+    // that focus to let this be destroyed
     FocusManager.getCurrentKeyboardFocusManager().clearGlobalFocusOwner();
-    
+
     // call the parent class to do more cleanup if necessary
     super.cleanup();
   }
