@@ -391,6 +391,7 @@ public abstract class ItemManager {
       // check if this item still maps some tracks
       if (!lItems.contains(item)) {
         it.remove();
+        internalMap.remove(item.getID());
       }
     }
   }
