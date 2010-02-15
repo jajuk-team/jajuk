@@ -900,10 +900,10 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
      */
     public void treeCollapsed(TreeExpansionEvent event) {
       Object o = event.getPath().getLastPathComponent();
-      if (o instanceof DirectoryNode && !bAutoCollapse) {
+      if (o instanceof DirectoryNode && bManualAction) {
         Directory dir = ((DirectoryNode) o).getDirectory();
         dir.removeProperty(Const.XML_EXPANDED);
-      } else if (o instanceof DeviceNode && !bAutoCollapse) {
+      } else if (o instanceof DeviceNode && bManualAction) {
         Device device = ((DeviceNode) o).getDevice();
         device.removeProperty(Const.XML_EXPANDED);
       }
@@ -917,10 +917,10 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
      */
     public void treeExpanded(TreeExpansionEvent event) {
       Object o = event.getPath().getLastPathComponent();
-      if (o instanceof DirectoryNode && !bAutoCollapse) {
+      if (o instanceof DirectoryNode && bManualAction) {
         Directory dir = ((DirectoryNode) o).getDirectory();
         dir.setProperty(Const.XML_EXPANDED, true);
-      } else if (o instanceof DeviceNode && !bAutoCollapse) {
+      } else if (o instanceof DeviceNode && bManualAction) {
         Device device = ((DeviceNode) o).getDevice();
         device.setProperty(Const.XML_EXPANDED, true);
       }

@@ -152,7 +152,7 @@ public abstract class AbstractTreeView extends ViewAdapter {
   PreferencesJMenu pjmTracks;
 
   /** Used to differentiate user action tree collapse from code tree collapse. */
-  boolean bAutoCollapse = false;
+  boolean bManualAction = true;
 
   /*
    * (non-Javadoc)
@@ -335,9 +335,9 @@ public abstract class AbstractTreeView extends ViewAdapter {
             Log.error(e);
           }
           SwingUtilities.updateComponentTreeUI(jtree);
-          bAutoCollapse = true;
+          bManualAction = false;
           expand();
-          bAutoCollapse = false;
+          bManualAction = true;
           // Reset last position in tree
           // The scrollbar must be set after current EDT work to be effective,
           // so queue it
