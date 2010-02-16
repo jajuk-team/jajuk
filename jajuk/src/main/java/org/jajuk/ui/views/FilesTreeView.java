@@ -336,8 +336,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
     }
 
     // add all devices as "LazyLoading" nodes so all subsequent elements are
-    // only
-    // populated if necessary
+    // only populated if necessary
     List<Device> devices = DeviceManager.getInstance().getDevices();
     for (Device device : devices) {
       DefaultMutableTreeNode nodeDevice = new DeviceNode(device);

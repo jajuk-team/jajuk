@@ -352,8 +352,6 @@ public abstract class AbstractTreeView extends ViewAdapter {
         }
       };
       sw.execute();
-      // Make sure to refresh cells (useful to remove highlighters for ie)
-      repaint();
     } else if (JajukEvents.TABLE_SELECTION_CHANGED.equals(subject)) {
       // Check if the sync tree table option is set for this tree
       if (Conf.getBoolean(Const.CONF_SYNC_TABLE_TREE + "." + getID())) {
