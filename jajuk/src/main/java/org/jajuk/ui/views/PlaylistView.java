@@ -46,7 +46,6 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
-import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTable;
@@ -217,10 +216,7 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
   /** DOCUMENT_ME. */
   List<File> selectedFiles = new ArrayList<File>(20);
 
-  /** Generic menu for playlist (shared by smart and regular playlists). */
-  JPopupMenu jpmenu;
-
-  /** Mouse adapter for smart playlist items. */
+   /** Mouse adapter for smart playlist items. */
   MouseAdapter ma = new JajukMouseAdapter() {
 
     @Override
@@ -264,7 +260,7 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
       // We use for smart playlists panels the same popup menu than the one from
       // the repository table
       // but we disable some items like delete or properties
-      List<Integer> indexToDisable = Arrays.asList(new Integer[] { 4, 5, 8, 9 });
+      List<Integer> indexToDisable = Arrays.asList(new Integer[] { 4, 5, 9 });
       repositoryPanel.jtable.getMenu(indexToDisable).show(e.getComponent(), e.getX(), e.getY());
     }
   };
@@ -292,6 +288,8 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
     }
     // Update playlist editor
     selectPlaylist(sp.getPlaylist());
+    repositoryPanel.jmiPrepareParty.putClientProperty(Const.DETAIL_SELECTION, sp.getPlaylist());
+    repositoryPanel.jmiRepositorySaveAs.putClientProperty(Const.DETAIL_SELECTION, sp.getPlaylist());
   }
 
   /**

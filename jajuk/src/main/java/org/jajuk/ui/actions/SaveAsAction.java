@@ -65,23 +65,25 @@ public class SaveAsAction extends JajukAction {
       @Override
       public void run() {
         JComponent source = (JComponent) e.getSource();
-        // @TODO Do better here, accept a single playlist for ie
+        // TODO Do better here, accept a single playlist for ie
         Object o = source.getClientProperty(Const.DETAIL_SELECTION);
-        if (o instanceof List) {
-          try {
-            List<Playlist> playlists = (List<Playlist>) o;
-            Playlist playlist = playlists.get(0);
-            playlist.saveAs();
-            InformationJPanel.getInstance().setMessage(
-                Messages.getString("AbstractPlaylistEditorView.22"), InformationJPanel.INFORMATIVE);
-            ObservationManager.notify(new JajukEvent(JajukEvents.DEVICE_REFRESH));
-          } catch (JajukException je) {
-            Log.error(je);
-            Messages.showErrorMessage(je.getCode());
-          } catch (Exception ex) {
-            Log.error(ex);
+        Playlist playlist = null;
+        try {
+          if (o instanceof List) {
+            playlist = ((List<Playlist>) o).get(0);
           }
-
+          else{
+            playlist = (Playlist)o;
+          }
+          playlist.saveAs();
+          InformationJPanel.getInstance().setMessage(
+              Messages.getString("AbstractPlaylistEditorView.22"), InformationJPanel.INFORMATIVE);
+          ObservationManager.notify(new JajukEvent(JajukEvents.DEVICE_REFRESH));
+        } catch (JajukException je) {
+          Log.error(je);
+          Messages.showErrorMessage(je.getCode());
+        } catch (Exception ex) {
+          Log.error(ex);
         }
       }
     }.start();
