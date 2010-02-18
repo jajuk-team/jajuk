@@ -288,6 +288,7 @@ public class DeviceWizard extends JajukJDialog implements ActionListener, Const 
         });
 
     // Validate device name
+    vg.add(jtfName, Validators.REQUIRE_NON_EMPTY_STRING);
     vg.add(jtfName, new Validator<String>() {
       @Override
       public boolean validate(Problems problems, String compName, String model) {
