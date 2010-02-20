@@ -151,7 +151,8 @@ public class TestDirectory extends JajukTestCase {
 
   public void testGetDirectories() {
     Device dev = new Device("2", "test");
-    Directory dir = new Directory("1", "dir", null, dev);
+    // This is a root directory = the device root itself, its name should be ""
+    Directory dir = new Directory("1", "", null, dev);
     Set<Directory> dirs = dir.getDirectories();
     
     // no dirs without registered directories
@@ -284,7 +285,8 @@ public class TestDirectory extends JajukTestCase {
     FileManager.getInstance().clear();
     
     Device dev = new Device("3", "test2");
-    Directory dir = new Directory("99", "dir99", null, dev);
+    // This is a root directory = the device root itself, its name should be ""
+    Directory dir = new Directory("99", "", null, dev);
     List<File> files = dir.getFilesRecursively();
     
     // no files are available currently
