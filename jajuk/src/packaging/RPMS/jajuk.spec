@@ -7,7 +7,7 @@ URL: http://jajuk.sourceforge.net
 License: GPL
 Source: http://jajuk.sourceforge.net
 Packager: Bertrand Florat
-BuildRoot: %_topdir/%{name}
+BuildRoot: %{_topdir}/%{name}
 
 %description
 Jajuk is a Java music organizer for all platforms.
