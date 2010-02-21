@@ -125,8 +125,7 @@ public class TestHelpers extends JajukTestCase {
     Track track = TrackManager.getInstance().registerTrack("track name", album, genre, artist, 12l,
         year, 1l, type, 1l);
     Device device = DeviceManager.getInstance().registerDevice("device name", 1l, "/tmp");
-    Directory dir = DirectoryManager.getInstance()
-        .registerDirectory("directory name", null, device);
+    Directory dir = DirectoryManager.getInstance().registerDirectory(device);
     File file = FileManager.getInstance().registerFile("123", "file name", dir, track, 12, 128);
     return file;
   }
