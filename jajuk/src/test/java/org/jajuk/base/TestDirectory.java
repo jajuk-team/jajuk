@@ -38,14 +38,16 @@ import org.jajuk.util.Const;
  */
 public class TestDirectory extends JajukTestCase {
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see junit.framework.TestCase#setUp()
    */
   @Override
   protected void setUp() throws Exception {
     // reset some conf-options
     Conf.setProperty(Const.CONF_OPTIONS_HIDE_UNMOUNTED, "false");
-    
+
     super.setUp();
   }
 
@@ -72,9 +74,9 @@ public class TestDirectory extends JajukTestCase {
    */
 
   public void testGetHumanValue() {
-    Device dev = DeviceManager.getInstance().registerDevice("2", Device.TYPE_DIRECTORY, "test"); 
+    Device dev = DeviceManager.getInstance().registerDevice("2", Device.TYPE_DIRECTORY, "test");
     assertNotNull(dev);
-    
+
     Directory dir = new Directory("1", "dir", null, dev);
     assertEquals(dir.toString(), "", dir.getHumanValue(Const.XML_DIRECTORY_PARENT));
     assertEquals(dir.toString(), "2", dir.getHumanValue(Const.XML_DEVICE));
@@ -88,7 +90,7 @@ public class TestDirectory extends JajukTestCase {
 
   public void testGetIconRepresentation() {
     StartupCollectionService.registerItemManagers();
-    
+
     Directory dir = new Directory("1", "dir", null, new Device("2", "test"));
     assertNotNull(dir.getIconRepresentation());
   }
@@ -150,18 +152,19 @@ public class TestDirectory extends JajukTestCase {
    */
 
   public void testGetDirectories() {
-    Device dev = new Device("2", "test");
+    Device dev = DeviceManager.getInstance().registerDevice("2", "test", Device.TYPE_DIRECTORY,
+        "/tmp");
     // This is a root directory = the device root itself, its name should be ""
     Directory dir = new Directory("1", "", null, dev);
     Set<Directory> dirs = dir.getDirectories();
-    
+
     // no dirs without registered directories
     assertEquals(0, dirs.size());
 
     DirectoryManager.getInstance().registerDirectory("sub1", dir, dev);
     DirectoryManager.getInstance().registerDirectory("sub2", dir, dev);
     DirectoryManager.getInstance().registerDirectory("sub3", dir, dev);
-    
+
     dirs = dir.getDirectories();
     assertEquals(3, dirs.size());
   }
@@ -175,39 +178,38 @@ public class TestDirectory extends JajukTestCase {
     Device dev = new Device("2", "test");
     dev.setUrl(System.getProperty("java.io.tmpdir"));
     Directory dir = new Directory("1", "dir", null, dev);
-    
 
     Set<File> files = dir.getFiles();
-    
+
     // no files are available currently
     assertEquals(0, files.size());
-    
+
     getFileInDir(3, dir);
     getFileInDir(4, dir);
-    
+
     files = dir.getFiles();
     assertEquals(2, dir.getFiles().size());
   }
 
   @SuppressWarnings("unchecked")
-  public
-  static org.jajuk.base.File getFileInDir(int i, Directory dir) throws Exception {
+  public static org.jajuk.base.File getFileInDir(int i, Directory dir) throws Exception {
     Genre genre = new Genre(Integer.valueOf(i).toString(), "name");
     Album album = new Album(Integer.valueOf(i).toString(), "name", 23);
     album.setProperty(Const.XML_ALBUM_COVER, Const.COVER_NONE); // don't read covers for
     // this test
-  
+
     Artist artist = new Artist(Integer.valueOf(i).toString(), "name");
     Year year = new Year(Integer.valueOf(i).toString(), "2000");
-  
+
     IPlayerImpl imp = new MockPlayer();
     Class<IPlayerImpl> cl = (Class<IPlayerImpl>) imp.getClass();
-  
+
     Type type = new Type(Integer.valueOf(i).toString(), "name", "mp3", cl, null);
     Track track = new Track(Integer.valueOf(i).toString(), "name", album, genre, artist, 120, year,
         1, type, 1);
-  
-    return FileManager.getInstance().registerFile(Integer.valueOf(i).toString(), "test.tst", dir, track, 120, 70);
+
+    return FileManager.getInstance().registerFile(Integer.valueOf(i).toString(), "test.tst", dir,
+        track, 120, 70);
   }
 
   /**
@@ -220,14 +222,22 @@ public class TestDirectory extends JajukTestCase {
     Directory dir = new Directory("1", "dir", null, dev);
 
     Set<Playlist> files = dir.getPlaylistFiles();
-    
+
     // no files are available currently
     assertEquals(0, files.size());
-    
-    PlaylistManager.getInstance().registerPlaylistFile(new java.io.File(System.getProperty("java.io.tmpdir") + java.io.File.separator + "testfile1"), dir);
-    PlaylistManager.getInstance().registerPlaylistFile(new java.io.File(System.getProperty("java.io.tmpdir") + java.io.File.separator + "testfile2"), dir);
-    PlaylistManager.getInstance().registerPlaylistFile(new java.io.File(System.getProperty("java.io.tmpdir") + java.io.File.separator + "testfile3"), dir);
-    PlaylistManager.getInstance().registerPlaylistFile(new java.io.File(System.getProperty("java.io.tmpdir") + java.io.File.separator + "testfile4"), dir);
+
+    PlaylistManager.getInstance().registerPlaylistFile(
+        new java.io.File(System.getProperty("java.io.tmpdir") + java.io.File.separator
+            + "testfile1"), dir);
+    PlaylistManager.getInstance().registerPlaylistFile(
+        new java.io.File(System.getProperty("java.io.tmpdir") + java.io.File.separator
+            + "testfile2"), dir);
+    PlaylistManager.getInstance().registerPlaylistFile(
+        new java.io.File(System.getProperty("java.io.tmpdir") + java.io.File.separator
+            + "testfile3"), dir);
+    PlaylistManager.getInstance().registerPlaylistFile(
+        new java.io.File(System.getProperty("java.io.tmpdir") + java.io.File.separator
+            + "testfile4"), dir);
 
     files = dir.getPlaylistFiles();
     assertEquals(4, files.size());
@@ -235,27 +245,36 @@ public class TestDirectory extends JajukTestCase {
 
   public void testGetPlaylistRecursively() {
     PlaylistManager.getInstance().clear();
-    
+
     Device dev = new Device("2", "test");
     dev.setUrl(System.getProperty("java.io.tmpdir"));
     Directory dir = new Directory("1", "dir", null, dev);
 
     List<Playlist> files = dir.getPlaylistsRecursively();
-    
+
     // no files are available currently
     assertEquals(0, files.size());
-    
+
     Directory dir1 = DirectoryManager.getInstance().registerDirectory("sub1", dir, dev);
     Directory dir2 = DirectoryManager.getInstance().registerDirectory("sub2", dir, dev);
     Directory dir3 = DirectoryManager.getInstance().registerDirectory("sub3", dir, dev);
 
-    PlaylistManager.getInstance().registerPlaylistFile(new java.io.File(System.getProperty("java.io.tmpdir") + java.io.File.separator + "testfile1"), dir1);
-    PlaylistManager.getInstance().registerPlaylistFile(new java.io.File(System.getProperty("java.io.tmpdir") + java.io.File.separator + "testfile2"), dir2);
-    PlaylistManager.getInstance().registerPlaylistFile(new java.io.File(System.getProperty("java.io.tmpdir") + java.io.File.separator + "testfile3"), dir2);
-    PlaylistManager.getInstance().registerPlaylistFile(new java.io.File(System.getProperty("java.io.tmpdir") + java.io.File.separator + "testfile4"), dir3);
+    PlaylistManager.getInstance().registerPlaylistFile(
+        new java.io.File(System.getProperty("java.io.tmpdir") + java.io.File.separator
+            + "testfile1"), dir1);
+    PlaylistManager.getInstance().registerPlaylistFile(
+        new java.io.File(System.getProperty("java.io.tmpdir") + java.io.File.separator
+            + "testfile2"), dir2);
+    PlaylistManager.getInstance().registerPlaylistFile(
+        new java.io.File(System.getProperty("java.io.tmpdir") + java.io.File.separator
+            + "testfile3"), dir2);
+    PlaylistManager.getInstance().registerPlaylistFile(
+        new java.io.File(System.getProperty("java.io.tmpdir") + java.io.File.separator
+            + "testfile4"), dir3);
 
     files = dir.getPlaylistsRecursively();
   }
+
   /**
    * Test method for {@link org.jajuk.base.Directory#getFilesFromFile(org.jajuk.base.File)}.
    * @throws Exception 
@@ -266,7 +285,7 @@ public class TestDirectory extends JajukTestCase {
     dev.setUrl(System.getProperty("java.io.tmpdir"));
     Directory dir = new Directory("1", "dir", null, dev);
     assertNull(dir.getFilesFromFile(null));
-    
+
     getFileInDir(3, dir);
     getFileInDir(4, dir);
     File file = getFileInDir(5, dir);
@@ -283,15 +302,15 @@ public class TestDirectory extends JajukTestCase {
 
   public void testGetFilesRecursively() throws Exception {
     FileManager.getInstance().clear();
-    
+
     Device dev = new Device("3", "test2");
     // This is a root directory = the device root itself, its name should be ""
     Directory dir = new Directory("99", "", null, dev);
     List<File> files = dir.getFilesRecursively();
-    
+
     // no files are available currently
     assertEquals(0, files.size());
-    
+
     Directory dir1 = DirectoryManager.getInstance().registerDirectory("sub1", dir, dev);
     Directory dir2 = DirectoryManager.getInstance().registerDirectory("sub2", dir, dev);
     Directory dir3 = DirectoryManager.getInstance().registerDirectory("sub3", dir, dev);
@@ -311,22 +330,24 @@ public class TestDirectory extends JajukTestCase {
 
   public void testScan() {
     Directory dir = new Directory("1", "dir", null, new Device("2", "test"));
-    
+
     // this scan will not do much because there are no files in this dir
     dir.scan(true, null);
   }
-    
+
   public void testScanActual() throws Exception {
     StartupCollectionService.registerItemManagers();
     StartupCollectionService.registerTypes();
-    
+
     // create temp file
-    Device dev = DeviceManager.getInstance().registerDevice("test1", Device.TYPE_DIRECTORY, System.getProperty("java.io.tmpdir"));
+    Device dev = DeviceManager.getInstance().registerDevice("test1", Device.TYPE_DIRECTORY,
+        System.getProperty("java.io.tmpdir"));
     Directory dir = new Directory("1", "testScan", null, dev);
-    
+
     new java.io.File(dev.getUrl()).mkdirs();
-    FileUtils.writeStringToFile(new java.io.File(dev.getUrl() + java.io.File.separator + "testScan" + java.io.File.separator + "test1.mp3"), "teststring");
-    
+    FileUtils.writeStringToFile(new java.io.File(dev.getUrl() + java.io.File.separator + "testScan"
+        + java.io.File.separator + "test1.mp3"), "teststring");
+
     dir.scan(true, null);
   }
 
@@ -370,7 +391,7 @@ public class TestDirectory extends JajukTestCase {
     dir3a.getDevice().setUrl(System.getProperty("java.io.tmpdir"));
     Directory dir3b = new Directory("2", "dir", null, new Device("2", "test"));
     dir3b.getDevice().setUrl(System.getProperty("java.io.tmpdir") + java.io.File.separator + "1");
-   
+
     JUnitHelpers.CompareToTest(dir1, dir2, dir3a);
     JUnitHelpers.CompareToTest(dir1, dir2, dir3b);
   }
@@ -384,15 +405,15 @@ public class TestDirectory extends JajukTestCase {
     Directory dir = new Directory("1", "dir1", null, new Device("2", "test"));
     // not mounted by default
     assertFalse(dir.getDevice().isMounted());
-    
+
     // false because option is not set
     assertFalse(dir.shouldBeHidden());
-    
+
     Conf.setProperty(Const.CONF_OPTIONS_HIDE_UNMOUNTED, "true");
 
     // now true because option to hide unmounted is set
     assertTrue(dir.shouldBeHidden());
-    
+
     dir.getDevice().setUrl(System.getProperty("java.io.tmpdir"));
     dir.getDevice().mount(true);
 
@@ -408,9 +429,9 @@ public class TestDirectory extends JajukTestCase {
     Directory dir = new Directory("1", "dir1", null, new Device("2", "test"));
 
     assertEquals("dir1", dir.getName());
-    
+
     dir.setName("newname");
-    
+
     assertEquals("newname", dir.getName());
   }
 
@@ -421,7 +442,7 @@ public class TestDirectory extends JajukTestCase {
 
   public void testRefresh() throws Exception {
     Directory dir = new Directory("1", "dir1", null, new Device("2", "test"));
-    dir.refresh(true, null);    
+    dir.refresh(true, null);
   }
 
   /**
@@ -450,9 +471,9 @@ public class TestDirectory extends JajukTestCase {
     Device dev = new Device("2", "test");
     Directory dir = new Directory("1", "dir1", null, dev);
     assertFalse(dir.isChildOf(new Directory("2", "dir2", null, dev)));
-    
+
     Directory dir2 = new Directory("3", "dir3", dir, dev);
-    
+
     assertTrue(dir2.isChildOf(dir));
   }
 
