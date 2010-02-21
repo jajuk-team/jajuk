@@ -682,7 +682,7 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
     if (lFiles != null) {
       for (final java.io.File element : lFiles) {
         final Directory subdir = DirectoryManager.getInstance().registerDirectory(
-            element.getName(), this, getDevice());
+            element.getName(), this);
         subdir.refresh(deep, reporter);
       }
     }

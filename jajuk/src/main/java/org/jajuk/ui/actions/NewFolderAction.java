@@ -44,7 +44,7 @@ import org.jajuk.util.log.Log;
  * DOCUMENT_ME.
  */
 public class NewFolderAction extends JajukAction {
-  
+
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
@@ -57,7 +57,9 @@ public class NewFolderAction extends JajukAction {
     setShortDescription(Messages.getString("NewFolderAction.0"));
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see org.jajuk.ui.actions.JajukAction#perform(java.awt.event.ActionEvent)
    */
   @Override
@@ -93,8 +95,7 @@ public class NewFolderAction extends JajukAction {
               java.io.File newFolder = new java.io.File(dir.getAbsolutePath() + "/" + folderName);
               if (!newFolder.exists()) {
                 if (newFolder.mkdir()) {
-                  DirectoryManager.getInstance()
-                      .registerDirectory(folderName, dir, dir.getDevice());
+                  DirectoryManager.getInstance().registerDirectory(folderName, dir);
                   ObservationManager.notify(new JajukEvent(JajukEvents.DEVICE_REFRESH));
                 } else {
                   Messages.showErrorMessage(136);
