@@ -50,6 +50,7 @@ import org.jajuk.util.ReadOnlyIterator;
 import org.jajuk.util.UtilFeatures;
 import org.jajuk.util.UtilSystem;
 import org.jajuk.util.error.JajukException;
+import org.jajuk.util.error.JajukRuntimeException;
 import org.jajuk.util.log.Log;
 
 /**
@@ -79,8 +80,12 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
    * @param dParent DOCUMENT_ME
    * @param device DOCUMENT_ME
    */
-  public Directory(String sId, String sName, Directory dParent, Device device) {
+  Directory(String sId, String sName, Directory dParent, Device device) {
     super(sId, sName);
+    // check that top directories name is void
+    if (dParent == null && !"".equals(sName)){
+      throw new JajukRuntimeException("Top directory name should be a void string");
+    }
     this.dParent = dParent;
     setProperty(Const.XML_DIRECTORY_PARENT, (dParent == null ? "-1" : dParent.getID()));
     this.device = device;
