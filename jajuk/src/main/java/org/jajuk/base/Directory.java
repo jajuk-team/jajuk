@@ -105,7 +105,7 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
    */
   @Override
   public String toString() {
-    return "Directory[ID=" + getID() + " Name={{" + getRelativePath() + "}} ParentID="
+    return "Directory[ID=" + getID() + " Relative path={{" + getRelativePath() + "}} ParentID="
         + (dParent == null ? "null" : dParent.getID()) + " Device={{" + device.getName() + "}}]";
   }
 
