@@ -80,7 +80,7 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
    * @param dParent DOCUMENT_ME
    * @param device DOCUMENT_ME
    */
-  Directory(String sId, String sName, Directory dParent, Device device) {
+  public Directory(String sId, String sName, Directory dParent, Device device) {
     super(sId, sName);
     // check that top directories name is void
     if (dParent == null && !"".equals(sName)){
