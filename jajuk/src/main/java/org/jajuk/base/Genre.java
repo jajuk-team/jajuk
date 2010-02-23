@@ -44,7 +44,7 @@ public class Genre extends LogicalItem implements Comparable<Genre> {
    * @param sName DOCUMENT_ME
    * @param sId DOCUMENT_ME
    */
-  public Genre(String sId, String sName) {
+  Genre(String sId, String sName) {
     super(sId, sName);
   }
 

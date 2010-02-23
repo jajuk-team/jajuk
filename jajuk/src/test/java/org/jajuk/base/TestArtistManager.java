@@ -171,7 +171,7 @@ public class TestArtistManager extends JajukTestCase {
   @SuppressWarnings("unchecked")
   private File getFile(int i, Artist artist) throws Exception {
     Genre genre = new Genre(Integer.valueOf(i).toString(), "name");
-    Album album = new Album(Integer.valueOf(i).toString(), "name", 23);
+    Album album = JUnitHelpers.getAlbum("myalbum",0);
     album.setProperty(Const.XML_ALBUM_COVER, Const.COVER_NONE); // don't read
                                                                 // covers for
     // this test
@@ -186,7 +186,7 @@ public class TestArtistManager extends JajukTestCase {
     Track track = TrackManager.getInstance().registerTrack("name", album, genre, artist, 120, year,
         1, type, 1);
 
-    Device device = new Device(Integer.valueOf(i).toString(), "name");
+    Device device = JUnitHelpers.getDevice();
     device.setUrl(System.getProperty("java.io.tmpdir"));
     device.mount(true);
 

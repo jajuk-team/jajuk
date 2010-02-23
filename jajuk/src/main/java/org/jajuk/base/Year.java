@@ -45,7 +45,7 @@ public class Year extends LogicalItem implements Comparable<Year> {
    *          The Year-Value as string. Only a simple parsing is done, things
    *          like AC, BC, ... are not supported.
    */
-  public Year(String sId, String sValue) {
+  Year(String sId, String sValue) {
     super(sId, sValue);
     if (sValue != null)
       this.value = UtilString.fastLongParser(sValue);

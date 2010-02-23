@@ -66,7 +66,7 @@ public class Album extends LogicalItem implements Comparable<Album> {
    * @param sId DOCUMENT_ME
    * @param discID DOCUMENT_ME
    */
-  public Album(String sId, String sName, long discID) {
+  Album(String sId, String sName, long discID) {
     super(sId, sName);
     setProperty(Const.XML_ALBUM_DISC_ID, discID);
   }

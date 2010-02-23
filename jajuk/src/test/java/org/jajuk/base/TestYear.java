@@ -20,10 +20,10 @@
  */
 package org.jajuk.base;
 
+import junit.framework.TestCase;
+
 import org.jajuk.JUnitHelpers;
 import org.jajuk.util.Const;
-
-import junit.framework.TestCase;
 
 /**
  * 

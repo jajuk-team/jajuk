@@ -35,13 +35,12 @@ import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
 import org.jajuk.base.Genre;
 import org.jajuk.base.Track;
+import org.jajuk.base.TrackManager;
 import org.jajuk.base.Type;
 import org.jajuk.base.Year;
-import org.jajuk.base.TestAlbumManager.MockPlayer;
 import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.services.notification.NotificatorTypes;
-import org.jajuk.services.players.IPlayerImpl;
 import org.jajuk.services.players.Player;
 import org.jajuk.services.players.QueueModel;
 import org.jajuk.services.players.StackItem;
@@ -109,9 +108,8 @@ public class TestPlayerStateMediator extends JajukTestCase {
     PlayerStateMediator med = PlayerStateMediator.getInstance();
 
     // test with queue size > 0
-    Device device = new Device("1", "name");
-    device.setUrl(System.getProperty("java.io.tmpdir"));
-
+    Device device = JUnitHelpers.getDevice();
+    
     // no files without a directory
     List<File> files = device.getFilesRecursively();
     assertEquals(0, files.size()); // no file available
@@ -126,21 +124,17 @@ public class TestPlayerStateMediator extends JajukTestCase {
     med.update(new JajukEvent(JajukEvents.PLAYER_STOP, null));
   }
 
-  @SuppressWarnings("unchecked")
   private File getFile(int i, Directory dir) {
-    Genre genre = new Genre(Integer.valueOf(i).toString(), "name");
-    Album album = new Album(Integer.valueOf(i).toString(), "name", 23);
+    Genre genre = JUnitHelpers.getGenre();
+    Album album = JUnitHelpers.getAlbum("name",0);
     album.setProperty(Const.XML_ALBUM_COVER, Const.COVER_NONE); // don't read covers for
     // this test
 
-    Artist artist = new Artist(Integer.valueOf(i).toString(), "name");
-    Year year = new Year(Integer.valueOf(i).toString(), "2000");
+    Artist artist = JUnitHelpers.getArtist("name");
+    Year year = JUnitHelpers.getYear(2000);
 
-    IPlayerImpl imp = new MockPlayer();
-    Class<IPlayerImpl> cl = (Class<IPlayerImpl>) imp.getClass();
-
-    Type type = new Type(Integer.valueOf(i).toString(), "name", "mp3", cl, null);
-    Track track = new Track(Integer.valueOf(i).toString(), "name", album, genre, artist, 120, year,
+    Type type =JUnitHelpers.getType();
+    Track track = TrackManager.getInstance().registerTrack("name", album, genre, artist, 120, year,
         1, type, 1);
 
     return FileManager.getInstance().registerFile(Integer.valueOf(i).toString(), "test.tst", dir,
@@ -187,7 +181,7 @@ public class TestPlayerStateMediator extends JajukTestCase {
     // enable Tooltip/Notification
     Conf.setProperty(Const.CONF_UI_NOTIFICATOR_TYPE, NotificatorTypes.TOAST.name());
 
-    Device device = new Device("1", "name");
+    Device device = JUnitHelpers.getDevice();
     device.setUrl(System.getProperty("java.io.tmpdir"));
     Directory dir = DirectoryManager.getInstance().registerDirectory(device);
     File file = getFile(3, dir);

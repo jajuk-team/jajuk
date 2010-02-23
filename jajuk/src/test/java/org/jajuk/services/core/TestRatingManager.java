@@ -22,12 +22,15 @@ package org.jajuk.services.core;
 
 import java.util.Set;
 
+import org.jajuk.JUnitHelpers;
 import org.jajuk.JajukTestCase;
 import org.jajuk.base.Album;
 import org.jajuk.base.Artist;
 import org.jajuk.base.Device;
 import org.jajuk.base.Directory;
+import org.jajuk.base.DirectoryManager;
 import org.jajuk.base.File;
+import org.jajuk.base.FileManager;
 import org.jajuk.base.Genre;
 import org.jajuk.base.Track;
 import org.jajuk.base.TrackManager;
@@ -139,33 +142,32 @@ public class TestRatingManager extends JajukTestCase {
 
   @SuppressWarnings("unchecked")
   private Track getTrack(int i) throws Exception {
-    Genre genre = new Genre(Integer.valueOf(i).toString(), "name");
-    Album album = new Album(Integer.valueOf(i).toString(), "name", 23);
+    Genre genre = JUnitHelpers.getGenre();
+    Album album = JUnitHelpers.getAlbum("name", 23);
     album.setProperty(Const.XML_ALBUM_COVER, Const.COVER_NONE); // don't read covers for
     // this test
 
-    Artist artist = new Artist(Integer.valueOf(i).toString(), "name");
-    Year year = new Year(Integer.valueOf(i).toString(), "2000");
+    Artist artist = JUnitHelpers.getArtist("name");
+    Year year = JUnitHelpers.getYear(2000);
 
     IPlayerImpl imp = new MockPlayer();
     Class<IPlayerImpl> cl = (Class<IPlayerImpl>) imp.getClass();
     ITagImpl tagimp = new MyTagImpl();
     Class<ITagImpl> tl = (Class<ITagImpl>) tagimp.getClass();
 
-    Type type = new Type(Integer.valueOf(i).toString(), "name", "mp3", cl, tl);
+    Type type = JUnitHelpers.getType();
     Track track = TrackManager.getInstance().registerTrack(Integer.valueOf(i).toString(), "name",
         album, genre, artist, 120, year, 1, type, 1);
 
     album.getTracksCache().add(track);
 
-    Device device = new Device(Integer.valueOf(i).toString(), "name");
+    Device device = JUnitHelpers.getDevice();
     device.setUrl(System.getProperty("java.io.tmpdir"));
     device.mount(true);
 
-    Directory dir = new Directory(Integer.valueOf(i).toString(), "name", null, device);
+    Directory dir = DirectoryManager.getInstance().registerDirectory(device);
 
-    File file = new org.jajuk.base.File(Integer.valueOf(i).toString(), "test.tst", dir, track, 120,
-        70);
+    File file = FileManager.getInstance().registerFile("test.tst", dir, track, 120, 70);
 
     track.addFile(file);
 

@@ -39,7 +39,7 @@ import org.jajuk.base.Album;
 import org.jajuk.base.Artist;
 import org.jajuk.base.Genre;
 import org.jajuk.base.Track;
-import org.jajuk.base.Type;
+import org.jajuk.base.TrackManager;
 import org.jajuk.base.Year;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.ui.actions.ActionManager;
@@ -298,7 +298,6 @@ public class TestTracksTreeView extends JajukTestCase {
     }
   }
 
- 
   /**
    * Test method for
    * {@link org.jajuk.ui.views.TracksTreeView#actionPerformed(java.awt.event.ActionEvent)}
@@ -376,7 +375,7 @@ public class TestTracksTreeView extends JajukTestCase {
    * @return
    */
   private Genre getGenre() {
-    return new Genre("1", "name");
+    return JUnitHelpers.getGenre();
   }
 
   public final void testArtistNode() {
@@ -392,7 +391,7 @@ public class TestTracksTreeView extends JajukTestCase {
    * @return
    */
   private Artist getArtist() {
-    return new Artist("1", "name");
+    return JUnitHelpers.getArtist("name");
   }
 
   public final void testYearNode() {
@@ -408,7 +407,7 @@ public class TestTracksTreeView extends JajukTestCase {
    * @return
    */
   private Year getYear() {
-    return new Year("1", "name");
+    return JUnitHelpers.getYear(2000);
   }
 
   public final void testAlbumNode() {
@@ -424,7 +423,7 @@ public class TestTracksTreeView extends JajukTestCase {
    * @return
    */
   private Album getAlbum() {
-    return new Album("1", "name", 234);
+    return JUnitHelpers.getAlbum("name", 234);
   }
 
   public final void testTrackNode() {
@@ -440,8 +439,8 @@ public class TestTracksTreeView extends JajukTestCase {
    * @return
    */
   private Track getTrack() {
-    return new Track("1", "name", getAlbum(), getGenre(), getArtist(), 123, getYear(), 1, new Type(
-        "3", "name", "ext", null, null), 1);
+    return TrackManager.getInstance().registerTrack("name", getAlbum(), getGenre(), getArtist(), 123, getYear(), 1,
+        JUnitHelpers.getType(), 1);
   }
 
   public final void testDiscoveryDateNode() {

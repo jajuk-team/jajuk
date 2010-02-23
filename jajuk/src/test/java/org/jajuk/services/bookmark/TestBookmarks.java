@@ -26,17 +26,15 @@ import java.util.List;
 import org.jajuk.JUnitHelpers;
 import org.jajuk.JajukTestCase;
 import org.jajuk.base.Album;
+import org.jajuk.base.AlbumArtist;
 import org.jajuk.base.Artist;
 import org.jajuk.base.Device;
 import org.jajuk.base.Directory;
 import org.jajuk.base.File;
-import org.jajuk.base.FileManager;
 import org.jajuk.base.Genre;
 import org.jajuk.base.Track;
 import org.jajuk.base.Type;
 import org.jajuk.base.Year;
-import org.jajuk.services.players.IPlayerImpl;
-import org.jajuk.util.Const;
 
 /**
  * 
@@ -228,39 +226,22 @@ public class TestBookmarks extends JajukTestCase {
   }
 
   // helper method to emma-coverage of the unused constructor
-  @SuppressWarnings("unchecked")
   public void testPrivateConstructor() throws Exception {
-    int i = 1;
-    {
-      Genre genre = new Genre(Integer.valueOf(i).toString(), "name");
-      Album album = new Album(Integer.valueOf(i).toString(), "name", 23);
-      album.setProperty(Const.XML_ALBUM_COVER, Const.COVER_NONE); // don't read covers for
-      // this test
-
-      Artist artist = new Artist(Integer.valueOf(i).toString(), "name");
-      Year year = new Year(Integer.valueOf(i).toString(), "2000");
-
-      IPlayerImpl imp = new JUnitHelpers.MockPlayer();
-      Class<IPlayerImpl> cl = (Class<IPlayerImpl>) imp.getClass();
-
-      Type type = new Type(Integer.valueOf(i).toString(), "name", "mp3", cl, null);
-      Track track = new Track(Integer.valueOf(i).toString(), "name", album, genre, artist, 120,
-          year, 1, type, 1);
-
-      Device device = new Device(Integer.valueOf(i).toString(), "name");
-      device.setUrl(System.getProperty("java.io.tmpdir"));
-      device.mount(true);
-
-      Directory dir = new Directory(Integer.valueOf(i).toString(), "name", null, device);
-      FileManager.getInstance().registerFile("1", "name", dir, track, 120, 10);
-    }
-
     // test with some files
     Bookmarks.getInstance().addFile(JUnitHelpers.getFile(1, true));
     Bookmarks.getInstance().addFile(JUnitHelpers.getFile(1, true));
 
     // For EMMA code-coverage tests
     JUnitHelpers.executePrivateConstructor(Bookmarks.class);
+    JUnitHelpers.executePrivateConstructor(Genre.class);
+    JUnitHelpers.executePrivateConstructor(Album.class);
+    JUnitHelpers.executePrivateConstructor(Artist.class);
+    JUnitHelpers.executePrivateConstructor(AlbumArtist.class);
+    JUnitHelpers.executePrivateConstructor(Year.class);
+    JUnitHelpers.executePrivateConstructor(Type.class);
+    JUnitHelpers.executePrivateConstructor(Track.class);
+    JUnitHelpers.executePrivateConstructor(Device.class);
+    JUnitHelpers.executePrivateConstructor(Directory.class);
   }
 
 }

@@ -67,7 +67,7 @@ public class File extends PhysicalItem implements Comparable<File>, Const {
    * @param lQuality
    *          DOCUMENT_ME
    */
-  public File(String sId, String sName, Directory directory, Track track, long lSize, long lQuality) {
+  File(String sId, String sName, Directory directory, Track track, long lSize, long lQuality) {
     super(sId, sName);
     this.directory = directory;
     setProperty(Const.XML_DIRECTORY, directory.getID());

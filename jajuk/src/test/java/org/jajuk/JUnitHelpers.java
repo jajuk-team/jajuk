@@ -31,16 +31,22 @@ import javax.swing.SwingUtilities;
 import junit.framework.Assert;
 
 import org.jajuk.base.Album;
+import org.jajuk.base.AlbumManager;
 import org.jajuk.base.Artist;
+import org.jajuk.base.ArtistManager;
 import org.jajuk.base.Device;
 import org.jajuk.base.DeviceManager;
 import org.jajuk.base.Directory;
 import org.jajuk.base.DirectoryManager;
 import org.jajuk.base.FileManager;
 import org.jajuk.base.Genre;
+import org.jajuk.base.GenreManager;
 import org.jajuk.base.Track;
+import org.jajuk.base.TrackManager;
 import org.jajuk.base.Type;
+import org.jajuk.base.TypeManager;
 import org.jajuk.base.Year;
+import org.jajuk.base.YearManager;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.services.bookmark.History;
@@ -236,8 +242,8 @@ public class JUnitHelpers {
 
     // not equals to a different type of object
     /*
-     * Assert.assertFalse("Object should not be equal to an arbitrary string in CompareToTest!"
-     * , 0 == obj.compareTo("TestString"));
+     * Assert.assertFalse("Object should not be equal to an arbitrary string in CompareToTest!" , 0
+     * == obj.compareTo("TestString"));
      */
 
     // then test some things with another object that should be equal
@@ -326,9 +332,11 @@ public class JUnitHelpers {
    * @throws Exception
    */
   public static void HashCodeTest(final Object obj, final Object equ) {
-    Assert.assertFalse("HashCodeTest expects two distinct objects with equal hashCode, but the same object is provided twice!", 
-        obj == equ);
-    		
+    Assert
+        .assertFalse(
+            "HashCodeTest expects two distinct objects with equal hashCode, but the same object is provided twice!",
+            obj == equ);
+
     // The same object returns the same hashCode always
     final int hash = obj.hashCode();
     Assert.assertEquals("hashCode() on object returned different hash after some iterations!",
@@ -345,9 +353,10 @@ public class JUnitHelpers {
     // equal objects must have the same hashCode
     // the other way around is not required,
     // different objects can have the same hashCode!!
-    Assert.assertEquals(
-        "Equal Assert failed, but input to HashCodeTest should be two equal objects! Check if the class implements equals() as well to fullfill this contract", 
-        obj, equ);
+    Assert
+        .assertEquals(
+            "Equal Assert failed, but input to HashCodeTest should be two equal objects! Check if the class implements equals() as well to fullfill this contract",
+            obj, equ);
     Assert.assertEquals("Equal objects should have equal hashCode() by Java contract!", obj
         .hashCode(), equ.hashCode());
   }
@@ -404,10 +413,9 @@ public class JUnitHelpers {
     /* int received = */Thread.currentThread().getThreadGroup().enumerate(threads);
 
     /*
-     * we ignore this check as we can not do anything anyway if we receive not
-     * all threads if(count != received) { throw new
-     * IllegalStateException("Could not read all threads: Expected: " + count +
-     * " Found: " + received); }
+     * we ignore this check as we can not do anything anyway if we receive not all threads if(count
+     * != received) { throw new IllegalStateException("Could not read all threads: Expected: " +
+     * count + " Found: " + received); }
      */
 
     for (Thread t : threads) {
@@ -487,33 +495,84 @@ public class JUnitHelpers {
     JUnitHelpers.clearSwingUtilitiesQueue();
   }
 
-  @SuppressWarnings("unchecked")
-  public
-  static org.jajuk.base.File getFile(int i, boolean mount) throws Exception {
-    Genre genre = new Genre(Integer.valueOf(i).toString(), "name");
-    Album album = new Album(Integer.valueOf(i).toString(), "name", 23);
+  public static org.jajuk.base.File getFile(int i, boolean mount) throws Exception {
+    Genre genre = getGenre();
+    Album album = getAlbum("name", 0);
     album.setProperty(Const.XML_ALBUM_COVER, Const.COVER_NONE); // don't read covers for
     // this test
-  
-    Artist artist = new Artist(Integer.valueOf(i).toString(), "name");
-    Year year = new Year(Integer.valueOf(i).toString(), "2000");
-  
-    IPlayerImpl imp = new MockPlayer();
-    Class<IPlayerImpl> cl = (Class<IPlayerImpl>) imp.getClass();
-  
-    Type type = new Type(Integer.valueOf(i).toString(), "name", "mp3", cl, null);
-    Track track = new Track(Integer.valueOf(i).toString(), "name", album, genre, artist, 120, year,
+
+    Artist artist = getArtist("myartist");
+    Year year = getYear(2000);
+
+    Type type = getType();
+    Track track = TrackManager.getInstance().registerTrack("name", album, genre, artist, 120, year,
         1, type, 1);
-  
-    Device device = new Device(Integer.valueOf(i).toString(), "name");
-    device.setUrl(System.getProperty("java.io.tmpdir"));
-    if(mount) {
+
+    Device device = getDevice("name", Device.TYPE_DIRECTORY, System.getProperty("java.io.tmpdir"));
+    if (mount) {
       device.mount(true);
     }
+
+    Directory dir = JUnitHelpers.getDirectory();
+
+    return FileManager.getInstance().registerFile("test.tst", dir,
+        track, 120, 70);
+  }
+
+  public static Album getAlbum(String name, int discID) {
+    return AlbumManager.getInstance().registerAlbum(name, discID);
+  }
+
+  public static Album getAlbum() {
+    return getAlbum("name", 0);
+  }
+
+  public static Artist getArtist(String name) {
+    return ArtistManager.getInstance().registerArtist(name);
+  }
+
+  public static Artist getArtist() {
+    return getArtist("name");
+  }
   
-    Directory dir = new Directory(Integer.valueOf(i).toString(), "name", null, device);
   
-    return FileManager.getInstance().registerFile(Integer.valueOf(i).toString(), "test.tst", dir, track, 120, 70);
+  public static Genre getGenre(String name) {
+    return GenreManager.getInstance().registerGenre(name);
+  }
+
+  public static Genre getGenre() {
+    return getGenre("name");
+  }
+
+  public static Year getYear(int year) {
+    return YearManager.getInstance().registerYear("" + year);
+  }
+  
+  public static Year getYear() {
+    return getYear(2000);
+  }
+
+  public static Device getDevice(String name, long type, String url) {
+    return DeviceManager.getInstance().registerDevice(name, type, url);
+  }
+
+  public static Device getDevice() {
+    return getDevice("name", Device.TYPE_DIRECTORY, System.getProperty("java.io.tmpdir"));
+  }
+  
+  public static Directory getDirectory(String name,Directory parent) {
+    return DirectoryManager.getInstance().registerDirectory(name,parent);
+  }
+  /** The "any" directory is the top dir of the device pointing toward $java.io.tmpdir*/
+  public static Directory getDirectory(){
+    return DirectoryManager.getInstance().registerDirectory(getDevice());
+  }
+  
+  @SuppressWarnings("unchecked")
+  public static Type getType(){
+    IPlayerImpl imp = new MockPlayer();
+    Class<IPlayerImpl> cl = (Class<IPlayerImpl>) imp.getClass();
+    return TypeManager.getInstance().registerType("type", "mp3", cl, null);
   }
 
   // needs to be public to be callable from the outside...
@@ -538,7 +597,8 @@ public class JUnitHelpers {
 
     }
 
-    public void play(org.jajuk.base.File file, float fPosition, long length, float fVolume) throws Exception {
+    public void play(org.jajuk.base.File file, float fPosition, long length, float fVolume)
+        throws Exception {
 
     }
 
@@ -572,21 +632,17 @@ public class JUnitHelpers {
     }
   }
 
-  @SuppressWarnings("unchecked")
   public static Track getTrack(int i) {
-    Genre genre = new Genre(Integer.valueOf(i).toString(), "name");
-    Album album = new Album(Integer.valueOf(i).toString(), "name", 23);
+    Genre genre = getGenre();
+    Album album = getAlbum("myalbum", 0);
     album.setProperty(Const.XML_ALBUM_COVER, Const.COVER_NONE); // don't read covers for
     // this test
-  
-    Artist artist = new Artist(Integer.valueOf(i).toString(), "name");
-    Year year = new Year(Integer.valueOf(i).toString(), "2000");
-  
-    IPlayerImpl imp = new MockPlayer();
-    Class<IPlayerImpl> cl = (Class<IPlayerImpl>) imp.getClass();
-  
-    Type type = new Type(Integer.valueOf(i).toString(), "name", "mp3", cl, null);
-    return new Track(Integer.valueOf(i).toString(), "name", album, genre, artist, 120, year, 1,
+
+    Artist artist = getArtist("myartist");
+    Year year = getYear(2000);
+
+    Type type = getType();
+    return TrackManager.getInstance().registerTrack("name", album, genre, artist, 120, year, 1,
         type, 1);
-  }  
+  }
 }

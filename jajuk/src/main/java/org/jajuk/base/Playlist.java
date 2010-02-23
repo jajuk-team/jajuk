@@ -113,7 +113,7 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
    * @param sName DOCUMENT_ME
    * @param dParentDirectory DOCUMENT_ME
    */
-  public Playlist(final Type type, final String sId, final String sName,
+  Playlist(final Type type, final String sId, final String sName,
       final Directory dParentDirectory) {
     super(sId, sName);
     this.dParentDirectory = dParentDirectory;

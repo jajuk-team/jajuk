@@ -34,6 +34,7 @@ import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
 import org.jajuk.base.Playlist;
 import org.jajuk.base.PlaylistManager;
+import org.jajuk.base.SmartPlaylist;
 import org.jajuk.services.dj.Ambience;
 import org.jajuk.services.dj.AmbienceManager;
 import org.jajuk.services.dj.DigitalDJ;
@@ -408,7 +409,7 @@ public class UtilPrepareParty {
    *           the jajuk exception
    */
   public static List<org.jajuk.base.File> getBestOfFiles() throws JajukException {
-    Playlist pl = new Playlist(Playlist.Type.BESTOF, "tmp", "temporary", null);
+    Playlist pl = new SmartPlaylist(Playlist.Type.BESTOF, "tmp", "temporary", null);
     return pl.getFiles();
   }
 
@@ -421,7 +422,7 @@ public class UtilPrepareParty {
    *           the jajuk exception
    */
   public static List<org.jajuk.base.File> getNoveltiesFiles() throws JajukException {
-    Playlist pl = new Playlist(Playlist.Type.NOVELTIES, "tmp", "temporary", null);
+    Playlist pl = new SmartPlaylist(Playlist.Type.NOVELTIES, "tmp", "temporary", null);
     return pl.getFiles();
   }
 
@@ -434,7 +435,7 @@ public class UtilPrepareParty {
    *           the jajuk exception
    */
   public static List<org.jajuk.base.File> getQueueFiles() throws JajukException {
-    Playlist pl = new Playlist(Playlist.Type.QUEUE, "tmp", "temporary", null);
+    Playlist pl = new SmartPlaylist(Playlist.Type.QUEUE, "tmp", "temporary", null);
     return pl.getFiles();
   }
 
@@ -447,7 +448,7 @@ public class UtilPrepareParty {
    *           the jajuk exception
    */
   public static List<org.jajuk.base.File> getBookmarkFiles() throws JajukException {
-    Playlist pl = new Playlist(Playlist.Type.BOOKMARK, "tmp", "temporary", null);
+    Playlist pl = new SmartPlaylist(Playlist.Type.BOOKMARK, "tmp", "temporary", null);
     return pl.getFiles();
   }
 

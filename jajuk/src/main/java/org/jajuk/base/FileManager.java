@@ -117,8 +117,8 @@ public final class FileManager extends ItemManager {
   /**
    * Register an File with a known id.
    * 
-   * @param sName DOCUMENT_ME
    * @param sId DOCUMENT_ME
+   * @param sName DOCUMENT_ME
    * @param directory DOCUMENT_ME
    * @param track DOCUMENT_ME
    * @param lSize DOCUMENT_ME
@@ -146,6 +146,23 @@ public final class FileManager extends ItemManager {
     // Add file to track
     track.addFile(file);
     return file;
+  }
+  
+  /**
+   * Register an File without known id.
+   * 
+   * @param sName DOCUMENT_ME
+   * @param directory DOCUMENT_ME
+   * @param track DOCUMENT_ME
+   * @param lSize DOCUMENT_ME
+   * @param lQuality DOCUMENT_ME
+   * 
+   * @return the file
+   */
+  public synchronized File registerFile(String sName, Directory directory, Track track,
+      long lSize, long lQuality) {
+    String sId = createID(sName);
+    return registerFile(sId, sName, directory, track, lSize, lQuality);
   }
 
   /**

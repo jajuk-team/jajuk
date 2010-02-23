@@ -54,7 +54,7 @@ public class Type extends PhysicalItem implements Comparable<Type> {
    * @param cTagImpl DOCUMENT_ME
    * 
    * @throws Exception    */
-  public Type(final String sId, final String sName, final String sExtension,
+  Type(final String sId, final String sName, final String sExtension,
       final Class<IPlayerImpl> cPlayerImpl, final Class<ITagImpl> cTagImpl) {
     super(sId, sName);
     this.cPlayerImpl = cPlayerImpl;

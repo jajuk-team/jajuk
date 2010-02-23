@@ -31,10 +31,12 @@ import org.jajuk.base.AlbumManager;
 import org.jajuk.base.Artist;
 import org.jajuk.base.Device;
 import org.jajuk.base.Directory;
+import org.jajuk.base.DirectoryManager;
 import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
 import org.jajuk.base.Genre;
 import org.jajuk.base.Track;
+import org.jajuk.base.TrackManager;
 import org.jajuk.base.Type;
 import org.jajuk.base.Year;
 import org.jajuk.services.core.SessionService;
@@ -121,8 +123,8 @@ public class TestQueueModel extends JajukTestCase {
     addItems(10);
 
     // empty call, does not find anything
-    QueueModel.resetAround(1, new Album("99", "name99", 0));
-    
+    QueueModel.resetAround(1, JUnitHelpers.getAlbum("name", 23));
+
     // do a normal call
     QueueModel.resetAround(1, AlbumManager.getInstance().getAlbumByID("1"));
   }
@@ -317,7 +319,7 @@ public class TestQueueModel extends JajukTestCase {
   */
   public void testFinishedRepeatAndShuffle() throws Exception {
     QueueModel.clear();
-    
+
     addItems(5);
     StackItem firstItem = QueueModel.getItem(0);
     QueueModel.setRepeatModeToAll(true);
@@ -332,8 +334,8 @@ public class TestQueueModel extends JajukTestCase {
     assertTrue(QueueModel.getItem(0).equals(firstItem));
     QueueModel.finished();
     // Queue should be shuffled then
-    assertFalse("Item0: " + QueueModel.getItem(0) + "\nFirstItem: " + firstItem, 
-        QueueModel.getItem(0).equals(firstItem));
+    assertFalse("Item0: " + QueueModel.getItem(0) + "\nFirstItem: " + firstItem, QueueModel
+        .getItem(0).equals(firstItem));
   }
 
   /**
@@ -736,18 +738,18 @@ public class TestQueueModel extends JajukTestCase {
    */
 
   public void testCanUnmount() throws Exception {
-    assertTrue(QueueModel.canUnmount(new Device("0", "test")));
+    assertTrue(QueueModel.canUnmount(JUnitHelpers.getDevice()));
 
     addItems(10);
 
     // still true as we are not playing
-    assertTrue(QueueModel.canUnmount(new Device("1", "test")));
-    assertTrue(QueueModel.canUnmount(new Device("11", "test")));
+    assertTrue(QueueModel.canUnmount(JUnitHelpers.getDevice("test", Device.TYPE_DIRECTORY, System
+        .getProperty("java.io.tmpdir"))));
 
     // try to start playing/planning
     QueueModel.playNext();
     assertFalse(QueueModel.canUnmount(QueueModel.getItem(1).getFile().getDevice()));
-    assertTrue(QueueModel.canUnmount(new Device("11", "test")));
+    assertTrue(QueueModel.canUnmount(JUnitHelpers.getDevice()));
   }
 
   /**
@@ -1231,23 +1233,23 @@ public class TestQueueModel extends JajukTestCase {
     assertEquals(10, QueueModel.getQueueSize());
 
     // we can add a dummy-file and check that it is removed
-    Genre genre = new Genre("99", "name");
-    Album album = new Album("99", "name", 23);
+    Genre genre = JUnitHelpers.getGenre();
+    Album album = JUnitHelpers.getAlbum("name", 23);
     album.setProperty(Const.XML_ALBUM_COVER, Const.COVER_NONE); // don't read covers for
     // this test
 
-    Artist artist = new Artist("99", "name");
-    Year year = new Year("99", "2000");
+    Artist artist = JUnitHelpers.getArtist("name");
+    Year year = JUnitHelpers.getYear(2000);
 
-    Type type = new Type("99", "name", "mp3", null, null);
-    Track track = new Track("99", "name", album, genre, artist, 120, year, 1, type, 1);
+    Type type = JUnitHelpers.getType();
+    Track track = TrackManager.getInstance().registerTrack("name", album, genre, artist, 120, year,
+        1, type, 1);
 
-    Device device = new Device("99", "name");
-    device.setUrl(System.getProperty("java.io.tmpdir"));
+    Device device = JUnitHelpers.getDevice();
 
-    Directory dir = new Directory("99", "name", null, device);
+    Directory dir = DirectoryManager.getInstance().registerDirectory(device);
 
-    File file = new File("99", "test.tst", dir, track, 120, 70);
+    File file = FileManager.getInstance().registerFile("test.tst", dir, track, 120, 70);
 
     QueueModel.insert(new StackItem(file), 0);
 

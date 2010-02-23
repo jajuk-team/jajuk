@@ -26,6 +26,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import org.jajuk.base.Playlist;
+import org.jajuk.base.SmartPlaylist;
 import org.jajuk.base.Playlist.Type;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
@@ -34,7 +35,7 @@ import org.jajuk.util.Messages;
 /**
  * A physical playlist icon + text.
  */
-public class SmartPlaylist extends JPanel {
+public class SmartPlaylistView extends JPanel {
   
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
@@ -53,22 +54,22 @@ public class SmartPlaylist extends JPanel {
    * 
    * @param type DOCUMENT_ME
    */
-  public SmartPlaylist(Playlist.Type type) {
+  public SmartPlaylistView(Playlist.Type type) {
     this.type = type;
     if (type == Type.NEW) {
       jlIcon = new JLabel(IconLoader.getIcon(JajukIcons.PLAYLIST_NEW));
-      plf = new Playlist(Type.NEW, Integer.toString(Playlist.Type.NEW.ordinal()), getName(), null);
+      plf = new SmartPlaylist(Type.NEW, Integer.toString(Playlist.Type.NEW.ordinal()), getName(), null);
     } else if (type == Type.BESTOF) {
       jlIcon = new JLabel(IconLoader.getIcon(JajukIcons.PLAYLIST_BESTOF));
-      plf = new Playlist(Type.BESTOF, Integer.toString(Playlist.Type.BESTOF.ordinal()), getName(),
+      plf = new SmartPlaylist(Type.BESTOF, Integer.toString(Playlist.Type.BESTOF.ordinal()), getName(),
           null);
     } else if (type == Type.BOOKMARK) {
       jlIcon = new JLabel(IconLoader.getIcon(JajukIcons.PLAYLIST_BOOKMARK));
-      plf = new Playlist(Type.BOOKMARK, Integer.toString(Playlist.Type.BOOKMARK.ordinal()),
+      plf = new SmartPlaylist(Type.BOOKMARK, Integer.toString(Playlist.Type.BOOKMARK.ordinal()),
           getName(), null);
     } else if (type == Type.NOVELTIES) {
       jlIcon = new JLabel(IconLoader.getIcon(JajukIcons.PLAYLIST_NOVELTIES));
-      plf = new Playlist(Type.NOVELTIES, Integer.toString(Playlist.Type.NOVELTIES.ordinal()),
+      plf = new SmartPlaylist(Type.NOVELTIES, Integer.toString(Playlist.Type.NOVELTIES.ordinal()),
           getName(), null);
     }
     setToolTipText(getName());

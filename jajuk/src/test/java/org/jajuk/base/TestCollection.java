@@ -129,7 +129,7 @@ public class TestCollection extends JajukTestCase {
     DirectoryManager.getInstance().registerDirectory(device);
     device = new Device("6", System.getProperty("java.io.tmpdir"));
     device.setUrl(System.getProperty("java.io.tmpdir"));
-    FileManager.getInstance().registerFile("5", "thisfile.mp3",
+    FileManager.getInstance().registerFile("thisfile.mp3",
         new Directory("4", "directory", null, device),
         TrackManager.getInstance().getTracks().get(0), 120, 100);
 

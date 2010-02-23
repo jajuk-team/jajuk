@@ -34,14 +34,6 @@ import java.util.List;
 import org.apache.commons.lang.StringUtils;
 import org.jajuk.JUnitHelpers;
 import org.jajuk.JajukTestCase;
-import org.jajuk.base.Album;
-import org.jajuk.base.Artist;
-import org.jajuk.base.Device;
-import org.jajuk.base.Directory;
-import org.jajuk.base.Genre;
-import org.jajuk.base.Track;
-import org.jajuk.base.Type;
-import org.jajuk.base.Year;
 import org.jajuk.services.core.SessionService;
 import org.jajuk.services.lyrics.providers.FlyWebLyricsProvider;
 import org.jajuk.services.lyrics.providers.GenericWebLyricsProvider;
@@ -262,10 +254,8 @@ public class TestLyrics extends JajukTestCase {
     LyricsService.getProviders().remove(0);
     LyricsService.getProviders().remove(0);
 
-    org.jajuk.base.File dummyFile = new org.jajuk.base.File("1", "test", new Directory("1", "dir", null, new Device("1", "test")), new Track("1",
-        TITLE, new Album("1", "Album", 1), new Genre("1", "genre"), new Artist("1",
-            ARTIST), 0, new Year("1", "100"), 0, new Type("1", "name", "ext", null, null), 0),
-        120l, 70l);
+    
+    org.jajuk.base.File dummyFile = JUnitHelpers.getFile(2, true);
     LyricsService.getLyrics(dummyFile);
     assertTrue("Instance: " + LyricsService.getCurrentProvider().getClass()
         + " but expected LyricWikiProvider",

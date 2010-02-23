@@ -26,14 +26,18 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ComponentEvent;
 import java.util.Set;
 
+import org.jajuk.JUnitHelpers;
 import org.jajuk.JajukTestCase;
 import org.jajuk.base.Album;
 import org.jajuk.base.Artist;
 import org.jajuk.base.Device;
 import org.jajuk.base.Directory;
+import org.jajuk.base.DirectoryManager;
 import org.jajuk.base.File;
+import org.jajuk.base.FileManager;
 import org.jajuk.base.Genre;
 import org.jajuk.base.Track;
+import org.jajuk.base.TrackManager;
 import org.jajuk.base.Type;
 import org.jajuk.base.Year;
 import org.jajuk.events.JajukEvent;
@@ -85,16 +89,16 @@ public class TestCoverView extends JajukTestCase {
   }
 
   private File getFile() {
-    Genre genre = new Genre("5", "name");
-    Album album = new Album("4", "name", 23);
-    Artist artist = new Artist("6", "name");
-    Year year = new Year("7", "2000");
-    Type type = new Type("8", "name", "mp3", null, null);
-    Track track = new Track("3", "name", album, genre, artist, 120, year, 1, type, 1);
-    Device device = new Device("9", "name");
-    Directory dir = new Directory("2", "name", null, device);
-
-    return new org.jajuk.base.File("1", "test.tst", dir, track, 120, 70);
+    Genre genre = JUnitHelpers.getGenre();
+    Album album = JUnitHelpers.getAlbum("name",0);
+    Artist artist = JUnitHelpers.getArtist("name");
+    Year year = JUnitHelpers.getYear(2000);
+    Type type = JUnitHelpers.getType();
+    Track track = TrackManager.getInstance().registerTrack("name", album, genre, artist, 120, year, 1, type, 1);
+    Device device = JUnitHelpers.getDevice();
+    Directory dir = DirectoryManager.getInstance().registerDirectory(device);
+    File file = FileManager.getInstance().registerFile("test.tst", dir, track, 120, 70);
+    return file;
   }
 
   /**

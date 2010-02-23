@@ -34,15 +34,16 @@ import org.jajuk.base.Album;
 import org.jajuk.base.Artist;
 import org.jajuk.base.Device;
 import org.jajuk.base.Directory;
+import org.jajuk.base.DirectoryManager;
 import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
+import org.jajuk.base.Genre;
 import org.jajuk.base.Playlist;
 import org.jajuk.base.PlaylistManager;
-import org.jajuk.base.Genre;
 import org.jajuk.base.Track;
+import org.jajuk.base.TrackManager;
 import org.jajuk.base.Type;
 import org.jajuk.base.Year;
-import org.jajuk.services.players.IPlayerImpl;
 import org.jajuk.util.Const;
 import org.jajuk.util.log.Log;
 
@@ -98,29 +99,24 @@ public class TestPreparePartyAction extends JajukTestCase {
     }
   }
 
-  @SuppressWarnings("unchecked")
   private static Playlist getPlaylist(int i, boolean register) throws Exception {
-    Genre genre = new Genre(Integer.valueOf(i).toString(), "name");
-    Album album = new Album(Integer.valueOf(i).toString(), "name", 23);
+    Genre genre = JUnitHelpers.getGenre();
+    Album album = JUnitHelpers.getAlbum("name", 23);
     album.setProperty(Const.XML_ALBUM_COVER, Const.COVER_NONE); // don't read covers for
     // this test
 
-    Artist artist = new Artist(Integer.valueOf(i).toString(), "name");
-    Year year = new Year(Integer.valueOf(i).toString(), "2000");
+    Artist artist = JUnitHelpers.getArtist("name");
+    Year year = JUnitHelpers.getYear(2000);
 
-    IPlayerImpl imp = new JUnitHelpers.MockPlayer();
-    Class<IPlayerImpl> cl = (Class<IPlayerImpl>) imp.getClass();
-
-    Type type = new Type(Integer.valueOf(i).toString(), "name", "mp3", cl, null);
-    Track track = new Track(Integer.valueOf(i).toString(), "name", album, genre, artist, 120, year,
+    Type type = JUnitHelpers.getType();
+    Track track = TrackManager.getInstance().registerTrack("name", album, genre, artist, 120, year,
         1, type, 1);
 
-    Device device = new Device(Integer.valueOf(i).toString(), "JajukDevice");
-    device.setUrl(System.getProperty("java.io.tmpdir"));
+    Device device = JUnitHelpers.getDevice("JajukDevice", Device.TYPE_DIRECTORY, System
+        .getProperty("java.io.tmpdir"));
     device.mount(true);
 
-    Directory dir = new Directory(Integer.valueOf(i).toString(), "name", null, device);
-
+    Directory dir = DirectoryManager.getInstance().registerDirectory(device);
     Log.debug("Dir: " + dir.getFio());
     dir.getFio().mkdirs();
 

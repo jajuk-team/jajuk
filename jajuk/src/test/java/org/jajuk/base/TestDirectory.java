@@ -205,11 +205,11 @@ public class TestDirectory extends JajukTestCase {
   @SuppressWarnings("unchecked")
   public static org.jajuk.base.File getFileInDir(int i, Directory dir) throws Exception {
     Genre genre = new Genre(Integer.valueOf(i).toString(), "name");
-    Album album = new Album(Integer.valueOf(i).toString(), "name", 23);
+    Album album = JUnitHelpers.getAlbum("myalbum",0);
     album.setProperty(Const.XML_ALBUM_COVER, Const.COVER_NONE); // don't read covers for
     // this test
 
-    Artist artist = new Artist(Integer.valueOf(i).toString(), "name");
+    Artist artist = JUnitHelpers.getArtist("name");
     Year year = new Year(Integer.valueOf(i).toString(), "2000");
 
     IPlayerImpl imp = new MockPlayer();

@@ -40,7 +40,7 @@ public class Artist extends LogicalItem implements Comparable<Artist> {
    * @param sName DOCUMENT_ME
    * @param sId DOCUMENT_ME
    */
-  public Artist(String sId, String sName) {
+  Artist(String sId, String sName) {
     super(sId, sName);
   }
 

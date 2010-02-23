@@ -314,11 +314,11 @@ public class TestDevice extends JajukTestCase {
   @SuppressWarnings("unchecked")
   private File getFile(int i, Directory dir) {
     Genre genre = new Genre(Integer.valueOf(i).toString(), "name");
-    Album album = new Album(Integer.valueOf(i).toString(), "name", 23);
+    Album album = JUnitHelpers.getAlbum("myalbum",0);
     album.setProperty(Const.XML_ALBUM_COVER, Const.COVER_NONE); // don't read covers for
     // this test
 
-    Artist artist = new Artist(Integer.valueOf(i).toString(), "name");
+    Artist artist = JUnitHelpers.getArtist("name");
     Year year = new Year(Integer.valueOf(i).toString(), "2000");
 
     IPlayerImpl imp = new MockPlayer();
@@ -328,8 +328,7 @@ public class TestDevice extends JajukTestCase {
     Track track = new Track(Integer.valueOf(i).toString(), "name", album, genre, artist, 120, year,
         1, type, 1);
 
-    return FileManager.getInstance().registerFile(Integer.valueOf(i).toString(),
-        "test" + Long.valueOf(System.currentTimeMillis()).toString() + ".tst", dir, track, 120, 70);
+    return FileManager.getInstance().registerFile("test" + Long.valueOf(System.currentTimeMillis()).toString() + ".tst", dir, track, 120, 70);
   }
 
   /**

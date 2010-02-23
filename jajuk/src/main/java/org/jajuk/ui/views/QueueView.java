@@ -48,6 +48,7 @@ import net.miginfocom.swing.MigLayout;
 import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
 import org.jajuk.base.Playlist;
+import org.jajuk.base.SmartPlaylist;
 import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
@@ -99,7 +100,7 @@ public class QueueView extends PlaylistView {
    */
   @Override
   public void initUI() {
-    plf = new Playlist(Playlist.Type.QUEUE, Integer.toString(Playlist.Type.QUEUE.ordinal()), null,
+    plf = new SmartPlaylist(Playlist.Type.QUEUE, Integer.toString(Playlist.Type.QUEUE.ordinal()), null,
         null);
     // Control panel
     jpEditorControl = new JPanel();

@@ -20,11 +20,11 @@
  */
 package org.jajuk.base;
 
+import junit.framework.TestCase;
+
 import org.jajuk.JUnitHelpers;
 import org.jajuk.base.SearchResult.SearchResultType;
 import org.jajuk.services.webradio.WebRadio;
-
-import junit.framework.TestCase;
 
 /**
  * 

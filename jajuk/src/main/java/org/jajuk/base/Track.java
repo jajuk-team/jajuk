@@ -84,7 +84,7 @@ public class Track extends LogicalItem implements Comparable<Track> {
    * @param lOrder DOCUMENT_ME
    * @param lDiscNumber DOCUMENT_ME
    */
-  public Track(String sId, String sName, Album album, Genre genre, Artist artist, long length,
+  Track(String sId, String sName, Album album, Genre genre, Artist artist, long length,
       Year year, long lOrder, Type type, long lDiscNumber) {
     super(sId, sName);
     // album

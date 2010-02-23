@@ -32,9 +32,12 @@ import org.jajuk.base.Album;
 import org.jajuk.base.Artist;
 import org.jajuk.base.Device;
 import org.jajuk.base.Directory;
+import org.jajuk.base.DirectoryManager;
 import org.jajuk.base.File;
+import org.jajuk.base.FileManager;
 import org.jajuk.base.Genre;
 import org.jajuk.base.Track;
+import org.jajuk.base.TrackManager;
 import org.jajuk.base.Type;
 import org.jajuk.base.Year;
 import org.jajuk.util.Const;
@@ -194,28 +197,25 @@ public class TestDigitalDJ extends JajukTestCase {
   }
 
   private File getFile(int i) throws Exception {
-    Genre genre = new Genre(Integer.valueOf(i).toString(), "name");
-    Album album = new Album(Integer.valueOf(i).toString(), "name", 23);
+    Genre genre = JUnitHelpers.getGenre();
+    Album album = JUnitHelpers.getAlbum("name",0);
     album.setProperty(Const.XML_ALBUM_COVER, Const.COVER_NONE); // don't read covers for
     // this test
 
-    Artist artist = new Artist(Integer.valueOf(i).toString(), "name");
-    Year year = new Year(Integer.valueOf(i).toString(), "2000");
+    Artist artist = JUnitHelpers.getArtist("name");
+    Year year = JUnitHelpers.getYear(2000);
 
     // IPlayerImpl imp = new MockPlayer();
     // Class<IPlayerImpl> cl = (Class<IPlayerImpl>) imp.getClass();
 
-    Type type = new Type(Integer.valueOf(i).toString(), "name", "mp3", null, null);
-    Track track = new Track(Integer.valueOf(i).toString(), "name", album, genre, artist, 120, year,
+    Type type = JUnitHelpers.getType();
+    Track track = TrackManager.getInstance().registerTrack("name", album, genre, artist, 120, year,
         1, type, 1);
 
-    Device device = new Device(Integer.valueOf(i).toString(), "name");
-    device.setUrl(System.getProperty("java.io.tmpdir"));
+    Device device = JUnitHelpers.getDevice();
     device.mount(true);
-
-    Directory dir = new Directory(Integer.valueOf(i).toString(), "name", null, device);
-
-    return new org.jajuk.base.File(Integer.valueOf(i).toString(), "test.tst", dir, track, 120, 70);
+    Directory dir = DirectoryManager.getInstance().registerDirectory(device);
+    return FileManager.getInstance().registerFile("test.tst", dir, track, 120, 70);
   }
 
   /**

@@ -129,7 +129,7 @@ public class Device extends PhysicalItem implements Comparable<Device> {
    * @param sId DOCUMENT_ME
    * @param sName DOCUMENT_ME
    */
-  public Device(final String sId, final String sName) {
+  Device(final String sId, final String sName) {
     super(sId, sName);
   }
 

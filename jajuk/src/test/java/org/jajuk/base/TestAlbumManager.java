@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import org.jajuk.JUnitHelpers;
 import org.jajuk.JajukTestCase;
 import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
@@ -506,7 +507,7 @@ public class TestAlbumManager extends JajukTestCase {
     // covers for
     // this test
 
-    Artist artist = new Artist(Integer.valueOf(i).toString(), "name");
+    Artist artist = JUnitHelpers.getArtist("name");
     Year year = new Year(Integer.valueOf(i).toString(), "2000");
 
     IPlayerImpl imp = new MockPlayer();
@@ -520,7 +521,7 @@ public class TestAlbumManager extends JajukTestCase {
 
     album.getTracksCache().add(track);
 
-    Device device = new Device(Integer.valueOf(i).toString(), "name");
+    Device device = JUnitHelpers.getDevice();
     device.setUrl(System.getProperty("java.io.tmpdir"));
     device.mount(true);
 

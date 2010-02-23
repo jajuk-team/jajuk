@@ -90,7 +90,7 @@ import org.jajuk.ui.widgets.JajukButton;
 import org.jajuk.ui.widgets.JajukJSplitPane;
 import org.jajuk.ui.widgets.JajukJToolbar;
 import org.jajuk.ui.widgets.JajukTable;
-import org.jajuk.ui.widgets.SmartPlaylist;
+import org.jajuk.ui.widgets.SmartPlaylistView;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
@@ -199,19 +199,19 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
   private PlaylistRepository repositoryPanel;
 
   /** DOCUMENT_ME. */
-  private SmartPlaylist spNew;
+  private SmartPlaylistView spNew;
 
   /** DOCUMENT_ME. */
-  private SmartPlaylist spNovelties;
+  private SmartPlaylistView spNovelties;
 
   /** DOCUMENT_ME. */
-  private SmartPlaylist spBookmark;
+  private SmartPlaylistView spBookmark;
 
   /** DOCUMENT_ME. */
-  private SmartPlaylist spBestof;
+  private SmartPlaylistView spBestof;
 
   /** Selected smart playlist. */
-  private SmartPlaylist spSelected;
+  private SmartPlaylistView spSelected;
 
   /** DOCUMENT_ME. */
   List<File> selectedFiles = new ArrayList<File>(20);
@@ -221,7 +221,7 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
 
     @Override
     public void handleAction(final MouseEvent e) {
-      SmartPlaylist sp = (SmartPlaylist) e.getComponent();
+      SmartPlaylistView sp = (SmartPlaylistView) e.getComponent();
       if (sp == spSelected) {
         List<File> files;
         try {
@@ -243,7 +243,7 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
 
     @Override
     public void handlePopup(final MouseEvent e) {
-      SmartPlaylist sp = (SmartPlaylist) e.getComponent();
+      SmartPlaylistView sp = (SmartPlaylistView) e.getComponent();
       if (sp == spSelected) {
         // right click
         showMenu(e);
@@ -271,7 +271,7 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
    * @param sp
    *          DOCUMENT_ME
    */
-  void selectSmartPlaylist(SmartPlaylist sp) {
+  void selectSmartPlaylist(SmartPlaylistView sp) {
     // remove item border
     if (spSelected != null) {
       spSelected.getIcon().setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
@@ -454,13 +454,13 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
   public void initUI() {
     initEditorPanel();
 
-    spNew = new SmartPlaylist(Type.NEW);
+    spNew = new SmartPlaylistView(Type.NEW);
     spNew.addMouseListener(ma);
-    spBestof = new SmartPlaylist(Type.BESTOF);
+    spBestof = new SmartPlaylistView(Type.BESTOF);
     spBestof.addMouseListener(ma);
-    spNovelties = new SmartPlaylist(Type.NOVELTIES);
+    spNovelties = new SmartPlaylistView(Type.NOVELTIES);
     spNovelties.addMouseListener(ma);
-    spBookmark = new SmartPlaylist(Type.BOOKMARK);
+    spBookmark = new SmartPlaylistView(Type.BOOKMARK);
     spBookmark.addMouseListener(ma);
     JPanel jpSmartPlaylists = new JPanel();
     jpSmartPlaylists.setLayout(new FlowLayout(FlowLayout.LEFT));

@@ -397,7 +397,7 @@ public class TestAlbum extends JajukTestCase {
   }
 
   private File getFile(int i, Track track) throws Exception {
-    Device device = new Device(Integer.valueOf(i).toString(), "name");
+    Device device = JUnitHelpers.getDevice();
     device.setUrl(System.getProperty("java.io.tmpdir"));
     device.mount(true);
 

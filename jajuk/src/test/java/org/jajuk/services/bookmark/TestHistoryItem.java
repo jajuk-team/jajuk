@@ -26,13 +26,14 @@ import org.jajuk.base.Album;
 import org.jajuk.base.Artist;
 import org.jajuk.base.Device;
 import org.jajuk.base.Directory;
+import org.jajuk.base.DirectoryManager;
 import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
 import org.jajuk.base.Genre;
 import org.jajuk.base.Track;
+import org.jajuk.base.TrackManager;
 import org.jajuk.base.Type;
 import org.jajuk.base.Year;
-import org.jajuk.services.players.IPlayerImpl;
 import org.jajuk.util.Const;
 
 /**
@@ -91,32 +92,25 @@ public class TestHistoryItem extends JajukTestCase {
     JUnitHelpers.ToStringTest(item);
   }
 
-  @SuppressWarnings("unchecked")
   public final void testToStringFile() {
     File file;
     {
-      Genre genre = new Genre("3", "genrename");
-      Album album = new Album("3", "albumname", 23);
+      Genre genre = JUnitHelpers.getGenre("genrename");
+      Album album = JUnitHelpers.getAlbum("myalbum", 0);
       album.setProperty(Const.XML_ALBUM_COVER, Const.COVER_NONE); // don't read covers for
       // this test
 
-      Artist artist = new Artist("3", "artistname");
-      Year year = new Year("3", "2000");
+      Artist artist = JUnitHelpers.getArtist("artistname");
+      Year year = JUnitHelpers.getYear(2000);
 
-      IPlayerImpl imp = new JUnitHelpers.MockPlayer();
-      Class<IPlayerImpl> cl = (Class<IPlayerImpl>) imp.getClass();
+      Type type = JUnitHelpers.getType();
+      Track track = TrackManager.getInstance().registerTrack("trackname", album, genre, artist, 120, year, 1, type, 1);
 
-      Type type = new Type("3", "typename", "mp3", cl, null);
-      Track track = new Track("3", "trackname", album, genre, artist, 120, year, 1, type, 1);
+      Device device = JUnitHelpers.getDevice("devicename", Device.TYPE_DIRECTORY, System
+          .getProperty("java.io.tmpdir"));
 
-      Device device = new Device("3", "devicename");
-      device.setUrl(System.getProperty("java.io.tmpdir"));
-      // device.mount(true);
-
-      Directory dir = new Directory("3", "dirname", null, device);
-
-      file = new org.jajuk.base.File("3", "test.tst", dir, track, 120, 70);
-      FileManager.getInstance().registerFile("3", "test.tst", dir, track, 120, 70);
+      Directory dir = DirectoryManager.getInstance().registerDirectory(device);
+      file = FileManager.getInstance().registerFile("test.tst", dir, track, 120, 70);
     }
 
     long date = System.currentTimeMillis();

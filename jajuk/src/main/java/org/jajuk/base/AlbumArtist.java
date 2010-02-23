@@ -45,7 +45,7 @@ public class AlbumArtist extends Artist {
    * @param sName album-artist string
    * @param sId album-artist guid
    */
-  public AlbumArtist(String sId, String sName) {
+  AlbumArtist(String sId, String sName) {
     super(sId, sName);
   }
 
