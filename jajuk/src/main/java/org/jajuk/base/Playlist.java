@@ -248,7 +248,7 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
         final Iterator<File> it = getFiles().iterator();
         while (it.hasNext()) {
           final File file = it.next();
-          if (file.getFIO().getParent().equals(fio.getParent())) {
+          if (file.getFIO().getParent().equals(getFIO().getParent())) {
             bw.write(file.getName());
           } else {
             bw.write(file.getAbsolutePath());
