@@ -146,7 +146,7 @@ public class TestQueueModel extends JajukTestCase {
 
   public void testPushListOfStackItemBoolean() throws Exception {
     List<StackItem> list = new ArrayList<StackItem>();
-    list.add(new StackItem(JUnitHelpers.getFile(1, true)));
+    list.add(new StackItem(JUnitHelpers.getFile("file1", true)));
 
     QueueModel.push(list, true);
 
@@ -158,7 +158,7 @@ public class TestQueueModel extends JajukTestCase {
 
   public void testPushListOfStackItemBooleanNoPush() throws Exception {
     List<StackItem> list = new ArrayList<StackItem>();
-    list.add(new StackItem(JUnitHelpers.getFile(1, true)));
+    list.add(new StackItem(JUnitHelpers.getFile("file1", true)));
 
     QueueModel.push(list, false);
 
@@ -185,9 +185,9 @@ public class TestQueueModel extends JajukTestCase {
 
   public void testPushListOfStackItemBooleanNullItems() throws Exception {
     List<StackItem> list = new ArrayList<StackItem>();
-    list.add(new StackItem(JUnitHelpers.getFile(1, true)));
+    list.add(new StackItem(JUnitHelpers.getFile("file1", true)));
     list.add(null);
-    list.add(new StackItem(JUnitHelpers.getFile(3, true)));
+    list.add(new StackItem(JUnitHelpers.getFile("file3", true)));
 
     QueueModel.push(list, true);
 
@@ -205,7 +205,7 @@ public class TestQueueModel extends JajukTestCase {
 
   public void testPushListOfStackItemBooleanBoolean() throws Exception {
     List<StackItem> list = new ArrayList<StackItem>();
-    list.add(new StackItem(JUnitHelpers.getFile(1, true)));
+    list.add(new StackItem(JUnitHelpers.getFile("file1", true)));
 
     QueueModel.push(list, true, true);
 
@@ -217,7 +217,7 @@ public class TestQueueModel extends JajukTestCase {
 
   public void testPushListOfStackItemBooleanBooleanNoPushNext() throws Exception {
     List<StackItem> list = new ArrayList<StackItem>();
-    list.add(new StackItem(JUnitHelpers.getFile(1, true)));
+    list.add(new StackItem(JUnitHelpers.getFile("file1", true)));
 
     QueueModel.push(list, false, false);
 
@@ -234,7 +234,7 @@ public class TestQueueModel extends JajukTestCase {
    */
 
   public void testPushStackItemBoolean() throws Exception {
-    QueueModel.push(new StackItem(JUnitHelpers.getFile(1, true)), true);
+    QueueModel.push(new StackItem(JUnitHelpers.getFile("file1", true)), true);
 
     // we try to wait for the thread started inside push() to finish
     JUnitHelpers.waitForThreadToFinish("Queue Push Thread");
@@ -249,7 +249,7 @@ public class TestQueueModel extends JajukTestCase {
    */
 
   public void testPushStackItemBooleanBoolean() throws Exception {
-    QueueModel.push(new StackItem(JUnitHelpers.getFile(1, true)), true, true);
+    QueueModel.push(new StackItem(JUnitHelpers.getFile("file1", true)), true, true);
 
     // we try to wait for the thread started inside push() to finish
     JUnitHelpers.waitForThreadToFinish("Queue Push Thread");
@@ -265,7 +265,7 @@ public class TestQueueModel extends JajukTestCase {
   private void addItems(int count) throws Exception {
     List<StackItem> list = new ArrayList<StackItem>();
     for (int i = 0; i < count; i++) {
-      list.add(new StackItem(JUnitHelpers.getFile(i, true)));
+      list.add(new StackItem(JUnitHelpers.getFile("file" + i, true)));
     }
     QueueModel.insert(list, 0);
   }
@@ -411,7 +411,7 @@ public class TestQueueModel extends JajukTestCase {
 
     { // start a track
       List<StackItem> list = new ArrayList<StackItem>();
-      list.add(new StackItem(JUnitHelpers.getFile(21, true)));
+      list.add(new StackItem(JUnitHelpers.getFile("file" + 21, true)));
 
       QueueModel.push(list, true);
 
@@ -693,7 +693,7 @@ public class TestQueueModel extends JajukTestCase {
     assertFalse(QueueModel.isStopped());
     assertNotNull(QueueModel.getPlayingFile());
     // we start at 0
-    assertEquals("0", QueueModel.getPlayingFile().getID());
+    assertEquals("file0", QueueModel.getPlayingFile().getName());
   }
 
   public void testGetPlayingFileTitle() throws Exception {
@@ -705,7 +705,7 @@ public class TestQueueModel extends JajukTestCase {
     assertFalse(QueueModel.isStopped());
     assertNotNull(QueueModel.getPlayingFileTitle());
     // we start at 0
-    assertTrue(QueueModel.getPlayingFileTitle(), QueueModel.getPlayingFileTitle().contains("name"));
+    assertTrue(QueueModel.getPlayingFileTitle(), QueueModel.getPlayingFileTitle().contains("file"));
   }
 
   /**
@@ -719,7 +719,7 @@ public class TestQueueModel extends JajukTestCase {
 
     addItems(10);
     QueueModel.playNext();
-    assertEquals("1", QueueModel.getCurrentItem().getFile().getID());
+    assertEquals("file1", QueueModel.getCurrentItem().getFile().getName());
   }
 
   /**
@@ -728,7 +728,7 @@ public class TestQueueModel extends JajukTestCase {
 
   public void testGetItem() throws Exception {
     addItems(10);
-    assertEquals("0", QueueModel.getItem(0).getFile().getID());
+    assertEquals("file0", QueueModel.getItem(0).getFile().getName());
   }
 
   /**
@@ -738,18 +738,18 @@ public class TestQueueModel extends JajukTestCase {
    */
 
   public void testCanUnmount() throws Exception {
-    assertTrue(QueueModel.canUnmount(JUnitHelpers.getDevice()));
+    Device device = JUnitHelpers.getDevice("anydevice", 0, "/foo");
+    assertTrue(QueueModel.canUnmount(device));
 
     addItems(10);
 
     // still true as we are not playing
-    assertTrue(QueueModel.canUnmount(JUnitHelpers.getDevice("test", Device.TYPE_DIRECTORY, System
-        .getProperty("java.io.tmpdir"))));
+    assertTrue(QueueModel.canUnmount(device));
 
     // try to start playing/planning
     QueueModel.playNext();
     assertFalse(QueueModel.canUnmount(QueueModel.getItem(1).getFile().getDevice()));
-    assertTrue(QueueModel.canUnmount(JUnitHelpers.getDevice()));
+    assertTrue(QueueModel.canUnmount(device));
   }
 
   /**
@@ -815,17 +815,17 @@ public class TestQueueModel extends JajukTestCase {
     addItems(10);
 
     // verify that we have them in order before
-    assertEquals("0", QueueModel.getItem(0).getFile().getID());
-    assertEquals("5", QueueModel.getItem(5).getFile().getID());
-    assertEquals("9", QueueModel.getItem(9).getFile().getID());
+    assertEquals("file0", QueueModel.getItem(0).getFile().getName());
+    assertEquals("file5", QueueModel.getItem(5).getFile().getName());
+    assertEquals("file9", QueueModel.getItem(9).getFile().getName());
 
     QueueModel.shuffle();
 
     // it's very unlikely that we have the same order afterwards
-    assertFalse("Queue: " + QueueModel.getQueue(), QueueModel.getItem(0).getFile().getID().equals(
-        "0")
-        && QueueModel.getItem(5).getFile().getID().equals("5")
-        && QueueModel.getItem(9).getFile().getID().equals("9"));
+    assertFalse("Queue: " + QueueModel.getQueue(), QueueModel.getItem(0).getFile().getName()
+        .equals("file0")
+        && QueueModel.getItem(5).getFile().getName().equals("file5")
+        && QueueModel.getItem(9).getFile().getName().equals("file9"));
   }
 
   /**
@@ -836,33 +836,33 @@ public class TestQueueModel extends JajukTestCase {
 
   public void testInsertStackItemInt() throws Exception {
     assertEquals(0, QueueModel.getQueueSize());
-    QueueModel.insert(new StackItem(JUnitHelpers.getFile(0, true)), 0);
+    QueueModel.insert(new StackItem(JUnitHelpers.getFile("file0", true)), 0);
 
     assertEquals(1, QueueModel.getQueueSize());
 
     // when we insert the next one at 0, the previous one should be moved
-    QueueModel.insert(new StackItem(JUnitHelpers.getFile(1, true)), 0);
+    QueueModel.insert(new StackItem(JUnitHelpers.getFile("file1", true)), 0);
 
     assertEquals(2, QueueModel.getQueueSize());
-    assertEquals("1", QueueModel.getItem(0).getFile().getID());
-    assertEquals("0", QueueModel.getItem(1).getFile().getID());
+    assertEquals("file1", QueueModel.getItem(0).getFile().getName());
+    assertEquals("file0", QueueModel.getItem(1).getFile().getName());
 
     // adding in between now, should again adjust the queue accordingly
-    QueueModel.insert(new StackItem(JUnitHelpers.getFile(2, true)), 1);
+    QueueModel.insert(new StackItem(JUnitHelpers.getFile("file2", true)), 1);
 
     assertEquals(3, QueueModel.getQueueSize());
-    assertEquals("1", QueueModel.getItem(0).getFile().getID());
-    assertEquals("2", QueueModel.getItem(1).getFile().getID());
-    assertEquals("0", QueueModel.getItem(2).getFile().getID());
+    assertEquals("file1", QueueModel.getItem(0).getFile().getName());
+    assertEquals("file2", QueueModel.getItem(1).getFile().getName());
+    assertEquals("file0", QueueModel.getItem(2).getFile().getName());
 
     // and adding at the end should work as well
-    QueueModel.insert(new StackItem(JUnitHelpers.getFile(3, true)), 3);
+    QueueModel.insert(new StackItem(JUnitHelpers.getFile("file3", true)), 3);
 
     assertEquals(4, QueueModel.getQueueSize());
-    assertEquals("1", QueueModel.getItem(0).getFile().getID());
-    assertEquals("2", QueueModel.getItem(1).getFile().getID());
-    assertEquals("0", QueueModel.getItem(2).getFile().getID());
-    assertEquals("3", QueueModel.getItem(3).getFile().getID());
+    assertEquals("file1", QueueModel.getItem(0).getFile().getName());
+    assertEquals("file2", QueueModel.getItem(1).getFile().getName());
+    assertEquals("file0", QueueModel.getItem(2).getFile().getName());
+    assertEquals("file3", QueueModel.getItem(3).getFile().getName());
 
   }
 
@@ -892,27 +892,27 @@ public class TestQueueModel extends JajukTestCase {
 
     // check queue
     assertEquals(3, QueueModel.getQueueSize());
-    assertEquals("0", QueueModel.getItem(0).getFile().getID());
-    assertEquals("1", QueueModel.getItem(1).getFile().getID());
-    assertEquals("2", QueueModel.getItem(2).getFile().getID());
+    assertEquals("file0", QueueModel.getItem(0).getFile().getName());
+    assertEquals("file1", QueueModel.getItem(1).getFile().getName());
+    assertEquals("file2", QueueModel.getItem(2).getFile().getName());
 
     // now up one
     QueueModel.up(2);
 
     // check queue after move
     assertEquals(3, QueueModel.getQueueSize());
-    assertEquals("0", QueueModel.getItem(0).getFile().getID());
-    assertEquals("2", QueueModel.getItem(1).getFile().getID());
-    assertEquals("1", QueueModel.getItem(2).getFile().getID());
+    assertEquals("file0", QueueModel.getItem(0).getFile().getName());
+    assertEquals("file2", QueueModel.getItem(1).getFile().getName());
+    assertEquals("file1", QueueModel.getItem(2).getFile().getName());
 
     // up once more
     QueueModel.up(1);
 
     // check queue
     assertEquals(3, QueueModel.getQueueSize());
-    assertEquals("2", QueueModel.getItem(0).getFile().getID());
-    assertEquals("0", QueueModel.getItem(1).getFile().getID());
-    assertEquals("1", QueueModel.getItem(2).getFile().getID());
+    assertEquals("file2", QueueModel.getItem(0).getFile().getName());
+    assertEquals("file0", QueueModel.getItem(1).getFile().getName());
+    assertEquals("file1", QueueModel.getItem(2).getFile().getName());
   }
 
   /**
@@ -927,27 +927,30 @@ public class TestQueueModel extends JajukTestCase {
 
     // check queue
     assertEquals(3, QueueModel.getQueueSize());
-    assertEquals("0", QueueModel.getItem(0).getFile().getID());
-    assertEquals("1", QueueModel.getItem(1).getFile().getID());
-    assertEquals("2", QueueModel.getItem(2).getFile().getID());
+    assertEquals("file0", QueueModel.getItem(0).getFile().getName());
+    assertEquals("file1", QueueModel.getItem(1).getFile().getName());
+    assertEquals("file2", QueueModel.getItem(2).getFile().getName());
 
     // now up one
     QueueModel.down(0);
 
     // check queue after move
     assertEquals(3, QueueModel.getQueueSize());
-    assertEquals(QueueModel.getQueue().toString(), "1", QueueModel.getItem(0).getFile().getID());
-    assertEquals(QueueModel.getQueue().toString(), "0", QueueModel.getItem(1).getFile().getID());
-    assertEquals(QueueModel.getQueue().toString(), "2", QueueModel.getItem(2).getFile().getID());
+    assertEquals(QueueModel.getQueue().toString(), "file1", QueueModel.getItem(0).getFile()
+        .getName());
+    assertEquals(QueueModel.getQueue().toString(), "file0", QueueModel.getItem(1).getFile()
+        .getName());
+    assertEquals(QueueModel.getQueue().toString(), "file2", QueueModel.getItem(2).getFile()
+        .getName());
 
     // up once more
     QueueModel.down(1);
 
     // check queue
     assertEquals(3, QueueModel.getQueueSize());
-    assertEquals("1", QueueModel.getItem(0).getFile().getID());
-    assertEquals("2", QueueModel.getItem(1).getFile().getID());
-    assertEquals("0", QueueModel.getItem(2).getFile().getID());
+    assertEquals("file1", QueueModel.getItem(0).getFile().getName());
+    assertEquals("file2", QueueModel.getItem(1).getFile().getName());
+    assertEquals("file0", QueueModel.getItem(2).getFile().getName());
   }
 
   /**
@@ -963,7 +966,7 @@ public class TestQueueModel extends JajukTestCase {
 
     QueueModel.goTo(4);
 
-    assertEquals("4", QueueModel.getCurrentItem().getFile().getID());
+    assertEquals("file4", QueueModel.getCurrentItem().getFile().getName());
   }
 
   public void testGoToRepeat() throws Exception {
@@ -977,7 +980,7 @@ public class TestQueueModel extends JajukTestCase {
 
       QueueModel.goTo(4);
 
-      assertEquals("4", QueueModel.getCurrentItem().getFile().getID());
+      assertEquals("file4", QueueModel.getCurrentItem().getFile().getName());
 
       // item 2 is now not repeated any more
       assertFalse(QueueModel.getItem(2).isRepeat());
@@ -990,7 +993,7 @@ public class TestQueueModel extends JajukTestCase {
 
       QueueModel.goTo(2);
 
-      assertEquals("2", QueueModel.getCurrentItem().getFile().getID());
+      assertEquals("file2", QueueModel.getCurrentItem().getFile().getName());
 
       // item 2 is now still repeated
       assertTrue(QueueModel.getItem(2).isRepeat());
@@ -1022,10 +1025,10 @@ public class TestQueueModel extends JajukTestCase {
     Conf.setProperty(Const.CONF_STATE_CONTINUE, "true");
 
     // register some file
-    File file = JUnitHelpers.getFile(11, true);
+    File file = JUnitHelpers.getFile("file11", true);
     FileManager.getInstance().registerFile(file.getID(), file.getName(), file.getDirectory(),
         file.getTrack(), file.getSize(), file.getQuality());
-    file = JUnitHelpers.getFile(12, true);
+    file = JUnitHelpers.getFile("file12", true);
     FileManager.getInstance().registerFile(file.getID(), file.getName(), file.getDirectory(),
         file.getTrack(), file.getSize(), file.getQuality());
 
@@ -1041,7 +1044,7 @@ public class TestQueueModel extends JajukTestCase {
 
     // again planned items are added now
     assertEquals(QueueModel.getPlanned().toString(), 10, QueueModel.getPlanned().size());
-    // assertEquals("12", QueueModel.getPlanned().get(0).getFile().getID());
+    // assertEquals("12", QueueModel.getPlanned().get(0).getFile().getName());
   }
 
   /**
@@ -1053,7 +1056,7 @@ public class TestQueueModel extends JajukTestCase {
 
     addItems(10);
 
-    assertEquals("9", QueueModel.getLast().getFile().getID());
+    assertEquals("file9", QueueModel.getLast().getFile().getName());
   }
 
   /**
@@ -1255,6 +1258,8 @@ public class TestQueueModel extends JajukTestCase {
 
     // now we have 11 elements
     assertEquals(11, QueueModel.getQueueSize());
+
+    FileManager.getInstance().removeFile(file);
 
     // here clean will remove one item that is not listed in the FileManager
     QueueModel.clean();

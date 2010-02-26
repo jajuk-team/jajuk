@@ -401,7 +401,7 @@ public class TestAlbum extends JajukTestCase {
     device.setUrl(System.getProperty("java.io.tmpdir"));
     device.mount(true);
 
-    Directory dir = new Directory(Integer.valueOf(i).toString(), "name", null, device);
+    Directory dir = new Directory(Integer.valueOf(i).toString(), "", null, device);
 
     return new org.jajuk.base.File(Integer.valueOf(i).toString(), "test.tst", dir, track, 120, 70);
   }

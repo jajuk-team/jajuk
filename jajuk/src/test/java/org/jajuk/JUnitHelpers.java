@@ -495,7 +495,12 @@ public class JUnitHelpers {
     JUnitHelpers.clearSwingUtilitiesQueue();
   }
 
-  public static org.jajuk.base.File getFile(int i, boolean mount) throws Exception {
+  public static org.jajuk.base.File getFile() {
+    return getFile("test.tst", true);
+  }
+
+  
+  public static org.jajuk.base.File getFile(String name, boolean mount) {
     Genre genre = getGenre();
     Album album = getAlbum("name", 0);
     album.setProperty(Const.XML_ALBUM_COVER, Const.COVER_NONE); // don't read covers for
@@ -505,18 +510,21 @@ public class JUnitHelpers {
     Year year = getYear(2000);
 
     Type type = getType();
-    Track track = TrackManager.getInstance().registerTrack("name", album, genre, artist, 120, year,
+    Track track = TrackManager.getInstance().registerTrack(name, album, genre, artist, 120, year,
         1, type, 1);
 
     Device device = getDevice("name", Device.TYPE_DIRECTORY, System.getProperty("java.io.tmpdir"));
     if (mount) {
-      device.mount(true);
+      try {
+        device.mount(true);
+      } catch (Exception e) {
+        throw new RuntimeException(e);
+      }
     }
 
     Directory dir = JUnitHelpers.getDirectory();
 
-    return FileManager.getInstance().registerFile("test.tst", dir,
-        track, 120, 70);
+    return FileManager.getInstance().registerFile(name, dir, track, 120, 70);
   }
 
   public static Album getAlbum(String name, int discID) {
@@ -534,8 +542,7 @@ public class JUnitHelpers {
   public static Artist getArtist() {
     return getArtist("name");
   }
-  
-  
+
   public static Genre getGenre(String name) {
     return GenreManager.getInstance().registerGenre(name);
   }
@@ -547,7 +554,7 @@ public class JUnitHelpers {
   public static Year getYear(int year) {
     return YearManager.getInstance().registerYear("" + year);
   }
-  
+
   public static Year getYear() {
     return getYear(2000);
   }
@@ -559,17 +566,25 @@ public class JUnitHelpers {
   public static Device getDevice() {
     return getDevice("name", Device.TYPE_DIRECTORY, System.getProperty("java.io.tmpdir"));
   }
-  
-  public static Directory getDirectory(String name,Directory parent) {
-    return DirectoryManager.getInstance().registerDirectory(name,parent);
+
+  public static Directory getDirectory(String name, Directory parent, Device device) {
+    return DirectoryManager.getInstance().registerDirectory(name, parent, device);
   }
+
   /** The "any" directory is the top dir of the device pointing toward $java.io.tmpdir*/
-  public static Directory getDirectory(){
+  public static Directory getDirectory() {
+    Device device = getDevice();
+    Directory topdir = getTopDirectory();
+    return DirectoryManager.getInstance().registerDirectory("dir", topdir, device);
+  }
+
+  /** A topdir directory */
+  public static Directory getTopDirectory() {
     return DirectoryManager.getInstance().registerDirectory(getDevice());
   }
-  
+
   @SuppressWarnings("unchecked")
-  public static Type getType(){
+  public static Type getType() {
     IPlayerImpl imp = new MockPlayer();
     Class<IPlayerImpl> cl = (Class<IPlayerImpl>) imp.getClass();
     return TypeManager.getInstance().registerType("type", "mp3", cl, null);

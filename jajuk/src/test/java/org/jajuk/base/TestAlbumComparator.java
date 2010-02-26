@@ -25,7 +25,15 @@ import java.util.Date;
 import org.jajuk.JajukTestCase;
 
 /**
- * 
+ * TODO : most of this test class should rewritten as the case we test
+ * here is not actually possible :
+ * Album album = new Album("1", "name", 2);
+ *  Album equal = new Album("1", "name", 2);
+ *  Album notequal = new Album("1", "name", 2);
+ *  is an impossible state as two albums with the same name must 
+ *  be the same album (endorsed by the AlbumManager)
+ *  
+ *  We should also drop the direct items instantiations but use managers instead
  */
 public class TestAlbumComparator extends JajukTestCase {
 

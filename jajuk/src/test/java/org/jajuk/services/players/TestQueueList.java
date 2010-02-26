@@ -41,7 +41,7 @@ public class TestQueueList extends JajukTestCase {
    */
   public void testAddStackItem() throws Exception {
     QueueList impl = new QueueList();
-    impl.add(new StackItem(JUnitHelpers.getFile(1, false)));
+    impl.add(new StackItem(JUnitHelpers.getFile("file1", false)));
     assertEquals(1, impl.size());
   }
 
@@ -51,13 +51,16 @@ public class TestQueueList extends JajukTestCase {
    */
   public void testAddIntStackItem() throws Exception {
     QueueList impl = new QueueList();
-    impl.add(new StackItem(JUnitHelpers.getFile(1, false)));
+    File file1 = JUnitHelpers.getFile("file1", false);
+    File file2 = JUnitHelpers.getFile("file2", false);
+
+    impl.add(new StackItem(file1));
     assertEquals(1, impl.size());
-    impl.add(0, new StackItem(JUnitHelpers.getFile(2, false)));
+    impl.add(0, new StackItem(file2));
     assertEquals(2, impl.size());
 
     // "2" should be first!
-    assertEquals("2", impl.get(0).getFile().getID());
+    assertEquals(file2, impl.get(0).getFile());
   }
 
   /**
@@ -78,17 +81,22 @@ public class TestQueueList extends JajukTestCase {
   public void testAddAllIntCollectionOfQextendsStackItem() throws Exception {
     QueueList impl = new QueueList();
 
-    impl.add(new StackItem(JUnitHelpers.getFile(10, false)));
+    impl.add(new StackItem(JUnitHelpers.getFile("file10", false)));
     assertEquals(1, impl.size());
+    
+    File file1 = JUnitHelpers.getFile("file1", false);
+    File file2 = JUnitHelpers.getFile("file2", false);
+    File file3 = JUnitHelpers.getFile("file3", false);
+    
 
     List<StackItem> set = new ArrayList<StackItem>();
-    set.add(new StackItem(JUnitHelpers.getFile(1, false)));
-    set.add(new StackItem(JUnitHelpers.getFile(2, false)));
-    set.add(new StackItem(JUnitHelpers.getFile(3, false)));
+    set.add(new StackItem(file1));
+    set.add(new StackItem(file2));
+    set.add(new StackItem(file3));
 
     impl.addAll(0, set);
     assertEquals(4, impl.size());
-    assertEquals("1", impl.get(0).getFile().getID());
+    assertEquals(file1, impl.get(0).getFile());
   }
 
   /**
@@ -98,7 +106,7 @@ public class TestQueueList extends JajukTestCase {
   public void testClear() throws Exception {
     QueueList impl = new QueueList();
 
-    impl.add(new StackItem(JUnitHelpers.getFile(10, false)));
+    impl.add(new StackItem(JUnitHelpers.getFile("file10", false)));
     assertEquals(1, impl.size());
 
     impl.clear();
@@ -115,8 +123,8 @@ public class TestQueueList extends JajukTestCase {
     prepareQueueImpl(impl);
     assertEquals(3, impl.size());
 
-    assertTrue(impl.contains(new StackItem(JUnitHelpers.getFile(1, false))));
-    assertFalse(impl.contains(new StackItem(JUnitHelpers.getFile(4, false))));
+    assertTrue(impl.contains(new StackItem(JUnitHelpers.getFile("file1", false))));
+    assertFalse(impl.contains(new StackItem(JUnitHelpers.getFile("file4", false))));
   }
 
   /**
@@ -132,7 +140,7 @@ public class TestQueueList extends JajukTestCase {
     assertTrue(impl.containsAll(set));
 
     // add a file that is not in the queue
-    set.add(new StackItem(JUnitHelpers.getFile(4, false)));
+    set.add(new StackItem(JUnitHelpers.getFile("file4", false)));
     assertFalse(impl.containsAll(set));
   }
 
@@ -152,8 +160,8 @@ public class TestQueueList extends JajukTestCase {
     prepareQueueImpl(impl);
     assertEquals(3, impl.size());
 
-    assertEquals(0, impl.indexOf(new StackItem(JUnitHelpers.getFile(1, false))));
-    assertEquals(1, impl.indexOf(new StackItem(JUnitHelpers.getFile(2, false))));
+    assertEquals(0, impl.indexOf(new StackItem(JUnitHelpers.getFile("file1", false))));
+    assertEquals(1, impl.indexOf(new StackItem(JUnitHelpers.getFile("file2", false))));
   }
 
   /**
@@ -164,7 +172,7 @@ public class TestQueueList extends JajukTestCase {
 
     assertTrue(impl.isEmpty());
 
-    impl.add(new StackItem(JUnitHelpers.getFile(1, false)));
+    impl.add(new StackItem(JUnitHelpers.getFile("file1", false)));
 
     assertFalse(impl.isEmpty());
   }
@@ -197,7 +205,7 @@ public class TestQueueList extends JajukTestCase {
     prepareQueueImpl(impl);
     assertEquals(3, impl.size());
 
-    assertEquals(2, impl.lastIndexOf(new StackItem(JUnitHelpers.getFile(3, false))));
+    assertEquals(2, impl.lastIndexOf(new StackItem(JUnitHelpers.getFile("file3", false))));
   }
 
   /**
@@ -234,10 +242,10 @@ public class TestQueueList extends JajukTestCase {
     assertEquals(3, impl.size());
 
     // first it works
-    assertTrue(impl.remove(new StackItem(JUnitHelpers.getFile(2, false))));
+    assertTrue(impl.remove(new StackItem(JUnitHelpers.getFile("file2", false))));
 
     // then the element is not found any more
-    assertFalse(impl.remove(new StackItem(JUnitHelpers.getFile(2, false))));
+    assertFalse(impl.remove(new StackItem(JUnitHelpers.getFile("file2", false))));
   }
 
   /**
@@ -297,9 +305,9 @@ public class TestQueueList extends JajukTestCase {
     QueueList impl = new QueueList();
     prepareQueueImpl(impl);
 
-    impl.set(0, new StackItem(JUnitHelpers.getFile(4, false)));
+    impl.set(0, new StackItem(JUnitHelpers.getFile("file4", false)));
 
-    assertEquals("4", impl.get(0).getFile().getID());
+    assertEquals("file4", impl.get(0).getFile().getName());
   }
 
   /**
@@ -361,7 +369,7 @@ public class TestQueueList extends JajukTestCase {
     prepareQueueImpl(impl);
 
     assertEquals(0, impl.sizePlanned());
-    impl.addPlanned(new StackItem(JUnitHelpers.getFile(2, false)));
+    impl.addPlanned(new StackItem(JUnitHelpers.getFile("file2", false)));
 
     assertEquals(1, impl.sizePlanned());
   }
@@ -412,8 +420,8 @@ public class TestQueueList extends JajukTestCase {
 
     prepareQueueImplPlanned(impl);
 
-    assertEquals("9", impl.getPlanned(0).getFile().getID());
-    assertEquals("8", impl.getPlanned(1).getFile().getID());
+    assertEquals("file9", impl.getPlanned(0).getFile().getName());
+    assertEquals("file8", impl.getPlanned(1).getFile().getName());
   }
 
   /**
@@ -443,17 +451,17 @@ public class TestQueueList extends JajukTestCase {
 
     assertEquals(0, items.size());
 
-    items.add(JUnitHelpers.getFile(2, false));
-    items.add(JUnitHelpers.getFile(8, false)); // this should be removed
-    items.add(JUnitHelpers.getFile(11, false));
+    items.add(JUnitHelpers.getFile("file2", false));
+    items.add(JUnitHelpers.getFile("file8", false)); // this should be removed
+    items.add(JUnitHelpers.getFile("file11", false));
 
     assertEquals(3, items.size());
 
     impl.removePlannedFromList(items);
 
     assertEquals(2, items.size());
-    assertEquals("2", items.get(0).getID());
-    assertEquals("11", items.get(1).getID());
+    assertEquals("file2", items.get(0).getName());
+    assertEquals("file11", items.get(1).getName());
 
   }
 
@@ -531,9 +539,9 @@ public class TestQueueList extends JajukTestCase {
 
   private List<StackItem> prepareQueueImpl(QueueList impl) throws JajukException, Exception {
     List<StackItem> set = new ArrayList<StackItem>();
-    set.add(new StackItem(JUnitHelpers.getFile(1, false)));
-    set.add(new StackItem(JUnitHelpers.getFile(2, false)));
-    set.add(new StackItem(JUnitHelpers.getFile(3, false)));
+    set.add(new StackItem(JUnitHelpers.getFile("file1", false)));
+    set.add(new StackItem(JUnitHelpers.getFile("file2", false)));
+    set.add(new StackItem(JUnitHelpers.getFile("file3", false)));
 
     impl.addAll(set);
     return set;
@@ -541,8 +549,8 @@ public class TestQueueList extends JajukTestCase {
 
   private List<StackItem> prepareQueueImplPlanned(QueueList impl) throws JajukException, Exception {
     List<StackItem> set = new ArrayList<StackItem>();
-    set.add(new StackItem(JUnitHelpers.getFile(9, false)));
-    set.add(new StackItem(JUnitHelpers.getFile(8, false)));
+    set.add(new StackItem(JUnitHelpers.getFile("file9", false)));
+    set.add(new StackItem(JUnitHelpers.getFile("file8", false)));
 
     impl.addPlanned(set);
     return set;

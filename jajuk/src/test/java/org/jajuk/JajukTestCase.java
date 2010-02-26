@@ -20,6 +20,9 @@
  */
 package org.jajuk;
 
+import org.jajuk.base.Collection;
+import org.jajuk.services.startup.StartupCollectionService;
+
 import junit.framework.TestCase;
 
 /**
@@ -36,7 +39,9 @@ public abstract class JajukTestCase extends TestCase {
   protected void setUp() throws Exception {
     // let's clean up before we begin any test
     JUnitHelpers.waitForAllWorkToFinishAndCleanup();
-
+    // Clean the collection
+    StartupCollectionService.registerItemManagers();
+    Collection.clearCollection();
     super.setUp();
   }
 }

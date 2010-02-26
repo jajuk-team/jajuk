@@ -35,7 +35,7 @@ public class TestArtist extends JajukTestCase {
    * Test method for {@link org.jajuk.base.Artist#getDesc()}.
    */
   public final void testGetDesc() {
-    Artist artist = new Artist("1", "name");
+    Artist artist = JUnitHelpers.getArtist();
     assertTrue(StringUtils.isNotBlank(artist.getDesc()));
   }
 
@@ -43,7 +43,7 @@ public class TestArtist extends JajukTestCase {
    * Test method for {@link org.jajuk.base.Artist#getLabel()}.
    */
   public final void testGetLabel() {
-    Artist artist = new Artist("1", "name");
+    Artist artist = JUnitHelpers.getArtist();
     assertEquals(Const.XML_ARTIST, artist.getLabel());
   }
 
@@ -55,16 +55,15 @@ public class TestArtist extends JajukTestCase {
     // need ArtistManager for MetaInformation here...
     StartupCollectionService.registerItemManagers();
 
-    Artist artist = new Artist("1", "name");
+    Artist artist = JUnitHelpers.getArtist();
     assertEquals("name", artist.getHumanValue(Const.XML_NAME));
-    assertEquals("1", artist.getHumanValue(Const.XML_ID));
-  }
+   }
 
   /**
    * Test method for {@link org.jajuk.base.Artist#getIconRepresentation()}.
    */
   public final void testGetIconRepresentation() {
-    Artist artist = new Artist("1", "name");
+    Artist artist = JUnitHelpers.getArtist();
     assertNotNull(artist.getIconRepresentation());
   }
 
@@ -73,20 +72,20 @@ public class TestArtist extends JajukTestCase {
    * {@link org.jajuk.base.Artist#Artist(java.lang.String, java.lang.String)}.
    */
   public final void testArtist() {
-    new Artist("1", "name");
+    JUnitHelpers.getArtist();
   }
 
   /**
    * Test method for {@link org.jajuk.base.Artist#getName2()}.
    */
   public final void testGetName2() {
-    Artist artist = new Artist("1", "name");
+    Artist artist = JUnitHelpers.getArtist();
 
     // usually equal to getName()
     assertEquals("name", artist.getName2());
 
     // only different for unknown_artist
-    artist = new Artist("2", Const.UNKNOWN_ARTIST);
+    artist = JUnitHelpers.getArtist(Const.UNKNOWN_ARTIST);
     // should be replaced by some localized string
     assertFalse(artist.getName2().equals(Const.UNKNOWN_ARTIST));
   }
@@ -120,10 +119,10 @@ public class TestArtist extends JajukTestCase {
    * Test method for {@link org.jajuk.base.Artist#isUnknown()}.
    */
   public final void testIsUnknown() {
-    Artist artist = new Artist("1", "name");
+    Artist artist = JUnitHelpers.getArtist();
     assertFalse(artist.isUnknown());
 
-    artist = new Artist("1", Const.UNKNOWN_ARTIST);
+    artist = JUnitHelpers.getArtist(Const.UNKNOWN_ARTIST);
     assertTrue(artist.isUnknown());
   }
 

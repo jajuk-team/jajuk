@@ -160,7 +160,7 @@ public class TestDigitalDJ extends JajukTestCase {
     // set rating level and see if tracks are removed
     dj.setRatingLevel(2);
     dj.filterFilesByRate(files);
-    assertEquals(2, files.size());
+    assertEquals(1, files.size());
   }
 
   public final void testFilterFilesByMaxTrack() throws Exception {

@@ -35,7 +35,6 @@ import org.jajuk.services.players.StackItem;
 import org.jajuk.services.startup.StartupCollectionService;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
-import org.jajuk.util.MD5Processor;
 import org.jajuk.util.error.JajukException;
 import org.xml.sax.Attributes;
 
@@ -193,11 +192,16 @@ public class TestDevice extends JajukTestCase {
    */
 
   public void testAddDirectory() {
-    Device device = new Device("1", "name");
+    Device device = JUnitHelpers.getDevice();
+    Directory dir1 = DirectoryManager.getInstance().registerDirectory("dir1",
+        JUnitHelpers.getDirectory(), device);
+    Directory dir2 = DirectoryManager.getInstance().registerDirectory("dir2",
+        JUnitHelpers.getDirectory(), device);
+
     assertEquals(0, device.getDirectories().size());
-    device.addDirectory(new Directory("2", "name", null, device));
+    device.addDirectory(dir1);
     assertEquals(1, device.getDirectories().size());
-    device.addDirectory(new Directory("2", "name", null, device));
+    device.addDirectory(dir2);
     assertEquals(2, device.getDirectories().size());
   }
 
@@ -207,21 +211,18 @@ public class TestDevice extends JajukTestCase {
 
   public void testCleanRemovedFiles() throws Exception {
     JUnitHelpers.createSessionDirectory();
-
-    Device device = new Device("1", "name");
+    Device device = JUnitHelpers.getDevice();
     device.setUrl(System.getProperty("java.io.tmpdir"));
     device.mount(true);
-    device.setUrl("notexisting/testparent\\anotherclientparentthing"); // change
-    // the
-    // Url
-    // after
-    // mounting
+    device.setUrl("notexisting/testparent\\anotherclientparentthing");
 
     // clean without any stuff
     assertFalse(device.cleanRemovedFiles());
 
     // add some directory, then the remove should kick in!
-    Directory dir = new Directory("2", "notexistingdir", null, device);
+    Directory topdir = DirectoryManager.getInstance().registerDirectory(device);
+    Directory dir = DirectoryManager.getInstance().registerDirectory("notexistingdir", topdir,
+        device);
     device.addDirectory(dir);
     DirectoryManager.getInstance().registerDirectory(device);
 
@@ -280,10 +281,10 @@ public class TestDevice extends JajukTestCase {
    * Test method for {@link org.jajuk.base.Device#getDirectories()}.
    */
   public void testGetDirectories() {
-    Device device = new Device("1", "name");
+    Device device = JUnitHelpers.getDevice();
     assertEquals(0, device.getDirectories().size());
-
-    device.addDirectory(new Directory("1", "name", null, device));
+    Directory dir = JUnitHelpers.getDirectory();
+    device.addDirectory(dir);
     assertEquals(1, device.getDirectories().size());
   }
 
@@ -291,7 +292,7 @@ public class TestDevice extends JajukTestCase {
    * Test method for {@link org.jajuk.base.Device#getFilesRecursively()}.
    */
   public void testGetFilesRecursively() {
-    Device device = new Device("1", "name");
+    Device device = JUnitHelpers.getDevice();
     device.setUrl(System.getProperty("java.io.tmpdir") + System.currentTimeMillis());
 
     // no files without a directory
@@ -313,8 +314,8 @@ public class TestDevice extends JajukTestCase {
 
   @SuppressWarnings("unchecked")
   private File getFile(int i, Directory dir) {
-    Genre genre = new Genre(Integer.valueOf(i).toString(), "name");
-    Album album = JUnitHelpers.getAlbum("myalbum",0);
+    Genre genre = JUnitHelpers.getGenre("name");
+    Album album = JUnitHelpers.getAlbum("myalbum", 0);
     album.setProperty(Const.XML_ALBUM_COVER, Const.COVER_NONE); // don't read covers for
     // this test
 
@@ -328,7 +329,8 @@ public class TestDevice extends JajukTestCase {
     Track track = new Track(Integer.valueOf(i).toString(), "name", album, genre, artist, 120, year,
         1, type, 1);
 
-    return FileManager.getInstance().registerFile("test" + Long.valueOf(System.currentTimeMillis()).toString() + ".tst", dir, track, 120, 70);
+    return FileManager.getInstance().registerFile(
+        "test" + Long.valueOf(System.currentTimeMillis()).toString() + ".tst", dir, track, 120, 70);
   }
 
   /**
@@ -351,7 +353,8 @@ public class TestDevice extends JajukTestCase {
    */
   public void testGetRootDirectory() throws Exception {
     // create a unique id here...
-    Device device = new Device(MD5Processor.hash("getRootDirectory"), "getRootDirectory");
+    Device device = DeviceManager.getInstance().registerDevice("getRootDirectory", Device.TYPE_CD,
+        "/foo");
 
     assertNull(device.getRootDirectory());
 
@@ -577,13 +580,11 @@ public class TestDevice extends JajukTestCase {
    * @throws Exception
    */
   public void testSetUrl() throws Exception {
-    Device device = new Device("1", "name");
-    device.setUrl(System.getProperty("java.io.tmpdir"));
+    Device device = JUnitHelpers.getDevice();
 
     // add some directory, then the remove should kick in!
-    Directory dir = new Directory("2", "notexistingdir", null, device);
+    Directory dir = JUnitHelpers.getDirectory();
     device.addDirectory(dir);
-    DirectoryManager.getInstance().registerDirectory(device);
 
     File file = getFile(8, dir);
     PlaylistManager.getInstance().registerPlaylistFile(file.getFIO(), dir);
@@ -596,7 +597,7 @@ public class TestDevice extends JajukTestCase {
    * Test method for {@link org.jajuk.base.Device#synchronize(boolean)}.
    */
   public void testSynchronize() {
-    Device device = new Device("1", "name");
+    Device device = JUnitHelpers.getDevice();
     device.synchronize(true);
 
     // nothing much happens here as there is no synchro-device set
@@ -605,10 +606,11 @@ public class TestDevice extends JajukTestCase {
   }
 
   public void testSynchronizeConfSet() {
-    Device device = new Device("1", "name");
+    Device device = JUnitHelpers.getDevice();
+    Device dSrc = JUnitHelpers.getDevice("src",0,"/tmp");
 
     // set the synchro-device
-    device.setProperty(Const.XML_DEVICE_SYNCHRO_SOURCE, "blabla");
+    device.setProperty(Const.XML_DEVICE_SYNCHRO_SOURCE, dSrc.getID());
     device.synchronize(false);
     device.synchronize(true);
   }
@@ -617,33 +619,35 @@ public class TestDevice extends JajukTestCase {
    * Test method for {@link org.jajuk.base.Device#synchronizeCommand()}.
    */
   public void testSynchronizeCommand() {
-    Device device = new Device("1", "name");
+    Device device = JUnitHelpers.getDevice();
     device.synchronizeCommand();
 
     // TODO do some real testing here
   }
 
   public void testSynchronizeCommandSyncDevice() {
-    Device device = new Device("1", "name");
+    Device device = JUnitHelpers.getDevice();
 
     // set the synchro-device
     Device sync = DeviceManager.getInstance().registerDevice("name2", 0,
-        System.getProperty("java.io.tmpdir"));
+        System.getProperty("java.io.tmpdir") + "/device2");
     device.setProperty(Const.XML_DEVICE_SYNCHRO_SOURCE, sync.getID());
 
     device.synchronizeCommand();
   }
 
   public void testSynchronizeCommandSyncDeviceBidi() {
-    Device device = new Device("1", "name");
-    device.setUrl(System.getProperty("java.io.tmpdir"));
+    Device device = JUnitHelpers.getDevice();
 
     // set the synchro-device
     Device sync = DeviceManager.getInstance().registerDevice("name2", 0,
-        System.getProperty("java.io.tmpdir"));
-    sync.setUrl(System.getProperty("java.io.tmpdir"));
+        System.getProperty("java.io.tmpdir") + "/device2");
+    sync.setUrl(System.getProperty("java.io.tmpdir") + "/device2");
     device.setProperty(Const.XML_DEVICE_SYNCHRO_SOURCE, sync.getID());
     device.setProperty(Const.XML_DEVICE_SYNCHRO_MODE, Const.DEVICE_SYNCHRO_MODE_BI);
+
+    sync.setProperty(Const.XML_DEVICE_SYNCHRO_SOURCE, device.getID());
+    sync.setProperty(Const.XML_DEVICE_SYNCHRO_MODE, Const.DEVICE_SYNCHRO_MODE_BI);
 
     device.synchronizeCommand();
   }
@@ -652,12 +656,12 @@ public class TestDevice extends JajukTestCase {
    * Test method for {@link org.jajuk.base.Device#test()}.
    */
   public void testTest() {
-    Device device = new Device("1", "name");
+    Device device = JUnitHelpers.getDevice("notexist", Device.TYPE_DIRECTORY, "notexisting");
     assertFalse(device.test());
   }
 
   public void testTestMounted() {
-    Device device = new Device("1", "name");
+    Device device = JUnitHelpers.getDevice();
     device.setUrl(System.getProperty("java.io.tmpdir"));
 
     assertTrue(device.test());
@@ -667,10 +671,10 @@ public class TestDevice extends JajukTestCase {
    * Test method for {@link org.jajuk.base.Device#toString()}.
    */
   public void testToString() {
-    Device device = new Device("1", "name");
+    Device device = JUnitHelpers.getDevice();
     JUnitHelpers.ToStringTest(device);
 
-    device = new Device("1", null);
+    device = JUnitHelpers.getDevice();
     JUnitHelpers.ToStringTest(device);
 
     device = new Device(null, null);
@@ -683,8 +687,7 @@ public class TestDevice extends JajukTestCase {
    * @throws Exception
    */
   public void testUnmount() throws Exception {
-    Device device = new Device("1", "name");
-    device.setUrl(System.getProperty("java.io.tmpdir"));
+    Device device = JUnitHelpers.getDevice();
     assertFalse(device.isMounted());
     device.unmount();
 
@@ -701,8 +704,7 @@ public class TestDevice extends JajukTestCase {
    * @throws Exception
    */
   public void testUnmountBooleanBoolean() throws Exception {
-    Device device = new Device("1", "name");
-    device.setUrl(System.getProperty("java.io.tmpdir"));
+    Device device = JUnitHelpers.getDevice();
     assertFalse(device.isMounted());
     device.unmount(false, false);
 
@@ -714,15 +716,13 @@ public class TestDevice extends JajukTestCase {
   }
 
   public void testUnmountBooleanBooleanQueue() throws Exception {
-    Device device = new Device("1", "name");
-    device.setUrl(System.getProperty("java.io.tmpdir"));
+    Device device = JUnitHelpers.getDevice();
 
     device.mount(true);
     assertTrue(device.isMounted());
 
-    Directory dir = new Directory("2", "notexistingdir", null, device);
+    Directory dir = JUnitHelpers.getDirectory();
     device.addDirectory(dir);
-    DirectoryManager.getInstance().registerDirectory(device);
 
     File file = getFile(9, dir);
 

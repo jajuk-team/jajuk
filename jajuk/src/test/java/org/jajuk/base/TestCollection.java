@@ -22,6 +22,7 @@ package org.jajuk.base;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
+import org.jajuk.JUnitHelpers;
 import org.jajuk.JajukTestCase;
 import org.jajuk.services.startup.StartupCollectionService;
 import org.jajuk.util.Const;
@@ -95,23 +96,17 @@ public class TestCollection extends JajukTestCase {
         System.getProperty("java.io.tmpdir"));
     GenreManager.getInstance().registerGenre("cooldown");
     {
-      Genre genre = new Genre("5", "name");
-      GenreManager.getInstance().registerGenre("name");
-      Album album = new Album("5", "name", 23);
+      Genre genre = GenreManager.getInstance().registerGenre("name");
+      Album album = AlbumManager.getInstance().registerAlbum("name", 23);
       album.setProperty(Const.XML_ALBUM_COVER, Const.COVER_NONE); // don't read covers for
       // this test
-      AlbumManager.getInstance().registerAlbum("name", 23);
+      
 
-      Artist artist = new Artist("5", "name");
-      ArtistManager.getInstance().registerArtist("name");
-      Year year = new Year("5", "2000");
+      Artist artist = ArtistManager.getInstance().registerArtist("name");
+      Year year = YearManager.getInstance().registerYear("2000");
       YearManager.getInstance().registerYear("2000");
 
-      // IPlayerImpl imp = new MockPlayer();
-      // Class<IPlayerImpl> cl = (Class<IPlayerImpl>) imp.getClass();
-
-      Type type = new Type("5", "MP3", "mp3", null, null);
-      TypeManager.getInstance().registerType("MP3", "mp3", null, null);
+      Type type = TypeManager.getInstance().registerType("MP3", "mp3", null, null);
 
       TrackManager.getInstance()
           .registerTrack("name5", album, genre, artist, 120, year, 1, type, 1);
@@ -119,18 +114,18 @@ public class TestCollection extends JajukTestCase {
     YearManager.getInstance().registerYear("1900");
     Device device = new Device("6", System.getProperty("java.io.tmpdir"));
     device.setUrl(System.getProperty("java.io.tmpdir"));
+    Directory dir = JUnitHelpers.getDirectory();
     PlaylistManager.getInstance().registerPlaylistFile("4", "plf",
-        new Directory("4", "directory", null, device));
+        dir);
     ArtistManager.getInstance().registerArtist("testartist");
     AlbumManager.getInstance().registerAlbum("album2", "artist1", 0);
 
-    device = new Device("7", System.getProperty("java.io.tmpdir"));
-    device.setUrl(System.getProperty("java.io.tmpdir"));
+    device = DeviceManager.getInstance().registerDevice("7", 0,System.getProperty("java.io.tmpdir"));
     DirectoryManager.getInstance().registerDirectory(device);
     device = new Device("6", System.getProperty("java.io.tmpdir"));
     device.setUrl(System.getProperty("java.io.tmpdir"));
     FileManager.getInstance().registerFile("thisfile.mp3",
-        new Directory("4", "directory", null, device),
+        dir,
         TrackManager.getInstance().getTracks().get(0), 120, 100);
 
     // delete the file before writing the collection
@@ -150,7 +145,7 @@ public class TestCollection extends JajukTestCase {
 
     // add test for strange error in this testcase on hudson
     assertNotNull(UtilString.getAdditionDateFormatter());
-    
+
     // also test loading here
     Collection.load(file);
 

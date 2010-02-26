@@ -107,7 +107,7 @@ public class TestArtistManager extends JajukTestCase {
   public final void testChangeArtistName() throws Exception {
     StartupCollectionService.registerItemManagers();
 
-    Artist artistold = new Artist("4", "nameold");
+    Artist artistold = JUnitHelpers.getArtist("nameold");
 
     // we get the same object back if we have the same name
     assertTrue(artistold == ArtistManager.getInstance().changeArtistName(artistold, "nameold"));
@@ -146,7 +146,7 @@ public class TestArtistManager extends JajukTestCase {
   public final void testChangeArtistNameThreads() throws Exception {
     StartupCollectionService.registerItemManagers();
 
-    final Artist artistold = new Artist("4", "nameold");
+    final Artist artistold = JUnitHelpers.getArtist("nameold");
 
     // we get the same object back if we have the same name
     assertTrue(artistold == ArtistManager.getInstance().changeArtistName(artistold, "nameold"));
@@ -170,7 +170,7 @@ public class TestArtistManager extends JajukTestCase {
 
   @SuppressWarnings("unchecked")
   private File getFile(int i, Artist artist) throws Exception {
-    Genre genre = new Genre(Integer.valueOf(i).toString(), "name");
+    Genre genre = JUnitHelpers.getGenre("name");
     Album album = JUnitHelpers.getAlbum("myalbum",0);
     album.setProperty(Const.XML_ALBUM_COVER, Const.COVER_NONE); // don't read
                                                                 // covers for
@@ -187,10 +187,8 @@ public class TestArtistManager extends JajukTestCase {
         1, type, 1);
 
     Device device = JUnitHelpers.getDevice();
-    device.setUrl(System.getProperty("java.io.tmpdir"));
     device.mount(true);
-
-    Directory dir = new Directory(Integer.valueOf(i).toString(), "name", null, device);
+    Directory dir = JUnitHelpers.getDirectory();
 
     File file = new org.jajuk.base.File(Integer.valueOf(i).toString(), "test.tst", dir, track, 120,
         70);

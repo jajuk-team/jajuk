@@ -39,8 +39,8 @@ public class TestSearchResult extends TestCase {
     // TODO: this fails currently because there is no equals in SearchResult, should we add one? For now we just cover hashCode()
     
     // hashcode only looks at "sResu" parameter
-    SearchResult res = new SearchResult(JUnitHelpers.getFile(2, true));
-    SearchResult equ = new SearchResult(JUnitHelpers.getFile(2, true));
+    SearchResult res = new SearchResult(JUnitHelpers.getFile("file2", true));
+    SearchResult equ = new SearchResult(JUnitHelpers.getFile("file2", true));
     
     assertEquals(res.hashCode(), equ.hashCode());
     
@@ -56,7 +56,7 @@ public class TestSearchResult extends TestCase {
    * @throws Exception 
    */
   public void testSearchResultFile() throws Exception {
-    SearchResult res = new SearchResult(JUnitHelpers.getFile(2, true));
+    SearchResult res = new SearchResult(JUnitHelpers.getFile("file2", true));
     assertNotNull(res);
   }
 
@@ -65,7 +65,7 @@ public class TestSearchResult extends TestCase {
    * @throws Exception 
    */
   public void testSearchResultFileString() throws Exception {
-    SearchResult res = new SearchResult(JUnitHelpers.getFile(2, true), "testresult");
+    SearchResult res = new SearchResult(JUnitHelpers.getFile("file2", true), "testresult");
     assertNotNull(res);
     
   }
@@ -84,9 +84,9 @@ public class TestSearchResult extends TestCase {
    */
   public void testCompareTo() throws Exception {
     // compareTo only looks at sResu-parameter
-    SearchResult res = new SearchResult(JUnitHelpers.getFile(2, true), "testresu");
-    SearchResult equ = new SearchResult(JUnitHelpers.getFile(2, true), "testresu");
-    SearchResult notequ = new SearchResult(JUnitHelpers.getFile(2, true), "testresu1");
+    SearchResult res = new SearchResult(JUnitHelpers.getFile("file2", true), "testresu");
+    SearchResult equ = new SearchResult(JUnitHelpers.getFile("file2", true), "testresu");
+    SearchResult notequ = new SearchResult(JUnitHelpers.getFile("file2", true), "testresu1");
     JUnitHelpers.CompareToTest(res, equ, notequ);
   }
 
@@ -95,8 +95,8 @@ public class TestSearchResult extends TestCase {
    * @throws Exception 
    */
   public void testGetFile() throws Exception {
-    SearchResult res = new SearchResult(JUnitHelpers.getFile(2, true), "testresu");
-    assertEquals("2", res.getFile().getID());
+    SearchResult res = new SearchResult(JUnitHelpers.getFile("file2", true), "testresu");
+    assertEquals("file2", res.getFile().getName());
   }
 
   /**
@@ -104,7 +104,7 @@ public class TestSearchResult extends TestCase {
    * @throws Exception 
    */
   public void testGetType() throws Exception {
-    SearchResult res = new SearchResult(JUnitHelpers.getFile(2, true), "testresu");
+    SearchResult res = new SearchResult(JUnitHelpers.getFile("file2", true), "testresu");
     assertEquals(SearchResultType.FILE, res.getType());
     
     res = new SearchResult(new WebRadio("web", "testurl"), "testresu");

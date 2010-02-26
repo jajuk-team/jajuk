@@ -368,7 +368,7 @@ public class TestTracksTreeView extends JajukTestCase {
 
     JUnitHelpers.ToStringTest(ad);
     assertNotNull(ad.getGenre());
-    assertEquals("1", ad.getGenre().getID());
+    assertEquals("name", ad.getGenre().getName());
   }
 
   /**
@@ -384,7 +384,7 @@ public class TestTracksTreeView extends JajukTestCase {
 
     JUnitHelpers.ToStringTest(ad);
     assertNotNull(ad.getArtist());
-    assertEquals("1", ad.getArtist().getID());
+    assertEquals("name", ad.getArtist().getName());
   }
 
   /**
@@ -400,7 +400,7 @@ public class TestTracksTreeView extends JajukTestCase {
 
     JUnitHelpers.ToStringTest(ad);
     assertNotNull(ad.getYear());
-    assertEquals("1", ad.getYear().getID());
+    assertEquals("2000", ad.getYear().getName());
   }
 
   /**
@@ -416,7 +416,7 @@ public class TestTracksTreeView extends JajukTestCase {
 
     JUnitHelpers.ToStringTest(ad);
     assertNotNull(ad.getAlbum());
-    assertEquals("1", ad.getAlbum().getID());
+    assertEquals("name", ad.getAlbum().getName());
   }
 
   /**
@@ -432,7 +432,7 @@ public class TestTracksTreeView extends JajukTestCase {
 
     JUnitHelpers.ToStringTest(ad);
     assertNotNull(ad.getTrack());
-    assertEquals("1", ad.getTrack().getID());
+    assertEquals("name", ad.getTrack().getName());
   }
 
   /**

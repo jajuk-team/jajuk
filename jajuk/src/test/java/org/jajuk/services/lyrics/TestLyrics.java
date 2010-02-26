@@ -38,7 +38,6 @@ import org.jajuk.services.core.SessionService;
 import org.jajuk.services.lyrics.providers.FlyWebLyricsProvider;
 import org.jajuk.services.lyrics.providers.GenericWebLyricsProvider;
 import org.jajuk.services.lyrics.providers.ILyricsProvider;
-import org.jajuk.services.lyrics.providers.LyrcWebLyricsProvider;
 import org.jajuk.services.lyrics.providers.LyricWikiWebLyricsProvider;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
@@ -242,41 +241,6 @@ public class TestLyrics extends JajukTestCase {
     GenericWebLyricsProvider provider = new LyricWikiWebLyricsProvider();
     testWeb(provider);
   }
-
-  /**
-   * Test providers order For each provider, we test the class and then we
-   * remove it from the providers list to allow the others to run
-   * 
-   * @throws Exception
-   */
-  public void testWebProvidersOrder() throws Exception {
-    // Removing TagProvider and TxtProvider
-    LyricsService.getProviders().remove(0);
-    LyricsService.getProviders().remove(0);
-
-    
-    org.jajuk.base.File dummyFile = JUnitHelpers.getFile(2, true);
-    LyricsService.getLyrics(dummyFile);
-    assertTrue("Instance: " + LyricsService.getCurrentProvider().getClass()
-        + " but expected LyricWikiProvider",
-        LyricsService.getCurrentProvider() instanceof LyricWikiWebLyricsProvider);
-
-    LyricsService.getProviders().remove(0);
-    LyricsService.getLyrics(dummyFile);
-// TODO: enable after flylyrics works again...
-//    assertTrue("Instance: " + LyricsService.getCurrentProvider().getClass()
-//        + " but expected FlyProvider",
-//        LyricsService.getCurrentProvider() instanceof FlyWebLyricsProvider);
-
-    LyricsService.getProviders().remove(0);
-    LyricsService.getLyrics(dummyFile);
-    assertTrue("Instance: " + LyricsService.getCurrentProvider().getClass()
-        + " but expected LyrcProvider",
-        LyricsService.getCurrentProvider() instanceof LyrcWebLyricsProvider);
-
-    // delay a bit as LyricsFly puts a min. delay before the next request is
-    // allowed
-    Thread.sleep(FLY_DELAY);
-  }
+  
 
 }
