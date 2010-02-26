@@ -286,7 +286,7 @@ public class Device extends PhysicalItem implements Comparable<Device> {
   }
 
   /**
-   * Gets the directories.
+   * Gets the directories directly under the device root (not recursive)
    * 
    * @return the directories
    */
@@ -810,7 +810,7 @@ public class Device extends PhysicalItem implements Comparable<Device> {
           return;
         }
         final Directory subDir = DirectoryManager.getInstance().registerDirectory(
-            element.getName(), dir);
+            element.getName(), dir, this);
         scanRecursively(subDir, bDeepScan);
       }
     }

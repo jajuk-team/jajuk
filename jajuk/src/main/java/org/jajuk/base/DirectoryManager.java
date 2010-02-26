@@ -43,12 +43,12 @@ public final class DirectoryManager extends ItemManager {
    * Return hashcode for this item.
    * 
    * @param sName directory name
+   * @param device device
    * @param dParent parent directory
    * 
    * @return ItemManager ID
    */
-  protected static String createID(final String sName, final Directory dParent) {
-    Device device = dParent.getDevice();
+  protected static String createID(final String sName, final Device device, final Directory dParent) {
     final StringBuilder sbAbs = new StringBuilder(device.getName());
     // Under windows, all files/directories with different cases should get
     // the same ID
@@ -190,7 +190,7 @@ public final class DirectoryManager extends ItemManager {
    * @return the directory
    */
   public Directory registerDirectory(final Device device) {
-    return registerDirectory(device.getID(), "", null);
+    return registerDirectory(device.getID(), "", null, device);
   }
 
   /**
@@ -198,11 +198,14 @@ public final class DirectoryManager extends ItemManager {
    * 
    * @param sName DOCUMENT_ME
    * @param dParent DOCUMENT_ME
+   * @param device DOCUMENT_ME
    * 
    * @return the directory
    */
-  public synchronized Directory registerDirectory(final String sName, final Directory dParent) {
-    return registerDirectory(DirectoryManager.createID(sName, dParent), sName, dParent);
+  public synchronized Directory registerDirectory(final String sName, final Directory dParent,
+      final Device device) {
+    return registerDirectory(DirectoryManager.createID(sName, device, dParent), sName, dParent,
+        device);
   }
 
   /**
@@ -211,19 +214,12 @@ public final class DirectoryManager extends ItemManager {
    * @param sName DOCUMENT_ME
    * @param sId DOCUMENT_ME
    * @param dParent DOCUMENT_ME
+   * @param device DOCUMENT_ME
    * 
    * @return the directory
    */
   public synchronized Directory registerDirectory(final String sId, final String sName,
-      final Directory dParent) {
-    // Find the associated device. Top dirs's IDs = device id and their dParent is null
-    Device device = null;
-    if (dParent == null) {
-      device = DeviceManager.getInstance().getDeviceByID(sId);
-    } else {
-      device = dParent.getDevice();
-    }
-
+      final Directory dParent, final Device device) {
     Directory directory = getDirectoryByID(sId);
     if (directory != null) {
       return directory;

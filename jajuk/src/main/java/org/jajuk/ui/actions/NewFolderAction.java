@@ -95,7 +95,8 @@ public class NewFolderAction extends JajukAction {
               java.io.File newFolder = new java.io.File(dir.getAbsolutePath() + "/" + folderName);
               if (!newFolder.exists()) {
                 if (newFolder.mkdir()) {
-                  DirectoryManager.getInstance().registerDirectory(folderName, dir);
+                  DirectoryManager.getInstance()
+                      .registerDirectory(folderName, dir, dir.getDevice());
                   ObservationManager.notify(new JajukEvent(JajukEvents.DEVICE_REFRESH));
                 } else {
                   Messages.showErrorMessage(136);

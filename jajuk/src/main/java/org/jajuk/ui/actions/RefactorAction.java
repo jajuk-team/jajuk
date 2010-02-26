@@ -181,7 +181,7 @@ public class RefactorAction {
       final Directory dir = DirectoryManager.getInstance().registerDirectory(
           sFirstDir,
           DirectoryManager.getInstance().getDirectoryForIO(fCurrent.getDevice().getFio(),
-              fCurrent.getDevice()));
+              fCurrent.getDevice()), fCurrent.getDevice());
 
       // Ask to refresh this directory afterward
       if (!toBeRefreshed.contains(dir)) {

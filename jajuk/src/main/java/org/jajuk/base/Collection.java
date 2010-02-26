@@ -778,7 +778,7 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
     // UPGRADE test
     String sRightID = sID;
     if (needCheckID) {
-      sRightID = DirectoryManager.createID(sItemName, dParent).intern();
+      sRightID = DirectoryManager.createID(sItemName, device, dParent).intern();
       if (sRightID == sID) {
         needCheckID = UpgradeManager.isUpgradeDetected() || SessionService.isTestMode();
       } else {
@@ -787,7 +787,7 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
       }
     }
     Directory directory = DirectoryManager.getInstance().registerDirectory(sRightID, sItemName,
-        dParent);
+        dParent, device);
     directory.populateProperties(attributes);
 
     // also remember top-level directories at the device

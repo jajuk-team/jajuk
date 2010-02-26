@@ -809,7 +809,7 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
   }
 
   /**
-   * Gets the rate.
+   * Gets the playlist average rating.
    * 
    * @return playlist average rating
    */
