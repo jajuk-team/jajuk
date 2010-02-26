@@ -317,7 +317,15 @@ public class JajukSystray extends CommandJPanel implements IJajukWindow {
             windowDecorator = JajukMainWindow.getInstance().getWindowStateDecorator();
           } else if (Conf.getInt(Const.CONF_STARTUP_DISPLAY) == Const.DISPLAY_MODE_SLIMBAR_TRAY) {
             windowDecorator = JajukSlimbar.getInstance().getWindowStateDecorator();
+          } else if (Conf.getInt(Const.CONF_STARTUP_DISPLAY) == Const.DISPLAY_MODE_FULLSCREEN) {
+            windowDecorator = JajukFullScreenWindow.getInstance().getWindowStateDecorator();
           }
+          
+          // show Main if no other found, i.e. only Systray is displayed 
+          if(windowDecorator == null) {
+            windowDecorator = JajukMainWindow.getInstance().getWindowStateDecorator();
+          }
+          
           // Invert visibility for the current window
           boolean bShouldDisplay = !(windowDecorator.getWindowState() == WindowState.BUILT_DISPLAYED);
           windowDecorator.display(bShouldDisplay);
