@@ -42,6 +42,16 @@ import org.xml.sax.Attributes;
  * 
  */
 public class TestDevice extends JajukTestCase {
+  
+   /*
+   * (non-Javadoc)
+   * 
+   * @see junit.framework.TestCase#setUp()
+   */
+  @Override
+  public void setUp() throws Exception {
+    super.setUp();
+  }
 
   /**
    * Test method for {@link org.jajuk.base.Device#getDesc()}.
@@ -211,11 +221,11 @@ public class TestDevice extends JajukTestCase {
 
   public void testCleanRemovedFiles() throws Exception {
     JUnitHelpers.createSessionDirectory();
+    
     Device device = JUnitHelpers.getDevice();
-    device.setUrl(System.getProperty("java.io.tmpdir"));
     device.mount(true);
     device.setUrl("notexisting/testparent\\anotherclientparentthing");
-
+   
     // clean without any stuff
     assertFalse(device.cleanRemovedFiles());
 

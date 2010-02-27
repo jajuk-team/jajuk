@@ -42,8 +42,6 @@ public abstract class JajukTestCase extends TestCase {
     // Clean the collection
     StartupCollectionService.registerItemManagers();
     Collection.clearCollection();
-    JUnitHelpers.getDirectory().getFio().delete();
-    JUnitHelpers.getDirectory().getFio().mkdirs();
     super.setUp();
   }
 }

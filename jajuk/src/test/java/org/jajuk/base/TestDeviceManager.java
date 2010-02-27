@@ -34,12 +34,6 @@ public class TestDeviceManager extends JajukTestCase {
   protected void setUp() throws Exception {
     // avoid UI:
     Conf.setProperty(Const.CONF_CONFIRMATIONS_REMOVE_DEVICE, "false");
-
-    // clean up
-    for (Device device : DeviceManager.getInstance().getDevices()) {
-      DeviceManager.getInstance().removeDevice(device);
-    }
-
     super.setUp();
   }
 
