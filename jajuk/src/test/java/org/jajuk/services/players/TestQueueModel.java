@@ -322,6 +322,7 @@ public class TestQueueModel extends JajukTestCase {
 
     addItems(5);
     StackItem firstItem = QueueModel.getItem(0);
+    StackItem secondItem = QueueModel.getItem(1);
     QueueModel.setRepeatModeToAll(true);
     Conf.setProperty(Const.CONF_STATE_REPEAT, "false");
     Conf.setProperty(Const.CONF_STATE_REPEAT_ALL, "true");
@@ -333,9 +334,11 @@ public class TestQueueModel extends JajukTestCase {
     QueueModel.finished();
     assertTrue(QueueModel.getItem(0).equals(firstItem));
     QueueModel.finished();
-    // Queue should be shuffled then
-    assertFalse("Item0: " + QueueModel.getItem(0) + "\nFirstItem: " + firstItem, QueueModel
-        .getItem(0).equals(firstItem));
+    // Queue should be shuffled then. We test position of two items, not only once to avoid false
+    // positive, indeed, when the playlist is shuffled, the first track could remain at its previous
+    // position but it is very unlikely that 2 consecutive tracks remain at the same position
+    assertFalse("Item0: " + QueueModel.getItem(0) + "\nFirstItem: " + firstItem, (QueueModel
+        .getItem(0).equals(firstItem) && QueueModel.getItem(1).equals(secondItem)));
   }
 
   /**
