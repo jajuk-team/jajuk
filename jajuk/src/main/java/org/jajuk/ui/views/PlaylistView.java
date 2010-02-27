@@ -288,8 +288,12 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
     }
     // Update playlist editor
     selectPlaylist(sp.getPlaylist());
-    repositoryPanel.jmiPrepareParty.putClientProperty(Const.DETAIL_SELECTION, sp.getPlaylist());
-    repositoryPanel.jmiRepositorySaveAs.putClientProperty(Const.DETAIL_SELECTION, sp.getPlaylist());
+    if(repositoryPanel.jmiPrepareParty != null) {
+      repositoryPanel.jmiPrepareParty.putClientProperty(Const.DETAIL_SELECTION, sp.getPlaylist());
+    }
+    if(repositoryPanel.jmiRepositorySaveAs != null) {
+      repositoryPanel.jmiRepositorySaveAs.putClientProperty(Const.DETAIL_SELECTION, sp.getPlaylist());
+    }
   }
 
   /**
