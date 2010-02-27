@@ -227,8 +227,7 @@ public class TestDirectory extends JajukTestCase {
     Track track = new Track(Integer.valueOf(i).toString(), "name", album, genre, artist, 120, year,
         1, type, 1);
 
-    return FileManager.getInstance().registerFile(Integer.valueOf(i).toString(), "test.tst", dir,
-        track, 120, 70);
+    return FileManager.getInstance().registerFile("test_" + i + ".tst", dir, track, 120, 70);
   }
 
   /**

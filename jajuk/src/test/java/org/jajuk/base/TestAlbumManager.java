@@ -140,6 +140,7 @@ public class TestAlbumManager extends JajukTestCase {
     getTrack(5, album);
     getTrack(6, album);
 
+    JUnitHelpers.getDevice().mount(false);
     AlbumManager.getInstance().changeAlbumName(album, "name4");
 
     assertNull(AlbumManager.getInstance().getAlbumByName("name3"));
@@ -510,8 +511,8 @@ public class TestAlbumManager extends JajukTestCase {
     album.setProperty(Const.XML_ALBUM_COVER, Const.COVER_NONE);
     // don't read covers for this test
 
-    Artist artist = JUnitHelpers.getArtist("name");
-    Year year = new Year(Integer.valueOf(i).toString(), "2000");
+    Artist artist = JUnitHelpers.getArtist("atist_" + i);
+    Year year = YearManager.getInstance().registerYear(Integer.valueOf(i).toString());
 
     IPlayerImpl imp = new MockPlayer();
     Class<IPlayerImpl> cl = (Class<IPlayerImpl>) imp.getClass();
@@ -525,7 +526,10 @@ public class TestAlbumManager extends JajukTestCase {
     Device device = JUnitHelpers.getDevice();
     Directory dir = JUnitHelpers.getDirectory();
     device.mount(true);
-    track.addFile(FileManager.getInstance().registerFile("file_" + i, dir, track, 200, 100));
+    File file = FileManager.getInstance().registerFile("file_" + i + ".mp3", dir, track, 200, 100);
+    file.getFIO().createNewFile();
+    track.addFile(file);
+
     return track;
   }
 

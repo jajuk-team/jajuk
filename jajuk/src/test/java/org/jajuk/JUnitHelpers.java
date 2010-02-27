@@ -499,7 +499,6 @@ public class JUnitHelpers {
     return getFile("test.tst", true);
   }
 
-  
   public static org.jajuk.base.File getFile(String name, boolean mount) {
     Genre genre = getGenre();
     Album album = getAlbum("name", 0);
@@ -653,11 +652,11 @@ public class JUnitHelpers {
     album.setProperty(Const.XML_ALBUM_COVER, Const.COVER_NONE); // don't read covers for
     // this test
 
-    Artist artist = getArtist("myartist");
+    Artist artist = getArtist("myartist_" + i);
     Year year = getYear(2000);
 
     Type type = getType();
-    return TrackManager.getInstance().registerTrack("name", album, genre, artist, 120, year, 1,
-        type, 1);
+    return TrackManager.getInstance().registerTrack("track_" + i, album, genre, artist, 120, year,
+        1, type, 1);
   }
 }
