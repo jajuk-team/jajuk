@@ -140,7 +140,6 @@ public class TestAlbumManager extends JajukTestCase {
     getTrack(5, album);
     getTrack(6, album);
 
-    JUnitHelpers.getDevice().mount(false);
     AlbumManager.getInstance().changeAlbumName(album, "name4");
 
     assertNull(AlbumManager.getInstance().getAlbumByName("name3"));
@@ -526,9 +525,11 @@ public class TestAlbumManager extends JajukTestCase {
     Device device = JUnitHelpers.getDevice();
     Directory dir = JUnitHelpers.getDirectory();
     device.mount(true);
-    File file = FileManager.getInstance().registerFile("file_" + i + ".mp3", dir, track, 200, 100);
+    File file = FileManager.getInstance().registerFile("file_" + i + ".tst", dir, track, 200, 100);
     file.getFIO().createNewFile();
     track.addFile(file);
+
+    TypeManager.getInstance().registerType("test", "tst", cl, tl);
 
     return track;
   }
