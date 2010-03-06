@@ -109,6 +109,9 @@ public class CommandJPanel extends JXPanel implements ActionListener, ChangeList
 
   // widgets declaration
 
+  /** Continue mode button */
+  private JajukToggleButton jbContinue;
+  
   /** DOCUMENT_ME. */
   private JajukToggleButton jbRepeat;
 
@@ -243,12 +246,15 @@ public class CommandJPanel extends JXPanel implements ActionListener, ChangeList
     JPanel jpModes = new JPanel();
     jpModes.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 3));
     // make it not floatable as this behavior is managed by vldocking
+    jbContinue = new JajukToggleButton(ActionManager.getAction(JajukActions.CONTINUE_MODE));
+    jbContinue.setSelected(Conf.getBoolean(Const.CONF_STATE_CONTINUE));
     jbRepeat = new JajukToggleButton(ActionManager.getAction(JajukActions.REPEAT_MODE));
     jbRepeat.setSelected(Conf.getBoolean(Const.CONF_STATE_REPEAT));
     jbRepeatAll = new JajukToggleButton(ActionManager.getAction(JajukActions.REPEAT_ALL_MODE));
     jbRepeatAll.setSelected(Conf.getBoolean(Const.CONF_STATE_REPEAT_ALL));
     jbRandom = new JajukToggleButton(ActionManager.getAction(JajukActions.SHUFFLE_MODE));
     jbRandom.setSelected(Conf.getBoolean(Const.CONF_STATE_SHUFFLE));
+    jpModes.add(jbContinue);
     jpModes.add(jbRepeat);
     jpModes.add(jbRepeatAll);
     jpModes.add(jbRandom);
