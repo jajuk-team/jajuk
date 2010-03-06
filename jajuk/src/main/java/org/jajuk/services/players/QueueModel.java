@@ -469,7 +469,7 @@ public final class QueueModel {
           }
         } else {
           if (Conf.getBoolean(Const.CONF_STATE_SHUFFLE) && alQueue.containsOnlyRepeat()) {
-            QueueModel.shuffle();
+            UtilFeatures.forcedShuffle(alQueue);
           }
           StackItem itemNext = alQueue.get(0);
           // if next track is repeat, inc index

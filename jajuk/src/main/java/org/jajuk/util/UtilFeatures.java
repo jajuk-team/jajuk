@@ -429,4 +429,18 @@ public final class UtilFeatures {
     return ((xx << 24) | (yyyy << 8) | zz);
   }
 
+  /**
+   * Shuffle a list of items and ensure that final list first element 
+   * is different from the initial list's one
+   * <p>The list should not be void</p>  
+   * @return shuffled list
+   */
+  public static void forcedShuffle(List<StackItem> list) {
+    StackItem first = list.get(0);
+    StackItem newFirst = first;
+    while (newFirst.equals(first)) {
+      Collections.shuffle(list,UtilSystem.getRandom());
+      newFirst = list.get(0);
+    }
+  }
 }
