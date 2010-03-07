@@ -53,6 +53,7 @@ import org.jajuk.services.players.QueueModel;
 import org.jajuk.ui.actions.ActionManager;
 import org.jajuk.ui.actions.JajukActions;
 import org.jajuk.ui.helpers.FontManager;
+import org.jajuk.ui.helpers.JajukMouseAdapter;
 import org.jajuk.ui.helpers.PlayerStateMediator;
 import org.jajuk.ui.helpers.FontManager.JajukFont;
 import org.jajuk.ui.widgets.CommandJPanel;
@@ -306,30 +307,28 @@ public class JajukSystray extends CommandJPanel implements IJajukWindow {
       }
     });
     trayIcon.setJPopuMenu(jmenu);
-    trayIcon.addMouseListener(new MouseAdapter() {
+    trayIcon.addMouseListener(new JajukMouseAdapter() {
 
       @Override
-      public void mouseClicked(MouseEvent e) {
+      public void handleActionSingleClick(MouseEvent e) {
         // Invert current window visibility with a left click on the tray icon
-        if (!e.isPopupTrigger()) {
-          WindowStateDecorator windowDecorator = null;
-          if (Conf.getInt(Const.CONF_STARTUP_DISPLAY) == Const.DISPLAY_MODE_MAIN_WINDOW) {
-            windowDecorator = JajukMainWindow.getInstance().getWindowStateDecorator();
-          } else if (Conf.getInt(Const.CONF_STARTUP_DISPLAY) == Const.DISPLAY_MODE_SLIMBAR_TRAY) {
-            windowDecorator = JajukSlimbar.getInstance().getWindowStateDecorator();
-          } else if (Conf.getInt(Const.CONF_STARTUP_DISPLAY) == Const.DISPLAY_MODE_FULLSCREEN) {
-            windowDecorator = JajukFullScreenWindow.getInstance().getWindowStateDecorator();
-          }
-          
-          // show Main if no other found, i.e. only Systray is displayed 
-          if(windowDecorator == null) {
-            windowDecorator = JajukMainWindow.getInstance().getWindowStateDecorator();
-          }
-          
-          // Invert visibility for the current window
-          boolean bShouldDisplay = !(windowDecorator.getWindowState() == WindowState.BUILT_DISPLAYED);
-          windowDecorator.display(bShouldDisplay);
+        WindowStateDecorator windowDecorator = null;
+        if (Conf.getInt(Const.CONF_STARTUP_DISPLAY) == Const.DISPLAY_MODE_MAIN_WINDOW) {
+          windowDecorator = JajukMainWindow.getInstance().getWindowStateDecorator();
+        } else if (Conf.getInt(Const.CONF_STARTUP_DISPLAY) == Const.DISPLAY_MODE_SLIMBAR_TRAY) {
+          windowDecorator = JajukSlimbar.getInstance().getWindowStateDecorator();
+        } else if (Conf.getInt(Const.CONF_STARTUP_DISPLAY) == Const.DISPLAY_MODE_FULLSCREEN) {
+          windowDecorator = JajukFullScreenWindow.getInstance().getWindowStateDecorator();
         }
+
+        // show Main if no other found, i.e. only Systray is displayed
+        if (windowDecorator == null) {
+          windowDecorator = JajukMainWindow.getInstance().getWindowStateDecorator();
+        }
+
+        // Invert visibility for the current window
+        boolean bShouldDisplay = !(windowDecorator.getWindowState() == WindowState.BUILT_DISPLAYED);
+        windowDecorator.display(bShouldDisplay);
       }
 
     });
