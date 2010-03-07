@@ -35,7 +35,11 @@ public class TestDBusManager extends JajukTestCase {
     // but this is typically only set on machines that support D-Bus
 
     // cannot check this for null as it won't work in some installations
-    DBusManager.connect();
+    try {
+      DBusManager.connect();
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
   }
 
   /**
@@ -46,7 +50,11 @@ public class TestDBusManager extends JajukTestCase {
     DBusManager.disconnect();
 
     // then run getInstance() which tries to connect
-    DBusManager.connect();
+    try {
+      DBusManager.connect();
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
 
     // now again, although getInstance() might not have worked...
     DBusManager.disconnect();

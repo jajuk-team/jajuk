@@ -120,7 +120,7 @@ public class TestLyrics extends JajukTestCase {
    * @throws Exception
    */
   // TODO: re-enable after we added a new userid
-  public void ntestFlyService() throws Exception {
+  public void testFlyService() throws Exception {
     GenericWebLyricsProvider provider = new FlyWebLyricsProvider();
     testWebService(provider);
 
@@ -130,7 +130,7 @@ public class TestLyrics extends JajukTestCase {
   }
 
   // TODO: re-enable after we added a new userid
-  public void ntestFlyServiceSonar() throws Exception {
+  public void testFlyServiceSonar() throws Exception {
     // ensure that this is not configured somehow
     assertFalse(Conf.getBoolean(Const.CONF_NETWORK_NONE_INTERNET_ACCESS));
 

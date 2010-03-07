@@ -50,11 +50,11 @@ public class StartupAsyncService {
     // private constructor to hide it from the outside
   }
 
-   /**
-    * Asynchronous tasks executed at startup at the same time (for perf).
-    * 
-    * @param bCollectionLoadRecover DOCUMENT_ME
-    */
+  /**
+   * Asynchronous tasks executed at startup at the same time (for perf).
+   * 
+   * @param bCollectionLoadRecover DOCUMENT_ME
+   */
   public static void startupAsyncAfterCollectionLoad(final boolean bCollectionLoadRecover) {
     Thread startup = new Thread("Startup Async After Collection Load Thread") {
       @Override
@@ -92,9 +92,15 @@ public class StartupAsyncService {
           // implemented on Linux
           if (UtilSystem.isUnderLinux()) {
             // make sure the singleton is initialized here
-            DBusManager.connect();
+            try {
+              DBusManager.connect();
+            } catch (Exception e) {
+              // Make sure to catch this error propertly, otherwise the rest of the initalization is
+              // not done
+              Log.error(e);
+            }
           }
-          
+
           // Wait few secs to avoid GUI startup perturbations
           Thread.sleep(10000);
 

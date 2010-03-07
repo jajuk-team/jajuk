@@ -20,6 +20,7 @@
  */
 package org.jajuk.services.dbus;
 
+
 /**
  * Base class to connect/disconnect to the session wide DBus daemon.
  */
@@ -37,13 +38,17 @@ public final class DBusManager {
    * 
    * @see disconnect()
    */
-  public static void connect() {
-    if (dbus == null) {
-      dbus = new DBusSupportImpl();
+  public static void connect() throws Exception {
+    try {
+      if (dbus == null) {
+        dbus = new DBusSupportImpl();
 
-      // the connect method will internally catch errors and report them to the
-      // logfile
-      dbus.connect();
+        // the connect method will internally catch errors and report them to the
+        // logfile
+        dbus.connect();
+      }
+    } catch (Throwable t) {
+      throw new Exception("DBus not available", t);
     }
   }
 
@@ -56,7 +61,7 @@ public final class DBusManager {
   public static void disconnect() {
     if (dbus != null) {
       dbus.disconnect();
-      
+
       // reset to let initialize work correctly in all cases
       dbus = null;
     }
