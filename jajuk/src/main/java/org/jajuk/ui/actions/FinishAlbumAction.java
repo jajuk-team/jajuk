@@ -21,6 +21,7 @@
 package org.jajuk.ui.actions;
 
 import java.awt.event.ActionEvent;
+import java.util.List;
 import java.util.Properties;
 
 import org.jajuk.base.Directory;
@@ -54,7 +55,9 @@ public class FinishAlbumAction extends JajukAction {
     setShortDescription(Messages.getString("JajukWindow.32"));
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see org.jajuk.ui.actions.JajukAction#perform(java.awt.event.ActionEvent)
    */
   @Override
@@ -66,13 +69,17 @@ public class FinishAlbumAction extends JajukAction {
           StackItem item = QueueModel.getCurrentItem();// stores
           // current item
           Directory dir = item.getFile().getDirectory();
-          // then re-add current item
-          QueueModel.push(UtilFeatures.createStackItems(dir.getFilesFromFile(item.getFile()), item
-              .isRepeat(), item.isUserLaunch()), true, true);
-          QueueModel.computesPlanned(true); // update planned list
-          Properties properties = new Properties();
-          properties.put(Const.DETAIL_ORIGIN, Const.DETAIL_SPECIAL_MODE_NORMAL);
-          ObservationManager.notify(new JajukEvent(JajukEvents.SPECIAL_MODE, properties));
+          List<StackItem> stack = UtilFeatures.createStackItems(dir
+              .getFilesFromFile(item.getFile()), item.isRepeat(), item.isUserLaunch());
+          // Then re-add current item only if some more tracks are to be ran. Otherwise, just ignore
+          // this command, better than displaying a bozing error message.
+          if (stack != null && stack.size() > 0) {
+            QueueModel.push(stack, true, true);
+            QueueModel.computesPlanned(true); // update planned list
+            Properties properties = new Properties();
+            properties.put(Const.DETAIL_ORIGIN, Const.DETAIL_SPECIAL_MODE_NORMAL);
+            ObservationManager.notify(new JajukEvent(JajukEvents.SPECIAL_MODE, properties));
+          }
         } catch (Exception e) {
           Log.error(e);
         }
