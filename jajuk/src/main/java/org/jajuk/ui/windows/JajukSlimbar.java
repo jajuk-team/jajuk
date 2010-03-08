@@ -28,6 +28,7 @@ import static org.jajuk.ui.actions.JajukActions.QUEUE_TO_SLIM;
 import static org.jajuk.ui.actions.JajukActions.STOP_TRACK;
 import ext.DropDownButton;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Point;
@@ -100,7 +101,8 @@ public final class JajukSlimbar extends JFrame implements IJajukWindow, Observer
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
-  /** DOCUMENT_ME. */
+  /** A queue view to be used by the show queue view slimbar switch button. 
+   * Don't use it directly, use the getQueueWindow() method instead that lazy-load it. */
   private JWindow queueViewWindow;
 
   /** DOCUMENT_ME. */
@@ -209,11 +211,11 @@ public final class JajukSlimbar extends JFrame implements IJajukWindow, Observer
   public void setDisplayQueue(boolean display) {
     if (display) {
       // Set position of queue dialog
-      queueViewWindow.setLocation(this.getLocation().x, this.getLocation().y
-          + this.getSize().height);
-      queueViewWindow.setSize(this.getSize().width, queueViewWindow.getSize().height);
+      getQueueWindow().setLocation(this.getLocation().x,
+          this.getLocation().y + this.getSize().height);
+      getQueueWindow().setSize(this.getSize().width, queueViewWindow.getSize().height);
     }
-    queueViewWindow.setVisible(display);
+    getQueueWindow().setVisible(display);
     Conf.setProperty(Const.CONF_SLIMBAR_DISPLAY_QUEUE, Boolean.toString(isDisplayQueue()));
   }
 
@@ -223,7 +225,7 @@ public final class JajukSlimbar extends JFrame implements IJajukWindow, Observer
    * @return true, if is display queue
    */
   public boolean isDisplayQueue() {
-    return queueViewWindow.isVisible();
+    return getQueueWindow().isVisible();
   }
 
   /*
@@ -480,24 +482,26 @@ public final class JajukSlimbar extends JFrame implements IJajukWindow, Observer
 
     // Install global keystrokes
     WindowGlobalKeystrokeManager.getInstance();
-
-    createQueueWindow();
   }
 
   /**
-   * Creates the queue window. DOCUMENT_ME
+   * Returns or create a queue window to be displayed though the queue view slimbar button
    */
-  private void createQueueWindow() {
-    QueueView queueView = new QueueView();
-    queueView.initUI();
-    queueViewWindow = new JWindow(this);
-    queueViewWindow.getContentPane().add(queueView);
-    queueViewWindow.pack();
-    // Set position of queue dialog
-    queueViewWindow.setLocation(this.getLocation().x, this.getLocation().y + this.getSize().height);
-    queueViewWindow.setSize(this.getSize().width, queueViewWindow.getSize().height / 2);
-
-    queueViewWindow.setVisible(Conf.getBoolean(Const.CONF_SLIMBAR_DISPLAY_QUEUE));
+  private JWindow getQueueWindow() {
+    if (queueViewWindow == null) {
+      QueueView queueView = new QueueView();
+      queueView.initUI();
+      queueView.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+      queueViewWindow = new JWindow(this);
+      queueViewWindow.getContentPane().add(queueView);
+      queueViewWindow.pack();
+      // Set position of queue dialog
+      queueViewWindow.setLocation(this.getLocation().x, this.getLocation().y
+          + this.getSize().height);
+      queueViewWindow.setSize(this.getSize().width, queueViewWindow.getSize().height / 2);
+      queueViewWindow.setVisible(Conf.getBoolean(Const.CONF_SLIMBAR_DISPLAY_QUEUE));
+    }
+    return queueViewWindow;
   }
 
   /**
@@ -550,8 +554,7 @@ public final class JajukSlimbar extends JFrame implements IJajukWindow, Observer
   /*
    * (non-Javadoc)
    * 
-   * @seejava.awt.event.MouseWheelListener#mouseWheelMoved(java.awt.event.
-   * MouseWheelEvent)
+   * @seejava.awt.event.MouseWheelListener#mouseWheelMoved(java.awt.event. MouseWheelEvent)
    */
   public void mouseWheelMoved(MouseWheelEvent e) {
     if (e.getSource().equals(jbVolume)) {
@@ -639,8 +642,7 @@ public final class JajukSlimbar extends JFrame implements IJajukWindow, Observer
   /*
    * (non-Javadoc)
    * 
-   * @see
-   * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+   * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
    */
   public void actionPerformed(final ActionEvent ae) {
     if (ae.getSource() == jbBestof) {
