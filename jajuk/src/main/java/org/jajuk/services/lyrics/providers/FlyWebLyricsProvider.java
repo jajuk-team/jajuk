@@ -39,7 +39,7 @@ import org.w3c.dom.Document;
 public class FlyWebLyricsProvider extends GenericWebLyricsProvider {
 
   /** The Constant USER_ID. DO NOT USE THESE KEYS FOR OTHER APPLICATIONS THAN Jajuk ! */
-  private static final String USER_ID = "79o116n89n93sr93p-wnwhx.vasb";
+  private static final String USER_ID = "55593623089-wnwhx.vasb";
 
   /** URL pattern used by jajuk to retrieve lyrics. */
   private static final String URL = "http://api.lyricsfly.com/api/api.php?i="
