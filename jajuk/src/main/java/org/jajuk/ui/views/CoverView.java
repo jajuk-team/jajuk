@@ -1600,18 +1600,14 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
       }
     }
 
-    if (alCovers.size() == 0) {// add the default cover if none
-      // other cover has been found
-      alCovers.add(CoverView.nocover);
-    }
-
     // if the last file had a tag cover, we must remove it
     // we can not use the cover type because a tag cover could be set as default.
     if (!dirChanged) {
       Cover coverToRemove = null;
       for (Cover c : alCovers) {
 
-        if (c.getFile().getName().equalsIgnoreCase(Const.TAG_COVER_FILE)) {
+        if (c.getFile().getName().equalsIgnoreCase(Const.TAG_COVER_FILE)
+            || c.getType().equals(CoverType.NO_COVER)) {
           coverToRemove = c;
           break;
         }
@@ -1643,6 +1639,11 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
     } catch (Exception e1) {
       // current file is not supported by jaudiotagger
       Log.error(e1);
+    }
+
+    if (alCovers.size() == 0) {// add the default cover if none
+      // other cover has been found
+      alCovers.add(CoverView.nocover);
     }
 
     Collections.sort(alCovers);
