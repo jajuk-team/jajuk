@@ -26,6 +26,7 @@ import java.io.FileFilter;
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
+import java.util.StringTokenizer;
 
 import javax.swing.JOptionPane;
 
@@ -42,10 +43,12 @@ import org.jajuk.util.log.Log;
 
 /**
  * Maintain all behavior needed upgrades from releases to releases.
+ * 
+ * Jajuk version sheme is XX.YY.ZZ (two digits possible for each part of the release)
  */
 public final class UpgradeManager {
 
-  /** DOCUMENT_ME. */
+  /** Last jajuk release known from Internet (parsed from a pad file). */
   private static String newVersionName;
 
   /** Is it a minor or major X.Y upgrade */
@@ -58,9 +61,30 @@ public final class UpgradeManager {
   private static boolean majorMigration = false;
 
   /**
-   * private constructor to avoid instantiating utility class.
-   */
+  * private constructor to avoid instantiating utility class.
+  */
   private UpgradeManager() {
+  }
+
+  /**
+   * Return Jajuk number version = integer format of the padded release
+   * 
+   * Jajuk version sheme is XX.YY.ZZ[RCn] (two digits possible for each part of the release)
+   * 
+   * @return Jajuk number version = integer format of the padded release
+   */
+  static int getNumberRelease(String pStringRelease) {
+    String stringRelease = pStringRelease;
+    // We drop any RCx part of the release
+    if (pStringRelease.contains("RC")) {
+      stringRelease = pStringRelease.split("RC.*")[0];
+    }
+    StringTokenizer st = new StringTokenizer(stringRelease, ".");
+    String main = UtilString.padNumber(Integer.parseInt(st.nextToken()), 2);
+    String minor = UtilString.padNumber(Integer.parseInt(st.nextToken()), 2);
+
+    String fix = UtilString.padNumber(Integer.parseInt(st.nextToken()), 2);
+    return Integer.parseInt(main + minor + fix);
   }
 
   /**
@@ -69,22 +93,17 @@ public final class UpgradeManager {
   public static void detectRelease() {
     try {
       // Upgrade detection. Depends on: Configuration manager load
-      final String sRelease = Conf.getString(Const.CONF_RELEASE);
+      final String sStoredRelease = Conf.getString(Const.CONF_RELEASE);
 
       // check if it is a new major 'x.y' release: 1.2 != 1.3 for instance
       if (!bFirstSession
       // if first session, not taken as an upgrade
-          && ((sRelease == null) || // null for jajuk releases < 1.2
-          !sRelease.substring(0, 3).equals(Const.JAJUK_VERSION.substring(0, 3)))) {
+          && ((sStoredRelease == null) || // null for jajuk releases < 1.2
+          !sStoredRelease.substring(0, 3).equals(Const.JAJUK_VERSION.substring(0, 3)))) {
         bUpgraded = true;
-        // Now check if this is an old migration. We assume than version goes
-        // this way : x.0 -> x.9 -> y.0-> y.9 ... (no x.10 or later)
+        // Now check if this is an old migration.
         if (!SessionService.isTestMode()) {
-          int currentRelease = Integer.parseInt((sRelease == null ? "0.0" : sRelease).charAt(0)
-              + "" + (sRelease == null ? "0.0" : sRelease).charAt(2));
-          int newRelease = Integer.parseInt(Const.JAJUK_VERSION.charAt(0) + ""
-              + Const.JAJUK_VERSION.charAt(2));
-          if (Math.abs(newRelease - currentRelease) >= 1) {
+          if (isMajorMigration(Const.JAJUK_VERSION, sStoredRelease)) {
             majorMigration = true;
           }
         }
@@ -435,16 +454,18 @@ public final class UpgradeManager {
       return;
     }
     // Try to download current jajuk PAD file
-    String sRelease = null;
+    String sPadRelease = null;
     try {
       String pad = DownloadManager.downloadText(new URL(Const.CHECK_FOR_UPDATE_URL));
       int beginIndex = pad.indexOf("<Program_Version>");
       int endIndex = pad.indexOf("</Program_Version>");
-      sRelease = pad.substring(beginIndex + 17, endIndex);
-      if (!Const.JAJUK_VERSION.equals(sRelease)
+      sPadRelease = pad.substring(beginIndex + 17, endIndex);
+      if (!Const.JAJUK_VERSION.equals(sPadRelease)
       // Don't use this in test
-          && !("VERSION_REPLACED_BY_ANT".equals(Const.JAJUK_VERSION))) {
-        newVersionName = sRelease;
+          && !("VERSION_REPLACED_BY_ANT".equals(Const.JAJUK_VERSION))
+          // We display the upgrade icon only if PAD release is newer than current release
+          && isNewer(Const.JAJUK_VERSION, sPadRelease)) {
+        newVersionName = sPadRelease;
         return;
       }
     } catch (Exception e) {
@@ -471,6 +492,30 @@ public final class UpgradeManager {
    */
   public static boolean isMajorMigration() {
     return majorMigration;
+  }
+
+  /**
+   * Return whether two releases switch is a major upgrade or not
+   * @param currentRelease
+   * @param comparedRelease
+   * @return whether two releases switch is a major upgrade or not
+   */
+  public static boolean isMajorMigration(String currentRelease, String comparedRelease) {
+    int iCurrentRelease = getNumberRelease(currentRelease);
+    int iComparedRelease = getNumberRelease(comparedRelease);
+    return iComparedRelease / 100 != iCurrentRelease / 100;
+  }
+
+  /**
+  * Return whether second release is newer than first
+  * @param currentRelease
+  * @param comparedRelease
+  * @return whether second release is newer than first
+  */
+  public static boolean isNewer(String currentRelease, String comparedRelease) {
+    int iCurrentRelease = getNumberRelease(currentRelease);
+    int iComparedRelease = getNumberRelease(comparedRelease);
+    return iComparedRelease > iCurrentRelease;
   }
 
   /**
