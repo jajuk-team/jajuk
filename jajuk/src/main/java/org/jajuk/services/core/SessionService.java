@@ -73,8 +73,7 @@ public class SessionService {
   /** Lock used to trigger first time wizard window close*. */
   private static short[] isFirstTimeWizardClosed = new short[0];
 
-  /*   *Bootstrap file content. format is <test|final>=<workspace location>* */
-  /** DOCUMENT_ME. */
+  /** Bootstrap file content. format is <test|final>=<workspace location> */
   private static Properties versionWorkspace = new Properties();
 
   /** Whether we are regular process are a thumb builder process *. */
@@ -82,7 +81,7 @@ public class SessionService {
 
   /** Cached bootstrap absolute file path. */
   private static String cachedBootstrapPath;
-
+  
   /** For performances, store conf root path. */
   private static String confRoot;
 
@@ -385,7 +384,7 @@ public class SessionService {
     }
     // In all cases, make sure to set a workspace
     if (SessionService.getWorkspace() == null) {
-      SessionService.setWorkspace(System.getProperty(UtilSystem.getUserHome()));
+      SessionService.setWorkspace(UtilSystem.getUserHome());
     }
   }
 
