@@ -69,7 +69,7 @@ public final class UpgradeManager {
   /**
    * Return Jajuk number version = integer format of the padded release
    * 
-   * Jajuk version sheme is XX.YY.ZZ[RCn] (two digits possible for each part of the release)
+   * Jajuk version scheme is XX.YY.ZZ[RCn] (two digits possible for each part of the release)
    * 
    * @return Jajuk number version = integer format of the padded release
    */
@@ -79,6 +79,13 @@ public final class UpgradeManager {
     if (pStringRelease.contains("RC")) {
       stringRelease = pStringRelease.split("RC.*")[0];
     }
+    // Add a trailing .0 if it is a main release like 1.X -> 1.X.0
+    int countDot =  stringRelease.replaceAll("[^.]","").length();
+    if (countDot == 1){
+      stringRelease = stringRelease + ".0";
+    }
+    // Analyze each part of the release, throw a runtime exception if 
+    // the format is wrong at this point 
     StringTokenizer st = new StringTokenizer(stringRelease, ".");
     String main = UtilString.padNumber(Integer.parseInt(st.nextToken()), 2);
     String minor = UtilString.padNumber(Integer.parseInt(st.nextToken()), 2);

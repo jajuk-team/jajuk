@@ -31,6 +31,10 @@ public class TestUpgradeManager extends JajukTestCase {
   String v2 = "1.9.1";
   String v3 = "1.9.2RC3";
   String v4 = "1.8.5";
+  String v5 = "1.8";
+  String v6 = "1.9";
+  String v7 = "1.9.2RC4";
+
 
   /*
    * (non-Javadoc)
@@ -50,6 +54,9 @@ public class TestUpgradeManager extends JajukTestCase {
     assertEquals(10804, UpgradeManager.getNumberRelease(v1));
     assertEquals(10901, UpgradeManager.getNumberRelease(v2));
     assertEquals(10902, UpgradeManager.getNumberRelease(v3));
+    assertEquals(10805, UpgradeManager.getNumberRelease(v4));
+    assertEquals(10800, UpgradeManager.getNumberRelease(v5));
+    assertEquals(10900, UpgradeManager.getNumberRelease(v6));
   }
 
   /**
@@ -60,6 +67,8 @@ public class TestUpgradeManager extends JajukTestCase {
     assertEquals(true, UpgradeManager.isMajorMigration(v1, v2));
     assertEquals(false, UpgradeManager.isMajorMigration(v1, v4));
     assertEquals(false, UpgradeManager.isMajorMigration(v2, v3));
+    assertEquals(true, UpgradeManager.isMajorMigration(v5, v6));
+    assertEquals(false, UpgradeManager.isMajorMigration(v3, v7));
   }
 
   /**
@@ -71,6 +80,7 @@ public class TestUpgradeManager extends JajukTestCase {
     assertEquals(true, UpgradeManager.isNewer(v1, v4));
     assertEquals(true, UpgradeManager.isNewer(v2, v3));
     assertEquals(false, UpgradeManager.isNewer(v2, v1));
+    assertEquals(true, UpgradeManager.isNewer(v5, v6));
   }
 
 }
