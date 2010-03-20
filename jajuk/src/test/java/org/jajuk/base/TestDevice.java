@@ -584,6 +584,38 @@ public class TestDevice extends JajukTestCase {
     device.refreshCommand(false);
   }
 
+  // test for a regression that was added
+  public void testRefreshCommandDontReaddTopDirectory() throws Exception {
+    Device device = JUnitHelpers.getDevice();
+    device.mount(true);
+    device.refreshCommand(false);
+    
+    // we should not have more than one top-directory!
+    assertEquals(1, device.getDirectories().size());
+    
+    // even if we refresh some more, we should only have one, not multiple
+    device.refreshCommand(false);
+    
+    // we should not have more than one top-directory!
+    assertEquals(1, device.getDirectories().size());
+
+    device.refreshCommand(false);
+    
+    // we should not have more than one top-directory!
+    assertEquals(1, device.getDirectories().size());
+
+    device.refreshCommand(false);
+    
+    // we should not have more than one top-directory!
+    assertEquals(1, device.getDirectories().size());
+
+    device.refreshCommand(false);
+    
+    // we should not have more than one top-directory!
+    assertEquals(1, device.getDirectories().size());
+
+  }
+
   /**
    * Test method for {@link org.jajuk.base.Device#setUrl(java.lang.String)}.
    * 

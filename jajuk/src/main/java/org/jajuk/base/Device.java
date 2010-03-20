@@ -744,7 +744,9 @@ public class Device extends PhysicalItem implements Comparable<Device> {
       // Create a directory for device itself and scan files to allow
       // files at the root of the device
       final Directory top = DirectoryManager.getInstance().registerDirectory(this);
-      addDirectory(top);
+      if(!getDirectories().contains(top)) {
+        addDirectory(top);
+      }
 
       // Start actual scan
       scanRecursively(top, bDeepScan);
