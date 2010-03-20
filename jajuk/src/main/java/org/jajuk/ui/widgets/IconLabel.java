@@ -59,7 +59,7 @@ public class IconLabel extends ImageIcon implements Comparable<IconLabel> {
   private String sTooltip;
 
   /** Whether this is a integer. */
-  private boolean bInteger = false;
+  private int nValue = -1;
 
   /** DOCUMENT_ME. */
   private static Map<JajukIcons, IconLabel> cachedIcons = new HashMap<JajukIcons, IconLabel>();
@@ -156,16 +156,16 @@ public class IconLabel extends ImageIcon implements Comparable<IconLabel> {
    * @see java.lang.Comparable#compareTo(T)
    */
   public int compareTo(IconLabel ilOther) {
-    if (ilOther.getTooltip() != null && this.getTooltip() != null) {
-      if (bInteger) { // is this item represents an integer ?
-        long l = Long.parseLong(getTooltip());
-        long lOther = Long.parseLong(ilOther.getTooltip());
-        return (int) (l - lOther);
-      } else { // simply compare tooltip strings
-        return ilOther.getTooltip().compareTo(getTooltip());
-      }
+    // are both items integer-values ?
+    if (nValue != -1 && ilOther.nValue != -1) {
+      return nValue - ilOther.nValue;
     } else {
-      return 0;
+      // if no integer value then simply compare tooltip strings
+      if (ilOther.getTooltip() != null && this.getTooltip() != null) {
+        return ilOther.getTooltip().compareTo(getTooltip());
+      } else {
+        return 0;
+      }
     }
   }
 
@@ -174,8 +174,8 @@ public class IconLabel extends ImageIcon implements Comparable<IconLabel> {
    * 
    * @param integer DOCUMENT_ME
    */
-  public void setInteger(boolean integer) {
-    bInteger = integer;
+  public void setInteger(int integer) {
+    nValue = integer;
   }
 
   /**
@@ -204,7 +204,9 @@ public class IconLabel extends ImageIcon implements Comparable<IconLabel> {
       }
     } else if (icon == JajukIcons.BAN) {
       if (!cachedIcons.containsKey(icon)) {
-        cachedIcons.put(icon, new IconLabel(IconLoader.getIcon(icon), "", null, null, null, "-1"));
+        IconLabel ban = new IconLabel(IconLoader.getIcon(icon), "", null, null, null, "-1");
+        ban.setInteger(0);
+        cachedIcons.put(icon, ban);
       }
     } else {
       Log.warn("Unsupported icon requested in IconLabel.getIcon(): " + icon.toString());

@@ -314,7 +314,7 @@ public class FilesTableModel extends JajukTableModel {
         long lQuality = file.getQuality();
         oValues[iRow][11] = lQuality;
       } else {
-        oValues[iRow][11] = "";
+        oValues[iRow][11] = 0l;
       }
       bCellEditable[iRow][11] = false;
 
@@ -322,7 +322,7 @@ public class FilesTableModel extends JajukTableModel {
       if (bSize) {
         oValues[iRow][12] = Math.round(file.getSize() / 10485.76) / 100f;
       } else {
-        oValues[iRow][12] = "";
+        oValues[iRow][12] = 0l;
       }
       bCellEditable[iRow][12] = false;
 

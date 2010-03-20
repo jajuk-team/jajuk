@@ -29,9 +29,9 @@ import java.util.Map;
 import org.jajuk.base.Album;
 import org.jajuk.base.AlbumManager;
 import org.jajuk.base.Artist;
+import org.jajuk.base.Genre;
 import org.jajuk.base.Item;
 import org.jajuk.base.PropertyMetaInformation;
-import org.jajuk.base.Genre;
 import org.jajuk.base.Year;
 import org.jajuk.ui.widgets.IconLabel;
 import org.jajuk.util.Conf;
@@ -127,13 +127,16 @@ public class AlbumsTableModel extends JajukTableModel {
     Filter.filterItems(alToShow, filter);
 
     // Filter unmounted files if required
-    Iterator<Album> it = alToShow.iterator();
-    while (it.hasNext()) {
-      Album album = it.next();
-      if (Conf.getBoolean(Const.CONF_OPTIONS_HIDE_UNMOUNTED) && !album.containsReadyFiles()) {
-        it.remove();
+    if(Conf.getBoolean(Const.CONF_OPTIONS_HIDE_UNMOUNTED)) {
+      Iterator<Album> it = alToShow.iterator();
+      while (it.hasNext()) {
+        Album album = it.next();
+        if (!album.containsReadyFiles()) {
+          it.remove();
+        }
       }
     }
+
     // Sort the result
     int iColNum = iNumberStandardCols + AlbumManager.getInstance().getCustomProperties().size();
     iRowNum = alToShow.size();
@@ -142,7 +145,7 @@ public class AlbumsTableModel extends JajukTableModel {
     bCellEditable = new boolean[iRowNum][iColNum];
     // Allow only custom properties edition
     bEditable = true;
-    it = alToShow.iterator();
+    Iterator<Album> it = alToShow.iterator();
 
     // For perfs, prepare columns visibility
     boolean bAlbum = (columnsToShow != null && columnsToShow.contains(Const.XML_ALBUM));
@@ -216,7 +219,7 @@ public class AlbumsTableModel extends JajukTableModel {
         if (year != null) {
           oValues[iRow][4] = year.getValue();
         } else {
-          oValues[iRow][4] = "";
+          oValues[iRow][4] = 0l;
         }
       } else {
         oValues[iRow][4] = "";

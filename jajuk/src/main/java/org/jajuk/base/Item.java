@@ -541,7 +541,7 @@ public abstract class Item implements Const {
         map[starsNumber].put(rate, new IconLabel(getIcon(starsNumber), "", null, null, null, Long
             .toString(rate)));
 
-        ((IconLabel) (map[starsNumber].get(rate))).setInteger(true);
+        ((IconLabel) (map[starsNumber].get(rate))).setInteger(starsNumber+1);   // plus one to make room for "ban" at zero
       }
 
       return (IconLabel) (map[starsNumber].get(rate));
