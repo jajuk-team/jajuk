@@ -24,9 +24,10 @@ package org.jajuk.events;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
-import java.util.Queue;
 import java.util.Set;
-import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.TimeUnit;
 
 import org.jajuk.services.core.ExitService;
 import org.jajuk.util.log.Log;
@@ -45,7 +46,7 @@ public final class ObservationManager {
   static Map<JajukEvents, Properties> hLastEventBySubject = new HashMap<JajukEvents, Properties>(10);
 
   /** The queue itself. Must be synchronized, so we use a ConcurrentLinkedQueue which is tread-safe */
-  static volatile Queue<JajukEvent> queue = new ConcurrentLinkedQueue<JajukEvent>();
+  static BlockingQueue<JajukEvent> queue = new LinkedBlockingQueue<JajukEvent>();
 
   /** The observation fifo. */
   private static ObservationManagerThread observationThread;
@@ -223,8 +224,7 @@ class ObservationManagerThread extends Thread {
     // Stop to execute events is thread flag is set or if Jajuk is exiting
     while (!ExitService.isExiting()) {
       try {
-        Thread.sleep(50);
-        final JajukEvent event = ObservationManager.queue.poll();
+        final JajukEvent event = ObservationManager.queue.poll(1000, TimeUnit.MILLISECONDS);
         if (event != null) {
           // launch action asynchronously
           new Thread("Event Executor for: " + event.toString()) {
