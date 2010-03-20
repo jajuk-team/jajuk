@@ -660,6 +660,9 @@ public interface Const {
   /** DOCUMENT_ME. */
   String EXT_WV = "wv";
 
+  /** DOCUMENT_ME. */
+  String EXT_FLV = "flv";
+
   // details keys
   /** DOCUMENT_ME. */
   String DETAIL_CURRENT_FILE_ID = "current file id";

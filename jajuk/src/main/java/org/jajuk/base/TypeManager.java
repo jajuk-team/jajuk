@@ -518,6 +518,14 @@ public final class TypeManager extends ItemManager {
     type.setProperty(Const.XML_TYPE_SEEK_SUPPORTED, Const.TRUE);
     type
         .setProperty(Const.XML_TYPE_ICON, UtilSystem.getResource(ICON_16X16_VIDEO).toExternalForm());
+    // FLV - Flash Movie
+    type = TypeManager.getInstance().registerType(Messages.getString(Const.TYPE_VIDEO),
+        Const.EXT_FLV, Class.forName(Const.PLAYER_IMPL_MPLAYER),
+        Class.forName(Const.TAG_IMPL_NO_TAGS));
+    type.setProperty(Const.XML_TYPE_IS_MUSIC, true);
+    type.setProperty(Const.XML_TYPE_SEEK_SUPPORTED, Const.TRUE);
+    type
+        .setProperty(Const.XML_TYPE_ICON, UtilSystem.getResource(ICON_16X16_VIDEO).toExternalForm());
   }
 
   /*
