@@ -135,6 +135,11 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
     // Discovery Date
     jcbSort.addItem(Messages.getString("Property_rate")); // sort by rate
     jcbSort.addItem(Messages.getString("Property_hits")); // sort by hits
+    // Load stored index, reset to index 0 in case of out of bounds (can happen after a version
+    // upgrade)
+    if (Conf.getInt(Const.CONF_LOGICAL_TREE_SORT_ORDER) >= jcbSort.getItemCount()) {
+      Conf.setProperty(Const.CONF_LOGICAL_TREE_SORT_ORDER, "0");
+    }
     jcbSort.setSelectedIndex(Conf.getInt(Const.CONF_LOGICAL_TREE_SORT_ORDER));
     jcbSort.setActionCommand(JajukEvents.LOGICAL_TREE_SORT.toString());
     jcbSort.addActionListener(this);
@@ -558,7 +563,6 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
 
   }
 
-  
   /*
    * (non-Javadoc)
    * 
