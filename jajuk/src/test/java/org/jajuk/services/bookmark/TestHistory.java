@@ -148,24 +148,30 @@ public class TestHistory extends JajukTestCase {
     // size should at the max now
     assertEquals(Const.MAX_HISTORY_SIZE, History.getInstance().getHistory().size());
 
+    // register one more file
+    File max = JUnitHelpers.getFile("file" + Const.MAX_HISTORY_SIZE, false);
+    
     // now when we add one item, we should loose the oldest one (i.e. ID "1")
-    History.getInstance().addItem(new Integer(Const.MAX_HISTORY_SIZE).toString(), 123);
-
-    // new element should be in the History now
-    assertEquals(History.getInstance().getHistory().toString(), files[Const.MAX_HISTORY_SIZE - 1]
-        .getID(), History.getInstance().getHistoryItem(0).getFileId());
+    History.getInstance().addItem(max.getID(), 123);
 
     // size should be equal as the oldest item was purged
     assertEquals(Const.MAX_HISTORY_SIZE, History.getInstance().getHistory().size());
 
-    // check that the new item is there (i.e. "0" is gone, "1" is the oldest one
-    assertEquals(History.getInstance().getHistory().toString(), files[0].getID(), History
-        .getInstance().getHistoryItem(Const.MAX_HISTORY_SIZE - 1).getFileId());
+    // new element should be in the History at position 0 now
+    assertEquals(History.getInstance().getHistory().toString(), max
+        .getID(), History.getInstance().getHistoryItem(0).getFileId());
+    
+    // check that the existing items were moved by one (items are always added at the front, so 
+    // we have to check in reverse order, i.e. the one before the last added one is at pos 1
+    for(int i = 1;i < Const.MAX_HISTORY_SIZE;i++) {
+      assertEquals(History.getInstance().getHistory().toString(), files[Const.MAX_HISTORY_SIZE-i].getID(), History
+          .getInstance().getHistoryItem(i).getFileId());
+    }
 
     // also check clear
     History.getInstance().clear();
 
-    // we have to sleep a bit as it is executed in the background
+    // we have to wait for it as it is executed in the background
     JUnitHelpers.clearSwingUtilitiesQueue();
 
     // size should be zero again now

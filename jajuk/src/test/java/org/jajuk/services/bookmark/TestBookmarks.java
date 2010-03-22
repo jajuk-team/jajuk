@@ -25,16 +25,9 @@ import java.util.List;
 
 import org.jajuk.JUnitHelpers;
 import org.jajuk.JajukTestCase;
-import org.jajuk.base.Album;
-import org.jajuk.base.AlbumArtist;
-import org.jajuk.base.Artist;
-import org.jajuk.base.Device;
-import org.jajuk.base.Directory;
 import org.jajuk.base.File;
-import org.jajuk.base.Genre;
-import org.jajuk.base.Track;
-import org.jajuk.base.Type;
-import org.jajuk.base.Year;
+import org.jajuk.util.Conf;
+import org.jajuk.util.Const;
 
 /**
  * 
@@ -234,5 +227,18 @@ public class TestBookmarks extends JajukTestCase {
     // For EMMA code-coverage tests
     JUnitHelpers.executePrivateConstructor(Bookmarks.class);
   }
+  
+  public void testCoverage() throws Exception {
+    Conf.setProperty(Const.CONF_BOOKMARKS, "");
+    // For EMMA code-coverage tests
+    JUnitHelpers.executePrivateConstructor(Bookmarks.class);
 
+    Conf.removeProperty(Const.CONF_BOOKMARKS);
+    // For EMMA code-coverage tests
+    JUnitHelpers.executePrivateConstructor(Bookmarks.class);
+    
+    Conf.setProperty(Const.CONF_BOOKMARKS, "1,2,3,4");
+    // For EMMA code-coverage tests
+    JUnitHelpers.executePrivateConstructor(Bookmarks.class);
+  }
 }
