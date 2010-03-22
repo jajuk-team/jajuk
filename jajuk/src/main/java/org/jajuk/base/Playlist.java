@@ -72,19 +72,19 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
    * playlist type.
    */
   public enum Type {
-    
+
     /** DOCUMENT_ME. */
-    NORMAL, 
- /** DOCUMENT_ME. */
- QUEUE, 
- /** DOCUMENT_ME. */
- NEW, 
- /** DOCUMENT_ME. */
- BOOKMARK, 
- /** DOCUMENT_ME. */
- BESTOF, 
- /** DOCUMENT_ME. */
- NOVELTIES
+    NORMAL,
+    /** DOCUMENT_ME. */
+    QUEUE,
+    /** DOCUMENT_ME. */
+    NEW,
+    /** DOCUMENT_ME. */
+    BOOKMARK,
+    /** DOCUMENT_ME. */
+    BESTOF,
+    /** DOCUMENT_ME. */
+    NOVELTIES
   }
 
   /** Playlist parent directory. */
@@ -105,6 +105,9 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
   /** Contains files outside device flag. */
   private boolean bContainsExtFiles = false;
 
+  /** Whether we ask for device mounting if required */
+  private boolean askForMounting = true;
+
   /**
    * playlist constructor.
    * 
@@ -113,8 +116,7 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
    * @param sName DOCUMENT_ME
    * @param dParentDirectory DOCUMENT_ME
    */
-  Playlist(final Type type, final String sId, final String sName,
-      final Directory dParentDirectory) {
+  Playlist(final Type type, final String sId, final String sName, final Directory dParentDirectory) {
     super(sId, sName);
     this.dParentDirectory = dParentDirectory;
     setProperty(Const.XML_DIRECTORY, dParentDirectory == null ? "-1" : dParentDirectory.getID());
@@ -183,9 +185,9 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
         // start immediately playing
         QueueModel.push(item, false);
       }
-      
+
       // we don't need to adjust the alFiles here because for playlist type QUEUE
-      // the contents is taken directly from the QueueModel in case of 
+      // the contents is taken directly from the QueueModel in case of
     } else {
       getFiles().add(index, file);
     }
@@ -217,7 +219,7 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
     } else if (getType() == Type.QUEUE) {
       QueueModel.clear();
     } else {
-      if(alFiles == null) {
+      if (alFiles == null) {
         return;
       }
 
@@ -234,10 +236,9 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
     java.io.File temp = null;
     try {
       /*
-       * Due to bug #1046, we use a temporary file In some special cases
-       * (reproduced under Linux, JRE SUN 1.6.0_04, CIFS mount, 777 rights
-       * file), probably due to a JRE bug, files cannot be opened (FileNotFound?
-       * Exception, permission denied) and the file is voided (0 bytes) and is
+       * Due to bug #1046, we use a temporary file In some special cases (reproduced under Linux,
+       * JRE SUN 1.6.0_04, CIFS mount, 777 rights file), probably due to a JRE bug, files cannot be
+       * opened (FileNotFound? Exception, permission denied) and the file is voided (0 bytes) and is
        * closed (checked with lsof).
        */
       temp = new java.io.File(getAbsolutePath() + '~');
@@ -278,7 +279,7 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
     if (temp.exists() && temp.length() > 0) {
       try {
         UtilSystem.copy(temp, getFIO());
-        if(!temp.delete()) {
+        if (!temp.delete()) {
           Log.warn("Could not delete temporary file: {{" + temp.getAbsolutePath() + "}}");
         }
       } catch (final Exception e1) {
@@ -287,7 +288,7 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
     } else {
       try {
         // Try to remove the temp file
-        if(!temp.delete()) {
+        if (!temp.delete()) {
           Log.warn("Could not delete temporary file: {{" + temp.getAbsolutePath() + "}}");
         }
       } catch (final Exception e1) {
@@ -309,10 +310,10 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
    */
   public int compareTo(final Playlist o) {
     // not equal if other is null
-    if(o == null) {
+    if (o == null) {
       return -1;
     }
-    
+
     // Perf: leave if items are equals
     if (o.equals(this)) {
       return 0;
@@ -320,7 +321,8 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
 
     final Playlist otherPlaylistFile = o;
     final String abs = getName() + (getDirectory() != null ? getAbsolutePath() : "");
-    final String sOtherAbs = otherPlaylistFile.getName() + (otherPlaylistFile.getDirectory() != null ? otherPlaylistFile.getAbsolutePath() : "");
+    final String sOtherAbs = otherPlaylistFile.getName()
+        + (otherPlaylistFile.getDirectory() != null ? otherPlaylistFile.getAbsolutePath() : "");
     // We must be consistent with equals, see
     // http://java.sun.com/javase/6/docs/api/java/lang/Comparable.html
     int comp = abs.compareToIgnoreCase(sOtherAbs);
@@ -354,7 +356,7 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
       // the last track cannot go deeper
 
       // n+1 file becomes nth file
-      Collections.swap(alFiles, index, index+1);
+      Collections.swap(alFiles, index, index + 1);
     }
   }
 
@@ -375,13 +377,6 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
     final Playlist plfOther = (Playlist) otherPlaylistFile;
     return getID().equals(plfOther.getID()) && plfOther.getType() == type;
   }
-
-  // Item.hashCode() operates on ID, which should be sufficient for now.
-  // no need to overwrite it here
-  /*@Override
-  public int hashCode() {
-    return super.hashCode();
-  }*/
 
   /**
    * Force playlist re-read (don't use the cache). Can be used after a forced
@@ -409,16 +404,13 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
       sAbs = sbOut.toString();
     } else {
       // smart playlist path depends on the user selected from the save as
-      // file
-      // chooser and has been set using the setFio() method just before
-      // that
-      
-      // don't use "getFIO()" here, as otherwise we can cause an endless loop as
-      // getFIO() calls this method as well
-      if(fio == null) {
+      // file chooser and has been set using the setFio() method just before
+      // that don't use "getFIO()" here, as otherwise we can cause an endless
+      // loop as getFIO() calls this method as well
+      if (fio == null) {
         return "";
       }
-      
+
       sAbs = fio.getAbsolutePath();
     }
     return sAbs;
@@ -453,6 +445,12 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
   public List<File> getFiles() throws JajukException {
     // if normal playlist, propose to mount device if unmounted
     if ((getType() == Type.NORMAL) && !isReady()) {
+      // We already asked but user didn't want to mount the device -> leave
+      if (!askForMounting) {
+        throw new JajukException(141, getFIO().getAbsolutePath());
+      }
+      // No more ask for mounting
+      askForMounting = false;
       final String sMessage = Messages.getString("Error.025") + " ("
           + getDirectory().getDevice().getName() + Messages.getString("FIFO.4");
       final int i = Messages.getChoice(sMessage, JOptionPane.YES_NO_CANCEL_OPTION,
@@ -470,8 +468,7 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
     }
     if ((type == Type.NORMAL) && (alFiles == null)) {
       // normal playlist, test if list is null for performances (avoid
-      // reading
-      // the m3u file twice)
+      // reading the m3u file twice)
       if (getFIO().exists() && getFIO().canRead()) {
         // check device is mounted
         alFiles = load(); // populate playlist
@@ -492,7 +489,7 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
         files.add(si.getFile());
       }
       alFiles = files;
-    } else if (type.equals(Type.NEW) && (alFiles == null)) {
+    } else if (type.equals(Type.NEW) && alFiles == null) {
       alFiles = new ArrayList<File>(10);
     }
     return alFiles;
@@ -552,8 +549,8 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
    * @return true the file can be accessed right now
    */
   public boolean isReady() {
-    if (getDirectory() != null && getDirectory().getDevice() != null && 
-        getDirectory().getDevice().isMounted()) {
+    if (getDirectory() != null && getDirectory().getDevice() != null
+        && getDirectory().getDevice().isMounted()) {
       return true;
     }
     return false;
@@ -623,8 +620,8 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
       }
     } catch (final IOException e) {
       Log.error(17, "{{" + getName() + "}}", e);
-      throw new JajukException(17, 
-          (getDirectory() != null && getFIO() != null ? getFIO().getAbsolutePath() : "<unknown>"), e);
+      throw new JajukException(17, (getDirectory() != null && getFIO() != null ? getFIO()
+          .getAbsolutePath() : "<unknown>"), e);
     }
 
     return files;
@@ -676,9 +673,10 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
         final File fileToTest = it.next();
         if (fileToTest.equals(fOld)) {
           files.set(i, fNew);
-          /* this leads to ConcurrentModificationException:
-          Bookmarks.getInstance().remove(i);
-          Bookmarks.getInstance().addFile(i, fNew);*/
+          /*
+           * this leads to ConcurrentModificationException: Bookmarks.getInstance().remove(i);
+           * Bookmarks.getInstance().addFile(i, fNew);
+           */
         }
       }
     } else if (type == Type.QUEUE) {
@@ -725,10 +723,10 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
    */
   public void saveAs() throws JajukException, InterruptedException, InvocationTargetException {
     FileChooserRunnable runnable = new FileChooserRunnable();
-    
+
     SwingUtilities.invokeLater(runnable);
-    
-    if(runnable.getException() != null) {
+
+    if (runnable.getException() != null) {
       throw runnable.getException();
     }
   }
@@ -782,11 +780,11 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
    */
   @Override
   public String toString() {
-    if(dParentDirectory == null) {
+    if (dParentDirectory == null) {
       return "playlist[ID=" + getID() + " Name={{" + getName() + "}} " + " Dir=<null>]";
     } else {
       return "playlist[ID=" + getID() + " Name={{" + getName() + "}} " + " Dir="
-      + dParentDirectory.getID() + "]";
+          + dParentDirectory.getID() + "]";
     }
   }
 
@@ -804,7 +802,7 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
       // cannot go further
 
       // n-1 file becomes nth file
-      Collections.swap(alFiles, index, index-1);
+      Collections.swap(alFiles, index, index - 1);
     }
   }
 
@@ -815,7 +813,7 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
    */
   @Override
   public long getRate() {
-    if(alFiles == null) {
+    if (alFiles == null) {
       return 0;
     }
 
@@ -834,7 +832,7 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
    * @return total nb of hits
    */
   public long getHits() {
-    if(alFiles == null) {
+    if (alFiles == null) {
       return 0;
     }
 
@@ -851,7 +849,7 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
    * @return the duration
    */
   public long getDuration() {
-    if(alFiles == null) {
+    if (alFiles == null) {
       return 0;
     }
 
@@ -868,21 +866,21 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
    * @return playlist nb of tracks
    */
   public int getNbOfTracks() {
-    if(alFiles == null) {
+    if (alFiles == null) {
       return 0;
     }
 
     return alFiles.size();
   }
-  
-    /**
-   * Return true is the specified directory is an ancestor for this playlist.
-   * 
-   * @param directory
-   *          DOCUMENT_ME
-   * 
-   * @return true, if checks for ancestor
-   */
+
+  /**
+  * Return true is the specified directory is an ancestor for this playlist.
+  * 
+  * @param directory
+  *          DOCUMENT_ME
+  * 
+  * @return true, if checks for ancestor
+  */
   public boolean hasAncestor(Directory directory) {
     Directory dirTested = getDirectory();
     while (true) {
@@ -905,14 +903,15 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
     // records if there are exceptions during doing the call
     /** DOCUMENT_ME. */
     JajukException ex = null;
-    
-    /* (non-Javadoc)
+
+    /*
+     * (non-Javadoc)
+     * 
      * @see java.lang.Runnable#run()
      */
     @Override
     public void run() {
-      try
-      {
+      try {
         final JajukFileChooser jfchooser = new JajukFileChooser(new JajukFileFilter(PlaylistFilter
             .getInstance()));
         jfchooser.setDialogType(JFileChooser.SAVE_DIALOG);
@@ -952,15 +951,15 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
           } else {
             file = new java.io.File(file.getAbsolutePath() + "." + Const.EXT_PLAYLIST);
           }
- 
+
           // set new file path ( this playlist is a special playlist, just in
           // memory )
           setFIO(file);
           commit(); // write it on the disk
-        }      
-    } catch (JajukException e) {
-      ex = e;
-    }
+        }
+      } catch (JajukException e) {
+        ex = e;
+      }
     }
 
     /**
