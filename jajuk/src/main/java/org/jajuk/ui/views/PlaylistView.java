@@ -216,7 +216,7 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
   /** DOCUMENT_ME. */
   List<File> selectedFiles = new ArrayList<File>(20);
 
-   /** Mouse adapter for smart playlist items. */
+  /** Mouse adapter for smart playlist items. */
   MouseAdapter ma = new JajukMouseAdapter() {
 
     @Override
@@ -288,11 +288,12 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
     }
     // Update playlist editor
     selectPlaylist(sp.getPlaylist());
-    if(repositoryPanel.jmiPrepareParty != null) {
+    if (repositoryPanel.jmiPrepareParty != null) {
       repositoryPanel.jmiPrepareParty.putClientProperty(Const.DETAIL_SELECTION, sp.getPlaylist());
     }
-    if(repositoryPanel.jmiRepositorySaveAs != null) {
-      repositoryPanel.jmiRepositorySaveAs.putClientProperty(Const.DETAIL_SELECTION, sp.getPlaylist());
+    if (repositoryPanel.jmiRepositorySaveAs != null) {
+      repositoryPanel.jmiRepositorySaveAs.putClientProperty(Const.DETAIL_SELECTION, sp
+          .getPlaylist());
     }
   }
 
@@ -655,10 +656,10 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
       // it is called in a loop
     }
     int[] rows = editorTable.getSelectedRows();
-    
+
     // Force table refreshing
     editorModel.fireTableDataChanged();
-   
+
     // Save selection
     bSettingSelection = true;
     for (int element : rows) {
@@ -739,7 +740,7 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
           jbPrepParty.setEnabled(true);
         }
         // Run button is available only if the playlist is not void
-        jbRun.setEnabled(plf.getFiles().size() > 0);
+        jbRun.setEnabled(plf.isReady() && plf.getFiles().size() > 0);
       }
     } catch (Exception e) {
       Log.error(e);
@@ -1111,10 +1112,9 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
 
       SwingWorker<Void, Void> sw = new SwingWorker<Void, Void>() {
         Playlist playlist;
-        boolean bErrorLoading = false;
 
         @Override
-        public Void doInBackground() {
+        public Void doInBackground() throws JajukException {
           int selectedRow = jtable.getSelectedRow();
           if (selectedRow < 0) {
             return null;
@@ -1123,16 +1123,10 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
           JajukTableModel model = (JajukTableModel) jtable.getModel();
           playlist = (Playlist) model.getItemAt(row);
           // load the playlist
-          try {
-            playlist.getFiles();
-            if (!alreadyWarned.contains(playlist) && playlist.containsExtFiles()) {
-              Messages.showWarningMessage(Messages.getErrorMessage(142));
-              alreadyWarned.add(playlist);
-            }
-          } catch (JajukException e1) {
-            Log.error(e1);
-            Messages.showErrorMessage(17);
-            bErrorLoading = true;
+          playlist.getFiles();
+          if (!alreadyWarned.contains(playlist) && playlist.containsExtFiles()) {
+            Messages.showWarningMessage(Messages.getErrorMessage(142));
+            alreadyWarned.add(playlist);
           }
           return null;
         }
@@ -1145,8 +1139,12 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
             Log.error(e);
           } catch (ExecutionException e) {
             Log.error(e);
+          } catch (Exception e1) {
+            Log.error(e1);
+            Messages.showErrorMessage(17);
+            return;
           }
-          if (!bErrorLoading && playlist != null) {
+          if (playlist != null) {
             selectPlaylist(playlist);
             jmiPrepareParty.putClientProperty(Const.DETAIL_SELECTION, playlist);
             jmiRepositorySaveAs.putClientProperty(Const.DETAIL_SELECTION, playlist);
