@@ -50,6 +50,8 @@ import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.events.Observer;
 import org.jajuk.services.bookmark.Bookmarks;
+import org.jajuk.services.notification.INotificator;
+import org.jajuk.services.notification.NotificatorFactory;
 import org.jajuk.services.players.QueueModel;
 import org.jajuk.ui.actions.ActionManager;
 import org.jajuk.ui.actions.JajukActions;
@@ -319,6 +321,15 @@ public class DBusSupportImpl implements DBusSupport, Observer {
       // the action expects a JComponent, which we do not have here, therefore we do it directly here
       // ActionManager.getAction(JajukActions.BOOKMARK_SELECTION).perform()
       Bookmarks.getInstance().addFile(file);
+      
+      INotificator notifier = NotificatorFactory.getNotificator();
+      if (notifier != null) {
+        String pattern = Conf.getString(Const.CONF_PATTERN_BALLOON_NOTIFIER);
+        String text = UtilString.applyPattern(file, pattern, false, false);
+        
+        notifier.notify("Bookmarked", text);
+      }
+
     }
   }
 
