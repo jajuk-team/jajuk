@@ -360,7 +360,7 @@ public class SessionService {
       } catch (final IOException e) {
         // Can be an ioexception or an NPE if the file is void
         System.out.println("Cannot read bootstrap file, using ~ directory");
-        SessionService.setWorkspace(System.getProperty(UtilSystem.getUserHome()));
+        SessionService.setWorkspace(UtilSystem.getUserHome());
       }
     }
     // No bootstrap or unreadable or the path included inside is not
@@ -437,7 +437,7 @@ public class SessionService {
    * @return default workspace location
    */
   public static final File getDefaultWorkspace() {
-    String home = System.getProperty(UtilSystem.getUserHome());
+    String home = UtilSystem.getUserHome();
     return new File(home + '/' + (isTestMode() ? ".jajuk_test_" + Const.TEST_VERSION : ".jajuk")
         + '/');
   }
