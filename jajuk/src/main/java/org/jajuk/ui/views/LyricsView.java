@@ -37,6 +37,7 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
 
 import net.miginfocom.swing.MigLayout;
@@ -59,6 +60,7 @@ import org.jajuk.ui.helpers.FontManager;
 import org.jajuk.ui.helpers.JajukMouseAdapter;
 import org.jajuk.ui.helpers.FontManager.JajukFont;
 import org.jajuk.ui.widgets.JajukButton;
+import org.jajuk.ui.widgets.JajukJToolbar;
 import org.jajuk.ui.widgets.JajukToggleButton;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
@@ -89,9 +91,6 @@ public class LyricsView extends ViewAdapter {
 
   /** DOCUMENT_ME. */
   private JLabel jlTitle = null;
-
-  /** DOCUMENT_ME. */
-  private JLabel jlArtist = null;
 
   /** DOCUMENT_ME. */
   private String sURL = null;
@@ -137,7 +136,6 @@ public class LyricsView extends ViewAdapter {
    */
   public void initUI() {
     final JTextArea ta = getTextArea();
-    final JLabel artist = getJlArtist();
     final JLabel title = getJlTitle();
     final JScrollPane jspLyrics = getJsp();
     final FontManager fmgr = FontManager.getInstance();
@@ -162,19 +160,21 @@ public class LyricsView extends ViewAdapter {
       }
     });
 
-    artist.setFont(fmgr.getFont(JajukFont.PLAIN_L));
     title.setFont(fmgr.getFont(JajukFont.PLAIN_XL));
     ta.setFont(fmgr.getFont(JajukFont.PLAIN));
     initEditUI();
 
+    //Create a toolbar to group edition commands
+    JToolBar toolbarEdit = new JajukJToolbar();
+    jtbEdit.add(toolbarEdit);
+    jtbEdit.add(jbSave);
+    jtbEdit.add(jbDelete);
+    
     // Add items
-    p = new JPanel(new MigLayout("insets 5,gapx 3, gapy 5,filly", "[grow]", "[][][][grow]"));
-    p.add(jlTitle, "wrap,center");
-    p.add(jlArtist, "wrap,center");
-    p.add(jtbEdit, "left,split 3");
-    p.add(jbSave, "center");
-    p.add(jbDelete, "wrap,right");
-    p.add(jspLyrics, "grow");
+    p = new JPanel(new MigLayout("insets 5,gapx 3, gapy 5,filly", "[][grow]", "[][grow]"));
+    p.add(jtbEdit, "left");
+    p.add(jlTitle, "center,wrap");
+    p.add(jspLyrics, "span,grow");
 
     setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
     add(p);
@@ -301,7 +301,6 @@ public class LyricsView extends ViewAdapter {
           public void run() {
             removeAll();
             add(p);
-            jlArtist.setText(track.getArtist().getName2());
             jlTitle.setText(track.getName());
             jtbEdit.setVisible(true);
             textarea.setText(Messages.getString("LyricsView.1"));
@@ -357,7 +356,6 @@ public class LyricsView extends ViewAdapter {
           final WebRadio radio = (WebRadio) event.getDetails().get(Const.DETAIL_CONTENT);
           if (radio != null) {
             jlTitle.setText(radio.getName());
-            jlArtist.setText("");
             jtbEdit.setVisible(false);
             jsp.setVisible(false);
             revalidate();
@@ -384,7 +382,6 @@ public class LyricsView extends ViewAdapter {
               jsp.getVerticalScrollBar().setValue(0);
             }
           });
-          jlArtist.setText(track.getArtist().getName2());
           jlTitle.setText(track.getName());
           jsp.setVisible(true);
           jtbEdit.setVisible(true);
@@ -404,7 +401,6 @@ public class LyricsView extends ViewAdapter {
       public void run() {
         jsp.setVisible(false);
         jtbEdit.setVisible(false);
-        jlArtist.setText("");
         jlTitle.setText(Messages.getString("JajukWindow.18"));
       }
 
@@ -456,17 +452,6 @@ public class LyricsView extends ViewAdapter {
     return jlTitle;
   }
 
-  /**
-   * Gets the jl artist.
-   * 
-   * @return the jl artist
-   */
-  private JLabel getJlArtist() {
-    if (jlArtist == null) {
-      jlArtist = new JLabel();
-    }
-    return jlArtist;
-  }
 
   /**
    * Gets the jb save.
