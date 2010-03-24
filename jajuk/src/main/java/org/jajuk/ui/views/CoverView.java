@@ -1605,7 +1605,6 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
     if (!dirChanged) {
       Cover coverToRemove = null;
       for (Cover c : alCovers) {
-
         if (c.getFile().getName().equalsIgnoreCase(Const.TAG_COVER_FILE)
             || c.getType().equals(CoverType.NO_COVER)) {
           coverToRemove = c;
@@ -1627,7 +1626,8 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
         if (imageRawData != null) {
           BufferedImage bi = ImageIO.read(new ByteArrayInputStream(imageRawData));
           if (bi != null) {
-            File coverFile = SessionService.getConfFileByPath(Const.TAG_COVER_FILE);
+            File coverFile = SessionService.getConfFileByPath(Const.FILE_CACHE + '/'
+                + Const.TAG_COVER_FILE);
             ImageIO.write(bi, "png", coverFile);
             Cover cover = new Cover(coverFile, CoverType.TAG_COVER);
             alCovers.addLast(cover);
