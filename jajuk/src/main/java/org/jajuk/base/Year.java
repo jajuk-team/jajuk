@@ -22,6 +22,7 @@ package org.jajuk.base;
 
 import javax.swing.ImageIcon;
 
+import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
@@ -95,7 +96,7 @@ public class Year extends LogicalItem implements Comparable<Year> {
    */
   @Override
   public String getDesc() {
-    return Messages.getString("Property_year") + " : " + getName();
+    return Messages.getHumanPropertyName(Const.XML_YEAR) + " : " + getName();
   }
 
   /**

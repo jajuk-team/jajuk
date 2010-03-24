@@ -59,29 +59,29 @@ public class AlbumsTableModel extends JajukTableModel {
     vColNames.add(" ");
     idList.add(Const.XML_PLAY);
 
-    vColNames.add(Messages.getString("Property_album"));
+    vColNames.add(Messages.getHumanPropertyName(Const.XML_ALBUM));
     idList.add(Const.XML_ALBUM);
 
     // First track found artist. If different artists in album, will be
     // displayed in italic
-    vColNames.add(Messages.getString("Property_artist"));
+    vColNames.add(Messages.getHumanPropertyName(Const.XML_ARTIST));
     idList.add(Const.XML_ARTIST);
 
     // First track found genre. If different genres in album, will be
     // displayed in italic
-    vColNames.add(Messages.getString("Property_genre"));
+    vColNames.add(Messages.getHumanPropertyName(Const.XML_GENRE));
     idList.add(Const.XML_GENRE);
 
     // First found track year, italic if different values
-    vColNames.add(Messages.getString("Property_year"));
+    vColNames.add(Messages.getHumanPropertyName(Const.XML_YEAR));
     idList.add(Const.XML_YEAR);
 
     // Album rate (average of its tracks rate)
-    vColNames.add(Messages.getString("Property_rate"));
+    vColNames.add(Messages.getHumanPropertyName(Const.XML_TRACK_RATE));
     idList.add(Const.XML_TRACK_RATE);
 
     // Total album length
-    vColNames.add(Messages.getString("Property_length"));
+    vColNames.add(Messages.getHumanPropertyName(Const.XML_TRACK_LENGTH));
     idList.add(Const.XML_TRACK_LENGTH);
 
     // Number of tracks
@@ -89,15 +89,15 @@ public class AlbumsTableModel extends JajukTableModel {
     idList.add(Const.XML_TRACKS);
 
     // First found track discovery date
-    vColNames.add(Messages.getString("Property_added"));
+    vColNames.add(Messages.getHumanPropertyName(Const.XML_TRACK_DISCOVERY_DATE));
     idList.add(Const.XML_TRACK_DISCOVERY_DATE);
 
     // Sum of all tracks hits
-    vColNames.add(Messages.getString("Property_hits"));
+    vColNames.add(Messages.getHumanPropertyName(Const.XML_TRACK_HITS));
     idList.add(Const.XML_TRACK_HITS);
 
     // Disc ID
-    vColNames.add(Messages.getString("Property_disc_id"));
+    vColNames.add(Messages.getHumanPropertyName(Const.XML_ALBUM_DISC_ID));
     idList.add(Const.XML_ALBUM_DISC_ID);
 
     // custom properties now

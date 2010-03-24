@@ -134,63 +134,63 @@ public class PlaylistTableModel extends JajukTableModel {
     idList.add(Const.XML_TRACK_NAME);
 
     // Album
-    vColNames.add(Messages.getString("Property_album"));
+    vColNames.add(Messages.getHumanPropertyName(Const.XML_TRACK_ALBUM));
     idList.add(Const.XML_TRACK_ALBUM);
 
     // Artist
-    vColNames.add(Messages.getString("Property_artist"));
+    vColNames.add(Messages.getHumanPropertyName(Const.XML_TRACK_ARTIST));
     idList.add(Const.XML_TRACK_ARTIST);
 
     // Artist
-    vColNames.add(Messages.getString("Property_album_artist"));
+    vColNames.add(Messages.getHumanPropertyName(Const.XML_ALBUM_ARTIST));
     idList.add(Const.XML_ALBUM_ARTIST);
 
     // Genre
-    vColNames.add(Messages.getString("Property_genre"));
+    vColNames.add(Messages.getHumanPropertyName(Const.XML_TRACK_GENRE));
     idList.add(Const.XML_TRACK_GENRE);
 
     // Stars
-    vColNames.add(Messages.getString("Property_rate"));
+    vColNames.add(Messages.getHumanPropertyName(Const.XML_TRACK_RATE));
     idList.add(Const.XML_TRACK_RATE);
 
     // Year
-    vColNames.add(Messages.getString("Property_year"));
+    vColNames.add(Messages.getHumanPropertyName(Const.XML_YEAR));
     idList.add(Const.XML_YEAR);
 
     // Length
-    vColNames.add(Messages.getString("Property_length"));
+    vColNames.add(Messages.getHumanPropertyName(Const.XML_TRACK_LENGTH));
     idList.add(Const.XML_TRACK_LENGTH);
 
     // comments
-    vColNames.add(Messages.getString("Property_comment"));
+    vColNames.add(Messages.getHumanPropertyName(Const.XML_TRACK_COMMENT));
     idList.add(Const.XML_TRACK_COMMENT);
 
     // Added date
-    vColNames.add(Messages.getString("Property_added"));
+    vColNames.add(Messages.getHumanPropertyName(Const.XML_TRACK_DISCOVERY_DATE));
     idList.add(Const.XML_TRACK_DISCOVERY_DATE);
 
     // Order
-    vColNames.add(Messages.getString("Property_order"));
+    vColNames.add(Messages.getHumanPropertyName(Const.XML_TRACK_ORDER));
     idList.add(Const.XML_TRACK_ORDER);
 
     // Disc number
-    vColNames.add(Messages.getString("Property_disc_number"));
+    vColNames.add(Messages.getHumanPropertyName(Const.XML_TRACK_DISC_NUMBER));
     idList.add(Const.XML_TRACK_DISC_NUMBER);
 
     // Device
-    vColNames.add(Messages.getString("Property_device"));
+    vColNames.add(Messages.getHumanPropertyName(Const.XML_DEVICE));
     idList.add(Const.XML_DEVICE);
 
     // Directory
-    vColNames.add(Messages.getString("Property_directory"));
+    vColNames.add(Messages.getHumanPropertyName(Const.XML_DIRECTORY));
     idList.add(Const.XML_DIRECTORY);
 
     // File name
-    vColNames.add(Messages.getString("Property_filename"));
+    vColNames.add(Messages.getHumanPropertyName(Const.XML_FILE));
     idList.add(Const.XML_FILE);
 
     // Hits
-    vColNames.add(Messages.getString("Property_hits"));
+    vColNames.add(Messages.getHumanPropertyName(Const.XML_TRACK_HITS));
     idList.add(Const.XML_TRACK_HITS);
 
     // custom properties now

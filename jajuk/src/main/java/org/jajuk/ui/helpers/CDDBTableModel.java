@@ -28,6 +28,7 @@ import java.util.List;
 import org.jajuk.base.Item;
 import org.jajuk.base.Track;
 import org.jajuk.services.cddb.CDDBTrack;
+import org.jajuk.util.Const;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilString;
 
@@ -62,20 +63,20 @@ public class CDDBTableModel extends JajukTableModel {
     idList.add("CDDBWizard.4");
 
     // Proposed Track Artist
-    vColNames.add(Messages.getString("Property_artist"));
-    idList.add("Property_artist");
+    vColNames.add(Messages.getHumanPropertyName(Const.XML_ARTIST));
+    idList.add(Const.XML_ARTIST);
 
     // Proposed Track genre
-    vColNames.add(Messages.getString("Property_genre"));
-    idList.add("Property_genre");
+    vColNames.add(Messages.getHumanPropertyName(Const.XML_GENRE));
+    idList.add(Const.XML_GENRE);
 
     // Proposed Track year
-    vColNames.add(Messages.getString("Property_year"));
-    idList.add("Property_year");
+    vColNames.add(Messages.getHumanPropertyName(Const.XML_YEAR));
+    idList.add(Const.XML_YEAR);
 
     // Proposed Track number
-    vColNames.add(Messages.getString("Property_order"));
-    idList.add("Property_order");
+    vColNames.add(Messages.getHumanPropertyName(Const.XML_TRACK_ORDER));
+    idList.add(Const.XML_TRACK_ORDER);
   }
 
   /**

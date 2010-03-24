@@ -62,9 +62,9 @@ import net.miginfocom.swing.MigLayout;
 import org.jajuk.base.AlbumArtistManager;
 import org.jajuk.base.ArtistManager;
 import org.jajuk.base.File;
+import org.jajuk.base.GenreManager;
 import org.jajuk.base.Item;
 import org.jajuk.base.ItemManager;
-import org.jajuk.base.GenreManager;
 import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
@@ -662,7 +662,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
       model.setItemAt(e.getFirstRow(), itemNew); // update model
       // user message
       InformationJPanel.getInstance().setMessage(
-          Messages.getString("PropertiesWizard.8") + ": " + ItemManager.getHumanType(sKey),
+          Messages.getString("PropertiesWizard.8") + ": " + Messages.getHumanPropertyName(sKey),
           InformationJPanel.INFORMATIVE);
       // Require refresh of all tables
       Properties properties = new Properties();

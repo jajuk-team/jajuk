@@ -203,7 +203,7 @@ public class PropertiesWizard extends JajukJDialog implements ActionListener {
             .getDesc(), 50), false);
       } else {
         panel2 = new PropertiesPanel(alItems2, UtilString.formatPropertyDesc(alItems2.size() + " "
-            + Messages.getString("Property_tracks")), true);
+            +Messages.getHumanPropertyName(Const.XML_TRACKS)), true);
       }
       panel2.setBorder(BorderFactory.createEtchedBorder());
     }

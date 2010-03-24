@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2009 The Jajuk Team
+ *  Copyright (C) 2003-2010 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -317,7 +317,7 @@ public class Messages extends DefaultHandler {
       // Make sure to reset the choice and to return a non-existing choice if
       // the GUI fails
       choice = JOptionPane.DEFAULT_OPTION;
-      Runnable t = new Thread("Get choice thread"){
+      Runnable t = new Thread("Get choice thread") {
         @Override
         public void run() {
           // This must be done in the EDT
@@ -327,10 +327,9 @@ public class Messages extends DefaultHandler {
         }
       };
       // invokeAndWait method cannot be called from the EDT
-      if (SwingUtilities.isEventDispatchThread()){
+      if (SwingUtilities.isEventDispatchThread()) {
         t.run();
-      }
-      else{
+      } else {
         SwingUtilities.invokeAndWait(t);
       }
     } catch (InterruptedException e) {
@@ -493,6 +492,17 @@ public class Messages extends DefaultHandler {
   }
 
   /**
+   * Gets localized and human property name for given key
+   * 
+   * @param key the property name like XML_ARTIST, always use XML_? constants
+   * 
+   * @return the human property name or the property itself if not translated
+   */
+  public static String getHumanPropertyName(String key) {
+    return getString(Const.PROPERTY_SEPARATOR + key);
+  }
+
+  /**
    * Gets the properties.
    * 
    * @return Returns the properties.
@@ -548,7 +558,8 @@ class ConfirmDialog extends JajukDialog {
    * @param iType
    *          message type like JOptionPane.WARNING
    */
-  ConfirmDialog(final String sText, final String sTitle, final int optionsType, final int iType, Component parent) {
+  ConfirmDialog(final String sText, final String sTitle, final int optionsType, final int iType,
+      Component parent) {
     super();
 
     final JOptionPane optionPane = UtilGUI.getNarrowOptionPane(72);
@@ -653,7 +664,7 @@ class DetailsMessageDialog extends JajukDialog {
       dialogDetail.pack();
       dialogDetail.setLocationRelativeTo(JajukMainWindow.getInstance());
       dialogDetail.setVisible(true);
-      
+
       // manually dispose to free up memory, somehow this is not done automatically!
       dialog.dispose();
     }

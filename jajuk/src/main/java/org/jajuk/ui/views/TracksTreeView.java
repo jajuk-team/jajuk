@@ -125,16 +125,16 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
     // ComboBox sort
     JLabel jlSort = new JLabel(Messages.getString("Sort"));
     jcbSort = new JComboBox();
-    jcbSort.addItem(Messages.getString("Property_genre")); // sort by
+    jcbSort.addItem(Messages.getHumanPropertyName(Const.XML_GENRE)); // sort by
     // Genre/Artist/Album
-    jcbSort.addItem(Messages.getString("Property_artist")); // sort by
+    jcbSort.addItem(Messages.getHumanPropertyName(Const.XML_ARTIST)); // sort by
     // Artist/Album
-    jcbSort.addItem(Messages.getString("Property_album")); // sort by Album
-    jcbSort.addItem(Messages.getString("Property_year")); // sort by Year
+    jcbSort.addItem(Messages.getHumanPropertyName(Const.XML_ALBUM)); // sort by Album
+    jcbSort.addItem(Messages.getHumanPropertyName(Const.XML_YEAR)); // sort by Year
     jcbSort.addItem(Messages.getString("TracksTreeView.35")); // sort by
     // Discovery Date
-    jcbSort.addItem(Messages.getString("Property_rate")); // sort by rate
-    jcbSort.addItem(Messages.getString("Property_hits")); // sort by hits
+    jcbSort.addItem(Messages.getHumanPropertyName(Const.XML_TRACK_RATE)); // sort by rate
+    jcbSort.addItem(Messages.getHumanPropertyName(Const.XML_TRACK_HITS)); // sort by hits
     // Load stored index, reset to index 0 in case of out of bounds (can happen after a version
     // upgrade)
     if (Conf.getInt(Const.CONF_LOGICAL_TREE_SORT_ORDER) >= jcbSort.getItemCount()) {

@@ -60,16 +60,16 @@ public class PlaylistRepositoryTableModel extends JajukTableModel {
     vColNames.add(" ");
     idList.add(Const.XML_PLAY);
 
-    vColNames.add(Messages.getString(Const.PROPERTY_SEPARATOR + Const.XML_NAME));
+    vColNames.add(Messages.getHumanPropertyName(Const.XML_NAME));
     idList.add(Const.XML_NAME);
 
-    vColNames.add(Messages.getString(Const.PROPERTY_SEPARATOR + Const.XML_DEVICE));
+    vColNames.add(Messages.getHumanPropertyName(Const.XML_DEVICE));
     idList.add(Const.XML_DEVICE);
 
-    vColNames.add(Messages.getString(Const.PROPERTY_SEPARATOR + Const.XML_DIRECTORY));
+    vColNames.add(Messages.getHumanPropertyName(Const.XML_DIRECTORY));
     idList.add(Const.XML_DIRECTORY);
 
-    vColNames.add(Messages.getString(Const.PROPERTY_SEPARATOR + Const.XML_PATH));
+    vColNames.add(Messages.getHumanPropertyName(Const.XML_PATH));
     idList.add(Const.XML_PATH);
 
     // custom properties now

@@ -123,12 +123,12 @@ public class LastFmAlbumThumbnail extends AbstractThumbnail {
     sOut += "<img src='" + album.getBigCoverURL() + "'><br>";
     // Display artist as global value only if it is a single artist album
     // We use file://<item type>?<item id> as HTML hyperlink format
-    sOut += "<br>" + Messages.getString("Property_artist") + " : " + "<a href='file://"
+    sOut += "<br>" + Messages.getHumanPropertyName(Const.XML_ARTIST) + " : " + "<a href='file://"
         + Const.XML_URL + '?' + album.getArtistUrl() + "'>" + album.getArtist() + "</a>";
     // Display year if available
     String year = album.getYear();
     if (!StringUtils.isBlank(year)) {
-      sOut += "<br>" + Messages.getString("Property_year") + " : " + year;
+      sOut += "<br>" + Messages.getHumanPropertyName(Const.XML_YEAR) + " : " + year;
     }
     sOut += "</TD><TD>";
     // Show each track detail if available

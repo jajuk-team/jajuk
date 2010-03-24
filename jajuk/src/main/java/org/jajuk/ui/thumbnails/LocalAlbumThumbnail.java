@@ -103,7 +103,9 @@ public class LocalAlbumThumbnail extends AbstractThumbnail {
     this.fCover = ThumbnailManager.getThumbBySize(album, size);
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see org.jajuk.ui.thumbnails.AbstractThumbnail#populate()
    */
   @Override
@@ -205,30 +207,31 @@ public class LocalAlbumThumbnail extends AbstractThumbnail {
     if (cover.exists()) {
       sOut += "<img src='file:" + cover.getAbsolutePath() + "'><br>";
     }
-    //TODO : add AlbumArtist value and hyperlink here
-    
+    // TODO : add AlbumArtist value and hyperlink here
+
     // Display artist as global value only if it is a single artist album
     // We use file://<item type>?<item id> as HTML hyperlink format
     if (album.getArtist() != null) {
-      sOut += "<br>" + Messages.getString("Property_artist") + ": <a href='file://"
+      sOut += "<br>" + Messages.getHumanPropertyName(Const.XML_ARTIST) + ": <a href='file://"
           + Const.XML_ARTIST + '?' + firstTrack.getArtist().getID() + "'>"
           + firstTrack.getArtist().getName2() + "</a>";
     }
     // Display genre
     if (album.getGenre() != null) {
-      sOut += "<br>" + Messages.getString("Property_genre") + ": <a href='file://"
+      sOut += "<br>" + Messages.getHumanPropertyName(Const.XML_GENRE) + ": <a href='file://"
           + Const.XML_GENRE + '?' + firstTrack.getGenre().getID() + "'>"
           + UtilString.getLimitedString(firstTrack.getGenre().getName2(), 20) + "</a>";
     }
     // Display year
     if (album.getYear() != null) {
-      sOut += "<br>" + Messages.getString("Property_year") + ": <a href='file://" + Const.XML_YEAR
-          + '?' + firstTrack.getYear().getID() + "'>" + firstTrack.getYear().getName() + "</a>";
+      sOut += "<br>" + Messages.getHumanPropertyName(Const.XML_YEAR) + ": <a href='file://"
+          + Const.XML_YEAR + '?' + firstTrack.getYear().getID() + "'>"
+          + firstTrack.getYear().getName() + "</a>";
     }
     // display rating (sum of all tracks rating)
     try {
       sOut += "<br>"
-          + Messages.getString("Property_rate")
+          + Messages.getHumanPropertyName(Const.XML_TRACK_RATE)
           + ": <img src='"
           + SessionService.getConfFileByPath(
               "cache/internal/star" + album.getStarsNumber() + "_16x16.png").toURI().toURL()
@@ -238,7 +241,7 @@ public class LocalAlbumThumbnail extends AbstractThumbnail {
     }
     // Compute total length in secs
     long length = album.getDuration();
-    sOut += "<br>" + Messages.getString("Property_length") + ": "
+    sOut += "<br>" + Messages.getHumanPropertyName(Const.XML_TRACK_LENGTH) + ": "
         + UtilString.formatTimeBySec(length) + "</TD><TD VALIGN='TOP'><br>";
 
     // Show each track detail

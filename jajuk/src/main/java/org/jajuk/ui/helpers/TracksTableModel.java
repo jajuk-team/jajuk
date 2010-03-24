@@ -70,46 +70,46 @@ public class TracksTableModel extends JajukTableModel {
     vColNames.add(" ");
     idList.add(Const.XML_PLAY);
 
-    vColNames.add(Messages.getString("Property_name"));
+    vColNames.add(Messages.getHumanPropertyName(Const.XML_NAME));
     idList.add(Const.XML_NAME);
 
-    vColNames.add(Messages.getString("Property_album"));
+    vColNames.add(Messages.getHumanPropertyName(Const.XML_ALBUM));
     idList.add(Const.XML_ALBUM);
 
-    vColNames.add(Messages.getString("Property_artist"));
+    vColNames.add(Messages.getHumanPropertyName(Const.XML_ARTIST));
     idList.add(Const.XML_ARTIST);
 
-    vColNames.add(Messages.getString("Property_album_artist"));
+    vColNames.add(Messages.getHumanPropertyName(Const.XML_ALBUM_ARTIST));
     idList.add(Const.XML_ALBUM_ARTIST);
 
-    vColNames.add(Messages.getString("Property_genre"));
+    vColNames.add(Messages.getHumanPropertyName(Const.XML_GENRE));
     idList.add(Const.XML_GENRE);
 
-    vColNames.add(Messages.getString("Property_rate"));
+    vColNames.add(Messages.getHumanPropertyName(Const.XML_TRACK_RATE));
     idList.add(Const.XML_TRACK_RATE);
 
-    vColNames.add(Messages.getString("Property_length"));
+    vColNames.add(Messages.getHumanPropertyName(Const.XML_TRACK_LENGTH));
     idList.add(Const.XML_TRACK_LENGTH);
 
-    vColNames.add(Messages.getString("Property_comment"));
+    vColNames.add(Messages.getHumanPropertyName(Const.XML_TRACK_COMMENT));
     idList.add(Const.XML_TRACK_COMMENT);
 
-    vColNames.add(Messages.getString("Property_added"));
+    vColNames.add(Messages.getHumanPropertyName(Const.XML_TRACK_DISCOVERY_DATE));
     idList.add(Const.XML_TRACK_DISCOVERY_DATE);
 
-    vColNames.add(Messages.getString("Property_order"));
+    vColNames.add(Messages.getHumanPropertyName(Const.XML_TRACK_ORDER));
     idList.add(Const.XML_TRACK_ORDER);
 
-    vColNames.add(Messages.getString("Property_disc_number"));
+    vColNames.add(Messages.getHumanPropertyName(Const.XML_TRACK_DISC_NUMBER));
     idList.add(Const.XML_TRACK_DISC_NUMBER);
 
-    vColNames.add(Messages.getString("Property_year"));
+    vColNames.add(Messages.getHumanPropertyName(Const.XML_YEAR));
     idList.add(Const.XML_YEAR);
 
-    vColNames.add(Messages.getString("Property_hits"));
+    vColNames.add(Messages.getHumanPropertyName(Const.XML_TRACK_HITS));
     idList.add(Const.XML_TRACK_HITS);
 
-    vColNames.add(Messages.getString("Property_files"));
+    vColNames.add(Messages.getHumanPropertyName(Const.XML_FILES));
     idList.add(Const.XML_FILES);
 
     // custom properties now

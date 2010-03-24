@@ -36,7 +36,6 @@ import org.apache.commons.collections.Predicate;
 import org.jajuk.services.tags.Tag;
 import org.jajuk.util.Const;
 import org.jajuk.util.MD5Processor;
-import org.jajuk.util.Messages;
 import org.jajuk.util.ReadOnlyIterator;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
@@ -132,22 +131,7 @@ public abstract class ItemManager {
     return hmPropertiesMetaInformation.get(sPropertyName);
   }
 
-  /**
-   * Return a human representation for a given property name when we don't now
-   * item type we work on. Otherwise, use PropertyMetaInformation.getHumanType
-   * 
-   * @param sKey DOCUMENT_ME
-   * 
-   * @return the human type
-   */
-  public static String getHumanType(String sKey) {
-    String sOut = sKey;
-    if (Messages.contains(Const.PROPERTY_SEPARATOR + sKey)) {
-      return Messages.getString(Const.PROPERTY_SEPARATOR + sKey);
-    }
-    return sOut;
-  }
-
+  
   /**
    * Remove a property *.
    * 

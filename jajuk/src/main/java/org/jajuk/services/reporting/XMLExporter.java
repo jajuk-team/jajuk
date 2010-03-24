@@ -538,21 +538,20 @@ public class XMLExporter extends Exporter {
             .getString("ReportAction." + i)));
         i++;
       }
-      writer.write('\t' + Tag.tagData("ReportAction.name", Messages.getString("Property_name")));
+      writer.write('\t' + Tag.tagData("ReportAction.name", Messages.getHumanPropertyName(Const.XML_NAME)));
       writer
-          .write('\t' + Tag.tagData("ReportAction.artist", Messages.getString("Property_artist")));
-      writer.write('\t' + Tag.tagData("ReportAction.genre", Messages.getString("Property_genre")));
-      writer.write('\t' + Tag.tagData("ReportAction.order", Messages.getString("Property_track")));
+          .write('\t' + Tag.tagData("ReportAction.artist", Messages.getHumanPropertyName(Const.XML_ARTIST)));
+      writer.write('\t' + Tag.tagData("ReportAction.genre", Messages.getHumanPropertyName(Const.XML_GENRE)));
+      writer.write('\t' + Tag.tagData("ReportAction.order", Messages.getHumanPropertyName(Const.XML_TRACK)));
       writer.write('\t' + Tag.tagData("ReportAction.track", Messages.getString("Item_Track")));
-      writer.write('\t' + Tag.tagData("ReportAction.album", Messages.getString("Property_album")));
+      writer.write('\t' + Tag.tagData("ReportAction.album", Messages.getHumanPropertyName(Const.XML_ALBUM)));
       writer
-          .write('\t' + Tag.tagData("ReportAction.length", Messages.getString("Property_length")));
-      writer.write('\t' + Tag.tagData("ReportAction.year", Messages.getString("Property_year")));
-      writer.write('\t' + Tag.tagData("ReportAction.rate", Messages.getString("Property_rate")));
-      writer.write('\t' + Tag.tagData("ReportAction.url", Messages.getString("Property_url")));
-      writer.write('\t' + Tag.tagData("ReportAction.type", Messages.getString("Property_type")));
-      writer.write('\t' + Tag.tagData("ReportAction.comment", Messages
-          .getString("Property_comment")));
+          .write('\t' + Tag.tagData("ReportAction.length", Messages.getHumanPropertyName(Const.XML_TRACK_LENGTH)));
+      writer.write('\t' + Tag.tagData("ReportAction.year", Messages.getHumanPropertyName(Const.XML_YEAR)));
+      writer.write('\t' + Tag.tagData("ReportAction.rate", Messages.getHumanPropertyName(Const.XML_TRACK_RATE)));
+      writer.write('\t' + Tag.tagData("ReportAction.url", Messages.getHumanPropertyName(Const.XML_URL)));
+      writer.write('\t' + Tag.tagData("ReportAction.type", Messages.getHumanPropertyName(Const.XML_TYPE)));
+      writer.write('\t' + Tag.tagData("ReportAction.comment", Messages.getHumanPropertyName(Const.XML_TRACK_COMMENT)));
       writer.write(Tag.closeTag("i18n"));
       writer.write(Tag.closeTag(Const.XML_COLLECTION));
     } finally {

@@ -264,8 +264,7 @@ public class PropertyMetaInformation {
    * @return the human name
    */
   public String getHumanName() {
-    return Messages.contains("Property_" + getName()) ? Messages.getString("Property_" + getName())
-        : getName();
+    return Messages.getHumanPropertyName(getName());
   }
 
 }

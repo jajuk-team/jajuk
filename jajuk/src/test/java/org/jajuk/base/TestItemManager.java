@@ -33,6 +33,7 @@ import org.apache.commons.lang.StringUtils;
 import org.jajuk.JajukTestCase;
 import org.jajuk.services.startup.StartupCollectionService;
 import org.jajuk.util.Const;
+import org.jajuk.util.Messages;
 
 /**
  * 
@@ -111,10 +112,8 @@ public class TestItemManager extends JajukTestCase {
    */
 
   public final void testGetHumanType() {
-    assertEquals("anykey", ItemManager.getHumanType("anykey"));
-
-    assertFalse(ItemManager.getHumanType("disc_number"), "disc_number".equals(ItemManager
-        .getHumanType("disc_number")));
+    assertEquals("anykey", Messages.getHumanPropertyName("anykey"));
+    assertFalse(Messages.getHumanPropertyName("disc_number"), "disc_number".equals(Messages.getHumanPropertyName("disc_number")));
   }
 
   /**

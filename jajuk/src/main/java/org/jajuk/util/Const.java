@@ -1691,7 +1691,7 @@ public interface Const {
   /** DOCUMENT_ME. */
   String HTML = "<html>";
 
-  //file name where the tag cover is stored in
+  /** File name where the tag cover is stored in */
   String TAG_COVER_FILE = "tag_cover.png";
 
 }
