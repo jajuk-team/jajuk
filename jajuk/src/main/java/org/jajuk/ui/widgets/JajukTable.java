@@ -57,6 +57,7 @@ import org.jajuk.ui.helpers.JajukMouseAdapter;
 import org.jajuk.ui.helpers.JajukTableModel;
 import org.jajuk.ui.helpers.TableTransferHandler;
 import org.jajuk.ui.perspectives.PerspectiveManager;
+import org.jajuk.ui.views.IView;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.UtilGUI;
@@ -499,7 +500,11 @@ public class JajukTable extends JXTable implements Observer, TableColumnModelLis
     Properties properties = new Properties();
     properties.put(Const.DETAIL_SELECTION, getSelection());
     properties.put(Const.DETAIL_PERSPECTIVE, PerspectiveManager.getCurrentPerspective().getID());
-    properties.put(Const.DETAIL_VIEW, UtilGUI.getParentView(this));
+    // Test parent view nullity to avoid NPE
+    IView parentView = UtilGUI.getParentView(this);
+    if (parentView != null) {
+      properties.put(Const.DETAIL_VIEW, parentView);
+    }
     ObservationManager.notify(new JajukEvent(JajukEvents.TABLE_SELECTION_CHANGED, properties));
   }
 
