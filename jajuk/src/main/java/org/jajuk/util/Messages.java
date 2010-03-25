@@ -498,8 +498,12 @@ public class Messages extends DefaultHandler {
    * 
    * @return the human property name or the property itself if not translated
    */
-  public static String getHumanPropertyName(String key) {
-    return getString(Const.PROPERTY_SEPARATOR + key);
+  public static String getHumanPropertyName(String sKey) {
+    String sOut = sKey;
+    if (Messages.contains(Const.PROPERTY_SEPARATOR + sKey)) {
+      return Messages.getString(Const.PROPERTY_SEPARATOR + sKey);
+    }
+    return sOut;
   }
 
   /**
