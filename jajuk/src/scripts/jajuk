@@ -26,14 +26,6 @@ FIND_OTHER_JAVA="true"
 JAJUK_VERSION="VERSION_REPLACED_BY_ANT"
 PROGNAME=`basename $0`
 
-## Version warning
-warning_version () {
-    echo "==================================================================="
-    echo " Jajuk runs much faster with Java SUN 1.6, consider to install it. "
-    echo "==================================================================="
-    echo " "
-}
-
 ## find java version in the default path
 JAVA_VER=$($JAVA_BIN -version 2>&1 | grep version | cut -d\" -f 2-2 | cut -c 1-3)
 
@@ -65,10 +57,7 @@ find_java () {
             echo "  j2re1.5-sun detected in $JAVA_BIN"
             warning_version
         fi
-    elif [ "$JAVA_VER" = "1.5" ] ; then
-        echo " Java version in the default path is: $JAVA_VER
-        warning_version
-    else
+     else
         echo " Java version in the default path is: $JAVA_VER    
         echo "   No Java compatible version detected, but let's still try to run it!"
         warning_version
