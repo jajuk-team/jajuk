@@ -121,31 +121,31 @@ public class PreparePartyWizard extends Wizard {
   /** Max number of tracks to use. */
   private static final String KEY_MAX_TRACKS_ON = "MAXTRACKS_ENABLED";
   
-  /** The Constant KEY_MAX_TRACKS.  DOCUMENT_ME */
+  /** Key for max. number of track */
   private static final String KEY_MAX_TRACKS = "MAXTRACKS";
 
   /** Max size to use. */
   private static final String KEY_MAX_SIZE_ON = "MAXSIZE_ENABLED";
   
-  /** The Constant KEY_MAX_SIZE.  DOCUMENT_ME */
+  /** Key for max. size of party */
   private static final String KEY_MAX_SIZE = "MAXSIZE";
 
   /** Max playing length of tracks to use. */
   private static final String KEY_MAX_LENGTH_ON = "MAXLENGTH_ENABLED";
   
-  /** The Constant KEY_MAX_LENGTH.  DOCUMENT_ME */
+  /** Key for max length of party */
   private static final String KEY_MAX_LENGTH = "MAXLENGTH";
 
   /** Max number of tracks to queue. */
   private static final String KEY_ONE_MEDIA_ON = "ONE_MEDIA_ENABLED";
   
-  /** The Constant KEY_MEDIA.  DOCUMENT_ME */
+  /** Key for limit to one audio type */
   private static final String KEY_MEDIA = "ONE_MEDIA";
   
-  /** The Constant KEY_CONVERT_MEDIA.  DOCUMENT_ME */
+  /** Key for audio type conversion */
   private static final String KEY_CONVERT_MEDIA = "CONVERT_MEDIA";
   
-  /** The Constant KEY_CONVERT_COMMAND.  DOCUMENT_ME */
+  /** Key for the command to use for audio conversion */
   private static final String KEY_CONVERT_COMMAND = "CONVERT_COMMAND";
 
   /** Used to enable replacing characters outside the normal range. */
@@ -154,43 +154,43 @@ public class PreparePartyWizard extends Wizard {
   /** Ratings level. */
   private static final String KEY_RATINGS_LEVEL = "RATING_LEVEL";
 
-  // store a temporary playlist that is provided by the PlaylistView without
-  // storing it in the PlaylistManager
-  // we keep it here to be able to re-display it in the Pages later on
-  // We need to keep it outside the ActionSelectionPanel because the panel is
-  // re-created during back-forward operations
-  /** DOCUMENT_ME. */
+  /**
+   *  store a temporary playlist that is provided by the PlaylistView without storing it in the 
+   *  PlaylistManager we keep it here to be able to re-display it in the Pages later on
+   *  
+   *  We need to keep it outside the ActionSelectionPanel because the panel is re-created during back-forward operations
+   */
   private static Playlist tempPlaylist;
 
-  /** DOCUMENT_ME. */
+  /** Indicator to only restore properties once and not overwrite them again later. */
   private static boolean bPropertiesRestored = false;
   
-  /** DOCUMENT_ME. */
+  /** Indicates if the PACPL tool for audio conversion is available */
   private static boolean bPACPLAvailable = false;
 
   /**
-   * DOCUMENT_ME.
+   * The source of the Party.
    */
   private enum Mode {
     
-    /** DOCUMENT_ME. */
+    /** Use one of the available DJs */
     DJ, 
- /** DOCUMENT_ME. */
- Ambience, 
- /** DOCUMENT_ME. */
- Shuffle, 
- /** DOCUMENT_ME. */
- Playlist, 
- /** DOCUMENT_ME. */
- BestOf, 
- /** DOCUMENT_ME. */
- Novelties, 
- /** DOCUMENT_ME. */
- Queue, 
- /** DOCUMENT_ME. */
- Bookmarks, 
- /** DOCUMENT_ME. */
- ProvidedPlaylist
+    /** Use one of hte available Ambiences*/
+    Ambience,
+    /** Use random tracks from all available track */
+    Shuffle,
+    /** Use a playlist */
+    Playlist,
+    /** Use songs from the BestOf list */
+    BestOf,
+    /** Use songs from the Novelties list */
+    Novelties,
+    /** Use songs from the current play queue */
+    Queue,
+    /** Use the available bookmarks */
+    Bookmarks,
+    /** Special mode for when the dialog is invoked with a newly created playlist */
+    ProvidedPlaylist
   }
 
   /**
@@ -231,7 +231,7 @@ public class PreparePartyWizard extends Wizard {
   /**
    * Return if the specified element is true in the data-map.
    * 
-   * @param key DOCUMENT_ME
+   * @param key The key to look up in the data-object.
    * 
    * @return true if the value was stored as boolean true, false otherwise.
    */
@@ -395,7 +395,7 @@ public class PreparePartyWizard extends Wizard {
   }
 
   /**
-   * Gets the files.
+   * Gets the list of files to copy depending on the current mode.
    * 
    * @return the files
    */
@@ -500,7 +500,7 @@ public class PreparePartyWizard extends Wizard {
   /**
    * Store one value as String.
    * 
-   * @param key DOCUMENT_ME
+   * @param key The name of the property to store in the overall configuration 
    */
   private static void storeValue(final String key) {
     // nothing to do?
@@ -670,47 +670,47 @@ public class PreparePartyWizard extends Wizard {
   }
 
   /**
-   * DOCUMENT_ME.
+   * First Panel of the Wizard, it shows a selection of sources where the user can choose one, e.g. DJs, Ambiences, ... 
    */
   public static class ActionSelectionPanel extends Screen implements ActionListener, ClearPoint {
 
     /** Generated serialVersionUID. */
     private static final long serialVersionUID = -6981770030816500259L;
 
-    /** DOCUMENT_ME. */
+    /** The group for the various sources */
     private ButtonGroup bgActions;
 
-    /** DOCUMENT_ME. */
+    /** DJ */
     private JRadioButton jrbDJ;
     
-    /** DOCUMENT_ME. */
+    /** DJ */
     private JComboBox jcbDJ;
 
-    /** DOCUMENT_ME. */
+    /** Ambience */
     private JRadioButton jrbAmbience;
     
-    /** DOCUMENT_ME. */
+    /** Ambience */
     private JComboBox jcbAmbience;
 
-    /** DOCUMENT_ME. */
+    /** Playlist */
     private JRadioButton jrbPlaylist;
     
-    /** DOCUMENT_ME. */
+    /** Playlist */
     private JComboBox jcbPlaylist;
 
-    /** DOCUMENT_ME. */
+    /** Shuffle */
     private JRadioButton jrbShuffle;
 
-    /** DOCUMENT_ME. */
+    /** Shuffle */
     private JRadioButton jrbBestOf;
     
-    /** DOCUMENT_ME. */
+    /** Novelties */
     private JRadioButton jrbNovelties;
     
-    /** DOCUMENT_ME. */
+    /** Queue */
     private JRadioButton jrbQueue;
     
-    /** DOCUMENT_ME. */
+    /** Bookmarks */
     private JRadioButton jrbBookmark;
 
     /**
@@ -991,62 +991,58 @@ public class PreparePartyWizard extends Wizard {
     /** Generated serialVersionUID. */
     private static final long serialVersionUID = 1L;
 
-    /** The Constant NO_VALUE.  DOCUMENT_ME */
+    /** Empty value */
     private static final String NO_VALUE = " ";
 
-    // Max. number of tracks to include
-    /** DOCUMENT_ME. */
+    /** Enable limit on number of tracks */
     private JCheckBox jcbMaxTracks;
     
-    /** DOCUMENT_ME. */
+    /** The max. number of tracks */
     private JSlider jsMaxTracks;
     
-    /** DOCUMENT_ME. */
+    /** The max. number of tracks */
     private JLabel jnMaxTracks;
 
-    // Max size (in MB) of party
-    /** DOCUMENT_ME. */
+    /** Enable limit on max size */
     private JCheckBox jcbMaxSize;
     
-    /** DOCUMENT_ME. */
+    /** Max size (in MB) of party */
     private JSlider jsMaxSize;
     
-    /** DOCUMENT_ME. */
+    /** Max size (in MB) of party */
     private JLabel jnMaxSize;
 
-    // Max playing length of party
-    /** DOCUMENT_ME. */
+    /** Enable limit on max playing length */
     private JCheckBox jcbMaxLength;
     
-    /** DOCUMENT_ME. */
+    /** Max playing length of party (in minutes) */
     private JSlider jsMaxLength;
     
-    /** DOCUMENT_ME. */
+    /** Max playing length of party (in minutes) */
     private JLabel jnMaxLength;
 
-    // Limit to one type of media
-    /** DOCUMENT_ME. */
+    /** Enable limit on specific audio type */
     private JCheckBox jcbOneMedia;
     
-    /** DOCUMENT_ME. */
+    /** Limit to one type of audo file */
     private JComboBox jcbMedia;
     
-    /** DOCUMENT_ME. */
+    /** Enable conversion to the selected audio type */
     private JCheckBox jcbConvertMedia;
     
-    /** DOCUMENT_ME. */
+    /** Audio conversion */
     private JLabel jlConvertMedia;
     
-    /** DOCUMENT_ME. */
+    /** Button to configure audio conversion */
     private JButton jbConvertConfig;
 
-    /** DOCUMENT_ME. */
+    /** Limit on rate of tracks */
     private JLabel jlRatingLevel;
     
-    /** DOCUMENT_ME. */
+    /** The min. number of stars a track needs to have */
     private JSlider jsRatingLevel;
 
-    /** DOCUMENT_ME. */
+    /** Enable normalizing filenames so they can be stored on windows fileshares */
     private JCheckBox jcbNormalizeFilename;
 
     /* (non-Javadoc)
@@ -1376,7 +1372,6 @@ public class PreparePartyWizard extends Wizard {
      * @see
      * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
-
     public void actionPerformed(ActionEvent ae) {
       // if a checkbox is selected/deselected, enable/disable the
       // sliders/comboboxes accordingly
@@ -1521,14 +1516,11 @@ public class PreparePartyWizard extends Wizard {
     /** Generated serialVersionUID. */
     private static final long serialVersionUID = -236180699495019177L;
 
-    /** DOCUMENT_ME. */
+    /** Button for file chooser dialog */
     JButton jbFileSelection;
 
-    /** DOCUMENT_ME. */
+    /** The selected file */
     JLabel jlSelectedFile;
-
-    /** DOCUMENT_ME. */
-    JPanel jpMain;
 
     /** Selected directory. */
     private File fDir;
