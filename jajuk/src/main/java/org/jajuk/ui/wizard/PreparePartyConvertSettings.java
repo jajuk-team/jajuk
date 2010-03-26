@@ -45,21 +45,21 @@ public class PreparePartyConvertSettings extends JajukJDialog implements ActionL
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
-  /** DOCUMENT_ME. */
+  /** Listener which is informed about changes to the settings. */
   ChangeListener listener;
 
-  /** DOCUMENT_ME. */
+  /** Text field for the input of the command */
   JTextField jtfPACPLCommand;
 
-  /** DOCUMENT_ME. */
+  /** OK/Cancel buttons */
   OKCancelPanel okp;
 
   /**
    * Instantiates a new prepare party convert settings.
    * 
-   * @param listener DOCUMENT_ME
-   * @param command DOCUMENT_ME
-   * @param parent DOCUMENT_ME
+   * @param listener Listener for changes
+   * @param command The current command
+   * @param parent Parent frame
    */
   public PreparePartyConvertSettings(ChangeListener listener, String command, Frame parent) {
     super(parent, true);
