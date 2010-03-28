@@ -73,7 +73,6 @@ public class TestDirectory extends JajukTestCase {
     topdir1 = DirectoryManager.getInstance().registerDirectory(device1);
     dir1 = DirectoryManager.getInstance().registerDirectory("dir1", topdir1, device1);
     dir2 = DirectoryManager.getInstance().registerDirectory("dir2", topdir1, device1);
-
   }
 
   /**
@@ -332,6 +331,26 @@ public class TestDirectory extends JajukTestCase {
 
     files = dir.getFilesRecursively();
     assertEquals(4, files.size());
+  }
+
+  /**
+   * Test method for {@link org.jajuk.base.Directory#hasAncestor(org.jajuk.base.Directory)}.
+   */
+  public void testHasAncestor() throws Exception {
+    assertTrue(dir1.hasAncestor(topdir1));
+    assertFalse(dir1.hasAncestor(dir2));
+    assertFalse(dir1.hasAncestor(dir1));
+  }
+  
+   /**
+   * Test method for {@link org.jajuk.base.Directory#getDirectoriesRecursively()}.
+   */
+  public void testGetDirectoriesRecursively() throws Exception {
+    List<Directory> dirs = topdir1.getDirectoriesRecursively();
+    assertTrue(dirs.size() == 2);
+    assertFalse(dirs.contains(topdir1));
+    assertTrue(dirs.contains(dir1));
+    assertTrue(dirs.contains(dir2));
   }
 
   /**

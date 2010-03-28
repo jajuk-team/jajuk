@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2009 The Jajuk Team
+ *  Copyright (C) 2003-2010 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -32,8 +32,10 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Properties;
+import java.util.Set;
 
 import javax.swing.Action;
 import javax.swing.BorderFactory;
@@ -415,15 +417,11 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
         }
       }.start();
     } else if (e.getSource() == jmiDirDesynchro) {
-      for (Directory dir : alDirs) {
-        dir.setProperty(Const.XML_DIRECTORY_SYNCHRONIZED, false);
-      }
+      setSynchonizationStateRecursively(false);
       jtree.revalidate();
       jtree.repaint();
     } else if (e.getSource() == jmiDirResynchro) {
-      for (Directory dir : alDirs) {
-        dir.setProperty(Const.XML_DIRECTORY_SYNCHRONIZED, true);
-      }
+      setSynchonizationStateRecursively(true);
       jtree.revalidate();
       jtree.repaint();
     } else if (e.getSource() == jmiCopy || e.getSource() == jmiCut) {
@@ -445,6 +443,23 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
       DeviceManager.getInstance().removeDevice(device);
       // refresh views
       ObservationManager.notify(new JajukEvent(JajukEvents.DEVICE_REFRESH));
+    }
+  }
+
+  /**
+   * Sets the synchronization state recursively for all files selected
+   * 
+   * @param sync whether the directories should be synchronized
+   */
+  private void setSynchonizationStateRecursively(boolean sync) {
+    Set<Directory> directories = new HashSet<Directory>();
+    for (Item item : alSelected) {
+      Directory dir = (Directory) item;
+      directories.add(dir);
+      directories.addAll(dir.getDirectoriesRecursively());
+    }
+    for (Directory dir : directories) {
+      dir.setProperty(Const.XML_DIRECTORY_SYNCHRONIZED, sync);
     }
   }
 
@@ -537,6 +552,12 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
    */
   class FilesMouseAdapter extends JajukMouseAdapter {
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.jajuk.ui.helpers.JajukMouseAdapter#handleActionSeveralClicks(java.awt.event.MouseEvent)
+     */
     @Override
     public void handleActionSeveralClicks(final MouseEvent e) {
       TreePath path = jtree.getPathForLocation(e.getX(), e.getY());
@@ -576,6 +597,11 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
       }
     }
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.jajuk.ui.helpers.JajukMouseAdapter#handlePopup(java.awt.event.MouseEvent)
+     */
     @Override
     @SuppressWarnings("unchecked")
     public void handlePopup(final MouseEvent e) {
@@ -931,13 +957,9 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
    * Fill the provided list with sub-elements for that directory, i.e.
    * sub-directories, files and playlists.
    * 
-   * @param parent
-   *          The parent-directory to start from.
-   * @param model
-   *          The DefaultTreeModel to use.
-   * @param list
-   *          The list to add elements to. This list can contain elements before
-   *          which will not be touched.
+   * @param parent The parent-directory to start from.
+   * @param list The list to add elements to. This list can contain elements before
+   * which will not be touched.
    */
   static void populateFromDirectory(Directory parent, List<MutableTreeNode> list) {
     // now we get all directories in this device

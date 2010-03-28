@@ -228,6 +228,44 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
     }
     return alFiles;
   }
+  
+  /**
+   * return ordered child directories recursively.
+   * 
+   * @return child directories recursively
+   */
+  public List<Directory> getDirectoriesRecursively() {
+    List<Directory> alDirs = new ArrayList<Directory>(10);
+    for (Item item : DirectoryManager.getInstance().getDirectories()) {
+      Directory dir = (Directory) item;
+      if (dir.hasAncestor(this)) {
+        alDirs.add(dir);
+      }
+    }
+    return alDirs;
+  }
+  
+  /**
+   * Return true is the specified directory is an ancestor for this directory.
+   * 
+   * @param directory
+   *          directory to check
+   * 
+   * @return true, if given directory is a parent directory of this directory
+   */
+  public boolean hasAncestor(Directory directory) {
+    Directory dirTested = this;
+    while (true) {
+      if (!dirTested.equals(this) && dirTested.equals(directory)) {
+        return true;
+      } else {
+        dirTested = dirTested.getParentDirectory();
+        if (dirTested == null) {
+          return false;
+        }
+      }
+    }
+  }
 
   /**
   * return ordered child playlists recursively.
