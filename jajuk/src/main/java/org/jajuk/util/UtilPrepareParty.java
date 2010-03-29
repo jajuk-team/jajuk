@@ -654,7 +654,6 @@ public class UtilPrepareParty {
         long lRefreshDateStart = System.currentTimeMillis();
 
         // start copying and create a playlist on the fly
-//        UtilGUI.waiting();
         int convert_errors = 0;
         final java.io.File file = new java.io.File(destDir.getAbsolutePath() + "/playlist.m3u");
         try {
@@ -675,13 +674,6 @@ public class UtilPrepareParty {
               if (isNormalize) {
                 name = UtilPrepareParty.normalizeFilename(name);
               }
-
-              // rdialog.setRefreshing(new
-              // StringBuilder(Messages.getString("PreparePartyWizard.30"))
-              // .append(' ').append(name).toString());
-              // rdialog.setProgress(count / files.size());
-              // setProgress(100 * files.size() / count, new StringBuilder(Messages
-              // .getString("PreparePartyWizard.30")).append(' ').append(name).toString());
 
               // check if we need to convert the file format
               if (isConvertMedia && !entry.getType().getExtension().equals(media)) {
@@ -727,11 +719,6 @@ public class UtilPrepareParty {
           Messages.showErrorMessage(180, e.getMessage());
           return;
         } finally {
-//          UtilGUI.stopWaiting();
-
-          // Close refresh dialog
-          // rdialog.setVisible(false);
-          // rdialog.dispose();
 
           long refreshTime = System.currentTimeMillis() - lRefreshDateStart;
 
