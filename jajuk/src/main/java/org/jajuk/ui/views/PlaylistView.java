@@ -517,7 +517,6 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
     eventSubjectSet.add(JajukEvents.DEVICE_MOUNT);
     eventSubjectSet.add(JajukEvents.DEVICE_UNMOUNT);
     eventSubjectSet.add(JajukEvents.DEVICE_REFRESH);
-    eventSubjectSet.add(JajukEvents.FILE_COPIED);
     eventSubjectSet.add(JajukEvents.VIEW_REFRESH_REQUEST);
     eventSubjectSet.add(JajukEvents.QUEUE_NEED_REFRESH);
     eventSubjectSet.add(JajukEvents.TABLE_SELECTION_CHANGED);
@@ -571,19 +570,6 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
               || JajukEvents.DEVICE_UNMOUNT.equals(subject)
               || JajukEvents.PARAMETERS_CHANGE.equals(subject)) {
             refreshCurrentPlaylist();
-          } else if (JajukEvents.FILE_COPIED.equals(subject)) {
-            Properties properties = event.getDetails();
-            if (properties == null) {
-              // if no property, the party is done
-              InformationJPanel.getInstance().setMessage("", InformationJPanel.INFORMATIVE);
-            } else {
-              String filename = properties.getProperty(Const.DETAIL_CONTENT);
-              if (filename != null) {
-                InformationJPanel.getInstance()
-                    .setMessage(Messages.getString("Device.31") + filename + "]",
-                        InformationJPanel.INFORMATIVE);
-              }
-            }
           } else if (JajukEvents.CUSTOM_PROPERTIES_ADD.equals(subject)) {
             Properties properties = event.getDetails();
             if (properties == null) {

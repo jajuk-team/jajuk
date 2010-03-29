@@ -22,19 +22,27 @@ package org.jajuk.util;
 
 import ext.ProcessLauncher;
 
+import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.CharUtils;
-import org.jajuk.base.File;
+import org.apache.commons.lang.StringUtils;
 import org.jajuk.base.FileManager;
 import org.jajuk.base.Playlist;
 import org.jajuk.base.PlaylistManager;
 import org.jajuk.base.SmartPlaylist;
+import org.jajuk.events.JajukEvent;
+import org.jajuk.events.JajukEvents;
+import org.jajuk.events.ObservationManager;
 import org.jajuk.services.dj.Ambience;
 import org.jajuk.services.dj.AmbienceManager;
 import org.jajuk.services.dj.DigitalDJ;
@@ -597,7 +605,7 @@ public class UtilPrepareParty {
     list.add(toFormat);
 
     // now add the actual file to convert
-    list.add(file.getFIO().getAbsolutePath());
+    list.add(file.getAbsolutePath());
 
     // create streams for catching stdout and stderr
     ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -626,5 +634,131 @@ public class UtilPrepareParty {
     }
 
     return ret;
+  }
+
+  /**
+   * Copies the files contained in the list to the specified directory.
+   * 
+   * @param files The list of flies to copy.
+   * @param destDir The target location.
+   */
+  public static void copyFiles(final List<org.jajuk.base.File> files, final java.io.File destDir, 
+      final boolean isNormalize, final boolean isConvertMedia, final String media, 
+      final String convertCommand) {
+
+    Thread thread = new Thread("PrepareParty - File Copy") {
+
+      @Override
+      public void run() {
+        // start time to display elapsed time at the end
+        long lRefreshDateStart = System.currentTimeMillis();
+
+        // start copying and create a playlist on the fly
+//        UtilGUI.waiting();
+        int convert_errors = 0;
+        final java.io.File file = new java.io.File(destDir.getAbsolutePath() + "/playlist.m3u");
+        try {
+          final BufferedWriter bw = new BufferedWriter(new FileWriter(file));
+          try {
+            bw.write(Const.PLAYLIST_NOTE);
+            int count = 0;
+            for (final org.jajuk.base.File entry : files) {
+              // update progress
+              count++;
+
+              // We can use the actual file name as we do numbering of the files,
+              // this is important for existing playlists to keep the order
+              String name = StringUtils.leftPad(Integer.valueOf(count).toString(), 5, '0') + '_'
+                  + entry.getFIO().getName();
+
+              // normalize filenames if necessary
+              if (isNormalize) {
+                name = UtilPrepareParty.normalizeFilename(name);
+              }
+
+              // rdialog.setRefreshing(new
+              // StringBuilder(Messages.getString("PreparePartyWizard.30"))
+              // .append(' ').append(name).toString());
+              // rdialog.setProgress(count / files.size());
+              // setProgress(100 * files.size() / count, new StringBuilder(Messages
+              // .getString("PreparePartyWizard.30")).append(' ').append(name).toString());
+
+              // check if we need to convert the file format
+              if (isConvertMedia && !entry.getType().getExtension().equals(media)) {
+                // Notify that we are converting a file
+                Properties properties = new Properties();
+                properties.put(Const.DETAIL_CONTENT, entry.getName());
+                properties.put(Const.DETAIL_NEW, name + "." + media);
+
+                ObservationManager.notify(new JajukEvent(JajukEvents.FILE_CONVERSION, properties));
+
+                int ret = UtilPrepareParty.convertPACPL(convertCommand, entry.getFIO(), media,
+                    destDir, name);
+                if (ret != 0) {
+                  convert_errors++;
+                }
+
+              } else {
+                // do a normal copy otherwise
+                FileUtils.copyFile(entry.getFIO(), new File(destDir, name));
+              }
+
+              // write playlist as well
+              bw.newLine();
+              bw.write(name);
+
+              // Notify that a file has been copied
+              Properties properties = new Properties();
+              properties.put(Const.DETAIL_CONTENT, entry.getName());
+              ObservationManager.notify(new JajukEvent(JajukEvents.FILE_COPIED, properties));
+            }
+
+            bw.flush();
+          } finally {
+            bw.close();
+          }
+
+          // Send a last event with null properties to inform the
+          // client that the party is done
+          ObservationManager.notify(new JajukEvent(JajukEvents.FILE_COPIED));
+
+        } catch (final IOException e) {
+          Log.error(e);
+          Messages.showErrorMessage(180, e.getMessage());
+          return;
+        } finally {
+//          UtilGUI.stopWaiting();
+
+          // Close refresh dialog
+          // rdialog.setVisible(false);
+          // rdialog.dispose();
+
+          long refreshTime = System.currentTimeMillis() - lRefreshDateStart;
+
+          // inform the user about the number of resulting tracks
+          StringBuilder sbOut = new StringBuilder();
+          sbOut.append(Messages.getString("PreparePartyWizard.31")).append(" ").append(
+              destDir.getAbsolutePath()).append(".\n").append(files.size()).append(" ").append(
+              Messages.getString("PreparePartyWizard.23")).append(" ").append(
+              ((refreshTime < 1000) ? refreshTime + " ms." : refreshTime / 1000 + " s."));
+
+          // inform user if converting did not work
+          if (convert_errors > 0) {
+            sbOut.append("\n").append(Integer.toString(convert_errors)).append(
+                Messages.getString("PreparePartyWizard.36"));
+          }
+
+          String message = sbOut.toString();
+
+          Log.debug(message);
+
+          // Display end of copy message with stats
+          Messages.showInfoMessage(message);
+        }
+      }
+
+    };
+    
+    thread.start();
   }
 }

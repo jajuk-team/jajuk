@@ -24,6 +24,7 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashSet;
+import java.util.Properties;
 import java.util.Set;
 
 import javax.swing.Box;
@@ -198,6 +199,8 @@ public final class InformationJPanel extends JXPanel implements Observer {
     eventSubjectSet.add(JajukEvents.WEBRADIO_LAUNCHED);
     eventSubjectSet.add(JajukEvents.PLAYER_STOP);
     eventSubjectSet.add(JajukEvents.THUMB_CREATED);
+    eventSubjectSet.add(JajukEvents.FILE_COPIED);
+    eventSubjectSet.add(JajukEvents.FILE_CONVERSION);
     return eventSubjectSet;
   }
 
@@ -366,6 +369,31 @@ public final class InformationJPanel extends JXPanel implements Observer {
             if (radio != null) {
               String message = Messages.getString("FIFO.14") + " " + radio.getName();
               setMessage(message, InformationJPanel.INFORMATIVE);
+            }
+          } else if (JajukEvents.FILE_COPIED.equals(subject)) {
+            Properties properties = event.getDetails();
+            if (properties == null) {
+              // if no property, the party is done
+              setMessage("", InformationJPanel.INFORMATIVE);
+            } else {
+              String filename = properties.getProperty(Const.DETAIL_CONTENT);
+              if (filename != null) {
+                setMessage(Messages.getString("Device.45") + filename + "]",
+                        InformationJPanel.INFORMATIVE);
+              }
+            }
+          } else if (JajukEvents.FILE_CONVERSION.equals(subject)) {
+            Properties properties = event.getDetails();
+            if (properties == null) {
+              // if no property, the party is done
+              setMessage("", InformationJPanel.INFORMATIVE);
+            } else {
+              String filename = properties.getProperty(Const.DETAIL_CONTENT);
+              String target = properties.getProperty(Const.DETAIL_NEW);
+              if (filename != null) {
+                setMessage(Messages.getString("Device.46") + filename + Messages.getString("Device.47") + target + "]",
+                        InformationJPanel.INFORMATIVE);
+              }
             }
           }
         }

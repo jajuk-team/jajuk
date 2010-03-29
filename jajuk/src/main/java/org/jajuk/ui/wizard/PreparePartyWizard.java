@@ -25,9 +25,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -37,7 +35,6 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.Properties;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
@@ -54,15 +51,11 @@ import javax.swing.event.ChangeListener;
 
 import net.miginfocom.swing.MigLayout;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.jajuk.base.Playlist;
 import org.jajuk.base.PlaylistManager;
 import org.jajuk.base.Type;
 import org.jajuk.base.TypeManager;
-import org.jajuk.events.JajukEvent;
-import org.jajuk.events.JajukEvents;
-import org.jajuk.events.ObservationManager;
 import org.jajuk.services.bookmark.Bookmarks;
 import org.jajuk.services.dj.Ambience;
 import org.jajuk.services.dj.AmbienceManager;
@@ -79,7 +72,6 @@ import org.jajuk.util.JajukFileFilter;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.LocaleManager;
 import org.jajuk.util.Messages;
-import org.jajuk.util.UtilGUI;
 import org.jajuk.util.UtilPrepareParty;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.filters.DirectoryFilter;
@@ -276,123 +268,10 @@ public class PreparePartyWizard extends Wizard {
         + destDir.getAbsolutePath() + "}}");
 
     // perform the actual copying
-    copyFiles(files, destDir);
+    UtilPrepareParty.copyFiles(files, destDir, isTrue(KEY_NORMALIZE_FILENAME_ON), isTrue(KEY_ONE_MEDIA_ON) && isTrue(KEY_CONVERT_MEDIA), 
+        (String)data.get(KEY_MEDIA), (String)data.get(KEY_CONVERT_COMMAND));
   }
 
-  /**
-   * Copies the files contained in the list to the specified directory.
-   * 
-   * @param files The list of flies to copy.
-   * @param destDir The target location.
-   */
-  private void copyFiles(List<org.jajuk.base.File> files, final java.io.File destDir) {
-    // TODO: somehow this did not work, we have to find out how to display a
-    // useful progress bar here... See also
-    // http://java.sun.com/docs/books/tutorial/uiswing/components/progress.html
-    // RefreshDialog rdialog = new RefreshDialog(false);
-    // rdialog.setTitle(Messages.getString("PreparePartyWizard.28") + destDir);
-    // rdialog.setAction(Messages.getString("PreparePartyWizard.29"), IconLoader
-    // .getIcon(JajukIcons.INFO));
-
-    // start time to display elapsed time at the end
-    long lRefreshDateStart = System.currentTimeMillis();
-
-    // start copying and create a playlist on the fly
-    UtilGUI.waiting();
-    int convert_errors = 0;
-    final java.io.File file = new java.io.File(destDir.getAbsolutePath() + "/playlist.m3u");
-    try {
-      final BufferedWriter bw = new BufferedWriter(new FileWriter(file));
-      try {
-        bw.write(Const.PLAYLIST_NOTE);
-        int count = 0;
-        for (final org.jajuk.base.File entry : files) {
-          // update progress
-          count++;
-
-          // We can use the actual file name as we do numbering of the files,
-          // this is important for existing playlists to keep the order
-          String name = StringUtils.leftPad(Integer.valueOf(count).toString(), 5, '0') + '_'
-              + entry.getFIO().getName();
-
-          // normalize filenames if necessary
-          if (isTrue(KEY_NORMALIZE_FILENAME_ON)) {
-            name = UtilPrepareParty.normalizeFilename(name);
-          }
-
-          // rdialog.setRefreshing(new
-          // StringBuilder(Messages.getString("PreparePartyWizard.30"))
-          // .append(' ').append(name).toString());
-          // rdialog.setProgress(count / files.size());
-          // setProgress(100 * files.size() / count, new StringBuilder(Messages
-          // .getString("PreparePartyWizard.30")).append(' ').append(name).toString());
-
-          // check if we need to convert the file format
-          if (isTrue(KEY_ONE_MEDIA_ON) && isTrue(KEY_CONVERT_MEDIA)
-              && !entry.getType().getExtension().equals(data.get(KEY_MEDIA))) {
-            int ret = UtilPrepareParty.convertPACPL((String) data.get(KEY_CONVERT_COMMAND), entry,
-                (String) data.get(KEY_MEDIA), destDir, name);
-            if (ret != 0) {
-              convert_errors++;
-            }
-          } else {
-            // do a normal copy otherwise
-            FileUtils.copyFile(entry.getFIO(), new File(destDir, name));
-          }
-
-          // write playlist as well
-          bw.newLine();
-          bw.write(name);
-
-          // Notify that a file has been copied
-          Properties properties = new Properties();
-          properties.put(Const.DETAIL_CONTENT, entry.getName());
-          ObservationManager.notify(new JajukEvent(JajukEvents.FILE_COPIED, properties));
-        }
-
-        bw.flush();
-      } finally {
-        bw.close();
-      }
-
-      // Send a last event with null properties to inform the
-      // client that the party is done
-      ObservationManager.notify(new JajukEvent(JajukEvents.FILE_COPIED));
-
-    } catch (final IOException e) {
-      Log.error(e);
-      Messages.showErrorMessage(180, e.getMessage());
-      return;
-    } finally {
-      UtilGUI.stopWaiting();
-
-      // Close refresh dialog
-      // rdialog.setVisible(false);
-      // rdialog.dispose();
-
-      long refreshTime = System.currentTimeMillis() - lRefreshDateStart;
-
-      // inform the user about the number of resulting tracks
-      StringBuilder sbOut = new StringBuilder();
-      sbOut.append(Messages.getString("PreparePartyWizard.31")).append(" ").append(
-          destDir.getAbsolutePath()).append(".\n").append(files.size()).append(" ").append(
-          Messages.getString("PreparePartyWizard.23")).append(" ").append(
-          ((refreshTime < 1000) ? refreshTime + " ms." : refreshTime / 1000 + " s."));
-
-      // inform user if converting did not work
-      if (convert_errors > 0) {
-        sbOut.append("\n").append(Integer.toString(convert_errors)).append(
-            Messages.getString("PreparePartyWizard.36"));
-      }
-
-      String message = sbOut.toString();
-
-      Log.debug(message);
-
-      // Display end of copy message with stats
-      Messages.showInfoMessage(message);
-    }
-  }
 
   /**
    * Gets the list of files to copy depending on the current mode.

@@ -179,6 +179,9 @@ public enum JajukEvents {
   /** A file has been copied (used by prepare party). */
   FILE_COPIED,
 
+  /** A file is converted from one media type to another */
+  FILE_CONVERSION,
+
   /** Covers should be refreshed. */
   COVER_NEED_REFRESH,
 
