@@ -40,8 +40,8 @@ public class CommitAction extends JajukAction {
    * Instantiates a new action.
    */
   CommitAction() {
-    super(Messages.getString("JajukJMenuBar.32"), IconLoader.getIcon(JajukIcons.SAVE), true);
-    setShortDescription(Messages.getString("JajukJMenuBar.32"));
+    super(Messages.getString("JajukJMenuBar.33"), IconLoader.getIcon(JajukIcons.SAVE), true);
+    setShortDescription(Messages.getString("JajukJMenuBar.33"));
   }
 
   /* (non-Javadoc)
