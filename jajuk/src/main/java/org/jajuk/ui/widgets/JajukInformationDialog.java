@@ -21,6 +21,7 @@
 package org.jajuk.ui.widgets;
 
 import java.awt.Color;
+import java.awt.Window;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -47,13 +48,15 @@ public class JajukInformationDialog extends JDialog {
    * The Constructor.
    * 
    * @param text : text to display
+   * @param owner parent owner, see  #1582 ([Linux] Void entry in task bar for information dialog)
    */
-  public JajukInformationDialog(String text) {
-    // An annoying entry appears under linux in the taskbar. We have no way so far to fix it. 
+  public JajukInformationDialog(String text, Window owner) {
+    // An annoying entry appears under linux in the taskbar. We have no way so far to fix it.
     // We tried this trick : set the owner window to fix a JRE issue under Linux only
     // See http://www.velocityreviews.com/forums/t125048-re-jdialog-in-taskbar-under-linux.html
-    // It fixes the problem but a new problem arises : the main window appears / disappears  
+    // It fixes the problem but a new problem arises : the main window appears / disappears
     // with the toast, it is even worse than the previous issue.
+    super(owner);
     setFocusableWindowState(false);
     setUndecorated(true);
     setAlwaysOnTop(true);

@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2009 The Jajuk Team
+ *  Copyright (C) 2003-2010 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -23,7 +23,9 @@ package org.jajuk.services.notification;
 import org.jajuk.base.File;
 import org.jajuk.services.webradio.WebRadio;
 import org.jajuk.ui.widgets.JajukToast;
+import org.jajuk.ui.windows.JajukMainWindow;
 import org.jajuk.util.Messages;
+import org.jajuk.util.UtilGUI;
 
 /**
  * Notificator that displays a full Swing album toast (notification frame that
@@ -56,7 +58,9 @@ public class ToastNotificator implements INotificator {
     return self;
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see org.jajuk.services.notification.INotificator#isAvailable()
    */
   @Override
@@ -67,34 +71,48 @@ public class ToastNotificator implements INotificator {
   /*
    * (non-Javadoc)
    * 
-   * @see
-   * org.jajuk.services.notification.INotificator#notify(org.jajuk.services.
-   * webradio.WebRadio)
+   * @see org.jajuk.services.notification.INotificator#notify(org.jajuk.services. webradio.WebRadio)
    */
   @Override
   public void notify(WebRadio webradio) {
     String text = Messages.getString("Notificator.track_change.webradio_title")
         + webradio.getName();
-    new JajukToast(text).display();
+    displayToast(text);
+  }
+
+
+  /**
+   * Display toast.
+   * 
+   * @param text toast text
+   */
+  private void displayToast(String text) {
+    // Useful for #1582 ([Linux] Void entry in task bar for information dialog)
+    if (UtilGUI.getActiveWindow().equals(JajukMainWindow.getInstance())) {
+      new JajukToast(text, null).display();
+    } else {
+      new JajukToast(text, UtilGUI.getActiveWindow()).display();
+    }
   }
 
   /*
    * (non-Javadoc)
    * 
-   * @see
-   * org.jajuk.services.notification.INotificator#notify(org.jajuk.base.Track)
+   * @see org.jajuk.services.notification.INotificator#notify(org.jajuk.base.Track)
    */
   @Override
   public void notify(File file) {
     String text = file.getHTMLFormatText();
-    new JajukToast(text).display();
+    displayToast(text);
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see org.jajuk.services.notification.INotificator#notify(java.lang.String, java.lang.String)
    */
   @Override
   public void notify(String title, String status) {
-    new JajukToast(status).display();
+    displayToast(status);
   }
 }

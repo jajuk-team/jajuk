@@ -58,6 +58,7 @@ import org.jajuk.ui.helpers.PlayerStateMediator;
 import org.jajuk.ui.helpers.FontManager.JajukFont;
 import org.jajuk.ui.widgets.CommandJPanel;
 import org.jajuk.ui.widgets.JajukInformationDialog;
+import org.jajuk.ui.widgets.JajukToast;
 import org.jajuk.ui.widgets.SearchBox;
 import org.jajuk.ui.widgets.SizedJMenuItem;
 import org.jajuk.util.Conf;
@@ -66,6 +67,7 @@ import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilFeatures;
+import org.jajuk.util.UtilGUI;
 import org.jajuk.util.UtilSystem;
 import org.jajuk.util.log.Log;
 
@@ -299,7 +301,12 @@ public class JajukSystray extends CommandJPanel implements IJajukWindow {
         if (balloon != null && balloon.isVisible()) {
           return;
         }
-        balloon = new JajukInformationDialog(title);
+        // Useful for #1582 ([Linux] Void entry in task bar for information dialog)
+        if (UtilGUI.getActiveWindow().equals(JajukMainWindow.getInstance())) {
+          balloon = new JajukInformationDialog(title, null);
+        } else {
+          balloon = new JajukInformationDialog(title, UtilGUI.getActiveWindow());
+        }
         Point location = new Point(e.getX() - balloon.getWidth(), e.getY()
             - (20 + balloon.getHeight()));
         balloon.setLocation(location);
