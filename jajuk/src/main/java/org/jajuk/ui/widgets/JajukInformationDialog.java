@@ -33,7 +33,6 @@ import javax.swing.border.LineBorder;
 
 import org.jajuk.ui.helpers.FontManager;
 import org.jajuk.ui.helpers.FontManager.JajukFont;
-import org.jajuk.util.UtilGUI;
 import org.jajuk.util.log.Log;
 
 /**
@@ -50,12 +49,11 @@ public class JajukInformationDialog extends JDialog {
    * @param text : text to display
    */
   public JajukInformationDialog(String text) {
-    // We have to set the owner window to fix a JRE issue under Linux only
-    // See
-    // http://www.velocityreviews.com/forums/t125048-re-jdialog-in-taskbar-under-linux.html
-    // Otherwise, if no owner window is given or if the owner window is not
-    // displayed, an ugly task entry appears on the task bar
-    super(UtilGUI.getActiveWindow());
+    // An annoying entry appears under linux in the taskbar. We have no way so far to fix it. 
+    // We tried this trick : set the owner window to fix a JRE issue under Linux only
+    // See http://www.velocityreviews.com/forums/t125048-re-jdialog-in-taskbar-under-linux.html
+    // It fixes the problem but a new problem arises : the main window appears / disappears  
+    // with the toast, it is even worse than the previous issue.
     setFocusableWindowState(false);
     setUndecorated(true);
     setAlwaysOnTop(true);
