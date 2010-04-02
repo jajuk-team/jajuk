@@ -218,6 +218,7 @@ public class ArtistView extends SuggestionView implements TwoStepsDisplayable {
     // Prefetch artist thumbs
     try {
       preFetchOthersAlbum();
+      preFetchSimilarArtists();
     } catch (UnknownHostException e) {
       Log.warn("Could not contact host for loading album information: {{" + e.getMessage() + "}}");
     } catch (Exception e) {
