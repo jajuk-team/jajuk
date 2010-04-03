@@ -388,7 +388,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
 
   /** DOCUMENT_ME. */
   private JCheckBox jcbMinimizeToTray;
-  
+
   /** DOCUMENT_ME. */
   private JPanel jpUI;
 
@@ -732,7 +732,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
       someOptionsAppliedAtNextStartup = true;
     }
     Conf.setProperty(Const.CONF_SHOW_SYSTRAY, Boolean.toString(jcbShowSystray.isSelected()));
-    
+
     // Minimize to tray
     Conf.setProperty(Const.CONF_MINIMIZE_TO_TRAY, Boolean.toString(jcbMinimizeToTray.isSelected()));
 
@@ -1631,6 +1631,14 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
       scbLAF.addItem(theme);
     }
     scbLAF.setToolTipText(Messages.getString("ParameterView.44"));
+    // Refresh full GUI at each LAF change as a preview
+    scbLAF.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        UtilGUI.setupSubstanceLookAndFeel((String) scbLAF.getSelectedItem());
+        UtilGUI.updateAllUIs();
+      }
+    });
 
     // Add items
     jpUI = new JPanel(new MigLayout("insets 10,gapx 10,gapy 15"));
@@ -1870,7 +1878,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
 
     jcbShowSystray.setSelected(Conf.getBoolean(Const.CONF_SHOW_SYSTRAY));
     jcbMinimizeToTray.setSelected(Conf.getBoolean(Const.CONF_MINIMIZE_TO_TRAY));
-    
+
     scbLAF.removeActionListener(this);
     scbLAF.setSelectedItem(Conf.getString(Const.CONF_OPTIONS_LNF));
     scbLAF.addActionListener(this);
@@ -1892,7 +1900,9 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
     super.removeAll();
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see org.jajuk.ui.views.ViewAdapter#cleanup()
    */
   @Override
@@ -1902,6 +1912,5 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
 
     super.cleanup();
   }
-  
-  
+
 }

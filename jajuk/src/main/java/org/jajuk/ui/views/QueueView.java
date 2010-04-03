@@ -70,11 +70,9 @@ import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
-import org.jajuk.util.UtilGUI;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 import org.jdesktop.swingx.decorator.ColorHighlighter;
-import org.jdesktop.swingx.decorator.Highlighter;
 import org.jvnet.substance.SubstanceLookAndFeel;
 import org.jvnet.substance.api.SubstanceColorScheme;
 import org.jvnet.substance.api.SubstanceSkin;
@@ -195,8 +193,7 @@ public class QueueView extends PlaylistView {
     }
     ColorHighlighter colorHighlighter = new ColorHighlighter(new IndexHighlighterPredicate(),
         queueHighlighterColor, null);
-    Highlighter alternate = UtilGUI.getAlternateHighlighter();
-    editorTable.setHighlighters(alternate, colorHighlighter);
+    editorTable.addHighlighter(colorHighlighter);
     // register events
     ObservationManager.register(this);
     // Add key listener to enable row suppression using SUPR key

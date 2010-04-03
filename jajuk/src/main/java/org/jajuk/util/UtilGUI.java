@@ -114,8 +114,23 @@ public final class UtilGUI {
   /** Substance theme *. */
   private static String theme;
 
-  /** DOCUMENT_ME. */
-  private static Highlighter defaultHighlighter;
+  /** Alternate color rows highlighter used in every table. */
+  private static Highlighter alternateColorHighlighter;
+
+  /**
+   * Return whether the given highlighter is the alternateColorHighlighter
+   * @return whether the given highlighter is the alternateColorHighlighter
+   */
+  public static boolean isAlternateColorHighlighter(Highlighter other) {
+    return other.equals(alternateColorHighlighter);
+  }
+
+  /**
+   * Reset the alternateColorHighlighter (during a theme change for eg)
+   */
+  public static void resetAlternateColorHighlighter() {
+    alternateColorHighlighter = null;
+  }
 
   /** Current active color scheme *. */
   private static SubstanceColorScheme colorScheme;
@@ -606,6 +621,7 @@ public final class UtilGUI {
     try {
       UtilGUI.updateComponentTreeUI(window);
     } catch (final Exception exception) {
+      Log.error(exception);
     }
 
     final Window windows[] = window.getOwnedWindows();
@@ -621,20 +637,16 @@ public final class UtilGUI {
    * @return a theme-dependent alternate row highlighter used in tables or trees
    */
   public static Highlighter getAlternateHighlighter() {
-    if (defaultHighlighter != null) {
-      return defaultHighlighter;
+    if (alternateColorHighlighter != null) {
+      return alternateColorHighlighter;
     }
     SubstanceSkin theme = SubstanceLookAndFeel.getCurrentSkin();
     SubstanceColorScheme scheme = theme.getMainActiveColorScheme();
-    Color color1 = null;
-    // Color color2 = null;
-    if (scheme.isDark()) {
-      color1 = scheme.getDarkColor();
-    } else {
-      color1 = new Color(230, 235, 240);
-    }
-    defaultHighlighter = HighlighterFactory.createAlternateStriping(color1, null);
-    return defaultHighlighter;
+    Color color1=scheme.getWatermarkStampColor();
+    Color color2=scheme.getWatermarkDarkColor();
+    Highlighter highlighter = HighlighterFactory.createAlternateStriping(color1, color2);
+    alternateColorHighlighter = highlighter;
+    return highlighter;
   }
 
   /**

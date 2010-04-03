@@ -102,7 +102,6 @@ import org.jajuk.util.UtilSystem;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 import org.jdesktop.swingx.decorator.ColorHighlighter;
-import org.jdesktop.swingx.decorator.Highlighter;
 
 /**
  * Adapter for playlists editors *.
@@ -376,8 +375,7 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
 
     ColorHighlighter colorHighlighter = new ColorHighlighter(new PlayHighlighterPredicate(
         editorModel), Color.ORANGE, null);
-    Highlighter alternate = UtilGUI.getAlternateHighlighter();
-    editorTable.setHighlighters(alternate, colorHighlighter);
+    editorTable.addHighlighter(colorHighlighter);
     // register events
     ObservationManager.register(this);
     // -- force a refresh --

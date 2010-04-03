@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2009 The Jajuk Team
+ *  Copyright (C) 2003-2010 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -63,6 +63,8 @@ import org.jajuk.util.Const;
 import org.jajuk.util.UtilGUI;
 import org.jajuk.util.UtilString;
 import org.jdesktop.swingx.JXTable;
+import org.jdesktop.swingx.decorator.CompoundHighlighter;
+import org.jdesktop.swingx.decorator.Highlighter;
 import org.jdesktop.swingx.table.DefaultTableColumnModelExt;
 import org.jdesktop.swingx.table.TableColumnExt;
 
@@ -104,12 +106,10 @@ public class JajukTable extends JXTable implements Observer, TableColumnModelLis
   /** Stores the last index of column move to*. */
   private int lastToIndex = 0;
 
-  /** Last time the selection changed (ms) */
+  /** Last time the selection changed (ms). */
   private long dateLastSelectionUpdate = 0l;
 
-  /**
-   * The Jajuk table mouse adapter used to handle click events
-   */
+  /** The Jajuk table mouse adapter used to handle click events. */
   JajukMouseAdapter ma = new JajukMouseAdapter() {
 
     @Override
@@ -141,12 +141,9 @@ public class JajukTable extends JXTable implements Observer, TableColumnModelLis
   /**
    * Constructor.
    * 
-   * @param model
-   *          : model to use
-   * @param bSortable
-   *          : is this table sortable
-   * @param sConf
-   *          DOCUMENT_ME
+   * @param model : model to use
+   * @param bSortable : is this table sortable
+   * @param sConf DOCUMENT_ME
    * 
    * @sConf: configuration variable used to store columns conf
    */
@@ -167,17 +164,17 @@ public class JajukTable extends JXTable implements Observer, TableColumnModelLis
     getSelectionModel().addListSelectionListener(this);
     // Listen for clicks
     addMouseListener(ma);
-
+    // Add the Alternate Highlighter
+    addHighlighter(UtilGUI.getAlternateHighlighter());
+    // Register itself to incoming events
     ObservationManager.register(this);
   }
 
   /**
    * Constructor.
    * 
-   * @param model
-   *          : model to use
-   * @param sConf
-   *          DOCUMENT_ME
+   * @param model : model to use
+   * @param sConf DOCUMENT_ME
    * 
    * @sConf: configuration variable used to store columns conf
    */
@@ -188,8 +185,7 @@ public class JajukTable extends JXTable implements Observer, TableColumnModelLis
   /**
    * Inits the. DOCUMENT_ME
    * 
-   * @param bSortable
-   *          DOCUMENT_ME
+   * @param bSortable DOCUMENT_ME
    */
   private void init(boolean bSortable) {
     super.setSortable(bSortable);
@@ -199,8 +195,7 @@ public class JajukTable extends JXTable implements Observer, TableColumnModelLis
   /**
    * Select columns to show colsToShow list of columns id to keep.
    * 
-   * @param colsToShow
-   *          DOCUMENT_ME
+   * @param colsToShow DOCUMENT_ME
    */
   @SuppressWarnings("unchecked")
   public void showColumns(List<String> colsToShow) {
@@ -297,8 +292,7 @@ public class JajukTable extends JXTable implements Observer, TableColumnModelLis
   /**
    * Add a new property into columns conf.
    * 
-   * @param property
-   *          DOCUMENT_ME
+   * @param property DOCUMENT_ME
    */
   public void addColumnIntoConf(String property) {
     if (sConf == null) {
@@ -314,8 +308,7 @@ public class JajukTable extends JXTable implements Observer, TableColumnModelLis
   /**
    * Remove a property from columns conf.
    * 
-   * @param property
-   *          DOCUMENT_ME
+   * @param property DOCUMENT_ME
    */
   public void removeColumnFromConf(String property) {
     if (sConf == null) {
@@ -411,8 +404,7 @@ public class JajukTable extends JXTable implements Observer, TableColumnModelLis
   /**
    * Gets the columns conf.
    * 
-   * @param alCol
-   *          DOCUMENT_ME
+   * @param alCol DOCUMENT_ME
    * 
    * @return columns configuration from given list of columns identifiers
    */
@@ -433,8 +425,7 @@ public class JajukTable extends JXTable implements Observer, TableColumnModelLis
   /**
    * add tooltips to each cell.
    * 
-   * @param e
-   *          DOCUMENT_ME
+   * @param e DOCUMENT_ME
    * 
    * @return the tool tip text
    */
@@ -462,8 +453,7 @@ public class JajukTable extends JXTable implements Observer, TableColumnModelLis
   /**
    * Select a list of rows.
    * 
-   * @param indexes
-   *          list of row indexes to be selected
+   * @param indexes list of row indexes to be selected
    */
   public void setSelectedRows(int[] indexes) {
     for (int element : indexes) {
@@ -537,8 +527,7 @@ public class JajukTable extends JXTable implements Observer, TableColumnModelLis
    * Return generic popup menu for items in a table. <br>
    * The provided list allow to disable some items
    * 
-   * @param indexToDisable
-   *          list of integer of indexes of items to disable
+   * @param indexToDisable list of integer of indexes of items to disable
    * 
    * @return generic popup menu for items in a table with filter
    */
@@ -594,8 +583,7 @@ public class JajukTable extends JXTable implements Observer, TableColumnModelLis
   /**
    * Sets the command.
    * 
-   * @param command
-   *          the new command
+   * @param command the new command
    */
   public void setCommand(ILaunchCommand command) {
     this.command = command;
@@ -604,8 +592,7 @@ public class JajukTable extends JXTable implements Observer, TableColumnModelLis
   /**
    * Sets the accept columns events.
    * 
-   * @param acceptColumnsEvents
-   *          the new accept columns events
+   * @param acceptColumnsEvents the new accept columns events
    */
   public void setAcceptColumnsEvents(boolean acceptColumnsEvents) {
     this.acceptColumnsEvents = acceptColumnsEvents;
@@ -667,5 +654,25 @@ public class JajukTable extends JXTable implements Observer, TableColumnModelLis
       tableID = "jajuk.table";
     }
     return tableID;
+  }
+
+  /**
+   * Remove previous alternate highlighter and add a new one
+   * It is required because after theme change, the alternate
+   * highlighter colors are no more valid
+   * 
+   * @see org.jdesktop.swingx.JXTable#updateUI()
+   */
+  public void updateUI() {
+    for (Highlighter highlighter : getHighlighters()) {
+      if (highlighter instanceof CompoundHighlighter) {
+        if (UtilGUI.isAlternateColorHighlighter(highlighter)) {
+          removeHighlighter(highlighter);
+          UtilGUI.resetAlternateColorHighlighter();
+          addHighlighter(UtilGUI.getAlternateHighlighter());
+        }
+      }
+    }
+    super.updateUI();
   }
 }

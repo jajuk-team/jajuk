@@ -365,8 +365,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
     jtable.setTransferHandler(new TableTransferHandler(jtable));
     jtable.showColumns(jtable.getColumnsConf());
     applyFilter(null, null);
-    jtable.setHighlighters(UtilGUI.getAlternateHighlighter());
-
+  
     // Hide the copy url if several items selection. Do not simply disable them
     // as the getMenu() method enable all menu items
     jtable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
