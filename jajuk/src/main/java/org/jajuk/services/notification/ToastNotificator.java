@@ -80,7 +80,6 @@ public class ToastNotificator implements INotificator {
     displayToast(text);
   }
 
-
   /**
    * Display toast.
    * 
@@ -88,7 +87,8 @@ public class ToastNotificator implements INotificator {
    */
   private void displayToast(String text) {
     // Useful for #1582 ([Linux] Void entry in task bar for information dialog)
-    if (UtilGUI.getActiveWindow().equals(JajukMainWindow.getInstance())) {
+    if (UtilGUI.getActiveWindow() != null // null if none window displayed
+        && UtilGUI.getActiveWindow().equals(JajukMainWindow.getInstance())) {
       new JajukToast(text, null).display();
     } else {
       new JajukToast(text, UtilGUI.getActiveWindow()).display();

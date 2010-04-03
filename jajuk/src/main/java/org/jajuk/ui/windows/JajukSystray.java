@@ -58,7 +58,6 @@ import org.jajuk.ui.helpers.PlayerStateMediator;
 import org.jajuk.ui.helpers.FontManager.JajukFont;
 import org.jajuk.ui.widgets.CommandJPanel;
 import org.jajuk.ui.widgets.JajukInformationDialog;
-import org.jajuk.ui.widgets.JajukToast;
 import org.jajuk.ui.widgets.SearchBox;
 import org.jajuk.ui.widgets.SizedJMenuItem;
 import org.jajuk.util.Conf;
@@ -302,7 +301,8 @@ public class JajukSystray extends CommandJPanel implements IJajukWindow {
           return;
         }
         // Useful for #1582 ([Linux] Void entry in task bar for information dialog)
-        if (UtilGUI.getActiveWindow().equals(JajukMainWindow.getInstance())) {
+        if (UtilGUI.getActiveWindow() != null //can happen if tray only
+            && UtilGUI.getActiveWindow().equals(JajukMainWindow.getInstance())) {
           balloon = new JajukInformationDialog(title, null);
         } else {
           balloon = new JajukInformationDialog(title, UtilGUI.getActiveWindow());
