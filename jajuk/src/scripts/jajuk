@@ -44,24 +44,11 @@ find_java () {
         elif [ -e /usr/lib/jvm/java-6-sun/jre/bin/java ] ; then
             JAVA_BIN="/usr/lib/jvm/java-6-sun/jre/bin/java"
             echo "  j2re1.6-sun detected in $JAVA_BIN"
-        #Search for Java SUN 1.5
-        elif [ "$JAVA_VER" = "1.5" ] ; then
-            echo "  Java 1.5 detected (in default path)"
-            warning_version
-        elif [ -e /usr/lib/jvm/java-1.5.0-sun/jre/bin/java ] ; then
-            JAVA_BIN="/usr/lib/jvm/java-1.5.0-sun/jre/bin/java"
-            echo "  j2re1.5-sun detected in $JAVA_BIN"
-            warning_version
-        elif [ -e /usr/lib/j2re1.5-sun/bin/java ] ; then
-            JAVA_BIN="/usr/lib/j2re1.5-sun/bin/java"
-            echo "  j2re1.5-sun detected in $JAVA_BIN"
-            warning_version
         fi
      else
-        echo " Java version in the default path is: $JAVA_VER    
+        echo " Java version in the default path is: $JAVA_VER"    
         echo "   No Java compatible version detected, but let's still try to run it!"
-        warning_version
-    fi
+     fi
 }    
 
 
