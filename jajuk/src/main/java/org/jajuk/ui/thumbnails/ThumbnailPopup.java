@@ -267,7 +267,6 @@ public class ThumbnailPopup extends JWindow {
    */
   @Override
   public void dispose() {
-    Log.info("Disposing Thumbnail Popup");
     removeKeystrokes();
     super.dispose();
   }
