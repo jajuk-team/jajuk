@@ -474,6 +474,10 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
         }
       }
       ObservationManager.notify(new JajukEvent(JajukEvents.CLEAR_HISTORY));
+    } else if (e.getSource() == scbLAF) {
+      // Refresh full GUI at each LAF change as a preview
+      UtilGUI.setupSubstanceLookAndFeel((String) scbLAF.getSelectedItem());
+      UtilGUI.updateAllUIs();
     } else if (e.getSource() == jbResetRatings) {
       // show confirmation message if required
       if (Conf.getBoolean(Const.CONF_CONFIRMATIONS_RESET_RATINGS)) {
@@ -1632,13 +1636,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
     }
     scbLAF.setToolTipText(Messages.getString("ParameterView.44"));
     // Refresh full GUI at each LAF change as a preview
-    scbLAF.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        UtilGUI.setupSubstanceLookAndFeel((String) scbLAF.getSelectedItem());
-        UtilGUI.updateAllUIs();
-      }
-    });
+    scbLAF.addActionListener(this);
 
     // Add items
     jpUI = new JPanel(new MigLayout("insets 10,gapx 10,gapy 15"));
