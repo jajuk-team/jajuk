@@ -688,11 +688,17 @@ public class UtilPrepareParty {
                     destDir, name);
                 if (ret != 0) {
                   convert_errors++;
+                } else {
+                  // increase hits for this track/file as it is likely played outside of Jajuk
+                  entry.getTrack().incHits();
                 }
 
               } else {
                 // do a normal copy otherwise
                 FileUtils.copyFile(entry.getFIO(), new File(destDir, name));
+
+                // increase hits for this track/file as it is likely played outside of Jajuk
+                entry.getTrack().incHits();
               }
 
               // write playlist as well
