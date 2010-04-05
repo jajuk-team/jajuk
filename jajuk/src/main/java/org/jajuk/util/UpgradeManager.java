@@ -74,6 +74,11 @@ public final class UpgradeManager {
    * @return Jajuk number version = integer format of the padded release
    */
   static int getNumberRelease(String pStringRelease) {
+    if(pStringRelease == null) {
+      // no string provided: use 1.0.0
+      return 10000;
+    }
+    
     String stringRelease = pStringRelease;
     // We drop any RCx part of the release
     if (pStringRelease.contains("RC")) {
