@@ -81,7 +81,7 @@ public final class DeviceManager extends ItemManager {
   };
 
   /** DOCUMENT_ME. */
-  private boolean bGlobalRefreshing = false;
+  private volatile boolean bGlobalRefreshing = false;
 
   /**
    * No constructor available, only static access.

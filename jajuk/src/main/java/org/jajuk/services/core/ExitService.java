@@ -48,7 +48,7 @@ public class ExitService extends Thread {
   private static int iExitCode = 0;
 
   /** Exiting flag. */
-  private static boolean bExiting = false;
+  private volatile static boolean bExiting = false;
 
   /**
    * Instantiates a new exit service.
