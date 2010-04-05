@@ -429,6 +429,7 @@ public abstract class AbstractThumbnail extends JPanel implements ActionListener
         jd.add(cv);
         jd.setSize(600, 450);
         jd.setLocationByPlatform(true);
+        jd.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         jd.setVisible(true);
       } else {
         Messages.showErrorMessage(166);

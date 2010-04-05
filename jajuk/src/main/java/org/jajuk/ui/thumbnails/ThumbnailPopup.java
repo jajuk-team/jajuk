@@ -82,6 +82,8 @@ public class ThumbnailPopup extends JWindow {
   /** DOCUMENT_ME. */
   final JEditorPane text;
 
+  private KeyEventDispatcher dispatcher = null;
+  
   /**
    * Launch selection and set right cursor.
    * 
@@ -240,13 +242,33 @@ public class ThumbnailPopup extends JWindow {
    * JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
    */
   private void setKeystrokes() {
+    removeKeystrokes();
+    
+    dispatcher = new KeyEventDispatcher() {
+      public boolean dispatchKeyEvent(KeyEvent e) {
+        dispose();
+        return false;
+      }
+    };
+    
     KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(
-        new KeyEventDispatcher() {
-          public boolean dispatchKeyEvent(KeyEvent e) {
-            dispose();
-            return false;
-          }
-        });
+        dispatcher);
   }
 
+  private void removeKeystrokes() {
+    if(dispatcher != null) {
+      KeyboardFocusManager.getCurrentKeyboardFocusManager().removeKeyEventDispatcher(dispatcher);
+      dispatcher = null;
+    }
+  }
+
+  /* (non-Javadoc)
+   * @see java.awt.Window#dispose()
+   */
+  @Override
+  public void dispose() {
+    Log.info("Disposing Thumbnail Popup");
+    removeKeystrokes();
+    super.dispose();
+  }
 }
