@@ -58,8 +58,8 @@ if [ "/usr/bin/jajuk" = "$0" ] && [ -e /usr/share/jajuk/bin/jajuk.jar ] ; then
     JAJUK_HOME="/usr/share/jajuk/bin"
     cd /usr/share/jajuk/bin
 else
-    cd `dirname $0`/bin
-    JAJUK_HOME="`pwd`"
+    JAJUK_HOME=`dirname "$0"`/bin
+    cd "$JAJUK_HOME"
 fi
 
 ##Options 
@@ -106,4 +106,4 @@ find_java
 ##let's finally start Jajuk:
 echo " "
 echo $JAVA_BIN $JAVA_OPTIONS -Djava.library.path=/usr/lib/jni:/usr/lib:/usr/share/jajuk/$RPMLIB:$JAJUK_HOME/../lib/$ARCHLIB -jar jajuk.jar $JAJUK_OPTIONS
-$JAVA_BIN $JAVA_OPTIONS -Djava.library.path=/usr/lib/jni:/usr/lib:/usr/share/jajuk/$RPMLIB:$JAJUK_HOME/../lib/$ARCHLIB -jar jajuk.jar $JAJUK_OPTIONS
+$JAVA_BIN $JAVA_OPTIONS -Djava.library.path=/usr/lib/jni:/usr/lib:/usr/share/jajuk/$RPMLIB:"$JAJUK_HOME"/../lib/$ARCHLIB -jar jajuk.jar $JAJUK_OPTIONS
