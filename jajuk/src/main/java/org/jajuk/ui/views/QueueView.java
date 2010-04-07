@@ -98,8 +98,8 @@ public class QueueView extends PlaylistView {
    */
   @Override
   public void initUI() {
-    plf = new SmartPlaylist(Playlist.Type.QUEUE, Integer.toString(Playlist.Type.QUEUE.ordinal()), null,
-        null);
+    plf = new SmartPlaylist(Playlist.Type.QUEUE, Integer.toString(Playlist.Type.QUEUE.ordinal()),
+        null, null);
     // Control panel
     jpEditorControl = new JPanel();
     jpEditorControl.setBorder(BorderFactory.createEtchedBorder());
@@ -212,8 +212,13 @@ public class QueueView extends PlaylistView {
     // Add specific behavior on left click
     editorTable.setCommand(new ILaunchCommand() {
       public void launch(int nbClicks) {
-        if (nbClicks == 2) {
-          // double click, launches selected track and all after
+        int iSelectedCol = editorTable.getSelectedColumn();
+        // Convert column selection as columns may have been moved
+        iSelectedCol = editorTable.convertColumnIndexToModel(iSelectedCol);
+        // double click, launches selected track and all after
+        if (nbClicks == 2
+        // click on play icon
+            || (nbClicks == 1 && iSelectedCol == 0)) {
           StackItem item = editorModel.getStackItem(editorTable.getSelectedRow());
           if (item.isPlanned()) {
             item.setPlanned(false);
@@ -409,10 +414,10 @@ public class QueueView extends PlaylistView {
     ((JajukTableModel) editorTable.getModel()).populateModel(editorTable.getColumnsConf());
     // save selection to avoid reseting selection the user is doing
     int[] rows = editorTable.getSelectedRows();
-    
+
     // force table refresh
     editorModel.fireTableDataChanged();
-    
+
     bSettingSelection = true;
     for (int element : rows) {
       // set saved selection after a refresh
@@ -442,8 +447,7 @@ public class QueueView extends PlaylistView {
   /*
    * (non-Javadoc)
    * 
-   * @see
-   * org.jajuk.ui.views.PlaylistView#actionPerformed(java.awt.event.ActionEvent)
+   * @see org.jajuk.ui.views.PlaylistView#actionPerformed(java.awt.event.ActionEvent)
    */
   @Override
   public void actionPerformed(ActionEvent ae) {

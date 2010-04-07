@@ -159,13 +159,13 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
   JMenuItem jmiFilePlay;
 
   /** DOCUMENT_ME. */
-  JMenuItem jmiFilePush;
+  private JMenuItem jmiFilePush;
 
   /** DOCUMENT_ME. */
-  JMenuItem jmiFileFrontPush;
+  private JMenuItem jmiFileFrontPush;
 
   /** DOCUMENT_ME. */
-  JMenuItem jmiFileAddFavorites;
+  private JMenuItem jmiFileAddFavorites;
 
   /** DOCUMENT_ME. */
   JMenuItem jmiFileUp;
@@ -174,10 +174,10 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
   JMenuItem jmiFileDown;
 
   /** DOCUMENT_ME. */
-  JMenuItem jmiFileProperties;
+  private JMenuItem jmiFileProperties;
 
   /** DOCUMENT_ME. */
-  JMenuItem jmiFileCopyURL;
+  private JMenuItem jmiFileCopyURL;
 
   /** Current playlist. */
   Playlist plf;
@@ -191,7 +191,7 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
   protected PlaylistTableModel editorModel;
 
   /** DOCUMENT_ME. */
-  PreferencesJMenu pjmFilesEditor;
+  private PreferencesJMenu pjmFilesEditor;
 
   // --- Repository ---
   /** DOCUMENT_ME. */
@@ -395,8 +395,14 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
     // Add specific behavior on left click
     editorTable.setCommand(new ILaunchCommand() {
       public void launch(int nbClicks) {
-        if (nbClicks == 2) {
-          // double click, launches selected track and all after
+        
+         int iSelectedCol = editorTable.getSelectedColumn();
+        // Convert column selection as columns may have been moved
+        iSelectedCol = editorTable.convertColumnIndexToModel(iSelectedCol);
+        // double click, launches selected track and all after
+        if (nbClicks == 2 
+              // click on play icon
+            || (nbClicks == 1 && iSelectedCol == 0)) {
           StackItem item = editorModel.getStackItem(editorTable.getSelectedRow());
           if (item != null) {
             // We launch all tracks from this
@@ -409,7 +415,7 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
       }
     });
   }
-
+  
   /**
    * This factorizes edit panel code between regular playlist view and queue
    * view for all menu items except the play that is queue-specific.
