@@ -191,21 +191,6 @@ public class CommandJPanel extends JXPanel implements ActionListener, ChangeList
   private JajukButton jbMute;
 
   // variables declaration
-  /** Repeat mode flag. */
-  static boolean bIsRepeatEnabled = false;
-
-  /** Shuffle mode flag. */
-  static boolean bIsShuffleEnabled = false;
-
-  /** Continue mode flag. */
-  static boolean bIsContinueEnabled = true;
-
-  /** Intro mode flag. */
-  static boolean bIsIntroEnabled = false;
-
-  /** Forward or rewind jump size in track percentage. */
-  static final float JUMP_SIZE = 0.1f;
-
   /** DOCUMENT_ME. */
   private JajukToggleButton jbRepeatAll;
 

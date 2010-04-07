@@ -48,16 +48,7 @@ public class JajukButton extends JButton {
     this(null, icon);
   }
 
-  /**
-   * Instantiates a new jajuk button.
-   * 
-   * @param text DOCUMENT_ME
-   */
-  public JajukButton(String text) {
-    this(text, null);
-  }
-
-  /**
+   /**
    * Instantiates a new jajuk button.
    * 
    * @param a DOCUMENT_ME

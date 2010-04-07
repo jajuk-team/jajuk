@@ -128,9 +128,6 @@ public class JajukSystray extends CommandJPanel implements IJajukWindow {
   /** DOCUMENT_ME. */
   JMenu jmAmbience;
 
-  /** DOCUMENT_ME. */
-  long lDateLastAdjust;
-
   /** Self instance singleton. */
   private static JajukSystray jsystray;
 

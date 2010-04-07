@@ -76,10 +76,7 @@ public class ThumbnailPopup extends JWindow {
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = -8131528719972829954L;
 
-  /** DOCUMENT_ME. */
-  JPanel jp;
-
-  /** DOCUMENT_ME. */
+    /** DOCUMENT_ME. */
   final JEditorPane text;
 
   private KeyEventDispatcher dispatcher = null;

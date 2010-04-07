@@ -98,12 +98,6 @@ public final class JajukJMenuBar extends JMenuBar implements Observer {
   JMenu file;
 
   /** DOCUMENT_ME. */
-  JMenuItem jmiFileOpen;
-
-  /** DOCUMENT_ME. */
-  JajukFileChooser jfchooser;
-
-  /** DOCUMENT_ME. */
   JMenuItem jmiFileExit;
 
   /** DOCUMENT_ME. */
