@@ -592,10 +592,9 @@ public class QueueView extends PlaylistView {
           // No up/down buttons for planned tracks
           jbUp.setEnabled(false);
         } else { // normal item
-          if (selection.getMinSelectionIndex() == 0 || (selection.getMinSelectionIndex() == 1)) {
-            // check if we selected second track just after current
-            // tracks
-            jbUp.setEnabled(false); // already at the top
+          if (selection.getMinSelectionIndex() == 0) {
+            // already at the top
+            jbUp.setEnabled(false);
           } else {
             jbUp.setEnabled(true);
           }
@@ -611,10 +610,7 @@ public class QueueView extends PlaylistView {
           // No up/down buttons for planned tracks
           jbDown.setEnabled(false);
         } else { // normal item
-          if (selection.getMaxSelectionIndex() == 0) {
-            // current track can't go down
-            jbDown.setEnabled(false);
-          } else if (selection.getMaxSelectionIndex() < editorModel.getItems().size() - 1) {
+          if (selection.getMaxSelectionIndex() < editorModel.getItems().size() - 1) {
             // a normal item can't go in the planned items
             jbDown.setEnabled(true);
           } else {
