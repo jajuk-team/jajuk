@@ -23,6 +23,8 @@ package ext.services.lastfm;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import net.roarsoftware.lastfm.Artist;
@@ -34,7 +36,7 @@ import net.roarsoftware.lastfm.ImageSize;
 public class LastFmSimilarArtists implements SimilarArtistsInfo {
 
   /** The Constant MAX_SIMILAR_ARTISTS. */
-  public static final int MAX_SIMILAR_ARTISTS = 15;
+  private static final int MAX_SIMILAR_ARTISTS = 15;
 
   /** The artist name. */
   private String artistName;
@@ -86,6 +88,13 @@ public class LastFmSimilarArtists implements SimilarArtistsInfo {
    * @return the artists
    */
   public List<ArtistInfo> getArtists() {
+    // Sort similar artists ignoring case
+    Collections.sort(artists, new Comparator<ArtistInfo>() {
+      @Override
+      public int compare(ArtistInfo o1, ArtistInfo o2) {
+        return o1.getName().compareToIgnoreCase(o2.getName());
+      }
+    });
     return artists;
   }
 
@@ -125,4 +134,5 @@ public class LastFmSimilarArtists implements SimilarArtistsInfo {
     this.picture = picture;
   }
 
+ 
 }
