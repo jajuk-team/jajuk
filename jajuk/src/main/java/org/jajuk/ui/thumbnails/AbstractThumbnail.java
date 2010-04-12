@@ -112,7 +112,7 @@ public abstract class AbstractThumbnail extends JPanel implements ActionListener
   JMenuItem jmiGetCovers;
 
   /** DOCUMENT_ME. */
-  JMenuItem jmiShowPopup;
+  private JMenuItem jmiShowPopup;
 
   /** DOCUMENT_ME. */
   JMenuItem jmiCDDBWizard;

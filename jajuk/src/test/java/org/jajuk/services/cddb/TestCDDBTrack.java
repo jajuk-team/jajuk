@@ -84,7 +84,7 @@ public class TestCDDBTrack extends JajukTestCase {
 
   private Track getTrack(int i) {
     Genre genre = JUnitHelpers.getGenre();
-    Album album = JUnitHelpers.getAlbum("myalbum",0);
+    Album album = JUnitHelpers.getAlbum("myalbum", 0);
     album.setProperty(Const.XML_ALBUM_COVER, Const.COVER_NONE); // don't read covers for
     // this test
 
@@ -92,7 +92,7 @@ public class TestCDDBTrack extends JajukTestCase {
     Year year = JUnitHelpers.getYear(2000);
 
     Type type = JUnitHelpers.getType();
-    return TrackManager.getInstance().registerTrack("name", album, genre, artist, 120, year, 1,
+    return TrackManager.getInstance().registerTrack("name" + i, album, genre, artist, 120, year, 1,
         type, 1);
   }
 

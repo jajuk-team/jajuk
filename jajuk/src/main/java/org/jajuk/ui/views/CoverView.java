@@ -144,43 +144,43 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
 
   // control panel
   /** DOCUMENT_ME. */
-  JPanel jpControl;
+  private JPanel jpControl;
 
   /** DOCUMENT_ME. */
-  JajukButton jbPrevious;
+  private JajukButton jbPrevious;
 
   /** DOCUMENT_ME. */
-  JajukButton jbNext;
+  private JajukButton jbNext;
 
   /** DOCUMENT_ME. */
-  JajukButton jbDelete;
+  private JajukButton jbDelete;
 
   /** DOCUMENT_ME. */
-  JajukButton jbSave;
+  private JajukButton jbSave;
 
   /** DOCUMENT_ME. */
-  JajukButton jbDefault;
+  private JajukButton jbDefault;
 
   /** DOCUMENT_ME. */
-  JLabel jlSize;
+  private JLabel jlSize;
 
   /** DOCUMENT_ME. */
-  JLabel jlFound;
+  private JLabel jlFound;
 
   /** DOCUMENT_ME. */
-  JLabel jlSearching;
+  private JLabel jlSearching;
 
   /** Cover search accuracy combo. */
-  JComboBox jcbAccuracy;
+  private JComboBox jcbAccuracy;
 
   /** Date last resize (used for adjustment management). */
   private long lDateLastResize;
 
   /** URL and size of the image. */
-  JLabel jl;
+  private JLabel jl;
 
   /** Used Cover index. */
-  int index = 0;
+  private int index = 0;
 
   /** Event ID. */
   private volatile int iEventID;

@@ -179,10 +179,10 @@ public class CommandJPanel extends JXPanel implements ActionListener, ChangeList
   private JButton jbStop;
 
   /** DOCUMENT_ME. */
-  JSlider jsVolume;
+  private JSlider jsVolume;
 
   /** DOCUMENT_ME. */
-  JLabel jlVolume;
+  private JLabel jlVolume;
 
   /** DOCUMENT_ME. */
   private PreferenceToolbar evaltoobar;

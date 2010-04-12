@@ -54,13 +54,13 @@ public class AmbienceComboBox extends SteppedComboBox  {
   private static final long serialVersionUID = 1L;
   
   /** An instance of the ambience combo listener. */
-  AmbienceListener ambienceListener;
+  private AmbienceListener ambienceListener;
 
   
   /**
    * Ambience combo listener.
    */
-  class AmbienceListener implements ActionListener {
+  private class AmbienceListener implements ActionListener {
     
     /* (non-Javadoc)
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)

@@ -155,22 +155,22 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
   String columnsConf;
 
   /** DOCUMENT_ME. */
-  JMenuItem jmiPlay;
+  private JMenuItem jmiPlay;
 
   /** DOCUMENT_ME. */
-  JMenuItem jmiPush;
+  private JMenuItem jmiPush;
 
   /** DOCUMENT_ME. */
-  JMenuItem jmiFrontPush;
+  private JMenuItem jmiFrontPush;
 
   /** DOCUMENT_ME. */
   JMenuItem jmiDelete;
 
   /** DOCUMENT_ME. */
-  JMenuItem jmiPlayRepeat;
+  private JMenuItem jmiPlayRepeat;
 
   /** DOCUMENT_ME. */
-  JMenuItem jmiPlayShuffle;
+  private JMenuItem jmiPlayShuffle;
 
   /** DOCUMENT_ME. */
   JMenuItem jmiBookmark;
@@ -179,18 +179,18 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
   JMenuItem jmiProperties;
 
   /** DOCUMENT_ME. */
-  JMenuItem jmiFileCopyURL;
+  private JMenuItem jmiFileCopyURL;
 
   /** DOCUMENT_ME. */
   PreferencesJMenu pjmTracks;
 
   /** The table/tree sync toggle button */
-  JajukToggleButton jtbSync;
+  private JajukToggleButton jtbSync;
 
-  boolean bStopThread = false;
+  private boolean bStopThread = false;
   
   /** Launches a thread used to perform dynamic filtering when user is typing. */
-  Thread filteringThread = new Thread("Dynamic user input filtering thread") {
+  private Thread filteringThread = new Thread("Dynamic user input filtering thread") {
     @Override
     public void run() {
       while (!bStopThread) {

@@ -363,21 +363,6 @@ public final class WebRadioManager extends DefaultHandler {
     return null;
   }
 
-  /**
-   * Gets the web radio by url.
-   * 
-   * @param url DOCUMENT_ME
-   * 
-   * @return WebRadio for a given url (first match) or null if no match
-   */
-  public WebRadio getWebRadioByURL(String url) {
-    for (WebRadio radio : webradios) {
-      if (radio.getUrl().equals(url)) {
-        return radio;
-      }
-    }
-    return null;
-  }
 
   /**
    * Gets the current web radio tooltip.

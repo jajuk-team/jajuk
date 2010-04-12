@@ -146,7 +146,7 @@ public abstract class AbstractTreeView extends ViewAdapter {
   JMenuItem jmiCopyURL;
 
   /** Jtree scroller position*. */
-  int pos;
+  private int pos;
 
   /** Preference menu. */
   PreferencesJMenu pjmTracks;

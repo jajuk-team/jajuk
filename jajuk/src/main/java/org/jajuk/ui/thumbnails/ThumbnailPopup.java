@@ -35,7 +35,6 @@ import java.util.Collections;
 import java.util.List;
 
 import javax.swing.JEditorPane;
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JWindow;
 import javax.swing.SwingUtilities;

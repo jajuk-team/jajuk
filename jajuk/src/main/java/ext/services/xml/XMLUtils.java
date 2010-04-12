@@ -165,16 +165,6 @@ public final class XMLUtils {
     }
   }
 
-  /**
-   * Reads an object from a String as xml.
-   * 
-   * @param string the string
-   * 
-   * @return The object read from the xml string
-   */
-  public static Object readObjectFromString(String string) {
-    return xStream.fromXML(string);
-  }
 
   /**
    * Writes an object to a file as xml.

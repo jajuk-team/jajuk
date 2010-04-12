@@ -77,40 +77,40 @@ public class FirstTimeWizard extends JajukJDialog implements ActionListener, Pro
   private static final long serialVersionUID = 1L;
 
   /** DOCUMENT_ME. */
-  JLabel jlLeftIcon;
+  private JLabel jlLeftIcon;
 
   /** DOCUMENT_ME. */
-  JPanel jpRightPanel;
+  private JPanel jpRightPanel;
 
   /** DOCUMENT_ME. */
-  JButton jbFileSelection;
+  private JButton jbFileSelection;
 
   /** DOCUMENT_ME. */
-  JLabel jlSelectedFile;
+  private JLabel jlSelectedFile;
 
   /** DOCUMENT_ME. */
-  PathSelector workspacePath;
+  private PathSelector workspacePath;
 
   /** DOCUMENT_ME. */
-  JLabel jlRefreshTime;
+  private JLabel jlRefreshTime;
 
   /** DOCUMENT_ME. */
-  JTextField jtfRefreshTime;
+  private JTextField jtfRefreshTime;
 
   /** DOCUMENT_ME. */
-  JCheckBox jcbHelp;
+  private JCheckBox jcbHelp;
 
   /** DOCUMENT_ME. */
-  JXCollapsiblePane advanced;
+  private JXCollapsiblePane advanced;
 
   /** DOCUMENT_ME. */
-  JButton jbOk;
+  private JButton jbOk;
 
   /** DOCUMENT_ME. */
-  JButton jbCancel;
+  private JButton jbCancel;
 
   /** DOCUMENT_ME. */
-  JPanel jpMain;
+  private JPanel jpMain;
 
   /** Selected directory. */
   private File fDir;

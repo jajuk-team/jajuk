@@ -74,22 +74,22 @@ public class AmbienceWizard extends Wizard {
     private static final long serialVersionUID = 1L;
 
     /** All dynamic widgets. */
-    JComponent[][] widgets;
+    private JComponent[][] widgets;
 
     /** DOCUMENT_ME. */
-    JButton jbNew;
+    private JButton jbNew;
 
     /** DOCUMENT_ME. */
-    JButton jbDelete;
+    private JButton jbDelete;
 
     /** DOCUMENT_ME. */
-    JButton jbDefaults;
+    private JButton jbDefaults;
 
     /** DJ*. */
-    AmbienceDigitalDJ dj = null;
+    private AmbienceDigitalDJ dj = null;
 
     /** Selected ambience index. */
-    int ambienceIndex = 0;
+    private int ambienceIndex = 0;
 
     /*
      * (non-Javadoc)

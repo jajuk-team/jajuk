@@ -133,7 +133,7 @@ public class DeviceWizard extends JajukJDialog implements ActionListener, Const 
   private NumberFormat nformat = NumberFormat.getInstance();
 
   /** Validation group */
-  ValidationGroup vg;
+  private ValidationGroup vg;
 
   /**
    * Device wizard by default, is used for void configuration.

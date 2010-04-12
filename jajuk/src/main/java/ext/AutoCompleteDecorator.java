@@ -288,13 +288,13 @@ public final class AutoCompleteDecorator {
     private static final long serialVersionUID = -5508607690462561673L;
 
     /** DOCUMENT_ME. */
-    Action backspace;
+   private  Action backspace;
 
     /** DOCUMENT_ME. */
-    Action selectionBackward;
+    private Action selectionBackward;
 
     /** DOCUMENT_ME. */
-    AbstractAutoCompleteAdaptor adaptor;
+    private AbstractAutoCompleteAdaptor adaptor;
 
     /**
      * Instantiates a new non strict backspace action.

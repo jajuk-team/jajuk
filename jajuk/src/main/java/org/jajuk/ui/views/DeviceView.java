@@ -505,7 +505,7 @@ class DeviceItem extends JPanel {
   private static final long serialVersionUID = 1L;
 
   /** Associated device */
-  Device device;
+  private Device device;
 
   /**
    * Constructor

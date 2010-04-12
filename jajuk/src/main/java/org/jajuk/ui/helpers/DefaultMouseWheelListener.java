@@ -32,7 +32,7 @@ import javax.swing.JSlider;
 public class DefaultMouseWheelListener implements MouseWheelListener {
 
   /** DOCUMENT_ME. */
-  JSlider js;
+  private JSlider js;
 
   /**
    * The Constructor.

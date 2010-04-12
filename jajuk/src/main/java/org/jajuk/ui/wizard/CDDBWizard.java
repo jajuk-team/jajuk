@@ -68,31 +68,31 @@ public class CDDBWizard extends JajukJDialog implements ActionListener {
   private static final long serialVersionUID = 1L;
 
   /** DOCUMENT_ME. */
-  SteppedComboBox jcbAlbum;
+  private SteppedComboBox jcbAlbum;
 
   /** DOCUMENT_ME. */
-  JajukTable jtable;
+  private JajukTable jtable;
 
   /** DOCUMENT_ME. */
-  CDDBTableModel model;
+  private CDDBTableModel model;
 
   /** OK/Cancel panel. */
-  OKCancelPanel okc;
+  private OKCancelPanel okc;
 
   /** Items to be retagged. */
-  List<CDDBTrack> alCddbTracks;
+  private List<CDDBTrack> alCddbTracks;
 
   /** Freedb Items. */
-  Freedb fdb;
+  private Freedb fdb;
 
   /** DOCUMENT_ME. */
-  FreedbQueryResult[] foundAlbums;
+  private FreedbQueryResult[] foundAlbums;
 
   /** DOCUMENT_ME. */
-  FreedbReadResult fdbReader;
+  private FreedbReadResult fdbReader;
 
   /** DOCUMENT_ME. */
-  List<String> jcbFoundAlbums;
+  private List<String> jcbFoundAlbums;
 
   /**
    * CDDB wizard.

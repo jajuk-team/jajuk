@@ -112,10 +112,10 @@ public class Device extends PhysicalItem implements Comparable<Device> {
   private volatile boolean bAlreadySynchronizing = false;
 
   /** Volume of created files during synchronization. */
-  long lVolume = 0;
+  private long lVolume = 0;
 
   /** date last refresh. */
-  long lDateLastRefresh;
+  private long lDateLastRefresh;
 
   /** Progress reporter *. */
   private RefreshReporter reporter;
