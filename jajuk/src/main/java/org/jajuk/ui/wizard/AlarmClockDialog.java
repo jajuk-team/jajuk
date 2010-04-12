@@ -22,20 +22,16 @@
 package org.jajuk.ui.wizard;
 
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.Calendar;
 
-import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
-import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.event.ListSelectionEvent;
@@ -50,6 +46,7 @@ import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.services.alarm.AlarmManager;
 import org.jajuk.ui.widgets.JajukJDialog;
+import org.jajuk.ui.widgets.OKCancelPanel;
 import org.jajuk.ui.widgets.SearchBox;
 import org.jajuk.ui.windows.JajukMainWindow;
 import org.jajuk.util.Conf;
@@ -72,12 +69,6 @@ public class AlarmClockDialog extends JajukJDialog implements ActionListener, It
 
   /** DOCUMENT_ME. */
   private final JLabel jlChoice;
-
-  /** DOCUMENT_ME. */
-  private final JButton jbOK;
-
-  /** DOCUMENT_ME. */
-  private final JButton jbCancel;
 
   /** DOCUMENT_ME. */
   private final JCheckBox jcbTime;
@@ -110,7 +101,9 @@ public class AlarmClockDialog extends JajukJDialog implements ActionListener, It
   private final SearchBox sbSearch;
 
   /** DOCUMENT_ME. */
-  transient private SearchResult sr;
+  private SearchResult sr;
+  
+  private OKCancelPanel okCancelPanel;
 
   /**
    * Instantiates a new alarm clock dialog.
@@ -171,18 +164,9 @@ public class AlarmClockDialog extends JajukJDialog implements ActionListener, It
     bgChoices.add(jrbFile);
 
     jrbShuffle.setSelected(true);
-
-    final JPanel jpOKCancel = new JPanel();
-    jpOKCancel.setLayout(new FlowLayout());
-    jbOK = new JButton(Messages.getString("Ok"));
-    jbOK.addActionListener(this);
-    jpOKCancel.add(jbOK);
-    jbCancel = new JButton(Messages.getString("Cancel"));
-    jbCancel.addActionListener(this);
-    jpOKCancel.add(jbCancel);
-    jpOKCancel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-
-    setLayout(new MigLayout("insets 10,gapy 15", "[grow][grow]"));
+    okCancelPanel = new OKCancelPanel(this);
+    
+    setLayout(new MigLayout("insets 5,gapy 15", "[grow][grow]"));
     add(jcbTime, "right");
     add(jtfHour, "left,split 5,width 30!");
     add(new JLabel(":"));
@@ -197,7 +181,7 @@ public class AlarmClockDialog extends JajukJDialog implements ActionListener, It
     add(jrbNovelties, LEFT_WRAP);
     add(jrbFile, "left");
     add(sbSearch, "left,wrap,grow");
-    add(jpOKCancel, "center,grow,span");
+    add(okCancelPanel , "right,span");
 
     // Reload on GUI saved values
     loadValues();
@@ -217,9 +201,9 @@ public class AlarmClockDialog extends JajukJDialog implements ActionListener, It
     boolean playAction = (jcbAlarmAction.getSelectedIndex() == 0);
     if (e.getSource() == jcbAlarmAction) {
       handleAction(playAction);
-    } else if (e.getSource() == jbOK) {
+    } else if (e.getSource() == okCancelPanel.getOKButton()) {
       saveValues();
-    } else if (e.getSource() == jbCancel) {
+    } else if (e.getSource() == okCancelPanel.getCancelButton()) {
       dispose();
     } else if (e.getSource() == jcbTime) {
       handleTimeCheckbox(playAction);
@@ -273,7 +257,7 @@ public class AlarmClockDialog extends JajukJDialog implements ActionListener, It
   /**
    * Store GUI values to persisted values.
    */
-  public void saveValues() {
+  private void saveValues() {
     // Parse the final alarm value
     Calendar cal = Calendar.getInstance();
     try {
