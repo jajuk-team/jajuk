@@ -122,13 +122,6 @@ public class CDScanView extends ViewAdapter implements ActionListener {
 
         @Override
         public void done() {
-          try {
-            get();
-          } catch (InterruptedException e) {
-            Log.error(e);
-          } catch (ExecutionException e) {
-            Log.error(e);
-          }
           jtfName.setText("");
           jtfName.requestFocusInWindow();
         }

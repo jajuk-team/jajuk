@@ -386,13 +386,6 @@ public class SearchBox extends JTextField implements KeyListener, ListSelectionL
 
       @Override
       public void done() {
-        try {
-          get();
-        } catch (InterruptedException e1) {
-          Log.error(e1);
-        } catch (ExecutionException e1) {
-          Log.error(e1);
-        }
         if (!e.getValueIsAdjusting()) {
           hidePopup();
           requestFocusInWindow();

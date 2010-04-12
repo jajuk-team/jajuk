@@ -28,7 +28,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Properties;
 import java.util.Set;
-import java.util.concurrent.ExecutionException;
 
 import javax.swing.Action;
 import javax.swing.ActionMap;
@@ -327,13 +326,6 @@ public abstract class AbstractTreeView extends ViewAdapter {
 
         @Override
         public void done() {
-          try {
-            get();
-          } catch (InterruptedException e) {
-            Log.error(e);
-          } catch (ExecutionException e) {
-            Log.error(e);
-          }
           SwingUtilities.updateComponentTreeUI(jtree);
           bManualAction = false;
           expand();

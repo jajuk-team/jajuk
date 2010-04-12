@@ -583,13 +583,6 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
 
         @Override
         public void done() {
-          try {
-            get();
-          } catch (InterruptedException e1) {
-            Log.error(e1);
-          } catch (ExecutionException e1) {
-            Log.error(e1);
-          }
           SwingUtilities.updateComponentTreeUI(jtree);
           UtilGUI.stopWaiting();
         }

@@ -454,13 +454,6 @@ public final class JajukJMenuBar extends JMenuBar implements Observer {
 
       @Override
       public void done() {
-        try {
-          get();
-        } catch (InterruptedException e) {
-          Log.error(e);
-        } catch (ExecutionException e) {
-          Log.error(e);
-        }
         // add the new release label if required
         if (UpgradeManager.getNewVersionName() != null) {
           jlUpdate = new JLabel(" ", IconLoader.getIcon(JajukIcons.UPDATE_MANAGER),

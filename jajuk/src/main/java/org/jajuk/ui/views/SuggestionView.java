@@ -309,13 +309,6 @@ public class SuggestionView extends ViewAdapter {
 
       @Override
       public void done() {
-        try {
-          get();
-        } catch (InterruptedException e) {
-          Log.error(e);
-        } catch (ExecutionException e) {
-          Log.error(e);
-        }
         jsp1 = getLocalSuggestionsPanel(SuggestionType.BEST_OF);
         jsp2 = getLocalSuggestionsPanel(SuggestionType.NEWEST);
         jsp3 = getLocalSuggestionsPanel(SuggestionType.RARE);

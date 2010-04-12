@@ -32,7 +32,6 @@ import java.io.OutputStreamWriter;
 import java.io.Reader;
 import java.io.Writer;
 import java.net.URL;
-import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -173,18 +172,6 @@ public class JajukHtmlPanel extends HtmlPanel {
         }
         return null;
       }
-
-      @Override
-      public void done() {
-        try {
-          get();
-        } catch (InterruptedException e) {
-          Log.error(e);
-        } catch (ExecutionException e) {
-          Log.error(e);
-        }
-      }
-
     };
     sw.execute();
   }
