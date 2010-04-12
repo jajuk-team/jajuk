@@ -58,7 +58,6 @@ import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
-import org.jajuk.util.log.Log;
 import org.jdesktop.swingx.JXTree;
 
 /**

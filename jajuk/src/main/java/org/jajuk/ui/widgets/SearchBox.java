@@ -37,7 +37,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 import javax.swing.ActionMap;
 import javax.swing.BorderFactory;

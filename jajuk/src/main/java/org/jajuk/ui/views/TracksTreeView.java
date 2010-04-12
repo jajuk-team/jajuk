@@ -31,7 +31,6 @@ import java.util.Date;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Properties;
-import java.util.concurrent.ExecutionException;
 
 import javax.swing.Action;
 import javax.swing.BorderFactory;
@@ -56,8 +55,8 @@ import net.miginfocom.swing.MigLayout;
 import org.jajuk.base.Album;
 import org.jajuk.base.Artist;
 import org.jajuk.base.File;
-import org.jajuk.base.Item;
 import org.jajuk.base.Genre;
+import org.jajuk.base.Item;
 import org.jajuk.base.Track;
 import org.jajuk.base.TrackManager;
 import org.jajuk.base.Year;
