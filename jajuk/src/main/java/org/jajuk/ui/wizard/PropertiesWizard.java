@@ -57,12 +57,12 @@ import org.jajuk.base.Device;
 import org.jajuk.base.Directory;
 import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
+import org.jajuk.base.GenreManager;
 import org.jajuk.base.Item;
 import org.jajuk.base.ItemManager;
 import org.jajuk.base.Playlist;
 import org.jajuk.base.PlaylistManager;
 import org.jajuk.base.PropertyMetaInformation;
-import org.jajuk.base.GenreManager;
 import org.jajuk.base.Track;
 import org.jajuk.base.TrackManager;
 import org.jajuk.events.JajukEvent;
@@ -98,28 +98,28 @@ public class PropertiesWizard extends JajukJDialog implements ActionListener {
 
   /* Main panel */
   /** DOCUMENT_ME. */
-  JPanel jpMain;
+  private JPanel jpMain;
 
   /** OK/Cancel panel. */
-  OKCancelPanel okc;
+  private OKCancelPanel okc;
 
   /** Items. */
-  List<Item> alItems;
+  private List<Item> alItems;
 
   /** Items2. */
-  List<Item> alItems2;
+  private List<Item> alItems2;
 
   /** Files filter. */
-  Set<File> filter = null;
+  private Set<File> filter = null;
 
   /** number of editable items (all panels). */
-  int iEditable = 0;
+  private int iEditable = 0;
 
   /** First property panel. */
-  PropertiesPanel panel1;
+  private PropertiesPanel panel1;
 
   /** Second property panel. */
-  PropertiesPanel panel2;
+  private PropertiesPanel panel2;
 
   /**
    * Constructor for normal wizard with only one wizard panel and n items to
@@ -172,20 +172,7 @@ public class PropertiesWizard extends JajukJDialog implements ActionListener {
     this.alItems = alItems1;
     this.alItems2 = alItems2;
     // computes filter
-    if (alItems1.get(0) instanceof Directory) {
-      filter = new HashSet<File>(alItems1.size() * 10);
-      for (Item item : alItems1) {
-        Directory dir = (Directory) item;
-        filter.addAll(dir.getFilesRecursively());
-      }
-    } else if (alItems1.get(0) instanceof File) {
-      filter = new HashSet<File>(alItems1.size());
-      for (Item item : alItems1) {
-        filter.add((File) item);
-      }
-    } else {
-      filter = null;
-    }
+    refreshFileFilter();
     if (alItems1.size() > 0) {
       if (alItems1.size() == 1) {
         panel1 = new PropertiesPanel(alItems1, UtilString.getLimitedString(alItems1.get(0)
@@ -203,7 +190,7 @@ public class PropertiesWizard extends JajukJDialog implements ActionListener {
             .getDesc(), 50), false);
       } else {
         panel2 = new PropertiesPanel(alItems2, UtilString.formatPropertyDesc(alItems2.size() + " "
-            +Messages.getHumanPropertyName(Const.XML_TRACKS)), true);
+            + Messages.getHumanPropertyName(Const.XML_TRACKS)), true);
       }
       panel2.setBorder(BorderFactory.createEtchedBorder());
     }
@@ -221,6 +208,29 @@ public class PropertiesWizard extends JajukJDialog implements ActionListener {
     jpMain.add(okc, "cell 0 1 1 1,span,right");
 
     display();
+  }
+
+  /**
+    * Refresh the file filter used to update only selected files even 
+    * if the associated track is changed and can map several files.
+    * Note that this method should be called after a file panel save
+    * because files may have changed then (if user changed the file name). 
+    */
+  private void refreshFileFilter() {
+    if (alItems.get(0) instanceof Directory) {
+      filter = new HashSet<File>(alItems.size() * 10);
+      for (Item item : alItems) {
+        Directory dir = (Directory) item;
+        filter.addAll(dir.getFilesRecursively());
+      }
+    } else if (alItems.get(0) instanceof File) {
+      filter = new HashSet<File>(alItems.size());
+      for (Item item : alItems) {
+        filter.add((File) item);
+      }
+    } else {
+      filter = null;
+    }
   }
 
   /**
@@ -245,8 +255,7 @@ public class PropertiesWizard extends JajukJDialog implements ActionListener {
   /*
    * (non-Javadoc)
    * 
-   * @see
-   * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+   * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
    */
   public void actionPerformed(ActionEvent e) {
     if (e.getSource() == okc.getCancelButton()) {
@@ -258,9 +267,11 @@ public class PropertiesWizard extends JajukJDialog implements ActionListener {
         @Override
         public void run() {
           try {
-            PropertiesWizard.this.panel1.save();
+            panel1.save();
             if (panel2 != null) {
-              PropertiesWizard.this.panel2.save();
+              // refresh the file filter
+              refreshFileFilter();
+              panel2.save();
             }
           } catch (Exception ex) {
             Messages.showErrorMessage(104, ex.getMessage());
@@ -520,14 +531,14 @@ public class PropertiesWizard extends JajukJDialog implements ActionListener {
               }
             });
             widgets[index][1] = jcb;
-          } else if (meta.getType().equals(String.class) && 
-              (Const.XML_ARTIST.equals(meta.getName()) || Const.XML_ALBUM_ARTIST.equals(meta.getName()))) {
+          } else if (meta.getType().equals(String.class)
+              && (Const.XML_ARTIST.equals(meta.getName()) || Const.XML_ALBUM_ARTIST.equals(meta
+                  .getName()))) {
             // for artists or album-artists
             Vector<String> artists = null;
-            if (Const.XML_ARTIST.equals(meta.getName())){
+            if (Const.XML_ARTIST.equals(meta.getName())) {
               artists = ArtistManager.getArtistsList();
-            }
-            else if (Const.XML_ALBUM_ARTIST.equals(meta.getName())){
+            } else if (Const.XML_ALBUM_ARTIST.equals(meta.getName())) {
               artists = AlbumArtistManager.getAlbumArtistsList();
             }
             final JComboBox jcb = new JComboBox(artists);
@@ -654,8 +665,7 @@ public class PropertiesWizard extends JajukJDialog implements ActionListener {
     /*
      * (non-Javadoc)
      * 
-     * @see
-     * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent ae) {
       // Link
