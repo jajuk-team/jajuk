@@ -70,7 +70,7 @@ public class NativeFunctionsUtils {
    * 
    * @return File/Path in 8.3 format
    */
-  public static String getShortPathNameW(String longPathName) {
+  public static synchronized String getShortPathNameW(String longPathName) {
     WString pathname = new WString(longPathName);
     int bufferSize = (pathname.length() * CHAR_BYTE_WIDTH) + CHAR_BYTE_WIDTH;
     Memory buffer = new Memory(bufferSize);
