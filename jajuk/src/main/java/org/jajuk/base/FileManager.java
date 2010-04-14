@@ -236,6 +236,8 @@ public final class FileManager extends ItemManager {
     String sNewId = createID(sNewName, dir);
     // create a new file (with own fio and sAbs)
     Track track = fileOld.getTrack();
+    // Remove old file from associated track
+    track.getFiles().remove(fileOld);
     org.jajuk.base.File fNew = new File(sNewId, sNewName, fileOld.getDirectory(), track, fileOld
         .getSize(), fileOld.getQuality());
     // transfer all properties and reset id and name
