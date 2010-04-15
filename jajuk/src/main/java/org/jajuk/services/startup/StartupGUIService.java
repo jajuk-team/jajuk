@@ -211,7 +211,7 @@ public class StartupGUIService {
           }
           // Display tip of the day if required (not at the first
           // session to avoid displaying too many windows once)
-          if (Conf.getBoolean(Const.CONF_SHOW_TIP_ON_STARTUP) && !UpgradeManager.isFirstSesion()) {
+          if (Conf.getBoolean(Const.CONF_SHOW_TIP_ON_STARTUP) && !UpgradeManager.isFirstSession()) {
             final TipOfTheDayWizard tipsView = new TipOfTheDayWizard();
             tipsView.setLocationRelativeTo(JajukMainWindow.getInstance());
             tipsView.setVisible(true);

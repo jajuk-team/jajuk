@@ -60,6 +60,9 @@ public final class UpgradeManager {
   /** Is it an old migration (more than 1 major release) ?. */
   private static boolean majorMigration = false;
 
+  /** List of versions that doesn't require perspective reset at upgrade */
+  private static String[] versionsNoNeedPerspectiveReset = new String[] { "1.9" };
+
   /**
   * private constructor to avoid instantiating utility class.
   */
@@ -74,23 +77,23 @@ public final class UpgradeManager {
    * @return Jajuk number version = integer format of the padded release
    */
   static int getNumberRelease(String pStringRelease) {
-    if(pStringRelease == null) {
+    if (pStringRelease == null) {
       // no string provided: use 1.0.0
       return 10000;
     }
-    
+
     String stringRelease = pStringRelease;
     // We drop any RCx part of the release
     if (pStringRelease.contains("RC")) {
       stringRelease = pStringRelease.split("RC.*")[0];
     }
     // Add a trailing .0 if it is a main release like 1.X -> 1.X.0
-    int countDot =  stringRelease.replaceAll("[^.]","").length();
-    if (countDot == 1){
+    int countDot = stringRelease.replaceAll("[^.]", "").length();
+    if (countDot == 1) {
       stringRelease = stringRelease + ".0";
     }
-    // Analyze each part of the release, throw a runtime exception if 
-    // the format is wrong at this point 
+    // Analyze each part of the release, throw a runtime exception if
+    // the format is wrong at this point
     StringTokenizer st = new StringTokenizer(stringRelease, ".");
     String main = UtilString.padNumber(Integer.parseInt(st.nextToken()), 2);
     String minor = UtilString.padNumber(Integer.parseInt(st.nextToken()), 2);
@@ -132,7 +135,7 @@ public final class UpgradeManager {
    * 
    * @return true, if is first sesion
    */
-  public static boolean isFirstSesion() {
+  public static boolean isFirstSession() {
     return bFirstSession;
   }
 
@@ -512,7 +515,7 @@ public final class UpgradeManager {
    * @param comparedRelease
    * @return whether two releases switch is a major upgrade or not
    */
-  public static boolean isMajorMigration(String currentRelease, String comparedRelease) {
+  protected static boolean isMajorMigration(String currentRelease, String comparedRelease) {
     int iCurrentRelease = getNumberRelease(currentRelease);
     int iComparedRelease = getNumberRelease(comparedRelease);
     return iComparedRelease / 100 != iCurrentRelease / 100;
@@ -524,7 +527,7 @@ public final class UpgradeManager {
   * @param comparedRelease
   * @return whether second release is newer than first
   */
-  public static boolean isNewer(String currentRelease, String comparedRelease) {
+  protected static boolean isNewer(String currentRelease, String comparedRelease) {
     int iCurrentRelease = getNumberRelease(currentRelease);
     int iComparedRelease = getNumberRelease(comparedRelease);
     return iComparedRelease > iCurrentRelease;
@@ -533,7 +536,7 @@ public final class UpgradeManager {
   /**
    * Require user to perform a deep scan
    */
-  public static void deepScanRequest() {
+  private static void deepScanRequest() {
     int reply = Messages.getChoice(Messages.getString("Warning.7"),
         JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
     if (reply == JOptionPane.CANCEL_OPTION || reply == JOptionPane.NO_OPTION) {
@@ -553,7 +556,23 @@ public final class UpgradeManager {
       };
       t.setPriority(Thread.MIN_PRIORITY);
       t.start();
-
     }
+  }
+
+  /**
+   * Return whether this version need a perspective reset at upgrade.
+   * We reset perspectives only at major upgrade and if it comes with new views.  
+   * @return whether this version need a perspective reset at upgrade
+   */
+  public static boolean doNeedPerspectiveResetAtUpgrade() {
+    if (!isMajorMigration()) {
+      return false;
+    }
+    for (String version : versionsNoNeedPerspectiveReset) {
+      if (Const.JAJUK_VERSION.matches(version + ".*")) {
+        return false;
+      }
+    }
+    return true;
   }
 }

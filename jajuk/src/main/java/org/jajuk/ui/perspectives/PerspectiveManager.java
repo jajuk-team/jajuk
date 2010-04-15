@@ -96,7 +96,7 @@ public final class PerspectiveManager {
        * perspectiveList)
        */
 
-      if (UpgradeManager.isMajorMigration()) {
+      if (UpgradeManager.doNeedPerspectiveResetAtUpgrade()) {
         // upgrade message
         Messages.showInfoMessage(Messages.getString("Note.0"));
       }
@@ -165,7 +165,7 @@ public final class PerspectiveManager {
    * 
    * @param perspective the new current perspective
    */
-  public static void setCurrentPerspective(final IPerspective perspective) {
+  protected static void setCurrentPerspective(final IPerspective perspective) {
     UtilGUI.waiting();
     // views display
     SwingUtilities.invokeLater(new Runnable() {
@@ -230,17 +230,7 @@ public final class PerspectiveManager {
     return perspectives;
   }
 
-  /**
-   * Get a perspective by ID or null if none associated perspective found.
-   * 
-   * @param sID perspective ID
-   * 
-   * @return perspective
-   */
-  public static IPerspective getPerspective(String sID) {
-    return hmNameInstance.get(sID);
-  }
-
+  
   /**
    * Saves perspectives and views position in the perspective.xml file Must be
    * executed in EDT to avoid dead locks on getComponent()
@@ -261,7 +251,7 @@ public final class PerspectiveManager {
    * size than 40x40
    * </p>
    */
-  public static void registerDefaultPerspectives() {
+  private static void registerDefaultPerspectives() {
     reset();
 
     // Simple perspective
@@ -299,7 +289,7 @@ public final class PerspectiveManager {
    * 
    * @return registered perspective
    */
-  public static IPerspective registerPerspective(IPerspective perspective) {
+  private static IPerspective registerPerspective(IPerspective perspective) {
     hmNameInstance.put(perspective.getID(), perspective);
     perspectives.add(perspective);
     return perspective;

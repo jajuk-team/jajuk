@@ -89,7 +89,7 @@ public final class AmbienceManager implements Observer {
    */
   public void load() {
     // if first startup, define default ambiences
-    if (UpgradeManager.isFirstSesion()) {
+    if (UpgradeManager.isFirstSession()) {
       Log.debug("First start, creating default Ambiences.");
       createDefaultAmbiences();
       return;

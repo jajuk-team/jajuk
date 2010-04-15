@@ -228,7 +228,7 @@ public class StartupCollectionService {
    * Load persisted collection file.
    */
   public static void loadCollection() {
-    if (UpgradeManager.isFirstSesion()) {
+    if (UpgradeManager.isFirstSession()) {
       Log.info("First session, collection will be created");
       return;
     }

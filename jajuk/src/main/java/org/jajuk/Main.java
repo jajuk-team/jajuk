@@ -205,13 +205,13 @@ public final class Main {
       // if network is not reachable
       // Do not start this if first session, it is causes concurrency with
       // first refresh thread
-      if (!UpgradeManager.isFirstSesion()) {
+      if (!UpgradeManager.isFirstSession()) {
         StartupEngineService.autoMount();
       }
 
       // Launch startup track if any (but don't start it if first session
       // because the first refresh is probably still running)
-      if (!UpgradeManager.isFirstSesion()) {
+      if (!UpgradeManager.isFirstSession()) {
         StartupEngineService.launchInitialTrack();
       }
 

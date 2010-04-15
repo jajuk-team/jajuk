@@ -67,7 +67,7 @@ public final class LastFmManager implements Observer, Const {
     if (!Conf.getBoolean(Const.CONF_LASTFM_ENABLE)
     // don't show this message if first jajuk launch: already too many
         // popups.
-        && !UpgradeManager.isFirstSesion()
+        && !UpgradeManager.isFirstSession()
         // don't show neither if last.fm login is already provided but disabled
         && StringUtils.isBlank(Conf.getString(Const.CONF_LASTFM_USER))) {
       Messages.showHideableWarningMessage(Messages.getString("LastFmManager.0"),
