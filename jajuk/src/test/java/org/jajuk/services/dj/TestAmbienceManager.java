@@ -79,7 +79,7 @@ public class TestAmbienceManager extends JajukTestCase {
       f.setAccessible(true);
       f.setBoolean(null, Boolean.FALSE);
     }
-    assertFalse(UpgradeManager.isFirstSesion());
+    assertFalse(UpgradeManager.isFirstSession());
 
     assertEquals(0, AmbienceManager.getInstance().getAmbiences().size());
 
@@ -113,7 +113,7 @@ public class TestAmbienceManager extends JajukTestCase {
     assertEquals(0, AmbienceManager.getInstance().getAmbiences().size());
 
     { // check all the conditions to find out why it fails in Hudson
-      assertFalse(UpgradeManager.isFirstSesion());
+      assertFalse(UpgradeManager.isFirstSession());
       Properties properties = Conf.getProperties();
       Enumeration<Object> e = properties.keys();
       int nMatch = 0;
