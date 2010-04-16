@@ -96,6 +96,7 @@ public class DonateWindow extends JajukJDialog {
       public void actionPerformed(ActionEvent e) {
         try {
           Desktop.getDesktop().browse(new URI(BUDGET_LINK));
+          dispose();
         } catch (IOException e1) {
           Log.error(e1);
         } catch (URISyntaxException e1) {
@@ -113,6 +114,7 @@ public class DonateWindow extends JajukJDialog {
       public void actionPerformed(ActionEvent e) {
         try {
           Desktop.getDesktop().browse(new URI(DONATE_LINK));
+          dispose();
         } catch (IOException e1) {
           Log.error(e1);
         } catch (URISyntaxException e1) {
