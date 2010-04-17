@@ -142,34 +142,39 @@ public final class ThumbnailManager {
    * @throws InterruptedException the interrupted exception
    * @throws IOException Signals that an I/O exception has occurred.
    * @throws Exception    */
+  @SuppressWarnings("ucd")
   public static void createThumbnail(final ImageIcon ii, final File thumb, final int maxDim)
       throws InterruptedException, IOException {
-    final Image image = ii.getImage();
-    // Wait for full image loading
-    final MediaTracker mediaTracker = new MediaTracker(new Container());
-    mediaTracker.addImage(image, 0);
-    mediaTracker.waitForID(0); // wait for image loading
-    // determine thumbnail size from WIDTH and HEIGHT
-    int thumbWidth = maxDim;
-    int thumbHeight = maxDim;
-    final double thumbRatio = (double) thumbWidth / (double) thumbHeight;
-    final int imageWidth = image.getWidth(null);
-    final int imageHeight = image.getHeight(null);
-    final double imageRatio = (double) imageWidth / (double) imageHeight;
-    if (thumbRatio < imageRatio) {
-      thumbHeight = (int) (thumbWidth / imageRatio);
-    } else {
-      thumbWidth = (int) (thumbHeight * imageRatio);
+    // Synchronize the file to avoid any concurrency between several threads refreshing the thumb
+    // like the catalog view and the thumb builder after a major upgrade.
+    synchronized (thumb) {
+      final Image image = ii.getImage();
+      // Wait for full image loading
+      final MediaTracker mediaTracker = new MediaTracker(new Container());
+      mediaTracker.addImage(image, 0);
+      mediaTracker.waitForID(0); // wait for image loading
+      // determine thumbnail size from WIDTH and HEIGHT
+      int thumbWidth = maxDim;
+      int thumbHeight = maxDim;
+      final double thumbRatio = (double) thumbWidth / (double) thumbHeight;
+      final int imageWidth = image.getWidth(null);
+      final int imageHeight = image.getHeight(null);
+      final double imageRatio = (double) imageWidth / (double) imageHeight;
+      if (thumbRatio < imageRatio) {
+        thumbHeight = (int) (thumbWidth / imageRatio);
+      } else {
+        thumbWidth = (int) (thumbHeight * imageRatio);
+      }
+      // draw original image to thumbnail image object and
+      // scale it to the new size on-the-fly
+      final BufferedImage thumbImage = UtilGUI.toBufferedImage(image, !(UtilSystem
+          .getExtension(thumb).equalsIgnoreCase("jpg")), thumbWidth, thumbHeight);
+      // Need alpha only for png and gif files
+      // save thumbnail image to OUTFILE
+      ImageIO.write(thumbImage, UtilSystem.getExtension(thumb), thumb);
+      // Free thumb memory
+      thumbImage.flush();
     }
-    // draw original image to thumbnail image object and
-    // scale it to the new size on-the-fly
-    final BufferedImage thumbImage = UtilGUI.toBufferedImage(image, !(UtilSystem
-        .getExtension(thumb).equalsIgnoreCase("jpg")), thumbWidth, thumbHeight);
-    // Need alpha only for png and gif files
-    // save thumbnail image to OUTFILE
-    ImageIO.write(thumbImage, UtilSystem.getExtension(thumb), thumb);
-    // Free thumb memory
-    thumbImage.flush();
   }
 
   /**
