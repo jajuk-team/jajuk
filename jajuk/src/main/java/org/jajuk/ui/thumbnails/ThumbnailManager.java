@@ -146,8 +146,9 @@ public final class ThumbnailManager {
   public static void createThumbnail(final ImageIcon ii, final File thumb, final int maxDim)
       throws InterruptedException, IOException {
     // Synchronize the file to avoid any concurrency between several threads refreshing the thumb
-    // like the catalog view and the thumb builder after a major upgrade.
-    synchronized (thumb) {
+    // like the catalog view and the artist view. However, it can't prevent collision between
+    // jajuk and the thumb builder process (different JVM)
+    synchronized (thumb.getAbsolutePath().intern()) {
       final Image image = ii.getImage();
       // Wait for full image loading
       final MediaTracker mediaTracker = new MediaTracker(new Container());
