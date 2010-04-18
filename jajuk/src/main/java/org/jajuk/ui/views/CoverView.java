@@ -1175,7 +1175,7 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
     float fadeHeight = 0.6f;
 
     // cover
-    BufferedImage coverImage = UtilGUI.toBufferedImage(img, true);
+    BufferedImage coverImage = UtilGUI.toBufferedImage(img);
 
     PerspectiveFilter filter1 = new PerspectiveFilter(0, angle, coverImage.getHeight() - angle / 2,
         (int) (angle * (5.0 / 3.0)), coverImage.getHeight() - angle / 2, coverImage.getHeight(), 0,

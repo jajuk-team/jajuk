@@ -39,6 +39,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
+import java.awt.image.ColorModel;
+import java.awt.image.PixelGrabber;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -179,8 +181,7 @@ public final class UtilGUI {
    *          DOCUMENT_ME
    */
   public static void extractImage(final Image src, final File dest) {
-    final BufferedImage bi = UtilGUI.toBufferedImage(src, !(UtilSystem.getExtension(dest)
-        .equalsIgnoreCase("jpg")));
+    final BufferedImage bi = UtilGUI.toBufferedImage(src);
     // Need alpha only for png and gif files);
     try {
       ImageIO.write(bi, UtilSystem.getExtension(dest), dest);
@@ -487,53 +488,77 @@ public final class UtilGUI {
    * 
    * @param image
    *          DOCUMENT_ME
-   * @param alpha
-   *          DOCUMENT_ME
    * 
    * @return the buffered image
    */
-  public static BufferedImage toBufferedImage(final Image image, final boolean alpha) {
-    return UtilGUI.toBufferedImage(image, alpha, image.getWidth(null), image.getHeight(null));
+  public static BufferedImage toBufferedImage(final Image image) {
+    return UtilGUI.toBufferedImage(image, image.getWidth(null), image.getHeight(null));
   }
 
   /**
    * Transform an image to a BufferedImage
    * <p>
-   * Thanks http://java.developpez.com/faq/java/?page=graphique_general_images
+   * Code partially coming from http://www.exampledepot.com/egs/java.awt.image/Image2Buf.html
    * </p>
    * 
    * @param image
    *          DOCUMENT_ME
    * @param height
    *          new image height
-   * @param alpha
-   *          DOCUMENT_ME
    * @param width
    *          DOCUMENT_ME
    * 
-   * @return buffured image from an image
+   * @return buffered image from an image
    */
-  public static BufferedImage toBufferedImage(final Image image, final boolean alpha,
-      final int width, final int height) {
+  public static BufferedImage toBufferedImage(final Image image, final int width, final int height) {
     if (image instanceof BufferedImage) {
       return ((BufferedImage) image);
     } else {
       /** Create the new image */
+      // This code ensures that all the pixels in the image are loaded
+      Image loadedImage = new ImageIcon(image).getImage();
       BufferedImage bufferedImage = null;
-      if (alpha) {
+      if (hasAlpha(loadedImage)) {
         bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
       } else {
-        // Save memory
+        // Save memory, use RGB is no alpha required
         bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
       }
       final Graphics2D graphics2D = bufferedImage.createGraphics();
       graphics2D.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
           RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-      graphics2D.drawImage(image, 0, 0, width, height, null);
+      graphics2D.drawImage(loadedImage, 0, 0, width, height, null);
       image.flush();
+      loadedImage.flush();
       graphics2D.dispose();
       return bufferedImage;
     }
+  }
+
+  /** 
+   * This method returns true if the specified image has transparent pixels
+   * Found at http://www.exampledepot.com/egs/java.awt.image/HasAlpha.html
+   * 
+   * @param image
+   * @return true if the specified image has transparent pixels
+   */
+  public static boolean hasAlpha(Image image) {
+    // If buffered image, the color model is readily available
+    if (image instanceof BufferedImage) {
+      BufferedImage bimage = (BufferedImage) image;
+      return bimage.getColorModel().hasAlpha();
+    }
+    // Use a pixel grabber to retrieve the image's color model;
+    // grabbing a single pixel is usually sufficient
+    PixelGrabber pg = new PixelGrabber(image, 0, 0, 1, 1, false);
+    try {
+      pg.grabPixels();
+    } catch (InterruptedException e) {
+      Log.error(e);
+    }
+    // Get the image's color model
+    ColorModel cm = pg.getColorModel();
+    return cm.hasAlpha();
   }
 
   /**
@@ -642,8 +667,8 @@ public final class UtilGUI {
     }
     SubstanceSkin theme = SubstanceLookAndFeel.getCurrentSkin();
     SubstanceColorScheme scheme = theme.getMainActiveColorScheme();
-    Color color1=scheme.getWatermarkStampColor();
-    Color color2=scheme.getWatermarkDarkColor();
+    Color color1 = scheme.getWatermarkStampColor();
+    Color color2 = scheme.getWatermarkDarkColor();
     Highlighter highlighter = HighlighterFactory.createAlternateStriping(color1, color2);
     alternateColorHighlighter = highlighter;
     return highlighter;

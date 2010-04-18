@@ -168,8 +168,7 @@ public final class ThumbnailManager {
       }
       // draw original image to thumbnail image object and
       // scale it to the new size on-the-fly
-      final BufferedImage thumbImage = UtilGUI.toBufferedImage(image, !(UtilSystem
-          .getExtension(thumb).equalsIgnoreCase("jpg")), thumbWidth, thumbHeight);
+      final BufferedImage thumbImage = UtilGUI.toBufferedImage(image, thumbWidth, thumbHeight);
       // Need alpha only for png and gif files
       // save thumbnail image to OUTFILE
       ImageIO.write(thumbImage, UtilSystem.getExtension(thumb), thumb);
