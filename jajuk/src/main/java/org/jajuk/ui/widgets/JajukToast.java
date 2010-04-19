@@ -45,8 +45,8 @@ public class JajukToast extends JajukInformationDialog {
    * @param text DOCUMENT_ME
    * @param owner parent owner, see  #1582 ([Linux] Void entry in task bar for information dialog)
    */
-  public JajukToast(String text,Window owner) {
-    super(text,owner);
+  public JajukToast(String text, Window owner) {
+    super(text, owner);
     setAlwaysOnTop(true);
     setFocusableWindowState(false);
   }
@@ -76,6 +76,10 @@ public class JajukToast extends JajukInformationDialog {
             try {
               // Keep toast visible some times before beginning the fading (windows only)
               Thread.sleep(3000);
+              // No fading if user already closed the toast by clicking on it
+              if (!JajukToast.this.isVisible()) {
+                return;
+              }
             } catch (InterruptedException ex) {
               Log.error(ex);
             }
