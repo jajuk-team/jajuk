@@ -45,9 +45,16 @@ public class TxtLyricsProvider implements ILyricsProvider {
    * @see org.jajuk.services.lyrics.providers.ILyricsProvider#getLyrics(java.lang.String, java.lang.String)
    */
   public String getLyrics(File audioFile) {
-    String lyrics = "";
     readerPath = UtilSystem.removeExtension(audioFile.getAbsolutePath()) + ".txt";
+
+    if(!new java.io.File(readerPath).exists()) {
+      Log.debug("Lyrics Txt file not found, can not read lyrics for Txt-Provider");
+      return null;
+    }
+    
     try {
+      String lyrics = "";
+
       lyricsReader = getLyricsReader();
       String s = null;
       while ((s = lyricsReader.readLine()) != null) {
@@ -56,16 +63,19 @@ public class TxtLyricsProvider implements ILyricsProvider {
         }
       }
       lyricsReader.close();
-      lyricsReader = null; //So it will be instanced new
+      lyricsReader = null; // So it will be instanced new
+
+      if (StringUtils.isBlank(lyrics)) {
+        return null;
+      }
+      return lyrics;
     } catch (FileNotFoundException e) {
       Log.debug("Not found approriate lyrics Txt file");
+      return null;
     } catch (IOException e) {
       Log.error(e);
-    }
-    if (StringUtils.isBlank(lyrics)) {
       return null;
-    }    
-   return lyrics;
+    }
   }
 
   /* (non-Javadoc)
