@@ -122,7 +122,7 @@ public class LastFmSimilarArtists implements SimilarArtistsInfo {
    * @param artists the artists to set
    */
   public void setArtists(List<? extends ArtistInfo> artists) {
-    this.artists = artists != null ? new ArrayList<ArtistInfo>(artists) : null;
+    this.artists = artists != null ? new ArrayList<ArtistInfo>(artists) : new ArrayList<ArtistInfo>();
   }
 
   /**
