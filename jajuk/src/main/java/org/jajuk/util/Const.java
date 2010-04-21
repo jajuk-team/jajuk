@@ -213,7 +213,7 @@ public interface Const {
   String JAJUK_VERSION_DATE = "Build: DATE_REPLACED_BY_ANT";
 
   /** DOCUMENT_ME. */
-  String JAJUK_COPYRIGHT = "Copyright 2003-2009 The Jajuk Team";
+  String JAJUK_COPYRIGHT = "Copyright 2003-2010 The Jajuk Team";
 
   /** DOCUMENT_ME. */
   String TYPE_VIDEO = "Type.video";
