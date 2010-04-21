@@ -684,8 +684,8 @@ public class CatalogView extends ViewAdapter implements ComponentListener, Actio
    */
   public void actionPerformed(final ActionEvent e) {
     if (e.getSource() == jcbFilter) {
-      if (jtfValue.getText().trim().equals("")) { // no need to refresh
-        // 
+      if (jtfValue.getText().trim().equals("")) {
+        // no need to refresh
         return;
       }
       bNeedSearch = true;
@@ -698,6 +698,9 @@ public class CatalogView extends ViewAdapter implements ComponentListener, Actio
     } else if (e.getSource() == jcbShowCover) {
       Conf.setProperty(Const.CONF_THUMBS_SHOW_COVER, Integer.toString(jcbShowCover
           .getSelectedIndex()));
+      // Reset page to zero to avoid out of bounds exceptions, when restricting
+      // the filter, less pages are available
+      page = 0;
       // display thumbs
       populateCatalog();
     } else if (e.getSource() == jbPrev) {
