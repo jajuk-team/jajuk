@@ -36,7 +36,6 @@ import org.jajuk.events.ObservationManager;
 import org.jajuk.services.bookmark.History;
 import org.jajuk.services.core.ExitService;
 import org.jajuk.services.core.SessionService;
-import org.jajuk.services.tags.NoTagsTagImpl;
 import org.jajuk.services.tags.Tag;
 import org.jajuk.ui.helpers.ManualDirectoryRefreshReporter;
 import org.jajuk.ui.helpers.RefreshReporter;
@@ -83,7 +82,7 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
   Directory(String sId, String sName, Directory dParent, Device device) {
     super(sId, sName);
     // check that top directories name is void
-    if (dParent == null && !"".equals(sName)){
+    if (dParent == null && !"".equals(sName)) {
       throw new JajukRuntimeException("Top directory name should be a void string");
     }
     this.dParent = dParent;
@@ -228,7 +227,7 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
     }
     return alFiles;
   }
-  
+
   /**
    * return ordered child directories recursively.
    * 
@@ -244,7 +243,7 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
     }
     return alDirs;
   }
-  
+
   /**
    * Return true is the specified directory is an ancestor for this directory.
    * 
@@ -395,18 +394,22 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
       return;
     }
 
-    // If the audio file format doesn't support tagging (like wav) and the file
-    // is already known, continue
+    // Is this format tag readable ?
     Type type = TypeManager.getInstance().getTypeByExtension(UtilSystem.getExtension(music));
-    if ((type.getTaggerClass() == null || type.getTaggerClass().equals(NoTagsTagImpl.class))
-        && fileRef != null) {
+    boolean tagSupported = (type.getTaggerClass() != null);
+
+    // Deep refresh : if the audio file format doesn't support tagging (like wav) and the file
+    // is already known, continue, no need to try to read tags
+    if (!tagSupported && fileRef != null) {
       return;
     }
 
     // Ignore tag error to make sure to get a
-    // tag object in all cases
+    // tag object in all cases.
     Tag tag = Tag.getTagForFio(music, true);
-    if (tag.isCorrupted()) {
+    // We need a tag instance even for unsupported formats but it that
+    // case, we don't notify tag reading errors
+    if (tag.isCorrupted() && tagSupported) {
       if (reporter != null) {
         reporter.notifyCorruptedFile();
       }
@@ -459,9 +462,9 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
    * @param discID DOCUMENT_ME
    * @param discNumber DOCUMENT_ME
    */
-  private Track registerFile(java.io.File music, String sFileId, String sTrackName, String sAlbumName,
-      String sArtistName, String sGenre, long length, String sYear, long lQuality, String sComment,
-      long lOrder, String sAlbumArtist, long discID, long discNumber) {
+  private Track registerFile(java.io.File music, String sFileId, String sTrackName,
+      String sAlbumName, String sArtistName, String sGenre, long length, String sYear,
+      long lQuality, String sComment, long lOrder, String sAlbumArtist, long discID, long discNumber) {
     Album album = AlbumManager.getInstance().registerAlbum(sAlbumName, discID);
     Genre genre = GenreManager.getInstance().registerGenre(sGenre);
     Year year = YearManager.getInstance().registerYear(sYear);
@@ -495,8 +498,8 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
       track.setDiscoveryDate(new Date());
     }
 
-    org.jajuk.base.File file = FileManager.getInstance().registerFile(sFileId, music.getName(), this,
-        track, music.length(), lQuality);
+    org.jajuk.base.File file = FileManager.getInstance().registerFile(sFileId, music.getName(),
+        this, track, music.length(), lQuality);
     // Set file date
     file.setProperty(Const.XML_FILE_DATE, new Date(lastModified));
     // Comment is at the track level, note that we take last
