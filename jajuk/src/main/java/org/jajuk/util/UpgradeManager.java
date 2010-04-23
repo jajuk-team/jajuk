@@ -21,6 +21,8 @@
 
 package org.jajuk.util;
 
+import com.sun.org.apache.xerces.internal.impl.PropertyManager;
+
 import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
@@ -30,6 +32,7 @@ import java.util.StringTokenizer;
 
 import javax.swing.JOptionPane;
 
+import org.jajuk.base.AlbumManager;
 import org.jajuk.base.Collection;
 import org.jajuk.base.Device;
 import org.jajuk.base.DeviceManager;
@@ -113,8 +116,10 @@ public final class UpgradeManager {
       // check if it is a new major 'x.y' release: 1.2 != 1.3 for instance
       if (!bFirstSession
       // if first session, not taken as an upgrade
-          && ((sStoredRelease == null) || // null for jajuk releases < 1.2
-          !sStoredRelease.substring(0, 3).equals(Const.JAJUK_VERSION.substring(0, 3)))) {
+          && (sStoredRelease == null || // null for jajuk releases < 1.2
+          !sStoredRelease.substring(0, 3).equals(Const.JAJUK_VERSION.substring(0, 3)))
+          // Each RC is seen as an upgrade to force RC users to re-run upgrade code at each new RC
+          || Const.JAJUK_VERSION.matches(".*RC.*")) {
         bUpgraded = true;
         // Now check if this is an old migration.
         if (!SessionService.isTestMode()) {
@@ -388,6 +393,16 @@ public final class UpgradeManager {
   }
 
   /**
+  * For jajuk < 1.9, remove album artist property for albums
+  */
+  private static void upgradeNoMoreAlbumArtistsforAlbums() {
+    if (AlbumManager.getInstance().getMetaInformation(Const.XML_ALBUM_ARTIST) != null) {
+      AlbumManager.getInstance().removeProperty(Const.XML_ALBUM_ARTIST);
+    }
+
+  }
+
+  /**
    * For any jajuk version, after major upgrade, force thumbs cleanup.
    */
   private static void upgradeThumbRebuild() {
@@ -419,11 +434,12 @@ public final class UpgradeManager {
       if (isUpgradeDetected()) {
         // For Jajuk < 1.7
         upgradeCollectionRating();
+        // For Jajuk < 1.9
+        upgradeNoMoreAlbumArtistsforAlbums();
       }
       // Major releases upgrade specific operations
       if (isMajorMigration()) {
         upgradeThumbRebuild();
-
       }
     } catch (Throwable e) {
       Log.error(e);
