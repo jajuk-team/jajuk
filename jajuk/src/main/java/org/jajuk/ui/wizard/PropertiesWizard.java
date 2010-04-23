@@ -594,7 +594,14 @@ public class PropertiesWizard extends JajukJDialog implements ActionListener {
             widgets[index][1] = jtfValue;
           }
         } else {
-          JLabel jl = new JLabel(pa.getHumanValue(meta.getName()));
+          JLabel jl = null;
+          if (meta.getName().equals(Const.XML_ALBUM_DISC_ID)) {
+            // Specific rendering : the album disc id should be translated from decimal to hex
+            jl = new JLabel((Long.toString(((Long) pa.getValue(meta.getName())), 16)));
+          } else {
+            // Regular un-editable item rendering
+            jl = new JLabel(pa.getHumanValue(meta.getName()));
+          }
           // If several items, take first value found
           if (bAllEquals) {
             String s = pa.getHumanValue(meta.getName());
