@@ -59,17 +59,17 @@ public class LastFmSimilarArtists implements SimilarArtistsInfo {
     List<Artist> list = new ArrayList<Artist>(as);
     LastFmSimilarArtists similar = new LastFmSimilarArtists();
 
-    similar.artistName = a.getName();
-    similar.picture = a.getImageURL(ImageSize.LARGE);
+    similar.setArtistName(a.getName());
+    similar.setPicture(a.getImageURL(ImageSize.LARGE));
 
-    similar.artists = new ArrayList<ArtistInfo>();
+    List<ArtistInfo> artists = new ArrayList<ArtistInfo>();
     for (int i = 0; i < list.size(); i++) {
       if (i == MAX_SIMILAR_ARTISTS) {
         break;
       }
-      similar.artists.add(LastFmArtist.getArtist(list.get(i)));
+      artists.add(LastFmArtist.getArtist(list.get(i)));
     }
-
+    similar.setArtists(artists);
     return similar;
   }
 
