@@ -111,8 +111,6 @@ public class AboutWindow extends JajukJDialog {
     jtp.addTab(Messages.getString("AboutView.8"), jpLicence);
     jtp.addTab(Messages.getString("AboutView.9"), spp);
     add(jtp);
-    
-    UtilGUI.setEscapeKeyboardAction(this, jtp);
   }
 
   /*
