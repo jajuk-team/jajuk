@@ -94,17 +94,17 @@ public class SuggestionView extends ViewAdapter {
    * DOCUMENT_ME.
    */
   enum SuggestionType {
-    
+
     /** DOCUMENT_ME. */
-    BEST_OF, 
- /** DOCUMENT_ME. */
- NEWEST, 
- /** DOCUMENT_ME. */
- RARE, 
- /** DOCUMENT_ME. */
- OTHERS_ALBUMS, 
- /** DOCUMENT_ME. */
- SIMILAR_ARTISTS
+    BEST_OF,
+    /** DOCUMENT_ME. */
+    NEWEST,
+    /** DOCUMENT_ME. */
+    RARE,
+    /** DOCUMENT_ME. */
+    OTHERS_ALBUMS,
+    /** DOCUMENT_ME. */
+    SIMILAR_ARTISTS
   }
 
   /** DOCUMENT_ME. */
@@ -127,10 +127,10 @@ public class SuggestionView extends ViewAdapter {
 
   /** DOCUMENT_ME. */
   List<Album> albumsNewest;
-  
+
   /** DOCUMENT_ME. */
   List<Album> albumsPrefered;
-  
+
   /** DOCUMENT_ME. */
   List<Album> albumsRare;
 
@@ -139,7 +139,7 @@ public class SuggestionView extends ViewAdapter {
 
   /** DOCUMENT_ME. */
   private AlbumListInfo albums;
-  
+
   /** DOCUMENT_ME. */
   private SimilarArtistsInfo similar;
 
@@ -147,8 +147,10 @@ public class SuggestionView extends ViewAdapter {
    * DOCUMENT_ME.
    */
   class ThumbMouseListener extends MouseAdapter {
-    
-    /* (non-Javadoc)
+
+    /*
+     * (non-Javadoc)
+     * 
      * @see java.awt.event.MouseAdapter#mousePressed(java.awt.event.MouseEvent)
      */
     @Override
@@ -246,7 +248,9 @@ public class SuggestionView extends ViewAdapter {
     ObservationManager.register(this);
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see org.jajuk.events.Observer#getRegistrationKeys()
    */
   public Set<JajukEvents> getRegistrationKeys() {
@@ -431,7 +435,8 @@ public class SuggestionView extends ViewAdapter {
   void preFetchSimilarArtists() throws Exception {
     // Perform last.fm calls
     similar = LastFmService.getInstance().getSimilarArtists(artist);
-    if (similar != null) {
+    // artists is null for void (unknown) similar artists
+    if (similar != null && similar.getArtists() != null) {
       List<ArtistInfo> artists = similar.getArtists();
       for (ArtistInfo similarArtist : artists) {
         String artistUrl = similarArtist.getImageUrl();
