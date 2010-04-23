@@ -61,7 +61,7 @@ public interface SimilarArtistsInfo {
    * 
    * @param artists the artists to set
    */
-  public void setArtists(List<? extends ArtistInfo> artists);
+  public void setArtists(List<ArtistInfo> artists);
 
   /**
    * Sets the picture.

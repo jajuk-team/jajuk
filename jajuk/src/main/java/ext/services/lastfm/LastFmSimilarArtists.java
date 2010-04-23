@@ -88,13 +88,16 @@ public class LastFmSimilarArtists implements SimilarArtistsInfo {
    * @return the artists
    */
   public List<ArtistInfo> getArtists() {
-    // Sort similar artists ignoring case
-    Collections.sort(artists, new Comparator<ArtistInfo>() {
-      @Override
-      public int compare(ArtistInfo o1, ArtistInfo o2) {
-        return o1.getName().compareToIgnoreCase(o2.getName());
-      }
-    });
+    // artists is null for void (unknown) similar artists
+    if (artists != null) {
+      // Sort similar artists ignoring case
+      Collections.sort(artists, new Comparator<ArtistInfo>() {
+        @Override
+        public int compare(ArtistInfo o1, ArtistInfo o2) {
+          return o1.getName().compareToIgnoreCase(o2.getName());
+        }
+      });
+    }
     return artists;
   }
 
@@ -121,8 +124,8 @@ public class LastFmSimilarArtists implements SimilarArtistsInfo {
    * 
    * @param artists the artists to set
    */
-  public void setArtists(List<? extends ArtistInfo> artists) {
-    this.artists = artists != null ? new ArrayList<ArtistInfo>(artists) : new ArrayList<ArtistInfo>();
+  public void setArtists(List<ArtistInfo> artists) {
+    this.artists = artists != null ? artists : new ArrayList<ArtistInfo>();
   }
 
   /**
@@ -134,5 +137,4 @@ public class LastFmSimilarArtists implements SimilarArtistsInfo {
     this.picture = picture;
   }
 
- 
 }
