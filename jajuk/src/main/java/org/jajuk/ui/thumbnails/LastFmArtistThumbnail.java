@@ -69,7 +69,7 @@ public class LastFmArtistThumbnail extends AbstractThumbnail {
   private final boolean bKnown;
 
   /** Thumb associated image *. */
-  ImageIcon ii;
+  private ImageIcon ii;
 
   /**
    * The Constructor.
@@ -149,7 +149,7 @@ public class LastFmArtistThumbnail extends AbstractThumbnail {
    * have already been done by the caller outside the EDT. we only pop the image
    * from the cache here.
    */
-  public void preLoad() {
+  private void preLoad() {
     try {
       // Check if artist is null
       String artistUrl = artist.getImageUrl();
@@ -216,6 +216,7 @@ public class LastFmArtistThumbnail extends AbstractThumbnail {
     }
     JLabel jlTitle = new JLabel(UtilString.getLimitedString(artist.getName(), textLength));
     jlTitle.setToolTipText(artist.getName());
+    jlIcon.setToolTipText(artist.getName());
     if (bKnown && !isArtistView()) {
       // Artist known in collection, display its name in bold
       jlTitle.setIcon(IconLoader.getIcon(JajukIcons.ARTIST));

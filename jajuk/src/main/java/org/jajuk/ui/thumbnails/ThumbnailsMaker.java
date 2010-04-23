@@ -121,7 +121,7 @@ public final class ThumbnailsMaker {
    * @throws URISyntaxException the URI syntax exception
    * @throws IOException Signals that an I/O exception has occurred.
    */
-  public static int launchProcessus(final int size) throws URISyntaxException, IOException {
+  private static int launchProcessus(final int size) throws URISyntaxException, IOException {
     final String jvmPath = System.getProperty("java.home") + File.separatorChar + "bin"
         + File.separatorChar + "java";
     // TODO Under JNLP mode, following line throw an URI malformed exception

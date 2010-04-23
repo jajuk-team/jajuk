@@ -180,7 +180,7 @@ public abstract class AbstractThumbnail extends JPanel implements ActionListener
    * @param size :
    *          size of the thumbnail
    */
-  public AbstractThumbnail(int size) {
+  protected AbstractThumbnail(int size) {
     this.size = size;
     setSelected(false);
   }
@@ -207,7 +207,7 @@ public abstract class AbstractThumbnail extends JPanel implements ActionListener
   /**
    * display a popup over the catalog item.
    */
-  public void displayPopup() {
+  private void displayPopup() {
     // close popup if any visible
     if (details != null) {
       details.dispose();

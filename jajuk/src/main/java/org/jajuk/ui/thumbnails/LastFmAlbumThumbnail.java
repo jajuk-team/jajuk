@@ -71,7 +71,7 @@ public class LastFmAlbumThumbnail extends AbstractThumbnail {
   private final boolean bKnown;
 
   /** Thumb associated image *. */
-  ImageIcon ii;
+  private ImageIcon ii;
 
   /**
    * The Constructor.
@@ -163,7 +163,7 @@ public class LastFmAlbumThumbnail extends AbstractThumbnail {
    * have already been done by the caller outside the EDT. we only pop the image
    * from the cache here.
    */
-  public void preLoad() {
+  private void preLoad() {
     try {
       // Check if album image is null
       String albumUrl = album.getBigCoverURL();
@@ -233,6 +233,7 @@ public class LastFmAlbumThumbnail extends AbstractThumbnail {
       jlTitle.setFont(FontManager.getInstance().getFont(JajukFont.PLAIN));
     }
     jlTitle.setToolTipText(album.getTitle());
+    jlIcon.setToolTipText(album.getTitle());
     add(jlTitle, "center");
     jlIcon.setBorder(new DropShadowBorder(Color.BLACK, 5, 0.5f, 5, false, true, false, true));
     // disable inadequate menu items

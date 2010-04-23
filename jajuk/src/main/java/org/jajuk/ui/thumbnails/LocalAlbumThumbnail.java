@@ -72,13 +72,13 @@ public class LocalAlbumThumbnail extends AbstractThumbnail {
   private static final long serialVersionUID = -282669695411453802L;
 
   /** Associated album. */
-  Album album;
+  private Album album;
 
   /** DOCUMENT_ME. */
-  JLabel jlArtist;
+  private JLabel jlArtist;
 
   /** DOCUMENT_ME. */
-  JLabel jlAlbum;
+  private JLabel jlAlbum;
 
   /** DOCUMENT_ME. */
   private final boolean bShowFullText;
@@ -135,6 +135,8 @@ public class LocalAlbumThumbnail extends AbstractThumbnail {
       jlAlbum = new JLabel(UtilString.getLimitedString(album.getName2(), iRows));
       jlAlbum.setToolTipText(album.getName2());
       jlAlbum.setBorder(new EmptyBorder(0, 0, 0, 0));
+
+      jlIcon.setToolTipText(artistName + "/" + album.getName2());
 
       // Add items
       setLayout(new MigLayout("ins 0", "[grow]", "[" + (size + 10) + "!][grow][grow]"));
