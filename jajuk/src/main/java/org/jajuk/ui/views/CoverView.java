@@ -1057,11 +1057,16 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
         cover = alCovers.get(index); // take image at the given index
         Image img = cover.getImage();
 
-        if (!Conf.getBoolean(Const.CONF_COVERS_MIRROW_COVER)
+        if (
+        // should we mirror in our gui
+        (includeControls && Conf.getBoolean(Const.CONF_COVERS_MIRROW_COVER))
+        // should we mirror in fullscreen mode
+            || (!includeControls && Conf.getBoolean(Const.CONF_COVERS_MIRROW_COVER_FS_MODE))
+            // never mirror our no cover image
             || cover.getType().equals(CoverType.NO_COVER)) {
-          icon = new ImageIcon(img);
-        } else {
           icon = new ImageIcon(get3dImage(img));
+        } else {
+          icon = new ImageIcon(img);
         }
 
         if (icon.getIconHeight() == 0 || icon.getIconWidth() == 0) {
