@@ -19,16 +19,14 @@
  *  $Revision$
  */
 package org.jajuk.util;
-
+ 
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.Properties;
 import java.util.StringTokenizer;
 
@@ -37,10 +35,9 @@ import org.jajuk.base.AlbumArtistManager;
 import org.jajuk.base.AlbumManager;
 import org.jajuk.base.ArtistManager;
 import org.jajuk.base.File;
-import org.jajuk.base.GenreManager;
 import org.jajuk.base.PropertyMetaInformation;
+import org.jajuk.base.GenreManager;
 import org.jajuk.base.Track;
-import org.jajuk.base.TrackManager;
 import org.jajuk.util.error.JajukException;
 
 /**
@@ -142,8 +139,8 @@ public final class UtilString {
    * 
    * @return the string
    */
-  private static String applyTrackPattern(final String sPattern, final boolean normalize,
-      final String out, final Track track) {
+  private static String applyTrackPattern(final String sPattern, final boolean normalize, final String out,
+      final Track track) {
     String ret = out;
     String sValue;
     if (sPattern.contains(Const.PATTERN_TRACKNAME)) {
@@ -169,9 +166,8 @@ public final class UtilString {
    * 
    * @throws JajukException the jajuk exception
    */
-  private static String applyTrackOrderPattern(final org.jajuk.base.File file,
-      final String sPattern, final boolean bMandatory, final String out, final Track track)
-      throws JajukException {
+  private static String applyTrackOrderPattern(final org.jajuk.base.File file, final String sPattern,
+      final boolean bMandatory, final String out, final Track track) throws JajukException {
     if (sPattern.contains(Const.PATTERN_TRACKORDER)) {
       // override Order from filename if not set explicitly
       long lOrder = handleOrder(file, bMandatory, track);
@@ -344,9 +340,6 @@ public final class UtilString {
     // Check Disc Value
     out = UtilString.applyDiscPattern(file, sPattern, bMandatory, out, track);
 
-    // Check Custom Properties
-    out = UtilString.applyCustomPattern(sPattern, normalize, out, track);
-
     return out;
   }
 
@@ -360,8 +353,8 @@ public final class UtilString {
    * 
    * @return the string
    */
-  private static String applyAlbumArtistPattern(String sPattern, boolean normalize, String out,
-      Track track) {
+  private static String applyAlbumArtistPattern(String sPattern, boolean normalize,
+      String out, Track track) {
     String ret = out;
     String sValue;
     if (sPattern.contains(Const.PATTERN_ALBUM_ARTIST)) {
@@ -370,32 +363,6 @@ public final class UtilString {
         sValue = UtilSystem.getNormalizedFilename(sValue);
       }
       ret = ret.replaceAll(Const.PATTERN_ALBUM_ARTIST, AlbumArtistManager.format(sValue));
-    }
-    return ret;
-  }
-
-  private static String applyCustomPattern(String sPattern, boolean normalize, String out,
-      Track track) {
-    String ret = out;
-    String sValue;
-
-    Map<String, Object> properties = track.getProperties();
-    Iterator<PropertyMetaInformation> it2 = TrackManager.getInstance().getCustomProperties()
-        .iterator();
-    for (int i = 0; it2.hasNext(); i++) {
-      PropertyMetaInformation meta = it2.next();
-      if (sPattern.contains("%" + meta.getName())) {
-        Object o = properties.get(meta.getName());
-        if (o != null) {
-          sValue = o.toString();
-        } else {
-          sValue = meta.getDefaultValue().toString();
-        }
-        if (normalize) {
-          sValue = UtilSystem.getNormalizedFilename(sValue);
-        }
-        ret = ret.replaceAll("%" + meta.getName(), sValue);
-      }
     }
     return ret;
   }
@@ -658,9 +625,10 @@ public final class UtilString {
     String sOut = replaceReservedXMLChars(s);
     final StringBuilder sbOut = new StringBuilder(sOut.length());
     /*
-     * Transform String to XML-valid characters. XML 1.0 specs ; Character Range [2] Char ::= #x9 |
-     * #xA | #xD | [#x20-#xD7FF] | [#xE000-#xFFFD] | [#x10000-#x10FFFF] any Unicode character,
-     * excluding the surrogate blocks, FFFE, and FFFF.
+     * Transform String to XML-valid characters. XML 1.0 specs ; Character Range
+     * [2] Char ::= #x9 | #xA | #xD | [#x20-#xD7FF] | [#xE000-#xFFFD] |
+     * [#x10000-#x10FFFF] any Unicode character, excluding the surrogate blocks,
+     * FFFE, and FFFF.
      */
     for (int i = 0; i < sOut.length(); i++) {
       final char c = sOut.charAt(i);

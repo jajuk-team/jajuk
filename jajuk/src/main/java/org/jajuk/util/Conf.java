@@ -19,7 +19,7 @@
  *  $Revision$
  */
 package org.jajuk.util;
-
+ 
 import java.awt.HeadlessException;
 import java.awt.Toolkit;
 import java.io.FileInputStream;
@@ -232,8 +232,7 @@ public final class Conf implements Const {
     defaults.put(CONF_NETWORK_CONNECTION_TO, "10");
     defaults.put(CONF_NETWORK_PROXY_TYPE, PROXY_TYPE_HTTP);
     defaults.put(CONF_COVERS_AUTO_COVER, TRUE);
-    defaults.put(CONF_COVERS_MIRROW_COVER, FALSE);
-    defaults.put(CONF_COVERS_MIRROW_COVER_FS_MODE, TRUE);
+    defaults.put(CONF_COVERS_MIRROW_COVER, TRUE);
     defaults.put(CONF_COVERS_SHUFFLE, FALSE);
     defaults.put(CONF_COVERS_SAVE_EXPLORER_FRIENDLY, FALSE);
     defaults.put(FILE_DEFAULT_COVER, "jajuk;folder;cover;front");

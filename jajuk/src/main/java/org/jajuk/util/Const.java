@@ -19,7 +19,7 @@
  *  $Revision$
  */
 package org.jajuk.util;
-
+ 
 import java.net.URL;
 
 /**
@@ -955,9 +955,6 @@ public interface Const {
 
   /** DOCUMENT_ME. */
   String CONF_COVERS_MIRROW_COVER = "jajuk.covers.mirrow_cover";
-  
-  /** DOCUMENT_ME. */
-  String CONF_COVERS_MIRROW_COVER_FS_MODE = "jajuk.covers.mirrow_cover_fs_mode";
 
   /** DOCUMENT_ME. */
   String CONF_COVERS_SHUFFLE = "jajuk.covers.shuffle";
@@ -1696,8 +1693,5 @@ public interface Const {
 
   /** File name where the tag cover is stored in */
   String TAG_COVER_FILE = "tag_cover.png";
-  
-  /** We need a fix size to have the same angle effect for every cover*/
-  int MIRROW_COVER_SIZE=600;
 
 }
