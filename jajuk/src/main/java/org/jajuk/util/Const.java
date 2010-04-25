@@ -1696,5 +1696,8 @@ public interface Const {
 
   /** File name where the tag cover is stored in */
   String TAG_COVER_FILE = "tag_cover.png";
+  
+  /** We need a fix size to have the same angle effect for every cover*/
+  int MIRROW_COVER_SIZE=600;
 
 }

@@ -1059,11 +1059,11 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
 
         if (
         // should we mirror in our gui
-        (includeControls && Conf.getBoolean(Const.CONF_COVERS_MIRROW_COVER))
+        ((includeControls && Conf.getBoolean(Const.CONF_COVERS_MIRROW_COVER))
         // should we mirror in fullscreen mode
-            || (!includeControls && Conf.getBoolean(Const.CONF_COVERS_MIRROW_COVER_FS_MODE))
+            || (!includeControls && Conf.getBoolean(Const.CONF_COVERS_MIRROW_COVER_FS_MODE)))
             // never mirror our no cover image
-            || cover.getType().equals(CoverType.NO_COVER)) {
+            && !cover.getType().equals(CoverType.NO_COVER)) {
           icon = new ImageIcon(get3dImage(img));
         } else {
           icon = new ImageIcon(img);
@@ -1172,19 +1172,18 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
    * @return the 3d image
    */
   private BufferedImage get3dImage(Image img) {
-    // 3d
-
     int angle = 30;
     int gap = 10;
     float opacity = 0.3f;
     float fadeHeight = 0.6f;
 
     // cover, we always need an aplpha image, otherwise we can not mirror it
-    BufferedImage coverImage = UtilGUI.toBufferedAlphaImage(img, img.getWidth(null), img.getHeight(null));
+    BufferedImage coverImage = UtilGUI.toBufferedAlphaImage(img, Const.MIRROW_COVER_SIZE,
+        Const.MIRROW_COVER_SIZE);
 
-    PerspectiveFilter filter1 = new PerspectiveFilter(0, angle, coverImage.getHeight() - angle / 2,
-        (int) (angle * (5.0 / 3.0)), coverImage.getHeight() - angle / 2, coverImage.getHeight(), 0,
-        coverImage.getHeight() + angle);
+    PerspectiveFilter filter1 = new PerspectiveFilter(0, angle,
+        Const.MIRROW_COVER_SIZE - angle / 2, (int) (angle * (5.0 / 3.0)), Const.MIRROW_COVER_SIZE
+            - angle / 2, Const.MIRROW_COVER_SIZE, 0, Const.MIRROW_COVER_SIZE + angle);
     coverImage = filter1.filter(coverImage, null);
 
     // reflection
