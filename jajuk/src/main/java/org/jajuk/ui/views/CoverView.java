@@ -21,15 +21,8 @@
 
 package org.jajuk.ui.views;
 
-import com.jhlabs.image.PerspectiveFilter;
-
-import java.awt.AlphaComposite;
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.GradientPaint;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.MediaTracker;
 import java.awt.event.ActionEvent;
@@ -1057,16 +1050,11 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
         cover = alCovers.get(index); // take image at the given index
         Image img = cover.getImage();
 
-        if (
-        // should we mirror in our gui
-        ((includeControls && Conf.getBoolean(Const.CONF_COVERS_MIRROW_COVER))
-        // should we mirror in fullscreen mode
-            || (!includeControls && Conf.getBoolean(Const.CONF_COVERS_MIRROW_COVER_FS_MODE)))
-            // never mirror our no cover image
-            && !cover.getType().equals(CoverType.NO_COVER)) {
-          icon = new ImageIcon(get3dImage(img));
-        } else {
+        if (!Conf.getBoolean(Const.CONF_COVERS_MIRROW_COVER)
+            || cover.getType().equals(CoverType.NO_COVER)) {
           icon = new ImageIcon(img);
+        } else {
+          icon = new ImageIcon(UtilGUI.get3dImage(img));
         }
 
         if (icon.getIconHeight() == 0 || icon.getIconWidth() == 0) {
@@ -1164,64 +1152,7 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
     return null;
   }
 
-  /**
-   * Get3d image.
-   * 
-   * @param img DOCUMENT_ME
-   * 
-   * @return the 3d image
-   */
-  private BufferedImage get3dImage(Image img) {
-    int angle = 30;
-    int gap = 10;
-    float opacity = 0.3f;
-    float fadeHeight = 0.6f;
-
-    // cover, we always need an aplpha image, otherwise we can not mirror it
-    BufferedImage coverImage = UtilGUI.toBufferedAlphaImage(img, Const.MIRROW_COVER_SIZE,
-        Const.MIRROW_COVER_SIZE);
-
-    PerspectiveFilter filter1 = new PerspectiveFilter(0, angle,
-        Const.MIRROW_COVER_SIZE - angle / 2, (int) (angle * (5.0 / 3.0)), Const.MIRROW_COVER_SIZE
-            - angle / 2, Const.MIRROW_COVER_SIZE, 0, Const.MIRROW_COVER_SIZE + angle);
-    coverImage = filter1.filter(coverImage, null);
-
-    // reflection
-    int imageWidth = coverImage.getWidth();
-    int imageHeight = coverImage.getHeight();
-    BufferedImage reflection = new BufferedImage(imageWidth, imageHeight,
-        BufferedImage.TYPE_INT_ARGB);
-    Graphics2D rg = reflection.createGraphics();
-    rg.drawRenderedImage(coverImage, null);
-    rg.setComposite(AlphaComposite.getInstance(AlphaComposite.DST_IN));
-    rg.setPaint(new GradientPaint(0, imageHeight * fadeHeight, new Color(0.0f, 0.0f, 0.0f, 0.0f),
-        0, imageHeight, new Color(0.0f, 0.0f, 0.0f, opacity)));
-    rg.fillRect(0, 0, imageWidth, imageHeight);
-    rg.dispose();
-
-    PerspectiveFilter filter2 = new PerspectiveFilter(0, 0, coverImage.getHeight() - angle / 2,
-        angle * 2, coverImage.getHeight() - angle / 2, coverImage.getHeight() + angle * 2, 0,
-        coverImage.getHeight());
-    BufferedImage reflectedImage = filter2.filter(reflection, null);
-
-    // now draw everything on one bufferedImage
-    BufferedImage finalImage = new BufferedImage(imageWidth, (int) (1.4 * imageHeight),
-        BufferedImage.TYPE_INT_ARGB);
-
-    Graphics g = finalImage.getGraphics();
-    Graphics2D g2d = (Graphics2D) g;
-
-    g2d.drawRenderedImage(coverImage, null);
-
-    g2d.translate(0, 2 * imageHeight + gap);
-    g2d.scale(1, -1);
-    g2d.drawRenderedImage(reflectedImage, null);
-    g2d.dispose();
-    reflection.flush();
-    coverImage.flush();
-
-    return finalImage;
-  }
+ 
 
   /**
    * Refresh default cover thumb (used in catalog view).

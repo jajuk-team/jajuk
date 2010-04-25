@@ -20,12 +20,17 @@
  */
 package org.jajuk.util;
 
+import com.jhlabs.image.PerspectiveFilter;
+
+import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Frame;
+import java.awt.GradientPaint;
+import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
@@ -487,7 +492,7 @@ public final class UtilGUI {
    * To buffered image. DOCUMENT_ME
    * 
    * @param image
-   *          DOCUMENT_ME
+   *          the input image
    * 
    * @return the buffered image
    */
@@ -496,79 +501,157 @@ public final class UtilGUI {
   }
 
   /**
-   * Transform an image to a BufferedImage
-   * <p>
-   * Code partially coming from http://www.exampledepot.com/egs/java.awt.image/Image2Buf.html
-   * </p>
-   * 
+   * Create a buffered image without forced alpha channel
    * @param image
-   *          DOCUMENT_ME
-   * @param height
-   *          new image height
+   *          the input image
    * @param width
-   *          DOCUMENT_ME
-   * 
-   * @return buffered image from an image
+   *          target image width
+   * @param height
+   *          target image height
+   * @return
    */
-  public static BufferedImage toBufferedImage(final Image image, final int width, final int height) {
-    if (image instanceof BufferedImage) {
-      return ((BufferedImage) image);
-    } else {
-      /** Create the new image */
-      // This code ensures that all the pixels in the image are loaded
-      Image loadedImage = new ImageIcon(image).getImage();
-      BufferedImage bufferedImage = null;
-      if (hasAlpha(loadedImage)) {
-        bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-      } else {
-        // Save memory, use RGB is no alpha required
-        bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
-      }
-      final Graphics2D graphics2D = bufferedImage.createGraphics();
-      graphics2D.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
-          RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-      graphics2D.drawImage(loadedImage, 0, 0, width, height, null);
-      image.flush();
-      loadedImage.flush();
-      graphics2D.dispose();
-      return bufferedImage;
-    }
+  public static BufferedImage toBufferedImage(final Image image, final int targetWidth,
+      final int targetHeight) {
+    return UtilGUI.toBufferedImage(image, targetWidth, targetHeight, false);
   }
 
   /**
    * Transform an image to a BufferedImage
    * <p>
-   * Code partially coming from http://www.exampledepot.com/egs/java.awt.image/Image2Buf.html
+   * Code adapted from from http://today.java.net/pub/a/today/2007/04/03/perils-of-image-getscaledinstance.html
+  
    * </p>
    * 
    * @param image
-   *          DOCUMENT_ME
-   * @param height
-   *          new image height
+   *          the input image
    * @param width
-   *          DOCUMENT_ME
+   *          target image width
+   * @param height
+   *          target image height
+   * @param forcedAlpha 
+   *    Force using an alpha chanel for target image
    * 
    * @return buffered image from an image
    */
-  public static BufferedImage toBufferedAlphaImage(final Image image, final int width,
-      final int height) {
+  public static BufferedImage toBufferedImage(final Image image, final int targetWidth,
+      final int targetHeight, boolean forcedAlpha) {
     if (image instanceof BufferedImage) {
       return ((BufferedImage) image);
     } else {
-      /** Create the new image */
       // This code ensures that all the pixels in the image are loaded
       Image loadedImage = new ImageIcon(image).getImage();
-      BufferedImage bufferedImage = null;
-      bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-      final Graphics2D graphics2D = bufferedImage.createGraphics();
-      graphics2D.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
-          RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-      graphics2D.drawImage(loadedImage, 0, 0, width, height, null);
+      // Use right target format according to need for alpha chanel or not (less memory use if no
+      // alpha)
+      int type = BufferedImage.TYPE_INT_RGB;
+      if (forcedAlpha || hasAlpha(image)) {
+        type = BufferedImage.TYPE_INT_ARGB;
+      }
+      BufferedImage ret = null;
+      int w, h;
+      // Use multi-step technique: start with original size, then
+      // scale down in multiple passes with drawImage()
+      // until the target size is reached
+      w = image.getWidth(null);
+      h = image.getHeight(null);
+      // See http://today.java.net/pub/a/today/2007/04/03/perils-of-image-getscaledinstance.html for
+      // explanations about this algorithm.
+      // Basically, we perform image creation dichotomy to create high quality thumb at low price
+      do {
+        // When w/y reaches thumb height/width, it's time to to use the target thumb size exactly
+        if (w <= targetHeight || h <= targetHeight) {
+          w = targetWidth;
+          h = targetHeight;
+        } else {
+          if (w > targetWidth) {
+            w /= 2;
+            if (w < targetWidth) {
+              w = targetWidth;
+            }
+          }
+          if (h > targetHeight) {
+            h /= 2;
+            if (h < targetHeight) {
+              h = targetHeight;
+            }
+          }
+        }
+        BufferedImage tmp = new BufferedImage(w, h, type);
+        Graphics2D g2 = tmp.createGraphics();
+        g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
+            RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+        // If the input buffered image doesn't yet exist, use the input image
+        if (ret != null) {
+          g2.drawImage(ret, 0, 0, w, h, null);
+        } else {
+          g2.drawImage(loadedImage, 0, 0, w, h, null);
+        }
+        g2.dispose();
+        ret = tmp;
+      } while (w != targetWidth || h != targetHeight);
+
       image.flush();
       loadedImage.flush();
-      graphics2D.dispose();
-      return bufferedImage;
+      return ret;
     }
+  }
+  
+  
+   /**
+   * Get3d image.
+   * 
+   * @param img DOCUMENT_ME
+   * 
+   * @return the 3d image
+   */
+  public static BufferedImage get3dImage(Image img) {
+    int angle = 30;
+    int gap = 10;
+    float opacity = 0.3f;
+    float fadeHeight = 0.6f;
+
+    // cover
+    BufferedImage coverImage = UtilGUI.toBufferedImage(img,img.getWidth(null),img.getHeight(null),true);
+
+    PerspectiveFilter filter1 = new PerspectiveFilter(0, angle, coverImage.getHeight() - angle / 2,
+        (int) (angle * (5.0 / 3.0)), coverImage.getHeight() - angle / 2, coverImage.getHeight(), 0,
+        coverImage.getHeight() + angle);
+    coverImage = filter1.filter(coverImage, null);
+
+    // reflection
+    int imageWidth = coverImage.getWidth();
+    int imageHeight = coverImage.getHeight();
+    BufferedImage reflection = new BufferedImage(imageWidth, imageHeight,
+        BufferedImage.TYPE_INT_ARGB);
+    Graphics2D rg = reflection.createGraphics();
+    rg.drawRenderedImage(coverImage, null);
+    rg.setComposite(AlphaComposite.getInstance(AlphaComposite.DST_IN));
+    rg.setPaint(new GradientPaint(0, imageHeight * fadeHeight, new Color(0.0f, 0.0f, 0.0f, 0.0f),
+        0, imageHeight, new Color(0.0f, 0.0f, 0.0f, opacity)));
+    rg.fillRect(0, 0, imageWidth, imageHeight);
+    rg.dispose();
+
+    PerspectiveFilter filter2 = new PerspectiveFilter(0, 0, coverImage.getHeight() - angle / 2,
+        angle * 2, coverImage.getHeight() - angle / 2, coverImage.getHeight() + angle * 2, 0,
+        coverImage.getHeight());
+    BufferedImage reflectedImage = filter2.filter(reflection, null);
+
+    // now draw everything on one bufferedImage
+    BufferedImage finalImage = new BufferedImage(imageWidth, (int) (1.4 * imageHeight),
+        BufferedImage.TYPE_INT_ARGB);
+
+    Graphics g = finalImage.getGraphics();
+    Graphics2D g2d = (Graphics2D) g;
+
+    g2d.drawRenderedImage(coverImage, null);
+
+    g2d.translate(0, 2 * imageHeight + gap);
+    g2d.scale(1, -1);
+    g2d.drawRenderedImage(reflectedImage, null);
+    g2d.dispose();
+    reflection.flush();
+    coverImage.flush();
+
+    return finalImage;
   }
 
   /** 
