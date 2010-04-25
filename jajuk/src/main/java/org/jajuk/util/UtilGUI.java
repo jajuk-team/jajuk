@@ -535,6 +535,42 @@ public final class UtilGUI {
     }
   }
 
+  /**
+   * Transform an image to a BufferedImage
+   * <p>
+   * Code partially coming from http://www.exampledepot.com/egs/java.awt.image/Image2Buf.html
+   * </p>
+   * 
+   * @param image
+   *          DOCUMENT_ME
+   * @param height
+   *          new image height
+   * @param width
+   *          DOCUMENT_ME
+   * 
+   * @return buffered image from an image
+   */
+  public static BufferedImage toBufferedAlphaImage(final Image image, final int width,
+      final int height) {
+    if (image instanceof BufferedImage) {
+      return ((BufferedImage) image);
+    } else {
+      /** Create the new image */
+      // This code ensures that all the pixels in the image are loaded
+      Image loadedImage = new ImageIcon(image).getImage();
+      BufferedImage bufferedImage = null;
+      bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+      final Graphics2D graphics2D = bufferedImage.createGraphics();
+      graphics2D.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
+          RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+      graphics2D.drawImage(loadedImage, 0, 0, width, height, null);
+      image.flush();
+      loadedImage.flush();
+      graphics2D.dispose();
+      return bufferedImage;
+    }
+  }
+
   /** 
    * This method returns true if the specified image has transparent pixels
    * Found at http://www.exampledepot.com/egs/java.awt.image/HasAlpha.html

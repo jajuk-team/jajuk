@@ -1179,8 +1179,8 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
     float opacity = 0.3f;
     float fadeHeight = 0.6f;
 
-    // cover
-    BufferedImage coverImage = UtilGUI.toBufferedImage(img);
+    // cover, we always need an aplpha image, otherwise we can not mirror it
+    BufferedImage coverImage = UtilGUI.toBufferedAlphaImage(img, img.getWidth(null), img.getHeight(null));
 
     PerspectiveFilter filter1 = new PerspectiveFilter(0, angle, coverImage.getHeight() - angle / 2,
         (int) (angle * (5.0 / 3.0)), coverImage.getHeight() - angle / 2, coverImage.getHeight(), 0,
