@@ -588,8 +588,8 @@ public interface Const {
   /** DOCUMENT_ME. */
   String EXT_FLAC = "flac";
 
-  /** DOCUMENT_ME. */
-  String EXT_THUMB = "jpg";
+  /** Extension of the thumbnails. */
+  String EXT_THUMB = "png";
 
   /** DOCUMENT_ME. */
   String EXT_MPC = "mpc";
