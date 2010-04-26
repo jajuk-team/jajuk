@@ -21,7 +21,6 @@
 
 package org.jajuk.ui.thumbnails;
 
-import java.awt.Container;
 import java.awt.Image;
 import java.awt.MediaTracker;
 import java.awt.image.BufferedImage;
@@ -44,6 +43,7 @@ import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.UtilGUI;
 import org.jajuk.util.UtilSystem;
+import org.jajuk.util.error.JajukRuntimeException;
 import org.jajuk.util.log.Log;
 
 /**
@@ -116,7 +116,7 @@ public final class ThumbnailManager {
    * http://schmidt.devlib.org/java/save-jpeg-thumbnail.html#source
    * 
    * @param orig source image
-   * @param thumb destination file (jpg)
+   * @param thumb destination file
    * @param maxDim required size
    * 
    * @throws IOException Signals that an I/O exception has occurred.
@@ -125,7 +125,11 @@ public final class ThumbnailManager {
   public static void createThumbnail(final File orig, final File thumb, final int maxDim)
       throws InterruptedException, IOException {
     // do not use URL object has it can corrupt special paths
-    createThumbnail(new ImageIcon(orig.getAbsolutePath()), thumb, maxDim);
+    ImageIcon ii = new ImageIcon(orig.getAbsolutePath());
+    if (ii.getImageLoadStatus() != MediaTracker.COMPLETE) {
+      throw new JajukRuntimeException("Cannot load image : " + orig.getAbsolutePath());
+    }
+    createThumbnail(ii, thumb, maxDim);
   }
 
   /**
@@ -149,11 +153,8 @@ public final class ThumbnailManager {
     // like the catalog view and the artist view. However, it can't prevent collision between
     // jajuk and the thumb builder process (different JVM)
     synchronized (thumb.getAbsolutePath().intern()) {
+      // Note that at this point, the image is fully loaded (done in the ImageIcon constructor)
       final Image image = ii.getImage();
-      // Wait for full image loading
-      final MediaTracker mediaTracker = new MediaTracker(new Container());
-      mediaTracker.addImage(image, 0);
-      mediaTracker.waitForID(0); // wait for image loading
       // determine thumbnail size from WIDTH and HEIGHT
       int thumbWidth = maxDim;
       int thumbHeight = maxDim;
@@ -169,7 +170,6 @@ public final class ThumbnailManager {
       // draw original image to thumbnail image object and
       // scale it to the new size on-the-fly
       final BufferedImage thumbImage = UtilGUI.toBufferedImage(image, thumbWidth, thumbHeight);
-      // Need alpha only for png and gif files
       // save thumbnail image to OUTFILE
       ImageIO.write(thumbImage, UtilSystem.getExtension(thumb), thumb);
       // Free thumb memory
@@ -205,6 +205,10 @@ public final class ThumbnailManager {
     }
     final File fThumb = getThumbBySize(album, size);
     final File fCover = album.findCoverFile();
+    if (!fCover.canRead()) {
+      Log.debug("Cannot read cover : " + fCover.getAbsolutePath());
+      return false;
+    }
     if (fCover != null) {
       try {
         createThumbnail(fCover, fThumb, size);

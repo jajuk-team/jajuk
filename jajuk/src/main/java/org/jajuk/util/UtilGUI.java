@@ -594,15 +594,14 @@ public final class UtilGUI {
       return ret;
     }
   }
-  
-  
-   /**
-   * Get3d image.
-   * 
-   * @param img DOCUMENT_ME
-   * 
-   * @return the 3d image
-   */
+
+  /**
+  * Get3d image.
+  * 
+  * @param img DOCUMENT_ME
+  * 
+  * @return the 3d image
+  */
   public static BufferedImage get3dImage(Image img) {
     int angle = 30;
     int gap = 10;
@@ -610,7 +609,8 @@ public final class UtilGUI {
     float fadeHeight = 0.6f;
 
     // cover
-    BufferedImage coverImage = UtilGUI.toBufferedImage(img,img.getWidth(null),img.getHeight(null),true);
+    BufferedImage coverImage = UtilGUI.toBufferedImage(img, img.getWidth(null),
+        img.getHeight(null), true);
 
     PerspectiveFilter filter1 = new PerspectiveFilter(0, angle, coverImage.getHeight() - angle / 2,
         (int) (angle * (5.0 / 3.0)), coverImage.getHeight() - angle / 2, coverImage.getHeight(), 0,
@@ -677,7 +677,11 @@ public final class UtilGUI {
     }
     // Get the image's color model
     ColorModel cm = pg.getColorModel();
-    return cm.hasAlpha();
+    if (cm == null) {
+      return false;
+    } else {
+      return cm.hasAlpha();
+    }
   }
 
   /**

@@ -24,7 +24,6 @@ package org.jajuk.ui.views;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Image;
-import java.awt.MediaTracker;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
@@ -1130,17 +1129,8 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
       }
     }
     if (iEventID == iLocalEventID) {
+      // Note that at this point, the image is fully loaded (done in the ImageIcon constructor)
       ii = UtilGUI.getResizedImage(icon, iNewWidth, iNewHeight);
-      // Force waiting to scaled instance. The getResizedImage method can finish asynchronously and
-      // this maybe
-      // explain some void covers effects.
-      MediaTracker tracker = new MediaTracker(this);
-      tracker.addImage(ii.getImage(), 0);
-      try {
-        tracker.waitForAll();
-      } catch (InterruptedException e) {
-        Log.error(e);
-      }
       // Free source and destination image buffer, see
       // http://forums.sun.com/thread.jspa?threadID=5424304&tstart=60
       icon.getImage().flush();

@@ -330,11 +330,9 @@ public class Album extends LogicalItem implements Comparable<Album> {
               && (UtilFeatures.isStandardCover(files[i]))) {
             // Test the image is not corrupted
             try {
-              MediaTracker mediaTracker = new MediaTracker(new Container());
               ImageIcon ii = new ImageIcon(files[i].getAbsolutePath());
-              mediaTracker.addImage(ii.getImage(), 0);
-              mediaTracker.waitForID(0); // wait for image
-              if (!mediaTracker.isErrorAny()) {
+              // Note that at this point, the image is fully loaded (done in the ImageIcon constructor)
+              if (ii.getImageLoadStatus()!= MediaTracker.COMPLETE) {
                 setProperty(XML_ALBUM_COVER, files[i].getAbsolutePath());
                 return files[i];
               }
