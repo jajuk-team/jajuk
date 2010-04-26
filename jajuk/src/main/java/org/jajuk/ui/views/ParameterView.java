@@ -1668,7 +1668,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
     class JajukJScrollPane extends JScrollPane {
       private static final long serialVersionUID = 4564343623724771988L;
 
-      public JajukJScrollPane(final Component view) {
+      private JajukJScrollPane(final Component view) {
         super(view);
         setBorder(null);
       }

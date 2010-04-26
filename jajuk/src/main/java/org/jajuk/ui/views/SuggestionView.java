@@ -224,15 +224,15 @@ public class SuggestionView extends ViewAdapter {
       public void stateChanged(ChangeEvent arg0) {
         refreshLastFMCollectionTabs();
         // store the selected tab
-        Conf.setProperty(Const.VIEW_NAME_SUGGESTION + "_"
+        Conf.setProperty(getClass().getName() + "_"
             + ((getPerspective() == null) ? "solo" : getPerspective().getID()), Integer.toString(
             tabs.getSelectedIndex()).toString());
       }
     });
 
-    if (Conf.containsProperty(Const.VIEW_NAME_SUGGESTION + "_"
+    if (Conf.containsProperty(getClass().getName() + "_"
         + ((getPerspective() == null) ? "solo" : getPerspective().getID()))) {
-      int index = Conf.getInt(Const.VIEW_NAME_SUGGESTION + "_"
+      int index = Conf.getInt(getClass().getName() + "_"
           + ((getPerspective() == null) ? "solo" : getPerspective().getID()));
       if (index > 0 && index < tabs.getTabCount()) {
         tabs.setSelectedIndex(index);
