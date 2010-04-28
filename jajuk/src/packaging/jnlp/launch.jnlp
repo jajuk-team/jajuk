@@ -37,7 +37,6 @@ TS: 2009-11-02 05:37:24
         	<extension name='VLDocking' href='vldocking.jnlp'/>
         	<extension name='JIntellitype' href='jintellitype.jnlp'/>
         	<extension name='Cobra' href='cobra.jnlp'/>
-        	<extension name='Jna' href='jna.jnlp'/>
         	<extension name='dbus' href='dbus.jnlp'/>
         	<extension name='xml' href='xml.jnlp'/>
         	<extension name='bindings' href='bindings.jnlp'/>

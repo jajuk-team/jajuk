@@ -19,7 +19,7 @@
  *  $Revision$
  */
 package org.jajuk.util;
- 
+
 import java.net.URL;
 
 /**
@@ -29,7 +29,7 @@ import java.net.URL;
 public interface Const {
 
   // Misc
- 
+
   /** Maximum size for covers in KB. */
   int MAX_COVER_SIZE = 1025;
 
@@ -63,7 +63,7 @@ public interface Const {
   /** Default refresh interval in mins for unknown types devices *. */
   String DEFAULT_REFRESH_INTERVAL = "5";
 
-   /** Fading status code. */
+  /** Fading status code. */
   int FADING_STATUS = 9999;
 
   /** Need full gc memory %. */
@@ -72,10 +72,10 @@ public interface Const {
   /** Play time to get rate +1 in secs. */
   int INC_RATE_TIME = 20;
 
-   /**
-   * Max number of concurrent executions by observation manager for a given
-   * event.
-   */
+  /**
+  * Max number of concurrent executions by observation manager for a given
+  * event.
+  */
   int MAX_EVENT_EXECUTIONS = 15;
 
   /** Min number of tracks in a DJ selection without track unicity. */
@@ -117,7 +117,7 @@ public interface Const {
   /** Number of album bestof items. */
   int NB_BESTOF_ALBUMS = 25;
 
-   /* Number of tracks for global actions (global shuffle, bestof...) */
+  /* Number of tracks for global actions (global shuffle, bestof...) */
   /** DOCUMENT_ME. */
   int NB_TRACKS_ON_ACTION = 200;
 
@@ -161,7 +161,7 @@ public interface Const {
   /** DOCUMENT_ME. */
   String FILE_DEFAULT_MPLAYER_POWER_OSX_PATH = "/Applications/MPlayer OSX PPC.app/Contents/Resources/External_Binaries/mplayer_ppc.app/Contents/MacOS/mplayer";
 
-   /** Update URL = PAD file URL. */
+  /** Update URL = PAD file URL. */
   String CHECK_FOR_UPDATE_URL = "http://jajuk.svn.sourceforge.net/svnroot/jajuk/trunk/jajuk/src/site/resources/jajuk_pad.xml";
 
   // Jajuk version
@@ -229,6 +229,9 @@ public interface Const {
 
   /** DOCUMENT_ME. */
   String FILE_CACHE = "cache";
+
+  /** Bat Converter to DOS 8.3 format */
+  String FILE_FILENAME_CONVERTER = "converter.bat";
 
   /** DOCUMENT_ME. */
   String LASTFM_CACHE = "lastfm";
@@ -319,13 +322,12 @@ public interface Const {
   URL FILE_REPORTING_CSS_PRINT_PATH = UtilSystem.getResource("xslt/"
       + FILE_REPORTING_CSS_PRINT_FILENAME);
 
-   /** DOCUMENT_ME. */
+  /** DOCUMENT_ME. */
   String URL_MPLAYER = "http://repository.jajuk.info/mplayer/20090114/mplayer.exe";
 
   /** DOCUMENT_ME. */
   String URL_DEFAULT_WEBRADIOS = "http://svn2.assembla.com/svn/common-jukebox/common-jukebox/src/main/resources/preset_radios.xml";
 
- 
   // sequence
   /** DOCUMENT_ME. */
   String AMBIENCE_PREFIX = "jajuk.ambience.";
@@ -351,7 +353,7 @@ public interface Const {
   /** DOCUMENT_ME. */
   String UNKNOWN_YEAR = "unknown_year";
 
-   /** DOCUMENT_ME. */
+  /** DOCUMENT_ME. */
   String VARIOUS_ARTIST = "various_artist";
 
   String COVER_NONE = "none";
@@ -363,7 +365,7 @@ public interface Const {
   /** DOCUMENT_ME. */
   URL IMAGE_SEARCH = UtilSystem.getResource("images/included/search.png");
 
-   // XSLT Files
+  // XSLT Files
   /** DOCUMENT_ME. */
   URL XSLT_ARTIST = UtilSystem.getResource("xslt/artist.xsl");
 
@@ -412,21 +414,21 @@ public interface Const {
   String PLAYER_IMPL_WEBRADIOS = "org.jajuk.services.players.WebRadioPlayerImpl";
 
   // tag impls
-   /** DOCUMENT_ME. */
+  /** DOCUMENT_ME. */
   String TAG_IMPL_NO_TAGS = "org.jajuk.services.tags.NoTagsTagImpl";
 
   /** DOCUMENT_ME. */
   String TAG_IMPL_JAUDIOTAGGER = "org.jajuk.services.tags.JAudioTaggerTagImpl";
 
   // device types
- 
+
   // Devices sync mode
   /** DOCUMENT_ME. */
   String DEVICE_SYNCHRO_MODE_BI = "bi";
 
   /** DOCUMENT_ME. */
   String DEVICE_SYNCHRO_MODE_UNI = "uni";
- 
+
   // extensions
   /** DOCUMENT_ME. */
   String EXT_MP3 = "mp3";
@@ -446,7 +448,7 @@ public interface Const {
   /** DOCUMENT_ME. */
   String EXT_AU = "au";
 
-   /** DOCUMENT_ME. */
+  /** DOCUMENT_ME. */
   String EXT_FLAC = "flac";
 
   /** Extension of the thumbnails. */
@@ -1292,7 +1294,7 @@ public interface Const {
   /** DOCUMENT_ME. */
   String XML_DJ_NUMBER = "number";
 
-   /** DOCUMENT_ME. */
+  /** DOCUMENT_ME. */
   String XML_STREAMS = "streams";
 
   /** DOCUMENT_ME. */

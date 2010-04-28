@@ -20,8 +20,6 @@
  */
 package org.jajuk.services.players;
 
-import ext.service.io.NativeFunctionsUtils;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -402,7 +400,7 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
     // special characters (see #1267)
     String pathname = fCurrent.getAbsolutePath();
     if (UtilSystem.isUnderWindows32bits() && Conf.getBoolean(CONF_SHORT_NAMES)) {
-      pathname = NativeFunctionsUtils.getShortPathNameW(pathname);
+      pathname = UtilSystem.getShortPathNameW(pathname);
     }
     ProcessBuilder pb = new ProcessBuilder(buildCommand(pathname));
     Log.debug("Using this Mplayer command: {{" + pb.command() + "}}");

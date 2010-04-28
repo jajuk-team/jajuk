@@ -20,8 +20,6 @@
  */
 package org.jajuk.util;
 
-import ext.service.io.NativeFunctionsUtils;
-
 import java.awt.Desktop;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -61,6 +59,7 @@ import org.apache.commons.lang.StringUtils;
 import org.jajuk.Main;
 import org.jajuk.services.core.SessionService;
 import org.jajuk.util.error.JajukException;
+import org.jajuk.util.error.JajukRuntimeException;
 import org.jajuk.util.filters.DirectoryFilter;
 import org.jajuk.util.filters.KnownTypeFilter;
 import org.jajuk.util.log.Log;
@@ -77,15 +76,15 @@ public final class UtilSystem {
    * MPlayer status possible values *.
    */
   public static enum MPlayerStatus {
-    
+
     /** DOCUMENT_ME. */
-    MPLAYER_STATUS_OK, 
- /** DOCUMENT_ME. */
- MPLAYER_STATUS_NOT_FOUND, 
- /** DOCUMENT_ME. */
- MPLAYER_STATUS_WRONG_VERSION, 
- /** DOCUMENT_ME. */
- MPLAYER_STATUS_JNLP_DOWNLOAD_PBM
+    MPLAYER_STATUS_OK,
+    /** DOCUMENT_ME. */
+    MPLAYER_STATUS_NOT_FOUND,
+    /** DOCUMENT_ME. */
+    MPLAYER_STATUS_WRONG_VERSION,
+    /** DOCUMENT_ME. */
+    MPLAYER_STATUS_JNLP_DOWNLOAD_PBM
   }
 
   /** Current date cached (for performances) *. */
@@ -99,25 +98,25 @@ public final class UtilSystem {
 
   /** Are we under Linux ? *. */
   private static final boolean UNDER_LINUX;
-  
+
   /** Are we under MAC OS Intel ? *. */
   private static final boolean UNDER_OSX_INTEL;
-  
+
   /** Are we under MAC OS power ? *. */
   private static final boolean UNDER_OSX_POWER;
-  
+
   /** Are we under Windows ? *. */
   private static final boolean UNDER_WINDOWS;
-  
+
   /** Are we under Windows 32 bits ? *. */
   private static final boolean UNDER_WINDOWS_32BIT;
-  
+
   /** Are we under Windows 64 bits ? *. */
   private static final boolean UNDER_WINDOWS_64BIT;
-  
+
   /** Directory filter used in refresh. */
   private static JajukFileFilter dirFilter;
-  
+
   /** File filter used in refresh. */
   private static JajukFileFilter fileFilter;
 
@@ -161,10 +160,10 @@ public final class UtilSystem {
 
   /** Icons cache. */
   static Map<String, ImageIcon> iconCache = new HashMap<String, ImageIcon>(200);
-  
+
   /** Mplayer exe path. */
   private static File mplayerPath = null;
-  
+
   /** current class loader. */
   private static ClassLoader classLoader = null;
 
@@ -1086,12 +1085,10 @@ public final class UtilSystem {
   public static void openInExplorer(File directory) {
     final File directoryToOpen;
     /*
-     * Needed for UNC filenames with spaces ->
-     * http://bugs.sun.com/view_bug.do?bug_id=6550588
+     * Needed for UNC filenames with spaces -> http://bugs.sun.com/view_bug.do?bug_id=6550588
      */
     if (isUnderWindows()) {
-      directoryToOpen = new File(NativeFunctionsUtils
-          .getShortPathNameW(directory.getAbsolutePath()));
+      directoryToOpen = new File(getShortPathNameW(directory.getAbsolutePath()));
     } else {
       directoryToOpen = directory;
     }
@@ -1191,5 +1188,35 @@ public final class UtilSystem {
     }
     return cachedUserHomeDir;
   }
- 
+
+  /**
+   * Convert a full regular Windows path to 8.3 DOS format 
+   * @param longname the regular absolute path
+   * @return the shortname absolute path
+   */
+  public static String getShortPathNameW(String longname) {
+    // Find the shortname .bat converter, create it if it doesn't yet exist
+    String shortname = null;
+    try {
+      File fileConverter = SessionService.getConfFileByPath(Const.FILE_FILENAME_CONVERTER);
+      if (!fileConverter.exists()) {
+        FileWriter fw = new FileWriter(fileConverter);
+        fw.write("@echo off\n");
+        fw.write("set name=%*\n");
+        fw.write("for %%X in (%name%) do set name=%%~sX\n");
+        fw.write("echo %name%\n");
+        fw.flush();
+        fw.close();
+      }
+      ProcessBuilder pc = new ProcessBuilder(fileConverter.getAbsolutePath(), longname);
+      Process process = pc.start();
+      BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()));
+      shortname = br.readLine();
+      process.destroy();
+    } catch (Exception e) {
+      throw new JajukRuntimeException("Cannot convert the filename to 8.3 format", e);
+    }
+    return shortname;
+  }
+
 }
