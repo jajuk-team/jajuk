@@ -15,5 +15,5 @@
 java -version
 @echo.
 PUSHD bin
-java -client -Xms20M -Xmx512M -XX:MinHeapFreeRatio=5 -XX:MaxHeapFreeRatio=10 -jar jajuk.jar -notest
+java -client -Xms20M -Xmx512M -XX:MinHeapFreeRatio=5 -XX:MaxHeapFreeRatio=10 -jar jajuk.jar TEST_FLAG_REPLACED_BY_ANT
 POPD
