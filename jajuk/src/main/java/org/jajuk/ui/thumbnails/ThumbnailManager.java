@@ -205,11 +205,12 @@ public final class ThumbnailManager {
     }
     final File fThumb = getThumbBySize(album, size);
     final File fCover = album.findCoverFile();
-    if (!fCover.canRead()) {
-      Log.debug("Cannot read cover : " + fCover.getAbsolutePath());
-      return false;
-    }
     if (fCover != null) {
+      if (!fCover.canRead()) {
+        Log.debug("Cannot read cover : " + fCover.getAbsolutePath());
+        return false;
+      }
+
       try {
         createThumbnail(fCover, fThumb, size);
         // Update thumb availability
