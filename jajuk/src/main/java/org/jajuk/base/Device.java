@@ -24,6 +24,8 @@ import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -978,7 +980,6 @@ public class Device extends PhysicalItem implements Comparable<Device> {
         }
       }
     }
-
     // handle known extensions and image files
     final FileFilter filter = new JajukFileFilter(false, new JajukFileFilter[] {
         KnownTypeFilter.getInstance(), ImageFilter.getInstance() });
@@ -1011,12 +1012,15 @@ public class Device extends PhysicalItem implements Comparable<Device> {
       final File[] fSrcFiles = fileSrc.listFiles(filter);
       if (fSrcFiles != null) {
         for (final File element : fSrcFiles) {
-          final File[] files = fileNewDir.listFiles(filter);
-          if (files == null) {
+          File[] filesArray =  fileNewDir.listFiles(filter);
+          if (filesArray == null) {
             // fileNewDir is not a directory or an error occurred (
             // read/write right ? )
             continue;
           }
+          final List<File> files = Arrays.asList(filesArray);
+          // Sort  so files are copied in the filesystem order
+          Collections.sort(files);
           boolean bNeedCopy = true;
           for (final File element2 : files) {
             if (element.getName().equalsIgnoreCase(element2.getName())) {
