@@ -28,6 +28,7 @@ import org.jajuk.JUnitHelpers;
 import org.jajuk.JajukTestCase;
 import org.jajuk.util.Const;
 import org.jajuk.util.UtilSystem;
+import org.jajuk.util.error.JajukRuntimeException;
 
 /**
  * 
@@ -123,8 +124,30 @@ public class TestSessionService extends JajukTestCase {
    */
   public void testHandleCommandline() {
     SessionService.handleCommandline(new String[] {});
-
     SessionService.handleCommandline(new String[] { "-test", "-ide", "-something" });
+    assertFalse(parseBootstrap(""));
+    assertFalse(parseBootstrap("/foo"));
+    String tmpDir = System.getProperty("java.io.tmpdir");
+    String rightBootstrapLocation = tmpDir;
+    assertTrue(parseBootstrap(rightBootstrapLocation));
+    SessionService.handleCommandline(new String[] { "-test", "-ide", "-bootstrap=" + tmpDir,
+        "-something" });
+  }
+
+  /**
+   * Return true if the bootstrap location is valid
+   * @param bootstrapLocation
+   * @return true if the bootstrap location is valid
+   */
+  private boolean parseBootstrap(String bootstrapLocation) {
+    try {
+      // next line should throw a runtime exception
+      SessionService.handleCommandline(new String[] { "-test", "-ide", "-something",
+          "-bootstrap=" + bootstrapLocation });
+      return true;
+    } catch (JajukRuntimeException e) {
+      return false;
+    }
   }
 
   /**

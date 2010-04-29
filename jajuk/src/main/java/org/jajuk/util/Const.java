@@ -295,6 +295,9 @@ public interface Const {
 
   /** DOCUMENT_ME. */
   String FILE_FIFO = "fifo.lst";
+  
+  /** Bootstrap file name */
+  String FILE_BOOTSTRAP = ".jajuk_bootstrap";
 
   /** DOCUMENT_ME. */
   String FILE_MPLAYER_EXE = "mplayer.exe";
@@ -395,13 +398,14 @@ public interface Const {
 
   // -- Command line options --
 
-  // Tells jajuk it is inside the IDE
-  /** DOCUMENT_ME. */
+  /** Tells jajuk it is inside the IDE */
   String CLI_IDE = "ide";
 
-  // Tells jajuk to use a .jajuk_test repository
-  /** DOCUMENT_ME. */
+  /** Tells jajuk to use a .jajuk_test repository */
   String CLI_TEST = "test";
+
+  /** Special bootstrap file location option */
+  String CLI_BOOTSTRAP_LOCATION = "bootstrap";
 
   // players impls
   /** DOCUMENT_ME. */

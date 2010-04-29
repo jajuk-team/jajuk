@@ -34,6 +34,7 @@ import java.net.UnknownHostException;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 import java.util.Properties;
+import java.util.StringTokenizer;
 
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
@@ -51,6 +52,7 @@ import org.jajuk.util.Messages;
 import org.jajuk.util.UpgradeManager;
 import org.jajuk.util.UtilGUI;
 import org.jajuk.util.UtilSystem;
+import org.jajuk.util.error.JajukRuntimeException;
 import org.jajuk.util.log.Log;
 
 /**
@@ -67,6 +69,9 @@ public class SessionService {
   /** Workspace PATH*. */
   private static String workspace;
 
+  /** Alternative bootstrap file location (required for some special packaging like portableapps) **/
+  private static String forcedBootstrapPath = null;
+
   /** Directory used to flag the current jajuk session. */
   private static File sessionIdFile;
 
@@ -81,7 +86,7 @@ public class SessionService {
 
   /** Cached bootstrap absolute file path. */
   private static String cachedBootstrapPath;
-  
+
   /** For performances, store conf root path. */
   private static String confRoot;
 
@@ -259,6 +264,24 @@ public class SessionService {
       // -test=[test|notest] option
       if (element.equals("-" + Const.CLI_TEST)) {
         bTestMode = true;
+      }
+      // Handle special bootstrap file location
+      // Format : -bootstrap=<url of parent directory>
+      if (element.matches("-" + Const.CLI_BOOTSTRAP_LOCATION + "=.*")) {
+        String testedBootstrapPath = null;
+        try {
+          StringTokenizer st = new StringTokenizer(element, "=");
+          st.nextToken();
+          testedBootstrapPath = st.nextToken();
+        } catch (Exception e) {
+          throw new JajukRuntimeException("Wrong bootstrap file location : " + testedBootstrapPath);
+        }
+        if (testedBootstrapPath == null || !new File(testedBootstrapPath).canRead()) {
+          // Leave jajuk
+          throw new JajukRuntimeException("Wrong bootstrap file location : " + testedBootstrapPath);
+        } else {
+          forcedBootstrapPath = testedBootstrapPath + "/" + Const.FILE_BOOTSTRAP;
+        }
       }
     }
   }
@@ -490,19 +513,24 @@ public class SessionService {
    * but we keep it here because of its bootstraping nature that make it easier
    * in a dynamic method than inside a boot process.
    * 
+   * This bootstrap file location can be overriden by providing -bootstrap=<URL> progam CLI option
+   * 
    * @return bootstrap file absolute path
    */
   public static String getBootstrapPath() {
+    if (forcedBootstrapPath != null) {
+      cachedBootstrapPath = forcedBootstrapPath;
+    }
     if (cachedBootstrapPath != null) {
       return cachedBootstrapPath;
     }
-    cachedBootstrapPath = UtilSystem.getUserHome() + "/.jajuk_bootstrap";
-    if (!new File(UtilSystem.getUserHome() + "/.jajuk_bootstrap").exists()) {
-      if (new File(System.getProperty("user.home") + "/.jajuk_bootstrap").exists()) {
+    cachedBootstrapPath = UtilSystem.getUserHome() + "/" + Const.FILE_BOOTSTRAP;
+    if (!new File(UtilSystem.getUserHome() + "/" + Const.FILE_BOOTSTRAP).exists()) {
+      if (new File(System.getProperty("user.home") + "/" + Const.FILE_BOOTSTRAP).exists()) {
         try {
-          FileUtils.copyFileToDirectory(new File(System.getProperty("user.home")
-              + "/.jajuk_bootstrap"), new File(UtilSystem.getUserHome()));
-          new File(System.getProperty("user.home") + "/.jajuk_bootstrap").delete();
+          FileUtils.copyFileToDirectory(new File(System.getProperty("user.home") + "/"
+              + Const.FILE_BOOTSTRAP), new File(UtilSystem.getUserHome()));
+          new File(System.getProperty("user.home") + "/" + Const.FILE_BOOTSTRAP).delete();
         } catch (IOException ex) {
           Log.error(ex);
         }
